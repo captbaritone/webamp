@@ -306,4 +306,4 @@ document.onkeyup = function(e){
 }
 
 winamp = new Winamp();
-winamp.loadFile('http://jordaneldredge.com/projects/winamp.js/llama.mp3', 'llama.mp3');
+winamp.loadFile('http://jordaneldredge.com/projects/winamp2-js/llama.mp3', 'llama.mp3');
