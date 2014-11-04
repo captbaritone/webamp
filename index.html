@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Winamp.js - It really rips off the llama's ass</title>
+        <link rel='stylesheet' type='text/css' href='winamp.css' />
+    </head>
+    <body>
+        <audio id='player'></audio>
+        <div id='winamp'>
+            <div id='title-bar' class='selected'>
+                <div id='option'></div>
+                <div id='minimize'></div>
+                <div id='shade'></div>
+                <div id='close'></div>
+            </div>
+            <div class='status'>
+                <div id='clutter-bar' class='disabled'></div>
+                <div id='play-pause' class='stop'>
+                    <div id='work-indicator' class='selected'></div>
+                </div>
+                <div id='time'>
+                    <div id='minus-sign'></div>
+                    <div id='minute-first-digit'></div>
+                    <div id='minute-second-digit'></div>
+                    <div id='second-first-digit'></div>
+                    <div id='second-second-digit'></div>
+                </div>
+                <div id='visualization'></div>
+            </div>
+            <div class='media-info'>
+                <div id='song-title'></div>
+                <div id='kbps'></div>
+                <div id='khz'></div>
+                <div class='mono-stereo'>
+                    <div id='mono' class=''></div>
+                    <div id='stereo' class='selected'></div>
+                </div>
+            </div>
+            <input id='volume' type='range' min='0' max='100' step='1' value='50' />
+            <input id='balance' type='range' min='0' max='100' step='1' value='50' />
+            <div class='windows'>
+                <div id='equalizer'></div>
+                <div id='playlist'></div>
+            </div>
+            <input id='position' type='range' min='0' max='100' step='1' value='0' />
+            <div class='actions'>
+                <div id='previous'></div>
+                <div id='play'></div>
+                <div id='pause'></div>
+                <div id='stop'></div>
+                <div id='next'></div>
+            </div>
+            <div id='eject'></div>
+            <div class='shuffle-repeat'>
+                <div id="shuffle"></div>
+                <div id="repeat"></div>
+            </div>
+            <a id='about' target='_blank' href='http://jordaneldredge.com'></a>
+        </div>
+        <input id="file-input" type="file" />
+        <script src="winamp.js"></script>
+    </body>
+</html>

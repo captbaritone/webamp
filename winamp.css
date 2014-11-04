@@ -1,0 +1,461 @@
+/* Range input css reset */
+input[type=range]{ -webkit-appearance: none; margin: 0; padding: 0; background: none; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; border: none; border-radius: 0; background: none; }
+input[type=range]::-moz-range-thumb { border: none; border-radius: 0; background: none; }
+input[type=range]::-moz-range-track { border: none; background: none; }
+input[type=range]:focus { outline: none; }
+input[type=range]::-moz-focus-outer { border: 0; }
+
+#winamp {
+    position: relative;
+    background-image: url('skins/default/MAIN.BMP');
+    height: 116px;
+    width: 275px;
+    cursor:url('skins/default/MAINMENU.CUR'), auto;
+}
+
+.actions {
+    position: absolute;
+    top: 88px;
+    left: 16px;
+    height: 18px;
+    width: 114px;
+}
+
+#title-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 14px;
+    width: 275px;
+    background-image: url('skins/default/TITLEBAR.BMP');
+    background-position: -27px -14px;
+    cursor:url('skins/default/TITLEBAR.CUR'), auto;
+}
+
+#title-bar.selected {
+    background-position: -27px 0px;
+}
+
+.llama #title-bar {
+    background-position: -27px -61px;
+}
+
+.llama #title-bar.selected {
+    background-position: -27px -57px;
+}
+
+#title-bar div {
+    position: absolute;
+    height: 9px;
+    width: 9px;
+    top: 3px;
+    cursor:url('skins/default/MAINMENU.CUR'), auto;
+}
+
+#title-bar #option {
+    left: 6px;
+    background-image: url('skins/default/TITLEBAR.BMP');
+}
+#title-bar #option:active {
+    background-position: 0 -9px;
+}
+
+#title-bar #minimize {
+    left: 244px;
+    background-image: url('skins/default/TITLEBAR.BMP');
+    background-position: -9px 0;
+}
+#title-bar #minimize:active {
+    background-position: -9px -9px;
+}
+
+#title-bar #shade {
+    left: 254px;
+    background-image: url('skins/default/TITLEBAR.BMP');
+    background-position: 0px -18px;
+}
+#title-bar #shade:active {
+    background-position: -9px -18px;
+}
+
+#title-bar #close {
+    left: 264px;
+    background-image: url('skins/default/TITLEBAR.BMP');
+    background-position: -18px 0px;
+    cursor:url('skins/default/CLOSE.CUR'), auto;
+}
+#title-bar #close:active {
+    background-position: -18px -9px;
+}
+
+.status #clutter-bar {
+    position: absolute;
+    top: 22px;
+    left: 10px;
+    height: 43px;
+    width: 8px;
+    background-image: url('skins/default/TITLEBAR.BMP');
+    background-position: -304px 0;
+}
+
+.status #clutter-bar.disabled {
+    background-position: -312px 0;
+}
+
+.status #play-pause {
+    position: absolute;
+    top: 28px;
+    left: 24px;
+    height: 9px;
+    width: 9px;
+    background-image: url('skins/default/PLAYPAUS.BMP');
+}
+
+.status #play-pause.play #work-indicator {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 9px;
+    width: 3px;
+    background-image: url('skins/default/PLAYPAUS.BMP');
+    background-position: -39px 0;
+}
+.status #play-pause.play #work-indicator.selected {
+    background-position: -36px 0;
+}
+
+.status #play-pause.play { }
+.status #play-pause.pause { background-position: -9px 0; }
+.status #play-pause.stop { background-position: -18px 0; }
+.status #time {
+    position: absolute;
+    left: 48px;
+    left: 40px;
+    top: 26px;
+    /* Just to make it clickable */
+    height: 13px;
+    width: 59px;
+}
+.status #time #minus-sign {
+    position: absolute;
+    top: 6px;
+    background-color: red;
+    width: 5px;
+    height: 1px;
+    background-image: url('skins/default/NUMBERS.BMP');
+    background-position: -9px -6px;
+}
+.status #time.countdown #minus-sign {
+    background-position: -20px -6px;
+}
+
+.status #time #minute-first-digit {
+    position: absolute;
+    left: 8px;
+    height: 13px;
+    width: 9px;
+}
+.status #time #minute-second-digit {
+    position: absolute;
+    left: 20px;
+    height: 13px;
+    width: 9px;
+}
+.status #time #second-first-digit {
+    position: absolute;
+    left: 38px;
+    height: 13px;
+    width: 9px;
+}
+.status #time #second-second-digit {
+    position: absolute;
+    left: 50px;
+    height: 13px;
+    width: 9px;
+}
+
+.media-info #song-title {
+    position: absolute;
+    left: 112px;
+    top: 27px;
+    width: 152px;
+    height: 6px;
+    overflow: hidden;
+}
+
+.media-info #kbps {
+    position: absolute;
+    left: 111px;
+    top: 43px;
+    width: 15px;
+    height: 6px;
+    overflow: hidden;
+}
+
+.media-info #khz {
+    position: absolute;
+    left: 156px;
+    top: 43px;
+    width: 10px;
+    height: 6px;
+    overflow: hidden;
+}
+
+.media-info .mono-stereo {
+    position: absolute;
+    left: 212px;
+    top: 41px;
+    width: 57px;
+    height: 12px;
+}
+
+.media-info .mono-stereo div {
+    position: absolute;
+    height: 12px;
+    background-image: url('skins/default/MONOSTER.BMP');
+}
+
+.media-info .mono-stereo #mono {
+    width: 29px;
+    background-position: -29px -12px;
+}
+.media-info .mono-stereo #mono.selected {
+    background-position: -29px 0;
+}
+
+.media-info .mono-stereo #stereo {
+    left: 27px;
+    width: 29px;
+    background-position: 0 -12px;
+}
+.media-info .mono-stereo #stereo.selected {
+    background-position: 0 0;
+}
+
+#volume {
+    position: absolute;
+    left: 107px;
+    top: 57px;
+    height: 13px;
+    width: 68px;
+    background-image: url('skins/default/VOLUME.BMP');
+    background-position: 0 0;
+}
+#volume::-webkit-slider-thumb {
+    margin-top: 1px;
+    height: 11px;
+    width: 14px;
+    background-image: url('skins/default/VOLUME.BMP');
+    background-position: -15px -422px;
+    cursor:url('skins/default/VOLBAR.CUR'), auto;
+}
+#volume::-moz-range-thumb {
+    margin-top: 1px;
+    height: 11px;
+    width: 14px;
+    background-image: url('skins/default/VOLUME.BMP');
+    background-position: -15px -422px;
+    cursor:url('skins/default/VOLBAR.CUR'), auto;
+}
+#volume:active::-webkit-slider-thumb  {
+    background-position: 0 -422px;
+}
+#volume:active::-moz-range-thumb  {
+    background-position: 0 -422px;
+}
+
+#balance {
+    position: absolute;
+    left: 177px;
+    top: 57px;
+    height: 13px;
+    width: 38px;
+    background-image: url('skins/default/BALANCE.BMP');
+    background-position: -9px 0;
+}
+
+#balance::-webkit-slider-thumb {
+    top: 1px;
+    height: 11px;
+    width: 14px;
+    background-image: url('skins/default/VOLUME.BMP');
+    background-position: -15px -422px;
+    cursor:url('skins/default/POSBAR.CUR'), auto;
+}
+#balance::-moz-range-thumb {
+    top: 1px;
+    height: 11px;
+    width: 14px;
+    background-image: url('skins/default/VOLUME.BMP');
+    background-position: -15px -422px;
+    cursor:url('skins/default/POSBAR.CUR'), auto;
+}
+
+#balance:active::-webkit-slider-thumb  {
+    background-position: 0 -422px;
+}
+#balance:active::-moz-range-thumb  {
+    background-position: 0 -422px;
+}
+
+.windows {
+    position: absolute;
+    left: 219px;
+    top: 58px;
+    width: 46px;
+    height: 13px;
+}
+
+.windows div {
+    position: absolute;
+    width: 23px;
+    height: 13px;
+    background-image: url('skins/default/SHUFREP.BMP');
+}
+
+.windows #equalizer {
+    left: 0;
+    background-position: 0 -61px;
+}
+.windows #equalizer:active {
+    background-position: -46px -61px;
+}
+
+.windows #playlist {
+    left: 23px;
+    background-position: -23px -61px;
+}
+.windows #playlist:active {
+    background-position: -69px -61px;
+}
+
+#position {
+    position: absolute;
+    left: 16px;
+    top: 72px;
+    width: 248px;
+    height: 10px;
+    background-image: url('skins/default/POSBAR.BMP');
+}
+
+#position::-webkit-slider-thumb {
+    height: 10px;
+    width: 29px;
+    background-position: -248px 0;
+    background-image: url('skins/default/POSBAR.BMP');
+    cursor:url('skins/default/POSBAR.CUR'), auto;
+}
+#position::-moz-range-thumb {
+    height: 10px;
+    width: 29px;
+    background-position: -248px 0;
+    background-image: url('skins/default/POSBAR.BMP');
+    cursor:url('skins/default/POSBAR.CUR'), auto;
+}
+#position:active::-webkit-slider-thumb {
+    background-position: -278px 0;
+}
+#position:active::-moz-range-thumb {
+    background-position: -278px 0;
+}
+
+.actions div {
+    background-image: url('skins/default/CBUTTONS.BMP');
+    height: 18px;
+    width: 23px;
+    float: left;
+}
+
+.actions #previous { background-position: 0 0; }
+.actions #previous:active { background-position: 0 -18px; }
+.actions #play { background-position: -23px 0; }
+.actions #play:active { background-position: -23px -18px; }
+.actions #pause { background-position: -46px 0; }
+.actions #pause:active { background-position: -46px -18px; }
+.actions #stop { background-position: -69px 0; }
+.actions #stop:active { background-position: -69px -18px; }
+.actions #next { background-position: -92px 0; width: 22px; }
+.actions #next:active { background-position: -92px -18px; }
+
+#eject {
+    position: absolute;
+    top: 88px;
+    left: 136px;
+    background-image: url('skins/default/CBUTTONS.BMP');
+    height: 16px;
+    width: 22px;
+}
+#eject { background-position: -114px 0; }
+#eject:active { background-position: -114px -16px; }
+
+.shuffle-repeat {
+    position: absolute;
+    top: 89px;
+    left: 164px;
+    width: 74px;
+}
+
+.shuffle-repeat div {
+    position: absolute;
+    height: 15px;
+    background-image: url('skins/default/SHUFREP.BMP');
+}
+
+.shuffle-repeat #shuffle {
+    width: 47px;
+    background-position: -28px 0;
+}
+.shuffle-repeat #shuffle:active {
+    background-position: -28px -15px;
+}
+
+.shuffle-repeat #shuffle.selected {
+    background-position: -28px -30px;
+}
+.shuffle-repeat #shuffle.selected:active {
+    background-position: -28px -45px;
+}
+
+.shuffle-repeat #repeat {
+    left: 47px;
+    width: 28px;
+}
+.shuffle-repeat #repeat:active {
+    background-position: 0 -15px;
+}
+
+.shuffle-repeat #repeat.selected {
+    background-position: 0 -30px;
+}
+.shuffle-repeat #repeat.selected:active {
+    background-position: 0 -45px;
+}
+
+#about {
+    position: absolute;
+    top: 91px;
+    left: 253px;
+    height: 15px;
+    width: 13px;
+}
+
+.character {
+    display: block;
+    float: left; /* Safari does not do inline-block well */
+    width: 5px;
+    height: 6px;
+    background-image: url('skins/default/TEXT.BMP');
+    text-indent: -9999px;
+
+}
+
+.digit {
+    display: inline-block;
+    width: 9px;
+    height: 13px;
+    background-image: url('skins/default/NUMBERS.BMP');
+    text-indent: -9999px;
+}
+
+#file-input { display: none; }
