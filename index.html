@@ -5,8 +5,8 @@
         <link rel='stylesheet' type='text/css' href='winamp.css' />
     </head>
     <body>
-        <audio id='player'></audio>
         <div id='winamp'>
+            <audio id='player'></audio>
             <div id='title-bar' class='selected'>
                 <div id='option'></div>
                 <div id='minimize'></div>
@@ -50,7 +50,9 @@
                 <div id='stop'></div>
                 <div id='next'></div>
             </div>
-            <div id='eject'></div>
+            <div id='eject'>
+                <input id="file-input" type="file" />
+            </div>
             <div class='shuffle-repeat'>
                 <div id="shuffle"></div>
                 <div id="repeat"></div>
