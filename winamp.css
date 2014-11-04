@@ -345,6 +345,12 @@ input[type=range]::-moz-focus-outer { border: 0; }
     background-position: -248px 0;
     background-image: url('skins/default/POSBAR.BMP');
     cursor:url('skins/default/POSBAR.CUR'), auto;
+    /*
+     * Fix the strange bug in Safair/mobile-chrome
+     * http://stackoverflow.com/questions/26727769/rendering-glitch-when-manipulating-range-input-value-via-javascript-in-webkit
+     */
+    -webkit-box-sizing: border-box;
+    position: relative;
 }
 #position::-moz-range-thumb {
     height: 10px;

@@ -50,9 +50,9 @@ and Firefox. Only tested on OS X.
 
 ## Tested in modern versions of
 
-- Chrome (OS X, Ubuntu) - Perfect
+- Chrome (OS X, iOS, Ubuntu) - Perfect
 - Firefox (OS X) - Perfect
-- Safari (OS X), Chrome & Safari (iOS) - Small glitch with the position handle
+- Safari (OS X, iOS) - Perfect
 
 ## Thanks to
 
