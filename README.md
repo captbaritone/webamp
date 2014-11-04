@@ -47,6 +47,8 @@ and Firefox. Only tested on OS X.
 ## Currently Impossible
 
 - Equalizer and balance?
+- Get volume working on iOS devices
+  (https://developer.apple.com/library/safari/documentation/audiovideo/conceptual/using_html5_audio_video/device-specificconsiderations/device-specificconsiderations.html)
 
 ## Tested in modern versions of
 
