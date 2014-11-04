@@ -5,6 +5,7 @@ input[type=range]::-moz-range-thumb { border: none; border-radius: 0; background
 input[type=range]::-moz-range-track { border: none; background: none; }
 input[type=range]:focus { outline: none; }
 input[type=range]::-moz-focus-outer { border: 0; }
+a:focus { outline: none; }
 
 #winamp {
     position: relative;
