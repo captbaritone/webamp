@@ -182,7 +182,6 @@ function Winamp () {
         offset = Math.abs(balance - .5) * 2;
         sprite = Math.floor(offset * 28);
         offset = (sprite - 1) * 15;
-        console.log(self.nodes.balance.style);
         self.nodes.balance.style.backgroundPosition = '-9px -' + offset + 'px';
     }
 
