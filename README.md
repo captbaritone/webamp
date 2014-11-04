@@ -6,8 +6,7 @@ assets so it *should* be compatible with other themes.
 It comes preloaded with one track, but you can click to "eject" button to
 select your own mp3 file.
 
-Looks the most polished in Chrome but works fine in modern versions of Safari
-and Firefox. Only tested on OS X.
+Works in modern versions of Firefox, Safari and Chrome. Untested in IE.
 
 ## TODO
 
