@@ -142,10 +142,7 @@ function Winamp () {
 
     this.nodes.fileInput.onchange = function(e){
         var file = e.target.files[0];
-        var objectUrl = URL.createObjectURL(file);
-        self.loadFile(objectUrl, file.name);
-        self.media.play();
-        self.setStatus('play');
+        self.loadFileViaReference(file);
     }
 
     this.nodes.volume.oninput = function() {
@@ -217,6 +214,34 @@ function Winamp () {
         html = digitHtml(digits[3]);
         document.getElementById('second-second-digit').innerHTML = '';
         document.getElementById('second-second-digit').appendChild(html);
+    }
+
+
+    this.dragenter = function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+    }
+    this.dragover = function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+    }
+    this.drop = function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        var dt = e.dataTransfer;
+        var file = dt.files[0];
+        self.loadFileViaReference(file);
+    }
+
+    this.nodes.winamp.addEventListener('dragenter', this.dragenter);
+    this.nodes.winamp.addEventListener('dragover', this.dragover);
+    this.nodes.winamp.addEventListener('drop', this.drop);
+
+    this.loadFileViaReference = function(fileReference) {
+        var objectUrl = URL.createObjectURL(fileReference);
+        self.loadFile(objectUrl, fileReference.name);
+        self.media.play();
+        self.setStatus('play');
     }
 
     this.loadFile = function(file, fileName) {
