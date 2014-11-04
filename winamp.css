@@ -338,6 +338,7 @@ a:focus { outline: none; }
     width: 248px;
     height: 10px;
     background-image: url('skins/default/POSBAR.BMP');
+    background-repeat: no-repeat;
 }
 
 #position::-webkit-slider-thumb {
@@ -345,6 +346,7 @@ a:focus { outline: none; }
     width: 29px;
     background-position: -248px 0;
     background-image: url('skins/default/POSBAR.BMP');
+    background-repeat: no-repeat;
     cursor:url('skins/default/POSBAR.CUR'), auto;
     /*
      * Fix the strange bug in Safair/mobile-chrome
@@ -358,6 +360,7 @@ a:focus { outline: none; }
     width: 29px;
     background-position: -248px 0;
     background-image: url('skins/default/POSBAR.BMP');
+    background-repeat: no-repeat;
     cursor:url('skins/default/POSBAR.CUR'), auto;
 }
 #position:active::-webkit-slider-thumb {
