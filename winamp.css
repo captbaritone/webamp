@@ -596,14 +596,14 @@ a:focus { outline: none; }
 
 .shade #shade-minus-sign {
     display: block;
-    top: 5px;
+    top: 4px;
     left: 126px;
     width: 5px;
     height:6px;
 }
 .shade #shade-minute-first-digit {
     display: block;
-    top: 5px;
+    top: 4px;
     left: 133px;
     width: 5px;
     height:6px;
@@ -611,14 +611,14 @@ a:focus { outline: none; }
 
 .shade #shade-minute-second-digit {
     display: block;
-    top: 5px;
+    top: 4px;
     left: 138px;
     width: 5px;
     height:6px;
 }
 .shade #shade-second-first-digit {
     display: block;
-    top: 5px;
+    top: 4px;
     left: 147px;
     width: 5px;
     height:6px;
@@ -626,7 +626,7 @@ a:focus { outline: none; }
 
 .shade #shade-second-second-digit {
     display: block;
-    top: 5px;
+    top: 4px;
     left: 152px;
     width: 5px;
     height:6px;
