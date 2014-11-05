@@ -1,7 +1,6 @@
-# Winamp.js
+# Winamp2-js
 
-A reimplementation of Winamp 2.x in jQuery and css. We use the actual skin
-assets so it *should* be compatible with other themes.
+A reimplementation of Winamp 2.9 in HTML5 and Javascript.
 
 Works in modern versions of Firefox, Safari and Chrome. Untested in IE.
 
@@ -11,24 +10,23 @@ Works in modern versions of Firefox, Safari and Chrome. Untested in IE.
 - Open a url using the upper left hand corner "options" icon
 - Uses the acutal skin assets, so it's compatible with all skins
 - "Shade" mini-mode
+- Not dependent on any libraries or frameworks
 
 ## TODO
 
+- Don't show time, stero/mono, kbps, khz or postion slider when were're not playing
+- Marquee effect when the title is too long
+- Handle "working" icon
+- Disable previous and next
 - Shade mode
     - Left and right position slider
     - Show minus sign when appropriate
 - Investigate real space text
 - Blog post
 - Test on IE 10
-- Handle "working" icon
-- Better presentation around it
-- Test other themes
 - Tool for selecting a theme
     - Maybe http://gildas-lormeau.github.io/zip.js/demos/demo2.html
 - Control loading state so it's not visible until it's loaded
-- Marquee effect when the title is too long
-- Don't show time, stero/mono, kbps, khz or postion slider when were're not playing
-- Disable previous and next
 - Get version 2.91 cursors
 - Check native app for behavior
     - Does it pause when we scrub? No.
