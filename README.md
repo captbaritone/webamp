@@ -3,15 +3,20 @@
 A reimplementation of Winamp 2.x in jQuery and css. We use the actual skin
 assets so it *should* be compatible with other themes.
 
-It comes preloaded with one track, but you can click to "eject" button to
-select your own mp3 file.
-
 Works in modern versions of Firefox, Safari and Chrome. Untested in IE.
+
+## Features
+
+- Drag in local files or open them via the "eject" button
+- Open a url using the upper left hand corner "options" icon
+- Uses the acutal skin assets, so it's compatible with all skins
+- "Shade" mini-mode
 
 ## TODO
 
 - Shade mode
     - Left and right position slider
+    - Show minus sign when appropriate
 - Investigate real space text
 - Blog post
 - Test on IE 10
@@ -22,17 +27,14 @@ Works in modern versions of Firefox, Safari and Chrome. Untested in IE.
     - Maybe http://gildas-lormeau.github.io/zip.js/demos/demo2.html
 - Control loading state so it's not visible until it's loaded
 - Marquee effect when the title is too long
+- Don't show time, stero/mono, kbps, khz or postion slider when were're not playing
+- Disable previous and next
+- Get version 2.91 cursors
 - Check native app for behavior
-    - When you load a track, do we auto-play? Do we update the time?
-    - What does the scrubber do when we fastforward
-    - Does it pause when we scrub?
-    - What does the scrubber do when we get to the end of the file?
-    - What does the top left button do?
+    - Does it pause when we scrub? No.
     - What are the visualizer options?
         - What is the line graph version?
         - What is the bar graph version?
-    - What do the clutter bar letters do?
-    - Check behavior of position slider icon as it moves from left to right
 
 ## Someday Maybe
 
@@ -41,7 +43,6 @@ Works in modern versions of Firefox, Safari and Chrome. Untested in IE.
 - Actually read header info
 - Actually get kbps and khz
 - Actually get streo/mono
-- Drag and drop file selection
 - Make the window draggable
 - Responsive css so it looks reasonable on my phone
 
