@@ -175,13 +175,19 @@ a:focus { outline: none; }
     width: 9px;
 }
 
-.media-info #song-title {
+
+.text {
     position: absolute;
     left: 112px;
     top: 27px;
     width: 152px;
     height: 6px;
     overflow: hidden;
+    display: none;
+}
+
+#song-title {
+    display: block;
 }
 
 .media-info #kbps {

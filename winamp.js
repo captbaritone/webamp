@@ -77,6 +77,7 @@ function Media (audioId) {
 function Winamp () {
     self = this;
     this.media = new Media('player');
+    this.font = new Font();
     this.media.setVolume(.5);
 
     this.nodes = {
@@ -84,6 +85,9 @@ function Winamp () {
         'shade': document.getElementById('shade'),
         'position': document.getElementById('position'),
         'fileInput': document.getElementById('file-input'),
+        'volumeMessage': document.getElementById('volume-message'),
+        'balanceMessage': document.getElementById('balance-message'),
+        'songTitle': document.getElementById('song-title'),
         'time': document.getElementById('time'),
         'previous': document.getElementById('previous'),
         'play': document.getElementById('play'),
@@ -152,6 +156,8 @@ function Winamp () {
 
     this.nodes.volume.oninput = function() {
         setVolume( this.value / 100);
+        string = 'Volume: ' + this.value + '%';
+        self.font.setNodeToString(self.nodes.volumeMessage, string);
     }
 
     this.nodes.position.onmousedown = function() {
@@ -163,7 +169,16 @@ function Winamp () {
     }
 
     this.nodes.balance.oninput = function() {
-        setBalance( this.value / 100);
+        setBalance( Math.abs(this.value) / 100);
+        var string = '';
+        if(this.value == 0) {
+            string = 'Balance: Center';
+        } else if(this.value > 0) {
+            string = 'Balance: ' + this.value + '% Right';
+        } else {
+            string = 'Balance: ' + Math.abs(this.value) + '% Left';
+        }
+        self.font.setNodeToString(self.nodes.balanceMessage, string);
     }
     this.nodes.repeat.onclick = function() {
         toggleRepeat();
@@ -184,8 +199,7 @@ function Winamp () {
     }
 
     function setBalance(balance) {
-        offset = Math.abs(balance - .5) * 2;
-        sprite = Math.floor(offset * 28);
+        sprite = Math.round(balance * 28);
         offset = (sprite - 1) * 15;
         self.nodes.balance.style.backgroundPosition = '-9px -' + offset + 'px';
     }
@@ -209,19 +223,19 @@ function Winamp () {
         html = digitHtml(digits[0]);
         document.getElementById('minute-first-digit').innerHTML = '';
         document.getElementById('minute-first-digit').appendChild(html);
-        displayCharacterInNode(digits[0], document.getElementById('shade-minute-first-digit'));
+        this.font.displayCharacterInNode(digits[0], document.getElementById('shade-minute-first-digit'));
         html = digitHtml(digits[1]);
         document.getElementById('minute-second-digit').innerHTML = '';
         document.getElementById('minute-second-digit').appendChild(html);
-        displayCharacterInNode(digits[1], document.getElementById('shade-minute-second-digit'));
+        this.font.displayCharacterInNode(digits[1], document.getElementById('shade-minute-second-digit'));
         html = digitHtml(digits[2]);
         document.getElementById('second-first-digit').innerHTML = '';
         document.getElementById('second-first-digit').appendChild(html);
-        displayCharacterInNode(digits[2], document.getElementById('shade-second-first-digit'));
+        this.font.displayCharacterInNode(digits[2], document.getElementById('shade-second-first-digit'));
         html = digitHtml(digits[3]);
         document.getElementById('second-second-digit').innerHTML = '';
         document.getElementById('second-second-digit').appendChild(html);
-        displayCharacterInNode(digits[3], document.getElementById('shade-second-second-digit'));
+        this.font.displayCharacterInNode(digits[3], document.getElementById('shade-second-second-digit'));
     }
 
 
@@ -254,20 +268,46 @@ function Winamp () {
 
     this.loadFile = function(file, fileName) {
         this.media.loadFile(file);
-        html = fontHtml(fileName);
-        document.getElementById('song-title').innerHTML = '';
-        document.getElementById('song-title').appendChild(html);
-        html = fontHtml("128");
-        document.getElementById('kbps').innerHTML = '';
-        document.getElementById('kbps').appendChild(html);
-        html = fontHtml("44");
-        document.getElementById('khz').innerHTML = '';
-        document.getElementById('khz').appendChild(html);
+        this.font.setNodeToString(document.getElementById('song-title'), fileName)
+        this.font.setNodeToString(document.getElementById('kbps'), "128")
+        this.font.setNodeToString(document.getElementById('khz'), "44")
         this.updateTime();
     }
 
-    function displayCharacterInNode(character, node) {
-        position = charPosition(character);
+    function digitHtml(digit) {
+        horizontalOffset = digit * 9;
+        div = document.createElement('div');
+        div.classList.add('digit');
+        div.style.backgroundPosition = '-' + horizontalOffset + 'px 0';
+        div.innerHTML = digit;
+        return div;
+    }
+
+}
+
+Font = function() {
+
+    this.setNodeToString = function(node, string) {
+        stringElement = this.stringNode(string);
+        node.innerHTML = '';
+        node.appendChild(stringElement);
+    }
+
+    this.stringNode = function(string) {
+        parentDiv = document.createElement('div');
+        for (var i = 0, len = string.length; i < len; i++) {
+            char = string[i].toLowerCase();
+            parentDiv.appendChild(this.characterNode(char));
+        }
+        return parentDiv;
+    }
+
+    this.characterNode = function(char) {
+        return this.displayCharacterInNode(char, document.createElement('div'));
+    }
+
+    this.displayCharacterInNode = function(character, node) {
+        position = this.charPosition(character);
         row = position[0];
         column = position[1];
         verticalOffset = row * 6;
@@ -281,39 +321,17 @@ function Winamp () {
         return node;
     }
 
-    function digitHtml(digit) {
-        horizontalOffset = digit * 9;
-        div = document.createElement('div');
-        div.classList.add('digit');
-        div.style.backgroundPosition = '-' + horizontalOffset + 'px 0';
-        div.innerHTML = digit;
-        return div;
-    }
-
-    function fontHtml(string) {
-        parentDiv = document.createElement('div');
-        for (var i = 0, len = string.length; i < len; i++) {
-            char = string[i].toLowerCase();
-            parentDiv.appendChild(charHtml(char));
-        }
-        return parentDiv;
-    }
-
-    function charHtml(char) {
-        return displayCharacterInNode(char, document.createElement('div'));
-    }
-
-    function charPosition(char) {
-        position = fontLookup[char];
+    this.charPosition = function(char) {
+        position = this.fontLookup[char];
         if(!position) {
-            return fontLookup[' '];
+            return this.fontLookup[' '];
         }
 
         return position;
     }
 
     /* XXX There are too many " " and "_" characters */
-    var fontLookup = {
+    this.fontLookup = {
         "a": [0,0], "b": [0,1], "c": [0,2], "d": [0,3], "e": [0,4], "f": [0,5],
         "g": [0,6], "h": [0,7], "i": [0,8], "j": [0,9], "k": [0,10],
         "l": [0,11], "m": [0,12], "n": [0,13], "o": [0,14], "p": [0,15],
