@@ -7,20 +7,19 @@ input[type=range]:focus { outline: none; }
 input[type=range]::-moz-focus-outer { border: 0; }
 a:focus { outline: none; }
 
+#shade-minute-first-digit,
+#shade-minute-second-digit,
+#shade-second-first-digit,
+#shade-second-second-digit {
+    display: none;
+}
+
 #winamp {
     position: relative;
     background-image: url('skins/default/MAIN.BMP');
     height: 116px;
     width: 275px;
     cursor:url('skins/default/MAINMENU.CUR'), auto;
-}
-
-.actions {
-    position: absolute;
-    top: 88px;
-    left: 16px;
-    height: 18px;
-    width: 114px;
 }
 
 #title-bar {
@@ -374,18 +373,39 @@ a:focus { outline: none; }
     background-image: url('skins/default/CBUTTONS.BMP');
     height: 18px;
     width: 23px;
-    float: left;
+    position: absolute;
 }
 
-.actions #previous { background-position: 0 0; }
+.actions #previous {
+    top: 88px;
+    left: 16px;
+    background-position: 0 0;
+}
 .actions #previous:active { background-position: 0 -18px; }
-.actions #play { background-position: -23px 0; }
+.actions #play {
+    top: 88px;
+    left: 39px;
+    background-position: -23px 0;
+}
 .actions #play:active { background-position: -23px -18px; }
-.actions #pause { background-position: -46px 0; }
+.actions #pause {
+    top: 88px;
+    left: 62px;
+    background-position: -46px 0;
+}
 .actions #pause:active { background-position: -46px -18px; }
-.actions #stop { background-position: -69px 0; }
+.actions #stop {
+    top: 88px;
+    left: 85px;
+    background-position: -69px 0;
+}
 .actions #stop:active { background-position: -69px -18px; }
-.actions #next { background-position: -92px 0; width: 22px; }
+.actions #next {
+    top: 88px;
+    left: 108px;
+    background-position: -92px 0;
+    width: 22px;
+}
 .actions #next:active { background-position: -92px -18px; }
 
 #eject {
@@ -469,3 +489,132 @@ a:focus { outline: none; }
 }
 
 #file-input { display: none; }
+
+/* Shade View */
+#winamp.shade {
+    height: 14px;
+    overflow: hidden;
+}
+
+.shade #title-bar {
+    background-position: -27px -42px;
+}
+
+.shade #title-bar.selected {
+    background-position: -27px -29px;
+}
+
+.shade #title-bar #shade {
+    background-position: 0px -27px;
+}
+.shade #title-bar #shade:active {
+    background-position: -9px -27px;
+}
+.shade .actions div {
+    background: none;
+    position: absolute;
+}
+.shade #previous {
+    height: 10px;
+    width: 7px;
+    top: 2px;
+    left: 169px;
+}
+.shade #play {
+    height: 10px;
+    width: 10px;
+    top: 2px;
+    left: 176px;
+}
+.shade #pause {
+    height: 10px;
+    width: 9px;
+    top: 2px;
+    left: 186px;
+}
+.shade #stop {
+    height: 10px;
+    width: 9px;
+    top: 2px;
+    left: 195px;
+}
+.shade #next {
+    height: 10px;
+    width: 10px;
+    top: 2px;
+    left: 204px;
+}
+.shade #eject {
+    height: 10px;
+    width: 10px;
+    top: 2px;
+    left: 215px;
+    background: none;
+}
+
+.shade #position {
+    position: absolute;
+    left: 226px;
+    top: 4px;
+    width: 17px;
+    height: 7px;
+    background-image: url('skins/default/TITLEBAR.BMP');
+    background-position: -0px -36px;
+}
+
+.shade #position::-webkit-slider-thumb {
+    height: 7px;
+    width: 3px;
+    background-position: -20px -36px;
+    background-image: url('skins/default/TITLEBAR.BMP');
+}
+.shade #position::-moz-range-thumb {
+    height: 7px;
+    width: 3px;
+    background-position: -20px -36px;
+    background-image: url('skins/default/TITLEBAR.BMP');
+}
+.shade #position:active::-webkit-slider-thumb {
+    background-position: -20px -36px;
+}
+.shade #position:active::-moz-range-thumb {
+    background-position: -20px -36px;
+}
+
+.shade #shade-minus-sign {
+    display: block;
+    top: 5px;
+    left: 126px;
+    width: 5px;
+    height:6px;
+}
+.shade #shade-minute-first-digit {
+    display: block;
+    top: 5px;
+    left: 133px;
+    width: 5px;
+    height:6px;
+}
+
+.shade #shade-minute-second-digit {
+    display: block;
+    top: 5px;
+    left: 138px;
+    width: 5px;
+    height:6px;
+}
+.shade #shade-second-first-digit {
+    display: block;
+    top: 5px;
+    left: 147px;
+    width: 5px;
+    height:6px;
+}
+
+.shade #shade-second-second-digit {
+    display: block;
+    top: 5px;
+    left: 152px;
+    width: 5px;
+    height:6px;
+}

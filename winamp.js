@@ -81,6 +81,7 @@ function Winamp () {
 
     this.nodes = {
         'close': document.getElementById('close'),
+        'shade': document.getElementById('shade'),
         'position': document.getElementById('position'),
         'fileInput': document.getElementById('file-input'),
         'time': document.getElementById('time'),
@@ -110,6 +111,10 @@ function Winamp () {
         self.setStatus('stop');
         self.media.previous();
     });
+
+    this.nodes.shade.onclick = function() {
+        self.nodes.winamp.classList.toggle('shade');
+    }
 
     this.nodes.time.onclick = function() {
         this.classList.toggle('countdown');
@@ -204,15 +209,19 @@ function Winamp () {
         html = digitHtml(digits[0]);
         document.getElementById('minute-first-digit').innerHTML = '';
         document.getElementById('minute-first-digit').appendChild(html);
+        displayCharacterInNode(digits[0], document.getElementById('shade-minute-first-digit'));
         html = digitHtml(digits[1]);
         document.getElementById('minute-second-digit').innerHTML = '';
         document.getElementById('minute-second-digit').appendChild(html);
+        displayCharacterInNode(digits[1], document.getElementById('shade-minute-second-digit'));
         html = digitHtml(digits[2]);
         document.getElementById('second-first-digit').innerHTML = '';
         document.getElementById('second-first-digit').appendChild(html);
+        displayCharacterInNode(digits[2], document.getElementById('shade-second-first-digit'));
         html = digitHtml(digits[3]);
         document.getElementById('second-second-digit').innerHTML = '';
         document.getElementById('second-second-digit').appendChild(html);
+        displayCharacterInNode(digits[3], document.getElementById('shade-second-second-digit'));
     }
 
 
@@ -257,6 +266,21 @@ function Winamp () {
         this.updateTime();
     }
 
+    function displayCharacterInNode(character, node) {
+        position = charPosition(character);
+        row = position[0];
+        column = position[1];
+        verticalOffset = row * 6;
+        horizontalOffset = column * 5;
+
+        x = '-' + horizontalOffset + 'px';
+        y = '-' + verticalOffset + 'px'
+        node.style.backgroundPosition =  x + ' ' + y;
+        node.classList.add('character');
+        node.innerHTML = character;
+        return node;
+    }
+
     function digitHtml(digit) {
         horizontalOffset = digit * 9;
         div = document.createElement('div');
@@ -276,19 +300,7 @@ function Winamp () {
     }
 
     function charHtml(char) {
-        position = charPosition(char);
-        row = position[0];
-        column = position[1];
-        verticalOffset = row * 6;
-        horizontalOffset = column * 5;
-
-        div = document.createElement('div');
-        div.classList.add('character');
-        x = '-' + horizontalOffset + 'px';
-        y = '-' + verticalOffset + 'px'
-        div.style.backgroundPosition =  x + ' ' + y;
-        div.innerHTML = char;
-        return div;
+        return displayCharacterInNode(char, document.createElement('div'));
     }
 
     function charPosition(char) {

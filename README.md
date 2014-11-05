@@ -10,11 +10,12 @@ Works in modern versions of Firefox, Safari and Chrome. Untested in IE.
 
 ## TODO
 
+- Shade mode
+    - Left and right position slider
 - Investigate real space text
 - Blog post
 - Test on IE 10
 - Handle "working" icon
-- Minimized "shade" view
 - Better presentation around it
 - Test other themes
 - Tool for selecting a theme
@@ -31,6 +32,7 @@ Works in modern versions of Firefox, Safari and Chrome. Untested in IE.
         - What is the line graph version?
         - What is the bar graph version?
     - What do the clutter bar letters do?
+    - Check behavior of position slider icon as it moves from left to right
 
 ## Someday Maybe
 
