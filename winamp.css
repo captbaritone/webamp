@@ -19,7 +19,7 @@ a:focus { outline: none; }
     background-image: url('skins/default/MAIN.BMP');
     height: 116px;
     width: 275px;
-    cursor:url('skins/default/MAINMENU.CUR'), auto;
+    cursor:url('cursors/MAINMENU.CUR'), auto;
 }
 
 #title-bar {
@@ -30,7 +30,7 @@ a:focus { outline: none; }
     width: 275px;
     background-image: url('skins/default/TITLEBAR.BMP');
     background-position: -27px -14px;
-    cursor:url('skins/default/TITLEBAR.CUR'), auto;
+    cursor:url('cursors/TITLEBAR.CUR'), auto;
 }
 
 #title-bar.selected {
@@ -50,7 +50,7 @@ a:focus { outline: none; }
     height: 9px;
     width: 9px;
     top: 3px;
-    cursor:url('skins/default/MAINMENU.CUR'), auto;
+    cursor:url('cursors/MAINMENU.CUR'), auto;
 }
 
 #title-bar #option {
@@ -83,7 +83,7 @@ a:focus { outline: none; }
     left: 264px;
     background-image: url('skins/default/TITLEBAR.BMP');
     background-position: -18px 0px;
-    cursor:url('skins/default/CLOSE.CUR'), auto;
+    cursor:url('cursors/CLOSE.CUR'), auto;
 }
 #title-bar #close:active {
     background-position: -18px -9px;
@@ -248,7 +248,7 @@ a:focus { outline: none; }
     width: 14px;
     background-image: url('skins/default/VOLUME.BMP');
     background-position: -15px -422px;
-    cursor:url('skins/default/VOLBAR.CUR'), auto;
+    cursor:url('cursors/VOLBAR.CUR'), auto;
 }
 #volume::-moz-range-thumb {
     margin-top: 1px;
@@ -256,7 +256,7 @@ a:focus { outline: none; }
     width: 14px;
     background-image: url('skins/default/VOLUME.BMP');
     background-position: -15px -422px;
-    cursor:url('skins/default/VOLBAR.CUR'), auto;
+    cursor:url('cursors/VOLBAR.CUR'), auto;
 }
 #volume:active::-webkit-slider-thumb  {
     background-position: 0 -422px;
@@ -281,7 +281,7 @@ a:focus { outline: none; }
     width: 14px;
     background-image: url('skins/default/VOLUME.BMP');
     background-position: -15px -422px;
-    cursor:url('skins/default/POSBAR.CUR'), auto;
+    cursor:url('cursors/POSBAR.CUR'), auto;
 }
 #balance::-moz-range-thumb {
     top: 1px;
@@ -289,7 +289,7 @@ a:focus { outline: none; }
     width: 14px;
     background-image: url('skins/default/VOLUME.BMP');
     background-position: -15px -422px;
-    cursor:url('skins/default/POSBAR.CUR'), auto;
+    cursor:url('cursors/POSBAR.CUR'), auto;
 }
 
 #balance:active::-webkit-slider-thumb  {
@@ -304,13 +304,13 @@ a:focus { outline: none; }
     left: 219px;
     top: 58px;
     width: 46px;
-    height: 13px;
+    height: 12px;
 }
 
 .windows div {
     position: absolute;
     width: 23px;
-    height: 13px;
+    height: 12px;
     background-image: url('skins/default/SHUFREP.BMP');
 }
 
@@ -346,7 +346,7 @@ a:focus { outline: none; }
     background-position: -248px 0;
     background-image: url('skins/default/POSBAR.BMP');
     background-repeat: no-repeat;
-    cursor:url('skins/default/POSBAR.CUR'), auto;
+    cursor:url('cursors/POSBAR.CUR'), auto;
     /*
      * Fix the strange bug in Safair/mobile-chrome
      * http://stackoverflow.com/questions/26727769/rendering-glitch-when-manipulating-range-input-value-via-javascript-in-webkit
@@ -360,7 +360,7 @@ a:focus { outline: none; }
     background-position: -248px 0;
     background-image: url('skins/default/POSBAR.BMP');
     background-repeat: no-repeat;
-    cursor:url('skins/default/POSBAR.CUR'), auto;
+    cursor:url('cursors/POSBAR.CUR'), auto;
 }
 #position:active::-webkit-slider-thumb {
     background-position: -278px 0;
