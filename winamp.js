@@ -81,6 +81,7 @@ function Winamp () {
     this.media.setVolume(.5);
 
     this.nodes = {
+        'option': document.getElementById('option'),
         'close': document.getElementById('close'),
         'shade': document.getElementById('shade'),
         'position': document.getElementById('position'),
@@ -102,6 +103,15 @@ function Winamp () {
         'playPause': document.getElementById('play-pause'),
         'winamp': document.getElementById('winamp'),
     };
+
+    this.nodes.option.onclick = function() {
+        text = "Enter an Internet location to open here:\n";
+        text += "For example: http://www.server.com/file.mp3"
+        file = window.prompt(text, '');
+        self.startFile(file, file);
+        self.media.play();
+        self.setStatus('play');
+    }
 
     this.nodes.close.onclick = function() {
     }
@@ -151,7 +161,7 @@ function Winamp () {
 
     this.nodes.fileInput.onchange = function(e){
         var file = e.target.files[0];
-        self.loadFileViaReference(file);
+        self.startFileViaReference(file);
     }
 
     this.nodes.volume.onmousedown = function() {
@@ -265,16 +275,20 @@ function Winamp () {
         e.preventDefault();
         var dt = e.dataTransfer;
         var file = dt.files[0];
-        self.loadFileViaReference(file);
+        self.startFileViaReference(file);
     }
 
     this.nodes.winamp.addEventListener('dragenter', this.dragenter);
     this.nodes.winamp.addEventListener('dragover', this.dragover);
     this.nodes.winamp.addEventListener('drop', this.drop);
 
-    this.loadFileViaReference = function(fileReference) {
+    this.startFileViaReference = function(fileReference) {
         var objectUrl = URL.createObjectURL(fileReference);
-        self.loadFile(objectUrl, fileReference.name);
+        self.startFile(objectUrl, fileReference.name);
+    }
+
+    this.startFile = function(file, fileName) {
+        self.loadFile(file, fileName);
         self.media.play();
         self.setStatus('play');
     }
