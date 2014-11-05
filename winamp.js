@@ -360,4 +360,4 @@ document.onkeyup = function(e){
 }
 
 winamp = new Winamp();
-winamp.loadFile('http://jordaneldredge.com/projects/winamp2-js/llama.mp3', "1. DJ -- Mike Llama Whippin' Intro <0:05>  ***  ");
+winamp.loadFile('http://jordaneldredge.com/projects/winamp2-js/llama.mp3', "1. DJ Mike Llama - Llama Whippin' Intro <0:05>  ***  ");
