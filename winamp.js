@@ -154,6 +154,13 @@ function Winamp () {
         self.loadFileViaReference(file);
     }
 
+    this.nodes.volume.onmousedown = function() {
+        self.nodes.winamp.classList.add('setting-volume');
+    }
+    this.nodes.volume.onmouseup = function() {
+        self.nodes.winamp.classList.remove('setting-volume');
+    }
+
     this.nodes.volume.oninput = function() {
         setVolume( this.value / 100);
         string = 'Volume: ' + this.value + '%';
@@ -168,6 +175,12 @@ function Winamp () {
         self.media.seekToPercentComplete(this.value);
     }
 
+    this.nodes.balance.onmousedown = function() {
+        self.nodes.winamp.classList.add('setting-balance');
+    }
+    this.nodes.balance.onmouseup = function() {
+        self.nodes.winamp.classList.remove('setting-balance');
+    }
     this.nodes.balance.oninput = function() {
         setBalance( Math.abs(this.value) / 100);
         var string = '';

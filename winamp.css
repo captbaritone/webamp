@@ -190,6 +190,13 @@ a:focus { outline: none; }
     display: block;
 }
 
+.setting-volume #song-title { display: none; }
+.setting-volume #balance-message { display: none; }
+.setting-volume #volume-message { display: block; }
+.setting-balance #song-title { display: none; }
+.setting-balance #volume-message { display: none; }
+.setting-balance #balance-message { display: block; }
+
 .media-info #kbps {
     position: absolute;
     left: 111px;
