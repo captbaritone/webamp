@@ -140,7 +140,6 @@ a:focus { outline: none; }
 .status #time #minus-sign {
     position: absolute;
     top: 6px;
-    background-color: red;
     width: 5px;
     height: 1px;
     background-image: url('skins/default/NUMBERS.BMP');
