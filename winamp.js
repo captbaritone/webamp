@@ -102,7 +102,59 @@ function Winamp () {
         'balance': document.getElementById('balance'),
         'playPause': document.getElementById('play-pause'),
         'winamp': document.getElementById('winamp'),
+        'titleBar': document.getElementById('title-bar'),
     };
+
+    // make window dragable
+    this.nodes.titleBar.addEventListener('mousedown',function(e){
+        if(e.target !== this) {
+            // prevent going into drag mode when clicking any of the title bar's icons
+            // by making sure the click was made directly on the titlebar
+            return true;
+        }
+
+        // get starting window position
+        var winampElm = self.nodes.winamp;
+
+        // if the element was 'absolutely' positioned we could simply use offsetLeft / offsetTop
+        // however the element is 'relatively' positioned so we're using style.left
+        // parseInt is used to remove the 'px' postfix from the value
+
+        var winStartLeft = parseInt(winampElm.style.left || 0,10), 
+            winStartTop  = parseInt(winampElm.style.top || 0,10);
+        
+        // get starting mouse position
+        var mouseStartLeft = e.clientX,
+            mouseStartTop = e.clientY;
+
+        // mouse move handler function while mouse is down
+        function handleMove(e) {
+            // get current mouse position
+            var mouseLeft = e.clientX,
+                mouseTop = e.clientY;
+
+            // calculate difference offsets
+            var diffLeft = mouseLeft-mouseStartLeft,
+                diffTop = mouseTop-mouseStartTop;
+
+            // move window to new position
+            winampElm.style.left = (winStartLeft+diffLeft)+"px";
+            winampElm.style.top = (winStartTop+diffTop)+"px";
+        }
+
+        // mouse button up
+        function handleUp() {
+            removeListeners();
+        }
+
+        function removeListeners() {
+            window.removeEventListener('mousemove',handleMove);
+            window.removeEventListener('mouseup',handleUp);
+        }
+
+        window.addEventListener('mousemove',handleMove);
+        window.addEventListener('mouseup',handleUp);
+    });
 
     this.nodes.option.onclick = function() {
         text = "Enter an Internet location to open here:\n";
