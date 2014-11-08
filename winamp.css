@@ -676,7 +676,7 @@ a:focus { outline: none; }
     padding-left: 1.5em;
     position: relative;
     font-size: 8px ;
-    color: green;
+    color: rgb(29, 252, 29);
 }
 
 /* Style the links */
@@ -704,7 +704,7 @@ a:focus { outline: none; }
 
 .non-marquee {
     height: 10px;
-    color: green;
+    color: rgb(29, 252, 29);
     font-size: 8px;
     float: left;
     font-family: verdana,helvetica,arial,sans-serif;
