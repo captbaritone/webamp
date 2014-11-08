@@ -7,11 +7,9 @@ input[type=range]:focus { outline: none; }
 input[type=range]::-moz-focus-outer { border: 0; }
 a:focus { outline: none; }
 
-#shade-minute-first-digit,
-#shade-minute-second-digit,
-#shade-second-first-digit,
-#shade-second-second-digit {
+#shade-time {
     display: none;
+    cursor:url('cursors/MAINMENU.CUR'), auto;
 }
 
 #winamp {
@@ -45,7 +43,10 @@ a:focus { outline: none; }
     background-position: -27px -57px;
 }
 
-#title-bar div {
+#option,
+#minimize,
+#shade,
+#close {
     position: absolute;
     height: 9px;
     width: 9px;
@@ -593,40 +594,33 @@ a:focus { outline: none; }
     background-position: -20px -36px;
 }
 
-.shade #shade-minus-sign {
+.shade #shade-time {
     display: block;
+    position: absolute;
     top: 4px;
-    left: 126px;
-    width: 5px;
+    left: 127px;
     height:6px;
+    width: 25px;
+}
+
+.shade #shade-time .character {
+    position: absolute;
+    top: 0;
+}
+.shade #shade-minus-sign {
+    left: 0px;
 }
 .shade #shade-minute-first-digit {
-    display: block;
-    top: 4px;
-    left: 133px;
-    width: 5px;
-    height:6px;
+    left: 6px;
 }
 
 .shade #shade-minute-second-digit {
-    display: block;
-    top: 4px;
-    left: 138px;
-    width: 5px;
-    height:6px;
+    left: 11px;
 }
 .shade #shade-second-first-digit {
-    display: block;
-    top: 4px;
-    left: 147px;
-    width: 5px;
-    height:6px;
+    left: 20px;
 }
 
 .shade #shade-second-second-digit {
-    display: block;
-    top: 4px;
-    left: 152px;
-    width: 5px;
-    height:6px;
+    left: 25px;
 }

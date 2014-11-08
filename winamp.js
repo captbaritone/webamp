@@ -90,6 +90,7 @@ function Winamp () {
         'balanceMessage': document.getElementById('balance-message'),
         'songTitle': document.getElementById('song-title'),
         'time': document.getElementById('time'),
+        'shadeTime': document.getElementById('shade-time'),
         'previous': document.getElementById('previous'),
         'play': document.getElementById('play'),
         'pause': document.getElementById('pause'),
@@ -184,6 +185,11 @@ function Winamp () {
 
     this.nodes.time.onclick = function() {
         this.classList.toggle('countdown');
+        self.updateTime();
+    }
+
+    this.nodes.shadeTime.onclick = function() {
+        self.nodes.time.classList.toggle('countdown');
         self.updateTime();
     }
 
@@ -301,12 +307,17 @@ function Winamp () {
         self.nodes.shuffle.classList.toggle('selected');
     }
 
+    // TODO: Refactor this function
     this.updateTime = function() {
+        var shadeMinusCharacter = ' ';
         if(this.nodes.time.classList.contains('countdown')) {
             digits = this.media.timeRemainingObject();
+            var shadeMinusCharacter = '-';
         } else {
             digits = this.media.timeElapsedObject();
         }
+        this.font.displayCharacterInNode(shadeMinusCharacter, document.getElementById('shade-minus-sign'));
+
         html = digitHtml(digits[0]);
         document.getElementById('minute-first-digit').innerHTML = '';
         document.getElementById('minute-first-digit').appendChild(html);
