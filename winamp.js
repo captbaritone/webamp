@@ -21,7 +21,7 @@ function Media (audioId) {
 
     /* Actions */
     this.previous = function() {
-        this.audio.currentTime = 0;
+        // Implement this when we support playlists
     };
     this.play = function() {
         this.audio.play();
@@ -34,7 +34,7 @@ function Media (audioId) {
         this.audio.currentTime = 0;
     };
     this.next = function() {
-        this.audio.currentTime = this.audio.duration;
+        // Implement this when we support playlists
     };
     this.toggleRepeat = function() {
         this.audio.loop = !this.audio.loop;
@@ -48,6 +48,7 @@ function Media (audioId) {
         this.audio.currentTime = this.audio.duration * (percent/100);
         this.audio.play();
     };
+    // From 0-1
     this.setVolume = function(volume) {
         this.audio.volume = volume;
     };
@@ -78,7 +79,6 @@ function Winamp () {
     self = this;
     this.media = new Media('player');
     this.font = new Font();
-    this.media.setVolume(.5);
 
     this.nodes = {
         'option': document.getElementById('option'),
@@ -90,6 +90,7 @@ function Winamp () {
         'balanceMessage': document.getElementById('balance-message'),
         'songTitle': document.getElementById('song-title'),
         'time': document.getElementById('time'),
+        'shadeTime': document.getElementById('shade-time'),
         'previous': document.getElementById('previous'),
         'play': document.getElementById('play'),
         'pause': document.getElementById('pause'),
@@ -120,9 +121,9 @@ function Winamp () {
         // however the element is 'relatively' positioned so we're using style.left
         // parseInt is used to remove the 'px' postfix from the value
 
-        var winStartLeft = parseInt(winampElm.style.left || 0,10), 
+        var winStartLeft = parseInt(winampElm.style.left || 0,10),
             winStartTop  = parseInt(winampElm.style.top || 0,10);
-        
+
         // get starting mouse position
         var mouseStartLeft = e.clientX,
             mouseStartTop = e.clientY;
@@ -175,7 +176,6 @@ function Winamp () {
 
     this.media.addEventListener('ended', function() {
         self.setStatus('stop');
-        self.media.previous();
     });
 
     this.nodes.shade.onclick = function() {
@@ -187,8 +187,13 @@ function Winamp () {
         self.updateTime();
     }
 
+    this.nodes.shadeTime.onclick = function() {
+        self.nodes.time.classList.toggle('countdown');
+        self.updateTime();
+    }
+
     this.nodes.previous.onclick = function() {
-        self.media.previous();
+        // Implement this when we support playlists
     }
 
     this.nodes.play.onclick = function() {
@@ -204,7 +209,7 @@ function Winamp () {
         self.setStatus('stop');
     }
     this.nodes.next.onclick = function() {
-        self.media.next();
+        // Implement this when we support playlists
     }
 
     this.nodes.eject.onclick = function() {
@@ -213,7 +218,9 @@ function Winamp () {
 
     this.nodes.fileInput.onchange = function(e){
         var file = e.target.files[0];
-        self.startFileViaReference(file);
+        if(file) {
+            self.startFileViaReference(file);
+        }
     }
 
     this.nodes.volume.onmousedown = function() {
@@ -224,9 +231,7 @@ function Winamp () {
     }
 
     this.nodes.volume.oninput = function() {
-        setVolume( this.value / 100);
-        string = 'Volume: ' + this.value + '%';
-        self.font.setNodeToString(self.nodes.volumeMessage, string);
+        self.setVolume(this.value);
     }
 
     this.nodes.position.onmousedown = function() {
@@ -244,16 +249,7 @@ function Winamp () {
         self.nodes.winamp.classList.remove('setting-balance');
     }
     this.nodes.balance.oninput = function() {
-        setBalance( Math.abs(this.value) / 100);
-        var string = '';
-        if(this.value == 0) {
-            string = 'Balance: Center';
-        } else if(this.value > 0) {
-            string = 'Balance: ' + this.value + '% Right';
-        } else {
-            string = 'Balance: ' + Math.abs(this.value) + '% Left';
-        }
-        self.font.setNodeToString(self.nodes.balanceMessage, string);
+        self.setBalance(this.value);
     }
     this.nodes.repeat.onclick = function() {
         toggleRepeat();
@@ -266,14 +262,35 @@ function Winamp () {
         self.nodes.playPause.removeAttribute("class");
         self.nodes.playPause.classList.add(className);
     }
-    function setVolume(volume) {
-        sprite = Math.round(volume * 28);
+    // From 0-100
+    this.setVolume = function(volume) {
+        var percent = volume / 100;
+        sprite = Math.round(percent * 28);
         offset = (sprite - 1) * 15;
-        self.media.setVolume(volume);
+
+        self.media.setVolume(percent);
         self.nodes.volume.style.backgroundPosition = '0 -' + offset + 'px';
+
+        string = 'Volume: ' + volume + '%';
+        self.font.setNodeToString(self.nodes.volumeMessage, string);
+
+        // This shouldn't trigger an infinite loop with volume.onchange(),
+        // since the value will be the same
+        self.nodes.volume.value = volume;
     }
 
-    function setBalance(balance) {
+    this.setBalance = function(balance) {
+        var string = '';
+        if(balance == 0) {
+            string = 'Balance: Center';
+        } else if(balance > 0) {
+            string = 'Balance: ' + balance + '% Right';
+        } else {
+            string = 'Balance: ' + Math.abs(balance) + '% Left';
+        }
+        self.font.setNodeToString(self.nodes.balanceMessage, string);
+
+        balance = Math.abs(balance) / 100
         sprite = Math.round(balance * 28);
         offset = (sprite - 1) * 15;
         self.nodes.balance.style.backgroundPosition = '-9px -' + offset + 'px';
@@ -289,12 +306,17 @@ function Winamp () {
         self.nodes.shuffle.classList.toggle('selected');
     }
 
+    // TODO: Refactor this function
     this.updateTime = function() {
+        var shadeMinusCharacter = ' ';
         if(this.nodes.time.classList.contains('countdown')) {
             digits = this.media.timeRemainingObject();
+            var shadeMinusCharacter = '-';
         } else {
             digits = this.media.timeElapsedObject();
         }
+        this.font.displayCharacterInNode(shadeMinusCharacter, document.getElementById('shade-minus-sign'));
+
         html = digitHtml(digits[0]);
         document.getElementById('minute-first-digit').innerHTML = '';
         document.getElementById('minute-first-digit').appendChild(html);
@@ -443,4 +465,6 @@ document.onkeyup = function(e){
 }
 
 winamp = new Winamp();
+winamp.setVolume(50);
+winamp.setBalance(0);
 winamp.loadFile('https://mediacru.sh/download/Q2HAoRHE-JvD.mp3', "1. DJ Mike Llama - Llama Whippin' Intro <0:05>  ***  ");
