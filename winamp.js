@@ -48,6 +48,7 @@ function Media (audioId) {
         this.audio.currentTime = this.audio.duration * (percent/100);
         this.audio.play();
     };
+    // From 0-1
     this.setVolume = function(volume) {
         this.audio.volume = volume;
     };
@@ -78,7 +79,6 @@ function Winamp () {
     self = this;
     this.media = new Media('player');
     this.font = new Font();
-    this.media.setVolume(.5);
 
     this.nodes = {
         'option': document.getElementById('option'),
@@ -226,9 +226,7 @@ function Winamp () {
     }
 
     this.nodes.volume.oninput = function() {
-        setVolume( this.value / 100);
-        string = 'Volume: ' + this.value + '%';
-        self.font.setNodeToString(self.nodes.volumeMessage, string);
+        self.setVolume(this.value);
     }
 
     this.nodes.position.onmousedown = function() {
@@ -246,16 +244,7 @@ function Winamp () {
         self.nodes.winamp.classList.remove('setting-balance');
     }
     this.nodes.balance.oninput = function() {
-        setBalance( Math.abs(this.value) / 100);
-        var string = '';
-        if(this.value == 0) {
-            string = 'Balance: Center';
-        } else if(this.value > 0) {
-            string = 'Balance: ' + this.value + '% Right';
-        } else {
-            string = 'Balance: ' + Math.abs(this.value) + '% Left';
-        }
-        self.font.setNodeToString(self.nodes.balanceMessage, string);
+        self.setBalance(this.value);
     }
     this.nodes.repeat.onclick = function() {
         toggleRepeat();
@@ -268,14 +257,35 @@ function Winamp () {
         self.nodes.playPause.removeAttribute("class");
         self.nodes.playPause.classList.add(className);
     }
-    function setVolume(volume) {
-        sprite = Math.round(volume * 28);
+    // From 0-100
+    this.setVolume = function(volume) {
+        var percent = volume / 100;
+        sprite = Math.round(percent * 28);
         offset = (sprite - 1) * 15;
-        self.media.setVolume(volume);
+
+        self.media.setVolume(percent);
         self.nodes.volume.style.backgroundPosition = '0 -' + offset + 'px';
+
+        string = 'Volume: ' + volume + '%';
+        self.font.setNodeToString(self.nodes.volumeMessage, string);
+
+        // This shouldn't trigger an infinite loop with volume.onchange(),
+        // since the value will be the same
+        self.nodes.volume.value = volume;
     }
 
-    function setBalance(balance) {
+    this.setBalance = function(balance) {
+        var string = '';
+        if(balance == 0) {
+            string = 'Balance: Center';
+        } else if(balance > 0) {
+            string = 'Balance: ' + balance + '% Right';
+        } else {
+            string = 'Balance: ' + Math.abs(balance) + '% Left';
+        }
+        self.font.setNodeToString(self.nodes.balanceMessage, string);
+
+        balance = Math.abs(balance) / 100
         sprite = Math.round(balance * 28);
         offset = (sprite - 1) * 15;
         self.nodes.balance.style.backgroundPosition = '-9px -' + offset + 'px';
@@ -441,4 +451,6 @@ document.onkeyup = function(e){
 }
 
 winamp = new Winamp();
+winamp.setVolume(50);
+winamp.setBalance(0);
 winamp.loadFile('https://mediacru.sh/download/Q2HAoRHE-JvD.mp3', "1. DJ Mike Llama - Llama Whippin' Intro <0:05>  ***  ");
