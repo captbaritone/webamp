@@ -373,16 +373,15 @@ Font = function() {
     }
 
     this.stringNode = function(string) {
+        parentDiv = document.createElement('div');
+        var tempNode = document.createElement('span');
         if( string.length > 28 ) {
-            parentDiv = document.createElement('marquee');
-            parentDiv.style.float = "left";    
+            parentDiv.className = "microsoft marquee";
         } else {
-            parentDiv = document.createElement('div');
+            tempNode.className = "non-marquee";
         }
-        for (var i = 0, len = string.length; i < len; i++) {
-            char = string[i].toLowerCase();
-            parentDiv.appendChild(this.characterNode(char));
-        }
+        tempNode.innerHTML = string;
+        parentDiv.appendChild(tempNode);
         return parentDiv;
     }
 
