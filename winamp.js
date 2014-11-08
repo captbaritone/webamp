@@ -213,7 +213,9 @@ function Winamp () {
 
     this.nodes.fileInput.onchange = function(e){
         var file = e.target.files[0];
-        self.startFileViaReference(file);
+        if(file) {
+            self.startFileViaReference(file);
+        }
     }
 
     this.nodes.volume.onmousedown = function() {
