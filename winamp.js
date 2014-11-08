@@ -2,6 +2,62 @@
 function Media (audioId) {
     this.audio = document.getElementById(audioId);
 
+    // create audio context (if browser supports it)
+    var AudioCtx = null, AudioModule = window.AudioContext || window.webkitAudioContext;
+    var mediaApi, leftGain, rightGain, chanSplit, chanMerge;
+
+    var isFirefox = navigator.userAgent.search("Firefox") !== -1;
+    // createMediaElementSource does not seem to work due to CORS on Firefox
+    // http://stackoverflow.com/a/19710142
+    // 
+    // so this is basically supported only on Chrome (and possibly Safari)
+
+    if(AudioModule && !isFirefox) {
+        AudioCtx = new AudioModule;
+
+        // get API from <audio> tag
+        mediaApi = AudioCtx.createMediaElementSource(this.audio);
+
+        // basic audio stream flow
+        //
+        //              <audio>
+        //                  |
+        //  (split using createChannelSplitter)
+        //                  |
+        //                 / \
+        //                /   \
+        //        leftGain     rightGain
+        //                \   /
+        //                 \ /
+        //                  |
+        //  (merge using createChannelMerger)
+        //                  |
+        //              chanMerge    
+
+
+        // create gains for left right
+        leftGain = AudioCtx.createGain();
+        rightGain = AudioCtx.createGain();
+
+        // split source channels
+        chanSplit = AudioCtx.createChannelSplitter(2);
+
+        // pass <audio> through channel splitter
+        mediaApi.connect(chanSplit);
+
+        // connect split channels to left / right gains
+        chanSplit.connect(leftGain,0);
+        chanSplit.connect(rightGain,1);
+
+        // create channel merger, and merge left / right gains
+        chanMerge = AudioCtx.createChannelMerger(2);
+        leftGain.connect(chanMerge, 0, 0);
+        rightGain.connect(chanMerge, 0, 1);
+
+        // send merged channels to soundcard
+        chanMerge.connect(AudioCtx.destination);
+    }
+
     /* Properties */
     this.timeElapsed = function() {
         return this.audio.currentTime;
@@ -51,6 +107,32 @@ function Media (audioId) {
     this.setVolume = function(volume) {
         this.audio.volume = volume;
     };
+
+    this.setBalance = function(balance) {
+        // balance range -100 (left) to 100 (right)
+        var changeVal = 0;
+
+        if(balance === 0) {
+            leftGain.gain.value = 1;
+            rightGain.gain.value = 1;
+        }
+        else if(balance < 0) {
+            // convert to positive
+            changeVal = balance *= -1;
+            changeVal = changeVal / 100;
+
+            leftGain.gain.value = 1;
+            rightGain.gain.value = 1 - changeVal;
+        }
+        else { // balance > 0
+            changeVal = parseInt(balance,10);
+            changeVal = changeVal / 100;
+            
+            leftGain.gain.value = 1 - changeVal;
+            rightGain.gain.value = 1;
+        }
+    }
+
     this.loadFile = function(file) {
         this.audio.setAttribute('src', file);
     };
@@ -255,6 +337,8 @@ function Winamp () {
         } else {
             string = 'Balance: ' + Math.abs(this.value) + '% Left';
         }
+
+        self.media.setBalance(this.value);        
         self.font.setNodeToString(self.nodes.balanceMessage, string);
     }
     this.nodes.repeat.onclick = function() {
