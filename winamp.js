@@ -373,7 +373,12 @@ Font = function() {
     }
 
     this.stringNode = function(string) {
-        parentDiv = document.createElement('div');
+        if( string.length > 28 ) {
+            parentDiv = document.createElement('marquee');
+            parentDiv.style.float = "left";    
+        } else {
+            parentDiv = document.createElement('div');
+        }
         for (var i = 0, len = string.length; i < len; i++) {
             char = string[i].toLowerCase();
             parentDiv.appendChild(this.characterNode(char));
