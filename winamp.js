@@ -21,7 +21,7 @@ function Media (audioId) {
 
     /* Actions */
     this.previous = function() {
-        this.audio.currentTime = 0;
+        // Implement this when we support playlists
     };
     this.play = function() {
         this.audio.play();
@@ -34,7 +34,7 @@ function Media (audioId) {
         this.audio.currentTime = 0;
     };
     this.next = function() {
-        this.audio.currentTime = this.audio.duration;
+        // Implement this when we support playlists
     };
     this.toggleRepeat = function() {
         this.audio.loop = !this.audio.loop;
@@ -176,7 +176,6 @@ function Winamp () {
 
     this.media.addEventListener('ended', function() {
         self.setStatus('stop');
-        self.media.previous();
     });
 
     this.nodes.shade.onclick = function() {
@@ -194,7 +193,7 @@ function Winamp () {
     }
 
     this.nodes.previous.onclick = function() {
-        self.media.previous();
+        // Implement this when we support playlists
     }
 
     this.nodes.play.onclick = function() {
@@ -210,7 +209,7 @@ function Winamp () {
         self.setStatus('stop');
     }
     this.nodes.next.onclick = function() {
-        self.media.next();
+        // Implement this when we support playlists
     }
 
     this.nodes.eject.onclick = function() {
