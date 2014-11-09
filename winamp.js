@@ -411,6 +411,20 @@ function Winamp () {
         return div;
     }
 
+    this.marqueeLoop = function() {
+        setTimeout(function () {
+            var text = self.nodes.songTitle.firstChild;
+            // Only scroll if the text is too long
+            if(text.childNodes.length > 30) {
+                var characterNode = text.firstChild;
+                text.removeChild(characterNode);
+                text.appendChild(characterNode);
+                self.marqueeLoop();
+            }
+
+        }, 220)
+    }
+
 }
 
 Font = function() {
@@ -515,3 +529,4 @@ winamp = new Winamp();
 winamp.setVolume(volume);
 winamp.setBalance(balance);
 winamp.loadFile(file, fileName);
+winamp.marqueeLoop();
