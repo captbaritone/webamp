@@ -162,9 +162,11 @@ function Winamp () {
         text = "Enter an Internet location to open here:\n";
         text += "For example: http://www.server.com/file.mp3"
         file = window.prompt(text, '');
-        self.startFile(file, file);
-        self.media.play();
-        self.setStatus('play');
+        if(file != null) {
+            self.startFile(file, file);
+            self.media.play();
+            self.setStatus('play');
+        }
     }
 
     this.nodes.close.onclick = function() {
