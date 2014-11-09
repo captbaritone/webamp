@@ -444,6 +444,10 @@ Font = function() {
         y = '-' + verticalOffset + 'px'
         node.style.backgroundPosition =  x + ' ' + y;
         node.classList.add('character');
+
+        // Spaces cause a strange issue with inline-block elements
+        if(character == ' ') character = '&nbsp;';
+
         node.innerHTML = character;
         return node;
     }
