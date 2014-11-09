@@ -395,6 +395,7 @@ function Winamp () {
 
     this.loadFile = function(file, fileName) {
         this.media.loadFile(file);
+        fileName += '  ***  '
         this.font.setNodeToString(document.getElementById('song-title'), fileName)
         this.font.setNodeToString(document.getElementById('kbps'), "128")
         this.font.setNodeToString(document.getElementById('khz'), "44")
@@ -493,4 +494,4 @@ document.onkeyup = function(e){
 winamp = new Winamp();
 winamp.setVolume(50);
 winamp.setBalance(0);
-winamp.loadFile('https://mediacru.sh/download/Q2HAoRHE-JvD.mp3', "1. DJ Mike Llama - Llama Whippin' Intro <0:05>  ***  ");
+winamp.loadFile('https://mediacru.sh/download/Q2HAoRHE-JvD.mp3', "1. DJ Mike Llama - Llama Whippin' Intro <0:05>");
