@@ -20,6 +20,8 @@ a:focus { outline: none; }
     cursor:url('cursors/MAINMENU.CUR'), auto;
 }
 
+#winamp.closed { display: none; }
+
 #title-bar {
     position: absolute;
     top: 0;

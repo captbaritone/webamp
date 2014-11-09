@@ -170,6 +170,9 @@ function Winamp () {
     }
 
     this.nodes.close.onclick = function() {
+        self.media.stop();
+        self.setStatus('stop'); // Currently unneeded
+        self.nodes.winamp.classList.add('closed');
     }
 
     this.media.addEventListener('timeupdate', function() {
