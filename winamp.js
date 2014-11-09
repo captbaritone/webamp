@@ -408,10 +408,14 @@ Font = function() {
 
     this.stringNode = function(string) {
         parentDiv = document.createElement('div');
-        for (var i = 0, len = string.length; i < len; i++) {
-            char = string[i].toLowerCase();
-            parentDiv.appendChild(this.characterNode(char));
+        var tempNode = document.createElement('span');
+        if( string.length > 28 ) {
+            parentDiv.className = "microsoft marquee";
+        } else {
+            tempNode.className = "non-marquee";
         }
+        tempNode.innerHTML = string;
+        parentDiv.appendChild(tempNode);
         return parentDiv;
     }
 

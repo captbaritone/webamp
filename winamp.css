@@ -188,6 +188,8 @@ a:focus { outline: none; }
 
 #song-title {
     display: block;
+    top: 25px;
+    height: 10px;
 }
 
 .setting-volume #song-title { display: none; }
@@ -200,18 +202,18 @@ a:focus { outline: none; }
 .media-info #kbps {
     position: absolute;
     left: 111px;
-    top: 43px;
+    top: 41px;
     width: 15px;
-    height: 6px;
+    height: 10px;
     overflow: hidden;
 }
 
 .media-info #khz {
     position: absolute;
     left: 156px;
-    top: 43px;
+    top: 41px;
     width: 10px;
-    height: 6px;
+    height: 10px;
     overflow: hidden;
 }
 
@@ -630,3 +632,81 @@ a:focus { outline: none; }
 .shade #shade-second-second-digit {
     left: 25px;
 }
+
+/* Make it a marquee */
+.marquee {
+    width: 150px;
+    margin: 0 auto;
+    height: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.marquee span {
+    display: inline-block;
+    padding-left: 0%;
+    text-indent: 0;
+    height: 10px;
+    animation: marquee 5s linear infinite;
+    -moz-animation:  caption 5s linear 0s infinite;
+    -webkit-animation:  caption 5s linear 0s infinite;
+    
+    display: block;
+    float: left; 
+    width: 5px;
+    height: 6px;
+    font-family: verdana,helvetica,arial,sans-serif;
+}
+
+@-moz-keyframes caption { 0% { margin-left:5%; } 100% { margin-left:-100%; }  }
+@-webkit-keyframes caption { 0% { margin-left:5%; } 100% { margin-left:-100%; }  }
+
+.marquee span:hover {
+    animation-play-state: paused
+}
+
+/* Make it move 
+@keyframes marquee {
+    0%   { transform: translate(0, 0); }
+    100% { transform: translate(-100%, 0); }
+}
+
+/* Make it pretty */
+.microsoft {
+    padding-left: 1.5em;
+    position: relative;
+    font-size: 8px ;
+    color: rgb(29, 252, 29);
+}
+
+/* Style the links */
+.vanity {
+    color: #333;
+    text-align: center;
+    font: .75em 'Segoe UI', Tahoma, Helvetica, Sans-Serif;
+}
+
+.vanity a, .microsoft a {
+    color: #1570A6;
+    transition: color .5s;
+    text-decoration: none;
+}
+
+.vanity a:hover, .microsoft a:hover {
+    color: #F65314;
+}
+
+/* Style toggle button */
+.toggle {
+    display: block;
+    margin: 2em auto;
+}
+
+.non-marquee {
+    height: 10px;
+    color: rgb(29, 252, 29);
+    font-size: 8px;
+    float: left;
+    font-family: verdana,helvetica,arial,sans-serif;
+}
+
