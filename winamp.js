@@ -62,9 +62,9 @@ function Media (audioId) {
     };
 
     /* Helpers */
-    this._timeObject = function(seconds) {
-        var minutes = seconds / 60;
-        var seconds = seconds % 60;
+    this._timeObject = function(time) {
+        var minutes = Math.floor(time / 60);
+        var seconds = time - (minutes * 60);
 
         return [
             Math.floor(minutes / 10),
