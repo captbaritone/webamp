@@ -18,36 +18,22 @@ function Media (audioId) {
     this.percentComplete = function() {
         return (this.audio.currentTime / this.audio.duration) * 100;
     }
-
-    this.showThings = function() {
-        document.getElementById('khz').style.display = '';
-        document.getElementById('kbps').style.display = '';
-        document.getElementById('position').style.display = '';
-        document.getElementById('time').style.display = '';
-    };
-    this.hideThings = function() {
-        document.getElementById('khz').style.display = 'none';
-        document.getElementById('kbps').style.display = 'none';
-        document.getElementById('position').style.display = 'none';
-        document.getElementById('time').style.display = 'none';
-    };
-
+    this.setCurrentTime = function(e){
+        this.audio.currentTime = e;
+    }
     /* Actions */
     this.previous = function() {
         // Implement this when we support playlists
     };
     this.play = function() {
-        self.showThings();
         this.audio.play();
-        if(this.audio.currentTime = 0){}
     };
     this.pause = function() {
         this.audio.pause();
     };
     this.stop = function() {
-        self.hideThings();
         this.audio.pause();
-        this.audio.currentTime = 0;
+        this.setCurrentTime(0);
     };
     this.next = function() {
         // Implement this when we support playlists
@@ -116,6 +102,8 @@ function Winamp () {
         'repeat': document.getElementById('repeat'),
         'shuffle': document.getElementById('shuffle'),
         'volume': document.getElementById('volume'),
+        'kbps': document.getElementById('kbps'),
+        'khz': document.getElementById('khz'),
         'balance': document.getElementById('balance'),
         'playPause': document.getElementById('play-pause'),
         'workIndicator': document.getElementById('work-indicator'),
@@ -123,18 +111,18 @@ function Winamp () {
         'titleBar': document.getElementById('title-bar')
     };
 
-    this.showThings = function() {
-        document.getElementById('khz').style.display = '';
-        document.getElementById('kbps').style.display = '';
-        document.getElementById('position').style.display = '';
-        document.getElementById('time').style.display = '';
+    this.showNodes = function() {
+        this.nodes.khz.style.display = 'block';
+        this.nodes.kbps.style.display = 'block';
+        this.nodes.position.style.display = 'block';
+        this.nodes.time.style.display = 'block';
     };
 
-    this.hideThings = function() {
-        document.getElementById('khz').style.display = 'none';
-        document.getElementById('kbps').style.display = 'none';
-        document.getElementById('position').style.display = 'none';
-        document.getElementById('time').style.display = 'none';
+    this.hideNodes = function() {
+        this.nodes.khz.style.display = '';
+        this.nodes.kbps.style.display = '';
+        this.nodes.position.style.display = '';
+        this.nodes.time.style.display = '';
     };
 
     // make window dragable
@@ -211,7 +199,7 @@ function Winamp () {
     });
 
     this.media.addEventListener('ended', function() {
-        self.hideThings();
+        self.hideNodes();
         self.setStatus('stop');
     });
 
@@ -242,16 +230,32 @@ function Winamp () {
     }
 
     this.nodes.play.onclick = function() {
-        self.media.play();
-        self.setStatus('play');
+        console.log(self.getStatus());
+        self.showNodes();
+        if(self.getStatus()=='pause'){
+            self.media.play();
+            self.setStatus('play');
+        } else {
+            self.media.play();
+            self.setStatus('play');
+            self.media.setCurrentTime(0);
+        }
     }
     this.nodes.pause.onclick = function() {
-        self.media.pause();
-        self.setStatus('pause');
+        if(self.getStatus()=='pause'){
+            self.media.play();
+            self.setStatus('play');
+        }else if(self.getStatus()=='stop'){
+        }else{
+            self.media.pause();
+            self.setStatus('pause');
+        }
     }
     this.nodes.stop.onclick = function() {
         self.media.stop();
+        self.media.setCurrentTime(0);
         self.setStatus('stop');
+        self.hideNodes();
     }
     this.nodes.next.onclick = function() {
         // Implement this when we support playlists
@@ -301,6 +305,11 @@ function Winamp () {
     }
     this.nodes.shuffle.onclick = function() {
         toggleShuffle();
+    }
+
+    this.getStatus = function() {
+        var status = self.nodes.playPause.className;
+        return status;
     }
 
     this.setStatus = function(className) {
