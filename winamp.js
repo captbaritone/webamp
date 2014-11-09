@@ -19,17 +19,33 @@ function Media (audioId) {
         return (this.audio.currentTime / this.audio.duration) * 100;
     }
 
+    this.showThings = function() {
+        document.getElementById('khz').style.display = '';
+        document.getElementById('kbps').style.display = '';
+        document.getElementById('position').style.display = '';
+        document.getElementById('time').style.display = '';
+    };
+    this.hideThings = function() {
+        document.getElementById('khz').style.display = 'none';
+        document.getElementById('kbps').style.display = 'none';
+        document.getElementById('position').style.display = 'none';
+        document.getElementById('time').style.display = 'none';
+    };
+
     /* Actions */
     this.previous = function() {
         // Implement this when we support playlists
     };
     this.play = function() {
+        self.showThings();
         this.audio.play();
+        if(this.audio.currentTime = 0){}
     };
     this.pause = function() {
         this.audio.pause();
     };
     this.stop = function() {
+        self.hideThings();
         this.audio.pause();
         this.audio.currentTime = 0;
     };
@@ -104,7 +120,21 @@ function Winamp () {
         'playPause': document.getElementById('play-pause'),
         'workIndicator': document.getElementById('work-indicator'),
         'winamp': document.getElementById('winamp'),
-        'titleBar': document.getElementById('title-bar'),
+        'titleBar': document.getElementById('title-bar')
+    };
+
+    this.showThings = function() {
+        document.getElementById('khz').style.display = '';
+        document.getElementById('kbps').style.display = '';
+        document.getElementById('position').style.display = '';
+        document.getElementById('time').style.display = '';
+    };
+
+    this.hideThings = function() {
+        document.getElementById('khz').style.display = 'none';
+        document.getElementById('kbps').style.display = 'none';
+        document.getElementById('position').style.display = 'none';
+        document.getElementById('time').style.display = 'none';
     };
 
     // make window dragable
@@ -181,6 +211,7 @@ function Winamp () {
     });
 
     this.media.addEventListener('ended', function() {
+        self.hideThings();
         self.setStatus('stop');
     });
 
