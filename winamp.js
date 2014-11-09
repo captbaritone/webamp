@@ -102,6 +102,7 @@ function Winamp () {
         'volume': document.getElementById('volume'),
         'balance': document.getElementById('balance'),
         'playPause': document.getElementById('play-pause'),
+        'workIndicator': document.getElementById('work-indicator'),
         'winamp': document.getElementById('winamp'),
         'titleBar': document.getElementById('title-bar'),
     };
@@ -176,6 +177,14 @@ function Winamp () {
 
     this.media.addEventListener('ended', function() {
         self.setStatus('stop');
+    });
+
+    this.media.addEventListener('waiting', function() {
+        self.nodes.workIndicator.classList.add('selected');
+    });
+
+    this.media.addEventListener('playing', function() {
+        self.nodes.workIndicator.classList.remove('selected');
     });
 
     this.nodes.shade.onclick = function() {

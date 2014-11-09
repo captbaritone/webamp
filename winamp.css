@@ -120,10 +120,10 @@ a:focus { outline: none; }
     height: 9px;
     width: 3px;
     background-image: url('skins/default/PLAYPAUS.BMP');
-    background-position: -39px 0;
+    background-position: -36px 0;
 }
 .status #play-pause.play #work-indicator.selected {
-    background-position: -36px 0;
+    background-position: -39px 0;
 }
 
 .status #play-pause.play { }
