@@ -498,8 +498,8 @@ function anchorArgument(argument, defaultValue) {
         pair = pairs[i];
         eq = pair.indexOf("=");
         if(eq) {
-            key = pair.slice(0, eq);
-            value = pair.slice(eq + 1);
+            key = decodeURIComponent(pair.slice(0, eq));
+            value = decodeURIComponent(pair.slice(eq + 1));
             args[key] = value;
         }
     }
