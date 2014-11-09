@@ -491,7 +491,27 @@ document.onkeyup = function(e){
     }
 }
 
+function anchorArgument(argument, defaultValue) {
+    args = [];
+    pairs = window.location.hash.slice(1).split("&");
+    for (var i = 0, len = pairs.length; i < len; i++) {
+        pair = pairs[i];
+        eq = pair.indexOf("=");
+        if(eq) {
+            key = pair.slice(0, eq);
+            value = pair.slice(eq + 1);
+            args[key] = value;
+        }
+    }
+    return args[argument] ? args[argument] : defaultValue;
+}
+
+volume = anchorArgument('volume', 50);
+balance = anchorArgument('volume', 0);
+file = anchorArgument('m', 'https://mediacru.sh/download/Q2HAoRHE-JvD.mp3');
+fileName = anchorArgument('name', "1. DJ Mike Llama - Llama Whippin' Intro <0:05>");
+
 winamp = new Winamp();
-winamp.setVolume(50);
-winamp.setBalance(0);
-winamp.loadFile('https://mediacru.sh/download/Q2HAoRHE-JvD.mp3', "1. DJ Mike Llama - Llama Whippin' Intro <0:05>");
+winamp.setVolume(volume);
+winamp.setBalance(balance);
+winamp.loadFile(file, fileName);
