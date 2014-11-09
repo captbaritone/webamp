@@ -308,6 +308,8 @@ function Winamp () {
 
     // TODO: Refactor this function
     this.updateTime = function() {
+        self.updateShadePositionClass();
+
         var shadeMinusCharacter = ' ';
         if(this.nodes.time.classList.contains('countdown')) {
             digits = this.media.timeRemainingObject();
@@ -335,6 +337,16 @@ function Winamp () {
         this.font.displayCharacterInNode(digits[3], document.getElementById('shade-second-second-digit'));
     }
 
+    // In shade mode, the position slider shows up differently depending on if
+    // it's near the start, middle or end of its progress
+    this.updateShadePositionClass = function() {
+        self.nodes.position.removeAttribute("class");
+        if(self.nodes.position.value <= 33) {
+            self.nodes.position.classList.add('left');
+        } else if(self.nodes.position.value >= 66) {
+            self.nodes.position.classList.add('right');
+        }
+    }
 
     this.dragenter = function(e) {
         e.stopPropagation();

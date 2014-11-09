@@ -587,11 +587,17 @@ a:focus { outline: none; }
     background-position: -20px -36px;
     background-image: url('skins/default/TITLEBAR.BMP');
 }
-.shade #position:active::-webkit-slider-thumb {
-    background-position: -20px -36px;
+.shade #position.left::-webkit-slider-thumb {
+    background-position: -17px -36px;
 }
-.shade #position:active::-moz-range-thumb {
-    background-position: -20px -36px;
+.shade #position.left::-moz-range-thumb {
+    background-position: -17px -36px;
+}
+.shade #position.right::-webkit-slider-thumb {
+    background-position: -23px -36px;
+}
+.shade #position.right::-moz-range-thumb {
+    background-position: -23px -36px;
 }
 
 .shade #shade-time {
