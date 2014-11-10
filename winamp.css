@@ -34,7 +34,7 @@ a:focus { outline: none; }
 }
 
 #title-bar.selected {
-    background-position: -27px 0px;
+    background-position: -27px 0;
 }
 
 .llama #title-bar {
@@ -76,7 +76,7 @@ a:focus { outline: none; }
 #title-bar #shade {
     left: 254px;
     background-image: url('skins/default/TITLEBAR.BMP');
-    background-position: 0px -18px;
+    background-position: 0 -18px;
 }
 #title-bar #shade:active {
     background-position: -9px -18px;
@@ -85,7 +85,7 @@ a:focus { outline: none; }
 #title-bar #close {
     left: 264px;
     background-image: url('skins/default/TITLEBAR.BMP');
-    background-position: -18px 0px;
+    background-position: -18px 0;
     cursor:url('cursors/CLOSE.CUR'), auto;
 }
 #title-bar #close:active {
@@ -117,8 +117,8 @@ a:focus { outline: none; }
 
 .status #play-pause.play #work-indicator {
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     height: 9px;
     width: 3px;
     background-image: url('skins/default/PLAYPAUS.BMP');
@@ -132,6 +132,7 @@ a:focus { outline: none; }
 .status #play-pause.pause { background-position: -9px 0; }
 .status #play-pause.stop { background-position: -18px 0; }
 .status #time {
+    display:none;
     position: absolute;
     left: 48px;
     left: 40px;
@@ -200,6 +201,7 @@ a:focus { outline: none; }
 .setting-balance #balance-message { display: block; }
 
 .media-info #kbps {
+    display: none;
     position: absolute;
     left: 111px;
     top: 43px;
@@ -209,6 +211,7 @@ a:focus { outline: none; }
 }
 
 .media-info #khz {
+    display:none;
     position: absolute;
     left: 156px;
     top: 43px;
@@ -346,6 +349,7 @@ a:focus { outline: none; }
 }
 
 #position {
+    display:none;
     position: absolute;
     left: 16px;
     top: 72px;
@@ -520,7 +524,7 @@ a:focus { outline: none; }
 }
 
 .shade #title-bar #shade {
-    background-position: 0px -27px;
+    background-position: 0 -27px;
 }
 .shade #title-bar #shade:active {
     background-position: -9px -27px;
@@ -616,7 +620,7 @@ a:focus { outline: none; }
     top: 0;
 }
 .shade #shade-minus-sign {
-    left: 0px;
+    left: 0;
 }
 .shade #shade-minute-first-digit {
     left: 6px;
