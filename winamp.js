@@ -211,11 +211,11 @@ function Winamp () {
     }
 
     this.nodes.play.onclick = function() {
+        //if the item is currently playing, and play is 'clicked,' then restart
         if(_.contains(self.nodes.playPause.classList, 'play')){
              self.media.stop();
         }
         
-        console.log(self.nodes.playPause.classList);
         self.media.play();
         self.setStatus('play');
     }
