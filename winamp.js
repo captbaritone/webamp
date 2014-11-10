@@ -78,6 +78,7 @@ function Media (audioId) {
 function Winamp () {
     self = this;
     this.media = new Media('player');
+    this.skinManager = new SkinManager();
     this.font = new Font();
 
     this.nodes = {
@@ -494,6 +495,62 @@ Font = function() {
     };
 }
 
+SkinManager = function() {
+    var self = this;
+
+    this.skinImages = {
+        "#winamp": "MAIN.BMP",
+        "#title-bar": "TITLEBAR.BMP",
+        "#title-bar #option": "TITLEBAR.BMP",
+        "#title-bar #minimize": "TITLEBAR.BMP",
+        "#title-bar #shade": "TITLEBAR.BMP",
+        "#title-bar #close": "TITLEBAR.BMP",
+        ".status #clutter-bar": "TITLEBAR.BMP",
+        ".status #play-pause": "PLAYPAUS.BMP",
+        ".status #play-pause.play #work-indicator": "PLAYPAUS.BMP",
+        ".status #time #minus-sign": "NUMBERS.BMP",
+        ".media-info .mono-stereo div": "MONOSTER.BMP",
+        "#volume": "VOLUME.BMP",
+        "#volume::-webkit-slider-thumb": "VOLUME.BMP",
+        "#volume::-moz-range-thumb": "VOLUME.BMP",
+        "#balance": "BALANCE.BMP",
+        "#balance::-webkit-slider-thumb": "VOLUME.BMP",
+        "#balance::-moz-range-thumb": "VOLUME.BMP",
+        ".windows div": "SHUFREP.BMP",
+        "#position": "POSBAR.BMP",
+        "#position::-webkit-slider-thumb": "POSBAR.BMP",
+        "#position::-moz-range-thumb": "POSBAR.BMP",
+        ".actions div": "CBUTTONS.BMP",
+        "#eject": "CBUTTONS.BMP",
+        ".shuffle-repeat div": "SHUFREP.BMP",
+        ".character": "TEXT.BMP",
+        ".digit": "NUMBERS.BMP",
+        ".shade #position": "TITLEBAR.BMP",
+        ".shade #position::-webkit-slider-thumb": "TITLEBAR.BMP",
+        ".shade #position::-moz-range-thumb": "TITLEBAR.BMP",
+    };
+
+    this.setSkinByName = function(name) {
+        url = "https://cdn.rawgit.com/captbaritone/winamp-skins/master/v2/" + name;
+        self.setSkinByUrl(url);
+    }
+
+    this.setSkinByUrl = function(skinPath) {
+        skinPath += "/";
+        cssRules = '';
+        for(var selector in self.skinImages) {
+            var value = "background-image: url(" + skinPath + self.skinImages[selector] + ");";
+            cssRules += selector + "{" + value + "}\n";
+
+            var style = document.createElement('style');
+            style.type = 'text/css';
+            style.appendChild(document.createTextNode(cssRules));
+
+            document.getElementsByTagName("head")[0].appendChild(style);
+        }
+    }
+}
+
 keylog = [];
 trigger = [78,85,76,27,76,27,83,79,70,84];
 // Easter Egg
@@ -524,9 +581,17 @@ volume = anchorArgument('volume', 50);
 balance = anchorArgument('volume', 0);
 file = anchorArgument('m', 'https://mediacru.sh/download/Q2HAoRHE-JvD.mp3');
 fileName = anchorArgument('name', "1. DJ Mike Llama - Llama Whippin' Intro <0:05>");
+skin = anchorArgument('skin', "base-2.91");
+skinUrl = anchorArgument('skin-url', false);
 
 winamp = new Winamp();
+// XXX These should be moved to a constructor, but I can't figure out how
 winamp.setVolume(volume);
 winamp.setBalance(balance);
 winamp.loadFile(file, fileName);
 winamp.marqueeLoop();
+if(skinUrl) {
+    winamp.skinManager.setSkinByUrl(skinUrl);
+} else {
+    winamp.skinManager.setSkinByName(skin);
+}
