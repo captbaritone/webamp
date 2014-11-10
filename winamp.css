@@ -425,7 +425,7 @@ a:focus { outline: none; }
 
 #eject {
     position: absolute;
-    top: 88px;
+    top: 89px;
     left: 136px;
     background-image: url('skins/default/CBUTTONS.BMP');
     height: 16px;
