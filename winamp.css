@@ -113,6 +113,7 @@ a:focus { outline: none; }
     height: 9px;
     width: 9px;
     background-image: url('skins/default/PLAYPAUS.BMP');
+    background-repeat: no-repeat;
 }
 
 .status #play-pause.play #work-indicator {
@@ -500,6 +501,7 @@ a:focus { outline: none; }
     width: 9px;
     height: 13px;
     background-image: url('skins/default/NUMBERS.BMP');
+    background-repeat: no-repeat;
     text-indent: -9999px;
 }
 
