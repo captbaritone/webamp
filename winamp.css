@@ -14,7 +14,7 @@ a:focus { outline: none; }
 
 #winamp {
     position: relative;
-    background-image: url('skins/default/MAIN.BMP');
+    /* background-image: MAIN.BMP via Javascript */
     height: 116px;
     width: 275px;
     cursor:url('cursors/MAINMENU.CUR'), auto;
@@ -28,7 +28,7 @@ a:focus { outline: none; }
     left: 0;
     height: 14px;
     width: 275px;
-    background-image: url('skins/default/TITLEBAR.BMP');
+    /* background-image: TITLEBAR.BMP via Javascript */
     background-position: -27px -14px;
     cursor:url('cursors/TITLEBAR.CUR'), auto;
 }
@@ -58,7 +58,7 @@ a:focus { outline: none; }
 
 #title-bar #option {
     left: 6px;
-    background-image: url('skins/default/TITLEBAR.BMP');
+    /* background-image: TITLEBAR.BMP via Javascript */
 }
 #title-bar #option:active {
     background-position: 0 -9px;
@@ -66,7 +66,7 @@ a:focus { outline: none; }
 
 #title-bar #minimize {
     left: 244px;
-    background-image: url('skins/default/TITLEBAR.BMP');
+    /* background-image: TITLEBAR.BMP via Javascript */
     background-position: -9px 0;
 }
 #title-bar #minimize:active {
@@ -75,7 +75,7 @@ a:focus { outline: none; }
 
 #title-bar #shade {
     left: 254px;
-    background-image: url('skins/default/TITLEBAR.BMP');
+    /* background-image: TITLEBAR.BMP via Javascript */
     background-position: 0px -18px;
 }
 #title-bar #shade:active {
@@ -84,7 +84,7 @@ a:focus { outline: none; }
 
 #title-bar #close {
     left: 264px;
-    background-image: url('skins/default/TITLEBAR.BMP');
+    /* background-image: TITLEBAR.BMP via Javascript */
     background-position: -18px 0px;
     cursor:url('cursors/CLOSE.CUR'), auto;
 }
@@ -98,7 +98,7 @@ a:focus { outline: none; }
     left: 10px;
     height: 43px;
     width: 8px;
-    background-image: url('skins/default/TITLEBAR.BMP');
+    /* background-image: TITLEBAR.BMP via Javascript */
     background-position: -304px 0;
 }
 
@@ -112,7 +112,7 @@ a:focus { outline: none; }
     left: 24px;
     height: 9px;
     width: 9px;
-    background-image: url('skins/default/PLAYPAUS.BMP');
+    /* background-image: PLAYPAUS.BMP via Javascript */
     background-repeat: no-repeat;
 }
 
@@ -122,7 +122,7 @@ a:focus { outline: none; }
     left: 0px;
     height: 9px;
     width: 3px;
-    background-image: url('skins/default/PLAYPAUS.BMP');
+    /* background-image: PLAYPAUS.BMP via Javascript */
     background-position: -36px 0;
 }
 .status #play-pause.play #work-indicator.selected {
@@ -146,7 +146,7 @@ a:focus { outline: none; }
     top: 6px;
     width: 5px;
     height: 1px;
-    background-image: url('skins/default/NUMBERS.BMP');
+    /* background-image: NUMBERS.BMP via Javascript */
     background-position: -9px -6px;
 }
 .status #time.countdown #minus-sign {
@@ -229,7 +229,7 @@ a:focus { outline: none; }
 .media-info .mono-stereo div {
     position: absolute;
     height: 12px;
-    background-image: url('skins/default/MONOSTER.BMP');
+    /* background-image: MONOSTER.BMP via Javascript */
 }
 
 .media-info .mono-stereo #mono {
@@ -255,14 +255,14 @@ a:focus { outline: none; }
     top: 57px;
     height: 13px;
     width: 68px;
-    background-image: url('skins/default/VOLUME.BMP');
+    /* background-image: VOLUME.BMP via Javascript */
     background-position: 0 0;
 }
 #volume::-webkit-slider-thumb {
     margin-top: 1px;
     height: 11px;
     width: 14px;
-    background-image: url('skins/default/VOLUME.BMP');
+    /* background-image: VOLUME.BMP via Javascript */
     background-position: -15px -422px;
     cursor:url('cursors/VOLBAR.CUR'), auto;
 }
@@ -270,7 +270,7 @@ a:focus { outline: none; }
     margin-top: 1px;
     height: 11px;
     width: 14px;
-    background-image: url('skins/default/VOLUME.BMP');
+    /* background-image: VOLUME.BMP via Javascript */
     background-position: -15px -422px;
     cursor:url('cursors/VOLBAR.CUR'), auto;
 }
@@ -287,7 +287,7 @@ a:focus { outline: none; }
     top: 57px;
     height: 13px;
     width: 38px;
-    background-image: url('skins/default/BALANCE.BMP');
+    /* background-image: BALANCE.BMP via Javascript */
     background-position: -9px 0;
 }
 
@@ -295,7 +295,7 @@ a:focus { outline: none; }
     top: 1px;
     height: 11px;
     width: 14px;
-    background-image: url('skins/default/VOLUME.BMP');
+    /* background-image: VOLUME.BMP via Javascript */
     background-position: -15px -422px;
     cursor:url('cursors/POSBAR.CUR'), auto;
 }
@@ -303,7 +303,7 @@ a:focus { outline: none; }
     top: 1px;
     height: 11px;
     width: 14px;
-    background-image: url('skins/default/VOLUME.BMP');
+    /* background-image: VOLUME.BMP via Javascript */
     background-position: -15px -422px;
     cursor:url('cursors/POSBAR.CUR'), auto;
 }
@@ -327,7 +327,7 @@ a:focus { outline: none; }
     position: absolute;
     width: 23px;
     height: 12px;
-    background-image: url('skins/default/SHUFREP.BMP');
+    /* background-image: SHUFREP.BMP via Javascript */
 }
 
 .windows #equalizer {
@@ -352,7 +352,7 @@ a:focus { outline: none; }
     top: 72px;
     width: 248px;
     height: 10px;
-    background-image: url('skins/default/POSBAR.BMP');
+    /* background-image: POSBAR.BMP via Javascript */
     background-repeat: no-repeat;
 }
 
@@ -360,7 +360,7 @@ a:focus { outline: none; }
     height: 10px;
     width: 29px;
     background-position: -248px 0;
-    background-image: url('skins/default/POSBAR.BMP');
+    /* background-image: POSBAR.BMP via Javascript */
     background-repeat: no-repeat;
     cursor:url('cursors/POSBAR.CUR'), auto;
     /*
@@ -374,7 +374,7 @@ a:focus { outline: none; }
     height: 10px;
     width: 29px;
     background-position: -248px 0;
-    background-image: url('skins/default/POSBAR.BMP');
+    /* background-image: POSBAR.BMP via Javascript */
     background-repeat: no-repeat;
     cursor:url('cursors/POSBAR.CUR'), auto;
 }
@@ -386,7 +386,7 @@ a:focus { outline: none; }
 }
 
 .actions div {
-    background-image: url('skins/default/CBUTTONS.BMP');
+    /* background-image: CBUTTONS.BMP via Javascript */
     height: 18px;
     width: 23px;
     position: absolute;
@@ -428,7 +428,7 @@ a:focus { outline: none; }
     position: absolute;
     top: 89px;
     left: 136px;
-    background-image: url('skins/default/CBUTTONS.BMP');
+    /* background-image: CBUTTONS.BMP via Javascript */
     height: 16px;
     width: 22px;
 }
@@ -445,7 +445,7 @@ a:focus { outline: none; }
 .shuffle-repeat div {
     position: absolute;
     height: 15px;
-    background-image: url('skins/default/SHUFREP.BMP');
+    /* background-image: SHUFREP.BMP via Javascript */
 }
 
 .shuffle-repeat #shuffle {
@@ -491,7 +491,7 @@ a:focus { outline: none; }
     float: left; /* Safari does not do inline-block well */
     width: 5px;
     height: 6px;
-    background-image: url('skins/default/TEXT.BMP');
+    /* background-image: TEXT.BMP via Javascript */
     text-indent: -9999px;
 
 }
@@ -500,7 +500,7 @@ a:focus { outline: none; }
     display: inline-block;
     width: 9px;
     height: 13px;
-    background-image: url('skins/default/NUMBERS.BMP');
+    /* background-image: NUMBERS.BMP via Javascript */
     background-repeat: no-repeat;
     text-indent: -9999px;
 }
@@ -575,7 +575,7 @@ a:focus { outline: none; }
     top: 4px;
     width: 17px;
     height: 7px;
-    background-image: url('skins/default/TITLEBAR.BMP');
+    /* background-image: TITLEBAR.BMP via Javascript */
     background-position: -0px -36px;
 }
 
@@ -583,13 +583,13 @@ a:focus { outline: none; }
     height: 7px;
     width: 3px;
     background-position: -20px -36px;
-    background-image: url('skins/default/TITLEBAR.BMP');
+    /* background-image: TITLEBAR.BMP via Javascript */
 }
 .shade #position::-moz-range-thumb {
     height: 7px;
     width: 3px;
     background-position: -20px -36px;
-    background-image: url('skins/default/TITLEBAR.BMP');
+    /* background-image: TITLEBAR.BMP via Javascript */
 }
 .shade #position.left::-webkit-slider-thumb {
     background-position: -17px -36px;
