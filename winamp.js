@@ -1,4 +1,36 @@
 /* Helpful wrapper for the native <audio> element */
+
+
+    var utilityService = (function () {
+
+           //code courtesy of: http://goo.gl/Wuoqct 
+        function _arrayContains(a, obj){
+            for (var i = 0; i < a.length; i++) {
+                if (a[i] === obj) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        //code courtesy of: goo.gl/RINqY4
+        function _addEvent(element, eventName, callback) {
+            if (element.addEventListener) {
+                element.addEventListener(eventName, callback, false);
+            } else if (element.attachEvent) {
+                element.attachEvent("on" + eventName, callback);
+            } else {
+                element["on" + eventName] = callback;
+            }
+        }
+
+        return {
+            addEvent: _addEvent,
+            arrayContains: _arrayContains
+        };
+ 
+    })();
+
 function Media (audioId) {
     this.audio = document.getElementById(audioId);
 
@@ -107,6 +139,213 @@ function Winamp () {
         'titleBar': document.getElementById('title-bar'),
     };
 
+    this.nodes.timer = {
+         digitNodes: [{
+            'firstMinDigit':        document.getElementById('minute-first-digit'),
+            'secondMinDigit':       document.getElementById('minute-second-digit'),
+            'firstSecDigit':        document.getElementById('second-first-digit'),
+            'secondSecDigit':       document.getElementById('second-second-digit')
+        }],
+
+          shadeNodes: [{
+            'firstMinDigit':   document.getElementById('shade-minute-first-digit'),
+            'secondMinDigit':  document.getElementById('shade-minute-second-digit'),
+            'firstSecDigit':   document.getElementById('shade-second-first-digit'),
+            'secondSecDigit':  document.getElementById('shade-second-second-digit')
+        }]
+        
+    };
+
+    var mediaService = (function () {
+
+        var _mediaPlayer;
+
+        function _init()
+        {
+            _mediaPlayer = new Media('player');
+            _setMediaBalance(0);
+            _setMediaVolume(50);
+            _loadMediaFile('https://mediacru.sh/download/Q2HAoRHE-JvD.mp3', "1. DJ Mike Llama - Llama Whippin' Intro <0:05>  ***  ");
+        }
+
+        function _pauseMedia(){
+            self.media.pause();
+            _setStatus('pause');
+        }
+        
+        function _playMedia() {
+            //if the item is currently playing, and play is 'clicked,' then restart
+            if(self.nodes.playPause.classList.contains, 'play'){
+                 self.media.stop();
+            }
+            
+            self.media.play();
+            _setStatus('play');
+        }
+
+        function _stopMedia(){
+            self.media.stop();
+            _setStatus('stop'); // Currently unneeded
+            //self.nodes.winamp.classList.add('closed');
+        }
+
+        function _closeMedia(){
+
+            self.media.stop();
+            _setStatus('stop'); // Currently unneeded
+            self.nodes.winamp.classList.add('closed');
+        }
+ 
+        function _setStatus(className) {
+ 
+            self.nodes.playPause.removeAttribute("class");
+            self.nodes.playPause.classList.add(className);
+        }
+
+        function _toggleMediaRepeat() {
+            self.media.toggleRepeat();
+            self.nodes.repeat.classList.toggle('selected');
+        }
+
+        function _toggleMediaShuffle() {
+            self.media.toggleShuffle();
+            self.nodes.shuffle.classList.toggle('selected');
+        }      
+
+        function _setMediaVolume(volume) {
+            var percent = volume / 100;
+            sprite = Math.round(percent * 28);
+            offset = (sprite - 1) * 15;
+
+            self.media.setVolume(percent);
+            self.nodes.volume.style.backgroundPosition = '0 -' + offset + 'px';
+
+            string = 'Volume: ' + volume + '%';
+            self.font.setNodeToString(self.nodes.volumeMessage, string);
+
+            // This shouldn't trigger an infinite loop with volume.onchange(),
+            // since the value will be the same
+            self.nodes.volume.value = volume;
+        }
+
+        function _setMediaBalance(balance){
+
+            var string = '';
+            if(balance == 0) {
+                string = 'Balance: Center';
+            } else if(balance > 0) {
+                string = 'Balance: ' + balance + '% Right';
+            } else {
+                string = 'Balance: ' + Math.abs(balance) + '% Left';
+            }
+            self.font.setNodeToString(self.nodes.balanceMessage, string);
+
+            balance = Math.abs(balance) / 100
+            sprite = Math.round(balance * 28);
+            offset = (sprite - 1) * 15;
+            self.nodes.balance.style.backgroundPosition = '-9px -' + offset + 'px';
+
+        }
+
+        function _startMediaFile(file, fileName) {
+            _loadMediaFile(file, fileName);
+            self.media.play();
+            _setStatus('play');
+        }
+
+        function _loadMediaFile(file, fileName) {
+            self.media.loadFile(file);
+            self.font.setNodeToString(document.getElementById('song-title'), fileName)
+            self.font.setNodeToString(document.getElementById('kbps'), "128")
+            self.font.setNodeToString(document.getElementById('khz'), "44")
+            _updateTime();
+        }
+
+                // TODO: Refactor this function
+        function _updateTime () {
+            self.font.displayCharacterInNode(shadeMinusCharacter, document.getElementById('shade-minus-sign'));
+
+            _updateShadePositionClass();
+
+            var shadeMinusCharacter = ' ';
+            if(self.nodes.time.classList.contains('countdown')) {
+                digits = self.media.timeRemainingObject();
+                var shadeMinusCharacter = '-';
+            } else {
+                digits = self.media.timeElapsedObject();
+            }
+
+            var iter= 0;
+
+            for( nodeInstance in self.nodes.timer.digitNodes[0] ){
+                html = digitHtml(digits[iter]);
+                self.nodes.timer.digitNodes[0][nodeInstance].innerHTML = '';
+                self.nodes.timer.digitNodes[0][nodeInstance].appendChild(html);
+                self.font.displayCharacterInNode(digits[iter], self.nodes.timer.shadeNodes[0][nodeInstance]);
+                iter++;
+            }
+        }
+
+            // In shade mode, the position slider shows up differently depending on if
+        // it's near the start, middle or end of its progress
+        function _updateShadePositionClass() {
+            self.nodes.position.removeAttribute("class");
+            if(self.nodes.position.value <= 33) {
+                self.nodes.position.classList.add('left');
+            } else if(self.nodes.position.value >= 66) {
+                self.nodes.position.classList.add('right');
+            }
+        }
+
+
+        function _startMediaFileViaReference(fileReference) {
+            var objectUrl = URL.createObjectURL(fileReference);
+            _startMediaFile(objectUrl, fileReference.name);
+        }
+
+        return {
+            initialize: _init,
+            startFile: _startMediaFile,
+            loadFile: _loadMediaFile,
+            pause: _pauseMedia,
+            close: _closeMedia,
+            play: _playMedia,
+            stop: _stopMedia,
+            toggleRepeat: _toggleMediaRepeat,
+            toggleShuffle: _toggleMediaShuffle,
+            setVolume: _setMediaVolume,
+            setStatus: _setStatus,
+            setBalance: _setMediaBalance,
+            updateTime: _updateTime,
+            loadFileFromURL: _startMediaFileViaReference
+        };
+ 
+    })();
+
+    mediaService.initialize();
+
+
+    /**************************
+    /*** EVENT LISTENERS
+    /**************************/
+
+    this.media.addEventListener('timeupdate', function() {
+        self.nodes.position.value = self.media.percentComplete();
+        mediaService.updateTime();
+    });
+
+    this.media.addEventListener('ended', function() {
+        mediaService.setStatus('stop');
+    });
+
+    this.media.addEventListener('waiting', function() {
+        self.nodes.workIndicator.classList.add('selected');
+    });
+
+    this.media.addEventListener('playing', function() {
+        self.nodes.workIndicator.classList.remove('selected');
+    });
+
     // make window dragable
     this.nodes.titleBar.addEventListener('mousedown',function(e){
         if(e.target !== this) {
@@ -163,47 +402,28 @@ function Winamp () {
         text += "For example: http://www.server.com/file.mp3"
         file = window.prompt(text, '');
         if(file != null) {
-            self.startFile(file, file);
-            self.media.play();
-            self.setStatus('play');
+            mediaService.startFile(file,file);
+            mediaService.play();
+            mediaService.setStatus('play');
         }
     }
 
-    this.nodes.close.onclick = function() {
-        self.media.stop();
-        self.setStatus('stop'); // Currently unneeded
-        self.nodes.winamp.classList.add('closed');
+    this.nodes.close.onclick = function() { 
+        mediaService.close(); 
     }
-
-    this.media.addEventListener('timeupdate', function() {
-        self.nodes.position.value = self.media.percentComplete();
-        self.updateTime();
-    });
-
-    this.media.addEventListener('ended', function() {
-        self.setStatus('stop');
-    });
-
-    this.media.addEventListener('waiting', function() {
-        self.nodes.workIndicator.classList.add('selected');
-    });
-
-    this.media.addEventListener('playing', function() {
-        self.nodes.workIndicator.classList.remove('selected');
-    });
-
+    
     this.nodes.shade.onclick = function() {
         self.nodes.winamp.classList.toggle('shade');
     }
 
     this.nodes.time.onclick = function() {
         this.classList.toggle('countdown');
-        self.updateTime();
+        mediaService.updateTime();
     }
 
     this.nodes.shadeTime.onclick = function() {
         self.nodes.time.classList.toggle('countdown');
-        self.updateTime();
+        mediaService.updateTime();
     }
 
     this.nodes.previous.onclick = function() {
@@ -211,21 +431,13 @@ function Winamp () {
     }
 
     this.nodes.play.onclick = function() {
-        //if the item is currently playing, and play is 'clicked,' then restart
-        if(_.contains(self.nodes.playPause.classList, 'play')){
-             self.media.stop();
-        }
-        
-        self.media.play();
-        self.setStatus('play');
+        mediaService.play();
     }
     this.nodes.pause.onclick = function() {
-        self.media.pause();
-        self.setStatus('pause');
+        mediaService.pause();
     }
     this.nodes.stop.onclick = function() {
-        self.media.stop();
-        self.setStatus('stop');
+        mediaService.stop();
     }
     this.nodes.next.onclick = function() {
         // Implement this when we support playlists
@@ -238,7 +450,7 @@ function Winamp () {
     this.nodes.fileInput.onchange = function(e){
         var file = e.target.files[0];
         if(file) {
-            self.startFileViaReference(file);
+            mediaService.loadFileFromURL(file);
         }
     }
 
@@ -250,7 +462,7 @@ function Winamp () {
     }
 
     this.nodes.volume.oninput = function() {
-        self.setVolume(this.value);
+        mediaService.setVolume(this.value);
     }
 
     this.nodes.position.onmousedown = function() {
@@ -268,103 +480,13 @@ function Winamp () {
         self.nodes.winamp.classList.remove('setting-balance');
     }
     this.nodes.balance.oninput = function() {
-        self.setBalance(this.value);
+        mediaService.setBalance(this.value);
     }
     this.nodes.repeat.onclick = function() {
-        toggleRepeat();
+        mediaService.toggleRepeat();
     }
     this.nodes.shuffle.onclick = function() {
-        toggleShuffle();
-    }
-
-    this.setStatus = function(className) {
-        self.nodes.playPause.removeAttribute("class");
-        self.nodes.playPause.classList.add(className);
-    }
-    // From 0-100
-    this.setVolume = function(volume) {
-        var percent = volume / 100;
-        sprite = Math.round(percent * 28);
-        offset = (sprite - 1) * 15;
-
-        self.media.setVolume(percent);
-        self.nodes.volume.style.backgroundPosition = '0 -' + offset + 'px';
-
-        string = 'Volume: ' + volume + '%';
-        self.font.setNodeToString(self.nodes.volumeMessage, string);
-
-        // This shouldn't trigger an infinite loop with volume.onchange(),
-        // since the value will be the same
-        self.nodes.volume.value = volume;
-    }
-
-    this.setBalance = function(balance) {
-        var string = '';
-        if(balance == 0) {
-            string = 'Balance: Center';
-        } else if(balance > 0) {
-            string = 'Balance: ' + balance + '% Right';
-        } else {
-            string = 'Balance: ' + Math.abs(balance) + '% Left';
-        }
-        self.font.setNodeToString(self.nodes.balanceMessage, string);
-
-        balance = Math.abs(balance) / 100
-        sprite = Math.round(balance * 28);
-        offset = (sprite - 1) * 15;
-        self.nodes.balance.style.backgroundPosition = '-9px -' + offset + 'px';
-    }
-
-    function toggleRepeat() {
-        self.media.toggleRepeat();
-        self.nodes.repeat.classList.toggle('selected');
-    }
-
-    function toggleShuffle() {
-        self.media.toggleShuffle();
-        self.nodes.shuffle.classList.toggle('selected');
-    }
-
-    // TODO: Refactor this function
-    this.updateTime = function() {
-        self.updateShadePositionClass();
-
-        var shadeMinusCharacter = ' ';
-        if(this.nodes.time.classList.contains('countdown')) {
-            digits = this.media.timeRemainingObject();
-            var shadeMinusCharacter = '-';
-        } else {
-            digits = this.media.timeElapsedObject();
-        }
-        this.font.displayCharacterInNode(shadeMinusCharacter, document.getElementById('shade-minus-sign'));
-
-        html = digitHtml(digits[0]);
-        document.getElementById('minute-first-digit').innerHTML = '';
-        document.getElementById('minute-first-digit').appendChild(html);
-        this.font.displayCharacterInNode(digits[0], document.getElementById('shade-minute-first-digit'));
-        html = digitHtml(digits[1]);
-        document.getElementById('minute-second-digit').innerHTML = '';
-        document.getElementById('minute-second-digit').appendChild(html);
-        this.font.displayCharacterInNode(digits[1], document.getElementById('shade-minute-second-digit'));
-        html = digitHtml(digits[2]);
-        document.getElementById('second-first-digit').innerHTML = '';
-        document.getElementById('second-first-digit').appendChild(html);
-        this.font.displayCharacterInNode(digits[2], document.getElementById('shade-second-first-digit'));
-        html = digitHtml(digits[3]);
-        document.getElementById('second-second-digit').innerHTML = '';
-        document.getElementById('second-second-digit').appendChild(html);
-        this.font.displayCharacterInNode(digits[3], document.getElementById('shade-second-second-digit'));
-    }
-
-    // In shade mode, the position slider shows up differently depending on if
-    // it's near the start, middle or end of its progress
-    this.updateShadePositionClass = function() {
-        self.nodes.position.removeAttribute("class");
-        if(self.nodes.position.value <= 33) {
-            self.nodes.position.classList.add('left');
-        } else if(self.nodes.position.value >= 66) {
-            self.nodes.position.classList.add('right');
-        }
+        mediaService.toggleShuffle();
     }
 
     this.dragenter = function(e) {
@@ -386,25 +508,6 @@ function Winamp () {
     this.nodes.winamp.addEventListener('dragenter', this.dragenter);
     this.nodes.winamp.addEventListener('dragover', this.dragover);
     this.nodes.winamp.addEventListener('drop', this.drop);
-
-    this.startFileViaReference = function(fileReference) {
-        var objectUrl = URL.createObjectURL(fileReference);
-        self.startFile(objectUrl, fileReference.name);
-    }
-
-    this.startFile = function(file, fileName) {
-        self.loadFile(file, fileName);
-        self.media.play();
-        self.setStatus('play');
-    }
-
-    this.loadFile = function(file, fileName) {
-        this.media.loadFile(file);
-        this.font.setNodeToString(document.getElementById('song-title'), fileName)
-        this.font.setNodeToString(document.getElementById('kbps'), "128")
-        this.font.setNodeToString(document.getElementById('khz'), "44")
-        this.updateTime();
-    }
 
     function digitHtml(digit) {
         horizontalOffset = digit * 9;
@@ -492,6 +595,3 @@ document.onkeyup = function(e){
 }
 
 winamp = new Winamp();
-winamp.setVolume(50);
-winamp.setBalance(0);
-winamp.loadFile('https://mediacru.sh/download/Q2HAoRHE-JvD.mp3', "1. DJ Mike Llama - Llama Whippin' Intro <0:05>  ***  ");
