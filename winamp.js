@@ -108,6 +108,23 @@ function Winamp () {
         'titleBar': document.getElementById('title-bar'),
     };
 
+    this.nodes.timer = {
+         digitNodes: [{
+            'firstMinDigit':        document.getElementById('minute-first-digit'),
+            'secondMinDigit':       document.getElementById('minute-second-digit'),
+            'firstSecDigit':        document.getElementById('second-first-digit'),
+            'secondSecDigit':       document.getElementById('second-second-digit')
+        }],
+
+          shadeNodes: [{
+            'firstMinDigit':   document.getElementById('shade-minute-first-digit'),
+            'secondMinDigit':  document.getElementById('shade-minute-second-digit'),
+            'firstSecDigit':   document.getElementById('shade-second-first-digit'),
+            'secondSecDigit':  document.getElementById('shade-second-second-digit')
+        }]
+        
+    };
+
     // make window dragable
     this.nodes.titleBar.addEventListener('mousedown',function(e){
         if(e.target !== this) {
@@ -327,33 +344,27 @@ function Winamp () {
 
     // TODO: Refactor this function
     this.updateTime = function() {
-        self.updateShadePositionClass();
 
-        var shadeMinusCharacter = ' ';
-        if(this.nodes.time.classList.contains('countdown')) {
-            digits = this.media.timeRemainingObject();
-            var shadeMinusCharacter = '-';
-        } else {
-            digits = this.media.timeElapsedObject();
-        }
-        this.font.displayCharacterInNode(shadeMinusCharacter, document.getElementById('shade-minus-sign'));
+            self.updateShadePositionClass();
+            self.font.displayCharacterInNode(shadeMinusCharacter, document.getElementById('shade-minus-sign'));
 
-        html = digitHtml(digits[0]);
-        document.getElementById('minute-first-digit').innerHTML = '';
-        document.getElementById('minute-first-digit').appendChild(html);
-        this.font.displayCharacterInNode(digits[0], document.getElementById('shade-minute-first-digit'));
-        html = digitHtml(digits[1]);
-        document.getElementById('minute-second-digit').innerHTML = '';
-        document.getElementById('minute-second-digit').appendChild(html);
-        this.font.displayCharacterInNode(digits[1], document.getElementById('shade-minute-second-digit'));
-        html = digitHtml(digits[2]);
-        document.getElementById('second-first-digit').innerHTML = '';
-        document.getElementById('second-first-digit').appendChild(html);
-        this.font.displayCharacterInNode(digits[2], document.getElementById('shade-second-first-digit'));
-        html = digitHtml(digits[3]);
-        document.getElementById('second-second-digit').innerHTML = '';
-        document.getElementById('second-second-digit').appendChild(html);
-        this.font.displayCharacterInNode(digits[3], document.getElementById('shade-second-second-digit'));
+            var shadeMinusCharacter = ' ';
+            if(self.nodes.time.classList.contains('countdown')) {
+                digits = self.media.timeRemainingObject();
+                var shadeMinusCharacter = '-';
+            } else {
+                digits = self.media.timeElapsedObject();
+            }
+
+            var iter= 0;
+
+            for( nodeInstance in self.nodes.timer.digitNodes[0] ){
+                html = digitHtml(digits[iter]);
+                self.nodes.timer.digitNodes[0][nodeInstance].innerHTML = '';
+                self.nodes.timer.digitNodes[0][nodeInstance].appendChild(html);
+                self.font.displayCharacterInNode(digits[iter], self.nodes.timer.shadeNodes[0][nodeInstance]);
+                iter++;
+            }
     }
 
     // In shade mode, the position slider shows up differently depending on if
