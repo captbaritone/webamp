@@ -212,6 +212,10 @@ function Winamp () {
     }
 
     this.nodes.play.onclick = function() {
+        if(self.nodes.playPause.classList)
+        {
+             self.media.stop();
+        }
         self.media.play();
         self.setStatus('play');
     }
