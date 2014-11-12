@@ -11,7 +11,23 @@ a:focus { outline: none; }
     display: none;
     cursor:url('cursors/MAINMENU.CUR'), auto;
 }
+/* Animation */
+.blink {
+   animation: blink 2s step-start 1s infinite;
+   -webkit-animation: blink 2s step-start 1s infinite;
+}
+@keyframes blink {
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+@-webkit-keyframes blink {
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
 
+/* Styles */
 #winamp {
     position: relative;
     /* background-image: MAIN.BMP via Javascript */
@@ -609,7 +625,7 @@ a:focus { outline: none; }
 }
 
 .shade #shade-time {
-    display: block;
+    display: none;
     position: absolute;
     top: 4px;
     left: 127px;
