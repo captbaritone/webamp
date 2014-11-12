@@ -198,11 +198,20 @@ function Winamp () {
     });
     this.media.addEventListener('playing', function() {
         self.stopBlinkTime();
+        if(self.nodes.winamp.classList=='shade'){
+            self.showShadeTime();
+        }
         self.nodes.workIndicator.classList.remove('selected');
     });
 
     this.nodes.shade.onclick = function() {
         self.nodes.winamp.classList.toggle('shade');
+        if(self.nodes.winamp.classList!='shade' || self.nodes.playPause.classList=='stop'){
+            self.hideShadeTime()
+        }else{
+            self.showShadeTime();
+        }
+
     }
 
     this.nodes.time.onclick = function() {
@@ -308,7 +317,9 @@ function Winamp () {
         this.nodes.time.style.display='block';
     };
     this.showShadeTime = function(){
-        this.nodes.shadeTime.style.display='block';
+        if(self.nodes.winamp.classList=='shade'){
+            this.nodes.shadeTime.style.display='block';
+        }
     };
     this.hideKHz = function(){
         this.nodes.khz.style.display='';
