@@ -62,6 +62,7 @@ function Media (audioId) {
     };
 
     /* Helpers */
+    // TODO: Move this to the Winamp object
     this._timeObject = function(time) {
         var minutes = Math.floor(time / 60);
         var seconds = time - (minutes * 60);
@@ -110,44 +111,44 @@ function Winamp () {
         'titleBar': document.getElementById('title-bar'),
     };
 
-    // make window dragable
+    // Make window dragable
     this.nodes.titleBar.addEventListener('mousedown',function(e){
         if(e.target !== this) {
-            // prevent going into drag mode when clicking any of the title bar's icons
-            // by making sure the click was made directly on the titlebar
-            return true;
-        }
+            // Prevent going into drag mode when clicking any of the title
+            // bar's icons by making sure the click was made directly on the
+            // titlebar
+            return true; }
 
-        // get starting window position
+        // Get starting window position
         var winampElm = self.nodes.winamp;
 
-        // if the element was 'absolutely' positioned we could simply use offsetLeft / offsetTop
-        // however the element is 'relatively' positioned so we're using style.left
-        // parseInt is used to remove the 'px' postfix from the value
-
+        // If the element was 'absolutely' positioned we could simply use
+        // offsetLeft / offsetTop however the element is 'relatively'
+        // positioned so we're using style.left. parseInt is used to remove the
+        // 'px' postfix from the value
         var winStartLeft = parseInt(winampElm.style.left || 0,10),
             winStartTop  = parseInt(winampElm.style.top || 0,10);
 
-        // get starting mouse position
+        // Get starting mouse position
         var mouseStartLeft = e.clientX,
             mouseStartTop = e.clientY;
 
-        // mouse move handler function while mouse is down
+        // Mouse move handler function while mouse is down
         function handleMove(e) {
-            // get current mouse position
+            // Get current mouse position
             var mouseLeft = e.clientX,
                 mouseTop = e.clientY;
 
-            // calculate difference offsets
+            // Calculate difference offsets
             var diffLeft = mouseLeft-mouseStartLeft,
                 diffTop = mouseTop-mouseStartTop;
 
-            // move window to new position
+            // Move window to new position
             winampElm.style.left = (winStartLeft+diffLeft)+"px";
             winampElm.style.top = (winStartTop+diffTop)+"px";
         }
 
-        // mouse button up
+        // Mouse button up
         function handleUp() {
             removeListeners();
         }
@@ -219,15 +220,18 @@ function Winamp () {
         self.media.play();
         self.setStatus('play');
     }
+
     this.nodes.pause.onclick = function() {
         self.media.pause();
         self.setStatus('pause');
     }
+
     this.nodes.stop.onclick = function() {
         self.media.stop();
         self.setStatus('stop');
         self.hideMetaInfo();
     }
+
     this.nodes.next.onclick = function() {
         // Implement this when we support playlists
     }
@@ -246,6 +250,7 @@ function Winamp () {
     this.nodes.volume.onmousedown = function() {
         self.nodes.winamp.classList.add('setting-volume');
     }
+
     this.nodes.volume.onmouseup = function() {
         self.nodes.winamp.classList.remove('setting-volume');
     }
@@ -265,15 +270,19 @@ function Winamp () {
     this.nodes.balance.onmousedown = function() {
         self.nodes.winamp.classList.add('setting-balance');
     }
+
     this.nodes.balance.onmouseup = function() {
         self.nodes.winamp.classList.remove('setting-balance');
     }
+
     this.nodes.balance.oninput = function() {
         self.setBalance(this.value);
     }
+
     this.nodes.repeat.onclick = function() {
         toggleRepeat();
     }
+
     this.nodes.shuffle.onclick = function() {
         toggleShuffle();
     }
@@ -297,6 +306,7 @@ function Winamp () {
         self.nodes.playPause.removeAttribute("class");
         self.nodes.playPause.classList.add(className);
     }
+
     // From 0-100
     this.setVolume = function(volume) {
         var percent = volume / 100;
@@ -314,6 +324,7 @@ function Winamp () {
         self.nodes.volume.value = volume;
     }
 
+    // From -100 to 100
     this.setBalance = function(balance) {
         var string = '';
         if(balance == 0) {
@@ -387,10 +398,12 @@ function Winamp () {
         e.stopPropagation();
         e.preventDefault();
     }
+
     this.dragover = function(e) {
         e.stopPropagation();
         e.preventDefault();
     }
+
     this.drop = function(e) {
         e.stopPropagation();
         e.preventDefault();
