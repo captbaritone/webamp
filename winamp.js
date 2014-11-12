@@ -101,6 +101,8 @@ function Winamp () {
         'repeat': document.getElementById('repeat'),
         'shuffle': document.getElementById('shuffle'),
         'volume': document.getElementById('volume'),
+        'kbps': document.getElementById('kbps'),
+        'khz': document.getElementById('khz'),
         'balance': document.getElementById('balance'),
         'playPause': document.getElementById('play-pause'),
         'workIndicator': document.getElementById('work-indicator'),
@@ -182,6 +184,10 @@ function Winamp () {
     });
 
     this.media.addEventListener('ended', function() {
+        self.hideKbps();
+        self.hideKHz();
+        self.hidePosition();
+        self.hideTime();
         self.setStatus('stop');
     });
 
@@ -212,6 +218,10 @@ function Winamp () {
     }
 
     this.nodes.play.onclick = function() {
+        self.showKbps();
+        self.showKHz();
+        self.showPosition();
+        self.showTime();
         self.media.play();
         self.setStatus('play');
     }
@@ -222,6 +232,11 @@ function Winamp () {
     this.nodes.stop.onclick = function() {
         self.media.stop();
         self.setStatus('stop');
+        self.setStatus('stop');
+        self.hideKbps();
+        self.hideKHz();
+        self.hidePosition();
+        self.hideTime();
     }
     this.nodes.next.onclick = function() {
         // Implement this when we support playlists
@@ -272,6 +287,32 @@ function Winamp () {
     this.nodes.shuffle.onclick = function() {
         toggleShuffle();
     }
+
+    /* Functions */
+    this.showKHz = function(){
+        this.nodes.khz.style.display='block';
+    };
+    this.showKbps = function(){
+        this.nodes.kbps.style.display='block';
+    };
+    this.showPosition = function(){
+        this.nodes.position.style.display='block';
+    };
+    this.showTime = function(){
+        this.nodes.time.style.display='block';
+    };
+    this.hideKHz = function(){
+        this.nodes.khz.style.display='';
+    };
+    this.hideKbps = function(){
+        this.nodes.kbps.style.display='';
+    };
+    this.hidePosition = function(){
+        this.nodes.position.style.display='';
+    };
+    this.hideTime = function(){
+        this.nodes.time.style.display='';
+    };
 
     this.setStatus = function(className) {
         self.nodes.playPause.removeAttribute("class");
