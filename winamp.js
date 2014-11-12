@@ -212,6 +212,8 @@ function Winamp () {
     }
 
     this.nodes.play.onclick = function() {
+        //auto reset. Premise: play will always start from 0
+        self.media.stop();
         self.media.play();
         self.setStatus('play');
     }
