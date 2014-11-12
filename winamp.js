@@ -314,8 +314,9 @@ function Winamp () {
         self.nodes.volume.value = volume;
     }
 
-    this.setBalance = function(balance) {
-        var string = '';
+    this.balanceOutput = function(balance){
+
+         var string = '';
         if(balance == 0) {
             string = 'Balance: Center';
         } else if(balance > 0) {
@@ -324,11 +325,23 @@ function Winamp () {
             string = 'Balance: ' + Math.abs(balance) + '% Left';
         }
         self.font.setNodeToString(self.nodes.balanceMessage, string);
+    }
 
-        balance = Math.abs(balance) / 100
-        sprite = Math.round(balance * 28);
-        offset = (sprite - 1) * 15;
-        self.nodes.balance.style.backgroundPosition = '-9px -' + offset + 'px';
+    this.setBalance = function(balance) {
+        if(Math.abs(balance) < 25){
+     
+            balance =  0;
+            self.nodes.balance.value = 0;
+        }
+        else{
+
+            //balance = Math.abs(balance) / 100
+            sprite = Math.round((balance/100) * 28);
+            offset = (sprite - 1) * 15;
+        }
+       
+        self.balanceOutput(balance);
+        self.nodes.balance.style.backgroundPosition = '-9px -' + '0' + 'px';
     }
 
     function toggleRepeat() {
