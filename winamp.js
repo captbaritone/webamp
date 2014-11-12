@@ -186,6 +186,7 @@ function Winamp () {
 
     this.media.addEventListener('ended', function() {
         self.hideMetaInfo();
+        self.stopBlinkTime();
         self.setStatus('stop');
     });
 
@@ -195,6 +196,7 @@ function Winamp () {
 
     this.media.addEventListener('playing', function() {
         self.nodes.workIndicator.classList.remove('selected');
+        self.stopBlinkTime();
     });
 
     this.nodes.shade.onclick = function() {
@@ -217,6 +219,7 @@ function Winamp () {
 
     this.nodes.play.onclick = function() {
         self.showMetaInfo();
+        self.stopBlinkTime();
         self.media.play();
         self.setStatus('play');
     }
@@ -224,11 +227,13 @@ function Winamp () {
     this.nodes.pause.onclick = function() {
         self.media.pause();
         self.setStatus('pause');
+        self.startBlinkTime();
     }
 
     this.nodes.stop.onclick = function() {
         self.media.stop();
         self.setStatus('stop');
+        self.stopBlinkTime();
         self.hideMetaInfo();
     }
 
@@ -301,6 +306,16 @@ function Winamp () {
         this.nodes.position.style.display='';
         this.nodes.time.style.display='';
     };
+
+    this.startBlinkTime = function(){
+        self.nodes.time.classList.add('blink');
+        self.nodes.shadeTime.classList.add('blink');
+    }
+    this.stopBlinkTime = function(){
+        self.nodes.time.classList.remove('blink');
+        self.nodes.shadeTime.classList.remove('blink');
+    }
+
 
     this.setStatus = function(className) {
         self.nodes.playPause.removeAttribute("class");
