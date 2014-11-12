@@ -133,6 +133,7 @@ a:focus { outline: none; }
 .status #play-pause.pause { background-position: -9px 0; }
 .status #play-pause.stop { background-position: -18px 0; }
 .status #time {
+    display:none;
     position: absolute;
     left: 48px;
     left: 40px;
@@ -201,6 +202,7 @@ a:focus { outline: none; }
 .setting-balance #balance-message { display: block; }
 
 .media-info #kbps {
+    display: none;
     position: absolute;
     left: 111px;
     top: 43px;
@@ -210,6 +212,7 @@ a:focus { outline: none; }
 }
 
 .media-info #khz {
+    display: none;
     position: absolute;
     left: 156px;
     top: 43px;
@@ -347,6 +350,7 @@ a:focus { outline: none; }
 }
 
 #position {
+    display: none;
     position: absolute;
     left: 16px;
     top: 72px;
