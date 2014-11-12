@@ -540,7 +540,8 @@ Font = function() {
         "_": [1,18], "+": [1,19], "\\": [1,20], "/": [1,21], "[": [1,22],
         "]": [1,23], "^": [1,24], "&": [1,25], "%": [1,26], ".": [1,27],
         "=": [1,28], "$": [1,29], "#": [1,30], "Å": [2,0], "Ö": [2,1],
-        "Ä": [2,2], "?": [2,3], "*": [2,4], " ": [2,5]
+        "Ä": [2,2], "?": [2,3], "*": [2,4], " ": [2,5], "<": [1,22],
+        ">": [1,23], "{": [1,22], "}": [1,23]
     };
 }
 
@@ -629,7 +630,7 @@ function anchorArgument(argument, defaultValue) {
 volume = anchorArgument('volume', 50);
 balance = anchorArgument('volume', 0);
 file = anchorArgument('m', 'https://mediacru.sh/download/Q2HAoRHE-JvD.mp3');
-fileName = anchorArgument('name', "1. DJ Mike Llama - Llama Whippin' Intro <0:05>");
+fileName = anchorArgument('name', "1. DJ Mike Llama - Llama Whippin' Intro (0:05)");
 skin = anchorArgument('skin', "base-2.91");
 skinUrl = anchorArgument('skin-url', false);
 
