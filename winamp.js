@@ -188,14 +188,16 @@ function Winamp () {
         self.hideKHz();
         self.hidePosition();
         self.hideTime();
+        self.hideShadeTime();
+        self.stopBlinkTime();
         self.setStatus('stop');
     });
 
     this.media.addEventListener('waiting', function() {
         self.nodes.workIndicator.classList.add('selected');
     });
-
     this.media.addEventListener('playing', function() {
+        self.stopBlinkTime();
         self.nodes.workIndicator.classList.remove('selected');
     });
 
@@ -218,25 +220,29 @@ function Winamp () {
     }
 
     this.nodes.play.onclick = function() {
+        self.media.play();
+        self.setStatus('play');
         self.showKbps();
         self.showKHz();
         self.showPosition();
         self.showTime();
-        self.media.play();
-        self.setStatus('play');
+        self.showShadeTime();
+
     }
     this.nodes.pause.onclick = function() {
         self.media.pause();
         self.setStatus('pause');
+        self.startBlinkTime();
     }
     this.nodes.stop.onclick = function() {
         self.media.stop();
         self.setStatus('stop');
-        self.setStatus('stop');
+        self.stopBlinkTime();
         self.hideKbps();
         self.hideKHz();
         self.hidePosition();
         self.hideTime();
+        self.hideShadeTime();
     }
     this.nodes.next.onclick = function() {
         // Implement this when we support playlists
@@ -301,6 +307,9 @@ function Winamp () {
     this.showTime = function(){
         this.nodes.time.style.display='block';
     };
+    this.showShadeTime = function(){
+        this.nodes.shadeTime.style.display='block';
+    };
     this.hideKHz = function(){
         this.nodes.khz.style.display='';
     };
@@ -313,6 +322,17 @@ function Winamp () {
     this.hideTime = function(){
         this.nodes.time.style.display='';
     };
+    this.hideShadeTime = function(){
+        this.nodes.shadeTime.style.display='';
+    };
+    this.startBlinkTime = function(){
+        self.nodes.time.classList.add('blink');
+        self.nodes.shadeTime.classList.add('blink');
+    }
+    this.stopBlinkTime = function(){
+        self.nodes.time.classList.remove('blink');
+        self.nodes.shadeTime.classList.remove('blink');
+    }
 
     this.setStatus = function(className) {
         self.nodes.playPause.removeAttribute("class");
