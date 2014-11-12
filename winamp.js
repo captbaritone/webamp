@@ -23,9 +23,14 @@ function Media (audioId) {
     this.previous = function() {
         // Implement this when we support playlists
     };
-    this.play = function() {
+
+    this.play = function(startTime) {
+         if(typeof startTime !== "undefined"){
+            this.currentTime = startTime;
+        }
         this.audio.play();
     };
+
     this.pause = function() {
         this.audio.pause();
     };
@@ -212,9 +217,14 @@ function Winamp () {
     }
 
     this.nodes.play.onclick = function() {
-        //auto reset. Premise: play will always start from 0
-        self.media.stop();
-        self.media.play();
+        
+       if(self.media.timeElapsed()>0 && self.nodes.playPause.classList.contains('pause')){
+            self.media.play(self.media.timeElapsed());
+        }
+        else{
+            self.media.stop();
+            self.media.play();
+        }
         self.setStatus('play');
     }
     this.nodes.pause.onclick = function() {
