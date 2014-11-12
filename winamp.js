@@ -184,10 +184,7 @@ function Winamp () {
     });
 
     this.media.addEventListener('ended', function() {
-        self.hideKbps();
-        self.hideKHz();
-        self.hidePosition();
-        self.hideTime();
+        self.hideMetaInfo();
         self.setStatus('stop');
     });
 
@@ -218,10 +215,7 @@ function Winamp () {
     }
 
     this.nodes.play.onclick = function() {
-        self.showKbps();
-        self.showKHz();
-        self.showPosition();
-        self.showTime();
+        self.showMetaInfo();
         self.media.play();
         self.setStatus('play');
     }
@@ -232,11 +226,7 @@ function Winamp () {
     this.nodes.stop.onclick = function() {
         self.media.stop();
         self.setStatus('stop');
-        self.setStatus('stop');
-        self.hideKbps();
-        self.hideKHz();
-        self.hidePosition();
-        self.hideTime();
+        self.hideMetaInfo();
     }
     this.nodes.next.onclick = function() {
         // Implement this when we support playlists
@@ -289,28 +279,17 @@ function Winamp () {
     }
 
     /* Functions */
-    this.showKHz = function(){
+    this.showMetaInfo = function() {
         this.nodes.khz.style.display='block';
-    };
-    this.showKbps = function(){
         this.nodes.kbps.style.display='block';
-    };
-    this.showPosition = function(){
         this.nodes.position.style.display='block';
-    };
-    this.showTime = function(){
         this.nodes.time.style.display='block';
     };
-    this.hideKHz = function(){
+
+    this.hideMetaInfo = function() {
         this.nodes.khz.style.display='';
-    };
-    this.hideKbps = function(){
         this.nodes.kbps.style.display='';
-    };
-    this.hidePosition = function(){
         this.nodes.position.style.display='';
-    };
-    this.hideTime = function(){
         this.nodes.time.style.display='';
     };
 
@@ -431,10 +410,7 @@ function Winamp () {
 
     this.startFile = function(file, fileName) {
         self.loadFile(file, fileName);
-        self.showKbps();
-        self.showKHz();
-        self.showPosition();
-        self.showTime();
+        self.showMetaInfo();
         self.media.play();
         self.setStatus('play');
     }
