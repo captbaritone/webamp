@@ -431,6 +431,10 @@ function Winamp () {
 
     this.startFile = function(file, fileName) {
         self.loadFile(file, fileName);
+        self.showKbps();
+        self.showKHz();
+        self.showPosition();
+        self.showTime();
         self.media.play();
         self.setStatus('play');
     }
