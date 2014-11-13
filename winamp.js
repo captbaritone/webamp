@@ -46,7 +46,6 @@ function Media (audioId) {
     /* Actions with arguments */
     this.seekToPercentComplete = function(percent) {
         this.audio.currentTime = this.audio.duration * (percent/100);
-        this.audio.play();
     };
     // From 0-1
     this.setVolume = function(volume) {
