@@ -396,7 +396,31 @@ keylog = [];
 trigger = [78,85,76,27,76,27,83,79,70,84];
 // Easter Egg
 document.onkeyup = function(e){
-    keylog.push(e.which);
+    key = e.keyCode;
+    keyboardAction = {
+        66: winamp.nodes.next, 67: winamp.nodes.pause,
+        76: winamp.nodes.eject, 86: winamp.nodes.stop,
+        82: winamp.nodes.repeat, 83: winamp.nodes.shuffle,
+        88: winamp.nodes.play, 90: winamp.nodes.previous,
+        100: winamp.nodes.previous, 101: winamp.nodes.play,
+        102: winamp.nodes.next, 96: winamp.nodes.eject
+    };
+    if(keyboardAction[key]){
+        keyboardAction[key].click();
+    }else if(e.keyCode == 76 && e.ctrlKey){ //CTRL+L
+        winamp.nodes.option.click();
+    }else{
+        switch (key){
+            case 38: winamp.setVolume((winamp.nodes.volume.value*1)+1); break;
+            case 104: winamp.setVolume((winamp.nodes.volume.value*1)+1); break;
+            case 40: winamp.setVolume((winamp.nodes.volume.value*1)-1); break;
+            case 98: winamp.setVolume((winamp.nodes.volume.value*1)-1); break;
+            case 103: winamp.media.audio.currentTime-=5; winamp.updateTime(); break;
+            case 105: winamp.media.audio.currentTime+=5; winamp.updateTime(); break;
+        }
+    }
+
+    keylog.push(key);
     keylog = keylog.slice(-10);
     if(keylog.toString() == trigger.toString()) {
         document.getElementById('winamp').classList.toggle('llama');
