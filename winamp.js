@@ -394,16 +394,22 @@ function Winamp () {
 
 keylog = [];
 trigger = [78,85,76,27,76,27,83,79,70,84];
-// Easter Egg
 document.onkeyup = function(e){
-    key = e.keyCode;
-    keyboardAction = {
-        66: winamp.nodes.next, 67: winamp.nodes.pause,
-        76: winamp.nodes.eject, 86: winamp.nodes.stop,
-        82: winamp.nodes.repeat, 83: winamp.nodes.shuffle,
-        88: winamp.nodes.play, 90: winamp.nodes.previous,
-        100: winamp.nodes.previous, 101: winamp.nodes.play,
-        102: winamp.nodes.next, 96: winamp.nodes.eject
+    var key = e.keyCode;
+    // Keys that correspond to node clicks
+    var keyboardAction = {
+        66: winamp.nodes.next, // B
+        67: winamp.nodes.pause, // C
+        76: winamp.nodes.eject, // L
+        86: winamp.nodes.stop, // V
+        82: winamp.nodes.repeat, // R
+        83: winamp.nodes.shuffle, // S
+        88: winamp.nodes.play, // X
+        90: winamp.nodes.previous, // Z
+        100: winamp.nodes.previous, // numpad 4
+        101: winamp.nodes.play, // numpad 5
+        102: winamp.nodes.next, // numpad 6
+        96: winamp.nodes.eject // numpad 0
     };
     if(keyboardAction[key]){
         keyboardAction[key].click();
@@ -411,19 +417,30 @@ document.onkeyup = function(e){
         winamp.nodes.option.click();
     }else{
         switch (key){
+            // up arrow
             case 38: winamp.setVolume((winamp.nodes.volume.value*1)+1); break;
+            // numpad 8
             case 104: winamp.setVolume((winamp.nodes.volume.value*1)+1); break;
+            // down arrow
             case 40: winamp.setVolume((winamp.nodes.volume.value*1)-1); break;
+            // numpad 2
             case 98: winamp.setVolume((winamp.nodes.volume.value*1)-1); break;
+            // left arrow
             case 37: winamp.media.audio.currentTime-=5; winamp.updateTime(); break;
+            // numpad 7
             case 103: winamp.media.audio.currentTime-=5; winamp.updateTime(); break;
+            // right arrow
             case 39: winamp.media.audio.currentTime+=5; winamp.updateTime(); break;
+            // numpad 9
             case 105: winamp.media.audio.currentTime+=5; winamp.updateTime(); break;
+            // numpad 1
             case 97: /* Placeholder for jump backwards 10 songs in playlist or to start of */ break;
+            // numpad 3
             case 99: /* Placeholder for jump forwards 10 songs in playlist or to start of */ break;
         }
     }
 
+    // Easter Egg
     keylog.push(key);
     keylog = keylog.slice(-10);
     if(keylog.toString() == trigger.toString()) {
