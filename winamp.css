@@ -8,7 +8,6 @@ input[type=range]::-moz-focus-outer { border: 0; }
 a:focus { outline: none; }
 
 #shade-time {
-    display: none;
     cursor:url('cursors/MAINMENU.CUR'), auto;
 }
 
@@ -133,7 +132,7 @@ a:focus { outline: none; }
     background-repeat: no-repeat;
 }
 
-.status #play-pause.play #work-indicator {
+.play .status #play-pause #work-indicator {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -142,15 +141,14 @@ a:focus { outline: none; }
     /* background-image: PLAYPAUS.BMP via Javascript */
     background-position: -36px 0;
 }
-.status #play-pause.play #work-indicator.selected {
+.play .status #play-pause #work-indicator.selected {
     background-position: -39px 0;
 }
 
-.status #play-pause.play { }
-.status #play-pause.pause { background-position: -9px 0; }
-.status #play-pause.stop { background-position: -18px 0; }
+.play .status #play-pause { }
+.pause .status #play-pause { background-position: -9px 0; }
+.stop .status #play-pause { background-position: -18px 0; }
 .status #time {
-    display:none;
     position: absolute;
     left: 48px;
     left: 40px;
@@ -159,6 +157,9 @@ a:focus { outline: none; }
     height: 13px;
     width: 59px;
 }
+
+.stop .status #time { display:none; }
+
 .status #time #minus-sign {
     position: absolute;
     top: 6px;
@@ -219,7 +220,6 @@ a:focus { outline: none; }
 .setting-balance #balance-message { display: block; }
 
 .media-info #kbps {
-    display: none;
     position: absolute;
     left: 111px;
     top: 43px;
@@ -228,8 +228,9 @@ a:focus { outline: none; }
     overflow: hidden;
 }
 
+.stop .media-info #kbps { display: none; }
+
 .media-info #khz {
-    display: none;
     position: absolute;
     left: 156px;
     top: 43px;
@@ -238,6 +239,8 @@ a:focus { outline: none; }
     overflow: hidden;
 }
 
+.stop .media-info #khz { display: none; }
+
 .media-info .mono-stereo {
     position: absolute;
     left: 212px;
@@ -245,6 +248,8 @@ a:focus { outline: none; }
     width: 57px;
     height: 12px;
 }
+
+.stop .media-info .mono-stero { display: none; }
 
 .media-info .mono-stereo div {
     position: absolute;
@@ -279,6 +284,7 @@ a:focus { outline: none; }
     background-position: 0 0;
 }
 #volume::-webkit-slider-thumb {
+    display: block;
     margin-top: 1px;
     height: 11px;
     width: 14px;
@@ -367,7 +373,6 @@ a:focus { outline: none; }
 }
 
 #position {
-    display: none;
     position: absolute;
     left: 16px;
     top: 72px;
@@ -391,14 +396,19 @@ a:focus { outline: none; }
     -webkit-box-sizing: border-box;
     position: relative;
 }
+
 #position::-moz-range-thumb {
     height: 10px;
     width: 29px;
     background-position: -248px 0;
     /* background-image: POSBAR.BMP via Javascript */
-    background-repeat: no-repeat;
     cursor:url('cursors/POSBAR.CUR'), auto;
 }
+
+/* For some reason, we can't use display: none here */
+.stop #position::-webkit-slider-thumb { visibility: hidden; }
+.stop #position::-moz-range-thumb { visibility: hidden; }
+
 #position:active::-webkit-slider-thumb {
     background-position: -278px 0;
 }
@@ -606,12 +616,14 @@ a:focus { outline: none; }
     background-position: -20px -36px;
     /* background-image: TITLEBAR.BMP via Javascript */
 }
+
 .shade #position::-moz-range-thumb {
     height: 7px;
     width: 3px;
     background-position: -20px -36px;
     /* background-image: TITLEBAR.BMP via Javascript */
 }
+
 .shade #position.left::-webkit-slider-thumb {
     background-position: -17px -36px;
 }
@@ -625,6 +637,10 @@ a:focus { outline: none; }
     background-position: -23px -36px;
 }
 
+#shade-time {
+    display: none;
+}
+
 .shade #shade-time {
     display: block;
     position: absolute;
@@ -633,6 +649,8 @@ a:focus { outline: none; }
     height:6px;
     width: 25px;
 }
+
+.stop.shade #shade-time { display:none; }
 
 .shade #shade-time .character {
     position: absolute;
