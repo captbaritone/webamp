@@ -12,10 +12,6 @@ a:focus { outline: none; }
 }
 
 /* Animation */
-.blink {
-    animation: blink 2s step-start 1s infinite;
-    -webkit-animation: blink 2s step-start 1s infinite;
-}
 @keyframes blink {
     0% { opacity: 1.0; }
     50% { opacity: 0.0; }
@@ -159,6 +155,10 @@ a:focus { outline: none; }
 }
 
 .stop .status #time { display:none; }
+.pause .status #time {
+    animation: blink 2s step-start 1s infinite;
+    -webkit-animation: blink 2s step-start 1s infinite;
+}
 
 .status #time #minus-sign {
     position: absolute;
@@ -651,6 +651,10 @@ a:focus { outline: none; }
 }
 
 .stop.shade #shade-time { display:none; }
+.pause.shade #shade-time {
+    animation: blink 2s step-start 1s infinite;
+    -webkit-animation: blink 2s step-start 1s infinite;
+}
 
 .shade #shade-time .character {
     position: absolute;
