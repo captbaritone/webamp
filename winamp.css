@@ -249,8 +249,6 @@ a:focus { outline: none; }
     height: 12px;
 }
 
-.stop .media-info .mono-stero { display: none; }
-
 .media-info .mono-stereo div {
     position: absolute;
     height: 12px;
@@ -264,6 +262,9 @@ a:focus { outline: none; }
 .media-info .mono-stereo #mono.selected {
     background-position: -29px 0;
 }
+.stop .media-info .mono-stereo #mono.selected {
+    background-position: -29px 0;
+}
 
 .media-info .mono-stereo #stereo {
     left: 27px;
@@ -272,6 +273,9 @@ a:focus { outline: none; }
 }
 .media-info .mono-stereo #stereo.selected {
     background-position: 0 0;
+}
+.stop .media-info .mono-stereo #stereo.selected {
+    background-position: 0 -12px;
 }
 
 #volume {

@@ -1,81 +1,4 @@
-/* Helpful wrapper for the native <audio> element */
-function Media (audioId) {
-    this.audio = document.getElementById(audioId);
-
-    /* Properties */
-    this.timeElapsed = function() {
-        return this.audio.currentTime;
-    }
-    this.timeRemaining = function() {
-        return this.audio.duration - this.audio.currentTime;
-    }
-    this.timeElapsedObject = function() {
-        return this._timeObject(this.timeElapsed());
-    }
-    this.timeRemainingObject = function() {
-        return this._timeObject(this.timeRemaining());
-    }
-    this.percentComplete = function() {
-        return (this.audio.currentTime / this.audio.duration) * 100;
-    }
-
-    /* Actions */
-    this.previous = function() {
-        // Implement this when we support playlists
-    };
-    this.play = function() {
-        this.audio.play();
-    };
-    this.pause = function() {
-        this.audio.pause();
-    };
-    this.stop = function() {
-        this.audio.pause();
-        this.audio.currentTime = 0;
-    };
-    this.next = function() {
-        // Implement this when we support playlists
-    };
-    this.toggleRepeat = function() {
-        this.audio.loop = !this.audio.loop;
-    };
-    this.toggleShuffle = function() {
-        // Not implemented
-    };
-
-    /* Actions with arguments */
-    this.seekToPercentComplete = function(percent) {
-        this.audio.currentTime = this.audio.duration * (percent/100);
-        this.audio.play();
-    };
-    // From 0-1
-    this.setVolume = function(volume) {
-        this.audio.volume = volume;
-    };
-    this.loadFile = function(file) {
-        this.audio.setAttribute('src', file);
-    };
-
-    /* Listeners */
-    this.addEventListener = function(event, callback) {
-        this.audio.addEventListener(event, callback);
-    };
-
-    /* Helpers */
-    // TODO: Move this to the Winamp object
-    this._timeObject = function(time) {
-        var minutes = Math.floor(time / 60);
-        var seconds = time - (minutes * 60);
-
-        return [
-            Math.floor(minutes / 10),
-            Math.floor(minutes % 10),
-            Math.floor(seconds / 10),
-            Math.floor(seconds % 10)
-        ];
-    }
-}
-
+// UI and App logic
 function Winamp () {
     self = this;
     this.media = new Media('player');
@@ -277,11 +200,11 @@ function Winamp () {
     }
 
     this.nodes.repeat.onclick = function() {
-        toggleRepeat();
+        self.toggleRepeat();
     }
 
     this.nodes.shuffle.onclick = function() {
-        toggleShuffle();
+        self.toggleShuffle();
     }
 
     /* Functions */
@@ -328,12 +251,12 @@ function Winamp () {
         self.nodes.balance.style.backgroundPosition = '-9px -' + offset + 'px';
     }
 
-    function toggleRepeat() {
+    this.toggleRepeat = function() {
         self.media.toggleRepeat();
         self.nodes.repeat.classList.toggle('selected');
     }
 
-    function toggleShuffle() {
+    this.toggleShuffle = function() {
         self.media.toggleShuffle();
         self.nodes.shuffle.classList.toggle('selected');
     }
@@ -344,10 +267,10 @@ function Winamp () {
 
         var shadeMinusCharacter = ' ';
         if(this.nodes.time.classList.contains('countdown')) {
-            digits = this.media.timeRemainingObject();
+            digits = this._timeObject(this.media.timeRemaining());
             var shadeMinusCharacter = '-';
         } else {
-            digits = this.media.timeElapsedObject();
+            digits = this._timeObject(this.media.timeElapsed());
         }
         this.font.displayCharacterInNode(shadeMinusCharacter, document.getElementById('shade-minus-sign'));
 
@@ -422,6 +345,20 @@ function Winamp () {
         this.updateTime();
     }
 
+    /* Helpers */
+    this._timeObject = function(time) {
+        var minutes = Math.floor(time / 60);
+        var seconds = time - (minutes * 60);
+
+        return [
+            Math.floor(minutes / 10),
+            Math.floor(minutes % 10),
+            Math.floor(seconds / 10),
+            Math.floor(seconds % 10)
+        ];
+    }
+
+    // TODO: Move to font.js
     function digitHtml(digit) {
         horizontalOffset = digit * 9;
         div = document.createElement('div');
@@ -431,6 +368,7 @@ function Winamp () {
         return div;
     }
 
+    // TODO: Move to font.js
     this.marqueeLoop = function() {
         setTimeout(function () {
             var text = self.nodes.songTitle.firstChild;
@@ -447,130 +385,6 @@ function Winamp () {
 
 }
 
-Font = function() {
-
-    this.setNodeToString = function(node, string) {
-        stringElement = this.stringNode(string);
-        node.innerHTML = '';
-        node.appendChild(stringElement);
-    }
-
-    this.stringNode = function(string) {
-        parentDiv = document.createElement('div');
-        for (var i = 0, len = string.length; i < len; i++) {
-            char = string[i].toLowerCase();
-            parentDiv.appendChild(this.characterNode(char));
-        }
-        return parentDiv;
-    }
-
-    this.characterNode = function(char) {
-        return this.displayCharacterInNode(char, document.createElement('div'));
-    }
-
-    this.displayCharacterInNode = function(character, node) {
-        position = this.charPosition(character);
-        row = position[0];
-        column = position[1];
-        verticalOffset = row * 6;
-        horizontalOffset = column * 5;
-
-        x = '-' + horizontalOffset + 'px';
-        y = '-' + verticalOffset + 'px'
-        node.style.backgroundPosition =  x + ' ' + y;
-        node.classList.add('character');
-
-        // Spaces cause a strange issue with inline-block elements
-        if(character == ' ') character = '&nbsp;';
-
-        node.innerHTML = character;
-        return node;
-    }
-
-    this.charPosition = function(char) {
-        position = this.fontLookup[char];
-        if(!position) {
-            return this.fontLookup[' '];
-        }
-
-        return position;
-    }
-
-    /* XXX There are too many " " and "_" characters */
-    this.fontLookup = {
-        "a": [0,0], "b": [0,1], "c": [0,2], "d": [0,3], "e": [0,4], "f": [0,5],
-        "g": [0,6], "h": [0,7], "i": [0,8], "j": [0,9], "k": [0,10],
-        "l": [0,11], "m": [0,12], "n": [0,13], "o": [0,14], "p": [0,15],
-        "q": [0,16], "r": [0,17], "s": [0,18], "t": [0,19], "u": [0,20],
-        "v": [0,21], "w": [0,22], "x": [0,23], "y": [0,24], "z": [0,25],
-        "\"": [0,26], "@": [0,27], " ": [0,29], "0": [1,0], "1": [1,1],
-        "2": [1,2], "3": [1,3], "4": [1,4], "5": [1,5], "6": [1,6], "7": [1,7],
-        "8": [1,8], "9": [1,9], " ": [1,10], "_": [1,11], ":": [1,12],
-        "(": [1,13], ")": [1,14], "-": [1,15], "'": [1,16], "!": [1,17],
-        "_": [1,18], "+": [1,19], "\\": [1,20], "/": [1,21], "[": [1,22],
-        "]": [1,23], "^": [1,24], "&": [1,25], "%": [1,26], ".": [1,27],
-        "=": [1,28], "$": [1,29], "#": [1,30], "Å": [2,0], "Ö": [2,1],
-        "Ä": [2,2], "?": [2,3], "*": [2,4], " ": [2,5], "<": [1,22],
-        ">": [1,23], "{": [1,22], "}": [1,23]
-    };
-}
-
-SkinManager = function() {
-    var self = this;
-
-    this.skinImages = {
-        "#winamp": "MAIN.BMP",
-        "#title-bar": "TITLEBAR.BMP",
-        "#title-bar #option": "TITLEBAR.BMP",
-        "#title-bar #minimize": "TITLEBAR.BMP",
-        "#title-bar #shade": "TITLEBAR.BMP",
-        "#title-bar #close": "TITLEBAR.BMP",
-        ".status #clutter-bar": "TITLEBAR.BMP",
-        ".status #play-pause": "PLAYPAUS.BMP",
-        ".status #play-pause.play #work-indicator": "PLAYPAUS.BMP",
-        ".status #time #minus-sign": "NUMBERS.BMP",
-        ".media-info .mono-stereo div": "MONOSTER.BMP",
-        "#volume": "VOLUME.BMP",
-        "#volume::-webkit-slider-thumb": "VOLUME.BMP",
-        "#volume::-moz-range-thumb": "VOLUME.BMP",
-        "#balance": "BALANCE.BMP",
-        "#balance::-webkit-slider-thumb": "VOLUME.BMP",
-        "#balance::-moz-range-thumb": "VOLUME.BMP",
-        ".windows div": "SHUFREP.BMP",
-        "#position": "POSBAR.BMP",
-        "#position::-webkit-slider-thumb": "POSBAR.BMP",
-        "#position::-moz-range-thumb": "POSBAR.BMP",
-        ".actions div": "CBUTTONS.BMP",
-        "#eject": "CBUTTONS.BMP",
-        ".shuffle-repeat div": "SHUFREP.BMP",
-        ".character": "TEXT.BMP",
-        ".digit": "NUMBERS.BMP",
-        ".shade #position": "TITLEBAR.BMP",
-        ".shade #position::-webkit-slider-thumb": "TITLEBAR.BMP",
-        ".shade #position::-moz-range-thumb": "TITLEBAR.BMP",
-    };
-
-    this.setSkinByName = function(name) {
-        url = "https://cdn.rawgit.com/captbaritone/winamp-skins/master/v2/" + name;
-        self.setSkinByUrl(url);
-    }
-
-    this.setSkinByUrl = function(skinPath) {
-        skinPath += "/";
-        cssRules = '';
-        for(var selector in self.skinImages) {
-            var value = "background-image: url(" + skinPath + self.skinImages[selector] + ");";
-            cssRules += selector + "{" + value + "}\n";
-
-            var style = document.createElement('style');
-            style.type = 'text/css';
-            style.appendChild(document.createTextNode(cssRules));
-
-            document.getElementsByTagName("head")[0].appendChild(style);
-        }
-    }
-}
-
 keylog = [];
 trigger = [78,85,76,27,76,27,83,79,70,84];
 // Easter Egg
@@ -580,21 +394,6 @@ document.onkeyup = function(e){
     if(keylog.toString() == trigger.toString()) {
         document.getElementById('winamp').classList.toggle('llama');
     }
-}
-
-function anchorArgument(argument, defaultValue) {
-    args = [];
-    pairs = window.location.hash.slice(1).split("&");
-    for (var i = 0, len = pairs.length; i < len; i++) {
-        pair = pairs[i];
-        eq = pair.indexOf("=");
-        if(eq) {
-            key = decodeURIComponent(pair.slice(0, eq));
-            value = decodeURIComponent(pair.slice(eq + 1));
-            args[key] = value;
-        }
-    }
-    return args[argument] ? args[argument] : defaultValue;
 }
 
 volume = anchorArgument('volume', 50);
