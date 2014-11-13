@@ -1,8 +1,8 @@
-// Dynamically set the css background images for a skin
+// Dynamically set the css background images for all the sprites
 SkinManager = function() {
     var self = this;
 
-    this.skinImages = {
+    this._skinImages = {
         "#winamp": "MAIN.BMP",
         "#title-bar": "TITLEBAR.BMP",
         "#title-bar #option": "TITLEBAR.BMP",
@@ -32,26 +32,35 @@ SkinManager = function() {
         ".shade #position": "TITLEBAR.BMP",
         ".shade #position::-webkit-slider-thumb": "TITLEBAR.BMP",
         ".shade #position::-moz-range-thumb": "TITLEBAR.BMP",
-    };
+    }
 
+    // For local dev, we want to use the asset we have locally
+    this.useLocalDefaultSkin = function() {
+        self.setSkinByUrl('skins/default');
+    }
+
+    // I have a collection of skins on GitHub to make loading remote skins
+    // easier. rawgit.com changes this into a free CDN
     this.setSkinByName = function(name) {
         url = "https://cdn.rawgit.com/captbaritone/winamp-skins/master/v2/" + name;
         self.setSkinByUrl(url);
     }
 
+    // Given the URL of a skin directory, set the current skin
     this.setSkinByUrl = function(skinPath) {
+        // Make sure we have a trailing slash. Two slashes are > than none
         skinPath += "/";
-        cssRules = '';
-        for(var selector in self.skinImages) {
-            var value = "background-image: url(" + skinPath + self.skinImages[selector] + ");";
+
+        var style = document.getElementById('skin');
+        // XXX Ideally we would empty the style tag here, but I don't know how.
+        // Appending overwrites, which has the same net effect, but after
+        // several skin changes, this tag will get pretty bloated.
+        var cssRules = '';
+        for(var selector in self._skinImages) {
+            var imagePath = skinPath + self._skinImages[selector];
+            var value = "background-image: url(" + imagePath + ");";
             cssRules += selector + "{" + value + "}\n";
-
-            var style = document.createElement('style');
-            style.type = 'text/css';
             style.appendChild(document.createTextNode(cssRules));
-
-            document.getElementsByTagName("head")[0].appendChild(style);
         }
     }
 }
-
