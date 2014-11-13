@@ -267,10 +267,10 @@ function Winamp () {
 
         var shadeMinusCharacter = ' ';
         if(this.nodes.time.classList.contains('countdown')) {
-            digits = this.media.timeRemainingObject();
+            digits = this._timeObject(this.media.timeRemaining());
             var shadeMinusCharacter = '-';
         } else {
-            digits = this.media.timeElapsedObject();
+            digits = this._timeObject(this.media.timeElapsed());
         }
         this.font.displayCharacterInNode(shadeMinusCharacter, document.getElementById('shade-minus-sign'));
 
@@ -343,6 +343,19 @@ function Winamp () {
         this.font.setNodeToString(document.getElementById('kbps'), "128")
         this.font.setNodeToString(document.getElementById('khz'), "44")
         this.updateTime();
+    }
+
+    /* Helpers */
+    this._timeObject = function(time) {
+        var minutes = Math.floor(time / 60);
+        var seconds = time - (minutes * 60);
+
+        return [
+            Math.floor(minutes / 10),
+            Math.floor(minutes % 10),
+            Math.floor(seconds / 10),
+            Math.floor(seconds % 10)
+        ];
     }
 
     // TODO: Move to font.js
