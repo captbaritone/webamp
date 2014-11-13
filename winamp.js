@@ -221,6 +221,10 @@ function Winamp () {
 
     // From 0-100
     this.setVolume = function(volume) {
+        // Ensure volume does not go out of bounds
+        if(volume < 0){volume=0}
+        else if(volume > 100){volume=100;}
+
         var percent = volume / 100;
         sprite = Math.round(percent * 28);
         offset = (sprite - 1) * 15;
