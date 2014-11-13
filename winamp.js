@@ -200,11 +200,11 @@ function Winamp () {
     }
 
     this.nodes.repeat.onclick = function() {
-        toggleRepeat();
+        self.toggleRepeat();
     }
 
     this.nodes.shuffle.onclick = function() {
-        toggleShuffle();
+        self.toggleShuffle();
     }
 
     /* Functions */
@@ -251,12 +251,12 @@ function Winamp () {
         self.nodes.balance.style.backgroundPosition = '-9px -' + offset + 'px';
     }
 
-    function toggleRepeat() {
+    this.toggleRepeat = function() {
         self.media.toggleRepeat();
         self.nodes.repeat.classList.toggle('selected');
     }
 
-    function toggleShuffle() {
+    this.toggleShuffle = function() {
         self.media.toggleShuffle();
         self.nodes.shuffle.classList.toggle('selected');
     }
@@ -345,6 +345,7 @@ function Winamp () {
         this.updateTime();
     }
 
+    // TODO: Move to font.js
     function digitHtml(digit) {
         horizontalOffset = digit * 9;
         div = document.createElement('div');
@@ -354,6 +355,7 @@ function Winamp () {
         return div;
     }
 
+    // TODO: Move to font.js
     this.marqueeLoop = function() {
         setTimeout(function () {
             var text = self.nodes.songTitle.firstChild;
