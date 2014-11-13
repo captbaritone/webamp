@@ -415,8 +415,12 @@ document.onkeyup = function(e){
             case 104: winamp.setVolume((winamp.nodes.volume.value*1)+1); break;
             case 40: winamp.setVolume((winamp.nodes.volume.value*1)-1); break;
             case 98: winamp.setVolume((winamp.nodes.volume.value*1)-1); break;
+            case 37: winamp.media.audio.currentTime-=5; winamp.updateTime(); break;
             case 103: winamp.media.audio.currentTime-=5; winamp.updateTime(); break;
+            case 39: winamp.media.audio.currentTime+=5; winamp.updateTime(); break;
             case 105: winamp.media.audio.currentTime+=5; winamp.updateTime(); break;
+            case 97: /* Placeholder for jump backwards 10 songs in playlist or to start of */ break;
+            case 99: /* Placeholder for jump forwards 10 songs in playlist or to start of */ break;
         }
     }
 
