@@ -185,8 +185,6 @@ function Winamp () {
     });
 
     this.media.addEventListener('ended', function() {
-        self.hideMetaInfo();
-        self.stopBlinkTime();
         self.setStatus('stop');
     });
 
@@ -196,7 +194,6 @@ function Winamp () {
 
     this.media.addEventListener('playing', function() {
         self.nodes.workIndicator.classList.remove('selected');
-        self.stopBlinkTime();
     });
 
     this.nodes.shade.onclick = function() {
@@ -218,8 +215,6 @@ function Winamp () {
     }
 
     this.nodes.play.onclick = function() {
-        self.showMetaInfo();
-        self.stopBlinkTime();
         self.media.play();
         self.setStatus('play');
     }
@@ -227,14 +222,11 @@ function Winamp () {
     this.nodes.pause.onclick = function() {
         self.media.pause();
         self.setStatus('pause');
-        self.startBlinkTime();
     }
 
     this.nodes.stop.onclick = function() {
         self.media.stop();
         self.setStatus('stop');
-        self.stopBlinkTime();
-        self.hideMetaInfo();
     }
 
     this.nodes.next.onclick = function() {
@@ -293,33 +285,12 @@ function Winamp () {
     }
 
     /* Functions */
-    this.showMetaInfo = function() {
-        this.nodes.khz.style.display='block';
-        this.nodes.kbps.style.display='block';
-        this.nodes.position.style.display='block';
-        this.nodes.time.style.display='block';
-    };
-
-    this.hideMetaInfo = function() {
-        this.nodes.khz.style.display='';
-        this.nodes.kbps.style.display='';
-        this.nodes.position.style.display='';
-        this.nodes.time.style.display='';
-    };
-
-    this.startBlinkTime = function(){
-        self.nodes.time.classList.add('blink');
-        self.nodes.shadeTime.classList.add('blink');
-    }
-    this.stopBlinkTime = function(){
-        self.nodes.time.classList.remove('blink');
-        self.nodes.shadeTime.classList.remove('blink');
-    }
-
-
     this.setStatus = function(className) {
-        self.nodes.playPause.removeAttribute("class");
-        self.nodes.playPause.classList.add(className);
+        var statusOptions = ['play', 'stop', 'pause'];
+        for(var i = 0; i < statusOptions.length; i++) {
+            self.nodes.winamp.classList.remove(statusOptions[i]);
+        }
+        self.nodes.winamp.classList.add(className);
     }
 
     // From 0-100
@@ -438,7 +409,6 @@ function Winamp () {
 
     this.startFile = function(file, fileName) {
         self.loadFile(file, fileName);
-        self.showMetaInfo();
         self.media.play();
         self.setStatus('play');
     }
