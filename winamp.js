@@ -188,6 +188,9 @@ function Winamp () {
 
     this.nodes.position.onchange = function() {
         self.media.seekToPercentComplete(this.value);
+        if(self.nodes.winamp.classList.contains('play')) {
+            self.media.play();
+        }
     }
 
     this.nodes.balance.onmousedown = function() {
