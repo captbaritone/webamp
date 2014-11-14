@@ -417,6 +417,7 @@ document.onkeyup = function(e){
         winamp.nodes.option.click();
     }else{
         switch (key){
+            // *1 is used to cast these values to integers. Could be improved.
             // up arrow
             case 38: winamp.setVolume((winamp.nodes.volume.value*1)+1); break;
             // numpad 8
