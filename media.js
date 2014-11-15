@@ -3,6 +3,9 @@ function Media (audioId) {
     this.audio = document.getElementById(audioId);
 
     /* Properties */
+    this.duration = function() {
+        return this.audio.duration;
+    }
     this.timeElapsed = function() {
         return this.audio.currentTime;
     }

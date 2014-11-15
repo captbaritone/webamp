@@ -214,10 +214,18 @@ a:focus { outline: none; }
 
 .setting-volume #song-title { display: none; }
 .setting-volume #balance-message { display: none; }
+.setting-volume #position-message { display: none; }
 .setting-volume #volume-message { display: block; }
+
 .setting-balance #song-title { display: none; }
 .setting-balance #volume-message { display: none; }
+.setting-balance #position-message { display: none; }
 .setting-balance #balance-message { display: block; }
+
+.setting-position #song-title { display: none; }
+.setting-position #volume-message { display: none; }
+.setting-position #balance-message { display: none; }
+.setting-position #position-message { display: block; }
 
 .media-info #kbps {
     position: absolute;

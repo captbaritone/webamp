@@ -13,6 +13,7 @@ function Winamp () {
         'fileInput': document.getElementById('file-input'),
         'volumeMessage': document.getElementById('volume-message'),
         'balanceMessage': document.getElementById('balance-message'),
+        'positionMessage': document.getElementById('position-message'),
         'songTitle': document.getElementById('song-title'),
         'time': document.getElementById('time'),
         'shadeTime': document.getElementById('shade-time'),
@@ -103,7 +104,9 @@ function Winamp () {
     }
 
     this.media.addEventListener('timeupdate', function() {
-        self.nodes.position.value = self.media.percentComplete();
+        if(!self.nodes.winamp.classList.contains('setting-position')) {
+            self.nodes.position.value = self.media.percentComplete();
+        }
         self.updateTime();
     });
 
@@ -180,6 +183,26 @@ function Winamp () {
 
     this.nodes.volume.oninput = function() {
         self.setVolume(this.value);
+    }
+
+    this.nodes.position.onmousedown = function() {
+        if(!self.nodes.winamp.classList.contains('stop')){
+            self.nodes.winamp.classList.add('setting-position');
+        }
+    }
+
+    this.nodes.position.onmouseup = function() {
+        // This should only even be needed when we are stopped, but better safe
+        // than sorry
+        self.nodes.winamp.classList.remove('setting-position');
+    }
+
+    this.nodes.position.oninput = function() {
+        var elapsed = self._timeString(self.media.timeElapsed());
+        var duration = self._timeString(self.media.duration());
+        var percentComplete = Math.round(self.media.percentComplete());
+        var message = "Seek to: " + elapsed + "/" + duration + " (" + percentComplete + "%)";
+        self.font.setNodeToString(self.nodes.positionMessage, message);
     }
 
     this.nodes.position.onchange = function() {
@@ -361,6 +384,11 @@ function Winamp () {
             Math.floor(seconds / 10),
             Math.floor(seconds % 10)
         ];
+    }
+
+    this._timeString = function(time) {
+        var timeObject = self._timeObject(time);
+        return timeObject[0] + timeObject[1] + ':' + timeObject[2] + timeObject[3];
     }
 
     // TODO: Move to font.js
