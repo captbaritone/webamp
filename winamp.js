@@ -183,7 +183,9 @@ function Winamp () {
     }
 
     this.nodes.position.onchange = function() {
-        self.media.seekToPercentComplete(this.value);
+        if(!self.nodes.winamp.classList.contains('stop')){
+            self.media.seekToPercentComplete(this.value);
+        }
     }
 
     this.nodes.balance.onmousedown = function() {
