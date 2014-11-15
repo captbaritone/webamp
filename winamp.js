@@ -198,10 +198,11 @@ function Winamp () {
     }
 
     this.nodes.position.oninput = function() {
-        var elapsed = self._timeString(self.media.timeElapsed());
+        var newPercentComplete = self.nodes.position.value;
+        var newFractionComplete = newPercentComplete/100;
+        var newElapsed = self._timeString(self.media.duration() * newFractionComplete);
         var duration = self._timeString(self.media.duration());
-        var percentComplete = Math.round(self.media.percentComplete());
-        var message = "Seek to: " + elapsed + "/" + duration + " (" + percentComplete + "%)";
+        var message = "Seek to: " + newElapsed + "/" + duration + " (" + newPercentComplete + "%)";
         self.font.setNodeToString(self.nodes.positionMessage, message);
     }
 
