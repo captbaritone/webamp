@@ -347,7 +347,7 @@ a:focus { outline: none; }
     /* background-image: VOLUME.BMP via Javascript */
     background-position: -15px -422px;
     cursor:url('cursors/POSBAR.CUR'), auto;
-    background-position: no-repeat;
+    background-repeat: no-repeat;
 }
 
 #balance:active::-webkit-slider-thumb  {
