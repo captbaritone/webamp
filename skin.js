@@ -11,7 +11,7 @@ SkinManager = function() {
         "#title-bar #close": "TITLEBAR.BMP",
         ".status #clutter-bar": "TITLEBAR.BMP",
         ".status #play-pause": "PLAYPAUS.BMP",
-        ".status #play-pause.play #work-indicator": "PLAYPAUS.BMP",
+        ".play .status #play-pause #work-indicator": "PLAYPAUS.BMP",
         ".status #time #minus-sign": "NUMBERS.BMP",
         ".media-info .mono-stereo div": "MONOSTER.BMP",
         "#volume": "VOLUME.BMP",
