@@ -222,6 +222,9 @@ function Winamp () {
     }
 
     this.nodes.balance.oninput = function() {
+        if(Math.abs(this.value) < 25) {
+            this.value = 0;
+        }
         self.setBalance(this.value);
     }
 
