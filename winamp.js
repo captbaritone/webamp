@@ -1,6 +1,7 @@
 // UI and App logic
 function Winamp () {
     self = this;
+    this.fileManager = new FileManager();
     this.media = new Media('player');
     this.skinManager = new SkinManager();
     this.font = new Font();
@@ -355,8 +356,8 @@ function Winamp () {
     this.nodes.winamp.addEventListener('drop', this.drop);
 
     this.startFileViaReference = function(fileReference) {
-        var objectUrl = URL.createObjectURL(fileReference);
-        self.startFile(objectUrl, fileReference.name);
+        var url = self.fileManager.urlFromFileReference(fileReference);
+        self.startFile(url, fileReference.name);
     }
 
     this.startFile = function(file, fileName) {
