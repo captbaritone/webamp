@@ -34,6 +34,11 @@ SkinManager = function() {
         ".shade #position::-moz-range-thumb": "TITLEBAR.BMP",
     }
 
+    // For local dev, we want to use the asset we have locally
+    this.useLocalDefaultSkin = function() {
+        self.setSkinByUrl('skins/base-2.91.wsz');
+    }
+
     // I have a collection of skins on GitHub to make loading remote skins
     // easier. rawgit.com changes this into a free CDN
     this.setSkinByName = function(name) {
