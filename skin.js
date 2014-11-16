@@ -53,6 +53,9 @@ SkinManager = function() {
         var zip = new JSZip(data);
 
         var style = document.getElementById('skin');
+        // XXX Ideally we would empty the style tag here, but I don't know how
+        // Appending overwrites, which has the same net effect, but after
+        // several skin changes, this tag will get pretty bloated.
         var cssRules = '';
         for(var selector in self._skinImages) {
 
