@@ -418,6 +418,7 @@ a:focus { outline: none; }
     width: 29px;
     background-position: -248px 0;
     /* background-image: POSBAR.BMP via Javascript */
+    background-repeat: no-repeat;
     cursor:url('cursors/POSBAR.CUR'), auto;
 }
 
