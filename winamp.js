@@ -480,8 +480,7 @@ volume = anchorArgument('volume', 50);
 balance = anchorArgument('volume', 0);
 file = anchorArgument('m', 'https://mediacru.sh/download/Q2HAoRHE-JvD.mp3');
 fileName = anchorArgument('name', "1. DJ Mike Llama - Llama Whippin' Intro (0:05)");
-skin = anchorArgument('skin', "base-2.91");
-skinUrl = anchorArgument('skin-url', false);
+skinUrl = anchorArgument('skin-url', 'https://cdn.rawgit.com/captbaritone/winamp2-js/master/skins/base-2.91.wsz');
 
 winamp = new Winamp();
 // XXX These should be moved to a constructor, but I can't figure out how
@@ -489,8 +488,4 @@ winamp.setVolume(volume);
 winamp.setBalance(balance);
 winamp.loadFile(file, fileName);
 winamp.marqueeLoop();
-if(skinUrl) {
-    winamp.skinManager.setSkinByUrl(skinUrl);
-} else {
-    winamp.skinManager.setSkinByName(skin);
-}
+winamp.skinManager.setSkinByUrl(skinUrl);
