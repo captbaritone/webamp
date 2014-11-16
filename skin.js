@@ -36,31 +36,50 @@ SkinManager = function() {
 
     // For local dev, we want to use the asset we have locally
     this.useLocalDefaultSkin = function() {
-        self.setSkinByUrl('skins/default');
+        self.setSkinByUrl('skins/base-2.91.wsz');
     }
 
     // I have a collection of skins on GitHub to make loading remote skins
     // easier. rawgit.com changes this into a free CDN
     this.setSkinByName = function(name) {
-        url = "https://cdn.rawgit.com/captbaritone/winamp-skins/master/v2/" + name;
+        url = "https://cdn.rawgit.com/elliots/winamp2-js/master/skins/" + name + ".wsz";
         self.setSkinByUrl(url);
     }
 
-    // Given the URL of a skin directory, set the current skin
-    this.setSkinByUrl = function(skinPath) {
-        // Make sure we have a trailing slash. Two slashes are > than none
-        skinPath += "/";
+    // Given the url of an original Winamp WSZ file, set the current skin
+    this.setSkinByUrl = function(url) {
 
-        var style = document.getElementById('skin');
-        // XXX Ideally we would empty the style tag here, but I don't know how.
-        // Appending overwrites, which has the same net effect, but after
-        // several skin changes, this tag will get pretty bloated.
-        var cssRules = '';
-        for(var selector in self._skinImages) {
-            var imagePath = skinPath + self._skinImages[selector];
-            var value = "background-image: url(" + imagePath + ");";
-            cssRules += selector + "{" + value + "}\n";
-            style.appendChild(document.createTextNode(cssRules));
+      JSZipUtils.getBinaryContent(url, function(err, data) {
+
+        if (err) {
+          alert('Failed to load skin ' + url + ' : ' + err);
         }
+
+        try {
+
+          var zip = new JSZip(data);
+
+          var style = document.getElementById('skin');
+          var cssRules = '';
+          for(var selector in self._skinImages) {
+
+            var file = zip.filter(function (relativePath, file){
+              return new RegExp("(^|/)" + self._skinImages[selector], 'i').test(relativePath)
+            })[0];
+
+            if (!file) {
+              console.log("Warning: Couldn't find file:" + self._skinImages[selector])
+            } else {
+              var value = "background-image: url(data:image/bmp;base64," + btoa(file.asBinary()) + ")"
+              cssRules += selector + "{" + value + "}\n";
+            }
+          }
+          style.appendChild(document.createTextNode(cssRules));
+
+        } catch(e) {
+          alert('Failed to load skin ' + url + ' : ' + e.message);
+        }
+      })
+
     }
 }
