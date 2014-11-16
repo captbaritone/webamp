@@ -1,6 +1,7 @@
 // Dynamically set the css background images for all the sprites
 SkinManager = function() {
     var self = this;
+    this.fileManager = new FileManager();
 
     this._skinImages = {
         "#winamp": "MAIN.BMP",
@@ -34,23 +35,19 @@ SkinManager = function() {
         ".shade #position::-moz-range-thumb": "TITLEBAR.BMP",
     }
 
+    // Given a file of an original Winamp WSZ file, set the current skin
+    this.setSkinByFileReference = function(fileReference) {
+        this.fileManager.bufferFromFileReference(fileReference, this._setSkinByBuffer);
+    }.bind(this)
+
     // Given the url of an original Winamp WSZ file, set the current skin
     this.setSkinByUrl = function(url) {
-        JSZipUtils.getBinaryContent(url, function(err, data) {
-            if (err) {
-                alert('Failed to load skin ' + url + ' : ' + err);
-            }
-            try {
-                this._setSkinByDataBlob(data);
-            } catch(e) {
-                alert('Failed to load skin ' + url + ' : ' + e.message);
-            }
-        }.bind(this));
-    }
+        this.fileManager.bufferFromUrl(url, this._setSkinByBuffer);
+    }.bind(this)
 
-    // Given a raw blob of a Winamp WSZ file, set the current skin
-    this._setSkinByDataBlob = function(data) {
-        var zip = new JSZip(data);
+    // Given a bufferArray containing a Winamp WSZ file, set the current skin
+    this._setSkinByBuffer = function(buffer) {
+        var zip = new JSZip(buffer);
 
         var style = document.getElementById('skin');
         // XXX Ideally we would empty the style tag here, but I don't know how

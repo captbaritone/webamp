@@ -356,8 +356,12 @@ function Winamp () {
     this.nodes.winamp.addEventListener('drop', this.drop);
 
     this.startFileViaReference = function(fileReference) {
-        var url = self.fileManager.urlFromFileReference(fileReference);
-        self.startFile(url, fileReference.name);
+        if(new RegExp("(wsz|zip)", 'i').test(fileReference.name)) {
+            self.skinManager.setSkinByFileReference(fileReference);
+        } else {
+            var url = self.fileManager.urlFromFileReference(fileReference);
+            self.startFile(url, fileReference.name);
+        }
     }
 
     this.startFile = function(file, fileName) {
