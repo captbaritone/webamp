@@ -59,7 +59,7 @@ SkinManager = function() {
           for(var selector in self._skinImages) {
 
             var file = zip.filter(function (relativePath, file){
-              return new RegExp(self._skinImages[selector], 'i').test(relativePath)
+              return new RegExp("($|/)" + self._skinImages[selector], 'i').test(relativePath)
             })[0];
 
             if (!file) {
