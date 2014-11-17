@@ -1,7 +1,7 @@
 // UI and App logic
 function Winamp () {
     self = this;
-    this.fileManager = new FileManager();
+    this.fileManager = FileManager;
     this.media = Media.init('player');
     this.skinManager = SkinManager;
     this.font = Font;

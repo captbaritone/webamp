@@ -1,18 +1,18 @@
 // Handle common file interactions
-function FileManager () {
-    this.reader = new FileReader()
+FileManager = {
+    reader: new FileReader(),
 
     // Given an input node, returns a functional URL
-    this.urlFromInput = function(input) {
+    urlFromInput: function(input) {
         var file = input.files[0];
         return this.urlFromFileReference(file);
-    }.bind(this)
+    },
 
-    this.urlFromFileReference = function(fileReference) {
+    urlFromFileReference: function(fileReference) {
         return URL.createObjectURL(fileReference);
-    }
+    },
 
-    this.bufferFromFileReference = function(fileReference, bufferHandler) {
+    bufferFromFileReference: function(fileReference, bufferHandler) {
         this.reader.onload = function (e) {
             var arrayBuffer = e.target.result;
             bufferHandler(arrayBuffer);
@@ -22,9 +22,9 @@ function FileManager () {
         };
 
         this.reader.readAsArrayBuffer(fileReference);
-    }.bind(this)
+    },
 
-    this.bufferFromUrl = function(url, bufferHandler) {
+    bufferFromUrl: function(url, bufferHandler) {
         var oReq = new XMLHttpRequest();
         oReq.open("GET", url, true);
         oReq.responseType = "arraybuffer";
@@ -35,5 +35,5 @@ function FileManager () {
         };
 
         oReq.send(null);
-    }.bind(this)
+    }
 }

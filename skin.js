@@ -1,6 +1,6 @@
 // Dynamically set the css background images for all the sprites
 SkinManager = {
-    fileManager: new FileManager(),
+    fileManager: FileManager,
 
     _skinImages: {
         "#winamp": "MAIN.BMP",
