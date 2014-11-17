@@ -486,16 +486,14 @@ document.onkeyup = function(e){
     }
 }
 
-volume = anchorArgument('volume', 50);
-balance = anchorArgument('volume', 0);
-file = anchorArgument('m', 'https://cdn.rawgit.com/captbaritone/llama/master/llama.mp3');
-fileName = anchorArgument('name', "1. DJ Mike Llama - Llama Whippin' Intro (0:05)");
-skinUrl = anchorArgument('skin-url', 'https://cdn.rawgit.com/captbaritone/winamp2-js/master/skins/base-2.91.wsz');
-
 winamp = new Winamp();
-// XXX These should be moved to a constructor, but I can't figure out how
-winamp.setVolume(volume);
-winamp.setBalance(balance);
+// XXX These should be moved to a constructor
+winamp.setVolume(50);
+winamp.setBalance(0);
+
+file = 'https://cdn.rawgit.com/captbaritone/llama/master/llama.mp3';
+fileName = "1. DJ Mike Llama - Llama Whippin' Intro (0:05)";
 winamp.loadFromUrl(file, fileName);
+
 winamp.marqueeLoop();
-winamp.skinManager.setSkinByUrl(skinUrl);
+winamp.skinManager.setSkinByUrl('https://cdn.rawgit.com/captbaritone/winamp2-js/master/skins/base-2.91.wsz');

@@ -7,7 +7,6 @@ Works in modern versions of Firefox, Safari and Chrome. Untested in IE.
 ## Features
 
 - Drag in local sound or skin files or load them via the "eject" button
-- Open a url using the upper left hand corner "options" icon
 - "Shade" mini-mode
 
 ## Tested in modern versions of
