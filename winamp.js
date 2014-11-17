@@ -248,8 +248,8 @@ function Winamp () {
     // From 0-100
     this.setVolume = function(volume) {
         // Ensure volume does not go out of bounds
-        if(volume < 0){volume=0}
-        else if(volume > 100){volume=100;}
+        volume = Math.max(volume, 0);
+        volume = Math.min(volume, 100);
 
         var percent = volume / 100;
         sprite = Math.round(percent * 28);
@@ -328,11 +328,13 @@ function Winamp () {
     // In shade mode, the position slider shows up differently depending on if
     // it's near the start, middle or end of its progress
     this.updateShadePositionClass = function() {
-        self.nodes.position.removeAttribute("class");
-        if(self.nodes.position.value <= 33) {
-            self.nodes.position.classList.add('left');
-        } else if(self.nodes.position.value >= 66) {
-            self.nodes.position.classList.add('right');
+        var position = self.nodes.position;
+
+        position.removeAttribute("class");
+        if(position.value <= 33) {
+            position.classList.add('left');
+        } else if(position.value >= 66) {
+            position.classList.add('right');
         }
     }
 
