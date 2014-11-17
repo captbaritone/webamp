@@ -101,7 +101,7 @@ Media = {
     /* Actions with arguments */
     seekToPercentComplete: function(percent) {
         var seekTime = this.duration() * (percent / 100);
-        this._seekToTime(seekTime);
+        this.seekToTime(seekTime);
     },
 
     // From 0-1
@@ -123,12 +123,11 @@ Media = {
         this._callbacks[event] = callback;
     },
 
-    _seekToTime: function(time) {
-        if (this._playing) {
-            this.play(time);
-        } else {
-            this._position = time;
-        }
+    seekToTime: function(time) {
+        // Make sure we are within range
+        time = Math.min(time, this.duration());
+        time = Math.max(time, 0);
+        this.play(time);
     },
 
     _draw: function() {

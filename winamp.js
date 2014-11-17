@@ -464,13 +464,13 @@ document.onkeyup = function(e){
             // numpad 2
             case 98: winamp.setVolume((winamp.nodes.volume.value*1)-1); break;
             // left arrow
-            case 37: winamp.media.audio.currentTime-=5; winamp.updateTime(); break;
+            case 37: winamp.media.seekToTime(winamp.media.timeElapsed() - 5); winamp.updateTime(); break;
             // numpad 7
-            case 103: winamp.media.audio.currentTime-=5; winamp.updateTime(); break;
+            case 103: winamp.media.seekToTime(winamp.media.timeElapsed() - 5); winamp.updateTime(); break;
             // right arrow
-            case 39: winamp.media.audio.currentTime+=5; winamp.updateTime(); break;
+            case 39: winamp.media.seekToTime(winamp.media.timeElapsed() + 5); winamp.updateTime(); break;
             // numpad 9
-            case 105: winamp.media.audio.currentTime+=5; winamp.updateTime(); break;
+            case 105: winamp.media.seekToTime(winamp.media.timeElapsed() + 5); winamp.updateTime(); break;
             // numpad 1
             case 97: /* Placeholder for jump backwards 10 songs in playlist or to start of */ break;
             // numpad 3
