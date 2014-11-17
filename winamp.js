@@ -361,27 +361,45 @@ function Winamp () {
         } else {
             self.media.autoPlay = true;
             self.fileManager.bufferFromFileReference(fileReference, this._loadBuffer.bind(this));
-            self._setMetaData(fileReference.name, '128', '44');
+            self._setTitle(fileReference.name);
         }
     }
 
     // Used only for the initial load, since it must have a CORS header
     this.loadFromUrl = function(url, fileName) {
         this.fileManager.bufferFromUrl(url, this._loadBuffer.bind(this));
-        this._setMetaData(fileName, '128', '44');
+        self._setTitle(fileName);
+        this._setMetaData();
     }
 
     this._loadBuffer = function(buffer) {
         // Note, this will not happen right away
-        this.media.loadBuffer(buffer);
+        this.media.loadBuffer(buffer, this._setMetaData);
     }
 
-    this._setMetaData = function(name, kbps, khz) {
+    this._setTitle = function(name) {
         name += '  ***  ';
         self.font.setNodeToString(document.getElementById('song-title'), name);
+    }
+
+    this._setMetaData = function() {
+        var kbps = "128";
+        var khz = "44";
         self.font.setNodeToString(document.getElementById('kbps'), kbps);
         self.font.setNodeToString(document.getElementById('khz'), khz);
+        self._setChannels();
         self.updateTime();
+    }
+
+    this._setChannels = function() {
+        var channels = self.media.channels();
+        document.getElementById('mono').classList.remove('selected');
+        document.getElementById('stereo').classList.remove('selected');
+        if(channels == 1) {
+            document.getElementById('mono').classList.add('selected');
+        } else if(channels == 2) { 
+            document.getElementById('stereo').classList.add('selected');
+        }
     }
 
     /* Helpers */

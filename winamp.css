@@ -271,7 +271,7 @@ a:focus { outline: none; }
     background-position: -29px 0;
 }
 .stop .media-info .mono-stereo #mono.selected {
-    background-position: -29px 0;
+    background-position: -29px -12px;
 }
 
 .media-info .mono-stereo #stereo {

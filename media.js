@@ -21,12 +21,13 @@ Media = {
     },
 
     // Load from bufferArray
-    loadBuffer: function(buffer) {
+    loadBuffer: function(buffer, loadedCallback) {
         this.stop();
         this._callbacks.waiting();
 
         var loadAudioBuffer = function(buffer) {
             this._buffer = buffer;
+            loadedCallback();
             if(this.autoPlay) {
                 this.play(0);
             }
@@ -52,6 +53,12 @@ Media = {
     },
     percentComplete: function() {
         return (this.timeElapsed() / this.duration()) * 100;
+    },
+    channels: function() {
+        if(!this._buffer) {
+            return 0;
+        }
+        return this._buffer.numberOfChannels;
     },
 
     /* Actions */
