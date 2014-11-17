@@ -1,20 +1,20 @@
 // Manage rendering text from this skin's text.bmp file
-Font = function() {
+Font = {
 
     // Fill a node with a <div> containing character <div>s
-    this.setNodeToString = function(node, string) {
+    setNodeToString: function(node, string) {
         stringElement = this._stringNode(string);
         node.innerHTML = '';
         node.appendChild(stringElement);
-    }
+    },
 
     // Get a <div> containing char
-    this.characterNode = function(char) {
+    characterNode: function(char) {
         return this.displayCharacterInNode(char, document.createElement('div'));
-    }
+    },
 
     // Style/populate a <div> to display a character
-    this.displayCharacterInNode = function(character, node) {
+    displayCharacterInNode: function(character, node) {
         position = this._getCharPosition(character);
         row = position[0];
         column = position[1];
@@ -28,30 +28,29 @@ Font = function() {
 
         node.innerHTML = character;
         return node;
-    }
+    },
 
     // Get a <div> containing character <div>s
-    this._stringNode = function(string) {
+    _stringNode: function(string) {
         parentDiv = document.createElement('div');
         for (var i = 0, len = string.length; i < len; i++) {
             char = string[i].toLowerCase();
             parentDiv.appendChild(this.characterNode(char));
         }
         return parentDiv;
-    }
-
+    },
 
     // Find the background offsets for a given character
-    this._getCharPosition = function(char) {
+    _getCharPosition: function(char) {
         position = this._fontLookup[char];
         if(!position) {
             return this._fontLookup[' '];
         }
         return position;
-    }
+    },
 
     /* TODO: There are too many " " and "_" characters */
-    this._fontLookup = {
+    _fontLookup: {
         "a": [0,0], "b": [0,1], "c": [0,2], "d": [0,3], "e": [0,4], "f": [0,5],
         "g": [0,6], "h": [0,7], "i": [0,8], "j": [0,9], "k": [0,10],
         "l": [0,11], "m": [0,12], "n": [0,13], "o": [0,14], "p": [0,15],

@@ -4,7 +4,7 @@ function Winamp () {
     this.fileManager = new FileManager();
     this.media = new Media('player');
     this.skinManager = SkinManager;
-    this.font = new Font();
+    this.font = Font;
 
     this.nodes = {
         'option': document.getElementById('option'),
