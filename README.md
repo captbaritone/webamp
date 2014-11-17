@@ -28,7 +28,7 @@ Works in modern versions of Firefox, Safari and Chrome. Untested in IE.
 
 - [JuicyDrop](http://cggaurav.github.io/juicydrop/) An HTML5 implementation with
   less empasis on being true to the skin, but fully featured visualizations.
-  @cggaurav is keeping int alive on [GitHub](https://github.com/cggaurav/juicydrop)
+  @cggaurav is keeping it alive on [GitHub](https://github.com/cggaurav/juicydrop)
 
 - [Spotiamp](http://spotiamp.com/) The folks at Spotify reimplemented Winamp as
   a frontend for Spotify. Not in a browser, and only runs on Windows.
