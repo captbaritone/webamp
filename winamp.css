@@ -121,23 +121,23 @@ a:focus { outline: none; }
 .status #play-pause {
     position: absolute;
     top: 28px;
-    left: 24px;
+    left: 26px;
     height: 9px;
     width: 9px;
     /* background-image: PLAYPAUS.BMP via Javascript */
     background-repeat: no-repeat;
 }
 
-.play .status #play-pause #work-indicator {
+.play .status #work-indicator {
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 28px;
+    left: 24px;
     height: 9px;
     width: 3px;
     /* background-image: PLAYPAUS.BMP via Javascript */
     background-position: -36px 0;
 }
-.play .status #play-pause #work-indicator.selected {
+.play .status #work-indicator.selected {
     background-position: -39px 0;
 }
 
