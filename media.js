@@ -1,59 +1,62 @@
 /* Helpful wrapper for the native <audio> element */
-function Media (audioId) {
-    this.audio = document.getElementById(audioId);
+Media = {
+    init: function(audioId) {
+        this.audio = document.getElementById(audioId);
+        return this;
+    },
 
     /* Properties */
-    this.duration = function() {
+    duration: function() {
         return this.audio.duration;
-    }
-    this.timeElapsed = function() {
+    },
+    timeElapsed: function() {
         return this.audio.currentTime;
-    }
-    this.timeRemaining = function() {
+    },
+    timeRemaining: function() {
         return this.audio.duration - this.audio.currentTime;
-    }
-    this.percentComplete = function() {
+    },
+    percentComplete: function() {
         return (this.audio.currentTime / this.audio.duration) * 100;
-    }
+    },
 
     /* Actions */
-    this.previous = function() {
+    previous: function() {
         // Implement this when we support playlists
-    }
-    this.play = function() {
+    },
+    play: function() {
         this.audio.play();
-    }
-    this.pause = function() {
+    },
+    pause: function() {
         this.audio.pause();
-    }
-    this.stop = function() {
+    },
+    stop: function() {
         this.audio.pause();
         this.audio.currentTime = 0;
-    }
-    this.next = function() {
+    },
+    next: function() {
         // Implement this when we support playlists
-    }
-    this.toggleRepeat = function() {
+    },
+    toggleRepeat: function() {
         this.audio.loop = !this.audio.loop;
-    }
-    this.toggleShuffle = function() {
+    },
+    toggleShuffle: function() {
         // Not implemented
-    }
+    },
 
     /* Actions with arguments */
-    this.seekToPercentComplete = function(percent) {
+    seekToPercentComplete: function(percent) {
         this.audio.currentTime = this.audio.duration * (percent/100);
-    }
+    },
     // From 0-1
-    this.setVolume = function(volume) {
+    setVolume: function(volume) {
         this.audio.volume = volume;
-    }
-    this.loadFile = function(file) {
+    },
+    loadFile: function(file) {
         this.audio.setAttribute('src', file);
-    }
+    },
 
     /* Listeners */
-    this.addEventListener = function(event, callback) {
+    addEventListener: function(event, callback) {
         this.audio.addEventListener(event, callback);
     }
 }
