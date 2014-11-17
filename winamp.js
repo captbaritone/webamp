@@ -2,7 +2,7 @@
 function Winamp () {
     self = this;
     this.fileManager = new FileManager();
-    this.media = new Media('player');
+    this.media = Media.init('player');
     this.skinManager = SkinManager;
     this.font = Font;
 
