@@ -197,6 +197,14 @@ a:focus { outline: none; }
     width: 9px;
 }
 
+#visualizer {
+    position: absolute;
+    width: 75px;
+    height: 16px;
+    top: 43px;
+    left: 24px;
+}
+
 
 .text {
     position: absolute;

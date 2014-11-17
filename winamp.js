@@ -4,6 +4,9 @@ function Winamp () {
     this.fileManager = FileManager;
     this.media = Media.init();
     this.skin = SkinManager;
+    this.skinManager = SkinManager;
+    this.visualizer = Visualizer.init(document.getElementById('visualizer'));
+    this.visualizerStyle = this.visualizer.OSCILLOSCOPE;
 
     this.nodes = {
         'option': document.getElementById('option'),
@@ -17,6 +20,7 @@ function Winamp () {
         'songTitle': document.getElementById('song-title'),
         'time': document.getElementById('time'),
         'shadeTime': document.getElementById('shade-time'),
+        'visualizer': document.getElementById('visualizer'),
         'previous': document.getElementById('previous'),
         'play': document.getElementById('play'),
         'pause': document.getElementById('pause'),
@@ -103,7 +107,12 @@ function Winamp () {
         self.updateTime();
     });
 
+    this.media.addEventListener('visualizerupdate', function(bufferLength, dataArray) {
+        self.visualizer.paintFrame(self.visualizerStyle, bufferLength, dataArray);
+    });
+
     this.media.addEventListener('ended', function() {
+        self.visualizer.clear();
         self.setStatus('stop');
     });
 
@@ -128,6 +137,17 @@ function Winamp () {
     this.nodes.shadeTime.onclick = function() {
         self.nodes.time.classList.toggle('countdown');
         self.updateTime();
+    }
+
+    this.nodes.visualizer.onclick = function() {
+        if(self.visualizerStyle == self.visualizer.NONE) {
+        //    self.visualizerStyle = self.visualizer.BAR;
+        //} else if(self.visualizerStyle == self.visualizer.BAR) {
+            self.visualizerStyle = self.visualizer.OSCILLOSCOPE;
+        } else if(self.visualizerStyle == self.visualizer.OSCILLOSCOPE) {
+            self.visualizerStyle = self.visualizer.NONE;
+        }
+        self.visualizer.clear();
     }
 
     this.nodes.previous.onclick = function() {

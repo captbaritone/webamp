@@ -7,6 +7,7 @@ Media = {
         waiting: function(){},
         playing: function(){},
         timeupdate: function(){},
+        visualizerupdate: function(){},
         ended: function(){}
     },
     _startTime: 0,
@@ -17,6 +18,12 @@ Media = {
 
     init: function() {
         this._gainNode = this._context.createGain();
+        this._analyser = this._context.createAnalyser();
+
+        this._analyser.fftSize = 2048;
+        this._bufferLength = this._analyser.frequencyBinCount;
+        this._dataArray = new Uint8Array(this._bufferLength);
+        this._analyser.getByteTimeDomainData(this._dataArray);
         return this;
     },
 
@@ -73,7 +80,8 @@ Media = {
         this._source = this._context.createBufferSource();
         if(this._buffer) {
             this._source.buffer = this._buffer;
-            this._source.connect(this._gainNode);
+            this._source.connect(this._analyser);
+            this._analyser.connect(this._gainNode);
             this._gainNode.connect(this._context.destination);
 
             this._position = typeof position !== 'undefined' ? position : this._position;
@@ -94,7 +102,6 @@ Media = {
     stop: function() {
         this._silence();
         this._position = 0;
-        this._callbacks.ended();
     },
 
     _silence: function() {
@@ -137,10 +144,18 @@ Media = {
         this.play(time);
     },
 
+    // There is probably a more reasonable way to do this, rather than having
+    // it always running.
     _draw: function() {
         if(this._playing) {
             this._updatePosition();
             this._callbacks.timeupdate();
+
+            // _updatePosition might have stoped the playing
+            if(this._playing) {
+                this._analyser.getByteTimeDomainData(this._dataArray);
+                this._callbacks.visualizerupdate(this._bufferLength, this._dataArray);
+            }
         }
         window.requestAnimationFrame(this._draw.bind(this));
     },
