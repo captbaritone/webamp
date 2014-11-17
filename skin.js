@@ -1,9 +1,8 @@
 // Dynamically set the css background images for all the sprites
-SkinManager = function() {
-    var self = this;
-    this.fileManager = new FileManager();
+SkinManager = {
+    fileManager: new FileManager(),
 
-    this._skinImages = {
+    _skinImages: {
         "#winamp": "MAIN.BMP",
         "#title-bar": "TITLEBAR.BMP",
         "#title-bar #option": "TITLEBAR.BMP",
@@ -33,20 +32,21 @@ SkinManager = function() {
         ".shade #position": "TITLEBAR.BMP",
         ".shade #position::-webkit-slider-thumb": "TITLEBAR.BMP",
         ".shade #position::-moz-range-thumb": "TITLEBAR.BMP",
-    }
+    },
 
     // Given a file of an original Winamp WSZ file, set the current skin
-    this.setSkinByFileReference = function(fileReference) {
+    setSkinByFileReference: function(fileReference) {
         this.fileManager.bufferFromFileReference(fileReference, this._setSkinByBuffer);
-    }.bind(this)
+    },
 
     // Given the url of an original Winamp WSZ file, set the current skin
-    this.setSkinByUrl = function(url) {
+    setSkinByUrl: function(url) {
         this.fileManager.bufferFromUrl(url, this._setSkinByBuffer);
-    }.bind(this)
+    },
 
     // Given a bufferArray containing a Winamp WSZ file, set the current skin
-    this._setSkinByBuffer = function(buffer) {
+    // Gets passed as a callback, so don't have access to `this`
+    _setSkinByBuffer: function(buffer) {
         var zip = new JSZip(buffer);
 
         var style = document.getElementById('skin');
@@ -54,14 +54,14 @@ SkinManager = function() {
         // Appending overwrites, which has the same net effect, but after
         // several skin changes, this tag will get pretty bloated.
         var cssRules = '';
-        for(var selector in self._skinImages) {
+        for(var selector in SkinManager._skinImages) {
 
             var file = zip.filter(function (relativePath, file){
-                return new RegExp("(^|/)" + self._skinImages[selector], 'i').test(relativePath)
+                return new RegExp("(^|/)" + SkinManager._skinImages[selector], 'i').test(relativePath)
             })[0];
 
             if (!file) {
-                console.log("Warning: Couldn't find file:" + self._skinImages[selector])
+                console.log("Warning: Couldn't find file:" + SkinManager._skinImages[selector])
             } else {
                 var value = "background-image: url(data:image/bmp;base64," + btoa(file.asBinary()) + ")"
                 cssRules += selector + "{" + value + "}\n";
