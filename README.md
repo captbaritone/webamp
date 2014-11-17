@@ -21,5 +21,14 @@ Works in modern versions of Firefox, Safari and Chrome. Untested in IE.
 - [Skinner's Atlas 1.5 by Jellby](http://forums.winamp.com/showthread.php?p=951257)
 
 ## Predecessors
-- After I started, I found someone else who did the same thing in 2002(!).
-  Doesn't seem to work play in my modern browsers. http://forums.winamp.com/showthread.php?threadid=91850
+
+- [Webamp2x](http://forums.winamp.com/showthread.php?threadid=91850) An
+  impressive implementation from 2002(!). Doesn't seem to work/play in my
+  modern browsers.
+
+- [JuicyDrop](http://cggaurav.github.io/juicydrop/) An HTML5 implementation with
+  less empasis on being true to the skin, but fully featured visualizations.
+  @cggaurav is keeping int alive on [GitHub](https://github.com/cggaurav/juicydrop)
+
+- [Spotiamp](http://spotiamp.com/) The folks at Spotify reimplemented Winamp as
+  a frontend for Spotify. Not in a browser, and only runs on Windows.
