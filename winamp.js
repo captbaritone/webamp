@@ -2,7 +2,7 @@
 function Winamp () {
     self = this;
     this.fileManager = FileManager;
-    this.media = Media.init('player');
+    this.media = Media.init();
     this.skinManager = SkinManager;
     this.font = Font;
 
@@ -88,14 +88,7 @@ function Winamp () {
     });
 
     this.nodes.option.onclick = function() {
-        text = "Enter an Internet location to open here:\n";
-        text += "For example: http://www.server.com/file.mp3"
-        file = window.prompt(text, '');
-        if(file != null) {
-            self.startFile(file, file);
-            self.media.play();
-            self.setStatus('play');
-        }
+        // We don't support playing from URLs any more
     }
 
     this.nodes.close.onclick = function() {
@@ -120,6 +113,7 @@ function Winamp () {
     });
 
     this.media.addEventListener('playing', function() {
+        self.setStatus('play');
         self.nodes.workIndicator.classList.remove('selected');
     });
 
@@ -150,8 +144,12 @@ function Winamp () {
     }
 
     this.nodes.pause.onclick = function() {
-        self.media.pause();
-        self.setStatus('pause');
+        if(self.nodes.winamp.classList.contains('pause')){
+            self.media.play();
+        } else {
+            self.media.pause();
+            self.setStatus('pause');
+        }
     }
 
     this.nodes.stop.onclick = function() {
@@ -168,10 +166,7 @@ function Winamp () {
     }
 
     this.nodes.fileInput.onchange = function(e){
-        var file = e.target.files[0];
-        if(file) {
-            self.startFileViaReference(file);
-        }
+        self.loadFromFileReference(e.target.files[0]);
     }
 
     this.nodes.volume.onmousedown = function() {
@@ -353,35 +348,40 @@ function Winamp () {
         e.preventDefault();
         var dt = e.dataTransfer;
         var file = dt.files[0];
-        self.startFileViaReference(file);
+        self.loadFromFileReference(file);
     }
 
     this.nodes.winamp.addEventListener('dragenter', this.dragenter);
     this.nodes.winamp.addEventListener('dragover', this.dragover);
     this.nodes.winamp.addEventListener('drop', this.drop);
 
-    this.startFileViaReference = function(fileReference) {
+    this.loadFromFileReference = function(fileReference) {
         if(new RegExp("(wsz|zip)$", 'i').test(fileReference.name)) {
             self.skinManager.setSkinByFileReference(fileReference);
         } else {
-            var url = self.fileManager.urlFromFileReference(fileReference);
-            self.startFile(url, fileReference.name);
+            self.media.autoPlay = true;
+            self.fileManager.bufferFromFileReference(fileReference, this._loadBuffer.bind(this));
+            self._setMetaData(fileReference.name, '128', '44');
         }
     }
 
-    this.startFile = function(file, fileName) {
-        self.loadFile(file, fileName);
-        self.media.play();
-        self.setStatus('play');
+    // Used only for the initial load, since it must have a CORS header
+    this.loadFromUrl = function(url, fileName) {
+        this.fileManager.bufferFromUrl(url, this._loadBuffer.bind(this));
+        this._setMetaData(fileName, '128', '44');
     }
 
-    this.loadFile = function(file, fileName) {
-        this.media.loadFile(file);
-        fileName += '  ***  '
-        this.font.setNodeToString(document.getElementById('song-title'), fileName)
-        this.font.setNodeToString(document.getElementById('kbps'), "128")
-        this.font.setNodeToString(document.getElementById('khz'), "44")
-        this.updateTime();
+    this._loadBuffer = function(buffer) {
+        // Note, this will not happen right away
+        this.media.loadBuffer(buffer);
+    }
+
+    this._setMetaData = function(name, kbps, khz) {
+        name += '  ***  ';
+        self.font.setNodeToString(document.getElementById('song-title'), name);
+        self.font.setNodeToString(document.getElementById('kbps'), kbps);
+        self.font.setNodeToString(document.getElementById('khz'), khz);
+        self.updateTime();
     }
 
     /* Helpers */
@@ -417,7 +417,7 @@ function Winamp () {
         setTimeout(function () {
             var text = self.nodes.songTitle.firstChild;
             // Only scroll if the text is too long
-            if(text.childNodes.length > 30) {
+            if(text && text.childNodes.length > 30) {
                 var characterNode = text.firstChild;
                 text.removeChild(characterNode);
                 text.appendChild(characterNode);
@@ -488,7 +488,7 @@ document.onkeyup = function(e){
 
 volume = anchorArgument('volume', 50);
 balance = anchorArgument('volume', 0);
-file = anchorArgument('m', 'https://mediacru.sh/download/Q2HAoRHE-JvD.mp3');
+file = anchorArgument('m', 'https://cdn.rawgit.com/captbaritone/llama/master/llama.mp3');
 fileName = anchorArgument('name', "1. DJ Mike Llama - Llama Whippin' Intro (0:05)");
 skinUrl = anchorArgument('skin-url', 'https://cdn.rawgit.com/captbaritone/winamp2-js/master/skins/base-2.91.wsz');
 
@@ -496,6 +496,6 @@ winamp = new Winamp();
 // XXX These should be moved to a constructor, but I can't figure out how
 winamp.setVolume(volume);
 winamp.setBalance(balance);
-winamp.loadFile(file, fileName);
+winamp.loadFromUrl(file, fileName);
 winamp.marqueeLoop();
 winamp.skinManager.setSkinByUrl(skinUrl);
