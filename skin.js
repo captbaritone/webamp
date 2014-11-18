@@ -73,7 +73,7 @@ SkinManager = {
 
     },
 
-    _parseVisColors(zip) {
+    _parseVisColors: function(zip) {
         var entries = this._findFileInZip("VISCOLOR.TXT", zip).asText().split("\n");
         var regex = /^(\d+),(\d+),(\d+)/
         for(var i = 0; i <= entries.length; i++) {
@@ -86,7 +86,7 @@ SkinManager = {
 
     _findFileInZip: function(name, zip) {
         return zip.filter(function (relativePath, file){
-            return new RegExp("(^|/)" + "VISCOLOR.TXT", 'i').test(relativePath)
+            return new RegExp("(^|/)" + name, 'i').test(relativePath)
         })[0];
     }
 }
