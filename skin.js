@@ -1,5 +1,5 @@
 // Dynamically set the css background images for all the sprites
-SkinManager = {
+var SkinManager = {
     fileManager: FileManager,
     visColors: [],
 
@@ -73,7 +73,7 @@ SkinManager = {
 
     },
 
-    _parseVisColors(zip) {
+    _parseVisColors: function(zip) {
         var entries = this._findFileInZip("VISCOLOR.TXT", zip).asText().split("\n");
         var regex = /^(\d+),(\d+),(\d+)/
         for(var i = 0; i <= entries.length; i++) {
