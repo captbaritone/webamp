@@ -75,7 +75,7 @@ SkinManager = {
 
     _parseVisColors: function(zip) {
         var entries = this._findFileInZip("VISCOLOR.TXT", zip).asText().split("\n");
-        var regex = /^(\d+),(\d+),(\d+)/
+        var regex = /^(\d+),\s*(\d+),\s*(\d+)/
         for(var i = 0; i <= entries.length; i++) {
             var matches = regex.exec(entries[i]);
             if(matches) {
