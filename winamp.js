@@ -397,7 +397,7 @@ function Winamp () {
         document.getElementById('stereo').classList.remove('selected');
         if(channels == 1) {
             document.getElementById('mono').classList.add('selected');
-        } else if(channels == 2) { 
+        } else if(channels == 2) {
             document.getElementById('stereo').classList.add('selected');
         }
     }
