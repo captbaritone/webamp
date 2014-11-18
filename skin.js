@@ -1,6 +1,7 @@
 // Dynamically set the css background images for all the sprites
 SkinManager = {
     fileManager: FileManager,
+    visColors: [],
 
     _skinImages: {
         "#winamp": "MAIN.BMP",
@@ -41,7 +42,7 @@ SkinManager = {
 
     // Given the url of an original Winamp WSZ file, set the current skin
     setSkinByUrl: function(url) {
-        this.fileManager.bufferFromUrl(url, this._setSkinByBuffer);
+        this.fileManager.bufferFromUrl(url, this._setSkinByBuffer.bind(this));
     },
 
     // Given a bufferArray containing a Winamp WSZ file, set the current skin
@@ -56,9 +57,7 @@ SkinManager = {
         var cssRules = '';
         for(var selector in SkinManager._skinImages) {
 
-            var file = zip.filter(function (relativePath, file){
-                return new RegExp("(^|/)" + SkinManager._skinImages[selector], 'i').test(relativePath)
-            })[0];
+            var file = this._findFileInZip(SkinManager._skinImages[selector], zip);
 
             if (!file) {
                 console.log("Warning: Couldn't find file:" + SkinManager._skinImages[selector])
@@ -66,7 +65,28 @@ SkinManager = {
                 var value = "background-image: url(data:image/bmp;base64," + btoa(file.asBinary()) + ")"
                 cssRules += selector + "{" + value + "}\n";
             }
+
         }
         style.appendChild(document.createTextNode(cssRules));
+
+        this._parseVisColors(zip);
+
+    },
+
+    _parseVisColors(zip) {
+        var entries = this._findFileInZip("VISCOLOR.TXT", zip).asText().split("\n");
+        var regex = /^(\d+),(\d+),(\d+)/
+        for(var i = 0; i <= entries.length; i++) {
+            var matches = regex.exec(entries[i]);
+            if(matches) {
+                this.visColors.push('rgb(' + matches.slice(1,4).join(',') + ')');
+            }
+        }
+    },
+
+    _findFileInZip: function(name, zip) {
+        return zip.filter(function (relativePath, file){
+            return new RegExp("(^|/)" + "VISCOLOR.TXT", 'i').test(relativePath)
+        })[0];
     }
 }
