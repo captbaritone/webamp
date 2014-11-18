@@ -425,6 +425,8 @@ function Winamp () {
         horizontalOffset = digit * 9;
         div = document.createElement('div');
         div.classList.add('digit');
+        // Ex rules superseed if nums_ex.bmp is present
+        div.classList.add('digit-ex');
         div.style.backgroundPosition = '-' + horizontalOffset + 'px 0';
         div.innerHTML = digit;
         return div;

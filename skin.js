@@ -2,6 +2,7 @@
 SkinManager = {
     fileManager: FileManager,
     visColors: [],
+    style: document.getElementById('skin'),
 
     _skinImages: {
         "#winamp": "MAIN.BMP",
@@ -30,6 +31,8 @@ SkinManager = {
         ".shuffle-repeat div": "SHUFREP.BMP",
         ".character": "TEXT.BMP",
         ".digit": "NUMBERS.BMP",
+        // Put this second, since it will trump .digit
+        ".digit-ex": "NUMS_EX.BMP",
         ".shade #position": "TITLEBAR.BMP",
         ".shade #position::-webkit-slider-thumb": "TITLEBAR.BMP",
         ".shade #position::-moz-range-thumb": "TITLEBAR.BMP",
@@ -37,7 +40,7 @@ SkinManager = {
 
     // Given a file of an original Winamp WSZ file, set the current skin
     setSkinByFileReference: function(fileReference) {
-        this.fileManager.bufferFromFileReference(fileReference, this._setSkinByBuffer);
+        this.fileManager.bufferFromFileReference(fileReference, this._setSkinByBuffer.bind(this));
     },
 
     // Given the url of an original Winamp WSZ file, set the current skin
@@ -50,24 +53,21 @@ SkinManager = {
     _setSkinByBuffer: function(buffer) {
         var zip = new JSZip(buffer);
 
-        var style = document.getElementById('skin');
         // XXX Ideally we would empty the style tag here, but I don't know how
         // Appending overwrites, which has the same net effect, but after
         // several skin changes, this tag will get pretty bloated.
         var cssRules = '';
         for(var selector in SkinManager._skinImages) {
+            var fileName = SkinManager._skinImages[selector];
+            var file = this._findFileInZip(fileName, zip);
 
-            var file = this._findFileInZip(SkinManager._skinImages[selector], zip);
-
-            if (!file) {
-                console.log("Warning: Couldn't find file:" + SkinManager._skinImages[selector])
-            } else {
+            if (file) {
                 var value = "background-image: url(data:image/bmp;base64," + btoa(file.asBinary()) + ")"
                 cssRules += selector + "{" + value + "}\n";
             }
 
         }
-        style.appendChild(document.createTextNode(cssRules));
+        this.style.appendChild(document.createTextNode(cssRules));
 
         this._parseVisColors(zip);
 
