@@ -301,22 +301,28 @@ function Winamp () {
         }
         this.skin.font.displayCharacterInNode(shadeMinusCharacter, document.getElementById('shade-minus-sign'));
 
-        html = digitHtml(digits[0]);
-        document.getElementById('minute-first-digit').innerHTML = '';
-        document.getElementById('minute-first-digit').appendChild(html);
-        this.skin.font.displayCharacterInNode(digits[0], document.getElementById('shade-minute-first-digit'));
-        html = digitHtml(digits[1]);
-        document.getElementById('minute-second-digit').innerHTML = '';
-        document.getElementById('minute-second-digit').appendChild(html);
-        this.skin.font.displayCharacterInNode(digits[1], document.getElementById('shade-minute-second-digit'));
-        html = digitHtml(digits[2]);
-        document.getElementById('second-first-digit').innerHTML = '';
-        document.getElementById('second-first-digit').appendChild(html);
-        this.skin.font.displayCharacterInNode(digits[2], document.getElementById('shade-second-first-digit'));
-        html = digitHtml(digits[3]);
-        document.getElementById('second-second-digit').innerHTML = '';
-        document.getElementById('second-second-digit').appendChild(html);
-        this.skin.font.displayCharacterInNode(digits[3], document.getElementById('shade-second-second-digit'));
+        var digitNodes = [
+            document.getElementById('minute-first-digit'),
+            document.getElementById('minute-second-digit'),
+            document.getElementById('second-first-digit'),
+            document.getElementById('second-second-digit')
+        ];
+        var shadeDigitNodes = [
+            document.getElementById('shade-minute-first-digit'),
+            document.getElementById('shade-minute-second-digit'),
+            document.getElementById('shade-second-first-digit'),
+            document.getElementById('shade-second-second-digit')
+        ];
+
+        // For each digit/node
+        for(i = 0; i < 4; i++) {
+            var digit = digits[i];
+            var digitNode = digitNodes[i];
+            var shadeNode = shadeDigitNodes[i];
+            digitNode.innerHTML = '';
+            digitNode.appendChild(self.skin.font.digitNode(digit));
+            this.skin.font.displayCharacterInNode(digit, shadeNode);
+        }
     }
 
     // In shade mode, the position slider shows up differently depending on if
@@ -419,19 +425,6 @@ function Winamp () {
         return timeObject[0] + timeObject[1] + ':' + timeObject[2] + timeObject[3];
     }
 
-    // TODO: Move to font.js
-    function digitHtml(digit) {
-        horizontalOffset = digit * 9;
-        div = document.createElement('div');
-        div.classList.add('digit');
-        // Ex rules superseed if nums_ex.bmp is present
-        div.classList.add('digit-ex');
-        div.style.backgroundPosition = '-' + horizontalOffset + 'px 0';
-        div.innerHTML = digit;
-        return div;
-    }
-
-    // TODO: Move to font.js
     this.marqueeLoop = function() {
         setTimeout(function () {
             var text = self.nodes.songTitle.firstChild;

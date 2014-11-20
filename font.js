@@ -30,6 +30,19 @@ Font = {
         return node;
     },
 
+    // Get a <div> containing a digit
+    digitNode: function(digit) {
+        var horizontalOffset = digit * 9;
+        var div = document.createElement('div');
+        div.classList.add('digit');
+        // Ex rules superseed if nums_ex.bmp is present
+        div.classList.add('digit-ex');
+        div.style.backgroundPosition = '-' + horizontalOffset + 'px 0';
+        div.innerHTML = digit;
+        return div;
+    },
+
+
     // Get a <div> containing character <div>s
     _stringNode: function(string) {
         parentDiv = document.createElement('div');
