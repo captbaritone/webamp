@@ -1,6 +1,7 @@
 // Dynamically set the css background images for all the sprites
 SkinManager = {
     fileManager: FileManager,
+    font: Font,
     visColors: [],
     style: document.getElementById('skin'),
 

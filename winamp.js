@@ -3,8 +3,7 @@ function Winamp () {
     self = this;
     this.fileManager = FileManager;
     this.media = Media.init();
-    this.skinManager = SkinManager;
-    this.font = Font;
+    this.skin = SkinManager;
 
     this.nodes = {
         'option': document.getElementById('option'),
@@ -199,7 +198,7 @@ function Winamp () {
         var newElapsed = self._timeString(self.media.duration() * newFractionComplete);
         var duration = self._timeString(self.media.duration());
         var message = "Seek to: " + newElapsed + "/" + duration + " (" + newPercentComplete + "%)";
-        self.font.setNodeToString(self.nodes.positionMessage, message);
+        self.skin.font.setNodeToString(self.nodes.positionMessage, message);
     }
 
     this.nodes.position.onchange = function() {
@@ -254,7 +253,7 @@ function Winamp () {
         self.nodes.volume.style.backgroundPosition = '0 -' + offset + 'px';
 
         string = 'Volume: ' + volume + '%';
-        self.font.setNodeToString(self.nodes.volumeMessage, string);
+        self.skin.font.setNodeToString(self.nodes.volumeMessage, string);
 
         // This shouldn't trigger an infinite loop with volume.onchange(),
         // since the value will be the same
@@ -271,7 +270,7 @@ function Winamp () {
         } else {
             string = 'Balance: ' + Math.abs(balance) + '% Left';
         }
-        self.font.setNodeToString(self.nodes.balanceMessage, string);
+        self.skin.font.setNodeToString(self.nodes.balanceMessage, string);
 
         balance = Math.abs(balance) / 100
         sprite = Math.round(balance * 28);
@@ -300,24 +299,24 @@ function Winamp () {
         } else {
             digits = this._timeObject(this.media.timeElapsed());
         }
-        this.font.displayCharacterInNode(shadeMinusCharacter, document.getElementById('shade-minus-sign'));
+        this.skin.font.displayCharacterInNode(shadeMinusCharacter, document.getElementById('shade-minus-sign'));
 
         html = digitHtml(digits[0]);
         document.getElementById('minute-first-digit').innerHTML = '';
         document.getElementById('minute-first-digit').appendChild(html);
-        this.font.displayCharacterInNode(digits[0], document.getElementById('shade-minute-first-digit'));
+        this.skin.font.displayCharacterInNode(digits[0], document.getElementById('shade-minute-first-digit'));
         html = digitHtml(digits[1]);
         document.getElementById('minute-second-digit').innerHTML = '';
         document.getElementById('minute-second-digit').appendChild(html);
-        this.font.displayCharacterInNode(digits[1], document.getElementById('shade-minute-second-digit'));
+        this.skin.font.displayCharacterInNode(digits[1], document.getElementById('shade-minute-second-digit'));
         html = digitHtml(digits[2]);
         document.getElementById('second-first-digit').innerHTML = '';
         document.getElementById('second-first-digit').appendChild(html);
-        this.font.displayCharacterInNode(digits[2], document.getElementById('shade-second-first-digit'));
+        this.skin.font.displayCharacterInNode(digits[2], document.getElementById('shade-second-first-digit'));
         html = digitHtml(digits[3]);
         document.getElementById('second-second-digit').innerHTML = '';
         document.getElementById('second-second-digit').appendChild(html);
-        this.font.displayCharacterInNode(digits[3], document.getElementById('shade-second-second-digit'));
+        this.skin.font.displayCharacterInNode(digits[3], document.getElementById('shade-second-second-digit'));
     }
 
     // In shade mode, the position slider shows up differently depending on if
@@ -357,7 +356,7 @@ function Winamp () {
 
     this.loadFromFileReference = function(fileReference) {
         if(new RegExp("(wsz|zip)$", 'i').test(fileReference.name)) {
-            self.skinManager.setSkinByFileReference(fileReference);
+            self.skin.setSkinByFileReference(fileReference);
         } else {
             self.media.autoPlay = true;
             self.fileManager.bufferFromFileReference(fileReference, this._loadBuffer.bind(this));
@@ -379,14 +378,14 @@ function Winamp () {
 
     this._setTitle = function(name) {
         name += '  ***  ';
-        self.font.setNodeToString(document.getElementById('song-title'), name);
+        self.skin.font.setNodeToString(document.getElementById('song-title'), name);
     }
 
     this._setMetaData = function() {
         var kbps = "128";
         var khz = "44";
-        self.font.setNodeToString(document.getElementById('kbps'), kbps);
-        self.font.setNodeToString(document.getElementById('khz'), khz);
+        self.skin.font.setNodeToString(document.getElementById('kbps'), kbps);
+        self.skin.font.setNodeToString(document.getElementById('khz'), khz);
         self._setChannels();
         self.updateTime();
     }
