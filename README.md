@@ -19,6 +19,7 @@ Works in modern versions of Firefox, Safari and Chrome. Untested in IE.
 
 - [skinspecs.pdf](http://members.xoom.it/skinart/tutorial/skinspecs..pdf)
 - [Skinner's Atlas 1.5 by Jellby](http://forums.winamp.com/showthread.php?p=951257)
+- [Winamp Skinning Tutorial](http://people.xmms2.org/~tru/promoe/Winamp_skinning_tutorial_1_5_0.pdf)
 
 ## Predecessors
 
