@@ -68,6 +68,9 @@ SkinManager = {
             }
 
         }
+
+        // Clear the loading state
+        document.getElementById('winamp').classList.remove('loading');
         this.style.appendChild(document.createTextNode(cssRules));
 
         this._parseVisColors(zip);

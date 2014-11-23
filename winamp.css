@@ -32,6 +32,13 @@ a:focus { outline: none; }
     cursor:url('cursors/MAINMENU.CUR'), auto;
 }
 
+#winamp.loading {
+    background-image: url('images/loading.gif');
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 2px solid #dddddd;
+}
+
 #winamp.closed { display: none; }
 
 #title-bar {
