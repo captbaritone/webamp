@@ -5,8 +5,11 @@ Visualizer = {
         this.canvasCtx = this.canvas.getContext("2d");
         this.canvasCtx.imageSmoothingEnabled= false;
         this.canvasCtx.translate(1, 1); //  http://stackoverflow.com/questions/13593527/canvas-make-the-line-thicker
-        this.width = this.canvas.width;
-        this.height = this.canvas.height;
+        this.width = this.canvas.width * 1; // Cast to int
+        this.height = this.canvas.height * 1; // Cast to int
+        this.pixel = this.canvasCtx.createImageData(2,2);
+
+        // Constants
         this.NONE = 0;
         this.OSCILLOSCOPE = 1;
         this.BAR = 2;
@@ -15,7 +18,7 @@ Visualizer = {
 
     clear: function() {
         // +/- is just there to deal with offset, meh if its right or not ;)
-        this.canvasCtx.clearRect(-2, -2, this.width + 2, this.height + 2);
+        this.canvasCtx.clearRect(-1, -1, this.width + 2, this.height + 2);
     },
 
     paintFrame: function(type, bufferLength, dataArray) {
@@ -39,30 +42,39 @@ Visualizer = {
             return h * v / 128;
         }
 
-        this.canvasCtx.lineWidth = 2; // 2 because were shrinking the canvas by 2
-        this.canvasCtx.strokeStyle = 'rgba(255, 255, 255,1)';
+        var color = [255,255,255,255];
 
-        this.canvasCtx.beginPath();
-
-        var sliceWidth = bufferLength / this.width * 1;
+        var sliceWidth = bufferLength / this.width;
         var h = this.height / 2;
 
-        this.canvasCtx.moveTo(-2, h);
+        var y = 0;
         var index = 0;
         var lastIndex = 0;
         for (var i = 0, iEnd = this.width * 1; i < iEnd; i += 2) {
             index = i * sliceWidth | 0;
-            this.canvasCtx.lineTo(i, avg());
+
+            // Only plot to even pixels, since we are scaling. Otherwise we get
+            // more precision than we should have
+            y = 2 * Math.round(avg() / 2);
+            this.canvasCtx.putImageData(this._pixel(color), i, y);
             lastIndex = index + 1;
         }
-        lastIndex = index + 1;
-            index = i * sliceWidth | 0;
-
-        this.canvasCtx.lineTo(this.width, avg());
-        this.canvasCtx.stroke();
     },
 
     _paintBarFrame: function(bufferLength, dataArray) {
         // TODO
+    },
+
+    // Get an imagedata blob representing a pixel in the given color
+    // Actualy a 2x2 square due to our scaling
+    _pixel: function(rgba) {
+        for(i = 0; i < 4; i++) {
+            j = i * 4;
+            this.pixel.data[j+0] = rgba[0]; // Red
+            this.pixel.data[j+1] = rgba[1]; // Green
+            this.pixel.data[j+2] = rgba[2]; // Blue
+            this.pixel.data[j+3] = rgba[3]; // Alpha
+        }
+        return this.pixel;
     }
 }
