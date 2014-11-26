@@ -8,7 +8,7 @@ input[type=range]::-moz-focus-outer { border: 0; }
 a:focus { outline: none; }
 
 #shade-time {
-    cursor:url('cursors/MAINMENU.CUR'), auto;
+    cursor:url('cursors/MAINMENU.PNG'), auto;
 }
 
 /* Animation */
@@ -29,7 +29,7 @@ a:focus { outline: none; }
     /* background-image: MAIN.BMP via Javascript */
     height: 116px;
     width: 275px;
-    cursor:url('cursors/MAINMENU.CUR'), auto;
+    cursor:url('cursors/MAINMENU.PNG'), auto;
 }
 
 #winamp.loading {
@@ -49,7 +49,7 @@ a:focus { outline: none; }
     width: 275px;
     /* background-image: TITLEBAR.BMP via Javascript */
     background-position: -27px -14px;
-    cursor:url('cursors/TITLEBAR.CUR'), auto;
+    cursor:url('cursors/TITLEBAR.PNG'), auto;
 }
 
 #title-bar.selected {
@@ -72,7 +72,7 @@ a:focus { outline: none; }
     height: 9px;
     width: 9px;
     top: 3px;
-    cursor:url('cursors/MAINMENU.CUR'), auto;
+    cursor:url('cursors/MAINMENU.PNG'), auto;
 }
 
 #title-bar #option {
@@ -105,7 +105,7 @@ a:focus { outline: none; }
     left: 264px;
     /* background-image: TITLEBAR.BMP via Javascript */
     background-position: -18px 0px;
-    cursor:url('cursors/CLOSE.CUR'), auto;
+    cursor:url('cursors/CLOSE.PNG'), auto;
 }
 #title-bar #close:active {
     background-position: -18px -9px;
@@ -309,6 +309,7 @@ a:focus { outline: none; }
     width: 68px;
     /* background-image: VOLUME.BMP via Javascript */
     background-position: 0 0;
+    cursor:url('cursors/POSBAR.PNG'), auto;
 }
 #volume::-webkit-slider-thumb {
     display: block;
@@ -317,7 +318,7 @@ a:focus { outline: none; }
     width: 14px;
     /* background-image: VOLUME.BMP via Javascript */
     background-position: -15px -422px;
-    cursor:url('cursors/VOLBAR.CUR'), auto;
+    cursor:url('cursors/POSBAR.PNG'), auto;
     background-repeat: no-repeat;
 }
 #volume::-moz-range-thumb {
@@ -326,7 +327,7 @@ a:focus { outline: none; }
     width: 14px;
     /* background-image: VOLUME.BMP via Javascript */
     background-position: -15px -422px;
-    cursor:url('cursors/VOLBAR.CUR'), auto;
+    cursor:url('cursors/POSBAR.PNG'), auto;
     background-repeat: no-repeat;
 }
 #volume:active::-webkit-slider-thumb  {
@@ -344,6 +345,7 @@ a:focus { outline: none; }
     width: 38px;
     /* background-image: BALANCE.BMP via Javascript */
     background-position: -9px 0;
+    cursor:url('cursors/POSBAR.PNG'), auto;
 }
 
 #balance::-webkit-slider-thumb {
@@ -352,7 +354,7 @@ a:focus { outline: none; }
     width: 14px;
     /* background-image: VOLUME.BMP via Javascript */
     background-position: -15px -422px;
-    cursor:url('cursors/POSBAR.CUR'), auto;
+    cursor:url('cursors/POSBAR.PNG'), auto;
     background-repeat: no-repeat;
 }
 #balance::-moz-range-thumb {
@@ -361,7 +363,7 @@ a:focus { outline: none; }
     width: 14px;
     /* background-image: VOLUME.BMP via Javascript */
     background-position: -15px -422px;
-    cursor:url('cursors/POSBAR.CUR'), auto;
+    cursor:url('cursors/POSBAR.PNG'), auto;
     background-repeat: no-repeat;
 }
 
@@ -411,6 +413,7 @@ a:focus { outline: none; }
     height: 10px;
     /* background-image: POSBAR.BMP via Javascript */
     background-repeat: no-repeat;
+    cursor:url('cursors/POSBAR.PNG'), auto;
 }
 
 #position::-webkit-slider-thumb {
@@ -419,7 +422,7 @@ a:focus { outline: none; }
     background-position: -248px 0;
     /* background-image: POSBAR.BMP via Javascript */
     background-repeat: no-repeat;
-    cursor:url('cursors/POSBAR.CUR'), auto;
+    cursor:url('cursors/POSBAR.PNG'), auto;
     /*
      * Fix the strange bug in Safair/mobile-chrome
      * http://stackoverflow.com/questions/26727769/rendering-glitch-when-manipulating-range-input-value-via-javascript-in-webkit
@@ -434,7 +437,7 @@ a:focus { outline: none; }
     background-position: -248px 0;
     /* background-image: POSBAR.BMP via Javascript */
     background-repeat: no-repeat;
-    cursor:url('cursors/POSBAR.CUR'), auto;
+    cursor:url('cursors/POSBAR.PNG'), auto;
 }
 
 /* For some reason, we can't use display: none here */
@@ -578,6 +581,7 @@ a:focus { outline: none; }
 
 .shade #title-bar {
     background-position: -27px -42px;
+    cursor:url('cursors/MAINMENU.PNG'), auto;
 }
 
 .shade #title-bar.selected {
