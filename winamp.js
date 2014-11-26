@@ -4,9 +4,7 @@ function Winamp () {
     this.fileManager = FileManager;
     this.media = Media.init();
     this.skin = SkinManager;
-    this.skinManager = SkinManager;
-    this.visualizer = Visualizer.init(document.getElementById('visualizer'));
-    this.visualizerStyle = this.visualizer.OSCILLOSCOPE;
+    this.skin.visualizerStyle = this.skin.visualizer.OSCILLOSCOPE;
 
     this.nodes = {
         'option': document.getElementById('option'),
@@ -108,11 +106,11 @@ function Winamp () {
     });
 
     this.media.addEventListener('visualizerupdate', function(bufferLength, dataArray) {
-        self.visualizer.paintFrame(self.visualizerStyle, bufferLength, dataArray);
+        self.skin.visualizer.paintFrame(self.skin.visualizerStyle, bufferLength, dataArray);
     });
 
     this.media.addEventListener('ended', function() {
-        self.visualizer.clear();
+        self.skin.visualizer.clear();
         self.setStatus('stop');
     });
 
@@ -140,14 +138,14 @@ function Winamp () {
     }
 
     this.nodes.visualizer.onclick = function() {
-        if(self.visualizerStyle == self.visualizer.NONE) {
+        if(self.visualizerStyle == self.skin.visualizer.NONE) {
         //    self.visualizerStyle = self.visualizer.BAR;
         //} else if(self.visualizerStyle == self.visualizer.BAR) {
-            self.visualizerStyle = self.visualizer.OSCILLOSCOPE;
-        } else if(self.visualizerStyle == self.visualizer.OSCILLOSCOPE) {
-            self.visualizerStyle = self.visualizer.NONE;
+            self.visualizerStyle = self.skin.visualizer.OSCILLOSCOPE;
+        } else if(self.visualizerStyle == self.skin.visualizer.OSCILLOSCOPE) {
+            self.visualizerStyle = self.skin.visualizer.NONE;
         }
-        self.visualizer.clear();
+        self.skin.visualizer.clear();
     }
 
     this.nodes.previous.onclick = function() {
@@ -529,4 +527,4 @@ fileName = "1. DJ Mike Llama - Llama Whippin' Intro (0:05)";
 winamp.loadFromUrl(file, fileName);
 
 winamp.marqueeLoop();
-winamp.skinManager.setSkinByUrl('https://cdn.rawgit.com/captbaritone/winamp2-js/master/skins/base-2.91.wsz');
+winamp.skin.setSkinByUrl('https://cdn.rawgit.com/captbaritone/winamp2-js/master/skins/base-2.91.wsz');

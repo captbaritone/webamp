@@ -7,6 +7,7 @@ Visualizer = {
         this.canvasCtx.translate(1, 1); //  http://stackoverflow.com/questions/13593527/canvas-make-the-line-thicker
         this.width = this.canvas.width;
         this.height = this.canvas.height;
+        this.colors = [];
         this.NONE = 0;
         this.OSCILLOSCOPE = 1;
         this.BAR = 2;
@@ -40,7 +41,9 @@ Visualizer = {
         }
 
         this.canvasCtx.lineWidth = 2; // 2 because were shrinking the canvas by 2
-        this.canvasCtx.strokeStyle = 'rgba(255, 255, 255,1)';
+
+        // Just use one of the viscolors for now
+        this.canvasCtx.strokeStyle = this.colors[18];
 
         this.canvasCtx.beginPath();
 
