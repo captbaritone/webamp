@@ -17,13 +17,63 @@ Media = {
     autoPlay: false,
 
     init: function() {
-        this._gainNode = this._context.createGain();
-        this._analyser = this._context.createAnalyser();
+        // The _source node has to be recreated each time it's stopped or
+        // paused, so we don't create it here.
 
+        // Create the spliter node
+        this._chanSplit = this._context.createChannelSplitter(2);
+
+        // Create the gains for left and right
+        this._leftGain = this._context.createGain();
+        this._rightGain = this._context.createGain();
+
+        // Create channel merge
+        this._chanMerge = this._context.createChannelMerger(2);
+
+        // Create the gain node for the volume control
+        this._gainNode = this._context.createGain();
+
+        // Create the analyser node for the visualizer
+        this._analyser = this._context.createAnalyser();
         this._analyser.fftSize = 2048;
         this._bufferLength = this._analyser.frequencyBinCount;
         this._dataArray = new Uint8Array(this._bufferLength);
         this._analyser.getByteTimeDomainData(this._dataArray);
+
+        // Connect all the nodes in the correct way
+        // (Note, source is created and connected later)
+        //
+        //                 <source>
+        //                    |\
+        //                    | <analyser>
+        //                    |
+        //    (split using createChannelSplitter)
+        //                    |
+        //                   / \
+        //                  /   \
+        //             leftGain rightGain
+        //                  \   /
+        //                   \ /
+        //                    |
+        //     (merge using createChannelMerger)
+        //                    |
+        //                chanMerge
+        //                    |
+        //                   gain
+        //                    |
+        //               destination
+
+        // Connect split channels to left / right gains
+        this._chanSplit.connect(this._leftGain,0);
+        this._chanSplit.connect(this._rightGain,1);
+
+        // Reconnect the left / right gains to the merge node
+        this._leftGain.connect(this._chanMerge, 0, 0);
+        this._rightGain.connect(this._chanMerge, 0, 1);
+
+        this._chanMerge.connect(this._gainNode);
+
+        this._gainNode.connect(this._context.destination);
         return this;
     },
 
@@ -77,12 +127,11 @@ Media = {
             // So we don't get a race condition with _position getting overwritten
             this.pause();
         }
-        this._source = this._context.createBufferSource();
         if(this._buffer) {
+            this._source = this._context.createBufferSource();
             this._source.buffer = this._buffer;
             this._source.connect(this._analyser);
-            this._analyser.connect(this._gainNode);
-            this._gainNode.connect(this._context.destination);
+            this._source.connect(this._chanSplit);
 
             this._position = typeof position !== 'undefined' ? position : this._position;
             this._startTime = this._context.currentTime - this._position;
@@ -125,7 +174,26 @@ Media = {
 
     // From -100 to 100
     setBalance: function(balance) {
-        // TODO
+        var changeVal = Math.abs(balance) / 100;
+
+        // Hack for Firefox. Having either channel set to 0 seems to revert us
+        // to equal balance.
+        var changeVal = changeVal - .00000001;
+
+        if(balance > 0) { // Right
+            this._leftGain.gain.value = 1 - changeVal;
+            this._rightGain.gain.value = 1;
+        }
+        else if(balance < 0) // Left
+        {
+            this._leftGain.gain.value = 1;
+            this._rightGain.gain.value = 1 - changeVal;
+        }
+        else // Center
+        {
+            this._leftGain.gain.value = 1;
+            this._rightGain.gain.value = 1;
+        }
     },
 
     toggleRepeat: function() {

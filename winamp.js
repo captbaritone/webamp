@@ -292,6 +292,7 @@ function Winamp () {
         }
         self.skin.font.setNodeToString(self.nodes.balanceMessage, string);
 
+        self.media.setBalance(balance);
         balance = Math.abs(balance) / 100
         sprite = Math.round(balance * 28);
         offset = (sprite - 1) * 15;
