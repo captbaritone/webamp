@@ -522,7 +522,7 @@ winamp = new Winamp();
 winamp.setVolume(50);
 winamp.setBalance(0);
 
-file = 'https://cdn.rawgit.com/captbaritone/llama/master/llama.mp3';
+file = 'https://cdn.rawgit.com/captbaritone/llama/master/llama-2.91.mp3';
 fileName = "1. DJ Mike Llama - Llama Whippin' Intro (0:05)";
 winamp.loadFromUrl(file, fileName);
 
