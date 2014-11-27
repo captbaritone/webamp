@@ -5,6 +5,7 @@ function Winamp () {
     this.media = Media.init();
     this.skin = SkinManager;
     this.skin.visualizerStyle = this.skin.visualizer.OSCILLOSCOPE;
+    this.fileName = '';
 
     this.nodes = {
         'option': document.getElementById('option'),
@@ -384,16 +385,15 @@ function Winamp () {
             self.skin.setSkinByFileReference(fileReference);
         } else {
             self.media.autoPlay = true;
+            self.fileName = fileReference.name;
             self.fileManager.bufferFromFileReference(fileReference, this._loadBuffer.bind(this));
-            self._setTitle(fileReference.name);
         }
     }
 
     // Used only for the initial load, since it must have a CORS header
     this.loadFromUrl = function(url, fileName) {
+        this.fileName = fileName;
         this.fileManager.bufferFromUrl(url, this._loadBuffer.bind(this));
-        self._setTitle(fileName);
-        this._setMetaData();
     }
 
     this._loadBuffer = function(buffer) {
@@ -401,8 +401,9 @@ function Winamp () {
         this.media.loadBuffer(buffer, this._setMetaData);
     }
 
-    this._setTitle = function(name) {
-        name += '  ***  ';
+    this._setTitle = function() {
+        var duration = self._timeString(self.media.duration());
+        var name = self.fileName + ' (' + duration + ')  ***  ';
         self.skin.font.setNodeToString(document.getElementById('song-title'), name);
     }
 
@@ -413,6 +414,7 @@ function Winamp () {
         self.skin.font.setNodeToString(document.getElementById('khz'), khz);
         self._setChannels();
         self.updateTime();
+        self._setTitle();
     }
 
     this._setChannels = function() {
@@ -523,7 +525,7 @@ winamp.setVolume(50);
 winamp.setBalance(0);
 
 file = 'https://cdn.rawgit.com/captbaritone/llama/master/llama-2.91.mp3';
-fileName = "1. DJ Mike Llama - Llama Whippin' Intro (0:05)";
+fileName = "1. DJ Mike Llama - Llama Whippin' Intro";
 winamp.loadFromUrl(file, fileName);
 
 winamp.marqueeLoop();
