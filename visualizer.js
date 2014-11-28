@@ -67,19 +67,19 @@ Visualizer = {
 
         this.canvasCtx.beginPath();
 
-        var sliceWidth = this.bufferLength / this.width * 1;
+        var sliceWidth = this.bufferLength / this.width * 0.25; //This makes the Oscillioscope feel more like Winamp 2.x to 5.x
         var h = this.height / 2;
 
         this.canvasCtx.moveTo(-2, h);
         var index = 0;
         var lastIndex = 0;
-        for (var i = 0, iEnd = this.width * 1; i < iEnd; i += 2) {
+        for (var i = 2, iEnd = this.width * 1; i < iEnd; i += 2) {
             index = i * sliceWidth | 0;
             this.canvasCtx.lineTo(i, avg(this.dataArray));
-            lastIndex = index + 1;
+            lastIndex = index + 0;
         }
-        lastIndex = index + 1;
-            index = i * sliceWidth | 0;
+        lastIndex = index + 0;
+            index = i * sliceWidth | 1;
 
         this.canvasCtx.lineTo(this.width, avg(this.dataArray));
         this.canvasCtx.stroke();
