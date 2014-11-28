@@ -2,16 +2,6 @@
 FileManager = {
     reader: new FileReader(),
 
-    // Given an input node, returns a functional URL
-    urlFromInput: function(input) {
-        var file = input.files[0];
-        return this.urlFromFileReference(file);
-    },
-
-    urlFromFileReference: function(fileReference) {
-        return URL.createObjectURL(fileReference);
-    },
-
     bufferFromFileReference: function(fileReference, bufferHandler) {
         this.reader.onload = function (e) {
             var arrayBuffer = e.target.result;
