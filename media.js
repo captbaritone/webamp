@@ -36,9 +36,6 @@ Media = {
         // Create the analyser node for the visualizer
         this._analyser = this._context.createAnalyser();
         this._analyser.fftSize = 2048;
-        this._bufferLength = this._analyser.frequencyBinCount;
-        this._dataArray = new Uint8Array(this._bufferLength);
-        this._analyser.getByteTimeDomainData(this._dataArray);
 
         // Connect all the nodes in the correct way
         // (Note, source is created and connected later)
@@ -221,8 +218,7 @@ Media = {
 
             // _updatePosition might have stoped the playing
             if(this._playing) {
-                this._analyser.getByteTimeDomainData(this._dataArray);
-                this._callbacks.visualizerupdate(this._bufferLength, this._dataArray);
+                this._callbacks.visualizerupdate(this._analyser);
             }
         }
         window.requestAnimationFrame(this._draw.bind(this));

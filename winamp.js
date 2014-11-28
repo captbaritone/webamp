@@ -3,8 +3,7 @@ function Winamp () {
     self = this;
     this.fileManager = FileManager;
     this.media = Media.init();
-    this.skin = SkinManager;
-    this.skin.visualizerStyle = this.skin.visualizer.OSCILLOSCOPE;
+    this.skin = SkinManager.init(document.getElementById('skin'), document.getElementById('visualizer'), this.media._analyser);
     this.fileName = '';
 
     this.nodes = {
@@ -106,8 +105,8 @@ function Winamp () {
         self.updateTime();
     });
 
-    this.media.addEventListener('visualizerupdate', function(bufferLength, dataArray) {
-        self.skin.visualizer.paintFrame(self.skin.visualizerStyle, bufferLength, dataArray);
+    this.media.addEventListener('visualizerupdate', function(analyser) {
+        self.skin.visualizer.paintFrame(self.visualizerStyle, analyser);
     });
 
     this.media.addEventListener('ended', function() {
@@ -139,12 +138,12 @@ function Winamp () {
     }
 
     this.nodes.visualizer.onclick = function() {
-        if(self.visualizerStyle == self.skin.visualizer.NONE) {
-        //    self.visualizerStyle = self.visualizer.BAR;
-        //} else if(self.visualizerStyle == self.visualizer.BAR) {
-            self.visualizerStyle = self.skin.visualizer.OSCILLOSCOPE;
-        } else if(self.visualizerStyle == self.skin.visualizer.OSCILLOSCOPE) {
-            self.visualizerStyle = self.skin.visualizer.NONE;
+        if(self.skin.visualizer.style == self.skin.visualizer.NONE) {
+            self.skin.visualizer.setStyle(self.skin.visualizer.BAR);
+        } else if(self.skin.visualizer.style == self.skin.visualizer.BAR) {
+            self.skin.visualizer.setStyle(self.skin.visualizer.OSCILLOSCOPE);
+        } else if(self.skin.visualizer.style == self.skin.visualizer.OSCILLOSCOPE) {
+            self.skin.visualizer.setStyle(self.skin.visualizer.NONE);
         }
         self.skin.visualizer.clear();
     }

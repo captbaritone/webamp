@@ -2,8 +2,11 @@
 SkinManager = {
     fileManager: FileManager,
     font: Font,
-    style: document.getElementById('skin'),
-    visualizer: Visualizer.init(document.getElementById('visualizer')),
+    init: function(styleNode, visualizerNode, analyser) {
+        this.styleNode = styleNode;
+        this.visualizer = Visualizer.init(visualizerNode, analyser);
+        return this;
+    },
 
     _skinImages: {
         "#winamp": "MAIN.BMP",
@@ -71,7 +74,7 @@ SkinManager = {
 
         // Clear the loading state
         document.getElementById('winamp').classList.remove('loading');
-        this.style.appendChild(document.createTextNode(cssRules));
+        this.styleNode.appendChild(document.createTextNode(cssRules));
 
         this._parseVisColors(zip);
 
@@ -86,7 +89,7 @@ SkinManager = {
         for(var i = 0; i < 24; i++) {
             var matches = regex.exec(entries[i]);
             if(matches) {
-                this.visualizer.colors.push('rgb(' + matches.slice(1,4).join(',') + ')');
+                this.visualizer.colors[i] = 'rgb(' + matches.slice(1,4).join(',') + ')';
             } else {
                 console.error('Error in VISCOLOR.TXT on line', i);
                 this.visColors.push('rgb(255,0,0)');
