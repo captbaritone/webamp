@@ -408,7 +408,8 @@ function Winamp () {
 
     this._setMetaData = function() {
         var kbps = "128";
-        var khz = "44";
+        var khz = Math.round(self.media.sampleRate() / 1000).toString();
+
         self.skin.font.setNodeToString(document.getElementById('kbps'), kbps);
         self.skin.font.setNodeToString(document.getElementById('khz'), khz);
         self._setChannels();

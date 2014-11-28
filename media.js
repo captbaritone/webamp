@@ -114,6 +114,9 @@ Media = {
         }
         return this._buffer.numberOfChannels;
     },
+    sampleRate: function() {
+        return this._buffer.sampleRate;
+    },
 
     /* Actions */
     previous: function() {
