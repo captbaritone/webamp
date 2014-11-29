@@ -5,8 +5,9 @@ Visualizer = {
         this.analyser = analyser;
         this.canvasCtx = this.canvas.getContext("2d");
         this.canvasCtx.imageSmoothingEnabled= false;
-        this.width = this.canvas.width;
-        this.height = this.canvas.height;
+        this.width = this.canvas.width * 1; // Cast to int
+        this.height = this.canvas.height * 1; // Cast to int
+        this.canvasCtx.translate(1, 1); //  http://stackoverflow.com/questions/13593527/canvas-make-the-line-thicker
         this.colors = []; // skin.js fills this from viscolors.txt
         this.NONE = 0;
         this.OSCILLOSCOPE = 1;
@@ -71,40 +72,50 @@ Visualizer = {
     },
 
     _paintOscilloscopeFrame: function() {
-        function avg(dataArray) {
-            var avg = 0;
-            var count = 0;
-            for (var l = lastIndex; l < index + 1; l++) {
-                avg += dataArray[l];
-                count++;
+        // Return the average value in a slice of dataArray
+        function sliceAverage(dataArray, sliceWidth, sliceNumber) {
+            var start = sliceWidth * sliceNumber;
+            var end = start + sliceWidth;
+            var sum = 0;
+            for(var i = start; i < end; i++) {
+                sum += dataArray[i];
             }
-            var v = avg / count;
-            return h * v / 128;
+            return sum / sliceWidth;
         }
+
         this.analyser.getByteTimeDomainData(this.dataArray);
 
-        this.canvasCtx.lineWidth = 2; // 2 because were shrinking the canvas by 2
+        // 2 because we're shrinking the canvas by 2
+        this.canvasCtx.lineWidth = 2;
 
         // Just use one of the viscolors for now
         this.canvasCtx.strokeStyle = this.colors[18];
 
-        this.canvasCtx.beginPath();
+        // Since dataArray has more values than we have pixels to display, we
+        // have to average several dataArray values per pixel. We call these
+        // groups slices.
+        //
+        // We use the  2x scale here since we only want to plot values for
+        // "real" pixels.
+        var sliceWidth = Math.floor(this.bufferLength / this.width) * 2;
 
-        var sliceWidth = this.bufferLength / this.width * 1;
+        // The max amplitude is half the height
         var h = this.height / 2;
 
-        this.canvasCtx.moveTo(-2, h);
-        var index = 0;
-        var lastIndex = 0;
-        for (var i = 0, iEnd = this.width * 1; i < iEnd; i += 2) {
-            index = i * sliceWidth | 0;
-            this.canvasCtx.lineTo(i, avg(this.dataArray));
-            lastIndex = index + 1;
-        }
-        lastIndex = index + 1;
-            index = i * sliceWidth | 0;
+        this.canvasCtx.beginPath();
 
-        this.canvasCtx.lineTo(this.width, avg(this.dataArray));
+        // Iterate over the width of the canvas in "real" pixels.
+        for (var j = 0; j < this.width/2; j++) {
+            amplitude = sliceAverage(this.dataArray, sliceWidth, j);
+            percentAmplitude = amplitude / 128; // dataArray gives us bytes
+            y = percentAmplitude * h;
+            x = j * 2;
+            if(x == 0) {
+                this.canvasCtx.moveTo(x, y);
+            } else {
+                this.canvasCtx.lineTo(x, y);
+            }
+        }
         this.canvasCtx.stroke();
     },
 
