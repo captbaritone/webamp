@@ -138,8 +138,9 @@ Media = {
             this._source.start(0, this._position);
             this._playing = true;
             var vol = Math.max(this._gainNode.gain.value,0.01);
+            var delay = 0.25;
             this._gainNode.gain.linearRampToValueAtTime(0.01,this._context.currentTime);
-            this._gainNode.gain.linearRampToValueAtTime(vol,this._context.currentTime+0.25);
+            this._gainNode.gain.linearRampToValueAtTime(vol,this._context.currentTime+delay);
             this._callbacks.playing();
         }
     },
@@ -158,10 +159,11 @@ Media = {
 
     _silence: function() {
         if(this._source) {
-            var vol = Math.max(this._gainNode.gain.value,0.01); // does not work :(
-            this._gainNode.gain.linearRampToValueAtTime(vol,this._context.currentTime); // does not work :(
-            this._gainNode.gain.linearRampToValueAtTime(0.01,this._context.currentTime+0.25); // does not work :(
-            this._source.stop(0);
+            var vol = Math.max(this._gainNode.gain.value,0.01);
+            var delay = 0.25
+            this._gainNode.gain.linearRampToValueAtTime(vol,this._context.currentTime);
+            this._gainNode.gain.linearRampToValueAtTime(0.01,this._context.currentTime+delay);
+            this._source.stop(delay);
             this._source = null;
         }
         this._playing = false;
