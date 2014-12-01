@@ -12,6 +12,7 @@ Media = {
     },
     _startTime: 0,
     _position: 0,
+    _fadeDelay: 0.25,
     _playing: false,
     _loop: false,
     autoPlay: false,
@@ -138,9 +139,8 @@ Media = {
             this._source.start(0, this._position);
             this._playing = true;
             var vol = Math.max(this._gainNode.gain.value,0.01);
-            var delay = 0.25;
             this._gainNode.gain.linearRampToValueAtTime(0.01,this._context.currentTime);
-            this._gainNode.gain.linearRampToValueAtTime(vol,this._context.currentTime+delay);
+            this._gainNode.gain.linearRampToValueAtTime(vol,this._context.currentTime+this._fadeDelay);
             this._callbacks.playing();
         }
     },
@@ -160,10 +160,9 @@ Media = {
     _silence: function() {
         if(this._source) {
             var vol = Math.max(this._gainNode.gain.value,0.01);
-            var delay = 0.25
             this._gainNode.gain.linearRampToValueAtTime(vol,this._context.currentTime);
-            this._gainNode.gain.linearRampToValueAtTime(0.01,this._context.currentTime+delay);
-            this._source.stop(delay);
+            this._gainNode.gain.linearRampToValueAtTime(0.01,this._context.currentTime+this._fadeDelay);
+            this._source.stop(this._fadeDelay);
             this._source = null;
         }
         this._playing = false;
