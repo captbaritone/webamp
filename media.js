@@ -1,41 +1,51 @@
-/* Emulate the native <audio> element with Web Audio API */
-Media = {
-    _context: new(window.AudioContext || window.webkitAudioContext)(),
-    _source: null,
-    _buffer: null,
-    _callbacks: {
-        waiting: function(){},
-        playing: function(){},
-        timeupdate: function(){},
-        visualizerupdate: function(){},
-        ended: function(){}
-    },
-    _startTime: 0,
-    _position: 0,
-    _playing: false,
-    _loop: false,
-    autoPlay: false,
+(function(window, undefined) {
 
-    init: function() {
+    var callbacks = {
+        waiting: function() {},
+        playing: function() {},
+        timeupdate: function() {},
+        visualizerupdate: function() {},
+        ended: function() {}
+    };
+
+    var startTime = 0;
+    var position = 0;
+    var playing = false;
+    var loop = false;
+    // var autoPlay= false;  // its public, put it in self
+
+    var audio = { // Anything to do with webaudio
+        context: new(window.AudioContext || window.webkitAudioContext)(),
+        source: null,
+        analyser: null,
+        buffer: null,
+        chanSplit: null,
+        leftGain: null,
+        rightGain: null,
+        chanMerge: null,
+        gainNode: null
+    }
+
+    function init() {
         // The _source node has to be recreated each time it's stopped or
         // paused, so we don't create it here.
 
         // Create the spliter node
-        this._chanSplit = this._context.createChannelSplitter(2);
+        audio.chanSplit = audio.context.createChannelSplitter(2);
 
         // Create the gains for left and right
-        this._leftGain = this._context.createGain();
-        this._rightGain = this._context.createGain();
+        audio.leftGain = audio.context.createGain();
+        audio.rightGain = audio.context.createGain();
 
         // Create channel merge
-        this._chanMerge = this._context.createChannelMerger(2);
+        audio.chanMerge = audio.context.createChannelMerger(2);
 
         // Create the gain node for the volume control
-        this._gainNode = this._context.createGain();
+        audio.gainNode = audio.context.createGain();
 
         // Create the analyser node for the visualizer
-        this._analyser = this._context.createAnalyser();
-        this._analyser.fftSize = 2048;
+        audio.analyser = audio.context.createAnalyser();
+        audio.analyser.fftSize = 2048;
 
         // Connect all the nodes in the correct way
         // (Note, source is created and connected later)
@@ -61,183 +71,216 @@ Media = {
         //               destination
 
         // Connect split channels to left / right gains
-        this._chanSplit.connect(this._leftGain,0);
-        this._chanSplit.connect(this._rightGain,1);
+        audio.chanSplit.connect(audio.leftGain, 0);
+        audio.chanSplit.connect(audio.rightGain, 1);
 
         // Reconnect the left / right gains to the merge node
-        this._leftGain.connect(this._chanMerge, 0, 0);
-        this._rightGain.connect(this._chanMerge, 0, 1);
+        audio.leftGain.connect(audio.chanMerge, 0, 0);
+        audio.rightGain.connect(audio.chanMerge, 0, 1);
 
-        this._chanMerge.connect(this._gainNode);
+        audio.chanMerge.connect(audio.gainNode);
 
-        this._gainNode.connect(this._context.destination);
-        return this;
-    },
+        audio.gainNode.connect(audio.context.destination);
+        return self;
+    };
 
     // Load from bufferArray
-    loadBuffer: function(buffer, loadedCallback) {
-        this.stop();
-        this._callbacks.waiting();
+    function loadBuffer(_buffer, loadedCallback) {
+        stop();
+        callbacks.waiting();
 
-        var loadAudioBuffer = function(buffer) {
-            this._buffer = buffer;
+        var loadAudioBuffer = function(_buffer) {
+            audio.buffer = _buffer;
             loadedCallback();
-            if(this.autoPlay) {
-                this.play(0);
+            if (self.autoPlay) {
+                play(0);
             }
-            this._draw(0);
+            _draw(0);
         }
 
-        var error = function (error) {
-            //console.error("failed to decode:", error);
-        }
-        // Decode the target file into an arrayBuffer and pass it to loadBuffer
-        this._context.decodeAudioData(buffer, loadAudioBuffer.bind(this), error);
-    },
+        var error = function(error) {
+                //console.error("failed to decode:", error);
+            }
+            // Decode the target file into an arrayBuffer and pass it to loadBuffer
+        audio.context.decodeAudioData(_buffer, loadAudioBuffer, error);
+    };
 
     /* Properties */
-    duration: function() {
-        return this._buffer.duration;
-    },
-    timeElapsed: function() {
-        return this._context.currentTime - this._startTime;
-    },
-    timeRemaining: function() {
-        return this.duration() - this.timeElapsed();
-    },
-    percentComplete: function() {
-        return (this.timeElapsed() / this.duration()) * 100;
-    },
-    channels: function() {
-        if(!this._buffer) {
+    function duration() {
+        return audio.buffer.duration;
+    };
+
+    function timeElapsed() {
+        return audio.context.currentTime - startTime;
+    };
+
+    function timeRemaining() {
+        return duration() - timeElapsed();
+    };
+
+    function percentComplete() {
+        return (timeElapsed() / duration()) * 100;
+    };
+
+    function channels() {
+        if (!audio.buffer) {
             return 0;
         }
-        return this._buffer.numberOfChannels;
-    },
-    sampleRate: function() {
-        return this._buffer.sampleRate;
-    },
+        return audio.buffer.numberOfChannels;
+    };
+
+    function sampleRate() {
+        return audio.buffer.sampleRate;
+    };
 
     /* Actions */
-    previous: function() {
+    function previous() {
         // Implement this when we support playlists
-    },
-    play: function(position) {
-        if(this._playing) {
-            // So we don't get a race condition with _position getting overwritten
-            this.pause();
-        }
-        if(this._buffer) {
-            this._source = this._context.createBufferSource();
-            this._source.buffer = this._buffer;
-            this._source.connect(this._analyser);
-            this._source.connect(this._chanSplit);
+    };
 
-            this._position = typeof position !== 'undefined' ? position : this._position;
-            this._startTime = this._context.currentTime - this._position;
-            this._source.start(0, this._position);
-            this._playing = true;
-            this._callbacks.playing();
+    function play(_position) {
+        if (playing) {
+            // So we don't get a race condition with _position getting overwritten
+            pause();
         }
-    },
-    pause: function() {
-        if(!this._playing) {
+        if (audio.buffer) {
+            audio.source = audio.context.createBufferSource();
+            audio.source.buffer = audio.buffer;
+            audio.source.connect(audio.analyser);
+            audio.source.connect(audio.chanSplit);
+
+            position = typeof _position !== 'undefined' ? _position : position;
+            startTime = audio.context.currentTime - position;
+            audio.source.start(0, position);
+            playing = true;
+            callbacks.playing();
+        }
+    };
+
+    function pause() {
+        if (!playing) {
             return;
         }
-        this._silence();
-        this._position = this._context.currentTime - this._startTime;
-    },
+        _silence();
+        position = audio.context.currentTime - startTime;
+    };
 
-    stop: function() {
-        this._silence();
-        this._position = 0;
-    },
+    function stop() {
+        _silence();
+        position = 0;
+    };
 
-    _silence: function() {
-        if(this._source) {
-            this._source.stop(0);
-            this._source = null;
+    function _silence() {
+        if (audio.source) {
+            audio.source.stop(0);
+            audio.source = null;
         }
-        this._playing = false;
-    },
+        playing = false;
+    };
 
     /* Actions with arguments */
-    seekToPercentComplete: function(percent) {
-        var seekTime = this.duration() * (percent / 100);
-        this.seekToTime(seekTime);
-    },
+    function seekToPercentComplete(percent) {
+        var seekTime = duration() * (percent / 100);
+        seekToTime(seekTime);
+    };
 
     // From 0-1
-    setVolume: function(volume) {
-        this._gainNode.gain.value = volume;
-    },
+    function setVolume(volume) {
+        audio.gainNode.gain.value = volume;
+    };
 
     // From -100 to 100
-    setBalance: function(balance) {
+    function setBalance(balance) {
         var changeVal = Math.abs(balance) / 100;
 
         // Hack for Firefox. Having either channel set to 0 seems to revert us
         // to equal balance.
         var changeVal = changeVal - .00000001;
 
-        if(balance > 0) { // Right
-            this._leftGain.gain.value = 1 - changeVal;
-            this._rightGain.gain.value = 1;
-        }
-        else if(balance < 0) // Left
+        if (balance > 0) { // Right
+            audio.leftGain.gain.value = 1 - changeVal;
+            audio.rightGain.gain.value = 1;
+        } else if (balance < 0) // Left
         {
-            this._leftGain.gain.value = 1;
-            this._rightGain.gain.value = 1 - changeVal;
-        }
-        else // Center
+            audio.leftGain.gain.value = 1;
+            audio.rightGain.gain.value = 1 - changeVal;
+        } else // Center
         {
-            this._leftGain.gain.value = 1;
-            this._rightGain.gain.value = 1;
+            audio.leftGain.gain.value = 1;
+            audio.rightGain.gain.value = 1;
         }
-    },
+    };
 
-    toggleRepeat: function() {
-        this._loop = !this._loop;
-    },
+    function toggleRepeat() {
+        loop = !loop;
+    };
 
     /* Listeners */
-    addEventListener: function(event, callback) {
-        this._callbacks[event] = callback;
-    },
+    function addEventListener(event, callback) {
+        callbacks[event] = callback;
+    };
 
-    seekToTime: function(time) {
+    function seekToTime(time) {
         // Make sure we are within range
-        time = Math.min(time, this.duration());
+        time = Math.min(time, duration());
         time = Math.max(time, 0);
-        this.play(time);
-    },
+        play(time);
+    };
 
     // There is probably a more reasonable way to do this, rather than having
     // it always running.
-    _draw: function() {
-        if(this._playing) {
-            this._updatePosition();
-            this._callbacks.timeupdate();
+    function _draw() {
+        if (playing) {
+            _updatePosition();
+            callbacks.timeupdate();
 
             // _updatePosition might have stoped the playing
-            if(this._playing) {
-                this._callbacks.visualizerupdate(this._analyser);
+            if (playing) {
+                callbacks.visualizerupdate(audio.analyser);
             }
         }
-        window.requestAnimationFrame(this._draw.bind(this));
-    },
+        window.requestAnimationFrame(_draw);
+    };
 
-    _updatePosition: function() {
-        this._position = this._context.currentTime - this._startTime;
-        if(this._position >= this._buffer.duration) {
+    function _updatePosition() {
+        position = audio.context.currentTime - startTime;
+        if (position >= audio.buffer.duration) {
             // Idealy we could use _source.loop, but it makes updating the position tricky
-            if(this._loop) {
-                this.play(0);
+            if (loop) {
+                play(0);
             } else {
-                this.stop();
-                this._callbacks.ended();
+                stop();
+                callbacks.ended();
             }
         }
-        return this._position;
+        return position;
     }
-}
+
+    // Declare all public (on winamp) stuff here
+    var self = {
+        init: init,
+        loadBuffer: loadBuffer,
+        duration: duration,
+        timeElapsed: timeElapsed,
+        timeRemaining: timeRemaining,
+        percentComplete: percentComplete,
+        channels: channels,
+        sampleRate: sampleRate,
+        previous: previous,
+        play: play,
+        pause: pause,
+        stop: stop,
+        seekToPercentComplete: seekToPercentComplete,
+        setVolume: setVolume,
+        setBalance: setBalance,
+        toggleRepeat: toggleRepeat,
+        addEventListener: addEventListener,
+        seekToTime: seekToTime,
+        autoPlay: false,
+        audio: audio
+    }
+
+    // There can be only one....
+    if(!window.Media) window.Media = self;
+
+ })(window);
