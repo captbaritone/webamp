@@ -44,6 +44,10 @@ Visualizer = {
             var y = 32 - (i*2);
             this.barCanvasCtx.fillRect(0,y,6,2);
         }
+        // If we are paused when the skin changes, we will keep the vis colors
+        // until we paint again. For now we can just clear the current frame so
+        // we don't end up with a clashing visual.
+        this.clear();
     },
 
     setStyle: function(style) {
