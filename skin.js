@@ -19,6 +19,7 @@ SkinManager = {
         ".status #play-pause": "PLAYPAUS.BMP",
         ".play .status #work-indicator": "PLAYPAUS.BMP",
         ".status #time #minus-sign": "NUMBERS.BMP",
+        ".status #time.ex #minus-sign": "NUMS_EX.BMP",
         ".media-info .mono-stereo div": "MONOSTER.BMP",
         "#volume": "VOLUME.BMP",
         "#volume::-webkit-slider-thumb": "VOLUME.BMP",
@@ -56,6 +57,7 @@ SkinManager = {
     // Gets passed as a callback, so don't have access to `this`
     _setSkinByBuffer: function(buffer) {
         var zip = new JSZip(buffer);
+        document.getElementById('time').classList.remove('ex');
 
         // XXX Ideally we would empty the style tag here, but I don't know how
         // Appending overwrites, which has the same net effect, but after
@@ -68,8 +70,12 @@ SkinManager = {
             if (file) {
                 var value = "background-image: url(data:image/bmp;base64," + btoa(file.asBinary()) + ")"
                 cssRules += selector + "{" + value + "}\n";
-            }
 
+                // CSS has to change if this file is present
+                if(fileName == 'NUMS_EX.BMP') {
+                    document.getElementById('time').classList.add('ex');
+                }
+            }
         }
 
         // Clear the loading state

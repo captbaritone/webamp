@@ -128,7 +128,7 @@ function Winamp () {
     }
 
     this.nodes.time.onclick = function() {
-        this.classList.toggle('countdown');
+        self.nodes.time.classList.toggle('countdown');
         self.updateTime();
     }
 

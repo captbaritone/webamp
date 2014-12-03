@@ -153,8 +153,7 @@ a:focus { outline: none; }
 .stop .status #play-pause { background-position: -18px 0; }
 .status #time {
     position: absolute;
-    left: 48px;
-    left: 40px;
+    left: 39px;
     top: 26px;
     /* Just to make it clickable */
     height: 13px;
@@ -178,28 +177,44 @@ a:focus { outline: none; }
 .status #time.countdown #minus-sign {
     background-position: -20px -6px;
 }
+/* Alternate format for minus sign, when skin supports it */
+.status #time.ex #minus-sign {
+    top: 0px;
+    left: -1px;
+    width: 9px;
+    height: 13px;
+    /* background-image: NUMS_EX.BMP via Javascript */
+    background-position: -90px 0px;
+}
+.status #time.ex.countdown #minus-sign {
+    background-position: -99px 0px;
+}
 
 .status #time #minute-first-digit {
     position: absolute;
-    left: 8px;
+    pointer-events: none;
+    left: 9px;
     height: 13px;
     width: 9px;
 }
 .status #time #minute-second-digit {
     position: absolute;
-    left: 20px;
+    pointer-events: none;
+    left: 21px;
     height: 13px;
     width: 9px;
 }
 .status #time #second-first-digit {
     position: absolute;
-    left: 38px;
+    pointer-events: none;
+    left: 39px;
     height: 13px;
     width: 9px;
 }
 .status #time #second-second-digit {
     position: absolute;
-    left: 50px;
+    pointer-events: none;
+    left: 51px;
     height: 13px;
     width: 9px;
 }
