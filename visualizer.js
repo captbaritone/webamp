@@ -5,7 +5,6 @@ Visualizer = {
         this.analyser = analyser;
         this.canvasCtx = this.canvas.getContext("2d");
         this.canvasCtx.imageSmoothingEnabled= false;
-        this.canvasCtx.translate(1, 1); //  http://stackoverflow.com/questions/13593527/canvas-make-the-line-thicker
         this.width = this.canvas.width;
         this.height = this.canvas.height;
         this.colors = []; // skin.js fills this from viscolors.txt
@@ -16,6 +15,11 @@ Visualizer = {
         this.dataArray = null;
         this.setStyle(this.BAR);
 
+        // Off-screen canvas for pre-rendering a single bar gradient
+        this.barCanvas = document.createElement('canvas');
+        this.barCanvas.width = 6;
+        this.barCanvas.height = 32;
+        this.barCanvasCtx = this.barCanvas.getContext("2d");
         return this;
     },
 
@@ -24,17 +28,36 @@ Visualizer = {
         this.canvasCtx.clearRect(-2, -2, this.width + 2, this.height + 2);
     },
 
+    setColors: function(colors) {
+        this.colors = colors;
+        this.preRenderBar();
+    },
+
+    // Pre-render the bar gradient
+    preRenderBar: function() {
+        this.barCanvasCtx.fillStyle = this.colors[23];
+        this.barCanvasCtx.fillRect(0,0,6,2);
+        for(i = 0; i <= 15; i++) {
+            var colorNumber = 17 - i;
+            this.barCanvasCtx.fillStyle = this.colors[colorNumber];
+            var y = 32 - (i*2);
+            this.barCanvasCtx.fillRect(0,y,6,2);
+        }
+    },
+
     setStyle: function(style) {
         this.style = style;
         if(this.style == this.OSCILLOSCOPE) {
             this.analyser.fftSize = 2048;
             this.bufferLength = this.analyser.fftSize;
             this.dataArray = new Uint8Array(this.bufferLength);
+            this.canvasCtx.translate(1, 1); //  http://stackoverflow.com/questions/13593527/canvas-make-the-line-thicker
         } else if(this.style == this.BAR) {
             this.analyser.fftSize = 64; // Must be a power of two
             // Number of bins/bars we get
             this.bufferLength = this.analyser.frequencyBinCount;
             this.dataArray = new Uint8Array(this.bufferLength);
+            this.canvasCtx.translate(0, 0);
         }
     },
 
@@ -87,18 +110,14 @@ Visualizer = {
 
     _paintBarFrame: function() {
         var printBar = function(x, height) {
-            var max = height;
-            for(i = 0; i <= max; i++) {
-                var colorNumber = 17 - i;
-                var y = 32 - (i*2);
-                this.canvasCtx.fillStyle = this.colors[colorNumber];
-                this.canvasCtx.fillRect(x,y,6,2);
+            height = Math.round(height) * 2;
+            if(height > 0) {
+                y = 32 - height;
+                // Draw the gray peak line
+                this.canvasCtx.drawImage(this.barCanvas, 0, 0, 6, 2, x, y - 2, 6, 2);
+                // Draw the gradient
+                this.canvasCtx.drawImage(this.barCanvas, 0, y, 6, height, x, y, 6, height);
             }
-
-            // Draw the grey peak line
-            this.canvasCtx.fillStyle = this.colors[23];
-            var y = 32 - ((max)*2);
-            this.canvasCtx.fillRect(x,y,6,2);
         }.bind(this);
 
         this.analyser.getByteFrequencyData(this.dataArray);

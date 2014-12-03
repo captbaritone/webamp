@@ -83,18 +83,19 @@ SkinManager = {
     _parseVisColors: function(zip) {
         var entries = this._findFileInZip("VISCOLOR.TXT", zip).asText().split("\n");
         var regex = /^(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/
+        var colors = [];
         // changed to a hard number to deal with empty lines at the end...
         // plus its only meant to be an exact amount of numbers anywayz
         // - @PAEz
         for(var i = 0; i < 24; i++) {
             var matches = regex.exec(entries[i]);
             if(matches) {
-                this.visualizer.colors[i] = 'rgb(' + matches.slice(1,4).join(',') + ')';
+                colors[i] = 'rgb(' + matches.slice(1,4).join(',') + ')';
             } else {
                 console.error('Error in VISCOLOR.TXT on line', i);
-                this.visColors.push('rgb(255,0,0)');
             }
         }
+        this.visualizer.setColors(colors);
     },
 
     _findFileInZip: function(name, zip) {
