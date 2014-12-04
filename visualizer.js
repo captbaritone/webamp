@@ -128,7 +128,7 @@ Visualizer = {
         var printBar = function(x, height) {
             height = Math.round(height) * 2;
             if(height > 0) {
-                y = 32 - height;
+                y = 30 - height;
                 // Draw the gray peak line
                 this.canvasCtx.drawImage(this.barCanvas, 0, 0, 6, 2, x, y - 2, 6, 2);
                 // Draw the gradient

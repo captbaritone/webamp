@@ -222,8 +222,8 @@ a:focus { outline: none; }
 #visualizer {
     position: absolute;
     width: 75px;
-    height: 16px;
-    top: 43px;
+    height: 15px;
+    top: 44px;
     left: 24px;
 }
 
