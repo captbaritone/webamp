@@ -100,7 +100,7 @@ Media = {
         return this._buffer.duration;
     },
     timeElapsed: function() {
-        return this._context.currentTime - this._startTime;
+        return this._position;
     },
     timeRemaining: function() {
         return this.duration() - this.timeElapsed();
