@@ -24,8 +24,7 @@ Visualizer = {
     },
 
     clear: function() {
-        // +/- is just there to deal with offset, meh if its right or not ;)
-        this.canvasCtx.clearRect(-2, -2, this.width + 2, this.height + 2);
+        this.canvasCtx.clearRect(0, 0, this.width, this.height);
     },
 
     setColors: function(colors) {
