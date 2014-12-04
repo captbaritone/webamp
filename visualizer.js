@@ -7,7 +7,6 @@ Visualizer = {
         this.canvasCtx.imageSmoothingEnabled= false;
         this.width = this.canvas.width * 1; // Cast to int
         this.height = this.canvas.height * 1; // Cast to int
-        this.canvasCtx.translate(1, 1); //  http://stackoverflow.com/questions/13593527/canvas-make-the-line-thicker
         this.colors = []; // skin.js fills this from viscolors.txt
         this.NONE = 0;
         this.OSCILLOSCOPE = 1;
@@ -56,13 +55,11 @@ Visualizer = {
             this.analyser.fftSize = 2048;
             this.bufferLength = this.analyser.fftSize;
             this.dataArray = new Uint8Array(this.bufferLength);
-            this.canvasCtx.translate(1, 1); //  http://stackoverflow.com/questions/13593527/canvas-make-the-line-thicker
         } else if(this.style == this.BAR) {
             this.analyser.fftSize = 64; // Must be a power of two
             // Number of bins/bars we get
             this.bufferLength = this.analyser.frequencyBinCount;
             this.dataArray = new Uint8Array(this.bufferLength);
-            this.canvasCtx.translate(0, 0);
         }
     },
 
@@ -114,6 +111,10 @@ Visualizer = {
             percentAmplitude = amplitude / 128; // dataArray gives us bytes
             y = percentAmplitude * h;
             x = j * 2;
+
+            // Canvas coordinates are in the middle of the pixel by default.
+            // When we want to draw pixel perfect lines, we will need to
+            // account for that here
             if(x == 0) {
                 this.canvasCtx.moveTo(x, y);
             } else {
