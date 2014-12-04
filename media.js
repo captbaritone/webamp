@@ -145,7 +145,7 @@ Media = {
             return;
         }
         this._silence();
-        this._position = this._context.currentTime - this._startTime;
+        this._updatePosition();
     },
 
     stop: function() {
@@ -229,7 +229,7 @@ Media = {
 
     _updatePosition: function() {
         this._position = this._context.currentTime - this._startTime;
-        if(this._position >= this._buffer.duration) {
+        if(this._position >= this._buffer.duration && this._playing) {
             // Idealy we could use _source.loop, but it makes updating the position tricky
             if(this._loop) {
                 this.play(0);
