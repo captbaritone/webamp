@@ -7,6 +7,10 @@ input[type=range]:focus { outline: none; }
 input[type=range]::-moz-focus-outer { border: 0; }
 a:focus { outline: none; }
 
+body {
+    background-color: #0072CC;
+}
+
 #shade-time {
     cursor:url('cursors/MAINMENU.PNG'), auto;
 }
@@ -25,14 +29,19 @@ a:focus { outline: none; }
 
 /* Styles */
 #winamp {
-    position: relative;
+    position: absolute;
     /* background-image: MAIN.BMP via Javascript */
     height: 116px;
     width: 275px;
+    margin-top: -58px;
+    margin-left: -137px;
+    top: 40%;
+    left: 50%;
     cursor:url('cursors/MAINMENU.PNG'), auto;
 }
 
 #winamp.loading {
+    background-color: #FFFFFF;
     background-image: url('images/loading.gif');
     background-position: center;
     background-repeat: no-repeat;
@@ -731,4 +740,17 @@ a:focus { outline: none; }
 
 .shade #shade-second-second-digit {
     left: 25px;
+}
+
+.about {
+    position: absolute;
+    bottom: 0;
+    color: #bbb;
+    font-family: arial;
+    font-size: 15px;
+    color: white;
+}
+
+.about a {
+    color: white;
 }

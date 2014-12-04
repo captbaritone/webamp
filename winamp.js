@@ -52,8 +52,8 @@ function Winamp () {
         // offsetLeft / offsetTop however the element is 'relatively'
         // positioned so we're using style.left. parseInt is used to remove the
         // 'px' postfix from the value
-        var winStartLeft = parseInt(winampElm.style.left || 0,10),
-            winStartTop  = parseInt(winampElm.style.top || 0,10);
+        var winStartLeft = parseInt(winampElm.offsetLeft || 0,10),
+            winStartTop  = parseInt(winampElm.offsetTop || 0,10);
 
         // Get starting mouse position
         var mouseStartLeft = e.clientX,
@@ -69,6 +69,10 @@ function Winamp () {
             var diffLeft = mouseLeft-mouseStartLeft,
                 diffTop = mouseTop-mouseStartTop;
 
+            // These margins were only useful for centering the div, now we
+            // don't need them
+            winampElm.style.marginLeft = "0px";
+            winampElm.style.marginTop = "0px";
             // Move window to new position
             winampElm.style.left = (winStartLeft+diffLeft)+"px";
             winampElm.style.top = (winStartTop+diffTop)+"px";
