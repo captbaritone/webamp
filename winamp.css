@@ -227,6 +227,10 @@ a:focus { outline: none; }
     left: 24px;
 }
 
+.stop #visualizer {
+    display: none;
+}
+
 
 .text {
     position: absolute;

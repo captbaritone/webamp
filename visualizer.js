@@ -15,6 +15,12 @@ Visualizer = {
         this.dataArray = null;
         this.setStyle(this.BAR);
 
+        // Off-screen canvas for pre-rendering the background
+        this.bgCanvas = document.createElement('canvas');
+        this.bgCanvas.width = this.width;
+        this.bgCanvas.height = this.height;
+        this.bgCanvasCtx = this.bgCanvas.getContext("2d");
+
         // Off-screen canvas for pre-rendering a single bar gradient
         this.barCanvas = document.createElement('canvas');
         this.barCanvas.width = 6;
@@ -24,12 +30,25 @@ Visualizer = {
     },
 
     clear: function() {
-        this.canvasCtx.clearRect(0, 0, this.width, this.height);
+        this.canvasCtx.drawImage(this.bgCanvas, 0, 0);
     },
 
     setColors: function(colors) {
         this.colors = colors;
+        this.preRenderBg();
         this.preRenderBar();
+    },
+
+    // Pre-render the background grid
+    preRenderBg: function() {
+        this.bgCanvasCtx.fillStyle = this.colors[0];
+        this.bgCanvasCtx.fillRect(0,0,this.width, this.height);
+        this.bgCanvasCtx.fillStyle = this.colors[1];
+        for(x = 0; x < this.width; x += 4) {
+            for(y = 0; y < this.height; y += 4) {
+                this.bgCanvasCtx.fillRect(x,y,2,2);
+            }
+        }
     },
 
     // Pre-render the bar gradient
