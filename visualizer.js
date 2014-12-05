@@ -124,7 +124,7 @@ Visualizer = {
         this.canvasCtx.beginPath();
 
         // Iterate over the width of the canvas in "real" pixels.
-        for (var j = 0; j < this.width/2; j++) {
+        for (var j = 0; j <= this.width/2; j++) {
             amplitude = sliceAverage(this.dataArray, sliceWidth, j);
             percentAmplitude = amplitude / 128; // dataArray gives us bytes
             y = percentAmplitude * h;
