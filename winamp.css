@@ -139,10 +139,6 @@ body {
     background-position: -312px 0;
 }
 
-.doubled .status #clutter-bar {
-    background-position: -328px -44px;
-}
-
 #clutter-bar div {
     position: absolute;
     height: 7px;
@@ -162,10 +158,15 @@ body {
 }
 #clutter-bar #button-d {
     top: 25px;
- }
-#clutter-bar #button-v {
-    top: 32px;
+}
+/* Other buttons could follow this model */
+#clutter-bar #button-d:active,
+#clutter-bar #button-d.selected {
+    background-position: -328px -69px;
     height: 8px;
+}
+#clutter-bar #button-v {
+    top: 33px;
 }
 
 .status #play-pause {

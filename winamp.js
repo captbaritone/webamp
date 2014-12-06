@@ -104,6 +104,7 @@ function Winamp () {
     }
 
     this.nodes.buttonD.onclick = function() {
+        this.classList.toggle('selected');
         self.nodes.winamp.classList.toggle('doubled');
     }
 
