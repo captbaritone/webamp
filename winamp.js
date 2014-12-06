@@ -10,6 +10,7 @@ function Winamp () {
         'option': document.getElementById('option'),
         'close': document.getElementById('close'),
         'shade': document.getElementById('shade'),
+        'buttonD': document.getElementById('button-d'),
         'position': document.getElementById('position'),
         'fileInput': document.getElementById('file-input'),
         'volumeMessage': document.getElementById('volume-message'),
@@ -100,6 +101,10 @@ function Winamp () {
         self.media.stop();
         self.setStatus('stop'); // Currently unneeded
         self.nodes.winamp.classList.add('closed');
+    }
+
+    this.nodes.buttonD.onclick = function() {
+        self.nodes.winamp.classList.toggle('doubled');
     }
 
     this.media.addEventListener('timeupdate', function() {

@@ -40,6 +40,11 @@ body {
     cursor:url('cursors/MAINMENU.PNG'), auto;
 }
 
+#winamp.doubled {
+    zoom: 2;
+    -moz-transform: scale(2);
+}
+
 #winamp.loading {
     background-color: #FFFFFF;
     background-image: url('images/loading.gif');
@@ -132,6 +137,35 @@ body {
 
 .status #clutter-bar.disabled {
     background-position: -312px 0;
+}
+
+.doubled .status #clutter-bar {
+    background-position: -328px -44px;
+}
+
+#clutter-bar div {
+    position: absolute;
+    height: 7px;
+    width: 8px;
+    left: 0px;
+}
+
+#clutter-bar #button-o {
+    top: 3px;
+    height: 8px;
+}
+#clutter-bar #button-a {
+    top: 11px;
+ }
+#clutter-bar #button-i {
+    top: 18px;
+}
+#clutter-bar #button-d {
+    top: 25px;
+ }
+#clutter-bar #button-v {
+    top: 32px;
+    height: 8px;
 }
 
 .status #play-pause {
