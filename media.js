@@ -200,6 +200,10 @@ Media = {
         this._loop = !this._loop;
     },
 
+    toggleShuffle: function() {
+        // Implement this when we support playlists
+    },
+
     /* Listeners */
     addEventListener: function(event, callback) {
         this._callbacks[event] = callback;
