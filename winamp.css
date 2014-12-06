@@ -150,23 +150,35 @@ body {
     top: 3px;
     height: 8px;
 }
+#clutter-bar #button-o:active {
+    background-position: -304px -47px;
+}
 #clutter-bar #button-a {
     top: 11px;
- }
+}
+#clutter-bar #button-a:active,
+#clutter-bar #button-a.selected {
+    background-position: -312px -55px;
+}
 #clutter-bar #button-i {
     top: 18px;
 }
+#clutter-bar #button-i:active {
+    background-position: -320px -62px;
+}
 #clutter-bar #button-d {
     top: 25px;
+    height: 8px;
 }
-/* Other buttons could follow this model */
 #clutter-bar #button-d:active,
 #clutter-bar #button-d.selected {
     background-position: -328px -69px;
-    height: 8px;
 }
 #clutter-bar #button-v {
     top: 33px;
+}
+#clutter-bar #button-v:active {
+    background-position: -336px -77px;
 }
 
 .status #play-pause {
