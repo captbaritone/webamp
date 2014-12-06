@@ -173,7 +173,9 @@ function Winamp () {
     this.nodes.pause.onclick = function() {
         if(self.nodes.winamp.classList.contains('pause')){
             self.media.play();
-        } else {
+        }
+        else if(self.nodes.winamp.classList.contains('play'))
+        {
             self.media.pause();
             self.setStatus('pause');
         }
