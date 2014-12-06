@@ -495,6 +495,10 @@ document.onkeyup = function(e){
         keyboardAction[key].click();
     }else if(e.keyCode == 76 && e.ctrlKey){ //CTRL+L
         winamp.nodes.option.click();
+    }else if(e.keyCode == 68 && e.ctrlKey){ //CTRL+D
+        winamp.nodes.buttonD.click();
+    }else if(e.keyCode == 84 && e.ctrlKey){ //CTRL+T
+        winamp.nodes.time.click();
     }else{
         switch (key){
             // *1 is used to cast these values to integers. Could be improved.
