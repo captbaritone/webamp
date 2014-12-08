@@ -74,7 +74,10 @@ Visualizer = {
             this.bufferLength = this.analyser.fftSize;
             this.dataArray = new Uint8Array(this.bufferLength);
         } else if(this.style == this.BAR) {
-            this.analyser.fftSize = 64; // Must be a power of two
+            this.analyser.fftSize = 2048; // Must be a power of two
+            this.analyser.smoothingTimeConstant=0.9;
+            this.analyser.maxDecibels=-50;
+            this.analyser.minDecibels=-75;
             // Number of bins/bars we get
             this.bufferLength = this.analyser.frequencyBinCount;
             this.dataArray = new Uint8Array(this.bufferLength);
@@ -150,13 +153,17 @@ Visualizer = {
                 // Draw the gray peak line
                 this.canvasCtx.drawImage(this.barCanvas, 0, 0, 6, 2, x, y - 2, 6, 2);
                 // Draw the gradient
+                // ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
                 this.canvasCtx.drawImage(this.barCanvas, 0, y, 6, height, x, y, 6, height);
             }
         }.bind(this);
 
         this.analyser.getByteFrequencyData(this.dataArray);
-        for(j = 0; j < this.bufferLength; j++) {
-            height = this.dataArray[j] * (15/256);
+        var barCount=19; // How many bars to display
+        var spread=(this.bufferLength-250)/(barCount-1);
+        for(j = 0; j < barCount; j++) {
+            // console.debug(Math.ceil(spread*j),this.bufferLength); // just checking the spread
+            height = this.dataArray[Math.ceil(spread*j)] * (15/256);
             printBar(j*8, height);
         }
     }
