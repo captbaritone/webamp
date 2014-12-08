@@ -182,6 +182,16 @@ function Winamp () {
         self.skin.visualizer.clear();
     }
 
+    this.nodes.songTitle.onmousedown = function() {
+        self.textDisplay.pauseRegisterMarquee('songTitle');
+    }
+
+    this.nodes.songTitle.onmouseup = function() {
+        setTimeout(function () {
+            self.textDisplay.startRegisterMarquee('songTitle');
+        }, 1000);
+    }
+
     this.nodes.previous.onclick = function() {
         // Implement this when we support playlists
     }
