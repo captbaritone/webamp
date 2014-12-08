@@ -38,6 +38,18 @@ function Winamp () {
         'titleBar': document.getElementById('title-bar'),
     };
 
+    this.textDisplay = MultiDisplay.init(Font, this.nodes.songTitle);
+    this.textDisplay.addRegister('songTitle');
+    this.textDisplay.addRegister('position');
+    this.textDisplay.addRegister('volume');
+    this.textDisplay.addRegister('balance');
+    this.textDisplay.addRegister('message'); // General purpose
+
+    this.textDisplay.showRegister('songTitle');
+
+    this.textDisplay.startRegisterMarquee('songTitle');
+
+
     // Make window dragable
     this.nodes.titleBar.addEventListener('mousedown',function(e){
         if(e.target !== this) {
@@ -199,11 +211,11 @@ function Winamp () {
     }
 
     this.nodes.volume.onmousedown = function() {
-        self.nodes.winamp.classList.add('setting-volume');
+        self.textDisplay.showRegister('volume');
     }
 
     this.nodes.volume.onmouseup = function() {
-        self.nodes.winamp.classList.remove('setting-volume');
+        self.textDisplay.showRegister('songTitle');
     }
 
     this.nodes.volume.oninput = function() {
@@ -212,13 +224,13 @@ function Winamp () {
 
     this.nodes.position.onmousedown = function() {
         if(!self.nodes.winamp.classList.contains('stop')){
+            self.textDisplay.showRegister('position');
             self.nodes.winamp.classList.add('setting-position');
         }
     }
 
     this.nodes.position.onmouseup = function() {
-        // This should only even be needed when we are stopped, but better safe
-        // than sorry
+        self.textDisplay.showRegister('songTitle');
         self.nodes.winamp.classList.remove('setting-position');
     }
 
@@ -228,7 +240,7 @@ function Winamp () {
         var newElapsed = self._timeString(self.media.duration() * newFractionComplete);
         var duration = self._timeString(self.media.duration());
         var message = "Seek to: " + newElapsed + "/" + duration + " (" + newPercentComplete + "%)";
-        self.skin.font.setNodeToString(self.nodes.positionMessage, message);
+        self.textDisplay.setRegisterText('position', message);
     }
 
     this.nodes.position.onchange = function() {
@@ -238,11 +250,11 @@ function Winamp () {
     }
 
     this.nodes.balance.onmousedown = function() {
-        self.nodes.winamp.classList.add('setting-balance');
+        self.textDisplay.showRegister('balance');
     }
 
     this.nodes.balance.onmouseup = function() {
-        self.nodes.winamp.classList.remove('setting-balance');
+        self.textDisplay.showRegister('songTitle');
     }
 
     this.nodes.balance.oninput = function() {
@@ -282,8 +294,8 @@ function Winamp () {
         self.media.setVolume(percent);
         self.nodes.volume.style.backgroundPosition = '0 -' + offset + 'px';
 
-        string = 'Volume: ' + volume + '%';
-        self.skin.font.setNodeToString(self.nodes.volumeMessage, string);
+        var message = 'Volume: ' + volume + '%';
+        self.textDisplay.setRegisterText('volume', message);
 
         // This shouldn't trigger an infinite loop with volume.onchange(),
         // since the value will be the same
@@ -300,7 +312,7 @@ function Winamp () {
         } else {
             string = 'Balance: ' + Math.abs(balance) + '% Left';
         }
-        self.skin.font.setNodeToString(self.nodes.balanceMessage, string);
+        self.textDisplay.setRegisterText('balance', string);
 
         self.media.setBalance(balance);
         balance = Math.abs(balance) / 100
@@ -415,7 +427,7 @@ function Winamp () {
     this._setTitle = function() {
         var duration = self._timeString(self.media.duration());
         var name = self.fileName + ' (' + duration + ')  ***  ';
-        self.skin.font.setNodeToString(document.getElementById('song-title'), name);
+        this.textDisplay.setRegisterText('songTitle', name);
     }
 
     this._setMetaData = function() {
@@ -457,21 +469,6 @@ function Winamp () {
         var timeObject = self._timeObject(time);
         return timeObject[0] + timeObject[1] + ':' + timeObject[2] + timeObject[3];
     }
-
-    this.marqueeLoop = function() {
-        setTimeout(function () {
-            var text = self.nodes.songTitle.firstChild;
-            // Only scroll if the text is too long
-            if(text && text.childNodes.length > 30) {
-                var characterNode = text.firstChild;
-                text.removeChild(characterNode);
-                text.appendChild(characterNode);
-                self.marqueeLoop();
-            }
-
-        }, 220)
-    }
-
 }
 
 keylog = [];
@@ -544,5 +541,4 @@ file = 'https://cdn.rawgit.com/captbaritone/llama/master/llama-2.91.mp3';
 fileName = "1. DJ Mike Llama - Llama Whippin' Intro";
 winamp.loadFromUrl(file, fileName);
 
-winamp.marqueeLoop();
 winamp.skin.setSkinByUrl('https://cdn.rawgit.com/captbaritone/winamp2-js/master/skins/base-2.91.wsz');
