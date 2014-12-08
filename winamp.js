@@ -115,6 +115,18 @@ function Winamp () {
         self.nodes.winamp.classList.add('closed');
     }
 
+    this.nodes.buttonD.onmousedown = function() {
+        if(self.nodes.winamp.classList.contains('doubled')) {
+            self.textDisplay.setRegisterText('message', 'Disable doublesize mode');
+        } else {
+            self.textDisplay.setRegisterText('message', 'Enable doublesize mode');
+        }
+        self.textDisplay.showRegister('message');
+    }
+    this.nodes.buttonD.onmouseup = function() {
+        self.textDisplay.showRegister('songTitle');
+    }
+
     this.nodes.buttonD.onclick = function() {
         this.classList.toggle('selected');
         self.nodes.winamp.classList.toggle('doubled');
