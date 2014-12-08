@@ -10,6 +10,7 @@ function Winamp () {
         'option': document.getElementById('option'),
         'close': document.getElementById('close'),
         'shade': document.getElementById('shade'),
+        'buttonD': document.getElementById('button-d'),
         'position': document.getElementById('position'),
         'fileInput': document.getElementById('file-input'),
         'volumeMessage': document.getElementById('volume-message'),
@@ -52,8 +53,8 @@ function Winamp () {
         // offsetLeft / offsetTop however the element is 'relatively'
         // positioned so we're using style.left. parseInt is used to remove the
         // 'px' postfix from the value
-        var winStartLeft = parseInt(winampElm.style.left || 0,10),
-            winStartTop  = parseInt(winampElm.style.top || 0,10);
+        var winStartLeft = parseInt(winampElm.offsetLeft || 0,10),
+            winStartTop  = parseInt(winampElm.offsetTop || 0,10);
 
         // Get starting mouse position
         var mouseStartLeft = e.clientX,
@@ -69,6 +70,10 @@ function Winamp () {
             var diffLeft = mouseLeft-mouseStartLeft,
                 diffTop = mouseTop-mouseStartTop;
 
+            // These margins were only useful for centering the div, now we
+            // don't need them
+            winampElm.style.marginLeft = "0px";
+            winampElm.style.marginTop = "0px";
             // Move window to new position
             winampElm.style.left = (winStartLeft+diffLeft)+"px";
             winampElm.style.top = (winStartTop+diffTop)+"px";
@@ -96,6 +101,11 @@ function Winamp () {
         self.media.stop();
         self.setStatus('stop'); // Currently unneeded
         self.nodes.winamp.classList.add('closed');
+    }
+
+    this.nodes.buttonD.onclick = function() {
+        this.classList.toggle('selected');
+        self.nodes.winamp.classList.toggle('doubled');
     }
 
     this.media.addEventListener('timeupdate', function() {
@@ -128,7 +138,7 @@ function Winamp () {
     }
 
     this.nodes.time.onclick = function() {
-        this.classList.toggle('countdown');
+        self.nodes.time.classList.toggle('countdown');
         self.updateTime();
     }
 
@@ -163,7 +173,9 @@ function Winamp () {
     this.nodes.pause.onclick = function() {
         if(self.nodes.winamp.classList.contains('pause')){
             self.media.play();
-        } else {
+        }
+        else if(self.nodes.winamp.classList.contains('play'))
+        {
             self.media.pause();
             self.setStatus('pause');
         }
@@ -485,6 +497,10 @@ document.onkeyup = function(e){
         keyboardAction[key].click();
     }else if(e.keyCode == 76 && e.ctrlKey){ //CTRL+L
         winamp.nodes.option.click();
+    }else if(e.keyCode == 68 && e.ctrlKey){ //CTRL+D
+        winamp.nodes.buttonD.click();
+    }else if(e.keyCode == 84 && e.ctrlKey){ //CTRL+T
+        winamp.nodes.time.click();
     }else{
         switch (key){
             // *1 is used to cast these values to integers. Could be improved.

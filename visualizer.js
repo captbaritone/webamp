@@ -5,9 +5,8 @@ Visualizer = {
         this.analyser = analyser;
         this.canvasCtx = this.canvas.getContext("2d");
         this.canvasCtx.imageSmoothingEnabled= false;
-        this.canvasCtx.translate(1, 1); //  http://stackoverflow.com/questions/13593527/canvas-make-the-line-thicker
-        this.width = this.canvas.width;
-        this.height = this.canvas.height;
+        this.width = this.canvas.width * 1; // Cast to int
+        this.height = this.canvas.height * 1; // Cast to int
         this.colors = []; // skin.js fills this from viscolors.txt
         this.NONE = 0;
         this.OSCILLOSCOPE = 1;
@@ -16,12 +15,56 @@ Visualizer = {
         this.dataArray = null;
         this.setStyle(this.BAR);
 
+        // Off-screen canvas for pre-rendering the background
+        this.bgCanvas = document.createElement('canvas');
+        this.bgCanvas.width = this.width;
+        this.bgCanvas.height = this.height;
+        this.bgCanvasCtx = this.bgCanvas.getContext("2d");
+
+        // Off-screen canvas for pre-rendering a single bar gradient
+        this.barCanvas = document.createElement('canvas');
+        this.barCanvas.width = 6;
+        this.barCanvas.height = 32;
+        this.barCanvasCtx = this.barCanvas.getContext("2d");
         return this;
     },
 
     clear: function() {
-        // +/- is just there to deal with offset, meh if its right or not ;)
-        this.canvasCtx.clearRect(-2, -2, this.width + 2, this.height + 2);
+        this.canvasCtx.drawImage(this.bgCanvas, 0, 0);
+    },
+
+    setColors: function(colors) {
+        this.colors = colors;
+        this.preRenderBg();
+        this.preRenderBar();
+    },
+
+    // Pre-render the background grid
+    preRenderBg: function() {
+        this.bgCanvasCtx.fillStyle = this.colors[0];
+        this.bgCanvasCtx.fillRect(0,0,this.width, this.height);
+        this.bgCanvasCtx.fillStyle = this.colors[1];
+        for(x = 0; x < this.width; x += 4) {
+            for(y = 0; y < this.height; y += 4) {
+                this.bgCanvasCtx.fillRect(x,y,2,2);
+            }
+        }
+    },
+
+    // Pre-render the bar gradient
+    preRenderBar: function() {
+        this.barCanvasCtx.fillStyle = this.colors[23];
+        this.barCanvasCtx.fillRect(0,0,6,2);
+        for(i = 0; i <= 15; i++) {
+            var colorNumber = 17 - i;
+            this.barCanvasCtx.fillStyle = this.colors[colorNumber];
+            var y = 32 - (i*2);
+            this.barCanvasCtx.fillRect(0,y,6,2);
+        }
+        // If we are paused when the skin changes, we will keep the vis colors
+        // until we paint again. For now we can just clear the current frame so
+        // we don't end up with a clashing visual.
+        this.clear();
     },
 
     setStyle: function(style) {
@@ -48,57 +91,67 @@ Visualizer = {
     },
 
     _paintOscilloscopeFrame: function() {
-        function avg(dataArray) {
-            var avg = 0;
-            var count = 0;
-            for (var l = lastIndex; l < index + 1; l++) {
-                avg += dataArray[l];
-                count++;
+        // Return the average value in a slice of dataArray
+        function sliceAverage(dataArray, sliceWidth, sliceNumber) {
+            var start = sliceWidth * sliceNumber;
+            var end = start + sliceWidth;
+            var sum = 0;
+            for(var i = start; i < end; i++) {
+                sum += dataArray[i];
             }
-            var v = avg / count;
-            return h * v / 128;
+            return sum / sliceWidth;
         }
+
         this.analyser.getByteTimeDomainData(this.dataArray);
 
-        this.canvasCtx.lineWidth = 2; // 2 because were shrinking the canvas by 2
+        // 2 because we're shrinking the canvas by 2
+        this.canvasCtx.lineWidth = 2;
 
         // Just use one of the viscolors for now
         this.canvasCtx.strokeStyle = this.colors[18];
 
-        this.canvasCtx.beginPath();
+        // Since dataArray has more values than we have pixels to display, we
+        // have to average several dataArray values per pixel. We call these
+        // groups slices.
+        //
+        // We use the  2x scale here since we only want to plot values for
+        // "real" pixels.
+        var sliceWidth = Math.floor(this.bufferLength / this.width) * 2;
 
-        var sliceWidth = this.bufferLength / this.width * 1;
+        // The max amplitude is half the height
         var h = this.height / 2;
 
-        this.canvasCtx.moveTo(-2, h);
-        var index = 0;
-        var lastIndex = 0;
-        for (var i = 0, iEnd = this.width * 1; i < iEnd; i += 2) {
-            index = i * sliceWidth | 0;
-            this.canvasCtx.lineTo(i, avg(this.dataArray));
-            lastIndex = index + 1;
-        }
-        lastIndex = index + 1;
-            index = i * sliceWidth | 0;
+        this.canvasCtx.beginPath();
 
-        this.canvasCtx.lineTo(this.width, avg(this.dataArray));
+        // Iterate over the width of the canvas in "real" pixels.
+        for (var j = 0; j <= this.width/2; j++) {
+            amplitude = sliceAverage(this.dataArray, sliceWidth, j);
+            percentAmplitude = amplitude / 128; // dataArray gives us bytes
+            y = percentAmplitude * h;
+            x = j * 2;
+
+            // Canvas coordinates are in the middle of the pixel by default.
+            // When we want to draw pixel perfect lines, we will need to
+            // account for that here
+            if(x == 0) {
+                this.canvasCtx.moveTo(x, y);
+            } else {
+                this.canvasCtx.lineTo(x, y);
+            }
+        }
         this.canvasCtx.stroke();
     },
 
     _paintBarFrame: function() {
         var printBar = function(x, height) {
-            var max = height;
-            for(i = 0; i <= max; i++) {
-                var colorNumber = 17 - i;
-                var y = 32 - (i*2);
-                this.canvasCtx.fillStyle = this.colors[colorNumber];
-                this.canvasCtx.fillRect(x,y,6,2);
+            height = Math.round(height) * 2;
+            if(height > 0) {
+                y = 30 - height;
+                // Draw the gray peak line
+                this.canvasCtx.drawImage(this.barCanvas, 0, 0, 6, 2, x, y - 2, 6, 2);
+                // Draw the gradient
+                this.canvasCtx.drawImage(this.barCanvas, 0, y, 6, height, x, y, 6, height);
             }
-
-            // Draw the grey peak line
-            this.canvasCtx.fillStyle = this.colors[23];
-            var y = 32 - ((max)*2);
-            this.canvasCtx.fillRect(x,y,6,2);
         }.bind(this);
 
         this.analyser.getByteFrequencyData(this.dataArray);

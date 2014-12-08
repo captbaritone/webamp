@@ -100,7 +100,7 @@ Media = {
         return this._buffer.duration;
     },
     timeElapsed: function() {
-        return this._context.currentTime - this._startTime;
+        return this._position;
     },
     timeRemaining: function() {
         return this.duration() - this.timeElapsed();
@@ -145,7 +145,7 @@ Media = {
             return;
         }
         this._silence();
-        this._position = this._context.currentTime - this._startTime;
+        this._updatePosition();
     },
 
     stop: function() {
@@ -200,6 +200,10 @@ Media = {
         this._loop = !this._loop;
     },
 
+    toggleShuffle: function() {
+        // Implement this when we support playlists
+    },
+
     /* Listeners */
     addEventListener: function(event, callback) {
         this._callbacks[event] = callback;
@@ -229,7 +233,7 @@ Media = {
 
     _updatePosition: function() {
         this._position = this._context.currentTime - this._startTime;
-        if(this._position >= this._buffer.duration) {
+        if(this._position >= this._buffer.duration && this._playing) {
             // Idealy we could use _source.loop, but it makes updating the position tricky
             if(this._loop) {
                 this.play(0);

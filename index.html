@@ -3,15 +3,15 @@
     <head>
         <title>Winamp2-js</title>
         <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="Winamp 2.9 reimplemented in HTML5 and JavaScript" />
         <meta property="og:title" content="Winamp2-js &bull; Winamp in your browser" />
         <meta property="og:description" content="Winamp 2.9 reimplemented in HTML5 and JavaScript" />
         <meta property="og:type" content="website" />
-        <meta property="og:url"
-        content="http://jordaneldredge.com/projects/winamp2-js/" />
-        <meta property="og:image"
-        content="http://jordaneldredge.com/projects/winamp2-js/preview.png" />
+        <meta property="og:url" content="http://jordaneldredge.com/projects/winamp2-js/" />
+        <meta property="og:image" content="http://jordaneldredge.com/projects/winamp2-js/preview.png" />
         <link rel='stylesheet' type='text/css' href='winamp.css' />
+        <link rel="shortcut icon" sizes="16x16 32x32" href="favicon.ico">
         <style id='skin' media="screen" type="text/css"></style>
     </head>
     <body>
@@ -30,7 +30,13 @@
                 <div id='close'></div>
             </div>
             <div class='status'>
-                <div id='clutter-bar'></div>
+                <div id='clutter-bar'>
+                    <div id='button-o'></div>
+                    <div id='button-a'></div>
+                    <div id='button-i'></div>
+                    <div id='button-d'></div>
+                    <div id='button-v'></div>
+                </div>
                 <div id='play-pause'></div>
                 <div id='work-indicator'></div>
                 <div id='time'>
@@ -40,7 +46,7 @@
                     <div id='second-first-digit'></div>
                     <div id='second-second-digit'></div>
                 </div>
-                <canvas id='visualizer' width='150' height='32'></canvas>
+                <canvas id='visualizer' width='150' height='30'></canvas>
             </div>
             <div class='media-info'>
                 <div id='song-title' class='text'></div>
@@ -77,8 +83,12 @@
             </div>
             <a id='about' target='_blank' href='https://github.com/captbaritone/winamp2-js'></a>
         </div>
-        <p style="position: absolute; bottom: 0;">by <a href='https://twitter.com/captbaritone'>@captbaritone</a> - <a href='https://github.com/captbaritone/winamp2-js'>GitHub</a></p>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.4.0/jszip.min.js"></script>
+        <p class='about'>
+            by <a href='https://twitter.com/captbaritone'>@captbaritone</a>
+            -
+            <a href='https://github.com/captbaritone/winamp2-js'>GitHub</a>
+        </p>
+        <script src="http://cdn.bootcss.com/jszip/2.4.0/jszip.min.js"></script>
 
         <script src="file-manager.js"></script>
         <script src="visualizer.js"></script>

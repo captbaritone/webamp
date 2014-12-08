@@ -16,9 +16,12 @@ SkinManager = {
         "#title-bar #shade": "TITLEBAR.BMP",
         "#title-bar #close": "TITLEBAR.BMP",
         ".status #clutter-bar": "TITLEBAR.BMP",
+        ".status #clutter-bar div:active": "TITLEBAR.BMP",
+        ".status #clutter-bar div.selected": "TITLEBAR.BMP",
         ".status #play-pause": "PLAYPAUS.BMP",
         ".play .status #work-indicator": "PLAYPAUS.BMP",
         ".status #time #minus-sign": "NUMBERS.BMP",
+        ".status #time.ex #minus-sign": "NUMS_EX.BMP",
         ".media-info .mono-stereo div": "MONOSTER.BMP",
         "#volume": "VOLUME.BMP",
         "#volume::-webkit-slider-thumb": "VOLUME.BMP",
@@ -56,6 +59,7 @@ SkinManager = {
     // Gets passed as a callback, so don't have access to `this`
     _setSkinByBuffer: function(buffer) {
         var zip = new JSZip(buffer);
+        document.getElementById('time').classList.remove('ex');
 
         // XXX Ideally we would empty the style tag here, but I don't know how
         // Appending overwrites, which has the same net effect, but after
@@ -68,8 +72,12 @@ SkinManager = {
             if (file) {
                 var value = "background-image: url(data:image/bmp;base64," + btoa(file.asBinary()) + ")"
                 cssRules += selector + "{" + value + "}\n";
-            }
 
+                // CSS has to change if this file is present
+                if(fileName == 'NUMS_EX.BMP') {
+                    document.getElementById('time').classList.add('ex');
+                }
+            }
         }
 
         // Clear the loading state
@@ -83,18 +91,19 @@ SkinManager = {
     _parseVisColors: function(zip) {
         var entries = this._findFileInZip("VISCOLOR.TXT", zip).asText().split("\n");
         var regex = /^(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/
+        var colors = [];
         // changed to a hard number to deal with empty lines at the end...
         // plus its only meant to be an exact amount of numbers anywayz
         // - @PAEz
         for(var i = 0; i < 24; i++) {
             var matches = regex.exec(entries[i]);
             if(matches) {
-                this.visualizer.colors[i] = 'rgb(' + matches.slice(1,4).join(',') + ')';
+                colors[i] = 'rgb(' + matches.slice(1,4).join(',') + ')';
             } else {
                 console.error('Error in VISCOLOR.TXT on line', i);
-                this.visColors.push('rgb(255,0,0)');
             }
         }
+        this.visualizer.setColors(colors);
     },
 
     _findFileInZip: function(name, zip) {
