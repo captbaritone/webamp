@@ -300,8 +300,8 @@ function Winamp () {
         volume = Math.min(volume, 100);
 
         var percent = volume / 100;
-        sprite = Math.round(percent * 28);
-        offset = (sprite - 1) * 15;
+        var sprite = Math.round(percent * 28);
+        var offset = (sprite - 1) * 15;
 
         self.media.setVolume(percent);
         self.nodes.volume.style.backgroundPosition = '0 -' + offset + 'px';
