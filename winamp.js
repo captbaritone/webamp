@@ -502,15 +502,3 @@ Winamp = {
         return timeObject[0] + timeObject[1] + ':' + timeObject[2] + timeObject[3];
     }
 }
-
-winamp = Winamp.init({
-    'volume': 50,
-    'balance': 0,
-    'mediaFile': {
-        'url': "https://cdn.rawgit.com/captbaritone/llama/master/llama-2.91.mp3",
-        'name': "1. DJ Mike Llama - Llama Whippin' Intro"
-    },
-    'skinUrl': 'https://cdn.rawgit.com/captbaritone/winamp2-js/master/skins/base-2.91.wsz'
-});
-
-Hotkeys.init(winamp);
