@@ -28,7 +28,7 @@ Works in modern versions of Firefox, Safari and Chrome. Untested in IE.
   modern browsers.
 
 - [Winamp em HTML5 e Javascript](http://www.tidbits.com.br/winamp-em-html5-e-javascript)
-  In 2010 a developer named Dnailo posted one of his HTML5 experiment: " audio
+  In 2010 a developer named Danilo posted one of his HTML5 experiment: " audio
   player simulating good old Winamp". You will have to download the zip file.
 
 - [JuicyDrop](http://cggaurav.github.io/juicydrop/) An HTML5 implementation with
