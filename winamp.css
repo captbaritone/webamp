@@ -233,6 +233,7 @@ body {
 .status #time #minus-sign {
     position: absolute;
     top: 6px;
+    left: -1px;
     width: 5px;
     height: 1px;
     /* background-image: NUMBERS.BMP via Javascript */
