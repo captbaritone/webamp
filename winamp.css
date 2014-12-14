@@ -631,6 +631,7 @@ body {
 }
 
 .digit {
+    position: absolute;
     display: inline-block;
     width: 9px;
     height: 13px;
