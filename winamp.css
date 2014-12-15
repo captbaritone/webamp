@@ -8,7 +8,7 @@ input[type=range]::-moz-focus-outer { border: 0; }
 a:focus { outline: none; }
 
 body {
-    background-color: #0072CC;
+    background-color: #224EB7;
     font-family: arial;
     font-size: 15px;
 }
