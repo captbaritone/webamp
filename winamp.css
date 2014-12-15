@@ -49,8 +49,10 @@ body {
 }
 
 #winamp.doubled {
-    zoom: 2;
     -moz-transform: scale(2);
+    -moz-transform-origin: top left;
+    -webkit-transform: scale(2);
+    -webkit-transform-origin: top left;
 }
 
 #winamp.loading {
