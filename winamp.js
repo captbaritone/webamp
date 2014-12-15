@@ -3,7 +3,7 @@ Winamp = {
     init: function(options) {
         this.fileManager = FileManager;
         this.media = Media.init();
-        this.skin = SkinManager.init(document.getElementById('skin'), document.getElementById('visualizer'), this.media._analyser);
+        this.skin = SkinManager.init(document.getElementById('visualizer'), this.media._analyser);
 
         this.nodes = {
             'option': document.getElementById('option'),

@@ -2,8 +2,8 @@
 SkinManager = {
     fileManager: FileManager,
     font: Font,
-    init: function(styleNode, visualizerNode, analyser) {
-        this.styleNode = styleNode;
+    init: function(visualizerNode, analyser) {
+        this._createNewStyleNode();
         this.visualizer = Visualizer.init(visualizerNode, analyser);
         return this;
     },
@@ -61,9 +61,8 @@ SkinManager = {
         var zip = new JSZip(buffer);
         document.getElementById('time').classList.remove('ex');
 
-        // XXX Ideally we would empty the style tag here, but I don't know how
-        // Appending overwrites, which has the same net effect, but after
-        // several skin changes, this tag will get pretty bloated.
+        this._createNewStyleNode();
+
         var cssRules = '';
         for(var selector in SkinManager._skinImages) {
             var fileName = SkinManager._skinImages[selector];
@@ -110,5 +109,13 @@ SkinManager = {
         return zip.filter(function (relativePath, file){
             return new RegExp("(^|/)" + name, 'i').test(relativePath)
         })[0];
+    },
+
+    _createNewStyleNode: function() {
+        if(this.styleNode) {
+            document.head.removeChild(this.styleNode);
+        }
+        this.styleNode = document.createElement('style');
+        document.head.appendChild(this.styleNode);
     }
 }
