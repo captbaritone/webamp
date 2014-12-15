@@ -119,9 +119,7 @@ Winamp = {
         }
 
         this.nodes.close.onclick = function() {
-            self.media.stop();
-            self.setStatus('stop'); // Currently unneeded
-            self.nodes.winamp.classList.add('closed');
+            self.close();
         }
 
         this.nodes.buttonD.onmousedown = function() {
@@ -234,7 +232,7 @@ Winamp = {
         }
 
         this.nodes.eject.onclick = function() {
-            self.nodes.fileInput.click();
+            self.openFileDialog();
         }
 
         this.nodes.fileInput.onchange = function(e){
@@ -402,6 +400,16 @@ Winamp = {
             digitNode.appendChild(this.skin.font.digitNode(digit));
             this.skin.font.displayCharacterInNode(digit, shadeNode);
         }
+    },
+
+    close: function() {
+        this.media.stop();
+        this.setStatus('stop'); // Currently unneeded
+        this.nodes.winamp.classList.add('closed');
+    },
+
+    openFileDialog: function() {
+        this.nodes.fileInput.click();
     },
 
     // In shade mode, the position slider shows up differently depending on if
