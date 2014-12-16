@@ -7,30 +7,30 @@ module.exports = function(grunt) {
         concat: {
             dist: {
                   src: [
-                    "jszip.2.4.0.min.js",
-                    "browser.js",
-                    "file-manager.js",
-                    "visualizer.js",
-                    "media.js",
-                    "font.js",
-                    "skin.js",
-                    "multi-display.js",
-                    "hotkeys.js",
-                    "winamp.js"
+                    "js/jszip.2.4.0.min.js",
+                    "js/browser.js",
+                    "js/file-manager.js",
+                    "js/visualizer.js",
+                    "js/media.js",
+                    "js/font.js",
+                    "js/skin.js",
+                    "js/multi-display.js",
+                    "js/hotkeys.js",
+                    "js/winamp.js"
                   ],
-                  dest: 'production.js',
+                  dest: 'js/production.js',
             }
         },
         uglify: {
             build: {
-                src: 'production.js',
-                dest: 'production.min.js'
+                src: 'js/production.js',
+                dest: 'js/production.min.js'
             }
         },
         cssmin: {
             combine: {
                 files: {
-                    'production.min.css': ['winamp.css']
+                    'css/production.min.css': ['css/winamp.css']
                 }
             }
         }
