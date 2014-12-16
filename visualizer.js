@@ -45,7 +45,7 @@ Visualizer = {
         this.bgCanvasCtx.fillRect(0,0,this.width, this.height);
         this.bgCanvasCtx.fillStyle = this.colors[1];
         for(x = 0; x < this.width; x += 4) {
-            for(y = 0; y < this.height; y += 4) {
+            for(y = 2; y < this.height; y += 4) {
                 this.bgCanvasCtx.fillRect(x,y,2,2);
             }
         }
@@ -146,7 +146,7 @@ Visualizer = {
         var printBar = function(x, height) {
             height = Math.round(height) * 2;
             if(height > 0) {
-                y = 30 - height;
+                y = 32 - height;
                 // Draw the gray peak line
                 this.canvasCtx.drawImage(this.barCanvas, 0, 0, 6, 2, x, y - 2, 6, 2);
                 // Draw the gradient
@@ -156,7 +156,7 @@ Visualizer = {
 
         this.analyser.getByteFrequencyData(this.dataArray);
         for(j = 0; j < this.bufferLength; j++) {
-            height = this.dataArray[j] * (15/256);
+            height = this.dataArray[j] * (14/256);
             printBar(j*8, height);
         }
     }
