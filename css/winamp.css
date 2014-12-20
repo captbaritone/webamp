@@ -55,12 +55,25 @@ body {
     -webkit-transform-origin: top left;
 }
 
+.doubled #context-menu {
+    -moz-transform: scale(.5);
+    -moz-transform-origin: top left;
+    -webkit-transform: scale(.5);
+    -webkit-transform-origin: top left;
+}
+
 #winamp.loading {
+    background-image: none;
     background-color: #FFFFFF;
     border: 2px solid #dddddd;
 }
-#winamp.loading #loading {
-    display: block;
+/* Hide everything whil we are loading */
+#winamp.loading * {
+    display: none;
+}
+
+#loading {
+    display: none;
     text-align: center;
     font-size: 20px;
     height: 30px;
@@ -69,9 +82,11 @@ body {
     top: 0; left: 0; bottom: 0; right: 0;
 }
 
-#loading {
-    display: none;
+/* Only show loading div while we are loading */
+#winamp.loading #loading {
+    display: block;
 }
+
 #winamp.closed { display: none; }
 
 #title-bar {
@@ -112,8 +127,20 @@ body {
     left: 6px;
     /* background-image: TITLEBAR.BMP via Javascript */
 }
-#title-bar #option:active {
+#title-bar #option #context-menu {
+    display: none;
+    top: 12px;
+    left: 0px;
+}
+#title-bar #option:active,
+#title-bar #option.selected
+{
     background-position: 0 -9px;
+}
+#title-bar #option:active #context-menu,
+#title-bar #option.selected #context-menu
+{
+    display: block;
 }
 
 #title-bar #minimize {
@@ -657,9 +684,17 @@ body {
 /* Shade View */
 #winamp.shade {
     height: 14px;
-    overflow: hidden;
 }
 
+.shade .media-info,
+.shade .windows,
+.shade #volume,
+.shade #balance,
+.shade .shuffle-repeat,
+.shade .status
+{
+    display: none;
+}
 .shade #title-bar {
     background-position: -27px -42px;
     cursor:url('../cursors/MAINMENU.PNG'), auto;

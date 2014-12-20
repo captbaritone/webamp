@@ -51,7 +51,7 @@ Winamp = {
         this.setVolume(options.volume);
         this.setBalance(options.balance);
         this.loadFromUrl(options.mediaFile.url, options.mediaFile.name);
-        this.skin.setSkinByUrl(options.skinUrl);
+        this.setSkinByUrl(options.skinUrl);
 
         this._registerListeners();
         return this;
@@ -114,8 +114,9 @@ Winamp = {
             window.addEventListener('mouseup',handleUp);
         });
 
-        this.nodes.option.onclick = function() {
-            // We don't support playing from URLs any more
+        this.nodes.option.onclick = function(event) {
+            event.stopPropagation();
+            this.classList.toggle('selected');
         }
 
         this.nodes.close.onclick = function() {
@@ -315,6 +316,10 @@ Winamp = {
         this.nodes.winamp.classList.add(className);
     },
 
+    closeOptionMenu: function() {
+        this.nodes.option.classList.remove('selected');
+    },
+
     // From 0-100
     setVolume: function(volume) {
         // Ensure volume does not go out of bounds
@@ -457,6 +462,11 @@ Winamp = {
     loadFromUrl: function(url, fileName) {
         this.fileName = fileName;
         this.fileManager.bufferFromUrl(url, this._loadBuffer.bind(this));
+    },
+
+    setSkinByUrl: function(url) {
+        this.nodes.winamp.classList.add('loading');
+        this.skin.setSkinByUrl(url);
     },
 
     _loadBuffer: function(buffer) {
