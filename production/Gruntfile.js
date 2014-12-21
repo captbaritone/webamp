@@ -22,7 +22,7 @@ module.exports = function(grunt) {
                     cssmin: true
                 },
                 src: [
-                    '../css/winamp.css', // Inlines the cursor images
+                    //'../css/winamp.css', // Inlines the cursor images
                     '../index.html'
                 ]
             }
