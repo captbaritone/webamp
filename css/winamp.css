@@ -496,19 +496,19 @@ body {
     /* background-image: SHUFREP.BMP via Javascript */
 }
 
-.windows #equalizer {
+.windows #equalizer-button {
     left: 0;
     background-position: 0 -61px;
 }
-.windows #equalizer:active {
+.windows #equalizer-button:active {
     background-position: -46px -61px;
 }
 
-.windows #playlist {
+.windows #playlist-button {
     left: 23px;
     background-position: -23px -61px;
 }
-.windows #playlist:active {
+.windows #playlist-button:active {
     background-position: -69px -61px;
 }
 
