@@ -23,6 +23,10 @@
     padding: 1px 18px 3px 18px;
     display: block;
 }
+#context-menu li.parent:after {
+    text-align: right;
+    /* content: '\25b8'; */
+}
 #context-menu li a {
     text-decoration: none;
     color: black;
