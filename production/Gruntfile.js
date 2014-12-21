@@ -17,7 +17,7 @@ module.exports = function(grunt) {
         inline: {
             dist: {
                 options:{
-                    tag: '', // Inline all the things
+                    tag: 'inline', // Inline all the things
                     uglify: true,
                     cssmin: true
                 },
