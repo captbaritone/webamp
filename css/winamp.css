@@ -14,7 +14,7 @@ body {
 }
 
 #shade-time {
-    cursor:url('../cursors/MAINMENU.PNG'), auto;
+    cursor:url('../cursors/MAINMENU.PNG?inline'), auto;
 }
 
 /* Animation */
@@ -39,7 +39,7 @@ body {
     margin-left: -137px;
     top: 40%;
     left: 50%;
-    cursor:url('../cursors/MAINMENU.PNG'), auto;
+    cursor:url('../cursors/MAINMENU.PNG?inline'), auto;
     /* Ask the browser to scale showing large pixels if possible */
     image-rendering: -moz-crisp-edges;          /* Firefox */
     image-rendering:   -o-crisp-edges;          /* Opera */
@@ -97,7 +97,7 @@ body {
     width: 275px;
     /* background-image: TITLEBAR.BMP via Javascript */
     background-position: -27px -14px;
-    cursor:url('../cursors/TITLEBAR.PNG'), auto;
+    cursor:url('../cursors/TITLEBAR.PNG?inline'), auto;
 }
 
 #title-bar.selected {
@@ -120,7 +120,7 @@ body {
     height: 9px;
     width: 9px;
     top: 3px;
-    cursor:url('../cursors/MAINMENU.PNG'), auto;
+    cursor:url('../cursors/MAINMENU.PNG?inline'), auto;
 }
 
 #title-bar #option {
@@ -165,7 +165,7 @@ body {
     left: 264px;
     /* background-image: TITLEBAR.BMP via Javascript */
     background-position: -18px 0px;
-    cursor:url('../cursors/CLOSE.PNG'), auto;
+    cursor:url('../cursors/CLOSE.PNG?inline'), auto;
 }
 #title-bar #close:active {
     background-position: -18px -9px;
@@ -416,7 +416,7 @@ body {
     width: 68px;
     /* background-image: VOLUME.BMP via Javascript */
     background-position: 0 0;
-    cursor:url('../cursors/POSBAR.PNG'), auto;
+    cursor:url('../cursors/POSBAR.PNG?inline'), auto;
 }
 #volume::-webkit-slider-thumb {
     display: block;
@@ -425,7 +425,7 @@ body {
     width: 14px;
     /* background-image: VOLUME.BMP via Javascript */
     background-position: -15px -422px;
-    cursor:url('../cursors/POSBAR.PNG'), auto;
+    cursor:url('../cursors/POSBAR.PNG?inline'), auto;
     background-repeat: no-repeat;
 }
 #volume::-moz-range-thumb {
@@ -434,7 +434,7 @@ body {
     width: 14px;
     /* background-image: VOLUME.BMP via Javascript */
     background-position: -15px -422px;
-    cursor:url('../cursors/POSBAR.PNG'), auto;
+    cursor:url('../cursors/POSBAR.PNG?inline'), auto;
     background-repeat: no-repeat;
 }
 #volume:active::-webkit-slider-thumb  {
@@ -452,7 +452,7 @@ body {
     width: 38px;
     /* background-image: BALANCE.BMP via Javascript */
     background-position: -9px 0;
-    cursor:url('../cursors/POSBAR.PNG'), auto;
+    cursor:url('../cursors/POSBAR.PNG?inline'), auto;
 }
 
 #balance::-webkit-slider-thumb {
@@ -461,7 +461,7 @@ body {
     width: 14px;
     /* background-image: VOLUME.BMP via Javascript */
     background-position: -15px -422px;
-    cursor:url('../cursors/POSBAR.PNG'), auto;
+    cursor:url('../cursors/POSBAR.PNG?inline'), auto;
     background-repeat: no-repeat;
 }
 #balance::-moz-range-thumb {
@@ -470,7 +470,7 @@ body {
     width: 14px;
     /* background-image: VOLUME.BMP via Javascript */
     background-position: -15px -422px;
-    cursor:url('../cursors/POSBAR.PNG'), auto;
+    cursor:url('../cursors/POSBAR.PNG?inline'), auto;
     background-repeat: no-repeat;
 }
 
@@ -520,7 +520,7 @@ body {
     height: 10px;
     /* background-image: POSBAR.BMP via Javascript */
     background-repeat: no-repeat;
-    cursor:url('../cursors/POSBAR.PNG'), auto;
+    cursor:url('../cursors/POSBAR.PNG?inline'), auto;
 }
 
 #position::-webkit-slider-thumb {
@@ -529,7 +529,7 @@ body {
     background-position: -248px 0;
     /* background-image: POSBAR.BMP via Javascript */
     background-repeat: no-repeat;
-    cursor:url('../cursors/POSBAR.PNG'), auto;
+    cursor:url('../cursors/POSBAR.PNG?inline'), auto;
     /*
      * Fix the strange bug in Safair/mobile-chrome
      * http://stackoverflow.com/questions/26727769/rendering-glitch-when-manipulating-range-input-value-via-javascript-in-webkit
@@ -544,7 +544,7 @@ body {
     background-position: -248px 0;
     /* background-image: POSBAR.BMP via Javascript */
     background-repeat: no-repeat;
-    cursor:url('../cursors/POSBAR.PNG'), auto;
+    cursor:url('../cursors/POSBAR.PNG?inline'), auto;
 }
 
 /* For some reason, we can't use display: none here */
@@ -697,7 +697,7 @@ body {
 }
 .shade #title-bar {
     background-position: -27px -42px;
-    cursor:url('../cursors/MAINMENU.PNG'), auto;
+    cursor:url('../cursors/MAINMENU.PNG?inline'), auto;
 }
 
 .shade #title-bar.selected {
