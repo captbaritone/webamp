@@ -33,7 +33,8 @@
     cursor: default;
 }
 
-#context-menu li:hover {
+#context-menu li:hover,
+#context-menu li:hover a {
     background-color: #224EB7;
     color: #FFFFFF;
 }
