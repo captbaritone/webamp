@@ -64,8 +64,8 @@ Winamp = {
         this.windowManager.registerWindow(this.nodes.winamp, this.nodes.titleBar);
 
         this.nodes.option.onclick = function(event) {
+            self.toggleOptionMenu();
             event.stopPropagation();
-            this.classList.toggle('selected');
         }
 
         this.nodes.close.onclick = function() {
@@ -85,8 +85,7 @@ Winamp = {
         }
 
         this.nodes.buttonD.onclick = function() {
-            this.classList.toggle('selected');
-            self.nodes.winamp.classList.toggle('doubled');
+            self.toggleDoubledMode();
         }
 
         this.media.addEventListener('timeupdate', function() {
@@ -119,13 +118,11 @@ Winamp = {
         }
 
         this.nodes.time.onclick = function() {
-            self.nodes.time.classList.toggle('countdown');
-            self.updateTime();
+            self.toggleTimeMode();
         }
 
         this.nodes.shadeTime.onclick = function() {
-            self.nodes.time.classList.toggle('countdown');
-            self.updateTime();
+            self.toggleTimeMode();
         }
 
         this.nodes.visualizer.onclick = function() {
@@ -150,35 +147,23 @@ Winamp = {
         }
 
         this.nodes.previous.onclick = function() {
-            // Implement this when we support playlists
+            self.previous();
         }
 
         this.nodes.play.onclick = function() {
-            if(self.nodes.winamp.classList.contains('play')){
-                self.media.stop();
-            }
-            self.media.play();
-            self.setStatus('play');
+            self.play();
         }
 
         this.nodes.pause.onclick = function() {
-            if(self.nodes.winamp.classList.contains('pause')){
-                self.media.play();
-            }
-            else if(self.nodes.winamp.classList.contains('play'))
-            {
-                self.media.pause();
-                self.setStatus('pause');
-            }
+            self.pause();
         }
 
         this.nodes.stop.onclick = function() {
-            self.media.stop();
-            self.setStatus('stop');
+            self.stop();
         }
 
         this.nodes.next.onclick = function() {
-            // Implement this when we support playlists
+            self.next();
         }
 
         this.nodes.eject.onclick = function() {
@@ -269,6 +254,53 @@ Winamp = {
         this.nodes.option.classList.remove('selected');
     },
 
+    toggleOptionMenu: function() {
+        this.nodes.option.classList.toggle('selected');
+    },
+
+    toggleDoubledMode: function() {
+        this.nodes.buttonD.classList.toggle('selected');
+        this.nodes.winamp.classList.toggle('doubled');
+    },
+
+    toggleTimeMode: function() {
+        self.nodes.time.classList.toggle('countdown');
+        self.updateTime();
+    },
+
+    previous: function(num) {
+        // Jump back num tracks
+        // Not yet supported
+    },
+
+    play: function() {
+        if(this.nodes.winamp.classList.contains('play')){
+            this.media.stop();
+        }
+        this.media.play();
+        this.setStatus('play');
+    },
+
+    pause: function() {
+        if(this.nodes.winamp.classList.contains('pause')){
+            this.media.play();
+        }
+        else if(this.nodes.winamp.classList.contains('play'))
+        {
+            this.media.pause();
+            this.setStatus('pause');
+        }
+    },
+    stop: function() {
+        this.media.stop();
+        this.setStatus('stop');
+    },
+
+    next: function(num) {
+        // Jump back num tracks
+        // Not yet supported
+    },
+
     // From 0-100
     setVolume: function(volume) {
         // Ensure volume does not go out of bounds
@@ -290,6 +322,10 @@ Winamp = {
         this.nodes.volume.value = volume;
     },
 
+    incrementVolumeBy: function(ammount) {
+        this.setVolume((winamp.nodes.volume.value*1) + ammount);
+    },
+
     // From -100 to 100
     setBalance: function(balance) {
         var string = '';
@@ -309,6 +345,11 @@ Winamp = {
         this.nodes.balance.style.backgroundPosition = '-9px -' + offset + 'px';
     },
 
+    seekForwardBy: function(seconds) {
+        this.media.seekToTime(this.media.timeElapsed() + seconds);
+        winamp.updateTime()
+    },
+
     toggleRepeat: function() {
         this.media.toggleRepeat();
         this.nodes.repeat.classList.toggle('selected');
@@ -317,6 +358,10 @@ Winamp = {
     toggleShuffle: function() {
         this.media.toggleShuffle();
         this.nodes.shuffle.classList.toggle('selected');
+    },
+
+    toggleLlama: function() {
+        document.getElementById('winamp').classList.toggle('llama');
     },
 
     // TODO: Refactor this function
