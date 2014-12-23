@@ -264,8 +264,8 @@ Winamp = {
     },
 
     toggleTimeMode: function() {
-        self.nodes.time.classList.toggle('countdown');
-        self.updateTime();
+        this.nodes.time.classList.toggle('countdown');
+        this.updateTime();
     },
 
     previous: function(num) {

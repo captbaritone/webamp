@@ -26,7 +26,7 @@ Hotkeys = {
                     case 96: winamp.openFileDialog(); break;      // numpad 0
                     case 97: winamp.previous(10); break;          // numpad 1
                     case 98: winamp.incrementVolumeBy(-1); break; // numpad 2
-                    case 99: winamp.next(10) break;               // numpad 3
+                    case 99: winamp.next(10); break;              // numpad 3
                     case 100: winamp.previous(); break;           // numpad 4
                     case 101: winamp.play(); break;               // numpad 5
                     case 102: winamp.next(); break;               // numpad 6
