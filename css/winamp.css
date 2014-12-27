@@ -611,7 +611,7 @@ body {
 .shuffle-repeat {
     position: absolute;
     top: 89px;
-    left: 164px;
+    left: 163px;
     width: 74px;
 }
 
@@ -637,7 +637,7 @@ body {
 }
 
 .shuffle-repeat #repeat {
-    left: 47px;
+    left: 46px;
     width: 28px;
 }
 .shuffle-repeat #repeat:active {
