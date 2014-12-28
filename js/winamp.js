@@ -2,9 +2,18 @@
 Winamp = {
     init: function(options) {
         this.fileManager = FileManager;
+
+        this.fileInput = document.createElement('input');
+        this.fileInput.type = 'file';
+        this.fileInput.style.display = 'none';
+
         this.windowManager = WindowManager;
         this.media = Media.init();
         this.skin = SkinManager.init(document.getElementById('visualizer'), this.media._analyser);
+        this._callbacks = {
+            changeState: []
+        };
+        this.state = '';
 
         this.nodes = {
             'option': document.getElementById('option'),
@@ -12,7 +21,6 @@ Winamp = {
             'shade': document.getElementById('shade'),
             'buttonD': document.getElementById('button-d'),
             'position': document.getElementById('position'),
-            'fileInput': document.getElementById('file-input'),
             'volumeMessage': document.getElementById('volume-message'),
             'balanceMessage': document.getElementById('balance-message'),
             'positionMessage': document.getElementById('position-message'),
@@ -101,7 +109,7 @@ Winamp = {
 
         this.media.addEventListener('ended', function() {
             self.skin.visualizer.clear();
-            self.setStatus('stop');
+            self.setState('stop');
         });
 
         this.media.addEventListener('waiting', function() {
@@ -109,7 +117,7 @@ Winamp = {
         });
 
         this.media.addEventListener('playing', function() {
-            self.setStatus('play');
+            self.setState('play');
             self.nodes.workIndicator.classList.remove('selected');
         });
 
@@ -170,7 +178,7 @@ Winamp = {
             self.openFileDialog();
         }
 
-        this.nodes.fileInput.onchange = function(e){
+        this.fileInput.onchange = function(e){
             self.loadFromFileReference(e.target.files[0]);
         }
 
@@ -236,18 +244,25 @@ Winamp = {
             self.toggleShuffle();
         }
 
+        // Propagate state to window css
+        this.addEventListener('changeState', function() {
+            var stateOptions = ['play', 'stop', 'pause'];
+            for(var i = 0; i < stateOptions.length; i++) {
+                self.nodes.winamp.classList.remove(stateOptions[i]);
+            }
+            self.nodes.winamp.classList.add(self.state);
+        });
+
         this.nodes.winamp.addEventListener('dragenter', this.dragenter.bind(this));
         this.nodes.winamp.addEventListener('dragover', this.dragover.bind(this));
         this.nodes.winamp.addEventListener('drop', this.drop.bind(this));
+
     },
 
     /* Functions */
-    setStatus: function(className) {
-        var statusOptions = ['play', 'stop', 'pause'];
-        for(var i = 0; i < statusOptions.length; i++) {
-            this.nodes.winamp.classList.remove(statusOptions[i]);
-        }
-        this.nodes.winamp.classList.add(className);
+    setState: function(state) {
+        this.state = state;
+        this.dispatchEvent('changeState');
     },
 
     closeOptionMenu: function() {
@@ -278,7 +293,7 @@ Winamp = {
             this.media.stop();
         }
         this.media.play();
-        this.setStatus('play');
+        this.setState('play');
     },
 
     pause: function() {
@@ -288,12 +303,12 @@ Winamp = {
         else if(this.nodes.winamp.classList.contains('play'))
         {
             this.media.pause();
-            this.setStatus('pause');
+            this.setState('pause');
         }
     },
     stop: function() {
         this.media.stop();
-        this.setStatus('stop');
+        this.setState('stop');
     },
 
     next: function(num) {
@@ -403,12 +418,12 @@ Winamp = {
 
     close: function() {
         this.media.stop();
-        this.setStatus('stop'); // Currently unneeded
+        this.setState('stop'); // Currently unneeded
         this.nodes.winamp.classList.add('closed');
     },
 
     openFileDialog: function() {
-        this.nodes.fileInput.click();
+        this.fileInput.click();
     },
 
     // In shade mode, the position slider shows up differently depending on if
@@ -461,6 +476,18 @@ Winamp = {
     setSkinByUrl: function(url) {
         this.nodes.winamp.classList.add('loading');
         this.skin.setSkinByUrl(url);
+    },
+
+    /* Listeners */
+    addEventListener: function(event, callback) {
+        this._callbacks[event].push(callback);
+    },
+
+    dispatchEvent(event) {
+        // Execute all the callbacks registered to this event
+        for(var i = 0; i < this._callbacks[event].length; i++) {
+            this._callbacks[event][i]();
+        }
     },
 
     _loadBuffer: function(buffer) {

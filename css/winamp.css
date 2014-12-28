@@ -679,8 +679,6 @@ body {
     text-indent: -9999px;
 }
 
-#file-input { display: none; }
-
 /* Shade View */
 #winamp.shade {
     height: 14px;
