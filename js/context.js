@@ -1,7 +1,17 @@
 Context = {
+    // The Option button
+    option: document.getElementById('option'),
+
     init: function(winamp) {
+        var self = this;
+
         document.onclick = function() {
-            winamp.closeOptionMenu();
+            self.option.classList.remove('selected');
+        }
+
+        this.option.onclick = function(event) {
+            self.option.classList.toggle('selected');
+            event.stopPropagation();
         }
 
         var skinSelectNodes = document.getElementsByClassName('skin-select');
@@ -10,15 +20,14 @@ Context = {
                 winamp.setSkinByUrl(this.dataset.skinUrl);
             }
         }
+
         document.getElementById('context-play-file').onclick = function(event) {
+            self.option.classList.remove('selected');
             winamp.openFileDialog();
-            // Makes the option menu close. Not 100% sure why
-            event.stopPropagation();
         };
         document.getElementById('context-load-skin').onclick = function(event) {
+            self.option.classList.remove('selected');
             winamp.openFileDialog();
-            // Makes the option menu close. Not 100% sure why
-            event.stopPropagation();
         };
         document.getElementById('context-exit').onclick = function() {
             winamp.close();

@@ -16,7 +16,6 @@ Winamp = {
         this.state = '';
 
         this.nodes = {
-            'option': document.getElementById('option'),
             'close': document.getElementById('close'),
             'shade': document.getElementById('shade'),
             'buttonD': document.getElementById('button-d'),
@@ -70,11 +69,6 @@ Winamp = {
         self = this;
 
         this.windowManager.registerWindow(this.nodes.winamp, this.nodes.titleBar);
-
-        this.nodes.option.onclick = function(event) {
-            self.toggleOptionMenu();
-            event.stopPropagation();
-        }
 
         this.nodes.close.onclick = function() {
             self.close();
@@ -265,14 +259,6 @@ Winamp = {
         this.dispatchEvent('changeState');
     },
 
-    closeOptionMenu: function() {
-        this.nodes.option.classList.remove('selected');
-    },
-
-    toggleOptionMenu: function() {
-        this.nodes.option.classList.toggle('selected');
-    },
-
     toggleDoubledMode: function() {
         this.nodes.buttonD.classList.toggle('selected');
         this.nodes.winamp.classList.toggle('doubled');
@@ -289,7 +275,7 @@ Winamp = {
     },
 
     play: function() {
-        if(this.nodes.winamp.classList.contains('play')){
+        if(this.state == 'play'){
             this.media.stop();
         }
         this.media.play();
@@ -297,10 +283,10 @@ Winamp = {
     },
 
     pause: function() {
-        if(this.nodes.winamp.classList.contains('pause')){
+        if(this.state == 'pause'){
             this.media.play();
         }
-        else if(this.nodes.winamp.classList.contains('play'))
+        else if(this.state == 'play')
         {
             this.media.pause();
             this.setState('pause');
