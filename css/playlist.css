@@ -1,0 +1,143 @@
+#playlist {
+    position: absolute;
+    height: 116px;
+    width: 275px;
+    margin-top: -58px;
+    margin-left: -137px;
+    margin-left: -137px;
+    top: 40%;
+    left: 20%;
+    background-color: black;
+    /* Background-image: pledit.bmp */
+}
+
+#playlist #tracks {
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    top: 20px;
+    left: 11px;
+
+    width: -moz-calc(100% - 31px);
+    width: -webkit-calc(100% - 31px);
+    width: calc(100% - 31px);
+
+    height: -moz-calc(100% - 58px);
+    height: -webkit-calc(100% - 58px);
+    height: calc(100% - 58px);
+
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+#playlist #tracks li {
+    white-space: nowrap;
+    color: lightgreen;
+}
+
+#playlist .top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    overflow: hidden;
+}
+
+#playlist .top .tile-x {
+    height: 100%;
+    width: 25px;
+    background-position: -127px -21px;
+    float: left;
+}
+
+#playlist .top .top-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 25px;
+    background-position: 0 -21px;
+}
+#playlist.selected .top .top-left {
+    background-position: 0 0;
+}
+
+#playlist .top .title {
+    position: relative;
+    height: 100%;
+    width: 100px;
+    margin: 0 auto;
+    background-position: -26px -21px;
+}
+#playlist.selected .top .title {
+    background-position: -26px 0px;
+}
+
+#playlist .top .top-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 25px;
+    background-position: -153px -21px;
+}
+#playlist.selected .top .top-right {
+    background-position: -153px 0;
+}
+
+#playlist .left {
+    height: 100%;
+    width: 24px;
+    overflow: hidden;
+}
+#playlist .left .tile-y {
+    width: 100%;
+    height: 29px;
+    background-position: 0px -42px;
+}
+
+#playlist .right {
+    height: 100%;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 24px;
+    overflow: hidden;
+}
+#playlist .right .tile-y {
+    width: 100%;
+    height: 29px;
+    background-position: -27px -42px;
+}
+#playlist .bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 38px;
+    overflow: hidden;
+}
+
+#playlist .bottom .tile-x {
+    height: 100%;
+    width: 25px;
+    background-position: -179px 0px;
+    float: left;
+}
+#playlist .bottom-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 125px;
+    background-position: 0 -72px;
+}
+#playlist .bottom-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 150px;
+    background-position: -126px -72px;
+}

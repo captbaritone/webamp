@@ -13,6 +13,7 @@
         <link rel='stylesheet' type='text/css' href='css/winamp.css?inline' />
         <link rel='stylesheet' type='text/css' href='css/page.css?inline' />
         <link rel='stylesheet' type='text/css' href='css/main.css?inline' />
+        <link rel='stylesheet' type='text/css' href='css/playlist.css?inline' />
         <link rel='stylesheet' type='text/css' href='css/context-menu.css?inline' />
         <link rel="shortcut icon" sizes="16x16 32x32" href="favicon.ico">
     </head>
@@ -101,6 +102,45 @@
                 <div id="repeat"></div>
             </div>
             <a id='about' target='_blank' href='https://github.com/captbaritone/winamp2-js'></a>
+        </div>
+        <div id='playlist' class='loading stop'>
+            <ul id='tracks'>
+                <li>1. track one is very long and if you don't cut it off it
+                causes some problems</li>
+                <li>2. track two</li>
+                <li>2. track two</li>
+                <li>2. track two</li>
+                <li>2. track two</li>
+                <li>2. track two</li>
+                <li>2. track two</li>
+                <li>2. track two</li>
+                <li>2. track two</li>
+            </ul>
+            <!-- These go first so that they end up below the .top div in the
+            z axis -->
+            <div class='left'>
+                <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div>
+            </div>
+            <div class='right'>
+                <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div>
+            </div>
+            <div class='top'>
+                <div class='top-left'></div>
+                <!-- Generate on the fly? --!>
+                <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div>
+                <div class='title'></div>
+                <div class='top-right'>
+                    <div id='playlist-shade'></div>
+                    <div id='playlist-close'></div>
+                </div>
+            </div>
+            <div class='bottom'>
+                <div class='bottom-left'></div>
+                <!-- Generate on the fly? --!>
+                <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div>
+                <div class='title'></div>
+                <div class='bottom-right'></div>
+            </div>
         </div>
         <div id='browser-compatibility'>
             <p>Your browser does not support the features we need</p>
