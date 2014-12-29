@@ -469,7 +469,7 @@ Winamp = {
         this._callbacks[event].push(callback);
     },
 
-    dispatchEvent(event) {
+    dispatchEvent: function(event) {
         // Execute all the callbacks registered to this event
         for(var i = 0; i < this._callbacks[event].length; i++) {
             this._callbacks[event][i]();
