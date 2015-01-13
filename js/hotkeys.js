@@ -6,6 +6,7 @@ Hotkeys = {
             if(e.ctrlKey) { // Is CTRL depressed?
                 switch(e.keyCode) {
                     case 68: winamp.toggleDoubledMode(); break;   // CTRL+D
+                    // XXX FIXME
                     case 76: winamp.openOptionMenu(); break;      // CTRL+L
                     case 84: winamp.toggleTimeMode(); break;      // CTRL+T
                 }

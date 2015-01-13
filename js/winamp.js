@@ -15,46 +15,7 @@ Winamp = {
         };
         this.state = '';
 
-        this.nodes = {
-            'close': document.getElementById('close'),
-            'shade': document.getElementById('shade'),
-            'buttonD': document.getElementById('button-d'),
-            'position': document.getElementById('position'),
-            'volumeMessage': document.getElementById('volume-message'),
-            'balanceMessage': document.getElementById('balance-message'),
-            'positionMessage': document.getElementById('position-message'),
-            'songTitle': document.getElementById('song-title'),
-            'time': document.getElementById('time'),
-            'shadeTime': document.getElementById('shade-time'),
-            'visualizer': document.getElementById('visualizer'),
-            'previous': document.getElementById('previous'),
-            'play': document.getElementById('play'),
-            'pause': document.getElementById('pause'),
-            'stop': document.getElementById('stop'),
-            'next': document.getElementById('next'),
-            'eject': document.getElementById('eject'),
-            'repeat': document.getElementById('repeat'),
-            'shuffle': document.getElementById('shuffle'),
-            'volume': document.getElementById('volume'),
-            'kbps': document.getElementById('kbps'),
-            'khz': document.getElementById('khz'),
-            'balance': document.getElementById('balance'),
-            'playPause': document.getElementById('play-pause'),
-            'workIndicator': document.getElementById('work-indicator'),
-            'winamp': document.getElementById('winamp'),
-            'titleBar': document.getElementById('title-bar'),
-        };
-
-        this.textDisplay = MultiDisplay.init(Font, this.nodes.songTitle);
-        this.textDisplay.addRegister('songTitle');
-        this.textDisplay.addRegister('position');
-        this.textDisplay.addRegister('volume');
-        this.textDisplay.addRegister('balance');
-        this.textDisplay.addRegister('message'); // General purpose
-
-        this.textDisplay.showRegister('songTitle');
-
-        this.textDisplay.startRegisterMarquee('songTitle');
+        this.mainWindow = MainWindow.init(this);
 
         this.setVolume(options.volume);
         this.setBalance(options.balance);
@@ -66,35 +27,13 @@ Winamp = {
     },
 
     _registerListeners: function() {
-        self = this;
+        var self = this;
 
-        this.windowManager.registerWindow(this.nodes.winamp, this.nodes.titleBar);
-
-        this.nodes.close.onclick = function() {
-            self.close();
-        }
-
-        this.nodes.buttonD.onmousedown = function() {
-            if(self.nodes.winamp.classList.contains('doubled')) {
-                self.textDisplay.setRegisterText('message', 'Disable doublesize mode');
-            } else {
-                self.textDisplay.setRegisterText('message', 'Enable doublesize mode');
-            }
-            self.textDisplay.showRegister('message');
-        }
-        this.nodes.buttonD.onmouseup = function() {
-            self.textDisplay.showRegister('songTitle');
-        }
-
-        this.nodes.buttonD.onclick = function() {
-            self.toggleDoubledMode();
-        }
+        this.windowManager.registerWindow(this.mainWindow);
 
         this.media.addEventListener('timeupdate', function() {
-            if(!self.nodes.winamp.classList.contains('setting-position')) {
-                self.nodes.position.value = self.media.percentComplete();
-            }
-            self.updateTime();
+            self.mainWindow.updatePosition(self.media.percentComplete());
+            self.mainWindow.updateTime();
         });
 
         this.media.addEventListener('visualizerupdate', function(analyser) {
@@ -107,149 +46,22 @@ Winamp = {
         });
 
         this.media.addEventListener('waiting', function() {
-            self.nodes.workIndicator.classList.add('selected');
+            self.mainWindow.setWorkingIndicator();
         });
 
         this.media.addEventListener('playing', function() {
             self.setState('play');
-            self.nodes.workIndicator.classList.remove('selected');
+            self.mainWindow.unsetWorkingIndicator();
         });
-
-        this.nodes.shade.onclick = function() {
-            self.nodes.winamp.classList.toggle('shade');
-        }
-
-        this.nodes.time.onclick = function() {
-            self.toggleTimeMode();
-        }
-
-        this.nodes.shadeTime.onclick = function() {
-            self.toggleTimeMode();
-        }
-
-        this.nodes.visualizer.onclick = function() {
-            if(self.skin.visualizer.style == self.skin.visualizer.NONE) {
-                self.skin.visualizer.setStyle(self.skin.visualizer.BAR);
-            } else if(self.skin.visualizer.style == self.skin.visualizer.BAR) {
-                self.skin.visualizer.setStyle(self.skin.visualizer.OSCILLOSCOPE);
-            } else if(self.skin.visualizer.style == self.skin.visualizer.OSCILLOSCOPE) {
-                self.skin.visualizer.setStyle(self.skin.visualizer.NONE);
-            }
-            self.skin.visualizer.clear();
-        }
-
-        this.nodes.songTitle.onmousedown = function() {
-            self.textDisplay.pauseRegisterMarquee('songTitle');
-        }
-
-        this.nodes.songTitle.onmouseup = function() {
-            setTimeout(function () {
-                self.textDisplay.startRegisterMarquee('songTitle');
-            }, 1000);
-        }
-
-        this.nodes.previous.onclick = function() {
-            self.previous();
-        }
-
-        this.nodes.play.onclick = function() {
-            self.play();
-        }
-
-        this.nodes.pause.onclick = function() {
-            self.pause();
-        }
-
-        this.nodes.stop.onclick = function() {
-            self.stop();
-        }
-
-        this.nodes.next.onclick = function() {
-            self.next();
-        }
-
-        this.nodes.eject.onclick = function() {
-            self.openFileDialog();
-        }
 
         this.fileInput.onchange = function(e){
             self.loadFromFileReference(e.target.files[0]);
         }
 
-        this.nodes.volume.onmousedown = function() {
-            self.textDisplay.showRegister('volume');
-        }
-
-        this.nodes.volume.onmouseup = function() {
-            self.textDisplay.showRegister('songTitle');
-        }
-
-        this.nodes.volume.oninput = function() {
-            self.setVolume(this.value);
-        }
-
-        this.nodes.position.onmousedown = function() {
-            if(!self.nodes.winamp.classList.contains('stop')){
-                self.textDisplay.showRegister('position');
-                self.nodes.winamp.classList.add('setting-position');
-            }
-        }
-
-        this.nodes.position.onmouseup = function() {
-            self.textDisplay.showRegister('songTitle');
-            self.nodes.winamp.classList.remove('setting-position');
-        }
-
-        this.nodes.position.oninput = function() {
-            var newPercentComplete = self.nodes.position.value;
-            var newFractionComplete = newPercentComplete/100;
-            var newElapsed = self._timeString(self.media.duration() * newFractionComplete);
-            var duration = self._timeString(self.media.duration());
-            var message = "Seek to: " + newElapsed + "/" + duration + " (" + newPercentComplete + "%)";
-            self.textDisplay.setRegisterText('position', message);
-        }
-
-        this.nodes.position.onchange = function() {
-            if(!self.nodes.winamp.classList.contains('stop')){
-                self.media.seekToPercentComplete(this.value);
-            }
-        }
-
-        this.nodes.balance.onmousedown = function() {
-            self.textDisplay.showRegister('balance');
-        }
-
-        this.nodes.balance.onmouseup = function() {
-            self.textDisplay.showRegister('songTitle');
-        }
-
-        this.nodes.balance.oninput = function() {
-            if(Math.abs(this.value) < 25) {
-                this.value = 0;
-            }
-            self.setBalance(this.value);
-        }
-
-        this.nodes.repeat.onclick = function() {
-            self.toggleRepeat();
-        }
-
-        this.nodes.shuffle.onclick = function() {
-            self.toggleShuffle();
-        }
-
         // Propagate state to window css
         this.addEventListener('changeState', function() {
-            var stateOptions = ['play', 'stop', 'pause'];
-            for(var i = 0; i < stateOptions.length; i++) {
-                self.nodes.winamp.classList.remove(stateOptions[i]);
-            }
-            self.nodes.winamp.classList.add(self.state);
+            self.mainWindow.changeState(self.state);
         });
-
-        this.nodes.winamp.addEventListener('dragenter', this.dragenter.bind(this));
-        this.nodes.winamp.addEventListener('dragover', this.dragover.bind(this));
-        this.nodes.winamp.addEventListener('drop', this.drop.bind(this));
 
     },
 
@@ -259,14 +71,12 @@ Winamp = {
         this.dispatchEvent('changeState');
     },
 
-    toggleDoubledMode: function() {
-        this.nodes.buttonD.classList.toggle('selected');
-        this.nodes.winamp.classList.toggle('doubled');
+    getState: function() {
+        return this.state;
     },
 
     toggleTimeMode: function() {
-        this.nodes.time.classList.toggle('countdown');
-        this.updateTime();
+        this.mainWindow.toggleTimeMode();
     },
 
     previous: function(num) {
@@ -275,7 +85,7 @@ Winamp = {
     },
 
     play: function() {
-        if(this.state == 'play'){
+        if(this.getState() == 'play'){
             this.media.stop();
         }
         this.media.play();
@@ -283,10 +93,10 @@ Winamp = {
     },
 
     pause: function() {
-        if(this.state == 'pause'){
+        if(this.getState() == 'pause'){
             this.media.play();
         }
-        else if(this.state == 'play')
+        else if(this.getState() == 'play')
         {
             this.media.pause();
             this.setState('pause');
@@ -309,138 +119,51 @@ Winamp = {
         volume = Math.min(volume, 100);
 
         var percent = volume / 100;
-        var sprite = Math.round(percent * 28);
-        var offset = (sprite - 1) * 15;
 
         this.media.setVolume(percent);
-        this.nodes.volume.style.backgroundPosition = '0 -' + offset + 'px';
-
-        var message = 'Volume: ' + volume + '%';
-        this.textDisplay.setRegisterText('volume', message);
-
-        // This shouldn't trigger an infinite loop with volume.onchange(),
-        // since the value will be the same
-        this.nodes.volume.value = volume;
+        this.mainWindow.setVolume(volume);
     },
 
     incrementVolumeBy: function(ammount) {
-        this.setVolume((winamp.nodes.volume.value*1) + ammount);
+        this.setVolume((this.media.getVolume() * 100) + ammount);
+    },
+
+    toggleDoubledMode: function() {
+        this.mainWindow.toggleDoubledMode();
     },
 
     // From -100 to 100
     setBalance: function(balance) {
-        var string = '';
-        if(balance == 0) {
-            string = 'Balance: Center';
-        } else if(balance > 0) {
-            string = 'Balance: ' + balance + '% Right';
-        } else {
-            string = 'Balance: ' + Math.abs(balance) + '% Left';
-        }
-        this.textDisplay.setRegisterText('balance', string);
-
         this.media.setBalance(balance);
-        balance = Math.abs(balance) / 100
-        sprite = Math.round(balance * 28);
-        offset = (sprite - 1) * 15;
-        this.nodes.balance.style.backgroundPosition = '-9px -' + offset + 'px';
+        this.mainWindow.setBalance(balance);
     },
 
     seekForwardBy: function(seconds) {
         this.media.seekToTime(this.media.timeElapsed() + seconds);
-        winamp.updateTime()
+        winamp.mainWindow.updateTime()
     },
 
     toggleRepeat: function() {
         this.media.toggleRepeat();
-        this.nodes.repeat.classList.toggle('selected');
+        this.mainWindow.toggleRepeat();
     },
 
     toggleShuffle: function() {
         this.media.toggleShuffle();
-        this.nodes.shuffle.classList.toggle('selected');
+        this.mainWindow.toggleShuffle();
     },
 
     toggleLlama: function() {
-        document.getElementById('winamp').classList.toggle('llama');
-    },
-
-    // TODO: Refactor this function
-    updateTime: function() {
-        this.updateShadePositionClass();
-
-        var shadeMinusCharacter = ' ';
-        if(this.nodes.time.classList.contains('countdown')) {
-            digits = this._timeObject(this.media.timeRemaining());
-            var shadeMinusCharacter = '-';
-        } else {
-            digits = this._timeObject(this.media.timeElapsed());
-        }
-        this.skin.font.displayCharacterInNode(shadeMinusCharacter, document.getElementById('shade-minus-sign'));
-
-        var digitNodes = [
-            document.getElementById('minute-first-digit'),
-            document.getElementById('minute-second-digit'),
-            document.getElementById('second-first-digit'),
-            document.getElementById('second-second-digit')
-        ];
-        var shadeDigitNodes = [
-            document.getElementById('shade-minute-first-digit'),
-            document.getElementById('shade-minute-second-digit'),
-            document.getElementById('shade-second-first-digit'),
-            document.getElementById('shade-second-second-digit')
-        ];
-
-        // For each digit/node
-        for(i = 0; i < 4; i++) {
-            var digit = digits[i];
-            var digitNode = digitNodes[i];
-            var shadeNode = shadeDigitNodes[i];
-            digitNode.innerHTML = '';
-            digitNode.appendChild(this.skin.font.digitNode(digit));
-            this.skin.font.displayCharacterInNode(digit, shadeNode);
-        }
+        this.mainWindow.toggleLlama();
     },
 
     close: function() {
         this.media.stop();
         this.setState('stop'); // Currently unneeded
-        this.nodes.winamp.classList.add('closed');
     },
 
     openFileDialog: function() {
         this.fileInput.click();
-    },
-
-    // In shade mode, the position slider shows up differently depending on if
-    // it's near the start, middle or end of its progress
-    updateShadePositionClass: function() {
-        var position = this.nodes.position;
-
-        position.removeAttribute("class");
-        if(position.value <= 33) {
-            position.classList.add('left');
-        } else if(position.value >= 66) {
-            position.classList.add('right');
-        }
-    },
-
-    dragenter: function(e) {
-        e.stopPropagation();
-        e.preventDefault();
-    },
-
-    dragover: function(e) {
-        e.stopPropagation();
-        e.preventDefault();
-    },
-
-    drop: function(e) {
-        e.stopPropagation();
-        e.preventDefault();
-        var dt = e.dataTransfer;
-        var file = dt.files[0];
-        this.loadFromFileReference(file);
     },
 
     loadFromFileReference: function(fileReference) {
@@ -460,8 +183,26 @@ Winamp = {
     },
 
     setSkinByUrl: function(url) {
-        this.nodes.winamp.classList.add('loading');
         this.skin.setSkinByUrl(url);
+    },
+
+    setLoadingState: function() {
+        this.mainWindow.setLoadingState();
+    },
+
+    unsetLoadingState: function() {
+        this.mainWindow.unsetLoadingState();
+    },
+
+    toggleVisualizer: function() {
+        if(this.skin.visualizer.style == this.skin.visualizer.NONE) {
+            this.skin.visualizer.setStyle(this.skin.visualizer.BAR);
+        } else if(this.skin.visualizer.style == this.skin.visualizer.BAR) {
+            this.skin.visualizer.setStyle(this.skin.visualizer.OSCILLOSCOPE);
+        } else if(this.skin.visualizer.style == this.skin.visualizer.OSCILLOSCOPE) {
+            this.skin.visualizer.setStyle(this.skin.visualizer.NONE);
+        }
+        this.skin.visualizer.clear();
     },
 
     /* Listeners */
@@ -481,12 +222,6 @@ Winamp = {
         this.media.loadBuffer(buffer, this._setMetaData.bind(this));
     },
 
-    _setTitle: function() {
-        var duration = this._timeString(this.media.duration());
-        var name = this.fileName + ' (' + duration + ')  ***  ';
-        this.textDisplay.setRegisterText('songTitle', name);
-    },
-
     _setMetaData: function() {
         var kbps = "128";
         var khz = Math.round(this.media.sampleRate() / 1000).toString();
@@ -494,19 +229,13 @@ Winamp = {
         this.skin.font.setNodeToString(document.getElementById('kbps'), kbps);
         this.skin.font.setNodeToString(document.getElementById('khz'), khz);
         this._setChannels();
-        this.updateTime();
-        this._setTitle();
+        this.mainWindow.updateTime();
+        this.mainWindow.setTitle(this.fileName, this.media.duration());
     },
 
     _setChannels: function() {
         var channels = this.media.channels();
-        document.getElementById('mono').classList.remove('selected');
-        document.getElementById('stereo').classList.remove('selected');
-        if(channels == 1) {
-            document.getElementById('mono').classList.add('selected');
-        } else if(channels == 2) {
-            document.getElementById('stereo').classList.add('selected');
-        }
+        this.mainWindow.setChannelCount(channels);
     },
 
     /* Helpers */
@@ -521,9 +250,4 @@ Winamp = {
             Math.floor(seconds % 10)
         ];
     },
-
-    _timeString: function(time) {
-        var timeObject = this._timeObject(time);
-        return timeObject[0] + timeObject[1] + ':' + timeObject[2] + timeObject[3];
-    }
 }

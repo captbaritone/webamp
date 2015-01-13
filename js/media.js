@@ -172,6 +172,10 @@ Media = {
         this._gainNode.gain.value = volume;
     },
 
+    getVolume: function() {
+        return this._gainNode.gain.value;
+    },
+
     // From -100 to 100
     setBalance: function(balance) {
         var changeVal = Math.abs(balance) / 100;

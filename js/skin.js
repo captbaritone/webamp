@@ -52,6 +52,7 @@ SkinManager = {
 
     // Given the url of an original Winamp WSZ file, set the current skin
     setSkinByUrl: function(url) {
+        Winamp.setLoadingState();
         this.fileManager.bufferFromUrl(url, this._setSkinByBuffer.bind(this));
     },
 
@@ -80,7 +81,7 @@ SkinManager = {
         }
 
         // Clear the loading state
-        document.getElementById('winamp').classList.remove('loading');
+        Winamp.unsetLoadingState();
         this.styleNode.appendChild(document.createTextNode(cssRules));
 
         this._parseVisColors(zip);
