@@ -107,15 +107,15 @@ MainWindow = {
         this.nodes.position.oninput = function() {
             var newPercentComplete = self.nodes.position.value;
             var newFractionComplete = newPercentComplete/100;
-            var newElapsed = self._timeString(self.winamp.media.duration() * newFractionComplete);
-            var duration = self._timeString(self.winamp.media.duration());
+            var newElapsed = self._timeString(self.winamp.getDuration() * newFractionComplete);
+            var duration = self._timeString(self.winamp.getDuration());
             var message = "Seek to: " + newElapsed + "/" + duration + " (" + newPercentComplete + "%)";
             self.textDisplay.setRegisterText('position', message);
         }
 
         this.nodes.position.onchange = function() {
             if(self.winamp.getState() != 'stop'){
-                self.winamp.media.seekToPercentComplete(this.value);
+                self.winamp.seekToPercentComplete(this.value);
             }
         }
 
@@ -227,10 +227,10 @@ MainWindow = {
 
         var shadeMinusCharacter = ' ';
         if(this.nodes.time.classList.contains('countdown')) {
-            digits = this.winamp._timeObject(this.winamp.media.timeRemaining());
+            digits = this.winamp._timeObject(this.winamp.getTimeRemaining());
             var shadeMinusCharacter = '-';
         } else {
-            digits = this.winamp._timeObject(this.winamp.media.timeElapsed());
+            digits = this.winamp._timeObject(this.winamp.getTimeElapsed());
         }
         this.winamp.skin.font.displayCharacterInNode(shadeMinusCharacter, document.getElementById('shade-minus-sign'));
 

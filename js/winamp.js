@@ -75,6 +75,22 @@ Winamp = {
         return this.state;
     },
 
+    getDuration: function() {
+        return this.media.duration();
+    },
+
+    getTimeRemaining: function() {
+        return this.media.timeRemaining();
+    },
+
+    getTimeElapsed: function() {
+        return this.media.timeElapsed();
+    },
+
+    seekToPercentComplete: function(percent) {
+        this.media.seekToPercentComplete(percent);
+    },
+
     toggleTimeMode: function() {
         this.mainWindow.toggleTimeMode();
     },
