@@ -12,6 +12,7 @@ MainWindow = {
             'songTitle': document.getElementById('song-title'),
             'time': document.getElementById('time'),
             'shadeTime': document.getElementById('shade-time'),
+            'shadeMinusSign': document.getElementById('shade-minus-sign'),
             'visualizer': document.getElementById('visualizer'),
             'previous': document.getElementById('previous'),
             'play': document.getElementById('play'),
@@ -29,7 +30,7 @@ MainWindow = {
             'balance': document.getElementById('balance'),
             'workIndicator': document.getElementById('work-indicator'),
             'titleBar': document.getElementById('title-bar'),
-            'window': document.getElementById('winamp'),
+            'window': document.getElementById('main-window'),
         };
 
         this.handle = document.getElementById('title-bar');
@@ -221,7 +222,6 @@ MainWindow = {
         }
     },
 
-    // TODO: Refactor this function
     updateTime: function() {
         this.updateShadePositionClass();
 
@@ -232,7 +232,7 @@ MainWindow = {
         } else {
             digits = this.winamp._timeObject(this.winamp.getTimeElapsed());
         }
-        this.winamp.skin.font.displayCharacterInNode(shadeMinusCharacter, document.getElementById('shade-minus-sign'));
+        this.winamp.skin.font.displayCharacterInNode(shadeMinusCharacter, this.nodes.shadeMinusSign);
 
         var digitNodes = [
             document.getElementById('minute-first-digit'),

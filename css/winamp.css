@@ -30,7 +30,7 @@ body {
 }
 
 /* Styles */
-#winamp {
+#main-window {
     position: absolute;
     /* background-image: MAIN.BMP via Javascript */
     height: 116px;
@@ -48,7 +48,7 @@ body {
     -ms-interpolation-mode: nearest-neighbor;   /* IE (non-standard property) */
 }
 
-#winamp.doubled {
+#main-window.doubled {
     -moz-transform: scale(2);
     -moz-transform-origin: top left;
     -webkit-transform: scale(2);
@@ -62,13 +62,13 @@ body {
     -webkit-transform-origin: top left;
 }
 
-#winamp.loading {
+#main-window.loading {
     background-image: none;
     background-color: #FFFFFF;
     border: 2px solid #dddddd;
 }
 /* Hide everything whil we are loading */
-#winamp.loading * {
+#main-window.loading * {
     display: none;
 }
 
@@ -83,11 +83,11 @@ body {
 }
 
 /* Only show loading div while we are loading */
-#winamp.loading #loading {
+#main-window.loading #loading {
     display: block;
 }
 
-#winamp.closed { display: none; }
+#main-window.closed { display: none; }
 
 #title-bar {
     position: absolute;
@@ -680,7 +680,7 @@ body {
 }
 
 /* Shade View */
-#winamp.shade {
+#main-window.shade {
     height: 14px;
 }
 

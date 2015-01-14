@@ -156,7 +156,7 @@ Winamp = {
 
     seekForwardBy: function(seconds) {
         this.media.seekToTime(this.media.timeElapsed() + seconds);
-        winamp.mainWindow.updateTime()
+        this.mainWindow.updateTime()
     },
 
     toggleRepeat: function() {

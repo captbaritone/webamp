@@ -9,7 +9,7 @@ SkinManager = {
     },
 
     _skinImages: {
-        "#winamp": "MAIN.BMP",
+        "#main-window": "MAIN.BMP",
         "#title-bar": "TITLEBAR.BMP",
         "#title-bar #option": "TITLEBAR.BMP",
         "#title-bar #minimize": "TITLEBAR.BMP",
