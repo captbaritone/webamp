@@ -83,19 +83,31 @@
 }
 
 #playlist .top #playlist-shade {
+    background-position: -156px -3px;
     position: absolute;
     top: 3px;
-    left: 3px;
+    right: 13px;
+    height: 9px;
+    width: 9px;
+}
+#playlist .top #playlist-shade:active {
+    background-position: -62px -42px;
+}
+#playlist .top #playlist-shade.selected {
+    background-position: -150px -42px;
+}
+
+#playlist .top #playlist-close {
+    background-position: -167px -3px;
+    position: absolute;
+    top: 3px;
+    right: 3px;
     height: 9px;
     width: 9px;
 }
 
-#playlist .top #playlist-close {
-    position: absolute;
-    top: 3px;
-    left: 14px;
-    height: 9px;
-    width: 9px;
+#playlist .top #playlist-close:active {
+    background-position: -52px -42px;
 }
 
 #playlist .left {
@@ -143,4 +155,58 @@
     height: 20px;
     bottom: 0px;
     right: 0px;
+}
+
+/* Shade View */
+#playlist.shade {
+    height: 14px;
+}
+
+#playlist.shade .bottom,
+#playlist.shade .left,
+#playlist.shade .right,
+#playlist.shade .title
+{
+    display: none;
+}
+#playlist.shade .playlist-top-tile {
+    background: none;
+}
+
+#playlist.shade .top .top-left {
+    background-position: -72px -42px;
+    width: 25px;
+    height: 14px;
+}
+#playlist.shade .top .top-right {
+    background-position: -99px -42px;
+    width: 50px;
+    height: 14px;
+}
+#playlist.shade .top #playlist-close {
+    background-position: -138px -45px;
+}
+#playlist.shade .top #playlist-close:active {
+    background-position: -52px -42px;
+}
+#playlist.shade .top #playlist-shade {
+    background-position: -128px -45px;
+}
+#playlist.shade .top #playlist-shade:active {
+    background-position: -150px -42px;
+}
+#playlist.shade #tracks {
+    top: 0;
+    height: 14px;
+    background: none;
+}
+#playlist.shade #tracks li {
+    display: none;
+    height: 10px;
+    margin: 2px 0;
+    background: none;
+}
+
+#playlist.shade #tracks li.current {
+    display: block;
 }

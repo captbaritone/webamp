@@ -33,6 +33,10 @@ PlaylistWindow = {
             self.winamp.closePlaylist();
         }
 
+        this.nodes.shade.onclick = function() {
+            self.nodes.window.classList.toggle('shade');
+        }
+
         this.nodes.window.addEventListener('dragenter', this.dragenter.bind(this));
         this.nodes.window.addEventListener('dragover', this.dragover.bind(this));
         this.nodes.window.addEventListener('drop', this.drop.bind(this));
@@ -66,7 +70,7 @@ PlaylistWindow = {
 
         for(i = 0; i < this.winamp.playlist.length; i++) {
             var li = document.createElement('li');
-            li.innerHTML = "<li>" + (i+1) + ". " + this.winamp.playlist[i].name + "</li>";
+            li.innerHTML = (i+1) + ". " + this.winamp.playlist[i].name;
             tracks.appendChild(li);
         }
 
@@ -77,9 +81,9 @@ PlaylistWindow = {
         var tracks = this.nodes.tracks.children;
         for(i = 0; i < tracks.length; i++) {
             if(i == this.winamp.currentTrack) {
-                tracks[i].classList.add('selected');
+                tracks[i].classList.add('current');
             } else {
-                tracks[i].classList.remove('selected');
+                tracks[i].classList.remove('current');
             }
         }
     },
