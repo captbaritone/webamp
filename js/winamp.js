@@ -10,12 +10,19 @@ Winamp = {
         this.windowManager = WindowManager;
         this.media = Media.init();
         this.skin = SkinManager.init(document.getElementById('visualizer'), this.media._analyser);
-        this._callbacks = {
-            changeState: []
-        };
         this.state = '';
 
         this.mainWindow = MainWindow.init(this);
+
+        this.events = {
+            timeUpdated: new Event('timeUpdated'),
+            startWaiting: new Event('startWaiting'),
+            stopWaiting: new Event('stopWaiting'),
+            startLoading: new Event('startLoading'),
+            stopLoading: new Event('stopLoading'),
+            toggleTimeMode: new Event('toggleTimeMode'),
+            changeState: new Event('changeState')
+        }
 
         this.setVolume(options.volume);
         this.setBalance(options.balance);
@@ -33,7 +40,7 @@ Winamp = {
 
         this.media.addEventListener('timeupdate', function() {
             self.mainWindow.updatePosition(self.media.percentComplete());
-            self.mainWindow.updateTime();
+            window.dispatchEvent(self.events.timeUpdated);
         });
 
         this.media.addEventListener('visualizerupdate', function(analyser) {
@@ -46,29 +53,23 @@ Winamp = {
         });
 
         this.media.addEventListener('waiting', function() {
-            self.mainWindow.setWorkingIndicator();
+            window.dispatchEvent(self.events.startWaiting);
         });
 
         this.media.addEventListener('playing', function() {
             self.setState('play');
-            self.mainWindow.unsetWorkingIndicator();
+            window.dispatchEvent(self.events.stopWaiting);
         });
 
         this.fileInput.onchange = function(e){
             self.loadFromFileReference(e.target.files[0]);
         }
-
-        // Propagate state to window css
-        this.addEventListener('changeState', function() {
-            self.mainWindow.changeState(self.state);
-        });
-
     },
 
     /* Functions */
     setState: function(state) {
         this.state = state;
-        this.dispatchEvent('changeState');
+        window.dispatchEvent(this.events.changeState);
     },
 
     getState: function() {
@@ -92,7 +93,7 @@ Winamp = {
     },
 
     toggleTimeMode: function() {
-        this.mainWindow.toggleTimeMode();
+        window.dispatchEvent(this.events.toggleTimeMode);
     },
 
     previous: function(num) {
@@ -156,7 +157,7 @@ Winamp = {
 
     seekForwardBy: function(seconds) {
         this.media.seekToTime(this.media.timeElapsed() + seconds);
-        this.mainWindow.updateTime()
+        window.dispatchEvent(self.events.timeUpdated);
     },
 
     toggleRepeat: function() {
@@ -203,11 +204,11 @@ Winamp = {
     },
 
     setLoadingState: function() {
-        this.mainWindow.setLoadingState();
+        window.dispatchEvent(this.events.startLoading);
     },
 
     unsetLoadingState: function() {
-        this.mainWindow.unsetLoadingState();
+        window.dispatchEvent(this.events.stopLoading);
     },
 
     toggleVisualizer: function() {
@@ -222,17 +223,6 @@ Winamp = {
     },
 
     /* Listeners */
-    addEventListener: function(event, callback) {
-        this._callbacks[event].push(callback);
-    },
-
-    dispatchEvent: function(event) {
-        // Execute all the callbacks registered to this event
-        for(var i = 0; i < this._callbacks[event].length; i++) {
-            this._callbacks[event][i]();
-        }
-    },
-
     _loadBuffer: function(buffer) {
         // Note, this will not happen right away
         this.media.loadBuffer(buffer, this._setMetaData.bind(this));
@@ -245,7 +235,7 @@ Winamp = {
         this.skin.font.setNodeToString(document.getElementById('kbps'), kbps);
         this.skin.font.setNodeToString(document.getElementById('khz'), khz);
         this._setChannels();
-        this.mainWindow.updateTime();
+        window.dispatchEvent(this.events.timeUpdated);
         this.mainWindow.setTitle(this.fileName, this.media.duration());
     },
 

@@ -187,6 +187,14 @@ MainWindow = {
             self.winamp.toggleVisualizer();
         }
 
+        window.addEventListener('timeUpdated', function() { self.updateTime(); });
+        window.addEventListener('startWaiting', function() { self.setWorkingIndicator(); });
+        window.addEventListener('stopWaiting', function() { self.unsetWorkingIndicator(); });
+        window.addEventListener('startLoading', function() { self.setLoadingState(); });
+        window.addEventListener('stopLoading', function() { self.unsetLoadingState(); });
+        window.addEventListener('toggleTimeMode', function() { self.toggleTimeMode(); });
+        window.addEventListener('changeState', function() { self.changeState(); });
+
         this.nodes.window.addEventListener('dragenter', this.dragenter.bind(this));
         this.nodes.window.addEventListener('dragover', this.dragover.bind(this));
         this.nodes.window.addEventListener('drop', this.drop.bind(this));
@@ -309,7 +317,8 @@ MainWindow = {
         this.nodes.balance.style.backgroundPosition = '-9px -' + offset + 'px';
     },
 
-    changeState: function(state) {
+    changeState: function() {
+        var state = this.winamp.getState();
         var stateOptions = ['play', 'stop', 'pause'];
         for(var i = 0; i < stateOptions.length; i++) {
             this.nodes.window.classList.remove(stateOptions[i]);
