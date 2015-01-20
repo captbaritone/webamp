@@ -2,6 +2,7 @@ WindowManager = {
     registerWindow: function(win) {
         var body = win.body;
         var handle = win.handle;
+        var resizeHandle = win.resizeHandle;
 
         // Make window dragable
         handle.addEventListener('mousedown',function(e){
@@ -52,6 +53,57 @@ WindowManager = {
             }
 
             window.addEventListener('mousemove',handleMove);
+            window.addEventListener('mouseup',handleUp);
+        });
+
+        if (typeof resizeHandle == 'undefined') return;
+
+        // Make window resizeable
+        resizeHandle.addEventListener('mousedown',function(e){
+            var winStartHeight = body.offsetHeight,
+                winStartWidth  = body.offsetWidth;
+
+            // Get starting mouse position
+            var mouseStartLeft = e.clientX,
+                mouseStartTop = e.clientY;
+
+            // Mouse move handler function while mouse is down
+            function handleResize(e) {
+                // Get current mouse position
+                var mouseLeft = e.clientX,
+                    mouseTop = e.clientY;
+
+                // Calculate difference offsets
+                var diffLeft = mouseLeft-mouseStartLeft,
+                    diffTop = mouseTop-mouseStartTop;
+
+                var newWidth = (winStartWidth+diffLeft),
+                    newHeight = (winStartHeight+diffTop);
+
+                // Enforce resizing by 25px
+                newWidth = Math.ceil(newWidth / 25.0) * 25;
+                newHeight = Math.ceil(newHeight / 29.0) * 29;
+
+                // Enforce minimum size
+                newWidth = Math.max(newWidth, 275);
+                newHeight = Math.max(newHeight, 116);
+
+                // Resize window
+                body.style.width = newWidth +"px";
+                body.style.height = newHeight +"px";
+            }
+
+            // Mouse button up
+            function handleUp() {
+                removeListeners();
+            }
+
+            function removeListeners() {
+                window.removeEventListener('mousemove',handleResize);
+                window.removeEventListener('mouseup',handleUp);
+            }
+
+            window.addEventListener('mousemove',handleResize);
             window.addEventListener('mouseup',handleUp);
         });
     }

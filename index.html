@@ -104,18 +104,7 @@
             <a id='about' target='_blank' href='https://github.com/captbaritone/winamp2-js'></a>
         </div>
         <div id='playlist' class='selected loading stop'>
-            <ul id='tracks'>
-                <li>1. track one is very long and if you don't cut it off it
-                causes some problems</li>
-                <li>2. track two</li>
-                <li>2. track two</li>
-                <li>2. track two</li>
-                <li>2. track two</li>
-                <li>2. track two</li>
-                <li>2. track two</li>
-                <li>2. track two</li>
-                <li>2. track two</li>
-            </ul>
+            <ul id='tracks'></ul>
             <!-- These go first so that they end up below the .top div in the
             z axis -->
             <div class='left playlist-left-tile'></div>
@@ -132,8 +121,9 @@
 
             <div class='bottom playlist-bottom-tile'>
                 <div class='bottom-left'></div>
-                <div class='title'></div>
-                <div class='bottom-right'></div>
+                <div class='bottom-right'>
+                    <div id='playlist-resize-handle'></div>
+                </div>
             </div>
         </div>
         <div id='browser-compatibility'>

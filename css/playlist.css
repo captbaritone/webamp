@@ -34,6 +34,10 @@
 #playlist #tracks li {
     white-space: nowrap;
     color: lightgreen;
+    font-size: 8px;
+}
+#playlist #tracks li.selected {
+    background-color: red;
 }
 
 #playlist .top {
@@ -134,4 +138,12 @@
     height: 100%;
     width: 150px;
     background-position: -126px -72px;
+}
+
+#playlist #playlist-resize-handle {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    bottom: 0px;
+    right: 0px;
 }

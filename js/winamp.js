@@ -13,6 +13,9 @@ Winamp = {
         this.mainWindow = MainWindow.init(this);
         this.playlistWindow = PlaylistWindow.init(this);
 
+        this.playlist = [];
+        this.currentTrack = null;
+
         this.events = {
             timeUpdated: new Event('timeUpdated'),
             startWaiting: new Event('startWaiting'),
@@ -27,7 +30,11 @@ Winamp = {
             balanceChanged: new Event('balanceChanged'),
             doubledModeToggled: new Event('doubledModeToggled'),
             repeatToggled: new Event('repeatToggled'),
-            llamaToggled: new Event('llamaToggled')
+            llamaToggled: new Event('llamaToggled'),
+            openPlaylist: new Event('openPlaylist'),
+            closePlaylist: new Event('closePlaylist'),
+            tracksUpdated: new Event('tracksUpdated'),
+            currentTrackChanged: new Event('currentTrackChanged')
         };
 
         this.setVolume(options.volume);
@@ -117,8 +124,11 @@ Winamp = {
     },
 
     previous: function(num) {
-        // Jump back num tracks
-        // Not yet supported
+        if(this.currentTrack > 0) {
+            this.currentTrack = this.currentTrack - 1;
+            window.dispatchEvent(this.events.currentTrackChanged);
+            this.playFromFileReference(this.playlist[this.currentTrack]);
+        }
     },
 
     play: function() {
@@ -139,14 +149,19 @@ Winamp = {
             this.setState('pause');
         }
     },
+
     stop: function() {
         this.media.stop();
         this.setState('stop');
     },
 
     next: function(num) {
-        // Jump back num tracks
-        // Not yet supported
+        this.currentTrack++;
+        if(this.currentTrack == this.playlist.length) {
+            this.currentTrack = 0;
+        }
+        window.dispatchEvent(this.events.currentTrackChanged);
+        this.playFromFileReference(this.playlist[this.currentTrack]);
     },
 
     // From 0-100
@@ -203,12 +218,20 @@ Winamp = {
         this.setState('stop'); // Currently unneeded
     },
 
-    togglePlaylist: function() {
-        this.playlistWindow.toggle();
+    openPlaylist: function() {
+        window.dispatchEvent(this.events.openPlaylist);
     },
 
-    playlistIsClosed: function() {
-        return this.playlistWindow.isClosed();
+    closePlaylist: function() {
+        window.dispatchEvent(this.events.closePlaylist);
+    },
+
+    togglePlaylist: function() {
+        if(this.playlistWindow.isClosed()) {
+            this.openPlaylist();
+        } else {
+            this.closePlaylist();
+        }
     },
 
     openFileDialog: function() {
@@ -221,10 +244,22 @@ Winamp = {
         if(new RegExp("(wsz|zip)$", 'i').test(fileReference.name)) {
             this.skin.setSkinByFile(file);
         } else {
-            this.media.autoPlay = true;
-            this.fileName = fileReference.name;
-            file.processBuffer(this._loadBuffer.bind(this));
+            this.playlist = [];
+            this.enqueueFromFileReference(fileReference);
+            this.currentTrack = 0;
+            this.playFromFileReference(this.playlist[0]);
         }
+    },
+
+    playFromFileReference: function(fileReference) {
+        this.media.autoPlay = true;
+        this.fileName = fileReference.name;
+        this.fileManager.bufferFromFileReference(fileReference, this._loadBuffer.bind(this));
+    },
+
+    enqueueFromFileReference: function(fileReference, position) {
+        this.playlist.push(fileReference);
+        window.dispatchEvent(this.events.tracksUpdated);
     },
 
     // Used only for the initial load, since it must have a CORS header

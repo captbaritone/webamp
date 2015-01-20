@@ -206,6 +206,8 @@ MainWindow = {
         window.addEventListener('doubledModeToggled', function() { self.toggleDoubledMode(); });
         window.addEventListener('repeatToggled', function() { self.toggleRepeat(); });
         window.addEventListener('llamaToggled', function() { self.toggleLlama(); });
+        window.addEventListener('openPlaylist', function() { self.nodes.playlistButton.classList.add('selected'); });
+        window.addEventListener('closePlaylist', function() { self.nodes.playlistButton.classList.remove('selected'); });
 
         this.nodes.window.addEventListener('dragenter', this.dragenter.bind(this));
         this.nodes.window.addEventListener('dragover', this.dragover.bind(this));
@@ -373,11 +375,6 @@ MainWindow = {
 
     togglePlaylist: function() {
         this.winamp.togglePlaylist();
-        if(this.winamp.playlistIsClosed()) {
-            this.nodes.playlistButton.classList.remove('selected');
-        } else {
-            this.nodes.playlistButton.classList.add('selected');
-        }
     },
 
     dragenter: function(e) {
