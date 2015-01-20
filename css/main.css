@@ -345,6 +345,13 @@
     left: 23px;
 }
 
+.windows #playlist-button.selected {
+    background-position: -23px -73px;
+}
+.windows #playlist-button.selected:active {
+    background-position: -69px -73px;
+}
+
 #position {
     position: absolute;
     left: 16px;

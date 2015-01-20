@@ -103,5 +103,17 @@ SkinManager = {
                 resolve(cssRules);
             };
         });
+    },
+
+    _spriteURL: function(imgURL, x, y, width, height) {
+        var imageObj = new Image();
+        imageObj.src = imgURL;
+        var canvas = document.createElement('canvas');
+        canvas.height = height;
+        canvas.width = width;
+        var context = canvas.getContext('2d');
+        context.drawImage(imageObj, -x, -y);
+        dataURL = canvas.toDataURL();
+        return dataURL;
     }
 };

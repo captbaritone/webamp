@@ -21,7 +21,7 @@
         <div id='main-window' class='loading stop'>
             <div id='loading'>Loading...</div>
             <div id='title-bar' class='selected'>
-                <div id='option'>
+                <div id='option' class='ui'>
                     <ul id='context-menu'>
                         <li><a href='https://github.com/captbaritone/winamp2-js' target='_blank'>Winamp2-js...</a></li>
                         <li class='hr'><hr /></li>
@@ -43,16 +43,16 @@
                         <li id='context-exit'>Exit</li>
                     </ul>
                 </div>
-                <div id='shade-time'>
+                <div id='shade-time' class='ui'>
                     <div id='shade-minus-sign'></div>
                     <div id='shade-minute-first-digit' class='character'></div>
                     <div id='shade-minute-second-digit' class='character'></div>
                     <div id='shade-second-first-digit' class='character'></div>
                     <div id='shade-second-second-digit' class='character'></div>
                 </div>
-                <div id='minimize'></div>
-                <div id='shade'></div>
-                <div id='close'></div>
+                <div id='minimize' class='ui'></div>
+                <div id='shade' class='ui'></div>
+                <div id='close' class='ui'></div>
             </div>
             <div class='status'>
                 <div id='clutter-bar'>
@@ -103,7 +103,7 @@
             </div>
             <a id='about' target='_blank' href='https://github.com/captbaritone/winamp2-js'></a>
         </div>
-        <div id='playlist' class='loading stop'>
+        <div id='playlist' class='selected loading stop'>
             <ul id='tracks'>
                 <li>1. track one is very long and if you don't cut it off it
                 causes some problems</li>
@@ -118,26 +118,20 @@
             </ul>
             <!-- These go first so that they end up below the .top div in the
             z axis -->
-            <div class='left'>
-                <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div>
-            </div>
-            <div class='right'>
-                <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div> <div class='tile-y'></div>
-            </div>
-            <div class='top'>
+            <div class='left playlist-left-tile'></div>
+            <div class='right playlist-right-tile'></div>
+
+            <div class='top playlist-top-tile'>
                 <div class='top-left'></div>
-                <!-- Generate on the fly? --!>
-                <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div>
                 <div class='title'></div>
                 <div class='top-right'>
-                    <div id='playlist-shade'></div>
-                    <div id='playlist-close'></div>
+                    <div id='playlist-shade' class='ui'></div>
+                    <div id='playlist-close' class='ui'></div>
                 </div>
             </div>
-            <div class='bottom'>
+
+            <div class='bottom playlist-bottom-tile'>
                 <div class='bottom-left'></div>
-                <!-- Generate on the fly? --!>
-                <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div> <div class='tile-x'></div>
                 <div class='title'></div>
                 <div class='bottom-right'></div>
             </div>
@@ -164,6 +158,7 @@
         <script src="js/context.js?inline"></script>
         <script src="js/window-manager.js?inline"></script>
         <script src="js/main-window.js?inline"></script>
+        <script src="js/playlist-window.js?inline"></script>
         <script src="js/winamp.js?inline"></script>
         <script type="text/javascript">
             if(Browser.isCompatible()) {

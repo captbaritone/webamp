@@ -11,6 +11,7 @@ Winamp = {
         this.state = '';
 
         this.mainWindow = MainWindow.init(this);
+        this.playlistWindow = PlaylistWindow.init(this);
 
         this.events = {
             timeUpdated: new Event('timeUpdated'),
@@ -44,6 +45,7 @@ Winamp = {
         var self = this;
 
         this.windowManager.registerWindow(this.mainWindow);
+        this.windowManager.registerWindow(this.playlistWindow);
 
         this.media.addEventListener('timeupdate', function() {
             window.dispatchEvent(self.events.timeUpdated);
@@ -199,6 +201,14 @@ Winamp = {
     close: function() {
         this.media.stop();
         this.setState('stop'); // Currently unneeded
+    },
+
+    togglePlaylist: function() {
+        this.playlistWindow.toggle();
+    },
+
+    playlistIsClosed: function() {
+        return this.playlistWindow.isClosed();
     },
 
     openFileDialog: function() {

@@ -1,11 +1,11 @@
 WindowManager = {
     registerWindow: function(win) {
-        body = win.body;
-        handle = win.handle;
+        var body = win.body;
+        var handle = win.handle;
 
         // Make window dragable
         handle.addEventListener('mousedown',function(e){
-            if(e.target !== this) {
+            if(e.target.classList.contains('ui')) {
                 // Prevent going into drag mode when clicking any of the title
                 // bar's icons by making sure the click was made directly on the
                 // titlebar

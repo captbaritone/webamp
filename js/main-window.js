@@ -30,6 +30,7 @@ MainWindow = {
             'balance': document.getElementById('balance'),
             'workIndicator': document.getElementById('work-indicator'),
             'titleBar': document.getElementById('title-bar'),
+            'playlistButton': document.getElementById('playlist-button'),
             'window': document.getElementById('main-window'),
         };
 
@@ -186,6 +187,10 @@ MainWindow = {
         this.nodes.visualizer.onclick = function() {
             self.winamp.toggleVisualizer();
         };
+
+        this.nodes.playlistButton.onclick = function() {
+            self.togglePlaylist();
+        },
 
         window.addEventListener('timeUpdated', function() { self.updateTime(); });
         window.addEventListener('startWaiting', function() { self.setWorkingIndicator(); });
@@ -364,6 +369,15 @@ MainWindow = {
 
     toggleShuffle: function() {
         this.nodes.shuffle.classList.toggle('selected');
+    },
+
+    togglePlaylist: function() {
+        this.winamp.togglePlaylist();
+        if(this.winamp.playlistIsClosed()) {
+            this.nodes.playlistButton.classList.remove('selected');
+        } else {
+            this.nodes.playlistButton.classList.add('selected');
+        }
     },
 
     dragenter: function(e) {

@@ -10,6 +10,7 @@
     background-color: black;
     /* Background-image: pledit.bmp */
 }
+#playlist.closed { display: none; }
 
 #playlist #tracks {
     position: absolute;
@@ -44,13 +45,6 @@
     overflow: hidden;
 }
 
-#playlist .top .tile-x {
-    height: 100%;
-    width: 25px;
-    background-position: -127px -21px;
-    float: left;
-}
-
 #playlist .top .top-left {
     position: absolute;
     top: 0;
@@ -82,8 +76,25 @@
     width: 25px;
     background-position: -153px -21px;
 }
+
 #playlist.selected .top .top-right {
     background-position: -153px 0;
+}
+
+#playlist .top #playlist-shade {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    height: 9px;
+    width: 9px;
+}
+
+#playlist .top #playlist-close {
+    position: absolute;
+    top: 3px;
+    left: 14px;
+    height: 9px;
+    width: 9px;
 }
 
 #playlist .left {
@@ -91,12 +102,6 @@
     width: 24px;
     overflow: hidden;
 }
-#playlist .left .tile-y {
-    width: 100%;
-    height: 29px;
-    background-position: 0px -42px;
-}
-
 #playlist .right {
     height: 100%;
     position: absolute;
@@ -104,11 +109,6 @@
     top: 0px;
     width: 24px;
     overflow: hidden;
-}
-#playlist .right .tile-y {
-    width: 100%;
-    height: 29px;
-    background-position: -27px -42px;
 }
 #playlist .bottom {
     position: absolute;
@@ -119,12 +119,6 @@
     overflow: hidden;
 }
 
-#playlist .bottom .tile-x {
-    height: 100%;
-    width: 25px;
-    background-position: -179px 0px;
-    float: left;
-}
 #playlist .bottom-left {
     position: absolute;
     top: 0;
