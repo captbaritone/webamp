@@ -36,6 +36,24 @@ SkinManager = {
             }
         }, this);
 
+        // Extract PLEDIT.txt values
+        var plRules = {
+            "Normal": { selector:'#tracks li', attribute:'color' },
+            "Current": { selector:'#tracks li.current', attribute:'color' },
+            "Current": { selector:'#tracks li.current', attribute:'color' },
+            "Font": { selector:'#tracks li', attribute:'font-family' },
+            "NormalBG": { selector:'#tracks, #tracks li', attribute:'background-color' },
+            "SelectedBG": { selector:'#tracks li.selected', attribute:'background-color' }
+        }
+
+        var plValues = this._parsePlEdit(zip);
+        for(key in plRules) {
+            var rule = plRules[key];
+            if(plValues[key]) {
+                promisedCssRules.push(rule.selector + "{" + rule.attribute + ":" + plValues[key] + "}");
+            }
+        }
+
         // Extract sprite images
         Promise.all(promisedCssRules).then(function(newCssRules) {
             this._createNewStyleNode();
@@ -62,6 +80,19 @@ SkinManager = {
             }
         }
         this.visualizer.setColors(colors);
+    },
+
+    _parsePlEdit: function(zip) {
+        var entries = this._findFileInZip("PLEDIT.TXT", zip).asText().split("\n");
+        var regex = /^([^=]*)=([^=\r]*)\r?$/
+        var results = {};
+        for(var i = 0; i < entries.length; i++) {
+            var matches = regex.exec(entries[i]);
+            if(matches) {
+                results[matches[1]] = matches[2];
+            }
+        }
+        return results;
     },
 
     _findFileInZip: function(name, zip) {

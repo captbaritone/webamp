@@ -7,7 +7,6 @@
     margin-left: -137px;
     top: 40%;
     left: 20%;
-    background-color: black;
     /* Background-image: pledit.bmp */
 }
 #playlist.closed { display: none; }
@@ -33,11 +32,9 @@
 }
 #playlist #tracks li {
     white-space: nowrap;
-    color: lightgreen;
     font-size: 8px;
 }
 #playlist #tracks li.selected {
-    background-color: red;
 }
 
 #playlist .top {
