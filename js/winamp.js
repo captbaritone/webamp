@@ -64,7 +64,11 @@ Winamp = {
 
         this.media.addEventListener('ended', function() {
             self.skin.visualizer.clear();
-            self.setState('stop');
+            if(self.media.repeatEnabled()) {
+                self.next();
+            } else {
+                self.setState('stop');
+            }
         });
 
         this.media.addEventListener('waiting', function() {
