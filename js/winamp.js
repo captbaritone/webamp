@@ -51,8 +51,8 @@ Winamp = {
     _registerListeners: function() {
         var self = this;
 
-        this.windowManager.registerWindow(this.mainWindow);
-        this.windowManager.registerWindow(this.playlistWindow);
+        this.windowManager.registerWindow('main', this.mainWindow);
+        this.windowManager.registerWindow('playlist', this.playlistWindow);
 
         this.media.addEventListener('timeupdate', function() {
             window.dispatchEvent(self.events.timeUpdated);

@@ -1,8 +1,12 @@
 WindowManager = {
-    registerWindow: function(win) {
+    windows: {},
+    registerWindow: function(name, win) {
+        var self = this;
         var body = win.body;
         var handle = win.handle;
         var resizeHandle = win.resizeHandle;
+
+        this.windows[name] = body;
 
         // Make window dragable
         handle.addEventListener('mousedown',function(e){
