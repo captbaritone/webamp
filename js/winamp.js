@@ -39,7 +39,7 @@ Winamp = {
 
         this.setVolume(options.volume);
         this.setBalance(options.balance);
-        this.loadFromUrl(options.mediaFile.url, options.mediaFile.name);
+        this.enqueueFromUrl(options.mediaFile.url, options.mediaFile.name);
         var skinFile = new MyFile();
         skinFile.setUrl(options.skinUrl);
         this.setSkin(skinFile);
@@ -81,7 +81,14 @@ Winamp = {
         });
 
         this.fileInput.onchange = function(e){
-            self.loadFromFileReference(e.target.files[0]);
+            self.emptyPlaylist();
+            var files = e.dataTransfer.files;
+            for(var i = 0; i < files.length; i++) {
+                var file = new MyFile();
+                file.setFileReference(files[i]);
+                this.enqueue(file);
+            }
+            this.next();
         };
     },
 
@@ -131,7 +138,7 @@ Winamp = {
         if(this.currentTrack > 0) {
             this.currentTrack = this.currentTrack - 1;
             window.dispatchEvent(this.events.currentTrackChanged);
-            this.playFromFileReference(this.playlist[this.currentTrack]);
+            this.playTrack(this.currentTrack);
         }
     },
 
@@ -165,7 +172,7 @@ Winamp = {
             this.currentTrack = 0;
         }
         window.dispatchEvent(this.events.currentTrackChanged);
-        this.playFromFileReference(this.playlist[this.currentTrack]);
+        this.playTrack(this.currentTrack);
     },
 
     // From 0-100
@@ -242,36 +249,49 @@ Winamp = {
         this.fileInput.click();
     },
 
-    loadFromFileReference: function(fileReference) {
+    enqueueFromFileReference: function(fileReference) {
         var file = new MyFile();
         file.setFileReference(fileReference);
         if(new RegExp("(wsz|zip)$", 'i').test(fileReference.name)) {
             this.skin.setSkinByFile(file);
         } else {
-            this.playlist = [];
-            this.enqueueFromFileReference(fileReference);
-            this.currentTrack = 0;
-            this.playFromFileReference(this.playlist[0]);
+            this.enqueue(file);
         }
     },
 
-    playFromFileReference: function(fileReference) {
-        this.media.autoPlay = true;
-        this.fileName = fileReference.name;
-        this.fileManager.bufferFromFileReference(fileReference, this._loadBuffer.bind(this));
+    loadFile: function(file) {
+        this.fileName = file.name;
+        file.processBuffer(this._loadBuffer.bind(this));
     },
 
-    enqueueFromFileReference: function(fileReference, position) {
-        this.playlist.push(fileReference);
+    playTrack: function(track) {
+        this.currentTrack = track;
+        window.dispatchEvent(this.events.currentTrackChanged);
+        var file = this.playlist[this.currentTrack];
+        this.media.autoPlay = true;
+        this.loadFile(file);
+    },
+
+    enqueue: function(file) {
+        this.playlist.push(file);
+        if(this.playlist.length === 1) {
+            this.loadFile(file);
+        }
+        window.dispatchEvent(this.events.tracksUpdated);
+    },
+
+    emptyPlaylist: function() {
+        this.playlist = [];
+        this.currentTrack = 0;
         window.dispatchEvent(this.events.tracksUpdated);
     },
 
     // Used only for the initial load, since it must have a CORS header
-    loadFromUrl: function(url, fileName) {
-        this.fileName = fileName;
+    enqueueFromUrl: function(url, fileName) {
         var file = new MyFile();
         file.setUrl(url);
-        file.processBuffer(this._loadBuffer.bind(this));
+        file.name = fileName;
+        this.enqueue(file);
     },
 
     setSkin: function(file) {

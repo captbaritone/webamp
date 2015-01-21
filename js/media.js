@@ -156,6 +156,10 @@ Media = {
         this._position = 0;
     },
 
+    isEmpty: function() {
+        return !!this._buffer;
+    },
+
     _silence: function() {
         if(this._source) {
             this._source.stop(0);

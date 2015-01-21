@@ -390,9 +390,14 @@ MainWindow = {
     drop: function(e) {
         e.stopPropagation();
         e.preventDefault();
-        var dt = e.dataTransfer;
-        var file = dt.files[0];
-        this.winamp.loadFromFileReference(file);
+        this.winamp.emptyPlaylist();
+        var files = e.dataTransfer.files;
+        for(var i = 0; i < files.length; i++) {
+            var file = new MyFile();
+            file.setFileReference(files[i]);
+            this.winamp.enqueue(file);
+        }
+        this.winamp.play();
     },
 
     _timeString: function(time) {

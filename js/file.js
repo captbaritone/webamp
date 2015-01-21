@@ -2,12 +2,14 @@
 // `File` is already a builtin, so we use `MyFile`
 MyFile = function(){
     this.reader = new FileReader();
+    this.name = '';
     this.url = null;
     this.fileReference = null;
     this.setUrl = function(url){
         this.url = url;
     };
     this.setFileReference = function(fileReference){
+        this.name = fileReference.name;
         this.fileReference = fileReference;
     };
     this.processBuffer = function(bufferHandler) {

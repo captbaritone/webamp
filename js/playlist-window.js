@@ -68,9 +68,13 @@ PlaylistWindow = {
             tracks.removeChild(tracks.firstChild);
         }
 
-        for(i = 0; i < this.winamp.playlist.length; i++) {
+        var self = this;
+        for(var i = 0; i < this.winamp.playlist.length; i++) {
             var li = document.createElement('li');
             li.innerHTML = (i+1) + ". " + this.winamp.playlist[i].name;
+            li.onclick = (function(trackNumber) {
+                return function() { self.winamp.playTrack(trackNumber); };
+            })(i);
             tracks.appendChild(li);
         }
 
@@ -79,7 +83,7 @@ PlaylistWindow = {
 
     updateCurrentTrack: function() {
         var tracks = this.nodes.tracks.children;
-        for(i = 0; i < tracks.length; i++) {
+        for(var i = 0; i < tracks.length; i++) {
             if(i == this.winamp.currentTrack) {
                 tracks[i].classList.add('current');
             } else {
@@ -101,9 +105,12 @@ PlaylistWindow = {
     drop: function(e) {
         e.stopPropagation();
         e.preventDefault();
-        var dt = e.dataTransfer;
-        var file = dt.files[0];
-        this.winamp.enqueueFromFileReference(file, 0);
+        var files = e.dataTransfer.files;
+        for(var i = 0; i < files.length; i++) {
+            var file = new MyFile();
+            file.setFileReference(files[i]);
+            this.winamp.enqueue(file);
+        }
     }
 
 }
