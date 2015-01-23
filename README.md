@@ -39,6 +39,11 @@ Works in modern versions of Firefox, Safari and Chrome. Untested in IE.
 - [Spotiamp](http://spotiamp.com/) The folks at Spotify reimplemented Winamp as
   a frontend for Spotify. Not in a browser, and only runs on Windows.
 
+## Compiling
+
+You don't need to compile the code, because this is Javascript.
+You only need to run the index.html file with a normal web browser, and you're good to go.
+
 ## Thanks
 
 - Research and feature prototyping: @PAEz
