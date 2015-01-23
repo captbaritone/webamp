@@ -9,12 +9,6 @@ Works in modern versions of Firefox, Safari and Chrome. Untested in IE.
 - Drag in local sound or skin files or load them via the "eject" button
 - "Shade" mini-mode
 
-## Tested in modern versions of
-
-- Chrome (OS X, iOS, Ubuntu) - Perfect
-- Firefox (OS X) - Perfect
-- Safari (OS X, iOS) - Perfect
-
 ## Reference
 
 - [skinspecs.pdf](http://members.xoom.it/skinart/tutorial/skinspecs..pdf)
