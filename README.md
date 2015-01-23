@@ -9,6 +9,11 @@ Works in modern versions of Firefox, Safari and Chrome. Untested in IE.
 - Drag in local sound or skin files or load them via the "eject" button
 - "Shade" mini-mode
 
+## Compiling
+
+You don't need to compile the code, because this is Javascript.
+You only need to run the index.html file with a normal web browser, and you're good to go.
+
 ## Reference
 
 - [skinspecs.pdf](http://members.xoom.it/skinart/tutorial/skinspecs..pdf)
@@ -32,11 +37,6 @@ Works in modern versions of Firefox, Safari and Chrome. Untested in IE.
 
 - [Spotiamp](http://spotiamp.com/) The folks at Spotify reimplemented Winamp as
   a frontend for Spotify. Not in a browser, and only runs on Windows.
-
-## Compiling
-
-You don't need to compile the code, because this is Javascript.
-You only need to run the index.html file with a normal web browser, and you're good to go.
 
 ## Thanks
 
