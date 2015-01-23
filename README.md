@@ -2,12 +2,19 @@
 
 A reimplementation of Winamp 2.9 in HTML5 and Javascript.
 
-Works in modern versions of Firefox, Safari and Chrome. Untested in IE.
+Works in modern versions of Firefox, Safari and Chrome. IE is [not
+supported](http://caniuse.com/#feat=audio-api).
 
 ## Features
 
-- Drag in local sound or skin files or load them via the "eject" button
+- Decodes the actual skin file in your browser so you can load your favorite
+  Winamp 2 skins!
+- Load local audio or skin files via drag-and-drop, eject button, or "options"
+  button (upper left-hand corner)
+- Both visualization modes: oscilloscope and spectrum
+- Hotkeys
 - "Shade" mini-mode
+- "Doubled" mode, where the main window is twice as large: `Ctrl-D`
 
 ## Compiling
 
