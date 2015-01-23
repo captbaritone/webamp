@@ -1,6 +1,5 @@
 // Dynamically set the css background images for all the sprites
 SkinManager = {
-    fileManager: FileManager,
     font: Font,
     init: function(visualizerNode, analyser) {
         this._createNewStyleNode();
@@ -46,14 +45,9 @@ SkinManager = {
     },
 
     // Given a file of an original Winamp WSZ file, set the current skin
-    setSkinByFileReference: function(fileReference) {
-        this.fileManager.bufferFromFileReference(fileReference, this._setSkinByBuffer.bind(this));
-    },
-
-    // Given the url of an original Winamp WSZ file, set the current skin
-    setSkinByUrl: function(url) {
-        Winamp.setLoadingState();
-        this.fileManager.bufferFromUrl(url, this._setSkinByBuffer.bind(this));
+    setSkinByFile: function(file, completedCallback) {
+        this.completedCallback = completedCallback;
+        file.processBuffer(this._setSkinByBuffer.bind(this));
     },
 
     // Given a bufferArray containing a Winamp WSZ file, set the current skin
@@ -80,12 +74,9 @@ SkinManager = {
             }
         }
 
-        // Clear the loading state
-        Winamp.unsetLoadingState();
         this.styleNode.appendChild(document.createTextNode(cssRules));
-
         this._parseVisColors(zip);
-
+        this.completedCallback();
     },
 
     _parseVisColors: function(zip) {

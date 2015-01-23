@@ -1,8 +1,6 @@
 // UI and App logic
 Winamp = {
     init: function(options) {
-        this.fileManager = FileManager;
-
         this.fileInput = document.createElement('input');
         this.fileInput.type = 'file';
         this.fileInput.style.display = 'none';
@@ -27,7 +25,9 @@ Winamp = {
         this.setVolume(options.volume);
         this.setBalance(options.balance);
         this.loadFromUrl(options.mediaFile.url, options.mediaFile.name);
-        this.setSkinByUrl(options.skinUrl);
+        var skinFile = new MyFile();
+        skinFile.setUrl(options.skinUrl);
+        this.setSkin(skinFile);
 
         this._registerListeners();
         return this;
@@ -184,23 +184,28 @@ Winamp = {
     },
 
     loadFromFileReference: function(fileReference) {
+        var file = new MyFile();
+        file.setFileReference(fileReference);
         if(new RegExp("(wsz|zip)$", 'i').test(fileReference.name)) {
-            this.skin.setSkinByFileReference(fileReference);
+            this.skin.setSkinByFile(file);
         } else {
             this.media.autoPlay = true;
             this.fileName = fileReference.name;
-            this.fileManager.bufferFromFileReference(fileReference, this._loadBuffer.bind(this));
+            file.processBuffer(this._loadBuffer.bind(this));
         }
     },
 
     // Used only for the initial load, since it must have a CORS header
     loadFromUrl: function(url, fileName) {
         this.fileName = fileName;
-        this.fileManager.bufferFromUrl(url, this._loadBuffer.bind(this));
+        var file = new MyFile();
+        file.setUrl(url);
+        file.processBuffer(this._loadBuffer.bind(this));
     },
 
-    setSkinByUrl: function(url) {
-        this.skin.setSkinByUrl(url);
+    setSkin: function(file) {
+        this.setLoadingState();
+        this.skin.setSkinByFile(file, this.unsetLoadingState.bind(this));
     },
 
     setLoadingState: function() {

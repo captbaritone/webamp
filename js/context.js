@@ -3,6 +3,7 @@ Context = {
     option: document.getElementById('option'),
 
     init: function(winamp) {
+        this.winamp = winamp;
         var self = this;
 
         document.onclick = function() {
@@ -17,20 +18,22 @@ Context = {
         var skinSelectNodes = document.getElementsByClassName('skin-select');
         for(var i = 0; i < skinSelectNodes.length; i++) {
             skinSelectNodes[i].onclick = function() {
-                winamp.setSkinByUrl(this.dataset.skinUrl);
+                var skinFile = new MyFile();
+                skinFile.setUrl(this.dataset.skinUrl);
+                self.winamp.setSkin(skinFile);
             }
         }
 
         document.getElementById('context-play-file').onclick = function(event) {
             self.option.classList.remove('selected');
-            winamp.openFileDialog();
+            self.winamp.openFileDialog();
         };
         document.getElementById('context-load-skin').onclick = function(event) {
             self.option.classList.remove('selected');
-            winamp.openFileDialog();
+            self.winamp.openFileDialog();
         };
         document.getElementById('context-exit').onclick = function() {
-            winamp.close();
+            self.winamp.close();
         };
     }
 }
