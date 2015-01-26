@@ -71,6 +71,9 @@ Media = {
         this._chanMerge.connect(this._gainNode);
 
         this._gainNode.connect(this._context.destination);
+
+        // Kick off the animation loop
+        this._draw(0);
         return this;
     },
 
@@ -85,7 +88,6 @@ Media = {
             if(this.autoPlay) {
                 this.play(0);
             }
-            this._draw(0);
         }
 
         var error = function (error) {
