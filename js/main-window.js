@@ -256,7 +256,7 @@ MainWindow = {
         ];
 
         // For each digit/node
-        for(i = 0; i < 4; i++) {
+        for(var i = 0; i < 4; i++) {
             var digit = digits[i];
             var digitNode = digitNodes[i];
             var shadeNode = shadeDigitNodes[i];

@@ -55,7 +55,7 @@ Visualizer = {
     preRenderBar: function() {
         this.barCanvasCtx.fillStyle = this.colors[23];
         this.barCanvasCtx.fillRect(0,0,6,2);
-        for(i = 0; i <= 15; i++) {
+        for(var i = 0; i <= 15; i++) {
             var colorNumber = 17 - i;
             this.barCanvasCtx.fillStyle = this.colors[colorNumber];
             var y = 32 - (i*2);
