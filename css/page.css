@@ -1,0 +1,30 @@
+/* Rules for the page layout */
+body {
+    background-color: #224EB7;
+    font-family: arial;
+    font-size: 15px;
+}
+
+#browser-compatibility {
+    display: none;
+    position: absolute;
+    width: 275px;
+    margin-top: -58px;
+    margin-left: -137px;
+    top: 40%;
+    left: 50%;
+    background: white;
+    text-align: center;
+}
+
+.about {
+    position: absolute;
+    bottom: 0;
+    color: white;
+}
+
+.about a {
+    color: white;
+}
+
+
