@@ -15,7 +15,6 @@ Media = {
     _balance: 0,
     _playing: false,
     _loop: false,
-    autoPlay: false,
 
     init: function() {
         // The _source node has to be recreated each time it's stopped or
@@ -86,9 +85,6 @@ Media = {
         var loadAudioBuffer = function(buffer) {
             this._buffer = buffer;
             loadedCallback();
-            if(this.autoPlay) {
-                this.play(0);
-            }
         };
 
         var error = function (error) {
