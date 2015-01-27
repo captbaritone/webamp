@@ -16,10 +16,12 @@ supported](http://caniuse.com/#feat=audio-api).
 - "Shade" mini-mode
 - "Doubled" mode, where the main window is twice as large: `Ctrl-D`
 
-## Compiling
+## Running locally vs. Production
 
-You don't need to compile the code, because this is Javascript.
-You only need to run the index.html file with a normal web browser, and you're good to go.
+Running Winamp2-js locally is as simple as cloning this repository and opening
+`index.html` in your browser. The [`production/`](production/README.md)
+directory contains some scripts to concatenate and minify the JavaScript and
+CSS files.
 
 ## Reference
 
