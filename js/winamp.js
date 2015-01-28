@@ -15,6 +15,7 @@ Winamp = {
 
         this.playlist = [];
         this.currentTrack = null;
+        this.autoPlay = false;
 
         this.events = {
             timeUpdated: new Event('timeUpdated'),
@@ -64,10 +65,11 @@ Winamp = {
 
         this.media.addEventListener('ended', function() {
             self.skin.visualizer.clear();
-            if(self.media.repeatEnabled()) {
-                self.next();
-            } else {
+            var lastTrack = (self.currentTrack + 1 == self.playlist.length);
+            if(lastTrack && !self.media.repeatEnabled()) {
                 self.setState('stop');
+            } else {
+                self.next();
             }
         });
 
@@ -136,9 +138,10 @@ Winamp = {
 
     previous: function(num) {
         if(this.currentTrack > 0) {
-            this.currentTrack = this.currentTrack - 1;
+            this.playTrack(this.currentTrack - 1);
             window.dispatchEvent(this.events.currentTrackChanged);
-            this.playTrack(this.currentTrack);
+        } else  {
+            this.playTrack(0);
         }
     },
 
@@ -167,12 +170,13 @@ Winamp = {
     },
 
     next: function(num) {
-        this.currentTrack++;
-        if(this.currentTrack == this.playlist.length) {
-            this.currentTrack = 0;
+        var nextTrack = this.currentTrack + 1;
+        if(nextTrack < this.playlist.length) {
+            this.playTrack(this.currentTrack + 1);
+        } else  {
+            this.playTrack(0);
         }
         window.dispatchEvent(this.events.currentTrackChanged);
-        this.playTrack(this.currentTrack);
     },
 
     // From 0-100
@@ -265,17 +269,25 @@ Winamp = {
     },
 
     playTrack: function(track) {
-        this.currentTrack = track;
-        window.dispatchEvent(this.events.currentTrackChanged);
-        var file = this.playlist[this.currentTrack];
-        this.media.autoPlay = true;
-        this.loadFile(file);
+        if(this.currentTrack != track) {
+            this.currentTrack = track;
+            window.dispatchEvent(this.events.currentTrackChanged);
+            var file = this.playlist[this.currentTrack];
+            this.autoPlay = true;
+            this.loadFile(file);
+        } else {
+            this.play();
+        }
     },
 
     enqueue: function(file) {
         this.playlist.push(file);
         if(this.playlist.length === 1) {
             this.loadFile(file);
+        }
+        if(this.currentTrack == null) {
+            this.currentTrack = this.playlist.length - 1;
+            window.dispatchEvent(this.events.currentTrackChanged);
         }
         window.dispatchEvent(this.events.tracksUpdated);
     },
@@ -321,6 +333,10 @@ Winamp = {
     /* Listeners */
     _loadBuffer: function(buffer) {
         function setMetaData() {
+            if(this.autoPlay) {
+                this.play();
+                this.autoPlay = false;
+            }
             var kbps = "128";
             var khz = Math.round(this.media.sampleRate() / 1000).toString();
             this.skin.font.setNodeToString(document.getElementById('kbps'), kbps);

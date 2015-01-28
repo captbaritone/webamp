@@ -397,7 +397,7 @@ MainWindow = {
             file.setFileReference(files[i]);
             this.winamp.enqueue(file);
         }
-        this.winamp.play();
+        this.winamp.playTrack(0);
     },
 
     _timeString: function(time) {
