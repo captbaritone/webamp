@@ -194,6 +194,8 @@ MainWindow = {
         window.addEventListener('stopLoading', function() { self.unsetLoadingState(); });
         window.addEventListener('toggleTimeMode', function() { self.toggleTimeMode(); });
         window.addEventListener('changeState', function() { self.changeState(); });
+        window.addEventListener('titleUpdated', function() { self.updateTitle(); });
+        window.addEventListener('channelCountUpdated', function() { self.updateChannelCount(); });
 
         this.nodes.window.addEventListener('dragenter', this.dragenter.bind(this));
         this.nodes.window.addEventListener('dragover', this.dragover.bind(this));
@@ -330,13 +332,14 @@ MainWindow = {
         this.nodes.window.classList.toggle('llama');
     },
 
-    setTitle: function(fileName, duration) {
-        var duration = this._timeString(duration);
-        var name = fileName + ' (' + duration + ')  ***  ';
+    updateTitle: function() {
+        var duration = this._timeString(this.winamp.getDuration());
+        var name = this.winamp.fileName + ' (' + duration + ')  ***  ';
         this.textDisplay.setRegisterText('songTitle', name);
     },
 
-    setChannelCount: function(channels) {
+    updateChannelCount: function() {
+        var channels = this.winamp.getChannelCount();
         this.nodes.mono.classList.remove('selected');
         this.nodes.stereo.classList.remove('selected');
         if(channels == 1) {

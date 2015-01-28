@@ -19,7 +19,9 @@ Winamp = {
             startLoading: new Event('startLoading'),
             stopLoading: new Event('stopLoading'),
             toggleTimeMode: new Event('toggleTimeMode'),
-            changeState: new Event('changeState')
+            changeState: new Event('changeState'),
+            titleUpdated: new Event('titleUpdated'),
+            channelCountUpdated: new Event('channelCountUpdated')
         }
 
         this.setVolume(options.volume);
@@ -86,6 +88,10 @@ Winamp = {
 
     getTimeElapsed: function() {
         return this.media.timeElapsed();
+    },
+
+    getChannelCount: function() {
+        return this.media.channels();
     },
 
     seekToPercentComplete: function(percent) {
@@ -229,24 +235,18 @@ Winamp = {
 
     /* Listeners */
     _loadBuffer: function(buffer) {
+        function setMetaData() {
+            var kbps = "128";
+            var khz = Math.round(this.media.sampleRate() / 1000).toString();
+            this.skin.font.setNodeToString(document.getElementById('kbps'), kbps);
+            this.skin.font.setNodeToString(document.getElementById('khz'), khz);
+            window.dispatchEvent(this.events.channelCountUpdated);
+            window.dispatchEvent(this.events.titleUpdated);
+            window.dispatchEvent(this.events.timeUpdated);
+        }
+
         // Note, this will not happen right away
-        this.media.loadBuffer(buffer, this._setMetaData.bind(this));
-    },
-
-    _setMetaData: function() {
-        var kbps = "128";
-        var khz = Math.round(this.media.sampleRate() / 1000).toString();
-
-        this.skin.font.setNodeToString(document.getElementById('kbps'), kbps);
-        this.skin.font.setNodeToString(document.getElementById('khz'), khz);
-        this._setChannels();
-        window.dispatchEvent(this.events.timeUpdated);
-        this.mainWindow.setTitle(this.fileName, this.media.duration());
-    },
-
-    _setChannels: function() {
-        var channels = this.media.channels();
-        this.mainWindow.setChannelCount(channels);
+        this.media.loadBuffer(buffer, setMetaData.bind(this));
     },
 
     /* Helpers */
