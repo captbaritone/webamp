@@ -213,9 +213,9 @@ MainWindow = {
         this.nodes.window.classList.add('closed');
     },
 
-    updatePosition: function(percent) {
+    updatePosition: function() {
         if(!this.nodes.window.classList.contains('setting-position')) {
-            this.nodes.position.value = percent;
+            this.nodes.position.value = this.winamp.getPercentComplete();
         }
     },
 
@@ -234,6 +234,7 @@ MainWindow = {
 
     updateTime: function() {
         this.updateShadePositionClass();
+        this.updatePosition();
 
         var shadeMinusCharacter = ' ';
         if(this.nodes.time.classList.contains('countdown')) {

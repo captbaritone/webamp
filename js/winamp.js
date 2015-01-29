@@ -41,7 +41,6 @@ Winamp = {
         this.windowManager.registerWindow(this.mainWindow);
 
         this.media.addEventListener('timeupdate', function() {
-            self.mainWindow.updatePosition(self.media.percentComplete());
             window.dispatchEvent(self.events.timeUpdated);
         });
 
@@ -88,6 +87,10 @@ Winamp = {
 
     getTimeElapsed: function() {
         return this.media.timeElapsed();
+    },
+
+    getPercentComplete: function() {
+        return this.media.percentComplete()
     },
 
     getChannelCount: function() {
