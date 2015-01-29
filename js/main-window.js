@@ -197,6 +197,7 @@ MainWindow = {
         window.addEventListener('titleUpdated', function() { self.updateTitle(); });
         window.addEventListener('channelCountUpdated', function() { self.updateChannelCount(); });
         window.addEventListener('volumeChanged', function() { self.updateVolume(); });
+        window.addEventListener('doubledModeToggled', function() { self.toggleDoubledMode(); });
 
         this.nodes.window.addEventListener('dragenter', this.dragenter.bind(this));
         this.nodes.window.addEventListener('dragover', this.dragover.bind(this));

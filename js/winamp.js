@@ -22,7 +22,8 @@ Winamp = {
             changeState: new Event('changeState'),
             titleUpdated: new Event('titleUpdated'),
             channelCountUpdated: new Event('channelCountUpdated'),
-            volumeChanged: new Event('volumeChanged')
+            volumeChanged: new Event('volumeChanged'),
+            doubledModeToggled: new Event('doubledModeToggled'),
         }
 
         this.setVolume(options.volume);
@@ -160,7 +161,7 @@ Winamp = {
     },
 
     toggleDoubledMode: function() {
-        this.mainWindow.toggleDoubledMode();
+        window.dispatchEvent(this.events.doubledModeToggled);
     },
 
     // From -100 to 100
