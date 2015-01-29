@@ -21,7 +21,8 @@ Winamp = {
             toggleTimeMode: new Event('toggleTimeMode'),
             changeState: new Event('changeState'),
             titleUpdated: new Event('titleUpdated'),
-            channelCountUpdated: new Event('channelCountUpdated')
+            channelCountUpdated: new Event('channelCountUpdated'),
+            volumeChanged: new Event('volumeChanged')
         }
 
         this.setVolume(options.volume);
@@ -97,6 +98,10 @@ Winamp = {
         return this.media.channels();
     },
 
+    getVolume: function() {
+        return Math.round(this.media.getVolume() * 100);
+    },
+
     seekToPercentComplete: function(percent) {
         this.media.seekToPercentComplete(percent);
     },
@@ -147,7 +152,7 @@ Winamp = {
         var percent = volume / 100;
 
         this.media.setVolume(percent);
-        this.mainWindow.setVolume(volume);
+        window.dispatchEvent(this.events.volumeChanged);
     },
 
     incrementVolumeBy: function(ammount) {

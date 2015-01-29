@@ -196,6 +196,7 @@ MainWindow = {
         window.addEventListener('changeState', function() { self.changeState(); });
         window.addEventListener('titleUpdated', function() { self.updateTitle(); });
         window.addEventListener('channelCountUpdated', function() { self.updateChannelCount(); });
+        window.addEventListener('volumeChanged', function() { self.updateVolume(); });
 
         this.nodes.window.addEventListener('dragenter', this.dragenter.bind(this));
         this.nodes.window.addEventListener('dragover', this.dragover.bind(this));
@@ -290,7 +291,8 @@ MainWindow = {
         this.updateTime();
     },
 
-    setVolume: function(volume) {
+    updateVolume: function() {
+        var volume = this.winamp.getVolume();
         var percent = volume / 100;
         var sprite = Math.round(percent * 28);
         var offset = (sprite - 1) * 15;
