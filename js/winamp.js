@@ -15,6 +15,7 @@ Winamp = {
 
         this.playlist = [];
         this.currentTrack = null;
+        this.loadedTrack = null;
         this.autoPlay = false;
 
         this.events = {
@@ -269,9 +270,8 @@ Winamp = {
     },
 
     playTrack: function(track) {
-        if(this.currentTrack != track) {
+        if(this.loadedTrack != track) {
             this.currentTrack = track;
-            window.dispatchEvent(this.events.currentTrackChanged);
             var file = this.playlist[this.currentTrack];
             this.autoPlay = true;
             this.loadFile(file);
@@ -282,19 +282,19 @@ Winamp = {
 
     enqueue: function(file) {
         this.playlist.push(file);
-        if(this.playlist.length === 1) {
-            this.loadFile(file);
-        }
+        var trackNumber = this.playlist.length - 1;
         if(this.currentTrack == null) {
-            this.currentTrack = this.playlist.length - 1;
+            this.currentTrack = trackNumber;
+            this.loadFile(file);
             window.dispatchEvent(this.events.currentTrackChanged);
         }
         window.dispatchEvent(this.events.tracksUpdated);
+        return trackNumber;
     },
 
     emptyPlaylist: function() {
         this.playlist = [];
-        this.currentTrack = 0;
+        this.currentTrack = null;
         window.dispatchEvent(this.events.tracksUpdated);
     },
 
@@ -303,7 +303,7 @@ Winamp = {
         var file = new MyFile();
         file.setUrl(url);
         file.name = fileName;
-        this.enqueue(file);
+        var trackNumber = this.enqueue(file);
     },
 
     setSkin: function(file) {
@@ -333,6 +333,7 @@ Winamp = {
     /* Listeners */
     _loadBuffer: function(buffer) {
         function setMetaData() {
+            this.loadedTrack = this.currentTrack;
             if(this.autoPlay) {
                 this.play();
                 this.autoPlay = false;
