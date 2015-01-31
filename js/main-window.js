@@ -197,6 +197,7 @@ MainWindow = {
         window.addEventListener('titleUpdated', function() { self.updateTitle(); });
         window.addEventListener('channelCountUpdated', function() { self.updateChannelCount(); });
         window.addEventListener('volumeChanged', function() { self.updateVolume(); });
+        window.addEventListener('balanceChanged', function() { self.setBalance(); });
         window.addEventListener('doubledModeToggled', function() { self.toggleDoubledMode(); });
 
         this.nodes.window.addEventListener('dragenter', this.dragenter.bind(this));
@@ -307,7 +308,8 @@ MainWindow = {
         this.nodes.volume.value = volume;
     },
 
-    setBalance: function(balance) {
+    setBalance: function() {
+        var balance = this.winamp.getBalance();
         var string = '';
         if(balance == 0) {
             string = 'Balance: Center';

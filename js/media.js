@@ -12,6 +12,7 @@ Media = {
     },
     _startTime: 0,
     _position: 0,
+    _balance: 0,
     _playing: false,
     _loop: false,
     autoPlay: false,
@@ -200,6 +201,11 @@ Media = {
             this._leftGain.gain.value = 1;
             this._rightGain.gain.value = 1;
         }
+        this._balance = balance;
+    },
+
+    getBalance: function() {
+        return this._balance;
     },
 
     toggleRepeat: function() {

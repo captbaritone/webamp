@@ -23,6 +23,7 @@ Winamp = {
             titleUpdated: new Event('titleUpdated'),
             channelCountUpdated: new Event('channelCountUpdated'),
             volumeChanged: new Event('volumeChanged'),
+            balanceChanged: new Event('balanceChanged'),
             doubledModeToggled: new Event('doubledModeToggled'),
         }
 
@@ -167,7 +168,11 @@ Winamp = {
     // From -100 to 100
     setBalance: function(balance) {
         this.media.setBalance(balance);
-        this.mainWindow.setBalance(balance);
+        window.dispatchEvent(this.events.balanceChanged);
+    },
+
+    getBalance: function() {
+        return this.media.getBalance();
     },
 
     seekForwardBy: function(seconds) {
