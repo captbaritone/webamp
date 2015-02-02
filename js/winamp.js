@@ -25,6 +25,7 @@ Winamp = {
             volumeChanged: new Event('volumeChanged'),
             balanceChanged: new Event('balanceChanged'),
             doubledModeToggled: new Event('doubledModeToggled'),
+            repeatToggled: new Event('repeatToggled')
         }
 
         this.setVolume(options.volume);
@@ -182,7 +183,7 @@ Winamp = {
 
     toggleRepeat: function() {
         this.media.toggleRepeat();
-        this.mainWindow.toggleRepeat();
+        window.dispatchEvent(this.events.repeatToggled);
     },
 
     toggleShuffle: function() {
