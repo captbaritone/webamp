@@ -22,7 +22,7 @@ Font = {
         horizontalOffset = column * 5;
 
         x = '-' + horizontalOffset + 'px';
-        y = '-' + verticalOffset + 'px'
+        y = '-' + verticalOffset + 'px';
         node.style.backgroundPosition =  x + ' ' + y;
         node.classList.add('character');
 
@@ -79,4 +79,4 @@ Font = {
         "Ä": [2,2], "?": [2,3], "*": [2,4], " ": [2,5], "<": [1,22],
         ">": [1,23], "{": [1,22], "}": [1,23]
     }
-}
+};

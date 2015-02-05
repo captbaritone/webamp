@@ -89,11 +89,11 @@ Media = {
             if(this.autoPlay) {
                 this.play(0);
             }
-        }
+        };
 
         var error = function (error) {
             //console.error("failed to decode:", error);
-        }
+        };
         // Decode the target file into an arrayBuffer and pass it to loadBuffer
         this._context.decodeAudioData(buffer, loadAudioBuffer.bind(this), error);
     },
@@ -185,7 +185,7 @@ Media = {
 
         // Hack for Firefox. Having either channel set to 0 seems to revert us
         // to equal balance.
-        var changeVal = changeVal - .00000001;
+        changeVal = changeVal - 0.00000001;
 
         if(balance > 0) { // Right
             this._leftGain.gain.value = 1 - changeVal;
@@ -256,4 +256,4 @@ Media = {
         }
         return this._position;
     }
-}
+};

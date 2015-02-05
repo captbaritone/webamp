@@ -64,7 +64,7 @@ SkinManager = {
             var file = this._findFileInZip(fileName, zip);
 
             if (file) {
-                var value = "background-image: url(data:image/bmp;base64," + btoa(file.asBinary()) + ")"
+                var value = "background-image: url(data:image/bmp;base64," + btoa(file.asBinary()) + ")";
                 cssRules += selector + "{" + value + "}\n";
 
                 // CSS has to change if this file is present
@@ -81,7 +81,7 @@ SkinManager = {
 
     _parseVisColors: function(zip) {
         var entries = this._findFileInZip("VISCOLOR.TXT", zip).asText().split("\n");
-        var regex = /^(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/
+        var regex = /^(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/;
         var colors = [];
         // changed to a hard number to deal with empty lines at the end...
         // plus its only meant to be an exact amount of numbers anywayz
@@ -99,7 +99,7 @@ SkinManager = {
 
     _findFileInZip: function(name, zip) {
         return zip.filter(function (relativePath, file){
-            return new RegExp("(^|/)" + name, 'i').test(relativePath)
+            return new RegExp("(^|/)" + name, 'i').test(relativePath);
         })[0];
     },
 
@@ -110,4 +110,4 @@ SkinManager = {
         this.styleNode = document.createElement('style');
         document.head.appendChild(this.styleNode);
     }
-}
+};

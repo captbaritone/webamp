@@ -43,7 +43,7 @@ Hotkeys = {
             if(keylog.toString() == trigger.toString()) {
                 winamp.toggleLlama();
             }
-        }
+        };
     }
-}
+};
 

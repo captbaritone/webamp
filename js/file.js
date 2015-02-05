@@ -6,10 +6,10 @@ MyFile = function(){
     this.fileReference = null;
     this.setUrl = function(url){
         this.url = url;
-    }
+    };
     this.setFileReference = function(fileReference){
         this.fileReference = fileReference;
-    }
+    };
     this.processBuffer = function(bufferHandler) {
         if(this.url) {
             var oReq = new XMLHttpRequest();
@@ -22,7 +22,7 @@ MyFile = function(){
             };
 
             oReq.send(null);
-            return
+            return;
 
         } else if(this.fileReference) {
             this.reader.onload = function (e) {
@@ -34,10 +34,10 @@ MyFile = function(){
             };
 
             this.reader.readAsArrayBuffer(this.fileReference);
-            return
+            return;
         }
 
         console.error('Tried to process an unpopulated file object');
         return false;
-    }
+    };
 };

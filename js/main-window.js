@@ -60,7 +60,7 @@ MainWindow = {
 
         this.nodes.shade.onclick = function() {
             self.nodes.window.classList.toggle('shade');
-        }
+        };
 
         this.nodes.buttonD.onmousedown = function() {
             if(self.nodes.window.classList.contains('doubled')) {
@@ -69,41 +69,41 @@ MainWindow = {
                 self.textDisplay.setRegisterText('message', 'Enable doublesize mode');
             }
             self.textDisplay.showRegister('message');
-        }
+        };
 
         this.nodes.buttonD.onmouseup = function() {
             self.textDisplay.showRegister('songTitle');
-        }
+        };
 
         this.nodes.buttonD.onclick = function() {
             self.winamp.toggleDoubledMode();
-        }
+        };
 
         this.nodes.play.onclick = function() {
             self.winamp.play();
-        }
+        };
 
         this.nodes.songTitle.onmousedown = function() {
             self.textDisplay.pauseRegisterMarquee('songTitle');
-        }
+        };
 
         this.nodes.songTitle.onmouseup = function() {
             setTimeout(function () {
                 self.textDisplay.startRegisterMarquee('songTitle');
             }, 1000);
-        }
+        };
 
         this.nodes.position.onmousedown = function() {
             if(!self.nodes.window.classList.contains('stop')){
                 self.textDisplay.showRegister('position');
                 self.nodes.window.classList.add('setting-position');
             }
-        }
+        };
 
         this.nodes.position.onmouseup = function() {
             self.textDisplay.showRegister('songTitle');
             self.nodes.window.classList.remove('setting-position');
-        }
+        };
 
         this.nodes.position.oninput = function() {
             var newPercentComplete = self.nodes.position.value;
@@ -112,80 +112,80 @@ MainWindow = {
             var duration = self._timeString(self.winamp.getDuration());
             var message = "Seek to: " + newElapsed + "/" + duration + " (" + newPercentComplete + "%)";
             self.textDisplay.setRegisterText('position', message);
-        }
+        };
 
         this.nodes.position.onchange = function() {
             if(self.winamp.getState() != 'stop'){
                 self.winamp.seekToPercentComplete(this.value);
             }
-        }
+        };
 
         this.nodes.previous.onclick = function() {
             self.winamp.previous();
-        }
+        };
 
         this.nodes.next.onclick = function() {
             self.winamp.next();
-        }
+        };
 
         this.nodes.pause.onclick = function() {
             self.winamp.pause();
-        }
+        };
 
         this.nodes.stop.onclick = function() {
             self.winamp.stop();
-        }
+        };
 
         this.nodes.eject.onclick = function() {
             self.winamp.openFileDialog();
-        }
+        };
 
         this.nodes.repeat.onclick = function() {
             self.winamp.toggleRepeat();
-        }
+        };
 
         this.nodes.shuffle.onclick = function() {
             self.winamp.toggleShuffle();
-        }
+        };
 
         this.nodes.shadeTime.onclick = function() {
             self.winamp.toggleTimeMode();
-        }
+        };
 
         this.nodes.volume.onmousedown = function() {
             self.textDisplay.showRegister('volume');
-        }
+        };
 
         this.nodes.volume.onmouseup = function() {
             self.textDisplay.showRegister('songTitle');
-        }
+        };
 
         this.nodes.volume.oninput = function() {
             self.winamp.setVolume(this.value);
-        }
+        };
 
         this.nodes.time.onclick = function() {
             self.winamp.toggleTimeMode();
-        }
+        };
 
         this.nodes.balance.onmousedown = function() {
             self.textDisplay.showRegister('balance');
-        }
+        };
 
         this.nodes.balance.onmouseup = function() {
             self.textDisplay.showRegister('songTitle');
-        }
+        };
 
         this.nodes.balance.oninput = function() {
             if(Math.abs(this.value) < 25) {
                 this.value = 0;
             }
             self.winamp.setBalance(this.value);
-        }
+        };
 
         this.nodes.visualizer.onclick = function() {
             self.winamp.toggleVisualizer();
-        }
+        };
 
         window.addEventListener('timeUpdated', function() { self.updateTime(); });
         window.addEventListener('startWaiting', function() { self.setWorkingIndicator(); });
@@ -244,7 +244,7 @@ MainWindow = {
         var shadeMinusCharacter = ' ';
         if(this.nodes.time.classList.contains('countdown')) {
             digits = this.winamp._timeObject(this.winamp.getTimeRemaining());
-            var shadeMinusCharacter = '-';
+            shadeMinusCharacter = '-';
         } else {
             digits = this.winamp._timeObject(this.winamp.getTimeElapsed());
         }
@@ -313,7 +313,7 @@ MainWindow = {
     setBalance: function() {
         var balance = this.winamp.getBalance();
         var string = '';
-        if(balance == 0) {
+        if(balance === 0) {
             string = 'Balance: Center';
         } else if(balance > 0) {
             string = 'Balance: ' + balance + '% Right';
@@ -321,7 +321,7 @@ MainWindow = {
             string = 'Balance: ' + Math.abs(balance) + '% Left';
         }
         this.textDisplay.setRegisterText('balance', string);
-        balance = Math.abs(balance) / 100
+        balance = Math.abs(balance) / 100;
         var sprite = Math.round(balance * 28);
         var offset = (sprite - 1) * 15;
         this.nodes.balance.style.backgroundPosition = '-9px -' + offset + 'px';
@@ -387,5 +387,4 @@ MainWindow = {
         var timeObject = this.winamp._timeObject(time);
         return timeObject[0] + timeObject[1] + ':' + timeObject[2] + timeObject[3];
     }
-
-}
+};

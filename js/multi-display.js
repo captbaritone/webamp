@@ -58,7 +58,4 @@ MultiDisplay = {
             self._marqueeLoop();
         }, 220);
     }
-}
-
-
-
+};

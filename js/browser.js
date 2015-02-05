@@ -9,6 +9,5 @@ Browser = {
     _supportsCanvas: function() {
         return !!document.createElement('canvas').getContext;
     }
-
-}
+};
 

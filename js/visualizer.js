@@ -133,7 +133,7 @@ Visualizer = {
             // Canvas coordinates are in the middle of the pixel by default.
             // When we want to draw pixel perfect lines, we will need to
             // account for that here
-            if(x == 0) {
+            if(x === 0) {
                 this.canvasCtx.moveTo(x, y);
             } else {
                 this.canvasCtx.lineTo(x, y);
@@ -160,4 +160,4 @@ Visualizer = {
             printBar(j*8, height);
         }
     }
-}
+};

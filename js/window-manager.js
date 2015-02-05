@@ -55,4 +55,4 @@ WindowManager = {
             window.addEventListener('mouseup',handleUp);
         });
     }
-}
+};
