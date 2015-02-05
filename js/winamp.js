@@ -25,7 +25,8 @@ Winamp = {
             volumeChanged: new Event('volumeChanged'),
             balanceChanged: new Event('balanceChanged'),
             doubledModeToggled: new Event('doubledModeToggled'),
-            repeatToggled: new Event('repeatToggled')
+            repeatToggled: new Event('repeatToggled'),
+            llamaToggled: new Event('llamaToggled')
         }
 
         this.setVolume(options.volume);
@@ -192,7 +193,7 @@ Winamp = {
     },
 
     toggleLlama: function() {
-        this.mainWindow.toggleLlama();
+        window.dispatchEvent(this.events.llamaToggled);
     },
 
     close: function() {

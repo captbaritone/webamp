@@ -200,6 +200,7 @@ MainWindow = {
         window.addEventListener('balanceChanged', function() { self.setBalance(); });
         window.addEventListener('doubledModeToggled', function() { self.toggleDoubledMode(); });
         window.addEventListener('repeatToggled', function() { self.toggleRepeat(); });
+        window.addEventListener('llamaToggled', function() { self.toggleLlama(); });
 
         this.nodes.window.addEventListener('dragenter', this.dragenter.bind(this));
         this.nodes.window.addEventListener('dragover', this.dragover.bind(this));
