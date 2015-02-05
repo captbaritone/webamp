@@ -27,7 +27,7 @@ Winamp = {
             doubledModeToggled: new Event('doubledModeToggled'),
             repeatToggled: new Event('repeatToggled'),
             llamaToggled: new Event('llamaToggled')
-        }
+        };
 
         this.setVolume(options.volume);
         this.setBalance(options.balance);
@@ -69,7 +69,7 @@ Winamp = {
 
         this.fileInput.onchange = function(e){
             self.loadFromFileReference(e.target.files[0]);
-        }
+        };
     },
 
     /* Functions */
@@ -95,7 +95,7 @@ Winamp = {
     },
 
     getPercentComplete: function() {
-        return this.media.percentComplete()
+        return this.media.percentComplete();
     },
 
     getChannelCount: function() {
@@ -277,4 +277,4 @@ Winamp = {
             Math.floor(seconds % 10)
         ];
     },
-}
+};
