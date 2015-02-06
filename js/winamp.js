@@ -120,7 +120,7 @@ Winamp = {
     },
 
     play: function() {
-        if(this.getState() == 'play'){
+        if(this.getState() === 'play'){
             this.media.stop();
         }
         this.media.play();
@@ -128,10 +128,10 @@ Winamp = {
     },
 
     pause: function() {
-        if(this.getState() == 'pause'){
+        if(this.getState() === 'pause'){
             this.media.play();
         }
-        else if(this.getState() == 'play')
+        else if(this.getState() === 'play')
         {
             this.media.pause();
             this.setState('pause');
@@ -239,11 +239,11 @@ Winamp = {
     },
 
     toggleVisualizer: function() {
-        if(this.skin.visualizer.style == this.skin.visualizer.NONE) {
+        if(this.skin.visualizer.style === this.skin.visualizer.NONE) {
             this.skin.visualizer.setStyle(this.skin.visualizer.BAR);
-        } else if(this.skin.visualizer.style == this.skin.visualizer.BAR) {
+        } else if(this.skin.visualizer.style === this.skin.visualizer.BAR) {
             this.skin.visualizer.setStyle(this.skin.visualizer.OSCILLOSCOPE);
-        } else if(this.skin.visualizer.style == this.skin.visualizer.OSCILLOSCOPE) {
+        } else if(this.skin.visualizer.style === this.skin.visualizer.OSCILLOSCOPE) {
             this.skin.visualizer.setStyle(this.skin.visualizer.NONE);
         }
         this.skin.visualizer.clear();
