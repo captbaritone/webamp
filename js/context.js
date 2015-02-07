@@ -17,11 +17,7 @@ Context = {
 
         var skinSelectNodes = document.getElementsByClassName('skin-select');
         for(var i = 0; i < skinSelectNodes.length; i++) {
-            skinSelectNodes[i].onclick = function() {
-                var skinFile = new MyFile();
-                skinFile.setUrl(this.dataset.skinUrl);
-                self.winamp.setSkin(skinFile);
-            };
+            skinSelectNodes[i].onclick = this._loadSkin;
         }
 
         document.getElementById('context-play-file').onclick = function(event) {
@@ -35,5 +31,12 @@ Context = {
         document.getElementById('context-exit').onclick = function() {
             self.winamp.close();
         };
+    },
+
+    _loadSkin: function() {
+        var skinFile = new MyFile();
+        skinFile.setUrl(this.dataset.skinUrl);
+        self.winamp.setSkin(skinFile);
     }
+
 };
