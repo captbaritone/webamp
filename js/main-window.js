@@ -56,7 +56,7 @@ MainWindow = {
 
         this.nodes.close.onclick = function() {
             self.close();
-        }
+        };
 
         this.nodes.shade.onclick = function() {
             self.nodes.window.classList.toggle('shade');
@@ -242,6 +242,7 @@ MainWindow = {
         this.updatePosition();
 
         var shadeMinusCharacter = ' ';
+        var digits = null;
         if(this.nodes.time.classList.contains('countdown')) {
             digits = this.winamp._timeObject(this.winamp.getTimeRemaining());
             shadeMinusCharacter = '-';
