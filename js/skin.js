@@ -44,10 +44,10 @@ SkinManager = {
             "Font": { selector:'#tracks li', attribute:'font-family' },
             "NormalBG": { selector:'#tracks, #tracks li', attribute:'background-color' },
             "SelectedBG": { selector:'#tracks li.selected', attribute:'background-color' }
-        }
+        };
 
         var plValues = this._parsePlEdit(zip);
-        for(key in plRules) {
+        for(var key in plRules) {
             var rule = plRules[key];
             if(plValues[key]) {
                 promisedCssRules.push(rule.selector + "{" + rule.attribute + ":" + plValues[key] + "}");
@@ -134,17 +134,5 @@ SkinManager = {
                 resolve(cssRules);
             };
         });
-    },
-
-    _spriteURL: function(imgURL, x, y, width, height) {
-        var imageObj = new Image();
-        imageObj.src = imgURL;
-        var canvas = document.createElement('canvas');
-        canvas.height = height;
-        canvas.width = width;
-        var context = canvas.getContext('2d');
-        context.drawImage(imageObj, -x, -y);
-        dataURL = canvas.toDataURL();
-        return dataURL;
     }
 };
