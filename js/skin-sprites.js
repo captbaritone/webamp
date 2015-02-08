@@ -6,6 +6,15 @@ var SKIN_SPRITES = [
         ]
     },
     {
+        img: "MONOSTER",
+        sprites: [
+            { selectors: [".media-info #stereo", ".stop .media-info #stereo.selected"], x: 0, y: 12, width: 29, height: 12},
+            { selectors: [".media-info #stereo.selected"], x: 0, y: 0, width: 29, height: 12},
+            { selectors: [".media-info #mono", ".stop .media-info #mono.selected"], x: 29, y: 12, width: 29, height: 12},
+            { selectors: [".media-info #mono.selected"], x: 29, y: 0, width: 29, height: 12},
+        ]
+    },
+    {
         img: "NUMBERS",
         sprites: [
             { selectors: ["#time #minus-sign"], x: 9, y: 6, width: 5, height: 1},

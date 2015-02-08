@@ -8,7 +8,6 @@ SkinManager = {
     },
 
     _skinImages: {
-        ".media-info .mono-stereo div": "MONOSTER.BMP",
         "#volume": "VOLUME.BMP",
         "#volume::-webkit-slider-thumb": "VOLUME.BMP",
         "#volume::-moz-range-thumb": "VOLUME.BMP",

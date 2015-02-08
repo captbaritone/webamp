@@ -275,30 +275,11 @@
 .media-info .mono-stereo div {
     position: absolute;
     height: 12px;
-    /* background-image: MONOSTER.BMP via Javascript */
-}
-
-.media-info .mono-stereo #mono {
     width: 29px;
-    background-position: -29px -12px;
-}
-.media-info .mono-stereo #mono.selected {
-    background-position: -29px 0;
-}
-.stop .media-info .mono-stereo #mono.selected {
-    background-position: -29px -12px;
 }
 
 .media-info .mono-stereo #stereo {
     left: 27px;
-    width: 29px;
-    background-position: 0 -12px;
-}
-.media-info .mono-stereo #stereo.selected {
-    background-position: 0 0;
-}
-.stop .media-info .mono-stereo #stereo.selected {
-    background-position: 0 -12px;
 }
 
 #volume {
