@@ -64,21 +64,7 @@
     left: 0;
     height: 14px;
     width: 275px;
-    /* background-image: TITLEBAR.BMP via Javascript */
-    background-position: -27px -14px;
     cursor:url('../cursors/TITLEBAR.PNG?inline'), auto;
-}
-
-#title-bar.selected {
-    background-position: -27px 0px;
-}
-
-.llama #title-bar {
-    background-position: -27px -61px;
-}
-
-.llama #title-bar.selected {
-    background-position: -27px -57px;
 }
 
 #option,
@@ -101,11 +87,6 @@
     top: 12px;
     left: 0px;
 }
-#title-bar #option:active,
-#title-bar #option.selected
-{
-    background-position: 0 -9px;
-}
 #title-bar #option:active #context-menu,
 #title-bar #option.selected #context-menu
 {
@@ -114,44 +95,20 @@
 
 #title-bar #minimize {
     left: 244px;
-    /* background-image: TITLEBAR.BMP via Javascript */
-    background-position: -9px 0;
 }
-#title-bar #minimize:active {
-    background-position: -9px -9px;
-}
-
 #title-bar #shade {
     left: 254px;
-    /* background-image: TITLEBAR.BMP via Javascript */
-    background-position: 0px -18px;
 }
-#title-bar #shade:active {
-    background-position: -9px -18px;
-}
-
 #title-bar #close {
     left: 264px;
-    /* background-image: TITLEBAR.BMP via Javascript */
-    background-position: -18px 0px;
     cursor:url('../cursors/CLOSE.PNG?inline'), auto;
 }
-#title-bar #close:active {
-    background-position: -18px -9px;
-}
-
-.status #clutter-bar {
+#clutter-bar {
     position: absolute;
     top: 22px;
     left: 10px;
     height: 43px;
     width: 8px;
-    /* background-image: TITLEBAR.BMP via Javascript */
-    background-position: -304px 0;
-}
-
-.status #clutter-bar.disabled {
-    background-position: -312px 0;
 }
 
 #clutter-bar div {
@@ -165,38 +122,21 @@
     top: 3px;
     height: 8px;
 }
-#clutter-bar #button-o:active {
-    background-position: -304px -47px;
-}
 #clutter-bar #button-a {
     top: 11px;
 }
-#clutter-bar #button-a:active,
-#clutter-bar #button-a.selected {
-    background-position: -312px -55px;
-}
 #clutter-bar #button-i {
     top: 18px;
-}
-#clutter-bar #button-i:active {
-    background-position: -320px -62px;
 }
 #clutter-bar #button-d {
     top: 25px;
     height: 8px;
 }
-#clutter-bar #button-d:active,
-#clutter-bar #button-d.selected {
-    background-position: -328px -69px;
-}
 #clutter-bar #button-v {
     top: 33px;
 }
-#clutter-bar #button-v:active {
-    background-position: -336px -77px;
-}
 
-.status #play-pause {
+#play-pause {
     position: absolute;
     top: 28px;
     left: 26px;
@@ -206,7 +146,7 @@
     background-repeat: no-repeat;
 }
 
-.play .status #work-indicator {
+.play #work-indicator {
     position: absolute;
     top: 28px;
     left: 24px;
@@ -215,13 +155,6 @@
     /* background-image: PLAYPAUS.BMP via Javascript */
     background-position: -36px 0;
 }
-.play .status #work-indicator.selected {
-    background-position: -39px 0;
-}
-
-.play .status #play-pause { }
-.pause .status #play-pause { background-position: -9px 0; }
-.stop .status #play-pause { background-position: -18px 0; }
 .status #time {
     position: absolute;
     left: 39px;
@@ -243,23 +176,14 @@
     left: -1px;
     width: 5px;
     height: 1px;
-    /* background-image: NUMBERS.BMP via Javascript */
-    background-position: -9px -6px;
 }
-.status #time.countdown #minus-sign {
-    background-position: -20px -6px;
-}
+
 /* Alternate format for minus sign, when skin supports it */
 .status #time.ex #minus-sign {
     top: 0px;
     left: -1px;
     width: 9px;
     height: 13px;
-    /* background-image: NUMS_EX.BMP via Javascript */
-    background-position: -90px 0px;
-}
-.status #time.ex.countdown #minus-sign {
-    background-position: -99px 0px;
 }
 
 .status #time #minute-first-digit {
@@ -658,20 +582,9 @@
     display: none;
 }
 .shade #title-bar {
-    background-position: -27px -42px;
     cursor:url('../cursors/MAINMENU.PNG?inline'), auto;
 }
 
-.shade #title-bar.selected {
-    background-position: -27px -29px;
-}
-
-.shade #title-bar #shade {
-    background-position: 0px -27px;
-}
-.shade #title-bar #shade:active {
-    background-position: -9px -27px;
-}
 .shade .actions div {
     background: none;
     position: absolute;

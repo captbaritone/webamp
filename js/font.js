@@ -32,13 +32,9 @@ Font = {
 
     // Get a <div> containing a digit
     digitNode: function(digit) {
-        var horizontalOffset = digit * 9;
         var div = document.createElement('div');
         div.classList.add('digit');
-        // Ex rules superseed if nums_ex.bmp is present
-        div.classList.add('digit-ex');
-        div.style.backgroundPosition = '-' + horizontalOffset + 'px 0';
-        div.innerHTML = digit;
+        div.classList.add('digit-' + digit);
         return div;
     },
 

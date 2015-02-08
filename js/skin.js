@@ -8,19 +8,6 @@ SkinManager = {
     },
 
     _skinImages: {
-        "#main-window": "MAIN.BMP",
-        "#title-bar": "TITLEBAR.BMP",
-        "#title-bar #option": "TITLEBAR.BMP",
-        "#title-bar #minimize": "TITLEBAR.BMP",
-        "#title-bar #shade": "TITLEBAR.BMP",
-        "#title-bar #close": "TITLEBAR.BMP",
-        ".status #clutter-bar": "TITLEBAR.BMP",
-        ".status #clutter-bar div:active": "TITLEBAR.BMP",
-        ".status #clutter-bar div.selected": "TITLEBAR.BMP",
-        ".status #play-pause": "PLAYPAUS.BMP",
-        ".play .status #work-indicator": "PLAYPAUS.BMP",
-        ".status #time #minus-sign": "NUMBERS.BMP",
-        ".status #time.ex #minus-sign": "NUMS_EX.BMP",
         ".media-info .mono-stereo div": "MONOSTER.BMP",
         "#volume": "VOLUME.BMP",
         "#volume::-webkit-slider-thumb": "VOLUME.BMP",
@@ -36,13 +23,15 @@ SkinManager = {
         "#eject": "CBUTTONS.BMP",
         ".shuffle-repeat div": "SHUFREP.BMP",
         ".character": "TEXT.BMP",
-        ".digit": "NUMBERS.BMP",
         // Put this second, since it will trump .digit
         ".digit-ex": "NUMS_EX.BMP",
         ".shade #position": "TITLEBAR.BMP",
         ".shade #position::-webkit-slider-thumb": "TITLEBAR.BMP",
         ".shade #position::-moz-range-thumb": "TITLEBAR.BMP",
     },
+
+    // For sprites that tile, we need to use just the sprite, not the whole image
+    _skinSprites: SKIN_SPRITES,
 
     // Given a file of an original Winamp WSZ file, set the current skin
     setSkinByFile: function(file, completedCallback) {
@@ -56,16 +45,14 @@ SkinManager = {
         var zip = new JSZip(buffer);
         document.getElementById('time').classList.remove('ex');
 
-        this._createNewStyleNode();
-
-        var cssRules = '';
-        for(var selector in SkinManager._skinImages) {
-            var fileName = SkinManager._skinImages[selector];
+        var promisedCssRules = [];
+        for(var selector in this._skinImages) {
+            var fileName = this._skinImages[selector];
             var file = this._findFileInZip(fileName, zip);
 
             if (file) {
                 var value = "background-image: url(data:image/bmp;base64," + btoa(file.asBinary()) + ")";
-                cssRules += selector + "{" + value + "}\n";
+                promisedCssRules.push(selector + "{" + value + "}");
 
                 // CSS has to change if this file is present
                 if(fileName == 'NUMS_EX.BMP') {
@@ -74,9 +61,24 @@ SkinManager = {
             }
         }
 
-        this.styleNode.appendChild(document.createTextNode(cssRules));
-        this._parseVisColors(zip);
-        this.completedCallback();
+        Array.prototype.push.apply(promisedCssRules, this._skinSprites.map(function(spriteObj) {
+            var file = this._findFileInZip(spriteObj.img, zip);
+            if (file) {
+                var src = "data:image/bmp;base64," + btoa(file.asBinary());
+                return this._spriteCssRule(src, spriteObj);
+            }
+        }, this));
+
+
+        // Extract sprite images
+        Promise.all(promisedCssRules).then(function(newCssRules) {
+            this._createNewStyleNode();
+            cssRules = newCssRules.join('\n');
+            console.log(cssRules.length);
+            this.styleNode.appendChild(document.createTextNode(cssRules));
+            this._parseVisColors(zip);
+            this.completedCallback();
+        }.bind(this));
     },
 
     _parseVisColors: function(zip) {
@@ -109,5 +111,32 @@ SkinManager = {
         }
         this.styleNode = document.createElement('style');
         document.head.appendChild(this.styleNode);
+    },
+
+    // Given an image URL and coordinates, returns a data url for a sub-section
+    // of that image
+    _spriteCssRule: function(src, spriteObj) {
+        return new Promise(function(resolve, reject) {
+            var imageObj = new Image();
+            imageObj.src = src;
+
+            imageObj.onload = function() {
+                var skinImage = this;
+                var cssRules = '';
+                var canvas = document.createElement('canvas');
+                spriteObj.sprites.forEach(function(sprite) {
+                    canvas.height = sprite.height;
+                    canvas.width = sprite.width;
+
+                    var context = canvas.getContext('2d');
+                    context.drawImage(skinImage, -sprite.x, -sprite.y);
+                    var value = "background-image: url(" + canvas.toDataURL() + ")";
+                    sprite.selectors.forEach(function(selector) {
+                        cssRules += selector + "{" + value + "}\n";
+                    });
+                });
+                resolve(cssRules);
+            };
+        });
     }
 };
