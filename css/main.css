@@ -1,7 +1,6 @@
 /* Styles */
 #main-window {
     position: absolute;
-    /* background-image: MAIN.BMP via Javascript */
     height: 116px;
     width: 275px;
     margin-top: -58px;
@@ -80,7 +79,6 @@
 
 #title-bar #option {
     left: 6px;
-    /* background-image: TITLEBAR.BMP via Javascript */
 }
 #title-bar #option #context-menu {
     display: none;
@@ -142,7 +140,6 @@
     left: 26px;
     height: 9px;
     width: 9px;
-    /* background-image: PLAYPAUS.BMP via Javascript */
     background-repeat: no-repeat;
 }
 
@@ -152,8 +149,6 @@
     left: 24px;
     height: 9px;
     width: 3px;
-    /* background-image: PLAYPAUS.BMP via Javascript */
-    background-position: -36px 0;
 }
 .status #time {
     position: absolute;
@@ -311,6 +306,7 @@
     top: 57px;
     height: 13px;
     width: 38px;
+    background-position: 0 0;
     cursor:url('../cursors/POSBAR.PNG?inline'), auto;
 }
 
@@ -339,23 +335,14 @@
     position: absolute;
     width: 23px;
     height: 12px;
-    /* background-image: SHUFREP.BMP via Javascript */
 }
 
 .windows #equalizer-button {
     left: 0;
-    background-position: 0 -61px;
-}
-.windows #equalizer-button:active {
-    background-position: -46px -61px;
 }
 
 .windows #playlist-button {
     left: 23px;
-    background-position: -23px -61px;
-}
-.windows #playlist-button:active {
-    background-position: -69px -61px;
 }
 
 #position {
@@ -364,17 +351,12 @@
     top: 72px;
     width: 248px;
     height: 10px;
-    /* background-image: POSBAR.BMP via Javascript */
-    background-repeat: no-repeat;
     cursor:url('../cursors/POSBAR.PNG?inline'), auto;
 }
 
 #position::-webkit-slider-thumb {
     height: 10px;
     width: 29px;
-    background-position: -248px 0;
-    /* background-image: POSBAR.BMP via Javascript */
-    background-repeat: no-repeat;
     cursor:url('../cursors/POSBAR.PNG?inline'), auto;
     /*
      * Fix the strange bug in Safair/mobile-chrome
@@ -387,9 +369,6 @@
 #position::-moz-range-thumb {
     height: 10px;
     width: 29px;
-    background-position: -248px 0;
-    /* background-image: POSBAR.BMP via Javascript */
-    background-repeat: no-repeat;
     cursor:url('../cursors/POSBAR.PNG?inline'), auto;
 }
 
@@ -397,15 +376,7 @@
 .stop #position::-webkit-slider-thumb { visibility: hidden; }
 .stop #position::-moz-range-thumb { visibility: hidden; }
 
-#position:active::-webkit-slider-thumb {
-    background-position: -278px 0;
-}
-#position:active::-moz-range-thumb {
-    background-position: -278px 0;
-}
-
 .actions div {
-    /* background-image: CBUTTONS.BMP via Javascript */
     height: 18px;
     width: 23px;
     position: absolute;
@@ -475,7 +446,6 @@
     display: inline-block;
     width: 9px;
     height: 13px;
-    /* background-image: NUMBERS.BMP via Javascript */
     background-repeat: no-repeat;
     text-indent: -9999px;
 }

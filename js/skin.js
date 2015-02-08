@@ -7,14 +7,6 @@ SkinManager = {
         return this;
     },
 
-    _skinImages: {
-        "#position": "POSBAR.BMP",
-        "#position::-webkit-slider-thumb": "POSBAR.BMP",
-        "#position::-moz-range-thumb": "POSBAR.BMP",
-        // Put this second, since it will trump .digit
-        ".digit-ex": "NUMS_EX.BMP"
-    },
-
     // For sprites that tile, we need to use just the sprite, not the whole image
     _skinSprites: SKIN_SPRITES,
 
@@ -30,30 +22,19 @@ SkinManager = {
         var zip = new JSZip(buffer);
         document.getElementById('time').classList.remove('ex');
 
-        var promisedCssRules = [];
-        for(var selector in this._skinImages) {
-            var fileName = this._skinImages[selector];
-            var file = this._findFileInZip(fileName, zip);
+        var promisedCssRules = this._skinSprites.map(function(spriteObj) {
 
-            if (file) {
-                var value = "background-image: url(data:image/bmp;base64," + btoa(file.asBinary()) + ")";
-                promisedCssRules.push(selector + "{" + value + "}");
-
-                // CSS has to change if this file is present
-                if(fileName == 'NUMS_EX.BMP') {
-                    document.getElementById('time').classList.add('ex');
-                }
+            // CSS has to change if this file is present
+            if(spriteObj.img == 'NUMS_EX') {
+                document.getElementById('time').classList.add('ex');
             }
-        }
 
-        Array.prototype.push.apply(promisedCssRules, this._skinSprites.map(function(spriteObj) {
             var file = this._findFileInZip(spriteObj.img, zip);
             if (file) {
                 var src = "data:image/bmp;base64," + btoa(file.asBinary());
                 return this._spriteCssRule(src, spriteObj);
             }
-        }, this));
-
+        }, this);
 
         // Extract sprite images
         Promise.all(promisedCssRules).then(function(newCssRules) {

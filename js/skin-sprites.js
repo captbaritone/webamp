@@ -95,6 +95,14 @@ var SKIN_SPRITES = [
         ]
     }, */
     {
+        img: "POSBAR",
+        sprites: [
+            { selectors: ["#position"], x: 0, y: 0, width: 248, height: 10},
+            { selectors: ["#position::-webkit-slider-thumb", "#position::-moz-range-thumb"], x: 248, y: 0, width: 29, height: 10},
+            { selectors: ["#position:active::-webkit-slider-thumb", "#position:active::-moz-range-thumb"], x: 278, y: 0, width: 29, height: 10},
+        ]
+    },
+    {
         img: "SHUFREP",
         sprites: [
             { selectors: ["#shuffle"], x: 28, y: 0, width: 47, height: 15},
@@ -105,6 +113,10 @@ var SKIN_SPRITES = [
             { selectors: ["#repeat:active"], x: 0, y: 15, width: 28, height: 15},
             { selectors: ["#repeat.selected"], x: 0, y: 30, width: 28, height: 15},
             { selectors: ["#repeat.selected:active"], x: 0, y: 45, width: 28, height: 15},
+            { selectors: ["#equalizer-button"], x: 0, y: 61, width: 23, height: 12},
+            { selectors: ["#equalizer-button:active"], x: 46, y: 61, width: 23, height: 12},
+            { selectors: ["#playlist-button"], x: 23, y: 61, width: 23, height: 12},
+            { selectors: ["#playlist-button:active"], x: 69, y: 61, width: 23, height: 12},
         ]
     },
     {
