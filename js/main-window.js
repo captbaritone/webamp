@@ -325,7 +325,7 @@ MainWindow = {
         balance = Math.abs(balance) / 100;
         var sprite = Math.round(balance * 28);
         var offset = (sprite - 1) * 15;
-        this.nodes.balance.style.backgroundPosition = '-9px -' + offset + 'px';
+        this.nodes.balance.style.backgroundPosition = '0px -' + offset + 'px';
     },
 
     changeState: function() {

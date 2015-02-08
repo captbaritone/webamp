@@ -8,12 +8,6 @@ SkinManager = {
     },
 
     _skinImages: {
-        "#volume": "VOLUME.BMP",
-        "#volume::-webkit-slider-thumb": "VOLUME.BMP",
-        "#volume::-moz-range-thumb": "VOLUME.BMP",
-        "#balance": "BALANCE.BMP",
-        "#balance::-webkit-slider-thumb": "VOLUME.BMP",
-        "#balance::-moz-range-thumb": "VOLUME.BMP",
         ".windows div": "SHUFREP.BMP",
         "#position": "POSBAR.BMP",
         "#position::-webkit-slider-thumb": "POSBAR.BMP",
@@ -23,10 +17,7 @@ SkinManager = {
         ".shuffle-repeat div": "SHUFREP.BMP",
         ".character": "TEXT.BMP",
         // Put this second, since it will trump .digit
-        ".digit-ex": "NUMS_EX.BMP",
-        ".shade #position": "TITLEBAR.BMP",
-        ".shade #position::-webkit-slider-thumb": "TITLEBAR.BMP",
-        ".shade #position::-moz-range-thumb": "TITLEBAR.BMP",
+        ".digit-ex": "NUMS_EX.BMP"
     },
 
     // For sprites that tile, we need to use just the sprite, not the whole image

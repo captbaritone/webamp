@@ -1,5 +1,13 @@
 var SKIN_SPRITES = [
     {
+        img: "BALANCE",
+        sprites: [
+            { selectors: ["#balance"], x: 9, y: 0, width: 38, height: 420},
+            { selectors: ["#balance::-webkit-slider-thumb", "#balance::-moz-range-thumb"], x: 15, y: 422, width: 14, height: 11},
+            { selectors: ["#balance::-webkit-slider-thumb:active", "#balance::-moz-range-thumb:active"], x: 0, y: 422, width: 14, height: 11},
+        ]
+    },
+    {
         img: "MAIN",
         sprites: [
             { selectors: ["#main-window"], x: 0, y: 0, width: 275, height: 116}
@@ -95,7 +103,19 @@ var SKIN_SPRITES = [
             { selectors: [".shade #title-bar"], x: 27, y: 42, width: 275, height: 14},
             { selectors: [".shade #title-bar.selected"], x: 27, y: 29, width: 275, height: 14},
             { selectors: [".shade #title-bar #shade"], x: 0, y: 27, width: 9, height: 9},
-            { selectors: [".shade #title-bar #shade:active"], x: 9, y: 27, width: 9, height: 9}
+            { selectors: [".shade #title-bar #shade:active"], x: 9, y: 27, width: 9, height: 9},
+            { selectors: [".shade #position"], x: 0, y: 36, width: 17, height: 7},
+            { selectors: [".shade #position::-moz-range-thumb", ".shade #position::-webkit-slider-thumb"], x: 20, y: 36, width: 3, height: 7},
+            { selectors: [".shade #position.left::-moz-range-thumb", ".shade #position.left::-webkit-slider-thumb"], x: 17, y: 36, width: 3, height: 7},
+            { selectors: [".shade #position.right::-moz-range-thumb", ".shade #position.right::-webkit-slider-thumb"], x: 23, y: 36, width: 3, height: 7}
+        ]
+    },
+    {
+        img: "VOLUME",
+        sprites: [
+            { selectors: ["#volume"], x: 0, y: 0, width: 68, height: 420},
+            { selectors: ["#volume::-webkit-slider-thumb", "#volume::-moz-range-thumb"], x: 15, y: 422, width: 14, height: 11},
+            { selectors: ["#volume::-webkit-slider-thumb:active", "#volume::-moz-range-thumb:active"], x: 0, y: 422, width: 14, height: 11},
         ]
     },
 ];

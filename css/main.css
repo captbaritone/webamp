@@ -288,7 +288,6 @@
     top: 57px;
     height: 13px;
     width: 68px;
-    /* background-image: VOLUME.BMP via Javascript */
     background-position: 0 0;
     cursor:url('../cursors/POSBAR.PNG?inline'), auto;
 }
@@ -297,25 +296,13 @@
     margin-top: 1px;
     height: 11px;
     width: 14px;
-    /* background-image: VOLUME.BMP via Javascript */
-    background-position: -15px -422px;
     cursor:url('../cursors/POSBAR.PNG?inline'), auto;
-    background-repeat: no-repeat;
 }
 #volume::-moz-range-thumb {
     margin-top: 1px;
     height: 11px;
     width: 14px;
-    /* background-image: VOLUME.BMP via Javascript */
-    background-position: -15px -422px;
     cursor:url('../cursors/POSBAR.PNG?inline'), auto;
-    background-repeat: no-repeat;
-}
-#volume:active::-webkit-slider-thumb  {
-    background-position: 0 -422px;
-}
-#volume:active::-moz-range-thumb  {
-    background-position: 0 -422px;
 }
 
 #balance {
@@ -324,8 +311,6 @@
     top: 57px;
     height: 13px;
     width: 38px;
-    /* background-image: BALANCE.BMP via Javascript */
-    background-position: -9px 0;
     cursor:url('../cursors/POSBAR.PNG?inline'), auto;
 }
 
@@ -333,26 +318,13 @@
     top: 1px;
     height: 11px;
     width: 14px;
-    /* background-image: VOLUME.BMP via Javascript */
-    background-position: -15px -422px;
     cursor:url('../cursors/POSBAR.PNG?inline'), auto;
-    background-repeat: no-repeat;
 }
 #balance::-moz-range-thumb {
     top: 1px;
     height: 11px;
     width: 14px;
-    /* background-image: VOLUME.BMP via Javascript */
-    background-position: -15px -422px;
     cursor:url('../cursors/POSBAR.PNG?inline'), auto;
-    background-repeat: no-repeat;
-}
-
-#balance:active::-webkit-slider-thumb  {
-    background-position: 0 -422px;
-}
-#balance:active::-moz-range-thumb  {
-    background-position: 0 -422px;
 }
 
 .windows {
@@ -614,35 +586,20 @@
     top: 4px;
     width: 17px;
     height: 7px;
-    /* background-image: TITLEBAR.BMP via Javascript */
-    background-position: -0px -36px;
 }
 
 .shade #position::-webkit-slider-thumb {
     height: 7px;
     width: 3px;
-    background-position: -20px -36px;
-    /* background-image: TITLEBAR.BMP via Javascript */
+    /* This make it appear. Not sure why */
+    background: none;
 }
 
 .shade #position::-moz-range-thumb {
     height: 7px;
     width: 3px;
-    background-position: -20px -36px;
-    /* background-image: TITLEBAR.BMP via Javascript */
-}
-
-.shade #position.left::-webkit-slider-thumb {
-    background-position: -17px -36px;
-}
-.shade #position.left::-moz-range-thumb {
-    background-position: -17px -36px;
-}
-.shade #position.right::-webkit-slider-thumb {
-    background-position: -23px -36px;
-}
-.shade #position.right::-moz-range-thumb {
-    background-position: -23px -36px;
+    /* This make it appear. Not sure why */
+    background: none;
 }
 
 #shade-time {
