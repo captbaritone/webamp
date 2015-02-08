@@ -8,14 +8,9 @@ SkinManager = {
     },
 
     _skinImages: {
-        ".windows div": "SHUFREP.BMP",
         "#position": "POSBAR.BMP",
         "#position::-webkit-slider-thumb": "POSBAR.BMP",
         "#position::-moz-range-thumb": "POSBAR.BMP",
-        ".actions div": "CBUTTONS.BMP",
-        "#eject": "CBUTTONS.BMP",
-        ".shuffle-repeat div": "SHUFREP.BMP",
-        ".character": "TEXT.BMP",
         // Put this second, since it will trump .digit
         ".digit-ex": "NUMS_EX.BMP"
     },

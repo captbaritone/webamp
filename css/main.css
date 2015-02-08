@@ -414,45 +414,32 @@
 .actions #previous {
     top: 88px;
     left: 16px;
-    background-position: 0 0;
 }
-.actions #previous:active { background-position: 0 -18px; }
 .actions #play {
     top: 88px;
     left: 39px;
-    background-position: -23px 0;
 }
-.actions #play:active { background-position: -23px -18px; }
 .actions #pause {
     top: 88px;
     left: 62px;
-    background-position: -46px 0;
 }
-.actions #pause:active { background-position: -46px -18px; }
 .actions #stop {
     top: 88px;
     left: 85px;
-    background-position: -69px 0;
 }
-.actions #stop:active { background-position: -69px -18px; }
 .actions #next {
     top: 88px;
     left: 108px;
-    background-position: -92px 0;
     width: 22px;
 }
-.actions #next:active { background-position: -92px -18px; }
 
 #eject {
     position: absolute;
     top: 89px;
     left: 136px;
-    /* background-image: CBUTTONS.BMP via Javascript */
     height: 16px;
     width: 22px;
 }
-#eject { background-position: -114px 0; }
-#eject:active { background-position: -114px -16px; }
 
 .shuffle-repeat {
     position: absolute;
@@ -464,37 +451,15 @@
 .shuffle-repeat div {
     position: absolute;
     height: 15px;
-    /* background-image: SHUFREP.BMP via Javascript */
 }
 
 .shuffle-repeat #shuffle {
     width: 47px;
-    background-position: -28px 0;
-}
-.shuffle-repeat #shuffle:active {
-    background-position: -28px -15px;
-}
-
-.shuffle-repeat #shuffle.selected {
-    background-position: -28px -30px;
-}
-.shuffle-repeat #shuffle.selected:active {
-    background-position: -28px -45px;
 }
 
 .shuffle-repeat #repeat {
     left: 46px;
     width: 28px;
-}
-.shuffle-repeat #repeat:active {
-    background-position: 0 -15px;
-}
-
-.shuffle-repeat #repeat.selected {
-    background-position: 0 -30px;
-}
-.shuffle-repeat #repeat.selected:active {
-    background-position: 0 -45px;
 }
 
 #about {

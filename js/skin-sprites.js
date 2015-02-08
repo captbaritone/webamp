@@ -8,6 +8,23 @@ var SKIN_SPRITES = [
         ]
     },
     {
+        img: "CBUTTONS",
+        sprites: [
+            { selectors: [".actions #previous"], x: 0, y: 0, width: 23, height: 18},
+            { selectors: [".actions #previous:active"], x: 0, y: 18, width: 23, height: 18},
+            { selectors: [".actions #play"], x: 23, y: 0, width: 23, height: 18},
+            { selectors: [".actions #play:active"], x: 23, y: 18, width: 23, height: 18},
+            { selectors: [".actions #pause"], x: 46, y: 0, width: 23, height: 18},
+            { selectors: [".actions #pause:active"], x: 46, y: 18, width: 23, height: 18},
+            { selectors: [".actions #stop"], x: 69, y: 0, width: 23, height: 18},
+            { selectors: [".actions #stop:active"], x: 69, y: 18, width: 23, height: 18},
+            { selectors: [".actions #next"], x: 92, y: 0, width: 23, height: 18},
+            { selectors: [".actions #next:active"], x: 92, y: 18, width: 22, height: 18},
+            { selectors: ["#eject"], x: 114, y: 0, width: 22, height: 16},
+            { selectors: ["#eject:active"], x: 114, y: 16, width: 22, height: 16},
+        ]
+    },
+    {
         img: "MAIN",
         sprites: [
             { selectors: ["#main-window"], x: 0, y: 0, width: 275, height: 116}
@@ -77,6 +94,25 @@ var SKIN_SPRITES = [
             { selectors: ["#playlist.shade"], x: 72, y: 57, width: 25, height: 14}
         ]
     }, */
+    {
+        img: "SHUFREP",
+        sprites: [
+            { selectors: ["#shuffle"], x: 28, y: 0, width: 47, height: 15},
+            { selectors: ["#shuffle:active"], x: 28, y: 15, width: 47, height: 15},
+            { selectors: ["#shuffle.selected"], x: 28, y: 30, width: 47, height: 15},
+            { selectors: ["#shuffle.selected:active"], x: 28, y: 45, width: 47, height: 15},
+            { selectors: ["#repeat"], x: 0, y: 0, width: 28, height: 15},
+            { selectors: ["#repeat:active"], x: 0, y: 15, width: 28, height: 15},
+            { selectors: ["#repeat.selected"], x: 0, y: 30, width: 28, height: 15},
+            { selectors: ["#repeat.selected:active"], x: 0, y: 45, width: 28, height: 15},
+        ]
+    },
+    {
+        img: "TEXT",
+        sprites: [
+            { selectors: [".character"], x: 0, y: 0, width: 155, height: 74},
+        ]
+    },
     {
         img: "TITLEBAR",
         sprites: [
