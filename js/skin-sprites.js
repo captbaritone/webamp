@@ -49,7 +49,7 @@ var SKIN_SPRITES = [
             { selectors: [".play #work-indicator.selected"], x: 39, y: 0, width: 9, height: 9}
         ]
     },
-    {
+    /* {
         img: "PLEDIT",
         sprites: [
             { selectors: [".playlist-top-tile"], x: 127, y: 21, width: 25, height: 20},
@@ -59,7 +59,7 @@ var SKIN_SPRITES = [
             { selectors: [".playlist-bottom-tile"], x: 179, y: 0, width: 25, height: 38},
             { selectors: ["#playlist.shade"], x: 72, y: 57, width: 25, height: 14}
         ]
-    },
+    }, */
     {
         img: "TITLEBAR",
         sprites: [
