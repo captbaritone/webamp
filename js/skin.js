@@ -74,7 +74,6 @@ SkinManager = {
         Promise.all(promisedCssRules).then(function(newCssRules) {
             this._createNewStyleNode();
             cssRules = newCssRules.join('\n');
-            console.log(cssRules.length);
             this.styleNode.appendChild(document.createTextNode(cssRules));
             this._parseVisColors(zip);
             this.completedCallback();
