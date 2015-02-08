@@ -7,7 +7,6 @@
     margin-left: -137px;
     top: 40%;
     left: 20%;
-    /* Background-image: pledit.bmp */
 }
 #playlist.closed { display: none; }
 
@@ -52,21 +51,12 @@
     left: 0;
     height: 100%;
     width: 25px;
-    background-position: 0 -21px;
 }
-#playlist.selected .top .top-left {
-    background-position: 0 0;
-}
-
 #playlist .top .title {
     position: relative;
     height: 100%;
     width: 100px;
     margin: 0 auto;
-    background-position: -26px -21px;
-}
-#playlist.selected .top .title {
-    background-position: -26px 0px;
 }
 
 #playlist .top .top-right {
@@ -75,30 +65,17 @@
     right: 0;
     height: 100%;
     width: 25px;
-    background-position: -153px -21px;
-}
-
-#playlist.selected .top .top-right {
-    background-position: -153px 0;
 }
 
 #playlist .top #playlist-shade {
-    background-position: -156px -3px;
     position: absolute;
     top: 3px;
     right: 13px;
     height: 9px;
     width: 9px;
 }
-#playlist .top #playlist-shade:active {
-    background-position: -62px -42px;
-}
-#playlist .top #playlist-shade.selected {
-    background-position: -150px -42px;
-}
 
 #playlist .top #playlist-close {
-    background-position: -167px -3px;
     position: absolute;
     top: 3px;
     right: 3px;
@@ -106,15 +83,12 @@
     width: 9px;
 }
 
-#playlist .top #playlist-close:active {
-    background-position: -52px -42px;
-}
-
 #playlist .left {
     height: 100%;
     width: 24px;
     overflow: hidden;
 }
+
 #playlist .right {
     height: 100%;
     position: absolute;
@@ -138,7 +112,6 @@
     left: 0;
     height: 100%;
     width: 125px;
-    background-position: 0 -72px;
 }
 #playlist .bottom-right {
     position: absolute;
@@ -146,7 +119,6 @@
     right: 0;
     height: 100%;
     width: 150px;
-    background-position: -126px -72px;
 }
 
 #playlist #playlist-resize-handle {
@@ -174,26 +146,12 @@
 }
 
 #playlist.shade .top .top-left {
-    background-position: -72px -42px;
     width: 25px;
     height: 14px;
 }
 #playlist.shade .top .top-right {
-    background-position: -99px -42px;
     width: 50px;
     height: 14px;
-}
-#playlist.shade .top #playlist-close {
-    background-position: -138px -45px;
-}
-#playlist.shade .top #playlist-close:active {
-    background-position: -52px -42px;
-}
-#playlist.shade .top #playlist-shade {
-    background-position: -128px -45px;
-}
-#playlist.shade .top #playlist-shade:active {
-    background-position: -150px -42px;
 }
 #playlist.shade #tracks {
     top: 0;

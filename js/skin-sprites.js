@@ -83,17 +83,36 @@ var SKIN_SPRITES = [
             { selectors: [".play #work-indicator.selected"], x: 39, y: 0, width: 9, height: 9}
         ]
     },
-    /* {
+    {
         img: "PLEDIT",
         sprites: [
+            { selectors: ["#playlist .top-left"], x: 0, y: 21, width: 25, height: 20},
+            { selectors: ["#playlist.selected .top-left"], x: 0, y: 0, width: 25, height: 20},
+            { selectors: ["#playlist .title"], x: 26, y: 21, width: 100, height: 20},
+            { selectors: ["#playlist.selected .title"], x: 26, y: 0, width: 100, height: 20},
+            { selectors: ["#playlist .top-right"], x: 153, y: 21, width: 25, height: 20},
+            { selectors: ["#playlist.selected .top-right"], x: 153, y: 0, width: 25, height: 20},
             { selectors: [".playlist-top-tile"], x: 127, y: 21, width: 25, height: 20},
             { selectors: [".selected .playlist-top-tile"], x: 127, y: 0, width: 25, height: 20},
+            { selectors: ["#playlist-shade"], x: 156, y: 3, width: 9, height: 9},
+            { selectors: ["#playlist-shade:active"], x: 62, y: 42, width: 9, height: 9},
+            { selectors: ["#playlist-shade.selected"], x: 150, y: 42, width: 9, height: 9},
+            { selectors: ["#playlist.shade #playlist-shade"], x: 128, y: 45, width: 9, height: 9},
+            { selectors: ["#playlist.shade #playlist-shade:active"], x: 150, y: 42, width: 9, height: 9},
+            { selectors: ["#playlist-close"], x: 167, y: 3, width: 9, height: 9},
+            { selectors: ["#playlist-close:active"], x: 52, y: 42, width: 9, height: 9},
+            { selectors: ["#playlist.shade #playlist-close"], x: 138, y: 45, width: 9, height: 9},
+            { selectors: ["#playlist.shade #playlist-close:active"], x: 52, y: 42, width: 9, height: 9},
             { selectors: [".playlist-left-tile"], x: 0, y: 42, width: 25, height: 29},
             { selectors: [".playlist-right-tile"], x: 27, y: 42, width: 25, height: 29},
             { selectors: [".playlist-bottom-tile"], x: 179, y: 0, width: 25, height: 38},
-            { selectors: ["#playlist.shade"], x: 72, y: 57, width: 25, height: 14}
+            { selectors: ["#playlist .bottom-right"], x: 126, y: 72, width: 150, height: 38},
+            { selectors: ["#playlist .bottom-left"], x: 0, y: 72, width: 150, height: 38},
+            { selectors: ["#playlist.shade"], x: 72, y: 57, width: 25, height: 14},
+            { selectors: ["#playlist.shade .top-left"], x: 72, y: 42, width: 25, height: 14},
+            { selectors: ["#playlist.shade .top-right"], x: 99, y: 42, width: 50, height: 14}
         ]
-    }, */
+    },
     {
         img: "POSBAR",
         sprites: [

@@ -10,6 +10,15 @@ SkinManager = {
     // For sprites that tile, we need to use just the sprite, not the whole image
     _skinSprites: SKIN_SPRITES,
 
+    // PLEDIT.txt values
+    _plRules: {
+        "Normal": { selector:'#tracks li', attribute:'color' },
+        "Current": { selector:'#tracks li.current', attribute:'color' },
+        "Font": { selector:'#tracks li', attribute:'font-family' },
+        "NormalBG": { selector:'#tracks, #tracks li', attribute:'background-color' },
+        "SelectedBG": { selector:'#tracks li.selected', attribute:'background-color' }
+    },
+
     // Given a file of an original Winamp WSZ file, set the current skin
     setSkinByFile: function(file, completedCallback) {
         this.completedCallback = completedCallback;
@@ -47,12 +56,21 @@ SkinManager = {
         };
 
         var plValues = this._parsePlEdit(zip);
-        for(var key in plRules) {
-            var rule = plRules[key];
+        for(var key in this._plRules) {
+            var rule = this._plRules[key];
             if(plValues[key]) {
                 promisedCssRules.push(rule.selector + "{" + rule.attribute + ":" + plValues[key] + "}");
             }
         }
+
+        Array.prototype.push.apply(promisedCssRules, this._skinSprites.map(function(spriteObj) {
+            var file = this._findFileInZip(spriteObj.img, zip);
+            if (file) {
+                var src = "data:image/bmp;base64," + btoa(file.asBinary());
+                return this._spriteCssRule(src, spriteObj);
+            }
+        }, this));
+
 
         // Extract sprite images
         Promise.all(promisedCssRules).then(function(newCssRules) {
@@ -84,7 +102,7 @@ SkinManager = {
 
     _parsePlEdit: function(zip) {
         var entries = this._findFileInZip("PLEDIT.TXT", zip).asText().split("\n");
-        var regex = /^([^=]*)=([^=\r]*)\r?$/
+        var regex = /^([^=]*)=([^=\r]*)\r?$/;
         var results = {};
         for(var i = 0; i < entries.length; i++) {
             var matches = regex.exec(entries[i]);
