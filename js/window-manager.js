@@ -8,6 +8,13 @@ WindowManager = {
 
         this.windows[name] = body;
 
+        body.addEventListener('mousedown',function(e){
+            for (var name in self.windows) {
+                self.windows[name].classList.remove('selected');
+            }
+            this.classList.add('selected');
+        });
+
         // Make window dragable
         handle.addEventListener('mousedown',function(e){
             if(e.target.classList.contains('ui')) {
