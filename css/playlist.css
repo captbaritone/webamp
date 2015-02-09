@@ -121,6 +121,53 @@
     width: 150px;
 }
 
+#playlist-previous {
+    position: absolute;
+    height: 9px;
+    width: 9px;
+    top: 22px;
+    left: 5px;
+}
+
+#playlist-play {
+    position: absolute;
+    height: 9px;
+    width: 9px;
+    top: 22px;
+    left: 14px;
+}
+
+#playlist-pause {
+    position: absolute;
+    height: 9px;
+    width: 9px;
+    top: 22px;
+    left: 23px;
+}
+
+#playlist-stop {
+    position: absolute;
+    height: 9px;
+    width: 9px;
+    top: 22px;
+    left: 32px;
+}
+
+#playlist-next {
+    position: absolute;
+    height: 9px;
+    width: 9px;
+    top: 22px;
+    left: 41px;
+}
+
+#playlist-eject {
+    position: absolute;
+    height: 9px;
+    width: 9px;
+    top: 22px;
+    left: 50px;
+}
 #playlist #playlist-resize-handle {
     position: absolute;
     width: 20px;

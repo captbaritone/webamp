@@ -7,7 +7,13 @@ PlaylistWindow = {
             'shade': document.getElementById('playlist-shade'),
             'close': document.getElementById('playlist-close'),
             'tracks': document.getElementById('tracks'),
-            'resizeHandle': document.getElementById('playlist-resize-handle')
+            'resizeHandle': document.getElementById('playlist-resize-handle'),
+            'previous': document.getElementById('playlist-previous'),
+            'play': document.getElementById('playlist-play'),
+            'pause': document.getElementById('playlist-pause'),
+            'stop': document.getElementById('playlist-stop'),
+            'next': document.getElementById('playlist-next'),
+            'eject': document.getElementById('playlist-eject')
         };
 
         this.closed = this.nodes.window.classList.contains('closed');
@@ -35,6 +41,30 @@ PlaylistWindow = {
 
         this.nodes.shade.onclick = function() {
             self.nodes.window.classList.toggle('shade');
+        }
+
+        this.nodes.previous.onclick = function() {
+            self.winamp.previous();
+        }
+
+        this.nodes.play.onclick = function() {
+            self.winamp.play();
+        }
+
+        this.nodes.pause.onclick = function() {
+            self.winamp.pause();
+        }
+
+        this.nodes.stop.onclick = function() {
+            self.winamp.stop();
+        }
+
+        this.nodes.next.onclick = function() {
+            self.winamp.next();
+        }
+
+        this.nodes.eject.onclick = function() {
+            self.winamp.openFileDialog();
         }
 
         this.nodes.window.addEventListener('dragenter', this.dragenter.bind(this));
