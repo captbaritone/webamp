@@ -136,6 +136,8 @@ var SKIN_SPRITES = [
             { selectors: ["#equalizer-button:active"], x: 46, y: 61, width: 23, height: 12},
             { selectors: ["#playlist-button"], x: 23, y: 61, width: 23, height: 12},
             { selectors: ["#playlist-button:active"], x: 69, y: 61, width: 23, height: 12},
+            { selectors: ["#playlist-button.selected"], x: 23, y: 73, width: 23, height: 12},
+            { selectors: ["#playlist-button.selected:active"], x: 69, y: 73, width: 23, height: 12},
         ]
     },
     {
