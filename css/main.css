@@ -3,10 +3,6 @@
     position: absolute;
     height: 116px;
     width: 275px;
-    margin-top: -58px;
-    margin-left: -137px;
-    top: 40%;
-    left: 50%;
     cursor:url('../cursors/MAINMENU.PNG?inline'), auto;
     /* Ask the browser to scale showing large pixels if possible */
     image-rendering: -moz-crisp-edges;          /* Firefox */

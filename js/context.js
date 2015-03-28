@@ -1,9 +1,9 @@
 Context = {
-    // The Option button
-    option: document.getElementById('option'),
-
     init: function(winamp) {
         this.winamp = winamp;
+
+        // The Option button
+        this.option = document.getElementById('option');
         var self = this;
 
         document.onclick = function() {
