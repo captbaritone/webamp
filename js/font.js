@@ -1,5 +1,5 @@
 // Manage rendering text from this skin's text.bmp file
-Font = {
+define({
 
     // Fill a node with a <div> containing character <div>s
     setNodeToString: function(node, string) {
@@ -75,4 +75,4 @@ Font = {
         "Ä": [2,2], "?": [2,3], "*": [2,4], " ": [2,5], "<": [1,22],
         ">": [1,23], "{": [1,22], "}": [1,23]
     }
-};
+});

@@ -1,4 +1,4 @@
-Browser = {
+define({
     isCompatible: function() {
         return this._supportsAudioApi() && this._supportsCanvas();
     },
@@ -9,5 +9,5 @@ Browser = {
     _supportsCanvas: function() {
         return !!document.createElement('canvas').getContext;
     }
-};
+});
 

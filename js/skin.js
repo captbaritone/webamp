@@ -1,5 +1,16 @@
 // Dynamically set the css background images for all the sprites
-SkinManager = {
+define([
+    'skin-sprites',
+    'font',
+    'visualizer',
+    'jszip.2.4.0.min'
+], function(
+    SKIN_SPRITES,
+    Font,
+    Visualizer,
+    JSZip
+) {
+return {
     font: Font,
     init: function(visualizerNode, analyser) {
         this._createNewStyleNode();
@@ -105,3 +116,4 @@ SkinManager = {
         });
     }
 };
+});

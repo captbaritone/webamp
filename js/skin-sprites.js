@@ -1,4 +1,5 @@
-var SKIN_SPRITES = [
+define([], function() {
+return [
     {
         img: "BALANCE",
         sprites: [
@@ -167,3 +168,4 @@ var SKIN_SPRITES = [
         ]
     },
 ];
+});

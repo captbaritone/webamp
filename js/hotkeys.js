@@ -1,4 +1,4 @@
-Hotkeys = {
+define({
     init: function(winamp) {
         keylog = [];
         trigger = [78,85,76,27,76,27,83,79,70,84];
@@ -45,5 +45,4 @@ Hotkeys = {
             }
         };
     }
-};
-
+});

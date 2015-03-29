@@ -1,4 +1,4 @@
-Context = {
+define({
     init: function(winamp) {
         this.winamp = winamp;
 
@@ -39,4 +39,4 @@ Context = {
         self.winamp.setSkin(skinFile);
     }
 
-};
+});

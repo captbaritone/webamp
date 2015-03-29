@@ -1,4 +1,5 @@
-MainWindow = {
+define(['multi-display', 'font'], function(MultiDisplay, Font) {
+return {
     init: function(winamp) {
         this.winamp = winamp;
         this.nodes = {
@@ -389,3 +390,4 @@ MainWindow = {
         return timeObject[0] + timeObject[1] + ':' + timeObject[2] + timeObject[3];
     }
 };
+});

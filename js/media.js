@@ -1,5 +1,5 @@
 /* Emulate the native <audio> element with Web Audio API */
-Media = {
+define({
     _context: new(window.AudioContext || window.webkitAudioContext)(),
     _source: null,
     _buffer: null,
@@ -256,4 +256,4 @@ Media = {
         }
         return this._position;
     }
-};
+});

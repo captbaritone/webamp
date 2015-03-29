@@ -1,5 +1,18 @@
 // UI and App logic
-Winamp = {
+define([
+    'main-window',
+    'window-manager',
+    'skin',
+    'media',
+    'file'
+], function(
+    MainWindow,
+    WindowManager,
+    SkinManager,
+    Media,
+    MyFile
+) {
+return {
     init: function(options) {
         this.fileInput = document.createElement('input');
         this.fileInput.type = 'file';
@@ -278,3 +291,4 @@ Winamp = {
         ];
     },
 };
+});

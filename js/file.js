@@ -1,6 +1,7 @@
 // Custom object representing a file
 // `File` is already a builtin, so we use `MyFile`
-MyFile = function(){
+define([], function(){
+return function() {
     this.reader = new FileReader();
     this.url = null;
     this.fileReference = null;
@@ -41,3 +42,4 @@ MyFile = function(){
         return false;
     };
 };
+});

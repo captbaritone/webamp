@@ -1,5 +1,5 @@
 // Single line text display that can animate and hold multiple registers
-MultiDisplay = {
+define({
     node: null, // The DOM node of the display
     registers: {},
     init: function(font, node) {
@@ -58,4 +58,4 @@ MultiDisplay = {
             self._marqueeLoop();
         }, 220);
     }
-};
+});

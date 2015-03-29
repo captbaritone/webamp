@@ -1,4 +1,4 @@
-WindowManager = {
+define({
     registerWindow: function(win) {
         body = win.body;
         handle = win.handle;
@@ -55,4 +55,4 @@ WindowManager = {
             window.addEventListener('mouseup',handleUp);
         });
     }
-};
+});

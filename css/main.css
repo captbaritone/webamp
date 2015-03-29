@@ -1,6 +1,11 @@
 /* Styles */
+#main-window-parent {
+    height: 116px;
+    width: 275px;
+}
+
 #main-window {
-    position: absolute;
+    position: fixed;
     height: 116px;
     width: 275px;
     cursor:url('../cursors/MAINMENU.PNG?inline'), auto;
