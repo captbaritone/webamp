@@ -31,7 +31,8 @@ Winamp = {
 
         this.setVolume(options.volume);
         this.setBalance(options.balance);
-        this.loadFromUrl(options.mediaFile.url, options.mediaFile.name);
+        var filename = options.mediaFile.name ? options.mediaFile.name : false;
+        this.loadFromUrl(options.mediaFile.url, filename);
         var skinFile = new MyFile();
         skinFile.setUrl(options.skinUrl);
         this.setSkin(skinFile);
@@ -219,7 +220,12 @@ Winamp = {
 
     // Used only for the initial load, since it must have a CORS header
     loadFromUrl: function(url, fileName) {
-        this.fileName = fileName;
+        if(fileName) {
+            this.fileName = fileName;
+        } else {
+            this.fileName = url.split('/').pop();
+        }
+
         var file = new MyFile();
         file.setUrl(url);
         file.processBuffer(this._loadBuffer.bind(this));

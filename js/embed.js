@@ -42,8 +42,7 @@ var initFromTemplate = function (template) {
             'volume': 50,
             'balance': 0,
             'mediaFile': {
-                'url': scriptTag.dataset.media,
-                'name': scriptTag.dataset.trackname
+                'url': scriptTag.dataset.media
             },
             'skinUrl': 'https://cdn.rawgit.com/captbaritone/winamp-skins/master/v2/base-2.91.wsz'
         });
