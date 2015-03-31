@@ -470,34 +470,38 @@
 }
 
 .shade .actions div {
-    background: none;
     position: absolute;
 }
-.shade #previous {
+.shade .actions #previous {
+    background: none;
     height: 10px;
     width: 7px;
     top: 2px;
     left: 169px;
 }
-.shade #play {
+.shade .actions #play {
+    background: none;
     height: 10px;
     width: 10px;
     top: 2px;
     left: 176px;
 }
-.shade #pause {
+.shade .actions #pause {
+    background: none;
     height: 10px;
     width: 9px;
     top: 2px;
     left: 186px;
 }
-.shade #stop {
+.shade .actions #stop {
+    background: none;
     height: 10px;
     width: 9px;
     top: 2px;
     left: 195px;
 }
-.shade #next {
+.shade .actions #next {
+    background: none;
     height: 10px;
     width: 10px;
     top: 2px;
