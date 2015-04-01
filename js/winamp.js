@@ -232,7 +232,11 @@ return {
 
     // Used only for the initial load, since it must have a CORS header
     loadFromUrl: function(url, fileName) {
-        this.fileName = fileName;
+        if(!fileName) {
+            this.fileName = url.split("/").pop();
+        } else {
+            this.fileName = fileName;
+        }
         var file = new MyFile();
         file.setUrl(url);
         file.processBuffer(this._loadBuffer.bind(this));
