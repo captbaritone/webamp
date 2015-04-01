@@ -9,8 +9,12 @@
     modules: [
         { name: 'main' },
         {
-            name: 'almond',
-            include: 'embed',
+            name: 'embed-built',
+            create: true,
+            include: [
+                'almond',
+                'embed'
+            ]
         }
     ],
     map: {
