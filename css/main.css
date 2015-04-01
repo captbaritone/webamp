@@ -5,7 +5,7 @@
 }
 
 #main-window {
-    position: fixed;
+    position: absolute;
     height: 116px;
     width: 275px;
     cursor:url('../cursors/MAINMENU.PNG?inline'), auto;
