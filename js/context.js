@@ -1,4 +1,5 @@
-define({
+define(['file'], function(MyFile) {
+return {
     init: function(winamp) {
         this.winamp = winamp;
 
@@ -17,7 +18,7 @@ define({
 
         var skinSelectNodes = document.getElementsByClassName('skin-select');
         for(var i = 0; i < skinSelectNodes.length; i++) {
-            skinSelectNodes[i].onclick = this._loadSkin;
+            skinSelectNodes[i].onclick = this._loadSkin.bind(this);
         }
 
         document.getElementById('context-play-file').onclick = function(event) {
@@ -33,10 +34,10 @@ define({
         };
     },
 
-    _loadSkin: function() {
+    _loadSkin: function(event) {
         var skinFile = new MyFile();
-        skinFile.setUrl(this.dataset.skinUrl);
-        self.winamp.setSkin(skinFile);
+        skinFile.setUrl(event.target.dataset.skinUrl);
+        this.winamp.setSkin(skinFile);
     }
-
+};
 });
