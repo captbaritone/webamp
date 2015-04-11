@@ -108,7 +108,7 @@ return {
                     context.drawImage(skinImage, -sprite.x, -sprite.y);
                     var value = "background-image: url(" + canvas.toDataURL() + ")";
                     sprite.selectors.forEach(function(selector) {
-                        cssRules += selector + "{" + value + "}\n";
+                        cssRules += "#winamp2-js " + selector + "{" + value + "}\n";
                     });
                 });
                 resolve(cssRules);

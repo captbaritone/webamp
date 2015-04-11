@@ -1,6 +1,5 @@
-#context-menu,
-#context-menu ul
-{
+#winamp2-js #context-menu,
+#winamp2-js #context-menu ul {
     display: none;
     z-index: 50; /* Gross */
     background-color: #FFFFFF;
@@ -13,7 +12,7 @@
     box-shadow: 2px 2px 4px rgba(0,0,0,.5);
 }
 
-#context-menu li {
+#winamp2-js #context-menu li {
     position: relative;
     font-family: 'Tahoma';
     font-size: 11px;
@@ -23,31 +22,31 @@
     padding: 1px 18px 3px 18px;
     display: block;
 }
-#context-menu li.parent:after {
+#winamp2-js #context-menu li.parent:after {
     text-align: right;
     /* content: '\25b8'; */
 }
-#context-menu li a {
+#winamp2-js #context-menu li a {
     text-decoration: none;
     color: black;
     cursor: default;
 }
 
-#context-menu li:hover,
-#context-menu li:hover a {
+#winamp2-js #context-menu li:hover,
+#winamp2-js #context-menu li:hover a {
     background-color: #224EB7;
     color: #FFFFFF;
 }
 
-#context-menu li.hr {
+#winamp2-js #context-menu li.hr {
     padding: 2px 0;
 }
 
-#context-menu li.hr:hover {
+#winamp2-js #context-menu li.hr:hover {
     background-color: #FFFFFF;
 }
 
-#context-menu li.hr hr {
+#winamp2-js #context-menu li.hr hr {
     border: none;
     height: 1px;
     background-color: #A7A394;
@@ -55,11 +54,11 @@
     padding: 0;
 }
 
-#context-menu ul {
+#winamp2-js #context-menu ul {
     left: 100%;
     margin-left: -3px;
 }
 
-#context-menu li:hover ul {
+#winamp2-js #context-menu li:hover ul {
     display: block;
 }

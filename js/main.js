@@ -16,7 +16,7 @@ require([
     if(Browser.isCompatible()) {
         var mainWindowElement = document.createElement('div');
         mainWindowElement.innerHTML = mainWindowHtml;
-        document.getElementById('main-window-parent').appendChild(mainWindowElement);
+        document.getElementById('winamp2-js').appendChild(mainWindowElement);
 
         var winamp = Winamp.init({
             'volume': 50,

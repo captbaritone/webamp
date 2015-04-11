@@ -2,16 +2,21 @@
 @import url("context-menu.css");
 
 /* Rules used by all windows */
+#winamp2-js {
+    height: 116px;
+    width: 275px;
+}
+
 
 /* Range input css reset */
-input[type=range]{ -webkit-appearance: none; margin: 0; padding: 0; background: none; }
-input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; border: none; border-radius: 0; background: none; }
-input[type=range]::-moz-range-thumb { border: none; border-radius: 0; background: none; }
-input[type=range]::-moz-range-track { border: none; background: none; }
-input[type=range]:focus { outline: none; }
-input[type=range]::-moz-focus-outer { border: 0; }
+#winamp2-js input[type=range]{ -webkit-appearance: none; margin: 0; padding: 0; background: none; border: none; }
+#winamp2-js input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; border: none; border-radius: 0; background: none; }
+#winamp2-js input[type=range]::-moz-range-thumb { border: none; border-radius: 0; background: none; }
+#winamp2-js input[type=range]::-moz-range-track { border: none; background: none; }
+#winamp2-js input[type=range]:focus { outline: none; }
+#winamp2-js input[type=range]::-moz-focus-outer { border: 0; }
 
-a:focus { outline: none; }
+#winamp2-js a:focus { outline: none; }
 
 /* Animation */
 @keyframes blink {
@@ -25,7 +30,7 @@ a:focus { outline: none; }
     100% { opacity: 1.0; }
 }
 
-.character {
+#winamp2-js .character {
     display: block;
     float: left; /* Safari does not do inline-block well */
     width: 5px;
