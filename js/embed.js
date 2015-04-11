@@ -3,22 +3,24 @@ var scriptTag = document.currentScript;
 
 require([
     'browser',
-    'text!../html/main-window.html',
-    'css!../css/winamp.css',
+    '../rjs/text!../html/main-window.html',
+    '../rjs/css!../css/cleanslate.css',
+    '../rjs/css!../css/winamp.css',
     'winamp',
     'context',
     'hotkeys'
 ], function(
     Browser,
     mainWindowHtml,
-    pageCss,
+    cleanslateCss,
+    winampCss,
     Winamp,
     Context,
     Hotkeys
 ) {
     if(Browser.isCompatible()) {
         var node = document.createElement('div');
-        node.setAttribute("id", "main-window-parent");
+        node.setAttribute("id", "winamp2-js");
         node.innerHTML = mainWindowHtml;
 
         if (scriptTag.nextSibling) {

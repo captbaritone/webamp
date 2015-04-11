@@ -1,7 +1,7 @@
 require([
     'browser',
-    'text!../html/main-window.html',
-    'css!../css/winamp.css',
+    '../rjs/text!../html/main-window.html',
+    '../rjs/css!../css/winamp.css',
     'winamp',
     'context',
     'hotkeys'

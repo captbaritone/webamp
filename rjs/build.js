@@ -1,7 +1,6 @@
 ({
     appDir: "../",
     baseUrl: "js/",
-    include: "main",
     wrap: true,
     dir: "../../winamp2-js-prod",
     optimizeCss: "standard",
@@ -9,17 +8,13 @@
     modules: [
         { name: 'main' },
         {
-            name: 'embed-built',
+            name: '../winamp2-js',
             create: true,
             include: [
-                'almond',
+                '../rjs/almond',
                 'embed'
-            ]
+            ],
+            exclude: ['../rjs/normalize']
         }
-    ],
-    map: {
-        '*': {
-            'css': 'css'
-        }
-    }
+    ]
 })
