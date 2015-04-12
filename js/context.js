@@ -21,12 +21,10 @@ return {
             skinSelectNodes[i].onclick = this._loadSkin.bind(this);
         }
 
-        document.getElementById('context-play-file').onclick = function(event) {
-            self.option.classList.remove('selected');
+        document.getElementById('context-play-file').onclick = function() {
             self.winamp.openFileDialog();
         };
-        document.getElementById('context-load-skin').onclick = function(event) {
-            self.option.classList.remove('selected');
+        document.getElementById('context-load-skin').onclick = function() {
             self.winamp.openFileDialog();
         };
         document.getElementById('context-exit').onclick = function() {
