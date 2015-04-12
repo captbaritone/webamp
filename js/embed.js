@@ -18,23 +18,24 @@ require([
     Context,
     Hotkeys
 ) {
-    if(Browser.isCompatible()) {
-        var node = document.createElement('div');
-        node.setAttribute("id", "winamp2-js");
-        node.innerHTML = mainWindowHtml;
+    var node = document.createElement('div');
 
-        if (scriptTag.nextSibling) {
-            scriptTag.parentNode.insertBefore(node, scriptTag.nextSibling);
-        }
-        else {
-            scriptTag.parentNode.appendChild(node);
-        }
+    if (scriptTag.nextSibling) {
+        scriptTag.parentNode.insertBefore(node, scriptTag.nextSibling);
+    } else {
+        scriptTag.parentNode.appendChild(node);
+    }
+    var media = scriptTag.dataset.media ? scriptTag.dataset.media : 'https://cdn.rawgit.com/captbaritone/llama/master/llama-2.91.mp3';
+
+    if(Browser.isCompatible()) {
+        node.innerHTML = mainWindowHtml;
+        node.setAttribute("id", "winamp2-js");
 
         var winamp = Winamp.init({
             'volume': 50,
             'balance': 0,
             'mediaFile': {
-                'url': scriptTag.dataset.media
+                'url': media
             },
             'skinUrl':
             'https://cdn.rawgit.com/captbaritone/winamp-skins/master/v2/base-2.91.wsz'
@@ -43,7 +44,9 @@ require([
         Hotkeys.init(winamp);
         Context.init(winamp);
     } else {
-        document.getElementById('winamp').style.display = 'none';
-        document.getElementById('browser-compatibility').style.display = 'block';
+        var audio = document.createElement('audio');
+        audio.src = media;
+        audio.setAttribute('controls', true);
+        node.appendChild(audio);
     }
 });
