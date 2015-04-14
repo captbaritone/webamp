@@ -76,9 +76,12 @@ return {
             window.dispatchEvent(self.events.startWaiting);
         });
 
+        this.media.addEventListener('stopWaiting', function() {
+            window.dispatchEvent(self.events.stopWaiting);
+        });
+
         this.media.addEventListener('playing', function() {
             self.setState('play');
-            window.dispatchEvent(self.events.stopWaiting);
         });
 
         this.fileInput.onchange = function(e){

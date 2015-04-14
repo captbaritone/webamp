@@ -5,6 +5,7 @@ define({
     _buffer: null,
     _callbacks: {
         waiting: function(){},
+        stopWaiting: function(){},
         playing: function(){},
         timeupdate: function(){},
         visualizerupdate: function(){},
@@ -86,6 +87,7 @@ define({
         var loadAudioBuffer = function(buffer) {
             this._buffer = buffer;
             loadedCallback();
+            this._callbacks.stopWaiting();
             if(this.autoPlay) {
                 this.play(0);
             }
