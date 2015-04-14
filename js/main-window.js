@@ -56,7 +56,7 @@ return {
         var self = this;
 
         this.nodes.close.onclick = function() {
-            self.close();
+            self.winamp.close();
         };
 
         this.nodes.shade.onclick = function() {
@@ -202,6 +202,7 @@ return {
         window.addEventListener('doubledModeToggled', function() { self.toggleDoubledMode(); });
         window.addEventListener('repeatToggled', function() { self.toggleRepeat(); });
         window.addEventListener('llamaToggled', function() { self.toggleLlama(); });
+        window.addEventListener('close', function() { self.close(); });
 
         this.nodes.window.addEventListener('dragenter', this.dragenter.bind(this));
         this.nodes.window.addEventListener('dragover', this.dragover.bind(this));
@@ -214,8 +215,6 @@ return {
     },
 
     close: function() {
-        // Probably not the right thing once we have more windows
-        this.winamp.close();
         this.nodes.window.classList.add('closed');
     },
 

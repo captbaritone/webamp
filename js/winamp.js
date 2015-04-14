@@ -39,7 +39,8 @@ return {
             balanceChanged: new Event('balanceChanged'),
             doubledModeToggled: new Event('doubledModeToggled'),
             repeatToggled: new Event('repeatToggled'),
-            llamaToggled: new Event('llamaToggled')
+            llamaToggled: new Event('llamaToggled'),
+            close: new Event('close')
         };
 
         this.setVolume(options.volume);
@@ -210,6 +211,7 @@ return {
     },
 
     close: function() {
+        window.dispatchEvent(this.events.close);
         this.media.stop();
         this.setState('stop'); // Currently unneeded
     },
