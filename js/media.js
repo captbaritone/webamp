@@ -237,7 +237,7 @@ define({
             this._updatePosition();
             this._callbacks.timeupdate();
 
-            // _updatePosition might have stoped the playing
+            // _updatePosition might have stopped the playing
             if(this._playing) {
                 this._callbacks.visualizerupdate(this._analyser);
             }
