@@ -1,4 +1,8 @@
-define(['file'], function(MyFile) {
+define([
+    'my-file'
+], function(
+    MyFile
+) {
 return {
     init: function(winamp) {
         this.winamp = winamp;

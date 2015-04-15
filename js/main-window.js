@@ -1,4 +1,10 @@
-define(['multi-display', 'font'], function(MultiDisplay, Font) {
+define([
+    'multi-display',
+    'font'
+], function(
+    MultiDisplay,
+    Font
+) {
 return {
     init: function(winamp) {
         this.winamp = winamp;

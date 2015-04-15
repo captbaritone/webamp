@@ -4,11 +4,11 @@ define([
     'window-manager',
     'skin',
     'media',
-    'file'
+    'my-file'
 ], function(
     MainWindow,
     WindowManager,
-    SkinManager,
+    Skin,
     Media,
     MyFile
 ) {
@@ -20,7 +20,7 @@ return {
 
         this.windowManager = WindowManager;
         this.media = Media.init();
-        this.skin = SkinManager.init(document.getElementById('visualizer'), this.media._analyser);
+        this.skin = Skin.init(document.getElementById('visualizer'), this.media._analyser);
         this.state = '';
 
         this.mainWindow = MainWindow.init(this);
