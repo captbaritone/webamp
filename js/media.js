@@ -256,6 +256,5 @@ define({
                 this._callbacks.ended();
             }
         }
-        return this._position;
     }
 });
