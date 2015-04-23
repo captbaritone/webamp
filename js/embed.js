@@ -20,11 +20,7 @@ require([
 ) {
     var node = document.createElement('div');
 
-    if (scriptTag.nextSibling) {
-        scriptTag.parentNode.insertBefore(node, scriptTag.nextSibling);
-    } else {
-        scriptTag.parentNode.appendChild(node);
-    }
+    scriptTag.parentNode.insertBefore(node, scriptTag);
     var media = scriptTag.dataset.media ? scriptTag.dataset.media : 'https://cdn.rawgit.com/captbaritone/llama/master/llama-2.91.mp3';
 
     if(Browser.isCompatible()) {
