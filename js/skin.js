@@ -76,9 +76,8 @@ return {
     },
 
     _findFileInZip: function(name, zip) {
-        return zip.filter(function (relativePath, file){
-            return new RegExp("(^|/)" + name, 'i').test(relativePath);
-        })[0];
+        // Note: "."s in file names are actually treated as wildcards
+        return zip.file(new RegExp("/" + name, 'i'))[0];
     },
 
     _createNewStyleNode: function() {
