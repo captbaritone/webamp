@@ -21,7 +21,11 @@ require([
     var node = document.createElement('div');
 
     scriptTag.parentNode.insertBefore(node, scriptTag);
-    var media = scriptTag.dataset.media ? scriptTag.dataset.media : 'https://cdn.rawgit.com/captbaritone/llama/master/llama-2.91.mp3';
+    var options = scriptTag.dataset;
+
+    var media = options.media ? options.media : 'https://cdn.rawgit.com/captbaritone/llama/master/llama-2.91.mp3';
+    var skin = options.skin ? options.skin : 'https://cdn.rawgit.com/captbaritone/winamp-skins/master/v2/base-2.91.wsz';
+    var hotKeys = typeof options.hotkeys !== "undefined" ? true : false;
 
     if(Browser.isCompatible()) {
         node.innerHTML = mainWindowHtml;
@@ -33,11 +37,12 @@ require([
             'mediaFile': {
                 'url': media
             },
-            'skinUrl':
-            'https://cdn.rawgit.com/captbaritone/winamp-skins/master/v2/base-2.91.wsz'
+            'skinUrl': skin
         });
 
-        Hotkeys.init(winamp);
+        if(hotKeys) {
+            Hotkeys.init(winamp);
+        }
         Context.init(winamp);
     } else {
         var audio = document.createElement('audio');
