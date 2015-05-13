@@ -19,9 +19,9 @@ supported](http://caniuse.com/#feat=audio-api).
 ## Running locally vs. Production
 
 Running Winamp2-js locally is as simple as cloning this repository and opening
-`index.html` in your browser. You can run `r.js -o build.js` in the `js/`
-directory to build the production version which reduces the number of http
-requests.
+`index.html` in your browser, but you will need to have a local web server to run it on.
+You can run `r.js -o build.js` in the `js/` directory to build the production version 
+which reduces the number of http requests.
 
 ## Reference
 
