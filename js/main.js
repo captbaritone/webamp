@@ -16,6 +16,7 @@ require([
     document.getElementById('embed-link').onclick = function() {
         document.getElementById('embed').classList.toggle('selected');
         document.getElementById('embed-input').select();
+        return false;
     };
     if(Browser.isCompatible()) {
         var mainWindowElement = document.createElement('div');
