@@ -13,6 +13,10 @@ require([
     Context,
     Hotkeys
 ) {
+    document.getElementById('embed-link').onclick = function() {
+        document.getElementById('embed').classList.toggle('selected');
+        document.getElementById('embed-input').select();
+    };
     if(Browser.isCompatible()) {
         var mainWindowElement = document.createElement('div');
         mainWindowElement.innerHTML = mainWindowHtml;

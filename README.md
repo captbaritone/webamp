@@ -16,12 +16,31 @@ supported](http://caniuse.com/#feat=audio-api).
 - "Shade" mini-mode
 - "Doubled" mode, where the main window is twice as large: `Ctrl-D`
 
+## Embed Winamp2-js in your web page
+
+If you would like to embed Winamp2-js into your web page, simply paste this
+HTML snippet where you would like the player to appear:
+
+    <script async src="https://jordaneldredge.com/winamp2-js.js"></script>
+
+You can set the default audio file by adding the following attribute to the
+`<script>` tag:
+
+    data-media="https://example.com/dj-llama.mp3"
+
+*Note: The audio file must be hosted on the [same
+domain](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS)
+as your web page*
+
+If Winamp2-js cannot run in a user's browser, it will fall back to a simple
+`<audio>` tag.
+
 ## Running locally vs. Production
 
 Running Winamp2-js locally is as simple as cloning this repository and opening
-`index.html` in your browser. You can run `r.js -o build.js` in the `js/`
-directory to build the production version which reduces the number of http
-requests.
+`index.html` in your browser, but you will need to have a local web server to run it on.
+You can run `r.js -o build.js` in the `js/` directory to build the production version 
+which reduces the number of http requests.
 
 ## Reference
 
