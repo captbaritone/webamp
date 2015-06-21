@@ -52,7 +52,9 @@ return {
             var cssRules = newCssRules.join('\n');
             this.styleNode.appendChild(document.createTextNode(cssRules));
             this._parseVisColors(zip);
-            this.completedCallback();
+            if(this.completedCallback !== undefined) {
+                this.completedCallback();
+            }
         }.bind(this));
     },
 
