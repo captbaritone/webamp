@@ -282,14 +282,13 @@
     cursor:url('https://jordaneldredge.com/projects/winamp2-js/cursors/POSBAR.PNG'), auto;
 }
 #winamp2-js #volume::-webkit-slider-thumb {
-    display: block;
-    margin-top: 1px;
+    top: 1px;
     height: 11px;
     width: 14px;
     cursor:url('https://jordaneldredge.com/projects/winamp2-js/cursors/POSBAR.PNG'), auto;
 }
 #winamp2-js #volume::-moz-range-thumb {
-    margin-top: 1px;
+    top: 1px;
     height: 11px;
     width: 14px;
     cursor:url('https://jordaneldredge.com/projects/winamp2-js/cursors/POSBAR.PNG'), auto;
