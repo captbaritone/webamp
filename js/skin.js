@@ -49,7 +49,7 @@ return {
         // Extract sprite images
         Promise.all(promisedCssRules).then(function(newCssRules) {
             this._createNewStyleNode();
-            cssRules = newCssRules.join('\n');
+            var cssRules = newCssRules.join('\n');
             this.styleNode.appendChild(document.createTextNode(cssRules));
             this._parseVisColors(zip);
             this.completedCallback();
