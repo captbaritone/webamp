@@ -35,13 +35,12 @@ return {
 
         var promisedCssRules = this._skinSprites.map(function(spriteObj) {
 
-            // CSS has to change if this file is present
-            if(spriteObj.img == 'NUMS_EX') {
-                document.getElementById('time').classList.add('ex');
-            }
-
             var file = this._findFileInZip(spriteObj.img, zip);
             if (file) {
+                // CSS has to change if this file is present
+                if(spriteObj.img == 'NUMS_EX') {
+                    document.getElementById('time').classList.add('ex');
+                }
                 var src = "data:image/bmp;base64," + btoa(file.asBinary());
                 return this._spriteCssRule(src, spriteObj);
             }
