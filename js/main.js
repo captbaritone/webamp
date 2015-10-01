@@ -27,7 +27,10 @@ require([
             'volume': 50,
             'balance': 0,
             'mediaFile': {
-                'url': "https://cdn.rawgit.com/captbaritone/llama/master/llama-2.91.mp3",
+                // 'url': "https://cdn.rawgit.com/captbaritone/llama/master/llama-2.91.mp3",
+                // Not using cdn subdomain, because it does not return
+                // content-lenght: https://github.com/rgrove/rawgit/issues/81
+                'url': "https://rawgit.com/captbaritone/llama/master/llama-2.91.mp3",
                 'name': "1. DJ Mike Llama - Llama Whippin' Intro"
             },
             'skinUrl':

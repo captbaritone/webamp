@@ -17,9 +17,10 @@ return {
         this.fileInput = document.createElement('input');
         this.fileInput.type = 'file';
         this.fileInput.style.display = 'none';
+        this.objectURL = null;
 
         this.windowManager = WindowManager;
-        this.media = Media.init();
+        this.media = new Media();
         this.skin = Skin.init(document.getElementById('visualizer'), this.media._analyser);
         this.state = '';
 
@@ -76,14 +77,17 @@ return {
             window.dispatchEvent(self.events.startWaiting);
         });
 
-        this.media.addEventListener('stopWaiting', function() {
+        this.media.addEventListener('canplay', function() {
             window.dispatchEvent(self.events.stopWaiting);
         });
 
-        this.media.addEventListener('playing', function() {
+        this.media.addEventListener('play', function() {
             self.setState('play');
         });
 
+        this.media.addEventListener('loadedmetadata', function() {
+            self.loadMetaData();
+        });
         this.fileInput.onchange = function(e){
             self.loadFromFileReference(e.target.files[0]);
         };
@@ -224,27 +228,25 @@ return {
     },
 
     loadFromFileReference: function(fileReference) {
-        var file = new MyFile();
-        file.setFileReference(fileReference);
         if(new RegExp("(wsz|zip)$", 'i').test(fileReference.name)) {
+            var file = new MyFile();
+            file.setFileReference(fileReference);
             this.skin.setSkinByFile(file);
         } else {
-            this.media.autoPlay = true;
+            this.media.setAutoPlay(true);
             this.fileName = fileReference.name;
-            file.processBuffer(this._loadBuffer.bind(this));
+            if(this.objectURL) {
+                URL.revokeObjectURL(this.objectURL);
+            }
+            this.objectURL = URL.createObjectURL(fileReference);
+            this.loadFromUrl(this.objectURL, this.fileName);
         }
     },
 
     // Used only for the initial load, since it must have a CORS header
     loadFromUrl: function(url, fileName) {
-        if(!fileName) {
-            this.fileName = url.split("/").pop();
-        } else {
-            this.fileName = fileName;
-        }
-        var file = new MyFile();
-        file.setUrl(url);
-        file.processBuffer(this._loadBuffer.bind(this));
+        this.fileName = fileName ? fileName : url.split("/").pop();
+        this.media.loadUrl(url);
     },
 
     setSkin: function(file) {
@@ -271,20 +273,14 @@ return {
         this.skin.visualizer.clear();
     },
 
-    /* Listeners */
-    _loadBuffer: function(buffer) {
-        function setMetaData() {
-            var kbps = "128";
-            var khz = Math.round(this.media.sampleRate() / 1000).toString();
-            this.skin.font.setNodeToString(document.getElementById('kbps'), kbps);
-            this.skin.font.setNodeToString(document.getElementById('khz'), khz);
-            window.dispatchEvent(this.events.channelCountUpdated);
-            window.dispatchEvent(this.events.titleUpdated);
-            window.dispatchEvent(this.events.timeUpdated);
-        }
-
-        // Note, this will not happen right away
-        this.media.loadBuffer(buffer, setMetaData.bind(this));
+    loadMetaData: function() {
+        var kbps = "128";
+        var khz = Math.round(this.media.sampleRate() / 1000).toString();
+        this.skin.font.setNodeToString(document.getElementById('kbps'), kbps);
+        this.skin.font.setNodeToString(document.getElementById('khz'), khz);
+        window.dispatchEvent(this.events.channelCountUpdated);
+        window.dispatchEvent(this.events.titleUpdated);
+        window.dispatchEvent(this.events.timeUpdated);
     },
 
     /* Helpers */
