@@ -2,52 +2,52 @@
 var scriptTag = document.currentScript;
 
 require([
-    'browser',
-    '../rjs/text!../html/main-window.html',
-    '../rjs/css!../css/cleanslate.css',
-    '../rjs/css!../css/winamp.css',
-    'winamp',
-    'context',
-    'hotkeys'
+  'browser',
+  '../rjs/text!../html/main-window.html',
+  '../rjs/css!../css/cleanslate.css',
+  '../rjs/css!../css/winamp.css',
+  'winamp',
+  'context',
+  'hotkeys'
 ], function(
-    Browser,
-    mainWindowHtml,
-    cleanslateCss,
-    winampCss,
-    Winamp,
-    Context,
-    Hotkeys
+  Browser,
+  mainWindowHtml,
+  cleanslateCss,
+  winampCss,
+  Winamp,
+  Context,
+  Hotkeys
 ) {
-    var node = document.createElement('div');
+  var node = document.createElement('div');
 
-    scriptTag.parentNode.insertBefore(node, scriptTag);
-    var options = scriptTag.dataset;
+  scriptTag.parentNode.insertBefore(node, scriptTag);
+  var options = scriptTag.dataset;
 
-    var media = options.media ? options.media : 'https://cdn.rawgit.com/captbaritone/llama/master/llama-2.91.mp3';
-    var skin = options.skin ? options.skin : 'https://cdn.rawgit.com/captbaritone/winamp-skins/master/v2/base-2.91.wsz';
-    var hotKeys = typeof options.hotkeys !== "undefined" ? true : false;
+  var media = options.media ? options.media : 'https://cdn.rawgit.com/captbaritone/llama/master/llama-2.91.mp3';
+  var skin = options.skin ? options.skin : 'https://cdn.rawgit.com/captbaritone/winamp-skins/master/v2/base-2.91.wsz';
+  var hotKeys = typeof options.hotkeys !== 'undefined';
 
-    if(Browser.isCompatible()) {
-        node.innerHTML = mainWindowHtml;
-        node.setAttribute("id", "winamp2-js");
+  if (Browser.isCompatible()) {
+    node.innerHTML = mainWindowHtml;
+    node.setAttribute('id', 'winamp2-js');
 
-        var winamp = Winamp.init({
-            'volume': 50,
-            'balance': 0,
-            'mediaFile': {
-                'url': media
-            },
-            'skinUrl': skin
-        });
+    var winamp = Winamp.init({
+      volume: 50,
+      balance: 0,
+      mediaFile: {
+        url: media
+      },
+      skinUrl: skin
+    });
 
-        if(hotKeys) {
-            Hotkeys.init(winamp);
-        }
-        Context.init(winamp);
-    } else {
-        var audio = document.createElement('audio');
-        audio.src = media;
-        audio.setAttribute('controls', true);
-        node.appendChild(audio);
+    if (hotKeys) {
+      Hotkeys.init(winamp);
     }
+    Context.init(winamp);
+  } else {
+    var audio = document.createElement('audio');
+    audio.src = media;
+    audio.setAttribute('controls', true);
+    node.appendChild(audio);
+  }
 });
