@@ -1,13 +1,13 @@
 define({
-    isCompatible: function() {
-        return this._supportsAudioApi() && this._supportsCanvas();
-    },
+  isCompatible: function() {
+    return this._supportsAudioApi() && this._supportsCanvas();
+  },
 
-    _supportsAudioApi: function() {
-        return !!(window.AudioContext || window.webkitAudioContext);
-    },
-    _supportsCanvas: function() {
-        return !!document.createElement('canvas').getContext;
-    }
+  _supportsAudioApi: function() {
+    return !!(window.AudioContext || window.webkitAudioContext);
+  },
+  _supportsCanvas: function() {
+    return !!document.createElement('canvas').getContext;
+  }
 });
 
