@@ -1,13 +1,13 @@
 require([
   'browser',
-  '../rjs/text!../html/main-window.html',
+  'main-window-dom',
   '../rjs/css!../css/winamp.css',
   'winamp',
   'context',
   'hotkeys'
 ], function(
   Browser,
-  mainWindowHtml,
+  mainWindowDom,
   pageCss,
   Winamp,
   Context,
@@ -20,7 +20,7 @@ require([
   };
   if (Browser.isCompatible()) {
     var mainWindowElement = document.createElement('div');
-    mainWindowElement.innerHTML = mainWindowHtml;
+    mainWindowElement.appendChild(mainWindowDom);
     document.getElementById('winamp2-js').appendChild(mainWindowElement);
 
     var winamp = Winamp.init({

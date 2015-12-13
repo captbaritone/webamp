@@ -3,7 +3,7 @@ var scriptTag = document.currentScript;
 
 require([
   'browser',
-  '../rjs/text!../html/main-window.html',
+  'main-window-dom',
   '../rjs/css!../css/cleanslate.css',
   '../rjs/css!../css/winamp.css',
   'winamp',
@@ -11,7 +11,7 @@ require([
   'hotkeys'
 ], function(
   Browser,
-  mainWindowHtml,
+  mainWindowDom,
   cleanslateCss,
   winampCss,
   Winamp,
@@ -28,7 +28,7 @@ require([
   var hotKeys = typeof options.hotkeys !== 'undefined';
 
   if (Browser.isCompatible()) {
-    node.innerHTML = mainWindowHtml;
+    node.appendChild(mainWindowDom);
     node.setAttribute('id', 'winamp2-js');
 
     var winamp = Winamp.init({
