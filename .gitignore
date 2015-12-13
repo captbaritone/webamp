@@ -4,3 +4,5 @@ preview.png
 llama-2.91.mp3
 
 node_modules
+
+/bundle.js

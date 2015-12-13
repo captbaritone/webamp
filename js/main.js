@@ -2,22 +2,21 @@ require([
   'browser',
   'main-window-dom',
   '../rjs/css!../css/winamp.css',
+  '../rjs/css!../css/main-window.css', // @import does not work with r.js
+  '../rjs/css!../css/context-menu.css', // @import does not work with r.js
   'winamp',
   'context',
   'hotkeys'
 ], function(
   Browser,
   mainWindowDom,
-  pageCss,
+  winampCss,
+  mainWindowCss,
+  contextMenuCss,
   Winamp,
   Context,
   Hotkeys
 ) {
-  document.getElementById('embed-link').onclick = function() {
-    document.getElementById('embed').classList.toggle('selected');
-    document.getElementById('embed-input').select();
-    return false;
-  };
   if (Browser.isCompatible()) {
     var mainWindowElement = document.createElement('div');
     mainWindowElement.appendChild(mainWindowDom);

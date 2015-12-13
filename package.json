@@ -1,0 +1,35 @@
+{
+  "name": "winamp2-js",
+  "version": "1.0.0",
+  "description": "Winamp 2 implemented in HTML5 and JavaScript",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "qunit-cli test/*.js && npm run lint",
+    "lint": "eslint js/*.js",
+    "build": "r.js -o rjs/bundle.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/captbaritone/winamp2-js.git"
+  },
+  "keywords": [
+    "Winamp",
+    "HTML5",
+    "audio",
+    "web-auido-api"
+  ],
+  "author": "Jordan Eldredge <jordan@jordaneldredge.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/captbaritone/winamp2-js/issues"
+  },
+  "homepage": "https://github.com/captbaritone/winamp2-js#readme",
+  "devDependencies": {
+    "qunit-cli": "~0.1.4",
+    "eslint": "1.*"
+  }
+
+}
