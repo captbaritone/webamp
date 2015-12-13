@@ -4,5 +4,8 @@
     include: ['main'],
     out: '../bundle.js',
     wrap: true,
-    exclude: ['../rjs/normalize']
+    exclude: ['../rjs/normalize'],
+    pragmasOnSave: {
+        excludeRequireCss: true
+    }
 })
