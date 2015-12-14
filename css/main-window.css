@@ -469,42 +469,48 @@
 #winamp2-js .shade .actions div {
     position: absolute;
 }
-#winamp2-js .shade .actions #previous {
+#winamp2-js .shade .actions #previous,
+#winamp2-js .shade .actions #previous:active {
     background: none;
     height: 10px;
     width: 7px;
     top: 2px;
     left: 169px;
 }
-#winamp2-js .shade .actions #play {
+#winamp2-js .shade .actions #play,
+#winamp2-js .shade .actions #play:active {
     background: none;
     height: 10px;
     width: 10px;
     top: 2px;
     left: 176px;
 }
-#winamp2-js .shade .actions #pause {
+#winamp2-js .shade .actions #pause,
+#winamp2-js .shade .actions #pause:active {
     background: none;
     height: 10px;
     width: 9px;
     top: 2px;
     left: 186px;
 }
-#winamp2-js .shade .actions #stop {
+#winamp2-js .shade .actions #stop,
+#winamp2-js .shade .actions #stop:active {
     background: none;
     height: 10px;
     width: 9px;
     top: 2px;
     left: 195px;
 }
-#winamp2-js .shade .actions #next {
+#winamp2-js .shade .actions #next,
+#winamp2-js .shade .actions #next:active {
     background: none;
     height: 10px;
     width: 10px;
     top: 2px;
     left: 204px;
 }
-#winamp2-js .shade #eject {
+#winamp2-js .shade #eject,
+#winamp2-js .shade #eject:active {
     height: 10px;
     width: 10px;
     top: 2px;
