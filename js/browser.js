@@ -1,13 +1,9 @@
-define({
-  isCompatible: function() {
-    return this._supportsAudioApi() && this._supportsCanvas();
-  },
+define([], function() {
+  return function(base) {
+    var supportsAudioApi = !!(base.AudioContext || base.webkitAudioContext);
+    var supportsCanvas = !!(base.document.createElement('canvas').getContext);
 
-  _supportsAudioApi: function() {
-    return !!(window.AudioContext || window.webkitAudioContext);
-  },
-  _supportsCanvas: function() {
-    return !!document.createElement('canvas').getContext;
-  }
+    this.isCompatible = supportsAudioApi && supportsCanvas;
+  };
 });
 

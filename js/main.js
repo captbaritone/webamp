@@ -17,7 +17,7 @@ require([
   Context,
   Hotkeys
 ) {
-  if (Browser.isCompatible()) {
+  if (new Browser(window).isCompatible) {
     var mainWindowElement = document.createElement('div');
     mainWindowElement.appendChild(mainWindowDom);
     document.getElementById('winamp2-js').appendChild(mainWindowElement);
@@ -32,8 +32,8 @@ require([
       skinUrl: 'https://cdn.rawgit.com/captbaritone/winamp-skins/master/v2/base-2.91.wsz'
     });
 
-    Hotkeys.init(winamp);
-    Context.init(winamp);
+    new Hotkeys(winamp);
+    new Context(winamp);
   } else {
     document.getElementById('winamp').style.display = 'none';
     document.getElementById('browser-compatibility').style.display = 'block';

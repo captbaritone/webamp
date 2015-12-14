@@ -3,43 +3,48 @@ define([
 ], function(
   MyFile
 ) {
-  return {
-    init: function(winamp) {
-      this.winamp = winamp;
+  var Context = function(winamp) {
+    this.winamp = winamp;
 
-      // The Option button
-      this.option = document.getElementById('option');
-      var self = this;
+    var el = {
+      option: document.getElementById('option'),
+      playFile: document.getElementById('context-play-file'),
+      loadSkin: document.getElementById('context-load-skin'),
+      exit: document.getElementById('context-exit'),
+      skinOptions: document.getElementsByClassName('skin-select')
+    };
 
-      document.onclick = function() {
-        self.option.classList.remove('selected');
-      };
+    // Click anywhere to close the context menu
+    document.addEventListener('click', function() {
+      el.option.classList.remove('selected');
+    });
 
-      this.option.onclick = function(event) {
-        self.option.classList.toggle('selected');
-        event.stopPropagation();
-      };
+    // Click the context menu to close it
+    el.option.addEventListener('click', function(e) {
+      el.option.classList.toggle('selected');
+      e.stopPropagation();
+    });
 
-      var skinSelectNodes = document.getElementsByClassName('skin-select');
-      for (var i = 0; i < skinSelectNodes.length; i++) {
-        skinSelectNodes[i].onclick = this._loadSkin.bind(this);
-      }
-
-      document.getElementById('context-play-file').onclick = function() {
-        self.winamp.openFileDialog();
-      };
-      document.getElementById('context-load-skin').onclick = function() {
-        self.winamp.openFileDialog();
-      };
-      document.getElementById('context-exit').onclick = function() {
-        self.winamp.close();
-      };
-    },
-
-    _loadSkin: function(event) {
-      var skinFile = new MyFile();
-      skinFile.setUrl(event.target.dataset.skinUrl);
-      this.winamp.setSkin(skinFile);
+    // Bind to each of the various skin options
+    for (var i = 0; i < el.skinOptions.length; i++) {
+      el.skinOptions[i].addEventListener('click', function(e) {
+        this.loadSkin(e.target.dataset.skinUrl);
+      }.bind(this));
     }
+
+    // Play file and load skin both just spawn the file opener
+    el.playFile.addEventListener('click', winamp.openFileDialog);
+    el.loadSkin.addEventListener('click', winamp.openFileDialog);
+
+    // Close all of Winamp
+    el.exit.addEventListener('click', winamp.close);
   };
+
+  Context.prototype.loadSkin = function(url) {
+    var skinFile = new MyFile();
+    skinFile.setUrl(url);
+    this.winamp.setSkin(skinFile);
+  };
+
+  return Context;
 });

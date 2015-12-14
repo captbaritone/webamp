@@ -1,8 +1,8 @@
-define({
-  init: function(winamp) {
+define([], function() {
+  var Hotkeys = function(winamp) {
     var keylog = [];
     var trigger = [78, 85, 76, 27, 76, 27, 83, 79, 70, 84];
-    document.onkeyup = function(e){
+    document.addEventListener('keyup', function(e){
       if (e.ctrlKey) { // Is CTRL depressed?
         switch (e.keyCode) {
           case 68: winamp.toggleDoubledMode(); break;   // CTRL+D
@@ -43,6 +43,7 @@ define({
       if (keylog.toString() === trigger.toString()) {
         winamp.toggleLlama();
       }
-    };
-  }
+    });
+  };
+  return Hotkeys;
 });
