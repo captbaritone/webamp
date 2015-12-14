@@ -43,7 +43,7 @@ define([
       this.handle = document.getElementById('title-bar');
       this.body = this.nodes.window;
 
-      this.textDisplay = MultiDisplay.init(Font, this.nodes.songTitle);
+      this.textDisplay = new MultiDisplay(this.nodes.songTitle);
       this.textDisplay.addRegister('songTitle');
       this.textDisplay.addRegister('position');
       this.textDisplay.addRegister('volume');

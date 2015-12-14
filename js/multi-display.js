@@ -1,14 +1,13 @@
 // Single line text display that can animate and hold multiple registers
-define({
-  node: null, // The DOM node of the display
-  registers: {},
-  init: function(font, node) {
-    this.font = font;
+define(['font'], function(Font) {
+  var MultiDisplay = function(node) {
+    this.font = new Font();
     this.node = node;
+    this.registers = {};
     this._marqueeLoop();
-    return this;
-  },
-  addRegister: function(key) {
+  };
+
+  MultiDisplay.prototype.addRegister = function(key) {
     // Create element node
     var register = document.createElement('div');
     register.style.display = 'none';
@@ -19,28 +18,29 @@ define({
       text: '',
       marquee: false
     };
-  },
-  setRegisterText: function(register, text) {
-    // Set text of register
+  };
+
+  // Set text of register
+  MultiDisplay.prototype.setRegisterText = function(register, text) {
     this.font.setNodeToString(this.registers[register].node, text);
-  },
-  hideAllRegisters: function() {
+  };
+
+  MultiDisplay.prototype.showRegister = function(showKey) {
     for (var key in this.registers) {
-      this.registers[key].node.style.display = 'none';
+      var display = (key === showKey) ? 'block' : 'none';
+      this.registers[key].node.style.display = display;
     }
-  },
-  showRegister: function(key) {
-    this.hideAllRegisters();
-    // Show the one register
-    this.registers[key].node.style.display = 'block';
-  },
-  startRegisterMarquee: function(key) {
+  };
+
+  MultiDisplay.prototype.startRegisterMarquee = function(key) {
     this.registers[key].marquee = true;
-  },
-  pauseRegisterMarquee: function(key) {
+  };
+
+  MultiDisplay.prototype.pauseRegisterMarquee = function(key) {
     this.registers[key].marquee = false;
-  },
-  _marqueeLoop: function() {
+  };
+
+  MultiDisplay.prototype._marqueeLoop = function() {
     var self = this;
     setTimeout(function() {
       for (var key in self.registers) {
@@ -57,5 +57,7 @@ define({
       }
       self._marqueeLoop();
     }, 220);
-  }
+  };
+
+  return MultiDisplay;
 });

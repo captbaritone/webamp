@@ -11,7 +11,7 @@ define([
   JSZip
 ) {
   return {
-    font: Font,
+    font: new Font(),
     init: function(visualizerNode, analyser) {
       this._createNewStyleNode();
       this.visualizer = Visualizer.init(visualizerNode, analyser);
