@@ -131,8 +131,8 @@ define([], function() {
       sprites: [
         {selectors: ['#title-bar'], x: 27, y: 15, width: 275, height: 14},
         {selectors: ['#title-bar.selected'], x: 27, y: 0, width: 275, height: 14},
-        {selectors: ['.lllama #title-bar'], x: 27, y: 61, width: 275, height: 14},
-        {selectors: ['.lllama #title-bar.selected'], x: 27, y: 57, width: 275, height: 14},
+        {selectors: ['.llama #title-bar'], x: 27, y: 61, width: 275, height: 14},
+        {selectors: ['.llama #title-bar.selected'], x: 27, y: 57, width: 275, height: 14},
         {selectors: ['#title-bar #option'], x: 0, y: 0, width: 9, height: 9},
         {selectors: ['#title-bar #option'], x: 0, y: 0, width: 9, height: 9},
         {selectors: ['#title-bar #option:active', '#title-bar #option:selected'], x: 0, y: 9, width: 9, height: 9},
