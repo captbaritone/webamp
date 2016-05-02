@@ -1,5 +1,4 @@
-define([], function() {
-  return [
+module.exports = [
     {
       img: 'BALANCE',
       sprites: [
@@ -144,7 +143,7 @@ define([], function() {
         {selectors: ['#title-bar #close:active'], x: 18, y: 9, width: 9, height: 9},
         {selectors: ['#clutter-bar'], x: 304, y: 0, width: 8, height: 43},
         {selectors: ['#clutter-bar.disabled'], x: 312, y: 0, width: 8, height: 43},
-        {selectors: ['#button-o:active', '#button-0:selected'], x: 304, y: 47, width: 8, height: 8},
+        {selectors: ['#button-o:active', '#button-o:selected'], x: 304, y: 47, width: 8, height: 8},
         {selectors: ['#button-a:active', '#button-a.selected'], x: 312, y: 55, width: 8, height: 7},
         {selectors: ['#button-i:active', '#button-i.selected'], x: 320, y: 62, width: 8, height: 7},
         {selectors: ['#button-d:active', '#button-d.selected'], x: 328, y: 69, width: 8, height: 8},
@@ -168,4 +167,3 @@ define([], function() {
       ]
     }
   ];
-});

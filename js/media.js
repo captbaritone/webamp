@@ -1,16 +1,12 @@
+var WinampStore = require('./stores/WinampStore');
+var AppDispatcher = require('./dispatcher/AppDispatcher');
+var WinampConstants = require('./constants/WinampConstants');
+
 /* Emulate the native <audio> element with Web Audio API */
-define({
+var Media = {
   _context: new (window.AudioContext || window.webkitAudioContext)(),
   _source: null,
   _buffer: null,
-  _callbacks: {
-    waiting: function(){},
-    stopWaiting: function(){},
-    playing: function(){},
-    timeupdate: function(){},
-    visualizerupdate: function(){},
-    ended: function(){}
-  },
   _startTime: 0,
   _position: 0,
   _balance: 0,
@@ -81,13 +77,16 @@ define({
 
   // Load from bufferArray
   loadBuffer: function(buffer, loadedCallback) {
+    AppDispatcher.dispatch({
+      actionType: WinampConstants.MEDIA_IS_LOADING
+    });
     this.stop();
-    this._callbacks.waiting();
-
     var loadAudioBuffer = function(audioBuffer) {
       this._buffer = audioBuffer;
+      AppDispatcher.dispatch({
+        actionType: WinampConstants.MEDIA_LOADED
+      });
       loadedCallback();
-      this._callbacks.stopWaiting();
       if (this.autoPlay) {
         this.play(0);
       }
@@ -131,8 +130,10 @@ define({
     if (this._playing) {
       // So we don't get a race condition with _position getting overwritten
       this.pause();
+      console.log('pause');
     }
     if (this._buffer) {
+      console.log('buffer found');
       this._source = this._context.createBufferSource();
       this._source.buffer = this._buffer;
       this._source.connect(this._analyser);
@@ -140,9 +141,9 @@ define({
 
       this._position = typeof position !== 'undefined' ? position : this._position;
       this._startTime = this._context.currentTime - this._position;
+      console.log('start!', this._source);
       this._source.start(0, this._position);
       this._playing = true;
-      this._callbacks.playing();
     }
   },
   pause: function() {
@@ -214,11 +215,6 @@ define({
     // Implement this when we support playlists
   },
 
-  /* Listeners */
-  addEventListener: function(event, callback) {
-    this._callbacks[event] = callback;
-  },
-
   seekToTime: function(time) {
     // Make sure we are within range
     time = Math.min(time, this.duration());
@@ -231,11 +227,11 @@ define({
   _draw: function() {
     if (this._playing) {
       this._updatePosition();
-      this._callbacks.timeupdate();
 
       // _updatePosition might have stopped the playing
       if (this._playing) {
-        this._callbacks.visualizerupdate(this._analyser);
+        update();
+        // TODO(captbaritone): Update visualize
       }
     }
     window.requestAnimationFrame(this._draw.bind(this));
@@ -249,8 +245,33 @@ define({
         this.play(0);
       } else {
         this.stop();
-        this._callbacks.ended();
       }
     }
   }
+};
+
+function update() {
+  AppDispatcher.dispatch({
+    actionType: WinampConstants.SET_POSITION,
+    position: Media.percentComplete(),
+    secondsElapsed: Media.timeElapsed(),
+    secondsRemaining: Media.timeRemaining()
+  });
+}
+
+WinampStore.addChangeListener(function() {
+  var state = WinampStore.get();
+
+  if (state.playing && !Media._playing) {
+    Media.play();
+  }
+  if (!state.playing && Media._playing) {
+    Media.pause();
+  }
+  if (state.secondsElapsed === 0) {
+    Media.stop();
+  }
+  Media.setVolume(state.volume / 100);
+  Media.setBalance(state.balance);
 });
+module.exports = Media;

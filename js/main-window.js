@@ -6,43 +6,6 @@ define([
   Font
 ) {
   return {
-    init: function(winamp) {
-      this.winamp = winamp;
-      this.nodes = {
-        close: document.getElementById('close'),
-        shade: document.getElementById('shade'),
-        buttonD: document.getElementById('button-d'),
-        position: document.getElementById('position'),
-        volumeMessage: document.getElementById('volume-message'),
-        balanceMessage: document.getElementById('balance-message'),
-        positionMessage: document.getElementById('position-message'),
-        songTitle: document.getElementById('song-title'),
-        time: document.getElementById('time'),
-        shadeTime: document.getElementById('shade-time'),
-        shadeMinusSign: document.getElementById('shade-minus-sign'),
-        visualizer: document.getElementById('visualizer'),
-        previous: document.getElementById('previous'),
-        play: document.getElementById('play'),
-        pause: document.getElementById('pause'),
-        stop: document.getElementById('stop'),
-        next: document.getElementById('next'),
-        eject: document.getElementById('eject'),
-        repeat: document.getElementById('repeat'),
-        shuffle: document.getElementById('shuffle'),
-        volume: document.getElementById('volume'),
-        kbps: document.getElementById('kbps'),
-        khz: document.getElementById('khz'),
-        mono: document.getElementById('mono'),
-        stereo: document.getElementById('stereo'),
-        balance: document.getElementById('balance'),
-        workIndicator: document.getElementById('work-indicator'),
-        titleBar: document.getElementById('title-bar'),
-        window: document.getElementById('main-window')
-      };
-
-      this.handle = document.getElementById('title-bar');
-      this.body = this.nodes.window;
-
       this.textDisplay = new MultiDisplay(this.nodes.songTitle);
       this.textDisplay.addRegister('songTitle');
       this.textDisplay.addRegister('position');
@@ -54,41 +17,8 @@ define([
 
       this.textDisplay.startRegisterMarquee('songTitle');
 
-      this._registerListeners();
-      return this;
-    },
 
     _registerListeners: function() {
-      var self = this;
-
-      this.nodes.close.onclick = function() {
-        self.winamp.close();
-      };
-
-      this.nodes.shade.onclick = function() {
-        self.nodes.window.classList.toggle('shade');
-      };
-
-      this.nodes.buttonD.onmousedown = function() {
-        if (self.nodes.window.classList.contains('doubled')) {
-          self.textDisplay.setRegisterText('message', 'Disable doublesize mode');
-        } else {
-          self.textDisplay.setRegisterText('message', 'Enable doublesize mode');
-        }
-        self.textDisplay.showRegister('message');
-      };
-
-      this.nodes.buttonD.onmouseup = function() {
-        self.textDisplay.showRegister('songTitle');
-      };
-
-      this.nodes.buttonD.onclick = function() {
-        self.winamp.toggleDoubledMode();
-      };
-
-      this.nodes.play.onclick = function() {
-        self.winamp.play();
-      };
 
       this.nodes.songTitle.onmousedown = function() {
         self.textDisplay.pauseRegisterMarquee('songTitle');
