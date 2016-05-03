@@ -1,9 +1,9 @@
-require([
+define([
   'browser',
   'main-window-dom',
-  '../rjs/css!../css/winamp.css',
-  '../rjs/css!../css/main-window.css', // @import does not work with r.js
-  '../rjs/css!../css/context-menu.css', // @import does not work with r.js
+  '../css/winamp.css',
+  '../css/main-window.css',
+  '../css/context-menu.css',
   'winamp',
   'context',
   'hotkeys'

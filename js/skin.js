@@ -3,7 +3,7 @@ define([
   'skin-sprites',
   'font',
   'visualizer',
-  'vendor/jszip.2.4.0.min'
+  '../node_modules/jszip/dist/jszip' // Hack
 ], function(
   SKIN_SPRITES,
   Font,

@@ -2,14 +2,11 @@
   "name": "winamp2-js",
   "version": "1.0.0",
   "description": "Winamp 2 implemented in HTML5 and JavaScript",
-  "main": "index.js",
-  "directories": {
-    "test": "tests"
-  },
+  "main": "index.html",
   "scripts": {
-    "test": "qunit-cli test/*.js && npm run lint",
     "lint": "eslint js/*.js",
-    "build": "r.js -o rjs/bundle.js"
+    "build": "webpack --optimize-minimize",
+    "serve": "webpack-dev-server"
   },
   "repository": {
     "type": "git",
@@ -28,8 +25,12 @@
   },
   "homepage": "https://github.com/captbaritone/winamp2-js#readme",
   "devDependencies": {
-    "qunit-cli": "~0.1.4",
-    "eslint": "1.*"
+    "css-loader": "^0.23.1",
+    "eslint": "1.*",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.13.0"
+  },
+  "dependencies": {
+    "jszip": "^2.6.0"
   }
-
 }
