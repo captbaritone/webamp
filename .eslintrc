@@ -1,8 +1,15 @@
 {
+  "parserOptions": {
+      "ecmaVersion": 6
+  },
+  "ecmaFeatures": {
+      "modules": true
+  },
   "env": {
     "browser": true,
     "node": true,
-    "amd": true
+    "amd": true,
+    "es6": true
   },
 
   "rules": {
