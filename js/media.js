@@ -1,5 +1,5 @@
 /* Emulate the native <audio> element with Web Audio API */
-define({
+module.exports = {
   _context: new (window.AudioContext || window.webkitAudioContext)(),
   _source: null,
   _buffer: null,
@@ -253,4 +253,4 @@ define({
       }
     }
   }
-});
+};

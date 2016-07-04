@@ -1,4 +1,4 @@
-define({
+module.exports = {
   registerWindow: function(win) {
     var body = win.body;
     var handle = win.handle;
@@ -56,4 +56,4 @@ define({
       window.addEventListener('mouseup', handleUp);
     });
   }
-});
+};

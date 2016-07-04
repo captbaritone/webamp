@@ -1,5 +1,5 @@
 /* Use Canvas to recreate the simple Winamp visualizer */
-define({
+module.exports = {
   init: function(canvasNode, analyser) {
     this.canvas = canvasNode;
     this.analyser = analyser;
@@ -160,4 +160,4 @@ define({
       printBar(j * 8, height);
     }
   }
-});
+};
