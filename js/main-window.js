@@ -1,5 +1,4 @@
 import MultiDisplay from './multi-display';
-import Font from './font';
 
 module.exports = {
   init: function(winamp) {
