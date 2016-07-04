@@ -1,3 +1,5 @@
+var path = require('path');
+
 module.exports = {
   resolve: {
     modulesDirectories: ['js']
@@ -16,6 +18,7 @@ module.exports = {
   entry: './js/main.js',
   output: {
     filename: 'winamp.js',
-    path: './built'
+    publicPath: '/built/',
+    path: path.resolve(__dirname, 'built')
   }
 };
