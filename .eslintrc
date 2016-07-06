@@ -22,6 +22,7 @@
     "dot-notation": [2, { "allowKeywords": false }],
     "eol-last": 2,
     "eqeqeq": [2, "smart"],
+    "guard-for-in": 2,
     "indent": [2, 2, {"SwitchCase": 1}],
     "key-spacing": 1,
     "linebreak-style": 2,

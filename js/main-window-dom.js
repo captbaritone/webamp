@@ -7,7 +7,9 @@ function el(tagName, attributes, content) {
     content = [content];
   }
   for (var attr in attributes) {
-    tag.setAttribute(attr, attributes[attr]);
+    if (attributes.hasOwnProperty(attr)) {
+      tag.setAttribute(attr, attributes[attr]);
+    }
   }
   for (var i = 0; i < content.length; i++) {
     if (typeof content[i] === 'string') {

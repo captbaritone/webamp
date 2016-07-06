@@ -27,8 +27,10 @@ MultiDisplay.prototype.setRegisterText = function(register, text) {
 
 MultiDisplay.prototype.showRegister = function(showKey) {
   for (var key in this.registers) {
-    var display = (key === showKey) ? 'block' : 'none';
-    this.registers[key].node.style.display = display;
+    if (this.registers.hasOwnProperty(key)) {
+      var display = (key === showKey) ? 'block' : 'none';
+      this.registers[key].node.style.display = display;
+    }
   }
 };
 
