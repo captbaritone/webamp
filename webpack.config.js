@@ -11,12 +11,9 @@ module.exports = {
         loader: 'style-loader!css-loader'
       },
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
         exclude: /(node_modules|bower_components)/,
-        loader: 'babel', // 'babel-loader' is also a legal name to reference
-        query: {
-          presets: ['es2015']
-        }
+        loader: 'babel' // 'babel-loader' is also a legal name to reference
       }
     ],
     noParse: [

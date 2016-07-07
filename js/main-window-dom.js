@@ -24,31 +24,7 @@ function el(tagName, attributes, content) {
 module.exports = el('div', {id: 'main-window', class: 'loading stop'}, [
   el('div', {id: 'loading'}, 'Loading...'),
   el('div', {id: 'title-bar', class: 'selected'}, [
-    el('div', {id: 'option'}, [
-      el('ul', {id: 'context-menu'}, [
-        el('li', {}, [
-          el('a', {href: 'https://github.com/captbaritone/winamp2-js', target: '_blank'}, 'Winamp2-js...')
-        ]),
-        el('li', {class: 'hr'}, [ el('hr') ]),
-        el('li', {id: 'context-play-file'}, 'Play File...'),
-        el('li', {class: 'parent'}, [
-          el('ul', {}, [
-            el('li', {id: 'context-load-skin'}, 'Load Skin...'),
-            el('li', {class: 'hr'}, [ el('hr') ]),
-            el('li', {'class': 'skin-select', 'data-skin-url': 'https://cdn.rawgit.com/captbaritone/winamp-skins/master/v2/base-2.91.wsz'}, '<Base Skin>'),
-            el('li', {'class': 'skin-select', 'data-skin-url': 'https://cdn.rawgit.com/captbaritone/winamp-skins/master/v2/MacOSXAqua1-5.wsz'}, 'Mac OSX v1.5 (Aqua)'),
-            el('li', {'class': 'skin-select', 'data-skin-url': 'https://cdn.rawgit.com/captbaritone/winamp-skins/master/v2/TopazAmp1-2.wsz'}, 'TopazAmp'),
-            el('li', {'class': 'skin-select', 'data-skin-url': 'https://cdn.rawgit.com/captbaritone/winamp-skins/master/v2/Vizor1-01.wsz'}, 'Vizor'),
-            el('li', {'class': 'skin-select', 'data-skin-url': 'https://cdn.rawgit.com/captbaritone/winamp-skins/master/v2/XMMS-Turquoise.wsz'}, 'XMMS Turquoise '),
-            el('li', {'class': 'skin-select', 'data-skin-url': 'https://cdn.rawgit.com/captbaritone/winamp-skins/master/v2/ZaxonRemake1-0.wsz'}, 'Zaxon Remake')
-            // More here
-          ]),
-          'Skins'
-        ]),
-        el('li', {class: 'hr'}, [ el('hr') ]),
-        el('li', {id: 'context-exit'}, 'Exit')
-      ])
-    ]),
+    el('div', {id: 'context-menu-holder'}),
     el('div', {id: 'shade-time'}, [
       el('div', {id: 'shade-minus-sign'}),
       el('div', {id: 'shade-minute-first-digit', class: 'character'}),

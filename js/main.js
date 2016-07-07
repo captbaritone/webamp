@@ -1,12 +1,14 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+
 import Browser from './browser';
 import mainWindowDom from './main-window-dom';
 import Winamp from './winamp';
-import Context from './context';
+import ContextMenu from './ContextMenu.jsx';
 import Hotkeys from './hotkeys';
 
 import '../css/winamp.css';
 import '../css/main-window.css';
-import '../css/context-menu.css';
 
 if (new Browser(window).isCompatible) {
   var mainWindowElement = document.createElement('div');
@@ -24,7 +26,7 @@ if (new Browser(window).isCompatible) {
   });
 
   new Hotkeys(winamp);
-  new Context(winamp);
+  ReactDOM.render(<ContextMenu winamp={winamp} />, document.getElementById('context-menu-holder'));
 } else {
   document.getElementById('winamp').style.display = 'none';
   document.getElementById('browser-compatibility').style.display = 'block';
