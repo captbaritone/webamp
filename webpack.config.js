@@ -1,9 +1,14 @@
 var path = require('path');
+var webpack = require('webpack');
 
 module.exports = {
-  resolve: {
-    modulesDirectories: ['js']
-  },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
+    })
+  ],
   module: {
     loaders: [
       {
