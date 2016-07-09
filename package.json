@@ -43,6 +43,8 @@
     "babel-plugin-transform-react-jsx": "^6.8.0",
     "jszip": "^2.6.0",
     "react": "^15.2.0",
-    "react-dom": "^15.2.0"
+    "react-dom": "^15.2.0",
+    "react-redux": "^4.4.5",
+    "redux": "^3.5.2"
   }
 }

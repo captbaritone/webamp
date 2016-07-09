@@ -1,15 +1,11 @@
 import React from 'react';
-import MyFile from './my-file';
+import {connect} from 'react-redux';
 
 import '../css/context-menu.css';
 
 class ContextMenu extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selected: false
-    };
-
     this.openFileDialog = this.openFileDialog.bind(this);
     this.close = this.close.bind(this);
     this.toggleMenu = this.toggleMenu.bind(this);
@@ -27,34 +23,30 @@ class ContextMenu extends React.Component {
   }
 
   openFileDialog() {
-    this.props.winamp.openFileDialog();
+    this.props.dispatch({type: 'OPEN_FILE_DIALOG'});
   }
 
   close() {
-    // Close all of Winamp
-    this.props.winamp.close();
+    this.props.dispatch({type: 'CLOSE_WINAMP'});
   }
 
   closeMenu() {
-    this.setState({selected: false});
+    this.props.dispatch({type: 'CLOSE_CONTEXT_MENU'});
   }
 
   toggleMenu(event) {
-    this.setState({selected: !this.state.selected});
+    this.props.dispatch({type: 'TOGGLE_CONTEXT_MENU'});
     event.stopPropagation();
   }
 
   setSkin(e) {
     const filename = e.target.dataset.filename;
     const url = 'https://cdn.rawgit.com/captbaritone/winamp-skins/master/v2/' + filename;
-    const skinFile = new MyFile();
-    skinFile.setUrl(url);
-    this.props.winamp.setSkin(skinFile);
+    this.props.dispatch({type: 'SET_SKIN_FROM_URL', url: url});
   }
 
-
   render() {
-    var classes = this.state.selected ? 'selected' : '';
+    var classes = this.props.selected ? 'selected' : '';
     return <div id='option' className={classes} onClick={this.toggleMenu}>
       <ul id='context-menu'>
         <li><a href='https://github.com/captbaritone/winamp2-js' target='_blank'>Winamp2-js...</a></li>
@@ -80,4 +72,4 @@ class ContextMenu extends React.Component {
   }
 }
 
-module.exports = ContextMenu;
+module.exports = connect(state => state.contextMenu)(ContextMenu);

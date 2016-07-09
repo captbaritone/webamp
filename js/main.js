@@ -1,5 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import {render} from 'react-dom';
+import {Provider} from 'react-redux';
+import {createStore} from 'redux';
+
+import createReducer from './reducers';
 
 import Browser from './browser';
 import mainWindowDom from './main-window-dom';
@@ -25,8 +29,15 @@ if (new Browser(window).isCompatible) {
     skinUrl: 'https://cdn.rawgit.com/captbaritone/winamp-skins/master/v2/base-2.91.wsz'
   });
 
+  let store = createStore(createReducer(winamp));
+
   new Hotkeys(winamp);
-  ReactDOM.render(<ContextMenu winamp={winamp} />, document.getElementById('context-menu-holder'));
+  render(
+    <Provider store={store}>
+      <ContextMenu winamp={winamp} />
+    </Provider>,
+    document.getElementById('context-menu-holder')
+  );
 } else {
   document.getElementById('winamp').style.display = 'none';
   document.getElementById('browser-compatibility').style.display = 'block';
