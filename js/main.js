@@ -17,7 +17,7 @@ if (new Browser(window).isCompatible) {
   document.getElementById('winamp2-js').appendChild(mainWindowElement);
 
   var winamp = Winamp;
-  let store = createStore(createReducer(winamp));
+  let store = createStore(createReducer(winamp), window.devToolsExtension && window.devToolsExtension());
 
   // TODO: Remove this workaround
   winamp.renderTo = (componant, node) => {
