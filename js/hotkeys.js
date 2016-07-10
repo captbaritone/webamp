@@ -17,13 +17,15 @@ module.exports = function(winamp) {
         case 40: winamp.incrementVolumeBy(-1); break; // down arrow
         case 66: winamp.next(); break;                // B
         case 67: winamp.pause(); break;               // C
-        case 76: winamp.openFileDialog(); break;      // L
+        // L
+        case 76: winamp.dispatch({type: 'OPEN_FILE_DIALOG'}); break;
         case 82: winamp.toggleRepeat(); break;        // R
         case 83: winamp.toggleShuffle(); break;       // S
         case 86: winamp.stop(); break;                // V
         case 88: winamp.play(); break;                // X
         case 90: winamp.previous(); break;            // Z
-        case 96: winamp.openFileDialog(); break;      // numpad 0
+        // numpad 0
+        case 96: winamp.dispatch({type: 'OPEN_FILE_DIALOG'}); break;
         case 97: winamp.previous(10); break;          // numpad 1
         case 98: winamp.incrementVolumeBy(-1); break; // numpad 2
         case 99: winamp.next(10); break;              // numpad 3
