@@ -1,7 +1,7 @@
 module.exports = function(winamp) {
   var keylog = [];
   var trigger = [78, 85, 76, 27, 76, 27, 83, 79, 70, 84];
-  document.addEventListener('keyup', function(e){
+  document.addEventListener('keydown', function(e){
     if (e.ctrlKey) { // Is CTRL depressed?
       switch (e.keyCode) {
         case 68: winamp.toggleDoubledMode(); break;   // CTRL+D
