@@ -1,6 +1,8 @@
 import React from 'react';
 import Marquee from './Marquee.jsx';
 
+import '../css/main-window.css';
+
 module.exports = {
   init: function(winamp) {
     this.winamp = winamp;

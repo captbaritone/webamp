@@ -11,9 +11,6 @@ import Winamp from './winamp';
 import ContextMenu from './ContextMenu.jsx';
 import Hotkeys from './hotkeys';
 
-import '../css/winamp.css';
-import '../css/main-window.css';
-
 if (new Browser(window).isCompatible) {
   var mainWindowElement = document.createElement('div');
   mainWindowElement.appendChild(mainWindowDom);

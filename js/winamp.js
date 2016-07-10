@@ -5,6 +5,8 @@ import Skin from './skin';
 import Media from './media';
 import MyFile from './my-file';
 
+import '../css/winamp.css';
+
 module.exports = {
   init: function(options) {
     this.fileInput = document.createElement('input');
