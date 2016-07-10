@@ -133,7 +133,7 @@ module.exports = {
     };
 
     this.nodes.eject.onclick = function() {
-      self.winamp.openFileDialog();
+      self.winamp.dispatch({type: 'OPEN_FILE_DIALOG'});
     };
 
     this.nodes.repeat.onclick = function() {
