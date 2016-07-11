@@ -81,6 +81,15 @@ const createReducer = (winamp) => {
   return (state, action) => {
     state = reducer(state, action);
     switch (action.type) {
+      case 'PLAY':
+        winamp.play();
+        return state;
+      case 'PAUSE':
+        winamp.pause();
+        return state;
+      case 'STOP':
+        winamp.stop();
+        return state;
       case 'CLOSE_WINAMP':
         winamp.close();
         return state;

@@ -1,5 +1,6 @@
 import React from 'react';
 import Marquee from './Marquee.jsx';
+import Actions from './Actions.jsx';
 
 import '../css/main-window.css';
 
@@ -14,16 +15,10 @@ module.exports = {
       volumeMessage: document.getElementById('volume-message'),
       balanceMessage: document.getElementById('balance-message'),
       positionMessage: document.getElementById('position-message'),
-      songTitle: document.getElementById('song-title'),
       time: document.getElementById('time'),
       shadeTime: document.getElementById('shade-time'),
       shadeMinusSign: document.getElementById('shade-minus-sign'),
       visualizer: document.getElementById('visualizer'),
-      previous: document.getElementById('previous'),
-      play: document.getElementById('play'),
-      pause: document.getElementById('pause'),
-      stop: document.getElementById('stop'),
-      next: document.getElementById('next'),
       eject: document.getElementById('eject'),
       repeat: document.getElementById('repeat'),
       shuffle: document.getElementById('shuffle'),
@@ -41,7 +36,8 @@ module.exports = {
     this.handle = document.getElementById('title-bar');
     this.body = this.nodes.window;
 
-    this.winamp.renderTo(<Marquee />, this.nodes.songTitle);
+    this.winamp.renderTo(<Marquee />, document.getElementById('song-title'));
+    this.winamp.renderTo(<Actions />, document.getElementById('actions-holder'));
 
     this._registerListeners();
     return this;
@@ -73,10 +69,6 @@ module.exports = {
 
     this.nodes.buttonD.onclick = function() {
       self.winamp.toggleDoubledMode();
-    };
-
-    this.nodes.play.onclick = function() {
-      self.winamp.play();
     };
 
     this.nodes.songTitle.onmousedown = function() {
@@ -114,22 +106,6 @@ module.exports = {
       if (self.winamp.getState() !== 'stop'){
         self.winamp.seekToPercentComplete(this.value);
       }
-    };
-
-    this.nodes.previous.onclick = function() {
-      self.winamp.previous();
-    };
-
-    this.nodes.next.onclick = function() {
-      self.winamp.next();
-    };
-
-    this.nodes.pause.onclick = function() {
-      self.winamp.pause();
-    };
-
-    this.nodes.stop.onclick = function() {
-      self.winamp.stop();
     };
 
     this.nodes.eject.onclick = function() {

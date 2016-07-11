@@ -71,13 +71,7 @@ module.exports = el('div', {id: 'main-window', class: 'loading stop'}, [
     el('div', {id: 'playlist-button'})
   ]),
   el('input', {id: 'position', type: 'range', min: '0', max: '100', step: '1', value: '0'}),
-  el('div', {class: 'actions'}, [
-    el('div', {id: 'previous'}),
-    el('div', {id: 'play'}),
-    el('div', {id: 'pause'}),
-    el('div', {id: 'stop'}),
-    el('div', {id: 'next'})
-  ]),
+  el('div', {id: 'actions-holder'}),
   el('div', {id: 'eject'}),
   el('div', {class: 'shuffle-repeat'}, [
     el('div', {id: 'shuffle'}),
