@@ -4,9 +4,6 @@ import {connect} from 'react-redux';
 
 
 class Marquee extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   componentDidMount() {
     const step = () => {
       setTimeout(() => {
