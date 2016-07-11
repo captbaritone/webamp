@@ -71,16 +71,6 @@ module.exports = {
       self.winamp.toggleDoubledMode();
     };
 
-    this.nodes.songTitle.onmousedown = function() {
-      //self.textDisplay.pauseRegisterMarquee('songTitle');
-    };
-
-    this.nodes.songTitle.onmouseup = function() {
-      setTimeout(function() {
-        //self.textDisplay.startRegisterMarquee('songTitle');
-      }, 1000);
-    };
-
     this.nodes.position.onmousedown = function() {
       if (!self.nodes.window.classList.contains('stop')){
         self.winamp.dispatch({type: 'SHOW_MARQUEE_REGISTER', register: 'position'});

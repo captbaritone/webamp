@@ -4,6 +4,11 @@ import {connect} from 'react-redux';
 
 
 class Marquee extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleMouseDown = this.handleMouseDown.bind(this);
+  }
+
   componentDidMount() {
     const step = () => {
       setTimeout(() => {
@@ -19,6 +24,15 @@ class Marquee extends React.Component {
     });
     return selected ? selected[0] : selected;
   }
+  handleMouseDown() {
+    this.props.dispatch({type: 'PAUSE_MARQUEE'});
+    document.addEventListener('mouseup', () => {
+      // TODO: Remove this listener
+      setTimeout(() => {
+        this.props.dispatch({type: 'START_MARQUEE'});
+      }, 1000);
+    });
+  }
 
   render() {
     const register = this.selectedRegister();
@@ -29,7 +43,7 @@ class Marquee extends React.Component {
       // TODO: Use the spread operator
       chars = start.concat(end).slice(0, 30);
     }
-    return <div>
+    return <div onMouseDown={this.handleMouseDown}>
     {chars.map(character => {
       // TODO: Standarize how we get a characer class name
       const className = 'character character-' + character.toLowerCase().charCodeAt(0);

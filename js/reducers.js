@@ -49,6 +49,10 @@ const marquee = (state, action) => {
         return Object.assign({}, state, {selectedRegister: action.register});
       }
       return state;
+    case 'PAUSE_MARQUEE':
+      return Object.assign({}, state, {stepping: false});
+    case 'START_MARQUEE':
+      return Object.assign({}, state, {stepping: true});
     default:
       return state;
   }
