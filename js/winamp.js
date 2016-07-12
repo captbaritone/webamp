@@ -26,7 +26,6 @@ module.exports = {
       stopWaiting: new Event('stopWaiting'),
       startLoading: new Event('startLoading'),
       stopLoading: new Event('stopLoading'),
-      toggleTimeMode: new Event('toggleTimeMode'),
       changeState: new Event('changeState'),
       titleUpdated: new Event('titleUpdated'),
       channelCountUpdated: new Event('channelCountUpdated'),
@@ -122,10 +121,6 @@ module.exports = {
 
   seekToPercentComplete: function(percent) {
     this.media.seekToPercentComplete(percent);
-  },
-
-  toggleTimeMode: function() {
-    window.dispatchEvent(this.events.toggleTimeMode);
   },
 
   play: function() {

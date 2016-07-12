@@ -25,13 +25,7 @@ module.exports = el('div', {id: 'main-window', class: 'loading stop'}, [
   el('div', {id: 'loading'}, 'Loading...'),
   el('div', {id: 'title-bar', class: 'selected'}, [
     el('div', {id: 'context-menu-holder'}),
-    el('div', {id: 'shade-time'}, [
-      el('div', {id: 'shade-minus-sign'}),
-      el('div', {id: 'shade-minute-first-digit', class: 'character'}),
-      el('div', {id: 'shade-minute-second-digit', class: 'character'}),
-      el('div', {id: 'shade-second-first-digit', class: 'character'}),
-      el('div', {id: 'shade-second-second-digit', class: 'character'})
-    ]),
+    el('div', {id: 'shade-time-holder'}),
     el('div', {id: 'minimize'}),
     el('div', {id: 'shade'}),
     el('div', {id: 'close'})
@@ -46,13 +40,7 @@ module.exports = el('div', {id: 'main-window', class: 'loading stop'}, [
     ]),
     el('div', {id: 'play-pause'}),
     el('div', {id: 'work-indicator'}),
-    el('div', {id: 'time'}, [
-      el('div', {id: 'minus-sign'}),
-      el('div', {id: 'minute-first-digit'}),
-      el('div', {id: 'minute-second-digit'}),
-      el('div', {id: 'second-first-digit'}),
-      el('div', {id: 'second-second-digit'})
-    ]),
+    el('div', {id: 'time-holder'}),
     el('canvas', {id: 'visualizer', width: '152', height: '32'})
   ]),
   el('div', {class: 'media-info'}, [

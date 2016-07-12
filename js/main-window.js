@@ -1,6 +1,8 @@
 import React from 'react';
 import Marquee from './Marquee.jsx';
 import Actions from './Actions.jsx';
+import Time from './Time.jsx';
+import ShadeTime from './ShadeTime.jsx';
 
 import '../css/main-window.css';
 
@@ -15,9 +17,6 @@ module.exports = {
       volumeMessage: document.getElementById('volume-message'),
       balanceMessage: document.getElementById('balance-message'),
       positionMessage: document.getElementById('position-message'),
-      time: document.getElementById('time'),
-      shadeTime: document.getElementById('shade-time'),
-      shadeMinusSign: document.getElementById('shade-minus-sign'),
       visualizer: document.getElementById('visualizer'),
       eject: document.getElementById('eject'),
       repeat: document.getElementById('repeat'),
@@ -38,6 +37,8 @@ module.exports = {
 
     this.winamp.renderTo(<Marquee />, document.getElementById('song-title'));
     this.winamp.renderTo(<Actions />, document.getElementById('actions-holder'));
+    this.winamp.renderTo(<Time />, document.getElementById('time-holder'));
+    this.winamp.renderTo(<ShadeTime />, document.getElementById('shade-time-holder'));
 
     this._registerListeners();
     return this;
@@ -110,10 +111,6 @@ module.exports = {
       self.winamp.toggleShuffle();
     };
 
-    this.nodes.shadeTime.onclick = function() {
-      self.winamp.toggleTimeMode();
-    };
-
     this.nodes.volume.onmousedown = function() {
       self.winamp.dispatch({type: 'SHOW_MARQUEE_REGISTER', register: 'volume'});
     };
@@ -124,10 +121,6 @@ module.exports = {
 
     this.nodes.volume.oninput = function() {
       self.winamp.setVolume(this.value);
-    };
-
-    this.nodes.time.onclick = function() {
-      self.winamp.toggleTimeMode();
     };
 
     this.nodes.balance.onmousedown = function() {
@@ -163,9 +156,6 @@ module.exports = {
     });
     window.addEventListener('stopLoading', function() {
       self.unsetLoadingState();
-    });
-    window.addEventListener('toggleTimeMode', function() {
-      self.toggleTimeMode();
     });
     window.addEventListener('changeState', function() {
       self.changeState();
@@ -231,39 +221,6 @@ module.exports = {
   updateTime: function() {
     this.updateShadePositionClass();
     this.updatePosition();
-
-    var shadeMinusCharacter = ' ';
-    var digits = null;
-    if (this.nodes.time.classList.contains('countdown')) {
-      digits = this.winamp._timeObject(this.winamp.getTimeRemaining());
-      shadeMinusCharacter = '-';
-    } else {
-      digits = this.winamp._timeObject(this.winamp.getTimeElapsed());
-    }
-    this.winamp.skin.font.displayCharacterInNode(shadeMinusCharacter, this.nodes.shadeMinusSign);
-
-    var digitNodes = [
-      document.getElementById('minute-first-digit'),
-      document.getElementById('minute-second-digit'),
-      document.getElementById('second-first-digit'),
-      document.getElementById('second-second-digit')
-    ];
-    var shadeDigitNodes = [
-      document.getElementById('shade-minute-first-digit'),
-      document.getElementById('shade-minute-second-digit'),
-      document.getElementById('shade-second-first-digit'),
-      document.getElementById('shade-second-second-digit')
-    ];
-
-    // For each digit/node
-    for (var i = 0; i < 4; i++) {
-      var digit = digits[i];
-      var digitNode = digitNodes[i];
-      var shadeNode = shadeDigitNodes[i];
-      digitNode.innerHTML = '';
-      digitNode.appendChild(this.winamp.skin.font.digitNode(digit));
-      this.winamp.skin.font.displayCharacterInNode(digit, shadeNode);
-    }
   },
 
   setWorkingIndicator: function() {
@@ -280,11 +237,6 @@ module.exports = {
 
   unsetLoadingState: function() {
     this.nodes.window.classList.remove('loading');
-  },
-
-  toggleTimeMode: function() {
-    this.nodes.time.classList.toggle('countdown');
-    this.updateTime();
   },
 
   updateVolume: function() {

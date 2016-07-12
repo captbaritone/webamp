@@ -25,13 +25,4 @@ module.exports = function() {
     node.classList.add(className);
     return node;
   };
-
-  // Get a <div> containing a digit
-  this.digitNode = function(digit) {
-    var div = document.createElement('div');
-    div.classList.add('digit');
-    div.classList.add('digit-' + digit);
-    return div;
-  };
-
 };

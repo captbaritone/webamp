@@ -7,7 +7,8 @@ module.exports = function(winamp) {
         case 68: winamp.toggleDoubledMode(); break;   // CTRL+D
         // XXX FIXME
         case 76: winamp.openOptionMenu(); break;      // CTRL+L
-        case 84: winamp.toggleTimeMode(); break;      // CTRL+T
+        // CTRL+T
+        case 84: winamp.dispath({type: 'TOGGLE_TIME_MODE'}); break;
       }
     } else {
       switch (e.keyCode) {
