@@ -45,8 +45,8 @@ module.exports = el('div', {id: 'main-window', class: 'loading stop'}, [
   ]),
   el('div', {class: 'media-info'}, [
     el('div', {id: 'song-title', class: 'text'}),
-    el('div', {id: 'kbps'}),
-    el('div', {id: 'khz'}),
+    el('div', {id: 'kbps-holder'}),
+    el('div', {id: 'khz-holder'}),
     el('div', {class: 'mono-stereo'}, [
       el('div', {id: 'mono'}),
       el('div', {id: 'stereo'})

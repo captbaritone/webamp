@@ -1,11 +1,9 @@
 // Dynamically set the css background images for all the sprites
 import SKIN_SPRITES from './skin-sprites';
-import Font from './font';
 import Visualizer from './visualizer';
 import JSZip from '../node_modules/jszip/dist/jszip'; // Hack
 
 module.exports = {
-  font: new Font(),
   init: function(visualizerNode, analyser) {
     this._createNewStyleNode();
     this.visualizer = Visualizer.init(visualizerNode, analyser);

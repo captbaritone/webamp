@@ -3,6 +3,8 @@ import Marquee from './Marquee.jsx';
 import Actions from './Actions.jsx';
 import Time from './Time.jsx';
 import ShadeTime from './ShadeTime.jsx';
+import Kbps from './Kbps.jsx';
+import Khz from './Khz.jsx';
 
 import '../css/main-window.css';
 
@@ -22,8 +24,6 @@ module.exports = {
       repeat: document.getElementById('repeat'),
       shuffle: document.getElementById('shuffle'),
       volume: document.getElementById('volume'),
-      kbps: document.getElementById('kbps'),
-      khz: document.getElementById('khz'),
       mono: document.getElementById('mono'),
       stereo: document.getElementById('stereo'),
       balance: document.getElementById('balance'),
@@ -39,6 +39,8 @@ module.exports = {
     this.winamp.renderTo(<Actions />, document.getElementById('actions-holder'));
     this.winamp.renderTo(<Time />, document.getElementById('time-holder'));
     this.winamp.renderTo(<ShadeTime />, document.getElementById('shade-time-holder'));
+    this.winamp.renderTo(<Kbps />, document.getElementById('kbps-holder'));
+    this.winamp.renderTo(<Khz />, document.getElementById('khz-holder'));
 
     this._registerListeners();
     return this;

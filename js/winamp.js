@@ -256,8 +256,8 @@ module.exports = {
     function setMetaData() {
       var kbps = '128';
       var khz = Math.round(this.media.sampleRate() / 1000).toString();
-      this.skin.font.setNodeToString(document.getElementById('kbps'), kbps);
-      this.skin.font.setNodeToString(document.getElementById('khz'), khz);
+      this.dispatch({type: 'SET_MEDIA_KBPS', kbps: kbps});
+      this.dispatch({type: 'SET_MEDIA_KHZ', khz: khz});
       window.dispatchEvent(this.events.channelCountUpdated);
       window.dispatchEvent(this.events.titleUpdated);
       window.dispatchEvent(this.events.timeUpdated);

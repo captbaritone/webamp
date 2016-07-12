@@ -79,7 +79,9 @@ const media = (state, action) => {
     return {
       timeMode: 'ELAPSED',
       timeElapsed: 0,
-      length: null
+      length: null,
+      kbps: null,
+      khz: null
     };
   }
   switch (action.type) {
@@ -90,6 +92,10 @@ const media = (state, action) => {
       return Object.assign({}, state, {timeElapsed: action.elapsed});
     case 'SET_MEDIA_LENGTH':
       return Object.assign({}, state, {length: action.length});
+    case 'SET_MEDIA_KBPS':
+      return Object.assign({}, state, {kbps: action.kbps});
+    case 'SET_MEDIA_KHZ':
+      return Object.assign({}, state, {khz: action.khz});
     default:
       return state;
   }
