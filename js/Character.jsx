@@ -6,3 +6,4 @@ module.exports = (props) => {
   return <div {...props} className={className}>{props.children}</div>;
 };
 
+// TODO: Require that props.children be a string

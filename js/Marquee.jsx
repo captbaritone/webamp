@@ -2,7 +2,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import Character from './Character.jsx';
+import CharacterString from './CharacterString.jsx';
 
 
 class Marquee extends React.Component {
@@ -45,11 +45,10 @@ class Marquee extends React.Component {
       // TODO: Use the spread operator
       chars = start.concat(end).slice(0, 30);
     }
-    return <div onMouseDown={this.handleMouseDown}>
-      {chars.map(character => {
-        return <Character>{character}</Character>;
-      })};
-      </div>;
+    const text = chars.join('');
+    return <CharacterString onMouseDown={this.handleMouseDown}>
+      {text}
+    </CharacterString>;
   }
 }
 
