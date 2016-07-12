@@ -23,6 +23,12 @@ supported](http://caniuse.com/#feat=audio-api).
 
 Open `index.html` in your browser.
 
+## Development
+
+    npm run serve
+
+Open `http://localhost:8080/webpack-dev-server/` in your browser.
+
 ## Reference
 
 - [skinspecs.pdf](http://members.xoom.it/skinart/tutorial/skinspecs..pdf)
