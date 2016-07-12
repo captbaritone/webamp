@@ -16,6 +16,10 @@ module.exports = {
         loader: 'style-loader!css-loader'
       },
       {
+        test: /\.png$/i,
+        loader: 'url-loader?limit=100000'
+      },
+      {
         test: /\.jsx?$/,
         exclude: /(node_modules|bower_components)/,
         loader: 'babel' // 'babel-loader' is also a legal name to reference
