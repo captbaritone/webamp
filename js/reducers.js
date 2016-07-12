@@ -74,11 +74,33 @@ const contextMenu = (state, action) => {
   }
 };
 
+const media = (state, action) => {
+  if (!state) {
+    return {
+      timeMode: 'ELAPSED',
+      timeElapsed: 0,
+      length: null
+    };
+  }
+  switch (action.type) {
+    case 'TOGGLE_TIME_MODE':
+      const newMode = state.timeMode === 'REMAINING' ? 'ELAPSED' : 'REMAINING';
+      return Object.assign({}, state, {timeMode: newMode});
+    case 'UPDATE_TIME_ELAPSED':
+      return Object.assign({}, state, {timeElapsed: action.elapsed});
+    case 'SET_MEDIA_LENGTH':
+      return Object.assign({}, state, {length: action.length});
+    default:
+      return state;
+  }
+};
+
 const createReducer = (winamp) => {
 
   const reducer = combineReducers({
     marquee,
-    contextMenu
+    contextMenu,
+    media
   });
 
   // Add in the temporary actions that don't modify the state.

@@ -55,6 +55,8 @@ module.exports = {
     this.windowManager.registerWindow(this.mainWindow);
 
     this.media.addEventListener('timeupdate', function() {
+      self.dispatch({type: 'UPDATE_TIME_ELAPSED', elapsed: self.media.timeElapsed()});
+      // Legacy
       window.dispatchEvent(self.events.timeUpdated);
     });
 
@@ -264,6 +266,7 @@ module.exports = {
       window.dispatchEvent(this.events.channelCountUpdated);
       window.dispatchEvent(this.events.titleUpdated);
       window.dispatchEvent(this.events.timeUpdated);
+      this.dispatch({type: 'SET_MEDIA_LENGTH', length: this.media.duration()});
     }
 
     // Note, this will not happen right away
