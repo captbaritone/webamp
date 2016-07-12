@@ -25,18 +25,11 @@ module.exports = {
   // Gets passed as a callback, so don't have access to `this`
   _setSkinByBuffer: function(buffer) {
     var zip = new JSZip(buffer);
-    document.getElementById('time').classList.remove('ex');
-
     var promisedCssRules = this._skinSprites.map(function(spriteObj) {
-
       var file = this._findFileInZip(spriteObj.img, zip);
       if (file) {
-        // CSS has to change if this file is present
-        if (spriteObj.img === 'NUMS_EX') {
-          document.getElementById('time').classList.add('ex');
-        }
         var src = 'data:image/bmp;base64,' + btoa(file.asBinary());
-        return this._spriteCssRule(src, spriteObj);
+        return this._spriteCssRule(spriteObj.img, src, spriteObj);
       }
     }, this);
 
@@ -85,7 +78,7 @@ module.exports = {
 
   // Given an image URL and coordinates, returns a data url for a sub-section
   // of that image
-  _spriteCssRule: function(src, spriteObj) {
+  _spriteCssRule: function(img, src, spriteObj) {
     return new Promise(function(resolve) {
       var imageObj = new Image();
       imageObj.src = src;
@@ -105,6 +98,11 @@ module.exports = {
             cssRules += '#winamp2-js ' + selector + '{' + value + '}\n';
           });
         });
+        if (img === 'NUMS_EX') {
+          // This alternate number file requires that the minus sign be
+          // formatted differently.
+          cssRules += '#winamp2-js .status #time #minus-sign { top: 0px; left: -1px; width: 9px; height: 13px; }\n';
+        }
         resolve(cssRules);
       };
     });

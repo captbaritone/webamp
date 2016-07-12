@@ -161,6 +161,7 @@
 }
 
 #winamp2-js .status #time #minus-sign {
+    /* Note that this get's augmented by the skin CSS if NUM_EX.BMP is present */
     position: absolute;
     top: 6px;
     left: -1px;
@@ -168,13 +169,6 @@
     height: 1px;
 }
 
-/* Alternate format for minus sign, when skin supports it */
-#winamp2-js .status #time.ex #minus-sign {
-    top: 0px;
-    left: -1px;
-    width: 9px;
-    height: 13px;
-}
 
 #winamp2-js .status #time #minute-first-digit {
     position: absolute;
