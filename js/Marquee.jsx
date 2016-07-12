@@ -2,6 +2,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
+import Character from './Character.jsx';
+
 
 class Marquee extends React.Component {
   constructor(props) {
@@ -44,12 +46,10 @@ class Marquee extends React.Component {
       chars = start.concat(end).slice(0, 30);
     }
     return <div onMouseDown={this.handleMouseDown}>
-    {chars.map(character => {
-      // TODO: Standarize how we get a characer class name
-      const className = 'character character-' + character.toLowerCase().charCodeAt(0);
-      return <div className={className}>{character}</div>;
-    })}
-    </div>;
+      {chars.map(character => {
+        return <Character>{character}</Character>;
+      })};
+      </div>;
   }
 }
 
