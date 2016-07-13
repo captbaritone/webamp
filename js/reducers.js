@@ -36,14 +36,8 @@ const marquee = (state, action) => {
       ]
     };
   }
+  state = Object.assign({}, state, {registers: state.registers.map(r => register(r, action))});
   switch (action.type) {
-    case 'SET_MARQUEE_REGISTER':
-      return Object.assign({}, state, {registers: state.registers.map(r => register(r, action))});
-    case 'STEP_MARQUEE':
-      if (state.stepping) {
-        return Object.assign({}, state, {registers: state.registers.map(r => register(r, action))});
-      }
-      return state;
     case 'SHOW_MARQUEE_REGISTER':
       if (state.stepping) {
         return Object.assign({}, state, {selectedRegister: action.register});

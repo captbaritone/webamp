@@ -14,7 +14,9 @@ class Marquee extends React.Component {
   componentDidMount() {
     const step = () => {
       setTimeout(() => {
-        this.props.dispatch({type: 'STEP_MARQUEE'});
+        if (this.props.stepping) {
+          this.props.dispatch({type: 'STEP_MARQUEE'});
+        }
         step();
       }, 220);
     };
