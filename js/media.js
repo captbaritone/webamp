@@ -174,11 +174,11 @@ module.exports = {
 
   // From 0-1
   setVolume: function(volume) {
-    this._gainNode.gain.value = volume;
+    this._gainNode.gain.value = volume / 100;
   },
 
   getVolume: function() {
-    return this._gainNode.gain.value;
+    return this._gainNode.gain.value * 100;
   },
 
   // From -100 to 100

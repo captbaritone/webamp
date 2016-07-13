@@ -41,9 +41,7 @@ if (new Browser(window).isCompatible) {
     skinUrl: 'https://cdn.rawgit.com/captbaritone/winamp-skins/master/v2/base-2.91.wsz'
   });
 
-
-
-  new Hotkeys(winamp);
+  new Hotkeys(winamp, store);
   winamp.renderTo(<ContextMenu />, document.getElementById('context-menu-holder'));
 } else {
   document.getElementById('winamp').style.display = 'none';

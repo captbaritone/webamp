@@ -29,7 +29,6 @@ module.exports = {
       changeState: new Event('changeState'),
       titleUpdated: new Event('titleUpdated'),
       channelCountUpdated: new Event('channelCountUpdated'),
-      volumeChanged: new Event('volumeChanged'),
       balanceChanged: new Event('balanceChanged'),
       doubledModeToggled: new Event('doubledModeToggled'),
       repeatToggled: new Event('repeatToggled'),
@@ -37,7 +36,7 @@ module.exports = {
       close: new Event('close')
     };
 
-    this.setVolume(options.volume);
+    this.dispatch({type: 'SET_VOLUME', volume: options.volume});
     this.setBalance(options.balance);
     this.loadFromUrl(options.mediaFile.url, options.mediaFile.name);
     var skinFile = new MyFile();
@@ -116,7 +115,7 @@ module.exports = {
   },
 
   getVolume: function() {
-    return Math.round(this.media.getVolume() * 100);
+    return Math.round(this.media.getVolume());
   },
 
   seekToPercentComplete: function(percent) {
@@ -150,14 +149,11 @@ module.exports = {
     volume = Math.max(volume, 0);
     volume = Math.min(volume, 100);
 
-    var percent = volume / 100;
-
-    this.media.setVolume(percent);
-    window.dispatchEvent(this.events.volumeChanged);
+    this.media.setVolume(volume);
   },
 
   incrementVolumeBy: function(ammount) {
-    this.setVolume((this.media.getVolume() * 100) + ammount);
+    this.setVolume((this.media.getVolume()) + ammount);
   },
 
   toggleDoubledMode: function() {

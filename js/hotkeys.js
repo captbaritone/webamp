@@ -1,4 +1,4 @@
-module.exports = function(winamp) {
+module.exports = function(winamp, store) {
   var keylog = [];
   var trigger = [78, 85, 76, 27, 76, 27, 83, 79, 70, 84];
   document.addEventListener('keydown', function(e){
@@ -8,25 +8,33 @@ module.exports = function(winamp) {
         // XXX FIXME
         case 76: winamp.openOptionMenu(); break;      // CTRL+L
         // CTRL+T
-        case 84: winamp.dispath({type: 'TOGGLE_TIME_MODE'}); break;
+        case 84: store.dispath({type: 'TOGGLE_TIME_MODE'}); break;
       }
     } else {
       switch (e.keyCode) {
         case 37: winamp.seekForwardBy(-5); break;     // left arrow
-        case 38: winamp.incrementVolumeBy(1); break;  // up arrow
+        // up arrow
+        case 38:
+          const incrementedVolume = Math.min(100, store.getState().media.volume + 1);
+          store.dispatch({type: 'SET_VOLUME', volume: incrementedVolume});
+          break;
         case 39: winamp.seekForwardBy(5); break;      // right arrow
-        case 40: winamp.incrementVolumeBy(-1); break; // down arrow
+        // down arrow
+        case 40:
+          const decrementedVolume = Math.max(0, store.getState().media.volume - 1);
+          store.dispatch({type: 'SET_VOLUME', volume: decrementedVolume});
+          break;
         case 66: winamp.next(); break;                // B
         case 67: winamp.pause(); break;               // C
         // L
-        case 76: winamp.dispatch({type: 'OPEN_FILE_DIALOG'}); break;
+        case 76: store.dispatch({type: 'OPEN_FILE_DIALOG'}); break;
         case 82: winamp.toggleRepeat(); break;        // R
         case 83: winamp.toggleShuffle(); break;       // S
         case 86: winamp.stop(); break;                // V
         case 88: winamp.play(); break;                // X
         case 90: winamp.previous(); break;            // Z
         // numpad 0
-        case 96: winamp.dispatch({type: 'OPEN_FILE_DIALOG'}); break;
+        case 96: store.dispatch({type: 'OPEN_FILE_DIALOG'}); break;
         case 97: winamp.previous(10); break;          // numpad 1
         case 98: winamp.incrementVolumeBy(-1); break; // numpad 2
         case 99: winamp.next(10); break;              // numpad 3

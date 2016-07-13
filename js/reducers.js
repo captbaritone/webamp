@@ -15,6 +15,12 @@ const register = (state, action) => {
         return Object.assign({}, state, {step: 0, text: action.text});
       }
       return state;
+    case 'SET_VOLUME':
+      if (state.id === 'volume') {
+        const text = 'Volume: ' + action.volume + '%';
+        return Object.assign({}, state, {step: 0, text: text});
+      }
+      return state;
     case 'STEP_MARQUEE':
       return Object.assign({}, state, {step: (state.step + 1) % state.text.length});
     default:
@@ -75,7 +81,8 @@ const media = (state, action) => {
       timeElapsed: 0,
       length: null,
       kbps: null,
-      khz: null
+      khz: null,
+      volume: 50
     };
   }
   switch (action.type) {
@@ -90,6 +97,8 @@ const media = (state, action) => {
       return Object.assign({}, state, {kbps: action.kbps});
     case 'SET_MEDIA_KHZ':
       return Object.assign({}, state, {khz: action.khz});
+    case 'SET_VOLUME':
+      return Object.assign({}, state, {volume: action.volume});
     default:
       return state;
   }
@@ -115,6 +124,9 @@ const createReducer = (winamp) => {
         return state;
       case 'STOP':
         winamp.stop();
+        return state;
+      case 'SET_VOLUME':
+        winamp.setVolume(action.volume);
         return state;
       case 'CLOSE_WINAMP':
         winamp.close();

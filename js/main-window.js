@@ -5,6 +5,7 @@ import Time from './Time.jsx';
 import ShadeTime from './ShadeTime.jsx';
 import Kbps from './Kbps.jsx';
 import Khz from './Khz.jsx';
+import Volume from './Volume.jsx';
 
 import '../css/main-window.css';
 
@@ -20,7 +21,6 @@ module.exports = {
       eject: document.getElementById('eject'),
       repeat: document.getElementById('repeat'),
       shuffle: document.getElementById('shuffle'),
-      volume: document.getElementById('volume'),
       mono: document.getElementById('mono'),
       stereo: document.getElementById('stereo'),
       balance: document.getElementById('balance'),
@@ -38,6 +38,7 @@ module.exports = {
     this.winamp.renderTo(<ShadeTime />, document.getElementById('shade-time-holder'));
     this.winamp.renderTo(<Kbps />, document.getElementById('kbps-holder'));
     this.winamp.renderTo(<Khz />, document.getElementById('khz-holder'));
+    this.winamp.renderTo(<Volume />, document.getElementById('volume-holder'));
 
     this._registerListeners();
     return this;
@@ -110,18 +111,6 @@ module.exports = {
       self.winamp.toggleShuffle();
     };
 
-    this.nodes.volume.onmousedown = function() {
-      self.winamp.dispatch({type: 'SHOW_MARQUEE_REGISTER', register: 'volume'});
-    };
-
-    this.nodes.volume.onmouseup = function() {
-      self.winamp.dispatch({type: 'SHOW_MARQUEE_REGISTER', register: 'songTitle'});
-    };
-
-    this.nodes.volume.oninput = function() {
-      self.winamp.setVolume(this.value);
-    };
-
     this.nodes.balance.onmousedown = function() {
       self.winamp.dispatch({type: 'SHOW_MARQUEE_REGISTER', register: 'balance'});
     };
@@ -164,9 +153,6 @@ module.exports = {
     });
     window.addEventListener('channelCountUpdated', function() {
       self.updateChannelCount();
-    });
-    window.addEventListener('volumeChanged', function() {
-      self.updateVolume();
     });
     window.addEventListener('balanceChanged', function() {
       self.setBalance();
@@ -236,21 +222,6 @@ module.exports = {
 
   unsetLoadingState: function() {
     this.nodes.window.classList.remove('loading');
-  },
-
-  updateVolume: function() {
-    var volume = this.winamp.getVolume();
-    var percent = volume / 100;
-    var sprite = Math.round(percent * 28);
-    var offset = (sprite - 1) * 15;
-    this.nodes.volume.style.backgroundPosition = '0 -' + offset + 'px';
-
-    var message = 'Volume: ' + volume + '%';
-    this.winamp.dispatch({type: 'SET_MARQUEE_REGISTER', register: 'volume', text: message});
-
-    // This shouldn't trigger an infinite loop with volume.onchange(),
-    // since the value will be the same
-    this.nodes.volume.value = volume;
   },
 
   setBalance: function() {
