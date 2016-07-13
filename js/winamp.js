@@ -114,10 +114,6 @@ module.exports = {
     return this.media.channels();
   },
 
-  getVolume: function() {
-    return Math.round(this.media.getVolume());
-  },
-
   seekToPercentComplete: function(percent) {
     this.media.seekToPercentComplete(percent);
   },
@@ -150,10 +146,6 @@ module.exports = {
     volume = Math.min(volume, 100);
 
     this.media.setVolume(volume);
-  },
-
-  incrementVolumeBy: function(ammount) {
-    this.setVolume((this.media.getVolume()) + ammount);
   },
 
   toggleDoubledMode: function() {
