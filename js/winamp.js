@@ -29,7 +29,6 @@ module.exports = {
       changeState: new Event('changeState'),
       titleUpdated: new Event('titleUpdated'),
       channelCountUpdated: new Event('channelCountUpdated'),
-      balanceChanged: new Event('balanceChanged'),
       doubledModeToggled: new Event('doubledModeToggled'),
       repeatToggled: new Event('repeatToggled'),
       llamaToggled: new Event('llamaToggled'),
@@ -37,7 +36,7 @@ module.exports = {
     };
 
     this.dispatch({type: 'SET_VOLUME', volume: options.volume});
-    this.setBalance(options.balance);
+    this.dispatch({type: 'SET_BALANCE', balance: options.balance});
     this.loadFromUrl(options.mediaFile.url, options.mediaFile.name);
     var skinFile = new MyFile();
     skinFile.setUrl(options.skinUrl);
@@ -155,11 +154,6 @@ module.exports = {
   // From -100 to 100
   setBalance: function(balance) {
     this.media.setBalance(balance);
-    window.dispatchEvent(this.events.balanceChanged);
-  },
-
-  getBalance: function() {
-    return this.media.getBalance();
   },
 
   seekForwardBy: function(seconds) {

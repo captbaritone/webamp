@@ -21,6 +21,18 @@ const register = (state, action) => {
         return Object.assign({}, state, {step: 0, text: text});
       }
       return state;
+    case 'SET_BALANCE':
+      if (state.id === 'balance') {
+        let text = '';
+        if (action.balance === 0) {
+          text = 'Balance: Center';
+        } else {
+          const direction = action.balance > 0 ? 'Right' : 'Left';
+          text = 'Balance: ' + Math.abs(action.balance) + '% ' + direction;
+        }
+        return Object.assign({}, state, {step: 0, text: text});
+      }
+      return state;
     case 'STEP_MARQUEE':
       return Object.assign({}, state, {step: (state.step + 1) % state.text.length});
     default:
@@ -82,7 +94,8 @@ const media = (state, action) => {
       length: null,
       kbps: null,
       khz: null,
-      volume: 50
+      volume: 50,
+      balance: 0
     };
   }
   switch (action.type) {
@@ -99,6 +112,8 @@ const media = (state, action) => {
       return Object.assign({}, state, {khz: action.khz});
     case 'SET_VOLUME':
       return Object.assign({}, state, {volume: action.volume});
+    case 'SET_BALANCE':
+      return Object.assign({}, state, {balance: action.balance});
     default:
       return state;
   }
@@ -127,6 +142,9 @@ const createReducer = (winamp) => {
         return state;
       case 'SET_VOLUME':
         winamp.setVolume(action.volume);
+        return state;
+      case 'SET_BALANCE':
+        winamp.setBalance(action.balance);
         return state;
       case 'CLOSE_WINAMP':
         winamp.close();

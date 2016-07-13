@@ -6,6 +6,7 @@ import ShadeTime from './ShadeTime.jsx';
 import Kbps from './Kbps.jsx';
 import Khz from './Khz.jsx';
 import Volume from './Volume.jsx';
+import Balance from './Balance.jsx';
 
 import '../css/main-window.css';
 
@@ -23,7 +24,6 @@ module.exports = {
       shuffle: document.getElementById('shuffle'),
       mono: document.getElementById('mono'),
       stereo: document.getElementById('stereo'),
-      balance: document.getElementById('balance'),
       workIndicator: document.getElementById('work-indicator'),
       titleBar: document.getElementById('title-bar'),
       window: document.getElementById('main-window')
@@ -39,6 +39,7 @@ module.exports = {
     this.winamp.renderTo(<Kbps />, document.getElementById('kbps-holder'));
     this.winamp.renderTo(<Khz />, document.getElementById('khz-holder'));
     this.winamp.renderTo(<Volume />, document.getElementById('volume-holder'));
+    this.winamp.renderTo(<Balance />, document.getElementById('balance-holder'));
 
     this._registerListeners();
     return this;
@@ -111,21 +112,6 @@ module.exports = {
       self.winamp.toggleShuffle();
     };
 
-    this.nodes.balance.onmousedown = function() {
-      self.winamp.dispatch({type: 'SHOW_MARQUEE_REGISTER', register: 'balance'});
-    };
-
-    this.nodes.balance.onmouseup = function() {
-      self.winamp.dispatch({type: 'SHOW_MARQUEE_REGISTER', register: 'songTitle'});
-    };
-
-    this.nodes.balance.oninput = function() {
-      if (Math.abs(this.value) < 25) {
-        this.value = 0;
-      }
-      self.winamp.setBalance(this.value);
-    };
-
     this.nodes.visualizer.onclick = function() {
       self.winamp.toggleVisualizer();
     };
@@ -153,9 +139,6 @@ module.exports = {
     });
     window.addEventListener('channelCountUpdated', function() {
       self.updateChannelCount();
-    });
-    window.addEventListener('balanceChanged', function() {
-      self.setBalance();
     });
     window.addEventListener('doubledModeToggled', function() {
       self.toggleDoubledMode();
@@ -222,23 +205,6 @@ module.exports = {
 
   unsetLoadingState: function() {
     this.nodes.window.classList.remove('loading');
-  },
-
-  setBalance: function() {
-    var balance = this.winamp.getBalance();
-    var string = '';
-    if (balance === 0) {
-      string = 'Balance: Center';
-    } else if (balance > 0) {
-      string = 'Balance: ' + balance + '% Right';
-    } else {
-      string = 'Balance: ' + Math.abs(balance) + '% Left';
-    }
-    this.winamp.dispatch({type: 'SET_MARQUEE_REGISTER', register: 'balance', text: string});
-    balance = Math.abs(balance) / 100;
-    var sprite = Math.round(balance * 28);
-    var offset = (sprite - 1) * 15;
-    this.nodes.balance.style.backgroundPosition = '0px -' + offset + 'px';
   },
 
   changeState: function() {

@@ -53,7 +53,7 @@ module.exports = el('div', {id: 'main-window', class: 'loading stop'}, [
     ])
   ]),
   el('div', {id: 'volume-holder'}),
-  el('input', {id: 'balance', type: 'range', min: '-100', max: '100', step: '2', value: '0'}),
+  el('div', {id: 'balance-holder'}),
   el('div', {class: 'windows'}, [
     el('div', {id: 'equalizer-button'}),
     el('div', {id: 'playlist-button'})
