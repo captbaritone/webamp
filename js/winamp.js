@@ -5,6 +5,8 @@ import Skin from './skin';
 import Media from './media';
 import MyFile from './my-file';
 
+import '../css/winamp.css';
+
 module.exports = {
   init: function(options) {
     this.fileInput = document.createElement('input');
@@ -24,7 +26,6 @@ module.exports = {
       stopWaiting: new Event('stopWaiting'),
       startLoading: new Event('startLoading'),
       stopLoading: new Event('stopLoading'),
-      toggleTimeMode: new Event('toggleTimeMode'),
       changeState: new Event('changeState'),
       titleUpdated: new Event('titleUpdated'),
       channelCountUpdated: new Event('channelCountUpdated'),
@@ -53,6 +54,8 @@ module.exports = {
     this.windowManager.registerWindow(this.mainWindow);
 
     this.media.addEventListener('timeupdate', function() {
+      self.dispatch({type: 'UPDATE_TIME_ELAPSED', elapsed: self.media.timeElapsed()});
+      // Legacy
       window.dispatchEvent(self.events.timeUpdated);
     });
 
@@ -118,10 +121,6 @@ module.exports = {
 
   seekToPercentComplete: function(percent) {
     this.media.seekToPercentComplete(percent);
-  },
-
-  toggleTimeMode: function() {
-    window.dispatchEvent(this.events.toggleTimeMode);
   },
 
   play: function() {
@@ -257,11 +256,12 @@ module.exports = {
     function setMetaData() {
       var kbps = '128';
       var khz = Math.round(this.media.sampleRate() / 1000).toString();
-      this.skin.font.setNodeToString(document.getElementById('kbps'), kbps);
-      this.skin.font.setNodeToString(document.getElementById('khz'), khz);
+      this.dispatch({type: 'SET_MEDIA_KBPS', kbps: kbps});
+      this.dispatch({type: 'SET_MEDIA_KHZ', khz: khz});
       window.dispatchEvent(this.events.channelCountUpdated);
       window.dispatchEvent(this.events.titleUpdated);
       window.dispatchEvent(this.events.timeUpdated);
+      this.dispatch({type: 'SET_MEDIA_LENGTH', length: this.media.duration()});
     }
 
     // Note, this will not happen right away

@@ -23,6 +23,12 @@ supported](http://caniuse.com/#feat=audio-api).
 
 Open `index.html` in your browser.
 
+## Development
+
+    npm run serve
+
+Open `http://localhost:8080/webpack-dev-server/` in your browser.
+
 ## Reference
 
 - [skinspecs.pdf](http://members.xoom.it/skinart/tutorial/skinspecs..pdf)
@@ -56,7 +62,7 @@ for Winamp which inspired so many of us.
 
 ## License
 
-While the Winamp name, interface, sample audio file and surely property of
+While the Winamp name, interface, and, sample audio file are surely property of
 Nullsoft, the code within this project is released under the [MIT
 License](LICENSE.txt). That being said, if you do anything interesting with
 this code, please let me know. I'd love to see it.

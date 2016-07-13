@@ -3,7 +3,7 @@
     position: absolute;
     height: 116px;
     width: 275px;
-    cursor:url('https://jordaneldredge.com/projects/winamp2-js/cursors/MAINMENU.PNG'), auto;
+    cursor:url('../cursors/MAINMENU.PNG'), auto;
     /* Ask the browser to scale showing large pixels if possible */
     image-rendering: -moz-crisp-edges;          /* Firefox */
     image-rendering:   -o-crisp-edges;          /* Opera */
@@ -59,7 +59,7 @@
     left: 0;
     height: 14px;
     width: 275px;
-    cursor:url('https://jordaneldredge.com/projects/winamp2-js/cursors/TITLEBAR.PNG'), auto;
+    cursor:url('../cursors/TITLEBAR.PNG'), auto;
 }
 
 #winamp2-js #option,
@@ -70,7 +70,7 @@
     height: 9px;
     width: 9px;
     top: 3px;
-    cursor:url('https://jordaneldredge.com/projects/winamp2-js/cursors/MAINMENU.PNG'), auto;
+    cursor:url('../cursors/MAINMENU.PNG'), auto;
 }
 
 #winamp2-js #title-bar #option {
@@ -94,7 +94,7 @@
 }
 #winamp2-js #title-bar #close {
     left: 264px;
-    cursor:url('https://jordaneldredge.com/projects/winamp2-js/cursors/CLOSE.PNG'), auto;
+    cursor:url('../cursors/CLOSE.PNG'), auto;
 }
 #winamp2-js #clutter-bar {
     position: absolute;
@@ -161,6 +161,7 @@
 }
 
 #winamp2-js .status #time #minus-sign {
+    /* Note that this get's augmented by the skin CSS if NUM_EX.BMP is present */
     position: absolute;
     top: 6px;
     left: -1px;
@@ -168,13 +169,6 @@
     height: 1px;
 }
 
-/* Alternate format for minus sign, when skin supports it */
-#winamp2-js .status #time.ex #minus-sign {
-    top: 0px;
-    left: -1px;
-    width: 9px;
-    height: 13px;
-}
 
 #winamp2-js .status #time #minute-first-digit {
     position: absolute;
@@ -279,19 +273,19 @@
     height: 13px;
     width: 68px;
     background-position: 0 0;
-    cursor:url('https://jordaneldredge.com/projects/winamp2-js/cursors/POSBAR.PNG'), auto;
+    cursor:url('../cursors/POSBAR.PNG'), auto;
 }
 #winamp2-js #volume::-webkit-slider-thumb {
     top: 1px;
     height: 11px;
     width: 14px;
-    cursor:url('https://jordaneldredge.com/projects/winamp2-js/cursors/POSBAR.PNG'), auto;
+    cursor:url('../cursors/POSBAR.PNG'), auto;
 }
 #winamp2-js #volume::-moz-range-thumb {
     top: 1px;
     height: 11px;
     width: 14px;
-    cursor:url('https://jordaneldredge.com/projects/winamp2-js/cursors/POSBAR.PNG'), auto;
+    cursor:url('../cursors/POSBAR.PNG'), auto;
 }
 
 #winamp2-js #balance {
@@ -301,20 +295,20 @@
     height: 13px;
     width: 38px;
     background-position: 0 0;
-    cursor:url('https://jordaneldredge.com/projects/winamp2-js/cursors/POSBAR.PNG'), auto;
+    cursor:url('../cursors/POSBAR.PNG'), auto;
 }
 
 #winamp2-js #balance::-webkit-slider-thumb {
     top: 1px;
     height: 11px;
     width: 14px;
-    cursor:url('https://jordaneldredge.com/projects/winamp2-js/cursors/POSBAR.PNG'), auto;
+    cursor:url('../cursors/POSBAR.PNG'), auto;
 }
 #winamp2-js #balance::-moz-range-thumb {
     top: 1px;
     height: 11px;
     width: 14px;
-    cursor:url('https://jordaneldredge.com/projects/winamp2-js/cursors/POSBAR.PNG'), auto;
+    cursor:url('../cursors/POSBAR.PNG'), auto;
 }
 
 #winamp2-js .windows {
@@ -345,13 +339,13 @@
     top: 72px;
     width: 248px;
     height: 10px;
-    cursor:url('https://jordaneldredge.com/projects/winamp2-js/cursors/POSBAR.PNG'), auto;
+    cursor:url('../cursors/POSBAR.PNG'), auto;
 }
 
 #winamp2-js #position::-webkit-slider-thumb {
     height: 10px;
     width: 29px;
-    cursor:url('https://jordaneldredge.com/projects/winamp2-js/cursors/POSBAR.PNG'), auto;
+    cursor:url('../cursors/POSBAR.PNG'), auto;
     /*
      * Fix the strange bug in Safair/mobile-chrome
      * http://stackoverflow.com/questions/26727769/rendering-glitch-when-manipulating-range-input-value-via-javascript-in-webkit
@@ -363,7 +357,7 @@
 #winamp2-js #position::-moz-range-thumb {
     height: 10px;
     width: 29px;
-    cursor:url('https://jordaneldredge.com/projects/winamp2-js/cursors/POSBAR.PNG'), auto;
+    cursor:url('../cursors/POSBAR.PNG'), auto;
 }
 
 /* For some reason, we can't use display: none here */
@@ -450,7 +444,7 @@
 }
 
 #winamp2-js #shade-time {
-    cursor:url('https://jordaneldredge.com/projects/winamp2-js/cursors/MAINMENU.PNG'), auto;
+    cursor:url('../cursors/MAINMENU.PNG'), auto;
 }
 
 
@@ -463,7 +457,7 @@
     display: none;
 }
 #winamp2-js .shade #title-bar {
-    cursor:url('https://jordaneldredge.com/projects/winamp2-js/cursors/MAINMENU.PNG'), auto;
+    cursor:url('../cursors/MAINMENU.PNG'), auto;
 }
 
 #winamp2-js .shade .actions div {

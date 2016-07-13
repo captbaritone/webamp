@@ -1,13 +1,14 @@
 module.exports = function(winamp) {
   var keylog = [];
   var trigger = [78, 85, 76, 27, 76, 27, 83, 79, 70, 84];
-  document.addEventListener('keyup', function(e){
+  document.addEventListener('keydown', function(e){
     if (e.ctrlKey) { // Is CTRL depressed?
       switch (e.keyCode) {
         case 68: winamp.toggleDoubledMode(); break;   // CTRL+D
         // XXX FIXME
         case 76: winamp.openOptionMenu(); break;      // CTRL+L
-        case 84: winamp.toggleTimeMode(); break;      // CTRL+T
+        // CTRL+T
+        case 84: winamp.dispath({type: 'TOGGLE_TIME_MODE'}); break;
       }
     } else {
       switch (e.keyCode) {
@@ -17,13 +18,15 @@ module.exports = function(winamp) {
         case 40: winamp.incrementVolumeBy(-1); break; // down arrow
         case 66: winamp.next(); break;                // B
         case 67: winamp.pause(); break;               // C
-        case 76: winamp.openFileDialog(); break;      // L
+        // L
+        case 76: winamp.dispatch({type: 'OPEN_FILE_DIALOG'}); break;
         case 82: winamp.toggleRepeat(); break;        // R
         case 83: winamp.toggleShuffle(); break;       // S
         case 86: winamp.stop(); break;                // V
         case 88: winamp.play(); break;                // X
         case 90: winamp.previous(); break;            // Z
-        case 96: winamp.openFileDialog(); break;      // numpad 0
+        // numpad 0
+        case 96: winamp.dispatch({type: 'OPEN_FILE_DIALOG'}); break;
         case 97: winamp.previous(10); break;          // numpad 1
         case 98: winamp.incrementVolumeBy(-1); break; // numpad 2
         case 99: winamp.next(10); break;              // numpad 3

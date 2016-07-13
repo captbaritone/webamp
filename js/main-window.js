@@ -1,4 +1,12 @@
-import MultiDisplay from './multi-display';
+import React from 'react';
+import Marquee from './Marquee.jsx';
+import Actions from './Actions.jsx';
+import Time from './Time.jsx';
+import ShadeTime from './ShadeTime.jsx';
+import Kbps from './Kbps.jsx';
+import Khz from './Khz.jsx';
+
+import '../css/main-window.css';
 
 module.exports = {
   init: function(winamp) {
@@ -8,25 +16,11 @@ module.exports = {
       shade: document.getElementById('shade'),
       buttonD: document.getElementById('button-d'),
       position: document.getElementById('position'),
-      volumeMessage: document.getElementById('volume-message'),
-      balanceMessage: document.getElementById('balance-message'),
-      positionMessage: document.getElementById('position-message'),
-      songTitle: document.getElementById('song-title'),
-      time: document.getElementById('time'),
-      shadeTime: document.getElementById('shade-time'),
-      shadeMinusSign: document.getElementById('shade-minus-sign'),
       visualizer: document.getElementById('visualizer'),
-      previous: document.getElementById('previous'),
-      play: document.getElementById('play'),
-      pause: document.getElementById('pause'),
-      stop: document.getElementById('stop'),
-      next: document.getElementById('next'),
       eject: document.getElementById('eject'),
       repeat: document.getElementById('repeat'),
       shuffle: document.getElementById('shuffle'),
       volume: document.getElementById('volume'),
-      kbps: document.getElementById('kbps'),
-      khz: document.getElementById('khz'),
       mono: document.getElementById('mono'),
       stereo: document.getElementById('stereo'),
       balance: document.getElementById('balance'),
@@ -38,16 +32,12 @@ module.exports = {
     this.handle = document.getElementById('title-bar');
     this.body = this.nodes.window;
 
-    this.textDisplay = new MultiDisplay(this.nodes.songTitle);
-    this.textDisplay.addRegister('songTitle');
-    this.textDisplay.addRegister('position');
-    this.textDisplay.addRegister('volume');
-    this.textDisplay.addRegister('balance');
-    this.textDisplay.addRegister('message'); // General purpose
-
-    this.textDisplay.showRegister('songTitle');
-
-    this.textDisplay.startRegisterMarquee('songTitle');
+    this.winamp.renderTo(<Marquee />, document.getElementById('song-title'));
+    this.winamp.renderTo(<Actions />, document.getElementById('actions-holder'));
+    this.winamp.renderTo(<Time />, document.getElementById('time-holder'));
+    this.winamp.renderTo(<ShadeTime />, document.getElementById('shade-time-holder'));
+    this.winamp.renderTo(<Kbps />, document.getElementById('kbps-holder'));
+    this.winamp.renderTo(<Khz />, document.getElementById('khz-holder'));
 
     this._registerListeners();
     return this;
@@ -66,44 +56,30 @@ module.exports = {
 
     this.nodes.buttonD.onmousedown = function() {
       if (self.nodes.window.classList.contains('doubled')) {
-        self.textDisplay.setRegisterText('message', 'Disable doublesize mode');
+        self.winamp.dispatch({type: 'SET_MARQUEE_REGISTER', register: 'message', text: 'Disable doublesize mode'});
       } else {
-        self.textDisplay.setRegisterText('message', 'Enable doublesize mode');
+        self.winamp.dispatch({type: 'SET_MARQUEE_REGISTER', register: 'message', text: 'Enable doublesize mode'});
       }
-      self.textDisplay.showRegister('message');
+      self.winamp.dispatch({type: 'SHOW_MARQUEE_REGISTER', register: 'message'});
     };
 
     this.nodes.buttonD.onmouseup = function() {
-      self.textDisplay.showRegister('songTitle');
+      self.winamp.dispatch({type: 'SHOW_MARQUEE_REGISTER', register: 'songTitle'});
     };
 
     this.nodes.buttonD.onclick = function() {
       self.winamp.toggleDoubledMode();
     };
 
-    this.nodes.play.onclick = function() {
-      self.winamp.play();
-    };
-
-    this.nodes.songTitle.onmousedown = function() {
-      self.textDisplay.pauseRegisterMarquee('songTitle');
-    };
-
-    this.nodes.songTitle.onmouseup = function() {
-      setTimeout(function() {
-        self.textDisplay.startRegisterMarquee('songTitle');
-      }, 1000);
-    };
-
     this.nodes.position.onmousedown = function() {
       if (!self.nodes.window.classList.contains('stop')){
-        self.textDisplay.showRegister('position');
+        self.winamp.dispatch({type: 'SHOW_MARQUEE_REGISTER', register: 'position'});
         self.nodes.window.classList.add('setting-position');
       }
     };
 
     this.nodes.position.onmouseup = function() {
-      self.textDisplay.showRegister('songTitle');
+      self.winamp.dispatch({type: 'SHOW_MARQUEE_REGISTER', register: 'songTitle'});
       self.nodes.window.classList.remove('setting-position');
     };
 
@@ -113,7 +89,7 @@ module.exports = {
       var newElapsed = self._timeString(self.winamp.getDuration() * newFractionComplete);
       var duration = self._timeString(self.winamp.getDuration());
       var message = 'Seek to: ' + newElapsed + '/' + duration + ' (' + newPercentComplete + '%)';
-      self.textDisplay.setRegisterText('position', message);
+      self.winamp.dispatch({type: 'SET_MARQUEE_REGISTER', register: 'message', text: message});
     };
 
     this.nodes.position.onchange = function() {
@@ -122,24 +98,8 @@ module.exports = {
       }
     };
 
-    this.nodes.previous.onclick = function() {
-      self.winamp.previous();
-    };
-
-    this.nodes.next.onclick = function() {
-      self.winamp.next();
-    };
-
-    this.nodes.pause.onclick = function() {
-      self.winamp.pause();
-    };
-
-    this.nodes.stop.onclick = function() {
-      self.winamp.stop();
-    };
-
     this.nodes.eject.onclick = function() {
-      self.winamp.openFileDialog();
+      self.winamp.dispatch({type: 'OPEN_FILE_DIALOG'});
     };
 
     this.nodes.repeat.onclick = function() {
@@ -150,32 +110,24 @@ module.exports = {
       self.winamp.toggleShuffle();
     };
 
-    this.nodes.shadeTime.onclick = function() {
-      self.winamp.toggleTimeMode();
-    };
-
     this.nodes.volume.onmousedown = function() {
-      self.textDisplay.showRegister('volume');
+      self.winamp.dispatch({type: 'SHOW_MARQUEE_REGISTER', register: 'volume'});
     };
 
     this.nodes.volume.onmouseup = function() {
-      self.textDisplay.showRegister('songTitle');
+      self.winamp.dispatch({type: 'SHOW_MARQUEE_REGISTER', register: 'songTitle'});
     };
 
     this.nodes.volume.oninput = function() {
       self.winamp.setVolume(this.value);
     };
 
-    this.nodes.time.onclick = function() {
-      self.winamp.toggleTimeMode();
-    };
-
     this.nodes.balance.onmousedown = function() {
-      self.textDisplay.showRegister('balance');
+      self.winamp.dispatch({type: 'SHOW_MARQUEE_REGISTER', register: 'balance'});
     };
 
     this.nodes.balance.onmouseup = function() {
-      self.textDisplay.showRegister('songTitle');
+      self.winamp.dispatch({type: 'SHOW_MARQUEE_REGISTER', register: 'songTitle'});
     };
 
     this.nodes.balance.oninput = function() {
@@ -203,9 +155,6 @@ module.exports = {
     });
     window.addEventListener('stopLoading', function() {
       self.unsetLoadingState();
-    });
-    window.addEventListener('toggleTimeMode', function() {
-      self.toggleTimeMode();
     });
     window.addEventListener('changeState', function() {
       self.changeState();
@@ -271,39 +220,6 @@ module.exports = {
   updateTime: function() {
     this.updateShadePositionClass();
     this.updatePosition();
-
-    var shadeMinusCharacter = ' ';
-    var digits = null;
-    if (this.nodes.time.classList.contains('countdown')) {
-      digits = this.winamp._timeObject(this.winamp.getTimeRemaining());
-      shadeMinusCharacter = '-';
-    } else {
-      digits = this.winamp._timeObject(this.winamp.getTimeElapsed());
-    }
-    this.winamp.skin.font.displayCharacterInNode(shadeMinusCharacter, this.nodes.shadeMinusSign);
-
-    var digitNodes = [
-      document.getElementById('minute-first-digit'),
-      document.getElementById('minute-second-digit'),
-      document.getElementById('second-first-digit'),
-      document.getElementById('second-second-digit')
-    ];
-    var shadeDigitNodes = [
-      document.getElementById('shade-minute-first-digit'),
-      document.getElementById('shade-minute-second-digit'),
-      document.getElementById('shade-second-first-digit'),
-      document.getElementById('shade-second-second-digit')
-    ];
-
-    // For each digit/node
-    for (var i = 0; i < 4; i++) {
-      var digit = digits[i];
-      var digitNode = digitNodes[i];
-      var shadeNode = shadeDigitNodes[i];
-      digitNode.innerHTML = '';
-      digitNode.appendChild(this.winamp.skin.font.digitNode(digit));
-      this.winamp.skin.font.displayCharacterInNode(digit, shadeNode);
-    }
   },
 
   setWorkingIndicator: function() {
@@ -322,11 +238,6 @@ module.exports = {
     this.nodes.window.classList.remove('loading');
   },
 
-  toggleTimeMode: function() {
-    this.nodes.time.classList.toggle('countdown');
-    this.updateTime();
-  },
-
   updateVolume: function() {
     var volume = this.winamp.getVolume();
     var percent = volume / 100;
@@ -335,7 +246,7 @@ module.exports = {
     this.nodes.volume.style.backgroundPosition = '0 -' + offset + 'px';
 
     var message = 'Volume: ' + volume + '%';
-    this.textDisplay.setRegisterText('volume', message);
+    this.winamp.dispatch({type: 'SET_MARQUEE_REGISTER', register: 'volume', text: message});
 
     // This shouldn't trigger an infinite loop with volume.onchange(),
     // since the value will be the same
@@ -352,7 +263,7 @@ module.exports = {
     } else {
       string = 'Balance: ' + Math.abs(balance) + '% Left';
     }
-    this.textDisplay.setRegisterText('balance', string);
+    this.winamp.dispatch({type: 'SET_MARQUEE_REGISTER', register: 'balance', text: string});
     balance = Math.abs(balance) / 100;
     var sprite = Math.round(balance * 28);
     var offset = (sprite - 1) * 15;
@@ -375,7 +286,7 @@ module.exports = {
   updateTitle: function() {
     var duration = this._timeString(this.winamp.getDuration());
     var name = this.winamp.fileName + ' (' + duration + ')  ***  ';
-    this.textDisplay.setRegisterText('songTitle', name);
+    this.winamp.dispatch({type: 'SET_MARQUEE_REGISTER', register: 'songTitle', text: name});
   },
 
   updateChannelCount: function() {

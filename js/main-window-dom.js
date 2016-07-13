@@ -25,13 +25,7 @@ module.exports = el('div', {id: 'main-window', class: 'loading stop'}, [
   el('div', {id: 'loading'}, 'Loading...'),
   el('div', {id: 'title-bar', class: 'selected'}, [
     el('div', {id: 'context-menu-holder'}),
-    el('div', {id: 'shade-time'}, [
-      el('div', {id: 'shade-minus-sign'}),
-      el('div', {id: 'shade-minute-first-digit', class: 'character'}),
-      el('div', {id: 'shade-minute-second-digit', class: 'character'}),
-      el('div', {id: 'shade-second-first-digit', class: 'character'}),
-      el('div', {id: 'shade-second-second-digit', class: 'character'})
-    ]),
+    el('div', {id: 'shade-time-holder'}),
     el('div', {id: 'minimize'}),
     el('div', {id: 'shade'}),
     el('div', {id: 'close'})
@@ -46,19 +40,13 @@ module.exports = el('div', {id: 'main-window', class: 'loading stop'}, [
     ]),
     el('div', {id: 'play-pause'}),
     el('div', {id: 'work-indicator'}),
-    el('div', {id: 'time'}, [
-      el('div', {id: 'minus-sign'}),
-      el('div', {id: 'minute-first-digit'}),
-      el('div', {id: 'minute-second-digit'}),
-      el('div', {id: 'second-first-digit'}),
-      el('div', {id: 'second-second-digit'})
-    ]),
+    el('div', {id: 'time-holder'}),
     el('canvas', {id: 'visualizer', width: '152', height: '32'})
   ]),
   el('div', {class: 'media-info'}, [
     el('div', {id: 'song-title', class: 'text'}),
-    el('div', {id: 'kbps'}),
-    el('div', {id: 'khz'}),
+    el('div', {id: 'kbps-holder'}),
+    el('div', {id: 'khz-holder'}),
     el('div', {class: 'mono-stereo'}, [
       el('div', {id: 'mono'}),
       el('div', {id: 'stereo'})
@@ -71,13 +59,7 @@ module.exports = el('div', {id: 'main-window', class: 'loading stop'}, [
     el('div', {id: 'playlist-button'})
   ]),
   el('input', {id: 'position', type: 'range', min: '0', max: '100', step: '1', value: '0'}),
-  el('div', {class: 'actions'}, [
-    el('div', {id: 'previous'}),
-    el('div', {id: 'play'}),
-    el('div', {id: 'pause'}),
-    el('div', {id: 'stop'}),
-    el('div', {id: 'next'})
-  ]),
+  el('div', {id: 'actions-holder'}),
   el('div', {id: 'eject'}),
   el('div', {class: 'shuffle-repeat'}, [
     el('div', {id: 'shuffle'}),

@@ -94,8 +94,8 @@ module.exports = [
   {
     img: 'NUMS_EX',
     sprites: [
-      {selectors: ['#time.ex #minus-sign'], x: 90, y: 0, width: 9, height: 13},
-      {selectors: ['#time.ex.countdown #minus-sign'], x: 99, y: 0, width: 9, height: 13},
+      {selectors: ['#time #minus-sign'], x: 90, y: 0, width: 9, height: 13},
+      {selectors: ['#time.countdown #minus-sign'], x: 99, y: 0, width: 9, height: 13},
       {selectors: ['.digit-0'], x: 0, y: 0, width: 9, height: 13},
       {selectors: ['.digit-1'], x: 9, y: 0, width: 9, height: 13},
       {selectors: ['.digit-2'], x: 18, y: 0, width: 9, height: 13},
