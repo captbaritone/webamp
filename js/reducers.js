@@ -91,7 +91,7 @@ const media = (state, action) => {
     return {
       timeMode: 'ELAPSED',
       timeElapsed: 0,
-      length: null,
+      length: null, // Consider renaming to "duration"
       kbps: null,
       khz: null,
       volume: 50,
@@ -145,6 +145,9 @@ const createReducer = (winamp) => {
         return state;
       case 'SET_BALANCE':
         winamp.setBalance(action.balance);
+        return state;
+      case 'SET_POSITION':
+        winamp.seekToPercentComplete(action.position);
         return state;
       case 'CLOSE_WINAMP':
         winamp.close();

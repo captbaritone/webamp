@@ -58,7 +58,7 @@ module.exports = el('div', {id: 'main-window', class: 'loading stop'}, [
     el('div', {id: 'equalizer-button'}),
     el('div', {id: 'playlist-button'})
   ]),
-  el('input', {id: 'position', type: 'range', min: '0', max: '100', step: '1', value: '0'}),
+  el('div', {id: 'position-holder'}),
   el('div', {id: 'actions-holder'}),
   el('div', {id: 'eject'}),
   el('div', {class: 'shuffle-repeat'}, [

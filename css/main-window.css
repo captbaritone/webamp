@@ -364,6 +364,11 @@
 #winamp2-js .stop #position::-webkit-slider-thumb { visibility: hidden; }
 #winamp2-js .stop #position::-moz-range-thumb { visibility: hidden; }
 
+/* For some reason this is needed for the position slider to show up now that
+ * we are using React.
+ */
+#winamp2-js .play #position::-webkit-slider-thumb { visibility: visible; }
+
 #winamp2-js .actions div {
     height: 18px;
     width: 23px;

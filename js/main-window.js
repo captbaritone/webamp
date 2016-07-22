@@ -7,6 +7,7 @@ import Kbps from './Kbps.jsx';
 import Khz from './Khz.jsx';
 import Volume from './Volume.jsx';
 import Balance from './Balance.jsx';
+import Position from './Position.jsx';
 
 import '../css/main-window.css';
 
@@ -17,7 +18,6 @@ module.exports = {
       close: document.getElementById('close'),
       shade: document.getElementById('shade'),
       buttonD: document.getElementById('button-d'),
-      position: document.getElementById('position'),
       visualizer: document.getElementById('visualizer'),
       eject: document.getElementById('eject'),
       repeat: document.getElementById('repeat'),
@@ -40,6 +40,7 @@ module.exports = {
     this.winamp.renderTo(<Khz />, document.getElementById('khz-holder'));
     this.winamp.renderTo(<Volume />, document.getElementById('volume-holder'));
     this.winamp.renderTo(<Balance />, document.getElementById('balance-holder'));
+    this.winamp.renderTo(<Position />, document.getElementById('position-holder'));
 
     this._registerListeners();
     return this;
@@ -73,33 +74,6 @@ module.exports = {
       self.winamp.toggleDoubledMode();
     };
 
-    this.nodes.position.onmousedown = function() {
-      if (!self.nodes.window.classList.contains('stop')){
-        self.winamp.dispatch({type: 'SHOW_MARQUEE_REGISTER', register: 'position'});
-        self.nodes.window.classList.add('setting-position');
-      }
-    };
-
-    this.nodes.position.onmouseup = function() {
-      self.winamp.dispatch({type: 'SHOW_MARQUEE_REGISTER', register: 'songTitle'});
-      self.nodes.window.classList.remove('setting-position');
-    };
-
-    this.nodes.position.oninput = function() {
-      var newPercentComplete = self.nodes.position.value;
-      var newFractionComplete = newPercentComplete / 100;
-      var newElapsed = self._timeString(self.winamp.getDuration() * newFractionComplete);
-      var duration = self._timeString(self.winamp.getDuration());
-      var message = 'Seek to: ' + newElapsed + '/' + duration + ' (' + newPercentComplete + '%)';
-      self.winamp.dispatch({type: 'SET_MARQUEE_REGISTER', register: 'message', text: message});
-    };
-
-    this.nodes.position.onchange = function() {
-      if (self.winamp.getState() !== 'stop'){
-        self.winamp.seekToPercentComplete(this.value);
-      }
-    };
-
     this.nodes.eject.onclick = function() {
       self.winamp.dispatch({type: 'OPEN_FILE_DIALOG'});
     };
@@ -116,9 +90,6 @@ module.exports = {
       self.winamp.toggleVisualizer();
     };
 
-    window.addEventListener('timeUpdated', function() {
-      self.updateTime();
-    });
     window.addEventListener('startWaiting', function() {
       self.setWorkingIndicator();
     });
@@ -165,30 +136,6 @@ module.exports = {
 
   close: function() {
     this.nodes.window.classList.add('closed');
-  },
-
-  updatePosition: function() {
-    if (!this.nodes.window.classList.contains('setting-position')) {
-      this.nodes.position.value = this.winamp.getPercentComplete();
-    }
-  },
-
-  // In shade mode, the position slider shows up differently depending on if
-  // it's near the start, middle or end of its progress
-  updateShadePositionClass: function() {
-    var position = this.nodes.position;
-
-    position.removeAttribute('class');
-    if (position.value <= 33) {
-      position.classList.add('left');
-    } else if (position.value >= 66) {
-      position.classList.add('right');
-    }
-  },
-
-  updateTime: function() {
-    this.updateShadePositionClass();
-    this.updatePosition();
   },
 
   setWorkingIndicator: function() {
