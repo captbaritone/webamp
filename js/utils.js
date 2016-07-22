@@ -10,7 +10,19 @@ const getTimeObj = (time) => {
   };
 };
 
+const getTimeStr = (time) => {
+  const timeObj = getTimeObj(time);
+  return [
+    timeObj.minutesFirstDigit,
+    timeObj.minutesSecondDigit,
+    ':',
+    timeObj.secondsFirstDigit,
+    timeObj.secondsSecondDigit
+  ].join('');
+};
+
 module.exports = {
-  getTimeObj
+  getTimeObj,
+  getTimeStr
 };
 

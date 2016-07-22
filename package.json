@@ -7,7 +7,8 @@
     "lint": "eslint js/*.js js/*.jsx",
     "build": "webpack --optimize-minimize",
     "serve": "webpack-dev-server",
-    "weight": "npm run build && gzip-size built/winamp.js | pretty-bytes"
+    "weight": "npm run build && gzip-size built/winamp.js | pretty-bytes",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -28,7 +29,9 @@
   "devDependencies": {
     "babel-cli": "^6.10.1",
     "babel-core": "^6.10.4",
+    "babel-jest": "^13.2.2",
     "babel-loader": "^6.2.4",
+    "babel-polyfill": "^6.9.1",
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-react": "^6.11.1",
     "css-loader": "^0.23.1",
@@ -36,6 +39,7 @@
     "eslint-plugin-react": "^5.2.2",
     "file-loader": "^0.9.0",
     "gzip-size-cli": "^1.0.0",
+    "jest-cli": "^13.2.3",
     "pretty-bytes-cli": "^1.0.0",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
