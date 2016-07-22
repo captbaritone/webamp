@@ -5,8 +5,8 @@ module.exports = (props) => {
   const text = '' + props.children;
   const chars = text.split('');
   return <div {...props}>
-    {chars.map(character => {
-      return <Character>{character}</Character>;
+    {chars.map((character, index) => {
+      return <Character key={index + character}>{character}</Character>;
     })};
   </div>;
 };
