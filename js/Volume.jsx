@@ -12,19 +12,28 @@ class Volume extends React.Component {
   }
 
   setVolume(e) {
-    this.props.dispatch({type: 'SET_VOLUME', volume: e.target.value});
+    this.props.dispatch({
+      type: 'SET_VOLUME',
+      volume: e.target.value
+    });
   }
 
   showMarquee() {
-    this.props.dispatch({type: 'SHOW_MARQUEE_REGISTER', register: 'volume'});
+    this.props.dispatch({
+      type: 'SHOW_MARQUEE_REGISTER',
+      register: 'volume'
+    });
   }
 
   hideMarquee() {
-    this.props.dispatch({type: 'SHOW_MARQUEE_REGISTER', register: 'songTitle'});
+    this.props.dispatch({
+      type: 'SHOW_MARQUEE_REGISTER',
+      register: 'songTitle'
+    });
   }
 
   render() {
-    const volume = this.props.volume;
+    const {volume} = this.props;
     const percent = volume / 100;
     const sprite = Math.round(percent * 28);
     const offset = (sprite - 1) * 15;
