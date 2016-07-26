@@ -58,20 +58,12 @@ module.exports = {
     };
 
     this.nodes.buttonD.onmousedown = function() {
-      if (self.nodes.window.classList.contains('doubled')) {
-        self.winamp.dispatch({type: 'SET_MARQUEE_REGISTER', register: 'message', text: 'Disable doublesize mode'});
-      } else {
-        self.winamp.dispatch({type: 'SET_MARQUEE_REGISTER', register: 'message', text: 'Enable doublesize mode'});
-      }
-      self.winamp.dispatch({type: 'SHOW_MARQUEE_REGISTER', register: 'message'});
+      self.winamp.dispatch({type: 'SET_FOCUS', input: 'double'});
     };
 
     this.nodes.buttonD.onmouseup = function() {
-      self.winamp.dispatch({type: 'SHOW_MARQUEE_REGISTER', register: 'songTitle'});
-    };
-
-    this.nodes.buttonD.onclick = function() {
-      self.winamp.toggleDoubledMode();
+      self.winamp.dispatch({type: 'TOGGLE_DOUBLESIZE_MODE'});
+      self.winamp.dispatch({type: 'UNSET_FOCUS'});
     };
 
     this.nodes.eject.onclick = function() {
@@ -104,9 +96,6 @@ module.exports = {
     });
     window.addEventListener('changeState', function() {
       self.changeState();
-    });
-    window.addEventListener('titleUpdated', function() {
-      self.updateTitle();
     });
     window.addEventListener('channelCountUpdated', function() {
       self.updateChannelCount();
@@ -167,12 +156,6 @@ module.exports = {
     this.nodes.window.classList.toggle('llama');
   },
 
-  updateTitle: function() {
-    var duration = this._timeString(this.winamp.getDuration());
-    var name = this.winamp.fileName + ' (' + duration + ')  ***  ';
-    this.winamp.dispatch({type: 'SET_MARQUEE_REGISTER', register: 'songTitle', text: name});
-  },
-
   updateChannelCount: function() {
     var channels = this.winamp.getChannelCount();
     this.nodes.mono.classList.remove('selected');
@@ -208,10 +191,5 @@ module.exports = {
     var dt = e.dataTransfer;
     var file = dt.files[0];
     this.winamp.loadFromFileReference(file);
-  },
-
-  _timeString: function(time) {
-    var timeObject = this.winamp._timeObject(time);
-    return timeObject[0] + timeObject[1] + ':' + timeObject[2] + timeObject[3];
   }
 };

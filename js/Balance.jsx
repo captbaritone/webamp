@@ -21,11 +21,11 @@ class Balance extends React.Component {
   }
 
   showMarquee() {
-    this.props.dispatch({type: 'SHOW_MARQUEE_REGISTER', register: 'balance'});
+    this.props.dispatch({type: 'SET_FOCUS', input: 'balance'});
   }
 
   hideMarquee() {
-    this.props.dispatch({type: 'SHOW_MARQUEE_REGISTER', register: 'songTitle'});
+    this.props.dispatch({type: 'UNSET_FOCUS'});
   }
 
   render() {
@@ -45,7 +45,7 @@ class Balance extends React.Component {
       step='1'
       value={this.props.balance}
       style={style}
-      onInput={this.setBalance}
+      onChange={this.setBalance}
       onMouseDown={this.showMarquee}
       onMouseUp={this.hideMarquee}
     />;

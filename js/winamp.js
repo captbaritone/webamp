@@ -27,7 +27,6 @@ module.exports = {
       startLoading: new Event('startLoading'),
       stopLoading: new Event('stopLoading'),
       changeState: new Event('changeState'),
-      titleUpdated: new Event('titleUpdated'),
       channelCountUpdated: new Event('channelCountUpdated'),
       doubledModeToggled: new Event('doubledModeToggled'),
       repeatToggled: new Event('repeatToggled'),
@@ -241,7 +240,7 @@ module.exports = {
       this.dispatch({type: 'SET_MEDIA_KBPS', kbps: kbps});
       this.dispatch({type: 'SET_MEDIA_KHZ', khz: khz});
       window.dispatchEvent(this.events.channelCountUpdated);
-      window.dispatchEvent(this.events.titleUpdated);
+      this.dispatch({type: 'SET_MEDIA_NAME', name: this.fileName});
       window.dispatchEvent(this.events.timeUpdated);
       this.dispatch({type: 'SET_MEDIA_LENGTH', length: this.media.duration()});
     }

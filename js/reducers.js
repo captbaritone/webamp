@@ -1,70 +1,38 @@
 import MyFile from './my-file';
 import {combineReducers} from 'redux';
 
-const register = (state, action) => {
+const userInput = (state, action) => {
   if (!state) {
     return {
-      id: '',
-      step: 0,
-      text: ''
+      focus: null,
+      scrubPosition: 0
     };
   }
   switch (action.type) {
-    case 'SET_MARQUEE_REGISTER':
-      if (state.id === action.register) {
-        return Object.assign({}, state, {step: 0, text: action.text});
-      }
-      return state;
-    case 'SET_VOLUME':
-      if (state.id === 'volume') {
-        const text = 'Volume: ' + action.volume + '%';
-        return Object.assign({}, state, {step: 0, text: text});
-      }
-      return state;
-    case 'SET_BALANCE':
-      if (state.id === 'balance') {
-        let text = '';
-        if (action.balance === 0) {
-          text = 'Balance: Center';
-        } else {
-          const direction = action.balance > 0 ? 'Right' : 'Left';
-          text = 'Balance: ' + Math.abs(action.balance) + '% ' + direction;
-        }
-        return Object.assign({}, state, {step: 0, text: text});
-      }
-      return state;
-    case 'STEP_MARQUEE':
-      return Object.assign({}, state, {step: (state.step + 1) % state.text.length});
+    case 'SET_FOCUS':
+      return {...state, focus: action.input};
+    case 'UNSET_FOCUS':
+      return {...state, focus: null};
+    case 'SET_SCRUB_POSITION':
+      return {...state, scrubPosition: action.position};
     default:
       return state;
   }
 };
 
-const marquee = (state, action) => {
+const display = (state, action) => {
   if (!state) {
     return {
-      stepping: true,
-      selectedRegister: 'songTitle',
-      registers: [
-        Object.assign(register(), {id: 'songTitle'}),
-        Object.assign(register(), {id: 'position'}),
-        Object.assign(register(), {id: 'volume'}),
-        Object.assign(register(), {id: 'balance'}),
-        Object.assign(register(), {id: 'message'})
-      ]
+      doubled: false,
+      marqueeStep: 0
     };
   }
-  state = Object.assign({}, state, {registers: state.registers.map(r => register(r, action))});
   switch (action.type) {
-    case 'SHOW_MARQUEE_REGISTER':
-      if (state.stepping) {
-        return Object.assign({}, state, {selectedRegister: action.register});
-      }
-      return state;
-    case 'PAUSE_MARQUEE':
-      return Object.assign({}, state, {stepping: false});
-    case 'START_MARQUEE':
-      return Object.assign({}, state, {stepping: true});
+    case 'TOGGLE_DOUBLESIZE_MODE':
+      return {...state, doubled: !state.doubled};
+    case 'STEP_MARQUEE':
+      // TODO: Prevent this from becoming huge
+      return {...state, marqueeStep: state.marqueeStep + 1};
     default:
       return state;
   }
@@ -78,9 +46,9 @@ const contextMenu = (state, action) => {
   }
   switch (action.type) {
     case 'TOGGLE_CONTEXT_MENU':
-      return Object.assign({}, state, {selected: !state.selected});
+      return {...state, selected: !state.selected};
     case 'CLOSE_CONTEXT_MENU':
-      return Object.assign({}, state, {selected: false});
+      return {...state, selected: false};
     default:
       return state;
   }
@@ -95,25 +63,28 @@ const media = (state, action) => {
       kbps: null,
       khz: null,
       volume: 50,
-      balance: 0
+      balance: 0,
+      name: ''
     };
   }
   switch (action.type) {
     case 'TOGGLE_TIME_MODE':
       const newMode = state.timeMode === 'REMAINING' ? 'ELAPSED' : 'REMAINING';
-      return Object.assign({}, state, {timeMode: newMode});
+      return {...state, timeMode: newMode};
     case 'UPDATE_TIME_ELAPSED':
-      return Object.assign({}, state, {timeElapsed: action.elapsed});
+      return {...state, timeElapsed: action.elapsed};
     case 'SET_MEDIA_LENGTH':
-      return Object.assign({}, state, {length: action.length});
+      return {...state, length: action.length};
     case 'SET_MEDIA_KBPS':
-      return Object.assign({}, state, {kbps: action.kbps});
+      return {...state, kbps: action.kbps};
     case 'SET_MEDIA_KHZ':
-      return Object.assign({}, state, {khz: action.khz});
+      return {...state, khz: action.khz};
     case 'SET_VOLUME':
-      return Object.assign({}, state, {volume: action.volume});
+      return {...state, volume: action.volume};
     case 'SET_BALANCE':
-      return Object.assign({}, state, {balance: action.balance});
+      return {...state, balance: action.balance};
+    case 'SET_MEDIA_NAME':
+      return {...state, name: action.name};
     default:
       return state;
   }
@@ -122,7 +93,8 @@ const media = (state, action) => {
 const createReducer = (winamp) => {
 
   const reducer = combineReducers({
-    marquee,
+    userInput,
+    display,
     contextMenu,
     media
   });
@@ -161,6 +133,9 @@ const createReducer = (winamp) => {
         const skinFile = new MyFile();
         skinFile.setUrl(action.url);
         winamp.setSkin(skinFile);
+        return state;
+      case 'TOGGLE_DOUBLESIZE_MODE':
+        winamp.toggleDoubledMode();
         return state;
       default:
         return state;

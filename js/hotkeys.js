@@ -4,7 +4,8 @@ module.exports = function(winamp, store) {
   document.addEventListener('keydown', function(e){
     if (e.ctrlKey) { // Is CTRL depressed?
       switch (e.keyCode) {
-        case 68: winamp.toggleDoubledMode(); break;   // CTRL+D
+        // CTRL+D
+        case 68: winamp.dispatch({type: 'TOGGLE_DOUBLESIZE_MODE'}); break;
         // XXX FIXME
         case 76: winamp.openOptionMenu(); break;      // CTRL+L
         // CTRL+T

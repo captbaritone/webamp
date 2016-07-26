@@ -2,19 +2,29 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import CharacterString from './CharacterString.jsx';
+import {
+  getBalanceText,
+  getVolumeText,
+  getMediaText,
+  getPositionText,
+  getDoubleSizeModeText,
+  wrapForMarquee
+} from './utils';
 
+import CharacterString from './CharacterString.jsx';
 
 class Marquee extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {stepping: true};
     this.handleMouseDown = this.handleMouseDown.bind(this);
+    this.getText = this.getText.bind(this);
   }
 
   componentDidMount() {
     const step = () => {
       setTimeout(() => {
-        if (this.props.stepping) {
+        if (this.state.stepping) {
           this.props.dispatch({type: 'STEP_MARQUEE'});
         }
         step();
@@ -22,36 +32,42 @@ class Marquee extends React.Component {
     };
     step();
   }
-  selectedRegister() {
-    const selected = this.props.registers.filter(register => {
-      return register.id === this.props.selectedRegister;
-    });
-    return selected ? selected[0] : selected;
+
+  getText() {
+    switch (this.props.userInput.focus) {
+      case 'balance':
+        return getBalanceText(this.props.media.balance);
+      case 'volume':
+        return getVolumeText(this.props.media.volume);
+      case 'position':
+        return getPositionText(this.props.media.length, this.props.userInput.scrubPosition);
+      case 'double':
+        return getDoubleSizeModeText(this.props.display.doubled);
+      default:
+        break;
+    }
+    if (this.props.media.name) {
+      return getMediaText(this.props.media.name, this.props.media.length);
+    }
+    return 'Winamp 2.91';
   }
+
   handleMouseDown() {
-    this.props.dispatch({type: 'PAUSE_MARQUEE'});
+    this.setState({stepping: false});
     document.addEventListener('mouseup', () => {
       // TODO: Remove this listener
       setTimeout(() => {
-        this.props.dispatch({type: 'START_MARQUEE'});
+        this.setState({stepping: true});
       }, 1000);
     });
   }
 
   render() {
-    const register = this.selectedRegister();
-    let chars = register.text.split('');
-    if (chars.length > 30 && register.step > 0) {
-      const start = chars.slice(register.step);
-      const end = chars.slice(0, register.step);
-      // TODO: Use the spread operator
-      chars = start.concat(end).slice(0, 30);
-    }
-    const text = chars.join('');
+    const text = wrapForMarquee(this.getText(), this.props.display.marqueeStep);
     return <CharacterString onMouseDown={this.handleMouseDown}>
       {text}
     </CharacterString>;
   }
 }
 
-module.exports = connect(state => state.marquee)(Marquee);
+module.exports = connect(state => state)(Marquee);

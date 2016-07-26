@@ -19,17 +19,11 @@ class Volume extends React.Component {
   }
 
   showMarquee() {
-    this.props.dispatch({
-      type: 'SHOW_MARQUEE_REGISTER',
-      register: 'volume'
-    });
+    this.props.dispatch({type: 'SET_FOCUS', input: 'volume'});
   }
 
   hideMarquee() {
-    this.props.dispatch({
-      type: 'SHOW_MARQUEE_REGISTER',
-      register: 'songTitle'
-    });
+    this.props.dispatch({type: 'UNSET_FOCUS'});
   }
 
   render() {
@@ -50,7 +44,7 @@ class Volume extends React.Component {
       step='1'
       value={volume}
       style={style}
-      onInput={this.setVolume}
+      onChange={this.setVolume}
       onMouseDown={this.showMarquee}
       onMouseUp={this.hideMarquee}
     />;
