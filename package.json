@@ -8,7 +8,7 @@
     "build": "webpack --optimize-minimize",
     "serve": "webpack-dev-server",
     "weight": "npm run build && gzip-size built/winamp.js | pretty-bytes",
-    "test": "jest"
+    "test": "jest && npm run lint"
   },
   "repository": {
     "type": "git",
