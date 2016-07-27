@@ -232,11 +232,6 @@ module.exports = {
     if (this._playing) {
       this._updatePosition();
       this._callbacks.timeupdate();
-
-      // _updatePosition might have stopped the playing
-      if (this._playing) {
-        this._callbacks.visualizerupdate(this._analyser);
-      }
     }
     window.requestAnimationFrame(this._draw.bind(this));
   },

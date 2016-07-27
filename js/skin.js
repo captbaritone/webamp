@@ -1,12 +1,10 @@
 // Dynamically set the css background images for all the sprites
 import SKIN_SPRITES from './skin-sprites';
-import Visualizer from './visualizer';
 import JSZip from '../node_modules/jszip/dist/jszip'; // Hack
 
 module.exports = {
-  init: function(visualizerNode, analyser) {
+  init: function() {
     this._createNewStyleNode();
-    this.visualizer = Visualizer.init(visualizerNode, analyser);
     return this;
   },
 
@@ -38,7 +36,7 @@ module.exports = {
       this.styleNode.appendChild(document.createTextNode(cssRules));
       this._parseVisColors(zip);
       if (this.completedCallback !== void 0) {
-        this.completedCallback();
+        this.completedCallback(this.colors);
       }
     }.bind(this));
   },
@@ -58,7 +56,7 @@ module.exports = {
         console.error('Error in VISCOLOR.TXT on line', i);
       }
     }
-    this.visualizer.setColors(colors);
+    this.colors = colors;
   },
 
   _findFileInZip: function(name, zip) {

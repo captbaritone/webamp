@@ -12,8 +12,7 @@ module.exports = {
     this.fileInput.type = 'file';
     this.fileInput.style.display = 'none';
 
-    this.skin = Skin.init(document.getElementById('visualizer'), this.media._analyser);
-    this.state = '';
+    this.skin = Skin.init(this.media._analyser);
 
     this.events = {
       timeUpdated: new Event('timeUpdated')
@@ -37,13 +36,8 @@ module.exports = {
       window.dispatchEvent(this.events.timeUpdated);
     });
 
-    this.media.addEventListener('visualizerupdate', (analyser) => {
-      this.skin.visualizer.paintFrame(this.visualizerStyle, analyser);
-    });
-
     this.media.addEventListener('ended', () => {
-      this.skin.visualizer.clear();
-      this.dispatch({type: 'MEDIA_IS_STOPPED'});
+      this.dispatch({type: 'SET_MEDIA_STATUS', status: 'STOPPED'});
     });
 
     this.media.addEventListener('waiting', () => {
@@ -52,10 +46,6 @@ module.exports = {
 
     this.media.addEventListener('stopWaiting', () => {
       this.dispatch({type: 'STOP_WORKING'});
-    });
-
-    this.media.addEventListener('playing', () => {
-      this.dispatch({type: 'MEDIA_IS_PLAYING'});
     });
 
     this.fileInput.onchange = (e) => {
@@ -97,7 +87,6 @@ module.exports = {
 
   close: function() {
     this.media.stop();
-    this.dispatch({type: 'MEDIA_IS_STOPPED'});
   },
 
   openFileDialog: function() {
@@ -108,7 +97,9 @@ module.exports = {
     const file = new MyFile();
     file.setFileReference(fileReference);
     if (new RegExp('(wsz|zip)$', 'i').test(fileReference.name)) {
-      this.skin.setSkinByFile(file);
+      this.skin.setSkinByFile(file, (colors) => {
+        this.dispatch({type: 'SET_VISUALIZATION_COLORS', colors});
+      });
     } else {
       this.media.autoPlay = true;
       this.fileName = fileReference.name;
@@ -130,18 +121,10 @@ module.exports = {
 
   setSkin: function(file) {
     this.dispatch({type: 'START_LOADING'});
-    this.skin.setSkinByFile(file, () => this.dispatch({type: 'STOP_LOADING'}));
-  },
-
-  toggleVisualizer: function() {
-    if (this.skin.visualizer.style === this.skin.visualizer.NONE) {
-      this.skin.visualizer.setStyle(this.skin.visualizer.BAR);
-    } else if (this.skin.visualizer.style === this.skin.visualizer.BAR) {
-      this.skin.visualizer.setStyle(this.skin.visualizer.OSCILLOSCOPE);
-    } else if (this.skin.visualizer.style === this.skin.visualizer.OSCILLOSCOPE) {
-      this.skin.visualizer.setStyle(this.skin.visualizer.NONE);
-    }
-    this.skin.visualizer.clear();
+    this.skin.setSkinByFile(file, (colors) => {
+      this.dispatch({type: 'STOP_LOADING'});
+      this.dispatch({type: 'SET_VISUALIZATION_COLORS', colors});
+    });
   },
 
   /* Listeners */
