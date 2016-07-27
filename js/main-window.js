@@ -9,6 +9,8 @@ import Volume from './Volume.jsx';
 import Balance from './Balance.jsx';
 import Position from './Position.jsx';
 import MonoStereo from './MonoStereo.jsx';
+import Repeat from './Repeat.jsx';
+import Shuffle from './Shuffle.jsx';
 
 import '../css/main-window.css';
 
@@ -21,8 +23,6 @@ module.exports = {
       buttonD: document.getElementById('button-d'),
       visualizer: document.getElementById('visualizer'),
       eject: document.getElementById('eject'),
-      repeat: document.getElementById('repeat'),
-      shuffle: document.getElementById('shuffle'),
       workIndicator: document.getElementById('work-indicator'),
       titleBar: document.getElementById('title-bar'),
       window: document.getElementById('main-window')
@@ -41,6 +41,8 @@ module.exports = {
     this.winamp.renderTo(<Balance />, document.getElementById('balance-holder'));
     this.winamp.renderTo(<Position />, document.getElementById('position-holder'));
     this.winamp.renderTo(<MonoStereo />, document.getElementById('mono-stereo-holder'));
+    this.winamp.renderTo(<Repeat />, document.getElementById('repeat-holder'));
+    this.winamp.renderTo(<Shuffle />, document.getElementById('shuffle-holder'));
 
     this._registerListeners();
     return this;
@@ -70,14 +72,6 @@ module.exports = {
       self.winamp.dispatch({type: 'OPEN_FILE_DIALOG'});
     };
 
-    this.nodes.repeat.onclick = function() {
-      self.winamp.toggleRepeat();
-    };
-
-    this.nodes.shuffle.onclick = function() {
-      self.winamp.toggleShuffle();
-    };
-
     this.nodes.visualizer.onclick = function() {
       self.winamp.toggleVisualizer();
     };
@@ -99,9 +93,6 @@ module.exports = {
     });
     window.addEventListener('doubledModeToggled', function() {
       self.toggleDoubledMode();
-    });
-    window.addEventListener('repeatToggled', function() {
-      self.toggleRepeat();
     });
     window.addEventListener('llamaToggled', function() {
       self.toggleLlama();
@@ -151,14 +142,6 @@ module.exports = {
 
   toggleLlama: function() {
     this.nodes.window.classList.toggle('llama');
-  },
-
-  toggleRepeat: function() {
-    this.nodes.repeat.classList.toggle('selected');
-  },
-
-  toggleShuffle: function() {
-    this.nodes.shuffle.classList.toggle('selected');
   },
 
   dragenter: function(e) {

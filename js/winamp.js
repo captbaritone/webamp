@@ -28,7 +28,6 @@ module.exports = {
       stopLoading: new Event('stopLoading'),
       changeState: new Event('changeState'),
       doubledModeToggled: new Event('doubledModeToggled'),
-      repeatToggled: new Event('repeatToggled'),
       llamaToggled: new Event('llamaToggled'),
       close: new Event('close')
     };
@@ -157,12 +156,10 @@ module.exports = {
 
   toggleRepeat: function() {
     this.media.toggleRepeat();
-    window.dispatchEvent(this.events.repeatToggled);
   },
 
   toggleShuffle: function() {
     this.media.toggleShuffle();
-    this.mainWindow.toggleShuffle();
   },
 
   toggleLlama: function() {

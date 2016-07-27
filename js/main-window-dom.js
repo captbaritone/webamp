@@ -59,8 +59,8 @@ module.exports = el('div', {id: 'main-window', class: 'loading stop'}, [
   el('div', {id: 'actions-holder'}),
   el('div', {id: 'eject'}),
   el('div', {class: 'shuffle-repeat'}, [
-    el('div', {id: 'shuffle'}),
-    el('div', {id: 'repeat'})
+    el('div', {id: 'shuffle-holder'}),
+    el('div', {id: 'repeat-holder'})
   ]),
   el('a', {id: 'about', target: 'blank', href: 'https://github.com/captbaritone/winamp2-js'})
 ]);
