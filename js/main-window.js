@@ -12,6 +12,7 @@ import MonoStereo from './MonoStereo.jsx';
 import Repeat from './Repeat.jsx';
 import Shuffle from './Shuffle.jsx';
 import Eject from './Eject.jsx';
+import Close from './Close.jsx';
 
 import '../css/main-window.css';
 
@@ -19,7 +20,6 @@ module.exports = {
   init: function(winamp) {
     this.winamp = winamp;
     this.nodes = {
-      close: document.getElementById('close'),
       shade: document.getElementById('shade'),
       buttonD: document.getElementById('button-d'),
       visualizer: document.getElementById('visualizer'),
@@ -43,6 +43,7 @@ module.exports = {
     this.winamp.renderTo(<Repeat />, document.getElementById('repeat-holder'));
     this.winamp.renderTo(<Shuffle />, document.getElementById('shuffle-holder'));
     this.winamp.renderTo(<Eject />, document.getElementById('eject-holder'));
+    this.winamp.renderTo(<Close />, document.getElementById('close-holder'));
 
     this._registerListeners();
     return this;
@@ -50,10 +51,6 @@ module.exports = {
 
   _registerListeners: function() {
     var self = this;
-
-    this.nodes.close.onclick = function() {
-      self.winamp.close();
-    };
 
     this.nodes.shade.onclick = function() {
       self.nodes.window.classList.toggle('shade');
@@ -94,7 +91,7 @@ module.exports = {
       self.toggleLlama();
     });
     window.addEventListener('close', function() {
-      self.close();
+      self.nodes.window.classList.add('closed');
     });
 
     this.nodes.window.addEventListener('dragenter', this.dragenter.bind(this));
@@ -105,10 +102,6 @@ module.exports = {
   toggleDoubledMode: function() {
     this.nodes.buttonD.classList.toggle('selected');
     this.nodes.window.classList.toggle('doubled');
-  },
-
-  close: function() {
-    this.nodes.window.classList.add('closed');
   },
 
   setWorkingIndicator: function() {
