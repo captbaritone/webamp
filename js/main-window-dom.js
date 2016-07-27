@@ -47,10 +47,7 @@ module.exports = el('div', {id: 'main-window', class: 'loading stop'}, [
     el('div', {id: 'song-title', class: 'text'}),
     el('div', {id: 'kbps-holder'}),
     el('div', {id: 'khz-holder'}),
-    el('div', {class: 'mono-stereo'}, [
-      el('div', {id: 'mono'}),
-      el('div', {id: 'stereo'})
-    ])
+    el('div', {id: 'mono-stereo-holder'})
   ]),
   el('div', {id: 'volume-holder'}),
   el('div', {id: 'balance-holder'}),
@@ -62,8 +59,8 @@ module.exports = el('div', {id: 'main-window', class: 'loading stop'}, [
   el('div', {id: 'actions-holder'}),
   el('div', {id: 'eject'}),
   el('div', {class: 'shuffle-repeat'}, [
-    el('div', {id: 'shuffle'}),
-    el('div', {id: 'repeat'})
+    el('div', {id: 'shuffle-holder'}),
+    el('div', {id: 'repeat-holder'})
   ]),
   el('a', {id: 'about', target: 'blank', href: 'https://github.com/captbaritone/winamp2-js'})
 ]);

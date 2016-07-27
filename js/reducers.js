@@ -64,7 +64,10 @@ const media = (state, action) => {
       khz: null,
       volume: 50,
       balance: 0,
-      name: ''
+      name: '',
+      channels: null,
+      shuffle: false,
+      repeat: false
     };
   }
   switch (action.type) {
@@ -85,6 +88,12 @@ const media = (state, action) => {
       return {...state, balance: action.balance};
     case 'SET_MEDIA_NAME':
       return {...state, name: action.name};
+    case 'SET_CHANNELS_COUNT':
+      return {...state, channels: action.channels};
+    case 'TOGGLE_REPEAT':
+      return {...state, repeat: !state.repeat};
+    case 'TOGGLE_SHUFFLE':
+      return {...state, shuffle: !state.shuffle};
     default:
       return state;
   }
@@ -136,6 +145,12 @@ const createReducer = (winamp) => {
         return state;
       case 'TOGGLE_DOUBLESIZE_MODE':
         winamp.toggleDoubledMode();
+        return state;
+      case 'TOGGLE_REPEAT':
+        winamp.toggleRepeat();
+        return state;
+      case 'TOGGLE_SHUFFLE':
+        winamp.toggleShuffle();
         return state;
       default:
         return state;
