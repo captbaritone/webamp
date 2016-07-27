@@ -8,6 +8,7 @@ import Khz from './Khz.jsx';
 import Volume from './Volume.jsx';
 import Balance from './Balance.jsx';
 import Position from './Position.jsx';
+import MonoStereo from './MonoStereo.jsx';
 
 import '../css/main-window.css';
 
@@ -22,8 +23,6 @@ module.exports = {
       eject: document.getElementById('eject'),
       repeat: document.getElementById('repeat'),
       shuffle: document.getElementById('shuffle'),
-      mono: document.getElementById('mono'),
-      stereo: document.getElementById('stereo'),
       workIndicator: document.getElementById('work-indicator'),
       titleBar: document.getElementById('title-bar'),
       window: document.getElementById('main-window')
@@ -41,6 +40,7 @@ module.exports = {
     this.winamp.renderTo(<Volume />, document.getElementById('volume-holder'));
     this.winamp.renderTo(<Balance />, document.getElementById('balance-holder'));
     this.winamp.renderTo(<Position />, document.getElementById('position-holder'));
+    this.winamp.renderTo(<MonoStereo />, document.getElementById('mono-stereo-holder'));
 
     this._registerListeners();
     return this;
@@ -97,9 +97,6 @@ module.exports = {
     window.addEventListener('changeState', function() {
       self.changeState();
     });
-    window.addEventListener('channelCountUpdated', function() {
-      self.updateChannelCount();
-    });
     window.addEventListener('doubledModeToggled', function() {
       self.toggleDoubledMode();
     });
@@ -154,17 +151,6 @@ module.exports = {
 
   toggleLlama: function() {
     this.nodes.window.classList.toggle('llama');
-  },
-
-  updateChannelCount: function() {
-    var channels = this.winamp.getChannelCount();
-    this.nodes.mono.classList.remove('selected');
-    this.nodes.stereo.classList.remove('selected');
-    if (channels === 1) {
-      this.nodes.mono.classList.add('selected');
-    } else if (channels === 2) {
-      this.nodes.stereo.classList.add('selected');
-    }
   },
 
   toggleRepeat: function() {

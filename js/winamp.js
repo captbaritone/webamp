@@ -27,7 +27,6 @@ module.exports = {
       startLoading: new Event('startLoading'),
       stopLoading: new Event('stopLoading'),
       changeState: new Event('changeState'),
-      channelCountUpdated: new Event('channelCountUpdated'),
       doubledModeToggled: new Event('doubledModeToggled'),
       repeatToggled: new Event('repeatToggled'),
       llamaToggled: new Event('llamaToggled'),
@@ -106,10 +105,6 @@ module.exports = {
 
   getPercentComplete: function() {
     return this.media.percentComplete();
-  },
-
-  getChannelCount: function() {
-    return this.media.channels();
   },
 
   seekToPercentComplete: function(percent) {
@@ -239,7 +234,7 @@ module.exports = {
       var khz = Math.round(this.media.sampleRate() / 1000).toString();
       this.dispatch({type: 'SET_MEDIA_KBPS', kbps: kbps});
       this.dispatch({type: 'SET_MEDIA_KHZ', khz: khz});
-      window.dispatchEvent(this.events.channelCountUpdated);
+      this.dispatch({type: 'SET_CHANNELS_COUNT', channels: this.media.channels()});
       this.dispatch({type: 'SET_MEDIA_NAME', name: this.fileName});
       window.dispatchEvent(this.events.timeUpdated);
       this.dispatch({type: 'SET_MEDIA_LENGTH', length: this.media.duration()});

@@ -64,7 +64,8 @@ const media = (state, action) => {
       khz: null,
       volume: 50,
       balance: 0,
-      name: ''
+      name: '',
+      channels: null
     };
   }
   switch (action.type) {
@@ -85,6 +86,8 @@ const media = (state, action) => {
       return {...state, balance: action.balance};
     case 'SET_MEDIA_NAME':
       return {...state, name: action.name};
+    case 'SET_CHANNELS_COUNT':
+      return {...state, channels: action.channels};
     default:
       return state;
   }
