@@ -28,7 +28,7 @@ module.exports = el('div', {id: 'main-window', class: 'loading stop'}, [
     el('div', {id: 'shade-time-holder'}),
     el('div', {id: 'minimize'}),
     el('div', {id: 'shade'}),
-    el('div', {id: 'close'})
+    el('div', {id: 'close-holder'})
   ]),
   el('div', {class: 'status'}, [
     el('div', {id: 'clutter-bar'}, [
