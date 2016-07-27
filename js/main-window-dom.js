@@ -57,7 +57,7 @@ module.exports = el('div', {id: 'main-window', class: 'loading stop'}, [
   ]),
   el('div', {id: 'position-holder'}),
   el('div', {id: 'actions-holder'}),
-  el('div', {id: 'eject'}),
+  el('div', {id: 'eject-holder'}),
   el('div', {class: 'shuffle-repeat'}, [
     el('div', {id: 'shuffle-holder'}),
     el('div', {id: 'repeat-holder'})

@@ -11,6 +11,7 @@ import Position from './Position.jsx';
 import MonoStereo from './MonoStereo.jsx';
 import Repeat from './Repeat.jsx';
 import Shuffle from './Shuffle.jsx';
+import Eject from './Eject.jsx';
 
 import '../css/main-window.css';
 
@@ -22,9 +23,7 @@ module.exports = {
       shade: document.getElementById('shade'),
       buttonD: document.getElementById('button-d'),
       visualizer: document.getElementById('visualizer'),
-      eject: document.getElementById('eject'),
       workIndicator: document.getElementById('work-indicator'),
-      titleBar: document.getElementById('title-bar'),
       window: document.getElementById('main-window')
     };
 
@@ -43,6 +42,7 @@ module.exports = {
     this.winamp.renderTo(<MonoStereo />, document.getElementById('mono-stereo-holder'));
     this.winamp.renderTo(<Repeat />, document.getElementById('repeat-holder'));
     this.winamp.renderTo(<Shuffle />, document.getElementById('shuffle-holder'));
+    this.winamp.renderTo(<Eject />, document.getElementById('eject-holder'));
 
     this._registerListeners();
     return this;
@@ -66,10 +66,6 @@ module.exports = {
     this.nodes.buttonD.onmouseup = function() {
       self.winamp.dispatch({type: 'TOGGLE_DOUBLESIZE_MODE'});
       self.winamp.dispatch({type: 'UNSET_FOCUS'});
-    };
-
-    this.nodes.eject.onclick = function() {
-      self.winamp.dispatch({type: 'OPEN_FILE_DIALOG'});
     };
 
     this.nodes.visualizer.onclick = function() {
