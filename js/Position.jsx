@@ -15,7 +15,7 @@ class Position extends React.Component {
   }
 
   onMouseUp(e) {
-    this.props.dispatch({type: 'SET_POSITION', position: e.target.value});
+    this.props.mediaPlayer.seekToPercentComplete(e.target.value);
     this.props.dispatch({type: 'UNSET_FOCUS'});
   }
 

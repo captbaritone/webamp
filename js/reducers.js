@@ -1,4 +1,3 @@
-import MyFile from './my-file';
 import {combineReducers} from 'redux';
 
 const userInput = (state, action) => {
@@ -24,15 +23,34 @@ const display = (state, action) => {
   if (!state) {
     return {
       doubled: false,
-      marqueeStep: 0
+      marqueeStep: 0,
+      loading: true,
+      llama: false,
+      closed: false,
+      shade: false,
+      working: false
     };
   }
   switch (action.type) {
     case 'TOGGLE_DOUBLESIZE_MODE':
       return {...state, doubled: !state.doubled};
+    case 'TOGGLE_SHADE_MODE':
+      return {...state, shade: !state.shade};
+    case 'TOGGLE_LLAMA_MODE':
+      return {...state, llama: !state.llama};
     case 'STEP_MARQUEE':
       // TODO: Prevent this from becoming huge
       return {...state, marqueeStep: state.marqueeStep + 1};
+    case 'STOP_WORKING':
+      return {...state, working: false};
+    case 'START_WORKING':
+      return {...state, working: true};
+    case 'STOP_LOADING':
+      return {...state, loading: false};
+    case 'START_LOADING':
+      return {...state, loading: true};
+    case 'CLOSE_WINAMP':
+      return {...state, closed: true};
     default:
       return state;
   }
@@ -67,7 +85,9 @@ const media = (state, action) => {
       name: '',
       channels: null,
       shuffle: false,
-      repeat: false
+      repeat: false,
+      // TODO: Enforce possible values
+      status: 'STOPPED'
     };
   }
   switch (action.type) {
@@ -94,6 +114,12 @@ const media = (state, action) => {
       return {...state, repeat: !state.repeat};
     case 'TOGGLE_SHUFFLE':
       return {...state, shuffle: !state.shuffle};
+    case 'MEDIA_IS_PLAYING':
+      return {...state, status: 'PLAYING'};
+    case 'MEDIA_IS_PAUSED':
+      return {...state, status: 'PAUSED'};
+    case 'MEDIA_IS_STOPPED':
+      return {...state, status: 'STOPPED'};
     default:
       return state;
   }
@@ -112,48 +138,21 @@ const createReducer = (winamp) => {
   return (state, action) => {
     state = reducer(state, action);
     switch (action.type) {
-      case 'PLAY':
-        winamp.play();
-        return state;
-      case 'PAUSE':
-        winamp.pause();
-        return state;
-      case 'STOP':
-        winamp.stop();
-        return state;
       case 'SET_VOLUME':
         winamp.setVolume(action.volume);
         return state;
       case 'SET_BALANCE':
         winamp.setBalance(action.balance);
         return state;
-      case 'SET_POSITION':
-        winamp.seekToPercentComplete(action.position);
-        return state;
-      case 'CLOSE_WINAMP':
-        winamp.close();
-        return state;
       case 'OPEN_FILE_DIALOG':
         // TODO: Figure out how to make this pure
         winamp.openFileDialog();
-        return state;
-      case 'SET_SKIN_FROM_URL':
-        // TODO: Figure out how to make this pure
-        const skinFile = new MyFile();
-        skinFile.setUrl(action.url);
-        winamp.setSkin(skinFile);
-        return state;
-      case 'TOGGLE_DOUBLESIZE_MODE':
-        winamp.toggleDoubledMode();
         return state;
       case 'TOGGLE_REPEAT':
         winamp.toggleRepeat();
         return state;
       case 'TOGGLE_SHUFFLE':
         winamp.toggleShuffle();
-        return state;
-      case 'CLOSE':
-        winamp.close();
         return state;
       default:
         return state;

@@ -1,3 +1,5 @@
+import {play, pause, stop} from './actionCreators';
+
 module.exports = function(winamp, store) {
   var keylog = [];
   var trigger = [78, 85, 76, 27, 76, 27, 83, 79, 70, 84];
@@ -26,13 +28,16 @@ module.exports = function(winamp, store) {
           store.dispatch({type: 'SET_VOLUME', volume: decrementedVolume});
           break;
         case 66: winamp.next(); break;                // B
-        case 67: winamp.pause(); break;               // C
+        // C
+        case 67: winamp.dispatch(pause(winamp.media)); break;
         // L
         case 76: store.dispatch({type: 'OPEN_FILE_DIALOG'}); break;
         case 82: winamp.toggleRepeat(); break;        // R
         case 83: winamp.toggleShuffle(); break;       // S
-        case 86: winamp.stop(); break;                // V
-        case 88: winamp.play(); break;                // X
+        // V
+        case 86: winamp.dispatch(stop(winamp.media)); break;
+        // X
+        case 88: winamp.dispatch(play(winamp.media)); break;
         case 90: winamp.previous(); break;            // Z
         // numpad 0
         case 96: store.dispatch({type: 'OPEN_FILE_DIALOG'}); break;
@@ -40,7 +45,8 @@ module.exports = function(winamp, store) {
         case 98: winamp.incrementVolumeBy(-1); break; // numpad 2
         case 99: winamp.next(10); break;              // numpad 3
         case 100: winamp.previous(); break;           // numpad 4
-        case 101: winamp.play(); break;               // numpad 5
+        // numpad 5
+        case 101: winamp.dispatch(play(winamp.media)); break;
         case 102: winamp.next(); break;               // numpad 6
         case 103: winamp.seekForwardBy(-5); break;    // numpad 7
         case 104: winamp.incrementVolumeBy(1); break; // numpad 8
@@ -52,7 +58,7 @@ module.exports = function(winamp, store) {
     keylog.push(e.keyCode);
     keylog = keylog.slice(-10);
     if (keylog.toString() === trigger.toString()) {
-      winamp.toggleLlama();
+      winamp.dispatch({type: 'TOGGLE_LLAMA_MODE'});
     }
   });
 };

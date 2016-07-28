@@ -1,6 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
+import {close, setSkinFromFilename} from './actionCreators';
+
 import '../css/context-menu.css';
 
 class ContextMenu extends React.Component {
@@ -27,7 +29,7 @@ class ContextMenu extends React.Component {
   }
 
   close() {
-    this.props.dispatch({type: 'CLOSE_WINAMP'});
+    this.props.dispatch(close(this.props.mediaPlayer));
   }
 
   closeMenu() {
@@ -40,9 +42,7 @@ class ContextMenu extends React.Component {
   }
 
   setSkin(e) {
-    const filename = e.target.dataset.filename;
-    const url = 'https://cdn.rawgit.com/captbaritone/winamp-skins/master/v2/' + filename;
-    this.props.dispatch({type: 'SET_SKIN_FROM_URL', url: url});
+    setSkinFromFilename(this.props.winamp, e.target.dataset.filename);
   }
 
   render() {

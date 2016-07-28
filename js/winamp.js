@@ -8,28 +8,20 @@ import MyFile from './my-file';
 import '../css/winamp.css';
 
 module.exports = {
+  media: Media.init(),
   init: function(options) {
     this.fileInput = document.createElement('input');
     this.fileInput.type = 'file';
     this.fileInput.style.display = 'none';
 
     this.windowManager = WindowManager;
-    this.media = Media.init();
     this.skin = Skin.init(document.getElementById('visualizer'), this.media._analyser);
     this.state = '';
 
     this.mainWindow = MainWindow.init(this);
 
     this.events = {
-      timeUpdated: new Event('timeUpdated'),
-      startWaiting: new Event('startWaiting'),
-      stopWaiting: new Event('stopWaiting'),
-      startLoading: new Event('startLoading'),
-      stopLoading: new Event('stopLoading'),
-      changeState: new Event('changeState'),
-      doubledModeToggled: new Event('doubledModeToggled'),
-      llamaToggled: new Event('llamaToggled'),
-      close: new Event('close')
+      timeUpdated: new Event('timeUpdated')
     };
 
     this.dispatch({type: 'SET_VOLUME', volume: options.volume});
@@ -60,19 +52,19 @@ module.exports = {
 
     this.media.addEventListener('ended', function() {
       self.skin.visualizer.clear();
-      self.setState('stop');
+      self.dispatch({type: 'MEDIA_IS_STOPPED'});
     });
 
     this.media.addEventListener('waiting', function() {
-      window.dispatchEvent(self.events.startWaiting);
+      self.dispatch({type: 'START_WORKING'});
     });
 
     this.media.addEventListener('stopWaiting', function() {
-      window.dispatchEvent(self.events.stopWaiting);
+      self.dispatch({type: 'STOP_WORKING'});
     });
 
     this.media.addEventListener('playing', function() {
-      self.setState('play');
+      self.dispatch({type: 'MEDIA_IS_PLAYING'});
     });
 
     this.fileInput.onchange = function(e){
@@ -81,15 +73,6 @@ module.exports = {
   },
 
   /* Functions */
-  setState: function(state) {
-    this.state = state;
-    window.dispatchEvent(this.events.changeState);
-  },
-
-  getState: function() {
-    return this.state;
-  },
-
   getDuration: function() {
     return this.media.duration();
   },
@@ -110,27 +93,6 @@ module.exports = {
     this.media.seekToPercentComplete(percent);
   },
 
-  play: function() {
-    if (this.getState() === 'play'){
-      this.media.stop();
-    }
-    this.media.play();
-    this.setState('play');
-  },
-
-  pause: function() {
-    if (this.getState() === 'pause'){
-      this.media.play();
-    } else if (this.getState() === 'play') {
-      this.media.pause();
-      this.setState('pause');
-    }
-  },
-  stop: function() {
-    this.media.stop();
-    this.setState('stop');
-  },
-
   // From 0-100
   setVolume: function(volume) {
     // Ensure volume does not go out of bounds
@@ -138,10 +100,6 @@ module.exports = {
     volume = Math.min(volume, 100);
 
     this.media.setVolume(volume);
-  },
-
-  toggleDoubledMode: function() {
-    window.dispatchEvent(this.events.doubledModeToggled);
   },
 
   // From -100 to 100
@@ -162,14 +120,9 @@ module.exports = {
     this.media.toggleShuffle();
   },
 
-  toggleLlama: function() {
-    window.dispatchEvent(this.events.llamaToggled);
-  },
-
   close: function() {
-    window.dispatchEvent(this.events.close);
     this.media.stop();
-    this.setState('stop'); // Currently unneeded
+    this.dispatch({type: 'MEDIA_IS_STOPPED'});
   },
 
   openFileDialog: function() {
@@ -201,16 +154,8 @@ module.exports = {
   },
 
   setSkin: function(file) {
-    this.setLoadingState();
-    this.skin.setSkinByFile(file, this.unsetLoadingState.bind(this));
-  },
-
-  setLoadingState: function() {
-    window.dispatchEvent(this.events.startLoading);
-  },
-
-  unsetLoadingState: function() {
-    window.dispatchEvent(this.events.stopLoading);
+    this.dispatch({type: 'START_LOADING'});
+    this.skin.setSkinByFile(file, () => this.dispatch({type: 'STOP_LOADING'}));
   },
 
   toggleVisualizer: function() {

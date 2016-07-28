@@ -1,23 +1,20 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {close} from './actionCreators';
-
-
-class Close extends React.Component {
+class Shade extends React.Component {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
   }
   handleClick() {
-    this.props.dispatch(close(this.props.mediaPlayer));
+    this.props.dispatch({type: 'TOGGLE_SHADE_MODE'});
   }
   render() {
     return <div
-      id='close'
+      id='shade'
       onClick={this.handleClick}
     />;
   }
 }
 
-module.exports = connect()(Close);
+module.exports = connect()(Shade);

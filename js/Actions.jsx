@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {play, pause, stop} from './actionCreators';
 
 
 class Actions extends React.Component {
@@ -10,13 +11,13 @@ class Actions extends React.Component {
     this.stop = this.stop.bind(this);
   }
   play() {
-    this.props.dispatch({type: 'PLAY'});
+    this.props.dispatch(play(this.props.mediaPlayer));
   }
   pause() {
-    this.props.dispatch({type: 'PAUSE'});
+    this.props.dispatch(pause(this.props.mediaPlayer));
   }
   stop() {
-    this.props.dispatch({type: 'STOP'});
+    this.props.dispatch(stop(this.props.mediaPlayer));
   }
   render() {
     return <div className='actions'>

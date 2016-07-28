@@ -1,4 +1,6 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import classnames from 'classnames';
 
 import Actions from './Actions.jsx';
 import Balance from './Balance.jsx';
@@ -11,6 +13,7 @@ import Marquee from './Marquee.jsx';
 import MonoStereo from './MonoStereo.jsx';
 import Position from './Position.jsx';
 import Repeat from './Repeat.jsx';
+import Shade from './Shade.jsx';
 import ShadeTime from './ShadeTime.jsx';
 import Shuffle from './Shuffle.jsx';
 import Time from './Time.jsx';
@@ -18,14 +21,28 @@ import Volume from './Volume.jsx';
 
 import '../css/main-window.css';
 
-const MainWindow = () => {
-  return <div id='main-window' className='loading stop'>
+const MainWindow = (props) => {
+  const {status} = props.media;
+  const {loading, doubled, shade, closed, llama} = props.display;
+
+  const className = classnames({
+    // TODO: Handle these status changes in the individual components
+    play: status === 'PLAYING',
+    stop: status === 'STOPPED',
+    pause: status === 'PAUSED',
+    loading,
+    doubled,
+    llama,
+    shade,
+    closed
+  });
+  return <div id='main-window' className={className}>
     <div id='loading'>Loading...</div>
     <div id='title-bar' className='selected'>
-      <ContextMenu />
+      <ContextMenu mediaPlayer={props.mediaPlayer} winamp={props.winamp} />
       <ShadeTime />
       <div id='minimize'></div>
-      <div id='shade'></div>
+      <Shade />
       <Close />
     </div>
     <div className='status'>
@@ -33,11 +50,11 @@ const MainWindow = () => {
         <div id='button-o'></div>
         <div id='button-a'></div>
         <div id='button-i'></div>
-        <div id='button-d'></div>
+        <div id='button-d' className={props.display.doubled ? 'selected' : ''}></div>
         <div id='button-v'></div>
       </div>
       <div id='play-pause'></div>
-      <div id='work-indicator'></div>
+      <div id='work-indicator' className={props.display.working ? 'selected' : ''}></div>
       <Time />
       <canvas id='visualizer' width='152' height='32'></canvas>
     </div>
@@ -53,8 +70,8 @@ const MainWindow = () => {
       <div id='equalizer-button'></div>
       <div id='playlist-button'></div>
     </div>
-    <Position />
-    <Actions />
+    <Position mediaPlayer={props.mediaPlayer} />
+    <Actions mediaPlayer={props.mediaPlayer} />
     <Eject />
     <div className='shuffle-repeat'>
       <Shuffle />
@@ -64,4 +81,4 @@ const MainWindow = () => {
   </div>;
 };
 
-module.exports = MainWindow;
+module.exports = connect(state => state)(MainWindow);
