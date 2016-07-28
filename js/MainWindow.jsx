@@ -6,6 +6,7 @@ import Actions from './Actions.jsx';
 import Balance from './Balance.jsx';
 import Close from './Close.jsx';
 import ContextMenu from './ContextMenu.jsx';
+import DragTarget from './DragTarget.jsx';
 import Eject from './Eject.jsx';
 import Kbps from './Kbps.jsx';
 import Khz from './Khz.jsx';
@@ -36,49 +37,57 @@ const MainWindow = (props) => {
     shade,
     closed
   });
-  return <div id='main-window' className={className}>
-    <div id='loading'>Loading...</div>
-    <div id='title-bar' className='selected'>
-      <ContextMenu mediaPlayer={props.mediaPlayer} winamp={props.winamp} />
-      <ShadeTime />
-      <div id='minimize'></div>
-      <Shade />
-      <Close />
-    </div>
-    <div className='status'>
-      <div id='clutter-bar'>
-        <div id='button-o'></div>
-        <div id='button-a'></div>
-        <div id='button-i'></div>
-        <div id='button-d' className={props.display.doubled ? 'selected' : ''}></div>
-        <div id='button-v'></div>
+
+  // TODO: Move this to an actionCreator
+  const handleDrop = (files) => {
+    props.winamp.loadFromFileReference(files[0]);
+  };
+
+  return <DragTarget handleFiles={handleDrop}>
+    <div id='main-window' className={className}>
+      <div id='loading'>Loading...</div>
+      <div id='title-bar' className='selected'>
+        <ContextMenu mediaPlayer={props.mediaPlayer} winamp={props.winamp} />
+        <ShadeTime />
+        <div id='minimize'></div>
+        <Shade />
+        <Close />
       </div>
-      <div id='play-pause'></div>
-      <div id='work-indicator' className={props.display.working ? 'selected' : ''}></div>
-      <Time />
-      <canvas id='visualizer' width='152' height='32'></canvas>
+      <div className='status'>
+        <div id='clutter-bar'>
+          <div id='button-o'></div>
+          <div id='button-a'></div>
+          <div id='button-i'></div>
+          <div id='button-d' className={props.display.doubled ? 'selected' : ''}></div>
+          <div id='button-v'></div>
+        </div>
+        <div id='play-pause'></div>
+        <div id='work-indicator' className={props.display.working ? 'selected' : ''}></div>
+        <Time />
+        <canvas id='visualizer' width='152' height='32'></canvas>
+      </div>
+      <div className='media-info'>
+        <Marquee />
+        <Kbps />
+        <Khz />
+        <MonoStereo />
+      </div>
+      <Volume />
+      <Balance />
+      <div className='windows'>
+        <div id='equalizer-button'></div>
+        <div id='playlist-button'></div>
+      </div>
+      <Position mediaPlayer={props.mediaPlayer} />
+      <Actions mediaPlayer={props.mediaPlayer} />
+      <Eject />
+      <div className='shuffle-repeat'>
+        <Shuffle />
+        <Repeat />
+      </div>
+      <a id='about' target='blank' href= 'https://github.com/captbaritone/winamp2-js'></a>
     </div>
-    <div className='media-info'>
-      <Marquee />
-      <Kbps />
-      <Khz />
-      <MonoStereo />
-    </div>
-    <Volume />
-    <Balance />
-    <div className='windows'>
-      <div id='equalizer-button'></div>
-      <div id='playlist-button'></div>
-    </div>
-    <Position mediaPlayer={props.mediaPlayer} />
-    <Actions mediaPlayer={props.mediaPlayer} />
-    <Eject />
-    <div className='shuffle-repeat'>
-      <Shuffle />
-      <Repeat />
-    </div>
-    <a id='about' target='blank' href= 'https://github.com/captbaritone/winamp2-js'></a>
-  </div>;
+  </DragTarget>;
 };
 
 module.exports = connect(state => state)(MainWindow);
