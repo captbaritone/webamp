@@ -9,7 +9,7 @@ cd /var/www/jordaneldredge.com/
 NEW_CLONE=repos/winamp2-js-`date +%s`
 
 # Do the clone
-echo "Cloning vim-awesome"
+echo "Cloning Winamp2-js"
 git clone git@github.com:captbaritone/winamp2-js.git $NEW_CLONE > /dev/null
 
 echo "Installing Node requirements"
