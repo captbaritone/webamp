@@ -1,7 +1,8 @@
 import React from 'react';
 import {render} from 'react-dom';
 import {Provider} from 'react-redux';
-import {createStore} from 'redux';
+import {createStore, applyMiddleware} from 'redux';
+import thunk from 'redux-thunk';
 
 import createReducer from './reducers';
 
@@ -14,12 +15,13 @@ if (new Browser(window).isCompatible) {
   var winamp = Winamp;
   let store = createStore(
     createReducer(winamp),
-    window.devToolsExtension && window.devToolsExtension()
+    window.devToolsExtension && window.devToolsExtension(),
+    applyMiddleware(thunk)
   );
 
   render(
     <Provider store={store}>
-      <MainWindow />
+      <MainWindow winamp={winamp} mediaPlayer={winamp.media} />
     </Provider>,
     document.getElementById('winamp2-js')
   );
