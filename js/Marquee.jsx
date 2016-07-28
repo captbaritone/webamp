@@ -92,7 +92,7 @@ class Marquee extends React.Component {
 
   render() {
     const text = wrapForMarquee(this.getText(), this.props.display.marqueeStep);
-    return <CharacterString onMouseDown={this.handleMouseDown}>
+    return <CharacterString id='marquee' className='text' onMouseDown={this.handleMouseDown}>
       {text}
     </CharacterString>;
   }

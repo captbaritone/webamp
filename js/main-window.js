@@ -1,21 +1,3 @@
-import React from 'react';
-import Marquee from './Marquee.jsx';
-import Actions from './Actions.jsx';
-import Time from './Time.jsx';
-import ShadeTime from './ShadeTime.jsx';
-import Kbps from './Kbps.jsx';
-import Khz from './Khz.jsx';
-import Volume from './Volume.jsx';
-import Balance from './Balance.jsx';
-import Position from './Position.jsx';
-import MonoStereo from './MonoStereo.jsx';
-import Repeat from './Repeat.jsx';
-import Shuffle from './Shuffle.jsx';
-import Eject from './Eject.jsx';
-import Close from './Close.jsx';
-
-import '../css/main-window.css';
-
 module.exports = {
   init: function(winamp) {
     this.winamp = winamp;
@@ -29,21 +11,6 @@ module.exports = {
 
     this.handle = document.getElementById('title-bar');
     this.body = this.nodes.window;
-
-    this.winamp.renderTo(<Marquee />, document.getElementById('song-title'));
-    this.winamp.renderTo(<Actions />, document.getElementById('actions-holder'));
-    this.winamp.renderTo(<Time />, document.getElementById('time-holder'));
-    this.winamp.renderTo(<ShadeTime />, document.getElementById('shade-time-holder'));
-    this.winamp.renderTo(<Kbps />, document.getElementById('kbps-holder'));
-    this.winamp.renderTo(<Khz />, document.getElementById('khz-holder'));
-    this.winamp.renderTo(<Volume />, document.getElementById('volume-holder'));
-    this.winamp.renderTo(<Balance />, document.getElementById('balance-holder'));
-    this.winamp.renderTo(<Position />, document.getElementById('position-holder'));
-    this.winamp.renderTo(<MonoStereo />, document.getElementById('mono-stereo-holder'));
-    this.winamp.renderTo(<Repeat />, document.getElementById('repeat-holder'));
-    this.winamp.renderTo(<Shuffle />, document.getElementById('shuffle-holder'));
-    this.winamp.renderTo(<Eject />, document.getElementById('eject-holder'));
-    this.winamp.renderTo(<Close />, document.getElementById('close-holder'));
 
     this._registerListeners();
     return this;
