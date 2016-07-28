@@ -30,27 +30,5 @@ module.exports = {
     this.nodes.visualizer.onclick = function() {
       self.winamp.toggleVisualizer();
     };
-
-    this.nodes.window.addEventListener('dragenter', this.dragenter.bind(this));
-    this.nodes.window.addEventListener('dragover', this.dragover.bind(this));
-    this.nodes.window.addEventListener('drop', this.drop.bind(this));
-  },
-
-  dragenter: function(e) {
-    e.stopPropagation();
-    e.preventDefault();
-  },
-
-  dragover: function(e) {
-    e.stopPropagation();
-    e.preventDefault();
-  },
-
-  drop: function(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    var dt = e.dataTransfer;
-    var file = dt.files[0];
-    this.winamp.loadFromFileReference(file);
   }
 };
