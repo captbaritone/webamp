@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import Actions from './Actions.jsx';
 import Balance from './Balance.jsx';
 import Close from './Close.jsx';
+import ClutterBar from './ClutterBar.jsx';
 import ContextMenu from './ContextMenu.jsx';
 import DragTarget from './DragTarget.jsx';
 import Eject from './Eject.jsx';
@@ -54,13 +55,7 @@ const MainWindow = (props) => {
         <Close />
       </div>
       <div className='status'>
-        <div id='clutter-bar'>
-          <div id='button-o'></div>
-          <div id='button-a'></div>
-          <div id='button-i'></div>
-          <div id='button-d' className={props.display.doubled ? 'selected' : ''}></div>
-          <div id='button-v'></div>
-        </div>
+        <ClutterBar />
         <div id='play-pause'></div>
         <div id='work-indicator' className={props.display.working ? 'selected' : ''}></div>
         <Time />
