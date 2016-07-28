@@ -31,7 +31,7 @@
     background-color: #FFFFFF;
     border: 2px solid #dddddd;
 }
-/* Hide everything whil we are loading */
+/* Hide everything while we are loading */
 #winamp2-js #main-window.loading * {
     display: none;
 }
@@ -213,16 +213,16 @@
 
 
 #winamp2-js .text {
+    display: none;
+}
+
+#winamp2-js #marquee {
     position: absolute;
     left: 112px;
     top: 27px;
     width: 152px;
     height: 6px;
     overflow: hidden;
-    display: none;
-}
-
-#winamp2-js #song-title {
     display: block;
 }
 
