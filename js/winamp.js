@@ -1,6 +1,4 @@
 // UI and App logic
-import MainWindow from './main-window';
-import WindowManager from './window-manager';
 import Skin from './skin';
 import Media from './media';
 import MyFile from './my-file';
@@ -14,11 +12,8 @@ module.exports = {
     this.fileInput.type = 'file';
     this.fileInput.style.display = 'none';
 
-    this.windowManager = WindowManager;
     this.skin = Skin.init(document.getElementById('visualizer'), this.media._analyser);
     this.state = '';
-
-    this.mainWindow = MainWindow.init(this);
 
     this.events = {
       timeUpdated: new Event('timeUpdated')
@@ -36,8 +31,6 @@ module.exports = {
   },
 
   _registerListeners: function() {
-    this.windowManager.registerWindow(this.mainWindow);
-
     this.media.addEventListener('timeupdate', () => {
       this.dispatch({type: 'UPDATE_TIME_ELAPSED', elapsed: this.media.timeElapsed()});
       // Legacy
