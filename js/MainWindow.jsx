@@ -19,6 +19,7 @@ import Shade from './Shade.jsx';
 import ShadeTime from './ShadeTime.jsx';
 import Shuffle from './Shuffle.jsx';
 import Time from './Time.jsx';
+import Visualizer from './Visualizer.jsx';
 import Volume from './Volume.jsx';
 
 import '../css/main-window.css';
@@ -59,7 +60,7 @@ const MainWindow = (props) => {
         <div id='play-pause'></div>
         <div id='work-indicator' className={props.display.working ? 'selected' : ''}></div>
         <Time />
-        <canvas id='visualizer' width='152' height='32'></canvas>
+        <Visualizer />
       </div>
       <div className='media-info'>
         <Marquee />

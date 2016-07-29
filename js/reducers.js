@@ -154,6 +154,9 @@ const createReducer = (winamp) => {
       case 'TOGGLE_SHUFFLE':
         winamp.toggleShuffle();
         return state;
+      case 'TOGGLE_VISUALIZER':
+        winamp.toggleVisualizer();
+        return state;
       default:
         return state;
     }
