@@ -1,4 +1,3 @@
-// Single line text display that can animate and hold multiple registers
 import React from 'react';
 import {connect} from 'react-redux';
 
