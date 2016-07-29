@@ -1,3 +1,4 @@
+jest.unmock('../Marquee.jsx');
 jest.unmock('../utils');
 
 import {
@@ -6,7 +7,9 @@ import {
   getPositionText,
   getMediaText,
   getDoubleSizeModeText,
-  wrapForMarquee
+  stepOffset,
+  negativePixels,
+  loopText
 } from '../Marquee.jsx';
 
 describe('getBalanceText', () => {
@@ -55,35 +58,62 @@ describe('getMediaText', () => {
   });
 });
 
-describe('wrapForMarquee', () => {
+describe('stepOffset', () => {
   const long = 'This is a long string. Longer than 30 characters!';
-  it('truncates to 30 characters', () => {
-    const actual = wrapForMarquee(long, 0);
-    const expected = 'This is a long string. Longer ';
+  it('starts at 0', () => {
+    const actual = stepOffset(long, 0);
+    const expected = 0;
     expect(actual).toEqual(expected);
   });
-  it('offsets by the number of steps', () => {
-    const actual = wrapForMarquee(long, 8);
-    const expected = 'a long string. Longer than 30 ';
+  it('first step offsets by one character', () => {
+    const actual = stepOffset(long, 1);
+    const expected = 5;
     expect(actual).toEqual(expected);
   });
-  it('wraps around when step > text length', () => {
-    const actual = wrapForMarquee(long, 51);
-    const expected = 'his is a long string. Longer t';
+  it('resets to 0 when step === string.length', () => {
+    const actual = stepOffset(long, long.length);
+    const expected = 0;
     expect(actual).toEqual(expected);
   });
-  it('wraps text when it gets to the end', () => {
-    const actual = wrapForMarquee(long, 30);
-    const expected = 'than 30 characters! This is a ';
+  it('offsets by one char when step = string.length + 1', () => {
+    const actual = stepOffset(long, long.length + 1);
+    const expected = 5;
     expect(actual).toEqual(expected);
   });
-  it('does not step through short strings', () => {
-    const actual = wrapForMarquee('Short string', 30);
-    const expected = 'Short string';
+  xit('does not try to offset strings shorter than 30 characters', () => {
+    const actual = stepOffset('hello', 15);
+    const expected = 0;
     expect(actual).toEqual(expected);
   });
 });
 
+describe('negativePixels', () => {
+  it('converts an integer into a CSS offset', () => {
+    const actual = negativePixels(1);
+    const expected = '-1px';
+    expect(actual).toEqual(expected);
+  });
+  it('handles 0', () => {
+    const actual = negativePixels(0);
+    const expected = '-0px';
+    expect(actual).toEqual(expected);
+  });
+});
+
+describe('loopText', () => {
+  const long = 'This is a long string. Longer than 30 characters!';
+  const short = 'This is a short string.';
+  it('loops long string', () => {
+    const actual = loopText(long);
+    const expected = long + long;
+    expect(actual).toEqual(expected);
+  });
+  it('does not loop sort strings', () => {
+    const actual = loopText(short);
+    const expected = short;
+    expect(actual).toEqual(expected);
+  });
+});
 describe('getDoubleSizeModeText', () => {
   it('prompts to enable when disabled', () => {
     const actual = getDoubleSizeModeText(true);

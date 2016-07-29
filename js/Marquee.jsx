@@ -28,16 +28,21 @@ const getDoubleSizeModeText = (enabled) => {
   return `${enabled ? 'Disable' : 'Enable'} doublesize mode`;
 };
 
-const wrapForMarquee = (text, step) => {
-  if (text.length <= 30) {
-    return text;
+const isLong = (text) => text.length > 30;
+
+// Given text and step, how many pixels should it be shifted?
+const stepOffset = (text, step) => {
+  if (!isLong(text)) {
+    return 0;
   }
-  step = step % (text.length + 1);
-  const chars = text.split('');
-  const start = chars.slice(step);
-  const end = chars.slice(0, step);
-  return [...start, ' ', ...end].slice(0, 30).join('');
+  return (step % text.length) * 5;
 };
+
+// Format an int as negative pixels
+const negativePixels = (pixels) => `-${pixels}px`;
+
+// If text is wider than the marquee, it needs to loop
+const loopText = (text) => isLong(text) ? text + text : text;
 
 import CharacterString from './CharacterString.jsx';
 
@@ -91,10 +96,13 @@ class Marquee extends React.Component {
   }
 
   render() {
-    const text = wrapForMarquee(this.getText(), this.props.display.marqueeStep);
-    return <CharacterString id='marquee' className='text' onMouseDown={this.handleMouseDown}>
-      {text}
-    </CharacterString>;
+    const text = this.getText();
+    const offset = stepOffset(text, this.props.display.marqueeStep);
+    return <div id='marquee' className='text' onMouseDown={this.handleMouseDown}>
+      <CharacterString style={{marginLeft: negativePixels(offset)}} >
+        {loopText(text)}
+      </CharacterString>
+    </div>;
   }
 }
 
@@ -104,7 +112,9 @@ export {
   getPositionText,
   getMediaText,
   getDoubleSizeModeText,
-  wrapForMarquee,
+  negativePixels,
+  stepOffset,
+  loopText,
   Marquee
 };
 export default connect(state => state)(Marquee);
