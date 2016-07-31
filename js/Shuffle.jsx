@@ -19,4 +19,4 @@ class Shuffle extends React.Component {
   }
 }
 
-module.exports = connect(state => state.media)(Shuffle);
+module.exports = connect((state) => state.media)(Shuffle);

@@ -4,12 +4,10 @@ import {connect} from 'react-redux';
 import CharacterString from './CharacterString.jsx';
 
 
-class Khz extends React.Component {
-  render() {
-    return <CharacterString id='khz'>
-      {this.props.khz}
-    </CharacterString>;
-  }
-}
+const Khz = (props) => {
+  return <CharacterString id='khz'>
+    {props.khz}
+  </CharacterString>;
+};
 
-module.exports = connect(state => state.media)(Khz);
+module.exports = connect((state) => state.media)(Khz);

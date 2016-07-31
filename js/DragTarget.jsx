@@ -20,7 +20,8 @@ class DragTarget extends React.Component {
     return <div
       onDragEnter={this.supress}
       onDragOver={this.supress}
-      onDrop={this.handleDrop}>
+      onDrop={this.handleDrop}
+    >
       {this.props.children}
     </div>;
   }

@@ -72,4 +72,4 @@ class ContextMenu extends React.Component {
   }
 }
 
-module.exports = connect(state => state.contextMenu)(ContextMenu);
+module.exports = connect((state) => state.contextMenu)(ContextMenu);

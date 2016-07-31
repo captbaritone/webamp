@@ -1,9 +1,9 @@
 import {play, pause, stop} from './actionCreators';
 
 module.exports = function(winamp, store) {
-  var keylog = [];
-  var trigger = [78, 85, 76, 27, 76, 27, 83, 79, 70, 84];
-  document.addEventListener('keydown', function(e){
+  let keylog = [];
+  const trigger = [78, 85, 76, 27, 76, 27, 83, 79, 70, 84];
+  document.addEventListener('keydown', (e) => {
     if (e.ctrlKey) { // Is CTRL depressed?
       switch (e.keyCode) {
         // CTRL+D

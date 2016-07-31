@@ -20,4 +20,4 @@ class Visualizer extends React.Component {
   }
 }
 
-module.exports = connect(state => state)(Visualizer);
+module.exports = connect((state) => state)(Visualizer);

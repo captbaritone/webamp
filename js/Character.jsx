@@ -2,7 +2,7 @@ import React from 'react';
 
 module.exports = (props) => {
   const char = '' + props.children;
-  const className = 'character character-' + char.toLowerCase().charCodeAt(0);
+  const className = `character character-${char.toLowerCase().charCodeAt(0)}`;
   return <div {...props} className={className}>{props.children}</div>;
 };
 

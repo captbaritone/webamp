@@ -52,4 +52,4 @@ class Position extends React.Component {
   }
 }
 
-module.exports = connect(state => state)(Position);
+module.exports = connect((state) => state)(Position);

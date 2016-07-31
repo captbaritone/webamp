@@ -33,7 +33,7 @@ class Balance extends React.Component {
     const offset = (sprite - 1) * 15;
 
     const style = {
-      backgroundPosition: '0 -' + offset + 'px'
+      backgroundPosition: `0 -${offset}px`
     };
 
     return <input
@@ -51,4 +51,4 @@ class Balance extends React.Component {
   }
 }
 
-module.exports = connect(state => state.media)(Balance);
+module.exports = connect((state) => state.media)(Balance);
