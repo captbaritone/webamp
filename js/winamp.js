@@ -73,22 +73,6 @@ module.exports = {
   },
 
   /* Functions */
-  getDuration: function() {
-    return this.media.duration();
-  },
-
-  getTimeRemaining: function() {
-    return this.media.timeRemaining();
-  },
-
-  getTimeElapsed: function() {
-    return this.media.timeElapsed();
-  },
-
-  getPercentComplete: function() {
-    return this.media.percentComplete();
-  },
-
   seekToPercentComplete: function(percent) {
     this.media.seekToPercentComplete(percent);
   },
@@ -184,18 +168,5 @@ module.exports = {
 
     // Note, this will not happen right away
     this.media.loadBuffer(buffer, setMetaData.bind(this));
-  },
-
-  /* Helpers */
-  _timeObject: function(time) {
-    var minutes = Math.floor(time / 60);
-    var seconds = time - (minutes * 60);
-
-    return [
-      Math.floor(minutes / 10),
-      Math.floor(minutes % 10),
-      Math.floor(seconds / 10),
-      Math.floor(seconds % 10)
-    ];
   }
 };
