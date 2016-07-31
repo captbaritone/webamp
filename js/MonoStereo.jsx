@@ -9,4 +9,4 @@ const MonoStereo = (props) => {
   </div>;
 };
 
-module.exports = connect(state => state.media)(MonoStereo);
+module.exports = connect((state) => state.media)(MonoStereo);

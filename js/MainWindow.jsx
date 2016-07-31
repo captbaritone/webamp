@@ -81,9 +81,9 @@ const MainWindow = (props) => {
         <Shuffle />
         <Repeat />
       </div>
-      <a id='about' target='blank' href= 'https://github.com/captbaritone/winamp2-js'></a>
+      <a id='about' target='blank' href='https://github.com/captbaritone/winamp2-js'></a>
     </div>
   </DragTarget>;
 };
 
-module.exports = connect(state => state)(MainWindow);
+module.exports = connect((state) => state)(MainWindow);

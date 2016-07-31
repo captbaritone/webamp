@@ -27,7 +27,7 @@ module.exports = {
     this.dispatch({type: 'SET_VOLUME', volume: options.volume});
     this.dispatch({type: 'SET_BALANCE', balance: options.balance});
     this.loadFromUrl(options.mediaFile.url, options.mediaFile.name);
-    var skinFile = new MyFile();
+    const skinFile = new MyFile();
     skinFile.setUrl(options.skinUrl);
     this.setSkin(skinFile);
 
@@ -36,39 +36,37 @@ module.exports = {
   },
 
   _registerListeners: function() {
-    var self = this;
-
     this.windowManager.registerWindow(this.mainWindow);
 
-    this.media.addEventListener('timeupdate', function() {
-      self.dispatch({type: 'UPDATE_TIME_ELAPSED', elapsed: self.media.timeElapsed()});
+    this.media.addEventListener('timeupdate', () => {
+      this.dispatch({type: 'UPDATE_TIME_ELAPSED', elapsed: this.media.timeElapsed()});
       // Legacy
-      window.dispatchEvent(self.events.timeUpdated);
+      window.dispatchEvent(this.events.timeUpdated);
     });
 
-    this.media.addEventListener('visualizerupdate', function(analyser) {
-      self.skin.visualizer.paintFrame(self.visualizerStyle, analyser);
+    this.media.addEventListener('visualizerupdate', (analyser) => {
+      this.skin.visualizer.paintFrame(this.visualizerStyle, analyser);
     });
 
-    this.media.addEventListener('ended', function() {
-      self.skin.visualizer.clear();
-      self.dispatch({type: 'MEDIA_IS_STOPPED'});
+    this.media.addEventListener('ended', () => {
+      this.skin.visualizer.clear();
+      this.dispatch({type: 'MEDIA_IS_STOPPED'});
     });
 
-    this.media.addEventListener('waiting', function() {
-      self.dispatch({type: 'START_WORKING'});
+    this.media.addEventListener('waiting', () => {
+      this.dispatch({type: 'START_WORKING'});
     });
 
-    this.media.addEventListener('stopWaiting', function() {
-      self.dispatch({type: 'STOP_WORKING'});
+    this.media.addEventListener('stopWaiting', () => {
+      this.dispatch({type: 'STOP_WORKING'});
     });
 
-    this.media.addEventListener('playing', function() {
-      self.dispatch({type: 'MEDIA_IS_PLAYING'});
+    this.media.addEventListener('playing', () => {
+      this.dispatch({type: 'MEDIA_IS_PLAYING'});
     });
 
-    this.fileInput.onchange = function(e){
-      self.loadFromFileReference(e.target.files[0]);
+    this.fileInput.onchange = (e) => {
+      this.loadFromFileReference(e.target.files[0]);
     };
   },
 
@@ -93,7 +91,7 @@ module.exports = {
 
   seekForwardBy: function(seconds) {
     this.media.seekToTime(this.media.timeElapsed() + seconds);
-    window.dispatchEvent(self.events.timeUpdated);
+    window.dispatchEvent(this.events.timeUpdated);
   },
 
   toggleRepeat: function() {
@@ -114,7 +112,7 @@ module.exports = {
   },
 
   loadFromFileReference: function(fileReference) {
-    var file = new MyFile();
+    const file = new MyFile();
     file.setFileReference(fileReference);
     if (new RegExp('(wsz|zip)$', 'i').test(fileReference.name)) {
       this.skin.setSkinByFile(file);
@@ -132,7 +130,7 @@ module.exports = {
     } else {
       this.fileName = fileName;
     }
-    var file = new MyFile();
+    const file = new MyFile();
     file.setUrl(url);
     file.processBuffer(this._loadBuffer.bind(this));
   },
@@ -156,8 +154,8 @@ module.exports = {
   /* Listeners */
   _loadBuffer: function(buffer) {
     function setMetaData() {
-      var kbps = '128';
-      var khz = Math.round(this.media.sampleRate() / 1000).toString();
+      const kbps = '128';
+      const khz = Math.round(this.media.sampleRate() / 1000).toString();
       this.dispatch({type: 'SET_MEDIA_KBPS', kbps: kbps});
       this.dispatch({type: 'SET_MEDIA_KHZ', khz: khz});
       this.dispatch({type: 'SET_CHANNELS_COUNT', channels: this.media.channels()});

@@ -21,13 +21,13 @@ class Actions extends React.Component {
   }
   render() {
     return <div className='actions'>
-        <div id='previous'></div>
-        <div id='play' onClick={this.play}></div>
-        <div id='pause' onClick={this.pause}></div>
-        <div id='stop' onClick={this.stop}></div>
-        <div id='next'></div>
+      <div id='previous'></div>
+      <div id='play' onClick={this.play}></div>
+      <div id='pause' onClick={this.pause}></div>
+      <div id='stop' onClick={this.stop}></div>
+      <div id='next'></div>
     </div>;
   }
 }
 
-module.exports = connect(state => state.media)(Actions);
+module.exports = connect((state) => state.media)(Actions);

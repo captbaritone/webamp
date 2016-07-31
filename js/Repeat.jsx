@@ -19,4 +19,4 @@ class Repeat extends React.Component {
   }
 }
 
-module.exports = connect(state => state.media)(Repeat);
+module.exports = connect((state) => state.media)(Repeat);

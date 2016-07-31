@@ -34,4 +34,4 @@ class ClutterBar extends React.Component {
   }
 }
 
-module.exports = connect(state => state.display)(ClutterBar);
+module.exports = connect((state) => state.display)(ClutterBar);

@@ -117,4 +117,4 @@ export {
   loopText,
   Marquee
 };
-export default connect(state => state)(Marquee);
+export default connect((state) => state)(Marquee);

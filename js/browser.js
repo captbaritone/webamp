@@ -1,6 +1,6 @@
 module.exports = function(base) {
-  var supportsAudioApi = !!(base.AudioContext || base.webkitAudioContext);
-  var supportsCanvas = !!(base.document.createElement('canvas').getContext);
+  const supportsAudioApi = !!(base.AudioContext || base.webkitAudioContext);
+  const supportsCanvas = !!(base.document.createElement('canvas').getContext);
 
   this.isCompatible = supportsAudioApi && supportsCanvas;
 };
