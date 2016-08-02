@@ -21,7 +21,26 @@ const getTimeStr = (time) => {
   ].join('');
 };
 
+const parseViscolors = (text) => {
+  const entries = text.split('\n');
+  const regex = /^(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/;
+  const colors = [];
+  // changed to a hard number to deal with empty lines at the end...
+  // plus its only meant to be an exact amount of numbers anywayz
+  // - @PAEz
+  for (let i = 0; i < 24; i++) {
+    const matches = regex.exec(entries[i]);
+    if (matches) {
+      colors[i] = `rgb(${matches.slice(1, 4).join(',')})`;
+    } else {
+      console.error('Error in VISCOLOR.TXT on line', i);
+    }
+  }
+  return colors;
+};
+
 module.exports = {
   getTimeObj,
-  getTimeStr
+  getTimeStr,
+  parseViscolors
 };

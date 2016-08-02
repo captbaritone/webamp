@@ -42,7 +42,7 @@ class ContextMenu extends React.Component {
   }
 
   setSkin(e) {
-    setSkinFromFilename(this.props.winamp, e.target.dataset.filename);
+    this.props.dispatch(setSkinFromFilename(e.target.dataset.filename));
   }
 
   render() {

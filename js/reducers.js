@@ -19,23 +19,6 @@ const userInput = (state, action) => {
   }
 };
 
-const visualizer = (state, action) => {
-  if (!state) {
-    return {
-      colors: [],
-      style: 2
-    };
-  }
-  switch (action.type) {
-    case 'SET_VISUALIZATION_COLORS':
-      return {...state, colors: action.colors};
-    case 'TOGGLE_VISUALIZER_STYLE':
-      return {...state, style: (state.style + 1) % 3};
-    default:
-      return state;
-  }
-};
-
 const display = (state, action) => {
   if (!state) {
     return {
@@ -45,7 +28,10 @@ const display = (state, action) => {
       llama: false,
       closed: false,
       shade: false,
-      working: false
+      working: false,
+      skinCss: null,
+      skinColors: null,
+      visualizerStyle: 2
     };
   }
   switch (action.type) {
@@ -62,12 +48,19 @@ const display = (state, action) => {
       return {...state, working: false};
     case 'START_WORKING':
       return {...state, working: true};
-    case 'STOP_LOADING':
-      return {...state, loading: false};
     case 'START_LOADING':
       return {...state, loading: true};
     case 'CLOSE_WINAMP':
       return {...state, closed: true};
+    case 'SET_SKIN_DATA':
+      return {
+        ...state,
+        loading: false,
+        skinCss: action.skinCss,
+        skinColors: action.skinColors
+      };
+    case 'TOGGLE_VISUALIZER_STYLE':
+      return {...state, visualizerStyle: (state.visualizerStyle + 1) % 3};
     default:
       return state;
   }
@@ -143,7 +136,6 @@ const createReducer = (winamp) => {
   const reducer = combineReducers({
     userInput,
     display,
-    visualizer,
     contextMenu,
     media
   });

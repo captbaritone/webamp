@@ -10,6 +10,7 @@ import Browser from './browser';
 import MainWindow from './MainWindow.jsx';
 import Winamp from './winamp';
 import Hotkeys from './hotkeys';
+import Skin from './Skin.jsx';
 
 if (new Browser(window).isCompatible) {
   var winamp = Winamp;
@@ -21,7 +22,13 @@ if (new Browser(window).isCompatible) {
 
   render(
     <Provider store={store}>
-      <MainWindow winamp={winamp} mediaPlayer={winamp.media} />
+      <div>
+        <Skin>
+          {/* This is not technically kosher, since <style> tags should be in
+          the <head>, but browsers don't really care... */}
+        </Skin>
+        <MainWindow winamp={winamp} mediaPlayer={winamp.media} />
+      </div>
     </Provider>,
     document.getElementById('winamp2-js')
   );

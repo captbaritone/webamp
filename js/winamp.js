@@ -1,7 +1,7 @@
 // UI and App logic
-import Skin from './skin';
 import Media from './media';
 import MyFile from './my-file';
+import {setSkinFromUrl, setSkinFromFile} from './actionCreators';
 
 import '../css/winamp.css';
 
@@ -12,8 +12,6 @@ module.exports = {
     this.fileInput.type = 'file';
     this.fileInput.style.display = 'none';
 
-    this.skin = Skin.init(this.media._analyser);
-
     this.events = {
       timeUpdated: new Event('timeUpdated')
     };
@@ -21,10 +19,7 @@ module.exports = {
     this.dispatch({type: 'SET_VOLUME', volume: options.volume});
     this.dispatch({type: 'SET_BALANCE', balance: options.balance});
     this.loadFromUrl(options.mediaFile.url, options.mediaFile.name);
-    const skinFile = new MyFile();
-    skinFile.setUrl(options.skinUrl);
-    this.setSkin(skinFile);
-
+    this.dispatch(setSkinFromUrl(options.skinUrl));
     this._registerListeners();
     return this;
   },
@@ -97,9 +92,7 @@ module.exports = {
     const file = new MyFile();
     file.setFileReference(fileReference);
     if (new RegExp('(wsz|zip)$', 'i').test(fileReference.name)) {
-      this.skin.setSkinByFile(file, (colors) => {
-        this.dispatch({type: 'SET_VISUALIZATION_COLORS', colors});
-      });
+      this.dispatch(setSkinFromFile(file));
     } else {
       this.media.autoPlay = true;
       this.fileName = fileReference.name;
@@ -117,14 +110,6 @@ module.exports = {
     const file = new MyFile();
     file.setUrl(url);
     file.processBuffer(this._loadBuffer.bind(this));
-  },
-
-  setSkin: function(file) {
-    this.dispatch({type: 'START_LOADING'});
-    this.skin.setSkinByFile(file, (colors) => {
-      this.dispatch({type: 'STOP_LOADING'});
-      this.dispatch({type: 'SET_VISUALIZATION_COLORS', colors});
-    });
   },
 
   /* Listeners */
