@@ -19,6 +19,23 @@ const userInput = (state, action) => {
   }
 };
 
+const visualizer = (state, action) => {
+  if (!state) {
+    return {
+      colors: [],
+      style: 2
+    };
+  }
+  switch (action.type) {
+    case 'SET_VISUALIZATION_COLORS':
+      return {...state, colors: action.colors};
+    case 'TOGGLE_VISUALIZER_STYLE':
+      return {...state, style: (state.style + 1) % 3};
+    default:
+      return state;
+  }
+};
+
 const display = (state, action) => {
   if (!state) {
     return {
@@ -114,12 +131,8 @@ const media = (state, action) => {
       return {...state, repeat: !state.repeat};
     case 'TOGGLE_SHUFFLE':
       return {...state, shuffle: !state.shuffle};
-    case 'MEDIA_IS_PLAYING':
-      return {...state, status: 'PLAYING'};
-    case 'MEDIA_IS_PAUSED':
-      return {...state, status: 'PAUSED'};
-    case 'MEDIA_IS_STOPPED':
-      return {...state, status: 'STOPPED'};
+    case 'SET_MEDIA_STATUS':
+      return {...state, status: action.status};
     default:
       return state;
   }
@@ -130,6 +143,7 @@ const createReducer = (winamp) => {
   const reducer = combineReducers({
     userInput,
     display,
+    visualizer,
     contextMenu,
     media
   });
@@ -153,9 +167,6 @@ const createReducer = (winamp) => {
         return state;
       case 'TOGGLE_SHUFFLE':
         winamp.toggleShuffle();
-        return state;
-      case 'TOGGLE_VISUALIZER':
-        winamp.toggleVisualizer();
         return state;
       default:
         return state;

@@ -67,7 +67,7 @@ const MainWindow = (props) => {
           <div id='play-pause'></div>
           <div id='work-indicator' className={props.display.working ? 'selected' : ''}></div>
           <Time />
-          <Visualizer />
+          <Visualizer analyser={props.mediaPlayer._analyser}/>
         </div>
         <div className='media-info'>
           <Marquee />

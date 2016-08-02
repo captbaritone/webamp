@@ -4,10 +4,10 @@ export function play(mediaPlayer) {
   return (dispatch, getState) => {
     if (getState().media.status === 'PLAYING') {
       mediaPlayer.stop();
-      dispatch({type: 'MEDIA_IS_STOPPED'});
+      dispatch({type: 'SET_MEDIA_STATUS', status: 'STOPPED'});
     } else {
       mediaPlayer.play();
-      dispatch({type: 'MEDIA_IS_PLAYING'});
+      dispatch({type: 'SET_MEDIA_STATUS', status: 'PLAYING'});
     }
   };
 }
@@ -18,11 +18,11 @@ export function pause(mediaPlayer) {
     switch (status) {
       case 'PAUSED':
         mediaPlayer.play();
-        dispatch({type: 'MEDIA_IS_PLAYING'});
+        dispatch({type: 'SET_MEDIA_STATUS', status: 'PLAYING'});
         break;
       case 'PLAYING':
         mediaPlayer.pause();
-        dispatch({type: 'MEDIA_IS_PAUSED'});
+        dispatch({type: 'SET_MEDIA_STATUS', status: 'PAUSED'});
         break;
     }
   };
@@ -31,7 +31,7 @@ export function pause(mediaPlayer) {
 export function stop(mediaPlayer) {
   return (dispatch) => {
     mediaPlayer.stop();
-    dispatch({type: 'MEDIA_IS_STOPPED'});
+    dispatch({type: 'SET_MEDIA_STATUS', status: 'STOPPED'});
   };
 }
 
