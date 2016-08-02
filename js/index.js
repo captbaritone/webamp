@@ -35,14 +35,16 @@ if (new Browser(window).isCompatible) {
 
   winamp.dispatch = store.dispatch;
 
+  const cdnUrl = 'https://cdn.rawgit.com/captbaritone/winamp2-js/master/';
+  const assetBase = process.env.NODE_ENV === 'production' ? cdnUrl : '';
   winamp.init({
     volume: 50,
     balance: 0,
     mediaFile: {
-      url: process.env.NODE_ENV === 'production' ? 'https://cdn.rawgit.com/captbaritone/llama/master/llama-2.91.mp3' : 'mp3/llama-2.91.mp3',
+      url: `${assetBase}mp3/llama-2.91.mp3`,
       name: "1. DJ Mike Llama - Llama Whippin' Intro"
     },
-    skinUrl: process.env.NODE_ENV === 'production' ? 'https://cdn.rawgit.com/captbaritone/winamp-skins/master/v2/base-2.91.wsz' : 'skins/base-2.91.wsz'
+    skinUrl: `${assetBase}skins/base-2.91.wsz`
   });
 
   new Hotkeys(winamp, store);
