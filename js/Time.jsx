@@ -18,11 +18,11 @@ class Time extends React.Component {
 
     const timeObj = getTimeObj(seconds);
     return <div id='time' onClick={this.toggleTimeMode} className='countdown'>
-      {this.props.timeMode === 'REMAINING' && <div id='minus-sign'></div>}
-      <div id='minute-first-digit' className={`digit digit-${timeObj.minutesFirstDigit}`}></div>
-      <div id='minute-second-digit' className={`digit digit-${timeObj.minutesSecondDigit}`}></div>
-      <div id='second-first-digit' className={`digit digit-${timeObj.secondsFirstDigit}`}></div>
-      <div id='second-second-digit' className={`digit digit-${timeObj.secondsSecondDigit}`}></div>
+      {this.props.timeMode === 'REMAINING' && <div id='minus-sign' />}
+      <div id='minute-first-digit' className={`digit digit-${timeObj.minutesFirstDigit}`} />
+      <div id='minute-second-digit' className={`digit digit-${timeObj.minutesSecondDigit}`} />
+      <div id='second-first-digit' className={`digit digit-${timeObj.secondsFirstDigit}`} />
+      <div id='second-second-digit' className={`digit digit-${timeObj.secondsSecondDigit}`} />
     </div>;
   }
 }

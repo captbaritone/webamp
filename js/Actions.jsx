@@ -21,11 +21,11 @@ class Actions extends React.Component {
   }
   render() {
     return <div className='actions'>
-      <div id='previous'></div>
-      <div id='play' onClick={this.play}></div>
-      <div id='pause' onClick={this.pause}></div>
-      <div id='stop' onClick={this.stop}></div>
-      <div id='next'></div>
+      <div id='previous' />
+      <div id='play' onClick={this.play} />
+      <div id='pause' onClick={this.pause} />
+      <div id='stop' onClick={this.stop} />
+      <div id='next' />
     </div>;
   }
 }
