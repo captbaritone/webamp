@@ -1,6 +1,6 @@
 // UI and App logic
 import Media from './media';
-import MyFile from './my-file';
+import MyFile from './myFile';
 import {setSkinFromUrl, setSkinFromFile} from './actionCreators';
 
 import '../css/winamp.css';

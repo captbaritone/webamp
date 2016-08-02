@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import classnames from 'classnames';
 
-import Actions from './Actions.jsx';
+import ActionButtons from './ActionButtons.jsx';
 import Balance from './Balance.jsx';
 import Close from './Close.jsx';
 import ClutterBar from './ClutterBar.jsx';
@@ -23,7 +23,7 @@ import Time from './Time.jsx';
 import Visualizer from './Visualizer.jsx';
 import Volume from './Volume.jsx';
 
-import '../css/main-window.css';
+import '../../css/main-window.css';
 
 const MainWindow = (props) => {
   const {status} = props.media;
@@ -82,7 +82,7 @@ const MainWindow = (props) => {
           <div id='playlist-button' />
         </div>
         <Position mediaPlayer={props.mediaPlayer} />
-        <Actions mediaPlayer={props.mediaPlayer} />
+        <ActionButtons mediaPlayer={props.mediaPlayer} />
         <Eject />
         <div className='shuffle-repeat'>
           <Shuffle />

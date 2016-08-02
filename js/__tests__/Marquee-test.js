@@ -1,4 +1,4 @@
-jest.unmock('../Marquee.jsx');
+jest.unmock('../components/Marquee.jsx');
 jest.unmock('../utils');
 
 import {
@@ -10,7 +10,7 @@ import {
   stepOffset,
   negativePixels,
   loopText
-} from '../Marquee.jsx';
+} from '../components/Marquee.jsx';
 
 describe('getBalanceText', () => {
   it('treats negative numbers as left', () => {
