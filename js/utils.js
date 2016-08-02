@@ -1,6 +1,6 @@
 const getTimeObj = (time) => {
-  var minutes = Math.floor(time / 60);
-  var seconds = time % 60;
+  const minutes = Math.floor(time / 60);
+  const seconds = time % 60;
 
   return {
     minutesFirstDigit: Math.floor(minutes / 10),

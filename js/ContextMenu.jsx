@@ -46,7 +46,7 @@ class ContextMenu extends React.Component {
   }
 
   render() {
-    var classes = this.props.selected ? 'selected' : '';
+    const classes = this.props.selected ? 'selected' : '';
     return <div id='option' className={classes} onClick={this.toggleMenu}>
       <ul id='context-menu'>
         <li><a href='https://github.com/captbaritone/winamp2-js' target='_blank'>Winamp2-js...</a></li>

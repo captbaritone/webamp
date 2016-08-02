@@ -1,5 +1,5 @@
 /* TODO: There are too many " " and "_" characters */
-var FONT_LOOKUP = {
+const FONT_LOOKUP = {
   'a': [0, 0], 'b': [0, 1], 'c': [0, 2], 'd': [0, 3], 'e': [0, 4], 'f': [0, 5],
   'g': [0, 6], 'h': [0, 7], 'i': [0, 8], 'j': [0, 9], 'k': [0, 10],
   'l': [0, 11], 'm': [0, 12], 'n': [0, 13], 'o': [0, 14], 'p': [0, 15],
@@ -16,13 +16,13 @@ var FONT_LOOKUP = {
   '>': [1, 23], '{': [1, 22], '}': [1, 23]
 };
 
-var CHAR_X = 5;
-var CHAR_Y = 6;
+const CHAR_X = 5;
+const CHAR_Y = 6;
 
-var characterSprites = [];
-for (var key in FONT_LOOKUP) {
+const characterSprites = [];
+for (const key in FONT_LOOKUP) {
   if (FONT_LOOKUP.hasOwnProperty(key)) {
-    var position = FONT_LOOKUP[key];
+    const position = FONT_LOOKUP[key];
     characterSprites.push({
       selectors: ['.character-' + key.charCodeAt(0)],
       y: position[0] * CHAR_Y,

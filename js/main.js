@@ -13,8 +13,8 @@ import Hotkeys from './hotkeys';
 import Skin from './Skin.jsx';
 
 if (new Browser(window).isCompatible) {
-  var winamp = Winamp;
-  let store = createStore(
+  const winamp = Winamp;
+  const store = createStore(
     createReducer(winamp),
     window.devToolsExtension && window.devToolsExtension(),
     applyMiddleware(thunk)

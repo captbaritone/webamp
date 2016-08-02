@@ -100,7 +100,7 @@
     "no-unused-vars": "error",
     "no-use-before-define": ["error", "nofunc"],
     "no-useless-rename": "error",
-    "no-var": "warn",
+    "no-var": "error",
     "no-with": "error",
     "object-curly-spacing": ["error", "never"],
     "prefer-arrow-callback": "warn",
