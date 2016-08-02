@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {close} from './actionCreators';
+import {close} from '../actionCreators';
 
 
 class Close extends React.Component {

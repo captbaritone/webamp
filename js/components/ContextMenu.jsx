@@ -1,9 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {close, setSkinFromFilename} from './actionCreators';
+import {close, setSkinFromFilename} from '../actionCreators';
 
-import '../css/context-menu.css';
+import '../../css/context-menu.css';
 
 class ContextMenu extends React.Component {
   constructor(props) {

@@ -21,7 +21,7 @@ module.exports = {
       /jszip\.js$/
     ]
   },
-  entry: './js/main.js',
+  entry: './js/index.js',
   output: {
     filename: 'winamp.js',
     publicPath: '/built/',

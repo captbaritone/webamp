@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {getTimeObj} from './utils';
+import {getTimeObj} from '../utils';
 
 class Time extends React.Component {
   constructor(props) {

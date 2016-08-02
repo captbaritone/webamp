@@ -1,4 +1,4 @@
-import SKIN_SPRITES from './skin-sprites';
+import SKIN_SPRITES from './skinSprites';
 import JSZip from '../node_modules/jszip/dist/jszip'; // Hack
 import {parseViscolors} from './utils';
 

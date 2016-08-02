@@ -2,7 +2,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {getTimeStr} from './utils';
+import {getTimeStr} from '../utils';
 
 const getBalanceText = (balance) => {
   if (balance === 0) {

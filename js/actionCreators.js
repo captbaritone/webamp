@@ -1,4 +1,4 @@
-import MyFile from './my-file';
+import MyFile from './myFile';
 import skinParser from './skinParser';
 
 export function play(mediaPlayer) {

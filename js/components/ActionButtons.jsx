@@ -1,9 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {play, pause, stop} from './actionCreators';
+import {play, pause, stop} from '../actionCreators';
 
 
-class Actions extends React.Component {
+class ActionButtons extends React.Component {
   constructor(props) {
     super(props);
     this.play = this.play.bind(this);
@@ -30,4 +30,4 @@ class Actions extends React.Component {
   }
 }
 
-module.exports = connect((state) => state.media)(Actions);
+module.exports = connect((state) => state.media)(ActionButtons);
