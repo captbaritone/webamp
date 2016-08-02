@@ -35,7 +35,7 @@ for (var key in FONT_LOOKUP) {
 
 module.exports = [
   {
-    img: 'BALANCE',
+    name: 'BALANCE',
     sprites: [
       {selectors: ['#balance'], x: 9, y: 0, width: 38, height: 420},
       {selectors: ['#balance::-webkit-slider-thumb', '#balance::-moz-range-thumb'], x: 15, y: 422, width: 14, height: 11},
@@ -43,7 +43,7 @@ module.exports = [
     ]
   },
   {
-    img: 'CBUTTONS',
+    name: 'CBUTTONS',
     sprites: [
       {selectors: ['.actions #previous'], x: 0, y: 0, width: 23, height: 18},
       {selectors: ['.actions #previous:active'], x: 0, y: 18, width: 23, height: 18},
@@ -60,13 +60,13 @@ module.exports = [
     ]
   },
   {
-    img: 'MAIN',
+    name: 'MAIN',
     sprites: [
       {selectors: ['#main-window'], x: 0, y: 0, width: 275, height: 116}
     ]
   },
   {
-    img: 'MONOSTER',
+    name: 'MONOSTER',
     sprites: [
       {selectors: ['.media-info #stereo', '.stop .media-info #stereo.selected'], x: 0, y: 12, width: 29, height: 12},
       {selectors: ['.media-info #stereo.selected'], x: 0, y: 0, width: 29, height: 12},
@@ -75,7 +75,7 @@ module.exports = [
     ]
   },
   {
-    img: 'NUMBERS',
+    name: 'NUMBERS',
     sprites: [
       {selectors: ['#time #minus-sign'], x: 9, y: 6, width: 5, height: 1},
       {selectors: ['#time.countdown #minus-sign'], x: 20, y: 6, width: 5, height: 1},
@@ -92,7 +92,7 @@ module.exports = [
     ]
   },
   {
-    img: 'NUMS_EX',
+    name: 'NUMS_EX',
     sprites: [
       {selectors: ['#time #minus-sign'], x: 90, y: 0, width: 9, height: 13},
       {selectors: ['#time.countdown #minus-sign'], x: 99, y: 0, width: 9, height: 13},
@@ -109,7 +109,7 @@ module.exports = [
     ]
   },
   {
-    img: 'PLAYPAUS',
+    name: 'PLAYPAUS',
     sprites: [
       {selectors: ['.play #play-pause'], x: 0, y: 0, width: 9, height: 9},
       {selectors: ['.pause #play-pause'], x: 9, y: 0, width: 9, height: 9},
@@ -119,7 +119,7 @@ module.exports = [
     ]
   },
   /* {
-     img: 'PLEDIT',
+     name: 'PLEDIT',
      sprites: [
      {selectors: ['.playlist-top-tile'], x: 127, y: 21, width: 25, height: 20},
      {selectors: ['.selected .playlist-top-tile'], x: 127, y: 0, width: 25, height: 20},
@@ -130,7 +130,7 @@ module.exports = [
      ]
      }, */
   {
-    img: 'POSBAR',
+    name: 'POSBAR',
     sprites: [
       {selectors: ['#position'], x: 0, y: 0, width: 248, height: 10},
       {selectors: ['#position::-webkit-slider-thumb', '#position::-moz-range-thumb'], x: 248, y: 0, width: 29, height: 10},
@@ -138,7 +138,7 @@ module.exports = [
     ]
   },
   {
-    img: 'SHUFREP',
+    name: 'SHUFREP',
     sprites: [
       {selectors: ['#shuffle'], x: 28, y: 0, width: 47, height: 15},
       {selectors: ['#shuffle:active'], x: 28, y: 15, width: 47, height: 15},
@@ -155,11 +155,11 @@ module.exports = [
     ]
   },
   {
-    img: 'TEXT',
+    name: 'TEXT',
     sprites: characterSprites
   },
   {
-    img: 'TITLEBAR',
+    name: 'TITLEBAR',
     sprites: [
       {selectors: ['#title-bar'], x: 27, y: 15, width: 275, height: 14},
       {selectors: ['#title-bar.selected'], x: 27, y: 0, width: 275, height: 14},
@@ -192,11 +192,14 @@ module.exports = [
     ]
   },
   {
-    img: 'VOLUME',
+    name: 'VOLUME',
     sprites: [
       {selectors: ['#volume'], x: 0, y: 0, width: 68, height: 420},
       {selectors: ['#volume::-webkit-slider-thumb', '#volume::-moz-range-thumb'], x: 15, y: 422, width: 14, height: 11},
       {selectors: ['#volume::-webkit-slider-thumb:active', '#volume::-moz-range-thumb:active'], x: 0, y: 422, width: 14, height: 11}
     ]
+  },
+  {
+    name: 'VISCOLOR'
   }
 ];

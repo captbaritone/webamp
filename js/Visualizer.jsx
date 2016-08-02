@@ -54,6 +54,9 @@ class Visualizer extends React.Component {
   }
 
   setStyle() {
+    if (!this.props.colors) {
+      return;
+    }
     // TODO: Split this into to methods. One for skin update, one for style
     // update.
     this.preRenderBg();
@@ -195,7 +198,12 @@ class Visualizer extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  return {...state.visualizer, status: state.media.status};
+  return {
+    colors: state.display.skinColors,
+    style: state.display.visualizerStyle,
+    status: state.media.status
+  };
+
 };
 
 module.exports = connect(mapStateToProps)(Visualizer);

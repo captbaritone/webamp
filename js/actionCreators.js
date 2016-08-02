@@ -1,4 +1,5 @@
 import MyFile from './my-file';
+import skinParser from './skinParser';
 
 export function play(mediaPlayer) {
   return (dispatch, getState) => {
@@ -42,10 +43,26 @@ export function close(mediaPlayer) {
   };
 }
 
-export function setSkinFromFilename(winamp, filename) {
-  const url = `https://cdn.rawgit.com/captbaritone/winamp-skins/master/v2/${filename}`;
+export function setSkinFromFile(skinFile) {
+  return (dispatch) => {
+    dispatch({type: 'START_LOADING'});
+    skinParser(skinFile).then((skinData) => {
+      return dispatch({
+        type: 'SET_SKIN_DATA',
+        skinCss: skinData.css,
+        skinColors: skinData.colors
+      });
+    });
+  };
+}
+
+export function setSkinFromUrl(url) {
   const skinFile = new MyFile();
   skinFile.setUrl(url);
-  winamp.setSkin(skinFile);
-  return {type: 'START_LOADING'};
+  return setSkinFromFile(skinFile);
+}
+
+export function setSkinFromFilename(filename) {
+  const url = `https://cdn.rawgit.com/captbaritone/winamp-skins/master/v2/${filename}`;
+  return setSkinFromUrl(url);
 }
