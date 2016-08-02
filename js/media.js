@@ -84,7 +84,7 @@ module.exports = {
     this.stop();
     this._callbacks.waiting();
 
-    var loadAudioBuffer = function(audioBuffer) {
+    const loadAudioBuffer = function(audioBuffer) {
       this._buffer = audioBuffer;
       loadedCallback();
       this._callbacks.stopWaiting();
@@ -93,7 +93,7 @@ module.exports = {
       }
     };
 
-    var error = function(errorMessage) {
+    const error = function(errorMessage) {
       console.error('failed to decode:', errorMessage);
     };
     // Decode the target file into an arrayBuffer and pass it to loadBuffer
@@ -168,7 +168,7 @@ module.exports = {
 
   /* Actions with arguments */
   seekToPercentComplete: function(percent) {
-    var seekTime = this.duration() * (percent / 100);
+    const seekTime = this.duration() * (percent / 100);
     this.seekToTime(seekTime);
   },
 
@@ -183,7 +183,7 @@ module.exports = {
 
   // From -100 to 100
   setBalance: function(balance) {
-    var changeVal = Math.abs(balance) / 100;
+    let changeVal = Math.abs(balance) / 100;
 
     // Hack for Firefox. Having either channel set to 0 seems to revert us
     // to equal balance.

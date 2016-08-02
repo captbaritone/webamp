@@ -12,12 +12,12 @@ module.exports = function() {
   };
   this.processBuffer = function(bufferHandler) {
     if (this.url) {
-      var oReq = new XMLHttpRequest();
+      const oReq = new XMLHttpRequest();
       oReq.open('GET', this.url, true);
       oReq.responseType = 'arraybuffer';
 
       oReq.onload = function() {
-        var arrayBuffer = oReq.response; // Note: not oReq.responseText
+        const arrayBuffer = oReq.response; // Note: not oReq.responseText
         bufferHandler(arrayBuffer);
       };
 
@@ -26,7 +26,7 @@ module.exports = function() {
 
     } else if (this.fileReference) {
       this.reader.onload = function(e) {
-        var arrayBuffer = e.target.result;
+        const arrayBuffer = e.target.result;
         bufferHandler(arrayBuffer);
       };
       this.reader.onerror = function(e) {

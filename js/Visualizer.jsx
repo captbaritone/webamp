@@ -6,10 +6,10 @@ const BAR = 2;
 
 // Return the average value in a slice of dataArray
 function sliceAverage(dataArray, sliceWidth, sliceNumber) {
-  var start = sliceWidth * sliceNumber;
-  var end = start + sliceWidth;
-  var sum = 0;
-  for (var i = start; i < end; i++) {
+  const start = sliceWidth * sliceNumber;
+  const end = start + sliceWidth;
+  let sum = 0;
+  for (let i = start; i < end; i++) {
     sum += dataArray[i];
   }
   return sum / sliceWidth;
@@ -87,12 +87,12 @@ class Visualizer extends React.Component {
 
   // Pre-render the background grid
   preRenderBg() {
-    var bgCanvasCtx = this.bgCanvas.getContext('2d');
+    const bgCanvasCtx = this.bgCanvas.getContext('2d');
     bgCanvasCtx.fillStyle = this.props.colors[0];
     bgCanvasCtx.fillRect(0, 0, this.width, this.height);
     bgCanvasCtx.fillStyle = this.props.colors[1];
-    for (var x = 0; x < this.width; x += 4) {
-      for (var y = 2; y < this.height; y += 4) {
+    for (let x = 0; x < this.width; x += 4) {
+      for (let y = 2; y < this.height; y += 4) {
         bgCanvasCtx.fillRect(x, y, 2, 2);
       }
     }
@@ -100,13 +100,13 @@ class Visualizer extends React.Component {
 
   // Pre-render the bar gradient
   preRenderBar() {
-    var barCanvasCtx = this.barCanvas.getContext('2d');
+    const barCanvasCtx = this.barCanvas.getContext('2d');
     barCanvasCtx.fillStyle = this.props.colors[23];
     barCanvasCtx.fillRect(0, 0, 6, 2);
-    for (var i = 0; i <= 15; i++) {
-      var colorNumber = 17 - i;
+    for (let i = 0; i <= 15; i++) {
+      const colorNumber = 17 - i;
       barCanvasCtx.fillStyle = this.props.colors[colorNumber];
-      var y = 32 - (i * 2);
+      const y = 32 - (i * 2);
       barCanvasCtx.fillRect(0, y, 6, 2);
     }
   }
@@ -136,19 +136,19 @@ class Visualizer extends React.Component {
     //
     // We use the  2x scale here since we only want to plot values for
     // "real" pixels.
-    var sliceWidth = Math.floor(this.bufferLength / this.width) * 2;
+    const sliceWidth = Math.floor(this.bufferLength / this.width) * 2;
 
     // The max amplitude is half the height
-    var h = this.height / 2;
+    const h = this.height / 2;
 
     this.canvasCtx.beginPath();
 
     // Iterate over the width of the canvas in "real" pixels.
-    for (var j = 0; j <= this.width / 2; j++) {
-      var amplitude = sliceAverage(this.dataArray, sliceWidth, j);
-      var percentAmplitude = amplitude / 128; // dataArray gives us bytes
-      var y = percentAmplitude * h;
-      var x = j * 2;
+    for (let j = 0; j <= this.width / 2; j++) {
+      const amplitude = sliceAverage(this.dataArray, sliceWidth, j);
+      const percentAmplitude = amplitude / 128; // dataArray gives us bytes
+      const y = percentAmplitude * h;
+      const x = j * 2;
 
       // Canvas coordinates are in the middle of the pixel by default.
       // When we want to draw pixel perfect lines, we will need to
@@ -165,7 +165,7 @@ class Visualizer extends React.Component {
   _printBar(x, height) {
     height = Math.round(height) * 2;
     if (height > 0) {
-      var y = 32 - height;
+      const y = 32 - height;
       // Draw the gray peak line
       this.canvasCtx.drawImage(this.barCanvas, 0, 0, 6, 2, x, y - 2, 6, 2);
       // Draw the gradient
@@ -175,8 +175,8 @@ class Visualizer extends React.Component {
 
   _paintBarFrame() {
     this.props.analyser.getByteFrequencyData(this.dataArray);
-    for (var j = 0; j < this.bufferLength; j++) {
-      var height = this.dataArray[j] * (14 / 256);
+    for (let j = 0; j < this.bufferLength; j++) {
+      const height = this.dataArray[j] * (14 / 256);
       this._printBar(j * 8, height);
     }
   }
