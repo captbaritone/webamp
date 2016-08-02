@@ -20,16 +20,16 @@ class ClutterBar extends React.Component {
 
   render() {
     return <div id='clutter-bar'>
-      <div id='button-o'></div>
-      <div id='button-a'></div>
-      <div id='button-i'></div>
+      <div id='button-o' />
+      <div id='button-a' />
+      <div id='button-i' />
       <div
         id='button-d'
         className={this.props.doubled ? 'selected' : ''}
         onMouseUp={this.handleMouseUpDouble}
         onMouseDown={this.handleMouseDownDouble}
       />
-      <div id='button-v'></div>
+      <div id='button-v' />
     </div>;
   }
 }

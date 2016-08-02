@@ -58,14 +58,14 @@ const MainWindow = (props) => {
         <div id='title-bar' className='selected title-bar'>
           <ContextMenu mediaPlayer={props.mediaPlayer} winamp={props.winamp} />
           <ShadeTime />
-          <div id='minimize'></div>
+          <div id='minimize' />
           <Shade />
           <Close />
         </div>
         <div className='status'>
           <ClutterBar />
-          <div id='play-pause'></div>
-          <div id='work-indicator' className={props.display.working ? 'selected' : ''}></div>
+          <div id='play-pause' />
+          <div id='work-indicator' className={props.display.working ? 'selected' : ''} />
           <Time />
           <Visualizer analyser={props.mediaPlayer._analyser}/>
         </div>
@@ -78,8 +78,8 @@ const MainWindow = (props) => {
         <Volume />
         <Balance />
         <div className='windows'>
-          <div id='equalizer-button'></div>
-          <div id='playlist-button'></div>
+          <div id='equalizer-button' />
+          <div id='playlist-button' />
         </div>
         <Position mediaPlayer={props.mediaPlayer} />
         <Actions mediaPlayer={props.mediaPlayer} />
@@ -88,7 +88,7 @@ const MainWindow = (props) => {
           <Shuffle />
           <Repeat />
         </div>
-        <a id='about' target='blank' href='https://github.com/captbaritone/winamp2-js'></a>
+        <a id='about' target='blank' href='https://github.com/captbaritone/winamp2-js' />
       </div>
     </DraggableWindow>
   </DragTarget>;
