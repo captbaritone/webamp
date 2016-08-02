@@ -5,7 +5,7 @@
   "main": "index.html",
   "scripts": {
     "lint": "eslint js/*.js js/*.jsx",
-    "build": "webpack --optimize-minimize",
+    "build": "webpack --config=webpack.production.config.js",
     "serve": "webpack-dev-server",
     "weight": "npm run build && gzip-size built/winamp.js | pretty-bytes",
     "test": "jest && npm run lint",
