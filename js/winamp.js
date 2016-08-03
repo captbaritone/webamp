@@ -16,17 +16,17 @@ module.exports = {
     this.dispatch({type: 'SET_BALANCE', balance: options.balance});
     this.loadFromUrl(options.mediaFile.url, options.mediaFile.name);
     this.dispatch(setSkinFromUrl(options.skinUrl));
-    this._registerListeners();
-    return this;
-  },
 
-  _registerListeners: function() {
     this.media.addEventListener('timeupdate', () => {
       this.dispatch({type: 'UPDATE_TIME_ELAPSED', elapsed: this.media.timeElapsed()});
     });
 
     this.media.addEventListener('ended', () => {
       this.dispatch({type: 'SET_MEDIA_STATUS', status: 'STOPPED'});
+    });
+
+    this.media.addEventListener('playing', () => {
+      this.dispatch({type: 'SET_MEDIA_STATUS', status: 'PLAYING'});
     });
 
     this.media.addEventListener('waiting', () => {
@@ -40,6 +40,7 @@ module.exports = {
     this.fileInput.onchange = (e) => {
       this.loadFromFileReference(e.target.files[0]);
     };
+    return this;
   },
 
   /* Functions */
