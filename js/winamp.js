@@ -12,10 +12,6 @@ module.exports = {
     this.fileInput.type = 'file';
     this.fileInput.style.display = 'none';
 
-    this.events = {
-      timeUpdated: new Event('timeUpdated')
-    };
-
     this.dispatch({type: 'SET_VOLUME', volume: options.volume});
     this.dispatch({type: 'SET_BALANCE', balance: options.balance});
     this.loadFromUrl(options.mediaFile.url, options.mediaFile.name);
@@ -27,8 +23,6 @@ module.exports = {
   _registerListeners: function() {
     this.media.addEventListener('timeupdate', () => {
       this.dispatch({type: 'UPDATE_TIME_ELAPSED', elapsed: this.media.timeElapsed()});
-      // Legacy
-      window.dispatchEvent(this.events.timeUpdated);
     });
 
     this.media.addEventListener('ended', () => {
@@ -69,7 +63,6 @@ module.exports = {
 
   seekForwardBy: function(seconds) {
     this.media.seekToTime(this.media.timeElapsed() + seconds);
-    window.dispatchEvent(this.events.timeUpdated);
   },
 
   toggleRepeat: function() {
@@ -121,7 +114,6 @@ module.exports = {
       this.dispatch({type: 'SET_MEDIA_KHZ', khz: khz});
       this.dispatch({type: 'SET_CHANNELS_COUNT', channels: this.media.channels()});
       this.dispatch({type: 'SET_MEDIA_NAME', name: this.fileName});
-      window.dispatchEvent(this.events.timeUpdated);
       this.dispatch({type: 'SET_MEDIA_LENGTH', length: this.media.duration()});
     }
 
