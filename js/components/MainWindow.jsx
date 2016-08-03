@@ -60,7 +60,7 @@ const MainWindow = (props) => {
           <ShadeTime />
           <div id='minimize' />
           <Shade />
-          <Close />
+          <Close mediaPlayer={props.mediaPlayer} />
         </div>
         <div className='status'>
           <ClutterBar />

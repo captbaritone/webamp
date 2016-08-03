@@ -64,10 +64,6 @@ module.exports = {
     this.media.toggleShuffle();
   },
 
-  close: function() {
-    this.media.stop();
-  },
-
   openFileDialog: function() {
     this.fileInput.click();
   },
