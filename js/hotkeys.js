@@ -1,4 +1,11 @@
-import {play, pause, stop, adjustVolume, toggleRepeat} from './actionCreators';
+import {
+  play,
+  pause,
+  stop,
+  adjustVolume,
+  toggleRepeat,
+  toggleShuffle
+} from './actionCreators';
 
 module.exports = function(winamp, store) {
   let keylog = [];
@@ -32,7 +39,8 @@ module.exports = function(winamp, store) {
         case 76: store.dispatch({type: 'OPEN_FILE_DIALOG'}); break;
         // R
         case 82: store.dispatch(toggleRepeat(winamp.media)); break;
-        case 83: winamp.toggleShuffle(); break;       // S
+        // S
+        case 83: store.dispatch(toggleShuffle(winamp.media)); break;
         // V
         case 86: store.dispatch(stop(winamp.media)); break;
         // X

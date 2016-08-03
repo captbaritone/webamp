@@ -61,9 +61,28 @@ export function adjustVolume(mediaPlayer, volumeDiff) {
   };
 }
 
+export function setBalance(mediaPlayer, balance) {
+  balance = clamp(balance, -100, 100);
+  // The balance clips to the center
+  if (Math.abs(balance) < 25) {
+    balance = 0;
+  }
+  mediaPlayer.setBalance(balance);
+  return {
+    type: 'SET_BALANCE',
+    balance
+  };
+}
+
+
 export function toggleRepeat(mediaPlayer) {
   mediaPlayer.toggleRepeat();
   return {type: 'TOGGLE_REPEAT'};
+}
+
+export function toggleShuffne(mediaPlayer) {
+  mediaPlayer.toggleShuffne();
+  return {type: 'TOGGLE_SHUFFLE'};
 }
 
 export function setSkinFromFile(skinFile) {

@@ -76,7 +76,7 @@ const MainWindow = (props) => {
           <MonoStereo />
         </div>
         <Volume mediaPlayer={props.mediaPlayer} />
-        <Balance />
+        <Balance mediaPlayer={props.mediaPlayer} />
         <div className='windows'>
           <div id='equalizer-button' />
           <div id='playlist-button' />
@@ -85,7 +85,7 @@ const MainWindow = (props) => {
         <ActionButtons mediaPlayer={props.mediaPlayer} />
         <Eject />
         <div className='shuffle-repeat'>
-          <Shuffle />
+          <Shuffle mediaPlayer={props.mediaPlayer} />
           <Repeat mediaPlayer={props.mediaPlayer} />
         </div>
         <a id='about' target='blank' href='https://github.com/captbaritone/winamp2-js' />

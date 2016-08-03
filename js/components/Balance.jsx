@@ -1,6 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
+import {setBalance} from '../actionCreators';
+
 
 class Balance extends React.Component {
   constructor(props) {
@@ -11,12 +13,7 @@ class Balance extends React.Component {
   }
 
   setBalance(e) {
-    let balance = e.target.value;
-    // The balance clips to the center
-    if (Math.abs(balance) < 25) {
-      balance = 0;
-    }
-    this.props.dispatch({type: 'SET_BALANCE', balance: balance});
+    this.props.dispatch(setBalance(this.props.mediaPlayer, e.target.value));
   }
 
   showMarquee() {

@@ -144,15 +144,9 @@ const createReducer = (winamp) => {
   return (state, action) => {
     state = reducer(state, action);
     switch (action.type) {
-      case 'SET_BALANCE':
-        winamp.setBalance(action.balance);
-        return state;
       case 'OPEN_FILE_DIALOG':
         // TODO: Figure out how to make this pure
         winamp.openFileDialog();
-        return state;
-      case 'TOGGLE_SHUFFLE':
-        winamp.toggleShuffle();
         return state;
       default:
         return state;

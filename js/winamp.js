@@ -47,17 +47,8 @@ module.exports = {
     this.media.seekToPercentComplete(percent);
   },
 
-  // From -100 to 100
-  setBalance: function(balance) {
-    this.media.setBalance(balance);
-  },
-
   seekForwardBy: function(seconds) {
     this.media.seekToTime(this.media.timeElapsed() + seconds);
-  },
-
-  toggleShuffle: function() {
-    this.media.toggleShuffle();
   },
 
   openFileDialog: function() {
