@@ -7,7 +7,7 @@ module.exports = function(winamp, store) {
     if (e.ctrlKey) { // Is CTRL depressed?
       switch (e.keyCode) {
         // CTRL+D
-        case 68: winamp.dispatch({type: 'TOGGLE_DOUBLESIZE_MODE'}); break;
+        case 68: store.dispatch({type: 'TOGGLE_DOUBLESIZE_MODE'}); break;
         // XXX FIXME
         case 76: winamp.openOptionMenu(); break;      // CTRL+L
         // CTRL+T
@@ -27,15 +27,15 @@ module.exports = function(winamp, store) {
           break;
         case 66: winamp.next(); break;                // B
         // C
-        case 67: winamp.dispatch(pause(winamp.media)); break;
+        case 67: store.dispatch(pause(winamp.media)); break;
         // L
         case 76: store.dispatch({type: 'OPEN_FILE_DIALOG'}); break;
         case 82: winamp.toggleRepeat(); break;        // R
         case 83: winamp.toggleShuffle(); break;       // S
         // V
-        case 86: winamp.dispatch(stop(winamp.media)); break;
+        case 86: store.dispatch(stop(winamp.media)); break;
         // X
-        case 88: winamp.dispatch(play(winamp.media)); break;
+        case 88: store.dispatch(play(winamp.media)); break;
         case 90: winamp.previous(); break;            // Z
         // numpad 0
         case 96: store.dispatch({type: 'OPEN_FILE_DIALOG'}); break;
@@ -45,7 +45,7 @@ module.exports = function(winamp, store) {
         case 99: winamp.next(10); break;              // numpad 3
         case 100: winamp.previous(); break;           // numpad 4
         // numpad 5
-        case 101: winamp.dispatch(play(winamp.media)); break;
+        case 101: store.dispatch(play(winamp.media)); break;
         case 102: winamp.next(); break;               // numpad 6
         case 103: winamp.seekForwardBy(-5); break;    // numpad 7
         // numpad 8
@@ -58,7 +58,7 @@ module.exports = function(winamp, store) {
     keylog.push(e.keyCode);
     keylog = keylog.slice(-10);
     if (keylog.toString() === trigger.toString()) {
-      winamp.dispatch({type: 'TOGGLE_LLAMA_MODE'});
+      store.dispatch({type: 'TOGGLE_LLAMA_MODE'});
     }
   });
 };
