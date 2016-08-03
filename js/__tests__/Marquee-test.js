@@ -80,7 +80,7 @@ describe('stepOffset', () => {
     const expected = 5;
     expect(actual).toEqual(expected);
   });
-  xit('does not try to offset strings shorter than 30 characters', () => {
+  it('does not try to offset strings shorter than 30 characters', () => {
     const actual = stepOffset('hello', 15);
     const expected = 0;
     expect(actual).toEqual(expected);
