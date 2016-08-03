@@ -86,7 +86,7 @@ const MainWindow = (props) => {
         <Eject />
         <div className='shuffle-repeat'>
           <Shuffle />
-          <Repeat />
+          <Repeat mediaPlayer={props.mediaPlayer} />
         </div>
         <a id='about' target='blank' href='https://github.com/captbaritone/winamp2-js' />
       </div>

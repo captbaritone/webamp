@@ -61,6 +61,11 @@ export function adjustVolume(mediaPlayer, volumeDiff) {
   };
 }
 
+export function toggleRepeat(mediaPlayer) {
+  mediaPlayer.toggleRepeat();
+  return {type: 'TOGGLE_REPEAT'};
+}
+
 export function setSkinFromFile(skinFile) {
   return (dispatch) => {
     dispatch({type: 'START_LOADING'});

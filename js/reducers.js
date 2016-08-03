@@ -151,9 +151,6 @@ const createReducer = (winamp) => {
         // TODO: Figure out how to make this pure
         winamp.openFileDialog();
         return state;
-      case 'TOGGLE_REPEAT':
-        winamp.toggleRepeat();
-        return state;
       case 'TOGGLE_SHUFFLE':
         winamp.toggleShuffle();
         return state;

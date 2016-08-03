@@ -56,10 +56,6 @@ module.exports = {
     this.media.seekToTime(this.media.timeElapsed() + seconds);
   },
 
-  toggleRepeat: function() {
-    this.media.toggleRepeat();
-  },
-
   toggleShuffle: function() {
     this.media.toggleShuffle();
   },

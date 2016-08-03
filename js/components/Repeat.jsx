@@ -1,6 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
+import {toggleRepeat} from '../actionCreators';
+
 
 class Repeat extends React.Component {
   constructor(props) {
@@ -8,7 +10,7 @@ class Repeat extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
   handleClick() {
-    this.props.dispatch({type: 'TOGGLE_REPEAT'});
+    this.props.dispatch(toggleRepeat(this.props.mediaPlayer));
   }
   render() {
     return <div
