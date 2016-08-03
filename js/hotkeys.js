@@ -40,14 +40,16 @@ module.exports = function(winamp, store) {
         // numpad 0
         case 96: store.dispatch({type: 'OPEN_FILE_DIALOG'}); break;
         case 97: winamp.previous(10); break;          // numpad 1
-        case 98: winamp.incrementVolumeBy(-1); break; // numpad 2
+        // numpad 2
+        case 98: store.dispatch(adjustVolume(winamp.media, -1)); break;
         case 99: winamp.next(10); break;              // numpad 3
         case 100: winamp.previous(); break;           // numpad 4
         // numpad 5
         case 101: winamp.dispatch(play(winamp.media)); break;
         case 102: winamp.next(); break;               // numpad 6
         case 103: winamp.seekForwardBy(-5); break;    // numpad 7
-        case 104: winamp.incrementVolumeBy(1); break; // numpad 8
+        // numpad 8
+        case 104: store.dispatch(adjustVolume(winamp.media, 1)); break;
         case 105: winamp.seekForwardBy(5); break;     // numpad 9
       }
     }
