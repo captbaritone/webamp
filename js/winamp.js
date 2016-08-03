@@ -47,15 +47,6 @@ module.exports = {
     this.media.seekToPercentComplete(percent);
   },
 
-  // From 0-100
-  setVolume: function(volume) {
-    // Ensure volume does not go out of bounds
-    volume = Math.max(volume, 0);
-    volume = Math.min(volume, 100);
-
-    this.media.setVolume(volume);
-  },
-
   // From -100 to 100
   setBalance: function(balance) {
     this.media.setBalance(balance);

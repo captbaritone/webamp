@@ -1,6 +1,8 @@
 import MyFile from './myFile';
 import skinParser from './skinParser';
 
+import {clamp} from './utils';
+
 export function play(mediaPlayer) {
   return (dispatch, getState) => {
     if (getState().media.status === 'PLAYING') {
@@ -40,6 +42,22 @@ export function close(mediaPlayer) {
   return (dispatch) => {
     mediaPlayer.stop();
     dispatch({type: 'CLOSE_WINAMP'});
+  };
+}
+
+export function setVolume(mediaPlayer, volume) {
+  const realVolume = clamp(volume, 0, 100);
+  mediaPlayer.setVolume(volume);
+  return {
+    type: 'SET_VOLUME',
+    volume: realVolume
+  };
+}
+
+export function adjustVolume(mediaPlayer, volumeDiff) {
+  return (dispatch, getState) => {
+    const currentVolume = getState().media.volume;
+    return dispatch(setVolume(mediaPlayer, currentVolume + volumeDiff));
   };
 }
 

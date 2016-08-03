@@ -39,8 +39,13 @@ const parseViscolors = (text) => {
   return colors;
 };
 
+const clamp = (value, min, max) => {
+  return Math.min(Math.max(value, min), max);
+};
+
 module.exports = {
   getTimeObj,
   getTimeStr,
-  parseViscolors
+  parseViscolors,
+  clamp
 };

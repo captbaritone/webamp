@@ -144,9 +144,6 @@ const createReducer = (winamp) => {
   return (state, action) => {
     state = reducer(state, action);
     switch (action.type) {
-      case 'SET_VOLUME':
-        winamp.setVolume(action.volume);
-        return state;
       case 'SET_BALANCE':
         winamp.setBalance(action.balance);
         return state;

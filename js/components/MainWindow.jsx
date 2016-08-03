@@ -75,7 +75,7 @@ const MainWindow = (props) => {
           <Khz />
           <MonoStereo />
         </div>
-        <Volume />
+        <Volume mediaPlayer={props.mediaPlayer} />
         <Balance />
         <div className='windows'>
           <div id='equalizer-button' />

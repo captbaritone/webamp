@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {setVolume} from '../actionCreators';
 
 
 class Volume extends React.Component {
@@ -11,10 +12,9 @@ class Volume extends React.Component {
   }
 
   setVolume(e) {
-    this.props.dispatch({
-      type: 'SET_VOLUME',
-      volume: e.target.value
-    });
+    this.props.dispatch(
+      setVolume(this.props.mediaPlayer, e.target.value)
+    );
   }
 
   showMarquee() {

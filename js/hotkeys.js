@@ -1,4 +1,4 @@
-import {play, pause, stop} from './actionCreators';
+import {play, pause, stop, adjustVolume} from './actionCreators';
 
 module.exports = function(winamp, store) {
   let keylog = [];
@@ -18,14 +18,12 @@ module.exports = function(winamp, store) {
         case 37: winamp.seekForwardBy(-5); break;     // left arrow
         // up arrow
         case 38:
-          const incrementedVolume = Math.min(100, store.getState().media.volume + 1);
-          store.dispatch({type: 'SET_VOLUME', volume: incrementedVolume});
+          store.dispatch(adjustVolume(winamp.media, 1));
           break;
         case 39: winamp.seekForwardBy(5); break;      // right arrow
         // down arrow
         case 40:
-          const decrementedVolume = Math.max(0, store.getState().media.volume - 1);
-          store.dispatch({type: 'SET_VOLUME', volume: decrementedVolume});
+          store.dispatch(adjustVolume(winamp.media, -1));
           break;
         case 66: winamp.next(); break;                // B
         // C
