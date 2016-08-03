@@ -47,7 +47,7 @@ export function close(mediaPlayer) {
 
 export function setVolume(mediaPlayer, volume) {
   const realVolume = clamp(volume, 0, 100);
-  mediaPlayer.setVolume(volume);
+  mediaPlayer.setVolume(realVolume);
   return {
     type: 'SET_VOLUME',
     volume: realVolume
