@@ -4,7 +4,8 @@ import {
   stop,
   adjustVolume,
   toggleRepeat,
-  toggleShuffle
+  toggleShuffle,
+  openFileDialog
 } from './actionCreators';
 
 module.exports = function(winamp, store) {
@@ -36,7 +37,7 @@ module.exports = function(winamp, store) {
         // C
         case 67: store.dispatch(pause(winamp.media)); break;
         // L
-        case 76: store.dispatch({type: 'OPEN_FILE_DIALOG'}); break;
+        case 76: openFileDialog(winamp); break;
         // R
         case 82: store.dispatch(toggleRepeat(winamp.media)); break;
         // S
@@ -47,7 +48,7 @@ module.exports = function(winamp, store) {
         case 88: store.dispatch(play(winamp.media)); break;
         case 90: winamp.previous(); break;            // Z
         // numpad 0
-        case 96: store.dispatch({type: 'OPEN_FILE_DIALOG'}); break;
+        case 96: openFileDialog(winamp); break;
         case 97: winamp.previous(10); break;          // numpad 1
         // numpad 2
         case 98: store.dispatch(adjustVolume(winamp.media, -1)); break;

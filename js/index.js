@@ -4,7 +4,7 @@ import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 
-import createReducer from './reducers';
+import reducer from './reducers';
 
 import Browser from './browser';
 import MainWindow from './components/MainWindow.jsx';
@@ -15,7 +15,7 @@ import Skin from './components/Skin.jsx';
 if (new Browser(window).isCompatible) {
   const winamp = Winamp;
   const store = createStore(
-    createReducer(winamp),
+    reducer,
     window.devToolsExtension && window.devToolsExtension(),
     applyMiddleware(thunk)
   );

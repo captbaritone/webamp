@@ -83,7 +83,7 @@ const MainWindow = (props) => {
         </div>
         <Position mediaPlayer={props.mediaPlayer} />
         <ActionButtons mediaPlayer={props.mediaPlayer} />
-        <Eject />
+        <Eject winamp={props.winamp} />
         <div className='shuffle-repeat'>
           <Shuffle mediaPlayer={props.mediaPlayer} />
           <Repeat mediaPlayer={props.mediaPlayer} />

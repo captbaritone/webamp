@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {close, setSkinFromFilename} from '../actionCreators';
+import {close, setSkinFromFilename, openFileDialog} from '../actionCreators';
 
 import '../../css/context-menu.css';
 
@@ -25,7 +25,7 @@ class ContextMenu extends React.Component {
   }
 
   openFileDialog() {
-    this.props.dispatch({type: 'OPEN_FILE_DIALOG'});
+    openFileDialog(this.props.winamp);
   }
 
   close() {

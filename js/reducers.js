@@ -131,27 +131,11 @@ const media = (state, action) => {
   }
 };
 
-const createReducer = (winamp) => {
+const reducer = combineReducers({
+  userInput,
+  display,
+  contextMenu,
+  media
+});
 
-  const reducer = combineReducers({
-    userInput,
-    display,
-    contextMenu,
-    media
-  });
-
-  // Add in the temporary actions that don't modify the state.
-  return (state, action) => {
-    state = reducer(state, action);
-    switch (action.type) {
-      case 'OPEN_FILE_DIALOG':
-        // TODO: Figure out how to make this pure
-        winamp.openFileDialog();
-        return state;
-      default:
-        return state;
-    }
-  };
-};
-
-export default createReducer;
+export default reducer;

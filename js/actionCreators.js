@@ -108,3 +108,7 @@ export function setSkinFromFilename(filename) {
   const url = `https://cdn.rawgit.com/captbaritone/winamp-skins/master/v2/${filename}`;
   return setSkinFromUrl(url);
 }
+
+export function openFileDialog(winamp) {
+  winamp.openFileDialog();
+}

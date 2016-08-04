@@ -1,6 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
+import {openFileDialog} from '../actionCreators';
+
 
 class Eject extends React.Component {
   constructor(props) {
@@ -8,7 +10,7 @@ class Eject extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
   handleClick() {
-    this.props.dispatch({type: 'OPEN_FILE_DIALOG'});
+    openFileDialog(this.props.winamp);
   }
   render() {
     return <div
