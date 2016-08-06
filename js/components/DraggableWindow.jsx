@@ -1,6 +1,8 @@
 import {cloneElement, Children, Component} from 'react';
 import {clamp} from '../utils';
 
+const SNAP_DISTANCE = 15;
+
 // Many of the ideas of how to build this as a React componant were stolen
 // from: https://github.com/mzabriskie/react-draggable Thanks! @mzabriskie
 class DraggableWindow extends Component {
@@ -25,8 +27,8 @@ class DraggableWindow extends Component {
       left: parseInt(this.body.offsetLeft || 0, 10),
       top: parseInt(this.body.offsetTop || 0, 10)
     };
-    const width = this.body.offsetWidth;
-    const height = this.body.offsetHeight;
+    const maxLeft = window.innerWidth - this.body.offsetWidth;
+    const maxTop = window.innerHeight - this.body.offsetHeight;
 
     // Get starting mouse position
     const mouseStart = {
@@ -45,9 +47,25 @@ class DraggableWindow extends Component {
       let left = winStart.left + diff.left;
       let top = winStart.top + diff.top;
 
-      // Constrain window to within the browser window
-      left = clamp(left, 0, window.innerWidth - width);
-      top = clamp(top, 0, window.innerHeight - height);
+      // Snap to top
+      if (top < SNAP_DISTANCE) {
+        top = 0;
+      }
+
+      // Snap to right
+      if (left > maxLeft - SNAP_DISTANCE) {
+        left = maxLeft;
+      }
+
+      // Snap to left
+      if (left < SNAP_DISTANCE) {
+        left = 0;
+      }
+
+      // Snap to bottom
+      if (top > maxTop - SNAP_DISTANCE) {
+        top = maxTop;
+      }
 
       // These margins were only useful for centering the div, now we
       // don't need them
