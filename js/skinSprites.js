@@ -118,17 +118,26 @@ module.exports = [
       {selectors: ['.play #work-indicator.selected'], x: 39, y: 0, width: 9, height: 9}
     ]
   },
-  /* {
-     name: 'PLEDIT',
-     sprites: [
-     {selectors: ['.playlist-top-tile'], x: 127, y: 21, width: 25, height: 20},
-     {selectors: ['.selected .playlist-top-tile'], x: 127, y: 0, width: 25, height: 20},
-     {selectors: ['.playlist-left-tile'], x: 0, y: 42, width: 25, height: 29},
-     {selectors: ['.playlist-right-tile'], x: 27, y: 42, width: 25, height: 29},
-     {selectors: ['.playlist-bottom-tile'], x: 179, y: 0, width: 25, height: 38},
-     {selectors: ['#playlist.shade'], x: 72, y: 57, width: 25, height: 14}
-     ]
-     }, */
+  {
+    name: 'PLEDIT',
+    sprites: [
+      {selectors: ['.playlist-top'], x: 127, y: 21, width: 25, height: 20},
+      {selectors: ['.playlist-top-left'], x: 0, y: 21, width: 25, height: 20},
+      {selectors: ['.playlist-top-title'], x: 26, y: 21, width: 100, height: 20},
+      {selectors: ['.playlist-top-right'], x: 153, y: 21, width: 25, height: 20},
+      {selectors: ['.selected .playlist-top'], x: 127, y: 0, width: 25, height: 20},
+      {selectors: ['.selected .playlist-top-left'], x: 0, y: 0, width: 25, height: 20},
+      {selectors: ['.selected .playlist-top-title'], x: 26, y: 0, width: 100, height: 20},
+      {selectors: ['.selected .playlist-top-right'], x: 153, y: 0, width: 25, height: 20},
+      {selectors: ['.playlist-left'], x: 0, y: 42, width: 25, height: 29},
+      {selectors: ['.playlist-right'], x: 26, y: 42, width: 25, height: 29},
+      {selectors: ['.playlist-bottom'], x: 179, y: 0, width: 25, height: 38},
+      {selectors: ['.playlist-bottom-left'], x: 0, y: 72, width: 125, height: 38},
+      {selectors: ['.playlist-bottom-right'], x: 126, y: 72, width: 150, height: 38},
+      {selectors: ['.playlist-visualizer'], x: 205, y: 0, width: 75, height: 38},
+      {selectors: ['#playlist.shade'], x: 72, y: 57, width: 25, height: 14}
+    ]
+  },
   {
     name: 'POSBAR',
     sprites: [

@@ -1,0 +1,73 @@
+/* Styles */
+#winamp2-js #playlist-window {
+    height: 116px;
+    width: 275px;
+    background-color: black;
+}
+
+#winamp2-js .playlist-top {
+    width: 100%;
+    height: 20px;
+}
+
+#winamp2-js .playlist-top-left {
+    width: 25px;
+    height: 20px;
+    position: absolute;
+}
+
+#winamp2-js .playlist-top-title {
+    width: 100px;
+    height: 20px;
+    margin: 0 auto;
+    position: absolute;
+    /* Giving left and right 0 seems to center */
+    left: 0;
+    right: 0;
+}
+
+#winamp2-js .playlist-top-right {
+    width: 25px;
+    height: 20px;
+    position: absolute;
+    right: 0;
+}
+
+#winamp2-js .playlist-left {
+    background-repeat: repeat-y;
+    height: 100%;
+}
+
+#winamp2-js .playlist-right {
+    background-repeat: repeat-y;
+    height: 100%;
+    background-position: top right;
+}
+
+#winamp2-js .playlist-bottom {
+    width: 100%;
+    height: 38px;
+    position: absolute;
+    bottom: 0px;
+}
+
+#winamp2-js .playlist-bottom-left {
+    width: 125px;
+    height: 100%;
+    position: absolute;
+}
+
+#winamp2-js .playlist-bottom-right {
+    width: 150px;
+    height: 100%;
+    position: absolute;
+    right: 0;
+}
+
+#winamp2-js .playlist-visualizer {
+    width: 75px;
+    height: 100%;
+    position: absolute;
+    right: 150px;
+    display: none; /* Only show if the window is wide enough */
+}
