@@ -39,6 +39,19 @@ const parseViscolors = (text) => {
   return colors;
 };
 
+// Dumb ini parser that just gets all the key/value pairs
+const parseIni = (text) => {
+  const lines = text.split(/[\r\n]+/g);
+  const data = {};
+  lines.forEach((line) => {
+    if (line.includes('=')) {
+      const [key, value] = line.split('=');
+      data[key] = value;
+    }
+  });
+  return data;
+};
+
 const clamp = (value, min, max) => {
   return Math.min(Math.max(value, min), max);
 };
@@ -47,5 +60,6 @@ module.exports = {
   getTimeObj,
   getTimeStr,
   parseViscolors,
+  parseIni,
   clamp
 };
