@@ -24,7 +24,7 @@ for (const key in FONT_LOOKUP) {
   if (FONT_LOOKUP.hasOwnProperty(key)) {
     const position = FONT_LOOKUP[key];
     characterSprites.push({
-      selectors: ['.character-' + key.charCodeAt(0)],
+      selectors: [`.character-${key.charCodeAt(0)}`],
       y: position[0] * CHAR_Y,
       x: position[1] * CHAR_X,
       width: CHAR_X,
