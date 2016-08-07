@@ -139,6 +139,14 @@ module.exports = [
     ]
   },
   {
+    name: 'EQMAIN',
+    sprites: [
+      {selectors: ['#equalizer-window'], x: 0, y: 0, width: 275, height: 116},
+      {selectors: ['.equalizer-top'], x: 0, y: 149, width: 275, height: 14},
+      {selectors: ['.selected .equalizer-top'], x: 0, y: 134, width: 275, height: 14}
+    ]
+  },
+  {
     name: 'POSBAR',
     sprites: [
       {selectors: ['#position'], x: 0, y: 0, width: 248, height: 10},

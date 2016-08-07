@@ -1,0 +1,10 @@
+/* Styles */
+#winamp2-js #equalizer-window {
+    height: 116px;
+    width: 275px;
+}
+
+#winamp2-js .equalizer-top {
+    height: 14px;
+    width: 275px;
+}
