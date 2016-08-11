@@ -15,8 +15,11 @@ import Hotkeys from './hotkeys';
 import Skin from './components/Skin.jsx';
 
 if (new Browser(window).isCompatible) {
-  const playlist = false; // Turn on the incomplete playlist window
-  const equalizer = false; // Turn on the incomplete equalizer window
+  const hash = window.location.hash;
+  // Turn on the incomplete playlist window
+  const playlist = hash.includes('playlist');
+  // Turn on the incomplete equalizer window
+  const equalizer = hash.includes('equalizer');
   const winamp = Winamp;
   const store = createStore(
     reducer,
