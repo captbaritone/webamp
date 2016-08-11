@@ -92,7 +92,8 @@ export function setSkinFromFile(skinFile) {
       return dispatch({
         type: 'SET_SKIN_DATA',
         skinCss: skinData.css,
-        skinColors: skinData.colors
+        skinColors: skinData.colors,
+        skinPlaylistStyle: skinData.playlistStyle
       });
     });
   };

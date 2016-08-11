@@ -119,7 +119,7 @@ module.exports = [
     ]
   },
   {
-    name: 'PLEDIT',
+    name: 'PLEDIT.BMP',
     sprites: [
       {selectors: ['.playlist-top'], x: 127, y: 21, width: 25, height: 20},
       {selectors: ['.playlist-top-left'], x: 0, y: 21, width: 25, height: 20},
@@ -218,5 +218,8 @@ module.exports = [
   },
   {
     name: 'VISCOLOR'
+  },
+  {
+    name: 'PLEDIT.TXT'
   }
 ];

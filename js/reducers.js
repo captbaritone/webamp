@@ -31,6 +31,7 @@ const display = (state, action) => {
       working: false,
       skinCss: null,
       skinColors: null,
+      skinPlaylistStyle: {},
       visualizerStyle: 2
     };
   }
@@ -57,7 +58,8 @@ const display = (state, action) => {
         ...state,
         loading: false,
         skinCss: action.skinCss,
-        skinColors: action.skinColors
+        skinColors: action.skinColors,
+        skinPlaylistStyle: action.skinPlaylistStyle
       };
     case 'TOGGLE_VISUALIZER_STYLE':
       return {...state, visualizerStyle: (state.visualizerStyle + 1) % 3};

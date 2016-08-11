@@ -1,6 +1,6 @@
 import SKIN_SPRITES from './skinSprites';
 import JSZip from '../node_modules/jszip/dist/jszip'; // Hack
-import {parseViscolors} from './utils';
+import {parseViscolors, parseIni} from './utils';
 
 const bmpUriFromFile = (file) => {
   return `data:image/bmp;base64,${btoa(file.asBinary())}`;
@@ -63,18 +63,31 @@ const extractColors = (spriteObj) => {
   };
 };
 
+// Extract the color data from a VISCOLOR.TXT file and add it to the object
+const extractPlaylistStyle = (spriteObj) => {
+  return {
+    ...spriteObj,
+    playlistStyle: parseIni(spriteObj.file.asText())
+  };
+};
+
 const getSkinDataFromFiles = (spriteObjs) => {
   return Promise.all(spriteObjs.map((spriteObj) => {
-    if (spriteObj.name === 'VISCOLOR') {
-      return extractColors(spriteObj);
+    switch (spriteObj.name) {
+      case 'VISCOLOR':
+        return extractColors(spriteObj);
+      case 'PLEDIT.TXT':
+        return extractPlaylistStyle(spriteObj);
+      default:
+        return extractCss(spriteObj);
     }
-    return extractCss(spriteObj);
   }));
 };
 
 const collectCssAndColors = (spriteObjs) => {
   let cssRules = [];
   let colors = null;
+  let playlistStyle = null;
   spriteObjs.forEach((spriteObj) => {
     if (spriteObj.cssRules) {
       cssRules = cssRules.concat(spriteObj.cssRules);
@@ -82,11 +95,15 @@ const collectCssAndColors = (spriteObjs) => {
     if (spriteObj.colors) {
       colors = spriteObj.colors;
     }
+    if (spriteObj.playlistStyle) {
+      playlistStyle = spriteObj.playlistStyle;
+    }
   });
 
   return {
     css: cssRules.join('\n'),
-    colors
+    colors,
+    playlistStyle
   };
 };
 

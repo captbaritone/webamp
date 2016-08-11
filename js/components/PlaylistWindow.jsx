@@ -5,9 +5,15 @@ import DraggableWindow from './DraggableWindow.jsx';
 
 import '../../css/playlist-window.css';
 
-const PlaylistWindow = () => {
+const PlaylistWindow = (props) => {
+  console.log(props);
+  const style = {};
+  if (props) {
+    style.color = props.Normal;
+    style.backgroundColor = props.NormalBG;
+  }
   return <DraggableWindow handleClass='title-bar'>
-    <div id='playlist-window' className='window'>
+    <div id='playlist-window' className='window' style={style}>
       <div className='playlist-left'>
         <div className='playlist-right'>
           <div className='playlist-top title-bar'>
@@ -29,4 +35,4 @@ const PlaylistWindow = () => {
   </DraggableWindow>;
 };
 
-module.exports = connect((state) => state)(PlaylistWindow);
+module.exports = connect((state) => state.display.skinPlaylistStyle)(PlaylistWindow);

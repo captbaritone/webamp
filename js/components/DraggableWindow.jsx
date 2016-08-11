@@ -93,10 +93,11 @@ class DraggableWindow extends Component {
     return false;
   }
   render() {
-    return cloneElement(Children.only(this.props.children), {
+    const {children} = this.props;
+    return cloneElement(Children.only(children), {
       ref: (body) => this.body = body,
       onMouseDown: this.handleMouseDown,
-      style: {...this.props.children.props, ...this.state}
+      style: {...children.props.style, ...this.state}
     });
   }
 
