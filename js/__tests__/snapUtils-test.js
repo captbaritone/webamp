@@ -6,7 +6,9 @@ import {
   left,
   right,
   near,
-  snap
+  snap,
+  overlapY,
+  overlapX
 } from '../snapUtils';
 
 describe('side functions', () => {
@@ -46,6 +48,51 @@ describe('near function', () => {
   });
 });
 
+describe('overlap functions', () => {
+  it('overlapY detects when the boxes overlap in the Y axis', () => {
+    const a = {y: 10, height: 50};
+    const b = {y: 40, height: 50};
+    const actual = overlapY(a, b);
+    const expected = true;
+    expect(actual).toEqual(expected);
+  });
+  it('overlapY detects when the boxes are within SNAP_DISTANCE on the Y axis', () => {
+    const a = {y: 10, height: 50};
+    const b = {y: 70, height: 50};
+    const actual = overlapY(a, b);
+    const expected = true;
+    expect(actual).toEqual(expected);
+  });
+  it('overlapY detects when the boxes do not overlap in the Y axis', () => {
+    const a = {y: 10, height: 50};
+    const b = {y: 90, height: 50};
+    const actual = overlapY(a, b);
+    const expected = false;
+    expect(actual).toEqual(expected);
+  });
+  it('overlapX detects when the boxes overlap in the X axis', () => {
+    const a = {x: 10, width: 50};
+    const b = {x: 40, width: 50};
+    const actual = overlapX(a, b);
+    const expected = true;
+    expect(actual).toEqual(expected);
+  });
+  it('overlapX detects when the boxes are within SNAP_DISTANCE on the X axis', () => {
+    const a = {x: 10, width: 50};
+    const b = {x: 70, width: 50};
+    const actual = overlapX(a, b);
+    const expected = true;
+    expect(actual).toEqual(expected);
+  });
+  it('overlapX detects when the boxes do not overlap in the X axis', () => {
+    const a = {x: 10, width: 50};
+    const b = {x: 90, width: 50};
+    const actual = overlapX(a, b);
+    const expected = false;
+    expect(actual).toEqual(expected);
+  });
+});
+
 describe('snap function', () => {
   it('does not snap if A and B are obviously far apart', () => {
     const a = {x: 10, y: 10, width: 100, height: 100};
@@ -80,6 +127,20 @@ describe('snap function', () => {
     const b = {x: 10, y: 10, width: 100, height: 100};
     const actual = snap(a, b);
     const expected = {y: 110};
+    expect(actual).toEqual(expected);
+  });
+  it('does not snap to the X axis if A is below B', () => {
+    const a = {x: 10, y: 10, width: 100, height: 100};
+    const b = {x: 110, y: 150, width: 100, height: 100};
+    const actual = snap(a, b);
+    const expected = {};
+    expect(actual).toEqual(expected);
+  });
+  it('snaps in both axis if the corners are within SNAP_DISTANCE', () => {
+    const a = {x: 10, y: 10, width: 100, height: 100};
+    const b = {x: 120, y: 120, width: 100, height: 100};
+    const actual = snap(a, b);
+    const expected = {x: 20, y: 20};
     expect(actual).toEqual(expected);
   });
 });
