@@ -83,13 +83,14 @@ module.exports = {
   /* Listeners */
   _loadBuffer: function(buffer) {
     function setMetaData() {
-      const kbps = '128';
-      const khz = Math.round(this.media.sampleRate() / 1000).toString();
-      this.dispatch({type: 'SET_MEDIA_KBPS', kbps: kbps});
-      this.dispatch({type: 'SET_MEDIA_KHZ', khz: khz});
-      this.dispatch({type: 'SET_CHANNELS_COUNT', channels: this.media.channels()});
-      this.dispatch({type: 'SET_MEDIA_NAME', name: this.fileName});
-      this.dispatch({type: 'SET_MEDIA_LENGTH', length: this.media.duration()});
+      this.dispatch({
+        type: 'SET_MEDIA',
+        kbps: '128',
+        khz: Math.round(this.media.sampleRate() / 1000).toString(),
+        channels: this.media.channels(),
+        name: this.fileName,
+        length: this.media.duration()
+      });
     }
 
     // Note, this will not happen right away

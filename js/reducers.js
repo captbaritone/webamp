@@ -108,20 +108,19 @@ const media = (state, action) => {
       return {...state, timeMode: newMode};
     case 'UPDATE_TIME_ELAPSED':
       return {...state, timeElapsed: action.elapsed};
-    case 'SET_MEDIA_LENGTH':
-      return {...state, length: action.length};
-    case 'SET_MEDIA_KBPS':
-      return {...state, kbps: action.kbps};
-    case 'SET_MEDIA_KHZ':
-      return {...state, khz: action.khz};
+    case 'SET_MEDIA':
+      return {
+        ...state,
+        length: action.length,
+        kbps: action.kbps,
+        khz: action.khz,
+        channels: action.channels,
+        name: action.name
+      };
     case 'SET_VOLUME':
       return {...state, volume: action.volume};
     case 'SET_BALANCE':
       return {...state, balance: action.balance};
-    case 'SET_MEDIA_NAME':
-      return {...state, name: action.name};
-    case 'SET_CHANNELS_COUNT':
-      return {...state, channels: action.channels};
     case 'TOGGLE_REPEAT':
       return {...state, repeat: !state.repeat};
     case 'TOGGLE_SHUFFLE':
