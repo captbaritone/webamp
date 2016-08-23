@@ -143,7 +143,10 @@ module.exports = [
     sprites: [
       {selectors: ['#equalizer-window'], x: 0, y: 0, width: 275, height: 116},
       {selectors: ['.equalizer-top'], x: 0, y: 149, width: 275, height: 14},
-      {selectors: ['.selected .equalizer-top'], x: 0, y: 134, width: 275, height: 14}
+      {selectors: ['.selected .equalizer-top'], x: 0, y: 134, width: 275, height: 14},
+      {selectors: ['.band'], x: 13, y: 164, width: 209, height: 129},
+      {selectors: ['.band input::-webkit-slider-thumb', 'band input::-moz-range-thumb'], x: 0, y: 164, width: 11, height: 11},
+      {selectors: ['band input::-webkit-slider-thumb:active', '.band input::-moz-range-thumb:active'], x: 0, y: 176, width: 11, height: 11}
     ]
   },
   {

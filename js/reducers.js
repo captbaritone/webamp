@@ -84,6 +84,32 @@ const contextMenu = (state, action) => {
   }
 };
 
+const equalizer = (state, action) => {
+  if (!state) {
+    return {
+      preamp: 50,
+      band60: 50,
+      band170: 50,
+      band310: 50,
+      band600: 50,
+      band1k: 50,
+      band3k: 50,
+      band6k: 50,
+      band12k: 50,
+      band14k: 50,
+      band16k: 50
+    };
+  }
+  switch (action.type) {
+    case 'SET_BAND_VALUE':
+      const newState = {...state};
+      newState[action.band] = action.value;
+      return newState;
+    default:
+      return state;
+  }
+};
+
 const media = (state, action) => {
   if (!state) {
     return {
@@ -136,6 +162,7 @@ const reducer = combineReducers({
   userInput,
   display,
   contextMenu,
+  equalizer,
   media
 });
 

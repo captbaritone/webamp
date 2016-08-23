@@ -8,3 +8,113 @@
     height: 14px;
     width: 275px;
 }
+
+#winamp2-js #preamp {
+  position: absolute;
+  left: 20px;
+  top: 37px;
+}
+
+#winamp2-js #band-60 {
+  position: absolute;
+  left: 80px;
+  top: 37px;
+}
+
+#winamp2-js #band-170 {
+  position: absolute;
+  left: 98px;
+  top: 37px;
+}
+
+#winamp2-js #band-310 {
+  position: absolute;
+  left: 116px;
+  top: 37px;
+}
+
+#winamp2-js #band-600 {
+  position: absolute;
+  left: 134px;
+  top: 37px;
+}
+
+#winamp2-js #band-1k {
+  position: absolute;
+  left: 152px;
+  top: 37px;
+}
+
+#winamp2-js #band-3k {
+  position: absolute;
+  left: 170px;
+  top: 37px;
+}
+
+#winamp2-js #band-6k {
+  position: absolute;
+  left: 188px;
+  top: 37px;
+}
+
+#winamp2-js #band-12k {
+  position: absolute;
+  left: 206px;
+  top: 37px;
+}
+
+#winamp2-js #band-14k {
+  position: absolute;
+  left: 224px;
+  top: 37px;
+}
+
+#winamp2-js #band-16k {
+  position: absolute;
+  left: 242px;
+  top: 37px;
+}
+
+#winamp2-js .band {
+  width: 14px;
+  height: 64px;
+}
+
+#winamp2-js .band input[type=range] {
+    /* These two numbers are pure magic. No idea why they work */
+    margin-left: -25px;
+    margin-top: 25px;
+    width: 64px;
+    height: 14px;
+    background-position: 0 0;
+    transform: rotate(270deg);
+    cursor:url('../cursors/POSBAR.PNG'), auto;
+}
+
+#winamp2-js .band input[type=range]::-webkit-slider-thumb {
+    height: 11px;
+    width: 11px;
+    /* Confusingly, due to rotation, this is actually left margin */
+    margin-top: -1px;
+    cursor:url('../cursors/POSBAR.PNG'), auto;
+    /* Counteract the input's rotation */
+    -webkit-transform: rotate(-270deg);
+    -moz-transform: rotate(-270deg);
+    -ms-transform: rotate(-270deg);
+    -o-transform: rotate(-270deg);
+    transform: rotate(-270deg);
+}
+
+#winamp2-js .band input[type=range]::-moz-range-thumb {
+    height: 11px;
+    width: 11px;
+    /* Confusingly, due to rotation, this is actually left margin */
+    margin-top: -1px;
+    cursor:url('../cursors/POSBAR.PNG'), auto;
+    /* Counteract the input's rotation */
+    -webkit-transform: rotate(-270deg);
+    -moz-transform: rotate(-270deg);
+    -ms-transform: rotate(-270deg);
+    -o-transform: rotate(-270deg);
+    transform: rotate(-270deg);
+}
