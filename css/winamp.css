@@ -47,3 +47,9 @@
     -ms-interpolation-mode: nearest-neighbor;   /* IE (non-standard property) */
 }
 
+#winamp2-js .window.doubled {
+    -moz-transform: scale(2);
+    -moz-transform-origin: top left;
+    -webkit-transform: scale(2);
+    -webkit-transform-origin: top left;
+}

@@ -12,13 +12,6 @@
     -ms-interpolation-mode: nearest-neighbor;   /* IE (non-standard property) */
 }
 
-#winamp2-js #main-window.doubled {
-    -moz-transform: scale(2);
-    -moz-transform-origin: top left;
-    -webkit-transform: scale(2);
-    -webkit-transform-origin: top left;
-}
-
 #winamp2-js #main-window.doubled #context-menu {
     -moz-transform: scale(.5);
     -moz-transform-origin: top left;
