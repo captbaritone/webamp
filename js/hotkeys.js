@@ -10,57 +10,96 @@ import {
 
 module.exports = function(winamp, store) {
   let keylog = [];
-  const trigger = [78, 85, 76, 27, 76, 27, 83, 79, 70, 84];
+  const trigger = [
+    78, // N
+    85, // U
+    76, // L
+    76, // L
+    83, // S
+    79, // O
+    70, // F
+    84  // T
+  ];
   document.addEventListener('keydown', (e) => {
     if (e.ctrlKey) { // Is CTRL depressed?
       switch (e.keyCode) {
-        // CTRL+D
-        case 68: store.dispatch({type: 'TOGGLE_DOUBLESIZE_MODE'}); break;
-        // XXX FIXME
-        case 76: winamp.openOptionMenu(); break;      // CTRL+L
-        // CTRL+T
-        case 84: store.dispath({type: 'TOGGLE_TIME_MODE'}); break;
+        case 68: // CTRL+D
+          store.dispatch({type: 'TOGGLE_DOUBLESIZE_MODE'});
+          break;
+        case 76: // CTRL+L FIXME
+          break;
+        case 84: // CTRL+T
+          store.dispath({type: 'TOGGLE_TIME_MODE'});
+          break;
       }
     } else {
       switch (e.keyCode) {
-        case 37: winamp.seekForwardBy(-5); break;     // left arrow
-        // up arrow
-        case 38:
+        case 37: // left arrow
+          winamp.seekForwardBy(-5);
+          break;
+        case 38: // up arrow
           store.dispatch(adjustVolume(winamp.media, 1));
           break;
-        case 39: winamp.seekForwardBy(5); break;      // right arrow
-        // down arrow
-        case 40:
+        case 39: // right arrow
+          winamp.seekForwardBy(5);
+          break;
+        case 40: // down arrow
           store.dispatch(adjustVolume(winamp.media, -1));
           break;
-        case 66: winamp.next(); break;                // B
-        // C
-        case 67: store.dispatch(pause(winamp.media)); break;
-        // L
-        case 76: openFileDialog(winamp); break;
-        // R
-        case 82: store.dispatch(toggleRepeat(winamp.media)); break;
-        // S
-        case 83: store.dispatch(toggleShuffle(winamp.media)); break;
-        // V
-        case 86: store.dispatch(stop(winamp.media)); break;
-        // X
-        case 88: store.dispatch(play(winamp.media)); break;
-        case 90: winamp.previous(); break;            // Z
-        // numpad 0
-        case 96: openFileDialog(winamp); break;
-        case 97: winamp.previous(10); break;          // numpad 1
-        // numpad 2
-        case 98: store.dispatch(adjustVolume(winamp.media, -1)); break;
-        case 99: winamp.next(10); break;              // numpad 3
-        case 100: winamp.previous(); break;           // numpad 4
-        // numpad 5
-        case 101: store.dispatch(play(winamp.media)); break;
-        case 102: winamp.next(); break;               // numpad 6
-        case 103: winamp.seekForwardBy(-5); break;    // numpad 7
-        // numpad 8
-        case 104: store.dispatch(adjustVolume(winamp.media, 1)); break;
-        case 105: winamp.seekForwardBy(5); break;     // numpad 9
+        case 66: // B
+          winamp.next();
+          break;
+        case 67: // C
+          store.dispatch(pause(winamp.media));
+          break;
+        case 76: // L
+          openFileDialog(winamp);
+          break;
+        case 82: // R
+          store.dispatch(toggleRepeat(winamp.media));
+          break;
+        case 83: // S
+          store.dispatch(toggleShuffle(winamp.media));
+          break;
+        case 86: // V
+          store.dispatch(stop(winamp.media));
+          break;
+        case 88: // X
+          store.dispatch(play(winamp.media));
+          break;
+        case 90: // Z
+          winamp.previous();
+          break;
+        case 96: // numpad 0
+          openFileDialog(winamp);
+          break;
+        case 97: // numpad 1
+          winamp.previous(10);
+          break;
+        case 98: // numpad 2
+          store.dispatch(adjustVolume(winamp.media, -1));
+          break;
+        case 99: // numpad 3
+          winamp.next(10);
+          break;
+        case 100: // numpad 4
+          winamp.previous();
+          break;
+        case 101: // numpad 5
+          store.dispatch(play(winamp.media));
+          break;
+        case 102: // numpad 6
+          winamp.next();
+          break;
+        case 103: // numpad 7
+          winamp.seekForwardBy(-5);
+          break;
+        case 104: // numpad 8
+          store.dispatch(adjustVolume(winamp.media, 1));
+          break;
+        case 105: // numpad 9
+          winamp.seekForwardBy(5);
+          break;
       }
     }
 
