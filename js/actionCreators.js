@@ -80,8 +80,8 @@ export function toggleRepeat(mediaPlayer) {
   return {type: 'TOGGLE_REPEAT'};
 }
 
-export function toggleShuffne(mediaPlayer) {
-  mediaPlayer.toggleShuffne();
+export function toggleShuffle(mediaPlayer) {
+  mediaPlayer.toggleShuffle();
   return {type: 'TOGGLE_SHUFFLE'};
 }
 
