@@ -19,6 +19,20 @@ const userInput = (state, action) => {
   }
 };
 
+const windows = (state, action) => {
+  if (!state) {
+    return {
+      focused: 'MAIN'
+    };
+  }
+  switch (action.type) {
+    case 'SET_FOCUSED_WINDOW':
+      return {...state, focused: action.window};
+    default:
+      return state;
+  }
+};
+
 const display = (state, action) => {
   if (!state) {
     return {
@@ -87,24 +101,32 @@ const contextMenu = (state, action) => {
 const equalizer = (state, action) => {
   if (!state) {
     return {
-      preamp: 50,
-      band60: 50,
-      band170: 50,
-      band310: 50,
-      band600: 50,
-      band1k: 50,
-      band3k: 50,
-      band6k: 50,
-      band12k: 50,
-      band14k: 50,
-      band16k: 50
+      on: false,
+      auto: false,
+      sliders: {
+        preamp: 50,
+        band60: 50,
+        band170: 50,
+        band310: 50,
+        band600: 50,
+        band1k: 50,
+        band3k: 50,
+        band6k: 50,
+        band12k: 50,
+        band14k: 50,
+        band16k: 50
+      }
     };
   }
   switch (action.type) {
     case 'SET_BAND_VALUE':
-      const newState = {...state};
-      newState[action.band] = action.value;
-      return newState;
+      const newSliders = {...state.sliders};
+      newSliders[action.band] = action.value;
+      return {...state, sliders: newSliders};
+    case 'TOGGLE_EQ_ON':
+      return {...state, on: !state.on};
+    case 'TOGGLE_EQ_AUTO':
+      return {...state, auto: !state.auto};
     default:
       return state;
   }
@@ -160,6 +182,7 @@ const media = (state, action) => {
 
 const reducer = combineReducers({
   userInput,
+  windows,
   display,
   contextMenu,
   equalizer,

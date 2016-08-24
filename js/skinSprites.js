@@ -146,7 +146,19 @@ module.exports = [
       {selectors: ['.selected .equalizer-top'], x: 0, y: 134, width: 275, height: 14},
       {selectors: ['.band'], x: 13, y: 164, width: 209, height: 129},
       {selectors: ['.band input::-webkit-slider-thumb', 'band input::-moz-range-thumb'], x: 0, y: 164, width: 11, height: 11},
-      {selectors: ['band input::-webkit-slider-thumb:active', '.band input::-moz-range-thumb:active'], x: 0, y: 176, width: 11, height: 11}
+      {selectors: ['band input::-webkit-slider-thumb:active', '.band input::-moz-range-thumb:active'], x: 0, y: 176, width: 11, height: 11},
+      {selectors: ['#on'], x: 10, y: 119, width: 26, height: 12},
+      {selectors: ['#on:active'], x: 128, y: 119, width: 26, height: 12},
+      {selectors: ['#on.selected'], x: 69, y: 119, width: 26, height: 12},
+      {selectors: ['#on.selected:active'], x: 187, y: 119, width: 26, height: 12},
+      {selectors: ['#auto'], x: 36, y: 119, width: 32, height: 12},
+      {selectors: ['#auto:active'], x: 154, y: 119, width: 32, height: 12},
+      {selectors: ['#auto.selected'], x: 95, y: 119, width: 32, height: 12},
+      {selectors: ['#auto.selected:active'], x: 213, y: 119, width: 32, height: 12},
+      {selectors: ['#eqGraph'], x: 0, y: 294, width: 113, height: 19},
+      {selectors: ['#presets'], x: 224, y: 164, width: 44, height: 12},
+      {selectors: ['#presets:active'], x: 224, y: 176, width: 44, height: 12},
+      {name: 'PREAMP_LINE', selectors: ['#preamp-line'], x: 0, y: 314, width: 113, height: 1}
     ]
   },
   {
@@ -182,7 +194,7 @@ module.exports = [
     name: 'TITLEBAR',
     sprites: [
       {selectors: ['#title-bar'], x: 27, y: 15, width: 275, height: 14},
-      {selectors: ['#title-bar.selected'], x: 27, y: 0, width: 275, height: 14},
+      {selectors: ['.selected #title-bar'], x: 27, y: 0, width: 275, height: 14},
       {selectors: ['.llama #title-bar'], x: 27, y: 61, width: 275, height: 14},
       {selectors: ['.llama #title-bar.selected'], x: 27, y: 57, width: 275, height: 14},
       {selectors: ['#title-bar #option'], x: 0, y: 0, width: 9, height: 9},

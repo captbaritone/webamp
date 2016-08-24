@@ -9,6 +9,38 @@
     width: 275px;
 }
 
+#winamp2-js #on {
+    position: absolute;
+    width: 26px;
+    height: 12px;
+    top: 18px;
+    left: 14px;
+}
+
+#winamp2-js #auto {
+    position: absolute;
+    width: 32px;
+    height: 12px;
+    top: 18px;
+    left: 40px;
+}
+
+#winamp2-js #presets {
+    position: absolute;
+    width: 44px;
+    height: 12px;
+    top: 18px;
+    left: 217px;
+}
+
+#winamp2-js #eqGraph {
+    position: absolute;
+    width: 113px;
+    height: 19px;
+    top: 17px;
+    left: 86px;
+}
+
 #winamp2-js #preamp {
   position: absolute;
   left: 20px;

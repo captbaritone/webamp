@@ -51,4 +51,4 @@ class Band extends React.Component {
   }
 }
 
-export default connect((state) => state.equalizer)(Band);
+export default connect((state) => state.equalizer.sliders)(Band);
