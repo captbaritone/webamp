@@ -51,7 +51,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.8.0",
     "babel-plugin-transform-react-jsx": "^6.8.0",
     "classnames": "^2.2.5",
-    "jszip": "^2.6.0",
+    "jszip": "^3.1.2",
     "react": "^15.2.0",
     "react-dom": "^15.2.0",
     "react-redux": "^4.4.5",
