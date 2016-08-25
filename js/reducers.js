@@ -1,5 +1,7 @@
 import {combineReducers} from 'redux';
 
+import {BANDS} from './constants';
+
 const userInput = (state, action) => {
   if (!state) {
     return {
@@ -100,23 +102,17 @@ const contextMenu = (state, action) => {
 
 const equalizer = (state, action) => {
   if (!state) {
-    return {
+    state = {
       on: false,
       auto: false,
       sliders: {
-        preamp: 50,
-        band60: 50,
-        band170: 50,
-        band310: 50,
-        band600: 50,
-        band1k: 50,
-        band3k: 50,
-        band6k: 50,
-        band12k: 50,
-        band14k: 50,
-        band16k: 50
+        preamp: 50
       }
     };
+    BANDS.forEach((band) => {
+      state.sliders[band] = 50;
+    });
+    return state;
   }
   switch (action.type) {
     case 'SET_BAND_VALUE':

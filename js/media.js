@@ -1,4 +1,6 @@
 /* Emulate the native <audio> element with Web Audio API */
+import {BANDS} from './constants';
+
 module.exports = {
   _context: new (window.AudioContext || window.webkitAudioContext)(),
   _source: null,
@@ -70,8 +72,30 @@ module.exports = {
     this._leftGain.connect(this._chanMerge, 0, 0);
     this._rightGain.connect(this._chanMerge, 0, 1);
 
-    this._chanMerge.connect(this._gainNode);
+    let output = this._chanMerge;
+    this.bands = {};
 
+    BANDS.forEach((band, i) => {
+      const filter = this._context.createBiquadFilter();
+
+      this.bands[band] = filter;
+
+      if (i === 0) {
+        // The first filter, includes all lower frequencies
+        filter.type = 'lowshelf';
+      } else if (i === band.length - 1) {
+        // The last filter, includes all higher frequencies
+        filter.type = 'highshelf';
+      } else {
+        filter.type = 'peaking';
+      }
+      filter.frequency.value = band;
+      filter.gain.value = 0;
+      output.connect(filter);
+      output = filter;
+    });
+
+    output.connect(this._gainNode);
     this._gainNode.connect(this._context.destination);
 
     // Kick off the animation loop
@@ -200,6 +224,15 @@ module.exports = {
       this._rightGain.gain.value = 1;
     }
     this._balance = balance;
+  },
+
+  setEqBand: function(band, value) {
+    const db = ((value / 100) * 24) - 12;
+    this.bands[band].gain.value = db;
+  },
+
+  setPreamp: function(value) {
+    console.log(value);
   },
 
   getBalance: function() {

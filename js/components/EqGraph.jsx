@@ -41,16 +41,16 @@ class EqGraph extends React.Component {
   drawEqLine() {
     const {props} = this;
     const values = [
-      props.band60,
-      props.band170,
-      props.band310,
-      props.band600,
-      props.band1k,
-      props.band3k,
-      props.band6k,
-      props.band12k,
-      props.band14k,
-      props.band16k
+      props[60],
+      props[170],
+      props[310],
+      props[600],
+      props[1000],
+      props[3000],
+      props[6000],
+      props[12000],
+      props[14000],
+      props[16000]
     ];
 
     this.canvasCtx.strokeStyle = this.colorPattern;
@@ -58,7 +58,6 @@ class EqGraph extends React.Component {
     this.canvasCtx.beginPath();
     const paddingLeft = 4;
     // TODO: Curve these lines
-    // TODO: Color these lines
     values.forEach((value, i) => {
       this.canvasCtx.lineTo(paddingLeft + (i * 16), getY(value));
     });
@@ -66,6 +65,7 @@ class EqGraph extends React.Component {
   }
 
   drawPreampLine() {
+    // TODO: Use the line from the skin image
     const preampValue = getY(this.props.preamp);
     this.canvasCtx.lineWidth = 2;
     this.canvasCtx.strokeStyle = 'white';

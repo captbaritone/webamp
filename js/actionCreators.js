@@ -113,3 +113,25 @@ export function setSkinFromFilename(filename) {
 export function openFileDialog(winamp) {
   winamp.openFileDialog();
 }
+
+export function setEqBand(mediaPlayer, band, value) {
+  mediaPlayer.setEqBand(band, value);
+  return (dispatch) => {
+    return dispatch({
+      type: 'SET_BAND_VALUE',
+      band,
+      value
+    });
+  };
+}
+
+export function setPreamp(mediaPlayer, value) {
+  mediaPlayer.setPreamp(value);
+  return (dispatch) => {
+    return dispatch({
+      type: 'SET_BAND_VALUE',
+      band: 'preamp',
+      value
+    });
+  };
+}

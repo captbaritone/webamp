@@ -14,41 +14,26 @@ export const spriteOffsets = (number) => {
   return {x, y};
 };
 
-class Band extends React.Component {
-  constructor(props) {
-    super(props);
-    this.setValue = this.setValue.bind(this);
-  }
+const Band = (props) => {
+  const value = props[props.band];
+  const offset = spriteOffsets(spriteNumber(value));
+  const xOffset = offset.x * 15; // Each sprite is 15px wide
+  const yOffset = offset.y * 65; // Each sprite is 15px tall
 
-  setValue(e) {
-    this.props.dispatch({
-      type: 'SET_BAND_VALUE',
-      band: this.props.band,
-      value: e.target.value
-    });
-  }
+  const style = {
+    backgroundPosition: `-${xOffset}px -${yOffset}px`
+  };
 
-  render() {
-    const value = this.props[this.props.band];
-    const offset = spriteOffsets(spriteNumber(value));
-    const xOffset = offset.x * 15; // Each sprite is 15px wide
-    const yOffset = offset.y * 65; // Each sprite is 15px tall
-
-    const style = {
-      backgroundPosition: `-${xOffset}px -${yOffset}px`
-    };
-
-    return <div className='band' style={style}>
-      <input
-        type='range'
-        min='1'
-        max='100'
-        step='1'
-        value={value}
-        onChange={this.setValue}
-      />
-    </div>;
-  }
-}
+  return <div id={props.id} className='band' style={style}>
+    <input
+      type='range'
+      min='0'
+      max='100'
+      step='1'
+      value={value}
+      onChange={props.onChange}
+    />
+  </div>;
+};
 
 export default connect((state) => state.equalizer.sliders)(Band);

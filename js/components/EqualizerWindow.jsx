@@ -2,6 +2,9 @@ import React from 'react';
 import {connect} from 'react-redux';
 import classnames from 'classnames';
 
+import {BANDS} from '../constants';
+import {setEqBand, setPreamp} from '../actionCreators';
+
 import DraggableWindow from './DraggableWindow.jsx';
 import Band from './Band.jsx';
 import EqOn from './EqOn.jsx';
@@ -10,14 +13,34 @@ import EqGraph from './EqGraph.jsx';
 
 import '../../css/equalizer-window.css';
 
+const bandClassName = (band) => {
+  return `band-${band}`;
+};
+
 class EqualizerWindow extends React.Component {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
+    this.setHertzValue = this.setHertzValue.bind(this);
+    this.setPreampValue = this.setPreampValue.bind(this);
   }
 
   handleClick() {
     this.props.dispatch({type: 'SET_FOCUSED_WINDOW', window: 'EQUALIZER'});
+  }
+
+  setHertzValue(hertz) {
+    return (e) => {
+      this.props.dispatch(
+        setEqBand(this.props.mediaPlayer, hertz, e.target.value)
+      );
+    };
+  }
+
+  setPreampValue(e) {
+    this.props.dispatch(
+      setPreamp(this.props.mediaPlayer, e.target.value)
+    );
   }
 
   render() {
@@ -35,42 +58,18 @@ class EqualizerWindow extends React.Component {
         <EqAuto />
         <EqGraph />
         <div id='presets' />
-        <div id='preamp'>
-          <Band band='preamp' />
-        </div>
-        <div id='band-60'>
-          <Band band='band60' />
-        </div>
-        <div id='band-170'>
-          <Band band='band170' />
-        </div>
-        <div id='band-310'>
-          <Band band='band310' />
-        </div>
-        <div id='band-600'>
-          <Band band='band600' />
-        </div>
-        <div id='band-1k'>
-          <Band band='band1k' />
-        </div>
-        <div id='band-3k'>
-          <Band band='band3k' />
-        </div>
-        <div id='band-6k'>
-          <Band band='band6k' />
-        </div>
-        <div id='band-12k'>
-          <Band band='band12k' />
-        </div>
-        <div id='band-14k'>
-          <Band band='band14k' />
-        </div>
-        <div id='band-16k'>
-          <Band band='band16k' />
-        </div>
+        <Band id='preamp' band='preamp' onChange={this.setPreampValue} />
+        {BANDS.map((hertz) => (
+          <Band
+            key={hertz}
+            id={bandClassName(hertz)}
+            band={hertz}
+            onChange={this.setHertzValue(hertz)}
+          />
+        ))}
       </div>
     </DraggableWindow>;
   }
 }
 
-  module.exports = connect((state) => state)(EqualizerWindow);
+module.exports = connect((state) => state)(EqualizerWindow);

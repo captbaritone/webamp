@@ -36,7 +36,7 @@ if (new Browser(window).isCompatible) {
         </Skin>
         <MainWindow winamp={winamp} mediaPlayer={winamp.media} />
         { playlist ? <PlaylistWindow /> : '' }
-        { equalizer ? <EqualizerWindow /> : '' }
+        { equalizer ? <EqualizerWindow mediaPlayer={winamp.media} /> : '' }
       </div>
     </Provider>,
     document.getElementById('winamp2-js')
