@@ -10,3 +10,9 @@ export const BANDS = [
   14000,
   16000
 ];
+
+export const WINDOWS = {
+  MAIN: 'MAIN',
+  PLAYLIST: 'PLAYLIST',
+  EQUALIZER: 'EQUALIZER'
+};

@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux';
 
-import {BANDS} from './constants';
+import {BANDS, WINDOWS} from './constants';
 
 const userInput = (state, action) => {
   if (!state) {
@@ -24,7 +24,7 @@ const userInput = (state, action) => {
 const windows = (state, action) => {
   if (!state) {
     return {
-      focused: 'MAIN'
+      focused: WINDOWS.MAIN
     };
   }
   switch (action.type) {

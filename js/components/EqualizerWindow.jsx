@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import classnames from 'classnames';
 
-import {BANDS} from '../constants';
+import {BANDS, WINDOWS} from '../constants';
 import {setEqBand, setPreamp} from '../actionCreators';
 
 import DraggableWindow from './DraggableWindow.jsx';
@@ -26,7 +26,7 @@ class EqualizerWindow extends React.Component {
   }
 
   handleClick() {
-    this.props.dispatch({type: 'SET_FOCUSED_WINDOW', window: 'EQUALIZER'});
+    this.props.dispatch({type: 'SET_FOCUSED_WINDOW', window: WINDOWS.EQUALIZER});
   }
 
   setHertzValue(hertz) {
@@ -48,7 +48,7 @@ class EqualizerWindow extends React.Component {
 
     const className = classnames({
       window: true,
-      selected: this.props.windows.focused === 'EQUALIZER',
+      selected: this.props.windows.focused === WINDOWS.EQUALIZER,
       doubled
     });
     return <DraggableWindow handleClass='title-bar'>

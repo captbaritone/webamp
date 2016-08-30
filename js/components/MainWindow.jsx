@@ -2,6 +2,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 import classnames from 'classnames';
 
+import {WINDOWS} from '../constants';
+
 import ActionButtons from './ActionButtons.jsx';
 import Balance from './Balance.jsx';
 import Close from './Close.jsx';
@@ -32,7 +34,7 @@ class MainWindow extends React.Component {
   }
 
   handleClick() {
-    this.props.dispatch({type: 'SET_FOCUSED_WINDOW', window: 'MAIN'});
+    this.props.dispatch({type: 'SET_FOCUSED_WINDOW', window: WINDOWS.MAIN});
   }
 
   render() {
@@ -45,7 +47,7 @@ class MainWindow extends React.Component {
       play: status === 'PLAYING',
       stop: status === 'STOPPED',
       pause: status === 'PAUSED',
-      selected: this.props.windows.focused === 'MAIN',
+      selected: this.props.windows.focused === WINDOWS.MAIN,
       loading,
       doubled,
       llama,
