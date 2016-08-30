@@ -50,6 +50,7 @@
   "dependencies": {
     "babel-plugin-transform-object-rest-spread": "^6.8.0",
     "babel-plugin-transform-react-jsx": "^6.8.0",
+    "cardinal-spline-js": "^2.3.6",
     "classnames": "^2.2.5",
     "jszip": "^2.6.0",
     "react": "^15.2.0",
