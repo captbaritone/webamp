@@ -231,8 +231,8 @@ module.exports = {
     this.bands[band].gain.value = db;
   },
 
-  setPreamp: function(value) {
-    console.log(value);
+  setPreamp: function() {
+    // ??
   },
 
   getBalance: function() {

@@ -6,7 +6,6 @@ import DraggableWindow from './DraggableWindow.jsx';
 import '../../css/playlist-window.css';
 
 const PlaylistWindow = (props) => {
-  console.log(props);
   const style = {};
   if (props) {
     style.color = props.Normal;
