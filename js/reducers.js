@@ -45,7 +45,7 @@ const display = (state, action) => {
       closed: false,
       shade: false,
       working: false,
-      skinCss: null,
+      skinImages: {},
       skinColors: null,
       skinPlaylistStyle: {},
       visualizerStyle: 2
@@ -73,7 +73,7 @@ const display = (state, action) => {
       return {
         ...state,
         loading: false,
-        skinCss: action.skinCss,
+        skinImages: action.skinImages,
         skinColors: action.skinColors,
         skinPlaylistStyle: action.skinPlaylistStyle
       };

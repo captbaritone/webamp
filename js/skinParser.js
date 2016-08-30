@@ -31,25 +31,19 @@ const extractCss = (spriteObj) => {
 
     img.onload = () => {
       const canvas = document.createElement('canvas');
-      const cssRules = [];
+      const images = {};
       spriteObj.sprites.forEach((sprite) => {
         canvas.height = sprite.height;
         canvas.width = sprite.width;
 
         const context = canvas.getContext('2d');
         context.drawImage(img, -sprite.x, -sprite.y);
-        const value = `background-image: url(${canvas.toDataURL()})`;
-        sprite.selectors.forEach((selector) => {
-          cssRules.push(`#winamp2-js ${selector} {${value}}`);
-        });
+        const image = canvas.toDataURL();
+        if (sprite.name) {
+          images[sprite.name] = image;
+        }
       });
-      if (name === 'NUMS_EX') {
-        // This alternate number file requires that the minus sign be
-        // formatted differently.
-        cssRules.push('#winamp2-js .status #time #minus-sign { top: 0px; left: -1px; width: 9px; height: 13px; }');
-        resolve(name);
-      }
-      resolve({...spriteObj, cssRules});
+      resolve({...spriteObj, images});
     };
     img.src = uri;
   });
@@ -85,12 +79,12 @@ const getSkinDataFromFiles = (spriteObjs) => {
 };
 
 const collectCssAndColors = (spriteObjs) => {
-  let cssRules = [];
+  let images = {};
   let colors = null;
   let playlistStyle = null;
   spriteObjs.forEach((spriteObj) => {
-    if (spriteObj.cssRules) {
-      cssRules = cssRules.concat(spriteObj.cssRules);
+    if (spriteObj.images) {
+      images = {...images, ...spriteObj.images};
     }
     if (spriteObj.colors) {
       colors = spriteObj.colors;
@@ -101,7 +95,7 @@ const collectCssAndColors = (spriteObjs) => {
   });
 
   return {
-    css: cssRules.join('\n'),
+    images,
     colors,
     playlistStyle
   };

@@ -91,7 +91,7 @@ export function setSkinFromFile(skinFile) {
     skinParser(skinFile).then((skinData) => {
       return dispatch({
         type: 'SET_SKIN_DATA',
-        skinCss: skinData.css,
+        skinImages: skinData.images,
         skinColors: skinData.colors,
         skinPlaylistStyle: skinData.playlistStyle
       });
