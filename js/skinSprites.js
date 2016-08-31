@@ -184,9 +184,13 @@ export default [
       {name: 'MAIN_REPEAT_BUTTON_SELECTED', x: 0, y: 30, width: 28, height: 15},
       {name: 'MAIN_REPEAT_BUTTON_SELECTED_DEPRESSED', x: 0, y: 45, width: 28, height: 15},
       {name: 'MAIN_EQ_BUTTON', x: 0, y: 61, width: 23, height: 12},
+      {name: 'MAIN_EQ_BUTTON_SELECTED', x: 0, y: 73, width: 23, height: 12},
       {name: 'MAIN_EQ_BUTTON_DEPRESSED', x: 46, y: 61, width: 23, height: 12},
+      {name: 'MAIN_EQ_BUTTON_DEPRESSED_SELECTED', x: 46, y: 73, width: 23, height: 12},
       {name: 'MAIN_PLAYLIST_BUTTON', x: 23, y: 61, width: 23, height: 12},
-      {name: 'MAIN_PLAYLIST_BUTTON_DEPRESSED', x: 69, y: 61, width: 23, height: 12}
+      {name: 'MAIN_PLAYLIST_BUTTON_SELECTED', x: 23, y: 73, width: 23, height: 12},
+      {name: 'MAIN_PLAYLIST_BUTTON_DEPRESSED', x: 69, y: 61, width: 23, height: 12},
+      {name: 'MAIN_PLAYLIST_BUTTON_DEPRESSED_SELECTED', x: 69, y: 62, width: 23, height: 12}
     ]
   },
   {

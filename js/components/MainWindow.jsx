@@ -12,6 +12,7 @@ import ContextMenu from './ContextMenu.jsx';
 import DragTarget from './DragTarget.jsx';
 import DraggableWindow from './DraggableWindow.jsx';
 import Eject from './Eject.jsx';
+import EqToggleButton from './EqToggleButton.jsx';
 import Kbps from './Kbps.jsx';
 import Khz from './Khz.jsx';
 import Marquee from './Marquee.jsx';
@@ -92,7 +93,7 @@ class MainWindow extends React.Component {
           <Volume mediaPlayer={this.props.mediaPlayer} />
           <Balance mediaPlayer={this.props.mediaPlayer} />
           <div className='windows'>
-            <div id='equalizer-button' />
+            <EqToggleButton />
             <div id='playlist-button' />
           </div>
           <Position mediaPlayer={this.props.mediaPlayer} />

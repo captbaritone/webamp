@@ -24,12 +24,18 @@ const userInput = (state, action) => {
 const windows = (state, action) => {
   if (!state) {
     return {
-      focused: WINDOWS.MAIN
+      focused: WINDOWS.MAIN,
+      equalizer: false
     };
   }
   switch (action.type) {
     case 'SET_FOCUSED_WINDOW':
       return {...state, focused: action.window};
+    case 'TOGGLE_EQUALIZER_WINDOW':
+      if (process.env.NODE_ENV === 'production') {
+        return state;
+      }
+      return {...state, equalizer: !state.equalizer};
     default:
       return state;
   }

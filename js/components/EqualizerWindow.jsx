@@ -49,6 +49,7 @@ class EqualizerWindow extends React.Component {
     const className = classnames({
       window: true,
       selected: this.props.windows.focused === WINDOWS.EQUALIZER,
+      closed: !this.props.windows.equalizer,
       doubled
     });
     return <DraggableWindow handleClass='title-bar'>
