@@ -28,7 +28,7 @@ import Volume from './Volume.jsx';
 
 import '../../css/main-window.css';
 
-class MainWindow extends React.Component {
+export class MainWindow extends React.Component {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
@@ -80,7 +80,7 @@ class MainWindow extends React.Component {
           <div className='status'>
             <ClutterBar />
             <div id='play-pause' />
-            <div id='work-indicator' className={this.props.display.working ? 'selected' : ''} />
+            <div id='work-indicator' className={classnames({selected: this.props.display.working})} />
             <Time />
             <Visualizer analyser={this.props.mediaPlayer._analyser}/>
           </div>
@@ -110,4 +110,4 @@ class MainWindow extends React.Component {
   }
 }
 
-  module.exports = connect((state) => state)(MainWindow);
+export default connect((state) => state)(MainWindow);

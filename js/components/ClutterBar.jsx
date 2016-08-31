@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import classnames from 'classnames';
 
 
 class ClutterBar extends React.Component {
@@ -25,7 +26,7 @@ class ClutterBar extends React.Component {
       <div id='button-i' />
       <div
         id='button-d'
-        className={this.props.doubled ? 'selected' : ''}
+        className={classnames({selected: this.props.doubled})}
         onMouseUp={this.handleMouseUpDouble}
         onMouseDown={this.handleMouseDownDouble}
       />

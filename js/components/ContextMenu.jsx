@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import classnames from 'classnames';
 
 import {close, setSkinFromFilename, openFileDialog} from '../actionCreators';
 
@@ -46,8 +47,7 @@ class ContextMenu extends React.Component {
   }
 
   render() {
-    const classes = this.props.selected ? 'selected' : '';
-    return <div id='option' className={classes} onClick={this.toggleMenu}>
+    return <div id='option' className={classnames({selected: this.props.selected})} onClick={this.toggleMenu}>
       <ul id='context-menu'>
         <li><a href='https://github.com/captbaritone/winamp2-js' target='_blank'>Winamp2-js...</a></li>
         <li className='hr'><hr /></li>

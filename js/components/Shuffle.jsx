@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import classnames from 'classnames';
 
 
 class Shuffle extends React.Component {
@@ -13,7 +14,7 @@ class Shuffle extends React.Component {
   render() {
     return <div
       id='shuffle'
-      className={this.props.shuffle ? 'selected' : ''}
+      className={classnames({selected: this.props.shuffle})}
       onClick={this.handleClick}
     />;
   }
