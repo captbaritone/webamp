@@ -10,4 +10,8 @@ config.plugins = (config.plugins || []).concat([
   new webpack.optimize.UglifyJsPlugin()
 ]);
 
+config.entry = (config.entry || []).concat([
+    './js/googleAnalytics.min.js'
+]);
+
 module.exports = config;
