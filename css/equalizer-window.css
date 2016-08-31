@@ -43,68 +43,68 @@
 
 #winamp2-js #preamp {
   position: absolute;
-  left: 20px;
-  top: 37px;
+  left: 19px;
+  top: 38px;
 }
 
 #winamp2-js #band-60 {
   position: absolute;
-  left: 80px;
-  top: 37px;
+  left: 79px;
+  top: 38px;
 }
 
 #winamp2-js #band-170 {
   position: absolute;
-  left: 98px;
-  top: 37px;
+  left: 97px;
+  top: 38px;
 }
 
 #winamp2-js #band-310 {
   position: absolute;
-  left: 116px;
-  top: 37px;
+  left: 115px;
+  top: 38px;
 }
 
 #winamp2-js #band-600 {
   position: absolute;
-  left: 134px;
-  top: 37px;
+  left: 133px;
+  top: 38px;
 }
 
 #winamp2-js #band-1000 {
   position: absolute;
-  left: 152px;
-  top: 37px;
+  left: 151px;
+  top: 38px;
 }
 
 #winamp2-js #band-3000 {
   position: absolute;
-  left: 170px;
-  top: 37px;
+  left: 169px;
+  top: 38px;
 }
 
 #winamp2-js #band-6000 {
   position: absolute;
-  left: 188px;
-  top: 37px;
+  left: 187px;
+  top: 38px;
 }
 
 #winamp2-js #band-12000 {
   position: absolute;
-  left: 206px;
-  top: 37px;
+  left: 205px;
+  top: 38px;
 }
 
 #winamp2-js #band-14000 {
   position: absolute;
-  left: 224px;
-  top: 37px;
+  left: 223px;
+  top: 38px;
 }
 
 #winamp2-js #band-16000 {
   position: absolute;
-  left: 242px;
-  top: 37px;
+  left: 241px;
+  top: 38px;
 }
 
 #winamp2-js .band {
@@ -116,7 +116,7 @@
     /* These two numbers are pure magic. No idea why they work */
     margin-left: -25px;
     margin-top: 25px;
-    width: 64px;
+    width: 63px;
     height: 14px;
     background-position: 0 0;
     transform: rotate(270deg);
