@@ -53,7 +53,7 @@
     "cardinal-spline-js": "^2.3.6",
     "classnames": "^2.2.5",
     "jszip": "^2.6.0",
-    "react": "^15.2.0",
+    "react": "^15.3.1",
     "react-dom": "^15.2.0",
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
