@@ -129,6 +129,24 @@ const equalizer = (state, action) => {
       return {...state, on: !state.on};
     case 'TOGGLE_EQ_AUTO':
       return {...state, auto: !state.auto};
+    case 'SET_EQ_TO_MAX':
+      const maxSliders = {};
+      Object.keys(state.sliders).forEach((key) => {
+        maxSliders[key] = 100;
+      });
+      return {...state, sliders: maxSliders};
+    case 'SET_EQ_TO_MID':
+      const midSliders = {};
+      Object.keys(state.sliders).forEach((key) => {
+        midSliders[key] = 50;
+      });
+      return {...state, sliders: midSliders};
+    case 'SET_EQ_TO_MIN':
+      const minSliders = {};
+      Object.keys(state.sliders).forEach((key) => {
+        minSliders[key] = 0;
+      });
+      return {...state, sliders: minSliders};
     default:
       return state;
   }

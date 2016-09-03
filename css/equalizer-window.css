@@ -47,6 +47,30 @@
   top: 38px;
 }
 
+#winamp2-js #plus12db {
+  position: absolute;
+  left: 45px;
+  top: 36px;
+  width: 22px;
+  height: 8px;
+}
+
+#winamp2-js #zerodb {
+  position: absolute;
+  left: 45px;
+  top: 64px;
+  width: 22px;
+  height: 8px;
+}
+
+#winamp2-js #minus12db {
+  position: absolute;
+  left: 45px;
+  top: 95px;
+  width: 22px;
+  height: 8px;
+}
+
 #winamp2-js #band-60 {
   position: absolute;
   left: 79px;

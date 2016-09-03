@@ -20,13 +20,8 @@ const bandClassName = (band) => {
 class EqualizerWindow extends React.Component {
   constructor(props) {
     super(props);
-    this.handleClick = this.handleClick.bind(this);
     this.setHertzValue = this.setHertzValue.bind(this);
     this.setPreampValue = this.setPreampValue.bind(this);
-  }
-
-  handleClick() {
-    this.props.dispatch({type: 'SET_FOCUSED_WINDOW', window: WINDOWS.EQUALIZER});
   }
 
   setHertzValue(hertz) {
@@ -53,13 +48,16 @@ class EqualizerWindow extends React.Component {
       doubled
     });
     return <DraggableWindow handleClass='title-bar'>
-      <div id='equalizer-window' className={className} onClick={this.handleClick}>
+      <div id='equalizer-window' className={className} onClick={this.props.focusWindow}>
         <div className='equalizer-top title-bar' />
         <EqOn />
         <EqAuto />
         <EqGraph />
         <div id='presets' />
         <Band id='preamp' band='preamp' onChange={this.setPreampValue} />
+        <div id='plus12db' onClick={this.props.setEqToMax} />
+        <div id='zerodb' onClick={this.props.setEqToMid} />
+        <div id='minus12db' onClick={this.props.setEqToMin} />
         {BANDS.map((hertz) => (
           <Band
             key={hertz}
@@ -73,4 +71,11 @@ class EqualizerWindow extends React.Component {
   }
 }
 
-module.exports = connect((state) => state)(EqualizerWindow);
+const mapDispatchToProps = (dispatch) => ({
+  setEqToMax: () => dispatch({type: 'SET_EQ_TO_MAX'}),
+  setEqToMid: () => dispatch({type: 'SET_EQ_TO_MID'}),
+  setEqToMin: () => dispatch({type: 'SET_EQ_TO_MIN'}),
+  focusWindow: () => dispatch({type: 'SET_FOCUSED_WINDOW', window: WINDOWS.EQUALIZER})
+});
+
+module.exports = connect((state) => state, mapDispatchToProps)(EqualizerWindow);
