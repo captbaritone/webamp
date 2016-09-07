@@ -11,7 +11,7 @@ config.plugins = (config.plugins || []).concat([
 ]);
 
 config.entry = (config.entry || []).concat([
-    './js/googleAnalytics.min.js'
+  './js/googleAnalytics.min.js'
 ]);
 
 module.exports = config;

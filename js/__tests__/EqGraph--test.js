@@ -1,8 +1,7 @@
 jest.unmock('../components/EqGraph.jsx');
 
 import {
-  roundToEven,
-  getY
+  roundToEven
 } from '../components/EqGraph.jsx';
 
 describe('roundToEven', () => {
