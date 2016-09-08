@@ -1,5 +1,6 @@
 import MyFile from './myFile';
 import skinParser from './skinParser';
+import {BANDS} from './constants';
 
 import {clamp} from './utils';
 
@@ -123,6 +124,32 @@ export function setEqBand(mediaPlayer, band, value) {
       value
     });
   };
+}
+
+function _setEqTo(mediaPlayer, value) {
+  return (dispatch) => {
+    Object.keys(BANDS).forEach((key) => {
+      const band = BANDS[key];
+      mediaPlayer.setEqBand(band, value);
+      dispatch({
+        type: 'SET_BAND_VALUE',
+        value,
+        band
+      });
+    });
+  };
+}
+
+export function setEqToMax(mediaPlayer) {
+  return _setEqTo(mediaPlayer, 100);
+}
+
+export function setEqToMid(mediaPlayer) {
+  return _setEqTo(mediaPlayer, 50);
+}
+
+export function setEqToMin(mediaPlayer) {
+  return _setEqTo(mediaPlayer, 0);
 }
 
 export function setPreamp(mediaPlayer, value) {
