@@ -24,6 +24,9 @@ module.exports = {
     // The _source node has to be recreated each time it's stopped or
     // paused, so we don't create it here.
 
+    // Create the preamp node
+    this._preamp = this._context.createGain();
+
     // Create the spliter node
     this._chanSplit = this._context.createChannelSplitter(2);
 
@@ -63,6 +66,8 @@ module.exports = {
     //                   gain
     //                    |
     //               destination
+
+    this._preamp.connect(this._chanSplit);
 
     // Connect split channels to left / right gains
     this._chanSplit.connect(this._leftGain, 0);
@@ -160,7 +165,7 @@ module.exports = {
       this._source = this._context.createBufferSource();
       this._source.buffer = this._buffer;
       this._source.connect(this._analyser);
-      this._source.connect(this._chanSplit);
+      this._source.connect(this._preamp);
 
       this._position = typeof position !== 'undefined' ? position : this._position;
       this._startTime = this._context.currentTime - this._position;
@@ -201,8 +206,10 @@ module.exports = {
     this._gainNode.gain.value = volume / 100;
   },
 
-  getVolume: function() {
-    return this._gainNode.gain.value * 100;
+  // From 0-1
+  setPreamp: function(value) {
+    console.log('preamp', value);
+    this._preamp.gain.value = value / 100;
   },
 
   // From -100 to 100
@@ -229,14 +236,6 @@ module.exports = {
   setEqBand: function(band, value) {
     const db = ((value / 100) * 24) - 12;
     this.bands[band].gain.value = db;
-  },
-
-  setPreamp: function() {
-    // ??
-  },
-
-  getBalance: function() {
-    return this._balance;
   },
 
   toggleRepeat: function() {

@@ -1,7 +1,13 @@
 // UI and App logic
 import Media from './media';
 import MyFile from './myFile';
-import {setSkinFromUrl, setSkinFromFile} from './actionCreators';
+import {
+  setSkinFromUrl,
+  setSkinFromFile,
+  setVolume,
+  setPreamp,
+  setBalance
+} from './actionCreators';
 
 import '../css/winamp.css';
 
@@ -12,8 +18,9 @@ module.exports = {
     this.fileInput.type = 'file';
     this.fileInput.style.display = 'none';
 
-    this.dispatch({type: 'SET_VOLUME', volume: options.volume});
-    this.dispatch({type: 'SET_BALANCE', balance: options.balance});
+    this.dispatch(setVolume(this.media, options.volume));
+    this.dispatch(setBalance(this.media, options.balance));
+    this.dispatch(setPreamp(this.media, 50));
     this.loadFromUrl(options.mediaFile.url, options.mediaFile.name);
     this.dispatch(setSkinFromUrl(options.skinUrl));
 
