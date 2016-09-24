@@ -110,7 +110,7 @@
     "quote-props": ["warn", "consistent-as-needed"],
     "quotes": ["error", "single", "avoid-escape"],
     "radix": "error",
-    "react/wrap-multilines": "error",
+    "react/jsx-wrap-multilines": "error",
     "react/no-string-refs": "error",
     "react/jsx-boolean-value": "error",
     "react/jsx-closing-bracket-location": ["error", "line-aligned"],

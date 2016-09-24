@@ -13,10 +13,12 @@ class Eject extends React.Component {
     openFileDialog(this.props.winamp);
   }
   render() {
-    return <div
-      id='eject'
-      onClick={this.handleClick}
-    />;
+    return (
+      <div
+        id='eject'
+        onClick={this.handleClick}
+      />
+    );
   }
 }
 
