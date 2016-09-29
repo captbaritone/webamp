@@ -1,9 +1,4 @@
 /* Rules used by all windows */
-#winamp2-js {
-    height: 116px;
-    width: 275px;
-}
-
 
 /* Range input css reset */
 #winamp2-js input[type=range]{ -webkit-appearance: none; margin: 0; padding: 0; background: none; border: none; }

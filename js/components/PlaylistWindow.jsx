@@ -1,8 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import DraggableWindow from './DraggableWindow.jsx';
-
 import '../../css/playlist-window.css';
 
 const PlaylistWindow = (props) => {
@@ -11,7 +9,7 @@ const PlaylistWindow = (props) => {
     style.color = props.Normal;
     style.backgroundColor = props.NormalBG;
   }
-  return <DraggableWindow handleClass='title-bar'>
+  return (
     <div id='playlist-window' className='window' style={style}>
       <div className='playlist-left'>
         <div className='playlist-right'>
@@ -31,7 +29,7 @@ const PlaylistWindow = (props) => {
         </div>
       </div>
     </div>
-  </DraggableWindow>;
+  );
 };
 
 module.exports = connect((state) => state.display.skinPlaylistStyle)(PlaylistWindow);

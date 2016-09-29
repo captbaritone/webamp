@@ -9,6 +9,7 @@
     "serve": "webpack-dev-server",
     "weight": "npm run build && gzip-size built/winamp.js | pretty-bytes",
     "test": "jest && npm run lint",
+    "tdd": "jest --watch",
     "deploy": "ssh jordaneldredge.com sh < deploy.sh"
   },
   "repository": {

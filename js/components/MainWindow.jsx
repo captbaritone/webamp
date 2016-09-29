@@ -10,7 +10,6 @@ import Close from './Close.jsx';
 import ClutterBar from './ClutterBar.jsx';
 import ContextMenu from './ContextMenu.jsx';
 import DragTarget from './DragTarget.jsx';
-import DraggableWindow from './DraggableWindow.jsx';
 import Eject from './Eject.jsx';
 import EqToggleButton from './EqToggleButton.jsx';
 import Kbps from './Kbps.jsx';
@@ -34,7 +33,7 @@ export class MainWindow extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick() {
+  handleClick(e) {
     this.props.dispatch({type: 'SET_FOCUSED_WINDOW', window: WINDOWS.MAIN});
   }
 
@@ -66,47 +65,45 @@ export class MainWindow extends React.Component {
     // absolutely positioned, exists at a different location than the main
     // window. Drag/Drop still work, because events propogate up to parent
     // elements.
-    return <DragTarget handleFiles={handleDrop}>
-      <DraggableWindow handleClass='title-bar'>
-        <div id='main-window' className={className} onClick={this.handleClick}>
-          <div id='loading'>Loading...</div>
-          <div id='title-bar' className='selected title-bar'>
-            <ContextMenu mediaPlayer={this.props.mediaPlayer} winamp={this.props.winamp} />
-            <ShadeTime />
-            <div id='minimize' />
-            <Shade />
-            <Close mediaPlayer={this.props.mediaPlayer} />
-          </div>
-          <div className='status'>
-            <ClutterBar />
-            <div id='play-pause' />
-            <div id='work-indicator' className={classnames({selected: this.props.display.working})} />
-            <Time />
-            <Visualizer analyser={this.props.mediaPlayer._analyser}/>
-          </div>
-          <div className='media-info'>
-            <Marquee />
-            <Kbps />
-            <Khz />
-            <MonoStereo />
-          </div>
-          <Volume mediaPlayer={this.props.mediaPlayer} />
-          <Balance mediaPlayer={this.props.mediaPlayer} />
-          <div className='windows'>
-            <EqToggleButton />
-            <div id='playlist-button' />
-          </div>
-          <Position mediaPlayer={this.props.mediaPlayer} />
-          <ActionButtons mediaPlayer={this.props.mediaPlayer} />
-          <Eject winamp={this.props.winamp} />
-          <div className='shuffle-repeat'>
-            <Shuffle mediaPlayer={this.props.mediaPlayer} />
-            <Repeat mediaPlayer={this.props.mediaPlayer} />
-          </div>
-          <a id='about' target='blank' href='https://github.com/captbaritone/winamp2-js' />
+    return (
+      <div id='main-window' className={className} onClick={this.handleClick} onMouseDown={this.props.startDrag}>
+        <div id='loading'>Loading...</div>
+        <div id='title-bar' className='selected title-bar'>
+          <ContextMenu mediaPlayer={this.props.mediaPlayer} winamp={this.props.winamp} />
+          <ShadeTime />
+          <div id='minimize' />
+          <Shade />
+          <Close mediaPlayer={this.props.mediaPlayer} />
         </div>
-      </DraggableWindow>
-    </DragTarget>;
+        <div className='status'>
+          <ClutterBar />
+          <div id='play-pause' />
+          <div id='work-indicator' className={classnames({selected: this.props.display.working})} />
+          <Time />
+          <Visualizer analyser={this.props.mediaPlayer._analyser}/>
+        </div>
+        <div className='media-info'>
+          <Marquee />
+          <Kbps />
+          <Khz />
+          <MonoStereo />
+        </div>
+        <Volume mediaPlayer={this.props.mediaPlayer} />
+        <Balance mediaPlayer={this.props.mediaPlayer} />
+        <div className='windows'>
+          <EqToggleButton />
+          <div id='playlist-button' />
+        </div>
+        <Position mediaPlayer={this.props.mediaPlayer} />
+        <ActionButtons mediaPlayer={this.props.mediaPlayer} />
+        <Eject winamp={this.props.winamp} />
+        <div className='shuffle-repeat'>
+          <Shuffle mediaPlayer={this.props.mediaPlayer} />
+          <Repeat mediaPlayer={this.props.mediaPlayer} />
+        </div>
+        <a id='about' target='blank' href='https://github.com/captbaritone/winamp2-js' />
+      </div>
+    );
   }
 }
 

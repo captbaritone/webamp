@@ -208,7 +208,6 @@ module.exports = {
 
   // From 0-1
   setPreamp: function(value) {
-    console.log('preamp', value);
     this._preamp.gain.value = value / 100;
   },
 

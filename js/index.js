@@ -6,6 +6,7 @@ import thunk from 'redux-thunk';
 
 import reducer from './reducers';
 
+import WindowManager from './components/WindowManager.jsx';
 import Browser from './browser';
 import MainWindow from './components/MainWindow.jsx';
 import PlaylistWindow from './components/PlaylistWindow.jsx';
@@ -34,9 +35,11 @@ if (new Browser(window).isCompatible) {
           {/* This is not technically kosher, since <style> tags should be in
           the <head>, but browsers don't really care... */}
         </Skin>
-        <MainWindow winamp={winamp} mediaPlayer={winamp.media} />
-        { playlist ? <PlaylistWindow /> : '' }
-        { equalizer ? <EqualizerWindow mediaPlayer={winamp.media} /> : '' }
+        <WindowManager>
+          <MainWindow winamp={winamp} mediaPlayer={winamp.media} />
+          { playlist ? <PlaylistWindow /> : '' }
+          { equalizer ? <EqualizerWindow mediaPlayer={winamp.media} /> : '' }
+        </WindowManager>
       </div>
     </Provider>,
     document.getElementById('winamp2-js')

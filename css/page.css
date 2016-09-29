@@ -17,13 +17,6 @@ body {
     text-align: center;
 }
 
-#main-window {
-    margin-top: -58px;
-    margin-left: -137px;
-    top: 40%;
-    left: 50%;
-}
-
 .about {
     position: absolute;
     bottom: 0;

@@ -11,7 +11,6 @@ import {
   setEqToMin
 } from '../actionCreators';
 
-import DraggableWindow from './DraggableWindow.jsx';
 import Band from './Band.jsx';
 import EqOn from './EqOn.jsx';
 import EqAuto from './EqAuto.jsx';
@@ -47,40 +46,38 @@ class EqualizerWindow extends React.Component {
       doubled
     });
     return (
-      <DraggableWindow handleClass='title-bar'>
-        <div id='equalizer-window' className={className} onClick={this.props.focusWindow}>
-          <div className='equalizer-top title-bar' />
-          <EqOn />
-          <EqAuto />
-          <EqGraph />
-          <div id='presets' />
+      <div id='equalizer-window' className={className} onClick={this.props.focusWindow}>
+        <div className='equalizer-top title-bar' />
+        <EqOn />
+        <EqAuto />
+        <EqGraph />
+        <div id='presets' />
+        <Band
+          id='preamp'
+          band='preamp'
+          onChange={this.props.setPreampValue(this.props.mediaPlayer)}
+        />
+        <div
+          id='plus12db'
+          onClick={this.props.setEqToMax(this.props.mediaPlayer)}
+        />
+        <div
+          id='zerodb'
+          onClick={this.props.setEqToMid(this.props.mediaPlayer)}
+        />
+        <div
+          id='minus12db'
+          onClick={this.props.setEqToMin(this.props.mediaPlayer)}
+        />
+        {BANDS.map((hertz) => (
           <Band
-            id='preamp'
-            band='preamp'
-            onChange={this.props.setPreampValue(this.props.mediaPlayer)}
+            key={hertz}
+            id={bandClassName(hertz)}
+            band={hertz}
+            onChange={this.setHertzValue(hertz)}
           />
-          <div
-            id='plus12db'
-            onClick={this.props.setEqToMax(this.props.mediaPlayer)}
-          />
-          <div
-            id='zerodb'
-            onClick={this.props.setEqToMid(this.props.mediaPlayer)}
-          />
-          <div
-            id='minus12db'
-            onClick={this.props.setEqToMin(this.props.mediaPlayer)}
-          />
-          {BANDS.map((hertz) => (
-            <Band
-              key={hertz}
-              id={bandClassName(hertz)}
-              band={hertz}
-              onChange={this.setHertzValue(hertz)}
-            />
-          ))}
-        </div>
-      </DraggableWindow>
+        ))}
+      </div>
     );
   }
 }
