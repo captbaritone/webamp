@@ -40,7 +40,7 @@
     "eslint-plugin-react": "^6.2.2",
     "file-loader": "^0.9.0",
     "gzip-size-cli": "^1.0.0",
-    "jest-cli": "^16.0.0",
+    "jest-cli": "^16.0.1",
     "pretty-bytes-cli": "^2.0.0",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
