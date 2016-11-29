@@ -22,10 +22,10 @@ class Visualizer extends React.Component {
   }
 
   componentDidMount() {
-    this.canvasCtx = this.refs.canvas.getContext('2d');
+    this.canvasCtx = this.canvas.getContext('2d');
     this.canvasCtx.imageSmoothingEnabled = false;
-    this.width = this.refs.canvas.width * 1; // Cast to int
-    this.height = this.refs.canvas.height * 1; // Cast to int
+    this.width = this.canvas.width * 1; // Cast to int
+    this.height = this.canvas.height * 1; // Cast to int
 
     // Off-screen canvas for pre-rendering the background
     this.bgCanvas = document.createElement('canvas');
@@ -189,7 +189,7 @@ class Visualizer extends React.Component {
     // TODO: Don't rerender DOM on style updates
     return <canvas
       id='visualizer'
-      ref='canvas'
+      ref={(node) => this.canvas = node}
       width='152'
       height='32'
       onClick={this.handleClick}

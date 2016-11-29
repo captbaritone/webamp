@@ -9,7 +9,7 @@ import Balance from './Balance.jsx';
 import Close from './Close.jsx';
 import ClutterBar from './ClutterBar.jsx';
 import ContextMenu from './ContextMenu.jsx';
-import DragTarget from './DragTarget.jsx';
+//import DragTarget from './DragTarget.jsx';
 import Eject from './Eject.jsx';
 import EqToggleButton from './EqToggleButton.jsx';
 import Kbps from './Kbps.jsx';
@@ -34,7 +34,7 @@ export class MainWindow extends React.Component {
     this.handleDrop = this.handleDrop.bind(this);
   }
 
-  handleClick(e) {
+  handleClick() {
     this.props.dispatch({type: 'SET_FOCUSED_WINDOW', window: WINDOWS.MAIN});
   }
 

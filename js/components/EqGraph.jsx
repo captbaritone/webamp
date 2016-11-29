@@ -19,10 +19,10 @@ class EqGraph extends React.Component {
   }
 
   componentDidMount() {
-    this.canvasCtx = this.refs.canvas.getContext('2d');
+    this.canvasCtx = this.canvas.getContext('2d');
     this.canvasCtx.imageSmoothingEnabled = false;
-    this.width = this.refs.canvas.width * 1; // Cast to int
-    this.height = this.refs.canvas.height * 1; // Cast to int
+    this.width = this.canvas.width * 1; // Cast to int
+    this.height = this.canvas.height * 1; // Cast to int
   }
 
   componentDidUpdate() {
@@ -113,7 +113,7 @@ class EqGraph extends React.Component {
   render() {
     return <canvas
       id='eqGraph'
-      ref='canvas'
+      ref={(node) => this.canvas = node}
       width='152'
       height='32'
     />;
