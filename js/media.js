@@ -77,7 +77,7 @@ module.exports = {
     this._leftGain.connect(this._chanMerge, 0, 0);
     this._rightGain.connect(this._chanMerge, 0, 1);
 
-    let output = this._chanMerge;
+    const output = this._chanMerge;
     this.bands = {};
 
     BANDS.forEach((band, i) => {
@@ -96,8 +96,11 @@ module.exports = {
       }
       filter.frequency.value = band;
       filter.gain.value = 0;
+      /*
+      Disable this while we wait for Safari to fix its bug.
       output.connect(filter);
       output = filter;
+      */
     });
 
     output.connect(this._gainNode);
