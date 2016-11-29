@@ -43,11 +43,12 @@ class EqualizerWindow extends React.Component {
       window: true,
       selected: this.props.windows.focused === WINDOWS.EQUALIZER,
       closed: !this.props.windows.equalizer,
+      draggable: true,
       doubled
     });
     return (
       <div id='equalizer-window' className={className} onClick={this.props.focusWindow}>
-        <div className='equalizer-top title-bar' />
+        <div className='equalizer-top title-bar draggable' />
         <EqOn />
         <EqAuto />
         <EqGraph />

@@ -10,13 +10,13 @@ const PlaylistWindow = (props) => {
     style.backgroundColor = props.NormalBG;
   }
   return (
-    <div id='playlist-window' className='window' style={style}>
+    <div id='playlist-window' className='window draggable' style={style}>
       <div className='playlist-left'>
         <div className='playlist-right'>
-          <div className='playlist-top title-bar'>
-            <div className='playlist-top-left' />
-            <div className='playlist-top-title' />
-            <div className='playlist-top-right'>
+          <div className='playlist-top title-bar draggable'>
+            <div className='playlist-top-left draggable' />
+            <div className='playlist-top-title draggable' />
+            <div className='playlist-top-right draggable'>
               <div id='close-playlist' />
               <div id='shade-playlist' />
             </div>

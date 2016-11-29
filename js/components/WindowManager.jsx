@@ -60,6 +60,9 @@ class WindowManager extends React.Component {
   }
 
   handleMouseDown(i, e) {
+    if (!e.target.classList.contains('draggable')) {
+      return;
+    }
     const mouseStart = {
       x: e.clientX,
       y: e.clientY

@@ -48,6 +48,7 @@ export class MainWindow extends React.Component {
       stop: status === 'STOPPED',
       pause: status === 'PAUSED',
       selected: this.props.windows.focused === WINDOWS.MAIN,
+      draggable: true,
       loading,
       doubled,
       llama,
@@ -68,7 +69,7 @@ export class MainWindow extends React.Component {
     return (
       <div id='main-window' className={className} onClick={this.handleClick} onMouseDown={this.props.startDrag}>
         <div id='loading'>Loading...</div>
-        <div id='title-bar' className='selected title-bar'>
+        <div id='title-bar' className='selected title-bard draggable'>
           <ContextMenu mediaPlayer={this.props.mediaPlayer} winamp={this.props.winamp} />
           <ShadeTime />
           <div id='minimize' />
