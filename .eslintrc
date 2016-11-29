@@ -93,7 +93,6 @@
     "no-trailing-spaces": "error",
     "no-undef": "error",
     "no-undef-init": "error",
-    "no-undefined": "error",
     "no-unneeded-ternary": "error",
     "no-unreachable": "error",
     "no-unused-expressions": "error",
