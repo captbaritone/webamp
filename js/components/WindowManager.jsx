@@ -9,17 +9,26 @@ const WINDOW_WIDTH = 275;
 class WindowManager extends React.Component {
   constructor(props) {
     super(props);
-    const state = {};
-    this.validChildren().forEach((child, i) => {
-      state[i] = {
-        x: -(WINDOW_WIDTH / 2),
-        y: 0
-      };
-    });
-    this.state = state;
     this.windowNodes = [];
+    this.state = {};
+    window.addEventListener('resize', this.centerWindows.bind(this));
     this.getRef = this.getRef.bind(this);
     this.handleMouseDown = this.handleMouseDown.bind(this);
+  }
+
+  centerWindows() {
+    const {innerHeight, innerWidth} = window;
+    const state = {};
+    const children = this.validChildren();
+    const totalHeight = children.length * WINDOW_HEIGHT;
+    children.forEach((child, i) => {
+      const offset = WINDOW_HEIGHT * i;
+      state[i] = {
+        left: (innerWidth / 2) - WINDOW_WIDTH / 2,
+        top: (innerHeight / 2) - (totalHeight / 2) + offset
+      };
+    });
+    this.setState(state);
   }
 
   getRef(node) {
@@ -97,15 +106,15 @@ class WindowManager extends React.Component {
       position: 'absolute',
       width: 0,
       height: 0,
-      top: '50vh',
-      left: '50vw'
+      top: 0,
+      left: 0
     };
     return (
       <div style={parentStyle}>
         {this.validChildren().map((child, i) => {
-          const position = this.state[i] || {};
+          const position = this.state[i];
           /* eslint-disable react/jsx-no-bind */
-          return (
+          return position && (
             <div
               onMouseDown={(e) => this.handleMouseDown(i, e)}
               ref={this.getRef}
