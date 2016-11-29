@@ -1,4 +1,3 @@
-jest.unmock('../snapUtils');
 
 import {
   top,

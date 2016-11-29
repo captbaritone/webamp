@@ -1,7 +1,5 @@
 import fs from 'fs';
 
-jest.unmock('../utils');
-
 import {
   getTimeObj,
   getTimeStr,

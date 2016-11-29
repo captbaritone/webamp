@@ -1,5 +1,3 @@
-jest.unmock('../components/Band.jsx');
-
 import {
   spriteNumber,
   spriteOffsets

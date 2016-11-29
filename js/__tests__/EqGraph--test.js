@@ -1,5 +1,3 @@
-jest.unmock('../components/EqGraph.jsx');
-
 import {
   roundToEven
 } from '../components/EqGraph.jsx';

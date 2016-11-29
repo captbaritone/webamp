@@ -1,6 +1,3 @@
-jest.unmock('../components/Marquee.jsx');
-jest.unmock('../utils');
-
 import {
   getBalanceText,
   getVolumeText,

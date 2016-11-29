@@ -1,5 +1,3 @@
-jest.unmock('../skinSprites');
-
 import skinSprites from '../skinSprites';
 
 const getNames = (arr) => arr.map((item) => item.name);
