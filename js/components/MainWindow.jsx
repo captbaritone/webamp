@@ -31,10 +31,23 @@ export class MainWindow extends React.Component {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
+    this.handleDrop = this.handleDrop.bind(this);
   }
 
   handleClick(e) {
     this.props.dispatch({type: 'SET_FOCUSED_WINDOW', window: WINDOWS.MAIN});
+  }
+
+  supress(e) {
+    e.stopPropagation();
+    e.preventDefault();
+  }
+
+  handleDrop(e) {
+    this.supress(e);
+    const {files} = e.dataTransfer;
+    // TODO: Move this to an actionCreator
+    this.props.winamp.loadFromFileReference(files[0]);
   }
 
   render() {
@@ -56,18 +69,16 @@ export class MainWindow extends React.Component {
       closed
     });
 
-    // TODO: Move this to an actionCreator
-    const handleDrop = (files) => {
-      this.props.winamp.loadFromFileReference(files[0]);
-    };
-
-    // NOTE: DragTarget but be outside Draggable Window, since currently
-    // DragTarget creates a wrapper DOM element which, since main-window is
-    // absolutely positioned, exists at a different location than the main
-    // window. Drag/Drop still work, because events propogate up to parent
-    // elements.
     return (
-      <div id='main-window' className={className} onClick={this.handleClick} onMouseDown={this.props.startDrag}>
+      <div
+        id='main-window'
+        className={className}
+        onClick={this.handleClick}
+        onMouseDown={this.props.startDrag}
+        onDragEnter={this.supress}
+        onDragOver={this.supress}
+        onDrop={this.handleDrop}
+      >
         <div id='loading'>Loading...</div>
         <div id='title-bar' className='selected title-bard draggable'>
           <ContextMenu mediaPlayer={this.props.mediaPlayer} winamp={this.props.winamp} />
