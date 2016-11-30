@@ -78,10 +78,9 @@ class EqGraph extends React.Component {
     this.canvasCtx.beginPath();
     const paddingLeft = 4;
 
-    let points = [];
-    amplitudes.forEach((value, i) => {
-      points = points.concat(paddingLeft + (i * 16), getY(value));
-    });
+    const points = amplitudes.reduce((prev, value, i) => (
+      prev.concat(paddingLeft + (i * 16), getY(value))
+    ), []);
 
     // Spline between points in order to create nice curves
     const tension = 0.5;
