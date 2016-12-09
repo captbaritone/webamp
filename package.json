@@ -56,7 +56,7 @@
     "classnames": "^2.2.5",
     "jszip": "^2.6.0",
     "react": "^15.3.1",
-    "react-dom": "^15.3.1",
+    "react-dom": "^15.4.0",
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0"
