@@ -50,7 +50,7 @@
     "webpack-dev-server": "^1.15.1"
   },
   "dependencies": {
-    "babel-plugin-transform-object-rest-spread": "^6.19.0",
+    "babel-plugin-transform-object-rest-spread": "^6.20.1",
     "babel-plugin-transform-react-jsx": "^6.8.0",
     "cardinal-spline-js": "^2.3.6",
     "classnames": "^2.2.5",
