@@ -52,9 +52,7 @@ const parseIni = (text) => {
   return data;
 };
 
-const clamp = (value, min, max) => {
-  return Math.min(Math.max(value, min), max);
-};
+const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
 module.exports = {
   getTimeObj,

@@ -145,9 +145,7 @@ Object.keys(FONT_LOOKUP).forEach((character) => {
 });
 
 
-const numExIsUsed = (skinImages) => {
-  return !!skinImages.DIGIT_0_EX;
-};
+const numExIsUsed = (skinImages) => !!skinImages.DIGIT_0_EX;
 
 const Skin = (props) => {
   if (!props.skinImages) {

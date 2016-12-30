@@ -10,14 +10,10 @@ export const right = (box) => box.x + box.width;
 export const near = (a, b) => Math.abs(a - b) < SNAP_DISTANCE;
 
 // http://stackoverflow.com/a/3269471/1263117
-export const overlapX = (a, b) => {
-  return left(a) <= right(b) + SNAP_DISTANCE &&
+export const overlapX = (a, b) => left(a) <= right(b) + SNAP_DISTANCE &&
          left(b) <= right(a) + SNAP_DISTANCE;
-};
-export const overlapY = (a, b) => {
-  return top(a) <= bottom(b) + SNAP_DISTANCE &&
+export const overlapY = (a, b) => top(a) <= bottom(b) + SNAP_DISTANCE &&
          top(b) <= bottom(a) + SNAP_DISTANCE;
-};
 
 export const snap = (boxA, boxB) => {
   let x, y;

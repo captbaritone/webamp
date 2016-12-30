@@ -23,6 +23,7 @@
   },
 
   "rules": {
+    "arrow-body-style": ["error", "as-needed"],
     "arrow-parens": "error",
     "arrow-spacing": "error",
     "block-scoped-var": "warn",

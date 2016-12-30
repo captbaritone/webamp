@@ -18,9 +18,7 @@ import EqGraph from './EqGraph.jsx';
 
 import '../../css/equalizer-window.css';
 
-const bandClassName = (band) => {
-  return `band-${band}`;
-};
+const bandClassName = (band) => `band-${band}`;
 
 class EqualizerWindow extends React.Component {
   constructor(props) {

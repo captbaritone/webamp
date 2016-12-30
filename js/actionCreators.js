@@ -89,14 +89,12 @@ export function toggleShuffle(mediaPlayer) {
 export function setSkinFromFile(skinFile) {
   return (dispatch) => {
     dispatch({type: 'START_LOADING'});
-    skinParser(skinFile).then((skinData) => {
-      return dispatch({
-        type: 'SET_SKIN_DATA',
-        skinImages: skinData.images,
-        skinColors: skinData.colors,
-        skinPlaylistStyle: skinData.playlistStyle
-      });
-    });
+    skinParser(skinFile).then((skinData) => dispatch({
+      type: 'SET_SKIN_DATA',
+      skinImages: skinData.images,
+      skinColors: skinData.colors,
+      skinPlaylistStyle: skinData.playlistStyle
+    }));
   };
 }
 
@@ -117,13 +115,11 @@ export function openFileDialog(winamp) {
 
 export function setEqBand(mediaPlayer, band, value) {
   mediaPlayer.setEqBand(band, value);
-  return (dispatch) => {
-    return dispatch({
-      type: 'SET_BAND_VALUE',
-      band,
-      value
-    });
-  };
+  return (dispatch) => dispatch({
+    type: 'SET_BAND_VALUE',
+    band,
+    value
+  });
 }
 
 function _setEqTo(mediaPlayer, value) {
@@ -154,11 +150,9 @@ export function setEqToMin(mediaPlayer) {
 
 export function setPreamp(mediaPlayer, value) {
   mediaPlayer.setPreamp(value);
-  return (dispatch) => {
-    return dispatch({
-      type: 'SET_BAND_VALUE',
-      band: 'preamp',
-      value
-    });
-  };
+  return (dispatch) => dispatch({
+    type: 'SET_BAND_VALUE',
+    band: 'preamp',
+    value
+  });
 }

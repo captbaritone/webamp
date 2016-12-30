@@ -20,13 +20,9 @@ const getPositionText = (duration, seekToPercent) => {
   return `Seek to: ${newElapsedStr}/${durationStr} (${seekToPercent}%)`;
 };
 
-const getMediaText = (name, duration) => {
-  return `${name} (${getTimeStr(duration)})  ***  `;
-};
+const getMediaText = (name, duration) => `${name} (${getTimeStr(duration)})  ***  `;
 
-const getDoubleSizeModeText = (enabled) => {
-  return `${enabled ? 'Disable' : 'Enable'} doublesize mode`;
-};
+const getDoubleSizeModeText = (enabled) => `${enabled ? 'Disable' : 'Enable'} doublesize mode`;
 
 const isLong = (text) => text.length > 30;
 
