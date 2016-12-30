@@ -16,11 +16,6 @@ function sliceAverage(dataArray, sliceWidth, sliceNumber) {
 }
 
 class Visualizer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleClick = this.handleClick.bind(this);
-  }
-
   componentDidMount() {
     this.canvasCtx = this.canvas.getContext('2d');
     this.canvasCtx.imageSmoothingEnabled = false;
@@ -181,10 +176,6 @@ class Visualizer extends React.Component {
     }
   }
 
-  handleClick() {
-    this.props.dispatch({type: 'TOGGLE_VISUALIZER_STYLE'});
-  }
-
   render() {
     // TODO: Don't rerender DOM on style updates
     return <canvas
@@ -192,18 +183,19 @@ class Visualizer extends React.Component {
       ref={(node) => this.canvas = node}
       width='152'
       height='32'
-      onClick={this.handleClick}
+      onClick={this.props.toggleVisualizer}
     />;
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    colors: state.display.skinColors,
-    style: state.display.visualizerStyle,
-    status: state.media.status
-  };
+const mapStateToProps = (state) => ({
+  colors: state.display.skinColors,
+  style: state.display.visualizerStyle,
+  status: state.media.status
+});
 
-};
+const mapDispatchToProps = (dispatch) => ({
+  toggleVisualizer: () => dispatch({type: 'TOGGLE_VISUALIZER_STYLE'})
+});
 
-module.exports = connect(mapStateToProps)(Visualizer);
+module.exports = connect(mapStateToProps, mapDispatchToProps)(Visualizer);
