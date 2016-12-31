@@ -4,20 +4,16 @@ import {connect} from 'react-redux';
 import {close} from '../actionCreators';
 
 
-class Close extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleClick = this.handleClick.bind(this);
-  }
-  handleClick() {
-    this.props.dispatch(close(this.props.mediaPlayer));
-  }
-  render() {
-    return <div
-      id='close'
-      onClick={this.handleClick}
-    />;
-  }
-}
+const Close = ({closeWinamp}) => (
+  <div
+    id='close'
+    onClick={closeWinamp}
+  />
+);
 
-module.exports = connect()(Close);
+const mapStateToProps = (state) => state;
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  closeWinamp: () => dispatch(close(ownProps.mediaPlayer))
+});
+
+module.exports = connect(mapStateToProps, mapDispatchToProps)(Close);
