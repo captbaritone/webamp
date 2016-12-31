@@ -3,36 +3,31 @@ import {connect} from 'react-redux';
 import classnames from 'classnames';
 
 
-class ClutterBar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleMouseDownDouble = this.handleMouseDownDouble.bind(this);
-    this.handleMouseUpDouble = this.handleMouseUpDouble.bind(this);
-  }
+const ClutterBar = (props) => (
+  <div id='clutter-bar'>
+    <div id='button-o' />
+    <div id='button-a' />
+    <div id='button-i' />
+    <div
+      id='button-d'
+      className={classnames({selected: props.doubled})}
+      onMouseUp={props.handleMouseUp}
+      onMouseDown={props.handleMouseDown}
+    />
+    <div id='button-v' />
+  </div>
+);
 
-  handleMouseDownDouble() {
-    this.props.dispatch({type: 'SET_FOCUS', input: 'double'});
-  }
+const mapStateToProps = (state) => ({
+  doubled: state.display.doubled
+});
 
-  handleMouseUpDouble() {
-    this.props.dispatch({type: 'TOGGLE_DOUBLESIZE_MODE'});
-    this.props.dispatch({type: 'UNSET_FOCUS'});
+const mapDispatchToProps = (dispatch) => ({
+  handleMouseDown: () => dispatch({type: 'SET_FOCUS', input: 'double'}),
+  handleMouseUp: () => {
+    dispatch({type: 'TOGGLE_DOUBLESIZE_MODE'});
+    dispatch({type: 'UNSET_FOCUS'});
   }
+});
 
-  render() {
-    return <div id='clutter-bar'>
-      <div id='button-o' />
-      <div id='button-a' />
-      <div id='button-i' />
-      <div
-        id='button-d'
-        className={classnames({selected: this.props.doubled})}
-        onMouseUp={this.handleMouseUpDouble}
-        onMouseDown={this.handleMouseDownDouble}
-      />
-      <div id='button-v' />
-    </div>;
-  }
-}
-
-module.exports = connect((state) => state.display)(ClutterBar);
+module.exports = connect(mapStateToProps, mapDispatchToProps)(ClutterBar);
