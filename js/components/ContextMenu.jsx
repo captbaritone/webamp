@@ -6,70 +6,63 @@ import {close, setSkinFromFilename, openFileDialog} from '../actionCreators';
 
 import '../../css/context-menu.css';
 
-class ContextMenu extends React.Component {
-  constructor(props) {
-    super(props);
-    this.openFileDialog = this.openFileDialog.bind(this);
-    this.close = this.close.bind(this);
-    this.toggleMenu = this.toggleMenu.bind(this);
-    this.closeMenu = this.closeMenu.bind(this);
-    this.setSkin = this.setSkin.bind(this);
-  }
+const SKINS = [
+  {file: 'base-2.91.wsz', name: '<Base Skin>'},
+  {file: 'MacOSXAqua1-5.wsz', name: 'Mac OSX v1.5 (Aqua)'},
+  {file: 'TopazAmp1-2.wsz', name: 'TopazAmp'},
+  {file: 'Vizor1-01.wsz', name: 'Vizor'},
+  {file: 'XMMS-Turquoise.wsz', name: 'XMMS Turquoise '},
+  {file: 'ZaxonRemake1-0.wsz', name: 'Zaxon Remake'}
+];
 
+class ContextMenu extends React.Component {
   componantWillMount() {
     // Clicking anywhere outside the context menu will close the window
-    document.addEventListener('click', this.closeMenu);
+    document.addEventListener('click', this.props.closeMenu);
   }
 
   componantWillUnmount() {
-    document.removeEventListener('click', this.closeMenu);
-  }
-
-  openFileDialog() {
-    openFileDialog(this.props.winamp);
-  }
-
-  close() {
-    this.props.dispatch(close(this.props.mediaPlayer));
-  }
-
-  closeMenu() {
-    this.props.dispatch({type: 'CLOSE_CONTEXT_MENU'});
-  }
-
-  toggleMenu(event) {
-    this.props.dispatch({type: 'TOGGLE_CONTEXT_MENU'});
-    event.stopPropagation();
-  }
-
-  setSkin(e) {
-    this.props.dispatch(setSkinFromFilename(e.target.dataset.filename));
+    document.removeEventListener('click', this.props.closeMenu);
   }
 
   render() {
-    return <div id='option' className={classnames({selected: this.props.selected})} onClick={this.toggleMenu}>
+    return <div id='option' className={classnames({selected: this.props.selected})} onClick={this.props.toggleMenu}>
       <ul id='context-menu'>
         <li><a href='https://github.com/captbaritone/winamp2-js' target='_blank'>Winamp2-js...</a></li>
         <li className='hr'><hr /></li>
-        <li id='context-play-file' onClick={this.openFileDialog}>Play File...</li>
+        <li id='context-play-file' onClick={this.props.openFileDialog}>Play File...</li>
         <li className='parent'>
           <ul>
-            <li id='context-load-skin' onClick={this.openFileDialog}>Load Skin...</li>
+            <li id='context-load-skin' onClick={this.props.openFileDialog}>Load Skin...</li>
             <li className='hr'><hr /></li>
-            <li data-filename='base-2.91.wsz' onClick={this.setSkin} >{'<Base Skin>'}</li>
-            <li data-filename='MacOSXAqua1-5.wsz' onClick={this.setSkin} >{'Mac OSX v1.5 (Aqua)'}</li>
-            <li data-filename='TopazAmp1-2.wsz' onClick={this.setSkin} >{'TopazAmp'}</li>
-            <li data-filename='Vizor1-01.wsz' onClick={this.setSkin} >{'Vizor'}</li>
-            <li data-filename='XMMS-Turquoise.wsz' onClick={this.setSkin} >{'XMMS Turquoise '}</li>
-            <li data-filename='ZaxonRemake1-0.wsz' onClick={this.setSkin} >{'Zaxon Remake'}</li>
+            {SKINS.map((skin) => (
+              <li
+                key={skin.file}
+                onClick={this.props.setSkin.bind(null, skin.file)}
+              >
+                {skin.name}
+              </li>
+            ))}
           </ul>
           Skins
         </li>
         <li className='hr'><hr /></li>
-        <li id='context-exit' onClick={this.close}>Exit</li>
+        <li id='context-exit' onClick={this.props.close}>Exit</li>
       </ul>
     </div>;
   }
 }
 
-module.exports = connect((state) => state.contextMenu)(ContextMenu);
+const mapStateToProps = (state) => state.contextMenu;
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  close: () => dispatch(close(ownProps.mediaPlayer)),
+  closeMenu: () => dispatch({type: 'CLOSE_CONTEXT_MENU'}),
+  toggleMenu: (e) => {
+    dispatch({type: 'TOGGLE_CONTEXT_MENU'});
+    e.stopPropagation();
+  },
+  openFileDialog: () => openFileDialog(ownProps.winamp),
+  setSkin: (filename) => dispatch(setSkinFromFilename(filename))
+});
+
+module.exports = connect(mapStateToProps, mapDispatchToProps)(ContextMenu);
