@@ -3,15 +3,26 @@ import skinParser from './skinParser';
 import {BANDS} from './constants';
 
 import {clamp} from './utils';
+import {
+  CLOSE_WINAMP,
+  SET_BALANCE,
+  SET_BAND_VALUE,
+  SET_MEDIA_STATUS,
+  SET_SKIN_DATA,
+  SET_VOLUME,
+  START_LOADING,
+  TOGGLE_REPEAT,
+  TOGGLE_SHUFFLE
+} from './actionTypes';
 
 export function play(mediaPlayer) {
   return (dispatch, getState) => {
     if (getState().media.status === 'PLAYING') {
       mediaPlayer.stop();
-      dispatch({type: 'SET_MEDIA_STATUS', status: 'STOPPED'});
+      dispatch({type: SET_MEDIA_STATUS, status: 'STOPPED'});
     } else {
       mediaPlayer.play();
-      dispatch({type: 'SET_MEDIA_STATUS', status: 'PLAYING'});
+      dispatch({type: SET_MEDIA_STATUS, status: 'PLAYING'});
     }
   };
 }
@@ -22,11 +33,11 @@ export function pause(mediaPlayer) {
     switch (status) {
       case 'PAUSED':
         mediaPlayer.play();
-        dispatch({type: 'SET_MEDIA_STATUS', status: 'PLAYING'});
+        dispatch({type: SET_MEDIA_STATUS, status: 'PLAYING'});
         break;
       case 'PLAYING':
         mediaPlayer.pause();
-        dispatch({type: 'SET_MEDIA_STATUS', status: 'PAUSED'});
+        dispatch({type: SET_MEDIA_STATUS, status: 'PAUSED'});
         break;
     }
   };
@@ -35,14 +46,14 @@ export function pause(mediaPlayer) {
 export function stop(mediaPlayer) {
   return (dispatch) => {
     mediaPlayer.stop();
-    dispatch({type: 'SET_MEDIA_STATUS', status: 'STOPPED'});
+    dispatch({type: SET_MEDIA_STATUS, status: 'STOPPED'});
   };
 }
 
 export function close(mediaPlayer) {
   return (dispatch) => {
     mediaPlayer.stop();
-    dispatch({type: 'CLOSE_WINAMP'});
+    dispatch({type: CLOSE_WINAMP});
   };
 }
 
@@ -50,7 +61,7 @@ export function setVolume(mediaPlayer, volume) {
   const realVolume = clamp(volume, 0, 100);
   mediaPlayer.setVolume(realVolume);
   return {
-    type: 'SET_VOLUME',
+    type: SET_VOLUME,
     volume: realVolume
   };
 }
@@ -70,7 +81,7 @@ export function setBalance(mediaPlayer, balance) {
   }
   mediaPlayer.setBalance(balance);
   return {
-    type: 'SET_BALANCE',
+    type: SET_BALANCE,
     balance
   };
 }
@@ -78,19 +89,19 @@ export function setBalance(mediaPlayer, balance) {
 
 export function toggleRepeat(mediaPlayer) {
   mediaPlayer.toggleRepeat();
-  return {type: 'TOGGLE_REPEAT'};
+  return {type: TOGGLE_REPEAT};
 }
 
 export function toggleShuffle(mediaPlayer) {
   mediaPlayer.toggleShuffle();
-  return {type: 'TOGGLE_SHUFFLE'};
+  return {type: TOGGLE_SHUFFLE};
 }
 
 export function setSkinFromFile(skinFile) {
   return (dispatch) => {
-    dispatch({type: 'START_LOADING'});
+    dispatch({type: START_LOADING});
     skinParser(skinFile).then((skinData) => dispatch({
-      type: 'SET_SKIN_DATA',
+      type: SET_SKIN_DATA,
       skinImages: skinData.images,
       skinColors: skinData.colors,
       skinPlaylistStyle: skinData.playlistStyle
@@ -116,7 +127,7 @@ export function openFileDialog(winamp) {
 export function setEqBand(mediaPlayer, band, value) {
   mediaPlayer.setEqBand(band, value);
   return (dispatch) => dispatch({
-    type: 'SET_BAND_VALUE',
+    type: SET_BAND_VALUE,
     band,
     value
   });
@@ -128,7 +139,7 @@ function _setEqTo(mediaPlayer, value) {
       const band = BANDS[key];
       mediaPlayer.setEqBand(band, value);
       dispatch({
-        type: 'SET_BAND_VALUE',
+        type: SET_BAND_VALUE,
         value,
         band
       });
@@ -151,7 +162,7 @@ export function setEqToMin(mediaPlayer) {
 export function setPreamp(mediaPlayer, value) {
   mediaPlayer.setPreamp(value);
   return (dispatch) => dispatch({
-    type: 'SET_BAND_VALUE',
+    type: SET_BAND_VALUE,
     band: 'preamp',
     value
   });

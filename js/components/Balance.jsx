@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import {setBalance} from '../actionCreators';
-
+import {SET_FOCUS, UNSET_FOCUS} from '../actionTypes';
 
 class Balance extends React.Component {
   constructor(props) {
@@ -17,11 +17,11 @@ class Balance extends React.Component {
   }
 
   showMarquee() {
-    this.props.dispatch({type: 'SET_FOCUS', input: 'balance'});
+    this.props.dispatch({type: SET_FOCUS, input: 'balance'});
   }
 
   hideMarquee() {
-    this.props.dispatch({type: 'UNSET_FOCUS'});
+    this.props.dispatch({type: UNSET_FOCUS});
   }
 
   render() {
