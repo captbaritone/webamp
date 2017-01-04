@@ -8,6 +8,7 @@ import {
   START_WORKING,
   STOP,
   STOP_WORKING,
+  TOGGLE_REPEAT,
   UPDATE_TIME_ELAPSED
 } from './actionTypes';
 
@@ -49,6 +50,9 @@ export default (media) => (
           break;
         case SET_BALANCE:
           media.setBalance(action.balance);
+          break;
+        case TOGGLE_REPEAT:
+          media.toggleRepeat();
           break;
       }
       return next(action);

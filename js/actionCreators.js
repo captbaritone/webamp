@@ -66,8 +66,7 @@ export function setBalance(balance) {
 }
 
 
-export function toggleRepeat(mediaPlayer) {
-  mediaPlayer.toggleRepeat();
+export function toggleRepeat() {
   return {type: TOGGLE_REPEAT};
 }
 

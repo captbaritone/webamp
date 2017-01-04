@@ -56,7 +56,7 @@ module.exports = function(winamp, {dispatch}) {
           openFileDialog(winamp);
           break;
         case 82: // R
-          dispatch(toggleRepeat(winamp.media));
+          dispatch(toggleRepeat());
           break;
         case 83: // S
           dispatch(toggleShuffle(winamp.media));
