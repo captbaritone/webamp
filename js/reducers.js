@@ -8,7 +8,6 @@ import {
   SET_FOCUS,
   SET_FOCUSED_WINDOW,
   SET_MEDIA,
-  SET_MEDIA_STATUS,
   SET_SCRUB_POSITION,
   SET_SKIN_DATA,
   SET_VOLUME,
@@ -212,8 +211,6 @@ const media = (state, action) => {
       return {...state, repeat: !state.repeat};
     case TOGGLE_SHUFFLE:
       return {...state, shuffle: !state.shuffle};
-    case SET_MEDIA_STATUS:
-      return {...state, status: action.status};
     default:
       return state;
   }

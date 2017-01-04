@@ -5,7 +5,6 @@ export const SET_BAND_VALUE = 'SET_BAND_VALUE';
 export const SET_FOCUS = 'SET_FOCUS';
 export const SET_FOCUSED_WINDOW = 'SET_FOCUSED_WINDOW';
 export const SET_MEDIA = 'SET_MEDIA';
-export const SET_MEDIA_STATUS = 'SET_MEDIA_STATUS';
 export const SET_SCRUB_POSITION = 'SET_SCRUB_POSITION';
 export const SET_SKIN_DATA = 'SET_SKIN_DATA';
 export const SET_VOLUME = 'SET_VOLUME';
