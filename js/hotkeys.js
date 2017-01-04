@@ -8,7 +8,7 @@ import {
   openFileDialog
 } from './actionCreators';
 
-module.exports = function(winamp, store) {
+module.exports = function(winamp, {dispatch}) {
   let keylog = [];
   const trigger = [
     78, // N
@@ -24,12 +24,12 @@ module.exports = function(winamp, store) {
     if (e.ctrlKey) { // Is CTRL depressed?
       switch (e.keyCode) {
         case 68: // CTRL+D
-          store.dispatch({type: 'TOGGLE_DOUBLESIZE_MODE'});
+          dispatch({type: 'TOGGLE_DOUBLESIZE_MODE'});
           break;
         case 76: // CTRL+L FIXME
           break;
         case 84: // CTRL+T
-          store.dispath({type: 'TOGGLE_TIME_MODE'});
+          dispath({type: 'TOGGLE_TIME_MODE'});
           break;
       }
     } else {
@@ -38,34 +38,34 @@ module.exports = function(winamp, store) {
           winamp.seekForwardBy(-5);
           break;
         case 38: // up arrow
-          store.dispatch(adjustVolume(winamp.media, 1));
+          dispatch(adjustVolume(winamp.media, 1));
           break;
         case 39: // right arrow
           winamp.seekForwardBy(5);
           break;
         case 40: // down arrow
-          store.dispatch(adjustVolume(winamp.media, -1));
+          dispatch(adjustVolume(winamp.media, -1));
           break;
         case 66: // B
           winamp.next();
           break;
         case 67: // C
-          store.dispatch(pause());
+          dispatch(pause());
           break;
         case 76: // L
           openFileDialog(winamp);
           break;
         case 82: // R
-          store.dispatch(toggleRepeat(winamp.media));
+          dispatch(toggleRepeat(winamp.media));
           break;
         case 83: // S
-          store.dispatch(toggleShuffle(winamp.media));
+          dispatch(toggleShuffle(winamp.media));
           break;
         case 86: // V
-          store.dispatch(stop());
+          dispatch(stop());
           break;
         case 88: // X
-          store.dispatch(play());
+          dispatch(play());
           break;
         case 90: // Z
           winamp.previous();
@@ -77,7 +77,7 @@ module.exports = function(winamp, store) {
           winamp.previous(10);
           break;
         case 98: // numpad 2
-          store.dispatch(adjustVolume(winamp.media, -1));
+          dispatch(adjustVolume(winamp.media, -1));
           break;
         case 99: // numpad 3
           winamp.next(10);
@@ -86,7 +86,7 @@ module.exports = function(winamp, store) {
           winamp.previous();
           break;
         case 101: // numpad 5
-          store.dispatch(play());
+          dispatch(play());
           break;
         case 102: // numpad 6
           winamp.next();
@@ -95,7 +95,7 @@ module.exports = function(winamp, store) {
           winamp.seekForwardBy(-5);
           break;
         case 104: // numpad 8
-          store.dispatch(adjustVolume(winamp.media, 1));
+          dispatch(adjustVolume(winamp.media, 1));
           break;
         case 105: // numpad 9
           winamp.seekForwardBy(5);
@@ -107,7 +107,7 @@ module.exports = function(winamp, store) {
     keylog.push(e.keyCode);
     keylog = keylog.slice(-10);
     if (keylog.toString() === trigger.toString()) {
-      store.dispatch({type: 'TOGGLE_LLAMA_MODE'});
+      dispatch({type: 'TOGGLE_LLAMA_MODE'});
     }
   });
 };
