@@ -29,7 +29,7 @@ module.exports = function(winamp, {dispatch}) {
         case 76: // CTRL+L FIXME
           break;
         case 84: // CTRL+T
-          dispath({type: 'TOGGLE_TIME_MODE'});
+          dispatch({type: 'TOGGLE_TIME_MODE'});
           break;
       }
     } else {
