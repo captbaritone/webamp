@@ -50,7 +50,7 @@ module.exports = function(winamp, store) {
           winamp.next();
           break;
         case 67: // C
-          store.dispatch(pause(winamp.media));
+          store.dispatch(pause());
           break;
         case 76: // L
           openFileDialog(winamp);
@@ -62,10 +62,10 @@ module.exports = function(winamp, store) {
           store.dispatch(toggleShuffle(winamp.media));
           break;
         case 86: // V
-          store.dispatch(stop(winamp.media));
+          store.dispatch(stop());
           break;
         case 88: // X
-          store.dispatch(play(winamp.media));
+          store.dispatch(play());
           break;
         case 90: // Z
           winamp.previous();
@@ -86,7 +86,7 @@ module.exports = function(winamp, store) {
           winamp.previous();
           break;
         case 101: // numpad 5
-          store.dispatch(play(winamp.media));
+          store.dispatch(play());
           break;
         case 102: // numpad 6
           winamp.next();
