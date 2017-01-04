@@ -1,5 +1,9 @@
 export const CLOSE_CONTEXT_MENU = 'CLOSE_CONTEXT_MENU';
 export const CLOSE_WINAMP = 'CLOSE_WINAMP';
+export const IS_PLAYING = 'IS_PLAYING';
+export const IS_STOPPED = 'IS_STOPPED';
+export const PAUSE = 'PAUSE';
+export const PLAY = 'PLAY';
 export const SET_BALANCE = 'SET_BALANCE';
 export const SET_BAND_VALUE = 'SET_BAND_VALUE';
 export const SET_FOCUS = 'SET_FOCUS';
@@ -11,6 +15,7 @@ export const SET_VOLUME = 'SET_VOLUME';
 export const START_LOADING = 'START_LOADING';
 export const START_WORKING = 'START_WORKING';
 export const STEP_MARQUEE = 'STEP_MARQUEE';
+export const STOP = 'STOP';
 export const STOP_WORKING = 'STOP_WORKING';
 export const TOGGLE_CONTEXT_MENU = 'TOGGLE_CONTEXT_MENU';
 export const TOGGLE_DOUBLESIZE_MODE = 'TOGGLE_DOUBLESIZE_MODE';
