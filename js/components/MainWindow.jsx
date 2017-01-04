@@ -110,8 +110,8 @@ export class MainWindow extends React.Component {
         <ActionButtons mediaPlayer={this.props.mediaPlayer} />
         <Eject winamp={this.props.winamp} />
         <div className='shuffle-repeat'>
-          <Shuffle mediaPlayer={this.props.mediaPlayer} />
-          <Repeat mediaPlayer={this.props.mediaPlayer} />
+          <Shuffle />
+          <Repeat />
         </div>
         <a id='about' target='blank' href='https://github.com/captbaritone/winamp2-js' />
       </div>

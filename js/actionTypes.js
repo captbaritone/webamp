@@ -4,6 +4,7 @@ export const IS_PLAYING = 'IS_PLAYING';
 export const IS_STOPPED = 'IS_STOPPED';
 export const PAUSE = 'PAUSE';
 export const PLAY = 'PLAY';
+export const SEEK_TO_PERCENT_COMPLETE = 'SEEK_TO_PERCENT_COMPLETE';
 export const SET_BALANCE = 'SET_BALANCE';
 export const SET_BAND_VALUE = 'SET_BAND_VALUE';
 export const SET_FOCUS = 'SET_FOCUS';

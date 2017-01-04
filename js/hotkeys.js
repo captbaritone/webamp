@@ -59,7 +59,7 @@ module.exports = function(winamp, {dispatch}) {
           dispatch(toggleRepeat());
           break;
         case 83: // S
-          dispatch(toggleShuffle(winamp.media));
+          dispatch(toggleShuffle());
           break;
         case 86: // V
           dispatch(stop());

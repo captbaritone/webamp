@@ -70,8 +70,7 @@ export function toggleRepeat() {
   return {type: TOGGLE_REPEAT};
 }
 
-export function toggleShuffle(mediaPlayer) {
-  mediaPlayer.toggleShuffle();
+export function toggleShuffle() {
   return {type: TOGGLE_SHUFFLE};
 }
 

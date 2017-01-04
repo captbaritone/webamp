@@ -19,7 +19,7 @@ const Position = ({position, seekToPercentComplete, displayedPosition, setPositi
     max='100'
     step='1'
     value={displayedPosition}
-    onChange={seekToPercentComplete}
+    onChange={setPosition}
     onInput={setPosition}
     onMouseUp={seekToPercentComplete}
     onMouseDown={setPosition}
@@ -30,7 +30,7 @@ const mapStateToProps = ({media, userInput}) => {
   const position = media.length ? (media.timeElapsed / media.length) * 100 : 0;
 
   const displayedPosition = (userInput.focus === 'position') ?
-    userInput.scrubbingPosition :
+    userInput.scrubPosition :
     position;
 
   return {
@@ -39,9 +39,9 @@ const mapStateToProps = ({media, userInput}) => {
   };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch) => ({
   seekToPercentComplete: (e) => {
-    ownProps.mediaPlayer.seekToPercentComplete(e.target.value);
+    dispatch({type: 'SEEK_TO_PERCENT_COMPLETE', percent: e.target.value});
     dispatch({type: 'UNSET_FOCUS'});
   },
   setPosition: (e) => {

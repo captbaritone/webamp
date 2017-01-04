@@ -3,12 +3,14 @@ import {
   IS_STOPPED,
   PAUSE,
   PLAY,
+  SEEK_TO_PERCENT_COMPLETE,
   SET_BALANCE,
   SET_VOLUME,
   START_WORKING,
   STOP,
   STOP_WORKING,
   TOGGLE_REPEAT,
+  TOGGLE_SHUFFLE,
   UPDATE_TIME_ELAPSED
 } from './actionTypes';
 
@@ -53,6 +55,12 @@ export default (media) => (
           break;
         case TOGGLE_REPEAT:
           media.toggleRepeat();
+          break;
+        case TOGGLE_SHUFFLE:
+          media.toggleShuffle();
+          break;
+        case SEEK_TO_PERCENT_COMPLETE:
+          media.seekToPercentComplete(action.percent);
           break;
       }
       return next(action);

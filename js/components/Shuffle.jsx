@@ -1,17 +1,21 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import classnames from 'classnames';
+import toggleShuffle from '../actionCreators';
 
 
-const Shuffle = ({shuffle, toggleShuffle}) => (
+const Shuffle = ({shuffle, handleClick}) => (
   <div
     id='shuffle'
     className={classnames({selected: shuffle})}
-    onClick={toggleShuffle}
+    onClick={handleClick}
   />
 );
-const mapStateToProps = (state) => state.media;
+const mapStateToProps = (state) => ({
+  shuffle: state.media.shuffle
+});
+
 const mapDispatchToProps = (dispatch) => ({
-  toggleShuffle: () => dispatch({type: 'TOGGLE_SHUFFLE'})
+  handleClick: () => dispatch(toggleShuffle())
 });
 module.exports = connect(mapStateToProps, mapDispatchToProps)(Shuffle);
