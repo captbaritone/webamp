@@ -38,13 +38,13 @@ module.exports = function(winamp, {dispatch}) {
           winamp.seekForwardBy(-5);
           break;
         case 38: // up arrow
-          dispatch(adjustVolume(winamp.media, 1));
+          dispatch(adjustVolume(1));
           break;
         case 39: // right arrow
           winamp.seekForwardBy(5);
           break;
         case 40: // down arrow
-          dispatch(adjustVolume(winamp.media, -1));
+          dispatch(adjustVolume(-1));
           break;
         case 66: // B
           winamp.next();
@@ -77,7 +77,7 @@ module.exports = function(winamp, {dispatch}) {
           winamp.previous(10);
           break;
         case 98: // numpad 2
-          dispatch(adjustVolume(winamp.media, -1));
+          dispatch(adjustVolume(-1));
           break;
         case 99: // numpad 3
           winamp.next(10);
@@ -95,7 +95,7 @@ module.exports = function(winamp, {dispatch}) {
           winamp.seekForwardBy(-5);
           break;
         case 104: // numpad 8
-          dispatch(adjustVolume(winamp.media, 1));
+          dispatch(adjustVolume(1));
           break;
         case 105: // numpad 9
           winamp.seekForwardBy(5);

@@ -29,10 +29,10 @@ const Volume = (props) => {
 
 const mapStateToProps = (state) => state.media;
 
-const mapDispatchToProps = (dispatch, {mediaPlayer}) => ({
+const mapDispatchToProps = (dispatch) => ({
   showMarquee: () => dispatch({type: 'SET_FOCUS', input: 'volume'}),
   hideMarquee: () => dispatch({type: 'UNSET_FOCUS'}),
-  setVolume: (e) => dispatch(setVolume(mediaPlayer, e.target.value))
+  setVolume: (e) => dispatch(setVolume(e.target.value))
 });
 
 module.exports = connect(mapStateToProps, mapDispatchToProps)(Volume);

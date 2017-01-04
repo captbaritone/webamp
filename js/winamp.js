@@ -18,8 +18,8 @@ module.exports = {
     this.fileInput.type = 'file';
     this.fileInput.style.display = 'none';
 
-    this.dispatch(setVolume(this.media, options.volume));
-    this.dispatch(setBalance(this.media, options.balance));
+    this.dispatch(setVolume(options.volume));
+    this.dispatch(setBalance(options.balance));
     this.dispatch(setPreamp(this.media, 50));
     this.loadFromUrl(options.mediaFile.url, options.mediaFile.name);
     this.dispatch(setSkinFromUrl(options.skinUrl));

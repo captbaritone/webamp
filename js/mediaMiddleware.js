@@ -30,6 +30,13 @@ export default (media) => (
           break;
         case 'STOP':
           media.stop();
+          break;
+        case 'SET_VOLUME':
+          media.setVolume(action.volume);
+          break;
+        case 'SET_BALANCE':
+          media.setBalance(action.balance);
+          break;
       }
       return next(action);
     };

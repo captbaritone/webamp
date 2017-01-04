@@ -39,29 +39,26 @@ export function close() {
   };
 }
 
-export function setVolume(mediaPlayer, volume) {
-  const realVolume = clamp(volume, 0, 100);
-  mediaPlayer.setVolume(realVolume);
+export function setVolume(volume) {
   return {
     type: SET_VOLUME,
-    volume: realVolume
+    volume: clamp(volume, 0, 100)
   };
 }
 
-export function adjustVolume(mediaPlayer, volumeDiff) {
+export function adjustVolume(volumeDiff) {
   return (dispatch, getState) => {
     const currentVolume = getState().media.volume;
-    return dispatch(setVolume(mediaPlayer, currentVolume + volumeDiff));
+    return dispatch(setVolume(currentVolume + volumeDiff));
   };
 }
 
-export function setBalance(mediaPlayer, balance) {
+export function setBalance(balance) {
   balance = clamp(balance, -100, 100);
   // The balance clips to the center
   if (Math.abs(balance) < 25) {
     balance = 0;
   }
-  mediaPlayer.setBalance(balance);
   return {
     type: SET_BALANCE,
     balance

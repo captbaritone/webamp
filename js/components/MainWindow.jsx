@@ -100,8 +100,8 @@ export class MainWindow extends React.Component {
           <Khz />
           <MonoStereo />
         </div>
-        <Volume mediaPlayer={this.props.mediaPlayer} />
-        <Balance mediaPlayer={this.props.mediaPlayer} />
+        <Volume />
+        <Balance />
         <div className='windows'>
           <EqToggleButton />
           <div id='playlist-button' />

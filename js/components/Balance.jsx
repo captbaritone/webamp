@@ -13,7 +13,7 @@ class Balance extends React.Component {
   }
 
   setBalance(e) {
-    this.props.dispatch(setBalance(this.props.mediaPlayer, e.target.value));
+    this.props.dispatch(setBalance(e.target.value));
   }
 
   showMarquee() {
