@@ -11,9 +11,9 @@ const Close = ({closeWinamp}) => (
   />
 );
 
-const mapStateToProps = (state) => state;
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  closeWinamp: () => dispatch(close(ownProps.mediaPlayer))
+const mapStateToProps = () => ({});
+const mapDispatchToProps = (dispatch) => ({
+  closeWinamp: () => dispatch(close())
 });
 
 module.exports = connect(mapStateToProps, mapDispatchToProps)(Close);

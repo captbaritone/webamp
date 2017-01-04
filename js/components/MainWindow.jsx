@@ -85,7 +85,7 @@ export class MainWindow extends React.Component {
           <ShadeTime />
           <div id='minimize' />
           <Shade />
-          <Close mediaPlayer={this.props.mediaPlayer} />
+          <Close />
         </div>
         <div className='status'>
           <ClutterBar />
@@ -106,8 +106,8 @@ export class MainWindow extends React.Component {
           <EqToggleButton />
           <div id='playlist-button' />
         </div>
-        <Position mediaPlayer={this.props.mediaPlayer} />
-        <ActionButtons mediaPlayer={this.props.mediaPlayer} />
+        <Position />
+        <ActionButtons />
         <Eject winamp={this.props.winamp} />
         <div className='shuffle-repeat'>
           <Shuffle />

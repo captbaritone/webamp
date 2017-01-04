@@ -15,10 +15,10 @@ const ActionButtons = (props) => (
 
 const mapStateToProps = (state) => state.media;
 
-const mapDispatchToProps = (dispatch, {mediaPlayer}) => ({
-  play: () => dispatch(play(mediaPlayer)),
-  pause: () => dispatch(pause(mediaPlayer)),
-  stop: () => dispatch(stop(mediaPlayer))
+const mapDispatchToProps = (dispatch) => ({
+  play: () => dispatch(play()),
+  pause: () => dispatch(pause()),
+  stop: () => dispatch(stop())
 });
 
 module.exports = connect(mapStateToProps, mapDispatchToProps)(ActionButtons);
