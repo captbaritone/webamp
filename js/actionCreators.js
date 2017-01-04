@@ -15,44 +15,27 @@ import {
   TOGGLE_SHUFFLE
 } from './actionTypes';
 
-export function play(mediaPlayer) {
+export function play() {
   return (dispatch, getState) => {
-    if (getState().media.status === 'PLAYING') {
-      mediaPlayer.stop();
-      dispatch({type: SET_MEDIA_STATUS, status: 'STOPPED'});
-    } else {
-      mediaPlayer.play();
-      dispatch({type: SET_MEDIA_STATUS, status: 'PLAYING'});
-    }
+    const {status} = getState().media;
+    dispatch({type: (status === 'PLAYING') ? 'STOP' : 'PLAY'});
   };
 }
 
-export function pause(mediaPlayer) {
+export function pause() {
   return (dispatch, getState) => {
-    const status = getState().media.status;
-    switch (status) {
-      case 'PAUSED':
-        mediaPlayer.play();
-        dispatch({type: SET_MEDIA_STATUS, status: 'PLAYING'});
-        break;
-      case 'PLAYING':
-        mediaPlayer.pause();
-        dispatch({type: SET_MEDIA_STATUS, status: 'PAUSED'});
-        break;
-    }
+    const {status} = getState().media;
+    dispatch({type: (status === 'PLAYING') ? 'PAUSE' : 'PLAY'});
   };
 }
 
-export function stop(mediaPlayer) {
-  return (dispatch) => {
-    mediaPlayer.stop();
-    dispatch({type: SET_MEDIA_STATUS, status: 'STOPPED'});
-  };
+export function stop() {
+  return {type: 'STOP'};
 }
 
-export function close(mediaPlayer) {
+export function close() {
   return (dispatch) => {
-    mediaPlayer.stop();
+    dispatch({type: 'STOP'});
     dispatch({type: CLOSE_WINAMP});
   };
 }

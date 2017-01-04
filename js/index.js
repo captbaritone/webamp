@@ -3,6 +3,7 @@ import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
+import mediaMiddleware from './mediaMiddleware';
 
 import reducer from './reducers';
 
@@ -22,10 +23,14 @@ if (new Browser(window).isCompatible) {
   // Turn on the incomplete equalizer window
   const equalizer = hash.includes('equalizer');
   const winamp = Winamp;
+
   const store = createStore(
     reducer,
     window.devToolsExtension && window.devToolsExtension(),
-    applyMiddleware(thunk)
+    applyMiddleware(
+      thunk,
+      mediaMiddleware(winamp.media)
+    )
   );
 
   render(

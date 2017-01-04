@@ -182,6 +182,14 @@ const media = (state, action) => {
     };
   }
   switch (action.type) {
+    case 'PLAY':
+    case 'IS_PLAYING':
+      return {...state, status: 'PLAYING'};
+    case 'PAUSE':
+      return {...state, status: 'PAUSED'};
+    case 'STOP':
+    case 'IS_STOPPED':
+      return {...state, status: 'STOPPED'};
     case TOGGLE_TIME_MODE:
       const newMode = state.timeMode === 'REMAINING' ? 'ELAPSED' : 'REMAINING';
       return {...state, timeMode: newMode};
