@@ -1,6 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
+import {TOGGLE_VISUALIZER_STYLE} from '../actionTypes';
+
 const OSCILLOSCOPE = 1;
 const BAR = 2;
 
@@ -195,7 +197,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  toggleVisualizer: () => dispatch({type: 'TOGGLE_VISUALIZER_STYLE'})
+  toggleVisualizer: () => dispatch({type: TOGGLE_VISUALIZER_STYLE})
 });
 
 module.exports = connect(mapStateToProps, mapDispatchToProps)(Visualizer);

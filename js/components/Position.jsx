@@ -1,6 +1,13 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
+import {
+  SEEK_TO_PERCENT_COMPLETE,
+  SET_FOCUS,
+  UNSET_FOCUS,
+  SET_SCRUB_POSITION
+} from '../actionTypes';
+
 const Position = ({position, seekToPercentComplete, displayedPosition, setPosition}) => {
   // In shade mode, the position slider shows up differently depending on if
   // it's near the start, middle or end of its progress
@@ -41,12 +48,12 @@ const mapStateToProps = ({media, userInput}) => {
 
 const mapDispatchToProps = (dispatch) => ({
   seekToPercentComplete: (e) => {
-    dispatch({type: 'SEEK_TO_PERCENT_COMPLETE', percent: e.target.value});
-    dispatch({type: 'UNSET_FOCUS'});
+    dispatch({type: SEEK_TO_PERCENT_COMPLETE, percent: e.target.value});
+    dispatch({type: UNSET_FOCUS});
   },
   setPosition: (e) => {
-    dispatch({type: 'SET_FOCUS', input: 'position'});
-    dispatch({type: 'SET_SCRUB_POSITION', position: e.target.value});
+    dispatch({type: SET_FOCUS, input: 'position'});
+    dispatch({type: SET_SCRUB_POSITION, position: e.target.value});
   }
 });
 

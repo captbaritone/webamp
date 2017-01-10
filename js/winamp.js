@@ -9,6 +9,8 @@ import {
   setBalance
 } from './actionCreators';
 
+import {SET_MEDIA} from '../actionTypes';
+
 import '../css/winamp.css';
 
 module.exports = {
@@ -71,7 +73,7 @@ module.exports = {
   _loadBuffer: function(buffer) {
     function setMetaData() {
       this.dispatch({
-        type: 'SET_MEDIA',
+        type: SET_MEDIA,
         kbps: '128',
         khz: Math.round(this.media.sampleRate() / 1000).toString(),
         channels: this.media.channels(),

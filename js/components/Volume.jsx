@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {setVolume} from '../actionCreators';
 
+import {SET_FOCUS, UNSET_FOCUS} from '../actionTypes';
 
 const Volume = (props) => {
   const {volume} = props;
@@ -30,8 +31,8 @@ const Volume = (props) => {
 const mapStateToProps = (state) => state.media;
 
 const mapDispatchToProps = (dispatch) => ({
-  showMarquee: () => dispatch({type: 'SET_FOCUS', input: 'volume'}),
-  hideMarquee: () => dispatch({type: 'UNSET_FOCUS'}),
+  showMarquee: () => dispatch({type: SET_FOCUS, input: 'volume'}),
+  hideMarquee: () => dispatch({type: UNSET_FOCUS}),
   setVolume: (e) => dispatch(setVolume(e.target.value))
 });
 

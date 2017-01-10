@@ -8,6 +8,12 @@ import {
   openFileDialog
 } from './actionCreators';
 
+import {
+  TOGGLE_DOUBLESIZE_MODE,
+  TOGGLE_TIME_MODE,
+  TOGGLE_LLAMA_MODE
+} from './actionTypes';
+
 module.exports = function(winamp, {dispatch}) {
   let keylog = [];
   const trigger = [
@@ -24,12 +30,12 @@ module.exports = function(winamp, {dispatch}) {
     if (e.ctrlKey) { // Is CTRL depressed?
       switch (e.keyCode) {
         case 68: // CTRL+D
-          dispatch({type: 'TOGGLE_DOUBLESIZE_MODE'});
+          dispatch({type: TOGGLE_DOUBLESIZE_MODE});
           break;
         case 76: // CTRL+L FIXME
           break;
         case 84: // CTRL+T
-          dispatch({type: 'TOGGLE_TIME_MODE'});
+          dispatch({type: TOGGLE_TIME_MODE});
           break;
       }
     } else {
@@ -107,7 +113,7 @@ module.exports = function(winamp, {dispatch}) {
     keylog.push(e.keyCode);
     keylog = keylog.slice(-10);
     if (keylog.toString() === trigger.toString()) {
-      dispatch({type: 'TOGGLE_LLAMA_MODE'});
+      dispatch({type: TOGGLE_LLAMA_MODE});
     }
   });
 };
