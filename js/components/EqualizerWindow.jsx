@@ -33,7 +33,7 @@ class EqualizerWindow extends React.Component {
   setHertzValue(hertz) {
     return (e) => {
       this.props.dispatch(
-        setEqBand(this.props.mediaPlayer, hertz, e.target.value)
+        setEqBand(hertz, e.target.value)
       );
     };
   }

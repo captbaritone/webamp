@@ -11,7 +11,8 @@ import {
   STOP_WORKING,
   TOGGLE_REPEAT,
   TOGGLE_SHUFFLE,
-  UPDATE_TIME_ELAPSED
+  UPDATE_TIME_ELAPSED,
+  SET_EQ_BAND
 } from './actionTypes';
 
 export default (media) => (
@@ -61,6 +62,9 @@ export default (media) => (
           break;
         case SEEK_TO_PERCENT_COMPLETE:
           media.seekToPercentComplete(action.percent);
+          break;
+        case SET_EQ_BAND:
+          media.setEqBand(action.band);
           break;
       }
       return next(action);

@@ -102,13 +102,12 @@ export function openFileDialog(winamp) {
   winamp.openFileDialog();
 }
 
-export function setEqBand(mediaPlayer, band, value) {
-  mediaPlayer.setEqBand(band, value);
-  return (dispatch) => dispatch({
+export function setEqBand(band, value) {
+  return {
     type: SET_BAND_VALUE,
     band,
     value
-  });
+  };
 }
 
 function _setEqTo(mediaPlayer, value) {
