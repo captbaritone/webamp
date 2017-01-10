@@ -25,6 +25,10 @@ import Time from './Time.jsx';
 import Visualizer from './Visualizer.jsx';
 import Volume from './Volume.jsx';
 
+import {
+  SET_FOCUSED_WINDOW
+} from '../actionTypes';
+
 import '../../css/main-window.css';
 
 export class MainWindow extends React.Component {
@@ -35,7 +39,7 @@ export class MainWindow extends React.Component {
   }
 
   handleClick() {
-    this.props.dispatch({type: 'SET_FOCUSED_WINDOW', window: WINDOWS.MAIN});
+    this.props.dispatch({type: SET_FOCUSED_WINDOW, window: WINDOWS.MAIN});
   }
 
   supress(e) {

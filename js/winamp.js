@@ -9,7 +9,7 @@ import {
   setBalance
 } from './actionCreators';
 
-import {SET_MEDIA} from '../actionTypes';
+import {SET_MEDIA} from './actionTypes';
 
 import '../css/winamp.css';
 

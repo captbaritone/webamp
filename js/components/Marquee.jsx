@@ -1,8 +1,9 @@
 // Single line text display that can animate and hold multiple registers
 import React from 'react';
 import {connect} from 'react-redux';
-
 import {getTimeStr} from '../utils';
+
+import {STEP_MARQUEE} from '../actionTypes';
 
 const getBalanceText = (balance) => {
   if (balance === 0) {
@@ -54,7 +55,7 @@ class Marquee extends React.Component {
     const step = () => {
       setTimeout(() => {
         if (this.state.stepping) {
-          this.props.dispatch({type: 'STEP_MARQUEE'});
+          this.props.dispatch({type: STEP_MARQUEE});
         }
         step();
       }, 220);

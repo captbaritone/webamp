@@ -11,6 +11,10 @@ import {
   setEqToMin
 } from '../actionCreators';
 
+import {
+  SET_FOCUSED_WINDOW
+} from '../actionTypes';
+
 import Band from './Band.jsx';
 import EqOn from './EqOn.jsx';
 import EqAuto from './EqAuto.jsx';
@@ -82,7 +86,7 @@ class EqualizerWindow extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  focusWindow: () => dispatch({type: 'SET_FOCUSED_WINDOW', window: WINDOWS.EQUALIZER}),
+  focusWindow: () => dispatch({type: SET_FOCUSED_WINDOW, window: WINDOWS.EQUALIZER}),
   setPreampValue: (mediaPlayer) => (e) => dispatch(setPreamp(mediaPlayer, e.target.value)),
   setEqToMin: (mediaPlayer) => () => dispatch(setEqToMin(mediaPlayer)),
   setEqToMid: (mediaPlayer) => () => dispatch(setEqToMid(mediaPlayer)),

@@ -1,9 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
-
 import {getTimeObj} from '../utils';
 import Character from './Character.jsx';
 
+import {TOGGLE_TIME_MODE} from '../actionTypes';
 
 class Time extends React.Component {
   constructor(props) {
@@ -11,7 +11,7 @@ class Time extends React.Component {
     this.toggleTimeMode = this.toggleTimeMode.bind(this);
   }
   toggleTimeMode() {
-    this.props.dispatch({type: 'TOGGLE_TIME_MODE'});
+    this.props.dispatch({type: TOGGLE_TIME_MODE});
   }
   render() {
     const seconds = this.props.timeMode === 'ELAPSED' ?

@@ -1,7 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
-
 import {getTimeObj} from '../utils';
+
+import {TOGGLE_TIME_MODE} from '../actionTypes';
 
 const Time = ({timeElapsed, length, timeMode, toggleTimeMode}) => {
   const seconds = timeMode === 'ELAPSED' ?
@@ -20,7 +21,7 @@ const Time = ({timeElapsed, length, timeMode, toggleTimeMode}) => {
 
 const mapStateToProps = (state) => state.media;
 const mapDispatchToProps = (dispatch) => ({
-  toggleTimeMode: () => dispatch({type: 'TOGGLE_TIME_MODE'})
+  toggleTimeMode: () => dispatch({type: TOGGLE_TIME_MODE})
 });
 
 module.exports = connect(mapStateToProps, mapDispatchToProps)(Time);
