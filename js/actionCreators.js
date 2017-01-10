@@ -11,7 +11,8 @@ import {
   SET_VOLUME,
   START_LOADING,
   TOGGLE_REPEAT,
-  TOGGLE_SHUFFLE
+  TOGGLE_SHUFFLE,
+  STOP
 } from './actionTypes';
 
 export function play() {
@@ -29,12 +30,12 @@ export function pause() {
 }
 
 export function stop() {
-  return {type: 'STOP'};
+  return {type: STOP};
 }
 
 export function close() {
   return (dispatch) => {
-    dispatch({type: 'STOP'});
+    dispatch({type: STOP});
     dispatch({type: CLOSE_WINAMP});
   };
 }

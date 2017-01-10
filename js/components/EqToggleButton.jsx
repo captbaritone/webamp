@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import classnames from 'classnames';
 
+import {TOGGLE_EQUALIZER_WINDOW} from '../actionTypes';
 
 const EqToggleButton = (props) => (
   <div
@@ -16,7 +17,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  handleClick: () => dispatch({type: 'TOGGLE_EQUALIZER_WINDOW'})
+  handleClick: () => dispatch({type: TOGGLE_EQUALIZER_WINDOW})
 });
 
 

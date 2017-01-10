@@ -4,6 +4,8 @@ import classnames from 'classnames';
 
 import {close, setSkinFromFilename, openFileDialog} from '../actionCreators';
 
+import {CLOSE_CONTEXT_MENU, TOGGLE_CONTEXT_MENU} from '../actionTypes';
+
 import '../../css/context-menu.css';
 
 const SKINS = [
@@ -55,10 +57,10 @@ class ContextMenu extends React.Component {
 
 const mapStateToProps = (state) => state.contextMenu;
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  close: () => dispatch(close(ownProps.mediaPlayer)),
-  closeMenu: () => dispatch({type: 'CLOSE_CONTEXT_MENU'}),
+  close: () => dispatch(close()),
+  closeMenu: () => dispatch({type: CLOSE_CONTEXT_MENU}),
   toggleMenu: (e) => {
-    dispatch({type: 'TOGGLE_CONTEXT_MENU'});
+    dispatch({type: TOGGLE_CONTEXT_MENU});
     e.stopPropagation();
   },
   openFileDialog: () => openFileDialog(ownProps.winamp),
