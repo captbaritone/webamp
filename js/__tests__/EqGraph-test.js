@@ -1,6 +1,6 @@
 import {
   roundToEven
-} from '../components/EqGraph.jsx';
+} from '../components/EqGraph';
 
 describe('roundToEven', () => {
   it('leaves even numbers as is', () => {

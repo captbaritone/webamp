@@ -15,10 +15,10 @@ import {
   SET_FOCUSED_WINDOW
 } from '../actionTypes';
 
-import Band from './Band.jsx';
-import EqOn from './EqOn.jsx';
-import EqAuto from './EqAuto.jsx';
-import EqGraph from './EqGraph.jsx';
+import Band from './Band';
+import EqOn from './EqOn';
+import EqAuto from './EqAuto';
+import EqGraph from './EqGraph';
 
 import '../../css/equalizer-window.css';
 

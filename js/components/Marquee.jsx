@@ -41,7 +41,7 @@ const negativePixels = (pixels) => `-${pixels}px`;
 // If text is wider than the marquee, it needs to loop
 const loopText = (text) => isLong(text) ? text + text : text;
 
-import CharacterString from './CharacterString.jsx';
+import CharacterString from './CharacterString';
 
 class Marquee extends React.Component {
   constructor(props) {

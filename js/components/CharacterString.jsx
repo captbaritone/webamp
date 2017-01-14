@@ -1,5 +1,5 @@
 import React from 'react';
-import Character from './Character.jsx';
+import Character from './Character';
 
 module.exports = (props) => {
   const text = `${props.children}`;

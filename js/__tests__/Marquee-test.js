@@ -7,7 +7,7 @@ import {
   stepOffset,
   negativePixels,
   loopText
-} from '../components/Marquee.jsx';
+} from '../components/Marquee';
 
 describe('getBalanceText', () => {
   it('treats negative numbers as left', () => {

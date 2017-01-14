@@ -4,26 +4,26 @@ import classnames from 'classnames';
 
 import {WINDOWS} from '../constants';
 
-import ActionButtons from './ActionButtons.jsx';
-import Balance from './Balance.jsx';
-import Close from './Close.jsx';
-import ClutterBar from './ClutterBar.jsx';
-import ContextMenu from './ContextMenu.jsx';
-//import DragTarget from './DragTarget.jsx';
-import Eject from './Eject.jsx';
-import EqToggleButton from './EqToggleButton.jsx';
-import Kbps from './Kbps.jsx';
-import Khz from './Khz.jsx';
-import Marquee from './Marquee.jsx';
-import MonoStereo from './MonoStereo.jsx';
-import Position from './Position.jsx';
-import Repeat from './Repeat.jsx';
-import Shade from './Shade.jsx';
-import ShadeTime from './ShadeTime.jsx';
-import Shuffle from './Shuffle.jsx';
-import Time from './Time.jsx';
-import Visualizer from './Visualizer.jsx';
-import Volume from './Volume.jsx';
+import ActionButtons from './ActionButtons';
+import Balance from './Balance';
+import Close from './Close';
+import ClutterBar from './ClutterBar';
+import ContextMenu from './ContextMenu';
+//import DragTarget from './DragTarget';
+import Eject from './Eject';
+import EqToggleButton from './EqToggleButton';
+import Kbps from './Kbps';
+import Khz from './Khz';
+import Marquee from './Marquee';
+import MonoStereo from './MonoStereo';
+import Position from './Position';
+import Repeat from './Repeat';
+import Shade from './Shade';
+import ShadeTime from './ShadeTime';
+import Shuffle from './Shuffle';
+import Time from './Time';
+import Visualizer from './Visualizer';
+import Volume from './Volume';
 
 import {
   SET_FOCUSED_WINDOW

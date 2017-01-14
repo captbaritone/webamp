@@ -3,14 +3,14 @@ import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 
 import getStore from './store';
-import WindowManager from './components/WindowManager.jsx';
+import WindowManager from './components/WindowManager';
 import Browser from './browser';
-import MainWindow from './components/MainWindow.jsx';
-import PlaylistWindow from './components/PlaylistWindow.jsx';
-import EqualizerWindow from './components/EqualizerWindow.jsx';
+import MainWindow from './components/MainWindow';
+import PlaylistWindow from './components/PlaylistWindow';
+import EqualizerWindow from './components/EqualizerWindow';
 import Winamp from './winamp';
 import Hotkeys from './hotkeys';
-import Skin from './components/Skin.jsx';
+import Skin from './components/Skin';
 
 if (new Browser(window).isCompatible) {
   const hash = window.location.hash;
