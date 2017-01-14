@@ -1,3 +1,5 @@
+ [![Travis](https://img.shields.io/travis/captbaritone/winamp2-js.svg)]() [![Codecov](https://img.shields.io/codecov/c/github/captbaritone/winamp2-js.svg)]()
+
 # Winamp2-js
 
 A reimplementation of Winamp 2.9 in HTML5 and Javascript.
