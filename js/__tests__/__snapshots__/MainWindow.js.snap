@@ -1,0 +1,369 @@
+exports[`MainWindow renders to snapshot 1`] = `
+<div
+  className="window stop selected draggable loading"
+  id="main-window"
+  onClick={[Function]}
+  onDragEnter={[Function]}
+  onDragOver={[Function]}
+  onDrop={[Function]}
+  onMouseDown={undefined}>
+  <div
+    id="loading">
+    Loading...
+  </div>
+  <div
+    className="selected title-bard draggable"
+    id="title-bar">
+    <div
+      className=""
+      id="option"
+      onClick={[Function]}>
+      <ul
+        id="context-menu">
+        <li>
+          <a
+            href="https://github.com/captbaritone/winamp2-js"
+            target="_blank">
+            Winamp2-js...
+          </a>
+        </li>
+        <li
+          className="hr">
+          <hr />
+        </li>
+        <li
+          id="context-play-file"
+          onClick={[Function]}>
+          Play File...
+        </li>
+        <li
+          className="parent">
+          <ul>
+            <li
+              id="context-load-skin"
+              onClick={[Function]}>
+              Load Skin...
+            </li>
+            <li
+              className="hr">
+              <hr />
+            </li>
+            <li
+              onClick={[Function]}>
+              <Base Skin>
+            </li>
+            <li
+              onClick={[Function]}>
+              Mac OSX v1.5 (Aqua)
+            </li>
+            <li
+              onClick={[Function]}>
+              TopazAmp
+            </li>
+            <li
+              onClick={[Function]}>
+              Vizor
+            </li>
+            <li
+              onClick={[Function]}>
+              XMMS Turquoise 
+            </li>
+            <li
+              onClick={[Function]}>
+              Zaxon Remake
+            </li>
+          </ul>
+          Skins
+        </li>
+        <li
+          className="hr">
+          <hr />
+        </li>
+        <li
+          id="context-exit"
+          onClick={[Function]}>
+          Exit
+        </li>
+      </ul>
+    </div>
+    <div
+      className="countdown"
+      id="shade-time"
+      onClick={[Function]}>
+      <div
+        className="character character-NaN"
+        id="shade-minus-sign">
+        
+      </div>
+      <div
+        className="character character-48"
+        id="shade-minute-first-digit">
+        0
+      </div>
+      <div
+        className="character character-48"
+        id="shade-minute-second-digit">
+        0
+      </div>
+      <div
+        className="character character-48"
+        id="shade-second-first-digit">
+        0
+      </div>
+      <div
+        className="character character-48"
+        id="shade-second-second-digit">
+        0
+      </div>
+    </div>
+    <div
+      id="minimize" />
+    <div
+      id="shade"
+      onClick={[Function]} />
+    <div
+      id="close"
+      onClick={[Function]} />
+  </div>
+  <div
+    className="status">
+    <div
+      id="clutter-bar">
+      <div
+        id="button-o" />
+      <div
+        id="button-a" />
+      <div
+        id="button-i" />
+      <div
+        className=""
+        id="button-d"
+        onMouseDown={[Function]}
+        onMouseUp={[Function]} />
+      <div
+        id="button-v" />
+    </div>
+    <div
+      id="play-pause" />
+    <div
+      className=""
+      id="work-indicator" />
+    <div
+      className="countdown"
+      id="time"
+      onClick={[Function]}>
+      <div
+        className="digit digit-0"
+        id="minute-first-digit" />
+      <div
+        className="digit digit-0"
+        id="minute-second-digit" />
+      <div
+        className="digit digit-0"
+        id="second-first-digit" />
+      <div
+        className="digit digit-0"
+        id="second-second-digit" />
+    </div>
+    <canvas
+      height="32"
+      id="visualizer"
+      onClick={[Function]}
+      width="152" />
+  </div>
+  <div
+    className="media-info">
+    <div
+      className="text"
+      id="marquee"
+      onMouseDown={[Function]}>
+      <div
+        style={
+          Object {
+            "marginLeft": "-0px",
+          }
+        }>
+        <div
+          className="character character-119">
+          W
+        </div>
+        <div
+          className="character character-105">
+          i
+        </div>
+        <div
+          className="character character-110">
+          n
+        </div>
+        <div
+          className="character character-97">
+          a
+        </div>
+        <div
+          className="character character-109">
+          m
+        </div>
+        <div
+          className="character character-112">
+          p
+        </div>
+        <div
+          className="character character-32">
+           
+        </div>
+        <div
+          className="character character-50">
+          2
+        </div>
+        <div
+          className="character character-46">
+          .
+        </div>
+        <div
+          className="character character-57">
+          9
+        </div>
+        <div
+          className="character character-49">
+          1
+        </div>
+        ;
+      </div>
+    </div>
+    <div
+      id="kbps">
+      <div
+        className="character character-110">
+        n
+      </div>
+      <div
+        className="character character-117">
+        u
+      </div>
+      <div
+        className="character character-108">
+        l
+      </div>
+      <div
+        className="character character-108">
+        l
+      </div>
+      ;
+    </div>
+    <div
+      id="khz">
+      <div
+        className="character character-110">
+        n
+      </div>
+      <div
+        className="character character-117">
+        u
+      </div>
+      <div
+        className="character character-108">
+        l
+      </div>
+      <div
+        className="character character-108">
+        l
+      </div>
+      ;
+    </div>
+    <div
+      className="mono-stereo">
+      <div
+        className=""
+        id="stereo" />
+      <div
+        className=""
+        id="mono" />
+    </div>
+  </div>
+  <input
+    id="volume"
+    max="100"
+    min="0"
+    onChange={[Function]}
+    onMouseDown={[Function]}
+    onMouseUp={[Function]}
+    step="1"
+    style={
+      Object {
+        "backgroundPosition": "0 -195px",
+      }
+    }
+    type="range"
+    value={50} />
+  <input
+    id="balance"
+    max="100"
+    min="-100"
+    onChange={[Function]}
+    onMouseDown={[Function]}
+    onMouseUp={[Function]}
+    step="1"
+    style={
+      Object {
+        "backgroundPosition": "0 --15px",
+      }
+    }
+    type="range"
+    value={0} />
+  <div
+    className="windows">
+    <div
+      className="selected"
+      id="equalizer-button"
+      onClick={[Function]} />
+    <div
+      id="playlist-button" />
+  </div>
+  <input
+    className="left"
+    id="position"
+    max="100"
+    min="0"
+    onChange={[Function]}
+    onInput={[Function]}
+    onMouseDown={[Function]}
+    onMouseUp={[Function]}
+    step="1"
+    type="range"
+    value={0} />
+  <div
+    className="actions">
+    <div
+      id="previous" />
+    <div
+      id="play"
+      onClick={[Function]} />
+    <div
+      id="pause"
+      onClick={[Function]} />
+    <div
+      id="stop"
+      onClick={[Function]} />
+    <div
+      id="next" />
+  </div>
+  <div
+    id="eject"
+    onClick={[Function]} />
+  <div
+    className="shuffle-repeat">
+    <div
+      className=""
+      id="shuffle"
+      onClick={[Function]} />
+    <div
+      className=""
+      id="repeat"
+      onClick={[Function]} />
+  </div>
+  <a
+    href="https://github.com/captbaritone/winamp2-js"
+    id="about"
+    target="blank" />
+</div>
+`;
