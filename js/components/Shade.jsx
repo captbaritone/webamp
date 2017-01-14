@@ -6,7 +6,7 @@ import {TOGGLE_SHADE_MODE} from '../actionTypes';
 const Shade = (props) => <div id='shade' onClick={props.handleClick} />;
 
 const mapDispatchToProps = (dispatch) => ({
-  handleClick: dispatch({type: TOGGLE_SHADE_MODE})
+  handleClick: () => dispatch({type: TOGGLE_SHADE_MODE})
 });
 
-module.exports = connect(() => {}, mapDispatchToProps)(Shade);
+module.exports = connect(() => ({}), mapDispatchToProps)(Shade);
