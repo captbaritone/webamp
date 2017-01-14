@@ -1,12 +1,8 @@
 import React from 'react';
 import {render} from 'react-dom';
 import {Provider} from 'react-redux';
-import {createStore, applyMiddleware} from 'redux';
-import thunk from 'redux-thunk';
-import mediaMiddleware from './mediaMiddleware';
 
-import reducer from './reducers';
-
+import getStore from './store';
 import WindowManager from './components/WindowManager.jsx';
 import Browser from './browser';
 import MainWindow from './components/MainWindow.jsx';
@@ -24,14 +20,7 @@ if (new Browser(window).isCompatible) {
   const equalizer = hash.includes('equalizer');
   const winamp = Winamp;
 
-  const store = createStore(
-    reducer,
-    window.devToolsExtension && window.devToolsExtension(),
-    applyMiddleware(
-      thunk,
-      mediaMiddleware(winamp.media)
-    )
-  );
+  const store = getStore(winamp);
 
   render(
     <Provider store={store}>
