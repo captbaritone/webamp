@@ -3,3 +3,4 @@ preview.png
 node_modules
 
 /built
+/coverage
