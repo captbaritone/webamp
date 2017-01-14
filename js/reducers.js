@@ -30,7 +30,7 @@ import {
   UPDATE_TIME_ELAPSED
 } from './actionTypes';
 
-const userInput = (state, action) => {
+export const userInput = (state, action) => {
   if (!state) {
     return {
       focus: null,
