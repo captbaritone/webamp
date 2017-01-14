@@ -3,6 +3,8 @@ node_js:
   - 4
   - 5
   - 6
-script: npm run travis-tests
+script: >
+    npm run travis-tests &&
+    python node_modules/travis-weigh-in/weigh_in.py built/winamp.js
 after_success:
   - bash <(curl -s https://codecov.io/bash)
