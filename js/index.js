@@ -30,7 +30,7 @@ if (new Browser(window).isCompatible) {
           the <head>, but browsers don't really care... */}
         </Skin>
         <WindowManager>
-          <MainWindow winamp={winamp} mediaPlayer={winamp.media} />
+          <MainWindow fileInput={winamp.fileInput} mediaPlayer={winamp.media} />
           { playlist ? <PlaylistWindow /> : '' }
           { equalizer ? <EqualizerWindow mediaPlayer={winamp.media} /> : '' }
         </WindowManager>

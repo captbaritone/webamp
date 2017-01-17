@@ -2,13 +2,20 @@
 // `File` is already a builtin, so we use `MyFile`
 module.exports = function() {
   this.reader = new FileReader();
+  this.name = null;
   this.url = null;
   this.fileReference = null;
-  this.setUrl = function(url){
+  this.setUrl = function(url, name){
     this.url = url;
+    if (!name) {
+      this.name = url.split('/').pop();
+    } else {
+      this.name = name;
+    }
   };
   this.setFileReference = function(fileReference){
     this.fileReference = fileReference;
+    this.name = fileReference.name;
   };
   this.processBuffer = function(bufferHandler) {
     if (this.url) {

@@ -1,18 +1,20 @@
 import {
   IS_PLAYING,
   IS_STOPPED,
+  LOAD_AUDIO_URL,
   PAUSE,
   PLAY,
   SEEK_TO_PERCENT_COMPLETE,
   SET_BALANCE,
+  SET_EQ_BAND,
+  SET_MEDIA,
   SET_VOLUME,
   START_WORKING,
   STOP,
   STOP_WORKING,
   TOGGLE_REPEAT,
   TOGGLE_SHUFFLE,
-  UPDATE_TIME_ELAPSED,
-  SET_EQ_BAND
+  UPDATE_TIME_ELAPSED
 } from './actionTypes';
 
 export default (media) => (
@@ -35,6 +37,17 @@ export default (media) => (
 
     media.addEventListener('stopWaiting', () => {
       store.dispatch({type: STOP_WORKING});
+    });
+
+    media.addEventListener('fileLoaded', () => {
+      store.dispatch({
+        type: SET_MEDIA,
+        kbps: '128',
+        khz: Math.round(media.sampleRate() / 1000).toString(),
+        channels: media.channels(),
+        name: media.name,
+        length: media.duration()
+      });
     });
 
     return (next) => (action) => {
@@ -65,6 +78,9 @@ export default (media) => (
           break;
         case SET_EQ_BAND:
           media.setEqBand(action.band);
+          break;
+        case LOAD_AUDIO_URL:
+          media.loadFromUrl(action.url, action.name);
           break;
       }
       return next(action);

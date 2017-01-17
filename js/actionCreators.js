@@ -5,14 +5,17 @@ import {BANDS} from './constants';
 import {clamp} from './utils';
 import {
   CLOSE_WINAMP,
+  LOAD_AUDIO_FILE,
+  LOAD_AUDIO_URL,
+  OPEN_FILE_DIALOG,
   SET_BALANCE,
   SET_BAND_VALUE,
   SET_SKIN_DATA,
   SET_VOLUME,
   START_LOADING,
+  STOP,
   TOGGLE_REPEAT,
-  TOGGLE_SHUFFLE,
-  STOP
+  TOGGLE_SHUFFLE
 } from './actionTypes';
 
 export function play() {
@@ -75,6 +78,25 @@ export function toggleShuffle() {
   return {type: TOGGLE_SHUFFLE};
 }
 
+const SKIN_FILENAME_MATCHER = new RegExp('(wsz|zip)$', 'i');
+export function loadFileFromReference(fileReference) {
+  return (dispatch) => {
+    const file = new MyFile();
+    file.setFileReference(fileReference);
+    if (SKIN_FILENAME_MATCHER.test(fileReference.name)) {
+      dispatch(setSkinFromFile(file));
+    } else {
+      dispatch({type: LOAD_AUDIO_FILE, file});
+    }
+  };
+}
+
+export function loadMediaFromUrl(url, name) {
+  return (dispatch) => {
+    dispatch({type: LOAD_AUDIO_URL, url, name});
+  };
+}
+
 export function setSkinFromFile(skinFile) {
   return (dispatch) => {
     dispatch({type: START_LOADING});
@@ -98,8 +120,10 @@ export function setSkinFromFilename(filename) {
   return setSkinFromUrl(url);
 }
 
-export function openFileDialog(winamp) {
-  winamp.openFileDialog();
+export function openFileDialog(fileInput) {
+  fileInput.click();
+  // No reducers currently respond to this.
+  return {type: OPEN_FILE_DIALOG};
 }
 
 export function setEqBand(band, value) {

@@ -63,7 +63,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch({type: TOGGLE_CONTEXT_MENU});
     e.stopPropagation();
   },
-  openFileDialog: () => openFileDialog(ownProps.winamp),
+  openFileDialog: () => dispatch(openFileDialog(ownProps.fileInput)),
   setSkin: (filename) => dispatch(setSkinFromFilename(filename))
 });
 

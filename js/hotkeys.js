@@ -59,7 +59,7 @@ module.exports = function(winamp, {dispatch}) {
           dispatch(pause());
           break;
         case 76: // L
-          openFileDialog(winamp);
+          dispatch(openFileDialog(winamp.fileInput));
           break;
         case 82: // R
           dispatch(toggleRepeat());
@@ -77,7 +77,7 @@ module.exports = function(winamp, {dispatch}) {
           winamp.previous();
           break;
         case 96: // numpad 0
-          openFileDialog(winamp);
+          dispatch(openFileDialog(winamp.fileInput));
           break;
         case 97: // numpad 1
           winamp.previous(10);
