@@ -1,7 +1,7 @@
 import {
   spriteNumber,
   spriteOffsets
-} from '../components/Band';
+} from './Band';
 
 describe('spriteNumber', () => {
   it('gives the first sprite', () => {

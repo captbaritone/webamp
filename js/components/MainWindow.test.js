@@ -23,7 +23,7 @@ import {Provider} from 'react-redux';
 import renderer from 'react-test-renderer';
 import getStore from '../store';
 
-import MainWindow from '../components/MainWindow';
+import MainWindow from './MainWindow';
 
 describe('MainWindow', () => {
   let store;

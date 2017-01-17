@@ -1,4 +1,4 @@
-import {characterClassName} from '../components/Character';
+import {characterClassName} from './Character';
 
 describe('characterClassName', () => {
   it('is not case sensitive', () => {

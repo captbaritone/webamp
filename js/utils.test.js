@@ -6,7 +6,7 @@ import {
   clamp,
   parseViscolors,
   parseIni
-} from '../utils';
+} from './utils';
 
 const fixture = (filename) => (
     fs.readFileSync(`./js/__tests__/fixtures/${filename}`).toString()

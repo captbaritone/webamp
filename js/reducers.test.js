@@ -1,9 +1,9 @@
-import {userInput} from '../reducers';
+import {userInput} from './reducers';
 import {
   SET_FOCUS,
   SET_SCRUB_POSITION,
   UNSET_FOCUS
-} from '../actionTypes';
+} from './actionTypes';
 
 describe('userInput reducer', () => {
   const state = userInput();

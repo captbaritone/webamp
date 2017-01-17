@@ -9,7 +9,7 @@ import {
   overlapX,
   snapWithin,
   applySnap
-} from '../snapUtils';
+} from './snapUtils';
 
 describe('side functions', () => {
   const box = {x: 10, y: 15, width: 50, height: 100};
