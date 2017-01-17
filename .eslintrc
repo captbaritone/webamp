@@ -23,6 +23,7 @@
   },
 
   "rules": {
+    "no-multiple-empty-lines": ["error", {"max": 2, "maxEOF": 0, "maxBOF": 0}],
     "arrow-body-style": ["error", "as-needed"],
     "arrow-parens": "error",
     "arrow-spacing": "error",

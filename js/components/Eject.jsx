@@ -3,23 +3,15 @@ import {connect} from 'react-redux';
 
 import {openFileDialog} from '../actionCreators';
 
+const Eject = (props) => (
+  <div
+    id='eject'
+    onClick={props.openFileDialog}
+  />
+);
 
-class Eject extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleClick = this.handleClick.bind(this);
-  }
-  handleClick() {
-    openFileDialog(this.props.winamp);
-  }
-  render() {
-    return (
-      <div
-        id='eject'
-        onClick={this.handleClick}
-      />
-    );
-  }
-}
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  openFileDialog: () => dispatch(openFileDialog(ownProps.fileInput))
+});
 
-module.exports = connect()(Eject);
+module.exports = connect(() => ({}), mapDispatchToProps)(Eject);

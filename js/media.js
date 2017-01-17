@@ -1,5 +1,6 @@
 /* Emulate the native <audio> element with Web Audio API */
 import {BANDS} from './constants';
+import MyFile from './myFile';
 
 module.exports = {
   _context: new (window.AudioContext || window.webkitAudioContext)(),
@@ -11,7 +12,8 @@ module.exports = {
     playing: function(){},
     timeupdate: function(){},
     visualizerupdate: function(){},
-    ended: function(){}
+    ended: function(){},
+    fileLoaded: function(){}
   },
   _startTime: 0,
   _position: 0,
@@ -19,8 +21,11 @@ module.exports = {
   _playing: false,
   _loop: false,
   autoPlay: false,
+  name: null,
 
-  init: function() {
+  init: function(fileInput) {
+    this.fileInput = fileInput;
+
     // The _source node has to be recreated each time it's stopped or
     // paused, so we don't create it here.
 
@@ -255,9 +260,32 @@ module.exports = {
 
   seekToTime: function(time) {
     // Make sure we are within range
+    // TODO: Use clamp
     time = Math.min(time, this.duration());
     time = Math.max(time, 0);
     this.play(time);
+  },
+
+  loadFromFileReference: function(fileReference) {
+    const file = new MyFile();
+    file.setFileReference(fileReference);
+    this.autoPlay = true;
+    this.name = file.name;
+    file.processBuffer(this._loadBuffer.bind(this));
+  },
+
+  // Used only for the initial load, since it must have a CORS header
+  loadFromUrl: function(url, fileName) {
+    const file = new MyFile();
+    this.name = fileName;
+    file.setUrl(url, fileName);
+    file.processBuffer(this._loadBuffer.bind(this));
+  },
+
+  /* Listeners */
+  _loadBuffer: function(buffer) {
+    // Note, this will not happen right away
+    this.loadBuffer(buffer, this._callbacks.fileLoaded);
   },
 
   // There is probably a more reasonable way to do this, rather than having

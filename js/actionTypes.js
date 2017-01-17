@@ -1,7 +1,10 @@
+export const LOAD_AUDIO_URL = 'LOAD_AUDIO_URL';
+export const LOAD_AUDIO_FILE = 'LOAD_AUDIO_FILE';
 export const CLOSE_CONTEXT_MENU = 'CLOSE_CONTEXT_MENU';
 export const CLOSE_WINAMP = 'CLOSE_WINAMP';
 export const IS_PLAYING = 'IS_PLAYING';
 export const IS_STOPPED = 'IS_STOPPED';
+export const OPEN_FILE_DIALOG = 'OPEN_FILE_DIALOG';
 export const PAUSE = 'PAUSE';
 export const PLAY = 'PLAY';
 export const SEEK_TO_PERCENT_COMPLETE = 'SEEK_TO_PERCENT_COMPLETE';

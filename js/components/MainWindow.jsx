@@ -29,6 +29,8 @@ import {
   SET_FOCUSED_WINDOW
 } from '../actionTypes';
 
+import {loadFileFromReference} from '../actionCreators';
+
 import '../../css/main-window.css';
 
 export class MainWindow extends React.Component {
@@ -51,7 +53,7 @@ export class MainWindow extends React.Component {
     this.supress(e);
     const {files} = e.dataTransfer;
     // TODO: Move this to an actionCreator
-    this.props.winamp.loadFromFileReference(files[0]);
+    this.props.dispatch(loadFileFromReference(files[0]));
   }
 
   render() {
@@ -85,7 +87,7 @@ export class MainWindow extends React.Component {
       >
         <div id='loading'>Loading...</div>
         <div id='title-bar' className='selected title-bard draggable'>
-          <ContextMenu mediaPlayer={this.props.mediaPlayer} winamp={this.props.winamp} />
+          <ContextMenu fileInput={this.props.fileInput} />
           <ShadeTime />
           <div id='minimize' />
           <Shade />
@@ -112,7 +114,7 @@ export class MainWindow extends React.Component {
         </div>
         <Position />
         <ActionButtons />
-        <Eject winamp={this.props.winamp} />
+        <Eject fileInput={this.props.fileInput} />
         <div className='shuffle-repeat'>
           <Shuffle />
           <Repeat />
