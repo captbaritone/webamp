@@ -24,7 +24,7 @@ module.exports = {
 
     this.dispatch(setVolume(options.volume));
     this.dispatch(setBalance(options.balance));
-    this.dispatch(setPreamp(this.media, 50));
+    this.dispatch(setPreamp(50));
     this.dispatch(loadMediaFromUrl(options.mediaFile.url, options.mediaFile.name));
     this.dispatch(setSkinFromUrl(options.skinUrl));
     return this;

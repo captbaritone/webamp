@@ -32,7 +32,7 @@ if (new Browser(window).isCompatible) {
         <WindowManager>
           <MainWindow fileInput={winamp.fileInput} mediaPlayer={winamp.media} />
           { playlist ? <PlaylistWindow /> : '' }
-          { equalizer ? <EqualizerWindow mediaPlayer={winamp.media} /> : '' }
+          { equalizer ? <EqualizerWindow /> : '' }
         </WindowManager>
       </div>
     </Provider>,

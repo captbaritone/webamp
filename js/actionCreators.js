@@ -134,11 +134,10 @@ export function setEqBand(band, value) {
   };
 }
 
-function _setEqTo(mediaPlayer, value) {
+function _setEqTo(value) {
   return (dispatch) => {
     Object.keys(BANDS).forEach((key) => {
       const band = BANDS[key];
-      mediaPlayer.setEqBand(band, value);
       dispatch({
         type: SET_BAND_VALUE,
         value,
@@ -148,23 +147,22 @@ function _setEqTo(mediaPlayer, value) {
   };
 }
 
-export function setEqToMax(mediaPlayer) {
-  return _setEqTo(mediaPlayer, 100);
+export function setEqToMax() {
+  return _setEqTo(100);
 }
 
-export function setEqToMid(mediaPlayer) {
-  return _setEqTo(mediaPlayer, 50);
+export function setEqToMid() {
+  return _setEqTo(50);
 }
 
-export function setEqToMin(mediaPlayer) {
-  return _setEqTo(mediaPlayer, 0);
+export function setEqToMin() {
+  return _setEqTo(0);
 }
 
-export function setPreamp(mediaPlayer, value) {
-  mediaPlayer.setPreamp(value);
-  return (dispatch) => dispatch({
+export function setPreamp(value) {
+  return {
     type: SET_BAND_VALUE,
     band: 'preamp',
     value
-  });
+  };
 }

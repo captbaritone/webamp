@@ -24,73 +24,59 @@ import '../../css/equalizer-window.css';
 
 const bandClassName = (band) => `band-${band}`;
 
-class EqualizerWindow extends React.Component {
-  constructor(props) {
-    super(props);
-    this.setHertzValue = this.setHertzValue.bind(this);
-  }
+const EqualizerWindow = (props) => {
+  const {doubled} = props.display;
 
-  setHertzValue(hertz) {
-    return (e) => {
-      this.props.dispatch(
-        setEqBand(hertz, e.target.value)
-      );
-    };
-  }
-
-  render() {
-    const {doubled} = this.props.display;
-
-    const className = classnames({
-      window: true,
-      selected: this.props.windows.focused === WINDOWS.EQUALIZER,
-      closed: !this.props.windows.equalizer,
-      draggable: true,
-      doubled
-    });
-    return (
-      <div id='equalizer-window' className={className} onClick={this.props.focusWindow}>
-        <div className='equalizer-top title-bar draggable' />
-        <EqOn />
-        <EqAuto />
-        <EqGraph />
-        <div id='presets' />
+  const className = classnames({
+    window: true,
+    selected: props.windows.focused === WINDOWS.EQUALIZER,
+    closed: !props.windows.equalizer,
+    draggable: true,
+    doubled
+  });
+  return (
+    <div id='equalizer-window' className={className} onClick={props.focusWindow}>
+      <div className='equalizer-top title-bar draggable' />
+      <EqOn />
+      <EqAuto />
+      <EqGraph />
+      <div id='presets' />
+      <Band
+        id='preamp'
+        band='preamp'
+        onChange={props.setPreampValue}
+      />
+      <div
+        id='plus12db'
+        onClick={props.setEqToMax}
+      />
+      <div
+        id='zerodb'
+        onClick={props.setEqToMid}
+      />
+      <div
+        id='minus12db'
+        onClick={props.setEqToMin}
+      />
+      {BANDS.map((hertz) => (
         <Band
-          id='preamp'
-          band='preamp'
-          onChange={this.props.setPreampValue(this.props.mediaPlayer)}
+          key={hertz}
+          id={bandClassName(hertz)}
+          band={hertz}
+          onChange={props.setHertzValue(hertz)}
         />
-        <div
-          id='plus12db'
-          onClick={this.props.setEqToMax(this.props.mediaPlayer)}
-        />
-        <div
-          id='zerodb'
-          onClick={this.props.setEqToMid(this.props.mediaPlayer)}
-        />
-        <div
-          id='minus12db'
-          onClick={this.props.setEqToMin(this.props.mediaPlayer)}
-        />
-        {BANDS.map((hertz) => (
-          <Band
-            key={hertz}
-            id={bandClassName(hertz)}
-            band={hertz}
-            onChange={this.setHertzValue(hertz)}
-          />
-        ))}
-      </div>
-    );
-  }
-}
+      ))}
+    </div>
+  );
+};
 
 const mapDispatchToProps = (dispatch) => ({
   focusWindow: () => dispatch({type: SET_FOCUSED_WINDOW, window: WINDOWS.EQUALIZER}),
-  setPreampValue: (mediaPlayer) => (e) => dispatch(setPreamp(mediaPlayer, e.target.value)),
-  setEqToMin: (mediaPlayer) => () => dispatch(setEqToMin(mediaPlayer)),
-  setEqToMid: (mediaPlayer) => () => dispatch(setEqToMid(mediaPlayer)),
-  setEqToMax: (mediaPlayer) => () => dispatch(setEqToMax(mediaPlayer)),
+  setPreampValue: (e) => dispatch(setPreamp(e.target.value)),
+  setEqToMin: () => dispatch(setEqToMin()),
+  setEqToMid: () => dispatch(setEqToMid()),
+  setEqToMax: () => dispatch(setEqToMax()),
+  setHertzValue: (hertz) => (e) => dispatch(setEqBand(hertz, e.target.value)),
   dispatch
 });
 

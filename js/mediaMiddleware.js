@@ -5,6 +5,7 @@ import {
   PAUSE,
   PLAY,
   SEEK_TO_PERCENT_COMPLETE,
+  SET_BAND_VALUE,
   SET_BALANCE,
   SET_EQ_BAND,
   SET_MEDIA,
@@ -81,6 +82,13 @@ export default (media) => (
           break;
         case LOAD_AUDIO_URL:
           media.loadFromUrl(action.url, action.name);
+          break;
+        case SET_BAND_VALUE:
+          if (action.band === 'preamp') {
+            media.setPreamp(action.value);
+          } else {
+            media.setEqBand(action.band, action.value);
+          }
           break;
       }
       return next(action);
