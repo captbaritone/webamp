@@ -1,9 +1,24 @@
 import React from 'react';
 
-module.exports = (props) => {
-  const char = `${props.children}`;
-  const className = `character character-${char.toLowerCase().charCodeAt(0)}`;
-  return <div {...props} className={className}>{props.children}</div>;
+export const characterClassName = (char) => (
+  `character-${char.toString().toLowerCase().charCodeAt(0)}`
+);
+
+const Character = ({children: char, id}) => (
+  <div
+    id={id}
+    className={`character ${characterClassName(char)}`}
+  >
+    {char}
+  </div>
+);
+
+Character.propTypes = {
+  children: React.PropTypes.oneOfType([
+    React.PropTypes.string,
+    React.PropTypes.number
+  ]).isRequired
 };
 
+export default Character;
 // TODO: Require that props.children be a string

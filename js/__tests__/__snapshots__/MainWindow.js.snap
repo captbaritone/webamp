@@ -184,47 +184,58 @@ exports[`MainWindow renders to snapshot 1`] = `
           }
         }>
         <div
-          className="character character-119">
+          className="character character-119"
+          id={undefined}>
           W
         </div>
         <div
-          className="character character-105">
+          className="character character-105"
+          id={undefined}>
           i
         </div>
         <div
-          className="character character-110">
+          className="character character-110"
+          id={undefined}>
           n
         </div>
         <div
-          className="character character-97">
+          className="character character-97"
+          id={undefined}>
           a
         </div>
         <div
-          className="character character-109">
+          className="character character-109"
+          id={undefined}>
           m
         </div>
         <div
-          className="character character-112">
+          className="character character-112"
+          id={undefined}>
           p
         </div>
         <div
-          className="character character-32">
+          className="character character-32"
+          id={undefined}>
            
         </div>
         <div
-          className="character character-50">
+          className="character character-50"
+          id={undefined}>
           2
         </div>
         <div
-          className="character character-46">
+          className="character character-46"
+          id={undefined}>
           .
         </div>
         <div
-          className="character character-57">
+          className="character character-57"
+          id={undefined}>
           9
         </div>
         <div
-          className="character character-49">
+          className="character character-49"
+          id={undefined}>
           1
         </div>
         ;
@@ -233,19 +244,23 @@ exports[`MainWindow renders to snapshot 1`] = `
     <div
       id="kbps">
       <div
-        className="character character-110">
+        className="character character-110"
+        id={undefined}>
         n
       </div>
       <div
-        className="character character-117">
+        className="character character-117"
+        id={undefined}>
         u
       </div>
       <div
-        className="character character-108">
+        className="character character-108"
+        id={undefined}>
         l
       </div>
       <div
-        className="character character-108">
+        className="character character-108"
+        id={undefined}>
         l
       </div>
       ;
@@ -253,19 +268,23 @@ exports[`MainWindow renders to snapshot 1`] = `
     <div
       id="khz">
       <div
-        className="character character-110">
+        className="character character-110"
+        id={undefined}>
         n
       </div>
       <div
-        className="character character-117">
+        className="character character-117"
+        id={undefined}>
         u
       </div>
       <div
-        className="character character-108">
+        className="character character-108"
+        id={undefined}>
         l
       </div>
       <div
-        className="character character-108">
+        className="character character-108"
+        id={undefined}>
         l
       </div>
       ;
