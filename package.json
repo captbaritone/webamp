@@ -8,7 +8,7 @@
     "build": "webpack --config=webpack.production.config.js",
     "serve": "webpack-dev-server",
     "weight": "npm run build && gzip-size built/winamp.js | pretty-bytes",
-    "test": "jest --coverage && npm run lint",
+    "test": "jest --coverage",
     "travis-tests": "jest --coverage && npm run lint && npm run build",
     "tdd": "jest --watch",
     "deploy": "ssh jordaneldredge.com sh < deploy.sh",
