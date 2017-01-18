@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js']
   },
   module: {
     loaders: [
@@ -15,7 +15,7 @@ module.exports = {
         loader: 'url-loader?limit=100000'
       },
       {
-        test: /\.jsx?$/,
+        test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
         loader: 'babel' // 'babel-loader' is also a legal name to reference
       }
