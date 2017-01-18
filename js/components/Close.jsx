@@ -16,4 +16,4 @@ const mapDispatchToProps = (dispatch) => ({
   closeWinamp: () => dispatch(close())
 });
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(Close);
+export default connect(mapStateToProps, mapDispatchToProps)(Close);

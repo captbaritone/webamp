@@ -1,6 +1,6 @@
 // Custom object representing a file
 // `File` is already a builtin, so we use `MyFile`
-module.exports = function() {
+export default function() {
   this.reader = new FileReader();
   this.name = null;
   this.url = null;

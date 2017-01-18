@@ -14,4 +14,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   openFileDialog: () => dispatch(openFileDialog(ownProps.fileInput))
 });
 
-module.exports = connect(() => ({}), mapDispatchToProps)(Eject);
+export default connect(() => ({}), mapDispatchToProps)(Eject);

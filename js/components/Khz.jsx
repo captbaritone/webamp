@@ -8,4 +8,4 @@ const Khz = (props) => <CharacterString id='khz'>
   {props.khz}
 </CharacterString>;
 
-module.exports = connect((state) => state.media)(Khz);
+export default connect((state) => state.media)(Khz);

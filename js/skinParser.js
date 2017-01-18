@@ -96,4 +96,4 @@ const parseSkin = (file) => getBufferFromFile(file)
     .then(getSkinDataFromFiles)
     .then(collectCssAndColors);
 
-module.exports = parseSkin;
+export default parseSkin;

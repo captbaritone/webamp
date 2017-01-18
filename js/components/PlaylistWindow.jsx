@@ -32,4 +32,4 @@ const PlaylistWindow = (props) => {
   );
 };
 
-module.exports = connect((state) => state.display.skinPlaylistStyle)(PlaylistWindow);
+export default connect((state) => state.display.skinPlaylistStyle)(PlaylistWindow);

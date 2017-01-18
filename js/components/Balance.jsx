@@ -34,4 +34,4 @@ const mapDispatchToProps = (dispatch) => ({
   hideMarquee: () => dispatch({type: UNSET_FOCUS})
 });
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(Balance);
+export default connect(mapStateToProps, mapDispatchToProps)(Balance);

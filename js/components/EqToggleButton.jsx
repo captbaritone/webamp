@@ -21,4 +21,4 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(EqToggleButton);
+export default connect(mapStateToProps, mapDispatchToProps)(EqToggleButton);

@@ -200,4 +200,4 @@ const mapDispatchToProps = (dispatch) => ({
   toggleVisualizer: () => dispatch({type: TOGGLE_VISUALIZER_STYLE})
 });
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(Visualizer);
+export default connect(mapStateToProps, mapDispatchToProps)(Visualizer);

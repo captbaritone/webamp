@@ -8,4 +8,4 @@ const MonoStereo = (props) => <div className='mono-stereo'>
   <div id='mono' className={classnames({selected: props.channels === 1})} />
 </div>;
 
-module.exports = connect((state) => state.media)(MonoStereo);
+export default connect((state) => state.media)(MonoStereo);

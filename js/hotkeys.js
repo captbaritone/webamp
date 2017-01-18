@@ -14,7 +14,7 @@ import {
   TOGGLE_LLAMA_MODE
 } from './actionTypes';
 
-module.exports = function(winamp, {dispatch}) {
+export default function(winamp, {dispatch}) {
   let keylog = [];
   const trigger = [
     78, // N

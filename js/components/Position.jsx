@@ -57,4 +57,4 @@ const mapDispatchToProps = (dispatch) => ({
   }
 });
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(Position);
+export default connect(mapStateToProps, mapDispatchToProps)(Position);

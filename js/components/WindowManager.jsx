@@ -140,4 +140,4 @@ class WindowManager extends React.Component {
     );
   }
 }
-module.exports = WindowManager;
+export default WindowManager;

@@ -2,7 +2,7 @@
 import {BANDS} from './constants';
 import MyFile from './myFile';
 
-module.exports = {
+export default {
   _context: new (window.AudioContext || window.webkitAudioContext)(),
   _source: null,
   _buffer: null,

@@ -24,4 +24,4 @@ const mapDispatchToProps = (dispatch) => ({
   toggleTimeMode: () => dispatch({type: TOGGLE_TIME_MODE})
 });
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(Time);
+export default connect(mapStateToProps, mapDispatchToProps)(Time);

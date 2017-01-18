@@ -67,4 +67,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   setSkin: (filename) => dispatch(setSkinFromFilename(filename))
 });
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(ContextMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(ContextMenu);

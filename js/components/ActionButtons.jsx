@@ -21,4 +21,4 @@ const mapDispatchToProps = (dispatch) => ({
   stop: () => dispatch(stop())
 });
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(ActionButtons);
+export default connect(mapStateToProps, mapDispatchToProps)(ActionButtons);

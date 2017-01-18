@@ -14,7 +14,7 @@ const fileInput = document.createElement('input');
 fileInput.type = 'file';
 fileInput.style.display = 'none';
 
-module.exports = {
+export default {
   media: Media.init(fileInput),
   fileInput: fileInput,
   init: function(options) {

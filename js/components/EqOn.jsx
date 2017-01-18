@@ -26,4 +26,4 @@ class EqOn extends React.Component {
   }
 }
 
-module.exports = connect((state) => state.equalizer)(EqOn);
+export default connect((state) => state.equalizer)(EqOn);

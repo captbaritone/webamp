@@ -1,7 +1,7 @@
 import React from 'react';
 import Character from './Character';
 
-module.exports = (props) => {
+export default (props) => {
   const text = `${props.children}`;
   const chars = text.split('');
   return <div {...props}>

@@ -8,4 +8,4 @@ const Kbps = (props) => <CharacterString id='kbps'>
   {props.kbps}
 </CharacterString>;
 
-module.exports = connect((state) => state.media)(Kbps);
+export default connect((state) => state.media)(Kbps);

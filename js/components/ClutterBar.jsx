@@ -32,4 +32,4 @@ const mapDispatchToProps = (dispatch) => ({
   }
 });
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(ClutterBar);
+export default connect(mapStateToProps, mapDispatchToProps)(ClutterBar);

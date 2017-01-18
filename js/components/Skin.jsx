@@ -168,4 +168,4 @@ const Skin = (props) => {
   return <style type='text/css'>{cssRules.join('\n')}</style>;
 };
 
-module.exports = connect((state) => ({skinImages: state.display.skinImages}))(Skin);
+export default connect((state) => ({skinImages: state.display.skinImages}))(Skin);

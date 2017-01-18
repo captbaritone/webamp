@@ -27,4 +27,4 @@ class DragTarget extends React.Component {
   }
 }
 
-module.exports = DragTarget;
+export default DragTarget;

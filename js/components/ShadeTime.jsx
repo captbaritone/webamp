@@ -29,4 +29,4 @@ class Time extends React.Component {
   }
 }
 
-module.exports = connect((state) => state.media)(Time);
+export default connect((state) => state.media)(Time);

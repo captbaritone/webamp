@@ -26,4 +26,4 @@ class EqAuto extends React.Component {
   }
 }
 
-module.exports = connect((state) => state.equalizer)(EqAuto);
+export default connect((state) => state.equalizer)(EqAuto);

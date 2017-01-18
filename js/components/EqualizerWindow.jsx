@@ -80,4 +80,4 @@ const mapDispatchToProps = (dispatch) => ({
   dispatch
 });
 
-module.exports = connect((state) => state, mapDispatchToProps)(EqualizerWindow);
+export default connect((state) => state, mapDispatchToProps)(EqualizerWindow);

@@ -21,4 +21,4 @@ const mapDispatchToProps = (dispatch) => ({
   handleClick: () => dispatch(toggleRepeat())
 });
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(Repeat);
+export default connect(mapStateToProps, mapDispatchToProps)(Repeat);

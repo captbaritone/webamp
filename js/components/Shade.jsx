@@ -9,4 +9,4 @@ const mapDispatchToProps = (dispatch) => ({
   handleClick: () => dispatch({type: TOGGLE_SHADE_MODE})
 });
 
-module.exports = connect(() => ({}), mapDispatchToProps)(Shade);
+export default connect(() => ({}), mapDispatchToProps)(Shade);

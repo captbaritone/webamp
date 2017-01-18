@@ -1,4 +1,4 @@
-const getTimeObj = (time) => {
+export const getTimeObj = (time) => {
   const minutes = Math.floor(time / 60);
   const seconds = time % 60;
 
@@ -10,7 +10,7 @@ const getTimeObj = (time) => {
   };
 };
 
-const getTimeStr = (time) => {
+export const getTimeStr = (time) => {
   const timeObj = getTimeObj(time);
   return [
     timeObj.minutesFirstDigit,
@@ -21,7 +21,7 @@ const getTimeStr = (time) => {
   ].join('');
 };
 
-const parseViscolors = (text) => {
+export const parseViscolors = (text) => {
   const entries = text.split('\n');
   const regex = /^(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/;
   const colors = [];
@@ -40,7 +40,7 @@ const parseViscolors = (text) => {
 };
 
 // Dumb ini parser that just gets all the key/value pairs
-const parseIni = (text) => {
+export const parseIni = (text) => {
   const lines = text.split(/[\r\n]+/g);
   const data = {};
   lines.forEach((line) => {
@@ -52,12 +52,4 @@ const parseIni = (text) => {
   return data;
 };
 
-const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
-
-module.exports = {
-  getTimeObj,
-  getTimeStr,
-  parseViscolors,
-  parseIni,
-  clamp
-};
+export const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
