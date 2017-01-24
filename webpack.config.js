@@ -2,22 +2,25 @@ const path = require('path');
 
 module.exports = {
   resolve: {
-    extensions: ['', '.js']
+    extensions: ['.js']
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.css$/,
-        loader: 'style-loader!css-loader'
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
       },
       {
         test: /\.png$/i,
-        loader: 'url-loader?limit=100000'
+        use: 'url-loader?limit=100000'
       },
       {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
-        loader: 'babel' // 'babel-loader' is also a legal name to reference
+        use: 'babel-loader' // 'babel-loader' is also a legal name to reference
       }
     ],
     noParse: [

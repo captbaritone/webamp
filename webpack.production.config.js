@@ -7,7 +7,9 @@ config.plugins = (config.plugins || []).concat([
       NODE_ENV: JSON.stringify('production')
     }
   }),
-  new webpack.optimize.UglifyJsPlugin()
+  new webpack.optimize.UglifyJsPlugin({
+    sourceMap: true
+  })
 ]);
 
 config.entry = (config.entry || []).concat([
