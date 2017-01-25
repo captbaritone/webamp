@@ -7,7 +7,6 @@ import {
   SEEK_TO_PERCENT_COMPLETE,
   SET_BAND_VALUE,
   SET_BALANCE,
-  SET_EQ_BAND,
   SET_MEDIA,
   SET_VOLUME,
   START_WORKING,
@@ -76,9 +75,6 @@ export default (media) => (
           break;
         case SEEK_TO_PERCENT_COMPLETE:
           media.seekToPercentComplete(action.percent);
-          break;
-        case SET_EQ_BAND:
-          media.setEqBand(action.band);
           break;
         case LOAD_AUDIO_URL:
           media.loadFromUrl(action.url, action.name);
