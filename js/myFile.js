@@ -47,4 +47,4 @@ export default function() {
     console.error('Tried to process an unpopulated file object');
     return false;
   };
-};
+}

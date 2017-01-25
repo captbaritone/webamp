@@ -116,4 +116,4 @@ export default function(winamp, {dispatch}) {
       dispatch({type: TOGGLE_LLAMA_MODE});
     }
   });
-};
+}
