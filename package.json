@@ -63,7 +63,7 @@
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.2",
     "redux": "^3.5.2",
-    "redux-thunk": "^2.1.0",
+    "redux-thunk": "^2.1.2",
     "webpack": "^2.2.0"
   },
   "jest": {
