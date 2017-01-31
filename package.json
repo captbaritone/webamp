@@ -51,7 +51,7 @@
     "travis-weigh-in": "^1.0.2",
     "url-loader": "^0.5.7",
     "webpack": "^2.2.0",
-    "webpack-dev-server": "^1.15.1"
+    "webpack-dev-server": "^2.2.1"
   },
   "dependencies": {
     "babel-plugin-transform-object-rest-spread": "^6.20.2",
