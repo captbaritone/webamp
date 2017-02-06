@@ -43,7 +43,7 @@
     "eslint": "3.15.0",
     "eslint-plugin-react": "^6.9.0",
     "file-loader": "^0.10.0",
-    "gzip-size-cli": "^1.0.0",
+    "gzip-size-cli": "^2.0.0",
     "jest-cli": "^18.1.0",
     "pretty-bytes-cli": "^2.0.0",
     "react-test-renderer": "^15.4.2",
