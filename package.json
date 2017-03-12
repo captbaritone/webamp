@@ -39,7 +39,7 @@
     "babel-preset-es2015": "^6.14.0",
     "babel-preset-react": "^6.11.1",
     "canvas-mock": "0.0.0",
-    "css-loader": "^0.26.1",
+    "css-loader": "^0.27.2",
     "eslint": "3.17.0",
     "eslint-plugin-react": "^6.9.0",
     "file-loader": "^0.10.0",
