@@ -5,7 +5,9 @@ import {
   adjustVolume,
   toggleRepeat,
   toggleShuffle,
-  openFileDialog
+  openFileDialog,
+  seekForward,
+  seekBackward,
 } from './actionCreators';
 
 import {
@@ -41,19 +43,20 @@ export default function(winamp, {dispatch}) {
     } else {
       switch (e.keyCode) {
         case 37: // left arrow
-          winamp.seekForwardBy(-5);
+          dispatch(seekBackward(5));
+          //winamp.seekForwardBy(-5);
           break;
         case 38: // up arrow
           dispatch(adjustVolume(1));
           break;
         case 39: // right arrow
-          winamp.seekForwardBy(5);
+          dispatch(seekForward(5));
           break;
         case 40: // down arrow
           dispatch(adjustVolume(-1));
           break;
         case 66: // B
-          winamp.next();
+          // Next
           break;
         case 67: // C
           dispatch(pause());
@@ -74,37 +77,37 @@ export default function(winamp, {dispatch}) {
           dispatch(play());
           break;
         case 90: // Z
-          winamp.previous();
+          // Previous
           break;
         case 96: // numpad 0
           dispatch(openFileDialog(winamp.fileInput));
           break;
         case 97: // numpad 1
-          winamp.previous(10);
+          // Previous (10 tracks)
           break;
         case 98: // numpad 2
           dispatch(adjustVolume(-1));
           break;
         case 99: // numpad 3
-          winamp.next(10);
+          // Next (10 tracks)
           break;
         case 100: // numpad 4
-          winamp.previous();
+          // Previous
           break;
         case 101: // numpad 5
           dispatch(play());
           break;
         case 102: // numpad 6
-          winamp.next();
+          // Next
           break;
         case 103: // numpad 7
-          winamp.seekForwardBy(-5);
+          dispatch(seekBackward(5));
           break;
         case 104: // numpad 8
           dispatch(adjustVolume(1));
           break;
         case 105: // numpad 9
-          winamp.seekForwardBy(5);
+          dispatch(seekForward(5));
           break;
       }
     }
@@ -112,6 +115,7 @@ export default function(winamp, {dispatch}) {
     // Easter Egg
     keylog.push(e.keyCode);
     keylog = keylog.slice(-10);
+    // TODO: Find a less stupid way to compare arrays.
     if (keylog.toString() === trigger.toString()) {
       dispatch({type: TOGGLE_LLAMA_MODE});
     }

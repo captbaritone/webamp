@@ -8,6 +8,7 @@ import {
   LOAD_AUDIO_FILE,
   LOAD_AUDIO_URL,
   OPEN_FILE_DIALOG,
+  SEEK_TO_PERCENT_COMPLETE,
   SET_BALANCE,
   SET_BAND_VALUE,
   SET_SKIN_DATA,
@@ -34,6 +35,20 @@ export function pause() {
 
 export function stop() {
   return {type: STOP};
+}
+
+export function seekForward(seconds) {
+  return function(dispatch, getState) {
+    const {media} = getState();
+    const {timeElapsed, length} = media;
+    const newTimeElapsed = timeElapsed + seconds;
+    const newPercentComplete = newTimeElapsed / length;
+    dispatch({type: SEEK_TO_PERCENT_COMPLETE, percent: newPercentComplete});
+  };
+}
+
+export function seekBackward(seconds) {
+  return seekForward(-seconds);
 }
 
 export function close() {
