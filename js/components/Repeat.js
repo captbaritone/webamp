@@ -1,23 +1,22 @@
-import React from 'react';
-import {connect} from 'react-redux';
-import classnames from 'classnames';
+import React from "react";
+import { connect } from "react-redux";
+import classnames from "classnames";
 
-import {toggleRepeat} from '../actionCreators';
+import { toggleRepeat } from "../actionCreators";
 
-
-const Repeat = (props) => (
+const Repeat = props => (
   <div
-    id='repeat'
-    className={classnames({selected: props.repeat})}
+    id="repeat"
+    className={classnames({ selected: props.repeat })}
     onClick={props.handleClick}
   />
 );
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   repeat: state.media.repeat
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   handleClick: () => dispatch(toggleRepeat())
 });
 

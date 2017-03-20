@@ -1,5 +1,5 @@
-import {combineReducers} from 'redux';
-import {BANDS, WINDOWS} from './constants';
+import { combineReducers } from "redux";
+import { BANDS, WINDOWS } from "./constants";
 import {
   CLOSE_CONTEXT_MENU,
   CLOSE_WINAMP,
@@ -28,7 +28,7 @@ import {
   TOGGLE_VISUALIZER_STYLE,
   UNSET_FOCUS,
   UPDATE_TIME_ELAPSED
-} from './actionTypes';
+} from "./actionTypes";
 
 export const userInput = (state, action) => {
   if (!state) {
@@ -39,11 +39,11 @@ export const userInput = (state, action) => {
   }
   switch (action.type) {
     case SET_FOCUS:
-      return {...state, focus: action.input};
+      return { ...state, focus: action.input };
     case UNSET_FOCUS:
-      return {...state, focus: null};
+      return { ...state, focus: null };
     case SET_SCRUB_POSITION:
-      return {...state, scrubPosition: action.position};
+      return { ...state, scrubPosition: action.position };
     default:
       return state;
   }
@@ -58,12 +58,12 @@ const windows = (state, action) => {
   }
   switch (action.type) {
     case SET_FOCUSED_WINDOW:
-      return {...state, focused: action.window};
+      return { ...state, focused: action.window };
     case TOGGLE_EQUALIZER_WINDOW:
-      if (process.env.NODE_ENV === 'production') {
+      if (process.env.NODE_ENV === "production") {
         return state;
       }
-      return {...state, equalizer: !state.equalizer};
+      return { ...state, equalizer: !state.equalizer };
     default:
       return state;
   }
@@ -87,22 +87,22 @@ const display = (state, action) => {
   }
   switch (action.type) {
     case TOGGLE_DOUBLESIZE_MODE:
-      return {...state, doubled: !state.doubled};
+      return { ...state, doubled: !state.doubled };
     case TOGGLE_SHADE_MODE:
-      return {...state, shade: !state.shade};
+      return { ...state, shade: !state.shade };
     case TOGGLE_LLAMA_MODE:
-      return {...state, llama: !state.llama};
+      return { ...state, llama: !state.llama };
     case STEP_MARQUEE:
       // TODO: Prevent this from becoming huge
-      return {...state, marqueeStep: state.marqueeStep + 1};
+      return { ...state, marqueeStep: state.marqueeStep + 1 };
     case STOP_WORKING:
-      return {...state, working: false};
+      return { ...state, working: false };
     case START_WORKING:
-      return {...state, working: true};
+      return { ...state, working: true };
     case START_LOADING:
-      return {...state, loading: true};
+      return { ...state, loading: true };
     case CLOSE_WINAMP:
-      return {...state, closed: true};
+      return { ...state, closed: true };
     case SET_SKIN_DATA:
       return {
         ...state,
@@ -112,7 +112,7 @@ const display = (state, action) => {
         skinPlaylistStyle: action.skinPlaylistStyle
       };
     case TOGGLE_VISUALIZER_STYLE:
-      return {...state, visualizerStyle: (state.visualizerStyle + 1) % 3};
+      return { ...state, visualizerStyle: (state.visualizerStyle + 1) % 3 };
     default:
       return state;
   }
@@ -126,9 +126,9 @@ const contextMenu = (state, action) => {
   }
   switch (action.type) {
     case TOGGLE_CONTEXT_MENU:
-      return {...state, selected: !state.selected};
+      return { ...state, selected: !state.selected };
     case CLOSE_CONTEXT_MENU:
-      return {...state, selected: false};
+      return { ...state, selected: false };
     default:
       return state;
   }
@@ -143,20 +143,20 @@ const equalizer = (state, action) => {
         preamp: 50
       }
     };
-    BANDS.forEach((band) => {
+    BANDS.forEach(band => {
       state.sliders[band] = 50;
     });
     return state;
   }
   switch (action.type) {
     case SET_BAND_VALUE:
-      const newSliders = {...state.sliders};
+      const newSliders = { ...state.sliders };
       newSliders[action.band] = action.value;
-      return {...state, sliders: newSliders};
+      return { ...state, sliders: newSliders };
     case TOGGLE_EQ_ON:
-      return {...state, on: !state.on};
+      return { ...state, on: !state.on };
     case TOGGLE_EQ_AUTO:
-      return {...state, auto: !state.auto};
+      return { ...state, auto: !state.auto };
     default:
       return state;
   }
@@ -165,35 +165,35 @@ const equalizer = (state, action) => {
 const media = (state, action) => {
   if (!state) {
     return {
-      timeMode: 'ELAPSED',
+      timeMode: "ELAPSED",
       timeElapsed: 0,
       length: null, // Consider renaming to "duration"
       kbps: null,
       khz: null,
       volume: 50,
       balance: 0,
-      name: '',
+      name: "",
       channels: null,
       shuffle: false,
       repeat: false,
       // TODO: Enforce possible values
-      status: 'STOPPED'
+      status: "STOPPED"
     };
   }
   switch (action.type) {
-    case 'PLAY':
-    case 'IS_PLAYING':
-      return {...state, status: 'PLAYING'};
-    case 'PAUSE':
-      return {...state, status: 'PAUSED'};
-    case 'STOP':
-    case 'IS_STOPPED':
-      return {...state, status: 'STOPPED'};
+    case "PLAY":
+    case "IS_PLAYING":
+      return { ...state, status: "PLAYING" };
+    case "PAUSE":
+      return { ...state, status: "PAUSED" };
+    case "STOP":
+    case "IS_STOPPED":
+      return { ...state, status: "STOPPED" };
     case TOGGLE_TIME_MODE:
-      const newMode = state.timeMode === 'REMAINING' ? 'ELAPSED' : 'REMAINING';
-      return {...state, timeMode: newMode};
+      const newMode = state.timeMode === "REMAINING" ? "ELAPSED" : "REMAINING";
+      return { ...state, timeMode: newMode };
     case UPDATE_TIME_ELAPSED:
-      return {...state, timeElapsed: action.elapsed};
+      return { ...state, timeElapsed: action.elapsed };
     case SET_MEDIA:
       return {
         ...state,
@@ -204,13 +204,13 @@ const media = (state, action) => {
         name: action.name
       };
     case SET_VOLUME:
-      return {...state, volume: action.volume};
+      return { ...state, volume: action.volume };
     case SET_BALANCE:
-      return {...state, balance: action.balance};
+      return { ...state, balance: action.balance };
     case TOGGLE_REPEAT:
-      return {...state, repeat: !state.repeat};
+      return { ...state, repeat: !state.repeat };
     case TOGGLE_SHUFFLE:
-      return {...state, shuffle: !state.shuffle};
+      return { ...state, shuffle: !state.shuffle };
     default:
       return state;
   }

@@ -8,15 +8,15 @@ import {
   openFileDialog,
   seekForward,
   seekBackward
-} from './actionCreators';
+} from "./actionCreators";
 
 import {
   TOGGLE_DOUBLESIZE_MODE,
   TOGGLE_TIME_MODE,
   TOGGLE_LLAMA_MODE
-} from './actionTypes';
+} from "./actionTypes";
 
-export default function(winamp, {dispatch}) {
+export default function(winamp, { dispatch }) {
   let keylog = [];
   const trigger = [
     78, // N
@@ -26,18 +26,19 @@ export default function(winamp, {dispatch}) {
     83, // S
     79, // O
     70, // F
-    84  // T
+    84 // T
   ];
-  document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey) { // Is CTRL depressed?
+  document.addEventListener("keydown", e => {
+    if (e.ctrlKey) {
+      // Is CTRL depressed?
       switch (e.keyCode) {
         case 68: // CTRL+D
-          dispatch({type: TOGGLE_DOUBLESIZE_MODE});
+          dispatch({ type: TOGGLE_DOUBLESIZE_MODE });
           break;
         case 76: // CTRL+L FIXME
           break;
         case 84: // CTRL+T
-          dispatch({type: TOGGLE_TIME_MODE});
+          dispatch({ type: TOGGLE_TIME_MODE });
           break;
       }
     } else {
@@ -116,7 +117,7 @@ export default function(winamp, {dispatch}) {
     keylog = keylog.slice(-10);
     // TODO: Find a less stupid way to compare arrays.
     if (keylog.toString() === trigger.toString()) {
-      dispatch({type: TOGGLE_LLAMA_MODE});
+      dispatch({ type: TOGGLE_LLAMA_MODE });
     }
   });
 }

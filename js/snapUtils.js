@@ -2,18 +2,18 @@
 
 export const SNAP_DISTANCE = 15;
 
-export const top = (box) => box.y;
-export const bottom = (box) => box.y + box.height;
-export const left = (box) => box.x;
-export const right = (box) => box.x + box.width;
+export const top = box => box.y;
+export const bottom = box => box.y + box.height;
+export const left = box => box.x;
+export const right = box => box.x + box.width;
 
 export const near = (a, b) => Math.abs(a - b) < SNAP_DISTANCE;
 
 // http://stackoverflow.com/a/3269471/1263117
-export const overlapX = (a, b) => left(a) <= right(b) + SNAP_DISTANCE &&
-         left(b) <= right(a) + SNAP_DISTANCE;
-export const overlapY = (a, b) => top(a) <= bottom(b) + SNAP_DISTANCE &&
-         top(b) <= bottom(a) + SNAP_DISTANCE;
+export const overlapX = (a, b) =>
+  left(a) <= right(b) + SNAP_DISTANCE && left(b) <= right(a) + SNAP_DISTANCE;
+export const overlapY = (a, b) =>
+  top(a) <= bottom(b) + SNAP_DISTANCE && top(b) <= bottom(a) + SNAP_DISTANCE;
 
 export const snap = (boxA, boxB) => {
   let x, y;
@@ -42,19 +42,19 @@ export const snap = (boxA, boxB) => {
       y = bottom(boxB) - boxA.height;
     }
   }
-  return {x, y};
+  return { x, y };
 };
 
 export const snapToMany = (boxA, otherBoxes) => {
   let x, y;
 
-  otherBoxes.forEach((boxB) => {
+  otherBoxes.forEach(boxB => {
     const newPos = snap(boxA, boxB);
     x = newPos.x || x;
     y = newPos.y || y;
   });
 
-  return {x, y};
+  return { x, y };
 };
 
 export const snapWithin = (boxA, boundingBox) => {
@@ -62,23 +62,25 @@ export const snapWithin = (boxA, boundingBox) => {
 
   if (boxA.x - SNAP_DISTANCE < 0) {
     x = 0;
-  } else if ((boxA.x + boxA.width + SNAP_DISTANCE) > boundingBox.width) {
+  } else if (boxA.x + boxA.width + SNAP_DISTANCE > boundingBox.width) {
     x = boundingBox.width - boxA.width;
   }
 
   if (boxA.y - SNAP_DISTANCE < 0) {
     y = 0;
-  } else if ((boxA.y + boxA.height + SNAP_DISTANCE) > boundingBox.height) {
+  } else if (boxA.y + boxA.height + SNAP_DISTANCE > boundingBox.height) {
     y = boundingBox.height - boxA.height;
   }
 
-  return {x, y};
+  return { x, y };
 };
 
-export const applySnap = (original, ...snaps) => (
-  snaps.reduce((previous, snapped) => ({
-    ...previous,
-    x: typeof snapped.x !== 'undefined' ? snapped.x : previous.x,
-    y: typeof snapped.y !== 'undefined' ? snapped.y : previous.y
-  }), original)
-);
+export const applySnap = (original, ...snaps) =>
+  snaps.reduce(
+    (previous, snapped) => ({
+      ...previous,
+      x: typeof snapped.x !== "undefined" ? snapped.x : previous.x,
+      y: typeof snapped.y !== "undefined" ? snapped.y : previous.y
+    }),
+    original
+  );

@@ -1,8 +1,8 @@
-import MyFile from './myFile';
-import skinParser from './skinParser';
-import {BANDS} from './constants';
+import MyFile from "./myFile";
+import skinParser from "./skinParser";
+import { BANDS } from "./constants";
 
-import {clamp} from './utils';
+import { clamp } from "./utils";
 import {
   CLOSE_WINAMP,
   LOAD_AUDIO_FILE,
@@ -17,33 +17,33 @@ import {
   STOP,
   TOGGLE_REPEAT,
   TOGGLE_SHUFFLE
-} from './actionTypes';
+} from "./actionTypes";
 
 export function play() {
   return (dispatch, getState) => {
-    const {status} = getState().media;
-    dispatch({type: (status === 'PLAYING') ? 'STOP' : 'PLAY'});
+    const { status } = getState().media;
+    dispatch({ type: status === "PLAYING" ? "STOP" : "PLAY" });
   };
 }
 
 export function pause() {
   return (dispatch, getState) => {
-    const {status} = getState().media;
-    dispatch({type: (status === 'PLAYING') ? 'PAUSE' : 'PLAY'});
+    const { status } = getState().media;
+    dispatch({ type: status === "PLAYING" ? "PAUSE" : "PLAY" });
   };
 }
 
 export function stop() {
-  return {type: STOP};
+  return { type: STOP };
 }
 
 export function seekForward(seconds) {
   return function(dispatch, getState) {
-    const {media} = getState();
-    const {timeElapsed, length} = media;
+    const { media } = getState();
+    const { timeElapsed, length } = media;
     const newTimeElapsed = timeElapsed + seconds;
     const newPercentComplete = newTimeElapsed / length;
-    dispatch({type: SEEK_TO_PERCENT_COMPLETE, percent: newPercentComplete});
+    dispatch({ type: SEEK_TO_PERCENT_COMPLETE, percent: newPercentComplete });
   };
 }
 
@@ -52,9 +52,9 @@ export function seekBackward(seconds) {
 }
 
 export function close() {
-  return (dispatch) => {
-    dispatch({type: STOP});
-    dispatch({type: CLOSE_WINAMP});
+  return dispatch => {
+    dispatch({ type: STOP });
+    dispatch({ type: CLOSE_WINAMP });
   };
 }
 
@@ -84,43 +84,43 @@ export function setBalance(balance) {
   };
 }
 
-
 export function toggleRepeat() {
-  return {type: TOGGLE_REPEAT};
+  return { type: TOGGLE_REPEAT };
 }
 
 export function toggleShuffle() {
-  return {type: TOGGLE_SHUFFLE};
+  return { type: TOGGLE_SHUFFLE };
 }
 
-const SKIN_FILENAME_MATCHER = new RegExp('(wsz|zip)$', 'i');
+const SKIN_FILENAME_MATCHER = new RegExp("(wsz|zip)$", "i");
 export function loadFileFromReference(fileReference) {
-  return (dispatch) => {
+  return dispatch => {
     const file = new MyFile();
     file.setFileReference(fileReference);
     if (SKIN_FILENAME_MATCHER.test(fileReference.name)) {
       dispatch(setSkinFromFile(file));
     } else {
-      dispatch({type: LOAD_AUDIO_FILE, file});
+      dispatch({ type: LOAD_AUDIO_FILE, file });
     }
   };
 }
 
 export function loadMediaFromUrl(url, name) {
-  return (dispatch) => {
-    dispatch({type: LOAD_AUDIO_URL, url, name});
+  return dispatch => {
+    dispatch({ type: LOAD_AUDIO_URL, url, name });
   };
 }
 
 export function setSkinFromFile(skinFile) {
-  return (dispatch) => {
-    dispatch({type: START_LOADING});
-    skinParser(skinFile).then((skinData) => dispatch({
-      type: SET_SKIN_DATA,
-      skinImages: skinData.images,
-      skinColors: skinData.colors,
-      skinPlaylistStyle: skinData.playlistStyle
-    }));
+  return dispatch => {
+    dispatch({ type: START_LOADING });
+    skinParser(skinFile).then(skinData =>
+      dispatch({
+        type: SET_SKIN_DATA,
+        skinImages: skinData.images,
+        skinColors: skinData.colors,
+        skinPlaylistStyle: skinData.playlistStyle
+      }));
   };
 }
 
@@ -138,7 +138,7 @@ export function setSkinFromFilename(filename) {
 export function openFileDialog(fileInput) {
   fileInput.click();
   // No reducers currently respond to this.
-  return {type: OPEN_FILE_DIALOG};
+  return { type: OPEN_FILE_DIALOG };
 }
 
 export function setEqBand(band, value) {
@@ -150,8 +150,8 @@ export function setEqBand(band, value) {
 }
 
 function _setEqTo(value) {
-  return (dispatch) => {
-    Object.keys(BANDS).forEach((key) => {
+  return dispatch => {
+    Object.keys(BANDS).forEach(key => {
       const band = BANDS[key];
       dispatch({
         type: SET_BAND_VALUE,
@@ -177,7 +177,7 @@ export function setEqToMin() {
 export function setPreamp(value) {
   return {
     type: SET_BAND_VALUE,
-    band: 'preamp',
+    band: "preamp",
     value
   };
 }

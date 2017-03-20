@@ -5,23 +5,23 @@ export default function() {
   this.name = null;
   this.url = null;
   this.fileReference = null;
-  this.setUrl = function(url, name){
+  this.setUrl = function(url, name) {
     this.url = url;
     if (!name) {
-      this.name = url.split('/').pop();
+      this.name = url.split("/").pop();
     } else {
       this.name = name;
     }
   };
-  this.setFileReference = function(fileReference){
+  this.setFileReference = function(fileReference) {
     this.fileReference = fileReference;
     this.name = fileReference.name;
   };
   this.processBuffer = function(bufferHandler) {
     if (this.url) {
       const oReq = new XMLHttpRequest();
-      oReq.open('GET', this.url, true);
-      oReq.responseType = 'arraybuffer';
+      oReq.open("GET", this.url, true);
+      oReq.responseType = "arraybuffer";
 
       oReq.onload = function() {
         const arrayBuffer = oReq.response; // Note: not oReq.responseText
@@ -30,7 +30,6 @@ export default function() {
 
       oReq.send(null);
       return true;
-
     } else if (this.fileReference) {
       this.reader.onload = function(e) {
         const arrayBuffer = e.target.result;
@@ -44,7 +43,7 @@ export default function() {
       return true;
     }
 
-    console.error('Tried to process an unpopulated file object');
+    console.error("Tried to process an unpopulated file object");
     return false;
   };
 }

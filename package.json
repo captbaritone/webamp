@@ -12,7 +12,8 @@
     "travis-tests": "jest --coverage && npm run lint && npm run build",
     "tdd": "jest --watch",
     "deploy": "ssh jordaneldredge.com sh < deploy.sh",
-    "revert": "ssh jordaneldredge.com sh < revert.sh"
+    "revert": "ssh jordaneldredge.com sh < revert.sh",
+    "format": "prettier --write js/**/*.js webpack.config.js webpack.production.config.js"
   },
   "repository": {
     "type": "git",
@@ -41,10 +42,12 @@
     "canvas-mock": "0.0.0",
     "css-loader": "^0.27.3",
     "eslint": "3.18.0",
+    "eslint-config-prettier": "^1.5.0",
     "eslint-plugin-react": "6.10.3",
     "file-loader": "^0.10.0",
     "gzip-size-cli": "^2.0.0",
     "jest-cli": "^19.0.2",
+    "prettier": "^0.22.0",
     "pretty-bytes-cli": "^2.0.0",
     "react-test-renderer": "^15.4.2",
     "style-loader": "^0.14.1",

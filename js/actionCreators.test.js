@@ -1,4 +1,4 @@
-import {BANDS} from './constants';
+import { BANDS } from "./constants";
 import {
   STOP,
   SET_VOLUME,
@@ -6,7 +6,7 @@ import {
   TOGGLE_REPEAT,
   TOGGLE_SHUFFLE,
   SET_BAND_VALUE
-} from './actionTypes';
+} from "./actionTypes";
 
 import {
   stop,
@@ -19,22 +19,22 @@ import {
   setEqToMax,
   setEqToMin,
   setEqToMid
-} from './actionCreators';
+} from "./actionCreators";
 
-test('stop', () => {
-  const expectedAction = {type: STOP};
+test("stop", () => {
+  const expectedAction = { type: STOP };
   expect(stop()).toEqual(expectedAction);
 });
 
-describe('setVolume', () => {
-  it('enforces a mimimum value', () => {
+describe("setVolume", () => {
+  it("enforces a mimimum value", () => {
     const expectedAction = {
       type: SET_VOLUME,
       volume: 0
     };
     expect(setVolume(-10)).toEqual(expectedAction);
   });
-  it('enforces a maximum value', () => {
+  it("enforces a maximum value", () => {
     const expectedAction = {
       type: SET_VOLUME,
       volume: 100
@@ -43,29 +43,29 @@ describe('setVolume', () => {
   });
 });
 
-describe('setBalance', () => {
-  it('enforces a mimimum value', () => {
+describe("setBalance", () => {
+  it("enforces a mimimum value", () => {
     const expectedAction = {
       type: SET_BALANCE,
       balance: -100
     };
     expect(setBalance(-110)).toEqual(expectedAction);
   });
-  it('enforces a maximum value', () => {
+  it("enforces a maximum value", () => {
     const expectedAction = {
       type: SET_BALANCE,
       balance: 100
     };
     expect(setBalance(110)).toEqual(expectedAction);
   });
-  it('snaps to zero for positive values close to zero', () => {
+  it("snaps to zero for positive values close to zero", () => {
     const expectedAction = {
       type: SET_BALANCE,
       balance: 0
     };
     expect(setBalance(24)).toEqual(expectedAction);
   });
-  it('snaps to zero for negative values close to zero', () => {
+  it("snaps to zero for negative values close to zero", () => {
     const expectedAction = {
       type: SET_BALANCE,
       balance: 0
@@ -74,52 +74,52 @@ describe('setBalance', () => {
   });
 });
 
-test('toggleRepeat', () => {
-  const expectedAction = {type: TOGGLE_REPEAT};
+test("toggleRepeat", () => {
+  const expectedAction = { type: TOGGLE_REPEAT };
   expect(toggleRepeat()).toEqual(expectedAction);
 });
 
-test('toggleShuffle', () => {
-  const expectedAction = {type: TOGGLE_SHUFFLE};
+test("toggleShuffle", () => {
+  const expectedAction = { type: TOGGLE_SHUFFLE };
   expect(toggleShuffle()).toEqual(expectedAction);
 });
 
-test('setPreamp', () => {
-  const expectedAction = {type: SET_BAND_VALUE, band: 'preamp', value: 100};
+test("setPreamp", () => {
+  const expectedAction = { type: SET_BAND_VALUE, band: "preamp", value: 100 };
   expect(setPreamp(100)).toEqual(expectedAction);
 });
 
-test('setEqBand', () => {
-  const expectedAction = {type: SET_BAND_VALUE, band: 3, value: 100};
+test("setEqBand", () => {
+  const expectedAction = { type: SET_BAND_VALUE, band: 3, value: 100 };
   expect(setEqBand(3, 100)).toEqual(expectedAction);
 });
 
-test('setEqToMax', () => {
+test("setEqToMax", () => {
   const mockDispatch = jest.fn();
   const dispatcher = setEqToMax();
   dispatcher(mockDispatch);
-  const expectedCalls = BANDS.map((band) => (
-    [{type: SET_BAND_VALUE, band, value: 100}]
-  ));
+  const expectedCalls = BANDS.map(band => [
+    { type: SET_BAND_VALUE, band, value: 100 }
+  ]);
   expect(mockDispatch.mock.calls).toEqual(expectedCalls);
 });
 
-test('setEqToMin', () => {
+test("setEqToMin", () => {
   const mockDispatch = jest.fn();
   const dispatcher = setEqToMin();
   dispatcher(mockDispatch);
-  const expectedCalls = BANDS.map((band) => (
-    [{type: SET_BAND_VALUE, band, value: 0}]
-  ));
+  const expectedCalls = BANDS.map(band => [
+    { type: SET_BAND_VALUE, band, value: 0 }
+  ]);
   expect(mockDispatch.mock.calls).toEqual(expectedCalls);
 });
 
-test('setEqToMid', () => {
+test("setEqToMid", () => {
   const mockDispatch = jest.fn();
   const dispatcher = setEqToMid();
   dispatcher(mockDispatch);
-  const expectedCalls = BANDS.map((band) => (
-    [{type: SET_BAND_VALUE, band, value: 50}]
-  ));
+  const expectedCalls = BANDS.map(band => [
+    { type: SET_BAND_VALUE, band, value: 50 }
+  ]);
   expect(mockDispatch.mock.calls).toEqual(expectedCalls);
 });

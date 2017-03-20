@@ -1,8 +1,8 @@
-import React from 'react';
-import {connect} from 'react-redux';
-import classnames from 'classnames';
+import React from "react";
+import { connect } from "react-redux";
+import classnames from "classnames";
 
-import {TOGGLE_EQ_ON} from '../actionTypes';
+import { TOGGLE_EQ_ON } from "../actionTypes";
 
 class EqOn extends React.Component {
   constructor(props) {
@@ -11,19 +11,15 @@ class EqOn extends React.Component {
   }
 
   handleClick() {
-    this.props.dispatch({type: TOGGLE_EQ_ON});
+    this.props.dispatch({ type: TOGGLE_EQ_ON });
   }
 
   render() {
     const className = classnames({
       selected: this.props.on
     });
-    return <div
-      id='on'
-      className={className}
-      onClick={this.handleClick}
-    />;
+    return <div id="on" className={className} onClick={this.handleClick} />;
   }
 }
 
-export default connect((state) => state.equalizer)(EqOn);
+export default connect(state => state.equalizer)(EqOn);

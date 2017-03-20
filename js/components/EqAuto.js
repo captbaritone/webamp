@@ -1,8 +1,8 @@
-import React from 'react';
-import {connect} from 'react-redux';
-import classnames from 'classnames';
+import React from "react";
+import { connect } from "react-redux";
+import classnames from "classnames";
 
-import {TOGGLE_EQ_AUTO} from '../actionTypes';
+import { TOGGLE_EQ_AUTO } from "../actionTypes";
 
 class EqAuto extends React.Component {
   constructor(props) {
@@ -11,19 +11,15 @@ class EqAuto extends React.Component {
   }
 
   handleClick() {
-    this.props.dispatch({type: TOGGLE_EQ_AUTO});
+    this.props.dispatch({ type: TOGGLE_EQ_AUTO });
   }
 
   render() {
     const className = classnames({
       selected: this.props.auto
     });
-    return <div
-      id='auto'
-      className={className}
-      onClick={this.handleClick}
-    />;
+    return <div id="auto" className={className} onClick={this.handleClick} />;
   }
 }
 
-export default connect((state) => state.equalizer)(EqAuto);
+export default connect(state => state.equalizer)(EqAuto);

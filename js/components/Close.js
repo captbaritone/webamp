@@ -1,18 +1,12 @@
-import React from 'react';
-import {connect} from 'react-redux';
+import React from "react";
+import { connect } from "react-redux";
 
-import {close} from '../actionCreators';
+import { close } from "../actionCreators";
 
-
-const Close = ({closeWinamp}) => (
-  <div
-    id='close'
-    onClick={closeWinamp}
-  />
-);
+const Close = ({ closeWinamp }) => <div id="close" onClick={closeWinamp} />;
 
 const mapStateToProps = () => ({});
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   closeWinamp: () => dispatch(close())
 });
 

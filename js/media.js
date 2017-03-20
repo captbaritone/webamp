@@ -1,19 +1,19 @@
 /* Emulate the native <audio> element with Web Audio API */
-import {BANDS} from './constants';
-import MyFile from './myFile';
+import { BANDS } from "./constants";
+import MyFile from "./myFile";
 
 export default {
   _context: new (window.AudioContext || window.webkitAudioContext)(),
   _source: null,
   _buffer: null,
   _callbacks: {
-    waiting: function(){},
-    stopWaiting: function(){},
-    playing: function(){},
-    timeupdate: function(){},
-    visualizerupdate: function(){},
-    ended: function(){},
-    fileLoaded: function(){}
+    waiting: function() {},
+    stopWaiting: function() {},
+    playing: function() {},
+    timeupdate: function() {},
+    visualizerupdate: function() {},
+    ended: function() {},
+    fileLoaded: function() {}
   },
   _startTime: 0,
   _position: 0,
@@ -92,12 +92,12 @@ export default {
 
       if (i === 0) {
         // The first filter, includes all lower frequencies
-        filter.type = 'lowshelf';
+        filter.type = "lowshelf";
       } else if (i === band.length - 1) {
         // The last filter, includes all higher frequencies
-        filter.type = 'highshelf';
+        filter.type = "highshelf";
       } else {
-        filter.type = 'peaking';
+        filter.type = "peaking";
       }
       filter.frequency.value = band;
       filter.gain.value = 0;
@@ -131,7 +131,7 @@ export default {
     };
 
     const error = function(errorMessage) {
-      console.error('failed to decode:', errorMessage);
+      console.error("failed to decode:", errorMessage);
     };
     // Decode the target file into an arrayBuffer and pass it to loadBuffer
     this._context.decodeAudioData(buffer, loadAudioBuffer.bind(this), error);
@@ -148,7 +148,7 @@ export default {
     return this.duration() - this.timeElapsed();
   },
   percentComplete: function() {
-    return (this.timeElapsed() / this.duration()) * 100;
+    return this.timeElapsed() / this.duration() * 100;
   },
   channels: function() {
     if (!this._buffer) {
@@ -175,7 +175,9 @@ export default {
       this._source.connect(this._analyser);
       this._source.connect(this._preamp);
 
-      this._position = typeof position !== 'undefined' ? position : this._position;
+      this._position = typeof position !== "undefined"
+        ? position
+        : this._position;
       this._startTime = this._context.currentTime - this._position;
       this._source.start(0, this._position);
       this._playing = true;
@@ -227,13 +229,16 @@ export default {
     // to equal balance.
     changeVal = changeVal - 0.00000001;
 
-    if (balance > 0) { // Right
+    if (balance > 0) {
+      // Right
       this._leftGain.gain.value = 1 - changeVal;
       this._rightGain.gain.value = 1;
-    } else if (balance < 0) { // Left
+    } else if (balance < 0) {
+      // Left
       this._leftGain.gain.value = 1;
       this._rightGain.gain.value = 1 - changeVal;
-    } else { // Center
+    } else {
+      // Center
       this._leftGain.gain.value = 1;
       this._rightGain.gain.value = 1;
     }
@@ -241,7 +246,7 @@ export default {
   },
 
   setEqBand: function(band, value) {
-    const db = ((value / 100) * 24) - 12;
+    const db = value / 100 * 24 - 12;
     this.bands[band].gain.value = db;
   },
 

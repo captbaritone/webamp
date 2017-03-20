@@ -1,7 +1,7 @@
-import React from 'react';
-import {connect} from 'react-redux';
+import React from "react";
+import { connect } from "react-redux";
 
-import {TOGGLE_VISUALIZER_STYLE} from '../actionTypes';
+import { TOGGLE_VISUALIZER_STYLE } from "../actionTypes";
 
 const OSCILLOSCOPE = 1;
 const BAR = 2;
@@ -19,18 +19,18 @@ function sliceAverage(dataArray, sliceWidth, sliceNumber) {
 
 class Visualizer extends React.Component {
   componentDidMount() {
-    this.canvasCtx = this.canvas.getContext('2d');
+    this.canvasCtx = this.canvas.getContext("2d");
     this.canvasCtx.imageSmoothingEnabled = false;
     this.width = this.canvas.width * 1; // Cast to int
     this.height = this.canvas.height * 1; // Cast to int
 
     // Off-screen canvas for pre-rendering the background
-    this.bgCanvas = document.createElement('canvas');
+    this.bgCanvas = document.createElement("canvas");
     this.bgCanvas.width = this.width;
     this.bgCanvas.height = this.height;
 
     // Off-screen canvas for pre-rendering a single bar gradient
-    this.barCanvas = document.createElement('canvas');
+    this.barCanvas = document.createElement("canvas");
     this.barCanvas.width = 6;
     this.barCanvas.height = 32;
 
@@ -38,7 +38,7 @@ class Visualizer extends React.Component {
 
     // Kick off the animation loop
     const loop = () => {
-      if (this.props.status === 'PLAYING') {
+      if (this.props.status === "PLAYING") {
         this.paintFrame();
       }
       window.requestAnimationFrame(loop);
@@ -73,7 +73,7 @@ class Visualizer extends React.Component {
     // we don't end up with a clashing visual.
 
     // TODO: Once this is split, alwasy clear on skin change
-    if (this.props.status === 'PLAYING') {
+    if (this.props.status === "PLAYING") {
       this.clear();
     }
   }
@@ -84,7 +84,7 @@ class Visualizer extends React.Component {
 
   // Pre-render the background grid
   preRenderBg() {
-    const bgCanvasCtx = this.bgCanvas.getContext('2d');
+    const bgCanvasCtx = this.bgCanvas.getContext("2d");
     bgCanvasCtx.fillStyle = this.props.colors[0];
     bgCanvasCtx.fillRect(0, 0, this.width, this.height);
     bgCanvasCtx.fillStyle = this.props.colors[1];
@@ -97,13 +97,13 @@ class Visualizer extends React.Component {
 
   // Pre-render the bar gradient
   preRenderBar() {
-    const barCanvasCtx = this.barCanvas.getContext('2d');
+    const barCanvasCtx = this.barCanvas.getContext("2d");
     barCanvasCtx.fillStyle = this.props.colors[23];
     barCanvasCtx.fillRect(0, 0, 6, 2);
     for (let i = 0; i <= 15; i++) {
       const colorNumber = 17 - i;
       barCanvasCtx.fillStyle = this.props.colors[colorNumber];
-      const y = 32 - (i * 2);
+      const y = 32 - i * 2;
       barCanvasCtx.fillRect(0, y, 6, 2);
     }
   }
@@ -118,7 +118,6 @@ class Visualizer extends React.Component {
   }
 
   _paintOscilloscopeFrame() {
-
     this.props.analyser.getByteTimeDomainData(this.dataArray);
 
     // 2 because we're shrinking the canvas by 2
@@ -166,7 +165,17 @@ class Visualizer extends React.Component {
       // Draw the gray peak line
       this.canvasCtx.drawImage(this.barCanvas, 0, 0, 6, 2, x, y - 2, 6, 2);
       // Draw the gradient
-      this.canvasCtx.drawImage(this.barCanvas, 0, y, 6, height, x, y, 6, height);
+      this.canvasCtx.drawImage(
+        this.barCanvas,
+        0,
+        y,
+        6,
+        height,
+        x,
+        y,
+        6,
+        height
+      );
     }
   }
 
@@ -180,24 +189,26 @@ class Visualizer extends React.Component {
 
   render() {
     // TODO: Don't rerender DOM on style updates
-    return <canvas
-      id='visualizer'
-      ref={(node) => this.canvas = node}
-      width='152'
-      height='32'
-      onClick={this.props.toggleVisualizer}
-    />;
+    return (
+      <canvas
+        id="visualizer"
+        ref={node => this.canvas = node}
+        width="152"
+        height="32"
+        onClick={this.props.toggleVisualizer}
+      />
+    );
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   colors: state.display.skinColors,
   style: state.display.visualizerStyle,
   status: state.media.status
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  toggleVisualizer: () => dispatch({type: TOGGLE_VISUALIZER_STYLE})
+const mapDispatchToProps = dispatch => ({
+  toggleVisualizer: () => dispatch({ type: TOGGLE_VISUALIZER_STYLE })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Visualizer);

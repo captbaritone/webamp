@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 class DragTarget extends React.Component {
   constructor(props) {
@@ -17,13 +17,15 @@ class DragTarget extends React.Component {
   }
 
   render() {
-    return <div
-      onDragEnter={this.supress}
-      onDragOver={this.supress}
-      onDrop={this.handleDrop}
-    >
-      {this.props.children}
-    </div>;
+    return (
+      <div
+        onDragEnter={this.supress}
+        onDragOver={this.supress}
+        onDrop={this.handleDrop}
+      >
+        {this.props.children}
+      </div>
+    );
   }
 }
 
