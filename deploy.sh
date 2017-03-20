@@ -13,13 +13,13 @@ echo "Cloning Winamp2-js"
 git clone git@github.com:captbaritone/winamp2-js.git $NEW_CLONE > /dev/null
 
 echo "Installing Node requirements"
-( cd $NEW_CLONE && npm install)
+( cd $NEW_CLONE && yarn install)
 
 echo "Run tests"
-( cd $NEW_CLONE && npm run test )
+( cd $NEW_CLONE && yarn run test )
 
 echo "Build the webpack bundle"
-( cd $NEW_CLONE && npm run build)
+( cd $NEW_CLONE && yarn run build)
 
 echo "Cleaning up node_modules/ to save space"
 ( cd $NEW_CLONE && rm -r node_modules)
