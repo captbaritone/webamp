@@ -6,7 +6,7 @@ const mockMedia = {
   addEventListener: jest.fn(),
   loadFromFileReference: jest.fn()
 };
-const mockStore = {}; 
+const mockStore = {};
 const mockNext = jest.fn();
 
 const middleware = mediaMiddleware(mockMedia)(mockStore)(mockNext);
