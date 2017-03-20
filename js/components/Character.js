@@ -21,4 +21,3 @@ Character.propTypes = {
 };
 
 export default Character;
-// TODO: Require that props.children be a string
