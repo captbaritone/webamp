@@ -1,3 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`MainWindow renders to snapshot 1`] = `
 <div
   className="window stop selected draggable loading"
@@ -6,82 +8,101 @@ exports[`MainWindow renders to snapshot 1`] = `
   onDragEnter={[Function]}
   onDragOver={[Function]}
   onDrop={[Function]}
-  onMouseDown={undefined}>
+  onMouseDown={undefined}
+>
   <div
-    id="loading">
+    id="loading"
+  >
     Loading...
   </div>
   <div
     className="selected title-bard draggable"
-    id="title-bar">
+    id="title-bar"
+  >
     <div
       className=""
       id="option"
-      onClick={[Function]}>
+      onClick={[Function]}
+    >
       <ul
-        id="context-menu">
+        id="context-menu"
+      >
         <li>
           <a
             href="https://github.com/captbaritone/winamp2-js"
-            target="_blank">
+            target="_blank"
+          >
             Winamp2-js...
           </a>
         </li>
         <li
-          className="hr">
+          className="hr"
+        >
           <hr />
         </li>
         <li
           id="context-play-file"
-          onClick={[Function]}>
+          onClick={[Function]}
+        >
           Play File...
         </li>
         <li
-          className="parent">
+          className="parent"
+        >
           <ul>
             <li
               id="context-load-skin"
-              onClick={[Function]}>
+              onClick={[Function]}
+            >
               Load Skin...
             </li>
             <li
-              className="hr">
+              className="hr"
+            >
               <hr />
             </li>
             <li
-              onClick={[Function]}>
-              <Base Skin>
+              onClick={[Function]}
+            >
+              &lt;Base Skin&gt;
             </li>
             <li
-              onClick={[Function]}>
+              onClick={[Function]}
+            >
               Mac OSX v1.5 (Aqua)
             </li>
             <li
-              onClick={[Function]}>
+              onClick={[Function]}
+            >
               TopazAmp
             </li>
             <li
-              onClick={[Function]}>
+              onClick={[Function]}
+            >
               Vizor
             </li>
             <li
-              onClick={[Function]}>
+              onClick={[Function]}
+            >
               XMMS Turquoise 
             </li>
             <li
-              onClick={[Function]}>
+              onClick={[Function]}
+            >
               Zaxon Remake
             </li>
           </ul>
           Skins
         </li>
         <li
-          className="hr">
+          className="hr"
+        >
           <hr />
         </li>
         <li
           id="context-exit"
-          onClick={[Function]}>
+          onClick={[Function]}
+        >
           Exit
         </li>
       </ul>
@@ -89,214 +110,265 @@ exports[`MainWindow renders to snapshot 1`] = `
     <div
       className="countdown"
       id="shade-time"
-      onClick={[Function]}>
+      onClick={[Function]}
+    >
       <div
         className="character character-NaN"
-        id="shade-minus-sign">
+        id="shade-minus-sign"
+      >
         
       </div>
       <div
         className="character character-48"
-        id="shade-minute-first-digit">
+        id="shade-minute-first-digit"
+      >
         0
       </div>
       <div
         className="character character-48"
-        id="shade-minute-second-digit">
+        id="shade-minute-second-digit"
+      >
         0
       </div>
       <div
         className="character character-48"
-        id="shade-second-first-digit">
+        id="shade-second-first-digit"
+      >
         0
       </div>
       <div
         className="character character-48"
-        id="shade-second-second-digit">
+        id="shade-second-second-digit"
+      >
         0
       </div>
     </div>
     <div
-      id="minimize" />
+      id="minimize"
+    />
     <div
       id="shade"
-      onClick={[Function]} />
+      onClick={[Function]}
+    />
     <div
       id="close"
-      onClick={[Function]} />
+      onClick={[Function]}
+    />
   </div>
   <div
-    className="status">
+    className="status"
+  >
     <div
-      id="clutter-bar">
+      id="clutter-bar"
+    >
       <div
-        id="button-o" />
+        id="button-o"
+      />
       <div
-        id="button-a" />
+        id="button-a"
+      />
       <div
-        id="button-i" />
+        id="button-i"
+      />
       <div
         className=""
         id="button-d"
         onMouseDown={[Function]}
-        onMouseUp={[Function]} />
+        onMouseUp={[Function]}
+      />
       <div
-        id="button-v" />
+        id="button-v"
+      />
     </div>
     <div
-      id="play-pause" />
+      id="play-pause"
+    />
     <div
       className=""
-      id="work-indicator" />
+      id="work-indicator"
+    />
     <div
       className="countdown"
       id="time"
-      onClick={[Function]}>
+      onClick={[Function]}
+    >
       <div
         className="digit digit-0"
-        id="minute-first-digit" />
+        id="minute-first-digit"
+      />
       <div
         className="digit digit-0"
-        id="minute-second-digit" />
+        id="minute-second-digit"
+      />
       <div
         className="digit digit-0"
-        id="second-first-digit" />
+        id="second-first-digit"
+      />
       <div
         className="digit digit-0"
-        id="second-second-digit" />
+        id="second-second-digit"
+      />
     </div>
     <canvas
       height="32"
       id="visualizer"
       onClick={[Function]}
-      width="152" />
+      width="152"
+    />
   </div>
   <div
-    className="media-info">
+    className="media-info"
+  >
     <div
       className="text"
       id="marquee"
-      onMouseDown={[Function]}>
+      onMouseDown={[Function]}
+    >
       <div
         style={
           Object {
             "marginLeft": "-0px",
           }
-        }>
+        }
+      >
         <div
           className="character character-119"
-          id={undefined}>
+          id={undefined}
+        >
           W
         </div>
         <div
           className="character character-105"
-          id={undefined}>
+          id={undefined}
+        >
           i
         </div>
         <div
           className="character character-110"
-          id={undefined}>
+          id={undefined}
+        >
           n
         </div>
         <div
           className="character character-97"
-          id={undefined}>
+          id={undefined}
+        >
           a
         </div>
         <div
           className="character character-109"
-          id={undefined}>
+          id={undefined}
+        >
           m
         </div>
         <div
           className="character character-112"
-          id={undefined}>
+          id={undefined}
+        >
           p
         </div>
         <div
           className="character character-32"
-          id={undefined}>
+          id={undefined}
+        >
            
         </div>
         <div
           className="character character-50"
-          id={undefined}>
+          id={undefined}
+        >
           2
         </div>
         <div
           className="character character-46"
-          id={undefined}>
+          id={undefined}
+        >
           .
         </div>
         <div
           className="character character-57"
-          id={undefined}>
+          id={undefined}
+        >
           9
         </div>
         <div
           className="character character-49"
-          id={undefined}>
+          id={undefined}
+        >
           1
         </div>
         ;
       </div>
     </div>
     <div
-      id="kbps">
+      id="kbps"
+    >
       <div
         className="character character-110"
-        id={undefined}>
+        id={undefined}
+      >
         n
       </div>
       <div
         className="character character-117"
-        id={undefined}>
+        id={undefined}
+      >
         u
       </div>
       <div
         className="character character-108"
-        id={undefined}>
+        id={undefined}
+      >
         l
       </div>
       <div
         className="character character-108"
-        id={undefined}>
+        id={undefined}
+      >
         l
       </div>
       ;
     </div>
     <div
-      id="khz">
+      id="khz"
+    >
       <div
         className="character character-110"
-        id={undefined}>
+        id={undefined}
+      >
         n
       </div>
       <div
         className="character character-117"
-        id={undefined}>
+        id={undefined}
+      >
         u
       </div>
       <div
         className="character character-108"
-        id={undefined}>
+        id={undefined}
+      >
         l
       </div>
       <div
         className="character character-108"
-        id={undefined}>
+        id={undefined}
+      >
         l
       </div>
       ;
     </div>
     <div
-      className="mono-stereo">
+      className="mono-stereo"
+    >
       <div
         className=""
-        id="stereo" />
+        id="stereo"
+      />
       <div
         className=""
-        id="mono" />
+        id="mono"
+      />
     </div>
   </div>
   <input
@@ -313,7 +385,8 @@ exports[`MainWindow renders to snapshot 1`] = `
       }
     }
     type="range"
-    value={50} />
+    value={50}
+  />
   <input
     id="balance"
     max="100"
@@ -328,15 +401,19 @@ exports[`MainWindow renders to snapshot 1`] = `
       }
     }
     type="range"
-    value={0} />
+    value={0}
+  />
   <div
-    className="windows">
+    className="windows"
+  >
     <div
       className="selected"
       id="equalizer-button"
-      onClick={[Function]} />
+      onClick={[Function]}
+    />
     <div
-      id="playlist-button" />
+      id="playlist-button"
+    />
   </div>
   <input
     className="left"
@@ -349,40 +426,52 @@ exports[`MainWindow renders to snapshot 1`] = `
     onMouseUp={[Function]}
     step="1"
     type="range"
-    value={0} />
+    value={0}
+  />
   <div
-    className="actions">
+    className="actions"
+  >
     <div
-      id="previous" />
+      id="previous"
+    />
     <div
       id="play"
-      onClick={[Function]} />
+      onClick={[Function]}
+    />
     <div
       id="pause"
-      onClick={[Function]} />
+      onClick={[Function]}
+    />
     <div
       id="stop"
-      onClick={[Function]} />
+      onClick={[Function]}
+    />
     <div
-      id="next" />
+      id="next"
+    />
   </div>
   <div
     id="eject"
-    onClick={[Function]} />
+    onClick={[Function]}
+  />
   <div
-    className="shuffle-repeat">
+    className="shuffle-repeat"
+  >
     <div
       className=""
       id="shuffle"
-      onClick={[Function]} />
+      onClick={[Function]}
+    />
     <div
       className=""
       id="repeat"
-      onClick={[Function]} />
+      onClick={[Function]}
+    />
   </div>
   <a
     href="https://github.com/captbaritone/winamp2-js"
     id="about"
-    target="blank" />
+    target="blank"
+  />
 </div>
 `;
