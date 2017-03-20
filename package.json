@@ -41,7 +41,7 @@
     "canvas-mock": "0.0.0",
     "css-loader": "^0.27.3",
     "eslint": "3.18.0",
-    "eslint-plugin-react": "^6.9.0",
+    "eslint-plugin-react": "^6.10.2",
     "file-loader": "^0.10.0",
     "gzip-size-cli": "^2.0.0",
     "jest-cli": "^18.1.0",
