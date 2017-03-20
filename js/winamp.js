@@ -31,10 +31,6 @@ export default {
   },
 
   /* Functions */
-  seekToPercentComplete: function(percent) {
-    this.media.seekToPercentComplete(percent);
-  },
-
   seekForwardBy: function(seconds) {
     this.media.seekToTime(this.media.timeElapsed() + seconds);
   }
