@@ -7,7 +7,7 @@ import {
   toggleShuffle,
   openFileDialog,
   seekForward,
-  seekBackward,
+  seekBackward
 } from './actionCreators';
 
 import {
@@ -44,7 +44,6 @@ export default function(winamp, {dispatch}) {
       switch (e.keyCode) {
         case 37: // left arrow
           dispatch(seekBackward(5));
-          //winamp.seekForwardBy(-5);
           break;
         case 38: // up arrow
           dispatch(adjustVolume(1));
