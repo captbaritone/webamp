@@ -50,7 +50,7 @@
     "prettier": "^0.22.0",
     "pretty-bytes-cli": "^2.0.0",
     "react-test-renderer": "^15.4.2",
-    "style-loader": "^0.14.1",
+    "style-loader": "^0.15.0",
     "travis-weigh-in": "^1.0.2",
     "url-loader": "^0.5.7",
     "webpack": "^2.2.0",
