@@ -81,10 +81,10 @@ const imageSelectors = {
   EQ_SLIDER_BACKGROUND: [".band"],
   EQ_SLIDER_THUMB: [
     ".band input::-webkit-slider-thumb",
-    "band input::-moz-range-thumb"
+    ".band input::-moz-range-thumb"
   ],
   EQ_SLIDER_THUMB_SELECTED: [
-    "band input::-webkit-slider-thumb:active",
+    ".band input::-webkit-slider-thumb:active",
     ".band input::-moz-range-thumb:active"
   ],
   EQ_ON_BUTTON: ["#on"],
