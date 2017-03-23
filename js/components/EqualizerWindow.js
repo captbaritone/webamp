@@ -23,14 +23,14 @@ import "../../css/equalizer-window.css";
 const bandClassName = band => `band-${band}`;
 
 const EqualizerWindow = props => {
-  const { doubled } = props.display;
+  const { doubled, selected, closed } = props;
 
   const className = classnames({
+    selected,
+    closed,
+    doubled,
     window: true,
-    selected: props.windows.focused === WINDOWS.EQUALIZER,
-    closed: !props.windows.equalizer,
-    draggable: true,
-    doubled
+    draggable: true
   });
   return (
     <div
@@ -59,6 +59,12 @@ const EqualizerWindow = props => {
   );
 };
 
+EqualizerWindow.propTypes = {
+  doubled: React.PropTypes.bool.isRequired,
+  selected: React.PropTypes.bool.isRequired,
+  closed: React.PropTypes.bool.isRequired
+};
+
 const mapDispatchToProps = dispatch => ({
   focusWindow: () =>
     dispatch({ type: SET_FOCUSED_WINDOW, window: WINDOWS.EQUALIZER }),
@@ -66,8 +72,13 @@ const mapDispatchToProps = dispatch => ({
   setEqToMin: () => dispatch(setEqToMin()),
   setEqToMid: () => dispatch(setEqToMid()),
   setEqToMax: () => dispatch(setEqToMax()),
-  setHertzValue: hertz => e => dispatch(setEqBand(hertz, e.target.value)),
-  dispatch
+  setHertzValue: hertz => value => dispatch(setEqBand(hertz, value))
 });
 
-export default connect(state => state, mapDispatchToProps)(EqualizerWindow);
+const mapStateToProps = state => ({
+  doubled: state.display.doubled,
+  selected: state.windows.focused === WINDOWS.EQUALIZER,
+  closed: !state.windows.equalizer
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(EqualizerWindow);
