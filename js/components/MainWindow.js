@@ -9,7 +9,6 @@ import Balance from "./Balance";
 import Close from "./Close";
 import ClutterBar from "./ClutterBar";
 import ContextMenu from "./ContextMenu";
-//import DragTarget from './DragTarget';
 import Eject from "./Eject";
 import EqToggleButton from "./EqToggleButton";
 import Kbps from "./Kbps";
