@@ -8,7 +8,6 @@ exports[`MainWindow renders to snapshot 1`] = `
   onDragEnter={[Function]}
   onDragOver={[Function]}
   onDrop={[Function]}
-  onMouseDown={undefined}
 >
   <div
     id="loading"

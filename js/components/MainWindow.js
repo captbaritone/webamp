@@ -55,8 +55,16 @@ export class MainWindow extends React.Component {
   }
 
   render() {
-    const { status } = this.props.media;
-    const { loading, doubled, shade, closed, llama } = this.props.display;
+    const {
+      focused,
+      loading,
+      doubled,
+      shade,
+      closed,
+      llama,
+      status,
+      working
+    } = this.props;
 
     const className = classnames({
       window: true,
@@ -64,7 +72,7 @@ export class MainWindow extends React.Component {
       play: status === "PLAYING",
       stop: status === "STOPPED",
       pause: status === "PAUSED",
-      selected: this.props.windows.focused === WINDOWS.MAIN,
+      selected: focused === WINDOWS.MAIN,
       draggable: true,
       loading,
       doubled,
@@ -78,7 +86,6 @@ export class MainWindow extends React.Component {
         id="main-window"
         className={className}
         onClick={this.handleClick}
-        onMouseDown={this.props.startDrag}
         onDragEnter={this.supress}
         onDragOver={this.supress}
         onDrop={this.handleDrop}
@@ -96,7 +103,7 @@ export class MainWindow extends React.Component {
           <div id="play-pause" />
           <div
             id="work-indicator"
-            className={classnames({ selected: this.props.display.working })}
+            className={classnames({ selected: working })}
           />
           <Time />
           <Visualizer analyser={this.props.mediaPlayer._analyser} />
@@ -130,4 +137,12 @@ export class MainWindow extends React.Component {
   }
 }
 
-export default connect(state => state)(MainWindow);
+const mapStateToProps = state => {
+  const {
+    media: { status },
+    display: { loading, doubled, shade, closed, llama, working },
+    windows: { focused }
+  } = state;
+  return { status, loading, doubled, shade, closed, llama, working, focused };
+};
+export default connect(mapStateToProps)(MainWindow);
