@@ -27,7 +27,7 @@ Open `index.html` in your browser.
 
 ## Development
 
-    npm run serve
+    npm start
 
 Open `http://localhost:8080/webpack-dev-server/` in your browser.
 

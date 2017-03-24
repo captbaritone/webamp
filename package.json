@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint .",
     "build": "webpack --config=webpack.production.config.js",
-    "serve": "webpack-dev-server",
+    "start": "webpack-dev-server",
     "weight": "npm run build && gzip-size built/winamp.js | pretty-bytes",
     "test": "jest --coverage",
     "travis-tests": "jest --coverage && npm run lint && npm run build",
