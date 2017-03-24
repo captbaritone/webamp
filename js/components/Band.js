@@ -1,6 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
+import Slider from "rc-slider/lib/Slider";
 
+const MAX_VALUE = 100;
 // Given a value between 1-100, return the sprite number (0-27)
 export const spriteNumber = value => {
   const percent = value / 100;
@@ -14,28 +16,34 @@ export const spriteOffsets = number => {
   return { x, y };
 };
 
-const Band = props => {
-  const value = props[props.band];
-  const offset = spriteOffsets(spriteNumber(value));
-  const xOffset = offset.x * 15; // Each sprite is 15px wide
-  const yOffset = offset.y * 65; // Each sprite is 15px tall
+const Handle = () => <div className="rc-slider-handle" />;
 
-  const style = {
-    backgroundPosition: `-${xOffset}px -${yOffset}px`
+const Band = ({ value, backgroundPosition, id, onChange }) => (
+  <div id={id} className="band" style={{ backgroundPosition }}>
+    <Slider
+      type="range"
+      min={0}
+      max={MAX_VALUE}
+      step={1}
+      value={MAX_VALUE - value}
+      vertical
+      onChange={onChange}
+      handle={Handle}
+    />
+  </div>
+);
+
+const mapStateToProps = (state, ownProps) => {
+  const value = state.equalizer.sliders[ownProps.band];
+  const { x, y } = spriteOffsets(spriteNumber(value));
+  const xOffset = x * 15; // Each sprite is 15px wide
+  const yOffset = y * 65; // Each sprite is 15px tall
+  const backgroundPosition = `-${xOffset}px -${yOffset}px`;
+  return {
+    id: ownProps.id,
+    value,
+    backgroundPosition
   };
-
-  return (
-    <div id={props.id} className="band" style={style}>
-      <input
-        type="range"
-        min="0"
-        max="100"
-        step="1"
-        value={value}
-        onChange={props.onChange}
-      />
-    </div>
-  );
 };
 
-export default connect(state => state.equalizer.sliders)(Band);
+export default connect(mapStateToProps)(Band);

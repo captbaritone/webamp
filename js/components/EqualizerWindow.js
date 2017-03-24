@@ -68,7 +68,7 @@ EqualizerWindow.propTypes = {
 const mapDispatchToProps = dispatch => ({
   focusWindow: () =>
     dispatch({ type: SET_FOCUSED_WINDOW, window: WINDOWS.EQUALIZER }),
-  setPreampValue: e => dispatch(setPreamp(e.target.value)),
+  setPreampValue: value => dispatch(setPreamp(value)),
   setEqToMin: () => dispatch(setEqToMin()),
   setEqToMid: () => dispatch(setEqToMid()),
   setEqToMax: () => dispatch(setEqToMax()),

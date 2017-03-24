@@ -79,14 +79,8 @@ const imageSelectors = {
   EQ_TITLE_BAR: [".equalizer-top"],
   EQ_TITLE_BAR_SELECTED: [".selected .equalizer-top"],
   EQ_SLIDER_BACKGROUND: [".band"],
-  EQ_SLIDER_THUMB: [
-    ".band input::-webkit-slider-thumb",
-    ".band input::-moz-range-thumb"
-  ],
-  EQ_SLIDER_THUMB_SELECTED: [
-    ".band input::-webkit-slider-thumb:active",
-    ".band input::-moz-range-thumb:active"
-  ],
+  EQ_SLIDER_THUMB: [".band .rc-slider-handle"],
+  EQ_SLIDER_THUMB_SELECTED: [".band .rc-slider-handle:active"],
   EQ_ON_BUTTON: ["#on"],
   EQ_ON_BUTTON_DEPRESSED: ["#on:active"],
   EQ_ON_BUTTON_SELECTED: ["#on.selected"],

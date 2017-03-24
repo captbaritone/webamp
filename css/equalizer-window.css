@@ -136,41 +136,17 @@
   height: 63px;
 }
 
-#winamp2-js .band input[type=range] {
-    /* These two numbers are pure magic. No idea why they work */
-    margin-left: -25px;
-    margin-top: 25px;
-    width: 63px;
-    height: 14px;
-    background-position: 0 0;
-    transform: rotate(270deg);
+#winamp2-js .band .rc-slider {
+    height: 51px;
+    width: 14px;
+    margin-top: 6px;
     cursor:url('../cursors/POSBAR.PNG'), auto;
 }
 
-#winamp2-js .band input[type=range]::-webkit-slider-thumb {
-    height: 11px;
+#winamp2-js .band .rc-slider .rc-slider-handle {
     width: 11px;
-    /* Confusingly, due to rotation, this is actually left margin */
-    margin-top: -1px;
-    cursor:url('../cursors/POSBAR.PNG'), auto;
-    /* Counteract the input's rotation */
-    -webkit-transform: rotate(-270deg);
-    -moz-transform: rotate(-270deg);
-    -ms-transform: rotate(-270deg);
-    -o-transform: rotate(-270deg);
-    transform: rotate(-270deg);
-}
-
-#winamp2-js .band input[type=range]::-moz-range-thumb {
     height: 11px;
-    width: 11px;
-    /* Confusingly, due to rotation, this is actually left margin */
-    margin-top: -1px;
+    margin: -6px 0 0 1px;
+    position: absolute;
     cursor:url('../cursors/POSBAR.PNG'), auto;
-    /* Counteract the input's rotation */
-    -webkit-transform: rotate(-270deg);
-    -moz-transform: rotate(-270deg);
-    -ms-transform: rotate(-270deg);
-    -o-transform: rotate(-270deg);
-    transform: rotate(-270deg);
 }
