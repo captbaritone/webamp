@@ -44,7 +44,7 @@
     "eslint": "3.18.0",
     "eslint-config-prettier": "^1.5.0",
     "eslint-plugin-react": "6.10.3",
-    "file-loader": "^0.10.0",
+    "file-loader": "^0.11.0",
     "gzip-size-cli": "^2.0.0",
     "jest-cli": "^19.0.2",
     "prettier": "^0.22.0",
