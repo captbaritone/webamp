@@ -41,7 +41,7 @@
     "babel-preset-react": "^6.11.1",
     "canvas-mock": "0.0.0",
     "css-loader": "^0.28.0",
-    "eslint": "3.18.0",
+    "eslint": "3.19.0",
     "eslint-config-prettier": "^1.5.0",
     "eslint-plugin-react": "6.10.3",
     "file-loader": "^0.11.0",
