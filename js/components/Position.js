@@ -8,9 +8,12 @@ import {
   SET_SCRUB_POSITION
 } from "../actionTypes";
 
-const Position = (
-  { position, seekToPercentComplete, displayedPosition, setPosition }
-) => {
+const Position = ({
+  position,
+  seekToPercentComplete,
+  displayedPosition,
+  setPosition
+}) => {
   // In shade mode, the position slider shows up differently depending on if
   // it's near the start, middle or end of its progress
   let className = "";

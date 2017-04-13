@@ -41,7 +41,7 @@ const stepOffset = (text, step) => {
 const negativePixels = pixels => `-${pixels}px`;
 
 // If text is wider than the marquee, it needs to loop
-const loopText = text => isLong(text) ? text + text : text;
+const loopText = text => (isLong(text) ? text + text : text);
 
 import CharacterString from "./CharacterString";
 
@@ -55,15 +55,12 @@ class Marquee extends React.Component {
 
   componentDidMount() {
     const step = () => {
-      setTimeout(
-        () => {
-          if (this.state.stepping) {
-            this.props.dispatch({ type: STEP_MARQUEE });
-          }
-          step();
-        },
-        220
-      );
+      setTimeout(() => {
+        if (this.state.stepping) {
+          this.props.dispatch({ type: STEP_MARQUEE });
+        }
+        step();
+      }, 220);
     };
     step();
   }
@@ -94,12 +91,9 @@ class Marquee extends React.Component {
     this.setState({ stepping: false });
     document.addEventListener("mouseup", () => {
       // TODO: Remove this listener
-      setTimeout(
-        () => {
-          this.setState({ stepping: true });
-        },
-        1000
-      );
+      setTimeout(() => {
+        this.setState({ stepping: true });
+      }, 1000);
     });
   }
 

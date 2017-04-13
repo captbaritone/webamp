@@ -130,7 +130,8 @@ class WindowManager extends React.Component {
         {this.validChildren().map((child, i) => {
           const position = this.state[i];
           /* eslint-disable react/jsx-no-bind */
-          return position &&
+          return (
+            position &&
             <div
               onMouseDown={e => this.handleMouseDown(i, e)}
               ref={this.getRef}
@@ -138,7 +139,8 @@ class WindowManager extends React.Component {
               key={i}
             >
               {child}
-            </div>;
+            </div>
+          );
           /* eslint-enable react/jsx-no-bind */
         })}
       </div>
