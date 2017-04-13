@@ -47,7 +47,7 @@
     "file-loader": "^0.11.0",
     "gzip-size-cli": "^2.0.0",
     "jest-cli": "^19.0.2",
-    "prettier": "^0.22.0",
+    "prettier": "^1.0.2",
     "pretty-bytes-cli": "^2.0.0",
     "react-test-renderer": "^15.4.2",
     "style-loader": "^0.16.1",
