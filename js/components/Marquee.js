@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { getTimeStr } from "../utils";
 
 import { STEP_MARQUEE } from "../actionTypes";
+import CharacterString from "./CharacterString";
 
 const getBalanceText = balance => {
   if (balance === 0) {
@@ -42,8 +43,6 @@ const negativePixels = pixels => `-${pixels}px`;
 
 // If text is wider than the marquee, it needs to loop
 const loopText = text => (isLong(text) ? text + text : text);
-
-import CharacterString from "./CharacterString";
 
 class Marquee extends React.Component {
   constructor(props) {
