@@ -82,7 +82,14 @@ export default {
     this._leftGain.connect(this._chanMerge, 0, 0);
     this._rightGain.connect(this._chanMerge, 0, 1);
 
-    const output = this._chanMerge;
+    // Safari, both mobile and desktop, has a bug where
+    // connecting a merger node to biquad filter node
+    // will cause it to crash. Adding this dummy node
+    // works around this bug.
+    const dummyNode = this._context.createAnalyser();
+    this._chanMerge.connect(dummyNode);
+
+    let output = dummyNode;
     this.bands = {};
 
     BANDS.forEach((band, i) => {
@@ -101,11 +108,9 @@ export default {
       }
       filter.frequency.value = band;
       filter.gain.value = 0;
-      /*
-      Disable this while we wait for Safari to fix its bug.
+
       output.connect(filter);
       output = filter;
-      */
     });
 
     output.connect(this._gainNode);
