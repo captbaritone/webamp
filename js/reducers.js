@@ -18,8 +18,8 @@ import {
   TOGGLE_CONTEXT_MENU,
   TOGGLE_DOUBLESIZE_MODE,
   TOGGLE_EQUALIZER_WINDOW,
-  TOGGLE_EQ_AUTO,
-  TOGGLE_EQ_ON,
+  SET_EQ_AUTO,
+  SET_EQ_ON,
   TOGGLE_LLAMA_MODE,
   TOGGLE_REPEAT,
   TOGGLE_SHADE_MODE,
@@ -153,10 +153,10 @@ const equalizer = (state, action) => {
       const newSliders = { ...state.sliders };
       newSliders[action.band] = action.value;
       return { ...state, sliders: newSliders };
-    case TOGGLE_EQ_ON:
-      return { ...state, on: !state.on };
-    case TOGGLE_EQ_AUTO:
-      return { ...state, auto: !state.auto };
+    case SET_EQ_ON:
+      return { ...state, on: action.value };
+    case SET_EQ_AUTO:
+      return { ...state, auto: action.value };
     default:
       return state;
   }

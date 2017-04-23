@@ -2,24 +2,18 @@ import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
 
-import { TOGGLE_EQ_AUTO } from "../actionTypes";
+import { SET_EQ_AUTO } from "../actionTypes";
 
-class EqAuto extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleClick = this.handleClick.bind(this);
-  }
+const EqAuto = props => {
+  const className = classnames({
+    selected: props.auto
+  });
+  return <div id="auto" className={className} onClick={props.toggleAuto} />;
+};
 
-  handleClick() {
-    this.props.dispatch({ type: TOGGLE_EQ_AUTO });
-  }
+const toggleAuto = () => (dispatch, getState) => {
+  dispatch({ type: SET_EQ_AUTO, value: !getState().equalizer.auto });
+};
 
-  render() {
-    const className = classnames({
-      selected: this.props.auto
-    });
-    return <div id="auto" className={className} onClick={this.handleClick} />;
-  }
-}
-
-export default connect(state => state.equalizer)(EqAuto);
+const mapDispatchToProps = { toggleAuto };
+export default connect(state => state.equalizer, mapDispatchToProps)(EqAuto);
