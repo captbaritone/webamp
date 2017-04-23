@@ -1,7 +1,7 @@
 import React from "react";
 import Character from "./Character";
 
-export default props => {
+const CharacterString = props => {
   const text = `${props.children}`;
   const chars = text.split("");
   return (
@@ -15,4 +15,8 @@ export default props => {
   );
 };
 
-// TODO: Require that props.children be a string
+CharacterString.propsTypes = {
+  children: React.PropTypes.string
+};
+
+export default CharacterString;
