@@ -56,6 +56,10 @@ export default {
     //                    |\
     //                    | <analyser>
     //                    |
+    //                 preamp
+    //                    |
+    //             [biquadFilters]
+    //                    |
     //    (split using createChannelSplitter)
     //                    |
     //                   / \
@@ -72,24 +76,7 @@ export default {
     //                    |
     //               destination
 
-    this._preamp.connect(this._chanSplit);
-
-    // Connect split channels to left / right gains
-    this._chanSplit.connect(this._leftGain, 0);
-    this._chanSplit.connect(this._rightGain, 1);
-
-    // Reconnect the left / right gains to the merge node
-    this._leftGain.connect(this._chanMerge, 0, 0);
-    this._rightGain.connect(this._chanMerge, 0, 1);
-
-    // Safari, both mobile and desktop, has a bug where
-    // connecting a merger node to biquad filter node
-    // will cause it to crash. Adding this dummy node
-    // works around this bug.
-    const dummyNode = this._context.createAnalyser();
-    this._chanMerge.connect(dummyNode);
-
-    let output = dummyNode;
+    let output = this._preamp;
     this.bands = {};
 
     BANDS.forEach((band, i) => {
@@ -113,7 +100,18 @@ export default {
       output = filter;
     });
 
-    output.connect(this._gainNode);
+    output.connect(this._chanSplit);
+
+    // Connect split channels to left / right gains
+    this._chanSplit.connect(this._leftGain, 0);
+    this._chanSplit.connect(this._rightGain, 1);
+
+    // Reconnect the left / right gains to the merge node
+    this._leftGain.connect(this._chanMerge, 0, 0);
+    this._rightGain.connect(this._chanMerge, 0, 1);
+
+    this._chanMerge.connect(this._gainNode);
+
     this._gainNode.connect(this._context.destination);
 
     // Kick off the animation loop
