@@ -16,7 +16,9 @@ import {
   START_LOADING,
   STOP,
   TOGGLE_REPEAT,
-  TOGGLE_SHUFFLE
+  TOGGLE_SHUFFLE,
+  SET_EQ_ON,
+  SET_EQ_OFF
 } from "./actionTypes";
 
 export function play() {
@@ -120,7 +122,8 @@ export function setSkinFromFile(skinFile) {
         skinImages: skinData.images,
         skinColors: skinData.colors,
         skinPlaylistStyle: skinData.playlistStyle
-      }));
+      })
+    );
   };
 }
 
@@ -179,5 +182,13 @@ export function setPreamp(value) {
     type: SET_BAND_VALUE,
     band: "preamp",
     value
+  };
+}
+
+export function toggleEq() {
+  return (dispatch, getState) => {
+    console.log("ho");
+    const type = getState().equalizer.on ? SET_EQ_OFF : SET_EQ_ON;
+    dispatch({ type });
   };
 }

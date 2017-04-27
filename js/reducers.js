@@ -20,6 +20,7 @@ import {
   TOGGLE_EQUALIZER_WINDOW,
   SET_EQ_AUTO,
   SET_EQ_ON,
+  SET_EQ_OFF,
   TOGGLE_LLAMA_MODE,
   TOGGLE_REPEAT,
   TOGGLE_SHADE_MODE,
@@ -154,7 +155,9 @@ const equalizer = (state, action) => {
       newSliders[action.band] = action.value;
       return { ...state, sliders: newSliders };
     case SET_EQ_ON:
-      return { ...state, on: action.value };
+      return { ...state, on: true };
+    case SET_EQ_OFF:
+      return { ...state, on: false };
     case SET_EQ_AUTO:
       return { ...state, auto: action.value };
     default:
