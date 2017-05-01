@@ -2,6 +2,8 @@
 
 # Winamp2-js
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/captbaritone/winamp2-js.svg)](https://greenkeeper.io/)
+
 A reimplementation of Winamp 2.9 in HTML5 and Javascript.
 
 Works in modern versions of Firefox, Safari and Chrome. IE is [not
