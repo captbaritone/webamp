@@ -3,11 +3,6 @@ import { connect } from "react-redux";
 
 import { close } from "../actionCreators";
 
-const Close = ({ closeWinamp }) => <div id="close" onClick={closeWinamp} />;
+const Close = ({ onClick }) => <div id="close" onClick={onClick} />;
 
-const mapStateToProps = () => ({});
-const mapDispatchToProps = dispatch => ({
-  closeWinamp: () => dispatch(close())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Close);
+export default connect(null, { onClick: close })(Close);
