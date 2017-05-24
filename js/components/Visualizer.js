@@ -48,6 +48,8 @@ class Visualizer extends React.Component {
 
   componentDidUpdate() {
     this.setStyle();
+    // Redraw the current frame, since the skin may have changed.
+    this.paintFrame();
   }
 
   setStyle() {
@@ -67,14 +69,6 @@ class Visualizer extends React.Component {
       // Number of bins/bars we get
       this.bufferLength = this.props.analyser.frequencyBinCount;
       this.dataArray = new Uint8Array(this.bufferLength);
-    }
-    // If we are paused when the skin changes, we will keep the vis colors
-    // until we paint again. For now we can just clear the current frame so
-    // we don't end up with a clashing visual.
-
-    // TODO: Once this is split, alwasy clear on skin change
-    if (this.props.status === "PLAYING") {
-      this.clear();
     }
   }
 
@@ -192,7 +186,7 @@ class Visualizer extends React.Component {
     return (
       <canvas
         id="visualizer"
-        ref={node => this.canvas = node}
+        ref={node => (this.canvas = node)}
         width="152"
         height="32"
         onClick={this.props.toggleVisualizer}
