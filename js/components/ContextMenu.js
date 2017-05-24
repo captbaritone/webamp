@@ -18,7 +18,7 @@ const SKINS = [
 ];
 
 class ContextMenu extends React.Component {
-  componantWillMount() {
+  componentWillMount() {
     // Clicking anywhere outside the context menu will close the window
     document.addEventListener("click", this.props.closeMenu);
   }
@@ -75,10 +75,15 @@ class ContextMenu extends React.Component {
 const mapStateToProps = state => state.contextMenu;
 const mapDispatchToProps = (dispatch, ownProps) => ({
   close: () => dispatch(close()),
-  closeMenu: () => dispatch({ type: CLOSE_CONTEXT_MENU }),
+  closeMenu: () => {
+    console.log("close");
+    dispatch({ type: CLOSE_CONTEXT_MENU });
+  },
   toggleMenu: e => {
     dispatch({ type: TOGGLE_CONTEXT_MENU });
-    e.stopPropagation();
+    // TODO: Consider binding to a ref instead.
+    // https://stackoverflow.com/a/24421834
+    e.nativeEvent.stopImmediatePropagation();
   },
   openFileDialog: () => dispatch(openFileDialog(ownProps.fileInput)),
   setSkin: filename => dispatch(setSkinFromFilename(filename))
