@@ -226,7 +226,7 @@ exports[`MainWindow renders to snapshot 1`] = `
       <div
         style={
           Object {
-            "marginLeft": "-0px",
+            "marginLeft": "0px",
           }
         }
       >

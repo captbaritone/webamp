@@ -1,4 +1,5 @@
 // Single line text display that can animate and hold multiple registers
+// Knows how to display various modes like tracking, volume, balance, etc.
 import React from "react";
 import { connect } from "react-redux";
 import { getTimeStr } from "../utils";
@@ -6,7 +7,12 @@ import { getTimeStr } from "../utils";
 import { STEP_MARQUEE } from "../actionTypes";
 import CharacterString from "./CharacterString";
 
-const getBalanceText = balance => {
+const CHAR_WIDTH = 5;
+
+// Always positive modulus
+export const mod = (n, m) => (n % m + m) % m;
+
+export const getBalanceText = balance => {
   if (balance === 0) {
     return "Balance: Center";
   }
@@ -14,40 +20,47 @@ const getBalanceText = balance => {
   return `Balance: ${Math.abs(balance)}% ${direction}`;
 };
 
-const getVolumeText = volume => `Volume: ${volume}%`;
+export const getVolumeText = volume => `Volume: ${volume}%`;
 
-const getPositionText = (duration, seekToPercent) => {
+export const getPositionText = (duration, seekToPercent) => {
   const newElapsedStr = getTimeStr(duration * seekToPercent / 100);
   const durationStr = getTimeStr(duration);
   return `Seek to: ${newElapsedStr}/${durationStr} (${seekToPercent}%)`;
 };
 
-const getMediaText = (name, duration) =>
+export const getMediaText = (name, duration) =>
   `${name} (${getTimeStr(duration)})  ***  `;
 
-const getDoubleSizeModeText = enabled =>
+export const getDoubleSizeModeText = enabled =>
   `${enabled ? "Disable" : "Enable"} doublesize mode`;
+
+// TODO: Handle EQ text
 
 const isLong = text => text.length > 30;
 
 // Given text and step, how many pixels should it be shifted?
-const stepOffset = (text, step) => {
+export const stepOffset = (text, step, pixels) => {
   if (!isLong(text)) {
     return 0;
   }
-  return step % text.length * 5;
+
+  const stepOffsetWidth = step * CHAR_WIDTH; // Steps move one char at a time
+  const offset = stepOffsetWidth + pixels;
+  const stringLength = text.length * CHAR_WIDTH;
+
+  return mod(offset, stringLength);
 };
 
-// Format an int as negative pixels
-const negativePixels = pixels => `-${pixels}px`;
+// Format an int as pixels
+export const pixelUnits = pixels => `${pixels}px`;
 
 // If text is wider than the marquee, it needs to loop
-const loopText = text => (isLong(text) ? text + text : text);
+export const loopText = text => (isLong(text) ? text + text : text);
 
 class Marquee extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { stepping: true };
+    this.state = { stepping: true, dragOffset: 0 };
     this.handleMouseDown = this.handleMouseDown.bind(this);
     this.getText = this.getText.bind(this);
   }
@@ -86,22 +99,38 @@ class Marquee extends React.Component {
     return "Winamp 2.91";
   }
 
-  handleMouseDown() {
+  handleMouseDown(e) {
+    const xStart = e.clientX;
     this.setState({ stepping: false });
-    document.addEventListener("mouseup", () => {
+    const handleMouseMove = ee => {
+      const diff = ee.clientX - xStart;
+      this.setState({ dragOffset: -diff });
+    };
+
+    const handleMouseUp = () => {
+      document.removeEventListener("mousemove", handleMouseMove);
       // TODO: Remove this listener
       setTimeout(() => {
         this.setState({ stepping: true });
       }, 1000);
-    });
+      document.removeEventListener("mouseUp", handleMouseUp);
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
   }
 
   render() {
     const text = this.getText();
-    const offset = stepOffset(text, this.props.display.marqueeStep);
+    const offset = stepOffset(
+      text,
+      this.props.display.marqueeStep,
+      this.state.dragOffset
+    );
+    const marginLeft = pixelUnits(-offset);
     return (
       <div id="marquee" className="text" onMouseDown={this.handleMouseDown}>
-        <CharacterString style={{ marginLeft: negativePixels(offset) }}>
+        <CharacterString style={{ marginLeft }}>
           {loopText(text)}
         </CharacterString>
       </div>
@@ -109,15 +138,5 @@ class Marquee extends React.Component {
   }
 }
 
-export {
-  getBalanceText,
-  getVolumeText,
-  getPositionText,
-  getMediaText,
-  getDoubleSizeModeText,
-  negativePixels,
-  stepOffset,
-  loopText,
-  Marquee
-};
+// TODO: Define map state to props
 export default connect(state => state)(Marquee);
