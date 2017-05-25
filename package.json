@@ -68,7 +68,8 @@
     "react-redux": "^5.0.2",
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0",
-    "webpack": "^2.2.0"
+    "webpack": "^2.2.0",
+    "winamp-eqf": "^0.1.0"
   },
   "jest": {
     "testRegex": "\\.test\\.js$",

@@ -1,3 +1,4 @@
+import parser from "winamp-eqf";
 import MyFile from "./myFile";
 import skinParser from "./skinParser";
 import { BANDS } from "./constants";
@@ -94,13 +95,32 @@ export function toggleShuffle() {
   return { type: TOGGLE_SHUFFLE };
 }
 
+const normalize = hrz => hrz / 63 * 100;
+function setEqFromFile(file) {
+  return dispatch => {
+    file.processBuffer(arrayBuffer => {
+      const eqf = parser(arrayBuffer);
+      const preset = eqf.presets[0];
+
+      // TODO: Fix normalize. Currently these numbers are kinda wrong.
+      dispatch(setPreamp(normalize(preset.preamp)));
+      BANDS.forEach(band => {
+        dispatch(setEqBand(band, normalize(preset[`hz${band}`])));
+      });
+    });
+  };
+}
+
 const SKIN_FILENAME_MATCHER = new RegExp("(wsz|zip)$", "i");
+const EQF_FILENAME_MATCHER = new RegExp("eqf$", "i");
 export function loadFileFromReference(fileReference) {
   return dispatch => {
     const file = new MyFile();
     file.setFileReference(fileReference);
     if (SKIN_FILENAME_MATCHER.test(fileReference.name)) {
       dispatch(setSkinFromFile(file));
+    } else if (EQF_FILENAME_MATCHER.test(fileReference.name)) {
+      dispatch(setEqFromFile(file));
     } else {
       dispatch({ type: LOAD_AUDIO_FILE, file });
     }
