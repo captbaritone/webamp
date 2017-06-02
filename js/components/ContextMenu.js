@@ -53,14 +53,14 @@ class ContextMenu extends React.Component {
                 Load Skin...
               </li>
               <li className="hr"><hr /></li>
-              {SKINS.map(skin => (
+              {SKINS.map(skin =>
                 <li
                   key={skin.file}
                   onClick={this.props.setSkin.bind(null, skin.file)}
                 >
                   {skin.name}
                 </li>
-              ))}
+              )}
             </ul>
             Skins
           </li>

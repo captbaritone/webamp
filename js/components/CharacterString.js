@@ -6,11 +6,11 @@ const CharacterString = props => {
   const chars = text.split("");
   return (
     <div {...props}>
-      {chars.map((character, index) => (
+      {chars.map((character, index) =>
         <Character key={index + character}>
           {character}
         </Character>
-      ))};
+      )};
     </div>
   );
 };

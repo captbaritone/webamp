@@ -3,10 +3,9 @@ import { connect } from "react-redux";
 
 import CharacterString from "./CharacterString";
 
-const Khz = props => (
+const Khz = props =>
   <CharacterString id="khz">
     {props.khz}
-  </CharacterString>
-);
+  </CharacterString>;
 
 export default connect(state => state.media)(Khz);

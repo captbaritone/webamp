@@ -4,13 +4,12 @@ import classnames from "classnames";
 
 import { toggleRepeat } from "../actionCreators";
 
-const Repeat = props => (
+const Repeat = props =>
   <div
     id="repeat"
     className={classnames({ selected: props.repeat })}
     onClick={props.handleClick}
-  />
-);
+  />;
 
 const mapStateToProps = state => ({
   repeat: state.media.repeat

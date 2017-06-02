@@ -4,7 +4,7 @@ import classnames from "classnames";
 
 import { SET_FOCUS, TOGGLE_DOUBLESIZE_MODE, UNSET_FOCUS } from "../actionTypes";
 
-const ClutterBar = props => (
+const ClutterBar = props =>
   <div id="clutter-bar">
     <div id="button-o" />
     <div id="button-a" />
@@ -16,8 +16,7 @@ const ClutterBar = props => (
       onMouseDown={props.handleMouseDown}
     />
     <div id="button-v" />
-  </div>
-);
+  </div>;
 
 const mapStateToProps = state => ({
   doubled: state.display.doubled

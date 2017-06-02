@@ -116,7 +116,7 @@ class EqGraph extends React.Component {
     return (
       <canvas
         id="eqGraph"
-        ref={node => this.canvas = node}
+        ref={node => (this.canvas = node)}
         width="152"
         height="32"
       />

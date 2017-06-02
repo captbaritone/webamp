@@ -11,7 +11,7 @@ const offsetFromBalance = balance => {
   return offset;
 };
 
-const Balance = ({ balance, handleChange, showMarquee, hideMarquee }) => (
+const Balance = ({ balance, handleChange, showMarquee, hideMarquee }) =>
   <input
     id="balance"
     type="range"
@@ -23,8 +23,7 @@ const Balance = ({ balance, handleChange, showMarquee, hideMarquee }) => (
     onChange={handleChange}
     onMouseDown={showMarquee}
     onMouseUp={hideMarquee}
-  />
-);
+  />;
 
 const mapStateToProps = state => state.media;
 
