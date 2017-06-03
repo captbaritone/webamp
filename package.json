@@ -13,7 +13,7 @@
     "tdd": "jest --watch",
     "deploy": "ssh jordaneldredge.com sh < deploy.sh",
     "revert": "ssh jordaneldredge.com sh < revert.sh",
-    "format": "prettier --write js/**/*.js webpack.config.js webpack.production.config.js"
+    "format": "prettier --write js/**/*.js css/**/*.css webpack.config.js webpack.production.config.js"
   },
   "repository": {
     "type": "git",

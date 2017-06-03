@@ -1,44 +1,44 @@
 /* Styles */
 #winamp2-js #equalizer-window {
-    height: 116px;
-    width: 275px;
+  height: 116px;
+  width: 275px;
 }
 
 #winamp2-js .equalizer-top {
-    height: 14px;
-    width: 275px;
+  height: 14px;
+  width: 275px;
 }
 
 #winamp2-js #on {
-    position: absolute;
-    width: 26px;
-    height: 12px;
-    top: 18px;
-    left: 14px;
+  position: absolute;
+  width: 26px;
+  height: 12px;
+  top: 18px;
+  left: 14px;
 }
 
 #winamp2-js #auto {
-    position: absolute;
-    width: 32px;
-    height: 12px;
-    top: 18px;
-    left: 40px;
+  position: absolute;
+  width: 32px;
+  height: 12px;
+  top: 18px;
+  left: 40px;
 }
 
 #winamp2-js #presets {
-    position: absolute;
-    width: 44px;
-    height: 12px;
-    top: 18px;
-    left: 217px;
+  position: absolute;
+  width: 44px;
+  height: 12px;
+  top: 18px;
+  left: 217px;
 }
 
 #winamp2-js #eqGraph {
-    position: absolute;
-    width: 113px;
-    height: 19px;
-    top: 17px;
-    left: 86px;
+  position: absolute;
+  width: 113px;
+  height: 19px;
+  top: 17px;
+  left: 86px;
 }
 
 #winamp2-js #preamp {
@@ -137,16 +137,16 @@
 }
 
 #winamp2-js .band .rc-slider {
-    height: 51px;
-    width: 14px;
-    margin-top: 6px;
-    cursor:url('../cursors/POSBAR.PNG'), auto;
+  height: 51px;
+  width: 14px;
+  margin-top: 6px;
+  cursor: url('../cursors/POSBAR.PNG'), auto;
 }
 
 #winamp2-js .band .rc-slider .rc-slider-handle {
-    width: 11px;
-    height: 11px;
-    margin: -6px 0 0 1px;
-    position: absolute;
-    cursor:url('../cursors/POSBAR.PNG'), auto;
+  width: 11px;
+  height: 11px;
+  margin: -6px 0 0 1px;
+  position: absolute;
+  cursor: url('../cursors/POSBAR.PNG'), auto;
 }

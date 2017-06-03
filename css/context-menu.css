@@ -1,64 +1,62 @@
-#winamp2-js #context-menu,
-#winamp2-js #context-menu ul {
-    display: none;
-    z-index: 50; /* Gross */
-    background-color: #FFFFFF;
-    position: absolute;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    border: 1px solid #A7A394;
-    cursor: default;
-    box-shadow: 2px 2px 4px rgba(0,0,0,.5);
+#winamp2-js #context-menu, #winamp2-js #context-menu ul {
+  display: none;
+  z-index: 50; /* Gross */
+  background-color: #FFFFFF;
+  position: absolute;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #A7A394;
+  cursor: default;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, .5);
 }
 
 #winamp2-js #context-menu li {
-    position: relative;
-    font-family: 'Tahoma';
-    font-size: 11px;
-    color: black;
-    white-space: nowrap;
-    margin: 2px;
-    padding: 1px 18px 3px 18px;
-    display: block;
+  position: relative;
+  font-family: 'Tahoma';
+  font-size: 11px;
+  color: black;
+  white-space: nowrap;
+  margin: 2px;
+  padding: 1px 18px 3px 18px;
+  display: block;
 }
 #winamp2-js #context-menu li.parent:after {
-    text-align: right;
-    /* content: '\25b8'; */
+  text-align: right;
+  /* content: '\25b8'; */
 }
 #winamp2-js #context-menu li a {
-    text-decoration: none;
-    color: black;
-    cursor: default;
+  text-decoration: none;
+  color: black;
+  cursor: default;
 }
 
-#winamp2-js #context-menu li:hover,
-#winamp2-js #context-menu li:hover a {
-    background-color: #224EB7;
-    color: #FFFFFF;
+#winamp2-js #context-menu li:hover, #winamp2-js #context-menu li:hover a {
+  background-color: #224EB7;
+  color: #FFFFFF;
 }
 
 #winamp2-js #context-menu li.hr {
-    padding: 2px 0;
+  padding: 2px 0;
 }
 
 #winamp2-js #context-menu li.hr:hover {
-    background-color: #FFFFFF;
+  background-color: #FFFFFF;
 }
 
 #winamp2-js #context-menu li.hr hr {
-    border: none;
-    height: 1px;
-    background-color: #A7A394;
-    margin: 0;
-    padding: 0;
+  border: none;
+  height: 1px;
+  background-color: #A7A394;
+  margin: 0;
+  padding: 0;
 }
 
 #winamp2-js #context-menu ul {
-    left: 100%;
-    margin-left: -3px;
+  left: 100%;
+  margin-left: -3px;
 }
 
 #winamp2-js #context-menu li:hover ul {
-    display: block;
+  display: block;
 }

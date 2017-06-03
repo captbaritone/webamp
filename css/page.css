@@ -1,68 +1,68 @@
 /* Rules for the page layout */
 body {
-    background-color: #224EB7;
-    font-family: arial;
-    font-size: 15px;
+  background-color: #224EB7;
+  font-family: arial;
+  font-size: 15px;
 }
 
 #browser-compatibility {
-    display: none;
-    position: absolute;
-    width: 275px;
-    margin-top: -58px;
-    margin-left: -137px;
-    top: 40%;
-    left: 50%;
-    background: white;
-    text-align: center;
+  display: none;
+  position: absolute;
+  width: 275px;
+  margin-top: -58px;
+  margin-left: -137px;
+  top: 40%;
+  left: 50%;
+  background: white;
+  text-align: center;
 }
 
 .about {
-    position: absolute;
-    bottom: 0;
-    color: white;
+  position: absolute;
+  bottom: 0;
+  color: white;
 }
 
 .about a {
-    color: white;
+  color: white;
 }
 
 #embed {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    color: white;
-    margin-right: 15px;
-    text-align: left;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  color: white;
+  margin-right: 15px;
+  text-align: left;
 }
 
 #embed label {
-    display: inline-block;
+  display: inline-block;
 }
 
 #embed a {
-    color: white;
-    float: left;
+  color: white;
+  float: left;
 }
 
 #embed input {
-    border: 1px solid black;
-    width: 300px;
-    padding: 5px;
-    border-radius: 5px;
-    font-size: 13px;
-    display: none;
-    margin-left: 15px;
-    margin-right: 15px;
+  border: 1px solid black;
+  width: 300px;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 13px;
+  display: none;
+  margin-left: 15px;
+  margin-right: 15px;
 }
 
 #embed #embed-learn-more {
-    display: none;
+  display: none;
 }
 #embed.selected #embed-learn-more {
-    display: inline;
+  display: inline;
 }
 
 #embed.selected input {
-    display: inline;
+  display: inline;
 }

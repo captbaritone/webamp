@@ -1,54 +1,90 @@
 /* Rules used by all windows */
 
 /* Range input css reset */
-#winamp2-js input[type=range]{ -webkit-appearance: none; margin: 0; padding: 0; background: none; border: none; }
-#winamp2-js input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; border: none; border-radius: 0; background: none; }
-#winamp2-js input[type=range]::-moz-range-thumb { border: none; border-radius: 0; background: none; }
-#winamp2-js input[type=range]::-moz-range-track { border: none; background: none; }
-#winamp2-js input[type=range]:focus { outline: none; }
-#winamp2-js input[type=range]::-moz-focus-outer { border: 0; }
+#winamp2-js input[type=range] {
+  -webkit-appearance: none;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+}
+#winamp2-js input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: none;
+  border-radius: 0;
+  background: none;
+}
+#winamp2-js input[type=range]::-moz-range-thumb {
+  border: none;
+  border-radius: 0;
+  background: none;
+}
+#winamp2-js input[type=range]::-moz-range-track {
+  border: none;
+  background: none;
+}
+#winamp2-js input[type=range]:focus {
+  outline: none;
+}
+#winamp2-js input[type=range]::-moz-focus-outer {
+  border: 0;
+}
 
-#winamp2-js a:focus { outline: none; }
+#winamp2-js a:focus {
+  outline: none;
+}
 
 /* Animation */
 @keyframes blink {
-    0% { opacity: 1.0; }
-    50% { opacity: 0.0; }
-    100% { opacity: 1.0; }
+  0% {
+    opacity: 1.0;
+  }
+  50% {
+    opacity: 0.0;
+  }
+  100% {
+    opacity: 1.0;
+  }
 }
 @-webkit-keyframes blink {
-    0% { opacity: 1.0; }
-    50% { opacity: 0.0; }
-    100% { opacity: 1.0; }
+  0% {
+    opacity: 1.0;
+  }
+  50% {
+    opacity: 0.0;
+  }
+  100% {
+    opacity: 1.0;
+  }
 }
 
 #winamp2-js .character {
-    display: block;
-    float: left; /* Safari does not do inline-block well */
-    width: 5px;
-    height: 6px;
-    /* background-image: TEXT.BMP via Javascript */
-    text-indent: -9999px;
+  display: block;
+  float: left; /* Safari does not do inline-block well */
+  width: 5px;
+  height: 6px;
+  /* background-image: TEXT.BMP via Javascript */
+  text-indent: -9999px;
 }
 
 #winamp2-js .window {
-    position: absolute;
-    cursor:url('../cursors/MAINMENU.PNG'), auto;
-    /* Ask the browser to scale showing large pixels if possible */
-    image-rendering: -moz-crisp-edges;          /* Firefox */
-    image-rendering:   -o-crisp-edges;          /* Opera */
-    image-rendering: -webkit-optimize-contrast; /* Safari */
-    image-rendering: pixelated;                 /* Only in Chrome > 40 */
-    -ms-interpolation-mode: nearest-neighbor;   /* IE (non-standard property) */
+  position: absolute;
+  cursor: url('../cursors/MAINMENU.PNG'), auto;
+  /* Ask the browser to scale showing large pixels if possible */
+  image-rendering: -moz-crisp-edges; /* Firefox */
+  image-rendering: -o-crisp-edges; /* Opera */
+  image-rendering: -webkit-optimize-contrast; /* Safari */
+  image-rendering: pixelated; /* Only in Chrome > 40 */
+  -ms-interpolation-mode: nearest-neighbor; /* IE (non-standard property) */
 }
 
 #winamp2-js .window.doubled {
-    -moz-transform: scale(2);
-    -moz-transform-origin: top left;
-    -webkit-transform: scale(2);
-    -webkit-transform-origin: top left;
+  -moz-transform: scale(2);
+  -moz-transform-origin: top left;
+  -webkit-transform: scale(2);
+  -webkit-transform-origin: top left;
 }
 
 #winamp2-js .window.closed {
-    display: none;
+  display: none;
 }
