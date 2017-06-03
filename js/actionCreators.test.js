@@ -18,7 +18,8 @@ import {
   setEqBand,
   setEqToMax,
   setEqToMin,
-  setEqToMid
+  setEqToMid,
+  normalize
 } from "./actionCreators";
 
 test("stop", () => {
@@ -122,4 +123,9 @@ test("setEqToMid", () => {
     { type: SET_BAND_VALUE, band, value: 50 }
   ]);
   expect(mockDispatch.mock.calls).toEqual(expectedCalls);
+});
+
+test("normalize", () => {
+  expect(normalize(1)).toBe(0);
+  expect(normalize(64)).toBe(100);
 });

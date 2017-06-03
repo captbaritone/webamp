@@ -95,7 +95,8 @@ export function toggleShuffle() {
   return { type: TOGGLE_SHUFFLE };
 }
 
-const normalize = hrz => hrz / 63 * 100;
+export const normalize = hrz => Math.round((hrz - 1) / 63 * 100);
+
 function setEqFromFile(file) {
   return dispatch => {
     file.processBuffer(arrayBuffer => {
