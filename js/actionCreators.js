@@ -1,4 +1,4 @@
-import parser from "winamp-eqf";
+import { parser } from "winamp-eqf";
 import MyFile from "./myFile";
 import skinParser from "./skinParser";
 import { BANDS } from "./constants";

@@ -70,7 +70,7 @@
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0",
     "webpack": "^2.2.0",
-    "winamp-eqf": "^0.1.1"
+    "winamp-eqf": "^1.0.0"
   },
   "jest": {
     "testRegex": "\\.test\\.js$",
