@@ -208,7 +208,6 @@ export function setPreamp(value) {
 
 export function toggleEq() {
   return (dispatch, getState) => {
-    console.log("ho");
     const type = getState().equalizer.on ? SET_EQ_OFF : SET_EQ_ON;
     dispatch({ type });
   };
