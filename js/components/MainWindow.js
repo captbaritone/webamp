@@ -8,7 +8,7 @@ import ActionButtons from "./ActionButtons";
 import Balance from "./Balance";
 import Close from "./Close";
 import ClutterBar from "./ClutterBar";
-import ContextMenu from "./ContextMenu";
+import MainContextMenu from "./MainContextMenu";
 import Eject from "./Eject";
 import EqToggleButton from "./EqToggleButton";
 import Kbps from "./Kbps";
@@ -91,7 +91,7 @@ export class MainWindow extends React.Component {
       >
         <div id="loading">Loading...</div>
         <div id="title-bar" className="selected title-bard draggable">
-          <ContextMenu fileInput={this.props.fileInput} />
+          <MainContextMenu fileInput={this.props.fileInput} />
           <ShadeTime />
           <div id="minimize" />
           <Shade />
