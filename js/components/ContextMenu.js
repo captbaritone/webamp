@@ -44,12 +44,12 @@ class ContextMenu extends React.Component {
             </a>
           </li>
           <li className="hr"><hr /></li>
-          <li id="context-play-file" onClick={this.props.openFileDialog}>
+          <li onClick={this.props.openFileDialog}>
             Play File...
           </li>
           <li className="parent">
             <ul>
-              <li id="context-load-skin" onClick={this.props.openFileDialog}>
+              <li onClick={this.props.openFileDialog}>
                 Load Skin...
               </li>
               <li className="hr"><hr /></li>
@@ -65,7 +65,7 @@ class ContextMenu extends React.Component {
             Skins
           </li>
           <li className="hr"><hr /></li>
-          <li id="context-exit" onClick={this.props.close}>Exit</li>
+          <li onClick={this.props.close}>Exit</li>
         </ul>
       </div>
     );
