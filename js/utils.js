@@ -26,7 +26,7 @@ export const parseViscolors = text => {
   const regex = /^(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/;
   const colors = [];
   // changed to a hard number to deal with empty lines at the end...
-  // plus its only meant to be an exact amount of numbers anywayz
+  // plus it's only meant to be an exact quantity of numbers anyway.
   // - @PAEz
   for (let i = 0; i < 24; i++) {
     const matches = regex.exec(entries[i]);
@@ -42,14 +42,13 @@ export const parseViscolors = text => {
 // Dumb ini parser that just gets all the key/value pairs
 export const parseIni = text => {
   const lines = text.split(/[\r\n]+/g);
-  const data = {};
-  lines.forEach(line => {
+  return lines.reduce((data, line) => {
     if (line.includes("=")) {
       const [key, value] = line.split("=");
       data[key] = value;
     }
-  });
-  return data;
+    return data;
+  }, {});
 };
 
 export const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
