@@ -14,11 +14,7 @@ const SKINS = [
 ];
 
 const MainContextMenu = props =>
-  <ContextMenu
-    closeMenu={props.closeMenu}
-    toggleMenu={props.toggleMenu}
-    selected={props.selected}
-  >
+  <ContextMenu closeMenu={props.closeMenu} selected={props.selected}>
     <LinkNode
       href="https://github.com/captbaritone/winamp2-js"
       target="_blank"
@@ -47,12 +43,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   closeMenu: () => {
     console.log("close");
     dispatch({ type: CLOSE_CONTEXT_MENU });
-  },
-  toggleMenu: e => {
-    dispatch({ type: TOGGLE_CONTEXT_MENU });
-    // TODO: Consider binding to a ref instead.
-    // https://stackoverflow.com/a/24421834
-    e.nativeEvent.stopImmediatePropagation();
   },
   openFileDialog: () => dispatch(openFileDialog(ownProps.fileInput)),
   setSkin: filename => dispatch(setSkinFromFilename(filename))

@@ -24,7 +24,7 @@ import Time from "./Time";
 import Visualizer from "./Visualizer";
 import Volume from "./Volume";
 
-import { SET_FOCUSED_WINDOW } from "../actionTypes";
+import { SET_FOCUSED_WINDOW, TOGGLE_CONTEXT_MENU } from "../actionTypes";
 
 import { loadFileFromReference } from "../actionCreators";
 
@@ -91,7 +91,9 @@ export class MainWindow extends React.Component {
       >
         <div id="loading">Loading...</div>
         <div id="title-bar" className="selected title-bard draggable">
-          <MainContextMenu fileInput={this.props.fileInput} />
+          <div id="option" onClick={this.props.toggleMenu}>
+            <MainContextMenu fileInput={this.props.fileInput} />
+          </div>
           <ShadeTime />
           <div id="minimize" />
           <Shade />
@@ -144,4 +146,14 @@ const mapStateToProps = state => {
   } = state;
   return { status, loading, doubled, shade, closed, llama, working, focused };
 };
-export default connect(mapStateToProps)(MainWindow);
+
+const mapDispatchToProps = dispatch => ({
+  toggleMenu: e => {
+    dispatch({ type: TOGGLE_CONTEXT_MENU });
+    // TODO: Consider binding to a ref instead.
+    // https://stackoverflow.com/a/24421834
+    e.nativeEvent.stopImmediatePropagation();
+  },
+  dispatch
+});
+export default connect(mapStateToProps, mapDispatchToProps)(MainWindow);

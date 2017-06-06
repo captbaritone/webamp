@@ -48,11 +48,7 @@ export class ContextMenu extends React.Component {
 
   render() {
     return (
-      <div
-        id="option"
-        className={classnames({ selected: this.props.selected })}
-        onClick={this.props.toggleMenu}
-      >
+      <div className={classnames({ selected: this.props.selected })}>
         <ul id="context-menu">
           {this.props.children}
         </ul>
@@ -63,6 +59,5 @@ export class ContextMenu extends React.Component {
 
 ContextMenu.propTypes = {
   closeMenu: React.PropTypes.func.isRequired,
-  toggleMenu: React.PropTypes.func.isRequired,
   children: React.PropTypes.any.isRequired
 };
