@@ -22,7 +22,7 @@ const Band = ({ value, backgroundPosition, id, onChange }) =>
   <div id={id} className="band" style={{ backgroundPosition }}>
     <Slider
       type="range"
-      min={0}
+      min={1}
       max={MAX_VALUE}
       step={1}
       value={MAX_VALUE - value}

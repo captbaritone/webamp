@@ -1,12 +1,16 @@
 import React from "react";
 import { connect } from "react-redux";
 import { getCurvePoints } from "cardinal-spline-js";
+import { rebound } from "../utils";
 
 import { BANDS } from "../constants";
 
 export const roundToEven = value => 2 * Math.round(value / 2);
 
-export const getY = value => roundToEven(32 - value / 100 * 32);
+// The line is two pixels wide, and sits "above" the offset specified. So we use 30 not 32 as our max.
+const reboundTo32 = rebound(1, 100, 0, 30);
+
+export const getY = value => roundToEven(reboundTo32(value));
 
 class EqGraph extends React.Component {
   constructor(props) {

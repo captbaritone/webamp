@@ -52,3 +52,29 @@ export const parseIni = text => {
 };
 
 export const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+export const base64FromArrayBuffer = arrayBuffer => {
+  const dataView = new Uint8Array(arrayBuffer);
+  return window.btoa(String.fromCharCode(...dataView));
+};
+
+// https://stackoverflow.com/a/15832662/1263117
+export function downloadURI(uri, name) {
+  const link = document.createElement("a");
+  link.download = name;
+  link.href = uri;
+  window.document.body.appendChild(link);
+  link.click();
+  window.document.body.removeChild(link);
+}
+
+export const rebound = (oldMin, oldMax, newMin, newMax) => oldValue =>
+  Math.round(
+    (oldValue - oldMin) * (newMax - newMin) / (oldMax - oldMin) + newMin
+  );
+
+// Convert a .eqf value to a 1-100
+export const normalize = rebound(1, 64, 1, 100);
+
+// Convert a 0-100 to an .eqf value
+export const denormalize = rebound(1, 100, 1, 64);

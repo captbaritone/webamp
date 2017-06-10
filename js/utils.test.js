@@ -5,7 +5,9 @@ import {
   getTimeStr,
   clamp,
   parseViscolors,
-  parseIni
+  parseIni,
+  normalize,
+  denormalize
 } from "./utils";
 
 const fixture = filename =>
@@ -122,4 +124,13 @@ describe("parseIni", () => {
     };
     expect(actual).toEqual(expected);
   });
+});
+
+test("normalize", () => {
+  expect(normalize(1)).toBe(1);
+  expect(normalize(64)).toBe(100);
+});
+test("denormalize", () => {
+  expect(denormalize(1)).toBe(1);
+  expect(denormalize(100)).toBe(64);
 });

@@ -11,12 +11,16 @@ import {
   setEqToMin
 } from "../actionCreators";
 
-import { SET_FOCUSED_WINDOW } from "../actionTypes";
+import {
+  SET_FOCUSED_WINDOW,
+  TOGGLE_PRESETS_CONTEXT_MENU
+} from "../actionTypes";
 
 import Band from "./Band";
 import EqOn from "./EqOn";
 import EqAuto from "./EqAuto";
 import EqGraph from "./EqGraph";
+import PresetsContextMenu from "./PresetsContextMenu";
 
 import "../../css/equalizer-window.css";
 
@@ -42,7 +46,12 @@ const EqualizerWindow = props => {
       <EqOn />
       <EqAuto />
       <EqGraph />
-      <div id="presets" />
+      <div id="presets" onClick={props.togglePresetsContextMenu}>
+        <PresetsContextMenu
+          selected={props.contextMenuSelected}
+          fileInput={props.fileInput}
+        />
+      </div>
       <Band id="preamp" band="preamp" onChange={props.setPreampValue} />
       <div id="plus12db" onClick={props.setEqToMax} />
       <div id="zerodb" onClick={props.setEqToMid} />
@@ -72,13 +81,20 @@ const mapDispatchToProps = dispatch => ({
   setEqToMin: () => dispatch(setEqToMin()),
   setEqToMid: () => dispatch(setEqToMid()),
   setEqToMax: () => dispatch(setEqToMax()),
-  setHertzValue: hertz => value => dispatch(setEqBand(hertz, value))
+  setHertzValue: hertz => value => dispatch(setEqBand(hertz, value)),
+  togglePresetsContextMenu: e => {
+    dispatch({ type: TOGGLE_PRESETS_CONTEXT_MENU });
+    // TODO: Consider binding to a ref instead.
+    // https://stackoverflow.com/a/24421834
+    e.nativeEvent.stopImmediatePropagation();
+  }
 });
 
 const mapStateToProps = state => ({
   doubled: state.display.doubled,
   selected: state.windows.focused === WINDOWS.EQUALIZER,
-  closed: !state.windows.equalizer
+  closed: !state.windows.equalizer,
+  contextMenuSelected: state.presetsContextMenu.selected
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EqualizerWindow);

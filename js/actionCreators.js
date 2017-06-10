@@ -1,9 +1,10 @@
-import { parser } from "winamp-eqf";
+import { parser, creator } from "winamp-eqf";
 import MyFile from "./myFile";
 import skinParser from "./skinParser";
 import { BANDS } from "./constants";
+import { getEqfData } from "./selectors";
 
-import { clamp } from "./utils";
+import { clamp, base64FromArrayBuffer, downloadURI, normalize } from "./utils";
 import {
   CLOSE_WINAMP,
   LOAD_AUDIO_FILE,
@@ -94,8 +95,6 @@ export function toggleRepeat() {
 export function toggleShuffle() {
   return { type: TOGGLE_SHUFFLE };
 }
-
-export const normalize = hrz => Math.round((hrz - 1) / 63 * 100);
 
 function setEqFromFile(file) {
   return dispatch => {
@@ -210,5 +209,16 @@ export function toggleEq() {
   return (dispatch, getState) => {
     const type = getState().equalizer.on ? SET_EQ_OFF : SET_EQ_ON;
     dispatch({ type });
+  };
+}
+
+export function downloadPreset() {
+  return (dispatch, getState) => {
+    const state = getState();
+    const data = getEqfData(state);
+    const arrayBuffer = creator(data);
+    const base64 = base64FromArrayBuffer(arrayBuffer);
+    const dataURI = `data:application/zip;base64,${base64}`;
+    downloadURI(dataURI, "entry.eqf");
   };
 }
