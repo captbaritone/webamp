@@ -85,7 +85,7 @@ class EqGraph extends React.Component {
     const paddingLeft = 4;
 
     const points = amplitudes.reduce(
-      (prev, value, i) => prev.concat(paddingLeft + i * 16, getY(value)),
+      (prev, value, i) => prev.concat(paddingLeft + i * 16, getY(100 - value)),
       []
     );
 
@@ -106,7 +106,7 @@ class EqGraph extends React.Component {
       // The skin has not finished loading yet
       return;
     }
-    const preampValue = getY(100 - this.props.preamp);
+    const preampValue = getY(this.props.preamp);
     this.canvasCtx.drawImage(
       this.state.preampLineImg,
       0,
