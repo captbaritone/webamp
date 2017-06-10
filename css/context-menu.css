@@ -1,3 +1,24 @@
+#winamp2-js #context-menu {
+  display: none;
+  left: 0px;
+}
+
+#winamp2-js .bottom > #context-menu {
+  top: 12px;
+}
+
+#winamp2-js .top > #context-menu {
+  top: 0px;
+}
+
+#winamp2-js div:active > div > #context-menu {
+  display: block;
+}
+
+#winamp2-js .selected > #context-menu {
+  display: block;
+}
+
 #winamp2-js #context-menu, #winamp2-js #context-menu ul {
   display: none;
   z-index: 50; /* Gross */

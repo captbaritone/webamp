@@ -74,16 +74,6 @@
 #winamp2-js #title-bar #option {
   left: 6px;
 }
-#winamp2-js #title-bar #option #context-menu {
-  display: none;
-  top: 12px;
-  left: 0px;
-}
-#winamp2-js #title-bar #option:active #context-menu,
-#winamp2-js #title-bar #option .selected #context-menu {
-  display: block;
-}
-
 #winamp2-js #title-bar #minimize {
   left: 244px;
 }

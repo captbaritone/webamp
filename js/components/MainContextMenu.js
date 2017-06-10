@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { CLOSE_CONTEXT_MENU, TOGGLE_CONTEXT_MENU } from "../actionTypes";
+import { CLOSE_CONTEXT_MENU } from "../actionTypes";
 import { close, setSkinFromFilename, openFileDialog } from "../actionCreators";
 import { ContextMenu, Hr, Node, Parent, LinkNode } from "./contextMenu";
 
@@ -14,7 +14,7 @@ const SKINS = [
 ];
 
 const MainContextMenu = props =>
-  <ContextMenu closeMenu={props.closeMenu} selected={props.selected}>
+  <ContextMenu closeMenu={props.closeMenu} selected={props.selected} bottom>
     <LinkNode
       href="https://github.com/captbaritone/winamp2-js"
       target="_blank"
@@ -37,15 +37,13 @@ const MainContextMenu = props =>
     <Node onClick={props.close} label="Exit" />
   </ContextMenu>;
 
-const mapStateToProps = state => state.contextMenu;
 const mapDispatchToProps = (dispatch, ownProps) => ({
   close: () => dispatch(close()),
   closeMenu: () => {
-    console.log("close");
     dispatch({ type: CLOSE_CONTEXT_MENU });
   },
   openFileDialog: () => dispatch(openFileDialog(ownProps.fileInput)),
   setSkin: filename => dispatch(setSkinFromFilename(filename))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainContextMenu);
+export default connect(null, mapDispatchToProps)(MainContextMenu);
