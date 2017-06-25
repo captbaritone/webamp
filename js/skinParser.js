@@ -2,7 +2,15 @@ import SKIN_SPRITES from "./skinSprites";
 import JSZip from "../node_modules/jszip/dist/jszip"; // Hack
 import { parseViscolors, parseIni } from "./utils";
 
-const bmpUriFromFile = file => `data:image/bmp;base64,${btoa(file.asBinary())}`;
+const bmpUriFromBase64 = data64 => `data:image/bmp;base64,${data64}`;
+const imgFromUri = uri =>
+  new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => {
+      resolve(img);
+    };
+    img.src = uri;
+  });
 
 // "Promisify" processBuffer
 const getBufferFromFile = file =>
@@ -10,7 +18,7 @@ const getBufferFromFile = file =>
     file.processBuffer(resolve);
   });
 
-const getZipFromBuffer = buffer => new JSZip(buffer);
+const getZipFromBuffer = buffer => JSZip.loadAsync(buffer);
 
 const getSpriteSheetFilesFromZip = zip => {
   const spriteObjs = SKIN_SPRITES.map(spriteObj => ({
@@ -22,11 +30,11 @@ const getSpriteSheetFilesFromZip = zip => {
 
 // Extract the CSS rules for a given file, and add them to the object
 const extractCss = spriteObj =>
-  new Promise(resolve => {
-    const uri = bmpUriFromFile(spriteObj.file);
-    const img = new Image();
-
-    img.onload = () => {
+  spriteObj.file
+    .async("base64")
+    .then(bmpUriFromBase64)
+    .then(imgFromUri)
+    .then(img => {
       const canvas = document.createElement("canvas");
       const images = {};
       spriteObj.sprites.forEach(sprite => {
@@ -40,22 +48,22 @@ const extractCss = spriteObj =>
           images[sprite.name] = image;
         }
       });
-      resolve({ ...spriteObj, images });
-    };
-    img.src = uri;
-  });
+      return { ...spriteObj, images };
+    });
 
 // Extract the color data from a VISCOLOR.TXT file and add it to the object
-const extractColors = spriteObj => ({
-  ...spriteObj,
-  colors: parseViscolors(spriteObj.file.asText())
-});
+const extractColors = spriteObj =>
+  spriteObj.file.async("text").then(content => ({
+    ...spriteObj,
+    colors: parseViscolors(content)
+  }));
 
 // Extract the color data from a VISCOLOR.TXT file and add it to the object
-const extractPlaylistStyle = spriteObj => ({
-  ...spriteObj,
-  playlistStyle: parseIni(spriteObj.file.asText())
-});
+const extractPlaylistStyle = spriteObj =>
+  spriteObj.file.async("text").then(content => ({
+    ...spriteObj,
+    playlistStyle: parseIni(content)
+  }));
 
 const getSkinDataFromFiles = spriteObjs =>
   Promise.all(
