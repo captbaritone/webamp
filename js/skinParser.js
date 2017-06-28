@@ -3,7 +3,8 @@ import JSZip from "../node_modules/jszip/dist/jszip"; // Hack
 import { parseViscolors, parseIni } from "./utils";
 
 const bmpUriFromBase64 = data64 => `data:image/bmp;base64,${data64}`;
-const imgFromUri = uri =>
+
+const genImgNodeFromUri = uri =>
   new Promise(resolve => {
     const img = new Image();
     img.onload = () => {
@@ -13,101 +14,68 @@ const imgFromUri = uri =>
   });
 
 // "Promisify" processBuffer
-const getBufferFromFile = file =>
+const genBufferFromFile = file =>
   new Promise(resolve => {
     file.processBuffer(resolve);
   });
 
-const getZipFromBuffer = buffer => JSZip.loadAsync(buffer);
+async function genFileFromZip(zip, fileName, ext, mode) {
+  const regex = new RegExp(`^(.*/)?${fileName}(\.${ext})?$`, "i");
+  const files = zip.file(regex);
+  if (!files.length) {
+    return null;
+  }
+  // Return a promise (awaitable).
+  return files[0].async(mode);
+}
 
-const getSpriteSheetFilesFromZip = zip => {
-  const spriteObjs = SKIN_SPRITES.map(spriteObj => ({
-    ...spriteObj,
-    file: zip.file(new RegExp(`(/|^)${spriteObj.name}`, "i"))[0]
-  }));
-  return spriteObjs.filter(spriteObj => spriteObj.file);
-};
+function getSpriteUrisFromImg(img, sprites) {
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+  return sprites.reduce((images, sprite) => {
+    canvas.height = sprite.height;
+    canvas.width = sprite.width;
 
-// Extract the CSS rules for a given file, and add them to the object
-const extractCss = spriteObj =>
-  spriteObj.file
-    .async("base64")
-    .then(bmpUriFromBase64)
-    .then(imgFromUri)
-    .then(img => {
-      const canvas = document.createElement("canvas");
-      const images = {};
-      spriteObj.sprites.forEach(sprite => {
-        canvas.height = sprite.height;
-        canvas.width = sprite.width;
+    context.drawImage(img, -sprite.x, -sprite.y);
+    const image = canvas.toDataURL();
+    images[sprite.name] = image;
+    return images;
+  }, {});
+}
 
-        const context = canvas.getContext("2d");
-        context.drawImage(img, -sprite.x, -sprite.y);
-        const image = canvas.toDataURL();
-        if (sprite.name) {
-          images[sprite.name] = image;
-        }
-      });
-      return { ...spriteObj, images };
-    });
-
-// Extract the color data from a VISCOLOR.TXT file and add it to the object
-const extractColors = spriteObj =>
-  spriteObj.file.async("text").then(content => ({
-    ...spriteObj,
-    colors: parseViscolors(content)
-  }));
-
-// Extract the color data from a VISCOLOR.TXT file and add it to the object
-const extractPlaylistStyle = spriteObj =>
-  spriteObj.file.async("text").then(content => ({
-    ...spriteObj,
-    playlistStyle: parseIni(content)
-  }));
-
-const getSkinDataFromFiles = spriteObjs =>
-  Promise.all(
-    spriteObjs.map(spriteObj => {
-      switch (spriteObj.name) {
-        case "VISCOLOR":
-          return extractColors(spriteObj);
-        case "PLEDIT.TXT":
-          return extractPlaylistStyle(spriteObj);
-        default:
-          return extractCss(spriteObj);
-      }
-    })
-  );
-
-const collectCssAndColors = spriteObjs => {
-  let images = {};
-  let colors = null;
-  let playlistStyle = null;
-  spriteObjs.forEach(spriteObj => {
-    if (spriteObj.images) {
-      images = { ...images, ...spriteObj.images };
-    }
-    if (spriteObj.colors) {
-      colors = spriteObj.colors;
-    }
-    if (spriteObj.playlistStyle) {
-      playlistStyle = spriteObj.playlistStyle;
-    }
-  });
-
-  return {
-    images,
-    colors,
-    playlistStyle
-  };
-};
+async function genSpriteUrisFromFilename(zip, fileName) {
+  const base64 = await genFileFromZip(zip, fileName, "bmp", "base64");
+  if (!base64) {
+    return {};
+  }
+  const uri = bmpUriFromBase64(base64);
+  const img = await genImgNodeFromUri(uri);
+  const spriteUris = getSpriteUrisFromImg(img, SKIN_SPRITES[fileName]);
+  return spriteUris;
+}
 
 // A promise that, given a File object, returns a skin style object
-const parseSkin = file =>
-  getBufferFromFile(file)
-    .then(getZipFromBuffer)
-    .then(getSpriteSheetFilesFromZip)
-    .then(getSkinDataFromFiles)
-    .then(collectCssAndColors);
+async function parseSkin(zipFile) {
+  const buffer = await genBufferFromFile(zipFile);
+  const zip = await JSZip.loadAsync(buffer);
+  const imageObjs = await Promise.all(
+    Object.keys(SKIN_SPRITES).map(
+      async fileName => await genSpriteUrisFromFilename(zip, fileName)
+    )
+  );
+
+  // Merge all the objects into a single object. Tests assert that sprite keys are unique.
+  const images = imageObjs.reduce(Object.assign, {});
+
+  // TODO: Handle this being null.
+  const viscolorContent = await genFileFromZip(zip, "VISCOLOR", "txt", "text");
+  const colors = parseViscolors(viscolorContent);
+
+  // TODO: Handle this being null.
+  const pleditContent = await genFileFromZip(zip, "PLEDIT", "txt", "text");
+  const playlistStyle = parseIni(pleditContent);
+
+  return { colors, playlistStyle, images };
+}
 
 export default parseSkin;
