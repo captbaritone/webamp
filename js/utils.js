@@ -33,7 +33,7 @@ export const parseViscolors = text => {
     if (matches) {
       colors[i] = `rgb(${matches.slice(1, 4).join(",")})`;
     } else {
-      console.error("Error in VISCOLOR.TXT on line", i);
+      console.error(`Error in VISCOLOR.TXT on line ${i}`);
     }
   }
   return colors;
