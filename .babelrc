@@ -1,12 +1,7 @@
 {
   "presets": [
     "react",
-    [
-      "es2015",
-      {
-        "modules": false
-      }
-    ]
+    "es2017"
   ],
   "plugins": [
     "transform-object-rest-spread"
@@ -14,8 +9,10 @@
   "env": {
     "test": {
       "presets": [
-        "react",
-        "es2015"
+        "react"
+      ],
+      "plugins": [
+        "transform-es2015-modules-commonjs"
       ]
     }
   }

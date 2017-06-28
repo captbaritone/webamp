@@ -12,12 +12,22 @@ module.exports = {
       },
       {
         test: /\.png$/i,
-        use: "url-loader?limit=100000"
+        use: {
+          loader: "url-loader",
+          options: {
+            limit: 100000
+          }
+        }
       },
       {
         test: /\.js$/,
-        exclude: /(node_modules|bower_components)/,
-        use: "babel-loader" // 'babel-loader' is also a legal name to reference
+        exclude: /(node_modules)/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["env"]
+          }
+        }
       }
     ],
     noParse: [/jszip\.js$/]
