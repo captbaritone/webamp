@@ -1,7 +1,15 @@
 {
   "presets": [
-    "react",
-    "es2017"
+    [
+      "env",
+      {
+        "targets": {
+          "uglify": true
+        },
+        "useBuiltIns": true
+      }
+    ],
+    "react"
   ],
   "plugins": [
     "transform-object-rest-spread"
