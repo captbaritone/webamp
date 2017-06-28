@@ -24,6 +24,7 @@ exports[`MainWindow renders to snapshot 1`] = `
     >
       <div
         className="bottom"
+        onClick={[Function]}
       >
         <ul
           id="context-menu"

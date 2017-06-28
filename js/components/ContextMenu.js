@@ -47,9 +47,9 @@ export class ContextMenu extends React.Component {
   }
 
   render() {
-    const { selected, top, bottom, children } = this.props;
+    const { selected, top, bottom, children, openMenu } = this.props;
     return (
-      <div className={classnames({ selected, top, bottom })}>
+      <div className={classnames({ selected, top, bottom })} onClick={openMenu}>
         <ul id="context-menu">
           {children}
         </ul>
@@ -60,6 +60,7 @@ export class ContextMenu extends React.Component {
 
 ContextMenu.propTypes = {
   closeMenu: React.PropTypes.func.isRequired,
+  openMenu: React.PropTypes.func.isRequired,
   children: React.PropTypes.any.isRequired,
   top: React.PropTypes.bool,
   bottom: React.PropTypes.bool
