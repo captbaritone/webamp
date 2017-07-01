@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classnames from "classnames";
 
@@ -73,10 +74,10 @@ const EqualizerWindow = props => {
 };
 
 EqualizerWindow.propTypes = {
-  doubled: React.PropTypes.bool.isRequired,
-  selected: React.PropTypes.bool.isRequired,
-  closed: React.PropTypes.bool.isRequired,
-  shade: React.PropTypes.bool.isRequired
+  doubled: PropTypes.bool.isRequired,
+  selected: PropTypes.bool.isRequired,
+  closed: PropTypes.bool.isRequired,
+  shade: PropTypes.bool.isRequired
 };
 
 const mapDispatchToProps = dispatch => ({

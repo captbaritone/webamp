@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import Character from "./Character";
 
 const CharacterString = props => {
@@ -16,7 +17,7 @@ const CharacterString = props => {
 };
 
 CharacterString.propsTypes = {
-  children: React.PropTypes.string
+  children: PropTypes.string
 };
 
 export default CharacterString;
