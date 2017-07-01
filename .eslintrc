@@ -161,20 +161,6 @@
     "radix": "error",
     "react/no-string-refs": "error",
     "react/jsx-boolean-value": "error",
-    "react/jsx-closing-bracket-location": [
-      "error",
-      "line-aligned"
-    ],
-    "react/jsx-curly-spacing": "error",
-    "react/jsx-equals-spacing": "error",
-    "react/jsx-first-prop-new-line": [
-      "error",
-      "multiline"
-    ],
-    "react/jsx-indent": [
-      "error",
-      2
-    ],
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
     "react/prefer-stateless-function": "error",
