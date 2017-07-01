@@ -2,10 +2,10 @@
 // Knows how to display various modes like tracking, volume, balance, etc.
 import React from "react";
 import { connect } from "react-redux";
-import { getTimeStr } from "../utils";
+import { getTimeStr } from "../../utils";
 
-import { STEP_MARQUEE } from "../actionTypes";
-import CharacterString from "./CharacterString";
+import { STEP_MARQUEE } from "../../actionTypes";
+import CharacterString from "../CharacterString";
 
 const CHAR_WIDTH = 5;
 

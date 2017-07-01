@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import { getCurvePoints } from "cardinal-spline-js";
-import { rebound } from "../utils";
+import { rebound } from "../../utils";
 
-import { BANDS } from "../constants";
+import { BANDS } from "../../constants";
 
 export const roundToEven = value => 2 * Math.round(value / 2);
 

@@ -4,7 +4,10 @@ import classnames from "classnames";
 
 import "../../css/context-menu.css";
 
-export const Hr = () => <li className="hr"><hr /></li>;
+export const Hr = () =>
+  <li className="hr">
+    <hr />
+  </li>;
 
 // TODO: Add down-arrow
 export const Parent = ({ children, label }) =>
@@ -47,9 +50,9 @@ export class ContextMenu extends React.Component {
   }
 
   render() {
-    const { selected, top, bottom, children, openMenu } = this.props;
+    const { selected, top, bottom, children } = this.props;
     return (
-      <div className={classnames({ selected, top, bottom })} onClick={openMenu}>
+      <div className={classnames({ selected, top, bottom })}>
         <ul id="context-menu">
           {children}
         </ul>
@@ -60,7 +63,6 @@ export class ContextMenu extends React.Component {
 
 ContextMenu.propTypes = {
   closeMenu: React.PropTypes.func.isRequired,
-  openMenu: React.PropTypes.func.isRequired,
   children: React.PropTypes.any.isRequired,
   top: React.PropTypes.bool,
   bottom: React.PropTypes.bool

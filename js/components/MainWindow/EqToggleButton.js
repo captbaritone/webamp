@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
 
-import { TOGGLE_EQUALIZER_WINDOW } from "../actionTypes";
+import { TOGGLE_EQUALIZER_WINDOW } from "../../actionTypes";
 
 const EqToggleButton = props =>
   <div

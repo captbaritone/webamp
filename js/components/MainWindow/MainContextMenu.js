@@ -1,8 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
-import { CLOSE_CONTEXT_MENU, TOGGLE_CONTEXT_MENU } from "../actionTypes";
-import { close, setSkinFromFilename, openFileDialog } from "../actionCreators";
-import { ContextMenu, Hr, Node, Parent, LinkNode } from "./ContextMenu";
+import { CLOSE_CONTEXT_MENU, TOGGLE_CONTEXT_MENU } from "../../actionTypes";
+import {
+  close,
+  setSkinFromFilename,
+  openFileDialog
+} from "../../actionCreators";
+import { ContextMenu, Hr, Node, Parent, LinkNode } from "../ContextMenu";
 
 const SKINS = [
   { file: "base-2.91.wsz", name: "<Base Skin>" },

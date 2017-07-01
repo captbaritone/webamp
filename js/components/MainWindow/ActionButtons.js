@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { play, pause, stop } from "../actionCreators";
+import { play, pause, stop } from "../../actionCreators";
 
 const ActionButtons = props =>
   <div className="actions">

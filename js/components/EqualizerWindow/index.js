@@ -2,19 +2,19 @@ import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
 
-import { BANDS, WINDOWS } from "../constants";
+import { BANDS, WINDOWS } from "../../constants";
 import {
   setEqBand,
   setPreamp,
   setEqToMax,
   setEqToMid,
   setEqToMin
-} from "../actionCreators";
+} from "../../actionCreators";
 
 import {
   SET_FOCUSED_WINDOW,
   TOGGLE_PRESETS_CONTEXT_MENU
-} from "../actionTypes";
+} from "../../actionTypes";
 
 import Band from "./Band";
 import EqOn from "./EqOn";
@@ -22,7 +22,7 @@ import EqAuto from "./EqAuto";
 import EqGraph from "./EqGraph";
 import PresetsContextMenu from "./PresetsContextMenu";
 
-import "../../css/equalizer-window.css";
+import "../../../css/equalizer-window.css";
 
 const bandClassName = band => `band-${band}`;
 
@@ -42,28 +42,32 @@ const EqualizerWindow = props => {
       className={className}
       onClick={props.focusWindow}
     >
-      <div className="equalizer-top title-bar draggable" />
-      <EqOn />
-      <EqAuto />
-      <EqGraph />
-      <div id="presets" onClick={props.togglePresetsContextMenu}>
-        <PresetsContextMenu
-          selected={props.contextMenuSelected}
-          fileInput={props.fileInput}
-        />
-      </div>
-      <Band id="preamp" band="preamp" onChange={props.setPreampValue} />
-      <div id="plus12db" onClick={props.setEqToMax} />
-      <div id="zerodb" onClick={props.setEqToMid} />
-      <div id="minus12db" onClick={props.setEqToMin} />
-      {BANDS.map(hertz =>
-        <Band
-          key={hertz}
-          id={bandClassName(hertz)}
-          band={hertz}
-          onChange={props.setHertzValue(hertz)}
-        />
-      )}
+      {props.shade
+        ? "SHADE"
+        : <div>
+            <div className="equalizer-top title-bar draggable" />
+            <EqOn />
+            <EqAuto />
+            <EqGraph />
+            <div id="presets" onClick={props.togglePresetsContextMenu}>
+              <PresetsContextMenu
+                selected={props.contextMenuSelected}
+                fileInput={props.fileInput}
+              />
+            </div>
+            <Band id="preamp" band="preamp" onChange={props.setPreampValue} />
+            <div id="plus12db" onClick={props.setEqToMax} />
+            <div id="zerodb" onClick={props.setEqToMid} />
+            <div id="minus12db" onClick={props.setEqToMin} />
+            {BANDS.map(hertz =>
+              <Band
+                key={hertz}
+                id={bandClassName(hertz)}
+                band={hertz}
+                onChange={props.setHertzValue(hertz)}
+              />
+            )}}
+          </div>}
     </div>
   );
 };
@@ -71,7 +75,8 @@ const EqualizerWindow = props => {
 EqualizerWindow.propTypes = {
   doubled: React.PropTypes.bool.isRequired,
   selected: React.PropTypes.bool.isRequired,
-  closed: React.PropTypes.bool.isRequired
+  closed: React.PropTypes.bool.isRequired,
+  shade: React.PropTypes.bool.isRequired
 };
 
 const mapDispatchToProps = dispatch => ({
@@ -94,7 +99,8 @@ const mapStateToProps = state => ({
   doubled: state.display.doubled,
   selected: state.windows.focused === WINDOWS.EQUALIZER,
   closed: !state.windows.equalizer,
-  contextMenuSelected: state.presetsContextMenu.selected
+  contextMenuSelected: state.presetsContextMenu.selected,
+  shade: state.display.equalizerShade
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EqualizerWindow);

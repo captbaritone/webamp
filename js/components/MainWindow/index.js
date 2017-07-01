@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
 
-import { WINDOWS } from "../constants";
+import { WINDOWS } from "../../constants";
 
 import ActionButtons from "./ActionButtons";
 import Balance from "./Balance";
@@ -24,11 +24,11 @@ import Time from "./Time";
 import Visualizer from "./Visualizer";
 import Volume from "./Volume";
 
-import { SET_FOCUSED_WINDOW, TOGGLE_CONTEXT_MENU } from "../actionTypes";
+import { SET_FOCUSED_WINDOW, TOGGLE_CONTEXT_MENU } from "../../actionTypes";
 
-import { loadFileFromReference } from "../actionCreators";
+import { loadFileFromReference } from "../../actionCreators";
 
-import "../../css/main-window.css";
+import "../../../css/main-window.css";
 
 export class MainWindow extends React.Component {
   constructor(props) {

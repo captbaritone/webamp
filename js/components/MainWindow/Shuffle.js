@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
-import { toggleShuffle } from "../actionCreators";
+import { toggleShuffle } from "../../actionCreators";
 
 const Shuffle = ({ shuffle, handleClick }) =>
   <div

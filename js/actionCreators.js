@@ -43,7 +43,7 @@ export function stop() {
 }
 
 export function seekForward(seconds) {
-  return function (dispatch, getState) {
+  return function(dispatch, getState) {
     const { media } = getState();
     const { timeElapsed, length } = media;
     const newTimeElapsed = timeElapsed + seconds;

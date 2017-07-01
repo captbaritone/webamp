@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import { setVolume } from "../actionCreators";
+import { setVolume } from "../../actionCreators";
 
-import { SET_FOCUS, UNSET_FOCUS } from "../actionTypes";
+import { SET_FOCUS, UNSET_FOCUS } from "../../actionTypes";
 
 const Volume = props => {
   const { volume } = props;

@@ -2,7 +2,11 @@ import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
 
-import { SET_FOCUS, TOGGLE_DOUBLESIZE_MODE, UNSET_FOCUS } from "../actionTypes";
+import {
+  SET_FOCUS,
+  TOGGLE_DOUBLESIZE_MODE,
+  UNSET_FOCUS
+} from "../../actionTypes";
 
 const ClutterBar = props =>
   <div id="clutter-bar">

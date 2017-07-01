@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { setBalance } from "../actionCreators";
-import { SET_FOCUS, UNSET_FOCUS } from "../actionTypes";
+import { setBalance } from "../../actionCreators";
+import { SET_FOCUS, UNSET_FOCUS } from "../../actionTypes";
 
 const offsetFromBalance = balance => {
   const percent = Math.abs(balance) / 100;

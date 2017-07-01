@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getTimeObj } from "../utils";
+import { getTimeObj } from "../../utils";
 
-import { TOGGLE_TIME_MODE } from "../actionTypes";
+import { TOGGLE_TIME_MODE } from "../../actionTypes";
 
 const Time = ({ timeElapsed, length, timeMode, toggleTimeMode }) => {
   const seconds = timeMode === "ELAPSED" ? timeElapsed : length - timeElapsed;

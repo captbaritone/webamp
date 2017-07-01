@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
 
-import { SET_EQ_AUTO } from "../actionTypes";
+import { SET_EQ_AUTO } from "../../actionTypes";
 
 const EqAuto = props => {
   const className = classnames({

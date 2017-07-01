@@ -9,7 +9,8 @@
   },
   "plugins": [
     "react",
-    "prettier"
+    "prettier",
+    "import"
   ],
   "settings": {
     "react": {
@@ -188,6 +189,10 @@
     "use-isnan": "error",
     "valid-typeof": "error",
     "wrap-iife": "error",
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "import/no-unresolved": "error",
+    "import/default": "error",
+    "import/export": "error",
+    "import/no-extraneous-dependencies": "error"
   }
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { TOGGLE_VISUALIZER_STYLE } from "../actionTypes";
+import { TOGGLE_VISUALIZER_STYLE } from "../../actionTypes";
 
 const OSCILLOSCOPE = 1;
 const BAR = 2;

@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
 
-import { toggleRepeat } from "../actionCreators";
+import { toggleRepeat } from "../../actionCreators";
 
 const Repeat = props =>
   <div

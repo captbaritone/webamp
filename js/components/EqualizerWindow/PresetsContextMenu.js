@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import { CLOSE_PRESETS_CONTEXT_MENU } from "../actionTypes";
-import { openFileDialog, downloadPreset } from "../actionCreators";
-import { ContextMenu, Node } from "./ContextMenu";
+import { CLOSE_PRESETS_CONTEXT_MENU } from "../../actionTypes";
+import { openFileDialog, downloadPreset } from "../../actionCreators";
+import { ContextMenu, Node } from "../ContextMenu";
 
 const MainContextMenu = props =>
   <ContextMenu closeMenu={props.closeMenu} selected={props.selected} top>

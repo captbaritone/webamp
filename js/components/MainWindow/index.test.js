@@ -21,9 +21,9 @@ window.requestAnimationFrame = () => {};
 import React from "react";
 import { Provider } from "react-redux";
 import renderer from "react-test-renderer";
-import getStore from "../store";
+import getStore from "../../store";
 
-import MainWindow from "./MainWindow";
+import MainWindow from "./index";
 
 describe("MainWindow", () => {
   let store;

@@ -1,5 +1,10 @@
-import { each } from "lodash";
 import skinSprites from "./skinSprites";
+
+const each = (obj, iterator) => {
+  Object.keys(obj).forEach(key => {
+    iterator(obj[key]);
+  });
+};
 
 const getNames = arr => arr.map(item => item.name);
 

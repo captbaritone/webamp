@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import "../../css/playlist-window.css";
+import "../../../css/playlist-window.css";
 
 const PlaylistWindow = props => {
   const style = {};

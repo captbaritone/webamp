@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getTimeObj } from "../utils";
-import Character from "./Character";
+import { getTimeObj } from "../../utils";
+import Character from "../Character";
 
-import { TOGGLE_TIME_MODE } from "../actionTypes";
+import { TOGGLE_TIME_MODE } from "../../actionTypes";
 
 class Time extends React.Component {
   constructor(props) {

@@ -6,7 +6,7 @@ import {
   SET_FOCUS,
   UNSET_FOCUS,
   SET_SCRUB_POSITION
-} from "../actionTypes";
+} from "../../actionTypes";
 
 const Position = ({
   position,
