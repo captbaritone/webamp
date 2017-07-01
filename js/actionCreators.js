@@ -20,7 +20,8 @@ import {
   TOGGLE_REPEAT,
   TOGGLE_SHUFFLE,
   SET_EQ_ON,
-  SET_EQ_OFF
+  SET_EQ_OFF,
+  TOGGLE_EQUALIZER_SHADE_MODE
 } from "./actionTypes";
 
 export function play() {
@@ -42,7 +43,7 @@ export function stop() {
 }
 
 export function seekForward(seconds) {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     const { media } = getState();
     const { timeElapsed, length } = media;
     const newTimeElapsed = timeElapsed + seconds;
@@ -221,4 +222,8 @@ export function downloadPreset() {
     const dataURI = `data:application/zip;base64,${base64}`;
     downloadURI(dataURI, "entry.eqf");
   };
+}
+
+export function toggleEqualizerShadeMode() {
+  return { type: TOGGLE_EQUALIZER_SHADE_MODE };
 }

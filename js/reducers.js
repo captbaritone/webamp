@@ -26,6 +26,7 @@ import {
   TOGGLE_LLAMA_MODE,
   TOGGLE_REPEAT,
   TOGGLE_SHADE_MODE,
+  TOGGLE_EQUALIZER_SHADE_MODE,
   TOGGLE_SHUFFLE,
   TOGGLE_TIME_MODE,
   TOGGLE_VISUALIZER_STYLE,
@@ -81,6 +82,7 @@ const display = (state, action) => {
       llama: false,
       closed: false,
       shade: false,
+      equalizerShade: false,
       working: false,
       skinImages: {},
       skinColors: null,
@@ -93,6 +95,8 @@ const display = (state, action) => {
       return { ...state, doubled: !state.doubled };
     case TOGGLE_SHADE_MODE:
       return { ...state, shade: !state.shade };
+    case TOGGLE_EQUALIZER_SHADE_MODE:
+      return { ...state, equalizerShade: !state.shade };
     case TOGGLE_LLAMA_MODE:
       return { ...state, llama: !state.llama };
     case STEP_MARQUEE:
