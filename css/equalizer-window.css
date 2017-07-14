@@ -4,9 +4,32 @@
   width: 275px;
 }
 
+#winamp2-js #equalizer-window.shade {
+  height: 14px;
+}
+
 #winamp2-js .equalizer-top {
   height: 14px;
   width: 275px;
+  position: relative;
+}
+
+#winamp2-js #equalizer-close {
+  position: absolute;
+  height: 9px;
+  width: 9px;
+  left: 264px;
+  top: 3px;
+  cursor: url('../cursors/MAINMENU.PNG'), auto;
+}
+
+#winamp2-js #equalizer-shade {
+  position: absolute;
+  height: 9px;
+  width: 9px;
+  left: 254px;
+  top: 3px;
+  cursor: url('../cursors/MAINMENU.PNG'), auto;
 }
 
 #winamp2-js #on {

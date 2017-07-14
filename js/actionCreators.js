@@ -21,7 +21,8 @@ import {
   TOGGLE_SHUFFLE,
   SET_EQ_ON,
   SET_EQ_OFF,
-  TOGGLE_EQUALIZER_SHADE_MODE
+  TOGGLE_EQUALIZER_SHADE_MODE,
+  CLOSE_EQUALIZER_WINDOW
 } from "./actionTypes";
 
 export function play() {
@@ -226,4 +227,8 @@ export function downloadPreset() {
 
 export function toggleEqualizerShadeMode() {
   return { type: TOGGLE_EQUALIZER_SHADE_MODE };
+}
+
+export function closeEqualizerWindow() {
+  return { type: CLOSE_EQUALIZER_WINDOW };
 }

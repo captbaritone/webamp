@@ -9,7 +9,9 @@ import {
   setPreamp,
   setEqToMax,
   setEqToMid,
-  setEqToMin
+  setEqToMin,
+  closeEqualizerWindow,
+  toggleEqualizerShadeMode
 } from "../../actionCreators";
 
 import {
@@ -35,7 +37,8 @@ const EqualizerWindow = props => {
     closed,
     doubled,
     window: true,
-    draggable: true
+    draggable: true,
+    shade: props.shade
   });
   return (
     <div
@@ -44,9 +47,21 @@ const EqualizerWindow = props => {
       onClick={props.focusWindow}
     >
       {props.shade
-        ? "SHADE"
+        ? <div className="draggable">
+            <div
+              id="equalizer-shade"
+              onClick={props.toggleEqualizerShadeMode}
+            />
+            <div id="equalizer-close" onClick={props.closeEqualizerWindow} />
+          </div>
         : <div>
-            <div className="equalizer-top title-bar draggable" />
+            <div className="equalizer-top title-bar draggable">
+              <div
+                id="equalizer-shade"
+                onClick={props.toggleEqualizerShadeMode}
+              />
+              <div id="equalizer-close" onClick={props.closeEqualizerWindow} />
+            </div>
             <EqOn />
             <EqAuto />
             <EqGraph />
@@ -67,7 +82,7 @@ const EqualizerWindow = props => {
                 band={hertz}
                 onChange={props.setHertzValue(hertz)}
               />
-            )}}
+            )}
           </div>}
     </div>
   );
@@ -93,7 +108,9 @@ const mapDispatchToProps = dispatch => ({
     // TODO: Consider binding to a ref instead.
     // https://stackoverflow.com/a/24421834
     e.nativeEvent.stopImmediatePropagation();
-  }
+  },
+  closeEqualizerWindow: () => dispatch(closeEqualizerWindow()),
+  toggleEqualizerShadeMode: () => dispatch(toggleEqualizerShadeMode())
 });
 
 const mapStateToProps = state => ({

@@ -217,6 +217,17 @@ export default {
     },
     { name: "PLAYLIST_SHADE_BACKGROUND", x: 72, y: 57, width: 25, height: 14 }
   ],
+  EQ_EX: [
+    {
+      name: "EQ_SHADE_BACKGROUND_SELECTED",
+      x: 0,
+      y: 0,
+      width: 275,
+      height: 14
+    },
+    { name: "EQ_SHADE_BACKGROUND", x: 0, y: 15, width: 275, height: 14 },
+    { name: "EQ_SHADE_SLIDER", x: 1, y: 30, width: 9, height: 7 }
+  ],
   EQMAIN: [
     { name: "EQ_WINDOW_BACKGROUND", x: 0, y: 0, width: 275, height: 116 },
     { name: "EQ_TITLE_BAR", x: 0, y: 149, width: 275, height: 14 },

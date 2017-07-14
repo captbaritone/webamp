@@ -20,6 +20,7 @@ import {
   TOGGLE_PRESETS_CONTEXT_MENU,
   TOGGLE_DOUBLESIZE_MODE,
   TOGGLE_EQUALIZER_WINDOW,
+  CLOSE_EQUALIZER_WINDOW,
   SET_EQ_AUTO,
   SET_EQ_ON,
   SET_EQ_OFF,
@@ -68,6 +69,8 @@ const windows = (state, action) => {
         return state;
       }
       return { ...state, equalizer: !state.equalizer };
+    case CLOSE_EQUALIZER_WINDOW:
+      return { ...state, equalizer: false };
     default:
       return state;
   }
@@ -96,7 +99,7 @@ const display = (state, action) => {
     case TOGGLE_SHADE_MODE:
       return { ...state, shade: !state.shade };
     case TOGGLE_EQUALIZER_SHADE_MODE:
-      return { ...state, equalizerShade: !state.shade };
+      return { ...state, equalizerShade: !state.equalizerShade };
     case TOGGLE_LLAMA_MODE:
       return { ...state, llama: !state.llama };
     case STEP_MARQUEE:

@@ -75,7 +75,7 @@ const imageSelectors = {
   PLAYLIST_BOTTOM_RIGHT_CORNER: [".playlist-bottom-right"],
   PLAYLIST_VISUALIZER_BACKGROUND: [".playlist-visualizer"],
   PLAYLIST_SHADE_BACKGROUND: ["#playlist.shade"],
-  EQ_WINDOW_BACKGROUND: ["#equalizer-window"],
+  EQ_WINDOW_BACKGROUND: ["#equalizer-window:not(.shade)"],
   EQ_TITLE_BAR: [".equalizer-top"],
   EQ_TITLE_BAR_SELECTED: [".selected .equalizer-top"],
   EQ_SLIDER_BACKGROUND: [".band"],
@@ -93,6 +93,9 @@ const imageSelectors = {
   EQ_PRESETS_BUTTON: ["#presets"],
   EQ_PRESETS_BUTTON_SELECTED: ["#presets:active"],
   EQ_PREAMP_LINE: ["#preamp-line"],
+  EQ_SHADE_BACKGROUND: ["#equalizer-window.shade"],
+  EQ_SHADE_BACKGROUND_SELECTED: ["#equalizer-window.shade.selected"],
+  EQ_SHADE_SLIDER: ["#equalizer-window.shade .slider"],
   MAIN_POSITION_SLIDER_BACKGROUND: ["#position"],
   MAIN_POSITION_SLIDER_THUMB: [
     "#position::-webkit-slider-thumb",
@@ -213,7 +216,11 @@ const Skin = props => {
       "#winamp2-js .status #time #minus-sign { top: 0px; left: -1px; width: 9px; height: 13px; }"
     );
   }
-  return <style type="text/css">{cssRules.join("\n")}</style>;
+  return (
+    <style type="text/css">
+      {cssRules.join("\n")}
+    </style>
+  );
 };
 
 export default connect(state => ({ skinImages: state.display.skinImages }))(
