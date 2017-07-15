@@ -226,7 +226,19 @@ export default {
       height: 14
     },
     { name: "EQ_SHADE_BACKGROUND", x: 0, y: 15, width: 275, height: 14 },
-    { name: "EQ_SHADE_SLIDER", x: 1, y: 30, width: 9, height: 7 }
+    { name: "EQ_SHADE_VOLUME_SLIDER_LEFT", x: 1, y: 30, width: 2, height: 7 },
+    { name: "EQ_SHADE_VOLUME_SLIDER_CENTER", x: 3, y: 30, width: 5, height: 7 },
+    { name: "EQ_SHADE_VOLUME_SLIDER_RIGHT", x: 8, y: 30, width: 2, height: 7 },
+    // TODO
+    { name: "EQ_SHADE_BALANCE_SLIDER_LEFT", x: 11, y: 30, width: 2, height: 7 },
+    {
+      name: "EQ_SHADE_BALANCE_SLIDER_CENTER",
+      x: 13,
+      y: 30,
+      width: 5,
+      height: 7
+    },
+    { name: "EQ_SHADE_BALANCE_SLIDER_RIGHT", x: 18, y: 30, width: 2, height: 7 }
   ],
   EQMAIN: [
     { name: "EQ_WINDOW_BACKGROUND", x: 0, y: 0, width: 275, height: 116 },

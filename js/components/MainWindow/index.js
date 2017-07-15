@@ -5,7 +5,7 @@ import classnames from "classnames";
 import { WINDOWS } from "../../constants";
 
 import ActionButtons from "./ActionButtons";
-import Balance from "./Balance";
+import MainBalance from "./MainBalance";
 import Close from "./Close";
 import ClutterBar from "./ClutterBar";
 import MainContextMenu from "./MainContextMenu";
@@ -22,7 +22,7 @@ import ShadeTime from "./ShadeTime";
 import Shuffle from "./Shuffle";
 import Time from "./Time";
 import Visualizer from "./Visualizer";
-import Volume from "./Volume";
+import MainVolume from "./MainVolume";
 
 import { SET_FOCUSED_WINDOW, TOGGLE_CONTEXT_MENU } from "../../actionTypes";
 
@@ -115,8 +115,8 @@ export class MainWindow extends React.Component {
           <Khz />
           <MonoStereo />
         </div>
-        <Volume />
-        <Balance />
+        <MainVolume />
+        <MainBalance />
         <div className="windows">
           <EqToggleButton />
           <div id="playlist-button" />

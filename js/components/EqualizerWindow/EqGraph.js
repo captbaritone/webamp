@@ -23,11 +23,17 @@ class EqGraph extends React.Component {
     this.canvasCtx.imageSmoothingEnabled = false;
     this.width = this.canvas.width * 1; // Cast to int
     this.height = this.canvas.height * 1; // Cast to int
+
+    if (this.props.lineColorsImage) {
+      this.createColorPattern(this.props.lineColorsImage);
+    }
+    if (this.props.preampLineUrl) {
+      this.createPreampLineImage(this.props.preampLineUrl);
+    }
   }
 
   componentDidUpdate() {
     this.canvasCtx.clearRect(0, 0, this.width, this.height);
-    //this.createColorPattern();
     this.drawPreampLine();
     this.drawEqLine(); // This should paint on top of the preamp line
   }

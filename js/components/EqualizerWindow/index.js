@@ -2,6 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classnames from "classnames";
+import Volume from "../Volume";
+import Balance from "../Balance";
 
 import { BANDS, WINDOWS } from "../../constants";
 import {
@@ -30,16 +32,21 @@ import "../../../css/equalizer-window.css";
 const bandClassName = band => `band-${band}`;
 
 const EqualizerWindow = props => {
-  const { doubled, selected, closed } = props;
+  const { doubled, selected, closed, volume, balance, shade } = props;
 
   const className = classnames({
     selected,
     closed,
     doubled,
+    shade,
     window: true,
-    draggable: true,
-    shade: props.shade
+    draggable: true
   });
+
+  const v = Math.round(volume);
+  const eqVolumeClassName = v === 50 ? "center" : v > 50 ? "right" : "left";
+  const b = Math.round(balance);
+  const eqBalanceClassName = b === 0 ? "center" : v > 0 ? "right" : "left";
   return (
     <div
       id="equalizer-window"
@@ -53,6 +60,8 @@ const EqualizerWindow = props => {
               onClick={props.toggleEqualizerShadeMode}
             />
             <div id="equalizer-close" onClick={props.closeEqualizerWindow} />
+            <Volume id="equalizer-volume" className={eqVolumeClassName} />
+            <Balance id="equalizer-balance" className={eqBalanceClassName} />
           </div>
         : <div>
             <div className="equalizer-top title-bar draggable">
@@ -118,7 +127,9 @@ const mapStateToProps = state => ({
   selected: state.windows.focused === WINDOWS.EQUALIZER,
   closed: !state.windows.equalizer,
   contextMenuSelected: state.presetsContextMenu.selected,
-  shade: state.display.equalizerShade
+  shade: state.display.equalizerShade,
+  volume: state.media.volume,
+  balance: state.media.balance
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EqualizerWindow);

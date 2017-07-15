@@ -95,7 +95,30 @@ const imageSelectors = {
   EQ_PREAMP_LINE: ["#preamp-line"],
   EQ_SHADE_BACKGROUND: ["#equalizer-window.shade"],
   EQ_SHADE_BACKGROUND_SELECTED: ["#equalizer-window.shade.selected"],
-  EQ_SHADE_SLIDER: ["#equalizer-window.shade .slider"],
+  EQ_SHADE_VOLUME_SLIDER_LEFT: [
+    "#equalizer-volume.left::-webkit-slider-thumb",
+    "#equalizer-volume.left::-moz-range-thumb"
+  ],
+  EQ_SHADE_VOLUME_SLIDER_CENTER: [
+    "#equalizer-volume.center::-webkit-slider-thumb",
+    "#equalizer-volume.center::-moz-range-thumb"
+  ],
+  EQ_SHADE_VOLUME_SLIDER_RIGHT: [
+    "#equalizer-volume.right::-webkit-slider-thumb",
+    "#equalizer-volume.right::-moz-range-thumb"
+  ],
+  EQ_SHADE_BALANCE_SLIDER_LEFT: [
+    "#equalizer-balance.left::-webkit-slider-thumb",
+    "#equalizer-balance.left::-moz-range-thumb"
+  ],
+  EQ_SHADE_BALANCE_SLIDER_CENTER: [
+    "#equalizer-balance.center::-webkit-slider-thumb",
+    "#equalizer-balance.center::-moz-range-thumb"
+  ],
+  EQ_SHADE_BALANCE_SLIDER_RIGHT: [
+    "#equalizer-balance.right::-webkit-slider-thumb",
+    "#equalizer-balance.right::-moz-range-thumb"
+  ],
   MAIN_POSITION_SLIDER_BACKGROUND: ["#position"],
   MAIN_POSITION_SLIDER_THUMB: [
     "#position::-webkit-slider-thumb",
@@ -159,7 +182,7 @@ const imageSelectors = {
     "#button-v.selected"
   ],
   MAIN_SHADE_BACKGROUND: [".shade #title-bar"],
-  MAIN_SHADE_BACKGROUND_SELECTED: [".shade #title-bar.selected"],
+  MAIN_SHADE_BACKGROUND_SELECTED: [".shade.selected #title-bar"],
   MAIN_SHADE_BUTTON_SELECTED: [".shade #title-bar #shade"],
   MAIN_SHADE_BUTTON_SELECTED_DEPRESSED: [".shade #title-bar #shade:active"],
   MAIN_SHADE_POSITION_BACKGROUND: [".shade #position"],
