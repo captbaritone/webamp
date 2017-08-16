@@ -381,6 +381,7 @@ exports[`MainWindow renders to snapshot 1`] = `
     </div>
   </div>
   <input
+    className={undefined}
     id="volume"
     max="100"
     min="0"
@@ -397,6 +398,7 @@ exports[`MainWindow renders to snapshot 1`] = `
     value={50}
   />
   <input
+    className={undefined}
     id="balance"
     max="100"
     min="-100"
