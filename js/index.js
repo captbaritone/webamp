@@ -1,4 +1,5 @@
 import "babel-polyfill";
+import { cdnUrl } from "../package.json";
 import React from "react";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
@@ -42,7 +43,6 @@ if (new Browser(window).isCompatible) {
 
   winamp.dispatch = store.dispatch;
 
-  const cdnUrl = "https://d38dnrh1liu4f5.cloudfront.net/projects/winamp2-js/";
   const assetBase = process.env.NODE_ENV === "production" ? cdnUrl : "";
   winamp.init({
     volume: 50,

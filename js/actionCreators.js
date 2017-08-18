@@ -1,3 +1,4 @@
+import { cdnUrl } from "../package.json";
 import { parser, creator } from "winamp-eqf";
 import MyFile from "./myFile";
 import skinParser from "./skinParser";
@@ -156,7 +157,7 @@ export function setSkinFromUrl(url) {
 }
 
 export function setSkinFromFilename(filename) {
-  const url = `https://cdn.rawgit.com/captbaritone/winamp-skins/master/v2/${filename}`;
+  const url = `${cdnUrl}/skins/${filename}`;
   return setSkinFromUrl(url);
 }
 
