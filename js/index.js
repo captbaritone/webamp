@@ -42,7 +42,7 @@ if (new Browser(window).isCompatible) {
 
   winamp.dispatch = store.dispatch;
 
-  const cdnUrl = "https://cdn.rawgit.com/captbaritone/winamp2-js/master/";
+  const cdnUrl = "https://d38dnrh1liu4f5.cloudfront.net/projects/winamp2-js/";
   const assetBase = process.env.NODE_ENV === "production" ? cdnUrl : "";
   winamp.init({
     volume: 50,
