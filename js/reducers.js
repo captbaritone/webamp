@@ -58,7 +58,7 @@ const windows = (state, action) => {
   if (!state) {
     return {
       focused: WINDOWS.MAIN,
-      equalizer: true
+      equalizer: false
     };
   }
   switch (action.type) {
