@@ -31,6 +31,15 @@ Open `index.html` in your browser.
 
 Open `http://localhost:8080/webpack-dev-server/` in your browser.
 
+## Deploying
+
+    npm run deploy
+
+## Reverting
+
+    npm run revert # Reverts quickly to the previous deploy
+    HASH=<SOME_GIT_HASH> npm run deploy # Runs a new deploy at a given hashlike.
+
 ## Reference
 
 - [skinspecs.pdf](http://members.xoom.it/skinart/tutorial/skinspecs..pdf)
