@@ -178,8 +178,9 @@ export default {
       this._source.connect(this._analyser);
       this._source.connect(this._preamp);
 
-      this._position =
-        typeof position !== "undefined" ? position : this._position;
+      this._position = typeof position !== "undefined"
+        ? position
+        : this._position;
       this._startTime = this._context.currentTime - this._position;
       this._source.start(0, this._position);
       this._playing = true;
