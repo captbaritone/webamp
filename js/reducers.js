@@ -176,8 +176,7 @@ const equalizer = (state, action) => {
   }
   switch (action.type) {
     case SET_BAND_VALUE:
-      const newSliders = { ...state.sliders };
-      newSliders[action.band] = action.value;
+      const newSliders = { ...state.sliders, [action.band]: action.value };
       return { ...state, sliders: newSliders };
     case SET_EQ_ON:
       return { ...state, on: true };
