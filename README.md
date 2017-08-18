@@ -2,7 +2,7 @@
 
 # Winamp2-js
 
-A reimplementation of Winamp 2.9 in HTML5 and Javascript.
+A reimplementation of Winamp 2.9 in HTML5 and JavaScript.
 
 Works in modern versions of Firefox, Safari and Chrome. IE is [not
 supported](http://caniuse.com/#feat=audio-api).
@@ -18,6 +18,14 @@ supported](http://caniuse.com/#feat=audio-api).
 - "Shade" mini-mode
 - "Doubled" mode, where the main window is twice as large: `Ctrl-D`
 
+## Development
+
+    yarn
+    # Or: npm install
+    npm start
+
+Open `http://localhost:8080/webpack-dev-server/` in your browser.
+
 ## Building
 
     npm install
@@ -25,17 +33,14 @@ supported](http://caniuse.com/#feat=audio-api).
 
 Open `index.html` in your browser.
 
-## Development
-
-    npm start
-
-Open `http://localhost:8080/webpack-dev-server/` in your browser.
-
 ## Deploying
+
+These commands assume you have an SSH key to my server, which you probably
+don't have. Feel free to adapt them to your own server.
 
     npm run deploy
 
-## Reverting
+### Reverting
 
     npm run revert # Reverts quickly to the previous deploy
     HASH=<SOME_GIT_HASH> npm run deploy # Runs a new deploy at a given hashlike.
