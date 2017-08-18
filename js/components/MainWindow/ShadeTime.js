@@ -14,9 +14,10 @@ class Time extends React.Component {
     this.props.dispatch({ type: TOGGLE_TIME_MODE });
   }
   render() {
-    const seconds = this.props.timeMode === "ELAPSED"
-      ? this.props.timeElapsed
-      : this.props.length - this.props.timeElapsed;
+    const seconds =
+      this.props.timeMode === "ELAPSED"
+        ? this.props.timeElapsed
+        : this.props.length - this.props.timeElapsed;
 
     const timeObj = getTimeObj(seconds);
     return (

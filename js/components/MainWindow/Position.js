@@ -43,9 +43,8 @@ const Position = ({
 const mapStateToProps = ({ media, userInput }) => {
   const position = media.length ? media.timeElapsed / media.length * 100 : 0;
 
-  const displayedPosition = userInput.focus === "position"
-    ? userInput.scrubPosition
-    : position;
+  const displayedPosition =
+    userInput.focus === "position" ? userInput.scrubPosition : position;
 
   return {
     displayedPosition,
