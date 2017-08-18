@@ -119,7 +119,7 @@
     "no-multi-str": "error",
     "no-native-reassign": "error",
     "no-negated-in-lhs": "warn",
-    "no-nested-ternary": "error",
+    "no-nested-ternary": "warn",
     "no-new-object": "error",
     "no-new-symbol": "error",
     "no-new-wrappers": "error",
