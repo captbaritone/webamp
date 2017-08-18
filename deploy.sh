@@ -26,10 +26,10 @@ echo "Cleaning up node_modules/ to save space"
 
 PREVIOUS=$(readlink -f public_html/projects/winamp2-js)
 
-echo "The previous buid was: $PREVIOUS"
+echo "The previous build was: $PREVIOUS"
 
 echo "Creating 'previous' link to enable reverts"
-ln -snf  repos/previous
+ln -snf $PREVIOUS repos/previous
 
 echo "Linking new Winamp2-js into place"
 ln -snf `pwd`/$NEW_CLONE/ public_html/projects/winamp2-js
