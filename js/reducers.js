@@ -34,6 +34,7 @@ import {
   UNSET_FOCUS,
   UPDATE_TIME_ELAPSED
 } from "./actionTypes";
+import { equalizerEnabled } from "./config";
 
 export const userInput = (state, action) => {
   if (!state) {
@@ -54,18 +55,17 @@ export const userInput = (state, action) => {
   }
 };
 
-const windows = (state, action) => {
-  if (!state) {
-    return {
-      focused: WINDOWS.MAIN,
-      equalizer: false
-    };
-  }
+const defaultWindowsState = {
+  focused: WINDOWS.MAIN,
+  equalizer: equalizerEnabled
+};
+
+const windows = (state = defaultWindowsState, action) => {
   switch (action.type) {
     case SET_FOCUSED_WINDOW:
       return { ...state, focused: action.window };
     case TOGGLE_EQUALIZER_WINDOW:
-      if (process.env.NODE_ENV === "production") {
+      if (!equalizerEnabled) {
         return state;
       }
       return { ...state, equalizer: !state.equalizer };
@@ -76,23 +76,22 @@ const windows = (state, action) => {
   }
 };
 
-const display = (state, action) => {
-  if (!state) {
-    return {
-      doubled: false,
-      marqueeStep: 0,
-      loading: true,
-      llama: false,
-      closed: false,
-      shade: false,
-      equalizerShade: false,
-      working: false,
-      skinImages: {},
-      skinColors: null,
-      skinPlaylistStyle: {},
-      visualizerStyle: 2
-    };
-  }
+const defaultDisplayState = {
+  doubled: false,
+  marqueeStep: 0,
+  loading: true,
+  llama: false,
+  closed: false,
+  shade: false,
+  equalizerShade: false,
+  working: false,
+  skinImages: {},
+  skinColors: null,
+  skinPlaylistStyle: {},
+  visualizerStyle: 2
+};
+
+const display = (state = defaultDisplayState, action) => {
   switch (action.type) {
     case TOGGLE_DOUBLESIZE_MODE:
       return { ...state, doubled: !state.doubled };
@@ -128,12 +127,11 @@ const display = (state, action) => {
   }
 };
 
-const contextMenu = (state, action) => {
-  if (!state) {
-    return {
-      selected: false
-    };
-  }
+const defaultContextMenuState = {
+  selected: false
+};
+
+const contextMenu = (state = defaultContextMenuState, action) => {
   switch (action.type) {
     case TOGGLE_CONTEXT_MENU:
       return { ...state, selected: !state.selected };

@@ -13,13 +13,9 @@ import EqualizerWindow from "./components/EqualizerWindow";
 import Winamp from "./winamp";
 import Hotkeys from "./hotkeys";
 import Skin from "./components/Skin";
+import { equalizerEnabled, playlistEnabled } from "./config";
 
 if (new Browser(window).isCompatible) {
-  const hash = window.location.hash;
-  // Turn on the incomplete playlist window
-  const playlist = hash.includes("playlist");
-  // Turn on the incomplete equalizer window
-  const equalizer = hash.includes("equalizer");
   const winamp = Winamp;
 
   const store = getStore(winamp);
@@ -33,8 +29,8 @@ if (new Browser(window).isCompatible) {
         </Skin>
         <WindowManager>
           <MainWindow fileInput={winamp.fileInput} mediaPlayer={winamp.media} />
-          {playlist && <PlaylistWindow />}
-          {equalizer && <EqualizerWindow fileInput={winamp.fileInput} />}
+          {playlistEnabled && <PlaylistWindow />}
+          {equalizerEnabled && <EqualizerWindow fileInput={winamp.fileInput} />}
         </WindowManager>
       </div>
     </Provider>,
