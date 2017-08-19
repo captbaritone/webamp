@@ -1,5 +1,12 @@
 /* Rules used by all windows */
 
+/* Prevent accidental highlighting */
+canvas {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
 /* Range input css reset */
 #winamp2-js input[type="range"] {
   -webkit-appearance: none;
