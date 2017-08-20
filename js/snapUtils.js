@@ -45,6 +45,31 @@ export const snap = (boxA, boxB) => {
   return { x, y };
 };
 
+export const snapDiff = (a, b) => {
+  const newPos = snap(a, b);
+  return {
+    x: newPos.x === undefined ? 0 : newPos.x - a.x,
+    y: newPos.y === undefined ? 0 : newPos.y - a.y
+  };
+};
+
+// TODO: Use the first x and y combo
+export const snapDiffManyToMany = (as, bs) => {
+  let x = 0;
+  let y = 0;
+  for (const a of as) {
+    for (const b of bs) {
+      const diff = snapDiff(a, b);
+      x = x || diff.x;
+      y = y || diff.y;
+      if (x > 0 && y > 0) {
+        break;
+      }
+    }
+  }
+  return { x, y };
+};
+
 export const snapToMany = (boxA, otherBoxes) => {
   let x, y;
 
@@ -75,6 +100,14 @@ export const snapWithin = (boxA, boundingBox) => {
   return { x, y };
 };
 
+export const snapWithinDiff = (a, b) => {
+  const newPos = snapWithin(a, b);
+  return {
+    x: newPos.x === undefined ? 0 : newPos.x - a.x,
+    y: newPos.y === undefined ? 0 : newPos.y - a.y
+  };
+};
+
 export const applySnap = (original, ...snaps) =>
   snaps.reduce(
     (previous, snapped) => ({
@@ -84,3 +117,42 @@ export const applySnap = (original, ...snaps) =>
     }),
     original
   );
+
+export const boundingBox = nodes => {
+  const boxes = nodes.slice();
+  const firstNode = boxes.pop();
+  const bounding = {
+    top: top(firstNode),
+    right: right(firstNode),
+    bottom: bottom(firstNode),
+    left: left(firstNode)
+  };
+
+  boxes.forEach(node => {
+    bounding.top = Math.min(bounding.top, top(node));
+    bounding.right = Math.max(bounding.right, right(node));
+    bounding.bottom = Math.max(bounding.bottom, bottom(node));
+    bounding.left = Math.min(bounding.left, left(node));
+  });
+
+  return {
+    x: bounding.left,
+    y: bounding.top,
+    width: bounding.right - bounding.left,
+    height: bounding.bottom - bounding.top
+  };
+};
+
+export const traceConnection = areConnected => (candidates, node) => {
+  const connected = new Set();
+  const checkNode = n => {
+    for (const candidate of candidates) {
+      if (!connected.has(candidate) && areConnected(candidate, n)) {
+        connected.add(candidate);
+        checkNode(candidate);
+      }
+    }
+  };
+  checkNode(node);
+  return connected;
+};
