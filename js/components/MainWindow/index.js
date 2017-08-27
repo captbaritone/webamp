@@ -89,7 +89,6 @@ export class MainWindow extends React.Component {
         onDragOver={this.supress}
         onDrop={this.handleDrop}
       >
-        <div id="loading">Loading...</div>
         <div id="title-bar" className="selected title-bard draggable">
           <div id="option" onClick={this.props.toggleMenu}>
             <MainContextMenu fileInput={this.props.fileInput} />

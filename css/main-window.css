@@ -24,15 +24,11 @@
   background-color: #FFFFFF;
   border: 2px solid #dddddd;
 }
-/* Hide everything while we are loading */
-#winamp2-js #main-window.loading * {
-  display: none;
-}
 
 #winamp2-js #loading {
-  display: none;
+  color: white;
   text-align: center;
-  font-size: 20px;
+  font-size: 40px;
   height: 30px;
   position: absolute;
   margin: auto;
@@ -42,9 +38,49 @@
   right: 0;
 }
 
-/* Only show loading div while we are loading */
-#winamp2-js #main-window.loading #loading {
-  display: block;
+#winamp2-js #loading .ellipsis-anim span {
+  opacity: 0;
+  -webkit-animation: ellipsis-dot 1s infinite;
+  animation: ellipsis-dot 1s infinite;
+}
+
+#winamp2-js #loading .ellipsis-anim span:nth-child(1) {
+  -webkit-animation-delay: 0.0s;
+  animation-delay: 0.0s;
+}
+
+#winamp2-js #loading .ellipsis-anim span:nth-child(2) {
+  -webkit-animation-delay: 0.1s;
+  animation-delay: 0.1s;
+}
+
+#winamp2-js #loading .ellipsis-anim span:nth-child(3) {
+  -webkit-animation-delay: 0.2s;
+  animation-delay: 0.2s;
+}
+
+@-webkit-keyframes ellipsis-dot {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ellipsis-dot {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 #winamp2-js #main-window.closed {
