@@ -78,3 +78,16 @@ export const normalize = rebound(1, 64, 1, 100);
 
 // Convert a 0-100 to an .eqf value
 export const denormalize = rebound(1, 100, 1, 64);
+
+// Merge a `source` object to a `target` recursively
+export const merge = (target, source) => {
+  // Iterate through `source` properties and if an `Object` set property to merge of `target` and `source` properties
+  for (const key of Object.keys(source)) {
+    if (source[key] instanceof Object)
+      Object.assign(source[key], merge(target[key], source[key]));
+  }
+
+  // Join `target` and modified `source`
+  Object.assign(target || {}, source);
+  return target;
+};
