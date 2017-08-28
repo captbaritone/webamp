@@ -2,6 +2,12 @@
 
 ## Setup
 
+Clone the Winamp2-js repo:
+
+```
+git clone git@github.com:captbaritone/winamp2-js.git
+```
+
 Start Winamp2-js in dev mode:
 
 ```
@@ -10,8 +16,12 @@ yarn install
 npm start
 ```
 
+Winamp2-js should now be running on your local port 8080.
+
+Now, in a separate terminal:
+
 ```
-cd automated_screenshots
+cd winamp2-js/automated_screenshots
 yarn install
 ```
 
