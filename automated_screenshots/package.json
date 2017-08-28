@@ -1,0 +1,15 @@
+{
+  "name": "automated_screenshots",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "filehound": "^1.16.2",
+    "puppeteer": "^0.10.1"
+  }
+}
