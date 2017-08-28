@@ -2,6 +2,14 @@
 
 ## Setup
 
+Start Winamp2-js in dev mode:
+
+```
+cd winamp2-js
+yarn install
+npm start
+```
+
 ```
 cd automated_screenshots
 yarn install
