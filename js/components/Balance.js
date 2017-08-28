@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { setBalance } from "../actionCreators";
 import { SET_FOCUS, UNSET_FOCUS } from "../actionTypes";
 
-const Balance = props =>
+const Balance = props => (
   <input
     id={props.id}
     className={props.className}
@@ -17,7 +17,8 @@ const Balance = props =>
     onChange={props.handleChange}
     onMouseDown={props.showMarquee}
     onMouseUp={props.hideMarquee}
-  />;
+  />
+);
 
 const mapDispatchToProps = dispatch => ({
   handleChange: e => dispatch(setBalance(e.target.value)),

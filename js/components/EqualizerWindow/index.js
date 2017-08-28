@@ -53,46 +53,45 @@ const EqualizerWindow = props => {
       className={className}
       onClick={props.focusWindow}
     >
-      {props.shade
-        ? <div className="draggable">
+      {props.shade ? (
+        <div className="draggable">
+          <div id="equalizer-shade" onClick={props.toggleEqualizerShadeMode} />
+          <div id="equalizer-close" onClick={props.closeEqualizerWindow} />
+          <Volume id="equalizer-volume" className={eqVolumeClassName} />
+          <Balance id="equalizer-balance" className={eqBalanceClassName} />
+        </div>
+      ) : (
+        <div>
+          <div className="equalizer-top title-bar draggable">
             <div
               id="equalizer-shade"
               onClick={props.toggleEqualizerShadeMode}
             />
             <div id="equalizer-close" onClick={props.closeEqualizerWindow} />
-            <Volume id="equalizer-volume" className={eqVolumeClassName} />
-            <Balance id="equalizer-balance" className={eqBalanceClassName} />
           </div>
-        : <div>
-            <div className="equalizer-top title-bar draggable">
-              <div
-                id="equalizer-shade"
-                onClick={props.toggleEqualizerShadeMode}
-              />
-              <div id="equalizer-close" onClick={props.closeEqualizerWindow} />
-            </div>
-            <EqOn />
-            <EqAuto />
-            <EqGraph />
-            <div id="presets" onClick={props.togglePresetsContextMenu}>
-              <PresetsContextMenu
-                selected={props.contextMenuSelected}
-                fileInput={props.fileInput}
-              />
-            </div>
-            <Band id="preamp" band="preamp" onChange={props.setPreampValue} />
-            <div id="plus12db" onClick={props.setEqToMax} />
-            <div id="zerodb" onClick={props.setEqToMid} />
-            <div id="minus12db" onClick={props.setEqToMin} />
-            {BANDS.map(hertz =>
-              <Band
-                key={hertz}
-                id={bandClassName(hertz)}
-                band={hertz}
-                onChange={props.setHertzValue(hertz)}
-              />
-            )}
-          </div>}
+          <EqOn />
+          <EqAuto />
+          <EqGraph />
+          <div id="presets" onClick={props.togglePresetsContextMenu}>
+            <PresetsContextMenu
+              selected={props.contextMenuSelected}
+              fileInput={props.fileInput}
+            />
+          </div>
+          <Band id="preamp" band="preamp" onChange={props.setPreampValue} />
+          <div id="plus12db" onClick={props.setEqToMax} />
+          <div id="zerodb" onClick={props.setEqToMid} />
+          <div id="minus12db" onClick={props.setEqToMin} />
+          {BANDS.map(hertz => (
+            <Band
+              key={hertz}
+              id={bandClassName(hertz)}
+              band={hertz}
+              onChange={props.setHertzValue(hertz)}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

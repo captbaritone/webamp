@@ -1,32 +1,32 @@
 /* Rules used by all windows */
 
 /* Range input css reset */
-#winamp2-js input[type=range] {
+#winamp2-js input[type="range"] {
   -webkit-appearance: none;
   margin: 0;
   padding: 0;
   background: none;
   border: none;
 }
-#winamp2-js input[type=range]::-webkit-slider-thumb {
+#winamp2-js input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   border: none;
   border-radius: 0;
   background: none;
 }
-#winamp2-js input[type=range]::-moz-range-thumb {
+#winamp2-js input[type="range"]::-moz-range-thumb {
   border: none;
   border-radius: 0;
   background: none;
 }
-#winamp2-js input[type=range]::-moz-range-track {
+#winamp2-js input[type="range"]::-moz-range-track {
   border: none;
   background: none;
 }
-#winamp2-js input[type=range]:focus {
+#winamp2-js input[type="range"]:focus {
   outline: none;
 }
-#winamp2-js input[type=range]::-moz-focus-outer {
+#winamp2-js input[type="range"]::-moz-focus-outer {
   border: 0;
 }
 
@@ -37,24 +37,24 @@
 /* Animation */
 @keyframes blink {
   0% {
-    opacity: 1.0;
+    opacity: 1;
   }
   50% {
-    opacity: 0.0;
+    opacity: 0;
   }
   100% {
-    opacity: 1.0;
+    opacity: 1;
   }
 }
 @-webkit-keyframes blink {
   0% {
-    opacity: 1.0;
+    opacity: 1;
   }
   50% {
-    opacity: 0.0;
+    opacity: 0;
   }
   100% {
-    opacity: 1.0;
+    opacity: 1;
   }
 }
 
@@ -69,7 +69,7 @@
 
 #winamp2-js .window {
   position: absolute;
-  cursor: url('../cursors/MAINMENU.PNG'), auto;
+  cursor: url("../cursors/MAINMENU.PNG"), auto;
   /* Ask the browser to scale showing large pixels if possible */
   image-rendering: -moz-crisp-edges; /* Firefox */
   image-rendering: -o-crisp-edges; /* Opera */

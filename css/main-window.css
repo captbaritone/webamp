@@ -3,7 +3,7 @@
   position: absolute;
   height: 116px;
   width: 275px;
-  cursor: url('../cursors/MAINMENU.PNG'), auto;
+  cursor: url("../cursors/MAINMENU.PNG"), auto;
   /* Ask the browser to scale showing large pixels if possible */
   image-rendering: -moz-crisp-edges; /* Firefox */
   image-rendering: -o-crisp-edges; /* Opera */
@@ -13,15 +13,15 @@
 }
 
 #winamp2-js #main-window.doubled #context-menu {
-  -moz-transform: scale(.5);
+  -moz-transform: scale(0.5);
   -moz-transform-origin: top left;
-  -webkit-transform: scale(.5);
+  -webkit-transform: scale(0.5);
   -webkit-transform-origin: top left;
 }
 
 #winamp2-js #main-window.loading {
   background-image: none;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: 2px solid #dddddd;
 }
 
@@ -45,8 +45,8 @@
 }
 
 #winamp2-js #loading .ellipsis-anim span:nth-child(1) {
-  -webkit-animation-delay: 0.0s;
-  animation-delay: 0.0s;
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
 }
 
 #winamp2-js #loading .ellipsis-anim span:nth-child(2) {
@@ -93,7 +93,7 @@
   left: 0;
   height: 14px;
   width: 275px;
-  cursor: url('../cursors/TITLEBAR.PNG'), auto;
+  cursor: url("../cursors/TITLEBAR.PNG"), auto;
 }
 
 #winamp2-js #option,
@@ -104,7 +104,7 @@
   height: 9px;
   width: 9px;
   top: 3px;
-  cursor: url('../cursors/MAINMENU.PNG'), auto;
+  cursor: url("../cursors/MAINMENU.PNG"), auto;
 }
 
 #winamp2-js #title-bar #option {
@@ -118,7 +118,7 @@
 }
 #winamp2-js #title-bar #close {
   left: 264px;
-  cursor: url('../cursors/CLOSE.PNG'), auto;
+  cursor: url("../cursors/CLOSE.PNG"), auto;
 }
 #winamp2-js #clutter-bar {
   position: absolute;
@@ -301,19 +301,19 @@
   height: 13px;
   width: 68px;
   background-position: 0 0;
-  cursor: url('../cursors/POSBAR.PNG'), auto;
+  cursor: url("../cursors/POSBAR.PNG"), auto;
 }
 #winamp2-js #volume::-webkit-slider-thumb {
   top: 1px;
   height: 11px;
   width: 14px;
-  cursor: url('../cursors/POSBAR.PNG'), auto;
+  cursor: url("../cursors/POSBAR.PNG"), auto;
 }
 #winamp2-js #volume::-moz-range-thumb {
   top: 1px;
   height: 11px;
   width: 14px;
-  cursor: url('../cursors/POSBAR.PNG'), auto;
+  cursor: url("../cursors/POSBAR.PNG"), auto;
 }
 
 #winamp2-js #balance {
@@ -323,20 +323,20 @@
   height: 13px;
   width: 38px;
   background-position: 0 0;
-  cursor: url('../cursors/POSBAR.PNG'), auto;
+  cursor: url("../cursors/POSBAR.PNG"), auto;
 }
 
 #winamp2-js #balance::-webkit-slider-thumb {
   top: 1px;
   height: 11px;
   width: 14px;
-  cursor: url('../cursors/POSBAR.PNG'), auto;
+  cursor: url("../cursors/POSBAR.PNG"), auto;
 }
 #winamp2-js #balance::-moz-range-thumb {
   top: 1px;
   height: 11px;
   width: 14px;
-  cursor: url('../cursors/POSBAR.PNG'), auto;
+  cursor: url("../cursors/POSBAR.PNG"), auto;
 }
 
 #winamp2-js .windows {
@@ -367,13 +367,13 @@
   top: 72px;
   width: 248px;
   height: 10px;
-  cursor: url('../cursors/POSBAR.PNG'), auto;
+  cursor: url("../cursors/POSBAR.PNG"), auto;
 }
 
 #winamp2-js #position::-webkit-slider-thumb {
   height: 10px;
   width: 29px;
-  cursor: url('../cursors/POSBAR.PNG'), auto;
+  cursor: url("../cursors/POSBAR.PNG"), auto;
   /*
      * Fix the strange bug in Safair/mobile-chrome
      * http://stackoverflow.com/questions/26727769/rendering-glitch-when-manipulating-range-input-value-via-javascript-in-webkit
@@ -385,7 +385,7 @@
 #winamp2-js #position::-moz-range-thumb {
   height: 10px;
   width: 29px;
-  cursor: url('../cursors/POSBAR.PNG'), auto;
+  cursor: url("../cursors/POSBAR.PNG"), auto;
 }
 
 /* For some reason, we can't use display: none here */
@@ -483,7 +483,7 @@
 }
 
 #winamp2-js #shade-time {
-  cursor: url('../cursors/MAINMENU.PNG'), auto;
+  cursor: url("../cursors/MAINMENU.PNG"), auto;
 }
 
 #winamp2-js .shade .media-info,
@@ -495,7 +495,7 @@
   display: none;
 }
 #winamp2-js .shade #title-bar {
-  cursor: url('../cursors/MAINMENU.PNG'), auto;
+  cursor: url("../cursors/MAINMENU.PNG"), auto;
 }
 
 #winamp2-js .shade .actions div {
@@ -509,35 +509,40 @@
   top: 2px;
   left: 169px;
 }
-#winamp2-js .shade .actions #play, #winamp2-js .shade .actions #play:active {
+#winamp2-js .shade .actions #play,
+#winamp2-js .shade .actions #play:active {
   background: none;
   height: 10px;
   width: 10px;
   top: 2px;
   left: 176px;
 }
-#winamp2-js .shade .actions #pause, #winamp2-js .shade .actions #pause:active {
+#winamp2-js .shade .actions #pause,
+#winamp2-js .shade .actions #pause:active {
   background: none;
   height: 10px;
   width: 9px;
   top: 2px;
   left: 186px;
 }
-#winamp2-js .shade .actions #stop, #winamp2-js .shade .actions #stop:active {
+#winamp2-js .shade .actions #stop,
+#winamp2-js .shade .actions #stop:active {
   background: none;
   height: 10px;
   width: 9px;
   top: 2px;
   left: 195px;
 }
-#winamp2-js .shade .actions #next, #winamp2-js .shade .actions #next:active {
+#winamp2-js .shade .actions #next,
+#winamp2-js .shade .actions #next:active {
   background: none;
   height: 10px;
   width: 10px;
   top: 2px;
   left: 204px;
 }
-#winamp2-js .shade #eject, #winamp2-js .shade #eject:active {
+#winamp2-js .shade #eject,
+#winamp2-js .shade #eject:active {
   height: 10px;
   width: 10px;
   top: 2px;

@@ -4,7 +4,7 @@ import { setVolume } from "../actionCreators";
 
 import { SET_FOCUS, UNSET_FOCUS } from "../actionTypes";
 
-const Volume = props =>
+const Volume = props => (
   <input
     id={props.id}
     type="range"
@@ -17,7 +17,8 @@ const Volume = props =>
     onChange={props.setVolume}
     onMouseDown={props.showMarquee}
     onMouseUp={props.hideMarquee}
-  />;
+  />
+);
 
 const mapStateToProps = state => state.media;
 

@@ -17,7 +17,7 @@ const SKINS = [
   { file: "ZaxonRemake1-0.wsz", name: "Zaxon Remake" }
 ];
 
-const MainContextMenu = props =>
+const MainContextMenu = props => (
   <ContextMenu
     closeMenu={props.closeMenu}
     openMenu={props.openMenu}
@@ -34,17 +34,18 @@ const MainContextMenu = props =>
     <Parent label="Skins">
       <Node onClick={props.openFileDialog} label="Load Skin..." />
       <Hr />
-      {SKINS.map(skin =>
+      {SKINS.map(skin => (
         <Node
           key={skin.file}
           onClick={props.setSkin.bind(null, skin.file)}
           label={skin.name}
         />
-      )}
+      ))}
     </Parent>
     <Hr />
     <Node onClick={props.close} label="Exit" />
-  </ContextMenu>;
+  </ContextMenu>
+);
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   close: () => dispatch(close()),

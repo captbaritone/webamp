@@ -18,7 +18,7 @@ export const spriteOffsets = number => {
 
 const Handle = () => <div className="rc-slider-handle" />;
 
-const Band = ({ value, backgroundPosition, id, onChange }) =>
+const Band = ({ value, backgroundPosition, id, onChange }) => (
   <div id={id} className="band" style={{ backgroundPosition }}>
     <Slider
       type="range"
@@ -30,7 +30,8 @@ const Band = ({ value, backgroundPosition, id, onChange }) =>
       onChange={onChange}
       handle={Handle}
     />
-  </div>;
+  </div>
+);
 
 const mapStateToProps = (state, ownProps) => {
   const value = state.equalizer.sliders[ownProps.band];

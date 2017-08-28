@@ -8,7 +8,7 @@ import {
   UNSET_FOCUS
 } from "../../actionTypes";
 
-const ClutterBar = props =>
+const ClutterBar = props => (
   <div id="clutter-bar">
     <div id="button-o" />
     <div id="button-a" />
@@ -20,7 +20,8 @@ const ClutterBar = props =>
       onMouseDown={props.handleMouseDown}
     />
     <div id="button-v" />
-  </div>;
+  </div>
+);
 
 const mapStateToProps = state => ({
   doubled: state.display.doubled

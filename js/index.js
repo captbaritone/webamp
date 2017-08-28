@@ -20,7 +20,9 @@ if (new Browser(window).isCompatible) {
   window.store = store;
 
   render(
-    <Provider store={store}><App winamp={winamp} /></Provider>,
+    <Provider store={store}>
+      <App winamp={winamp} />
+    </Provider>,
     document.getElementById("winamp2-js")
   );
 

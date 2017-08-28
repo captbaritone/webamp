@@ -4,12 +4,13 @@ import classnames from "classnames";
 
 import { TOGGLE_EQUALIZER_WINDOW } from "../../actionTypes";
 
-const EqToggleButton = props =>
+const EqToggleButton = props => (
   <div
     id="equalizer-button"
     className={classnames({ selected: props.equalizer })}
     onClick={props.handleClick}
-  />;
+  />
+);
 
 const mapStateToProps = state => ({
   equalizer: state.windows.equalizer

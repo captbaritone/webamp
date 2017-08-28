@@ -19,22 +19,23 @@
   display: block;
 }
 
-#winamp2-js #context-menu, #winamp2-js #context-menu ul {
+#winamp2-js #context-menu,
+#winamp2-js #context-menu ul {
   display: none;
   z-index: 50; /* Gross */
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   position: absolute;
   list-style: none;
   padding: 0;
   margin: 0;
-  border: 1px solid #A7A394;
+  border: 1px solid #a7a394;
   cursor: default;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, .5);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 #winamp2-js #context-menu li {
   position: relative;
-  font-family: 'Tahoma';
+  font-family: "Tahoma";
   font-size: 11px;
   color: black;
   white-space: nowrap;
@@ -52,9 +53,10 @@
   cursor: default;
 }
 
-#winamp2-js #context-menu li:hover, #winamp2-js #context-menu li:hover a {
-  background-color: #224EB7;
-  color: #FFFFFF;
+#winamp2-js #context-menu li:hover,
+#winamp2-js #context-menu li:hover a {
+  background-color: #224eb7;
+  color: #ffffff;
 }
 
 #winamp2-js #context-menu li.hr {
@@ -62,13 +64,13 @@
 }
 
 #winamp2-js #context-menu li.hr:hover {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 }
 
 #winamp2-js #context-menu li.hr hr {
   border: none;
   height: 1px;
-  background-color: #A7A394;
+  background-color: #a7a394;
   margin: 0;
   padding: 0;
 }

@@ -239,11 +239,7 @@ const Skin = props => {
       "#winamp2-js .status #time #minus-sign { top: 0px; left: -1px; width: 9px; height: 13px; }"
     );
   }
-  return (
-    <style type="text/css">
-      {cssRules.join("\n")}
-    </style>
-  );
+  return <style type="text/css">{cssRules.join("\n")}</style>;
 };
 
 export default connect(state => ({ skinImages: state.display.skinImages }))(

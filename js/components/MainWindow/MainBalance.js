@@ -10,11 +10,12 @@ const offsetFromBalance = balance => {
   return offset;
 };
 
-const MainBalance = props =>
+const MainBalance = props => (
   <Balance
     id="balance"
     style={{ backgroundPosition: `0 -${offsetFromBalance(props.balance)}px` }}
-  />;
+  />
+);
 
 const mapStateToProps = state => ({ balance: state.media.balance });
 

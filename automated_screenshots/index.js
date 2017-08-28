@@ -10,7 +10,10 @@ const config = {
 };
 
 (async () => {
-  const files = await Filehound.create().ext("wsz").paths("skins/").find();
+  const files = await Filehound.create()
+    .ext("wsz")
+    .paths("skins/")
+    .find();
 
   const browser = await puppeteer.launch();
 

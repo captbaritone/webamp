@@ -131,15 +131,16 @@ class WindowManager extends React.Component {
           const position = this.state[i];
           /* eslint-disable react/jsx-no-bind */
           return (
-            position &&
-            <div
-              onMouseDown={e => this.handleMouseDown(i, e)}
-              ref={this.getRef}
-              style={{ ...style, ...position }}
-              key={i}
-            >
-              {child}
-            </div>
+            position && (
+              <div
+                onMouseDown={e => this.handleMouseDown(i, e)}
+                ref={this.getRef}
+                style={{ ...style, ...position }}
+                key={i}
+              >
+                {child}
+              </div>
+            )
           );
           /* eslint-enable react/jsx-no-bind */
         })}

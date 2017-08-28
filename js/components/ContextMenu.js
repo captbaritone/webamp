@@ -4,36 +4,32 @@ import classnames from "classnames";
 
 import "../../css/context-menu.css";
 
-export const Hr = () =>
+export const Hr = () => (
   <li className="hr">
     <hr />
-  </li>;
+  </li>
+);
 
 // TODO: Add down-arrow
-export const Parent = ({ children, label }) =>
+export const Parent = ({ children, label }) => (
   <li className="parent">
-    <ul>
-      {children}
-    </ul>
+    <ul>{children}</ul>
     {label}
-  </li>;
+  </li>
+);
 
-export const LinkNode = props =>
+export const LinkNode = props => (
   <li>
-    <a {...props}>
-      {props.label}
-    </a>
-  </li>;
+    <a {...props}>{props.label}</a>
+  </li>
+);
 
 LinkNode.propTypes = {
   label: React.PropTypes.string.isRequired,
   href: React.PropTypes.string.isRequired
 };
 
-export const Node = props =>
-  <li {...props}>
-    {props.label}
-  </li>;
+export const Node = props => <li {...props}>{props.label}</li>;
 
 Node.propTypes = {
   label: React.PropTypes.string.isRequired
@@ -53,9 +49,7 @@ export class ContextMenu extends React.Component {
     const { selected, top, bottom, children } = this.props;
     return (
       <div className={classnames({ selected, top, bottom })}>
-        <ul id="context-menu">
-          {children}
-        </ul>
+        <ul id="context-menu">{children}</ul>
       </div>
     );
   }

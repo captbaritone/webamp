@@ -8,23 +8,27 @@ import Skin from "./Skin";
 import { equalizerEnabled, playlistEnabled } from "../config";
 
 const App = ({ winamp, loading }) =>
-  loading
-    ? <div id="loading">
-        Loading<span className="ellipsis-anim">
-          <span>.</span><span>.</span><span>.</span>
-        </span>
-      </div>
-    : <div id="loaded">
-        <Skin>
-          {/* This is not technically kosher, since <style> tags should be in
+  loading ? (
+    <div id="loading">
+      Loading<span className="ellipsis-anim">
+        <span>.</span>
+        <span>.</span>
+        <span>.</span>
+      </span>
+    </div>
+  ) : (
+    <div id="loaded">
+      <Skin>
+        {/* This is not technically kosher, since <style> tags should be in
           the <head>, but browsers don't really care... */}
-        </Skin>
-        <WindowManager>
-          <MainWindow fileInput={winamp.fileInput} mediaPlayer={winamp.media} />
-          {equalizerEnabled && <EqualizerWindow fileInput={winamp.fileInput} />}
-          {playlistEnabled && <PlaylistWindow />}
-        </WindowManager>
-      </div>;
+      </Skin>
+      <WindowManager>
+        <MainWindow fileInput={winamp.fileInput} mediaPlayer={winamp.media} />
+        {equalizerEnabled && <EqualizerWindow fileInput={winamp.fileInput} />}
+        {playlistEnabled && <PlaylistWindow />}
+      </WindowManager>
+    </div>
+  );
 
 const mapStateToProps = state => ({ loading: state.display.loading });
 
