@@ -10,11 +10,6 @@ exports[`MainWindow renders to snapshot 1`] = `
   onDrop={[Function]}
 >
   <div
-    id="loading"
-  >
-    Loading...
-  </div>
-  <div
     className="selected title-bard draggable"
     id="title-bar"
   >
