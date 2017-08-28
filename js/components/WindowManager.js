@@ -129,7 +129,6 @@ class WindowManager extends React.Component {
       <div style={parentStyle}>
         {this.validChildren().map((child, i) => {
           const position = this.state[i];
-          /* eslint-disable react/jsx-no-bind */
           return (
             position && (
               <div
@@ -142,7 +141,6 @@ class WindowManager extends React.Component {
               </div>
             )
           );
-          /* eslint-enable react/jsx-no-bind */
         })}
       </div>
     );
