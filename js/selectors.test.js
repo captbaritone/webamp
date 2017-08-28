@@ -2,7 +2,7 @@ import reducer from "./reducers";
 import { getEqfData } from "./selectors";
 describe("getEqfData", () => {
   it("can extract EQF data from the current state", () => {
-    const state = reducer();
+    const state = reducer(undefined, { type: "@@INIT" });
     //state = reducer(state, { type: "SET_BAND_VALUE", band: 60, value: 100 });
     const actual = getEqfData(state);
     const expected = {
