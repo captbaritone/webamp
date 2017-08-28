@@ -191,8 +191,8 @@ export default {
       width: 25,
       height: 20
     },
-    { name: "PLAYLIST_LEFT_TILE", x: 0, y: 42, width: 25, height: 29 },
-    { name: "PLAYLIST_RIGHT_TILE", x: 26, y: 42, width: 25, height: 29 },
+    { name: "PLAYLIST_LEFT_TILE", x: 0, y: 42, width: 12, height: 29 },
+    { name: "PLAYLIST_RIGHT_TILE", x: 31, y: 42, width: 20, height: 29 },
     { name: "PLAYLIST_BOTTOM_TILE", x: 179, y: 0, width: 25, height: 38 },
     {
       name: "PLAYLIST_BOTTOM_LEFT_CORNER",
