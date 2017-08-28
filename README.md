@@ -45,6 +45,21 @@ don't have. Feel free to adapt them to your own server.
     npm run revert # Reverts quickly to the previous deploy
     HASH=<SOME_GIT_HASH> npm run deploy # Runs a new deploy at a given hashlike.
 
+### Advanced ussage
+
+There are some "feature flags" which you can manipulate by passing a specially crafted URL hash. Simply supply a JSON blob after the `#` of the URL to change these settings:
+
+* `skinUrl` (string) Url of the default skin to use. Note, this file must be served with the correct Allows Origin header.
+* `audioUrl` (string) Url of the default audio file to use. Note, this file must be served with the correct Allows Origin header.
+* `playlistEnabled` (boolean) Should the incomplete Playlist window be made avalaible.
+* `equalizerEnabled` (boolean) Should the incomplete Equalizer window be made avalaible.
+* `noMarquee` (boolean) Enable/disable to scrolling of the song title in the main window. It can be nice to turn this off when debugging Redux actions, since the scrolling generates a lot of noise.
+* `hideAbout` (boolean) Selectively hide the byline and GitHub link at the bottom of the page. Useful for taking screenshots.
+* `initialState` (object) Override the [initial Redux state](js/reducers.js). Values from this object will be recursively merged into the actual default state.
+
+__Note:__ These are intended mostly as development tools and are subject to change at any time.
+
+
 ## Reference
 
 - [skinspecs.pdf](http://members.xoom.it/skinart/tutorial/skinspecs..pdf)
@@ -54,8 +69,7 @@ don't have. Feel free to adapt them to your own server.
 ## Predecessors
 
 - [Webamp2x](http://forums.winamp.com/showthread.php?threadid=91850) An
-  impressive implementation from 2002(!). Doesn't seem to work/play in my
-  modern browsers.
+  impressive implementation from 2002(!).
 
 - [Winamp em HTML5 e Javascript](http://www.tidbits.com.br/winamp-em-html5-e-javascript)
   In 2010 a developer named Danilo posted one of his HTML5 experiments: "an
