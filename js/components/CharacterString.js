@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Character from "./Character";
 
 const CharacterString = props => {
-  const text = `${props.children}`;
+  const text = `${props.children}` || "";
   const chars = text.split("");
   return (
     <div {...props}>
