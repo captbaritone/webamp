@@ -5,4 +5,4 @@ import CharacterString from "../CharacterString";
 
 const Kbps = props => <CharacterString id="kbps">{props.kbps}</CharacterString>;
 
-export default connect(state => state.media)(Kbps);
+export default connect(state => ({ kbps: state.media.kbps }))(Kbps);
