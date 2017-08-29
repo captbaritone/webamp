@@ -10,10 +10,12 @@ if (hash) {
   }
 }
 
+const or = (value, fallback) => (value === undefined ? fallback : value);
+
 const assetBase = process.env.NODE_ENV === "production" ? cdnUrl : "";
 // Turn on the incomplete playlist window
-export const skinUrl = config.skinUrl || `${assetBase}skins/base-2.91.wsz`;
-export const audioUrl = config.audioUrl || `${assetBase}mp3/llama-2.91.mp3`;
+export const skinUrl = or(config.skinUrl, `${assetBase}skins/base-2.91.wsz`);
+export const audioUrl = or(config.audioUrl, `${assetBase}mp3/llama-2.91.mp3`);
 export const playlistEnabled = config.playlist || false;
 // Turn on the incomplete equalizer window
 export const equalizerEnabled = config.equalizer || false;
