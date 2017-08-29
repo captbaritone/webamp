@@ -21,6 +21,7 @@ import {
   TOGGLE_DOUBLESIZE_MODE,
   TOGGLE_EQUALIZER_WINDOW,
   CLOSE_EQUALIZER_WINDOW,
+  TOGGLE_PLAYLIST_WINDOW,
   SET_EQ_AUTO,
   SET_EQ_ON,
   SET_EQ_OFF,
@@ -34,7 +35,7 @@ import {
   UNSET_FOCUS,
   UPDATE_TIME_ELAPSED
 } from "./actionTypes";
-import { equalizerEnabled } from "./config";
+import { equalizerEnabled, playlistEnabled } from "./config";
 
 export const userInput = (state, action) => {
   if (!state) {
@@ -57,7 +58,8 @@ export const userInput = (state, action) => {
 
 const defaultWindowsState = {
   focused: WINDOWS.MAIN,
-  equalizer: equalizerEnabled
+  equalizer: equalizerEnabled,
+  playlist: playlistEnabled
 };
 
 const windows = (state = defaultWindowsState, action) => {
@@ -71,6 +73,11 @@ const windows = (state = defaultWindowsState, action) => {
       return { ...state, equalizer: !state.equalizer };
     case CLOSE_EQUALIZER_WINDOW:
       return { ...state, equalizer: false };
+    case TOGGLE_PLAYLIST_WINDOW:
+      if (!playlistEnabled) {
+        return state;
+      }
+      return { ...state, playlist: !state.playlist };
     default:
       return state;
   }

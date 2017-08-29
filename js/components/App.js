@@ -7,16 +7,22 @@ import EqualizerWindow from "./EqualizerWindow";
 import Skin from "./Skin";
 import { equalizerEnabled, playlistEnabled } from "../config";
 
-const App = ({ winamp, loading }) =>
-  loading ? (
-    <div id="loading">
-      Loading<span className="ellipsis-anim">
-        <span>.</span>
-        <span>.</span>
-        <span>.</span>
-      </span>
-    </div>
-  ) : (
+const App = ({ winamp, loading, closed, equalizer, playlist }) => {
+  if (closed) {
+    return null;
+  }
+  if (loading) {
+    return (
+      <div id="loading">
+        Loading<span className="ellipsis-anim">
+          <span>.</span>
+          <span>.</span>
+          <span>.</span>
+        </span>
+      </div>
+    );
+  }
+  return (
     <div id="loaded">
       <Skin>
         {/* This is not technically kosher, since <style> tags should be in
@@ -24,12 +30,19 @@ const App = ({ winamp, loading }) =>
       </Skin>
       <WindowManager>
         <MainWindow fileInput={winamp.fileInput} mediaPlayer={winamp.media} />
-        {equalizerEnabled && <EqualizerWindow fileInput={winamp.fileInput} />}
-        {playlistEnabled && <PlaylistWindow />}
+        {equalizerEnabled &&
+        equalizer && <EqualizerWindow fileInput={winamp.fileInput} />}
+        {playlistEnabled && playlist && <PlaylistWindow />}
       </WindowManager>
     </div>
   );
+};
 
-const mapStateToProps = state => ({ loading: state.display.loading });
+const mapStateToProps = state => ({
+  loading: state.display.loading,
+  closed: state.display.closed,
+  equalizer: state.windows.equalizer,
+  playlist: state.windows.playlist
+});
 
 export default connect(mapStateToProps)(App);

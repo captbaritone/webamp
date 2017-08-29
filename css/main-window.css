@@ -83,10 +83,6 @@
   }
 }
 
-#winamp2-js #main-window.closed {
-  display: none;
-}
-
 #winamp2-js #title-bar {
   position: absolute;
   top: 0;

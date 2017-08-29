@@ -84,7 +84,3 @@
   -webkit-transform: scale(2);
   -webkit-transform-origin: top left;
 }
-
-#winamp2-js .window.closed {
-  display: none;
-}

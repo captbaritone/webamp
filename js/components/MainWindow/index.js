@@ -11,6 +11,7 @@ import ClutterBar from "./ClutterBar";
 import MainContextMenu from "./MainContextMenu";
 import Eject from "./Eject";
 import EqToggleButton from "./EqToggleButton";
+import PlaylistToggleButton from "./PlaylistToggleButton";
 import Kbps from "./Kbps";
 import Khz from "./Khz";
 import Marquee from "./Marquee";
@@ -59,7 +60,6 @@ export class MainWindow extends React.Component {
       loading,
       doubled,
       shade,
-      closed,
       llama,
       status,
       working
@@ -76,8 +76,7 @@ export class MainWindow extends React.Component {
       loading,
       doubled,
       llama,
-      shade,
-      closed
+      shade
     });
 
     return (
@@ -118,7 +117,7 @@ export class MainWindow extends React.Component {
         <MainBalance />
         <div className="windows">
           <EqToggleButton />
-          <div id="playlist-button" />
+          <PlaylistToggleButton />
         </div>
         <Position />
         <ActionButtons />
@@ -140,10 +139,10 @@ export class MainWindow extends React.Component {
 const mapStateToProps = state => {
   const {
     media: { status },
-    display: { loading, doubled, shade, closed, llama, working },
+    display: { loading, doubled, shade, llama, working },
     windows: { focused }
   } = state;
-  return { status, loading, doubled, shade, closed, llama, working, focused };
+  return { status, loading, doubled, shade, llama, working, focused };
 };
 
 const mapDispatchToProps = dispatch => ({

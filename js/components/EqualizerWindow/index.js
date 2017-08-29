@@ -32,11 +32,10 @@ import "../../../css/equalizer-window.css";
 const bandClassName = band => `band-${band}`;
 
 const EqualizerWindow = props => {
-  const { doubled, selected, closed, volume, balance, shade } = props;
+  const { doubled, selected, volume, balance, shade } = props;
 
   const className = classnames({
     selected,
-    closed,
     doubled,
     shade,
     window: true,
@@ -99,7 +98,6 @@ const EqualizerWindow = props => {
 EqualizerWindow.propTypes = {
   doubled: PropTypes.bool.isRequired,
   selected: PropTypes.bool.isRequired,
-  closed: PropTypes.bool.isRequired,
   shade: PropTypes.bool.isRequired
 };
 
@@ -124,7 +122,6 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = state => ({
   doubled: state.display.doubled,
   selected: state.windows.focused === WINDOWS.EQUALIZER,
-  closed: !state.windows.equalizer,
   contextMenuSelected: state.presetsContextMenu.selected,
   shade: state.display.equalizerShade,
   volume: state.media.volume,
