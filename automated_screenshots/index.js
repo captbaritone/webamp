@@ -6,7 +6,22 @@ const config = {
   equalizer: true,
   playlist: true,
   hideAbout: true,
-  noMarquee: true
+  noMarquee: true,
+  audioUrl: null,
+  initialState: {
+    media: {
+      status: "PLAYING",
+      kbps: 128,
+      khz: 44,
+      length: 5,
+      timeElapsed: 1,
+      channels: 2,
+      name: "1. DJ Mike Llama - Llama Whippin' Intro"
+    },
+    display: {
+      working: false
+    }
+  }
 };
 
 (async () => {
@@ -37,6 +52,7 @@ const config = {
     console.log("Writing screenshot to", screenshotFile);
     await page.screenshot({ path: screenshotFile });
     await page.close();
+    break;
   }
   browser.close();
 })();
