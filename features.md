@@ -36,4 +36,6 @@
 * Slider background uses a different sprite background depending upon value
 * Shade mode with three states for each slider hande (center state should be wider for volume?)
 * EQ levels actually effect the sound
-* Parse and create binary .eqf files to import/export eq levels.
+* Parse and create binary .eqf files to import/export eq levels
+* Set all bands to top/mid/bottom with a single click
+* Splined visualization of EQ levels
