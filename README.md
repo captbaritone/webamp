@@ -18,6 +18,8 @@ supported](http://caniuse.com/#feat=audio-api).
 - "Shade" mini-mode
 - "Doubled" mode, where the main window is twice as large: `Ctrl-D`
 
+A more detailed list of features can be found in [features.md](./features.md).
+
 ## Development
 
     yarn
