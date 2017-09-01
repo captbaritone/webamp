@@ -418,7 +418,9 @@ exports[`MainWindow renders to snapshot 1`] = `
       onClick={[Function]}
     />
     <div
+      className=""
       id="playlist-button"
+      onClick={[Function]}
     />
   </div>
   <input
