@@ -83,7 +83,7 @@ export class MainWindow extends React.Component {
       <div
         id="main-window"
         className={className}
-        onClick={this.handleClick}
+        onMouseDown={this.handleClick}
         onDragEnter={this.supress}
         onDragOver={this.supress}
         onDrop={this.handleDrop}

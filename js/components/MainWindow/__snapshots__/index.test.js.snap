@@ -4,10 +4,10 @@ exports[`MainWindow renders to snapshot 1`] = `
 <div
   className="window stop selected draggable loading"
   id="main-window"
-  onClick={[Function]}
   onDragEnter={[Function]}
   onDragOver={[Function]}
   onDrop={[Function]}
+  onMouseDown={[Function]}
 >
   <div
     className="selected title-bard draggable"

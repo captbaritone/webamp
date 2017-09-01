@@ -50,7 +50,7 @@ const EqualizerWindow = props => {
     <div
       id="equalizer-window"
       className={className}
-      onClick={props.focusWindow}
+      onMouseDown={props.focusWindow}
     >
       {props.shade ? (
         <div className="draggable">
