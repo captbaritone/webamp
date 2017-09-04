@@ -7,7 +7,8 @@ import {
   parseViscolors,
   parseIni,
   normalize,
-  denormalize
+  denormalize,
+  segment
 } from "./utils";
 
 const fixture = filename =>
@@ -133,4 +134,25 @@ test("normalize", () => {
 test("denormalize", () => {
   expect(denormalize(1)).toBe(1);
   expect(denormalize(100)).toBe(64);
+});
+
+describe("segment", () => {
+  it("can handle min", () => {
+    expect(segment(0, 100, 0, [0, 1, 2])).toBe(0);
+    expect(segment(1, 100, 1, [0, 1, 2])).toBe(0);
+    expect(segment(-1, 100, -1, [0, 1, 2])).toBe(0);
+  });
+  it("can handle max", () => {
+    expect(segment(0, 100, 100, [0, 1, 2])).toBe(2);
+    expect(segment(1, 100, 100, [0, 1, 2])).toBe(2);
+    expect(segment(-1, 100, 100, [0, 1, 2])).toBe(2);
+  });
+  it("can handle mid", () => {
+    expect(segment(0, 2, 1, [0, 1, 2])).toBe(1);
+    expect(segment(0, 2, 1.5, [0, 1, 2])).toBe(1);
+    expect(segment(-1, 2, 0.5, [0, 1, 2])).toBe(1);
+  });
+  it("can handle mid", () => {
+    expect(segment(-100, 100, -100, ["left", "center", "right"])).toBe("left");
+  });
 });

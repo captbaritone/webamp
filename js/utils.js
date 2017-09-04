@@ -91,3 +91,7 @@ export const merge = (target, source) => {
   Object.assign(target || {}, source);
   return target;
 };
+
+// Maps a value in a range (defined my min/max) to the corresponding value in the array `newValues`.
+export const segment = (min, max, value, newValues) =>
+  newValues[Math.floor((value - min) / (max - min) * (newValues.length - 1))];

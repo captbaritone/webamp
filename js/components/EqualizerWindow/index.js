@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import classnames from "classnames";
 import Volume from "../Volume";
 import Balance from "../Balance";
+import { segment } from "../../utils";
 
 import { BANDS, WINDOWS } from "../../constants";
 import {
@@ -42,10 +43,9 @@ const EqualizerWindow = props => {
     draggable: true
   });
 
-  const v = Math.round(volume);
-  const eqVolumeClassName = v === 50 ? "center" : v > 50 ? "right" : "left";
-  const b = Math.round(balance);
-  const eqBalanceClassName = b === 0 ? "center" : v > 0 ? "right" : "left";
+  const classes = ["left", "center", "right"];
+  const eqVolumeClassName = segment(0, 100, volume, classes);
+  const eqBalanceClassName = segment(-100, 100, balance, classes);
   return (
     <div
       id="equalizer-window"
