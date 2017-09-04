@@ -15,7 +15,9 @@ import {
   STOP_WORKING,
   TOGGLE_REPEAT,
   TOGGLE_SHUFFLE,
-  UPDATE_TIME_ELAPSED
+  UPDATE_TIME_ELAPSED,
+  SET_EQ_OFF,
+  SET_EQ_ON
 } from "./actionTypes";
 
 export default media => store => {
@@ -91,6 +93,12 @@ export default media => store => {
         } else {
           media.setEqBand(action.band, action.value);
         }
+        break;
+      case SET_EQ_OFF:
+        media.disableEq();
+        break;
+      case SET_EQ_ON:
+        media.enableEq();
         break;
     }
     return next(action);

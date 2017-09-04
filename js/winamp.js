@@ -15,7 +15,7 @@ fileInput.type = "file";
 fileInput.style.display = "none";
 
 export default {
-  media: Media.init(fileInput),
+  media: new Media(fileInput),
   fileInput: fileInput,
   init: function(options) {
     this.fileInput.addEventListener("change", e => {

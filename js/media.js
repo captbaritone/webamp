@@ -2,28 +2,27 @@
 import { BANDS } from "./constants";
 import MyFile from "./myFile";
 
-export default {
-  _context: new (window.AudioContext || window.webkitAudioContext)(),
-  _source: null,
-  _buffer: null,
-  _callbacks: {
-    waiting: function() {},
-    stopWaiting: function() {},
-    playing: function() {},
-    timeupdate: function() {},
-    visualizerupdate: function() {},
-    ended: function() {},
-    fileLoaded: function() {}
-  },
-  _startTime: 0,
-  _position: 0,
-  _balance: 0,
-  _playing: false,
-  _loop: false,
-  autoPlay: false,
-  name: null,
-
-  init: function(fileInput) {
+export default class Media {
+  constructor(fileInput) {
+    this._context = new (window.AudioContext || window.webkitAudioContext)();
+    this._source = null;
+    this._buffer = null;
+    this._callbacks = {
+      waiting: function() {},
+      stopWaiting: function() {},
+      playing: function() {},
+      timeupdate: function() {},
+      visualizerupdate: function() {},
+      ended: function() {},
+      fileLoaded: function() {}
+    };
+    this._startTime = 0;
+    this._position = 0;
+    this._balance = 0;
+    this._playing = false;
+    this._loop = false;
+    this.autoPlay = false;
+    this.name = null;
     this.fileInput = fileInput;
 
     // The _source node has to be recreated each time it's stopped or
@@ -57,9 +56,11 @@ export default {
     //                    | <analyser>
     //                    |
     //                 preamp
-    //                    |
-    //             [biquadFilters]
-    //                    |
+    //                    |_____________
+    //                    |             \
+    //           [...biquadFilters]     | <-- Optional bypass
+    //                    | ____________/
+    //                    |/
     //    (split using createChannelSplitter)
     //                    |
     //                   / \
@@ -117,10 +118,10 @@ export default {
     // Kick off the animation loop
     this._draw(0);
     return this;
-  },
+  }
 
   // Load from bufferArray
-  loadBuffer: function(buffer, loadedCallback) {
+  loadBuffer(buffer, loadedCallback) {
     this.stop();
     this._callbacks.waiting();
 
@@ -138,36 +139,42 @@ export default {
     };
     // Decode the target file into an arrayBuffer and pass it to loadBuffer
     this._context.decodeAudioData(buffer, loadAudioBuffer.bind(this), error);
-  },
+  }
 
   /* Properties */
-  duration: function() {
+  duration() {
     return this._buffer.duration;
-  },
-  timeElapsed: function() {
+  }
+
+  timeElapsed() {
     return this._position;
-  },
-  timeRemaining: function() {
+  }
+
+  timeRemaining() {
     return this.duration() - this.timeElapsed();
-  },
-  percentComplete: function() {
+  }
+
+  percentComplete() {
     return this.timeElapsed() / this.duration() * 100;
-  },
-  channels: function() {
+  }
+
+  channels() {
     if (!this._buffer) {
       return 0;
     }
     return this._buffer.numberOfChannels;
-  },
-  sampleRate: function() {
+  }
+
+  sampleRate() {
     return this._buffer.sampleRate;
-  },
+  }
 
   /* Actions */
-  previous: function() {
+  previous() {
     // Implement this when we support playlists
-  },
-  play: function(position) {
+  }
+
+  play(position) {
     if (this._playing) {
       // So we don't get a race condition with _position getting overwritten
       this.pause();
@@ -185,46 +192,47 @@ export default {
       this._playing = true;
       this._callbacks.playing();
     }
-  },
-  pause: function() {
+  }
+
+  pause() {
     if (!this._playing) {
       return;
     }
     this._silence();
     this._updatePosition();
-  },
+  }
 
-  stop: function() {
+  stop() {
     this._silence();
     this._position = 0;
-  },
+  }
 
-  _silence: function() {
+  _silence() {
     if (this._source) {
       this._source.stop(0);
       this._source = null;
     }
     this._playing = false;
-  },
+  }
 
   /* Actions with arguments */
-  seekToPercentComplete: function(percent) {
+  seekToPercentComplete(percent) {
     const seekTime = this.duration() * (percent / 100);
     this.seekToTime(seekTime);
-  },
+  }
 
   // From 0-1
-  setVolume: function(volume) {
+  setVolume(volume) {
     this._gainNode.gain.value = volume / 100;
-  },
+  }
 
   // From 0-1
-  setPreamp: function(value) {
+  setPreamp(value) {
     this._preamp.gain.value = value / 100;
-  },
+  }
 
   // From -100 to 100
-  setBalance: function(balance) {
+  setBalance(balance) {
     let changeVal = Math.abs(balance) / 100;
 
     // Hack for Firefox. Having either channel set to 0 seems to revert us
@@ -245,67 +253,77 @@ export default {
       this._rightGain.gain.value = 1;
     }
     this._balance = balance;
-  },
+  }
 
-  setEqBand: function(band, value) {
+  setEqBand(band, value) {
     const db = value / 100 * 24 - 12;
     this.bands[band].gain.value = db;
-  },
+  }
 
-  toggleRepeat: function() {
+  disableEq() {
+    this._preamp.disconnect();
+    this._preamp.connect(this._chanSplit);
+  }
+
+  enableEq() {
+    this._preamp.disconnect();
+    this._preamp.connect(this.bands[BANDS[0]]);
+  }
+
+  toggleRepeat() {
     this._loop = !this._loop;
-  },
+  }
 
-  toggleShuffle: function() {
+  toggleShuffle() {
     // Implement this when we support playlists
-  },
+  }
 
   /* Listeners */
-  addEventListener: function(event, callback) {
+  addEventListener(event, callback) {
     this._callbacks[event] = callback;
-  },
+  }
 
-  seekToTime: function(time) {
+  seekToTime(time) {
     // Make sure we are within range
     // TODO: Use clamp
     time = Math.min(time, this.duration());
     time = Math.max(time, 0);
     this.play(time);
-  },
+  }
 
-  loadFromFileReference: function(fileReference) {
+  loadFromFileReference(fileReference) {
     const file = new MyFile();
     file.setFileReference(fileReference);
     this.autoPlay = true;
     this.name = file.name;
     file.processBuffer(this._loadBuffer.bind(this));
-  },
+  }
 
   // Used only for the initial load, since it must have a CORS header
-  loadFromUrl: function(url, fileName) {
+  loadFromUrl(url, fileName) {
     const file = new MyFile();
     this.name = fileName;
     file.setUrl(url, fileName);
     file.processBuffer(this._loadBuffer.bind(this));
-  },
+  }
 
   /* Listeners */
-  _loadBuffer: function(buffer) {
+  _loadBuffer(buffer) {
     // Note, this will not happen right away
     this.loadBuffer(buffer, this._callbacks.fileLoaded);
-  },
+  }
 
   // There is probably a more reasonable way to do this, rather than having
   // it always running.
-  _draw: function() {
+  _draw() {
     if (this._playing) {
       this._updatePosition();
       this._callbacks.timeupdate();
     }
     window.requestAnimationFrame(this._draw.bind(this));
-  },
+  }
 
-  _updatePosition: function() {
+  _updatePosition() {
     this._position = this._context.currentTime - this._startTime;
     if (this._position >= this._buffer.duration && this._playing) {
       // Idealy we could use _source.loop, but it makes updating the position tricky
@@ -317,4 +335,4 @@ export default {
       }
     }
   }
-};
+}
