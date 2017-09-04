@@ -168,7 +168,7 @@ const presetsContextMenu = (state, action) => {
 const equalizer = (state, action) => {
   if (!state) {
     state = {
-      on: false,
+      on: true,
       auto: false,
       sliders: {
         preamp: 50

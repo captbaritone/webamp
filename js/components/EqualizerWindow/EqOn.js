@@ -11,4 +11,6 @@ const EqOn = props => {
   return <div id="on" className={className} onClick={props.toggleEq} />;
 };
 
-export default connect(state => state.equalizer, { toggleEq })(EqOn);
+const mapStateToProps = state => ({ on: state.equalizer.on });
+
+export default connect(mapStateToProps, { toggleEq })(EqOn);
