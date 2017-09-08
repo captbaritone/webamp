@@ -147,7 +147,7 @@ const imageSelectors = {
   MAIN_TITLE_BAR: ["#title-bar"],
   MAIN_TITLE_BAR_SELECTED: [".selected #title-bar"],
   MAIN_EASTER_EGG_TITLE_BAR: [".llama #title-bar"],
-  MAIN_EASTER_EGG_TITLE_BAR_SELECTED: [".llama #title-bar.selected"],
+  MAIN_EASTER_EGG_TITLE_BAR_SELECTED: [".llama.selected #title-bar"],
   MAIN_OPTIONS_BUTTON: ["#title-bar #option"],
   MAIN_OPTIONS_BUTTON_DEPRESSED: [
     "#title-bar #option:active",

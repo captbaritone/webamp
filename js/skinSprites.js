@@ -393,7 +393,7 @@ export default {
     {
       name: "MAIN_EASTER_EGG_TITLE_BAR",
       x: 27,
-      y: 61,
+      y: 72,
       width: 275,
       height: 14
     },
