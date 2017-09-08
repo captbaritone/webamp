@@ -137,16 +137,15 @@ export function loadMediaFromUrl(url, name) {
 }
 
 export function setSkinFromFile(skinFile) {
-  return dispatch => {
+  return async dispatch => {
     dispatch({ type: START_LOADING });
-    skinParser(skinFile).then(skinData =>
-      dispatch({
-        type: SET_SKIN_DATA,
-        skinImages: skinData.images,
-        skinColors: skinData.colors,
-        skinPlaylistStyle: skinData.playlistStyle
-      })
-    );
+    const skinData = await skinParser(skinFile);
+    dispatch({
+      type: SET_SKIN_DATA,
+      skinImages: skinData.images,
+      skinColors: skinData.colors,
+      skinPlaylistStyle: skinData.playlistStyle
+    });
   };
 }
 
