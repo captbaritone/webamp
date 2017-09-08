@@ -30,7 +30,7 @@ module.exports = {
     noParse: [/jszip\.js$/]
   },
   entry: {
-    winamp: "./js/index.js",
+    winamp: ["./js/index.js"],
     skinExplorer: "./js/skinExplorer.js"
   },
   output: {
