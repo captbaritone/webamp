@@ -153,7 +153,7 @@ describe("segment", () => {
     expect(segment(1, 3, 2.5, [0, 1, 2])).toBe(2);
     expect(segment(-1, 2, 0.5, [0, 1, 2])).toBe(1);
   });
-  it("can handle mid", () => {
+  it("can handle various real wold cases", () => {
     expect(segment(-100, 100, -100, ["left", "center", "right"])).toBe("left");
     expect(segment(0, 100, 88, ["left", "center", "right"])).toBe("right");
     expect(segment(0, 100, 50, ["left", "center", "right"])).toBe("center");
