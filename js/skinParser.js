@@ -90,7 +90,7 @@ const defaultPlaylistStyle = {
 };
 
 // A promise that, given a File object, returns a skin style object
-async function parseSkin(zipFile) {
+async function skinParser(zipFile) {
   const buffer = await genBufferFromFile(zipFile);
   const zip = await JSZip.loadAsync(buffer);
   const imageObjs = await Promise.all(
@@ -115,4 +115,4 @@ async function parseSkin(zipFile) {
   return { colors, playlistStyle, images };
 }
 
-export default parseSkin;
+export default skinParser;
