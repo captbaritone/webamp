@@ -100,7 +100,7 @@ async function skinParser(zipFile) {
   );
 
   // Merge all the objects into a single object. Tests assert that sprite keys are unique.
-  const images = imageObjs.reduce(Object.assign, {});
+  const images = imageObjs.reduce((prev, img) => Object.assign(prev, img), {});
 
   const viscolorContent = await genFileFromZip(zip, "VISCOLOR", "txt", "text");
   const colors = viscolorContent
