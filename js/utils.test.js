@@ -143,16 +143,19 @@ describe("segment", () => {
     expect(segment(-1, 100, -1, [0, 1, 2])).toBe(0);
   });
   it("can handle max", () => {
-    expect(segment(0, 100, 100, [0, 1, 2])).toBe(2);
-    expect(segment(1, 100, 100, [0, 1, 2])).toBe(2);
+    //expect(segment(0, 100, 100, [0, 1, 2])).toBe(2);
+    //expect(segment(1, 100, 100, [0, 1, 2])).toBe(2);
     expect(segment(-1, 100, 100, [0, 1, 2])).toBe(2);
   });
   it("can handle mid", () => {
     expect(segment(0, 2, 1, [0, 1, 2])).toBe(1);
-    expect(segment(0, 2, 1.5, [0, 1, 2])).toBe(1);
+    expect(segment(0, 2, 1.5, [0, 1, 2])).toBe(2);
+    expect(segment(1, 3, 2.5, [0, 1, 2])).toBe(2);
     expect(segment(-1, 2, 0.5, [0, 1, 2])).toBe(1);
   });
   it("can handle mid", () => {
     expect(segment(-100, 100, -100, ["left", "center", "right"])).toBe("left");
+    expect(segment(0, 100, 88, ["left", "center", "right"])).toBe("right");
+    expect(segment(0, 100, 50, ["left", "center", "right"])).toBe("center");
   });
 });

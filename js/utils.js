@@ -92,6 +92,16 @@ export const merge = (target, source) => {
   return target;
 };
 
-// Maps a value in a range (defined my min/max) to the corresponding value in the array `newValues`.
-export const segment = (min, max, value, newValues) =>
-  newValues[Math.floor((value - min) / (max - min) * (newValues.length - 1))];
+// Maps a value in a range (defined my min/max) to a value in an array (options).
+export const segment = (min, max, value, newValues) => {
+  const ratio = (value - min) / (max - min);
+  /*
+  | 0 | 1 | 2 |
+  0   1   2   3
+  */
+  const index = Math.min(
+    Math.floor(ratio * newValues.length),
+    newValues.length - 1 // Special case for 100%
+  );
+  return newValues[index];
+};
