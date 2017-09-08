@@ -119,6 +119,12 @@ const imageSelectors = {
     "#equalizer-balance.right::-webkit-slider-thumb",
     "#equalizer-balance.right::-moz-range-thumb"
   ],
+  EQ_MAXIMIZE_BUTTON_ACTIVE: ["#equalizer-shade:active"],
+  EQ_MINIMIZE_BUTTON_ACTIVE: [
+    "#equalizer-window.shade #equalizer-shade:active"
+  ],
+  EQ_CLOSE_BUTTON: ["#equalizer-window.selected #equalizer-close"],
+  EQ_CLOSE_BUTTON_ACTIVE: ["#equalizer-window #equalizer-close:active"],
   MAIN_POSITION_SLIDER_BACKGROUND: ["#position"],
   MAIN_POSITION_SLIDER_THUMB: [
     "#position::-webkit-slider-thumb",

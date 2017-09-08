@@ -29,9 +29,12 @@ module.exports = {
     ],
     noParse: [/jszip\.js$/]
   },
-  entry: ["./js/index.js"],
+  entry: {
+    winamp: "./js/index.js",
+    skinExplorer: "./js/skinExplorer.js"
+  },
   output: {
-    filename: "winamp.js",
+    filename: "[name].js",
     publicPath: "/built/",
     path: path.resolve(__dirname, "built")
   }
