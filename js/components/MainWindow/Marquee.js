@@ -35,7 +35,19 @@ export const getMediaText = (name, duration) =>
 export const getDoubleSizeModeText = enabled =>
   `${enabled ? "Disable" : "Enable"} doublesize mode`;
 
-// TODO: Handle EQ text
+const formatHz = hz => (hz < 1000 ? `${hz}HZ` : `${hz / 1000}KHZ`);
+
+// Format a number as a string, ensuring it has a + or - sign
+const ensureSign = num => (num > 0 ? `+${num}` : num.toString());
+
+// Round to 1 and exactly 1 decimal point
+const roundToTenths = num => (Math.round(num * 10) / 10).toFixed(1);
+
+export const getEqText = (band, level) => {
+  const db = roundToTenths((level - 50) / 50 * 12);
+  const label = band === "preamp" ? "Preamp" : formatHz(band);
+  return `EQ: ${label} ${ensureSign(db)} DB`;
+};
 
 const isLong = text => text.length > 30;
 
@@ -93,6 +105,9 @@ class Marquee extends React.Component {
         );
       case "double":
         return getDoubleSizeModeText(this.props.display.doubled);
+      case "eq":
+        const band = this.props.userInput.bandFocused;
+        return getEqText(band, this.props.equalizer.sliders[band]);
       default:
         break;
     }

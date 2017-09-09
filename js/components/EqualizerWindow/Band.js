@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import Slider from "rc-slider/lib/Slider";
+import { SET_BAND_FOCUS, UNSET_FOCUS } from "../../actionTypes";
 
 const MAX_VALUE = 100;
 // Given a value between 1-100, return the sprite number (0-27)
@@ -18,7 +19,14 @@ export const spriteOffsets = number => {
 
 const Handle = () => <div className="rc-slider-handle" />;
 
-const Band = ({ value, backgroundPosition, id, onChange }) => (
+const Band = ({
+  value,
+  backgroundPosition,
+  id,
+  onChange,
+  handleMouseDown,
+  handleMouseUp
+}) => (
   <div id={id} className="band" style={{ backgroundPosition }}>
     <Slider
       type="range"
@@ -28,6 +36,8 @@ const Band = ({ value, backgroundPosition, id, onChange }) => (
       value={MAX_VALUE - value}
       vertical
       onChange={onChange}
+      onBeforeChange={handleMouseDown}
+      onAfterChange={handleMouseUp}
       handle={Handle}
     />
   </div>
@@ -46,4 +56,10 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps)(Band);
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  handleMouseDown: () =>
+    dispatch({ type: SET_BAND_FOCUS, input: "eq", bandFocused: ownProps.band }),
+  handleMouseUp: () => dispatch({ type: UNSET_FOCUS })
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Band);

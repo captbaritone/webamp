@@ -7,6 +7,7 @@ import {
   SET_BALANCE,
   SET_BAND_VALUE,
   SET_FOCUS,
+  SET_BAND_FOCUS,
   SET_FOCUSED_WINDOW,
   SET_MEDIA,
   SET_SCRUB_POSITION,
@@ -37,18 +38,20 @@ import {
 } from "./actionTypes";
 import { equalizerEnabled, playlistEnabled } from "./config";
 
-export const userInput = (state, action) => {
-  if (!state) {
-    return {
-      focus: null,
-      scrubPosition: 0
-    };
-  }
+const defaultUserInput = {
+  focus: null,
+  bandFocused: null,
+  scrubPosition: 0
+};
+
+export const userInput = (state = defaultUserInput, action) => {
   switch (action.type) {
     case SET_FOCUS:
-      return { ...state, focus: action.input };
+      return { ...state, focus: action.input, bandFocused: null };
+    case SET_BAND_FOCUS:
+      return { ...state, focus: action.input, bandFocused: action.bandFocused };
     case UNSET_FOCUS:
-      return { ...state, focus: null };
+      return { ...state, focus: null, bandFocused: null };
     case SET_SCRUB_POSITION:
       return { ...state, scrubPosition: action.position };
     default:
