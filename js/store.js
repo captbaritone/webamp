@@ -3,6 +3,7 @@ import reducer from "./reducers";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import mediaMiddleware from "./mediaMiddleware";
+import analyticsMiddleware from "./analyticsMiddleware";
 import { merge } from "./utils";
 
 const getStore = (winamp, stateOverrides) => {
@@ -16,7 +17,9 @@ const getStore = (winamp, stateOverrides) => {
   return createStore(
     reducer,
     initialState,
-    composeWithDevTools(applyMiddleware(thunk, mediaMiddleware(winamp.media)))
+    composeWithDevTools(
+      applyMiddleware(thunk, mediaMiddleware(winamp.media), analyticsMiddleware)
+    )
   );
 };
 

@@ -12,6 +12,6 @@ config.plugins = (config.plugins || []).concat([
   })
 ]);
 
-config.entry.winamp.push("./js/googleAnalytics.min.js");
+config.entry.winamp.unshift("./js/googleAnalytics.min.js");
 
 module.exports = config;
