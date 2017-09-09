@@ -10,8 +10,7 @@ import {
   snapWithin,
   applySnap,
   snapDiff,
-  boundingBox,
-  traceConnection
+  boundingBox
 } from "./snapUtils";
 
 describe("side functions", () => {
