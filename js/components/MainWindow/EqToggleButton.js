@@ -9,6 +9,7 @@ const EqToggleButton = props => (
     id="equalizer-button"
     className={classnames({ selected: props.equalizer })}
     onClick={props.handleClick}
+    title="Toggle Graphical Equalizer"
   />
 );
 

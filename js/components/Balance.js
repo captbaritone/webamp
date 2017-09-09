@@ -17,6 +17,7 @@ const Balance = props => (
     onChange={props.handleChange}
     onMouseDown={props.showMarquee}
     onMouseUp={props.hideMarquee}
+    title="Panning Bar"
   />
 );
 

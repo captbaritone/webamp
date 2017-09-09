@@ -16,6 +16,7 @@ exports[`MainWindow renders to snapshot 1`] = `
     <div
       id="option"
       onClick={[Function]}
+      title="Winamp Menu"
     >
       <div
         className="bottom"
@@ -153,10 +154,12 @@ exports[`MainWindow renders to snapshot 1`] = `
     <div
       id="shade"
       onClick={[Function]}
+      title="Toggle Windowshade Mode"
     />
     <div
       id="close"
       onClick={[Function]}
+      title="Close"
     />
   </div>
   <div
@@ -179,6 +182,7 @@ exports[`MainWindow renders to snapshot 1`] = `
         id="button-d"
         onMouseDown={[Function]}
         onMouseUp={[Function]}
+        title="Toggle Doublesize Mode"
       />
       <div
         id="button-v"
@@ -227,6 +231,7 @@ exports[`MainWindow renders to snapshot 1`] = `
       className="text"
       id="marquee"
       onMouseDown={[Function]}
+      title="Song Title"
     >
       <div
         style={
@@ -389,6 +394,7 @@ exports[`MainWindow renders to snapshot 1`] = `
         "backgroundPosition": "0 -195px",
       }
     }
+    title="Volume Bar"
     type="range"
     value={50}
   />
@@ -406,6 +412,7 @@ exports[`MainWindow renders to snapshot 1`] = `
         "backgroundPosition": "0 --15px",
       }
     }
+    title="Panning Bar"
     type="range"
     value={0}
   />
@@ -416,11 +423,13 @@ exports[`MainWindow renders to snapshot 1`] = `
       className=""
       id="equalizer-button"
       onClick={[Function]}
+      title="Toggle Graphical Equalizer"
     />
     <div
       className=""
       id="playlist-button"
       onClick={[Function]}
+      title="Toggle Playlist Editor"
     />
   </div>
   <input
@@ -433,6 +442,7 @@ exports[`MainWindow renders to snapshot 1`] = `
     onMouseDown={[Function]}
     onMouseUp={[Function]}
     step="1"
+    title="Seeking Bar"
     type="range"
     value={0}
   />
@@ -441,26 +451,32 @@ exports[`MainWindow renders to snapshot 1`] = `
   >
     <div
       id="previous"
+      title="Previous Track"
     />
     <div
       id="play"
       onClick={[Function]}
+      title="Play"
     />
     <div
       id="pause"
       onClick={[Function]}
+      title="Pause"
     />
     <div
       id="stop"
       onClick={[Function]}
+      title="Stop"
     />
     <div
       id="next"
+      title="Next Track"
     />
   </div>
   <div
     id="eject"
     onClick={[Function]}
+    title="Open File(s)"
   />
   <div
     className="shuffle-repeat"
@@ -469,17 +485,20 @@ exports[`MainWindow renders to snapshot 1`] = `
       className=""
       id="shuffle"
       onClick={[Function]}
+      title="Toggle Shuffle"
     />
     <div
       className=""
       id="repeat"
       onClick={[Function]}
+      title="Toggle Repeat"
     />
   </div>
   <a
     href="https://github.com/captbaritone/winamp2-js"
     id="about"
     target="blank"
+    title="About"
   />
 </div>
 `;

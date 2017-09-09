@@ -9,6 +9,7 @@ const PlaylistToggleButton = props => (
     id="playlist-button"
     className={classnames({ selected: props.playlist })}
     onClick={props.handleClick}
+    title="Toggle Playlist Editor"
   />
 );
 

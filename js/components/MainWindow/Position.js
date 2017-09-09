@@ -36,6 +36,7 @@ const Position = ({
       onInput={setPosition}
       onMouseUp={seekToPercentComplete}
       onMouseDown={setPosition}
+      title="Seeking Bar"
     />
   );
 };

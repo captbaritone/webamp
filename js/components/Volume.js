@@ -17,6 +17,7 @@ const Volume = props => (
     onChange={props.setVolume}
     onMouseDown={props.showMarquee}
     onMouseUp={props.hideMarquee}
+    title="Volume Bar"
   />
 );
 

@@ -4,11 +4,11 @@ import { play, pause, stop } from "../../actionCreators";
 
 const ActionButtons = props => (
   <div className="actions">
-    <div id="previous" />
-    <div id="play" onClick={props.play} />
-    <div id="pause" onClick={props.pause} />
-    <div id="stop" onClick={props.stop} />
-    <div id="next" />
+    <div id="previous" title="Previous Track" />
+    <div id="play" onClick={props.play} title="Play" />
+    <div id="pause" onClick={props.pause} title="Pause" />
+    <div id="stop" onClick={props.stop} title="Stop" />
+    <div id="next" title="Next Track" />
   </div>
 );
 

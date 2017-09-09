@@ -8,6 +8,7 @@ const Shuffle = ({ shuffle, handleClick }) => (
     id="shuffle"
     className={classnames({ selected: shuffle })}
     onClick={handleClick}
+    title="Toggle Shuffle"
   />
 );
 const mapStateToProps = state => ({

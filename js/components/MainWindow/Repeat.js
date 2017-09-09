@@ -9,6 +9,7 @@ const Repeat = props => (
     id="repeat"
     className={classnames({ selected: props.repeat })}
     onClick={props.handleClick}
+    title="Toggle Repeat"
   />
 );
 

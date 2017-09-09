@@ -89,7 +89,7 @@ export class MainWindow extends React.Component {
         onDrop={this.handleDrop}
       >
         <div id="title-bar" className="selected title-bard draggable">
-          <div id="option" onClick={this.props.toggleMenu}>
+          <div id="option" onClick={this.props.toggleMenu} title="Winamp Menu">
             <MainContextMenu fileInput={this.props.fileInput} />
           </div>
           <ShadeTime />
@@ -130,6 +130,7 @@ export class MainWindow extends React.Component {
           id="about"
           target="blank"
           href="https://github.com/captbaritone/winamp2-js"
+          title="About"
         />
       </div>
     );

@@ -14,6 +14,7 @@ const ClutterBar = props => (
     <div id="button-a" />
     <div id="button-i" />
     <div
+      title={"Toggle Doublesize Mode"}
       id="button-d"
       className={classnames({ selected: props.doubled })}
       onMouseUp={props.handleMouseUp}

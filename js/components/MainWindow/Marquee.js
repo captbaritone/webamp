@@ -147,7 +147,12 @@ class Marquee extends React.Component {
     );
     const marginLeft = pixelUnits(-offset);
     return (
-      <div id="marquee" className="text" onMouseDown={this.handleMouseDown}>
+      <div
+        id="marquee"
+        className="text"
+        onMouseDown={this.handleMouseDown}
+        title="Song Title"
+      >
         <CharacterString style={{ marginLeft }}>
           {loopText(text)}
         </CharacterString>
