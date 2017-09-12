@@ -44,8 +44,9 @@
   display: block;
 }
 #winamp2-js #context-menu li.parent:after {
-  text-align: right;
-  /* content: '\25b8'; */
+  float: right;
+  content: "\25b8";
+  margin-right: -12px;
 }
 #winamp2-js #context-menu li a {
   text-decoration: none;
