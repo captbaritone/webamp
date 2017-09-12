@@ -76,11 +76,12 @@ class Marquee extends React.Component {
     this.state = { stepping: true, dragOffset: 0 };
     this.handleMouseDown = this.handleMouseDown.bind(this);
     this.getText = this.getText.bind(this);
+    this.stepHandle = null;
   }
 
   componentDidMount() {
     const step = () => {
-      setTimeout(() => {
+      this.stepHandle = setTimeout(() => {
         if (this.state.stepping) {
           this.props.dispatch({ type: STEP_MARQUEE });
         }
@@ -89,6 +90,12 @@ class Marquee extends React.Component {
     };
     if (!noMarquee) {
       step();
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.stepHandle) {
+      clearTimeout(this.stepHandle);
     }
   }
 
