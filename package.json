@@ -47,7 +47,7 @@
     "eslint-plugin-react": "7.3.0",
     "file-loader": "^0.11.0",
     "gzip-size-cli": "^2.0.0",
-    "jest-cli": "^21.0.1",
+    "jest-cli": "^21.0.2",
     "react-test-renderer": "16.0.0-rc.2",
     "style-loader": "^0.18.2",
     "travis-weigh-in": "^1.0.2",
