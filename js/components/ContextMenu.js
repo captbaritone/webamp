@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import classnames from "classnames";
 
@@ -25,14 +26,14 @@ export const LinkNode = props => (
 );
 
 LinkNode.propTypes = {
-  label: React.PropTypes.string.isRequired,
-  href: React.PropTypes.string.isRequired
+  label: PropTypes.string.isRequired,
+  href: PropTypes.string.isRequired
 };
 
 export const Node = props => <li {...props}>{props.label}</li>;
 
 Node.propTypes = {
-  label: React.PropTypes.string.isRequired
+  label: PropTypes.string.isRequired
 };
 
 export class ContextMenu extends React.Component {
@@ -56,8 +57,8 @@ export class ContextMenu extends React.Component {
 }
 
 ContextMenu.propTypes = {
-  closeMenu: React.PropTypes.func.isRequired,
-  children: React.PropTypes.any.isRequired,
-  top: React.PropTypes.bool,
-  bottom: React.PropTypes.bool
+  closeMenu: PropTypes.func.isRequired,
+  children: PropTypes.any.isRequired,
+  top: PropTypes.bool,
+  bottom: PropTypes.bool
 };
