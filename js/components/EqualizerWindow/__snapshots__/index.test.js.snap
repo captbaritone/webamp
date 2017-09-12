@@ -1,0 +1,516 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EqualizerWindow renders to snapshot 1`] = `
+<div
+  className="window draggable"
+  id="equalizer-window"
+  onMouseDown={[Function]}
+>
+  <div>
+    <div
+      className="equalizer-top title-bar draggable"
+    >
+      <div
+        id="equalizer-shade"
+        onClick={[Function]}
+      />
+      <div
+        id="equalizer-close"
+        onClick={[Function]}
+      />
+    </div>
+    <div
+      className="selected"
+      id="on"
+      onClick={[Function]}
+    />
+    <div
+      className=""
+      id="auto"
+      onClick={[Function]}
+    />
+    <canvas
+      height="32"
+      id="eqGraph"
+      width="152"
+    />
+    <div
+      id="presets"
+      onClick={[Function]}
+    >
+      <div
+        className="top"
+      >
+        <ul
+          id="context-menu"
+        >
+          <li
+            label="Load"
+            onClick={[Function]}
+          >
+            Load
+          </li>
+          <li
+            label="Save"
+            onClick={[Function]}
+          >
+            Save
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div
+      className="band"
+      id="preamp"
+      style={
+        Object {
+          "backgroundPosition": "-0px -65px",
+        }
+      }
+    >
+      <div
+        className="rc-slider rc-slider-vertical"
+        onMouseDown={[Function]}
+        onTouchStart={[Function]}
+        style={undefined}
+      >
+        <div
+          className="rc-slider-rail"
+          style={Object {}}
+        />
+        <div
+          className="rc-slider-track"
+          style={
+            Object {
+              "bottom": "0%",
+              "height": "50%",
+              "visibility": "visible",
+            }
+          }
+        />
+        <div
+          className="rc-slider-step"
+        />
+        <div
+          className="rc-slider-handle"
+        />
+        <div
+          className="rc-slider-mark"
+        />
+      </div>
+    </div>
+    <div
+      id="plus12db"
+      onClick={[Function]}
+    />
+    <div
+      id="zerodb"
+      onClick={[Function]}
+    />
+    <div
+      id="minus12db"
+      onClick={[Function]}
+    />
+    <div
+      className="band"
+      id="band-60"
+      style={
+        Object {
+          "backgroundPosition": "-0px -65px",
+        }
+      }
+    >
+      <div
+        className="rc-slider rc-slider-vertical"
+        onMouseDown={[Function]}
+        onTouchStart={[Function]}
+        style={undefined}
+      >
+        <div
+          className="rc-slider-rail"
+          style={Object {}}
+        />
+        <div
+          className="rc-slider-track"
+          style={
+            Object {
+              "bottom": "0%",
+              "height": "50%",
+              "visibility": "visible",
+            }
+          }
+        />
+        <div
+          className="rc-slider-step"
+        />
+        <div
+          className="rc-slider-handle"
+        />
+        <div
+          className="rc-slider-mark"
+        />
+      </div>
+    </div>
+    <div
+      className="band"
+      id="band-170"
+      style={
+        Object {
+          "backgroundPosition": "-0px -65px",
+        }
+      }
+    >
+      <div
+        className="rc-slider rc-slider-vertical"
+        onMouseDown={[Function]}
+        onTouchStart={[Function]}
+        style={undefined}
+      >
+        <div
+          className="rc-slider-rail"
+          style={Object {}}
+        />
+        <div
+          className="rc-slider-track"
+          style={
+            Object {
+              "bottom": "0%",
+              "height": "50%",
+              "visibility": "visible",
+            }
+          }
+        />
+        <div
+          className="rc-slider-step"
+        />
+        <div
+          className="rc-slider-handle"
+        />
+        <div
+          className="rc-slider-mark"
+        />
+      </div>
+    </div>
+    <div
+      className="band"
+      id="band-310"
+      style={
+        Object {
+          "backgroundPosition": "-0px -65px",
+        }
+      }
+    >
+      <div
+        className="rc-slider rc-slider-vertical"
+        onMouseDown={[Function]}
+        onTouchStart={[Function]}
+        style={undefined}
+      >
+        <div
+          className="rc-slider-rail"
+          style={Object {}}
+        />
+        <div
+          className="rc-slider-track"
+          style={
+            Object {
+              "bottom": "0%",
+              "height": "50%",
+              "visibility": "visible",
+            }
+          }
+        />
+        <div
+          className="rc-slider-step"
+        />
+        <div
+          className="rc-slider-handle"
+        />
+        <div
+          className="rc-slider-mark"
+        />
+      </div>
+    </div>
+    <div
+      className="band"
+      id="band-600"
+      style={
+        Object {
+          "backgroundPosition": "-0px -65px",
+        }
+      }
+    >
+      <div
+        className="rc-slider rc-slider-vertical"
+        onMouseDown={[Function]}
+        onTouchStart={[Function]}
+        style={undefined}
+      >
+        <div
+          className="rc-slider-rail"
+          style={Object {}}
+        />
+        <div
+          className="rc-slider-track"
+          style={
+            Object {
+              "bottom": "0%",
+              "height": "50%",
+              "visibility": "visible",
+            }
+          }
+        />
+        <div
+          className="rc-slider-step"
+        />
+        <div
+          className="rc-slider-handle"
+        />
+        <div
+          className="rc-slider-mark"
+        />
+      </div>
+    </div>
+    <div
+      className="band"
+      id="band-1000"
+      style={
+        Object {
+          "backgroundPosition": "-0px -65px",
+        }
+      }
+    >
+      <div
+        className="rc-slider rc-slider-vertical"
+        onMouseDown={[Function]}
+        onTouchStart={[Function]}
+        style={undefined}
+      >
+        <div
+          className="rc-slider-rail"
+          style={Object {}}
+        />
+        <div
+          className="rc-slider-track"
+          style={
+            Object {
+              "bottom": "0%",
+              "height": "50%",
+              "visibility": "visible",
+            }
+          }
+        />
+        <div
+          className="rc-slider-step"
+        />
+        <div
+          className="rc-slider-handle"
+        />
+        <div
+          className="rc-slider-mark"
+        />
+      </div>
+    </div>
+    <div
+      className="band"
+      id="band-3000"
+      style={
+        Object {
+          "backgroundPosition": "-0px -65px",
+        }
+      }
+    >
+      <div
+        className="rc-slider rc-slider-vertical"
+        onMouseDown={[Function]}
+        onTouchStart={[Function]}
+        style={undefined}
+      >
+        <div
+          className="rc-slider-rail"
+          style={Object {}}
+        />
+        <div
+          className="rc-slider-track"
+          style={
+            Object {
+              "bottom": "0%",
+              "height": "50%",
+              "visibility": "visible",
+            }
+          }
+        />
+        <div
+          className="rc-slider-step"
+        />
+        <div
+          className="rc-slider-handle"
+        />
+        <div
+          className="rc-slider-mark"
+        />
+      </div>
+    </div>
+    <div
+      className="band"
+      id="band-6000"
+      style={
+        Object {
+          "backgroundPosition": "-0px -65px",
+        }
+      }
+    >
+      <div
+        className="rc-slider rc-slider-vertical"
+        onMouseDown={[Function]}
+        onTouchStart={[Function]}
+        style={undefined}
+      >
+        <div
+          className="rc-slider-rail"
+          style={Object {}}
+        />
+        <div
+          className="rc-slider-track"
+          style={
+            Object {
+              "bottom": "0%",
+              "height": "50%",
+              "visibility": "visible",
+            }
+          }
+        />
+        <div
+          className="rc-slider-step"
+        />
+        <div
+          className="rc-slider-handle"
+        />
+        <div
+          className="rc-slider-mark"
+        />
+      </div>
+    </div>
+    <div
+      className="band"
+      id="band-12000"
+      style={
+        Object {
+          "backgroundPosition": "-0px -65px",
+        }
+      }
+    >
+      <div
+        className="rc-slider rc-slider-vertical"
+        onMouseDown={[Function]}
+        onTouchStart={[Function]}
+        style={undefined}
+      >
+        <div
+          className="rc-slider-rail"
+          style={Object {}}
+        />
+        <div
+          className="rc-slider-track"
+          style={
+            Object {
+              "bottom": "0%",
+              "height": "50%",
+              "visibility": "visible",
+            }
+          }
+        />
+        <div
+          className="rc-slider-step"
+        />
+        <div
+          className="rc-slider-handle"
+        />
+        <div
+          className="rc-slider-mark"
+        />
+      </div>
+    </div>
+    <div
+      className="band"
+      id="band-14000"
+      style={
+        Object {
+          "backgroundPosition": "-0px -65px",
+        }
+      }
+    >
+      <div
+        className="rc-slider rc-slider-vertical"
+        onMouseDown={[Function]}
+        onTouchStart={[Function]}
+        style={undefined}
+      >
+        <div
+          className="rc-slider-rail"
+          style={Object {}}
+        />
+        <div
+          className="rc-slider-track"
+          style={
+            Object {
+              "bottom": "0%",
+              "height": "50%",
+              "visibility": "visible",
+            }
+          }
+        />
+        <div
+          className="rc-slider-step"
+        />
+        <div
+          className="rc-slider-handle"
+        />
+        <div
+          className="rc-slider-mark"
+        />
+      </div>
+    </div>
+    <div
+      className="band"
+      id="band-16000"
+      style={
+        Object {
+          "backgroundPosition": "-0px -65px",
+        }
+      }
+    >
+      <div
+        className="rc-slider rc-slider-vertical"
+        onMouseDown={[Function]}
+        onTouchStart={[Function]}
+        style={undefined}
+      >
+        <div
+          className="rc-slider-rail"
+          style={Object {}}
+        />
+        <div
+          className="rc-slider-track"
+          style={
+            Object {
+              "bottom": "0%",
+              "height": "50%",
+              "visibility": "visible",
+            }
+          }
+        />
+        <div
+          className="rc-slider-step"
+        />
+        <div
+          className="rc-slider-handle"
+        />
+        <div
+          className="rc-slider-mark"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
