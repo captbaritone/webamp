@@ -17,8 +17,9 @@ const assetBase = process.env.NODE_ENV === "production" ? cdnUrl : "";
 export const skinUrl = or(config.skinUrl, `${assetBase}skins/base-2.91.wsz`);
 export const audioUrl = or(config.audioUrl, `${assetBase}mp3/llama-2.91.mp3`);
 export const playlistEnabled = config.playlist || false;
-// Turn on the incomplete equalizer window
-export const equalizerEnabled = config.equalizer || false;
 export const noMarquee = config.noMarquee || false;
 export const hideAbout = config.hideAbout || false;
 export const initialState = config.initialState || undefined;
+
+// Leave this flag in place in case we need to disable quickly.
+export const equalizerEnabled = true;
