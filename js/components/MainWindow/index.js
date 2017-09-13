@@ -4,6 +4,8 @@ import classnames from "classnames";
 
 import { WINDOWS } from "../../constants";
 
+import MiniTime from "../MiniTime";
+
 import ActionButtons from "./ActionButtons";
 import MainBalance from "./MainBalance";
 import Close from "./Close";
@@ -19,7 +21,6 @@ import MonoStereo from "./MonoStereo";
 import Position from "./Position";
 import Repeat from "./Repeat";
 import Shade from "./Shade";
-import ShadeTime from "./ShadeTime";
 import Shuffle from "./Shuffle";
 import Time from "./Time";
 import Visualizer from "./Visualizer";
@@ -92,7 +93,7 @@ export class MainWindow extends React.Component {
           <div id="option" onClick={this.props.toggleMenu} title="Winamp Menu">
             <MainContextMenu fileInput={this.props.fileInput} />
           </div>
-          <ShadeTime />
+          {shade && <MiniTime />}
           <div id="minimize" />
           <Shade />
           <Close />

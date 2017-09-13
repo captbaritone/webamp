@@ -32,7 +32,8 @@ const App = ({ winamp, loading, closed, equalizer, playlist }) => {
         <MainWindow fileInput={winamp.fileInput} mediaPlayer={winamp.media} />
         {equalizerEnabled &&
         equalizer && <EqualizerWindow fileInput={winamp.fileInput} />}
-        {playlistEnabled && playlist && <PlaylistWindow />}
+        {playlistEnabled &&
+        playlist && <PlaylistWindow fileInput={winamp.fileInput} />}
       </WindowManager>
     </div>
   );

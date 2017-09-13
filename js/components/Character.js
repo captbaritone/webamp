@@ -7,8 +7,11 @@ export const characterClassName = char =>
     .toLowerCase()
     .charCodeAt(0)}`;
 
-const Character = ({ children: char, id }) => (
-  <div id={id} className={`character ${characterClassName(char)}`}>
+const Character = ({ children: char, className, ...passThrough }) => (
+  <div
+    {...passThrough}
+    className={`${className} character ${characterClassName(char)}`}
+  >
     {char}
   </div>
 );
