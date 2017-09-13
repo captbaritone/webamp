@@ -4,6 +4,7 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
 <div
   className="window draggable"
   id="playlist-window"
+  onMouseDown={[Function]}
   style={
     Object {
       "backgroundColor": undefined,
@@ -48,7 +49,34 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
         />
         <div
           className="playlist-bottom-right"
-        />
+        >
+          <div
+            className="playlist-action-buttons"
+          >
+            <div
+              className="playlist-previous-button"
+            />
+            <div
+              className="playlist-play-button"
+              onClick={[Function]}
+            />
+            <div
+              className="playlist-pause-button"
+              onClick={[Function]}
+            />
+            <div
+              className="playlist-stop-button"
+              onClick={[Function]}
+            />
+            <div
+              className="playlist-next-butto"
+            />
+            <div
+              className="playlist-eject-button"
+              onClick={[Function]}
+            />
+          </div>
+        </div>
       </div>
     </div>
   </div>

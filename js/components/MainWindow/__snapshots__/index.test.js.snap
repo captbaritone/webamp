@@ -113,42 +113,6 @@ exports[`MainWindow renders to snapshot 1`] = `
       </div>
     </div>
     <div
-      className="countdown"
-      id="shade-time"
-      onClick={[Function]}
-    >
-      <div
-        className="character character-NaN"
-        id="shade-minus-sign"
-      >
-        
-      </div>
-      <div
-        className="character character-48"
-        id="shade-minute-first-digit"
-      >
-        0
-      </div>
-      <div
-        className="character character-48"
-        id="shade-minute-second-digit"
-      >
-        0
-      </div>
-      <div
-        className="character character-48"
-        id="shade-second-first-digit"
-      >
-        0
-      </div>
-      <div
-        className="character character-48"
-        id="shade-second-second-digit"
-      >
-        0
-      </div>
-    </div>
-    <div
       id="minimize"
     />
     <div
@@ -241,68 +205,57 @@ exports[`MainWindow renders to snapshot 1`] = `
         }
       >
         <div
-          className="character character-119"
-          id={undefined}
+          className=" character character-119"
         >
           W
         </div>
         <div
-          className="character character-105"
-          id={undefined}
+          className=" character character-105"
         >
           i
         </div>
         <div
-          className="character character-110"
-          id={undefined}
+          className=" character character-110"
         >
           n
         </div>
         <div
-          className="character character-97"
-          id={undefined}
+          className=" character character-97"
         >
           a
         </div>
         <div
-          className="character character-109"
-          id={undefined}
+          className=" character character-109"
         >
           m
         </div>
         <div
-          className="character character-112"
-          id={undefined}
+          className=" character character-112"
         >
           p
         </div>
         <div
-          className="character character-32"
-          id={undefined}
+          className=" character character-32"
         >
            
         </div>
         <div
-          className="character character-50"
-          id={undefined}
+          className=" character character-50"
         >
           2
         </div>
         <div
-          className="character character-46"
-          id={undefined}
+          className=" character character-46"
         >
           .
         </div>
         <div
-          className="character character-57"
-          id={undefined}
+          className=" character character-57"
         >
           9
         </div>
         <div
-          className="character character-49"
-          id={undefined}
+          className=" character character-49"
         >
           1
         </div>
@@ -313,26 +266,22 @@ exports[`MainWindow renders to snapshot 1`] = `
       id="kbps"
     >
       <div
-        className="character character-110"
-        id={undefined}
+        className=" character character-110"
       >
         n
       </div>
       <div
-        className="character character-117"
-        id={undefined}
+        className=" character character-117"
       >
         u
       </div>
       <div
-        className="character character-108"
-        id={undefined}
+        className=" character character-108"
       >
         l
       </div>
       <div
-        className="character character-108"
-        id={undefined}
+        className=" character character-108"
       >
         l
       </div>
@@ -342,26 +291,22 @@ exports[`MainWindow renders to snapshot 1`] = `
       id="khz"
     >
       <div
-        className="character character-110"
-        id={undefined}
+        className=" character character-110"
       >
         n
       </div>
       <div
-        className="character character-117"
-        id={undefined}
+        className=" character character-117"
       >
         u
       </div>
       <div
-        className="character character-108"
-        id={undefined}
+        className=" character character-108"
       >
         l
       </div>
       <div
-        className="character character-108"
-        id={undefined}
+        className=" character character-108"
       >
         l
       </div>

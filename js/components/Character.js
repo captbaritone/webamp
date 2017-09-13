@@ -10,7 +10,7 @@ export const characterClassName = char =>
 const Character = ({ children: char, className, ...passThrough }) => (
   <div
     {...passThrough}
-    className={`${className} character ${characterClassName(char)}`}
+    className={`${className || ""} character ${characterClassName(char)}`}
   >
     {char}
   </div>
