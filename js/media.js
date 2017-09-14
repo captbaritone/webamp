@@ -52,8 +52,6 @@ export default class Media {
     // (Note, source is created and connected later)
     //
     //                 <source>
-    //                    |\
-    //                    | <analyser>
     //                    |
     //                 preamp
     //                    |_____________
@@ -65,7 +63,7 @@ export default class Media {
     //                    |
     //                   / \
     //                  /   \
-    //             leftGain rightGain
+    //           leftGain   rightGain
     //                  \   /
     //                   \ /
     //                    |
@@ -73,6 +71,8 @@ export default class Media {
     //                    |
     //                chanMerge
     //                    |
+    //                    |\
+    //                    | <analyser>
     //                   gain
     //                    |
     //               destination
@@ -182,8 +182,8 @@ export default class Media {
     if (this._buffer) {
       this._source = this._context.createBufferSource();
       this._source.buffer = this._buffer;
-      this._source.connect(this._analyser);
       this._source.connect(this._preamp);
+      this._chanMerge.connect(this._analyser);
 
       this._position =
         typeof position !== "undefined" ? position : this._position;
