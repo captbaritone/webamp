@@ -159,11 +159,11 @@ const imageSelectors = {
     "#title-bar #option:active",
     "#title-bar #option:selected"
   ],
-  MAIN_MINIMIZE_BUTTON: ["#title-bar #minimize"],
+  MAIN_MINIMIZE_BUTTON: [".selected #title-bar #minimize"],
   MAIN_MINIMIZE_BUTTON_DEPRESSED: ["#title-bar #minimize:active"],
-  MAIN_SHADE_BUTTON: ["#title-bar #shade"],
+  MAIN_SHADE_BUTTON: [".selected #title-bar #shade"],
   MAIN_SHADE_BUTTON_DEPRESSED: ["#title-bar #shade:active"],
-  MAIN_CLOSE_BUTTON: ["#title-bar #close"],
+  MAIN_CLOSE_BUTTON: [".selected #title-bar #close"],
   MAIN_CLOSE_BUTTON_DEPRESSED: ["#title-bar #close:active"],
   MAIN_CLUTTER_BAR_BACKGROUND: ["#clutter-bar"],
   MAIN_CLUTTER_BAR_BACKGROUND_DISABLED: ["#clutter-bar.disabled"],
@@ -189,7 +189,7 @@ const imageSelectors = {
   ],
   MAIN_SHADE_BACKGROUND: [".shade #title-bar"],
   MAIN_SHADE_BACKGROUND_SELECTED: [".shade.selected #title-bar"],
-  MAIN_SHADE_BUTTON_SELECTED: [".shade #title-bar #shade"],
+  MAIN_SHADE_BUTTON_SELECTED: [".shade.selected #title-bar #shade"],
   MAIN_SHADE_BUTTON_SELECTED_DEPRESSED: [".shade #title-bar #shade:active"],
   MAIN_SHADE_POSITION_BACKGROUND: [".shade #position"],
   MAIN_SHADE_POSITION_THUMB: [
