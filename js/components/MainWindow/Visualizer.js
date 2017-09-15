@@ -21,8 +21,8 @@ class Visualizer extends React.Component {
   componentDidMount() {
     this.canvasCtx = this.canvas.getContext("2d");
     this.canvasCtx.imageSmoothingEnabled = false;
-    this.width = this.canvas.width * 1; // Cast to int
-    this.height = this.canvas.height * 1; // Cast to int
+    this.width = Number(this.canvas.width);
+    this.height = Number(this.canvas.height);
 
     // Off-screen canvas for pre-rendering the background
     this.bgCanvas = document.createElement("canvas");
@@ -156,25 +156,17 @@ class Visualizer extends React.Component {
     height = Math.round(height) * 2;
     if (height > 0) {
       const y = 32 - height;
+      const ctx = this.canvasCtx;
       // Draw the gray peak line
-      this.canvasCtx.drawImage(this.barCanvas, 0, 0, 6, 2, x, y - 2, 6, 2);
+      ctx.drawImage(this.barCanvas, 0, 0, 6, 2, x, y - 2, 6, 2);
       // Draw the gradient
-      this.canvasCtx.drawImage(
-        this.barCanvas,
-        0,
-        y,
-        6,
-        height,
-        x,
-        y,
-        6,
-        height
-      );
+      ctx.drawImage(this.barCanvas, 0, y, 6, height, x, y, 6, height);
     }
   }
 
   _paintBarFrame() {
     this.props.analyser.getByteFrequencyData(this.dataArray);
+    // We are printing bars off the right of the canvas :(
     for (let j = 0; j < this.bufferLength; j++) {
       const height = this.dataArray[j] * (14 / 256);
       this._printBar(j * 8, height);
