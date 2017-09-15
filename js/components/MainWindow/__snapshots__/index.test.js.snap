@@ -365,7 +365,7 @@ exports[`MainWindow renders to snapshot 1`] = `
     className="windows"
   >
     <div
-      className=""
+      className="selected"
       id="equalizer-button"
       onClick={[Function]}
       title="Toggle Graphical Equalizer"

@@ -39,6 +39,9 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
         </div>
       </div>
       <div
+        className="playlist-scrollbar"
+      />
+      <div
         className="playlist-bottom"
       >
         <div
