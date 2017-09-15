@@ -70,6 +70,8 @@ const imageSelectors = {
   PLAYLIST_TOP_RIGHT_CORNER_SELECTED: [".selected .playlist-top-right"],
   PLAYLIST_LEFT_TILE: [".playlist-left"],
   PLAYLIST_RIGHT_TILE: [".playlist-right"],
+  PLAYLIST_SCROLL_HANDLE: [".playlist-scrollbar"],
+  PLAYLIST_SCROLL_HANDLE_SELECTED: [".playlist-scrollbar:active"],
   PLAYLIST_BOTTOM_TILE: [".playlist-bottom"],
   PLAYLIST_BOTTOM_LEFT_CORNER: [".playlist-bottom-left"],
   PLAYLIST_BOTTOM_RIGHT_CORNER: [".playlist-bottom-right"],

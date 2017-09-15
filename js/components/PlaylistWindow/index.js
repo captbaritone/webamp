@@ -37,6 +37,8 @@ const PlaylistWindow = props => {
               <div id="shade-playlist" />
             </div>
           </div>
+          {/* Eventual content lives here */}
+          <div className="playlist-scrollbar" />
           <div className="playlist-bottom">
             <div className="playlist-bottom-left" />
             <div className="playlist-visualizer" />

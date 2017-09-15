@@ -42,6 +42,14 @@
   background-repeat: repeat-y;
   height: 100%;
   background-position: top right;
+  padding-right: 7px;
+  padding-top: 0px;
+}
+
+#winamp2-js .playlist-scrollbar {
+  height: 100%;
+  float: right;
+  width: 8px;
 }
 
 #winamp2-js .playlist-bottom {
