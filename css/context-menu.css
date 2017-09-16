@@ -1,5 +1,11 @@
+#winamp2-js .doubled #context-menu {
+  -moz-transform: scale(0.5);
+  -moz-transform-origin: top left;
+  -webkit-transform: scale(0.5);
+  -webkit-transform-origin: top left;
+}
+
 #winamp2-js #context-menu {
-  display: none;
   left: 0px;
 }
 
@@ -11,11 +17,7 @@
   top: 0px;
 }
 
-#winamp2-js div:active > div > #context-menu {
-  display: block;
-}
-
-#winamp2-js .selected > #context-menu {
+#winamp2-js .selected #context-menu {
   display: block;
 }
 
@@ -43,6 +45,7 @@
   padding: 1px 18px 3px 18px;
   display: block;
 }
+
 #winamp2-js #context-menu li.parent:after {
   float: right;
   content: "\25b8";

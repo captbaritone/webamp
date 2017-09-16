@@ -12,19 +12,6 @@
   -ms-interpolation-mode: nearest-neighbor; /* IE (non-standard property) */
 }
 
-#winamp2-js #main-window.doubled #context-menu {
-  -moz-transform: scale(0.5);
-  -moz-transform-origin: top left;
-  -webkit-transform: scale(0.5);
-  -webkit-transform-origin: top left;
-}
-
-#winamp2-js #main-window.loading {
-  background-image: none;
-  background-color: #ffffff;
-  border: 2px solid #dddddd;
-}
-
 #winamp2-js #loading {
   color: white;
   text-align: center;
@@ -92,7 +79,7 @@
   cursor: url("../cursors/TITLEBAR.PNG"), auto;
 }
 
-#winamp2-js #option,
+#winamp2-js #option-context,
 #winamp2-js #minimize,
 #winamp2-js #shade,
 #winamp2-js #close {
@@ -104,6 +91,11 @@
 }
 
 #winamp2-js #title-bar #option {
+  width: 100%;
+  height: 100%;
+}
+
+#winamp2-js #title-bar #option-context {
   left: 6px;
 }
 #winamp2-js #title-bar #minimize {

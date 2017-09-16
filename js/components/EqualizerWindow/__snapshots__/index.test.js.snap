@@ -35,28 +35,21 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
       width="152"
     />
     <div
-      id="presets"
-      onClick={[Function]}
+      id="presets-context"
     >
       <div
-        className="top"
+        className="handle"
+        onClick={[Function]}
+        style={
+          Object {
+            "height": "100%",
+            "width": "100%",
+          }
+        }
       >
-        <ul
-          id="context-menu"
-        >
-          <li
-            label="Load"
-            onClick={[Function]}
-          >
-            Load
-          </li>
-          <li
-            label="Save"
-            onClick={[Function]}
-          >
-            Save
-          </li>
-        </ul>
+        <div
+          id="presets"
+        />
       </div>
     </div>
     <div

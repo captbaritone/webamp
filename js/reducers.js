@@ -1,8 +1,6 @@
 import { combineReducers } from "redux";
 import { BANDS, WINDOWS } from "./constants";
 import {
-  CLOSE_CONTEXT_MENU,
-  CLOSE_PRESETS_CONTEXT_MENU,
   CLOSE_WINAMP,
   SET_BALANCE,
   SET_BAND_VALUE,
@@ -17,8 +15,6 @@ import {
   START_WORKING,
   STEP_MARQUEE,
   STOP_WORKING,
-  TOGGLE_CONTEXT_MENU,
-  TOGGLE_PRESETS_CONTEXT_MENU,
   TOGGLE_DOUBLESIZE_MODE,
   TOGGLE_EQUALIZER_WINDOW,
   CLOSE_EQUALIZER_WINDOW,
@@ -137,37 +133,6 @@ const display = (state = defaultDisplayState, action) => {
   }
 };
 
-const defaultContextMenuState = {
-  selected: false
-};
-
-const contextMenu = (state = defaultContextMenuState, action) => {
-  switch (action.type) {
-    case TOGGLE_CONTEXT_MENU:
-      return { ...state, selected: !state.selected };
-    case CLOSE_CONTEXT_MENU:
-      return { ...state, selected: false };
-    default:
-      return state;
-  }
-};
-
-const presetsContextMenu = (state, action) => {
-  if (!state) {
-    return {
-      selected: false
-    };
-  }
-  switch (action.type) {
-    case TOGGLE_PRESETS_CONTEXT_MENU:
-      return { ...state, selected: !state.selected };
-    case CLOSE_PRESETS_CONTEXT_MENU:
-      return { ...state, selected: false };
-    default:
-      return state;
-  }
-};
-
 const equalizer = (state, action) => {
   if (!state) {
     state = {
@@ -255,8 +220,6 @@ const reducer = combineReducers({
   userInput,
   windows,
   display,
-  contextMenu,
-  presetsContextMenu,
   equalizer,
   media
 });

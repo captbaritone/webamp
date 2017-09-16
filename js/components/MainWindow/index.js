@@ -26,7 +26,7 @@ import Time from "./Time";
 import Visualizer from "./Visualizer";
 import MainVolume from "./MainVolume";
 
-import { SET_FOCUSED_WINDOW, TOGGLE_CONTEXT_MENU } from "../../actionTypes";
+import { SET_FOCUSED_WINDOW } from "../../actionTypes";
 
 import { loadFileFromReference } from "../../actionCreators";
 
@@ -40,7 +40,7 @@ export class MainWindow extends React.Component {
   }
 
   handleClick() {
-    this.props.dispatch({ type: SET_FOCUSED_WINDOW, window: WINDOWS.MAIN });
+    this.props.setFocus();
   }
 
   supress(e) {
@@ -90,9 +90,7 @@ export class MainWindow extends React.Component {
         onDrop={this.handleDrop}
       >
         <div id="title-bar" className="selected title-bard draggable">
-          <div id="option" onClick={this.props.toggleMenu} title="Winamp Menu">
-            <MainContextMenu fileInput={this.props.fileInput} />
-          </div>
+          <MainContextMenu fileInput={this.props.fileInput} />
           {shade && <MiniTime />}
           <div id="minimize" />
           <Shade />
@@ -148,12 +146,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  toggleMenu: e => {
-    dispatch({ type: TOGGLE_CONTEXT_MENU });
-    // TODO: Consider binding to a ref instead.
-    // https://stackoverflow.com/a/24421834
-    e.nativeEvent.stopImmediatePropagation();
-  },
-  dispatch
+  setFocus: () => {
+    dispatch({ type: SET_FOCUSED_WINDOW, window: WINDOWS.MAIN });
+  }
 });
 export default connect(mapStateToProps, mapDispatchToProps)(MainWindow);

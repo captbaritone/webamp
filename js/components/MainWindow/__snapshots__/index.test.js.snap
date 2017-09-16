@@ -14,102 +14,22 @@ exports[`MainWindow renders to snapshot 1`] = `
     id="title-bar"
   >
     <div
-      id="option"
-      onClick={[Function]}
-      title="Winamp Menu"
+      id="option-context"
     >
       <div
-        className="bottom"
+        className="handle"
+        onClick={[Function]}
+        style={
+          Object {
+            "height": "100%",
+            "width": "100%",
+          }
+        }
       >
-        <ul
-          id="context-menu"
-        >
-          <li>
-            <a
-              href="https://github.com/captbaritone/winamp2-js"
-              label="Winamp2-js"
-              target="_blank"
-            >
-              Winamp2-js
-            </a>
-          </li>
-          <li
-            className="hr"
-          >
-            <hr />
-          </li>
-          <li
-            label="Play File..."
-            onClick={[Function]}
-          >
-            Play File...
-          </li>
-          <li
-            className="parent"
-          >
-            <ul>
-              <li
-                label="Load Skin..."
-                onClick={[Function]}
-              >
-                Load Skin...
-              </li>
-              <li
-                className="hr"
-              >
-                <hr />
-              </li>
-              <li
-                label="<Base Skin>"
-                onClick={[Function]}
-              >
-                &lt;Base Skin&gt;
-              </li>
-              <li
-                label="Mac OSX v1.5 (Aqua)"
-                onClick={[Function]}
-              >
-                Mac OSX v1.5 (Aqua)
-              </li>
-              <li
-                label="TopazAmp"
-                onClick={[Function]}
-              >
-                TopazAmp
-              </li>
-              <li
-                label="Vizor"
-                onClick={[Function]}
-              >
-                Vizor
-              </li>
-              <li
-                label="XMMS Turquoise "
-                onClick={[Function]}
-              >
-                XMMS Turquoise 
-              </li>
-              <li
-                label="Zaxon Remake"
-                onClick={[Function]}
-              >
-                Zaxon Remake
-              </li>
-            </ul>
-            Skins
-          </li>
-          <li
-            className="hr"
-          >
-            <hr />
-          </li>
-          <li
-            label="Exit"
-            onClick={[Function]}
-          >
-            Exit
-          </li>
-        </ul>
+        <div
+          id="option"
+          title="Winamp Menu"
+        />
       </div>
     </div>
     <div

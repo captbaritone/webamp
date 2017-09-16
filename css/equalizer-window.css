@@ -112,12 +112,17 @@
   left: 40px;
 }
 
-#winamp2-js #presets {
+#winamp2-js #presets-context {
   position: absolute;
   width: 44px;
   height: 12px;
   top: 18px;
   left: 217px;
+}
+
+#winamp2-js #presets {
+  width: 100%;
+  height: 100%;
 }
 
 #winamp2-js #eqGraph {
