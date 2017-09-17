@@ -74,7 +74,7 @@
     "redux": "^3.5.2",
     "redux-devtools-extension": "^2.13.2",
     "redux-thunk": "^2.1.0",
-    "webpack": "^3.0.0",
+    "webpack": "^3.6.0",
     "winamp-eqf": "^1.0.0"
   },
   "jest": {
