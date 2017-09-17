@@ -55,7 +55,10 @@ class WindowManager extends React.Component {
   }
 
   getRef(node) {
-    this.windowNodes.push(node);
+    // If we are unmounting, the node might be null;
+    if (node != null) {
+      this.windowNodes.push(node);
+    }
   }
 
   windows() {
