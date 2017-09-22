@@ -4,7 +4,7 @@
 
 A reimplementation of Winamp 2.9 in HTML5 and JavaScript.
 
-Works in modern versions of Firefox, Safari and Chrome. IE is [not
+Works in modern versions of Edge, Firefox, Safari and Chrome. IE is [not
 supported](http://caniuse.com/#feat=audio-api).
 
 ## Features
