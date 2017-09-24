@@ -112,6 +112,7 @@ export default class Media {
     this._rightGain.connect(this._chanMerge, 0, 1);
 
     this._chanMerge.connect(this._gainNode);
+    this._chanMerge.connect(this._analyser);
 
     this._gainNode.connect(this._context.destination);
 
@@ -183,7 +184,6 @@ export default class Media {
       this._source = this._context.createBufferSource();
       this._source.buffer = this._buffer;
       this._source.connect(this._preamp);
-      this._chanMerge.connect(this._analyser);
 
       this._position =
         typeof position !== "undefined" ? position : this._position;
