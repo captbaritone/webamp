@@ -52,7 +52,7 @@ export class MainWindow extends React.Component {
     this.supress(e);
     const { files } = e.dataTransfer;
     // TODO: Move this to an actionCreator
-    this.props.dispatch(loadFileFromReference(files[0]));
+    this.props.loadFileFromReference(files[0]);
   }
 
   render() {
@@ -145,9 +145,8 @@ const mapStateToProps = state => {
   return { status, loading, doubled, shade, llama, working, focused };
 };
 
-const mapDispatchToProps = dispatch => ({
-  setFocus: () => {
-    dispatch({ type: SET_FOCUSED_WINDOW, window: WINDOWS.MAIN });
-  }
-});
+const mapDispatchToProps = {
+  setFocus: () => ({ type: SET_FOCUSED_WINDOW, window: WINDOWS.MAIN }),
+  loadFileFromReference
+};
 export default connect(mapStateToProps, mapDispatchToProps)(MainWindow);
