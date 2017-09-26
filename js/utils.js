@@ -105,3 +105,6 @@ export const segment = (min, max, value, newValues) => {
   );
   return newValues[index];
 };
+
+export const arraysAreEqual = (a, b) =>
+  a.length === b.length && a.every((value, i) => value === b[i]);

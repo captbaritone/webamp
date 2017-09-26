@@ -16,6 +16,8 @@ import {
   TOGGLE_LLAMA_MODE
 } from "./actionTypes";
 
+import { arraysAreEqual } from "./utils";
+
 export default function(winamp, { dispatch }) {
   let keylog = [];
   const trigger = [
@@ -113,10 +115,13 @@ export default function(winamp, { dispatch }) {
     }
 
     // Easter Egg
-    keylog.push(e.keyCode);
-    keylog = keylog.slice(-10);
-    // TODO: Find a less stupid way to compare arrays.
-    if (keylog.toString() === trigger.toString()) {
+
+    // Ignore escape. Usually this get's swallowed by the browser, but not always.
+    if (e.keyCode !== 27) {
+      keylog.push(e.keyCode);
+      keylog = keylog.slice(-8);
+    }
+    if (arraysAreEqual(keylog, trigger)) {
       dispatch({ type: TOGGLE_LLAMA_MODE });
     }
   });
