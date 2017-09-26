@@ -14,14 +14,18 @@
     "tdd": "jest --watch",
     "deploy": "ssh jordaneldredge.com HASH=$HASH sh < deploy.sh",
     "revert": "ssh jordaneldredge.com sh < revert.sh",
-    "format":
-      "prettier --write js/**/*.js css/**/*.css webpack.config.js webpack.production.config.js"
+    "format": "prettier --write js/**/*.js css/**/*.css webpack.config.js webpack.production.config.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/captbaritone/winamp2-js.git"
   },
-  "keywords": ["Winamp", "HTML5", "audio", "web-auido-api"],
+  "keywords": [
+    "Winamp",
+    "HTML5",
+    "audio",
+    "web-auido-api"
+  ],
   "author": "Jordan Eldredge <jordan@jordaneldredge.com>",
   "license": "MIT",
   "bugs": {
@@ -64,8 +68,8 @@
     "prettier": "^1.6.0",
     "prop-types": "^15.5.10",
     "rc-slider": "^8.1.5",
-    "react": "16.0.0-rc.2",
-    "react-dom": "16.0.0-rc.2",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
     "react-redux": "^5.0.6",
     "redux": "^3.5.2",
     "redux-devtools-extension": "^2.13.2",
