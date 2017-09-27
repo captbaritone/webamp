@@ -14,18 +14,14 @@
     "tdd": "jest --watch",
     "deploy": "ssh jordaneldredge.com HASH=$HASH sh < deploy.sh",
     "revert": "ssh jordaneldredge.com sh < revert.sh",
-    "format": "prettier --write js/**/*.js css/**/*.css webpack.config.js webpack.production.config.js"
+    "format":
+      "prettier --write js/**/*.js css/**/*.css webpack.config.js webpack.production.config.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/captbaritone/winamp2-js.git"
   },
-  "keywords": [
-    "Winamp",
-    "HTML5",
-    "audio",
-    "web-auido-api"
-  ],
+  "keywords": ["Winamp", "HTML5", "audio", "web-auido-api"],
   "author": "Jordan Eldredge <jordan@jordaneldredge.com>",
   "license": "MIT",
   "bugs": {
@@ -63,6 +59,7 @@
     "cardinal-spline-js": "^2.3.6",
     "classnames": "^2.2.5",
     "eslint-plugin-import": "^2.7.0",
+    "html-webpack-plugin": "^2.30.1",
     "jest": "^21.2.0",
     "jszip": "^3.1.3",
     "prettier": "^1.6.0",

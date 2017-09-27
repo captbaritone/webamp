@@ -1,3 +1,4 @@
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 
 module.exports = {
@@ -29,13 +30,19 @@ module.exports = {
     ],
     noParse: [/jszip\.js$/]
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./index.ejs",
+      assetBase: ""
+    })
+  ],
   entry: {
-    winamp: ["./js/index.js"],
-    skinExplorer: "./js/skinExplorer.js"
+    winamp: ["./js/index.js"]
+    //skinExplorer: "./js/skinExplorer.js"
   },
   output: {
     filename: "[name].js",
-    publicPath: "/built/",
+    publicPath: "/",
     path: path.resolve(__dirname, "built")
   }
 };

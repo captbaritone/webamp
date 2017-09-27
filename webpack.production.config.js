@@ -1,7 +1,14 @@
-const config = require("./webpack.config");
+const webpackConfig = require("./webpack.config");
 const webpack = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { cdnUrl } = require("./package.json");
 
-config.plugins = (config.plugins || []).concat([
+webpackConfig.plugins = [
+  new HtmlWebpackPlugin({
+    template: "./index.ejs",
+    filename: "../index.html",
+    assetBase: cdnUrl
+  }),
   new webpack.DefinePlugin({
     "process.env": {
       NODE_ENV: JSON.stringify("production")
@@ -10,8 +17,9 @@ config.plugins = (config.plugins || []).concat([
   new webpack.optimize.UglifyJsPlugin({
     sourceMap: true
   })
-]);
+];
 
-config.entry.winamp.unshift("./js/googleAnalytics.min.js");
+webpackConfig.entry.winamp.unshift("./js/googleAnalytics.min.js");
+webpackConfig.output.publicPath = "built/";
 
-module.exports = config;
+module.exports = webpackConfig;
