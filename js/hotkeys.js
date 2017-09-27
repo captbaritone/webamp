@@ -120,9 +120,9 @@ export default function(winamp, { dispatch }) {
     if (e.keyCode !== 27) {
       keylog.push(e.keyCode);
       keylog = keylog.slice(-8);
-    }
-    if (arraysAreEqual(keylog, trigger)) {
-      dispatch({ type: TOGGLE_LLAMA_MODE });
+      if (arraysAreEqual(keylog, trigger)) {
+        dispatch({ type: TOGGLE_LLAMA_MODE });
+      }
     }
   });
 }
