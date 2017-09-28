@@ -40,6 +40,5 @@ if (new Browser(window).isCompatible) {
 
   new Hotkeys(winamp, store);
 } else {
-  document.getElementById("winamp").style.display = "none";
   document.getElementById("browser-compatibility").style.display = "block";
 }
