@@ -30,11 +30,9 @@ const Track = props => {
   );
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => ({});
-
 const mapStateToProps = state => {
   const { display: { skinPlaylistStyle } } = state;
   return { skinPlaylistStyle };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Track);
+export default connect(mapStateToProps)(Track);
