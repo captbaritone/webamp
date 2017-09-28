@@ -2,12 +2,14 @@
 #winamp2-js #playlist-window {
   height: 116px;
   width: 275px;
-  background-color: black;
+  display: flex;
+  flex-direction: column;
 }
 
 #winamp2-js .playlist-top {
   width: 100%;
   height: 20px;
+  position: relative;
 }
 
 #winamp2-js .playlist-top-left {
@@ -33,30 +35,44 @@
   right: 0;
 }
 
-#winamp2-js .playlist-left {
-  background-repeat: repeat-y;
-  height: 100%;
+#winamp2-js .playlist-middle {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  background-color: black;
 }
 
-#winamp2-js .playlist-right {
+#winamp2-js .playlist-middle-left {
   background-repeat: repeat-y;
-  height: 100%;
+  width: 12px;
+}
+
+#winamp2-js .playlist-middle-center {
+  flex-grow: 1;
+}
+
+#winamp2-js .playlist-middle-right {
+  background-repeat: repeat-y;
   background-position: top right;
-  padding-right: 7px;
-  padding-top: 0px;
+  width: 20px;
+  position: relative;
 }
 
 #winamp2-js .playlist-scrollbar {
   height: 100%;
-  float: right;
   width: 8px;
+  margin-left: 5px;
+}
+
+#winamp2-js .playlist-scrollbar-handle {
+  width: 8x;
+  height: 18px;
 }
 
 #winamp2-js .playlist-bottom {
   width: 100%;
   height: 38px;
-  position: absolute;
-  bottom: 0px;
+  position: relative;
 }
 
 #winamp2-js .playlist-bottom-left {

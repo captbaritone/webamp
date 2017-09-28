@@ -13,73 +13,99 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
   }
 >
   <div
-    className="playlist-left"
+    className="playlist-top"
   >
     <div
-      className="playlist-right"
+      className="playlist-top-left"
+    />
+    <div
+      className="playlist-top-title"
+    />
+    <div
+      className="playlist-top-right"
+    />
+  </div>
+  <div
+    className="playlist-middle"
+  >
+    <div
+      className="playlist-middle-left"
+    />
+    <div
+      className="playlist-middle-center"
+    />
+    <div
+      className="playlist-middle-right"
     >
       <div
-        className="playlist-top title-bar draggable"
+        className="rc-slider rc-slider-vertical playlist-scrollbar"
+        onMouseDown={[Function]}
+        onTouchStart={[Function]}
+        style={undefined}
       >
         <div
-          className="playlist-top-left draggable"
+          className="rc-slider-rail"
+          style={Object {}}
         />
         <div
-          className="playlist-top-title draggable"
+          className="rc-slider-track"
+          style={
+            Object {
+              "bottom": "0%",
+              "height": "0%",
+              "visibility": "visible",
+            }
+          }
         />
         <div
-          className="playlist-top-right draggable"
-        >
-          <div
-            id="close-playlist"
-          />
-          <div
-            id="shade-playlist"
-          />
-        </div>
+          className="rc-slider-step"
+        />
+        <div
+          className="playlist-scrollbar-handle"
+        />
+        <div
+          className="rc-slider-mark"
+        />
       </div>
+    </div>
+  </div>
+  <div
+    className="playlist-bottom"
+  >
+    <div
+      className="playlist-bottom-left"
+    />
+    <div
+      className="playlist-bottom-center"
+    />
+    <div
+      className="playlist-bottom-right"
+    >
       <div
-        className="playlist-scrollbar"
-      />
-      <div
-        className="playlist-bottom"
+        className="playlist-action-buttons"
       >
         <div
-          className="playlist-bottom-left"
+          className="playlist-previous-button"
         />
         <div
-          className="playlist-visualizer"
+          className="playlist-play-button"
+          onClick={[Function]}
         />
         <div
-          className="playlist-bottom-right"
-        >
-          <div
-            className="playlist-action-buttons"
-          >
-            <div
-              className="playlist-previous-button"
-            />
-            <div
-              className="playlist-play-button"
-              onClick={[Function]}
-            />
-            <div
-              className="playlist-pause-button"
-              onClick={[Function]}
-            />
-            <div
-              className="playlist-stop-button"
-              onClick={[Function]}
-            />
-            <div
-              className="playlist-next-butto"
-            />
-            <div
-              className="playlist-eject-button"
-              onClick={[Function]}
-            />
-          </div>
-        </div>
+          className="playlist-pause-button"
+          onClick={[Function]}
+        />
+        <div
+          className="playlist-stop-button"
+          onClick={[Function]}
+        />
+        <div
+          className="playlist-next-butto"
+        />
+        <div
+          className="playlist-eject-button"
+          onClick={[Function]}
+        />
       </div>
     </div>
   </div>
