@@ -32,7 +32,8 @@ import {
   UNSET_FOCUS,
   UPDATE_TIME_ELAPSED,
   SET_USER_MESSAGE,
-  UNSET_USER_MESSAGE
+  UNSET_USER_MESSAGE,
+  SET_PLAYLIST_SCROLL_POSITION
 } from "./actionTypes";
 import { playlistEnabled } from "./config";
 
@@ -98,7 +99,8 @@ const defaultDisplayState = {
   skinImages: {},
   skinColors: null,
   skinPlaylistStyle: {},
-  visualizerStyle: 2
+  visualizerStyle: 2,
+  playlistScrollPosition: 0
 };
 
 const display = (state = defaultDisplayState, action) => {
@@ -132,6 +134,8 @@ const display = (state = defaultDisplayState, action) => {
       };
     case TOGGLE_VISUALIZER_STYLE:
       return { ...state, visualizerStyle: (state.visualizerStyle + 1) % 3 };
+    case SET_PLAYLIST_SCROLL_POSITION:
+      return { ...state, playlistScrollPosition: action.position };
     default:
       return state;
   }

@@ -5,7 +5,10 @@ import Slider from "rc-slider/lib/Slider";
 
 import MiniTime from "../MiniTime";
 import { WINDOWS } from "../../constants";
-import { SET_FOCUSED_WINDOW } from "../../actionTypes";
+import {
+  SET_FOCUSED_WINDOW,
+  SET_PLAYLIST_SCROLL_POSITION
+} from "../../actionTypes";
 import { play, pause, stop, openFileDialog } from "../../actionCreators";
 
 import "../../../css/playlist-window.css";
@@ -13,7 +16,13 @@ import "../../../css/playlist-window.css";
 const Handle = () => <div className="playlist-scrollbar-handle" />;
 
 const PlaylistWindow = props => {
-  const { skinPlaylistStyle, focusPlaylist, focused } = props;
+  const {
+    skinPlaylistStyle,
+    focusPlaylist,
+    focused,
+    playlistScrollPosition,
+    setPlaylistScrollPosition
+  } = props;
   const style = {};
   if (props) {
     style.color = skinPlaylistStyle.Normal;
@@ -45,6 +54,8 @@ const PlaylistWindow = props => {
             min={0}
             max={100}
             step={1}
+            value={100 - playlistScrollPosition}
+            onChange={setPlaylistScrollPosition}
             vertical
             handle={Handle}
           />
@@ -81,12 +92,17 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   play: () => dispatch(play()),
   pause: () => dispatch(pause()),
   stop: () => dispatch(stop()),
-  openFileDialog: () => dispatch(openFileDialog(ownProps.fileInput))
+  openFileDialog: () => dispatch(openFileDialog(ownProps.fileInput)),
+  setPlaylistScrollPosition: position =>
+    dispatch({ type: SET_PLAYLIST_SCROLL_POSITION, position })
 });
 
 const mapStateToProps = state => {
-  const { windows: { focused }, display: { skinPlaylistStyle } } = state;
-  return { focused, skinPlaylistStyle };
+  const {
+    windows: { focused },
+    display: { skinPlaylistStyle, playlistScrollPosition }
+  } = state;
+  return { focused, skinPlaylistStyle, playlistScrollPosition };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlaylistWindow);

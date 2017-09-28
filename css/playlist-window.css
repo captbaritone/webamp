@@ -56,6 +56,8 @@
   background-position: top right;
   width: 20px;
   position: relative;
+  padding-bottom: 9px;
+  padding-top: 9px;
 }
 
 #winamp2-js .playlist-scrollbar {
@@ -67,6 +69,7 @@
 #winamp2-js .playlist-scrollbar-handle {
   width: 8x;
   height: 18px;
+  margin-top: -9px;
 }
 
 #winamp2-js .playlist-bottom {
