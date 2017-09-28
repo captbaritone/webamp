@@ -21,6 +21,8 @@ body {
   position: absolute;
   bottom: 0;
   color: white;
+  /* Let users drag windows over this text */
+  z-index: -1;
 }
 
 .about a {
