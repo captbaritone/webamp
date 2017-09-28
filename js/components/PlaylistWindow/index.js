@@ -4,6 +4,7 @@ import classnames from "classnames";
 import Slider from "rc-slider/lib/Slider";
 
 import MiniTime from "../MiniTime";
+import Track from "./Track";
 import { WINDOWS } from "../../constants";
 import {
   SET_FOCUSED_WINDOW,
@@ -23,11 +24,11 @@ const PlaylistWindow = props => {
     playlistScrollPosition,
     setPlaylistScrollPosition
   } = props;
-  const style = {};
-  if (props) {
-    style.color = skinPlaylistStyle.Normal;
-    style.backgroundColor = skinPlaylistStyle.NormalBG;
-  }
+  const style = {
+    color: skinPlaylistStyle.Normal,
+    backgroundColor: skinPlaylistStyle.NormalBG,
+    fontFamily: `${skinPlaylistStyle.Font}, Arial, sans-serif`
+  };
 
   const classes = classnames("window", "draggable", {
     selected: focused === WINDOWS.PLAYLIST
@@ -40,14 +41,29 @@ const PlaylistWindow = props => {
       onMouseDown={focusPlaylist}
     >
       <div className="playlist-top">
-        <div className="playlist-top-left" />
-        <div className="playlist-top-title" />
-        <div className="playlist-top-right" />
+        <div className="playlist-top-left draggable" />
+        <div className="playlist-top-title draggable" />
+        <div className="playlist-top-right draggable" />
       </div>
       <div className="playlist-middle">
-        <div className="playlist-middle-left" />
-        <div className="playlist-middle-center" />
-        <div className="playlist-middle-right">
+        <div className="playlist-middle-left draggable" />
+        <div className="playlist-middle-center">
+          <div className="playlist-tracks">
+            <div>
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((number, i) => (
+                <Track
+                  number={number}
+                  title="Mrs. Artist - Song Title"
+                  duration={263}
+                  selected={i === 0}
+                  current={i === 0}
+                  key={i}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="playlist-middle-right draggable">
           <Slider
             className="playlist-scrollbar"
             type="range"
@@ -62,9 +78,9 @@ const PlaylistWindow = props => {
         </div>
       </div>
       <div className="playlist-bottom">
-        <div className="playlist-bottom-left" />
-        <div className="playlist-bottom-center" />
-        <div className="playlist-bottom-right">
+        <div className="playlist-bottom-left draggable" />
+        <div className="playlist-bottom-center draggable" />
+        <div className="playlist-bottom-right draggable">
           <div className="playlist-action-buttons">
             <div className="playlist-previous-button" />
             <div className="playlist-play-button" onClick={props.play} />

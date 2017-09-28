@@ -4,7 +4,7 @@ const { hash } = window.location;
 let config = {};
 if (hash) {
   try {
-    config = JSON.parse(hash.slice(1));
+    config = JSON.parse(decodeURIComponent(hash).slice(1));
   } catch (e) {
     console.error("Failed to decode config from hash: ", e);
   }

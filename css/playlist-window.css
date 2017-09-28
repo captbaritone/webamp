@@ -8,7 +8,8 @@
 
 #winamp2-js .playlist-top {
   width: 100%;
-  height: 20px;
+  min-height: 20px;
+  max-height: 20px;
   position: relative;
 }
 
@@ -40,21 +41,64 @@
   display: flex;
   flex-direction: row;
   background-color: black;
+  overflow: hidden;
 }
 
 #winamp2-js .playlist-middle-left {
   background-repeat: repeat-y;
   width: 12px;
+  min-width: 12px;
 }
 
 #winamp2-js .playlist-middle-center {
   flex-grow: 1;
+  padding: 3px 0;
+}
+
+#winamp2-js .playlist-tracks {
+  overflow: hidden;
+  height: 100%;
+}
+#winamp2-js .playlist-tracks > div {
+  width: 100%;
+  display: table;
+}
+
+#winamp2-js .playlist-track {
+  font-size: 9px;
+  display: table-row;
+  line-height: 13px;
+  letter-spacing: 0.5px;
+  user-select: none;
+  opacity: 0.95; /* My colors don't quite match. This is a hack while I figure that out */
+}
+
+#winamp2-js .playlist-track-number {
+  text-align: right;
+  padding-right: 3px;
+  display: table-cell;
+  width: 1%;
+  white-space: nowrap;
+}
+
+#winamp2-js .playlist-track-title {
+  flex-grow: 1;
+  display: table-cell;
+  width: auto;
+}
+
+#winamp2-js .playlist-track-duration {
+  padding-right: 3px;
+  display: table-cell;
+  width: 1%;
+  white-space: nowrap;
 }
 
 #winamp2-js .playlist-middle-right {
   background-repeat: repeat-y;
   background-position: top right;
   width: 20px;
+  min-width: 20px;
   position: relative;
   padding-bottom: 9px;
   padding-top: 9px;
@@ -75,6 +119,8 @@
 #winamp2-js .playlist-bottom {
   width: 100%;
   height: 38px;
+  min-height: 38px;
+  max-height: 38px;
   position: relative;
 }
 

@@ -9,6 +9,7 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
     Object {
       "backgroundColor": undefined,
       "color": undefined,
+      "fontFamily": "undefined, Arial, sans-serif",
     }
   }
 >
@@ -16,26 +17,313 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
     className="playlist-top"
   >
     <div
-      className="playlist-top-left"
+      className="playlist-top-left draggable"
     />
     <div
-      className="playlist-top-title"
+      className="playlist-top-title draggable"
     />
     <div
-      className="playlist-top-right"
+      className="playlist-top-right draggable"
     />
   </div>
   <div
     className="playlist-middle"
   >
     <div
-      className="playlist-middle-left"
+      className="playlist-middle-left draggable"
     />
     <div
       className="playlist-middle-center"
-    />
+    >
+      <div
+        className="playlist-tracks"
+      >
+        <div>
+          <div
+            className="playlist-track selected current"
+            style={
+              Object {
+                "backgroundColor": undefined,
+                "color": undefined,
+              }
+            }
+          >
+            <div
+              className="playlist-track-number"
+            >
+              1
+              .
+            </div>
+            <div
+              className="playlist-track-title"
+            >
+              <span>
+                Mrs. Artist - Song Title
+              </span>
+            </div>
+            <div
+              className="playlist-track-duration"
+            >
+              04:23
+            </div>
+          </div>
+          <div
+            className="playlist-track"
+            style={
+              Object {
+                "backgroundColor": null,
+                "color": null,
+              }
+            }
+          >
+            <div
+              className="playlist-track-number"
+            >
+              2
+              .
+            </div>
+            <div
+              className="playlist-track-title"
+            >
+              <span>
+                Mrs. Artist - Song Title
+              </span>
+            </div>
+            <div
+              className="playlist-track-duration"
+            >
+              04:23
+            </div>
+          </div>
+          <div
+            className="playlist-track"
+            style={
+              Object {
+                "backgroundColor": null,
+                "color": null,
+              }
+            }
+          >
+            <div
+              className="playlist-track-number"
+            >
+              3
+              .
+            </div>
+            <div
+              className="playlist-track-title"
+            >
+              <span>
+                Mrs. Artist - Song Title
+              </span>
+            </div>
+            <div
+              className="playlist-track-duration"
+            >
+              04:23
+            </div>
+          </div>
+          <div
+            className="playlist-track"
+            style={
+              Object {
+                "backgroundColor": null,
+                "color": null,
+              }
+            }
+          >
+            <div
+              className="playlist-track-number"
+            >
+              4
+              .
+            </div>
+            <div
+              className="playlist-track-title"
+            >
+              <span>
+                Mrs. Artist - Song Title
+              </span>
+            </div>
+            <div
+              className="playlist-track-duration"
+            >
+              04:23
+            </div>
+          </div>
+          <div
+            className="playlist-track"
+            style={
+              Object {
+                "backgroundColor": null,
+                "color": null,
+              }
+            }
+          >
+            <div
+              className="playlist-track-number"
+            >
+              5
+              .
+            </div>
+            <div
+              className="playlist-track-title"
+            >
+              <span>
+                Mrs. Artist - Song Title
+              </span>
+            </div>
+            <div
+              className="playlist-track-duration"
+            >
+              04:23
+            </div>
+          </div>
+          <div
+            className="playlist-track"
+            style={
+              Object {
+                "backgroundColor": null,
+                "color": null,
+              }
+            }
+          >
+            <div
+              className="playlist-track-number"
+            >
+              6
+              .
+            </div>
+            <div
+              className="playlist-track-title"
+            >
+              <span>
+                Mrs. Artist - Song Title
+              </span>
+            </div>
+            <div
+              className="playlist-track-duration"
+            >
+              04:23
+            </div>
+          </div>
+          <div
+            className="playlist-track"
+            style={
+              Object {
+                "backgroundColor": null,
+                "color": null,
+              }
+            }
+          >
+            <div
+              className="playlist-track-number"
+            >
+              7
+              .
+            </div>
+            <div
+              className="playlist-track-title"
+            >
+              <span>
+                Mrs. Artist - Song Title
+              </span>
+            </div>
+            <div
+              className="playlist-track-duration"
+            >
+              04:23
+            </div>
+          </div>
+          <div
+            className="playlist-track"
+            style={
+              Object {
+                "backgroundColor": null,
+                "color": null,
+              }
+            }
+          >
+            <div
+              className="playlist-track-number"
+            >
+              8
+              .
+            </div>
+            <div
+              className="playlist-track-title"
+            >
+              <span>
+                Mrs. Artist - Song Title
+              </span>
+            </div>
+            <div
+              className="playlist-track-duration"
+            >
+              04:23
+            </div>
+          </div>
+          <div
+            className="playlist-track"
+            style={
+              Object {
+                "backgroundColor": null,
+                "color": null,
+              }
+            }
+          >
+            <div
+              className="playlist-track-number"
+            >
+              9
+              .
+            </div>
+            <div
+              className="playlist-track-title"
+            >
+              <span>
+                Mrs. Artist - Song Title
+              </span>
+            </div>
+            <div
+              className="playlist-track-duration"
+            >
+              04:23
+            </div>
+          </div>
+          <div
+            className="playlist-track"
+            style={
+              Object {
+                "backgroundColor": null,
+                "color": null,
+              }
+            }
+          >
+            <div
+              className="playlist-track-number"
+            >
+              10
+              .
+            </div>
+            <div
+              className="playlist-track-title"
+            >
+              <span>
+                Mrs. Artist - Song Title
+              </span>
+            </div>
+            <div
+              className="playlist-track-duration"
+            >
+              04:23
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div
-      className="playlist-middle-right"
+      className="playlist-middle-right draggable"
     >
       <div
         className="rc-slider rc-slider-vertical playlist-scrollbar"
@@ -52,7 +340,7 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
           style={
             Object {
               "bottom": "0%",
-              "height": "0%",
+              "height": "100%",
               "visibility": "visible",
             }
           }
@@ -73,13 +361,13 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
     className="playlist-bottom"
   >
     <div
-      className="playlist-bottom-left"
+      className="playlist-bottom-left draggable"
     />
     <div
-      className="playlist-bottom-center"
+      className="playlist-bottom-center draggable"
     />
     <div
-      className="playlist-bottom-right"
+      className="playlist-bottom-right draggable"
     >
       <div
         className="playlist-action-buttons"
