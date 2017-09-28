@@ -5,7 +5,7 @@ import MainWindow from "./MainWindow";
 import PlaylistWindow from "./PlaylistWindow";
 import EqualizerWindow from "./EqualizerWindow";
 import Skin from "./Skin";
-import { equalizerEnabled, playlistEnabled } from "../config";
+import { playlistEnabled } from "../config";
 
 const App = ({ winamp, loading, closed, equalizer, playlist }) => {
   if (closed) {
@@ -30,8 +30,7 @@ const App = ({ winamp, loading, closed, equalizer, playlist }) => {
       </Skin>
       <WindowManager>
         <MainWindow fileInput={winamp.fileInput} mediaPlayer={winamp.media} />
-        {equalizerEnabled &&
-        equalizer && <EqualizerWindow fileInput={winamp.fileInput} />}
+        {equalizer && <EqualizerWindow fileInput={winamp.fileInput} />}
         {playlistEnabled &&
         playlist && <PlaylistWindow fileInput={winamp.fileInput} />}
       </WindowManager>

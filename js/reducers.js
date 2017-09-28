@@ -34,7 +34,7 @@ import {
   SET_USER_MESSAGE,
   UNSET_USER_MESSAGE
 } from "./actionTypes";
-import { equalizerEnabled, playlistEnabled } from "./config";
+import { playlistEnabled } from "./config";
 
 const defaultUserInput = {
   focus: null,
@@ -64,7 +64,7 @@ export const userInput = (state = defaultUserInput, action) => {
 
 const defaultWindowsState = {
   focused: WINDOWS.MAIN,
-  equalizer: equalizerEnabled,
+  equalizer: true,
   playlist: playlistEnabled
 };
 
@@ -73,9 +73,6 @@ const windows = (state = defaultWindowsState, action) => {
     case SET_FOCUSED_WINDOW:
       return { ...state, focused: action.window };
     case TOGGLE_EQUALIZER_WINDOW:
-      if (!equalizerEnabled) {
-        return state;
-      }
       return { ...state, equalizer: !state.equalizer };
     case CLOSE_EQUALIZER_WINDOW:
       return { ...state, equalizer: false };
