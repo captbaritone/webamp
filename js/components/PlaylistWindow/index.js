@@ -40,12 +40,12 @@ const PlaylistWindow = props => {
       style={style}
       onMouseDown={focusPlaylist}
     >
-      <div className="playlist-top">
+      <div className="playlist-top draggable">
         <div className="playlist-top-left draggable" />
         <div className="playlist-top-title draggable" />
         <div className="playlist-top-right draggable" />
       </div>
-      <div className="playlist-middle">
+      <div className="playlist-middle draggable">
         <div className="playlist-middle-left draggable" />
         <div className="playlist-middle-center">
           <div className="playlist-tracks">
@@ -77,7 +77,7 @@ const PlaylistWindow = props => {
           />
         </div>
       </div>
-      <div className="playlist-bottom">
+      <div className="playlist-bottom draggable">
         <div className="playlist-bottom-left draggable" />
         <div className="playlist-bottom-center draggable" />
         <div className="playlist-bottom-right draggable">

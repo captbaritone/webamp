@@ -14,7 +14,7 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
   }
 >
   <div
-    className="playlist-top"
+    className="playlist-top draggable"
   >
     <div
       className="playlist-top-left draggable"
@@ -27,7 +27,7 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
     />
   </div>
   <div
-    className="playlist-middle"
+    className="playlist-middle draggable"
   >
     <div
       className="playlist-middle-left draggable"
@@ -358,7 +358,7 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
     </div>
   </div>
   <div
-    className="playlist-bottom"
+    className="playlist-bottom draggable"
   >
     <div
       className="playlist-bottom-left draggable"
