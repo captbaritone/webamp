@@ -30,14 +30,17 @@ import {
   TOGGLE_TIME_MODE,
   TOGGLE_VISUALIZER_STYLE,
   UNSET_FOCUS,
-  UPDATE_TIME_ELAPSED
+  UPDATE_TIME_ELAPSED,
+  SET_USER_MESSAGE,
+  UNSET_USER_MESSAGE
 } from "./actionTypes";
 import { equalizerEnabled, playlistEnabled } from "./config";
 
 const defaultUserInput = {
   focus: null,
   bandFocused: null,
-  scrubPosition: 0
+  scrubPosition: 0,
+  userMessage: null
 };
 
 export const userInput = (state = defaultUserInput, action) => {
@@ -50,6 +53,10 @@ export const userInput = (state = defaultUserInput, action) => {
       return { ...state, focus: null, bandFocused: null };
     case SET_SCRUB_POSITION:
       return { ...state, scrubPosition: action.position };
+    case SET_USER_MESSAGE:
+      return { ...state, userMessage: action.message };
+    case UNSET_USER_MESSAGE:
+      return { ...state, userMessage: null };
     default:
       return state;
   }

@@ -100,6 +100,9 @@ class Marquee extends React.Component {
   }
 
   getText() {
+    if (this.props.userInput.userMessage != null) {
+      return this.props.userInput.userMessage;
+    }
     switch (this.props.userInput.focus) {
       case "balance":
         return getBalanceText(this.props.media.balance);
