@@ -217,14 +217,14 @@ export default {
     },
     { name: "PLAYLIST_SHADE_BACKGROUND", x: 72, y: 57, width: 25, height: 14 },
     {
-      name: "PLAYLIST_SCROLL_HANDLE",
+      name: "PLAYLIST_SCROLL_HANDLE_SELECTED",
       x: 61,
       y: 53,
       width: 8,
       height: 18
     },
     {
-      name: "PLAYLIST_SCROLL_HANDLE_SELECTED",
+      name: "PLAYLIST_SCROLL_HANDLE",
       x: 52,
       y: 53,
       width: 8,
