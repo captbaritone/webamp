@@ -7,11 +7,7 @@
       "experimentalObjectRestSpread": true
     }
   },
-  "plugins": [
-    "react",
-    "prettier",
-    "import"
-  ],
+  "plugins": ["react", "prettier", "import"],
   "settings": {
     "react": {
       "version": "15.2"
@@ -33,21 +29,12 @@
         "maxBOF": 0
       }
     ],
-    "arrow-body-style": [
-      "error",
-      "as-needed"
-    ],
+    "arrow-body-style": ["error", "as-needed"],
     "arrow-spacing": "error",
     "block-scoped-var": "warn",
-    "brace-style": [
-      "warn",
-      "1tbs"
-    ],
+    "brace-style": ["warn", "1tbs"],
     "camelcase": "error",
-    "comma-dangle": [
-      "error",
-      "never"
-    ],
+    "comma-dangle": ["error", "never"],
     "comma-spacing": "error",
     "consistent-return": "warn",
     "constructor-super": "error",
@@ -58,10 +45,7 @@
       }
     ],
     "eol-last": "error",
-    "eqeqeq": [
-      "error",
-      "smart"
-    ],
+    "eqeqeq": ["error", "smart"],
     "guard-for-in": "error",
     "indent": [
       "error",
@@ -70,21 +54,12 @@
         "SwitchCase": 1
       }
     ],
-    "jsx-quotes": [
-      "error",
-      "prefer-double"
-    ],
+    "jsx-quotes": ["error", "prefer-double"],
     "key-spacing": "warn",
     "keyword-spacing": "error",
     "linebreak-style": "error",
-    "max-depth": [
-      "warn",
-      4
-    ],
-    "max-params": [
-      "warn",
-      5
-    ],
+    "max-depth": ["warn", 4],
+    "max-params": ["warn", 5],
     "new-cap": "error",
     "no-alert": "error",
     "no-caller": "error",
@@ -139,26 +114,16 @@
     "no-unreachable": "error",
     "no-unused-expressions": "error",
     "no-unused-vars": "error",
-    "no-use-before-define": [
-      "error",
-      "nofunc"
-    ],
+    "no-use-before-define": ["error", "nofunc"],
     "no-useless-rename": "error",
     "no-var": "error",
     "no-with": "error",
-    "object-curly-spacing": [
-      "error",
-      "always"
-    ],
+    "object-curly-spacing": ["error", "always"],
     "prefer-arrow-callback": "warn",
     "prefer-const": "error",
     "prefer-spread": "error",
     "prefer-template": "warn",
-    "quotes": [
-      "error",
-      "double",
-      "avoid-escape"
-    ],
+    "quotes": ["error", "double", "avoid-escape"],
     "radix": "error",
     "react/no-string-refs": "error",
     "react/jsx-boolean-value": "error",
@@ -188,7 +153,6 @@
     "template-curly-spacing": "error",
     "use-isnan": "error",
     "valid-typeof": "error",
-    "wrap-iife": "error",
     "prettier/prettier": "error",
     "import/no-unresolved": "error",
     "import/default": "error",
