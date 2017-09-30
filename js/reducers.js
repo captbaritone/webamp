@@ -220,9 +220,11 @@ const defaultTracksState = {
 const tracks = (state = defaultTracksState, action) => {
   switch (action.type) {
     case CLICKED_TRACK:
-      const track = state[action.id];
-      const newTrack = { ...track, selected: !track.selected };
-      return { ...state, [action.id]: newTrack };
+      const ids = Object.keys(state);
+      return ids.reduce((newTracks, id) => {
+        newTracks[id] = { ...state[id], selected: id === String(action.id) };
+        return newTracks;
+      }, {});
     default:
       return state;
   }
