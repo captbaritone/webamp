@@ -2,15 +2,13 @@ import SKIN_SPRITES from "./skinSprites";
 import JSZip from "../node_modules/jszip/dist/jszip"; // Hack
 import { parseViscolors, parseIni } from "./utils";
 
-const bmpUriFromBase64 = data64 => `data:image/bmp;base64,${data64}`;
-
-const genImgNodeFromUri = uri =>
+const genImgFromBlob = blob =>
   new Promise(resolve => {
     const img = new Image();
     img.onload = () => {
       resolve(img);
     };
-    img.src = uri;
+    img.src = URL.createObjectURL(blob);
   });
 
 // "Promisify" processBuffer
@@ -44,12 +42,11 @@ function getSpriteUrisFromImg(img, sprites) {
 }
 
 async function genSpriteUrisFromFilename(zip, fileName) {
-  const base64 = await genFileFromZip(zip, fileName, "bmp", "base64");
-  if (!base64) {
+  const blob = await genFileFromZip(zip, fileName, "bmp", "blob");
+  if (!blob) {
     return {};
   }
-  const uri = bmpUriFromBase64(base64);
-  const img = await genImgNodeFromUri(uri);
+  const img = await genImgFromBlob(blob);
   const spriteUris = getSpriteUrisFromImg(img, SKIN_SPRITES[fileName]);
   return spriteUris;
 }
