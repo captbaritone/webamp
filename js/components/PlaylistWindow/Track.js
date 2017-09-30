@@ -58,6 +58,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
       e.preventDefault();
       return dispatch({ type: CTRL_CLICKED_TRACK, id: ownProps.id });
     }
+    return null;
     // TODO: We need to spawn our own context menu
   }
 });
