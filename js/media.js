@@ -26,7 +26,10 @@ export default class Media {
     this.fileInput = fileInput;
 
     // The _source node has to be recreated each time it's stopped or
-    // paused, so we don't create it here.
+    // paused, so we don't create it here. Instead we create this dummy
+    // node wich the real source will connect to.
+
+    this._staticSource = this._context.createAnalyser(); // Just a noop node
 
     // Create the preamp node
     this._preamp = this._context.createGain();
@@ -41,41 +44,44 @@ export default class Media {
     // Create channel merge
     this._chanMerge = this._context.createChannelMerger(2);
 
-    // Create the gain node for the volume control
-    this._gainNode = this._context.createGain();
-
     // Create the analyser node for the visualizer
     this._analyser = this._context.createAnalyser();
     this._analyser.fftSize = 2048;
 
+    // Create the gain node for the volume control
+    this._gainNode = this._context.createGain();
+
     // Connect all the nodes in the correct way
     // (Note, source is created and connected later)
     //
-    //                 <source>
+    //                <source>
     //                    |
-    //                 preamp
     //                    |_____________
     //                    |             \
-    //           [...biquadFilters]     | <-- Optional bypass
-    //                    | ____________/
-    //                    |/
+    //                <preamp>          |
+    //                    |             | <-- Optional bypass
+    //           [...biquadFilters]     |
+    //                    |_____________/
+    //                    |
     //    (split using createChannelSplitter)
     //                    |
     //                   / \
     //                  /   \
-    //           leftGain   rightGain
+    //          <leftGain><rightGain>
     //                  \   /
     //                   \ /
     //                    |
     //     (merge using createChannelMerger)
     //                    |
-    //                chanMerge
+    //               <chanMerge>
     //                    |
     //                    |\
     //                    | <analyser>
-    //                   gain
+    //                  <gain>
     //                    |
-    //               destination
+    //              <destination>
+
+    this._staticSource.connect(this._preamp);
 
     let output = this._preamp;
     this.bands = {};
@@ -183,7 +189,7 @@ export default class Media {
     if (this._buffer) {
       this._source = this._context.createBufferSource();
       this._source.buffer = this._buffer;
-      this._source.connect(this._preamp);
+      this._source.connect(this._staticSource);
 
       this._position =
         typeof position !== "undefined" ? position : this._position;
@@ -261,13 +267,13 @@ export default class Media {
   }
 
   disableEq() {
-    this._preamp.disconnect();
-    this._preamp.connect(this._chanSplit);
+    this._staticSource.disconnect();
+    this._staticSource.connect(this._chanSplit);
   }
 
   enableEq() {
-    this._preamp.disconnect();
-    this._preamp.connect(this.bands[BANDS[0]]);
+    this._staticSource.disconnect();
+    this._staticSource.connect(this._preamp);
   }
 
   toggleRepeat() {
