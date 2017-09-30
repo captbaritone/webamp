@@ -25,7 +25,8 @@ const PlaylistWindow = props => {
     focusPlaylist,
     focused,
     playlistScrollPosition,
-    setPlaylistScrollPosition
+    setPlaylistScrollPosition,
+    trackOrder
   } = props;
   const style = {
     color: skinPlaylistStyle.Normal,
@@ -37,23 +38,8 @@ const PlaylistWindow = props => {
     selected: focused === WINDOWS.PLAYLIST
   });
 
-  const tracks = [
-    ["Rock Is Dead", "Marilyn Manson", "191"],
-    ["Spybreak! (Short One)", "Propellerheads", "191"],
-    ["Bad Blood", "Ministry", "191"],
-    ["Clubbed to Death", "Rob D", "191"],
-    ["Prime Audio Soup", "Meat Beat Manifesto", "191"],
-    ["Leave You Far Behind", "Lunatic Calm", "191"],
-    ["Mindfields", "The Prodigy", "191"],
-    ["Dragula", "Rob Zombie", "191"],
-    ["My Own Summer (Shove It)", "Deftones", "191"],
-    ["Ultrasonic Sound", "Hive", "191"],
-    ["Look to Your Orb", "Monster Magnet", "191"],
-    ["Du hast", "Rammstein", "191"],
-    ["Wake Up", "Rage Against The Machine", "191"]
-  ];
-
-  const scrollTicks = tracks.length - 3;
+  // TODO: This magic number will need to change if the playlist is resized.
+  const scrollTicks = trackOrder.length - 3;
 
   const offset =
     percentToIndex(playlistScrollPosition / 100, scrollTicks) * TRACK_HEIGHT;
@@ -74,15 +60,8 @@ const PlaylistWindow = props => {
         <div className="playlist-middle-center">
           <div className="playlist-tracks">
             <div style={{ marginTop: `-${offset}px` }}>
-              {tracks.map((track, i) => (
-                <Track
-                  number={i + 1}
-                  title={`${track[0]} - ${track[1]}`}
-                  duration={track[2]}
-                  selected={i === 0}
-                  current={i === 0}
-                  key={i}
-                />
+              {trackOrder.map((id, i) => (
+                <Track number={i + 1} id={id} key={id} />
               ))}
             </div>
           </div>
@@ -140,9 +119,15 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 const mapStateToProps = state => {
   const {
     windows: { focused },
-    display: { skinPlaylistStyle, playlistScrollPosition }
+    display: { skinPlaylistStyle, playlistScrollPosition },
+    playlist: { trackOrder }
   } = state;
-  return { focused, skinPlaylistStyle, playlistScrollPosition };
+  return {
+    focused,
+    skinPlaylistStyle,
+    playlistScrollPosition,
+    trackOrder
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlaylistWindow);

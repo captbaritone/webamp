@@ -33,7 +33,8 @@ import {
   UPDATE_TIME_ELAPSED,
   SET_USER_MESSAGE,
   UNSET_USER_MESSAGE,
-  SET_PLAYLIST_SCROLL_POSITION
+  SET_PLAYLIST_SCROLL_POSITION,
+  CLICKED_TRACK
 } from "./actionTypes";
 import { playlistEnabled } from "./config";
 
@@ -170,6 +171,74 @@ const equalizer = (state, action) => {
   }
 };
 
+// Dummy data for now
+const defaultTracksState = {
+  "0": {
+    selected: true,
+    title: "Rock Is Dead",
+    artist: "Marilyn Manson",
+    duration: "191"
+  },
+  "1": {
+    selected: false,
+    title: "Spybreak! (Short One)",
+    artist: "Propellerheads",
+    duration: "191"
+  },
+  "2": {
+    selected: true,
+    title: "Clubbed to Death",
+    artist: "Rob D",
+    duration: "191"
+  },
+  "3": {
+    selected: false,
+    title: "Leave You Far Behind",
+    artist: "Lunatic Calm",
+    duration: "191"
+  },
+  "4": {
+    selected: false,
+    title: "Dragula",
+    artist: "Rob Zombie",
+    duration: "191"
+  },
+  "5": {
+    selected: false,
+    title: "Ultrasonic Sound",
+    artist: "Hive",
+    duration: "191"
+  },
+  "6": {
+    selected: false,
+    title: "Du hast",
+    artist: "Rammstein",
+    duration: "191"
+  }
+};
+
+const tracks = (state = defaultTracksState, action) => {
+  switch (action.type) {
+    case CLICKED_TRACK:
+      const track = state[action.id];
+      const newTrack = { ...track, selected: !track.selected };
+      return { ...state, [action.id]: newTrack };
+    default:
+      return state;
+  }
+};
+
+const defaultPlaylistState = {
+  trackOrder: [0, 1, 2, 3, 4, 5, 6],
+  currentTrack: 2
+};
+const playlist = (state = defaultPlaylistState, action) => {
+  switch (action.type) {
+    default:
+      return state;
+  }
+};
+
 const media = (state, action) => {
   if (!state) {
     return {
@@ -229,6 +298,8 @@ const reducer = combineReducers({
   windows,
   display,
   equalizer,
+  tracks,
+  playlist,
   media
 });
 
