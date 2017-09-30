@@ -34,7 +34,8 @@ import {
   SET_USER_MESSAGE,
   UNSET_USER_MESSAGE,
   SET_PLAYLIST_SCROLL_POSITION,
-  CLICKED_TRACK
+  CLICKED_TRACK,
+  CTRL_CLICKED_TRACK
 } from "./actionTypes";
 import { playlistEnabled } from "./config";
 
@@ -225,6 +226,10 @@ const tracks = (state = defaultTracksState, action) => {
         newTracks[id] = { ...state[id], selected: id === String(action.id) };
         return newTracks;
       }, {});
+    case CTRL_CLICKED_TRACK:
+      const track = state[action.id];
+      const newTrack = { ...track, selected: !track.selected };
+      return { ...state, [action.id]: newTrack };
     default:
       return state;
   }

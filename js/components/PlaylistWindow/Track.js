@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
 import { getTimeStr } from "../../utils";
-import { CLICKED_TRACK } from "../../actionTypes";
+import { CLICKED_TRACK, CTRL_CLICKED_TRACK } from "../../actionTypes";
 
 const Track = props => {
   const {
@@ -12,7 +12,8 @@ const Track = props => {
     title,
     number,
     duration,
-    selectTrack
+    clickTrack,
+    ctrlClickTrack
   } = props;
   const style = {
     backgroundColor: selected ? skinPlaylistStyle.SelectedBG : null,
@@ -22,7 +23,8 @@ const Track = props => {
     <div
       className={classnames("playlist-track", { selected, current })}
       style={style}
-      onClick={selectTrack}
+      onClick={clickTrack}
+      onContextMenu={ctrlClickTrack}
     >
       <div className="playlist-track-number">{number}.</div>
       <div className="playlist-track-title">
@@ -50,7 +52,14 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  selectTrack: () => dispatch({ type: CLICKED_TRACK, id: ownProps.id })
+  clickTrack: () => dispatch({ type: CLICKED_TRACK, id: ownProps.id }),
+  ctrlClickTrack: e => {
+    if (e.ctrlKey) {
+      e.preventDefault();
+      return dispatch({ type: CTRL_CLICKED_TRACK, id: ownProps.id });
+    }
+    // TODO: We need to spawn our own context menu
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Track);

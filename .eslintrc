@@ -47,13 +47,6 @@
     "eol-last": "error",
     "eqeqeq": ["error", "smart"],
     "guard-for-in": "error",
-    "indent": [
-      "error",
-      2,
-      {
-        "SwitchCase": 1
-      }
-    ],
     "jsx-quotes": ["error", "prefer-double"],
     "key-spacing": "warn",
     "keyword-spacing": "error",

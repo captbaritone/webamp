@@ -48,6 +48,7 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
           <div
             className="playlist-track selected"
             onClick={[Function]}
+            onContextMenu={[Function]}
             style={
               Object {
                 "backgroundColor": undefined,
@@ -77,6 +78,7 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
           <div
             className="playlist-track"
             onClick={[Function]}
+            onContextMenu={[Function]}
             style={
               Object {
                 "backgroundColor": null,
@@ -106,6 +108,7 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
           <div
             className="playlist-track selected current"
             onClick={[Function]}
+            onContextMenu={[Function]}
             style={
               Object {
                 "backgroundColor": undefined,
@@ -135,6 +138,7 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
           <div
             className="playlist-track"
             onClick={[Function]}
+            onContextMenu={[Function]}
             style={
               Object {
                 "backgroundColor": null,
@@ -164,6 +168,7 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
           <div
             className="playlist-track"
             onClick={[Function]}
+            onContextMenu={[Function]}
             style={
               Object {
                 "backgroundColor": null,
@@ -193,6 +198,7 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
           <div
             className="playlist-track"
             onClick={[Function]}
+            onContextMenu={[Function]}
             style={
               Object {
                 "backgroundColor": null,
@@ -222,6 +228,7 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
           <div
             className="playlist-track"
             onClick={[Function]}
+            onContextMenu={[Function]}
             style={
               Object {
                 "backgroundColor": null,
