@@ -223,13 +223,127 @@ export default {
       width: 8,
       height: 18
     },
+    { name: "PLAYLIST_SCROLL_HANDLE", x: 52, y: 53, width: 8, height: 18 },
+    { name: "PLAYLIST_ADD_URL", x: 0, y: 111, width: 22, height: 18 },
+    { name: "PLAYLIST_ADD_URL_SELECTED", x: 23, y: 111, width: 22, height: 18 },
+    { name: "PLAYLIST_ADD_DIR", x: 0, y: 130, width: 22, height: 18 },
+    { name: "PLAYLIST_ADD_DIR_SELECTED", x: 23, y: 130, width: 22, height: 18 },
+    { name: "PLAYLIST_ADD_FILE", x: 0, y: 149, width: 22, height: 18 },
     {
-      name: "PLAYLIST_SCROLL_HANDLE",
-      x: 52,
-      y: 53,
-      width: 8,
+      name: "PLAYLIST_ADD_FILE_SELECTED",
+      x: 23,
+      y: 149,
+      width: 22,
       height: 18
-    }
+    },
+    { name: "PLAYLIST_REMOVE_ALL", x: 54, y: 111, width: 22, height: 18 },
+    {
+      name: "PLAYLIST_REMOVE_ALL_SELECTED",
+      x: 77,
+      y: 111,
+      width: 22,
+      height: 18
+    },
+    { name: "PLAYLIST_CROP", x: 54, y: 130, width: 22, height: 18 },
+    { name: "PLAYLIST_CROP_SELECTED", x: 77, y: 130, width: 22, height: 18 },
+    { name: "PLAYLIST_REMOVE_SELECTED", x: 54, y: 149, width: 22, height: 18 },
+    {
+      name: "PLAYLIST_REMOVE_SELECTED_SELECTED",
+      x: 77,
+      y: 149,
+      width: 22,
+      height: 18
+    },
+    { name: "PLAYLIST_REMOVE_MISC", x: 54, y: 168, width: 22, height: 18 },
+    {
+      name: "PLAYLIST_REMOVE_MISC_SELECTED",
+      x: 77,
+      y: 168,
+      width: 22,
+      height: 18
+    },
+    {
+      name: "PLAYLIST_INVERT_SELECTION",
+      x: 104,
+      y: 111,
+      width: 22,
+      height: 18
+    },
+    {
+      name: "PLAYLIST_INVERT_SELECTION_SELECTED",
+      x: 127,
+      y: 111,
+      width: 22,
+      height: 18
+    },
+    { name: "PLAYLIST_SELECT_ZERO", x: 104, y: 130, width: 22, height: 18 },
+    {
+      name: "PLAYLIST_SELECT_ZERO_SELECTED",
+      x: 127,
+      y: 130,
+      width: 22,
+      height: 18
+    },
+    { name: "PLAYLIST_SELECT_ALL", x: 104, y: 149, width: 22, height: 18 },
+    {
+      name: "PLAYLIST_SELECT_ALL_SELECTED",
+      x: 127,
+      y: 149,
+      width: 22,
+      height: 18
+    },
+    { name: "PLAYLIST_SORT_LIST", x: 154, y: 111, width: 22, height: 18 },
+    {
+      name: "PLAYLIST_SORT_LIST_SELECTED",
+      x: 177,
+      y: 111,
+      width: 22,
+      height: 18
+    },
+    { name: "PLAYLIST_FILE_INFO", x: 154, y: 130, width: 22, height: 18 },
+    {
+      name: "PLAYLIST_FILE_INFO_SELECTED",
+      x: 177,
+      y: 130,
+      width: 22,
+      height: 18
+    },
+    { name: "PLAYLIST_MISC_OPTIONS", x: 154, y: 149, width: 22, height: 18 },
+    {
+      name: "PLAYLIST_MISC_OPTIONS_SELECTED",
+      x: 177,
+      y: 149,
+      width: 22,
+      height: 18
+    },
+    { name: "PLAYLIST_NEW_LIST", x: 204, y: 111, width: 22, height: 18 },
+    {
+      name: "PLAYLIST_NEW_LIST_SELECTED",
+      x: 227,
+      y: 111,
+      width: 22,
+      height: 18
+    },
+    { name: "PLAYLIST_SAVE_LIST", x: 204, y: 130, width: 22, height: 18 },
+    {
+      name: "PLAYLIST_SAVE_LIST_SELECTED",
+      x: 227,
+      y: 130,
+      width: 22,
+      height: 18
+    },
+    { name: "PLAYLIST_LOAD_LIST", x: 204, y: 149, width: 22, height: 18 },
+    {
+      name: "PLAYLIST_LOAD_LIST_SELECTED",
+      x: 227,
+      y: 149,
+      width: 22,
+      height: 18
+    },
+    { name: "PLAYLIST_REMOVE_MENU_BAR", x: 48, y: 111, width: 3, height: 54 },
+    { name: "PLAYLIST_SELECT_MENU_BAR", x: 100, y: 111, width: 3, height: 72 },
+    { name: "PLAYLIST_MISC_MENU_BAR", x: 200, y: 111, width: 3, height: 54 },
+    { name: "PLAYLIST_LIST_MENU_BAR", x: 250, y: 111, width: 3, height: 54 }
   ],
   EQ_EX: [
     {
