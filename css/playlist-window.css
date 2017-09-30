@@ -69,7 +69,6 @@
   line-height: 13px;
   letter-spacing: 0.5px;
   user-select: none;
-  opacity: 0.95; /* My colors don't quite match. This is a hack while I figure that out */
 }
 
 #winamp2-js .playlist-track-number {
