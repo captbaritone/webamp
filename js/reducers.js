@@ -35,7 +35,10 @@ import {
   UNSET_USER_MESSAGE,
   SET_PLAYLIST_SCROLL_POSITION,
   CLICKED_TRACK,
-  CTRL_CLICKED_TRACK
+  CTRL_CLICKED_TRACK,
+  SELECT_ALL,
+  SELECT_ZERO,
+  INVERT_SELECTION
 } from "./actionTypes";
 import { playlistEnabled } from "./config";
 
@@ -221,8 +224,7 @@ const defaultTracksState = {
 const tracks = (state = defaultTracksState, action) => {
   switch (action.type) {
     case CLICKED_TRACK:
-      const ids = Object.keys(state);
-      return ids.reduce((newTracks, id) => {
+      return Object.keys(state).reduce((newTracks, id) => {
         newTracks[id] = { ...state[id], selected: id === String(action.id) };
         return newTracks;
       }, {});
@@ -230,6 +232,21 @@ const tracks = (state = defaultTracksState, action) => {
       const track = state[action.id];
       const newTrack = { ...track, selected: !track.selected };
       return { ...state, [action.id]: newTrack };
+    case SELECT_ALL:
+      return Object.keys(state).reduce((newTracks, id) => {
+        newTracks[id] = { ...state[id], selected: true };
+        return newTracks;
+      }, {});
+    case SELECT_ZERO:
+      return Object.keys(state).reduce((newTracks, id) => {
+        newTracks[id] = { ...state[id], selected: false };
+        return newTracks;
+      }, {});
+    case INVERT_SELECTION:
+      return Object.keys(state).reduce((newTracks, id) => {
+        newTracks[id] = { ...state[id], selected: !state[id].selected };
+        return newTracks;
+      }, {});
     default:
       return state;
   }

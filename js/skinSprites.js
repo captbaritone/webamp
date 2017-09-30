@@ -340,10 +340,11 @@ export default {
       width: 22,
       height: 18
     },
-    { name: "PLAYLIST_REMOVE_MENU_BAR", x: 48, y: 111, width: 3, height: 54 },
-    { name: "PLAYLIST_SELECT_MENU_BAR", x: 100, y: 111, width: 3, height: 72 },
+    { name: "PLAYLIST_ADD_MENU_BAR", x: 48, y: 111, width: 3, height: 54 },
+    { name: "PLAYLIST_REMOVE_MENU_BAR", x: 100, y: 111, width: 3, height: 72 },
+    { name: "PLAYLIST_SELECT_MENU_BAR", x: 150, y: 111, width: 3, height: 54 },
     { name: "PLAYLIST_MISC_MENU_BAR", x: 200, y: 111, width: 3, height: 54 },
-    { name: "PLAYLIST_LIST_MENU_BAR", x: 250, y: 111, width: 3, height: 54 }
+    { name: "PLAYLIST_LIST_BAR", x: 250, y: 111, width: 3, height: 54 }
   ],
   EQ_EX: [
     {

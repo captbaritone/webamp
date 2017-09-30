@@ -5,6 +5,7 @@ import Slider from "rc-slider/lib/Slider";
 
 import MiniTime from "../MiniTime";
 import Track from "./Track";
+import SelectionMenu from "./SelectionMenu";
 import { percentToIndex } from "../../utils";
 import { WINDOWS } from "../../constants";
 import {
@@ -81,7 +82,9 @@ const PlaylistWindow = props => {
         </div>
       </div>
       <div className="playlist-bottom draggable">
-        <div className="playlist-bottom-left draggable" />
+        <div className="playlist-bottom-left draggable">
+          <SelectionMenu />
+        </div>
         <div className="playlist-bottom-center draggable" />
         <div className="playlist-bottom-right draggable">
           <div className="playlist-action-buttons">

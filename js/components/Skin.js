@@ -77,6 +77,19 @@ const imageSelectors = {
   PLAYLIST_BOTTOM_RIGHT_CORNER: [".playlist-bottom-right"],
   PLAYLIST_VISUALIZER_BACKGROUND: [".playlist-visualizer"],
   PLAYLIST_SHADE_BACKGROUND: ["#playlist.shade"],
+
+  PLAYLIST_SELECT_MENU_BAR: ["#playlist-selection-menu.selected .bar"],
+  PLAYLIST_INVERT_SELECTION: ["#playlist-selection-menu .invert-selection"],
+  PLAYLIST_INVERT_SELECTION_SELECTED: [
+    "#playlist-selection-menu .invert-selection:hover"
+  ],
+  PLAYLIST_SELECT_ZERO: ["#playlist-selection-menu .select-zero"],
+  PLAYLIST_SELECT_ZERO_SELECTED: [
+    "#playlist-selection-menu .select-zero:hover"
+  ],
+  PLAYLIST_SELECT_ALL: ["#playlist-selection-menu .select-all"],
+  PLAYLIST_SELECT_ALL_SELECTED: ["#playlist-selection-menu .select-all:hover"],
+
   EQ_WINDOW_BACKGROUND: ["#equalizer-window:not(.shade)"],
   EQ_TITLE_BAR: [".equalizer-top"],
   EQ_TITLE_BAR_SELECTED: [".selected .equalizer-top"],

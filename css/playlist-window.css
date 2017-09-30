@@ -134,6 +134,46 @@
   position: absolute;
 }
 
+#winamp2-js .playlist-menu li {
+  list-style: none;
+  display: block;
+  display: none;
+  width: 22px;
+  height: 18px;
+}
+
+#winamp2-js .playlist-menu.selected ul {
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  bottom: 0;
+}
+
+#winamp2-js .playlist-menu.selected li {
+  list-style: none;
+  display: block;
+  width: 22px;
+  height: 18px;
+  padding: 0;
+  margin: 0;
+}
+
+#winamp2-js .playlist-menu .bar {
+  position: absolute;
+  bottom: 0;
+  left: -3px;
+  width: 3px;
+  height: 54px;
+}
+
+#winamp2-js #playlist-selection-menu {
+  position: absolute;
+  bottom: 12px;
+  left: 72px;
+  width: 22px;
+  height: 18px;
+}
+
 #winamp2-js .playlist-bottom-right {
   width: 150px;
   height: 100%;
