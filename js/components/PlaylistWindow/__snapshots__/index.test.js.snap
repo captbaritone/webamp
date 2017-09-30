@@ -38,7 +38,13 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
       <div
         className="playlist-tracks"
       >
-        <div>
+        <div
+          style={
+            Object {
+              "marginTop": "-0px",
+            }
+          }
+        >
           <div
             className="playlist-track selected current"
             style={
@@ -58,13 +64,13 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
               className="playlist-track-title"
             >
               <span>
-                Mrs. Artist - Song Title
+                Rock Is Dead - Marilyn Manson
               </span>
             </div>
             <div
               className="playlist-track-duration"
             >
-              04:23
+              03:11
             </div>
           </div>
           <div
@@ -86,13 +92,13 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
               className="playlist-track-title"
             >
               <span>
-                Mrs. Artist - Song Title
+                Spybreak! (Short One) - Propellerheads
               </span>
             </div>
             <div
               className="playlist-track-duration"
             >
-              04:23
+              03:11
             </div>
           </div>
           <div
@@ -114,13 +120,13 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
               className="playlist-track-title"
             >
               <span>
-                Mrs. Artist - Song Title
+                Bad Blood - Ministry
               </span>
             </div>
             <div
               className="playlist-track-duration"
             >
-              04:23
+              03:11
             </div>
           </div>
           <div
@@ -142,13 +148,13 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
               className="playlist-track-title"
             >
               <span>
-                Mrs. Artist - Song Title
+                Clubbed to Death - Rob D
               </span>
             </div>
             <div
               className="playlist-track-duration"
             >
-              04:23
+              03:11
             </div>
           </div>
           <div
@@ -170,13 +176,13 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
               className="playlist-track-title"
             >
               <span>
-                Mrs. Artist - Song Title
+                Prime Audio Soup - Meat Beat Manifesto
               </span>
             </div>
             <div
               className="playlist-track-duration"
             >
-              04:23
+              03:11
             </div>
           </div>
           <div
@@ -198,13 +204,13 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
               className="playlist-track-title"
             >
               <span>
-                Mrs. Artist - Song Title
+                Leave You Far Behind - Lunatic Calm
               </span>
             </div>
             <div
               className="playlist-track-duration"
             >
-              04:23
+              03:11
             </div>
           </div>
           <div
@@ -226,13 +232,13 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
               className="playlist-track-title"
             >
               <span>
-                Mrs. Artist - Song Title
+                Mindfields - The Prodigy
               </span>
             </div>
             <div
               className="playlist-track-duration"
             >
-              04:23
+              03:11
             </div>
           </div>
           <div
@@ -254,13 +260,13 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
               className="playlist-track-title"
             >
               <span>
-                Mrs. Artist - Song Title
+                Dragula - Rob Zombie
               </span>
             </div>
             <div
               className="playlist-track-duration"
             >
-              04:23
+              03:11
             </div>
           </div>
           <div
@@ -282,13 +288,13 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
               className="playlist-track-title"
             >
               <span>
-                Mrs. Artist - Song Title
+                My Own Summer (Shove It) - Deftones
               </span>
             </div>
             <div
               className="playlist-track-duration"
             >
-              04:23
+              03:11
             </div>
           </div>
           <div
@@ -310,13 +316,97 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
               className="playlist-track-title"
             >
               <span>
-                Mrs. Artist - Song Title
+                Ultrasonic Sound - Hive
               </span>
             </div>
             <div
               className="playlist-track-duration"
             >
-              04:23
+              03:11
+            </div>
+          </div>
+          <div
+            className="playlist-track"
+            style={
+              Object {
+                "backgroundColor": null,
+                "color": null,
+              }
+            }
+          >
+            <div
+              className="playlist-track-number"
+            >
+              11
+              .
+            </div>
+            <div
+              className="playlist-track-title"
+            >
+              <span>
+                Look to Your Orb - Monster Magnet
+              </span>
+            </div>
+            <div
+              className="playlist-track-duration"
+            >
+              03:11
+            </div>
+          </div>
+          <div
+            className="playlist-track"
+            style={
+              Object {
+                "backgroundColor": null,
+                "color": null,
+              }
+            }
+          >
+            <div
+              className="playlist-track-number"
+            >
+              12
+              .
+            </div>
+            <div
+              className="playlist-track-title"
+            >
+              <span>
+                Du hast - Rammstein
+              </span>
+            </div>
+            <div
+              className="playlist-track-duration"
+            >
+              03:11
+            </div>
+          </div>
+          <div
+            className="playlist-track"
+            style={
+              Object {
+                "backgroundColor": null,
+                "color": null,
+              }
+            }
+          >
+            <div
+              className="playlist-track-number"
+            >
+              13
+              .
+            </div>
+            <div
+              className="playlist-track-title"
+            >
+              <span>
+                Wake Up - Rage Against The Machine
+              </span>
+            </div>
+            <div
+              className="playlist-track-duration"
+            >
+              03:11
             </div>
           </div>
         </div>
@@ -340,7 +430,7 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
           style={
             Object {
               "bottom": "0%",
-              "height": "100%",
+              "height": "0%",
               "visibility": "visible",
             }
           }

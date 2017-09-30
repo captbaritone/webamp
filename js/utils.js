@@ -92,18 +92,21 @@ export const merge = (target, source) => {
   return target;
 };
 
+export const toPercent = (min, max, value) => (value - min) / (max - min);
+export const percentToIndex = (percent, length) =>
+  Math.min(
+    Math.floor(percent * length),
+    length - 1 // Special case for 100%
+  );
+
 // Maps a value in a range (defined my min/max) to a value in an array (options).
 export const segment = (min, max, value, newValues) => {
-  const ratio = (value - min) / (max - min);
+  const ratio = toPercent(min, max, value);
   /*
   | 0 | 1 | 2 |
   0   1   2   3
   */
-  const index = Math.min(
-    Math.floor(ratio * newValues.length),
-    newValues.length - 1 // Special case for 100%
-  );
-  return newValues[index];
+  return newValues[percentToIndex(ratio, newValues.length)];
 };
 
 export const arraysAreEqual = (a, b) =>

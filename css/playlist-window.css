@@ -85,6 +85,14 @@
   width: auto;
 }
 
+#winamp2-js .playlist-track-title > span {
+  white-space: nowrap;
+  overflow: hidden;
+  display: block;
+  text-overflow: ellipsis;
+  position: relative;
+}
+
 #winamp2-js .playlist-track-duration {
   padding-right: 3px;
   display: table-cell;
@@ -98,8 +106,7 @@
   width: 20px;
   min-width: 20px;
   position: relative;
-  padding-bottom: 9px;
-  padding-top: 9px;
+  padding-bottom: 18px;
 }
 
 #winamp2-js .playlist-scrollbar {
@@ -111,7 +118,6 @@
 #winamp2-js .playlist-scrollbar-handle {
   width: 8x;
   height: 18px;
-  margin-top: -9px;
 }
 
 #winamp2-js .playlist-bottom {

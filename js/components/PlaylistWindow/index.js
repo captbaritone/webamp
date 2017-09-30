@@ -5,6 +5,7 @@ import Slider from "rc-slider/lib/Slider";
 
 import MiniTime from "../MiniTime";
 import Track from "./Track";
+import { percentToIndex } from "../../utils";
 import { WINDOWS } from "../../constants";
 import {
   SET_FOCUSED_WINDOW,
@@ -13,6 +14,8 @@ import {
 import { play, pause, stop, openFileDialog } from "../../actionCreators";
 
 import "../../../css/playlist-window.css";
+
+const TRACK_HEIGHT = 13;
 
 const Handle = () => <div className="playlist-scrollbar-handle" />;
 
@@ -33,6 +36,27 @@ const PlaylistWindow = props => {
   const classes = classnames("window", "draggable", {
     selected: focused === WINDOWS.PLAYLIST
   });
+
+  const tracks = [
+    ["Rock Is Dead", "Marilyn Manson", "191"],
+    ["Spybreak! (Short One)", "Propellerheads", "191"],
+    ["Bad Blood", "Ministry", "191"],
+    ["Clubbed to Death", "Rob D", "191"],
+    ["Prime Audio Soup", "Meat Beat Manifesto", "191"],
+    ["Leave You Far Behind", "Lunatic Calm", "191"],
+    ["Mindfields", "The Prodigy", "191"],
+    ["Dragula", "Rob Zombie", "191"],
+    ["My Own Summer (Shove It)", "Deftones", "191"],
+    ["Ultrasonic Sound", "Hive", "191"],
+    ["Look to Your Orb", "Monster Magnet", "191"],
+    ["Du hast", "Rammstein", "191"],
+    ["Wake Up", "Rage Against The Machine", "191"]
+  ];
+
+  const scrollTicks = tracks.length - 3;
+
+  const offset =
+    percentToIndex(playlistScrollPosition / 100, scrollTicks) * TRACK_HEIGHT;
   return (
     <div
       id="playlist-window"
@@ -49,12 +73,12 @@ const PlaylistWindow = props => {
         <div className="playlist-middle-left draggable" />
         <div className="playlist-middle-center">
           <div className="playlist-tracks">
-            <div>
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((number, i) => (
+            <div style={{ marginTop: `-${offset}px` }}>
+              {tracks.map((track, i) => (
                 <Track
-                  number={number}
-                  title="Mrs. Artist - Song Title"
-                  duration={263}
+                  number={i + 1}
+                  title={`${track[0]} - ${track[1]}`}
+                  duration={track[2]}
                   selected={i === 0}
                   current={i === 0}
                   key={i}
@@ -70,7 +94,7 @@ const PlaylistWindow = props => {
             min={0}
             max={100}
             step={1}
-            value={100 - playlistScrollPosition}
+            value={playlistScrollPosition}
             onChange={setPlaylistScrollPosition}
             vertical
             handle={Handle}
@@ -110,7 +134,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   stop: () => dispatch(stop()),
   openFileDialog: () => dispatch(openFileDialog(ownProps.fileInput)),
   setPlaylistScrollPosition: position =>
-    dispatch({ type: SET_PLAYLIST_SCROLL_POSITION, position })
+    dispatch({ type: SET_PLAYLIST_SCROLL_POSITION, position: 100 - position })
 });
 
 const mapStateToProps = state => {
