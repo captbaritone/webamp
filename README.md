@@ -7,6 +7,8 @@ A reimplementation of Winamp 2.9 in HTML5 and JavaScript.
 Works in modern versions of Edge, Firefox, Safari and Chrome. IE is [not
 supported](http://caniuse.com/#feat=audio-api).
 
+![Screenshot of Winamp2-js](./preview.png)
+
 ## Features
 
 - Decodes the actual skin file in your browser so you can load your favorite
