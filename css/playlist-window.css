@@ -1,7 +1,5 @@
 /* Styles */
 #winamp2-js #playlist-window {
-  height: 116px;
-  width: 275px;
   display: flex;
   flex-direction: column;
 }
@@ -204,4 +202,12 @@
   position: absolute;
   top: 23px;
   left: 66px;
+}
+
+#winamp2-js #playlist-window #playlist-resize-target {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 20px;
+  width: 20px;
 }

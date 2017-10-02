@@ -38,7 +38,8 @@ import {
   CTRL_CLICKED_TRACK,
   SELECT_ALL,
   SELECT_ZERO,
-  INVERT_SELECTION
+  INVERT_SELECTION,
+  PLAYLIST_SIZE_CHANGED
 } from "./actionTypes";
 import { playlistEnabled } from "./config";
 
@@ -105,7 +106,8 @@ const defaultDisplayState = {
   skinColors: null,
   skinPlaylistStyle: {},
   visualizerStyle: 2,
-  playlistScrollPosition: 0
+  playlistScrollPosition: 0,
+  playlistSize: [0, 0]
 };
 
 const display = (state = defaultDisplayState, action) => {
@@ -141,6 +143,8 @@ const display = (state = defaultDisplayState, action) => {
       return { ...state, visualizerStyle: (state.visualizerStyle + 1) % 3 };
     case SET_PLAYLIST_SCROLL_POSITION:
       return { ...state, playlistScrollPosition: action.position };
+    case PLAYLIST_SIZE_CHANGED:
+      return { ...state, playlistSize: action.size };
     default:
       return state;
   }

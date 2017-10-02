@@ -6,8 +6,13 @@ import Slider from "rc-slider/lib/Slider";
 import MiniTime from "../MiniTime";
 import Track from "./Track";
 import SelectionMenu from "./SelectionMenu";
+import ResizeTarget from "./ResizeTarget";
 import { percentToIndex } from "../../utils";
-import { WINDOWS } from "../../constants";
+import {
+  WINDOWS,
+  PLAYLIST_RESIZE_SEGMENT_WIDTH,
+  PLAYLIST_RESIZE_SEGMENT_HEIGHT
+} from "../../constants";
 import {
   SET_FOCUSED_WINDOW,
   SET_PLAYLIST_SCROLL_POSITION
@@ -17,6 +22,8 @@ import { play, pause, stop, openFileDialog } from "../../actionCreators";
 import "../../../css/playlist-window.css";
 
 const TRACK_HEIGHT = 13;
+const MIN_WINDOW_HEIGHT = 116;
+const MIN_WINDOW_WIDTH = 275;
 
 const Handle = () => <div className="playlist-scrollbar-handle" />;
 
@@ -27,12 +34,18 @@ const PlaylistWindow = props => {
     focused,
     playlistScrollPosition,
     setPlaylistScrollPosition,
-    trackOrder
+    trackOrder,
+    playlistSize
   } = props;
+
   const style = {
     color: skinPlaylistStyle.Normal,
     backgroundColor: skinPlaylistStyle.NormalBG,
-    fontFamily: `${skinPlaylistStyle.Font}, Arial, sans-serif`
+    fontFamily: `${skinPlaylistStyle.Font}, Arial, sans-serif`,
+    height: `${MIN_WINDOW_HEIGHT +
+      playlistSize[1] * PLAYLIST_RESIZE_SEGMENT_HEIGHT}px`,
+    width: `${MIN_WINDOW_WIDTH +
+      playlistSize[0] * PLAYLIST_RESIZE_SEGMENT_WIDTH}px`
   };
 
   const classes = classnames("window", "draggable", {
@@ -99,6 +112,7 @@ const PlaylistWindow = props => {
             />
           </div>
           <MiniTime />
+          <ResizeTarget />
         </div>
       </div>
     </div>
@@ -122,13 +136,14 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 const mapStateToProps = state => {
   const {
     windows: { focused },
-    display: { skinPlaylistStyle, playlistScrollPosition },
+    display: { skinPlaylistStyle, playlistScrollPosition, playlistSize },
     playlist: { trackOrder }
   } = state;
   return {
     focused,
     skinPlaylistStyle,
     playlistScrollPosition,
+    playlistSize,
     trackOrder
   };
 };

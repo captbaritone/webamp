@@ -10,6 +10,8 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
       "backgroundColor": undefined,
       "color": undefined,
       "fontFamily": "undefined, Arial, sans-serif",
+      "height": "116px",
+      "width": "275px",
     }
   }
 >
@@ -298,7 +300,30 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
   >
     <div
       className="playlist-bottom-left draggable"
-    />
+    >
+      <div
+        className="playlist-menu selected"
+        id="playlist-selection-menu"
+      >
+        <div
+          className="bar"
+        />
+        <ul>
+          <li
+            className="invert-selection"
+            onClick={[Function]}
+          />
+          <li
+            className="select-zero"
+            onClick={[Function]}
+          />
+          <li
+            className="select-all"
+            onClick={[Function]}
+          />
+        </ul>
+      </div>
+    </div>
     <div
       className="playlist-bottom-center draggable"
     />
@@ -331,6 +356,10 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
           onClick={[Function]}
         />
       </div>
+      <div
+        id="playlist-resize-target"
+        onMouseDown={[Function]}
+      />
     </div>
   </div>
 </div>
