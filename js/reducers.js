@@ -46,6 +46,22 @@ import {
 } from "./actionTypes";
 import { playlistEnabled } from "./config";
 
+const mapObject = (obj, iteratee) =>
+  // TODO: Could return the original reference if no values change
+  Object.keys(obj).reduce((newObj, key) => {
+    newObj[key] = iteratee(obj[key], key);
+    return newObj;
+  }, {});
+
+const filterObject = (obj, predicate) =>
+  // TODO: Could return the original reference if no values change
+  Object.keys(obj).reduce((newObj, key) => {
+    if (predicate(obj[key], key)) {
+      newObj[key] = obj[key];
+    }
+    return newObj;
+  }, {});
+
 const defaultUserInput = {
   focus: null,
   bandFocused: null,
@@ -231,45 +247,31 @@ const defaultTracksState = {
 const tracks = (state = defaultTracksState, action) => {
   switch (action.type) {
     case CLICKED_TRACK:
-      return Object.keys(state).reduce((newTracks, id) => {
-        newTracks[id] = { ...state[id], selected: id === String(action.id) };
-        return newTracks;
-      }, {});
+      return mapObject(state, (track, id) => ({
+        ...track,
+        selected: id === String(action.id)
+      }));
     case CTRL_CLICKED_TRACK:
-      const track = state[action.id];
-      const newTrack = { ...track, selected: !track.selected };
-      return { ...state, [action.id]: newTrack };
+      const t = state[action.id];
+      return {
+        ...state,
+        [action.id]: { ...t, selected: !t.selected }
+      };
     case SELECT_ALL:
-      return Object.keys(state).reduce((newTracks, id) => {
-        newTracks[id] = { ...state[id], selected: true };
-        return newTracks;
-      }, {});
+      return mapObject(state, track => ({ ...track, selected: true }));
     case SELECT_ZERO:
-      return Object.keys(state).reduce((newTracks, id) => {
-        newTracks[id] = { ...state[id], selected: false };
-        return newTracks;
-      }, {});
+      return mapObject(state, track => ({ ...track, selected: false }));
     case INVERT_SELECTION:
-      return Object.keys(state).reduce((newTracks, id) => {
-        newTracks[id] = { ...state[id], selected: !state[id].selected };
-        return newTracks;
-      }, {});
+      return mapObject(state, track => ({
+        ...track,
+        selected: !track.selected
+      }));
     case REMOVE_ALL_TRACKS:
       return {};
     case CROP_TRACKS:
-      return Object.keys(state).reduce((newTracks, id) => {
-        if (state[id].selected) {
-          newTracks[id] = state[id];
-        }
-        return newTracks;
-      }, {});
+      return filterObject(state, track => track.selected);
     case REMOVE_SELECTED_TRACKS:
-      return Object.keys(state).reduce((newTracks, id) => {
-        if (!state[id].selected) {
-          newTracks[id] = state[id];
-        }
-        return newTracks;
-      }, {});
+      return filterObject(state, track => !track.selected);
     default:
       return state;
   }
