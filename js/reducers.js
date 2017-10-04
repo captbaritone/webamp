@@ -39,7 +39,10 @@ import {
   SELECT_ALL,
   SELECT_ZERO,
   INVERT_SELECTION,
-  PLAYLIST_SIZE_CHANGED
+  PLAYLIST_SIZE_CHANGED,
+  REMOVE_ALL_TRACKS,
+  CROP_TRACKS,
+  REMOVE_SELECTED_TRACKS
 } from "./actionTypes";
 import { playlistEnabled } from "./config";
 
@@ -251,6 +254,22 @@ const tracks = (state = defaultTracksState, action) => {
         newTracks[id] = { ...state[id], selected: !state[id].selected };
         return newTracks;
       }, {});
+    case REMOVE_ALL_TRACKS:
+      return {};
+    case CROP_TRACKS:
+      return Object.keys(state).reduce((newTracks, id) => {
+        if (state[id].selected) {
+          newTracks[id] = state[id];
+        }
+        return newTracks;
+      }, {});
+    case REMOVE_SELECTED_TRACKS:
+      return Object.keys(state).reduce((newTracks, id) => {
+        if (!state[id].selected) {
+          newTracks[id] = state[id];
+        }
+        return newTracks;
+      }, {});
     default:
       return state;
   }
@@ -262,6 +281,8 @@ const defaultPlaylistState = {
 };
 const playlist = (state = defaultPlaylistState, action) => {
   switch (action.type) {
+    case REMOVE_ALL_TRACKS:
+      return { ...state, trackOrder: [], currentTrack: null };
     default:
       return state;
   }

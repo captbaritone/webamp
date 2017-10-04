@@ -78,6 +78,18 @@ const imageSelectors = {
   PLAYLIST_VISUALIZER_BACKGROUND: [".playlist-visualizer"],
   PLAYLIST_SHADE_BACKGROUND: ["#playlist.shade"],
 
+  PLAYLIST_REMOVE_MENU_BAR: ["#playlist-remove-menu.selected .bar"],
+  PLAYLIST_REMOVE_ALL: ["#playlist-remove-menu .remove-all"],
+  PLAYLIST_REMOVE_ALL_SELECTED: ["#playlist-remove-menu .remove-all:hover"],
+  PLAYLIST_CROP: ["#playlist-remove-menu .crop"],
+  PLAYLIST_CROP_SELECTED: ["#playlist-remove-menu .crop:hover"],
+  PLAYLIST_REMOVE_SELECTED: ["#playlist-remove-menu .remove-selected"],
+  PLAYLIST_REMOVE_SELECTED_SELECTED: [
+    "#playlist-remove-menu .remove-selected:hover"
+  ],
+  PLAYLIST_REMOVE_MISC: ["#playlist-remove-menu .remove-misc"],
+  PLAYLIST_REMOVE_MISC_SELECTED: ["#playlist-remove-menu .remove-misc:hover"],
+
   PLAYLIST_SELECT_MENU_BAR: ["#playlist-selection-menu.selected .bar"],
   PLAYLIST_INVERT_SELECTION: ["#playlist-selection-menu .invert-selection"],
   PLAYLIST_INVERT_SELECTION_SELECTED: [

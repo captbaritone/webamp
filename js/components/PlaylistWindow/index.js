@@ -5,6 +5,7 @@ import Slider from "rc-slider/lib/Slider";
 
 import MiniTime from "../MiniTime";
 import Track from "./Track";
+import RemoveMenu from "./RemoveMenu";
 import SelectionMenu from "./SelectionMenu";
 import ResizeTarget from "./ResizeTarget";
 import { percentToIndex } from "../../utils";
@@ -96,6 +97,7 @@ const PlaylistWindow = props => {
       </div>
       <div className="playlist-bottom draggable">
         <div className="playlist-bottom-left draggable">
+          <RemoveMenu />
           <SelectionMenu />
         </div>
         <div className="playlist-bottom-center draggable" />
@@ -144,7 +146,7 @@ const mapStateToProps = state => {
     skinPlaylistStyle,
     playlistScrollPosition,
     playlistSize,
-    trackOrder
+    trackOrder: trackOrder.filter(id => state.tracks[id])
   };
 };
 
