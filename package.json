@@ -12,8 +12,8 @@
     "test": "jest --coverage",
     "travis-tests": "jest --coverage && npm run lint && npm run build",
     "tdd": "jest --watch",
-    "deploy": "ssh jordaneldredge.com HASH=$HASH sh < deploy.sh",
-    "revert": "ssh jordaneldredge.com sh < revert.sh",
+    "deploy": "ssh jordaneldredge.com HASH=$HASH sh < scripts/deploy.sh",
+    "revert": "ssh jordaneldredge.com sh < scripts/revert.sh",
     "format": "prettier --write js/**/*.js css/**/*.css webpack.config.js webpack.production.config.js"
   },
   "repository": {
