@@ -302,8 +302,36 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
       className="playlist-bottom-left draggable"
     >
       <div
-        className="playlist-menu selected"
+        className="playlist-menu"
+        id="playlist-remove-menu"
+        onClick={[Function]}
+      >
+        <div
+          className="bar"
+        />
+        <ul>
+          <li
+            className="remove-misc"
+            onClick={[Function]}
+          />
+          <li
+            className="remove-all"
+            onClick={[Function]}
+          />
+          <li
+            className="crop"
+            onClick={[Function]}
+          />
+          <li
+            className="remove-selected"
+            onClick={[Function]}
+          />
+        </ul>
+      </div>
+      <div
+        className="playlist-menu"
         id="playlist-selection-menu"
+        onClick={[Function]}
       >
         <div
           className="bar"

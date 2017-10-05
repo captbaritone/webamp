@@ -5,17 +5,15 @@ import {
   CROP_TRACKS,
   REMOVE_SELECTED_TRACKS
 } from "../../actionTypes";
+import PlaylistMenu from "./PlaylistMenu";
 
 const RemoveMenu = props => (
-  <div id="playlist-remove-menu" className="playlist-menu selected">
-    <div className="bar" />
-    <ul>
-      <li className="remove-misc" onClick={props.removeSelected} />
-      <li className="remove-all" onClick={props.removeAll} />
-      <li className="crop" onClick={props.crop} />
-      <li className="remove-selected" onClick={props.removeSelected} />
-    </ul>
-  </div>
+  <PlaylistMenu id="playlist-remove-menu">
+    <li className="remove-misc" onClick={props.removeSelected} />
+    <li className="remove-all" onClick={props.removeAll} />
+    <li className="crop" onClick={props.crop} />
+    <li className="remove-selected" onClick={props.removeSelected} />
+  </PlaylistMenu>
 );
 
 const mapDispatchToProps = {
