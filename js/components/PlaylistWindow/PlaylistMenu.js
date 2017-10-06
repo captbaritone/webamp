@@ -10,7 +10,13 @@ export default class PlaylistMenu extends React.Component {
 
   _handleClick(e) {
     const { target } = e;
-    this.setState({ selected: !this.state.selected });
+    const { selected } = this.state;
+    if (selected) {
+      this.setState({ selected: false });
+      return;
+    }
+    this.setState({ selected: true });
+
     const handleClickOut = ee => {
       if (!target.contains(ee.target)) {
         this.setState({ selected: false });
