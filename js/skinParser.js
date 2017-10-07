@@ -124,37 +124,44 @@ const defaultPlaylistStyle = {
   Font: "Arial"
 };
 
-// A promise that, given a File object, returns a skin style object
-async function skinParser(zipFile) {
-  const buffer = await genBufferFromFile(zipFile);
-  const zip = await JSZip.loadAsync(buffer);
+async function genPlaylistStyle(zip) {
+  const pleditContent = await genFileFromZip(zip, "PLEDIT", "txt", "text");
+  return pleditContent ? parseIni(pleditContent) : defaultPlaylistStyle;
+}
+
+async function genColors(zip) {
+  const viscolorContent = await genFileFromZip(zip, "VISCOLOR", "txt", "text");
+  return viscolorContent ? parseViscolors(viscolorContent) : defaultVisColors;
+}
+
+async function genImages(zip) {
   const imageObjs = await Promise.all(
-    Object.keys(SKIN_SPRITES).map(
-      async fileName => await genSpriteUrisFromFilename(zip, fileName)
+    Object.keys(SKIN_SPRITES).map(async fileName =>
+      genSpriteUrisFromFilename(zip, fileName)
     )
   );
-
   // Merge all the objects into a single object. Tests assert that sprite keys are unique.
-  const images = shallowMerge(imageObjs);
-
+  return shallowMerge(imageObjs);
+}
+async function genCursors(zip) {
   const cursorObjs = await Promise.all(
     CURSORS.map(async cursorName => ({
       [cursorName]: await getCursorFromFilename(zip, cursorName)
     }))
   );
+  return shallowMerge(cursorObjs);
+}
 
-  const cursors = shallowMerge(cursorObjs);
-
-  const viscolorContent = await genFileFromZip(zip, "VISCOLOR", "txt", "text");
-  const colors = viscolorContent
-    ? parseViscolors(viscolorContent)
-    : defaultVisColors;
-
-  const pleditContent = await genFileFromZip(zip, "PLEDIT", "txt", "text");
-  const playlistStyle = pleditContent
-    ? parseIni(pleditContent)
-    : defaultPlaylistStyle;
-
+// A promise that, given a File object, returns a skin style object
+async function skinParser(zipFile) {
+  const buffer = await genBufferFromFile(zipFile);
+  const zip = await JSZip.loadAsync(buffer);
+  const [colors, playlistStyle, images, cursors] = await Promise.all([
+    genColors(zip),
+    genPlaylistStyle(zip),
+    genImages(zip),
+    genCursors(zip)
+  ]);
   return { colors, playlistStyle, images, cursors };
 }
 
