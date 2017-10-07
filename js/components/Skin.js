@@ -242,6 +242,10 @@ const imageSelectors = {
   ]
 };
 
+const cursorSelectors = {
+  PSIZE: ["#playlist-resize-target"]
+};
+
 Object.keys(FONT_LOOKUP).forEach(character => {
   const key = imageConstFromChar(character);
   const code = character.charCodeAt(0);
@@ -265,6 +269,17 @@ const Skin = props => {
       });
     }
   });
+  Object.keys(cursorSelectors).map(cursorName => {
+    const imageUrl = props.skinCursors[cursorName];
+    if (imageUrl) {
+      cursorSelectors[cursorName].forEach(selector => {
+        cssRules.push(
+          `#winamp2-js ${selector} {cursor: url(${imageUrl}), auto}`
+        );
+      });
+    }
+  });
+
   if (numExIsUsed(props.skinImages)) {
     // This alternate number file requires that the minus sign be
     // formatted differently.
@@ -275,6 +290,7 @@ const Skin = props => {
   return <style type="text/css">{cssRules.join("\n")}</style>;
 };
 
-export default connect(state => ({ skinImages: state.display.skinImages }))(
-  Skin
-);
+export default connect(state => ({
+  skinImages: state.display.skinImages,
+  skinCursors: state.display.skinCursors
+}))(Skin);

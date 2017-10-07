@@ -2,6 +2,39 @@ import SKIN_SPRITES from "./skinSprites";
 import JSZip from "../node_modules/jszip/dist/jszip"; // Hack
 import { parseViscolors, parseIni } from "./utils";
 
+const shallowMerge = objs =>
+  objs.reduce((prev, img) => Object.assign(prev, img), {});
+
+const CURSORS = [
+  "CLOSE",
+  "EQCLOSE",
+  "EQNORMAL",
+  "EQSLID",
+  "EQTITLE",
+  "MAINMENU",
+  "MIN",
+  "NORMAL",
+  "PCLOSE",
+  "PNORMAL",
+  "POSBAR",
+  "PSIZE",
+  "PTBAR",
+  "PVSCROLL",
+  "PWINBUT",
+  "PWSNORM",
+  "PWSSIZE",
+  "SONGNAME",
+  "TITLEBAR",
+  "VOLBAL",
+  "VOLBAR",
+  "WINBUT",
+  "WSCLOSE",
+  "WSMIN",
+  "WSNORMAL",
+  "WSPOSBAR",
+  "WSWINBUT"
+];
+
 const genImgFromBlob = blob =>
   new Promise(resolve => {
     const img = new Image();
@@ -51,6 +84,11 @@ async function genSpriteUrisFromFilename(zip, fileName) {
   return spriteUris;
 }
 
+async function getCursorFromFilename(zip, fileName) {
+  const base64 = await genFileFromZip(zip, fileName, "CUR", "base64");
+  return `data:image/x-win-bitmap;base64,${base64}`;
+}
+
 const defaultVisColors = [
   "rgb(0,0,0)",
   "rgb(24,33,41)",
@@ -97,7 +135,15 @@ async function skinParser(zipFile) {
   );
 
   // Merge all the objects into a single object. Tests assert that sprite keys are unique.
-  const images = imageObjs.reduce((prev, img) => Object.assign(prev, img), {});
+  const images = shallowMerge(imageObjs);
+
+  const cursorObjs = await Promise.all(
+    CURSORS.map(async cursorName => ({
+      [cursorName]: await getCursorFromFilename(zip, cursorName)
+    }))
+  );
+
+  const cursors = shallowMerge(cursorObjs);
 
   const viscolorContent = await genFileFromZip(zip, "VISCOLOR", "txt", "text");
   const colors = viscolorContent
@@ -109,7 +155,7 @@ async function skinParser(zipFile) {
     ? parseIni(pleditContent)
     : defaultPlaylistStyle;
 
-  return { colors, playlistStyle, images };
+  return { colors, playlistStyle, images, cursors };
 }
 
 export default skinParser;

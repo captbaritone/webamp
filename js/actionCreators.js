@@ -145,7 +145,8 @@ export function setSkinFromFile(skinFile) {
       type: SET_SKIN_DATA,
       skinImages: skinData.images,
       skinColors: skinData.colors,
-      skinPlaylistStyle: skinData.playlistStyle
+      skinPlaylistStyle: skinData.playlistStyle,
+      skinCursors: skinData.cursors
     });
   };
 }

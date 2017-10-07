@@ -122,6 +122,7 @@ const defaultDisplayState = {
   working: false,
   skinImages: {},
   skinColors: null,
+  skinCursors: null,
   skinPlaylistStyle: {},
   visualizerStyle: 2,
   playlistScrollPosition: 0,
@@ -150,12 +151,14 @@ const display = (state = defaultDisplayState, action) => {
     case CLOSE_WINAMP:
       return { ...state, closed: true };
     case SET_SKIN_DATA:
+      console.log(action);
       return {
         ...state,
         loading: false,
         skinImages: action.skinImages,
         skinColors: action.skinColors,
-        skinPlaylistStyle: action.skinPlaylistStyle
+        skinPlaylistStyle: action.skinPlaylistStyle,
+        skinCursors: action.skinCursors
       };
     case TOGGLE_VISUALIZER_STYLE:
       return { ...state, visualizerStyle: (state.visualizerStyle + 1) % 3 };
