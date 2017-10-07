@@ -23,7 +23,8 @@ import {
   SET_EQ_ON,
   SET_EQ_OFF,
   TOGGLE_EQUALIZER_SHADE_MODE,
-  CLOSE_EQUALIZER_WINDOW
+  CLOSE_EQUALIZER_WINDOW,
+  REMOVE_TRACKS
 } from "./actionTypes";
 
 export function play() {
@@ -231,4 +232,24 @@ export function toggleEqualizerShadeMode() {
 
 export function closeEqualizerWindow() {
   return { type: CLOSE_EQUALIZER_WINDOW };
+}
+
+export function cropPlaylist() {
+  return (dispatch, getState) => {
+    const { tracks } = getState();
+    dispatch({
+      type: REMOVE_TRACKS,
+      ids: Object.keys(tracks).filter(id => !tracks[id].selected)
+    });
+  };
+}
+
+export function removeSelectedTracks() {
+  return (dispatch, getState) => {
+    const { tracks } = getState();
+    dispatch({
+      type: REMOVE_TRACKS,
+      ids: Object.keys(tracks).filter(id => tracks[id].selected)
+    });
+  };
 }
