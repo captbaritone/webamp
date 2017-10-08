@@ -64,6 +64,9 @@ const PlaylistWindow = props => {
     overflowTracks + 1
   );
 
+  // Ugh. By not rendering some tracks, we can end up in a situation where
+  // scrolling causes the number of digits in the tracks to go up, thus causing
+  // a horizontal jump.
   const tracks = trackOrder.slice(offset, offset + numberOfVisibleTracks);
   return (
     <div

@@ -40,13 +40,7 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
       <div
         className="playlist-tracks"
       >
-        <div
-          style={
-            Object {
-              "marginTop": "-0px",
-            }
-          }
-        >
+        <div>
           <div
             className="playlist-track selected"
             onClick={[Function]}
@@ -159,96 +153,6 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
             >
               <span>
                 Leave You Far Behind
-              </span>
-            </div>
-            <div
-              className="playlist-track-duration"
-            >
-              03:11
-            </div>
-          </div>
-          <div
-            className="playlist-track"
-            onClick={[Function]}
-            onContextMenu={[Function]}
-            style={
-              Object {
-                "backgroundColor": null,
-                "color": null,
-              }
-            }
-          >
-            <div
-              className="playlist-track-number"
-            >
-              5
-              .
-            </div>
-            <div
-              className="playlist-track-title"
-            >
-              <span>
-                Dragula
-              </span>
-            </div>
-            <div
-              className="playlist-track-duration"
-            >
-              03:11
-            </div>
-          </div>
-          <div
-            className="playlist-track"
-            onClick={[Function]}
-            onContextMenu={[Function]}
-            style={
-              Object {
-                "backgroundColor": null,
-                "color": null,
-              }
-            }
-          >
-            <div
-              className="playlist-track-number"
-            >
-              6
-              .
-            </div>
-            <div
-              className="playlist-track-title"
-            >
-              <span>
-                Ultrasonic Sound
-              </span>
-            </div>
-            <div
-              className="playlist-track-duration"
-            >
-              03:11
-            </div>
-          </div>
-          <div
-            className="playlist-track"
-            onClick={[Function]}
-            onContextMenu={[Function]}
-            style={
-              Object {
-                "backgroundColor": null,
-                "color": null,
-              }
-            }
-          >
-            <div
-              className="playlist-track-number"
-            >
-              7
-              .
-            </div>
-            <div
-              className="playlist-track-title"
-            >
-              <span>
-                Du hast
               </span>
             </div>
             <div
