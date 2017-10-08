@@ -53,11 +53,18 @@ const PlaylistWindow = props => {
     selected: focused === WINDOWS.PLAYLIST
   });
 
-  // TODO: This magic number will need to change if the playlist is resized.
-  const scrollTicks = trackOrder.length - 3;
+  const BASE_WINDOW_HEIGHT = 52;
+  const numberOfVisibleTracks = Math.floor(
+    (BASE_WINDOW_HEIGHT + PLAYLIST_RESIZE_SEGMENT_HEIGHT * playlistSize[1]) /
+      TRACK_HEIGHT
+  );
+  const overflowTracks = Math.max(0, trackOrder.length - numberOfVisibleTracks);
+  const offset = percentToIndex(
+    playlistScrollPosition / 100,
+    overflowTracks + 1
+  );
 
-  const offset =
-    percentToIndex(playlistScrollPosition / 100, scrollTicks) * TRACK_HEIGHT;
+  const tracks = trackOrder.slice(offset, offset + numberOfVisibleTracks);
   return (
     <div
       id="playlist-window"
@@ -74,9 +81,9 @@ const PlaylistWindow = props => {
         <div className="playlist-middle-left draggable" />
         <div className="playlist-middle-center">
           <div className="playlist-tracks">
-            <div style={{ marginTop: `-${offset}px` }}>
-              {trackOrder.map((id, i) => (
-                <Track number={i + 1} id={id} key={id} />
+            <div>
+              {tracks.map((id, i) => (
+                <Track number={i + 1 + offset} id={id} key={id} />
               ))}
             </div>
           </div>
