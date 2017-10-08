@@ -76,7 +76,6 @@ canvas {
 
 #winamp2-js .window {
   position: absolute;
-  cursor: url("../cursors/MAINMENU.PNG"), auto;
   /* Ask the browser to scale showing large pixels if possible */
   image-rendering: -moz-crisp-edges; /* Firefox */
   image-rendering: -o-crisp-edges; /* Opera */

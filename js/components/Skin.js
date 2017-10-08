@@ -243,7 +243,18 @@ const imageSelectors = {
 };
 
 const cursorSelectors = {
-  PSIZE: ["#playlist-resize-target"]
+  PSIZE: ["#playlist-resize-target"],
+  CLOSE: ["#title-bar #close"],
+  MAINMENU: ["#main-window", "#main-window.shade #title-bar"],
+  TITLEBAR: ["#main-window #title-bar"],
+  POSBAR: ["#position"],
+  VOLBAL: ["#volume", "#balance"],
+  EQSLID: ["#equalizer-window .band"],
+  EQTITLE: [
+    "#equalizer-window .title-bar",
+    "#equalizer-window.shade",
+    "#equalizer-window.shade input"
+  ]
 };
 
 Object.keys(FONT_LOOKUP).forEach(character => {
@@ -270,11 +281,11 @@ const Skin = props => {
     }
   });
   Object.keys(cursorSelectors).map(cursorName => {
-    const imageUrl = props.skinCursors[cursorName];
-    if (imageUrl) {
+    const cursorUrl = props.skinCursors[cursorName];
+    if (cursorUrl) {
       cursorSelectors[cursorName].forEach(selector => {
         cssRules.push(
-          `#winamp2-js ${selector} {cursor: url(${imageUrl}), auto}`
+          `#winamp2-js ${selector} {cursor: url(${cursorUrl}), auto}`
         );
       });
     }

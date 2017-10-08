@@ -151,7 +151,6 @@ const display = (state = defaultDisplayState, action) => {
     case CLOSE_WINAMP:
       return { ...state, closed: true };
     case SET_SKIN_DATA:
-      console.log(action);
       return {
         ...state,
         loading: false,

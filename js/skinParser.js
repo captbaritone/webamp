@@ -86,7 +86,7 @@ async function genSpriteUrisFromFilename(zip, fileName) {
 
 async function getCursorFromFilename(zip, fileName) {
   const base64 = await genFileFromZip(zip, fileName, "CUR", "base64");
-  return `data:image/x-win-bitmap;base64,${base64}`;
+  return base64 && `data:image/x-win-bitmap;base64,${base64}`;
 }
 
 const defaultVisColors = [
