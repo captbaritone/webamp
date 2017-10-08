@@ -312,7 +312,6 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
         <ul>
           <li
             className="remove-misc"
-            onClick={[Function]}
           />
           <li
             className="remove-all"
