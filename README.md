@@ -70,6 +70,8 @@ __Note:__ These are intended mostly as development tools and are subject to chan
 - [skinspecs.pdf](http://members.xoom.it/skinart/tutorial/skinspecs..pdf)
 - [Skinner's Atlas 1.5 by Jellby](http://forums.winamp.com/showthread.php?p=951257)
 - [Winamp Skinning Tutorial](http://people.xmms2.org/~tru/promoe/Winamp_skinning_tutorial_1_5_0.pdf)
+- Sacrat Skinning tutorial parts [1](http://www.hugi.scene.org/online/hugi26/hugi%2026%20-%20graphics%20skinning%20sacrat%20winamp%20skinning%20tutorial%20-%201.htm), [2](http://www.hugi.scene.org/online/hugi26/hugi%2026%20-%20graphics%20skinning%20sacrat%20winamp%20skinning%20tutorial%20-%202.htm), [3](http://www.hugi.scene.org/online/hugi26/hugi%2026%20-%20graphics%20skinning%20sacrat%20winamp%20skinning%20tutorial%20-%203.htm), [4](http://www.hugi.scene.org/online/hugi26/hugi%2026%20-%20graphics%20skinning%20sacrat%20winamp%20skinning%20tutorial%20-%204.htm), and [5](http://www.hugi.scene.org/online/hugi26/hugi%2026%20-%20graphics%20skinning%20sacrat%20winamp%20skinning%20tutorial%20-%205.htm), 
+- [Winamp Wiki](http://wiki.winamp.com/wiki/Creating_Classic_Skins)
 
 ## Predecessors
 
