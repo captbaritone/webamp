@@ -118,6 +118,7 @@
     "prefer-template": "warn",
     "quotes": ["error", "double", "avoid-escape"],
     "radix": "error",
+    "no-return-await": "error",
     "react/no-string-refs": "error",
     "react/jsx-boolean-value": "error",
     "react/jsx-uses-react": "error",
