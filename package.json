@@ -16,7 +16,7 @@
     "revert": "ssh jordaneldredge.com sh < scripts/revert.sh",
     "format":
       "prettier --write js/**/*.js css/**/*.css webpack.config.js webpack.production.config.js",
-    "build-skin": "rm skins/base-2.91.wsz && cd skins/base-2.91 && zip -r ../base-2.91.wsz .",
+    "build-skin": "rm skins/base-2.91.wsz && cd skins/base-2.91 && zip -x .* -x 'Skining Updates.txt' -r ../base-2.91.wsz .",
     "skin-info": "unzip -vl skins/base-2.91.wsz"
   },
   "repository": {
