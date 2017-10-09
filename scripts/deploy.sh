@@ -26,7 +26,7 @@ echo "Run tests"
 ( cd $NEW_CLONE && yarn run test )
 
 echo "Build the webpack bundle"
-( cd $NEW_CLONE && yarn run build )
+( cd $NEW_CLONE && CDN_URL=https://d38dnrh1liu4f5.cloudfront.net/projects/winamp2-js/ yarn run build )
 
 echo "Cleaning up node_modules/ to save space"
 ( cd $NEW_CLONE && rm -r node_modules )

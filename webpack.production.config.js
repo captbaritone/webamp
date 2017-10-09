@@ -1,6 +1,7 @@
-const { cdnUrl } = require("./package.json");
 const config = require("./webpack.config");
 const webpack = require("webpack");
+
+const cdnUrl = process.env.CDN_URL || "/";
 
 config.plugins = (config.plugins || []).concat([
   new webpack.DefinePlugin({

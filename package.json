@@ -52,7 +52,6 @@
     "url-loader": "^0.5.7",
     "webpack-dev-server": "^2.7.1"
   },
-  "cdnUrl": "https://d38dnrh1liu4f5.cloudfront.net/projects/winamp2-js/",
   "dependencies": {
     "babel": "^6.23.0",
     "babel-plugin-transform-object-rest-spread": "^6.20.2",
