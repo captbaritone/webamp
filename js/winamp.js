@@ -32,10 +32,5 @@ export default {
     }
     this.dispatch(setSkinFromUrl(options.skinUrl));
     return this;
-  },
-
-  /* Functions */
-  seekForwardBy: function(seconds) {
-    this.media.seekToTime(this.media.timeElapsed() + seconds);
   }
 };
