@@ -1,19 +1,21 @@
 import React from "react";
 import { connect } from "react-redux";
-import {
-  close,
-  setSkinFromFilename,
-  openFileDialog
-} from "../../actionCreators";
+import { close, setSkinFromUrl, openFileDialog } from "../../actionCreators";
 import { ContextMenu, Hr, Node, Parent, LinkNode } from "../ContextMenu";
+import base from "../../../skins/base-2.91.wsz";
+import osx from "../../../skins/MacOSXAqua1-5.wsz";
+import topaz from "../../../skins/TopazAmp1-2.wsz";
+import visor from "../../../skins/Vizor1-01.wsz";
+import xmms from "../../../skins/XMMS-Turquoise.wsz";
+import zaxon from "../../../skins/ZaxonRemake1-0.wsz";
 
 const SKINS = [
-  { file: "base-2.91.wsz", name: "<Base Skin>" },
-  { file: "MacOSXAqua1-5.wsz", name: "Mac OSX v1.5 (Aqua)" },
-  { file: "TopazAmp1-2.wsz", name: "TopazAmp" },
-  { file: "Vizor1-01.wsz", name: "Vizor" },
-  { file: "XMMS-Turquoise.wsz", name: "XMMS Turquoise " },
-  { file: "ZaxonRemake1-0.wsz", name: "Zaxon Remake" }
+  { url: base, name: "<Base Skin>" },
+  { url: osx, name: "Mac OSX v1.5 (Aqua)" },
+  { url: topaz, name: "TopazAmp" },
+  { url: visor, name: "Vizor" },
+  { url: xmms, name: "XMMS Turquoise " },
+  { url: zaxon, name: "Zaxon Remake" }
 ];
 
 const MainContextMenu = props => (
@@ -34,8 +36,8 @@ const MainContextMenu = props => (
       <Hr />
       {SKINS.map(skin => (
         <Node
-          key={skin.file}
-          onClick={props.setSkin.bind(null, skin.file)}
+          key={skin.url}
+          onClick={() => props.setSkin(skin.url)}
           label={skin.name}
         />
       ))}
@@ -48,7 +50,7 @@ const MainContextMenu = props => (
 const mapDispatchToProps = (dispatch, ownProps) => ({
   close: () => dispatch(close()),
   openFileDialog: () => dispatch(openFileDialog(ownProps.fileInput)),
-  setSkin: filename => dispatch(setSkinFromFilename(filename))
+  setSkin: url => dispatch(setSkinFromUrl(url))
 });
 
 export default connect(null, mapDispatchToProps)(MainContextMenu);

@@ -25,6 +25,18 @@ module.exports = {
         use: {
           loader: "babel-loader"
         }
+      },
+      {
+        test: /\.(wsz|mp3)$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              emitFile: true,
+              name: "[path][name]-[hash].[ext]"
+            }
+          }
+        ]
       }
     ],
     noParse: [/jszip\.js$/]

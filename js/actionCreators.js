@@ -1,4 +1,3 @@
-import { cdnUrl } from "../package.json";
 import { parser, creator } from "winamp-eqf";
 import MyFile from "./myFile";
 import skinParser from "./skinParser";
@@ -155,11 +154,6 @@ export function setSkinFromUrl(url) {
   const skinFile = new MyFile();
   skinFile.setUrl(url);
   return setSkinFromFile(skinFile);
-}
-
-export function setSkinFromFilename(filename) {
-  const url = `${cdnUrl}/skins/${filename}`;
-  return setSkinFromUrl(url);
 }
 
 export function openFileDialog(fileInput) {

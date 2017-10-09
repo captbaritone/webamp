@@ -43,7 +43,7 @@
     "eslint-config-prettier": "^2.3.0",
     "eslint-plugin-prettier": "^2.2.0",
     "eslint-plugin-react": "7.3.0",
-    "file-loader": "^0.11.0",
+    "file-loader": "^1.1.5",
     "gzip-size-cli": "^2.0.0",
     "jest-cli": "^21.0.2",
     "react-test-renderer": "16.0.0-rc.2",
@@ -78,7 +78,9 @@
   "jest": {
     "testRegex": "\\.test\\.js$",
     "moduleNameMapper": {
-      "\\.css$": "<rootDir>/js/__mocks__/styleMock.js"
+      "\\.css$": "<rootDir>/js/__mocks__/styleMock.js",
+      "\\.wsz$": "<rootDir>/js/__mocks__/fileMock.js",
+      "\\.mp3$": "<rootDir>/js/__mocks__/fileMock.js"
     }
   }
 }

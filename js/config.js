@@ -1,4 +1,5 @@
-import { cdnUrl } from "../package.json";
+import skin from "../skins/base-2.91.wsz";
+import audio from "../mp3/llama-2.91.mp3";
 
 const { hash } = window.location;
 let config = {};
@@ -10,12 +11,9 @@ if (hash) {
   }
 }
 
-const or = (value, fallback) => (value === undefined ? fallback : value);
-
-const assetBase = process.env.NODE_ENV === "production" ? cdnUrl : "";
 // Turn on the incomplete playlist window
-export const skinUrl = or(config.skinUrl, `${assetBase}skins/base-2.91.wsz`);
-export const audioUrl = or(config.audioUrl, `${assetBase}mp3/llama-2.91.mp3`);
+export const skinUrl = skin;
+export const audioUrl = audio;
 export const playlistEnabled = config.playlist || false;
 export const noMarquee = config.noMarquee || false;
 export const hideAbout = config.hideAbout || false;
