@@ -7,7 +7,9 @@ import EqualizerWindow from "./EqualizerWindow";
 import Skin from "./Skin";
 import { playlistEnabled } from "../config";
 
-const App = ({ winamp, loading, closed, equalizer, playlist }) => {
+import "../../css/winamp.css";
+
+const App = ({ media, fileInput, loading, closed, equalizer, playlist }) => {
   if (closed) {
     return null;
   }
@@ -29,10 +31,10 @@ const App = ({ winamp, loading, closed, equalizer, playlist }) => {
           the <head>, but browsers don't really care... */}
       </Skin>
       <WindowManager>
-        <MainWindow fileInput={winamp.fileInput} mediaPlayer={winamp.media} />
-        {equalizer && <EqualizerWindow fileInput={winamp.fileInput} />}
+        <MainWindow fileInput={fileInput} mediaPlayer={media} />
+        {equalizer && <EqualizerWindow fileInput={fileInput} />}
         {playlistEnabled &&
-        playlist && <PlaylistWindow fileInput={winamp.fileInput} />}
+        playlist && <PlaylistWindow fileInput={fileInput} />}
       </WindowManager>
     </div>
   );

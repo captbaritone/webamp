@@ -1,8 +1,6 @@
-const Winamp = {
-  media: {
-    addEventListener: jest.fn(),
-    _analyser: null
-  }
+const media = {
+  addEventListener: jest.fn(),
+  _analyser: null
 };
 
 const canvasMockify = require("canvas-mock");
@@ -28,7 +26,7 @@ import EqualizerWindow from "./index";
 describe("EqualizerWindow", () => {
   let store;
   beforeEach(() => {
-    store = getStore(Winamp);
+    store = getStore(media);
   });
 
   it("renders to snapshot", () => {

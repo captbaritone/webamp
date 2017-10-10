@@ -1,8 +1,6 @@
-const Winamp = {
-  media: {
-    addEventListener: jest.fn(),
-    _analyser: null
-  }
+const media = {
+  addEventListener: jest.fn(),
+  _analyser: null
 };
 
 window.requestAnimationFrame = () => {};
@@ -17,7 +15,7 @@ import PlaylistWindow from "./index";
 describe("PlaylistWindow", () => {
   let store;
   beforeEach(() => {
-    store = getStore(Winamp);
+    store = getStore(media);
   });
 
   it("renders to snapshot", () => {

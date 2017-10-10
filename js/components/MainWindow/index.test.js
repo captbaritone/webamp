@@ -1,8 +1,6 @@
-const Winamp = {
-  media: {
-    addEventListener: jest.fn(),
-    _analyser: null
-  }
+const media = {
+  addEventListener: jest.fn(),
+  _analyser: null
 };
 
 const canvasMockify = require("canvas-mock");
@@ -28,7 +26,7 @@ import MainWindow from "./index";
 describe("MainWindow", () => {
   let store;
   beforeEach(() => {
-    store = getStore(Winamp);
+    store = getStore(media);
   });
 
   it("renders to snapshot", () => {
@@ -36,7 +34,7 @@ describe("MainWindow", () => {
     const tree = renderer
       .create(
         <Provider store={store}>
-          <MainWindow winamp={Winamp} mediaPlayer={Winamp.media} />
+          <MainWindow mediaPlayer={media} />
         </Provider>,
         options
       )

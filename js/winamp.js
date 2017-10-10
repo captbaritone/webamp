@@ -1,36 +1,46 @@
-// UI and App logic
+import React from "react";
+import { render } from "react-dom";
+import { Provider } from "react-redux";
+
+import getStore from "./store";
+import App from "./components/App";
+import Hotkeys from "./hotkeys";
 import Media from "./media";
 import {
   setSkinFromUrl,
-  setVolume,
-  setPreamp,
-  setBalance,
   loadMediaFromUrl,
   loadFileFromReference
 } from "./actionCreators";
-import "../css/winamp.css";
+import { skinUrl, audioUrl, initialState } from "./config";
 
-const fileInput = document.createElement("input");
-fileInput.type = "file";
-fileInput.style.display = "none";
+export default class Winamp {
+  constructor(options) {
+    this.options = options;
 
-export default {
-  media: new Media(fileInput),
-  fileInput: fileInput,
-  init: function(options) {
+    this.fileInput = document.createElement("input");
+    this.fileInput.type = "file";
+    this.fileInput.style.display = "none";
+
+    this.media = new Media(this.fileInput);
+    this.store = getStore(this.media, initialState);
+  }
+  render(node) {
+    render(
+      <Provider store={this.store}>
+        <App fileInput={this.fileInput} media={this.media} />
+      </Provider>,
+      node
+    );
+
     this.fileInput.addEventListener("change", e => {
-      this.dispatch(loadFileFromReference(e.target.files[0]));
+      this.store.dispatch(loadFileFromReference(e.target.files[0]));
     });
 
-    this.dispatch(setVolume(options.volume));
-    this.dispatch(setBalance(options.balance));
-    this.dispatch(setPreamp(50));
-    if (options.mediaFile.url !== null) {
-      this.dispatch(
-        loadMediaFromUrl(options.mediaFile.url, options.mediaFile.name)
-      );
-    }
-    this.dispatch(setSkinFromUrl(options.skinUrl));
-    return this;
+    this.store.dispatch(
+      loadMediaFromUrl(audioUrl, "1. DJ Mike Llama - Llama Whippin' Intro")
+    );
+    this.store.dispatch(setSkinFromUrl(skinUrl));
+
+    new Hotkeys(this.fileInput, this.store);
   }
-};
+}

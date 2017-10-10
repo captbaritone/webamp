@@ -6,7 +6,7 @@ import mediaMiddleware from "./mediaMiddleware";
 import analyticsMiddleware from "./analyticsMiddleware";
 import { merge } from "./utils";
 
-const getStore = (winamp, stateOverrides) => {
+const getStore = (media, stateOverrides) => {
   let initialState;
   if (stateOverrides) {
     initialState = merge(
@@ -18,7 +18,7 @@ const getStore = (winamp, stateOverrides) => {
     reducer,
     initialState,
     composeWithDevTools(
-      applyMiddleware(thunk, mediaMiddleware(winamp.media), analyticsMiddleware)
+      applyMiddleware(thunk, mediaMiddleware(media), analyticsMiddleware)
     )
   );
 };

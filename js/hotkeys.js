@@ -18,7 +18,7 @@ import {
 
 import { arraysAreEqual } from "./utils";
 
-export default function(winamp, { dispatch }) {
+export default function(fileInput, { dispatch }) {
   let keylog = [];
   const trigger = [
     78, // N
@@ -64,7 +64,7 @@ export default function(winamp, { dispatch }) {
           dispatch(pause());
           break;
         case 76: // L
-          dispatch(openFileDialog(winamp.fileInput));
+          dispatch(openFileDialog(fileInput));
           break;
         case 82: // R
           dispatch(toggleRepeat());
@@ -82,7 +82,7 @@ export default function(winamp, { dispatch }) {
           // Previous
           break;
         case 96: // numpad 0
-          dispatch(openFileDialog(winamp.fileInput));
+          dispatch(openFileDialog(fileInput));
           break;
         case 97: // numpad 1
           // Previous (10 tracks)
