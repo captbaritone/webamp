@@ -24,6 +24,50 @@ supported](http://caniuse.com/#feat=audio-api).
 
 A more detailed list of features can be found in [features.md](./features.md).
 
+## Use Winamp2-js in your project **PRE ALPHA**
+
+Several people have expressed interest in including Winamp2-js inside their website. In an attempt to try this out, I have published Winamp2-js as an NPM package. You can attempt to use it in your JS project like so:
+
+Install the package:
+
+```
+npm install --save winamp2-js
+npm install --save babel-polyfill
+```
+
+Create a DOM element somewhere in your HTML document:
+
+```
+<div id='winamp2-js'></div>
+```
+
+Initialize Winamp2-js in your JavaScript:
+
+```
+import 'babel-polyfill';
+import Winamp from 'winamp2-js';
+
+new Winamp({
+  initialTrack: {
+    name: "1. DJ Mike Llama - Llama Whippin' Intro",
+    url: "mp3/llama-2.91.mp3"
+  },
+  initialSkin: {
+    url: "skins/base-2.91.wsz"
+  }
+}).render(document.getElementById('winamp2-js'));
+```
+
+*Notes:*
+
+* This should not be considered "production" code.
+  * Winamp2-js does not support Internet Explorer.
+  * Winamp2-js was built to run on it's own page, it may not play well with surrounding CSS.
+* You will probably need to include [babel-polyfill](https://babeljs.io/docs/usage/polyfill/) on the page that includes Winamp2-js.
+* Skin and audio URLs are subject to [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS). Please ensure they are either served from the same domain, or that the other domain is served with the correct headers.
+* This API is subject to change at any time.
+* Please reach out to me. I'd love to help you set it up, and understand how it's being used. I plan to expand this API as I learn how people want to use it.
+
 ## Development
 
     yarn

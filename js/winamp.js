@@ -11,9 +11,10 @@ import {
   loadMediaFromUrl,
   loadFileFromReference
 } from "./actionCreators";
-import { skinUrl, audioUrl, initialState } from "./config";
 
-export default class Winamp {
+import { SET_AVALIABLE_SKINS } from "./actionTypes";
+
+class Winamp {
   constructor(options) {
     this.options = options;
 
@@ -22,7 +23,7 @@ export default class Winamp {
     this.fileInput.style.display = "none";
 
     this.media = new Media(this.fileInput);
-    this.store = getStore(this.media, initialState);
+    this.store = getStore(this.media, this.options.__initialState);
   }
   render(node) {
     render(
@@ -36,11 +37,25 @@ export default class Winamp {
       this.store.dispatch(loadFileFromReference(e.target.files[0]));
     });
 
-    this.store.dispatch(
-      loadMediaFromUrl(audioUrl, "1. DJ Mike Llama - Llama Whippin' Intro")
-    );
-    this.store.dispatch(setSkinFromUrl(skinUrl));
+    if (this.options.initialTrack) {
+      this.store.dispatch(
+        loadMediaFromUrl(
+          this.options.initialTrack.url,
+          this.options.initialTrack.name
+        )
+      );
+    }
+    if (this.options.avaliableSkins) {
+      this.store.dispatch({
+        type: SET_AVALIABLE_SKINS,
+        skins: this.options.avaliableSkins
+      });
+    }
+    this.store.dispatch(setSkinFromUrl(this.options.initialSkin.url));
 
     new Hotkeys(this.fileInput, this.store);
   }
 }
+
+export default Winamp;
+module.exports = Winamp;

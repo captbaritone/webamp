@@ -41,7 +41,8 @@ import {
   INVERT_SELECTION,
   PLAYLIST_SIZE_CHANGED,
   REMOVE_ALL_TRACKS,
-  REMOVE_TRACKS
+  REMOVE_TRACKS,
+  SET_AVALIABLE_SKINS
 } from "./actionTypes";
 import { playlistEnabled } from "./config";
 
@@ -165,6 +166,19 @@ const display = (state = defaultDisplayState, action) => {
       return { ...state, playlistScrollPosition: action.position };
     case PLAYLIST_SIZE_CHANGED:
       return { ...state, playlistSize: action.size };
+    default:
+      return state;
+  }
+};
+
+const defaultSettingsState = {
+  avaliableSkins: []
+};
+
+const settings = (state = defaultSettingsState, action) => {
+  switch (action.type) {
+    case SET_AVALIABLE_SKINS:
+      return { ...state, avaliableSkins: action.skins };
     default:
       return state;
   }
@@ -352,6 +366,7 @@ const reducer = combineReducers({
   userInput,
   windows,
   display,
+  settings,
   equalizer,
   tracks,
   playlist,

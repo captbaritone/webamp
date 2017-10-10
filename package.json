@@ -2,10 +2,11 @@
   "name": "winamp2-js",
   "version": "1.0.0",
   "description": "Winamp 2 implemented in HTML5 and JavaScript",
-  "main": "index.html",
+  "main": "build/winamp.bundle.js",
   "scripts": {
     "lint": "eslint .",
     "build": "webpack --config=webpack.production.config.js",
+    "build-library": "webpack --config=webpack.library.config.js",
     "serve": "python -m SimpleHTTPServer 8000",
     "start": "webpack-dev-server",
     "weight": "npm run build && gzip-size built/winamp.js",
@@ -16,7 +17,8 @@
     "revert": "ssh jordaneldredge.com sh < scripts/revert.sh",
     "format":
       "prettier --write js/**/*.js css/**/*.css webpack.config.js webpack.production.config.js",
-    "build-skin": "rm skins/base-2.91.wsz && cd skins/base-2.91 && zip -x .* -x 'Skining Updates.txt' -r ../base-2.91.wsz .",
+    "build-skin":
+      "rm skins/base-2.91.wsz && cd skins/base-2.91 && zip -x .* -x 'Skining Updates.txt' -r ../base-2.91.wsz .",
     "skin-info": "unzip -vl skins/base-2.91.wsz"
   },
   "repository": {

@@ -1,9 +1,6 @@
 const path = require("path");
 
 module.exports = {
-  resolve: {
-    extensions: [".js"]
-  },
   module: {
     rules: [
       {
@@ -32,13 +29,11 @@ module.exports = {
     ],
     noParse: [/jszip\.js$/]
   },
-  entry: {
-    winamp: ["./js/index.js"],
-    skinExplorer: "./js/skinExplorer.js"
-  },
+  entry: ["babel-polyfill", "./js/winamp.js"],
   output: {
-    filename: "[name].js",
-    publicPath: "/built/",
-    path: path.resolve(__dirname, "built")
+    path: path.resolve(__dirname, "built"),
+    filename: "winamp.bundle.js",
+    library: "winamp2js",
+    libraryTarget: "umd"
   }
 };

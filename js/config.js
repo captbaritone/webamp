@@ -7,7 +7,7 @@ if (hash) {
   try {
     config = JSON.parse(decodeURIComponent(hash).slice(1));
   } catch (e) {
-    console.error("Failed to decode config from hash: ", e);
+    console.error("Failed to decode config from hash: ", hash);
   }
 }
 
