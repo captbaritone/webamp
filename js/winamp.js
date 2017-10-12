@@ -37,7 +37,7 @@ class Winamp {
       this.store.dispatch(loadFileFromReference(e.target.files[0]));
     });
 
-    if (this.options.initialTrack) {
+    if (this.options.initialTrack && this.options.initialTrack.url) {
       this.store.dispatch(
         loadMediaFromUrl(
           this.options.initialTrack.url,
