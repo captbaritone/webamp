@@ -35,14 +35,34 @@ const CURSORS = [
   "WSWINBUT"
 ];
 
-const genImgFromBlob = blob =>
-  new Promise(resolve => {
+const _genImgFromBlob = async blob =>
+  new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => {
+      // Schedule cleanup of object url?
+      // Maybe on next tick, or with requestidlecallback
       resolve(img);
     };
+    img.onerror = () => reject("Failed to decode image");
     img.src = URL.createObjectURL(blob);
   });
+
+const genImgFromBlob = async blob => {
+  if (window.createImageBitmap) {
+    try {
+      // Use this faster native browser API if avaliable.
+      return await window.createImageBitmap(blob);
+    } catch (e) {
+      console.warn(
+        "Encountered an error with createImageBitmap. Falling back to Image approach."
+      );
+      // There are some bugs in the new API. In case something goes wrong, we call fall back.
+      return _genImgFromBlob(blob);
+    }
+  }
+  console.log("not even trying");
+  return _genImgFromBlob(blob);
+};
 
 // "Promisify" processBuffer
 const genBufferFromFile = file =>
@@ -79,9 +99,12 @@ async function genSpriteUrisFromFilename(zip, fileName) {
   if (!blob) {
     return {};
   }
-  const img = await genImgFromBlob(blob);
-  const spriteUris = getSpriteUrisFromImg(img, SKIN_SPRITES[fileName]);
-  return spriteUris;
+  // The spec for createImageBitmap() says the browser should try to sniff the
+  // mime type, but it looks like Firefox does not. So we specify it here
+  // explicitly.
+  const typedBlob = new Blob([blob], { type: "image/bmp" });
+  const img = await genImgFromBlob(typedBlob);
+  return getSpriteUrisFromImg(img, SKIN_SPRITES[fileName]);
 }
 
 async function getCursorFromFilename(zip, fileName) {
