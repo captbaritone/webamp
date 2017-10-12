@@ -68,10 +68,16 @@ export function downloadURI(uri, name) {
   window.document.body.removeChild(link);
 }
 
-export const rebound = (oldMin, oldMax, newMin, newMax) => oldValue =>
-  Math.round(
-    (oldValue - oldMin) * (newMax - newMin) / (oldMax - oldMin) + newMin
-  );
+export const toPercent = (min, max, value) => (value - min) / (max - min);
+
+export const percentToRange = (percent, min, max) =>
+  min + Math.round(percent * (max - min));
+
+export const percentToIndex = (percent, length) =>
+  percentToRange(percent, 0, length - 1);
+
+const rebound = (oldMin, oldMax, newMin, newMax) => oldValue =>
+  percentToRange(toPercent(oldMin, oldMax, oldValue), newMin, newMax);
 
 // Convert a .eqf value to a 1-100
 export const normalize = rebound(1, 64, 1, 100);
@@ -91,13 +97,6 @@ export const merge = (target, source) => {
   Object.assign(target || {}, source);
   return target;
 };
-
-export const toPercent = (min, max, value) => (value - min) / (max - min);
-export const percentToIndex = (percent, length) =>
-  Math.min(
-    Math.floor(percent * length),
-    length - 1 // Special case for 100%
-  );
 
 // Maps a value in a range (defined my min/max) to a value in an array (options).
 export const segment = (min, max, value, newValues) => {

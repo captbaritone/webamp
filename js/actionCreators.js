@@ -105,7 +105,6 @@ function setEqFromFile(file) {
       const eqf = parser(arrayBuffer);
       const preset = eqf.presets[0];
 
-      // TODO: Fix normalize. Currently these numbers are kinda wrong.
       dispatch(setPreamp(normalize(preset.preamp)));
       BANDS.forEach(band => {
         dispatch(setEqBand(band, normalize(preset[`hz${band}`])));

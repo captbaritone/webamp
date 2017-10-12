@@ -1,16 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import { getCurvePoints } from "cardinal-spline-js";
-import { rebound } from "../../utils";
+import { percentToRange, clamp } from "../../utils";
 
 import { BANDS } from "../../constants";
-
-export const roundToEven = value => 2 * Math.round(value / 2);
-
-// The line is two pixels wide, and sits "above" the offset specified. So we use 30 not 32 as our max.
-const reboundTo32 = rebound(1, 100, 0, 30);
-
-export const getY = value => roundToEven(reboundTo32(value));
 
 class EqGraph extends React.Component {
   constructor(props) {
@@ -88,19 +81,25 @@ class EqGraph extends React.Component {
     this.canvasCtx.strokeStyle = this.state.colorPattern;
     this.canvasCtx.lineWidth = 2;
     this.canvasCtx.beginPath();
-    const paddingLeft = 4;
+    const paddingLeft = 4; // TODO: This should be 3
 
-    const points = amplitudes.reduce(
-      (prev, value, i) => prev.concat(paddingLeft + i * 16, getY(100 - value)),
-      []
-    );
+    const min = 1;
+    const max = 31;
+
+    const points = amplitudes.reduce((prev, value, i) => {
+      const percent = (100 - value) / 100;
+      const y = percentToRange(percent, min, max);
+      return prev.concat(paddingLeft + i * 16, y);
+    }, []);
 
     // Spline between points in order to create nice curves
     const tension = 0.5;
     const resolution = 4; // Points in each segment
     const smoothPoints = getCurvePoints(points, tension, resolution);
     for (let i = 0; i < smoothPoints.length; i += 2) {
-      this.canvasCtx.lineTo(smoothPoints[i], smoothPoints[i + 1]);
+      // Splining can push peaks out of bounds. So we fudge them back in.
+      const y = clamp(smoothPoints[i + 1], min, max);
+      this.canvasCtx.lineTo(smoothPoints[i], y);
     }
 
     this.canvasCtx.stroke();
@@ -112,7 +111,7 @@ class EqGraph extends React.Component {
       // The skin has not finished loading yet
       return;
     }
-    const preampValue = getY(this.props.preamp);
+    const preampValue = percentToRange(this.props.preamp / 100, 0, 30);
     this.canvasCtx.drawImage(
       this.state.preampLineImg,
       0,
