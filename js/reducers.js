@@ -216,46 +216,52 @@ const equalizer = (state, action) => {
 // Dummy data for now
 const defaultTracksState = {
   "0": {
-    selected: true,
-    title: "Rock Is Dead",
-    artist: "Marilyn Manson",
-    duration: "191"
+    selected: false,
+    title: "Llama Whipping Intro",
+    artist: "DJ Mike Llama",
+    duration: "221"
   },
   "1": {
     selected: false,
-    title: "Spybreak! (Short One)",
-    artist: "Propellerheads",
-    duration: "191"
+    title: "Rock Is Dead",
+    artist: "Marilyn Manson",
+    duration: "221"
   },
   "2": {
     selected: true,
-    title: "Clubbed to Death",
-    artist: "Rob D",
-    duration: "191"
+    title: "Spybreak! (Short One)",
+    artist: "Propellerheads",
+    duration: "171"
   },
   "3": {
     selected: false,
-    title: "Leave You Far Behind",
-    artist: "Lunatic Calm",
-    duration: "191"
+    title: "Clubbed to Death",
+    artist: "Rob D",
+    duration: "215"
   },
   "4": {
     selected: false,
-    title: "Dragula",
-    artist: "Rob Zombie",
-    duration: "191"
+    title: "Leave You Far Behind",
+    artist: "Lunatic Calm",
+    duration: "174"
   },
   "5": {
     selected: false,
-    title: "Ultrasonic Sound",
-    artist: "Hive",
-    duration: "191"
+    title: "Dragula",
+    artist: "Rob Zombie",
+    duration: "484"
   },
   "6": {
     selected: false,
+    title: "Ultrasonic Sound",
+    artist: "Hive",
+    duration: "152"
+  },
+  "7": {
+    selected: false,
     title: "Du hast",
     artist: "Rammstein",
-    duration: "191"
+    duration: "214"
   }
 };
 
@@ -292,7 +298,7 @@ const tracks = (state = defaultTracksState, action) => {
 
 const defaultPlaylistState = {
   trackOrder: [0, 1, 2, 3, 4, 5, 6],
-  currentTrack: 2
+  currentTrack: 0
 };
 const playlist = (state = defaultPlaylistState, action) => {
   switch (action.type) {
