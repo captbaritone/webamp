@@ -1,6 +1,14 @@
 const fs = require("fs");
 const puppeteer = require("puppeteer");
 const Filehound = require("filehound");
+const JSZip = require("jszip");
+
+const validateZip = u =>
+  new Promise((resolve, reject) => {
+    fs.readFile(u, (err, buffer) => {
+      JSZip.loadAsync(buffer).then(resolve, reject);
+    });
+  });
 
 const config = {
   equalizer: true,
@@ -9,6 +17,21 @@ const config = {
   noMarquee: true,
   audioUrl: null,
   initialState: {
+    equalizer: {
+      sliders: {
+        "60": 52,
+        "170": 74,
+        "310": 83,
+        "600": 91,
+        "1000": 74,
+        "3000": 54,
+        "6000": 23,
+        "12000": 19,
+        "14000": 34,
+        "16000": 75,
+        preamp: 56
+      }
+    },
     media: {
       status: "PLAYING",
       kbps: 128,
@@ -34,6 +57,14 @@ const config = {
 
   for (const skin of files) {
     const screenshotFile = `screenshots/${skin.replace(/\//g, "-")}.png`;
+    const skinUrl = `experiments/automated_screenshots/${skin}`;
+    console.log("Going to try", screenshotFile);
+    try {
+      await validateZip(`./${skin}`);
+    } catch (e) {
+      console.log("Error parsing", skinUrl, e);
+      continue;
+    }
     if (fs.existsSync(screenshotFile)) {
       console.log(screenshotFile, "exists already");
       continue;
@@ -43,16 +74,15 @@ const config = {
     page.on("console", (...args) => {
       console.log("PAGE LOG:", ...args);
     });
-    config.skinUrl = `automated_screenshots/${skin}`;
+    config.skinUrl = skinUrl;
     const url = `http://localhost:8080/#${JSON.stringify(config)}`;
     console.log({ url });
     await page["goto"](url);
-    await page.waitForSelector("#loaded");
+    await page.waitForSelector("#loaded", { timeout: 1000 });
 
     console.log("Writing screenshot to", screenshotFile);
     await page.screenshot({ path: screenshotFile });
     await page.close();
-    break;
   }
   browser.close();
 })();

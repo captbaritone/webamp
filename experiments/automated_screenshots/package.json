@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "filehound": "^1.16.2",
+    "jszip": "^3.1.4",
     "puppeteer": "^0.10.1"
   }
 }

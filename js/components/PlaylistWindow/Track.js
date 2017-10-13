@@ -7,6 +7,7 @@ import { CLICKED_TRACK, CTRL_CLICKED_TRACK } from "../../actionTypes";
 const Track = props => {
   const {
     skinPlaylistStyle,
+    artist,
     selected,
     current,
     title,
@@ -28,7 +29,9 @@ const Track = props => {
     >
       <div className="playlist-track-number">{number}.</div>
       <div className="playlist-track-title">
-        <span>{title}</span>
+        <span>
+          {artist} - {title}
+        </span>
       </div>
       <div className="playlist-track-duration">{getTimeStr(duration)}</div>
     </div>
@@ -45,6 +48,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     skinPlaylistStyle,
     selected: track.selected,
+    artist: track.artist,
     title: track.title,
     duration: track.duration,
     current: currentTrack === ownProps.id
