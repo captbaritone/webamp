@@ -1,4 +1,4 @@
 *.min.js
 built/
 coverage/
-experiments/automated_screenshots/node_modules/
+**/node_modules/
