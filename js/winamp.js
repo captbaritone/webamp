@@ -55,6 +55,10 @@ class Winamp {
 
     new Hotkeys(this.fileInput, this.store);
   }
+
+  loadTrackUrl(url, name) {
+    this.store.dispatch(loadMediaFromUrl(url, name));
+  }
 }
 
 export default Winamp;

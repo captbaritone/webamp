@@ -47,7 +47,7 @@ Initialize Winamp2-js in your JavaScript:
 import 'babel-polyfill';
 import Winamp from 'winamp2-js';
 
-new Winamp({
+const winamp = new Winamp({
   initialTrack: {
     name: "1. DJ Mike Llama - Llama Whippin' Intro",
     url: "https://d38dnrh1liu4f5.cloudfront.net/projects/winamp2-js/mp3/llama-2.91.mp3"
@@ -55,7 +55,11 @@ new Winamp({
   initialSkin: {
     url: "https://d38dnrh1liu4f5.cloudfront.net/projects/winamp2-js/skins/base-2.91.wsz"
   }
-}).render(document.getElementById('winamp2-js'));
+});
+winamp.render(document.getElementById('winamp2-js'));
+
+// In response to a user selecting a track from your UI:
+winamp.loadTrackUrl(url, name);
 ```
 
 *Notes:*
