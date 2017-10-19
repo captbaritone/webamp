@@ -181,6 +181,10 @@
       }
     }
 
+    getAutoPlay() {
+      return this._autoPlay;
+    }
+
     setAutoPlay(shouldAutoPlay) {
       this._autoPlay = shouldAutoPlay;
     }

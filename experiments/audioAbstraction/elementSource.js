@@ -105,6 +105,9 @@
       this._loop = shouldLoop;
     }
 
+    getAutoPlay() {
+      return this._autoPlay;
+    }
     setAutoPlay(shouldAutoPlay) {
       this._autoPlay = shouldAutoPlay;
     }

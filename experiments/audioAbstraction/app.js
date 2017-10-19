@@ -8,6 +8,7 @@ const loadUrl = document.getElementById("loadUrl");
 const info = document.getElementById("info");
 const position = document.getElementById("position");
 const sourceType = document.getElementById("sourceType");
+const autoplay = document.getElementById("autoplay");
 
 const context = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -48,6 +49,10 @@ position.addEventListener("change", () => {
   source.seekToTime(newTime);
 });
 
+autoplay.addEventListener("change", () => {
+  source.setAutoPlay(autoplay.checked);
+});
+
 const updateInfo = () => {
   const data = {
     numberOfChannels: source.getNumberOfChannels(),
@@ -55,7 +60,8 @@ const updateInfo = () => {
     duration: source.getDuration(),
     timeElapsed: source.getTimeElapsed(),
     sampleRate: source.getSampleRate(),
-    loop: source.getLoop()
+    loop: source.getLoop(),
+    autoplay: source.getAutoPlay()
   };
 
   info.value = JSON.stringify(data, null, 2);
