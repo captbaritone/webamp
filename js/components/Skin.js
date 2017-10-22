@@ -80,27 +80,27 @@ const imageSelectors = {
 
   PLAYLIST_REMOVE_MENU_BAR: ["#playlist-remove-menu.selected .bar"],
   PLAYLIST_REMOVE_ALL: ["#playlist-remove-menu .remove-all"],
-  PLAYLIST_REMOVE_ALL_SELECTED: ["#playlist-remove-menu .remove-all:hover"],
+  PLAYLIST_REMOVE_ALL_SELECTED: ["#playlist-remove-menu .hover .remove-all"],
   PLAYLIST_CROP: ["#playlist-remove-menu .crop"],
-  PLAYLIST_CROP_SELECTED: ["#playlist-remove-menu .crop:hover"],
+  PLAYLIST_CROP_SELECTED: ["#playlist-remove-menu .hover .crop"],
   PLAYLIST_REMOVE_SELECTED: ["#playlist-remove-menu .remove-selected"],
   PLAYLIST_REMOVE_SELECTED_SELECTED: [
-    "#playlist-remove-menu .remove-selected:hover"
+    "#playlist-remove-menu .hover .remove-selected"
   ],
   PLAYLIST_REMOVE_MISC: ["#playlist-remove-menu .remove-misc"],
-  PLAYLIST_REMOVE_MISC_SELECTED: ["#playlist-remove-menu .remove-misc:hover"],
+  PLAYLIST_REMOVE_MISC_SELECTED: ["#playlist-remove-menu .hover .remove-misc"],
 
   PLAYLIST_SELECT_MENU_BAR: ["#playlist-selection-menu.selected .bar"],
   PLAYLIST_INVERT_SELECTION: ["#playlist-selection-menu .invert-selection"],
   PLAYLIST_INVERT_SELECTION_SELECTED: [
-    "#playlist-selection-menu .invert-selection:hover"
+    "#playlist-selection-menu .hover .invert-selection"
   ],
   PLAYLIST_SELECT_ZERO: ["#playlist-selection-menu .select-zero"],
   PLAYLIST_SELECT_ZERO_SELECTED: [
-    "#playlist-selection-menu .select-zero:hover"
+    "#playlist-selection-menu .hover .select-zero"
   ],
   PLAYLIST_SELECT_ALL: ["#playlist-selection-menu .select-all"],
-  PLAYLIST_SELECT_ALL_SELECTED: ["#playlist-selection-menu .select-all:hover"],
+  PLAYLIST_SELECT_ALL_SELECTED: ["#playlist-selection-menu .hover .select-all"],
 
   EQ_WINDOW_BACKGROUND: ["#equalizer-window:not(.shade)"],
   EQ_TITLE_BAR: [".equalizer-top"],
@@ -254,7 +254,9 @@ const cursorSelectors = {
     "#equalizer-window .title-bar",
     "#equalizer-window.shade",
     "#equalizer-window.shade input"
-  ]
+  ],
+  PNORMAL: ["#playlist-window"],
+  PVSCROLL: ["#playlist-window .playlist-scrollbar-wrapper"]
 };
 
 Object.keys(FONT_LOOKUP).forEach(character => {

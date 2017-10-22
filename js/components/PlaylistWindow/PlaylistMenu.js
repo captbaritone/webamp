@@ -1,6 +1,45 @@
 import React from "react";
 import classnames from "classnames";
 
+let cursorX;
+let cursorY;
+window.document.addEventListener("mousemove", e => {
+  cursorX = e.pageX;
+  cursorY = e.pageY;
+});
+
+// We implement hover ourselves, because we hate ourselves and https://stackoverflow.com/a/13259049/1263117
+class Entry extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hover: false };
+  }
+
+  componentDidMount() {
+    const domRect = this.node.getBoundingClientRect();
+    this.setState({
+      hover:
+        cursorX >= domRect.left &&
+        cursorX <= domRect.right &&
+        cursorY >= domRect.top &&
+        cursorY <= domRect.bottom
+    });
+  }
+
+  render() {
+    return (
+      <li
+        ref={node => (this.node = node)}
+        onMouseEnter={() => this.setState({ hover: true })}
+        onMouseLeave={() => this.setState({ hover: false })}
+        className={classnames({ hover: this.state.hover })}
+      >
+        {this.props.children}
+      </li>
+    );
+  }
+}
+
 export default class PlaylistMenu extends React.Component {
   constructor(props) {
     super(props);
@@ -40,8 +79,14 @@ export default class PlaylistMenu extends React.Component {
         })}
         onClick={this._handleClick}
       >
-        <div className="bar" />
-        <ul>{this.props.children}</ul>
+        <div className="bar" />,
+        {this.state.selected && (
+          <ul>
+            {React.Children.map(this.props.children, (child, i) => (
+              <Entry key={i}>{child}</Entry>
+            ))}
+          </ul>
+        )}
       </div>
     );
   }

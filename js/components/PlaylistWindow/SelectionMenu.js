@@ -5,9 +5,9 @@ import PlaylistMenu from "./PlaylistMenu";
 
 const SelectionMenu = props => (
   <PlaylistMenu id="playlist-selection-menu">
-    <li className="invert-selection" onClick={props.invertSelection} />
-    <li className="select-zero" onClick={props.selectZero} />
-    <li className="select-all" onClick={props.selectAll} />
+    <div className="invert-selection" onClick={props.invertSelection} />
+    <div className="select-zero" onClick={props.selectZero} />
+    <div className="select-all" onClick={props.selectAll} />
   </PlaylistMenu>
 );
 

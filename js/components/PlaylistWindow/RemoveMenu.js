@@ -6,10 +6,10 @@ import PlaylistMenu from "./PlaylistMenu";
 
 const RemoveMenu = props => (
   <PlaylistMenu id="playlist-remove-menu">
-    <li className="remove-misc" />
-    <li className="remove-all" onClick={props.removeAll} />
-    <li className="crop" onClick={props.crop} />
-    <li className="remove-selected" onClick={props.removeSelected} />
+    <div className="remove-misc" />
+    <div className="remove-all" onClick={props.removeAll} />
+    <div className="crop" onClick={props.crop} />
+    <div className="remove-selected" onClick={props.removeSelected} />
   </PlaylistMenu>
 );
 

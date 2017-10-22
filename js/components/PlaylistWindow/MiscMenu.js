@@ -5,9 +5,9 @@ import PlaylistMenu from "./PlaylistMenu";
 
 const MiscMenu = props => (
   <PlaylistMenu id="playlist-misc-menu">
-    <li className="sort-list" />
-    <li className="file-info" onClick={props.fileInfo} />
-    <li className="misc-options" />
+    <div className="sort-list" />
+    <div className="file-info" onClick={props.fileInfo} />
+    <div className="misc-options" />
   </PlaylistMenu>
 );
 
