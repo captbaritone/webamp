@@ -12,4 +12,6 @@ const MonoStereo = props => (
   </div>
 );
 
-export default connect(state => state.media)(MonoStereo);
+export default connect(state => ({ channels: state.media.channels }))(
+  MonoStereo
+);

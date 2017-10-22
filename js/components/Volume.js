@@ -21,7 +21,9 @@ const Volume = props => (
   />
 );
 
-const mapStateToProps = state => state.media;
+const mapStateToProps = state => ({
+  volume: state.media.volume
+});
 
 const mapDispatchToProps = dispatch => ({
   showMarquee: () => dispatch({ type: SET_FOCUS, input: "volume" }),
