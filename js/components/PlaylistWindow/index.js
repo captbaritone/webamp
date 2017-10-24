@@ -18,6 +18,7 @@ import {
   SET_FOCUSED_WINDOW,
   SET_PLAYLIST_SCROLL_POSITION
 } from "../../actionTypes";
+import { getOrderedTracks } from "../../selectors";
 import { play, pause, stop, openFileDialog } from "../../actionCreators";
 
 import "../../../css/playlist-window.css";
@@ -148,15 +149,14 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 const mapStateToProps = state => {
   const {
     windows: { focused },
-    display: { skinPlaylistStyle, playlistScrollPosition, playlistSize },
-    playlist: { trackOrder }
+    display: { skinPlaylistStyle, playlistScrollPosition, playlistSize }
   } = state;
   return {
     focused,
     skinPlaylistStyle,
     playlistScrollPosition,
     playlistSize,
-    trackOrder: trackOrder.filter(id => state.tracks[id])
+    trackOrder: getOrderedTracks(state)
   };
 };
 

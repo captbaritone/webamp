@@ -1,5 +1,6 @@
 import { denormalize } from "./utils";
 import { BANDS } from "./constants";
+import { createSelector } from "reselect";
 
 export const getEqfData = state => {
   // state.equalizer.sliders
@@ -17,3 +18,12 @@ export const getEqfData = state => {
   };
   return eqfData;
 };
+
+const getTracks = state => state.tracks;
+const getTrackOrder = state => state.playlist.trackOrder;
+
+export const getOrderedTracks = createSelector(
+  getTracks,
+  getTrackOrder,
+  (tracks, trackOrder) => trackOrder.filter(id => tracks[id])
+);
