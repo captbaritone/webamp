@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require("webpack");
 
 module.exports = {
   resolve: {
@@ -32,6 +33,13 @@ module.exports = {
     ],
     noParse: [/jszip\.js$/]
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      SENTRY_DSN: JSON.stringify(
+        "https://5d5bf17b1bed4afc9103b5a09634775e@sentry.io/146969"
+      )
+    })
+  ],
   entry: {
     winamp: ["./js/index.js"],
     skinExplorer: "./js/skinExplorer.js"
