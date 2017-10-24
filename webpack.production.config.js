@@ -3,6 +3,8 @@ const webpack = require("webpack");
 
 const cdnUrl = process.env.CDN_URL || "/";
 
+config.devtool = "source-map";
+
 config.plugins = (config.plugins || []).concat([
   new webpack.DefinePlugin({
     "process.env": {
