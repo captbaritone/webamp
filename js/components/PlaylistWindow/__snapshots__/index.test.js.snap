@@ -221,23 +221,7 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
         <div
           className="bar"
         />
-        <ul>
-          <li
-            className="remove-misc"
-          />
-          <li
-            className="remove-all"
-            onClick={[Function]}
-          />
-          <li
-            className="crop"
-            onClick={[Function]}
-          />
-          <li
-            className="remove-selected"
-            onClick={[Function]}
-          />
-        </ul>
+        ,
       </div>
       <div
         className="playlist-menu"
@@ -247,20 +231,7 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
         <div
           className="bar"
         />
-        <ul>
-          <li
-            className="invert-selection"
-            onClick={[Function]}
-          />
-          <li
-            className="select-zero"
-            onClick={[Function]}
-          />
-          <li
-            className="select-all"
-            onClick={[Function]}
-          />
-        </ul>
+        ,
       </div>
     </div>
     <div
