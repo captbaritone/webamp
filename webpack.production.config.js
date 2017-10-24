@@ -5,7 +5,7 @@ const cdnUrl = process.env.CDN_URL || "/";
 
 config.devtool = "source-map";
 
-config.plugins = (config.plugins || []).concat([
+config.plugins = [
   new webpack.DefinePlugin({
     "process.env": {
       NODE_ENV: JSON.stringify("production")
@@ -17,7 +17,7 @@ config.plugins = (config.plugins || []).concat([
   new webpack.optimize.UglifyJsPlugin({
     sourceMap: true
   })
-]);
+];
 
 config.output.publicPath = `${cdnUrl}built/`;
 

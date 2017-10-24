@@ -36,7 +36,7 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       SENTRY_DSN: JSON.stringify(
-        "https://5d5bf17b1bed4afc9103b5a09634775e@sentry.io/146969"
+        "https://c8c64ef822f54240901bc64f88c234d8@sentry.io/146022"
       )
     })
   ],
