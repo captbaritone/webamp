@@ -26,10 +26,7 @@ const App = ({ media, fileInput, loading, closed, equalizer, playlist }) => {
   }
   return (
     <div id="loaded">
-      <Skin>
-        {/* This is not technically kosher, since <style> tags should be in
-          the <head>, but browsers don't really care... */}
-      </Skin>
+      <Skin />
       <WindowManager>
         <MainWindow fileInput={fileInput} mediaPlayer={media} />
         {equalizer && <EqualizerWindow fileInput={fileInput} />}

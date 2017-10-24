@@ -1,5 +1,6 @@
 // Dynamically set the css background images for all the sprites
 import React from "react";
+import { createPortal } from "react-dom";
 import { connect } from "react-redux";
 
 import { FONT_LOOKUP, imageConstFromChar } from "../skinSprites";
@@ -267,41 +268,56 @@ Object.keys(FONT_LOOKUP).forEach(character => {
 
 const numExIsUsed = skinImages => !!skinImages.DIGIT_0_EX;
 
-const Skin = props => {
-  if (!props.skinImages) {
-    return null;
+class Skin extends React.Component {
+  componentWillMount() {
+    const style = document.createElement("style");
+    style.type = "text/css";
+    document.head.appendChild(style);
+    this.style = style;
   }
-  const cssRules = [];
-  Object.keys(imageSelectors).map(imageName => {
-    const imageUrl = props.skinImages[imageName];
-    if (imageUrl) {
-      imageSelectors[imageName].forEach(selector => {
-        cssRules.push(
-          `#winamp2-js ${selector} {background-image: url(${imageUrl})}`
-        );
-      });
-    }
-  });
-  Object.keys(cursorSelectors).map(cursorName => {
-    const cursorUrl = props.skinCursors[cursorName];
-    if (cursorUrl) {
-      cursorSelectors[cursorName].forEach(selector => {
-        cssRules.push(
-          `#winamp2-js ${selector} {cursor: url(${cursorUrl}), auto}`
-        );
-      });
-    }
-  });
 
-  if (numExIsUsed(props.skinImages)) {
-    // This alternate number file requires that the minus sign be
-    // formatted differently.
-    cssRules.push(
-      "#winamp2-js .status #time #minus-sign { top: 0px; left: -1px; width: 9px; height: 13px; }"
-    );
+  componentWillUnmount() {
+    this.style.remove();
+    this.style = null;
   }
-  return <style type="text/css">{cssRules.join("\n")}</style>;
-};
+
+  render() {
+    const { skinImages, skinCursors } = this.props;
+    if (!skinImages) {
+      return null;
+    }
+    const cssRules = [];
+    Object.keys(imageSelectors).map(imageName => {
+      const imageUrl = skinImages[imageName];
+      if (imageUrl) {
+        imageSelectors[imageName].forEach(selector => {
+          cssRules.push(
+            `#winamp2-js ${selector} {background-image: url(${imageUrl})}`
+          );
+        });
+      }
+    });
+    Object.keys(cursorSelectors).map(cursorName => {
+      const cursorUrl = skinCursors[cursorName];
+      if (cursorUrl) {
+        cursorSelectors[cursorName].forEach(selector => {
+          cssRules.push(
+            `#winamp2-js ${selector} {cursor: url(${cursorUrl}), auto}`
+          );
+        });
+      }
+    });
+
+    if (numExIsUsed(skinImages)) {
+      // This alternate number file requires that the minus sign be
+      // formatted differently.
+      cssRules.push(
+        "#winamp2-js .status #time #minus-sign { top: 0px; left: -1px; width: 9px; height: 13px; }"
+      );
+    }
+    return createPortal(cssRules.join("\n"), this.style);
+  }
+}
 
 export default connect(state => ({
   skinImages: state.display.skinImages,
