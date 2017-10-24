@@ -2,9 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classnames from "classnames";
-import Volume from "../Volume";
-import Balance from "../Balance";
-import { segment } from "../../utils";
 
 import { BANDS, WINDOWS } from "../../constants";
 import {
@@ -24,13 +21,14 @@ import EqOn from "./EqOn";
 import EqAuto from "./EqAuto";
 import EqGraph from "./EqGraph";
 import PresetsContextMenu from "./PresetsContextMenu";
+import EqualizerShade from "./EqualizerShade";
 
 import "../../../css/equalizer-window.css";
 
 const bandClassName = band => `band-${band}`;
 
 const EqualizerWindow = props => {
-  const { doubled, selected, volume, balance, shade } = props;
+  const { doubled, selected, shade } = props;
 
   const className = classnames({
     selected,
@@ -39,10 +37,6 @@ const EqualizerWindow = props => {
     window: true,
     draggable: true
   });
-
-  const classes = ["left", "center", "right"];
-  const eqVolumeClassName = segment(0, 100, volume, classes);
-  const eqBalanceClassName = segment(-100, 100, balance, classes);
   return (
     <div
       id="equalizer-window"
@@ -50,12 +44,7 @@ const EqualizerWindow = props => {
       onMouseDown={props.focusWindow}
     >
       {props.shade ? (
-        <div className="draggable">
-          <div id="equalizer-shade" onClick={props.toggleEqualizerShadeMode} />
-          <div id="equalizer-close" onClick={props.closeEqualizerWindow} />
-          <Volume id="equalizer-volume" className={eqVolumeClassName} />
-          <Balance id="equalizer-balance" className={eqBalanceClassName} />
-        </div>
+        <EqualizerShade />
       ) : (
         <div>
           <div className="equalizer-top title-bar draggable">
@@ -108,9 +97,7 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = state => ({
   doubled: state.display.doubled,
   selected: state.windows.focused === WINDOWS.EQUALIZER,
-  shade: state.display.equalizerShade,
-  volume: state.media.volume,
-  balance: state.media.balance
+  shade: state.display.equalizerShade
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EqualizerWindow);

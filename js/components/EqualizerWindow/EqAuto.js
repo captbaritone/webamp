@@ -16,4 +16,7 @@ const toggleAuto = () => (dispatch, getState) => {
 };
 
 const mapDispatchToProps = { toggleAuto };
-export default connect(state => state.equalizer, mapDispatchToProps)(EqAuto);
+export default connect(
+  state => ({ toggleAuto: state.equalizer.toggleAuto }),
+  mapDispatchToProps
+)(EqAuto);
