@@ -57,7 +57,13 @@ export class ContextMenu extends React.Component {
   }
 
   _handleGlobalClick(e) {
-    if (this.state.selected && !this.handleNode.contains(e.target)) {
+    if (
+      this.state.selected &&
+      // Not sure how, but it's possible for this to get called when handleNode is null/undefined.
+      // https://sentry.io/share/issue/2066cd79f21e4f279791319f4d2ea35d/
+      this.handleNode &&
+      !this.handleNode.contains(e.target)
+    ) {
       this.setState({ selected: false });
     }
   }
