@@ -51,8 +51,9 @@ export class MainWindow extends React.Component {
   handleDrop(e) {
     this.supress(e);
     const { files } = e.dataTransfer;
-    // TODO: Move this to an actionCreator
-    this.props.loadFileFromReference(files[0]);
+    if (files[0]) {
+      this.props.loadFileFromReference(files[0]);
+    }
   }
 
   render() {

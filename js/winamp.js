@@ -34,7 +34,9 @@ class Winamp {
     );
 
     this.fileInput.addEventListener("change", e => {
-      this.store.dispatch(loadFileFromReference(e.target.files[0]));
+      if (e.target.files[0]) {
+        this.store.dispatch(loadFileFromReference(e.target.files[0]));
+      }
     });
 
     if (this.options.initialTrack && this.options.initialTrack.url) {
