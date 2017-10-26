@@ -1,5 +1,3 @@
-import "babel-polyfill";
-
 import Winamp from "./winamp";
 import Browser from "./browser";
 import base from "../skins/base-2.91.wsz";
