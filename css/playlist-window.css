@@ -141,6 +141,10 @@
   margin: 0;
 }
 
+#winamp2-js .playlist-menu li > div {
+  height: 100%;
+}
+
 #winamp2-js .playlist-menu ul {
   padding: 0;
   margin: 0;
