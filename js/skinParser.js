@@ -60,7 +60,6 @@ const genImgFromBlob = async blob => {
       return _genImgFromBlob(blob);
     }
   }
-  console.log("not even trying");
   return _genImgFromBlob(blob);
 };
 
