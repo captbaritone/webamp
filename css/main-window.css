@@ -146,7 +146,8 @@
   background-repeat: no-repeat;
 }
 
-#winamp2-js .play #work-indicator {
+#winamp2-js .play #work-indicator,
+#winamp2-js #work-indicator.selected {
   position: absolute;
   top: 28px;
   left: 24px;

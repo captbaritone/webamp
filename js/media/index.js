@@ -1,12 +1,11 @@
 /* Emulate the native <audio> element with Web Audio API */
-import { BANDS } from "./constants";
-import MyFile from "./myFile";
+import { BANDS } from "../constants";
+import BufferSource from "./bufferSource";
+//import ElementSource from "./elementSource";
 
 export default class Media {
   constructor(fileInput) {
     this._context = new (window.AudioContext || window.webkitAudioContext)();
-    this._source = null;
-    this._buffer = null;
     this._callbacks = {
       waiting: function() {},
       stopWaiting: function() {},
@@ -16,12 +15,7 @@ export default class Media {
       ended: function() {},
       fileLoaded: function() {}
     };
-    this._startTime = 0;
-    this._position = 0;
     this._balance = 0;
-    this._playing = false;
-    this._loop = false;
-    this.autoPlay = false;
     this.name = null;
     this.fileInput = fileInput;
 
@@ -29,6 +23,7 @@ export default class Media {
     // paused, so we don't create it here. Instead we create this dummy
     // node wich the real source will connect to.
 
+    // TODO: Maybe we can get rid of this now that we are using AudioAbstraction?
     this._staticSource = this._context.createAnalyser(); // Just a noop node
 
     // Create the preamp node
@@ -81,6 +76,27 @@ export default class Media {
     //                    |
     //              <destination>
 
+    this._source = new BufferSource(this._context, this._staticSource);
+    //this._source = new ElementSource(this._context, this._staticSource);
+
+    this._source.on("positionChange", () => {
+      this._callbacks.timeupdate();
+    });
+    this._source.on("statusChange", () => {
+      switch (this._source.getStatus()) {
+        case "PLAYING":
+          this._callbacks.playing();
+          break;
+        case "STOPPED":
+          this._callbacks.ended();
+          break;
+      }
+      this._callbacks.timeupdate();
+    });
+    this._source.on("loaded", () => {
+      this._callbacks.fileLoaded();
+    });
+
     this._staticSource.connect(this._preamp);
 
     let output = this._preamp;
@@ -121,40 +137,15 @@ export default class Media {
     this._chanMerge.connect(this._analyser);
 
     this._gainNode.connect(this._context.destination);
-
-    // Kick off the animation loop
-    this._draw(0);
-    return this;
-  }
-
-  // Load from bufferArray
-  loadBuffer(buffer, loadedCallback) {
-    this.stop();
-    this._callbacks.waiting();
-
-    const loadAudioBuffer = function(audioBuffer) {
-      this._buffer = audioBuffer;
-      loadedCallback();
-      this._callbacks.stopWaiting();
-      if (this.autoPlay) {
-        this.play(0);
-      }
-    };
-
-    const error = function(errorMessage) {
-      console.error("failed to decode:", errorMessage);
-    };
-    // Decode the target file into an arrayBuffer and pass it to loadBuffer
-    this._context.decodeAudioData(buffer, loadAudioBuffer.bind(this), error);
   }
 
   /* Properties */
   duration() {
-    return this._buffer.duration;
+    return this._source.getDuration();
   }
 
   timeElapsed() {
-    return this._position;
+    return this._source.getTimeElapsed();
   }
 
   timeRemaining() {
@@ -166,14 +157,11 @@ export default class Media {
   }
 
   channels() {
-    if (!this._buffer) {
-      return 0;
-    }
-    return this._buffer.numberOfChannels;
+    return this._source.getNumberOfChannels();
   }
 
   sampleRate() {
-    return this._buffer.sampleRate;
+    return this._source.getSampleRate();
   }
 
   /* Actions */
@@ -181,44 +169,16 @@ export default class Media {
     // Implement this when we support playlists
   }
 
-  play(position) {
-    if (this._playing) {
-      // So we don't get a race condition with _position getting overwritten
-      this.pause();
-    }
-    if (this._buffer) {
-      this._source = this._context.createBufferSource();
-      this._source.buffer = this._buffer;
-      this._source.connect(this._staticSource);
-
-      this._position =
-        typeof position !== "undefined" ? position : this._position;
-      this._startTime = this._context.currentTime - this._position;
-      this._source.start(0, this._position);
-      this._playing = true;
-      this._callbacks.playing();
-    }
+  play() {
+    this._source.play();
   }
 
   pause() {
-    if (!this._playing) {
-      return;
-    }
-    this._silence();
-    this._updatePosition();
+    this._source.pause();
   }
 
   stop() {
-    this._silence();
-    this._position = 0;
-  }
-
-  _silence() {
-    if (this._source) {
-      this._source.stop(0);
-      this._source = null;
-    }
-    this._playing = false;
+    this._source.stop();
   }
 
   /* Actions with arguments */
@@ -277,6 +237,7 @@ export default class Media {
   }
 
   toggleRepeat() {
+    this._source.setLoop(!this._source.getLoop());
     this._loop = !this._loop;
   }
 
@@ -290,55 +251,27 @@ export default class Media {
   }
 
   seekToTime(time) {
-    // Make sure we are within range
-    // TODO: Use clamp
-    time = Math.min(time, this.duration());
-    time = Math.max(time, 0);
-    this.play(time);
+    this._source.seekToTime(time);
   }
 
-  loadFromFileReference(fileReference) {
-    const file = new MyFile();
-    file.setFileReference(fileReference);
-    this.autoPlay = true;
-    this.name = file.name;
-    file.processBuffer(this._loadBuffer.bind(this));
+  async loadFromFileReference(fileReference, autoPlay) {
+    this.name = fileReference.name;
+    this._callbacks.waiting();
+    await this._source.loadFile(fileReference);
+    this._callbacks.stopWaiting();
+    if (autoPlay) {
+      this.play();
+    }
   }
 
   // Used only for the initial load, since it must have a CORS header
-  loadFromUrl(url, fileName) {
-    const file = new MyFile();
+  async loadFromUrl(url, fileName, autoPlay) {
     this.name = fileName;
-    file.setUrl(url, fileName);
-    file.processBuffer(this._loadBuffer.bind(this));
-  }
-
-  /* Listeners */
-  _loadBuffer(buffer) {
-    // Note, this will not happen right away
-    this.loadBuffer(buffer, this._callbacks.fileLoaded);
-  }
-
-  // There is probably a more reasonable way to do this, rather than having
-  // it always running.
-  _draw() {
-    if (this._playing) {
-      this._updatePosition();
-      this._callbacks.timeupdate();
-    }
-    window.requestAnimationFrame(this._draw.bind(this));
-  }
-
-  _updatePosition() {
-    this._position = this._context.currentTime - this._startTime;
-    if (this._position >= this._buffer.duration && this._playing) {
-      // Idealy we could use _source.loop, but it makes updating the position tricky
-      if (this._loop) {
-        this.play(0);
-      } else {
-        this.stop();
-        this._callbacks.ended();
-      }
+    this._callbacks.waiting();
+    await this._source.loadUrl(url);
+    this._callbacks.stopWaiting();
+    if (autoPlay) {
+      this.play();
     }
   }
 }

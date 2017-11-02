@@ -99,7 +99,7 @@ export class MainWindow extends React.Component {
         </div>
         <div className="status">
           <ClutterBar />
-          <div id="play-pause" />
+          {!working && <div id="play-pause" />}
           <div
             id="work-indicator"
             className={classnames({ selected: working })}

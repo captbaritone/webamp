@@ -35,7 +35,7 @@ class Winamp {
 
     this.fileInput.addEventListener("change", e => {
       if (e.target.files[0]) {
-        this.store.dispatch(loadFileFromReference(e.target.files[0]));
+        this.store.dispatch(loadFileFromReference(e.target.files[0], true));
       }
     });
 
@@ -43,7 +43,8 @@ class Winamp {
       this.store.dispatch(
         loadMediaFromUrl(
           this.options.initialTrack.url,
-          this.options.initialTrack.name
+          this.options.initialTrack.name,
+          false
         )
       );
     }

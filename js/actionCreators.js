@@ -27,10 +27,7 @@ import {
 } from "./actionTypes";
 
 export function play() {
-  return (dispatch, getState) => {
-    const { status } = getState().media;
-    dispatch({ type: status === "PLAYING" ? "STOP" : "PLAY" });
-  };
+  return { type: "PLAY" };
 }
 
 export function pause() {
@@ -124,14 +121,14 @@ export function loadFileFromReference(fileReference) {
     } else if (EQF_FILENAME_MATCHER.test(fileReference.name)) {
       dispatch(setEqFromFile(file));
     } else {
-      dispatch({ type: LOAD_AUDIO_FILE, file });
+      dispatch({ type: LOAD_AUDIO_FILE, file, autoPlay: true });
     }
   };
 }
 
-export function loadMediaFromUrl(url, name) {
+export function loadMediaFromUrl(url, name, autoPlay) {
   return dispatch => {
-    dispatch({ type: LOAD_AUDIO_URL, url, name });
+    dispatch({ type: LOAD_AUDIO_URL, url, name, autoPlay });
   };
 }
 

@@ -42,7 +42,9 @@ import {
   PLAYLIST_SIZE_CHANGED,
   REMOVE_ALL_TRACKS,
   REMOVE_TRACKS,
-  SET_AVALIABLE_SKINS
+  SET_AVALIABLE_SKINS,
+  LOAD_AUDIO_FILE,
+  LOAD_AUDIO_URL
 } from "./actionTypes";
 import { playlistEnabled } from "./config";
 
@@ -346,6 +348,17 @@ const media = (state, action) => {
       return { ...state, timeMode: newMode };
     case UPDATE_TIME_ELAPSED:
       return { ...state, timeElapsed: action.elapsed };
+    case LOAD_AUDIO_FILE:
+    case LOAD_AUDIO_URL:
+      return {
+        ...state,
+        timeElapsed: 0,
+        length: null,
+        kbps: null,
+        khz: null,
+        channels: null,
+        name: null
+      };
     case SET_MEDIA:
       return {
         ...state,

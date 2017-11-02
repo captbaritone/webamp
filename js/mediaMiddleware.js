@@ -82,10 +82,10 @@ export default media => store => {
         media.seekToPercentComplete(action.percent);
         break;
       case LOAD_AUDIO_URL:
-        media.loadFromUrl(action.url, action.name);
+        media.loadFromUrl(action.url, action.name, action.autoPlay);
         break;
       case LOAD_AUDIO_FILE:
-        media.loadFromFileReference(action.file.fileReference);
+        media.loadFromFileReference(action.file.fileReference, action.autoPlay);
         break;
       case SET_BAND_VALUE:
         if (action.band === "preamp") {
