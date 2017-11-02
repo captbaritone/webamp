@@ -13,9 +13,10 @@ const middleware = mediaMiddleware(mockMedia)(mockStore)(mockNext);
 describe("Inbound actions", () => {
   it("intercepts LOAD_AUDIO_FILE", () => {
     const mockFile = { fileReference: {} };
-    middleware({ type: LOAD_AUDIO_FILE, file: mockFile });
+    middleware({ type: LOAD_AUDIO_FILE, file: mockFile, autoPlay: true });
     expect(mockMedia.loadFromFileReference).toHaveBeenCalledWith(
-      mockFile.fileReference
+      mockFile.fileReference,
+      true
     );
   });
 });
