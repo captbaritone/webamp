@@ -21,6 +21,7 @@ export default class ElementSource extends Emitter {
     });
 
     this._audio.addEventListener("durationchange", () => {
+      this.trigger("loaded");
       this._setStalled(false);
     });
 
@@ -34,7 +35,7 @@ export default class ElementSource extends Emitter {
     });
 
     this._source = this._context.createMediaElementSource(this._audio);
-    this._loop = true;
+    this._audio.loop = false;
     this._source.connect(destination);
   }
 
@@ -110,11 +111,11 @@ export default class ElementSource extends Emitter {
   }
 
   getLoop() {
-    return this._loop;
+    return this._audio.loop;
   }
 
   setLoop(shouldLoop) {
-    this._loop = shouldLoop;
+    this._audio.loop = shouldLoop;
   }
 
   _setStatus(status) {

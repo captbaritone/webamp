@@ -109,4 +109,4 @@ Options:
 * Pause a track. Resume it with pause.
 * Play a track. Part way through press play again. Asserrt that the track starts over.
 * While a track is loading: Press play. Nothing should happen.
-* Load a large file while another file is loading. Assert that the first file stops playing while we wait.
+* Load a large file while another file is playing. Assert that the first file stops playing while we wait.
