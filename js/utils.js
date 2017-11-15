@@ -39,13 +39,17 @@ export const parseViscolors = text => {
   return colors;
 };
 
-// Dumb ini parser that just gets all the key/value pairs
+const SECTION_REGEX = /^\s*\[(.+?)\]\s*$/;
+const PROPERTY_REGEX = /^\s*([^;].*)\s*=\s*(.*)\s*$/;
+
 export const parseIni = text => {
-  const lines = text.split(/[\r\n]+/g);
-  return lines.reduce((data, line) => {
-    if (line.includes("=")) {
-      const [key, value] = line.split("=");
-      data[key] = value;
+  let section, match;
+  return text.split(/[\r\n]+/g).reduce((data, line) => {
+    if ((match = line.match(PROPERTY_REGEX)) && section != null) {
+      data[section][match[1]] = match[2];
+    } else if ((match = line.match(SECTION_REGEX))) {
+      section = match[1];
+      data[section] = {};
     }
     return data;
   }, {});

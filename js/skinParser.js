@@ -148,7 +148,7 @@ const defaultPlaylistStyle = {
 
 async function genPlaylistStyle(zip) {
   const pleditContent = await genFileFromZip(zip, "PLEDIT", "txt", "text");
-  return pleditContent ? parseIni(pleditContent) : defaultPlaylistStyle;
+  return pleditContent ? parseIni(pleditContent).Text : defaultPlaylistStyle;
 }
 
 async function genColors(zip) {
