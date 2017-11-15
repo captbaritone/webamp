@@ -23,17 +23,19 @@ import {
   SET_EQ_OFF,
   TOGGLE_EQUALIZER_SHADE_MODE,
   CLOSE_EQUALIZER_WINDOW,
-  REMOVE_TRACKS
+  REMOVE_TRACKS,
+  PLAY,
+  PAUSE
 } from "./actionTypes";
 
 export function play() {
-  return { type: "PLAY" };
+  return { type: PLAY };
 }
 
 export function pause() {
   return (dispatch, getState) => {
     const { status } = getState().media;
-    dispatch({ type: status === "PLAYING" ? "PAUSE" : "PLAY" });
+    dispatch({ type: status === "PLAYING" ? PAUSE : PLAY });
   };
 }
 
