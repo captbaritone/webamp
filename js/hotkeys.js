@@ -36,6 +36,7 @@ export default function(fileInput, { dispatch }) {
       switch (e.keyCode) {
         case 68: // CTRL+D
           dispatch({ type: TOGGLE_DOUBLESIZE_MODE });
+          e.preventDefault()
           break;
         case 76: // CTRL+L FIXME
           break;

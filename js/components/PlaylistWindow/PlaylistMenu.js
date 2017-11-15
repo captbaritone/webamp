@@ -79,7 +79,7 @@ export default class PlaylistMenu extends React.Component {
         })}
         onClick={this._handleClick}
       >
-        <div className="bar" />,
+        <div className="bar" />
         {this.state.selected && (
           <ul>
             {React.Children.map(this.props.children, (child, i) => (

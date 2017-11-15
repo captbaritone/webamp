@@ -8,6 +8,7 @@ import Track from "./Track";
 import RemoveMenu from "./RemoveMenu";
 import SelectionMenu from "./SelectionMenu";
 import ResizeTarget from "./ResizeTarget";
+import RunningTimeDisplay from  "./RunningTimeDisplay"
 import { percentToIndex } from "../../utils";
 import {
   WINDOWS,
@@ -103,6 +104,7 @@ const PlaylistWindow = props => {
             onChange={setPlaylistScrollPosition}
             vertical
             handle={Handle}
+            disabled={overflowTracks === 0}
           />
         </div>
       </div>
@@ -113,12 +115,13 @@ const PlaylistWindow = props => {
         </div>
         <div className="playlist-bottom-center draggable" />
         <div className="playlist-bottom-right draggable">
+          <RunningTimeDisplay />
           <div className="playlist-action-buttons">
             <div className="playlist-previous-button" />
             <div className="playlist-play-button" onClick={props.play} />
             <div className="playlist-pause-button" onClick={props.pause} />
             <div className="playlist-stop-button" onClick={props.stop} />
-            <div className="playlist-next-butto" />
+            <div className="playlist-next-button" />
             <div
               className="playlist-eject-button"
               onClick={props.openFileDialog}

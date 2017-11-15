@@ -179,7 +179,6 @@ exports[`MainWindow renders to snapshot 1`] = `
         >
           1
         </div>
-        ;
       </div>
     </div>
     <div
@@ -205,7 +204,6 @@ exports[`MainWindow renders to snapshot 1`] = `
       >
         l
       </div>
-      ;
     </div>
     <div
       id="khz"
@@ -230,7 +228,6 @@ exports[`MainWindow renders to snapshot 1`] = `
       >
         l
       </div>
-      ;
     </div>
     <div
       className="mono-stereo"

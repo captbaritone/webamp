@@ -190,6 +190,13 @@
   right: 0;
 }
 
+#winamp2-js .playlist-running-time-display {
+  position: absolute;
+  top: 10px;
+  left: 8px;
+  height: 10px;
+}
+
 #winamp2-js .playlist-action-buttons {
   position: absolute;
   top: 22px;

@@ -9,7 +9,7 @@ const CharacterString = props => {
     <div {...props}>
       {chars.map((character, index) => (
         <Character key={index + character}>{character}</Character>
-      ))};
+      ))}
     </div>
   );
 };

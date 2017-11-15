@@ -221,7 +221,6 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
         <div
           className="bar"
         />
-        ,
       </div>
       <div
         className="playlist-menu"
@@ -231,7 +230,6 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
         <div
           className="bar"
         />
-        ,
       </div>
     </div>
     <div
@@ -240,6 +238,67 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
     <div
       className="playlist-bottom-right draggable"
     >
+      <div
+        className="playlist-running-time-display draggable"
+      >
+        <div>
+          <div
+            className=" character character-48"
+          >
+            0
+          </div>
+          <div
+            className=" character character-50"
+          >
+            2
+          </div>
+          <div
+            className=" character character-58"
+          >
+            :
+          </div>
+          <div
+            className=" character character-53"
+          >
+            5
+          </div>
+          <div
+            className=" character character-49"
+          >
+            1
+          </div>
+          <div
+            className=" character character-47"
+          >
+            /
+          </div>
+          <div
+            className=" character character-50"
+          >
+            2
+          </div>
+          <div
+            className=" character character-55"
+          >
+            7
+          </div>
+          <div
+            className=" character character-58"
+          >
+            :
+          </div>
+          <div
+            className=" character character-49"
+          >
+            1
+          </div>
+          <div
+            className=" character character-56"
+          >
+            8
+          </div>
+        </div>
+      </div>
       <div
         className="playlist-action-buttons"
       >
@@ -259,7 +318,7 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
           onClick={[Function]}
         />
         <div
-          className="playlist-next-butto"
+          className="playlist-next-button"
         />
         <div
           className="playlist-eject-button"
