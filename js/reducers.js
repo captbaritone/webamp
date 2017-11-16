@@ -127,6 +127,7 @@ const defaultDisplayState = {
   skinColors: null,
   skinCursors: null,
   skinPlaylistStyle: {},
+  skinRegion: {},
   visualizerStyle: 2,
   playlistScrollPosition: 0,
   playlistSize: [0, 0]
@@ -160,7 +161,8 @@ const display = (state = defaultDisplayState, action) => {
         skinImages: action.skinImages,
         skinColors: action.skinColors,
         skinPlaylistStyle: action.skinPlaylistStyle,
-        skinCursors: action.skinCursors
+        skinCursors: action.skinCursors,
+        skinRegion: action.skinRegion
       };
     case TOGGLE_VISUALIZER_STYLE:
       return { ...state, visualizerStyle: (state.visualizerStyle + 1) % 3 };

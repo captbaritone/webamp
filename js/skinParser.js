@@ -1,5 +1,6 @@
 import SKIN_SPRITES from "./skinSprites";
 import JSZip from "../node_modules/jszip/dist/jszip"; // Hack
+import regionParser from "./regionParser";
 import { parseViscolors, parseIni } from "./utils";
 
 const shallowMerge = objs =>
@@ -174,17 +175,23 @@ async function genCursors(zip) {
   return shallowMerge(cursorObjs);
 }
 
+async function genRegion(zip) {
+  const regionContent = await genFileFromZip(zip, "REGION", "txt", "text");
+  return regionContent ? regionParser(regionContent) : {};
+}
+
 // A promise that, given a File object, returns a skin style object
 async function skinParser(zipFile) {
   const buffer = await genBufferFromFile(zipFile);
   const zip = await JSZip.loadAsync(buffer);
-  const [colors, playlistStyle, images, cursors] = await Promise.all([
+  const [colors, playlistStyle, images, cursors, region] = await Promise.all([
     genColors(zip),
     genPlaylistStyle(zip),
     genImages(zip),
-    genCursors(zip)
+    genCursors(zip),
+    genRegion(zip)
   ]);
-  return { colors, playlistStyle, images, cursors };
+  return { colors, playlistStyle, images, cursors, region };
 }
 
 export default skinParser;
