@@ -17,8 +17,8 @@ const Track = props => {
     ctrlClickTrack
   } = props;
   const style = {
-    backgroundColor: selected ? skinPlaylistStyle.SelectedBG : null,
-    color: current ? skinPlaylistStyle.Current : null
+    backgroundColor: selected ? skinPlaylistStyle.selectedbg : null,
+    color: current ? skinPlaylistStyle.current : null
   };
   return (
     <div

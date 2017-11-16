@@ -42,9 +42,9 @@ const PlaylistWindow = props => {
   } = props;
 
   const style = {
-    color: skinPlaylistStyle.Normal,
-    backgroundColor: skinPlaylistStyle.NormalBG,
-    fontFamily: `${skinPlaylistStyle.Font}, Arial, sans-serif`,
+    color: skinPlaylistStyle.normal,
+    backgroundColor: skinPlaylistStyle.normalbg,
+    fontFamily: `${skinPlaylistStyle.font}, Arial, sans-serif`,
     height: `${MIN_WINDOW_HEIGHT +
       playlistSize[1] * PLAYLIST_RESIZE_SEGMENT_HEIGHT}px`,
     width: `${MIN_WINDOW_WIDTH +

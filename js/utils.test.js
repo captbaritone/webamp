@@ -102,12 +102,12 @@ describe("parseIni", () => {
     const pledit = fixture("PLEDIT.TXT");
     const actual = parseIni(pledit);
     const expected = {
-      Text: {
-        Normal: "#00FF00",
-        Current: "#FFFFFF",
-        NormalBG: "#000000",
-        SelectedBG: "#0000FF",
-        Font: "Arial"
+      text: {
+        normal: "#00FF00",
+        current: "#FFFFFF",
+        normalbg: "#000000",
+        selectedbg: "#0000FF",
+        font: "Arial"
       }
     };
     expect(actual).toEqual(expected);
@@ -117,14 +117,14 @@ describe("parseIni", () => {
     const pledit = fixture("PLEDIT_TOPAZ.TXT");
     const actual = parseIni(pledit);
     const expected = {
-      Text: {
-        Normal: "#319593",
-        Current: "#89D8D1",
-        NormalBG: "#000000",
-        SelectedBG: "#2B4242",
-        Font: "Arial",
-        mbBG: "#000000",
-        mbFG: "#89D8D1"
+      text: {
+        normal: "#319593",
+        current: "#89D8D1",
+        normalbg: "#000000",
+        selectedbg: "#2B4242",
+        font: "Arial",
+        mbbg: "#000000",
+        mbfg: "#89D8D1"
       }
     };
     expect(actual).toEqual(expected);
