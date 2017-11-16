@@ -8,7 +8,7 @@ import Track from "./Track";
 import RemoveMenu from "./RemoveMenu";
 import SelectionMenu from "./SelectionMenu";
 import ResizeTarget from "./ResizeTarget";
-import RunningTimeDisplay from  "./RunningTimeDisplay"
+import RunningTimeDisplay from "./RunningTimeDisplay";
 import { percentToIndex } from "../../utils";
 import {
   WINDOWS,
