@@ -9,6 +9,10 @@
   image-rendering: -webkit-optimize-contrast; /* Safari */
   image-rendering: pixelated; /* Only in Chrome > 40 */
   -ms-interpolation-mode: nearest-neighbor; /* IE (non-standard property) */
+ /* Work around rendering bug with clip-path */
+  -webkit-transform: translateZ(
+    0
+  );
 }
 
 #winamp2-js #loading {
