@@ -120,8 +120,8 @@ export default {
   MONOSTER: [
     { name: "MAIN_STEREO", x: 0, y: 12, width: 29, height: 12 },
     { name: "MAIN_STEREO_SELECTED", x: 0, y: 0, width: 29, height: 12 },
-    { name: "MAIN_MONO", x: 29, y: 12, width: 29, height: 12 },
-    { name: "MAIN_MONO_SELECTED", x: 29, y: 0, width: 29, height: 12 }
+    { name: "MAIN_MONO", x: 29, y: 12, width: 27, height: 12 },
+    { name: "MAIN_MONO_SELECTED", x: 29, y: 0, width: 27, height: 12 }
   ],
   NUMBERS: [
     { name: "NO_MINUS_SIGN", x: 9, y: 6, width: 5, height: 1 },

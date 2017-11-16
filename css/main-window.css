@@ -9,10 +9,8 @@
   image-rendering: -webkit-optimize-contrast; /* Safari */
   image-rendering: pixelated; /* Only in Chrome > 40 */
   -ms-interpolation-mode: nearest-neighbor; /* IE (non-standard property) */
- /* Work around rendering bug with clip-path */
-  -webkit-transform: translateZ(
-    0
-  );
+  /* Work around rendering bug with clip-path */
+  -webkit-transform: translateZ(0);
 }
 
 #winamp2-js #loading {
@@ -276,11 +274,15 @@
 #winamp2-js .media-info .mono-stereo div {
   position: absolute;
   height: 12px;
-  width: 29px;
+}
+
+#winamp2-js .media-info .mono-stereo #mono {
+  width: 27px;
 }
 
 #winamp2-js .media-info .mono-stereo #stereo {
   left: 27px;
+  width: 29px;
 }
 
 #winamp2-js #volume {
