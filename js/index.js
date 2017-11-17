@@ -7,6 +7,7 @@ import topaz from "../skins/TopazAmp1-2.wsz";
 import visor from "../skins/Vizor1-01.wsz";
 import xmms from "../skins/XMMS-Turquoise.wsz";
 import zaxon from "../skins/ZaxonRemake1-0.wsz";
+import green from "../skins/Green-Dimension-V2.wsz";
 import Raven from "raven-js";
 
 import {
@@ -35,6 +36,7 @@ Raven.context(() => {
       },
       avaliableSkins: [
         { url: base, name: "<Base Skin>" },
+        { url: green, name: "Green Dimension V2" },
         { url: osx, name: "Mac OSX v1.5 (Aqua)" },
         { url: topaz, name: "TopazAmp" },
         { url: visor, name: "Vizor" },
