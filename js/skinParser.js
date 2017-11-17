@@ -149,14 +149,19 @@ const defaultPlaylistStyle = {
 
 async function genPlaylistStyle(zip) {
   const pleditContent = await genFileFromZip(zip, "PLEDIT", "txt", "text");
-  const data = pleditContent
-    ? parseIni(pleditContent).text
-    : defaultPlaylistStyle;
+  const data = pleditContent && parseIni(pleditContent).text;
+  if (!data) {
+    // Corrupt or missing PLEDIT.txt file.
+    return defaultPlaylistStyle;
+  }
 
   // Winamp seems to permit colors that contain too many characters.
   // For compatibility with existing skins, we normalize them here.
   ["normal", "current", "normalbg", "selectedbg"].forEach(colorKey => {
     let color = data[colorKey];
+    if (!color) {
+      return;
+    }
     if (color[0] !== "#") {
       color = `#${color}`;
     }
