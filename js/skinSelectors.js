@@ -97,6 +97,7 @@ export const imageSelectors = {
   ],
   PLAYLIST_SELECT_ALL: ["#playlist-selection-menu .select-all"],
   PLAYLIST_SELECT_ALL_SELECTED: ["#playlist-selection-menu .hover .select-all"],
+  PLAYLIST_CLOSE_SELECTED: ["#playlist-close:active"],
 
   EQ_WINDOW_BACKGROUND: ["#equalizer-window:not(.shade)"],
   EQ_TITLE_BAR: [".equalizer-top"],

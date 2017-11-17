@@ -16,6 +16,7 @@ import {
   PLAYLIST_RESIZE_SEGMENT_HEIGHT
 } from "../../constants";
 import {
+  TOGGLE_PLAYLIST_WINDOW,
   SET_FOCUSED_WINDOW,
   SET_PLAYLIST_SCROLL_POSITION
 } from "../../actionTypes";
@@ -38,7 +39,8 @@ const PlaylistWindow = props => {
     playlistScrollPosition,
     setPlaylistScrollPosition,
     trackOrder,
-    playlistSize
+    playlistSize,
+    close
   } = props;
 
   const style = {
@@ -80,7 +82,9 @@ const PlaylistWindow = props => {
       <div className="playlist-top draggable">
         <div className="playlist-top-left draggable" />
         <div className="playlist-top-title draggable" />
-        <div className="playlist-top-right draggable" />
+        <div className="playlist-top-right draggable">
+          <div id="playlist-close" onClick={close} />
+        </div>
       </div>
       <div className="playlist-middle draggable">
         <div className="playlist-middle-left draggable" />
@@ -146,7 +150,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   stop: () => dispatch(stop()),
   openFileDialog: () => dispatch(openFileDialog(ownProps.fileInput)),
   setPlaylistScrollPosition: position =>
-    dispatch({ type: SET_PLAYLIST_SCROLL_POSITION, position: 100 - position })
+    dispatch({ type: SET_PLAYLIST_SCROLL_POSITION, position: 100 - position }),
+  close: () => dispatch({ type: TOGGLE_PLAYLIST_WINDOW })
 });
 
 const mapStateToProps = state => {
