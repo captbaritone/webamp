@@ -13,9 +13,9 @@ const mapRegionNamesToIds = {
 };
 
 const mapRegionNamesToMatcher = {
-  normal: "#main-window",
+  normal: "#main-window:not(.shade)",
   windowshade: "#main-window.shade",
-  equalizer: "#equalizer-window",
+  equalizer: "#equalizer-window:not(.shade)",
   equalizerws: "#equalizer-window.shade"
 };
 
