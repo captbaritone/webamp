@@ -52,4 +52,11 @@ describe("regionParser", () => {
     );
     expect(regionParser(regionTxt)).toMatchSnapshot();
   });
+  it("parses Satellite M's region.txt", () => {
+    const regionTxt = fs.readFileSync(
+      "./js/__tests__/fixtures/region_satellite.txt",
+      "utf8"
+    );
+    expect(regionParser(regionTxt)).toMatchSnapshot();
+  });
 });
