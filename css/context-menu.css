@@ -1,29 +1,17 @@
-#winamp2-js .doubled #context-menu {
-  -moz-transform: scale(0.5);
-  -moz-transform-origin: top left;
-  -webkit-transform: scale(0.5);
-  -webkit-transform-origin: top left;
-}
-
-#winamp2-js #context-menu {
+#context-menu {
   left: 0px;
 }
 
-#winamp2-js .bottom > #context-menu {
+#context-menu.bottom {
   top: 12px;
 }
 
-#winamp2-js .top > #context-menu {
+#context-menu.top {
   top: 0px;
 }
 
-#winamp2-js .selected #context-menu {
-  display: block;
-}
-
-#winamp2-js #context-menu,
-#winamp2-js #context-menu ul {
-  display: none;
+#context-menu,
+#context-menu ul {
   z-index: 50; /* Gross */
   background-color: #ffffff;
   position: absolute;
@@ -35,7 +23,7 @@
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-#winamp2-js #context-menu li {
+#context-menu li {
   position: relative;
   font-family: "Tahoma";
   font-size: 11px;
@@ -46,32 +34,32 @@
   display: block;
 }
 
-#winamp2-js #context-menu li.parent:after {
+#context-menu li.parent:after {
   float: right;
   content: "\25b8";
   margin-right: -12px;
 }
-#winamp2-js #context-menu li a {
+#context-menu li a {
   text-decoration: none;
   color: black;
   cursor: default;
 }
 
-#winamp2-js #context-menu li:hover,
-#winamp2-js #context-menu li:hover a {
+#context-menu li:hover,
+#context-menu li:hover a {
   background-color: #224eb7;
   color: #ffffff;
 }
 
-#winamp2-js #context-menu li.hr {
+#context-menu li.hr {
   padding: 2px 0;
 }
 
-#winamp2-js #context-menu li.hr:hover {
+#context-menu li.hr:hover {
   background-color: #ffffff;
 }
 
-#winamp2-js #context-menu li.hr hr {
+#context-menu li.hr hr {
   border: none;
   height: 1px;
   background-color: #a7a394;
@@ -79,11 +67,12 @@
   padding: 0;
 }
 
-#winamp2-js #context-menu ul {
+#context-menu ul {
+  display: none;
   left: 100%;
   margin-left: -3px;
 }
 
-#winamp2-js #context-menu li:hover ul {
+#context-menu li:hover ul {
   display: block;
 }
