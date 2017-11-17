@@ -8,3 +8,4 @@ export const WINDOWS = {
 
 export const PLAYLIST_RESIZE_SEGMENT_WIDTH = 25;
 export const PLAYLIST_RESIZE_SEGMENT_HEIGHT = 29;
+export const MIN_PLAYLIST_WINDOW_WIDTH = 275;

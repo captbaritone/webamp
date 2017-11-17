@@ -4,6 +4,7 @@ import classnames from "classnames";
 import Slider from "rc-slider/lib/Slider";
 
 import MiniTime from "../MiniTime";
+import PlaylistShade from "./PlaylistShade";
 import Track from "./Track";
 import RemoveMenu from "./RemoveMenu";
 import SelectionMenu from "./SelectionMenu";
@@ -13,10 +14,12 @@ import { percentToIndex } from "../../utils";
 import {
   WINDOWS,
   PLAYLIST_RESIZE_SEGMENT_WIDTH,
-  PLAYLIST_RESIZE_SEGMENT_HEIGHT
+  PLAYLIST_RESIZE_SEGMENT_HEIGHT,
+  MIN_PLAYLIST_WINDOW_WIDTH
 } from "../../constants";
 import {
   TOGGLE_PLAYLIST_WINDOW,
+  TOGGLE_PLAYLIST_SHADE_MODE,
   SET_FOCUSED_WINDOW,
   SET_PLAYLIST_SCROLL_POSITION
 } from "../../actionTypes";
@@ -27,7 +30,6 @@ import "../../../css/playlist-window.css";
 
 const TRACK_HEIGHT = 13;
 const MIN_WINDOW_HEIGHT = 116;
-const MIN_WINDOW_WIDTH = 275;
 
 const Handle = () => <div className="playlist-scrollbar-handle" />;
 
@@ -40,8 +42,13 @@ const PlaylistWindow = props => {
     setPlaylistScrollPosition,
     trackOrder,
     playlistSize,
-    close
+    playlistShade,
+    close,
+    toggleShade
   } = props;
+  if (playlistShade) {
+    return <PlaylistShade />;
+  }
 
   const style = {
     color: skinPlaylistStyle.normal,
@@ -49,7 +56,7 @@ const PlaylistWindow = props => {
     fontFamily: `${skinPlaylistStyle.font}, Arial, sans-serif`,
     height: `${MIN_WINDOW_HEIGHT +
       playlistSize[1] * PLAYLIST_RESIZE_SEGMENT_HEIGHT}px`,
-    width: `${MIN_WINDOW_WIDTH +
+    width: `${MIN_PLAYLIST_WINDOW_WIDTH +
       playlistSize[0] * PLAYLIST_RESIZE_SEGMENT_WIDTH}px`
   };
 
@@ -72,6 +79,7 @@ const PlaylistWindow = props => {
   // scrolling causes the number of digits in the tracks to go up, thus causing
   // a horizontal jump.
   const tracks = trackOrder.slice(offset, offset + numberOfVisibleTracks);
+
   return (
     <div
       id="playlist-window"
@@ -83,7 +91,8 @@ const PlaylistWindow = props => {
         <div className="playlist-top-left draggable" />
         <div className="playlist-top-title draggable" />
         <div className="playlist-top-right draggable">
-          <div id="playlist-close" onClick={close} />
+          <div id="playlist-shade-button" onClick={toggleShade} />
+          <div id="playlist-close-button" onClick={close} />
         </div>
       </div>
       <div className="playlist-middle draggable">
@@ -151,20 +160,29 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   openFileDialog: () => dispatch(openFileDialog(ownProps.fileInput)),
   setPlaylistScrollPosition: position =>
     dispatch({ type: SET_PLAYLIST_SCROLL_POSITION, position: 100 - position }),
-  close: () => dispatch({ type: TOGGLE_PLAYLIST_WINDOW })
+  close: () => dispatch({ type: TOGGLE_PLAYLIST_WINDOW }),
+  toggleShade: () => dispatch({ type: TOGGLE_PLAYLIST_SHADE_MODE })
 });
 
 const mapStateToProps = state => {
   const {
     windows: { focused },
-    display: { skinPlaylistStyle, playlistScrollPosition, playlistSize }
+    display: {
+      skinPlaylistStyle,
+      playlistScrollPosition,
+      playlistSize,
+      playlistShade
+    },
+    media: { duration }
   } = state;
   return {
     focused,
     skinPlaylistStyle,
     playlistScrollPosition,
     playlistSize,
-    trackOrder: getOrderedTracks(state)
+    playlistShade,
+    trackOrder: getOrderedTracks(state),
+    duration
   };
 };
 

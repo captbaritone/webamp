@@ -72,7 +72,12 @@ export const imageSelectors = {
   PLAYLIST_BOTTOM_LEFT_CORNER: [".playlist-bottom-left"],
   PLAYLIST_BOTTOM_RIGHT_CORNER: [".playlist-bottom-right"],
   PLAYLIST_VISUALIZER_BACKGROUND: [".playlist-visualizer"],
-  PLAYLIST_SHADE_BACKGROUND: ["#playlist.shade"],
+  PLAYLIST_SHADE_BACKGROUND: ["#playlist-window-shade"],
+  PLAYLIST_SHADE_BACKGROUND_LEFT: ["#playlist-window-shade .left"],
+  PLAYLIST_SHADE_BACKGROUND_RIGHT: ["#playlist-window-shade .right"],
+  PLAYLIST_SHADE_BACKGROUND_RIGHT_SELECTED: [
+    "#playlist-window-shade.selected .right"
+  ],
 
   PLAYLIST_REMOVE_MENU_BAR: ["#playlist-remove-menu.selected .bar"],
   PLAYLIST_REMOVE_ALL: ["#playlist-remove-menu .remove-all"],
@@ -97,7 +102,13 @@ export const imageSelectors = {
   ],
   PLAYLIST_SELECT_ALL: ["#playlist-selection-menu .select-all"],
   PLAYLIST_SELECT_ALL_SELECTED: ["#playlist-selection-menu .hover .select-all"],
-  PLAYLIST_CLOSE_SELECTED: ["#playlist-close:active"],
+  PLAYLIST_CLOSE_SELECTED: ["#playlist-close-button:active"],
+  PLAYLIST_COLLAPSE_SELECTED: [
+    "#playlist-window #playlist-shade-button:active"
+  ],
+  PLAYLIST_EXPAND_SELECTED: [
+    "#playlist-window-shade #playlist-shade-button:active"
+  ],
 
   EQ_WINDOW_BACKGROUND: ["#equalizer-window:not(.shade)"],
   EQ_TITLE_BAR: [".equalizer-top"],

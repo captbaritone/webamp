@@ -26,7 +26,16 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
     />
     <div
       className="playlist-top-right draggable"
-    />
+    >
+      <div
+        id="playlist-shade-button"
+        onClick={[Function]}
+      />
+      <div
+        id="playlist-close-button"
+        onClick={[Function]}
+      />
+    </div>
   </div>
   <div
     className="playlist-middle draggable"

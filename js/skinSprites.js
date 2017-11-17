@@ -217,6 +217,27 @@ export default {
     },
     { name: "PLAYLIST_SHADE_BACKGROUND", x: 72, y: 57, width: 25, height: 14 },
     {
+      name: "PLAYLIST_SHADE_BACKGROUND_LEFT",
+      x: 72,
+      y: 42,
+      width: 25,
+      height: 14
+    },
+    {
+      name: "PLAYLIST_SHADE_BACKGROUND_RIGHT",
+      x: 99,
+      y: 57,
+      width: 50,
+      height: 14
+    },
+    {
+      name: "PLAYLIST_SHADE_BACKGROUND_RIGHT_SELECTED",
+      x: 99,
+      y: 42,
+      width: 50,
+      height: 14
+    },
+    {
       name: "PLAYLIST_SCROLL_HANDLE_SELECTED",
       x: 61,
       y: 53,
@@ -345,7 +366,9 @@ export default {
     { name: "PLAYLIST_SELECT_MENU_BAR", x: 150, y: 111, width: 3, height: 54 },
     { name: "PLAYLIST_MISC_MENU_BAR", x: 200, y: 111, width: 3, height: 54 },
     { name: "PLAYLIST_LIST_BAR", x: 250, y: 111, width: 3, height: 54 },
-    { name: "PLAYLIST_CLOSE_SELECTED", x: 52, y: 42, width: 9, height: 9 }
+    { name: "PLAYLIST_CLOSE_SELECTED", x: 52, y: 42, width: 9, height: 9 },
+    { name: "PLAYLIST_COLLAPSE_SELECTED", x: 62, y: 42, width: 9, height: 9 },
+    { name: "PLAYLIST_EXPAND_SELECTED", x: 150, y: 42, width: 9, height: 9 }
   ],
   EQ_EX: [
     {

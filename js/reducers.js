@@ -26,6 +26,7 @@ import {
   TOGGLE_REPEAT,
   TOGGLE_SHADE_MODE,
   TOGGLE_EQUALIZER_SHADE_MODE,
+  TOGGLE_PLAYLIST_SHADE_MODE,
   TOGGLE_SHUFFLE,
   TOGGLE_TIME_MODE,
   TOGGLE_VISUALIZER_STYLE,
@@ -122,6 +123,7 @@ const defaultDisplayState = {
   closed: false,
   shade: false,
   equalizerShade: false,
+  playlistShade: false,
   working: false,
   skinImages: {},
   skinColors: null,
@@ -141,6 +143,8 @@ const display = (state = defaultDisplayState, action) => {
       return { ...state, shade: !state.shade };
     case TOGGLE_EQUALIZER_SHADE_MODE:
       return { ...state, equalizerShade: !state.equalizerShade };
+    case TOGGLE_PLAYLIST_SHADE_MODE:
+      return { ...state, playlistShade: !state.playlistShade };
     case TOGGLE_LLAMA_MODE:
       return { ...state, llama: !state.llama };
     case STEP_MARQUEE:
