@@ -140,16 +140,30 @@ const defaultVisColors = [
 ];
 
 const defaultPlaylistStyle = {
-  Normal: "#00FF00",
-  Current: "#FFFFFF",
-  NormalBG: "#000000",
-  SelectedBG: "#0000FF",
-  Font: "Arial"
+  normal: "#00FF00",
+  current: "#FFFFFF",
+  normalbg: "#000000",
+  selectedbg: "#0000FF",
+  font: "Arial"
 };
 
 async function genPlaylistStyle(zip) {
   const pleditContent = await genFileFromZip(zip, "PLEDIT", "txt", "text");
-  return pleditContent ? parseIni(pleditContent).text : defaultPlaylistStyle;
+  const data = pleditContent
+    ? parseIni(pleditContent).text
+    : defaultPlaylistStyle;
+
+  // Winamp seems to permit colors that contain too many characters.
+  // For compatibility with existing skins, we normalize them here.
+  ["normal", "current", "normalbg", "selectedbg"].forEach(colorKey => {
+    let color = data[colorKey];
+    if (color[0] !== "#") {
+      color = `#${color}`;
+    }
+    data[colorKey] = color.slice(0, 7);
+  });
+
+  return data;
 }
 
 async function genColors(zip) {
