@@ -2,8 +2,6 @@
 #winamp2-js #equalizer-window {
   height: 116px;
   width: 275px;
-    /* Work around rendering bug with clip-path */
-    -webkit-transform: translateZ(0);
 }
 
 #winamp2-js #equalizer-window.shade {

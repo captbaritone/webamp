@@ -84,9 +84,13 @@ canvas {
   -ms-interpolation-mode: nearest-neighbor; /* IE (non-standard property) */
 }
 
+#winamp2-js .window {
+  /* Work around rendering bug with clip-path */
+  -webkit-transform: translateZ(0);
+}
 #winamp2-js .window.doubled {
-  -moz-transform: scale(2);
+  -moz-transform: translateZ(0) scale(2);
   -moz-transform-origin: top left;
-  -webkit-transform: scale(2);
+  -webkit-transform: translateZ(0) scale(2);
   -webkit-transform-origin: top left;
 }
