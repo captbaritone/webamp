@@ -16,9 +16,11 @@ export default function regionParser(regionStr) {
     if (!numpoints || !pointlist) {
       return;
     }
-    const pointCounts = numpoints.split(/\s*,\s*/);
-    // points can be separated by spaces, or by commas
-    const points = pointPairs(pointlist.split(/\s*[, ]\s*/));
+    const pointCounts = numpoints.split(/\s*,\s*/).filter(val => val !== "");
+    const points = pointPairs(
+      // points can be separated by spaces, or by commas
+      pointlist.split(/\s*[, ]\s*/).filter(val => val !== "")
+    );
     let pointIndex = 0;
     const polygons = pointCounts.map(numStr => {
       const num = Number(numStr);

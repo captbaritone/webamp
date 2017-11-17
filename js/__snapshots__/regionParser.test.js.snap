@@ -409,6 +409,23 @@ Object {
 }
 `;
 
+exports[`regionParser parses a region.txt where the points have leading commas 1`] = `
+Object {
+  "equalizer": Array [
+    "5,0 3,1 2,2 1,3 0,5 0,116 275,116 275,6 274,3 273,2 272,1 270,0",
+  ],
+  "equalizerws": Array [
+    "5,0 3,1 2,2 1,3 0,5 0,14 275,14 275,6 274,3 273,2 272,1 270,0",
+  ],
+  "normal": Array [
+    "5,0 3,1 2,2 1,3 0,5 0,116 275,116 275,6 274,3 273,2 272,1 270,0",
+  ],
+  "windowshade": Array [
+    "5,0 3,1 2,2 1,3 0,5 0,14 275,14 275,6 274,3 273,2 272,1 270,0",
+  ],
+}
+`;
+
 exports[`regionParser parses the EVAunit region.txt 1`] = `
 Object {
   "equalizer": Array [

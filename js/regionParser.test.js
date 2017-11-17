@@ -45,4 +45,11 @@ describe("regionParser", () => {
     );
     expect(regionParser(regionTxt)).toMatchSnapshot();
   });
+  it("parses a region.txt where the points have leading commas", () => {
+    const regionTxt = fs.readFileSync(
+      "./js/__tests__/fixtures/region_leading_comma.txt",
+      "utf8"
+    );
+    expect(regionParser(regionTxt)).toMatchSnapshot();
+  });
 });
