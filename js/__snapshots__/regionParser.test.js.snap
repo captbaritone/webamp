@@ -1,5 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`regionParser parses Satellite M's region.txt 1`] = `
+Object {
+  "normal": Array [
+    "4,0 271,0 271,116 4,116",
+    "2,1 273,1 273,116 2,116",
+    "1,2 274,2 274,116 1,116",
+    "0,4 275,4 275,116 0,116",
+  ],
+}
+`;
+
 exports[`regionParser parses a complex file 1`] = `
 Object {
   "equalizer": Array [
