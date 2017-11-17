@@ -1,8 +1,8 @@
 import { parseIni } from "./utils";
 
-function pointPairs(arr) {
+export function pointPairs(arr) {
   const pairedValues = [];
-  for (let i = 0; i <= arr.length; i += 2) {
+  for (let i = 0; i < arr.length; i += 2) {
     pairedValues.push(`${arr[i]},${arr[i + 1]}`);
   }
   return pairedValues;
@@ -11,18 +11,29 @@ function pointPairs(arr) {
 export default function regionParser(regionStr) {
   const iniData = parseIni(regionStr);
   const data = {};
-  Object.keys(iniData).forEach(key => {
-    const numPoints = iniData[key].numpoints.split(/\s*,\s*/);
-    // coords can be separated by spaces, or by commas
-    const coords = iniData[key].pointlist.split(/\s*[, ]\s*/);
-    const pointList = pointPairs(coords);
+  Object.keys(iniData).forEach(section => {
+    const { numpoints, pointlist } = iniData[section];
+    if (!numpoints || !pointlist) {
+      return;
+    }
+    const pointCounts = numpoints.split(/\s*,\s*/);
+    // points can be separated by spaces, or by commas
+    const points = pointPairs(pointlist.split(/\s*[, ]\s*/));
     let pointIndex = 0;
-    data[key] = numPoints.map(numStr => {
+    const polygons = pointCounts.map(numStr => {
       const num = Number(numStr);
-      const polygon = pointList.slice(pointIndex, pointIndex + num).join(" ");
+      const polygon = points.slice(pointIndex, pointIndex + num).join(" ");
+      if (!polygon.length) {
+        // It's possible that the skin author specified more polygons than provided points.
+        return null;
+      }
       pointIndex += num;
       return polygon;
     });
+    const validPolygons = polygons.filter(polygon => polygon != null);
+    if (validPolygons.length) {
+      data[section] = validPolygons;
+    }
   });
 
   return data;
