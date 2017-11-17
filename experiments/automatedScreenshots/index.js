@@ -11,7 +11,6 @@ const validateZip = u =>
   });
 
 const config = {
-  equalizer: true,
   playlist: true,
   hideAbout: true,
   noMarquee: true,
@@ -57,7 +56,7 @@ const config = {
 
   for (const skin of files) {
     const screenshotFile = `screenshots/${skin.replace(/\//g, "-")}.png`;
-    const skinUrl = `experiments/automated_screenshots/${skin}`;
+    const skinUrl = `experiments/automatedScreenshots/${skin}`;
     console.log("Going to try", screenshotFile);
     try {
       await validateZip(`./${skin}`);
@@ -78,7 +77,7 @@ const config = {
     const url = `http://localhost:8080/#${JSON.stringify(config)}`;
     console.log({ url });
     await page["goto"](url);
-    await page.waitForSelector("#loaded", { timeout: 1000 });
+    await page.waitForSelector("#loaded", { timeout: 2000 });
 
     console.log("Writing screenshot to", screenshotFile);
     await page.screenshot({ path: screenshotFile });
