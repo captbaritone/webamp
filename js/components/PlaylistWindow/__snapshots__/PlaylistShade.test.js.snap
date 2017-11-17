@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PlaylistShade renders to snapshot 1`] = `
+<div
+  className="window draggable"
+  id="playlist-window-shade"
+  onMouseDown={[Function]}
+  style={
+    Object {
+      "width": "275px",
+    }
+  }
+>
+  <div
+    className="left"
+  >
+    <div
+      className="right draggable"
+    >
+      <div
+        id="playlist-shade-track-title"
+      />
+      <div
+        id="playlist-shade-time"
+      >
+        <div
+          className=" character character-48"
+        >
+          0
+        </div>
+        <div
+          className=" character character-48"
+        >
+          0
+        </div>
+        <div
+          className=" character character-58"
+        >
+          :
+        </div>
+        <div
+          className=" character character-48"
+        >
+          0
+        </div>
+        <div
+          className=" character character-48"
+        >
+          0
+        </div>
+      </div>
+      <div
+        id="playlist-shade-button"
+        onClick={[Function]}
+      />
+      <div
+        id="playlist-close-button"
+        onClick={[Function]}
+      />
+    </div>
+  </div>
+</div>
+`;
