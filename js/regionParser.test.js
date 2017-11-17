@@ -38,4 +38,11 @@ describe("regionParser", () => {
     );
     expect(regionParser(regionTxt)).toMatchSnapshot();
   });
+  it("parses the iTuned region.txt", () => {
+    const regionTxt = fs.readFileSync(
+      "./js/__tests__/fixtures/region_ituned.txt",
+      "utf8"
+    );
+    expect(regionParser(regionTxt)).toMatchSnapshot();
+  });
 });

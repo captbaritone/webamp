@@ -129,6 +129,19 @@ describe("parseIni", () => {
     };
     expect(actual).toEqual(expected);
   });
+
+  it("allows space around =", () => {
+    const actual = parseIni(`
+[foo]
+bar = baz
+`);
+    const expected = {
+      foo: {
+        bar: "baz"
+      }
+    };
+    expect(actual).toEqual(expected);
+  });
 });
 
 test("normalize", () => {
