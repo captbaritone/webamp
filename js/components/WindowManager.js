@@ -29,14 +29,19 @@ class WindowManager extends React.Component {
     this.state = {};
     this.getRef = this.getRef.bind(this);
     this.handleMouseDown = this.handleMouseDown.bind(this);
+    this.centerWindows = this.centerWindows.bind(this);
   }
 
   componentDidMount() {
-    window.addEventListener("resize", this.centerWindows.bind(this));
+    window.addEventListener("resize", this.centerWindows);
     const { innerHeight, innerWidth } = window;
     if (innerHeight || innerWidth) {
       this.centerWindows();
     }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.centerWindows);
   }
 
   centerWindows() {
