@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { TOGGLE_VISUALIZER_STYLE } from "../../actionTypes";
+import { toggleVisualizerStyle } from "../../actionCreators";
 
 const OSCILLOSCOPE = 1;
 const BAR = 2;
@@ -181,7 +181,7 @@ class Visualizer extends React.Component {
         ref={node => (this.canvas = node)}
         width="152"
         height="32"
-        onClick={this.props.toggleVisualizer}
+        onClick={this.props.toggleVisualizerStyle}
       />
     );
   }
@@ -193,8 +193,8 @@ const mapStateToProps = state => ({
   status: state.media.status
 });
 
-const mapDispatchToProps = dispatch => ({
-  toggleVisualizer: () => dispatch({ type: TOGGLE_VISUALIZER_STYLE })
-});
+const mapDispatchToProps = {
+  toggleVisualizerStyle
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Visualizer);

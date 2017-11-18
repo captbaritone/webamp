@@ -27,7 +27,13 @@ import {
   SET_PLAYLIST_SCROLL_POSITION
 } from "../../actionTypes";
 import { getOrderedTracks } from "../../selectors";
-import { play, pause, stop, openFileDialog } from "../../actionCreators";
+import {
+  play,
+  pause,
+  stop,
+  openFileDialog,
+  toggleVisualizerStyle
+} from "../../actionCreators";
 
 import "../../../css/playlist-window.css";
 
@@ -134,7 +140,10 @@ const PlaylistWindow = props => {
         </div>
         <div className="playlist-bottom-center draggable" />
         <div className="playlist-bottom-right draggable">
-          <div className="playlist-visualizer" />
+          <div
+            className="playlist-visualizer"
+            onClick={props.toggleVisualizerStyle}
+          />
           <RunningTimeDisplay />
           <div className="playlist-action-buttons">
             <div className="playlist-previous-button" />
@@ -169,7 +178,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   setPlaylistScrollPosition: position =>
     dispatch({ type: SET_PLAYLIST_SCROLL_POSITION, position: 100 - position }),
   close: () => dispatch({ type: TOGGLE_PLAYLIST_WINDOW }),
-  toggleShade: () => dispatch({ type: TOGGLE_PLAYLIST_SHADE_MODE })
+  toggleShade: () => dispatch({ type: TOGGLE_PLAYLIST_SHADE_MODE }),
+  toggleVisualizerStyle: () => dispatch(toggleVisualizerStyle())
 });
 
 const mapStateToProps = state => {

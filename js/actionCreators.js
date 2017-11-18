@@ -34,7 +34,8 @@ import {
   PAUSE,
   REVERSE_LIST,
   RANDOMIZE_LIST,
-  SET_TRACK_ORDER
+  SET_TRACK_ORDER,
+  TOGGLE_VISUALIZER_STYLE
 } from "./actionTypes";
 
 export function play() {
@@ -273,4 +274,8 @@ export function sortListByTitle() {
     );
     return dispatch({ type: SET_TRACK_ORDER, trackOrder });
   };
+}
+
+export function toggleVisualizerStyle() {
+  return { type: TOGGLE_VISUALIZER_STYLE };
 }
