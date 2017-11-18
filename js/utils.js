@@ -114,3 +114,35 @@ export const segment = (min, max, value, newValues) => {
 
 export const arraysAreEqual = (a, b) =>
   a.length === b.length && a.every((value, i) => value === b[i]);
+
+// https://bost.ocks.org/mike/shuffle/
+// Shuffle an array in O(n)
+export const shuffle = array => {
+  const sorted = [...array];
+  let m = sorted.length;
+
+  // While there remain elements to shuffle…
+  while (m) {
+    // Pick a remaining element…
+    const i = Math.floor(Math.random() * m--);
+
+    // And swap it with the current element.
+    const val = sorted[m];
+    sorted[m] = sorted[i];
+    sorted[i] = val;
+  }
+
+  return sorted;
+};
+
+export const sort = (array, iteratee) =>
+  array.sort((a, b) => {
+    const aKey = iteratee(a);
+    const bKey = iteratee(b);
+    if (aKey < bKey) {
+      return -1;
+    } else if (aKey > bKey) {
+      return 1;
+    }
+    return 0;
+  });

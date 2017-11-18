@@ -4,7 +4,13 @@ import skinParser from "./skinParser";
 import { BANDS } from "./constants";
 import { getEqfData } from "./selectors";
 
-import { clamp, base64FromArrayBuffer, downloadURI, normalize } from "./utils";
+import {
+  clamp,
+  base64FromArrayBuffer,
+  downloadURI,
+  normalize,
+  sort
+} from "./utils";
 import {
   CLOSE_WINAMP,
   LOAD_AUDIO_FILE,
@@ -25,7 +31,10 @@ import {
   CLOSE_EQUALIZER_WINDOW,
   REMOVE_TRACKS,
   PLAY,
-  PAUSE
+  PAUSE,
+  REVERSE_LIST,
+  RANDOMIZE_LIST,
+  SET_TRACK_ORDER
 } from "./actionTypes";
 
 export function play() {
@@ -245,5 +254,23 @@ export function removeSelectedTracks() {
       type: REMOVE_TRACKS,
       ids: Object.keys(tracks).filter(id => tracks[id].selected)
     });
+  };
+}
+
+export function reverseList() {
+  return { type: REVERSE_LIST };
+}
+
+export function randomizeList() {
+  return { type: RANDOMIZE_LIST };
+}
+
+export function sortListByTitle() {
+  return (dispatch, getState) => {
+    const state = getState();
+    const trackOrder = sort(state.playlist.trackOrder, i =>
+      state.tracks[i].title.toLowerCase()
+    );
+    return dispatch({ type: SET_TRACK_ORDER, trackOrder });
   };
 }

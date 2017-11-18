@@ -52,3 +52,6 @@ export const CROP_TRACKS = "CROP_TRACKS";
 export const FILE_INFO = "FILE_INFO";
 export const REMOVE_TRACKS = "REMOVE_TRACKS";
 export const SET_AVALIABLE_SKINS = "SET_AVALIABLE_SKINS";
+export const REVERSE_LIST = "REVERSE_LIST";
+export const RANDOMIZE_LIST = "RANDOMIZE_LIST";
+export const SET_TRACK_ORDER = "SET_TRACK_ORDER";

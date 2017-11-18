@@ -7,7 +7,8 @@ import {
   toggleShuffle,
   openFileDialog,
   seekForward,
-  seekBackward
+  seekBackward,
+  reverseList
 } from "./actionCreators";
 
 import {
@@ -39,6 +40,9 @@ export default function(fileInput, { dispatch }) {
           e.preventDefault(); // Supress the "Bookmark" action on windows.
           break;
         case 76: // CTRL+L FIXME
+          break;
+        case 82: // CTRL+R
+          dispatch(reverseList());
           break;
         case 84: // CTRL+T
           dispatch({ type: TOGGLE_TIME_MODE });

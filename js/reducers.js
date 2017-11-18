@@ -45,9 +45,13 @@ import {
   REMOVE_TRACKS,
   SET_AVALIABLE_SKINS,
   LOAD_AUDIO_FILE,
-  LOAD_AUDIO_URL
+  LOAD_AUDIO_URL,
+  REVERSE_LIST,
+  RANDOMIZE_LIST,
+  SET_TRACK_ORDER
 } from "./actionTypes";
 import { playlistEnabled } from "./config";
+import { shuffle } from "./utils";
 
 const mapObject = (obj, iteratee) =>
   // TODO: Could return the original reference if no values change
@@ -317,6 +321,20 @@ const playlist = (state = defaultPlaylistState, action) => {
         ...state,
         trackOrder: state.trackOrder.filter(id => !action.ids.includes(id))
       };
+    case REVERSE_LIST:
+      return {
+        ...state,
+        trackOrder: [...state.trackOrder].reverse()
+      };
+    case RANDOMIZE_LIST:
+      return {
+        ...state,
+        trackOrder: shuffle(state.trackOrder)
+      };
+    case SET_TRACK_ORDER:
+      const { trackOrder } = action;
+      return { ...state, trackOrder };
+
     default:
       return state;
   }
