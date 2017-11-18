@@ -266,6 +266,9 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
       className="playlist-bottom-right draggable"
     >
       <div
+        className="playlist-visualizer"
+      />
+      <div
         className="playlist-running-time-display draggable"
       >
         <div>

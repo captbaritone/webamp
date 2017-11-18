@@ -64,7 +64,8 @@ const PlaylistWindow = props => {
   };
 
   const classes = classnames("window", "draggable", {
-    selected: focused === WINDOWS.PLAYLIST
+    selected: focused === WINDOWS.PLAYLIST,
+    wide: playlistSize[0] > 2
   });
 
   const BASE_WINDOW_HEIGHT = 52;
@@ -133,6 +134,7 @@ const PlaylistWindow = props => {
         </div>
         <div className="playlist-bottom-center draggable" />
         <div className="playlist-bottom-right draggable">
+          <div className="playlist-visualizer" />
           <RunningTimeDisplay />
           <div className="playlist-action-buttons">
             <div className="playlist-previous-button" />

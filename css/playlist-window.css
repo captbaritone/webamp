@@ -234,12 +234,16 @@
   width: 10px;
 }
 
-#winamp2-js .playlist-visualizer {
+#winamp2-js #playlist-window .playlist-visualizer {
   width: 75px;
   height: 100%;
   position: absolute;
   right: 150px;
   display: none; /* Only show if the window is wide enough */
+}
+
+#winamp2-js #playlist-window.wide .playlist-visualizer {
+  display: block;
 }
 
 #winamp2-js #playlist-window .mini-time {
