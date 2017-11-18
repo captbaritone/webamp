@@ -224,6 +224,15 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
     >
       <div
         className="playlist-menu"
+        id="playlist-add-menu"
+        onClick={[Function]}
+      >
+        <div
+          className="bar"
+        />
+      </div>
+      <div
+        className="playlist-menu"
         id="playlist-remove-menu"
         onClick={[Function]}
       >
@@ -234,6 +243,15 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
       <div
         className="playlist-menu"
         id="playlist-selection-menu"
+        onClick={[Function]}
+      >
+        <div
+          className="bar"
+        />
+      </div>
+      <div
+        className="playlist-menu"
+        id="playlist-misc-menu"
         onClick={[Function]}
       >
         <div
@@ -332,6 +350,15 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
         <div
           className="playlist-eject-button"
           onClick={[Function]}
+        />
+      </div>
+      <div
+        className="playlist-menu"
+        id="playlist-list-menu"
+        onClick={[Function]}
+      >
+        <div
+          className="bar"
         />
       </div>
       <div

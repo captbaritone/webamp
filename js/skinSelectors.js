@@ -79,6 +79,14 @@ export const imageSelectors = {
     "#playlist-window-shade.selected .right"
   ],
 
+  PLAYLIST_ADD_MENU_BAR: ["#playlist-add-menu.selected .bar"],
+  PLAYLIST_ADD_URL: ["#playlist-add-menu .add-url"],
+  PLAYLIST_ADD_URL_SELECTED: ["#playlist-add-menu .hover .add-url"],
+  PLAYLIST_ADD_DIR: ["#playlist-add-menu .add-dir"],
+  PLAYLIST_ADD_DIR_SELECTED: ["#playlist-add-menu .hover .add-dir"],
+  PLAYLIST_ADD_FILE: ["#playlist-add-menu .add-file"],
+  PLAYLIST_ADD_FILE_SELECTED: ["#playlist-add-menu .hover .add-file"],
+
   PLAYLIST_REMOVE_MENU_BAR: ["#playlist-remove-menu.selected .bar"],
   PLAYLIST_REMOVE_ALL: ["#playlist-remove-menu .remove-all"],
   PLAYLIST_REMOVE_ALL_SELECTED: ["#playlist-remove-menu .hover .remove-all"],
@@ -109,6 +117,22 @@ export const imageSelectors = {
   PLAYLIST_EXPAND_SELECTED: [
     "#playlist-window-shade #playlist-shade-button:active"
   ],
+
+  PLAYLIST_MISC_MENU_BAR: ["#playlist-misc-menu.selected .bar"],
+  PLAYLIST_MISC_OPTIONS: ["#playlist-misc-menu .misc-options"],
+  PLAYLIST_MISC_OPTIONS_SELECTED: ["#playlist-misc-menu .hover .misc-options"],
+  PLAYLIST_FILE_INFO: ["#playlist-misc-menu .file-info"],
+  PLAYLIST_FILE_INFO_SELECTED: ["#playlist-misc-menu .hover .file-info"],
+  PLAYLIST_SORT_LIST: ["#playlist-misc-menu .sort-list"],
+  PLAYLIST_SORT_LIST_SELECTED: ["#playlist-misc-menu .hover .sort-list"],
+
+  PLAYLIST_LIST_BAR: ["#playlist-list-menu.selected .bar"],
+  PLAYLIST_NEW_LIST: ["#playlist-list-menu .new-list"],
+  PLAYLIST_NEW_LIST_SELECTED: ["#playlist-list-menu .hover .new-list"],
+  PLAYLIST_LOAD_LIST: ["#playlist-list-menu .load-list"],
+  PLAYLIST_LOAD_LIST_SELECTED: ["#playlist-list-menu .hover .load-list"],
+  PLAYLIST_SAVE_LIST: ["#playlist-list-menu .save-list"],
+  PLAYLIST_SAVE_LIST_SELECTED: ["#playlist-list-menu .hover .save-list"],
 
   EQ_WINDOW_BACKGROUND: ["#equalizer-window:not(.shade)"],
   EQ_TITLE_BAR: [".equalizer-top"],

@@ -6,8 +6,11 @@ import Slider from "rc-slider/lib/Slider";
 import MiniTime from "../MiniTime";
 import PlaylistShade from "./PlaylistShade";
 import Track from "./Track";
+import AddMenu from "./AddMenu";
 import RemoveMenu from "./RemoveMenu";
 import SelectionMenu from "./SelectionMenu";
+import MiscMenu from "./MiscMenu";
+import ListMenu from "./ListMenu";
 import ResizeTarget from "./ResizeTarget";
 import RunningTimeDisplay from "./RunningTimeDisplay";
 import { percentToIndex } from "../../utils";
@@ -123,8 +126,10 @@ const PlaylistWindow = props => {
       </div>
       <div className="playlist-bottom draggable">
         <div className="playlist-bottom-left draggable">
+          <AddMenu openFileDialog={props.openFileDialog} />
           <RemoveMenu />
           <SelectionMenu />
+          <MiscMenu />
         </div>
         <div className="playlist-bottom-center draggable" />
         <div className="playlist-bottom-right draggable">
@@ -141,6 +146,7 @@ const PlaylistWindow = props => {
             />
           </div>
           <MiniTime />
+          <ListMenu />
           <ResizeTarget />
         </div>
       </div>

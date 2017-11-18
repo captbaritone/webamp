@@ -163,6 +163,15 @@
   width: 3px;
   height: 54px;
 }
+
+#winamp2-js #playlist-add-menu {
+  position: absolute;
+  bottom: 12px;
+  left: 13px;
+  width: 22px;
+  height: 18px;
+}
+
 #winamp2-js #playlist-remove-menu.playlist-menu .bar {
   height: 72px;
 }
@@ -179,6 +188,22 @@
   position: absolute;
   bottom: 12px;
   left: 72px;
+  width: 22px;
+  height: 18px;
+}
+
+#winamp2-js #playlist-misc-menu {
+  position: absolute;
+  bottom: 12px;
+  left: 102px;
+  width: 22px;
+  height: 18px;
+}
+
+#winamp2-js #playlist-list-menu {
+  position: absolute;
+  bottom: 12px;
+  right: 22px;
   width: 22px;
   height: 18px;
 }

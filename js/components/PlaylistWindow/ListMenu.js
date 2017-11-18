@@ -1,29 +1,25 @@
 import React from "react";
 import { connect } from "react-redux";
-import { FILE_INFO } from "../../actionTypes";
 import PlaylistMenu from "./PlaylistMenu";
 
 /* eslint-disable no-alert */
 
-const MiscMenu = () => (
-  <PlaylistMenu id="playlist-misc-menu">
+const ListMenu = () => (
+  <PlaylistMenu id="playlist-list-menu">
     <div
-      className="sort-list"
-      onClick={() => alert("Not supported in Winamp2-js")}
-    />
-    {/* onClick={props.fileInfo} */}
-    <div
-      className="file-info"
+      className="new-list"
       onClick={() => alert("Not supported in Winamp2-js")}
     />
     <div
-      className="misc-options"
+      className="save-list"
+      onClick={() => alert("Not supported in Winamp2-js")}
+    />
+    <div
+      className="load-list"
       onClick={() => alert("Not supported in Winamp2-js")}
     />
   </PlaylistMenu>
 );
 
-const mapDispatchToProps = {
-  fileInfo: () => ({ type: FILE_INFO })
-};
-export default connect(null, mapDispatchToProps)(MiscMenu);
+const mapDispatchToProps = {};
+export default connect(null, mapDispatchToProps)(ListMenu);
