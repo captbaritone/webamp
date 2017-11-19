@@ -1,5 +1,5 @@
-import { denormalize, getTimeStr, clamp } from "./utils";
-import { BANDS } from "./constants";
+import { denormalize, getTimeStr, clamp, percentToIndex } from "./utils";
+import { BANDS, PLAYLIST_RESIZE_SEGMENT_HEIGHT } from "./constants";
 import { createSelector } from "reselect";
 
 export const getEqfData = state => {
@@ -87,3 +87,34 @@ export const nextTrack = (state, n = 1) => {
   nextIndex = clamp(nextIndex, 0, trackOrder.length - 1);
   return trackOrder[nextIndex];
 };
+
+export const getPlaylistScrollPosition = state =>
+  state.display.playlistScrollPosition;
+
+const TRACK_HEIGHT = 13;
+const BASE_WINDOW_HEIGHT = 52;
+export const getNumberOfVisibleTracks = state => {
+  const { playlistSize } = state.display;
+  return Math.floor(
+    (BASE_WINDOW_HEIGHT + PLAYLIST_RESIZE_SEGMENT_HEIGHT * playlistSize[1]) /
+      TRACK_HEIGHT
+  );
+};
+
+export const getOverflowTrackCount = createSelector(
+  getTrackOrder,
+  getNumberOfVisibleTracks,
+  (trackOrder, numberOfVisibleTracks) =>
+    Math.max(0, trackOrder.length - numberOfVisibleTracks)
+);
+
+export const getVisibleTrackIds = createSelector(
+  getPlaylistScrollPosition,
+  getTrackOrder,
+  getNumberOfVisibleTracks,
+  (playlistScrollPosition, trackOrder, numberOfVisibleTracks) => {
+    const overflow = Math.max(0, trackOrder.length - numberOfVisibleTracks);
+    const offset = percentToIndex(playlistScrollPosition / 100, overflow + 1);
+    return trackOrder.slice(offset, offset + numberOfVisibleTracks);
+  }
+);

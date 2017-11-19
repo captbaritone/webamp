@@ -50,52 +50,32 @@
 #winamp2-js .playlist-middle-center {
   flex-grow: 1;
   padding: 3px 0;
+  min-width: 0; /* Not sure why this is needed */
 }
 
 #winamp2-js .playlist-tracks {
-  overflow: hidden;
-  height: 100%;
-}
-#winamp2-js .playlist-tracks > div {
-  width: 100%;
-  display: table;
-}
-
-#winamp2-js .playlist-track {
+  display: flex;
+  flex: 1 0 auto;
   font-size: 9px;
-  display: table-row;
   line-height: 13px;
   letter-spacing: 0.5px;
   user-select: none;
 }
 
-#winamp2-js .playlist-track-number {
-  text-align: right;
+#winamp2-js .playlist-track-numbers > div,
+#winamp2-js .playlist-track-durations > div {
   padding-right: 3px;
-  display: table-cell;
-  width: 1%;
-  white-space: nowrap;
 }
 
-#winamp2-js .playlist-track-title {
-  flex-grow: 1;
-  display: table-cell;
-  width: auto;
+#winamp2-js .playlist-track-titles {
+  flex: 1 1 auto;
+  overflow: hidden;
 }
 
-#winamp2-js .playlist-track-title > span {
+#winamp2-js .playlist-track-titles > div {
+  text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  display: block;
-  text-overflow: ellipsis;
-  position: relative;
-}
-
-#winamp2-js .playlist-track-duration {
-  padding-right: 3px;
-  display: table-cell;
-  width: 1%;
-  white-space: nowrap;
 }
 
 #winamp2-js .playlist-middle-right {
