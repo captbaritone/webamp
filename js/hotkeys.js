@@ -9,6 +9,7 @@ import {
   seekForward,
   seekBackward,
   reverseList,
+  nextN,
   next,
   previous
 } from "./actionCreators";
@@ -92,13 +93,13 @@ export default function(fileInput, { dispatch }) {
           dispatch(openFileDialog(fileInput));
           break;
         case 97: // numpad 1
-          // Previous (10 tracks)
+          dispatch(nextN(-10));
           break;
         case 98: // numpad 2
           dispatch(adjustVolume(-1));
           break;
         case 99: // numpad 3
-          // Next (10 tracks)
+          dispatch(nextN(10));
           break;
         case 100: // numpad 4
           dispatch(previous());
@@ -123,7 +124,7 @@ export default function(fileInput, { dispatch }) {
 
     // Easter Egg
 
-    // Ignore escape. Usually this get's swallowed by the browser, but not always.
+    // Ignore escape. Usually this gets swallowed by the browser, but not always.
     if (e.keyCode !== 27) {
       keylog.push(e.keyCode);
       keylog = keylog.slice(-8);
