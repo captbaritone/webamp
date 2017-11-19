@@ -75,7 +75,6 @@ class Marquee extends React.Component {
     super(props);
     this.state = { stepping: true, dragOffset: 0 };
     this.handleMouseDown = this.handleMouseDown.bind(this);
-    this.getText = this.getText.bind(this);
     this.stepHandle = null;
   }
 
@@ -97,34 +96,6 @@ class Marquee extends React.Component {
     if (this.stepHandle) {
       clearTimeout(this.stepHandle);
     }
-  }
-
-  getText() {
-    if (this.props.userInput.userMessage != null) {
-      return this.props.userInput.userMessage;
-    }
-    switch (this.props.userInput.focus) {
-      case "balance":
-        return getBalanceText(this.props.media.balance);
-      case "volume":
-        return getVolumeText(this.props.media.volume);
-      case "position":
-        return getPositionText(
-          this.props.media.length,
-          this.props.userInput.scrubPosition
-        );
-      case "double":
-        return getDoubleSizeModeText(this.props.display.doubled);
-      case "eq":
-        const band = this.props.userInput.bandFocused;
-        return getEqText(band, this.props.equalizer.sliders[band]);
-      default:
-        break;
-    }
-    if (this.props.media.name) {
-      return getMediaText(this.props.media.name, this.props.media.length);
-    }
-    return "Winamp 2.91";
   }
 
   handleMouseDown(e) {
@@ -149,12 +120,8 @@ class Marquee extends React.Component {
   }
 
   render() {
-    const text = this.getText();
-    const offset = stepOffset(
-      text,
-      this.props.display.marqueeStep,
-      this.state.dragOffset
-    );
+    const { text, marqueeStep } = this.props;
+    const offset = stepOffset(text, marqueeStep, this.state.dragOffset);
     const marginLeft = pixelUnits(-offset);
     return (
       <div
@@ -171,5 +138,33 @@ class Marquee extends React.Component {
   }
 }
 
+const getMarqueeText = state => {
+  if (state.userInput.userMessage != null) {
+    return state.userInput.userMessage;
+  }
+  switch (state.userInput.focus) {
+    case "balance":
+      return getBalanceText(state.media.balance);
+    case "volume":
+      return getVolumeText(state.media.volume);
+    case "position":
+      return getPositionText(state.media.length, state.userInput.scrubPosition);
+    case "double":
+      return getDoubleSizeModeText(state.display.doubled);
+    case "eq":
+      const band = state.userInput.bandFocused;
+      return getEqText(band, state.equalizer.sliders[band]);
+    default:
+      break;
+  }
+  if (state.media.name) {
+    return getMediaText(state.media.name, state.media.length);
+  }
+  return "Winamp 2.91";
+};
+
 // TODO: Define map state to props
-export default connect(state => state)(Marquee);
+export default connect(state => ({
+  marqueeStep: state.display.marqueeStep,
+  text: getMarqueeText(state)
+}))(Marquee);
