@@ -271,6 +271,14 @@
   background-position-x: right;
 }
 
+#winamp2-js #playlist-window-shade #playlist-resize-target {
+  position: absolute;
+  right: 20px;
+  top: 3px;
+  height: 9px;
+  width: 9px;
+}
+
 #winamp2-js #playlist-shade-track-title {
   position: absolute;
   top: 4px;

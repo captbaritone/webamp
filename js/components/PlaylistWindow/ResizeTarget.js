@@ -24,10 +24,16 @@ class ResizeTarget extends React.Component {
       const x = ee.clientX - mouseStart.x;
       const y = ee.clientY - mouseStart.y;
 
-      const newSize = [
-        Math.max(0, width + Math.round(x / PLAYLIST_RESIZE_SEGMENT_WIDTH)),
-        Math.max(0, height + Math.round(y / PLAYLIST_RESIZE_SEGMENT_HEIGHT))
-      ];
+      const newWidth = Math.max(
+        0,
+        width + Math.round(x / PLAYLIST_RESIZE_SEGMENT_WIDTH)
+      );
+
+      const newHeight = this.props.widthOnly
+        ? width
+        : Math.max(0, height + Math.round(y / PLAYLIST_RESIZE_SEGMENT_HEIGHT));
+
+      const newSize = [newWidth, newHeight];
 
       this.props.setPlaylistSize(newSize);
     };

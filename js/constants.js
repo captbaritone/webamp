@@ -6,6 +6,8 @@ export const WINDOWS = {
   EQUALIZER: "EQUALIZER"
 };
 
+export const UTF8_ELLIPSIS = "\u2026";
+export const CHARACTER_WIDTH = 5;
 export const PLAYLIST_RESIZE_SEGMENT_WIDTH = 25;
 export const PLAYLIST_RESIZE_SEGMENT_HEIGHT = 29;
 export const MIN_PLAYLIST_WINDOW_WIDTH = 275;

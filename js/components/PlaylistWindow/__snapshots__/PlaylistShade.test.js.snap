@@ -50,6 +50,10 @@ exports[`PlaylistShade renders to snapshot 1`] = `
         </div>
       </div>
       <div
+        id="playlist-resize-target"
+        onMouseDown={[Function]}
+      />
+      <div
         id="playlist-shade-button"
         onClick={[Function]}
       />

@@ -1,3 +1,4 @@
+import { UTF8_ELLIPSIS } from "./constants";
 /* TODO: There are too many " " and "_" characters */
 export const FONT_LOOKUP = {
   a: [0, 0],
@@ -38,6 +39,7 @@ export const FONT_LOOKUP = {
   "7": [1, 7],
   "8": [1, 8],
   "9": [1, 9],
+  [UTF8_ELLIPSIS]: [1, 10],
   _: [1, 11],
   ":": [1, 12],
   "(": [1, 13],
