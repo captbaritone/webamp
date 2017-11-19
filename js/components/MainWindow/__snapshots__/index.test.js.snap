@@ -288,7 +288,7 @@ exports[`MainWindow renders to snapshot 1`] = `
       title="Toggle Graphical Equalizer"
     />
     <div
-      className=""
+      className="selected"
       id="playlist-button"
       onClick={[Function]}
       onMouseDown={[Function]}
@@ -315,6 +315,7 @@ exports[`MainWindow renders to snapshot 1`] = `
   >
     <div
       id="previous"
+      onClick={[Function]}
       title="Previous Track"
     />
     <div
@@ -334,6 +335,7 @@ exports[`MainWindow renders to snapshot 1`] = `
     />
     <div
       id="next"
+      onClick={[Function]}
       title="Next Track"
     />
   </div>

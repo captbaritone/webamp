@@ -82,13 +82,13 @@ export default class Media {
     this._source.on("positionChange", () => {
       this._callbacks.timeupdate();
     });
+    this._source.on("ended", () => {
+      this._callbacks.ended();
+    });
     this._source.on("statusChange", () => {
       switch (this._source.getStatus()) {
         case "PLAYING":
           this._callbacks.playing();
-          break;
-        case "STOPPED":
-          this._callbacks.ended();
           break;
       }
       this._callbacks.timeupdate();
@@ -234,15 +234,6 @@ export default class Media {
   enableEq() {
     this._staticSource.disconnect();
     this._staticSource.connect(this._preamp);
-  }
-
-  toggleRepeat() {
-    this._loop = !this._loop;
-    this._source.setLoop(this._loop);
-  }
-
-  toggleShuffle() {
-    // Implement this when we support playlists
   }
 
   /* Listeners */

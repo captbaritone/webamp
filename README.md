@@ -105,7 +105,6 @@ There are some "feature flags" which you can manipulate by passing a specially c
 
 * `skinUrl` (string) Url of the default skin to use. Note, this file must be served with the correct Allows Origin header.
 * `audioUrl` (string) Url of the default audio file to use. Note, this file must be served with the correct Allows Origin header.
-* `playlistEnabled` (boolean) Should the incomplete Playlist window be made avalaible.
 * `noMarquee` (boolean) Enable/disable to scrolling of the song title in the main window. It can be nice to turn this off when debugging Redux actions, since the scrolling generates a lot of noise.
 * `hideAbout` (boolean) Selectively hide the byline and GitHub link at the bottom of the page. Useful for taking screenshots.
 * `initialState` (object) Override the [initial Redux state](js/reducers.js). Values from this object will be recursively merged into the actual default state.

@@ -2,7 +2,7 @@ import { parser, creator } from "winamp-eqf";
 import MyFile from "./myFile";
 import skinParser from "./skinParser";
 import { BANDS } from "./constants";
-import { getEqfData } from "./selectors";
+import { getEqfData, nextTrack } from "./selectors";
 
 import {
   clamp,
@@ -34,8 +34,18 @@ import {
   REVERSE_LIST,
   RANDOMIZE_LIST,
   SET_TRACK_ORDER,
-  TOGGLE_VISUALIZER_STYLE
+  TOGGLE_VISUALIZER_STYLE,
+  PLAY_TRACK
 } from "./actionTypes";
+
+function playRandomTrack() {
+  return (dispatch, getState) => {
+    const { playlist: { trackOrder } } = getState();
+    const nextIndex = Math.floor(trackOrder.length * Math.random());
+    // TODO: Ensure we don't repeat the same track.
+    dispatch({ type: PLAY_TRACK, id: trackOrder[nextIndex] });
+  };
+}
 
 export function play() {
   return { type: PLAY };
@@ -50,6 +60,29 @@ export function pause() {
 
 export function stop() {
   return { type: STOP };
+}
+
+export function nextN(n) {
+  return (dispatch, getState) => {
+    const state = getState();
+    if (state.media.shuffle) {
+      dispatch(playRandomTrack());
+      return;
+    }
+    const nextTrackId = nextTrack(state, n);
+    if (nextTrackId == null) {
+      return;
+    }
+    dispatch({ type: PLAY_TRACK, id: nextTrackId });
+  };
+}
+
+export function next() {
+  return nextN(1);
+}
+
+export function previous() {
+  return nextN(-1);
 }
 
 export function seekForward(seconds) {
@@ -120,7 +153,6 @@ function setEqFromFile(file) {
     });
   };
 }
-
 const SKIN_FILENAME_MATCHER = new RegExp("(wsz|zip)$", "i");
 const EQF_FILENAME_MATCHER = new RegExp("eqf$", "i");
 export function loadFileFromReference(fileReference) {
@@ -132,20 +164,15 @@ export function loadFileFromReference(fileReference) {
     } else if (EQF_FILENAME_MATCHER.test(fileReference.name)) {
       dispatch(setEqFromFile(file));
     } else {
-      dispatch({
-        type: LOAD_AUDIO_URL,
-        url: URL.createObjectURL(fileReference),
-        name: fileReference.name,
-        autoPlay: true
-      });
+      const url = URL.createObjectURL(fileReference);
+      dispatch(loadMediaFromUrl(url, fileReference.name, true));
     }
   };
 }
 
+let counter = 0;
 export function loadMediaFromUrl(url, name, autoPlay) {
-  return dispatch => {
-    dispatch({ type: LOAD_AUDIO_URL, url, name, autoPlay });
-  };
+  return { type: LOAD_AUDIO_URL, url, name, autoPlay, id: counter++ };
 }
 
 export function setSkinFromFile(skinFile) {
@@ -273,10 +300,9 @@ export function randomizeList() {
 export function sortListByTitle() {
   return (dispatch, getState) => {
     const state = getState();
-    const trackOrder = sort(state.playlist.trackOrder, i => {
-      const { title, artist } = state.tracks[i];
-      return `${artist} - ${title}`.toLowerCase();
-    });
+    const trackOrder = sort(state.playlist.trackOrder, i =>
+      `${state.tracks[i].title}`.toLowerCase()
+    );
     return dispatch({ type: SET_TRACK_ORDER, trackOrder });
   };
 }

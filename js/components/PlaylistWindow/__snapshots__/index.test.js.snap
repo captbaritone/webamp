@@ -52,143 +52,14 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
       <div
         className="playlist-tracks"
       >
-        <div>
-          <div
-            className="playlist-track current"
-            onClick={[Function]}
-            onContextMenu={[Function]}
-            style={
-              Object {
-                "backgroundColor": null,
-                "color": undefined,
-              }
-            }
-          >
-            <div
-              className="playlist-track-number"
-            >
-              1
-              .
-            </div>
-            <div
-              className="playlist-track-title"
-            >
-              <span>
-                DJ Mike Llama
-                 - 
-                Llama Whipping Intro
-              </span>
-            </div>
-            <div
-              className="playlist-track-duration"
-            >
-              03:41
-            </div>
-          </div>
-          <div
-            className="playlist-track"
-            onClick={[Function]}
-            onContextMenu={[Function]}
-            style={
-              Object {
-                "backgroundColor": null,
-                "color": null,
-              }
-            }
-          >
-            <div
-              className="playlist-track-number"
-            >
-              2
-              .
-            </div>
-            <div
-              className="playlist-track-title"
-            >
-              <span>
-                Marilyn Manson
-                 - 
-                Rock Is Dead
-              </span>
-            </div>
-            <div
-              className="playlist-track-duration"
-            >
-              03:41
-            </div>
-          </div>
-          <div
-            className="playlist-track selected"
-            onClick={[Function]}
-            onContextMenu={[Function]}
-            style={
-              Object {
-                "backgroundColor": undefined,
-                "color": null,
-              }
-            }
-          >
-            <div
-              className="playlist-track-number"
-            >
-              3
-              .
-            </div>
-            <div
-              className="playlist-track-title"
-            >
-              <span>
-                Propellerheads
-                 - 
-                Spybreak! (Short One)
-              </span>
-            </div>
-            <div
-              className="playlist-track-duration"
-            >
-              02:51
-            </div>
-          </div>
-          <div
-            className="playlist-track"
-            onClick={[Function]}
-            onContextMenu={[Function]}
-            style={
-              Object {
-                "backgroundColor": null,
-                "color": null,
-              }
-            }
-          >
-            <div
-              className="playlist-track-number"
-            >
-              4
-              .
-            </div>
-            <div
-              className="playlist-track-title"
-            >
-              <span>
-                Rob D
-                 - 
-                Clubbed to Death
-              </span>
-            </div>
-            <div
-              className="playlist-track-duration"
-            >
-              03:35
-            </div>
-          </div>
-        </div>
+        <div />
       </div>
     </div>
     <div
       className="playlist-middle-right draggable"
     >
       <div
-        className="rc-slider rc-slider-vertical playlist-scrollbar"
+        className="rc-slider rc-slider-disabled rc-slider-vertical playlist-scrollbar"
         onMouseDown={[Function]}
         onTouchStart={[Function]}
         style={undefined}
@@ -282,9 +153,9 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
             0
           </div>
           <div
-            className=" character character-50"
+            className=" character character-48"
           >
-            2
+            0
           </div>
           <div
             className=" character character-58"
@@ -292,14 +163,14 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
             :
           </div>
           <div
-            className=" character character-53"
+            className=" character character-48"
           >
-            5
+            0
           </div>
           <div
-            className=" character character-49"
+            className=" character character-48"
           >
-            1
+            0
           </div>
           <div
             className=" character character-47"
@@ -307,14 +178,14 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
             /
           </div>
           <div
-            className=" character character-50"
+            className=" character character-48"
           >
-            2
+            0
           </div>
           <div
-            className=" character character-55"
+            className=" character character-48"
           >
-            7
+            0
           </div>
           <div
             className=" character character-58"
@@ -322,14 +193,14 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
             :
           </div>
           <div
-            className=" character character-49"
+            className=" character character-48"
           >
-            1
+            0
           </div>
           <div
-            className=" character character-56"
+            className=" character character-48"
           >
-            8
+            0
           </div>
         </div>
       </div>
