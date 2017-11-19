@@ -11,6 +11,7 @@
   "dependencies": {
     "filehound": "^1.16.2",
     "jszip": "^3.1.4",
+    "md5-file": "^3.2.3",
     "puppeteer": "^0.13.0"
   }
 }

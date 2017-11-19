@@ -2,6 +2,7 @@ const fs = require("fs");
 const puppeteer = require("puppeteer");
 const Filehound = require("filehound");
 const JSZip = require("jszip");
+const md5File = require("md5-file");
 
 const validateZip = u =>
   new Promise((resolve, reject) => {
@@ -55,7 +56,11 @@ const config = {
   const browser = await puppeteer.launch();
 
   for (const skin of files) {
-    const screenshotFile = `screenshots/${skin.replace(/\//g, "-")}.png`;
+    const skinMd5 = md5File.sync(skin);
+    const screenshotFile = `screenshots/${skin.replace(
+      /\//g,
+      "-"
+    )}-${skinMd5}.png`;
     const skinUrl = `experiments/automatedScreenshots/${skin}`;
     console.log("Going to try", screenshotFile);
     try {
