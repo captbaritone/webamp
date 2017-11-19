@@ -2,7 +2,6 @@ import {
   IS_PLAYING,
   IS_STOPPED,
   LOAD_AUDIO_URL,
-  LOAD_AUDIO_FILE,
   PAUSE,
   PLAY,
   SEEK_TO_PERCENT_COMPLETE,
@@ -83,9 +82,6 @@ export default media => store => {
         break;
       case LOAD_AUDIO_URL:
         media.loadFromUrl(action.url, action.name, action.autoPlay);
-        break;
-      case LOAD_AUDIO_FILE:
-        media.loadFromFileReference(action.file.fileReference, action.autoPlay);
         break;
       case SET_BAND_VALUE:
         if (action.band === "preamp") {

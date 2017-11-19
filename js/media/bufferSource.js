@@ -6,20 +6,6 @@ const invariant = (assertion, message) => {
   }
 };
 
-async function readFileAsArrayBuffer(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const arrayBuffer = e.target.result;
-      resolve(arrayBuffer);
-    };
-    reader.onerror = function(e) {
-      reject(e);
-    };
-    reader.readAsArrayBuffer(file);
-  });
-}
-
 async function readUrlAsArrayBuffer(url) {
   return new Promise((resolve, reject) => {
     const oReq = new XMLHttpRequest();
@@ -80,12 +66,6 @@ export default class BufferSource extends Emitter {
     // Ensure we don't start playing while we are waiting to load.
     this._buffer = null;
     this._setStalled(true);
-  }
-
-  async loadFile(file) {
-    this._startLoading();
-    const arrayBuffer = await readFileAsArrayBuffer(file);
-    return this._loadArrayBuffer(arrayBuffer);
   }
 
   async loadUrl(url) {

@@ -53,10 +53,6 @@ export default class ElementSource extends Emitter {
     this._audio.src = url;
   }
 
-  loadFile(fileReference) {
-    this.loadUrl(URL.createObjectURL(fileReference));
-  }
-
   async play() {
     if (this._status !== STATUS.PAUSED) {
       this.seekToTime(0);

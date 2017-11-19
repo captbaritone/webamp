@@ -254,16 +254,6 @@ export default class Media {
     this._source.seekToTime(time);
   }
 
-  async loadFromFileReference(fileReference, autoPlay) {
-    this.name = fileReference.name;
-    this._callbacks.waiting();
-    await this._source.loadFile(fileReference);
-    this._callbacks.stopWaiting();
-    if (autoPlay) {
-      this.play();
-    }
-  }
-
   // Used only for the initial load, since it must have a CORS header
   async loadFromUrl(url, fileName, autoPlay) {
     this.name = fileName;

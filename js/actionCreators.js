@@ -13,7 +13,6 @@ import {
 } from "./utils";
 import {
   CLOSE_WINAMP,
-  LOAD_AUDIO_FILE,
   LOAD_AUDIO_URL,
   OPEN_FILE_DIALOG,
   SEEK_TO_PERCENT_COMPLETE,
@@ -133,7 +132,12 @@ export function loadFileFromReference(fileReference) {
     } else if (EQF_FILENAME_MATCHER.test(fileReference.name)) {
       dispatch(setEqFromFile(file));
     } else {
-      dispatch({ type: LOAD_AUDIO_FILE, file, autoPlay: true });
+      dispatch({
+        type: LOAD_AUDIO_URL,
+        url: URL.createObjectURL(fileReference),
+        name: fileReference.name,
+        autoPlay: true
+      });
     }
   };
 }
