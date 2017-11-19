@@ -57,10 +57,11 @@ describe("getPositionText", () => {
 
 describe("getMediaText", () => {
   it("formats a name and duration", () => {
+    const trackNumber = 1;
     const name = "My Great Song";
     const duration = 86;
-    const actual = getMediaText(name, duration);
-    const expected = "My Great Song (01:26)  ***  ";
+    const actual = getMediaText(trackNumber, name, duration);
+    const expected = "1. My Great Song (01:26)  ***  ";
     expect(actual).toEqual(expected);
   });
 });

@@ -54,7 +54,6 @@ const PlaylistWindow = props => {
     toggleShade,
     allTracksAreVisible
   } = props;
-  console.log({ allTracksAreVisible });
   if (playlistShade) {
     return <PlaylistShade />;
   }
