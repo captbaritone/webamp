@@ -136,7 +136,7 @@ export const shuffle = array => {
 };
 
 export const sort = (array, iteratee) =>
-  array.sort((a, b) => {
+  [...array].sort((a, b) => {
     const aKey = iteratee(a);
     const bKey = iteratee(b);
     if (aKey < bKey) {
