@@ -31,7 +31,7 @@ Raven.context(() => {
         url: skinUrl
       },
       initialTrack: {
-        name: "1. DJ Mike Llama - Llama Whippin' Intro",
+        name: "DJ Mike Llama - Llama Whippin' Intro",
         url: audioUrl
       },
       avaliableSkins: [

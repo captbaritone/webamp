@@ -7,6 +7,7 @@ import { getTimeStr } from "../../utils";
 import { STEP_MARQUEE } from "../../actionTypes";
 import CharacterString from "../CharacterString";
 import { noMarquee } from "../../config";
+import { getCurrentTrackNumber } from "../../selectors";
 
 const CHAR_WIDTH = 5;
 
@@ -29,8 +30,8 @@ export const getPositionText = (duration, seekToPercent) => {
   return `Seek to: ${newElapsedStr}/${durationStr} (${seekToPercent}%)`;
 };
 
-export const getMediaText = (name, duration) =>
-  `${name} (${getTimeStr(duration)})  ***  `;
+export const getMediaText = (trackNumber, name, duration) =>
+  `${trackNumber}. ${name} (${getTimeStr(duration)})  ***  `;
 
 export const getDoubleSizeModeText = enabled =>
   `${enabled ? "Disable" : "Enable"} doublesize mode`;
@@ -158,7 +159,8 @@ const getMarqueeText = state => {
       break;
   }
   if (state.media.name) {
-    return getMediaText(state.media.name, state.media.length);
+    const trackNumber = getCurrentTrackNumber(state);
+    return getMediaText(trackNumber, state.media.name, state.media.length);
   }
   return "Winamp 2.91";
 };
