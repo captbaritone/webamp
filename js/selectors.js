@@ -1,4 +1,4 @@
-import { denormalize, getTimeStr } from "./utils";
+import { denormalize, getTimeStr, clamp } from "./utils";
 import { BANDS } from "./constants";
 import { createSelector } from "reselect";
 
@@ -57,3 +57,33 @@ export const getRunningTimeMessage = createSelector(
   (totalRunningTime, selectedRunningTime) =>
     `${getTimeStr(selectedRunningTime)}/${getTimeStr(totalRunningTime)}`
 );
+
+export const nextTrack = (state, n = 1) => {
+  const { playlist: { trackOrder, currentTrack }, media: { repeat } } = state;
+  if (trackOrder.length === 0) {
+    return null;
+  }
+
+  const currentIndex = trackOrder.findIndex(
+    trackId => trackId === currentTrack
+  );
+
+  let nextIndex = currentIndex + n;
+  if (repeat) {
+    nextIndex = nextIndex % trackOrder.length;
+    if (nextIndex < 0) {
+      // Handle wrapping around backwards
+      nextIndex += trackOrder.length;
+    }
+    return trackOrder[nextIndex];
+  }
+
+  if (currentIndex === trackOrder.length - 1 && n > 0) {
+    return null;
+  } else if (currentIndex === 0 && n < 0) {
+    return null;
+  }
+
+  nextIndex = clamp(nextIndex, 0, trackOrder.length - 1);
+  return trackOrder[nextIndex];
+};

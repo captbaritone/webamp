@@ -16,7 +16,6 @@ if (hash) {
 // Turn on the incomplete playlist window
 export const skinUrl = config.skinUrl === undefined ? skin : config.skinUrl;
 export const audioUrl = config.audioUrl === undefined ? audio : config.audioUrl;
-export const playlistEnabled = config.playlist || false;
 export const noMarquee = config.noMarquee || false;
 export const hideAbout = config.hideAbout || false;
 export const initialState = config.initialState || undefined;

@@ -48,9 +48,9 @@ import {
   LOAD_AUDIO_URL,
   REVERSE_LIST,
   RANDOMIZE_LIST,
-  SET_TRACK_ORDER
+  SET_TRACK_ORDER,
+  PLAY_TRACK
 } from "./actionTypes";
-import { playlistEnabled } from "./config";
 import { shuffle } from "./utils";
 
 const mapObject = (obj, iteratee) =>
@@ -98,7 +98,7 @@ export const userInput = (state = defaultUserInput, action) => {
 const defaultWindowsState = {
   focused: WINDOWS.MAIN,
   equalizer: true,
-  playlist: playlistEnabled
+  playlist: true
 };
 
 const windows = (state = defaultWindowsState, action) => {
@@ -110,9 +110,6 @@ const windows = (state = defaultWindowsState, action) => {
     case CLOSE_EQUALIZER_WINDOW:
       return { ...state, equalizer: false };
     case TOGGLE_PLAYLIST_WINDOW:
-      if (!playlistEnabled) {
-        return state;
-      }
       return { ...state, playlist: !state.playlist };
     default:
       return state;
@@ -225,57 +222,7 @@ const equalizer = (state, action) => {
   }
 };
 
-// Dummy data for now
-const defaultTracksState = {
-  "0": {
-    selected: false,
-    title: "Llama Whipping Intro",
-    artist: "DJ Mike Llama",
-    duration: "221"
-  },
-  "1": {
-    selected: false,
-    title: "Rock Is Dead",
-    artist: "Marilyn Manson",
-    duration: "221"
-  },
-  "2": {
-    selected: true,
-    title: "Spybreak! (Short One)",
-    artist: "Propellerheads",
-    duration: "171"
-  },
-  "3": {
-    selected: false,
-    title: "Clubbed to Death",
-    artist: "Rob D",
-    duration: "215"
-  },
-  "4": {
-    selected: false,
-    title: "Leave You Far Behind",
-    artist: "Lunatic Calm",
-    duration: "174"
-  },
-  "5": {
-    selected: false,
-    title: "Dragula",
-    artist: "Rob Zombie",
-    duration: "484"
-  },
-  "6": {
-    selected: false,
-    title: "Ultrasonic Sound",
-    artist: "Hive",
-    duration: "152"
-  },
-  "7": {
-    selected: false,
-    title: "Du hast",
-    artist: "Rammstein",
-    duration: "214"
-  }
-};
+const defaultTracksState = {};
 
 const tracks = (state = defaultTracksState, action) => {
   switch (action.type) {
@@ -303,14 +250,32 @@ const tracks = (state = defaultTracksState, action) => {
       return {};
     case REMOVE_TRACKS:
       return filterObject(state, (track, id) => !action.ids.includes(id));
+    case LOAD_AUDIO_URL:
+      return {
+        ...state,
+        [action.id]: {
+          selected: false,
+          title: action.name,
+          duration: null,
+          url: action.url
+        }
+      };
+    case SET_MEDIA:
+      return {
+        ...state,
+        [action.id]: {
+          ...state[action.id],
+          duration: action.length
+        }
+      };
     default:
       return state;
   }
 };
 
 const defaultPlaylistState = {
-  trackOrder: [0, 1, 2, 3, 4, 5, 6],
-  currentTrack: 0
+  trackOrder: [],
+  currentTrack: null
 };
 const playlist = (state = defaultPlaylistState, action) => {
   switch (action.type) {
@@ -334,7 +299,17 @@ const playlist = (state = defaultPlaylistState, action) => {
     case SET_TRACK_ORDER:
       const { trackOrder } = action;
       return { ...state, trackOrder };
-
+    case LOAD_AUDIO_URL:
+      return {
+        ...state,
+        trackOrder: [...state.trackOrder, action.id],
+        currentTrack: action.id
+      };
+    case PLAY_TRACK:
+      return {
+        ...state,
+        currentTrack: action.id
+      };
     default:
       return state;
   }

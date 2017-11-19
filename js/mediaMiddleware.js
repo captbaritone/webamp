@@ -12,12 +12,12 @@ import {
   START_WORKING,
   STOP,
   STOP_WORKING,
-  TOGGLE_REPEAT,
-  TOGGLE_SHUFFLE,
   UPDATE_TIME_ELAPSED,
   SET_EQ_OFF,
-  SET_EQ_ON
+  SET_EQ_ON,
+  PLAY_TRACK
 } from "./actionTypes";
+import { next as nextTrack } from "./actionCreators";
 
 export default media => store => {
   media.addEventListener("timeupdate", () => {
@@ -29,6 +29,7 @@ export default media => store => {
 
   media.addEventListener("ended", () => {
     store.dispatch({ type: IS_STOPPED });
+    store.dispatch(nextTrack());
   });
 
   media.addEventListener("playing", () => {
@@ -50,7 +51,8 @@ export default media => store => {
       khz: Math.round(media.sampleRate() / 1000).toString(),
       channels: media.channels(),
       name: media.name,
-      length: media.duration()
+      length: media.duration(),
+      id: store.getState().playlist.currentTrack
     });
   });
 
@@ -71,17 +73,15 @@ export default media => store => {
       case SET_BALANCE:
         media.setBalance(action.balance);
         break;
-      case TOGGLE_REPEAT:
-        media.toggleRepeat();
-        break;
-      case TOGGLE_SHUFFLE:
-        media.toggleShuffle();
-        break;
       case SEEK_TO_PERCENT_COMPLETE:
         media.seekToPercentComplete(action.percent);
         break;
       case LOAD_AUDIO_URL:
         media.loadFromUrl(action.url, action.name, action.autoPlay);
+        break;
+      case PLAY_TRACK:
+        const track = store.getState().tracks[action.id];
+        media.loadFromUrl(track.url, track.title, true);
         break;
       case SET_BAND_VALUE:
         if (action.band === "preamp") {

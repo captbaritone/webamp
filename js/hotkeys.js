@@ -8,7 +8,9 @@ import {
   openFileDialog,
   seekForward,
   seekBackward,
-  reverseList
+  reverseList,
+  next,
+  previous
 } from "./actionCreators";
 
 import {
@@ -63,7 +65,7 @@ export default function(fileInput, { dispatch }) {
           dispatch(adjustVolume(-1));
           break;
         case 66: // B
-          // Next
+          dispatch(next());
           break;
         case 67: // C
           dispatch(pause());
@@ -84,7 +86,7 @@ export default function(fileInput, { dispatch }) {
           dispatch(play());
           break;
         case 90: // Z
-          // Previous
+          dispatch(previous());
           break;
         case 96: // numpad 0
           dispatch(openFileDialog(fileInput));
@@ -99,13 +101,13 @@ export default function(fileInput, { dispatch }) {
           // Next (10 tracks)
           break;
         case 100: // numpad 4
-          // Previous
+          dispatch(previous());
           break;
         case 101: // numpad 5
           dispatch(play());
           break;
         case 102: // numpad 6
-          // Next
+          dispatch(next());
           break;
         case 103: // numpad 7
           dispatch(seekBackward(5));

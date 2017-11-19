@@ -37,7 +37,7 @@ export default class BufferSource extends Emitter {
     super();
     this._context = context;
     this._destination = destination;
-    this._loop = false;
+    //this._loop = false;
     this._buffer = null;
     this._source = null;
     this._status = STATUS.STOPPED;
@@ -171,6 +171,7 @@ export default class BufferSource extends Emitter {
     return this._buffer.sampleRate;
   }
 
+  /*
   getLoop() {
     return this._loop;
   }
@@ -181,6 +182,7 @@ export default class BufferSource extends Emitter {
       this._source.loop = this._loop;
     }
   }
+  */
 
   _start(position) {
     invariant(!isNaN(position));
@@ -193,7 +195,7 @@ export default class BufferSource extends Emitter {
     }
     this._source = this._context.createBufferSource();
     this._source.buffer = this._buffer;
-    this._source.loop = this._loop;
+    //this._source.loop = this._loop;
     this._source.connect(this._destination);
     this._source.onended = this._onEnded;
     this._startTime = this._context.currentTime - position;
@@ -244,6 +246,7 @@ export default class BufferSource extends Emitter {
 
   _onEnded() {
     if (this._status === STATUS.PLAYING) {
+      this.trigger("ended");
       this._setStatus(STATUS.STOPPED);
     }
   }
