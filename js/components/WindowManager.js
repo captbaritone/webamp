@@ -91,6 +91,8 @@ class WindowManager extends React.Component {
     if (!e.target.classList.contains("draggable")) {
       return;
     }
+    // Prevent dragging from highlighting text.
+    e.preventDefault();
 
     const mouseStart = {
       x: e.clientX,

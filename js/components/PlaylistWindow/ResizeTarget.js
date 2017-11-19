@@ -12,6 +12,8 @@ class ResizeTarget extends React.Component {
     this.handleMouseDown = this.handleMouseDown.bind(this);
   }
   handleMouseDown(e) {
+    // Prevent dragging from highlighting text.
+    e.preventDefault();
     const [width, height] = this.props.playlistSize;
     const mouseStart = {
       x: e.clientX,
