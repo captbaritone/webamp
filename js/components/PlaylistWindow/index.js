@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import classnames from "classnames";
 import Slider from "rc-slider/lib/Slider";
 
+import DropTarget from "../DropTarget";
 import MiniTime from "../MiniTime";
 import PlaylistShade from "./PlaylistShade";
 import Track from "./Track";
@@ -91,7 +92,7 @@ const PlaylistWindow = props => {
   const tracks = trackOrder.slice(offset, offset + numberOfVisibleTracks);
 
   return (
-    <div
+    <DropTarget
       id="playlist-window"
       className={classes}
       style={style}
@@ -161,7 +162,7 @@ const PlaylistWindow = props => {
           <ResizeTarget />
         </div>
       </div>
-    </div>
+    </DropTarget>
   );
 };
 

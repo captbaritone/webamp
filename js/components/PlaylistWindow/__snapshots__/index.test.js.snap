@@ -4,6 +4,9 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
 <div
   className="window draggable"
   id="playlist-window"
+  onDragEnter={[Function]}
+  onDragOver={[Function]}
+  onDrop={[Function]}
   onMouseDown={[Function]}
   style={
     Object {
@@ -267,6 +270,7 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
     >
       <div
         className="playlist-visualizer"
+        onClick={[Function]}
       />
       <div
         className="playlist-running-time-display draggable"
