@@ -269,9 +269,10 @@ export function randomizeList() {
 export function sortListByTitle() {
   return (dispatch, getState) => {
     const state = getState();
-    const trackOrder = sort(state.playlist.trackOrder, i =>
-      state.tracks[i].title.toLowerCase()
-    );
+    const trackOrder = sort(state.playlist.trackOrder, i => {
+      const { title, artist } = state.tracks[i];
+      return `${artist} - ${title}`.toLowerCase();
+    });
     return dispatch({ type: SET_TRACK_ORDER, trackOrder });
   };
 }
