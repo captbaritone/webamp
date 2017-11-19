@@ -52,7 +52,15 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
       <div
         className="playlist-tracks"
       >
-        <div />
+        <div
+          className="playlist-track-numbers"
+        />
+        <div
+          className="playlist-track-titles"
+        />
+        <div
+          className="playlist-track-durations"
+        />
       </div>
     </div>
     <div

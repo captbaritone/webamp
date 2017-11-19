@@ -1,24 +1,21 @@
 import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
-import { getTimeStr } from "../../utils";
 import {
   CLICKED_TRACK,
   CTRL_CLICKED_TRACK,
   PLAY_TRACK
 } from "../../actionTypes";
 
-const Track = props => {
+const TrackCell = props => {
   const {
     skinPlaylistStyle,
     selected,
     current,
-    title,
-    number,
-    duration,
     clickTrack,
     ctrlClickTrack,
-    playTrack
+    playTrack,
+    children
   } = props;
   const style = {
     backgroundColor: selected ? skinPlaylistStyle.selectedbg : null,
@@ -26,17 +23,13 @@ const Track = props => {
   };
   return (
     <div
-      className={classnames("playlist-track", { selected, current })}
+      className={classnames({ selected, current })}
       style={style}
       onClick={clickTrack}
       onDoubleClick={playTrack}
       onContextMenu={ctrlClickTrack}
     >
-      <div className="playlist-track-number">{number}.</div>
-      <div className="playlist-track-title">
-        <span>{title}</span>
-      </div>
-      <div className="playlist-track-duration">{getTimeStr(duration)}</div>
+      {children}
     </div>
   );
 };
@@ -51,8 +44,6 @@ const mapStateToProps = (state, ownProps) => {
   return {
     skinPlaylistStyle,
     selected: track.selected,
-    title: track.title,
-    duration: track.duration,
     current: currentTrack === ownProps.id
   };
 };
@@ -70,4 +61,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   playTrack: () => dispatch({ type: PLAY_TRACK, id: ownProps.id })
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Track);
+export default connect(mapStateToProps, mapDispatchToProps)(TrackCell);

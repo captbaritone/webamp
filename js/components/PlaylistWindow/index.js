@@ -6,7 +6,6 @@ import Slider from "rc-slider/lib/Slider";
 import DropTarget from "../DropTarget";
 import MiniTime from "../MiniTime";
 import PlaylistShade from "./PlaylistShade";
-import Track from "./Track";
 import AddMenu from "./AddMenu";
 import RemoveMenu from "./RemoveMenu";
 import SelectionMenu from "./SelectionMenu";
@@ -14,7 +13,7 @@ import MiscMenu from "./MiscMenu";
 import ListMenu from "./ListMenu";
 import ResizeTarget from "./ResizeTarget";
 import RunningTimeDisplay from "./RunningTimeDisplay";
-import { percentToIndex } from "../../utils";
+import TrackList from "./TrackList";
 import {
   WINDOWS,
   PLAYLIST_RESIZE_SEGMENT_WIDTH,
@@ -27,7 +26,7 @@ import {
   SET_FOCUSED_WINDOW,
   SET_PLAYLIST_SCROLL_POSITION
 } from "../../actionTypes";
-import { getOrderedTracks } from "../../selectors";
+import { getVisibleTrackIds } from "../../selectors";
 import {
   play,
   pause,
@@ -38,7 +37,6 @@ import {
 
 import "../../../css/playlist-window.css";
 
-const TRACK_HEIGHT = 13;
 const MIN_WINDOW_HEIGHT = 116;
 
 const Handle = () => <div className="playlist-scrollbar-handle" />;
@@ -50,12 +48,13 @@ const PlaylistWindow = props => {
     focused,
     playlistScrollPosition,
     setPlaylistScrollPosition,
-    trackOrder,
     playlistSize,
     playlistShade,
     close,
-    toggleShade
+    toggleShade,
+    allTracksAreVisible
   } = props;
+  console.log({ allTracksAreVisible });
   if (playlistShade) {
     return <PlaylistShade />;
   }
@@ -75,22 +74,6 @@ const PlaylistWindow = props => {
     wide: playlistSize[0] > 2
   });
 
-  const BASE_WINDOW_HEIGHT = 52;
-  const numberOfVisibleTracks = Math.floor(
-    (BASE_WINDOW_HEIGHT + PLAYLIST_RESIZE_SEGMENT_HEIGHT * playlistSize[1]) /
-      TRACK_HEIGHT
-  );
-  const overflowTracks = Math.max(0, trackOrder.length - numberOfVisibleTracks);
-  const offset = percentToIndex(
-    playlistScrollPosition / 100,
-    overflowTracks + 1
-  );
-
-  // Ugh. By not rendering some tracks, we can end up in a situation where
-  // scrolling causes the number of digits in the tracks to go up, thus causing
-  // a horizontal jump.
-  const tracks = trackOrder.slice(offset, offset + numberOfVisibleTracks);
-
   return (
     <DropTarget
       id="playlist-window"
@@ -109,13 +92,7 @@ const PlaylistWindow = props => {
       <div className="playlist-middle draggable">
         <div className="playlist-middle-left draggable" />
         <div className="playlist-middle-center">
-          <div className="playlist-tracks">
-            <div>
-              {tracks.map((id, i) => (
-                <Track number={i + 1 + offset} id={id} key={id} />
-              ))}
-            </div>
-          </div>
+          <TrackList />
         </div>
         <div className="playlist-middle-right draggable">
           <Slider
@@ -128,7 +105,7 @@ const PlaylistWindow = props => {
             onChange={setPlaylistScrollPosition}
             vertical
             handle={Handle}
-            disabled={overflowTracks === 0}
+            disabled={allTracksAreVisible}
           />
         </div>
       </div>
@@ -177,6 +154,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   stop: () => dispatch(stop()),
   openFileDialog: () => dispatch(openFileDialog(ownProps.fileInput)),
   setPlaylistScrollPosition: position =>
+    // TODO: Move this to an action creator so we can see if this is actually changing
     dispatch({ type: SET_PLAYLIST_SCROLL_POSITION, position: 100 - position }),
   close: () => dispatch({ type: TOGGLE_PLAYLIST_WINDOW }),
   toggleShade: () => dispatch({ type: TOGGLE_PLAYLIST_SHADE_MODE }),
@@ -192,16 +170,18 @@ const mapStateToProps = state => {
       playlistSize,
       playlistShade
     },
-    media: { duration }
+    media: { duration },
+    playlist: { trackOrder }
   } = state;
+
   return {
     focused,
     skinPlaylistStyle,
     playlistScrollPosition,
     playlistSize,
     playlistShade,
-    trackOrder: getOrderedTracks(state),
-    duration
+    duration,
+    allTracksAreVisible: getVisibleTrackIds(state).length === trackOrder.length
   };
 };
 
