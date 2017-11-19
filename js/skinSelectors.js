@@ -281,7 +281,7 @@ Object.keys(FONT_LOOKUP).forEach(character => {
 });
 
 export const cursorSelectors = {
-  PSIZE: ["#playlist-resize-target"],
+  PSIZE: ["#playlist-window #playlist-resize-target"],
   CLOSE: ["#title-bar #close"],
   MAINMENU: ["#main-window", "#main-window.shade #title-bar"],
   TITLEBAR: ["#main-window #title-bar"],

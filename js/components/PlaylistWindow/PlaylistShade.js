@@ -11,9 +11,12 @@ import {
 import {
   WINDOWS,
   PLAYLIST_RESIZE_SEGMENT_WIDTH,
-  MIN_PLAYLIST_WINDOW_WIDTH
+  MIN_PLAYLIST_WINDOW_WIDTH,
+  CHARACTER_WIDTH,
+  UTF8_ELLIPSIS
 } from "../../constants";
 import CharacterString from "../CharacterString";
+import ResizeTarget from "./ResizeTarget";
 
 import { getOrderedTracks } from "../../selectors";
 
@@ -28,10 +31,17 @@ const PlaylistShade = props => {
     length
   } = props;
 
+  const addedWidth = playlistSize[0] * PLAYLIST_RESIZE_SEGMENT_WIDTH;
   const style = {
-    width: `${MIN_PLAYLIST_WINDOW_WIDTH +
-      playlistSize[0] * PLAYLIST_RESIZE_SEGMENT_WIDTH}px`
+    width: `${MIN_PLAYLIST_WINDOW_WIDTH + addedWidth}px`
   };
+  const MIN_NAME_WIDTH = 205;
+
+  const nameLength = (MIN_NAME_WIDTH + addedWidth) / CHARACTER_WIDTH;
+  const trimmedName =
+    name.length > nameLength
+      ? name.slice(0, nameLength - 1) + UTF8_ELLIPSIS
+      : name;
 
   const classes = classnames("window", "draggable", {
     selected: focused === WINDOWS.PLAYLIST
@@ -47,13 +57,13 @@ const PlaylistShade = props => {
       <div className="left">
         <div className="right draggable">
           <CharacterString id="playlist-shade-track-title">
-            {name}
+            {trimmedName}
           </CharacterString>
           {/* TODO: Ellipisize */}
           <CharacterString id="playlist-shade-time">
             {getTimeStr(length)}
           </CharacterString>
-          {/* TODO: Resize handle */}
+          <ResizeTarget widthOnly />
           <div id="playlist-shade-button" onClick={toggleShade} />
           <div id="playlist-close-button" onClick={close} />
         </div>
