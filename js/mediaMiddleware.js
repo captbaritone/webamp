@@ -18,6 +18,7 @@ import {
   PLAY_TRACK
 } from "./actionTypes";
 import { next as nextTrack } from "./actionCreators";
+import { getCurrentTrackId } from "./selectors";
 
 export default media => store => {
   media.addEventListener("timeupdate", () => {
@@ -52,7 +53,7 @@ export default media => store => {
       channels: media.channels(),
       name: media.name,
       length: media.duration(),
-      id: store.getState().playlist.currentTrack
+      id: getCurrentTrackId(store.getState())
     });
   });
 

@@ -275,13 +275,15 @@ const tracks = (state = defaultTracksState, action) => {
 
 const defaultPlaylistState = {
   trackOrder: [],
-  currentTrack: null
+  currentTrackIndex: null
 };
 const playlist = (state = defaultPlaylistState, action) => {
   switch (action.type) {
     case REMOVE_ALL_TRACKS:
-      return { ...state, trackOrder: [], currentTrack: null };
+      // TODO: Consider disposing of ObjectUrls
+      return { ...state, trackOrder: [], currentTrackIndex: null };
     case REMOVE_TRACKS:
+      // TODO: Consider disposing of ObjectUrls
       return {
         ...state,
         trackOrder: state.trackOrder.filter(id => !action.ids.includes(id))
@@ -303,12 +305,12 @@ const playlist = (state = defaultPlaylistState, action) => {
       return {
         ...state,
         trackOrder: [...state.trackOrder, action.id],
-        currentTrack: action.id
+        currentTrackIndex: state.trackOrder.length
       };
     case PLAY_TRACK:
       return {
         ...state,
-        currentTrack: action.id
+        currentTrackIndex: state.trackOrder.findIndex(id => id === action.id)
       };
     default:
       return state;

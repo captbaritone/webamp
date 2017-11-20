@@ -58,14 +58,18 @@ export const getRunningTimeMessage = createSelector(
     `${getTimeStr(selectedRunningTime)}/${getTimeStr(totalRunningTime)}`
 );
 
-// TODO: Consider changing `currentTrack` in the sate to be this value and
-// compute the other way (cheaper)
-export const getCurrentTrackIndex = state => {
-  const { trackOrder, currentTrack } = state.playlist;
-  return trackOrder.findIndex(trackId => trackId === currentTrack);
-};
+export const getCurrentTrackIndex = state => state.playlist.currentTrackIndex;
 
-export const getCurrentTrackNumber = state => getCurrentTrackIndex(state) + 1;
+export const getCurrentTrackNumber = createSelector(
+  getCurrentTrackIndex,
+  currentTrackIndex => currentTrackIndex + 1
+);
+
+export const getCurrentTrackId = createSelector(
+  getTrackOrder,
+  getCurrentTrackIndex,
+  (trackOrder, currentTrackIndex) => trackOrder[currentTrackIndex]
+);
 
 export const nextTrack = (state, n = 1) => {
   const { playlist: { trackOrder }, media: { repeat } } = state;

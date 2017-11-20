@@ -31,7 +31,7 @@ describe("getEqfData", () => {
 describe("nextTrack", () => {
   it("returns null if you don't have any tracks", () => {
     const state = {
-      playlist: { currentTrack: null, trackOrder: [] },
+      playlist: { currentTrackIndex: null, trackOrder: [] },
       media: { repeat: false }
     };
     expect(state.playlist.trackOrder).toEqual([]);
@@ -40,81 +40,81 @@ describe("nextTrack", () => {
 
   it("returns null if you are going forward from the last track and repeat is not turned on", () => {
     const state = {
-      playlist: { currentTrack: null, trackOrder: [] },
+      playlist: { currentTrackIndex: null, trackOrder: [] },
       media: { repeat: false }
     };
     state.playlist.trackOrder = [1, 2, 3];
-    state.playlist.currentTrack = 3;
+    state.playlist.currentTrackIndex = 2;
     expect(nextTrack(state)).toBe(null);
   });
 
   it("wraps around if you are going forward from the last track and repeat _is_ turned on", () => {
     const state = {
-      playlist: { currentTrack: null, trackOrder: [] },
+      playlist: { currentTrackIndex: null, trackOrder: [] },
       media: { repeat: true }
     };
     state.playlist.trackOrder = [1, 2, 3];
-    state.playlist.currentTrack = 3;
+    state.playlist.currentTrackIndex = 2;
     expect(nextTrack(state)).toBe(1);
   });
 
   it("returns null if you are going backward from the first track and repeat is not turned on", () => {
     const state = {
-      playlist: { currentTrack: null, trackOrder: [] },
+      playlist: { currentTrackIndex: null, trackOrder: [] },
       media: { repeat: false }
     };
     state.playlist.trackOrder = [1, 2, 3];
-    state.playlist.currentTrack = 1;
+    state.playlist.currentTrackIndex = 0;
     expect(nextTrack(state, -1)).toBe(null);
   });
 
   it("wraps around if you are going backwards from the first track and repeat _is_ turned on", () => {
     const state = {
-      playlist: { currentTrack: null, trackOrder: [] },
+      playlist: { currentTrackIndex: null, trackOrder: [] },
       media: { repeat: true }
     };
     state.playlist.trackOrder = [1, 2, 3];
-    state.playlist.currentTrack = 1;
+    state.playlist.currentTrackIndex = 0;
     expect(nextTrack(state, -1)).toBe(3);
   });
 
   it("does a normal next", () => {
     const state = {
-      playlist: { currentTrack: null, trackOrder: [] },
+      playlist: { currentTrackIndex: null, trackOrder: [] },
       media: { repeat: false }
     };
     state.playlist.trackOrder = [1, 2, 3];
-    state.playlist.currentTrack = 2;
+    state.playlist.currentTrackIndex = 1;
     expect(nextTrack(state)).toBe(3);
   });
 
   it("does a normal previous", () => {
     const state = {
-      playlist: { currentTrack: null, trackOrder: [] },
+      playlist: { currentTrackIndex: null, trackOrder: [] },
       media: { repeat: false }
     };
     state.playlist.trackOrder = [1, 2, 3];
-    state.playlist.currentTrack = 2;
+    state.playlist.currentTrackIndex = 1;
     expect(nextTrack(state, -1)).toBe(1);
   });
 
   it("takes you to the last track if you overshoot", () => {
     const state = {
-      playlist: { currentTrack: null, trackOrder: [] },
+      playlist: { currentTrackIndex: null, trackOrder: [] },
       media: { repeat: false }
     };
     state.playlist.trackOrder = [1, 2, 3];
-    state.playlist.currentTrack = 2;
+    state.playlist.currentTrackIndex = 1;
     expect(nextTrack(state, 10)).toBe(3);
   });
 
   it("takes you to the first track if you overshoot", () => {
     const state = {
-      playlist: { currentTrack: null, trackOrder: [] },
+      playlist: { currentTrackIndex: null, trackOrder: [] },
       media: { repeat: false }
     };
     state.playlist.trackOrder = [1, 2, 3];
-    state.playlist.currentTrack = 2;
+    state.playlist.currentTrackIndex = 1;
     expect(nextTrack(state, -10)).toBe(1);
   });
 });
