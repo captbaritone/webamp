@@ -2,7 +2,12 @@ import { parser, creator } from "winamp-eqf";
 import MyFile from "./myFile";
 import skinParser from "./skinParser";
 import { BANDS } from "./constants";
-import { getEqfData, nextTrack } from "./selectors";
+import {
+  getEqfData,
+  nextTrack,
+  getScrollOffset,
+  getOverflowTrackCount
+} from "./selectors";
 
 import {
   clamp,
@@ -314,4 +319,25 @@ export function toggleVisualizerStyle() {
 
 export function setPlaylistScrollPosition(position) {
   return { type: SET_PLAYLIST_SCROLL_POSITION, position };
+}
+
+export function scrollNTracks(n) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const overflow = getOverflowTrackCount(state);
+    const currentOffset = getScrollOffset(state);
+    const position = overflow ? clamp((currentOffset + n) / overflow, 0, 1) : 0;
+    return dispatch({
+      type: SET_PLAYLIST_SCROLL_POSITION,
+      position: position * 100
+    });
+  };
+}
+
+export function scrollUpFourTracks() {
+  return scrollNTracks(-4);
+}
+
+export function scrollDownFourTracks() {
+  return scrollNTracks(4);
 }

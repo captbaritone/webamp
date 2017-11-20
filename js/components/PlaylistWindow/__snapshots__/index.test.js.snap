@@ -248,6 +248,14 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
         />
       </div>
       <div
+        id="playlist-scroll-up-button"
+        onClick={[Function]}
+      />
+      <div
+        id="playlist-scroll-down-button"
+        onClick={[Function]}
+      />
+      <div
         id="playlist-resize-target"
         onMouseDown={[Function]}
       />

@@ -119,13 +119,20 @@ export const getOverflowTrackCount = createSelector(
     Math.max(0, trackOrder.length - numberOfVisibleTracks)
 );
 
-export const getVisibleTrackIds = createSelector(
+export const getScrollOffset = createSelector(
   getPlaylistScrollPosition,
   getTrackOrder,
   getNumberOfVisibleTracks,
   (playlistScrollPosition, trackOrder, numberOfVisibleTracks) => {
     const overflow = Math.max(0, trackOrder.length - numberOfVisibleTracks);
-    const offset = percentToIndex(playlistScrollPosition / 100, overflow + 1);
-    return trackOrder.slice(offset, offset + numberOfVisibleTracks);
+    return percentToIndex(playlistScrollPosition / 100, overflow + 1);
   }
+);
+
+export const getVisibleTrackIds = createSelector(
+  getScrollOffset,
+  getTrackOrder,
+  getNumberOfVisibleTracks,
+  (offset, trackOrder, numberOfVisibleTracks) =>
+    trackOrder.slice(offset, offset + numberOfVisibleTracks)
 );

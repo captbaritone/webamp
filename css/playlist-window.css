@@ -274,6 +274,21 @@
   background-position-x: right;
 }
 
+#winamp2-js #playlist-window #playlist-scroll-up-button,
+#winamp2-js #playlist-window #playlist-scroll-down-button {
+  position: absolute;
+  width: 8px;
+  height: 5px;
+  right: 7px;
+}
+
+#winamp2-js #playlist-window #playlist-scroll-up-button {
+  top: 2px;
+}
+#winamp2-js #playlist-window #playlist-scroll-down-button {
+  top: 8px;
+}
+
 #winamp2-js #playlist-window-shade #playlist-resize-target {
   position: absolute;
   right: 20px;

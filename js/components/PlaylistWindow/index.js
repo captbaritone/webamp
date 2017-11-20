@@ -30,7 +30,9 @@ import {
   pause,
   stop,
   openFileDialog,
-  toggleVisualizerStyle
+  toggleVisualizerStyle,
+  scrollUpFourTracks,
+  scrollDownFourTracks
 } from "../../actionCreators";
 
 import "../../../css/playlist-window.css";
@@ -117,6 +119,14 @@ const PlaylistWindow = props => {
           </div>
           <MiniTime />
           <ListMenu />
+          <div
+            id="playlist-scroll-up-button"
+            onClick={props.scrollUpFourTracks}
+          />
+          <div
+            id="playlist-scroll-down-button"
+            onClick={props.scrollDownFourTracks}
+          />
           <ResizeTarget />
         </div>
       </div>
@@ -136,7 +146,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   openFileDialog: () => dispatch(openFileDialog(ownProps.fileInput)),
   close: () => dispatch({ type: TOGGLE_PLAYLIST_WINDOW }),
   toggleShade: () => dispatch({ type: TOGGLE_PLAYLIST_SHADE_MODE }),
-  toggleVisualizerStyle: () => dispatch(toggleVisualizerStyle())
+  toggleVisualizerStyle: () => dispatch(toggleVisualizerStyle()),
+  scrollUpFourTracks: () => dispatch(scrollUpFourTracks()),
+  scrollDownFourTracks: () => dispatch(scrollDownFourTracks())
 });
 
 const mapStateToProps = state => {
