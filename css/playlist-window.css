@@ -66,6 +66,9 @@
 #winamp2-js .playlist-track-durations > div {
   padding-right: 3px;
 }
+#winamp2-js .playlist-track-numbers > div {
+  padding-left: 1px;
+}
 
 #winamp2-js .playlist-track-titles {
   flex: 1 1 auto;
