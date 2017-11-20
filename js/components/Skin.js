@@ -75,7 +75,7 @@ class ClipPaths extends React.Component {
 
 const Skin = props => {
   const { skinImages, skinCursors } = props;
-  if (!skinImages) {
+  if (!skinImages || !skinCursors) {
     return null;
   }
   const cssRules = [];
