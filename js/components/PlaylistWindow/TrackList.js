@@ -2,17 +2,17 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { getTimeStr } from "../../utils";
-import { getVisibleTrackIds } from "../../selectors";
+import { getVisibleTrackIds, getScrollOffset } from "../../selectors";
 import TrackCell from "./TrackCell";
 
 const TrackList = props => {
-  const { trackIds, tracks } = props;
+  const { trackIds, tracks, offset } = props;
   return (
     <div className="playlist-tracks">
       <div className="playlist-track-numbers">
         {trackIds.map((id, i) => (
           <TrackCell key={id} id={id}>
-            {`${i + 1}.`}
+            {`${i + 1 + offset}.`}
           </TrackCell>
         ))}
       </div>
@@ -37,6 +37,7 @@ const TrackList = props => {
 const mapDispatchToProps = () => ({});
 
 const mapStateToProps = state => ({
+  offset: getScrollOffset(state),
   trackIds: getVisibleTrackIds(state),
   tracks: state.tracks
 });
