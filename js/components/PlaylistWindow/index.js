@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
-import Slider from "rc-slider/lib/Slider";
 
 import DropTarget from "../DropTarget";
 import MiniTime from "../MiniTime";
@@ -14,6 +13,7 @@ import ListMenu from "./ListMenu";
 import ResizeTarget from "./ResizeTarget";
 import RunningTimeDisplay from "./RunningTimeDisplay";
 import TrackList from "./TrackList";
+import ScrollBar from "./ScrollBar";
 import {
   WINDOWS,
   PLAYLIST_RESIZE_SEGMENT_WIDTH,
@@ -23,10 +23,8 @@ import {
 import {
   TOGGLE_PLAYLIST_WINDOW,
   TOGGLE_PLAYLIST_SHADE_MODE,
-  SET_FOCUSED_WINDOW,
-  SET_PLAYLIST_SCROLL_POSITION
+  SET_FOCUSED_WINDOW
 } from "../../actionTypes";
-import { getVisibleTrackIds } from "../../selectors";
 import {
   play,
   pause,
@@ -39,20 +37,15 @@ import "../../../css/playlist-window.css";
 
 const MIN_WINDOW_HEIGHT = 116;
 
-const Handle = () => <div className="playlist-scrollbar-handle" />;
-
 const PlaylistWindow = props => {
   const {
     skinPlaylistStyle,
     focusPlaylist,
     focused,
-    playlistScrollPosition,
-    setPlaylistScrollPosition,
     playlistSize,
     playlistShade,
     close,
-    toggleShade,
-    allTracksAreVisible
+    toggleShade
   } = props;
   if (playlistShade) {
     return <PlaylistShade />;
@@ -94,18 +87,7 @@ const PlaylistWindow = props => {
           <TrackList />
         </div>
         <div className="playlist-middle-right draggable">
-          <Slider
-            className="playlist-scrollbar"
-            type="range"
-            min={0}
-            max={100}
-            step={1}
-            value={playlistScrollPosition}
-            onChange={setPlaylistScrollPosition}
-            vertical
-            handle={Handle}
-            disabled={allTracksAreVisible}
-          />
+          <ScrollBar />
         </div>
       </div>
       <div className="playlist-bottom draggable">
@@ -152,9 +134,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   pause: () => dispatch(pause()),
   stop: () => dispatch(stop()),
   openFileDialog: () => dispatch(openFileDialog(ownProps.fileInput)),
-  setPlaylistScrollPosition: position =>
-    // TODO: Move this to an action creator so we can see if this is actually changing
-    dispatch({ type: SET_PLAYLIST_SCROLL_POSITION, position: 100 - position }),
   close: () => dispatch({ type: TOGGLE_PLAYLIST_WINDOW }),
   toggleShade: () => dispatch({ type: TOGGLE_PLAYLIST_SHADE_MODE }),
   toggleVisualizerStyle: () => dispatch(toggleVisualizerStyle())
@@ -163,24 +142,16 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 const mapStateToProps = state => {
   const {
     windows: { focused },
-    display: {
-      skinPlaylistStyle,
-      playlistScrollPosition,
-      playlistSize,
-      playlistShade
-    },
-    media: { duration },
-    playlist: { trackOrder }
+    display: { skinPlaylistStyle, playlistSize, playlistShade },
+    media: { duration }
   } = state;
 
   return {
     focused,
     skinPlaylistStyle,
-    playlistScrollPosition,
     playlistSize,
     playlistShade,
-    duration,
-    allTracksAreVisible: getVisibleTrackIds(state).length === trackOrder.length
+    duration
   };
 };
 
