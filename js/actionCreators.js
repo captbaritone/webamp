@@ -35,7 +35,8 @@ import {
   RANDOMIZE_LIST,
   SET_TRACK_ORDER,
   TOGGLE_VISUALIZER_STYLE,
-  PLAY_TRACK
+  PLAY_TRACK,
+  SET_PLAYLIST_SCROLL_POSITION
 } from "./actionTypes";
 
 function playRandomTrack() {
@@ -309,4 +310,8 @@ export function sortListByTitle() {
 
 export function toggleVisualizerStyle() {
   return { type: TOGGLE_VISUALIZER_STYLE };
+}
+
+export function setPlaylistScrollPosition(position) {
+  return { type: SET_PLAYLIST_SCROLL_POSITION, position };
 }
