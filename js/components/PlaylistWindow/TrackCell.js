@@ -6,6 +6,7 @@ import {
   CTRL_CLICKED_TRACK,
   PLAY_TRACK
 } from "../../actionTypes";
+import { getCurrentTrackId } from "../../selectors";
 
 const TrackCell = props => {
   const {
@@ -35,17 +36,10 @@ const TrackCell = props => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  const {
-    display: { skinPlaylistStyle },
-    playlist: { currentTrack },
-    tracks
-  } = state;
+  const { display: { skinPlaylistStyle }, tracks } = state;
+  const current = getCurrentTrackId(state) === ownProps.id;
   const track = tracks[ownProps.id];
-  return {
-    skinPlaylistStyle,
-    selected: track.selected,
-    current: currentTrack === ownProps.id
-  };
+  return { skinPlaylistStyle, selected: track.selected, current };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
