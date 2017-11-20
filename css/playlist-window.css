@@ -67,6 +67,7 @@
   padding-right: 3px;
 }
 #winamp2-js .playlist-track-numbers > div {
+  text-align: center;
   padding-left: 1px;
 }
 
