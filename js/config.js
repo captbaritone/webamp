@@ -18,5 +18,6 @@ export const skinUrl = config.skinUrl === undefined ? skin : config.skinUrl;
 export const audioUrl = config.audioUrl === undefined ? audio : config.audioUrl;
 export const noMarquee = config.noMarquee || false;
 export const hideAbout = config.hideAbout || false;
+export const elementSource = config.elementSource || false;
 export const initialState = config.initialState || undefined;
 export const sentryDsn = SENTRY_DSN;

@@ -104,7 +104,9 @@ export default class ElementSource extends Emitter {
   }
 
   getSampleRate() {
-    return null;
+    // This is a lie. This is the sample rate of the context, not the
+    // underlying source media.
+    return this._context.sampleRate;
   }
 
   /*
