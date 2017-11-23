@@ -1,5 +1,9 @@
 import { denormalize, getTimeStr, clamp, percentToIndex } from "./utils";
-import { BANDS, PLAYLIST_RESIZE_SEGMENT_HEIGHT } from "./constants";
+import {
+  BANDS,
+  PLAYLIST_RESIZE_SEGMENT_HEIGHT,
+  TRACK_HEIGHT
+} from "./constants";
 import { createSelector } from "reselect";
 
 export const getEqfData = state => {
@@ -18,7 +22,7 @@ export const getEqfData = state => {
   return eqfData;
 };
 
-const getTracks = state => state.tracks;
+const getTracks = state => state.playlist.tracks;
 const getTrackOrder = state => state.playlist.trackOrder;
 
 export const getOrderedTracks = createSelector(
@@ -102,7 +106,6 @@ export const nextTrack = (state, n = 1) => {
 export const getPlaylistScrollPosition = state =>
   state.display.playlistScrollPosition;
 
-const TRACK_HEIGHT = 13;
 const BASE_WINDOW_HEIGHT = 52;
 export const getNumberOfVisibleTracks = state => {
   const { playlistSize } = state.display;

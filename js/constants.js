@@ -11,3 +11,4 @@ export const CHARACTER_WIDTH = 5;
 export const PLAYLIST_RESIZE_SEGMENT_WIDTH = 25;
 export const PLAYLIST_RESIZE_SEGMENT_HEIGHT = 29;
 export const MIN_PLAYLIST_WINDOW_WIDTH = 275;
+export const TRACK_HEIGHT = 13;

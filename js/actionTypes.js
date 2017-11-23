@@ -55,3 +55,4 @@ export const REVERSE_LIST = "REVERSE_LIST";
 export const RANDOMIZE_LIST = "RANDOMIZE_LIST";
 export const SET_TRACK_ORDER = "SET_TRACK_ORDER";
 export const PLAY_TRACK = "PLAY_TRACK";
+export const DRAG_SELECTED = "DRAG_SELECTED";
