@@ -41,7 +41,8 @@ import {
   SET_TRACK_ORDER,
   TOGGLE_VISUALIZER_STYLE,
   PLAY_TRACK,
-  SET_PLAYLIST_SCROLL_POSITION
+  SET_PLAYLIST_SCROLL_POSITION,
+  DRAG_SELECTED
 } from "./actionTypes";
 
 function playRandomTrack() {
@@ -307,7 +308,7 @@ export function sortListByTitle() {
   return (dispatch, getState) => {
     const state = getState();
     const trackOrder = sort(state.playlist.trackOrder, i =>
-      `${state.tracks[i].title}`.toLowerCase()
+      `${state.playlist.tracks[i].title}`.toLowerCase()
     );
     return dispatch({ type: SET_TRACK_ORDER, trackOrder });
   };
@@ -340,4 +341,33 @@ export function scrollUpFourTracks() {
 
 export function scrollDownFourTracks() {
   return scrollNTracks(4);
+}
+
+function findLastIndex(arr, cb) {
+  for (var i = arr.length - 1; i >= 0; i--) {
+    if (cb(arr[i])) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+export function dragSelected(offset) {
+  return (dispatch, getState) => {
+    const { playlist: { trackOrder }, tracks } = getState();
+    const firstSelected = trackOrder.findIndex(
+      trackId => tracks[trackId].selected
+    );
+    const lastSelected = findLastIndex(
+      trackOrder,
+      trackId => tracks[trackId].selected
+    );
+    // Ensure we don't try to drag off either end.
+    const normalizedOffset = clamp(
+      offset,
+      -firstSelected,
+      trackOrder.length - 1 - lastSelected
+    );
+    dispatch({ type: DRAG_SELECTED, offset: normalizedOffset });
+  };
 }

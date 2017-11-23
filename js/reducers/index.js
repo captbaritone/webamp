@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { BANDS, WINDOWS } from "./constants";
+import { BANDS, WINDOWS } from "../constants";
 import {
   CLOSE_WINAMP,
   SET_BALANCE,
@@ -35,39 +35,13 @@ import {
   SET_USER_MESSAGE,
   UNSET_USER_MESSAGE,
   SET_PLAYLIST_SCROLL_POSITION,
-  CLICKED_TRACK,
-  CTRL_CLICKED_TRACK,
-  SELECT_ALL,
-  SELECT_ZERO,
-  INVERT_SELECTION,
   PLAYLIST_SIZE_CHANGED,
-  REMOVE_ALL_TRACKS,
-  REMOVE_TRACKS,
   SET_AVALIABLE_SKINS,
   LOAD_AUDIO_FILE,
-  LOAD_AUDIO_URL,
-  REVERSE_LIST,
-  RANDOMIZE_LIST,
-  SET_TRACK_ORDER,
-  PLAY_TRACK
-} from "./actionTypes";
-import { shuffle } from "./utils";
+  LOAD_AUDIO_URL
+} from "../actionTypes";
 
-const mapObject = (obj, iteratee) =>
-  // TODO: Could return the original reference if no values change
-  Object.keys(obj).reduce((newObj, key) => {
-    newObj[key] = iteratee(obj[key], key);
-    return newObj;
-  }, {});
-
-const filterObject = (obj, predicate) =>
-  // TODO: Could return the original reference if no values change
-  Object.keys(obj).reduce((newObj, key) => {
-    if (predicate(obj[key], key)) {
-      newObj[key] = obj[key];
-    }
-    return newObj;
-  }, {});
+import playlist from "./playlist";
 
 const defaultUserInput = {
   focus: null,
@@ -222,101 +196,6 @@ const equalizer = (state, action) => {
   }
 };
 
-const defaultTracksState = {};
-
-const tracks = (state = defaultTracksState, action) => {
-  switch (action.type) {
-    case CLICKED_TRACK:
-      return mapObject(state, (track, id) => ({
-        ...track,
-        selected: id === String(action.id)
-      }));
-    case CTRL_CLICKED_TRACK:
-      const t = state[action.id];
-      return {
-        ...state,
-        [action.id]: { ...t, selected: !t.selected }
-      };
-    case SELECT_ALL:
-      return mapObject(state, track => ({ ...track, selected: true }));
-    case SELECT_ZERO:
-      return mapObject(state, track => ({ ...track, selected: false }));
-    case INVERT_SELECTION:
-      return mapObject(state, track => ({
-        ...track,
-        selected: !track.selected
-      }));
-    case REMOVE_ALL_TRACKS:
-      return {};
-    case REMOVE_TRACKS:
-      return filterObject(state, (track, id) => !action.ids.includes(id));
-    case LOAD_AUDIO_URL:
-      return {
-        ...state,
-        [action.id]: {
-          selected: false,
-          title: action.name,
-          duration: null,
-          url: action.url
-        }
-      };
-    case SET_MEDIA:
-      return {
-        ...state,
-        [action.id]: {
-          ...state[action.id],
-          duration: action.length
-        }
-      };
-    default:
-      return state;
-  }
-};
-
-const defaultPlaylistState = {
-  trackOrder: [],
-  currentTrackIndex: null
-};
-const playlist = (state = defaultPlaylistState, action) => {
-  switch (action.type) {
-    case REMOVE_ALL_TRACKS:
-      // TODO: Consider disposing of ObjectUrls
-      return { ...state, trackOrder: [], currentTrackIndex: null };
-    case REMOVE_TRACKS:
-      // TODO: Consider disposing of ObjectUrls
-      return {
-        ...state,
-        trackOrder: state.trackOrder.filter(id => !action.ids.includes(id))
-      };
-    case REVERSE_LIST:
-      return {
-        ...state,
-        trackOrder: [...state.trackOrder].reverse()
-      };
-    case RANDOMIZE_LIST:
-      return {
-        ...state,
-        trackOrder: shuffle(state.trackOrder)
-      };
-    case SET_TRACK_ORDER:
-      const { trackOrder } = action;
-      return { ...state, trackOrder };
-    case LOAD_AUDIO_URL:
-      return {
-        ...state,
-        trackOrder: [...state.trackOrder, action.id],
-        currentTrackIndex: state.trackOrder.length
-      };
-    case PLAY_TRACK:
-      return {
-        ...state,
-        currentTrackIndex: state.trackOrder.findIndex(id => id === action.id)
-      };
-    default:
-      return state;
-  }
-};
-
 const media = (state, action) => {
   if (!state) {
     return {
@@ -388,7 +267,6 @@ const reducer = combineReducers({
   display,
   settings,
   equalizer,
-  tracks,
   playlist,
   media
 });
