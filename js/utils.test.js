@@ -8,7 +8,8 @@ import {
   parseIni,
   normalize,
   denormalize,
-  segment
+  segment,
+  moveSelected
 } from "./utils";
 
 const fixture = filename =>
@@ -174,5 +175,35 @@ describe("segment", () => {
     expect(segment(-100, 100, -100, ["left", "center", "right"])).toBe("left");
     expect(segment(0, 100, 88, ["left", "center", "right"])).toBe("right");
     expect(segment(0, 100, 50, ["left", "center", "right"])).toBe("center");
+  });
+});
+
+describe("moveSelected", () => {
+  it("can drag a single item 1", () => {
+    expect(
+      moveSelected(
+        ["a", "b", "c", "d", "e", "f", "g", "h"],
+        i => new Set([1]).has(i),
+        1
+      )
+    ).toEqual(["a", "c", "b", "d", "e", "f", "g", "h"]);
+  });
+  it("can drag a single item", () => {
+    expect(
+      moveSelected(
+        ["a", "b", "c", "d", "e", "f", "g", "h"],
+        i => new Set([1]).has(i),
+        3
+      )
+    ).toEqual(["a", "c", "d", "e", "b", "f", "g", "h"]);
+  });
+  it("can drag consecutive items", () => {
+    expect(
+      moveSelected(
+        ["a", "b", "c", "d", "e", "f", "g", "h"],
+        i => new Set([1, 2]).has(i),
+        3
+      )
+    ).toEqual(["a", "d", "e", "f", "b", "c", "g", "h"]);
   });
 });

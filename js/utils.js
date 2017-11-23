@@ -146,3 +146,22 @@ export const sort = (array, iteratee) =>
     }
     return 0;
   });
+
+export const moveSelected = (arr, isSelected, offset) => {
+  const newArr = new Array(arr.length);
+  let next = 0;
+  for (let i = 0; i < newArr.length; i++) {
+    const from = i - offset;
+    // Is a value supposed to move here?
+    if (isSelected(from)) {
+      newArr[i] = arr[from];
+    } else {
+      while (isSelected(next)) {
+        next++;
+      }
+      newArr[i] = arr[next];
+      next++;
+    }
+  }
+  return newArr;
+};
