@@ -344,7 +344,7 @@ export function scrollDownFourTracks() {
 }
 
 function findLastIndex(arr, cb) {
-  for (var i = arr.length - 1; i >= 0; i--) {
+  for (let i = arr.length - 1; i >= 0; i--) {
     if (cb(arr[i])) {
       return i;
     }
@@ -354,20 +354,26 @@ function findLastIndex(arr, cb) {
 
 export function dragSelected(offset) {
   return (dispatch, getState) => {
-    const { playlist: { trackOrder }, tracks } = getState();
+    const { playlist: { trackOrder, tracks } } = getState();
     const firstSelected = trackOrder.findIndex(
-      trackId => tracks[trackId].selected
+      trackId => tracks[trackId] && tracks[trackId].selected
     );
+    if (firstSelected === -1) {
+      return;
+    }
     const lastSelected = findLastIndex(
       trackOrder,
-      trackId => tracks[trackId].selected
+      trackId => tracks[trackId] && tracks[trackId].selected
     );
+    if (lastSelected === -1) {
+      throw new Error("We found a first selected, but not a last selected.");
+    }
     // Ensure we don't try to drag off either end.
-    const normalizedOffset = clamp(
-      offset,
-      -firstSelected,
-      trackOrder.length - 1 - lastSelected
-    );
-    dispatch({ type: DRAG_SELECTED, offset: normalizedOffset });
+    const min = -firstSelected;
+    const max = trackOrder.length - 1 - lastSelected;
+    const normalizedOffset = clamp(offset, min, max);
+    if (normalizedOffset !== 0) {
+      dispatch({ type: DRAG_SELECTED, offset: normalizedOffset });
+    }
   };
 }

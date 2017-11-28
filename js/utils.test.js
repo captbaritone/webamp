@@ -206,4 +206,12 @@ describe("moveSelected", () => {
       )
     ).toEqual(["a", "d", "e", "f", "b", "c", "g", "h"]);
   });
+  it("works for a simple example", () => {
+    const arr = [true, false, false];
+    expect(moveSelected(arr, i => arr[i], 1)).toEqual([false, true, false]);
+  });
+  it("works for a simple negative example", () => {
+    const arr = [false, false, true];
+    expect(moveSelected(arr, i => arr[i], -1)).toEqual([false, true, false]);
+  });
 });

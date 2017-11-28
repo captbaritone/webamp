@@ -62,18 +62,16 @@ export const getRunningTimeMessage = createSelector(
     `${getTimeStr(selectedRunningTime)}/${getTimeStr(totalRunningTime)}`
 );
 
-export const getCurrentTrackIndex = state => state.playlist.currentTrackIndex;
+// TODO: use slectors to get memoization
+export const getCurrentTrackIndex = state =>
+  state.playlist.trackOrder.indexOf(state.playlist.currentTrack);
 
 export const getCurrentTrackNumber = createSelector(
   getCurrentTrackIndex,
   currentTrackIndex => currentTrackIndex + 1
 );
 
-export const getCurrentTrackId = createSelector(
-  getTrackOrder,
-  getCurrentTrackIndex,
-  (trackOrder, currentTrackIndex) => trackOrder[currentTrackIndex]
-);
+export const getCurrentTrackId = state => state.playlist.currentTrack;
 
 export const nextTrack = (state, n = 1) => {
   const { playlist: { trackOrder }, media: { repeat } } = state;
