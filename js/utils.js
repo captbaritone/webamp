@@ -153,10 +153,10 @@ export const moveSelected = (arr, isSelected, offset) => {
   for (let i = 0; i < newArr.length; i++) {
     const from = i - offset;
     // Is a value supposed to move here?
-    if (isSelected(from)) {
+    if (from >= 0 && from < arr.length && isSelected(from)) {
       newArr[i] = arr[from];
     } else {
-      while (isSelected(next)) {
+      while (next < arr.length && isSelected(next)) {
         next++;
       }
       newArr[i] = arr[next];
@@ -165,3 +165,19 @@ export const moveSelected = (arr, isSelected, offset) => {
   }
   return newArr;
 };
+
+export const mapObject = (obj, iteratee) =>
+  // TODO: Could return the original reference if no values change
+  Object.keys(obj).reduce((newObj, key) => {
+    newObj[key] = iteratee(obj[key], key);
+    return newObj;
+  }, {});
+
+export const filterObject = (obj, predicate) =>
+  // TODO: Could return the original reference if no values change
+  Object.keys(obj).reduce((newObj, key) => {
+    if (predicate(obj[key], key)) {
+      newObj[key] = obj[key];
+    }
+    return newObj;
+  }, {});

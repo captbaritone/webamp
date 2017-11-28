@@ -15,27 +15,11 @@ import {
   DRAG_SELECTED
 } from "../actionTypes";
 
-import { shuffle } from "../utils";
-
-const mapObject = (obj, iteratee) =>
-  // TODO: Could return the original reference if no values change
-  Object.keys(obj).reduce((newObj, key) => {
-    newObj[key] = iteratee(obj[key], key);
-    return newObj;
-  }, {});
-
-const filterObject = (obj, predicate) =>
-  // TODO: Could return the original reference if no values change
-  Object.keys(obj).reduce((newObj, key) => {
-    if (predicate(obj[key], key)) {
-      newObj[key] = obj[key];
-    }
-    return newObj;
-  }, {});
+import { shuffle, moveSelected, mapObject, filterObject } from "../utils";
 
 const defaultPlaylistState = {
   trackOrder: [],
-  currentTrackIndex: null,
+  currentTrack: null,
   tracks: {}
 };
 
@@ -81,23 +65,15 @@ const playlist = (state = defaultPlaylistState, action) => {
       };
     case REMOVE_ALL_TRACKS:
       // TODO: Consider disposing of ObjectUrls
-      return { ...state, trackOrder: [], currentTrackIndex: null, tracks: {} };
+      return { ...state, trackOrder: [], currentTrack: null, tracks: {} };
     case REMOVE_TRACKS:
       // TODO: Consider disposing of ObjectUrls
       const actionIds = action.ids.map(Number);
-      let { currentTrackIndex } = state;
-      const filteredTrackOrder = state.trackOrder.filter((id, i) => {
-        if (i === currentTrackIndex) {
-          // This is super janky: Using the .filter callback to do unrelated stuff.
-          // This is what you get when code reviews are not required.
-          currentTrackIndex = null;
-        }
-        return !actionIds.includes(id);
-      });
+      const { currentTrack } = state;
       return {
         ...state,
-        trackOrder: filteredTrackOrder,
-        currentTrackIndex,
+        trackOrder: state.trackOrder.filter(id => !actionIds.includes(id)),
+        currentTrack: actionIds.includes(currentTrack) ? null : currentTrack,
         tracks: filterObject(
           state.tracks,
           (track, id) => !action.ids.includes(id)
@@ -120,7 +96,7 @@ const playlist = (state = defaultPlaylistState, action) => {
       return {
         ...state,
         trackOrder: [...state.trackOrder, Number(action.id)],
-        currentTrackIndex: state.trackOrder.length,
+        currentTrack: action.id,
         tracks: {
           ...state.tracks,
           [action.id]: {
@@ -145,13 +121,20 @@ const playlist = (state = defaultPlaylistState, action) => {
     case PLAY_TRACK:
       return {
         ...state,
-        currentTrackIndex: state.trackOrder.findIndex(
-          id => id === Number(action.id)
-        )
+        currentTrack: action.id
       };
     case DRAG_SELECTED:
-      return state;
-
+      return {
+        ...state,
+        trackOrder: moveSelected(
+          state.trackOrder,
+          i => {
+            const id = state.trackOrder[i];
+            return state.tracks[id].selected;
+          },
+          action.offset
+        )
+      };
     default:
       return state;
   }
