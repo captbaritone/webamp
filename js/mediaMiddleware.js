@@ -51,7 +51,6 @@ export default media => store => {
       kbps: "128",
       khz: Math.round(media.sampleRate() / 1000).toString(),
       channels: media.channels(),
-      name: media.name,
       length: media.duration(),
       id: getCurrentTrackId(store.getState())
     });

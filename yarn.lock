@@ -3635,6 +3635,12 @@ jsesc@~0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/jsesc/-/jsesc-0.5.0.tgz#e7dee66e35d6fc16f710fe91d5cf69f70f08911d"
 
+jsmediatags@^3.8.1:
+  version "3.8.1"
+  resolved "https://registry.yarnpkg.com/jsmediatags/-/jsmediatags-3.8.1.tgz#e27d26e957b0b330c28f9762c82940c4dcc64720"
+  dependencies:
+    xhr2 "^0.1.4"
+
 json-loader@^0.5.4:
   version "0.5.4"
   resolved "https://registry.yarnpkg.com/json-loader/-/json-loader-0.5.4.tgz#8baa1365a632f58a3c46d20175fc6002c96e37de"
@@ -6065,6 +6071,10 @@ write@^0.2.1:
   resolved "https://registry.yarnpkg.com/write/-/write-0.2.1.tgz#5fc03828e264cea3fe91455476f7a3c566cb0757"
   dependencies:
     mkdirp "^0.5.1"
+
+xhr2@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/xhr2/-/xhr2-0.1.4.tgz#7f87658847716db5026323812f818cadab387a5f"
 
 xml-name-validator@^2.0.1:
   version "2.0.1"

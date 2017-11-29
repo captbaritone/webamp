@@ -56,3 +56,4 @@ export const RANDOMIZE_LIST = "RANDOMIZE_LIST";
 export const SET_TRACK_ORDER = "SET_TRACK_ORDER";
 export const PLAY_TRACK = "PLAY_TRACK";
 export const DRAG_SELECTED = "DRAG_SELECTED";
+export const SET_MEDIA_TAGS = "SET_MEDIA_TAGS";

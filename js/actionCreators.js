@@ -1,3 +1,4 @@
+import jsmediatags from "jsmediatags/dist/jsmediatags";
 import { parser, creator } from "winamp-eqf";
 import MyFile from "./myFile";
 import skinParser from "./skinParser";
@@ -42,7 +43,8 @@ import {
   TOGGLE_VISUALIZER_STYLE,
   PLAY_TRACK,
   SET_PLAYLIST_SCROLL_POSITION,
-  DRAG_SELECTED
+  DRAG_SELECTED,
+  SET_MEDIA_TAGS
 } from "./actionTypes";
 
 function playRandomTrack() {
@@ -171,15 +173,55 @@ export function loadFileFromReference(fileReference) {
     } else if (EQF_FILENAME_MATCHER.test(fileReference.name)) {
       dispatch(setEqFromFile(file));
     } else {
+      const id = uniqueId();
       const url = URL.createObjectURL(fileReference);
-      dispatch(loadMediaFromUrl(url, fileReference.name, true));
+      dispatch(_loadMediaFromUrl(url, fileReference.name, true, id));
+      dispatch(fetchMediaTags(fileReference, id));
     }
   };
 }
 
 let counter = 0;
+function uniqueId() {
+  return counter++;
+}
+
+export function _loadMediaFromUrl(url, name, autoPlay, id) {
+  return { type: LOAD_AUDIO_URL, url, name, autoPlay, id };
+}
+
 export function loadMediaFromUrl(url, name, autoPlay) {
-  return { type: LOAD_AUDIO_URL, url, name, autoPlay, id: counter++ };
+  return dispatch => {
+    const id = uniqueId();
+    dispatch(_loadMediaFromUrl(url, name, autoPlay, id));
+    dispatch(fetchMediaTags(url, id));
+  };
+}
+
+export function fetchMediaTags(file, id) {
+  // Workaround https://github.com/aadsm/jsmediatags/issues/83
+  if (typeof file === "string" && !/^[a-z]+:\/\//i.test(file)) {
+    file = `${location.protocol}//${location.host}${location.pathname}${file}`;
+  }
+  return dispatch => {
+    try {
+      jsmediatags.read(file, {
+        onSuccess: data => {
+          const { artist, title } = data.tags;
+          // There's more data here, but we don't have a use for it yet:
+          // https://github.com/aadsm/jsmediatags#shortcuts
+          dispatch({ type: SET_MEDIA_TAGS, artist, title, id });
+        },
+        onError: () => {
+          // Nothing to do. The filename will have to suffice.
+        }
+      });
+    } catch (e) {
+      // Possibly jsmediatags could not find a parser for this file?
+      // Nothing to do.
+      // Consider removing this after https://github.com/aadsm/jsmediatags/issues/83 is resolved.
+    }
+  };
 }
 
 export function setSkinFromFile(skinFile) {

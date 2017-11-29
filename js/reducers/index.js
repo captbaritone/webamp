@@ -206,7 +206,6 @@ const media = (state, action) => {
       khz: null,
       volume: 50,
       balance: 0,
-      name: "",
       channels: null,
       shuffle: false,
       repeat: false,
@@ -215,6 +214,7 @@ const media = (state, action) => {
     };
   }
   switch (action.type) {
+    // TODO: Make these constants
     case "PLAY":
     case "IS_PLAYING":
       return { ...state, status: "PLAYING" };
@@ -236,8 +236,7 @@ const media = (state, action) => {
         length: null,
         kbps: null,
         khz: null,
-        channels: null,
-        name: null
+        channels: null
       };
     case SET_MEDIA:
       return {
@@ -245,8 +244,7 @@ const media = (state, action) => {
         length: action.length,
         kbps: action.kbps,
         khz: action.khz,
-        channels: action.channels,
-        name: action.name
+        channels: action.channels
       };
     case SET_VOLUME:
       return { ...state, volume: action.volume };
