@@ -12,7 +12,8 @@ import {
   RANDOMIZE_LIST,
   SET_TRACK_ORDER,
   PLAY_TRACK,
-  DRAG_SELECTED
+  DRAG_SELECTED,
+  SET_MEDIA_TAGS
 } from "../actionTypes";
 
 import { shuffle, moveSelected, mapObject, filterObject } from "../utils";
@@ -118,6 +119,18 @@ const playlist = (state = defaultPlaylistState, action) => {
           }
         }
       };
+    case SET_MEDIA_TAGS:
+      return {
+        ...state,
+        tracks: {
+          ...state.tracks,
+          [action.id]: {
+            ...state.tracks[action.id],
+            title: action.title,
+            artist: action.artist
+          }
+        }
+      };
     case PLAY_TRACK:
       return {
         ...state,
@@ -141,3 +154,13 @@ const playlist = (state = defaultPlaylistState, action) => {
 };
 
 export default playlist;
+
+export const getTrackDisplayName = (state, id) => {
+  const { artist, title } = state.tracks[id];
+  if (artist && title) {
+    return `${artist} - ${title}`;
+  } else if (title) {
+    return title;
+  }
+  return "???";
+};

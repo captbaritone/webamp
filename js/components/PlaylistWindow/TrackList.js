@@ -3,9 +3,10 @@ import { connect } from "react-redux";
 
 import { getTimeStr } from "../../utils";
 import { TRACK_HEIGHT } from "../../constants";
-import { dragSelected} from "../../actionCreators";
+import { dragSelected } from "../../actionCreators";
 import { getVisibleTrackIds, getScrollOffset } from "../../selectors";
 import TrackCell from "./TrackCell";
+import TrackTitle from "./TrackTitle";
 
 class TrackList extends React.Component {
   constructor(props) {
@@ -47,7 +48,7 @@ class TrackList extends React.Component {
           {this._renderTracks((id, i) => `${i + 1 + offset}.`)}
         </div>
         <div className="playlist-track-titles">
-          {this._renderTracks(id => tracks[id].title)}
+          {this._renderTracks(id => <TrackTitle id={id} />)}
         </div>
         <div className="playlist-track-durations">
           {this._renderTracks(id => getTimeStr(tracks[id].duration))}

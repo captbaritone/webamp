@@ -5,6 +5,7 @@ import {
   TRACK_HEIGHT
 } from "./constants";
 import { createSelector } from "reselect";
+import * as fromPlaylist from "./reducers/playlist";
 
 export const getEqfData = state => {
   const { sliders } = state.equalizer;
@@ -136,4 +137,22 @@ export const getVisibleTrackIds = createSelector(
   getNumberOfVisibleTracks,
   (offset, trackOrder, numberOfVisibleTracks) =>
     trackOrder.slice(offset, offset + numberOfVisibleTracks)
+);
+
+export const getPlaylist = state => state.playlist;
+export const getDuration = state => state.media.length;
+export const getTrackDisplayName = (state, trackId) =>
+  fromPlaylist.getTrackDisplayName(getPlaylist(state), trackId);
+
+export const getCurrentTrackDisplayName = state => {
+  const id = getCurrentTrackId(state);
+  return getTrackDisplayName(state, id);
+};
+
+export const getMediaText = createSelector(
+  getCurrentTrackNumber,
+  getCurrentTrackDisplayName,
+  getDuration,
+  (trackNumber, name, duration) =>
+    `${trackNumber}. ${name} (${getTimeStr(duration)})  ***  `
 );
