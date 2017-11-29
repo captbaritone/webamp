@@ -278,7 +278,7 @@ export function closeEqualizerWindow() {
 
 export function cropPlaylist() {
   return (dispatch, getState) => {
-    const { tracks } = getState();
+    const { playlist: { tracks } } = getState();
     dispatch({
       type: REMOVE_TRACKS,
       ids: Object.keys(tracks).filter(id => !tracks[id].selected)
@@ -288,7 +288,7 @@ export function cropPlaylist() {
 
 export function removeSelectedTracks() {
   return (dispatch, getState) => {
-    const { tracks } = getState();
+    const { playlist: { tracks } } = getState();
     dispatch({
       type: REMOVE_TRACKS,
       ids: Object.keys(tracks).filter(id => tracks[id].selected)
