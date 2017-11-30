@@ -49,10 +49,14 @@ import {
 
 function playRandomTrack() {
   return (dispatch, getState) => {
-    const { playlist: { trackOrder } } = getState();
-    const nextIndex = Math.floor(trackOrder.length * Math.random());
-    // TODO: Ensure we don't repeat the same track.
-    dispatch({ type: PLAY_TRACK, id: trackOrder[nextIndex] });
+    const { playlist: { trackOrder, currentTrack } } = getState();
+    let nextId;
+    do {
+      nextId = trackOrder[Math.floor(trackOrder.length * Math.random())];
+    } while (nextId === currentTrack && trackOrder.length > 1);
+    // TODO: Sigh... Technically, we should detect if we are looping only repeat if we are.
+    // I think this would require pre-computing the "random" order of a playlist.
+    dispatch({ type: PLAY_TRACK, id: nextId });
   };
 }
 
