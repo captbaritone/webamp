@@ -105,7 +105,7 @@ export const nextTrack = (state, n = 1) => {
 export const getPlaylistScrollPosition = state =>
   state.display.playlistScrollPosition;
 
-const BASE_WINDOW_HEIGHT = 52;
+const BASE_WINDOW_HEIGHT = 58;
 export const getNumberOfVisibleTracks = state => {
   const { playlistSize } = state.display;
   return Math.floor(
