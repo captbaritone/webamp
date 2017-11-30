@@ -80,7 +80,7 @@ export default media => store => {
         media.loadFromUrl(action.url, action.name, action.autoPlay);
         break;
       case PLAY_TRACK:
-        const track = store.getState().tracks[action.id];
+        const track = store.getState().playlist.tracks[action.id];
         media.loadFromUrl(track.url, track.title, true);
         break;
       case SET_BAND_VALUE:
