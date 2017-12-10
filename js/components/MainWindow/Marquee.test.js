@@ -3,7 +3,6 @@ import {
   getBalanceText,
   getVolumeText,
   getPositionText,
-  getMediaText,
   getDoubleSizeModeText,
   stepOffset,
   pixelUnits,
@@ -51,17 +50,6 @@ describe("getPositionText", () => {
     const seekToPercent = 85;
     const actual = getPositionText(duration, seekToPercent);
     const expected = "Seek to: 01:13/01:26 (85%)";
-    expect(actual).toEqual(expected);
-  });
-});
-
-describe("getMediaText", () => {
-  it("formats a name and duration", () => {
-    const trackNumber = 1;
-    const name = "My Great Song";
-    const duration = 86;
-    const actual = getMediaText(trackNumber, name, duration);
-    const expected = "1. My Great Song (01:26)  ***  ";
     expect(actual).toEqual(expected);
   });
 });

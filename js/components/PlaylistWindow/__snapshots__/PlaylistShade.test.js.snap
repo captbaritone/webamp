@@ -19,7 +19,143 @@ exports[`PlaylistShade renders to snapshot 1`] = `
     >
       <div
         id="playlist-shade-track-title"
-      />
+      >
+        <div
+          className=" character character-49"
+        >
+          1
+        </div>
+        <div
+          className=" character character-46"
+        >
+          .
+        </div>
+        <div
+          className=" character character-32"
+        >
+           
+        </div>
+        <div
+          className=" character character-115"
+        >
+          S
+        </div>
+        <div
+          className=" character character-111"
+        >
+          o
+        </div>
+        <div
+          className=" character character-109"
+        >
+          m
+        </div>
+        <div
+          className=" character character-101"
+        >
+          e
+        </div>
+        <div
+          className=" character character-32"
+        >
+           
+        </div>
+        <div
+          className=" character character-110"
+        >
+          N
+        </div>
+        <div
+          className=" character character-97"
+        >
+          a
+        </div>
+        <div
+          className=" character character-109"
+        >
+          m
+        </div>
+        <div
+          className=" character character-101"
+        >
+          e
+        </div>
+        <div
+          className=" character character-32"
+        >
+           
+        </div>
+        <div
+          className=" character character-40"
+        >
+          (
+        </div>
+        <div
+          className=" character character-48"
+        >
+          0
+        </div>
+        <div
+          className=" character character-48"
+        >
+          0
+        </div>
+        <div
+          className=" character character-58"
+        >
+          :
+        </div>
+        <div
+          className=" character character-48"
+        >
+          0
+        </div>
+        <div
+          className=" character character-48"
+        >
+          0
+        </div>
+        <div
+          className=" character character-41"
+        >
+          )
+        </div>
+        <div
+          className=" character character-32"
+        >
+           
+        </div>
+        <div
+          className=" character character-32"
+        >
+           
+        </div>
+        <div
+          className=" character character-42"
+        >
+          *
+        </div>
+        <div
+          className=" character character-42"
+        >
+          *
+        </div>
+        <div
+          className=" character character-42"
+        >
+          *
+        </div>
+        <div
+          className=" character character-32"
+        >
+           
+        </div>
+        <div
+          className=" character character-32"
+        >
+           
+        </div>
+      </div>
       <div
         id="playlist-shade-time"
       >
