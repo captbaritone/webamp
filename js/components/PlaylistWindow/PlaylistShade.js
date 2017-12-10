@@ -18,7 +18,7 @@ import {
 import CharacterString from "../CharacterString";
 import ResizeTarget from "./ResizeTarget";
 
-import { getOrderedTracks } from "../../selectors";
+import { getOrderedTracks, getMediaText } from "../../selectors";
 
 const PlaylistShade = props => {
   const {
@@ -83,7 +83,7 @@ const mapStateToProps = state => {
   const {
     windows: { focused },
     display: { skinPlaylistStyle, playlistSize, playlistShade },
-    media: { length, name }
+    media: { length }
   } = state;
   return {
     focused,
@@ -92,7 +92,7 @@ const mapStateToProps = state => {
     playlistShade,
     trackOrder: getOrderedTracks(state),
     length,
-    name
+    name: getMediaText(state)
   };
 };
 
