@@ -4,6 +4,7 @@ import {
   PLAYLIST_RESIZE_SEGMENT_HEIGHT,
   TRACK_HEIGHT
 } from "./constants";
+import { createPlaylistURL } from "./playlistHtml";
 import { createSelector } from "reselect";
 import * as fromPlaylist from "./reducers/playlist";
 
@@ -155,4 +156,32 @@ export const getMediaText = createSelector(
   getDuration,
   (trackNumber, name, duration) =>
     `${trackNumber}. ${name} (${getTimeStr(duration)})  ***  `
+);
+
+const getNumberOfTracks = state => getTrackOrder(state).length;
+const getPlaylistDuration = createSelector(getTracks, tracks =>
+  Object.values(tracks).reduce((total, track) => total + track.duration, 0)
+);
+
+// TODO: Move to action creator
+export const getPlaylistURL = createSelector(
+  state => state,
+  getNumberOfTracks,
+  getPlaylistDuration,
+  getTrackOrder,
+  getTracks,
+  (state, numberOfTracks, playlistDuration, trackOrder, tracks) =>
+    createPlaylistURL({
+      numberOfTracks,
+      averageTrackLength: getTimeStr(playlistDuration / numberOfTracks),
+      // TODO: Handle hours
+      playlistLengthMinutes: Math.floor(playlistDuration / 60),
+      playlistLengthSeconds: Math.floor(playlistDuration % 60),
+      tracks: trackOrder.map(
+        (id, i) =>
+          `${i + 1}. ${getTrackDisplayName(state, id)} (${getTimeStr(
+            tracks[id].duration
+          )})`
+      )
+    })
 );

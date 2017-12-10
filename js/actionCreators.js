@@ -7,7 +7,8 @@ import {
   getEqfData,
   nextTrack,
   getScrollOffset,
-  getOverflowTrackCount
+  getOverflowTrackCount,
+  getPlaylistURL
 } from "./selectors";
 
 import {
@@ -421,5 +422,12 @@ export function dragSelected(offset) {
     if (normalizedOffset !== 0) {
       dispatch({ type: DRAG_SELECTED, offset: normalizedOffset });
     }
+  };
+}
+
+export function downloadHtmlPlaylist() {
+  return (dispatch, getState) => {
+    const uri = getPlaylistURL(getState());
+    downloadURI(uri, "Winamp Playlist.html");
   };
 }
