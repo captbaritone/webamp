@@ -12,8 +12,6 @@ const ActionButtons = props => (
   </div>
 );
 
-const mapStateToProps = state => state.media;
-
 const mapDispatchToProps = { previous, play, pause, stop, next };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ActionButtons);
+export default connect(null, mapDispatchToProps)(ActionButtons);
