@@ -3,8 +3,10 @@ import { connect } from "react-redux";
 import {
   reverseList,
   randomizeList,
-  sortListByTitle
+  sortListByTitle,
+  downloadHtmlPlaylist
 } from "../../actionCreators";
+
 import PlaylistMenu from "./PlaylistMenu";
 import { ContextMenu, Hr, Node } from "../ContextMenu";
 
@@ -19,25 +21,35 @@ const SortContextMenu = props => (
   </ContextMenu>
 );
 
-const ConnectedSortcontextMenu = connect(null, {
+const ConnectedSortContextMenu = connect(null, {
   reverseList,
   randomizeList,
   sortListByTitle
 })(SortContextMenu);
 
+const MiscOptionsContextMenu = props => (
+  <ContextMenu style={{ width: "100%", height: "100%" }} top handle={<div />}>
+    <Node onClick={props.downloadHtmlPlaylist} label="Generate HTML playlist" />
+  </ContextMenu>
+);
+
+const ConnectedMiscOptionsContextMenu = connect(null, { downloadHtmlPlaylist })(
+  MiscOptionsContextMenu
+);
+
 const MiscMenu = () => (
   <PlaylistMenu id="playlist-misc-menu">
     <div className="sort-list" onClick={e => e.stopPropagation()}>
-      <ConnectedSortcontextMenu />
+      <ConnectedSortContextMenu />
     </div>
     <div
       className="file-info"
       onClick={() => alert("Not supported in Winamp2-js")}
     />
-    <div
-      className="misc-options"
-      onClick={() => alert("Not supported in Winamp2-js")}
-    />
+
+    <div className="misc-options" onClick={e => e.stopPropagation()}>
+      <ConnectedMiscOptionsContextMenu />
+    </div>
   </PlaylistMenu>
 );
 
