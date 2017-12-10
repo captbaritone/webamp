@@ -19,6 +19,7 @@ import hashlib
 import boto3
 import twitter
 from docopt import docopt
+from sets import Set
 
 from config import CONFIG
 
@@ -78,6 +79,7 @@ def find_skin_with_screenshot():
         return find_skin_with_screenshot()
     return skin_path, screenshot_path, md5
 
+
 def dispatch(action):
     with open("./action_log.json", 'r') as f:
         action_log = json.load(f)
@@ -85,9 +87,25 @@ def dispatch(action):
     with open("./action_log.json", 'w') as f:
         json.dump(action_log, f)
 
+
+def past_skins():
+    with open("./action_log.json", 'r') as f:
+        action_log = json.load(f)
+        past = Set()
+        for action in action_log:
+            if(action['type'] == "REJECTED_SKIN" or action['type'] == "TWEETED"):
+                past.add(str(action["md5"]))
+        return past
+
+
 def main(dry):
+    already_handled = past_skins()
     skin_path, screenshot_path, md5 = find_skin_with_screenshot()
-    dispatch({"type": "FOUND_SCREENSHOT", "skin_path": skin_path, "screenshot_path": screenshot_path, "md5": md5})
+    dispatch({"type": "FOUND_SCREENSHOT", "skin_path": skin_path,
+              "screenshot_path": screenshot_path, "md5": md5})
+    if(md5 in already_handled):
+        print "Already handled %s. Trying again..." % md5
+        return main(dry)
     skin_name = os.path.basename(skin_path)
     print "Found %s" % skin_name
     os.system("open \"%s\"" % screenshot_path)
@@ -108,8 +126,9 @@ def main(dry):
 
     print "Going to check that URL..."
     if not url_is_good(skin_url):
-        dispatch({"type": "FOUND_INVALID_URL", "md5": md5, "skin_url": skin_url})
-        print "URL is no good"
+        dispatch({"type": "FOUND_INVALID_URL",
+                  "md5": md5, "skin_url": skin_url})
+        print "URL is no good. Aborting."
         return
 
     options = {"skinUrl": skin_url}
