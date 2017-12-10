@@ -22,7 +22,6 @@ describe("PlaylistShade", () => {
 
   it("renders to snapshot", () => {
     store.dispatch(loadMediaFromUrl("http://example.com", "Some Name", false));
-    console.log(store.getState().playlist.tracks[0]);
     const tree = renderer
       .create(
         <Provider store={store}>
