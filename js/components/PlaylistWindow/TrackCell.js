@@ -27,8 +27,10 @@ const TrackCell = props => {
     <div
       className={classnames({ selected, current })}
       style={style}
-      onMouseDown={onMouseDown}
-      onClick={clickTrack}
+      onMouseDown={e => {
+        onMouseDown(e);
+        clickTrack(e);
+      }}
       onDoubleClick={playTrack}
       onContextMenu={clickTrack}
     >
