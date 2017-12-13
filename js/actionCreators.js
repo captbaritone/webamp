@@ -36,6 +36,7 @@ import {
   TOGGLE_EQUALIZER_SHADE_MODE,
   CLOSE_EQUALIZER_WINDOW,
   REMOVE_TRACKS,
+  REMOVE_ALL_TRACKS,
   PLAY,
   PAUSE,
   REVERSE_LIST,
@@ -341,6 +342,10 @@ export function removeSelectedTracks() {
       ids: Object.keys(tracks).filter(id => tracks[id].selected)
     });
   };
+}
+
+export function removeAllTracks() {
+  return { type: REMOVE_ALL_TRACKS };
 }
 
 export function reverseList() {
