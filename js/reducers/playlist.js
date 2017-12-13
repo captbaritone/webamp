@@ -2,6 +2,7 @@ import {
   SET_MEDIA,
   CLICKED_TRACK,
   CTRL_CLICKED_TRACK,
+  SHIFT_CLICKED_TRACK,
   SELECT_ALL,
   SELECT_ZERO,
   INVERT_SELECTION,
@@ -21,27 +22,49 @@ import { shuffle, moveSelected, mapObject, filterObject } from "../utils";
 const defaultPlaylistState = {
   trackOrder: [],
   currentTrack: null,
-  tracks: {}
+  tracks: {},
+  lastSelectedIndex: null
 };
 
 const playlist = (state = defaultPlaylistState, action) => {
   switch (action.type) {
     case CLICKED_TRACK:
+      const clickedId = String(state.trackOrder[action.index]);
       return {
         ...state,
         tracks: mapObject(state.tracks, (track, id) => ({
           ...track,
-          selected: id === String(action.id)
-        }))
+          selected: id === clickedId
+        })),
+        lastSelectedIndex: action.index
       };
     case CTRL_CLICKED_TRACK:
-      const t = state.tracks[action.id];
+      const id = state.trackOrder[action.index];
+      const t = state.tracks[id];
       return {
         ...state,
         tracks: {
           ...state.tracks,
-          [action.id]: { ...t, selected: !t.selected }
-        }
+          [id]: { ...t, selected: !t.selected }
+        },
+        // Using this as the lastClickedIndex is kinda funny, since you
+        // may have just _un_selected the track. However, this is what
+        // Winamp 2 does, so we'll copy it.
+        lastSelectedIndex: action.index
+      };
+    case SHIFT_CLICKED_TRACK:
+      if (state.lastSelectedIndex == null) {
+        return state;
+      }
+      const clickedIndex = action.index;
+      const start = Math.min(clickedIndex, state.lastSelectedIndex);
+      const end = Math.max(clickedIndex, state.lastSelectedIndex);
+      return {
+        ...state,
+        tracks: state.trackOrder.map((trackId, i) => ({
+          ...state.tracks[trackId],
+          selected: i >= start && i <= end
+        }))
       };
     case SELECT_ALL:
       return {
@@ -66,24 +89,36 @@ const playlist = (state = defaultPlaylistState, action) => {
       };
     case REMOVE_ALL_TRACKS:
       // TODO: Consider disposing of ObjectUrls
-      return { ...state, trackOrder: [], currentTrack: null, tracks: {} };
+      return {
+        ...state,
+        trackOrder: [],
+        currentTrack: null,
+        tracks: {},
+        lastSelectedIndex: null
+      };
     case REMOVE_TRACKS:
       // TODO: Consider disposing of ObjectUrls
       const actionIds = action.ids.map(Number);
       const { currentTrack } = state;
       return {
         ...state,
-        trackOrder: state.trackOrder.filter(id => !actionIds.includes(id)),
+        trackOrder: state.trackOrder.filter(
+          trackId => !actionIds.includes(trackId)
+        ),
         currentTrack: actionIds.includes(currentTrack) ? null : currentTrack,
         tracks: filterObject(
           state.tracks,
-          (track, id) => !action.ids.includes(id)
-        )
+          (track, trackId) => !action.ids.includes(trackId)
+        ),
+        // TODO: This could probably be made to work, but we clear it just to be safe.
+        lastSelectedIndex: null
       };
     case REVERSE_LIST:
       return {
         ...state,
-        trackOrder: [...state.trackOrder].reverse()
+        trackOrder: [...state.trackOrder].reverse(),
+        // TODO: This could probably be made to work, but we clear it just to be safe.
+        lastSelectedIndex: null
       };
     case RANDOMIZE_LIST:
       return {
@@ -106,7 +141,9 @@ const playlist = (state = defaultPlaylistState, action) => {
             duration: null,
             url: action.url
           }
-        }
+        },
+        // TODO: This could probably be made to work, but we clear it just to be safe.
+        lastSelectedIndex: null
       };
     case SET_MEDIA:
       return {
@@ -141,12 +178,11 @@ const playlist = (state = defaultPlaylistState, action) => {
         ...state,
         trackOrder: moveSelected(
           state.trackOrder,
-          i => {
-            const id = state.trackOrder[i];
-            return state.tracks[id].selected;
-          },
+          i => state.tracks[state.trackOrder[i]].selected,
           action.offset
-        )
+        ),
+        // TODO: This could probably be made to work, but we clear it just to be safe.
+        lastSelectedIndex: null
       };
     default:
       return state;

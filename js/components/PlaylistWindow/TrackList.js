@@ -34,7 +34,7 @@ class TrackList extends React.Component {
 
   _renderTracks(format) {
     return this.props.trackIds.map((id, i) => (
-      <TrackCell key={id} id={id} onMouseDown={this._handleClick}>
+      <TrackCell key={id} id={id} index={i} onMouseDown={this._handleClick}>
         {format(id, i)}
       </TrackCell>
     ));

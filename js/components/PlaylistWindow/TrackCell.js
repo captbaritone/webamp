@@ -4,6 +4,7 @@ import classnames from "classnames";
 import {
   CLICKED_TRACK,
   CTRL_CLICKED_TRACK,
+  SHIFT_CLICKED_TRACK,
   PLAY_TRACK
 } from "../../actionTypes";
 import { getCurrentTrackId } from "../../selectors";
@@ -14,7 +15,6 @@ const TrackCell = props => {
     selected,
     current,
     clickTrack,
-    ctrlClickTrack,
     playTrack,
     children,
     onMouseDown
@@ -30,7 +30,7 @@ const TrackCell = props => {
       onMouseDown={onMouseDown}
       onClick={clickTrack}
       onDoubleClick={playTrack}
-      onContextMenu={ctrlClickTrack}
+      onContextMenu={clickTrack}
     >
       {children}
     </div>
@@ -45,14 +45,18 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  clickTrack: () => dispatch({ type: CLICKED_TRACK, id: ownProps.id }),
-  ctrlClickTrack: e => {
-    if (e.ctrlKey) {
+  clickTrack: e => {
+    if (e.shiftKey) {
       e.preventDefault();
-      return dispatch({ type: CTRL_CLICKED_TRACK, id: ownProps.id });
+      return dispatch({ type: SHIFT_CLICKED_TRACK, index: ownProps.index });
+    } else if (e.metaKey) {
+      e.preventDefault();
+      return dispatch({ type: CTRL_CLICKED_TRACK, index: ownProps.index });
+    } else if (e.ctrlKey) {
+      e.preventDefault();
+      return dispatch({ type: CTRL_CLICKED_TRACK, index: ownProps.index });
     }
-    return null;
-    // TODO: We need to spawn our own context menu
+    return dispatch({ type: CLICKED_TRACK, index: ownProps.index });
   },
   playTrack: () => dispatch({ type: PLAY_TRACK, id: ownProps.id })
 });
