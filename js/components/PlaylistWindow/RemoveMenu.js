@@ -1,7 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
-import { REMOVE_ALL_TRACKS } from "../../actionTypes";
-import { cropPlaylist, removeSelectedTracks } from "../../actionCreators";
+import {
+  cropPlaylist,
+  removeSelectedTracks,
+  removeAllTracks
+} from "../../actionCreators";
 import PlaylistMenu from "./PlaylistMenu";
 
 /* eslint-disable no-alert */
@@ -20,7 +23,7 @@ const RemoveMenu = props => (
 
 const mapDispatchToProps = {
   removeSelected: removeSelectedTracks,
-  removeAll: () => ({ type: REMOVE_ALL_TRACKS }),
+  removeAll: removeAllTracks,
   crop: cropPlaylist
 };
 export default connect(null, mapDispatchToProps)(RemoveMenu);
