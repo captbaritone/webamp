@@ -9,7 +9,7 @@ import Media from "./media";
 import {
   setSkinFromUrl,
   loadMediaFromUrl,
-  loadFileFromReference
+  loadFilesFromReferences
 } from "./actionCreators";
 
 import { SET_AVALIABLE_SKINS } from "./actionTypes";
@@ -34,9 +34,7 @@ class Winamp {
     );
 
     this.fileInput.addEventListener("change", e => {
-      if (e.target.files[0]) {
-        this.store.dispatch(loadFileFromReference(e.target.files[0], true));
-      }
+      this.store.dispatch(loadFilesFromReferences(e.target.files));
     });
 
     if (this.options.initialTrack && this.options.initialTrack.url) {
@@ -44,7 +42,7 @@ class Winamp {
         loadMediaFromUrl(
           this.options.initialTrack.url,
           this.options.initialTrack.name,
-          false
+          "BUFFER"
         )
       );
     }
@@ -57,10 +55,6 @@ class Winamp {
     this.store.dispatch(setSkinFromUrl(this.options.initialSkin.url));
 
     new Hotkeys(this.fileInput, this.store);
-  }
-
-  loadTrackUrl(url, name) {
-    this.store.dispatch(loadMediaFromUrl(url, name));
   }
 }
 

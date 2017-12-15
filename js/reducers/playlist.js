@@ -8,13 +8,15 @@ import {
   INVERT_SELECTION,
   REMOVE_ALL_TRACKS,
   REMOVE_TRACKS,
-  LOAD_AUDIO_URL,
+  ADD_TRACK_FROM_URL,
   REVERSE_LIST,
   RANDOMIZE_LIST,
   SET_TRACK_ORDER,
   PLAY_TRACK,
+  BUFFER_TRACK,
   DRAG_SELECTED,
-  SET_MEDIA_TAGS
+  SET_MEDIA_TAGS,
+  SET_MEDIA_DURATION
 } from "../actionTypes";
 
 import { shuffle, moveSelected, mapObject, filterObject } from "../utils";
@@ -128,11 +130,10 @@ const playlist = (state = defaultPlaylistState, action) => {
     case SET_TRACK_ORDER:
       const { trackOrder } = action;
       return { ...state, trackOrder };
-    case LOAD_AUDIO_URL:
+    case ADD_TRACK_FROM_URL:
       return {
         ...state,
         trackOrder: [...state.trackOrder, Number(action.id)],
-        currentTrack: action.id,
         tracks: {
           ...state.tracks,
           [action.id]: {
@@ -168,7 +169,19 @@ const playlist = (state = defaultPlaylistState, action) => {
           }
         }
       };
+    case SET_MEDIA_DURATION:
+      return {
+        ...state,
+        tracks: {
+          ...state.tracks,
+          [action.id]: {
+            ...state.tracks[action.id],
+            duration: action.duration
+          }
+        }
+      };
     case PLAY_TRACK:
+    case BUFFER_TRACK:
       return {
         ...state,
         currentTrack: action.id

@@ -1,7 +1,6 @@
 import {
   IS_PLAYING,
   IS_STOPPED,
-  LOAD_AUDIO_URL,
   PAUSE,
   PLAY,
   SEEK_TO_PERCENT_COMPLETE,
@@ -15,7 +14,8 @@ import {
   UPDATE_TIME_ELAPSED,
   SET_EQ_OFF,
   SET_EQ_ON,
-  PLAY_TRACK
+  PLAY_TRACK,
+  BUFFER_TRACK
 } from "./actionTypes";
 import { next as nextTrack } from "./actionCreators";
 import { getCurrentTrackId } from "./selectors";
@@ -84,12 +84,19 @@ export default media => store => {
       case SEEK_TO_PERCENT_COMPLETE:
         media.seekToPercentComplete(action.percent);
         break;
-      case LOAD_AUDIO_URL:
-        media.loadFromUrl(action.url, action.name, action.autoPlay);
-        break;
       case PLAY_TRACK:
-        const track = store.getState().playlist.tracks[action.id];
-        media.loadFromUrl(track.url, track.title, true);
+        media.loadFromUrl(
+          store.getState().playlist.tracks[action.id].url,
+          action.name,
+          true
+        );
+        break;
+      case BUFFER_TRACK:
+        media.loadFromUrl(
+          store.getState().playlist.tracks[action.id].url,
+          action.name,
+          false
+        );
         break;
       case SET_BAND_VALUE:
         if (action.band === "preamp") {

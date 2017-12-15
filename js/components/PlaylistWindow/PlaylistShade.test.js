@@ -21,7 +21,7 @@ describe("PlaylistShade", () => {
   });
 
   it("renders to snapshot", () => {
-    store.dispatch(loadMediaFromUrl("http://example.com", "Some Name", false));
+    store.dispatch(loadMediaFromUrl("http://example.com", "Some Name", "NONE"));
     const tree = renderer
       .create(
         <Provider store={store}>
