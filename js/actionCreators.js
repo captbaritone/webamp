@@ -20,7 +20,7 @@ import {
 } from "./utils";
 import {
   CLOSE_WINAMP,
-  LOAD_AUDIO_URL,
+  ADD_TRACK_FROM_URL,
   OPEN_FILE_DIALOG,
   SEEK_TO_PERCENT_COMPLETE,
   SET_BALANCE,
@@ -44,9 +44,11 @@ import {
   SET_TRACK_ORDER,
   TOGGLE_VISUALIZER_STYLE,
   PLAY_TRACK,
+  BUFFER_TRACK,
   SET_PLAYLIST_SCROLL_POSITION,
   DRAG_SELECTED,
-  SET_MEDIA_TAGS
+  SET_MEDIA_TAGS,
+  SET_MEDIA_DURATION
 } from "./actionTypes";
 
 function playRandomTrack() {
@@ -168,9 +170,18 @@ function setEqFromFile(file) {
     });
   };
 }
+
+export function loadFilesFromReferences(fileReferences) {
+  return dispatch => {
+    Array.from(fileReferences).forEach((file, i) => {
+      dispatch(loadFileFromReference(file, i === 0 ? "PLAY" : "NONE"));
+    });
+  };
+}
+
 const SKIN_FILENAME_MATCHER = new RegExp("(wsz|zip)$", "i");
 const EQF_FILENAME_MATCHER = new RegExp("eqf$", "i");
-export function loadFileFromReference(fileReference) {
+export function loadFileFromReference(fileReference, priority) {
   return dispatch => {
     const file = new MyFile();
     file.setFileReference(fileReference);
@@ -181,9 +192,24 @@ export function loadFileFromReference(fileReference) {
     } else {
       const id = uniqueId();
       const url = URL.createObjectURL(fileReference);
-      dispatch(_loadMediaFromUrl(url, fileReference.name, true, id));
+      dispatch(_addTrackFromUrl(url, fileReference.name, id, priority));
       dispatch(fetchMediaTags(fileReference, id));
     }
+  };
+}
+
+export function fetchMediaDuration(url, id) {
+  return dispatch => {
+    // TODO: Does this actually stop downloading the file once it's
+    // got the duration?
+    const audio = document.createElement("audio");
+    const durationChange = () => {
+      const { duration } = audio;
+      dispatch({ type: SET_MEDIA_DURATION, duration, id });
+      audio.removeEventListener("durationchange", durationChange);
+    };
+    audio.addEventListener("durationchange", durationChange);
+    audio.src = url;
   };
 }
 
@@ -192,14 +218,28 @@ function uniqueId() {
   return counter++;
 }
 
-export function _loadMediaFromUrl(url, name, autoPlay, id) {
-  return { type: LOAD_AUDIO_URL, url, name, autoPlay, id };
+export function _addTrackFromUrl(url, name, id, priority) {
+  return dispatch => {
+    dispatch({ type: ADD_TRACK_FROM_URL, url, name, id });
+    switch (priority) {
+      case "BUFFER":
+        dispatch({ type: BUFFER_TRACK, name, id });
+        break;
+      case "PLAY":
+        dispatch({ type: PLAY_TRACK, name, id });
+        break;
+      default:
+        // If we're not going to load this right away,
+        // we should fetch duration on our own
+        dispatch(fetchMediaDuration(url, id));
+    }
+  };
 }
 
-export function loadMediaFromUrl(url, name, autoPlay) {
+export function loadMediaFromUrl(url, name, priority) {
   return dispatch => {
     const id = uniqueId();
-    dispatch(_loadMediaFromUrl(url, name, autoPlay, id));
+    dispatch(_addTrackFromUrl(url, name, id, priority));
     dispatch(fetchMediaTags(url, id));
   };
 }

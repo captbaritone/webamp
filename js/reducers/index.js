@@ -38,7 +38,7 @@ import {
   PLAYLIST_SIZE_CHANGED,
   SET_AVALIABLE_SKINS,
   LOAD_AUDIO_FILE,
-  LOAD_AUDIO_URL
+  ADD_TRACK_FROM_URL
 } from "../actionTypes";
 
 import playlist from "./playlist";
@@ -232,7 +232,7 @@ const media = (state, action) => {
     case UPDATE_TIME_ELAPSED:
       return { ...state, timeElapsed: action.elapsed };
     case LOAD_AUDIO_FILE:
-    case LOAD_AUDIO_URL:
+    case ADD_TRACK_FROM_URL:
       return {
         ...state,
         timeElapsed: 0,

@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { loadFileFromReference } from "../actionCreators";
+import { loadFilesFromReferences } from "../actionCreators";
 
 export class DropTarget extends React.Component {
   constructor(props) {
@@ -17,14 +17,12 @@ export class DropTarget extends React.Component {
   handleDrop(e) {
     this.supress(e);
     const { files } = e.dataTransfer;
-    if (files[0]) {
-      this.props.loadFileFromReference(files[0]);
-    }
+    this.props.loadFilesFromReferences(files);
   }
 
   render() {
     // eslint-disable-next-line no-shadow, no-unused-vars
-    const { loadFileFromReference, ...passThroughProps } = this.props;
+    const { loadFilesFromReferences, ...passThroughProps } = this.props;
     return (
       <div
         {...passThroughProps}
@@ -36,4 +34,4 @@ export class DropTarget extends React.Component {
   }
 }
 
-export default connect(null, { loadFileFromReference })(DropTarget);
+export default connect(null, { loadFilesFromReferences })(DropTarget);
