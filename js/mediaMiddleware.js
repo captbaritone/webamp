@@ -21,6 +21,13 @@ import { next as nextTrack } from "./actionCreators";
 import { getCurrentTrackId } from "./selectors";
 
 export default media => store => {
+  const { media: { volume, balance } } = store.getState();
+
+  // Ensure the default state is the canonical value.
+  media.setVolume(volume);
+  media.setBalance(balance);
+  // TODO: Ensure other values like bands and preamp are in sync
+
   media.addEventListener("timeupdate", () => {
     store.dispatch({
       type: UPDATE_TIME_ELAPSED,
@@ -57,6 +64,7 @@ export default media => store => {
   });
 
   return next => action => {
+    // TODO: Consider doing this after the action, and using the state as the source of truth.
     switch (action.type) {
       case PLAY:
         media.play();
