@@ -167,10 +167,6 @@ export default class Media {
   }
 
   /* Actions */
-  previous() {
-    // Implement this when we support playlists
-  }
-
   play() {
     this._source.play();
   }
