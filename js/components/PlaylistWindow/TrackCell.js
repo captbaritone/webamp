@@ -63,6 +63,7 @@ class TrackCell extends React.Component {
       <div
         className={classnames({ selected, current })}
         style={style}
+        onClick={e => e.stopPropagation()}
         onMouseDown={this._onMouseDown}
         onContextMenu={e => e.preventDefault()}
         onDoubleClick={onDoubleClick}
