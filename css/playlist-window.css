@@ -60,6 +60,9 @@
   line-height: 13px;
   letter-spacing: 0.5px;
   user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 
 #winamp2-js .playlist-track-numbers > div,
