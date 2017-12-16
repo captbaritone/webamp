@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 
 import { getTimeStr } from "../../utils";
 import { getVisibleTrackIds, getScrollOffset } from "../../selectors";
+import { SELECT_ZERO } from "../../actionTypes";
 import TrackCell from "./TrackCell";
 import TrackTitle from "./TrackTitle";
 
@@ -22,7 +23,11 @@ class TrackList extends React.Component {
   render() {
     const { tracks, offset } = this.props;
     return (
-      <div className="playlist-tracks">
+      <div
+        className="playlist-tracks"
+        style={{ height: "100%" }}
+        onClick={this.props.selectZero}
+      >
         <div className="playlist-track-numbers">
           {this._renderTracks((id, i) => `${i + 1 + offset}.`)}
         </div>
@@ -37,10 +42,14 @@ class TrackList extends React.Component {
   }
 }
 
+const mapDispatchToProps = {
+  selectZero: () => ({ type: SELECT_ZERO })
+};
+
 const mapStateToProps = state => ({
   offset: getScrollOffset(state),
   trackIds: getVisibleTrackIds(state),
   tracks: state.playlist.tracks
 });
 
-export default connect(mapStateToProps)(TrackList);
+export default connect(mapStateToProps, mapDispatchToProps)(TrackList);
