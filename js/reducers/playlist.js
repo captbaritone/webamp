@@ -61,11 +61,12 @@ const playlist = (state = defaultPlaylistState, action) => {
       const clickedIndex = action.index;
       const start = Math.min(clickedIndex, state.lastSelectedIndex);
       const end = Math.max(clickedIndex, state.lastSelectedIndex);
+      const selected = new Set(state.trackOrder.slice(start, end + 1));
       return {
         ...state,
-        tracks: state.trackOrder.map((trackId, i) => ({
-          ...state.tracks[trackId],
-          selected: i >= start && i <= end
+        tracks: mapObject(state.tracks, (track, trackId) => ({
+          ...track,
+          selected: selected.has(Number(trackId))
         }))
       };
     case SELECT_ALL:
