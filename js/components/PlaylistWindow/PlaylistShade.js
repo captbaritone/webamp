@@ -20,57 +20,65 @@ import ResizeTarget from "./ResizeTarget";
 
 import { getOrderedTracks, getMediaText } from "../../selectors";
 
-const PlaylistShade = props => {
-  const {
-    toggleShade,
-    close,
-    focusPlaylist,
-    playlistSize,
-    focused,
-    name,
-    length
-  } = props;
+class PlaylistShade extends React.Component {
+  _addedWidth() {
+    return this.props.playlistSize[0] * PLAYLIST_RESIZE_SEGMENT_WIDTH;
+  }
+  _trimmedName() {
+    const { name } = this.props;
+    if (name == null) {
+      return "[No file]";
+    }
 
-  const addedWidth = playlistSize[0] * PLAYLIST_RESIZE_SEGMENT_WIDTH;
-  const style = {
-    width: `${MIN_PLAYLIST_WINDOW_WIDTH + addedWidth}px`
-  };
-  const MIN_NAME_WIDTH = 205;
+    const MIN_NAME_WIDTH = 205;
 
-  const nameLength = (MIN_NAME_WIDTH + addedWidth) / CHARACTER_WIDTH;
-  const trimmedName =
-    name.length > nameLength
+    const nameLength = (MIN_NAME_WIDTH + this._addedWidth()) / CHARACTER_WIDTH;
+    return name.length > nameLength
       ? name.slice(0, nameLength - 1) + UTF8_ELLIPSIS
       : name;
+  }
 
-  const classes = classnames("window", "draggable", {
-    selected: focused === WINDOWS.PLAYLIST
-  });
+  _time() {
+    const { length, name } = this.props;
+    return name == null ? "" : getTimeStr(length);
+  }
 
-  return (
-    <div
-      id="playlist-window-shade"
-      className={classes}
-      style={{ width: style.width }}
-      onMouseDown={focusPlaylist}
-    >
-      <div className="left">
-        <div className="right draggable">
-          <CharacterString id="playlist-shade-track-title">
-            {trimmedName}
-          </CharacterString>
-          {/* TODO: Ellipisize */}
-          <CharacterString id="playlist-shade-time">
-            {getTimeStr(length)}
-          </CharacterString>
-          <ResizeTarget widthOnly />
-          <div id="playlist-shade-button" onClick={toggleShade} />
-          <div id="playlist-close-button" onClick={close} />
+  render() {
+    const { toggleShade, close, focusPlaylist, focused } = this.props;
+
+    const style = {
+      width: `${MIN_PLAYLIST_WINDOW_WIDTH + this._addedWidth()}px`
+    };
+
+    const classes = classnames("window", "draggable", {
+      selected: focused === WINDOWS.PLAYLIST
+    });
+
+    return (
+      <div
+        id="playlist-window-shade"
+        className={classes}
+        style={{ width: style.width }}
+        onMouseDown={focusPlaylist}
+      >
+        <div className="left">
+          <div className="right draggable">
+            <CharacterString id="playlist-shade-track-title">
+              {this._trimmedName()}
+            </CharacterString>
+            {/* TODO: Ellipisize */}
+            <CharacterString id="playlist-shade-time">
+              {this._time()}
+            </CharacterString>
+            <ResizeTarget widthOnly />
+            <div id="playlist-shade-button" onClick={toggleShade} />
+            <div id="playlist-close-button" onClick={close} />
+          </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 const mapDispatchToProps = dispatch => ({
   focusPlaylist: () =>
