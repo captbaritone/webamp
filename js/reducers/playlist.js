@@ -206,7 +206,11 @@ const playlist = (state = defaultPlaylistState, action) => {
 export default playlist;
 
 export const getTrackDisplayName = (state, id) => {
-  const { artist, title } = state.tracks[id];
+  const track = state.tracks[id];
+  if (track == null) {
+    return null;
+  }
+  const { artist, title } = track;
   if (artist && title) {
     return `${artist} - ${title}`;
   } else if (title) {

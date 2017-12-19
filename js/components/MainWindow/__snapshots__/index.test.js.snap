@@ -253,12 +253,12 @@ exports[`MainWindow renders to snapshot 1`] = `
     step="1"
     style={
       Object {
-        "backgroundPosition": "0 -195px",
+        "backgroundPosition": "0 -315px",
       }
     }
     title="Volume Bar"
     type="range"
-    value={50}
+    value={78}
   />
   <input
     className={undefined}

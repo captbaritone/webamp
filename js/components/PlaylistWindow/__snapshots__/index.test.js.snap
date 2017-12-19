@@ -51,6 +51,12 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
     >
       <div
         className="playlist-tracks"
+        onClick={[Function]}
+        style={
+          Object {
+            "height": "100%",
+          }
+        }
       >
         <div
           className="playlist-track-numbers"
