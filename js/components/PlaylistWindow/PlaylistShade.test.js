@@ -6,8 +6,6 @@ const media = {
   _analyser: null
 };
 
-window.requestAnimationFrame = () => {};
-
 import React from "react";
 import { Provider } from "react-redux";
 import renderer from "react-test-renderer";
