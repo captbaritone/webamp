@@ -155,7 +155,9 @@ export const getMediaText = createSelector(
   getCurrentTrackDisplayName,
   getDuration,
   (trackNumber, name, duration) =>
-    `${trackNumber}. ${name} (${getTimeStr(duration)})  ***  `
+    name == null
+      ? null
+      : `${trackNumber}. ${name} (${getTimeStr(duration)})  ***  `
 );
 
 const getNumberOfTracks = state => getTrackOrder(state).length;
