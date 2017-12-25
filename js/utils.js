@@ -10,14 +10,20 @@ export const getTimeObj = time => {
   };
 };
 
-export const getTimeStr = time => {
-  const timeObj = getTimeObj(time);
+export const getTimeStr = (time, truncate = true) => {
+  const {
+    minutesFirstDigit,
+    minutesSecondDigit,
+    secondsFirstDigit,
+    secondsSecondDigit
+  } = getTimeObj(time);
+
   return [
-    timeObj.minutesFirstDigit,
-    timeObj.minutesSecondDigit,
+    truncate ? minutesFirstDigit || "" : minutesFirstDigit,
+    minutesSecondDigit,
     ":",
-    timeObj.secondsFirstDigit,
-    timeObj.secondsSecondDigit
+    secondsFirstDigit,
+    secondsSecondDigit
   ].join("");
 };
 
