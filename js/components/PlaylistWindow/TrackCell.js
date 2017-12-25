@@ -1,14 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
-import { TRACK_HEIGHT } from "../../constants";
 import {
   CLICKED_TRACK,
   CTRL_CLICKED_TRACK,
   SHIFT_CLICKED_TRACK,
   PLAY_TRACK
 } from "../../actionTypes";
-import { dragSelected } from "../../actionCreators";
 import { getCurrentTrackId } from "../../selectors";
 
 class TrackCell extends React.Component {
@@ -30,21 +28,7 @@ class TrackCell extends React.Component {
       this.props.click(e);
     }
 
-    const mouseStart = e.clientY;
-    let lastDiff = 0;
-    const handleMouseMove = ee => {
-      const proposedDiff = Math.floor((ee.clientY - mouseStart) / TRACK_HEIGHT);
-      if (proposedDiff !== lastDiff) {
-        const diffDiff = proposedDiff - lastDiff;
-        this.props.dragSelected(diffDiff);
-        lastDiff = proposedDiff;
-      }
-    };
-
-    window.addEventListener("mouseup", () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    });
-    window.addEventListener("mousemove", handleMouseMove);
+    this.props.handleMoveClick(e);
   }
 
   render() {
@@ -91,7 +75,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     return dispatch({ type: CTRL_CLICKED_TRACK, index: ownProps.index });
   },
   click: () => dispatch({ type: CLICKED_TRACK, index: ownProps.index }),
-  dragSelected: offset => dispatch(dragSelected(offset)),
   onDoubleClick: () => dispatch({ type: PLAY_TRACK, id: ownProps.id })
 });
 
