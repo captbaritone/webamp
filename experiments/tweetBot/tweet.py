@@ -26,6 +26,32 @@ from collections import defaultdict
 
 from config import CONFIG
 
+LOCAL_LOG_PATH = "./action_log.json";
+
+LOCKED = False
+
+class ActionLog():
+    def __init__(self):
+        s3 = boto3.resource('s3')
+        s3.meta.client.download_file('winamp2-js-skins', "action_log.json", LOCAL_LOG_PATH)
+        with open(LOCAL_LOG_PATH, 'r') as f:
+            self.action_log = json.load(f)
+
+    def __enter__(self):
+        global LOCKED
+        if LOCKED:
+            raise Exception("Tried to access the action log while locked")
+        LOCKED = True
+        return self.action_log
+
+    def __exit__(self, *args):
+        global LOCKED
+        with open(LOCAL_LOG_PATH, 'w') as f:
+            json.dump(self.action_log, f)
+        s3 = boto3.resource('s3')
+        s3.meta.client.upload_file(LOCAL_LOG_PATH, 'winamp2-js-skins', "action_log.json")
+        LOCKED = False
+
 
 def tweet(text, img_path):
     api = twitter.Api(
@@ -89,11 +115,8 @@ def find_skin_with_screenshot():
 
 
 def dispatch(action):
-    with open("./action_log.json", 'r') as f:
-        action_log = json.load(f)
-    action_log.append(action)
-    with open("./action_log.json", 'w') as f:
-        json.dump(action_log, f)
+    with ActionLog() as action_log:
+        action_log.append(action)
 
 
 def get_state():
@@ -102,8 +125,7 @@ def get_state():
 
     skins = defaultdict(get_default_skin)
 
-    with open("./action_log.json", 'r') as f:
-        action_log = json.load(f)
+    with ActionLog() as action_log:
         for action in action_log:
             if(action['type'] == "FOUND_SCREENSHOT"):
                 skin = skins[action['md5']]
