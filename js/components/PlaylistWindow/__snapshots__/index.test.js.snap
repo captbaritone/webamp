@@ -167,11 +167,6 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
             0
           </div>
           <div
-            className=" character character-48"
-          >
-            0
-          </div>
-          <div
             className=" character character-58"
           >
             :
@@ -190,11 +185,6 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
             className=" character character-47"
           >
             /
-          </div>
-          <div
-            className=" character character-48"
-          >
-            0
           </div>
           <div
             className=" character character-48"

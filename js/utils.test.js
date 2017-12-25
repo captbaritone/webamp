@@ -34,9 +34,9 @@ describe("getTimeStr", () => {
     const expected = "20:34";
     expect(actual).toEqual(expected);
   });
-  it("pads with zeros", () => {
+  it("pads with only one zero", () => {
     const actual = getTimeStr(5);
-    const expected = "00:05";
+    const expected = "0:05";
     expect(actual).toEqual(expected);
   });
   it("truncates extra minutes", () => {

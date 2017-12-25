@@ -25,8 +25,8 @@ export const getBalanceText = balance => {
 export const getVolumeText = volume => `Volume: ${volume}%`;
 
 export const getPositionText = (duration, seekToPercent) => {
-  const newElapsedStr = getTimeStr(duration * seekToPercent / 100);
-  const durationStr = getTimeStr(duration);
+  const newElapsedStr = getTimeStr(duration * seekToPercent / 100, false);
+  const durationStr = getTimeStr(duration, false);
   return `Seek to: ${newElapsedStr}/${durationStr} (${seekToPercent}%)`;
 };
 
