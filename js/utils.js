@@ -187,3 +187,9 @@ export const filterObject = (obj, predicate) =>
     }
     return newObj;
   }, {});
+
+export const spliceIn = (original, start, newValues) => {
+  const newArr = [...original];
+  newArr.splice(start, 0, ...newValues);
+  return newArr;
+};
