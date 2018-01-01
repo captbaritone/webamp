@@ -9,7 +9,8 @@ import {
   normalize,
   denormalize,
   segment,
-  moveSelected
+  moveSelected,
+  spliceIn
 } from "./utils";
 
 const fixture = filename =>
@@ -213,5 +214,18 @@ describe("moveSelected", () => {
   it("works for a simple negative example", () => {
     const arr = [false, false, true];
     expect(moveSelected(arr, i => arr[i], -1)).toEqual([false, true, false]);
+  });
+});
+
+describe("spliceIn", () => {
+  it("is immutable", () => {
+    const original = [1, 2, 3];
+    const spliced = spliceIn(original, 1, [200]);
+    expect(spliced).not.toBe(original);
+    expect(original).toEqual([1, 2, 3]);
+  });
+  it("adds values at the given index", () => {
+    const spliced = spliceIn([1, 2, 3], 1, [200]);
+    expect(spliced).toEqual([1, 200, 2, 3]);
   });
 });
