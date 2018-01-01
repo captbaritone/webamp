@@ -51,12 +51,12 @@ class PlaylistWindow extends React.Component {
 
   _handleDrop(e, targetCoords) {
     const top = e.clientY - targetCoords.y;
-    /*const startIndex = */ clamp(
-      (top - 23) % TRACK_HEIGHT,
+    const atIndex = clamp(
+      Math.round((top - 23) / TRACK_HEIGHT),
       0,
-      this.props.maxTrackIndex
+      this.props.maxTrackIndex + 1
     );
-    this.props.loadFilesFromReferences(e /*, startIndex*/);
+    this.props.loadFilesFromReferences(e, atIndex);
   }
 
   render() {

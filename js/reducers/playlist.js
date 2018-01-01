@@ -132,9 +132,15 @@ const playlist = (state = defaultPlaylistState, action) => {
       const { trackOrder } = action;
       return { ...state, trackOrder };
     case ADD_TRACK_FROM_URL:
+      const atIndex =
+        action.atIndex == null ? state.trackOrder.length : action.atIndex;
       return {
         ...state,
-        trackOrder: [...state.trackOrder, Number(action.id)],
+        trackOrder: [
+          ...state.trackOrder.slice(0, atIndex),
+          Number(action.id),
+          ...state.trackOrder.slice(atIndex)
+        ],
         tracks: {
           ...state.tracks,
           [action.id]: {
