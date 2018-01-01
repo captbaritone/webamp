@@ -2,9 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
 import { getTimeObj } from "../utils";
-import Character from "./Character";
-
 import { TOGGLE_TIME_MODE } from "../actionTypes";
+import Character from "./Character";
 
 import "../../css/mini-time.css";
 

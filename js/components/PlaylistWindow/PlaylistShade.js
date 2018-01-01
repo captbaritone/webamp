@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
+import { getOrderedTracks, getMediaText } from "../../selectors";
 import { getTimeStr } from "../../utils";
 import {
   TOGGLE_PLAYLIST_WINDOW,
@@ -17,8 +18,6 @@ import {
 } from "../../constants";
 import CharacterString from "../CharacterString";
 import ResizeTarget from "./ResizeTarget";
-
-import { getOrderedTracks, getMediaText } from "../../selectors";
 
 class PlaylistShade extends React.Component {
   _addedWidth() {

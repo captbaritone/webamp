@@ -1,6 +1,5 @@
 import "babel-polyfill";
-import Winamp from "./winamp";
-import Browser from "./browser";
+import Raven from "raven-js";
 import base from "../skins/base-2.91.wsz";
 import osx from "../skins/MacOSXAqua1-5.wsz";
 import topaz from "../skins/TopazAmp1-2.wsz";
@@ -8,7 +7,8 @@ import visor from "../skins/Vizor1-01.wsz";
 import xmms from "../skins/XMMS-Turquoise.wsz";
 import zaxon from "../skins/ZaxonRemake1-0.wsz";
 import green from "../skins/Green-Dimension-V2.wsz";
-import Raven from "raven-js";
+import Winamp from "./winamp";
+import Browser from "./browser";
 
 import {
   hideAbout,

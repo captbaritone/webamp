@@ -1,5 +1,5 @@
-const config = require("./webpack.config");
 const webpack = require("webpack");
+const config = require("./webpack.config");
 
 const cdnUrl = process.env.CDN_URL || "/";
 

@@ -1,5 +1,5 @@
-import SKIN_SPRITES from "./skinSprites";
 import JSZip from "../node_modules/jszip/dist/jszip"; // Hack
+import SKIN_SPRITES from "./skinSprites";
 import regionParser from "./regionParser";
 import { parseViscolors, parseIni } from "./utils";
 

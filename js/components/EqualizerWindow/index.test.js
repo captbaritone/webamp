@@ -1,3 +1,9 @@
+import React from "react";
+import { Provider } from "react-redux";
+import renderer from "react-test-renderer";
+import getStore from "../../store";
+
+import EqualizerWindow from "./index";
 const media = {
   addEventListener: jest.fn(),
   setVolume: jest.fn(),
@@ -15,13 +21,6 @@ function createNodeMock(element) {
   }
   return null;
 }
-
-import React from "react";
-import { Provider } from "react-redux";
-import renderer from "react-test-renderer";
-import getStore from "../../store";
-
-import EqualizerWindow from "./index";
 
 describe("EqualizerWindow", () => {
   let store;
