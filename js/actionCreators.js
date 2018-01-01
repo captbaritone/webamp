@@ -171,13 +171,13 @@ function setEqFromFile(file) {
   };
 }
 
-function addTracksFromReferences(fileReferences) {
+function addTracksFromReferences(fileReferences, atIndex) {
   return dispatch => {
     Array.from(fileReferences).forEach((file, i) => {
       const priority = i === 0 ? "PLAY" : "NONE";
       const id = uniqueId();
       const url = URL.createObjectURL(file);
-      dispatch(_addTrackFromUrl(url, file.name, id, priority));
+      dispatch(_addTrackFromUrl(url, file.name, id, priority, atIndex + i));
       dispatch(fetchMediaTags(file, id));
     });
   };
@@ -185,7 +185,7 @@ function addTracksFromReferences(fileReferences) {
 
 const SKIN_FILENAME_MATCHER = new RegExp("(wsz|zip)$", "i");
 const EQF_FILENAME_MATCHER = new RegExp("eqf$", "i");
-export function loadFilesFromReferences(fileReferences) {
+export function loadFilesFromReferences(fileReferences, atIndex = null) {
   return dispatch => {
     if (fileReferences.length < 1) {
       return;
@@ -201,7 +201,7 @@ export function loadFilesFromReferences(fileReferences) {
         return;
       }
     }
-    dispatch(addTracksFromReferences(fileReferences));
+    dispatch(addTracksFromReferences(fileReferences, atIndex));
   };
 }
 
@@ -225,9 +225,9 @@ function uniqueId() {
   return counter++;
 }
 
-export function _addTrackFromUrl(url, name, id, priority) {
+function _addTrackFromUrl(url, name, id, priority, atIndex) {
   return dispatch => {
-    dispatch({ type: ADD_TRACK_FROM_URL, url, name, id });
+    dispatch({ type: ADD_TRACK_FROM_URL, url, name, id, atIndex });
     switch (priority) {
       case "BUFFER":
         dispatch({ type: BUFFER_TRACK, name, id });
