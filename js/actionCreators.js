@@ -171,30 +171,37 @@ function setEqFromFile(file) {
   };
 }
 
-export function loadFilesFromReferences(fileReferences) {
+function addTracksFromReferences(fileReferences) {
   return dispatch => {
     Array.from(fileReferences).forEach((file, i) => {
-      dispatch(loadFileFromReference(file, i === 0 ? "PLAY" : "NONE"));
+      const priority = i === 0 ? "PLAY" : "NONE";
+      const id = uniqueId();
+      const url = URL.createObjectURL(file);
+      dispatch(_addTrackFromUrl(url, file.name, id, priority));
+      dispatch(fetchMediaTags(file, id));
     });
   };
 }
 
 const SKIN_FILENAME_MATCHER = new RegExp("(wsz|zip)$", "i");
 const EQF_FILENAME_MATCHER = new RegExp("eqf$", "i");
-export function loadFileFromReference(fileReference, priority) {
+export function loadFilesFromReferences(fileReferences) {
   return dispatch => {
-    const file = new MyFile();
-    file.setFileReference(fileReference);
-    if (SKIN_FILENAME_MATCHER.test(fileReference.name)) {
-      dispatch(setSkinFromFile(file));
-    } else if (EQF_FILENAME_MATCHER.test(fileReference.name)) {
-      dispatch(setEqFromFile(file));
-    } else {
-      const id = uniqueId();
-      const url = URL.createObjectURL(fileReference);
-      dispatch(_addTrackFromUrl(url, fileReference.name, id, priority));
-      dispatch(fetchMediaTags(fileReference, id));
+    if (fileReferences.length < 1) {
+      return;
+    } else if (fileReferences.length === 1) {
+      const fileReference = fileReferences[0];
+      const file = new MyFile();
+      file.setFileReference(fileReference);
+      if (SKIN_FILENAME_MATCHER.test(fileReference.name)) {
+        dispatch(setSkinFromFile(file));
+        return;
+      } else if (EQF_FILENAME_MATCHER.test(fileReference.name)) {
+        dispatch(setEqFromFile(file));
+        return;
+      }
     }
+    dispatch(addTracksFromReferences(fileReferences));
   };
 }
 
