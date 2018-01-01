@@ -1,9 +1,9 @@
-import reducer from "./playlist";
 import {
   SHIFT_CLICKED_TRACK,
   CLICKED_TRACK,
   CTRL_CLICKED_TRACK
 } from "../actionTypes";
+import reducer from "./playlist";
 
 describe("playlist reducer", () => {
   it("can handle clicking a track", () => {

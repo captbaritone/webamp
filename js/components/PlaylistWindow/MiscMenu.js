@@ -7,8 +7,8 @@ import {
   downloadHtmlPlaylist
 } from "../../actionCreators";
 
-import PlaylistMenu from "./PlaylistMenu";
 import { ContextMenu, Hr, Node } from "../ContextMenu";
+import PlaylistMenu from "./PlaylistMenu";
 
 /* eslint-disable no-alert */
 /* TODO: This should really be kitty-corner to the upper right hand corner of the MiscMenu */

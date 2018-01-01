@@ -1,3 +1,4 @@
+import { createSelector } from "reselect";
 import { denormalize, getTimeStr, clamp, percentToIndex } from "./utils";
 import {
   BANDS,
@@ -5,7 +6,6 @@ import {
   TRACK_HEIGHT
 } from "./constants";
 import { createPlaylistURL } from "./playlistHtml";
-import { createSelector } from "reselect";
 import * as fromPlaylist from "./reducers/playlist";
 
 export const getEqfData = state => {
