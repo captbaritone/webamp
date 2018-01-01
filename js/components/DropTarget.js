@@ -1,12 +1,10 @@
 import React from "react";
-import { connect } from "react-redux";
 
-import { loadFilesFromReferences } from "../actionCreators";
-
-export class DropTarget extends React.Component {
+export default class DropTarget extends React.Component {
   constructor(props) {
     super(props);
     this.handleDrop = this.handleDrop.bind(this);
+    this._ref = this._ref.bind(this);
   }
 
   supress(e) {
@@ -16,22 +14,33 @@ export class DropTarget extends React.Component {
 
   handleDrop(e) {
     this.supress(e);
-    const { files } = e.dataTransfer;
-    this.props.loadFilesFromReferences(files);
+    if (!this._node) {
+      return;
+    }
+    const { x, y } = this._node.getBoundingClientRect();
+    this.props.handleDrop(e, { x, y });
+  }
+
+  _ref(node) {
+    this._node = node;
   }
 
   render() {
-    // eslint-disable-next-line no-shadow, no-unused-vars
-    const { loadFilesFromReferences, ...passThroughProps } = this.props;
+    const {
+      // eslint-disable-next-line no-shadow, no-unused-vars
+      loadFilesFromReferences,
+      // eslint-disable-next-line no-shadow, no-unused-vars
+      handleDrop,
+      ...passThroughProps
+    } = this.props;
     return (
       <div
         {...passThroughProps}
         onDragEnter={this.supress}
         onDragOver={this.supress}
         onDrop={this.handleDrop}
+        ref={this._ref}
       />
     );
   }
 }
-
-export default connect(null, { loadFilesFromReferences })(DropTarget);
