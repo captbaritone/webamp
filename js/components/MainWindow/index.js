@@ -3,10 +3,12 @@ import { connect } from "react-redux";
 import classnames from "classnames";
 
 import { WINDOWS } from "../../constants";
+import { loadFilesFromReferences, removeAllTracks } from "../../actionCreators";
 
 import DropTarget from "../DropTarget";
 import MiniTime from "../MiniTime";
 
+import { SET_FOCUSED_WINDOW } from "../../actionTypes";
 import ActionButtons from "./ActionButtons";
 import MainBalance from "./MainBalance";
 import Close from "./Close";
@@ -27,18 +29,22 @@ import Time from "./Time";
 import Visualizer from "./Visualizer";
 import MainVolume from "./MainVolume";
 
-import { SET_FOCUSED_WINDOW } from "../../actionTypes";
-
 import "../../../css/main-window.css";
 
 export class MainWindow extends React.Component {
   constructor(props) {
     super(props);
-    this.handleClick = this.handleClick.bind(this);
+    this._handleClick = this._handleClick.bind(this);
+    this._handleDrop = this._handleDrop.bind(this);
   }
 
-  handleClick() {
+  _handleClick() {
     this.props.setFocus();
+  }
+
+  _handleDrop(e) {
+    this.props.removeAllTracks();
+    this.props.loadFilesFromReferences(e);
   }
 
   render() {
@@ -70,7 +76,8 @@ export class MainWindow extends React.Component {
       <DropTarget
         id="main-window"
         className={className}
-        onMouseDown={this.handleClick}
+        onMouseDown={this._handleClick}
+        handleDrop={this._handleDrop}
       >
         <div id="title-bar" className="selected title-bard draggable">
           <MainContextMenu fileInput={this.props.fileInput} />
@@ -129,6 +136,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  setFocus: () => ({ type: SET_FOCUSED_WINDOW, window: WINDOWS.MAIN })
+  setFocus: () => ({ type: SET_FOCUSED_WINDOW, window: WINDOWS.MAIN }),
+  loadFilesFromReferences: e => loadFilesFromReferences(e.dataTransfer.files),
+  removeAllTracks
 };
 export default connect(mapStateToProps, mapDispatchToProps)(MainWindow);
