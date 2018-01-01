@@ -37,7 +37,6 @@ import {
   SET_PLAYLIST_SCROLL_POSITION,
   PLAYLIST_SIZE_CHANGED,
   SET_AVALIABLE_SKINS,
-  LOAD_AUDIO_FILE,
   ADD_TRACK_FROM_URL
 } from "../actionTypes";
 
@@ -231,7 +230,6 @@ const media = (state, action) => {
       return { ...state, timeMode: newMode };
     case UPDATE_TIME_ELAPSED:
       return { ...state, timeElapsed: action.elapsed };
-    case LOAD_AUDIO_FILE:
     case ADD_TRACK_FROM_URL:
       return {
         ...state,
