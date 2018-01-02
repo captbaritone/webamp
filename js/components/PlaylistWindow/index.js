@@ -175,7 +175,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   scrollUpFourTracks: () => dispatch(scrollUpFourTracks()),
   scrollDownFourTracks: () => dispatch(scrollDownFourTracks()),
   loadFilesFromReferences: (e, startIndex) =>
-    dispatch(loadFilesFromReferences(e.dataTransfer.files, startIndex))
+    dispatch(loadFilesFromReferences(e.dataTransfer.files, false, startIndex))
 });
 
 const mapStateToProps = state => {

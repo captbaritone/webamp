@@ -171,10 +171,10 @@ function setEqFromFile(file) {
   };
 }
 
-function addTracksFromReferences(fileReferences, atIndex) {
+function addTracksFromReferences(fileReferences, autoPlay, atIndex) {
   return dispatch => {
     Array.from(fileReferences).forEach((file, i) => {
-      const priority = i === 0 ? "PLAY" : "NONE";
+      const priority = i === 0 && autoPlay ? "PLAY" : "NONE";
       const id = uniqueId();
       const url = URL.createObjectURL(file);
       dispatch(_addTrackFromUrl(url, file.name, id, priority, atIndex + i));
@@ -185,7 +185,11 @@ function addTracksFromReferences(fileReferences, atIndex) {
 
 const SKIN_FILENAME_MATCHER = new RegExp("(wsz|zip)$", "i");
 const EQF_FILENAME_MATCHER = new RegExp("eqf$", "i");
-export function loadFilesFromReferences(fileReferences, atIndex = null) {
+export function loadFilesFromReferences(
+  fileReferences,
+  autoPlay = true,
+  atIndex = null
+) {
   return dispatch => {
     if (fileReferences.length < 1) {
       return;
@@ -201,7 +205,7 @@ export function loadFilesFromReferences(fileReferences, atIndex = null) {
         return;
       }
     }
-    dispatch(addTracksFromReferences(fileReferences, atIndex));
+    dispatch(addTracksFromReferences(fileReferences, autoPlay, atIndex));
   };
 }
 
