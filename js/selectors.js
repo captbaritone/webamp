@@ -103,9 +103,6 @@ export const nextTrack = (state, n = 1) => {
   return trackOrder[nextIndex];
 };
 
-export const getPlaylistScrollPosition = state =>
-  state.display.playlistScrollPosition;
-
 const BASE_WINDOW_HEIGHT = 58;
 export const getNumberOfVisibleTracks = state => {
   const { playlistSize } = state.display;
@@ -122,8 +119,26 @@ export const getOverflowTrackCount = createSelector(
     Math.max(0, trackOrder.length - numberOfVisibleTracks)
 );
 
+const _getPlaylistScrollPosition = state =>
+  state.display.playlistScrollPosition;
+
+export const getPlaylistScrollPosition = createSelector(
+  getOverflowTrackCount,
+  _getPlaylistScrollPosition,
+  (overflowTrackCount, playlistScrollPosition) => {
+    if (overflowTrackCount === 0) {
+      return 0;
+    }
+    return Math.round(
+      Math.round(overflowTrackCount * playlistScrollPosition / 100) /
+        overflowTrackCount *
+        100
+    );
+  }
+);
+
 export const getScrollOffset = createSelector(
-  getPlaylistScrollPosition,
+  _getPlaylistScrollPosition,
   getTrackOrder,
   getNumberOfVisibleTracks,
   (playlistScrollPosition, trackOrder, numberOfVisibleTracks) => {
