@@ -6,6 +6,7 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
   id="playlist-window"
   onDragEnter={[Function]}
   onDragOver={[Function]}
+  onDragStart={[Function]}
   onDrop={[Function]}
   onMouseDown={[Function]}
   style={
