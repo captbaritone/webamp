@@ -6,6 +6,7 @@ exports[`MainWindow renders to snapshot 1`] = `
   id="main-window"
   onDragEnter={[Function]}
   onDragOver={[Function]}
+  onDragStart={[Function]}
   onDrop={[Function]}
   onMouseDown={[Function]}
 >
