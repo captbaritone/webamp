@@ -70,7 +70,6 @@ const validateZip = u =>
 const config = {
   playlist: true,
   hideAbout: true,
-  noMarquee: true,
   audioUrl: null,
   initialState: {
     equalizer: {

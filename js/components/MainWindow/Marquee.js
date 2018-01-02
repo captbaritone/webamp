@@ -6,7 +6,6 @@ import { getTimeStr } from "../../utils";
 
 import { STEP_MARQUEE } from "../../actionTypes";
 import CharacterString from "../CharacterString";
-import { noMarquee } from "../../config";
 import { getMediaText } from "../../selectors";
 
 const CHAR_WIDTH = 5;
@@ -85,9 +84,7 @@ class Marquee extends React.Component {
         step();
       }, 220);
     };
-    if (!noMarquee) {
-      step();
-    }
+    step();
   }
 
   componentWillUnmount() {
