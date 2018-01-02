@@ -5,6 +5,11 @@ import reducer from "./reducers";
 import mediaMiddleware from "./mediaMiddleware";
 import analyticsMiddleware from "./analyticsMiddleware";
 import { merge } from "./utils";
+import { UPDATE_TIME_ELAPSED, STEP_MARQUEE } from "./actionTypes";
+
+const compose = composeWithDevTools({
+  actionsBlacklist: [UPDATE_TIME_ELAPSED, STEP_MARQUEE]
+});
 
 const getStore = (media, stateOverrides) => {
   let initialState;
@@ -17,9 +22,7 @@ const getStore = (media, stateOverrides) => {
   return createStore(
     reducer,
     initialState,
-    composeWithDevTools(
-      applyMiddleware(thunk, mediaMiddleware(media), analyticsMiddleware)
-    )
+    compose(applyMiddleware(thunk, mediaMiddleware(media), analyticsMiddleware))
   );
 };
 
