@@ -3,11 +3,11 @@ import { connect } from "react-redux";
 import Slider from "rc-slider/lib/Slider";
 
 import { setPlaylistScrollPosition } from "../../actionCreators";
-import { getVisibleTrackIds } from "../../selectors";
+import { getVisibleTrackIds, getPlaylistScrollPosition } from "../../selectors";
 
 const Handle = () => <div className="playlist-scrollbar-handle" />;
 
-const PlaylistWindow = props => (
+const ScrollBar = props => (
   <Slider
     className="playlist-scrollbar"
     type="range"
@@ -27,16 +27,10 @@ const mapDispatchToProps = {
     setPlaylistScrollPosition(100 - position)
 };
 
-const mapStateToProps = state => {
-  const {
-    display: { playlistScrollPosition },
-    playlist: { trackOrder }
-  } = state;
+const mapStateToProps = state => ({
+  playlistScrollPosition: getPlaylistScrollPosition(state),
+  allTracksAreVisible:
+    getVisibleTrackIds(state).length === state.playlist.length
+});
 
-  return {
-    playlistScrollPosition,
-    allTracksAreVisible: getVisibleTrackIds(state).length === trackOrder.length
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(PlaylistWindow);
+export default connect(mapStateToProps, mapDispatchToProps)(ScrollBar);
