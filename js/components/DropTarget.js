@@ -10,6 +10,8 @@ export default class DropTarget extends React.Component {
   supress(e) {
     e.stopPropagation();
     e.preventDefault();
+    e.dataTransfer.dropEffect = "copy";
+    e.dataTransfer.effectAllowed = "copyMove";
   }
 
   handleDrop(e) {
@@ -36,6 +38,7 @@ export default class DropTarget extends React.Component {
     return (
       <div
         {...passThroughProps}
+        onDragStart={this.supress}
         onDragEnter={this.supress}
         onDragOver={this.supress}
         onDrop={this.handleDrop}
