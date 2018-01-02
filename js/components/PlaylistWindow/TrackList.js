@@ -20,7 +20,7 @@ class TrackList extends React.Component {
       <TrackCell
         key={id}
         id={id}
-        index={i}
+        index={this.props.offset + i}
         handleMoveClick={this._handleMoveClick}
       >
         {format(id, i)}
