@@ -283,7 +283,6 @@ export function fetchMediaTags(file, id) {
 
 export function setSkinFromFile(skinFile) {
   return async dispatch => {
-    dispatch({ type: START_LOADING });
     const skinData = await skinParser(skinFile);
     dispatch({
       type: SET_SKIN_DATA,
