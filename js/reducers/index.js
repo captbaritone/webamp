@@ -11,7 +11,6 @@ import {
   SET_SCRUB_POSITION,
   SET_SKIN_DATA,
   SET_VOLUME,
-  START_LOADING,
   START_WORKING,
   STEP_MARQUEE,
   STOP_WORKING,
@@ -128,8 +127,6 @@ const display = (state = defaultDisplayState, action) => {
       return { ...state, working: false };
     case START_WORKING:
       return { ...state, working: true };
-    case START_LOADING:
-      return { ...state, loading: true };
     case CLOSE_WINAMP:
       return { ...state, closed: true };
     case SET_SKIN_DATA:

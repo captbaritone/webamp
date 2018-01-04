@@ -16,7 +16,6 @@ export const SET_MEDIA = "SET_MEDIA";
 export const SET_SCRUB_POSITION = "SET_SCRUB_POSITION";
 export const SET_SKIN_DATA = "SET_SKIN_DATA";
 export const SET_VOLUME = "SET_VOLUME";
-export const START_LOADING = "START_LOADING";
 export const START_WORKING = "START_WORKING";
 export const STEP_MARQUEE = "STEP_MARQUEE";
 export const STOP = "STOP";
