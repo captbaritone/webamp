@@ -9,3 +9,4 @@
 #
 # https://github.com/aadsm/jsmediatags#http-access-control-cors
 Header add Access-Control-Allow-Headers "if-modified-since, range"
+Header set Access-Control-Allow-Origin "*"
