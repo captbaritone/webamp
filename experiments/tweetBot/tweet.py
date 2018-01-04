@@ -171,8 +171,16 @@ def review():
 def main(dry):
 
     state = get_state()
-    skin = next(skin for skin in state.itervalues() if skin.get(
-        'approved') and not skin.get('tweeted'))
+    approved = []
+    for skin in state.itervalues():
+        if skin.get('approved') and not skin.get('tweeted'):
+            approved.append(skin)
+
+    print "Found %s approved skins" % len(approved)
+    if not len(approved):
+        print "Exiting"
+        return
+    skin = approved[0]
 
     skin_path = skin.get('skin_path')
     skin_name = os.path.basename(skin_path)
