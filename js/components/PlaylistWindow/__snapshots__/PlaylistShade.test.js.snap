@@ -4,6 +4,7 @@ exports[`PlaylistShade renders to snapshot 1`] = `
 <div
   className="window draggable"
   id="playlist-window-shade"
+  onDoubleClick={[Function]}
   onMouseDown={[Function]}
   style={
     Object {

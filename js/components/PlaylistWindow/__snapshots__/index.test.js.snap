@@ -21,6 +21,7 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
 >
   <div
     className="playlist-top draggable"
+    onDoubleClick={[Function]}
   >
     <div
       className="playlist-top-left draggable"

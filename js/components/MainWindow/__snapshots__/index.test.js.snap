@@ -13,6 +13,7 @@ exports[`MainWindow renders to snapshot 1`] = `
   <div
     className="selected title-bard draggable"
     id="title-bar"
+    onDoubleClick={[Function]}
   >
     <div
       id="option-context"

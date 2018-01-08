@@ -9,6 +9,7 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
   <div>
     <div
       className="equalizer-top title-bar draggable"
+      onDoubleClick={[Function]}
     >
       <div
         id="equalizer-shade"
