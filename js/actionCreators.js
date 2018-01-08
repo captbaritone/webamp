@@ -47,7 +47,9 @@ import {
   SET_PLAYLIST_SCROLL_POSITION,
   DRAG_SELECTED,
   SET_MEDIA_TAGS,
-  SET_MEDIA_DURATION
+  SET_MEDIA_DURATION,
+  TOGGLE_SHADE_MODE,
+  TOGGLE_PLAYLIST_SHADE_MODE
 } from "./actionTypes";
 
 function playRandomTrack() {
@@ -367,6 +369,14 @@ export function downloadPreset() {
 
 export function toggleEqualizerShadeMode() {
   return { type: TOGGLE_EQUALIZER_SHADE_MODE };
+}
+
+export function toggleMainWindowShadeMode() {
+  return { type: TOGGLE_SHADE_MODE };
+}
+
+export function togglePlaylistShadeMode() {
+  return { type: TOGGLE_PLAYLIST_SHADE_MODE };
 }
 
 export function closeEqualizerWindow() {

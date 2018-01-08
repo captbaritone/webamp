@@ -59,6 +59,7 @@ class PlaylistShade extends React.Component {
         className={classes}
         style={{ width: style.width }}
         onMouseDown={focusPlaylist}
+        onDoubleClick={toggleShade}
       >
         <div className="left">
           <div className="right draggable">

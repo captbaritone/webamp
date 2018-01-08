@@ -47,7 +47,10 @@ const EqualizerWindow = props => {
         <EqualizerShade />
       ) : (
         <div>
-          <div className="equalizer-top title-bar draggable">
+          <div
+            className="equalizer-top title-bar draggable"
+            onDoubleClick={props.toggleEqualizerShadeMode}
+          >
             <div
               id="equalizer-shade"
               onClick={props.toggleEqualizerShadeMode}

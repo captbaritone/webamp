@@ -22,7 +22,8 @@ import {
   toggleVisualizerStyle,
   scrollUpFourTracks,
   scrollDownFourTracks,
-  loadFilesFromReferences
+  loadFilesFromReferences,
+  togglePlaylistShadeMode
 } from "../../actionCreators";
 
 import { clamp } from "../../utils";
@@ -96,7 +97,10 @@ class PlaylistWindow extends React.Component {
         onMouseDown={focusPlaylist}
         handleDrop={this._handleDrop}
       >
-        <div className="playlist-top draggable">
+        <div
+          className="playlist-top draggable"
+          onDoubleClick={this.props.togglePlaylistShadeMode}
+        >
           <div className="playlist-top-left draggable" />
           <div className="playlist-top-title draggable" />
           <div className="playlist-top-right draggable">
@@ -175,7 +179,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   scrollUpFourTracks: () => dispatch(scrollUpFourTracks()),
   scrollDownFourTracks: () => dispatch(scrollDownFourTracks()),
   loadFilesFromReferences: (e, startIndex) =>
-    dispatch(loadFilesFromReferences(e.dataTransfer.files, false, startIndex))
+    dispatch(loadFilesFromReferences(e.dataTransfer.files, false, startIndex)),
+  togglePlaylistShadeMode: () => dispatch(togglePlaylistShadeMode())
 });
 
 const mapStateToProps = state => {

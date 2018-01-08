@@ -16,7 +16,11 @@ const EqualizerShade = props => {
   const eqVolumeClassName = segment(0, 100, volume, classes);
   const eqBalanceClassName = segment(-100, 100, balance, classes);
   return (
-    <div className="draggable">
+    <div
+      className="draggable"
+      onDoubleClick={props.toggleEqualizerShadeMode}
+      style={{ width: "100%", height: "100%" }}
+    >
       <div id="equalizer-shade" onClick={props.toggleEqualizerShadeMode} />
       <div id="equalizer-close" onClick={props.closeEqualizerWindow} />
       <Volume id="equalizer-volume" className={eqVolumeClassName} />
