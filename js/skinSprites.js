@@ -686,5 +686,40 @@ export default {
       width: 14,
       height: 11
     }
+  ],
+  GEN: [
+    { name: "GEN_TOP_LEFT_SELECTED", x: 0, y: 0, width: 25, height: 20 },
+    { name: "GEN_TOP_LEFT_END_SELECTED", x: 26, y: 0, width: 25, height: 20 },
+    {
+      name: "GEN_TOP_CENTER_FILL_SELECTED",
+      x: 52,
+      y: 0,
+      width: 25,
+      height: 20
+    },
+    { name: "GEN_TOP_RIGHT_END_SELECTED", x: 78, y: 0, width: 25, height: 20 },
+    {
+      name: "GEN_TOP_LEFT_RIGHT_FILL_SELECTED",
+      x: 104,
+      y: 0,
+      width: 25,
+      height: 20
+    },
+    { name: "GEN_TOP_RIGHT_SELECTED", x: 130, y: 0, width: 25, height: 20 },
+
+    { name: "GEN_TOP_LEFT", x: 0, y: 21, width: 25, height: 20 },
+    { name: "GEN_TOP_LEFT_END", x: 26, y: 21, width: 25, height: 20 },
+    { name: "GEN_TOP_CENTER_FILL", x: 52, y: 21, width: 25, height: 20 },
+    { name: "GEN_TOP_RIGHT_END", x: 78, y: 21, width: 25, height: 20 },
+    { name: "GEN_TOP_LEFT_RIGHT_FILL", x: 104, y: 21, width: 25, height: 20 },
+    { name: "GEN_TOP_RIGHT", x: 130, y: 21, width: 25, height: 20 },
+    { name: "GEN_BOTTOM_LEFT", x: 0, y: 42, width: 125, height: 14 },
+    { name: "GEN_BOTTOM_RIGHT", x: 0, y: 57, width: 125, height: 14 },
+    { name: "GEN_BOTTOM_FILL", x: 127, y: 72, width: 25, height: 14 },
+    { name: "GEN_MIDDLE_LEFT", x: 127, y: 42, width: 11, height: 29 },
+    { name: "GEN_MIDDLE_LEFT_BOTTOM", x: 158, y: 42, width: 11, height: 24 },
+    { name: "GEN_MIDDLE_RIGHT", x: 139, y: 42, width: 8, height: 29 },
+    { name: "GEN_MIDDLE_RIGHT_BOTTOM", x: 170, y: 42, width: 8, height: 24 },
+    { name: "GEN_CLOSE_SELECTED", x: 148, y: 42, width: 9, height: 9 }
   ]
 };
