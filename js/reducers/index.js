@@ -137,7 +137,8 @@ const display = (state = defaultDisplayState, action) => {
         skinColors: action.skinColors,
         skinPlaylistStyle: action.skinPlaylistStyle,
         skinCursors: action.skinCursors,
-        skinRegion: action.skinRegion
+        skinRegion: action.skinRegion,
+        skinGenLetterWidths: action.skinGenLetterWidths
       };
     case TOGGLE_VISUALIZER_STYLE:
       return { ...state, visualizerStyle: (state.visualizerStyle + 1) % 3 };

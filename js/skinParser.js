@@ -1,6 +1,7 @@
 import JSZip from "../node_modules/jszip/dist/jszip"; // Hack
 import SKIN_SPRITES from "./skinSprites";
 import regionParser from "./regionParser";
+import { LETTERS } from "./constants";
 import { parseViscolors, parseIni } from "./utils";
 
 const shallowMerge = objs =>
@@ -94,16 +95,23 @@ function getSpriteUrisFromImg(img, sprites) {
   }, {});
 }
 
-async function genSpriteUrisFromFilename(zip, fileName) {
+async function genImgFromFilename(zip, fileName) {
   const blob = await genFileFromZip(zip, fileName, "bmp", "blob");
   if (!blob) {
-    return {};
+    return null;
   }
   // The spec for createImageBitmap() says the browser should try to sniff the
   // mime type, but it looks like Firefox does not. So we specify it here
   // explicitly.
   const typedBlob = new Blob([blob], { type: "image/bmp" });
-  const img = await genImgFromBlob(typedBlob);
+  return genImgFromBlob(typedBlob);
+}
+
+async function genSpriteUrisFromFilename(zip, fileName) {
+  const img = await genImgFromFilename(zip, fileName);
+  if (img == null) {
+    return {};
+  }
   return getSpriteUrisFromImg(img, SKIN_SPRITES[fileName]);
 }
 
@@ -199,18 +207,77 @@ async function genRegion(zip) {
   return regionContent ? regionParser(regionContent) : {};
 }
 
+async function genGenTextSprites(zip) {
+  const img = await genImgFromFilename(zip, "GEN");
+
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+  canvas.width = img.width;
+  canvas.height = img.height;
+  context.drawImage(img, 0, 0);
+
+  const getLetters = (y, prefix) => {
+    const getColorAt = x => context.getImageData(x, y, 1, 1).data.join(",");
+
+    let x = 1;
+    const backgroundColor = getColorAt(0);
+
+    const height = 7;
+    return LETTERS.map(letter => {
+      let nextBackground = x;
+      while (
+        getColorAt(nextBackground) !== backgroundColor &&
+        nextBackground < canvas.width
+      ) {
+        nextBackground++;
+      }
+      const width = nextBackground - x;
+      const name = `${prefix}_${letter}`;
+      const sprite = { x, y, height, width, name };
+      x = nextBackground + 1;
+      return sprite;
+    });
+  };
+
+  const letterWidths = {};
+  const sprites = [
+    ...getLetters(88, "GEN_TEXT_SELECTED"),
+    ...getLetters(96, "GEN_TEXT")
+  ];
+  sprites.forEach(sprite => {
+    letterWidths[sprite.name] = sprite.width;
+  });
+  return [letterWidths, getSpriteUrisFromImg(img, sprites)];
+}
+
 // A promise that, given a File object, returns a skin style object
 async function skinParser(zipFile) {
   const buffer = await genBufferFromFile(zipFile);
   const zip = await JSZip.loadAsync(buffer);
-  const [colors, playlistStyle, images, cursors, region] = await Promise.all([
+  const [
+    colors,
+    playlistStyle,
+    images,
+    cursors,
+    region,
+    [genLetterWidths, genTextImages]
+  ] = await Promise.all([
     genColors(zip),
     genPlaylistStyle(zip),
     genImages(zip),
     genCursors(zip),
-    genRegion(zip)
+    genRegion(zip),
+    genGenTextSprites(zip)
   ]);
-  return { colors, playlistStyle, images, cursors, region };
+
+  return {
+    colors,
+    playlistStyle,
+    images: { ...images, ...genTextImages },
+    genLetterWidths,
+    cursors,
+    region
+  };
 }
 
 export default skinParser;

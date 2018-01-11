@@ -1,3 +1,4 @@
+import { LETTERS } from "./constants";
 import { FONT_LOOKUP, imageConstFromChar } from "./skinSprites";
 
 export const imageSelectors = {
@@ -271,13 +272,45 @@ export const imageSelectors = {
   MAIN_VOLUME_THUMB_SELECTED: [
     "#volume::-webkit-slider-thumb:active",
     "#volume::-moz-range-thumb:active"
-  ]
+  ],
+  GEN_TOP_CENTER_FILL: [".gen-window .gen-top"],
+  GEN_TOP_LEFT: [".gen-window .gen-top-left"],
+  GEN_TOP_LEFT_END: [".gen-window .gen-top-left-end"],
+  GEN_TOP_RIGHT: [".gen-window .gen-top-right"],
+  GEN_TOP_RIGHT_END: [".gen-window .gen-top-right-end"],
+  GEN_TOP_LEFT_RIGHT_FILL: [".gen-window .gen-top-left-right-fill"],
+
+  GEN_TOP_CENTER_FILL_SELECTED: [".gen-window.selected .gen-top"],
+  GEN_TOP_LEFT_SELECTED: [".gen-window.selected .gen-top-left"],
+  GEN_TOP_LEFT_END_SELECTED: [".gen-window.selected .gen-top-left-end"],
+  GEN_TOP_RIGHT_SELECTED: [".gen-window.selected .gen-top-right"],
+  GEN_TOP_RIGHT_END_SELECTED: [".gen-window.selected .gen-top-right-end"],
+  GEN_TOP_LEFT_RIGHT_FILL_SELECTED: [
+    ".gen-window.selected .gen-top-left-right-fill"
+  ],
+  GEN_BOTTOM_LEFT: [".gen-window .gen-bottom-left"],
+  GEN_BOTTOM_RIGHT: [".gen-window .gen-bottom-right"],
+  GEN_BOTTOM_FILL: [".gen-window .gen-bottom"],
+  GEN_MIDDLE_LEFT: [".gen-window .gen-middle-left"],
+  GEN_MIDDLE_LEFT_BOTTOM: [".gen-window .gen-middle-left-bottom"],
+  GEN_MIDDLE_RIGHT: [".gen-window .gen-middle-right"],
+  GEN_MIDDLE_RIGHT_BOTTOM: [".gen-window .gen-middle-right-bottom"],
+  GEN_CLOSE_SELECTED: [".gen-window .gen-close:active"]
 };
 
 Object.keys(FONT_LOOKUP).forEach(character => {
   const key = imageConstFromChar(character);
   const code = character.charCodeAt(0);
   imageSelectors[key] = [`.character-${code}`];
+});
+
+LETTERS.forEach(character => {
+  imageSelectors[`GEN_TEXT_${character}`] = [
+    `.gen-text-${character.toLowerCase()}`
+  ];
+  imageSelectors[`GEN_TEXT_SELECTED_${character}`] = [
+    `.gen-window.selected .gen-text-${character.toLowerCase()}`
+  ];
 });
 
 export const cursorSelectors = {

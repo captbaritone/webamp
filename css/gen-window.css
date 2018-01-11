@@ -1,0 +1,114 @@
+#winamp2-js .gen-text-space {
+    width: 5px;
+}
+
+#winamp2-js .gen-text-letter {
+    height: 7px;
+    display: inline-block;
+}
+
+#winamp2-js .gen-window {
+    /* Default size */
+    width: 275px;
+    height: 116px;
+    display: flex;
+    flex-direction: column;
+}
+
+#winamp2-js .gen-top {
+    height: 20px;
+    display: flex;
+    flex-direction: row;
+}
+
+#winamp2-js .gen-top-left {
+    width: 25px;
+    height: 20px;
+}
+
+#winamp2-js .gen-top-title {
+    line-height: 7px;
+    margin-top: 2px;
+    /* TODO: This should be a conciquence of the repeating tiles, not hard coded */
+    padding: 0 3px 0 4px;
+}
+
+#winamp2-js .gen-top-left-right-fill {
+    flex-grow: 1;
+    height: 20px;
+}
+
+#winamp2-js .gen-top-left-end {
+    width: 25px;
+    height: 20px;
+}
+
+#winamp2-js .gen-top-right {
+    width: 25px;
+    height: 20px;
+}
+
+#winamp2-js .gen-top-right-end {
+    width: 25px;
+    height: 20px;
+}
+
+#winamp2-js .gen-close {
+    width: 9px;
+    height: 9px;
+    position: absolute;
+    right: 2px;
+    top: 3px;
+}
+
+#winamp2-js .gen-middle {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+
+#winamp2-js .gen-middle-left {
+    width: 11px;
+}
+
+#winamp2-js .gen-middle-left-bottom {
+    width: 11px;
+    height: 24px;
+    bottom: 0;
+    position: absolute;
+}
+
+#winamp2-js .gen-middle-center {
+    flex-grow: 1;
+}
+
+#winamp2-js .gen-middle-right {
+    width: 8px;
+}
+
+#winamp2-js .gen-middle-right-bottom {
+    width: 8px;
+    height: 24px;
+    bottom: 0;
+    position: absolute;
+}
+
+#winamp2-js .gen-bottom {
+    height: 14px;
+    background-repeat: repeat-x;
+}
+
+#winamp2-js .gen-bottom-left {
+    position: absolute;
+    left: 0;
+    width: 125px;
+    height: 14px;
+}
+
+#winamp2-js .gen-bottom-right {
+    position: absolute;
+    right: 0;
+    width: 125px;
+    height: 14px;
+}

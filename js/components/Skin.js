@@ -3,6 +3,7 @@ import React from "react";
 import { createPortal } from "react-dom";
 import { connect } from "react-redux";
 
+import { LETTERS } from "../constants";
 import { imageSelectors, cursorSelectors } from "../skinSelectors";
 
 const mapRegionNamesToIds = {
@@ -74,12 +75,12 @@ class ClipPaths extends React.Component {
 }
 
 const Skin = props => {
-  const { skinImages, skinCursors } = props;
+  const { skinImages, skinCursors, skinGenLetterWidths } = props;
   if (!skinImages || !skinCursors) {
     return null;
   }
   const cssRules = [];
-  Object.keys(imageSelectors).map(imageName => {
+  Object.keys(imageSelectors).forEach(imageName => {
     const imageUrl = skinImages[imageName];
     if (imageUrl) {
       imageSelectors[imageName].forEach(selector => {
@@ -89,7 +90,17 @@ const Skin = props => {
       });
     }
   });
-  Object.keys(cursorSelectors).map(cursorName => {
+  LETTERS.forEach(letter => {
+    const width = skinGenLetterWidths[`GEN_TEXT_${letter}`];
+    const selectedWidth = skinGenLetterWidths[`GEN_LETTER_SELECTED_${letter}`];
+    cssRules.push(
+      `#winamp2-js .gen-text-${letter.toLowerCase()} {width: ${width}px;}`
+    );
+    cssRules.push(
+      `#winamp2-js .selected .gen-text-${letter.toLowerCase()} {width: ${selectedWidth}px;}`
+    );
+  });
+  Object.keys(cursorSelectors).forEach(cursorName => {
     const cursorUrl = skinCursors[cursorName];
     if (cursorUrl) {
       cursorSelectors[cursorName].forEach(selector => {
@@ -128,5 +139,6 @@ const Skin = props => {
 export default connect(state => ({
   skinImages: state.display.skinImages,
   skinCursors: state.display.skinCursors,
-  skinRegion: state.display.skinRegion
+  skinRegion: state.display.skinRegion,
+  skinGenLetterWidths: state.display.skinGenLetterWidths
 }))(Skin);
