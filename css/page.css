@@ -1,30 +1,30 @@
 /* Rules for the page layout */
 body {
-  background-color: #224eb7;
-  font-family: arial;
-  font-size: 15px;
+    background-color: #224eb7;
+    font-family: arial;
+    font-size: 15px;
 }
 
 #browser-compatibility {
-  display: none;
-  position: absolute;
-  width: 275px;
-  margin-top: -58px;
-  margin-left: -137px;
-  top: 40%;
-  left: 50%;
-  background: white;
-  text-align: center;
+    display: none;
+    position: absolute;
+    width: 275px;
+    margin-top: -58px;
+    margin-left: -137px;
+    top: 40%;
+    left: 50%;
+    background: white;
+    text-align: center;
 }
 
 .about {
-  position: absolute;
-  bottom: 0;
-  color: white;
-  /* Let users drag windows over this text */
-  z-index: -1;
+    position: absolute;
+    bottom: 0;
+    color: white;
+    /* Let users drag windows over this text */
+    z-index: -1;
 }
 
 .about a {
-  color: white;
+    color: white;
 }

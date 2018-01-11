@@ -1,465 +1,465 @@
 /* Styles */
 #winamp2-js #main-window {
-  position: absolute;
-  height: 116px;
-  width: 275px;
-  /* Ask the browser to scale showing large pixels if possible */
-  image-rendering: -moz-crisp-edges; /* Firefox */
-  image-rendering: -o-crisp-edges; /* Opera */
-  image-rendering: -webkit-optimize-contrast; /* Safari */
-  image-rendering: pixelated; /* Only in Chrome > 40 */
-  -ms-interpolation-mode: nearest-neighbor; /* IE (non-standard property) */
+    position: absolute;
+    height: 116px;
+    width: 275px;
+    /* Ask the browser to scale showing large pixels if possible */
+    image-rendering: -moz-crisp-edges; /* Firefox */
+    image-rendering: -o-crisp-edges; /* Opera */
+    image-rendering: -webkit-optimize-contrast; /* Safari */
+    image-rendering: pixelated; /* Only in Chrome > 40 */
+    -ms-interpolation-mode: nearest-neighbor; /* IE (non-standard property) */
 }
 
 #winamp2-js #loading {
-  color: white;
-  text-align: center;
-  font-size: 40px;
-  height: 30px;
-  position: absolute;
-  margin: auto;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
+    color: white;
+    text-align: center;
+    font-size: 40px;
+    height: 30px;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
 }
 
 #winamp2-js #loading .ellipsis-anim span {
-  opacity: 0;
-  -webkit-animation: ellipsis-dot 1s infinite;
-  animation: ellipsis-dot 1s infinite;
+    opacity: 0;
+    -webkit-animation: ellipsis-dot 1s infinite;
+    animation: ellipsis-dot 1s infinite;
 }
 
 #winamp2-js #loading .ellipsis-anim span:nth-child(1) {
-  -webkit-animation-delay: 0s;
-  animation-delay: 0s;
+    -webkit-animation-delay: 0s;
+    animation-delay: 0s;
 }
 
 #winamp2-js #loading .ellipsis-anim span:nth-child(2) {
-  -webkit-animation-delay: 0.1s;
-  animation-delay: 0.1s;
+    -webkit-animation-delay: 0.1s;
+    animation-delay: 0.1s;
 }
 
 #winamp2-js #loading .ellipsis-anim span:nth-child(3) {
-  -webkit-animation-delay: 0.2s;
-  animation-delay: 0.2s;
+    -webkit-animation-delay: 0.2s;
+    animation-delay: 0.2s;
 }
 
 @-webkit-keyframes ellipsis-dot {
-  0% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }
 
 @keyframes ellipsis-dot {
-  0% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }
 
 #winamp2-js #title-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 14px;
-  width: 275px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 14px;
+    width: 275px;
 }
 
 #option-context,
 #winamp2-js #minimize,
 #winamp2-js #shade,
 #winamp2-js #close {
-  position: absolute;
-  height: 9px;
-  width: 9px;
-  top: 3px;
+    position: absolute;
+    height: 9px;
+    width: 9px;
+    top: 3px;
 }
 
 #winamp2-js #title-bar #option {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 }
 
 #winamp2-js #title-bar #option-context {
-  left: 6px;
+    left: 6px;
 }
 #winamp2-js #title-bar #minimize {
-  left: 244px;
+    left: 244px;
 }
 #winamp2-js #title-bar #shade {
-  left: 254px;
+    left: 254px;
 }
 #winamp2-js #title-bar #close {
-  left: 264px;
+    left: 264px;
 }
 #winamp2-js #clutter-bar {
-  position: absolute;
-  top: 22px;
-  left: 10px;
-  height: 43px;
-  width: 8px;
+    position: absolute;
+    top: 22px;
+    left: 10px;
+    height: 43px;
+    width: 8px;
 }
 
 #winamp2-js #clutter-bar div {
-  position: absolute;
-  height: 7px;
-  width: 8px;
-  left: 0px;
+    position: absolute;
+    height: 7px;
+    width: 8px;
+    left: 0px;
 }
 
 #winamp2-js #clutter-bar #button-o {
-  top: 3px;
-  height: 8px;
+    top: 3px;
+    height: 8px;
 }
 #winamp2-js #clutter-bar #button-a {
-  top: 11px;
+    top: 11px;
 }
 #winamp2-js #clutter-bar #button-i {
-  top: 18px;
+    top: 18px;
 }
 #winamp2-js #clutter-bar #button-d {
-  top: 25px;
-  height: 8px;
+    top: 25px;
+    height: 8px;
 }
 #winamp2-js #clutter-bar #button-v {
-  top: 33px;
+    top: 33px;
 }
 
 #winamp2-js #play-pause {
-  position: absolute;
-  top: 28px;
-  left: 26px;
-  height: 9px;
-  width: 9px;
-  background-repeat: no-repeat;
+    position: absolute;
+    top: 28px;
+    left: 26px;
+    height: 9px;
+    width: 9px;
+    background-repeat: no-repeat;
 }
 
 #winamp2-js .play #work-indicator,
 #winamp2-js #work-indicator.selected {
-  position: absolute;
-  top: 28px;
-  left: 24px;
-  height: 9px;
-  width: 3px;
+    position: absolute;
+    top: 28px;
+    left: 24px;
+    height: 9px;
+    width: 3px;
 }
 #winamp2-js .status #time {
-  position: absolute;
-  left: 39px;
-  top: 26px;
-  /* Just to make it clickable */
-  height: 13px;
-  width: 59px;
+    position: absolute;
+    left: 39px;
+    top: 26px;
+    /* Just to make it clickable */
+    height: 13px;
+    width: 59px;
 }
 
 #winamp2-js .stop .status #time {
-  display: none;
+    display: none;
 }
 #winamp2-js .pause .status #time {
-  animation: blink 2s step-start 1s infinite;
-  -webkit-animation: blink 2s step-start 1s infinite;
+    animation: blink 2s step-start 1s infinite;
+    -webkit-animation: blink 2s step-start 1s infinite;
 }
 
 #winamp2-js .status #time #minus-sign {
-  /* Note that this get's augmented by the skin CSS if NUM_EX.BMP is present */
-  position: absolute;
-  top: 6px;
-  left: -1px;
-  width: 5px;
-  height: 1px;
+    /* Note that this get's augmented by the skin CSS if NUM_EX.BMP is present */
+    position: absolute;
+    top: 6px;
+    left: -1px;
+    width: 5px;
+    height: 1px;
 }
 
 #winamp2-js .status #time #minute-first-digit {
-  position: absolute;
-  pointer-events: none;
-  left: 9px;
-  height: 13px;
-  width: 9px;
+    position: absolute;
+    pointer-events: none;
+    left: 9px;
+    height: 13px;
+    width: 9px;
 }
 #winamp2-js .status #time #minute-second-digit {
-  position: absolute;
-  pointer-events: none;
-  left: 21px;
-  height: 13px;
-  width: 9px;
+    position: absolute;
+    pointer-events: none;
+    left: 21px;
+    height: 13px;
+    width: 9px;
 }
 #winamp2-js .status #time #second-first-digit {
-  position: absolute;
-  pointer-events: none;
-  left: 39px;
-  height: 13px;
-  width: 9px;
+    position: absolute;
+    pointer-events: none;
+    left: 39px;
+    height: 13px;
+    width: 9px;
 }
 #winamp2-js .status #time #second-second-digit {
-  position: absolute;
-  pointer-events: none;
-  left: 51px;
-  height: 13px;
-  width: 9px;
+    position: absolute;
+    pointer-events: none;
+    left: 51px;
+    height: 13px;
+    width: 9px;
 }
 
 #winamp2-js #visualizer {
-  position: absolute;
-  width: 76px;
-  height: 16px;
-  top: 43px;
-  left: 24px;
+    position: absolute;
+    width: 76px;
+    height: 16px;
+    top: 43px;
+    left: 24px;
 }
 
 #winamp2-js .stop #visualizer {
-  display: none;
+    display: none;
 }
 
 #winamp2-js .text {
-  display: none;
+    display: none;
 }
 
 #winamp2-js #marquee {
-  position: absolute;
-  left: 112px;
-  top: 27px;
-  width: 152px;
-  height: 6px;
-  overflow: hidden;
-  display: block;
+    position: absolute;
+    left: 112px;
+    top: 27px;
+    width: 152px;
+    height: 6px;
+    overflow: hidden;
+    display: block;
 }
 
 #winamp2-js .media-info #kbps {
-  position: absolute;
-  left: 111px;
-  top: 43px;
-  width: 15px;
-  height: 6px;
-  overflow: hidden;
+    position: absolute;
+    left: 111px;
+    top: 43px;
+    width: 15px;
+    height: 6px;
+    overflow: hidden;
 }
 
 #winamp2-js .stop .media-info #kbps {
-  display: none;
+    display: none;
 }
 
 #winamp2-js .media-info #khz {
-  position: absolute;
-  left: 156px;
-  top: 43px;
-  width: 10px;
-  height: 6px;
-  overflow: hidden;
+    position: absolute;
+    left: 156px;
+    top: 43px;
+    width: 10px;
+    height: 6px;
+    overflow: hidden;
 }
 
 #winamp2-js .stop .media-info #khz {
-  display: none;
+    display: none;
 }
 
 #winamp2-js .media-info .mono-stereo {
-  position: absolute;
-  left: 212px;
-  top: 41px;
-  width: 57px;
-  height: 12px;
+    position: absolute;
+    left: 212px;
+    top: 41px;
+    width: 57px;
+    height: 12px;
 }
 
 #winamp2-js .media-info .mono-stereo div {
-  position: absolute;
-  height: 12px;
+    position: absolute;
+    height: 12px;
 }
 
 #winamp2-js .media-info .mono-stereo #mono {
-  width: 27px;
+    width: 27px;
 }
 
 #winamp2-js .media-info .mono-stereo #stereo {
-  left: 27px;
-  width: 29px;
+    left: 27px;
+    width: 29px;
 }
 
 #winamp2-js #volume {
-  position: absolute;
-  left: 107px;
-  top: 57px;
-  height: 13px;
-  width: 68px;
-  background-position: 0 0;
+    position: absolute;
+    left: 107px;
+    top: 57px;
+    height: 13px;
+    width: 68px;
+    background-position: 0 0;
 }
 #winamp2-js #volume::-webkit-slider-thumb {
-  top: 1px;
-  height: 11px;
-  width: 14px;
+    top: 1px;
+    height: 11px;
+    width: 14px;
 }
 #winamp2-js #volume::-moz-range-thumb {
-  top: 1px;
-  height: 11px;
-  width: 14px;
+    top: 1px;
+    height: 11px;
+    width: 14px;
 }
 
 #winamp2-js #balance {
-  position: absolute;
-  left: 177px;
-  top: 57px;
-  height: 13px;
-  width: 38px;
-  background-position: 0 0;
+    position: absolute;
+    left: 177px;
+    top: 57px;
+    height: 13px;
+    width: 38px;
+    background-position: 0 0;
 }
 
 #winamp2-js #balance::-webkit-slider-thumb {
-  top: 1px;
-  height: 11px;
-  width: 14px;
+    top: 1px;
+    height: 11px;
+    width: 14px;
 }
 #winamp2-js #balance::-moz-range-thumb {
-  top: 1px;
-  height: 11px;
-  width: 14px;
+    top: 1px;
+    height: 11px;
+    width: 14px;
 }
 
 #winamp2-js .windows {
-  position: absolute;
-  left: 219px;
-  top: 58px;
-  width: 46px;
-  height: 12px;
+    position: absolute;
+    left: 219px;
+    top: 58px;
+    width: 46px;
+    height: 12px;
 }
 
 #winamp2-js .windows div {
-  position: absolute;
-  width: 23px;
-  height: 12px;
+    position: absolute;
+    width: 23px;
+    height: 12px;
 }
 
 #winamp2-js .windows #equalizer-button {
-  left: 0;
+    left: 0;
 }
 
 #winamp2-js .windows #playlist-button {
-  left: 23px;
+    left: 23px;
 }
 
 #winamp2-js #position {
-  position: absolute;
-  left: 16px;
-  top: 72px;
-  width: 248px;
-  height: 10px;
+    position: absolute;
+    left: 16px;
+    top: 72px;
+    width: 248px;
+    height: 10px;
 }
 
 #winamp2-js #position::-webkit-slider-thumb {
-  height: 10px;
-  width: 29px;
-  /*
+    height: 10px;
+    width: 29px;
+    /*
      * Fix the strange bug in Safair/mobile-chrome
      * http://stackoverflow.com/questions/26727769/rendering-glitch-when-manipulating-range-input-value-via-javascript-in-webkit
      */
-  -webkit-box-sizing: border-box;
-  position: relative;
+    -webkit-box-sizing: border-box;
+    position: relative;
 }
 
 #winamp2-js #position::-moz-range-thumb {
-  height: 10px;
-  width: 29px;
+    height: 10px;
+    width: 29px;
 }
 
 /* For some reason, we can't use display: none here */
 #winamp2-js .stop #position::-webkit-slider-thumb {
-  visibility: hidden;
+    visibility: hidden;
 }
 #winamp2-js .stop #position::-moz-range-thumb {
-  visibility: hidden;
+    visibility: hidden;
 }
 
 /* For some reason this is needed for the position slider to show up now that
  * we are using React.
  */
 #winamp2-js .play #position::-webkit-slider-thumb {
-  visibility: visible;
+    visibility: visible;
 }
 
 #winamp2-js .actions div {
-  height: 18px;
-  width: 23px;
-  position: absolute;
+    height: 18px;
+    width: 23px;
+    position: absolute;
 }
 
 #winamp2-js .actions #previous {
-  top: 88px;
-  left: 16px;
+    top: 88px;
+    left: 16px;
 }
 #winamp2-js .actions #play {
-  top: 88px;
-  left: 39px;
+    top: 88px;
+    left: 39px;
 }
 #winamp2-js .actions #pause {
-  top: 88px;
-  left: 62px;
+    top: 88px;
+    left: 62px;
 }
 #winamp2-js .actions #stop {
-  top: 88px;
-  left: 85px;
+    top: 88px;
+    left: 85px;
 }
 #winamp2-js .actions #next {
-  top: 88px;
-  left: 108px;
-  width: 22px;
+    top: 88px;
+    left: 108px;
+    width: 22px;
 }
 
 #winamp2-js #eject {
-  position: absolute;
-  top: 89px;
-  left: 136px;
-  height: 16px;
-  width: 22px;
+    position: absolute;
+    top: 89px;
+    left: 136px;
+    height: 16px;
+    width: 22px;
 }
 
 #winamp2-js .shuffle-repeat {
-  position: absolute;
-  top: 89px;
-  left: 163px;
-  width: 74px;
+    position: absolute;
+    top: 89px;
+    left: 163px;
+    width: 74px;
 }
 
 #winamp2-js .shuffle-repeat div {
-  position: absolute;
-  height: 15px;
+    position: absolute;
+    height: 15px;
 }
 
 #winamp2-js .shuffle-repeat #shuffle {
-  width: 47px;
+    width: 47px;
 }
 
 #winamp2-js .shuffle-repeat #repeat {
-  left: 46px;
-  width: 28px;
+    left: 46px;
+    width: 28px;
 }
 
 #winamp2-js #about {
-  position: absolute;
-  top: 91px;
-  left: 253px;
-  height: 15px;
-  width: 13px;
+    position: absolute;
+    top: 91px;
+    left: 253px;
+    height: 15px;
+    width: 13px;
 }
 
 #winamp2-js .digit {
-  position: absolute;
-  display: inline-block;
-  width: 9px;
-  height: 13px;
-  background-repeat: no-repeat;
-  text-indent: -9999px;
+    position: absolute;
+    display: inline-block;
+    width: 9px;
+    height: 13px;
+    background-repeat: no-repeat;
+    text-indent: -9999px;
 }
 
 /* Shade View */
 #winamp2-js #main-window.shade {
-  height: 14px;
+    height: 14px;
 }
 
 #winamp2-js .shade .media-info,
@@ -468,87 +468,87 @@
 #winamp2-js .shade #balance,
 #winamp2-js .shade .shuffle-repeat,
 #winamp2-js .shade .status {
-  display: none;
+    display: none;
 }
 #winamp2-js .shade #title-bar {
 }
 
 #winamp2-js .shade .actions div {
-  position: absolute;
+    position: absolute;
 }
 #winamp2-js .shade .actions #previous,
 #winamp2-js .shade .actions #previous:active {
-  background: none;
-  height: 10px;
-  width: 7px;
-  top: 2px;
-  left: 169px;
+    background: none;
+    height: 10px;
+    width: 7px;
+    top: 2px;
+    left: 169px;
 }
 #winamp2-js .shade .actions #play,
 #winamp2-js .shade .actions #play:active {
-  background: none;
-  height: 10px;
-  width: 10px;
-  top: 2px;
-  left: 176px;
+    background: none;
+    height: 10px;
+    width: 10px;
+    top: 2px;
+    left: 176px;
 }
 #winamp2-js .shade .actions #pause,
 #winamp2-js .shade .actions #pause:active {
-  background: none;
-  height: 10px;
-  width: 9px;
-  top: 2px;
-  left: 186px;
+    background: none;
+    height: 10px;
+    width: 9px;
+    top: 2px;
+    left: 186px;
 }
 #winamp2-js .shade .actions #stop,
 #winamp2-js .shade .actions #stop:active {
-  background: none;
-  height: 10px;
-  width: 9px;
-  top: 2px;
-  left: 195px;
+    background: none;
+    height: 10px;
+    width: 9px;
+    top: 2px;
+    left: 195px;
 }
 #winamp2-js .shade .actions #next,
 #winamp2-js .shade .actions #next:active {
-  background: none;
-  height: 10px;
-  width: 10px;
-  top: 2px;
-  left: 204px;
+    background: none;
+    height: 10px;
+    width: 10px;
+    top: 2px;
+    left: 204px;
 }
 #winamp2-js .shade #eject,
 #winamp2-js .shade #eject:active {
-  height: 10px;
-  width: 10px;
-  top: 2px;
-  left: 215px;
-  background: none;
+    height: 10px;
+    width: 10px;
+    top: 2px;
+    left: 215px;
+    background: none;
 }
 
 #winamp2-js .shade #position {
-  position: absolute;
-  left: 226px;
-  top: 4px;
-  width: 17px;
-  height: 7px;
+    position: absolute;
+    left: 226px;
+    top: 4px;
+    width: 17px;
+    height: 7px;
 }
 
 #winamp2-js .shade #position::-webkit-slider-thumb {
-  height: 7px;
-  width: 3px;
-  /* This make it appear. Not sure why */
-  background: none;
+    height: 7px;
+    width: 3px;
+    /* This make it appear. Not sure why */
+    background: none;
 }
 
 #winamp2-js .shade #position::-moz-range-thumb {
-  height: 7px;
-  width: 3px;
-  /* This make it appear. Not sure why */
-  background: none;
+    height: 7px;
+    width: 3px;
+    /* This make it appear. Not sure why */
+    background: none;
 }
 
 #winamp2-js #main-window .mini-time {
-  position: absolute;
-  top: 4px;
-  left: 127px;
+    position: absolute;
+    top: 4px;
+    left: 127px;
 }

@@ -68,7 +68,7 @@
     "jest": "^22.0.3",
     "jsmediatags": "^3.8.1",
     "jszip": "^3.1.3",
-    "prettier": "^1.6.0",
+    "prettier": "^1.10.2",
     "prop-types": "^15.5.10",
     "raven-js": "^3.19.1",
     "rc-slider": "^8.1.5",

@@ -1,15 +1,15 @@
 #winamp2-js .mini-time {
-  display: block;
-  height: 6px;
-  width: 25px;
+    display: block;
+    height: 6px;
+    width: 25px;
 }
 
 #winamp2-js .mini-time.blinking {
-  animation: blink 2s step-start 1s infinite;
-  -webkit-animation: blink 2s step-start 1s infinite;
+    animation: blink 2s step-start 1s infinite;
+    -webkit-animation: blink 2s step-start 1s infinite;
 }
 
 #winamp2-js .mini-time .character {
-  position: absolute;
-  top: 0;
+    position: absolute;
+    top: 0;
 }

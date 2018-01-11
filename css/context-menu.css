@@ -1,78 +1,78 @@
 #context-menu {
-  left: 0px;
+    left: 0px;
 }
 
 #context-menu.bottom {
-  top: 12px;
+    top: 12px;
 }
 
 #context-menu.top {
-  top: 0px;
+    top: 0px;
 }
 
 #context-menu,
 #context-menu ul {
-  z-index: 50; /* Gross */
-  background-color: #ffffff;
-  position: absolute;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  border: 1px solid #a7a394;
-  cursor: default;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    z-index: 50; /* Gross */
+    background-color: #ffffff;
+    position: absolute;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #a7a394;
+    cursor: default;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 #context-menu li {
-  position: relative;
-  font-family: "Tahoma";
-  font-size: 11px;
-  color: black;
-  white-space: nowrap;
-  margin: 2px;
-  padding: 1px 18px 3px 18px;
-  display: block;
+    position: relative;
+    font-family: "Tahoma";
+    font-size: 11px;
+    color: black;
+    white-space: nowrap;
+    margin: 2px;
+    padding: 1px 18px 3px 18px;
+    display: block;
 }
 
 #context-menu li.parent:after {
-  float: right;
-  content: "\25b8";
-  margin-right: -12px;
+    float: right;
+    content: "\25b8";
+    margin-right: -12px;
 }
 #context-menu li a {
-  text-decoration: none;
-  color: black;
-  cursor: default;
+    text-decoration: none;
+    color: black;
+    cursor: default;
 }
 
 #context-menu li:hover,
 #context-menu li:hover a {
-  background-color: #224eb7;
-  color: #ffffff;
+    background-color: #224eb7;
+    color: #ffffff;
 }
 
 #context-menu li.hr {
-  padding: 2px 0;
+    padding: 2px 0;
 }
 
 #context-menu li.hr:hover {
-  background-color: #ffffff;
+    background-color: #ffffff;
 }
 
 #context-menu li.hr hr {
-  border: none;
-  height: 1px;
-  background-color: #a7a394;
-  margin: 0;
-  padding: 0;
+    border: none;
+    height: 1px;
+    background-color: #a7a394;
+    margin: 0;
+    padding: 0;
 }
 
 #context-menu ul {
-  display: none;
-  left: 100%;
-  margin-left: -3px;
+    display: none;
+    left: 100%;
+    margin-left: -3px;
 }
 
 #context-menu li:hover ul {
-  display: block;
+    display: block;
 }

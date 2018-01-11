@@ -1,315 +1,315 @@
 /* Styles */
 #winamp2-js #playlist-window {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 #winamp2-js .playlist-top {
-  width: 100%;
-  min-height: 20px;
-  max-height: 20px;
-  position: relative;
+    width: 100%;
+    min-height: 20px;
+    max-height: 20px;
+    position: relative;
 }
 
 #winamp2-js .playlist-top-left {
-  width: 25px;
-  height: 20px;
-  position: absolute;
+    width: 25px;
+    height: 20px;
+    position: absolute;
 }
 
 #winamp2-js .playlist-top-title {
-  width: 100px;
-  height: 20px;
-  margin: 0 auto;
-  position: absolute;
-  /* Giving left and right 0 seems to center */
-  left: 0;
-  right: 0;
+    width: 100px;
+    height: 20px;
+    margin: 0 auto;
+    position: absolute;
+    /* Giving left and right 0 seems to center */
+    left: 0;
+    right: 0;
 }
 
 #winamp2-js .playlist-top-right {
-  width: 25px;
-  height: 20px;
-  position: absolute;
-  right: 0;
+    width: 25px;
+    height: 20px;
+    position: absolute;
+    right: 0;
 }
 
 #winamp2-js .playlist-middle {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: row;
-  overflow: hidden;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
 }
 
 #winamp2-js .playlist-middle-left {
-  background-repeat: repeat-y;
-  width: 12px;
-  min-width: 12px;
+    background-repeat: repeat-y;
+    width: 12px;
+    min-width: 12px;
 }
 
 #winamp2-js .playlist-middle-center {
-  flex-grow: 1;
-  padding: 3px 0;
-  min-width: 0; /* Not sure why this is needed */
+    flex-grow: 1;
+    padding: 3px 0;
+    min-width: 0; /* Not sure why this is needed */
 }
 
 #winamp2-js .playlist-tracks {
-  display: flex;
-  flex: 1 0 auto;
-  font-size: 9px;
-  line-height: 13px;
-  letter-spacing: 0.5px;
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-  cursor: default;
+    display: flex;
+    flex: 1 0 auto;
+    font-size: 9px;
+    line-height: 13px;
+    letter-spacing: 0.5px;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    cursor: default;
 }
 
 #winamp2-js .playlist-track-numbers > div,
 #winamp2-js .playlist-track-durations > div {
-  padding-right: 3px;
+    padding-right: 3px;
 }
 #winamp2-js .playlist-track-numbers > div {
-  text-align: center;
-  padding-left: 1px;
+    text-align: center;
+    padding-left: 1px;
 }
 
 #winamp2-js .playlist-track-titles {
-  flex: 1 1 auto;
-  overflow: hidden;
+    flex: 1 1 auto;
+    overflow: hidden;
 }
 
 #winamp2-js .playlist-track-titles > div {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 #winamp2-js .playlist-middle-right {
-  background-repeat: repeat-y;
-  background-position: top right;
-  width: 20px;
-  min-width: 20px;
-  position: relative;
-  padding-bottom: 18px;
+    background-repeat: repeat-y;
+    background-position: top right;
+    width: 20px;
+    min-width: 20px;
+    position: relative;
+    padding-bottom: 18px;
 }
 
 #winamp2-js .playlist-scrollbar {
-  height: 100%;
-  width: 8px;
-  margin-left: 5px;
+    height: 100%;
+    width: 8px;
+    margin-left: 5px;
 }
 
 #winamp2-js .playlist-scrollbar-handle {
-  width: 8x;
-  height: 18px;
+    width: 8x;
+    height: 18px;
 }
 
 #winamp2-js .playlist-bottom {
-  width: 100%;
-  height: 38px;
-  min-height: 38px;
-  max-height: 38px;
-  position: relative;
+    width: 100%;
+    height: 38px;
+    min-height: 38px;
+    max-height: 38px;
+    position: relative;
 }
 
 #winamp2-js .playlist-bottom-left {
-  width: 125px;
-  height: 100%;
-  position: absolute;
+    width: 125px;
+    height: 100%;
+    position: absolute;
 }
 
 #winamp2-js .playlist-menu li {
-  list-style: none;
-  display: none;
-  width: 22px;
-  height: 18px;
-  padding: 0;
-  margin: 0;
+    list-style: none;
+    display: none;
+    width: 22px;
+    height: 18px;
+    padding: 0;
+    margin: 0;
 }
 
 #winamp2-js .playlist-menu li > div {
-  height: 100%;
+    height: 100%;
 }
 
 #winamp2-js .playlist-menu ul {
-  padding: 0;
-  margin: 0;
-  position: absolute;
-  bottom: 0;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    bottom: 0;
 }
 
 #winamp2-js .playlist-menu.selected li {
-  display: block;
+    display: block;
 }
 
 #winamp2-js .playlist-menu .bar {
-  position: absolute;
-  bottom: 0;
-  left: -3px;
-  width: 3px;
-  height: 54px;
+    position: absolute;
+    bottom: 0;
+    left: -3px;
+    width: 3px;
+    height: 54px;
 }
 
 #winamp2-js #playlist-add-menu {
-  position: absolute;
-  bottom: 12px;
-  left: 13px;
-  width: 22px;
-  height: 18px;
+    position: absolute;
+    bottom: 12px;
+    left: 13px;
+    width: 22px;
+    height: 18px;
 }
 
 #winamp2-js #playlist-remove-menu.playlist-menu .bar {
-  height: 72px;
+    height: 72px;
 }
 
 #winamp2-js #playlist-remove-menu {
-  position: absolute;
-  bottom: 12px;
-  left: 43px;
-  width: 22px;
-  height: 18px;
+    position: absolute;
+    bottom: 12px;
+    left: 43px;
+    width: 22px;
+    height: 18px;
 }
 
 #winamp2-js #playlist-selection-menu {
-  position: absolute;
-  bottom: 12px;
-  left: 72px;
-  width: 22px;
-  height: 18px;
+    position: absolute;
+    bottom: 12px;
+    left: 72px;
+    width: 22px;
+    height: 18px;
 }
 
 #winamp2-js #playlist-misc-menu {
-  position: absolute;
-  bottom: 12px;
-  left: 102px;
-  width: 22px;
-  height: 18px;
+    position: absolute;
+    bottom: 12px;
+    left: 102px;
+    width: 22px;
+    height: 18px;
 }
 
 #winamp2-js #playlist-list-menu {
-  position: absolute;
-  bottom: 12px;
-  right: 22px;
-  width: 22px;
-  height: 18px;
+    position: absolute;
+    bottom: 12px;
+    right: 22px;
+    width: 22px;
+    height: 18px;
 }
 
 #winamp2-js .playlist-bottom-right {
-  width: 150px;
-  height: 100%;
-  position: absolute;
-  right: 0;
+    width: 150px;
+    height: 100%;
+    position: absolute;
+    right: 0;
 }
 
 #winamp2-js .playlist-running-time-display {
-  position: absolute;
-  top: 10px;
-  left: 8px;
-  height: 10px;
+    position: absolute;
+    top: 10px;
+    left: 8px;
+    height: 10px;
 }
 
 #winamp2-js .playlist-action-buttons {
-  position: absolute;
-  top: 22px;
-  left: 3px;
-  display: flex;
+    position: absolute;
+    top: 22px;
+    left: 3px;
+    display: flex;
 }
 
 #winamp2-js .playlist-action-buttons > div {
-  height: 10px;
-  width: 10px;
+    height: 10px;
+    width: 10px;
 }
 
 #winamp2-js #playlist-window .playlist-visualizer {
-  width: 75px;
-  height: 100%;
-  position: absolute;
-  right: 150px;
-  display: none; /* Only show if the window is wide enough */
+    width: 75px;
+    height: 100%;
+    position: absolute;
+    right: 150px;
+    display: none; /* Only show if the window is wide enough */
 }
 
 #winamp2-js #playlist-window.wide .playlist-visualizer {
-  display: block;
+    display: block;
 }
 
 #winamp2-js #playlist-window .mini-time {
-  position: absolute;
-  top: 23px;
-  left: 66px;
+    position: absolute;
+    top: 23px;
+    left: 66px;
 }
 
 #winamp2-js #playlist-window #playlist-resize-target {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  height: 20px;
-  width: 20px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: 20px;
+    width: 20px;
 }
 
 #winamp2-js #playlist-close-button {
-  position: absolute;
-  right: 2px;
-  height: 9px;
-  width: 9px;
-  top: 3px;
+    position: absolute;
+    right: 2px;
+    height: 9px;
+    width: 9px;
+    top: 3px;
 }
 
 #winamp2-js #playlist-shade-button {
-  position: absolute;
-  right: 12px;
-  height: 9px;
-  width: 9px;
-  top: 3px;
+    position: absolute;
+    right: 12px;
+    height: 9px;
+    width: 9px;
+    top: 3px;
 }
 
 #winamp2-js #playlist-window-shade {
-  height: 14px;
+    height: 14px;
 }
 
 #winamp2-js #playlist-window-shade .left {
-  height: 14px;
-  background-repeat: no-repeat;
+    height: 14px;
+    background-repeat: no-repeat;
 }
 
 #winamp2-js #playlist-window-shade .right {
-  height: 14px;
-  background-repeat: no-repeat;
-  background-position-x: right;
+    height: 14px;
+    background-repeat: no-repeat;
+    background-position-x: right;
 }
 
 #winamp2-js #playlist-window #playlist-scroll-up-button,
 #winamp2-js #playlist-window #playlist-scroll-down-button {
-  position: absolute;
-  width: 8px;
-  height: 5px;
-  right: 7px;
+    position: absolute;
+    width: 8px;
+    height: 5px;
+    right: 7px;
 }
 
 #winamp2-js #playlist-window #playlist-scroll-up-button {
-  top: 2px;
+    top: 2px;
 }
 #winamp2-js #playlist-window #playlist-scroll-down-button {
-  top: 8px;
+    top: 8px;
 }
 
 #winamp2-js #playlist-window-shade #playlist-resize-target {
-  position: absolute;
-  right: 20px;
-  top: 3px;
-  height: 9px;
-  width: 9px;
+    position: absolute;
+    right: 20px;
+    top: 3px;
+    height: 9px;
+    width: 9px;
 }
 
 #winamp2-js #playlist-shade-track-title {
-  position: absolute;
-  top: 4px;
-  left: 5px;
+    position: absolute;
+    top: 4px;
+    left: 5px;
 }
 
 #winamp2-js #playlist-shade-time {
-  position: absolute;
-  top: 4px;
-  right: 30px;
+    position: absolute;
+    top: 4px;
+    right: 30px;
 }
