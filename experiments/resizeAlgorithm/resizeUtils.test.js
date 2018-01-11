@@ -108,18 +108,18 @@ function assertionsFromTxt(txtPath) {
 }
 
 xdescribe("integration", () => {
-  assertionsFromTxt(
-    "./js/__fixtures__/resizeDoubleTestCases.txt"
-  ).forEach(({ input, output, message }) => {
-    it(message, () => {
-      const matrix = matrixFromMap(input);
-      const boxes = boxesFromMatrix(matrix);
-      const doubledBoxes = double(boxes);
-      const derivedMatrix = matrixFromBoxes(doubledBoxes);
-      const derivedMap = mapFromMatrix(derivedMatrix);
-      expect(derivedMap).toEqual(output);
-    });
-  });
+  assertionsFromTxt("./js/__fixtures__/resizeDoubleTestCases.txt").forEach(
+    ({ input, output, message }) => {
+      it(message, () => {
+        const matrix = matrixFromMap(input);
+        const boxes = boxesFromMatrix(matrix);
+        const doubledBoxes = double(boxes);
+        const derivedMatrix = matrixFromBoxes(doubledBoxes);
+        const derivedMap = mapFromMatrix(derivedMatrix);
+        expect(derivedMap).toEqual(output);
+      });
+    }
+  );
 });
 
 describe("matrixFromBoxes", () => {
