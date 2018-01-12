@@ -1,6 +1,11 @@
 import { combineReducers } from "redux";
 import { BANDS, WINDOWS } from "../constants";
 import {
+  PLAY,
+  IS_PLAYING,
+  PAUSE,
+  STOP,
+  IS_STOPPED,
   CLOSE_WINAMP,
   SET_BALANCE,
   SET_BAND_VALUE,
@@ -230,13 +235,13 @@ const media = (state, action) => {
   }
   switch (action.type) {
     // TODO: Make these constants
-    case "PLAY":
-    case "IS_PLAYING":
+    case PLAY:
+    case IS_PLAYING:
       return { ...state, status: "PLAYING" };
-    case "PAUSE":
+    case PAUSE:
       return { ...state, status: "PAUSED" };
-    case "STOP":
-    case "IS_STOPPED":
+    case STOP:
+    case IS_STOPPED:
       return { ...state, status: "STOPPED" };
     case TOGGLE_TIME_MODE:
       const newMode = state.timeMode === "REMAINING" ? "ELAPSED" : "REMAINING";
