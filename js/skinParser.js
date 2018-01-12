@@ -209,6 +209,9 @@ async function genRegion(zip) {
 
 async function genGenTextSprites(zip) {
   const img = await genImgFromFilename(zip, "GEN");
+  if (img == null) {
+    return {};
+  }
 
   const canvas = document.createElement("canvas");
   const context = canvas.getContext("2d");
