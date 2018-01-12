@@ -2,6 +2,8 @@
 
 # Winamp2-js
 
+[![Join the chat at https://gitter.im/winamp2-js/Lobby](https://badges.gitter.im/winamp2-js/Lobby.svg)](https://gitter.im/winamp2-js/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 A reimplementation of Winamp 2.9 in HTML5 and JavaScript.
 
 **[Give it a try!](https://jordaneldredge.com/projects/winamp2-js/)**
