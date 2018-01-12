@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 
-import { SET_FOCUSED_WINDOW } from "../../actionTypes";
+import { SET_FOCUSED_WINDOW, CLOSE_GEN_WINDOW } from "../../actionTypes";
 
 const Text = ({ children }) => {
   const letters = children.split("");
@@ -40,7 +40,7 @@ export const GenWindow = ({
       <div className="gen-top-right-end draggable" />
       <div className="gen-top-left-right-fill draggable" />
       <div className="gen-top-right draggable">
-        <div className="gen-close selected" onClick={close} />
+        <div className="gen-close selected" onClick={() => close(windowId)} />
       </div>
     </div>
     <div className="gen-middle">
@@ -72,7 +72,8 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = {
-  setFocus: window => ({ type: SET_FOCUSED_WINDOW, window })
+  setFocus: windowId => ({ type: SET_FOCUSED_WINDOW, window: windowId }),
+  close: windowId => ({ type: CLOSE_GEN_WINDOW, windowId })
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GenWindow);

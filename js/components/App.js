@@ -4,11 +4,26 @@ import WindowManager from "./WindowManager";
 import MainWindow from "./MainWindow";
 import PlaylistWindow from "./PlaylistWindow";
 import EqualizerWindow from "./EqualizerWindow";
+import AvsWindow from "./AvsWindow";
 import Skin from "./Skin";
 
 import "../../css/winamp.css";
 
-const App = ({ media, fileInput, loading, closed, equalizer, playlist }) => {
+const genWindowMap = {
+  AVS_WINDOW: AvsWindow
+};
+
+const GEN_WINDOWS = ["AVS_WINDOW"];
+
+const App = ({
+  media,
+  fileInput,
+  loading,
+  closed,
+  equalizer,
+  playlist,
+  openWindows
+}) => {
   if (closed) {
     return null;
   }
@@ -30,6 +45,10 @@ const App = ({ media, fileInput, loading, closed, equalizer, playlist }) => {
         <MainWindow fileInput={fileInput} mediaPlayer={media} />
         {equalizer && <EqualizerWindow fileInput={fileInput} />}
         {playlist && <PlaylistWindow fileInput={fileInput} />}
+        {GEN_WINDOWS.map((windowId, i) => {
+          const Component = genWindowMap[windowId];
+          return openWindows.has(windowId) && <Component key={i} />;
+        })}
       </WindowManager>
     </div>
   );
@@ -39,7 +58,8 @@ const mapStateToProps = state => ({
   loading: state.display.loading,
   closed: state.display.closed,
   equalizer: state.windows.equalizer,
-  playlist: state.windows.playlist
+  playlist: state.windows.playlist,
+  openWindows: new Set(state.windows.openGenWindows)
 });
 
 export default connect(mapStateToProps)(App);

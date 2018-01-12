@@ -36,9 +36,12 @@ import {
   SET_PLAYLIST_SCROLL_POSITION,
   PLAYLIST_SIZE_CHANGED,
   SET_AVALIABLE_SKINS,
-  ADD_TRACK_FROM_URL
+  ADD_TRACK_FROM_URL,
+  CLOSE_GEN_WINDOW,
+  OPEN_GEN_WINDOW
 } from "../actionTypes";
 
+import { arrayWith, arrayWithout } from "../utils";
 import playlist from "./playlist";
 
 const defaultUserInput = {
@@ -70,7 +73,8 @@ export const userInput = (state = defaultUserInput, action) => {
 const defaultWindowsState = {
   focused: WINDOWS.MAIN,
   equalizer: true,
-  playlist: true
+  playlist: true,
+  openGenWindows: []
 };
 
 const windows = (state = defaultWindowsState, action) => {
@@ -83,6 +87,16 @@ const windows = (state = defaultWindowsState, action) => {
       return { ...state, equalizer: false };
     case TOGGLE_PLAYLIST_WINDOW:
       return { ...state, playlist: !state.playlist };
+    case CLOSE_GEN_WINDOW:
+      return {
+        ...state,
+        openGenWindows: arrayWithout(state.openGenWindow, action.windowId)
+      };
+    case OPEN_GEN_WINDOW:
+      return {
+        ...state,
+        openGenWindows: arrayWith(state.openGenWindow, action.windowId)
+      };
     default:
       return state;
   }
