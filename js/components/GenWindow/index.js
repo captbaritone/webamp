@@ -1,7 +1,9 @@
 import React from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import "../../../css/gen-window.css";
+
+import { SET_FOCUSED_WINDOW } from "../../actionTypes";
 
 const Text = ({ children }) => {
   const letters = children.split("");
@@ -15,8 +17,19 @@ const Text = ({ children }) => {
   ));
 };
 
-const GenWindow = ({ selected, children, close, title }) => (
-  <div className={classnames("gen-window", "window", { selected })}>
+// Named export for testing
+export const GenWindow = ({
+  selected,
+  children,
+  close,
+  title,
+  setFocus,
+  windowId
+}) => (
+  <div
+    className={classnames("gen-window", "window", { selected })}
+    onMouseDown={() => setFocus(windowId)}
+  >
     <div className="gen-top draggable">
       <div className="gen-top-left draggable" />
       <div className="gen-top-left-right-fill draggable" />
@@ -48,9 +61,18 @@ const GenWindow = ({ selected, children, close, title }) => (
 
 GenWindow.propTypes = {
   title: PropTypes.string.isRequired,
+  windowId: PropTypes.string.isRequired,
   children: PropTypes.node,
   close: PropTypes.func.isRequired,
   selected: PropTypes.bool.isRequired
 };
 
-export default GenWindow;
+const mapStateToProps = (state, ownProps) => ({
+  selected: state.windows.focused === ownProps.windowId
+});
+
+const mapDispatchToProps = {
+  setFocus: window => ({ type: SET_FOCUSED_WINDOW, window })
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GenWindow);

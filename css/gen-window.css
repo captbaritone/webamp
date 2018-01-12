@@ -81,6 +81,7 @@
 
 #winamp2-js .gen-middle-center {
     flex-grow: 1;
+    position: relative;
 }
 
 #winamp2-js .gen-middle-right {
