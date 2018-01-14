@@ -90,16 +90,20 @@ const Skin = props => {
       });
     }
   });
-  LETTERS.forEach(letter => {
-    const width = skinGenLetterWidths[`GEN_TEXT_${letter}`];
-    const selectedWidth = skinGenLetterWidths[`GEN_LETTER_SELECTED_${letter}`];
-    cssRules.push(
-      `#winamp2-js .gen-text-${letter.toLowerCase()} {width: ${width}px;}`
-    );
-    cssRules.push(
-      `#winamp2-js .selected .gen-text-${letter.toLowerCase()} {width: ${selectedWidth}px;}`
-    );
-  });
+
+  if (skinGenLetterWidths != null) {
+    LETTERS.forEach(letter => {
+      const width = skinGenLetterWidths[`GEN_TEXT_${letter}`];
+      const selectedWidth =
+        skinGenLetterWidths[`GEN_LETTER_SELECTED_${letter}`];
+      cssRules.push(
+        `#winamp2-js .gen-text-${letter.toLowerCase()} {width: ${width}px;}`
+      );
+      cssRules.push(
+        `#winamp2-js .selected .gen-text-${letter.toLowerCase()} {width: ${selectedWidth}px;}`
+      );
+    });
+  }
   Object.keys(cursorSelectors).forEach(cursorName => {
     const cursorUrl = skinCursors[cursorName];
     if (cursorUrl) {

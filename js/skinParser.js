@@ -210,7 +210,7 @@ async function genRegion(zip) {
 async function genGenTextSprites(zip) {
   const img = await genImgFromFilename(zip, "GEN");
   if (img == null) {
-    return {};
+    return null;
   }
 
   const canvas = document.createElement("canvas");
@@ -263,7 +263,7 @@ async function skinParser(zipFile) {
     images,
     cursors,
     region,
-    [genLetterWidths, genTextImages]
+    genTextSprites
   ] = await Promise.all([
     genColors(zip),
     genPlaylistStyle(zip),
@@ -272,6 +272,8 @@ async function skinParser(zipFile) {
     genRegion(zip),
     genGenTextSprites(zip)
   ]);
+
+  const [genLetterWidths, genTextImages] = genTextSprites || [null, {}];
 
   return {
     colors,
