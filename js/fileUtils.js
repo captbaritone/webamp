@@ -27,3 +27,16 @@ export async function genArrayBufferFromUrl(url) {
     oReq.send(null);
   });
 }
+
+export async function promptForFileReferences() {
+  return new Promise(resolve => {
+    // Does this represent a memory leak somehow?
+    // Can this fail? Do we ever reject?
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.addEventListener("change", e => {
+      resolve(e.target.files);
+    });
+    fileInput.click();
+  });
+}

@@ -119,7 +119,7 @@ class PlaylistWindow extends React.Component {
         </div>
         <div className="playlist-bottom draggable">
           <div className="playlist-bottom-left draggable">
-            <AddMenu openFileDialog={this.props.openFileDialog} />
+            <AddMenu />
             <RemoveMenu />
             <SelectionMenu />
             <MiscMenu />

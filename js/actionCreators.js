@@ -2,7 +2,8 @@ import jsmediatags from "jsmediatags/dist/jsmediatags";
 import { parser, creator } from "winamp-eqf";
 import {
   genArrayBufferFromFileReference,
-  genArrayBufferFromUrl
+  genArrayBufferFromUrl,
+  promptForFileReferences
 } from "./fileUtils";
 import skinParser from "./skinParser";
 import { BANDS } from "./constants";
@@ -173,7 +174,7 @@ function setEqFromFileReference(fileReference) {
   };
 }
 
-function addTracksFromReferences(fileReferences, autoPlay, atIndex) {
+export function addTracksFromReferences(fileReferences, autoPlay, atIndex) {
   return dispatch => {
     Array.from(fileReferences).forEach((file, i) => {
       const priority = i === 0 && autoPlay ? "PLAY" : "NONE";
@@ -313,23 +314,14 @@ export function setSkinFromUrl(url) {
 }
 
 export function openFileDialog() {
-  return dispatch => {
-    // Does this represent a memory leak somehow?
-    const fileInput = document.createElement("input");
-    fileInput.type = "file";
-    fileInput.addEventListener("change", e => {
-      dispatch(loadFilesFromReferences(e.target.files));
-    });
-    fileInput.click();
+  return async dispatch => {
+    const fileReferences = await promptForFileReferences();
+    dispatch(loadFilesFromReferences(fileReferences));
   };
 }
 
 export function setEqBand(band, value) {
-  return {
-    type: SET_BAND_VALUE,
-    band,
-    value
-  };
+  return { type: SET_BAND_VALUE, band, value };
 }
 
 function _setEqTo(value) {
