@@ -65,12 +65,6 @@ const genImgFromBlob = async blob => {
   return _genImgFromBlob(blob);
 };
 
-// "Promisify" processBuffer
-const genBufferFromFile = file =>
-  new Promise(resolve => {
-    file.processBuffer(resolve);
-  });
-
 async function genFileFromZip(zip, fileName, ext, mode) {
   const regex = new RegExp(`^(.*/)?${fileName}(\.${ext})?$`, "i");
   const files = zip.file(regex);
@@ -253,10 +247,9 @@ async function genGenTextSprites(zip) {
   return [letterWidths, getSpriteUrisFromImg(img, sprites)];
 }
 
-// A promise that, given a File object, returns a skin style object
-async function skinParser(zipFile) {
-  const buffer = await genBufferFromFile(zipFile);
-  const zip = await JSZip.loadAsync(buffer);
+// A promise that, given an array buffer  returns a skin style object
+async function skinParser(zipFileBuffer) {
+  const zip = await JSZip.loadAsync(zipFileBuffer);
   const [
     colors,
     playlistStyle,

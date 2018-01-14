@@ -1,6 +1,9 @@
 import jsmediatags from "jsmediatags/dist/jsmediatags";
 import { parser, creator } from "winamp-eqf";
-import MyFile from "./myFile";
+import {
+  genArrayBufferFromFileReference,
+  genArrayBufferFromUrl
+} from "./fileUtils";
 import skinParser from "./skinParser";
 import { BANDS } from "./constants";
 import {
@@ -21,7 +24,6 @@ import {
 import {
   CLOSE_WINAMP,
   ADD_TRACK_FROM_URL,
-  OPEN_FILE_DIALOG,
   SEEK_TO_PERCENT_COMPLETE,
   SET_BALANCE,
   SET_BAND_VALUE,
@@ -158,16 +160,15 @@ export function toggleShuffle() {
   return { type: TOGGLE_SHUFFLE };
 }
 
-function setEqFromFile(file) {
-  return dispatch => {
-    file.processBuffer(arrayBuffer => {
-      const eqf = parser(arrayBuffer);
-      const preset = eqf.presets[0];
+function setEqFromFileReference(fileReference) {
+  return async dispatch => {
+    const arrayBuffer = await genArrayBufferFromFileReference(fileReference);
+    const eqf = parser(arrayBuffer);
+    const preset = eqf.presets[0];
 
-      dispatch(setPreamp(normalize(preset.preamp)));
-      BANDS.forEach(band => {
-        dispatch(setEqBand(band, normalize(preset[`hz${band}`])));
-      });
+    dispatch(setPreamp(normalize(preset.preamp)));
+    BANDS.forEach(band => {
+      dispatch(setEqBand(band, normalize(preset[`hz${band}`])));
     });
   };
 }
@@ -196,13 +197,11 @@ export function loadFilesFromReferences(
       return;
     } else if (fileReferences.length === 1) {
       const fileReference = fileReferences[0];
-      const file = new MyFile();
-      file.setFileReference(fileReference);
       if (SKIN_FILENAME_MATCHER.test(fileReference.name)) {
-        dispatch(setSkinFromFile(file));
+        dispatch(setSkinFromFileReference(fileReference));
         return;
       } else if (EQF_FILENAME_MATCHER.test(fileReference.name)) {
-        dispatch(setEqFromFile(file));
+        dispatch(setEqFromFileReference(fileReference));
         return;
       }
     }
@@ -282,9 +281,9 @@ export function fetchMediaTags(file, id) {
   };
 }
 
-export function setSkinFromFile(skinFile) {
+export function setSkinFromArrayBuffer(arrayBuffer) {
   return async dispatch => {
-    const skinData = await skinParser(skinFile);
+    const skinData = await skinParser(arrayBuffer);
     dispatch({
       type: SET_SKIN_DATA,
       skinImages: skinData.images,
@@ -297,10 +296,20 @@ export function setSkinFromFile(skinFile) {
   };
 }
 
+export function setSkinFromFileReference(skinFileReference) {
+  return async dispatch => {
+    const arrayBuffer = await genArrayBufferFromFileReference(
+      skinFileReference
+    );
+    dispatch(setSkinFromArrayBuffer(arrayBuffer));
+  };
+}
+
 export function setSkinFromUrl(url) {
-  const skinFile = new MyFile();
-  skinFile.setUrl(url);
-  return setSkinFromFile(skinFile);
+  return async dispatch => {
+    const arrayBuffer = await genArrayBufferFromUrl(url);
+    dispatch(setSkinFromArrayBuffer(arrayBuffer));
+  };
 }
 
 export function openFileDialog() {
