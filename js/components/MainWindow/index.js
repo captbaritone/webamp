@@ -88,7 +88,7 @@ export class MainWindow extends React.Component {
           className="selected title-bard draggable"
           onDoubleClick={this.props.toggleMainWindowShadeMode}
         >
-          <MainContextMenu fileInput={this.props.fileInput} />
+          <MainContextMenu />
           {shade && <MiniTime />}
           <div id="minimize" />
           <Shade />
@@ -118,7 +118,7 @@ export class MainWindow extends React.Component {
         </div>
         <Position />
         <ActionButtons />
-        <Eject fileInput={this.props.fileInput} />
+        <Eject />
         <div className="shuffle-repeat">
           <Shuffle />
           <Repeat />

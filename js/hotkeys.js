@@ -22,7 +22,7 @@ import {
 
 import { arraysAreEqual } from "./utils";
 
-export default function(fileInput, { dispatch }) {
+export default function(dispatch) {
   let keylog = [];
   const trigger = [
     78, // N
@@ -72,7 +72,7 @@ export default function(fileInput, { dispatch }) {
           dispatch(pause());
           break;
         case 76: // L
-          dispatch(openFileDialog(fileInput));
+          dispatch(openFileDialog());
           break;
         case 82: // R
           dispatch(toggleRepeat());
@@ -90,7 +90,7 @@ export default function(fileInput, { dispatch }) {
           dispatch(previous());
           break;
         case 96: // numpad 0
-          dispatch(openFileDialog(fileInput));
+          dispatch(openFileDialog());
           break;
         case 97: // numpad 1
           dispatch(nextN(-10));

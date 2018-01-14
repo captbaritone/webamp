@@ -60,7 +60,7 @@ const EqualizerWindow = props => {
           <EqOn />
           <EqAuto />
           <EqGraph />
-          <PresetsContextMenu fileInput={props.fileInput} />
+          <PresetsContextMenu />
           <Band id="preamp" band="preamp" onChange={props.setPreampValue} />
           <div id="plus12db" onClick={props.setEqToMax} />
           <div id="zerodb" onClick={props.setEqToMid} />

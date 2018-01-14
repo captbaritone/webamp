@@ -15,15 +15,7 @@ const genWindowMap = {
 
 const GEN_WINDOWS = ["AVS_WINDOW"];
 
-const App = ({
-  media,
-  fileInput,
-  loading,
-  closed,
-  equalizer,
-  playlist,
-  openWindows
-}) => {
+const App = ({ media, loading, closed, equalizer, playlist, openWindows }) => {
   if (closed) {
     return null;
   }
@@ -42,9 +34,9 @@ const App = ({
     <div id="loaded">
       <Skin />
       <WindowManager>
-        <MainWindow fileInput={fileInput} mediaPlayer={media} />
-        {equalizer && <EqualizerWindow fileInput={fileInput} />}
-        {playlist && <PlaylistWindow fileInput={fileInput} />}
+        <MainWindow mediaPlayer={media} />
+        {equalizer && <EqualizerWindow />}
+        {playlist && <PlaylistWindow />}
         {GEN_WINDOWS.map((windowId, i) => {
           const Component = genWindowMap[windowId];
           return openWindows.has(windowId) && <Component key={i} />;

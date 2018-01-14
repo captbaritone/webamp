@@ -10,9 +10,6 @@ const MainContextMenu = props => (
   </ContextMenu>
 );
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  openFileDialog: () => dispatch(openFileDialog(ownProps.fileInput)),
-  downloadPreset: () => dispatch(downloadPreset())
-});
+const mapDispatchToProps = { openFileDialog, downloadPreset };
 
 export default connect(null, mapDispatchToProps)(MainContextMenu);

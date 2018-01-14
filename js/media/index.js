@@ -5,7 +5,7 @@ import BufferSource from "./bufferSource";
 import ElementSource from "./elementSource";
 
 export default class Media {
-  constructor(fileInput) {
+  constructor() {
     this._context = new (window.AudioContext || window.webkitAudioContext)();
     this._callbacks = {
       waiting: function() {},
@@ -18,7 +18,6 @@ export default class Media {
     };
     this._balance = 0;
     this.name = null;
-    this.fileInput = fileInput;
 
     // The _source node has to be recreated each time it's stopped or
     // paused, so we don't create it here. Instead we create this dummy

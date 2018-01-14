@@ -303,10 +303,16 @@ export function setSkinFromUrl(url) {
   return setSkinFromFile(skinFile);
 }
 
-export function openFileDialog(fileInput) {
-  fileInput.click();
-  // No reducers currently respond to this.
-  return { type: OPEN_FILE_DIALOG };
+export function openFileDialog() {
+  return dispatch => {
+    // Does this represent a memory leak somehow?
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.addEventListener("change", e => {
+      dispatch(loadFilesFromReferences(e.target.files));
+    });
+    fileInput.click();
+  };
 }
 
 export function setEqBand(band, value) {

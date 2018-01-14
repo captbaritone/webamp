@@ -7,8 +7,6 @@ const Eject = props => (
   <div id="eject" onClick={props.openFileDialog} title="Open File(s)" />
 );
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  openFileDialog: () => dispatch(openFileDialog(ownProps.fileInput))
-});
+const mapDispatchToProps = { openFileDialog };
 
 export default connect(() => ({}), mapDispatchToProps)(Eject);

@@ -163,7 +163,8 @@ class PlaylistWindow extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+// TODO: Convert to object syntax
+const mapDispatchToProps = dispatch => ({
   focusPlaylist: () =>
     dispatch({
       type: SET_FOCUSED_WINDOW,
@@ -172,7 +173,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   play: () => dispatch(play()),
   pause: () => dispatch(pause()),
   stop: () => dispatch(stop()),
-  openFileDialog: () => dispatch(openFileDialog(ownProps.fileInput)),
+  openFileDialog: () => dispatch(openFileDialog()),
   close: () => dispatch({ type: TOGGLE_PLAYLIST_WINDOW }),
   toggleShade: () => dispatch({ type: TOGGLE_PLAYLIST_SHADE_MODE }),
   toggleVisualizerStyle: () => dispatch(toggleVisualizerStyle()),

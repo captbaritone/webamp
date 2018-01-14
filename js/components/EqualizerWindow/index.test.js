@@ -33,7 +33,7 @@ describe("EqualizerWindow", () => {
     const tree = renderer
       .create(
         <Provider store={store}>
-          <EqualizerWindow fileInput={null} />
+          <EqualizerWindow />
         </Provider>,
         options
       )

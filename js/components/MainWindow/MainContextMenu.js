@@ -36,10 +36,6 @@ const mapStateToProps = state => ({
   avaliableSkins: state.settings.avaliableSkins
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  close: () => dispatch(close()),
-  openFileDialog: () => dispatch(openFileDialog(ownProps.fileInput)),
-  setSkin: url => dispatch(setSkinFromUrl(url))
-});
+const mapDispatchToProps = { close, openFileDialog, setSkin: setSkinFromUrl };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainContextMenu);

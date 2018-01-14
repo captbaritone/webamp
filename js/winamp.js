@@ -6,11 +6,7 @@ import getStore from "./store";
 import App from "./components/App";
 import Hotkeys from "./hotkeys";
 import Media from "./media";
-import {
-  setSkinFromUrl,
-  loadMediaFromUrl,
-  loadFilesFromReferences
-} from "./actionCreators";
+import { setSkinFromUrl, loadMediaFromUrl } from "./actionCreators";
 
 import { SET_AVALIABLE_SKINS } from "./actionTypes";
 
@@ -18,24 +14,16 @@ class Winamp {
   constructor(options) {
     this.options = options;
 
-    this.fileInput = document.createElement("input");
-    this.fileInput.type = "file";
-    this.fileInput.style.display = "none";
-
-    this.media = new Media(this.fileInput);
+    this.media = new Media();
     this.store = getStore(this.media, this.options.__initialState);
   }
   render(node) {
     render(
       <Provider store={this.store}>
-        <App fileInput={this.fileInput} media={this.media} />
+        <App media={this.media} />
       </Provider>,
       node
     );
-
-    this.fileInput.addEventListener("change", e => {
-      this.store.dispatch(loadFilesFromReferences(e.target.files));
-    });
 
     if (this.options.initialTrack && this.options.initialTrack.url) {
       this.store.dispatch(
@@ -54,7 +42,7 @@ class Winamp {
     }
     this.store.dispatch(setSkinFromUrl(this.options.initialSkin.url));
 
-    new Hotkeys(this.fileInput, this.store);
+    new Hotkeys(this.store.dispatch);
   }
 }
 
