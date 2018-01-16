@@ -82,15 +82,7 @@ class WindowManager extends React.Component {
     return { key, x: offsetLeft, y: offsetTop, height, width };
   }
 
-  handleMouseDown(key, e) {
-    if (!e.target.classList.contains("draggable")) {
-      return;
-    }
-    // Prevent dragging from highlighting text.
-    e.preventDefault();
-
-    const mouseStart = { x: e.clientX, y: e.clientY };
-
+  movingAndStationaryNodes(key) {
     const windows = this.getWindowNodes();
     const targetNode = windows.find(node => node.key === key);
 
@@ -104,6 +96,19 @@ class WindowManager extends React.Component {
     const stationary = windows.filter(w => !movingSet.has(w));
     const moving = Array.from(movingSet);
 
+    return [moving, stationary];
+  }
+
+  handleMouseDown(key, e) {
+    if (!e.target.classList.contains("draggable")) {
+      return;
+    }
+    // Prevent dragging from highlighting text.
+    e.preventDefault();
+
+    const [moving, stationary] = this.movingAndStationaryNodes(key);
+
+    const mouseStart = { x: e.clientX, y: e.clientY };
     const browserSize = {
       width: window.innerWidth,
       height: window.innerHeight
