@@ -74,7 +74,7 @@ const defaultWindowsState = {
   focused: WINDOWS.MAIN,
   equalizer: true,
   playlist: true,
-  openGenWindows: []
+  openGenWindows: ["AVS_WINDOW"]
 };
 
 const windows = (state = defaultWindowsState, action) => {

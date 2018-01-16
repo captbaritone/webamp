@@ -30,18 +30,21 @@ const App = ({ media, loading, closed, equalizer, playlist, openWindows }) => {
       </div>
     );
   }
+  const windows = {
+    main: <MainWindow mediaPlayer={media} />,
+    equalizer: equalizer && <EqualizerWindow />,
+    playlist: playlist && <PlaylistWindow />
+  };
+  GEN_WINDOWS.forEach((windowId, i) => {
+    const Component = genWindowMap[windowId];
+    windows[`genWindow${i}`] = openWindows.has(windowId) && (
+      <Component key={i} />
+    );
+  });
   return (
     <div id="loaded">
       <Skin />
-      <WindowManager>
-        <MainWindow mediaPlayer={media} />
-        {equalizer && <EqualizerWindow />}
-        {playlist && <PlaylistWindow />}
-        {GEN_WINDOWS.map((windowId, i) => {
-          const Component = genWindowMap[windowId];
-          return openWindows.has(windowId) && <Component key={i} />;
-        })}
-      </WindowManager>
+      <WindowManager windows={windows} />
     </div>
   );
 };

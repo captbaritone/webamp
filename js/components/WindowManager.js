@@ -1,5 +1,5 @@
 import React from "react";
-import { findDOMNode } from "react-dom";
+import PropTypes from "prop-types";
 
 import {
   snapDiffManyToMany,
@@ -25,7 +25,7 @@ const applyDiff = (a, b) => ({
 class WindowManager extends React.Component {
   constructor(props) {
     super(props);
-    this.windowNodes = [];
+    this.windowNodes = {};
     this.state = {};
     this.getRef = this.getRef.bind(this);
     this.handleMouseDown = this.handleMouseDown.bind(this);
@@ -47,11 +47,11 @@ class WindowManager extends React.Component {
   centerWindows() {
     const { innerHeight, innerWidth } = window;
     const state = {};
-    const children = this.validChildren();
-    const totalHeight = children.length * WINDOW_HEIGHT;
-    children.forEach((child, i) => {
+    const keys = this.windowKeys();
+    const totalHeight = keys.length * WINDOW_HEIGHT;
+    keys.forEach((key, i) => {
       const offset = WINDOW_HEIGHT * i;
-      state[i] = {
+      state[key] = {
         left: innerWidth / 2 - WINDOW_WIDTH / 2,
         top: innerHeight / 2 - totalHeight / 2 + offset
       };
@@ -59,54 +59,44 @@ class WindowManager extends React.Component {
     this.setState(state);
   }
 
-  getRef(node) {
+  getRef(key, node) {
     // If we are unmounting, the node might be null;
-    if (node != null) {
-      this.windowNodes.push(node);
-    }
+    this.windowNodes[key] = node;
   }
 
-  windows() {
-    return this.windowNodes.map(findDOMNode);
+  //
+  getWindowNodes() {
+    return this.windowKeys()
+      .map(key => {
+        const node = this.windowNodes[key];
+        return node && this.nodeInfo(node, key);
+      })
+
+      .filter(Boolean);
   }
 
-  otherWindows(element) {
-    return this.windows.filter(node => node !== element);
-  }
-
-  nodeInfo(node, i) {
+  nodeInfo(node, key) {
     const child = node.childNodes[0];
     const { height, width } = child.getBoundingClientRect();
     const { offsetLeft, offsetTop } = node;
-    return {
-      i,
-      x: offsetLeft,
-      y: offsetTop,
-      height,
-      width
-    };
+    return { key, x: offsetLeft, y: offsetTop, height, width };
   }
 
-  handleMouseDown(i, e) {
+  handleMouseDown(key, e) {
     if (!e.target.classList.contains("draggable")) {
       return;
     }
     // Prevent dragging from highlighting text.
     e.preventDefault();
 
-    const mouseStart = {
-      x: e.clientX,
-      y: e.clientY
-    };
+    const mouseStart = { x: e.clientX, y: e.clientY };
 
-    const targetNode = this.nodeInfo(e.currentTarget, i);
-
-    const windows = this.windows(e.currentTarget).map(this.nodeInfo);
+    const windows = this.getWindowNodes();
+    const targetNode = windows.find(node => node.key === key);
 
     let movingSet = new Set([targetNode]);
-
     // Only the main window brings other windows along.
-    if (targetNode.i === 0) {
+    if (key === "main") {
       const findAllConnected = traceConnection(abuts);
       movingSet = findAllConnected(windows, targetNode);
     }
@@ -150,7 +140,7 @@ class WindowManager extends React.Component {
 
       const stateDiff = moving.reduce((diff, window) => {
         const newWindowLocation = applyDiff(window, finalDiff);
-        diff[window.i] = {
+        diff[window.key] = {
           top: newWindowLocation.y,
           left: newWindowLocation.x
         };
@@ -166,8 +156,12 @@ class WindowManager extends React.Component {
     window.addEventListener("mousemove", handleMouseMove);
   }
 
-  validChildren() {
-    return React.Children.toArray(this.props.children).filter(child => child);
+  // Keys for the visible windows
+  windowKeys() {
+    // TODO: Iterables can probably do this better.
+    return Object.keys(this.props.windows).filter(
+      key => !!this.props.windows[key]
+    );
   }
 
   render() {
@@ -184,17 +178,17 @@ class WindowManager extends React.Component {
     };
     return (
       <div style={parentStyle}>
-        {this.validChildren().map((child, i) => {
-          const position = this.state[i];
+        {this.windowKeys().map(key => {
+          const position = this.state[key];
           return (
             position && (
               <div
-                onMouseDown={e => this.handleMouseDown(i, e)}
-                ref={this.getRef}
+                onMouseDown={e => this.handleMouseDown(key, e)}
+                ref={node => this.getRef(key, node)}
                 style={{ ...style, ...position }}
-                key={i}
+                key={key}
               >
-                {child}
+                {this.props.windows[key]}
               </div>
             )
           );
@@ -203,4 +197,9 @@ class WindowManager extends React.Component {
     );
   }
 }
+
+WindowManager.propTypes = {
+  windows: PropTypes.object.isRequired
+};
+
 export default WindowManager;
