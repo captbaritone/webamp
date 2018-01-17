@@ -13,7 +13,6 @@ class TrackList extends React.Component {
   constructor(props) {
     super(props);
     this._handleMoveClick = this._handleMoveClick.bind(this);
-    this._handleWeel = this._handleWeel.bind(this);
   }
 
   _renderTracks(format) {
@@ -27,12 +26,6 @@ class TrackList extends React.Component {
         {format(id, i)}
       </TrackCell>
     ));
-  }
-
-  _handleWeel(e) {
-    this.props.scrollPlaylistByDelta(e.deltaY);
-    e.preventDefault();
-    e.stopPropagation();
   }
 
   _handleMoveClick(e) {
@@ -72,7 +65,7 @@ class TrackList extends React.Component {
         className="playlist-tracks"
         style={{ height: "100%" }}
         onClick={this.props.selectZero}
-        onWheel={this._handleWeel}
+        onWheel={this.props.scrollPlaylistByDelta}
       >
         <div className="playlist-track-numbers">
           {this._renderTracks((id, i) => `${i + 1 + offset}.`)}
