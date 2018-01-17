@@ -19,7 +19,8 @@ import {
   scrollUpFourTracks,
   scrollDownFourTracks,
   loadFilesFromReferences,
-  togglePlaylistShadeMode
+  togglePlaylistShadeMode,
+  scrollVolume
 } from "../../actionCreators";
 
 import { clamp } from "../../utils";
@@ -91,6 +92,7 @@ class PlaylistWindow extends React.Component {
         style={style}
         onMouseDown={focusPlaylist}
         handleDrop={this._handleDrop}
+        onWheel={this.props.scrollVolume}
       >
         <div
           className="playlist-top draggable"
@@ -155,7 +157,8 @@ const mapDispatchToProps = {
   scrollDownFourTracks,
   loadFilesFromReferences: (e, startIndex) =>
     loadFilesFromReferences(e.dataTransfer.files, false, startIndex),
-  togglePlaylistShadeMode
+  togglePlaylistShadeMode,
+  scrollVolume
 };
 
 const mapStateToProps = state => {

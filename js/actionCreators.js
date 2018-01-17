@@ -142,6 +142,15 @@ export function adjustVolume(volumeDiff) {
   };
 }
 
+export function scrollVolume(e) {
+  e.preventDefault();
+  return (dispatch, getState) => {
+    const currentVolume = getState().media.volume;
+    // Using pixels as percentage difference here is a bit arbirary, but... oh well.
+    return dispatch(setVolume(currentVolume + e.deltaY));
+  };
+}
+
 export function setBalance(balance) {
   balance = clamp(balance, -100, 100);
   // The balance clips to the center

@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 
 import { SET_FOCUSED_WINDOW, CLOSE_GEN_WINDOW } from "../../actionTypes";
+import { scrollVolume } from "../../actionCreators";
 
 const Text = ({ children }) => {
   const letters = children.split("");
@@ -24,11 +25,13 @@ export const GenWindow = ({
   close,
   title,
   setFocus,
-  windowId
+  windowId,
+  scrollVolume: handleWheel
 }) => (
   <div
     className={classnames("gen-window", "window", { selected })}
     onMouseDown={() => setFocus(windowId)}
+    onWheel={handleWheel}
   >
     <div className="gen-top draggable">
       <div className="gen-top-left draggable" />
@@ -73,7 +76,8 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = {
   setFocus: windowId => ({ type: SET_FOCUSED_WINDOW, window: windowId }),
-  close: windowId => ({ type: CLOSE_GEN_WINDOW, windowId })
+  close: windowId => ({ type: CLOSE_GEN_WINDOW, windowId }),
+  scrollVolume
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GenWindow);

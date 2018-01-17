@@ -11,7 +11,8 @@ import {
   setEqToMid,
   setEqToMin,
   closeEqualizerWindow,
-  toggleEqualizerShadeMode
+  toggleEqualizerShadeMode,
+  scrollVolume
 } from "../../actionCreators";
 
 import { SET_FOCUSED_WINDOW } from "../../actionTypes";
@@ -42,6 +43,7 @@ const EqualizerWindow = props => {
       id="equalizer-window"
       className={className}
       onMouseDown={props.focusWindow}
+      onWheel={props.scrollVolume}
     >
       {props.shade ? (
         <EqualizerShade />
@@ -94,7 +96,8 @@ const mapDispatchToProps = dispatch => ({
   setEqToMax: () => dispatch(setEqToMax()),
   setHertzValue: hertz => value => dispatch(setEqBand(hertz, value)),
   closeEqualizerWindow: () => dispatch(closeEqualizerWindow()),
-  toggleEqualizerShadeMode: () => dispatch(toggleEqualizerShadeMode())
+  toggleEqualizerShadeMode: () => dispatch(toggleEqualizerShadeMode()),
+  scrollVolume: e => dispatch(scrollVolume(e))
 });
 
 const mapStateToProps = state => ({

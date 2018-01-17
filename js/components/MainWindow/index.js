@@ -6,7 +6,8 @@ import { WINDOWS } from "../../constants";
 import {
   loadFilesFromReferences,
   removeAllTracks,
-  toggleMainWindowShadeMode
+  toggleMainWindowShadeMode,
+  scrollVolume
 } from "../../actionCreators";
 
 import DropTarget from "../DropTarget";
@@ -82,6 +83,7 @@ export class MainWindow extends React.Component {
         className={className}
         onMouseDown={this._handleClick}
         handleDrop={this._handleDrop}
+        onWheel={this.props.scrollVolume}
       >
         <div
           id="title-bar"
@@ -147,6 +149,7 @@ const mapDispatchToProps = {
   setFocus: () => ({ type: SET_FOCUSED_WINDOW, window: WINDOWS.MAIN }),
   loadFilesFromReferences: e => loadFilesFromReferences(e.dataTransfer.files),
   removeAllTracks,
-  toggleMainWindowShadeMode
+  toggleMainWindowShadeMode,
+  scrollVolume
 };
 export default connect(mapStateToProps, mapDispatchToProps)(MainWindow);
