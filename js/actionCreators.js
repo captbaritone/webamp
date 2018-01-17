@@ -12,7 +12,8 @@ import {
   nextTrack,
   getScrollOffset,
   getOverflowTrackCount,
-  getPlaylistURL
+  getPlaylistURL,
+  getSelectedTrackObjects
 } from "./selectors";
 
 import {
@@ -393,6 +394,10 @@ export function closeEqualizerWindow() {
 
 export function cropPlaylist() {
   return (dispatch, getState) => {
+    const state = getState();
+    if (getSelectedTrackObjects(state).length === 0) {
+      return;
+    }
     const { playlist: { tracks } } = getState();
     dispatch({
       type: REMOVE_TRACKS,

@@ -39,8 +39,9 @@ const getOrderedTrackObjects = createSelector(
   (tracks, trackOrder) => trackOrder.map(id => tracks[id])
 );
 
-const getSelectedTrackObjects = createSelector(getOrderedTrackObjects, tracks =>
-  tracks.filter(track => track.selected)
+export const getSelectedTrackObjects = createSelector(
+  getOrderedTrackObjects,
+  tracks => tracks.filter(track => track.selected)
 );
 
 const runningTimeFromTracks = tracks =>
