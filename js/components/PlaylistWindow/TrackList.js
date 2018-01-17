@@ -5,7 +5,7 @@ import { getTimeStr } from "../../utils";
 import { getVisibleTrackIds, getScrollOffset } from "../../selectors";
 import { TRACK_HEIGHT } from "../../constants";
 import { SELECT_ZERO } from "../../actionTypes";
-import { dragSelected } from "../../actionCreators";
+import { dragSelected, scrollPlaylistByDelta } from "../../actionCreators";
 import TrackCell from "./TrackCell";
 import TrackTitle from "./TrackTitle";
 
@@ -13,6 +13,7 @@ class TrackList extends React.Component {
   constructor(props) {
     super(props);
     this._handleMoveClick = this._handleMoveClick.bind(this);
+    this._handleWeel = this._handleWeel.bind(this);
   }
 
   _renderTracks(format) {
@@ -26,6 +27,12 @@ class TrackList extends React.Component {
         {format(id, i)}
       </TrackCell>
     ));
+  }
+
+  _handleWeel(e) {
+    this.props.scrollPlaylistByDelta(e.deltaY);
+    e.preventDefault();
+    e.stopPropagation();
   }
 
   _handleMoveClick(e) {
@@ -65,6 +72,7 @@ class TrackList extends React.Component {
         className="playlist-tracks"
         style={{ height: "100%" }}
         onClick={this.props.selectZero}
+        onWheel={this._handleWeel}
       >
         <div className="playlist-track-numbers">
           {this._renderTracks((id, i) => `${i + 1 + offset}.`)}
@@ -82,7 +90,8 @@ class TrackList extends React.Component {
 
 const mapDispatchToProps = {
   selectZero: () => ({ type: SELECT_ZERO }),
-  dragSelected
+  dragSelected,
+  scrollPlaylistByDelta
 };
 
 const mapStateToProps = state => ({

@@ -6,7 +6,7 @@ import {
   promptForFileReferences
 } from "./fileUtils";
 import skinParser from "./skinParser";
-import { BANDS } from "./constants";
+import { BANDS, TRACK_HEIGHT } from "./constants";
 import {
   getEqfData,
   nextTrack,
@@ -450,6 +450,22 @@ export function scrollNTracks(n) {
     return dispatch({
       type: SET_PLAYLIST_SCROLL_POSITION,
       position: position * 100
+    });
+  };
+}
+
+export function scrollPlaylistByDelta(delta) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const totalPixelHeight = state.playlist.trackOrder.length * TRACK_HEIGHT;
+    const percentDelta = delta / totalPixelHeight * 100;
+    dispatch({
+      type: SET_PLAYLIST_SCROLL_POSITION,
+      position: clamp(
+        state.display.playlistScrollPosition + percentDelta,
+        0,
+        100
+      )
     });
   };
 }
