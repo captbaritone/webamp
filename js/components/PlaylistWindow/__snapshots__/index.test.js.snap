@@ -54,6 +54,7 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
       <div
         className="playlist-tracks"
         onClick={[Function]}
+        onWheel={[Function]}
         style={
           Object {
             "height": "100%",
@@ -215,6 +216,7 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
       >
         <div
           className="playlist-previous-button"
+          onClick={[Function]}
         />
         <div
           className="playlist-play-button"
@@ -230,6 +232,7 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
         />
         <div
           className="playlist-next-button"
+          onClick={[Function]}
         />
         <div
           className="playlist-eject-button"

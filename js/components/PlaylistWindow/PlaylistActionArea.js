@@ -13,9 +13,8 @@ import {
 import MiniTime from "../MiniTime";
 import RunningTimeDisplay from "./RunningTimeDisplay";
 
-// TODO: Use React.Fragment
 const PlaylistWindow = props => (
-  <div>
+  <React.Fragment>
     <RunningTimeDisplay />
     <div className="playlist-action-buttons">
       <div className="playlist-previous-button" onClick={props.previous} />
@@ -26,7 +25,7 @@ const PlaylistWindow = props => (
       <div className="playlist-eject-button" onClick={props.openFileDialog} />
     </div>
     <MiniTime />
-  </div>
+  </React.Fragment>
 );
 
 const mapDispatchToProps = {
