@@ -12,6 +12,7 @@ describe("GenWindow", () => {
           selected
           close={() => {}}
           windowId="TEST_WINDOW_ID"
+          scrollVolume={() => {}}
         />
       )
       .toJSON();

@@ -9,6 +9,7 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
   onDragStart={[Function]}
   onDrop={[Function]}
   onMouseDown={[Function]}
+  onWheel={[Function]}
   style={
     Object {
       "backgroundColor": undefined,

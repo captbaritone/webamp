@@ -5,6 +5,7 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
   className="window draggable"
   id="equalizer-window"
   onMouseDown={[Function]}
+  onWheel={[Function]}
 >
   <div>
     <div

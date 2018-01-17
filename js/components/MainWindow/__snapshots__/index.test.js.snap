@@ -9,6 +9,7 @@ exports[`MainWindow renders to snapshot 1`] = `
   onDragStart={[Function]}
   onDrop={[Function]}
   onMouseDown={[Function]}
+  onWheel={[Function]}
 >
   <div
     className="selected title-bard draggable"
