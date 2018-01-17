@@ -1,0 +1,41 @@
+import React from "react";
+import { connect } from "react-redux";
+
+import {
+  play,
+  pause,
+  stop,
+  next,
+  previous,
+  openFileDialog
+} from "../../actionCreators";
+
+import MiniTime from "../MiniTime";
+import RunningTimeDisplay from "./RunningTimeDisplay";
+
+// TODO: Use React.Fragment
+const PlaylistWindow = props => (
+  <div>
+    <RunningTimeDisplay />
+    <div className="playlist-action-buttons">
+      <div className="playlist-previous-button" onClick={props.previous} />
+      <div className="playlist-play-button" onClick={props.play} />
+      <div className="playlist-pause-button" onClick={props.pause} />
+      <div className="playlist-stop-button" onClick={props.stop} />
+      <div className="playlist-next-button" onClick={props.next} />
+      <div className="playlist-eject-button" onClick={props.openFileDialog} />
+    </div>
+    <MiniTime />
+  </div>
+);
+
+const mapDispatchToProps = {
+  play,
+  pause,
+  stop,
+  openFileDialog,
+  next,
+  previous
+};
+
+export default connect(null, mapDispatchToProps)(PlaylistWindow);

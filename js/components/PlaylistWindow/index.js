@@ -15,10 +15,6 @@ import {
   SET_FOCUSED_WINDOW
 } from "../../actionTypes";
 import {
-  play,
-  pause,
-  stop,
-  openFileDialog,
   toggleVisualizerStyle,
   scrollUpFourTracks,
   scrollDownFourTracks,
@@ -28,7 +24,6 @@ import {
 
 import { clamp } from "../../utils";
 import DropTarget from "../DropTarget";
-import MiniTime from "../MiniTime";
 import PlaylistShade from "./PlaylistShade";
 import AddMenu from "./AddMenu";
 import RemoveMenu from "./RemoveMenu";
@@ -36,7 +31,7 @@ import SelectionMenu from "./SelectionMenu";
 import MiscMenu from "./MiscMenu";
 import ListMenu from "./ListMenu";
 import ResizeTarget from "./ResizeTarget";
-import RunningTimeDisplay from "./RunningTimeDisplay";
+import PlaylistActionArea from "./PlaylistActionArea";
 import TrackList from "./TrackList";
 import ScrollBar from "./ScrollBar";
 
@@ -130,22 +125,7 @@ class PlaylistWindow extends React.Component {
               className="playlist-visualizer"
               onClick={this.props.toggleVisualizerStyle}
             />
-            <RunningTimeDisplay />
-            <div className="playlist-action-buttons">
-              <div className="playlist-previous-button" />
-              <div className="playlist-play-button" onClick={this.props.play} />
-              <div
-                className="playlist-pause-button"
-                onClick={this.props.pause}
-              />
-              <div className="playlist-stop-button" onClick={this.props.stop} />
-              <div className="playlist-next-button" />
-              <div
-                className="playlist-eject-button"
-                onClick={this.props.openFileDialog}
-              />
-            </div>
-            <MiniTime />
+            <PlaylistActionArea />
             <ListMenu />
             <div
               id="playlist-scroll-up-button"
@@ -163,26 +143,20 @@ class PlaylistWindow extends React.Component {
   }
 }
 
-// TODO: Convert to object syntax
-const mapDispatchToProps = dispatch => ({
-  focusPlaylist: () =>
-    dispatch({
-      type: SET_FOCUSED_WINDOW,
-      window: WINDOWS.PLAYLIST
-    }),
-  play: () => dispatch(play()),
-  pause: () => dispatch(pause()),
-  stop: () => dispatch(stop()),
-  openFileDialog: () => dispatch(openFileDialog()),
-  close: () => dispatch({ type: TOGGLE_PLAYLIST_WINDOW }),
-  toggleShade: () => dispatch({ type: TOGGLE_PLAYLIST_SHADE_MODE }),
-  toggleVisualizerStyle: () => dispatch(toggleVisualizerStyle()),
-  scrollUpFourTracks: () => dispatch(scrollUpFourTracks()),
-  scrollDownFourTracks: () => dispatch(scrollDownFourTracks()),
+const mapDispatchToProps = {
+  focusPlaylist: () => ({
+    type: SET_FOCUSED_WINDOW,
+    window: WINDOWS.PLAYLIST
+  }),
+  close: () => ({ type: TOGGLE_PLAYLIST_WINDOW }),
+  toggleShade: () => ({ type: TOGGLE_PLAYLIST_SHADE_MODE }),
+  toggleVisualizerStyle,
+  scrollUpFourTracks,
+  scrollDownFourTracks,
   loadFilesFromReferences: (e, startIndex) =>
-    dispatch(loadFilesFromReferences(e.dataTransfer.files, false, startIndex)),
-  togglePlaylistShadeMode: () => dispatch(togglePlaylistShadeMode())
-});
+    loadFilesFromReferences(e.dataTransfer.files, false, startIndex),
+  togglePlaylistShadeMode
+};
 
 const mapStateToProps = state => {
   const {
