@@ -31,7 +31,7 @@ import RemoveMenu from "./RemoveMenu";
 import SelectionMenu from "./SelectionMenu";
 import MiscMenu from "./MiscMenu";
 import ListMenu from "./ListMenu";
-import ResizeTarget from "./ResizeTarget";
+import PlaylistResizeTarget from "./PlaylistResizeTarget";
 import PlaylistActionArea from "./PlaylistActionArea";
 import TrackList from "./TrackList";
 import ScrollBar from "./ScrollBar";
@@ -137,7 +137,7 @@ class PlaylistWindow extends React.Component {
               id="playlist-scroll-down-button"
               onClick={this.props.scrollDownFourTracks}
             />
-            <ResizeTarget />
+            <PlaylistResizeTarget />
           </div>
         </div>
       </DropTarget>

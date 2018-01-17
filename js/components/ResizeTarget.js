@@ -1,12 +1,7 @@
 import React from "react";
-import { connect } from "react-redux";
-import { PLAYLIST_SIZE_CHANGED } from "../../actionTypes";
-import {
-  PLAYLIST_RESIZE_SEGMENT_WIDTH,
-  PLAYLIST_RESIZE_SEGMENT_HEIGHT
-} from "../../constants";
+import PropTypes from "prop-types";
 
-class ResizeTarget extends React.Component {
+export default class ResizeTarget extends React.Component {
   constructor(props) {
     super(props);
     this.handleMouseDown = this.handleMouseDown.bind(this);
@@ -14,7 +9,7 @@ class ResizeTarget extends React.Component {
   handleMouseDown(e) {
     // Prevent dragging from highlighting text.
     e.preventDefault();
-    const [width, height] = this.props.playlistSize;
+    const [width, height] = this.props.currentSize;
     const mouseStart = {
       x: e.clientX,
       y: e.clientY
@@ -26,12 +21,12 @@ class ResizeTarget extends React.Component {
 
       const newWidth = Math.max(
         0,
-        width + Math.round(x / PLAYLIST_RESIZE_SEGMENT_WIDTH)
+        width + Math.round(x / this.props.resizeSegmentWidth)
       );
 
       const newHeight = this.props.widthOnly
         ? width
-        : Math.max(0, height + Math.round(y / PLAYLIST_RESIZE_SEGMENT_HEIGHT));
+        : Math.max(0, height + Math.round(y / this.props.resizeSegmentHeight));
 
       const newSize = [newWidth, newHeight];
 
@@ -48,19 +43,17 @@ class ResizeTarget extends React.Component {
     return (
       <div
         ref={node => (this.node = node)}
-        id="playlist-resize-target"
+        id={this.props.id}
         onMouseDown={this.handleMouseDown}
       />
     );
   }
 }
 
-const mapStateToProps = state => ({
-  playlistSize: state.display.playlistSize
-});
-
-const mapDispatchToProps = {
-  setPlaylistSize: size => ({ type: PLAYLIST_SIZE_CHANGED, size })
+ResizeTarget.propTypes = {
+  currentSize: PropTypes.arrayOf(PropTypes.number).isRequired,
+  resizeSegmentWidth: PropTypes.number.isRequired,
+  resizeSegmentHeight: PropTypes.number.isRequired,
+  setPlaylistSize: PropTypes.func.isRequired,
+  widthOnly: PropTypes.bool
 };
-
-export default connect(mapStateToProps, mapDispatchToProps)(ResizeTarget);

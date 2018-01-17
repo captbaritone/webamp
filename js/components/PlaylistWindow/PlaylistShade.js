@@ -17,7 +17,7 @@ import {
   UTF8_ELLIPSIS
 } from "../../constants";
 import CharacterString from "../CharacterString";
-import ResizeTarget from "./ResizeTarget";
+import PlaylistResizeTarget from "./PlaylistResizeTarget";
 
 class PlaylistShade extends React.Component {
   _addedWidth() {
@@ -70,7 +70,7 @@ class PlaylistShade extends React.Component {
             <CharacterString id="playlist-shade-time">
               {this._time()}
             </CharacterString>
-            <ResizeTarget widthOnly />
+            <PlaylistResizeTarget widthOnly />
             <div id="playlist-shade-button" onClick={toggleShade} />
             <div id="playlist-close-button" onClick={close} />
           </div>
