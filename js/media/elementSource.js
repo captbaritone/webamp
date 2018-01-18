@@ -12,7 +12,7 @@ export default class ElementSource extends Emitter {
     this._context = context;
     this._destination = destination;
     this._audio = document.createElement("audio");
-    this._audio.crossorigin = "anonymous";
+    this._audio.crossOrigin = "anonymous";
     this._stalled = false;
     this._status = STATUS.STOPPED;
 
