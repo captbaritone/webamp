@@ -20,6 +20,7 @@ body {
 .about {
     position: absolute;
     bottom: 0;
+    right: 1em;
     color: white;
     /* Let users drag windows over this text */
     z-index: -1;
