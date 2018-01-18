@@ -22,8 +22,15 @@ const applyDiff = (a, b) => ({
   y: a.y + b.y
 });
 
-const applyMultipleDiffs = (initial, ...diffs) =>
-  diffs.reduce(applyDiff, initial);
+// TODO: This should not
+const applyMultipleDiffs = (initial, ...diffs) => {
+  const metaDiff = diffs.reduce((meta, diff) => ({
+    // Use the smallest non-zero diff for each axis.
+    x: meta.x === 0 ? diff.x : Math.min(meta.x, diff.x),
+    y: meta.y === 0 ? diff.y : Math.min(meta.y, diff.y)
+  }));
+  return applyDiff(initial, metaDiff);
+};
 
 class WindowManager extends React.Component {
   constructor(props) {
