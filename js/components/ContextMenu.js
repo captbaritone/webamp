@@ -36,7 +36,6 @@ export const Hr = () => (
   </li>
 );
 
-// TODO: Add down-arrow
 export const Parent = ({ children, label }) => (
   <li className="parent">
     <ul>{children}</ul>

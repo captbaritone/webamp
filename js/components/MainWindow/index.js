@@ -65,7 +65,6 @@ export class MainWindow extends React.Component {
 
     const className = classnames({
       window: true,
-      // TODO: Handle these status changes in the individual components
       play: status === "PLAYING",
       stop: status === "STOPPED",
       pause: status === "PAUSED",

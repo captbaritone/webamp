@@ -174,7 +174,6 @@ class Visualizer extends React.Component {
   }
 
   render() {
-    // TODO: Don't rerender DOM on style updates
     return (
       <canvas
         id="visualizer"

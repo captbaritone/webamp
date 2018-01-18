@@ -26,7 +26,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   addFilesAtIndex: async nextIndex => {
-    // TODO: This seems to fail sometimes.
     const fileReferences = await promptForFileReferences();
     dispatch(addTracksFromReferences(fileReferences, false, nextIndex));
   }
