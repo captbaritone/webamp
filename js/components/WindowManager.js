@@ -13,6 +13,8 @@ const WINDOW_HEIGHT = 116;
 const WINDOW_WIDTH = 275;
 
 const abuts = (a, b) => {
+  // TODO: This is kinda a hack. They should really be touching, not just within snapping distance.
+  // Also, overlapping should not count.
   const wouldMoveTo = snap(a, b);
   return wouldMoveTo.x !== undefined || wouldMoveTo.y !== undefined;
 };
