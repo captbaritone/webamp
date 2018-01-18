@@ -137,7 +137,7 @@ const config = {
     const url = `http://localhost:8080/#${JSON.stringify(config)}`;
     console.log({ url });
     await page["goto"](url);
-    await page.waitForSelector("#loaded", { timeout: 2000 });
+    await page.waitForSelector("#main-window", { timeout: 2000 });
 
     console.log("Writing screenshot to", screenshotFile);
     await page.screenshot({ path: screenshotFile });

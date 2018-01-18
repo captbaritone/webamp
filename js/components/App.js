@@ -24,6 +24,7 @@ const App = ({ media, closed, equalizer, playlist, openWindows }) => {
     equalizer: equalizer && <EqualizerWindow />,
     playlist: playlist && <PlaylistWindow />
   };
+  // Add any "generic" windows
   GEN_WINDOWS.forEach((windowId, i) => {
     const Component = genWindowMap[windowId];
     windows[`genWindow${i}`] = openWindows.has(windowId) && (
@@ -31,10 +32,10 @@ const App = ({ media, closed, equalizer, playlist, openWindows }) => {
     );
   });
   return (
-    <div id="loaded">
+    <React.Fragment>
       <Skin />
       <WindowManager windows={windows} />
-    </div>
+    </React.Fragment>
   );
 };
 

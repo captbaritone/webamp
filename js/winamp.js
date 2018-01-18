@@ -26,14 +26,21 @@ const storeHas = (store, predicate) =>
   });
 
 class Winamp {
+  static browserIsSupported() {
+    const supportsAudioApi = !!(
+      window.AudioContext || window.webkitAudioContext
+    );
+    const supportsCanvas = !!window.document.createElement("canvas").getContext;
+    const supportsPromises = typeof Promise !== "undefined";
+    return supportsAudioApi && supportsCanvas && supportsPromises;
+  }
+
   constructor(options) {
     this.options = options;
 
     this.media = new Media();
     this.store = getStore(this.media, this.options.__initialState);
-  }
 
-  async render(node) {
     this.store.dispatch(setSkinFromUrl(this.options.initialSkin.url));
 
     if (this.options.initialTrack && this.options.initialTrack.url) {
@@ -53,7 +60,9 @@ class Winamp {
     }
 
     new Hotkeys(this.store.dispatch);
+  }
 
+  async renderWhenReady(node) {
     // Wait for the skin to load.
     await storeHas(this.store, state => !state.display.loading);
 
