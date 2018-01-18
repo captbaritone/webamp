@@ -67,6 +67,7 @@ canvas {
 
 #winamp2-js .character {
     display: inline-block;
+    vertical-align: top;
     width: 5px;
     height: 6px;
     /* background-image: TEXT.BMP via Javascript */
