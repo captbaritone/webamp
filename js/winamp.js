@@ -10,29 +10,27 @@ import { setSkinFromUrl, loadMediaFromUrl } from "./actionCreators";
 
 import { SET_AVALIABLE_SKINS } from "./actionTypes";
 
+// Return a promise that resolves when the store matches a predicate.
+const storeHas = (store, predicate) =>
+  new Promise(resolve => {
+    if (predicate(store.getState())) {
+      resolve();
+      return;
+    }
+    const unsubscribe = store.subscribe(() => {
+      if (predicate(store.getState())) {
+        resolve();
+        unsubscribe();
+      }
+    });
+  });
+
 class Winamp {
   constructor(options) {
     this.options = options;
 
     this.media = new Media();
     this.store = getStore(this.media, this.options.__initialState);
-  }
-
-  _skinHasLoaded() {
-    return new Promise(resolve => {
-      const initialState = this.store.getState();
-      if (!initialState.display.loading) {
-        resolve();
-        return;
-      }
-      const unsubscribe = this.store.subscribe(() => {
-        const state = this.store.getState();
-        if (!state.display.loading) {
-          resolve();
-          unsubscribe();
-        }
-      });
-    });
   }
 
   async render(node) {
@@ -56,7 +54,8 @@ class Winamp {
 
     new Hotkeys(this.store.dispatch);
 
-    await this._skinHasLoaded();
+    // Wait for the skin to load.
+    await storeHas(this.store, state => !state.display.loading);
 
     render(
       <Provider store={this.store}>
