@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
-import { getOrderedTracks, getMediaText } from "../../selectors";
+import { getOrderedTracks, getMinimalMediaText } from "../../selectors";
 import { getTimeStr } from "../../utils";
 import {
   TOGGLE_PLAYLIST_WINDOW,
@@ -66,7 +66,6 @@ class PlaylistShade extends React.Component {
             <CharacterString id="playlist-shade-track-title">
               {this._trimmedName()}
             </CharacterString>
-            {/* TODO: Ellipisize */}
             <CharacterString id="playlist-shade-time">
               {this._time()}
             </CharacterString>
@@ -100,7 +99,7 @@ const mapStateToProps = state => {
     playlistShade,
     trackOrder: getOrderedTracks(state),
     length,
-    name: getMediaText(state)
+    name: getMinimalMediaText(state)
   };
 };
 

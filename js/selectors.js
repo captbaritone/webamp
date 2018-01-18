@@ -166,14 +166,19 @@ export const getCurrentTrackDisplayName = state => {
   return getTrackDisplayName(state, id);
 };
 
-export const getMediaText = createSelector(
+export const getMinimalMediaText = createSelector(
   getCurrentTrackNumber,
   getCurrentTrackDisplayName,
+  (trackNumber, name) => (name == null ? null : `${trackNumber}. ${name}`)
+);
+
+export const getMediaText = createSelector(
+  getMinimalMediaText,
   getDuration,
-  (trackNumber, name, duration) =>
-    name == null
+  (minimalMediaText, duration) =>
+    minimalMediaText == null
       ? null
-      : `${trackNumber}. ${name} (${getTimeStr(duration)})  ***  `
+      : `${minimalMediaText} (${getTimeStr(duration)})  ***  `
 );
 
 const getNumberOfTracks = state => getTrackOrder(state).length;
