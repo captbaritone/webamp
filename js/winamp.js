@@ -17,13 +17,26 @@ class Winamp {
     this.media = new Media();
     this.store = getStore(this.media, this.options.__initialState);
   }
-  render(node) {
-    render(
-      <Provider store={this.store}>
-        <App media={this.media} />
-      </Provider>,
-      node
-    );
+
+  _skinHasLoaded() {
+    return new Promise(resolve => {
+      const initialState = this.store.getState();
+      if (!initialState.display.loading) {
+        resolve();
+        return;
+      }
+      const unsubscribe = this.store.subscribe(() => {
+        const state = this.store.getState();
+        if (!state.display.loading) {
+          resolve();
+          unsubscribe();
+        }
+      });
+    });
+  }
+
+  async render(node) {
+    this.store.dispatch(setSkinFromUrl(this.options.initialSkin.url));
 
     if (this.options.initialTrack && this.options.initialTrack.url) {
       this.store.dispatch(
@@ -40,9 +53,17 @@ class Winamp {
         skins: this.options.avaliableSkins
       });
     }
-    this.store.dispatch(setSkinFromUrl(this.options.initialSkin.url));
 
     new Hotkeys(this.store.dispatch);
+
+    await this._skinHasLoaded();
+
+    render(
+      <Provider store={this.store}>
+        <App media={this.media} />
+      </Provider>,
+      node
+    );
   }
 }
 

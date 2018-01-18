@@ -15,20 +15,9 @@ const genWindowMap = {
 
 const GEN_WINDOWS = ["AVS_WINDOW"];
 
-const App = ({ media, loading, closed, equalizer, playlist, openWindows }) => {
+const App = ({ media, closed, equalizer, playlist, openWindows }) => {
   if (closed) {
     return null;
-  }
-  if (loading) {
-    return (
-      <div id="loading">
-        Loading<span className="ellipsis-anim">
-          <span>.</span>
-          <span>.</span>
-          <span>.</span>
-        </span>
-      </div>
-    );
   }
   const windows = {
     main: <MainWindow mediaPlayer={media} />,
@@ -50,7 +39,6 @@ const App = ({ media, loading, closed, equalizer, playlist, openWindows }) => {
 };
 
 const mapStateToProps = state => ({
-  loading: state.display.loading,
   closed: state.display.closed,
   equalizer: state.windows.equalizer,
   playlist: state.windows.playlist,
