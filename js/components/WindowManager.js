@@ -22,6 +22,9 @@ const applyDiff = (a, b) => ({
   y: a.y + b.y
 });
 
+const applyMultipleDiffs = (initial, ...diffs) =>
+  diffs.reduce(applyDiff, initial);
+
 class WindowManager extends React.Component {
   constructor(props) {
     super(props);
@@ -136,12 +139,7 @@ class WindowManager extends React.Component {
 
       const withinDiff = snapWithinDiff(proposedBox, browserSize);
 
-      let finalDiff = proposedDiff;
-      if (withinDiff.x !== 0 || withinDiff.y !== 0) {
-        finalDiff = applyDiff(proposedDiff, withinDiff);
-      } else {
-        finalDiff = applyDiff(proposedDiff, snapDiff);
-      }
+      const finalDiff = applyMultipleDiffs(proposedDiff, snapDiff, withinDiff);
 
       const stateDiff = moving.reduce((diff, window) => {
         const newWindowLocation = applyDiff(window, finalDiff);
