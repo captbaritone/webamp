@@ -66,8 +66,7 @@ canvas {
 }
 
 #winamp2-js .character {
-    display: block;
-    float: left; /* Safari does not do inline-block well */
+    display: inline-block;
     width: 5px;
     height: 6px;
     /* background-image: TEXT.BMP via Javascript */

@@ -8,12 +8,12 @@ export const characterClassName = char =>
     .charCodeAt(0)}`;
 
 const Character = ({ children: char, className, ...passThrough }) => (
-  <div
+  <span
     {...passThrough}
     className={`${className || ""} character ${characterClassName(char)}`}
   >
     {char}
-  </div>
+  </span>
 );
 
 Character.propTypes = {

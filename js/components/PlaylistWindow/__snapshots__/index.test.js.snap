@@ -165,51 +165,51 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
         className="playlist-running-time-display draggable"
       >
         <div>
-          <div
+          <span
             className=" character character-48"
           >
             0
-          </div>
-          <div
+          </span>
+          <span
             className=" character character-58"
           >
             :
-          </div>
-          <div
+          </span>
+          <span
             className=" character character-48"
           >
             0
-          </div>
-          <div
+          </span>
+          <span
             className=" character character-48"
           >
             0
-          </div>
-          <div
+          </span>
+          <span
             className=" character character-47"
           >
             /
-          </div>
-          <div
+          </span>
+          <span
             className=" character character-48"
           >
             0
-          </div>
-          <div
+          </span>
+          <span
             className=" character character-58"
           >
             :
-          </div>
-          <div
+          </span>
+          <span
             className=" character character-48"
           >
             0
-          </div>
-          <div
+          </span>
+          <span
             className=" character character-48"
           >
             0
-          </div>
+          </span>
         </div>
       </div>
       <div

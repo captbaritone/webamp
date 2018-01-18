@@ -21,51 +21,51 @@ exports[`PlaylistShade renders to snapshot 1`] = `
       <div
         id="playlist-shade-track-title"
       >
-        <div
+        <span
           className=" character character-91"
         >
           [
-        </div>
-        <div
+        </span>
+        <span
           className=" character character-110"
         >
           N
-        </div>
-        <div
+        </span>
+        <span
           className=" character character-111"
         >
           o
-        </div>
-        <div
+        </span>
+        <span
           className=" character character-32"
         >
            
-        </div>
-        <div
+        </span>
+        <span
           className=" character character-102"
         >
           f
-        </div>
-        <div
+        </span>
+        <span
           className=" character character-105"
         >
           i
-        </div>
-        <div
+        </span>
+        <span
           className=" character character-108"
         >
           l
-        </div>
-        <div
+        </span>
+        <span
           className=" character character-101"
         >
           e
-        </div>
-        <div
+        </span>
+        <span
           className=" character character-93"
         >
           ]
-        </div>
+        </span>
       </div>
       <div
         id="playlist-shade-time"

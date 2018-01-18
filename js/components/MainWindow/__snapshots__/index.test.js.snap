@@ -127,110 +127,110 @@ exports[`MainWindow renders to snapshot 1`] = `
           }
         }
       >
-        <div
+        <span
           className=" character character-119"
         >
           W
-        </div>
-        <div
+        </span>
+        <span
           className=" character character-105"
         >
           i
-        </div>
-        <div
+        </span>
+        <span
           className=" character character-110"
         >
           n
-        </div>
-        <div
+        </span>
+        <span
           className=" character character-97"
         >
           a
-        </div>
-        <div
+        </span>
+        <span
           className=" character character-109"
         >
           m
-        </div>
-        <div
+        </span>
+        <span
           className=" character character-112"
         >
           p
-        </div>
-        <div
+        </span>
+        <span
           className=" character character-32"
         >
            
-        </div>
-        <div
+        </span>
+        <span
           className=" character character-50"
         >
           2
-        </div>
-        <div
+        </span>
+        <span
           className=" character character-46"
         >
           .
-        </div>
-        <div
+        </span>
+        <span
           className=" character character-57"
         >
           9
-        </div>
-        <div
+        </span>
+        <span
           className=" character character-49"
         >
           1
-        </div>
+        </span>
       </div>
     </div>
     <div
       id="kbps"
     >
-      <div
+      <span
         className=" character character-110"
       >
         n
-      </div>
-      <div
+      </span>
+      <span
         className=" character character-117"
       >
         u
-      </div>
-      <div
+      </span>
+      <span
         className=" character character-108"
       >
         l
-      </div>
-      <div
+      </span>
+      <span
         className=" character character-108"
       >
         l
-      </div>
+      </span>
     </div>
     <div
       id="khz"
     >
-      <div
+      <span
         className=" character character-110"
       >
         n
-      </div>
-      <div
+      </span>
+      <span
         className=" character character-117"
       >
         u
-      </div>
-      <div
+      </span>
+      <span
         className=" character character-108"
       >
         l
-      </div>
-      <div
+      </span>
+      <span
         className=" character character-108"
       >
         l
-      </div>
+      </span>
     </div>
     <div
       className="mono-stereo"
