@@ -34,6 +34,7 @@ export async function promptForFileReferences() {
     // Can this fail? Do we ever reject?
     const fileInput = document.createElement("input");
     fileInput.type = "file";
+    fileInput.multiple = true;
     // Not entirely sure why this is needed, since the input
     // was just created, but somehow this helps prevent change
     // events from getting swallowed.
