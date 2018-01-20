@@ -28,7 +28,19 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
       className="playlist-top-left draggable"
     />
     <div
+      className="playlist-top-left-spacer draggable"
+    />
+    <div
+      className="playlist-top-left-fill draggable"
+    />
+    <div
       className="playlist-top-title draggable"
+    />
+    <div
+      className="playlist-top-right-spacer draggable"
+    />
+    <div
+      className="playlist-top-right-fill draggable"
     />
     <div
       className="playlist-top-right draggable"
@@ -209,6 +221,51 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
             className=" character character-48"
           >
             0
+          </span>
+          <span
+            className=" character character-32"
+          >
+             
+          </span>
+          <span
+            className=" character character-32"
+          >
+             
+          </span>
+          <span
+            className=" character character-32"
+          >
+             
+          </span>
+          <span
+            className=" character character-32"
+          >
+             
+          </span>
+          <span
+            className=" character character-32"
+          >
+             
+          </span>
+          <span
+            className=" character character-32"
+          >
+             
+          </span>
+          <span
+            className=" character character-32"
+          >
+             
+          </span>
+          <span
+            className=" character character-32"
+          >
+             
+          </span>
+          <span
+            className=" character character-32"
+          >
+             
           </span>
         </div>
       </div>

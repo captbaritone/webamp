@@ -85,6 +85,8 @@ class PlaylistWindow extends React.Component {
       wide: playlistSize[0] > 2
     });
 
+    const showSpacers = playlistSize[0] % 2 === 0;
+
     return (
       <DropTarget
         id="playlist-window"
@@ -99,7 +101,15 @@ class PlaylistWindow extends React.Component {
           onDoubleClick={this.props.togglePlaylistShadeMode}
         >
           <div className="playlist-top-left draggable" />
+          {showSpacers && (
+            <div className="playlist-top-left-spacer draggable" />
+          )}
+          <div className="playlist-top-left-fill draggable" />
           <div className="playlist-top-title draggable" />
+          {showSpacers && (
+            <div className="playlist-top-right-spacer draggable" />
+          )}
+          <div className="playlist-top-right-fill draggable" />
           <div className="playlist-top-right draggable">
             <div id="playlist-shade-button" onClick={toggleShade} />
             <div id="playlist-close-button" onClick={close} />

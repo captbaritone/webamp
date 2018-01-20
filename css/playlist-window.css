@@ -9,29 +9,38 @@
     min-height: 20px;
     max-height: 20px;
     position: relative;
+    display: flex;
 }
 
 #winamp2-js .playlist-top-left {
     width: 25px;
-    height: 20px;
-    position: absolute;
+}
+
+#winamp2-js .playlist-top-left-spacer {
+    width: 12px;
+}
+
+#winamp2-js .playlist-top-left-fill {
+    flex-grow: 1;
+    background-position: right;
+}
+
+#winamp2-js .playlist-top-right-spacer {
+    /* This goes to the right of the center */
+    width: 13px;
+}
+
+#winamp2-js .playlist-top-right-fill {
+    flex-grow: 1;
+    background-position: right;
 }
 
 #winamp2-js .playlist-top-title {
     width: 100px;
-    height: 20px;
-    margin: 0 auto;
-    position: absolute;
-    /* Giving left and right 0 seems to center */
-    left: 0;
-    right: 0;
 }
 
 #winamp2-js .playlist-top-right {
     width: 25px;
-    height: 20px;
-    position: absolute;
-    right: 0;
 }
 
 #winamp2-js .playlist-middle {

@@ -57,11 +57,21 @@ export const imageSelectors = {
   MAIN_STOPPED_INDICATOR: [".stop #play-pause"],
   MAIN_NOT_WORKING_INDICATOR: ["#work-indicator"],
   MAIN_WORKING_INDICATOR: ["#work-indicator.selected"],
-  PLAYLIST_TOP_TILE: [".playlist-top"],
+  PLAYLIST_TOP_TILE: [
+    ".playlist-top-left-fill",
+    ".playlist-top-left-spacer",
+    ".playlist-top-right-fill",
+    ".playlist-top-right-spacer"
+  ],
   PLAYLIST_TOP_LEFT_CORNER: [".playlist-top-left"],
   PLAYLIST_TITLE_BAR: [".playlist-top-title"],
   PLAYLIST_TOP_RIGHT_CORNER: [".playlist-top-right"],
-  PLAYLIST_TOP_TILE_SELECTED: [".selected .playlist-top"],
+  PLAYLIST_TOP_TILE_SELECTED: [
+    ".selected .playlist-top-left-fill",
+    ".selected .playlist-top-left-spacer",
+    ".selected .playlist-top-right-fill",
+    ".selected .playlist-top-right-spacer"
+  ],
   PLAYLIST_TOP_LEFT_SELECTED: [".selected .playlist-top-left"],
   PLAYLIST_TITLE_BAR_SELECTED: [".selected .playlist-top-title"],
   PLAYLIST_TOP_RIGHT_CORNER_SELECTED: [".selected .playlist-top-right"],
