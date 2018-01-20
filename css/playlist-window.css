@@ -155,7 +155,7 @@
 #winamp2-js #playlist-add-menu {
     position: absolute;
     bottom: 12px;
-    left: 13px;
+    left: 14px;
     width: 22px;
     height: 18px;
 }
@@ -183,7 +183,7 @@
 #winamp2-js #playlist-misc-menu {
     position: absolute;
     bottom: 12px;
-    left: 102px;
+    left: 101px;
     width: 22px;
     height: 18px;
 }
