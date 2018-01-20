@@ -6,7 +6,9 @@ import { getRunningTimeMessage } from "../../selectors";
 
 const RunningTimeDisplay = props => (
   <div className="playlist-running-time-display draggable">
-    <CharacterString>{props.runningTimeMessage}</CharacterString>
+    <CharacterString>
+      {props.runningTimeMessage.padEnd(18, " ")}
+    </CharacterString>
   </div>
 );
 
