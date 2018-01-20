@@ -241,6 +241,61 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
         />
       </div>
       <div
+        className="mini-time countdown"
+        onClick={[Function]}
+      >
+        <span
+          className=" character character-32"
+          style={
+            Object {
+              "left": 1,
+            }
+          }
+        >
+           
+        </span>
+        <span
+          className=" character character-32"
+          style={
+            Object {
+              "left": 7,
+            }
+          }
+        >
+           
+        </span>
+        <span
+          className=" character character-32"
+          style={
+            Object {
+              "left": 12,
+            }
+          }
+        >
+           
+        </span>
+        <span
+          className=" character character-32"
+          style={
+            Object {
+              "left": 20,
+            }
+          }
+        >
+           
+        </span>
+        <span
+          className=" character character-32"
+          style={
+            Object {
+              "left": 25,
+            }
+          }
+        >
+           
+        </span>
+      </div>
+      <div
         className="playlist-menu"
         id="playlist-list-menu"
         onClick={[Function]}

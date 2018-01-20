@@ -1,12 +1,37 @@
 export const getTimeObj = time => {
+  if (time == null) {
+    return {
+      minutesFirstDigit: " ",
+      minutesSecondDigit: " ",
+      secondsFirstDigit: " ",
+      secondsSecondDigit: " "
+    };
+  }
   const minutes = Math.floor(time / 60);
   const seconds = time % 60;
 
+  const digits =
+    time == null
+      ? [" ", " ", " ", " "]
+      : [
+          Math.floor(minutes / 10),
+          Math.floor(minutes % 10),
+          Math.floor(seconds / 10),
+          Math.floor(seconds % 10)
+        ];
+
+  const [
+    minutesFirstDigit,
+    minutesSecondDigit,
+    secondsFirstDigit,
+    secondsSecondDigit
+  ] = digits;
+
   return {
-    minutesFirstDigit: Math.floor(minutes / 10),
-    minutesSecondDigit: Math.floor(minutes % 10),
-    secondsFirstDigit: Math.floor(seconds / 10),
-    secondsSecondDigit: Math.floor(seconds % 10)
+    minutesFirstDigit,
+    minutesSecondDigit,
+    secondsFirstDigit,
+    secondsSecondDigit
   };
 };
 

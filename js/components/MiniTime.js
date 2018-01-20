@@ -8,15 +8,17 @@ import Character from "./Character";
 import "../../css/mini-time.css";
 
 const MiniTime = props => {
-  if (props.status === "STOPPED") {
-    return null;
+  let seconds = null;
+  if (props.status !== "STOPPED") {
+    seconds =
+      props.timeMode === "ELAPSED"
+        ? props.timeElapsed
+        : props.length - props.timeElapsed;
   }
-  const seconds =
-    props.timeMode === "ELAPSED"
-      ? props.timeElapsed
-      : props.length - props.timeElapsed;
 
   const timeObj = getTimeObj(seconds);
+  const showMinus =
+    props.timeMode === "REMAINING" && props.status !== "STOPPED";
   return (
     <div
       onClick={props.toggle}
@@ -24,11 +26,9 @@ const MiniTime = props => {
         blinking: props.status === "PAUSED"
       })}
     >
-      <Character style={{ left: 0 }}>
-        {props.timeMode === "REMAINING" ? "-" : ""}
-      </Character>
-      <Character style={{ left: 6 }}>{timeObj.minutesFirstDigit}</Character>
-      <Character style={{ left: 11 }}>{timeObj.minutesSecondDigit}</Character>
+      <Character style={{ left: 1 }}>{showMinus ? "-" : " "}</Character>
+      <Character style={{ left: 7 }}>{timeObj.minutesFirstDigit}</Character>
+      <Character style={{ left: 12 }}>{timeObj.minutesSecondDigit}</Character>
       <Character style={{ left: 20 }}>{timeObj.secondsFirstDigit}</Character>
       <Character style={{ left: 25 }}>{timeObj.secondsSecondDigit}</Character>
     </div>
