@@ -1,5 +1,6 @@
 export const getTimeObj = time => {
   if (time == null) {
+    // If we clean up `<MiniTime />` we don't need to do this any more.
     return {
       minutesFirstDigit: " ",
       minutesSecondDigit: " ",
