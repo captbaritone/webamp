@@ -1,14 +1,29 @@
-import Emitter from "./emitter";
-
 const STATUS = {
   PLAYING: "PLAYING",
   STOPPED: "STOPPED",
   PAUSED: "PAUSED"
 };
 
-export default class ElementSource extends Emitter {
+export default class ElementSource {
+  on(event, callback) {
+    const eventListeners = this._listeners[event] || [];
+    eventListeners.push(callback);
+    this._listeners[event] = eventListeners;
+    const unsubscribe = () => {
+      this._listeners[event] = eventListeners.filter(cb => cb !== callback);
+    };
+    return unsubscribe;
+  }
+
+  trigger(event) {
+    const callbacks = this._listeners[event];
+    if (callbacks) {
+      callbacks.forEach(cb => cb());
+    }
+  }
+
   constructor(context, destination) {
-    super();
+    this._listeners = {};
     this._context = context;
     this._destination = destination;
     this._audio = document.createElement("audio");

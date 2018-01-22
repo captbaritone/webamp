@@ -17,6 +17,5 @@ if (hash) {
 export const skinUrl = config.skinUrl === undefined ? skin : config.skinUrl;
 export const audioUrl = config.audioUrl === undefined ? audio : config.audioUrl;
 export const hideAbout = config.hideAbout || false;
-export const elementSource = config.elementSource || true;
 export const initialState = config.initialState || undefined;
 export const sentryDsn = SENTRY_DSN;

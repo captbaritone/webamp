@@ -1,7 +1,5 @@
 /* Emulate the native <audio> element with Web Audio API */
-import { elementSource } from "../config";
 import { BANDS } from "../constants";
-import BufferSource from "./bufferSource";
 import ElementSource from "./elementSource";
 
 export default class Media {
@@ -76,9 +74,7 @@ export default class Media {
     //                    |
     //              <destination>
 
-    this._source = elementSource
-      ? new ElementSource(this._context, this._staticSource)
-      : new BufferSource(this._context, this._staticSource);
+    this._source = new ElementSource(this._context, this._staticSource);
 
     this._source.on("positionChange", () => {
       this._callbacks.timeupdate();
