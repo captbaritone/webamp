@@ -48,7 +48,6 @@ export class MainWindow extends React.Component {
   }
 
   _handleDrop(e) {
-    this.props.removeAllTracks();
     this.props.loadFilesFromReferences(e);
   }
 

@@ -186,6 +186,11 @@ function setEqFromFileReference(fileReference) {
 
 export function addTracksFromReferences(fileReferences, autoPlay, atIndex) {
   return dispatch => {
+    if (autoPlay) {
+      // I'm the worst. It just so happens that in every case that we autoPlay,
+      // we should also clear all tracks.
+      dispatch(removeAllTracks());
+    }
     Array.from(fileReferences).forEach((file, i) => {
       const priority = i === 0 && autoPlay ? "PLAY" : "NONE";
       const id = uniqueId();
