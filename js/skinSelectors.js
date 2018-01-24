@@ -324,19 +324,47 @@ LETTERS.forEach(character => {
 });
 
 export const cursorSelectors = {
-  PSIZE: ["#playlist-window #playlist-resize-target"],
   CLOSE: ["#title-bar #close"],
-  MAINMENU: ["#main-window", "#main-window.shade #title-bar"],
-  TITLEBAR: ["#main-window #title-bar"],
-  POSBAR: ["#position"],
-  VOLBAL: ["#volume", "#balance"],
   EQSLID: ["#equalizer-window .band"],
+  EQNORMAL: ["#equalizer-window"],
+  EQCLOSE: ["#equalizer-window #equalizer-close"],
   EQTITLE: [
     "#equalizer-window .title-bar",
     "#equalizer-window.shade",
     "#equalizer-window.shade input"
   ],
+  MAINMENU: ["#main-window #option"],
+  MIN: ["#main-window #minimize"],
+  NORMAL: [
+    // Use this as the default cursor.
+    ".window",
+    "#main-window",
+    "#main-window.shade #title-bar"
+  ],
+  MMENU: ["#main-window.shade #option"],
   PNORMAL: ["#playlist-window"],
-  PVSCROLL: ["#playlist-window .playlist-scrollbar-wrapper"],
-  SONGNAME: ["#main-window #marquee"]
+  // TODO: This is should really only apply to the top part of the top.
+  // The chrome around the playlist window is larger than others. The
+  // cursor only applies to the same height as the other window's chrome.
+  PTBAR: ["#playlist-window .playlist-top"],
+  PCLOSE: [
+    "#playlist-window #playlist-close-button",
+    "#playlist-window-shade #playlist-close-button"
+  ],
+  PWINBUT: [
+    "#playlist-window #playlist-shade-button",
+    "#playlist-window-shade #playlist-shade-button"
+  ],
+  POSBAR: ["#main-window #position"],
+  PSIZE: ["#playlist-window #playlist-resize-target"],
+  PWSSIZE: ["#playlist-window-shade #playlist-resize-target"],
+  PWSNORM: ["#playlist-window-shade"],
+  // TODO: The target for this is not quite right.
+  PVSCROLL: ["#playlist-window .playlist-scrollbar"],
+  SONGNAME: ["#main-window #marquee"],
+  TITLEBAR: ["#main-window #title-bar"],
+  VOLBAL: ["#volume", "#balance"],
+  WINBUT: ["#main-window #shade"],
+  WSNORMAL: ["#main-window.shade #title-bar"],
+  WSPOSBAR: ["#main-window.shade #position"]
 };
