@@ -337,5 +337,6 @@ export const cursorSelectors = {
     "#equalizer-window.shade input"
   ],
   PNORMAL: ["#playlist-window"],
-  PVSCROLL: ["#playlist-window .playlist-scrollbar-wrapper"]
+  PVSCROLL: ["#playlist-window .playlist-scrollbar-wrapper"],
+  SONGNAME: ["#main-window #marquee"]
 };

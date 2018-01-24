@@ -169,12 +169,13 @@
 
 #winamp2-js #marquee {
     position: absolute;
-    left: 112px;
-    top: 27px;
+    left: 111px;
+    top: 24px;
     width: 152px;
     height: 6px;
     overflow: hidden;
     display: block;
+    padding: 3px 1px; /* Ensure the target is correct for the cursor */
 }
 
 #winamp2-js .media-info #kbps {
