@@ -99,7 +99,7 @@ don't have. Feel free to adapt them to your own server.
     npm run revert # Reverts quickly to the previous deploy
     HASH=<SOME_GIT_HASH> npm run deploy # Runs a new deploy at a given hashlike.
 
-### Advanced ussage
+### Advanced Usage
 
 There are some "feature flags" which you can manipulate by passing a specially crafted URL hash. Simply supply a JSON blob after the `#` of the URL to change these settings:
 
