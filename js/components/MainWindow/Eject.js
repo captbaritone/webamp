@@ -9,4 +9,4 @@ const Eject = props => (
 
 const mapDispatchToProps = { openFileDialog };
 
-export default connect(() => ({}), mapDispatchToProps)(Eject);
+export default connect(null, mapDispatchToProps)(Eject);
