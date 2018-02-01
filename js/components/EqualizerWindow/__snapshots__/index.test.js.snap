@@ -65,7 +65,11 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
     >
       <div
         className="rc-slider rc-slider-vertical"
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
         onMouseDown={[Function]}
+        onMouseUp={[Function]}
         onTouchStart={[Function]}
         style={undefined}
       >
@@ -117,7 +121,11 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
     >
       <div
         className="rc-slider rc-slider-vertical"
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
         onMouseDown={[Function]}
+        onMouseUp={[Function]}
         onTouchStart={[Function]}
         style={undefined}
       >
@@ -157,7 +165,11 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
     >
       <div
         className="rc-slider rc-slider-vertical"
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
         onMouseDown={[Function]}
+        onMouseUp={[Function]}
         onTouchStart={[Function]}
         style={undefined}
       >
@@ -197,7 +209,11 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
     >
       <div
         className="rc-slider rc-slider-vertical"
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
         onMouseDown={[Function]}
+        onMouseUp={[Function]}
         onTouchStart={[Function]}
         style={undefined}
       >
@@ -237,7 +253,11 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
     >
       <div
         className="rc-slider rc-slider-vertical"
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
         onMouseDown={[Function]}
+        onMouseUp={[Function]}
         onTouchStart={[Function]}
         style={undefined}
       >
@@ -277,7 +297,11 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
     >
       <div
         className="rc-slider rc-slider-vertical"
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
         onMouseDown={[Function]}
+        onMouseUp={[Function]}
         onTouchStart={[Function]}
         style={undefined}
       >
@@ -317,7 +341,11 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
     >
       <div
         className="rc-slider rc-slider-vertical"
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
         onMouseDown={[Function]}
+        onMouseUp={[Function]}
         onTouchStart={[Function]}
         style={undefined}
       >
@@ -357,7 +385,11 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
     >
       <div
         className="rc-slider rc-slider-vertical"
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
         onMouseDown={[Function]}
+        onMouseUp={[Function]}
         onTouchStart={[Function]}
         style={undefined}
       >
@@ -397,7 +429,11 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
     >
       <div
         className="rc-slider rc-slider-vertical"
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
         onMouseDown={[Function]}
+        onMouseUp={[Function]}
         onTouchStart={[Function]}
         style={undefined}
       >
@@ -437,7 +473,11 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
     >
       <div
         className="rc-slider rc-slider-vertical"
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
         onMouseDown={[Function]}
+        onMouseUp={[Function]}
         onTouchStart={[Function]}
         style={undefined}
       >
@@ -477,7 +517,11 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
     >
       <div
         className="rc-slider rc-slider-vertical"
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
         onMouseDown={[Function]}
+        onMouseUp={[Function]}
         onTouchStart={[Function]}
         style={undefined}
       >

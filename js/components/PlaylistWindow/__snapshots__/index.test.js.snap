@@ -90,7 +90,11 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
     >
       <div
         className="rc-slider rc-slider-vertical playlist-scrollbar"
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
         onMouseDown={[Function]}
+        onMouseUp={[Function]}
         onTouchStart={[Function]}
         style={undefined}
       >
