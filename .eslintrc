@@ -128,6 +128,7 @@
     "react/jsx-pascal-case": "error",
     "react/require-render-return": "error",
     "react/self-closing-comp": "error",
+    "react/no-unescaped-entities": "error",
     "semi": "error",
     "space-before-function-paren": [
       "error",
