@@ -31,6 +31,9 @@ echo "Build the webpack bundle"
 echo "Cleaning up node_modules/ to save space"
 ( cd $NEW_CLONE && rm -r node_modules )
 
+echo "Cleaning up coverage/ to save space"
+( cd $NEW_CLONE && rm -r coverage )
+
 PREVIOUS=$(readlink -f public_html/projects/winamp2-js)
 
 echo "The previous build was: $PREVIOUS"
