@@ -215,7 +215,7 @@ def main(dry):
     winamp2_js_url = "https://jordaneldredge.com/projects/winamp2-js/#%s" % options_query
 
     status_message = """%s
-Try: %s
+Try Online: %s
 Download: %s""" % (skin_name, winamp2_js_url, skin_url)
     if not dry:
         tweet(status_message, screenshot_path)
