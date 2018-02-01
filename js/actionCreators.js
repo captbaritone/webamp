@@ -70,7 +70,18 @@ function playRandomTrack() {
 }
 
 export function play() {
-  return { type: PLAY };
+  return (dispatch, getState) => {
+    const state = getState();
+    if (
+      state.media.status === "STOPPED" &&
+      state.playlist.curentTrack == null &&
+      state.playlist.trackOrder.length === 0
+    ) {
+      dispatch(openFileDialog());
+    } else {
+      dispatch({ type: PLAY });
+    }
+  };
 }
 
 export function pause() {
