@@ -32,8 +32,7 @@ const CURSORS = [
   "WINBUT",
   "WSNORMAL",
   "WSPOSBAR"
-  /* 
-
+  /*
    * > There are usually 4 more cursors in the skins: volbar.cur, wsclose.cur,
    * > wswinbut.cur, wsmin.cur, but they are never used, at least in the last
    * > versions of winamp, so there's no need of including them. The cursors
@@ -41,14 +40,14 @@ const CURSORS = [
    * > winshade mode, except for the main menu button. You can make animated
    * > cursors, but you have to name them with the extension .cur (animated
    * > cursors are usually .ani files).
-   * 
+   *
    * -- Skinners Atlas
    *
    * "VOLBAR",
    * "WSCLOSE",
    * "WSWINBUT",
    * "WSMIN",
-   * 
+   *
    */
 ];
 
