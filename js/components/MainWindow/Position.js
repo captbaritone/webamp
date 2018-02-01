@@ -32,7 +32,6 @@ const Position = ({
       max="100"
       step="1"
       value={displayedPosition}
-      onChange={setPosition}
       onInput={setPosition}
       onMouseUp={seekToPercentComplete}
       onMouseDown={setPosition}
