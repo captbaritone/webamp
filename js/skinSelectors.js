@@ -276,12 +276,12 @@ export const imageSelectors = {
   ],
   MAIN_VOLUME_BACKGROUND: ["#volume"],
   MAIN_VOLUME_THUMB: [
-    "#volume::-webkit-slider-thumb",
-    "#volume::-moz-range-thumb"
+    "#volume input::-webkit-slider-thumb",
+    "#volume input::-moz-range-thumb"
   ],
   MAIN_VOLUME_THUMB_SELECTED: [
-    "#volume::-webkit-slider-thumb:active",
-    "#volume::-moz-range-thumb:active"
+    "#volume input::-webkit-slider-thumb:active",
+    "#volume input::-moz-range-thumb:active"
   ],
   GEN_TOP_CENTER_FILL: [".gen-window .gen-top"],
   GEN_TOP_LEFT: [".gen-window .gen-top-left"],

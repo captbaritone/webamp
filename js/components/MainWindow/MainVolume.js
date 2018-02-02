@@ -12,7 +12,11 @@ const MainVolume = props => {
   const style = {
     backgroundPosition: `0 -${offset}px`
   };
-  return <Volume style={style} id="volume" />;
+  return (
+    <div id="volume" style={style}>
+      <Volume />
+    </div>
+  );
 };
 
 const mapStateToProps = state => ({

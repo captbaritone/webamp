@@ -234,12 +234,21 @@
     width: 68px;
     background-position: 0 0;
 }
-#winamp2-js #volume::-webkit-slider-thumb {
+
+#winamp2-js #volume input {
+    height: 13px;
+    /* The input itself, is actually 3px shorter than the background
+     * https://twitter.com/LuigiHann/status/959275940688867328
+     */
+    width: 65px;
+    display: block;
+}
+#winamp2-js #volume input::-webkit-slider-thumb {
     top: 1px;
     height: 11px;
     width: 14px;
 }
-#winamp2-js #volume::-moz-range-thumb {
+#winamp2-js #volume input::-moz-range-thumb {
     top: 1px;
     height: 11px;
     width: 14px;

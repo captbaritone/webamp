@@ -245,24 +245,29 @@ exports[`MainWindow renders to snapshot 1`] = `
       />
     </div>
   </div>
-  <input
-    className={undefined}
+  <div
     id="volume"
-    max="100"
-    min="0"
-    onChange={[Function]}
-    onMouseDown={[Function]}
-    onMouseUp={[Function]}
-    step="1"
     style={
       Object {
         "backgroundPosition": "0 -315px",
       }
     }
-    title="Volume Bar"
-    type="range"
-    value={78}
-  />
+  >
+    <input
+      className={undefined}
+      id={undefined}
+      max="100"
+      min="0"
+      onChange={[Function]}
+      onMouseDown={[Function]}
+      onMouseUp={[Function]}
+      step="1"
+      style={undefined}
+      title="Volume Bar"
+      type="range"
+      value={78}
+    />
+  </div>
   <input
     className={undefined}
     id="balance"
