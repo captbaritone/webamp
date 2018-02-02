@@ -29,6 +29,7 @@ import MonoStereo from "./MonoStereo";
 import Position from "./Position";
 import Repeat from "./Repeat";
 import Shade from "./Shade";
+import Minimize from "./Minimize";
 import Shuffle from "./Shuffle";
 import Time from "./Time";
 import Visualizer from "./Visualizer";
@@ -90,7 +91,7 @@ export class MainWindow extends React.Component {
         >
           <MainContextMenu />
           {shade && <MiniTime />}
-          <div id="minimize" />
+          <Minimize />
           <Shade />
           <Close />
         </div>

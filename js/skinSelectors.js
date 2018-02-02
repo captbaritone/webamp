@@ -229,9 +229,9 @@ export const imageSelectors = {
     "#title-bar #option:active",
     "#title-bar #option:selected"
   ],
-  MAIN_MINIMIZE_BUTTON: [".selected #title-bar #minimize"],
+  MAIN_MINIMIZE_BUTTON: [".selected #title-bar #minimize.clicked"],
   MAIN_MINIMIZE_BUTTON_DEPRESSED: ["#title-bar #minimize:active"],
-  MAIN_SHADE_BUTTON: [".selected #title-bar #shade"],
+  MAIN_SHADE_BUTTON: [".selected #title-bar #shade.clicked"],
   MAIN_SHADE_BUTTON_DEPRESSED: ["#title-bar #shade:active"],
   MAIN_CLOSE_BUTTON: [".selected #title-bar #close"],
   MAIN_CLOSE_BUTTON_DEPRESSED: ["#title-bar #close:active"],

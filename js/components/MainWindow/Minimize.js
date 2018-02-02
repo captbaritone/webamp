@@ -1,10 +1,7 @@
 import React from "react";
 import classnames from "classnames";
-import { connect } from "react-redux";
 
-import { toggleMainWindowShadeMode } from "../../actionCreators";
-
-class Shade extends React.Component {
+export default class Minimize extends React.Component {
   constructor(props) {
     super(props);
     this.state = { clicked: false };
@@ -12,22 +9,15 @@ class Shade extends React.Component {
   render() {
     return (
       <div
-        id="shade"
+        id="minimize"
         className={classnames(this.state)}
         onClick={() => {
           if (!this.state.clicked) {
             this.setState({ clicked: true });
           }
-          this.props.handleClick();
         }}
-        title="Toggle Windowshade Mode"
+        title="Minimize"
       />
     );
   }
 }
-
-const mapDispatchToProps = {
-  handleClick: toggleMainWindowShadeMode
-};
-
-export default connect(() => ({}), mapDispatchToProps)(Shade);

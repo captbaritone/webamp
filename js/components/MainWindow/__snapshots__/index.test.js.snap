@@ -36,9 +36,13 @@ exports[`MainWindow renders to snapshot 1`] = `
       </div>
     </div>
     <div
+      className=""
       id="minimize"
+      onClick={[Function]}
+      title="Minimize"
     />
     <div
+      className=""
       id="shade"
       onClick={[Function]}
       title="Toggle Windowshade Mode"
