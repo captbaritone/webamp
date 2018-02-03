@@ -30,7 +30,9 @@ exports[`MainWindow renders to snapshot 1`] = `
         }
       >
         <div
+          className=""
           id="option"
+          onMouseDown={[Function]}
           title="Winamp Menu"
         />
       </div>
@@ -38,18 +40,20 @@ exports[`MainWindow renders to snapshot 1`] = `
     <div
       className=""
       id="minimize"
-      onClick={[Function]}
+      onMouseDown={[Function]}
       title="Minimize"
     />
     <div
       className=""
       id="shade"
-      onClick={[Function]}
+      onMouseDown={[Function]}
       title="Toggle Windowshade Mode"
     />
     <div
+      className=""
       id="close"
       onClick={[Function]}
+      onMouseDown={[Function]}
       title="Close"
     />
   </div>

@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import ClickedDiv from "../ClickedDiv";
 import { close, setSkinFromUrl, openFileDialog } from "../../actionCreators";
 import { ContextMenu, Hr, Node, Parent, LinkNode } from "../ContextMenu";
 
@@ -7,7 +8,7 @@ const MainContextMenu = props => (
   <ContextMenu
     id="option-context"
     bottom
-    handle={<div id="option" title="Winamp Menu" />}
+    handle={<ClickedDiv id="option" title="Winamp Menu" />}
   >
     <LinkNode
       href="https://github.com/captbaritone/winamp2-js"
