@@ -15,6 +15,7 @@ export const overlapX = (a, b) =>
 export const overlapY = (a, b) =>
   top(a) <= bottom(b) + SNAP_DISTANCE && top(b) <= bottom(a) + SNAP_DISTANCE;
 
+// Give a new position for `boxA` that snaps it to `boxB` if neede.
 export const snap = (boxA, boxB) => {
   let x, y;
 
@@ -155,4 +156,20 @@ export const traceConnection = areConnected => (candidates, node) => {
   };
   checkNode(node);
   return connected;
+};
+
+export const applyDiff = (a, b) => ({
+  x: a.x + b.x,
+  y: a.y + b.y
+});
+
+// TODO: This should not
+export const applyMultipleDiffs = (initial, ...diffs) => {
+  const metaDiff = diffs.reduce((m, diff) => ({
+    // Use the smallest non-zero diff for each axis.
+    // TODO: Min should be the absolute value
+    x: m.x === 0 || diff.x === 0 ? m.x + diff.x : Math.min(m.x, diff.x),
+    y: m.y === 0 || diff.y === 0 ? m.y + diff.y : Math.min(m.y, diff.y)
+  }));
+  return applyDiff(initial, metaDiff);
 };

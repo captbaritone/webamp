@@ -6,7 +6,9 @@ import {
   boundingBox,
   snapWithinDiff,
   snap,
-  traceConnection
+  traceConnection,
+  applyDiff,
+  applyMultipleDiffs
 } from "../snapUtils";
 
 const WINDOW_HEIGHT = 116;
@@ -17,21 +19,6 @@ const abuts = (a, b) => {
   // Also, overlapping should not count.
   const wouldMoveTo = snap(a, b);
   return wouldMoveTo.x !== undefined || wouldMoveTo.y !== undefined;
-};
-
-const applyDiff = (a, b) => ({
-  x: a.x + b.x,
-  y: a.y + b.y
-});
-
-// TODO: This should not
-const applyMultipleDiffs = (initial, ...diffs) => {
-  const metaDiff = diffs.reduce((meta, diff) => ({
-    // Use the smallest non-zero diff for each axis.
-    x: meta.x === 0 ? diff.x : Math.min(meta.x, diff.x),
-    y: meta.y === 0 ? diff.y : Math.min(meta.y, diff.y)
-  }));
-  return applyDiff(initial, metaDiff);
 };
 
 class WindowManager extends React.Component {

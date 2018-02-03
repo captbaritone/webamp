@@ -10,7 +10,8 @@ import {
   snapWithin,
   applySnap,
   snapDiff,
-  boundingBox
+  boundingBox,
+  applyMultipleDiffs
 } from "./snapUtils";
 
 describe("side functions", () => {
@@ -164,6 +165,20 @@ describe("snap function", () => {
     const b = { x: 0, y: 0, width: 100, height: 100 };
     const actual = snap(a, b);
     const expected = { x: 100, y: 100 };
+    expect(actual).toEqual(expected);
+  });
+  it("snaps the top of A down to the bottom of B, if A slighterly overlaps B", () => {
+    const a = { x: 0, y: 90, width: 100, height: 100 };
+    const b = { x: 0, y: 0, width: 100, height: 100 };
+    const actual = snap(a, b);
+    const expected = { x: 0, y: 100 };
+    expect(actual).toEqual(expected);
+  });
+  it("snaps the top of A down to the bottom of B, if A slighterly overlaps B", () => {
+    const a = { x: 0, y: 90, width: 100, height: 100 };
+    const b = { x: 0, y: 0, width: 100, height: 100 };
+    const actual = snap(a, b);
+    const expected = { x: 0, y: 100 };
     expect(actual).toEqual(expected);
   });
 });
@@ -450,5 +465,13 @@ describe("applySnap function", () => {
     const actual = applySnap(original, snapped1, snapped2);
     const expected = { x: 60, y: 60 };
     expect(actual).toEqual(expected);
+  });
+
+  describe("applyMultipleDiffs", () => {
+    it("uses the smallest non-zero value for each axis", () => {
+      expect(
+        applyMultipleDiffs({ x: 31, y: -8 }, { x: 0, y: 8 }, { x: 0, y: 0 })
+      ).toEqual({ x: 31, y: 0 });
+    });
   });
 });
