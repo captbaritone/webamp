@@ -1,3 +1,4 @@
+/*
 const defaultTracksState = {
   "0": {
     selected: false,
@@ -28,6 +29,7 @@ const defaultTracksState = {
     url: ""
   }
 };
+*/
 
 const fs = require("fs");
 const puppeteer = require("puppeteer");
