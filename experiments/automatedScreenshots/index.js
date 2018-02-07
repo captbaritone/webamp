@@ -1,58 +1,33 @@
-/*
-This dummy data has been removed from the actual app. I'll put it here in
-case we want to continue to use it for screenshots
-
 const defaultTracksState = {
   "0": {
     selected: false,
     title: "Llama Whipping Intro",
     artist: "DJ Mike Llama",
-    duration: "221"
+    duration: "5",
+    url: ""
   },
   "1": {
     selected: false,
     title: "Rock Is Dead",
     artist: "Marilyn Manson",
-    duration: "221"
+    duration: "191", // 3:11
+    url: ""
   },
   "2": {
     selected: true,
     title: "Spybreak! (Short One)",
     artist: "Propellerheads",
-    duration: "171"
+    duration: "240", // 4:00
+    url: ""
   },
   "3": {
     selected: false,
-    title: "Clubbed to Death",
-    artist: "Rob D",
-    duration: "215"
-  },
-  "4": {
-    selected: false,
-    title: "Leave You Far Behind",
-    artist: "Lunatic Calm",
-    duration: "174"
-  },
-  "5": {
-    selected: false,
-    title: "Dragula",
-    artist: "Rob Zombie",
-    duration: "484"
-  },
-  "6": {
-    selected: false,
-    title: "Ultrasonic Sound",
-    artist: "Hive",
-    duration: "152"
-  },
-  "7": {
-    selected: false,
-    title: "Du hast",
-    artist: "Rammstein",
-    duration: "214"
+    title: "Bad Blood",
+    artist: "Ministry",
+    duration: "300", // 5:00
+    url: ""
   }
 };
-*/
 
 const fs = require("fs");
 const puppeteer = require("puppeteer");
