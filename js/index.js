@@ -25,6 +25,7 @@ Raven.context(() => {
   }
   if (!Winamp.browserIsSupported()) {
     document.getElementById("browser-compatibility").style.display = "block";
+    document.getElementById("winamp2-js").style.visibility = "hidden";
     return;
   }
 
