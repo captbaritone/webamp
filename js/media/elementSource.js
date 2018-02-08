@@ -53,7 +53,7 @@ export default class ElementSource {
     });
 
     this._audio.addEventListener("error", e => {
-      Raven.captureExcetion(e);
+      Raven.captureException(e);
     });
 
     this._source = this._context.createMediaElementSource(this._audio);
@@ -82,7 +82,7 @@ export default class ElementSource {
     try {
       await this._audio.play();
     } catch (err) {
-      Raven.captureExcetion(err);
+      Raven.captureException(err);
     }
     this._setStatus(STATUS.PLAYING);
   }
