@@ -133,7 +133,7 @@ There are some "feature flags" which you can manipulate by passing a specially c
   file.
 
 * [JuicyDrop](http://cggaurav.github.io/juicydrop/) An HTML5 implementation with
-  less empasis on being true to the skin, but fully featured visualizations.
+  less emphasis on being true to the skin, but fully featured visualizations.
   @cggaurav is keeping it alive on [GitHub](https://github.com/cggaurav/juicydrop)
 
 * [Spotiamp](http://spotiamp.com/) The folks at Spotify reimplemented Winamp as
@@ -142,7 +142,7 @@ There are some "feature flags" which you can manipulate by passing a specially c
 ## Thanks
 
 * Research and feature prototyping: @PAEz
-* Beta feedback, catching many small UI inconistencies: [LuigiHann](https://twitter.com/LuigiHann)
+* Beta feedback, catching many small UI inconsistencies: [LuigiHann](https://twitter.com/LuigiHann)
 * Beta feedback and insider answers to obscure Winamp questions: [Darren Owen](https://twitter.com/The_DoctorO)
 
 Thank you to [Justin Frankel](http://www.1014.org/) and everyone at Nullsoft
