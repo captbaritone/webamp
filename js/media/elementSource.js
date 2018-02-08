@@ -52,8 +52,12 @@ export default class ElementSource {
       this.trigger("positionChange");
     });
 
-    this._audio.addEventListener("error", e => {
-      Raven.captureException(e);
+    this._audio.addEventListener("error", () => {
+      Raven.captureMessage(
+        `AudioElement Error ${this._audio.error.code}; details: ${
+          this._audio.error.messagee
+        }`
+      );
     });
 
     this._source = this._context.createMediaElementSource(this._audio);
