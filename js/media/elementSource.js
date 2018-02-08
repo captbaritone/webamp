@@ -1,3 +1,5 @@
+import Raven from "raven-js";
+
 const STATUS = {
   PLAYING: "PLAYING",
   STOPPED: "STOPPED",
@@ -50,6 +52,10 @@ export default class ElementSource {
       this.trigger("positionChange");
     });
 
+    this._audio.addEventListener("error", e => {
+      Raven.captureExcetion(e);
+    });
+
     this._source = this._context.createMediaElementSource(this._audio);
     //this._audio.loop = false;
     this._source.connect(destination);
@@ -73,7 +79,11 @@ export default class ElementSource {
     if (this._status !== STATUS.PAUSED) {
       this.seekToTime(0);
     }
-    await this._audio.play();
+    try {
+      await this._audio.play();
+    } catch (err) {
+      Raven.captureExcetion(err);
+    }
     this._setStatus(STATUS.PLAYING);
   }
 
