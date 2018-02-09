@@ -2,7 +2,7 @@
   "name": "winamp2-js",
   "version": "0.0.1",
   "description": "Winamp 2 implemented in HTML5 and JavaScript",
-  "main": "build/winamp.bundle.js",
+  "main": "built/winamp.bundle.js",
   "scripts": {
     "lint": "eslint .",
     "build": "webpack --config=webpack.production.config.js",
