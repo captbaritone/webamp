@@ -2,9 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
 
-import {
-  TOGGLE_PLAYLIST_WINDOW
-} from "../../actionTypes";
+import { TOGGLE_PLAYLIST_WINDOW } from "../../actionTypes";
 
 const PlaylistToggleButton = props => (
   <div

@@ -307,8 +307,6 @@ exports[`MainWindow renders to snapshot 1`] = `
       className="selected"
       id="playlist-button"
       onClick={[Function]}
-      onMouseDown={[Function]}
-      onMouseUp={[Function]}
       title="Toggle Playlist Editor"
     />
   </div>
