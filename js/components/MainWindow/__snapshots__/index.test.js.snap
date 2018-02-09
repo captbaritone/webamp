@@ -290,7 +290,7 @@ exports[`MainWindow renders to snapshot 1`] = `
         "backgroundPosition": "0 -0px",
       }
     }
-    title="Panning Bar"
+    title="Balance"
     type="range"
     value={0}
   />
