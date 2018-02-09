@@ -3,10 +3,10 @@ import { connect } from "react-redux";
 
 import Balance from "../Balance";
 
-const offsetFromBalance = balance => {
+export const offsetFromBalance = balance => {
   const percent = Math.abs(balance) / 100;
-  const sprite = Math.round(percent * 28);
-  const offset = (sprite - 1) * 15;
+  const sprite = Math.floor(percent * 27);
+  const offset = sprite * 15;
   return offset;
 };
 
