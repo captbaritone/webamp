@@ -3,9 +3,7 @@ import { connect } from "react-redux";
 import classnames from "classnames";
 
 import {
-  TOGGLE_PLAYLIST_WINDOW,
-  SET_USER_MESSAGE,
-  UNSET_USER_MESSAGE
+  TOGGLE_PLAYLIST_WINDOW
 } from "../../actionTypes";
 
 const PlaylistToggleButton = props => (
@@ -13,8 +11,6 @@ const PlaylistToggleButton = props => (
     id="playlist-button"
     className={classnames({ selected: props.playlist })}
     onClick={props.handleClick}
-    onMouseDown={props.handleMouseDown}
-    onMouseUp={props.handleMouseUp}
     title="Toggle Playlist Editor"
   />
 );
@@ -24,14 +20,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  handleClick: () => ({ type: TOGGLE_PLAYLIST_WINDOW }),
-  handleMouseDown: () => ({
-    type: SET_USER_MESSAGE,
-    message: "Playlist not yet implemented"
-  }),
-  handleMouseUp: () => ({
-    type: UNSET_USER_MESSAGE
-  })
+  handleClick: () => ({ type: TOGGLE_PLAYLIST_WINDOW })
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(
