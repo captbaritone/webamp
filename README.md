@@ -84,8 +84,9 @@ Open `http://localhost:8080/webpack-dev-server/` in your browser.
 
     npm install
     npm run build
+    npm run serve
 
-Open `index.html` in your browser.
+Open the local ip/port that is output to the console in your browser.
 
 ## Deploying
 
