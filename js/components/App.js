@@ -32,10 +32,10 @@ const App = ({ media, closed, equalizer, playlist, openWindows }) => {
     );
   });
   return (
-    <React.Fragment>
+    <div role="application">
       <Skin />
       <WindowManager windows={windows} />
-    </React.Fragment>
+    </div>
   );
 };
 
