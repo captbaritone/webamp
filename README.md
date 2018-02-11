@@ -4,7 +4,7 @@
 
 [![Join the chat at https://gitter.im/winamp2-js/Lobby](https://badges.gitter.im/winamp2-js/Lobby.svg)](https://gitter.im/winamp2-js/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-A reimplementation of Winamp 2.9 in HTML5 and JavaScript. As seen on [TechCrunch], [Motherboard], [Gizmoto], Hacker News ([1], [2], [3]), and [elsewhere](./press.md).
+A reimplementation of Winamp 2.9 in HTML5 and JavaScript. As seen on [TechCrunch], [Motherboard], [Gizmodo], Hacker News ([1], [2], [3]), and [elsewhere](./press.md).
 
 **[Give it a try!](https://jordaneldredge.com/projects/winamp2-js/)**
 
@@ -158,7 +158,7 @@ this code, please let me know. I'd love to see it.
 
 [TechCrunch]: https://techcrunch.com/2018/02/09/whip-the-llamas-ass-with-this-javascript-winamp-emulator/
 [Motherboard]: https://motherboard.vice.com/en_us/article/qvebbv/winamp-2-mp3-music-player-emulator
-[Gizmoto]: https://gizmodo.com/winamp-2-has-been-immortalized-in-html5-for-your-pleasu-1655373653
+[Gizmodo]: https://gizmodo.com/winamp-2-has-been-immortalized-in-html5-for-your-pleasu-1655373653
 [1]: https://news.ycombinator.com/item?id=8565665
 [2]: https://news.ycombinator.com/item?id=15314629
 [3]: https://news.ycombinator.com/item?id=16333550
