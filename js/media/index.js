@@ -5,6 +5,21 @@ import ElementSource from "./elementSource";
 export default class Media {
   constructor() {
     this._context = new (window.AudioContext || window.webkitAudioContext)();
+    // Fix for iOS: https://gist.github.com/laziel/7aefabe99ee57b16081c
+    // Via: https://stackoverflow.com/a/43395068/1263117
+    if (this._context.state === "suspended") {
+      const resume = () => {
+        this._context.resume();
+
+        setTimeout(() => {
+          if (this._context.state === "running") {
+            document.body.removeEventListener("touchend", resume, false);
+          }
+        }, 0);
+      };
+
+      document.body.addEventListener("touchend", resume, false);
+    }
     this._callbacks = {
       waiting: function() {},
       stopWaiting: function() {},
