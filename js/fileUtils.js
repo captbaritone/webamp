@@ -28,11 +28,14 @@ export async function genArrayBufferFromUrl(url) {
   });
 }
 
-export async function promptForFileReferences() {
+export async function promptForFileReferences(accept) {
   return new Promise(resolve => {
     // Does this represent a memory leak somehow?
     // Can this fail? Do we ever reject?
     const fileInput = document.createElement("input");
+    if (accept) {
+      fileInput.setAttribute('accept', accept)
+    }
     fileInput.type = "file";
     fileInput.multiple = true;
     // Not entirely sure why this is needed, since the input

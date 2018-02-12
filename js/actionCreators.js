@@ -339,9 +339,9 @@ export function setSkinFromUrl(url) {
   };
 }
 
-export function openFileDialog() {
+export function openFileDialog(accept) {
   return async dispatch => {
-    const fileReferences = await promptForFileReferences();
+    const fileReferences = await promptForFileReferences(accept);
     dispatch(loadFilesFromReferences(fileReferences));
   };
 }
