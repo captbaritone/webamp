@@ -33,7 +33,7 @@ export async function promptForFileReferences(accept) {
     // Does this represent a memory leak somehow?
     // Can this fail? Do we ever reject?
     const fileInput = document.createElement("input");
-    if (accept) fileInput.setAttribute('accept', accept)
+    if (accept) fileInput.setAttribute("accept", accept)
     fileInput.type = "file";
     fileInput.multiple = true;
     // Not entirely sure why this is needed, since the input
