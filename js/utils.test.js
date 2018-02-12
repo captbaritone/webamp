@@ -145,6 +145,21 @@ bar = baz
     expect(actual).toEqual(expected);
   });
 
+  it("can parse a pledit.txt file with quotes", () => {
+    const pledit = fixture("PLEDIT_WITH_QUOTES.TXT");
+    const actual = parseIni(pledit);
+    const expected = {
+      text: {
+        normal: "#00FF00",
+        current: "#FFFFFF",
+        normalbg: "#000000",
+        selectedbg: "#0000FF",
+        font: "Ricky's cool font!"
+      }
+    };
+    expect(actual).toEqual(expected);
+  });
+
   it("allows quotes around values", () => {
     const actual = parseIni(`
 [foo]
