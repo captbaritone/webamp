@@ -78,7 +78,7 @@ export const parseIni = text => {
   let section, match;
   return text.split(/[\r\n]+/g).reduce((data, line) => {
     if ((match = line.match(PROPERTY_REGEX)) && section != null) {
-      const value = match[2].replace(/("|')/gi, "");
+      const value = match[2].replace(/(^")|("$)|(^')|('$)/gi, "");
       data[section][match[1].trim().toLowerCase()] = value;
     } else if ((match = line.match(SECTION_REGEX))) {
       section = match[1].trim().toLowerCase();
