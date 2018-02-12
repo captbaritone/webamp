@@ -144,6 +144,19 @@ bar = baz
     };
     expect(actual).toEqual(expected);
   });
+
+  it("allows quotes around values", () => {
+    const actual = parseIni(`
+[foo]
+bar = "baz"
+  `);
+    const expected = {
+      foo: {
+        bar: "baz"
+      }
+    };
+    expect(actual).toEqual(expected);
+  });
 });
 
 test("normalize", () => {
