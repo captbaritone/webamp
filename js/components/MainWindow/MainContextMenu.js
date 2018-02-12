@@ -18,7 +18,10 @@ const MainContextMenu = props => (
     <Hr />
     <Node onClick={props.openFileDialog} label="Play File..." />
     <Parent label="Skins">
-      <Node onClick={props.openFileDialog.bind(null, '.zip, .wsz')} label="Load Skin..." />
+      <Node
+        onClick={props.openFileDialog.bind(null, ".zip, .wsz")}
+        label="Load Skin..."
+      />
       {!!props.avaliableSkins.length && <Hr />}
       {props.avaliableSkins.map(skin => (
         <Node
