@@ -28,13 +28,21 @@ A more detailed list of features can be found in [features.md](./features.md).
 
 ## Use Winamp2-js in your project **PRE ALPHA**
 
-Several people have expressed interest in including Winamp2-js inside their website. In an attempt to try this out, I have published Winamp2-js as an NPM package. You can attempt to use it in your JS project like so:
+There are many websites that could potentially benefit from having Winamp embeded in them. That said, nobody that I know of is really doing this in production. In an attempt to try this out, I have published Winamp2-js as an NPM package. The API is far from stable as I don't actually know all the various use-cases it should support. Some potential ones are:
+
+* A player that can load files from Dropbox using the [Dropbox JavaScript SDK](http://dropbox.github.io/dropbox-sdk-js/).
+* A player that comes preloaded with a SoundCloud playlist.
+* A player that's compatible with [https://github.com/justinfrankel/WHUMP] database files.
+* A player that can be used to demonstrate skins on a skins website.
+* A generic podcast widget.
+* Something else?
+
+You can attempt to use it in your JS project like so:
 
 Install the package:
 
 ```
 npm install --save winamp2-js
-npm install --save babel-polyfill
 ```
 
 Create a DOM element somewhere in your HTML document:
@@ -46,7 +54,6 @@ Create a DOM element somewhere in your HTML document:
 Initialize Winamp2-js in your JavaScript:
 
 ```JavaScript
-import 'babel-polyfill';
 import Winamp from 'winamp2-js';
 
 const winamp = new Winamp({
@@ -67,7 +74,6 @@ _Notes:_
 * This should not be considered "production" code.
   * Winamp2-js does not support Internet Explorer.
   * Winamp2-js was built to run on its own page, it may not play well with surrounding CSS.
-* You will probably need to include [babel-polyfill](https://babeljs.io/docs/usage/polyfill/) on the page that includes Winamp2-js.
 * Skin and audio URLs are subject to [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS). Please ensure they are either served from the same domain, or that the other domain is served with the correct headers.
 * This API is subject to change at any time.
 * Please reach out to me. I'd love to help you set it up, and understand how it's being used. I plan to expand this API as I learn how people want to use it.

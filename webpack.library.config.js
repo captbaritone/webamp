@@ -11,7 +11,10 @@ module.exports = {
         test: /\.js$/,
         exclude: /(node_modules)/,
         use: {
-          loader: "babel-loader"
+          loader: "babel-loader",
+          options: {
+            forceEnv: "library"
+          }
         }
       },
       {
@@ -29,7 +32,7 @@ module.exports = {
     ],
     noParse: [/jszip\.js$/]
   },
-  entry: ["babel-polyfill", "./js/winamp.js"],
+  entry: ["./js/winamp.js"],
   output: {
     path: path.resolve(__dirname, "built"),
     filename: "winamp.bundle.js",
