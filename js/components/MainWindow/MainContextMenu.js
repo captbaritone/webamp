@@ -16,12 +16,9 @@ const MainContextMenu = props => (
       label="Winamp2-js"
     />
     <Hr />
-    <Node onClick={props.openFileDialog} label="Play File..." />
+    <Node onClick={props.openFileDialogForMedia} label="Play File..." />
     <Parent label="Skins">
-      <Node
-        onClick={props.openFileDialog.bind(null, ".zip, .wsz")}
-        label="Load Skin..."
-      />
+      <Node onClick={props.openFileDialogForSkin} label="Load Skin..." />
       {!!props.avaliableSkins.length && <Hr />}
       {props.avaliableSkins.map(skin => (
         <Node
@@ -40,6 +37,11 @@ const mapStateToProps = state => ({
   avaliableSkins: state.settings.avaliableSkins
 });
 
-const mapDispatchToProps = { close, openFileDialog, setSkin: setSkinFromUrl };
+const mapDispatchToProps = {
+  close,
+  openFileDialogForSkin: () => openFileDialog(".zip, .wsz"),
+  openFileDialogForMedia: openFileDialog,
+  setSkin: setSkinFromUrl
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainContextMenu);
