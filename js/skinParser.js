@@ -184,7 +184,7 @@ async function genPlaylistStyle(zip) {
     data[colorKey] = color.slice(0, 7);
   });
 
-  return data;
+  return { ...defaultPlaylistStyle, ...data };
 }
 
 async function genColors(zip) {
