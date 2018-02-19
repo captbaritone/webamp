@@ -2,7 +2,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import renderer from "react-test-renderer";
 import getStore from "../../store";
-import { loadMediaFromUrl } from "../../actionCreators";
+import { loadMediaFiles } from "../../actionCreators";
 
 import PlaylistShade from "./PlaylistShade";
 
@@ -21,7 +21,9 @@ describe("PlaylistShade", () => {
   });
 
   it("renders to snapshot", () => {
-    store.dispatch(loadMediaFromUrl("http://example.com", "Some Name", "NONE"));
+    store.dispatch(
+      loadMediaFiles([{ url: "http://example.com", defaultName: "Some Name" }])
+    );
     const tree = renderer
       .create(
         <Provider store={store}>

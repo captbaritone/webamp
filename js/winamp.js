@@ -6,7 +6,8 @@ import getStore from "./store";
 import App from "./components/App";
 import Hotkeys from "./hotkeys";
 import Media from "./media";
-import { setSkinFromUrl, loadMediaFromUrl } from "./actionCreators";
+import { setSkinFromUrl, loadMediaFile } from "./actionCreators";
+import { LOAD_STYLE } from "./constants";
 
 import { SET_AVALIABLE_SKINS } from "./actionTypes";
 
@@ -39,17 +40,14 @@ class Winamp {
     this.options = options;
 
     this.media = new Media();
-    this.store = getStore(this.media, this.options.__initialState);
+    this.store = getStore(this.media, this.options);
 
     this.store.dispatch(setSkinFromUrl(this.options.initialSkin.url));
 
+    // TODO: Make this initial track_s_
     if (this.options.initialTrack && this.options.initialTrack.url) {
       this.store.dispatch(
-        loadMediaFromUrl(
-          this.options.initialTrack.url,
-          this.options.initialTrack.name,
-          "BUFFER"
-        )
+        loadMediaFile(this.options.initialTrack, LOAD_STYLE.BUFFER)
       );
     }
     if (this.options.avaliableSkins) {

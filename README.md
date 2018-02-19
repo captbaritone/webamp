@@ -58,7 +58,10 @@ import Winamp from 'winamp2-js';
 
 const winamp = new Winamp({
   initialTrack: {
-    name: "1. DJ Mike Llama - Llama Whippin' Intro",
+    metaData: {
+      artist: "DJ Mike Llama",
+      title: "Llama Whippin' Intro",
+    },
     url: "https://d38dnrh1liu4f5.cloudfront.net/projects/winamp2-js/mp3/llama-2.91.mp3"
   },
   initialSkin: {

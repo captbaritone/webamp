@@ -34,7 +34,11 @@ Raven.context(() => {
       url: skinUrl
     },
     initialTrack: {
-      name: "DJ Mike Llama - Llama Whippin' Intro",
+      defaultName: "DJ Mike Llama - Llama Whippin' Intro",
+      metaData: {
+        artist: "DJ Mike Llama",
+        title: "Llama Whippin' Intro"
+      },
       url: audioUrl
     },
     avaliableSkins: [

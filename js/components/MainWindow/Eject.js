@@ -1,12 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { openFileDialog } from "../../actionCreators";
+import { openMediaFileDialog } from "../../actionCreators";
 
 const Eject = props => (
-  <div id="eject" onClick={props.openFileDialog} title="Open File(s)" />
+  <div id="eject" onClick={props.openMediaFileDialog} title="Open File(s)" />
 );
 
-const mapDispatchToProps = { openFileDialog };
+const mapDispatchToProps = { openMediaFileDialog };
 
 export default connect(null, mapDispatchToProps)(Eject);

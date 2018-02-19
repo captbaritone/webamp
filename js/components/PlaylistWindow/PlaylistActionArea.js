@@ -7,7 +7,7 @@ import {
   stop,
   next,
   previous,
-  openFileDialog
+  openMediaFileDialog
 } from "../../actionCreators";
 
 import MiniTime from "../MiniTime";
@@ -22,7 +22,10 @@ const PlaylistWindow = props => (
       <div className="playlist-pause-button" onClick={props.pause} />
       <div className="playlist-stop-button" onClick={props.stop} />
       <div className="playlist-next-button" onClick={props.next} />
-      <div className="playlist-eject-button" onClick={props.openFileDialog} />
+      <div
+        className="playlist-eject-button"
+        onClick={props.openMediaFileDialog}
+      />
     </div>
     <MiniTime />
   </React.Fragment>
@@ -32,7 +35,7 @@ const mapDispatchToProps = {
   play,
   pause,
   stop,
-  openFileDialog,
+  openMediaFileDialog,
   next,
   previous
 };

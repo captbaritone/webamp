@@ -1,7 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 import ClickedDiv from "../ClickedDiv";
-import { close, setSkinFromUrl, openFileDialog } from "../../actionCreators";
+import {
+  close,
+  setSkinFromUrl,
+  openMediaFileDialog,
+  openSkinFileDialog
+} from "../../actionCreators";
 import { ContextMenu, Hr, Node, Parent, LinkNode } from "../ContextMenu";
 
 const MainContextMenu = props => (
@@ -16,9 +21,9 @@ const MainContextMenu = props => (
       label="Winamp2-js"
     />
     <Hr />
-    <Node onClick={props.openFileDialogForMedia} label="Play File..." />
+    <Node onClick={props.openMediaFileDialog} label="Play File..." />
     <Parent label="Skins">
-      <Node onClick={props.openFileDialogForSkin} label="Load Skin..." />
+      <Node onClick={props.openSkinFileDialog} label="Load Skin..." />
       {!!props.avaliableSkins.length && <Hr />}
       {props.avaliableSkins.map(skin => (
         <Node
@@ -39,8 +44,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   close,
-  openFileDialogForSkin: () => openFileDialog(".zip, .wsz"),
-  openFileDialogForMedia: openFileDialog,
+  openSkinFileDialog,
+  openMediaFileDialog,
   setSkin: setSkinFromUrl
 };
 

@@ -47,3 +47,12 @@ export async function promptForFileReferences(accept) {
     fileInput.click();
   });
 }
+
+// This is not perfect, but... meh: https://stackoverflow.com/a/36756650/1263117
+export function filenameFromUrl(url) {
+  return url
+    .split("/")
+    .pop()
+    .split("#")[0]
+    .split("?")[0];
+}

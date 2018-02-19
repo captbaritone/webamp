@@ -6,6 +6,11 @@ export const WINDOWS = {
   EQUALIZER: "EQUALIZER"
 };
 
+export const LOAD_STYLE = {
+  BUFFER: "BUFFER",
+  PLAY: "PLAY"
+};
+
 export const UTF8_ELLIPSIS = "\u2026";
 export const CHARACTER_WIDTH = 5;
 export const PLAYLIST_RESIZE_SEGMENT_WIDTH = 25;

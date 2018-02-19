@@ -3,10 +3,11 @@ import { parser, creator } from "winamp-eqf";
 import {
   genArrayBufferFromFileReference,
   genArrayBufferFromUrl,
-  promptForFileReferences
+  promptForFileReferences,
+  filenameFromUrl
 } from "./fileUtils";
 import skinParser from "./skinParser";
-import { BANDS, TRACK_HEIGHT } from "./constants";
+import { BANDS, TRACK_HEIGHT, LOAD_STYLE } from "./constants";
 import {
   getEqfData,
   nextTrack,
@@ -77,7 +78,7 @@ export function play() {
       state.playlist.curentTrack == null &&
       state.playlist.trackOrder.length === 0
     ) {
-      dispatch(openFileDialog());
+      dispatch(openMediaFileDialog());
     } else {
       dispatch({ type: PLAY });
     }
@@ -196,20 +197,11 @@ function setEqFromFileReference(fileReference) {
 }
 
 export function addTracksFromReferences(fileReferences, autoPlay, atIndex) {
-  return dispatch => {
-    if (autoPlay) {
-      // I'm the worst. It just so happens that in every case that we autoPlay,
-      // we should also clear all tracks.
-      dispatch(removeAllTracks());
-    }
-    Array.from(fileReferences).forEach((file, i) => {
-      const priority = i === 0 && autoPlay ? "PLAY" : "NONE";
-      const id = uniqueId();
-      const url = URL.createObjectURL(file);
-      dispatch(_addTrackFromUrl(url, file.name, id, priority, atIndex + i));
-      dispatch(fetchMediaTags(file, id));
-    });
-  };
+  const tracks = Array.from(fileReferences).map(file => ({
+    blob: file,
+    defaultName: file.name
+  }));
+  return loadMediaFiles(tracks, autoPlay, atIndex);
 }
 
 const SKIN_FILENAME_MATCHER = new RegExp("(wsz|zip)$", "i");
@@ -245,8 +237,18 @@ export function fetchMediaDuration(url, id) {
       const { duration } = audio;
       dispatch({ type: SET_MEDIA_DURATION, duration, id });
       audio.removeEventListener("durationchange", durationChange);
+      audio.url = null;
+      // TODO: Not sure if this really gets cleaned up.
     };
     audio.addEventListener("durationchange", durationChange);
+    audio.addEventListener("error", () => {
+      // TODO: Should we update the state to indicate that we don't know the length?
+      /* Disabled, because people might drag in bogus local files.
+      Raven.captureMessage(
+        `Error getting duration of ${url}: ${audio.error.message}`
+      );
+      */
+    });
     audio.src = url;
   };
 }
@@ -256,29 +258,74 @@ function uniqueId() {
   return counter++;
 }
 
-function _addTrackFromUrl(url, name, id, priority, atIndex) {
+/*
+type Track = {
+  defaultName: ?string,
+  duration: ?number,
+  url?: string,
+  blob?: fileReference
+}
+*/
+
+export function loadMediaFiles(tracks, autoPlay = true, atIndex = 0) {
   return dispatch => {
-    dispatch({ type: ADD_TRACK_FROM_URL, url, name, id, atIndex });
-    switch (priority) {
-      case "BUFFER":
-        dispatch({ type: BUFFER_TRACK, name, id });
-        break;
-      case "PLAY":
-        dispatch({ type: PLAY_TRACK, name, id });
-        break;
-      default:
-        // If we're not going to load this right away,
-        // we should fetch duration on our own
-        dispatch(fetchMediaDuration(url, id));
+    if (autoPlay) {
+      // I'm the worst. It just so happens that in every case that we autoPlay,
+      // we should also clear all tracks.
+      dispatch(removeAllTracks());
     }
+    tracks.forEach((track, i) => {
+      const priority = i === 0 && autoPlay ? LOAD_STYLE.PLAY : null;
+      dispatch(loadMediaFile(track, priority, atIndex));
+    });
   };
 }
 
-export function loadMediaFromUrl(url, name, priority) {
+export function loadMediaFile(track, priority = null, atIndex = 0) {
   return dispatch => {
     const id = uniqueId();
-    dispatch(_addTrackFromUrl(url, name, id, priority));
-    dispatch(fetchMediaTags(url, id));
+    const { url, blob, defaultName, metaData, duration } = track;
+    let canonicalUrl = url;
+    let canonicalDefaultName = defaultName;
+    if (canonicalUrl == null) {
+      if (blob == null) {
+        throw new Error("Expected track to have either a blob or a url");
+      }
+      canonicalUrl = URL.createObjectURL(track.blob);
+    } else if (!defaultName) {
+      canonicalDefaultName = filenameFromUrl(url);
+      // TODO: Derive the defaultName from the URL if none is provided
+    }
+    dispatch({
+      type: ADD_TRACK_FROM_URL,
+      url: canonicalUrl,
+      name: canonicalDefaultName,
+      id,
+      atIndex
+    });
+    switch (priority) {
+      case LOAD_STYLE.BUFFER:
+        dispatch({ type: BUFFER_TRACK, id });
+        break;
+      case LOAD_STYLE.PLAY:
+        dispatch({ type: PLAY_TRACK, id });
+        break;
+      default:
+        // If we're not going to load this right away,
+        // we should set duration on our own
+        if (duration != null) {
+          dispatch({ type: SET_MEDIA_DURATION, duration, id });
+        } else {
+          dispatch(fetchMediaDuration(canonicalUrl, id));
+        }
+    }
+
+    if (metaData != null) {
+      const { artist, title } = metaData;
+      dispatch({ type: SET_MEDIA_TAGS, artist, title, id });
+    } else {
+      dispatch(fetchMediaTags(url || blob, id));
+    }
   };
 }
 
@@ -339,11 +386,34 @@ export function setSkinFromUrl(url) {
   };
 }
 
-export function openFileDialog(accept) {
+// This function is private, since Winamp consumers may wish to support
+// opening files via other means (Dropbox?). Only use the file type specific
+// versions below, since they can defer to the user-defined behavior.
+function _openFileDialog(accept) {
   return async dispatch => {
     const fileReferences = await promptForFileReferences(accept);
     dispatch(loadFilesFromReferences(fileReferences));
   };
+}
+
+export function openEqfFileDialog() {
+  return _openFileDialog(".eqf");
+}
+
+export function openMediaFileDialog() {
+  return async (dispatch, getState, { promptForMediaFiles }) => {
+    if (promptForMediaFiles == null) {
+      return dispatch(_openFileDialog());
+    }
+    const mediaFiles = await promptForMediaFiles();
+    if (mediaFiles != null) {
+      return dispatch(loadMediaFiles(mediaFiles, true, null));
+    }
+  };
+}
+
+export function openSkinFileDialog() {
+  return _openFileDialog(".zip, .wsz");
 }
 
 export function setEqBand(band, value) {
