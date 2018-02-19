@@ -40,6 +40,7 @@
 * https://es.gizmodo.com/ahora-puedes-viajar-al-pasado-y-volver-a-usar-el-mitico-1822850658
 * https://esquire.ru/articles/42012-winamp/
 * https://futurezone.at/digital-life/entwickler-baut-winamp-fuer-den-browser-nach/400003172
+* https://gigazine.net/news/20180213-winamp2-js/
 * https://gizmodo.com/winamp-2-has-been-immortalized-in-html5-for-your-pleasu-1655373653
 * https://hipertextual.com/archivo/2014/12/port-winamp-html5-javascript/
 * https://itc.ua/blogs/kaliforniyskiy-razrabotchik-vozrodil-legendarnyiy-muzyikalnyiy-pleer-winamp-nu-pochti/
