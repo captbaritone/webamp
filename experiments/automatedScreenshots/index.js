@@ -1,4 +1,3 @@
-/*
 const defaultTracksState = {
   "0": {
     selected: false,
@@ -29,7 +28,6 @@ const defaultTracksState = {
     url: ""
   }
 };
-*/
 
 const fs = require("fs");
 const puppeteer = require("puppeteer");
@@ -72,6 +70,11 @@ const config = {
       timeElapsed: 1,
       channels: 2,
       name: "1. DJ Mike Llama - Llama Whippin' Intro"
+    },
+    playlist: {
+      tracks: defaultTracksState,
+      trackOrder: [0, 1, 2, 3],
+      currentTrack: 0
     },
     display: {
       working: false
