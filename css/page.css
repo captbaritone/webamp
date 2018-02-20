@@ -30,7 +30,7 @@ body {
     color: white;
 }
 
-#winamp2-js #loading {
+#app #loading {
     color: white;
     text-align: center;
     font-size: 40px;
@@ -43,23 +43,23 @@ body {
     right: 0;
 }
 
-#winamp2-js #loading .ellipsis-anim span {
+#app #loading .ellipsis-anim span {
     opacity: 0;
     -webkit-animation: ellipsis-dot 1s infinite;
     animation: ellipsis-dot 1s infinite;
 }
 
-#winamp2-js #loading .ellipsis-anim span:nth-child(1) {
+#app #loading .ellipsis-anim span:nth-child(1) {
     -webkit-animation-delay: 0s;
     animation-delay: 0s;
 }
 
-#winamp2-js #loading .ellipsis-anim span:nth-child(2) {
+#app #loading .ellipsis-anim span:nth-child(2) {
     -webkit-animation-delay: 0.1s;
     animation-delay: 0.1s;
 }
 
-#winamp2-js #loading .ellipsis-anim span:nth-child(3) {
+#appwinamp2-js #loading .ellipsis-anim span:nth-child(3) {
     -webkit-animation-delay: 0.2s;
     animation-delay: 0.2s;
 }

@@ -25,7 +25,7 @@ Raven.context(() => {
   }
   if (!Winamp.browserIsSupported()) {
     document.getElementById("browser-compatibility").style.display = "block";
-    document.getElementById("winamp2-js").style.visibility = "hidden";
+    document.getElementById("app").style.visibility = "hidden";
     return;
   }
 
@@ -54,5 +54,5 @@ Raven.context(() => {
     __initialState: initialState
   });
 
-  winamp.renderWhenReady(document.getElementById("winamp2-js"));
+  winamp.renderWhenReady(document.getElementById("app"));
 });
