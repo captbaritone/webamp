@@ -33,10 +33,7 @@ class WindowManager extends React.Component {
 
   componentDidMount() {
     window.addEventListener("resize", this.centerWindows);
-    const { innerHeight, innerWidth } = window;
-    if (innerHeight || innerWidth) {
-      this.centerWindows();
-    }
+    this.centerWindows();
   }
 
   componentWillUnmount() {
@@ -44,15 +41,26 @@ class WindowManager extends React.Component {
   }
 
   centerWindows() {
-    const { innerHeight, innerWidth } = window;
+    let offsetLeft = 0;
+    let offsetTop = 0;
+    let width = document.documentElement.scrollWidth;
+    let height = document.documentElement.scrollHeight;
+
+    const { container } = this.props;
+    if (container != null) {
+      offsetLeft = container.offsetLeft;
+      offsetTop = container.offsetTop;
+      width = container.scrollWidth;
+      height = container.scrollHeight;
+    }
     const state = {};
     const keys = this.windowKeys();
     const totalHeight = keys.length * WINDOW_HEIGHT;
     keys.forEach((key, i) => {
       const offset = WINDOW_HEIGHT * i;
       state[key] = {
-        left: innerWidth / 2 - WINDOW_WIDTH / 2,
-        top: innerHeight / 2 - totalHeight / 2 + offset
+        left: offsetLeft + (width / 2 - WINDOW_WIDTH / 2),
+        top: offsetTop + (height / 2 - totalHeight / 2 + offset)
       };
     });
     this.setState(state);
@@ -109,8 +117,8 @@ class WindowManager extends React.Component {
 
     const mouseStart = { x: e.clientX, y: e.clientY };
     const browserSize = {
-      width: window.innerWidth,
-      height: window.innerHeight
+      width: document.documentElement.scrollWidth,
+      height: document.documentElement.scrollHeight
     };
 
     const box = boundingBox(moving);
@@ -198,7 +206,8 @@ class WindowManager extends React.Component {
 }
 
 WindowManager.propTypes = {
-  windows: PropTypes.object.isRequired
+  windows: PropTypes.object.isRequired,
+  container: PropTypes.instanceOf(Element)
 };
 
 export default WindowManager;

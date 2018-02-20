@@ -64,7 +64,7 @@ class Winamp {
 
     render(
       <Provider store={this.store}>
-        <App media={this.media} />
+        <App media={this.media} container={this.options.container} />
       </Provider>,
       node
     );

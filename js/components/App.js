@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import WindowManager from "./WindowManager";
 import MainWindow from "./MainWindow";
@@ -15,7 +16,14 @@ const genWindowMap = {
 
 const GEN_WINDOWS = ["AVS_WINDOW"];
 
-const App = ({ media, closed, equalizer, playlist, openWindows }) => {
+const App = ({
+  media,
+  closed,
+  equalizer,
+  playlist,
+  openWindows,
+  container
+}) => {
   if (closed) {
     return null;
   }
@@ -32,11 +40,15 @@ const App = ({ media, closed, equalizer, playlist, openWindows }) => {
     );
   });
   return (
-    <div role="application">
+    <div role="application" id="winamp2-js">
       <Skin />
-      <WindowManager windows={windows} />
+      <WindowManager windows={windows} container={container} />
     </div>
   );
+};
+
+App.propTypes = {
+  container: PropTypes.instanceOf(Element)
 };
 
 const mapStateToProps = state => ({
