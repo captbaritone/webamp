@@ -38,24 +38,30 @@ class Winamp {
 
   constructor(options) {
     this.options = options;
+    const {
+      initialTracks,
+      avaliableSkins,
+      enableHotkeys = false
+    } = this.options;
 
     this.media = new Media();
     this.store = getStore(this.media, this.options.__initialState);
 
     this.store.dispatch(setSkinFromUrl(this.options.initialSkin.url));
 
-    const { initialTracks } = this.options;
     if (initialTracks) {
       this.store.dispatch(loadMediaFiles(initialTracks, LOAD_STYLE.BUFFER));
     }
-    if (this.options.avaliableSkins) {
+    if (avaliableSkins) {
       this.store.dispatch({
         type: SET_AVALIABLE_SKINS,
-        skins: this.options.avaliableSkins
+        skins: avaliableSkins
       });
     }
 
-    new Hotkeys(this.store.dispatch);
+    if (enableHotkeys) {
+      new Hotkeys(this.store.dispatch);
+    }
   }
 
   async renderWhenReady(node) {

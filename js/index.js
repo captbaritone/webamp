@@ -51,6 +51,7 @@ Raven.context(() => {
       { url: xmms, name: "XMMS Turquoise " },
       { url: zaxon, name: "Zaxon Remake" }
     ],
+    enableHotkeys: true,
     __initialState: initialState
   });
 
