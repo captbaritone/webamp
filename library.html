@@ -11,15 +11,16 @@
     <script>
         const Winamp = window.winamp2js;
         new Winamp({
-            initialTrack: {
-                name: "1. DJ Mike Llama - Llama Whippin' Intro",
+            initialTracks: [{
+                metaData: {
+                    artits: "DJ Mike Llama",
+                    title: "Llama Whippin' Intro"
+                },
                 url: "https://d38dnrh1liu4f5.cloudfront.net/projects/winamp2-js/mp3/llama-2.91.mp3"
-            },
+            }],
             initialSkin: {
                 url: "https://d38dnrh1liu4f5.cloudfront.net/projects/winamp2-js/skins/base-2.91.wsz"
             },
-            avaliableSkins: [
-            ]
         }).renderWhenReady(document.getElementById('winamp2-js'));
     </script>
 </body>

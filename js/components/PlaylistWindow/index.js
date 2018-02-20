@@ -166,7 +166,7 @@ const mapDispatchToProps = {
   scrollUpFourTracks,
   scrollDownFourTracks,
   loadFilesFromReferences: (e, startIndex) =>
-    loadFilesFromReferences(e.dataTransfer.files, false, startIndex),
+    loadFilesFromReferences(e.dataTransfer.files, null, startIndex),
   togglePlaylistShadeMode,
   scrollVolume
 };

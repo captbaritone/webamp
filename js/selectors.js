@@ -157,7 +157,12 @@ export const getVisibleTrackIds = createSelector(
 );
 
 export const getPlaylist = state => state.playlist;
-export const getDuration = state => state.media.length;
+
+export const getDuration = state => {
+  const currentTrack = state.playlist.tracks[state.playlist.currentTrack];
+  return currentTrack && currentTrack.duration;
+};
+
 export const getTrackDisplayName = (state, trackId) =>
   fromPlaylist.getTrackDisplayName(getPlaylist(state), trackId);
 
@@ -178,7 +183,8 @@ export const getMediaText = createSelector(
   (minimalMediaText, duration) =>
     minimalMediaText == null
       ? null
-      : `${minimalMediaText} (${getTimeStr(duration)})  ***  `
+      : // TODO: Maybe the `  ***  ` should actually be added by the marquee
+        `${minimalMediaText} (${getTimeStr(duration)})  ***  `
 );
 
 const getNumberOfTracks = state => getTrackOrder(state).length;

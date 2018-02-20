@@ -196,19 +196,19 @@ function setEqFromFileReference(fileReference) {
   };
 }
 
-export function addTracksFromReferences(fileReferences, autoPlay, atIndex) {
+export function addTracksFromReferences(fileReferences, loadStyle, atIndex) {
   const tracks = Array.from(fileReferences).map(file => ({
     blob: file,
     defaultName: file.name
   }));
-  return loadMediaFiles(tracks, autoPlay, atIndex);
+  return loadMediaFiles(tracks, loadStyle, atIndex);
 }
 
 const SKIN_FILENAME_MATCHER = new RegExp("(wsz|zip)$", "i");
 const EQF_FILENAME_MATCHER = new RegExp("eqf$", "i");
 export function loadFilesFromReferences(
   fileReferences,
-  autoPlay = true,
+  loadStyle = LOAD_STYLE.PLAY,
   atIndex = null
 ) {
   return dispatch => {
@@ -224,7 +224,7 @@ export function loadFilesFromReferences(
         return;
       }
     }
-    dispatch(addTracksFromReferences(fileReferences, autoPlay, atIndex));
+    dispatch(addTracksFromReferences(fileReferences, loadStyle, atIndex));
   };
 }
 
@@ -267,15 +267,15 @@ type Track = {
 }
 */
 
-export function loadMediaFiles(tracks, autoPlay = true, atIndex = 0) {
+export function loadMediaFiles(tracks, loadStyle = null, atIndex = 0) {
   return dispatch => {
-    if (autoPlay) {
+    if (loadStyle === LOAD_STYLE.PLAY) {
       // I'm the worst. It just so happens that in every case that we autoPlay,
       // we should also clear all tracks.
       dispatch(removeAllTracks());
     }
     tracks.forEach((track, i) => {
-      const priority = i === 0 && autoPlay ? LOAD_STYLE.PLAY : null;
+      const priority = i === 0 && loadStyle != null ? loadStyle : null;
       dispatch(loadMediaFile(track, priority, atIndex));
     });
   };
@@ -401,15 +401,7 @@ export function openEqfFileDialog() {
 }
 
 export function openMediaFileDialog() {
-  return async (dispatch, getState, { promptForMediaFiles }) => {
-    if (promptForMediaFiles == null) {
-      return dispatch(_openFileDialog());
-    }
-    const mediaFiles = await promptForMediaFiles();
-    if (mediaFiles != null) {
-      return dispatch(loadMediaFiles(mediaFiles, true, null));
-    }
-  };
+  return _openFileDialog();
 }
 
 export function openSkinFileDialog() {
