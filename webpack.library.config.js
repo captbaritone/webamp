@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require("webpack");
 
 module.exports = {
   module: {
@@ -32,10 +33,24 @@ module.exports = {
     ],
     noParse: [/jszip\.js$/]
   },
-  entry: ["./js/winamp.js"],
+  plugins: [
+    new webpack.DefinePlugin({
+      "process.env": {
+        NODE_ENV: JSON.stringify("production")
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      minimize: true,
+      include: /\.min\.js$/
+    })
+  ],
+  entry: {
+    bundle: "./js/winamp.js",
+    "bundle.min": "./js/winamp.js"
+  },
   output: {
     path: path.resolve(__dirname, "built"),
-    filename: "winamp.bundle.js",
+    filename: "[name].js",
     library: "winamp2js",
     libraryTarget: "umd"
   }
