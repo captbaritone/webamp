@@ -243,11 +243,6 @@ export function fetchMediaDuration(url, id) {
     audio.addEventListener("durationchange", durationChange);
     audio.addEventListener("error", () => {
       // TODO: Should we update the state to indicate that we don't know the length?
-      /* Disabled, because people might drag in bogus local files.
-      Raven.captureMessage(
-        `Error getting duration of ${url}: ${audio.error.message}`
-      );
-      */
     });
     audio.src = url;
   };
