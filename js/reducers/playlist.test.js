@@ -4,7 +4,7 @@ import {
   CTRL_CLICKED_TRACK,
   ADD_TRACK_FROM_URL
 } from "../actionTypes";
-import reducer from "./playlist";
+import reducer, { getTrackDisplayName } from "./playlist";
 
 describe("playlist reducer", () => {
   it("can handle adding a track", () => {
@@ -16,7 +16,7 @@ describe("playlist reducer", () => {
     const nextState = reducer(initialState, {
       type: ADD_TRACK_FROM_URL,
       id: 100,
-      name: "My Track Name",
+      defaultName: "My Track Name",
       url: "url://some-url"
     });
     expect(nextState).toEqual({
@@ -24,7 +24,7 @@ describe("playlist reducer", () => {
         100: {
           selected: false,
           duration: null,
-          title: "My Track Name",
+          defaultName: "My Track Name",
           url: "url://some-url"
         }
       },
@@ -44,7 +44,7 @@ describe("playlist reducer", () => {
     const nextState = reducer(initialState, {
       type: ADD_TRACK_FROM_URL,
       id: 100,
-      name: "My Track Name",
+      defaultName: "My Track Name",
       url: "url://some-url"
     });
     expect(nextState).toEqual({
@@ -54,7 +54,7 @@ describe("playlist reducer", () => {
         100: {
           selected: false,
           duration: null,
-          title: "My Track Name",
+          defaultName: "My Track Name",
           url: "url://some-url"
         }
       },
@@ -74,7 +74,7 @@ describe("playlist reducer", () => {
     const nextState = reducer(initialState, {
       type: ADD_TRACK_FROM_URL,
       id: 100,
-      name: "My Track Name",
+      defaultName: "My Track Name",
       url: "url://some-url",
       atIndex: 1
     });
@@ -85,7 +85,7 @@ describe("playlist reducer", () => {
         100: {
           selected: false,
           duration: null,
-          title: "My Track Name",
+          defaultName: "My Track Name",
           url: "url://some-url"
         }
       },
@@ -165,5 +165,53 @@ describe("playlist reducer", () => {
       },
       trackOrder: [3, 2, 1, 0]
     });
+  });
+});
+
+describe("getTrackDisplayName", () => {
+  const expectDisplayName = (track, expected) => {
+    expect(getTrackDisplayName({ tracks: { "1": track } }, "1")).toBe(expected);
+  };
+  it("uses the artists and title if provided", () => {
+    expectDisplayName(
+      {
+        artist: "Artist",
+        title: "Title",
+        defaultName: "Default Name",
+        url: "https://example.com/dir/filename.mp3"
+      },
+      "Artist - Title"
+    );
+  });
+  it("uses the title if provided", () => {
+    expectDisplayName(
+      {
+        title: "Title",
+        defaultName: "Default Name",
+        url: "https://example.com/dir/filename.mp3"
+      },
+      "Title"
+    );
+  });
+  it("uses a defaultName if provided", () => {
+    expectDisplayName(
+      {
+        defaultName: "Default Name",
+        url: "https://example.com/dir/filename.mp3"
+      },
+      "Default Name"
+    );
+  });
+  it("uses the filename if a URL is provided", () => {
+    expectDisplayName(
+      { url: "https://example.com/dir/filename.mp3" },
+      "filename.mp3"
+    );
+  });
+  it("does not use the filename if a blob URL is provided", () => {
+    expectDisplayName({ url: "blob:foo" }, "???");
+  });
+  it("falls back to '???'", () => {
+    expectDisplayName({}, "???");
   });
 });

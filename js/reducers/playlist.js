@@ -19,6 +19,7 @@ import {
   SET_MEDIA_DURATION
 } from "../actionTypes";
 
+import { filenameFromUrl } from "../fileUtils";
 import { shuffle, moveSelected, mapObject, filterObject } from "../utils";
 
 const defaultPlaylistState = {
@@ -145,7 +146,7 @@ const playlist = (state = defaultPlaylistState, action) => {
           ...state.tracks,
           [action.id]: {
             selected: false,
-            title: action.name,
+            defaultName: action.defaultName,
             duration: null,
             url: action.url
           }
@@ -216,11 +217,18 @@ export const getTrackDisplayName = (state, id) => {
   if (track == null) {
     return null;
   }
-  const { artist, title } = track;
+  const { artist, title, defaultName, url } = track;
   if (artist && title) {
     return `${artist} - ${title}`;
   } else if (title) {
     return title;
+  } else if (defaultName) {
+    return defaultName;
+  } else if (url) {
+    const filename = filenameFromUrl(url);
+    if (filename) {
+      return filename;
+    }
   }
   return "???";
 };

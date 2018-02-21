@@ -3,8 +3,7 @@ import { parser, creator } from "winamp-eqf";
 import {
   genArrayBufferFromFileReference,
   genArrayBufferFromUrl,
-  promptForFileReferences,
-  filenameFromUrl
+  promptForFileReferences
 } from "./fileUtils";
 import skinParser from "./skinParser";
 import { BANDS, TRACK_HEIGHT, LOAD_STYLE } from "./constants";
@@ -253,15 +252,6 @@ function uniqueId() {
   return counter++;
 }
 
-/*
-type Track = {
-  defaultName: ?string,
-  duration: ?number,
-  url?: string,
-  blob?: fileReference
-}
-*/
-
 export function loadMediaFiles(tracks, loadStyle = null, atIndex = 0) {
   return dispatch => {
     if (loadStyle === LOAD_STYLE.PLAY) {
@@ -281,20 +271,16 @@ export function loadMediaFile(track, priority = null, atIndex = 0) {
     const id = uniqueId();
     const { url, blob, defaultName, metaData, duration } = track;
     let canonicalUrl = url;
-    let canonicalDefaultName = defaultName;
     if (canonicalUrl == null) {
       if (blob == null) {
         throw new Error("Expected track to have either a blob or a url");
       }
       canonicalUrl = URL.createObjectURL(track.blob);
-    } else if (!defaultName) {
-      canonicalDefaultName = filenameFromUrl(url);
-      // TODO: Derive the defaultName from the URL if none is provided
     }
     dispatch({
       type: ADD_TRACK_FROM_URL,
       url: canonicalUrl,
-      name: canonicalDefaultName,
+      defaultName,
       id,
       atIndex
     });
