@@ -78,6 +78,7 @@
 #winamp2-js .playlist-track-numbers > div,
 #winamp2-js .playlist-track-durations > div {
     padding-right: 3px;
+    text-align: right;
 }
 #winamp2-js .playlist-track-numbers > div {
     text-align: center;
