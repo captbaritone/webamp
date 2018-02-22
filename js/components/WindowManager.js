@@ -43,8 +43,17 @@ class WindowManager extends React.Component {
   centerWindows() {
     let offsetLeft = 0;
     let offsetTop = 0;
-    let width = document.documentElement.scrollWidth;
-    let height = document.documentElement.scrollHeight;
+    // https://j11y.io/snippets/get-document-height-cross-browser/
+    let width = Math.max(
+      document.documentElement.scrollWidth,
+      document.documentElement.clientWidth,
+      document.documentElement.offsetWidth
+    );
+    let height = Math.max(
+      document.documentElement.scrollHeight,
+      document.documentElement.clientHeight,
+      document.documentElement.offsetHeight
+    );
 
     const { container } = this.props;
     if (container != null) {
