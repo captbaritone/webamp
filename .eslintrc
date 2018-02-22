@@ -29,13 +29,8 @@
         "maxBOF": 0
       }
     ],
-    "arrow-body-style": ["error", "as-needed"],
-    "arrow-spacing": "error",
     "block-scoped-var": "warn",
-    "brace-style": ["warn", "1tbs"],
     "camelcase": "error",
-    "comma-dangle": ["error", "never"],
-    "comma-spacing": "error",
     "consistent-return": "warn",
     "constructor-super": "error",
     "dot-notation": [
@@ -44,13 +39,8 @@
         "allowKeywords": false
       }
     ],
-    "eol-last": "error",
     "eqeqeq": ["error", "smart"],
     "guard-for-in": "error",
-    "jsx-quotes": ["error", "prefer-double"],
-    "key-spacing": "warn",
-    "keyword-spacing": "error",
-    "linebreak-style": "error",
     "max-depth": ["warn", 4],
     "max-params": ["warn", 5],
     "new-cap": "error",
@@ -111,12 +101,10 @@
     "no-useless-rename": "error",
     "no-var": "error",
     "no-with": "error",
-    "object-curly-spacing": ["error", "always"],
     "prefer-arrow-callback": "warn",
     "prefer-const": "error",
     "prefer-spread": "error",
     "prefer-template": "warn",
-    "quotes": ["error", "double", "avoid-escape"],
     "radix": "error",
     "no-return-await": "error",
     "react/no-string-refs": "error",
@@ -129,23 +117,6 @@
     "react/require-render-return": "error",
     "react/self-closing-comp": "error",
     "react/no-unescaped-entities": "error",
-    "semi": "error",
-    "space-before-function-paren": [
-      "error",
-      {
-        "anonymous": "never",
-        "named": "never"
-      }
-    ],
-    "space-infix-ops": "error",
-    "space-unary-ops": [
-      "error",
-      {
-        "words": true,
-        "nonwords": false
-      }
-    ],
-    "template-curly-spacing": "error",
     "use-isnan": "error",
     "valid-typeof": "error",
     "prettier/prettier": "error",
