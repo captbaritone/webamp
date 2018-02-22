@@ -1,4 +1,46 @@
-## Articles
+## Articles (notable)
+
+* [Gizmodo](https://gizmodo.com/winamp-2-has-been-immortalized-in-html5-for-your-pleasu-1655373653)
+* [Vice Motherboard](https://motherboard.vice.com/en_us/article/qvebbv/winamp-2-mp3-music-player-emulator)
+* [Tech Crunch](https://techcrunch.com/2018/02/09/whip-the-llamas-ass-with-this-javascript-winamp-emulator/)
+* [Mashable](https://mashable.com/2018/02/09/winamp-web-version-llama/)
+
+## Newsletters
+
+* [JavaScript Weekly](http://javascriptweekly.com/issues/353) (issue 353)
+* [JavaScript Weekly](http://javascriptweekly.com/issues/372) (issue 372)
+* [W3 "weekly digest of W3C news and trends"](https://www.w3.org/blog/2014/11/this-week-html5-is-a-recommendation-w3c20-winamp-in-html5js-etc/)
+* [Front End Focus](https://frontendfoc.us/issues/309)
+* [Web Audio Weekly](http://www.webaudioweekly.com/86)
+
+## News Aggregators
+
+* [Reddit](https://www.reddit.com/r/InternetIsBeautiful/comments/2lh3ob/winamp_2_preserved_in_html5/) (/r/InternetIsBeautiful)
+* [Hacker News](https://news.ycombinator.com/item?id=16333550) (Feb. 2018)
+* [Hacker News](https://news.ycombinator.com/item?id=15314629) (Sept. 2017)
+* [Hacker News](https://news.ycombinator.com/item?id=8565665) (Nov. 2014)
+
+## Documentation
+
+* [Redux Documentation](https://redux.js.org/docs/introduction/LearningResources.html#apps-and-examples)
+
+## Podcasts
+
+* [User Error](https://www.youtube.com/watch?v=qlm_G0xgK8Q&feature=youtu.be&t=309)
+* [Important if True](https://youtu.be/6B6E2Kv-w04?t=3295)
+
+## Forum Posts
+
+* [Yaplakal.com](http://www.yaplakal.com/forum1/topic1737838.html)
+* [Straight Dope](https://boards.straightdope.com/sdmb/showthread.php?t=836828)
+
+## Twitter Endorsements
+
+* [Scott Hanselman](https://twitter.com/shanselman/status/966129035649564677)
+* [Jake Rodkin](https://twitter.com/ja2ke/status/961279058507063296)
+* [Changelog](https://twitter.com/changelog/status/911957655392006145)
+
+## Articles (continued)
 
 * http://abertoatedemadrugada.com/2018/02/winamp-completamente-funcional-em.html
 * http://altervision.org/2018/02/winamp-zapustili-v-vashem-brauzere/
@@ -41,15 +83,12 @@
 * https://esquire.ru/articles/42012-winamp/
 * https://futurezone.at/digital-life/entwickler-baut-winamp-fuer-den-browser-nach/400003172
 * https://gigazine.net/news/20180213-winamp2-js/
-* https://gizmodo.com/winamp-2-has-been-immortalized-in-html5-for-your-pleasu-1655373653
 * https://hipertextual.com/archivo/2014/12/port-winamp-html5-javascript/
 * https://itc.ua/blogs/kaliforniyskiy-razrabotchik-vozrodil-legendarnyiy-muzyikalnyiy-pleer-winamp-nu-pochti/
 * https://korben.info/winamp-en-html-javascript.html
 * https://lifehacker.ru/2018/02/09/browser-winamp-emulator/
-* https://mashable.com/2018/02/09/winamp-web-version-llama/?utm_cid=hp-r-3#qP2uzsKx1qq1
 * https://meduza.io/shapito/2018/02/09/kaliforniyskiy-razrabotchik-vossozdal-winamp-v-brauzere
 * https://mobirank.pl/2018/02/10/emulator-winamp-przeniesie-cie-do-1999-roku/
-* https://motherboard.vice.com/en_us/article/qvebbv/winamp-2-mp3-music-player-emulator
 * https://news.aotu.io/a/5a7ebbfd0b61600038184eec?utm_medium=lite02_web&utm_source=aotu_io
 * https://nplus1.ru/news/2018/02/09/winamp
 * https://ohmygeek.net/2018/02/09/winamp-2-js/
@@ -57,7 +96,6 @@
 * https://t3n.de/news/winamp-javascript-open-source-863217/
 * https://tech.everyeye.it/notizie/il-ritorno-winamp-storico-player-riappare-in-una-versione-web-320373.html
 * https://tech.onliner.by/2018/02/09/winamp-5
-* https://techcrunch.com/2018/02/09/whip-the-llamas-ass-with-this-javascript-winamp-emulator/
 * https://thenextweb.com/shareables/2018/02/09/bring-nostalgia-browser-winamp-emulator/
 * https://tjournal.ru/66060-brauzernyy-emulyator-kultovogo-muzykalnogo-pleera-winamp
 * https://trashbox.ru/topics/115521/winamp-zhivee-vseh-zhivyh
@@ -89,31 +127,3 @@
 * https://www.xataka.com/aplicaciones/winamp-se-hace-inmortal-gracias-a-la-magia-del-html5
 * https://www.zive.cz/clanky/zpatky-do-minulosti-winamp-muzete-pouzivat-primo-v-prohlizeci/sc-3-a-191743/default.aspx
 * https://zonait.tv/va-era-dor-de-winamp/
-
-## Newsletters
-
-* http://javascriptweekly.com/issues/353
-* http://javascriptweekly.com/issues/372
-* https://www.w3.org/blog/2014/11/this-week-html5-is-a-recommendation-w3c20-winamp-in-html5js-etc/
-* https://frontendfoc.us/issues/309
-* http://www.webaudioweekly.com/86
-
-## Forum Posts
-
-* http://www.yaplakal.com/forum1/topic1737838.html
-* https://boards.straightdope.com/sdmb/showthread.php?t=836828
-
-## News Aggregators
-
-* https://www.reddit.com/r/InternetIsBeautiful/comments/2lh3ob/winamp_2_preserved_in_html5/
-* https://news.ycombinator.com/item?id=15314629
-* https://news.ycombinator.com/item?id=16333550
-* https://news.ycombinator.com/item?id=8565665
-
-## Winamp2-js as an Example
-
-* https://redux.js.org/docs/introduction/LearningResources.html#apps-and-examples
-
-## Podcasts
-
-* [Important if True 49](https://youtu.be/6B6E2Kv-w04?t=3295)
