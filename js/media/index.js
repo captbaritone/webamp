@@ -5,20 +5,25 @@ import ElementSource from "./elementSource";
 export default class Media {
   constructor() {
     this._context = new (window.AudioContext || window.webkitAudioContext)();
-    // Fix for iOS: https://gist.github.com/laziel/7aefabe99ee57b16081c
+    // Fix for iOS and Chrome (Canary) which require that the context be created
+    // or resumed by a user interaction.
+    // https://developers.google.com/web/updates/2017/09/autoplay-policy-changes
+    // https://gist.github.com/laziel/7aefabe99ee57b16081c
     // Via: https://stackoverflow.com/a/43395068/1263117
     if (this._context.state === "suspended") {
-      const resume = () => {
-        this._context.resume();
+      const resume = async () => {
+        await this._context.resume();
 
-        setTimeout(() => {
-          if (this._context.state === "running") {
-            document.body.removeEventListener("touchend", resume, false);
-          }
-        }, 0);
+        if (this._context.state === "running") {
+          document.body.removeEventListener("touchend", resume, false);
+          document.body.removeEventListener("click", resume, false);
+          document.body.removeEventListener("keydown", resume, false);
+        }
       };
 
       document.body.addEventListener("touchend", resume, false);
+      document.body.addEventListener("click", resume, false);
+      document.body.addEventListener("keydown", resume, false);
     }
     this._callbacks = {
       waiting: function() {},
