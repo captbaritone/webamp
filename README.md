@@ -66,7 +66,8 @@ const winamp = new Winamp({
   }],
   initialSkin: {
     url: "https://d38dnrh1liu4f5.cloudfront.net/projects/winamp2-js/skins/base-2.91.wsz"
-  }
+  },
+  enableHotkeys: true // Enable hotkeys
 });
 // Render after the skin has loaded.
 winamp.renderWhenReady(document.getElementById('winamp2-js'));
