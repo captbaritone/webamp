@@ -1,12 +1,12 @@
-[![Travis](https://img.shields.io/travis/captbaritone/winamp2-js.svg)]() [![Codecov](https://img.shields.io/codecov/c/github/captbaritone/winamp2-js.svg)]()
+[![Travis](https://img.shields.io/travis/captbaritone/winamp2-js.svg)]() [![Codecov](https://img.shields.io/codecov/c/github/captbaritone/winamp2-js.svg)]() [![Join the chat at https://gitter.im/winamp2-js/Lobby](https://badges.gitter.im/winamp2-js/Lobby.svg)](https://gitter.im/winamp2-js/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 # Winamp2-js
 
-[![Join the chat at https://gitter.im/winamp2-js/Lobby](https://badges.gitter.im/winamp2-js/Lobby.svg)](https://gitter.im/winamp2-js/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+A reimplementation of Winamp 2.9 in HTML5 and JavaScript.
 
-A reimplementation of Winamp 2.9 in HTML5 and JavaScript. As seen on [TechCrunch], [Motherboard], [Gizmodo], Hacker News ([1], [2], [3]), and [elsewhere](./press.md).
+**As seen on [TechCrunch], [Motherboard], [Gizmodo], Hacker News ([1], [2], [3]), and [elsewhere](./press.md).**
 
-**[Give it a try!](https://jordaneldredge.com/projects/winamp2-js/)**
+## [Give it a try!](https://jordaneldredge.com/projects/winamp2-js/)
 
 [![Screenshot of Winamp2-js](./preview.png)](https://jordaneldredge.com/projects/winamp2-js/)
 
@@ -15,16 +15,7 @@ supported](http://caniuse.com/#feat=audio-api).
 
 ## Features
 
-* Decodes the actual skin file in your browser so you can load your favorite
-  Winamp 2 skins!
-* Load local audio or skin files via drag-and-drop, eject button, or "options"
-  button (upper left-hand corner)
-* Both visualization modes: oscilloscope and spectrum
-* Hotkeys
-* "Shade" mini-mode
-* "Doubled" mode, where the main window is twice as large: `Ctrl-D`
-
-A more detailed list of features can be found in [features.md](./features.md).
+Check out this Twitter thread for an illustrated list of features: https://twitter.com/captbaritone/status/961274714013319168
 
 ## Use Winamp2-js in your project **PRE ALPHA**
 
