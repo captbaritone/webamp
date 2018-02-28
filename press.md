@@ -44,98 +44,138 @@
 
 ## Articles (continued)
 
-* http://abertoatedemadrugada.com/2018/02/winamp-completamente-funcional-em.html
+### Russian
 * http://altervision.org/2018/02/winamp-zapustili-v-vashem-brauzere/
-* http://baijiahao.baidu.com/s?id=1592074295875163282
-* http://blog.csdn.net/souhugirl/article/details/43907469
-* http://datainfox.com/2018/02/lanzan-version-web-winamp/
-* http://de.engadget.com/2018/02/09/retro-winamp-emulator-fur-deinen-browser/
 * http://droider.ru/post/emulyator-dlya-nostalgii-po-winamp-09-02-2018/
-* http://entertainment.ie/trending/news/Remember-Winamp-Now-theres-a-web-browser-version-of-it/402141.htm
 * http://fornote.net/2018/02/winamp2-js-legendarny-j-winamp-dostupny-j-pryamo-v-brauzere/
-* http://gaffa.se/nyhet/125537/klassisk-musikspelare-nu-pa-webben/
-* http://html5facil.com/noticias/winamp-web/
-* http://hvg.hu/tudomany/20180212_winamp_zenelejatszo_letoltes_bongeszoben 
-* http://idesh.net/tech-i-web/internet/winamp-se-vratio-nostalgija-na-najjace/
-* http://innpoland.pl/137663,kultowy-winamp-powraca-w-nowej-formie-uderza-tam-gdzie-jest-juz-spotify
 * http://internetua.com/programmist-voskresil-legendarni-pleer-winamp
-* http://jp.techcrunch.com/2018/02/10/2018-02-09-whip-the-llamas-ass-with-this-javascript-winamp-emulator/
-* http://m.sohu.com/a/221750379_549015
-* http://news.cnblogs.com/n/589654/
-* http://newsvire.com/get-some-media-player-nostalgia-with-this-web-version-of-winamp/
 * http://oane.ws/2018/02/10/legendarnyy-pleer-winamp-vozrodili-v-brauzernoy-versii.html
-* http://omicrono.elespanol.com/2014/11/winamp-2-en-html5-es-nostalgia-pura/
-* http://osxdaily.com/2018/02/10/run-winamp-web-browser/
-* http://top.jobbole.com/16031/
-* http://www.apprcn.com/winamp2-js.html
-* http://www.armblog.net/2018/02/github-winamp.html
 * http://www.belursus.info/soft/i.php?c=winamp2js
-* http://www.bursateknikpc.com/winamp-2nin-html5-de-yazilmis-versiyonu-cikti/
-* http://www.chip.de/news/Winamp-ist-zurueck-Kult-Player-ueber-Browser-nutzen_124413881.html
-* http://www.cnbeta.com/articles/soft/697983.htm
-* http://www.flashfly.net/wp/208175
-* http://www.instalki.pl/aktualnosci/software/30055-winamp-przegladarka.html
-* http://www.intro.de/life/mit-winamp-zuruck-in-die-vergangenheit-nostalgische-browser-version-des-media-players
-* http://www.karpatinfo.net/cikk/tudomany/2567147-feltamadt-winamp-90-es-evek-kedvenc-zenelejatszoja-hasznalhatja
-* http://www.linuxidc.com/Linux/2018-02/150869.htm
-* http://www.microsiervos.com/archivo/musica/winamp-html5-javascript-codigo-abierto.html
-* http://www.phonandroid.com/winamps-lecteur-multimedia-retour.html
-* http://www.tecnofanatico.com/winamp-el-popular-reproductor-de-audio-llega-en-version-web/
-* http://www.topix.com/business/online-music/2018/02/winamp2-js-is-a-web-based-version-of-audio-player-winamp
-* https://canaltech.com.br/musica/desenvolvedor-ressuscita-winamp-em-emulador-com-javascript-108112/
-* https://emisorasunidas.com/winamp-2-vuelve-a-la-vida-con-una-version-para-la-web/
-* https://es.gizmodo.com/ahora-puedes-viajar-al-pasado-y-volver-a-usar-el-mitico-1822850658
 * https://esquire.ru/articles/42012-winamp/
-* https://futurezone.at/digital-life/entwickler-baut-winamp-fuer-den-browser-nach/400003172
-* https://gigazine.net/news/20180213-winamp2-js/
-* https://hipertextual.com/archivo/2014/12/port-winamp-html5-javascript/
-* https://itc.ua/blogs/kaliforniyskiy-razrabotchik-vozrodil-legendarnyiy-muzyikalnyiy-pleer-winamp-nu-pochti/
-* https://korben.info/winamp-en-html-javascript.html
 * https://lifehacker.ru/2018/02/09/browser-winamp-emulator/
+* https://itc.ua/blogs/kaliforniyskiy-razrabotchik-vozrodil-legendarnyiy-muzyikalnyiy-pleer-winamp-nu-pochti/
 * https://meduza.io/shapito/2018/02/09/kaliforniyskiy-razrabotchik-vossozdal-winamp-v-brauzere
-* https://mobirank.pl/2018/02/10/emulator-winamp-przeniesie-cie-do-1999-roku/
-* https://news.aotu.io/a/5a7ebbfd0b61600038184eec?utm_medium=lite02_web&utm_source=aotu_io
 * https://nplus1.ru/news/2018/02/09/winamp
-* https://ohmygeek.net/2018/02/09/winamp-2-js/
 * https://rg.ru/2018/02/09/programmist-voskresil-legendarnyj-pleer-winamp.html
-* https://t3n.de/news/winamp-javascript-open-source-863217/
-* https://tech.everyeye.it/notizie/il-ritorno-winamp-storico-player-riappare-in-una-versione-web-320373.html
-* https://tech.onliner.by/2018/02/09/winamp-5
-* https://thenextweb.com/shareables/2018/02/09/bring-nostalgia-browser-winamp-emulator/
 * https://tjournal.ru/66060-brauzernyy-emulyator-kultovogo-muzykalnogo-pleera-winamp
 * https://trashbox.ru/topics/115521/winamp-zhivee-vseh-zhivyh
-* https://tweakers.net/geek/135087/ontwikkelaar-bouwt-winamp-29-in-javascript.html
-* https://uk.news.yahoo.com/media-player-nostalgia-version-winamp-070022687.html
+* https://tech.onliner.by/2018/02/09/winamp-5
+
+### Spanish
+* http://datainfox.com/2018/02/lanzan-version-web-winamp/
+* http://html5facil.com/noticias/winamp-web/
+* http://omicrono.elespanol.com/2014/11/winamp-2-en-html5-es-nostalgia-pura/
+* http://www.microsiervos.com/archivo/musica/winamp-html5-javascript-codigo-abierto.html
+* http://www.tecnofanatico.com/winamp-el-popular-reproductor-de-audio-llega-en-version-web/
+* https://emisorasunidas.com/winamp-2-vuelve-a-la-vida-con-una-version-para-la-web/
+* https://es.gizmodo.com/ahora-puedes-viajar-al-pasado-y-volver-a-usar-el-mitico-1822850658
+* https://hipertextual.com/archivo/2014/12/port-winamp-html5-javascript/
+* https://ohmygeek.net/2018/02/09/winamp-2-js/
+* https://www.softzone.es/2018/02/08/winamp2-js-nueva-version-famoso-reproductor-formato-web/
+* https://www.tekcrispy.com/2018/02/08/winamp2-js-la-version-web/
+* https://www.softandapps.info/2014/11/07/resucita-winamp-en-version-html5-y-javascript/
+* https://www.neoteo.com/winamp2-js-version-web-del-legendario-winamp/
+* https://www.taringa.net/posts/musica/20127134/Ahora-podes-revivir-el-Winamp-desde-tu-navegador.html
+* https://www.xataka.com/aplicaciones/winamp-se-hace-inmortal-gracias-a-la-magia-del-html5
+* https://www.sweclockers.com/nyhet/25215-kor-klassikern-winamp-i-webblasaren
+* https://www.rocambola.com/winamp2-js-la-nueva-version-del-famoso-reproductor-en-formato-web/
+
+### Chinese
+* http://baijiahao.baidu.com/s?id=1592074295875163282
+* http://blog.csdn.net/souhugirl/article/details/43907469
+* http://m.sohu.com/a/221750379_549015
+* http://news.cnblogs.com/n/589654/
+* http://top.jobbole.com/16031/
+* http://www.apprcn.com/winamp2-js.html
+* http://www.cnbeta.com/articles/soft/697983.htm
+* http://www.linuxidc.com/Linux/2018-02/150869.htm
+* https://news.aotu.io/a/5a7ebbfd0b61600038184eec
 * https://unwire.hk/2018/02/11/winampemu/mobile-music/
 * https://www.appinn.com/winamp2-js/
-* https://www.aripfan.com/bring-winamp-emulator-in-web-browser/
-* https://www.b92.net/tehnopolis/vesti.php?yyyy=2018&mm=02&nav_id=1357852
-* https://www.beartai.com/news/itnews/221530/
-* https://www.benchmark.rs/vesti/novi_winamp_emulator_budi_nostalgiju_na_stara_vremena-74941
-* https://www.dobreprogramy.pl/Kultowy-odtwarzacz-muzyki-Winamp-powrocil-w-przegladarce-internetowej,News,86017.html
-* https://www.follownews.com/winamp2js-is-a-webbased-version-of-audio-player-winamp-43icg
-* https://www.gamestar.hu/hir/winamp-html5-verzio-243839.html
-* https://www.geekzone.fr/2018/02/09/winamp2-sinvite-navigateur/
-* https://www.ghacks.net/2018/02/08/winamp2-js-is-a-web-based-version-of-audio-player-winamp/
-* https://www.gizmodo.com.au/2018/02/someone-remade-winamp-so-it-runs-in-your-browser/
-* https://www.hwupgrade.it/news/web/winamp-arriva-su-qualsiasi-browser-web-nostalgici-gioiscono_74100.html
-* https://www.idg.se/2.1085/1.697529/mp3-winamp-webblasare
-* https://www.lesnumeriques.com/vie-du-net/winamp-est-retour-enfin-presque-n71341.html
-* https://www.log.com.tr/winamp-efsanesini-yeniden-kullanima-sunan-site/
-* https://www.macg.co/logiciels/2018/02/revivez-les-glorieuses-annees-winamp-avec-votre-navigateur-101345
-* https://www.macitynet.it/winamp-nostalgici-un-clone-utilizzabile-via-web/
-* https://www.neoteo.com/winamp2-js-version-web-del-legendario-winamp/
-* https://www.ozbargain.com.au/node/360476
-* https://www.rocambola.com/winamp2-js-la-nueva-version-del-famoso-reproductor-en-formato-web/
-* https://www.smartdroid.de/winamp2-js-laesst-den-klassiker-im-browser-wieder-aufleben/
-* https://www.softandapps.info/2014/11/07/resucita-winamp-en-version-html5-y-javascript/
-* https://www.softzone.es/2018/02/08/winamp2-js-nueva-version-famoso-reproductor-formato-web/
-* https://www.sweclockers.com/nyhet/25215-kor-klassikern-winamp-i-webblasaren
-* https://www.taringa.net/posts/musica/20127134/Ahora-podes-revivir-el-Winamp-desde-tu-navegador.html
-* https://www.tekcrispy.com/2018/02/08/winamp2-js-la-version-web/
 * https://www.waerfa.com/winamp2-js
-* https://www.windowsblogitalia.com/2018/02/ascoltare-la-musica-edge-firefox-chrome-winamp2-js/
+
+### English
+* http://entertainment.ie/trending/news/Remember-Winamp-Now-theres-a-web-browser-version-of-it/402141.htm
+* http://newsvire.com/get-some-media-player-nostalgia-with-this-web-version-of-winamp/
+* http://osxdaily.com/2018/02/10/run-winamp-web-browser/
+* https://www.ghacks.net/2018/02/08/winamp2-js-is-a-web-based-version-of-audio-player-winamp/
+* https://uk.news.yahoo.com/media-player-nostalgia-version-winamp-070022687.html
+* https://thenextweb.com/shareables/2018/02/09/bring-nostalgia-browser-winamp-emulator/
+* https://www.follownews.com/winamp2js-is-a-webbased-version-of-audio-player-winamp-43icg
+* https://www.gizmodo.com.au/2018/02/someone-remade-winamp-so-it-runs-in-your-browser/
+
+### German
+* http://de.engadget.com/2018/02/09/retro-winamp-emulator-fur-deinen-browser/
+* http://www.chip.de/news/Winamp-ist-zurueck-Kult-Player-ueber-Browser-nutzen_124413881.html
+* http://www.intro.de/life/mit-winamp-zuruck-in-die-vergangenheit-nostalgische-browser-version-des-media-players
+* https://futurezone.at/digital-life/entwickler-baut-winamp-fuer-den-browser-nach/400003172
+* https://t3n.de/news/winamp-javascript-open-source-863217/
+* https://www.smartdroid.de/winamp2-js-laesst-den-klassiker-im-browser-wieder-aufleben/
+
+### Polish
+* https://www.antyradio.pl/Technologia/Internet/Winamp-powrocil-jako-strona-internetowa-17497
+* http://innpoland.pl/137663,kultowy-winamp-powraca-w-nowej-formie-uderza-tam-gdzie-jest-juz-spotify
+* http://www.instalki.pl/aktualnosci/software/30055-winamp-przegladarka.html
+* https://mobirank.pl/2018/02/10/emulator-winamp-przeniesie-cie-do-1999-roku/
+* https://www.dobreprogramy.pl/Kultowy-odtwarzacz-muzyki-Winamp-powrocil-w-przegladarce-internetowej,News,86017.html
+
+### French
+* http://www.phonandroid.com/winamps-lecteur-multimedia-retour.html
+* http://www.lemonde.fr/pixels/breve/2014/11/07/winamp-en-html_4520190_4408996.html
+* https://korben.info/winamp-en-html-javascript.html
+* https://www.geekzone.fr/2018/02/09/winamp2-sinvite-navigateur/
+* https://www.lesnumeriques.com/vie-du-net/winamp-est-retour-enfin-presque-n71341.html
+* https://www.macg.co/logiciels/2018/02/revivez-les-glorieuses-annees-winamp-avec-votre-navigateur-101345
+
+### Italian
+* https://tech.everyeye.it/notizie/il-ritorno-winamp-storico-player-riappare-in-una-versione-web-320373.html
+* https://www.hwupgrade.it/news/web/winamp-arriva-su-qualsiasi-browser-web-nostalgici-gioiscono_74100.html
 * https://www.wired.it/internet/web/2018/02/09/winamp-rinasce-sul-web/
-* https://www.xataka.com/aplicaciones/winamp-se-hace-inmortal-gracias-a-la-magia-del-html5
-* https://www.zive.cz/clanky/zpatky-do-minulosti-winamp-muzete-pouzivat-primo-v-prohlizeci/sc-3-a-191743/default.aspx
+* https://www.macitynet.it/winamp-nostalgici-un-clone-utilizzabile-via-web/
+* https://www.windowsblogitalia.com/2018/02/ascoltare-la-musica-edge-firefox-chrome-winamp2-js/
+
+### Thai
+* http://www.flashfly.net/wp/208175
+* https://www.aripfan.com/bring-winamp-emulator-in-web-browser/
+* https://www.beartai.com/news/itnews/221530
+
+### Hungarian
+* http://hvg.hu/tudomany/20180212_winamp_zenelejatszo_letoltes_bongeszoben 
+* http://www.karpatinfo.net/cikk/tudomany/2567147-feltamadt-winamp-90-es-evek-kedvenc-zenelejatszoja-hasznalhatja
+* https://www.gamestar.hu/hir/winamp-html5-verzio-243839.html
+
+### Bosnian
+* https://www.b92.net/tehnopolis/vesti.php?yyyy=2018&mm=02&nav_id=1357852
+* https://www.benchmark.rs/vesti/novi_winamp_emulator_budi_nostalgiju_na_stara_vremena-74941
+
+### Turkish
+* http://www.bursateknikpc.com/winamp-2nin-html5-de-yazilmis-versiyonu-cikti/
+* https://www.log.com.tr/winamp-efsanesini-yeniden-kullanima-sunan-site/
+
+### Japanese
+* http://jp.techcrunch.com/2018/02/10/2018-02-09-whip-the-llamas-ass-with-this-javascript-winamp-emulator/
+* https://gigazine.net/news/20180213-winamp2-js/
+* https://www.gizmodo.jp/2014/11/90winamp_2html5.html
+
+### Portuguese
+* http://abertoatedemadrugada.com/2018/02/winamp-completamente-funcional-em.html
+* https://canaltech.com.br/musica/desenvolvedor-ressuscita-winamp-em-emulador-com-javascript-108112/
+
+### Swedish
+* http://gaffa.se/nyhet/125537/klassisk-musikspelare-nu-pa-webben/
+* https://www.idg.se/2.1085/1.697529/mp3-winamp-webblasare
+
+### Armenian
+* http://www.armblog.net/2018/02/github-winamp.htm
+
+### Dutch
+* https://tweakers.net/geek/135087/ontwikkelaar-bouwt-winamp-29-in-javascript.html
+
+### Romanian
 * https://zonait.tv/va-era-dor-de-winamp/
+
+### Czech
+* https://www.zive.cz/clanky/zpatky-do-minulosti-winamp-muzete-pouzivat-primo-v-prohlizeci/sc-3-a-191743/default.aspx
+
+### Croatian
+* http://idesh.net/tech-i-web/internet/winamp-se-vratio-nostalgija-na-najjace/
