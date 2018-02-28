@@ -15,7 +15,7 @@
 
 ## News Aggregators
 
-* [Reddit.com/r/InternetIsBeautiful](https://www.reddit.com/r/InternetIsBeautiful/comments/2lh3ob/winamp_2_preserved_in_html5/) (/r/InternetIsBeautiful)
+* [/r/InternetIsBeautiful](https://www.reddit.com/r/InternetIsBeautiful/comments/2lh3ob/winamp_2_preserved_in_html5/) 
 * [Hacker News](https://news.ycombinator.com/item?id=16333550) (Feb. 2018)
 * [Hacker News](https://news.ycombinator.com/item?id=15314629) (Sept. 2017)
 * [Hacker News](https://news.ycombinator.com/item?id=8565665) (Nov. 2014)
