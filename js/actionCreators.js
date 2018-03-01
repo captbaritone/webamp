@@ -232,6 +232,7 @@ export function fetchMediaDuration(url, id) {
     // TODO: Does this actually stop downloading the file once it's
     // got the duration?
     const audio = document.createElement("audio");
+    audio.crossOrigin = "anonymous";
     const durationChange = () => {
       const { duration } = audio;
       dispatch({ type: SET_MEDIA_DURATION, duration, id });
