@@ -262,7 +262,7 @@ export function loadMediaFiles(tracks, loadStyle = null, atIndex = 0) {
     }
     tracks.forEach((track, i) => {
       const priority = i === 0 && loadStyle != null ? loadStyle : null;
-      dispatch(loadMediaFile(track, priority, atIndex));
+      dispatch(loadMediaFile(track, priority, atIndex + i));
     });
   };
 }
