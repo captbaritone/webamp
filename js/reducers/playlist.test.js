@@ -25,6 +25,7 @@ describe("playlist reducer", () => {
           selected: false,
           duration: null,
           defaultName: "My Track Name",
+          mediaTagsRequestStatus: "NOT_REQUESTED",
           url: "url://some-url"
         }
       },
@@ -54,6 +55,7 @@ describe("playlist reducer", () => {
         100: {
           selected: false,
           duration: null,
+          mediaTagsRequestStatus: "NOT_REQUESTED",
           defaultName: "My Track Name",
           url: "url://some-url"
         }
@@ -85,6 +87,7 @@ describe("playlist reducer", () => {
         100: {
           selected: false,
           duration: null,
+          mediaTagsRequestStatus: "NOT_REQUESTED",
           defaultName: "My Track Name",
           url: "url://some-url"
         }

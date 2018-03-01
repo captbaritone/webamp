@@ -6,14 +6,20 @@ import {
   promptForFileReferences
 } from "./fileUtils";
 import skinParser from "./skinParser";
-import { BANDS, TRACK_HEIGHT, LOAD_STYLE } from "./constants";
+import {
+  BANDS,
+  TRACK_HEIGHT,
+  LOAD_STYLE,
+  MEDIA_TAG_REQUEST_STATUS
+} from "./constants";
 import {
   getEqfData,
   nextTrack,
   getScrollOffset,
   getOverflowTrackCount,
   getPlaylistURL,
-  getSelectedTrackObjects
+  getSelectedTrackObjects,
+  getVisibleTracks
 } from "./selectors";
 
 import {
@@ -53,7 +59,9 @@ import {
   SET_MEDIA_TAGS,
   SET_MEDIA_DURATION,
   TOGGLE_SHADE_MODE,
-  TOGGLE_PLAYLIST_SHADE_MODE
+  TOGGLE_PLAYLIST_SHADE_MODE,
+  MEDIA_TAG_REQUEST_INITIALIZED,
+  MEDIA_TAG_REQUEST_FAILED
 } from "./actionTypes";
 
 function playRandomTrack() {
@@ -311,12 +319,27 @@ export function loadMediaFile(track, priority = null, atIndex = 0) {
   };
 }
 
+export function fetchMediaTagsForVisibleTracks() {
+  return (dispatch, getState) => {
+    getVisibleTracks(getState())
+      .filter(
+        track =>
+          track.mediaTagsRequestStatus ===
+          MEDIA_TAG_REQUEST_STATUS.NOT_REQUESTED
+      )
+      .forEach(track => {
+        dispatch(fetchMediaTags(track.url, track.id));
+      });
+  };
+}
+
 export function fetchMediaTags(file, id) {
   // Workaround https://github.com/aadsm/jsmediatags/issues/83
   if (typeof file === "string" && !/^[a-z]+:\/\//i.test(file)) {
     file = `${location.protocol}//${location.host}${location.pathname}${file}`;
   }
   return dispatch => {
+    dispatch({ type: MEDIA_TAG_REQUEST_INITIALIZED, id });
     try {
       jsmediatags.read(file, {
         onSuccess: data => {
@@ -326,6 +349,7 @@ export function fetchMediaTags(file, id) {
           dispatch({ type: SET_MEDIA_TAGS, artist, title, id });
         },
         onError: () => {
+          dispatch({ type: MEDIA_TAG_REQUEST_FAILED, id });
           // Nothing to do. The filename will have to suffice.
         }
       });
@@ -333,6 +357,7 @@ export function fetchMediaTags(file, id) {
       // Possibly jsmediatags could not find a parser for this file?
       // Nothing to do.
       // Consider removing this after https://github.com/aadsm/jsmediatags/issues/83 is resolved.
+      dispatch({ type: MEDIA_TAG_REQUEST_FAILED, id });
     }
   };
 }
@@ -388,6 +413,35 @@ export function openMediaFileDialog() {
 
 export function openSkinFileDialog() {
   return _openFileDialog(".zip, .wsz");
+}
+
+// Requires Dropbox's Chooser to be loaded on the page
+function genAudioFileUrlsFromDropbox() {
+  return new Promise((resolve, reject) => {
+    if (window.Dropbox == null) {
+      reject();
+    }
+    window.Dropbox.choose({
+      success: resolve,
+      error: reject,
+      linkType: "direct",
+      folderselect: false,
+      multiselect: true,
+      extensions: ["video", "audio"]
+    });
+  });
+}
+
+export function openDropboxFileDialog() {
+  return async dispatch => {
+    const files = await genAudioFileUrlsFromDropbox();
+    dispatch(
+      loadMediaFiles(
+        files.map(file => ({ url: file.link, defaultName: file.name })),
+        LOAD_STYLE.PLAY
+      )
+    );
+  };
 }
 
 export function setEqBand(band, value) {

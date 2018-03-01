@@ -156,6 +156,12 @@ export const getVisibleTrackIds = createSelector(
     trackOrder.slice(offset, offset + numberOfVisibleTracks)
 );
 
+export const getVisibleTracks = createSelector(
+  getVisibleTrackIds,
+  getTracks,
+  (visibleTrackIds, tracks) => visibleTrackIds.map(id => tracks[id])
+);
+
 export const getPlaylist = state => state.playlist;
 
 export const getDuration = state => {

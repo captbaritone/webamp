@@ -16,8 +16,11 @@ import {
   BUFFER_TRACK,
   DRAG_SELECTED,
   SET_MEDIA_TAGS,
-  SET_MEDIA_DURATION
+  SET_MEDIA_DURATION,
+  MEDIA_TAG_REQUEST_INITIALIZED,
+  MEDIA_TAG_REQUEST_FAILED
 } from "../actionTypes";
+import { MEDIA_TAG_REQUEST_STATUS } from "../constants";
 
 import { filenameFromUrl } from "../fileUtils";
 import { shuffle, moveSelected, mapObject, filterObject } from "../utils";
@@ -148,7 +151,8 @@ const playlist = (state = defaultPlaylistState, action) => {
             selected: false,
             defaultName: action.defaultName,
             duration: null,
-            url: action.url
+            url: action.url,
+            mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.NOT_REQUESTED
           }
         },
         // TODO: This could probably be made to work, but we clear it just to be safe.
@@ -172,8 +176,31 @@ const playlist = (state = defaultPlaylistState, action) => {
           ...state.tracks,
           [action.id]: {
             ...state.tracks[action.id],
+            mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.COMPLETE,
             title: action.title,
             artist: action.artist
+          }
+        }
+      };
+    case MEDIA_TAG_REQUEST_INITIALIZED:
+      return {
+        ...state,
+        tracks: {
+          ...state.tracks,
+          [action.id]: {
+            ...state.tracks[action.id],
+            mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.INITIALIZED
+          }
+        }
+      };
+    case MEDIA_TAG_REQUEST_FAILED:
+      return {
+        ...state,
+        tracks: {
+          ...state.tracks,
+          [action.id]: {
+            ...state.tracks[action.id],
+            mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.FAILED
           }
         }
       };
