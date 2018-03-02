@@ -1,5 +1,4 @@
 import skin from "../skins/base-2.91.wsz";
-import audio from "../mp3/llama-2.91.mp3";
 
 /* global SENTRY_DSN */
 
@@ -15,7 +14,7 @@ if (hash) {
 
 // Turn on the incomplete playlist window
 export const skinUrl = config.skinUrl === undefined ? skin : config.skinUrl;
-export const audioUrl = config.audioUrl === undefined ? audio : config.audioUrl;
+export const audioUrl = config.audioUrl;
 export const hideAbout = config.hideAbout || false;
 export const initialState = config.initialState || undefined;
 export const sentryDsn = SENTRY_DSN;
