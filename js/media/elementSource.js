@@ -69,6 +69,7 @@ export default class ElementSource {
   }
 
   // Async for now, for compatibility with BufferAudioSource
+  // TODO: This does not need to be async
   async loadUrl(url) {
     this._audio.src = url;
   }
