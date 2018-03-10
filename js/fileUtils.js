@@ -1,4 +1,73 @@
+import invariant from "invariant";
+import jsmediatags from "jsmediatags/dist/jsmediatags";
+
+// Requires Dropbox's Chooser to be loaded on the page
+export function genAudioFileUrlsFromDropbox() {
+  return new Promise((resolve, reject) => {
+    if (window.Dropbox == null) {
+      reject();
+    }
+    window.Dropbox.choose({
+      success: resolve,
+      error: reject,
+      linkType: "direct",
+      folderselect: false,
+      multiselect: true,
+      extensions: ["video", "audio"]
+    });
+  });
+}
+
+export function genMediaTags(file) {
+  invariant(
+    file != null,
+    "Attempted to get the tags of media file without passing a file"
+  );
+  // Workaround https://github.com/aadsm/jsmediatags/issues/83
+  if (typeof file === "string" && !/^[a-z]+:\/\//i.test(file)) {
+    file = `${location.protocol}//${location.host}${location.pathname}${file}`;
+  }
+  return new Promise((resolve, reject) => {
+    try {
+      jsmediatags.read(file, { onSuccess: resolve, onError: reject });
+    } catch (e) {
+      // Possibly jsmediatags could not find a parser for this file?
+      // Nothing to do.
+      // Consider removing this after https://github.com/aadsm/jsmediatags/issues/83 is resolved.
+      reject(e);
+    }
+  });
+}
+
+export function genMediaDuration(url) {
+  invariant(
+    typeof url === "string",
+    "Attempted to get the duration of media file without passing a url"
+  );
+  return new Promise((resolve, reject) => {
+    // TODO: Does this actually stop downloading the file once it's
+    // got the duration?
+    const audio = document.createElement("audio");
+    audio.crossOrigin = "anonymous";
+    const durationChange = () => {
+      resolve(audio.duration);
+      audio.removeEventListener("durationchange", durationChange);
+      audio.url = null;
+      // TODO: Not sure if this really gets cleaned up.
+    };
+    audio.addEventListener("durationchange", durationChange);
+    audio.addEventListener("error", e => {
+      reject(e);
+    });
+    audio.src = url;
+  });
+}
+
 export async function genArrayBufferFromFileReference(fileReference) {
+  invariant(
+    fileReference != null,
+    "Attempted to get an ArrayBuffer without assing a fileReference"
+  );
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = function(e) {

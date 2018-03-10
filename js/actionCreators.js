@@ -1,9 +1,11 @@
-import jsmediatags from "jsmediatags/dist/jsmediatags";
 import { parser, creator } from "winamp-eqf";
 import {
   genArrayBufferFromFileReference,
   genArrayBufferFromUrl,
-  promptForFileReferences
+  promptForFileReferences,
+  genMediaDuration,
+  genMediaTags,
+  genAudioFileUrlsFromDropbox
 } from "./fileUtils";
 import skinParser from "./skinParser";
 import {
@@ -27,7 +29,8 @@ import {
   base64FromArrayBuffer,
   downloadURI,
   normalize,
-  sort
+  sort,
+  debounce
 } from "./utils";
 import {
   CLOSE_WINAMP,
@@ -61,8 +64,16 @@ import {
   TOGGLE_SHADE_MODE,
   TOGGLE_PLAYLIST_SHADE_MODE,
   MEDIA_TAG_REQUEST_INITIALIZED,
-  MEDIA_TAG_REQUEST_FAILED
+  MEDIA_TAG_REQUEST_FAILED,
+  PLAYLIST_SIZE_CHANGED
 } from "./actionTypes";
+
+import LoadQueue from "./loadQueue";
+
+const DURATION_PRIORITY = 5;
+const META_DATA_PRIORITY = 10;
+
+const loadQueue = new LoadQueue({ threads: 4 });
 
 function playRandomTrack() {
   return (dispatch, getState) => {
@@ -237,22 +248,14 @@ export function loadFilesFromReferences(
 
 export function fetchMediaDuration(url, id) {
   return dispatch => {
-    // TODO: Does this actually stop downloading the file once it's
-    // got the duration?
-    const audio = document.createElement("audio");
-    audio.crossOrigin = "anonymous";
-    const durationChange = () => {
-      const { duration } = audio;
-      dispatch({ type: SET_MEDIA_DURATION, duration, id });
-      audio.removeEventListener("durationchange", durationChange);
-      audio.url = null;
-      // TODO: Not sure if this really gets cleaned up.
-    };
-    audio.addEventListener("durationchange", durationChange);
-    audio.addEventListener("error", () => {
-      // TODO: Should we update the state to indicate that we don't know the length?
-    });
-    audio.src = url;
+    loadQueue.push(() => {
+      return genMediaDuration(url)
+        .then(duration => dispatch({ type: SET_MEDIA_DURATION, duration, id }))
+        .catch(() => {
+          // TODO: Should we update the state to indicate that we don't know the length?
+        });
+      // TODO: The priority should depend upon visiblity
+    }, () => DURATION_PRIORITY);
   };
 }
 
@@ -313,52 +316,51 @@ export function loadMediaFile(track, priority = null, atIndex = 0) {
     if (metaData != null) {
       const { artist, title } = metaData;
       dispatch({ type: SET_MEDIA_TAGS, artist, title, id });
+    } else if (blob != null) {
+      // Blobs can be loaded quickly
+      dispatch(fetchMediaTags(blob, id));
     } else {
-      dispatch(fetchMediaTags(url || blob, id));
+      dispatch(fetchMediaTagsForVisibleTracks());
     }
   };
 }
+
+const _fetchMediaTagsForVisibleTracksThunk = debounce((dispatch, getState) => {
+  getVisibleTracks(getState())
+    .filter(
+      track =>
+        track.mediaTagsRequestStatus === MEDIA_TAG_REQUEST_STATUS.NOT_REQUESTED
+    )
+    .forEach(track => {
+      loadQueue.push(
+        () => dispatch(fetchMediaTags(track.url, track.id)),
+        () => META_DATA_PRIORITY
+      );
+    });
+}, 200);
 
 export function fetchMediaTagsForVisibleTracks() {
-  return (dispatch, getState) => {
-    getVisibleTracks(getState())
-      .filter(
-        track =>
-          track.mediaTagsRequestStatus ===
-          MEDIA_TAG_REQUEST_STATUS.NOT_REQUESTED
-      )
-      .forEach(track => {
-        dispatch(fetchMediaTags(track.url, track.id));
-      });
-  };
+  return _fetchMediaTagsForVisibleTracksThunk;
 }
 
+export const debouncedFetchMediaTagsForVisibleTracks = debounce(
+  fetchMediaTagsForVisibleTracks,
+  200
+);
+
 export function fetchMediaTags(file, id) {
-  // Workaround https://github.com/aadsm/jsmediatags/issues/83
-  if (typeof file === "string" && !/^[a-z]+:\/\//i.test(file)) {
-    file = `${location.protocol}//${location.host}${location.pathname}${file}`;
-  }
   return dispatch => {
     dispatch({ type: MEDIA_TAG_REQUEST_INITIALIZED, id });
-    try {
-      jsmediatags.read(file, {
-        onSuccess: data => {
-          const { artist, title } = data.tags;
-          // There's more data here, but we don't have a use for it yet:
-          // https://github.com/aadsm/jsmediatags#shortcuts
-          dispatch({ type: SET_MEDIA_TAGS, artist, title, id });
-        },
-        onError: () => {
-          dispatch({ type: MEDIA_TAG_REQUEST_FAILED, id });
-          // Nothing to do. The filename will have to suffice.
-        }
+    return genMediaTags(file)
+      .then(data => {
+        const { artist, title } = data.tags;
+        // There's more data here, but we don't have a use for it yet:
+        // https://github.com/aadsm/jsmediatags#shortcuts
+        dispatch({ type: SET_MEDIA_TAGS, artist, title, id });
+      })
+      .catch(() => {
+        dispatch({ type: MEDIA_TAG_REQUEST_FAILED, id });
       });
-    } catch (e) {
-      // Possibly jsmediatags could not find a parser for this file?
-      // Nothing to do.
-      // Consider removing this after https://github.com/aadsm/jsmediatags/issues/83 is resolved.
-      dispatch({ type: MEDIA_TAG_REQUEST_FAILED, id });
-    }
   };
 }
 
@@ -413,23 +415,6 @@ export function openMediaFileDialog() {
 
 export function openSkinFileDialog() {
   return _openFileDialog(".zip, .wsz");
-}
-
-// Requires Dropbox's Chooser to be loaded on the page
-function genAudioFileUrlsFromDropbox() {
-  return new Promise((resolve, reject) => {
-    if (window.Dropbox == null) {
-      reject();
-    }
-    window.Dropbox.choose({
-      success: resolve,
-      error: reject,
-      linkType: "direct",
-      folderselect: false,
-      multiselect: true,
-      extensions: ["video", "audio"]
-    });
-  });
 }
 
 export function openDropboxFileDialog() {
@@ -566,7 +551,17 @@ export function toggleVisualizerStyle() {
 }
 
 export function setPlaylistScrollPosition(position) {
-  return { type: SET_PLAYLIST_SCROLL_POSITION, position };
+  return dispatch => {
+    dispatch({ type: SET_PLAYLIST_SCROLL_POSITION, position });
+    dispatch(fetchMediaTagsForVisibleTracks());
+  };
+}
+
+export function setPlaylistSize(size) {
+  return dispatch => {
+    dispatch({ type: PLAYLIST_SIZE_CHANGED, size });
+    dispatch(fetchMediaTagsForVisibleTracks());
+  };
 }
 
 export function scrollNTracks(n) {

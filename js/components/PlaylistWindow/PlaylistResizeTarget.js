@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import ResizeTarget from "../ResizeTarget";
-import { PLAYLIST_SIZE_CHANGED } from "../../actionTypes";
+import { setPlaylistSize } from "../../actionCreators";
 import {
   PLAYLIST_RESIZE_SEGMENT_WIDTH,
   PLAYLIST_RESIZE_SEGMENT_HEIGHT
@@ -13,8 +13,6 @@ const mapStateToProps = state => ({
   id: "playlist-resize-target"
 });
 
-const mapDispatchToProps = {
-  setPlaylistSize: size => ({ type: PLAYLIST_SIZE_CHANGED, size })
-};
+const mapDispatchToProps = { setPlaylistSize };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResizeTarget);

@@ -5,7 +5,8 @@ import {
   close,
   setSkinFromUrl,
   openMediaFileDialog,
-  openSkinFileDialog
+  openSkinFileDialog,
+  openDropboxFileDialog
 } from "../../actionCreators";
 import { ContextMenu, Hr, Node, Parent, LinkNode } from "../ContextMenu";
 
@@ -21,7 +22,10 @@ const MainContextMenu = props => (
       label="Winamp2-js"
     />
     <Hr />
-    <Node onClick={props.openMediaFileDialog} label="Play File..." />
+    <Parent label="Play">
+      <Node onClick={props.openMediaFileDialog} label="File..." />
+      <Node onClick={props.openDropboxFileDialog} label="Dropbox..." />
+    </Parent>
     <Parent label="Skins">
       <Node onClick={props.openSkinFileDialog} label="Load Skin..." />
       {!!props.avaliableSkins.length && <Hr />}
@@ -46,6 +50,7 @@ const mapDispatchToProps = {
   close,
   openSkinFileDialog,
   openMediaFileDialog,
+  openDropboxFileDialog,
   setSkin: setSkinFromUrl
 };
 

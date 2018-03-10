@@ -48,6 +48,7 @@ class PlaylistWindow extends React.Component {
 
   _handleDrop(e, targetCoords) {
     const top = e.clientY - targetCoords.y;
+    // TODO: Include the scroll offset in this
     const atIndex = clamp(
       Math.round((top - 23) / TRACK_HEIGHT),
       0,

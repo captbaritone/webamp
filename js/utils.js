@@ -232,3 +232,15 @@ export const arrayWithout = (arr, value) => {
   s["delete"](value);
   return Array.from(s);
 };
+
+export function debounce(func, delay) {
+  let token;
+  return function(...args) {
+    if (token != null) {
+      clearTimeout(token);
+    }
+    token = setTimeout(() => {
+      func.apply(this, args);
+    }, delay);
+  };
+}

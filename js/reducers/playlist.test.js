@@ -22,6 +22,7 @@ describe("playlist reducer", () => {
     expect(nextState).toEqual({
       tracks: {
         100: {
+          id: 100,
           selected: false,
           duration: null,
           defaultName: "My Track Name",
@@ -36,8 +37,8 @@ describe("playlist reducer", () => {
   it("defaults to adding new tracks to the end of the list", () => {
     const initialState = {
       tracks: {
-        2: { selected: false },
-        3: { selected: false }
+        2: { id: 2, selected: false },
+        3: { id: 3, selected: false }
       },
       trackOrder: [3, 2],
       lastSelectedIndex: 0
@@ -50,9 +51,10 @@ describe("playlist reducer", () => {
     });
     expect(nextState).toEqual({
       tracks: {
-        2: { selected: false },
-        3: { selected: false },
+        2: { id: 2, selected: false },
+        3: { id: 3, selected: false },
         100: {
+          id: 100,
           selected: false,
           duration: null,
           mediaTagsRequestStatus: "NOT_REQUESTED",
@@ -67,8 +69,8 @@ describe("playlist reducer", () => {
   it("can handle adding a track at a given index", () => {
     const initialState = {
       tracks: {
-        2: { selected: false },
-        3: { selected: false }
+        2: { id: 2, selected: false },
+        3: { id: 3, selected: false }
       },
       trackOrder: [3, 2],
       lastSelectedIndex: 0
@@ -82,9 +84,10 @@ describe("playlist reducer", () => {
     });
     expect(nextState).toEqual({
       tracks: {
-        2: { selected: false },
-        3: { selected: false },
+        2: { id: 2, selected: false },
+        3: { id: 3, selected: false },
         100: {
+          id: 100,
           selected: false,
           duration: null,
           mediaTagsRequestStatus: "NOT_REQUESTED",

@@ -148,6 +148,7 @@ const playlist = (state = defaultPlaylistState, action) => {
         tracks: {
           ...state.tracks,
           [action.id]: {
+            id: action.id,
             selected: false,
             defaultName: action.defaultName,
             duration: null,

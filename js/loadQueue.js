@@ -1,0 +1,47 @@
+import invariant from "invariant";
+import TinyQueue from "tinyqueue";
+
+// Push promises onto a queue with a priority.
+// Run a given number of jobs in parallel
+// Useful for prioritizing network requests
+export default class LoadQueue {
+  constructor({ threads }) {
+    // TODO: Consider not running items with zero prioirty
+    // Priority is a function so that items can change their priority between
+    // when their priority is evaluated.
+    // For example, we might add a track to the playlist and then scroll to/away
+    // from it before it gets processed.
+    this._queue = new TinyQueue([], (a, b) => a.priority() > b.priority());
+    this._avaliableThreads = threads;
+  }
+
+  push(task, priority) {
+    const t = { task, priority };
+    this._queue.push(t);
+    this._run();
+    return () => {
+      // TODO: Could return a boolean representing if the task has already been
+      // kicke off.
+      this._queue = this._queue.filter(t1 => t1 !== t);
+    };
+  }
+
+  _run() {
+    while (this._avaliableThreads > 0) {
+      if (this._queue.length === 0) {
+        return;
+      }
+      this._avaliableThreads--;
+      const t = this._queue.pop();
+      const promise = t.task();
+      invariant(
+        typeof promise.then === "function",
+        `LoadQueue only supports loading Promises. Got ${promise}`
+      );
+      promise.then(() => {
+        this._avaliableThreads++;
+        this._run();
+      });
+    }
+  }
+}
