@@ -229,7 +229,7 @@ export const arrayWith = (arr, value) => {
 
 export const arrayWithout = (arr, value) => {
   const s = new Set(arr);
-  s["delete"](value);
+  s.delete(value);
   return Array.from(s);
 };
 

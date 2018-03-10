@@ -116,7 +116,7 @@ const config = {
     config.skinUrl = skinUrl;
     const url = `http://localhost:8080/#${JSON.stringify(config)}`;
     console.log({ url });
-    await page["goto"](url);
+    await page.goto(url);
     await page.waitForSelector("#main-window", { timeout: 2000 });
 
     console.log("Writing screenshot to", screenshotFile);
