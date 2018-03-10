@@ -166,9 +166,12 @@ class WindowManager extends React.Component {
       this.setState(stateDiff);
     };
 
-    window.addEventListener("mouseup", () => {
+    const removeListeners = () => {
       window.removeEventListener("mousemove", handleMouseMove);
-    });
+      window.removeEventListener("mouseup", removeListeners);
+    };
+
+    window.addEventListener("mouseup", removeListeners);
     window.addEventListener("mousemove", handleMouseMove);
   }
 
