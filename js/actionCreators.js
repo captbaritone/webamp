@@ -397,7 +397,7 @@ export function setSkinFromUrl(url) {
 // versions below, since they can defer to the user-defined behavior.
 function _openFileDialog(accept) {
   return async dispatch => {
-    const fileReferences = await promptForFileReferences(accept);
+    const fileReferences = await promptForFileReferences({ accept });
     dispatch(loadFilesFromReferences(fileReferences));
   };
 }

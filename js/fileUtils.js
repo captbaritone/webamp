@@ -80,7 +80,10 @@ export async function genArrayBufferFromUrl(url) {
   });
 }
 
-export async function promptForFileReferences(accept) {
+export async function promptForFileReferences({
+  accept = null,
+  directory = false
+}) {
   return new Promise(resolve => {
     // Does this represent a memory leak somehow?
     // Can this fail? Do we ever reject?
@@ -88,6 +91,9 @@ export async function promptForFileReferences(accept) {
     if (accept) fileInput.setAttribute("accept", accept);
     fileInput.type = "file";
     fileInput.multiple = true;
+    fileInput.webkitdirectory = directory;
+    fileInput.directory = directory;
+    fileInput.mozdirectory = directory;
     // Not entirely sure why this is needed, since the input
     // was just created, but somehow this helps prevent change
     // events from getting swallowed.
