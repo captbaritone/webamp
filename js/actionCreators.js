@@ -64,10 +64,11 @@ import {
 
 import LoadQueue from "./loadQueue";
 
-const META_DATA_VISIBLE_PRIORITY = 20;
-const DURATION_VISIBLE_PRIORITY = 15;
-const DURATION_PRIORITY = 10;
-const META_DATA_PRIORITY = 5;
+// Lower is better
+const META_DATA_VISIBLE_PRIORITY = 5;
+const DURATION_VISIBLE_PRIORITY = 10;
+const DURATION_PRIORITY = 15;
+const META_DATA_PRIORITY = 20;
 
 const loadQueue = new LoadQueue({ threads: 4 });
 
