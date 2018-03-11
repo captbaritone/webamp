@@ -37,6 +37,9 @@ export const getTimeObj = time => {
 };
 
 export const getTimeStr = (time, truncate = true) => {
+  if (time == null) {
+    return "";
+  }
   const {
     minutesFirstDigit,
     minutesSecondDigit,
