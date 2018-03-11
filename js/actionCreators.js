@@ -7,12 +7,7 @@ import {
   genMediaTags
 } from "./fileUtils";
 import skinParser from "./skinParser";
-import {
-  BANDS,
-  TRACK_HEIGHT,
-  LOAD_STYLE,
-  MEDIA_TAG_REQUEST_STATUS
-} from "./constants";
+import { BANDS, TRACK_HEIGHT, LOAD_STYLE } from "./constants";
 import {
   getEqfData,
   nextTrack,
@@ -20,7 +15,8 @@ import {
   getOverflowTrackCount,
   getPlaylistURL,
   getSelectedTrackObjects,
-  getVisibleTracks
+  getTracks,
+  getTrackIsVisibleFunction
 } from "./selectors";
 
 import {
@@ -28,8 +24,7 @@ import {
   base64FromArrayBuffer,
   downloadURI,
   normalize,
-  sort,
-  debounce
+  sort
 } from "./utils";
 import {
   CLOSE_WINAMP,
@@ -69,8 +64,10 @@ import {
 
 import LoadQueue from "./loadQueue";
 
-const DURATION_PRIORITY = 5;
-const META_DATA_PRIORITY = 10;
+const META_DATA_VISIBLE_PRIORITY = 20;
+const DURATION_VISIBLE_PRIORITY = 15;
+const DURATION_PRIORITY = 10;
+const META_DATA_PRIORITY = 5;
 
 const loadQueue = new LoadQueue({ threads: 4 });
 
@@ -246,15 +243,23 @@ export function loadFilesFromReferences(
 }
 
 export function fetchMediaDuration(url, id) {
-  return dispatch => {
-    loadQueue.push(() => {
-      return genMediaDuration(url)
-        .then(duration => dispatch({ type: SET_MEDIA_DURATION, duration, id }))
-        .catch(() => {
-          // TODO: Should we update the state to indicate that we don't know the length?
-        });
-      // TODO: The priority should depend upon visiblity
-    }, () => DURATION_PRIORITY);
+  return (dispatch, getState) => {
+    loadQueue.push(
+      () =>
+        genMediaDuration(url)
+          .then(duration =>
+            dispatch({ type: SET_MEDIA_DURATION, duration, id })
+          )
+          .catch(() => {
+            // TODO: Should we update the state to indicate that we don't know the length?
+          }),
+      () => {
+        const trackIsVisible = getTrackIsVisibleFunction(getState());
+        return trackIsVisible(id)
+          ? DURATION_VISIBLE_PRIORITY
+          : DURATION_PRIORITY;
+      }
+    );
   };
 }
 
@@ -319,33 +324,25 @@ export function loadMediaFile(track, priority = null, atIndex = 0) {
       // Blobs can be loaded quickly
       dispatch(fetchMediaTags(blob, id));
     } else {
-      dispatch(fetchMediaTagsForVisibleTracks());
+      dispatch(queueFetchingMediaTags(id));
     }
   };
 }
 
-const _fetchMediaTagsForVisibleTracksThunk = debounce((dispatch, getState) => {
-  getVisibleTracks(getState())
-    .filter(
-      track =>
-        track.mediaTagsRequestStatus === MEDIA_TAG_REQUEST_STATUS.NOT_REQUESTED
-    )
-    .forEach(track => {
-      loadQueue.push(
-        () => dispatch(fetchMediaTags(track.url, track.id)),
-        () => META_DATA_PRIORITY
-      );
-    });
-}, 200);
-
-export function fetchMediaTagsForVisibleTracks() {
-  return _fetchMediaTagsForVisibleTracksThunk;
+function queueFetchingMediaTags(id) {
+  return (dispatch, getState) => {
+    const track = getTracks(getState())[id];
+    return loadQueue.push(
+      () => dispatch(fetchMediaTags(track.url, id)),
+      () => {
+        const trackIsVisible = getTrackIsVisibleFunction(getState());
+        return trackIsVisible(track.id)
+          ? META_DATA_VISIBLE_PRIORITY
+          : META_DATA_PRIORITY;
+      }
+    );
+  };
 }
-
-export const debouncedFetchMediaTagsForVisibleTracks = debounce(
-  fetchMediaTagsForVisibleTracks,
-  200
-);
 
 export function fetchMediaTags(file, id) {
   return dispatch => {
@@ -538,17 +535,11 @@ export function toggleVisualizerStyle() {
 }
 
 export function setPlaylistScrollPosition(position) {
-  return dispatch => {
-    dispatch({ type: SET_PLAYLIST_SCROLL_POSITION, position });
-    dispatch(fetchMediaTagsForVisibleTracks());
-  };
+  return { type: SET_PLAYLIST_SCROLL_POSITION, position };
 }
 
 export function setPlaylistSize(size) {
-  return dispatch => {
-    dispatch({ type: PLAYLIST_SIZE_CHANGED, size });
-    dispatch(fetchMediaTagsForVisibleTracks());
-  };
+  return { type: PLAYLIST_SIZE_CHANGED, size };
 }
 
 export function scrollNTracks(n) {
