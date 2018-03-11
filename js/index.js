@@ -7,13 +7,12 @@ import visor from "../skins/Vizor1-01.wsz";
 import xmms from "../skins/XMMS-Turquoise.wsz";
 import zaxon from "../skins/ZaxonRemake1-0.wsz";
 import green from "../skins/Green-Dimension-V2.wsz";
-import llamaAudio from "../mp3/llama-2.91.mp3";
 import Winamp from "./winamp";
 
 import {
   hideAbout,
   skinUrl,
-  audioUrl,
+  initialTracks,
   initialState,
   sentryDsn
 } from "./config";
@@ -47,22 +46,11 @@ Raven.context(() => {
     return;
   }
 
-  const audio =
-    audioUrl === undefined
-      ? {
-          metaData: {
-            artist: "DJ Mike Llama",
-            title: "Llama Whippin' Intro"
-          },
-          url: llamaAudio
-        }
-      : { url: audioUrl };
-
   const winamp = new Winamp({
     initialSkin: {
       url: skinUrl
     },
-    initialTracks: [audio],
+    initialTracks,
     avaliableSkins: [
       { url: base, name: "<Base Skin>" },
       { url: green, name: "Green Dimension V2" },
