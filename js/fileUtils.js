@@ -1,23 +1,6 @@
 import invariant from "invariant";
 import jsmediatags from "jsmediatags/dist/jsmediatags";
 
-// Requires Dropbox's Chooser to be loaded on the page
-export function genAudioFileUrlsFromDropbox() {
-  return new Promise((resolve, reject) => {
-    if (window.Dropbox == null) {
-      reject();
-    }
-    window.Dropbox.choose({
-      success: resolve,
-      error: reject,
-      linkType: "direct",
-      folderselect: false,
-      multiselect: true,
-      extensions: ["video", "audio"]
-    });
-  });
-}
-
 export function genMediaTags(file) {
   invariant(
     file != null,

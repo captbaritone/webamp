@@ -4,8 +4,7 @@ import {
   genArrayBufferFromUrl,
   promptForFileReferences,
   genMediaDuration,
-  genMediaTags,
-  genAudioFileUrlsFromDropbox
+  genMediaTags
 } from "./fileUtils";
 import skinParser from "./skinParser";
 import {
@@ -395,8 +394,8 @@ export function setSkinFromUrl(url) {
   };
 }
 
-// This function is private, since Winamp consumers may wish to support
-// opening files via other means (Dropbox?). Only use the file type specific
+// This function is private, since Winamp consumers can provide means for
+// opening files via other methods. Only use the file type specific
 // versions below, since they can defer to the user-defined behavior.
 function _openFileDialog(accept) {
   return async dispatch => {
@@ -415,18 +414,6 @@ export function openMediaFileDialog() {
 
 export function openSkinFileDialog() {
   return _openFileDialog(".zip, .wsz");
-}
-
-export function openDropboxFileDialog() {
-  return async dispatch => {
-    const files = await genAudioFileUrlsFromDropbox();
-    dispatch(
-      loadMediaFiles(
-        files.map(file => ({ url: file.link, defaultName: file.name })),
-        LOAD_STYLE.PLAY
-      )
-    );
-  };
 }
 
 export function setEqBand(band, value) {

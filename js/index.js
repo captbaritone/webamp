@@ -20,6 +20,23 @@ import {
 
 Raven.config(sentryDsn).install();
 
+// Requires Dropbox's Chooser to be loaded on the page
+function genAudioFileUrlsFromDropbox() {
+  return new Promise((resolve, reject) => {
+    if (window.Dropbox == null) {
+      reject();
+    }
+    window.Dropbox.choose({
+      success: resolve,
+      error: reject,
+      linkType: "direct",
+      folderselect: false,
+      multiselect: true,
+      extensions: ["video", "audio"]
+    });
+  });
+}
+
 Raven.context(() => {
   if (hideAbout) {
     document.getElementsByClassName("about")[0].style.visibility = "hidden";
@@ -54,6 +71,18 @@ Raven.context(() => {
       { url: visor, name: "Vizor" },
       { url: xmms, name: "XMMS Turquoise " },
       { url: zaxon, name: "Zaxon Remake" }
+    ],
+    filePickers: [
+      {
+        contextMenuName: "Dropbox...",
+        filePicker: async () => {
+          const files = await genAudioFileUrlsFromDropbox();
+          return files.map(file => ({
+            url: file.link,
+            defaultName: file.name
+          }));
+        }
+      }
     ],
     enableHotkeys: true,
     __initialState: initialState

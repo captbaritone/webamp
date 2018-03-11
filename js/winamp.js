@@ -70,7 +70,11 @@ class Winamp {
 
     render(
       <Provider store={this.store}>
-        <App media={this.media} container={this.options.container} />
+        <App
+          media={this.media}
+          container={this.options.container}
+          filePickers={this.options.filePickers}
+        />
       </Provider>,
       node
     );

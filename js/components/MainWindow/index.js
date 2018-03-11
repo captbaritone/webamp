@@ -60,7 +60,8 @@ export class MainWindow extends React.Component {
       shade,
       llama,
       status,
-      working
+      working,
+      filePickers
     } = this.props;
 
     const className = classnames({
@@ -89,7 +90,7 @@ export class MainWindow extends React.Component {
           className="selected title-bard draggable"
           onDoubleClick={this.props.toggleMainWindowShadeMode}
         >
-          <MainContextMenu />
+          <MainContextMenu filePickers={filePickers} />
           {shade && <MiniTime />}
           <Minimize />
           <Shade />
