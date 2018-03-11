@@ -22,6 +22,7 @@ import {
   togglePlaylistShadeMode,
   scrollVolume
 } from "../../actionCreators";
+import { getScrollOffset } from "../../selectors";
 
 import { clamp } from "../../utils";
 import DropTarget from "../DropTarget";
@@ -48,9 +49,8 @@ class PlaylistWindow extends React.Component {
 
   _handleDrop(e, targetCoords) {
     const top = e.clientY - targetCoords.y;
-    // TODO: Include the scroll offset in this
     const atIndex = clamp(
-      Math.round((top - 23) / TRACK_HEIGHT),
+      this.props.offset + Math.round((top - 23) / TRACK_HEIGHT),
       0,
       this.props.maxTrackIndex + 1
     );
@@ -181,6 +181,7 @@ const mapStateToProps = state => {
   } = state;
 
   return {
+    offset: getScrollOffset(state),
     maxTrackIndex: trackOrder.length - 1,
     focused,
     skinPlaylistStyle,
