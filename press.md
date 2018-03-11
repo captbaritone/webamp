@@ -109,6 +109,7 @@
 * https://www.gizmodo.com.au/2018/02/someone-remade-winamp-so-it-runs-in-your-browser/
 * https://changelog.com/news/winamp-29-in-htmljs--PJr
 * https://www.howtogeek.com/343813/re-live-90s-computing-in-your-browser-right-now/amp/
+* https://techcaption.com/run-winamp-web-browser/
 
 ### German
 
@@ -201,3 +202,7 @@
 ### Croatian
 
 * http://idesh.net/tech-i-web/internet/winamp-se-vratio-nostalgija-na-najjace/
+
+### Vietnamese
+
+* http://vnreview.vn/tin-tuc-xa-hoi-so/-/view_content/content/2421915/song-lai-thap-nien-90-voi-trai-nghiem-nhung-phan-mem-nay-ngay-tren-trinh-duyet
