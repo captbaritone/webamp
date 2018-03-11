@@ -26,8 +26,9 @@ const MainContextMenu = props => (
     <Parent label="Play">
       <Node onClick={props.openMediaFileDialog} label="File..." />
       {props.filePickers &&
-        props.filePickers.map(picker => (
+        props.filePickers.map((picker, i) => (
           <Node
+            key={i}
             onClick={async () => {
               props.loadMediaFiles(await picker.filePicker(), LOAD_STYLE.PLAY);
             }}
