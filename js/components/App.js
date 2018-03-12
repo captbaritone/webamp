@@ -22,13 +22,14 @@ const App = ({
   equalizer,
   playlist,
   openWindows,
-  container
+  container,
+  filePickers
 }) => {
   if (closed) {
     return null;
   }
   const windows = {
-    main: <MainWindow mediaPlayer={media} />,
+    main: <MainWindow mediaPlayer={media} filePickers={filePickers} />,
     equalizer: equalizer && <EqualizerWindow />,
     playlist: playlist && <PlaylistWindow />
   };

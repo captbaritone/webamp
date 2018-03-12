@@ -37,6 +37,9 @@ export const getTimeObj = time => {
 };
 
 export const getTimeStr = (time, truncate = true) => {
+  if (time == null) {
+    return "";
+  }
   const {
     minutesFirstDigit,
     minutesSecondDigit,
@@ -229,6 +232,18 @@ export const arrayWith = (arr, value) => {
 
 export const arrayWithout = (arr, value) => {
   const s = new Set(arr);
-  s["delete"](value);
+  s.delete(value);
   return Array.from(s);
 };
+
+export function debounce(func, delay) {
+  let token;
+  return function(...args) {
+    if (token != null) {
+      clearTimeout(token);
+    }
+    token = setTimeout(() => {
+      func.apply(this, args);
+    }, delay);
+  };
+}

@@ -24,7 +24,7 @@ export const getEqfData = state => {
   return eqfData;
 };
 
-const getTracks = state => state.playlist.tracks;
+export const getTracks = state => state.playlist.tracks;
 const getTrackOrder = state => state.playlist.trackOrder;
 
 export const getOrderedTracks = createSelector(
@@ -44,6 +44,7 @@ export const getSelectedTrackObjects = createSelector(
   tracks => tracks.filter(track => track.selected)
 );
 
+// If a duration is `null`, it counts as zero, which seems fine enough.
 const runningTimeFromTracks = tracks =>
   tracks.reduce((time, track) => time + Number(track.duration), 0);
 
@@ -154,6 +155,19 @@ export const getVisibleTrackIds = createSelector(
   getNumberOfVisibleTracks,
   (offset, trackOrder, numberOfVisibleTracks) =>
     trackOrder.slice(offset, offset + numberOfVisibleTracks)
+);
+
+export const getTrackIsVisibleFunction = createSelector(
+  getVisibleTrackIds,
+  visibleTrackIds => {
+    return id => visibleTrackIds.includes(id);
+  }
+);
+
+export const getVisibleTracks = createSelector(
+  getVisibleTrackIds,
+  getTracks,
+  (visibleTrackIds, tracks) => visibleTrackIds.map(id => tracks[id])
 );
 
 export const getPlaylist = state => state.playlist;

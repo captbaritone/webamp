@@ -33,12 +33,7 @@
     "camelcase": "error",
     "consistent-return": "warn",
     "constructor-super": "error",
-    "dot-notation": [
-      "error",
-      {
-        "allowKeywords": false
-      }
-    ],
+    "dot-notation": "error",
     "eqeqeq": ["error", "smart"],
     "guard-for-in": "error",
     "max-depth": ["warn", 4],

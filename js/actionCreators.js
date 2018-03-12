@@ -1,9 +1,10 @@
-import jsmediatags from "jsmediatags/dist/jsmediatags";
 import { parser, creator } from "winamp-eqf";
 import {
   genArrayBufferFromFileReference,
   genArrayBufferFromUrl,
-  promptForFileReferences
+  promptForFileReferences,
+  genMediaDuration,
+  genMediaTags
 } from "./fileUtils";
 import skinParser from "./skinParser";
 import { BANDS, TRACK_HEIGHT, LOAD_STYLE } from "./constants";
@@ -13,7 +14,9 @@ import {
   getScrollOffset,
   getOverflowTrackCount,
   getPlaylistURL,
-  getSelectedTrackObjects
+  getSelectedTrackObjects,
+  getTracks,
+  getTrackIsVisibleFunction
 } from "./selectors";
 
 import {
@@ -53,8 +56,21 @@ import {
   SET_MEDIA_TAGS,
   SET_MEDIA_DURATION,
   TOGGLE_SHADE_MODE,
-  TOGGLE_PLAYLIST_SHADE_MODE
+  TOGGLE_PLAYLIST_SHADE_MODE,
+  MEDIA_TAG_REQUEST_INITIALIZED,
+  MEDIA_TAG_REQUEST_FAILED,
+  PLAYLIST_SIZE_CHANGED
 } from "./actionTypes";
+
+import LoadQueue from "./loadQueue";
+
+// Lower is better
+const DURATION_VISIBLE_PRIORITY = 5;
+const META_DATA_VISIBLE_PRIORITY = 10;
+const DURATION_PRIORITY = 15;
+const META_DATA_PRIORITY = 20;
+
+const loadQueue = new LoadQueue({ threads: 4 });
 
 function playRandomTrack() {
   return (dispatch, getState) => {
@@ -228,22 +244,23 @@ export function loadFilesFromReferences(
 }
 
 export function fetchMediaDuration(url, id) {
-  return dispatch => {
-    // TODO: Does this actually stop downloading the file once it's
-    // got the duration?
-    const audio = document.createElement("audio");
-    const durationChange = () => {
-      const { duration } = audio;
-      dispatch({ type: SET_MEDIA_DURATION, duration, id });
-      audio.removeEventListener("durationchange", durationChange);
-      audio.url = null;
-      // TODO: Not sure if this really gets cleaned up.
-    };
-    audio.addEventListener("durationchange", durationChange);
-    audio.addEventListener("error", () => {
-      // TODO: Should we update the state to indicate that we don't know the length?
-    });
-    audio.src = url;
+  return (dispatch, getState) => {
+    loadQueue.push(
+      () =>
+        genMediaDuration(url)
+          .then(duration =>
+            dispatch({ type: SET_MEDIA_DURATION, duration, id })
+          )
+          .catch(() => {
+            // TODO: Should we update the state to indicate that we don't know the length?
+          }),
+      () => {
+        const trackIsVisible = getTrackIsVisibleFunction(getState());
+        return trackIsVisible(id)
+          ? DURATION_VISIBLE_PRIORITY
+          : DURATION_PRIORITY;
+      }
+    );
   };
 }
 
@@ -261,7 +278,7 @@ export function loadMediaFiles(tracks, loadStyle = null, atIndex = 0) {
     }
     tracks.forEach((track, i) => {
       const priority = i === 0 && loadStyle != null ? loadStyle : null;
-      dispatch(loadMediaFile(track, priority, atIndex));
+      dispatch(loadMediaFile(track, priority, atIndex + i));
     });
   };
 }
@@ -304,35 +321,43 @@ export function loadMediaFile(track, priority = null, atIndex = 0) {
     if (metaData != null) {
       const { artist, title } = metaData;
       dispatch({ type: SET_MEDIA_TAGS, artist, title, id });
+    } else if (blob != null) {
+      // Blobs can be loaded quickly
+      dispatch(fetchMediaTags(blob, id));
     } else {
-      dispatch(fetchMediaTags(url || blob, id));
+      dispatch(queueFetchingMediaTags(id));
     }
   };
 }
 
+function queueFetchingMediaTags(id) {
+  return (dispatch, getState) => {
+    const track = getTracks(getState())[id];
+    return loadQueue.push(
+      () => dispatch(fetchMediaTags(track.url, id)),
+      () => {
+        const trackIsVisible = getTrackIsVisibleFunction(getState());
+        return trackIsVisible(track.id)
+          ? META_DATA_VISIBLE_PRIORITY
+          : META_DATA_PRIORITY;
+      }
+    );
+  };
+}
+
 export function fetchMediaTags(file, id) {
-  // Workaround https://github.com/aadsm/jsmediatags/issues/83
-  if (typeof file === "string" && !/^[a-z]+:\/\//i.test(file)) {
-    file = `${location.protocol}//${location.host}${location.pathname}${file}`;
-  }
   return dispatch => {
-    try {
-      jsmediatags.read(file, {
-        onSuccess: data => {
-          const { artist, title } = data.tags;
-          // There's more data here, but we don't have a use for it yet:
-          // https://github.com/aadsm/jsmediatags#shortcuts
-          dispatch({ type: SET_MEDIA_TAGS, artist, title, id });
-        },
-        onError: () => {
-          // Nothing to do. The filename will have to suffice.
-        }
+    dispatch({ type: MEDIA_TAG_REQUEST_INITIALIZED, id });
+    return genMediaTags(file)
+      .then(data => {
+        const { artist, title } = data.tags;
+        // There's more data here, but we don't have a use for it yet:
+        // https://github.com/aadsm/jsmediatags#shortcuts
+        dispatch({ type: SET_MEDIA_TAGS, artist, title, id });
+      })
+      .catch(() => {
+        dispatch({ type: MEDIA_TAG_REQUEST_FAILED, id });
       });
-    } catch (e) {
-      // Possibly jsmediatags could not find a parser for this file?
-      // Nothing to do.
-      // Consider removing this after https://github.com/aadsm/jsmediatags/issues/83 is resolved.
-    }
   };
 }
 
@@ -367,12 +392,12 @@ export function setSkinFromUrl(url) {
   };
 }
 
-// This function is private, since Winamp consumers may wish to support
-// opening files via other means (Dropbox?). Only use the file type specific
+// This function is private, since Winamp consumers can provide means for
+// opening files via other methods. Only use the file type specific
 // versions below, since they can defer to the user-defined behavior.
 function _openFileDialog(accept) {
   return async dispatch => {
-    const fileReferences = await promptForFileReferences(accept);
+    const fileReferences = await promptForFileReferences({ accept });
     dispatch(loadFilesFromReferences(fileReferences));
   };
 }
@@ -512,6 +537,10 @@ export function toggleVisualizerStyle() {
 
 export function setPlaylistScrollPosition(position) {
   return { type: SET_PLAYLIST_SCROLL_POSITION, position };
+}
+
+export function setPlaylistSize(size) {
+  return { type: PLAYLIST_SIZE_CHANGED, size };
 }
 
 export function scrollNTracks(n) {

@@ -5,8 +5,10 @@ import {
   close,
   setSkinFromUrl,
   openMediaFileDialog,
+  loadMediaFiles,
   openSkinFileDialog
 } from "../../actionCreators";
+import { LOAD_STYLE } from "../../constants";
 import { ContextMenu, Hr, Node, Parent, LinkNode } from "../ContextMenu";
 
 const MainContextMenu = props => (
@@ -21,7 +23,19 @@ const MainContextMenu = props => (
       label="Winamp2-js"
     />
     <Hr />
-    <Node onClick={props.openMediaFileDialog} label="Play File..." />
+    <Parent label="Play">
+      <Node onClick={props.openMediaFileDialog} label="File..." />
+      {props.filePickers &&
+        props.filePickers.map((picker, i) => (
+          <Node
+            key={i}
+            onClick={async () => {
+              props.loadMediaFiles(await picker.filePicker(), LOAD_STYLE.PLAY);
+            }}
+            label={picker.contextMenuName}
+          />
+        ))}
+    </Parent>
     <Parent label="Skins">
       <Node onClick={props.openSkinFileDialog} label="Load Skin..." />
       {!!props.avaliableSkins.length && <Hr />}
@@ -46,6 +60,7 @@ const mapDispatchToProps = {
   close,
   openSkinFileDialog,
   openMediaFileDialog,
+  loadMediaFiles,
   setSkin: setSkinFromUrl
 };
 

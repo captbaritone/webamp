@@ -1,4 +1,56 @@
+import invariant from "invariant";
+import jsmediatags from "jsmediatags/dist/jsmediatags";
+
+export function genMediaTags(file) {
+  invariant(
+    file != null,
+    "Attempted to get the tags of media file without passing a file"
+  );
+  // Workaround https://github.com/aadsm/jsmediatags/issues/83
+  if (typeof file === "string" && !/^[a-z]+:\/\//i.test(file)) {
+    file = `${location.protocol}//${location.host}${location.pathname}${file}`;
+  }
+  return new Promise((resolve, reject) => {
+    try {
+      jsmediatags.read(file, { onSuccess: resolve, onError: reject });
+    } catch (e) {
+      // Possibly jsmediatags could not find a parser for this file?
+      // Nothing to do.
+      // Consider removing this after https://github.com/aadsm/jsmediatags/issues/83 is resolved.
+      reject(e);
+    }
+  });
+}
+
+export function genMediaDuration(url) {
+  invariant(
+    typeof url === "string",
+    "Attempted to get the duration of media file without passing a url"
+  );
+  return new Promise((resolve, reject) => {
+    // TODO: Does this actually stop downloading the file once it's
+    // got the duration?
+    const audio = document.createElement("audio");
+    audio.crossOrigin = "anonymous";
+    const durationChange = () => {
+      resolve(audio.duration);
+      audio.removeEventListener("durationchange", durationChange);
+      audio.url = null;
+      // TODO: Not sure if this really gets cleaned up.
+    };
+    audio.addEventListener("durationchange", durationChange);
+    audio.addEventListener("error", e => {
+      reject(e);
+    });
+    audio.src = url;
+  });
+}
+
 export async function genArrayBufferFromFileReference(fileReference) {
+  invariant(
+    fileReference != null,
+    "Attempted to get an ArrayBuffer without assing a fileReference"
+  );
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = function(e) {
@@ -28,7 +80,10 @@ export async function genArrayBufferFromUrl(url) {
   });
 }
 
-export async function promptForFileReferences(accept) {
+export async function promptForFileReferences({
+  accept = null,
+  directory = false
+}) {
   return new Promise(resolve => {
     // Does this represent a memory leak somehow?
     // Can this fail? Do we ever reject?
@@ -36,6 +91,9 @@ export async function promptForFileReferences(accept) {
     if (accept) fileInput.setAttribute("accept", accept);
     fileInput.type = "file";
     fileInput.multiple = true;
+    fileInput.webkitdirectory = directory;
+    fileInput.directory = directory;
+    fileInput.mozdirectory = directory;
     // Not entirely sure why this is needed, since the input
     // was just created, but somehow this helps prevent change
     // events from getting swallowed.

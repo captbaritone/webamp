@@ -7,18 +7,34 @@ import visor from "../skins/Vizor1-01.wsz";
 import xmms from "../skins/XMMS-Turquoise.wsz";
 import zaxon from "../skins/ZaxonRemake1-0.wsz";
 import green from "../skins/Green-Dimension-V2.wsz";
-import llamaAudio from "../mp3/llama-2.91.mp3";
 import Winamp from "./winamp";
 
 import {
   hideAbout,
   skinUrl,
-  audioUrl,
+  initialTracks,
   initialState,
   sentryDsn
 } from "./config";
 
 Raven.config(sentryDsn).install();
+
+// Requires Dropbox's Chooser to be loaded on the page
+function genAudioFileUrlsFromDropbox() {
+  return new Promise((resolve, reject) => {
+    if (window.Dropbox == null) {
+      reject();
+    }
+    window.Dropbox.choose({
+      success: resolve,
+      error: reject,
+      linkType: "direct",
+      folderselect: false,
+      multiselect: true,
+      extensions: ["video", "audio"]
+    });
+  });
+}
 
 Raven.context(() => {
   if (hideAbout) {
@@ -30,22 +46,11 @@ Raven.context(() => {
     return;
   }
 
-  const audio =
-    audioUrl === undefined
-      ? {
-          metaData: {
-            artist: "DJ Mike Llama",
-            title: "Llama Whippin' Intro"
-          },
-          url: llamaAudio
-        }
-      : { url: audioUrl };
-
   const winamp = new Winamp({
     initialSkin: {
       url: skinUrl
     },
-    initialTracks: [audio],
+    initialTracks,
     avaliableSkins: [
       { url: base, name: "<Base Skin>" },
       { url: green, name: "Green Dimension V2" },
@@ -54,6 +59,18 @@ Raven.context(() => {
       { url: visor, name: "Vizor" },
       { url: xmms, name: "XMMS Turquoise " },
       { url: zaxon, name: "Zaxon Remake" }
+    ],
+    filePickers: [
+      {
+        contextMenuName: "Dropbox...",
+        filePicker: async () => {
+          const files = await genAudioFileUrlsFromDropbox();
+          return files.map(file => ({
+            url: file.link,
+            defaultName: file.name
+          }));
+        }
+      }
     ],
     enableHotkeys: true,
     __initialState: initialState
