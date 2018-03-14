@@ -20,6 +20,7 @@ config.plugins = [
 ];
 
 config.output.publicPath = `${cdnUrl}built/`;
+config.output.filename = "[name]-[hash].js";
 
 config.entry.winamp.unshift("./js/googleAnalytics.min.js");
 
