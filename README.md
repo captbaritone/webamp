@@ -21,7 +21,6 @@ Check out this Twitter thread for an illustrated list of features: https://twitt
 
 There are many websites that could potentially benefit from having Winamp embeded in them. That said, nobody that I know of is really doing this in production. In an attempt to try this out, I have published Winamp2-js as an NPM package. The API is far from stable as I don't actually know all the various use-cases it should support. Some potential ones are:
 
-* A player that can load files from Dropbox using the [Dropbox JavaScript SDK](http://dropbox.github.io/dropbox-sdk-js/).
 * A player that comes preloaded with a SoundCloud playlist.
 * A player that's compatible with [https://github.com/justinfrankel/WHUMP] database files.
 * A player that can be used to demonstrate skins on a skins website.
