@@ -10,7 +10,7 @@ after_success:
   - bash <(curl -s https://codecov.io/bash)
 before_deploy:
   - rm .gitignore
-  - ./scripts/bash.sh
+  - ./scripts/bust.sh
 deploy:
     verbose: true
     provider: pages
