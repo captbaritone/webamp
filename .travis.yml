@@ -8,3 +8,10 @@ script: >
     # python node_modules/travis-weigh-in/weigh_in.py built/winamp.js.gz
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+deploy:
+    verbose: true
+    provider: pages
+    skip-cleanup: true
+    github-token: $GITHUB_TOKEN  # Set in travis-ci.org dashboard, marked secure
+    on:
+        branch: master
