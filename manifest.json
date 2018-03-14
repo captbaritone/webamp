@@ -1,0 +1,27 @@
+{
+  "name": "Winamp",
+  "short_name": "Winamp",
+  "description": "Winamp 2.9 reimplemented in HTML5 and JavaScript",
+  "start_url": "./?utm_source=web_app_manifest",
+  "scope": "./",
+  "display": "standalone",
+  "theme_color": "#4b4b4b",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "./images/manifest/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./images/manifest/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "./images/manifest/icon.svg",
+      "sizes": "513x513",
+      "type": "image/svg+xml"
+    }
+  ]
+}
