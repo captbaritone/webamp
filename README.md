@@ -90,15 +90,9 @@ Open the local ip/port that is output to the console in your browser.
 
 ## Deploying
 
-These commands assume you have an SSH key to my server, which you probably
-don't have. Feel free to adapt them to your own server.
+[Travis](https://travis-ci.org/) runs the build and then pushes the contents of `./built` to the `gh-pages` branch of this repository. GitHub Pages then serve that directory as <https://webamp.org>. CloudFlare sits in front of GitHub pages to provide the SSL certificate.
 
-    npm run deploy
-
-### Reverting
-
-    npm run revert # Reverts quickly to the previous deploy
-    HASH=<SOME_GIT_HASH> npm run deploy # Runs a new deploy at a given hashlike.
+In short, deploying should be as simple as pushing a commit to master which builds, lints and passes all tests.
 
 ### Advanced Usage
 
@@ -156,9 +150,9 @@ Nullsoft, the code within this project is released under the [MIT
 License](LICENSE.txt). That being said, if you do anything interesting with
 this code, please let me know. I'd love to see it.
 
-[TechCrunch]: https://techcrunch.com/2018/02/09/whip-the-llamas-ass-with-this-javascript-winamp-emulator/
-[Motherboard]: https://motherboard.vice.com/en_us/article/qvebbv/winamp-2-mp3-music-player-emulator
-[Gizmodo]: https://gizmodo.com/winamp-2-has-been-immortalized-in-html5-for-your-pleasu-1655373653
+[techcrunch]: https://techcrunch.com/2018/02/09/whip-the-llamas-ass-with-this-javascript-winamp-emulator/
+[motherboard]: https://motherboard.vice.com/en_us/article/qvebbv/winamp-2-mp3-music-player-emulator
+[gizmodo]: https://gizmodo.com/winamp-2-has-been-immortalized-in-html5-for-your-pleasu-1655373653
 [1]: https://news.ycombinator.com/item?id=8565665
 [2]: https://news.ycombinator.com/item?id=15314629
 [3]: https://news.ycombinator.com/item?id=16333550
