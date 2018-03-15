@@ -17,3 +17,10 @@ deploy:
     github-token: $GITHUB_TOKEN  # Set in travis-ci.org dashboard, marked secure
     on:
         branch: master
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/65e6de631df855237f1d
+    on_success: change
+    on_failure: always
+    on_start: never
