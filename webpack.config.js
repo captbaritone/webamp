@@ -1,5 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   devtool: "source-map",
@@ -20,7 +21,7 @@ module.exports = {
         }
       },
       {
-        test: /\.(wsz|mp3)$/,
+        test: /\.(wsz|mp3|png|ico|jpg|svg)$/,
         use: [
           {
             loader: "file-loader",
@@ -39,15 +40,17 @@ module.exports = {
       SENTRY_DSN: JSON.stringify(
         "https://c8c64ef822f54240901bc64f88c234d8@sentry.io/146022"
       )
+    }),
+    new HtmlWebpackPlugin({
+      template: "./index.html"
     })
   ],
   entry: {
-    winamp: ["./js/index.js"],
-    skinExplorer: "./js/skinExplorer.js"
+    winamp: ["./js/index.js"]
   },
   output: {
-    filename: "[name].js",
-    publicPath: "/built/",
+    filename: "[name]-[hash].js",
+    publicPath: "/",
     path: path.resolve(__dirname, "built")
   }
 };

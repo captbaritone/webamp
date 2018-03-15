@@ -1,4 +1,5 @@
 const webpack = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const config = require("./webpack.config");
 
 const cdnUrl = process.env.CDN_URL || "/";
@@ -16,10 +17,13 @@ config.plugins = [
   }),
   new webpack.optimize.UglifyJsPlugin({
     sourceMap: true
+  }),
+  new HtmlWebpackPlugin({
+    template: "./index.html"
   })
 ];
 
-config.output.publicPath = `${cdnUrl}built/`;
+config.output.publicPath = `${cdnUrl}/`;
 config.output.filename = "[name]-[hash].js";
 
 config.entry.winamp.unshift("./js/googleAnalytics.min.js");

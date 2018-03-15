@@ -51,6 +51,7 @@
     "eslint-plugin-react": "7.5.1",
     "file-loader": "^1.1.5",
     "gzip-size-cli": "^2.0.0",
+    "html-webpack-plugin": "^3.0.6",
     "http-server": "^0.11.1",
     "jest-cli": "^22.0.3",
     "react-test-renderer": "^16.2.0",
