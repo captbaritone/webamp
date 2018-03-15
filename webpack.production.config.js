@@ -2,8 +2,6 @@ const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const config = require("./webpack.config");
 
-const cdnUrl = process.env.CDN_URL || "/";
-
 config.devtool = "source-map";
 
 config.plugins = [
@@ -23,7 +21,7 @@ config.plugins = [
   })
 ];
 
-config.output.publicPath = `${cdnUrl}/`;
+config.output.publicPath = `/`;
 config.output.filename = "[name]-[hash].js";
 
 config.entry.winamp.unshift("./js/googleAnalytics.min.js");

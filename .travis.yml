@@ -8,6 +8,7 @@ script: >
     # python node_modules/travis-weigh-in/weigh_in.py built/winamp.js.gz
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+before_deploy: echo webamp.org > built/CNAME
 deploy:
     local-dir: "./built/"
     verbose: true
