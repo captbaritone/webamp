@@ -1,6 +1,7 @@
 const webpack = require("webpack");
 const merge = require("webpack-merge");
 const common = require("./webpack.common.js");
+const workboxPlugin = require("workbox-webpack-plugin");
 
 const config = merge(common, {
   devtool: "source-map",
@@ -15,6 +16,11 @@ const config = merge(common, {
     }),
     new webpack.optimize.UglifyJsPlugin({
       sourceMap: true
+    }),
+    new workboxPlugin.GenerateSW({
+      swDest: "service-worker.js",
+      clientsClaim: true,
+      skipWaiting: true,
     })
   ]
 });

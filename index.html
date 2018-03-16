@@ -43,6 +43,15 @@
     <meta name="msapplication-TileImage" content="<%= require('./images/manifest/icon-144x144.png') %>">
     <meta name="msapplication-TileColor" content="#4b4b4b">
     <meta name="msapplication-tap-highlight" content="no">
+
+    <!-- Load and register service worker that adds offline support -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/service-worker.js');
+        });
+      }
+    </script>
 </head>
 
 <body>
