@@ -7,7 +7,7 @@
     "lint": "eslint .",
     "build": "webpack --config=config/webpack.prod.js",
     "build-library": "webpack --config=config/webpack.library.js",
-    "serve": "http-server",
+    "serve": "http-server ./built",
     "start": "webpack-dev-server --config=config/webpack.dev.js",
     "weight": "npm run build && gzip-size built/winamp.js",
     "test": "jest --coverage",
