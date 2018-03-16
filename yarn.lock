@@ -1491,6 +1491,12 @@ commander@^2.11.0:
   version "2.14.1"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.14.1.tgz#2235123e37af8ca3c65df45b026dbd357b01b9aa"
 
+common-tags@^1.4.0:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/common-tags/-/common-tags-1.7.2.tgz#24d9768c63d253a56ecff93845b44b4df1d52771"
+  dependencies:
+    babel-runtime "^6.26.0"
+
 commondir@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/commondir/-/commondir-1.0.1.tgz#ddd800da0c66127393cca5950ea968a3aaf1253b"
@@ -2744,6 +2750,14 @@ fresh@0.5.2:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/fresh/-/fresh-0.5.2.tgz#3d8cadd90d976569fa835ab1f8e4b23a105605a7"
 
+fs-extra@^4.0.2:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-4.0.3.tgz#0d852122e5bc5beb453fb028e9c0c9bf36340c94"
+  dependencies:
+    graceful-fs "^4.1.2"
+    jsonfile "^4.0.0"
+    universalify "^0.1.0"
+
 fs-readdir-recursive@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/fs-readdir-recursive/-/fs-readdir-recursive-1.1.0.tgz#e32fc030a2ccee44a6b5371308da54be0b397d27"
@@ -2890,7 +2904,7 @@ globby@^6.1.0:
     pify "^2.0.0"
     pinkie-promise "^2.0.0"
 
-graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.4:
+graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.4, graceful-fs@^4.1.6:
   version "4.1.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
 
@@ -3575,6 +3589,12 @@ isarray@1.0.0, isarray@^1.0.0, isarray@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/isarray/-/isarray-1.0.0.tgz#bb935d48582cba168c06834957a54a3e07124f11"
 
+isemail@3.x.x:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/isemail/-/isemail-3.1.1.tgz#e8450fe78ff1b48347db599122adcd0668bd92b5"
+  dependencies:
+    punycode "2.x.x"
+
 isexe@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
@@ -3939,6 +3959,14 @@ jimp@^0.2.28:
     tinycolor2 "^1.1.2"
     url-regex "^3.0.0"
 
+joi@^11.1.1:
+  version "11.4.0"
+  resolved "https://registry.yarnpkg.com/joi/-/joi-11.4.0.tgz#f674897537b625e9ac3d0b7e1604c828ad913ccb"
+  dependencies:
+    hoek "4.x.x"
+    isemail "3.x.x"
+    topo "2.x.x"
+
 jpeg-js@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/jpeg-js/-/jpeg-js-0.2.0.tgz#53e448ec9d263e683266467e9442d2c5a2ef5482"
@@ -4047,6 +4075,12 @@ json3@^3.3.2:
 json5@^0.5.0, json5@^0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/json5/-/json5-0.5.1.tgz#1eade7acc012034ad84e2396767ead9fa5495821"
+
+jsonfile@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/jsonfile/-/jsonfile-4.0.0.tgz#8771aae0799b64076b76640fca058f9c10e33ecb"
+  optionalDependencies:
+    graceful-fs "^4.1.6"
 
 jsonify@~0.0.0:
   version "0.0.0"
@@ -4205,6 +4239,10 @@ lodash._getnative@^3.0.0:
   version "3.9.1"
   resolved "https://registry.yarnpkg.com/lodash._getnative/-/lodash._getnative-3.9.1.tgz#570bc7dede46d61cdcde687d65d3eecbaa3aaff5"
 
+lodash._reinterpolate@~3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/lodash._reinterpolate/-/lodash._reinterpolate-3.0.0.tgz#0ccf2d89166af03b3663c796538b75ac6e114d9d"
+
 lodash.camelcase@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/lodash.camelcase/-/lodash.camelcase-4.3.0.tgz#b28aa6288a2b9fc651035c7711f65ab6190331a6"
@@ -4236,6 +4274,19 @@ lodash.memoize@^4.1.2:
 lodash.sortby@^4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/lodash.sortby/-/lodash.sortby-4.7.0.tgz#edd14c824e2cc9c1e0b0a1b42bb5210516a42438"
+
+lodash.template@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/lodash.template/-/lodash.template-4.4.0.tgz#e73a0385c8355591746e020b99679c690e68fba0"
+  dependencies:
+    lodash._reinterpolate "~3.0.0"
+    lodash.templatesettings "^4.0.0"
+
+lodash.templatesettings@^4.0.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/lodash.templatesettings/-/lodash.templatesettings-4.1.0.tgz#2b4d4e95ba440d915ff08bc899e4553666713316"
+  dependencies:
+    lodash._reinterpolate "~3.0.0"
 
 lodash.uniq@^4.5.0:
   version "4.5.0"
@@ -5398,13 +5449,13 @@ punycode@1.3.2:
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.3.2.tgz#9653a036fb7c1ee42342f2325cceefea3926c48d"
 
+punycode@2.x.x, punycode@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.0.tgz#5f863edc89b96db09074bad7947bf09056ca4e7d"
+
 punycode@^1.2.4, punycode@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.4.1.tgz#c0d5a63b2718800ad8e1eb0fa5269c84dd41845e"
-
-punycode@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.0.tgz#5f863edc89b96db09074bad7947bf09056ca4e7d"
 
 q@^1.1.2:
   version "1.5.1"
@@ -6617,6 +6668,12 @@ to-regex@^3.0.1:
     extend-shallow "^2.0.1"
     regex-not "^1.0.0"
 
+topo@2.x.x:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/topo/-/topo-2.0.2.tgz#cd5615752539057c0dc0491a621c3bc6fbe1d182"
+  dependencies:
+    hoek "4.x.x"
+
 toposort@^1.0.0:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/toposort/-/toposort-1.0.6.tgz#c31748e55d210effc00fdcdc7d6e68d7d7bb9cec"
@@ -6752,6 +6809,10 @@ uniqid@^4.0.0:
 uniqs@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/uniqs/-/uniqs-2.0.0.tgz#ffede4b36b25290696e6e165d4a59edb998e6b02"
+
+universalify@^0.1.0:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/universalify/-/universalify-0.1.1.tgz#fa71badd4437af4c148841e3b3b165f9e9e590b7"
 
 unpipe@1.0.0, unpipe@~1.0.0:
   version "1.0.0"
@@ -7103,6 +7164,94 @@ wordwrap@~0.0.2:
 wordwrap@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-1.0.0.tgz#27584810891456a4171c8d0226441ade90cbcaeb"
+
+workbox-background-sync@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/workbox-background-sync/-/workbox-background-sync-3.0.0.tgz#25fcaf8b7f096a0d7f677001d8c7224271345519"
+  dependencies:
+    workbox-core "^3.0.0"
+
+workbox-broadcast-cache-update@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/workbox-broadcast-cache-update/-/workbox-broadcast-cache-update-3.0.0.tgz#7700d701bcebc59acc650b42ec131bdb53406db7"
+  dependencies:
+    workbox-core "^3.0.0"
+
+workbox-build@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/workbox-build/-/workbox-build-3.0.0.tgz#1913c03ff86b1ff2b59d7e7fc29246148b0dab2c"
+  dependencies:
+    babel-runtime "^6.26.0"
+    common-tags "^1.4.0"
+    fs-extra "^4.0.2"
+    glob "^7.1.2"
+    joi "^11.1.1"
+    lodash.template "^4.4.0"
+    pretty-bytes "^4.0.2"
+    workbox-background-sync "^3.0.0"
+    workbox-broadcast-cache-update "^3.0.0"
+    workbox-cache-expiration "^3.0.0"
+    workbox-cacheable-response "^3.0.0"
+    workbox-core "^3.0.0"
+    workbox-google-analytics "^3.0.0"
+    workbox-precaching "^3.0.0"
+    workbox-routing "^3.0.0"
+    workbox-strategies "^3.0.0"
+    workbox-sw "^3.0.0"
+
+workbox-cache-expiration@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/workbox-cache-expiration/-/workbox-cache-expiration-3.0.0.tgz#c47e8f1a39c8346a832691880fa149a7323a380e"
+  dependencies:
+    workbox-core "^3.0.0"
+
+workbox-cacheable-response@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/workbox-cacheable-response/-/workbox-cacheable-response-3.0.0.tgz#2bf09af3af708667786614ead1736c4137a46eac"
+  dependencies:
+    workbox-core "^3.0.0"
+
+workbox-core@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/workbox-core/-/workbox-core-3.0.0.tgz#39ff1c249ec2b1b39f6df0a1f6042d0f660ef8dc"
+
+workbox-google-analytics@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/workbox-google-analytics/-/workbox-google-analytics-3.0.0.tgz#9ce8f21cebb5a268121ec67607c75ecb20fc0b74"
+  dependencies:
+    workbox-background-sync "^3.0.0"
+    workbox-core "^3.0.0"
+    workbox-routing "^3.0.0"
+    workbox-strategies "^3.0.0"
+
+workbox-precaching@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/workbox-precaching/-/workbox-precaching-3.0.0.tgz#3ac6b54de5476eccf7f6f6b7153d23ee2b143a75"
+  dependencies:
+    workbox-core "^3.0.0"
+
+workbox-routing@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/workbox-routing/-/workbox-routing-3.0.0.tgz#0554b38eba0acbb358a067eb7b5ed9afa5048586"
+  dependencies:
+    workbox-core "^3.0.0"
+
+workbox-strategies@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/workbox-strategies/-/workbox-strategies-3.0.0.tgz#aa9a770a793c45ceb4c3e3e5c17eb01493d6d5af"
+  dependencies:
+    workbox-core "^3.0.0"
+
+workbox-sw@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/workbox-sw/-/workbox-sw-3.0.0.tgz#3380c95007dfd1e18e4ff11a31ac64d124c8e1f7"
+
+workbox-webpack-plugin@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/workbox-webpack-plugin/-/workbox-webpack-plugin-3.0.0.tgz#d05e8df0ca23e25638bbd3b37691018c18052745"
+  dependencies:
+    json-stable-stringify "^1.0.1"
+    workbox-build "^3.0.0"
 
 wrap-ansi@^2.0.0:
   version "2.1.0"
