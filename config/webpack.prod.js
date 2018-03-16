@@ -1,7 +1,7 @@
 const webpack = require("webpack");
 const merge = require("webpack-merge");
-const common = require("./webpack.common.js");
 const workboxPlugin = require("workbox-webpack-plugin");
+const common = require("./webpack.common.js");
 
 const config = merge(common, {
   devtool: "source-map",
@@ -20,7 +20,7 @@ const config = merge(common, {
     new workboxPlugin.GenerateSW({
       swDest: "service-worker.js",
       clientsClaim: true,
-      skipWaiting: true,
+      skipWaiting: true
     })
   ]
 });
