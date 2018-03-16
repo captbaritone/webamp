@@ -1,5 +1,4 @@
 import invariant from "invariant";
-import jsmediatags from "jsmediatags/dist/jsmediatags";
 
 export function genMediaTags(file) {
   invariant(
@@ -11,14 +10,24 @@ export function genMediaTags(file) {
     file = `${location.protocol}//${location.host}${location.pathname}${file}`;
   }
   return new Promise((resolve, reject) => {
-    try {
-      jsmediatags.read(file, { onSuccess: resolve, onError: reject });
-    } catch (e) {
-      // Possibly jsmediatags could not find a parser for this file?
-      // Nothing to do.
-      // Consider removing this after https://github.com/aadsm/jsmediatags/issues/83 is resolved.
-      reject(e);
-    }
+    require.ensure(
+      ["jsmediatags/dist/jsmediatags"],
+      require => {
+        const jsmediatags = require("jsmediatags/dist/jsmediatags");
+        try {
+          jsmediatags.read(file, { onSuccess: resolve, onError: reject });
+        } catch (e) {
+          // Possibly jsmediatags could not find a parser for this file?
+          // Nothing to do.
+          // Consider removing this after https://github.com/aadsm/jsmediatags/issues/83 is resolved.
+          reject(e);
+        }
+      },
+      () => {
+        // The dependency failed to load
+      },
+      "jsmediatags"
+    );
   });
 }
 
