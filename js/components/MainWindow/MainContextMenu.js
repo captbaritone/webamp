@@ -26,15 +26,21 @@ const MainContextMenu = props => (
     <Parent label="Play">
       <Node onClick={props.openMediaFileDialog} label="File..." />
       {props.filePickers &&
-        props.filePickers.map((picker, i) => (
-          <Node
-            key={i}
-            onClick={async () => {
-              props.loadMediaFiles(await picker.filePicker(), LOAD_STYLE.PLAY);
-            }}
-            label={picker.contextMenuName}
-          />
-        ))}
+        props.filePickers.map(
+          (picker, i) =>
+            (!picker.shouldShow || picker.shouldShow()) && (
+              <Node
+                key={i}
+                onClick={async () => {
+                  props.loadMediaFiles(
+                    await picker.filePicker(),
+                    LOAD_STYLE.PLAY
+                  );
+                }}
+                label={picker.contextMenuName}
+              />
+            )
+        )}
     </Parent>
     <Parent label="Skins">
       <Node onClick={props.openSkinFileDialog} label="Load Skin..." />

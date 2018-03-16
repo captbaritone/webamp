@@ -69,7 +69,8 @@ Raven.context(() => {
             url: file.link,
             defaultName: file.name
           }));
-        }
+        },
+        shouldShow: () => !!window.Dropbox
       }
     ],
     enableHotkeys: true,
