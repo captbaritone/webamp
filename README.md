@@ -6,9 +6,9 @@ A reimplementation of Winamp 2.9 in HTML5 and JavaScript.
 
 **As seen on [TechCrunch], [Motherboard], [Gizmodo], Hacker News ([1], [2], [3]), and [elsewhere](./press.md).**
 
-## [Give it a try!](https://jordaneldredge.com/projects/winamp2-js/)
+## [Give it a try!](https://webamp.org)
 
-[![Screenshot of Winamp2-js](./preview.png)](https://jordaneldredge.com/projects/winamp2-js/)
+[![Screenshot of Winamp2-js](./preview.png)](https://webamp.org)
 
 Works in modern versions of Edge, Firefox, Safari and Chrome. IE is [not
 supported](http://caniuse.com/#feat=audio-api).
