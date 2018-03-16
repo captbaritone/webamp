@@ -13,7 +13,7 @@
     "test": "jest --coverage",
     "travis-tests": "jest --coverage && npm run lint && npm run build",
     "tdd": "jest --watch",
-    "format": "prettier --write experiments/**/*.js js/**/*.js css/**/*.css webpack.config.js webpack.production.config.js",
+    "format": "prettier --write experiments/**/*.js js/**/*.js css/**/*.css",
     "build-skin": "rm skins/base-2.91.wsz && cd skins/base-2.91 && zip -x .* -x 'Skining Updates.txt' -r ../base-2.91.wsz .",
     "skin-info": "unzip -vl skins/base-2.91.wsz"
   },
