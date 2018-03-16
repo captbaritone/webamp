@@ -38,7 +38,6 @@ export default class LoadQueue {
       }
       this._avaliableThreads--;
       const t = this._queue.pop();
-      console.log({ priority: t.priority() });
       const promise = t.task();
       invariant(
         typeof promise.then === "function",
