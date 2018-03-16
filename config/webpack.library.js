@@ -1,12 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  devtool: "source-map",
-  resolve: {
-    extensions: [".js"]
-  },
   module: {
     rules: [
       {
@@ -17,11 +12,14 @@ module.exports = {
         test: /\.js$/,
         exclude: /(node_modules)/,
         use: {
-          loader: "babel-loader"
+          loader: "babel-loader",
+          options: {
+            forceEnv: "library"
+          }
         }
       },
       {
-        test: /\.(wsz|mp3|png|ico|jpg|svg)$/,
+        test: /\.(wsz|mp3)$/,
         use: [
           {
             loader: "file-loader",
@@ -37,20 +35,23 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      SENTRY_DSN: JSON.stringify(
-        "https://c8c64ef822f54240901bc64f88c234d8@sentry.io/146022"
-      )
+      "process.env": {
+        NODE_ENV: JSON.stringify("production")
+      }
     }),
-    new HtmlWebpackPlugin({
-      template: "./index.html"
+    new webpack.optimize.UglifyJsPlugin({
+      minimize: true,
+      include: /\.min\.js$/
     })
   ],
   entry: {
-    winamp: ["./js/index.js"]
+    bundle: "./js/winamp.js",
+    "bundle.min": "./js/winamp.js"
   },
   output: {
-    filename: "[name]-[hash].js",
-    publicPath: "/",
-    path: path.resolve(__dirname, "built")
+    path: path.resolve(__dirname, "../built"),
+    filename: "[name].js",
+    library: "winamp2js",
+    libraryTarget: "umd"
   }
 };
