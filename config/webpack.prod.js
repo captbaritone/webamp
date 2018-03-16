@@ -15,6 +15,7 @@ const config = merge(common, {
       )
     }),
     new webpack.optimize.UglifyJsPlugin({
+      // TODO: Is this needed with the devtool setting above?
       sourceMap: true
     }),
     new workboxPlugin.GenerateSW({
