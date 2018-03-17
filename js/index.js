@@ -19,6 +19,12 @@ import {
 
 Raven.config(sentryDsn).install();
 
+// Don't prompt user to install Winamp2-js. It's probably not
+// what they want.
+window.addEventListener("beforeinstallprompt", e => {
+  e.preventDefault();
+});
+
 // Requires Dropbox's Chooser to be loaded on the page
 function genAudioFileUrlsFromDropbox() {
   return new Promise((resolve, reject) => {
