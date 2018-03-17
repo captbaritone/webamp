@@ -43,7 +43,9 @@ import {
   SET_AVALIABLE_SKINS,
   ADD_TRACK_FROM_URL,
   CLOSE_GEN_WINDOW,
-  OPEN_GEN_WINDOW
+  OPEN_GEN_WINDOW,
+  NETWORK_CONNECTED,
+  NETWORK_DISCONNECTED
 } from "../actionTypes";
 
 import { arrayWith, arrayWithout } from "../utils";
@@ -278,6 +280,17 @@ const media = (state, action) => {
   }
 };
 
+const network = (state = { connected: true }, action) => {
+  switch (action.type) {
+    case NETWORK_CONNECTED:
+      return { ...state, connected: true };
+    case NETWORK_DISCONNECTED:
+      return { ...state, connected: false };
+    default:
+      return state;
+  }
+};
+
 const reducer = combineReducers({
   userInput,
   windows,
@@ -285,7 +298,8 @@ const reducer = combineReducers({
   settings,
   equalizer,
   playlist,
-  media
+  media,
+  network
 });
 
 export default reducer;

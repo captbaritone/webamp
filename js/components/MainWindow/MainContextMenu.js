@@ -28,7 +28,7 @@ const MainContextMenu = props => (
       {props.filePickers &&
         props.filePickers.map(
           (picker, i) =>
-            (!picker.shouldShow || picker.shouldShow()) && (
+            (props.networkConnected || !picker.requiresNetwork) && (
               <Node
                 key={i}
                 onClick={async () => {
@@ -59,7 +59,8 @@ const MainContextMenu = props => (
 );
 
 const mapStateToProps = state => ({
-  avaliableSkins: state.settings.avaliableSkins
+  avaliableSkins: state.settings.avaliableSkins,
+  networkConnected: state.network.connected
 });
 
 const mapDispatchToProps = {

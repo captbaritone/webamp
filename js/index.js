@@ -76,7 +76,7 @@ Raven.context(() => {
             defaultName: file.name
           }));
         },
-        shouldShow: () => !!window.Dropbox
+        requiresNetwork: true
       }
     ],
     enableHotkeys: true,

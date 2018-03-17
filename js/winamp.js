@@ -9,7 +9,11 @@ import Media from "./media";
 import { setSkinFromUrl, loadMediaFiles } from "./actionCreators";
 import { LOAD_STYLE } from "./constants";
 
-import { SET_AVALIABLE_SKINS } from "./actionTypes";
+import {
+  SET_AVALIABLE_SKINS,
+  NETWORK_CONNECTED,
+  NETWORK_DISCONNECTED
+} from "./actionTypes";
 
 // Return a promise that resolves when the store matches a predicate.
 const storeHas = (store, predicate) =>
@@ -46,6 +50,16 @@ class Winamp {
 
     this.media = new Media();
     this.store = getStore(this.media, this.options.__initialState);
+    this.store.dispatch({
+      type: navigator.onLine ? NETWORK_CONNECTED : NETWORK_DISCONNECTED
+    });
+
+    window.addEventListener("online", () =>
+      this.store.dispatch({ type: NETWORK_CONNECTED })
+    );
+    window.addEventListener("offline", () =>
+      this.store.dispatch({ type: NETWORK_DISCONNECTED })
+    );
 
     this.store.dispatch(setSkinFromUrl(this.options.initialSkin.url));
 
