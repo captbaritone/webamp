@@ -19,6 +19,9 @@ const config = merge(common, {
       sourceMap: true
     }),
     new workboxPlugin.GenerateSW({
+      // Note: CloudFlare is configued to not cache this file, as suggested in the:
+      // "Avoid changing the URL of your service worker script" sectio of:
+      // https://developers.google.com/web/fundamentals/primers/service-workers/lifecycle
       swDest: "service-worker.js",
       clientsClaim: true,
       skipWaiting: true
