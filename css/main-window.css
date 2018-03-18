@@ -153,10 +153,13 @@
 
 #winamp2-js #visualizer {
     position: absolute;
-    width: 76px;
-    height: 16px;
     top: 43px;
     left: 24px;
+}
+
+#winamp2-js .shade #visualizer {
+    top: 5px;
+    left: 79px;
 }
 
 #winamp2-js .stop #visualizer {

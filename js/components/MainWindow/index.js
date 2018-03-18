@@ -104,8 +104,8 @@ export class MainWindow extends React.Component {
             className={classnames({ selected: working })}
           />
           <Time />
-          <Visualizer analyser={this.props.mediaPlayer._analyser} />
         </div>
+        <Visualizer analyser={this.props.mediaPlayer._analyser} />
         <div className="media-info">
           <Marquee />
           <Kbps />

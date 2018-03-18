@@ -112,13 +112,19 @@ exports[`MainWindow renders to snapshot 1`] = `
         id="second-second-digit"
       />
     </div>
-    <canvas
-      height="32"
-      id="visualizer"
-      onClick={[Function]}
-      width="152"
-    />
   </div>
+  <canvas
+    height={32}
+    id="visualizer"
+    onClick={[Function]}
+    style={
+      Object {
+        "height": 16,
+        "width": 76,
+      }
+    }
+    width={152}
+  />
   <div
     className="media-info"
   >
