@@ -22,6 +22,7 @@ Raven.config(sentryDsn).install();
 // Don't prompt user to install Winamp2-js. It's probably not
 // what they want.
 window.addEventListener("beforeinstallprompt", e => {
+  // TODO: we could add this as a context menu item, or something.
   e.preventDefault();
 });
 
