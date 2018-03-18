@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { BANDS, WINDOWS } from "../constants";
+import { BANDS } from "../constants";
 import {
   PLAY,
   IS_PLAYING,
@@ -11,7 +11,6 @@ import {
   SET_BAND_VALUE,
   SET_FOCUS,
   SET_BAND_FOCUS,
-  SET_FOCUSED_WINDOW,
   SET_MEDIA,
   SET_SCRUB_POSITION,
   SET_SKIN_DATA,
@@ -20,9 +19,6 @@ import {
   STEP_MARQUEE,
   STOP_WORKING,
   TOGGLE_DOUBLESIZE_MODE,
-  TOGGLE_EQUALIZER_WINDOW,
-  CLOSE_EQUALIZER_WINDOW,
-  TOGGLE_PLAYLIST_WINDOW,
   SET_EQ_AUTO,
   SET_EQ_ON,
   SET_EQ_OFF,
@@ -42,14 +38,12 @@ import {
   PLAYLIST_SIZE_CHANGED,
   SET_AVALIABLE_SKINS,
   ADD_TRACK_FROM_URL,
-  CLOSE_GEN_WINDOW,
-  OPEN_GEN_WINDOW,
   NETWORK_CONNECTED,
   NETWORK_DISCONNECTED
 } from "../actionTypes";
 
-import { arrayWith, arrayWithout } from "../utils";
 import playlist from "./playlist";
+import windows from "./windows";
 
 const defaultUserInput = {
   focus: null,
@@ -72,39 +66,6 @@ export const userInput = (state = defaultUserInput, action) => {
       return { ...state, userMessage: action.message };
     case UNSET_USER_MESSAGE:
       return { ...state, userMessage: null };
-    default:
-      return state;
-  }
-};
-
-const defaultWindowsState = {
-  focused: WINDOWS.MAIN,
-  equalizer: true,
-  playlist: true,
-  // openGenWindows: ["AVS_WINDOW"]
-  openGenWindows: []
-};
-
-const windows = (state = defaultWindowsState, action) => {
-  switch (action.type) {
-    case SET_FOCUSED_WINDOW:
-      return { ...state, focused: action.window };
-    case TOGGLE_EQUALIZER_WINDOW:
-      return { ...state, equalizer: !state.equalizer };
-    case CLOSE_EQUALIZER_WINDOW:
-      return { ...state, equalizer: false };
-    case TOGGLE_PLAYLIST_WINDOW:
-      return { ...state, playlist: !state.playlist };
-    case CLOSE_GEN_WINDOW:
-      return {
-        ...state,
-        openGenWindows: arrayWithout(state.openGenWindow, action.windowId)
-      };
-    case OPEN_GEN_WINDOW:
-      return {
-        ...state,
-        openGenWindows: arrayWith(state.openGenWindow, action.windowId)
-      };
     default:
       return state;
   }
