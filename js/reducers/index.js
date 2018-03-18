@@ -28,7 +28,7 @@ import {
   SET_EQ_OFF,
   TOGGLE_LLAMA_MODE,
   TOGGLE_REPEAT,
-  TOGGLE_SHADE_MODE,
+  TOGGLE_MAIN_SHADE_MODE,
   TOGGLE_EQUALIZER_SHADE_MODE,
   TOGGLE_PLAYLIST_SHADE_MODE,
   TOGGLE_SHUFFLE,
@@ -116,7 +116,7 @@ const defaultDisplayState = {
   loading: true,
   llama: false,
   closed: false,
-  shade: false,
+  mainShade: false,
   equalizerShade: false,
   playlistShade: false,
   working: false,
@@ -134,8 +134,8 @@ const display = (state = defaultDisplayState, action) => {
   switch (action.type) {
     case TOGGLE_DOUBLESIZE_MODE:
       return { ...state, doubled: !state.doubled };
-    case TOGGLE_SHADE_MODE:
-      return { ...state, shade: !state.shade };
+    case TOGGLE_MAIN_SHADE_MODE:
+      return { ...state, mainShade: !state.mainShade };
     case TOGGLE_EQUALIZER_SHADE_MODE:
       return { ...state, equalizerShade: !state.equalizerShade };
     case TOGGLE_PLAYLIST_SHADE_MODE:

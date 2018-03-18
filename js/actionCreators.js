@@ -55,7 +55,7 @@ import {
   DRAG_SELECTED,
   SET_MEDIA_TAGS,
   SET_MEDIA_DURATION,
-  TOGGLE_SHADE_MODE,
+  TOGGLE_MAIN_SHADE_MODE,
   TOGGLE_PLAYLIST_SHADE_MODE,
   MEDIA_TAG_REQUEST_INITIALIZED,
   MEDIA_TAG_REQUEST_FAILED,
@@ -474,7 +474,7 @@ export function toggleEqualizerShadeMode() {
 }
 
 export function toggleMainWindowShadeMode() {
-  return { type: TOGGLE_SHADE_MODE };
+  return { type: TOGGLE_MAIN_SHADE_MODE };
 }
 
 export function togglePlaylistShadeMode() {

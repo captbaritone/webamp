@@ -57,7 +57,7 @@ export class MainWindow extends React.Component {
       focused,
       loading,
       doubled,
-      shade,
+      mainShade,
       llama,
       status,
       working,
@@ -70,11 +70,11 @@ export class MainWindow extends React.Component {
       stop: status === "STOPPED",
       pause: status === "PAUSED",
       selected: focused === WINDOWS.MAIN,
+      shade: mainShade,
       draggable: true,
       loading,
       doubled,
-      llama,
-      shade
+      llama
     });
 
     return (
@@ -91,7 +91,7 @@ export class MainWindow extends React.Component {
           onDoubleClick={this.props.toggleMainWindowShadeMode}
         >
           <MainContextMenu filePickers={filePickers} />
-          {shade && <MiniTime />}
+          {mainShade && <MiniTime />}
           <Minimize />
           <Shade />
           <Close />
@@ -139,10 +139,10 @@ export class MainWindow extends React.Component {
 const mapStateToProps = state => {
   const {
     media: { status },
-    display: { loading, doubled, shade, llama, working },
+    display: { loading, doubled, mainShade, llama, working },
     windows: { focused }
   } = state;
-  return { status, loading, doubled, shade, llama, working, focused };
+  return { status, loading, doubled, mainShade, llama, working, focused };
 };
 
 const mapDispatchToProps = {
