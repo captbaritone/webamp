@@ -170,7 +170,7 @@ class Visualizer extends React.Component {
       Math.floor(this.bufferLength / this._width()) * PIXEL_DENSITY;
 
     // The max amplitude is half the height
-    const h = this._renderHeight();
+    const h = this._height() / 2;
 
     this.canvasCtx.beginPath();
 
