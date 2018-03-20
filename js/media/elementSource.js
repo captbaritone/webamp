@@ -50,8 +50,34 @@ export default class ElementSource {
       this.trigger("positionChange");
     });
 
-    this._audio.addEventListener("error", () => {
-      //
+    this._audio.addEventListener("error", e => {
+      switch (this._audio.error.code) {
+        case 1:
+          // The fetching of the associated resource was aborted by the user's request.
+          console.error("MEDIA_ERR_ABORTED", e);
+          break;
+        case 2:
+          console.error("MEDIA_ERR_NETWORK", e);
+          // Some kind of network error occurred which prevented the media from being successfully fetched, despite having previously been available.
+          break;
+        case 3:
+          // Despite having previously been determined to be usable, an error occurred while trying to decode the media resource, resulting in an error.
+
+          // There is a bug in Chrome where improperly terminated mp3s can cuase this error.
+          // https://bugs.chromium.org/p/chromium/issues/detail?id=794782
+          // Related: Commit f44e826c83c74fef04c2c448af30cfb353b28312
+          console.error("PIPELINE_ERROR_DECODE", e);
+          break;
+        case 4:
+          console.error("MEDIA_ERR_SRC_NOT_SUPPORTED", e);
+          // The associated resource or media provider object (such as a MediaStream) has been found to be unsuitable.
+          break;
+      }
+      // Rather than just geting stuck in this error state, we can just pretend this is
+      // the end of the track.
+
+      this.trigger("ended");
+      this._setStatus(STATUS.STOPPED);
     });
 
     this._source = this._context.createMediaElementSource(this._audio);
