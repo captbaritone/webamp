@@ -45,7 +45,7 @@ class TrackCell extends React.Component {
     };
     return (
       <div
-        className={classnames({ selected, current })}
+        className={classnames("track-cell", { selected, current })}
         style={style}
         onClick={e => e.stopPropagation()}
         onMouseDown={this._onMouseDown}

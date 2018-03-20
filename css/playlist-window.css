@@ -65,14 +65,18 @@
 #winamp2-js .playlist-tracks {
     display: flex;
     flex: 1 0 auto;
-    font-size: 9px;
+    cursor: default;
+}
+
+#winamp2-js .playlist-tracks .track-cell {
+    height: 13px;
     line-height: 13px;
+    font-size: 9px;
     letter-spacing: 0.5px;
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     user-select: none;
-    cursor: default;
 }
 
 #winamp2-js .playlist-track-numbers > div,
