@@ -81,7 +81,6 @@ export default class ElementSource {
     });
 
     this._source = this._context.createMediaElementSource(this._audio);
-    //this._audio.loop = false;
     this._source.connect(destination);
   }
 
@@ -158,16 +157,6 @@ export default class ElementSource {
     // underlying source media.
     return this._context.sampleRate;
   }
-
-  /*
-  getLoop() {
-    return this._audio.loop;
-  }
-
-  setLoop(shouldLoop) {
-    this._audio.loop = shouldLoop;
-  }
-  */
 
   _setStatus(status) {
     this._status = status;
