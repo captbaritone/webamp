@@ -46,6 +46,7 @@ exports[`MainWindow renders to snapshot 1`] = `
     <div
       className=""
       id="shade"
+      onDoubleClick={[Function]}
       onMouseDown={[Function]}
       title="Toggle Windowshade Mode"
     />
