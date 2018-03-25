@@ -5,7 +5,8 @@ import {
   CLOSE_EQUALIZER_WINDOW,
   TOGGLE_PLAYLIST_WINDOW,
   CLOSE_GEN_WINDOW,
-  OPEN_GEN_WINDOW
+  OPEN_GEN_WINDOW,
+  UPDATE_WINDOW_POSITIONS
 } from "../actionTypes";
 
 import { arrayWith, arrayWithout } from "../utils";
@@ -15,7 +16,8 @@ const defaultWindowsState = {
   equalizer: true,
   playlist: true,
   // openGenWindows: ["AVS_WINDOW"]
-  openGenWindows: []
+  openGenWindows: [],
+  positions: {}
 };
 
 const windows = (state = defaultWindowsState, action) => {
@@ -37,6 +39,11 @@ const windows = (state = defaultWindowsState, action) => {
       return {
         ...state,
         openGenWindows: arrayWith(state.openGenWindow, action.windowId)
+      };
+    case UPDATE_WINDOW_POSITIONS:
+      return {
+        ...state,
+        positions: { ...state.positions, ...action.positions }
       };
     default:
       return state;

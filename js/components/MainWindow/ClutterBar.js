@@ -2,11 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
 
-import {
-  SET_FOCUS,
-  TOGGLE_DOUBLESIZE_MODE,
-  UNSET_FOCUS
-} from "../../actionTypes";
+import { SET_FOCUS, UNSET_FOCUS } from "../../actionTypes";
+import { toggleDoubleSizeMode } from "../../actionCreators";
 
 const ClutterBar = props => (
   <div id="clutter-bar">
@@ -31,7 +28,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   handleMouseDown: () => dispatch({ type: SET_FOCUS, input: "double" }),
   handleMouseUp: () => {
-    dispatch({ type: TOGGLE_DOUBLESIZE_MODE });
+    dispatch(toggleDoubleSizeMode());
     dispatch({ type: UNSET_FOCUS });
   }
 });

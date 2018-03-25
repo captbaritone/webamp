@@ -2,18 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
 
-import {
-  WINDOWS,
-  PLAYLIST_RESIZE_SEGMENT_WIDTH,
-  PLAYLIST_RESIZE_SEGMENT_HEIGHT,
-  MIN_PLAYLIST_WINDOW_WIDTH,
-  TRACK_HEIGHT
-} from "../../constants";
-import {
-  TOGGLE_PLAYLIST_WINDOW,
-  TOGGLE_PLAYLIST_SHADE_MODE,
-  SET_FOCUSED_WINDOW
-} from "../../actionTypes";
+import { WINDOWS, TRACK_HEIGHT } from "../../constants";
+import { TOGGLE_PLAYLIST_WINDOW, SET_FOCUSED_WINDOW } from "../../actionTypes";
 import {
   toggleVisualizerStyle,
   scrollUpFourTracks,
@@ -22,7 +12,7 @@ import {
   togglePlaylistShadeMode,
   scrollVolume
 } from "../../actionCreators";
-import { getScrollOffset } from "../../selectors";
+import { getScrollOffset, getPlaylistWindowPixelSize } from "../../selectors";
 
 import { clamp } from "../../utils";
 import DropTarget from "../DropTarget";
@@ -38,8 +28,6 @@ import TrackList from "./TrackList";
 import ScrollBar from "./ScrollBar";
 
 import "../../../css/playlist-window.css";
-
-const MIN_WINDOW_HEIGHT = 116;
 
 class PlaylistWindow extends React.Component {
   constructor(props) {
@@ -63,6 +51,7 @@ class PlaylistWindow extends React.Component {
       focusPlaylist,
       focused,
       playlistSize,
+      playlistWindowPixelSize,
       playlistShade,
       close,
       toggleShade
@@ -75,10 +64,8 @@ class PlaylistWindow extends React.Component {
       color: skinPlaylistStyle.normal,
       backgroundColor: skinPlaylistStyle.normalbg,
       fontFamily: `${skinPlaylistStyle.font}, Arial, sans-serif`,
-      height: `${MIN_WINDOW_HEIGHT +
-        playlistSize[1] * PLAYLIST_RESIZE_SEGMENT_HEIGHT}px`,
-      width: `${MIN_PLAYLIST_WINDOW_WIDTH +
-        playlistSize[0] * PLAYLIST_RESIZE_SEGMENT_WIDTH}px`
+      height: `${playlistWindowPixelSize.height}px`,
+      width: `${playlistWindowPixelSize.width}px`
     };
 
     const classes = classnames("window", "draggable", {
@@ -162,7 +149,7 @@ const mapDispatchToProps = {
     window: WINDOWS.PLAYLIST
   }),
   close: () => ({ type: TOGGLE_PLAYLIST_WINDOW }),
-  toggleShade: () => ({ type: TOGGLE_PLAYLIST_SHADE_MODE }),
+  toggleShade: togglePlaylistShadeMode,
   toggleVisualizerStyle,
   scrollUpFourTracks,
   scrollDownFourTracks,
@@ -183,6 +170,7 @@ const mapStateToProps = state => {
   return {
     offset: getScrollOffset(state),
     maxTrackIndex: trackOrder.length - 1,
+    playlistWindowPixelSize: getPlaylistWindowPixelSize(state),
     focused,
     skinPlaylistStyle,
     playlistSize,

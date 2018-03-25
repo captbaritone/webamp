@@ -11,14 +11,11 @@ import {
   reverseList,
   nextN,
   next,
-  previous
+  previous,
+  toggleDoubleSizeMode
 } from "./actionCreators";
 
-import {
-  TOGGLE_DOUBLESIZE_MODE,
-  TOGGLE_TIME_MODE,
-  TOGGLE_LLAMA_MODE
-} from "./actionTypes";
+import { TOGGLE_TIME_MODE, TOGGLE_LLAMA_MODE } from "./actionTypes";
 
 import { arraysAreEqual } from "./utils";
 
@@ -39,7 +36,7 @@ export default function(dispatch) {
       // Is CTRL depressed?
       switch (e.keyCode) {
         case 68: // CTRL+D
-          dispatch({ type: TOGGLE_DOUBLESIZE_MODE });
+          dispatch(toggleDoubleSizeMode());
           e.preventDefault(); // Supress the "Bookmark" action on windows.
           break;
         case 76: // CTRL+L FIXME

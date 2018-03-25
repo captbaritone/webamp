@@ -2,11 +2,14 @@ import { createSelector } from "reselect";
 import { denormalize, getTimeStr, clamp, percentToIndex } from "./utils";
 import {
   BANDS,
+  TRACK_HEIGHT,
+  PLAYLIST_RESIZE_SEGMENT_WIDTH,
   PLAYLIST_RESIZE_SEGMENT_HEIGHT,
-  TRACK_HEIGHT
+  MIN_PLAYLIST_WINDOW_WIDTH
 } from "./constants";
 import { createPlaylistURL } from "./playlistHtml";
 import * as fromPlaylist from "./reducers/playlist";
+import { generateGraph } from "./resizeUtils";
 
 export const getEqfData = state => {
   const { sliders } = state.equalizer;
@@ -227,4 +230,62 @@ export const getPlaylistURL = createSelector(
           )})`
       )
     })
+);
+
+export function getWindowPositions(state) {
+  return state.windows.positions;
+}
+
+const WINDOW_WIDTH = 275;
+const WINDOW_HEIGHT = 116;
+const DEFAUT_WINDOW_SIZE = {
+  height: WINDOW_HEIGHT,
+  width: WINDOW_WIDTH
+};
+const SHADE_WINDOW_HEIGHT = 14;
+
+export function getPlaylistWindowPixelSize(state) {
+  const { playlistSize } = state.display;
+  return {
+    height: WINDOW_HEIGHT + playlistSize[1] * PLAYLIST_RESIZE_SEGMENT_HEIGHT,
+    width:
+      MIN_PLAYLIST_WINDOW_WIDTH +
+      playlistSize[0] * PLAYLIST_RESIZE_SEGMENT_WIDTH
+  };
+}
+
+function getGenericWindowSize(size, shade, doubled) {
+  const doubledMultiplier = doubled ? 2 : 1;
+  return {
+    height: (shade ? SHADE_WINDOW_HEIGHT : size.height) * doubledMultiplier,
+    width: size.width * doubledMultiplier
+  };
+}
+
+export function getWindowSizes(state) {
+  const { doubled, mainShade, equalizerShade, playlistShade } = state.display;
+  const main = getGenericWindowSize(DEFAUT_WINDOW_SIZE, mainShade, doubled);
+  const equalizer = getGenericWindowSize(
+    DEFAUT_WINDOW_SIZE,
+    equalizerShade,
+    doubled
+  );
+  const playlist = getGenericWindowSize(
+    getPlaylistWindowPixelSize(state),
+    playlistShade,
+    false // The playlist cannot be doubled
+  );
+  return { main, equalizer, playlist };
+}
+
+export const getWindowGraph = createSelector(
+  getWindowPositions,
+  getWindowSizes,
+  (windowPositions, windowSizes) => {
+    const windowData = [];
+    for (const key of Object.keys(windowPositions)) {
+      windowData.push({ key, ...windowPositions[key], ...windowSizes[key] });
+    }
+    return generateGraph(windowData);
+  }
 );

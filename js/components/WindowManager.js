@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
 import {
   snapDiffManyToMany,
@@ -10,6 +11,8 @@ import {
   applyDiff,
   applyMultipleDiffs
 } from "../snapUtils";
+import { getWindowPositions } from "../selectors";
+import { updateWindowPositions } from "../actionCreators";
 
 const WINDOW_HEIGHT = 116;
 const WINDOW_WIDTH = 275;
@@ -25,7 +28,6 @@ class WindowManager extends React.Component {
   constructor(props) {
     super(props);
     this.windowNodes = {};
-    this.state = {};
     this.getRef = this.getRef.bind(this);
     this.handleMouseDown = this.handleMouseDown.bind(this);
     this.centerWindows = this.centerWindows.bind(this);
@@ -62,17 +64,17 @@ class WindowManager extends React.Component {
       width = container.scrollWidth;
       height = container.scrollHeight;
     }
-    const state = {};
+    const windowPositions = {};
     const keys = this.windowKeys();
     const totalHeight = keys.length * WINDOW_HEIGHT;
     keys.forEach((key, i) => {
       const offset = WINDOW_HEIGHT * i;
-      state[key] = {
-        left: offsetLeft + (width / 2 - WINDOW_WIDTH / 2),
-        top: offsetTop + (height / 2 - totalHeight / 2 + offset)
+      windowPositions[key] = {
+        x: offsetLeft + (width / 2 - WINDOW_WIDTH / 2),
+        y: offsetTop + (height / 2 - totalHeight / 2 + offset)
       };
     });
-    this.setState(state);
+    this.props.updateWindowPositions(windowPositions);
   }
 
   getRef(key, node) {
@@ -154,16 +156,12 @@ class WindowManager extends React.Component {
 
       const finalDiff = applyMultipleDiffs(proposedDiff, snapDiff, withinDiff);
 
-      const stateDiff = moving.reduce((diff, window) => {
-        const newWindowLocation = applyDiff(window, finalDiff);
-        diff[window.key] = {
-          top: newWindowLocation.y,
-          left: newWindowLocation.x
-        };
+      const windowPositionDiff = moving.reduce((diff, window) => {
+        diff[window.key] = applyDiff(window, finalDiff);
         return diff;
       }, {});
 
-      this.setState(stateDiff);
+      this.props.updateWindowPositions(windowPositionDiff);
     };
 
     const removeListeners = () => {
@@ -198,13 +196,13 @@ class WindowManager extends React.Component {
     return (
       <div style={parentStyle}>
         {this.windowKeys().map(key => {
-          const position = this.state[key];
+          const position = this.props.windowPositions[key];
           return (
             position && (
               <div
                 onMouseDown={e => this.handleMouseDown(key, e)}
                 ref={node => this.getRef(key, node)}
-                style={{ ...style, ...position }}
+                style={{ ...style, left: position.x, top: position.y }}
                 key={key}
               >
                 {this.props.windows[key]}
@@ -222,4 +220,12 @@ WindowManager.propTypes = {
   container: PropTypes.instanceOf(Element)
 };
 
-export default WindowManager;
+const mapStateToProps = state => ({
+  windowPositions: getWindowPositions(state)
+});
+
+const mapDispatchToProps = {
+  updateWindowPositions
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(WindowManager);

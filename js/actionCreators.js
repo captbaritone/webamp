@@ -16,7 +16,10 @@ import {
   getPlaylistURL,
   getSelectedTrackObjects,
   getTracks,
-  getTrackIsVisibleFunction
+  getTrackIsVisibleFunction,
+  getWindowGraph,
+  getWindowPositions,
+  getWindowSizes
 } from "./selectors";
 
 import {
@@ -59,10 +62,14 @@ import {
   TOGGLE_PLAYLIST_SHADE_MODE,
   MEDIA_TAG_REQUEST_INITIALIZED,
   MEDIA_TAG_REQUEST_FAILED,
-  PLAYLIST_SIZE_CHANGED
+  PLAYLIST_SIZE_CHANGED,
+  UPDATE_WINDOW_POSITIONS,
+  TOGGLE_DOUBLESIZE_MODE
 } from "./actionTypes";
 
 import LoadQueue from "./loadQueue";
+import { getPositionDiff } from "./resizeUtils";
+import { applyDiff } from "./snapUtils";
 
 // Lower is better
 const DURATION_VISIBLE_PRIORITY = 5;
@@ -469,16 +476,57 @@ export function downloadPreset() {
   };
 }
 
+// Dispatch an action and, if needed rearrange the windows to preserve
+// the existing edge relationship.
+//
+// Works by checking the edges before the action is dispatched. Then,
+// after disatching, calculating what position change would be required
+// to restore those relationships.
+function withWindowGraphIntegrity(action) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const graph = getWindowGraph(state);
+    const originalSizes = getWindowSizes(state);
+
+    dispatch(action);
+
+    const newSizes = getWindowSizes(getState());
+    const sizeDiff = {};
+    for (const window of Object.keys(newSizes)) {
+      const original = originalSizes[window];
+      const current = newSizes[window];
+      sizeDiff[window] = {
+        height: current.height - original.height,
+        width: current.width - original.width
+      };
+    }
+
+    const positionDiff = getPositionDiff(graph, sizeDiff);
+    const windowPositions = getWindowPositions(state);
+
+    const newPositions = {};
+    for (const key of Object.keys(windowPositions)) {
+      newPositions[key] = applyDiff(windowPositions[key], positionDiff[key]);
+    }
+
+    dispatch(updateWindowPositions(newPositions));
+  };
+}
+
+export function toggleDoubleSizeMode() {
+  return withWindowGraphIntegrity({ type: TOGGLE_DOUBLESIZE_MODE });
+}
+
 export function toggleEqualizerShadeMode() {
-  return { type: TOGGLE_EQUALIZER_SHADE_MODE };
+  return withWindowGraphIntegrity({ type: TOGGLE_EQUALIZER_SHADE_MODE });
 }
 
 export function toggleMainWindowShadeMode() {
-  return { type: TOGGLE_MAIN_SHADE_MODE };
+  return withWindowGraphIntegrity({ type: TOGGLE_MAIN_SHADE_MODE });
 }
 
 export function togglePlaylistShadeMode() {
-  return { type: TOGGLE_PLAYLIST_SHADE_MODE };
+  return withWindowGraphIntegrity({ type: TOGGLE_PLAYLIST_SHADE_MODE });
 }
 
 export function closeEqualizerWindow() {
@@ -624,4 +672,8 @@ export function downloadHtmlPlaylist() {
     const uri = getPlaylistURL(getState());
     downloadURI(uri, "Winamp Playlist.html");
   };
+}
+
+export function updateWindowPositions(positions) {
+  return { type: UPDATE_WINDOW_POSITIONS, positions };
 }
