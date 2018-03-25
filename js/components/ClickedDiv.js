@@ -17,12 +17,12 @@ export default class ClickedDiv extends React.Component {
       <div
         {...this.props}
         className={classnames(this.props.className, this.state)}
-        onMouseDown={() => {
+        onMouseDown={e => {
           if (!this.state.clicked) {
             this.setState({ clicked: true });
           }
           if (this.props.onMouseDown) {
-            this.props.onMouseDown();
+            this.props.onMouseDown(e);
           }
         }}
       />
