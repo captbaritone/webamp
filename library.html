@@ -6,22 +6,22 @@
 </head>
 
 <body>
-    <div id='winamp2-js'></div>
-    <script src="./built/winamp.bundle.js"></script>
+    <div id='app'></div>
+    <script src="./built/winamp.bundle.min.js"></script>
     <script>
         const Winamp = window.winamp2js;
         new Winamp({
             initialTracks: [{
                 metaData: {
-                    artits: "DJ Mike Llama",
+                    artist: "DJ Mike Llama",
                     title: "Llama Whippin' Intro"
                 },
-                url: "https://d38dnrh1liu4f5.cloudfront.net/projects/winamp2-js/mp3/llama-2.91.mp3"
+                url: "./mp3/llama-2.91.mp3"
             }],
             initialSkin: {
-                url: "https://d38dnrh1liu4f5.cloudfront.net/projects/winamp2-js/skins/base-2.91.wsz"
+                url: "./skins/base-2.91.wsz"
             },
-        }).renderWhenReady(document.getElementById('winamp2-js'));
+        }).renderWhenReady(document.getElementById('app'));
     </script>
 </body>
 
