@@ -3,6 +3,10 @@
   "version": "0.0.5",
   "description": "Winamp 2 implemented in HTML5 and JavaScript",
   "main": "built/winamp.bundle.js",
+  "files": [
+    "built/winamp.bundle.js",
+    "built/winamp.bundle.min.js"
+  ],
   "scripts": {
     "lint": "eslint .",
     "build": "webpack --config=config/webpack.prod.js",
