@@ -8,6 +8,7 @@ const Shade = props => (
   <ClickedDiv
     id="shade"
     onMouseDown={props.handleClick}
+    onDoubleClick={e => e.stopPropagation()}
     title="Toggle Windowshade Mode"
   />
 );
