@@ -20,20 +20,15 @@
     ],
     "react"
   ],
-  "plugins": [
-    "transform-object-rest-spread"
-  ],
+  "plugins": ["transform-object-rest-spread"],
   "env": {
     "test": {
-      "presets": [
-        "react"
-      ],
-      "plugins": [
-        "transform-es2015-modules-commonjs"
-      ]
+      "presets": ["react"],
+      "plugins": ["transform-es2015-modules-commonjs"]
     },
     "library": {
       "plugins": [
+        "babel-plugin-remove-webpack",
         "babel-plugin-transform-runtime"
       ]
     }

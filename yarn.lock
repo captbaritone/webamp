@@ -536,6 +536,10 @@ babel-plugin-jest-hoist@^22.2.0:
   version "22.2.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-jest-hoist/-/babel-plugin-jest-hoist-22.2.0.tgz#bd34f39d652406669713b8c89e23ef25c890b993"
 
+babel-plugin-remove-webpack@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-remove-webpack/-/babel-plugin-remove-webpack-1.1.0.tgz#82925cab871230c0c6b82cf67a3af243c094d1d6"
+
 babel-plugin-syntax-async-functions@^6.8.0:
   version "6.13.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-syntax-async-functions/-/babel-plugin-syntax-async-functions-6.13.0.tgz#cad9cad1191b5ad634bf30ae0872391e0647be95"
