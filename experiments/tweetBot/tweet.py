@@ -20,20 +20,23 @@ import urllib
 import hashlib
 import boto3
 import twitter
+from PIL import Image
 from docopt import docopt
 from sets import Set
 from collections import defaultdict
 
 from config import CONFIG
 
-LOCAL_LOG_PATH = "./action_log.json";
+LOCAL_LOG_PATH = "./action_log.json"
 
 LOCKED = False
+
 
 class ActionLog():
     def __init__(self):
         s3 = boto3.resource('s3')
-        s3.meta.client.download_file('winamp2-js-skins', "action_log.json", LOCAL_LOG_PATH)
+        s3.meta.client.download_file(
+            'winamp2-js-skins', "action_log.json", LOCAL_LOG_PATH)
         with open(LOCAL_LOG_PATH, 'r') as f:
             self.action_log = json.load(f)
 
@@ -49,7 +52,8 @@ class ActionLog():
         with open(LOCAL_LOG_PATH, 'w') as f:
             json.dump(self.action_log, f)
         s3 = boto3.resource('s3')
-        s3.meta.client.upload_file(LOCAL_LOG_PATH, 'winamp2-js-skins', "action_log.json")
+        s3.meta.client.upload_file(
+            LOCAL_LOG_PATH, 'winamp2-js-skins', "action_log.json")
         LOCKED = False
 
 
@@ -159,7 +163,8 @@ def review():
         if(res is "q"):
             return
         elif(res is "y"):
-            dispatch({"type": "APPROVED_SKIN", "md5": md5, "skin_path": skin_path})
+            dispatch({"type": "APPROVED_SKIN",
+                      "md5": md5, "skin_path": skin_path})
             print "Approved %s" % skin_name
         elif(res is "n"):
             dispatch({"type": "REJECTED_SKIN", "md5": md5})
@@ -195,7 +200,8 @@ def main(dry):
     if(not skin_url):
         print "Uploading to S3..."
         s3 = boto3.resource('s3')
-        s3.meta.client.upload_file(skin_path, 'winamp2-js-skins', skin_name, {'ACL': 'public-read'})
+        s3.meta.client.upload_file(
+            skin_path, 'winamp2-js-skins', skin_name, {'ACL': 'public-read'})
 
         skin_url = "https://s3-us-west-2.amazonaws.com/winamp2-js-skins/%s" % skin_name
         dispatch({"type": "UPLOADED_SKIN", "md5": md5, "skin_url": skin_url})
@@ -208,11 +214,21 @@ def main(dry):
         print "URL is no good. Aborting."
         return
 
+    # Trick Twitter into keeping the skin a PNG
+    img = Image.open(screenshot_path)
+    img = img.convert("RGBA")  # ensure 32-bit
+    [w, h] = img.size
+    pixels = img.load()
+
+    # set bottom-right pixel to 254 alpha
+    pixels[w - 1, h - 1] = pixels[w - 1, h - 1][:3] + (243,)
+    img.save(screenshot_path)
+
     options = {"skinUrl": skin_url}
 
     options_query = urllib.quote(json.dumps(options))
 
-    winamp2_js_url = "https://jordaneldredge.com/projects/winamp2-js/#%s" % options_query
+    winamp2_js_url = "https://webamp.org/#%s" % options_query
 
     status_message = """%s
 Try Online: %s
