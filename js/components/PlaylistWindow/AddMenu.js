@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { getTrackCount } from "../../selectors";
 import { addTracksFromReferences } from "../../actionCreators";
 import { promptForFileReferences } from "../../fileUtils";
 import PlaylistMenu from "./PlaylistMenu";
@@ -25,7 +26,7 @@ const AddMenu = ({ nextIndex, addFilesAtIndex, addDirAtIndex }) => (
 );
 
 const mapStateToProps = state => ({
-  nextIndex: state.playlist.trackOrder.length
+  nextIndex: getTrackCount(state)
 });
 
 const mapDispatchToProps = dispatch => ({

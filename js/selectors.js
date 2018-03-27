@@ -30,6 +30,11 @@ export const getEqfData = state => {
 export const getTracks = state => state.playlist.tracks;
 const getTrackOrder = state => state.playlist.trackOrder;
 
+export const getTrackCount = createSelector(
+  getTrackOrder,
+  trackOrder => trackOrder.length
+);
+
 export const getOrderedTracks = createSelector(
   getTracks,
   getTrackOrder,
@@ -82,7 +87,8 @@ export const getCurrentTrackId = state => state.playlist.currentTrack;
 
 export const nextTrack = (state, n = 1) => {
   const { playlist: { trackOrder }, media: { repeat } } = state;
-  if (trackOrder.length === 0) {
+  const trackCount = getTrackCount(state);
+  if (trackCount === 0) {
     return null;
   }
 
@@ -90,21 +96,21 @@ export const nextTrack = (state, n = 1) => {
 
   let nextIndex = currentIndex + n;
   if (repeat) {
-    nextIndex = nextIndex % trackOrder.length;
+    nextIndex = nextIndex % trackCount;
     if (nextIndex < 0) {
       // Handle wrapping around backwards
-      nextIndex += trackOrder.length;
+      nextIndex += trackCount;
     }
     return trackOrder[nextIndex];
   }
 
-  if (currentIndex === trackOrder.length - 1 && n > 0) {
+  if (currentIndex === trackCount - 1 && n > 0) {
     return null;
   } else if (currentIndex === 0 && n < 0) {
     return null;
   }
 
-  nextIndex = clamp(nextIndex, 0, trackOrder.length - 1);
+  nextIndex = clamp(nextIndex, 0, trackCount - 1);
   return trackOrder[nextIndex];
 };
 
@@ -118,10 +124,10 @@ export const getNumberOfVisibleTracks = state => {
 };
 
 export const getOverflowTrackCount = createSelector(
-  getTrackOrder,
+  getTrackCount,
   getNumberOfVisibleTracks,
-  (trackOrder, numberOfVisibleTracks) =>
-    Math.max(0, trackOrder.length - numberOfVisibleTracks)
+  (trackCount, numberOfVisibleTracks) =>
+    Math.max(0, trackCount - numberOfVisibleTracks)
 );
 
 const _getPlaylistScrollPosition = state =>
@@ -144,10 +150,10 @@ export const getPlaylistScrollPosition = createSelector(
 
 export const getScrollOffset = createSelector(
   _getPlaylistScrollPosition,
-  getTrackOrder,
+  getTrackCount,
   getNumberOfVisibleTracks,
-  (playlistScrollPosition, trackOrder, numberOfVisibleTracks) => {
-    const overflow = Math.max(0, trackOrder.length - numberOfVisibleTracks);
+  (playlistScrollPosition, trackCount, numberOfVisibleTracks) => {
+    const overflow = Math.max(0, trackCount - numberOfVisibleTracks);
     return percentToIndex(playlistScrollPosition / 100, overflow + 1);
   }
 );

@@ -6,6 +6,7 @@ import getStore from "./store";
 import App from "./components/App";
 import Hotkeys from "./hotkeys";
 import Media from "./media";
+import { getTrackCount } from "./selectors";
 import { setSkinFromUrl, loadMediaFiles } from "./actionCreators";
 import { LOAD_STYLE } from "./constants";
 
@@ -64,7 +65,7 @@ class Winamp {
     this.store.dispatch(setSkinFromUrl(this.options.initialSkin.url));
 
     if (initialTracks) {
-      this.store.dispatch(loadMediaFiles(initialTracks, LOAD_STYLE.BUFFER));
+      this.appendTracks(initialTracks);
     }
     if (avaliableSkins) {
       this.store.dispatch({
@@ -76,6 +77,17 @@ class Winamp {
     if (enableHotkeys) {
       new Hotkeys(this.store.dispatch);
     }
+  }
+
+  // Append this array of tracks to the end of the current playlist.
+  appendTracks(tracks) {
+    const nextIndex = getTrackCount(this.store.getState());
+    this.store.dispatch(loadMediaFiles(tracks, LOAD_STYLE.BUFFER, nextIndex));
+  }
+
+  // Replace any existing tracks with this array of tracks, and begin playing.
+  setTracksToPlay(tracks) {
+    this.store.dispatch(loadMediaFiles(tracks, LOAD_STYLE.PLAY));
   }
 
   async renderWhenReady(node) {
