@@ -222,6 +222,11 @@ def main(dry):
 
     # set bottom-right pixel to 254 alpha
     pixels[w - 1, h - 1] = pixels[w - 1, h - 1][:3] + (243,)
+
+    # Resize to 2x so that pixels remain a bit more crisp when resized
+    w, h = (2 * w, 2 * h)
+    img = img.resize((w, h), 0)
+
     img.save(screenshot_path)
 
     options = {"skinUrl": skin_url}
