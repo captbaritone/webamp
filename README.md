@@ -21,7 +21,7 @@ Check out this Twitter thread for an illustrated list of features: https://twitt
 
 I've tried to make it possible to include Winamp2-js in your own project.
 
-See the [ussage documentation](./docs/ussage.md) for more information.
+See the [usage documentation](./docs/usage.md) for more information.
 
 ## Development
 

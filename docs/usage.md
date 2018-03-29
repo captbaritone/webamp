@@ -28,8 +28,8 @@ Create a DOM element somewhere in your HTML document. This will eventually conta
 ```JavaScript
 import Winamp from 'winamp2-js';
 
-// Or, if you installed via a script tag:
-// const Winamp = window.winamp2-js;
+// Or, if you installed via a script tag, `Winamp` is avaliable on the global `window`:
+// const Winamp = window.winamp2js;
 
 // Check if Winamp is supported in this browser
 if(!Winamp.browserIsSupported()) {

@@ -3,7 +3,7 @@
 * Added: `winamp.appendTracks()`.
 * Added: `winamp.setTracksToPlay()`.
 * Changed: We no-longer try to center on window resize.
-* Meta: Added real documentation!
+* Meta: Added real [documentation](./docs/usage.md)!
 * Meta: Remove lots of garbage from the NPM build.
 
 ## Prehistory
