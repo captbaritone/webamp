@@ -7,6 +7,9 @@ Here's how to use Winamp-js in your own project.
 If you would like to look as some examples check out the [examples directory](../examples/) were you will find:
 
 * [Minimal](../examples/minimal/) - An example that just uses a `<script>` tag that points to a CDN. No install required.
+* [Webpack](../examples/webpack/) - An example that installs Winamp2-js via NPM, and bundles it into an applicaiton using Webpack.
+
+Each example has a README which explains it in more detail.
 
 ## Install
 
