@@ -38,7 +38,7 @@ npm install --save winamp2-js
 Create a DOM element somewhere in your HTML document:
 
 ```
-<div id='app'></div>
+<div id='winamp-container'></div>
 ```
 
 Initialize Winamp2-js in your JavaScript:
@@ -60,7 +60,7 @@ const winamp = new Winamp({
   enableHotkeys: true // Enable hotkeys
 });
 // Render after the skin has loaded.
-winamp.renderWhenReady(document.getElementById('app'));
+winamp.renderWhenReady(document.getElementById('winamp-container'));
 ```
 
 _Notes:_
