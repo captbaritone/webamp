@@ -10,4 +10,4 @@ $ cd winamp2-js
 $ open examples/minimal/index.html
 ```
 
-Or just navigate to <https://cdn.rawgit.com/captbaritone/winamp2-js/master/examles/minimal/index.html>
+Or just navigate to <https://cdn.rawgit.com/captbaritone/winamp2-js/master/examples/minimal/index.html>
