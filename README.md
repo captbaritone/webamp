@@ -52,9 +52,11 @@ const winamp = new Winamp({
       artist: "DJ Mike Llama",
       title: "Llama Whippin' Intro",
     },
+    // Can be downloaded from: https://github.com/captbaritone/winamp2-js/raw/master/mp3/llama-2.91.mp3
     url: "path/to/mp3/llama-2.91.mp3"
   }],
   initialSkin: {
+    // Can be downloaded from https://github.com/captbaritone/winamp2-js/raw/master/skins/base-2.91.wsz
     url: "path/to/skins/base-2.91.wsz"
   },
   enableHotkeys: true // Enable hotkeys
