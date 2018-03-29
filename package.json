@@ -1,6 +1,6 @@
 {
   "name": "winamp2-js",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Winamp 2 implemented in HTML5 and JavaScript",
   "main": "built/winamp.bundle.js",
   "files": [

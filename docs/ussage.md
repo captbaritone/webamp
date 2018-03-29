@@ -12,7 +12,7 @@ Or, you can include it via a script tag:
 
 ```html
 <!-- You can use this URL, or download it and check it into your own project -->
-<script src="https://unpkg.com/winamp2-js@0.0.5/built/winamp.bundle.min.js"></script>
+<script src="https://unpkg.com/winamp2-js@0.0.6/built/winamp.bundle.min.js"></script>
 ```
 
 ## Create a container
