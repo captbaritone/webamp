@@ -1,4 +1,4 @@
-# Ussage
+# Usage
 
 Here's how to use Winamp-js in your own project:
 
@@ -155,9 +155,9 @@ Add an array of `track`s (see above) to the end of the playlist.
 
 ```JavaScript
 winamp.appendTracks([
- {url: 'https://example.com/track1.mp3'},
- {url: 'https://example.com/track2.mp3'},
- {url: 'https://example.com/track3.mp3'}
+    {url: 'https://example.com/track1.mp3'},
+    {url: 'https://example.com/track2.mp3'},
+    {url: 'https://example.com/track3.mp3'}
 ]);
 ```
 
@@ -166,10 +166,10 @@ winamp.appendTracks([
 Replace the playlist with an array of `track`s (see above) and begin playing the first track.
 
 ```JavaScript
-winamp.appendTracks([
- {url: 'https://example.com/track1.mp3'},
- {url: 'https://example.com/track2.mp3'},
- {url: 'https://example.com/track3.mp3'}
+winamp.setTracksToPlay([
+    {url: 'https://example.com/track1.mp3'},
+    {url: 'https://example.com/track2.mp3'},
+    {url: 'https://example.com/track3.mp3'}
 ]);
 ```
 
@@ -187,7 +187,7 @@ winamp.renderWhenReady(container).then(() => {
 ## Notes
 
 * Internet Explorer is not supported.
-* Winamp2-js injects CSS into the page. The CSS is namespaced under `#winamp2-js` ID, so it should not interfere with anything on the host page.
-* Winamp2-js' HTML contains non-prefixed IDs and class names. If you have CSS on your page that is not namespaced, it may accidently be applied to Winamp2-js. If this happens please reach out. I may be able to resolve it.
+* Winamp2-js injects CSS into the page. The CSS is namespaced (every CSS selector is prefixed with `#winamp2-js`), so it should not interfere with anything on the host page.
+* Winamp2-js' HTML contains somewhat generic IDs and class names. If you have CSS on your page that is not namespaced, it may accidently be applied to Winamp2-js. If this happens please reach out. I may be able to resolve it.
 * Skin and audio URLs are subject to [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS). Please ensure they are either served from the same domain, or that the other domain is served with the correct headers.
 * Please reach out to me. I'd love to help you set it up, and understand how it's being used. I plan to expand this API as I learn how people want to use it.
