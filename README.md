@@ -4,7 +4,7 @@
 
 A reimplementation of Winamp 2.9 in HTML5 and JavaScript.
 
-**As seen on [TechCrunch], [Motherboard], [Gizmodo], Hacker News ([1], [2], [3]), and [elsewhere](./press.md).**
+**As seen on [TechCrunch], [Motherboard], [Gizmodo], Hacker News ([1], [2], [3]), and [elsewhere](./docs/press.md).**
 
 ## [Give it a try!](https://webamp.org)
 
