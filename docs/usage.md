@@ -1,6 +1,6 @@
 # Usage
 
-Here's how to use Winamp-js in your own project.
+Here's how to use Winamp-js in your own project. If you get stuck, or need help, please either file an issue, or reach out on [Gitter](https://gitter.im/winamp2-js/Lobby).
 
 ## Examples
 
