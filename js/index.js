@@ -58,7 +58,7 @@ Raven.context(() => {
       url: skinUrl
     },
     initialTracks,
-    avaliableSkins: [
+    availableSkins: [
       { url: base, name: "<Base Skin>" },
       { url: green, name: "Green Dimension V2" },
       { url: osx, name: "Mac OSX v1.5 (Aqua)" },

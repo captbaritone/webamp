@@ -44,8 +44,8 @@ const MainContextMenu = props => (
     </Parent>
     <Parent label="Skins">
       <Node onClick={props.openSkinFileDialog} label="Load Skin..." />
-      {!!props.avaliableSkins.length && <Hr />}
-      {props.avaliableSkins.map(skin => (
+      {!!props.availableSkins.length && <Hr />}
+      {props.availableSkins.map(skin => (
         <Node
           key={skin.url}
           onClick={() => props.setSkin(skin.url)}
@@ -59,7 +59,7 @@ const MainContextMenu = props => (
 );
 
 const mapStateToProps = state => ({
-  avaliableSkins: state.settings.avaliableSkins,
+  availableSkins: state.settings.availableSkins,
   networkConnected: state.network.connected
 });
 

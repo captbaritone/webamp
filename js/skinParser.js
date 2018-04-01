@@ -66,7 +66,7 @@ const _genImgFromBlob = async blob =>
 const genImgFromBlob = async blob => {
   if (window.createImageBitmap) {
     try {
-      // Use this faster native browser API if avaliable.
+      // Use this faster native browser API if available.
       return await window.createImageBitmap(blob);
     } catch (e) {
       console.warn(

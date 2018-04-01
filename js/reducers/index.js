@@ -36,7 +36,7 @@ import {
   UNSET_USER_MESSAGE,
   SET_PLAYLIST_SCROLL_POSITION,
   PLAYLIST_SIZE_CHANGED,
-  SET_AVALIABLE_SKINS,
+  SET_AVAILABLE_SKINS,
   ADD_TRACK_FROM_URL,
   NETWORK_CONNECTED,
   NETWORK_DISCONNECTED
@@ -135,13 +135,13 @@ const display = (state = defaultDisplayState, action) => {
 };
 
 const defaultSettingsState = {
-  avaliableSkins: []
+  availableSkins: []
 };
 
 const settings = (state = defaultSettingsState, action) => {
   switch (action.type) {
-    case SET_AVALIABLE_SKINS:
-      return { ...state, avaliableSkins: action.skins };
+    case SET_AVAILABLE_SKINS:
+      return { ...state, availableSkins: action.skins };
     default:
       return state;
   }
