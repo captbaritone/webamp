@@ -1,4 +1,4 @@
-import Winamp from "winamp2-js";
+import Winamp from "winamp2-js"; // eslint-disable-line import/no-unresolved
 
 new Winamp({
   initialTracks: [
