@@ -11,7 +11,7 @@ import { setSkinFromUrl, loadMediaFiles } from "./actionCreators";
 import { LOAD_STYLE } from "./constants";
 
 import {
-  SET_AVALIABLE_SKINS,
+  SET_AVAILABLE_SKINS,
   NETWORK_CONNECTED,
   NETWORK_DISCONNECTED
 } from "./actionTypes";
@@ -45,7 +45,7 @@ class Winamp {
     this.options = options;
     const {
       initialTracks,
-      avaliableSkins,
+      availableSkins,
       enableHotkeys = false
     } = this.options;
 
@@ -67,10 +67,10 @@ class Winamp {
     if (initialTracks) {
       this.appendTracks(initialTracks);
     }
-    if (avaliableSkins) {
+    if (availableSkins) {
       this.store.dispatch({
-        type: SET_AVALIABLE_SKINS,
-        skins: avaliableSkins
+        type: SET_AVAILABLE_SKINS,
+        skins: availableSkins
       });
     }
 

@@ -12,7 +12,7 @@ export default class LoadQueue {
     // For example, we might add a track to the playlist and then scroll to/away
     // from it before it gets processed.
     this._queue = new TinyQueue([], (a, b) => a.priority() - b.priority());
-    this._avaliableThreads = threads;
+    this._availableThreads = threads;
   }
 
   push(task, priority) {
@@ -32,11 +32,11 @@ export default class LoadQueue {
   }
 
   _run() {
-    while (this._avaliableThreads > 0) {
+    while (this._availableThreads > 0) {
       if (this._queue.length === 0) {
         return;
       }
-      this._avaliableThreads--;
+      this._availableThreads--;
       const t = this._queue.pop();
       const promise = t.task();
       invariant(
@@ -44,7 +44,7 @@ export default class LoadQueue {
         `LoadQueue only supports loading Promises. Got ${promise}`
       );
       promise.then(() => {
-        this._avaliableThreads++;
+        this._availableThreads++;
         this._run();
       });
     }

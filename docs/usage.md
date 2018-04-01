@@ -34,7 +34,7 @@ Create a DOM element somewhere in your HTML document. This will eventually conta
 ```JavaScript
 import Winamp from 'winamp2-js';
 
-// Or, if you installed via a script tag, `Winamp` is avaliable on the global `window`:
+// Or, if you installed via a script tag, `Winamp` is available on the global `window`:
 // const Winamp = window.winamp2js;
 
 // Check if Winamp is supported in this browser
@@ -124,7 +124,7 @@ const options = {
     // Optional. An array of objects representing skins.
     // These will appear in the "Options" menu under "Skins".
     // Note: These URLs must be served the with correct CORs headers.
-    avaliableSkins: [
+    availableSkins: [
       { url: "./green.wsz", name: "Green Dimension V2" },
       { url: "./osx.wsz", name: "Mac OSX v1.5 (Aqua)" }
     ],
@@ -144,7 +144,7 @@ const options = {
             url: './rick_roll.mp3'
         }]),
         // A boolean indicating if this options should be made
-        // avaliable when the user is offline.
+        // available when the user is offline.
         requiresNetwork: true
     }]
 };
