@@ -1,3 +1,7 @@
+## (next version)
+
+* Deprecated: The misspelled `Winamp` construction option `avaliableSkins` has been deprecated in favor of `availableSkins`. `avaliableSkins` will continue to work, but will log a deprecation warning. [#533](https://github.com/captbaritone/winamp2-js/pull/533) by [@remigallego](https://github.com/remigallego)
+
 ## 0.0.6
 
 * Added: `winamp.appendTracks()`.

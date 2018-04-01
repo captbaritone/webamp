@@ -45,6 +45,7 @@ class Winamp {
     this.options = options;
     const {
       initialTracks,
+      avaliableSkins, // Old misspelled name
       availableSkins,
       enableHotkeys = false
     } = this.options;
@@ -67,11 +68,14 @@ class Winamp {
     if (initialTracks) {
       this.appendTracks(initialTracks);
     }
-    if (availableSkins) {
-      this.store.dispatch({
-        type: SET_AVAILABLE_SKINS,
-        skins: availableSkins
-      });
+
+    if (avaliableSkins != null) {
+      console.warn(
+        "The misspelled option `avaliableSkins` is deprecated. Please use `availableSkins` instead."
+      );
+      this.store.dispatch({ type: SET_AVAILABLE_SKINS, skins: avaliableSkins });
+    } else {
+      this.store.dispatch({ type: SET_AVAILABLE_SKINS, skins: availableSkins });
     }
 
     if (enableHotkeys) {
