@@ -3,3 +3,4 @@ built/
 coverage/
 **/node_modules/
 experiments/winamp-skin-museum/
+examples/webpack/bundle.js
