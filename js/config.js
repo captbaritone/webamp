@@ -1,4 +1,4 @@
-import skin from "../skins/base-2.91.wsz";
+import skin from "../skins/base-2.91-png.wsz";
 import llamaAudio from "../mp3/llama-2.91.mp3";
 
 /* global SENTRY_DSN */

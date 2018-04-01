@@ -1,6 +1,6 @@
 import "babel-polyfill";
 import Raven from "raven-js";
-import base from "../skins/base-2.91.wsz";
+import base from "../skins/base-2.91-png.wsz";
 import osx from "../skins/MacOSXAqua1-5.wsz";
 import topaz from "../skins/TopazAmp1-2.wsz";
 import visor from "../skins/Vizor1-01.wsz";

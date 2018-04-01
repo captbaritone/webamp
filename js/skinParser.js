@@ -104,14 +104,17 @@ function getSpriteUrisFromImg(img, sprites) {
 }
 
 async function genImgFromFilename(zip, fileName) {
-  const blob = await genFileFromZip(zip, fileName, "bmp", "blob");
+  // Winamp only supports .bmp images, but WACUP set a precidence of supporting
+  // .png as well to reduce size. Since we care about size as well, we follow
+  // suit. Our default skin uses .png to save 14kb.
+  const blob = await genFileFromZip(zip, fileName, "(png|bmp)", "blob");
   if (!blob) {
     return null;
   }
   // The spec for createImageBitmap() says the browser should try to sniff the
   // mime type, but it looks like Firefox does not. So we specify it here
   // explicitly.
-  const typedBlob = new Blob([blob], { type: "image/bmp" });
+  const typedBlob = new Blob([blob], { type: "image/*" });
   return genImgFromBlob(typedBlob);
 }
 
