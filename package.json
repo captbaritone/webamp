@@ -16,7 +16,7 @@
     "start": "webpack-dev-server --config=config/webpack.dev.js",
     "weight": "echo 'FIXME: Need to find cache-busted file' || (npm run build && gzip-size built/winamp.js)",
     "test": "jest --coverage",
-    "travis-tests": "jest --coverage && npm run lint && npm run build",
+    "travis-tests": "jest --coverage && npm run build",
     "tdd": "jest --watch",
     "format": "prettier --write experiments/**/*.js js/**/*.js css/**/*.css",
     "build-skin": "rm skins/base-2.91.wsz && cd skins/base-2.91 && zip -x .* -x 'Skining Updates.txt' -r ../base-2.91.wsz .",
@@ -59,6 +59,7 @@
     "http-server": "^0.11.1",
     "jest": "^22.4.3",
     "jest-cli": "^22.4.3",
+    "jest-runner-eslint": "^0.4.0",
     "react-test-renderer": "^16.2.0",
     "style-loader": "^0.19.1",
     "travis-weigh-in": "^1.0.2",
@@ -97,14 +98,26 @@
     "winamp-eqf": "^1.0.0"
   },
   "jest": {
-    "testRegex": "\\.test\\.js$",
-    "moduleNameMapper": {
-      "\\.css$": "<rootDir>/js/__mocks__/styleMock.js",
-      "\\.wsz$": "<rootDir>/js/__mocks__/fileMock.js",
-      "\\.mp3$": "<rootDir>/js/__mocks__/fileMock.js"
-    },
-    "globals": {
-      "SENTRY_DSN": null
-    }
+    "projects": [
+      {
+        "displayName": "test",
+        "testRegex": "\\.test\\.js$",
+        "globals": {
+          "SENTRY_DSN": null
+        },
+        "moduleNameMapper": {
+          "\\.css$": "<rootDir>/js/__mocks__/styleMock.js",
+          "\\.wsz$": "<rootDir>/js/__mocks__/fileMock.js",
+          "\\.mp3$": "<rootDir>/js/__mocks__/fileMock.js"
+        }
+      },
+      {
+        "runner": "jest-runner-eslint",
+        "displayName": "lint",
+        "testMatch": [
+          "<rootDir>/**/*.js"
+        ]
+      }
+    ]
   }
 }
