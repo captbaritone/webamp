@@ -73,6 +73,24 @@ export async function genArrayBufferFromFileReference(fileReference) {
   });
 }
 
+export async function genTextFromFileReference(fileReference) {
+  invariant(
+    fileReference != null,
+    "Attempted to get an ArrayBuffer without assing a fileReference"
+  );
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      resolve(e.target.result);
+    };
+    reader.onerror = function(e) {
+      reject(e);
+    };
+
+    reader.readAsText(fileReference);
+  });
+}
+
 export async function genArrayBufferFromUrl(url) {
   return new Promise((resolve, reject) => {
     const oReq = new XMLHttpRequest();

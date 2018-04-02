@@ -176,6 +176,7 @@ export default class Media {
   _resetChannels() {
     this._setChannels(null);
   }
+
   /* Properties */
   duration() {
     return this._source.getDuration();
