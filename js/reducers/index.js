@@ -1,20 +1,12 @@
 import { combineReducers } from "redux";
 import { BANDS } from "../constants";
 import {
-  PLAY,
-  IS_PLAYING,
-  PAUSE,
-  STOP,
-  IS_STOPPED,
   CLOSE_WINAMP,
-  SET_BALANCE,
   SET_BAND_VALUE,
   SET_FOCUS,
   SET_BAND_FOCUS,
-  SET_MEDIA,
   SET_SCRUB_POSITION,
   SET_SKIN_DATA,
-  SET_VOLUME,
   START_WORKING,
   STEP_MARQUEE,
   STOP_WORKING,
@@ -23,27 +15,23 @@ import {
   SET_EQ_ON,
   SET_EQ_OFF,
   TOGGLE_LLAMA_MODE,
-  TOGGLE_REPEAT,
   TOGGLE_MAIN_SHADE_MODE,
   TOGGLE_EQUALIZER_SHADE_MODE,
   TOGGLE_PLAYLIST_SHADE_MODE,
-  TOGGLE_SHUFFLE,
-  TOGGLE_TIME_MODE,
   TOGGLE_VISUALIZER_STYLE,
   UNSET_FOCUS,
-  UPDATE_TIME_ELAPSED,
   SET_USER_MESSAGE,
   UNSET_USER_MESSAGE,
   SET_PLAYLIST_SCROLL_POSITION,
   PLAYLIST_SIZE_CHANGED,
   SET_AVAILABLE_SKINS,
-  ADD_TRACK_FROM_URL,
   NETWORK_CONNECTED,
   NETWORK_DISCONNECTED
 } from "../actionTypes";
 
 import playlist from "./playlist";
 import windows from "./windows";
+import media from "./media";
 
 const defaultUserInput = {
   focus: null,
@@ -171,71 +159,6 @@ const equalizer = (state, action) => {
       return { ...state, on: false };
     case SET_EQ_AUTO:
       return { ...state, auto: action.value };
-    default:
-      return state;
-  }
-};
-
-const media = (state, action) => {
-  if (!state) {
-    return {
-      timeMode: "ELAPSED",
-      timeElapsed: 0,
-      length: null, // Consider renaming to "duration"
-      kbps: null,
-      khz: null,
-      // The winamp ini file declares the default volume as "200".
-      // The UI seems to show a default volume near 78, which would
-      // math with the default value being 200 out of 255.
-      volume: Math.round(200 / 255 * 100),
-      balance: 0,
-      channels: null,
-      shuffle: false,
-      repeat: false,
-      // TODO: Enforce possible values
-      status: "STOPPED"
-    };
-  }
-  switch (action.type) {
-    // TODO: Make these constants
-    case PLAY:
-    case IS_PLAYING:
-      return { ...state, status: "PLAYING" };
-    case PAUSE:
-      return { ...state, status: "PAUSED" };
-    case STOP:
-    case IS_STOPPED:
-      return { ...state, status: "STOPPED" };
-    case TOGGLE_TIME_MODE:
-      const newMode = state.timeMode === "REMAINING" ? "ELAPSED" : "REMAINING";
-      return { ...state, timeMode: newMode };
-    case UPDATE_TIME_ELAPSED:
-      return { ...state, timeElapsed: action.elapsed };
-    case ADD_TRACK_FROM_URL:
-      return {
-        ...state,
-        timeElapsed: 0,
-        length: null,
-        kbps: null,
-        khz: null,
-        channels: null
-      };
-    case SET_MEDIA:
-      return {
-        ...state,
-        length: action.length,
-        kbps: action.kbps,
-        khz: action.khz,
-        channels: action.channels
-      };
-    case SET_VOLUME:
-      return { ...state, volume: action.volume };
-    case SET_BALANCE:
-      return { ...state, balance: action.balance };
-    case TOGGLE_REPEAT:
-      return { ...state, repeat: !state.repeat };
-    case TOGGLE_SHUFFLE:
-      return { ...state, shuffle: !state.shuffle };
     default:
       return state;
   }
