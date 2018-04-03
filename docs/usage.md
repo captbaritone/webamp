@@ -193,6 +193,19 @@ winamp.renderWhenReady(container).then(() => {
 });
 ```
 
+### `onClose(callback)`
+
+A callback which will be called when Winamp2-js is closed. Returns an "unsubscribe" function.
+
+```JavaScript
+const unsubscribe = winamp.onClose(() => {
+    console.log("Winamp closed");
+});
+
+// If at some point in the future you want to stop listening to these events:
+unsubscribe();
+```
+
 ## Notes
 
 * Internet Explorer is not supported.
@@ -200,3 +213,7 @@ winamp.renderWhenReady(container).then(() => {
 * Winamp2-js' HTML contains somewhat generic IDs and class names. If you have CSS on your page that is not namespaced, it may accidently be applied to Winamp2-js. If this happens please reach out. I may be able to resolve it.
 * Skin and audio URLs are subject to [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS). Please ensure they are either served from the same domain, or that the other domain is served with the correct headers.
 * Please reach out to me. I'd love to help you set it up, and understand how it's being used. I plan to expand this API as I learn how people want to use it.
+
+```
+
+```

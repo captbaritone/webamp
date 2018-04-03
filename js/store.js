@@ -11,7 +11,7 @@ const compose = composeWithDevTools({
   actionsBlacklist: [UPDATE_TIME_ELAPSED, STEP_MARQUEE]
 });
 
-const getStore = (media, stateOverrides) => {
+const getStore = (media, actionEmitter, stateOverrides) => {
   let initialState;
   if (stateOverrides) {
     initialState = merge(
@@ -19,10 +19,24 @@ const getStore = (media, stateOverrides) => {
       stateOverrides
     );
   }
+
+  // eslint-disable-next-line no-unused-vars
+  const emitterMiddleware = store => next => action => {
+    actionEmitter.trigger(action.type);
+    return next(action);
+  };
+
   return createStore(
     reducer,
     initialState,
-    compose(applyMiddleware(thunk, mediaMiddleware(media), analyticsMiddleware))
+    compose(
+      applyMiddleware(
+        thunk,
+        mediaMiddleware(media),
+        emitterMiddleware,
+        analyticsMiddleware
+      )
+    )
   );
 };
 

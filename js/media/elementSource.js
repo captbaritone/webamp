@@ -1,3 +1,4 @@
+import Emitter from "../emitter";
 const STATUS = {
   PLAYING: "PLAYING",
   STOPPED: "STOPPED",
@@ -5,25 +6,12 @@ const STATUS = {
 };
 
 export default class ElementSource {
-  on(event, callback) {
-    const eventListeners = this._listeners[event] || [];
-    eventListeners.push(callback);
-    this._listeners[event] = eventListeners;
-    const unsubscribe = () => {
-      this._listeners[event] = eventListeners.filter(cb => cb !== callback);
-    };
-    return unsubscribe;
-  }
-
-  trigger(event) {
-    const callbacks = this._listeners[event];
-    if (callbacks) {
-      callbacks.forEach(cb => cb());
-    }
+  on(eventType, cb) {
+    return this._emitter.on(eventType, cb);
   }
 
   constructor(context, destination) {
-    this._listeners = {};
+    this._emitter = new Emitter();
     this._context = context;
     this._destination = destination;
     this._audio = document.createElement("audio");
@@ -36,18 +24,18 @@ export default class ElementSource {
     });
 
     this._audio.addEventListener("durationchange", () => {
-      this.trigger("loaded");
+      this._emitter.trigger("loaded");
       this._setStalled(false);
     });
 
     this._audio.addEventListener("ended", () => {
-      this.trigger("ended");
+      this._emitter.trigger("ended");
       this._setStatus(STATUS.STOPPED);
     });
 
     // TODO: Throttle to 50 (if needed)
     this._audio.addEventListener("timeupdate", () => {
-      this.trigger("positionChange");
+      this._emitter.trigger("positionChange");
     });
 
     this._audio.addEventListener("error", e => {
@@ -76,7 +64,7 @@ export default class ElementSource {
       // Rather than just geting stuck in this error state, we can just pretend this is
       // the end of the track.
 
-      this.trigger("ended");
+      this._emitter.trigger("ended");
       this._setStatus(STATUS.STOPPED);
     });
 
@@ -86,7 +74,7 @@ export default class ElementSource {
 
   _setStalled(stalled) {
     this._stalled = stalled;
-    this.trigger("stallChanged");
+    this._emitter.trigger("stallChanged");
   }
 
   disconnect() {
@@ -128,7 +116,7 @@ export default class ElementSource {
     time = Math.min(time, this.getDuration());
     time = Math.max(time, 0);
     this._audio.currentTime = time;
-    this.trigger("positionChange");
+    this._emitter.trigger("positionChange");
   }
 
   getStalled() {
@@ -160,6 +148,6 @@ export default class ElementSource {
 
   _setStatus(status) {
     this._status = status;
-    this.trigger("statusChange");
+    this._emitter.trigger("statusChange");
   }
 }

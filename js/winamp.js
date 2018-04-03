@@ -13,8 +13,10 @@ import { LOAD_STYLE } from "./constants";
 import {
   SET_AVAILABLE_SKINS,
   NETWORK_CONNECTED,
-  NETWORK_DISCONNECTED
+  NETWORK_DISCONNECTED,
+  CLOSE_WINAMP
 } from "./actionTypes";
+import Emitter from "./emitter";
 
 // Return a promise that resolves when the store matches a predicate.
 const storeHas = (store, predicate) =>
@@ -42,6 +44,7 @@ class Winamp {
   }
 
   constructor(options) {
+    this._actionEmitter = new Emitter();
     this.options = options;
     const {
       initialTracks,
@@ -51,7 +54,11 @@ class Winamp {
     } = this.options;
 
     this.media = new Media();
-    this.store = getStore(this.media, this.options.__initialState);
+    this.store = getStore(
+      this.media,
+      this._actionEmitter,
+      this.options.__initialState
+    );
     this.store.dispatch({
       type: navigator.onLine ? NETWORK_CONNECTED : NETWORK_DISCONNECTED
     });
@@ -92,6 +99,10 @@ class Winamp {
   // Replace any existing tracks with this array of tracks, and begin playing.
   setTracksToPlay(tracks) {
     this.store.dispatch(loadMediaFiles(tracks, LOAD_STYLE.PLAY));
+  }
+
+  onClose(cb) {
+    return this._actionEmitter.on(CLOSE_WINAMP, cb);
   }
 
   async renderWhenReady(node) {
