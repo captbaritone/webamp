@@ -1,6 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import renderer from "react-test-renderer";
+import Emitter from "../../emitter";
 import getStore from "../../store";
 import { loadMediaFiles } from "../../actionCreators";
 
@@ -17,7 +18,7 @@ const media = {
 describe("PlaylistShade", () => {
   let store;
   beforeEach(() => {
-    store = getStore(media);
+    store = getStore(media, new Emitter());
   });
 
   it("renders to snapshot", () => {
