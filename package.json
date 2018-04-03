@@ -73,7 +73,7 @@
     "babel-plugin-remove-webpack": "^1.1.0",
     "babel-plugin-transform-object-rest-spread": "^6.20.2",
     "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-preset-env": "^1.5.2",
+    "babel-preset-env": "^1.6.1",
     "babel-runtime": "^6.26.0",
     "cardinal-spline-js": "^2.3.6",
     "classnames": "^2.2.5",
