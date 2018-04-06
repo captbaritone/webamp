@@ -1,5 +1,6 @@
 import "babel-polyfill";
 import Raven from "raven-js";
+import createMiddleware from "raven-for-redux";
 import base from "../skins/base-2.91-png.wsz";
 import osx from "../skins/MacOSXAqua1-5.wsz";
 import topaz from "../skins/TopazAmp1-2.wsz";
@@ -8,6 +9,14 @@ import xmms from "../skins/XMMS-Turquoise.wsz";
 import zaxon from "../skins/ZaxonRemake1-0.wsz";
 import green from "../skins/Green-Dimension-V2.wsz";
 import Winamp from "./winamp";
+import {
+  STEP_MARQUEE,
+  UPDATE_TIME_ELAPSED,
+  UPDATE_WINDOW_POSITIONS,
+  SET_VOLUME,
+  SET_BALANCE,
+  SET_BAND_VALUE
+} from "./actionTypes";
 
 import {
   hideAbout,
@@ -16,6 +25,26 @@ import {
   initialState,
   sentryDsn
 } from "./config";
+
+const NOISY_ACTION_TYPES = new Set([
+  STEP_MARQUEE,
+  UPDATE_TIME_ELAPSED,
+  UPDATE_WINDOW_POSITIONS,
+  SET_VOLUME,
+  SET_BALANCE,
+  SET_BAND_VALUE
+]);
+
+let lastActionType = null;
+
+// Filter out consecutive common actions
+function filterBreadcrumbActions(action) {
+  const noisy =
+    NOISY_ACTION_TYPES.has(action.type) &&
+    NOISY_ACTION_TYPES.has(lastActionType);
+  lastActionType = action.type;
+  return !noisy;
+}
 
 Raven.config(sentryDsn).install();
 
@@ -81,7 +110,20 @@ Raven.context(() => {
       }
     ],
     enableHotkeys: true,
-    __initialState: initialState
+    __initialState: initialState,
+    __customMiddleware: createMiddleware(Raven, {
+      filterBreadcrumbActions,
+      stateTransformer: state => ({
+        ...state,
+        display: {
+          ...state.display,
+          skinGenLetterWidths: "[[REDACTED]]",
+          skinImages: "[[REDACTED]]",
+          skinCursors: "[[REDACTED]]",
+          skinRegion: "[[REDACTED]]"
+        }
+      })
+    })
   });
 
   winamp.renderWhenReady(document.getElementById("app"));

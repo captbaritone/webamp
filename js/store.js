@@ -11,7 +11,7 @@ const compose = composeWithDevTools({
   actionsBlacklist: [UPDATE_TIME_ELAPSED, STEP_MARQUEE]
 });
 
-const getStore = (media, actionEmitter, stateOverrides) => {
+const getStore = (media, actionEmitter, customMiddleware, stateOverrides) => {
   let initialState;
   if (stateOverrides) {
     initialState = merge(
@@ -31,10 +31,13 @@ const getStore = (media, actionEmitter, stateOverrides) => {
     initialState,
     compose(
       applyMiddleware(
-        thunk,
-        mediaMiddleware(media),
-        emitterMiddleware,
-        analyticsMiddleware
+        ...[
+          thunk,
+          mediaMiddleware(media),
+          emitterMiddleware,
+          customMiddleware,
+          analyticsMiddleware
+        ].filter(Boolean)
       )
     )
   );
