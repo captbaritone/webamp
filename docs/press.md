@@ -5,6 +5,11 @@
 * [Tech Crunch](https://techcrunch.com/2018/02/09/whip-the-llamas-ass-with-this-javascript-winamp-emulator/)
 * [Mashable](https://mashable.com/2018/02/09/winamp-web-version-llama/)
 
+## Podcast Interviews
+
+* [Zeal Interesitngs](http://podcast.codingzeal.com/114820/657488-winamp-js)
+* [Changelog](https://changelog.com/podcast/291)
+
 ## Newsletters
 
 * [JavaScript Weekly](http://javascriptweekly.com/issues/353) (issue 353)
@@ -25,11 +30,12 @@
 
 * [Redux Documentation](https://redux.js.org/docs/introduction/LearningResources.html#apps-and-examples)
 
-## Podcasts
+## Podcast Mentions
 
 * [User Error](https://www.youtube.com/watch?v=qlm_G0xgK8Q&feature=youtu.be&t=309)
 * [Important if True](https://youtu.be/6B6E2Kv-w04?t=3295)
-* [Binärgewitter](http://blog.binaergewitter.de/2018/02/16/binaergewitter-talk-number-192-bitcoinheizung#t=1:52:13.216)
+* [Binärgewitter](http://blog.binaergewitter.de/2018/02/16/binaergewitter-talk-number-192-bitcoinheizung#t=1:52:13.216) (German)
+* [Freak Show](https://freakshow.fm/fs214-hoert-euch-doch-mal-zu?t=1:59:05,2:10:51) (German)
 
 ## Forum Posts
 
@@ -61,6 +67,7 @@
 * https://tjournal.ru/66060-brauzernyy-emulyator-kultovogo-muzykalnogo-pleera-winamp
 * https://trashbox.ru/topics/115521/winamp-zhivee-vseh-zhivyh
 * https://tech.onliner.by/2018/02/09/winamp-5
+* http://fonotekaelektrika.com/2018/02/winamp-%D0%B2-%D0%B1%D1%80%D0%B0%D1%83%D0%B7%D1%8A%D1%80/
 
 ### Spanish
 
@@ -119,6 +126,7 @@
 * https://futurezone.at/digital-life/entwickler-baut-winamp-fuer-den-browser-nach/400003172
 * https://t3n.de/news/winamp-javascript-open-source-863217/
 * https://www.smartdroid.de/winamp2-js-laesst-den-klassiker-im-browser-wieder-aufleben/
+* https://www.morgenpost.de/web-wissen/web-technik/article212250123/Surftipp-Kultiger-MP3-Player-im-Browser.html
 
 ### Polish
 
