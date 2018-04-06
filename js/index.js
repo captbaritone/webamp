@@ -46,7 +46,10 @@ function filterBreadcrumbActions(action) {
   return !noisy;
 }
 
-Raven.config(sentryDsn).install();
+Raven.config(sentryDsn, {
+  /* global COMMITHASH */
+  release: COMMITHASH || "DEV"
+}).install();
 
 // Don't prompt user to install Winamp2-js. It's probably not
 // what they want.

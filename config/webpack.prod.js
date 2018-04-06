@@ -1,7 +1,10 @@
 const webpack = require("webpack");
 const merge = require("webpack-merge");
 const workboxPlugin = require("workbox-webpack-plugin");
+const GitRevisionPlugin = require("git-revision-webpack-plugin");
 const common = require("./webpack.common.js");
+
+const gitRevisionPlugin = new GitRevisionPlugin();
 
 const config = merge(common, {
   devtool: "source-map",
@@ -12,7 +15,8 @@ const config = merge(common, {
       },
       SENTRY_DSN: JSON.stringify(
         "https://12b6be8ef7c44f28ac37ab5ed98fd294@sentry.io/146021"
-      )
+      ),
+      COMMITHASH: JSON.stringify(gitRevisionPlugin.commithash())
     }),
     new webpack.optimize.UglifyJsPlugin({
       // TODO: Is this needed with the devtool setting above?

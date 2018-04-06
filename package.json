@@ -55,6 +55,7 @@
     "eslint-plugin-prettier": "^2.2.0",
     "eslint-plugin-react": "^7.7.0",
     "file-loader": "^1.1.5",
+    "git-revision-webpack-plugin": "^2.5.1",
     "gzip-size-cli": "^2.0.0",
     "html-webpack-plugin": "^3.0.6",
     "http-server": "^0.11.1",
