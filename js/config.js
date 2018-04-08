@@ -24,6 +24,14 @@ export const initialTracks = config.initialTracks || [
   {
     metaData: { artist: "DJ Mike Llama", title: "Llama Whippin' Intro" },
     url: llamaAudio
+  },
+  {
+    url: "https://cdn.changelog.com/uploads/podcast/291/the-changelog-291.mp3",
+    metaData: {
+      artist: "Changelog Media",
+      title: "Winamp2-js with Jordan Eldredge"
+    },
+    duration: 4841
   }
 ];
 
