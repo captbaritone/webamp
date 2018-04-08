@@ -1,6 +1,7 @@
 /* Emulate the native <audio> element with Web Audio API */
 import { BANDS } from "../constants";
 import ElementSource from "./elementSource";
+import detectChannels from "./detectChannels";
 
 export default class Media {
   constructor() {
@@ -32,10 +33,12 @@ export default class Media {
       timeupdate: function() {},
       visualizerupdate: function() {},
       ended: function() {},
-      fileLoaded: function() {}
+      fileLoaded: function() {},
+      channelupdate: function() {}
     };
+    // We don't currently know how many channels
+    this._channels = null;
     this._balance = 0;
-    this.name = null;
 
     // The _source node has to be recreated each time it's stopped or
     // paused, so we don't create it here. Instead we create this dummy
@@ -60,6 +63,10 @@ export default class Media {
     // Create the analyser node for the visualizer
     this._analyser = this._context.createAnalyser();
     this._analyser.fftSize = 2048;
+    // TODO: Tune these to something that looks like Winamp
+    this._analyser.minDecibels = -90;
+    this._analyser.maxDecibels = -10;
+    this._analyser.smoothingTimeConstant = 0.8;
 
     // Create the gain node for the volume control
     this._gainNode = this._context.createGain();
@@ -154,8 +161,29 @@ export default class Media {
     this._chanMerge.connect(this._analyser);
 
     this._gainNode.connect(this._context.destination);
+    window.media = this;
   }
 
+  _setChannels(num) {
+    const assumedChannels = num == null ? 2 : num;
+    this._chanSplit.disconnect();
+    this._chanSplit.connect(this._leftGain, 0);
+    // If we only have one channel, use it for both left and right.
+    this._chanSplit.connect(this._rightGain, assumedChannels === 1 ? 0 : 1);
+    this._channels = num;
+    this._callbacks.channelupdate();
+  }
+
+  _makeMono() {
+    this._setChannels(1);
+  }
+
+  _makeStereo() {
+    this._setChannels(2);
+  }
+  _resetChannels() {
+    this._setChannels(null);
+  }
   /* Properties */
   duration() {
     return this._source.getDuration();
@@ -174,7 +202,7 @@ export default class Media {
   }
 
   channels() {
-    return this._source.getNumberOfChannels();
+    return this._channels == null ? 2 : this._channels;
   }
 
   sampleRate() {
@@ -182,8 +210,17 @@ export default class Media {
   }
 
   /* Actions */
-  play() {
-    this._source.play();
+  async play() {
+    await this._source.play();
+    if (this._channels == null) {
+      detectChannels(this._staticSource)
+        .then(channels => {
+          this._setChannels(channels);
+        })
+        .catch(() => {
+          this._setChannels(null);
+        });
+    }
   }
 
   pause() {
@@ -259,10 +296,10 @@ export default class Media {
   }
 
   // Used only for the initial load, since it must have a CORS header
-  async loadFromUrl(url, fileName, autoPlay) {
-    this.name = fileName;
+  async loadFromUrl(url, autoPlay) {
     this._callbacks.waiting();
     await this._source.loadUrl(url);
+    this._resetChannels();
     this._callbacks.stopWaiting();
     if (autoPlay) {
       this.play();
