@@ -48,7 +48,7 @@ function filterBreadcrumbActions(action) {
 
 Raven.config(sentryDsn, {
   /* global COMMITHASH */
-  release: typeof COMMITHASH !== "undefined" ? COMMITHASH : "DEV"
+  release: COMMITHASH || "DEV"
 }).install();
 
 // Don't prompt user to install Winamp2-js. It's probably not

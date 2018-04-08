@@ -11,8 +11,7 @@ import {
   TOGGLE_SHUFFLE,
   TOGGLE_TIME_MODE,
   UPDATE_TIME_ELAPSED,
-  ADD_TRACK_FROM_URL,
-  CHANNEL_COUNT_CHANGED
+  ADD_TRACK_FROM_URL
 } from "../actionTypes";
 
 const media = (state, action) => {
@@ -45,8 +44,6 @@ const media = (state, action) => {
     case STOP:
     case IS_STOPPED:
       return { ...state, status: "STOPPED" };
-    case CHANNEL_COUNT_CHANGED:
-      return { ...state, channels: action.channels };
     case TOGGLE_TIME_MODE:
       const newMode = state.timeMode === "REMAINING" ? "ELAPSED" : "REMAINING";
       return { ...state, timeMode: newMode };
