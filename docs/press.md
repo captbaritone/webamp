@@ -117,6 +117,7 @@
 * https://changelog.com/news/winamp-29-in-htmljs--PJr
 * https://www.howtogeek.com/343813/re-live-90s-computing-in-your-browser-right-now/amp/
 * https://techcaption.com/run-winamp-web-browser/
+* https://www.trishtech.com/2018/02/javascript-version-of-winamp-runs-in-any-web-browser/
 
 ### German
 
