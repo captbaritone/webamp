@@ -82,6 +82,9 @@ const loadQueue = new LoadQueue({ threads: 4 });
 function playRandomTrack() {
   return (dispatch, getState) => {
     const { playlist: { trackOrder, currentTrack } } = getState();
+    if (trackOrder.length === 0) {
+      return;
+    }
     let nextId;
     do {
       nextId = trackOrder[Math.floor(trackOrder.length * Math.random())];

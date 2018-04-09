@@ -93,17 +93,13 @@ export default media => store => {
         media.seekToPercentComplete(action.percent);
         break;
       case PLAY_TRACK:
-        media.loadFromUrl(
-          store.getState().playlist.tracks[action.id].url,
-          true
-        );
+      case BUFFER_TRACK: {
+        const track = store.getState().playlist.tracks[action.id];
+        if (track != null) {
+          media.loadFromUrl(track.url, true);
+        }
         break;
-      case BUFFER_TRACK:
-        media.loadFromUrl(
-          store.getState().playlist.tracks[action.id].url,
-          false
-        );
-        break;
+      }
       case SET_BAND_VALUE:
         if (action.band === "preamp") {
           media.setPreamp(action.value);
