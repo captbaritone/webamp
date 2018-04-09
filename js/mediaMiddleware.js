@@ -15,7 +15,8 @@ import {
   SET_EQ_OFF,
   SET_EQ_ON,
   PLAY_TRACK,
-  BUFFER_TRACK
+  BUFFER_TRACK,
+  CHANNEL_COUNT_CHANGED
 } from "./actionTypes";
 import { next as nextTrack } from "./actionCreators";
 import { getCurrentTrackId } from "./selectors";
@@ -63,6 +64,13 @@ export default media => store => {
     });
   });
 
+  media.addEventListener("channelupdate", () => {
+    store.dispatch({
+      type: CHANNEL_COUNT_CHANGED,
+      channels: media.channels()
+    });
+  });
+
   return next => action => {
     // TODO: Consider doing this after the action, and using the state as the source of truth.
     switch (action.type) {
@@ -87,14 +95,12 @@ export default media => store => {
       case PLAY_TRACK:
         media.loadFromUrl(
           store.getState().playlist.tracks[action.id].url,
-          action.name,
           true
         );
         break;
       case BUFFER_TRACK:
         media.loadFromUrl(
           store.getState().playlist.tracks[action.id].url,
-          action.name,
           false
         );
         break;
