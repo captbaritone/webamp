@@ -1,6 +1,11 @@
 import skin from "../skins/base-2.91-png.wsz";
 import llamaAudio from "../mp3/llama-2.91.mp3";
 
+// This seems to include the `accept-ranges` header, which GitHub Pages does not, and
+// Safari on iOS requires.
+llamaAudio =
+  "https://raw.githubusercontent.com/captbaritone/winamp2-js/master/mp3/llama-2.91.mp3";
+
 /* global SENTRY_DSN */
 
 const { hash } = window.location;
