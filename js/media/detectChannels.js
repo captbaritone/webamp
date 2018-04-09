@@ -15,14 +15,21 @@ function createAnalysers(source) {
   leftGain.connect(leftAnalyser);
   rightGain.connect(rightAnalyser);
 
-  return { left: leftAnalyser, right: rightAnalyser };
+  function destroy() {
+    source.disconnect(splitter);
+    splitter.disconnect();
+    leftGain.disconnect();
+    rightGain.disconnect();
+  }
+
+  return { left: leftAnalyser, right: rightAnalyser, destroy };
 }
 
 const MAX_CALLS = 1000;
 
 export default async function detectChannels(source) {
   return new Promise((resolve, reject) => {
-    const { left, right } = createAnalysers(source);
+    const { left, right, destroy } = createAnalysers(source);
 
     const dataArray = new Uint8Array(left.frequencyBinCount);
     let maxLeft = 0;
@@ -40,11 +47,13 @@ export default async function detectChannels(source) {
         } else {
           resolve(1);
         }
+        destroy();
         clearInterval(intervalHandle);
       }
 
       if (calls >= MAX_CALLS) {
         reject();
+        destroy();
       }
 
       calls++;
