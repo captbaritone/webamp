@@ -92,12 +92,13 @@ export default media => store => {
       case SEEK_TO_PERCENT_COMPLETE:
         media.seekToPercentComplete(action.percent);
         break;
-      case PLAY_TRACK:
+      case PLAY_TRACK: {
         const track = store.getState().playlist.tracks[action.id];
         if (track != null) {
           media.loadFromUrl(track.url, true);
         }
         break;
+      }
       case BUFFER_TRACK: {
         const track = store.getState().playlist.tracks[action.id];
         if (track != null) {
