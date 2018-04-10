@@ -2,7 +2,10 @@
 
 ## Library/Application
 
-This repository contains both an NPM module, and a demo page, found at <https://webamp.org>. The NPM module's goal is to provide a widget which can be embedded in any website, where as the demo page depends upon the library, and provides the canonical ussage. You can find more information about the library's API in the [ussage](./ussage.md) document. You can find more info about the demo page in [index.js](../js/index.js).
+This repository contains both an NPM module, and a demo page, found at <https://webamp.org>. The NPM module's goal is to provide a widget which can be embedded in any website, where as the demo page depends upon the library, and provides the canonical usage. You can find more information about the library's API in the [usage](./usage.md) document.
+
+* The entry point for the demo page is [index.js](../js/index.js)
+* The entry point for the NPM modules is [winamp.js](../js/winamp.js)
 
 ## Redux
 
@@ -51,7 +54,7 @@ All windows are rendred with `image-rendering: pixelated;` (or equivilant) so th
 
 ## Visualizer
 
-The visualizer in the main window is a React component [Visualizer.js](../js/components/Visualizer.js) that gets passed skin data from the Redux store, an [analyser node](https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode) and some various user settings (which visualizer should be shown? are we playing?). All computation is done such that it works both in the "regular" mode, but also in shade mode. In shade mode the dimension values are just different.
+The visualizer in the main window is a React component [Visualizer.js](../js/components/MainWindow/Visualizer.js) that gets passed skin data from the Redux store, an [analyser node](https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode) and some various user settings (which visualizer should be shown? are we playing?). All computation is done such that it works both in the "regular" mode, but also in shade mode. In shade mode the dimension values are just different.
 
 To improve performance, two off-screen canvases are pre-rendered whenever the skin changes. These are then used as components of the per-frame rendering:
 
