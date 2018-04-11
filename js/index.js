@@ -17,6 +17,7 @@ import {
   SET_BALANCE,
   SET_BAND_VALUE
 } from "./actionTypes";
+import analyticsMiddleware from "./analyticsMiddleware";
 
 import {
   hideAbout,
@@ -50,6 +51,20 @@ Raven.config(sentryDsn, {
   /* global COMMITHASH */
   release: typeof COMMITHASH !== "undefined" ? COMMITHASH : "DEV"
 }).install();
+
+const ravenMiddleware = createMiddleware(Raven, {
+  filterBreadcrumbActions,
+  stateTransformer: state => ({
+    ...state,
+    display: {
+      ...state.display,
+      skinGenLetterWidths: "[[REDACTED]]",
+      skinImages: "[[REDACTED]]",
+      skinCursors: "[[REDACTED]]",
+      skinRegion: "[[REDACTED]]"
+    }
+  })
+});
 
 // Don't prompt user to install Winamp2-js. It's probably not
 // what they want.
@@ -114,19 +129,7 @@ Raven.context(() => {
     ],
     enableHotkeys: true,
     __initialState: initialState,
-    __customMiddleware: createMiddleware(Raven, {
-      filterBreadcrumbActions,
-      stateTransformer: state => ({
-        ...state,
-        display: {
-          ...state.display,
-          skinGenLetterWidths: "[[REDACTED]]",
-          skinImages: "[[REDACTED]]",
-          skinCursors: "[[REDACTED]]",
-          skinRegion: "[[REDACTED]]"
-        }
-      })
-    })
+    __customMiddlewares: [analyticsMiddleware, ravenMiddleware]
   });
 
   winamp.renderWhenReady(document.getElementById("app"));

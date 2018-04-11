@@ -57,7 +57,7 @@ class Winamp {
     this.store = getStore(
       this.media,
       this._actionEmitter,
-      this.options.__customMiddleware,
+      this.options.__customMiddlewares,
       this.options.__initialState
     );
     this.store.dispatch({

@@ -3,15 +3,20 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import reducer from "./reducers";
 import mediaMiddleware from "./mediaMiddleware";
-import analyticsMiddleware from "./analyticsMiddleware";
 import { merge } from "./utils";
 import { UPDATE_TIME_ELAPSED, STEP_MARQUEE } from "./actionTypes";
+import analyticsMiddleware from "./analyticsMiddleware";
 
 const compose = composeWithDevTools({
   actionsBlacklist: [UPDATE_TIME_ELAPSED, STEP_MARQUEE]
 });
 
-const getStore = (media, actionEmitter, customMiddleware, stateOverrides) => {
+const getStore = (
+  media,
+  actionEmitter,
+  customMiddlewares = [],
+  stateOverrides
+) => {
   let initialState;
   if (stateOverrides) {
     initialState = merge(
@@ -35,7 +40,7 @@ const getStore = (media, actionEmitter, customMiddleware, stateOverrides) => {
           thunk,
           mediaMiddleware(media),
           emitterMiddleware,
-          customMiddleware,
+          ...customMiddlewares,
           analyticsMiddleware
         ].filter(Boolean)
       )
