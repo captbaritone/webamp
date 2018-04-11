@@ -25,20 +25,28 @@ function createAnalysers(source) {
   return { left: leftAnalyser, right: rightAnalyser, destroy };
 }
 
-const MAX_CALLS = 1000;
+const POLL_INTERVAL = 20;
+const MAX_CALLS = 100;
 
 export default async function detectChannels(source) {
   return new Promise((resolve, reject) => {
-    const { left, right, destroy } = createAnalysers(source);
+    const analysers = createAnalysers(source);
 
-    const dataArray = new Uint8Array(left.frequencyBinCount);
+    const dataArray = new Uint8Array(analysers.left.frequencyBinCount);
     let maxLeft = 0;
     let maxRight = 0;
     let calls = 0;
+
+    const unsubscribe = () => {
+      // eslint-disable-next-line no-use-before-define
+      clearInterval(intervalHandle);
+      analysers.destroy();
+    };
+
     const intervalHandle = setInterval(() => {
-      left.getByteFrequencyData(dataArray);
+      analysers.left.getByteFrequencyData(dataArray);
       maxLeft = Math.max(maxLeft, max(dataArray));
-      right.getByteFrequencyData(dataArray);
+      analysers.right.getByteFrequencyData(dataArray);
       maxRight = Math.max(maxRight, max(dataArray));
 
       if (maxLeft > 0) {
@@ -47,16 +55,15 @@ export default async function detectChannels(source) {
         } else {
           resolve(1);
         }
-        destroy();
-        clearInterval(intervalHandle);
+        unsubscribe();
       }
 
       if (calls >= MAX_CALLS) {
         reject();
-        destroy();
+        unsubscribe();
       }
 
       calls++;
-    }, 20);
+    }, POLL_INTERVAL);
   });
 }
