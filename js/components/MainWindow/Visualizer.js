@@ -239,7 +239,7 @@ class Visualizer extends React.Component {
 const mapStateToProps = state => ({
   colors: state.display.skinColors,
   style: state.display.visualizerStyle,
-  width: state.display.mainShade ? 38 : 76,
+  width: state.display.mainShade ? 38 : 75,
   height: state.display.mainShade ? 5 : 16,
   status: state.media.status,
   spekles: !state.display.mainShade
