@@ -1,3 +1,5 @@
+import { DEFAULT_VIS_COLORS } from "./constants";
+
 export const getTimeObj = time => {
   if (time == null) {
     // If we clean up `<MiniTime />` we don't need to do this any more.
@@ -65,11 +67,9 @@ export const parseViscolors = text => {
   // - @PAEz
   for (let i = 0; i < 24; i++) {
     const matches = regex.exec(entries[i]);
-    if (matches) {
-      colors[i] = `rgb(${matches.slice(1, 4).join(",")})`;
-    } else {
-      console.error(`Error in VISCOLOR.TXT on line ${i}`);
-    }
+    colors[i] = matches
+      ? `rgb(${matches.slice(1, 4).join(",")})`
+      : DEFAULT_VIS_COLORS[i];
   }
   return colors;
 };

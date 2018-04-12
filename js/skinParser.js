@@ -1,8 +1,11 @@
 import JSZip from "../node_modules/jszip/dist/jszip"; // Hack
 import SKIN_SPRITES from "./skinSprites";
 import regionParser from "./regionParser";
-import { LETTERS } from "./constants";
-import { parseViscolors, parseIni } from "./utils";
+import {
+  LETTERS,
+  DEFAULT_VIS_COLORS,
+  DEFAULT_PLAYLIST_STYLE
+} from "./constants";
 
 const shallowMerge = objs =>
   objs.reduce((prev, img) => Object.assign(prev, img), {});
@@ -131,47 +134,12 @@ async function getCursorFromFilename(zip, fileName) {
   return base64 && `data:image/x-win-bitmap;base64,${base64}`;
 }
 
-const defaultVisColors = [
-  "rgb(0,0,0)",
-  "rgb(24,33,41)",
-  "rgb(239,49,16)",
-  "rgb(206,41,16)",
-  "rgb(214,90,0)",
-  "rgb(214,102,0)",
-  "rgb(214,115,0)",
-  "rgb(198,123,8)",
-  "rgb(222,165,24)",
-  "rgb(214,181,33)",
-  "rgb(189,222,41)",
-  "rgb(148,222,33)",
-  "rgb(41,206,16)",
-  "rgb(50,190,16)",
-  "rgb(57,181,16)",
-  "rgb(49,156,8)",
-  "rgb(41,148,0)",
-  "rgb(24,132,8)",
-  "rgb(255,255,255)",
-  "rgb(214,214,222)",
-  "rgb(181,189,189)",
-  "rgb(160,170,175)",
-  "rgb(148,156,165)",
-  "rgb(150,150,150)"
-];
-
-const defaultPlaylistStyle = {
-  normal: "#00FF00",
-  current: "#FFFFFF",
-  normalbg: "#000000",
-  selectedbg: "#0000FF",
-  font: "Arial"
-};
-
 async function genPlaylistStyle(zip) {
   const pleditContent = await genFileFromZip(zip, "PLEDIT", "txt", "text");
   const data = pleditContent && parseIni(pleditContent).text;
   if (!data) {
     // Corrupt or missing PLEDIT.txt file.
-    return defaultPlaylistStyle;
+    return DEFAULT_PLAYLIST_STYLE;
   }
 
   // Winamp seems to permit colors that contain too many characters.
@@ -187,12 +155,12 @@ async function genPlaylistStyle(zip) {
     data[colorKey] = color.slice(0, 7);
   });
 
-  return { ...defaultPlaylistStyle, ...data };
+  return { ...DEFAULT_PLAYLIST_STYLE, ...data };
 }
 
 async function genColors(zip) {
   const viscolorContent = await genFileFromZip(zip, "VISCOLOR", "txt", "text");
-  return viscolorContent ? parseViscolors(viscolorContent) : defaultVisColors;
+  return viscolorContent ? parseViscolors(viscolorContent) : DEFAULT_VIS_COLORS;
 }
 
 async function genImages(zip) {
