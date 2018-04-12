@@ -10,8 +10,8 @@ export default class DropTarget extends React.Component {
   supress(e) {
     e.stopPropagation();
     e.preventDefault();
-    e.dataTransfer.dropEffect = "copy";
-    e.dataTransfer.effectAllowed = "copyMove";
+    e.dataTransfer.dropEffect = "link";
+    e.dataTransfer.effectAllowed = "link";
   }
 
   handleDrop(e) {

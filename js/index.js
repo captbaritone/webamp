@@ -36,6 +36,16 @@ const NOISY_ACTION_TYPES = new Set([
   SET_BAND_VALUE
 ]);
 
+function supressDragAndDrop(e) {
+  e.preventDefault();
+  e.dataTransfer.effectAllowed = "none";
+  e.dataTransfer.dropEffect = "none";
+}
+
+window.addEventListener("dragenter", supressDragAndDrop);
+window.addEventListener("dragover", supressDragAndDrop);
+window.addEventListener("drop", supressDragAndDrop);
+
 let lastActionType = null;
 
 // Filter out consecutive common actions
