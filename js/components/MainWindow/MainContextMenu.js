@@ -32,10 +32,13 @@ const MainContextMenu = props => (
               <Node
                 key={i}
                 onClick={async () => {
-                  props.loadMediaFiles(
-                    await picker.filePicker(),
-                    LOAD_STYLE.PLAY
-                  );
+                  let files;
+                  try {
+                    files = await picker.filePicker();
+                  } catch (e) {
+                    console.error("Error loading from file picker", e);
+                  }
+                  props.loadMediaFiles(files, LOAD_STYLE.PLAY);
                 }}
                 label={picker.contextMenuName}
               />
