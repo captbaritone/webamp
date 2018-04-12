@@ -103,6 +103,7 @@
 * https://unwire.hk/2018/02/11/winampemu/mobile-music/
 * https://www.appinn.com/winamp2-js/
 * https://www.waerfa.com/winamp2-js
+* https://www.techapple.com/archives/19899
 
 ### English
 
