@@ -14,7 +14,8 @@ import {
   SET_AVAILABLE_SKINS,
   NETWORK_CONNECTED,
   NETWORK_DISCONNECTED,
-  CLOSE_WINAMP
+  CLOSE_WINAMP,
+  MINIMIZE_WINAMP
 } from "./actionTypes";
 import Emitter from "./emitter";
 
@@ -104,6 +105,10 @@ class Winamp {
 
   onClose(cb) {
     return this._actionEmitter.on(CLOSE_WINAMP, cb);
+  }
+
+  onMinimize(cb) {
+    return this._actionEmitter.on(MINIMIZE_WINAMP, cb);
   }
 
   async renderWhenReady(node) {

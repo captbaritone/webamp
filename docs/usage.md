@@ -206,6 +206,19 @@ const unsubscribe = winamp.onClose(() => {
 unsubscribe();
 ```
 
+### `onMinimize(callback)`
+
+A callback which will be called when Winamp2-js is minimized. Returns an "unsubscribe" function.
+
+```JavaScript
+const unsubscribe = winamp.onClose(() => {
+    console.log("Winamp closed");
+});
+
+// If at some point in the future you want to stop listening to these events:
+unsubscribe();
+```
+
 ## Notes
 
 * Internet Explorer is not supported.
