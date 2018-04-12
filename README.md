@@ -31,6 +31,9 @@ See the [usage documentation](./docs/usage.md) for more information.
 
 Open `http://localhost:8080/webpack-dev-server/` in your browser.
 
+    # Run tests and lint checks
+    npm test
+
 ## Building
 
     npm install
