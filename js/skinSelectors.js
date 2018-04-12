@@ -224,17 +224,17 @@ export const imageSelectors = {
   MAIN_TITLE_BAR_SELECTED: [".selected #title-bar"],
   MAIN_EASTER_EGG_TITLE_BAR: [".llama #title-bar"],
   MAIN_EASTER_EGG_TITLE_BAR_SELECTED: [".llama.selected #title-bar"],
-  MAIN_OPTIONS_BUTTON: ["#title-bar #option.clicked"],
+  MAIN_OPTIONS_BUTTON: [".selected #title-bar #option.clicked"],
   MAIN_OPTIONS_BUTTON_DEPRESSED: [
-    "#title-bar #option:active",
-    "#title-bar #option:selected"
+    ".selected #title-bar #option:active",
+    ".selected #title-bar #option:selected"
   ],
   MAIN_MINIMIZE_BUTTON: [".selected #title-bar #minimize.clicked"],
-  MAIN_MINIMIZE_BUTTON_DEPRESSED: ["#title-bar #minimize:active"],
+  MAIN_MINIMIZE_BUTTON_DEPRESSED: [".selected #title-bar #minimize:active"],
   MAIN_SHADE_BUTTON: [".selected #title-bar #shade.clicked"],
-  MAIN_SHADE_BUTTON_DEPRESSED: ["#title-bar #shade:active"],
+  MAIN_SHADE_BUTTON_DEPRESSED: [".selected #title-bar #shade:active"],
   MAIN_CLOSE_BUTTON: [".selected #title-bar #close.clicked"],
-  MAIN_CLOSE_BUTTON_DEPRESSED: ["#title-bar #close:active"],
+  MAIN_CLOSE_BUTTON_DEPRESSED: [".selected #title-bar #close:active"],
   MAIN_CLUTTER_BAR_BACKGROUND: ["#clutter-bar"],
   MAIN_CLUTTER_BAR_BACKGROUND_DISABLED: ["#clutter-bar.disabled"],
   MAIN_CLUTTER_BAR_BUTTON_O_SELECTED: [
