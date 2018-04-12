@@ -10,7 +10,8 @@ import {
   denormalize,
   segment,
   moveSelected,
-  spliceIn
+  spliceIn,
+  getFileExtension
 } from "./utils";
 
 const fixture = filename =>
@@ -44,6 +45,21 @@ describe("getTimeStr", () => {
     const actual = getTimeStr(540000);
     const expected = "9000:00";
     expect(actual).toEqual(expected);
+  });
+});
+
+describe("getFileExtension", () => {
+  it("can get bmp", () => {
+    expect(getFileExtension("foo.bmp")).toBe("bmp");
+  });
+  it("can match four char extension", () => {
+    expect(getFileExtension("foo.html")).toBe("html");
+  });
+  it("converts to lower case", () => {
+    expect(getFileExtension("foo.BMP")).toBe("bmp");
+  });
+  it("returns null if a match is not found", () => {
+    expect(getFileExtension("foo")).toBe(null);
   });
 });
 

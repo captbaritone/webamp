@@ -6,6 +6,7 @@ import {
   DEFAULT_VIS_COLORS,
   DEFAULT_PLAYLIST_STYLE
 } from "./constants";
+import { parseViscolors, parseIni, getFileExtension } from "./utils";
 
 const shallowMerge = objs =>
   objs.reduce((prev, img) => Object.assign(prev, img), {});
@@ -89,7 +90,10 @@ async function genFileFromZip(zip, fileName, ext, mode) {
     return null;
   }
   // Return a promise (awaitable).
-  return files[0].async(mode);
+  return {
+    contents: await files[0].async(mode),
+    name: files[0].name
+  };
 }
 
 function getSpriteUrisFromImg(img, sprites) {
@@ -110,14 +114,16 @@ async function genImgFromFilename(zip, fileName) {
   // Winamp only supports .bmp images, but WACUP set a precidence of supporting
   // .png as well to reduce size. Since we care about size as well, we follow
   // suit. Our default skin uses .png to save 14kb.
-  const blob = await genFileFromZip(zip, fileName, "(png|bmp)", "blob");
-  if (!blob) {
+  const file = await genFileFromZip(zip, fileName, "(png|bmp)", "blob");
+  if (!file) {
     return null;
   }
+
+  const mimeType = `image/${getFileExtension(file.name) || "*"}`;
   // The spec for createImageBitmap() says the browser should try to sniff the
   // mime type, but it looks like Firefox does not. So we specify it here
   // explicitly.
-  const typedBlob = new Blob([blob], { type: "image/*" });
+  const typedBlob = new Blob([file.contents], { type: mimeType });
   return genImgFromBlob(typedBlob);
 }
 
@@ -130,13 +136,13 @@ async function genSpriteUrisFromFilename(zip, fileName) {
 }
 
 async function getCursorFromFilename(zip, fileName) {
-  const base64 = await genFileFromZip(zip, fileName, "CUR", "base64");
-  return base64 && `data:image/x-win-bitmap;base64,${base64}`;
+  const file = await genFileFromZip(zip, fileName, "CUR", "base64");
+  return file && `data:image/x-win-bitmap;base64,${file.contents}`;
 }
 
 async function genPlaylistStyle(zip) {
-  const pleditContent = await genFileFromZip(zip, "PLEDIT", "txt", "text");
-  const data = pleditContent && parseIni(pleditContent).text;
+  const pledit = await genFileFromZip(zip, "PLEDIT", "txt", "text");
+  const data = pledit && parseIni(pledit.contents).text;
   if (!data) {
     // Corrupt or missing PLEDIT.txt file.
     return DEFAULT_PLAYLIST_STYLE;
@@ -159,8 +165,8 @@ async function genPlaylistStyle(zip) {
 }
 
 async function genColors(zip) {
-  const viscolorContent = await genFileFromZip(zip, "VISCOLOR", "txt", "text");
-  return viscolorContent ? parseViscolors(viscolorContent) : DEFAULT_VIS_COLORS;
+  const viscolor = await genFileFromZip(zip, "VISCOLOR", "txt", "text");
+  return viscolor ? parseViscolors(viscolor.contents) : DEFAULT_VIS_COLORS;
 }
 
 async function genImages(zip) {
@@ -182,8 +188,8 @@ async function genCursors(zip) {
 }
 
 async function genRegion(zip) {
-  const regionContent = await genFileFromZip(zip, "REGION", "txt", "text");
-  return regionContent ? regionParser(regionContent) : {};
+  const region = await genFileFromZip(zip, "REGION", "txt", "text");
+  return region ? regionParser(region.contents) : {};
 }
 
 async function genGenTextSprites(zip) {
