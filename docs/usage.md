@@ -222,7 +222,7 @@ unsubscribe();
 ## Notes
 
 * Internet Explorer is not supported.
-* Webamp injects CSS into the page. The CSS is namespaced (every CSS selector is prefixed with `#winamp2-js`), so it should not interfere with anything on the host page.
+* Webamp injects CSS into the page. The CSS is namespaced (every CSS selector is prefixed with `#webamp`), so it should not interfere with anything on the host page.
 * Webamp HTML contains somewhat generic IDs and class names. If you have CSS on your page that is not namespaced, it may accidently be applied to Webamp. If this happens please reach out. I may be able to resolve it.
 * Skin and audio URLs are subject to [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS). Please ensure they are either served from the same domain, or that the other domain is served with the correct headers.
 * Please reach out to me. I'd love to help you set it up, and understand how it's being used. I plan to expand this API as I learn how people want to use it.

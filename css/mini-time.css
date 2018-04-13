@@ -1,19 +1,19 @@
-#winamp2-js .mini-time {
+#webamp .mini-time {
     display: block;
     height: 6px;
     width: 25px;
 }
 
-#winamp2-js .mini-time.blinking .character:not(.background-character) {
+#webamp .mini-time.blinking .character:not(.background-character) {
     animation: blink 2s step-start 1s infinite;
     -webkit-animation: blink 2s step-start 1s infinite;
 }
 
-#winamp2-js .mini-time .background-character {
+#webamp .mini-time .background-character {
     z-index: 1;
 }
 
-#winamp2-js .mini-time .character {
+#webamp .mini-time .character {
     position: absolute;
     top: 0;
     z-index: 2;

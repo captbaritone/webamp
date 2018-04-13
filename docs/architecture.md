@@ -43,7 +43,7 @@ The parsing of skin files is handed in [skinParser.js](../js/skinParser.js). Ren
 
 ## CSS
 
-CSS style sheets are imported by the components which use them. Each rule is individually prefixed with the id `#winamp2-js` to prevent our style rules from "leaking" out onto other potential elements. For example, [98.js.org], includes Webamp on a page along with many other elements, and we want to be sure our rules for `.selected` elements do not apply to any elements outside of `#winamp2-js`.
+CSS style sheets are imported by the components which use them. Each rule is individually prefixed with the id `#webamp` to prevent our style rules from "leaking" out onto other potential elements. For example, [98.js.org], includes Webamp on a page along with many other elements, and we want to be sure our rules for `.selected` elements do not apply to any elements outside of `#webamp`.
 
 The nature of Winamp skins is such that most elements are absolutely positioned, and have an explicit size. There are a few down sides to our current approach:
 

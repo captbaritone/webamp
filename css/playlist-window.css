@@ -1,10 +1,10 @@
 /* Styles */
-#winamp2-js #playlist-window {
+#webamp #playlist-window {
     display: flex;
     flex-direction: column;
 }
 
-#winamp2-js .playlist-top {
+#webamp .playlist-top {
     width: 100%;
     min-height: 20px;
     max-height: 20px;
@@ -12,63 +12,63 @@
     display: flex;
 }
 
-#winamp2-js .playlist-top-left {
+#webamp .playlist-top-left {
     width: 25px;
 }
 
-#winamp2-js .playlist-top-left-spacer {
+#webamp .playlist-top-left-spacer {
     width: 12px;
 }
 
-#winamp2-js .playlist-top-left-fill {
+#webamp .playlist-top-left-fill {
     flex-grow: 1;
     background-position: right;
 }
 
-#winamp2-js .playlist-top-right-spacer {
+#webamp .playlist-top-right-spacer {
     /* This goes to the right of the center */
     width: 13px;
 }
 
-#winamp2-js .playlist-top-right-fill {
+#webamp .playlist-top-right-fill {
     flex-grow: 1;
     background-position: right;
 }
 
-#winamp2-js .playlist-top-title {
+#webamp .playlist-top-title {
     width: 100px;
 }
 
-#winamp2-js .playlist-top-right {
+#webamp .playlist-top-right {
     width: 25px;
 }
 
-#winamp2-js .playlist-middle {
+#webamp .playlist-middle {
     flex-grow: 1;
     display: flex;
     flex-direction: row;
     overflow: hidden;
 }
 
-#winamp2-js .playlist-middle-left {
+#webamp .playlist-middle-left {
     background-repeat: repeat-y;
     width: 12px;
     min-width: 12px;
 }
 
-#winamp2-js .playlist-middle-center {
+#webamp .playlist-middle-center {
     flex-grow: 1;
     padding: 3px 0;
     min-width: 0; /* Not sure why this is needed */
 }
 
-#winamp2-js .playlist-tracks {
+#webamp .playlist-tracks {
     display: flex;
     flex: 1 0 auto;
     cursor: default;
 }
 
-#winamp2-js .playlist-tracks .track-cell {
+#webamp .playlist-tracks .track-cell {
     height: 13px;
     line-height: 13px;
     font-size: 9px;
@@ -79,28 +79,28 @@
     user-select: none;
 }
 
-#winamp2-js .playlist-track-numbers > div,
-#winamp2-js .playlist-track-durations > div {
+#webamp .playlist-track-numbers > div,
+#webamp .playlist-track-durations > div {
     padding-right: 3px;
     text-align: right;
 }
-#winamp2-js .playlist-track-numbers > div {
+#webamp .playlist-track-numbers > div {
     text-align: center;
     padding-left: 1px;
 }
 
-#winamp2-js .playlist-track-titles {
+#webamp .playlist-track-titles {
     flex: 1 1 auto;
     overflow: hidden;
 }
 
-#winamp2-js .playlist-track-titles > div {
+#webamp .playlist-track-titles > div {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
 }
 
-#winamp2-js .playlist-middle-right {
+#webamp .playlist-middle-right {
     background-repeat: repeat-y;
     background-position: top right;
     width: 20px;
@@ -109,18 +109,18 @@
     padding-bottom: 18px;
 }
 
-#winamp2-js .playlist-scrollbar {
+#webamp .playlist-scrollbar {
     height: 100%;
     width: 8px;
     margin-left: 5px;
 }
 
-#winamp2-js .playlist-scrollbar-handle {
+#webamp .playlist-scrollbar-handle {
     width: 8x;
     height: 18px;
 }
 
-#winamp2-js .playlist-bottom {
+#webamp .playlist-bottom {
     width: 100%;
     height: 38px;
     min-height: 38px;
@@ -128,13 +128,13 @@
     position: relative;
 }
 
-#winamp2-js .playlist-bottom-left {
+#webamp .playlist-bottom-left {
     width: 125px;
     height: 100%;
     position: absolute;
 }
 
-#winamp2-js .playlist-menu li {
+#webamp .playlist-menu li {
     list-style: none;
     display: none;
     width: 22px;
@@ -143,22 +143,22 @@
     margin: 0;
 }
 
-#winamp2-js .playlist-menu li > div {
+#webamp .playlist-menu li > div {
     height: 100%;
 }
 
-#winamp2-js .playlist-menu ul {
+#webamp .playlist-menu ul {
     padding: 0;
     margin: 0;
     position: absolute;
     bottom: 0;
 }
 
-#winamp2-js .playlist-menu.selected li {
+#webamp .playlist-menu.selected li {
     display: block;
 }
 
-#winamp2-js .playlist-menu .bar {
+#webamp .playlist-menu .bar {
     position: absolute;
     bottom: 0;
     left: -3px;
@@ -166,7 +166,7 @@
     height: 54px;
 }
 
-#winamp2-js #playlist-add-menu {
+#webamp #playlist-add-menu {
     position: absolute;
     bottom: 12px;
     left: 14px;
@@ -174,11 +174,11 @@
     height: 18px;
 }
 
-#winamp2-js #playlist-remove-menu.playlist-menu .bar {
+#webamp #playlist-remove-menu.playlist-menu .bar {
     height: 72px;
 }
 
-#winamp2-js #playlist-remove-menu {
+#webamp #playlist-remove-menu {
     position: absolute;
     bottom: 12px;
     left: 43px;
@@ -186,7 +186,7 @@
     height: 18px;
 }
 
-#winamp2-js #playlist-selection-menu {
+#webamp #playlist-selection-menu {
     position: absolute;
     bottom: 12px;
     left: 72px;
@@ -194,7 +194,7 @@
     height: 18px;
 }
 
-#winamp2-js #playlist-misc-menu {
+#webamp #playlist-misc-menu {
     position: absolute;
     bottom: 12px;
     left: 101px;
@@ -202,7 +202,7 @@
     height: 18px;
 }
 
-#winamp2-js #playlist-list-menu {
+#webamp #playlist-list-menu {
     position: absolute;
     bottom: 12px;
     right: 22px;
@@ -210,33 +210,33 @@
     height: 18px;
 }
 
-#winamp2-js .playlist-bottom-right {
+#webamp .playlist-bottom-right {
     width: 150px;
     height: 100%;
     position: absolute;
     right: 0;
 }
 
-#winamp2-js .playlist-running-time-display {
+#webamp .playlist-running-time-display {
     position: absolute;
     top: 10px;
     left: 7px;
     height: 10px;
 }
 
-#winamp2-js .playlist-action-buttons {
+#webamp .playlist-action-buttons {
     position: absolute;
     top: 22px;
     left: 3px;
     display: flex;
 }
 
-#winamp2-js .playlist-action-buttons > div {
+#webamp .playlist-action-buttons > div {
     height: 10px;
     width: 10px;
 }
 
-#winamp2-js #playlist-window .playlist-visualizer {
+#webamp #playlist-window .playlist-visualizer {
     width: 75px;
     height: 100%;
     position: absolute;
@@ -244,17 +244,17 @@
     display: none; /* Only show if the window is wide enough */
 }
 
-#winamp2-js #playlist-window.wide .playlist-visualizer {
+#webamp #playlist-window.wide .playlist-visualizer {
     display: block;
 }
 
-#winamp2-js #playlist-window .mini-time {
+#webamp #playlist-window .mini-time {
     position: absolute;
     top: 23px;
     left: 66px;
 }
 
-#winamp2-js #playlist-window #playlist-resize-target {
+#webamp #playlist-window #playlist-resize-target {
     position: absolute;
     right: 0;
     bottom: 0;
@@ -262,7 +262,7 @@
     width: 20px;
 }
 
-#winamp2-js #playlist-close-button {
+#webamp #playlist-close-button {
     position: absolute;
     right: 2px;
     height: 9px;
@@ -270,7 +270,7 @@
     top: 3px;
 }
 
-#winamp2-js #playlist-shade-button {
+#webamp #playlist-shade-button {
     position: absolute;
     right: 12px;
     height: 9px;
@@ -278,37 +278,37 @@
     top: 3px;
 }
 
-#winamp2-js #playlist-window-shade {
+#webamp #playlist-window-shade {
     height: 14px;
 }
 
-#winamp2-js #playlist-window-shade .left {
+#webamp #playlist-window-shade .left {
     height: 14px;
     background-repeat: no-repeat;
 }
 
-#winamp2-js #playlist-window-shade .right {
+#webamp #playlist-window-shade .right {
     height: 14px;
     background-repeat: no-repeat;
     background-position-x: right;
 }
 
-#winamp2-js #playlist-window #playlist-scroll-up-button,
-#winamp2-js #playlist-window #playlist-scroll-down-button {
+#webamp #playlist-window #playlist-scroll-up-button,
+#webamp #playlist-window #playlist-scroll-down-button {
     position: absolute;
     width: 8px;
     height: 5px;
     right: 7px;
 }
 
-#winamp2-js #playlist-window #playlist-scroll-up-button {
+#webamp #playlist-window #playlist-scroll-up-button {
     top: 2px;
 }
-#winamp2-js #playlist-window #playlist-scroll-down-button {
+#webamp #playlist-window #playlist-scroll-down-button {
     top: 8px;
 }
 
-#winamp2-js #playlist-window-shade #playlist-resize-target {
+#webamp #playlist-window-shade #playlist-resize-target {
     position: absolute;
     right: 20px;
     top: 3px;
@@ -316,13 +316,13 @@
     width: 9px;
 }
 
-#winamp2-js #playlist-shade-track-title {
+#webamp #playlist-shade-track-title {
     position: absolute;
     top: 4px;
     left: 5px;
 }
 
-#winamp2-js #playlist-shade-time {
+#webamp #playlist-shade-time {
     position: absolute;
     top: 4px;
     right: 30px;

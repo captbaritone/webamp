@@ -6,6 +6,8 @@ import { connect } from "react-redux";
 import { LETTERS } from "../constants";
 import { imageSelectors, cursorSelectors } from "../skinSelectors";
 
+const CSS_PREFIX = "#webamp";
+
 const mapRegionNamesToIds = {
   normal: "mainWindowClipPath",
   windowshade: "shadeMainWindowClipPath",
@@ -85,7 +87,7 @@ const Skin = props => {
     if (imageUrl) {
       imageSelectors[imageName].forEach(selector => {
         cssRules.push(
-          `#winamp2-js ${selector} {background-image: url(${imageUrl})}`
+          `${CSS_PREFIX} ${selector} {background-image: url(${imageUrl})}`
         );
       });
     }
@@ -97,10 +99,10 @@ const Skin = props => {
       const selectedWidth =
         skinGenLetterWidths[`GEN_LETTER_SELECTED_${letter}`];
       cssRules.push(
-        `#winamp2-js .gen-text-${letter.toLowerCase()} {width: ${width}px;}`
+        `${CSS_PREFIX} .gen-text-${letter.toLowerCase()} {width: ${width}px;}`
       );
       cssRules.push(
-        `#winamp2-js .selected .gen-text-${letter.toLowerCase()} {width: ${selectedWidth}px;}`
+        `${CSS_PREFIX} .selected .gen-text-${letter.toLowerCase()} {width: ${selectedWidth}px;}`
       );
     });
   }
@@ -109,7 +111,7 @@ const Skin = props => {
     if (cursorUrl) {
       cursorSelectors[cursorName].forEach(selector => {
         cssRules.push(
-          `#winamp2-js ${selector} {cursor: url(${cursorUrl}), auto}`
+          `${CSS_PREFIX} ${selector} {cursor: url(${cursorUrl}), auto}`
         );
       });
     }
@@ -119,7 +121,7 @@ const Skin = props => {
     // This alternate number file requires that the minus sign be
     // formatted differently.
     cssRules.push(
-      "#winamp2-js .status #time #minus-sign { top: 0px; left: -1px; width: 9px; height: 13px; }"
+      `${CSS_PREFIX} .status #time #minus-sign { top: 0px; left: -1px; width: 9px; height: 13px; }`
     );
   }
 
@@ -129,7 +131,7 @@ const Skin = props => {
       const matcher = mapRegionNamesToMatcher[regionName];
       const id = mapRegionNamesToIds[regionName];
       clipPaths[id] = polygons;
-      cssRules.push(`#winamp2-js ${matcher} { clip-path: url(#${id}); }`);
+      cssRules.push(`${CSS_PREFIX} ${matcher} { clip-path: url(#${id}); }`);
     }
   }
   return (
