@@ -130,7 +130,8 @@ export default class ElementSource {
   getDuration() {
     const { duration } = this._audio;
     // Safari on iOS currently has a strange behavior where it reports
-    // the duration as infinity. For now, 0 is better even though it's still wrong.
+    // the duration as infinity if an Accept-Ranges header is not returned.
+    // For now, 0 is better even though it's still wrong.
     return isNaN(duration) || duration === Infinity ? 0 : duration;
   }
 
