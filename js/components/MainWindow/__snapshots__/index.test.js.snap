@@ -382,7 +382,7 @@ exports[`MainWindow renders to snapshot 1`] = `
     />
   </div>
   <a
-    href="https://github.com/captbaritone/winamp2-js"
+    href="https://github.com/captbaritone/webamp"
     id="about"
     target="blank"
     title="About"

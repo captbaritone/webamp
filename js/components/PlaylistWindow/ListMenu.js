@@ -10,11 +10,11 @@ const ListMenu = props => (
     <div className="new-list" onClick={props.removeAllTracks} />
     <div
       className="save-list"
-      onClick={() => alert("Not supported in Winamp2-js")}
+      onClick={() => alert("Not supported in Webamp")}
     />
     <div
       className="load-list"
-      onClick={() => alert("Not supported in Winamp2-js")}
+      onClick={() => alert("Not supported in Webamp")}
     />
   </PlaylistMenu>
 );

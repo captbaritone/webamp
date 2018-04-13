@@ -16,10 +16,7 @@ const DIR_SUPPORT =
 
 const AddMenu = ({ nextIndex, addFilesAtIndex, addDirAtIndex }) => (
   <PlaylistMenu id="playlist-add-menu">
-    <div
-      className="add-url"
-      onClick={() => alert("Not supported in Winamp2-js")}
-    />
+    <div className="add-url" onClick={() => alert("Not supported in Webamp")} />
     <div className="add-dir" onClick={() => addDirAtIndex(nextIndex)} />
     <div className="add-file" onClick={() => addFilesAtIndex(nextIndex)} />
   </PlaylistMenu>

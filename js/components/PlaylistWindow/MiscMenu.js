@@ -44,7 +44,7 @@ const MiscMenu = () => (
     </div>
     <div
       className="file-info"
-      onClick={() => alert("Not supported in Winamp2-js")}
+      onClick={() => alert("Not supported in Webamp")}
     />
 
     <div className="misc-options" onClick={e => e.stopPropagation()}>

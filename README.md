@@ -1,6 +1,6 @@
-[![Travis](https://img.shields.io/travis/captbaritone/winamp2-js.svg)]() [![Codecov](https://img.shields.io/codecov/c/github/captbaritone/winamp2-js.svg)]() [![Discord](https://img.shields.io/discord/434058775012311061.svg)](https://discord.gg/fBTDMqR)
+[![Travis](https://img.shields.io/travis/captbaritone/webamp.svg)]() [![Codecov](https://img.shields.io/codecov/c/github/captbaritone/webamp.svg)]() [![Discord](https://img.shields.io/discord/434058775012311061.svg)](https://discord.gg/fBTDMqR)
 
-# Winamp2-js
+# Webamp
 
 A reimplementation of Winamp 2.9 in HTML5 and JavaScript.
 
@@ -8,7 +8,7 @@ A reimplementation of Winamp 2.9 in HTML5 and JavaScript.
 
 ## [Give it a try!](https://webamp.org)
 
-[![Screenshot of Winamp2-js](./images/preview.png)](https://webamp.org)
+[![Screenshot of Webamp](./images/preview.png)](https://webamp.org)
 
 Works in modern versions of Edge, Firefox, Safari and Chrome. IE is [not
 supported](http://caniuse.com/#feat=audio-api).
@@ -17,9 +17,9 @@ supported](http://caniuse.com/#feat=audio-api).
 
 Check out this Twitter thread for an illustrated list of features: https://twitter.com/captbaritone/status/961274714013319168
 
-## Use Winamp2-js in your own project
+## Use Webamp in your own project
 
-I've tried to make it possible to include Winamp2-js in your own project.
+I've tried to make it possible to include Webamp in your own project.
 
 See the [usage documentation](./docs/usage.md) for more information.
 

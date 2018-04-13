@@ -2,21 +2,21 @@
 
 ## Setup
 
-Clone the Winamp2-js repo:
+Clone the Webamp repo:
 
 ```
-git clone git@github.com:captbaritone/winamp2-js.git
+git clone git@github.com:captbaritone/webamp.git
 ```
 
-Start Winamp2-js in dev mode:
+Start Webamp in dev mode:
 
 ```
-cd winamp2-js
+cd webamp
 yarn install
 npm start
 ```
 
-Winamp2-js should now be running on your local port 8080.
+Webamp should now be running on your local port 8080.
 
 Now, in a separate terminal:
 

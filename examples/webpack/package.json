@@ -1,7 +1,7 @@
 {
-  "name": "winamp2-js-webpack-example",
+  "name": "webamp-webpack-example",
   "version": "0.0.0",
-  "description": "An example of using Winamp2-js within a Webpack bundle",
+  "description": "An example of using Webamp within a Webpack bundle",
   "main": "index.js",
   "scripts": {
     "build": "webpack index.js bundle.js"
@@ -10,6 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "webpack-cli": "^2.0.13",
-    "winamp2-js": "0.0.6"
+    "webamp": "0.0.6"
   }
 }

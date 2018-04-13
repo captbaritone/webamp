@@ -13,7 +13,7 @@ const RemoveMenu = props => (
   <PlaylistMenu id="playlist-remove-menu">
     <div
       className="remove-misc"
-      onClick={() => alert("Not supported in Winamp2-js")}
+      onClick={() => alert("Not supported in Webamp")}
     />
     <div className="remove-all" onClick={props.removeAll} />
     <div className="crop" onClick={props.crop} />

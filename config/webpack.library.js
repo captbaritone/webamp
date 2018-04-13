@@ -51,7 +51,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "../built"),
     filename: "winamp.[name].js",
-    library: "winamp2js",
+    library: "Webamp",
     libraryTarget: "umd"
   }
 };

@@ -1,32 +1,32 @@
 # Usage
 
-Here's how to use Winamp-js in your own project. If you get stuck, or need help, please either file an issue, or reach out on [Gitter](https://gitter.im/winamp2-js/Lobby).
+Here's how to use Webamp in your own project. If you get stuck, or need help, please either file an issue, or reach out on [Discord](https://discord.gg/fBTDMqR).
 
 ## Examples
 
 If you would like to look as some examples check out the [examples directory](../examples/) were you will find:
 
 * [Minimal](../examples/minimal/) - An example that just uses a `<script>` tag that points to a CDN. No install required.
-* [Webpack](../examples/webpack/) - An example that installs Winamp2-js via NPM, and bundles it into an applicaiton using Webpack.
+* [Webpack](../examples/webpack/) - An example that installs Webamp via NPM, and bundles it into an applicaiton using Webpack.
 
 Each example has a README which explains it in more detail.
 
 ## Install
 
 ```
-npm install --save winamp2-js
+npm install --save webamp
 ```
 
 Or, you can include it via a script tag:
 
 ```html
 <!-- You can use this URL, or download it and check it into your own project -->
-<script src="https://unpkg.com/winamp2-js@0.0.6/built/winamp.bundle.min.js"></script>
+<script src="https://unpkg.com/webamp@0.0.6/built/winamp.bundle.min.js"></script>
 ```
 
 ## Create a container
 
-Create a DOM element somewhere in your HTML document. This will eventually contain Winamp2-js.
+Create a DOM element somewhere in your HTML document. This will eventually contain Webamp
 
 ```html
 <div id='winamp-container'></div>
@@ -35,33 +35,33 @@ Create a DOM element somewhere in your HTML document. This will eventually conta
 ## Initialize the JavaScript
 
 ```JavaScript
-import Winamp from 'winamp2-js';
+import Webamp from 'webamp';
 
 // Or, if you installed via a script tag, `Winamp` is available on the global `window`:
-// const Winamp = window.winamp2js;
+// const Winamp = window.Webamp;
 
 // Check if Winamp is supported in this browser
-if(!Winamp.browserIsSupported()) {
-    alert("Oh no! Winamp does not work!")
+if(!Webamp.browserIsSupported()) {
+    alert("Oh no! Webamp does not work!")
     throw new Error("What's the point of anything?")
 }
 
-const winamp = new Winamp({
+const webamp = new Webamp({
   initialTracks: [{
     metaData: {
       artist: "DJ Mike Llama",
       title: "Llama Whippin' Intro",
     },
-    // Can be downloaded from: https://github.com/captbaritone/winamp2-js/raw/master/mp3/llama-2.91.mp3
+    // Can be downloaded from: https://github.com/captbaritone/webamp/raw/master/mp3/llama-2.91.mp3
     url: "path/to/mp3/llama-2.91.mp3"
   }],
   initialSkin: {
-    // Can be downloaded from https://github.com/captbaritone/winamp2-js/raw/master/skins/base-2.91.wsz
+    // Can be downloaded from https://github.com/captbaritone/webamp/raw/master/skins/base-2.91.wsz
     url: "path/to/skins/base-2.91.wsz"
   },
 });
 // Render after the skin has loaded.
-winamp.renderWhenReady(document.getElementById('winamp-container'));
+webamp.renderWhenReady(document.getElementById('winamp-container'));
 ```
 
 ## API
@@ -98,7 +98,7 @@ The `Winamp` class has the following _static_ methods:
 
 ### `browserIsSupported()`
 
-Returns a true if the current browser supports the features that Winamp2-js depends upon. It is recomended to check this before you attempt to instantiate an instance of `Winamp`.
+Returns a true if the current browser supports the features that Webamp depends upon. It is recomended to check this before you attempt to instantiate an instance of `Winamp`.
 
 ```JavaScript
 if(Winamp.browserIsSupported()) {
@@ -184,7 +184,7 @@ winamp.setTracksToPlay([
 
 ### `renderWhenReady(domNode)`
 
-Winamp2-js will wait until it has fetch the skin and fully parsed it, and then render itself into the given container. A promise is returned which will resolve after the render is complete.
+Webamp will wait until it has fetch the skin and fully parsed it, and then render itself into the given container. A promise is returned which will resolve after the render is complete.
 
 ```JavaScript
 const container = document.getElementById('winamp-container');
@@ -195,7 +195,7 @@ winamp.renderWhenReady(container).then(() => {
 
 ### `onClose(callback)`
 
-A callback which will be called when Winamp2-js is closed. Returns an "unsubscribe" function.
+A callback which will be called when Webamp is closed. Returns an "unsubscribe" function.
 
 ```JavaScript
 const unsubscribe = winamp.onClose(() => {
@@ -208,7 +208,7 @@ unsubscribe();
 
 ### `onMinimize(callback)`
 
-A callback which will be called when Winamp2-js is minimized. Returns an "unsubscribe" function.
+A callback which will be called when Webamp is minimized. Returns an "unsubscribe" function.
 
 ```JavaScript
 const unsubscribe = winamp.onClose(() => {
@@ -222,8 +222,8 @@ unsubscribe();
 ## Notes
 
 * Internet Explorer is not supported.
-* Winamp2-js injects CSS into the page. The CSS is namespaced (every CSS selector is prefixed with `#winamp2-js`), so it should not interfere with anything on the host page.
-* Winamp2-js' HTML contains somewhat generic IDs and class names. If you have CSS on your page that is not namespaced, it may accidently be applied to Winamp2-js. If this happens please reach out. I may be able to resolve it.
+* Webamp injects CSS into the page. The CSS is namespaced (every CSS selector is prefixed with `#winamp2-js`), so it should not interfere with anything on the host page.
+* Webamp HTML contains somewhat generic IDs and class names. If you have CSS on your page that is not namespaced, it may accidently be applied to Webamp. If this happens please reach out. I may be able to resolve it.
 * Skin and audio URLs are subject to [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS). Please ensure they are either served from the same domain, or that the other domain is served with the correct headers.
 * Please reach out to me. I'd love to help you set it up, and understand how it's being used. I plan to expand this API as I learn how people want to use it.
 

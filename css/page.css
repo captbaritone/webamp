@@ -59,7 +59,7 @@ body {
     animation-delay: 0.1s;
 }
 
-#appwinamp2-js #loading .ellipsis-anim span:nth-child(3) {
+#app #loading .ellipsis-anim span:nth-child(3) {
     -webkit-animation-delay: 0.2s;
     animation-delay: 0.2s;
 }
