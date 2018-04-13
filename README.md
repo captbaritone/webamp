@@ -1,4 +1,4 @@
-[![Travis](https://img.shields.io/travis/captbaritone/winamp2-js.svg)]() [![Codecov](https://img.shields.io/codecov/c/github/captbaritone/winamp2-js.svg)]() [![Join the chat at https://gitter.im/winamp2-js/Lobby](https://badges.gitter.im/winamp2-js/Lobby.svg)](https://gitter.im/winamp2-js/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Travis](https://img.shields.io/travis/captbaritone/winamp2-js.svg)]() [![Codecov](https://img.shields.io/codecov/c/github/captbaritone/winamp2-js.svg)]() [![Discord](https://img.shields.io/discord/434058775012311061.svg)](https://discord.gg/fBTDMqR)
 
 # Winamp2-js
 
