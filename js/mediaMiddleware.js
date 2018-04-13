@@ -29,31 +29,31 @@ export default media => store => {
   media.setBalance(balance);
   // TODO: Ensure other values like bands and preamp are in sync
 
-  media.addEventListener("timeupdate", () => {
+  media.on("timeupdate", () => {
     store.dispatch({
       type: UPDATE_TIME_ELAPSED,
       elapsed: media.timeElapsed()
     });
   });
 
-  media.addEventListener("ended", () => {
+  media.on("ended", () => {
     store.dispatch({ type: IS_STOPPED });
     store.dispatch(nextTrack());
   });
 
-  media.addEventListener("playing", () => {
+  media.on("playing", () => {
     store.dispatch({ type: IS_PLAYING });
   });
 
-  media.addEventListener("waiting", () => {
+  media.on("waiting", () => {
     store.dispatch({ type: START_WORKING });
   });
 
-  media.addEventListener("stopWaiting", () => {
+  media.on("stopWaiting", () => {
     store.dispatch({ type: STOP_WORKING });
   });
 
-  media.addEventListener("fileLoaded", () => {
+  media.on("fileLoaded", () => {
     store.dispatch({
       type: SET_MEDIA,
       kbps: "128",
@@ -64,7 +64,7 @@ export default media => store => {
     });
   });
 
-  media.addEventListener("channelupdate", () => {
+  media.on("channelupdate", () => {
     store.dispatch({
       type: CHANNEL_COUNT_CHANGED,
       channels: media.channels()

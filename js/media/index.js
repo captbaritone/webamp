@@ -1,10 +1,12 @@
 /* Emulate the native <audio> element with Web Audio API */
 import { BANDS } from "../constants";
+import Emitter from "../emitter";
 import ElementSource from "./elementSource";
 import detectChannels from "./detectChannels";
 
 export default class Media {
   constructor() {
+    this._emitter = new Emitter();
     this._context = new (window.AudioContext || window.webkitAudioContext)();
     // Fix for iOS and Chrome (Canary) which require that the context be created
     // or resumed by a user interaction.
@@ -26,16 +28,6 @@ export default class Media {
       document.body.addEventListener("click", resume, false);
       document.body.addEventListener("keydown", resume, false);
     }
-    this._callbacks = {
-      waiting: function() {},
-      stopWaiting: function() {},
-      playing: function() {},
-      timeupdate: function() {},
-      visualizerupdate: function() {},
-      ended: function() {},
-      fileLoaded: function() {},
-      channelupdate: function() {}
-    };
     // We don't currently know how many channels
     this._channels = null;
     this._balance = 0;
@@ -104,21 +96,21 @@ export default class Media {
     this._source = new ElementSource(this._context, this._staticSource);
 
     this._source.on("positionChange", () => {
-      this._callbacks.timeupdate();
+      this._emitter.trigger("timeupdate");
     });
     this._source.on("ended", () => {
-      this._callbacks.ended();
+      this._emitter.trigger("ended");
     });
     this._source.on("statusChange", () => {
       switch (this._source.getStatus()) {
         case "PLAYING":
-          this._callbacks.playing();
+          this._emitter.trigger("playing");
           break;
       }
-      this._callbacks.timeupdate();
+      this._emitter.trigger("timeupdate");
     });
     this._source.on("loaded", () => {
-      this._callbacks.fileLoaded();
+      this._emitter.trigger("fileLoaded");
     });
 
     this._staticSource.connect(this._preamp);
@@ -171,7 +163,7 @@ export default class Media {
     // If we only have one channel, use it for both left and right.
     this._chanSplit.connect(this._rightGain, assumedChannels === 1 ? 0 : 1);
     this._channels = num;
-    this._callbacks.channelupdate();
+    this._emitter.trigger("channelupdate");
   }
 
   _makeMono() {
@@ -287,8 +279,8 @@ export default class Media {
   }
 
   /* Listeners */
-  addEventListener(event, callback) {
-    this._callbacks[event] = callback;
+  on(event, callback) {
+    this._emitter.on(event, callback);
   }
 
   seekToTime(time) {
@@ -297,10 +289,10 @@ export default class Media {
 
   // Used only for the initial load, since it must have a CORS header
   async loadFromUrl(url, autoPlay) {
-    this._callbacks.waiting();
+    this._emitter.trigger("waiting");
     await this._source.loadUrl(url);
     this._resetChannels();
-    this._callbacks.stopWaiting();
+    this._emitter.trigger("stopWaiting");
     if (autoPlay) {
       this.play();
     }
