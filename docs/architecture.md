@@ -9,7 +9,7 @@ This repository contains both an NPM module, and a demo page, found at <https://
 
 ## Redux
 
-Within the core library, state is managed by [Redux]. In fact, Redux's own docs mention Winamp2-js in the [Apps and Examples](https://redux.js.org/introduction/learning-resources#apps-and-examples) section of their docs!
+Within the core library, state is managed by [Redux]. In fact, Redux's own docs mention Webamp in the [Apps and Examples](https://redux.js.org/introduction/learning-resources#apps-and-examples) section of their docs!
 
 Our reducers, and the states they control, can be found in the [reducers](../js/reducers/) directory.
 
@@ -43,7 +43,7 @@ The parsing of skin files is handed in [skinParser.js](../js/skinParser.js). Ren
 
 ## CSS
 
-CSS style sheets are imported by the components which use them. Each rule is individually prefixed with the id `#winamp2-js` to prevent our style rules from "leaking" out onto other potential elements. For example, [98.js.org], includes `winamp2-js` on a page along with many other elements, and we want to be sure our rules for `.selected` elements do not apply to any elements outside of `winamp2-js`.
+CSS style sheets are imported by the components which use them. Each rule is individually prefixed with the id `#winamp2-js` to prevent our style rules from "leaking" out onto other potential elements. For example, [98.js.org], includes Webamp on a page along with many other elements, and we want to be sure our rules for `.selected` elements do not apply to any elements outside of `#winamp2-js`.
 
 The nature of Winamp skins is such that most elements are absolutely positioned, and have an explicit size. There are a few down sides to our current approach:
 

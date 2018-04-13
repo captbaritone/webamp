@@ -18,9 +18,9 @@ const MainContextMenu = props => (
     handle={<ClickedDiv id="option" title="Winamp Menu" />}
   >
     <LinkNode
-      href="https://github.com/captbaritone/winamp2-js"
+      href="https://github.com/captbaritone/webamp"
       target="_blank"
-      label="Winamp2-js"
+      label="Webamp"
     />
     <Hr />
     <Parent label="Play">

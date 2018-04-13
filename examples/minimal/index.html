@@ -7,19 +7,19 @@
 
 <body>
     <div id='app'></div>
-    <script src="https://unpkg.com/winamp2-js@0.0.6/built/winamp.bundle.min.js"></script>
+    <script src="https://unpkg.com/webamp@0.0.6/built/winamp.bundle.min.js"></script>
     <script>
-        const Winamp = window.winamp2js;
-        new Winamp({
+        const Winamp = window.Webamp;
+        new Webamp({
             initialTracks: [{
                 metaData: {
                     artist: "DJ Mike Llama",
                     title: "Llama Whippin' Intro"
                 },
-                url: "https://cdn.rawgit.com/captbaritone/winamp2-js/43434d82/mp3/llama-2.91.mp3"
+                url: "https://cdn.rawgit.com/captbaritone/webamp/43434d82/mp3/llama-2.91.mp3"
             }],
             initialSkin: {
-                url: "https://cdn.rawgit.com/captbaritone/winamp2-js/43434d82/skins/base-2.91.wsz"
+                url: "https://cdn.rawgit.com/captbaritone/webamp/43434d82/skins/base-2.91.wsz"
             },
         }).renderWhenReady(document.getElementById('app'));
     </script>

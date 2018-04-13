@@ -27,7 +27,7 @@ export const initialTracks = config.initialTracks || [
     // This seems to include the `accept-ranges` header, which GitHub Pages does not, and
     // Safari on iOS requires.
     url:
-      "https://raw.githubusercontent.com/captbaritone/winamp2-js/master/mp3/llama-2.91.mp3",
+      "https://raw.githubusercontent.com/captbaritone/webamp/master/mp3/llama-2.91.mp3",
     duration: 5.322286
   },
   {

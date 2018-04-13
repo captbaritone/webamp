@@ -128,7 +128,7 @@ export class MainWindow extends React.Component {
         <a
           id="about"
           target="blank"
-          href="https://github.com/captbaritone/winamp2-js"
+          href="https://github.com/captbaritone/webamp"
           title="About"
         />
       </DropTarget>
