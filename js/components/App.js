@@ -41,7 +41,7 @@ const App = ({
     );
   });
   return (
-    <div role="application" id="winamp2-js">
+    <div role="application" id="webamp">
       <Skin />
       <WindowManager windows={windows} container={container} />
     </div>

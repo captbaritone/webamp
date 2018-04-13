@@ -8,36 +8,36 @@ canvas {
 }
 
 /* Range input css reset */
-#winamp2-js input[type="range"] {
+#webamp input[type="range"] {
     -webkit-appearance: none;
     margin: 0;
     padding: 0;
     background: none;
     border: none;
 }
-#winamp2-js input[type="range"]::-webkit-slider-thumb {
+#webamp input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     border: none;
     border-radius: 0;
     background: none;
 }
-#winamp2-js input[type="range"]::-moz-range-thumb {
+#webamp input[type="range"]::-moz-range-thumb {
     border: none;
     border-radius: 0;
     background: none;
 }
-#winamp2-js input[type="range"]::-moz-range-track {
+#webamp input[type="range"]::-moz-range-track {
     border: none;
     background: none;
 }
-#winamp2-js input[type="range"]:focus {
+#webamp input[type="range"]:focus {
     outline: none;
 }
-#winamp2-js input[type="range"]::-moz-focus-outer {
+#webamp input[type="range"]::-moz-focus-outer {
     border: 0;
 }
 
-#winamp2-js a:focus {
+#webamp a:focus {
     outline: none;
 }
 
@@ -65,7 +65,7 @@ canvas {
     }
 }
 
-#winamp2-js .character {
+#webamp .character {
     display: inline-block;
     vertical-align: top;
     width: 5px;
@@ -74,7 +74,7 @@ canvas {
     text-indent: -9999px;
 }
 
-#winamp2-js .window {
+#webamp .window {
     position: absolute;
     /* Ask the browser to scale showing large pixels if possible */
     image-rendering: -moz-crisp-edges; /* Firefox */
@@ -84,11 +84,11 @@ canvas {
     -ms-interpolation-mode: nearest-neighbor; /* IE (non-standard property) */
 }
 
-#winamp2-js .window {
+#webamp .window {
     /* Work around rendering bug with clip-path */
     -webkit-transform: translateZ(0);
 }
-#winamp2-js .window.doubled {
+#webamp .window.doubled {
     -moz-transform: translateZ(0) scale(2);
     -moz-transform-origin: top left;
     -webkit-transform: translateZ(0) scale(2);

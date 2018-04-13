@@ -1,14 +1,14 @@
 /* Styles */
-#winamp2-js #equalizer-window {
+#webamp #equalizer-window {
     height: 116px;
     width: 275px;
 }
 
-#winamp2-js #equalizer-window.shade {
+#webamp #equalizer-window.shade {
     height: 14px;
 }
 
-#winamp2-js #equalizer-volume {
+#webamp #equalizer-volume {
     position: absolute;
     left: 60px;
     top: 4px;
@@ -17,25 +17,25 @@
     background-position: 0 0;
 }
 
-#winamp2-js #equalizer-volume::-webkit-slider-thumb {
+#webamp #equalizer-volume::-webkit-slider-thumb {
     height: 7px;
     width: 2px;
 }
 
-#winamp2-js #equalizer-volume::-moz-range-thumb {
+#webamp #equalizer-volume::-moz-range-thumb {
     height: 7px;
     width: 2px;
 }
 
-#winamp2-js #equalizer-volume.center::-webkit-slider-thumb {
+#webamp #equalizer-volume.center::-webkit-slider-thumb {
     width: 5px;
 }
 
-#winamp2-js #equalizer-volume.center::-moz-range-thumb {
+#webamp #equalizer-volume.center::-moz-range-thumb {
     width: 5px;
 }
 
-#winamp2-js #equalizer-balance {
+#webamp #equalizer-balance {
     position: absolute;
     left: 164px;
     top: 4px;
@@ -44,31 +44,31 @@
     background-position: 0 0;
 }
 
-#winamp2-js #equalizer-balance::-webkit-slider-thumb {
+#webamp #equalizer-balance::-webkit-slider-thumb {
     height: 7px;
     width: 2px;
 }
 
-#winamp2-js #equalizer-balance::-moz-range-thumb {
+#webamp #equalizer-balance::-moz-range-thumb {
     height: 7px;
     width: 2px;
 }
 
-#winamp2-js #equalizer-balance.center::-webkit-slider-thumb {
+#webamp #equalizer-balance.center::-webkit-slider-thumb {
     width: 5px;
 }
 
-#winamp2-js #equalizer-balance.center::-moz-range-thumb {
+#webamp #equalizer-balance.center::-moz-range-thumb {
     width: 5px;
 }
 
-#winamp2-js .equalizer-top {
+#webamp .equalizer-top {
     height: 14px;
     width: 275px;
     position: relative;
 }
 
-#winamp2-js #equalizer-close {
+#webamp #equalizer-close {
     position: absolute;
     height: 9px;
     width: 9px;
@@ -76,7 +76,7 @@
     top: 3px;
 }
 
-#winamp2-js #equalizer-shade {
+#webamp #equalizer-shade {
     position: absolute;
     height: 9px;
     width: 9px;
@@ -84,7 +84,7 @@
     top: 3px;
 }
 
-#winamp2-js #on {
+#webamp #on {
     position: absolute;
     width: 26px;
     height: 12px;
@@ -92,7 +92,7 @@
     left: 14px;
 }
 
-#winamp2-js #auto {
+#webamp #auto {
     position: absolute;
     width: 32px;
     height: 12px;
@@ -100,7 +100,7 @@
     left: 40px;
 }
 
-#winamp2-js #presets-context {
+#webamp #presets-context {
     position: absolute;
     width: 44px;
     height: 12px;
@@ -108,12 +108,12 @@
     left: 217px;
 }
 
-#winamp2-js #presets {
+#webamp #presets {
     width: 100%;
     height: 100%;
 }
 
-#winamp2-js #eqGraph {
+#webamp #eqGraph {
     position: absolute;
     width: 113px;
     height: 19px;
@@ -121,13 +121,13 @@
     left: 86px;
 }
 
-#winamp2-js #preamp {
+#webamp #preamp {
     position: absolute;
     left: 21px;
     top: 38px;
 }
 
-#winamp2-js #plus12db {
+#webamp #plus12db {
     position: absolute;
     left: 45px;
     top: 36px;
@@ -135,7 +135,7 @@
     height: 8px;
 }
 
-#winamp2-js #zerodb {
+#webamp #zerodb {
     position: absolute;
     left: 45px;
     top: 64px;
@@ -143,7 +143,7 @@
     height: 8px;
 }
 
-#winamp2-js #minus12db {
+#webamp #minus12db {
     position: absolute;
     left: 45px;
     top: 95px;
@@ -151,78 +151,78 @@
     height: 8px;
 }
 
-#winamp2-js #band-60 {
+#webamp #band-60 {
     position: absolute;
     left: 78px;
     top: 38px;
 }
 
-#winamp2-js #band-170 {
+#webamp #band-170 {
     position: absolute;
     left: 96px;
     top: 38px;
 }
 
-#winamp2-js #band-310 {
+#webamp #band-310 {
     position: absolute;
     left: 114px;
     top: 38px;
 }
 
-#winamp2-js #band-600 {
+#webamp #band-600 {
     position: absolute;
     left: 132px;
     top: 38px;
 }
 
-#winamp2-js #band-1000 {
+#webamp #band-1000 {
     position: absolute;
     left: 150px;
     top: 38px;
 }
 
-#winamp2-js #band-3000 {
+#webamp #band-3000 {
     position: absolute;
     left: 168px;
     top: 38px;
 }
 
-#winamp2-js #band-6000 {
+#webamp #band-6000 {
     position: absolute;
     left: 186px;
     top: 38px;
 }
 
-#winamp2-js #band-12000 {
+#webamp #band-12000 {
     position: absolute;
     left: 204px;
     top: 38px;
 }
 
-#winamp2-js #band-14000 {
+#webamp #band-14000 {
     position: absolute;
     left: 222px;
     top: 38px;
 }
 
-#winamp2-js #band-16000 {
+#webamp #band-16000 {
     position: absolute;
     left: 240px;
     top: 38px;
 }
 
-#winamp2-js .band {
+#webamp .band {
     width: 14px;
     height: 63px;
 }
 
-#winamp2-js .band .rc-slider {
+#webamp .band .rc-slider {
     height: 51px;
     width: 14px;
     margin-top: 6px;
 }
 
-#winamp2-js .band .rc-slider .rc-slider-handle {
+#webamp .band .rc-slider .rc-slider-handle {
     width: 11px;
     height: 11px;
     margin: -6px 0 0 1px;
