@@ -2,12 +2,20 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { getTimeStr } from "../../utils";
-import { getVisibleTrackIds, getScrollOffset } from "../../selectors";
+import {
+  getVisibleTrackIds,
+  getScrollOffset,
+  getNumberOfTracks
+} from "../../selectors";
 import { TRACK_HEIGHT } from "../../constants";
 import { SELECT_ZERO } from "../../actionTypes";
 import { dragSelected, scrollPlaylistByDelta } from "../../actionCreators";
 import TrackCell from "./TrackCell";
 import TrackTitle from "./TrackTitle";
+
+function getNumberLength(number) {
+  return number.toString().length;
+}
 
 class TrackList extends React.Component {
   constructor(props) {
@@ -57,6 +65,9 @@ class TrackList extends React.Component {
 
   render() {
     const { tracks, offset } = this.props;
+    const maxTrackNumberLength = getNumberLength(this.props.numberOfTracks);
+    const paddedTrackNumForIndex = i =>
+      (i + 1 + offset).toString().padStart(maxTrackNumberLength, "\u00A0");
     return (
       <div
         ref={node => {
@@ -67,11 +78,10 @@ class TrackList extends React.Component {
         onClick={this.props.selectZero}
         onWheel={this.props.scrollPlaylistByDelta}
       >
-        <div className="playlist-track-numbers">
-          {this._renderTracks((id, i) => `${i + 1 + offset}.`)}
-        </div>
         <div className="playlist-track-titles">
-          {this._renderTracks(id => <TrackTitle id={id} />)}
+          {this._renderTracks((id, i) => (
+            <TrackTitle id={id} paddedTrackNumber={paddedTrackNumForIndex(i)} />
+          ))}
         </div>
         <div className="playlist-track-durations">
           {this._renderTracks(id => getTimeStr(tracks[id].duration))}
@@ -90,7 +100,8 @@ const mapDispatchToProps = {
 const mapStateToProps = state => ({
   offset: getScrollOffset(state),
   trackIds: getVisibleTrackIds(state),
-  tracks: state.playlist.tracks
+  tracks: state.playlist.tracks,
+  numberOfTracks: getNumberOfTracks(state)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TrackList);

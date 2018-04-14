@@ -2,7 +2,11 @@ import React from "react";
 import { connect } from "react-redux";
 import { getTrackDisplayName } from "../../selectors";
 
-const TrackTitle = props => <span>{props.title}</span>;
+const TrackTitle = props => (
+  <span>
+    {props.paddedTrackNumber}. {props.title}
+  </span>
+);
 
 const mapStateToProps = (state, ownProps) => ({
   title: getTrackDisplayName(state, ownProps.id)

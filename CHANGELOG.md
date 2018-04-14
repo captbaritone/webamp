@@ -1,6 +1,7 @@
 ## Next version
 
 * Marquee now displays one additional character: https://github.com/captbaritone/webamp/issues/543
+* Track numbers in playlist are now padded to the length of the longest track number.
 
 ## 1.0.0
 

@@ -210,7 +210,7 @@ export const getMediaText = createSelector(
         `${minimalMediaText} (${getTimeStr(duration)})  ***  `
 );
 
-const getNumberOfTracks = state => getTrackOrder(state).length;
+export const getNumberOfTracks = state => getTrackOrder(state).length;
 const getPlaylistDuration = createSelector(getTracks, tracks =>
   Object.values(tracks).reduce((total, track) => total + track.duration, 0)
 );
