@@ -99,7 +99,7 @@ Moving windows when their neighbors are resized via "double" or "shade" mode tog
 
 ## Dropping files
 
-**TODO**
+Webamp allows you to drag files (media files, skins and `.eqf` equalizer presets) onto various windows to load them. This behavior is manged by the [`<DropTarget>`](../js/components/DropTarget.js) component. The component expects to be passed a `handleDrop` handler which will be called with the drop event, and also the `{x, y}` coordinates of the drop within the component. This is needed to allow us to insert dropped tracks at the correct place in the playlist.
 
 [redux]: https://redux.js.org/
 [redux-thunk]: https://github.com/gaearon/redux-thunk
