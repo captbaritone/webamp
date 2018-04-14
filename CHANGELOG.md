@@ -1,3 +1,7 @@
+## Next version
+
+* Marquee now displays one additional character: https://github.com/captbaritone/webamp/issues/543
+
 ## 1.0.0
 
 **Important:** The NPM module as **moved** from `winamp2-js` to `webamp`. You will need to update your `package.json` to point to the new module.
