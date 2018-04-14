@@ -83,7 +83,7 @@ class Winamp {
         "The misspelled option `avaliableSkins` is deprecated. Please use `availableSkins` instead."
       );
       this.store.dispatch({ type: SET_AVAILABLE_SKINS, skins: avaliableSkins });
-    } else {
+    } else if (availableSkins != null) {
       this.store.dispatch({ type: SET_AVAILABLE_SKINS, skins: availableSkins });
     }
 
