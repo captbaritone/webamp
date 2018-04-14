@@ -21,7 +21,7 @@ Or, you can include it via a script tag:
 
 ```html
 <!-- You can use this URL, or download it and check it into your own project -->
-<script src="https://unpkg.com/webamp@0.0.6/built/winamp.bundle.min.js"></script>
+<script src="https://unpkg.com/webamp@0.0.6/built/webamp.bundle.min.js"></script>
 ```
 
 ## Create a container
@@ -66,7 +66,7 @@ webamp.renderWhenReady(document.getElementById('winamp-container'));
 
 ## API
 
-Many methods on the winamp instance deal with `track`s. Here is the shape of a `track`:
+Many methods on the webamp instance deal with `track`s. Here is the shape of a `track`:
 
 ```JavaScript
 const track = {
@@ -151,19 +151,19 @@ const options = {
         requiresNetwork: true
     }]
 };
-const winamp = new Winamp(options);
+const webamp = new Webamp(options);
 ```
 
 ## Instance Methods
 
-The `Winamp` class has the following _instance_ methods:
+The `Webamp` class has the following _instance_ methods:
 
 ### `appendTracks(tracks)`
 
 Add an array of `track`s (see above) to the end of the playlist.
 
 ```JavaScript
-winamp.appendTracks([
+webamp.appendTracks([
     {url: 'https://example.com/track1.mp3'},
     {url: 'https://example.com/track2.mp3'},
     {url: 'https://example.com/track3.mp3'}
@@ -175,7 +175,7 @@ winamp.appendTracks([
 Replace the playlist with an array of `track`s (see above) and begin playing the first track.
 
 ```JavaScript
-winamp.setTracksToPlay([
+webamp.setTracksToPlay([
     {url: 'https://example.com/track1.mp3'},
     {url: 'https://example.com/track2.mp3'},
     {url: 'https://example.com/track3.mp3'}
@@ -188,8 +188,8 @@ Webamp will wait until it has fetch the skin and fully parsed it, and then rende
 
 ```JavaScript
 const container = document.getElementById('winamp-container');
-winamp.renderWhenReady(container).then(() => {
-    console.log('rendered winamp!');
+webamp.renderWhenReady(container).then(() => {
+    console.log('rendered webamp!');
 });
 ```
 
@@ -198,8 +198,8 @@ winamp.renderWhenReady(container).then(() => {
 A callback which will be called when Webamp is closed. Returns an "unsubscribe" function.
 
 ```JavaScript
-const unsubscribe = winamp.onClose(() => {
-    console.log("Winamp closed");
+const unsubscribe = webamp.onClose(() => {
+    console.log("Webamp closed");
 });
 
 // If at some point in the future you want to stop listening to these events:
@@ -211,8 +211,8 @@ unsubscribe();
 A callback which will be called when Webamp is minimized. Returns an "unsubscribe" function.
 
 ```JavaScript
-const unsubscribe = winamp.onClose(() => {
-    console.log("Winamp closed");
+const unsubscribe = webamp.onClose(() => {
+    console.log("Webamp closed");
 });
 
 // If at some point in the future you want to stop listening to these events:

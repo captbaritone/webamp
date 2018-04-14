@@ -5,7 +5,7 @@
 This repository contains both an NPM module, and a demo page, found at <https://webamp.org>. The NPM module's goal is to provide a widget which can be embedded in any website, where as the demo page depends upon the library, and provides the canonical usage. You can find more information about the library's API in the [usage](./usage.md) document.
 
 * The entry point for the demo page is [index.js](../js/index.js)
-* The entry point for the NPM modules is [winamp.js](../js/winamp.js)
+* The entry point for the NPM modules is [webamp.js](../js/webamp.js)
 
 ## Redux
 

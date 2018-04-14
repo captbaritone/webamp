@@ -3,9 +3,9 @@ node_js:
   - node
 script: >
     npm run travis-tests # &&
-    # gzip -c built/winamp.js > built/winamp.js.gz &&
-    # python node_modules/travis-weigh-in/weigh_in.py built/winamp.js &&
-    # python node_modules/travis-weigh-in/weigh_in.py built/winamp.js.gz
+    # gzip -c built/webamp.bundle.min.js > built/webamp.bundle.min.js.gz &&
+    # python node_modules/travis-weigh-in/weigh_in.py built/webamp.bundle.min.js &&
+    # python node_modules/travis-weigh-in/weigh_in.py built/webamp.bundle.min.js.gz
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 before_deploy: echo webamp.org > built/CNAME

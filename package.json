@@ -2,10 +2,10 @@
   "name": "webamp",
   "version": "0.0.6",
   "description": "Winamp 2 implemented in HTML5 and JavaScript",
-  "main": "built/winamp.bundle.js",
+  "main": "built/webamp.bundle.js",
   "files": [
-    "built/winamp.bundle.js",
-    "built/winamp.bundle.min.js"
+    "built/webamp.bundle.js",
+    "built/webamp.bundle.min.js"
   ],
   "scripts": {
     "lint": "eslint .",
@@ -14,7 +14,7 @@
     "prepublishOnly": "npm run build-library",
     "serve": "http-server ./built",
     "start": "webpack-dev-server --config=config/webpack.dev.js",
-    "weight": "echo 'FIXME: Need to find cache-busted file' || (npm run build && gzip-size built/winamp.js)",
+    "weight": "echo 'FIXME: Need to find cache-busted file' || (npm run build && gzip-size built/webamp.bundle.min.js)",
     "test": "jest --coverage",
     "travis-tests": "jest --coverage && npm run build",
     "tdd": "jest --watch",
