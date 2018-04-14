@@ -14,7 +14,7 @@
     "prepublishOnly": "npm run build-library",
     "serve": "http-server ./built",
     "start": "webpack-dev-server --config=config/webpack.dev.js",
-    "weight": "echo 'FIXME: Need to find cache-busted file' || (npm run build && gzip-size built/webamp.bundle.min.js)",
+    "weight": "npm run build-library > /dev/null && gzip-size built/webamp.bundle.min.js",
     "test": "jest --coverage",
     "travis-tests": "jest --coverage && npm run build",
     "tdd": "jest --watch",
