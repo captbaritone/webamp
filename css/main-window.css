@@ -174,11 +174,11 @@
     position: absolute;
     left: 111px;
     top: 24px;
-    width: 152px;
+    width: 155px;
     height: 6px;
     overflow: hidden;
     display: block;
-    padding: 3px 1px; /* Ensure the target is correct for the cursor */
+    padding: 3px 0px; /* Ensure the target is correct for the cursor */
 }
 
 #webamp .media-info #kbps {
