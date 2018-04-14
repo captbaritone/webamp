@@ -45,12 +45,12 @@ module.exports = {
     })
   ],
   entry: {
-    bundle: "./js/winamp.js",
-    "bundle.min": "./js/winamp.js"
+    bundle: "./js/webamp.js",
+    "bundle.min": "./js/webamp.js"
   },
   output: {
     path: path.resolve(__dirname, "../built"),
-    filename: "winamp.[name].js",
+    filename: "webamp.[name].js",
     library: "Webamp",
     libraryTarget: "umd"
   }

@@ -8,7 +8,7 @@ import visor from "../skins/Vizor1-01.wsz";
 import xmms from "../skins/XMMS-Turquoise.wsz";
 import zaxon from "../skins/ZaxonRemake1-0.wsz";
 import green from "../skins/Green-Dimension-V2.wsz";
-import Winamp from "./winamp";
+import Webamp from "./webamp";
 import {
   STEP_MARQUEE,
   UPDATE_TIME_ELAPSED,
@@ -104,13 +104,13 @@ Raven.context(() => {
   if (hideAbout) {
     document.getElementsByClassName("about")[0].style.visibility = "hidden";
   }
-  if (!Winamp.browserIsSupported()) {
+  if (!Webamp.browserIsSupported()) {
     document.getElementById("browser-compatibility").style.display = "block";
     document.getElementById("app").style.visibility = "hidden";
     return;
   }
 
-  const winamp = new Winamp({
+  const webamp = new Webamp({
     initialSkin: {
       url: skinUrl
     },
@@ -142,5 +142,5 @@ Raven.context(() => {
     __customMiddlewares: [analyticsMiddleware, ravenMiddleware]
   });
 
-  winamp.renderWhenReady(document.getElementById("app"));
+  webamp.renderWhenReady(document.getElementById("app"));
 });

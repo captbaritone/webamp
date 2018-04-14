@@ -33,6 +33,6 @@ const config = merge(common, {
   ]
 });
 
-config.entry.winamp.unshift("./js/googleAnalytics.min.js");
+config.entry.webamp.unshift("./js/googleAnalytics.min.js");
 
 module.exports = config;

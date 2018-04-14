@@ -42,8 +42,8 @@ module.exports = {
     // directory, and injects a tag into the gererated index.html file
     // it also, applies cache-busting for all the icons.
     new WebpackPwaManifest({
-      name: "Winamp",
-      short_name: "Winamp", // eslint-disable-line camelcase
+      name: "Webamp",
+      short_name: "Webamp", // eslint-disable-line camelcase
       description: "Winamp 2.9 reimplemented in HTML5 and JavaScript",
       start_url: "./?utm_source=web_app_manifest", // eslint-disable-line camelcase
       scope: "./",
@@ -70,7 +70,7 @@ module.exports = {
     })
   ],
   entry: {
-    winamp: ["./js/index.js"]
+    webamp: ["./js/index.js"]
   },
   output: {
     filename: "[name]-[hash].js",
