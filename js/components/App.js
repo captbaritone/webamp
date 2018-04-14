@@ -8,7 +8,7 @@ import EqualizerWindow from "./EqualizerWindow";
 import AvsWindow from "./AvsWindow";
 import Skin from "./Skin";
 
-import "../../css/winamp.css";
+import "../../css/webamp.css";
 
 const genWindowMap = {
   AVS_WINDOW: AvsWindow
