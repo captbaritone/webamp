@@ -12,7 +12,8 @@ const media = {
   loadFromUrl: jest.fn(),
   setVolume: jest.fn(),
   setBalance: jest.fn(),
-  _analyser: null
+  _analyser: null,
+  on: jest.fn()
 };
 
 describe("PlaylistShade", () => {

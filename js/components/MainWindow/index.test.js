@@ -9,7 +9,8 @@ const media = {
   addEventListener: jest.fn(),
   setVolume: jest.fn(),
   setBalance: jest.fn(),
-  _analyser: null
+  _analyser: null,
+  on: jest.fn()
 };
 
 const canvasMockify = require("canvas-mock");
