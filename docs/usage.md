@@ -21,7 +21,7 @@ Or, you can include it via a script tag:
 
 ```html
 <!-- You can use this URL, or download it and check it into your own project -->
-<script src="https://unpkg.com/webamp@0.0.6/built/webamp.bundle.min.js"></script>
+<script src="https://unpkg.com/webamp@1.0.0/built/webamp.bundle.min.js"></script>
 ```
 
 ## Create a container
