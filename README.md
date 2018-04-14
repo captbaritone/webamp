@@ -93,6 +93,7 @@ There are some "feature flags" which you can manipulate by passing a specially c
 * Research and feature prototyping: @PAEz
 * Beta feedback, catching many small UI inconsistencies: [LuigiHann](https://twitter.com/LuigiHann)
 * Beta feedback and insider answers to obscure Winamp questions: [Darren Owen](https://twitter.com/The_DoctorO)
+* Donating the `webamp` NPM module name: [Dave Eddy](http://daveeddy.com/)
 
 Thank you to [Justin Frankel](http://www.1014.org/) and everyone at Nullsoft
 for Winamp which inspired so many of us.
