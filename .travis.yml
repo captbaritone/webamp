@@ -2,7 +2,7 @@ language: node_js
 node_js:
   - node
 script: >
-    npm run travis-tests
+    npm run travis-tests &&
     gzip -c built/webamp.bundle.min.js > built/webamp.bundle.min.js.gz &&
     python node_modules/travis-weigh-in/weigh_in.py built/webamp.bundle.min.js &&
     python node_modules/travis-weigh-in/weigh_in.py built/webamp.bundle.min.js.gz
