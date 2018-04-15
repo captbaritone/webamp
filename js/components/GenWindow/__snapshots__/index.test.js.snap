@@ -5,6 +5,12 @@ exports[`GenWindow renders to snapshot 1`] = `
   className="gen-window window selected"
   onMouseDown={[Function]}
   onWheel={[Function]}
+  style={
+    Object {
+      "height": 116,
+      "width": 275,
+    }
+  }
 >
   <div
     className="gen-top draggable"
@@ -13,7 +19,7 @@ exports[`GenWindow renders to snapshot 1`] = `
       className="gen-top-left draggable"
     />
     <div
-      className="gen-top-left-right-fill draggable"
+      className="gen-top-left-fill draggable"
     />
     <div
       className="gen-top-left-end draggable"
@@ -53,7 +59,7 @@ exports[`GenWindow renders to snapshot 1`] = `
       className="gen-top-right-end draggable"
     />
     <div
-      className="gen-top-left-right-fill draggable"
+      className="gen-top-right-fill draggable"
     />
     <div
       className="gen-top-right draggable"
@@ -93,7 +99,12 @@ exports[`GenWindow renders to snapshot 1`] = `
     />
     <div
       className="gen-bottom-right draggable"
-    />
+    >
+      <div
+        id="gen-resize-target"
+        onMouseDown={[Function]}
+      />
+    </div>
   </div>
 </div>
 `;

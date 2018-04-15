@@ -288,7 +288,10 @@ export const imageSelectors = {
   GEN_TOP_LEFT_END: [".gen-window .gen-top-left-end"],
   GEN_TOP_RIGHT: [".gen-window .gen-top-right"],
   GEN_TOP_RIGHT_END: [".gen-window .gen-top-right-end"],
-  GEN_TOP_LEFT_RIGHT_FILL: [".gen-window .gen-top-left-right-fill"],
+  GEN_TOP_LEFT_RIGHT_FILL: [
+    ".gen-window .gen-top-left-fill",
+    ".gen-window .gen-top-right-fill"
+  ],
 
   GEN_TOP_CENTER_FILL_SELECTED: [".gen-window.selected .gen-top"],
   GEN_TOP_LEFT_SELECTED: [".gen-window.selected .gen-top-left"],
@@ -296,7 +299,8 @@ export const imageSelectors = {
   GEN_TOP_RIGHT_SELECTED: [".gen-window.selected .gen-top-right"],
   GEN_TOP_RIGHT_END_SELECTED: [".gen-window.selected .gen-top-right-end"],
   GEN_TOP_LEFT_RIGHT_FILL_SELECTED: [
-    ".gen-window.selected .gen-top-left-right-fill"
+    ".gen-window.selected .gen-top-left-fill",
+    ".gen-window.selected .gen-top-right-fill"
   ],
   GEN_BOTTOM_LEFT: [".gen-window .gen-bottom-left"],
   GEN_BOTTOM_RIGHT: [".gen-window .gen-bottom-right"],

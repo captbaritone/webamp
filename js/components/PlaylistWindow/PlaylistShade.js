@@ -7,8 +7,8 @@ import { TOGGLE_PLAYLIST_WINDOW, SET_FOCUSED_WINDOW } from "../../actionTypes";
 
 import {
   WINDOWS,
-  PLAYLIST_RESIZE_SEGMENT_WIDTH,
-  MIN_PLAYLIST_WINDOW_WIDTH,
+  WINDOW_RESIZE_SEGMENT_WIDTH,
+  WINDOW_WIDTH,
   CHARACTER_WIDTH,
   UTF8_ELLIPSIS
 } from "../../constants";
@@ -18,7 +18,7 @@ import PlaylistResizeTarget from "./PlaylistResizeTarget";
 
 class PlaylistShade extends React.Component {
   _addedWidth() {
-    return this.props.playlistSize[0] * PLAYLIST_RESIZE_SEGMENT_WIDTH;
+    return this.props.playlistSize[0] * WINDOW_RESIZE_SEGMENT_WIDTH;
   }
   _trimmedName() {
     const { name } = this.props;
@@ -43,7 +43,7 @@ class PlaylistShade extends React.Component {
     const { toggleShade, close, focusPlaylist, focused } = this.props;
 
     const style = {
-      width: `${MIN_PLAYLIST_WINDOW_WIDTH + this._addedWidth()}px`
+      width: `${WINDOW_WIDTH + this._addedWidth()}px`
     };
 
     const classes = classnames("window", "draggable", {

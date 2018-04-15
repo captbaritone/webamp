@@ -13,9 +13,7 @@ import {
 } from "../snapUtils";
 import { getWindowPositions } from "../selectors";
 import { updateWindowPositions } from "../actionCreators";
-
-const WINDOW_HEIGHT = 116;
-const WINDOW_WIDTH = 275;
+import { WINDOW_HEIGHT, WINDOW_WIDTH } from "../constants";
 
 const abuts = (a, b) => {
   // TODO: This is kinda a hack. They should really be touching, not just within snapping distance.

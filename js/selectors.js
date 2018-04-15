@@ -3,9 +3,9 @@ import { denormalize, getTimeStr, clamp, percentToIndex } from "./utils";
 import {
   BANDS,
   TRACK_HEIGHT,
-  PLAYLIST_RESIZE_SEGMENT_WIDTH,
-  PLAYLIST_RESIZE_SEGMENT_HEIGHT,
-  MIN_PLAYLIST_WINDOW_WIDTH
+  WINDOW_RESIZE_SEGMENT_WIDTH,
+  WINDOW_RESIZE_SEGMENT_HEIGHT,
+  WINDOW_WIDTH
 } from "./constants";
 import { createPlaylistURL } from "./playlistHtml";
 import * as fromPlaylist from "./reducers/playlist";
@@ -118,7 +118,7 @@ const BASE_WINDOW_HEIGHT = 58;
 export const getNumberOfVisibleTracks = state => {
   const { playlistSize } = state.display;
   return Math.floor(
-    (BASE_WINDOW_HEIGHT + PLAYLIST_RESIZE_SEGMENT_HEIGHT * playlistSize[1]) /
+    (BASE_WINDOW_HEIGHT + WINDOW_RESIZE_SEGMENT_HEIGHT * playlistSize[1]) /
       TRACK_HEIGHT
   );
 };
@@ -242,7 +242,6 @@ export function getWindowPositions(state) {
   return state.windows.positions;
 }
 
-const WINDOW_WIDTH = 275;
 const WINDOW_HEIGHT = 116;
 const DEFAUT_WINDOW_SIZE = {
   height: WINDOW_HEIGHT,
@@ -250,14 +249,15 @@ const DEFAUT_WINDOW_SIZE = {
 };
 const SHADE_WINDOW_HEIGHT = 14;
 
-export function getPlaylistWindowPixelSize(state) {
-  const { playlistSize } = state.display;
+export function getWindowPixelSize([width, height]) {
   return {
-    height: WINDOW_HEIGHT + playlistSize[1] * PLAYLIST_RESIZE_SEGMENT_HEIGHT,
-    width:
-      MIN_PLAYLIST_WINDOW_WIDTH +
-      playlistSize[0] * PLAYLIST_RESIZE_SEGMENT_WIDTH
+    height: WINDOW_HEIGHT + height * WINDOW_RESIZE_SEGMENT_HEIGHT,
+    width: WINDOW_WIDTH + width * WINDOW_RESIZE_SEGMENT_WIDTH
   };
+}
+
+export function getPlaylistWindowPixelSize(state) {
+  return getWindowPixelSize(state.display.playlistSize);
 }
 
 function getGenericWindowSize(size, shade, doubled) {

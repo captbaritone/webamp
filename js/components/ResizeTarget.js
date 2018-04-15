@@ -1,5 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
+import {
+  WINDOW_RESIZE_SEGMENT_WIDTH,
+  WINDOW_RESIZE_SEGMENT_HEIGHT
+} from "../constants";
 
 export default class ResizeTarget extends React.Component {
   constructor(props) {
@@ -21,16 +25,16 @@ export default class ResizeTarget extends React.Component {
 
       const newWidth = Math.max(
         0,
-        width + Math.round(x / this.props.resizeSegmentWidth)
+        width + Math.round(x / WINDOW_RESIZE_SEGMENT_WIDTH)
       );
 
       const newHeight = this.props.widthOnly
         ? width
-        : Math.max(0, height + Math.round(y / this.props.resizeSegmentHeight));
+        : Math.max(0, height + Math.round(y / WINDOW_RESIZE_SEGMENT_HEIGHT));
 
       const newSize = [newWidth, newHeight];
 
-      this.props.setPlaylistSize(newSize);
+      this.props.setWindowSize(newSize);
     };
 
     window.addEventListener("mousemove", handleMove);
@@ -40,11 +44,19 @@ export default class ResizeTarget extends React.Component {
   }
 
   render() {
+    /* eslint-disable no-unused-vars */
+    const {
+      currentSize,
+      setWindowSize,
+      widthOnly,
+      ...passThroughProps
+    } = this.props;
+    /* eslint-enable no-unused-vars */
     return (
       <div
         ref={node => (this.node = node)}
-        id={this.props.id}
         onMouseDown={this.handleMouseDown}
+        {...passThroughProps}
       />
     );
   }
@@ -52,8 +64,6 @@ export default class ResizeTarget extends React.Component {
 
 ResizeTarget.propTypes = {
   currentSize: PropTypes.arrayOf(PropTypes.number).isRequired,
-  resizeSegmentWidth: PropTypes.number.isRequired,
-  resizeSegmentHeight: PropTypes.number.isRequired,
-  setPlaylistSize: PropTypes.func.isRequired,
+  setWindowSize: PropTypes.func.isRequired,
   widthOnly: PropTypes.bool
 };
