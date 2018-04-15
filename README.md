@@ -71,20 +71,15 @@ There are some "feature flags" which you can manipulate by passing a specially c
 
 * [Webamp2x](http://forums.winamp.com/showthread.php?threadid=91850) An
   impressive implementation from 2002(!).
-
 * [JsAmp](http://freecog.net/2005/jsamp/demo/MainWindow.xhtml) An implementation from 2005 by @twm (via [Hacker News](https://news.ycombinator.com/item?id=15317723)).
-
 * [LlamaCloud Comp](https://vimeo.com/20149683) From 2011 by [Lee Martin](http://www.leemartin.com/) (via [Twitter](https://twitter.com/leemartin/status/910235793737814017))
-
 * [Winamp em HTML5 e Javascript](http://www.tidbits.com.br/winamp-em-html5-e-javascript)
   In 2010 a developer named Danilo posted one of his HTML5 experiments: "an
   audio player simulating good old Winamp". You will have to download the zip
   file.
-
 * [JuicyDrop](http://cggaurav.github.io/juicydrop/) An HTML5 implementation with
   less emphasis on being true to the skin, but fully featured visualizations.
   @cggaurav is keeping it alive on [GitHub](https://github.com/cggaurav/juicydrop)
-
 * [Spotiamp](http://spotiamp.com/) The folks at Spotify reimplemented Winamp as
   a frontend for Spotify. Not in a browser, and only runs on Windows.
 
