@@ -59,6 +59,14 @@ There are some "feature flags" which you can manipulate by passing a specially c
 
 **Note:** These are intended mostly as development tools and are subject to change at any time.
 
+## Community
+
+There are a few related projects that have communites:
+
+* [Winamp Community Update Pack] - "New plug-ins to add additional features to Winamp as well as replacement plug-ins to provide better implementations of some of the plug-ins natively included with Winamp". ([Forum](https://getwacup.com/community/) / [Discord server](https://discord.gg/5pVTdbj))
+* [Webvs](https://gitter.im/visbot/AVS) -
+  A Winamp AVS like visualization library for the web. ([Gitter chat](https://gitter.im/visbot/AVS))
+
 ## Reference
 
 * [skinspecs.pdf](http://members.xoom.it/skinart/tutorial/skinspecs..pdf)
@@ -106,3 +114,4 @@ this code, please let me know. I'd love to see it.
 [1]: https://news.ycombinator.com/item?id=8565665
 [2]: https://news.ycombinator.com/item?id=15314629
 [3]: https://news.ycombinator.com/item?id=16333550
+[winamp community update pack]: https://getwacup.com/
