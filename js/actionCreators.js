@@ -360,10 +360,16 @@ export function fetchMediaTags(file, id) {
     dispatch({ type: MEDIA_TAG_REQUEST_INITIALIZED, id });
     return genMediaTags(file)
       .then(data => {
-        const { artist, title } = data.tags;
         // There's more data here, but we don't have a use for it yet:
         // https://github.com/aadsm/jsmediatags#shortcuts
-        dispatch({ type: SET_MEDIA_TAGS, artist, title, id });
+        const { artist, title, picture } = data.tags;
+        let albumArtUrl = null;
+        if (picture) {
+          const byteArray = new Uint8Array(picture.data);
+          const blob = new Blob([byteArray], { type: picture.type });
+          albumArtUrl = URL.createObjectURL(blob);
+        }
+        dispatch({ type: SET_MEDIA_TAGS, artist, title, albumArtUrl, id });
       })
       .catch(() => {
         dispatch({ type: MEDIA_TAG_REQUEST_FAILED, id });
