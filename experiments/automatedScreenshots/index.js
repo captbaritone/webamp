@@ -92,20 +92,22 @@ const config = {
 
   for (const skin of files) {
     const skinMd5 = md5File.sync(skin);
-    const screenshotFile = `screenshots/${skin.replace(
-      /\//g,
-      "-"
-    )}-${skinMd5}.png`;
+    const fileName = `${skin.replace(/\//g, "-")}-${skinMd5}`;
+    const screenshotFile = `screenshots/${fileName}.png`;
+    if (fs.existsSync(screenshotFile)) {
+      console.log(screenshotFile, "exists already");
+      continue;
+    }
+    const flatSkinFile = `flatSkins/${fileName}.wsz`;
+    if (!fs.existsSync(flatSkinFile)) {
+      fs.linkSync(skin, flatSkinFile);
+    }
     const skinUrl = `experiments/automatedScreenshots/${skin}`;
     console.log("Going to try", screenshotFile);
     try {
       await validateZip(`./${skin}`);
     } catch (e) {
       console.log("Error parsing", skinUrl, e);
-      continue;
-    }
-    if (fs.existsSync(screenshotFile)) {
-      console.log(screenshotFile, "exists already");
       continue;
     }
     const page = await browser.newPage();
