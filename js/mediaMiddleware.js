@@ -22,7 +22,9 @@ import { next as nextTrack } from "./actionCreators";
 import { getCurrentTrackId } from "./selectors";
 
 export default media => store => {
-  const { media: { volume, balance } } = store.getState();
+  const {
+    media: { volume, balance }
+  } = store.getState();
 
   // Ensure the default state is the canonical value.
   media.setVolume(volume);

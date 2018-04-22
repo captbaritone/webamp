@@ -81,7 +81,9 @@ const loadQueue = new LoadQueue({ threads: 4 });
 
 function playRandomTrack() {
   return (dispatch, getState) => {
-    const { playlist: { trackOrder, currentTrack } } = getState();
+    const {
+      playlist: { trackOrder, currentTrack }
+    } = getState();
     if (trackOrder.length === 0) {
       return;
     }
@@ -548,7 +550,9 @@ export function cropPlaylist() {
     if (getSelectedTrackObjects(state).length === 0) {
       return;
     }
-    const { playlist: { tracks } } = getState();
+    const {
+      playlist: { tracks }
+    } = getState();
     dispatch({
       type: REMOVE_TRACKS,
       ids: Object.keys(tracks).filter(id => !tracks[id].selected)
@@ -558,7 +562,9 @@ export function cropPlaylist() {
 
 export function removeSelectedTracks() {
   return (dispatch, getState) => {
-    const { playlist: { tracks } } = getState();
+    const {
+      playlist: { tracks }
+    } = getState();
     dispatch({
       type: REMOVE_TRACKS,
       ids: Object.keys(tracks).filter(id => tracks[id].selected)
@@ -652,7 +658,9 @@ function findLastIndex(arr, cb) {
 
 export function dragSelected(offset) {
   return (dispatch, getState) => {
-    const { playlist: { trackOrder, tracks } } = getState();
+    const {
+      playlist: { trackOrder, tracks }
+    } = getState();
     const firstSelected = trackOrder.findIndex(
       trackId => tracks[trackId] && tracks[trackId].selected
     );

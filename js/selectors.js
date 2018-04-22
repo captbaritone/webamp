@@ -86,7 +86,10 @@ export const getCurrentTrackNumber = createSelector(
 export const getCurrentTrackId = state => state.playlist.currentTrack;
 
 export const nextTrack = (state, n = 1) => {
-  const { playlist: { trackOrder }, media: { repeat } } = state;
+  const {
+    playlist: { trackOrder },
+    media: { repeat }
+  } = state;
   const trackCount = getTrackCount(state);
   if (trackCount === 0) {
     return null;
