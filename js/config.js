@@ -29,14 +29,6 @@ export const initialTracks = config.initialTracks || [
     url:
       "https://raw.githubusercontent.com/captbaritone/webamp/master/mp3/llama-2.91.mp3",
     duration: 5.322286
-  },
-  {
-    url: "https://cdn.changelog.com/uploads/podcast/291/the-changelog-291.mp3",
-    metaData: {
-      artist: "Changelog Media",
-      title: "Winamp2-js with Jordan Eldredge"
-    },
-    duration: 4841.038367
   }
 ];
 
