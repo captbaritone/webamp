@@ -9,13 +9,15 @@ import Media from "./media";
 import { getTrackCount } from "./selectors";
 import { setSkinFromUrl, loadMediaFiles } from "./actionCreators";
 import { LOAD_STYLE } from "./constants";
+import { uniqueId } from "./utils";
 
 import {
   SET_AVAILABLE_SKINS,
   NETWORK_CONNECTED,
   NETWORK_DISCONNECTED,
   CLOSE_WINAMP,
-  MINIMIZE_WINAMP
+  MINIMIZE_WINAMP,
+  OPEN_GEN_WINDOW
 } from "./actionTypes";
 import Emitter from "./emitter";
 
@@ -51,7 +53,8 @@ class Winamp {
       initialTracks,
       avaliableSkins, // Old misspelled name
       availableSkins,
-      enableHotkeys = false
+      enableHotkeys = false,
+      __extraWindows
     } = this.options;
 
     this.media = new Media();
@@ -63,6 +66,18 @@ class Winamp {
     );
     this.store.dispatch({
       type: navigator.onLine ? NETWORK_CONNECTED : NETWORK_DISCONNECTED
+    });
+
+    this.genWindows = [];
+    if (__extraWindows) {
+      this.genWindows = __extraWindows.map(genWindow => ({
+        id: `${genWindow.title}-${uniqueId()}`,
+        ...genWindow
+      }));
+    }
+
+    this.genWindows.forEach(genWindow => {
+      this.store.dispatch({ type: OPEN_GEN_WINDOW, windowId: genWindow.id });
     });
 
     window.addEventListener("online", () =>
@@ -121,7 +136,7 @@ class Winamp {
           media={this.media}
           container={this.options.container}
           filePickers={this.options.filePickers}
-          genWindows={this.options.__extraWindows}
+          genWindows={this.genWindows}
         />
       </Provider>,
       node

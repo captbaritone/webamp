@@ -18,7 +18,7 @@ const App = ({
   openWindows,
   container,
   filePickers,
-  genWindows = {}
+  genWindows = []
 }) => {
   if (closed) {
     return null;
@@ -29,23 +29,21 @@ const App = ({
     playlist: playlist && <PlaylistWindow />
   };
   // Add any "generic" windows
-  Object.keys(genWindows).forEach((windowId, i) => {
-    const windowInfo = genWindows[windowId];
-    const { title, Component } = windowInfo;
-    windows[`genWindow${i}`] = openWindows.has(windowId) && (
-      <GenWindow
-        key={i}
-        title={title}
-        close={() => {
-          // TODO: Allow windows to close
-        }}
-        windowId={windowId}
-      >
-        {({ height, width }) => (
-          <Component analyser={media._analyser} width={width} height={height} />
-        )}
-      </GenWindow>
-    );
+  genWindows.forEach(genWindow => {
+    const { id, title, Component } = genWindow;
+    if (openWindows.has(id)) {
+      windows[`genWindow${id}`] = (
+        <GenWindow key={id} title={title} windowId={id}>
+          {({ height, width }) => (
+            <Component
+              analyser={media._analyser}
+              width={width}
+              height={height}
+            />
+          )}
+        </GenWindow>
+      );
+    }
   });
   return (
     <div role="application" id="webamp">

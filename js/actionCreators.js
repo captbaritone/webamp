@@ -27,7 +27,8 @@ import {
   base64FromArrayBuffer,
   downloadURI,
   normalize,
-  sort
+  sort,
+  uniqueId
 } from "./utils";
 import {
   CLOSE_WINAMP,
@@ -274,11 +275,6 @@ export function fetchMediaDuration(url, id) {
       }
     );
   };
-}
-
-let counter = 0;
-function uniqueId() {
-  return counter++;
 }
 
 export function loadMediaFiles(tracks, loadStyle = null, atIndex = 0) {
