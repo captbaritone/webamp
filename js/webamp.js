@@ -121,6 +121,7 @@ class Winamp {
           media={this.media}
           container={this.options.container}
           filePickers={this.options.filePickers}
+          genWindows={this.options.__extraWindows}
         />
       </Provider>,
       node

@@ -5,16 +5,10 @@ import WindowManager from "./WindowManager";
 import MainWindow from "./MainWindow";
 import PlaylistWindow from "./PlaylistWindow";
 import EqualizerWindow from "./EqualizerWindow";
-import AvsWindow from "./AvsWindow";
+import GenWindow from "./GenWindow";
 import Skin from "./Skin";
 
 import "../../css/webamp.css";
-
-const genWindowMap = {
-  AVS_WINDOW: AvsWindow
-};
-
-const GEN_WINDOWS = ["AVS_WINDOW"];
 
 const App = ({
   media,
@@ -23,7 +17,8 @@ const App = ({
   playlist,
   openWindows,
   container,
-  filePickers
+  filePickers,
+  genWindows = {}
 }) => {
   if (closed) {
     return null;
@@ -34,10 +29,22 @@ const App = ({
     playlist: playlist && <PlaylistWindow />
   };
   // Add any "generic" windows
-  GEN_WINDOWS.forEach((windowId, i) => {
-    const Component = genWindowMap[windowId];
+  Object.keys(genWindows).forEach((windowId, i) => {
+    const windowInfo = genWindows[windowId];
+    const { title, Component } = windowInfo;
     windows[`genWindow${i}`] = openWindows.has(windowId) && (
-      <Component key={i} />
+      <GenWindow
+        key={i}
+        title={title}
+        close={() => {
+          // TODO: Allow windows to close
+        }}
+        windowId={windowId}
+      >
+        {({ height, width }) => (
+          <Component analyser={media._analyser} width={width} height={height} />
+        )}
+      </GenWindow>
     );
   });
   return (

@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import classnames from "classnames";
+import "../../../css/gen-window.css";
 
 import { SET_FOCUSED_WINDOW, CLOSE_GEN_WINDOW } from "../../actionTypes";
 import { scrollVolume } from "../../actionCreators";
@@ -19,6 +20,9 @@ const Text = ({ children }) => {
     />
   ));
 };
+
+const CHROME_WIDTH = 19;
+const CHROME_HEIGHT = 34;
 
 // Named export for testing
 export class GenWindow extends React.Component {
@@ -64,7 +68,12 @@ export class GenWindow extends React.Component {
           <div className="gen-middle-left draggable">
             <div className="gen-middle-left-bottom draggable" />
           </div>
-          <div className="gen-middle-center">{children}</div>
+          <div className="gen-middle-center">
+            {children({
+              width: width - CHROME_WIDTH,
+              height: height - CHROME_HEIGHT
+            })}
+          </div>
           <div className="gen-middle-right draggable">
             <div className="gen-middle-right-bottom draggable" />
           </div>
@@ -87,7 +96,7 @@ export class GenWindow extends React.Component {
 GenWindow.propTypes = {
   title: PropTypes.string.isRequired,
   windowId: PropTypes.string.isRequired,
-  children: PropTypes.node,
+  children: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
   selected: PropTypes.bool.isRequired
 };

@@ -13,7 +13,9 @@ describe("GenWindow", () => {
           close={() => {}}
           windowId="TEST_WINDOW_ID"
           scrollVolume={() => {}}
-        />
+        >
+          {() => {}}
+        </GenWindow>
       )
       .toJSON();
     expect(tree).toMatchSnapshot();
