@@ -2,6 +2,7 @@ const webpack = require("webpack");
 const merge = require("webpack-merge");
 const workboxPlugin = require("workbox-webpack-plugin");
 const GitRevisionPlugin = require("git-revision-webpack-plugin");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const common = require("./webpack.common.js");
 
 const gitRevisionPlugin = new GitRevisionPlugin();
@@ -18,9 +19,10 @@ const config = merge(common, {
       ),
       COMMITHASH: JSON.stringify(gitRevisionPlugin.commithash())
     }),
-    new webpack.optimize.UglifyJsPlugin({
+    new UglifyJsPlugin({
       // TODO: Is this needed with the devtool setting above?
-      sourceMap: true
+      sourceMap: true,
+      parallel: true
     }),
     new workboxPlugin.GenerateSW({
       // Note: CloudFlare is configued to not cache this file, as suggested in the:
