@@ -8,7 +8,8 @@ new Webamp({
         title: "Llama Whippin' Intro"
       },
       url:
-        "https://cdn.rawgit.com/captbaritone/webamp/43434d82/mp3/llama-2.91.mp3"
+        "https://cdn.rawgit.com/captbaritone/webamp/43434d82/mp3/llama-2.91.mp3",
+      duration: 5.322286
     }
   ],
   initialSkin: {
