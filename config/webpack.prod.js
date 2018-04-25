@@ -22,7 +22,13 @@ const config = merge(common, {
     new UglifyJsPlugin({
       // TODO: Is this needed with the devtool setting above?
       sourceMap: true,
-      parallel: true
+      parallel: true,
+      uglifyOptions: {
+        compress: {
+          // Workaround: https://github.com/mishoo/UglifyJS2/issues/2842
+          inline: false
+        }
+      }
     }),
     new workboxPlugin.GenerateSW({
       // Note: CloudFlare is configued to not cache this file, as suggested in the:

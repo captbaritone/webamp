@@ -42,7 +42,13 @@ module.exports = {
     }),
     new UglifyJsPlugin({
       include: /\.min\.js$/,
-      parallel: true
+      parallel: true,
+      uglifyOptions: {
+        compress: {
+          // Workaround: https://github.com/mishoo/UglifyJS2/issues/2842
+          inline: false
+        }
+      }
     })
   ],
   entry: {
