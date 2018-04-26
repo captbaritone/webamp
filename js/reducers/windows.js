@@ -9,7 +9,8 @@ import {
   CLOSE_GEN_WINDOW,
   OPEN_GEN_WINDOW,
   ADD_GEN_WINDOW,
-  UPDATE_WINDOW_POSITIONS
+  UPDATE_WINDOW_POSITIONS,
+  GEN_WINDOW_SIZE_CHANGED
 } from "../actionTypes";
 
 const defaultWindowsState = {
@@ -60,7 +61,7 @@ const windows = (state = defaultWindowsState, action) => {
         ...state,
         genWindows: {
           ...state.genWindows,
-          [action.windowId]: { title: action.title, open: true }
+          [action.windowId]: { title: action.title, open: true, size: [0, 0] }
         }
       };
     case OPEN_GEN_WINDOW:
@@ -71,6 +72,17 @@ const windows = (state = defaultWindowsState, action) => {
           [action.windowId]: {
             ...state.genWindows[action.windowId],
             open: true
+          }
+        }
+      };
+    case GEN_WINDOW_SIZE_CHANGED:
+      return {
+        ...state,
+        genWindows: {
+          ...state.genWindows,
+          [action.windowId]: {
+            ...state.genWindows[action.windowId],
+            size: action.size
           }
         }
       };
