@@ -23,7 +23,7 @@ import {
 import { MEDIA_TAG_REQUEST_STATUS } from "../constants";
 
 import { filenameFromUrl } from "../fileUtils";
-import { shuffle, moveSelected, mapObject, filterObject } from "../utils";
+import { shuffle, moveSelected, objectMap, objectFilter } from "../utils";
 
 const defaultPlaylistState = {
   trackOrder: [],
@@ -38,7 +38,7 @@ const playlist = (state = defaultPlaylistState, action) => {
       const clickedId = String(state.trackOrder[action.index]);
       return {
         ...state,
-        tracks: mapObject(state.tracks, (track, id) => ({
+        tracks: objectMap(state.tracks, (track, id) => ({
           ...track,
           selected: id === clickedId
         })),
@@ -68,7 +68,7 @@ const playlist = (state = defaultPlaylistState, action) => {
       const selected = new Set(state.trackOrder.slice(start, end + 1));
       return {
         ...state,
-        tracks: mapObject(state.tracks, (track, trackId) => ({
+        tracks: objectMap(state.tracks, (track, trackId) => ({
           ...track,
           selected: selected.has(Number(trackId))
         }))
@@ -76,12 +76,12 @@ const playlist = (state = defaultPlaylistState, action) => {
     case SELECT_ALL:
       return {
         ...state,
-        tracks: mapObject(state.tracks, track => ({ ...track, selected: true }))
+        tracks: objectMap(state.tracks, track => ({ ...track, selected: true }))
       };
     case SELECT_ZERO:
       return {
         ...state,
-        tracks: mapObject(state.tracks, track => ({
+        tracks: objectMap(state.tracks, track => ({
           ...track,
           selected: false
         }))
@@ -89,7 +89,7 @@ const playlist = (state = defaultPlaylistState, action) => {
     case INVERT_SELECTION:
       return {
         ...state,
-        tracks: mapObject(state.tracks, track => ({
+        tracks: objectMap(state.tracks, track => ({
           ...track,
           selected: !track.selected
         }))
@@ -113,7 +113,7 @@ const playlist = (state = defaultPlaylistState, action) => {
           trackId => !actionIds.includes(trackId)
         ),
         currentTrack: actionIds.includes(currentTrack) ? null : currentTrack,
-        tracks: filterObject(
+        tracks: objectFilter(
           state.tracks,
           (track, trackId) => !action.ids.includes(trackId)
         ),

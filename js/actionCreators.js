@@ -28,7 +28,8 @@ import {
   downloadURI,
   normalize,
   sort,
-  uniqueId
+  uniqueId,
+  objectMap
 } from "./utils";
 import {
   CLOSE_WINAMP,
@@ -511,10 +512,9 @@ function withWindowGraphIntegrity(action) {
     const positionDiff = getPositionDiff(graph, sizeDiff);
     const windowPositions = getWindowPositions(state);
 
-    const newPositions = {};
-    for (const key of Object.keys(windowPositions)) {
-      newPositions[key] = applyDiff(windowPositions[key], positionDiff[key]);
-    }
+    const newPositions = objectMap(windowPositions, (position, key) =>
+      applyDiff(position, positionDiff[key])
+    );
 
     dispatch(updateWindowPositions(newPositions));
   };

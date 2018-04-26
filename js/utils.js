@@ -207,22 +207,6 @@ export const moveSelected = (arr, isSelected, offset) => {
   return newArr;
 };
 
-export const mapObject = (obj, iteratee) =>
-  // TODO: Could return the original reference if no values change
-  Object.keys(obj).reduce((newObj, key) => {
-    newObj[key] = iteratee(obj[key], key);
-    return newObj;
-  }, {});
-
-export const filterObject = (obj, predicate) =>
-  // TODO: Could return the original reference if no values change
-  Object.keys(obj).reduce((newObj, key) => {
-    if (predicate(obj[key], key)) {
-      newObj[key] = obj[key];
-    }
-    return newObj;
-  }, {});
-
 export const spliceIn = (original, start, newValues) => {
   const newArr = [...original];
   newArr.splice(start, 0, ...newValues);
@@ -248,6 +232,15 @@ export function uniqueId() {
 
 export function objectMap(obj, cb) {
   const modified = {};
-  Object.keys(obj).forEach(key => (modified[key] = cb(obj[key])));
+  Object.keys(obj).forEach(key => (modified[key] = cb(obj[key], key)));
   return modified;
 }
+
+export const objectFilter = (obj, predicate) =>
+  // TODO: Could return the original reference if no values change
+  Object.keys(obj).reduce((newObj, key) => {
+    if (predicate(obj[key], key)) {
+      newObj[key] = obj[key];
+    }
+    return newObj;
+  }, {});
