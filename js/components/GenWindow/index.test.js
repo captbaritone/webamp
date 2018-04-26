@@ -13,6 +13,7 @@ describe("GenWindow", () => {
           close={() => {}}
           windowId="TEST_WINDOW_ID"
           scrollVolume={() => {}}
+          windowSize={[0, 0]}
         >
           {() => {}}
         </GenWindow>
