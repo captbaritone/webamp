@@ -70,6 +70,7 @@ const MainContextMenu = props => (
     />
     {Object.keys(props.genWindows).map(i => (
       <Node
+        key={i}
         label={props.genWindows[i].title}
         checked={props.genWindows[i].open}
         onClick={() => props.toggleGenWindow(i)}
