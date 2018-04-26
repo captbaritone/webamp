@@ -6,6 +6,7 @@ import {
   TOGGLE_PLAYLIST_WINDOW,
   CLOSE_GEN_WINDOW,
   OPEN_GEN_WINDOW,
+  ADD_GEN_WINDOW,
   UPDATE_WINDOW_POSITIONS
 } from "../actionTypes";
 
@@ -16,6 +17,7 @@ const defaultWindowsState = {
   equalizer: true,
   playlist: true,
   openGenWindows: [],
+  genWindows: {},
   positions: {}
 };
 
@@ -33,6 +35,17 @@ const windows = (state = defaultWindowsState, action) => {
       return {
         ...state,
         openGenWindows: arrayWithout(state.openGenWindow, action.windowId)
+      };
+    case ADD_GEN_WINDOW:
+      return {
+        ...state,
+        openGenWindows: action.opened
+          ? arrayWith(state.openGenWindow, action.windowId)
+          : state.openGenWindows,
+        genWindows: {
+          ...state.genWindows,
+          [action.windowId]: { title: action.title }
+        }
       };
     case OPEN_GEN_WINDOW:
       return {

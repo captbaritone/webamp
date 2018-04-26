@@ -17,7 +17,7 @@ import {
   NETWORK_DISCONNECTED,
   CLOSE_WINAMP,
   MINIMIZE_WINAMP,
-  OPEN_GEN_WINDOW
+  ADD_GEN_WINDOW
 } from "./actionTypes";
 import Emitter from "./emitter";
 
@@ -77,7 +77,12 @@ class Winamp {
     }
 
     this.genWindows.forEach(genWindow => {
-      this.store.dispatch({ type: OPEN_GEN_WINDOW, windowId: genWindow.id });
+      this.store.dispatch({
+        type: ADD_GEN_WINDOW,
+        windowId: genWindow.id,
+        title: genWindow.title,
+        opened: true
+      });
     });
 
     window.addEventListener("online", () =>
