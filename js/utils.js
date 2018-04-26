@@ -245,3 +245,9 @@ let counter = 0;
 export function uniqueId() {
   return counter++;
 }
+
+export function objectMap(obj, cb) {
+  const modified = {};
+  Object.keys(obj).forEach(key => (modified[key] = cb(obj[key])));
+  return modified;
+}

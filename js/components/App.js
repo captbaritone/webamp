@@ -35,7 +35,7 @@ const App = ({
   genWindows.forEach(genWindow => {
     const { id, title, Component } = genWindow;
     if (genWindowsInfo[id].open) {
-      windows[`genWindow${id}`] = (
+      windows[id] = (
         <GenWindow key={id} title={title} windowId={id}>
           {({ height, width }) => (
             <Component

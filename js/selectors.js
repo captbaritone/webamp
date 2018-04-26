@@ -1,5 +1,11 @@
 import { createSelector } from "reselect";
-import { denormalize, getTimeStr, clamp, percentToIndex } from "./utils";
+import {
+  denormalize,
+  getTimeStr,
+  clamp,
+  percentToIndex,
+  objectMap
+} from "./utils";
 import {
   BANDS,
   TRACK_HEIGHT,
@@ -284,7 +290,10 @@ export function getWindowSizes(state) {
     playlistShade,
     false // The playlist cannot be doubled
   );
-  return { main, equalizer, playlist };
+  const genWindowSizes = objectMap(state.windows.genWindows, genWindow =>
+    getWindowPixelSize(genWindow.size)
+  );
+  return { main, equalizer, playlist, ...genWindowSizes };
 }
 
 export const getWindowGraph = createSelector(
