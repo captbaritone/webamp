@@ -13,6 +13,7 @@ import "../../css/webamp.css";
 const App = ({
   media,
   closed,
+  mainWindow,
   equalizer,
   playlist,
   openWindows,
@@ -24,7 +25,9 @@ const App = ({
     return null;
   }
   const windows = {
-    main: <MainWindow mediaPlayer={media} filePickers={filePickers} />,
+    main: mainWindow && (
+      <MainWindow mediaPlayer={media} filePickers={filePickers} />
+    ),
     equalizer: equalizer && <EqualizerWindow />,
     playlist: playlist && <PlaylistWindow />
   };
@@ -46,7 +49,7 @@ const App = ({
     }
   });
   return (
-    <div role="application" id="webamp">
+    <div role="application" id="webamp" onContextMenu={() => alert("context")}>
       <Skin />
       <WindowManager windows={windows} container={container} />
     </div>
@@ -59,6 +62,7 @@ App.propTypes = {
 
 const mapStateToProps = state => ({
   closed: state.display.closed,
+  mainWindow: state.windows.mainWindow,
   equalizer: state.windows.equalizer,
   playlist: state.windows.playlist,
   openWindows: new Set(state.windows.openGenWindows)

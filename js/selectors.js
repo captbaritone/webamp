@@ -298,3 +298,7 @@ export const getWindowGraph = createSelector(
     return generateGraph(windowData);
   }
 );
+
+export const getGenWindows = state => {
+  return state.windows.genWindows;
+};

@@ -1,6 +1,7 @@
 import { WINDOWS } from "../constants";
 import {
   SET_FOCUSED_WINDOW,
+  TOGGLE_MAIN_WINDOW,
   TOGGLE_EQUALIZER_WINDOW,
   CLOSE_EQUALIZER_WINDOW,
   TOGGLE_PLAYLIST_WINDOW,
@@ -14,6 +15,7 @@ import { arrayWith, arrayWithout } from "../utils";
 
 const defaultWindowsState = {
   focused: WINDOWS.MAIN,
+  mainWindow: true,
   equalizer: true,
   playlist: true,
   openGenWindows: [],
@@ -25,6 +27,8 @@ const windows = (state = defaultWindowsState, action) => {
   switch (action.type) {
     case SET_FOCUSED_WINDOW:
       return { ...state, focused: action.window };
+    case TOGGLE_MAIN_WINDOW:
+      return { ...state, mainWindow: !state.mainWindow };
     case TOGGLE_EQUALIZER_WINDOW:
       return { ...state, equalizer: !state.equalizer };
     case CLOSE_EQUALIZER_WINDOW:

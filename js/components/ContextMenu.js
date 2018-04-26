@@ -1,7 +1,6 @@
 import React from "react";
 import { createPortal } from "react-dom";
 import PropTypes from "prop-types";
-
 import classnames from "classnames";
 
 import "../../css/context-menu.css";
@@ -54,7 +53,14 @@ LinkNode.propTypes = {
   href: PropTypes.string.isRequired
 };
 
-export const Node = props => <li {...props}>{props.label}</li>;
+export const Node = props => {
+  const { label, checked, className = "", ...passThroughProps } = props;
+  return (
+    <li className={classnames(className, { checked })} {...passThroughProps}>
+      {label}
+    </li>
+  );
+};
 
 Node.propTypes = {
   label: PropTypes.string.isRequired

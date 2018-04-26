@@ -34,6 +34,13 @@
     display: block;
 }
 
+#context-menu li.checked:before {
+    float: left;
+    /* TODO: Use an image */
+    content: "\2713";
+    margin-left: -12px;
+}
+
 #context-menu li.parent:after {
     float: right;
     content: "\25b8";

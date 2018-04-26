@@ -8,6 +8,11 @@ import {
   loadMediaFiles,
   openSkinFileDialog
 } from "../../actionCreators";
+import {
+  TOGGLE_MAIN_WINDOW,
+  TOGGLE_EQUALIZER_WINDOW,
+  TOGGLE_PLAYLIST_WINDOW
+} from "../../actionTypes";
 import { LOAD_STYLE } from "../../constants";
 import { ContextMenu, Hr, Node, Parent, LinkNode } from "../ContextMenu";
 
@@ -20,7 +25,7 @@ const MainContextMenu = props => (
     <LinkNode
       href="https://github.com/captbaritone/webamp"
       target="_blank"
-      label="Webamp"
+      label="Webamp..."
     />
     <Hr />
     <Parent label="Play">
@@ -45,6 +50,23 @@ const MainContextMenu = props => (
             )
         )}
     </Parent>
+    <Hr />
+    <Node
+      label="Main Window"
+      checked={props.mainWindowOpen}
+      onClick={props.toggleMainWindow}
+    />
+    <Node
+      label="Playlist Editor"
+      checked={props.playlistOpen}
+      onClick={props.togglePlaylist}
+    />
+    <Node
+      label="Equalizer"
+      checked={props.equalizerOpen}
+      onClick={props.toggleEqualizer}
+    />
+    <Hr />
     <Parent label="Skins">
       <Node onClick={props.openSkinFileDialog} label="Load Skin..." />
       {!!props.availableSkins.length && <Hr />}
@@ -63,7 +85,10 @@ const MainContextMenu = props => (
 
 const mapStateToProps = state => ({
   availableSkins: state.settings.availableSkins,
-  networkConnected: state.network.connected
+  networkConnected: state.network.connected,
+  mainWindowOpen: state.windows.mainWindow, // For now you can't close the main window without closing all of Webamp
+  playlistOpen: state.windows.playlist,
+  equalizerOpen: state.windows.equalizer
 });
 
 const mapDispatchToProps = {
@@ -71,7 +96,10 @@ const mapDispatchToProps = {
   openSkinFileDialog,
   openMediaFileDialog,
   loadMediaFiles,
-  setSkin: setSkinFromUrl
+  setSkin: setSkinFromUrl,
+  toggleMainWindow: () => ({ type: TOGGLE_MAIN_WINDOW }),
+  togglePlaylist: () => ({ type: TOGGLE_PLAYLIST_WINDOW }),
+  toggleEqualizer: () => ({ type: TOGGLE_EQUALIZER_WINDOW })
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainContextMenu);
