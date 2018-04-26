@@ -16,7 +16,7 @@ const App = ({
   mainWindow,
   equalizer,
   playlist,
-  openWindows,
+  genWindowsInfo,
   container,
   filePickers,
   genWindows = []
@@ -34,7 +34,7 @@ const App = ({
   // Add any "generic" windows
   genWindows.forEach(genWindow => {
     const { id, title, Component } = genWindow;
-    if (openWindows.has(id)) {
+    if (genWindowsInfo[id].open) {
       windows[`genWindow${id}`] = (
         <GenWindow key={id} title={title} windowId={id}>
           {({ height, width }) => (
@@ -49,7 +49,7 @@ const App = ({
     }
   });
   return (
-    <div role="application" id="webamp" onContextMenu={() => alert("context")}>
+    <div role="application" id="webamp">
       <Skin />
       <WindowManager windows={windows} container={container} />
     </div>
@@ -65,7 +65,7 @@ const mapStateToProps = state => ({
   mainWindow: state.windows.mainWindow,
   equalizer: state.windows.equalizer,
   playlist: state.windows.playlist,
-  openWindows: new Set(state.windows.openGenWindows)
+  genWindowsInfo: state.windows.genWindows
 });
 
 export default connect(mapStateToProps)(App);

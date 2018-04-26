@@ -5,20 +5,18 @@ import {
   TOGGLE_EQUALIZER_WINDOW,
   CLOSE_EQUALIZER_WINDOW,
   TOGGLE_PLAYLIST_WINDOW,
+  TOGGLE_GEN_WINDOW,
   CLOSE_GEN_WINDOW,
   OPEN_GEN_WINDOW,
   ADD_GEN_WINDOW,
   UPDATE_WINDOW_POSITIONS
 } from "../actionTypes";
 
-import { arrayWith, arrayWithout } from "../utils";
-
 const defaultWindowsState = {
   focused: WINDOWS.MAIN,
   mainWindow: true,
   equalizer: true,
   playlist: true,
-  openGenWindows: [],
   genWindows: {},
   positions: {}
 };
@@ -35,26 +33,46 @@ const windows = (state = defaultWindowsState, action) => {
       return { ...state, equalizer: false };
     case TOGGLE_PLAYLIST_WINDOW:
       return { ...state, playlist: !state.playlist };
+    case TOGGLE_GEN_WINDOW:
+      return {
+        ...state,
+        genWindows: {
+          ...state.genWindows,
+          [action.windowId]: {
+            ...state.genWindows[action.windowId],
+            open: !state.genWindows[action.windowId].open
+          }
+        }
+      };
     case CLOSE_GEN_WINDOW:
       return {
         ...state,
-        openGenWindows: arrayWithout(state.openGenWindow, action.windowId)
+        genWindows: {
+          ...state.genWindows,
+          [action.windowId]: {
+            ...state.genWindows[action.windowId],
+            open: false
+          }
+        }
       };
     case ADD_GEN_WINDOW:
       return {
         ...state,
-        openGenWindows: action.opened
-          ? arrayWith(state.openGenWindow, action.windowId)
-          : state.openGenWindows,
         genWindows: {
           ...state.genWindows,
-          [action.windowId]: { title: action.title }
+          [action.windowId]: { title: action.title, open: true }
         }
       };
     case OPEN_GEN_WINDOW:
       return {
         ...state,
-        openGenWindows: arrayWith(state.openGenWindow, action.windowId)
+        genWindows: {
+          ...state.genWindows,
+          [action.windowId]: {
+            ...state.genWindows[action.windowId],
+            open: true
+          }
+        }
       };
     case UPDATE_WINDOW_POSITIONS:
       return {

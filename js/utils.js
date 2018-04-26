@@ -229,18 +229,6 @@ export const spliceIn = (original, start, newValues) => {
   return newArr;
 };
 
-export const arrayWith = (arr, value) => {
-  const s = new Set(arr);
-  s.add(value);
-  return Array.from(s);
-};
-
-export const arrayWithout = (arr, value) => {
-  const s = new Set(arr);
-  s.delete(value);
-  return Array.from(s);
-};
-
 export function debounce(func, delay) {
   let token;
   return function(...args) {

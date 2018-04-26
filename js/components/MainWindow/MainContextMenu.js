@@ -11,8 +11,10 @@ import {
 import {
   TOGGLE_MAIN_WINDOW,
   TOGGLE_EQUALIZER_WINDOW,
-  TOGGLE_PLAYLIST_WINDOW
+  TOGGLE_PLAYLIST_WINDOW,
+  TOGGLE_GEN_WINDOW
 } from "../../actionTypes";
+import { getGenWindows } from "../../selectors";
 import { LOAD_STYLE } from "../../constants";
 import { ContextMenu, Hr, Node, Parent, LinkNode } from "../ContextMenu";
 
@@ -66,6 +68,13 @@ const MainContextMenu = props => (
       checked={props.equalizerOpen}
       onClick={props.toggleEqualizer}
     />
+    {Object.keys(props.genWindows).map(i => (
+      <Node
+        label={props.genWindows[i].title}
+        checked={props.genWindows[i].open}
+        onClick={() => props.toggleGenWindow(i)}
+      />
+    ))}
     <Hr />
     <Parent label="Skins">
       <Node onClick={props.openSkinFileDialog} label="Load Skin..." />
@@ -88,7 +97,8 @@ const mapStateToProps = state => ({
   networkConnected: state.network.connected,
   mainWindowOpen: state.windows.mainWindow, // For now you can't close the main window without closing all of Webamp
   playlistOpen: state.windows.playlist,
-  equalizerOpen: state.windows.equalizer
+  equalizerOpen: state.windows.equalizer,
+  genWindows: getGenWindows(state)
 });
 
 const mapDispatchToProps = {
@@ -99,7 +109,8 @@ const mapDispatchToProps = {
   setSkin: setSkinFromUrl,
   toggleMainWindow: () => ({ type: TOGGLE_MAIN_WINDOW }),
   togglePlaylist: () => ({ type: TOGGLE_PLAYLIST_WINDOW }),
-  toggleEqualizer: () => ({ type: TOGGLE_EQUALIZER_WINDOW })
+  toggleEqualizer: () => ({ type: TOGGLE_EQUALIZER_WINDOW }),
+  toggleGenWindow: windowId => ({ type: TOGGLE_GEN_WINDOW, windowId })
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainContextMenu);
