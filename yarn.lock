@@ -1197,6 +1197,22 @@ builtin-status-codes@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/builtin-status-codes/-/builtin-status-codes-3.0.0.tgz#85982878e21b98e1c66425e03d0174788f569ee8"
 
+butterchurn-presets@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/butterchurn-presets/-/butterchurn-presets-0.0.2.tgz#9af9c1f0eec6ca99c4e362b5ab2c070537c0b07f"
+  dependencies:
+    babel-runtime "^6.26.0"
+    ecma-proposal-math-extensions "0.0.2"
+    lodash "^4.17.4"
+
+butterchurn@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/butterchurn/-/butterchurn-2.2.2.tgz#219f54a2f674179c2ba580ea7002d26d740a31f4"
+  dependencies:
+    babel-runtime "^6.26.0"
+    ecma-proposal-math-extensions "0.0.2"
+    lodash "^4.17.4"
+
 bytes@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.0.0.tgz#d32815404d689699f85a4ea4fa8755dd13a96048"
@@ -2146,6 +2162,10 @@ ecc-jsbn@~0.1.1:
   resolved "https://registry.yarnpkg.com/ecc-jsbn/-/ecc-jsbn-0.1.1.tgz#0fc73a9ed5f0d53c38193398523ef7e543777505"
   dependencies:
     jsbn "~0.1.0"
+
+ecma-proposal-math-extensions@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/ecma-proposal-math-extensions/-/ecma-proposal-math-extensions-0.0.2.tgz#a6a3d64819db70cee0d2e1976b6315d00e4714a0"
 
 ecstatic@^3.0.0:
   version "3.2.0"
@@ -6404,6 +6424,10 @@ schema-utils@^0.4.5:
   dependencies:
     ajv "^6.1.0"
     ajv-keywords "^3.1.0"
+
+screenfull@^3.3.2:
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/screenfull/-/screenfull-3.3.2.tgz#a6adf3b3f5556da812725385880600f5b39fbf25"
 
 select-hose@^2.0.0:
   version "2.0.0"
