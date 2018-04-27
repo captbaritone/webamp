@@ -8,6 +8,7 @@ import visor from "../skins/Vizor1-01.wsz";
 import xmms from "../skins/XMMS-Turquoise.wsz";
 import zaxon from "../skins/ZaxonRemake1-0.wsz";
 import green from "../skins/Green-Dimension-V2.wsz";
+// import MilkdropWindow from "./components/MilkdropWindow";
 import Webamp from "./webamp";
 import {
   STEP_MARQUEE,
@@ -138,6 +139,12 @@ Raven.context(() => {
       }
     ],
     enableHotkeys: true,
+    // __extraWindows: [
+    //   {
+    //     title: "Milkdrop 2",
+    //     Component: MilkdropWindow
+    //   }
+    // ],
     __initialState: initialState,
     __customMiddlewares: [analyticsMiddleware, ravenMiddleware]
   });
