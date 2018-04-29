@@ -1,7 +1,5 @@
 import React from "react";
 import screenfull from "screenfull";
-import butterchurn from "butterchurn";
-import reactionDiffusion2 from "butterchurn-presets/presets/converted/Geiss - Reaction Diffusion 2";
 
 const PRESET_TRANSITION_SECONDS = 2.7;
 const MILLISECONDS_BETWEEN_PRESET_TRANSITIONS = 15000;
@@ -11,19 +9,30 @@ class MilkdropWindow extends React.Component {
     super();
   }
   componentDidMount() {
-    const analyserNode = this.props.analyser;
-    this.visualizer = butterchurn.createVisualizer(
-      analyserNode.context,
-      this._canvasNode,
-      {
-        width: this._canvasNode.width,
-        height: this._canvasNode.height,
-        pixelRatio: window.devicePixelRatio || 1
+    require.ensure(
+      [
+        "butterchurn",
+        "butterchurn-presets/presets/converted/Geiss - Reaction Diffusion 2"
+      ],
+      require => {
+        const analyserNode = this.props.analyser;
+        const butterchurn = require("butterchurn");
+        const reactionDiffusion2 = require("butterchurn-presets/presets/converted/Geiss - Reaction Diffusion 2");
+
+        this.visualizer = butterchurn.createVisualizer(
+          analyserNode.context,
+          this._canvasNode,
+          {
+            width: this._canvasNode.width,
+            height: this._canvasNode.height,
+            pixelRatio: window.devicePixelRatio || 1
+          }
+        );
+        this.visualizer.connectAudio(analyserNode);
+        this.visualizer.loadPreset(reactionDiffusion2, 0);
+        this._renderViz();
       }
     );
-    this.visualizer.connectAudio(analyserNode);
-    this.visualizer.loadPreset(reactionDiffusion2, 0);
-    this._renderViz();
 
     require.ensure(["butterchurn-presets"], require => {
       const butterchurnPresets = require("butterchurn-presets");
@@ -32,7 +41,10 @@ class MilkdropWindow extends React.Component {
       this.cycleInterval = setInterval(() => {
         const presetIdx = Math.floor(presetKeys.length * Math.random());
         const preset = presets[presetKeys[presetIdx]];
-        this.visualizer.loadPreset(preset, PRESET_TRANSITION_SECONDS);
+        // The visualizer may not have initialized yet.
+        if (this.visualizer != null) {
+          this.visualizer.loadPreset(preset, PRESET_TRANSITION_SECONDS);
+        }
       }, MILLISECONDS_BETWEEN_PRESET_TRANSITIONS);
     });
   }
@@ -67,7 +79,10 @@ class MilkdropWindow extends React.Component {
   _setRendererSize(width, height) {
     this._canvasNode.width = width;
     this._canvasNode.height = height;
-    this.visualizer.setRendererSize(width, height);
+    // It's possible that the visualizer has not been intialized yet.
+    if (this.visualizer != null) {
+      this.visualizer.setRendererSize(width, height);
+    }
   }
   _handleRequestFullsceen() {
     if (screenfull.enabled) {
@@ -87,6 +102,8 @@ class MilkdropWindow extends React.Component {
         ref={node => (this._canvasNode = node)}
         onDoubleClick={() => this._handleRequestFullsceen()}
         style={{
+          // This color will be used until Butterchurn is loaded
+          backgroundColor: "#000",
           position: "absolute",
           top: 0,
           bottom: 0,
