@@ -3,6 +3,9 @@ import screenfull from "screenfull";
 import butterchurn from "butterchurn";
 import reactionDiffusion2 from "butterchurn-presets/presets/converted/Geiss - Reaction Diffusion 2";
 
+const PRESET_TRANSITION_SECONDS = 2.7;
+const MILLISECONDS_BETWEEN_PRESET_TRANSITIONS = 15000;
+
 class MilkdropWindow extends React.Component {
   constructor() {
     super();
@@ -29,8 +32,8 @@ class MilkdropWindow extends React.Component {
       this.cycleInterval = setInterval(() => {
         const presetIdx = Math.floor(presetKeys.length * Math.random());
         const preset = presets[presetKeys[presetIdx]];
-        this.visualizer.loadPreset(preset, 2.7);
-      }, 15000);
+        this.visualizer.loadPreset(preset, PRESET_TRANSITION_SECONDS);
+      }, MILLISECONDS_BETWEEN_PRESET_TRANSITIONS);
     });
   }
   componentWillUnmount() {
