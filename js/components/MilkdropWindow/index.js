@@ -5,9 +5,6 @@ const PRESET_TRANSITION_SECONDS = 2.7;
 const MILLISECONDS_BETWEEN_PRESET_TRANSITIONS = 15000;
 
 class MilkdropWindow extends React.Component {
-  constructor() {
-    super();
-  }
   componentDidMount() {
     require.ensure(
       [
