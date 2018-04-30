@@ -8,7 +8,7 @@ import visor from "../skins/Vizor1-01.wsz";
 import xmms from "../skins/XMMS-Turquoise.wsz";
 import zaxon from "../skins/ZaxonRemake1-0.wsz";
 import green from "../skins/Green-Dimension-V2.wsz";
-// import MilkdropWindow from "./components/MilkdropWindow";
+import MilkdropWindow from "./components/MilkdropWindow";
 import Webamp from "./webamp";
 import {
   STEP_MARQUEE,
@@ -25,7 +25,8 @@ import {
   skinUrl,
   initialTracks,
   initialState,
-  sentryDsn
+  sentryDsn,
+  milkdrop
 } from "./config";
 
 const NOISY_ACTION_TYPES = new Set([
@@ -110,6 +111,10 @@ Raven.context(() => {
     document.getElementById("app").style.visibility = "hidden";
     return;
   }
+  const __extraWindows = [];
+  if (milkdrop) {
+    __extraWindows.push({ title: "Milkdrop 2", Component: MilkdropWindow });
+  }
 
   const webamp = new Webamp({
     initialSkin: {
@@ -139,12 +144,7 @@ Raven.context(() => {
       }
     ],
     enableHotkeys: true,
-    // __extraWindows: [
-    //   {
-    //     title: "Milkdrop 2",
-    //     Component: MilkdropWindow
-    //   }
-    // ],
+    __extraWindows,
     __initialState: initialState,
     __customMiddlewares: [analyticsMiddleware, ravenMiddleware]
   });
