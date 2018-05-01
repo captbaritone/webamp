@@ -112,8 +112,19 @@ Raven.context(() => {
     return;
   }
   const __extraWindows = [];
+  let __initialWindowLayout = {};
   if (milkdrop && isButterchurnSupported()) {
-    __extraWindows.push({ title: "Milkdrop", Component: MilkdropWindow });
+    __extraWindows.push({
+      id: "milkdrop",
+      title: "Milkdrop",
+      Component: MilkdropWindow
+    });
+    __initialWindowLayout = {
+      equalizer: { position: { x: 0, y: 116 } },
+      main: { position: { x: 0, y: 0 } },
+      playlist: { position: { x: 275, y: 0 }, size: [0, 8] },
+      milkdrop: { position: { x: 0, y: 232 } }
+    };
   }
 
   const webamp = new Webamp({
@@ -145,6 +156,7 @@ Raven.context(() => {
     ],
     enableHotkeys: true,
     __extraWindows,
+    __initialWindowLayout,
     __initialState: initialState,
     __customMiddlewares: [ravenMiddleware]
   });
