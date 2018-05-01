@@ -55,17 +55,50 @@ class WindowManager extends React.Component {
       width = container.scrollWidth;
       height = container.scrollHeight;
     }
-    const windowPositions = {};
-    const keys = this.windowKeys();
-    const totalHeight = keys.length * WINDOW_HEIGHT;
-    keys.forEach((key, i) => {
-      const offset = WINDOW_HEIGHT * i;
-      windowPositions[key] = {
-        x: Math.ceil(offsetLeft + (width / 2 - WINDOW_WIDTH / 2)),
-        y: Math.ceil(offsetTop + (height / 2 - totalHeight / 2 + offset))
+
+    if (this.props.windowsInfo.some(w => w.x == null || w.y == null)) {
+      // Some windows do not have an initial position, so we'll come up
+      // with your own layout.
+      const windowPositions = {};
+      const keys = this.windowKeys();
+      const totalHeight = keys.length * WINDOW_HEIGHT;
+      keys.forEach((key, i) => {
+        const offset = WINDOW_HEIGHT * i;
+        windowPositions[key] = {
+          x: Math.ceil(offsetLeft + (width / 2 - WINDOW_WIDTH / 2)),
+          y: Math.ceil(offsetTop + (height / 2 - totalHeight / 2 + offset))
+        };
+      });
+      this.props.updateWindowPositions(windowPositions);
+    } else {
+      // A layout has been suplied. We will compute the bounding box and
+      // center the given layout.
+      const info = this.props.windowsInfo;
+      const bounding = info.reduce(
+        (b, w) => ({
+          left: Math.min(b.left, w.x),
+          top: Math.min(b.top, w.y),
+          bottom: Math.max(b.bottom, w.y + w.height),
+          right: Math.max(b.right, w.x + w.width)
+        }),
+        { top: 0, bottom: 0, left: 0, right: 0 }
+      );
+
+      const boxHeight = bounding.bottom - bounding.top;
+      const boxWidth = bounding.right - bounding.left;
+
+      const move = {
+        x: offsetLeft + (width - boxWidth) / 2,
+        y: offsetTop + (height - boxHeight) / 2
       };
-    });
-    this.props.updateWindowPositions(windowPositions);
+
+      const newPositions = info.reduce(
+        (pos, w) => ({ ...pos, [w.key]: { x: move.x + w.x, y: move.y + w.y } }),
+        {}
+      );
+
+      this.props.updateWindowPositions(newPositions);
+    }
   }
 
   movingAndStationaryNodes(key) {

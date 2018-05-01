@@ -7,9 +7,13 @@ import App from "./components/App";
 import Hotkeys from "./hotkeys";
 import Media from "./media";
 import { getTrackCount } from "./selectors";
-import { setSkinFromUrl, loadMediaFiles } from "./actionCreators";
+import {
+  setSkinFromUrl,
+  loadMediaFiles,
+  setWindowSize
+} from "./actionCreators";
 import { LOAD_STYLE } from "./constants";
-import { uniqueId } from "./utils";
+import { uniqueId, objectMap, objectForEach } from "./utils";
 
 import {
   SET_AVAILABLE_SKINS,
@@ -17,7 +21,8 @@ import {
   NETWORK_DISCONNECTED,
   CLOSE_WINAMP,
   MINIMIZE_WINAMP,
-  ADD_GEN_WINDOW
+  ADD_GEN_WINDOW,
+  UPDATE_WINDOW_POSITIONS
 } from "./actionTypes";
 import Emitter from "./emitter";
 
@@ -71,7 +76,7 @@ class Winamp {
     this.genWindows = [];
     if (__extraWindows) {
       this.genWindows = __extraWindows.map(genWindow => ({
-        id: `${genWindow.title}-${uniqueId()}`,
+        id: genWindow.id || `${genWindow.title}-${uniqueId()}`,
         ...genWindow
       }));
     }
@@ -80,8 +85,7 @@ class Winamp {
       this.store.dispatch({
         type: ADD_GEN_WINDOW,
         windowId: genWindow.id,
-        title: genWindow.title,
-        opened: true
+        title: genWindow.title
       });
     });
 
@@ -105,6 +109,19 @@ class Winamp {
       this.store.dispatch({ type: SET_AVAILABLE_SKINS, skins: avaliableSkins });
     } else if (availableSkins != null) {
       this.store.dispatch({ type: SET_AVAILABLE_SKINS, skins: availableSkins });
+    }
+
+    const layout = options.__initialWindowLayout;
+    if (layout != null) {
+      objectForEach(layout, (w, windowId) => {
+        if (w.size != null) {
+          this.store.dispatch(setWindowSize(windowId, w.size));
+        }
+      });
+      this.store.dispatch({
+        type: UPDATE_WINDOW_POSITIONS,
+        positions: objectMap(layout, w => w.position)
+      });
     }
 
     if (enableHotkeys) {
