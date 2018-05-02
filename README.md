@@ -44,6 +44,9 @@ Open the local ip/port that is output to the console in your browser.
 
 ## Deploying
 
+[Netlify](https://www.netlify.com/) watches GitHub for new versions of master.
+When a new ve
+
 [Travis](https://travis-ci.org/) runs the build and then pushes the contents of `./built` to the `gh-pages` branch of this repository. GitHub Pages then serve that directory as <https://webamp.org>. CloudFlare sits in front of GitHub pages to provide the SSL certificate.
 
 In short, deploying should be as simple as pushing a commit to master which builds, lints and passes all tests.
