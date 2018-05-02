@@ -1,5 +1,4 @@
 import skin from "../skins/base-2.91-png.wsz";
-// eslint-disable-next-line no-unused-vars
 import llamaAudio from "../mp3/llama-2.91.mp3";
 
 /* global SENTRY_DSN */
@@ -24,10 +23,7 @@ export const skinUrl = config.skinUrl === undefined ? skin : config.skinUrl;
 export const initialTracks = config.initialTracks || [
   {
     metaData: { artist: "DJ Mike Llama", title: "Llama Whippin' Intro" },
-    // This seems to include the `accept-ranges` header, which GitHub Pages does not, and
-    // Safari on iOS requires.
-    url:
-      "https://raw.githubusercontent.com/captbaritone/webamp/master/mp3/llama-2.91.mp3",
+    url: llamaAudio,
     duration: 5.322286
   }
 ];
