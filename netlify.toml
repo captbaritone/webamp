@@ -1,3 +1,7 @@
+[build]
+  command = "npm run build"
+  publish = "built"
+
 # A short URL for listeners of https://changelog.com/podcast/291
 [[redirects]]
   from = "/changelog"
