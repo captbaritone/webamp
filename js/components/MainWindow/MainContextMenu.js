@@ -16,10 +16,10 @@ import {
 } from "../../actionTypes";
 import { getGenWindows } from "../../selectors";
 import { LOAD_STYLE } from "../../constants";
-import { ContextMenu, Hr, Node, Parent, LinkNode } from "../ContextMenu";
+import { ContextMenuTarget, Hr, Node, Parent, LinkNode } from "../ContextMenu";
 
 const MainContextMenu = props => (
-  <ContextMenu
+  <ContextMenuTarget
     id="option-context"
     bottom
     handle={<ClickedDiv id="option" title="Winamp Menu" />}
@@ -90,7 +90,7 @@ const MainContextMenu = props => (
     </Parent>
     <Hr />
     <Node onClick={props.close} label="Exit" />
-  </ContextMenu>
+  </ContextMenuTarget>
 );
 
 const mapStateToProps = state => ({

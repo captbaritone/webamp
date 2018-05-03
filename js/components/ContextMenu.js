@@ -66,7 +66,29 @@ Node.propTypes = {
   label: PropTypes.string.isRequired
 };
 
-export class ContextMenu extends React.Component {
+class ContextMenu extends React.Component {
+  render() {
+    const {
+      children,
+      offsetTop,
+      offsetLeft,
+      top,
+      bottom,
+      selected
+    } = this.props;
+    return (
+      selected && (
+        <Portal top={offsetTop} left={offsetLeft}>
+          <ul id="context-menu" className={classnames({ top, bottom })}>
+            {children}
+          </ul>
+        </Portal>
+      )
+    );
+  }
+}
+
+export class ContextMenuTarget extends React.Component {
   constructor(props) {
     super(props);
     this.state = { selected: false };
@@ -113,19 +135,21 @@ export class ContextMenu extends React.Component {
         >
           {handle}
         </div>
-        {this.state.selected && (
-          <Portal top={rect.top} left={rect.left}>
-            <ul id="context-menu" className={classnames({ top, bottom })}>
-              {children}
-            </ul>
-          </Portal>
-        )}
+        <ContextMenu
+          selected={this.state.selected}
+          offsetTop={rect.top}
+          offsetLeft={rect.left}
+          top={top}
+          bottom={bottom}
+        >
+          {children}
+        </ContextMenu>
       </div>
     );
   }
 }
 
-ContextMenu.propTypes = {
+ContextMenuTarget.propTypes = {
   children: PropTypes.any.isRequired,
   handle: PropTypes.any.isRequired,
   top: PropTypes.bool,
