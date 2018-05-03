@@ -2,7 +2,7 @@
 import { BANDS } from "../constants";
 import Emitter from "../emitter";
 import ElementSource from "./elementSource";
-import detectChannels from "./detectChannels";
+// import detectChannels from "./detectChannels";
 
 export default class Media {
   constructor() {
