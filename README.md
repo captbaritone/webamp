@@ -36,11 +36,16 @@ Open `http://localhost:8080/webpack-dev-server/` in your browser.
 
 ## Building
 
-    npm install
     npm run build
     npm run serve
 
 Open the local ip/port that is output to the console in your browser.
+
+## Testing
+
+    npm test
+
+This will run both the tests and the linter.
 
 ## Deploying
 
