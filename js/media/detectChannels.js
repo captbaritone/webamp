@@ -16,6 +16,9 @@ function createAnalysers(source) {
   rightGain.connect(rightAnalyser);
 
   function destroy() {
+    // TODO: Safari, and maybe Firefox, don't support passing the destination
+    // argument which means in Safari, this will disconnect `source` completely,
+    // which will silence the audio.
     source.disconnect(splitter);
     splitter.disconnect();
     leftGain.disconnect();

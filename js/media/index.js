@@ -205,6 +205,8 @@ export default class Media {
   async play() {
     await this._source.play();
     if (this._channels == null) {
+      // Temporarily disabled https://github.com/captbaritone/webamp/issues/551
+      /*
       detectChannels(this._staticSource)
         .then(channels => {
           this._setChannels(channels);
@@ -212,6 +214,7 @@ export default class Media {
         .catch(() => {
           this._setChannels(null);
         });
+      */
     }
   }
 
