@@ -166,16 +166,6 @@ export default class Media {
     this._emitter.trigger("channelupdate");
   }
 
-  _makeMono() {
-    this._setChannels(1);
-  }
-
-  _makeStereo() {
-    this._setChannels(2);
-  }
-  _resetChannels() {
-    this._setChannels(null);
-  }
   /* Properties */
   duration() {
     return this._source.getDuration();
@@ -294,7 +284,7 @@ export default class Media {
   async loadFromUrl(url, autoPlay) {
     this._emitter.trigger("waiting");
     await this._source.loadUrl(url);
-    this._resetChannels();
+    this._setChannels(null);
     this._emitter.trigger("stopWaiting");
     if (autoPlay) {
       this.play();
