@@ -64,6 +64,8 @@ There are some "feature flags" which you can manipulate by passing a specially c
 
 ## Community
 
+Join our community chat on Discord: <https://discord.gg/fBTDMqR>
+
 There are a few related projects that have communites:
 
 * [Winamp Community Update Pack] - "New plug-ins to add additional features to Winamp as well as replacement plug-ins to provide better implementations of some of the plug-ins natively included with Winamp". ([Forum](https://getwacup.com/community/) / [Discord server](https://discord.gg/5pVTdbj))
