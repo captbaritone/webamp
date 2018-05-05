@@ -38,7 +38,7 @@ export default class ContextMenuWraper extends React.Component {
   }
 
   render() {
-    const { children, Contents, ...passThroughProps } = this.props;
+    const { children, renderContents, ...passThroughProps } = this.props;
     return (
       <div
         onContextMenu={this._handleRightClick}
@@ -50,7 +50,7 @@ export default class ContextMenuWraper extends React.Component {
           offsetTop={this.state.offsetTop}
           offsetLeft={this.state.offsetLeft}
         >
-          <Contents />
+          {renderContents()}
         </ContextMenu>
         {children}
       </div>
@@ -60,5 +60,5 @@ export default class ContextMenuWraper extends React.Component {
 
 ContextMenuWraper.propTypes = {
   children: PropTypes.any.isRequired,
-  Contents: PropTypes.any.isRequired
+  renderContents: PropTypes.func.isRequired
 };

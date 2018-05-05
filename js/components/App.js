@@ -53,7 +53,9 @@ const App = ({
   return (
     <div role="application" id="webamp">
       <Skin />
-      <ContextMenuWrapper Contents={MainContextMenu}>
+      <ContextMenuWrapper
+        renderContents={() => <MainContextMenu filePickers={filePickers} />}
+      >
         <WindowManager windows={windows} container={container} />
       </ContextMenuWrapper>
     </div>
