@@ -27,6 +27,8 @@ export default class ContextMenuWraper extends React.Component {
     const { pageX, pageY } = e;
     this.setState({
       selected: true,
+      // TODO: We could do an initial render to see if the menu fits here
+      // and do a second render if it does not.
       offsetTop: pageY,
       offsetLeft: pageX
     });
