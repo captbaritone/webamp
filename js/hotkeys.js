@@ -15,7 +15,13 @@ import {
   toggleDoubleSizeMode
 } from "./actionCreators";
 
-import { TOGGLE_TIME_MODE, TOGGLE_LLAMA_MODE } from "./actionTypes";
+import {
+  TOGGLE_TIME_MODE,
+  TOGGLE_LLAMA_MODE,
+  TOGGLE_MAIN_WINDOW,
+  TOGGLE_PLAYLIST_WINDOW,
+  TOGGLE_EQUALIZER_WINDOW
+} from "./actionTypes";
 
 import { arraysAreEqual } from "./utils";
 
@@ -33,7 +39,6 @@ export default function(dispatch) {
   ];
   document.addEventListener("keydown", e => {
     if (e.ctrlKey) {
-      // Is CTRL depressed?
       switch (e.keyCode) {
         case 68: // CTRL+D
           dispatch(toggleDoubleSizeMode());
@@ -46,6 +51,18 @@ export default function(dispatch) {
           break;
         case 84: // CTRL+T
           dispatch({ type: TOGGLE_TIME_MODE });
+          break;
+      }
+    } else if (e.altKey) {
+      switch (e.keyCode) {
+        case 87: // ALT+W
+          dispatch({ type: TOGGLE_MAIN_WINDOW });
+          break;
+        case 69: // ALT+E
+          dispatch({ type: TOGGLE_PLAYLIST_WINDOW });
+          break;
+        case 71: // ALT+G
+          dispatch({ type: TOGGLE_EQUALIZER_WINDOW });
           break;
       }
     } else {

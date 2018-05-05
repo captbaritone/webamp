@@ -26,7 +26,7 @@ const MainContextMenu = props => (
     />
     <Hr />
     <Parent label="Play">
-      <Node onClick={props.openMediaFileDialog} label="File..." />
+      <Node onClick={props.openMediaFileDialog} label="File..." hotkey="L" />
       {props.filePickers &&
         props.filePickers.map(
           (picker, i) =>
@@ -52,16 +52,19 @@ const MainContextMenu = props => (
       label="Main Window"
       checked={props.mainWindowOpen}
       onClick={props.toggleMainWindow}
+      hotkey="Alt+W"
     />
     <Node
       label="Playlist Editor"
       checked={props.playlistOpen}
       onClick={props.togglePlaylist}
+      hotkey="Alt+E"
     />
     <Node
       label="Equalizer"
       checked={props.equalizerOpen}
       onClick={props.toggleEqualizer}
+      hotkey="Alt+G"
     />
     {Object.keys(props.genWindows).map(i => (
       <Node
