@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { openEqfFileDialog, downloadPreset } from "../../actionCreators";
 import { ContextMenuTarget, Node } from "../ContextMenu";
 
-const MainContextMenu = props => (
+const PresetsContextMenu = props => (
   <ContextMenuTarget top id="presets-context" handle={<div id="presets" />}>
     <Node onClick={props.openEqfFileDialog} label="Load" />
     <Node onClick={props.downloadPreset} label="Save" />
@@ -12,4 +12,4 @@ const MainContextMenu = props => (
 
 const mapDispatchToProps = { openEqfFileDialog, downloadPreset };
 
-export default connect(null, mapDispatchToProps)(MainContextMenu);
+export default connect(null, mapDispatchToProps)(PresetsContextMenu);
