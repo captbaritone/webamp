@@ -7,7 +7,8 @@ import {
   downloadHtmlPlaylist
 } from "../../actionCreators";
 
-import { ContextMenuTarget, Hr, Node } from "../ContextMenu";
+import { Hr, Node } from "../ContextMenu";
+import ContextMenuTarget from "../ContextMenuTarget";
 import PlaylistMenu from "./PlaylistMenu";
 
 /* eslint-disable no-alert */

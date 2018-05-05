@@ -14,6 +14,8 @@ import DropTarget from "../DropTarget";
 import MiniTime from "../MiniTime";
 
 import { SET_FOCUSED_WINDOW } from "../../actionTypes";
+import ClickedDiv from "../ClickedDiv";
+import ContextMenuTarget from "../ContextMenuTarget";
 import ActionButtons from "./ActionButtons";
 import MainBalance from "./MainBalance";
 import Close from "./Close";
@@ -90,7 +92,13 @@ export class MainWindow extends React.Component {
           className="selected title-bard draggable"
           onDoubleClick={this.props.toggleMainWindowShadeMode}
         >
-          <MainContextMenu filePickers={filePickers} />
+          <ContextMenuTarget
+            id="option-context"
+            bottom
+            handle={<ClickedDiv id="option" title="Winamp Menu" />}
+          >
+            <MainContextMenu filePickers={filePickers} />
+          </ContextMenuTarget>
           {mainShade && <MiniTime />}
           <Minimize />
           <Shade />

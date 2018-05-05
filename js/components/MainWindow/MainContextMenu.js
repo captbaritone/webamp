@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import ClickedDiv from "../ClickedDiv";
 import {
   close,
   setSkinFromUrl,
@@ -16,14 +15,10 @@ import {
 } from "../../actionTypes";
 import { getGenWindows } from "../../selectors";
 import { LOAD_STYLE } from "../../constants";
-import { ContextMenuTarget, Hr, Node, Parent, LinkNode } from "../ContextMenu";
+import { Hr, Node, Parent, LinkNode } from "../ContextMenu";
 
 const MainContextMenu = props => (
-  <ContextMenuTarget
-    id="option-context"
-    bottom
-    handle={<ClickedDiv id="option" title="Winamp Menu" />}
-  >
+  <React.Fragment>
     <LinkNode
       href="https://github.com/captbaritone/webamp"
       target="_blank"
@@ -90,7 +85,7 @@ const MainContextMenu = props => (
     </Parent>
     <Hr />
     <Node onClick={props.close} label="Exit" />
-  </ContextMenuTarget>
+  </React.Fragment>
 );
 
 const mapStateToProps = state => ({

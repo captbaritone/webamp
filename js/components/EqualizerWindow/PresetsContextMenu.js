@@ -1,7 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { openEqfFileDialog, downloadPreset } from "../../actionCreators";
-import { ContextMenuTarget, Node } from "../ContextMenu";
+import { Node } from "../ContextMenu";
+import ContextMenuTarget from "../ContextMenuTarget";
 
 const PresetsContextMenu = props => (
   <ContextMenuTarget top id="presets-context" handle={<div id="presets" />}>

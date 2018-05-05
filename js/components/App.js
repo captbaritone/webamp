@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import ContextMenuWrapper from "./ContextMenuWrapper";
+import MainContextMenu from "./MainWindow/MainContextMenu";
 import WindowManager from "./WindowManager";
 import MainWindow from "./MainWindow";
 import PlaylistWindow from "./PlaylistWindow";
@@ -51,7 +53,9 @@ const App = ({
   return (
     <div role="application" id="webamp">
       <Skin />
-      <WindowManager windows={windows} container={container} />
+      <ContextMenuWrapper Contents={MainContextMenu}>
+        <WindowManager windows={windows} container={container} />
+      </ContextMenuWrapper>
     </div>
   );
 };
