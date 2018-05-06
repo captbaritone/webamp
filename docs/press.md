@@ -32,7 +32,8 @@
 
 ## Podcast Mentions
 
-* [React Round Up](https://devchat.tv/react-round-up/rru-003-advanced-component-patterns-and-downshift-with-kent-c-dodds)
+* [React Round Up](https://devchat.tv/react-round-up/rru-003-advanced-component-patterns-and-downshift-with-kent-c-dodds) (0:59:00)
+* [Grumpy Old Geeks](http://gog.show/ep-248-side-hustle/) (1:37:30)
 * [User Error](https://www.youtube.com/watch?v=qlm_G0xgK8Q&feature=youtu.be&t=309)
 * [Important if True](https://youtu.be/6B6E2Kv-w04?t=3295)
 * [Binärgewitter](http://blog.binaergewitter.de/2018/02/16/binaergewitter-talk-number-192-bitcoinheizung#t=1:52:13.216) (German)
