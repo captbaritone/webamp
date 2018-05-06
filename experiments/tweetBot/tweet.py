@@ -203,7 +203,8 @@ def main(dry):
         s3.meta.client.upload_file(
             skin_path, 'winamp2-js-skins', skin_name, {'ACL': 'public-read'})
 
-        skin_url = "https://s3-us-west-2.amazonaws.com/winamp2-js-skins/%s" % skin_name
+        skin_url = "https://s3-us-west-2.amazonaws.com/winamp2-js-skins/%s" % urllib.quote(
+            skin_name)
         dispatch({"type": "UPLOADED_SKIN", "md5": md5, "skin_url": skin_url})
         print "Done: %s" % skin_url
 
