@@ -1,34 +1,66 @@
 
+var audio = new Audio;
+var base_title = "WinAMP v0.2a";
+var file_name;
+var blob_url;
+
+audio.onended = stop;
+
+function stop(){
+	URL.revokeObjectURL(blob_url);
+	audio.pause();
+	audio.src = "";
+	audio.load();
+	audio.currentTime = 0;
+	
+	$window.title(base_title);
+
+	$(".menu-popup").triggerHandler("update");
+};
+
+function play_from_file(file){
+	blob_url = URL.createObjectURL(file);
+	audio.src = blob_url;
+	audio.play();
+	file_name = file.name;
+	$window.title(base_title + " - " + file_name);
+};
+
 var show_nothingness = true;
 var menus = {
 	"&MP3": [
 		{
 			item: "&Play...",
 			action: ()=> {
-				
+				stop();
+
+				$("<input type='file' accept='audio/mp3'>").click().change(function(e){
+					if(this.files[0]){
+						play_from_file(this.files[0]);
+					}
+				});
 			},
-			enabled: false,
 		},
 		{
 			item: "&Stop",
-			action: ()=> {
-				
-			},
-			enabled: false,
+			action: stop,
+			enabled: ()=> audio.currentTime > 0,
 		},
 		{
 			item: "P&ause",
 			action: ()=> {
-				
+				audio.pause();
+				$window.title(base_title + " - " + file_name + " - Paused");
 			},
-			enabled: false,
+			enabled: ()=> !audio.paused,
 		},
 		{
 			item: "&Unpause",
 			action: ()=> {
-				
+				audio.play();
+				$window.title(base_title + " - " + file_name);
 			},
-			enabled: false,
+			enabled: ()=> audio.currentTime > 0 && audio.paused,
 		},
 		$MenuBar.DIVIDER,
 		{
@@ -73,7 +105,7 @@ function $Icon(path, size){
 	return $img;
 }
 
-var $window = new $Window({title: "WinAMP v0.2a", icon: "winamp-0.2.png"});
+var $window = new $Window({title: base_title, icon: "winamp-0.2.png"});
 $window.$content.append($menubar);
 $window.width(220);
 
