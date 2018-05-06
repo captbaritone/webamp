@@ -16,6 +16,7 @@ import {
 import { getGenWindows } from "../../selectors";
 import { LOAD_STYLE } from "../../constants";
 import { Hr, Node, Parent, LinkNode } from "../ContextMenu";
+import PlaybackContextMenu from "../PlaybackContextMenu";
 
 const MainContextMenu = props => (
   <React.Fragment>
@@ -85,6 +86,10 @@ const MainContextMenu = props => (
           label={skin.name}
         />
       ))}
+    </Parent>
+    <Hr />
+    <Parent label="Playback">
+      <PlaybackContextMenu />
     </Parent>
     <Hr />
     <Node onClick={props.close} label="Exit" />

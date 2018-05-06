@@ -369,17 +369,37 @@ exports[`MainWindow renders to snapshot 1`] = `
     className="shuffle-repeat"
   >
     <div
-      className=""
-      id="shuffle"
-      onClick={[Function]}
-      title="Toggle Shuffle"
-    />
+      onContextMenu={[Function]}
+      style={
+        Object {
+          "height": "100%",
+          "width": "100%",
+        }
+      }
+    >
+      <div
+        className=""
+        id="shuffle"
+        onClick={[Function]}
+        title="Toggle Shuffle"
+      />
+    </div>
     <div
-      className=""
-      id="repeat"
-      onClick={[Function]}
-      title="Toggle Repeat"
-    />
+      onContextMenu={[Function]}
+      style={
+        Object {
+          "height": "100%",
+          "width": "100%",
+        }
+      }
+    >
+      <div
+        className=""
+        id="repeat"
+        onClick={[Function]}
+        title="Toggle Repeat"
+      />
+    </div>
   </div>
   <a
     href="https://github.com/captbaritone/webamp"
