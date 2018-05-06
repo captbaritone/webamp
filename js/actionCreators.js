@@ -150,11 +150,12 @@ export function previous() {
 
 export function seekForward(seconds) {
   return function(dispatch, getState) {
-    const { media } = getState();
-    const { timeElapsed, length } = media;
+    const { timeElapsed, length } = getState().media;
     const newTimeElapsed = timeElapsed + seconds;
-    const newPercentComplete = newTimeElapsed / length;
-    dispatch({ type: SEEK_TO_PERCENT_COMPLETE, percent: newPercentComplete });
+    dispatch({
+      type: SEEK_TO_PERCENT_COMPLETE,
+      percent: newTimeElapsed / length * 100
+    });
   };
 }
 
