@@ -381,22 +381,22 @@ export default {
       height: 14
     },
     { name: "EQ_SHADE_BACKGROUND", x: 0, y: 15, width: 275, height: 14 },
-    { name: "EQ_SHADE_VOLUME_SLIDER_LEFT", x: 1, y: 30, width: 2, height: 7 },
-    { name: "EQ_SHADE_VOLUME_SLIDER_CENTER", x: 3, y: 30, width: 5, height: 7 },
-    { name: "EQ_SHADE_VOLUME_SLIDER_RIGHT", x: 8, y: 30, width: 2, height: 7 },
-    { name: "EQ_SHADE_BALANCE_SLIDER_LEFT", x: 11, y: 30, width: 2, height: 7 },
+    { name: "EQ_SHADE_VOLUME_SLIDER_LEFT", x: 1, y: 30, width: 3, height: 7 },
+    { name: "EQ_SHADE_VOLUME_SLIDER_CENTER", x: 4, y: 30, width: 3, height: 7 },
+    { name: "EQ_SHADE_VOLUME_SLIDER_RIGHT", x: 7, y: 30, width: 3, height: 7 },
+    { name: "EQ_SHADE_BALANCE_SLIDER_LEFT", x: 11, y: 30, width: 3, height: 7 },
     {
       name: "EQ_SHADE_BALANCE_SLIDER_CENTER",
-      x: 13,
+      x: 14,
       y: 30,
-      width: 5,
+      width: 3,
       height: 7
     },
     {
       name: "EQ_SHADE_BALANCE_SLIDER_RIGHT",
-      x: 18,
+      x: 17,
       y: 30,
-      width: 2,
+      width: 3,
       height: 7
     },
     { name: "EQ_MAXIMIZE_BUTTON_ACTIVE", x: 1, y: 38, width: 9, height: 9 },
