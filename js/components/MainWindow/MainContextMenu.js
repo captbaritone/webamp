@@ -2,10 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import {
   close,
-  setSkinFromUrl,
   openMediaFileDialog,
-  loadMediaFiles,
-  openSkinFileDialog
+  loadMediaFiles
 } from "../../actionCreators";
 import {
   TOGGLE_MAIN_WINDOW,
@@ -17,6 +15,7 @@ import { getGenWindows } from "../../selectors";
 import { LOAD_STYLE } from "../../constants";
 import { Hr, Node, Parent, LinkNode } from "../ContextMenu";
 import PlaybackContextMenu from "../PlaybackContextMenu";
+import SkinsContextMenu from "../SkinsContextMenu";
 
 const MainContextMenu = props => (
   <React.Fragment>
@@ -76,17 +75,7 @@ const MainContextMenu = props => (
       />
     ))}
     <Hr />
-    <Parent label="Skins">
-      <Node onClick={props.openSkinFileDialog} label="Load Skin..." />
-      {!!props.availableSkins.length && <Hr />}
-      {props.availableSkins.map(skin => (
-        <Node
-          key={skin.url}
-          onClick={() => props.setSkin(skin.url)}
-          label={skin.name}
-        />
-      ))}
-    </Parent>
+    <SkinsContextMenu />
     <Hr />
     <Parent label="Playback">
       <PlaybackContextMenu />
@@ -97,7 +86,6 @@ const MainContextMenu = props => (
 );
 
 const mapStateToProps = state => ({
-  availableSkins: state.settings.availableSkins,
   networkConnected: state.network.connected,
   mainWindowOpen: state.windows.mainWindow, // For now you can't close the main window without closing all of Webamp
   playlistOpen: state.windows.playlist,
@@ -107,10 +95,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   close,
-  openSkinFileDialog,
   openMediaFileDialog,
   loadMediaFiles,
-  setSkin: setSkinFromUrl,
   toggleMainWindow: () => ({ type: TOGGLE_MAIN_WINDOW }),
   togglePlaylist: () => ({ type: TOGGLE_PLAYLIST_WINDOW }),
   toggleEqualizer: () => ({ type: TOGGLE_EQUALIZER_WINDOW }),
