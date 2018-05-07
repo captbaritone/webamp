@@ -13,7 +13,7 @@
     left: 60px;
     top: 4px;
     height: 6px;
-    width: 97px;
+    width: 98px;
     background-position: 0 0;
 }
 
@@ -24,14 +24,6 @@
 
 #webamp #equalizer-volume::-moz-range-thumb {
     height: 7px;
-    width: 3px;
-}
-
-#webamp #equalizer-volume.center::-webkit-slider-thumb {
-    width: 3px;
-}
-
-#webamp #equalizer-volume.center::-moz-range-thumb {
     width: 3px;
 }
 
@@ -51,14 +43,6 @@
 
 #webamp #equalizer-balance::-moz-range-thumb {
     height: 7px;
-    width: 3px;
-}
-
-#webamp #equalizer-balance.center::-webkit-slider-thumb {
-    width: 3px;
-}
-
-#webamp #equalizer-balance.center::-moz-range-thumb {
     width: 3px;
 }
 
