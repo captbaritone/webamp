@@ -122,10 +122,10 @@ exports[`MainWindow renders to snapshot 1`] = `
     style={
       Object {
         "height": 16,
-        "width": 75,
+        "width": 76,
       }
     }
-    width={150}
+    width={152}
   />
   <div
     className="media-info"
