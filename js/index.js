@@ -1,7 +1,7 @@
 import "babel-polyfill";
 import Raven from "raven-js";
 import createMiddleware from "raven-for-redux";
-import isButterchurnSupported from "butterchurn/lib/isSupported";
+import isButterchurnSupported from "butterchurn/lib/isSupported.min";
 import base from "../skins/base-2.91-png.wsz";
 import osx from "../skins/MacOSXAqua1-5.wsz";
 import topaz from "../skins/TopazAmp1-2.wsz";

@@ -9,12 +9,12 @@ class MilkdropWindow extends React.Component {
     require.ensure(
       [
         "butterchurn",
-        "butterchurn-presets/presets/converted/Geiss - Reaction Diffusion 2"
+        "butterchurn-presets/presets/converted/Geiss - Reaction Diffusion 2.json"
       ],
       require => {
         const analyserNode = this.props.analyser;
         const butterchurn = require("butterchurn");
-        const reactionDiffusion2 = require("butterchurn-presets/presets/converted/Geiss - Reaction Diffusion 2");
+        const reactionDiffusion2 = require("butterchurn-presets/presets/converted/Geiss - Reaction Diffusion 2.json");
 
         this.visualizer = butterchurn.createVisualizer(
           analyserNode.context,
