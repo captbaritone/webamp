@@ -10,7 +10,7 @@ import {
   OPEN_GEN_WINDOW,
   ADD_GEN_WINDOW,
   UPDATE_WINDOW_POSITIONS,
-  GEN_WINDOW_SIZE_CHANGED
+  WINDOW_SIZE_CHANGED
 } from "../actionTypes";
 
 const defaultWindowsState = {
@@ -18,7 +18,11 @@ const defaultWindowsState = {
   mainWindow: true,
   equalizer: true,
   playlist: true,
-  genWindows: {},
+  genWindows: {
+    playlist: {
+      size: [0, 0]
+    }
+  },
   positions: {}
 };
 
@@ -75,7 +79,7 @@ const windows = (state = defaultWindowsState, action) => {
           }
         }
       };
-    case GEN_WINDOW_SIZE_CHANGED:
+    case WINDOW_SIZE_CHANGED:
       return {
         ...state,
         genWindows: {

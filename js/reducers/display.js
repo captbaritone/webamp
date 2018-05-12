@@ -10,8 +10,7 @@ import {
   TOGGLE_EQUALIZER_SHADE_MODE,
   TOGGLE_PLAYLIST_SHADE_MODE,
   TOGGLE_VISUALIZER_STYLE,
-  SET_PLAYLIST_SCROLL_POSITION,
-  PLAYLIST_SIZE_CHANGED
+  SET_PLAYLIST_SCROLL_POSITION
 } from "../actionTypes";
 
 const defaultDisplayState = {
@@ -30,8 +29,7 @@ const defaultDisplayState = {
   skinPlaylistStyle: {},
   skinRegion: {},
   visualizerStyle: 2,
-  playlistScrollPosition: 0,
-  playlistSize: [0, 0]
+  playlistScrollPosition: 0
 };
 
 const display = (state = defaultDisplayState, action) => {
@@ -70,8 +68,6 @@ const display = (state = defaultDisplayState, action) => {
       return { ...state, visualizerStyle: (state.visualizerStyle + 1) % 3 };
     case SET_PLAYLIST_SCROLL_POSITION:
       return { ...state, playlistScrollPosition: action.position };
-    case PLAYLIST_SIZE_CHANGED:
-      return { ...state, playlistSize: action.size };
     default:
       return state;
   }

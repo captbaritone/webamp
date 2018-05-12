@@ -4,12 +4,8 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import "../../../css/gen-window.css";
 
-import {
-  SET_FOCUSED_WINDOW,
-  CLOSE_GEN_WINDOW,
-  GEN_WINDOW_SIZE_CHANGED
-} from "../../actionTypes";
-import { scrollVolume } from "../../actionCreators";
+import { SET_FOCUSED_WINDOW, CLOSE_GEN_WINDOW } from "../../actionTypes";
+import { scrollVolume, setWindowSize } from "../../actionCreators";
 import { getWindowPixelSize } from "../../selectors";
 import ResizeTarget from "../ResizeTarget";
 
@@ -37,7 +33,7 @@ export const GenWindow = ({
   setFocus,
   windowId,
   windowSize,
-  genWindowSizeChanged,
+  setGenWindowSize,
   scrollVolume: handleWheel
 }) => {
   const { width, height } = getWindowPixelSize(windowSize);
@@ -80,7 +76,7 @@ export const GenWindow = ({
         <div className="gen-bottom-right draggable">
           <ResizeTarget
             currentSize={windowSize}
-            setWindowSize={size => genWindowSizeChanged(windowId, size)}
+            setWindowSize={size => setGenWindowSize(windowId, size)}
             id={"gen-resize-target"}
           />
         </div>
@@ -105,12 +101,8 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = {
   setFocus: windowId => ({ type: SET_FOCUSED_WINDOW, window: windowId }),
   close: windowId => ({ type: CLOSE_GEN_WINDOW, windowId }),
-  scrollVolume,
-  genWindowSizeChanged: (windowId, size) => ({
-    type: GEN_WINDOW_SIZE_CHANGED,
-    windowId,
-    size
-  })
+  setGenWindowSize: setWindowSize,
+  scrollVolume
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GenWindow);
