@@ -254,11 +254,9 @@ export function getWindowPositions(state) {
 const WINDOW_HEIGHT = 116;
 const SHADE_WINDOW_HEIGHT = 14;
 
-// TODO: Clean this up.
-export function getWindowPixelSize(state, windowId) {
-  const w = state.windows.genWindows[windowId];
+function getWPixelSize(w, doubled) {
   const [width, height] = w.size;
-  const doubledMultiplier = state.display.doubled && w.canDouble ? 2 : 1;
+  const doubledMultiplier = doubled && w.canDouble ? 2 : 1;
   const pix = {
     height: WINDOW_HEIGHT + height * WINDOW_RESIZE_SEGMENT_HEIGHT,
     width: WINDOW_WIDTH + width * WINDOW_RESIZE_SEGMENT_WIDTH
@@ -273,14 +271,34 @@ export function getWindowSize(state, windowId) {
   return state.windows.genWindows[windowId].size;
 }
 
-export function getPlaylistWindowPixelSize(state) {
-  return getWindowPixelSize(state, "playlist");
+export function getWindowOpen(state, windowId) {
+  return state.windows.genWindows[windowId].open;
 }
 
-export function getWindowSizes(state) {
-  return objectMap(state.windows.genWindows, (w, windowId) => {
-    return getWindowPixelSize(state, windowId);
-  });
+export function getWindowShade(state, windowId) {
+  return state.windows.genWindows[windowId].shade;
+}
+
+export const getGenWindows = state => {
+  return state.windows.genWindows;
+};
+
+export function getDoubled(state) {
+  return state.display.doubled;
+}
+
+export const getWindowSizes = createSelector(
+  getGenWindows,
+  getDoubled,
+  (windows, doubled) => {
+    return objectMap(windows, w => getWPixelSize(w, doubled));
+  }
+);
+
+export function getWindowPixelSize(state, windowId) {
+  // Rather than compute it directly, we go via `getWindowSizes`
+  // to take advantage of caching.
+  return getWindowSizes(state)[windowId];
 }
 
 export const getWindowsInfo = createSelector(
@@ -291,7 +309,3 @@ export const getWindowsInfo = createSelector(
 );
 
 export const getWindowGraph = createSelector(getWindowsInfo, generateGraph);
-
-export const getGenWindows = state => {
-  return state.windows.genWindows;
-};

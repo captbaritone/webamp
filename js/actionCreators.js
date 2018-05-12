@@ -44,7 +44,6 @@ import {
   TOGGLE_SHUFFLE,
   SET_EQ_ON,
   SET_EQ_OFF,
-  TOGGLE_EQUALIZER_SHADE_MODE,
   REMOVE_TRACKS,
   REMOVE_ALL_TRACKS,
   PLAY,
@@ -59,15 +58,14 @@ import {
   DRAG_SELECTED,
   SET_MEDIA_TAGS,
   SET_MEDIA_DURATION,
-  TOGGLE_MAIN_SHADE_MODE,
-  TOGGLE_PLAYLIST_SHADE_MODE,
   MEDIA_TAG_REQUEST_INITIALIZED,
   MEDIA_TAG_REQUEST_FAILED,
   UPDATE_WINDOW_POSITIONS,
   TOGGLE_DOUBLESIZE_MODE,
   WINDOW_SIZE_CHANGED,
   TOGGLE_WINDOW,
-  CLOSE_WINDOW
+  CLOSE_WINDOW,
+  TOGGLE_WINDOW_SHADE_MODE
 } from "./actionTypes";
 
 import LoadQueue from "./loadQueue";
@@ -527,15 +525,24 @@ export function toggleDoubleSizeMode() {
 }
 
 export function toggleEqualizerShadeMode() {
-  return withWindowGraphIntegrity({ type: TOGGLE_EQUALIZER_SHADE_MODE });
+  return withWindowGraphIntegrity({
+    type: TOGGLE_WINDOW_SHADE_MODE,
+    windowId: "equalizer"
+  });
 }
 
 export function toggleMainWindowShadeMode() {
-  return withWindowGraphIntegrity({ type: TOGGLE_MAIN_SHADE_MODE });
+  return withWindowGraphIntegrity({
+    type: TOGGLE_WINDOW_SHADE_MODE,
+    windowId: "main"
+  });
 }
 
 export function togglePlaylistShadeMode() {
-  return withWindowGraphIntegrity({ type: TOGGLE_PLAYLIST_SHADE_MODE });
+  return withWindowGraphIntegrity({
+    type: TOGGLE_WINDOW_SHADE_MODE,
+    windowId: "playlist"
+  });
 }
 
 export function closeWindow(windowId) {

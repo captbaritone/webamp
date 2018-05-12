@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
 
+import { getWindowOpen } from "../../selectors";
 import { toggleWindow } from "../../actionCreators";
 
 const PlaylistToggleButton = props => (
@@ -14,7 +15,7 @@ const PlaylistToggleButton = props => (
 );
 
 const mapStateToProps = state => ({
-  playlist: state.windows.playlist
+  playlist: getWindowOpen(state, "playlist")
 });
 
 const mapDispatchToProps = {
