@@ -11,7 +11,7 @@ import {
   applyDiff,
   applyMultipleDiffs
 } from "../snapUtils";
-import { getWindowPositions } from "../selectors";
+import { getWindowsInfo } from "../selectors";
 import { updateWindowPositions } from "../actionCreators";
 import { WINDOW_HEIGHT, WINDOW_WIDTH } from "../constants";
 
@@ -25,8 +25,6 @@ const abuts = (a, b) => {
 class WindowManager extends React.Component {
   constructor(props) {
     super(props);
-    this.windowNodes = {};
-    this.getRef = this.getRef.bind(this);
     this.handleMouseDown = this.handleMouseDown.bind(this);
     this.centerWindows = this.centerWindows.bind(this);
   }
@@ -70,31 +68,8 @@ class WindowManager extends React.Component {
     this.props.updateWindowPositions(windowPositions);
   }
 
-  getRef(key, node) {
-    // If we are unmounting, the node might be null;
-    this.windowNodes[key] = node;
-  }
-
-  //
-  getWindowNodes() {
-    return this.windowKeys()
-      .map(key => {
-        const node = this.windowNodes[key];
-        return node && this.nodeInfo(node, key);
-      })
-
-      .filter(Boolean);
-  }
-
-  nodeInfo(node, key) {
-    const child = node.childNodes[0];
-    const { height, width } = child.getBoundingClientRect();
-    const { offsetLeft, offsetTop } = node;
-    return { key, x: offsetLeft, y: offsetTop, height, width };
-  }
-
   movingAndStationaryNodes(key) {
-    const windows = this.getWindowNodes();
+    const windows = this.props.windowsInfo;
     const targetNode = windows.find(node => node.key === key);
 
     let movingSet = new Set([targetNode]);
@@ -188,21 +163,15 @@ class WindowManager extends React.Component {
     };
     return (
       <div style={parentStyle}>
-        {this.windowKeys().map(key => {
-          const position = this.props.windowPositions[key];
-          return (
-            position && (
-              <div
-                onMouseDown={e => this.handleMouseDown(key, e)}
-                ref={node => this.getRef(key, node)}
-                style={{ ...style, left: position.x, top: position.y }}
-                key={key}
-              >
-                {this.props.windows[key]}
-              </div>
-            )
-          );
-        })}
+        {this.props.windowsInfo.map(w => (
+          <div
+            onMouseDown={e => this.handleMouseDown(w.key, e)}
+            style={{ ...style, left: w.x, top: w.y }}
+            key={w.key}
+          >
+            {this.props.windows[w.key]}
+          </div>
+        ))}
       </div>
     );
   }
@@ -214,7 +183,7 @@ WindowManager.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  windowPositions: getWindowPositions(state)
+  windowsInfo: getWindowsInfo(state)
 });
 
 const mapDispatchToProps = {

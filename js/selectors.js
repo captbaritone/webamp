@@ -296,17 +296,14 @@ export function getWindowSizes(state) {
   return { main, equalizer, playlist, ...genWindowSizes };
 }
 
-export const getWindowGraph = createSelector(
-  getWindowPositions,
+export const getWindowsInfo = createSelector(
   getWindowSizes,
-  (windowPositions, windowSizes) => {
-    const windowData = [];
-    for (const key of Object.keys(windowPositions)) {
-      windowData.push({ key, ...windowPositions[key], ...windowSizes[key] });
-    }
-    return generateGraph(windowData);
-  }
+  getWindowPositions,
+  (sizes, positions) =>
+    Object.keys(sizes).map(key => ({ key, ...sizes[key], ...positions[key] }))
 );
+
+export const getWindowGraph = createSelector(getWindowsInfo, generateGraph);
 
 export const getGenWindows = state => {
   return state.windows.genWindows;
