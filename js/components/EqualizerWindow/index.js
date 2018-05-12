@@ -10,7 +10,7 @@ import {
   setEqToMax,
   setEqToMid,
   setEqToMin,
-  closeEqualizerWindow,
+  closeWindow,
   toggleEqualizerShadeMode,
   scrollVolume
 } from "../../actionCreators";
@@ -87,6 +87,7 @@ EqualizerWindow.propTypes = {
   shade: PropTypes.bool.isRequired
 };
 
+// TODO: Convert to object shorthand
 const mapDispatchToProps = dispatch => ({
   focusWindow: () =>
     dispatch({ type: SET_FOCUSED_WINDOW, window: WINDOWS.EQUALIZER }),
@@ -95,7 +96,7 @@ const mapDispatchToProps = dispatch => ({
   setEqToMid: () => dispatch(setEqToMid()),
   setEqToMax: () => dispatch(setEqToMax()),
   setHertzValue: hertz => value => dispatch(setEqBand(hertz, value)),
-  closeEqualizerWindow: () => dispatch(closeEqualizerWindow()),
+  closeEqualizerWindow: () => dispatch(closeWindow("equalizer")),
   toggleEqualizerShadeMode: () => dispatch(toggleEqualizerShadeMode()),
   scrollVolume: e => dispatch(scrollVolume(e))
 });

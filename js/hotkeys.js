@@ -12,16 +12,11 @@ import {
   nextN,
   next,
   previous,
-  toggleDoubleSizeMode
+  toggleDoubleSizeMode,
+  toggleWindow
 } from "./actionCreators";
 
-import {
-  TOGGLE_TIME_MODE,
-  TOGGLE_LLAMA_MODE,
-  TOGGLE_MAIN_WINDOW,
-  TOGGLE_PLAYLIST_WINDOW,
-  TOGGLE_EQUALIZER_WINDOW
-} from "./actionTypes";
+import { TOGGLE_TIME_MODE, TOGGLE_LLAMA_MODE } from "./actionTypes";
 
 import { arraysAreEqual } from "./utils";
 
@@ -56,13 +51,13 @@ export default function(dispatch) {
     } else if (e.altKey) {
       switch (e.keyCode) {
         case 87: // ALT+W
-          dispatch({ type: TOGGLE_MAIN_WINDOW });
+          dispatch(toggleWindow("main"));
           break;
         case 69: // ALT+E
-          dispatch({ type: TOGGLE_PLAYLIST_WINDOW });
+          dispatch(toggleWindow("playlist"));
           break;
         case 71: // ALT+G
-          dispatch({ type: TOGGLE_EQUALIZER_WINDOW });
+          dispatch(toggleWindow("equalizer"));
           break;
       }
     } else {

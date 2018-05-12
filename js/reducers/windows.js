@@ -1,13 +1,8 @@
 import { WINDOWS } from "../constants";
 import {
   SET_FOCUSED_WINDOW,
-  TOGGLE_MAIN_WINDOW,
-  TOGGLE_EQUALIZER_WINDOW,
-  CLOSE_EQUALIZER_WINDOW,
-  TOGGLE_PLAYLIST_WINDOW,
-  TOGGLE_GEN_WINDOW,
-  CLOSE_GEN_WINDOW,
-  OPEN_GEN_WINDOW,
+  TOGGLE_WINDOW,
+  CLOSE_WINDOW,
   ADD_GEN_WINDOW,
   UPDATE_WINDOW_POSITIONS,
   WINDOW_SIZE_CHANGED
@@ -15,12 +10,34 @@ import {
 
 const defaultWindowsState = {
   focused: WINDOWS.MAIN,
-  mainWindow: true,
-  equalizer: true,
-  playlist: true,
   genWindows: {
+    // TODO: Remove static capabilites and derive them from ids/generic
+    main: {
+      size: [0, 0],
+      open: true,
+      shade: false,
+      canResize: false,
+      canShade: true,
+      canDouble: true,
+      generic: false
+    },
+    equalizer: {
+      size: [0, 0],
+      open: true,
+      shade: false,
+      canResize: false,
+      canShade: true,
+      canDouble: true,
+      generic: false
+    },
     playlist: {
-      size: [0, 0]
+      size: [0, 0],
+      open: true,
+      shade: false,
+      canResize: true,
+      canShade: true,
+      canDouble: false,
+      generic: false
     }
   },
   positions: {}
@@ -30,15 +47,7 @@ const windows = (state = defaultWindowsState, action) => {
   switch (action.type) {
     case SET_FOCUSED_WINDOW:
       return { ...state, focused: action.window };
-    case TOGGLE_MAIN_WINDOW:
-      return { ...state, mainWindow: !state.mainWindow };
-    case TOGGLE_EQUALIZER_WINDOW:
-      return { ...state, equalizer: !state.equalizer };
-    case CLOSE_EQUALIZER_WINDOW:
-      return { ...state, equalizer: false };
-    case TOGGLE_PLAYLIST_WINDOW:
-      return { ...state, playlist: !state.playlist };
-    case TOGGLE_GEN_WINDOW:
+    case TOGGLE_WINDOW:
       return {
         ...state,
         genWindows: {
@@ -49,7 +58,7 @@ const windows = (state = defaultWindowsState, action) => {
           }
         }
       };
-    case CLOSE_GEN_WINDOW:
+    case CLOSE_WINDOW:
       return {
         ...state,
         genWindows: {
@@ -65,21 +74,25 @@ const windows = (state = defaultWindowsState, action) => {
         ...state,
         genWindows: {
           ...state.genWindows,
-          [action.windowId]: { title: action.title, open: true, size: [0, 0] }
-        }
-      };
-    case OPEN_GEN_WINDOW:
-      return {
-        ...state,
-        genWindows: {
-          ...state.genWindows,
           [action.windowId]: {
-            ...state.genWindows[action.windowId],
-            open: true
+            title: action.title,
+            open: true,
+            size: [0, 0],
+            canShade: false,
+            canResize: true,
+            canDouble: false,
+            generic: true
           }
         }
       };
     case WINDOW_SIZE_CHANGED:
+      const { canResize } = state.genWindows[action.windowId];
+      if (!canResize) {
+        throw new Error(
+          "Tried to resize a window that cannot be resized:",
+          action.windowId
+        );
+      }
       return {
         ...state,
         genWindows: {

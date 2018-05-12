@@ -125,7 +125,7 @@ export const nextTrack = (state, n = 1) => {
 
 const BASE_WINDOW_HEIGHT = 58;
 export const getNumberOfVisibleTracks = state => {
-  const playlistSize = getWindowSize(state, "playlist", state);
+  const playlistSize = getWindowSize(state, "playlist");
   return Math.floor(
     (BASE_WINDOW_HEIGHT + WINDOW_RESIZE_SEGMENT_HEIGHT * playlistSize[1]) /
       TRACK_HEIGHT
@@ -252,16 +252,20 @@ export function getWindowPositions(state) {
 }
 
 const WINDOW_HEIGHT = 116;
-const DEFAUT_WINDOW_SIZE = {
-  height: WINDOW_HEIGHT,
-  width: WINDOW_WIDTH
-};
 const SHADE_WINDOW_HEIGHT = 14;
 
-export function getWindowPixelSize([width, height]) {
-  return {
+// TODO: Clean this up.
+export function getWindowPixelSize(state, windowId) {
+  const w = state.windows.genWindows[windowId];
+  const [width, height] = w.size;
+  const doubledMultiplier = state.display.doubled && w.canDouble ? 2 : 1;
+  const pix = {
     height: WINDOW_HEIGHT + height * WINDOW_RESIZE_SEGMENT_HEIGHT,
     width: WINDOW_WIDTH + width * WINDOW_RESIZE_SEGMENT_WIDTH
+  };
+  return {
+    height: (w.shade ? SHADE_WINDOW_HEIGHT : pix.height) * doubledMultiplier,
+    width: pix.width * doubledMultiplier
   };
 }
 
@@ -270,34 +274,13 @@ export function getWindowSize(state, windowId) {
 }
 
 export function getPlaylistWindowPixelSize(state) {
-  return getWindowPixelSize(getWindowSize(state, "playlist"));
-}
-
-function getGenericWindowSize(size, shade, doubled) {
-  const doubledMultiplier = doubled ? 2 : 1;
-  return {
-    height: (shade ? SHADE_WINDOW_HEIGHT : size.height) * doubledMultiplier,
-    width: size.width * doubledMultiplier
-  };
+  return getWindowPixelSize(state, "playlist");
 }
 
 export function getWindowSizes(state) {
-  const { doubled, mainShade, equalizerShade, playlistShade } = state.display;
-  const main = getGenericWindowSize(DEFAUT_WINDOW_SIZE, mainShade, doubled);
-  const equalizer = getGenericWindowSize(
-    DEFAUT_WINDOW_SIZE,
-    equalizerShade,
-    doubled
-  );
-  const playlist = getGenericWindowSize(
-    getPlaylistWindowPixelSize(state),
-    playlistShade,
-    false // The playlist cannot be doubled
-  );
-  const genWindowSizes = objectMap(state.windows.genWindows, genWindow =>
-    getWindowPixelSize(genWindow.size)
-  );
-  return { main, equalizer, playlist, ...genWindowSizes };
+  return objectMap(state.windows.genWindows, (w, windowId) => {
+    return getWindowPixelSize(state, windowId);
+  });
 }
 
 export const getWindowsInfo = createSelector(

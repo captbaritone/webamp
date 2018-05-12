@@ -4,10 +4,7 @@ import Volume from "../Volume";
 import Balance from "../Balance";
 import { segment } from "../../utils";
 
-import {
-  closeEqualizerWindow,
-  toggleEqualizerShadeMode
-} from "../../actionCreators";
+import { closeWindow, toggleEqualizerShadeMode } from "../../actionCreators";
 
 const EqualizerShade = props => {
   const { volume, balance } = props;
@@ -30,7 +27,7 @@ const EqualizerShade = props => {
 };
 
 const mapDispatchToProps = {
-  closeEqualizerWindow,
+  closeWindow: () => closeWindow("equalizer"),
   toggleEqualizerShadeMode
 };
 
