@@ -64,9 +64,9 @@ import {
   TOGGLE_PLAYLIST_SHADE_MODE,
   MEDIA_TAG_REQUEST_INITIALIZED,
   MEDIA_TAG_REQUEST_FAILED,
-  PLAYLIST_SIZE_CHANGED,
   UPDATE_WINDOW_POSITIONS,
-  TOGGLE_DOUBLESIZE_MODE
+  TOGGLE_DOUBLESIZE_MODE,
+  WINDOW_SIZE_CHANGED
 } from "./actionTypes";
 
 import LoadQueue from "./loadQueue";
@@ -599,8 +599,8 @@ export function setPlaylistScrollPosition(position) {
   return { type: SET_PLAYLIST_SCROLL_POSITION, position };
 }
 
-export function setPlaylistSize(size) {
-  return { type: PLAYLIST_SIZE_CHANGED, size };
+export function setWindowSize(windowId, size) {
+  return { type: WINDOW_SIZE_CHANGED, windowId, size };
 }
 
 export function scrollNTracks(n) {

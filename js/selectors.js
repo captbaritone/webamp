@@ -125,7 +125,7 @@ export const nextTrack = (state, n = 1) => {
 
 const BASE_WINDOW_HEIGHT = 58;
 export const getNumberOfVisibleTracks = state => {
-  const { playlistSize } = state.display;
+  const playlistSize = getWindowSize(state, "playlist", state);
   return Math.floor(
     (BASE_WINDOW_HEIGHT + WINDOW_RESIZE_SEGMENT_HEIGHT * playlistSize[1]) /
       TRACK_HEIGHT
@@ -265,8 +265,12 @@ export function getWindowPixelSize([width, height]) {
   };
 }
 
+export function getWindowSize(state, windowId) {
+  return state.windows.genWindows[windowId].size;
+}
+
 export function getPlaylistWindowPixelSize(state) {
-  return getWindowPixelSize(state.display.playlistSize);
+  return getWindowPixelSize(getWindowSize(state, "playlist"));
 }
 
 function getGenericWindowSize(size, shade, doubled) {

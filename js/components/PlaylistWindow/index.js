@@ -12,7 +12,11 @@ import {
   togglePlaylistShadeMode,
   scrollVolume
 } from "../../actionCreators";
-import { getScrollOffset, getPlaylistWindowPixelSize } from "../../selectors";
+import {
+  getScrollOffset,
+  getPlaylistWindowPixelSize,
+  getWindowSize
+} from "../../selectors";
 
 import { clamp } from "../../utils";
 import DropTarget from "../DropTarget";
@@ -162,7 +166,7 @@ const mapDispatchToProps = {
 const mapStateToProps = state => {
   const {
     windows: { focused },
-    display: { skinPlaylistStyle, playlistSize, playlistShade },
+    display: { skinPlaylistStyle, playlistShade },
     media: { duration },
     playlist: { trackOrder }
   } = state;
@@ -173,7 +177,7 @@ const mapStateToProps = state => {
     playlistWindowPixelSize: getPlaylistWindowPixelSize(state),
     focused,
     skinPlaylistStyle,
-    playlistSize,
+    playlistSize: getWindowSize(state, "playlist"),
     playlistShade,
     duration
   };
