@@ -45,7 +45,6 @@ import {
   SET_EQ_ON,
   SET_EQ_OFF,
   TOGGLE_EQUALIZER_SHADE_MODE,
-  CLOSE_EQUALIZER_WINDOW,
   REMOVE_TRACKS,
   REMOVE_ALL_TRACKS,
   PLAY,
@@ -66,7 +65,9 @@ import {
   MEDIA_TAG_REQUEST_FAILED,
   UPDATE_WINDOW_POSITIONS,
   TOGGLE_DOUBLESIZE_MODE,
-  WINDOW_SIZE_CHANGED
+  WINDOW_SIZE_CHANGED,
+  TOGGLE_WINDOW,
+  CLOSE_WINDOW
 } from "./actionTypes";
 
 import LoadQueue from "./loadQueue";
@@ -537,8 +538,8 @@ export function togglePlaylistShadeMode() {
   return withWindowGraphIntegrity({ type: TOGGLE_PLAYLIST_SHADE_MODE });
 }
 
-export function closeEqualizerWindow() {
-  return { type: CLOSE_EQUALIZER_WINDOW };
+export function closeWindow(windowId) {
+  return { type: CLOSE_WINDOW, windowId };
 }
 
 export function cropPlaylist() {
@@ -601,6 +602,10 @@ export function setPlaylistScrollPosition(position) {
 
 export function setWindowSize(windowId, size) {
   return { type: WINDOW_SIZE_CHANGED, windowId, size };
+}
+
+export function toggleWindow(windowId) {
+  return { type: TOGGLE_WINDOW, windowId };
 }
 
 export function scrollNTracks(n) {

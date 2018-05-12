@@ -1,9 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
-import { getOrderedTracks, getMinimalMediaText } from "../../selectors";
+import {
+  getOrderedTracks,
+  getMinimalMediaText,
+  getWindowSize
+} from "../../selectors";
 import { getTimeStr } from "../../utils";
-import { TOGGLE_PLAYLIST_WINDOW, SET_FOCUSED_WINDOW } from "../../actionTypes";
+import { SET_FOCUSED_WINDOW } from "../../actionTypes";
 
 import {
   WINDOWS,
@@ -12,7 +16,7 @@ import {
   CHARACTER_WIDTH,
   UTF8_ELLIPSIS
 } from "../../constants";
-import { togglePlaylistShadeMode } from "../../actionCreators";
+import { togglePlaylistShadeMode, closeWindow } from "../../actionCreators";
 import CharacterString from "../CharacterString";
 import PlaylistResizeTarget from "./PlaylistResizeTarget";
 
@@ -79,20 +83,20 @@ class PlaylistShade extends React.Component {
 const mapDispatchToProps = dispatch => ({
   focusPlaylist: () =>
     dispatch({ type: SET_FOCUSED_WINDOW, window: WINDOWS.PLAYLIST }),
-  close: () => dispatch({ type: TOGGLE_PLAYLIST_WINDOW }),
+  close: () => closeWindow("playlist"),
   toggleShade: () => dispatch(togglePlaylistShadeMode())
 });
 
 const mapStateToProps = state => {
   const {
     windows: { focused },
-    display: { skinPlaylistStyle, playlistSize, playlistShade },
+    display: { skinPlaylistStyle, playlistShade },
     media: { length }
   } = state;
   return {
     focused,
     skinPlaylistStyle,
-    playlistSize,
+    playlistSize: getWindowSize(state, "playlist"),
     playlistShade,
     trackOrder: getOrderedTracks(state),
     length,

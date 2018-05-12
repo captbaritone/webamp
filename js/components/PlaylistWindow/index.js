@@ -3,14 +3,15 @@ import { connect } from "react-redux";
 import classnames from "classnames";
 
 import { WINDOWS, TRACK_HEIGHT } from "../../constants";
-import { TOGGLE_PLAYLIST_WINDOW, SET_FOCUSED_WINDOW } from "../../actionTypes";
+import { SET_FOCUSED_WINDOW } from "../../actionTypes";
 import {
   toggleVisualizerStyle,
   scrollUpFourTracks,
   scrollDownFourTracks,
   loadFilesFromReferences,
   togglePlaylistShadeMode,
-  scrollVolume
+  scrollVolume,
+  closeWindow
 } from "../../actionCreators";
 import {
   getScrollOffset,
@@ -152,7 +153,7 @@ const mapDispatchToProps = {
     type: SET_FOCUSED_WINDOW,
     window: WINDOWS.PLAYLIST
   }),
-  close: () => ({ type: TOGGLE_PLAYLIST_WINDOW }),
+  close: () => closeWindow("playlist"),
   toggleShade: togglePlaylistShadeMode,
   toggleVisualizerStyle,
   scrollUpFourTracks,

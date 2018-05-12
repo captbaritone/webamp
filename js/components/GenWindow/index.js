@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import "../../../css/gen-window.css";
 
-import { SET_FOCUSED_WINDOW, CLOSE_GEN_WINDOW } from "../../actionTypes";
-import { scrollVolume, setWindowSize } from "../../actionCreators";
+import { SET_FOCUSED_WINDOW } from "../../actionTypes";
+import { scrollVolume, setWindowSize, closeWindow } from "../../actionCreators";
 import { getWindowPixelSize } from "../../selectors";
 import ResizeTarget from "../ResizeTarget";
 
@@ -34,9 +34,10 @@ export const GenWindow = ({
   windowId,
   windowSize,
   setGenWindowSize,
-  scrollVolume: handleWheel
+  scrollVolume: handleWheel,
+  width,
+  height
 }) => {
-  const { width, height } = getWindowPixelSize(windowSize);
   return (
     <div
       className={classnames("gen-window", "window", { selected })}
@@ -93,14 +94,19 @@ GenWindow.propTypes = {
   selected: PropTypes.bool.isRequired
 };
 
-const mapStateToProps = (state, ownProps) => ({
-  selected: state.windows.focused === ownProps.windowId,
-  windowSize: state.windows.genWindows[ownProps.windowId].size
-});
+const mapStateToProps = (state, ownProps) => {
+  const { width, height } = getWindowPixelSize(state, ownProps.windowId);
+  return {
+    width,
+    height,
+    selected: state.windows.focused === ownProps.windowId,
+    windowSize: state.windows.genWindows[ownProps.windowId].size
+  };
+};
 
 const mapDispatchToProps = {
   setFocus: windowId => ({ type: SET_FOCUSED_WINDOW, window: windowId }),
-  close: windowId => ({ type: CLOSE_GEN_WINDOW, windowId }),
+  close: windowId => closeWindow(windowId),
   setGenWindowSize: setWindowSize,
   scrollVolume
 };

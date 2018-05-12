@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
 
-import { TOGGLE_PLAYLIST_WINDOW } from "../../actionTypes";
+import { toggleWindow } from "../../actionCreators";
 
 const PlaylistToggleButton = props => (
   <div
@@ -18,7 +18,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  handleClick: () => ({ type: TOGGLE_PLAYLIST_WINDOW })
+  handleClick: () => toggleWindow("playlist")
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(

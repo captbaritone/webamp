@@ -3,14 +3,9 @@ import { connect } from "react-redux";
 import {
   close,
   openMediaFileDialog,
-  loadMediaFiles
+  loadMediaFiles,
+  toggleWindow
 } from "../../actionCreators";
-import {
-  TOGGLE_MAIN_WINDOW,
-  TOGGLE_EQUALIZER_WINDOW,
-  TOGGLE_PLAYLIST_WINDOW,
-  TOGGLE_GEN_WINDOW
-} from "../../actionTypes";
 import { getGenWindows } from "../../selectors";
 import { LOAD_STYLE } from "../../constants";
 import { Hr, Node, Parent, LinkNode } from "../ContextMenu";
@@ -97,10 +92,10 @@ const mapDispatchToProps = {
   close,
   openMediaFileDialog,
   loadMediaFiles,
-  toggleMainWindow: () => ({ type: TOGGLE_MAIN_WINDOW }),
-  togglePlaylist: () => ({ type: TOGGLE_PLAYLIST_WINDOW }),
-  toggleEqualizer: () => ({ type: TOGGLE_EQUALIZER_WINDOW }),
-  toggleGenWindow: windowId => ({ type: TOGGLE_GEN_WINDOW, windowId })
+  toggleMainWindow: () => toggleWindow("main"),
+  togglePlaylist: () => toggleWindow("playlist"),
+  toggleEqualizer: () => toggleWindow("equalizer"),
+  toggleGenWindow: toggleWindow
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainContextMenu);
