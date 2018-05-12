@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
 
+import { getWindowOpen } from "../../selectors";
 import { toggleWindow } from "../../actionCreators";
 
 const EqToggleButton = props => (
@@ -14,7 +15,7 @@ const EqToggleButton = props => (
 );
 
 const mapStateToProps = state => ({
-  equalizer: state.windows.equalizer
+  equalizer: getWindowOpen(state, "equalizer")
 });
 
 const mapDispatchToProps = {

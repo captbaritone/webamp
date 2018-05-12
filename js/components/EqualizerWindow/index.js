@@ -16,6 +16,7 @@ import {
 } from "../../actionCreators";
 
 import { SET_FOCUSED_WINDOW } from "../../actionTypes";
+import { getWindowShade } from "../../selectors";
 
 import Band from "./Band";
 import EqOn from "./EqOn";
@@ -104,7 +105,7 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = state => ({
   doubled: state.display.doubled,
   selected: state.windows.focused === WINDOWS.EQUALIZER,
-  shade: state.display.equalizerShade
+  shade: getWindowShade(state, "equalizer")
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EqualizerWindow);

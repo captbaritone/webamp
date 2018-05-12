@@ -5,7 +5,8 @@ import {
   CLOSE_WINDOW,
   ADD_GEN_WINDOW,
   UPDATE_WINDOW_POSITIONS,
-  WINDOW_SIZE_CHANGED
+  WINDOW_SIZE_CHANGED,
+  TOGGLE_WINDOW_SHADE_MODE
 } from "../actionTypes";
 
 const defaultWindowsState = {
@@ -47,6 +48,24 @@ const windows = (state = defaultWindowsState, action) => {
   switch (action.type) {
     case SET_FOCUSED_WINDOW:
       return { ...state, focused: action.window };
+    case TOGGLE_WINDOW_SHADE_MODE:
+      const { canShade } = state.genWindows[action.windowId];
+      if (!canShade) {
+        throw new Error(
+          "Tried to shade/unshade a window that cannot be shaded:",
+          action.windowId
+        );
+      }
+      return {
+        ...state,
+        genWindows: {
+          ...state.genWindows,
+          [action.windowId]: {
+            ...state.genWindows[action.windowId],
+            shade: !state.genWindows[action.windowId].shade
+          }
+        }
+      };
     case TOGGLE_WINDOW:
       return {
         ...state,

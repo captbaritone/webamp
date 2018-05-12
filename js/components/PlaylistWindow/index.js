@@ -15,8 +15,9 @@ import {
 } from "../../actionCreators";
 import {
   getScrollOffset,
-  getPlaylistWindowPixelSize,
-  getWindowSize
+  getWindowPixelSize,
+  getWindowSize,
+  getWindowShade
 } from "../../selectors";
 
 import { clamp } from "../../utils";
@@ -89,10 +90,7 @@ class PlaylistWindow extends React.Component {
         handleDrop={this._handleDrop}
         onWheel={this.props.scrollVolume}
       >
-        <div
-          className="playlist-top draggable"
-          onDoubleClick={this.props.togglePlaylistShadeMode}
-        >
+        <div className="playlist-top draggable" onDoubleClick={toggleShade}>
           <div className="playlist-top-left draggable" />
           {showSpacers && (
             <div className="playlist-top-left-spacer draggable" />
@@ -160,14 +158,13 @@ const mapDispatchToProps = {
   scrollDownFourTracks,
   loadFilesFromReferences: (e, startIndex) =>
     loadFilesFromReferences(e.dataTransfer.files, null, startIndex),
-  togglePlaylistShadeMode,
   scrollVolume
 };
 
 const mapStateToProps = state => {
   const {
     windows: { focused },
-    display: { skinPlaylistStyle, playlistShade },
+    display: { skinPlaylistStyle },
     media: { duration },
     playlist: { trackOrder }
   } = state;
@@ -175,11 +172,11 @@ const mapStateToProps = state => {
   return {
     offset: getScrollOffset(state),
     maxTrackIndex: trackOrder.length - 1,
-    playlistWindowPixelSize: getPlaylistWindowPixelSize(state),
+    playlistWindowPixelSize: getWindowPixelSize(state, "playlist"),
     focused,
     skinPlaylistStyle,
     playlistSize: getWindowSize(state, "playlist"),
-    playlistShade,
+    playlistShade: getWindowShade(state, "playlist"),
     duration
   };
 };

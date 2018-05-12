@@ -9,6 +9,7 @@ import {
   toggleMainWindowShadeMode,
   scrollVolume
 } from "../../actionCreators";
+import { getWindowShade } from "../../selectors";
 
 import DropTarget from "../DropTarget";
 import MiniTime from "../MiniTime";
@@ -147,10 +148,18 @@ export class MainWindow extends React.Component {
 const mapStateToProps = state => {
   const {
     media: { status },
-    display: { loading, doubled, mainShade, llama, working },
+    display: { loading, doubled, llama, working },
     windows: { focused }
   } = state;
-  return { status, loading, doubled, mainShade, llama, working, focused };
+  return {
+    mainShade: getWindowShade(state, "main"),
+    status,
+    loading,
+    doubled,
+    llama,
+    working,
+    focused
+  };
 };
 
 const mapDispatchToProps = {

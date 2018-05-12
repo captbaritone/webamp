@@ -6,9 +6,6 @@ import {
   STOP_WORKING,
   TOGGLE_DOUBLESIZE_MODE,
   TOGGLE_LLAMA_MODE,
-  TOGGLE_MAIN_SHADE_MODE,
-  TOGGLE_EQUALIZER_SHADE_MODE,
-  TOGGLE_PLAYLIST_SHADE_MODE,
   TOGGLE_VISUALIZER_STYLE,
   SET_PLAYLIST_SCROLL_POSITION
 } from "../actionTypes";
@@ -19,9 +16,6 @@ const defaultDisplayState = {
   loading: true,
   llama: false,
   closed: false,
-  mainShade: false,
-  equalizerShade: false,
-  playlistShade: false,
   working: false,
   skinImages: {},
   skinColors: null,
@@ -36,12 +30,6 @@ const display = (state = defaultDisplayState, action) => {
   switch (action.type) {
     case TOGGLE_DOUBLESIZE_MODE:
       return { ...state, doubled: !state.doubled };
-    case TOGGLE_MAIN_SHADE_MODE:
-      return { ...state, mainShade: !state.mainShade };
-    case TOGGLE_EQUALIZER_SHADE_MODE:
-      return { ...state, equalizerShade: !state.equalizerShade };
-    case TOGGLE_PLAYLIST_SHADE_MODE:
-      return { ...state, playlistShade: !state.playlistShade };
     case TOGGLE_LLAMA_MODE:
       return { ...state, llama: !state.llama };
     case STEP_MARQUEE:
