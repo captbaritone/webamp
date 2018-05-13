@@ -113,7 +113,7 @@ Raven.context(() => {
   }
   const __extraWindows = [];
   if (milkdrop && isButterchurnSupported()) {
-    __extraWindows.push({ title: "Milkdrop 2", Component: MilkdropWindow });
+    __extraWindows.push({ title: "Milkdrop", Component: MilkdropWindow });
   }
 
   const webamp = new Webamp({
