@@ -19,7 +19,6 @@ import {
   SET_BALANCE,
   SET_BAND_VALUE
 } from "./actionTypes";
-import analyticsMiddleware from "./analyticsMiddleware";
 
 import {
   hideAbout,
@@ -147,7 +146,7 @@ Raven.context(() => {
     enableHotkeys: true,
     __extraWindows,
     __initialState: initialState,
-    __customMiddlewares: [analyticsMiddleware, ravenMiddleware]
+    __customMiddlewares: [ravenMiddleware]
   });
 
   webamp.renderWhenReady(document.getElementById("app"));

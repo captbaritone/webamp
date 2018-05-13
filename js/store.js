@@ -5,7 +5,6 @@ import reducer from "./reducers";
 import mediaMiddleware from "./mediaMiddleware";
 import { merge } from "./utils";
 import { UPDATE_TIME_ELAPSED, STEP_MARQUEE } from "./actionTypes";
-import analyticsMiddleware from "./analyticsMiddleware";
 
 const compose = composeWithDevTools({
   actionsBlacklist: [UPDATE_TIME_ELAPSED, STEP_MARQUEE]
@@ -40,8 +39,7 @@ const getStore = (
           thunk,
           mediaMiddleware(media),
           emitterMiddleware,
-          ...customMiddlewares,
-          analyticsMiddleware
+          ...customMiddlewares
         ].filter(Boolean)
       )
     )
