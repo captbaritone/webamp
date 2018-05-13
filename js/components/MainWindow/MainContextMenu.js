@@ -43,30 +43,13 @@ const MainContextMenu = props => (
         )}
     </Parent>
     <Hr />
-    <Node
-      label="Main Window"
-      checked={props.mainWindowOpen}
-      onClick={props.toggleMainWindow}
-      hotkey="Alt+W"
-    />
-    <Node
-      label="Playlist Editor"
-      checked={props.playlistOpen}
-      onClick={props.togglePlaylist}
-      hotkey="Alt+E"
-    />
-    <Node
-      label="Equalizer"
-      checked={props.equalizerOpen}
-      onClick={props.toggleEqualizer}
-      hotkey="Alt+G"
-    />
     {Object.keys(props.genWindows).map(i => (
       <Node
         key={i}
         label={props.genWindows[i].title}
         checked={props.genWindows[i].open}
         onClick={() => props.toggleGenWindow(i)}
+        hotKey={() => props.genWindows[i].hotkey}
       />
     ))}
     <Hr />
@@ -82,9 +65,6 @@ const MainContextMenu = props => (
 
 const mapStateToProps = state => ({
   networkConnected: state.network.connected,
-  mainWindowOpen: state.windows.mainWindow, // For now you can't close the main window without closing all of Webamp
-  playlistOpen: state.windows.playlist,
-  equalizerOpen: state.windows.equalizer,
   genWindows: getGenWindows(state)
 });
 
@@ -92,9 +72,6 @@ const mapDispatchToProps = {
   close,
   openMediaFileDialog,
   loadMediaFiles,
-  toggleMainWindow: () => toggleWindow("main"),
-  togglePlaylist: () => toggleWindow("playlist"),
-  toggleEqualizer: () => toggleWindow("equalizer"),
   toggleGenWindow: toggleWindow
 };
 
