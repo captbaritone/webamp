@@ -26,32 +26,31 @@ const App = ({
   }
 
   const windows = objectMap(genWindowsInfo, (w, id) => {
+    if (!w.open) {
+      return null;
+    }
     switch (id) {
       case "main":
-        return (
-          w.open && <MainWindow mediaPlayer={media} filePickers={filePickers} />
-        );
+        return <MainWindow mediaPlayer={media} filePickers={filePickers} />;
       case "equalizer":
-        return w.open && <EqualizerWindow />;
+        return <EqualizerWindow />;
       case "playlist":
-        return w.open && <PlaylistWindow />;
+        return <PlaylistWindow />;
       default:
         if (!w.generic) {
           throw new Error("Tried to render an unknown window:", id);
         }
         const Component = genWindowComponents[id];
         return (
-          w.open && (
-            <GenWindow title={w.title} windowId={id}>
-              {({ height, width }) => (
-                <Component
-                  analyser={media._analyser}
-                  width={width}
-                  height={height}
-                />
-              )}
-            </GenWindow>
-          )
+          <GenWindow title={w.title} windowId={id}>
+            {({ height, width }) => (
+              <Component
+                analyser={media._analyser}
+                width={width}
+                height={height}
+              />
+            )}
+          </GenWindow>
         );
     }
   });
