@@ -14,31 +14,37 @@ const defaultWindowsState = {
   genWindows: {
     // TODO: Remove static capabilites and derive them from ids/generic
     main: {
+      title: "Main Window",
       size: [0, 0],
       open: true,
       shade: false,
       canResize: false,
       canShade: true,
       canDouble: true,
-      generic: false
+      generic: false,
+      hotkey: "Alt+W"
     },
     equalizer: {
+      title: "Equalizer",
       size: [0, 0],
       open: true,
       shade: false,
       canResize: false,
       canShade: true,
       canDouble: true,
-      generic: false
+      generic: false,
+      hotkey: "Alt+G"
     },
     playlist: {
+      title: "Playlist Editor",
       size: [0, 0],
       open: true,
       shade: false,
       canResize: true,
       canShade: true,
       canDouble: false,
-      generic: false
+      generic: false,
+      hotkey: "Alt+E"
     }
   },
   positions: {}
