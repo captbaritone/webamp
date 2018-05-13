@@ -19,17 +19,11 @@ const App = ({
   genWindowsInfo,
   container,
   filePickers,
-  genWindows = []
+  genWindowComponents
 }) => {
   if (closed) {
     return null;
   }
-
-  // Index genWindows by id
-  const genWindowComponents = genWindows.reduce(
-    (comps, gen) => ({ ...comps, [gen.id]: gen }),
-    {}
-  );
 
   const windows = objectMap(genWindowsInfo, (w, id) => {
     switch (id) {
@@ -45,10 +39,10 @@ const App = ({
         if (!w.generic) {
           throw new Error("Tried to render an unknown window:", id);
         }
-        const { Component, title } = genWindowComponents[id];
+        const Component = genWindowComponents[id];
         return (
           w.open && (
-            <GenWindow title={title} windowId={id}>
+            <GenWindow title={w.title} windowId={id}>
               {({ height, width }) => (
                 <Component
                   analyser={media._analyser}
@@ -80,8 +74,6 @@ App.propTypes = {
 
 const mapStateToProps = state => ({
   closed: state.display.closed,
-  mainWindow: state.windows.mainWindow,
-  equalizer: state.windows.equalizer,
   genWindowsInfo: state.windows.genWindows
 });
 
