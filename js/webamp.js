@@ -135,13 +135,18 @@ class Winamp {
     // Wait for the skin to load.
     await storeHas(this.store, state => !state.display.loading);
 
+    const genWindowComponents = {};
+    this.genWindows.forEach(w => {
+      genWindowComponents[w.id] = w.Component;
+    });
+
     render(
       <Provider store={this.store}>
         <App
           media={this.media}
           container={this.options.container}
           filePickers={this.options.filePickers}
-          genWindows={this.genWindows}
+          genWindowComponents={genWindowComponents}
         />
       </Provider>,
       node
