@@ -1,4 +1,3 @@
-import skin from "../skins/base-2.91-png.wsz";
 // eslint-disable-next-line no-unused-vars
 import llamaAudio from "../mp3/llama-2.91.mp3";
 
@@ -20,7 +19,6 @@ if (config.audioUrl && !config.initialTracks) {
 }
 
 // Turn on the incomplete playlist window
-export const skinUrl = config.skinUrl === undefined ? skin : config.skinUrl;
 export const initialTracks = config.initialTracks || [
   {
     metaData: { artist: "DJ Mike Llama", title: "Llama Whippin' Intro" },

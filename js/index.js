@@ -22,7 +22,6 @@ import {
 
 import {
   hideAbout,
-  skinUrl,
   initialTracks,
   initialState,
   sentryDsn,
@@ -128,9 +127,6 @@ Raven.context(() => {
   }
 
   const webamp = new Webamp({
-    initialSkin: {
-      url: skinUrl
-    },
     initialTracks,
     availableSkins: [
       { url: base, name: "<Base Skin>" },

@@ -90,12 +90,10 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = state => {
   const {
     windows: { focused },
-    display: { skinPlaylistStyle },
     media: { length }
   } = state;
   return {
     focused,
-    skinPlaylistStyle,
     playlistSize: getWindowSize(state, "playlist"),
     trackOrder: getOrderedTracks(state),
     length,
