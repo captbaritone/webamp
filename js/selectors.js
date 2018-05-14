@@ -309,3 +309,15 @@ export const getWindowsInfo = createSelector(
 );
 
 export const getWindowGraph = createSelector(getWindowsInfo, generateGraph);
+
+export const getSkinPlaylistStyle = state => {
+  return (
+    state.display.skinPlaylistStyle || {
+      normal: "#00FF00",
+      current: "#FFFFFF",
+      normalbg: "#000000",
+      selectedbg: "#0000C6",
+      font: "Arial"
+    }
+  );
+};

@@ -7,7 +7,7 @@ import {
   SHIFT_CLICKED_TRACK,
   PLAY_TRACK
 } from "../../actionTypes";
-import { getCurrentTrackId } from "../../selectors";
+import { getCurrentTrackId, getSkinPlaylistStyle } from "../../selectors";
 
 class TrackCell extends React.Component {
   constructor(props) {
@@ -60,12 +60,15 @@ class TrackCell extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   const {
-    display: { skinPlaylistStyle },
     playlist: { tracks }
   } = state;
   const current = getCurrentTrackId(state) === ownProps.id;
   const track = tracks[ownProps.id];
-  return { skinPlaylistStyle, selected: track.selected, current };
+  return {
+    skinPlaylistStyle: getSkinPlaylistStyle(state),
+    selected: track.selected,
+    current
+  };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

@@ -12,6 +12,8 @@
     <meta property="og:url" content="https://webamp.org" />
     <meta property="og:image" content="https://webamp.org<%= require('./images/preview.png') %>" />
     <link rel='stylesheet' type='text/css' href="<%= require('!file-loader?name=[path][name]-[hash].[ext]!./css/page.css') %>" />
+    <!-- Some fancy attributes here to ensure we don't block rendering the page -->
+    <link rel='preload' type='text/css' href="<%= require('!file-loader?name=[path][name]-[hash].[ext]!./css/base-skin.css') %>" as="style" onload="this.onload=null;this.rel='stylesheet'"/>
     <link rel="shortcut icon" sizes="16x16 32x32" href="<%= require('./images/favicon.ico') %>">
 
     <!-- See https://goo.gl/OOhYW5 -->

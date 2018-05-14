@@ -13,14 +13,14 @@ import {
 const defaultDisplayState = {
   doubled: false,
   marqueeStep: 0,
-  loading: true,
+  loading: false,
   llama: false,
   closed: false,
   working: false,
   skinImages: {},
   skinColors: null,
   skinCursors: null,
-  skinPlaylistStyle: {},
+  skinPlaylistStyle: null,
   skinRegion: {},
   visualizerStyle: 2,
   playlistScrollPosition: 0

@@ -17,7 +17,8 @@ import {
   getScrollOffset,
   getWindowPixelSize,
   getWindowSize,
-  getWindowShade
+  getWindowShade,
+  getSkinPlaylistStyle
 } from "../../selectors";
 
 import { clamp } from "../../utils";
@@ -164,7 +165,6 @@ const mapDispatchToProps = {
 const mapStateToProps = state => {
   const {
     windows: { focused },
-    display: { skinPlaylistStyle },
     media: { duration },
     playlist: { trackOrder }
   } = state;
@@ -174,7 +174,7 @@ const mapStateToProps = state => {
     maxTrackIndex: trackOrder.length - 1,
     playlistWindowPixelSize: getWindowPixelSize(state, "playlist"),
     focused,
-    skinPlaylistStyle,
+    skinPlaylistStyle: getSkinPlaylistStyle(state),
     playlistSize: getWindowSize(state, "playlist"),
     playlistShade: getWindowShade(state, "playlist"),
     duration

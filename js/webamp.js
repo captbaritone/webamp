@@ -96,7 +96,7 @@ class Winamp {
       this.store.dispatch({ type: NETWORK_DISCONNECTED })
     );
 
-    this.store.dispatch(setSkinFromUrl(this.options.initialSkin.url));
+    //this.store.dispatch(setSkinFromUrl(this.options.initialSkin.url));
 
     if (initialTracks) {
       this.appendTracks(initialTracks);
@@ -150,7 +150,7 @@ class Winamp {
 
   async renderWhenReady(node) {
     // Wait for the skin to load.
-    await storeHas(this.store, state => !state.display.loading);
+    //await storeHas(this.store, state => !state.display.loading);
 
     const genWindowComponents = {};
     this.genWindows.forEach(w => {
