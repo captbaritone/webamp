@@ -1,4 +1,4 @@
-import skin from "../skins/base-2.91-png.wsz";
+import skin from "!url-loader?limit=0!../skins/base-2.91-png.wsz";
 // eslint-disable-next-line no-unused-vars
 import llamaAudio from "../mp3/llama-2.91.mp3";
 
