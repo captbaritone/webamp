@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import screenfull from "screenfull";
 
 const PRESET_TRANSITION_SECONDS = 2.7;
@@ -27,7 +28,14 @@ class MilkdropWindow extends React.Component {
         );
         this.visualizer.connectAudio(analyserNode);
         this.visualizer.loadPreset(reactionDiffusion2, 0);
-        this._renderViz();
+        // Kick off the animation loop
+        const loop = () => {
+          if (this.props.status === "PLAYING") {
+            this.visualizer.render();
+          }
+          window.requestAnimationFrame(loop);
+        };
+        loop();
       },
       e => {
         console.error("Error loading Butterchurn", e);
@@ -67,10 +75,6 @@ class MilkdropWindow extends React.Component {
     ) {
       this._setRendererSize(this.props.width, this.props.height);
     }
-  }
-  _renderViz() {
-    this.animationFrameRequest = requestAnimationFrame(() => this._renderViz());
-    this.visualizer.render();
   }
   _pauseViz() {
     if (this.animationFrameRequest) {
@@ -125,4 +129,8 @@ class MilkdropWindow extends React.Component {
   }
 }
 
-export default MilkdropWindow;
+const mapStateToProps = state => ({
+  status: state.media.status
+});
+
+export default connect(mapStateToProps)(MilkdropWindow);
