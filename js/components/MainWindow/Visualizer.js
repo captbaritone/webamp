@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { toggleVisualizerStyle } from "../../actionCreators";
+import { getWindowShade } from "../../selectors";
 
 const OSCILLOSCOPE = 1;
 const BAR = 2;
@@ -239,10 +240,10 @@ class Visualizer extends React.Component {
 const mapStateToProps = state => ({
   colors: state.display.skinColors,
   style: state.display.visualizerStyle,
-  width: state.display.mainShade ? 38 : 76,
-  height: state.display.mainShade ? 5 : 16,
+  width: getWindowShade(state, "main") ? 38 : 76,
+  height: getWindowShade(state, "main") ? 5 : 16,
   status: state.media.status,
-  spekles: !state.display.mainShade
+  spekles: !getWindowShade(state, "main")
 });
 
 const mapDispatchToProps = {
