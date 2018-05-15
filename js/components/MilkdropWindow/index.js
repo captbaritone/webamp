@@ -28,22 +28,33 @@ class MilkdropWindow extends React.Component {
         this.visualizer.connectAudio(analyserNode);
         this.visualizer.loadPreset(reactionDiffusion2, 0);
         this._renderViz();
-      }
+      },
+      e => {
+        console.error("Error loading Butterchurn", e);
+      },
+      "butterchurn"
     );
 
-    require.ensure(["butterchurn-presets"], require => {
-      const butterchurnPresets = require("butterchurn-presets");
-      const presets = butterchurnPresets.getPresets();
-      const presetKeys = Object.keys(presets);
-      this.cycleInterval = setInterval(() => {
-        const presetIdx = Math.floor(presetKeys.length * Math.random());
-        const preset = presets[presetKeys[presetIdx]];
-        // The visualizer may not have initialized yet.
-        if (this.visualizer != null) {
-          this.visualizer.loadPreset(preset, PRESET_TRANSITION_SECONDS);
-        }
-      }, MILLISECONDS_BETWEEN_PRESET_TRANSITIONS);
-    });
+    require.ensure(
+      ["butterchurn-presets"],
+      require => {
+        const butterchurnPresets = require("butterchurn-presets");
+        const presets = butterchurnPresets.getPresets();
+        const presetKeys = Object.keys(presets);
+        this.cycleInterval = setInterval(() => {
+          const presetIdx = Math.floor(presetKeys.length * Math.random());
+          const preset = presets[presetKeys[presetIdx]];
+          // The visualizer may not have initialized yet.
+          if (this.visualizer != null) {
+            this.visualizer.loadPreset(preset, PRESET_TRANSITION_SECONDS);
+          }
+        }, MILLISECONDS_BETWEEN_PRESET_TRANSITIONS);
+      },
+      e => {
+        console.error("Error loading Butterchurn presets", e);
+      },
+      "butterchurn-presets"
+    );
   }
   componentWillUnmount() {
     this._pauseViz();

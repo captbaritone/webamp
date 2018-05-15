@@ -9,9 +9,16 @@ import { parseViscolors, parseIni, getFileExtension } from "./utils";
 
 const getJSZip = () => {
   return new Promise(resolve => {
-    require.ensure("../node_modules/jszip/dist/jszip", require => {
-      resolve(require("../node_modules/jszip/dist/jszip"));
-    });
+    require.ensure(
+      "../node_modules/jszip/dist/jszip",
+      require => {
+        resolve(require("../node_modules/jszip/dist/jszip"));
+      },
+      e => {
+        console.error("Error loading JSZip", e);
+      },
+      "jszip"
+    );
   });
 };
 
