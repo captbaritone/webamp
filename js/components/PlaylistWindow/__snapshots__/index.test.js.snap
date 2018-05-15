@@ -12,9 +12,9 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
   onWheel={[Function]}
   style={
     Object {
-      "backgroundColor": undefined,
-      "color": undefined,
-      "fontFamily": "undefined, Arial, sans-serif",
+      "backgroundColor": "#000000",
+      "color": "#00FF00",
+      "fontFamily": "Arial, Arial, sans-serif",
       "height": "116px",
       "width": "275px",
     }
