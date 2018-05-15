@@ -2,6 +2,8 @@ import React from "react";
 import { Provider } from "react-redux";
 import renderer from "react-test-renderer";
 import getStore from "../../store";
+import { SET_SKIN_DATA } from "../../actionTypes";
+import Emitter from "../../emitter";
 
 import MainWindow from "./index";
 
@@ -27,7 +29,8 @@ function createNodeMock(element) {
 describe("MainWindow", () => {
   let store;
   beforeEach(() => {
-    store = getStore(media);
+    store = getStore(media, new Emitter());
+    store.dispatch({ type: SET_SKIN_DATA });
   });
 
   it("renders to snapshot", () => {
