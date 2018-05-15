@@ -43,10 +43,7 @@ const display = (state = defaultDisplayState, action) => {
     case CLOSE_WINAMP:
       return { ...state, closed: true };
     case LOADED:
-      return {
-        ...state,
-        loading: false
-      };
+      return { ...state, loading: false };
     case SET_SKIN_DATA:
       return {
         ...state,
