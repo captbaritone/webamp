@@ -22,9 +22,12 @@ import {
   CLOSE_WINAMP,
   MINIMIZE_WINAMP,
   ADD_GEN_WINDOW,
-  UPDATE_WINDOW_POSITIONS
+  UPDATE_WINDOW_POSITIONS,
+  LOADED
 } from "./actionTypes";
 import Emitter from "./emitter";
+
+import "../css/base-skin.min.css";
 
 // Return a promise that resolves when the store matches a predicate.
 const storeHas = (store, predicate) =>
@@ -56,6 +59,7 @@ class Winamp {
     this.options = options;
     const {
       initialTracks,
+      initialSkin,
       avaliableSkins, // Old misspelled name
       availableSkins,
       enableHotkeys = false,
@@ -96,7 +100,11 @@ class Winamp {
       this.store.dispatch({ type: NETWORK_DISCONNECTED })
     );
 
-    //this.store.dispatch(setSkinFromUrl(this.options.initialSkin.url));
+    if (initialSkin) {
+      this.store.dispatch(setSkinFromUrl(initialSkin.url));
+    } else {
+      this.store.dispatch({ type: LOADED });
+    }
 
     if (initialTracks) {
       this.appendTracks(initialTracks);
@@ -150,7 +158,7 @@ class Winamp {
 
   async renderWhenReady(node) {
     // Wait for the skin to load.
-    //await storeHas(this.store, state => !state.display.loading);
+    await storeHas(this.store, state => !state.display.loading);
 
     const genWindowComponents = {};
     this.genWindows.forEach(w => {

@@ -7,7 +7,8 @@ import {
   TOGGLE_DOUBLESIZE_MODE,
   TOGGLE_LLAMA_MODE,
   TOGGLE_VISUALIZER_STYLE,
-  SET_PLAYLIST_SCROLL_POSITION
+  SET_PLAYLIST_SCROLL_POSITION,
+  LOADED
 } from "../actionTypes";
 
 const defaultDisplayState = {
@@ -41,6 +42,11 @@ const display = (state = defaultDisplayState, action) => {
       return { ...state, working: true };
     case CLOSE_WINAMP:
       return { ...state, closed: true };
+    case LOADED:
+      return {
+        ...state,
+        loading: false
+      };
     case SET_SKIN_DATA:
       return {
         ...state,

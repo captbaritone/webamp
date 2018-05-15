@@ -18,7 +18,7 @@ if (config.audioUrl && !config.initialTracks) {
   config.initialTracks = [{ url: config.audioUrl }];
 }
 
-// Turn on the incomplete playlist window
+export const skinUrl = config.skinUrl === undefined ? null : config.skinUrl;
 export const initialTracks = config.initialTracks || [
   {
     metaData: { artist: "DJ Mike Llama", title: "Llama Whippin' Intro" },
