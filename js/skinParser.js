@@ -1,4 +1,3 @@
-import JSZip from "../node_modules/jszip/dist/jszip"; // Hack
 import SKIN_SPRITES from "./skinSprites";
 import regionParser from "./regionParser";
 import {
@@ -7,6 +6,14 @@ import {
   DEFAULT_PLAYLIST_STYLE
 } from "./constants";
 import { parseViscolors, parseIni, getFileExtension } from "./utils";
+
+const getJSZip = () => {
+  return new Promise(resolve => {
+    require.ensure("../node_modules/jszip/dist/jszip", require => {
+      resolve(require("../node_modules/jszip/dist/jszip"));
+    });
+  });
+};
 
 const shallowMerge = objs =>
   objs.reduce((prev, img) => Object.assign(prev, img), {});
@@ -240,6 +247,7 @@ async function genGenTextSprites(zip) {
 
 // A promise that, given an array buffer  returns a skin style object
 async function skinParser(zipFileBuffer) {
+  const JSZip = await getJSZip();
   const zip = await JSZip.loadAsync(zipFileBuffer);
   const [
     colors,
