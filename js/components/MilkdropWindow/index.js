@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import screenfull from "screenfull";
 
+const USER_PRESET_TRANSITION_SECONDS = 5.7;
 const PRESET_TRANSITION_SECONDS = 2.7;
 const MILLISECONDS_BETWEEN_PRESET_TRANSITIONS = 15000;
 
@@ -47,16 +48,15 @@ class MilkdropWindow extends React.Component {
       ["butterchurn-presets"],
       require => {
         const butterchurnPresets = require("butterchurn-presets");
-        const presets = butterchurnPresets.getPresets();
-        const presetKeys = Object.keys(presets);
+        this.presets = butterchurnPresets.getPresets();
+        this.presetKeys = Object.keys(this.presets);
+        this.presetHistory = [];
         this.cycleInterval = setInterval(() => {
-          const presetIdx = Math.floor(presetKeys.length * Math.random());
-          const preset = presets[presetKeys[presetIdx]];
-          // The visualizer may not have initialized yet.
-          if (this.visualizer != null) {
-            this.visualizer.loadPreset(preset, PRESET_TRANSITION_SECONDS);
-          }
+          this._nextPreset(PRESET_TRANSITION_SECONDS);
         }, MILLISECONDS_BETWEEN_PRESET_TRANSITIONS);
+        document.addEventListener("keydown", e => {
+          this._handleKeyboardInput(e);
+        });
       },
       e => {
         console.error("Error loading Butterchurn presets", e);
@@ -105,6 +105,33 @@ class MilkdropWindow extends React.Component {
         screenfull.exit();
         this._setRendererSize(this.props.width, this.props.height);
       }
+    }
+  }
+  _handleKeyboardInput(e) {
+    if (e.which === 32) {
+      this._nextPreset(USER_PRESET_TRANSITION_SECONDS);
+    } else if (e.which === 8) {
+      this._prevPreset(0);
+    } else if (e.which === 72) {
+      this._nextPreset(0);
+    }
+  }
+  _nextPreset(blendTime) {
+    const presetIdx = Math.floor(this.presetKeys.length * Math.random());
+    const preset = this.presets[this.presetKeys[presetIdx]];
+    // The visualizer may not have initialized yet.
+    if (this.visualizer != null) {
+      this.presetHistory.push(preset);
+      this.visualizer.loadPreset(preset, blendTime);
+    }
+  }
+  _prevPreset(blendTime) {
+    if (this.presetHistory.length > 1 && this.visualizer != null) {
+      this.presetHistory.pop();
+      this.visualizer.loadPreset(
+        this.presetHistory[this.presetHistory.length - 1],
+        blendTime
+      );
     }
   }
   render() {
