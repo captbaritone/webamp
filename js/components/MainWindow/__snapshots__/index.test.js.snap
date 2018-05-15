@@ -2,7 +2,7 @@
 
 exports[`MainWindow renders to snapshot 1`] = `
 <div
-  className="window stop selected draggable"
+  className="window stop selected draggable loading"
   id="main-window"
   onDragEnter={[Function]}
   onDragOver={[Function]}

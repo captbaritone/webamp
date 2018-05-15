@@ -14,7 +14,7 @@ import {
 const defaultDisplayState = {
   doubled: false,
   marqueeStep: 0,
-  loading: false,
+  loading: true,
   llama: false,
   closed: false,
   working: false,
