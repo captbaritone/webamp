@@ -55,6 +55,7 @@ class MilkdropWindow extends React.Component {
         this.presets = butterchurnPresets.getPresets();
         this.presetKeys = Object.keys(this.presets);
         this.presetHistory = [];
+        this.presetRandomize = true;
         this.cycleInterval = setInterval(() => {
           this._nextPreset(PRESET_TRANSITION_SECONDS);
         }, MILLISECONDS_BETWEEN_PRESET_TRANSITIONS);
@@ -121,14 +122,23 @@ class MilkdropWindow extends React.Component {
       case 72: // H
         this._nextPreset(0);
         break;
+      case 82: // R
+        this.presetRandomize = !this.presetRandomize;
+        break;
     }
   }
   _nextPreset(blendTime) {
-    const presetIdx = Math.floor(this.presetKeys.length * Math.random());
-    const preset = this.presets[this.presetKeys[presetIdx]];
     // The visualizer may not have initialized yet.
     if (this.visualizer != null) {
-      this.presetHistory.push(preset);
+      let presetIdx;
+      if (this.presetRandomize || this.presetHistory.length === 0) {
+        presetIdx = Math.floor(this.presetKeys.length * Math.random());
+      } else {
+        const prevPresetIdx = this.presetHistory[this.presetHistory.length - 1];
+        presetIdx = (prevPresetIdx + 1) % this.presetKeys.length;
+      }
+      const preset = this.presets[this.presetKeys[presetIdx]];
+      this.presetHistory.push(presetIdx);
       this.visualizer.loadPreset(preset, blendTime);
     }
   }
@@ -136,7 +146,9 @@ class MilkdropWindow extends React.Component {
     if (this.presetHistory.length > 1 && this.visualizer != null) {
       this.presetHistory.pop();
       this.visualizer.loadPreset(
-        this.presetHistory[this.presetHistory.length - 1],
+        this.presets[
+          this.presetKeys[this.presetHistory[this.presetHistory.length - 1]]
+        ],
         blendTime
       );
     }
