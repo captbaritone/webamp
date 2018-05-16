@@ -44,6 +44,8 @@ class MilkdropWindow extends React.Component {
       "butterchurn"
     );
 
+    this._handleKeyboardInput = this._handleKeyboardInput.bind(this);
+
     require.ensure(
       ["butterchurn-presets"],
       require => {
@@ -54,9 +56,7 @@ class MilkdropWindow extends React.Component {
         this.cycleInterval = setInterval(() => {
           this._nextPreset(PRESET_TRANSITION_SECONDS);
         }, MILLISECONDS_BETWEEN_PRESET_TRANSITIONS);
-        document.addEventListener("keydown", e => {
-          this._handleKeyboardInput(e);
-        });
+        document.addEventListener("keydown", this._handleKeyboardInput);
       },
       e => {
         console.error("Error loading Butterchurn presets", e);
@@ -67,6 +67,7 @@ class MilkdropWindow extends React.Component {
   componentWillUnmount() {
     this._pauseViz();
     this._stopCycling();
+    document.removeEventListener("keydown", this._handleKeyboardInput);
   }
   componentDidUpdate(prevProps) {
     if (
