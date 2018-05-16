@@ -38,6 +38,12 @@ body {
     width: 16px;
     height: 16px;
     fill: #fff;
+    transition: 0.25s ease-out;
+}
+
+.about a:hover svg {
+    transition: 0.25s ease-out;
+    transform: scale(1.35);
 }
 
 #twitter {
