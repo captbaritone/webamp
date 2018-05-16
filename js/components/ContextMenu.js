@@ -63,7 +63,8 @@ export const Node = props => {
 };
 
 Node.propTypes = {
-  label: PropTypes.string.isRequired
+  label: PropTypes.string.isRequired,
+  hotkey: PropTypes.string
 };
 
 export class ContextMenu extends React.Component {

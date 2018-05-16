@@ -49,7 +49,7 @@ const MainContextMenu = props => (
         label={props.genWindows[i].title}
         checked={props.genWindows[i].open}
         onClick={() => props.toggleGenWindow(i)}
-        hotKey={() => props.genWindows[i].hotkey}
+        hotkey={props.genWindows[i].hotkey}
       />
     ))}
     <Hr />
