@@ -41,6 +41,22 @@ body {
     transition: 0.25s ease-out;
 }
 
+/* TODO: Ideally this would be a border not a :before */
+.about a:before {
+    position: absolute;
+    top: 0;
+    content: "";
+    width: 42px; /* TODO: This should be derived not hard coded */
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0);
+    transition: 0.25s ease-out;
+}
+
+.about a:hover:before {
+    background-color: rgba(255, 255, 255, 255);
+    transition: 0.25s ease-out;
+}
+
 .about a:hover svg {
     transition: 0.25s ease-out;
     transform: scale(1.35);
