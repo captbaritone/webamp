@@ -18,7 +18,12 @@ const defaultDisplayState = {
   llama: false,
   closed: false,
   working: false,
-  skinImages: {},
+  skinImages: {
+    EQ_PREAMP_LINE:
+      "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHEAAAABCAYAAADpXEERAAAAE0lEQVQoU2Pcdfruf4ZRMKRDAAD1lwNjTqcaUQAAAABJRU5ErkJggg==",
+    EQ_GRAPH_LINE_COLORS:
+      "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAATCAYAAABRC2cZAAAAR0lEQVQYV2O4rCT9n+F9kOJ/hvfViv8ZHkzSQCE2afxneH/HEJm49Nr0PwOYWPLIAkp0PjL4z1B41uQ/Q9QGnf8MWrPEIAQANWYwvnlToNIAAAAASUVORK5CYII="
+  },
   skinColors: [
     "rgb(0,0,0)",
     "rgb(24,33,41)",
