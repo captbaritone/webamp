@@ -6,6 +6,10 @@ const PRESET_TRANSITION_SECONDS = 2.7;
 const MILLISECONDS_BETWEEN_PRESET_TRANSITIONS = 15000;
 
 class MilkdropWindow extends React.Component {
+  constructor(props) {
+    super(props);
+    this._handleKeyboardInput = this._handleKeyboardInput.bind(this);
+  }
   componentDidMount() {
     require.ensure(
       [
@@ -35,8 +39,6 @@ class MilkdropWindow extends React.Component {
       },
       "butterchurn"
     );
-
-    this._handleKeyboardInput = this._handleKeyboardInput.bind(this);
 
     require.ensure(
       ["butterchurn-presets"],
