@@ -109,12 +109,16 @@ class MilkdropWindow extends React.Component {
     }
   }
   _handleKeyboardInput(e) {
-    if (e.which === 32) { // spacebar
-      this._nextPreset(USER_PRESET_TRANSITION_SECONDS);
-    } else if (e.which === 8) { // backspace
-      this._prevPreset(0);
-    } else if (e.which === 72) { // H
-      this._nextPreset(0);
+    switch (e.keyCode) {
+      case 32: // spacebar
+        this._nextPreset(USER_PRESET_TRANSITION_SECONDS);
+        break;
+      case 8: // backspace
+        this._prevPreset(0);
+        break;
+      case 72: // H
+        this._nextPreset(0);
+        break;
     }
   }
   _nextPreset(blendTime) {
