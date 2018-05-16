@@ -96,8 +96,7 @@ const Skin = props => {
   if (skinGenLetterWidths != null) {
     LETTERS.forEach(letter => {
       const width = skinGenLetterWidths[`GEN_TEXT_${letter}`];
-      const selectedWidth =
-        skinGenLetterWidths[`GEN_LETTER_SELECTED_${letter}`];
+      const selectedWidth = skinGenLetterWidths[`GEN_TEXT_SELECTED_${letter}`];
       cssRules.push(
         `${CSS_PREFIX} .gen-text-${letter.toLowerCase()} {width: ${width}px;}`
       );
