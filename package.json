@@ -82,6 +82,7 @@
     "cardinal-spline-js": "^2.3.6",
     "classnames": "^2.2.5",
     "eslint-plugin-import": "^2.7.0",
+    "html-webpack-inline-svg-plugin": "^1.2.4",
     "invariant": "^2.2.3",
     "jsmediatags": "^3.8.1",
     "jszip": "^3.1.3",

@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WebpackPwaManifest = require("webpack-pwa-manifest");
+const HtmlWebpackInlineSVGPlugin = require("html-webpack-inline-svg-plugin");
 
 module.exports = {
   resolve: {
@@ -67,7 +68,8 @@ module.exports = {
           type: "image/svg+xml"
         }
       ].map(icon => ({ ...icon, destination: path.join("images", "manifest") }))
-    })
+    }),
+    new HtmlWebpackInlineSVGPlugin({ runPreEmit: true })
   ],
   entry: {
     webamp: ["./js/index.js"]
