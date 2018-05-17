@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Tweet Winamp Skins
 
 Usage:
@@ -22,9 +22,10 @@ import boto3
 import twitter
 from PIL import Image
 from docopt import docopt
-from sets import Set
 from collections import defaultdict
+from discord_hooks import Webhook
 
+# Create webhook
 from config import CONFIG
 
 LOCAL_LOG_PATH = "./action_log.json"
@@ -63,7 +64,8 @@ def tweet(text, img_path):
         consumer_secret=CONFIG['consumer_secret'],
         access_token_key=CONFIG['access_token_key'],
         access_token_secret=CONFIG['access_token_secret'])
-    api.PostMedia(text, img_path)
+    status = api.PostUpdate(text, img_path)
+    return ("https://twitter.com/winampskins/status/%s" % status["id_str"])
 
 
 def find(dir):
@@ -107,11 +109,11 @@ def find_skin_with_screenshot():
     skin_path = random_skin()
     md5 = md5_file(skin_path)
     if(md5 in skins):
-        print "Already handled %s. Trying again..." % md5
+        print("Already handled %s. Trying again..." % md5)
         return find_skin_with_screenshot()
     screenshot_path = screenshot_by_md5(md5)
     if(not screenshot_path):
-        print "Could not find the screenshot, trying again..."
+        print("Could not find the screenshot, trying again...")
         return find_skin_with_screenshot()
     dispatch({"type": "FOUND_SCREENSHOT", "skin_path": skin_path,
               "screenshot_path": screenshot_path, "md5": md5})
@@ -157,7 +159,7 @@ def review():
     while(True):
         skin_path, screenshot_path, md5 = find_skin_with_screenshot()
         skin_name = os.path.basename(skin_path)
-        print "Found %s" % skin_name
+        print("Found %s" % skin_name)
         os.system("open \"%s\"" % screenshot_path)
         res = raw_input("Approve? (y/n/q)")
         if(res is "q"):
@@ -165,25 +167,25 @@ def review():
         elif(res is "y"):
             dispatch({"type": "APPROVED_SKIN",
                       "md5": md5, "skin_path": skin_path})
-            print "Approved %s" % skin_name
+            print("Approved %s" % skin_name)
         elif(res is "n"):
             dispatch({"type": "REJECTED_SKIN", "md5": md5})
-            print "Rejected %s" % skin_name
+            print("Rejected %s" % skin_name)
         else:
-            print "Invalid input"
+            print("Invalid input")
 
 
 def main(dry):
 
     state = get_state()
     approved = []
-    for skin in state.itervalues():
+    for key, skin in state.items():
         if skin.get('approved') and not skin.get('tweeted'):
             approved.append(skin)
 
-    print "Found %s approved skins" % len(approved)
+    print("Found %s approved skins" % len(approved))
     if not len(approved):
-        print "Exiting"
+        print("Exiting")
         return
     skin = approved[0]
 
@@ -198,21 +200,21 @@ def main(dry):
     assert screenshot_path
 
     if(not skin_url):
-        print "Uploading to S3..."
+        print("Uploading to S3...")
         s3 = boto3.resource('s3')
         s3.meta.client.upload_file(
             skin_path, 'winamp2-js-skins', skin_name, {'ACL': 'public-read'})
 
-        skin_url = "https://s3-us-west-2.amazonaws.com/winamp2-js-skins/%s" % urllib.quote(
+        skin_url = "https://s3-us-west-2.amazonaws.com/winamp2-js-skins/%s" % urllib.parse.quote(
             skin_name)
         dispatch({"type": "UPLOADED_SKIN", "md5": md5, "skin_url": skin_url})
-        print "Done: %s" % skin_url
+        print("Done: %s" % skin_url)
 
-    print "Going to check that URL..."
+    print("Going to check that URL...")
     if not url_is_good(skin_url):
         dispatch({"type": "FOUND_INVALID_URL",
                   "md5": md5, "skin_url": skin_url})
-        print "URL is no good. Aborting."
+        print("URL is no good. Aborting.")
         return
 
     # Trick Twitter into keeping the skin a PNG
@@ -232,7 +234,7 @@ def main(dry):
 
     options = {"skinUrl": skin_url}
 
-    options_query = urllib.quote(json.dumps(options))
+    options_query = urllib.parse.quote(json.dumps(options))
 
     winamp2_js_url = "https://webamp.org/#%s" % options_query
 
@@ -240,12 +242,14 @@ def main(dry):
 Try Online: %s
 Download: %s""" % (skin_name, winamp2_js_url, skin_url)
     if not dry:
-        tweet(status_message, screenshot_path)
+        url = tweet(status_message, screenshot_path)
+        Webhook(CONFIG["discord_url"], msg=url).post()
+
         dispatch({"type": "TWEETED", "md5": md5, "message": status_message})
     else:
-        print "Would have tweeted: %" % status_message
-        print "With media file: %" % screenshot_path
-    print "Done!"
+        print("Would have tweeted: %" % status_message)
+        print("With media file: %" % screenshot_path)
+    print("Done!")
 
 
 if __name__ == "__main__":
