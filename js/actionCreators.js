@@ -306,6 +306,7 @@ export function loadMediaFile(track, priority = null, atIndex = 0) {
     dispatch({
       type: ADD_TRACK_FROM_URL,
       url: canonicalUrl,
+      duration: track.duration,
       defaultName,
       id,
       atIndex
