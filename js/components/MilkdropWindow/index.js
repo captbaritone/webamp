@@ -56,9 +56,8 @@ class MilkdropWindow extends React.Component {
         this.presetKeys = Object.keys(this.presets);
         this.presetHistory = [];
         this.presetRandomize = true;
-        this.cycleInterval = setInterval(() => {
-          this._nextPreset(PRESET_TRANSITION_SECONDS);
-        }, MILLISECONDS_BETWEEN_PRESET_TRANSITIONS);
+        this.presetCycle = true;
+        this._restartCycling();
         document.addEventListener("keydown", this._handleKeyboardInput);
       },
       e => {
@@ -90,6 +89,15 @@ class MilkdropWindow extends React.Component {
     if (this.cycleInterval) {
       clearInterval(this.cycleInterval);
       this.cycleInterval = null;
+    }
+  }
+  _restartCycling() {
+    this._stopCycling();
+
+    if (this.presetCycle) {
+      this.cycleInterval = setInterval(() => {
+        this._nextPreset(PRESET_TRANSITION_SECONDS);
+      }, MILLISECONDS_BETWEEN_PRESET_TRANSITIONS);
     }
   }
   _setRendererSize(width, height) {
@@ -125,6 +133,11 @@ class MilkdropWindow extends React.Component {
       case 82: // R
         this.presetRandomize = !this.presetRandomize;
         break;
+      case 145: // scroll lock
+      case 125: // F14 (scroll lock for OS X)
+        this.presetCycle = !this.presetCycle;
+        this._restartCycling();
+        break;
     }
   }
   _nextPreset(blendTime) {
@@ -140,6 +153,7 @@ class MilkdropWindow extends React.Component {
       const preset = this.presets[this.presetKeys[presetIdx]];
       this.presetHistory.push(presetIdx);
       this.visualizer.loadPreset(preset, blendTime);
+      this._restartCycling();
     }
   }
   _prevPreset(blendTime) {
@@ -151,6 +165,7 @@ class MilkdropWindow extends React.Component {
         ],
         blendTime
       );
+      this._restartCycling();
     }
   }
   render() {
