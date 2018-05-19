@@ -430,7 +430,15 @@ export function openSkinFileDialog() {
   return _openFileDialog(".zip, .wsz");
 }
 
+const BAND_SNAP_DISTANCE = 10;
+const BAND_MID_POINT_VALUE = 50;
 export function setEqBand(band, value) {
+  if (
+    value < BAND_MID_POINT_VALUE + BAND_SNAP_DISTANCE &&
+    value > BAND_MID_POINT_VALUE - BAND_SNAP_DISTANCE
+  ) {
+    return { type: SET_BAND_VALUE, band, value: BAND_MID_POINT_VALUE };
+  }
   return { type: SET_BAND_VALUE, band, value };
 }
 
