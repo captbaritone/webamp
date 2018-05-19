@@ -65,7 +65,7 @@ def tweet(text, img_path):
         access_token_key=CONFIG['access_token_key'],
         access_token_secret=CONFIG['access_token_secret'])
     status = api.PostUpdate(text, img_path)
-    return ("https://twitter.com/winampskins/status/%s" % status["id_str"])
+    return ("https://twitter.com/winampskins/status/%s" % status.id_str)
 
 
 def find(dir):
