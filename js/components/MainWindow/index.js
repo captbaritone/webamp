@@ -17,6 +17,7 @@ import MiniTime from "../MiniTime";
 import { SET_FOCUSED_WINDOW } from "../../actionTypes";
 import ClickedDiv from "../ClickedDiv";
 import ContextMenuTarget from "../ContextMenuTarget";
+import Visualizer from "../Visualizer";
 import ActionButtons from "./ActionButtons";
 import MainBalance from "./MainBalance";
 import Close from "./Close";
@@ -35,7 +36,6 @@ import Shade from "./Shade";
 import Minimize from "./Minimize";
 import Shuffle from "./Shuffle";
 import Time from "./Time";
-import Visualizer from "./Visualizer";
 import MainVolume from "./MainVolume";
 
 import "../../../css/main-window.css";

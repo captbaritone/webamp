@@ -151,18 +151,18 @@
     width: 9px;
 }
 
-#webamp #visualizer {
+#webamp #main-window #visualizer {
     position: absolute;
     top: 43px;
     left: 24px;
 }
 
-#webamp .shade #visualizer {
+#webamp #main-window.shade #visualizer {
     top: 5px;
     left: 79px;
 }
 
-#webamp .stop #visualizer {
+#webamp #main-window.stop #visualizer {
     display: none;
 }
 

@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { toggleVisualizerStyle } from "../../actionCreators";
-import { getWindowShade } from "../../selectors";
+import { toggleVisualizerStyle } from "../actionCreators";
+import { getWindowShade } from "../selectors";
 
 const OSCILLOSCOPE = 1;
 const BAR = 2;
@@ -24,6 +24,7 @@ function sliceAverage(dataArray, sliceWidth, sliceNumber) {
 
 class Visualizer extends React.Component {
   componentDidMount() {
+    console.log(this.props);
     this.canvasCtx = this.canvas.getContext("2d");
     this.canvasCtx.imageSmoothingEnabled = false;
 
