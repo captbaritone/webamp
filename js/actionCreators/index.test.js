@@ -1,4 +1,5 @@
-import { BANDS } from "./constants";
+// TODO: Split these out into individual files.
+import { BANDS } from "../constants";
 import {
   STOP,
   SET_VOLUME,
@@ -6,7 +7,7 @@ import {
   TOGGLE_REPEAT,
   TOGGLE_SHUFFLE,
   SET_BAND_VALUE
-} from "./actionTypes";
+} from "../actionTypes";
 
 import {
   stop,
@@ -19,7 +20,7 @@ import {
   setEqToMax,
   setEqToMin,
   setEqToMid
-} from "./actionCreators";
+} from "./";
 
 test("stop", () => {
   const expectedAction = { type: STOP };
