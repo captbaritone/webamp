@@ -161,7 +161,7 @@ def review():
         skin_name = os.path.basename(skin_path)
         print("Found %s" % skin_name)
         os.system("open \"%s\"" % screenshot_path)
-        res = raw_input("Approve? (y/n/q)")
+        res = input("Approve? (y/n/q)")
         if(res is "q"):
             return
         elif(res is "y"):
