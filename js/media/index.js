@@ -53,7 +53,6 @@ export default class Media {
     this._chanMerge = this._context.createChannelMerger(2);
 
     // Create the analyser node for the visualizer
-    // TODO: Expose this via a public method.
     this._analyser = this._context.createAnalyser();
     this._analyser.fftSize = 2048;
     // TODO: Tune these to something that looks like Winamp
@@ -165,6 +164,10 @@ export default class Media {
     this._chanSplit.connect(this._rightGain, assumedChannels === 1 ? 0 : 1);
     this._channels = num;
     this._emitter.trigger("channelupdate");
+  }
+
+  getAnalyser() {
+    return this._analyser;
   }
 
   /* Properties */

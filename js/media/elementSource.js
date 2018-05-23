@@ -1,4 +1,5 @@
 import Emitter from "../emitter";
+import { clamp } from "../utils";
 const STATUS = {
   PLAYING: "PLAYING",
   STOPPED: "STOPPED",
@@ -111,11 +112,7 @@ export default class ElementSource {
   }
 
   seekToTime(time) {
-    // Make sure we are within range
-    // TODO: Use clamp
-    time = Math.min(time, this.getDuration());
-    time = Math.max(time, 0);
-    this._audio.currentTime = time;
+    this._audio.currentTime = clamp(time, 0, this.getDuration());
     this._emitter.trigger("positionChange");
   }
 

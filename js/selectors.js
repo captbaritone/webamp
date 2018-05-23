@@ -224,7 +224,6 @@ const getPlaylistDuration = createSelector(getTracks, tracks =>
   Object.values(tracks).reduce((total, track) => total + track.duration, 0)
 );
 
-// TODO: Move to action creator
 export const getPlaylistURL = createSelector(
   state => state,
   getNumberOfTracks,

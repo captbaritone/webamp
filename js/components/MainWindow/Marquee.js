@@ -154,8 +154,9 @@ const getMarqueeText = state => {
   return "Winamp 2.91";
 };
 
-// TODO: Define map state to props
-export default connect(state => ({
+const mapStateToProps = state => ({
   marqueeStep: state.display.marqueeStep,
   text: getMarqueeText(state)
-}))(Marquee);
+});
+
+export default connect(mapStateToProps)(Marquee);

@@ -11,7 +11,7 @@ const media = {
   addEventListener: jest.fn(),
   setVolume: jest.fn(),
   setBalance: jest.fn(),
-  _analyser: null,
+  getAnalyser: () => null,
   on: jest.fn()
 };
 

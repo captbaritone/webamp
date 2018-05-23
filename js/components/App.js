@@ -32,12 +32,15 @@ const App = ({
     switch (id) {
       case "main":
         return (
-          <MainWindow analyser={media._analyser} filePickers={filePickers} />
+          <MainWindow
+            analyser={media.getAnalyser()}
+            filePickers={filePickers}
+          />
         );
       case "equalizer":
         return <EqualizerWindow />;
       case "playlist":
-        return <PlaylistWindow analyser={media._analyser} />;
+        return <PlaylistWindow analyser={media.getAnalyser()} />;
       default:
         if (!w.generic) {
           throw new Error("Tried to render an unknown window:", id);
@@ -47,7 +50,7 @@ const App = ({
           <GenWindow title={w.title} windowId={id}>
             {({ height, width }) => (
               <Component
-                analyser={media._analyser}
+                analyser={media.getAnalyser()}
                 width={width}
                 height={height}
               />

@@ -88,7 +88,8 @@ EqualizerWindow.propTypes = {
   shade: PropTypes.bool.isRequired
 };
 
-// TODO: Convert to object shorthand
+// This does not use the shorthand object syntax becuase `setHertzValue` needs
+// to return a function.
 const mapDispatchToProps = dispatch => ({
   focusWindow: () =>
     dispatch({ type: SET_FOCUSED_WINDOW, window: WINDOWS.EQUALIZER }),

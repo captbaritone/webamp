@@ -64,7 +64,6 @@ const display = (state = defaultDisplayState, action) => {
     case TOGGLE_LLAMA_MODE:
       return { ...state, llama: !state.llama };
     case STEP_MARQUEE:
-      // TODO: Prevent this from becoming huge
       return { ...state, marqueeStep: state.marqueeStep + 1 };
     case STOP_WORKING:
       return { ...state, working: false };
