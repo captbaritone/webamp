@@ -31,11 +31,12 @@ const App = ({
     }
     switch (id) {
       case "main":
+        // TODO: Pass only the analyser node
         return <MainWindow mediaPlayer={media} filePickers={filePickers} />;
       case "equalizer":
         return <EqualizerWindow />;
       case "playlist":
-        return <PlaylistWindow />;
+        return <PlaylistWindow analyser={media._analyser} />;
       default:
         if (!w.generic) {
           throw new Error("Tried to render an unknown window:", id);

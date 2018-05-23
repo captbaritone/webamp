@@ -322,3 +322,10 @@
     top: 4px;
     right: 30px;
 }
+
+#webamp #playlist-window #visualizer {
+    position: absolute;
+    /* TODO: These numbers are not quite right */
+    top: 10px;
+    left: 5px;
+}

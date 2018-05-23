@@ -23,6 +23,7 @@ import {
 
 import { clamp } from "../../utils";
 import DropTarget from "../DropTarget";
+import Visualizer from "../Visualizer";
 import PlaylistShade from "./PlaylistShade";
 import AddMenu from "./AddMenu";
 import RemoveMenu from "./RemoveMenu";
@@ -61,7 +62,8 @@ class PlaylistWindow extends React.Component {
       playlistWindowPixelSize,
       playlistShade,
       close,
-      toggleShade
+      toggleShade,
+      analyser
     } = this.props;
     if (playlistShade) {
       return <PlaylistShade />;
@@ -128,7 +130,10 @@ class PlaylistWindow extends React.Component {
             <div
               className="playlist-visualizer"
               onClick={this.props.toggleVisualizerStyle}
-            />
+            >
+              {/* TODO: Resize the visualizer so it fits */
+              false && <Visualizer analyser={analyser} />}
+            </div>
             <PlaylistActionArea />
             <ListMenu />
             <div
