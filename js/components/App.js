@@ -31,8 +31,9 @@ const App = ({
     }
     switch (id) {
       case "main":
-        // TODO: Pass only the analyser node
-        return <MainWindow mediaPlayer={media} filePickers={filePickers} />;
+        return (
+          <MainWindow analyser={media._analyser} filePickers={filePickers} />
+        );
       case "equalizer":
         return <EqualizerWindow />;
       case "playlist":
