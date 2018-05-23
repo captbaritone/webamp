@@ -80,12 +80,11 @@ class PlaylistShade extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  focusPlaylist: () =>
-    dispatch({ type: SET_FOCUSED_WINDOW, window: WINDOWS.PLAYLIST }),
+const mapDispatchToProps = {
+  focusPlaylist: () => ({ type: SET_FOCUSED_WINDOW, window: WINDOWS.PLAYLIST }),
   close: () => closeWindow("playlist"),
-  toggleShade: () => dispatch(togglePlaylistShadeMode())
-});
+  toggleShade: () => togglePlaylistShadeMode()
+};
 
 const mapStateToProps = state => {
   const {
