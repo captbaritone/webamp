@@ -70,6 +70,7 @@
 * https://trashbox.ru/topics/115521/winamp-zhivee-vseh-zhivyh
 * https://tech.onliner.by/2018/02/09/winamp-5
 * http://fonotekaelektrika.com/2018/02/winamp-%D0%B2-%D0%B1%D1%80%D0%B0%D1%83%D0%B7%D1%8A%D1%80/
+* https://toocha.me/winamp-web/
 
 ### Spanish
 
@@ -123,6 +124,8 @@
 * https://techcaption.com/run-winamp-web-browser/
 * https://www.trishtech.com/2018/02/javascript-version-of-winamp-runs-in-any-web-browser/
 * https://ourcodeworld.com/articles/read/685/winamp2-js-a-reimplementation-of-winamp-2-9-in-html5-and-javascript
+* http://whazupnaija.com/whip-the-llamas-ass-with-this-javascript-winamp-emulator/
+* http://cashrange.com/run-winamp-in-web-browser-and-play-mp3s/
 
 ### German
 
@@ -133,6 +136,7 @@
 * https://t3n.de/news/winamp-javascript-open-source-863217/
 * https://www.smartdroid.de/winamp2-js-laesst-den-klassiker-im-browser-wieder-aufleben/
 * https://www.morgenpost.de/web-wissen/web-technik/article212250123/Surftipp-Kultiger-MP3-Player-im-Browser.html
+* https://eay.cc/2017/winamp2-js/
 
 ### Polish
 
@@ -170,6 +174,7 @@
 * http://hvg.hu/tudomany/20180212_winamp_zenelejatszo_letoltes_bongeszoben
 * http://www.karpatinfo.net/cikk/tudomany/2567147-feltamadt-winamp-90-es-evek-kedvenc-zenelejatszoja-hasznalhatja
 * https://www.gamestar.hu/hir/winamp-html5-verzio-243839.html
+* https://pcworld.hu/pcwlite/feltamad-a-winamp-raadasul-bongeszoben-243841.html
 
 ### Bosnian
 
@@ -186,6 +191,7 @@
 * http://jp.techcrunch.com/2018/02/10/2018-02-09-whip-the-llamas-ass-with-this-javascript-winamp-emulator/
 * https://gigazine.net/news/20180213-winamp2-js/
 * https://www.gizmodo.jp/2014/11/90winamp_2html5.html
+* https://www.softantenna.com/wp/review/winamp2-js/
 
 ### Portuguese
 
