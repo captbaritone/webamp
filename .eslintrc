@@ -20,6 +20,10 @@
     "es6": true,
     "jest": true
   },
+  "globals": {
+    "page": true,
+    "browser": true
+  },
   "rules": {
     "no-multiple-empty-lines": [
       "error",
