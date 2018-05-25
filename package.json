@@ -8,15 +8,15 @@
     "built/webamp.bundle.min.js"
   ],
   "scripts": {
-    "lint": "eslint .",
+    "lint": "jest --projects config/jest.eslint.js",
     "build": "webpack --config=config/webpack.prod.js",
     "build-library": "webpack --config=config/webpack.library.js",
     "prepublishOnly": "npm run build-library",
     "serve": "http-server ./built",
     "start": "webpack-dev-server --config=config/webpack.dev.js",
     "weight": "npm run build-library > /dev/null && gzip-size built/webamp.bundle.min.js",
-    "test": "jest --coverage",
-    "travis-tests": "jest --coverage && npm run build && npm run build-library",
+    "test": "jest --projects config/jest.unit.js config/jest.eslint.js",
+    "travis-tests": "npm run test && npm run build && npm run build-library",
     "tdd": "jest --watch",
     "format": "prettier --write experiments/**/*.js js/**/*.js css/**/*.css",
     "build-skin": "rm skins/base-2.91.wsz && cd skins/base-2.91 && zip -x .* -x 'Skining Updates.txt' -r ../base-2.91.wsz .",
@@ -103,27 +103,8 @@
     "workbox-webpack-plugin": "^3.0.0"
   },
   "jest": {
-    "projects": [
-      {
-        "displayName": "test",
-        "testRegex": "\\.test\\.js$",
-        "globals": {
-          "SENTRY_DSN": null
-        },
-        "moduleNameMapper": {
-          "\\.css$": "<rootDir>/js/__mocks__/styleMock.js",
-          "\\.wsz$": "<rootDir>/js/__mocks__/fileMock.js",
-          "\\.mp3$": "<rootDir>/js/__mocks__/fileMock.js"
-        }
-      },
-      {
-        "runner": "jest-runner-eslint",
-        "displayName": "lint",
-        "testMatch": [
-          "<rootDir>/**/*.js"
-        ]
-      }
-    ]
-  },
-  "dependencies": {}
+    "globalSetup": "jest-environment-puppeteer/setup",
+    "globalTeardown": "jest-environment-puppeteer/teardown",
+    "projects": ["config/jest.*.js"]
+  }
 }
