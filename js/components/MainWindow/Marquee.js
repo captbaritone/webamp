@@ -3,6 +3,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { getTimeStr } from "../../utils";
+import { disableMarquee } from "../../config";
 
 import { STEP_MARQUEE } from "../../actionTypes";
 import CharacterString from "../CharacterString";
@@ -77,7 +78,7 @@ class Marquee extends React.Component {
 
   componentDidMount() {
     this.stepHandle = setInterval(() => {
-      if (this.state.stepping) {
+      if (this.state.stepping && !disableMarquee) {
         this.props.dispatch({ type: STEP_MARQUEE });
       }
     }, 220);
