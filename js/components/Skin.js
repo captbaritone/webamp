@@ -28,6 +28,7 @@ class Css extends React.Component {
   componentWillMount() {
     const style = document.createElement("style");
     style.type = "text/css";
+    style.id = "webamp-skin";
     document.head.appendChild(style);
     this.style = style;
   }
