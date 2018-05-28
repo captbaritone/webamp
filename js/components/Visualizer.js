@@ -250,4 +250,7 @@ const mapDispatchToProps = {
   toggleVisualizerStyle
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Visualizer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Visualizer);

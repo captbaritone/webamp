@@ -31,4 +31,7 @@ const mapDispatchToProps = dispatch => ({
   setVolume: e => dispatch(setVolume(e.target.value))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Volume);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Volume);

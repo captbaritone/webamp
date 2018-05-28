@@ -31,4 +31,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   handleClick: () => dispatch(toggleShuffle())
 });
-export default connect(mapStateToProps, mapDispatchToProps)(Shuffle);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Shuffle);

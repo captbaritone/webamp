@@ -84,4 +84,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onDoubleClick: () => dispatch({ type: PLAY_TRACK, id: ownProps.id })
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TrackCell);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TrackCell);

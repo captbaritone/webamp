@@ -17,4 +17,7 @@ const mapDispatchToProps = {
   handleClick: toggleMainWindowShadeMode
 };
 
-export default connect(() => ({}), mapDispatchToProps)(Shade);
+export default connect(
+  () => ({}),
+  mapDispatchToProps
+)(Shade);

@@ -142,12 +142,26 @@ export default class Media {
     output.connect(this._chanSplit);
 
     // Connect split channels to left / right gains
-    this._chanSplit.connect(this._leftGain, 0);
-    this._chanSplit.connect(this._rightGain, 1);
+    this._chanSplit.connect(
+      this._leftGain,
+      0
+    );
+    this._chanSplit.connect(
+      this._rightGain,
+      1
+    );
 
     // Reconnect the left / right gains to the merge node
-    this._leftGain.connect(this._chanMerge, 0, 0);
-    this._rightGain.connect(this._chanMerge, 0, 1);
+    this._leftGain.connect(
+      this._chanMerge,
+      0,
+      0
+    );
+    this._rightGain.connect(
+      this._chanMerge,
+      0,
+      1
+    );
 
     this._chanMerge.connect(this._gainNode);
     this._chanMerge.connect(this._analyser);
@@ -159,9 +173,15 @@ export default class Media {
   _setChannels(num) {
     const assumedChannels = num == null ? 2 : num;
     this._chanSplit.disconnect();
-    this._chanSplit.connect(this._leftGain, 0);
+    this._chanSplit.connect(
+      this._leftGain,
+      0
+    );
     // If we only have one channel, use it for both left and right.
-    this._chanSplit.connect(this._rightGain, assumedChannels === 1 ? 0 : 1);
+    this._chanSplit.connect(
+      this._rightGain,
+      assumedChannels === 1 ? 0 : 1
+    );
     this._channels = num;
     this._emitter.trigger("channelupdate");
   }
@@ -184,7 +204,7 @@ export default class Media {
   }
 
   percentComplete() {
-    return this.timeElapsed() / this.duration() * 100;
+    return (this.timeElapsed() / this.duration()) * 100;
   }
 
   channels() {
@@ -261,7 +281,7 @@ export default class Media {
   }
 
   setEqBand(band, value) {
-    const db = value / 100 * 24 - 12;
+    const db = (value / 100) * 24 - 12;
     this.bands[band].gain.value = db;
   }
 

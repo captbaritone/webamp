@@ -26,11 +26,14 @@ const SortContextMenu = props => (
   </ContextMenuTarget>
 );
 
-const ConnectedSortContextMenu = connect(null, {
-  reverseList,
-  randomizeList,
-  sortListByTitle
-})(SortContextMenu);
+const ConnectedSortContextMenu = connect(
+  null,
+  {
+    reverseList,
+    randomizeList,
+    sortListByTitle
+  }
+)(SortContextMenu);
 
 const MiscOptionsContextMenu = props => (
   <ContextMenuTarget
@@ -42,9 +45,10 @@ const MiscOptionsContextMenu = props => (
   </ContextMenuTarget>
 );
 
-const ConnectedMiscOptionsContextMenu = connect(null, { downloadHtmlPlaylist })(
-  MiscOptionsContextMenu
-);
+const ConnectedMiscOptionsContextMenu = connect(
+  null,
+  { downloadHtmlPlaylist }
+)(MiscOptionsContextMenu);
 
 const MiscMenu = () => (
   <PlaylistMenu id="playlist-misc-menu">

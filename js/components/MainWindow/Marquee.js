@@ -12,7 +12,7 @@ import { getMediaText } from "../../selectors";
 const CHAR_WIDTH = 5;
 
 // Always positive modulus
-export const mod = (n, m) => (n % m + m) % m;
+export const mod = (n, m) => ((n % m) + m) % m;
 
 export const getBalanceText = balance => {
   if (balance === 0) {
@@ -25,7 +25,7 @@ export const getBalanceText = balance => {
 export const getVolumeText = volume => `Volume: ${volume}%`;
 
 export const getPositionText = (duration, seekToPercent) => {
-  const newElapsedStr = getTimeStr(duration * seekToPercent / 100, false);
+  const newElapsedStr = getTimeStr((duration * seekToPercent) / 100, false);
   const durationStr = getTimeStr(duration, false);
   return `Seek to: ${newElapsedStr}/${durationStr} (${seekToPercent}%)`;
 };
@@ -42,7 +42,7 @@ const ensureSign = num => (num > 0 ? `+${num}` : num.toString());
 const roundToTenths = num => (Math.round(num * 10) / 10).toFixed(1);
 
 export const getEqText = (band, level) => {
-  const db = roundToTenths((level - 50) / 50 * 12);
+  const db = roundToTenths(((level - 50) / 50) * 12);
   const label = band === "preamp" ? "Preamp" : formatHz(band);
   return `EQ: ${label} ${ensureSign(db)} DB`;
 };

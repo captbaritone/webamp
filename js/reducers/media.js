@@ -26,7 +26,7 @@ const media = (state, action) => {
       // The winamp ini file declares the default volume as "200".
       // The UI seems to show a default volume near 78, which would
       // math with the default value being 200 out of 255.
-      volume: Math.round(200 / 255 * 100),
+      volume: Math.round((200 / 255) * 100),
       balance: 0,
       channels: null,
       shuffle: false,

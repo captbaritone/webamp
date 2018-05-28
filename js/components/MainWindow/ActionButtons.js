@@ -14,4 +14,7 @@ const ActionButtons = props => (
 
 const mapDispatchToProps = { previous, play, pause, stop, next };
 
-export default connect(null, mapDispatchToProps)(ActionButtons);
+export default connect(
+  null,
+  mapDispatchToProps
+)(ActionButtons);

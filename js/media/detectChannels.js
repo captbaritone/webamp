@@ -10,8 +10,14 @@ function createAnalysers(source) {
   const rightAnalyser = context.createAnalyser();
 
   source.connect(splitter);
-  splitter.connect(leftGain, 0);
-  splitter.connect(rightGain, 1);
+  splitter.connect(
+    leftGain,
+    0
+  );
+  splitter.connect(
+    rightGain,
+    1
+  );
   leftGain.connect(leftAnalyser);
   rightGain.connect(rightAnalyser);
 

@@ -26,4 +26,7 @@ const mapDispatchToProps = {
   removeAll: removeAllTracks,
   crop: cropPlaylist
 };
-export default connect(null, mapDispatchToProps)(RemoveMenu);
+export default connect(
+  null,
+  mapDispatchToProps
+)(RemoveMenu);

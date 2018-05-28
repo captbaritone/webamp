@@ -22,4 +22,7 @@ const ListMenu = props => (
 const mapDispatchToProps = {
   removeAllTracks
 };
-export default connect(null, mapDispatchToProps)(ListMenu);
+export default connect(
+  null,
+  mapDispatchToProps
+)(ListMenu);

@@ -40,4 +40,7 @@ const mapDispatchToProps = {
   previous
 };
 
-export default connect(null, mapDispatchToProps)(PlaylistWindow);
+export default connect(
+  null,
+  mapDispatchToProps
+)(PlaylistWindow);

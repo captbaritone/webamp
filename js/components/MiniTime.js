@@ -56,4 +56,7 @@ const mapDispatchToProps = {
   toggle: () => ({ type: TOGGLE_TIME_MODE })
 };
 
-export default connect(state => state.media, mapDispatchToProps)(MiniTime);
+export default connect(
+  state => state.media,
+  mapDispatchToProps
+)(MiniTime);

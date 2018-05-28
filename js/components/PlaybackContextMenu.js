@@ -57,4 +57,7 @@ const mapDispatchToProps = {
   seekBackward
 };
 
-export default connect(null, mapDispatchToProps)(PlaybackContextMenu);
+export default connect(
+  null,
+  mapDispatchToProps
+)(PlaybackContextMenu);

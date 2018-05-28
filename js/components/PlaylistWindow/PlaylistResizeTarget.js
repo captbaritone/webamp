@@ -12,4 +12,7 @@ const mapDispatchToProps = {
   setWindowSize: size => setWindowSize("playlist", size)
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ResizeTarget);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ResizeTarget);

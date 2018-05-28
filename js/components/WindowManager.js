@@ -223,4 +223,7 @@ const mapDispatchToProps = {
   updateWindowPositions
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(WindowManager);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(WindowManager);

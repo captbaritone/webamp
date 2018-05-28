@@ -22,6 +22,7 @@ const mapDispatchToProps = {
   handleClick: () => toggleWindow("playlist")
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  PlaylistToggleButton
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PlaylistToggleButton);

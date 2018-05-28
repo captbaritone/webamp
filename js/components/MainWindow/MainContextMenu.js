@@ -75,4 +75,7 @@ const mapDispatchToProps = {
   toggleGenWindow: toggleWindow
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainContextMenu);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MainContextMenu);

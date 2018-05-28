@@ -88,7 +88,7 @@ export function seekForward(seconds) {
     const newTimeElapsed = timeElapsed + seconds;
     dispatch({
       type: SEEK_TO_PERCENT_COMPLETE,
-      percent: newTimeElapsed / length * 100
+      percent: (newTimeElapsed / length) * 100
     });
   };
 }

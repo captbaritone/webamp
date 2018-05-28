@@ -150,8 +150,8 @@ export const getPlaylistScrollPosition = createSelector(
       return 0;
     }
     return Math.round(
-      Math.round(overflowTrackCount * playlistScrollPosition / 100) /
-        overflowTrackCount *
+      (Math.round((overflowTrackCount * playlistScrollPosition) / 100) /
+        overflowTrackCount) *
         100
     );
   }

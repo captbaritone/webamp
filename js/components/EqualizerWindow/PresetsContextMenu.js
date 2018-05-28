@@ -13,4 +13,7 @@ const PresetsContextMenu = props => (
 
 const mapDispatchToProps = { openEqfFileDialog, downloadPreset };
 
-export default connect(null, mapDispatchToProps)(PresetsContextMenu);
+export default connect(
+  null,
+  mapDispatchToProps
+)(PresetsContextMenu);

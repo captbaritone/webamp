@@ -33,4 +33,7 @@ const mapStateToProps = state => ({
     getVisibleTrackIds(state).length === state.playlist.length
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ScrollBar);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ScrollBar);

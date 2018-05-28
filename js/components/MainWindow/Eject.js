@@ -9,4 +9,7 @@ const Eject = props => (
 
 const mapDispatchToProps = { openMediaFileDialog };
 
-export default connect(null, mapDispatchToProps)(Eject);
+export default connect(
+  null,
+  mapDispatchToProps
+)(Eject);

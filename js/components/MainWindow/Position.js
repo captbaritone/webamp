@@ -43,7 +43,7 @@ const Position = ({
 const mapStateToProps = ({ media, userInput }) => {
   let position;
   if (media.length) {
-    position = Math.floor(media.timeElapsed) / media.length * 100;
+    position = (Math.floor(media.timeElapsed) / media.length) * 100;
   } else {
     position = 0;
   }
@@ -68,4 +68,7 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Position);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Position);

@@ -13,4 +13,7 @@ const EqOn = props => {
 
 const mapStateToProps = state => ({ on: state.equalizer.on });
 
-export default connect(mapStateToProps, { toggleEq })(EqOn);
+export default connect(
+  mapStateToProps,
+  { toggleEq }
+)(EqOn);

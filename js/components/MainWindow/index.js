@@ -169,4 +169,7 @@ const mapDispatchToProps = {
   toggleMainWindowShadeMode,
   scrollVolume
 };
-export default connect(mapStateToProps, mapDispatchToProps)(MainWindow);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MainWindow);

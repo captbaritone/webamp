@@ -8,4 +8,7 @@ const Close = ({ onClick }) => (
   <ClickedDiv id="close" onClick={onClick} title="Close" />
 );
 
-export default connect(null, { onClick: close })(Close);
+export default connect(
+  null,
+  { onClick: close }
+)(Close);

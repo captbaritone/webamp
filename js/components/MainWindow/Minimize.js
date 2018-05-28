@@ -11,4 +11,7 @@ const mapDispatchToProps = {
   minimize: () => ({ type: MINIMIZE_WINAMP })
 };
 
-export default connect(null, mapDispatchToProps)(Minimize);
+export default connect(
+  null,
+  mapDispatchToProps
+)(Minimize);

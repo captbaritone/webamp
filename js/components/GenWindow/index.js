@@ -111,4 +111,7 @@ const mapDispatchToProps = {
   scrollVolume
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(GenWindow);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GenWindow);

@@ -100,4 +100,7 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PlaylistShade);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PlaylistShade);

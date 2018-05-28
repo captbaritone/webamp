@@ -22,4 +22,7 @@ const mapDispatchToProps = {
   handleClick: () => toggleWindow("equalizer")
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EqToggleButton);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EqToggleButton);
