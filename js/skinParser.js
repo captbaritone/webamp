@@ -1,10 +1,6 @@
 import SKIN_SPRITES from "./skinSprites";
 import regionParser from "./regionParser";
-import {
-  LETTERS,
-  DEFAULT_VIS_COLORS,
-  DEFAULT_PLAYLIST_STYLE
-} from "./constants";
+import { LETTERS, DEFAULT_SKIN } from "./constants";
 import { parseViscolors, parseIni, getFileExtension } from "./utils";
 
 const getJSZip = () => {
@@ -159,7 +155,7 @@ async function genPlaylistStyle(zip) {
   const data = pledit && parseIni(pledit.contents).text;
   if (!data) {
     // Corrupt or missing PLEDIT.txt file.
-    return DEFAULT_PLAYLIST_STYLE;
+    return DEFAULT_SKIN.playlistStyle;
   }
 
   // Winamp seems to permit colors that contain too many characters.
@@ -175,12 +171,12 @@ async function genPlaylistStyle(zip) {
     data[colorKey] = color.slice(0, 7);
   });
 
-  return { ...DEFAULT_PLAYLIST_STYLE, ...data };
+  return { ...DEFAULT_SKIN.playlistStyle, ...data };
 }
 
-async function genColors(zip) {
+async function genVizColors(zip) {
   const viscolor = await genFileFromZip(zip, "VISCOLOR", "txt", "text");
-  return viscolor ? parseViscolors(viscolor.contents) : DEFAULT_VIS_COLORS;
+  return viscolor ? parseViscolors(viscolor.contents) : DEFAULT_SKIN.colors;
 }
 
 async function genImages(zip) {
@@ -264,7 +260,7 @@ async function skinParser(zipFileBuffer) {
     region,
     genTextSprites
   ] = await Promise.all([
-    genColors(zip),
+    genVizColors(zip),
     genPlaylistStyle(zip),
     genImages(zip),
     genCursors(zip),

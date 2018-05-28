@@ -1,4 +1,4 @@
-import { DEFAULT_VIS_COLORS } from "./constants";
+import { DEFAULT_SKIN } from "./constants";
 
 export const getTimeObj = time => {
   if (time == null) {
@@ -74,7 +74,7 @@ export const parseViscolors = text => {
     const matches = regex.exec(entries[i]);
     colors[i] = matches
       ? `rgb(${matches.slice(1, 4).join(",")})`
-      : DEFAULT_VIS_COLORS[i];
+      : DEFAULT_SKIN.colors[i];
   }
   return colors;
 };
