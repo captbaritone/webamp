@@ -1269,21 +1269,20 @@ builtin-status-codes@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/builtin-status-codes/-/builtin-status-codes-3.0.0.tgz#85982878e21b98e1c66425e03d0174788f569ee8"
 
-butterchurn-presets@^2.3.2:
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/butterchurn-presets/-/butterchurn-presets-2.3.2.tgz#f04552913e7b499df113946fa8888c9f1661fa7e"
+butterchurn-presets@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/butterchurn-presets/-/butterchurn-presets-2.4.1.tgz#cad3e94bf5665d65610bf336b57623616726bbe8"
   dependencies:
     babel-runtime "^6.26.0"
     ecma-proposal-math-extensions "0.0.2"
     lodash "^4.17.4"
 
-butterchurn@^2.3.2:
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/butterchurn/-/butterchurn-2.3.2.tgz#78eb04e9ad805828e07792f2589a23efda04cb2d"
+butterchurn@^2.4.3:
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/butterchurn/-/butterchurn-2.4.3.tgz#2dd90ba1bcbe8bd3908c3f053886d5f6bd92837a"
   dependencies:
     babel-runtime "^6.26.0"
     ecma-proposal-math-extensions "0.0.2"
-    lodash "^4.17.4"
 
 bytes@3.0.0:
   version "3.0.0"

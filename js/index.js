@@ -125,6 +125,8 @@ Raven.context(() => {
       playlist: { position: { x: 275, y: 0 }, size: [0, 8] },
       milkdrop: { position: { x: 0, y: 232 } }
     };
+
+    document.getElementById("butterchurn-share").style.display = "flex";
   }
 
   const initialSkin = !skinUrl ? null : { url: skinUrl };
