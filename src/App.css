@@ -1,0 +1,14 @@
+.screenshot {
+    image-rendering: pixelated;
+    height: 100%;
+}
+
+#overlay {
+    background-color: black;
+    height: 100%;
+    left: 0;
+    opacity: 0.9;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
