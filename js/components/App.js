@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { objectMap } from "../utils";
+import Emitter from "../emitter";
 import ContextMenuWrapper from "./ContextMenuWrapper";
 import MainContextMenu from "./MainWindow/MainContextMenu";
 import WindowManager from "./WindowManager";
@@ -14,6 +15,21 @@ import Skin from "./Skin";
 import "../../css/webamp.css";
 
 class App extends React.Component {
+  constructor() {
+    super();
+    this._handleKeyDown = this._handleKeyDown.bind(this);
+    this._emitter = new Emitter();
+  }
+
+  componentDidMount() {
+    document.addEventListener("keydown", this._handleKeyDown);
+  }
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this._handleKeyDown);
+  }
+  _handleKeyDown(e) {
+    this._emitter.trigger(this.props.focused, e);
+  }
   _renderWindows() {
     const {
       media,
@@ -46,6 +62,7 @@ class App extends React.Component {
             <GenWindow title={w.title} windowId={id}>
               {({ height, width }) => (
                 <Component
+                  onFocusedKeyDown={listener => this._emitter.on(id, listener)}
                   analyser={media.getAnalyser()}
                   width={width}
                   height={height}
@@ -82,6 +99,7 @@ App.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  focused: state.windows.focused,
   closed: state.display.closed,
   genWindowsInfo: state.windows.genWindows
 });

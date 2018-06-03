@@ -9,10 +9,10 @@ export default class Emitter {
     return unsubscribe;
   }
 
-  trigger(event) {
+  trigger(event, ...args) {
     const callbacks = this._listeners[event];
     if (callbacks) {
-      callbacks.forEach(cb => cb());
+      callbacks.forEach(cb => cb(...args));
     }
   }
 
