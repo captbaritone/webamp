@@ -10,6 +10,9 @@ class MilkdropWindow extends React.Component {
   constructor(props) {
     super(props);
     this._handleKeyboardInput = this._handleKeyboardInput.bind(this);
+    this._handleFocusedKeyboardInput = this._handleFocusedKeyboardInput.bind(
+      this
+    );
   }
   componentDidMount() {
     require.ensure(
@@ -59,6 +62,9 @@ class MilkdropWindow extends React.Component {
         this.presetCycle = true;
         this._restartCycling();
         document.addEventListener("keydown", this._handleKeyboardInput);
+        this._unsubscribeFocusedKeyDown = this.props.onFocusedKeyDown(
+          this._handleFocusedKeyboardInput
+        );
       },
       e => {
         console.error("Error loading Butterchurn presets", e);
@@ -70,6 +76,9 @@ class MilkdropWindow extends React.Component {
     this._pauseViz();
     this._stopCycling();
     document.removeEventListener("keydown", this._handleKeyboardInput);
+    if (this._unsubscribeFocusedKeyDown) {
+      this._unsubscribeFocusedKeyDown();
+    }
   }
   componentDidUpdate(prevProps) {
     if (
@@ -139,6 +148,9 @@ class MilkdropWindow extends React.Component {
         this._restartCycling();
         break;
     }
+  }
+  _handleFocusedKeyboardInput(e) {
+    console.log("Milkdrop keyDown", e.keyCode);
   }
   _nextPreset(blendTime) {
     // The visualizer may not have initialized yet.
