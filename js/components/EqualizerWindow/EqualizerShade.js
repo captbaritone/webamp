@@ -19,7 +19,7 @@ const EqualizerShade = props => {
       style={{ width: "100%", height: "100%" }}
     >
       <div id="equalizer-shade" onClick={props.toggleEqualizerShadeMode} />
-      <div id="equalizer-close" onClick={props.closeEqualizerWindow} />
+      <div id="equalizer-close" onClick={props.closeWindow} />
       <Volume id="equalizer-volume" className={eqVolumeClassName} />
       <Balance id="equalizer-balance" className={eqBalanceClassName} />
     </div>
