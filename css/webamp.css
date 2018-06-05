@@ -1,10 +1,14 @@
 /* Rules used by all windows */
 
 /* Prevent accidental highlighting */
-canvas {
+#webamp canvas {
     -webkit-user-select: none;
     -moz-user-select: none;
     user-select: none;
+}
+
+#webamp *:focus {
+    outline: 0;
 }
 
 /* Range input css reset */
