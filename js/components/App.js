@@ -1,8 +1,10 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { objectMap } from "../utils";
 import Emitter from "../emitter";
+import { WINDOWS } from "../constants";
 import ContextMenuWrapper from "./ContextMenuWrapper";
 import MainContextMenu from "./MainWindow/MainContextMenu";
 import WindowManager from "./WindowManager";
@@ -14,21 +16,57 @@ import Skin from "./Skin";
 
 import "../../css/webamp.css";
 
+/**
+ * Constructs the windows to render, and tracks focus.
+ */
 class App extends React.Component {
   constructor() {
     super();
-    this._handleKeyDown = this._handleKeyDown.bind(this);
     this._emitter = new Emitter();
+    this._windowNodes = {};
+    this._bindings = {};
+  }
+  componentDidMount() {
+    this._setFocus();
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.focused !== this.props.focused) {
+      this._setFocus();
+    }
+  }
+  _setFocus() {
+    const binding = this._bindings[this.props.focused];
+    if (binding.node) {
+      binding.node.focus();
+    }
   }
 
-  componentDidMount() {
-    document.addEventListener("keydown", this._handleKeyDown);
-  }
-  componentWillUnmount() {
-    document.removeEventListener("keydown", this._handleKeyDown);
-  }
-  _handleKeyDown(e) {
-    this._emitter.trigger(this.props.focused, e);
+  _gotRef(windowId, comp) {
+    if (comp == null) {
+      const binding = this._bindings[windowId];
+      if (binding.remove) {
+        binding.remove();
+      }
+      this._bindings[windowId] = null;
+      return;
+    }
+
+    const node = ReactDOM.findDOMNode(comp);
+    const binding = this._bindings[windowId];
+    if (binding && binding.node === node) {
+      return;
+    }
+
+    node.tabIndex = -1;
+    const listener = e => this._emitter.trigger(windowId, e);
+    node.addEventListener("keydown", listener);
+
+    this._bindings[windowId] = {
+      node,
+      remove: () => {
+        node.removeEventListener("keydown", listener);
+      }
+    };
   }
   _renderWindows() {
     const {
@@ -42,24 +80,36 @@ class App extends React.Component {
         return null;
       }
       switch (id) {
-        case "main":
+        case WINDOWS.MAIN:
           return (
             <MainWindow
+              ref={component => this._gotRef(id, component)}
               analyser={media.getAnalyser()}
               filePickers={filePickers}
             />
           );
-        case "equalizer":
-          return <EqualizerWindow />;
-        case "playlist":
-          return <PlaylistWindow analyser={media.getAnalyser()} />;
+        case WINDOWS.EQUALIZER:
+          return (
+            <EqualizerWindow ref={component => this._gotRef(id, component)} />
+          );
+        case WINDOWS.PLAYLIST:
+          return (
+            <PlaylistWindow
+              ref={component => this._gotRef(id, component)}
+              analyser={media.getAnalyser()}
+            />
+          );
         default:
           if (!w.generic) {
             throw new Error("Tried to render an unknown window:", id);
           }
           const Component = genWindowComponents[id];
           return (
-            <GenWindow title={w.title} windowId={id}>
+            <GenWindow
+              ref={component => this._gotRef(id, component)}
+              title={w.title}
+              windowId={id}
+            >
               {({ height, width }) => (
                 <Component
                   onFocusedKeyDown={listener => this._emitter.on(id, listener)}
