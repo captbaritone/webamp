@@ -75,8 +75,6 @@ body {
 
 #butterchurn-share {
   display: none; /* Button is only shown if the window gets enabled */
-  /* TODO: Figure out how to inline this */
-  background-image: url(/images/share/butterchurn-bg.png);
   background-size: 100%; /* Image is 2x size for retina displays */
 }
 
