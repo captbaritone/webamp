@@ -63,19 +63,20 @@ body {
 }
 
 #twitter-share {
-  background-color: #1da1f2;
+    background-color: #1da1f2;
 }
 #github-share {
-  background-color: #2d3238;
+    background-color: #2d3238;
 }
 
 #mail-share {
-  background-color: #6a7788;
+    background-color: #6a7788;
 }
 
 #butterchurn-share {
-  display: none; /* Button is only shown if the window gets enabled */
-  background-size: 100%; /* Image is 2x size for retina displays */
+    display: none; /* Button is only shown if the window gets enabled */
+    background-size: 100%; /* Image is 2x size for retina displays */
+    background-size: 100%; /* Image is 2x size for retina displays */
 }
 
 #app #loading {
