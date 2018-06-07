@@ -22,14 +22,14 @@ class MilkdropWindow extends React.Component {
   }
   componentDidMount() {
     require.ensure(
-      [
-        "butterchurn",
-        "butterchurn-presets/presets/converted/Geiss - Reaction Diffusion 2.json"
-      ],
+      ["butterchurn", "butterchurn-presets/lib/butterchurnPresetsMinimal.min"],
       require => {
         const analyserNode = this.props.analyser;
         const butterchurn = require("butterchurn");
-        const reactionDiffusion2 = require("butterchurn-presets/presets/converted/Geiss - Reaction Diffusion 2.json");
+        const butterchurnPresets = require("butterchurn-presets/lib/butterchurnPresetsMinimal.min");
+        this.presets = butterchurnPresets.getPresets();
+        this.presetKeys = Object.keys(this.presets);
+        const presetIdx = Math.floor(Math.random() * this.presetKeys.length);
 
         this.visualizer = butterchurn.createVisualizer(
           analyserNode.context,
@@ -43,7 +43,7 @@ class MilkdropWindow extends React.Component {
         this._canvasNode.width = this.props.width;
         this._canvasNode.height = this.props.height;
         this.visualizer.connectAudio(analyserNode);
-        this.visualizer.loadPreset(reactionDiffusion2, 0);
+        this.visualizer.loadPreset(this.presets[this.presetKeys[presetIdx]], 0);
         // Kick off the animation loop
         const loop = () => {
           if (this.props.status === "PLAYING") {
@@ -53,21 +53,7 @@ class MilkdropWindow extends React.Component {
         };
         loop();
 
-        screenfull.onchange(this._handleFullscreenChange);
-      },
-      e => {
-        console.error("Error loading Butterchurn", e);
-      },
-      "butterchurn"
-    );
-
-    require.ensure(
-      ["butterchurn-presets"],
-      require => {
-        const butterchurnPresets = require("butterchurn-presets");
-        this.presets = butterchurnPresets.getPresets();
-        this.presetKeys = Object.keys(this.presets);
-        this.presetHistory = [];
+        this.presetHistory = [presetIdx];
         this.presetRandomize = true;
         this.presetCycle = true;
         this._restartCycling();
@@ -76,9 +62,9 @@ class MilkdropWindow extends React.Component {
         );
       },
       e => {
-        console.error("Error loading Butterchurn presets", e);
+        console.error("Error loading Butterchurn", e);
       },
-      "butterchurn-presets"
+      "butterchurn"
     );
   }
   componentWillUnmount() {
