@@ -56,7 +56,7 @@
 
 <body>
     <div id='app'>
-        <div id="loading">
+        <div id="loading" style="display: none">
             Loading<span class="ellipsis-anim"><span>.</span><span>.</span><span>.</span></span>
         </div>
     </div>
@@ -75,6 +75,15 @@
             <img inline src="images/share/github.svg" />
         </a>
     </p>
+    <script type="text/javascript">
+        // If we can load faster than half a second, don't bother showing the loading indicator.
+        setTimeout(function() {
+            var loading = document.getElementById('loading');
+            if (loading != null) {
+                loading.style.display = 'block';
+            }
+        }, 500)
+    </script>
     <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="7py29249dpeddu8" async></script>
     <!-- Scripts get injected by html-webpack-plugin -->
 </body>
