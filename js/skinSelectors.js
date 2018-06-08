@@ -227,7 +227,7 @@ export const imageSelectors = {
   MAIN_OPTIONS_BUTTON: [".selected #title-bar #option.clicked"],
   MAIN_OPTIONS_BUTTON_DEPRESSED: [
     ".selected #title-bar #option:active",
-    ".selected #title-bar #option:selected"
+    ".selected #title-bar #option.selected"
   ],
   MAIN_MINIMIZE_BUTTON: [".selected #title-bar #minimize.clicked"],
   MAIN_MINIMIZE_BUTTON_DEPRESSED: [".selected #title-bar #minimize:active"],
@@ -239,7 +239,7 @@ export const imageSelectors = {
   MAIN_CLUTTER_BAR_BACKGROUND_DISABLED: ["#clutter-bar.disabled"],
   MAIN_CLUTTER_BAR_BUTTON_O_SELECTED: [
     "#button-o:active",
-    "#button-0:selected"
+    "#button-0.selected"
   ],
   MAIN_CLUTTER_BAR_BUTTON_A_SELECTED: [
     "#button-a:active",
