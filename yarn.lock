@@ -1269,9 +1269,9 @@ builtin-status-codes@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/builtin-status-codes/-/builtin-status-codes-3.0.0.tgz#85982878e21b98e1c66425e03d0174788f569ee8"
 
-butterchurn-presets@^2.4.4:
-  version "2.4.4"
-  resolved "https://registry.yarnpkg.com/butterchurn-presets/-/butterchurn-presets-2.4.4.tgz#23764b47e9d30c29caf95d974a92002f6f29c057"
+butterchurn-presets@^2.4.5:
+  version "2.4.5"
+  resolved "https://registry.yarnpkg.com/butterchurn-presets/-/butterchurn-presets-2.4.5.tgz#5e05f2c57e941ff2d24f655b0ea842ca1ff4787a"
   dependencies:
     babel-runtime "^6.26.0"
     ecma-proposal-math-extensions "0.0.2"

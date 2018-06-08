@@ -28,7 +28,7 @@ class PresetOverlay extends React.Component {
         this.setState({
           presetIdx: Math.min(
             this.state.presetIdx + 1,
-            Object.keys(this.props.presets).length - 1
+            this.props.presetKeys.length - 1
           )
         });
         e.stopPropagation();
@@ -44,7 +44,7 @@ class PresetOverlay extends React.Component {
     }
   }
   render() {
-    if (!this.props.presets) {
+    if (!this.props.presetKeys) {
       return (
         <div
           style={{
@@ -61,8 +61,7 @@ class PresetOverlay extends React.Component {
     }
 
     // display highlighted preset in the middle if possible
-    const presetKeys = Object.keys(this.props.presets);
-    const numPresets = presetKeys.length;
+    const numPresets = this.props.presetKeys.length;
     let presetListLen = Math.floor(this.props.height / 20);
     presetListLen = Math.min(Math.max(presetListLen, 3), numPresets);
     presetListLen = presetListLen % 2 ? presetListLen : presetListLen - 1;
@@ -73,7 +72,7 @@ class PresetOverlay extends React.Component {
       startIdx = Math.max(endIdx - presetListLen, 0);
       endIdx = Math.min(startIdx + presetListLen, numPresets);
     }
-    const presets = presetKeys.slice(startIdx, endIdx);
+    const presets = this.props.presetKeys.slice(startIdx, endIdx);
     const presetElms = presets.map((presetName, i) => {
       let color;
       if (i + startIdx === this.props.currentPreset) {
