@@ -61,13 +61,15 @@ class MilkdropWindow extends React.Component {
         };
         loop();
 
-        this.presetHistory = [this.presetKeys.indexOf(presetKey)];
+        const presetIdx = this.presetKeys.indexOf(presetKey);
+        this.presetHistory = [presetIdx];
         this.presetRandomize = true;
         this.presetCycle = true;
         this._restartCycling();
         this._unsubscribeFocusedKeyDown = this.props.onFocusedKeyDown(
           this._handleFocusedKeyboardInput
         );
+        this.setState({ currentPreset: presetIdx });
       },
       e => {
         console.error("Error loading Butterchurn", e);
@@ -163,11 +165,13 @@ class MilkdropWindow extends React.Component {
     }
   }
   async _loadMainPresetPack() {
+    this.loadingPresets = true;
     return require.ensure(
       ["butterchurn-presets/lib/butterchurnPresetsNonMinimal.min"],
       require => {
         const butterchurnNonMinimalPresets = require("butterchurn-presets/lib/butterchurnPresetsNonMinimal.min");
         Object.assign(this.presets, butterchurnNonMinimalPresets.getPresets());
+        this.loadingPresets = false;
       },
       e => {
         console.error("Error loading Butterchurn Presets", e);
@@ -185,19 +189,15 @@ class MilkdropWindow extends React.Component {
         const prevPresetIdx = this.presetHistory[this.presetHistory.length - 1];
         presetIdx = (prevPresetIdx + 1) % this.presetKeys.length;
       }
-      let preset = this.presets[this.presetKeys[presetIdx]];
-      if (!preset) {
-        await this._loadMainPresetPack();
-        preset = this.presets[this.presetKeys[presetIdx]];
-      }
-
-      this.presetHistory.push(presetIdx);
-      this.visualizer.loadPreset(preset, blendTime);
-      this._restartCycling();
-      this.setState({ currentPreset: presetIdx });
+      this.selectPreset(presetIdx, blendTime);
     }
   }
   _prevPreset(blendTime) {
+    if (this.loadingPresets && this.presetQueue.length > 1) {
+      this.presetQueue.pop();
+      return;
+    }
+
     if (this.presetHistory.length > 1 && this.visualizer != null) {
       this.presetHistory.pop();
       const prevPreset = this.presetHistory[this.presetHistory.length - 1];
@@ -209,16 +209,30 @@ class MilkdropWindow extends React.Component {
       this.setState({ currentPreset: prevPreset });
     }
   }
-  async selectPreset(presetIdx) {
-    let preset = this.presets[this.presetKeys[presetIdx]];
-    if (!preset) {
-      await this._loadMainPresetPack();
-      preset = this.presets[this.presetKeys[presetIdx]];
+  async selectPreset(presetIdx, blendTime) {
+    if (this.loadingPresets) {
+      this.presetQueue.push(presetIdx);
+      return;
     }
-    this.presetHistory.push(presetIdx);
-    this.visualizer.loadPreset(preset, 0);
+
+    let preset = this.presets[this.presetKeys[presetIdx]];
+    let selectedIdx;
+    if (!preset) {
+      this.presetQueue = [presetIdx];
+      await this._loadMainPresetPack();
+      if (this.presetQueue.length === 0) {
+        return;
+      }
+      selectedIdx = this.presetQueue[this.presetQueue.length - 1];
+      preset = this.presets[this.presetKeys[selectedIdx]];
+      this.presetHistory = this.presetHistory.concat(this.presetQueue);
+    } else {
+      selectedIdx = presetIdx;
+      this.presetHistory.push(selectedIdx);
+    }
+    this.visualizer.loadPreset(preset, blendTime);
     this._restartCycling();
-    this.setState({ currentPreset: presetIdx });
+    this.setState({ currentPreset: selectedIdx });
   }
   closePresetOverlay() {
     this.setState({ presetOverlay: false });
@@ -255,7 +269,7 @@ class MilkdropWindow extends React.Component {
             presetKeys={this.presetKeys}
             currentPreset={this.state.currentPreset}
             onFocusedKeyDown={listener => this.props.onFocusedKeyDown(listener)}
-            selectPreset={idx => this.selectPreset(idx)}
+            selectPreset={idx => this.selectPreset(idx, 0)}
             closeOverlay={() => this.closePresetOverlay()}
           />
         )}
