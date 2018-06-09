@@ -164,13 +164,10 @@ class MilkdropWindow extends React.Component {
   }
   async _loadMainPresetPack() {
     return require.ensure(
-      ["butterchurn-presets"],
+      ["butterchurn-presets/lib/butterchurnPresetsNonMinimal.min"],
       require => {
-        const butterchurnPresets = require("butterchurn-presets");
-        this.presets = Object.assign(
-          this.presets,
-          butterchurnPresets.getPresets()
-        );
+        const butterchurnNonMinimalPresets = require("butterchurn-presets/lib/butterchurnPresetsNonMinimal.min");
+        Object.assign(this.presets, butterchurnNonMinimalPresets.getPresets());
       },
       e => {
         console.error("Error loading Butterchurn Presets", e);
