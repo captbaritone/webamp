@@ -32,8 +32,12 @@ const config = merge(common, {
     }),
     new workboxPlugin.GenerateSW({
       swDest: "service-worker.js",
+      // importWorkboxFrom: "local",
       clientsClaim: true,
-      skipWaiting: true
+      skipWaiting: true,
+      // Safari (mobile and desktop) seems to have CORs issues when loading
+      // .mp3s from service workers.
+      exclude: [/\.mp3/, /\.wsz/]
     })
   ]
 });
