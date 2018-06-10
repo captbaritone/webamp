@@ -8,16 +8,19 @@ class PresetOverlay extends React.Component {
       this
     );
   }
+
   componentDidMount() {
     this._unsubscribeFocusedKeyDown = this.props.onFocusedKeyDown(
       this._handleFocusedKeyboardInput
     );
   }
+
   componentWillUnmount() {
     if (this._unsubscribeFocusedKeyDown) {
       this._unsubscribeFocusedKeyDown();
     }
   }
+
   _handleFocusedKeyboardInput(e) {
     switch (e.keyCode) {
       case 38: // up arrow
@@ -43,6 +46,7 @@ class PresetOverlay extends React.Component {
         break;
     }
   }
+
   render() {
     if (!this.props.presetKeys) {
       return (

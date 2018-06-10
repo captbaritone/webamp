@@ -120,6 +120,7 @@ class App extends React.Component {
                   analyser={media.getAnalyser()}
                   width={width}
                   height={height}
+                  playing={this.props.status === "PLAYING"}
                 />
               )}
             </GenWindow>
@@ -154,6 +155,7 @@ App.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  status: state.media.status,
   focused: state.windows.focused,
   closed: state.display.closed,
   genWindowsInfo: state.windows.genWindows
