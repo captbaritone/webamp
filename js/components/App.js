@@ -26,14 +26,17 @@ class App extends React.Component {
     this._windowNodes = {};
     this._bindings = {};
   }
+
   componentDidMount() {
     this._setFocus();
   }
+
   componentDidUpdate(prevProps) {
     if (prevProps.focused !== this.props.focused) {
       this._setFocus();
     }
   }
+
   _setFocus() {
     const binding = this._bindings[this.props.focused];
     if (binding.node) {
@@ -68,6 +71,7 @@ class App extends React.Component {
       }
     };
   }
+
   _renderWindows() {
     const {
       media,
@@ -123,6 +127,7 @@ class App extends React.Component {
       }
     });
   }
+
   render() {
     const { closed, container, filePickers } = this.props;
     if (closed) {

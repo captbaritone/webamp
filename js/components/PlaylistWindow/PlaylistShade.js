@@ -24,6 +24,7 @@ class PlaylistShade extends React.Component {
   _addedWidth() {
     return this.props.playlistSize[0] * WINDOW_RESIZE_SEGMENT_WIDTH;
   }
+
   _trimmedName() {
     const { name } = this.props;
     if (name == null) {

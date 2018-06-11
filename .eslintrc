@@ -36,6 +36,7 @@
     "dot-notation": "error",
     "eqeqeq": ["error", "smart"],
     "guard-for-in": "error",
+    "lines-between-class-members": "error",
     "max-depth": ["warn", 4],
     "max-params": ["warn", 5],
     "new-cap": "error",

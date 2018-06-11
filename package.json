@@ -8,7 +8,7 @@
     "built/webamp.bundle.min.js"
   ],
   "scripts": {
-    "lint": "jest --projects config/jest.eslint.js",
+    "lint": "eslint .",
     "build": "webpack --config=config/webpack.prod.js",
     "build-library": "webpack --config=config/webpack.library.js",
     "prepublishOnly": "npm run build-library",

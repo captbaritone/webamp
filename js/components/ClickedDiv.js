@@ -12,6 +12,7 @@ export default class ClickedDiv extends React.Component {
     super(props);
     this.state = { clicked: false };
   }
+
   render() {
     return (
       <div

@@ -10,6 +10,7 @@ export default class ResizeTarget extends React.Component {
     super(props);
     this.handleMouseDown = this.handleMouseDown.bind(this);
   }
+
   handleMouseDown(e) {
     // Prevent dragging from highlighting text.
     e.preventDefault();
