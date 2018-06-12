@@ -34,9 +34,15 @@ class Visualizer extends React.Component {
       if (this.props.status === "PLAYING") {
         this.paintFrame();
       }
-      window.requestAnimationFrame(loop);
+      this._animationRequest = window.requestAnimationFrame(loop);
     };
     loop();
+  }
+
+  componentWillUnmount() {
+    if (this._animationRequest) {
+      window.cancelAnimationFrame(this._animationRequest);
+    }
   }
 
   componentDidUpdate() {
