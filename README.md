@@ -59,10 +59,10 @@ Additionally, if you want to fork the project, deploying should be as simple as 
 
 There are some "feature flags" which you can manipulate by passing a specially crafted URL hash. Simply supply a JSON blob after the `#` of the URL to change these settings:
 
-* `skinUrl` (string) Url of the default skin to use. Note, this file must be served with the correct Allows Origin header.
-* `audioUrl` (string) Url of the default audio file to use. Note, this file must be served with the correct Allows Origin header.
-* `hideAbout` (boolean) Selectively hide the byline and GitHub link at the bottom of the page. Useful for taking screenshots.
-* `initialState` (object) Override the [initial Redux state](js/reducers.js). Values from this object will be recursively merged into the actual default state.
+- `skinUrl` (string) Url of the default skin to use. Note, this file must be served with the correct Allows Origin header.
+- `audioUrl` (string) Url of the default audio file to use. Note, this file must be served with the correct Allows Origin header.
+- `hideAbout` (boolean) Selectively hide the byline and GitHub link at the bottom of the page. Useful for taking screenshots.
+- `initialState` (object) Override the [initial Redux state](js/reducers.js). Values from this object will be recursively merged into the actual default state.
 
 **Note:** These are intended mostly as development tools and are subject to change at any time.
 
@@ -72,40 +72,41 @@ Join our community chat on Discord: <https://discord.gg/fBTDMqR>
 
 There are a few related projects that have communites:
 
-* [Winamp Community Update Pack] - "New plug-ins to add additional features to Winamp as well as replacement plug-ins to provide better implementations of some of the plug-ins natively included with Winamp". ([Forum](https://getwacup.com/community/) / [Discord server](https://discord.gg/5pVTdbj))
-* [Webvs](https://gitter.im/visbot/AVS) -
+- [Winamp Community Update Pack] - "New plug-ins to add additional features to Winamp as well as replacement plug-ins to provide better implementations of some of the plug-ins natively included with Winamp". ([Forum](https://getwacup.com/community/) / [Discord server](https://discord.gg/5pVTdbj))
+- [Webvs](https://gitter.im/visbot/AVS) -
   A Winamp AVS like visualization library for the web. ([Gitter chat](https://gitter.im/visbot/AVS))
 
 ## Reference
 
-* [skinspecs.pdf](http://members.xoom.it/skinart/tutorial/skinspecs..pdf)
-* [Skinner's Atlas 1.5 by Jellby](http://forums.winamp.com/showthread.php?p=951257)
-* [Winamp Skinning Tutorial](http://people.xmms2.org/~tru/promoe/Winamp_skinning_tutorial_1_5_0.pdf)
-* Sacrat Skinning tutorial parts [1](http://www.hugi.scene.org/online/hugi26/hugi%2026%20-%20graphics%20skinning%20sacrat%20winamp%20skinning%20tutorial%20-%201.htm), [2](http://www.hugi.scene.org/online/hugi26/hugi%2026%20-%20graphics%20skinning%20sacrat%20winamp%20skinning%20tutorial%20-%202.htm), [3](http://www.hugi.scene.org/online/hugi26/hugi%2026%20-%20graphics%20skinning%20sacrat%20winamp%20skinning%20tutorial%20-%203.htm), [4](http://www.hugi.scene.org/online/hugi26/hugi%2026%20-%20graphics%20skinning%20sacrat%20winamp%20skinning%20tutorial%20-%204.htm), and [5](http://www.hugi.scene.org/online/hugi26/hugi%2026%20-%20graphics%20skinning%20sacrat%20winamp%20skinning%20tutorial%20-%205.htm),
-* [Winamp Wiki](http://wiki.winamp.com/wiki/Creating_Classic_Skins)
+- [skinspecs.pdf](http://members.xoom.it/skinart/tutorial/skinspecs..pdf)
+- [Skinner's Atlas 1.5 by Jellby](http://forums.winamp.com/showthread.php?p=951257)
+- [Winamp Skinning Tutorial](http://people.xmms2.org/~tru/promoe/Winamp_skinning_tutorial_1_5_0.pdf)
+- Sacrat Skinning tutorial parts [1](http://www.hugi.scene.org/online/hugi26/hugi%2026%20-%20graphics%20skinning%20sacrat%20winamp%20skinning%20tutorial%20-%201.htm), [2](http://www.hugi.scene.org/online/hugi26/hugi%2026%20-%20graphics%20skinning%20sacrat%20winamp%20skinning%20tutorial%20-%202.htm), [3](http://www.hugi.scene.org/online/hugi26/hugi%2026%20-%20graphics%20skinning%20sacrat%20winamp%20skinning%20tutorial%20-%203.htm), [4](http://www.hugi.scene.org/online/hugi26/hugi%2026%20-%20graphics%20skinning%20sacrat%20winamp%20skinning%20tutorial%20-%204.htm), and [5](http://www.hugi.scene.org/online/hugi26/hugi%2026%20-%20graphics%20skinning%20sacrat%20winamp%20skinning%20tutorial%20-%205.htm),
+- [Winamp Wiki](http://wiki.winamp.com/wiki/Creating_Classic_Skins)
 
 ## Predecessors
 
-* [Webamp2x](http://forums.winamp.com/showthread.php?threadid=91850) An
+- [Webamp2x](http://forums.winamp.com/showthread.php?threadid=91850) An
   impressive implementation from 2002(!).
-* [JsAmp](http://freecog.net/2005/jsamp/demo/MainWindow.xhtml) An implementation from 2005 by @twm (via [Hacker News](https://news.ycombinator.com/item?id=15317723)).
-* [LlamaCloud Comp](https://vimeo.com/20149683) From 2011 by [Lee Martin](http://www.leemartin.com/) (via [Twitter](https://twitter.com/leemartin/status/910235793737814017))
-* [Winamp em HTML5 e Javascript](http://www.tidbits.com.br/winamp-em-html5-e-javascript)
+- [JsAmp](http://freecog.net/2005/jsamp/demo/MainWindow.xhtml) An implementation from 2005 by @twm (via [Hacker News](https://news.ycombinator.com/item?id=15317723)).
+- [LlamaCloud Comp](https://vimeo.com/20149683) From 2011 by [Lee Martin](http://www.leemartin.com/) (via [Twitter](https://twitter.com/leemartin/status/910235793737814017))
+- [Winamp em HTML5 e Javascript](http://www.tidbits.com.br/winamp-em-html5-e-javascript)
   In 2010 a developer named Danilo posted one of his HTML5 experiments: "an
   audio player simulating good old Winamp". You will have to download the zip
   file.
-* [JuicyDrop](http://cggaurav.github.io/juicydrop/) An HTML5 implementation with
+- [JuicyDrop](http://cggaurav.github.io/juicydrop/) An HTML5 implementation with
   less emphasis on being true to the skin, but fully featured visualizations.
   @cggaurav is keeping it alive on [GitHub](https://github.com/cggaurav/juicydrop)
-* [Spotiamp](http://spotiamp.com/) The folks at Spotify reimplemented Winamp as
+- [Spotiamp](http://spotiamp.com/) The folks at Spotify reimplemented Winamp as
   a frontend for Spotify. Not in a browser, and only runs on Windows.
 
 ## Thanks
 
-* Research and feature prototyping: @PAEz
-* Beta feedback, catching many small UI inconsistencies: [LuigiHann](https://twitter.com/LuigiHann)
-* Beta feedback and insider answers to obscure Winamp questions: [Darren Owen](https://twitter.com/The_DoctorO)
-* Donating the `webamp` NPM module name: [Dave Eddy](http://daveeddy.com/)
+- [Butterchurn](https://github.com/jberg/butterchurn), the amazing Mikdrop 2 WebGL implementation. Built and integrated into Webamp by: [jberg](https://github.com/jberg)
+- Research and feature prototyping: @PAEz
+- Beta feedback, catching many small UI inconsistencies: [LuigiHann](https://twitter.com/LuigiHann)
+- Beta feedback and insider answers to obscure Winamp questions: [Darren Owen](https://twitter.com/The_DoctorO)
+- Donating the `webamp` NPM module name: [Dave Eddy](http://daveeddy.com/)
 
 Thank you to [Justin Frankel](http://www.1014.org/) and everyone at Nullsoft
 for Winamp which inspired so many of us.
