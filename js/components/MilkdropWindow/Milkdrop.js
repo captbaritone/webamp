@@ -38,7 +38,7 @@ export default class Milkdrop extends React.Component {
 
     // Kick off the animation loop
     const loop = () => {
-      if (this.props.playing) {
+      if (this.props.playing && this.props.isEnabledVisualizer) {
         this.visualizer.render();
       }
       this._animationFrameRequest = window.requestAnimationFrame(loop);
@@ -194,7 +194,8 @@ export default class Milkdrop extends React.Component {
         <canvas
           style={{
             height: "100%",
-            width: "100%"
+            width: "100%",
+            display: this.props.isEnabledVisualizer ? "block" : "none"
           }}
           ref={node => (this._canvasNode = node)}
         />

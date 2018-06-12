@@ -24,7 +24,8 @@ import {
   MINIMIZE_WINAMP,
   ADD_GEN_WINDOW,
   UPDATE_WINDOW_POSITIONS,
-  LOADED
+  LOADED,
+  REGISTER_VISUALIZER
 } from "./actionTypes";
 import Emitter from "./emitter";
 
@@ -97,6 +98,12 @@ class Winamp {
         ...genWindow
       }));
     }
+
+    __extraWindows.forEach(genWindow => {
+      if (genWindow.isVisualizer) {
+        this.store.dispatch({ type: REGISTER_VISUALIZER, id: genWindow.id });
+      }
+    });
 
     this.genWindows.forEach(genWindow => {
       this.store.dispatch({

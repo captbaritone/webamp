@@ -15,6 +15,7 @@ import {
 } from "./constants";
 import { createPlaylistURL } from "./playlistHtml";
 import * as fromPlaylist from "./reducers/playlist";
+import * as fromDisplay from "./reducers/display";
 import { generateGraph } from "./resizeUtils";
 
 export const getEqfData = state => {
@@ -320,3 +321,6 @@ export const getSkinPlaylistStyle = state => {
     }
   );
 };
+
+export const getVisualizerStyle = state =>
+  fromDisplay.getVisualizerStyle(state.display);

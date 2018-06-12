@@ -1,3 +1,5 @@
+import { createSelector } from "reselect";
+
 import {
   CLOSE_WINAMP,
   SET_SKIN_DATA,
@@ -8,9 +10,22 @@ import {
   TOGGLE_LLAMA_MODE,
   TOGGLE_VISUALIZER_STYLE,
   SET_PLAYLIST_SCROLL_POSITION,
-  LOADED
+  LOADED,
+  REGISTER_VISUALIZER
 } from "../actionTypes";
 import { DEFAULT_SKIN, VISUALIZER_ORDER } from "../constants";
+
+export const getVisualizationOrder = state => {
+  return [...state.additionalVisualizers, ...VISUALIZER_ORDER];
+};
+
+export const getVisualizerStyle = createSelector(
+  getVisualizationOrder,
+  state => state.visualizerStyle,
+  (visualizationOrder, visualizationStyle) => {
+    return visualizationOrder[visualizationStyle];
+  }
+);
 
 const defaultDisplayState = {
   doubled: false,
@@ -26,7 +41,8 @@ const defaultDisplayState = {
   skinRegion: {},
   visualizerStyle: 0, // Index into VISUALIZER_ORDER
   playlistScrollPosition: 0,
-  skinGenLetterWidths: null // TODO: Get the default value for this?
+  skinGenLetterWidths: null, // TODO: Get the default value for this?
+  additionalVisualizers: []
 };
 
 const display = (state = defaultDisplayState, action) => {
@@ -59,7 +75,13 @@ const display = (state = defaultDisplayState, action) => {
     case TOGGLE_VISUALIZER_STYLE:
       return {
         ...state,
-        visualizerStyle: (state.visualizerStyle + 1) % VISUALIZER_ORDER.length
+        visualizerStyle:
+          (state.visualizerStyle + 1) % getVisualizationOrder(state).length
+      };
+    case REGISTER_VISUALIZER:
+      return {
+        ...state,
+        additionalVisualizers: [action.id, ...state.additionalVisualizers]
       };
     case SET_PLAYLIST_SCROLL_POSITION:
       return { ...state, playlistScrollPosition: action.position };
@@ -67,5 +89,4 @@ const display = (state = defaultDisplayState, action) => {
       return state;
   }
 };
-
 export default display;

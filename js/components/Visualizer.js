@@ -2,8 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { toggleVisualizerStyle } from "../actionCreators";
-import { getWindowShade } from "../selectors";
-import { VISUALIZER_ORDER, VISUALIZERS } from "../constants";
+import { getWindowShade, getVisualizerStyle } from "../selectors";
+import { VISUALIZERS } from "../constants";
 
 const PIXEL_DENSITY = 2;
 const BAR_WIDTH = 6;
@@ -228,7 +228,6 @@ class Visualizer extends React.Component {
   }
 
   render() {
-    console.log(this.props.style);
     const { width, height } = this.props;
     return (
       <canvas
@@ -245,7 +244,7 @@ class Visualizer extends React.Component {
 
 const mapStateToProps = state => ({
   colors: state.display.skinColors,
-  style: VISUALIZER_ORDER[state.display.visualizerStyle],
+  style: getVisualizerStyle(state),
   width: getWindowShade(state, "main") ? 38 : 76,
   height: getWindowShade(state, "main") ? 5 : 16,
   status: state.media.status,

@@ -117,6 +117,7 @@ Raven.context(() => {
     __extraWindows.push({
       id: "milkdrop",
       title: "Milkdrop",
+      isVisualizer: true,
       Component: MilkdropWindow
     });
     __initialWindowLayout = {

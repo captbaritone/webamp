@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { objectMap } from "../utils";
 import Emitter from "../emitter";
 import { WINDOWS } from "../constants";
+import { getVisualizerStyle } from "../selectors";
 import ContextMenuWrapper from "./ContextMenuWrapper";
 import MainContextMenu from "./MainWindow/MainContextMenu";
 import WindowManager from "./WindowManager";
@@ -118,6 +119,7 @@ class App extends React.Component {
                 <Component
                   onFocusedKeyDown={listener => this._emitter.on(id, listener)}
                   analyser={media.getAnalyser()}
+                  isEnabledVisualizer={this.props.visualizerStyle === id}
                   width={width}
                   height={height}
                   playing={this.props.status === "PLAYING"}
@@ -155,6 +157,7 @@ App.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  visualizerStyle: getVisualizerStyle(state),
   status: state.media.status,
   focused: state.windows.focused,
   closed: state.display.closed,
