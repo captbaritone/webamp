@@ -21,7 +21,6 @@ export default class Milkdrop extends React.Component {
   }
 
   async componentDidMount() {
-    this.setState({ currentPreset: this.props.presets.getCurrentIndex() });
     this.visualizer = this.props.butterchurn.createVisualizer(
       this.props.analyser.context,
       this._canvasNode,
@@ -34,6 +33,8 @@ export default class Milkdrop extends React.Component {
     this._setRendererSize(this.props.width, this.props.height);
 
     this.visualizer.connectAudio(this.props.analyser);
+    this.presetCycle = true;
+    this.selectPreset(this.props.presets.getCurrent(), 0);
 
     // Kick off the animation loop
     const loop = () => {
@@ -44,7 +45,6 @@ export default class Milkdrop extends React.Component {
     };
     loop();
 
-    this.presetCycle = true;
     this._unsubscribeFocusedKeyDown = this.props.onFocusedKeyDown(
       this._handleFocusedKeyboardInput
     );
@@ -156,6 +156,8 @@ export default class Milkdrop extends React.Component {
     if (preset != null) {
       this.visualizer.loadPreset(preset, blendTime);
       this._restartCycling();
+      // TODO: Kinda weird that we use the passed preset for the visualizer,
+      // but set state to the current. Maybe we should just always use the curent..
       this.setState({ currentPreset: this.props.presets.getCurrentIndex() });
     }
   }
