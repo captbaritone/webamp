@@ -29,3 +29,15 @@ export const TRACK_HEIGHT = 13;
 export const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
 export const DEFAULT_SKIN = baseSkin;
+
+export const VISUALIZERS = {
+  OSCILLOSCOPE: "OSCILLOSCOPE",
+  BAR: "BAR",
+  NONE: "NONE"
+};
+
+export const VISUALIZER_ORDER = [
+  VISUALIZERS.BAR,
+  VISUALIZERS.OSCILLOSCOPE, // TODO: Verify the order
+  VISUALIZERS.NONE
+];

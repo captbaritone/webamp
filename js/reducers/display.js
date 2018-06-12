@@ -10,7 +10,7 @@ import {
   SET_PLAYLIST_SCROLL_POSITION,
   LOADED
 } from "../actionTypes";
-import { DEFAULT_SKIN } from "../constants";
+import { DEFAULT_SKIN, VISUALIZER_ORDER } from "../constants";
 
 const defaultDisplayState = {
   doubled: false,
@@ -24,7 +24,7 @@ const defaultDisplayState = {
   skinCursors: null,
   skinPlaylistStyle: null,
   skinRegion: {},
-  visualizerStyle: 2,
+  visualizerStyle: 0, // Index into VISUALIZER_ORDER
   playlistScrollPosition: 0,
   skinGenLetterWidths: null // TODO: Get the default value for this?
 };
@@ -57,7 +57,10 @@ const display = (state = defaultDisplayState, action) => {
         skinGenLetterWidths: action.skinGenLetterWidths
       };
     case TOGGLE_VISUALIZER_STYLE:
-      return { ...state, visualizerStyle: (state.visualizerStyle + 1) % 3 };
+      return {
+        ...state,
+        visualizerStyle: (state.visualizerStyle + 1) % VISUALIZER_ORDER.length
+      };
     case SET_PLAYLIST_SCROLL_POSITION:
       return { ...state, playlistScrollPosition: action.position };
     default:

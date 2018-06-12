@@ -3,9 +3,8 @@ import { connect } from "react-redux";
 
 import { toggleVisualizerStyle } from "../actionCreators";
 import { getWindowShade } from "../selectors";
+import { VISUALIZER_ORDER, VISUALIZERS } from "../constants";
 
-const OSCILLOSCOPE = 1;
-const BAR = 2;
 const PIXEL_DENSITY = 2;
 const BAR_WIDTH = 6;
 const GRADIENT_COLOR_COUNT = 16;
@@ -75,11 +74,11 @@ class Visualizer extends React.Component {
     // update.
     this.preRenderBg();
     this.preRenderBar();
-    if (this.props.style === OSCILLOSCOPE) {
+    if (this.props.style === VISUALIZERS.OSCILLOSCOPE) {
       this.props.analyser.fftSize = 2048;
       this.bufferLength = this.props.analyser.fftSize;
       this.dataArray = new Uint8Array(this.bufferLength);
-    } else if (this.props.style === BAR) {
+    } else if (this.props.style === VISUALIZERS.BAR) {
       this.props.analyser.fftSize = 64; // Must be a power of two
       // Number of bins/bars we get
       this.bufferLength = this.props.analyser.frequencyBinCount;
@@ -152,9 +151,9 @@ class Visualizer extends React.Component {
 
   paintFrame() {
     this.clear();
-    if (this.props.style === OSCILLOSCOPE) {
+    if (this.props.style === VISUALIZERS.OSCILLOSCOPE) {
       this._paintOscilloscopeFrame();
-    } else if (this.props.style === BAR) {
+    } else if (this.props.style === VISUALIZERS.BAR) {
       this._paintBarFrame();
     }
   }
@@ -229,6 +228,7 @@ class Visualizer extends React.Component {
   }
 
   render() {
+    console.log(this.props.style);
     const { width, height } = this.props;
     return (
       <canvas
@@ -245,7 +245,7 @@ class Visualizer extends React.Component {
 
 const mapStateToProps = state => ({
   colors: state.display.skinColors,
-  style: state.display.visualizerStyle,
+  style: VISUALIZER_ORDER[state.display.visualizerStyle],
   width: getWindowShade(state, "main") ? 38 : 76,
   height: getWindowShade(state, "main") ? 5 : 16,
   status: state.media.status,
