@@ -18,6 +18,7 @@ export default class Milkdrop extends React.Component {
       this
     );
     this._handleFullscreenChange = this._handleFullscreenChange.bind(this);
+    this._handleFileDrop = this._handleFileDrop.bind(this);
   }
 
   async componentDidMount() {
@@ -99,6 +100,40 @@ export default class Milkdrop extends React.Component {
     this.visualizer.setRendererSize(width, height);
   }
 
+  _convertAndLoadPreset(preset) {
+    return require.ensure(
+      ["milkdrop-preset-converter"],
+      require => {
+        const milkdropPresetConverter = require("milkdrop-preset-converter");
+        const convertedPreset = milkdropPresetConverter.convertPreset(preset);
+        return convertedPreset;
+      },
+      e => {
+        console.error("Error loading Milkdrop Preset Converter", e);
+      },
+      "milkdrop-preset-converter"
+    );
+  }
+
+  _handleFileDrop(e) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    const file = e.dataTransfer.files[0];
+    if (file.name.match(/\.milk/)) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this._convertAndLoadPreset(reader.result).then(convertedPreset => {
+          this.visualizer.loadPreset(
+            convertedPreset,
+            PRESET_TRANSITION_SECONDS
+          );
+        });
+      };
+      reader.readAsText(file);
+    }
+  }
+
   _handleFullscreenChange() {
     if (screenfull.isFullscreen) {
       this._setRendererSize(window.innerWidth, window.innerHeight);
@@ -176,6 +211,7 @@ export default class Milkdrop extends React.Component {
     return (
       <Background
         innerRef={node => (this._wrapperNode = node)}
+        handleDrop={this._handleFileDrop}
         onDoubleClick={() => this._handleRequestFullsceen()}
       >
         {this.state.presetOverlay && (
