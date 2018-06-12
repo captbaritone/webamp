@@ -121,10 +121,10 @@ Raven.context(() => {
       Component: MilkdropWindow
     });
     __initialWindowLayout = {
-      equalizer: { position: { x: 0, y: 116 } },
       main: { position: { x: 0, y: 0 } },
-      playlist: { position: { x: 275, y: 0 }, size: [0, 8] },
-      milkdrop: { position: { x: 0, y: 232 } }
+      equalizer: { position: { x: 0, y: 116 } },
+      playlist: { position: { x: 0, y: 232 }, size: [0, 4] },
+      milkdrop: { position: { x: 275, y: 0 }, size: [7, 12] }
     };
 
     document.getElementById("butterchurn-share").style.display = "flex";
