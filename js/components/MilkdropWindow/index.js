@@ -58,13 +58,9 @@ export default class PresetsLoader extends React.Component {
     const { butterchurn, presets } = this.state;
     const loaded = butterchurn != null && presets != null;
 
-    const width = this.state.isFullscreen
-      ? window.innerWidth
-      : this.props.width;
+    const width = this.state.isFullscreen ? screen.width : this.props.width;
 
-    const height = this.state.isFullscreen
-      ? window.innerHeight
-      : this.props.height;
+    const height = this.state.isFullscreen ? screen.height : this.props.height;
 
     return (
       <ContextMenuWrapper
