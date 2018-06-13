@@ -1,4 +1,6 @@
 import React from "react";
+import ContextMenuWrapper from "../ContextMenuWrapper";
+import MilkdropContextMenu from "./MilkdropContextMenu";
 import Presets from "./Presets";
 import Milkdrop from "./Milkdrop";
 import Background from "./Background";
@@ -32,10 +34,20 @@ export default class PresetsLoader extends React.Component {
   render() {
     const { butterchurn, presets } = this.state;
     const loaded = butterchurn != null && presets != null;
-    return loaded ? (
-      <Milkdrop {...this.props} presets={presets} butterchurn={butterchurn} />
-    ) : (
-      <Background />
+    return (
+      <ContextMenuWrapper
+        renderContents={() => <MilkdropContextMenu close={this.props.close} />}
+      >
+        {loaded ? (
+          <Milkdrop
+            {...this.props}
+            presets={presets}
+            butterchurn={butterchurn}
+          />
+        ) : (
+          <Background />
+        )}
+      </ContextMenuWrapper>
     );
   }
 }

@@ -6,6 +6,7 @@ import { objectMap } from "../utils";
 import Emitter from "../emitter";
 import { WINDOWS } from "../constants";
 import { getVisualizerStyle } from "../selectors";
+import { closeWindow } from "../actionCreators";
 import ContextMenuWrapper from "./ContextMenuWrapper";
 import MainContextMenu from "./MainWindow/MainContextMenu";
 import WindowManager from "./WindowManager";
@@ -123,6 +124,7 @@ class App extends React.Component {
                   width={width}
                   height={height}
                   playing={this.props.status === "PLAYING"}
+                  close={() => this.props.closeWindow(id)}
                 />
               )}
             </GenWindow>
@@ -164,4 +166,11 @@ const mapStateToProps = state => ({
   genWindowsInfo: state.windows.genWindows
 });
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = dispatch => ({
+  closeWindow: id => dispatch(closeWindow(id))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

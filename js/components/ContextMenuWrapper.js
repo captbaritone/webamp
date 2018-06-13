@@ -14,6 +14,10 @@ export default class ContextMenuWraper extends React.Component {
     this._handleGlobalClick = this._handleGlobalClick.bind(this);
   }
 
+  componentWillUnmount() {
+    document.removeEventListener("click", this._handleGlobalClick);
+  }
+
   _handleGlobalClick() {
     this.setState({
       selected: false,
