@@ -14,6 +14,7 @@ import {
 import { getWindowsInfo } from "../selectors";
 import { updateWindowPositions } from "../actionCreators";
 import { WINDOW_HEIGHT, WINDOW_WIDTH } from "../constants";
+import { calculateBoundingBox } from "../utils";
 
 const abuts = (a, b) => {
   // TODO: This is kinda a hack. They should really be touching, not just within snapping distance.
@@ -74,15 +75,8 @@ class WindowManager extends React.Component {
       // A layout has been suplied. We will compute the bounding box and
       // center the given layout.
       const info = this.props.windowsInfo;
-      const bounding = info.reduce(
-        (b, w) => ({
-          left: Math.min(b.left, w.x),
-          top: Math.min(b.top, w.y),
-          bottom: Math.max(b.bottom, w.y + w.height),
-          right: Math.max(b.right, w.x + w.width)
-        }),
-        { top: 0, bottom: 0, left: 0, right: 0 }
-      );
+
+      const bounding = calculateBoundingBox(info);
 
       const boxHeight = bounding.bottom - bounding.top;
       const boxWidth = bounding.right - bounding.left;

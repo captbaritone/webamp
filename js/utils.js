@@ -248,3 +248,14 @@ export const objectFilter = (obj, predicate) =>
     }
     return newObj;
   }, {});
+
+export const calculateBoundingBox = windows =>
+  windows.reduce(
+    (b, w) => ({
+      left: Math.min(b.left, w.x),
+      top: Math.min(b.top, w.y),
+      bottom: Math.max(b.bottom, w.y + w.height),
+      right: Math.max(b.right, w.x + w.width)
+    }),
+    { top: 0, bottom: 0, left: 0, right: 0 }
+  );
