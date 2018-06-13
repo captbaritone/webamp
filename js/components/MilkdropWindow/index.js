@@ -1,6 +1,8 @@
 import React from "react";
+import screenfull from "screenfull";
 import ContextMenuWrapper from "../ContextMenuWrapper";
 import MilkdropContextMenu from "./MilkdropContextMenu";
+
 import Presets from "./Presets";
 import Milkdrop from "./Milkdrop";
 import Background from "./Background";
@@ -11,7 +13,9 @@ import Background from "./Background";
 export default class PresetsLoader extends React.Component {
   constructor() {
     super();
-    this.state = { presets: null, butterchurn: null };
+    this.state = { presets: null, butterchurn: null, isFullscreen: false };
+    this._handleFullscreenChange = this._handleFullscreenChange.bind(this);
+    this._handleRequestFullsceen = this._handleRequestFullsceen.bind(this);
   }
 
   async componentDidMount() {
@@ -29,24 +33,61 @@ export default class PresetsLoader extends React.Component {
         getRest: loadNonMinimalPresets
       })
     });
+    screenfull.onchange(this._handleFullscreenChange);
+  }
+
+  componentWillUnmount() {
+    screenfull.off("change", this._handleFullscreenChange);
+  }
+
+  _handleFullscreenChange() {
+    this.setState({ isFullscreen: screenfull.isFullscreen });
+  }
+
+  _handleRequestFullsceen() {
+    if (screenfull.enabled) {
+      if (!screenfull.isFullscreen) {
+        screenfull.request(this._wrapperNode);
+      } else {
+        screenfull.exit();
+      }
+    }
   }
 
   render() {
     const { butterchurn, presets } = this.state;
     const loaded = butterchurn != null && presets != null;
+
+    const width = this.state.isFullscreen
+      ? window.innerWidth
+      : this.props.width;
+
+    const height = this.state.isFullscreen
+      ? window.innerHeight
+      : this.props.height;
+
     return (
       <ContextMenuWrapper
-        renderContents={() => <MilkdropContextMenu close={this.props.close} />}
-      >
-        {loaded ? (
-          <Milkdrop
-            {...this.props}
-            presets={presets}
-            butterchurn={butterchurn}
+        onDoubleClick={this._handleRequestFullsceen}
+        renderContents={() => (
+          <MilkdropContextMenu
+            close={this.props.close}
+            toggleFullscreen={this._handleRequestFullsceen}
           />
-        ) : (
-          <Background />
         )}
+      >
+        <Background innerRef={node => (this._wrapperNode = node)}>
+          {loaded && (
+            <Milkdrop
+              {...this.props}
+              width={width}
+              height={height}
+              isFullscreen={this.state.isFullscreen}
+              presets={presets}
+              butterchurn={butterchurn}
+            />
+          )}
+        </Background>
       </ContextMenuWrapper>
     );
   }

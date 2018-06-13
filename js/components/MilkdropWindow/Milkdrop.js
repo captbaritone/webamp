@@ -1,7 +1,5 @@
 import React from "react";
-import screenfull from "screenfull";
 import PresetOverlay from "./PresetOverlay";
-import Background from "./Background";
 
 const USER_PRESET_TRANSITION_SECONDS = 5.7;
 const PRESET_TRANSITION_SECONDS = 2.7;
@@ -17,7 +15,6 @@ export default class Milkdrop extends React.Component {
     this._handleFocusedKeyboardInput = this._handleFocusedKeyboardInput.bind(
       this
     );
-    this._handleFullscreenChange = this._handleFullscreenChange.bind(this);
   }
 
   async componentDidMount() {
@@ -30,8 +27,6 @@ export default class Milkdrop extends React.Component {
         pixelRatio: window.devicePixelRatio || 1
       }
     );
-    this._setRendererSize(this.props.width, this.props.height);
-
     this.visualizer.connectAudio(this.props.analyser);
     this.presetCycle = true;
     this.selectPreset(this.props.presets.getCurrent(), 0);
@@ -48,7 +43,6 @@ export default class Milkdrop extends React.Component {
     this._unsubscribeFocusedKeyDown = this.props.onFocusedKeyDown(
       this._handleFocusedKeyboardInput
     );
-    screenfull.onchange(this._handleFullscreenChange);
   }
 
   componentWillUnmount() {
@@ -57,7 +51,6 @@ export default class Milkdrop extends React.Component {
     if (this._unsubscribeFocusedKeyDown) {
       this._unsubscribeFocusedKeyDown();
     }
-    screenfull.off("change", this._handleFullscreenChange);
   }
 
   componentDidUpdate(prevProps) {
@@ -65,7 +58,7 @@ export default class Milkdrop extends React.Component {
       this.props.width !== prevProps.width ||
       this.props.height !== prevProps.height
     ) {
-      this._setRendererSize(this.props.width, this.props.height);
+      this.visualizer.setRendererSize(this.props.width, this.props.height);
     }
   }
 
@@ -90,31 +83,6 @@ export default class Milkdrop extends React.Component {
       this.cycleInterval = setInterval(() => {
         this._nextPreset(PRESET_TRANSITION_SECONDS);
       }, MILLISECONDS_BETWEEN_PRESET_TRANSITIONS);
-    }
-  }
-
-  _setRendererSize(width, height) {
-    this._canvasNode.width = width;
-    this._canvasNode.height = height;
-    this.visualizer.setRendererSize(width, height);
-  }
-
-  _handleFullscreenChange() {
-    if (screenfull.isFullscreen) {
-      this._setRendererSize(window.innerWidth, window.innerHeight);
-    } else {
-      this._setRendererSize(this.props.width, this.props.height);
-    }
-    this.setState({ isFullscreen: screenfull.isFullscreen });
-  }
-
-  _handleRequestFullsceen() {
-    if (screenfull.enabled) {
-      if (!screenfull.isFullscreen) {
-        screenfull.request(this._wrapperNode);
-      } else {
-        screenfull.exit();
-      }
     }
   }
 
@@ -167,21 +135,12 @@ export default class Milkdrop extends React.Component {
   }
 
   render() {
-    const width = this.state.isFullscreen
-      ? window.innerWidth
-      : this.props.width;
-    const height = this.state.isFullscreen
-      ? window.innerHeight
-      : this.props.height;
     return (
-      <Background
-        innerRef={node => (this._wrapperNode = node)}
-        onDoubleClick={() => this._handleRequestFullsceen()}
-      >
+      <React.Fragment>
         {this.state.presetOverlay && (
           <PresetOverlay
-            width={width}
-            height={height}
+            width={this.props.width}
+            height={this.props.height}
             presetKeys={this.props.presets.getKeys()}
             currentPreset={this.state.currentPreset}
             onFocusedKeyDown={listener => this.props.onFocusedKeyDown(listener)}
@@ -192,6 +151,8 @@ export default class Milkdrop extends React.Component {
           />
         )}
         <canvas
+          height={this.props.height}
+          width={this.props.width}
           style={{
             height: "100%",
             width: "100%",
@@ -199,7 +160,7 @@ export default class Milkdrop extends React.Component {
           }}
           ref={node => (this._canvasNode = node)}
         />
-      </Background>
+      </React.Fragment>
     );
   }
 }
