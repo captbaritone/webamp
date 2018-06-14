@@ -54,7 +54,7 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-runtime": "^6.26.0",
-    "butterchurn": "^2.4.3",
+    "butterchurn": "^2.4.9",
     "butterchurn-presets": "^2.4.7",
     "canvas-mock": "0.0.0",
     "cardinal-spline-js": "^2.3.6",

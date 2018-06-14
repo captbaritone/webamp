@@ -24,7 +24,10 @@ export default class Milkdrop extends React.Component {
       {
         width: this.props.width,
         height: this.props.height,
-        pixelRatio: window.devicePixelRatio || 1
+        meshWidth: 32,
+        meshHeight: 24,
+        pixelRatio: window.devicePixelRatio || 1,
+        resampleOnResize: true
       }
     );
     this.visualizer.connectAudio(this.props.analyser);
