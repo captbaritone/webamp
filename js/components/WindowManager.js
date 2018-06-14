@@ -63,11 +63,13 @@ class WindowManager extends React.Component {
       const windowPositions = {};
       const keys = this.windowKeys();
       const totalHeight = keys.length * WINDOW_HEIGHT;
+      const globalOffsetLeft = Math.max(0, width / 2 - WINDOW_WIDTH / 2);
+      const globalOffsetTop = Math.max(0, height / 2 - totalHeight / 2);
       keys.forEach((key, i) => {
         const offset = WINDOW_HEIGHT * i;
         windowPositions[key] = {
-          x: Math.ceil(offsetLeft + (width / 2 - WINDOW_WIDTH / 2)),
-          y: Math.ceil(offsetTop + (height / 2 - totalHeight / 2 + offset))
+          x: Math.ceil(offsetLeft + globalOffsetLeft),
+          y: Math.ceil(offsetTop + (globalOffsetTop + offset))
         };
       });
       this.props.updateWindowPositions(windowPositions);
