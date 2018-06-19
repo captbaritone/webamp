@@ -25,7 +25,7 @@ See the [usage documentation](./docs/usage.md) for more information.
 
 ## Development
 
-    yarn
+    npx yarn
     # Or: npm install
     npm start
 
