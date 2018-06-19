@@ -236,11 +236,11 @@ export function fetchMediaTags(file, id) {
       .then(data => {
         // There's more data here, but we don't have a use for it yet:
         // https://github.com/aadsm/jsmediatags#shortcuts
-        const { artist, title, picture } = data.tags;
+        const { artist, title, picture } = data.common;
         let albumArtUrl = null;
-        if (picture) {
-          const byteArray = new Uint8Array(picture.data);
-          const blob = new Blob([byteArray], { type: picture.type });
+        if (picture && picture.length >= 1) {
+          const byteArray = new Uint8Array(picture[0].data);
+          const blob = new Blob([byteArray], { type: picture[0].format });
           albumArtUrl = URL.createObjectURL(blob);
         }
         dispatch({ type: SET_MEDIA_TAGS, artist, title, albumArtUrl, id });

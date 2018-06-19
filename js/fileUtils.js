@@ -1,4 +1,5 @@
 import invariant from "invariant";
+import readStream from "filereader-stream";
 
 export function genMediaTags(file) {
   invariant(
@@ -9,26 +10,20 @@ export function genMediaTags(file) {
   if (typeof file === "string" && !/^[a-z]+:\/\//i.test(file)) {
     file = `${location.protocol}//${location.host}${location.pathname}${file}`;
   }
-  return new Promise((resolve, reject) => {
-    require.ensure(
-      ["jsmediatags/dist/jsmediatags"],
-      require => {
-        const jsmediatags = require("jsmediatags/dist/jsmediatags");
-        try {
-          jsmediatags.read(file, { onSuccess: resolve, onError: reject });
-        } catch (e) {
-          // Possibly jsmediatags could not find a parser for this file?
-          // Nothing to do.
-          // Consider removing this after https://github.com/aadsm/jsmediatags/issues/83 is resolved.
-          reject(e);
-        }
-      },
-      () => {
-        // The dependency failed to load
-      },
-      "jsmediatags"
-    );
-  });
+  return require.ensure(
+    ["music-metadata"],
+    require => {
+      const mm = require("music-metadata");
+      const stream = readStream(file);
+      return mm.parseStream(stream, file.name);
+    },
+    err => {
+      console.error("genMediaTags: Failed to load music-metadata");
+      // The dependency failed to load
+      throw err;
+    },
+    "music-metadata"
+  );
 }
 
 export function genMediaDuration(url) {

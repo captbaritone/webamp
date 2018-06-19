@@ -7,6 +7,11 @@ module.exports = {
   resolve: {
     extensions: [".js"]
   },
+  // Ignore fs in music-metadata
+  node: {
+    fs: "empty",
+    "graceful-fs": "empty"
+  },
   module: {
     rules: [
       {
