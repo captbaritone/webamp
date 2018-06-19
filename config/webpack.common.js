@@ -9,8 +9,7 @@ module.exports = {
   },
   // Ignore fs in music-metadata
   node: {
-    fs: "empty",
-    "graceful-fs": "empty"
+    fs: "empty"
   },
   module: {
     rules: [
