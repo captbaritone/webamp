@@ -1,6 +1,27 @@
 import invariant from "invariant";
 import readStream from "filereader-stream";
 
+import http from "stream-http";
+
+function sourceToStream(source) {
+  if (typeof source === "string") {
+    // Assume URL
+    return new Promise(resolve => {
+      http.get(source, stream => {
+        resolve({
+          stream,
+          type: stream.headers["content-type"]
+        });
+      });
+    });
+  }
+  // Assume Blob
+  return Promise.resolve({
+    stream: readStream(source),
+    type: source.name
+  });
+}
+
 export function genMediaTags(file) {
   invariant(
     file != null,
@@ -14,8 +35,9 @@ export function genMediaTags(file) {
     ["music-metadata"],
     require => {
       const mm = require("music-metadata");
-      const stream = readStream(file);
-      return mm.parseStream(stream, file.name);
+      return sourceToStream(file).then(stream => {
+        return mm.parseStream(stream.stream, stream.type);
+      });
     },
     err => {
       console.error("genMediaTags: Failed to load music-metadata");
