@@ -8,6 +8,9 @@ module.exports = {
   resolve: {
     extensions: [".js"]
   },
+  node: {
+    fs: "empty"
+  },
   module: {
     rules: [
       {
@@ -37,7 +40,7 @@ module.exports = {
     noParse: [/jszip\.js$/]
   },
   plugins: [
-    new webpack.IgnorePlugin(/fs/), // Ignore fs in music-metadata
+    new webpack.IgnorePlugin(/fs/, /file-type/), // Ignore fs in music-metadata
     new HtmlWebpackPlugin({
       template: "./index.html"
     }),
