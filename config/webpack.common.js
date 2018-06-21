@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WebpackPwaManifest = require("webpack-pwa-manifest");
 const HtmlWebpackInlineSVGPlugin = require("html-webpack-inline-svg-plugin");
+const webpack = require("webpack");
 
 module.exports = {
   resolve: {
@@ -40,6 +41,7 @@ module.exports = {
     noParse: [/jszip\.js$/]
   },
   plugins: [
+    new webpack.IgnorePlugin(/fs/), // Ignore fs in music-metadata
     new HtmlWebpackPlugin({
       template: "./index.html"
     }),

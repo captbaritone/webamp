@@ -40,6 +40,7 @@ module.exports = {
         NODE_ENV: JSON.stringify("production")
       }
     }),
+    new webpack.IgnorePlugin(/fs/),
     new UglifyJsPlugin({
       include: /\.min\.js$/,
       parallel: true,
