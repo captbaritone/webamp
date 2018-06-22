@@ -6,8 +6,8 @@ Here's how to use Webamp in your own project. If you get stuck, or need help, pl
 
 If you would like to look as some examples check out the [examples directory](../examples/) were you will find:
 
-* [Minimal](../examples/minimal/) - An example that just uses a `<script>` tag that points to a CDN. No install required.
-* [Webpack](../examples/webpack/) - An example that installs Webamp via NPM, and bundles it into an applicaiton using Webpack.
+- [Minimal](../examples/minimal/) - An example that just uses a `<script>` tag that points to a CDN. No install required.
+- [Webpack](../examples/webpack/) - An example that installs Webamp via NPM, and bundles it into an applicaiton using Webpack.
 
 Each example has a README which explains it in more detail.
 
@@ -186,6 +186,8 @@ webamp.setTracksToPlay([
 
 Webamp will wait until it has fetch the skin and fully parsed it, and then render itself into the given container. A promise is returned which will resolve after the render is complete.
 
+**Note:** as of version 1.1.0, Webamp will attempt to center itself within this container.
+
 ```JavaScript
 const container = document.getElementById('winamp-container');
 webamp.renderWhenReady(container).then(() => {
@@ -221,11 +223,11 @@ unsubscribe();
 
 ## Notes
 
-* Internet Explorer is not supported.
-* Webamp injects CSS into the page. The CSS is namespaced (every CSS selector is prefixed with `#webamp`), so it should not interfere with anything on the host page.
-* Webamp HTML contains somewhat generic IDs and class names. If you have CSS on your page that is not namespaced, it may accidently be applied to Webamp. If this happens please reach out. I may be able to resolve it.
-* Skin and audio URLs are subject to [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS). Please ensure they are either served from the same domain, or that the other domain is served with the correct headers.
-* Please reach out to me. I'd love to help you set it up, and understand how it's being used. I plan to expand this API as I learn how people want to use it.
+- Internet Explorer is not supported.
+- Webamp injects CSS into the page. The CSS is namespaced (every CSS selector is prefixed with `#webamp`), so it should not interfere with anything on the host page.
+- Webamp HTML contains somewhat generic IDs and class names. If you have CSS on your page that is not namespaced, it may accidently be applied to Webamp. If this happens please reach out. I may be able to resolve it.
+- Skin and audio URLs are subject to [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS). Please ensure they are either served from the same domain, or that the other domain is served with the correct headers.
+- Please reach out to me. I'd love to help you set it up, and understand how it's being used. I plan to expand this API as I learn how people want to use it.
 
 ```
 

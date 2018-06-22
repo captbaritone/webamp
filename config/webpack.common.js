@@ -9,7 +9,10 @@ module.exports = {
     extensions: [".js"]
   },
   node: {
-    fs: "empty"
+    fs: "empty", // Ignore fs in music-metadata
+    // Consider suggesting jsmediatags use: https://github.com/feross/is-buffer
+    // Cuts 22k
+    Buffer: false
   },
   module: {
     rules: [

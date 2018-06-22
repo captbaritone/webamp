@@ -35,27 +35,12 @@ class WindowManager extends React.Component {
   }
 
   centerWindows() {
-    let offsetLeft = 0;
-    let offsetTop = 0;
-    // https://j11y.io/snippets/get-document-height-cross-browser/
-    let width = Math.max(
-      document.documentElement.scrollWidth,
-      document.documentElement.clientWidth,
-      document.documentElement.offsetWidth
-    );
-    let height = Math.max(
-      document.documentElement.scrollHeight,
-      document.documentElement.clientHeight,
-      document.documentElement.offsetHeight
-    );
-
     const { container } = this.props;
-    if (container != null) {
-      offsetLeft = container.offsetLeft;
-      offsetTop = container.offsetTop;
-      width = container.scrollWidth;
-      height = container.scrollHeight;
-    }
+
+    const offsetLeft = container.offsetLeft;
+    const offsetTop = container.offsetTop;
+    const width = container.scrollWidth;
+    const height = container.scrollHeight;
 
     if (this.props.windowsInfo.some(w => w.x == null || w.y == null)) {
       // Some windows do not have an initial position, so we'll come up
@@ -208,7 +193,7 @@ class WindowManager extends React.Component {
 
 WindowManager.propTypes = {
   windows: PropTypes.object.isRequired,
-  container: PropTypes.instanceOf(Element)
+  container: PropTypes.instanceOf(Element).isRequired
 };
 
 const mapStateToProps = state => ({

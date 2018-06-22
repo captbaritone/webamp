@@ -1,3 +1,5 @@
+/* global SENTRY_DSN */
+
 import "babel-polyfill";
 import Raven from "raven-js";
 import createMiddleware from "raven-for-redux";
@@ -25,7 +27,6 @@ import {
   skinUrl,
   initialTracks,
   initialState,
-  sentryDsn,
   milkdrop
 } from "./config";
 
@@ -59,7 +60,7 @@ function filterBreadcrumbActions(action) {
   return !noisy;
 }
 
-Raven.config(sentryDsn, {
+Raven.config(SENTRY_DSN, {
   /* global COMMITHASH */
   release: typeof COMMITHASH !== "undefined" ? COMMITHASH : "DEV"
 }).install();
@@ -120,6 +121,7 @@ Raven.context(() => {
       isVisualizer: true,
       Component: MilkdropWindow
     });
+    // TODO: Pick a layout dependent upon the window size.
     __initialWindowLayout = {
       main: { position: { x: 0, y: 0 } },
       equalizer: { position: { x: 0, y: 116 } },
