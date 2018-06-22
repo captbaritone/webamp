@@ -2,10 +2,13 @@ import React from "react";
 import screenfull from "screenfull";
 import ContextMenuWrapper from "../ContextMenuWrapper";
 import MilkdropContextMenu from "./MilkdropContextMenu";
+import Desktop from "./Desktop";
 
 import Presets from "./Presets";
 import Milkdrop from "./Milkdrop";
 import Background from "./Background";
+
+import "../../../css/milkdrop-window.css";
 
 // This component is just responsible for loading dependencies.
 // This simplifies the inner <Milkdrop /> component, by allowing
@@ -13,7 +16,12 @@ import Background from "./Background";
 export default class PresetsLoader extends React.Component {
   constructor() {
     super();
-    this.state = { presets: null, butterchurn: null, isFullscreen: false };
+    this.state = {
+      presets: null,
+      butterchurn: null,
+      isFullscreen: false,
+      desktop: false
+    };
     this._handleFullscreenChange = this._handleFullscreenChange.bind(this);
     this._handleRequestFullsceen = this._handleRequestFullsceen.bind(this);
   }
@@ -58,9 +66,23 @@ export default class PresetsLoader extends React.Component {
     const { butterchurn, presets } = this.state;
     const loaded = butterchurn != null && presets != null;
 
-    const width = this.state.isFullscreen ? screen.width : this.props.width;
+    let size = { width: this.props.width, height: this.props.height };
+    if (this.state.isFullscreen) {
+      size = { width: screen.width, height: screen.height };
+    } else if (this.state.desktop) {
+      size = { width: window.innerWidth, height: window.innerHeight };
+    }
 
-    const height = this.state.isFullscreen ? screen.height : this.props.height;
+    const milkdrop = loaded && (
+      <Milkdrop
+        {...this.props}
+        width={size.width}
+        height={size.height}
+        isFullscreen={this.state.isFullscreen}
+        presets={presets}
+        butterchurn={butterchurn}
+      />
+    );
 
     return (
       <ContextMenuWrapper
@@ -73,16 +95,7 @@ export default class PresetsLoader extends React.Component {
         )}
       >
         <Background innerRef={node => (this._wrapperNode = node)}>
-          {loaded && (
-            <Milkdrop
-              {...this.props}
-              width={width}
-              height={height}
-              isFullscreen={this.state.isFullscreen}
-              presets={presets}
-              butterchurn={butterchurn}
-            />
-          )}
+          {this.state.desktop ? <Desktop>{milkdrop}</Desktop> : milkdrop}
         </Background>
       </ContextMenuWrapper>
     );
