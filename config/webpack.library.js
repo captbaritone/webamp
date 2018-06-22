@@ -3,6 +3,11 @@ const webpack = require("webpack");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 module.exports = {
+  node: {
+    // Consider suggesting jsmediatags use: https://github.com/feross/is-buffer
+    // Cuts 22k
+    Buffer: false
+  },
   module: {
     rules: [
       {
