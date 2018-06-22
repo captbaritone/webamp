@@ -120,6 +120,7 @@ Raven.context(() => {
       isVisualizer: true,
       Component: MilkdropWindow
     });
+    // TODO: Pick a layout dependent upon the window size.
     __initialWindowLayout = {
       main: { position: { x: 0, y: 0 } },
       equalizer: { position: { x: 0, y: 116 } },
