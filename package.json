@@ -78,7 +78,7 @@
     "jest-mock-random": "^1.0.2",
     "jest-runner-eslint": "^0.4.0",
     "jszip": "^3.1.3",
-    "music-metadata": "../music-metadata",
+    "music-metadata": "^2.0.4",
     "prettier": "^1.13.0",
     "prop-types": "^15.5.10",
     "puppeteer": "^1.4.0",
