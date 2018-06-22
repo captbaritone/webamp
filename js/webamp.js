@@ -97,13 +97,13 @@ class Winamp {
         id: genWindow.id || `${genWindow.title}-${uniqueId()}`,
         ...genWindow
       }));
-    }
 
-    __extraWindows.forEach(genWindow => {
-      if (genWindow.isVisualizer) {
-        this.store.dispatch({ type: REGISTER_VISUALIZER, id: genWindow.id });
-      }
-    });
+      __extraWindows.forEach(genWindow => {
+        if (genWindow.isVisualizer) {
+          this.store.dispatch({ type: REGISTER_VISUALIZER, id: genWindow.id });
+        }
+      });
+    }
 
     this.genWindows.forEach(genWindow => {
       this.store.dispatch({
