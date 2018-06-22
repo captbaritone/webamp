@@ -169,7 +169,7 @@ export function loadMediaFiles(tracks, loadStyle = null, atIndex = 0) {
 export function loadMediaFile(track, priority = null, atIndex = 0) {
   return dispatch => {
     const id = uniqueId();
-    const { url, blob, defaultName, metaData, duration } = track;
+    const { url, blob, defaultName, metaData } = track;
     let canonicalUrl = url;
     if (canonicalUrl == null) {
       if (blob == null) {
@@ -192,14 +192,6 @@ export function loadMediaFile(track, priority = null, atIndex = 0) {
       case LOAD_STYLE.PLAY:
         dispatch({ type: PLAY_TRACK, id });
         break;
-      default:
-        // If we're not going to load this right away,
-        // we should set duration on our own
-        if (duration != null) {
-          dispatch({ type: SET_MEDIA_DURATION, duration, id });
-        } else {
-          dispatch(fetchMediaDuration(canonicalUrl, id));
-        }
     }
 
     if (metaData != null) {
@@ -244,6 +236,18 @@ export function fetchMediaTags(file, id) {
           albumArtUrl = URL.createObjectURL(blob);
         }
         dispatch({ type: SET_MEDIA_TAGS, artist, title, albumArtUrl, id });
+
+        // If we're not going to load this right away,
+        // we should set duration on our own
+        if (data.format.duration != null) {
+          dispatch({
+            type: SET_MEDIA_DURATION,
+            duration: data.format.duration,
+            id
+          });
+        } else {
+          //  ToDo? dispatch(fetchMediaDuration(canonicalUrl, id));
+        }
       })
       .catch(() => {
         dispatch({ type: MEDIA_TAG_REQUEST_FAILED, id });
