@@ -31,7 +31,8 @@ import {
   SET_MEDIA_DURATION,
   MEDIA_TAG_REQUEST_INITIALIZED,
   MEDIA_TAG_REQUEST_FAILED,
-  SET_SKIN_DATA
+  SET_SKIN_DATA,
+  SET_MEDIA
 } from "../actionTypes";
 import LoadQueue from "../loadQueue";
 
@@ -248,6 +249,15 @@ export function fetchMediaTags(file, id) {
         } else {
           //  ToDo? dispatch(fetchMediaDuration(canonicalUrl, id));
         }
+
+        dispatch({
+          type: SET_MEDIA,
+          kbps: Math.round(data.format.bitrate / 1000).toString(),
+          khz: Math.round(data.format.sampleRate / 1000).toString(),
+          channels: data.format.channels,
+          length: data.format.duration,
+          id
+        });
       })
       .catch(() => {
         dispatch({ type: MEDIA_TAG_REQUEST_FAILED, id });
