@@ -36,7 +36,8 @@ export function genMediaTags(file) {
     require => {
       const mm = require("music-metadata");
       return sourceToStream(file).then(stream => {
-        return mm.parseStream(stream.stream, stream.type);
+        stream.type = stream.type ? stream.type.split(";")[0] : stream.type; // Strip off: ; charset=UTF-8
+        return mm.parseStream(stream.stream, stream.type, { duration: true });
       });
     },
     err => {
