@@ -189,7 +189,7 @@ class Winamp {
       <Provider store={this.store}>
         <App
           media={this.media}
-          container={this.options.container}
+          container={node}
           filePickers={this.options.filePickers}
           genWindowComponents={genWindowComponents}
         />

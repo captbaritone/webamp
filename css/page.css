@@ -79,6 +79,14 @@ body {
     background-size: 100%; /* Image is 2x size for retina displays */
 }
 
+#app {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
 #app #loading {
     color: white;
     text-align: center;
