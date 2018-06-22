@@ -1,7 +1,5 @@
 import llamaAudio from "../mp3/llama-2.91.mp3";
 
-/* global SENTRY_DSN */
-
 const { hash } = window.location;
 let config = {};
 if (hash) {
@@ -138,4 +136,3 @@ export const hideAbout = config.hideAbout || false;
 export const disableMarquee = config.disableMarquee || false;
 export const initialState = config.initialState || undefined;
 export const milkdrop = config.milkdrop || false;
-export const sentryDsn = SENTRY_DSN;
