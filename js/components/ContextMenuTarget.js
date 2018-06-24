@@ -34,11 +34,21 @@ export default class ContextMenuTarget extends React.Component {
     }
   }
 
+  _offset() {
+    if (!this.handleNode) {
+      return { top: 0, left: 0 };
+    }
+
+    const rect = this.handleNode.getBoundingClientRect();
+    const scrollLeft =
+      window.pageXOffset || document.documentElement.scrollLeft;
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    return { top: rect.top + scrollTop, left: rect.left + scrollLeft };
+  }
+
   render() {
     const { handle, children, top, bottom, ...passThroughProps } = this.props;
-    const rect = this.handleNode
-      ? this.handleNode.getBoundingClientRect()
-      : { top: 0, left: 0 };
+    const offset = this._offset();
     return (
       <div {...passThroughProps}>
         <div
@@ -51,8 +61,8 @@ export default class ContextMenuTarget extends React.Component {
         </div>
         <ContextMenu
           selected={this.state.selected}
-          offsetTop={rect.top}
-          offsetLeft={rect.left}
+          offsetTop={offset.top}
+          offsetLeft={offset.left}
           top={top}
           bottom={bottom}
         >

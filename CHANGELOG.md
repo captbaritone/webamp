@@ -4,6 +4,10 @@
 
 Users can pass an initial layout (TODO: Documentation)
 
+### Fixes
+
+- Fixes positioning of context menus in context menu targets when they are spawned while scrolled.
+
 ## 1.1.1
 
 ### Fixes
