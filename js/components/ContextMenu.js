@@ -80,11 +80,12 @@ class ContextMenu extends React.Component {
       offsetLeft,
       top,
       bottom,
-      selected
+      selected,
+      zIndex
     } = this.props;
     return (
       selected && (
-        <Portal top={offsetTop} left={offsetLeft}>
+        <Portal top={offsetTop} left={offsetLeft} zIndex={zIndex}>
           <ul className={classnames("context-menu", { top, bottom })}>
             {children}
           </ul>
