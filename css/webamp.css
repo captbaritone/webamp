@@ -1,5 +1,11 @@
 /* Rules used by all windows */
 
+#webamp {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
 /* Prevent accidental highlighting */
 #webamp canvas {
     -webkit-user-select: none;

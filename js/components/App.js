@@ -29,6 +29,17 @@ class App extends React.Component {
     this._bindings = {};
   }
 
+  componentWillMount() {
+    this._webampNode = document.createElement("div");
+    this._webampNode.id = "webamp";
+    this._webampNode.role = "application";
+    document.body.appendChild(this._webampNode);
+  }
+
+  componentWillUnmount() {
+    document.body.removeChild(this._webampNode);
+  }
+
   componentDidMount() {
     this._setFocus();
   }
@@ -138,8 +149,8 @@ class App extends React.Component {
     if (closed) {
       return null;
     }
-    return (
-      <div role="application" id="webamp">
+    return ReactDOM.createPortal(
+      <React.Fragment>
         <Skin />
         <ContextMenuWrapper
           renderContents={() => <MainContextMenu filePickers={filePickers} />}
@@ -149,7 +160,8 @@ class App extends React.Component {
             container={container}
           />
         </ContextMenuWrapper>
-      </div>
+      </React.Fragment>,
+      this._webampNode
     );
   }
 }
