@@ -41,9 +41,6 @@ module.exports = {
   },
   plugins: [
     new webpack.IgnorePlugin(/fs/, /file-type/, /debug/), // Ignore fs in music-metadata
-    new webpack.ProvidePlugin({
-      Promise: "bluebird"
-    }),
     new HtmlWebpackPlugin({
       template: "./index.html"
     }),

@@ -2491,7 +2491,7 @@ es6-promise@^3.0.2:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-3.3.1.tgz#a08cdde84ccdbf34d027a1451bc91d4bcd28a613"
 
-es6-promise@^4.0.3:
+es6-promise@^4.0.3, es6-promise@^4.2.4:
   version "4.2.4"
   resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-4.2.4.tgz#dc4221c2b16518760bd8c39a52d8f356fc00ed29"
 
@@ -5199,15 +5199,15 @@ multicast-dns@^6.0.1:
     dns-packet "^1.3.1"
     thunky "^1.0.2"
 
-music-metadata@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/music-metadata/-/music-metadata-2.1.0.tgz#8ae57072d204eebaf3c4c70e2d4d062efc3877cf"
+music-metadata@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/music-metadata/-/music-metadata-2.2.0.tgz#675666a54779c04339b39c7f5c5facc09c520d8c"
   dependencies:
-    bluebird "^3.5.1"
     debug "^3.1.0"
+    es6-promise "^4.2.4"
     file-type "^8.0.0"
-    strtok3 "^1.4.4"
-    then-read-stream "^1.1.3"
+    strtok3 "^1.5.0"
+    then-read-stream "^1.2.0"
     token-types "^0.9.4"
 
 mute-stream@0.0.7:
@@ -7414,13 +7414,13 @@ strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
-strtok3@^1.4.4:
-  version "1.4.4"
-  resolved "https://registry.yarnpkg.com/strtok3/-/strtok3-1.4.4.tgz#90df04f66bbb5e9b21830cb45ae0e3f1cf682a58"
+strtok3@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/strtok3/-/strtok3-1.5.0.tgz#fb4e1a256467d3c57194edd51f0bbfc5107e9cf3"
   dependencies:
-    bluebird "^3.5.1"
     coveralls "^3.0.1"
-    then-read-stream "^1.1.3"
+    es6-promise "^4.2.4"
+    then-read-stream "^1.2.0"
     token-types "^0.9.4"
 
 style-loader@^0.19.1:
@@ -7563,11 +7563,11 @@ text-table@~0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
 
-then-read-stream@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/then-read-stream/-/then-read-stream-1.1.3.tgz#1940a884649ca63636bd55e924d4c6f874aea7db"
+then-read-stream@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/then-read-stream/-/then-read-stream-1.2.0.tgz#b5332be9234d237b547be11075a96872991d5841"
   dependencies:
-    bluebird "^3.5.1"
+    es6-promise "^4.2.4"
 
 throat@4.1.0, throat@^4.0.0:
   version "4.1.0"
