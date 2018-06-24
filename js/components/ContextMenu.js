@@ -6,9 +6,11 @@ import classnames from "classnames";
 import "../../css/context-menu.css";
 
 class Portal extends React.Component {
-  constructor(props) {
-    super(props);
+  componentWillMount() {
     this._node = document.createElement("div");
+    this._node.style.position = "absolute";
+    this._node.style.top = 0;
+    this._node.style.left = 0;
     document.body.appendChild(this._node);
   }
 

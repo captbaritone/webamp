@@ -7,6 +7,12 @@
     user-select: none;
 }
 
+#webamp * {
+    /* Some environments globably change the box-sizing */
+    box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+}
+
 #webamp *:focus {
     outline: 0;
 }

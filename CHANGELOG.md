@@ -4,6 +4,14 @@
 
 Users can pass an initial layout (TODO: Documentation)
 
+## 1.1.1
+
+### Fixes
+
+- Fixes the marquee text when the host page globally sets `box-sizing`.
+- Fixes the initial layout when the container is not at the top of the page.
+- Fixes the positioning of context menus created when scrolled down the page.
+
 ## 1.1.0
 
 ### Breaking
