@@ -37,6 +37,8 @@ class WindowManager extends React.Component {
   centerWindows() {
     const { container } = this.props;
 
+    const offsetLeft = container.offsetLeft;
+    const offsetTop = container.offsetTop;
     const width = container.scrollWidth;
     const height = container.scrollHeight;
 
@@ -51,8 +53,8 @@ class WindowManager extends React.Component {
       keys.forEach((key, i) => {
         const offset = WINDOW_HEIGHT * i;
         windowPositions[key] = {
-          x: Math.ceil(globalOffsetLeft),
-          y: Math.ceil(globalOffsetTop + offset)
+          x: Math.ceil(offsetLeft + globalOffsetLeft),
+          y: Math.ceil(offsetTop + (globalOffsetTop + offset))
         };
       });
       this.props.updateWindowPositions(windowPositions);
@@ -67,8 +69,8 @@ class WindowManager extends React.Component {
       const boxWidth = bounding.right - bounding.left;
 
       const move = {
-        x: (width - boxWidth) / 2,
-        y: (height - boxHeight) / 2
+        x: offsetLeft + (width - boxWidth) / 2,
+        y: offsetTop + (height - boxHeight) / 2
       };
 
       const newPositions = info.reduce(
