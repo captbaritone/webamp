@@ -8,6 +8,7 @@ import "../../css/context-menu.css";
 class Portal extends React.Component {
   componentWillMount() {
     this._node = document.createElement("div");
+    this._node.id = "webamp-context-menu";
     this._node.style.position = "absolute";
     this._node.style.top = 0;
     this._node.style.left = 0;
@@ -82,7 +83,7 @@ export class ContextMenu extends React.Component {
     return (
       selected && (
         <Portal top={offsetTop} left={offsetLeft}>
-          <ul id="context-menu" className={classnames({ top, bottom })}>
+          <ul className={classnames("context-menu", { top, bottom })}>
             {children}
           </ul>
         </Portal>
