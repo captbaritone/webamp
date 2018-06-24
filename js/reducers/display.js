@@ -11,7 +11,8 @@ import {
   TOGGLE_VISUALIZER_STYLE,
   SET_PLAYLIST_SCROLL_POSITION,
   LOADED,
-  REGISTER_VISUALIZER
+  REGISTER_VISUALIZER,
+  SET_Z_INDEX
 } from "../actionTypes";
 import { DEFAULT_SKIN, VISUALIZER_ORDER } from "../constants";
 
@@ -42,7 +43,8 @@ const defaultDisplayState = {
   visualizerStyle: 0, // Index into VISUALIZER_ORDER
   playlistScrollPosition: 0,
   skinGenLetterWidths: null, // TODO: Get the default value for this?
-  additionalVisualizers: []
+  additionalVisualizers: [],
+  zIndex: 0
 };
 
 const display = (state = defaultDisplayState, action) => {
@@ -85,6 +87,8 @@ const display = (state = defaultDisplayState, action) => {
       };
     case SET_PLAYLIST_SCROLL_POSITION:
       return { ...state, playlistScrollPosition: action.position };
+    case SET_Z_INDEX:
+      return { ...state, zIndex: action.zIndex };
     default:
       return state;
   }

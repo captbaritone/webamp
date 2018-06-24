@@ -25,7 +25,8 @@ import {
   ADD_GEN_WINDOW,
   UPDATE_WINDOW_POSITIONS,
   LOADED,
-  REGISTER_VISUALIZER
+  REGISTER_VISUALIZER,
+  SET_Z_INDEX
 } from "./actionTypes";
 import Emitter from "./emitter";
 
@@ -65,6 +66,7 @@ class Winamp {
       avaliableSkins, // Old misspelled name
       availableSkins,
       enableHotkeys = false,
+      zIndex,
       __extraWindows
     } = this.options;
 
@@ -89,6 +91,10 @@ class Winamp {
         this.store.dispatch(loadFilesFromReferences(e.target.files));
       });
       document.body.appendChild(fileInput);
+    }
+
+    if (zIndex != null) {
+      this.store.dispatch({ type: SET_Z_INDEX, zIndex });
     }
 
     this.genWindows = [];

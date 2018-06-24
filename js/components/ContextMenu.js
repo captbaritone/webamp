@@ -1,5 +1,6 @@
 import React from "react";
 import { createPortal } from "react-dom";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 
@@ -12,6 +13,7 @@ class Portal extends React.Component {
     this._node.style.position = "absolute";
     this._node.style.top = 0;
     this._node.style.left = 0;
+    this._node.style.zIndex = this.props.zIndex + 1;
     document.body.appendChild(this._node);
   }
 
@@ -70,7 +72,7 @@ Node.propTypes = {
   hotkey: PropTypes.string
 };
 
-export class ContextMenu extends React.Component {
+class ContextMenu extends React.Component {
   render() {
     const {
       children,
@@ -91,3 +93,9 @@ export class ContextMenu extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  zIndex: state.display.zIndex
+});
+
+export default connect(mapStateToProps)(ContextMenu);

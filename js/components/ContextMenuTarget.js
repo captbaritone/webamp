@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { ContextMenu } from "./ContextMenu";
+import ContextMenu from "./ContextMenu";
 
 export default class ContextMenuTarget extends React.Component {
   constructor(props) {
