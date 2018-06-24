@@ -65,12 +65,12 @@ class PlaylistShade extends React.Component {
       >
         <div className="left">
           <div className="right draggable">
-            <CharacterString id="playlist-shade-track-title">
-              {this._trimmedName()}
-            </CharacterString>
-            <CharacterString id="playlist-shade-time">
-              {this._time()}
-            </CharacterString>
+            <div id="playlist-shade-track-title">
+              <CharacterString>{this._trimmedName()}</CharacterString>
+            </div>
+            <div id="playlist-shade-time">
+              <CharacterString>{this._time()}</CharacterString>
+            </div>
             <PlaylistResizeTarget widthOnly />
             <div id="playlist-shade-button" onClick={toggleShade} />
             <div id="playlist-close-button" onClick={close} />

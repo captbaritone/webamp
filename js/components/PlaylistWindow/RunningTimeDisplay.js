@@ -16,9 +16,12 @@ function rightPad(str, len, fillChar) {
 
 const RunningTimeDisplay = props => (
   <div className="playlist-running-time-display draggable">
-    <CharacterString>
-      {rightPad(props.runningTimeMessage, 18, " ")}
-    </CharacterString>
+    {/* This div is probably not strictly needed */}
+    <div>
+      <CharacterString>
+        {rightPad(props.runningTimeMessage, 18, " ")}
+      </CharacterString>
+    </div>
   </div>
 );
 
