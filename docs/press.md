@@ -52,6 +52,24 @@
 
 ## Articles (continued)
 
+### English
+
+- http://entertainment.ie/trending/news/Remember-Winamp-Now-theres-a-web-browser-version-of-it/402141.htm
+- http://newsvire.com/get-some-media-player-nostalgia-with-this-web-version-of-winamp/
+- http://osxdaily.com/2018/02/10/run-winamp-web-browser/
+- https://www.ghacks.net/2018/02/08/winamp2-js-is-a-web-based-version-of-audio-player-winamp/
+- https://uk.news.yahoo.com/media-player-nostalgia-version-winamp-070022687.html
+- https://thenextweb.com/shareables/2018/02/09/bring-nostalgia-browser-winamp-emulator/
+- https://www.follownews.com/winamp2js-is-a-webbased-version-of-audio-player-winamp-43icg
+- https://www.gizmodo.com.au/2018/02/someone-remade-winamp-so-it-runs-in-your-browser/
+- https://changelog.com/news/winamp-29-in-htmljs--PJr
+- https://www.howtogeek.com/343813/re-live-90s-computing-in-your-browser-right-now/amp/
+- https://techcaption.com/run-winamp-web-browser/
+- https://www.trishtech.com/2018/02/javascript-version-of-winamp-runs-in-any-web-browser/
+- https://ourcodeworld.com/articles/read/685/winamp2-js-a-reimplementation-of-winamp-2-9-in-html5-and-javascript
+- http://whazupnaija.com/whip-the-llamas-ass-with-this-javascript-winamp-emulator/
+- http://cashrange.com/run-winamp-in-web-browser-and-play-mp3s/
+
 ### Russian
 
 - http://altervision.org/2018/02/winamp-zapustili-v-vashem-brauzere/
@@ -108,24 +126,6 @@
 - https://www.waerfa.com/winamp2-js
 - https://www.techapple.com/archives/19899
 - https://ezone.ulifestyle.com.hk/article/2010877
-
-### English
-
-- http://entertainment.ie/trending/news/Remember-Winamp-Now-theres-a-web-browser-version-of-it/402141.htm
-- http://newsvire.com/get-some-media-player-nostalgia-with-this-web-version-of-winamp/
-- http://osxdaily.com/2018/02/10/run-winamp-web-browser/
-- https://www.ghacks.net/2018/02/08/winamp2-js-is-a-web-based-version-of-audio-player-winamp/
-- https://uk.news.yahoo.com/media-player-nostalgia-version-winamp-070022687.html
-- https://thenextweb.com/shareables/2018/02/09/bring-nostalgia-browser-winamp-emulator/
-- https://www.follownews.com/winamp2js-is-a-webbased-version-of-audio-player-winamp-43icg
-- https://www.gizmodo.com.au/2018/02/someone-remade-winamp-so-it-runs-in-your-browser/
-- https://changelog.com/news/winamp-29-in-htmljs--PJr
-- https://www.howtogeek.com/343813/re-live-90s-computing-in-your-browser-right-now/amp/
-- https://techcaption.com/run-winamp-web-browser/
-- https://www.trishtech.com/2018/02/javascript-version-of-winamp-runs-in-any-web-browser/
-- https://ourcodeworld.com/articles/read/685/winamp2-js-a-reimplementation-of-winamp-2-9-in-html5-and-javascript
-- http://whazupnaija.com/whip-the-llamas-ass-with-this-javascript-winamp-emulator/
-- http://cashrange.com/run-winamp-in-web-browser-and-play-mp3s/
 
 ### German
 
