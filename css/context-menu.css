@@ -1,17 +1,17 @@
-#context-menu {
+#webamp-context-menu .context-menu {
     left: 0px;
 }
 
-#context-menu.bottom {
+#webamp-context-menu .context-menu.bottom {
     top: 12px;
 }
 
-#context-menu.top {
+#webamp-context-menu .context-menu.top {
     top: 0px;
 }
 
-#context-menu,
-#context-menu ul {
+#webamp-context-menu .context-menu,
+#webamp-context-menu .context-menu ul {
     z-index: 50; /* Gross */
     background-color: #ffffff;
     position: absolute;
@@ -23,7 +23,7 @@
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-#context-menu li {
+#webamp-context-menu .context-menu li {
     position: relative;
     font-family: "Tahoma";
     font-size: 11px;
@@ -34,39 +34,39 @@
     display: block;
 }
 
-#context-menu li.checked:before {
+#webamp-context-menu .context-menu li.checked:before {
     float: left;
     /* TODO: Use an image */
     content: "\2713";
     margin-left: -12px;
 }
 
-#context-menu li.parent:after {
+#webamp-context-menu .context-menu li.parent:after {
     float: right;
     content: "\25b8";
     margin-right: -12px;
 }
-#context-menu li a {
+#webamp-context-menu .context-menu li a {
     text-decoration: none;
     color: black;
     cursor: default;
 }
 
-#context-menu li:hover,
-#context-menu li:hover a {
+#webamp-context-menu .context-menu li:hover,
+#webamp-context-menu .context-menu li:hover a {
     background-color: #224eb7;
     color: #ffffff;
 }
 
-#context-menu li.hr {
+#webamp-context-menu .context-menu li.hr {
     padding: 2px 0;
 }
 
-#context-menu li.hr:hover {
+#webamp-context-menu .context-menu li.hr:hover {
     background-color: #ffffff;
 }
 
-#context-menu li.hr hr {
+#webamp-context-menu .context-menu li.hr hr {
     border: none;
     height: 1px;
     background-color: #a7a394;
@@ -74,12 +74,12 @@
     padding: 0;
 }
 
-#context-menu ul {
+#webamp-context-menu .context-menu ul {
     display: none;
     left: 100%;
     margin-left: -3px;
 }
 
-#context-menu li:hover ul {
+#webamp-context-menu .context-menu li:hover ul {
     display: block;
 }

@@ -1,5 +1,6 @@
 import React from "react";
 import { createPortal } from "react-dom";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 
@@ -8,9 +9,11 @@ import "../../css/context-menu.css";
 class Portal extends React.Component {
   componentWillMount() {
     this._node = document.createElement("div");
+    this._node.id = "webamp-context-menu";
     this._node.style.position = "absolute";
     this._node.style.top = 0;
     this._node.style.left = 0;
+    this._node.style.zIndex = this.props.zIndex + 1;
     document.body.appendChild(this._node);
   }
 
@@ -69,7 +72,7 @@ Node.propTypes = {
   hotkey: PropTypes.string
 };
 
-export class ContextMenu extends React.Component {
+class ContextMenu extends React.Component {
   render() {
     const {
       children,
@@ -77,12 +80,13 @@ export class ContextMenu extends React.Component {
       offsetLeft,
       top,
       bottom,
-      selected
+      selected,
+      zIndex
     } = this.props;
     return (
       selected && (
-        <Portal top={offsetTop} left={offsetLeft}>
-          <ul id="context-menu" className={classnames({ top, bottom })}>
+        <Portal top={offsetTop} left={offsetLeft} zIndex={zIndex}>
+          <ul className={classnames("context-menu", { top, bottom })}>
             {children}
           </ul>
         </Portal>
@@ -90,3 +94,9 @@ export class ContextMenu extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  zIndex: state.display.zIndex
+});
+
+export default connect(mapStateToProps)(ContextMenu);

@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build"
+  command = "npm run build && npm run build-library"
   publish = "built"
 
 # A short URL for listeners of https://changelog.com/podcast/291
