@@ -3,7 +3,7 @@ import readStream from "filereader-stream";
 
 import http from "stream-http";
 
-function sourceToStream(source) {
+async function sourceToStream(source) {
   if (typeof source === "string") {
     // Assume URL
     return new Promise(resolve => {
@@ -16,13 +16,13 @@ function sourceToStream(source) {
     });
   }
   // Assume Blob
-  return Promise.resolve({
+  return {
     stream: readStream(source),
     type: source.name
-  });
+  };
 }
 
-export function genMediaTags(file) {
+export async function genMediaTags(file) {
   invariant(
     file != null,
     "Attempted to get the tags of media file without passing a file"
@@ -33,12 +33,11 @@ export function genMediaTags(file) {
   }
   return require.ensure(
     ["music-metadata"],
-    require => {
+    async require => {
       const mm = require("music-metadata");
-      return sourceToStream(file).then(stream => {
-        stream.type = stream.type ? stream.type.split(";")[0] : stream.type; // Strip off: ; charset=UTF-8
-        return mm.parseStream(stream.stream, stream.type, { duration: true });
-      });
+      const stream = await sourceToStream(file);
+      stream.type = stream.type ? stream.type.split(";")[0] : stream.type; // Strip off: ; charset=UTF-8
+      return mm.parseStream(stream.stream, stream.type, { duration: true });
     },
     err => {
       console.error("genMediaTags: Failed to load music-metadata");
@@ -49,7 +48,7 @@ export function genMediaTags(file) {
   );
 }
 
-export function genMediaDuration(url) {
+export async function genMediaDuration(url) {
   invariant(
     typeof url === "string",
     "Attempted to get the duration of media file without passing a url"
