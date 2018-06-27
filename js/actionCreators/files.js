@@ -9,7 +9,6 @@ import {
 } from "../utils";
 
 import {
-  genArrayBufferFromUrl,
   promptForFileReferences,
   genArrayBufferFromFileReference,
   genMediaDuration,
@@ -31,7 +30,8 @@ import {
   SET_MEDIA_DURATION,
   MEDIA_TAG_REQUEST_INITIALIZED,
   MEDIA_TAG_REQUEST_FAILED,
-  SET_SKIN_DATA
+  SET_SKIN_DATA,
+  LOADED
 } from "../actionTypes";
 import LoadQueue from "../loadQueue";
 
@@ -104,8 +104,17 @@ export function setSkinFromFileReference(skinFileReference) {
 
 export function setSkinFromUrl(url) {
   return async dispatch => {
-    const arrayBuffer = await genArrayBufferFromUrl(url);
-    dispatch(setSkinFromArrayBuffer(arrayBuffer));
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      dispatch(setSkinFromArrayBuffer(response.arrayBuffer()));
+    } catch (e) {
+      console.error(e);
+      dispatch({ type: LOADED });
+      alert(`Failed to download skin from ${url}`);
+    }
   };
 }
 
