@@ -143,14 +143,15 @@ export function openSkinFileDialog() {
 export function fetchMediaDuration(url, id) {
   return (dispatch, getState) => {
     loadQueue.push(
-      () =>
-        genMediaDuration(url)
-          .then(duration =>
-            dispatch({ type: SET_MEDIA_DURATION, duration, id })
-          )
-          .catch(() => {
-            // TODO: Should we update the state to indicate that we don't know the length?
-          }),
+      async () => {
+        try {
+          const duration = await genMediaDuration(url);
+          dispatch({ type: SET_MEDIA_DURATION, duration, id });
+        } catch (e) {
+          // TODO: Should we update the state to indicate that we don't know the length?
+        }
+      },
+
       () => {
         const trackIsVisible = getTrackIsVisibleFunction(getState());
         return trackIsVisible(id)
@@ -239,24 +240,23 @@ function queueFetchingMediaTags(id) {
 }
 
 export function fetchMediaTags(file, id) {
-  return dispatch => {
+  return async dispatch => {
     dispatch({ type: MEDIA_TAG_REQUEST_INITIALIZED, id });
-    return genMediaTags(file)
-      .then(data => {
-        // There's more data here, but we don't have a use for it yet:
-        // https://github.com/aadsm/jsmediatags#shortcuts
-        const { artist, title, picture } = data.tags;
-        let albumArtUrl = null;
-        if (picture) {
-          const byteArray = new Uint8Array(picture.data);
-          const blob = new Blob([byteArray], { type: picture.type });
-          albumArtUrl = URL.createObjectURL(blob);
-        }
-        dispatch({ type: SET_MEDIA_TAGS, artist, title, albumArtUrl, id });
-      })
-      .catch(() => {
-        dispatch({ type: MEDIA_TAG_REQUEST_FAILED, id });
-      });
+    try {
+      const data = await genMediaTags(file);
+      // There's more data here, but we don't have a use for it yet:
+      // https://github.com/aadsm/jsmediatags#shortcuts
+      const { artist, title, picture } = data.tags;
+      let albumArtUrl = null;
+      if (picture) {
+        const byteArray = new Uint8Array(picture.data);
+        const blob = new Blob([byteArray], { type: picture.type });
+        albumArtUrl = URL.createObjectURL(blob);
+      }
+      dispatch({ type: SET_MEDIA_TAGS, artist, title, albumArtUrl, id });
+    } catch (e) {
+      dispatch({ type: MEDIA_TAG_REQUEST_FAILED, id });
+    }
   };
 }
 
