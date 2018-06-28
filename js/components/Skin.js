@@ -77,6 +77,12 @@ class ClipPaths extends React.Component {
   }
 }
 
+const FALLBACKS = {
+  MAIN_BALANCE_BACKGROUND: "MAIN_VOLUME_BACKGROUND",
+  MAIN_BALANCE_THUMB: "MAIN_VOLUME_THUMB",
+  MAIN_BALANCE_THUMB_ACTIVE: "MAIN_VOLUME_THUMB_SELECTED"
+};
+
 const Skin = props => {
   const { skinImages, skinCursors, skinGenLetterWidths } = props;
   if (!skinImages || !skinCursors) {
@@ -84,7 +90,7 @@ const Skin = props => {
   }
   const cssRules = [];
   Object.keys(imageSelectors).forEach(imageName => {
-    const imageUrl = skinImages[imageName];
+    const imageUrl = skinImages[imageName] || skinImages[FALLBACKS[imageName]];
     if (imageUrl) {
       imageSelectors[imageName].forEach(selector => {
         cssRules.push(
