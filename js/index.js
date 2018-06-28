@@ -12,6 +12,7 @@ import xmms from "../skins/XMMS-Turquoise.wsz";
 import zaxon from "../skins/ZaxonRemake1-0.wsz";
 import green from "../skins/Green-Dimension-V2.wsz";
 import MilkdropWindow from "./components/MilkdropWindow";
+import screenshotInitialState from "./screenshotInitialState";
 import Webamp from "./webamp";
 import {
   STEP_MARQUEE,
@@ -24,7 +25,7 @@ import {
 
 import {
   hideAbout,
-  skinUrl,
+  skinUrl as configSkinUrl,
   initialTracks,
   initialState,
   milkdrop
@@ -38,6 +39,14 @@ const NOISY_ACTION_TYPES = new Set([
   SET_BALANCE,
   SET_BAND_VALUE
 ]);
+
+let screenshot = false;
+let skinUrl = configSkinUrl;
+if ("URLSearchParams" in window) {
+  const params = new URLSearchParams(location.search);
+  screenshot = params.get("screenshot");
+  skinUrl = params.get("skinUrl") || skinUrl;
+}
 
 function supressDragAndDrop(e) {
   e.preventDefault();
@@ -136,7 +145,7 @@ Raven.context(() => {
 
   const webamp = new Webamp({
     initialSkin,
-    initialTracks,
+    initialTracks: screenshot ? null : initialTracks,
     availableSkins: [
       { url: base, name: "<Base Skin>" },
       { url: green, name: "Green Dimension V2" },
@@ -162,7 +171,7 @@ Raven.context(() => {
     enableHotkeys: true,
     __extraWindows,
     __initialWindowLayout,
-    __initialState: initialState,
+    __initialState: screenshot ? screenshotInitialState : initialState,
     __customMiddlewares: [ravenMiddleware]
   });
 
