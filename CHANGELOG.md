@@ -4,9 +4,20 @@
 
 Users can pass an initial layout (TODO: Documentation)
 
+## 1.1.2
+
+### Changes
+
+Webamp is no-longer rendered into the DOM node you pass into `webamp.renderWhenReady()`. Instead, Webamp is rendred as a direct child of the `<body>` tag. The passed DOM node is still used for positioning. Webamp will attempt to center itself within that DOM node when it renders.
+
+### Features
+
+- Allow consumers to specify a z-index when constructing Webamp.
+
 ### Fixes
 
 - Fixes positioning of context menus in context menu targets when they are spawned while scrolled.
+- Improve performance of CharacterString, which gets rendered on every marquee step.
 
 ## 1.1.1
 
