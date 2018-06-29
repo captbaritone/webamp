@@ -337,11 +337,12 @@ export const cursorSelectors = {
     "#equalizer-window.shade",
     "#equalizer-window.shade input"
   ],
-  MAINMENU: ["#main-window #option"],
+  MAINMENU: ["#main-window #option", "#webamp-context-menu .context-menu"],
   MIN: ["#main-window #minimize"],
   NORMAL: [
     // Use this as the default cursor.
     ".window",
+    ".window input", // Otherwise
     "#main-window",
     "#main-window.shade #title-bar"
   ],
@@ -367,7 +368,7 @@ export const cursorSelectors = {
   PVSCROLL: ["#playlist-window .playlist-scrollbar"],
   SONGNAME: ["#main-window #marquee"],
   TITLEBAR: ["#main-window #title-bar"],
-  VOLBAL: ["#volume", "#balance"],
+  VOLBAL: ["#volume", "#volume input", "#balance"],
   WINBUT: ["#main-window #shade"],
   WSNORMAL: ["#main-window.shade #title-bar"],
   WSPOSBAR: ["#main-window.shade #position"]
