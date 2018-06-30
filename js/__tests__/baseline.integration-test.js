@@ -24,6 +24,16 @@ it("should render the Topaz skin", async () => {
   expect(await page.screenshot()).toMatchImageSnapshot();
 });
 
+it("should render a skin that defines transparent regions", async () => {
+  await page.goto(`http://localhost:8080/#{"disableMarquee":true}`);
+  expect(page).toUploadFile(
+    "#webamp-file-input",
+    "./skins/Green-Dimension-V2.wsz"
+  );
+  await new Promise(resolve => setTimeout(resolve, 200));
+  expect(await page.screenshot()).toMatchImageSnapshot();
+});
+
 it("uses the volume spirtes as a fallback when balance spirtes are missing", async () => {
   await page.goto(`http://localhost:8080/#{"disableMarquee":true}`);
   expect(page).toUploadFile("#webamp-file-input", "./skins/AmigaPPC-dark.wsz");
