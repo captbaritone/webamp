@@ -83,7 +83,9 @@ class WindowManager extends React.Component {
   }
 
   movingAndStationaryNodes(key) {
-    const windows = this.props.windowsInfo;
+    const windows = this.props.windowsInfo.filter(
+      w => this.props.windows[w.key] != null
+    );
     const targetNode = windows.find(node => node.key === key);
 
     let movingSet = new Set([targetNode]);
