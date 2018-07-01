@@ -13,7 +13,6 @@ import WindowManager from "./WindowManager";
 import MainWindow from "./MainWindow";
 import PlaylistWindow from "./PlaylistWindow";
 import EqualizerWindow from "./EqualizerWindow";
-import GenWindow from "./GenWindow";
 import Skin from "./Skin";
 
 import "../../css/webamp.css";
@@ -123,23 +122,16 @@ class App extends React.Component {
           }
           const Component = genWindowComponents[id];
           return (
-            <GenWindow
-              ref={component => this._gotRef(id, component)}
+            <Component
+              chromeRef={component => this._gotRef(id, component)}
               title={w.title}
               windowId={id}
-            >
-              {({ height, width }) => (
-                <Component
-                  onFocusedKeyDown={listener => this._emitter.on(id, listener)}
-                  analyser={media.getAnalyser()}
-                  isEnabledVisualizer={this.props.visualizerStyle === id}
-                  width={width}
-                  height={height}
-                  playing={this.props.status === "PLAYING"}
-                  close={() => this.props.closeWindow(id)}
-                />
-              )}
-            </GenWindow>
+              onFocusedKeyDown={listener => this._emitter.on(id, listener)}
+              analyser={media.getAnalyser()}
+              isEnabledVisualizer={this.props.visualizerStyle === id}
+              playing={this.props.status === "PLAYING"}
+              close={() => this.props.closeWindow(id)}
+            />
           );
       }
     });
