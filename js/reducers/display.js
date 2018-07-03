@@ -12,7 +12,8 @@ import {
   SET_PLAYLIST_SCROLL_POSITION,
   LOADED,
   REGISTER_VISUALIZER,
-  SET_Z_INDEX
+  SET_Z_INDEX,
+  DISABLE_MARQUEE
 } from "../actionTypes";
 import { DEFAULT_SKIN, VISUALIZER_ORDER } from "../constants";
 
@@ -31,6 +32,7 @@ export const getVisualizerStyle = createSelector(
 const defaultDisplayState = {
   doubled: false,
   marqueeStep: 0,
+  disableMarquee: false,
   loading: true,
   llama: false,
   closed: false,
@@ -54,7 +56,11 @@ const display = (state = defaultDisplayState, action) => {
     case TOGGLE_LLAMA_MODE:
       return { ...state, llama: !state.llama };
     case STEP_MARQUEE:
-      return { ...state, marqueeStep: state.marqueeStep + 1 };
+      return state.disableMarquee
+        ? state
+        : { ...state, marqueeStep: state.marqueeStep + 1 };
+    case DISABLE_MARQUEE:
+      return { ...state, disableMarquee: true };
     case STOP_WORKING:
       return { ...state, working: false };
     case START_WORKING:

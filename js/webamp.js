@@ -26,7 +26,8 @@ import {
   UPDATE_WINDOW_POSITIONS,
   LOADED,
   REGISTER_VISUALIZER,
-  SET_Z_INDEX
+  SET_Z_INDEX,
+  DISABLE_MARQUEE
 } from "./actionTypes";
 import Emitter from "./emitter";
 
@@ -67,7 +68,8 @@ class Winamp {
       availableSkins,
       enableHotkeys = false,
       zIndex,
-      __extraWindows
+      __extraWindows,
+      __disableMarquee
     } = this.options;
 
     this.media = new Media();
@@ -156,6 +158,10 @@ class Winamp {
         type: UPDATE_WINDOW_POSITIONS,
         positions: objectMap(layout, w => w.position)
       });
+    }
+
+    if (__disableMarquee) {
+      this.store.dispatch({ type: DISABLE_MARQUEE });
     }
 
     if (enableHotkeys) {

@@ -11,9 +11,7 @@ test("should render the default skin", async () => {
 });
 
 test("can 'pose' for a screenshot", async () => {
-  await page.goto(
-    `http://localhost:8080/?screenshot=1#{"disableMarquee":true}`
-  );
+  await page.goto(`http://localhost:8080/?screenshot=1`);
   expect(await page.screenshot()).toMatchImageSnapshot();
 });
 

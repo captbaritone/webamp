@@ -28,7 +28,8 @@ import {
   skinUrl as configSkinUrl,
   initialTracks,
   initialState,
-  milkdrop
+  milkdrop,
+  disableMarquee
 } from "./config";
 
 const NOISY_ACTION_TYPES = new Set([
@@ -169,6 +170,7 @@ Raven.context(() => {
       }
     ],
     enableHotkeys: true,
+    __disableMarquee: disableMarquee || screenshot,
     __extraWindows,
     __initialWindowLayout,
     __initialState: screenshot ? screenshotInitialState : initialState,
