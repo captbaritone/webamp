@@ -24,7 +24,6 @@ import {
 } from "./actionTypes";
 
 import {
-  hideAbout,
   skinUrl as configSkinUrl,
   initialTracks,
   initialState,
@@ -114,7 +113,7 @@ function genAudioFileUrlsFromDropbox() {
 }
 
 Raven.context(() => {
-  if (hideAbout) {
+  if (screenshot) {
     document.getElementsByClassName("about")[0].style.visibility = "hidden";
   }
   if (!Webamp.browserIsSupported()) {
