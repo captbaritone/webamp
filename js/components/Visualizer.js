@@ -31,7 +31,13 @@ class Visualizer extends React.Component {
     // Kick off the animation loop
     const loop = () => {
       if (this.props.status === "PLAYING") {
-        this.paintFrame();
+        if (this.props.dummyVizData) {
+          Object.keys(this.props.dummyVizData).forEach(i => {
+            this._printBar(i, this.props.dummyVizData[i]);
+          });
+        } else {
+          this.paintFrame();
+        }
       }
       this._animationRequest = window.requestAnimationFrame(loop);
     };
@@ -248,7 +254,8 @@ const mapStateToProps = state => ({
   width: getWindowShade(state, "main") ? 38 : 76,
   height: getWindowShade(state, "main") ? 5 : 16,
   status: state.media.status,
-  spekles: !getWindowShade(state, "main")
+  spekles: !getWindowShade(state, "main"),
+  dummyVizData: state.display.dummyVizData
 });
 
 const mapDispatchToProps = {

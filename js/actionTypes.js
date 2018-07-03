@@ -67,3 +67,4 @@ export const LOADED = "LOADED";
 export const REGISTER_VISUALIZER = "REGISTER_VISUALIZER";
 export const SET_Z_INDEX = "SET_Z_INDEX";
 export const DISABLE_MARQUEE = "DISABLE_MARQUEE";
+export const SET_DUMMY_VIZ_DATA = "SET_DUMMY_VIZ_DATA";

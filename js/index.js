@@ -24,7 +24,8 @@ import {
   DISABLE_MARQUEE,
   TOGGLE_REPEAT,
   TOGGLE_SHUFFLE,
-  SET_EQ_AUTO
+  SET_EQ_AUTO,
+  SET_DUMMY_VIZ_DATA
 } from "./actionTypes";
 
 import {
@@ -186,6 +187,27 @@ Raven.context(() => {
     webamp.store.dispatch({ type: TOGGLE_REPEAT });
     webamp.store.dispatch({ type: TOGGLE_SHUFFLE });
     webamp.store.dispatch({ type: SET_EQ_AUTO, value: true });
+    webamp.store.dispatch({
+      type: SET_DUMMY_VIZ_DATA,
+      data: {
+        0: 11.75,
+        8: 11.0625,
+        16: 8.5,
+        24: 7.3125,
+        32: 6.75,
+        40: 6.4375,
+        48: 6.25,
+        56: 5.875,
+        64: 5.625,
+        72: 5.25,
+        80: 5.125,
+        88: 4.875,
+        96: 4.8125,
+        104: 4.375,
+        112: 3.625,
+        120: 1.5625
+      }
+    });
   }
 
   webamp.renderWhenReady(document.getElementById("app"));

@@ -13,7 +13,8 @@ import {
   LOADED,
   REGISTER_VISUALIZER,
   SET_Z_INDEX,
-  DISABLE_MARQUEE
+  DISABLE_MARQUEE,
+  SET_DUMMY_VIZ_DATA
 } from "../actionTypes";
 import { DEFAULT_SKIN, VISUALIZER_ORDER } from "../constants";
 
@@ -43,6 +44,7 @@ const defaultDisplayState = {
   skinPlaylistStyle: null,
   skinRegion: {},
   visualizerStyle: 0, // Index into VISUALIZER_ORDER
+  dummyVizData: null,
   playlistScrollPosition: 0,
   skinGenLetterWidths: null, // TODO: Get the default value for this?
   additionalVisualizers: [],
@@ -95,6 +97,8 @@ const display = (state = defaultDisplayState, action) => {
       return { ...state, playlistScrollPosition: action.position };
     case SET_Z_INDEX:
       return { ...state, zIndex: action.zIndex };
+    case SET_DUMMY_VIZ_DATA:
+      return { ...state, dummyVizData: action.data };
     default:
       return state;
   }
