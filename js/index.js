@@ -20,7 +20,11 @@ import {
   UPDATE_WINDOW_POSITIONS,
   SET_VOLUME,
   SET_BALANCE,
-  SET_BAND_VALUE
+  SET_BAND_VALUE,
+  DISABLE_MARQUEE,
+  TOGGLE_REPEAT,
+  TOGGLE_SHUFFLE,
+  SET_EQ_AUTO
 } from "./actionTypes";
 
 import {
@@ -169,12 +173,20 @@ Raven.context(() => {
       }
     ],
     enableHotkeys: true,
-    __disableMarquee: disableMarquee || screenshot,
     __extraWindows,
     __initialWindowLayout,
     __initialState: screenshot ? screenshotInitialState : initialState,
     __customMiddlewares: [ravenMiddleware]
   });
+
+  if (disableMarquee || screenshot) {
+    webamp.store.dispatch({ type: DISABLE_MARQUEE });
+  }
+  if (screenshot) {
+    webamp.store.dispatch({ type: TOGGLE_REPEAT });
+    webamp.store.dispatch({ type: TOGGLE_SHUFFLE });
+    webamp.store.dispatch({ type: SET_EQ_AUTO, value: true });
+  }
 
   webamp.renderWhenReady(document.getElementById("app"));
 
