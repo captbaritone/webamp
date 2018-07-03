@@ -176,4 +176,7 @@ Raven.context(() => {
   });
 
   webamp.renderWhenReady(document.getElementById("app"));
+
+  // Expose webamp instance for debugging and integration tests.
+  window.__webamp = webamp;
 });

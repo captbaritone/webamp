@@ -10,6 +10,7 @@ import CharacterString from "../CharacterString";
 import { getMediaText } from "../../selectors";
 
 const CHAR_WIDTH = 5;
+const MARQUEE_MAX_LENGTH = 31;
 
 // Always positive modulus
 export const mod = (n, m) => ((n % m) + m) % m;
@@ -47,7 +48,7 @@ export const getEqText = (band, level) => {
   return `EQ: ${label} ${ensureSign(db)} DB`;
 };
 
-const isLong = text => text.length > 30;
+const isLong = text => text.length >= MARQUEE_MAX_LENGTH;
 
 // Given text and step, how many pixels should it be shifted?
 export const stepOffset = (text, step, pixels) => {
@@ -66,7 +67,8 @@ export const stepOffset = (text, step, pixels) => {
 export const pixelUnits = pixels => `${pixels}px`;
 
 // If text is wider than the marquee, it needs to loop
-export const loopText = text => (isLong(text) ? text + text : text);
+export const loopText = text =>
+  isLong(text) ? text + text : text.padEnd(MARQUEE_MAX_LENGTH, " ");
 
 class Marquee extends React.Component {
   constructor(props) {
