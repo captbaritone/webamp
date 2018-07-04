@@ -36,7 +36,6 @@ export async function genMediaTags(file) {
     async require => {
       const mm = require("music-metadata");
       const stream = await sourceToStream(file);
-      stream.type = stream.type ? stream.type.split(";")[0] : stream.type; // Strip off: ; charset=UTF-8
       return mm.parseStream(stream.stream, stream.type, { duration: true });
     },
     err => {
