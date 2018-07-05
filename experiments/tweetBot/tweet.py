@@ -4,6 +4,7 @@
 Usage:
   tweet.py post [--dry]
   tweet.py review [--dry]
+  tweet.py manual
   tweet.py debug
 
 Options:
@@ -217,6 +218,10 @@ def main(dry):
         print("URL is no good. Aborting.")
         return
 
+    tweet_image(skin_name, md5, skin_url, screenshot_path, true)
+
+
+def tweet_image(skin_name, md5, skin_url, screenshot_path, double):
     # Trick Twitter into keeping the skin a PNG
     img = Image.open(screenshot_path)
     img = img.convert("RGBA")  # ensure 32-bit
@@ -227,8 +232,9 @@ def main(dry):
     pixels[w - 1, h - 1] = pixels[w - 1, h - 1][:3] + (243,)
 
     # Resize to 2x so that pixels remain a bit more crisp when resized
-    w, h = (2 * w, 2 * h)
-    img = img.resize((w, h), 0)
+    if double:
+        w, h = (2 * w, 2 * h)
+        img = img.resize((w, h), 0)
 
     img.save(screenshot_path)
 
@@ -259,3 +265,6 @@ if __name__ == "__main__":
         review()
     elif(arguments.get("post")):
         main(dry=dry)
+    elif(arguments.get("manual")):
+        tweet_image("United_We_Stand", "1c4a67647a1da20938a4826da95ab40e",
+                    "https://archive.org/cors/winampskin_United_We_Stand/United_We_Stand.wsz", "/Users/jordaneldredge/Downloads/usa.png", false)
