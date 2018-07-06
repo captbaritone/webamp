@@ -2,7 +2,6 @@ import "babel-polyfill";
 import React from "react";
 import { render } from "react-dom";
 import { skinUrl } from "./config";
-import { genArrayBufferFromUrl } from "./fileUtils";
 import skinParser from "./skinParser";
 
 const SkinTable = props => (
@@ -21,7 +20,7 @@ const SkinTable = props => (
 );
 
 const parse = async () => {
-  const skinData = await skinParser(await genArrayBufferFromUrl(skinUrl));
+  const skinData = await skinParser((await fetch(skinUrl)).arrayBuffer());
   render(<SkinTable {...skinData} />, document.getElementById("skin"));
 };
 

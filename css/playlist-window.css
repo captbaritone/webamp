@@ -65,7 +65,6 @@
 #webamp .playlist-tracks {
     display: flex;
     flex: 1 0 auto;
-    cursor: default;
 }
 
 #webamp .playlist-tracks .track-cell {

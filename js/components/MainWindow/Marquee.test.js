@@ -117,7 +117,11 @@ describe("loopText", () => {
   it("does not loop sort strings", () => {
     const actual = loopText(short);
     const expected = short;
-    expect(actual).toEqual(expected);
+    expect(actual.trim()).toEqual(expected);
+  });
+  it("pads a sort strings", () => {
+    const actual = loopText(short);
+    expect(actual.length).toBe(31);
   });
 });
 describe("getDoubleSizeModeText", () => {

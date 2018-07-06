@@ -20,6 +20,10 @@
     "es6": true,
     "jest": true
   },
+  "globals": {
+    "page": true,
+    "browser": true
+  },
   "rules": {
     "no-multiple-empty-lines": [
       "error",
@@ -40,7 +44,6 @@
     "max-depth": ["warn", 4],
     "max-params": ["warn", 5],
     "new-cap": "error",
-    "no-alert": "error",
     "no-caller": "error",
     "no-catch-shadow": "error",
     "no-const-assign": "error",

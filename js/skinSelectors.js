@@ -150,7 +150,9 @@ export const imageSelectors = {
   EQ_TITLE_BAR_SELECTED: [".selected .equalizer-top"],
   EQ_SLIDER_BACKGROUND: [".band"],
   EQ_SLIDER_THUMB: [".band .rc-slider-handle"],
-  EQ_SLIDER_THUMB_SELECTED: [".band .rc-slider-handle:active"],
+  // But the "active" pseudo selector on the parent, since clicking
+  // anywhere on the track moves the slider.
+  EQ_SLIDER_THUMB_SELECTED: [".band .rc-slider:active .rc-slider-handle"],
   EQ_ON_BUTTON: ["#on"],
   EQ_ON_BUTTON_DEPRESSED: ["#on:active"],
   EQ_ON_BUTTON_SELECTED: ["#on.selected"],
@@ -329,7 +331,9 @@ LETTERS.forEach(character => {
 
 export const cursorSelectors = {
   CLOSE: ["#title-bar #close"],
-  EQSLID: ["#equalizer-window .band"],
+  // This is not quite right. There are some areas that show this cursor
+  // but are not clickable.
+  EQSLID: ["#equalizer-window .band rc-slider"],
   EQNORMAL: ["#equalizer-window"],
   EQCLOSE: ["#equalizer-window #equalizer-close"],
   EQTITLE: [
@@ -337,11 +341,12 @@ export const cursorSelectors = {
     "#equalizer-window.shade",
     "#equalizer-window.shade input"
   ],
-  MAINMENU: ["#main-window #option"],
+  MAINMENU: ["#main-window #option", "#webamp-context-menu .context-menu"],
   MIN: ["#main-window #minimize"],
   NORMAL: [
     // Use this as the default cursor.
     ".window",
+    ".window input", // Otherwise
     "#main-window",
     "#main-window.shade #title-bar"
   ],
@@ -367,7 +372,7 @@ export const cursorSelectors = {
   PVSCROLL: ["#playlist-window .playlist-scrollbar"],
   SONGNAME: ["#main-window #marquee"],
   TITLEBAR: ["#main-window #title-bar"],
-  VOLBAL: ["#volume", "#balance"],
+  VOLBAL: ["#volume", "#volume input", "#balance"],
   WINBUT: ["#main-window #shade"],
   WSNORMAL: ["#main-window.shade #title-bar"],
   WSPOSBAR: ["#main-window.shade #position"]

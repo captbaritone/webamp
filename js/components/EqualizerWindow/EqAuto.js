@@ -5,18 +5,17 @@ import classnames from "classnames";
 import { SET_EQ_AUTO } from "../../actionTypes";
 
 const EqAuto = props => {
-  const className = classnames({
-    selected: props.auto
-  });
+  const className = classnames({ selected: props.auto });
   return <div id="auto" className={className} onClick={props.toggleAuto} />;
 };
 
-const toggleAuto = () => (dispatch, getState) => {
-  dispatch({ type: SET_EQ_AUTO, value: !getState().equalizer.auto });
+const toggleAuto = () => dispatch => {
+  // We don't support auto.
+  dispatch({ type: SET_EQ_AUTO, value: false });
 };
 
 const mapDispatchToProps = { toggleAuto };
 export default connect(
-  state => ({ toggleAuto: state.equalizer.toggleAuto }),
+  state => ({ auto: state.equalizer.auto }),
   mapDispatchToProps
 )(EqAuto);

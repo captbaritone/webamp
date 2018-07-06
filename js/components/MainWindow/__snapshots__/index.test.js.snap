@@ -198,6 +198,106 @@ exports[`MainWindow renders to snapshot 1`] = `
         >
           1
         </span>
+        <span
+          className=" character character-32"
+        >
+           
+        </span>
+        <span
+          className=" character character-32"
+        >
+           
+        </span>
+        <span
+          className=" character character-32"
+        >
+           
+        </span>
+        <span
+          className=" character character-32"
+        >
+           
+        </span>
+        <span
+          className=" character character-32"
+        >
+           
+        </span>
+        <span
+          className=" character character-32"
+        >
+           
+        </span>
+        <span
+          className=" character character-32"
+        >
+           
+        </span>
+        <span
+          className=" character character-32"
+        >
+           
+        </span>
+        <span
+          className=" character character-32"
+        >
+           
+        </span>
+        <span
+          className=" character character-32"
+        >
+           
+        </span>
+        <span
+          className=" character character-32"
+        >
+           
+        </span>
+        <span
+          className=" character character-32"
+        >
+           
+        </span>
+        <span
+          className=" character character-32"
+        >
+           
+        </span>
+        <span
+          className=" character character-32"
+        >
+           
+        </span>
+        <span
+          className=" character character-32"
+        >
+           
+        </span>
+        <span
+          className=" character character-32"
+        >
+           
+        </span>
+        <span
+          className=" character character-32"
+        >
+           
+        </span>
+        <span
+          className=" character character-32"
+        >
+           
+        </span>
+        <span
+          className=" character character-32"
+        >
+           
+        </span>
+        <span
+          className=" character character-32"
+        >
+           
+        </span>
       </div>
     </div>
     <div
@@ -319,6 +419,7 @@ exports[`MainWindow renders to snapshot 1`] = `
     id="position"
     max="100"
     min="0"
+    onChange={[Function]}
     onInput={[Function]}
     onMouseDown={[Function]}
     onMouseUp={[Function]}

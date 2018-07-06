@@ -9,7 +9,6 @@ import {
 } from "../utils";
 
 import {
-  genArrayBufferFromUrl,
   promptForFileReferences,
   genArrayBufferFromFileReference,
   genMediaDuration,
@@ -32,6 +31,7 @@ import {
   MEDIA_TAG_REQUEST_INITIALIZED,
   MEDIA_TAG_REQUEST_FAILED,
   SET_SKIN_DATA,
+  LOADED,
   SET_MEDIA
 } from "../actionTypes";
 import LoadQueue from "../loadQueue";
@@ -105,8 +105,17 @@ export function setSkinFromFileReference(skinFileReference) {
 
 export function setSkinFromUrl(url) {
   return async dispatch => {
-    const arrayBuffer = await genArrayBufferFromUrl(url);
-    dispatch(setSkinFromArrayBuffer(arrayBuffer));
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      dispatch(setSkinFromArrayBuffer(response.arrayBuffer()));
+    } catch (e) {
+      console.error(e);
+      dispatch({ type: LOADED });
+      alert(`Failed to download skin from ${url}`);
+    }
   };
 }
 
@@ -135,14 +144,14 @@ export function openSkinFileDialog() {
 export function fetchMediaDuration(url, id) {
   return (dispatch, getState) => {
     loadQueue.push(
-      () =>
-        genMediaDuration(url)
-          .then(duration =>
-            dispatch({ type: SET_MEDIA_DURATION, duration, id })
-          )
-          .catch(() => {
-            // TODO: Should we update the state to indicate that we don't know the length?
-          }),
+      async () => {
+        try {
+          const duration = await genMediaDuration(url);
+          dispatch({ type: SET_MEDIA_DURATION, duration, id });
+        } catch (e) {
+          // TODO: Should we update the state to indicate that we don't know the length?
+        }
+      },
       () => {
         const trackIsVisible = getTrackIsVisibleFunction(getState());
         return trackIsVisible(id)
@@ -223,45 +232,46 @@ function queueFetchingMediaTags(id) {
 }
 
 export function fetchMediaTags(file, id) {
-  return dispatch => {
+  return async dispatch => {
     dispatch({ type: MEDIA_TAG_REQUEST_INITIALIZED, id });
-    return genMediaTags(file)
-      .then(data => {
-        // There's more data here, but we don't have a use for it yet:
-        // https://github.com/aadsm/jsmediatags#shortcuts
-        const { artist, title, picture } = data.common;
-        let albumArtUrl = null;
-        if (picture && picture.length >= 1) {
-          const byteArray = new Uint8Array(picture[0].data);
-          const blob = new Blob([byteArray], { type: picture[0].format });
-          albumArtUrl = URL.createObjectURL(blob);
-        }
-        dispatch({ type: SET_MEDIA_TAGS, artist, title, albumArtUrl, id });
 
-        // If we're not going to load this right away,
-        // we should set duration on our own
-        if (data.format.duration != null) {
-          dispatch({
-            type: SET_MEDIA_DURATION,
-            duration: data.format.duration,
-            id
-          });
-        } else {
-          //  ToDo? dispatch(fetchMediaDuration(canonicalUrl, id));
-        }
+    let metadata;
+    try {
+      metadata = await genMediaTags(file);
+      // There's more data here, but we don't have a use for it yet:
+      const { artist, title, picture } = metadata.common;
+      let albumArtUrl = null;
+      if (picture && picture.length >= 1) {
+        const byteArray = new Uint8Array(picture[0].data);
+        const blob = new Blob([byteArray], { type: picture[0].format });
+        albumArtUrl = URL.createObjectURL(blob);
+      }
+      dispatch({ type: SET_MEDIA_TAGS, artist, title, albumArtUrl, id });
+    } catch (e) {
+      dispatch({ type: MEDIA_TAG_REQUEST_FAILED, id });
+      return;
+    }
 
-        dispatch({
-          type: SET_MEDIA,
-          kbps: Math.round(data.format.bitrate / 1000).toString(),
-          khz: Math.round(data.format.sampleRate / 1000).toString(),
-          channels: data.format.channels,
-          length: data.format.duration,
-          id
-        });
-      })
-      .catch(() => {
-        dispatch({ type: MEDIA_TAG_REQUEST_FAILED, id });
+    // If we're not going to load this right away,
+    // we should set duration on our own
+    if (metadata.format.duration) {
+      dispatch({
+        type: SET_MEDIA_DURATION,
+        duration: metadata.format.duration,
+        id
       });
+    } else {
+      //  ToDo? dispatch(fetchMediaDuration(canonicalUrl, id));
+    }
+
+    dispatch({
+      type: SET_MEDIA,
+      kbps: Math.round(metadata.format.bitrate / 1000).toString(),
+      khz: Math.round(metadata.format.sampleRate / 1000).toString(),
+      channels: metadata.format.channels,
+      length: metadata.format.duration,
+      id
+    });
   };
 }
 

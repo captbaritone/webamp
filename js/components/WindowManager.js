@@ -83,7 +83,9 @@ class WindowManager extends React.Component {
   }
 
   movingAndStationaryNodes(key) {
-    const windows = this.props.windowsInfo;
+    const windows = this.props.windowsInfo.filter(
+      w => this.props.windows[w.key] != null
+    );
     const targetNode = windows.find(node => node.key === key);
 
     let movingSet = new Set([targetNode]);
@@ -109,9 +111,24 @@ class WindowManager extends React.Component {
     const [moving, stationary] = this.movingAndStationaryNodes(key);
 
     const mouseStart = { x: e.clientX, y: e.clientY };
+    // Aparently this is crazy across browsers.
     const browserSize = {
-      width: document.documentElement.scrollWidth,
-      height: document.documentElement.scrollHeight
+      width: Math.max(
+        document.body.scrollWidth,
+        document.documentElement.scrollWidth,
+        document.body.offsetWidth,
+        document.documentElement.offsetWidth,
+        document.body.clientWidth,
+        document.documentElement.clientWidth
+      ),
+      height: Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight,
+        document.body.clientHeight,
+        document.documentElement.clientHeight
+      )
     };
 
     const box = boundingBox(moving);

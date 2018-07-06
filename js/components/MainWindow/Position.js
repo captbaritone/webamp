@@ -33,6 +33,9 @@ const Position = ({
       step="1"
       value={displayedPosition}
       onInput={setPosition}
+      onChange={
+        () => {} /* React complains without this, can probably rename onInput to onChange */
+      }
       onMouseUp={seekToPercentComplete}
       onMouseDown={setPosition}
       title="Seeking Bar"

@@ -12,6 +12,7 @@ import xmms from "../skins/XMMS-Turquoise.wsz";
 import zaxon from "../skins/ZaxonRemake1-0.wsz";
 import green from "../skins/Green-Dimension-V2.wsz";
 import MilkdropWindow from "./components/MilkdropWindow";
+import screenshotInitialState from "./screenshotInitialState";
 import Webamp from "./webamp";
 import {
   STEP_MARQUEE,
@@ -19,15 +20,20 @@ import {
   UPDATE_WINDOW_POSITIONS,
   SET_VOLUME,
   SET_BALANCE,
-  SET_BAND_VALUE
+  SET_BAND_VALUE,
+  DISABLE_MARQUEE,
+  TOGGLE_REPEAT,
+  TOGGLE_SHUFFLE,
+  SET_EQ_AUTO,
+  SET_DUMMY_VIZ_DATA
 } from "./actionTypes";
 
 import {
-  hideAbout,
-  skinUrl,
+  skinUrl as configSkinUrl,
   initialTracks,
   initialState,
-  milkdrop
+  milkdrop,
+  disableMarquee
 } from "./config";
 
 const NOISY_ACTION_TYPES = new Set([
@@ -38,6 +44,14 @@ const NOISY_ACTION_TYPES = new Set([
   SET_BALANCE,
   SET_BAND_VALUE
 ]);
+
+let screenshot = false;
+let skinUrl = configSkinUrl;
+if ("URLSearchParams" in window) {
+  const params = new URLSearchParams(location.search);
+  screenshot = params.get("screenshot");
+  skinUrl = params.get("skinUrl") || skinUrl;
+}
 
 function supressDragAndDrop(e) {
   e.preventDefault();
@@ -104,7 +118,7 @@ function genAudioFileUrlsFromDropbox() {
 }
 
 Raven.context(() => {
-  if (hideAbout) {
+  if (screenshot) {
     document.getElementsByClassName("about")[0].style.visibility = "hidden";
   }
   if (!Webamp.browserIsSupported()) {
@@ -136,7 +150,7 @@ Raven.context(() => {
 
   const webamp = new Webamp({
     initialSkin,
-    initialTracks,
+    initialTracks: screenshot ? null : initialTracks,
     availableSkins: [
       { url: base, name: "<Base Skin>" },
       { url: green, name: "Green Dimension V2" },
@@ -162,9 +176,42 @@ Raven.context(() => {
     enableHotkeys: true,
     __extraWindows,
     __initialWindowLayout,
-    __initialState: initialState,
+    __initialState: screenshot ? screenshotInitialState : initialState,
     __customMiddlewares: [ravenMiddleware]
   });
 
+  if (disableMarquee || screenshot) {
+    webamp.store.dispatch({ type: DISABLE_MARQUEE });
+  }
+  if (screenshot) {
+    webamp.store.dispatch({ type: TOGGLE_REPEAT });
+    webamp.store.dispatch({ type: TOGGLE_SHUFFLE });
+    webamp.store.dispatch({ type: SET_EQ_AUTO, value: true });
+    webamp.store.dispatch({
+      type: SET_DUMMY_VIZ_DATA,
+      data: {
+        0: 11.75,
+        8: 11.0625,
+        16: 8.5,
+        24: 7.3125,
+        32: 6.75,
+        40: 6.4375,
+        48: 6.25,
+        56: 5.875,
+        64: 5.625,
+        72: 5.25,
+        80: 5.125,
+        88: 4.875,
+        96: 4.8125,
+        104: 4.375,
+        112: 3.625,
+        120: 1.5625
+      }
+    });
+  }
+
   webamp.renderWhenReady(document.getElementById("app"));
+
+  // Expose webamp instance for debugging and integration tests.
+  window.__webamp = webamp;
 });
