@@ -218,7 +218,7 @@ def main(dry):
         print("URL is no good. Aborting.")
         return
 
-    tweet_image(skin_name, md5, skin_url, screenshot_path, true)
+    tweet_image(skin_name, md5, skin_url, screenshot_path, True)
 
 
 def tweet_image(skin_name, md5, skin_url, screenshot_path, double):
