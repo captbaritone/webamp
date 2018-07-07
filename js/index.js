@@ -184,6 +184,7 @@ Raven.context(() => {
     webamp.store.dispatch({ type: DISABLE_MARQUEE });
   }
   if (screenshot) {
+    window.document.body.style.backgroundColor = "#000";
     webamp.store.dispatch({ type: TOGGLE_REPEAT });
     webamp.store.dispatch({ type: TOGGLE_SHUFFLE });
     webamp.store.dispatch({ type: SET_EQ_AUTO, value: true });
