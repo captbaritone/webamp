@@ -5,6 +5,7 @@ export {
   toggleEqualizerShadeMode,
   togglePlaylistShadeMode,
   closeWindow,
+  hideWindow,
   setWindowSize,
   toggleWindow,
   updateWindowPositions,

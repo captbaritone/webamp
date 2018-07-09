@@ -1,7 +1,9 @@
 import React from "react";
+import { connect } from "react-redux";
 import screenfull from "screenfull";
 import ContextMenuWrapper from "../ContextMenuWrapper";
 import GenWindow from "../GenWindow";
+import { hideWindow } from "../../actionCreators";
 import MilkdropContextMenu from "./MilkdropContextMenu";
 import Desktop from "./Desktop";
 
@@ -14,7 +16,7 @@ import "../../../css/milkdrop-window.css";
 // This component is just responsible for loading dependencies.
 // This simplifies the inner <Milkdrop /> component, by allowing
 // it to alwasy assume that it has its dependencies.
-export default class PresetsLoader extends React.Component {
+class PresetsLoader extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -26,6 +28,10 @@ export default class PresetsLoader extends React.Component {
     this._handleFullscreenChange = this._handleFullscreenChange.bind(this);
     this._handleRequestFullsceen = this._handleRequestFullsceen.bind(this);
     this._enableDesktop = this._enableDesktop.bind(this);
+  }
+
+  isHidden() {
+    return this.state.desktop;
   }
 
   async componentDidMount() {
@@ -55,6 +61,7 @@ export default class PresetsLoader extends React.Component {
   }
 
   _enableDesktop() {
+    this.props.hideWindow(this.props.windowId);
     this.setState({ desktop: true });
   }
 
@@ -159,3 +166,13 @@ async function loadNonMinimalPresets() {
     );
   });
 }
+
+const mapStateToProps = () => ({});
+const mapDispatchProps = {
+  hideWindow
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchProps
+)(PresetsLoader);

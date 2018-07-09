@@ -279,6 +279,10 @@ export function getWindowShade(state, windowId) {
   return state.windows.genWindows[windowId].shade;
 }
 
+export function getWindowHidden(state) {
+  return windowId => state.windows.genWindows[windowId].hidden;
+}
+
 export const getGenWindows = state => {
   return state.windows.genWindows;
 };

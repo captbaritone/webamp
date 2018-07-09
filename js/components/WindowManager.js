@@ -11,7 +11,7 @@ import {
   applyDiff,
   applyMultipleDiffs
 } from "../snapUtils";
-import { getWindowsInfo } from "../selectors";
+import { getWindowsInfo, getWindowHidden } from "../selectors";
 import { updateWindowPositions } from "../actionCreators";
 import { WINDOW_HEIGHT, WINDOW_WIDTH } from "../constants";
 import { calculateBoundingBox } from "../utils";
@@ -84,7 +84,8 @@ class WindowManager extends React.Component {
 
   movingAndStationaryNodes(key) {
     const windows = this.props.windowsInfo.filter(
-      w => this.props.windows[w.key] != null
+      w =>
+        this.props.windows[w.key] != null && !this.props.getWindowHidden(w.key)
     );
     const targetNode = windows.find(node => node.key === key);
 
@@ -214,7 +215,8 @@ WindowManager.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  windowsInfo: getWindowsInfo(state)
+  windowsInfo: getWindowsInfo(state),
+  getWindowHidden: getWindowHidden(state)
 });
 
 const mapDispatchToProps = {
