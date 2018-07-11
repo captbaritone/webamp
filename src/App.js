@@ -31,14 +31,13 @@ class Skin extends React.Component {
         }}
       >
         <a href={this.props.href} target="_blank">
-          <img
-            src={this.props.src}
-            className={`screenshot`}
-            onLoad={this._handleLoad}
-            style={{
-              visibility: this.state.loaded ? "inherit" : "hidden"
-            }}
-          />
+          {(this.state.loaded || !this.props.isScrolling) && (
+            <img
+              src={this.props.src}
+              className={`screenshot ${this.state.loaded ? "loaded" : ""}`}
+              onLoad={this._handleLoad}
+            />
+          )}
         </a>
       </div>
     );
@@ -59,6 +58,7 @@ class App extends React.Component {
     style,
     columnCount,
     columnWidth,
+    rowHeight,
     isScrolling,
     isVisible
   }) {
@@ -70,6 +70,7 @@ class App extends React.Component {
           key={hash}
           src={`https://s3.amazonaws.com/webamp-uploaded-skins/screenshots/${hash}.png`}
           width={columnWidth}
+          height={rowHeight}
           color={skins[hash].color}
           isScrolling={isScrolling}
           isVisible={isVisible}
@@ -100,6 +101,7 @@ class App extends React.Component {
                 height={height}
                 isScrolling={isScrolling}
                 onScroll={onChildScroll}
+                overscanRowCount={10}
                 rowCount={hashes.length / columnCount}
                 rowHeight={rowHeight}
                 rowRenderer={props =>
@@ -107,7 +109,8 @@ class App extends React.Component {
                     ...props,
                     width,
                     columnCount,
-                    columnWidth
+                    columnWidth,
+                    rowHeight
                   })
                 }
                 scrollTop={scrollTop}

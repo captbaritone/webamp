@@ -1,4 +1,9 @@
 .screenshot {
   image-rendering: pixelated;
   height: 100%;
+  opacity: 0;
+}
+
+.screenshot.loaded {
+  opacity: 1;
 }
