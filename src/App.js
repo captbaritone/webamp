@@ -1,7 +1,6 @@
 import React from "react";
 import { List, WindowScroller } from "react-virtualized";
 import skins from "./skins.json";
-import Featured from "./Featured";
 import "./App.css";
 
 const hashes = Object.keys(skins);
