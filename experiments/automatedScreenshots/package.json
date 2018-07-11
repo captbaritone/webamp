@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "clean": "rm screenshots/*.png"
+    "clean": "rm screenshots/*.png",
+    "sync-screenshots": "aws s3 sync --acl=public-read screenshots/ s3://webamp-uploaded-skins/screenshots/",
+    "sync-skins": "aws s3 sync --acl=public-read md5Skins/ s3://webamp-uploaded-skins/skins/",
+    "sync": "npm run sync-screenshots && npm run sync-skins"
   },
   "author": "",
   "license": "ISC",
