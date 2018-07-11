@@ -82,16 +82,22 @@ export function loadFilesFromReferences(
 export function setSkinFromArrayBuffer(arrayBuffer) {
   return async dispatch => {
     dispatch({ type: LOADING });
-    const skinData = await skinParser(arrayBuffer);
-    dispatch({
-      type: SET_SKIN_DATA,
-      skinImages: skinData.images,
-      skinColors: skinData.colors,
-      skinPlaylistStyle: skinData.playlistStyle,
-      skinCursors: skinData.cursors,
-      skinRegion: skinData.region,
-      skinGenLetterWidths: skinData.genLetterWidths
-    });
+    try {
+      const skinData = await skinParser(arrayBuffer);
+      dispatch({
+        type: SET_SKIN_DATA,
+        skinImages: skinData.images,
+        skinColors: skinData.colors,
+        skinPlaylistStyle: skinData.playlistStyle,
+        skinCursors: skinData.cursors,
+        skinRegion: skinData.region,
+        skinGenLetterWidths: skinData.genLetterWidths
+      });
+    } catch (e) {
+      console.error(e);
+      dispatch({ type: LOADED });
+      alert(`Failed to parse skin`);
+    }
   };
 }
 

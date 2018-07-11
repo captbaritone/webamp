@@ -35,9 +35,13 @@ class Shooter {
 
   _validateZip(u) {
     return new Promise((resolve, reject) => {
-      fs.readFile(u, (err, buffer) => {
-        JSZip.loadAsync(buffer).then(resolve, reject);
-      });
+      try {
+        fs.readFile(u, (err, buffer) => {
+          JSZip.loadAsync(buffer).then(resolve, reject);
+        });
+      } catch (e) {
+        reject(e);
+      }
     });
   }
 
