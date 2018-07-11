@@ -31,7 +31,8 @@ import {
   MEDIA_TAG_REQUEST_INITIALIZED,
   MEDIA_TAG_REQUEST_FAILED,
   SET_SKIN_DATA,
-  LOADED
+  LOADED,
+  LOADING
 } from "../actionTypes";
 import LoadQueue from "../loadQueue";
 
@@ -80,6 +81,7 @@ export function loadFilesFromReferences(
 
 export function setSkinFromArrayBuffer(arrayBuffer) {
   return async dispatch => {
+    dispatch({ type: LOADING });
     const skinData = await skinParser(arrayBuffer);
     dispatch({
       type: SET_SKIN_DATA,
@@ -95,6 +97,7 @@ export function setSkinFromArrayBuffer(arrayBuffer) {
 
 export function setSkinFromFileReference(skinFileReference) {
   return async dispatch => {
+    dispatch({ type: LOADING });
     const arrayBuffer = await genArrayBufferFromFileReference(
       skinFileReference
     );
@@ -104,6 +107,7 @@ export function setSkinFromFileReference(skinFileReference) {
 
 export function setSkinFromUrl(url) {
   return async dispatch => {
+    dispatch({ type: LOADING });
     try {
       const response = await fetch(url);
       if (!response.ok) {

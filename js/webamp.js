@@ -129,6 +129,7 @@ class Winamp {
     if (initialSkin) {
       this.store.dispatch(setSkinFromUrl(initialSkin.url));
     } else {
+      // We are using the default skin.
       this.store.dispatch({ type: LOADED });
     }
 
@@ -182,10 +183,13 @@ class Winamp {
     return this._actionEmitter.on(MINIMIZE_WINAMP, cb);
   }
 
-  async renderWhenReady(node) {
+  async skinIsLoaded() {
     // Wait for the skin to load.
-    await storeHas(this.store, state => !state.display.loading);
+    return storeHas(this.store, state => !state.display.loading);
+  }
 
+  async renderWhenReady(node) {
+    await this.skinIsLoaded();
     const genWindowComponents = {};
     this.genWindows.forEach(w => {
       genWindowComponents[w.id] = w.Component;
