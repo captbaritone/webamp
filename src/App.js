@@ -4,11 +4,11 @@ import skins from "./skins.json";
 import Featured from "./Featured";
 import "./App.css";
 
+const hashes = Object.keys(skins);
+
 const SKIN_WIDTH = 275;
 const SKIN_HEIGHT = 348;
 const SKIN_RATIO = SKIN_HEIGHT / SKIN_WIDTH;
-
-const Img = props => <Img {...props} />;
 
 class Skin extends React.Component {
   constructor(props) {
@@ -30,16 +30,17 @@ class Skin extends React.Component {
           height: "100%",
           display: "inline-block"
         }}
-        onClick={this.props.setFocused}
       >
-        <img
-          src={this.props.src}
-          className={`screenshot`}
-          onLoad={this._handleLoad}
-          style={{
-            visibility: this.state.loaded ? "inherit" : "hidden"
-          }}
-        />
+        <a href={this.props.href} target="_blank">
+          <img
+            src={this.props.src}
+            className={`screenshot`}
+            onLoad={this._handleLoad}
+            style={{
+              visibility: this.state.loaded ? "inherit" : "hidden"
+            }}
+          />
+        </a>
       </div>
     );
   }
@@ -50,7 +51,6 @@ class Skin extends React.Component {
 class App extends React.Component {
   constructor() {
     super();
-    this.state = { focused: null };
     this._rowRenderer = this._rowRenderer.bind(this);
   }
 
@@ -65,21 +65,16 @@ class App extends React.Component {
   }) {
     const columns = [];
     for (let i = 0; i < columnCount; i++) {
-      const skin = skins[index * columnCount + i];
+      const hash = hashes[index * columnCount + i];
       columns.push(
         <Skin
-          key={skin.file}
-          src={`${process.env.PUBLIC_URL}/screenshots/${skin.file}`}
+          key={hash}
+          src={`https://s3.amazonaws.com/webamp-uploaded-skins/screenshots/${hash}.png`}
           width={columnWidth}
-          color={skin.color}
+          color={skins[hash].color}
           isScrolling={isScrolling}
           isVisible={isVisible}
-          faded={this.state.focused != null && this.state.focused !== skin.file}
-          setFocused={() =>
-            this.setState({
-              focused: this.state.focused === skin.file ? null : skin.file
-            })
-          }
+          href={`https://webamp.org/?skinUrl=https://s3.amazonaws.com/webamp-uploaded-skins/skins/${hash}.wsz`}
         />
       );
     }
@@ -106,7 +101,7 @@ class App extends React.Component {
                 height={height}
                 isScrolling={isScrolling}
                 onScroll={onChildScroll}
-                rowCount={skins.length / columnCount}
+                rowCount={hashes.length / columnCount}
                 rowHeight={rowHeight}
                 rowRenderer={props =>
                   this._rowRenderer({
@@ -122,14 +117,6 @@ class App extends React.Component {
             );
           }}
         </WindowScroller>
-        {this.state.focused && (
-          <Featured
-            skinUrl={`${process.env.PUBLIC_URL}/screenshots/${
-              this.state.focused
-            }`}
-            dismiss={() => this.setState({ focused: null })}
-          />
-        )}
       </div>
     );
   }
