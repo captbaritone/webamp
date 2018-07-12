@@ -12,8 +12,7 @@ import {
   TOGGLE_WINDOW,
   CLOSE_WINDOW,
   TOGGLE_WINDOW_SHADE_MODE,
-  HIDE_WINDOW,
-  SHOW_WINDOW
+  SET_WINDOW_VISIBILITY
 } from "../actionTypes";
 
 import { getPositionDiff } from "../resizeUtils";
@@ -85,11 +84,11 @@ export function closeWindow(windowId) {
 }
 
 export function hideWindow(windowId) {
-  return { type: HIDE_WINDOW, windowId };
+  return { type: SET_WINDOW_VISIBILITY, windowId, hidden: true };
 }
 
 export function showWindow(windowId) {
-  return { type: SHOW_WINDOW, windowId };
+  return { type: SET_WINDOW_VISIBILITY, windowId, hidden: false };
 }
 
 export function setWindowSize(windowId, size) {

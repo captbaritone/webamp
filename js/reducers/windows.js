@@ -3,8 +3,7 @@ import {
   SET_FOCUSED_WINDOW,
   TOGGLE_WINDOW,
   CLOSE_WINDOW,
-  HIDE_WINDOW,
-  SHOW_WINDOW,
+  SET_WINDOW_VISIBILITY,
   ADD_GEN_WINDOW,
   UPDATE_WINDOW_POSITIONS,
   WINDOW_SIZE_CHANGED,
@@ -99,25 +98,14 @@ const windows = (state = defaultWindowsState, action) => {
           }
         }
       };
-    case HIDE_WINDOW:
+    case SET_WINDOW_VISIBILITY:
       return {
         ...state,
         genWindows: {
           ...state.genWindows,
           [action.windowId]: {
             ...state.genWindows[action.windowId],
-            hidden: true
-          }
-        }
-      };
-    case SHOW_WINDOW:
-      return {
-        ...state,
-        genWindows: {
-          ...state.genWindows,
-          [action.windowId]: {
-            ...state.genWindows[action.windowId],
-            hidden: true
+            hidden: action.hidden
           }
         }
       };
