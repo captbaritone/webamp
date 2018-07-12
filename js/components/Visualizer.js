@@ -85,7 +85,7 @@ class Visualizer extends React.Component {
       this.bufferLength = this.props.analyser.fftSize;
       this.dataArray = new Uint8Array(this.bufferLength);
     } else if (this.props.style === VISUALIZERS.BAR) {
-      this.props.analyser.fftSize = 64; // Must be a power of two
+      this.props.analyser.fftSize = 128; // Must be a power of two
       // Number of bins/bars we get
       this.bufferLength = this.props.analyser.frequencyBinCount;
       this.dataArray = new Uint8Array(this.bufferLength);
