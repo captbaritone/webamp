@@ -6,6 +6,7 @@ export {
   togglePlaylistShadeMode,
   closeWindow,
   hideWindow,
+  showWindow,
   setWindowSize,
   toggleWindow,
   updateWindowPositions,

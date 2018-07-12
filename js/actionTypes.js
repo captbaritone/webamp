@@ -69,4 +69,5 @@ export const SET_Z_INDEX = "SET_Z_INDEX";
 export const DISABLE_MARQUEE = "DISABLE_MARQUEE";
 export const SET_DUMMY_VIZ_DATA = "SET_DUMMY_VIZ_DATA";
 export const HIDE_WINDOW = "HIDE_WINDOW";
+export const SHOW_WINDOW = "SHOW_WINDOW";
 export const LOADING = "LOADING";

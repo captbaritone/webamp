@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import screenfull from "screenfull";
 import ContextMenuWrapper from "../ContextMenuWrapper";
 import GenWindow from "../GenWindow";
-import { hideWindow } from "../../actionCreators";
+import { hideWindow, showWindow } from "../../actionCreators";
 import MilkdropContextMenu from "./MilkdropContextMenu";
 import Desktop from "./Desktop";
 
@@ -27,7 +27,7 @@ class PresetsLoader extends React.Component {
     };
     this._handleFullscreenChange = this._handleFullscreenChange.bind(this);
     this._handleRequestFullsceen = this._handleRequestFullsceen.bind(this);
-    this._enableDesktop = this._enableDesktop.bind(this);
+    this._toggleDesktop = this._toggleDesktop.bind(this);
   }
 
   isHidden() {
@@ -60,9 +60,14 @@ class PresetsLoader extends React.Component {
     this.setState({ isFullscreen: screenfull.isFullscreen });
   }
 
-  _enableDesktop() {
-    this.props.hideWindow(this.props.windowId);
-    this.setState({ desktop: true });
+  _toggleDesktop() {
+    if (this.state.desktop) {
+      this.props.showWindow(this.props.windowId);
+      this.setState({ desktop: false });
+    } else {
+      this.props.hideWindow(this.props.windowId);
+      this.setState({ desktop: true });
+    }
   }
 
   _handleRequestFullsceen() {
@@ -100,7 +105,21 @@ class PresetsLoader extends React.Component {
       return this._renderMilkdrop(size);
     } else if (this.state.desktop) {
       const size = { width: window.innerWidth, height: window.innerHeight };
-      return <Desktop>{this._renderMilkdrop(size)}</Desktop>;
+      return (
+        <ContextMenuWrapper
+          onDoubleClick={this._handleRequestFullsceen}
+          renderContents={() => (
+            <MilkdropContextMenu
+              close={this.props.close}
+              toggleFullscreen={this._handleRequestFullsceen}
+              desktopMode={this.state.desktop}
+              toggleDesktop={this._toggleDesktop}
+            />
+          )}
+        >
+          <Desktop>{this._renderMilkdrop(size)}</Desktop>
+        </ContextMenuWrapper>
+      );
     }
 
     return (
@@ -116,7 +135,8 @@ class PresetsLoader extends React.Component {
               <MilkdropContextMenu
                 close={this.props.close}
                 toggleFullscreen={this._handleRequestFullsceen}
-                enableDesktop={this._enableDesktop}
+                desktopMode={this.state.desktop}
+                toggleDesktop={this._toggleDesktop}
               />
             )}
           >
@@ -168,9 +188,7 @@ async function loadNonMinimalPresets() {
 }
 
 const mapStateToProps = () => ({});
-const mapDispatchProps = {
-  hideWindow
-};
+const mapDispatchProps = { hideWindow, showWindow };
 
 export default connect(
   mapStateToProps,
