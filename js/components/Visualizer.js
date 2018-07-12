@@ -81,7 +81,7 @@ class Visualizer extends React.Component {
     this.preRenderBg();
     this.preRenderBar();
     if (this.props.style === VISUALIZERS.OSCILLOSCOPE) {
-      this.props.analyser.fftSize = 2048;
+      this.props.analyser.fftSize = 1024;
       this.bufferLength = this.props.analyser.fftSize;
       this.dataArray = new Uint8Array(this.bufferLength);
     } else if (this.props.style === VISUALIZERS.BAR) {
@@ -181,16 +181,15 @@ class Visualizer extends React.Component {
     const sliceWidth =
       Math.floor(this.bufferLength / this._width()) * PIXEL_DENSITY;
 
-    // The max amplitude is half the height
-    const h = this._height() / 2;
+    const h = this._height();
 
     this.canvasCtx.beginPath();
 
     // Iterate over the width of the canvas in "real" pixels.
     for (let j = 0; j <= this._renderWidth(); j++) {
       const amplitude = sliceAverage(this.dataArray, sliceWidth, j);
-      const percentAmplitude = amplitude / 128; // dataArray gives us bytes
-      const y = percentAmplitude * h;
+      const percentAmplitude = (amplitude - 128) / 128; // dataArray gives us bytes
+      const y = percentAmplitude * h + h / 2; // center wave at half height
       const x = j * PIXEL_DENSITY;
 
       // Canvas coordinates are in the middle of the pixel by default.
