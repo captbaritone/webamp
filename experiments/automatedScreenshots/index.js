@@ -18,7 +18,7 @@ const Shooter = require("./shooter");
   }
 
   for (const skin of files) {
-    console.log('Trying', skin);
+    console.log("Trying", skin);
     const skinMd5 = md5File.sync(skin);
     const fileName = `${path.basename(skin).replace(/\//g, "-")}-${skinMd5}`;
     const screenshotPath = `screenshots/${skinMd5}.png`;
