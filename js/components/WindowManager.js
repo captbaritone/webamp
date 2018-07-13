@@ -11,7 +11,7 @@ import {
   applyDiff,
   applyMultipleDiffs
 } from "../snapUtils";
-import { getWindowsInfo, getWindowHidden } from "../selectors";
+import { getWindowsInfo, getWindowHidden, getWindowOpen } from "../selectors";
 import { updateWindowPositions } from "../actionCreators";
 import { WINDOW_HEIGHT, WINDOW_WIDTH } from "../constants";
 import { calculateBoundingBox } from "../utils";
@@ -61,9 +61,9 @@ class WindowManager extends React.Component {
     } else {
       // A layout has been suplied. We will compute the bounding box and
       // center the given layout.
-      const info = this.props.windowsInfo;
-
-      const bounding = calculateBoundingBox(info);
+      const bounding = calculateBoundingBox(
+        this.props.windowsInfo.filter(w => this.props.getWindowOpen(w.key))
+      );
 
       const boxHeight = bounding.bottom - bounding.top;
       const boxWidth = bounding.right - bounding.left;
@@ -73,7 +73,7 @@ class WindowManager extends React.Component {
         y: offsetTop + (height - boxHeight) / 2
       };
 
-      const newPositions = info.reduce(
+      const newPositions = this.props.windowsInfo.reduce(
         (pos, w) => ({ ...pos, [w.key]: { x: move.x + w.x, y: move.y + w.y } }),
         {}
       );
@@ -216,7 +216,8 @@ WindowManager.propTypes = {
 
 const mapStateToProps = state => ({
   windowsInfo: getWindowsInfo(state),
-  getWindowHidden: getWindowHidden(state)
+  getWindowHidden: getWindowHidden(state),
+  getWindowOpen: getWindowOpen(state)
 });
 
 const mapDispatchToProps = {

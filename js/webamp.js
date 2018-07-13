@@ -115,7 +115,8 @@ class Winamp {
       this.store.dispatch({
         type: ADD_GEN_WINDOW,
         windowId: genWindow.id,
-        title: genWindow.title
+        title: genWindow.title,
+        open: genWindow.open
       });
     });
 

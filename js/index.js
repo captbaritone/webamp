@@ -32,7 +32,6 @@ import {
   skinUrl as configSkinUrl,
   initialTracks,
   initialState,
-  milkdrop,
   disableMarquee
 } from "./config";
 
@@ -44,6 +43,8 @@ const NOISY_ACTION_TYPES = new Set([
   SET_BALANCE,
   SET_BAND_VALUE
 ]);
+
+const MIN_MILKDROP_WIDTH = 725;
 
 let screenshot = false;
 let skinUrl = configSkinUrl;
@@ -128,20 +129,36 @@ Raven.context(() => {
   }
   const __extraWindows = [];
   let __initialWindowLayout = {};
-  if (milkdrop && isButterchurnSupported()) {
+
+  if (isButterchurnSupported()) {
+    const startWithMilkdropHidden =
+      document.body.clientWidth < MIN_MILKDROP_WIDTH ||
+      skinUrl != null ||
+      screenshot;
+
     __extraWindows.push({
       id: "milkdrop",
       title: "Milkdrop",
       isVisualizer: true,
-      Component: MilkdropWindow
+      Component: MilkdropWindow,
+      open: !startWithMilkdropHidden
     });
-    // TODO: Pick a layout dependent upon the window size.
-    __initialWindowLayout = {
-      main: { position: { x: 0, y: 0 } },
-      equalizer: { position: { x: 0, y: 116 } },
-      playlist: { position: { x: 0, y: 232 }, size: [0, 4] },
-      milkdrop: { position: { x: 275, y: 0 }, size: [7, 12] }
-    };
+
+    if (startWithMilkdropHidden) {
+      __initialWindowLayout = {
+        main: { position: { x: 0, y: 0 } },
+        equalizer: { position: { x: 0, y: 116 } },
+        playlist: { position: { x: 0, y: 232 }, size: [0, 0] },
+        milkdrop: { position: { x: 0, y: 348 }, size: [0, 0] }
+      };
+    } else {
+      __initialWindowLayout = {
+        main: { position: { x: 0, y: 0 } },
+        equalizer: { position: { x: 0, y: 116 } },
+        playlist: { position: { x: 0, y: 232 }, size: [0, 4] },
+        milkdrop: { position: { x: 275, y: 0 }, size: [7, 12] }
+      };
+    }
 
     document.getElementById("butterchurn-share").style.display = "flex";
   }

@@ -116,7 +116,7 @@ const windows = (state = defaultWindowsState, action) => {
           ...state.genWindows,
           [action.windowId]: {
             title: action.title,
-            open: true,
+            open: action.open,
             hidden: false,
             size: [0, 0],
             canShade: false,

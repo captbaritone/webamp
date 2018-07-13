@@ -271,8 +271,8 @@ export function getWindowSize(state, windowId) {
   return state.windows.genWindows[windowId].size;
 }
 
-export function getWindowOpen(state, windowId) {
-  return state.windows.genWindows[windowId].open;
+export function getWindowOpen(state) {
+  return windowId => state.windows.genWindows[windowId].open;
 }
 
 export function getWindowShade(state, windowId) {
