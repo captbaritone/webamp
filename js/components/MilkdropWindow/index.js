@@ -80,9 +80,15 @@ class PresetsLoader extends React.Component {
     }
   }
 
-  _renderMilkdrop({ width, height }) {
+  _renderMilkdrop(size) {
     const { butterchurn, presets } = this.state;
     const loaded = butterchurn != null && presets != null;
+    const { width, height } = this.state.isFullscreen
+      ? { width: screen.width, height: screen.height }
+      : size;
+    // Note: This _wrapperNode must not be removed from the DOM while
+    // in/entering full screen mode. Ensure `this.setState({isFullscreen})`
+    // does not cause this node to change identity.
     return (
       <Background innerRef={node => (this._wrapperNode = node)}>
         {loaded && (
@@ -100,10 +106,7 @@ class PresetsLoader extends React.Component {
   }
 
   render() {
-    if (this.state.isFullscreen) {
-      const size = { width: screen.width, height: screen.height };
-      return this._renderMilkdrop(size);
-    } else if (this.state.desktop) {
+    if (this.state.desktop) {
       const size = { width: window.innerWidth, height: window.innerHeight };
       return (
         <ContextMenuWrapper
