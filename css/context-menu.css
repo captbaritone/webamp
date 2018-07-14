@@ -1,5 +1,8 @@
 #webamp-context-menu .context-menu {
     left: 0px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
 }
 
 #webamp-context-menu .context-menu.bottom {
