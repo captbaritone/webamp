@@ -8,14 +8,14 @@ import { toggleWindow } from "../../actionCreators";
 const EqToggleButton = props => (
   <div
     id="equalizer-button"
-    className={classnames({ selected: props.equalizer })}
+    className={classnames({ selected: props.getWindowOpen("equalizer") })}
     onClick={props.handleClick}
     title="Toggle Graphical Equalizer"
   />
 );
 
 const mapStateToProps = state => ({
-  equalizer: getWindowOpen(state, "equalizer")
+  getWindowOpen: getWindowOpen(state)
 });
 
 const mapDispatchToProps = {

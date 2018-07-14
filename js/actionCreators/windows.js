@@ -11,7 +11,8 @@ import {
   WINDOW_SIZE_CHANGED,
   TOGGLE_WINDOW,
   CLOSE_WINDOW,
-  TOGGLE_WINDOW_SHADE_MODE
+  TOGGLE_WINDOW_SHADE_MODE,
+  SET_WINDOW_VISIBILITY
 } from "../actionTypes";
 
 import { getPositionDiff } from "../resizeUtils";
@@ -80,6 +81,14 @@ export function togglePlaylistShadeMode() {
 
 export function closeWindow(windowId) {
   return { type: CLOSE_WINDOW, windowId };
+}
+
+export function hideWindow(windowId) {
+  return { type: SET_WINDOW_VISIBILITY, windowId, hidden: true };
+}
+
+export function showWindow(windowId) {
+  return { type: SET_WINDOW_VISIBILITY, windowId, hidden: false };
 }
 
 export function setWindowSize(windowId, size) {

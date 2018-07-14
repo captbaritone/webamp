@@ -3,6 +3,7 @@ import {
   SET_FOCUSED_WINDOW,
   TOGGLE_WINDOW,
   CLOSE_WINDOW,
+  SET_WINDOW_VISIBILITY,
   ADD_GEN_WINDOW,
   UPDATE_WINDOW_POSITIONS,
   WINDOW_SIZE_CHANGED,
@@ -17,6 +18,7 @@ const defaultWindowsState = {
       title: "Main Window",
       size: [0, 0],
       open: true,
+      hidden: false,
       shade: false,
       canResize: false,
       canShade: true,
@@ -28,6 +30,7 @@ const defaultWindowsState = {
       title: "Equalizer",
       size: [0, 0],
       open: true,
+      hidden: false,
       shade: false,
       canResize: false,
       canShade: true,
@@ -39,6 +42,7 @@ const defaultWindowsState = {
       title: "Playlist Editor",
       size: [0, 0],
       open: true,
+      hidden: false,
       shade: false,
       canResize: true,
       canShade: true,
@@ -94,6 +98,17 @@ const windows = (state = defaultWindowsState, action) => {
           }
         }
       };
+    case SET_WINDOW_VISIBILITY:
+      return {
+        ...state,
+        genWindows: {
+          ...state.genWindows,
+          [action.windowId]: {
+            ...state.genWindows[action.windowId],
+            hidden: action.hidden
+          }
+        }
+      };
     case ADD_GEN_WINDOW:
       return {
         ...state,
@@ -101,7 +116,8 @@ const windows = (state = defaultWindowsState, action) => {
           ...state.genWindows,
           [action.windowId]: {
             title: action.title,
-            open: true,
+            open: action.open,
+            hidden: false,
             size: [0, 0],
             canShade: false,
             canResize: true,

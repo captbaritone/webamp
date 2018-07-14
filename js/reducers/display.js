@@ -14,7 +14,8 @@ import {
   REGISTER_VISUALIZER,
   SET_Z_INDEX,
   DISABLE_MARQUEE,
-  SET_DUMMY_VIZ_DATA
+  SET_DUMMY_VIZ_DATA,
+  LOADING
 } from "../actionTypes";
 import { DEFAULT_SKIN, VISUALIZER_ORDER } from "../constants";
 
@@ -69,6 +70,8 @@ const display = (state = defaultDisplayState, action) => {
       return { ...state, working: true };
     case CLOSE_WINAMP:
       return { ...state, closed: true };
+    case LOADING:
+      return { ...state, loading: true };
     case LOADED:
       return { ...state, loading: false };
     case SET_SKIN_DATA:

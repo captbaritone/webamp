@@ -1,6 +1,9 @@
 import React from "react";
+import { connect } from "react-redux";
 import screenfull from "screenfull";
 import ContextMenuWrapper from "../ContextMenuWrapper";
+import GenWindow from "../GenWindow";
+import { hideWindow, showWindow } from "../../actionCreators";
 import MilkdropContextMenu from "./MilkdropContextMenu";
 import Desktop from "./Desktop";
 
@@ -12,8 +15,8 @@ import "../../../css/milkdrop-window.css";
 
 // This component is just responsible for loading dependencies.
 // This simplifies the inner <Milkdrop /> component, by allowing
-// it to alwasy assume that it has it's dependencies.
-export default class PresetsLoader extends React.Component {
+// it to alwasy assume that it has its dependencies.
+class PresetsLoader extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -24,6 +27,11 @@ export default class PresetsLoader extends React.Component {
     };
     this._handleFullscreenChange = this._handleFullscreenChange.bind(this);
     this._handleRequestFullsceen = this._handleRequestFullsceen.bind(this);
+    this._toggleDesktop = this._toggleDesktop.bind(this);
+  }
+
+  isHidden() {
+    return this.state.desktop;
   }
 
   async componentDidMount() {
@@ -52,6 +60,16 @@ export default class PresetsLoader extends React.Component {
     this.setState({ isFullscreen: screenfull.isFullscreen });
   }
 
+  _toggleDesktop() {
+    if (this.state.desktop) {
+      this.props.showWindow(this.props.windowId);
+      this.setState({ desktop: false });
+    } else {
+      this.props.hideWindow(this.props.windowId);
+      this.setState({ desktop: true });
+    }
+  }
+
   _handleRequestFullsceen() {
     if (screenfull.enabled) {
       if (!screenfull.isFullscreen) {
@@ -62,42 +80,73 @@ export default class PresetsLoader extends React.Component {
     }
   }
 
-  render() {
+  _renderMilkdrop(size) {
     const { butterchurn, presets } = this.state;
     const loaded = butterchurn != null && presets != null;
-
-    let size = { width: this.props.width, height: this.props.height };
-    if (this.state.isFullscreen) {
-      size = { width: screen.width, height: screen.height };
-    } else if (this.state.desktop) {
-      size = { width: window.innerWidth, height: window.innerHeight };
-    }
-
-    const milkdrop = loaded && (
-      <Milkdrop
-        {...this.props}
-        width={size.width}
-        height={size.height}
-        isFullscreen={this.state.isFullscreen}
-        presets={presets}
-        butterchurn={butterchurn}
-      />
-    );
-
+    const { width, height } = this.state.isFullscreen
+      ? { width: screen.width, height: screen.height }
+      : size;
+    // Note: This _wrapperNode must not be removed from the DOM while
+    // in/entering full screen mode. Ensure `this.setState({isFullscreen})`
+    // does not cause this node to change identity.
     return (
-      <ContextMenuWrapper
-        onDoubleClick={this._handleRequestFullsceen}
-        renderContents={() => (
-          <MilkdropContextMenu
-            close={this.props.close}
-            toggleFullscreen={this._handleRequestFullsceen}
+      <Background innerRef={node => (this._wrapperNode = node)}>
+        {loaded && (
+          <Milkdrop
+            {...this.props}
+            width={width}
+            height={height}
+            isFullscreen={this.state.isFullscreen}
+            presets={presets}
+            butterchurn={butterchurn}
           />
         )}
+      </Background>
+    );
+  }
+
+  render() {
+    if (this.state.desktop) {
+      const size = { width: window.innerWidth, height: window.innerHeight };
+      return (
+        <ContextMenuWrapper
+          onDoubleClick={this._handleRequestFullsceen}
+          renderContents={() => (
+            <MilkdropContextMenu
+              close={this.props.close}
+              toggleFullscreen={this._handleRequestFullsceen}
+              desktopMode={this.state.desktop}
+              toggleDesktop={this._toggleDesktop}
+            />
+          )}
+        >
+          <Desktop>{this._renderMilkdrop(size)}</Desktop>
+        </ContextMenuWrapper>
+      );
+    }
+
+    return (
+      <GenWindow
+        ref={this.props.chromeRef}
+        title={this.props.title}
+        windowId={this.props.windowId}
       >
-        <Background innerRef={node => (this._wrapperNode = node)}>
-          {this.state.desktop ? <Desktop>{milkdrop}</Desktop> : milkdrop}
-        </Background>
-      </ContextMenuWrapper>
+        {({ height, width }) => (
+          <ContextMenuWrapper
+            onDoubleClick={this._handleRequestFullsceen}
+            renderContents={() => (
+              <MilkdropContextMenu
+                close={this.props.close}
+                toggleFullscreen={this._handleRequestFullsceen}
+                desktopMode={this.state.desktop}
+                toggleDesktop={this._toggleDesktop}
+              />
+            )}
+          >
+            {this._renderMilkdrop({ width, height })}
+          </ContextMenuWrapper>
+        )}
+      </GenWindow>
     );
   }
 }
@@ -140,3 +189,11 @@ async function loadNonMinimalPresets() {
     );
   });
 }
+
+const mapStateToProps = () => ({});
+const mapDispatchProps = { hideWindow, showWindow };
+
+export default connect(
+  mapStateToProps,
+  mapDispatchProps
+)(PresetsLoader);

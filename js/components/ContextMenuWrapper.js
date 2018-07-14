@@ -36,14 +36,9 @@ export default class ContextMenuWraper extends React.Component {
       offsetTop: pageY,
       offsetLeft: pageX
     });
-    // This used to be a "click" handler, but Firefox would trigger a "click"
-    // event on the mouseup of the click that triggered `_handleRightClick` in the
-    // first place.
-    //
-    // If there are multiple right-clicks before there is a global click,
-    // the browser will dedupe this binding for us, since the bound function
-    // is referentially identical each time.
-    document.addEventListener("mousedown", this._handleGlobalClick);
+    // Even if you right click multiple times before closeing,
+    // we should only end up with one global listener.
+    document.addEventListener("click", this._handleGlobalClick);
     e.preventDefault();
     e.stopPropagation();
   }

@@ -32,6 +32,7 @@ import {
   MEDIA_TAG_REQUEST_FAILED,
   SET_SKIN_DATA,
   LOADED,
+  LOADING,
   SET_MEDIA
 } from "../actionTypes";
 import LoadQueue from "../loadQueue";
@@ -81,21 +82,29 @@ export function loadFilesFromReferences(
 
 export function setSkinFromArrayBuffer(arrayBuffer) {
   return async dispatch => {
-    const skinData = await skinParser(arrayBuffer);
-    dispatch({
-      type: SET_SKIN_DATA,
-      skinImages: skinData.images,
-      skinColors: skinData.colors,
-      skinPlaylistStyle: skinData.playlistStyle,
-      skinCursors: skinData.cursors,
-      skinRegion: skinData.region,
-      skinGenLetterWidths: skinData.genLetterWidths
-    });
+    dispatch({ type: LOADING });
+    try {
+      const skinData = await skinParser(arrayBuffer);
+      dispatch({
+        type: SET_SKIN_DATA,
+        skinImages: skinData.images,
+        skinColors: skinData.colors,
+        skinPlaylistStyle: skinData.playlistStyle,
+        skinCursors: skinData.cursors,
+        skinRegion: skinData.region,
+        skinGenLetterWidths: skinData.genLetterWidths
+      });
+    } catch (e) {
+      console.error(e);
+      dispatch({ type: LOADED });
+      alert(`Failed to parse skin`);
+    }
   };
 }
 
 export function setSkinFromFileReference(skinFileReference) {
   return async dispatch => {
+    dispatch({ type: LOADING });
     const arrayBuffer = await genArrayBufferFromFileReference(
       skinFileReference
     );
@@ -105,6 +114,7 @@ export function setSkinFromFileReference(skinFileReference) {
 
 export function setSkinFromUrl(url) {
   return async dispatch => {
+    dispatch({ type: LOADING });
     try {
       const response = await fetch(url);
       if (!response.ok) {
@@ -152,6 +162,7 @@ export function fetchMediaDuration(url, id) {
           // TODO: Should we update the state to indicate that we don't know the length?
         }
       },
+
       () => {
         const trackIsVisible = getTrackIsVisibleFunction(getState());
         return trackIsVisible(id)

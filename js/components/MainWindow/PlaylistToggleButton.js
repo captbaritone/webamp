@@ -8,14 +8,14 @@ import { toggleWindow } from "../../actionCreators";
 const PlaylistToggleButton = props => (
   <div
     id="playlist-button"
-    className={classnames({ selected: props.playlist })}
+    className={classnames({ selected: props.getWindowOpen("playlist") })}
     onClick={props.handleClick}
     title="Toggle Playlist Editor"
   />
 );
 
 const mapStateToProps = state => ({
-  playlist: getWindowOpen(state, "playlist")
+  getWindowOpen: getWindowOpen(state)
 });
 
 const mapDispatchToProps = {
