@@ -7,6 +7,7 @@ import { VISUALIZERS } from "../constants";
 
 const PIXEL_DENSITY = 2;
 const NUM_BARS = 20;
+const BAR_PEAK_DROP_RATE = 1 / 60; // drop full distance in 1 second at 60 FPS
 const GRADIENT_COLOR_COUNT = 16;
 const PEAK_COLOR_INDEX = 23;
 
@@ -23,6 +24,7 @@ function sliceAverage(dataArray, sliceWidth, sliceNumber) {
 
 class Visualizer extends React.Component {
   componentDidMount() {
+    this.barPeaks = new Array(NUM_BARS).fill(0);
     this.canvasCtx = this.canvas.getContext("2d");
     this.canvasCtx.imageSmoothingEnabled = false;
 
@@ -212,21 +214,25 @@ class Visualizer extends React.Component {
     this.canvasCtx.stroke();
   }
 
-  _printBar(x, height) {
+  _printBar(x, height, peakHeight) {
     height = Math.ceil(height) * PIXEL_DENSITY;
-    if (height > 0) {
+    peakHeight = Math.ceil(peakHeight) * PIXEL_DENSITY;
+    if (height > 0 || peakHeight > 0) {
       const y = this._height() - height;
       const ctx = this.canvasCtx;
       // Draw the gradient
       const b = this._barWidth();
-      ctx.drawImage(this.barCanvas, 0, y, b, height, x, y, b, height);
+      if (height > 0) {
+        ctx.drawImage(this.barCanvas, 0, y, b, height, x, y, b, height);
+      }
 
       // Draw the gray peak line
       // TODO: Rather than sitting on top of the bar, these
       // are expected to be behind the top pixel, and fall more slowly.
       // Currently these overwrite the top pixel.
+      const peakY = this._height() - peakHeight;
       ctx.fillStyle = this.props.colors[PEAK_COLOR_INDEX];
-      ctx.fillRect(x, y, b, PIXEL_DENSITY);
+      ctx.fillRect(x, peakY, b, PIXEL_DENSITY);
     }
   }
 
@@ -244,7 +250,19 @@ class Visualizer extends React.Component {
         amplitude += this.dataArray[k];
       }
       amplitude /= end - start;
-      this._printBar(j * xOffset, amplitude * heightMultiplier);
+
+      // The drop rate should probably be normalized to the rendering FPS, for now assume 60 FPS
+      let barPeak = this.barPeaks[j] - 255 * BAR_PEAK_DROP_RATE;
+      if (barPeak < amplitude) {
+        barPeak = amplitude;
+      }
+      this.barPeaks[j] = barPeak;
+
+      this._printBar(
+        j * xOffset,
+        amplitude * heightMultiplier,
+        barPeak * heightMultiplier
+      );
     }
   }
 
