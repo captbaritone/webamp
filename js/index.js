@@ -119,6 +119,7 @@ function genAudioFileUrlsFromDropbox() {
 }
 
 Raven.context(() => {
+  window.Raven = Raven;
   if (screenshot) {
     document.getElementsByClassName("about")[0].style.visibility = "hidden";
   }
