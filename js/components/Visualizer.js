@@ -6,7 +6,7 @@ import { getWindowShade, getVisualizerStyle } from "../selectors";
 import { VISUALIZERS } from "../constants";
 
 const PIXEL_DENSITY = 2;
-const BAR_WIDTH = 6;
+const NUM_BARS = 20;
 const GRADIENT_COLOR_COUNT = 16;
 const PEAK_COLOR_INDEX = 23;
 
@@ -72,6 +72,15 @@ class Visualizer extends React.Component {
     return this.props.width * PIXEL_DENSITY;
   }
 
+  _barWidth() {
+    const barWidth = Math.floor(this._width() / NUM_BARS);
+    if (barWidth % 2 === 0) {
+      return barWidth;
+    }
+
+    return barWidth - 1;
+  }
+
   setStyle() {
     if (!this.props.colors) {
       return;
@@ -80,13 +89,11 @@ class Visualizer extends React.Component {
     // update.
     this.preRenderBg();
     this.preRenderBar();
+    this.props.analyser.fftSize = 2048;
     if (this.props.style === VISUALIZERS.OSCILLOSCOPE) {
-      this.props.analyser.fftSize = 1024;
       this.bufferLength = this.props.analyser.fftSize;
       this.dataArray = new Uint8Array(this.bufferLength);
     } else if (this.props.style === VISUALIZERS.BAR) {
-      this.props.analyser.fftSize = 64; // Must be a power of two
-      // Number of bins/bars we get
       this.bufferLength = this.props.analyser.frequencyBinCount;
       this.dataArray = new Uint8Array(this.bufferLength);
     }
@@ -127,8 +134,9 @@ class Visualizer extends React.Component {
      */
 
     // Off-screen canvas for pre-rendering a single bar gradient
+    const barWidth = this._barWidth();
     this.barCanvas = document.createElement("canvas");
-    this.barCanvas.width = BAR_WIDTH;
+    this.barCanvas.width = barWidth;
     this.barCanvas.height = this._height();
 
     const offset = 2; // The first two colors are for the background;
@@ -151,7 +159,7 @@ class Visualizer extends React.Component {
       const colorIndex = GRADIENT_COLOR_COUNT - 1 - Math.floor(i * multiplier);
       barCanvasCtx.fillStyle = gradientColors[colorIndex];
       const y = this._height() - i * PIXEL_DENSITY;
-      barCanvasCtx.fillRect(0, y, BAR_WIDTH, PIXEL_DENSITY);
+      barCanvasCtx.fillRect(0, y, barWidth, PIXEL_DENSITY);
     }
   }
 
@@ -210,7 +218,7 @@ class Visualizer extends React.Component {
       const y = this._height() - height;
       const ctx = this.canvasCtx;
       // Draw the gradient
-      const b = BAR_WIDTH;
+      const b = this._barWidth();
       ctx.drawImage(this.barCanvas, 0, y, b, height, x, y, b, height);
 
       // Draw the gray peak line
@@ -218,17 +226,25 @@ class Visualizer extends React.Component {
       // are expected to be behind the top pixel, and fall more slowly.
       // Currently these overwrite the top pixel.
       ctx.fillStyle = this.props.colors[PEAK_COLOR_INDEX];
-      ctx.fillRect(x, y, BAR_WIDTH, PIXEL_DENSITY);
+      ctx.fillRect(x, y, b, PIXEL_DENSITY);
     }
   }
 
   _paintBarFrame() {
     this.props.analyser.getByteFrequencyData(this.dataArray);
-    // We are printing bars off the right of the canvas :(
-    const xOffset = BAR_WIDTH + PIXEL_DENSITY; // Bar width, plus a pixel of spacing to the right.
     const heightMultiplier = this._renderHeight() / 256;
-    for (let j = 0; j < this.bufferLength; j++) {
-      this._printBar(j * xOffset, this.dataArray[j] * heightMultiplier);
+    const barWidth = this._barWidth();
+    const xOffset = barWidth + PIXEL_DENSITY; // Bar width, plus a pixel of spacing to the right.
+    const numFrequncies = Math.floor(this.bufferLength / 2); // only look at  0 - 22050 Hz
+    for (let j = 0; j < NUM_BARS; j++) {
+      const start = Math.floor(numFrequncies * (j / NUM_BARS));
+      const end = Math.floor(numFrequncies * ((j + 1) / NUM_BARS));
+      let amplitude = 0;
+      for (let k = start; k < end; k++) {
+        amplitude += this.dataArray[k];
+      }
+      amplitude /= end - start;
+      this._printBar(j * xOffset, amplitude * heightMultiplier);
     }
   }
 

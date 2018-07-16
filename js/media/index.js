@@ -57,9 +57,10 @@ export default class Media {
     this._analyser.fftSize = 2048;
     // Tuned by @The1Freeman to resemble Winamp 2.9x.
     // https://github.com/captbaritone/webamp/pull/613
-    this._analyser.minDecibels = -64;
-    this._analyser.maxDecibels = 0;
-    this._analyser.smoothingTimeConstant = 0.25;
+    this._analyser.minDecibels = -80;
+    this._analyser.maxDecibels = -30;
+    // don't smooth audio analysis
+    this._analyser.smoothingTimeConstant = 0.0;
 
     // Create the gain node for the volume control
     this._gainNode = this._context.createGain();
