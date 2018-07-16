@@ -18,7 +18,8 @@ async function sourceToStream(source) {
   // Assume Blob
   return {
     stream: readStream(source),
-    type: source.name
+    type: source.name,
+    size: source.size
   };
 }
 
@@ -36,7 +37,10 @@ export async function genMediaTags(file) {
     async require => {
       const mm = require("music-metadata");
       const stream = await sourceToStream(file);
-      return mm.parseStream(stream.stream, stream.type, { duration: true });
+      return mm.parseStream(stream.stream, stream.type, {
+        duration: true,
+        fileSize: stream.size
+      });
     },
     err => {
       console.error("genMediaTags: Failed to load music-metadata");
