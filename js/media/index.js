@@ -55,10 +55,6 @@ export default class Media {
     // Create the analyser node for the visualizer
     this._analyser = this._context.createAnalyser();
     this._analyser.fftSize = 2048;
-    // Tuned by @The1Freeman to resemble Winamp 2.9x.
-    // https://github.com/captbaritone/webamp/pull/613
-    this._analyser.minDecibels = -80;
-    this._analyser.maxDecibels = -30;
     // don't smooth audio analysis
     this._analyser.smoothingTimeConstant = 0.0;
 
