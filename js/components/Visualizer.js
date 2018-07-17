@@ -7,7 +7,7 @@ import { VISUALIZERS } from "../constants";
 
 const PIXEL_DENSITY = 2;
 const NUM_BARS = 20;
-const BAR_PEAK_DROP_RATE = 1 / 60; // drop full distance in 1 second at 60 FPS
+const BAR_PEAK_DROP_RATE = 0.01;
 const GRADIENT_COLOR_COUNT = 16;
 const PEAK_COLOR_INDEX = 23;
 
@@ -25,6 +25,7 @@ function sliceAverage(dataArray, sliceWidth, sliceNumber) {
 class Visualizer extends React.Component {
   componentDidMount() {
     this.barPeaks = new Array(NUM_BARS).fill(0);
+    this.barPeakFrames = new Array(NUM_BARS).fill(0);
     this.canvasCtx = this.canvas.getContext("2d");
     this.canvasCtx.imageSmoothingEnabled = false;
 
@@ -227,9 +228,6 @@ class Visualizer extends React.Component {
       }
 
       // Draw the gray peak line
-      // TODO: Rather than sitting on top of the bar, these
-      // are expected to be behind the top pixel, and fall more slowly.
-      // Currently these overwrite the top pixel.
       const peakY = this._height() - peakHeight;
       ctx.fillStyle = this.props.colors[PEAK_COLOR_INDEX];
       ctx.fillRect(x, peakY, b, PIXEL_DENSITY);
@@ -252,9 +250,14 @@ class Visualizer extends React.Component {
       amplitude /= end - start;
 
       // The drop rate should probably be normalized to the rendering FPS, for now assume 60 FPS
-      let barPeak = this.barPeaks[j] - 255 * BAR_PEAK_DROP_RATE;
+      let barPeak =
+        this.barPeaks[j] -
+        BAR_PEAK_DROP_RATE * Math.pow(this.barPeakFrames[j], 2);
       if (barPeak < amplitude) {
         barPeak = amplitude;
+        this.barPeakFrames[j] = 0;
+      } else {
+        this.barPeakFrames[j] += 1;
       }
       this.barPeaks[j] = barPeak;
 
