@@ -26,7 +26,6 @@ class Visualizer extends React.Component {
   componentDidMount() {
     this.barPeaks = new Array(NUM_BARS).fill(0);
     this.barPeakFrames = new Array(NUM_BARS).fill(0);
-    this.logspaceArr = this._generateLogspaceVector(NUM_BARS);
     this.canvasCtx = this.canvas.getContext("2d");
     this.canvasCtx.imageSmoothingEnabled = false;
 
@@ -85,18 +84,27 @@ class Visualizer extends React.Component {
     return barWidth - 1;
   }
 
-  _generateLogspaceVector(len) {
-    const logspaceArr = new Array(len).fill(0);
+  _generateOctaveBuckets() {
+    const octaveBuckets = new Array(NUM_BARS).fill(0);
+    const minHz = 200;
+    const maxHz = 22050;
+    const octaveStep = Math.pow(maxHz / minHz, 1 / NUM_BARS);
 
-    // generate logspace array between 10^0 and 10^1
-    logspaceArr[0] = 1;
-    for (let i = 1; i < len - 1; i++) {
-      logspaceArr[i] = Math.pow(10, i / (len - 1));
+    octaveBuckets[0] = 0;
+    octaveBuckets[1] = minHz;
+    for (let i = 2; i < NUM_BARS - 1; i++) {
+      octaveBuckets[i] = octaveBuckets[i - 1] * octaveStep;
     }
-    logspaceArr[len - 1] = 10;
+    octaveBuckets[NUM_BARS - 1] = maxHz;
 
-    // scale to 0..1
-    return logspaceArr.map(x => (x - 1) / 9);
+    for (let i = 0; i < NUM_BARS; i++) {
+      const octaveIdx = Math.floor(
+        (octaveBuckets[i] / maxHz) * this.bufferLength
+      );
+      octaveBuckets[i] = octaveIdx;
+    }
+
+    return octaveBuckets;
   }
 
   setStyle() {
@@ -114,6 +122,10 @@ class Visualizer extends React.Component {
     } else if (this.props.style === VISUALIZERS.BAR) {
       this.bufferLength = this.props.analyser.frequencyBinCount;
       this.dataArray = new Uint8Array(this.bufferLength);
+
+      if (!this.octaveBuckets) {
+        this.octaveBuckets = this._generateOctaveBuckets();
+      }
     }
   }
 
@@ -254,9 +266,9 @@ class Visualizer extends React.Component {
     const heightMultiplier = this._renderHeight() / 256;
     const barWidth = this._barWidth();
     const xOffset = barWidth + PIXEL_DENSITY; // Bar width, plus a pixel of spacing to the right.
-    for (let j = 0; j < NUM_BARS; j++) {
-      const start = Math.floor(this.bufferLength * this.logspaceArr[j]);
-      const end = Math.floor(this.bufferLength * this.logspaceArr[j + 1]);
+    for (let j = 0; j < NUM_BARS - 1; j++) {
+      const start = this.octaveBuckets[j];
+      const end = this.octaveBuckets[j + 1];
       let amplitude = 0;
       for (let k = start; k < end; k++) {
         amplitude += this.dataArray[k];
