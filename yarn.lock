@@ -1399,9 +1399,9 @@ capture-exit@^1.2.0:
   dependencies:
     rsvp "^3.3.3"
 
-cardinal-spline-js@2.3.7:
-  version "2.3.7"
-  resolved "https://registry.yarnpkg.com/cardinal-spline-js/-/cardinal-spline-js-2.3.7.tgz#054872d39cc2e4848efa0ce4c5bbc6f9f7f3367d"
+cardinal-spline-js@^2.3.9:
+  version "2.3.9"
+  resolved "https://registry.yarnpkg.com/cardinal-spline-js/-/cardinal-spline-js-2.3.9.tgz#7e7cbbb4aad69a3ba1787cde82f63318e8b95d05"
 
 caseless@~0.12.0:
   version "0.12.0"
