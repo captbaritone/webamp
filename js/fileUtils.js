@@ -39,7 +39,8 @@ export async function genMediaTags(file) {
       const stream = await sourceToStream(file);
       return mm.parseStream(stream.stream, stream.type, {
         duration: true,
-        fileSize: stream.size
+        fileSize: stream.size,
+        skipPostHeaders: true // avoid unnecessary data to be read
       });
     },
     err => {
