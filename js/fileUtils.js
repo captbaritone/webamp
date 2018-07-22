@@ -76,7 +76,7 @@ export async function genArrayBufferFromFileReference(fileReference) {
 export async function promptForFileReferences({
   accept = null,
   directory = false
-}) {
+} = {}) {
   return new Promise(resolve => {
     // Does this represent a memory leak somehow?
     // Can this fail? Do we ever reject?
