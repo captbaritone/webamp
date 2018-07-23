@@ -232,3 +232,7 @@
 ### Indonsian
 
 - https://www.trentech.id/masih-ingat-winamp-kamu-bisa-nostalgia-dengan-winamp-di-situs-ini/
+
+### Persian
+
+- http://www.1pezeshk.com/archives/2018/07/webamp.html
