@@ -29,7 +29,7 @@ class Skin extends React.Component {
   componentDidMount() {
     this._dequeue = this.props.queue.enqueue(() => {
       const signal = this._controller.signal;
-      return fetch(this.props.src, { signal })
+      return fetch(this.props.src, { signal, mode: "no-cors" })
         .then(() => {
           this.setState({ load: true });
         })
