@@ -8,3 +8,10 @@
 .screenshot.loaded {
   opacity: 1;
 }
+
+.skin:hover {
+  /*
+  z-index: 10;
+  box-shadow: 0px 0px 15px 5px rgba(46, 46, 139, 0.75);
+  */
+}
