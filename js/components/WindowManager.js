@@ -69,8 +69,8 @@ class WindowManager extends React.Component {
       const boxWidth = bounding.right - bounding.left;
 
       const move = {
-        x: offsetLeft + (width - boxWidth) / 2,
-        y: offsetTop + (height - boxHeight) / 2
+        x: Math.ceil(offsetLeft + (width - boxWidth) / 2),
+        y: Math.ceil(offsetTop + (height - boxHeight) / 2)
       };
 
       const newPositions = this.props.windowsInfo.reduce(
