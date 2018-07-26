@@ -2,6 +2,7 @@
   image-rendering: pixelated;
   height: 100%;
   opacity: 0;
+  transition: opacity 0.2s;
 }
 
 .screenshot.loaded {
