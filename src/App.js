@@ -9,6 +9,8 @@ const SCALE = 1 / 2;
 const SKIN_WIDTH = 275 * SCALE;
 const SKIN_HEIGHT = 348 * SCALE;
 const SKIN_RATIO = SKIN_HEIGHT / SKIN_WIDTH;
+const OVERSCAN_ROWS_LEADING = 10;
+const OVERSCAN_ROWS_TRAILING = 4;
 
 class Skin extends React.Component {
   constructor(props) {
@@ -18,6 +20,12 @@ class Skin extends React.Component {
     this._handleLoad = this._handleLoad.bind(this);
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.isOverscan != this.props.isOverscan) {
+      // TODO: Update priority
+    }
+  }
+
   componentDidMount() {
     this._dequeue = this.props.queue.enqueue(() => {
       const signal = this._controller.signal;
@@ -25,10 +33,8 @@ class Skin extends React.Component {
         .then(() => {
           this.setState({ load: true });
         })
-        .catch(e => {
-          console.log("aborted?", e);
-        });
-    }, 0);
+        .catch(e => {});
+    }, this.props.isOverscan ? 1 : 0);
   }
 
   _handleLoad() {
@@ -146,15 +152,33 @@ class App extends React.Component {
 
     const topRow = Math.floor(this.state.scrollTop / rowHeight);
 
-    // TODO: Add overscan
+    const overscanRowsDown =
+      this.state.scrollDirection === "DOWN"
+        ? OVERSCAN_ROWS_LEADING
+        : OVERSCAN_ROWS_TRAILING;
+    const overscanRowsUp =
+      this.state.scrollDirection === "UP"
+        ? OVERSCAN_ROWS_LEADING
+        : OVERSCAN_ROWS_TRAILING;
+
     const firstHashToRender = topRow * columnCount;
     const lastHashToRender = Math.min(
       firstHashToRender + visibleRows * columnCount,
       hashes.length
     );
 
+    const firstOverscanHashToRender = Math.max(
+      firstHashToRender - overscanRowsUp * columnCount,
+      0
+    );
+    const lastOverscanHashToRender = Math.min(
+      lastHashToRender + overscanRowsDown * columnCount,
+      hashes.length
+    );
+
     const skinElements = [];
-    for (let i = firstHashToRender; i < lastHashToRender; i++) {
+    for (let i = firstOverscanHashToRender; i < lastOverscanHashToRender; i++) {
+      const isOverscan = i < firstHashToRender || i > lastHashToRender;
       const hash = hashes[i];
       const row = Math.floor(i / columnCount);
       const top = row * rowHeight;
@@ -171,6 +195,7 @@ class App extends React.Component {
           width={columnWidth}
           height={rowHeight}
           color={skins[hash].color}
+          isOverscan={isOverscan}
         />
       );
     }
