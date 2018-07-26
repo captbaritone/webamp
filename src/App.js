@@ -1,6 +1,7 @@
 import React from "react";
 import skins from "./skins.json";
 import "./App.css";
+import LoadQueue from "./LoadQueue";
 
 const hashes = Object.keys(skins);
 
@@ -12,12 +13,35 @@ const SKIN_RATIO = SKIN_HEIGHT / SKIN_WIDTH;
 class Skin extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { loaded: false };
+    this.state = { loaded: false, load: false };
+    this._controller = new window.AbortController();
     this._handleLoad = this._handleLoad.bind(this);
+  }
+
+  componentDidMount() {
+    this._dequeue = this.props.queue.enqueue(() => {
+      const signal = this._controller.signal;
+      return fetch(this.props.src, { signal })
+        .then(() => {
+          this.setState({ load: true });
+        })
+        .catch(e => {
+          console.log("aborted?", e);
+        });
+    }, 0);
   }
 
   _handleLoad() {
     this.setState({ loaded: true });
+  }
+
+  componentWillUnmount() {
+    if (!this.state.loaded) {
+      this._controller.abort();
+    }
+    if (this._dequeue != null) {
+      this._dequeue();
+    }
   }
 
   render() {
@@ -36,11 +60,13 @@ class Skin extends React.Component {
         }}
       >
         <a href={this.props.href} target="_blank">
-          <img
-            src={this.props.src}
-            className={`screenshot ${this.state.loaded ? "loaded" : ""}`}
-            onLoad={this._handleLoad}
-          />
+          {this.state.load && (
+            <img
+              src={this.props.src}
+              className={`screenshot ${this.state.loaded ? "loaded" : ""}`}
+              onLoad={this._handleLoad}
+            />
+          )}
         </a>
       </div>
     );
@@ -75,6 +101,7 @@ class App extends React.Component {
       scrollDirection: null
     };
     this._handleScroll();
+    this._queue = new LoadQueue(10);
     this._handleScroll = this._handleScroll.bind(this);
     this._handleResize = this._handleResize.bind(this);
   }
@@ -135,6 +162,7 @@ class App extends React.Component {
       const left = column * columnWidth;
       skinElements.push(
         <Skin
+          queue={this._queue}
           href={`https://webamp.org/?skinUrl=https://s3.amazonaws.com/webamp-uploaded-skins/skins/${hash}.wsz`}
           src={`https://s3.amazonaws.com/webamp-uploaded-skins/screenshots/${hash}.png`}
           key={hash}
