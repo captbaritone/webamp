@@ -31,9 +31,8 @@ class Skin extends React.Component {
           backgroundColor: this.props.color,
           width: this.props.width,
           height: this.props.height,
-          transform: `translate3d(${this.props.left}px, ${
-            this.props.top
-          }px, 0px)`
+          top: this.props.top,
+          left: this.props.left
         }}
       >
         <a href={this.props.href} target="_blank">
@@ -96,10 +95,18 @@ class App extends React.Component {
   }
 
   _handleScroll() {
-    const newScrollTop = getScrollTop();
-    this.setState({
-      scrollTop: newScrollTop,
-      scrollDirection: newScrollTop > this.state.scrollTop ? "DOWN" : "UP"
+    // If there's a timer, cancel it
+    if (this._timeout) {
+      window.cancelAnimationFrame(this._timeout);
+    }
+
+    this._timeout = window.requestAnimationFrame(() => {
+      // Run our scroll functions
+      const newScrollTop = getScrollTop();
+      this.setState({
+        scrollTop: newScrollTop,
+        scrollDirection: newScrollTop > this.state.scrollTop ? "DOWN" : "UP"
+      });
     });
   }
 
@@ -114,10 +121,13 @@ class App extends React.Component {
 
     // TODO: Add overscan
     const firstHashToRender = topRow * columnCount;
-    const lastHashToRender = firstHashToRender + visibleRows * columnCount;
+    const lastHashToRender = Math.min(
+      firstHashToRender + visibleRows * columnCount,
+      hashes.length
+    );
 
     const skinElements = [];
-    for (let i = firstHashToRender; i <= lastHashToRender; i++) {
+    for (let i = firstHashToRender; i < lastHashToRender; i++) {
       const hash = hashes[i];
       const row = Math.floor(i / columnCount);
       const top = row * rowHeight;
