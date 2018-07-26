@@ -5,8 +5,9 @@ import "./App.css";
 
 const hashes = Object.keys(skins);
 
-const SKIN_WIDTH = 275;
-const SKIN_HEIGHT = 348;
+const SCALE = 1 / 2;
+const SKIN_WIDTH = 275 * SCALE;
+const SKIN_HEIGHT = 348 * SCALE;
 const SKIN_RATIO = SKIN_HEIGHT / SKIN_WIDTH;
 
 class Skin extends React.Component {
