@@ -90,7 +90,7 @@ export class MainWindow extends React.Component {
       >
         <div
           id="title-bar"
-          className="selected title-bard draggable"
+          className="selected draggable"
           onDoubleClick={this.props.toggleMainWindowShadeMode}
         >
           <ContextMenuTarget

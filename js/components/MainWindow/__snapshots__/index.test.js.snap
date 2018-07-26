@@ -12,7 +12,7 @@ exports[`MainWindow renders to snapshot 1`] = `
   onWheel={[Function]}
 >
   <div
-    className="selected title-bard draggable"
+    className="selected draggable"
     id="title-bar"
     onDoubleClick={[Function]}
   >
