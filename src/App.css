@@ -1,5 +1,4 @@
 .screenshot {
-  image-rendering: pixelated;
   height: 100%;
   opacity: 0;
   transition: opacity 0.2s;
@@ -7,6 +6,8 @@
 
 .screenshot.loaded {
   opacity: 1;
+  /* https://stackoverflow.com/a/16833496/1263117 */
+  -webkit-backface-visibility: hidden;
 }
 
 .skin:hover {
