@@ -112,6 +112,12 @@ export default class ElementSource {
   }
 
   seekToTime(time) {
+    /* TODO: We could check if this is actually seekable:
+    const { seekable } = this._audio;
+    for (let i = 0; i < seekable.length; i++) {
+      console.log("start", seekable.start(i), "end", seekable.end(i));
+    }
+    */
     this._audio.currentTime = clamp(time, 0, this.getDuration());
     this._emitter.trigger("positionChange");
   }
