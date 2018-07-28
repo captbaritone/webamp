@@ -128,6 +128,7 @@ class App extends React.Component {
               windowId={id}
               onFocusedKeyDown={listener => this._emitter.on(id, listener)}
               analyser={media.getAnalyser()}
+              presetUrl={w.presetUrl}
               isEnabledVisualizer={this.props.visualizerStyle === id}
               playing={this.props.status === "PLAYING"}
               close={() => this.props.closeWindow(id)}

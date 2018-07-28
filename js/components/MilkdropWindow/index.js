@@ -21,6 +21,7 @@ class PresetsLoader extends React.Component {
     super();
     this.state = {
       presets: null,
+      initialPreset: null,
       butterchurn: null,
       isFullscreen: false,
       desktop: false
@@ -35,14 +36,17 @@ class PresetsLoader extends React.Component {
   }
 
   async componentDidMount() {
-    const {
-      butterchurn,
-      presetKeys,
-      minimalPresets
-    } = await loadInitialDependencies();
+    const [
+      { butterchurn, presetKeys, minimalPresets },
+      initialPreset
+    ] = await Promise.all([
+      loadInitialDependencies(),
+      loadInitialPreset(this.props.presetUrl)
+    ]);
 
     this.setState({
       butterchurn,
+      initialPreset,
       presets: new Presets({
         keys: presetKeys,
         initialPresets: minimalPresets,
@@ -81,7 +85,7 @@ class PresetsLoader extends React.Component {
   }
 
   _renderMilkdrop(size) {
-    const { butterchurn, presets } = this.state;
+    const { butterchurn, presets, initialPreset } = this.state;
     const loaded = butterchurn != null && presets != null;
     const { width, height } = this.state.isFullscreen
       ? { width: screen.width, height: screen.height }
@@ -98,6 +102,7 @@ class PresetsLoader extends React.Component {
             height={height}
             isFullscreen={this.state.isFullscreen}
             presets={presets}
+            initialPreset={initialPreset}
             butterchurn={butterchurn}
           />
         )}
@@ -149,6 +154,16 @@ class PresetsLoader extends React.Component {
       </GenWindow>
     );
   }
+}
+
+async function loadInitialPreset(presetUrl) {
+  if (presetUrl) {
+    const response = await fetch(presetUrl);
+    const responseBody = await response.json();
+    return responseBody;
+  }
+
+  return Promise.resolve(null);
 }
 
 async function loadInitialDependencies() {

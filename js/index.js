@@ -48,10 +48,13 @@ const MIN_MILKDROP_WIDTH = 725;
 
 let screenshot = false;
 let skinUrl = configSkinUrl;
+let butterchurnPresetUrl = null;
 if ("URLSearchParams" in window) {
   const params = new URLSearchParams(location.search);
   screenshot = params.get("screenshot");
   skinUrl = params.get("skinUrl") || skinUrl;
+  butterchurnPresetUrl =
+    params.get("butterchurnPresetUrl") || butterchurnPresetUrl;
 }
 
 function supressDragAndDrop(e) {
@@ -134,7 +137,7 @@ Raven.context(() => {
   if (isButterchurnSupported()) {
     const startWithMilkdropHidden =
       document.body.clientWidth < MIN_MILKDROP_WIDTH ||
-      skinUrl != null ||
+      (skinUrl != null && butterchurnPresetUrl === null) ||
       screenshot;
 
     __extraWindows.push({
@@ -142,6 +145,7 @@ Raven.context(() => {
       title: "Milkdrop",
       isVisualizer: true,
       Component: MilkdropWindow,
+      presetUrl: butterchurnPresetUrl,
       open: !startWithMilkdropHidden
     });
 
