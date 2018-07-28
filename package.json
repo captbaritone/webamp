@@ -120,5 +120,8 @@
     "projects": [
       "config/jest.*.js"
     ]
+  },
+  "dependencies": {
+    "ignore-loader": "^0.1.2"
   }
 }

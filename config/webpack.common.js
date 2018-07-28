@@ -19,7 +19,7 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        exclude: /(node_modules)/,
+        exclude: [/(node_modules)/],
         use: {
           loader: "babel-loader"
         }
@@ -35,9 +35,17 @@ module.exports = {
             }
           }
         ]
+      },
+      {
+        test: /\.d\.ts$/,
+        use: [
+          {
+            loader: "ignore-loader"
+          }
+        ]
       }
     ],
-    noParse: [/jszip\.js$/, /\.d\.ts$/]
+    noParse: [/jszip\.js$/]
   },
   plugins: [
     new webpack.IgnorePlugin(/fs/, /file-type/, /debug/), // Ignore fs in music-metadata

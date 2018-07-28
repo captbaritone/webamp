@@ -35,9 +35,17 @@ module.exports = {
             }
           }
         ]
+      },
+      {
+        test: /\.d\.ts$/,
+        use: [
+          {
+            loader: "ignore-loader"
+          }
+        ]
       }
     ],
-    noParse: [/jszip\.js$/, /\.d\.ts$/]
+    noParse: [/jszip\.js$/]
   },
   plugins: [
     new webpack.DefinePlugin({
