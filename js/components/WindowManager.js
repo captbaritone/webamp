@@ -132,7 +132,17 @@ class WindowManager extends React.Component {
       )
     };
 
-    const box = boundingBox(moving);
+    let box;
+    try {
+      box = boundingBox(moving);
+    } catch (err) {
+      console.error(
+        `Could not construct bounding box for key: ${key}. moving.length is: ${
+          moving.length
+        }`
+      );
+      throw err;
+    }
 
     const handleMouseMove = ee => {
       const proposedDiff = {
