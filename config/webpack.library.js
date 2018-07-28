@@ -37,7 +37,7 @@ module.exports = {
         ]
       }
     ],
-    noParse: [/jszip\.js$/]
+    noParse: [/jszip\.js$/, /\.d\.ts$/]
   },
   plugins: [
     new webpack.DefinePlugin({

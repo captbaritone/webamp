@@ -37,7 +37,7 @@ module.exports = {
         ]
       }
     ],
-    noParse: [/jszip\.js$/, /\.d.ts$/]
+    noParse: [/jszip\.js$/, /\.d\.ts$/]
   },
   plugins: [
     new webpack.IgnorePlugin(/fs/, /file-type/, /debug/), // Ignore fs in music-metadata
