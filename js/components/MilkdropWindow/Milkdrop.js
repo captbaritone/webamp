@@ -31,7 +31,11 @@ export default class Milkdrop extends React.Component {
     );
     this.visualizer.connectAudio(this.props.analyser);
     this.presetCycle = true;
-    this.selectPreset(this.props.presets.getCurrent(), 0);
+    if (this.props.initialPreset) {
+      this.visualizer.loadPreset(this.props.initialPreset, 0);
+    } else {
+      this.selectPreset(this.props.presets.getCurrent(), 0);
+    }
 
     // Kick off the animation loop
     const loop = () => {

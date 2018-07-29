@@ -21,6 +21,7 @@ class PresetsLoader extends React.Component {
     super();
     this.state = {
       presets: null,
+      initialPreset: null,
       butterchurn: null,
       isFullscreen: false,
       desktop: false
@@ -35,14 +36,14 @@ class PresetsLoader extends React.Component {
   }
 
   async componentDidMount() {
-    const {
-      butterchurn,
-      presetKeys,
-      minimalPresets
-    } = await loadInitialDependencies();
+    const [
+      { butterchurn, presetKeys, minimalPresets },
+      initialPreset
+    ] = await Promise.all([loadInitialDependencies(), loadInitialPreset()]);
 
     this.setState({
       butterchurn,
+      initialPreset,
       presets: new Presets({
         keys: presetKeys,
         initialPresets: minimalPresets,
@@ -81,7 +82,7 @@ class PresetsLoader extends React.Component {
   }
 
   _renderMilkdrop(size) {
-    const { butterchurn, presets } = this.state;
+    const { butterchurn, presets, initialPreset } = this.state;
     const loaded = butterchurn != null && presets != null;
     const { width, height } = this.state.isFullscreen
       ? { width: screen.width, height: screen.height }
@@ -98,6 +99,7 @@ class PresetsLoader extends React.Component {
             height={height}
             isFullscreen={this.state.isFullscreen}
             presets={presets}
+            initialPreset={initialPreset}
             butterchurn={butterchurn}
           />
         )}
@@ -149,6 +151,31 @@ class PresetsLoader extends React.Component {
       </GenWindow>
     );
   }
+}
+
+async function loadInitialPreset() {
+  let presetUrl = null;
+  if ("URLSearchParams" in window) {
+    const params = new URLSearchParams(location.search);
+    presetUrl = params.get("butterchurnPresetUrl");
+  }
+
+  if (presetUrl) {
+    try {
+      const response = await fetch(presetUrl);
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      const responseBody = await response.json();
+      return responseBody;
+    } catch (e) {
+      console.error(e);
+      alert(`Failed to load MilkDrop preset from ${presetUrl}`);
+      return null;
+    }
+  }
+
+  return null;
 }
 
 async function loadInitialDependencies() {
