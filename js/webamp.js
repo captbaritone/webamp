@@ -116,7 +116,6 @@ class Winamp {
         type: ADD_GEN_WINDOW,
         windowId: genWindow.id,
         title: genWindow.title,
-        presetUrl: genWindow.presetUrl,
         open: genWindow.open
       });
     });

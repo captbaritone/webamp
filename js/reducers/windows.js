@@ -116,7 +116,6 @@ const windows = (state = defaultWindowsState, action) => {
           ...state.genWindows,
           [action.windowId]: {
             title: action.title,
-            presetUrl: action.presetUrl,
             open: action.open,
             hidden: false,
             size: [0, 0],

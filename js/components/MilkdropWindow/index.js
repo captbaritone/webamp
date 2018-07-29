@@ -39,10 +39,7 @@ class PresetsLoader extends React.Component {
     const [
       { butterchurn, presetKeys, minimalPresets },
       initialPreset
-    ] = await Promise.all([
-      loadInitialDependencies(),
-      loadInitialPreset(this.props.presetUrl)
-    ]);
+    ] = await Promise.all([loadInitialDependencies(), loadInitialPreset()]);
 
     this.setState({
       butterchurn,
@@ -156,14 +153,29 @@ class PresetsLoader extends React.Component {
   }
 }
 
-async function loadInitialPreset(presetUrl) {
-  if (presetUrl) {
-    const response = await fetch(presetUrl);
-    const responseBody = await response.json();
-    return responseBody;
+async function loadInitialPreset() {
+  let presetUrl = null;
+  if ("URLSearchParams" in window) {
+    const params = new URLSearchParams(location.search);
+    presetUrl = params.get("butterchurnPresetUrl");
   }
 
-  return Promise.resolve(null);
+  if (presetUrl) {
+    try {
+      const response = await fetch(presetUrl);
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      const responseBody = await response.json();
+      return responseBody;
+    } catch (e) {
+      console.error(e);
+      alert(`Failed to load MilkDrop preset from ${presetUrl}`);
+      return null;
+    }
+  }
+
+  return null;
 }
 
 async function loadInitialDependencies() {
