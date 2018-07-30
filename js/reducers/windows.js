@@ -77,13 +77,16 @@ const windows = (state = defaultWindowsState, action) => {
         }
       };
     case TOGGLE_WINDOW:
+      const windowState = state.genWindows[action.windowId];
       return {
         ...state,
         genWindows: {
           ...state.genWindows,
           [action.windowId]: {
-            ...state.genWindows[action.windowId],
-            open: !state.genWindows[action.windowId].open
+            ...windowState,
+            open: !windowState.open,
+            // Reset hidden state when opening window
+            hidden: windowState.open ? windowState.hidden : false
           }
         }
       };
