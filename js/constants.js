@@ -41,3 +41,8 @@ export const VISUALIZER_ORDER = [
   VISUALIZERS.OSCILLOSCOPE, // TODO: Verify the order
   VISUALIZERS.NONE
 ];
+
+export const TIME_MODE = {
+  ELAPSED: "ELAPSED",
+  REMAINING: "REMAINING"
+};
