@@ -18,8 +18,9 @@ import * as fromPlaylist from "./reducers/playlist";
 import * as fromDisplay from "./reducers/display";
 import { generateGraph } from "./resizeUtils";
 
-export const getEqfData = state => {
-  const { sliders } = state.equalizer;
+export const getSliders = state => state.equalizer.sliders;
+
+export const getEqfData = createSelector(getSliders, sliders => {
   const preset = {
     name: "Entry1",
     preamp: denormalize(sliders.preamp)
@@ -32,7 +33,7 @@ export const getEqfData = state => {
     type: "Winamp EQ library file v1.1"
   };
   return eqfData;
-};
+});
 
 export const getTracks = state => state.playlist.tracks;
 const getTrackOrder = state => state.playlist.trackOrder;
