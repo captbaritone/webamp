@@ -68,7 +68,9 @@ class Shooter {
       });
       await this._page.screenshot({
         path: screenshotPath,
-        omitBackground: true // Make screenshot transparent
+        omitBackground: true, // Make screenshot transparent
+        // https://github.com/GoogleChrome/puppeteer/issues/703#issuecomment-366041479
+        clip: { x: 0, y: 0, width: 275, height: 116 * 3 }
       });
       console.log("Wrote screenshot to", screenshotPath);
       if (minify) {
