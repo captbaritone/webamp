@@ -150,7 +150,7 @@ def tweet_skin(md5):
     skin_url = get_skin_url(md5)
     screenshot_url = get_screenshot_url(md5)
 
-    screenshot_path = NamedTemporaryFile(suffix="png").name
+    screenshot_path = NamedTemporaryFile(suffix=".png").name
     urllib.request.urlretrieve(screenshot_url, screenshot_path)
 
     if not url_is_good(skin_url):
