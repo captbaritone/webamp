@@ -139,10 +139,11 @@ def main(dry):
 
 
 def tweet_skin(md5):
+    print("Going to Tweet the skin with md5 hash %s" % md5)
     filenames = dict()
     for pair in get_lines("filenames.txt"):
-        [md5, filename] = pair.strip().split(" ")
-        filenames[md5] = filename
+        [file_md5, filename] = pair.strip().split(" ")
+        filenames[file_md5] = filename
 
     skin_name = filenames[md5]
     assert skin_name
