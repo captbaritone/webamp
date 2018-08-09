@@ -67,12 +67,20 @@ def md5_file(path):
 
 
 def get_lines(path):
-    with open(path) as f:
+    temp_path = NamedTemporaryFile().name
+    s3 = boto3.resource("s3")
+    s3.meta.client.download_file("winamp2-js-skins", path, temp_path)
+    with open(temp_path, "r") as f:
         return [l.strip() for l in f.readlines()]
 
 
 def append_line(path, line):
-    open(path, "a").write("%s\n" % line)
+    temp_path = NamedTemporaryFile().name
+    s3 = boto3.resource("s3")
+    s3.meta.client.download_file("winamp2-js-skins", path, temp_path)
+    with open(temp_path, "a") as f:
+        f.write("%s\n" % line)
+    s3.meta.client.upload_file(temp_path, "winamp2-js-skins", path)
 
 
 def review():
@@ -96,11 +104,11 @@ def review():
 
     for md5 in potentials:
         screenshot_url = get_screenshot_url(md5)
-        screenshot_path = 
+        screenshot_path = NamedTemporaryFile(suffix="png").name
         urllib.request.urlretrieve(screenshot_url, screenshot_path)
         skin_name = filenames[md5]
         print("Found %s" % skin_name)
-        os.system('open "%s"' % screenshot_path)
+        os.system('open --background "%s"' % screenshot_path)
         res = input("Approve? (y/n/q/t)")
         if res is "q":
             return
