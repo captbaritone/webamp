@@ -143,7 +143,7 @@ class Visualizer extends React.Component {
     const bgCanvasCtx = this.bgCanvas.getContext("2d");
     bgCanvasCtx.fillStyle = this.props.colors[0];
     bgCanvasCtx.fillRect(0, 0, this._width(), this._height());
-    if (this.props.spekles) {
+    if (!this.props.windowShade) {
       bgCanvasCtx.fillStyle = this.props.colors[1];
       for (let x = 0; x < this._width(); x += 4) {
         for (let y = PIXEL_DENSITY; y < this._height(); y += 4) {
@@ -255,9 +255,11 @@ class Visualizer extends React.Component {
       }
 
       // Draw the gray peak line
-      const peakY = this._height() - peakHeight;
-      ctx.fillStyle = this.props.colors[PEAK_COLOR_INDEX];
-      ctx.fillRect(x, peakY, b, PIXEL_DENSITY);
+      if (!this.props.windowShade) {
+        const peakY = this._height() - peakHeight;
+        ctx.fillStyle = this.props.colors[PEAK_COLOR_INDEX];
+        ctx.fillRect(x, peakY, b, PIXEL_DENSITY);
+      }
     }
   }
 
@@ -316,7 +318,7 @@ const mapStateToProps = state => ({
   width: getWindowShade(state, "main") ? 38 : 76,
   height: getWindowShade(state, "main") ? 5 : 16,
   status: state.media.status,
-  spekles: !getWindowShade(state, "main"),
+  windowShade: getWindowShade(state, "main"),
   dummyVizData: state.display.dummyVizData
 });
 
