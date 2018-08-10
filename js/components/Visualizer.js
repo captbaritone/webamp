@@ -226,8 +226,8 @@ class Visualizer extends React.Component {
     // Iterate over the width of the canvas in "real" pixels.
     for (let j = 0; j <= this._renderWidth(); j++) {
       const amplitude = sliceAverage(this.dataArray, sliceWidth, j);
-      const percentAmplitude = (amplitude - 128) / 128; // dataArray gives us bytes
-      const y = percentAmplitude * h + h / 2; // center wave at half height
+      const percentAmplitude = amplitude / 255; // dataArray gives us bytes
+      const y = (1 - percentAmplitude) * h; // flip y
       const x = j * PIXEL_DENSITY;
 
       // Canvas coordinates are in the middle of the pixel by default.
