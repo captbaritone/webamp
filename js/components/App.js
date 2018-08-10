@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { objectMap } from "../utils";
 import Emitter from "../emitter";
-import { WINDOWS } from "../constants";
+import { WINDOWS, MEDIA_STATUS } from "../constants";
 import { getVisualizerStyle } from "../selectors";
 import { closeWindow } from "../actionCreators";
 import ContextMenuWrapper from "./ContextMenuWrapper";
@@ -129,7 +129,7 @@ class App extends React.Component {
               onFocusedKeyDown={listener => this._emitter.on(id, listener)}
               analyser={media.getAnalyser()}
               isEnabledVisualizer={this.props.visualizerStyle === id}
-              playing={this.props.status === "PLAYING"}
+              playing={this.props.status === MEDIA_STATUS.PLAYING}
               close={() => this.props.closeWindow(id)}
             />
           );

@@ -1,10 +1,6 @@
 import Emitter from "../emitter";
 import { clamp } from "../utils";
-const STATUS = {
-  PLAYING: "PLAYING",
-  STOPPED: "STOPPED",
-  PAUSED: "PAUSED"
-};
+import { MEDIA_STATUS } from "../constants";
 
 export default class ElementSource {
   on(eventType, cb) {
@@ -18,7 +14,7 @@ export default class ElementSource {
     this._audio = document.createElement("audio");
     this._audio.crossOrigin = "anonymous";
     this._stalled = false;
-    this._status = STATUS.STOPPED;
+    this._status = MEDIA_STATUS.STOPPED;
 
     this._audio.addEventListener("suspend", () => {
       this._setStalled(true);
@@ -31,7 +27,7 @@ export default class ElementSource {
 
     this._audio.addEventListener("ended", () => {
       this._emitter.trigger("ended");
-      this._setStatus(STATUS.STOPPED);
+      this._setStatus(MEDIA_STATUS.STOPPED);
     });
 
     // TODO: Throttle to 50 (if needed)
@@ -66,7 +62,7 @@ export default class ElementSource {
       // the end of the track.
 
       this._emitter.trigger("ended");
-      this._setStatus(STATUS.STOPPED);
+      this._setStatus(MEDIA_STATUS.STOPPED);
     });
 
     this._source = this._context.createMediaElementSource(this._audio);
@@ -89,7 +85,7 @@ export default class ElementSource {
   }
 
   async play() {
-    if (this._status !== STATUS.PAUSED) {
+    if (this._status !== MEDIA_STATUS.PAUSED) {
       this.seekToTime(0);
     }
     try {
@@ -97,18 +93,18 @@ export default class ElementSource {
     } catch (err) {
       //
     }
-    this._setStatus(STATUS.PLAYING);
+    this._setStatus(MEDIA_STATUS.PLAYING);
   }
 
   pause() {
     this._audio.pause();
-    this._setStatus(STATUS.PAUSED);
+    this._setStatus(MEDIA_STATUS.PAUSED);
   }
 
   stop() {
     this._audio.pause();
     this._audio.currentTime = 0;
-    this._setStatus(STATUS.STOPPED);
+    this._setStatus(MEDIA_STATUS.STOPPED);
   }
 
   seekToTime(time) {

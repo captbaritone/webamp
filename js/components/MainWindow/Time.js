@@ -6,7 +6,8 @@ import { TOGGLE_TIME_MODE } from "../../actionTypes";
 import { TIME_MODE } from "../../constants";
 
 const Time = ({ timeElapsed, length, timeMode, toggleTimeMode }) => {
-  const seconds = timeMode === "ELAPSED" ? timeElapsed : length - timeElapsed;
+  const seconds =
+    timeMode === TIME_MODE.ELAPSED ? timeElapsed : length - timeElapsed;
 
   const timeObj = getTimeObj(seconds);
   return (

@@ -46,3 +46,8 @@ export const TIME_MODE = {
   ELAPSED: "ELAPSED",
   REMAINING: "REMAINING"
 };
+
+export const MEDIA_STATUS = {
+  STOPPED: "STOPPED",
+  PAUSED: "PAUSED"
+};

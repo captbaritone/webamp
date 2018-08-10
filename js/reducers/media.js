@@ -14,7 +14,7 @@ import {
   ADD_TRACK_FROM_URL,
   CHANNEL_COUNT_CHANGED
 } from "../actionTypes";
-import { TIME_MODE } from "../constants";
+import { TIME_MODE, MEDIA_STATUS } from "../constants";
 
 const media = (state, action) => {
   if (!state) {
@@ -33,19 +33,19 @@ const media = (state, action) => {
       shuffle: false,
       repeat: false,
       // TODO: Enforce possible values
-      status: "STOPPED"
+      status: MEDIA_STATUS.STOPPED
     };
   }
   switch (action.type) {
     // TODO: Make these constants
     case PLAY:
     case IS_PLAYING:
-      return { ...state, status: "PLAYING" };
+      return { ...state, status: MEDIA_STATUS.PLAYING };
     case PAUSE:
-      return { ...state, status: "PAUSED" };
+      return { ...state, status: MEDIA_STATUS.PAUSED };
     case STOP:
     case IS_STOPPED:
-      return { ...state, status: "STOPPED" };
+      return { ...state, status: MEDIA_STATUS.STOPPED };
     case CHANNEL_COUNT_CHANGED:
       return { ...state, channels: action.channels };
     case TOGGLE_TIME_MODE:

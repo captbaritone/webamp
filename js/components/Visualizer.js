@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import { toggleVisualizerStyle } from "../actionCreators";
 import { getWindowShade, getVisualizerStyle } from "../selectors";
-import { VISUALIZERS } from "../constants";
+import { VISUALIZERS, MEDIA_STATUS } from "../constants";
 
 const PIXEL_DENSITY = 2;
 const NUM_BARS = 20;
@@ -33,7 +33,7 @@ class Visualizer extends React.Component {
 
     // Kick off the animation loop
     const loop = () => {
-      if (this.props.status === "PLAYING") {
+      if (this.props.status === MEDIA_STATUS.PLAYING) {
         if (this.props.dummyVizData) {
           Object.keys(this.props.dummyVizData).forEach(i => {
             this._printBar(i, this.props.dummyVizData[i]);

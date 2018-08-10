@@ -1,5 +1,5 @@
 /* Emulate the native <audio> element with Web Audio API */
-import { BANDS } from "../constants";
+import { BANDS, MEDIA_STATUS } from "../constants";
 import Emitter from "../emitter";
 import ElementSource from "./elementSource";
 // import detectChannels from "./detectChannels";
@@ -101,7 +101,7 @@ export default class Media {
     });
     this._source.on("statusChange", () => {
       switch (this._source.getStatus()) {
-        case "PLAYING":
+        case MEDIA_STATUS.PLAYING:
           this._emitter.trigger("playing");
           break;
       }

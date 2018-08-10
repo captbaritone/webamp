@@ -13,6 +13,7 @@ import {
   PLAY_TRACK
 } from "../actionTypes";
 
+import { MEDIA_STATUS } from "../constants";
 import { openMediaFileDialog } from "./";
 
 function playRandomTrack() {
@@ -37,7 +38,7 @@ export function play() {
   return (dispatch, getState) => {
     const state = getState();
     if (
-      state.media.status === "STOPPED" &&
+      state.media.status === MEDIA_STATUS.STOPPED &&
       state.playlist.curentTrack == null &&
       state.playlist.trackOrder.length === 0
     ) {
@@ -51,7 +52,7 @@ export function play() {
 export function pause() {
   return (dispatch, getState) => {
     const { status } = getState().media;
-    dispatch({ type: status === "PLAYING" ? PAUSE : PLAY });
+    dispatch({ type: status === MEDIA_STATUS.PLAYING ? PAUSE : PLAY });
   };
 }
 

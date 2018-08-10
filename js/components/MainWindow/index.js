@@ -1,8 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
-
-import { WINDOWS } from "../../constants";
+import { WINDOWS, MEDIA_STATUS } from "../../constants";
 import {
   loadFilesFromReferences,
   removeAllTracks,
@@ -69,9 +68,9 @@ export class MainWindow extends React.Component {
 
     const className = classnames({
       window: true,
-      play: status === "PLAYING",
-      stop: status === "STOPPED",
-      pause: status === "PAUSED",
+      play: status === MEDIA_STATUS.PLAYING,
+      stop: status === MEDIA_STATUS.STOPPED,
+      pause: status === MEDIA_STATUS.PAUSED,
       selected: focused === WINDOWS.MAIN,
       shade: mainShade,
       draggable: true,
