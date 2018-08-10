@@ -15,26 +15,34 @@ const OVERSCAN_ROWS_TRAILING = 4;
 class Skin extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { loaded: false, load: false };
+    this.state = { loaded: false, load: false, enqueuedAs: null };
     this._controller = new window.AbortController();
     this._handleLoad = this._handleLoad.bind(this);
   }
 
+  _getPriority() {
+    return this.props.isOverscan ? 1 : 0;
+  }
+
   componentDidUpdate(prevProps) {
-    if (prevProps.isOverscan != this.props.isOverscan) {
-      // TODO: Update priority
+    if (this._queued && !(this.state.load || this.state.loaded)) {
+      this._queued.changePriority(this._getPriority());
+      if (this.state.enqueuedAs !== this._getPriority()) {
+        this.setState({ enqueuedAs: this._getPriority() });
+      }
     }
   }
 
   componentDidMount() {
-    this._dequeue = this.props.queue.enqueue(() => {
+    this._queued = this.props.queue.enqueue(() => {
       const signal = this._controller.signal;
       return fetch(this.props.src, { signal, mode: "no-cors" })
         .then(() => {
           this.setState({ load: true });
         })
         .catch(e => {});
-    }, this.props.isOverscan ? 1 : 0);
+    }, this._getPriority());
+    this.setState({ enqueuedAs: this._getPriority() });
   }
 
   _handleLoad() {
@@ -45,8 +53,9 @@ class Skin extends React.Component {
     if (!this.state.loaded) {
       this._controller.abort();
     }
-    if (this._dequeue != null) {
-      this._dequeue();
+    if (this._queued != null) {
+      this._queued.dispose();
+      this._queued = null;
     }
   }
 
@@ -56,8 +65,8 @@ class Skin extends React.Component {
         className={"skin"}
         style={{
           position: "absolute",
-          top: 0,
-          left: 0,
+          // Ideally the final backgroundColor would be black
+          // But that makes our opacitly transition kinda funky
           backgroundColor: this.props.color,
           width: this.props.width,
           height: this.props.height,
@@ -65,6 +74,10 @@ class Skin extends React.Component {
           left: this.props.left
         }}
       >
+        <div className="priority">
+          {this.state.enqueuedAs} -{" "}
+          {this.state.load && !this.state.loaded ? "loading..." : ""}
+        </div>
         <a href={this.props.href} target="_blank">
           {this.state.load && (
             <img
