@@ -8,6 +8,7 @@ import MilkdropContextMenu from "./MilkdropContextMenu";
 import Desktop from "./Desktop";
 
 import Presets from "./Presets";
+import PresetConverter from "./PresetConverter";
 import Milkdrop from "./Milkdrop";
 import Background from "./Background";
 
@@ -48,6 +49,9 @@ class PresetsLoader extends React.Component {
         keys: presetKeys,
         initialPresets: minimalPresets,
         getRest: loadNonMinimalPresets
+      }),
+      presetConverter: new PresetConverter({
+        getPresetConverter: loadPresetConversionDependencies
       })
     });
     screenfull.onchange(this._handleFullscreenChange);
@@ -82,7 +86,7 @@ class PresetsLoader extends React.Component {
   }
 
   _renderMilkdrop(size) {
-    const { butterchurn, presets, initialPreset } = this.state;
+    const { butterchurn, presets, presetConverter, initialPreset } = this.state;
     const loaded = butterchurn != null && presets != null;
     const { width, height } = this.state.isFullscreen
       ? { width: screen.width, height: screen.height }
@@ -99,6 +103,7 @@ class PresetsLoader extends React.Component {
             height={height}
             isFullscreen={this.state.isFullscreen}
             presets={presets}
+            presetConverter={presetConverter}
             initialPreset={initialPreset}
             butterchurn={butterchurn}
           />
@@ -213,6 +218,36 @@ async function loadNonMinimalPresets() {
       },
       reject,
       "butterchurn-presets"
+    );
+  });
+}
+
+async function loadPresetConversionDependencies() {
+  return new Promise((resolve, reject) => {
+    require.ensure(
+      ["milkdrop-preset-utils", "milkdrop-eel-parser", "glsl-optimizer-js"],
+      async require => {
+        const milkdropPresetUtils = require("milkdrop-preset-utils");
+        const milkdropParser = require("milkdrop-eel-parser");
+        const glslOptimizer = require("glsl-optimizer-js");
+        const optimizeGLSL = await new Promise(resolveFun => {
+          glslOptimizer().then(Module => {
+            const optimize = Module.cwrap("optimize_glsl", "string", [
+              "string",
+              "number",
+              "number"
+            ]);
+            resolveFun(optimize);
+          });
+        });
+        resolve({
+          milkdropPresetUtils,
+          milkdropParser,
+          optimizeGLSL
+        });
+      },
+      reject,
+      "milkdrop-preset-conversion"
     );
   });
 }
