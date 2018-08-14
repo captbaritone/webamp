@@ -46,6 +46,16 @@ export default class Presets {
     this._randomize = val;
   }
 
+  addPresets(presets) {
+    const startIdx = this._keys.length;
+    this._keys = this._keys.concat(Object.keys(presets));
+    const endIndx = this._keys.length - 1;
+
+    this._presets = Object.assign(this._presets, presets);
+
+    return [startIdx, endIndx];
+  }
+
   async next() {
     let idx;
     if (this._randomize || this._history.length === 0) {

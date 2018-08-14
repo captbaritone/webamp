@@ -136,12 +136,34 @@ export default class Milkdrop extends React.Component {
   async _handleDrop(e) {
     const files = e.dataTransfer.files;
     if (files.length > 0) {
-      const fileContents = await this._readPresetFile(files[0]);
-      const convertedPreset = await this.props.presetConverter.convertPreset(
-        fileContents
-      );
-      this.visualizer.loadPreset(convertedPreset, PRESET_TRANSITION_SECONDS);
-      this._restartCycling();
+      const file = files[0];
+      const fileName = file.name;
+      if (fileName.endsWith(".milk")) {
+        const fileContents = await this._readPresetFile(file);
+        const presetName = fileName.substring(fileName, fileName.length - 5); // remove .milk
+        const presetKeys = this.props.presets.getKeys();
+        const presetIdx = presetKeys.indexOf(presetName);
+        if (presetIdx >= 0) {
+          this.selectPreset(
+            await this.props.presets.selectIndex(presetIdx),
+            PRESET_TRANSITION_SECONDS
+          );
+        } else {
+          const convertedPreset = await this.props.presetConverter.convertPreset(
+            fileContents
+          );
+          const presets = {
+            [presetName]: convertedPreset
+          };
+          const presetIndices = this.props.presets.addPresets(presets);
+          this.selectPreset(
+            await this.props.presets.selectIndex(presetIndices[0]),
+            PRESET_TRANSITION_SECONDS
+          );
+        }
+      } else {
+        alert("Visualizer only supports .milk files");
+      }
     }
   }
 
