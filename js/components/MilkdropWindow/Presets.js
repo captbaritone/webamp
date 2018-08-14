@@ -9,6 +9,20 @@ function getLast(arr) {
   return arr[arr.length - 1];
 }
 
+async function readPresetFile(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      resolve(e.target.result);
+    };
+    reader.onerror = function(e) {
+      reject(e);
+    };
+
+    reader.readAsText(file);
+  });
+}
+
 /**
  * Track a collection of async loaded presets
  *
@@ -21,10 +35,17 @@ function getLast(arr) {
  * and the remainder can be loaded async via the function `getRest`.
  */
 export default class Presets {
-  constructor({ keys, initialPresets, getRest, randomize = true }) {
+  constructor({
+    keys,
+    initialPresets,
+    getRest,
+    presetConverter,
+    randomize = true
+  }) {
     this._keys = keys; // Alphabetical list of preset names
     this._presets = initialPresets; // Presets indexed by name
     this._getRest = getRest; // An async function to get the rest of the presets
+    this._presetConverter = presetConverter; // Preset converter for converting Milkdrop presets
     this._history = []; // Indexes into _keys
 
     this._randomize = randomize;
@@ -92,6 +113,13 @@ export default class Presets {
         // the caller knows this request got canceled.
         return null;
       }
+    }
+    if (preset && preset.file) {
+      const fileContents = await readPresetFile(preset.file);
+      const convertedPreset = await this._presetConverter.convertPreset(
+        fileContents
+      );
+      this._presets[this._keys[idx]] = convertedPreset;
     }
     this._currentIndex = idx;
     return this.getCurrent();

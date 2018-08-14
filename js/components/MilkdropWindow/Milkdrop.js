@@ -119,48 +119,43 @@ export default class Milkdrop extends React.Component {
     }
   }
 
-  async _readPresetFile(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        resolve(e.target.result);
-      };
-      reader.onerror = function(e) {
-        reject(e);
-      };
-
-      reader.readAsText(file);
-    });
-  }
-
   async _handleDrop(e) {
     const files = e.dataTransfer.files;
     if (files.length > 0) {
-      const file = files[0];
-      const fileName = file.name;
-      if (fileName.endsWith(".milk")) {
-        const fileContents = await this._readPresetFile(file);
-        const presetName = fileName.substring(fileName, fileName.length - 5); // remove .milk
-        const presetKeys = this.props.presets.getKeys();
-        const presetIdx = presetKeys.indexOf(presetName);
-        if (presetIdx >= 0) {
-          this.selectPreset(
-            await this.props.presets.selectIndex(presetIdx),
-            PRESET_TRANSITION_SECONDS
-          );
-        } else {
-          const convertedPreset = await this.props.presetConverter.convertPreset(
-            fileContents
-          );
-          const presets = {
-            [presetName]: convertedPreset
-          };
-          const presetIndices = this.props.presets.addPresets(presets);
-          this.selectPreset(
-            await this.props.presets.selectIndex(presetIndices[0]),
-            PRESET_TRANSITION_SECONDS
-          );
+      const milkFiles = [];
+      for (let i = 0; i < files.length; i++) {
+        if (files[i].name.endsWith(".milk")) {
+          milkFiles.push(files[i]);
         }
+      }
+
+      if (milkFiles.length > 0) {
+        const presets = {};
+        const presetIndices = [];
+        for (let i = 0; i < milkFiles.length; i++) {
+          const file = milkFiles[i];
+          const fileName = file.name;
+          const presetName = fileName.substring(fileName, fileName.length - 5); // remove .milk
+          const presetKeys = this.props.presets.getKeys();
+          const presetIdx = presetKeys.indexOf(presetName);
+          if (presetIdx >= 0) {
+            presetIndices.push(presetIdx);
+          } else {
+            presets[presetName] = { file };
+          }
+        }
+
+        if (Object.keys(presets).length > 0) {
+          const filePresetIndices = this.props.presets.addPresets(presets);
+          for (let j = filePresetIndices[0]; j < filePresetIndices[1]; j++) {
+            presetIndices.push(j);
+          }
+        }
+
+        this.selectPreset(
+          await this.props.presets.selectIndex(presetIndices[0]),
+          PRESET_TRANSITION_SECONDS
+        );
       } else {
         alert("Visualizer only supports .milk files");
       }

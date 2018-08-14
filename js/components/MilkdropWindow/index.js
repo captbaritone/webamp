@@ -48,10 +48,10 @@ class PresetsLoader extends React.Component {
       presets: new Presets({
         keys: presetKeys,
         initialPresets: minimalPresets,
-        getRest: loadNonMinimalPresets
-      }),
-      presetConverter: new PresetConverter({
-        getPresetConverter: loadPresetConversionDependencies
+        getRest: loadNonMinimalPresets,
+        presetConverter: new PresetConverter({
+          getPresetConverter: loadPresetConversionDependencies
+        })
       })
     });
     screenfull.onchange(this._handleFullscreenChange);
