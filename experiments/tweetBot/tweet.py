@@ -91,7 +91,7 @@ def review():
     all_skins = []
 
     filenames = dict()
-    for pair in open("filenames.txt").readlines():
+    for pair in get_lines("filenames.txt"):
         [md5, filename] = pair.strip().split(" ")
         filenames[md5] = filename
         all_skins.append(md5)
