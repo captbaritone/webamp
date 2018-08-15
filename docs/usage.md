@@ -55,9 +55,10 @@ const webamp = new Webamp({
     // Can be downloaded from: https://github.com/captbaritone/webamp/raw/master/mp3/llama-2.91.mp3
     url: "path/to/mp3/llama-2.91.mp3"
   }],
+  // Optional. The default skin is included in the js bundle, and will be loaded by default.
   initialSkin: {
-    // Can be downloaded from https://github.com/captbaritone/webamp/raw/master/skins/base-2.91.wsz
-    url: "path/to/skins/base-2.91.wsz"
+    // Can be downloaded from https://github.com/captbaritone/webamp/raw/master/skins/TopazAmp1-2.wsz
+    url: "path/to/skins/TopazAmp1-2.wsz"
   },
 });
 // Render after the skin has loaded.
@@ -115,7 +116,8 @@ The `Winamp` class is constructed with an options object.
 
 ```JavaScript
 const options = {
-    // Required. An object representing the initial skin to use.
+    // Optional. An object representing the initial skin to use.
+    // If omitted, the default skin, included in the bundle, will be used.
     // Note: This URL must be served the with correct CORs headers.
     initialSkin: {
         url: './path/to/skin.wsz'
