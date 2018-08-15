@@ -128,7 +128,7 @@ class Marquee extends React.Component {
         onMouseDown={this.handleMouseDown}
         title="Song Title"
       >
-        <div style={{ style }}>
+        <div style={style}>
           <CharacterString>{loopText(text)}</CharacterString>
         </div>
       </div>
