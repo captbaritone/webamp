@@ -115,7 +115,11 @@ class Marquee extends React.Component {
   render() {
     const { text, marqueeStep } = this.props;
     const offset = stepOffset(text, marqueeStep, this.state.dragOffset);
-    const marginLeft = pixelUnits(-offset);
+    const offsetPixels = pixelUnits(-offset);
+    const style = {
+      whiteSpace: "nowrap",
+      willChange: "transform"
+    };
     return (
       <div
         id="marquee"
@@ -123,7 +127,7 @@ class Marquee extends React.Component {
         onMouseDown={this.handleMouseDown}
         title="Song Title"
       >
-        <div style={{ marginLeft }}>
+        <div style={{ ...style, transform: `translateX(${offsetPixels})` }}>
           <CharacterString>{loopText(text)}</CharacterString>
         </div>
       </div>
