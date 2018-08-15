@@ -118,7 +118,8 @@ class Marquee extends React.Component {
     const offsetPixels = pixelUnits(-offset);
     const style = {
       whiteSpace: "nowrap",
-      willChange: "transform"
+      willChange: "transform",
+      transform: `translateX(${offsetPixels})`
     };
     return (
       <div
@@ -127,7 +128,7 @@ class Marquee extends React.Component {
         onMouseDown={this.handleMouseDown}
         title="Song Title"
       >
-        <div style={{ ...style, transform: `translateX(${offsetPixels})` }}>
+        <div style={{ style }}>
           <CharacterString>{loopText(text)}</CharacterString>
         </div>
       </div>
