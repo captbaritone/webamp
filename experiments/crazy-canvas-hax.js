@@ -1,5 +1,5 @@
-window.hax_go = wrapMode => {
-  if (window.hax_cleanup) window.hax_cleanup();
+window.startVisOverlay = wrapMode => {
+  if (window.stopVisOverlay) window.stopVisOverlay();
 
   function waitFor(conditionFn, thenFn, ms) {
     setTimeout(() => {
@@ -34,7 +34,7 @@ window.hax_go = wrapMode => {
     var wrappyCtx = wrappyCanvas.getContext("2d");
     var windows = document.querySelectorAll(".window:not(.gen-window)");
 
-    var animate_fns = Array.from(windows).map(window_el => {
+    var animateFns = Array.from(windows).map(windowEl => {
       var canvas = document.createElement("canvas");
       var ctx = canvas.getContext("2d");
       canvas.style.position = "absolute";
@@ -43,25 +43,25 @@ window.hax_go = wrapMode => {
       canvas.style.pointerEvents = "none";
       canvas.style.mixBlendMode = "color-dodge";
       canvas.className = "hacky-canvas";
-      window_el.appendChild(canvas);
+      windowEl.appendChild(canvas);
       return () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        var scale = window_el.classList.contains("doubled") ? 2 : 1;
+        var scale = windowEl.classList.contains("doubled") ? 2 : 1;
         scale *= window.devicePixelRatio || 1;
         if (
-          canvas.width !== window_el.clientWidth * scale ||
-          canvas.height !== window_el.clientHeight * scale
+          canvas.width !== windowEl.clientWidth * scale ||
+          canvas.height !== windowEl.clientHeight * scale
         ) {
-          canvas.width = window_el.clientWidth * scale;
-          canvas.height = window_el.clientHeight * scale;
+          canvas.width = windowEl.clientWidth * scale;
+          canvas.height = windowEl.clientHeight * scale;
         }
-        canvas.style.width = window_el.clientWidth + "px";
-        canvas.style.height = window_el.clientHeight + "px";
-        var stuff = window_el.querySelectorAll(`*`);
+        canvas.style.width = windowEl.clientWidth + "px";
+        canvas.style.height = windowEl.clientHeight + "px";
+        var stuff = windowEl.querySelectorAll(`*`);
         Array.from(stuff)
           .reverse()
           .forEach(el => {
-            const { offsetLeft, offsetTop } = getOffset(el, window_el);
+            const { offsetLeft, offsetTop } = getOffset(el, windowEl);
             const width = el.clientWidth;
             const height = el.clientHeight;
             if (width == 0 || height == 0) {
@@ -136,9 +136,9 @@ window.hax_go = wrapMode => {
         wrappyCtx.drawImage(butterchurnCanvas, 0, 0, width, height);
       }
 
-      animate_fns.forEach(fn => fn());
+      animateFns.forEach(fn => fn());
     }
-    window.hax_cleanup = () => {
+    window.stopVisOverlay = () => {
       Array.from(document.querySelectorAll(".hacky-canvas")).forEach(el => {
         el.remove();
       });
@@ -147,4 +147,5 @@ window.hax_go = wrapMode => {
     };
     animate();
   }
+  window.stopVisOverlay = () => {};
 };

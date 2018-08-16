@@ -189,7 +189,7 @@ Raven.context(async () => {
 
     document.getElementById("butterchurn-share").style.display = "flex";
 
-    hax_go({ mirror: true, stretch: true });
+    startVisOverlay({ mirror: true, stretch: true });
   }
 
   const initialSkin = !skinUrl ? null : { url: skinUrl };
