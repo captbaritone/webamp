@@ -13,6 +13,21 @@ window.hax_go = wrapMode => {
 
   waitFor(() => document.querySelector(".gen-window canvas"), enable, 10);
 
+  function getOffset(element, fromElement) {
+    var el = element,
+      offsetLeft = 0,
+      offsetTop = 0;
+
+    do {
+      offsetLeft += el.offsetLeft;
+      offsetTop += el.offsetTop;
+
+      el = el.offsetParent;
+    } while (el && el !== fromElement);
+
+    return { offsetLeft, offsetTop };
+  }
+
   function enable() {
     var butterchurnCanvas = document.querySelector(".gen-window canvas");
     var wrappyCanvas = document.createElement("canvas");
@@ -38,21 +53,18 @@ window.hax_go = wrapMode => {
           canvas.width = window_el.clientWidth;
           canvas.height = window_el.clientHeight;
         }
-        const window_el_rect = window_el.getBoundingClientRect();
         var stuff = window_el.querySelectorAll(`*`);
         Array.from(stuff)
           .reverse()
           .forEach(el => {
-            const rect = el.getBoundingClientRect();
-            const x = rect.left - window_el_rect.left;
-            const y = rect.top - window_el_rect.top;
-            const width = rect.right - rect.left;
-            const height = rect.bottom - rect.top;
+            const { offsetLeft, offsetTop } = getOffset(el, window_el);
+            const width = el.clientWidth;
+            const height = el.clientHeight;
             if (width == 0 || height == 0) {
               return;
             }
             ctx.save();
-            ctx.translate(x, y);
+            ctx.translate(offsetLeft, offsetTop);
             if (wrapMode.stretch) {
               ctx.drawImage(wrappyCanvas, 0, 0, width, height);
             } else {
