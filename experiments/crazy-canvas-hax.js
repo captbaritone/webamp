@@ -46,13 +46,17 @@ window.hax_go = wrapMode => {
       window_el.appendChild(canvas);
       return () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        var scale = window_el.classList.contains("doubled") ? 2 : 1;
+        scale *= window.devicePixelRatio || 1;
         if (
-          canvas.width !== window_el.clientWidth ||
-          canvas.height !== window_el.clientHeight
+          canvas.width !== window_el.clientWidth * scale ||
+          canvas.height !== window_el.clientHeight * scale
         ) {
-          canvas.width = window_el.clientWidth;
-          canvas.height = window_el.clientHeight;
+          canvas.width = window_el.clientWidth * scale;
+          canvas.height = window_el.clientHeight * scale;
         }
+        canvas.style.width = window_el.clientWidth + "px";
+        canvas.style.height = window_el.clientHeight + "px";
         var stuff = window_el.querySelectorAll(`*`);
         Array.from(stuff)
           .reverse()
@@ -64,6 +68,7 @@ window.hax_go = wrapMode => {
               return;
             }
             ctx.save();
+            ctx.scale(scale, scale);
             ctx.translate(offsetLeft, offsetTop);
             if (wrapMode.stretch) {
               ctx.drawImage(wrappyCanvas, 0, 0, width, height);
