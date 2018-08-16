@@ -86,7 +86,7 @@ class PresetsLoader extends React.Component {
   }
 
   _renderMilkdrop(size) {
-    const { butterchurn, presets, presetConverter, initialPreset } = this.state;
+    const { butterchurn, presets, initialPreset } = this.state;
     const loaded = butterchurn != null && presets != null;
     const { width, height } = this.state.isFullscreen
       ? { width: screen.width, height: screen.height }
@@ -103,7 +103,6 @@ class PresetsLoader extends React.Component {
             height={height}
             isFullscreen={this.state.isFullscreen}
             presets={presets}
-            presetConverter={presetConverter}
             initialPreset={initialPreset}
             butterchurn={butterchurn}
           />
