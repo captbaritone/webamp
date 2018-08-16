@@ -187,6 +187,9 @@ Raven.context(async () => {
     }
 
     document.getElementById("butterchurn-share").style.display = "flex";
+    
+    // require("../experiments/crazy-canvas-hax.js").go();
+    hax_go();
   }
 
   const initialSkin = !skinUrl ? null : { url: skinUrl };
