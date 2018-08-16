@@ -1,4 +1,4 @@
-window.hax_go = () => {
+window.hax_go = (wrapMode) => {
   if (window.hax_cleanup) window.hax_cleanup();
 
   function waitFor(conditionFn, thenFn, ms) {
@@ -53,7 +53,15 @@ window.hax_go = () => {
             }
             ctx.save();
             ctx.translate(x, y);
-            ctx.drawImage(wrappyCanvas, 0, 0, width, height);
+            if(wrapMode.stretch){
+              ctx.drawImage(wrappyCanvas, 0, 0, width, height);
+            }else{
+              ctx.drawImage(
+                wrappyCanvas,
+                0, 0, width, height,
+                0, 0, width, height
+              );
+            }
             ctx.restore();
           });
       };
@@ -65,25 +73,28 @@ window.hax_go = () => {
       const { width, height } = butterchurnCanvas;
       wrappyCanvas.width = width * 2;
       wrappyCanvas.height = height * 2;
-      // wrappyCtx.drawImage(butterchurnCanvas, 0, 0, width, height, 0, 0, width, height);
-      // wrappyCtx.drawImage(butterchurnCanvas, 0, 0, width, height, width, 0, width, height);
-      // wrappyCtx.drawImage(butterchurnCanvas, 0, 0, width, height, 0, height, width, height);
-      // wrappyCtx.drawImage(butterchurnCanvas, 0, 0, width, height, width, height, width, height);
-      wrappyCtx.save();
-      wrappyCtx.drawImage(butterchurnCanvas, 0, 0, width, height);
-      wrappyCtx.translate(0, height);
-      wrappyCtx.scale(1, -1);
-      wrappyCtx.translate(0, -height);
-      wrappyCtx.drawImage(butterchurnCanvas, 0, 0, width, height);
-      wrappyCtx.translate(width, 0);
-      wrappyCtx.scale(-1, 1);
-      wrappyCtx.translate(-width, 0);
-      wrappyCtx.drawImage(butterchurnCanvas, 0, 0, width, height);
-      wrappyCtx.translate(0, height);
-      wrappyCtx.scale(1, -1);
-      wrappyCtx.translate(0, -height);
-      wrappyCtx.drawImage(butterchurnCanvas, 0, 0, width, height);
-      wrappyCtx.restore();
+      if(wrapMode.mirror){
+        wrappyCtx.save();
+        wrappyCtx.drawImage(butterchurnCanvas, 0, 0, width, height);
+        wrappyCtx.translate(0, height);
+        wrappyCtx.scale(1, -1);
+        wrappyCtx.translate(0, -height);
+        wrappyCtx.drawImage(butterchurnCanvas, 0, 0, width, height);
+        wrappyCtx.translate(width, 0);
+        wrappyCtx.scale(-1, 1);
+        wrappyCtx.translate(-width, 0);
+        wrappyCtx.drawImage(butterchurnCanvas, 0, 0, width, height);
+        wrappyCtx.translate(0, height);
+        wrappyCtx.scale(1, -1);
+        wrappyCtx.translate(0, -height);
+        wrappyCtx.drawImage(butterchurnCanvas, 0, 0, width, height);
+        wrappyCtx.restore();
+      }else{
+        wrappyCtx.drawImage(butterchurnCanvas, 0, 0, width, height, 0, 0, width, height);
+        wrappyCtx.drawImage(butterchurnCanvas, 0, 0, width, height, width, 0, width, height);
+        wrappyCtx.drawImage(butterchurnCanvas, 0, 0, width, height, 0, height, width, height);
+        wrappyCtx.drawImage(butterchurnCanvas, 0, 0, width, height, width, height, width, height);
+      }
 
       animate_fns.forEach(fn => fn());
     }
