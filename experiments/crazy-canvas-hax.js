@@ -77,9 +77,9 @@ window.hax_go = wrapMode => {
     function animate() {
       rafID = requestAnimationFrame(animate);
       const { width, height } = butterchurnCanvas;
-      wrappyCanvas.width = width * 2;
-      wrappyCanvas.height = height * 2;
       if (wrapMode.mirror) {
+        wrappyCanvas.width = width * 2;
+        wrappyCanvas.height = height * 2;
         wrappyCtx.save();
         wrappyCtx.drawImage(butterchurnCanvas, 0, 0, width, height);
         wrappyCtx.translate(0, height);
@@ -96,6 +96,8 @@ window.hax_go = wrapMode => {
         wrappyCtx.drawImage(butterchurnCanvas, 0, 0, width, height);
         wrappyCtx.restore();
       } else if (wrapMode.tile) {
+        wrappyCanvas.width = width * 2;
+        wrappyCanvas.height = height * 2;
         for (var xi = 0; xi < 2; xi++) {
           for (var xi = 0; xi < 2; xi++) {
             wrappyCtx.drawImage(
@@ -111,6 +113,10 @@ window.hax_go = wrapMode => {
             );
           }
         }
+      } else {
+        wrappyCanvas.width = width;
+        wrappyCanvas.height = height;
+        wrappyCtx.drawImage(butterchurnCanvas, 0, 0, width, height);
       }
 
       animate_fns.forEach(fn => fn());
