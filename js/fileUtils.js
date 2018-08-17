@@ -23,7 +23,7 @@ async function sourceToStream(source) {
   };
 }
 
-export async function genMediaTags(file) {
+export async function genMediaTags(file, observer) {
   invariant(
     file != null,
     "Attempted to get the tags of media file without passing a file"
@@ -32,6 +32,7 @@ export async function genMediaTags(file) {
   if (typeof file === "string" && !/^[a-z]+:\/\//i.test(file)) {
     file = `${location.protocol}//${location.host}${location.pathname}${file}`;
   }
+
   return require.ensure(
     ["music-metadata"],
     async require => {
@@ -40,7 +41,8 @@ export async function genMediaTags(file) {
       return mm.parseStream(stream.stream, stream.type, {
         duration: true,
         fileSize: stream.size,
-        skipPostHeaders: true // avoid unnecessary data to be read
+        skipPostHeaders: true, // avoid unnecessary data to be read
+        observer
       });
     },
     err => {
@@ -52,6 +54,7 @@ export async function genMediaTags(file) {
   );
 }
 
+/*
 export async function genMediaDuration(url) {
   invariant(
     typeof url === "string",
@@ -74,7 +77,7 @@ export async function genMediaDuration(url) {
     });
     audio.src = url;
   });
-}
+}*/
 
 export async function genArrayBufferFromFileReference(fileReference) {
   invariant(

@@ -242,13 +242,59 @@ function queueFetchingMediaTags(id) {
   };
 }
 
+let ts0;
+
 export function fetchMediaTags(file, id) {
+
+  if (!ts0) {
+    ts0 = Date.now();
+    console.log(ts0 + ' loading music-metadata');
+  }
+
   return async dispatch => {
     dispatch({ type: MEDIA_TAG_REQUEST_INITIALIZED, id });
 
     let metadata;
     try {
-      metadata = await genMediaTags(file);
+      metadata = await genMediaTags(file, event => {
+        console.log(Date.now()- ts0 + ` ${event.tag.type}.${event.tag.id}`);
+
+        switch(event.tag.type) {
+          case 'common':
+            switch(event.tag.id) {
+              case 'artist':
+              case 'title':
+                dispatch({
+                  type: SET_MEDIA_TAGS,
+                  artist: event.metadata.common.artist,
+                  title: event.metadata.common.title,
+                  albumArtUrl: null, id }); // ToDo albumArtUrl
+                break;
+            }
+            break;
+
+          case 'format':
+            switch(event.tag.id) {
+              case 'duration':
+                dispatch({type: SET_MEDIA_DURATION, duration: event.metadata.format.duration, id });
+
+              case 'bitrate':
+              case 'sampleRate':
+              case 'numberOfChannels':
+                /*
+                dispatch({
+                  type: SET_MEDIA,
+                  kbps: event.metadata.format.bitrate ? Math.round(event.metadata.format.bitrate / 1000).toString() : '',
+                  khz: event.metadata.format.sampleRate ? Math.round(event.metadata.format.sampleRate / 1000).toString() : '',
+                  channels: event.metadata.format.numberOfChannels,
+                  length: event.metadata.format.duration,
+                  id
+                });*/
+                break;
+            }
+            break;
+        }
+      });
       // There's more data here, but we don't have a use for it yet:
       const { artist, title, picture } = metadata.common;
       let albumArtUrl = null;
@@ -257,9 +303,9 @@ export function fetchMediaTags(file, id) {
         const blob = new Blob([byteArray], { type: picture[0].format });
         albumArtUrl = URL.createObjectURL(blob);
       }
-      dispatch({ type: SET_MEDIA_TAGS, artist, title, albumArtUrl, id });
+      // dispatch({ type: SET_MEDIA_TAGS, artist, title, albumArtUrl, id });
     } catch (e) {
-      dispatch({ type: MEDIA_TAG_REQUEST_FAILED, id });
+      // dispatch({ type: MEDIA_TAG_REQUEST_FAILED, id });
       return;
     }
 
