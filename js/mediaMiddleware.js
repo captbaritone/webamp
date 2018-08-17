@@ -6,7 +6,6 @@ import {
   SEEK_TO_PERCENT_COMPLETE,
   SET_BAND_VALUE,
   SET_BALANCE,
-  SET_MEDIA,
   SET_VOLUME,
   START_WORKING,
   STOP,
@@ -19,7 +18,6 @@ import {
   CHANNEL_COUNT_CHANGED
 } from "./actionTypes";
 import { next as nextTrack } from "./actionCreators";
-import { getCurrentTrackId } from "./selectors";
 
 export default media => store => {
   const {
@@ -55,16 +53,18 @@ export default media => store => {
     store.dispatch({ type: STOP_WORKING });
   });
 
+  // ToDo: maybe as an alternative if music-metadata did managed to read all
+  /*
   media.on("fileLoaded", () => {
     store.dispatch({
       type: SET_MEDIA,
-      kbps: "128",
+      //kbps: "128",
       khz: Math.round(media.sampleRate() / 1000).toString(),
       channels: media.channels(),
       length: media.duration(),
       id: getCurrentTrackId(store.getState())
     });
-  });
+  }); */
 
   media.on("channelupdate", () => {
     store.dispatch({

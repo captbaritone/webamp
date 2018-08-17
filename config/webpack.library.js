@@ -35,6 +35,14 @@ module.exports = {
             }
           }
         ]
+      },
+      {
+        test: /\.d\.ts$/,
+        use: [
+          {
+            loader: "ignore-loader"
+          }
+        ]
       }
     ],
     noParse: [/jszip\.js$/]
@@ -45,6 +53,7 @@ module.exports = {
         NODE_ENV: JSON.stringify("production")
       }
     }),
+    new webpack.IgnorePlugin(/fs/),
     new UglifyJsPlugin({
       include: /\.min\.js$/,
       parallel: true,
