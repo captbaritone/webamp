@@ -77,7 +77,6 @@
     "html-webpack-inline-svg-plugin": "^1.2.4",
     "html-webpack-plugin": "^3.0.6",
     "http-server": "^0.11.1",
-    "ignore-loader": "^0.1.2",
     "invariant": "^2.2.3",
     "jest": "^23.0.0",
     "jest-image-snapshot": "^2.4.1",
@@ -121,5 +120,8 @@
     "projects": [
       "config/jest.*.js"
     ]
+  },
+  "dependencies": {
+    "ignore-loader": "^0.1.2"
   }
 }
