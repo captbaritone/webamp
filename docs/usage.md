@@ -184,15 +184,34 @@ webamp.setTracksToPlay([
 
 ### `renderWhenReady(domNode)`
 
-Webamp will wait until it has fetch the skin and fully parsed it, and then render itself into the given container. A promise is returned which will resolve after the render is complete.
+Webamp will wait until it has fetch the skin and fully parsed it, and then render itself into a new DOM node at the end of the `<body>` tag.
 
-**Note:** as of version 1.1.0, Webamp will attempt to center itself within this container.
+If a `domNode` is passed, Webamp will place itself in the center of that DOM node.
+
+A promise is returned which will resolve after the render is complete.
 
 ```JavaScript
 const container = document.getElementById('winamp-container');
 webamp.renderWhenReady(container).then(() => {
     console.log('rendered webamp!');
 });
+```
+
+### `onTrackDidChange(callback)`
+
+A callback which will be called when a new track starts loading. This can happen on startup when the first track sarts buffering, or when a subsequent track starts playig. The callback will be called with an object (`{url: 'https://example.com/track.mp3'}`) containing the URL of the track.
+
+Returns an "unsubscribe" function.
+
+**Note:** If the user drags in a track, the URL may be an [ObjectURL](https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL)
+
+```JavaScript
+const unsubscribe = webamp.onTrackDidChange((track => {
+    console.log("New track playing:", track.url);
+});
+
+// If at some point in the future you want to stop listening to these events:
+unsubscribe();
 ```
 
 ### `onClose(callback)`
@@ -228,7 +247,3 @@ unsubscribe();
 - Webamp HTML contains somewhat generic IDs and class names. If you have CSS on your page that is not namespaced, it may accidently be applied to Webamp. If this happens please reach out. I may be able to resolve it.
 - Skin and audio URLs are subject to [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS). Please ensure they are either served from the same domain, or that the other domain is served with the correct headers.
 - Please reach out to me. I'd love to help you set it up, and understand how it's being used. I plan to expand this API as I learn how people want to use it.
-
-```
-
-```

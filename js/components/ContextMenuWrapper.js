@@ -12,19 +12,31 @@ export default class ContextMenuWraper extends React.Component {
     };
     this._handleRightClick = this._handleRightClick.bind(this);
     this._handleGlobalClick = this._handleGlobalClick.bind(this);
+    this._handleGlobalRightClick = this._handleGlobalRightClick.bind(this);
   }
 
   componentWillUnmount() {
-    document.removeEventListener("click", this._handleGlobalClick);
+    this._closeMenu();
   }
 
-  _handleGlobalClick() {
-    this.setState({
-      selected: false,
-      offsetTop: null,
-      offsetLeft: null
-    });
+  _closeMenu() {
+    this.setState({ selected: false, offsetTop: null, offsetLeft: null });
     document.removeEventListener("click", this._handleGlobalClick);
+    document.body.removeEventListener(
+      "contextmenu",
+      this._handleGlobalRightClick
+    );
+  }
+
+  _handleGlobalRightClick() {
+    this._closeMenu();
+  }
+
+  _handleGlobalClick(e) {
+    if (e.button === 2) {
+      return;
+    }
+    this._closeMenu();
   }
 
   _handleRightClick(e) {
@@ -39,6 +51,7 @@ export default class ContextMenuWraper extends React.Component {
     // Even if you right click multiple times before closeing,
     // we should only end up with one global listener.
     document.addEventListener("click", this._handleGlobalClick);
+    document.body.addEventListener("contextmenu", this._handleGlobalRightClick);
     e.preventDefault();
     e.stopPropagation();
   }

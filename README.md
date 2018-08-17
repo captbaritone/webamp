@@ -4,7 +4,7 @@
 
 A reimplementation of Winamp 2.9 in HTML5 and JavaScript.
 
-**As seen on [TechCrunch], [Motherboard], [Gizmodo], Hacker News ([1], [2], [3]), and [elsewhere](./docs/press.md).**
+**As seen on [TechCrunch], [Motherboard], [Gizmodo], Hacker News ([1], [2], [3], [4]), and [elsewhere](./docs/press.md).**
 
 ## [Give it a try!](https://webamp.org)
 
@@ -123,4 +123,5 @@ this code, please let me know. I'd love to see it.
 [1]: https://news.ycombinator.com/item?id=8565665
 [2]: https://news.ycombinator.com/item?id=15314629
 [3]: https://news.ycombinator.com/item?id=16333550
+[4]: https://news.ycombinator.com/item?id=17583997
 [winamp community update pack]: https://getwacup.com/

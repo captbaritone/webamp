@@ -545,7 +545,7 @@ export default {
     {
       name: "MAIN_PLAYLIST_BUTTON_DEPRESSED_SELECTED",
       x: 69,
-      y: 61,
+      y: 73,
       width: 23,
       height: 12
     }

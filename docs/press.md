@@ -21,6 +21,7 @@
 ## News Aggregators
 
 - [/r/InternetIsBeautiful](https://www.reddit.com/r/InternetIsBeautiful/comments/2lh3ob/winamp_2_preserved_in_html5/)
+- [Hacker News](https://news.ycombinator.com/item?id=17583997) (Jul. 2018)
 - [Hacker News](https://news.ycombinator.com/item?id=16333550) (Feb. 2018)
 - [Hacker News](https://news.ycombinator.com/item?id=15314629) (Sept. 2017)
 - [Hacker News](https://news.ycombinator.com/item?id=8565665) (Nov. 2014)
@@ -145,6 +146,7 @@
 - http://www.instalki.pl/aktualnosci/software/30055-winamp-przegladarka.html
 - https://mobirank.pl/2018/02/10/emulator-winamp-przeniesie-cie-do-1999-roku/
 - https://www.dobreprogramy.pl/Kultowy-odtwarzacz-muzyki-Winamp-powrocil-w-przegladarce-internetowej,News,86017.html
+- https://dailyweb.pl/pamietacie-jeszcze-winampa-poznajcie-jego-webowa-reinkarnacje/
 
 ### French
 
@@ -230,3 +232,7 @@
 ### Indonsian
 
 - https://www.trentech.id/masih-ingat-winamp-kamu-bisa-nostalgia-dengan-winamp-di-situs-ini/
+
+### Persian
+
+- http://www.1pezeshk.com/archives/2018/07/webamp.html

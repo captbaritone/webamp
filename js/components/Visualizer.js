@@ -3,10 +3,11 @@ import { connect } from "react-redux";
 
 import { toggleVisualizerStyle } from "../actionCreators";
 import { getWindowShade, getVisualizerStyle } from "../selectors";
-import { VISUALIZERS } from "../constants";
+import { VISUALIZERS, MEDIA_STATUS } from "../constants";
 
 const PIXEL_DENSITY = 2;
-const BAR_WIDTH = 6;
+const NUM_BARS = 20;
+const BAR_PEAK_DROP_RATE = 0.01;
 const GRADIENT_COLOR_COUNT = 16;
 const PEAK_COLOR_INDEX = 23;
 
@@ -23,6 +24,8 @@ function sliceAverage(dataArray, sliceWidth, sliceNumber) {
 
 class Visualizer extends React.Component {
   componentDidMount() {
+    this.barPeaks = new Array(NUM_BARS).fill(0);
+    this.barPeakFrames = new Array(NUM_BARS).fill(0);
     this.canvasCtx = this.canvas.getContext("2d");
     this.canvasCtx.imageSmoothingEnabled = false;
 
@@ -30,7 +33,7 @@ class Visualizer extends React.Component {
 
     // Kick off the animation loop
     const loop = () => {
-      if (this.props.status === "PLAYING") {
+      if (this.props.status === MEDIA_STATUS.PLAYING) {
         if (this.props.dummyVizData) {
           Object.keys(this.props.dummyVizData).forEach(i => {
             this._printBar(i, this.props.dummyVizData[i]);
@@ -72,6 +75,38 @@ class Visualizer extends React.Component {
     return this.props.width * PIXEL_DENSITY;
   }
 
+  _barWidth() {
+    const barWidth = Math.floor(this._width() / NUM_BARS);
+    if (barWidth % 2 === 0) {
+      return barWidth;
+    }
+
+    return barWidth - 1;
+  }
+
+  _generateOctaveBuckets() {
+    const octaveBuckets = new Array(NUM_BARS).fill(0);
+    const minHz = 200;
+    const maxHz = 22050;
+    const octaveStep = Math.pow(maxHz / minHz, 1 / NUM_BARS);
+
+    octaveBuckets[0] = 0;
+    octaveBuckets[1] = minHz;
+    for (let i = 2; i < NUM_BARS - 1; i++) {
+      octaveBuckets[i] = octaveBuckets[i - 1] * octaveStep;
+    }
+    octaveBuckets[NUM_BARS - 1] = maxHz;
+
+    for (let i = 0; i < NUM_BARS; i++) {
+      const octaveIdx = Math.floor(
+        (octaveBuckets[i] / maxHz) * this.bufferLength
+      );
+      octaveBuckets[i] = octaveIdx;
+    }
+
+    return octaveBuckets;
+  }
+
   setStyle() {
     if (!this.props.colors) {
       return;
@@ -80,15 +115,17 @@ class Visualizer extends React.Component {
     // update.
     this.preRenderBg();
     this.preRenderBar();
+    this.props.analyser.fftSize = 2048;
     if (this.props.style === VISUALIZERS.OSCILLOSCOPE) {
-      this.props.analyser.fftSize = 1024;
       this.bufferLength = this.props.analyser.fftSize;
       this.dataArray = new Uint8Array(this.bufferLength);
     } else if (this.props.style === VISUALIZERS.BAR) {
-      this.props.analyser.fftSize = 64; // Must be a power of two
-      // Number of bins/bars we get
       this.bufferLength = this.props.analyser.frequencyBinCount;
       this.dataArray = new Uint8Array(this.bufferLength);
+
+      if (!this.octaveBuckets) {
+        this.octaveBuckets = this._generateOctaveBuckets();
+      }
     }
   }
 
@@ -106,7 +143,7 @@ class Visualizer extends React.Component {
     const bgCanvasCtx = this.bgCanvas.getContext("2d");
     bgCanvasCtx.fillStyle = this.props.colors[0];
     bgCanvasCtx.fillRect(0, 0, this._width(), this._height());
-    if (this.props.spekles) {
+    if (!this.props.windowShade) {
       bgCanvasCtx.fillStyle = this.props.colors[1];
       for (let x = 0; x < this._width(); x += 4) {
         for (let y = PIXEL_DENSITY; y < this._height(); y += 4) {
@@ -127,8 +164,9 @@ class Visualizer extends React.Component {
      */
 
     // Off-screen canvas for pre-rendering a single bar gradient
+    const barWidth = this._barWidth();
     this.barCanvas = document.createElement("canvas");
-    this.barCanvas.width = BAR_WIDTH;
+    this.barCanvas.width = barWidth;
     this.barCanvas.height = this._height();
 
     const offset = 2; // The first two colors are for the background;
@@ -151,7 +189,7 @@ class Visualizer extends React.Component {
       const colorIndex = GRADIENT_COLOR_COUNT - 1 - Math.floor(i * multiplier);
       barCanvasCtx.fillStyle = gradientColors[colorIndex];
       const y = this._height() - i * PIXEL_DENSITY;
-      barCanvasCtx.fillRect(0, y, BAR_WIDTH, PIXEL_DENSITY);
+      barCanvasCtx.fillRect(0, y, barWidth, PIXEL_DENSITY);
     }
   }
 
@@ -188,8 +226,8 @@ class Visualizer extends React.Component {
     // Iterate over the width of the canvas in "real" pixels.
     for (let j = 0; j <= this._renderWidth(); j++) {
       const amplitude = sliceAverage(this.dataArray, sliceWidth, j);
-      const percentAmplitude = (amplitude - 128) / 128; // dataArray gives us bytes
-      const y = percentAmplitude * h + h / 2; // center wave at half height
+      const percentAmplitude = amplitude / 255; // dataArray gives us bytes
+      const y = (1 - percentAmplitude) * h; // flip y
       const x = j * PIXEL_DENSITY;
 
       // Canvas coordinates are in the middle of the pixel by default.
@@ -204,31 +242,58 @@ class Visualizer extends React.Component {
     this.canvasCtx.stroke();
   }
 
-  _printBar(x, height) {
+  _printBar(x, height, peakHeight) {
     height = Math.ceil(height) * PIXEL_DENSITY;
-    if (height > 0) {
+    peakHeight = Math.ceil(peakHeight) * PIXEL_DENSITY;
+    if (height > 0 || peakHeight > 0) {
       const y = this._height() - height;
       const ctx = this.canvasCtx;
       // Draw the gradient
-      const b = BAR_WIDTH;
-      ctx.drawImage(this.barCanvas, 0, y, b, height, x, y, b, height);
+      const b = this._barWidth();
+      if (height > 0) {
+        ctx.drawImage(this.barCanvas, 0, y, b, height, x, y, b, height);
+      }
 
       // Draw the gray peak line
-      // TODO: Rather than sitting on top of the bar, these
-      // are expected to be behind the top pixel, and fall more slowly.
-      // Currently these overwrite the top pixel.
-      ctx.fillStyle = this.props.colors[PEAK_COLOR_INDEX];
-      ctx.fillRect(x, y, BAR_WIDTH, PIXEL_DENSITY);
+      if (!this.props.windowShade) {
+        const peakY = this._height() - peakHeight;
+        ctx.fillStyle = this.props.colors[PEAK_COLOR_INDEX];
+        ctx.fillRect(x, peakY, b, PIXEL_DENSITY);
+      }
     }
   }
 
   _paintBarFrame() {
     this.props.analyser.getByteFrequencyData(this.dataArray);
-    // We are printing bars off the right of the canvas :(
-    const xOffset = BAR_WIDTH + PIXEL_DENSITY; // Bar width, plus a pixel of spacing to the right.
     const heightMultiplier = this._renderHeight() / 256;
-    for (let j = 0; j < this.bufferLength; j++) {
-      this._printBar(j * xOffset, this.dataArray[j] * heightMultiplier);
+    const barWidth = this._barWidth();
+    const xOffset = barWidth + PIXEL_DENSITY; // Bar width, plus a pixel of spacing to the right.
+    for (let j = 0; j < NUM_BARS - 1; j++) {
+      const start = this.octaveBuckets[j];
+      const end = this.octaveBuckets[j + 1];
+      let amplitude = 0;
+      for (let k = start; k < end; k++) {
+        amplitude += this.dataArray[k];
+      }
+      amplitude /= end - start;
+
+      // The drop rate should probably be normalized to the rendering FPS, for now assume 60 FPS
+      let barPeak =
+        this.barPeaks[j] -
+        BAR_PEAK_DROP_RATE * Math.pow(this.barPeakFrames[j], 2);
+      if (barPeak < amplitude) {
+        barPeak = amplitude;
+        this.barPeakFrames[j] = 0;
+      } else {
+        this.barPeakFrames[j] += 1;
+      }
+      this.barPeaks[j] = barPeak;
+
+      this._printBar(
+        j * xOffset,
+        amplitude * heightMultiplier,
+        barPeak * heightMultiplier
+      );
     }
   }
 
@@ -253,7 +318,7 @@ const mapStateToProps = state => ({
   width: getWindowShade(state, "main") ? 38 : 76,
   height: getWindowShade(state, "main") ? 5 : 16,
   status: state.media.status,
-  spekles: !getWindowShade(state, "main"),
+  windowShade: getWindowShade(state, "main"),
   dummyVizData: state.display.dummyVizData
 });
 

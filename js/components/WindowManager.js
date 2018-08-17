@@ -69,8 +69,8 @@ class WindowManager extends React.Component {
       const boxWidth = bounding.right - bounding.left;
 
       const move = {
-        x: offsetLeft + (width - boxWidth) / 2,
-        y: offsetTop + (height - boxHeight) / 2
+        x: Math.ceil(offsetLeft + (width - boxWidth) / 2),
+        y: Math.ceil(offsetTop + (height - boxHeight) / 2)
       };
 
       const newPositions = this.props.windowsInfo.reduce(
@@ -183,7 +183,9 @@ class WindowManager extends React.Component {
 
   render() {
     const style = {
-      position: "absolute"
+      position: "absolute",
+      top: 0,
+      left: 0
     };
 
     const parentStyle = {
@@ -198,7 +200,7 @@ class WindowManager extends React.Component {
         {this.props.windowsInfo.map(w => (
           <div
             onMouseDown={e => this.handleMouseDown(w.key, e)}
-            style={{ ...style, left: w.x, top: w.y }}
+            style={{ ...style, transform: `translate(${w.x}px, ${w.y}px)` }}
             key={w.key}
           >
             {this.props.windows[w.key]}

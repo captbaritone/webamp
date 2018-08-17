@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import classnames from "classnames";
 import { getTimeObj } from "../utils";
 import { TOGGLE_TIME_MODE } from "../actionTypes";
+import { TIME_MODE, MEDIA_STATUS } from "../constants";
 import Character from "./Character";
 
 import "../../css/mini-time.css";
@@ -25,21 +26,22 @@ const MiniTime = props => {
   let seconds = null;
   // TODO: Clean this up: If stopped, just render the background, rather than
   // rendering spaces twice.
-  if (props.status !== "STOPPED") {
+  if (props.status !== MEDIA_STATUS.STOPPED) {
     seconds =
-      props.timeMode === "ELAPSED"
+      props.timeMode === TIME_MODE.ELAPSED
         ? props.timeElapsed
         : props.length - props.timeElapsed;
   }
 
   const timeObj = getTimeObj(seconds);
   const showMinus =
-    props.timeMode === "REMAINING" && props.status !== "STOPPED";
+    props.timeMode === TIME_MODE.REMAINING &&
+    props.status !== MEDIA_STATUS.STOPPED;
   return (
     <div
       onClick={props.toggle}
       className={classnames("mini-time", "countdown", {
-        blinking: props.status === "PAUSED"
+        blinking: props.status === MEDIA_STATUS.PAUSED
       })}
     >
       <Background />
@@ -53,6 +55,7 @@ const MiniTime = props => {
 };
 
 const mapDispatchToProps = {
+  // TODO: move to actionCreators
   toggle: () => ({ type: TOGGLE_TIME_MODE })
 };
 

@@ -6,7 +6,7 @@ import getStore from "./store";
 import App from "./components/App";
 import Hotkeys from "./hotkeys";
 import Media from "./media";
-import { getTrackCount } from "./selectors";
+import { getTrackCount, getTracks } from "./selectors";
 import {
   setSkinFromUrl,
   loadMediaFiles,
@@ -26,7 +26,8 @@ import {
   UPDATE_WINDOW_POSITIONS,
   LOADED,
   REGISTER_VISUALIZER,
-  SET_Z_INDEX
+  SET_Z_INDEX,
+  SET_MEDIA
 } from "./actionTypes";
 import Emitter from "./emitter";
 
@@ -178,6 +179,17 @@ class Winamp {
 
   onClose(cb) {
     return this._actionEmitter.on(CLOSE_WINAMP, cb);
+  }
+
+  onTrackDidChange(cb) {
+    return this._actionEmitter.on(SET_MEDIA, action => {
+      const tracks = getTracks(this.store.getState());
+      const track = tracks[action.id];
+      if (track == null) {
+        return;
+      }
+      cb({ url: track.url });
+    });
   }
 
   onMinimize(cb) {
