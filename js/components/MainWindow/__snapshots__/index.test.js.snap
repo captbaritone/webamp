@@ -139,7 +139,9 @@ exports[`MainWindow renders to snapshot 1`] = `
       <div
         style={
           Object {
-            "marginLeft": "0px",
+            "transform": "translateX(0px)",
+            "whiteSpace": "nowrap",
+            "willChange": "transform",
           }
         }
       >
