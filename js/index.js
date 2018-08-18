@@ -31,7 +31,6 @@ import {
   SET_EQ_AUTO,
   SET_DUMMY_VIZ_DATA
 } from "./actionTypes";
-import "../experiments/crazy-canvas-hax.js";
 
 import { loadFilesFromReferences } from "./actionCreators";
 
@@ -188,8 +187,6 @@ Raven.context(async () => {
     }
 
     document.getElementById("butterchurn-share").style.display = "flex";
-
-    startVisOverlay({ mirror: true, stretch: true });
   }
 
   const initialSkin = !skinUrl ? null : { url: skinUrl };

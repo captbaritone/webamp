@@ -1,40 +1,27 @@
-window.startVisOverlay = wrapMode => {
-  if (window.stopVisOverlay) window.stopVisOverlay();
 
-  function waitFor(conditionFn, thenFn, ms) {
-    setTimeout(() => {
-      if (conditionFn()) {
-        thenFn();
-      } else {
-        waitFor(conditionFn, thenFn, ms);
-      }
-    }, ms);
-  }
+function getOffset(element, fromElement) {
+  var el = element,
+    offsetLeft = 0,
+    offsetTop = 0;
 
-  waitFor(() => document.querySelector(".gen-window canvas"), enable, 10);
+  do {
+    offsetLeft += el.offsetLeft;
+    offsetTop += el.offsetTop;
 
-  function getOffset(element, fromElement) {
-    var el = element,
-      offsetLeft = 0,
-      offsetTop = 0;
+    el = el.offsetParent;
+  } while (el && el !== fromElement);
 
-    do {
-      offsetLeft += el.offsetLeft;
-      offsetTop += el.offsetTop;
+  return { offsetLeft, offsetTop };
+}
 
-      el = el.offsetParent;
-    } while (el && el !== fromElement);
+export default class VisualizerOverlay {
+  constructor(visualizerCanvas, windowElements) {
+    this.visualizerCanvas = visualizerCanvas;
 
-    return { offsetLeft, offsetTop };
-  }
+    this.wrappyCanvas = document.createElement("canvas");
+    this.wrappyCtx = this.wrappyCanvas.getContext("2d");
 
-  function enable() {
-    var butterchurnCanvas = document.querySelector(".gen-window canvas");
-    var wrappyCanvas = document.createElement("canvas");
-    var wrappyCtx = wrappyCanvas.getContext("2d");
-    var windows = document.querySelectorAll(".window:not(.gen-window)");
-
-    var animateFns = Array.from(windows).map(windowEl => {
+    this.animateFns = Array.from(windowElements).map(windowEl => {
       var canvas = document.createElement("canvas");
       var ctx = canvas.getContext("2d");
       canvas.style.position = "absolute";
@@ -44,7 +31,7 @@ window.startVisOverlay = wrapMode => {
       canvas.style.mixBlendMode = "color-dodge";
       canvas.className = "hacky-canvas";
       windowEl.appendChild(canvas);
-      return () => {
+      return (wrapMode) => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         var scale = windowEl.classList.contains("doubled") ? 2 : 1;
         scale *= window.devicePixelRatio || 1;
@@ -71,10 +58,10 @@ window.startVisOverlay = wrapMode => {
             ctx.scale(scale, scale);
             ctx.translate(offsetLeft, offsetTop);
             if (wrapMode.stretch) {
-              ctx.drawImage(wrappyCanvas, 0, 0, width, height);
+              ctx.drawImage(this.wrappyCanvas, 0, 0, width, height);
             } else {
               ctx.drawImage(
-                wrappyCanvas,
+                this.wrappyCanvas,
                 0,
                 0,
                 width,
@@ -89,67 +76,58 @@ window.startVisOverlay = wrapMode => {
           });
       };
     });
-
-    var rafID;
-    function animate() {
-      rafID = requestAnimationFrame(animate);
-      if (!document.body.contains(butterchurnCanvas)) {
-        startVisOverlay(wrapMode);
-        return;
-      }
-      const { width, height } = butterchurnCanvas;
-      if (wrapMode.mirror) {
-        wrappyCanvas.width = width * 2;
-        wrappyCanvas.height = height * 2;
-        wrappyCtx.save();
-        wrappyCtx.drawImage(butterchurnCanvas, 0, 0, width, height);
-        wrappyCtx.translate(0, height);
-        wrappyCtx.scale(1, -1);
-        wrappyCtx.translate(0, -height);
-        wrappyCtx.drawImage(butterchurnCanvas, 0, 0, width, height);
-        wrappyCtx.translate(width, 0);
-        wrappyCtx.scale(-1, 1);
-        wrappyCtx.translate(-width, 0);
-        wrappyCtx.drawImage(butterchurnCanvas, 0, 0, width, height);
-        wrappyCtx.translate(0, height);
-        wrappyCtx.scale(1, -1);
-        wrappyCtx.translate(0, -height);
-        wrappyCtx.drawImage(butterchurnCanvas, 0, 0, width, height);
-        wrappyCtx.restore();
-      } else if (wrapMode.tile) {
-        wrappyCanvas.width = width * 2;
-        wrappyCanvas.height = height * 2;
-        for (var xi = 0; xi < 2; xi++) {
-          for (var xi = 0; xi < 2; xi++) {
-            wrappyCtx.drawImage(
-              butterchurnCanvas,
-              0,
-              0,
-              width,
-              height,
-              width * xi,
-              height * yi,
-              width,
-              height
-            );
-          }
-        }
-      } else {
-        wrappyCanvas.width = width;
-        wrappyCanvas.height = height;
-        wrappyCtx.drawImage(butterchurnCanvas, 0, 0, width, height);
-      }
-
-      animateFns.forEach(fn => fn());
-    }
-    window.stopVisOverlay = () => {
-      Array.from(document.querySelectorAll(".hacky-canvas")).forEach(el => {
-        el.remove();
-      });
-      cancelAnimationFrame(rafID);
-      rafID = null;
-    };
-    animate();
   }
-  window.stopVisOverlay = () => {};
+
+  render(wrapMode) {
+    const { visualizerCanvas, wrappyCanvas, wrappyCtx, animateFns } = this;
+    const { width, height } = visualizerCanvas;
+    if (wrapMode.mirror) {
+      wrappyCanvas.width = width * 2;
+      wrappyCanvas.height = height * 2;
+      wrappyCtx.save();
+      wrappyCtx.drawImage(visualizerCanvas, 0, 0, width, height);
+      wrappyCtx.translate(0, height);
+      wrappyCtx.scale(1, -1);
+      wrappyCtx.translate(0, -height);
+      wrappyCtx.drawImage(visualizerCanvas, 0, 0, width, height);
+      wrappyCtx.translate(width, 0);
+      wrappyCtx.scale(-1, 1);
+      wrappyCtx.translate(-width, 0);
+      wrappyCtx.drawImage(visualizerCanvas, 0, 0, width, height);
+      wrappyCtx.translate(0, height);
+      wrappyCtx.scale(1, -1);
+      wrappyCtx.translate(0, -height);
+      wrappyCtx.drawImage(visualizerCanvas, 0, 0, width, height);
+      wrappyCtx.restore();
+    } else if (wrapMode.tile) {
+      wrappyCanvas.width = width * 2;
+      wrappyCanvas.height = height * 2;
+      for (var xi = 0; xi < 2; xi++) {
+        for (var xi = 0; xi < 2; xi++) {
+          wrappyCtx.drawImage(
+            visualizerCanvas,
+            0,
+            0,
+            width,
+            height,
+            width * xi,
+            height * yi,
+            width,
+            height
+          );
+        }
+      }
+    } else {
+      wrappyCanvas.width = width;
+      wrappyCanvas.height = height;
+      wrappyCtx.drawImage(visualizerCanvas, 0, 0, width, height);
+    }
+
+    animateFns.forEach(fn => fn(wrapMode));
+  }
+  cleanUp() {
+    Array.from(document.querySelectorAll(".hacky-canvas")).forEach(el => {
+      el.remove();
+    });
+  }
 };

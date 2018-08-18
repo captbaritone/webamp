@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { getCurrentTrackDisplayName } from "../../selectors";
 import DropTarget from "../DropTarget";
 import PresetOverlay from "./PresetOverlay";
+import VisualizerOverlay from "../../../experiments/crazy-canvas-hax.js";
 
 const USER_PRESET_TRANSITION_SECONDS = 5.7;
 const PRESET_TRANSITION_SECONDS = 2.7;
@@ -43,10 +44,15 @@ class Milkdrop extends React.Component {
       this.selectPreset(this.props.presets.getCurrent(), 0);
     }
 
+    var visualizerCanvas = document.querySelector(".gen-window canvas");
+    var windowElements = document.querySelectorAll(".window:not(.gen-window)");
+    this.visualizerOverlay = new VisualizerOverlay(visualizerCanvas, windowElements);
+
     // Kick off the animation loop
     const loop = () => {
       if (this.props.playing && this.props.isEnabledVisualizer) {
         this.visualizer.render();
+        this.visualizerOverlay.render({ mirror: true, stretch: true });
       }
       this._animationFrameRequest = window.requestAnimationFrame(loop);
     };
@@ -63,6 +69,7 @@ class Milkdrop extends React.Component {
     if (this._unsubscribeFocusedKeyDown) {
       this._unsubscribeFocusedKeyDown();
     }
+    this.visualizerOverlay.cleanUp();
   }
 
   componentDidUpdate(prevProps) {
