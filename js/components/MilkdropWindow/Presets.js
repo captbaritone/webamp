@@ -63,7 +63,7 @@ export default class Presets {
   addPresets(presets) {
     const startIdx = this._keys.length;
     this._keys = this._keys.concat(Object.keys(presets));
-    const endIndx = this._keys.length - 1;
+    const endIndx = this._keys.length;
 
     this._presets = Object.assign(this._presets, presets);
 
@@ -102,7 +102,11 @@ export default class Presets {
         ["milkdrop-preset-converter-aws"],
         async require => {
           const { convertPreset } = require("milkdrop-preset-converter-aws");
-          resolve(convertPreset(file));
+          try {
+            resolve(convertPreset(file));
+          } catch (e) {
+            reject(e);
+          }
         },
         reject,
         "milkdrop-preset-converter"
@@ -122,9 +126,13 @@ export default class Presets {
       }
     }
     if (preset && preset.file) {
-      const fileContents = await readFileAsText(preset.file);
-      const convertedPreset = await this._convertPreset(fileContents);
-      this._presets[this._keys[idx]] = convertedPreset;
+      try {
+        const fileContents = await readFileAsText(preset.file);
+        const convertedPreset = await this._convertPreset(fileContents);
+        this._presets[this._keys[idx]] = convertedPreset;
+      } catch (e) {
+        alert(`Unable to convert MilkDrop preset ${this._keys[idx]}`);
+      }
     }
     this._currentIndex = idx;
     return this.getCurrent();
