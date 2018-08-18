@@ -192,13 +192,13 @@ class WindowManager extends React.Component {
       .filter(w => this.props.windows[w.key]);
 
     return windows.map(w => (
-          <div
+      <div
         key={w.key}
-            onMouseDown={e => this.handleMouseDown(w.key, e)}
-            style={{ ...style, transform: `translate(${w.x}px, ${w.y}px)` }}
-          >
-            {this.props.windows[w.key]}
-          </div>
+        onMouseDown={e => this.handleMouseDown(w.key, e)}
+        style={{ ...style, transform: `translate(${w.x}px, ${w.y}px)` }}
+      >
+        {this.props.windows[w.key]}
+      </div>
     ));
   }
 }
