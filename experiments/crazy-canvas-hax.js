@@ -1,4 +1,3 @@
-
 function getOffset(element, fromElement) {
   var el = element,
     offsetLeft = 0,
@@ -31,7 +30,7 @@ export default class VisualizerOverlay {
       canvas.style.mixBlendMode = "color-dodge";
       canvas.className = "hacky-canvas";
       windowEl.appendChild(canvas);
-      return (wrapMode) => {
+      return wrapMode => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         var scale = windowEl.classList.contains("doubled") ? 2 : 1;
         scale *= window.devicePixelRatio || 1;
@@ -130,4 +129,4 @@ export default class VisualizerOverlay {
       el.remove();
     });
   }
-};
+}

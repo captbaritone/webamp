@@ -46,7 +46,10 @@ class Milkdrop extends React.Component {
 
     var visualizerCanvas = document.querySelector(".gen-window canvas");
     var windowElements = document.querySelectorAll(".window:not(.gen-window)");
-    this.visualizerOverlay = new VisualizerOverlay(visualizerCanvas, windowElements);
+    this.visualizerOverlay = new VisualizerOverlay(
+      visualizerCanvas,
+      windowElements
+    );
 
     // Kick off the animation loop
     const loop = () => {
