@@ -1,6 +1,6 @@
 import invariant from "invariant";
 
-export function genMediaTags(file) {
+export function genMediaTags(file, jsmediatags) {
   invariant(
     file != null,
     "Attempted to get the tags of media file without passing a file"
@@ -9,26 +9,22 @@ export function genMediaTags(file) {
   if (typeof file === "string" && !/^[a-z]+:\/\//i.test(file)) {
     file = `${location.protocol}//${location.host}${location.pathname}${file}`;
   }
-  return new Promise((resolve, reject) => {
-    require.ensure(
-      ["jsmediatags/dist/jsmediatags"],
-      require => {
-        const jsmediatags = require("jsmediatags/dist/jsmediatags");
-        try {
-          jsmediatags.read(file, { onSuccess: resolve, onError: reject });
-        } catch (e) {
-          // Possibly jsmediatags could not find a parser for this file?
-          // Nothing to do.
-          // Consider removing this after https://github.com/aadsm/jsmediatags/issues/83 is resolved.
-          reject(e);
-        }
-      },
-      () => {
-        // The dependency failed to load
-      },
-      "jsmediatags"
-    );
-  });
+  return new Promise(
+    (resolve, reject) => {
+      try {
+        jsmediatags.read(file, { onSuccess: resolve, onError: reject });
+      } catch (e) {
+        // Possibly jsmediatags could not find a parser for this file?
+        // Nothing to do.
+        // Consider removing this after https://github.com/aadsm/jsmediatags/issues/83 is resolved.
+        reject(e);
+      }
+    },
+    () => {
+      // The dependency failed to load
+    },
+    "jsmediatags"
+  );
 }
 
 export function genMediaDuration(url) {

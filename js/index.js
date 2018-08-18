@@ -12,7 +12,7 @@ import zaxon from "../skins/ZaxonRemake1-0.wsz";
 import green from "../skins/Green-Dimension-V2.wsz";
 import MilkdropWindow from "./components/MilkdropWindow";
 import screenshotInitialState from "./screenshotInitialState";
-import Webamp from "./webamp";
+import WebampLazy from "./webampLazy";
 import {
   STEP_MARQUEE,
   UPDATE_TIME_ELAPSED,
@@ -33,6 +33,38 @@ import {
   initialState,
   disableMarquee
 } from "./config";
+
+const requireJSZip = () => {
+  return new Promise((resolve, reject) => {
+    require.ensure(
+      ["jszip/dist/jszip"],
+      require => {
+        resolve(require("jszip/dist/jszip"));
+      },
+      e => {
+        console.error("Error loading JSZip", e);
+        reject(e);
+      },
+      "jszip"
+    );
+  });
+};
+
+const requireJSMediaTags = () => {
+  return new Promise((resolve, reject) => {
+    require.ensure(
+      ["jsmediatags/dist/jsmediatags"],
+      require => {
+        resolve(require("jsmediatags/dist/jsmediatags"));
+      },
+      e => {
+        console.error("Error loading jsmediatags", e);
+        reject(e);
+      },
+      "jsmediatags"
+    );
+  });
+};
 
 const NOISY_ACTION_TYPES = new Set([
   STEP_MARQUEE,
@@ -122,7 +154,7 @@ Raven.context(() => {
   if (screenshot) {
     document.getElementsByClassName("about")[0].style.visibility = "hidden";
   }
-  if (!Webamp.browserIsSupported()) {
+  if (!WebampLazy.browserIsSupported()) {
     document.getElementById("browser-compatibility").style.display = "block";
     document.getElementById("app").style.visibility = "hidden";
     return;
@@ -165,7 +197,7 @@ Raven.context(() => {
 
   const initialSkin = !skinUrl ? null : { url: skinUrl };
 
-  const webamp = new Webamp({
+  const webamp = new WebampLazy({
     initialSkin,
     initialTracks: screenshot ? null : initialTracks,
     availableSkins: [
@@ -191,6 +223,8 @@ Raven.context(() => {
       }
     ],
     enableHotkeys: true,
+    requireJSZip,
+    requireJSMediaTags,
     __extraWindows,
     __initialWindowLayout,
     __initialState: screenshot ? screenshotInitialState : initialState,
