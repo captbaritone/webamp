@@ -6,7 +6,8 @@ module.exports = {
   node: {
     // Consider suggesting jsmediatags use: https://github.com/feross/is-buffer
     // Cuts 22k
-    Buffer: false
+    Buffer: false,
+    fs: "empty"
   },
   module: {
     rules: [
@@ -58,7 +59,9 @@ module.exports = {
   ],
   entry: {
     bundle: "./js/webamp.js",
-    "bundle.min": "./js/webamp.js"
+    "bundle.min": "./js/webamp.js",
+    "lazy-bundle": "./js/webampLazy.js",
+    "lazy-bundle.min": "./js/webampLazy.js"
   },
   output: {
     path: path.resolve(__dirname, "../built"),

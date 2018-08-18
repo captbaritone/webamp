@@ -5,7 +5,9 @@
   "main": "built/webamp.bundle.js",
   "files": [
     "built/webamp.bundle.js",
-    "built/webamp.bundle.min.js"
+    "built/webamp.bundle.min.js",
+    "built/webamp-lazy.bundle.js",
+    "built/webamp-lazy.bundle.min.js"
   ],
   "scripts": {
     "lint": "eslint .",
