@@ -93,6 +93,10 @@ window.startVisOverlay = wrapMode => {
     var rafID;
     function animate() {
       rafID = requestAnimationFrame(animate);
+      if (!document.body.contains(butterchurnCanvas)) {
+        startVisOverlay(wrapMode);
+        return;
+      }
       const { width, height } = butterchurnCanvas;
       if (wrapMode.mirror) {
         wrappyCanvas.width = width * 2;
