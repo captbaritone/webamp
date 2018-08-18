@@ -11,6 +11,7 @@ module.exports = {
     // Consider suggesting jsmediatags use: https://github.com/feross/is-buffer
     // Cuts 22k
     Buffer: false,
+    // Fix errors thrown by emscripten libs for milkdrop preset conversion
     fs: "empty"
   },
   module: {

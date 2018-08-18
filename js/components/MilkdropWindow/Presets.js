@@ -9,7 +9,7 @@ function getLast(arr) {
   return arr[arr.length - 1];
 }
 
-async function readPresetFile(file) {
+async function readFileAsText(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = function(e) {
@@ -115,7 +115,7 @@ export default class Presets {
       }
     }
     if (preset && preset.file) {
-      const fileContents = await readPresetFile(preset.file);
+      const fileContents = await readFileAsText(preset.file);
       const convertedPreset = await this._presetConverter.convertPreset(
         fileContents
       );
