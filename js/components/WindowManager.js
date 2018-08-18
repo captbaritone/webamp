@@ -24,17 +24,11 @@ const abuts = (a, b) => {
 };
 
 class WindowManager extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleMouseDown = this.handleMouseDown.bind(this);
-    this.centerWindows = this.centerWindows.bind(this);
-  }
-
   componentDidMount() {
     this.centerWindows();
   }
 
-  centerWindows() {
+  centerWindows = () => {
     const { container } = this.props;
 
     const offsetLeft = container.offsetLeft;
@@ -80,7 +74,7 @@ class WindowManager extends React.Component {
 
       this.props.updateWindowPositions(newPositions);
     }
-  }
+  };
 
   movingAndStationaryNodes(key) {
     const windows = this.props.windowsInfo.filter(
@@ -102,7 +96,7 @@ class WindowManager extends React.Component {
     return [moving, stationary];
   }
 
-  handleMouseDown(key, e) {
+  handleMouseDown = (key, e) => {
     if (!e.target.classList.contains("draggable")) {
       return;
     }
@@ -171,7 +165,7 @@ class WindowManager extends React.Component {
 
     window.addEventListener("mouseup", removeListeners);
     window.addEventListener("mousemove", handleMouseMove);
-  }
+  };
 
   // Keys for the visible windows
   windowKeys() {

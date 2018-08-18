@@ -10,12 +10,7 @@ import {
 import { getCurrentTrackId, getSkinPlaylistStyle } from "../../selectors";
 
 class TrackCell extends React.Component {
-  constructor(props) {
-    super(props);
-    this._onMouseDown = this._onMouseDown.bind(this);
-  }
-
-  _onMouseDown(e) {
+  _onMouseDown = e => {
     if (e.shiftKey) {
       this.props.shiftClick(e);
       return;
@@ -29,7 +24,7 @@ class TrackCell extends React.Component {
     }
 
     this.props.handleMoveClick(e);
-  }
+  };
 
   render() {
     const {

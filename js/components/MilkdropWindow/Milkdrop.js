@@ -12,9 +12,6 @@ export default class Milkdrop extends React.Component {
       isFullscreen: false,
       presetOverlay: false
     };
-    this._handleFocusedKeyboardInput = this._handleFocusedKeyboardInput.bind(
-      this
-    );
   }
 
   async componentDidMount() {
@@ -92,7 +89,7 @@ export default class Milkdrop extends React.Component {
     }
   }
 
-  _handleFocusedKeyboardInput(e) {
+  _handleFocusedKeyboardInput = e => {
     switch (e.keyCode) {
       case 32: // spacebar
         this._nextPreset(USER_PRESET_TRANSITION_SECONDS);
@@ -116,7 +113,7 @@ export default class Milkdrop extends React.Component {
         this._restartCycling();
         break;
     }
-  }
+  };
 
   async _nextPreset(blendTime) {
     this.selectPreset(await this.props.presets.next(), blendTime);

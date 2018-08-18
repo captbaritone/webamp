@@ -1,12 +1,6 @@
 import React from "react";
 
 export default class DropTarget extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleDrop = this.handleDrop.bind(this);
-    this._ref = this._ref.bind(this);
-  }
-
   supress(e) {
     e.stopPropagation();
     e.preventDefault();
@@ -14,18 +8,18 @@ export default class DropTarget extends React.Component {
     e.dataTransfer.effectAllowed = "link";
   }
 
-  handleDrop(e) {
+  handleDrop = e => {
     this.supress(e);
     if (!this._node) {
       return;
     }
     const { x, y } = this._node.getBoundingClientRect();
     this.props.handleDrop(e, { x, y });
-  }
+  };
 
-  _ref(node) {
+  _ref = node => {
     this._node = node;
-  }
+  };
 
   render() {
     const {

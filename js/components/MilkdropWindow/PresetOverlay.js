@@ -4,9 +4,6 @@ class PresetOverlay extends React.Component {
   constructor(props) {
     super(props);
     this.state = { presetIdx: Math.max(props.currentPreset, 0) };
-    this._handleFocusedKeyboardInput = this._handleFocusedKeyboardInput.bind(
-      this
-    );
   }
 
   componentDidMount() {
@@ -21,7 +18,7 @@ class PresetOverlay extends React.Component {
     }
   }
 
-  _handleFocusedKeyboardInput(e) {
+  _handleFocusedKeyboardInput = e => {
     switch (e.keyCode) {
       case 38: // up arrow
         this.setState({ presetIdx: Math.max(this.state.presetIdx - 1, 0) });
@@ -45,7 +42,7 @@ class PresetOverlay extends React.Component {
         e.stopPropagation();
         break;
     }
-  }
+  };
 
   render() {
     if (!this.props.presetKeys) {

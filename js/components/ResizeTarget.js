@@ -6,12 +6,7 @@ import {
 } from "../constants";
 
 export default class ResizeTarget extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleMouseDown = this.handleMouseDown.bind(this);
-  }
-
-  handleMouseDown(e) {
+  handleMouseDown = e => {
     // Prevent dragging from highlighting text.
     e.preventDefault();
     const [width, height] = this.props.currentSize;
@@ -42,7 +37,7 @@ export default class ResizeTarget extends React.Component {
     window.addEventListener("mouseup", () => {
       window.removeEventListener("mousemove", handleMove);
     });
-  }
+  };
 
   render() {
     /* eslint-disable no-unused-vars */

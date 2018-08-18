@@ -38,12 +38,7 @@ import ScrollBar from "./ScrollBar";
 import "../../../css/playlist-window.css";
 
 class PlaylistWindow extends React.Component {
-  constructor(props) {
-    super(props);
-    this._handleDrop = this._handleDrop.bind(this);
-  }
-
-  _handleDrop(e, targetCoords) {
+  _handleDrop = (e, targetCoords) => {
     const top = e.clientY - targetCoords.y;
     const atIndex = clamp(
       this.props.offset + Math.round((top - 23) / TRACK_HEIGHT),
@@ -51,7 +46,7 @@ class PlaylistWindow extends React.Component {
       this.props.maxTrackIndex + 1
     );
     this.props.loadFilesFromReferences(e, atIndex);
-  }
+  };
 
   render() {
     const {
