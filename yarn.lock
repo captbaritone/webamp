@@ -5225,6 +5225,15 @@ milkdrop-eel-parser@^0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/milkdrop-eel-parser/-/milkdrop-eel-parser-0.0.1.tgz#1c1a82bb7877d9df6d45e6f0b602b4cd1a5dc26d"
 
+milkdrop-preset-converter-aws@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/milkdrop-preset-converter-aws/-/milkdrop-preset-converter-aws-0.0.9.tgz#988cd926e0961c3347bef711dad168cc9cee583f"
+  dependencies:
+    babel-runtime "^6.26.0"
+    glsl-optimizer-js "^0.0.2"
+    milkdrop-eel-parser "^0.0.1"
+    milkdrop-preset-utils "^0.0.4"
+
 milkdrop-preset-utils@^0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/milkdrop-preset-utils/-/milkdrop-preset-utils-0.0.4.tgz#62676ee9067ea69f6758b20f643d87bb8e7a3188"

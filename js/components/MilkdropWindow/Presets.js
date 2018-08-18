@@ -35,17 +35,10 @@ async function readFileAsText(file) {
  * and the remainder can be loaded async via the function `getRest`.
  */
 export default class Presets {
-  constructor({
-    keys,
-    initialPresets,
-    getRest,
-    presetConverter,
-    randomize = true
-  }) {
+  constructor({ keys, initialPresets, getRest, randomize = true }) {
     this._keys = keys; // Alphabetical list of preset names
     this._presets = initialPresets; // Presets indexed by name
     this._getRest = getRest; // An async function to get the rest of the presets
-    this._presetConverter = presetConverter; // Preset converter for converting Milkdrop presets
     this._history = []; // Indexes into _keys
 
     this._randomize = randomize;
@@ -103,6 +96,20 @@ export default class Presets {
     return this._selectIndex(idx);
   }
 
+  async _convertPreset(file) {
+    return new Promise((resolve, reject) => {
+      require.ensure(
+        ["milkdrop-preset-converter-aws"],
+        async require => {
+          const { convertPreset } = require("milkdrop-preset-converter-aws");
+          resolve(convertPreset(file));
+        },
+        reject,
+        "milkdrop-preset-converter"
+      );
+    });
+  }
+
   async _selectIndex(idx) {
     const preset = this._presets[this._keys[idx]];
     if (!preset) {
@@ -116,9 +123,7 @@ export default class Presets {
     }
     if (preset && preset.file) {
       const fileContents = await readFileAsText(preset.file);
-      const convertedPreset = await this._presetConverter.convertPreset(
-        fileContents
-      );
+      const convertedPreset = await this._convertPreset(fileContents);
       this._presets[this._keys[idx]] = convertedPreset;
     }
     this._currentIndex = idx;
