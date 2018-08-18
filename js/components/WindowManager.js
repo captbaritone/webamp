@@ -31,8 +31,9 @@ class WindowManager extends React.Component {
   centerWindows = () => {
     const { container } = this.props;
 
-    const offsetLeft = container.offsetLeft;
-    const offsetTop = container.offsetTop;
+    const rect = container.getBoundingClientRect();
+    const offsetLeft = rect.left + window.scrollX;
+    const offsetTop = rect.top + window.scrollY;
     const width = container.scrollWidth;
     const height = container.scrollHeight;
 
