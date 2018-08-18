@@ -20,7 +20,9 @@ export default class VisualizerOverlay {
     this.wrappyCanvas = document.createElement("canvas");
     this.wrappyCtx = this.wrappyCanvas.getContext("2d");
 
-    this.animateFns = Array.from(windowElements).map(windowEl => {
+    this.overlayCanvases = [];
+    this.animateFns = [];
+    Array.from(windowElements).forEach(windowEl => {
       var canvas = document.createElement("canvas");
       var ctx = canvas.getContext("2d");
       canvas.style.position = "absolute";
@@ -30,7 +32,8 @@ export default class VisualizerOverlay {
       canvas.style.mixBlendMode = "color-dodge";
       canvas.className = "hacky-canvas";
       windowEl.appendChild(canvas);
-      return wrapMode => {
+      this.overlayCanvases.push(canvas);
+      this.animateFns.push(wrapMode => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         var scale = windowEl.classList.contains("doubled") ? 2 : 1;
         scale *= window.devicePixelRatio || 1;
@@ -73,7 +76,7 @@ export default class VisualizerOverlay {
             }
             ctx.restore();
           });
-      };
+      });
     });
   }
 
@@ -125,7 +128,7 @@ export default class VisualizerOverlay {
     animateFns.forEach(fn => fn(wrapMode));
   }
   cleanUp() {
-    Array.from(document.querySelectorAll(".hacky-canvas")).forEach(el => {
+    this.overlayCanvases.forEach(el => {
       el.remove();
     });
   }
