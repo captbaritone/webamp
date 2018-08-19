@@ -1,4 +1,5 @@
 import React from "react";
+import { promptForFileReferences } from "../../fileUtils";
 
 class PresetOverlay extends React.Component {
   constructor(props) {
@@ -21,7 +22,7 @@ class PresetOverlay extends React.Component {
   _handleFocusedKeyboardInput = e => {
     switch (e.keyCode) {
       case 38: // up arrow
-        this.setState({ presetIdx: Math.max(this.state.presetIdx - 1, 0) });
+        this.setState({ presetIdx: Math.max(this.state.presetIdx - 1, -1) });
         e.stopPropagation();
         break;
       case 40: // down arrow
@@ -34,7 +35,11 @@ class PresetOverlay extends React.Component {
         e.stopPropagation();
         break;
       case 13: // enter
-        this.props.selectPreset(this.state.presetIdx);
+        if (this.state.presetIdx === -1) {
+          this.loadLocalDir();
+        } else {
+          this.props.selectPreset(this.state.presetIdx);
+        }
         e.stopPropagation();
         break;
       case 27: // escape
@@ -43,6 +48,11 @@ class PresetOverlay extends React.Component {
         break;
     }
   };
+
+  async loadLocalDir() {
+    const fileReferences = await promptForFileReferences({ directory: true });
+    this.props.loadPresets(fileReferences);
+  }
 
   render() {
     if (!this.props.presetKeys) {
@@ -67,12 +77,13 @@ class PresetOverlay extends React.Component {
     presetListLen = Math.min(Math.max(presetListLen, 3), numPresets);
     presetListLen = presetListLen % 2 ? presetListLen : presetListLen - 1;
     const halfPresetListLen = Math.floor(presetListLen / 2);
-    let startIdx = Math.max(this.state.presetIdx - halfPresetListLen, 0);
+    let startIdx = Math.max(this.state.presetIdx - halfPresetListLen, -1);
     let endIdx = Math.min(startIdx + presetListLen, numPresets);
     if (endIdx >= numPresets) {
-      startIdx = Math.max(endIdx - presetListLen, 0);
+      startIdx = Math.max(endIdx - presetListLen, -1);
       endIdx = Math.min(startIdx + presetListLen, numPresets);
     }
+    startIdx = Math.max(startIdx, 0); // ensure startIdx >= 0 after endIdx is calculated
     const presets = this.props.presetKeys.slice(startIdx, endIdx);
     const presetElms = presets.map((presetName, i) => {
       let color;
@@ -93,6 +104,20 @@ class PresetOverlay extends React.Component {
         </li>
       );
     });
+
+    if (this.state.presetIdx - halfPresetListLen < 0) {
+      let color;
+      if (this.state.presetIdx === -1) {
+        color = "#FF5050";
+      } else {
+        color = "#CCCCCC";
+      }
+      presetElms.unshift(
+        <li key={"localDir"} style={{ color }}>
+          Load Local Directory
+        </li>
+      );
+    }
 
     return (
       <div

@@ -179,6 +179,24 @@ export default class Milkdrop extends React.Component {
     }
   }
 
+  async loadPresets(presetFiles) {
+    const presets = {};
+    const milkFiles = Array.from(presetFiles).filter(file =>
+      file.name.endsWith(".milk")
+    );
+    for (let i = 0; i < milkFiles.length; i++) {
+      const file = milkFiles[i];
+      presets[file.name] = { file };
+    }
+    const numPresets = this.props.presets.loadPresets(presets);
+    this.selectPreset(
+      await this.props.presets.selectIndex(
+        Math.floor(Math.random() * numPresets)
+      ),
+      PRESET_TRANSITION_SECONDS
+    );
+  }
+
   closePresetOverlay() {
     this.setState({ presetOverlay: false });
   }
@@ -196,6 +214,7 @@ export default class Milkdrop extends React.Component {
             selectPreset={async idx => {
               this.selectPreset(await this.props.presets.selectIndex(idx), 0);
             }}
+            loadPresets={async presetFiles => this.loadPresets(presetFiles)}
             closeOverlay={() => this.closePresetOverlay()}
           />
         )}
