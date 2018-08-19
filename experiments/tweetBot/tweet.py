@@ -32,7 +32,7 @@ from discord_hooks import Webhook
 from config import CONFIG
 
 
-def tweet(text, img_path):
+def tweet(text, img_path=None):
     api = twitter.Api(
         consumer_key=CONFIG["consumer_key"],
         consumer_secret=CONFIG["consumer_secret"],
@@ -100,7 +100,15 @@ def review():
 
     potentials.sort()
 
-    print("%s skins to review. Look busy!" % len(potentials))
+    number_of_potentials = len(potentials)
+
+    if number_of_potentials <= 50:
+        tweet(
+            "@captbaritone I'm down to only %s approved skins to tweet. You should review some more."
+            % number_of_potentials
+        )
+
+    print("%s skins to review. Look busy!" % number_of_potentials)
 
     for md5 in potentials:
         screenshot_url = get_screenshot_url(md5)
