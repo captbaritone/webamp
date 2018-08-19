@@ -140,13 +140,13 @@ export default class VisualizerOverlay {
   }
   fadeOut() {
     this.overlayCanvases.forEach(canvas => {
-      canvas.style.transition = "opacity 2s";
+      canvas.style.transition = "opacity 1s cubic-bezier(0.125, 0.960, 0.475, 0.915)";
       canvas.style.opacity = "0";
     });
   }
   fadeIn() {
     this.overlayCanvases.forEach(canvas => {
-      canvas.style.transition = "opacity 0.2s";
+      canvas.style.transition = "opacity 0.2s ease";
       canvas.style.opacity = "1";
     });
   }
