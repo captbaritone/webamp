@@ -44,10 +44,9 @@ class Milkdrop extends React.Component {
       this.selectPreset(this.props.presets.getCurrent(), 0);
     }
 
-    var visualizerCanvas = document.querySelector(".gen-window canvas");
     var windowElements = document.querySelectorAll(".window:not(.gen-window)");
     this.visualizerOverlay = new VisualizerOverlay(
-      visualizerCanvas,
+      this._canvasNode,
       windowElements
     );
 
