@@ -128,8 +128,20 @@ export default class VisualizerOverlay {
     animateFns.forEach(fn => fn(wrapMode));
   }
   cleanUp() {
-    this.overlayCanvases.forEach(el => {
-      el.remove();
+    this.overlayCanvases.forEach(canvas => {
+      canvas.remove();
+    });
+  }
+  fadeOut() {
+    this.overlayCanvases.forEach(canvas => {
+      canvas.style.transition = "opacity 2s";
+      canvas.style.opacity = "0";
+    });
+  }
+  fadeIn() {
+    this.overlayCanvases.forEach(canvas => {
+      canvas.style.transition = "opacity 0.2s";
+      canvas.style.opacity = "1";
     });
   }
 }

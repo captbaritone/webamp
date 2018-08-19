@@ -56,6 +56,9 @@ class Milkdrop extends React.Component {
       if (this.props.playing && this.props.isEnabledVisualizer) {
         this.visualizer.render();
         this.visualizerOverlay.render({ mirror: true, stretch: true });
+        this.visualizerOverlay.fadeIn();
+      } else {
+        this.visualizerOverlay.fadeOut();
       }
       this._animationFrameRequest = window.requestAnimationFrame(loop);
     };
