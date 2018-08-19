@@ -188,8 +188,9 @@ class WindowManager extends React.Component {
       left: 0
     };
 
-    const windows = this.props.windowsInfo
-      .filter(w => this.props.windows[w.key]);
+    const windows = this.props.windowsInfo.filter(
+      w => this.props.windows[w.key]
+    );
 
     return windows.map(w => (
       <div
