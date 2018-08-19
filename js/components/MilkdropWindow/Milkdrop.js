@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { getCurrentTrackDisplayName } from "../../selectors";
 import DropTarget from "../DropTarget";
 import PresetOverlay from "./PresetOverlay";
-import VisualizerOverlay from "../../visualizerOverlay.js";
+import VisualizerOverlay from "../../visualizerOverlay";
 
 const USER_PRESET_TRANSITION_SECONDS = 5.7;
 const PRESET_TRANSITION_SECONDS = 2.7;
