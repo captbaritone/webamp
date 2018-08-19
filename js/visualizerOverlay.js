@@ -46,16 +46,18 @@ export default class VisualizerOverlay {
         }
         canvas.style.width = windowEl.clientWidth + "px";
         canvas.style.height = windowEl.clientHeight + "px";
-        var stuff = windowEl.querySelectorAll(`*`);
+        var stuff = windowEl.querySelectorAll("*");
         Array.from(stuff)
-          .reverse()
-          .forEach(el => {
-            const { offsetLeft, offsetTop } = getOffset(el, windowEl);
+          .map(el => {
             const width = el.clientWidth;
             const height = el.clientHeight;
-            if (width == 0 || height == 0) {
-              return;
-            }
+            const area = width * height;
+            return { element: el, width, height, area };
+          })
+          .filter(({area})=> area > 0)
+          .sort((a, b)=> b.area - a.area)
+          .forEach(({ element, width, height, area }) => {
+            const { offsetLeft, offsetTop } = getOffset(element, windowEl);
             ctx.save();
             ctx.scale(scale, scale);
             ctx.translate(offsetLeft, offsetTop);
@@ -74,6 +76,12 @@ export default class VisualizerOverlay {
                 height
               );
             }
+            if (area < 30 * 30) {
+              ctx.globalCompositeOperation = "destination-out";
+              ctx.globalAlpha = 0.5;
+              ctx.fillStyle = "black";
+              ctx.fillRect(0, 0, width, height);
+            }
             ctx.restore();
           });
       });
@@ -86,8 +94,12 @@ export default class VisualizerOverlay {
     if (options.mirror) {
       const drawImage = ()=> {
         wrappyCtx.drawImage(visualizerCanvas, 0, 0, width, height, 0, 0, width, height);
+        // zoom in the source area:
         // wrappyCtx.drawImage(visualizerCanvas, width/4, height/4, width/2, height/2, 0, 0, width, height);
         // wrappyCtx.drawImage(visualizerCanvas, width/4, height/4, width/4, height/4, 0, 0, width, height);
+        // for testing:
+        // wrappyCtx.fillStyle = "aqua";
+        // wrappyCtx.fillRect(0, 0, width, height);
       };
       wrappyCanvas.width = width * 2;
       wrappyCanvas.height = height * 2;
