@@ -131,6 +131,7 @@ export default class Presets {
         const convertedPreset = await this._convertPreset(fileContents);
         this._presets[this._keys[idx]] = convertedPreset;
       } catch (e) {
+        console.error(e);
         alert(`Unable to convert MilkDrop preset ${this._keys[idx]}`);
       }
     }
