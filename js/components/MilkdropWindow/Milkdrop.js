@@ -75,7 +75,7 @@ class Milkdrop extends React.Component {
     if (this._unsubscribeFocusedKeyDown) {
       this._unsubscribeFocusedKeyDown();
     }
-    this.visualizerOverlay.cleanUp();
+    this.visualizerOverlay.fadeOutAndCleanUp();
   }
 
   componentDidUpdate(prevProps) {

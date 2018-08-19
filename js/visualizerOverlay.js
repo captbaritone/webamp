@@ -132,6 +132,12 @@ export default class VisualizerOverlay {
       canvas.remove();
     });
   }
+  fadeOutAndCleanUp() {
+    this.fadeOut();
+    this.overlayCanvases[0].addEventListener("transitionend", ()=> {
+      this.cleanUp();
+    });
+  }
   fadeOut() {
     this.overlayCanvases.forEach(canvas => {
       canvas.style.transition = "opacity 2s";
