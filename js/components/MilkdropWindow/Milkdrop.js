@@ -1,4 +1,5 @@
 import React from "react";
+import DropTarget from "../DropTarget";
 import PresetOverlay from "./PresetOverlay";
 
 const USER_PRESET_TRANSITION_SECONDS = 5.7;
@@ -115,6 +116,51 @@ export default class Milkdrop extends React.Component {
     }
   };
 
+  _addNewPresets(files) {
+    const presetKeys = this.props.presets.getKeys();
+    const presets = {};
+    const presetIndices = [];
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const fileName = file.name;
+      const presetName = fileName.substring(fileName, fileName.length - 5); // remove .milk
+      const presetIdx = presetKeys.indexOf(presetName);
+      if (presetIdx >= 0) {
+        presetIndices.push(presetIdx);
+      } else {
+        presets[presetName] = { file };
+      }
+    }
+
+    if (Object.keys(presets).length > 0) {
+      const filePresetIndices = this.props.presets.addPresets(presets);
+      for (let j = filePresetIndices[0]; j < filePresetIndices[1]; j++) {
+        presetIndices.push(j);
+      }
+    }
+
+    return presetIndices;
+  }
+
+  async _handleDrop(e) {
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      const milkFiles = Array.from(files).filter(file =>
+        file.name.endsWith(".milk")
+      );
+      if (milkFiles.length === 0) {
+        alert("Visualizer only supports .milk files");
+        return;
+      }
+
+      const presetIndices = this._addNewPresets(milkFiles);
+      this.selectPreset(
+        await this.props.presets.selectIndex(presetIndices[0]),
+        PRESET_TRANSITION_SECONDS
+      );
+    }
+  }
+
   async _nextPreset(blendTime) {
     this.selectPreset(await this.props.presets.next(), blendTime);
   }
@@ -139,7 +185,7 @@ export default class Milkdrop extends React.Component {
 
   render() {
     return (
-      <React.Fragment>
+      <DropTarget id="milkdrop-window" handleDrop={e => this._handleDrop(e)}>
         {this.state.presetOverlay && (
           <PresetOverlay
             width={this.props.width}
@@ -163,7 +209,7 @@ export default class Milkdrop extends React.Component {
           }}
           ref={node => (this._canvasNode = node)}
         />
-      </React.Fragment>
+      </DropTarget>
     );
   }
 }

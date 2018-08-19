@@ -9,6 +9,20 @@ function getLast(arr) {
   return arr[arr.length - 1];
 }
 
+async function readFileAsText(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      resolve(e.target.result);
+    };
+    reader.onerror = function(e) {
+      reject(e);
+    };
+
+    reader.readAsText(file);
+  });
+}
+
 /**
  * Track a collection of async loaded presets
  *
@@ -46,6 +60,16 @@ export default class Presets {
     this._randomize = val;
   }
 
+  addPresets(presets) {
+    const startIdx = this._keys.length;
+    this._keys = this._keys.concat(Object.keys(presets));
+    const endIndx = this._keys.length;
+
+    this._presets = Object.assign(this._presets, presets);
+
+    return [startIdx, endIndx];
+  }
+
   async next() {
     let idx;
     if (this._randomize || this._history.length === 0) {
@@ -72,6 +96,24 @@ export default class Presets {
     return this._selectIndex(idx);
   }
 
+  async _convertPreset(file) {
+    return new Promise((resolve, reject) => {
+      require.ensure(
+        ["milkdrop-preset-converter-aws"],
+        async require => {
+          const { convertPreset } = require("milkdrop-preset-converter-aws");
+          try {
+            resolve(convertPreset(file));
+          } catch (e) {
+            reject(e);
+          }
+        },
+        reject,
+        "milkdrop-preset-converter"
+      );
+    });
+  }
+
   async _selectIndex(idx) {
     const preset = this._presets[this._keys[idx]];
     if (!preset) {
@@ -81,6 +123,15 @@ export default class Presets {
         // This selection must be obsolete. Return null so that
         // the caller knows this request got canceled.
         return null;
+      }
+    }
+    if (preset && preset.file) {
+      try {
+        const fileContents = await readFileAsText(preset.file);
+        const convertedPreset = await this._convertPreset(fileContents);
+        this._presets[this._keys[idx]] = convertedPreset;
+      } catch (e) {
+        alert(`Unable to convert MilkDrop preset ${this._keys[idx]}`);
       }
     }
     this._currentIndex = idx;

@@ -3571,6 +3571,10 @@ globby@^7.1.1:
     pify "^3.0.0"
     slash "^1.0.0"
 
+glsl-optimizer-js@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/glsl-optimizer-js/-/glsl-optimizer-js-0.0.2.tgz#ac6eaa96bd8240c068dc9cdc9f42017312af6fdc"
+
 graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.4, graceful-fs@^4.1.6:
   version "4.1.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
@@ -5340,6 +5344,26 @@ micromatch@^3.1.8:
     regex-not "^1.0.0"
     snapdragon "^0.8.1"
     to-regex "^3.0.2"
+
+milkdrop-eel-parser@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/milkdrop-eel-parser/-/milkdrop-eel-parser-0.0.1.tgz#1c1a82bb7877d9df6d45e6f0b602b4cd1a5dc26d"
+
+milkdrop-preset-converter-aws@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/milkdrop-preset-converter-aws/-/milkdrop-preset-converter-aws-0.0.9.tgz#988cd926e0961c3347bef711dad168cc9cee583f"
+  dependencies:
+    babel-runtime "^6.26.0"
+    glsl-optimizer-js "^0.0.2"
+    milkdrop-eel-parser "^0.0.1"
+    milkdrop-preset-utils "^0.0.4"
+
+milkdrop-preset-utils@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/milkdrop-preset-utils/-/milkdrop-preset-utils-0.0.4.tgz#62676ee9067ea69f6758b20f643d87bb8e7a3188"
+  dependencies:
+    babel-runtime "^6.26.0"
+    lodash "^4.17.4"
 
 miller-rabin@^4.0.0:
   version "4.0.1"
