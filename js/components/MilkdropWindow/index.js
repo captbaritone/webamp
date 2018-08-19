@@ -15,7 +15,7 @@ import "../../../css/milkdrop-window.css";
 
 // This component is just responsible for loading dependencies.
 // This simplifies the inner <Milkdrop /> component, by allowing
-// it to alwasy assume that it has its dependencies.
+// it to always assume that it has its dependencies.
 class PresetsLoader extends React.Component {
   constructor() {
     super();

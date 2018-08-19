@@ -8,9 +8,9 @@ import Character from "./Character";
 
 import "../../css/mini-time.css";
 
-// Sigh. When he display is blinking (say when it's paused) we need to
-// alternate between the actual caracter and the space character. Not
-// Possible to that in purce CSS with the background being dynamically generated.
+// Sigh. When the display is blinking (say when it's paused) we need to
+// alternate between the actual character and the space character. Not
+// Possible to do that in pure CSS with the background being dynamically generated.
 // All "space" characters is also how Winamp renders no content.
 const Background = () =>
   [1, 7, 12, 20, 25].map((left, i) => (
