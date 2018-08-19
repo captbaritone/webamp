@@ -84,22 +84,27 @@ export default class VisualizerOverlay {
     const { visualizerCanvas, wrappyCanvas, wrappyCtx, animateFns } = this;
     const { width, height } = visualizerCanvas;
     if (wrapMode.mirror) {
+      const drawImage = ()=> {
+        wrappyCtx.drawImage(visualizerCanvas, 0, 0, width, height, 0, 0, width, height);
+        // wrappyCtx.drawImage(visualizerCanvas, width/4, height/4, width/2, height/2, 0, 0, width, height);
+        // wrappyCtx.drawImage(visualizerCanvas, width/4, height/4, width/4, height/4, 0, 0, width, height);
+      };
       wrappyCanvas.width = width * 2;
       wrappyCanvas.height = height * 2;
       wrappyCtx.save();
-      wrappyCtx.drawImage(visualizerCanvas, 0, 0, width, height);
+      drawImage();
       wrappyCtx.translate(0, height);
       wrappyCtx.scale(1, -1);
       wrappyCtx.translate(0, -height);
-      wrappyCtx.drawImage(visualizerCanvas, 0, 0, width, height);
+      drawImage();
       wrappyCtx.translate(width, 0);
       wrappyCtx.scale(-1, 1);
       wrappyCtx.translate(-width, 0);
-      wrappyCtx.drawImage(visualizerCanvas, 0, 0, width, height);
+      drawImage();
       wrappyCtx.translate(0, height);
       wrappyCtx.scale(1, -1);
       wrappyCtx.translate(0, -height);
-      wrappyCtx.drawImage(visualizerCanvas, 0, 0, width, height);
+      drawImage();
       wrappyCtx.restore();
     } else if (wrapMode.tile) {
       wrappyCanvas.width = width * 2;
