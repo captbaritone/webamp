@@ -30,6 +30,7 @@ export default class VisualizerOverlay {
       canvas.style.top = "0";
       canvas.style.pointerEvents = "none";
       canvas.style.mixBlendMode = "color-dodge";
+      canvas.style.willChange = "opacity"; // hint fixes flickering in chrome
       canvas.className = "visualizer-overlay-canvas";
       windowEl.appendChild(canvas);
       this.overlayCanvases.push(canvas);
