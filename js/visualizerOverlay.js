@@ -33,7 +33,7 @@ export default class VisualizerOverlay {
       canvas.className = "visualizer-overlay-canvas";
       windowEl.appendChild(canvas);
       this.overlayCanvases.push(canvas);
-      this.animateFns.push(wrapMode => {
+      this.animateFns.push(options => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         var scale = windowEl.classList.contains("doubled") ? 2 : 1;
         scale *= window.devicePixelRatio || 1;
@@ -59,7 +59,7 @@ export default class VisualizerOverlay {
             ctx.save();
             ctx.scale(scale, scale);
             ctx.translate(offsetLeft, offsetTop);
-            if (wrapMode.stretch) {
+            if (options.stretch) {
               ctx.drawImage(this.wrappyCanvas, 0, 0, width, height);
             } else {
               ctx.drawImage(
@@ -80,10 +80,10 @@ export default class VisualizerOverlay {
     });
   }
 
-  render(wrapMode) {
+  render(options) {
     const { visualizerCanvas, wrappyCanvas, wrappyCtx, animateFns } = this;
     const { width, height } = visualizerCanvas;
-    if (wrapMode.mirror) {
+    if (options.mirror) {
       const drawImage = ()=> {
         wrappyCtx.drawImage(visualizerCanvas, 0, 0, width, height, 0, 0, width, height);
         // wrappyCtx.drawImage(visualizerCanvas, width/4, height/4, width/2, height/2, 0, 0, width, height);
@@ -106,7 +106,7 @@ export default class VisualizerOverlay {
       wrappyCtx.translate(0, -height);
       drawImage();
       wrappyCtx.restore();
-    } else if (wrapMode.tile) {
+    } else if (options.tile) {
       wrappyCanvas.width = width * 2;
       wrappyCanvas.height = height * 2;
       for (var xi = 0; xi < 2; xi++) {
@@ -130,7 +130,7 @@ export default class VisualizerOverlay {
       wrappyCtx.drawImage(visualizerCanvas, 0, 0, width, height);
     }
 
-    animateFns.forEach(fn => fn(wrapMode));
+    animateFns.forEach(fn => fn(options));
   }
   cleanUp() {
     this.overlayCanvases.forEach(canvas => {
