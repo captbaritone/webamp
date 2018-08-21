@@ -34,12 +34,16 @@ Open `http://localhost:8080/webpack-dev-server/` in your browser.
     # Run tests and lint checks
     npm test
 
-## Building
+## Building the demo site (webmap.org)
 
     npm run build
     npm run serve
 
 Open the local ip/port that is output to the console in your browser.
+
+## Building the NPM module
+
+    npm run build-library
 
 ## Testing
 
