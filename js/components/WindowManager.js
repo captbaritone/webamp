@@ -183,26 +183,19 @@ class WindowManager extends React.Component {
       left: 0
     };
 
-    const parentStyle = {
-      position: "absolute",
-      width: 0,
-      height: 0,
-      top: 0,
-      left: 0
-    };
-    return (
-      <div style={parentStyle}>
-        {this.props.windowsInfo.map(w => (
-          <div
-            onMouseDown={e => this.handleMouseDown(w.key, e)}
-            style={{ ...style, transform: `translate(${w.x}px, ${w.y}px)` }}
-            key={w.key}
-          >
-            {this.props.windows[w.key]}
-          </div>
-        ))}
-      </div>
+    const windows = this.props.windowsInfo.filter(
+      w => this.props.windows[w.key]
     );
+
+    return windows.map(w => (
+      <div
+        key={w.key}
+        onMouseDown={e => this.handleMouseDown(w.key, e)}
+        style={{ ...style, transform: `translate(${w.x}px, ${w.y}px)` }}
+      >
+        {this.props.windows[w.key]}
+      </div>
+    ));
   }
 }
 
