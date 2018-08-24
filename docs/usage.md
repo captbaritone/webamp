@@ -4,10 +4,10 @@ Here's how to use Webamp in your own project. If you get stuck, or need help, pl
 
 ## Examples
 
-If you would like to look as some examples check out the [examples directory](../examples/) were you will find:
+If you would like to look at some examples check out the [examples directory](../examples/) where you will find:
 
 - [Minimal](../examples/minimal/) - An example that just uses a `<script>` tag that points to a CDN. No install required.
-- [Webpack](../examples/webpack/) - An example that installs Webamp via NPM, and bundles it into an applicaiton using Webpack.
+- [Webpack](../examples/webpack/) - An example that installs Webamp via NPM, and bundles it into an application using Webpack.
 
 Each example has a README which explains it in more detail.
 
@@ -99,7 +99,7 @@ The `Winamp` class has the following _static_ methods:
 
 ### `browserIsSupported()`
 
-Returns a true if the current browser supports the features that Webamp depends upon. It is recomended to check this before you attempt to instantiate an instance of `Winamp`.
+Returns a true if the current browser supports the features that Webamp depends upon. It is recommended to check this before you attempt to instantiate an instance of `Winamp`.
 
 ```JavaScript
 if(Winamp.browserIsSupported()) {
@@ -128,7 +128,7 @@ const options = {
 
     // Optional. An array of objects representing skins.
     // These will appear in the "Options" menu under "Skins".
-    // Note: These URLs must be served the with correct CORs headers.
+    // Note: These URLs must be served with the correct CORs headers.
     availableSkins: [
       { url: "./green.wsz", name: "Green Dimension V2" },
       { url: "./osx.wsz", name: "Mac OSX v1.5 (Aqua)" }
@@ -186,7 +186,7 @@ webamp.setTracksToPlay([
 
 ### `renderWhenReady(domNode)`
 
-Webamp will wait until it has fetch the skin and fully parsed it, and then render itself into a new DOM node at the end of the `<body>` tag.
+Webamp will wait until it has fetched the skin and fully parsed it, and then render itself into a new DOM node at the end of the `<body>` tag.
 
 If a `domNode` is passed, Webamp will place itself in the center of that DOM node.
 
@@ -201,7 +201,7 @@ webamp.renderWhenReady(container).then(() => {
 
 ### `onTrackDidChange(callback)`
 
-A callback which will be called when a new track starts loading. This can happen on startup when the first track sarts buffering, or when a subsequent track starts playig. The callback will be called with an object (`{url: 'https://example.com/track.mp3'}`) containing the URL of the track.
+A callback which will be called when a new track starts loading. This can happen on startup when the first track starts buffering, or when a subsequent track starts playing. The callback will be called with an object (`{url: 'https://example.com/track.mp3'}`) containing the URL of the track.
 
 Returns an "unsubscribe" function.
 
@@ -234,7 +234,7 @@ unsubscribe();
 A callback which will be called when Webamp is minimized. Returns an "unsubscribe" function.
 
 ```JavaScript
-const unsubscribe = webamp.onClose(() => {
+const unsubscribe = webamp.onMinimize(() => {
     console.log("Webamp closed");
 });
 
@@ -246,6 +246,6 @@ unsubscribe();
 
 - Internet Explorer is not supported.
 - Webamp injects CSS into the page. The CSS is namespaced (every CSS selector is prefixed with `#webamp`), so it should not interfere with anything on the host page.
-- Webamp HTML contains somewhat generic IDs and class names. If you have CSS on your page that is not namespaced, it may accidently be applied to Webamp. If this happens please reach out. I may be able to resolve it.
+- Webamp HTML contains somewhat generic IDs and class names. If you have CSS on your page that is not namespaced, it may accidentaly be applied to Webamp. If this happens please reach out. I may be able to resolve it.
 - Skin and audio URLs are subject to [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS). Please ensure they are either served from the same domain, or that the other domain is served with the correct headers.
 - Please reach out to me. I'd love to help you set it up, and understand how it's being used. I plan to expand this API as I learn how people want to use it.
