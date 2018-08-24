@@ -134,11 +134,9 @@ def main(dry):
     candidates = list(set(approved) - set(tweeted))
     number_of_potentials = len(candidates)
     print("Found %s approved skins" % number_of_potentials)
-    if number_of_potentials <= 50:
-        tweet(
-            "@captbaritone I'm down to only %s approved skins to tweet. You should review some more."
-            % number_of_potentials
-        )
+    if number_of_potentials <= 10:
+        msg = "I'm down to only %s approved skins to tweet. You should review some more." % number_of_potentials
+        Webhook(CONFIG["discord_url"], msg=msg).post()
 
     if not number_of_potentials:
         print("Exiting")
