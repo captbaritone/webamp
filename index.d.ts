@@ -35,7 +35,7 @@ interface URLTrack extends TrackInfo {
      *
      * Example: `'https://example.com/song.mp3'`
      */
-    url: string;
+    url: string | URL;
 }
 
 interface BlobTrack extends TrackInfo {
@@ -156,7 +156,7 @@ export default class Webamp {
      *
      * @returns An "unsubscribe" function. Useful if at some point in the future you want to stop listening to these events.
      */
-    public onTrackDidChange(callback: (track: Track | URL) => any): () => void;
+    public onTrackDidChange(callback: (track: Track) => any): () => void;
 
     /**
      * A callback which will be called when Webamp is closed.
