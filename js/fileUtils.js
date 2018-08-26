@@ -33,9 +33,9 @@ export async function genMediaTags(file) {
     file = `${location.protocol}//${location.host}${location.pathname}${file}`;
   }
   return require.ensure(
-    ["music-metadata"],
+    ["music-metadata-browser"],
     async require => {
-      const mm = require("music-metadata");
+      const mm = require("music-metadata-browser");
       const stream = await sourceToStream(file);
       return mm.parseStream(stream.stream, stream.type, {
         duration: true,

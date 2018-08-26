@@ -84,7 +84,7 @@
     "jest-puppeteer": "^3.0.1",
     "jest-runner-eslint": "^0.4.0",
     "jszip": "^3.1.3",
-    "music-metadata": "^2.6.0",
+    "music-metadata-browser": "^0.0.4",
     "prettier": "^1.13.0",
     "prop-types": "^15.5.10",
     "puppeteer": "^1.4.0",
@@ -120,8 +120,5 @@
     "projects": [
       "config/jest.*.js"
     ]
-  },
-  "dependencies": {
-    "ignore-loader": "^0.1.2"
   }
 }
