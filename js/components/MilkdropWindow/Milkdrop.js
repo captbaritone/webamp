@@ -1,6 +1,7 @@
 import React from "react";
 import DropTarget from "../DropTarget";
 import PresetOverlay from "./PresetOverlay";
+import PresetEditor from "./PresetEditor/PresetEditor";
 
 const USER_PRESET_TRANSITION_SECONDS = 5.7;
 const PRESET_TRANSITION_SECONDS = 2.7;
@@ -11,7 +12,8 @@ export default class Milkdrop extends React.Component {
     super(props);
     this.state = {
       isFullscreen: false,
-      presetOverlay: false
+      presetOverlay: false,
+      presetEditor: false
     };
   }
 
@@ -85,33 +87,51 @@ export default class Milkdrop extends React.Component {
 
     if (this.presetCycle) {
       this.cycleInterval = setInterval(() => {
-        this._nextPreset(PRESET_TRANSITION_SECONDS);
+        if (!this.state.presetEditor) {
+          this._nextPreset(PRESET_TRANSITION_SECONDS);
+        }
       }, MILLISECONDS_BETWEEN_PRESET_TRANSITIONS);
     }
   }
 
   _handleFocusedKeyboardInput = e => {
+    // Suppress preset controls when editor is open
+    if (!this.state.presetEditor) {
+      switch (e.keyCode) {
+        case 32: // spacebar
+          this._nextPreset(USER_PRESET_TRANSITION_SECONDS);
+          break;
+        case 8: // backspace
+          this._prevPreset(0);
+          break;
+        case 72: // H
+          this._nextPreset(0);
+          break;
+        case 82: // R
+          this.props.presets.toggleRandomize();
+          break;
+        case 145: // scroll lock
+        case 125: // F14 (scroll lock for OS X)
+          this.presetCycle = !this.presetCycle;
+          this._restartCycling();
+          break;
+      }
+    }
+
     switch (e.keyCode) {
-      case 32: // spacebar
-        this._nextPreset(USER_PRESET_TRANSITION_SECONDS);
-        break;
-      case 8: // backspace
-        this._prevPreset(0);
-        break;
-      case 72: // H
-        this._nextPreset(0);
-        break;
-      case 82: // R
-        this.props.presets.toggleRandomize();
-        break;
       case 76: // L
-        this.setState({ presetOverlay: !this.state.presetOverlay });
+        this.setState({
+          presetOverlay: !this.state.presetOverlay,
+          presetEditor: false
+        });
         e.stopPropagation();
         break;
-      case 145: // scroll lock
-      case 125: // F14 (scroll lock for OS X)
-        this.presetCycle = !this.presetCycle;
-        this._restartCycling();
+      case 77: // M
+        this.setState({
+          presetEditor: !this.state.presetEditor,
+          presetOverlay: false
+        });
+        e.stopPropagation();
         break;
     }
   };
@@ -197,8 +217,18 @@ export default class Milkdrop extends React.Component {
     );
   }
 
+  updatePreset(preset) {
+    const idx = this.props.presets.getCurrentIndex();
+    this.props.presets.updatePreset(idx, preset);
+    this.visualizer.loadPreset(preset, 0);
+  }
+
   closePresetOverlay() {
     this.setState({ presetOverlay: false });
+  }
+
+  closePresetEditor() {
+    this.setState({ presetEditor: false });
   }
 
   render() {
@@ -216,6 +246,17 @@ export default class Milkdrop extends React.Component {
             }}
             loadPresets={async presetFiles => this.loadPresets(presetFiles)}
             closeOverlay={() => this.closePresetOverlay()}
+          />
+        )}
+        {this.state.presetEditor && (
+          <PresetEditor
+            width={this.props.width}
+            height={this.props.height}
+            currentPreset={this.props.presets.getCurrent()}
+            updatePreset={preset => this.updatePreset(preset)}
+            onFocusedKeyDown={listener => this.props.onFocusedKeyDown(listener)}
+            closeOverlay={() => this.closePresetEditor()}
+            loadPresetConverter={this.props.loadPresetConverter}
           />
         )}
         <canvas

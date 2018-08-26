@@ -44,7 +44,8 @@ class PresetsLoader extends React.Component {
       presets: new Presets({
         keys: presetKeys,
         initialPresets: minimalPresets,
-        getRest: loadNonMinimalPresets
+        getRest: loadNonMinimalPresets,
+        loadPresetConverter
       })
     });
     screenfull.onchange(this._handleFullscreenChange);
@@ -98,6 +99,7 @@ class PresetsLoader extends React.Component {
             presets={presets}
             initialPreset={initialPreset}
             butterchurn={butterchurn}
+            loadPresetConverter={loadPresetConverter}
           />
         )}
       </Background>
@@ -210,6 +212,20 @@ async function loadNonMinimalPresets() {
       },
       reject,
       "butterchurn-presets"
+    );
+  });
+}
+
+async function loadPresetConverter() {
+  return new Promise((resolve, reject) => {
+    require.ensure(
+      ["milkdrop-preset-converter-aws"],
+      async require => {
+        const presetConverter = require("milkdrop-preset-converter-aws");
+        resolve(presetConverter);
+      },
+      reject,
+      "milkdrop-preset-converter"
     );
   });
 }
