@@ -32,6 +32,30 @@ from discord_hooks import Webhook
 from config import CONFIG
 
 
+def getChar():
+    try:
+        # for Windows-based systems
+        import msvcrt  # If successful, we are on Windows
+        return msvcrt.getch()
+
+    except ImportError:
+        # for POSIX-based systems (with termios & tty support)
+        import tty
+        import sys
+        import termios  # raises ImportError if unsupported
+
+        fd = sys.stdin.fileno()
+        oldSettings = termios.tcgetattr(fd)
+
+        try:
+            tty.setcbreak(fd)
+            answer = sys.stdin.read(1)
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, oldSettings)
+
+        return answer
+
+
 def tweet(text, img_path=None):
     api = twitter.Api(
         consumer_key=CONFIG["consumer_key"],
@@ -96,7 +120,8 @@ def review():
         filenames[md5] = filename
         all_skins.append(md5)
 
-    potentials = list(set(all_skins) - set(approved) - set(tweeted) - set(rejected))
+    potentials = list(set(all_skins) - set(approved) -
+                      set(tweeted) - set(rejected))
 
     potentials.sort()
 
@@ -107,11 +132,16 @@ def review():
     for md5 in potentials:
         screenshot_url = get_screenshot_url(md5)
         screenshot_path = NamedTemporaryFile(suffix="png").name
-        urllib.request.urlretrieve(screenshot_url, screenshot_path)
+        try:
+            urllib.request.urlretrieve(screenshot_url, screenshot_path)
+        except urllib.request.HTTPError:
+            print("Failed to download %s" % screenshot_url)
+            continue
         skin_name = filenames[md5]
         print("Found %s" % skin_name)
         os.system('open --background "%s"' % screenshot_path)
-        res = input("Approve? (y/n/q/t)")
+        print("Approve? (y/n/q/t)")
+        res = getChar()
         if res is "q":
             return
         elif res is "y":
@@ -231,4 +261,3 @@ if __name__ == "__main__":
 
     elif arguments.get("manual"):
         tweet_skin(arguments.get("hash"))
-
