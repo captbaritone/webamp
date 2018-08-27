@@ -101,11 +101,16 @@ class PresetEditor extends React.Component {
     );
   }
 
-  async _updateValue(key, value) {
-    const query = key
+  // Converts presetKey array ["baseVals" "warp"] to query {baseVals: {warp: { $set: value }}}
+  _presetKeyArrayToQuery(presetKey, value) {
+    return presetKey
       .slice()
       .reverse()
-      .reduce((acc, innerKey) => ({ [innerKey]: acc }), { $set: value });
+      .reduce((acc, key) => ({ [key]: acc }), { $set: value });
+  }
+
+  async _updateValue(key, value) {
+    const query = this._presetKeyArrayToQuery(key, value);
     this.setState({ presetParts: update(this.state.presetParts, query) });
 
     if (key.indexOf("baseVals") !== -1) {
