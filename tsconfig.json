@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "moduleResolution": "node",
-        "module": "esnext",
+        "module": "commonjs",
         "target": "esnext",
         "allowJs": true,
         "skipLibCheck": true,
