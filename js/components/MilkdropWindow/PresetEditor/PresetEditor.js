@@ -10,7 +10,7 @@ class PresetEditor extends React.Component {
     super(props);
     this.state = {
       presetParts: props.currentPreset.presetParts,
-      menuIdx: 0,
+      menuIdx: [0],
       menuKey: []
     };
   }
@@ -30,7 +30,7 @@ class PresetEditor extends React.Component {
   _backToLastMenuItem() {
     this.setState({
       menuKey: this.state.menuKey.splice(0, this.state.menuKey.length - 1),
-      menuIdx: 0
+      menuIdx: this.state.menuIdx.splice(0, this.state.menuIdx.length - 1)
     });
   }
 
@@ -46,21 +46,32 @@ class PresetEditor extends React.Component {
         break;
       case 38: // up arrow
         if (menuItem.items) {
-          this.setState({ menuIdx: Math.max(this.state.menuIdx - 1, 0) });
+          const menuIdx = this.state.menuIdx.slice();
+          menuIdx[menuIdx.length - 1] = Math.max(
+            menuIdx[menuIdx.length - 1] - 1,
+            0
+          );
+          this.setState({ menuIdx });
         }
         e.stopPropagation();
         break;
       case 40: // down arrow
         if (menuItem.items) {
-          this.setState({
-            menuIdx: Math.min(this.state.menuIdx + 1, menuItem.items.length - 1)
-          });
+          const menuIdx = this.state.menuIdx.slice();
+          menuIdx[menuIdx.length - 1] = Math.min(
+            menuIdx[menuIdx.length - 1] + 1,
+            menuItem.items.length - 1
+          );
+          this.setState({ menuIdx });
         }
         e.stopPropagation();
         break;
       case 13: // enter
         if (menuItem.items) {
-          const selectedItem = menuItem.items[this.state.menuIdx];
+          const currentMenuIdx = this.state.menuIdx[
+            this.state.menuIdx.length - 1
+          ];
+          const selectedItem = menuItem.items[currentMenuIdx];
           if (selectedItem.type === "bool") {
             this._updateValue(
               selectedItem.presetKey,
@@ -69,9 +80,9 @@ class PresetEditor extends React.Component {
           } else {
             this.setState({
               menuKey: this.state.menuKey.concat(
-                menuItem.items[this.state.menuIdx].name
+                menuItem.items[currentMenuIdx].name
               ),
-              menuIdx: 0
+              menuIdx: this.state.menuIdx.concat(0)
             });
           }
         }
@@ -223,7 +234,10 @@ class PresetEditor extends React.Component {
           <li
             key={i}
             style={{
-              color: i === this.state.menuIdx ? "#FF5050" : "#CCCCCC",
+              color:
+                i === this.state.menuIdx[this.state.menuIdx.length - 1]
+                  ? "#FF5050"
+                  : "#CCCCCC",
               whiteSpace: "pre"
             }}
           >
@@ -231,7 +245,8 @@ class PresetEditor extends React.Component {
           </li>
         );
       });
-      menuMeta = menuItem.items[this.state.menuIdx].meta;
+      menuMeta =
+        menuItem.items[this.state.menuIdx[this.state.menuIdx.length - 1]].meta;
     }
 
     return (
