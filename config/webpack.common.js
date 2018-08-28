@@ -8,9 +8,6 @@ module.exports = {
   resolve: {
     extensions: [".js"]
   },
-  node: {
-    fs: "empty" // Ignore fs in music-metadata
-  },
   module: {
     rules: [
       {
