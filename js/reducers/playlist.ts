@@ -183,7 +183,7 @@ const playlist = (
             defaultName: action.defaultName || null,
             duration: action.duration == null ? null : action.duration,
             url: action.url,
-            mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.NOT_REQUESTED
+            mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.INITIALIZED
           }
         },
         // TODO: This could probably be made to work, but we clear it just to be safe.
@@ -212,6 +212,7 @@ const playlist = (
             mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.COMPLETE,
             title: action.title,
             artist: action.artist,
+            album: action.album,
             albumArtUrl: action.albumArtUrl
           }
         }

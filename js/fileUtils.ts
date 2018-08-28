@@ -4,6 +4,7 @@ export interface MediaTags {
   tags: {
     artist: string;
     title: string;
+    album: string;
     picture: {
       data: number[];
       type: string;

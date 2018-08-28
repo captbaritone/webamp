@@ -297,6 +297,7 @@ export type Action =
       id: number;
       title: string;
       artist: string;
+      album?: string;
       albumArtUrl?: string | null;
     }
   | {
@@ -394,6 +395,8 @@ interface TrackInfo {
   metaData?: {
     artist: string;
     title: string;
+    album?: string;
+    albumArtUrl?: string;
   };
 
   /**
@@ -422,6 +425,16 @@ export interface BlobTrack extends TrackInfo {
   blob: Blob;
 }
 
+export interface LoadedURLTrack {
+  url: string;
+  metaData: {
+    artist: string | null;
+    title: string | null;
+    album: string | null;
+    albumArtUrl: string | null;
+  };
+}
+
 /**
  * Many methods on the webamp instance deal with track.
  *
@@ -433,6 +446,7 @@ export interface PlaylistTrack {
   id: number;
   artist?: string;
   title?: string;
+  album?: string;
   url: string;
   defaultName: string | null;
   albumArtUrl?: string | null;

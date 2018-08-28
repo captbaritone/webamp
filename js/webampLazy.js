@@ -6,12 +6,18 @@ import getStore from "./store";
 import App from "./components/App";
 import Hotkeys from "./hotkeys";
 import Media from "./media";
-import { getTrackCount, getTracks } from "./selectors";
+import * as Selectors from "./selectors";
 import {
   setSkinFromUrl,
   loadMediaFiles,
   setWindowSize,
-  loadFilesFromReferences
+  loadFilesFromReferences,
+  play,
+  pause,
+  seekBackward,
+  seekForward,
+  next,
+  previous
 } from "./actionCreators";
 import { LOAD_STYLE } from "./constants";
 import { uniqueId, objectMap, objectForEach } from "./utils";
@@ -27,7 +33,6 @@ import {
   LOADED,
   REGISTER_VISUALIZER,
   SET_Z_INDEX,
-  SET_MEDIA,
   CLOSE_REQUESTED
 } from "./actionTypes";
 import Emitter from "./emitter";
@@ -172,9 +177,33 @@ class Winamp {
     }
   }
 
+  play() {
+    this.store.dispatch(play());
+  }
+
+  pause() {
+    this.store.dispatch(pause());
+  }
+
+  seekBackward(seconds) {
+    this.store.dispatch(seekBackward(seconds));
+  }
+
+  seekForward(seconds) {
+    this.store.dispatch(seekForward(seconds));
+  }
+
+  nextTrack() {
+    this.store.dispatch(next());
+  }
+
+  previousTrack() {
+    this.store.dispatch(previous());
+  }
+
   // Append this array of tracks to the end of the current playlist.
   appendTracks(tracks) {
-    const nextIndex = getTrackCount(this.store.getState());
+    const nextIndex = Selectors.getTrackCount(this.store.getState());
     this.store.dispatch(loadMediaFiles(tracks, LOAD_STYLE.BUFFER, nextIndex));
   }
 
@@ -193,14 +222,16 @@ class Winamp {
     return this._actionEmitter.on(CLOSE_WINAMP, cb);
   }
 
-  onTrackDidChange(cb) {
-    return this._actionEmitter.on(SET_MEDIA, action => {
-      const tracks = getTracks(this.store.getState());
-      const track = tracks[action.id];
-      if (track == null) {
+  __onTrackDidChange(cb) {
+    let previousTrackId = null;
+    this.store.subscribe(() => {
+      const state = this.store.getState();
+      const trackId = Selectors.getCurrentlyPlayingTrackIdIfLoaded(state);
+      if (trackId === previousTrackId) {
         return;
       }
-      cb({ url: track.url });
+      previousTrackId = trackId;
+      cb(trackId == null ? null : Selectors.getCurrentTrackInfo(state));
     });
   }
 

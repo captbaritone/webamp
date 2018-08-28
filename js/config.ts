@@ -27,6 +27,10 @@ if (config.audioUrl && !config.initialTracks) {
 }
 
 export const skinUrl = config.skinUrl === undefined ? null : config.skinUrl;
+
+// https://freemusicarchive.org/music/netBloc_Artists/netBloc_Vol_24_tiuqottigeloot/
+const album = "netBloc Vol. 24: tiuqottigeloot";
+
 export const initialTracks = config.initialTracks || [
   {
     metaData: { artist: "DJ Mike Llama", title: "Llama Whippin' Intro" },
@@ -39,7 +43,8 @@ export const initialTracks = config.initialTracks || [
     duration: 322.612245,
     metaData: {
       title: "Heroines",
-      artist: "Diablo Swing Orchestra"
+      artist: "Diablo Swing Orchestra",
+      album
     }
   },
   {
@@ -48,7 +53,8 @@ export const initialTracks = config.initialTracks || [
     duration: 190.093061,
     metaData: {
       title: "We Are Going To Eclecfunk Your Ass",
-      artist: "Eclectek"
+      artist: "Eclectek",
+      album
     }
   },
   {
@@ -57,7 +63,8 @@ export const initialTracks = config.initialTracks || [
     duration: 214.622041,
     metaData: {
       title: "Seventeen",
-      artist: "Auto-Pilot"
+      artist: "Auto-Pilot",
+      album
     }
   },
   {
@@ -66,7 +73,8 @@ export const initialTracks = config.initialTracks || [
     duration: 181.838367,
     metaData: {
       title: "Microphone",
-      artist: "Muha"
+      artist: "Muha",
+      album
     }
   },
   {
@@ -75,7 +83,8 @@ export const initialTracks = config.initialTracks || [
     duration: 86.047347,
     metaData: {
       title: "Stumble",
-      artist: "Just Plain Ant"
+      artist: "Just Plain Ant",
+      album
     }
   },
   {
@@ -84,7 +93,8 @@ export const initialTracks = config.initialTracks || [
     duration: 226.795102,
     metaData: {
       title: "God Damn",
-      artist: "Sleaze"
+      artist: "Sleaze",
+      album
     }
   },
   {
@@ -93,7 +103,8 @@ export const initialTracks = config.initialTracks || [
     duration: 207.072653,
     metaData: {
       title: "Hola Hola Bossa Nova",
-      artist: "Juanitos"
+      artist: "Juanitos",
+      album
     }
   },
   {
@@ -102,7 +113,8 @@ export const initialTracks = config.initialTracks || [
     duration: 314.331429,
     metaData: {
       title: "Resolutions (Chris Summer Remix)",
-      artist: "Entertainment for the Braindead"
+      artist: "Entertainment for the Braindead",
+      album
     }
   },
   {
@@ -111,7 +123,8 @@ export const initialTracks = config.initialTracks || [
     duration: 204.042449,
     metaData: {
       title: "Trail",
-      artist: "Nobara Hayakawa"
+      artist: "Nobara Hayakawa",
+      album
     }
   },
   {
@@ -120,7 +133,8 @@ export const initialTracks = config.initialTracks || [
     duration: 201.116735,
     metaData: {
       title: "Tongue Tied",
-      artist: "Paper Navy"
+      artist: "Paper Navy",
+      album
     }
   },
   {
@@ -129,7 +143,8 @@ export const initialTracks = config.initialTracks || [
     duration: 245.394286,
     metaData: {
       title: "Garage",
-      artist: "60 Tigres"
+      artist: "60 Tigres",
+      album
     }
   },
   {
@@ -138,7 +153,8 @@ export const initialTracks = config.initialTracks || [
     duration: 221.44,
     metaData: {
       title: "The Cycle (Featuring Mista Mista)",
-      artist: "CM aka Creative"
+      artist: "CM aka Creative",
+      album
     }
   }
 ];

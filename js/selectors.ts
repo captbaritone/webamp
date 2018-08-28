@@ -3,7 +3,8 @@ import {
   PlaylistTrack,
   WebampWindow,
   WindowId,
-  WindowInfo
+  WindowInfo,
+  LoadedURLTrack
 } from "./types";
 import { createSelector } from "reselect";
 import {
@@ -18,7 +19,9 @@ import {
   TRACK_HEIGHT,
   WINDOW_RESIZE_SEGMENT_WIDTH,
   WINDOW_RESIZE_SEGMENT_HEIGHT,
-  WINDOW_WIDTH
+  WINDOW_WIDTH,
+  MEDIA_STATUS,
+  MEDIA_TAG_REQUEST_STATUS
 } from "./constants";
 import { createPlaylistURL } from "./playlistHtml";
 import * as fromPlaylist from "./reducers/playlist";
@@ -224,6 +227,50 @@ export const getCurrentTrackDisplayName = createSelector(
   getTrackDisplayName,
   (id, getName) => {
     return getName(id);
+  }
+);
+
+export const getMediaIsPlaying = (state: AppState) =>
+  state.media.status === MEDIA_STATUS.PLAYING;
+
+export const getCurrentTrack = createSelector(
+  getCurrentTrackId,
+  getPlaylist,
+  (trackId, playlist): PlaylistTrack | null => {
+    return trackId == null ? null : playlist.tracks[trackId];
+  }
+);
+export const getCurrentlyPlayingTrackIdIfLoaded = createSelector(
+  getMediaIsPlaying,
+  getCurrentTrack,
+  (mediaIsPlaying, currentTrack) => {
+    if (
+      !mediaIsPlaying ||
+      !currentTrack ||
+      currentTrack.mediaTagsRequestStatus ===
+        MEDIA_TAG_REQUEST_STATUS.INITIALIZED
+    ) {
+      return null;
+    }
+    return currentTrack.id;
+  }
+);
+
+export const getCurrentTrackInfo = createSelector(
+  getCurrentTrack,
+  (track: PlaylistTrack | null): LoadedURLTrack | null => {
+    if (track == null) {
+      return null;
+    }
+    return {
+      url: track.url,
+      metaData: {
+        title: track.title || null,
+        artist: track.artist || null,
+        album: track.album || null,
+        albumArtUrl: track.albumArtUrl || null
+      }
+    };
   }
 );
 
