@@ -11,7 +11,6 @@ import {
 import {
   promptForFileReferences,
   genArrayBufferFromFileReference,
-  genMediaDuration,
   genMediaTags
 } from "../fileUtils";
 import skinParser from "../skinParser";
@@ -41,9 +40,7 @@ import { removeAllTracks } from "./playlist";
 import { setPreamp, setEqBand } from "./equalizer";
 
 // Lower is better
-const DURATION_VISIBLE_PRIORITY = 5;
 const META_DATA_VISIBLE_PRIORITY = 10;
-const DURATION_PRIORITY = 15;
 const META_DATA_PRIORITY = 20;
 
 const loadQueue = new LoadQueue({ threads: 4 });
@@ -151,28 +148,6 @@ export function openSkinFileDialog() {
   return _openFileDialog(".zip, .wsz");
 }
 
-export function fetchMediaDuration(url, id) {
-  return (dispatch, getState) => {
-    loadQueue.push(
-      async () => {
-        try {
-          const duration = await genMediaDuration(url);
-          dispatch({ type: SET_MEDIA_DURATION, duration, id });
-        } catch (e) {
-          // TODO: Should we update the state to indicate that we don't know the length?
-        }
-      },
-
-      () => {
-        const trackIsVisible = getTrackIsVisibleFunction(getState());
-        return trackIsVisible(id)
-          ? DURATION_VISIBLE_PRIORITY
-          : DURATION_PRIORITY;
-      }
-    );
-  };
-}
-
 export function loadMediaFiles(tracks, loadStyle = null, atIndex = 0) {
   return dispatch => {
     if (loadStyle === LOAD_STYLE.PLAY) {
@@ -245,10 +220,9 @@ function queueFetchingMediaTags(id) {
 let ts0;
 
 export function fetchMediaTags(file, id) {
-
   if (!ts0) {
     ts0 = Date.now();
-    console.log(ts0 + ' loading music-metadata');
+    console.log(`${ts0} loading music-metadata`);
   }
 
   return async dispatch => {
@@ -257,39 +231,53 @@ export function fetchMediaTags(file, id) {
     let metadata;
     try {
       metadata = await genMediaTags(file, event => {
-        console.log(Date.now()- ts0 + ` ${event.tag.type}.${event.tag.id}`);
+        console.log(`${Date.now() - ts0} ${event.tag.type}.${event.tag.id}`);
 
-        switch(event.tag.type) {
-          case 'common':
-            switch(event.tag.id) {
-              case 'artist':
-              case 'title':
+        switch (event.tag.type) {
+          case "common":
+            switch (event.tag.id) {
+              case "artist":
+              case "title":
                 dispatch({
                   type: SET_MEDIA_TAGS,
                   artist: event.metadata.common.artist,
                   title: event.metadata.common.title,
-                  albumArtUrl: null, id }); // ToDo albumArtUrl
+                  albumArtUrl: null,
+                  id
+                }); // ToDo albumArtUrl
                 break;
             }
             break;
 
-          case 'format':
-            switch(event.tag.id) {
-              case 'duration':
-                dispatch({type: SET_MEDIA_DURATION, duration: event.metadata.format.duration, id });
+          case "format":
+            switch (event.tag.id) {
+              case "duration":
+                dispatch({
+                  type: SET_MEDIA_DURATION,
+                  duration: event.metadata.format.duration,
+                  id
+                });
+                break;
 
-              case 'bitrate':
-              case 'sampleRate':
-              case 'numberOfChannels':
-                /*
+              case "bitrate":
+              case "sampleRate":
+              case "numberOfChannels":
                 dispatch({
                   type: SET_MEDIA,
-                  kbps: event.metadata.format.bitrate ? Math.round(event.metadata.format.bitrate / 1000).toString() : '',
-                  khz: event.metadata.format.sampleRate ? Math.round(event.metadata.format.sampleRate / 1000).toString() : '',
+                  kbps: event.metadata.format.bitrate
+                    ? Math.round(
+                        event.metadata.format.bitrate / 1000
+                      ).toString()
+                    : "",
+                  khz: event.metadata.format.sampleRate
+                    ? Math.round(
+                        event.metadata.format.sampleRate / 1000
+                      ).toString()
+                    : "",
                   channels: event.metadata.format.numberOfChannels,
                   length: event.metadata.format.duration,
                   id
-                });*/
+                });
                 break;
             }
             break;
@@ -303,9 +291,9 @@ export function fetchMediaTags(file, id) {
         const blob = new Blob([byteArray], { type: picture[0].format });
         albumArtUrl = URL.createObjectURL(blob);
       }
-      // dispatch({ type: SET_MEDIA_TAGS, artist, title, albumArtUrl, id });
+      dispatch({ type: SET_MEDIA_TAGS, artist, title, albumArtUrl, id });
     } catch (e) {
-      // dispatch({ type: MEDIA_TAG_REQUEST_FAILED, id });
+      dispatch({ type: MEDIA_TAG_REQUEST_FAILED, id });
       return;
     }
 
