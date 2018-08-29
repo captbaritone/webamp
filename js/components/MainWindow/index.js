@@ -40,19 +40,13 @@ import MainVolume from "./MainVolume";
 import "../../../css/main-window.css";
 
 export class MainWindow extends React.Component {
-  constructor(props) {
-    super(props);
-    this._handleClick = this._handleClick.bind(this);
-    this._handleDrop = this._handleDrop.bind(this);
-  }
-
-  _handleClick() {
+  _handleClick = () => {
     this.props.setFocus();
-  }
+  };
 
-  _handleDrop(e) {
+  _handleDrop = e => {
     this.props.loadFilesFromReferences(e);
-  }
+  };
 
   render() {
     const {

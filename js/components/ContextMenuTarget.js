@@ -6,8 +6,6 @@ export default class ContextMenuTarget extends React.Component {
   constructor(props) {
     super(props);
     this.state = { selected: false };
-    this._handleHandleClick = this._handleHandleClick.bind(this);
-    this._handleGlobalClick = this._handleGlobalClick.bind(this);
   }
 
   componentDidMount() {
@@ -18,11 +16,11 @@ export default class ContextMenuTarget extends React.Component {
     document.removeEventListener("click", this._handleGlobalClick);
   }
 
-  _handleHandleClick() {
+  _handleHandleClick = () => {
     this.setState({ selected: !this.state.selected });
-  }
+  };
 
-  _handleGlobalClick(e) {
+  _handleGlobalClick = e => {
     if (
       this.state.selected &&
       // Not sure how, but it's possible for this to get called when handleNode is null/undefined.
@@ -32,7 +30,7 @@ export default class ContextMenuTarget extends React.Component {
     ) {
       this.setState({ selected: false });
     }
-  }
+  };
 
   _offset() {
     if (!this.handleNode) {

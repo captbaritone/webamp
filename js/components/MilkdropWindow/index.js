@@ -26,9 +26,6 @@ class PresetsLoader extends React.Component {
       isFullscreen: false,
       desktop: false
     };
-    this._handleFullscreenChange = this._handleFullscreenChange.bind(this);
-    this._handleRequestFullsceen = this._handleRequestFullsceen.bind(this);
-    this._toggleDesktop = this._toggleDesktop.bind(this);
   }
 
   isHidden() {
@@ -57,11 +54,11 @@ class PresetsLoader extends React.Component {
     screenfull.off("change", this._handleFullscreenChange);
   }
 
-  _handleFullscreenChange() {
+  _handleFullscreenChange = () => {
     this.setState({ isFullscreen: screenfull.isFullscreen });
-  }
+  };
 
-  _toggleDesktop() {
+  _toggleDesktop = () => {
     if (this.state.desktop) {
       this.props.showWindow(this.props.windowId);
       this.setState({ desktop: false });
@@ -69,9 +66,9 @@ class PresetsLoader extends React.Component {
       this.props.hideWindow(this.props.windowId);
       this.setState({ desktop: true });
     }
-  }
+  };
 
-  _handleRequestFullsceen() {
+  _handleRequestFullsceen = () => {
     if (screenfull.enabled) {
       if (!screenfull.isFullscreen) {
         screenfull.request(this._wrapperNode);
@@ -79,7 +76,7 @@ class PresetsLoader extends React.Component {
         screenfull.exit();
       }
     }
-  }
+  };
 
   _renderMilkdrop(size) {
     const { butterchurn, presets, initialPreset } = this.state;

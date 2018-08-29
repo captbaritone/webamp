@@ -26,7 +26,7 @@ const getStore = (
 
   // eslint-disable-next-line no-unused-vars
   const emitterMiddleware = store => next => action => {
-    actionEmitter.trigger(action.type);
+    actionEmitter.trigger(action.type, action);
     return next(action);
   };
 

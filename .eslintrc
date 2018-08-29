@@ -1,4 +1,5 @@
 {
+  "parser": "babel-eslint",
   "parserOptions": {
     "ecmaVersion": 8,
     "sourceType": "module",
@@ -7,7 +8,7 @@
       "experimentalObjectRestSpread": true
     }
   },
-  "plugins": ["react", "prettier", "import"],
+  "plugins": ["react", "prettier", "import", "no-constructor-bind"],
   "settings": {
     "react": {
       "version": "15.2"
@@ -128,6 +129,7 @@
     "import/no-extraneous-dependencies": "error",
     "import/no-named-as-default-member": "error",
     "import/no-unresolved": "error",
-    "import/order": "error"
+    "import/order": "error",
+    "no-constructor-bind/no-constructor-bind": "error"
   }
 }
