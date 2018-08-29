@@ -20,7 +20,7 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            forceEnv: "library"
+            envName: "library"
           }
         }
       },
