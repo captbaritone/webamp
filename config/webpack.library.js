@@ -70,6 +70,7 @@ module.exports = {
     path: path.resolve(__dirname, "../built"),
     filename: "webamp.[name].js",
     library: "Webamp",
-    libraryTarget: "umd"
+    libraryTarget: "umd",
+    libraryExport: "default"
   }
 };
