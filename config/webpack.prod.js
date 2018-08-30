@@ -3,6 +3,8 @@ const merge = require("webpack-merge");
 const workboxPlugin = require("workbox-webpack-plugin");
 const GitRevisionPlugin = require("git-revision-webpack-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+
 const common = require("./webpack.common.js");
 
 const gitRevisionPlugin = new GitRevisionPlugin();
@@ -10,6 +12,11 @@ const gitRevisionPlugin = new GitRevisionPlugin();
 const config = merge(common, {
   devtool: "source-map",
   plugins: [
+    new BundleAnalyzerPlugin({
+      analyzerMode: "static",
+      reportFilename: "prod-report.html",
+      openAnalyzer: false
+    }),
     new webpack.DefinePlugin({
       "process.env": {
         NODE_ENV: JSON.stringify("production")
