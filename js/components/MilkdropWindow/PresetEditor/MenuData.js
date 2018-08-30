@@ -629,6 +629,27 @@ const menuData = {
       ]
     },
     {
+      name: "[ edit preset initialization code ]",
+      meta:
+        "read-only: zoom, rot, warp, cx, cy, dx, dy, sx, sy; decay, gamma;\n           echo_zoom, echo_scale, echo_orient;\n           ib_{size|r|g|b|a}, ob_{size|r|g|b|a}, mv_{x|y|dx|dy|l|r|g|b|a};\n           wave_{r|g|b|a|x|y|mode|mystery|usedots|thick|additive|brighten};\n           darken_center, wrap; invert, brighten, darken, solarize\n           time, fps, frame, progress; {bass|mid|treb}[_att]\nwrite:     q1-q8, monitor",
+      type: "text",
+      presetKey: ["presetInit"]
+    },
+    {
+      name: "[ edit per_frame equations ]",
+      meta:
+        "read-only:  time, fps, frame, progress; {bass|mid|treb}[_att]\nread/write: zoom, rot, warp, cx, cy, dx, dy, sx, sy; q1-q8; monitor\n            mv_{x|y|dx|dy|l|r|g|b|a}, ib_{size|r|g|b|a}, ob_{size|r|g|b|a};\n            wave_{r|g|b|a|x|y|mode|mystery|usedots|thick|additive|brighten};\n            darken_center, wrap; invert, brighten, darken, solarize\n            decay, gamma, echo_zoom, echo_alpha, echo_orient",
+      type: "text",
+      presetKey: ["perFrame"]
+    },
+    {
+      name: "[ edit per_vertex equations ]",
+      meta:
+        "read-only:  x, y, rad, ang; time, fps, frame, progress; {bass|mid|treb}[_att]\nread/write: dx, dy, zoom, rot, warp, cx, cy, sx, sy, q1-q8",
+      type: "text",
+      presetKey: ["perVertex"]
+    },
+    {
       name: "[ edit warp shader ]",
       meta:
         "This pixel shader drives the warping, color, etc. of the internal image each frame.",

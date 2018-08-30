@@ -112,6 +112,16 @@ class PresetEditor extends React.Component {
     );
   }
 
+  async _convertPresetEquations(presetVersion, initEQs, frameEQs, pixelEQs) {
+    const presetConverter = await this.props.loadPresetConverter();
+    return presetConverter.convertPresetEquations(
+      presetVersion,
+      initEQs,
+      frameEQs,
+      pixelEQs
+    );
+  }
+
   // Converts presetKey array ["baseVals" "warp"] to query {baseVals: {warp: { $set: value }}}
   _presetKeyArrayToQuery(presetKey, value) {
     return presetKey
@@ -153,8 +163,20 @@ class PresetEditor extends React.Component {
         )
       );
       this.props.updatePreset(preset);
-    } else {
-      // need to convert base preset equations
+    } else if (
+      key[0] === "presetInit" ||
+      key[0] === "perFrame" ||
+      key[0] === "perVertex"
+    ) {
+      let preset = update(this.props.currentPreset, { presetParts: query });
+      const presetEQs = await this._convertPresetEquations(
+        preset.presetParts.presetVersion,
+        preset.presetParts.presetInit,
+        preset.presetParts.perFrame,
+        preset.presetParts.perVertex
+      );
+      preset = Object.assign(preset, presetEQs);
+      this.props.updatePreset(preset);
     }
   }
 
@@ -284,11 +306,11 @@ class PresetEditor extends React.Component {
             maxWidth: `${this.props.width - 30}px`,
             background: "rgba(0, 0, 0, 0.815)",
             textAlign: "right",
-            whiteSpace: "nowrap",
+            whiteSpace: "pre-line",
             overflow: "hidden"
           }}
         >
-          <span style={{ color: "#CCCCCC", fontSize: "12px" }}>{menuMeta}</span>
+          <div style={{ color: "#CCCCCC", fontSize: "12px" }}>{menuMeta}</div>
         </div>
       </div>
     );
