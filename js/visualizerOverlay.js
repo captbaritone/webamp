@@ -55,8 +55,8 @@ export default class VisualizerOverlay {
             const area = width * height;
             return { element: el, width, height, area };
           })
-          .filter(({area})=> area > 0)
-          .sort((a, b)=> b.area - a.area)
+          .filter(({ area }) => area > 0)
+          .sort((a, b) => b.area - a.area)
           .forEach(({ element, width, height, area }) => {
             const { offsetLeft, offsetTop } = getOffset(element, windowEl);
             ctx.save();
@@ -93,8 +93,18 @@ export default class VisualizerOverlay {
     const { visualizerCanvas, wrappyCanvas, wrappyCtx, animateFns } = this;
     const { width, height } = visualizerCanvas;
     if (options.mirror) {
-      const drawImage = ()=> {
-        wrappyCtx.drawImage(visualizerCanvas, 0, 0, width, height, 0, 0, width, height);
+      const drawImage = () => {
+        wrappyCtx.drawImage(
+          visualizerCanvas,
+          0,
+          0,
+          width,
+          height,
+          0,
+          0,
+          width,
+          height
+        );
         // zoom in the source area:
         // wrappyCtx.drawImage(visualizerCanvas, width/4, height/4, width/2, height/2, 0, 0, width, height);
         // wrappyCtx.drawImage(visualizerCanvas, width/4, height/4, width/4, height/4, 0, 0, width, height);
@@ -152,13 +162,14 @@ export default class VisualizerOverlay {
   }
   fadeOutAndCleanUp() {
     this.fadeOut();
-    this.overlayCanvases[0].addEventListener("transitionend", ()=> {
+    this.overlayCanvases[0].addEventListener("transitionend", () => {
       this.cleanUp();
     });
   }
   fadeOut() {
     this.overlayCanvases.forEach(canvas => {
-      canvas.style.transition = "opacity 1s cubic-bezier(0.125, 0.960, 0.475, 0.915)";
+      canvas.style.transition =
+        "opacity 1s cubic-bezier(0.125, 0.960, 0.475, 0.915)";
       canvas.style.opacity = "0";
     });
   }
