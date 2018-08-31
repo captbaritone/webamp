@@ -134,7 +134,7 @@ export default class VisualizerOverlay {
       wrappyCanvas.width = width * 2;
       wrappyCanvas.height = height * 2;
       for (let xi = 0; xi < 2; xi++) {
-        for (let xi = 0; xi < 2; xi++) {
+        for (let yi = 0; yi < 2; yi++) {
           wrappyCtx.drawImage(
             visualizerCanvas,
             0,
