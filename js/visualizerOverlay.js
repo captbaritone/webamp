@@ -1,5 +1,5 @@
 function getOffset(element, fromElement) {
-  var el = element,
+  let el = element,
     offsetLeft = 0,
     offsetTop = 0;
 
@@ -23,8 +23,8 @@ export default class VisualizerOverlay {
     this.overlayCanvases = [];
     this.animateFns = [];
     Array.from(windowElements).forEach(windowEl => {
-      var canvas = document.createElement("canvas");
-      var ctx = canvas.getContext("2d");
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
       canvas.style.position = "absolute";
       canvas.style.left = "0";
       canvas.style.top = "0";
@@ -36,8 +36,9 @@ export default class VisualizerOverlay {
       this.overlayCanvases.push(canvas);
       this.animateFns.push(options => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        var scale = windowEl.classList.contains("doubled") ? 2 : 1;
-        scale *= window.devicePixelRatio || 1;
+        const scale =
+          (windowEl.classList.contains("doubled") ? 2 : 1) *
+          (window.devicePixelRatio || 1);
         if (
           canvas.width !== windowEl.clientWidth * scale ||
           canvas.height !== windowEl.clientHeight * scale
@@ -47,7 +48,7 @@ export default class VisualizerOverlay {
         }
         canvas.style.width = windowEl.clientWidth + "px";
         canvas.style.height = windowEl.clientHeight + "px";
-        var stuff = windowEl.querySelectorAll("*");
+        const stuff = windowEl.querySelectorAll("*");
         Array.from(stuff)
           .map(el => {
             const width = el.clientWidth;
@@ -132,8 +133,8 @@ export default class VisualizerOverlay {
     } else if (options.tile) {
       wrappyCanvas.width = width * 2;
       wrappyCanvas.height = height * 2;
-      for (var xi = 0; xi < 2; xi++) {
-        for (var xi = 0; xi < 2; xi++) {
+      for (let xi = 0; xi < 2; xi++) {
+        for (let xi = 0; xi < 2; xi++) {
           wrappyCtx.drawImage(
             visualizerCanvas,
             0,
