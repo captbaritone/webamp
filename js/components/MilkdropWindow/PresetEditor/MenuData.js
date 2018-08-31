@@ -10,6 +10,215 @@ const shapeMenuData = idx => ({
       default: 0
     },
     {
+      name: "number of instances",
+      meta:
+        "the number of times (num_inst) to draw this shape.  Each instance will have a different value for 'instance' in the per-frame eqs (0,1,2...)",
+      type: "int",
+      presetKey: ["waves", idx, "baseVals", "num_inst"],
+      default: 1,
+      min: 1,
+      max: 1024
+    },
+    {
+      name: "number of sides",
+      meta: "the default number of sides that make up the polygonal shape",
+      type: "int",
+      presetKey: ["waves", idx, "baseVals", "sides"],
+      default: 4,
+      min: 3,
+      max: 100
+    },
+    {
+      name: "draw thick",
+      meta:
+        "if ON, the border will be overdrawn 4X to make it thicker, bolder, and more visible",
+      type: "bool",
+      presetKey: ["waves", idx, "baseVals", "thickoutline"],
+      default: 0
+    },
+    {
+      name: "additive drawing",
+      meta:
+        "if ON, the shape will add color to sature the image toward white; otherwise, it will replace what's there.",
+      type: "bool",
+      presetKey: ["waves", idx, "baseVals", "additive"],
+      default: 0
+    },
+    {
+      name: "x position",
+      meta: "default x position of the shape (0..1; 0=left side, 1=right side)",
+      type: "float",
+      presetKey: ["shapes", idx, "baseVals", "x"],
+      default: 0.5,
+      min: 0,
+      max: 1
+    },
+    {
+      name: "y position",
+      meta: "default y position of the shape (0..1; 0=bottom, 1=top of screen)",
+      type: "float",
+      presetKey: ["shapes", idx, "baseVals", "y"],
+      default: 0.5,
+      min: 0,
+      max: 1
+    },
+    {
+      name: "radius",
+      meta: "default radius of the shape (0+)",
+      type: "float",
+      presetKey: ["shapes", idx, "baseVals", "rad"],
+      default: 0.1
+    },
+    {
+      name: "angle",
+      meta: "default rotation angle of the shape (0...3.14*2)",
+      type: "float",
+      presetKey: ["shapes", idx, "baseVals", "ang"],
+      default: 0,
+      min: 0,
+      max: Math.PI * 2
+    },
+    {
+      name: "textured",
+      meta:
+        "if ON, the shape will be textured with the image from the previous frame",
+      type: "bool",
+      presetKey: ["waves", idx, "baseVals", "textured"],
+      default: 0
+    },
+    {
+      name: "texture zoom",
+      meta: "the portion of the previous frame's image to use with the shape",
+      type: "float",
+      presetKey: ["shapes", idx, "baseVals", "tex_zoom"],
+      default: 1
+    },
+    {
+      name: "texture angle",
+      meta:
+        "the angle at which to rotate the previous frame's image before applying it to the shape",
+      type: "float",
+      presetKey: ["shapes", idx, "baseVals", "tex_ang"],
+      default: 0,
+      min: 0,
+      max: Math.PI * 2
+    },
+    {
+      name: "inner color (red)",
+      meta: "default amount of red color toward the center of the shape (0..1)",
+      type: "float",
+      presetKey: ["shapes", idx, "baseVals", "r"],
+      default: 1,
+      min: 0,
+      max: 1
+    },
+    {
+      name: "inner color (green)",
+      meta:
+        "default amount of green color toward the center of the shape (0..1)",
+      type: "float",
+      presetKey: ["shapes", idx, "baseVals", "g"],
+      default: 0,
+      min: 0,
+      max: 1
+    },
+    {
+      name: "inner color (blue)",
+      meta:
+        "default amount of blue color toward the center of the shape (0..1)",
+      type: "float",
+      presetKey: ["shapes", idx, "baseVals", "b"],
+      default: 0,
+      min: 0,
+      max: 1
+    },
+    {
+      name: "inner opacity",
+      meta:
+        "default opacity of the center of the shape; 0=transparent, 1=opaque",
+      type: "float",
+      presetKey: ["shapes", idx, "baseVals", "a"],
+      default: 1,
+      min: 0,
+      max: 1
+    },
+    {
+      name: "outer color (red)",
+      meta:
+        "default amount of red color toward the outer edge of the shape (0..1)",
+      type: "float",
+      presetKey: ["shapes", idx, "baseVals", "r2"],
+      default: 0,
+      min: 0,
+      max: 1
+    },
+    {
+      name: "outer color (green)",
+      meta:
+        "default amount of green color toward the outer edge of the shape (0..1)",
+      type: "float",
+      presetKey: ["shapes", idx, "baseVals", "g2"],
+      default: 1,
+      min: 0,
+      max: 1
+    },
+    {
+      name: "outer color (blue)",
+      meta:
+        "default amount of blue color toward the outer edge of the shape (0..1)",
+      type: "float",
+      presetKey: ["shapes", idx, "baseVals", "b2"],
+      default: 0,
+      min: 0,
+      max: 1
+    },
+    {
+      name: "outer opacity",
+      meta:
+        "default opacity of the outer edge of the shape; 0=transparent, 1=opaque",
+      type: "float",
+      presetKey: ["shapes", idx, "baseVals", "a2"],
+      default: 0,
+      min: 0,
+      max: 1
+    },
+    {
+      name: "border color (red)",
+      meta: "default amount of red color in the shape's border (0..1)",
+      type: "float",
+      presetKey: ["shapes", idx, "baseVals", "border_r"],
+      default: 0,
+      min: 0,
+      max: 1
+    },
+    {
+      name: "border color (green)",
+      meta: "default amount of green color in the shape's border (0..1)",
+      type: "float",
+      presetKey: ["shapes", idx, "baseVals", "border_g"],
+      default: 1,
+      min: 0,
+      max: 1
+    },
+    {
+      name: "border color (blue)",
+      meta: "default amount of blue color in the shape's border (0..1)",
+      type: "float",
+      presetKey: ["shapes", idx, "baseVals", "border_b"],
+      default: 0,
+      min: 0,
+      max: 1
+    },
+    {
+      name: "border opacity",
+      meta: "default opacity of the shape's border; 0=transparent, 1=opaque",
+      type: "float",
+      presetKey: ["shapes", idx, "baseVals", "border_a"],
+      default: 0,
+      min: 0,
+      max: 1
+    },
+    {
       name: "[ edit initialization code ]",
       meta:
         "IN: time, frame, fps, progress; q1-q8 (from preset init); x,y,rad,ang; r,g,b,a; r2,g2,b2,a2; border_{r|g|b|a}; sides, thick, additive, textured\nOUT: t1-t8; x,y,rad,ang; r,g,b,a; r2,g2,b2,a2; border_{r|g|b|a}; sides, thick, additive, textured",
@@ -35,6 +244,109 @@ const waveMenuData = idx => ({
       meta: "enables or disables this custom waveform/spectrum",
       type: "bool",
       presetKey: ["waves", idx, "baseVals", "enabled"],
+      default: 0
+    },
+    {
+      name: "number of samples",
+      meta: "the number of samples (points) that makes up the waveform",
+      type: "int",
+      presetKey: ["waves", idx, "baseVals", "samples"],
+      default: 512,
+      min: 2,
+      max: 512
+    },
+    {
+      name: "L/R separation",
+      meta:
+        "the offset between the left & right channels; useful for doing phase plots. Keep low (<32) when using w/spectrum.",
+      type: "int",
+      presetKey: ["waves", idx, "baseVals", "sep"],
+      default: 0,
+      min: 0,
+      max: 256
+    },
+    {
+      name: "scaling",
+      meta: "the size of the wave (1=normal)",
+      type: "float",
+      presetKey: ["waves", idx, "baseVals", "scaling"],
+      default: 1
+    },
+    {
+      name: "smoothing",
+      meta: "0=the raw wave; 1=a highly damped (smoothed) wave",
+      type: "float",
+      presetKey: ["waves", idx, "baseVals", "smoothing"],
+      default: 0.5,
+      min: 0,
+      max: 1
+    },
+    {
+      name: "color (red)",
+      meta: "amount of red color in the wave (0..1)",
+      type: "float",
+      presetKey: ["waves", idx, "baseVals", "r"],
+      default: 1,
+      min: 0,
+      max: 1
+    },
+    {
+      name: "color (green)",
+      meta: "amount of green color in the wave (0..1)",
+      type: "float",
+      presetKey: ["waves", idx, "baseVals", "g"],
+      default: 0,
+      min: 0,
+      max: 1
+    },
+    {
+      name: "color (blue)",
+      meta: "amount of blue color in the wave (0..1)",
+      type: "float",
+      presetKey: ["waves", idx, "baseVals", "b"],
+      default: 0,
+      min: 0,
+      max: 1
+    },
+    {
+      name: "opacity",
+      meta: "opacity of the waveform; lower numbers = more transparent",
+      type: "float",
+      presetKey: ["waves", idx, "baseVals", "a"],
+      default: 1,
+      min: 0,
+      max: 1
+    },
+    {
+      name: "use spectrum",
+      meta:
+        "if ON, the data in value1 and value2 will constitute a frequency spectrum (instead of waveform values)",
+      type: "bool",
+      presetKey: ["waves", idx, "baseVals", "spectrum"],
+      default: 0
+    },
+    {
+      name: "use dots",
+      meta:
+        "if ON, the samples will be overdrawn 4X to make them thicker, bolder, and more visible",
+      type: "bool",
+      presetKey: ["waves", idx, "baseVals", "usedots"],
+      default: 0
+    },
+    {
+      name: "draw thick",
+      meta:
+        "if ON, the samples will be overdrawn 4X to make them thicker, bolder, and more visible",
+      type: "bool",
+      presetKey: ["waves", idx, "baseVals", "thick"],
+      default: 0
+    },
+    {
+      name: "additive drawing",
+      meta:
+        "if ON, the samples will add color to sature the image toward white; otherwise, they replace what's there.",
+      type: "bool",
+      presetKey: ["waves", idx, "baseVals", "additive"],
       default: 0
     },
     {
