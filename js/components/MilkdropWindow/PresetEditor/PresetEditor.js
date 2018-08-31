@@ -122,6 +122,25 @@ class PresetEditor extends React.Component {
     );
   }
 
+  async _convertShapeEquations(presetVersion, initEQs, frameEQs) {
+    const presetConverter = await this.props.loadPresetConverter();
+    return presetConverter.convertShapeEquations(
+      presetVersion,
+      initEQs,
+      frameEQs
+    );
+  }
+
+  async _convertWaveEquations(presetVersion, initEQs, frameEQs, pointEQs) {
+    const presetConverter = await this.props.loadPresetConverter();
+    return presetConverter.convertWaveEquations(
+      presetVersion,
+      initEQs,
+      frameEQs,
+      pointEQs
+    );
+  }
+
   // Converts presetKey array ["baseVals" "warp"] to query {baseVals: {warp: { $set: value }}}
   _presetKeyArrayToQuery(presetKey, value) {
     return presetKey
@@ -176,6 +195,27 @@ class PresetEditor extends React.Component {
         preset.presetParts.perVertex
       );
       preset = Object.assign(preset, presetEQs);
+      this.props.updatePreset(preset);
+    } else if (key[0] === "shapes") {
+      // Shape equations updated (baseVals handled already)
+      const preset = update(this.props.currentPreset, { presetParts: query });
+      const shapeEQs = await this._convertShapeEquations(
+        preset.presetParts.presetVersion,
+        preset.presetParts.shapes[key[1]].init_eqs_str,
+        preset.presetParts.shapes[key[1]].frame_eqs_str
+      );
+      preset.shapes[key[1]] = Object.assign(preset.shapes[key[1]], shapeEQs);
+      this.props.updatePreset(preset);
+    } else if (key[0] === "waves") {
+      // Wave equations updated (baseVals handled already)
+      const preset = update(this.props.currentPreset, { presetParts: query });
+      const waveEQs = await this._convertWaveEquations(
+        preset.presetParts.presetVersion,
+        preset.presetParts.waves[key[1]].init_eqs_str,
+        preset.presetParts.waves[key[1]].frame_eqs_str,
+        preset.presetParts.waves[key[1]].point_eqs_str
+      );
+      preset.waves[key[1]] = Object.assign(preset.waves[key[1]], waveEQs);
       this.props.updatePreset(preset);
     }
   }

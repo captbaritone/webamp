@@ -1,3 +1,66 @@
+const shapeMenuData = idx => ({
+  name: `--custom shape ${idx}`,
+  meta: "",
+  items: [
+    {
+      name: "enabled",
+      meta: "enables or disables this shape",
+      type: "bool",
+      presetKey: ["shapes", idx, "baseVals", "enabled"],
+      default: 0
+    },
+    {
+      name: "[ edit initialization code ]",
+      meta:
+        "IN: time, frame, fps, progress; q1-q8 (from preset init); x,y,rad,ang; r,g,b,a; r2,g2,b2,a2; border_{r|g|b|a}; sides, thick, additive, textured\nOUT: t1-t8; x,y,rad,ang; r,g,b,a; r2,g2,b2,a2; border_{r|g|b|a}; sides, thick, additive, textured",
+      type: "text",
+      presetKey: ["shapes", idx, "init_eqs_str"]
+    },
+    {
+      name: "[ edit per-frame(/per-instance) code ]",
+      meta:
+        "IN: instance, num_inst, time, frame, fps, progress; q1-q8 (from preset init); x,y,rad,ang; r,g,b,a; r2,g2,b2,a2; border_{r|g|b|a}; sides, thick, additive, textured\nOUT: t1-t8; x,y,rad,ang; r,g,b,a; r2,g2,b2,a2; border_{r|g|b|a}; sides, thick, additive, textured",
+      type: "text",
+      presetKey: ["shapes", idx, "frame_eqs_str"]
+    }
+  ]
+});
+
+const waveMenuData = idx => ({
+  name: `--custom wave ${idx}`,
+  meta: "",
+  items: [
+    {
+      name: "enabled",
+      meta: "enables or disables this custom waveform/spectrum",
+      type: "bool",
+      presetKey: ["waves", idx, "baseVals", "enabled"],
+      default: 0
+    },
+    {
+      name: "[ edit initialization code ]",
+      meta:
+        "IN: time, frame, fps, progress; samples; q1-q8 (from preset init) / OUT: t1-t8",
+      type: "text",
+      presetKey: ["waves", idx, "init_eqs_str"]
+    },
+    {
+      name: "[ edit per-frame code ]",
+      meta:
+        "IN: time, frame, fps, progress; samples; q1-q8, t1-t8; r,g,b,a; {bass|mid|treb}[_att] / OUT: r,g,b,a; samples; t1-t8",
+      type: "text",
+      presetKey: ["waves", idx, "frame_eqs_str"]
+    },
+    {
+      name: "[ edit per-point code ]",
+      meta:
+        "IN: sample [0..1]; value1 [left ch], value2 [right ch], plus all vars for per-frame code / OUT: x,y; r,g,b,a; t1-t8",
+      type: "text",
+      presetKey: ["waves", idx, "point_eqs_str"]
+    }
+  ]
+});
+
 const menuData = {
   items: [
     {
@@ -110,6 +173,28 @@ const menuData = {
           presetKey: ["baseVals", "sy"],
           default: 1
         }
+      ]
+    },
+    {
+      name: "--drawing: custom shapes",
+      meta:
+        "navigation: ESC: exit, Left Arrow: back, Right Arrow: select, UP/DOWN: change sel",
+      items: [
+        shapeMenuData(0),
+        shapeMenuData(1),
+        shapeMenuData(2),
+        shapeMenuData(3)
+      ]
+    },
+    {
+      name: "--drawing: custom waves",
+      meta:
+        "navigation: ESC: exit, Left Arrow: back, Right Arrow: select, UP/DOWN: change sel",
+      items: [
+        waveMenuData(0),
+        waveMenuData(1),
+        waveMenuData(2),
+        waveMenuData(3)
       ]
     },
     {
