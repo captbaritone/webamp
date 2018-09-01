@@ -2,8 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { getCurrentTrackDisplayName } from "../../selectors";
 import DropTarget from "../DropTarget";
-import PresetOverlay from "./PresetOverlay";
 import VisualizerOverlay from "../../visualizerOverlay";
+import PresetOverlay from "./PresetOverlay";
 
 const USER_PRESET_TRANSITION_SECONDS = 5.7;
 const PRESET_TRANSITION_SECONDS = 2.7;
@@ -44,7 +44,9 @@ class Milkdrop extends React.Component {
       this.selectPreset(this.props.presets.getCurrent(), 0);
     }
 
-    var windowElements = document.querySelectorAll(".window:not(.gen-window)");
+    const windowElements = document.querySelectorAll(
+      ".window:not(.gen-window)"
+    );
     this.visualizerOverlay = new VisualizerOverlay(
       this._canvasNode,
       windowElements
