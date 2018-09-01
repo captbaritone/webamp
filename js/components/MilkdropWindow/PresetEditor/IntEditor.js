@@ -22,6 +22,18 @@ class IntEditor extends React.Component {
 
   _handleFocusedKeyboardInput = e => {
     switch (e.keyCode) {
+      case 33: // page up
+        this.setState({
+          value: Math.min(this.state.value + 10, this.props.max)
+        });
+        e.stopPropagation();
+        break;
+      case 34: // page down
+        this.setState({
+          value: Math.max(this.state.value - 10, this.props.min)
+        });
+        e.stopPropagation();
+        break;
       case 38: // up arrow
         this.setState({
           value: Math.min(this.state.value + 1, this.props.max)
@@ -45,7 +57,19 @@ class IntEditor extends React.Component {
   render() {
     return (
       <div>
-        <span style={{ color: "#FFCC22" }}>{this.state.value}</span>
+        <div>
+          <span style={{ color: "#CCCCCC" }}>
+            (use up/down arrow keys, PGUP, PGDN to change value)
+          </span>
+        </div>
+        <div>
+          <span style={{ color: "#CCCCCC" }}>
+            Current value of {this.props.name}:
+          </span>
+        </div>
+        <div>
+          <span style={{ color: "#FFCC22" }}>{this.state.value}</span>
+        </div>
       </div>
     );
   }

@@ -43,11 +43,16 @@ class TextEditor extends React.Component {
   render() {
     return (
       <div>
+        <div>
+          <span style={{ color: "#CCCCCC" }}>
+            Enter the new string; hit CTRL+ENTER to apply or ESC to cancel.
+          </span>
+        </div>
         <textarea
           style={{
             width: `${this.props.width - 30}px`,
             height: `${this.props.height - 30}px`,
-            backgroundColor: "#000000",
+            backgroundColor: "transparent",
             color: "#CCCCCC",
             border: 0
           }}

@@ -249,6 +249,7 @@ class PresetEditor extends React.Component {
         menuItemElms = [
           <FloatEditor
             key="floatEditor"
+            name={menuItem.name}
             min={menuItem.min}
             max={menuItem.max}
             initial={itemValue}
@@ -261,6 +262,7 @@ class PresetEditor extends React.Component {
         menuItemElms = [
           <IntEditor
             key="intEditor"
+            name={menuItem.name}
             min={menuItem.min}
             max={menuItem.max}
             initial={itemValue}
@@ -330,7 +332,9 @@ class PresetEditor extends React.Component {
               whiteSpace: "nowrap",
               overflow: "hidden",
               background: "rgba(0, 0, 0, 0.815)",
-              fontSize: "12px"
+              fontFamily: "Courier New, Monaco, monospace",
+              fontSize: "14px",
+              fontWeight: "100"
             }}
           >
             <ul style={{ listStyleType: "none", padding: 0, margin: 0 }}>
