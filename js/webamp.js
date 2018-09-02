@@ -223,4 +223,3 @@ class Winamp {
 }
 
 export default Winamp;
-module.exports = Winamp;

@@ -1,9 +1,9 @@
 {
   "presets": [
     [
-      "env",
+      "@babel/preset-env",
       {
-        "useBuiltIns": "usage",
+        "useBuiltIns": "entry",
         "targets": {
           "browsers": [
             "last 2 Chrome versions",
@@ -17,18 +17,18 @@
         }
       }
     ],
-    "react"
+    "@babel/preset-react"
   ],
-  "plugins": ["transform-object-rest-spread", "transform-class-properties"],
+  "plugins": ["@babel/plugin-proposal-object-rest-spread", "@babel/plugin-proposal-class-properties"],
   "env": {
     "test": {
-      "presets": ["react"],
-      "plugins": ["transform-es2015-modules-commonjs"]
+      "presets": ["@babel/preset-react"],
+      "plugins": ["@babel/plugin-transform-modules-commonjs"]
     },
     "library": {
       "plugins": [
         "babel-plugin-remove-webpack",
-        "babel-plugin-transform-runtime"
+        "@babel/plugin-transform-runtime"
       ]
     }
   }
