@@ -23,7 +23,7 @@ async function sourceToStream(source) {
   };
 }
 
-export async function genMediaTags(file, observer) {
+export async function genMediaTags(file, mm, observer) {
   invariant(
     file != null,
     "Attempted to get the tags of media file without passing a file"
@@ -33,51 +33,14 @@ export async function genMediaTags(file, observer) {
     file = `${location.protocol}//${location.host}${location.pathname}${file}`;
   }
 
-  return require.ensure(
-    ["music-metadata-browser"],
-    async require => {
-      const mm = require("music-metadata-browser");
-      const stream = await sourceToStream(file);
-      return mm.parseStream(stream.stream, stream.type, {
-        duration: true,
-        fileSize: stream.size,
-        skipPostHeaders: true, // avoid unnecessary data to be read
-        observer
-      });
-    },
-    err => {
-      console.error("genMediaTags: Failed to load music-metadata");
-      // The dependency failed to load
-      throw err;
-    },
-    "music-metadata"
-  );
-}
-
-/*
-export async function genMediaDuration(url) {
-  invariant(
-    typeof url === "string",
-    "Attempted to get the duration of media file without passing a url"
-  );
-  return new Promise((resolve, reject) => {
-    // TODO: Does this actually stop downloading the file once it's
-    // got the duration?
-    const audio = document.createElement("audio");
-    audio.crossOrigin = "anonymous";
-    const durationChange = () => {
-      resolve(audio.duration);
-      audio.removeEventListener("durationchange", durationChange);
-      audio.url = null;
-      // TODO: Not sure if this really gets cleaned up.
-    };
-    audio.addEventListener("durationchange", durationChange);
-    audio.addEventListener("error", e => {
-      reject(e);
-    });
-    audio.src = url;
+  const stream = await sourceToStream(file);
+  return mm.parseStream(stream.stream, stream.type, {
+    duration: true,
+    fileSize: stream.size,
+    skipPostHeaders: true, // avoid unnecessary data to be read
+    observer
   });
-}*/
+}
 
 export async function genArrayBufferFromFileReference(fileReference) {
   invariant(

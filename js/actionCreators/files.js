@@ -78,10 +78,23 @@ export function loadFilesFromReferences(
 }
 
 export function setSkinFromArrayBuffer(arrayBuffer) {
-  return async dispatch => {
+  return async (dispatch, getState, { requireJSZip }) => {
+    if (!requireJSZip) {
+      alert("Webamp has not been configured to support custom skins.");
+      return;
+    }
     dispatch({ type: LOADING });
+    let JSZip;
     try {
-      const skinData = await skinParser(arrayBuffer);
+      JSZip = await requireJSZip();
+    } catch (e) {
+      console.error(e);
+      dispatch({ type: LOADED });
+      alert("Failed to load the skin parser.");
+      return;
+    }
+    try {
+      const skinData = await skinParser(arrayBuffer, JSZip);
       dispatch({
         type: SET_SKIN_DATA,
         skinImages: skinData.images,
@@ -217,72 +230,67 @@ function queueFetchingMediaTags(id) {
   };
 }
 
-let ts0;
-
 export function fetchMediaTags(file, id) {
-  if (!ts0) {
-    ts0 = Date.now();
-    console.log(`${ts0} loading music-metadata`);
-  }
-
-  return async dispatch => {
+  return async (dispatch, getState, { requireMusicMetadata }) => {
     dispatch({ type: MEDIA_TAG_REQUEST_INITIALIZED, id });
 
     let metadata;
     try {
-      metadata = await genMediaTags(file, event => {
-        console.log(`${Date.now() - ts0} ${event.tag.type}.${event.tag.id}`);
+      metadata = await genMediaTags(
+        file,
+        await requireMusicMetadata(),
+        event => {
+          switch (event.tag.type) {
+            case "common":
+              switch (event.tag.id) {
+                case "artist":
+                case "title":
+                  dispatch({
+                    type: SET_MEDIA_TAGS,
+                    artist: event.metadata.common.artist,
+                    title: event.metadata.common.title,
+                    albumArtUrl: null,
+                    id
+                  }); // ToDo albumArtUrl
+                  break;
+              }
+              break;
 
-        switch (event.tag.type) {
-          case "common":
-            switch (event.tag.id) {
-              case "artist":
-              case "title":
-                dispatch({
-                  type: SET_MEDIA_TAGS,
-                  artist: event.metadata.common.artist,
-                  title: event.metadata.common.title,
-                  albumArtUrl: null,
-                  id
-                }); // ToDo albumArtUrl
-                break;
-            }
-            break;
+            case "format":
+              switch (event.tag.id) {
+                case "duration":
+                  dispatch({
+                    type: SET_MEDIA_DURATION,
+                    duration: event.metadata.format.duration,
+                    id
+                  });
+                  break;
 
-          case "format":
-            switch (event.tag.id) {
-              case "duration":
-                dispatch({
-                  type: SET_MEDIA_DURATION,
-                  duration: event.metadata.format.duration,
-                  id
-                });
-                break;
-
-              case "bitrate":
-              case "sampleRate":
-              case "numberOfChannels":
-                dispatch({
-                  type: SET_MEDIA,
-                  kbps: event.metadata.format.bitrate
-                    ? Math.round(
-                        event.metadata.format.bitrate / 1000
-                      ).toString()
-                    : "",
-                  khz: event.metadata.format.sampleRate
-                    ? Math.round(
-                        event.metadata.format.sampleRate / 1000
-                      ).toString()
-                    : "",
-                  channels: event.metadata.format.numberOfChannels,
-                  length: event.metadata.format.duration,
-                  id
-                });
-                break;
-            }
-            break;
+                case "bitrate":
+                case "sampleRate":
+                case "numberOfChannels":
+                  dispatch({
+                    type: SET_MEDIA,
+                    kbps: event.metadata.format.bitrate
+                      ? Math.round(
+                          event.metadata.format.bitrate / 1000
+                        ).toString()
+                      : "",
+                    khz: event.metadata.format.sampleRate
+                      ? Math.round(
+                          event.metadata.format.sampleRate / 1000
+                        ).toString()
+                      : "",
+                    channels: event.metadata.format.numberOfChannels,
+                    length: event.metadata.format.duration,
+                    id
+                  });
+                  break;
+              }
+              break;
+          }
         }
-      });
+      );
       // There's more data here, but we don't have a use for it yet:
       const { artist, title, picture } = metadata.common;
       let albumArtUrl = null;
