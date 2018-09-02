@@ -80,10 +80,23 @@ export function loadFilesFromReferences(
 }
 
 export function setSkinFromArrayBuffer(arrayBuffer) {
-  return async dispatch => {
+  return async (dispatch, getState, { requireJSZip }) => {
+    if (!requireJSZip) {
+      alert("Webamp has not been configured to support custom skins.");
+      return;
+    }
     dispatch({ type: LOADING });
+    let JSZip;
     try {
-      const skinData = await skinParser(arrayBuffer);
+      JSZip = await requireJSZip();
+    } catch (e) {
+      console.error(e);
+      dispatch({ type: LOADED });
+      alert("Failed to load the skin parser.");
+      return;
+    }
+    try {
+      const skinData = await skinParser(arrayBuffer, JSZip);
       dispatch({
         type: SET_SKIN_DATA,
         skinImages: skinData.images,
@@ -250,10 +263,10 @@ function queueFetchingMediaTags(id) {
 }
 
 export function fetchMediaTags(file, id) {
-  return async dispatch => {
+  return async (dispatch, getState, { requireJSMediaTags }) => {
     dispatch({ type: MEDIA_TAG_REQUEST_INITIALIZED, id });
     try {
-      const data = await genMediaTags(file);
+      const data = await genMediaTags(file, await requireJSMediaTags());
       // There's more data here, but we don't have a use for it yet:
       // https://github.com/aadsm/jsmediatags#shortcuts
       const { artist, title, picture } = data.tags;
