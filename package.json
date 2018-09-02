@@ -19,7 +19,7 @@
     "analyze": "webpack --config=config/webpack.bundle-analyzer.js",
     "prepublishOnly": "npm run build-library",
     "serve": "http-server ./built",
-    "start": "webpack-dev-server --env.DEBUG=*- --config=config/webpack.dev.js",
+    "start": "webpack-dev-server --config=config/webpack.dev.js",
     "stats": "webpack --config=config/webpack.prod.js --json > stats.json",
     "stats-library": "webpack --config=config/webpack.library.js --json > stats.json",
     "weight": "npm run build-library > /dev/null && gzip-size built/webamp.bundle.min.js",
