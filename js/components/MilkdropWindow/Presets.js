@@ -103,7 +103,12 @@ export default class Presets {
         async require => {
           const { convertPreset } = require("milkdrop-preset-converter-aws");
           try {
-            resolve(convertPreset(file));
+            resolve(
+              convertPreset(
+                file,
+                "https://p2tpeb5v8b.execute-api.us-east-2.amazonaws.com/default/milkdropShaderConverter"
+              )
+            );
           } catch (e) {
             reject(e);
           }

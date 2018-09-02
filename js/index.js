@@ -1,6 +1,5 @@
 /* global SENTRY_DSN */
 
-import "babel-polyfill";
 import Raven from "raven-js";
 import createMiddleware from "raven-for-redux";
 import isButterchurnSupported from "butterchurn/lib/isSupported.min";

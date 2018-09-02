@@ -9,6 +9,8 @@
 
 - [Zeal Interesitngs](http://podcast.codingzeal.com/114820/657488-winamp-js)
 - [Changelog](https://changelog.com/podcast/291)
+- [JavaScript Jabber](https://devchat.tv/js-jabber/jsj-319-winamp2-js-with-jordan-eldredge/)
+- [React Roundup](https://devchat.tv/react-round-up/rru-024-webamp-with-jordan-eldredge/)
 
 ## Newsletters
 
@@ -70,6 +72,8 @@
 - https://ourcodeworld.com/articles/read/685/winamp2-js-a-reimplementation-of-winamp-2-9-in-html5-and-javascript
 - http://whazupnaija.com/whip-the-llamas-ass-with-this-javascript-winamp-emulator/
 - http://cashrange.com/run-winamp-in-web-browser-and-play-mp3s/
+- https://coolmaterial.com/media/winamp-emulator/
+- http://www.redferret.net/?p=57922
 
 ### Russian
 
@@ -90,6 +94,7 @@
 - https://tech.onliner.by/2018/02/09/winamp-5
 - http://fonotekaelektrika.com/2018/02/winamp-%D0%B2-%D0%B1%D1%80%D0%B0%D1%83%D0%B7%D1%8A%D1%80/
 - https://toocha.me/winamp-web/
+- https://manjaro.ru/blog/soft/pojavilsja-reliz-winamp2-js-desktop.html (forum post)
 
 ### Spanish
 
@@ -199,6 +204,7 @@
 
 - http://abertoatedemadrugada.com/2018/02/winamp-completamente-funcional-em.html
 - https://canaltech.com.br/musica/desenvolvedor-ressuscita-winamp-em-emulador-com-javascript-108112/
+- https://itovnp.blogspot.com/2018/07/winamp-atraves-de-um-simples-browser.html
 
 ### Swedish
 
