@@ -74,6 +74,8 @@
 - http://cashrange.com/run-winamp-in-web-browser-and-play-mp3s/
 - https://coolmaterial.com/media/winamp-emulator/
 - http://www.redferret.net/?p=57922
+- https://hackernoon.com/50-popular-javascript-open-source-projects-on-github-in-2018-469c11b48b8d (mention)
+- https://mashable.com/2018/08/01/old-ways-to-listen-to-music-ranked/ (mention)
 
 ### Russian
 
@@ -95,6 +97,8 @@
 - http://fonotekaelektrika.com/2018/02/winamp-%D0%B2-%D0%B1%D1%80%D0%B0%D1%83%D0%B7%D1%8A%D1%80/
 - https://toocha.me/winamp-web/
 - https://manjaro.ru/blog/soft/pojavilsja-reliz-winamp2-js-desktop.html (forum post)
+- https://mixed.news/news/1123379
+- https://banana.by/index.php?newsid=269984
 
 ### Spanish
 
@@ -161,6 +165,7 @@
 - https://www.geekzone.fr/2018/02/09/winamp2-sinvite-navigateur/
 - https://www.lesnumeriques.com/vie-du-net/winamp-est-retour-enfin-presque-n71341.html
 - https://www.macg.co/logiciels/2018/02/revivez-les-glorieuses-annees-winamp-avec-votre-navigateur-101345
+- https://www.byothe.fr/2018/05/avis-aux-nostalgiques-un-emulateur-de-winamp-dans-votre-navigateur-web/
 
 ### Italian
 
@@ -199,6 +204,7 @@
 - https://gigazine.net/news/20180213-winamp2-js/
 - https://www.gizmodo.jp/2014/11/90winamp_2html5.html
 - https://www.softantenna.com/wp/review/winamp2-js/
+- http://mantiddesign.com/archives/15468
 
 ### Portuguese
 
@@ -242,3 +248,11 @@
 ### Persian
 
 - http://www.1pezeshk.com/archives/2018/07/webamp.html
+
+### Korean
+
+- http://funtenna.funshop.co.kr/article/11801
+
+### Dutch
+
+- https://freshgadgets.nl/nostalgie-je-kunt-winamp-in-je-browser-gebruiken
