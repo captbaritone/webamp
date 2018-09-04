@@ -128,6 +128,8 @@
 - https://codigoespagueti.com/noticias/winamp-navegador/
 - https://wwwhatsnew.com/2018/02/09/lanzan-una-version-web-del-mitico-winamp/
 - https://abertoatedemadrugada.com/2018/02/winamp-completamente-funcional-em.html
+- https://www.ardilu.com/software/winamp2-js-reproductor-winamp-html-5
+- http://computerhoy.com/noticias/internet/recuerdas-winamp-puedes-volver-utilizarlo-esta-web-75669
 
 ### Chinese
 
@@ -147,6 +149,7 @@
 - https://ezone.ulifestyle.com.hk/article/2010877
 - https://www.minwt.com/life/19526.html
 - http://www.xia1ge.com/winamp2-js.html
+- https://www.techbang.com/posts/56800-do-you-miss-the-days-when-you-used-winamp-to-listen-to-music-now-you-can-go-back-to-this-page-and-relive-that-time
 
 ### German
 
@@ -160,6 +163,7 @@
 - https://eay.cc/2017/winamp2-js/
 - https://www.maennersache.de/winamp-simulator-neues-browser-plugin-befoerdert-dich-zurueck-ins-jahr-1999-aol-webamp-jordan-eldredge-9063.html#
 - https://www.abendblatt.de/ratgeber/multimedia/article212250123/Surftipp-Kultiger-MP3-Player-im-Browser.html
+- https://www.techbook.de/entertainment/sound/surftipp-kultiger-mp3-player-im-browser
 
 ### Polish
 
@@ -197,6 +201,7 @@
 - http://www.flashfly.net/wp/208175
 - https://www.aripfan.com/bring-winamp-emulator-in-web-browser/
 - https://www.beartai.com/news/itnews/221530
+- https://men.kapook.com/view188468.html
 
 ### Hungarian
 
@@ -250,6 +255,7 @@
 ### Romanian
 
 - https://zonait.tv/va-era-dor-de-winamp/
+- https://playtech.ro/2018/macos-windows-95-winamp-paint-software-vechi-browser/
 
 ### Czech
 
