@@ -244,7 +244,8 @@
 
 ### Dutch
 
-- https://tweakers.net/geek/135087/ontwikkelaar-bouwt-winamp-29-in-javascript.html
+- https://tweakers.net/geek/135087/ontwikkelaar-bouwt-winamp-29-in-javascript.html)
+- https://p-magazine.be/nostalgisch-luisterplezier-slechts-muisklik-verwijderd/
 
 ### Romanian
 
