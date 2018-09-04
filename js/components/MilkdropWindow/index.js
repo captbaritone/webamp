@@ -150,11 +150,20 @@ class PresetsLoader extends React.Component {
   }
 }
 
+function presetNameFromURL(url) {
+  const urlParts = url.split("/");
+  const lastPart = urlParts[urlParts.length - 1];
+  const presetName = lastPart.substring(0, lastPart.length - 5); // remove .milk or .json
+  return decodeURIComponent(presetName);
+}
+
 async function loadInitialPreset() {
   let presetUrl = null;
+  let milkdropPresetUrl = null;
   if ("URLSearchParams" in window) {
     const params = new URLSearchParams(location.search);
     presetUrl = params.get("butterchurnPresetUrl");
+    milkdropPresetUrl = params.get("milkdropPresetUrl");
   }
 
   if (presetUrl) {
@@ -164,10 +173,25 @@ async function loadInitialPreset() {
         throw new Error(response.statusText);
       }
       const responseBody = await response.json();
-      return responseBody;
+      const presetName = presetNameFromURL(presetUrl);
+      return { [presetName]: responseBody };
     } catch (e) {
       console.error(e);
       alert(`Failed to load MilkDrop preset from ${presetUrl}`);
+      return null;
+    }
+  } else if (milkdropPresetUrl) {
+    try {
+      const response = await fetch(milkdropPresetUrl);
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      const fileBlob = await response.blob();
+      const presetName = presetNameFromURL(milkdropPresetUrl);
+      return { [presetName]: { file: fileBlob } };
+    } catch (e) {
+      console.error(e);
+      alert(`Failed to load MilkDrop preset from ${milkdropPresetUrl}`);
       return null;
     }
   }
