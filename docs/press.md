@@ -28,6 +28,9 @@
 - [Hacker News](https://news.ycombinator.com/item?id=15314629) (Sept. 2017)
 - [Hacker News](https://news.ycombinator.com/item?id=8565665) (Nov. 2014)
 - [Waxy.org](https://waxy.org/2018/02/winamp2-js-now-supports-all-three-windows/)
+- [The Useless Web Index](https://www.theuselesswebindex.com/most-useless-websites/2018/17/)
+- [Product Hunt](https://www.producthunt.com/posts/winamp2-js) (2014)
+- [Product Hunt](https://www.producthunt.com/posts/webamp) (2018)
 
 ## Documentation
 
@@ -41,6 +44,7 @@
 - [Important if True](https://youtu.be/6B6E2Kv-w04?t=3295)
 - [Binärgewitter](http://blog.binaergewitter.de/2018/02/16/binaergewitter-talk-number-192-bitcoinheizung#t=1:52:13.216) (German)
 - [Freak Show](https://freakshow.fm/fs214-hoert-euch-doch-mal-zu?t=1:59:05,2:10:51) (German)
+- [Apparatus Pogovori](https://apparatus.si/095apg/) (Slovenian)
 
 ## Forum Posts
 
@@ -99,6 +103,7 @@
 - https://manjaro.ru/blog/soft/pojavilsja-reliz-winamp2-js-desktop.html (forum post)
 - https://mixed.news/news/1123379
 - https://banana.by/index.php?newsid=269984
+- https://zen.yandex.ru/media/apple-iphone.ru/legendarnyi-winamp-teper-mojno-polnocenno-ispolzovat-iz-liubogo-brauzera-5a8280f4a936f46fea003489
 
 ### Spanish
 
@@ -119,6 +124,10 @@
 - https://www.xataka.com/aplicaciones/winamp-se-hace-inmortal-gracias-a-la-magia-del-html5
 - https://www.sweclockers.com/nyhet/25215-kor-klassikern-winamp-i-webblasaren
 - https://www.rocambola.com/winamp2-js-la-nueva-version-del-famoso-reproductor-en-formato-web/
+- https://www.genbeta.com/web/viaja-a-1998-con-esta-version-web-de-winamp
+- https://codigoespagueti.com/noticias/winamp-navegador/
+- https://wwwhatsnew.com/2018/02/09/lanzan-una-version-web-del-mitico-winamp/
+- https://abertoatedemadrugada.com/2018/02/winamp-completamente-funcional-em.html
 
 ### Chinese
 
@@ -136,6 +145,8 @@
 - https://www.waerfa.com/winamp2-js
 - https://www.techapple.com/archives/19899
 - https://ezone.ulifestyle.com.hk/article/2010877
+- https://www.minwt.com/life/19526.html
+- http://www.xia1ge.com/winamp2-js.html
 
 ### German
 
@@ -147,6 +158,8 @@
 - https://www.smartdroid.de/winamp2-js-laesst-den-klassiker-im-browser-wieder-aufleben/
 - https://www.morgenpost.de/web-wissen/web-technik/article212250123/Surftipp-Kultiger-MP3-Player-im-Browser.html
 - https://eay.cc/2017/winamp2-js/
+- https://www.maennersache.de/winamp-simulator-neues-browser-plugin-befoerdert-dich-zurueck-ins-jahr-1999-aol-webamp-jordan-eldredge-9063.html#
+- https://www.abendblatt.de/ratgeber/multimedia/article212250123/Surftipp-Kultiger-MP3-Player-im-Browser.html
 
 ### Polish
 
@@ -156,6 +169,8 @@
 - https://mobirank.pl/2018/02/10/emulator-winamp-przeniesie-cie-do-1999-roku/
 - https://www.dobreprogramy.pl/Kultowy-odtwarzacz-muzyki-Winamp-powrocil-w-przegladarce-internetowej,News,86017.html
 - https://dailyweb.pl/pamietacie-jeszcze-winampa-poznajcie-jego-webowa-reinkarnacje/
+- https://www.wykop.pl/link/4432835/winamp-w-przehttps://www.producthunt.com/posts/webampgladarce-www/
+- http://android.com.pl/news/98936-winamp-online/
 
 ### French
 
@@ -166,6 +181,7 @@
 - https://www.lesnumeriques.com/vie-du-net/winamp-est-retour-enfin-presque-n71341.html
 - https://www.macg.co/logiciels/2018/02/revivez-les-glorieuses-annees-winamp-avec-votre-navigateur-101345
 - https://www.byothe.fr/2018/05/avis-aux-nostalgiques-un-emulateur-de-winamp-dans-votre-navigateur-web/
+- https://fr.softonic.com/articles/winamp-revient-sous-la-forme-de-lecteur-web
 
 ### Italian
 
@@ -174,6 +190,7 @@
 - https://www.wired.it/internet/web/2018/02/09/winamp-rinasce-sul-web/
 - https://www.macitynet.it/winamp-nostalgici-un-clone-utilizzabile-via-web/
 - https://www.windowsblogitalia.com/2018/02/ascoltare-la-musica-edge-firefox-chrome-winamp2-js/
+- https://www.amicopc.com/software-5/winamp-debutta-sul-web-versione-browser/
 
 ### Thai
 
@@ -187,6 +204,8 @@
 - http://www.karpatinfo.net/cikk/tudomany/2567147-feltamadt-winamp-90-es-evek-kedvenc-zenelejatszoja-hasznalhatja
 - https://www.gamestar.hu/hir/winamp-html5-verzio-243839.html
 - https://pcworld.hu/pcwlite/feltamad-a-winamp-raadasul-bongeszoben-243841.html
+- https://24.hu/tech/2018/02/11/ezernyi-emlek-onti-fogja-elonteni-a-szivet-ettol-a-hirtol/
+- https://888.hu/article-visszatert-minden-idok-legjobb-zenelejatszoja-a-winamp
 
 ### Bosnian
 
@@ -205,12 +224,14 @@
 - https://www.gizmodo.jp/2014/11/90winamp_2html5.html
 - https://www.softantenna.com/wp/review/winamp2-js/
 - http://mantiddesign.com/archives/15468
+- https://jp.sputniknews.com/science/201802104563738/
 
 ### Portuguese
 
 - http://abertoatedemadrugada.com/2018/02/winamp-completamente-funcional-em.html
 - https://canaltech.com.br/musica/desenvolvedor-ressuscita-winamp-em-emulador-com-javascript-108112/
 - https://itovnp.blogspot.com/2018/07/winamp-atraves-de-um-simples-browser.html
+- https://pplware.sapo.pt/software/chegou-winamp-funciona-um-browser/
 
 ### Swedish
 
