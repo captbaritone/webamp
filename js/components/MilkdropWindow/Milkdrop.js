@@ -32,7 +32,13 @@ class Milkdrop extends React.Component {
     this.visualizer.connectAudio(this.props.analyser);
     this.presetCycle = true;
     if (this.props.initialPreset) {
-      this.visualizer.loadPreset(this.props.initialPreset, 0);
+      const presetIndices = this.props.presets.addPresets(
+        this.props.initialPreset
+      );
+      this.selectPreset(
+        await this.props.presets.selectIndex(presetIndices[0]),
+        0
+      );
     } else {
       this.selectPreset(this.props.presets.getCurrent(), 0);
     }
