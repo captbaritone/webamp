@@ -13,7 +13,8 @@
         "pretty": true
     },
     "include": [
-        "js/**/*.js"
+        "js/**/*.js",
+        "js/**/*.ts"
     ],
     "exclude": [
         "node_modules",
