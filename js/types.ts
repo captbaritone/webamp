@@ -55,6 +55,22 @@ export type Action =
       type: "TOGGLE_REPEAT";
   } | {
       type: "TOGGLE_SHUFFLE";
+  } | {
+      type: "SET_FOCUS";
+      input: string;
+  } | {
+      type: "SET_BAND_FOCUS";
+      input: string;
+  } | {
+      type: "UNSET_FOCUS";
+  } | {
+      type: "SET_SCRUB_POSITION";
+      position: number;
+  } | {
+      type: "SET_USER_MESSAGE";
+      message: string;
+  } | {
+      type: "UNSET_USER_MESSAGE";
     };
 
 export interface SettingsState {
@@ -77,4 +93,11 @@ export interface MediaState {
   shuffle: boolean;
   repeat: boolean;
   status: string | null; // TODO: Convert this to an enum
+}
+
+export interface UserInputState {
+  focus: string | null; // TODO: Convert this to an enum?
+  bandFocused: null;
+  scrubPosition: number;
+  userMessage: string | null;
 }
