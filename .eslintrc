@@ -12,6 +12,14 @@
   "settings": {
     "react": {
       "version": "15.2"
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [
+          ".js",
+          ".ts"
+        ]
+      }
     }
   },
   "env": {
