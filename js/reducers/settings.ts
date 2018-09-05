@@ -1,7 +1,6 @@
 import { Action, SettingsState } from "../types";
 import { SET_AVAILABLE_SKINS } from "../actionTypes";
 
-
 const defaultSettingsState = {
   availableSkins: []
 };
