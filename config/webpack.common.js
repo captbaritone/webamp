@@ -5,7 +5,7 @@ const HtmlWebpackInlineSVGPlugin = require("html-webpack-inline-svg-plugin");
 
 module.exports = {
   resolve: {
-    extensions: [".js"]
+    extensions: [".js", ".ts"]
   },
   node: {
     // Consider suggesting jsmediatags use: https://github.com/feross/is-buffer
@@ -19,7 +19,7 @@ module.exports = {
         use: ["style-loader", "css-loader"]
       },
       {
-        test: /\.js$/,
+        test: /\.[tj]s$/,
         exclude: /(node_modules)/,
         use: {
           loader: "babel-loader"
