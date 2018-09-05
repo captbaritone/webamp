@@ -1,3 +1,4 @@
+import { MediaState, Action } from "../types";
 import {
   PLAY,
   STOP,
@@ -16,7 +17,7 @@ import {
 } from "../actionTypes";
 import { TIME_MODE, MEDIA_STATUS } from "../constants";
 
-const media = (state, action) => {
+const media = (state: MediaState, action: Action): MediaState => {
   if (!state) {
     return {
       timeMode: TIME_MODE.ELAPSED,
