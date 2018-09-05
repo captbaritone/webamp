@@ -11,12 +11,24 @@ class TextEditor extends React.Component {
   componentDidMount() {
     this.previousActiveElm = document.activeElement;
     this.textarea.focus();
-    this.textarea.addEventListener("keydown", e => {
+    this.textarea.addEventListener("keydown", async e => {
       if (e.ctrlKey) {
         switch (e.keyCode) {
           case 13: // CTRL + enter
-            this.props.updateValue(this.state.value);
-            this.props.closeEditor();
+            this.setState({
+              showCompiling: true,
+              showError: false
+            });
+            try {
+              await this.props.updateValue(this.state.value);
+              this.props.closeEditor();
+            } catch (err) {
+              this.setState({
+                showCompiling: false,
+                showError: true,
+                errorMessage: err.message
+              });
+            }
             break;
         }
       } else {
@@ -43,6 +55,41 @@ class TextEditor extends React.Component {
   render() {
     return (
       <div>
+        {this.state.showCompiling && (
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              background: "rgba(40, 40, 40, 0.815)",
+              color: "#CCCCCC",
+              fontSize: "16px"
+            }}
+          >
+            <div style={{ display: "grid", height: "100%" }}>
+              <span style={{ margin: "auto" }}>COMPILING!</span>
+            </div>
+          </div>
+        )}
+        {this.state.showError && (
+          <div
+            style={{
+              position: "absolute",
+              bottom: 0,
+              right: 0,
+              width: "100%",
+              height: "20%",
+              background: "rgba(40, 0, 0, 0.815)",
+              color: "#CCCCCC",
+              fontSize: "12px",
+              whiteSpace: "pre-line"
+            }}
+          >
+            <span>{this.state.errorMessage}</span>
+          </div>
+        )}
         <div>
           <span style={{ color: "#CCCCCC" }}>
             Enter the new string; hit CTRL+ENTER to apply or ESC to cancel.

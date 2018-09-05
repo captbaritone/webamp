@@ -82,7 +82,8 @@ class FloatEditor extends React.Component {
         </div>
         <div>
           <span style={{ color: "#FFCC22" }}>
-            &nbsp;{this.state.value.toFixed(2)}
+            &nbsp;
+            {this.state.value.toFixed(2)}
           </span>
         </div>
       </div>
