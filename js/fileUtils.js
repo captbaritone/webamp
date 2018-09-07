@@ -23,7 +23,7 @@ async function sourceToStream(source) {
   };
 }
 
-export async function genMediaTags(file, mm, observer) {
+export async function genMediaTags(file, musicMetadata, observer) {
   invariant(
     file != null,
     "Attempted to get the tags of media file without passing a file"
@@ -34,7 +34,7 @@ export async function genMediaTags(file, mm, observer) {
   }
 
   const stream = await sourceToStream(file);
-  return mm.parseStream(stream.stream, stream.type, {
+  return musicMetadata.parseStream(stream.stream, stream.type, {
     duration: true,
     fileSize: stream.size,
     skipPostHeaders: true, // avoid unnecessary data to be read
