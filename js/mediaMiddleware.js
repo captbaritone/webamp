@@ -54,19 +54,6 @@ export default media => store => {
     store.dispatch({ type: STOP_WORKING });
   });
 
-  // ToDo: maybe as an alternative if music-metadata did managed to read all
-  /*
-  media.on("fileLoaded", () => {
-    store.dispatch({
-      type: SET_MEDIA,
-      //kbps: "128",
-      khz: Math.round(media.sampleRate() / 1000).toString(),
-      channels: media.channels(),
-      length: media.duration(),
-      id: getCurrentTrackId(store.getState())
-    });
-  }); */
-
   media.on("channelupdate", () => {
     store.dispatch({
       type: CHANNEL_COUNT_CHANGED,
