@@ -18,7 +18,7 @@ import {
   CHANNEL_COUNT_CHANGED
 } from "./actionTypes";
 import { next as nextTrack } from "./actionCreators";
-import { loadMediaFile } from './actionCreators/files'
+import { loadMediaFile } from "./actionCreators/files";
 
 export default media => store => {
   const {
