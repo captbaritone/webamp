@@ -7,9 +7,7 @@
     "built/webamp.bundle.js",
     "built/webamp.bundle.min.js",
     "built/webamp-lazy.bundle.js",
-    "built/webamp-lazy.bundle.min.js",
-    "built/webamp.bundle.min.js",
-    "index.d.ts"
+    "built/webamp-lazy.bundle.min.js"
   ],
   "scripts": {
     "lint": "eslint .",
@@ -64,15 +62,6 @@
     "babel-jest": "^23.4.2",
     "babel-loader": "^8.0.0-beta.6",
     "babel-plugin-remove-webpack": "^1.1.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.20.2",
-    "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-polyfill": "^6.22.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-runtime": "^6.26.0",
     "butterchurn": "^2.4.10",
     "butterchurn-presets": "^2.4.7",
     "canvas-mock": "0.0.0",
