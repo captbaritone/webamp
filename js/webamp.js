@@ -13,4 +13,3 @@ class Winamp extends WebampLazy {
 }
 
 export default Winamp;
-module.exports = Winamp;

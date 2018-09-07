@@ -48,6 +48,7 @@ export const TIME_MODE = {
 };
 
 export const MEDIA_STATUS = {
+  PLAYING: "PLAYING",
   STOPPED: "STOPPED",
   PAUSED: "PAUSED"
 };
