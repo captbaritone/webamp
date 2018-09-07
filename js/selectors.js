@@ -82,7 +82,7 @@ export const getRunningTimeMessage = createSelector(
     `${getTimeStr(selectedRunningTime)}/${getTimeStr(totalRunningTime)}`
 );
 
-// TODO: use slectors to get memoization
+// TODO: use selectors to get memoization
 export const getCurrentTrackIndex = state =>
   state.playlist.trackOrder.indexOf(state.playlist.currentTrack);
 
