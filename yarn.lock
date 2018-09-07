@@ -6145,9 +6145,9 @@ multicast-dns@^6.0.1:
     dns-packet "^1.3.1"
     thunky "^1.0.2"
 
-music-metadata-browser@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/music-metadata-browser/-/music-metadata-browser-0.0.4.tgz#f9b9df82bab253112553aff2d9f97548db515cde"
+music-metadata-browser@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/music-metadata-browser/-/music-metadata-browser-0.1.2.tgz#065ce87350bbd9e2cafe978e5e6887ee9e4c3a2b"
 
 mute-stream@0.0.7:
   version "0.0.7"
