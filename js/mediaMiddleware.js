@@ -18,6 +18,7 @@ import {
   CHANNEL_COUNT_CHANGED
 } from "./actionTypes";
 import { next as nextTrack } from "./actionCreators";
+import { loadMediaFile } from './actionCreators/files'
 
 export default media => store => {
   const {
@@ -77,6 +78,8 @@ export default media => store => {
     // TODO: Consider doing this after the action, and using the state as the source of truth.
     switch (action.type) {
       case PLAY:
+        const _track = store.getState().playlist.tracks[action.id];
+        store.dispatch(loadMediaFile(_track));
         media.play();
         break;
       case PAUSE:
