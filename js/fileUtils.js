@@ -1,6 +1,29 @@
 import invariant from "invariant";
+import readStream from "filereader-stream";
 
-export function genMediaTags(file, jsmediatags) {
+import http from "stream-http";
+
+async function sourceToStream(source) {
+  if (typeof source === "string") {
+    // Assume URL
+    return new Promise(resolve => {
+      http.get(source, stream => {
+        resolve({
+          stream,
+          type: stream.headers["content-type"]
+        });
+      });
+    });
+  }
+  // Assume Blob
+  return {
+    stream: readStream(source),
+    type: source.name,
+    size: source.size
+  };
+}
+
+export async function genMediaTags(file, musicMetadata, observer) {
   invariant(
     file != null,
     "Attempted to get the tags of media file without passing a file"
@@ -9,45 +32,13 @@ export function genMediaTags(file, jsmediatags) {
   if (typeof file === "string" && !/^[a-z]+:\/\//i.test(file)) {
     file = `${location.protocol}//${location.host}${location.pathname}${file}`;
   }
-  return new Promise(
-    (resolve, reject) => {
-      try {
-        jsmediatags.read(file, { onSuccess: resolve, onError: reject });
-      } catch (e) {
-        // Possibly jsmediatags could not find a parser for this file?
-        // Nothing to do.
-        // Consider removing this after https://github.com/aadsm/jsmediatags/issues/83 is resolved.
-        reject(e);
-      }
-    },
-    () => {
-      // The dependency failed to load
-    },
-    "jsmediatags"
-  );
-}
 
-export function genMediaDuration(url) {
-  invariant(
-    typeof url === "string",
-    "Attempted to get the duration of media file without passing a url"
-  );
-  return new Promise((resolve, reject) => {
-    // TODO: Does this actually stop downloading the file once it's
-    // got the duration?
-    const audio = document.createElement("audio");
-    audio.crossOrigin = "anonymous";
-    const durationChange = () => {
-      resolve(audio.duration);
-      audio.removeEventListener("durationchange", durationChange);
-      audio.url = null;
-      // TODO: Not sure if this really gets cleaned up.
-    };
-    audio.addEventListener("durationchange", durationChange);
-    audio.addEventListener("error", e => {
-      reject(e);
-    });
-    audio.src = url;
+  const stream = await sourceToStream(file);
+  return musicMetadata.parseStream(stream.stream, stream.type, {
+    duration: true,
+    fileSize: stream.size,
+    skipPostHeaders: true, // avoid unnecessary data to be read
+    observer
   });
 }
 

@@ -50,18 +50,18 @@ const requireJSZip = () => {
   });
 };
 
-const requireJSMediaTags = () => {
+const requireMusicMetadata = () => {
   return new Promise((resolve, reject) => {
     require.ensure(
-      ["jsmediatags/dist/jsmediatags"],
+      ["music-metadata-browser/dist/music-metadata"],
       require => {
-        resolve(require("jsmediatags/dist/jsmediatags"));
+        resolve(require("music-metadata-browser/dist/music-metadata"));
       },
       e => {
-        console.error("Error loading jsmediatags", e);
+        console.error("Error loading music-metadata-browser", e);
         reject(e);
       },
-      "jsmediatags"
+      "music-metadata-browser"
     );
   });
 };
@@ -224,7 +224,7 @@ Raven.context(() => {
     ],
     enableHotkeys: true,
     requireJSZip,
-    requireJSMediaTags,
+    requireMusicMetadata,
     __extraWindows,
     __initialWindowLayout,
     __initialState: screenshot ? screenshotInitialState : initialState,

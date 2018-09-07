@@ -45,7 +45,6 @@ export {
   openEqfFileDialog,
   openMediaFileDialog,
   openSkinFileDialog,
-  fetchMediaDuration,
   loadMediaFiles,
   loadMediaFile,
   fetchMediaTags,

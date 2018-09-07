@@ -39,7 +39,7 @@ module.exports = {
         ]
       }
     ],
-    noParse: [/jszip\.js$/]
+    noParse: [/jszip\.js$/, /\.d\.ts$/]
   },
   plugins: [
     new BundleAnalyzerPlugin({
@@ -52,6 +52,7 @@ module.exports = {
         NODE_ENV: JSON.stringify("production")
       }
     }),
+    new webpack.IgnorePlugin(/fs/),
     new UglifyJsPlugin({
       include: /\.min\.js$/,
       parallel: true,

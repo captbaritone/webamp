@@ -2,15 +2,11 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WebpackPwaManifest = require("webpack-pwa-manifest");
 const HtmlWebpackInlineSVGPlugin = require("html-webpack-inline-svg-plugin");
+const webpack = require("webpack");
 
 module.exports = {
   resolve: {
     extensions: [".js"]
-  },
-  node: {
-    // Consider suggesting jsmediatags use: https://github.com/feross/is-buffer
-    // Cuts 22k
-    Buffer: false
   },
   module: {
     rules: [
@@ -38,9 +34,10 @@ module.exports = {
         ]
       }
     ],
-    noParse: [/jszip\.js$/]
+    noParse: [/jszip\.js$/, /\.d\.ts$/]
   },
   plugins: [
+    new webpack.IgnorePlugin(/fs/, /file-type/, /debug/), // Ignore fs in music-metadata
     new HtmlWebpackPlugin({
       template: "./index.html"
     }),
