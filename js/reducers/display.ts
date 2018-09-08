@@ -1,3 +1,4 @@
+import {DisplayState, Action } from "../types";
 import { createSelector } from "reselect";
 
 import {
@@ -19,7 +20,7 @@ import {
 } from "../actionTypes";
 import { DEFAULT_SKIN, VISUALIZER_ORDER } from "../constants";
 
-export const getVisualizationOrder = state => {
+export const getVisualizationOrder = (state: DisplayState): Array<string> => {
   return [...state.additionalVisualizers, ...VISUALIZER_ORDER];
 };
 
@@ -52,7 +53,7 @@ const defaultDisplayState = {
   zIndex: 0
 };
 
-const display = (state = defaultDisplayState, action) => {
+const display = (state: DisplayState = defaultDisplayState, action: Action): DisplayState => {
   switch (action.type) {
     case TOGGLE_DOUBLESIZE_MODE:
       return { ...state, doubled: !state.doubled };
@@ -75,15 +76,16 @@ const display = (state = defaultDisplayState, action) => {
     case LOADED:
       return { ...state, loading: false };
     case SET_SKIN_DATA:
+    const {data} = action;
       return {
         ...state,
         loading: false,
-        skinImages: action.skinImages,
-        skinColors: action.skinColors,
-        skinPlaylistStyle: action.skinPlaylistStyle,
-        skinCursors: action.skinCursors,
-        skinRegion: action.skinRegion,
-        skinGenLetterWidths: action.skinGenLetterWidths
+        skinImages: data.skinImages,
+        skinColors: data.skinColors,
+        skinPlaylistStyle: data.skinPlaylistStyle,
+        skinCursors: data.skinCursors,
+        skinRegion: data.skinRegion,
+        skinGenLetterWidths: data.skinGenLetterWidths
       };
     case TOGGLE_VISUALIZER_STYLE:
       return {

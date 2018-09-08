@@ -3,6 +3,22 @@ type Skin = {
   name: string;
 };
 
+type SkinImages = {
+
+}
+
+type Band = null; // TODO: Use a real type here.
+
+// TODO: Fill these out once we actually use them.
+type SkinData = {
+      skinImages: SkinImages;
+      skinColors: null;
+      skinPlaylistStyle: null;
+      skinCursors: null;
+      skinRegion: null;
+      skinGenLetterWidths: null;
+      }
+
 export type Action =
   | {
       type: "NETWORK_CONNECTED";
@@ -61,6 +77,7 @@ export type Action =
   } | {
       type: "SET_BAND_FOCUS";
       input: string;
+      bandFocused: Band;
   } | {
       type: "UNSET_FOCUS";
   } | {
@@ -71,6 +88,41 @@ export type Action =
       message: string;
   } | {
       type: "UNSET_USER_MESSAGE";
+  } | {
+      type: "TOGGLE_DOUBLESIZE_MODE";
+  } | {
+      type: "TOGGLE_LLAMA_MODE";
+  } | {
+      type: "STEP_MARQUEE";
+  } | {
+      type: "DISABLE_MARQUEE";
+  } | {
+      type: "STOP_WORKING";
+  } | {
+      type: "START_WORKING";
+  } | {
+      type: "CLOSE_WINAMP";
+  } | {
+      type: "LOADING";
+  } | {
+      type: "LOADED";
+  } | {
+      type: "SET_SKIN_DATA";
+      data: SkinData;
+  } | {
+      type: "TOGGLE_VISUALIZER_STYLE";
+  } | {
+      type: "REGISTER_VISUALIZER";
+      id: string;
+  } | {
+      type: "SET_PLAYLIST_SCROLL_POSITION";
+      position: number;
+  } | {
+      type: "SET_Z_INDEX";
+      zIndex: number;
+  } | {
+      type: "SET_DUMMY_VIZ_DATA";
+      data: null;
     };
 
 export interface SettingsState {
@@ -97,7 +149,25 @@ export interface MediaState {
 
 export interface UserInputState {
   focus: string | null; // TODO: Convert this to an enum?
-  bandFocused: null;
+  bandFocused: Band;
   scrubPosition: number;
   userMessage: string | null;
+}
+
+export interface DisplayState {
+  additionalVisualizers: Array<string>;
+  visualizerStyle: number;
+  doubled: boolean;
+  llama: boolean;
+  disableMarquee: boolean;
+  marqueeStep: number;
+  skinImages: SkinImages;
+  skinColors: null;
+  skinPlaylistStyle: null;
+  working: boolean;
+  closed: boolean;
+  loading: boolean;
+  playlistScrollPosition: number;
+  zIndex: number
+  dummyVizData:null; // TODO: Figure out what kind of data this actually is.
 }
