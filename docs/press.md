@@ -80,6 +80,8 @@
 - http://www.redferret.net/?p=57922
 - https://hackernoon.com/50-popular-javascript-open-source-projects-on-github-in-2018-469c11b48b8d (mention)
 - https://mashable.com/2018/08/01/old-ways-to-listen-to-music-ranked/ (mention)
+- https://www.thewindowsclub.com/webamp-online-music-player-winamp
+- https://www.techspot.com/news/58728-winamp-recreated-html5.html
 
 ### Russian
 
@@ -237,6 +239,7 @@
 - https://canaltech.com.br/musica/desenvolvedor-ressuscita-winamp-em-emulador-com-javascript-108112/
 - https://itovnp.blogspot.com/2018/07/winamp-atraves-de-um-simples-browser.html
 - https://pplware.sapo.pt/software/chegou-winamp-funciona-um-browser/
+- https://www.techtudo.com.br/noticias/2018/03/oito-curiosidades-sobre-o-winamp-player-que-era-sucesso-nos-anos-2000.ghtml (mention)
 
 ### Swedish
 
