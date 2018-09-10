@@ -242,6 +242,21 @@ const unsubscribe = webamp.onMinimize(() => {
 unsubscribe();
 ```
 
+### `openFiles(files)`
+
+Ask Webamp to open a set of [files](https://developer.mozilla.org/en-US/docs/Web/API/File). Useful for implementing a file input or "drag and drop" target outside of Webamp.
+
+* `.zip` or `.wsz` files are opened as skins
+* `.eqf` files are opened as equalizer files
+* All other file types are assumed to be media files
+
+```JavaScript
+const someFileInput = document.getElementById('someFileInput');
+someFileInput.addEventListener('change', (e) => {
+    webamp.openFiles(e.target.files);
+});
+```
+
 ## Notes
 
 - Internet Explorer is not supported.

@@ -206,6 +206,10 @@ class Winamp {
     return storeHas(this.store, state => !state.display.loading);
   }
 
+  openFiles(files) {
+    this.store.dispatch(loadFilesFromReferences(files));
+  }
+
   async renderWhenReady(node) {
     await this.skinIsLoaded();
     const genWindowComponents = {};

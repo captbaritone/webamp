@@ -85,16 +85,6 @@ if ("URLSearchParams" in window) {
   skinUrl = params.get("skinUrl") || skinUrl;
 }
 
-function supressDragAndDrop(e) {
-  e.preventDefault();
-  e.dataTransfer.effectAllowed = "none";
-  e.dataTransfer.dropEffect = "none";
-}
-
-window.addEventListener("dragenter", supressDragAndDrop);
-window.addEventListener("dragover", supressDragAndDrop);
-window.addEventListener("drop", supressDragAndDrop);
-
 let lastActionType = null;
 
 // Filter out consecutive common actions
@@ -263,6 +253,20 @@ Raven.context(() => {
   }
 
   webamp.renderWhenReady(document.getElementById("app"));
+
+  function supressDragAndDrop(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    e.dataTransfer.dropEffect = "link";
+    e.dataTransfer.effectAllowed = "link";
+  }
+
+  window.addEventListener("dragenter", supressDragAndDrop);
+  window.addEventListener("dragover", supressDragAndDrop);
+  window.addEventListener("drop", e => {
+    webamp.openFiles(e.dataTransfer.files);
+    supressDragAndDrop(e);
+  });
 
   // Expose webamp instance for debugging and integration tests.
   window.__webamp = webamp;
