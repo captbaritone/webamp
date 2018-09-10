@@ -240,6 +240,7 @@
 - https://itovnp.blogspot.com/2018/07/winamp-atraves-de-um-simples-browser.html
 - https://pplware.sapo.pt/software/chegou-winamp-funciona-um-browser/
 - https://www.techtudo.com.br/noticias/2018/03/oito-curiosidades-sobre-o-winamp-player-que-era-sucesso-nos-anos-2000.ghtml (mention)
+- https://tecnoblog.net/234125/winamp-versao-web-navegador/
 
 ### Swedish
 
