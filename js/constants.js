@@ -52,3 +52,5 @@ export const MEDIA_STATUS = {
   STOPPED: "STOPPED",
   PAUSED: "PAUSED"
 };
+
+export const SERIALIZATION_VERSION = 1;

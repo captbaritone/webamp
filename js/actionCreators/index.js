@@ -1,4 +1,10 @@
-import { CLOSE_WINAMP, STOP, TOGGLE_VISUALIZER_STYLE } from "../actionTypes";
+import {
+  CLOSE_WINAMP,
+  STOP,
+  TOGGLE_VISUALIZER_STYLE,
+  RESTORE_SERIALIZED_STATE
+} from "../actionTypes";
+import { SERIALIZATION_VERSION } from "../constants";
 
 export {
   toggleDoubleSizeMode,
@@ -77,4 +83,18 @@ export function close() {
 
 export function toggleVisualizerStyle() {
   return { type: TOGGLE_VISUALIZER_STYLE };
+}
+
+export function restoreSerializedState(serializedState) {
+  if (serializedState.version !== SERIALIZATION_VERSION) {
+    // When SERIALIZATION_VERSION changes, will need to provide mapper functions
+    // to transform old versions to new versions here.
+    //
+    // Having types will make doing this translation much easier.
+    //
+    // For now we will throw as reminder of how important it is to remember to
+    // do this translation.
+    throw new Error("Invalid serializaiton version");
+  }
+  return { type: RESTORE_SERIALIZED_STATE, serializedState };
 }

@@ -11,7 +11,8 @@ import {
   TRACK_HEIGHT,
   WINDOW_RESIZE_SEGMENT_WIDTH,
   WINDOW_RESIZE_SEGMENT_HEIGHT,
-  WINDOW_WIDTH
+  WINDOW_WIDTH,
+  SERIALIZATION_VERSION
 } from "./constants";
 import { createPlaylistURL } from "./playlistHtml";
 import * as fromPlaylist from "./reducers/playlist";
@@ -329,3 +330,9 @@ export const getSkinPlaylistStyle = state => {
 
 export const getVisualizerStyle = state =>
   fromDisplay.getVisualizerStyle(state.display);
+
+export const serialize = state => {
+  return {
+    version: SERIALIZATION_VERSION
+  };
+};
