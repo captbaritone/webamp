@@ -44,7 +44,7 @@ export function play() {
     ) {
       dispatch(openMediaFileDialog());
     } else {
-      dispatch({ type: PLAY });
+      dispatch({ type: PLAY, id: state.playlist.currentTrack });
     }
   };
 }

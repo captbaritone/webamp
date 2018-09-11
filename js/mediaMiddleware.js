@@ -6,7 +6,6 @@ import {
   SEEK_TO_PERCENT_COMPLETE,
   SET_BAND_VALUE,
   SET_BALANCE,
-  SET_MEDIA,
   SET_VOLUME,
   START_WORKING,
   STOP,
@@ -19,7 +18,7 @@ import {
   CHANNEL_COUNT_CHANGED
 } from "./actionTypes";
 import { next as nextTrack } from "./actionCreators";
-import { getCurrentTrackId } from "./selectors";
+import { loadMediaFile } from "./actionCreators/files";
 
 export default media => store => {
   const {
@@ -55,17 +54,6 @@ export default media => store => {
     store.dispatch({ type: STOP_WORKING });
   });
 
-  media.on("fileLoaded", () => {
-    store.dispatch({
-      type: SET_MEDIA,
-      kbps: "128",
-      khz: Math.round(media.sampleRate() / 1000).toString(),
-      channels: media.channels(),
-      length: media.duration(),
-      id: getCurrentTrackId(store.getState())
-    });
-  });
-
   media.on("channelupdate", () => {
     store.dispatch({
       type: CHANNEL_COUNT_CHANGED,
@@ -77,6 +65,8 @@ export default media => store => {
     // TODO: Consider doing this after the action, and using the state as the source of truth.
     switch (action.type) {
       case PLAY:
+        const _track = store.getState().playlist.tracks[action.id];
+        store.dispatch(loadMediaFile(_track));
         media.play();
         break;
       case PAUSE:
