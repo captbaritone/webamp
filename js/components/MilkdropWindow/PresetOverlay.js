@@ -148,7 +148,7 @@ class PresetOverlay extends React.Component {
       }
       presetElms.push(
         <li key={i} style={{ color, lineHeight: `${ENTRY_HEIGHT}px` }}>
-          {i === 0 ? "Load Local Directory" : presetKeys[presetIndex]};
+          {i === 0 ? "Load Local Directory" : presetKeys[presetIndex]}
         </li>
       );
     }
