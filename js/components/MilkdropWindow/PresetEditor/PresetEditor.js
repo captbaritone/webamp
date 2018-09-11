@@ -151,7 +151,6 @@ class PresetEditor extends React.Component {
 
   async _updateValue(key, value) {
     const query = this._presetKeyArrayToQuery(key, value);
-    this.setState({ presetParts: update(this.state.presetParts, query) });
 
     if (key.indexOf("baseVals") !== -1) {
       // can just directly update baseVal in preset and presetParts
@@ -160,24 +159,13 @@ class PresetEditor extends React.Component {
         Object.assign({}, query, { presetParts: query })
       );
       this.props.updatePreset(preset);
-    } else if (key[0] === "warp") {
+    } else if (key[0] === "warp" || key[0] === "comp") {
       const convertedShader = await this._convertShader(value);
       const preset = update(
         this.props.currentPreset,
         Object.assign(
           {},
-          { warp: { $set: convertedShader } },
-          { presetParts: query }
-        )
-      );
-      this.props.updatePreset(preset);
-    } else if (key[0] === "comp") {
-      const convertedShader = await this._convertShader(value);
-      const preset = update(
-        this.props.currentPreset,
-        Object.assign(
-          {},
-          { comp: { $set: convertedShader } },
+          { [key[0]]: { $set: convertedShader } },
           { presetParts: query }
         )
       );
@@ -218,6 +206,8 @@ class PresetEditor extends React.Component {
       preset.waves[key[1]] = Object.assign(preset.waves[key[1]], waveEQs);
       this.props.updatePreset(preset);
     }
+
+    this.setState({ presetParts: update(this.state.presetParts, query) });
   }
 
   render() {
