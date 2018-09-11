@@ -327,6 +327,10 @@ export type Action =
     }
   | {
       type: "MINIMIZE_WINAMP";
+    }
+  | {
+      type: "CLOSE_REQUESTED";
+      cancel: () => void;
     };
 
 export interface SettingsState {

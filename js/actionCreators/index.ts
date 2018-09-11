@@ -1,4 +1,9 @@
-import { CLOSE_WINAMP, STOP, TOGGLE_VISUALIZER_STYLE } from "../actionTypes";
+import {
+  CLOSE_WINAMP,
+  STOP,
+  TOGGLE_VISUALIZER_STYLE,
+  CLOSE_REQUESTED
+} from "../actionTypes";
 import { Dispatchable } from "../types";
 
 export {
@@ -71,8 +76,17 @@ export {
 
 export function close(): Dispatchable {
   return dispatch => {
-    dispatch({ type: STOP });
-    dispatch({ type: CLOSE_WINAMP });
+    // TODO: This could probably be improved by adding a "PREVENT_CLOSE" action
+    // or something, but this works okay for now.
+    let defaultPrevented = false;
+    const cancel = () => {
+      defaultPrevented = true;
+    };
+    dispatch({ type: CLOSE_REQUESTED, cancel });
+    if (!defaultPrevented) {
+      dispatch({ type: STOP });
+      dispatch({ type: CLOSE_WINAMP });
+    }
   };
 }
 
