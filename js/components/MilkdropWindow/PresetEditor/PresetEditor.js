@@ -5,6 +5,40 @@ import TextEditor from "./TextEditor";
 import FloatEditor from "./FloatEditor";
 import IntEditor from "./IntEditor";
 
+// The `currentPreset` prop is a converted MilkDrop preset that is organized into an object like this:
+// {
+//   baseVals: { } // object of default base values for things like warp, motion, etc.
+//   presetInit: "", // javascript preset initial equations string
+//   perFrame: "", // javascript preset per frame equations string
+//   perVertex: "", // javascript preset per vertex equations string
+//   shapes: [
+//     {
+//       baseVals: { },
+//       init_eqs_str: "",
+//       frame_eqs_str: "",
+//     }
+//   ],
+//   waves: [
+//     {
+//       baseVals: { },
+//       init_eqs_str: "",
+//       frame_eqs_str: "",
+//       point_eqs_str: "",
+//     }
+//   ],
+//   warp: "", // GLSL warp shader
+//   comp: "", // GLSL comp shader
+//   presetParts: {} // object containing the original HLSL / NSEEL code
+// }
+//
+// The presetParts has the same exact shape as the rest of the converted preset, except
+// the javascript equations are the original NSEEL string, and the GLSL warp/comp shaders
+// are the original HLSL string. This is required so we can edit the strings in the original
+// languages.
+//
+// The presetParts is what is required to convert the preset from MilkDrop to ButterChurn format.
+// When editing the preset, we need to update both the original text in the presetParts, as well as the
+// corresponding part of the converted preset itself.
 class PresetEditor extends React.Component {
   constructor(props) {
     super(props);
