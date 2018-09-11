@@ -151,10 +151,15 @@ class PresetsLoader extends React.Component {
 }
 
 function presetNameFromURL(url) {
-  const urlParts = url.split("/");
-  const lastPart = urlParts[urlParts.length - 1];
-  const presetName = lastPart.substring(0, lastPart.length - 5); // remove .milk or .json
-  return decodeURIComponent(presetName);
+  try {
+    const urlParts = url.split("/");
+    const lastPart = urlParts[urlParts.length - 1];
+    const presetName = lastPart.substring(0, lastPart.length - 5); // remove .milk or .json
+    return decodeURIComponent(presetName);
+  } catch (e) {
+    // if something goes wrong parsing url, just use url as the preset name
+    return url;
+  }
 }
 
 async function loadInitialPreset() {
