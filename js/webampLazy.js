@@ -6,7 +6,7 @@ import getStore from "./store";
 import App from "./components/App";
 import Hotkeys from "./hotkeys";
 import Media from "./media";
-import { getTrackCount, getTracks } from "./selectors";
+import * as Selectors from "./selectors";
 import {
   setSkinFromUrl,
   loadMediaFiles,
@@ -173,7 +173,7 @@ class Winamp {
 
   // Append this array of tracks to the end of the current playlist.
   appendTracks(tracks) {
-    const nextIndex = getTrackCount(this.store.getState());
+    const nextIndex = Selectors.getTrackCount(this.store.getState());
     this.store.dispatch(loadMediaFiles(tracks, LOAD_STYLE.BUFFER, nextIndex));
   }
 
@@ -186,9 +186,17 @@ class Winamp {
     return this._actionEmitter.on(CLOSE_WINAMP, cb);
   }
 
+  serialize() {
+    return Selectors.serialize(this.store.getState());
+  }
+
+  restoreSerializedState(serializedState) {
+    this.store.dispatch(this.restoreSerializedState(serializedState));
+  }
+
   onTrackDidChange(cb) {
     return this._actionEmitter.on(SET_MEDIA, action => {
-      const tracks = getTracks(this.store.getState());
+      const tracks = Selectors.getTracks(this.store.getState());
       const track = tracks[action.id];
       if (track == null) {
         return;
