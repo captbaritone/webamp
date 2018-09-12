@@ -4,6 +4,9 @@ const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
 module.exports = {
+  resolve: {
+    extensions: [".js", ".ts"]
+  },
   node: {
     // Consider suggesting jsmediatags use: https://github.com/feross/is-buffer
     // Cuts 22k
@@ -17,7 +20,7 @@ module.exports = {
         use: ["style-loader", "css-loader"]
       },
       {
-        test: /\.js$/,
+        test: /\.[tj]s$/,
         exclude: /(node_modules)/,
         use: {
           loader: "babel-loader",
