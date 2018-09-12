@@ -30,7 +30,7 @@ describe("MainWindow", () => {
   let store;
   beforeEach(() => {
     store = getStore(media, new Emitter());
-    store.dispatch({ type: SET_SKIN_DATA });
+    store.dispatch({ type: SET_SKIN_DATA, data: {} });
   });
 
   it("renders to snapshot", () => {
