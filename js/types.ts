@@ -12,10 +12,10 @@ type Band = null; // TODO: Use a real type here.
 // TODO: Fill these out once we actually use them.
 type SkinData = {
       skinImages: SkinImages;
-      skinColors: null;
+      skinColors: string[];
       skinPlaylistStyle: null;
       skinCursors: null;
-      skinRegion: null;
+      skinRegion: {};
       skinGenLetterWidths: null;
       }
 
@@ -162,7 +162,10 @@ export interface DisplayState {
   disableMarquee: boolean;
   marqueeStep: number;
   skinImages: SkinImages;
-  skinColors: null;
+  skinCursors: null;
+  skinRegion: {};
+  skinGenLetterWidths: null;
+  skinColors: string[]; // Theoretically this could be a tuple of a specific length
   skinPlaylistStyle: null;
   working: boolean;
   closed: boolean;
