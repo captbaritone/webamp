@@ -1,6 +1,6 @@
 import { UTF8_ELLIPSIS } from "./constants";
 /* TODO: There are too many " " and "_" characters */
-export const FONT_LOOKUP = {
+export const FONT_LOOKUP: { [letter: string]: [number, number] } = {
   a: [0, 0],
   b: [0, 1],
   c: [0, 2],
@@ -71,7 +71,8 @@ export const FONT_LOOKUP = {
   "}": [1, 23]
 };
 
-export const imageConstFromChar = char => `CHARACTER_${char.charCodeAt(0)}`;
+export const imageConstFromChar = (char: string) =>
+  `CHARACTER_${char.charCodeAt(0)}`;
 
 const CHAR_X = 5;
 const CHAR_Y = 6;
