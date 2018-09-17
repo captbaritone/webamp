@@ -1,6 +1,19 @@
 import { DEFAULT_SKIN } from "./constants";
 
-export const getTimeObj = time => {
+interface Time {
+  minutesFirstDigit: string;
+  minutesSecondDigit: string;
+  secondsFirstDigit: string;
+  secondsSecondDigit: string;
+}
+
+interface IniData {
+  [section: string]: {
+    [key: string]: string;
+  };
+}
+
+export const getTimeObj = (time: number): Time => {
   if (time == null) {
     // If we clean up `<MiniTime />` we don't need to do this any more.
     return {
@@ -17,10 +30,10 @@ export const getTimeObj = time => {
     time == null
       ? [" ", " ", " ", " "]
       : [
-          Math.floor(minutes / 10),
-          Math.floor(minutes % 10),
-          Math.floor(seconds / 10),
-          Math.floor(seconds % 10)
+          String(Math.floor(minutes / 10)),
+          String(Math.floor(minutes % 10)),
+          String(Math.floor(seconds / 10)),
+          String(Math.floor(seconds % 10))
         ];
 
   const [
@@ -38,7 +51,7 @@ export const getTimeObj = time => {
   };
 };
 
-export const getTimeStr = (time, truncate = true) => {
+export const getTimeStr = (time: number, truncate = true): string => {
   if (time == null) {
     return "";
   }
@@ -58,12 +71,12 @@ export const getTimeStr = (time, truncate = true) => {
   ].join("");
 };
 
-export const getFileExtension = fileName => {
+export const getFileExtension = (fileName: string): string | null => {
   const matches = /\.([a-z]{3,4})$/i.exec(fileName);
   return matches ? matches[1].toLowerCase() : null;
 };
 
-export const parseViscolors = text => {
+export const parseViscolors = (text: string): string[] => {
   const entries = text.split("\n");
   const regex = /^(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/;
   const colors = [];
@@ -82,9 +95,9 @@ export const parseViscolors = text => {
 const SECTION_REGEX = /^\s*\[(.+?)\]\s*$/;
 const PROPERTY_REGEX = /^\s*([^;].*)\s*=\s*(.*)\s*$/;
 
-export const parseIni = text => {
-  let section, match;
-  return text.split(/[\r\n]+/g).reduce((data, line) => {
+export const parseIni = (text: string): IniData => {
+  let section: string, match;
+  return text.split(/[\r\n]+/g).reduce((data: IniData, line) => {
     if ((match = line.match(PROPERTY_REGEX)) && section != null) {
       const value = match[2].replace(/(^")|("$)|(^')|('$)/gi, "");
       data[section][match[1].trim().toLowerCase()] = value;
@@ -96,15 +109,16 @@ export const parseIni = text => {
   }, {});
 };
 
-export const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+export const clamp = (value: number, min: number, max: number): number =>
+  Math.min(Math.max(value, min), max);
 
-export const base64FromArrayBuffer = arrayBuffer => {
+export const base64FromArrayBuffer = (arrayBuffer: ArrayBuffer): string => {
   const dataView = new Uint8Array(arrayBuffer);
   return window.btoa(String.fromCharCode(...dataView));
 };
 
 // https://stackoverflow.com/a/15832662/1263117
-export function downloadURI(uri, name) {
+export function downloadURI(uri: string, name: string): void {
   const link = document.createElement("a");
   link.download = name;
   link.href = uri;
@@ -113,15 +127,21 @@ export function downloadURI(uri, name) {
   window.document.body.removeChild(link);
 }
 
-export const toPercent = (min, max, value) => (value - min) / (max - min);
+export const toPercent = (min: number, max: number, value: number): number =>
+  (value - min) / (max - min);
 
-export const percentToRange = (percent, min, max) =>
+export const percentToRange = (percent: number, min: number, max: number) =>
   min + Math.round(percent * (max - min));
 
-export const percentToIndex = (percent, length) =>
+export const percentToIndex = (percent: number, length: number): number =>
   percentToRange(percent, 0, length - 1);
 
-const rebound = (oldMin, oldMax, newMin, newMax) => oldValue =>
+const rebound = (
+  oldMin: number,
+  oldMax: number,
+  newMin: number,
+  newMax: number
+) => (oldValue: number): number =>
   percentToRange(toPercent(oldMin, oldMax, oldValue), newMin, newMax);
 
 // Convert a .eqf value to a 1-100
@@ -131,34 +151,44 @@ export const normalize = rebound(1, 64, 1, 100);
 export const denormalize = rebound(1, 100, 1, 64);
 
 // Merge a `source` object to a `target` recursively
-export const merge = (target, source) => {
+// TODO: The typing here is a bit of a disaster.
+export function merge<T extends object, S extends object>(
+  target: T,
+  source: S
+): T & S {
+  const s = source as any;
+  const t = target as any;
   // Iterate through `source` properties and if an `Object` set property to merge of `target` and `source` properties
-  for (const key of Object.keys(source)) {
-    if (source[key] instanceof Object)
-      Object.assign(source[key], merge(target[key], source[key]));
+  for (const key of Object.keys(s as any)) {
+    if (s[key] instanceof Object) Object.assign(s[key], merge(t[key], s[key]));
   }
 
   // Join `target` and modified `source`
   Object.assign(target || {}, source);
-  return target;
-};
+  return target as any;
+}
 
 // Maps a value in a range (defined my min/max) to a value in an array (options).
-export const segment = (min, max, value, newValues) => {
+export function segment<V>(
+  min: number,
+  max: number,
+  value: number,
+  newValues: V[]
+): V {
   const ratio = toPercent(min, max, value);
   /*
   | 0 | 1 | 2 |
   0   1   2   3
   */
   return newValues[percentToIndex(ratio, newValues.length)];
-};
+}
 
-export const arraysAreEqual = (a, b) =>
+export const arraysAreEqual = (a: any[], b: any[]): boolean =>
   a.length === b.length && a.every((value, i) => value === b[i]);
 
 // https://bost.ocks.org/mike/shuffle/
 // Shuffle an array in O(n)
-export const shuffle = array => {
+export function shuffle<T>(array: T[]): T[] {
   const sorted = [...array];
   let m = sorted.length;
 
@@ -174,10 +204,10 @@ export const shuffle = array => {
   }
 
   return sorted;
-};
+}
 
-export const sort = (array, iteratee) =>
-  [...array].sort((a, b) => {
+export function sort<T>(array: T[], iteratee: (value: T) => number): T[] {
+  return [...array].sort((a, b) => {
     const aKey = iteratee(a);
     const bKey = iteratee(b);
     if (aKey < bKey) {
@@ -187,8 +217,13 @@ export const sort = (array, iteratee) =>
     }
     return 0;
   });
+}
 
-export const moveSelected = (arr, isSelected, offset) => {
+export function moveSelected<V>(
+  arr: V[],
+  isSelected: (index: number) => boolean,
+  offset: number
+): V[] {
   const newArr = new Array(arr.length);
   let next = 0;
   for (let i = 0; i < newArr.length; i++) {
@@ -205,24 +240,26 @@ export const moveSelected = (arr, isSelected, offset) => {
     }
   }
   return newArr;
-};
+}
 
-export const spliceIn = (original, start, newValues) => {
+export function spliceIn<T>(original: T[], start: number, newValues: T[]): T[] {
   const newArr = [...original];
   newArr.splice(start, 0, ...newValues);
   return newArr;
-};
+}
 
-export function debounce(func, delay) {
-  let token;
-  return function(...args) {
+type Procedure = (...args: any[]) => void;
+
+export function debounce<F extends Procedure>(func: F, delay: number): F {
+  let token: NodeJS.Timer;
+  return function(this: any, ...args: any[]): void {
     if (token != null) {
       clearTimeout(token);
     }
     token = setTimeout(() => {
       func.apply(this, args);
     }, delay);
-  };
+  } as any;
 }
 
 let counter = 0;
@@ -230,26 +267,45 @@ export function uniqueId() {
   return counter++;
 }
 
-export function objectForEach(obj, cb) {
+export function objectForEach<V>(
+  obj: { [key: string]: V },
+  cb: (value: V, key: string) => void
+): void {
   Object.keys(obj).forEach(key => cb(obj[key], key));
 }
 
-export function objectMap(obj, cb) {
-  const modified = {};
+export function objectMap<V, N>(
+  obj: { [key: string]: V },
+  cb: (value: V, key: string) => N
+): { [key: string]: N } {
+  const modified: { [key: string]: N } = {};
   Object.keys(obj).forEach(key => (modified[key] = cb(obj[key], key)));
   return modified;
 }
 
-export const objectFilter = (obj, predicate) =>
+export function objectFilter<V>(
+  obj: { [key: string]: V },
+  predicate: (value: V, key: string) => boolean
+) {
   // TODO: Could return the original reference if no values change
-  Object.keys(obj).reduce((newObj, key) => {
+  return Object.keys(obj).reduce((newObj: { [key: string]: V }, key) => {
     if (predicate(obj[key], key)) {
       newObj[key] = obj[key];
     }
     return newObj;
   }, {});
+}
 
-export const calculateBoundingBox = windows =>
+interface Window {
+  left: number;
+  top: number;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+export const calculateBoundingBox = (windows: Window[]) =>
   windows.reduce(
     (b, w) => ({
       left: Math.min(b.left, w.x),
