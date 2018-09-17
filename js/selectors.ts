@@ -1,3 +1,4 @@
+import { AppState, PlaylistTrack, WebampWindow, WindowId } from "./types";
 import { createSelector } from "reselect";
 import {
   denormalize,
@@ -18,10 +19,10 @@ import * as fromPlaylist from "./reducers/playlist";
 import * as fromDisplay from "./reducers/display";
 import { generateGraph } from "./resizeUtils";
 
-export const getSliders = state => state.equalizer.sliders;
+export const getSliders = (state: AppState) => state.equalizer.sliders;
 
 export const getEqfData = createSelector(getSliders, sliders => {
-  const preset = {
+  const preset: { [key: string]: number | string } = {
     name: "Entry1",
     preamp: denormalize(sliders.preamp)
   };
@@ -35,8 +36,8 @@ export const getEqfData = createSelector(getSliders, sliders => {
   return eqfData;
 });
 
-export const getTracks = state => state.playlist.tracks;
-const getTrackOrder = state => state.playlist.trackOrder;
+export const getTracks = (state: AppState) => state.playlist.tracks;
+const getTrackOrder = (state: AppState) => state.playlist.trackOrder;
 
 export const getTrackCount = createSelector(
   getTrackOrder,
@@ -52,7 +53,7 @@ export const getOrderedTracks = createSelector(
 const getOrderedTrackObjects = createSelector(
   getTracks,
   getOrderedTracks,
-  (tracks, trackOrder) => trackOrder.map(id => tracks[id])
+  (tracks, trackOrder): PlaylistTrack[] => trackOrder.map(id => tracks[id])
 );
 
 export const getSelectedTrackObjects = createSelector(
@@ -61,7 +62,7 @@ export const getSelectedTrackObjects = createSelector(
 );
 
 // If a duration is `null`, it counts as zero, which seems fine enough.
-const runningTimeFromTracks = tracks =>
+const runningTimeFromTracks = (tracks: PlaylistTrack[]) =>
   tracks.reduce((time, track) => time + Number(track.duration), 0);
 
 const getTotalRunningTime = createSelector(
@@ -83,17 +84,23 @@ export const getRunningTimeMessage = createSelector(
 );
 
 // TODO: use slectors to get memoization
-export const getCurrentTrackIndex = state =>
-  state.playlist.trackOrder.indexOf(state.playlist.currentTrack);
+export const getCurrentTrackIndex = (state: AppState): number => {
+  const { playlist } = state;
+  if (playlist.currentTrack == null) {
+    return -1;
+  }
+  return playlist.trackOrder.indexOf(playlist.currentTrack);
+};
 
 export const getCurrentTrackNumber = createSelector(
   getCurrentTrackIndex,
   currentTrackIndex => currentTrackIndex + 1
 );
 
-export const getCurrentTrackId = state => state.playlist.currentTrack;
+export const getCurrentTrackId = (state: AppState) =>
+  state.playlist.currentTrack;
 
-export const nextTrack = (state, n = 1) => {
+export const nextTrack = (state: AppState, n = 1) => {
   const {
     playlist: { trackOrder },
     media: { repeat }
@@ -126,7 +133,7 @@ export const nextTrack = (state, n = 1) => {
 };
 
 const BASE_WINDOW_HEIGHT = 58;
-export const getNumberOfVisibleTracks = state => {
+export const getNumberOfVisibleTracks = (state: AppState) => {
   const playlistSize = getWindowSize(state, "playlist");
   return Math.floor(
     (BASE_WINDOW_HEIGHT + WINDOW_RESIZE_SEGMENT_HEIGHT * playlistSize[1]) /
@@ -141,7 +148,7 @@ export const getOverflowTrackCount = createSelector(
     Math.max(0, trackCount - numberOfVisibleTracks)
 );
 
-const _getPlaylistScrollPosition = state =>
+const _getPlaylistScrollPosition = (state: AppState) =>
   state.display.playlistScrollPosition;
 
 export const getPlaylistScrollPosition = createSelector(
@@ -180,7 +187,7 @@ export const getVisibleTrackIds = createSelector(
 export const getTrackIsVisibleFunction = createSelector(
   getVisibleTrackIds,
   visibleTrackIds => {
-    return id => visibleTrackIds.includes(id);
+    return (id: number) => visibleTrackIds.includes(id);
   }
 );
 
@@ -190,17 +197,21 @@ export const getVisibleTracks = createSelector(
   (visibleTrackIds, tracks) => visibleTrackIds.map(id => tracks[id])
 );
 
-export const getPlaylist = state => state.playlist;
+export const getPlaylist = (state: AppState) => state.playlist;
 
-export const getDuration = state => {
-  const currentTrack = state.playlist.tracks[state.playlist.currentTrack];
+export const getDuration = (state: AppState): number | null => {
+  const { playlist } = state;
+  if (playlist.currentTrack == null) {
+    return null;
+  }
+  const currentTrack = playlist.tracks[playlist.currentTrack];
   return currentTrack && currentTrack.duration;
 };
 
-export const getTrackDisplayName = (state, trackId) =>
+export const getTrackDisplayName = (state: AppState, trackId: number | null) =>
   fromPlaylist.getTrackDisplayName(getPlaylist(state), trackId);
 
-export const getCurrentTrackDisplayName = state => {
+export const getCurrentTrackDisplayName = (state: AppState) => {
   const id = getCurrentTrackId(state);
   return getTrackDisplayName(state, id);
 };
@@ -221,9 +232,13 @@ export const getMediaText = createSelector(
         `${minimalMediaText} (${getTimeStr(duration)})  ***  `
 );
 
-export const getNumberOfTracks = state => getTrackOrder(state).length;
+export const getNumberOfTracks = (state: AppState) =>
+  getTrackOrder(state).length;
 const getPlaylistDuration = createSelector(getTracks, tracks =>
-  Object.values(tracks).reduce((total, track) => total + track.duration, 0)
+  Object.values(tracks).reduce(
+    (total, track) => total + (track.duration || 0),
+    0
+  )
 );
 
 export const getPlaylistURL = createSelector(
@@ -248,14 +263,14 @@ export const getPlaylistURL = createSelector(
     })
 );
 
-export function getWindowPositions(state) {
+export function getWindowPositions(state: AppState) {
   return state.windows.positions;
 }
 
 const WINDOW_HEIGHT = 116;
 const SHADE_WINDOW_HEIGHT = 14;
 
-function getWPixelSize(w, doubled) {
+function getWPixelSize(w: WebampWindow, doubled: boolean) {
   const [width, height] = w.size;
   const doubledMultiplier = doubled && w.canDouble ? 2 : 1;
   const pix = {
@@ -268,27 +283,27 @@ function getWPixelSize(w, doubled) {
   };
 }
 
-export function getWindowSize(state, windowId) {
+export function getWindowSize(state: AppState, windowId: WindowId) {
   return state.windows.genWindows[windowId].size;
 }
 
-export function getWindowOpen(state) {
-  return windowId => state.windows.genWindows[windowId].open;
+export function getWindowOpen(state: AppState) {
+  return (windowId: WindowId) => state.windows.genWindows[windowId].open;
 }
 
-export function getWindowShade(state, windowId) {
+export function getWindowShade(state: AppState, windowId: WindowId) {
   return state.windows.genWindows[windowId].shade;
 }
 
-export function getWindowHidden(state) {
-  return windowId => state.windows.genWindows[windowId].hidden;
+export function getWindowHidden(state: AppState) {
+  return (windowId: WindowId) => state.windows.genWindows[windowId].hidden;
 }
 
-export const getGenWindows = state => {
+export const getGenWindows = (state: AppState) => {
   return state.windows.genWindows;
 };
 
-export function getDoubled(state) {
+export function getDoubled(state: AppState) {
   return state.display.doubled;
 }
 
@@ -300,7 +315,7 @@ export const getWindowSizes = createSelector(
   }
 );
 
-export function getWindowPixelSize(state, windowId) {
+export function getWindowPixelSize(state: AppState, windowId: WindowId) {
   // Rather than compute it directly, we go via `getWindowSizes`
   // to take advantage of caching.
   return getWindowSizes(state)[windowId];
@@ -315,7 +330,7 @@ export const getWindowsInfo = createSelector(
 
 export const getWindowGraph = createSelector(getWindowsInfo, generateGraph);
 
-export const getSkinPlaylistStyle = state => {
+export const getSkinPlaylistStyle = (state: AppState) => {
   return (
     state.display.skinPlaylistStyle || {
       normal: "#00FF00",
@@ -327,5 +342,5 @@ export const getSkinPlaylistStyle = state => {
   );
 };
 
-export const getVisualizerStyle = state =>
+export const getVisualizerStyle = (state: AppState) =>
   fromDisplay.getVisualizerStyle(state.display);

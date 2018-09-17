@@ -31,7 +31,7 @@ type SkinImages = { [sprite: string]: string };
 // TODO: type these keys
 type SkinRegion = { [windowName: string]: string[] };
 
-type WindowId = string;
+export type WindowId = string;
 
 // TODO: Fill these out once we actually use them.
 type SkinData = {
@@ -43,6 +43,13 @@ type SkinData = {
   skinGenLetterWidths: GenLetterWidths;
 };
 
+interface WindowPosition {
+  x: number;
+  y: number;
+}
+export type WindowPositions = {
+  [windowId: string]: WindowPosition;
+};
 export type Action =
   | {
       type: "NETWORK_CONNECTED";
@@ -232,7 +239,7 @@ export type Action =
     }
   | {
       type: "UPDATE_WINDOW_POSITIONS";
-      positions: {};
+      positions: WindowPositions;
     }
   | {
       type: "CLICKED_TRACK";
@@ -361,7 +368,7 @@ export interface EqualizerState {
   sliders: Record<Slider, number>;
 }
 
-export interface Window {
+export interface WebampWindow {
   title: string;
   size: [number, number];
   open: boolean;
@@ -376,8 +383,8 @@ export interface Window {
 
 export interface WindowState {
   focused: string;
-  genWindows: { [name: string]: Window };
-  positions: {}; // TODO: Make this more strict
+  genWindows: { [name: string]: WebampWindow };
+  positions: WindowPositions;
 }
 
 export type MediaTagRequestStatus =
@@ -394,6 +401,7 @@ export interface PlaylistTrack {
   albumArtUrl: string | null;
   selected: boolean;
   mediaTagsRequestStatus: MediaTagRequestStatus;
+  duration: number | null;
 }
 
 export interface PlaylistState {

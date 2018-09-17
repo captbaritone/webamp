@@ -271,8 +271,11 @@ export default playlist;
 
 export const getTrackDisplayName = (
   state: PlaylistState,
-  id: number
+  id: number | null = null
 ): string | null => {
+  if (id == null) {
+    return null;
+  }
   const track = state.tracks[id];
   if (track == null) {
     return null;
