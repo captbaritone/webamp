@@ -1,9 +1,20 @@
 import React from "react";
-import PropTypes from "prop-types";
 import ContextMenu from "./ContextMenu";
 
-export default class ContextMenuTarget extends React.Component {
-  constructor(props) {
+interface Props {
+  handle: React.ReactNode;
+  children: React.ReactNode;
+  top: number;
+  bottom: number;
+}
+interface State {
+  selected: boolean;
+}
+
+export default class ContextMenuTarget extends React.Component<Props, State> {
+  handleNode?: HTMLDivElement | null;
+
+  constructor(props: Props) {
     super(props);
     this.state = { selected: false };
   }
@@ -20,13 +31,15 @@ export default class ContextMenuTarget extends React.Component {
     this.setState({ selected: !this.state.selected });
   };
 
-  _handleGlobalClick = e => {
+  _handleGlobalClick = (e: MouseEvent) => {
     if (
+      // Typescript does not believe that these click events are always fired on DOM nodes.
+      e.target instanceof Element &&
       this.state.selected &&
       // Not sure how, but it's possible for this to get called when handleNode is null/undefined.
       // https://sentry.io/share/issue/2066cd79f21e4f279791319f4d2ea35d/
       this.handleNode &&
-      !this.handleNode.contains(e.target)
+      !this.handleNode.contains(e.target!)
     ) {
       this.setState({ selected: false });
     }
@@ -70,10 +83,3 @@ export default class ContextMenuTarget extends React.Component {
     );
   }
 }
-
-ContextMenuTarget.propTypes = {
-  children: PropTypes.any.isRequired,
-  handle: PropTypes.any.isRequired,
-  top: PropTypes.bool,
-  bottom: PropTypes.bool
-};
