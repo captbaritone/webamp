@@ -393,6 +393,8 @@ export type MediaTagRequestStatus =
   | "COMPLETE"
   | "NOT_REQUESTED";
 
+export type MediaStatus = "PLAYING" | "STOPPED" | "PAUSED";
+
 export interface PlaylistTrack {
   artist: string;
   title: string;
