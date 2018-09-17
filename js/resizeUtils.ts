@@ -1,6 +1,34 @@
-export function getPositionDiff(graph, sizeDiff) {
-  const newGraph = {};
-  const positionDiff = {};
+import { WebampWindow, WindowInfo, WindowId } from "./types";
+
+interface NewGraph {
+  [key: string]: {
+    above: string[];
+    left: string[];
+  };
+}
+
+interface PositionDiff {
+  [key: string]: {
+    x: number;
+    y: number;
+  };
+}
+
+interface SizeDiff {
+  [key: string]: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  };
+}
+
+export function getPositionDiff(
+  graph: Graph,
+  sizeDiff: SizeDiff
+): PositionDiff {
+  const newGraph: NewGraph = {};
+  const positionDiff: PositionDiff = {};
   for (const key of Object.keys(graph)) {
     newGraph[key] = { above: [], left: [] };
     positionDiff[key] = { x: 0, y: 0 };
@@ -17,7 +45,7 @@ export function getPositionDiff(graph, sizeDiff) {
     }
   }
 
-  function walkRight(key) {
+  function walkRight(key: WindowId) {
     const node = newGraph[key];
     const nodeSizeDiff = sizeDiff[key];
     node.left.forEach(left => {
@@ -26,7 +54,7 @@ export function getPositionDiff(graph, sizeDiff) {
     });
   }
 
-  function walkDown(key) {
+  function walkDown(key: WindowId) {
     const node = newGraph[key];
     const nodeSizeDiff = sizeDiff[key];
     node.above.forEach(above => {
@@ -48,9 +76,19 @@ export function getPositionDiff(graph, sizeDiff) {
   return positionDiff;
 }
 
-export function generateGraph(windows) {
-  const bottoms = {};
-  const rights = {};
+interface Edges {
+  below?: WindowId;
+  right?: WindowId;
+}
+
+interface Graph {
+  // TODO: Ensure this is a WindowId
+  [id: string]: Edges;
+}
+
+export function generateGraph(windows: WindowInfo[]): Graph {
+  const bottoms: { [offset: number]: WindowInfo[] } = {};
+  const rights: { [offset: number]: WindowInfo[] } = {};
   for (const w of windows) {
     const bottom = w.y + w.height;
     if (bottoms[bottom]) {
@@ -67,9 +105,9 @@ export function generateGraph(windows) {
     }
   }
 
-  const graph = {};
+  const graph: Graph = {};
   for (const w of windows) {
-    const edges = {};
+    const edges: Edges = {};
     const top = w.y;
     const left = w.x;
 
