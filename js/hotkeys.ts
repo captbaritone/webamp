@@ -19,9 +19,10 @@ import {
 import { TOGGLE_TIME_MODE, TOGGLE_LLAMA_MODE } from "./actionTypes";
 
 import { arraysAreEqual } from "./utils";
+import { Dispatch } from "./types";
 
-export default function(dispatch) {
-  let keylog = [];
+export default function(dispatch: Dispatch) {
+  let keylog: number[] = [];
   const trigger = [
     78, // N
     85, // U
