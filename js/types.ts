@@ -14,7 +14,8 @@ export type Band =
   | 12000
   | 14000
   | 16000;
-type Slider = Band | "preamp";
+
+export type Slider = Band | "preamp";
 
 // TODO: Use a type to ensure these keys mirror the CURSORS constant in
 // skinParser.js
@@ -51,6 +52,9 @@ export type WindowPositions = {
   [windowId: string]: WindowPosition;
 };
 export type Action =
+  | {
+      type: "@@init";
+    }
   | {
       type: "NETWORK_CONNECTED";
     }
@@ -90,10 +94,10 @@ export type Action =
   | {
       type: "ADD_TRACK_FROM_URL";
       atIndex: number | null;
-      id: string;
-      defaultName: string;
-      duration: number | null;
-      url: string;
+      id: number;
+      defaultName?: string;
+      duration?: number;
+      url: string | URL;
     }
   | {
       type: "SET_MEDIA";
@@ -284,7 +288,7 @@ export type Action =
       id: number;
       title: string;
       artist: string;
-      albumArtUrl: string;
+      albumArtUrl?: string | null;
     }
   | {
       type: "MEDIA_TAG_REQUEST_INITIALIZED";
@@ -320,6 +324,9 @@ export type Action =
   | {
       type: "SEEK_TO_PERCENT_COMPLETE";
       percent: number;
+    }
+  | {
+      type: "MINIMIZE_WINAMP";
     };
 
 export interface SettingsState {
@@ -413,12 +420,70 @@ export type MediaTagRequestStatus =
 
 export type MediaStatus = "PLAYING" | "STOPPED" | "PAUSED";
 
+export type LoadStyle = "BUFFER" | "PLAY";
+
+export type TimeMode = "ELAPSED" | "REMAINING";
+
+interface TrackInfo {
+  /**
+   * Name to be used until ID3 tags can be resolved.
+   *
+   * If the track has a `url`, and this property is not given,
+   * the filename will be used instead.
+   *
+   * Example: `'My Song'`
+   */
+  defaultName?: string;
+
+  /**
+   * Data to be used _instead_ of trying to fetch ID3 tags.
+   *
+   * Example: `{ artist: 'Jordan Eldredge', title: "Jordan's Song" }`
+   */
+  metaData?: {
+    artist: string;
+    title: string;
+  };
+
+  /**
+   * Duration (in seconds) to be used instead of fetching enough of the file to measure its length.
+   *
+   * Example: 95
+   */
+  duration?: number;
+}
+
+export interface URLTrack extends TrackInfo {
+  /**
+   * Source URL of the track
+   *
+   * Note: This URL must be served the with correct CORs headers.
+   *
+   * Example: `'https://example.com/song.mp3'`
+   */
+  url: string | URL;
+}
+
+export interface BlobTrack extends TrackInfo {
+  /**
+   * Blob source of the track
+   */
+  blob: Blob;
+}
+
+/**
+ * Many methods on the webamp instance deal with track.
+ *
+ * Either `url` or `blob` must be specified
+ */
+export type Track = URLTrack | BlobTrack;
+
 export interface PlaylistTrack {
   artist: string;
   title: string;
   url: string;
   defaultName: string;
-  albumArtUrl: string | null;
+  albumArtUrl?: string | null;
   selected: boolean;
   mediaTagsRequestStatus: MediaTagRequestStatus;
   duration: number | null;
@@ -444,14 +509,24 @@ export interface AppState {
   network: NetworkState;
 }
 
+export interface Extras {
+  requireJSZip: () => Promise<never>;
+  requireJSMediaTags: () => Promise<never>;
+}
+
 export type GetState = () => AppState;
 
 export type Thunk = (
   dispatch: Dispatch,
-  getState: GetState
+  getState: GetState,
+  extras: Extras
 ) => void | Promise<void>;
 
 export type Dispatchable = Action | Thunk;
+
+export interface DispatchObject {
+  [prop: string]: (...args: any[]) => Dispatchable;
+}
 
 export type Dispatch = (action: Dispatchable) => void;
 
