@@ -1,23 +1,17 @@
 {
-    "compilerOptions": {
-        "moduleResolution": "node",
-        "module": "commonjs",
-        "target": "esnext",
-        "allowJs": true,
-        "skipLibCheck": true,
-        "allowSyntheticDefaultImports": true,
-        "resolveJsonModule": true,
-        "strict": true,
-        "jsx": "preserve",
-        "noEmit": true,
-        "pretty": true
-    },
-    "include": [
-        "js/**/*.js",
-        "js/**/*.ts"
-    ],
-    "exclude": [
-        "node_modules",
-        "**/*.spec.ts"
-    ]
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "target": "esnext",
+    "allowJs": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "jsx": "preserve",
+    "noEmit": true,
+    "pretty": true
+  },
+  "include": ["js/**/*.js", "js/**/*.ts"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }
