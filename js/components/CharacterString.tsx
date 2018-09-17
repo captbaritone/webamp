@@ -1,9 +1,12 @@
 import React from "react";
-import PropTypes from "prop-types";
 import Character from "./Character";
 
-class CharacterString extends React.Component {
-  shouldComponentUpdate(nextProps) {
+interface Props {
+  children: string;
+}
+
+class CharacterString extends React.Component<Props> {
+  shouldComponentUpdate(nextProps: Props) {
     return nextProps.children !== this.props.children;
   }
 
@@ -15,9 +18,5 @@ class CharacterString extends React.Component {
     ));
   }
 }
-
-CharacterString.propsTypes = {
-  children: PropTypes.string
-};
 
 export default CharacterString;
