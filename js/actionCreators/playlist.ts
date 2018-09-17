@@ -28,6 +28,8 @@ export function cropPlaylist(): Dispatchable {
     } = getState();
     dispatch({
       type: REMOVE_TRACKS,
+      // @ts-ignore The keys are numbers, but TypeScript does not trust us.
+      // https://github.com/Microsoft/TypeScript/pull/12253#issuecomment-263132208
       ids: Object.keys(tracks).filter(id => !tracks[id].selected)
     });
   };
@@ -40,6 +42,8 @@ export function removeSelectedTracks(): Dispatchable {
     } = getState();
     dispatch({
       type: REMOVE_TRACKS,
+      // @ts-ignore The keys are numbers, but TypeScript does not trust us.
+      // https://github.com/Microsoft/TypeScript/pull/12253#issuecomment-263132208
       ids: Object.keys(tracks).filter(id => tracks[id].selected)
     });
   };
