@@ -1,4 +1,10 @@
-import { Band, MediaTagRequestStatus, MediaStatus } from "./types";
+import {
+  Band,
+  MediaTagRequestStatus,
+  MediaStatus,
+  LoadStyle,
+  TimeMode
+} from "./types";
 import * as baseSkin from "./baseSkin.json";
 export const BANDS: Band[] = [
   60,
@@ -19,7 +25,7 @@ export const WINDOWS = {
   EQUALIZER: "equalizer"
 };
 
-export const LOAD_STYLE = {
+export const LOAD_STYLE: Record<LoadStyle, LoadStyle> = {
   BUFFER: "BUFFER",
   PLAY: "PLAY"
 };
@@ -58,7 +64,7 @@ export const VISUALIZER_ORDER = [
   VISUALIZERS.NONE
 ];
 
-export const TIME_MODE = {
+export const TIME_MODE: Record<TimeMode, TimeMode> = {
   ELAPSED: "ELAPSED",
   REMAINING: "REMAINING"
 };
