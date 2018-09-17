@@ -1,3 +1,4 @@
+import { AppState, Action } from "../types";
 import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
@@ -12,21 +13,32 @@ import "../../css/mini-time.css";
 // alternate between the actual character and the space character. Not
 // Possible to do that in pure CSS with the background being dynamically generated.
 // All "space" characters is also how Winamp renders no content.
-const Background = () =>
-  [1, 7, 12, 20, 25].map((left, i) => (
-    <Character
-      style={{ left }}
-      key={i}
-      className="background-character"
-      children=" "
-    />
-  ));
+const Background = () => (
+  <React.Fragment>
+    {[1, 7, 12, 20, 25].map((left, i) => (
+      <Character
+        style={{ left }}
+        key={i}
+        className="background-character"
+        children=" "
+      />
+    ))}
+  </React.Fragment>
+);
 
-const MiniTime = props => {
+type StateProps = {
+  status: string | null;
+  timeMode: string;
+  timeElapsed: number;
+  length: number | null;
+  toggle: () => void;
+};
+
+const MiniTime = (props: StateProps) => {
   let seconds = null;
   // TODO: Clean this up: If stopped, just render the background, rather than
   // rendering spaces twice.
-  if (props.status !== MEDIA_STATUS.STOPPED) {
+  if (props.status !== MEDIA_STATUS.STOPPED && props.length != null) {
     seconds =
       props.timeMode === TIME_MODE.ELAPSED
         ? props.timeElapsed
@@ -54,12 +66,21 @@ const MiniTime = props => {
   );
 };
 
-const mapDispatchToProps = {
+const mapStateToProps = (state: AppState) => ({
+  status: state.media.status,
+  timeMode: state.media.timeMode,
+  timeElapsed: state.media.timeElapsed,
+  length: state.media.length
+});
+
+const mapDispatchToProps = (dispatch: (action: Action) => void) => ({
   // TODO: move to actionCreators
-  toggle: () => ({ type: TOGGLE_TIME_MODE })
-};
+  toggle: () => {
+    dispatch({ type: TOGGLE_TIME_MODE });
+  }
+});
 
 export default connect(
-  state => state.media,
+  mapStateToProps,
   mapDispatchToProps
 )(MiniTime);

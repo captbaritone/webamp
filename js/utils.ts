@@ -13,7 +13,7 @@ interface IniData {
   };
 }
 
-export const getTimeObj = (time: number): Time => {
+export const getTimeObj = (time: number | null): Time => {
   if (time == null) {
     // If we clean up `<MiniTime />` we don't need to do this any more.
     return {
