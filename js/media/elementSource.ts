@@ -1,13 +1,22 @@
 import Emitter from "../emitter";
 import { clamp } from "../utils";
 import { MEDIA_STATUS } from "../constants";
+import { MediaStatus } from "../types";
 
 export default class ElementSource {
-  on(eventType, cb) {
+  _emitter: Emitter;
+  _context: AudioContext;
+  _source: AudioNode;
+  _destination: AudioNode;
+  _audio: HTMLAudioElement;
+  _stalled: boolean;
+  _status: MediaStatus;
+
+  on(eventType: string, cb: (...args: any[]) => void) {
     return this._emitter.on(eventType, cb);
   }
 
-  constructor(context, destination) {
+  constructor(context: AudioContext, destination: AudioNode) {
     this._emitter = new Emitter();
     this._context = context;
     this._destination = destination;
@@ -36,7 +45,7 @@ export default class ElementSource {
     });
 
     this._audio.addEventListener("error", e => {
-      switch (this._audio.error.code) {
+      switch (this._audio.error!.code) {
         case 1:
           // The fetching of the associated resource was aborted by the user's request.
           console.error("MEDIA_ERR_ABORTED", e);
@@ -69,7 +78,7 @@ export default class ElementSource {
     this._source.connect(destination);
   }
 
-  _setStalled(stalled) {
+  _setStalled(stalled: boolean) {
     this._stalled = stalled;
     this._emitter.trigger("stallChanged");
   }
@@ -80,7 +89,7 @@ export default class ElementSource {
 
   // Async for now, for compatibility with BufferAudioSource
   // TODO: This does not need to be async
-  async loadUrl(url) {
+  async loadUrl(url: string) {
     this._audio.src = url;
   }
 
@@ -107,7 +116,7 @@ export default class ElementSource {
     this._setStatus(MEDIA_STATUS.STOPPED);
   }
 
-  seekToTime(time) {
+  seekToTime(time: number) {
     /* TODO: We could check if this is actually seekable:
     const { seekable } = this._audio;
     for (let i = 0; i < seekable.length; i++) {
@@ -148,7 +157,7 @@ export default class ElementSource {
     return this._context.sampleRate;
   }
 
-  _setStatus(status) {
+  _setStatus(status: MediaStatus) {
     this._status = status;
     this._emitter.trigger("statusChange");
   }

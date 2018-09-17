@@ -1,4 +1,4 @@
-import { Band, MediaTagRequestStatus } from "./types";
+import { Band, MediaTagRequestStatus, MediaStatus } from "./types";
 import * as baseSkin from "./baseSkin.json";
 export const BANDS: Band[] = [
   60,
@@ -63,7 +63,8 @@ export const TIME_MODE = {
   REMAINING: "REMAINING"
 };
 
-export const MEDIA_STATUS = {
+// TODO: Convert to enum once we are fully Typescript
+export const MEDIA_STATUS: Record<MediaStatus, MediaStatus> = {
   PLAYING: "PLAYING",
   STOPPED: "STOPPED",
   PAUSED: "PAUSED"
