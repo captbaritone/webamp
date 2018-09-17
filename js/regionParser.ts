@@ -10,7 +10,7 @@ export function pointPairs(arr: string[]) {
 
 type RegionData = { [section: string]: string[] };
 
-export default function regionParser(regionStr: string) {
+export default function regionParser(regionStr: string): RegionData {
   const iniData = parseIni(regionStr);
   const data: RegionData = {};
   Object.keys(iniData).forEach(section => {
