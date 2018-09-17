@@ -14,7 +14,7 @@ import {
   getFileExtension
 } from "./utils";
 
-const fixture = filename =>
+const fixture = (filename: string) =>
   fs.readFileSync(`./js/__tests__/fixtures/${filename}`, "utf8");
 
 describe("getTimeObj", () => {
