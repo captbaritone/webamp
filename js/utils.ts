@@ -51,7 +51,7 @@ export const getTimeObj = (time: number | null): Time => {
   };
 };
 
-export const getTimeStr = (time: number, truncate = true): string => {
+export const getTimeStr = (time: number, truncate: boolean = true): string => {
   if (time == null) {
     return "";
   }
@@ -63,7 +63,7 @@ export const getTimeStr = (time: number, truncate = true): string => {
   } = getTimeObj(time);
 
   return [
-    truncate ? minutesFirstDigit || "" : minutesFirstDigit,
+    truncate && minutesFirstDigit === "0" ? "" : minutesFirstDigit,
     minutesSecondDigit,
     ":",
     secondsFirstDigit,
