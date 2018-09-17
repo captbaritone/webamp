@@ -17,26 +17,28 @@ import {
 } from "../actionTypes";
 import { TIME_MODE, MEDIA_STATUS } from "../constants";
 
-const media = (state: MediaState, action: Action): MediaState => {
-  if (!state) {
-    return {
-      timeMode: TIME_MODE.ELAPSED,
-      timeElapsed: 0,
-      length: null, // Consider renaming to "duration"
-      kbps: null,
-      khz: null,
-      // The winamp ini file declares the default volume as "200".
-      // The UI seems to show a default volume near 78, which would
-      // math with the default value being 200 out of 255.
-      volume: Math.round((200 / 255) * 100),
-      balance: 0,
-      channels: null,
-      shuffle: false,
-      repeat: false,
-      // TODO: Enforce possible values
-      status: MEDIA_STATUS.STOPPED
-    };
-  }
+const defaultState = {
+  timeMode: TIME_MODE.ELAPSED,
+  timeElapsed: 0,
+  length: null, // Consider renaming to "duration"
+  kbps: null,
+  khz: null,
+  // The winamp ini file declares the default volume as "200".
+  // The UI seems to show a default volume near 78, which would
+  // math with the default value being 200 out of 255.
+  volume: Math.round((200 / 255) * 100),
+  balance: 0,
+  channels: null,
+  shuffle: false,
+  repeat: false,
+  // TODO: Enforce possible values
+  status: MEDIA_STATUS.STOPPED
+};
+
+const media = (
+  state: MediaState = defaultState,
+  action: Action
+): MediaState => {
   switch (action.type) {
     // TODO: Make these constants
     case PLAY:
@@ -53,7 +55,7 @@ const media = (state: MediaState, action: Action): MediaState => {
       const newMode =
         state.timeMode === TIME_MODE.REMAINING
           ? TIME_MODE.ELAPSED
-          : TIME_MODE.TIME_REMAINING;
+          : TIME_MODE.REMAINING;
       return { ...state, timeMode: newMode };
     case UPDATE_TIME_ELAPSED:
       return { ...state, timeElapsed: action.elapsed };

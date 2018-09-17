@@ -1,3 +1,4 @@
+import { WindowState, Action } from "../types";
 import { WINDOWS } from "../constants";
 import {
   SET_FOCUSED_WINDOW,
@@ -10,7 +11,7 @@ import {
   TOGGLE_WINDOW_SHADE_MODE
 } from "../actionTypes";
 
-const defaultWindowsState = {
+const defaultWindowsState: WindowState = {
   focused: WINDOWS.MAIN,
   genWindows: {
     // TODO: Remove static capabilites and derive them from ids/generic
@@ -54,7 +55,10 @@ const defaultWindowsState = {
   positions: {}
 };
 
-const windows = (state = defaultWindowsState, action) => {
+const windows = (
+  state: WindowState = defaultWindowsState,
+  action: Action
+): WindowState => {
   switch (action.type) {
     case SET_FOCUSED_WINDOW:
       return { ...state, focused: action.window };
@@ -62,8 +66,9 @@ const windows = (state = defaultWindowsState, action) => {
       const { canShade } = state.genWindows[action.windowId];
       if (!canShade) {
         throw new Error(
-          "Tried to shade/unshade a window that cannot be shaded:",
-          action.windowId
+          `Tried to shade/unshade a window that cannot be shaded: ${
+            action.windowId
+          }`
         );
       }
       return {
@@ -133,8 +138,7 @@ const windows = (state = defaultWindowsState, action) => {
       const { canResize } = state.genWindows[action.windowId];
       if (!canResize) {
         throw new Error(
-          "Tried to resize a window that cannot be resized:",
-          action.windowId
+          `Tried to resize a window that cannot be resized: ${action.windowId}`
         );
       }
       return {

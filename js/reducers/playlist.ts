@@ -1,3 +1,4 @@
+import { PlaylistState, PlaylistTrack, Action } from "../types";
 import {
   SET_MEDIA,
   CLICKED_TRACK,
@@ -25,6 +26,8 @@ import { MEDIA_TAG_REQUEST_STATUS } from "../constants";
 import { filenameFromUrl } from "../fileUtils";
 import { shuffle, moveSelected, objectMap, objectFilter } from "../utils";
 
+const foo = objectMap({ foo: 1 }, String);
+
 const defaultPlaylistState = {
   trackOrder: [],
   currentTrack: null,
@@ -32,16 +35,22 @@ const defaultPlaylistState = {
   lastSelectedIndex: null
 };
 
-const playlist = (state = defaultPlaylistState, action) => {
+const playlist = (
+  state: PlaylistState = defaultPlaylistState,
+  action: Action
+): PlaylistState => {
   switch (action.type) {
     case CLICKED_TRACK:
       const clickedId = String(state.trackOrder[action.index]);
       return {
         ...state,
-        tracks: objectMap(state.tracks, (track, id) => ({
-          ...track,
-          selected: id === clickedId
-        })),
+        tracks: objectMap<PlaylistTrack, PlaylistTrack>(
+          state.tracks,
+          (track, id) => ({
+            ...track,
+            selected: id === clickedId
+          })
+        ),
         lastSelectedIndex: action.index
       };
     case CTRL_CLICKED_TRACK:
@@ -68,31 +77,43 @@ const playlist = (state = defaultPlaylistState, action) => {
       const selected = new Set(state.trackOrder.slice(start, end + 1));
       return {
         ...state,
-        tracks: objectMap(state.tracks, (track, trackId) => ({
-          ...track,
-          selected: selected.has(Number(trackId))
-        }))
+        tracks: objectMap<PlaylistTrack, PlaylistTrack>(
+          state.tracks,
+          (track, trackId) => ({
+            ...track,
+            selected: selected.has(Number(trackId))
+          })
+        )
       };
     case SELECT_ALL:
       return {
         ...state,
-        tracks: objectMap(state.tracks, track => ({ ...track, selected: true }))
+        tracks: objectMap<PlaylistTrack, PlaylistTrack>(
+          state.tracks,
+          track => ({ ...track, selected: true })
+        )
       };
     case SELECT_ZERO:
       return {
         ...state,
-        tracks: objectMap(state.tracks, track => ({
-          ...track,
-          selected: false
-        }))
+        tracks: objectMap<PlaylistTrack, PlaylistTrack>(
+          state.tracks,
+          track => ({
+            ...track,
+            selected: false
+          })
+        )
       };
     case INVERT_SELECTION:
       return {
         ...state,
-        tracks: objectMap(state.tracks, track => ({
-          ...track,
-          selected: !track.selected
-        }))
+        tracks: objectMap<PlaylistTrack, PlaylistTrack>(
+          state.tracks,
+          track => ({
+            ...track,
+            selected: !track.selected
+          })
+        )
       };
     case REMOVE_ALL_TRACKS:
       // TODO: Consider disposing of ObjectUrls
@@ -112,7 +133,9 @@ const playlist = (state = defaultPlaylistState, action) => {
         trackOrder: state.trackOrder.filter(
           trackId => !actionIds.includes(trackId)
         ),
-        currentTrack: actionIds.includes(currentTrack) ? null : currentTrack,
+        currentTrack: actionIds.includes(Number(currentTrack))
+          ? null
+          : currentTrack,
         tracks: objectFilter(
           state.tracks,
           (track, trackId) => !action.ids.includes(trackId)
@@ -159,18 +182,20 @@ const playlist = (state = defaultPlaylistState, action) => {
         // TODO: This could probably be made to work, but we clear it just to be safe.
         lastSelectedIndex: null
       };
-    case SET_MEDIA:
+    case SET_MEDIA: {
+      const newTrack = {
+        ...state.tracks[action.id],
+        duration: action.length
+      };
       return {
         ...state,
         tracks: {
           ...state.tracks,
-          [action.id]: {
-            ...state.tracks[action.id],
-            duration: action.length
-          }
+          [action.id]: newTrack
         }
       };
-    case SET_MEDIA_TAGS:
+    }
+    case SET_MEDIA_TAGS: {
       return {
         ...state,
         tracks: {
@@ -184,6 +209,7 @@ const playlist = (state = defaultPlaylistState, action) => {
           }
         }
       };
+    }
     case MEDIA_TAG_REQUEST_INITIALIZED:
       return {
         ...state,
@@ -206,17 +232,19 @@ const playlist = (state = defaultPlaylistState, action) => {
           }
         }
       };
-    case SET_MEDIA_DURATION:
+    case SET_MEDIA_DURATION: {
+      const newTrack = {
+        ...state.tracks[action.id],
+        duration: action.duration
+      };
       return {
         ...state,
         tracks: {
           ...state.tracks,
-          [action.id]: {
-            ...state.tracks[action.id],
-            duration: action.duration
-          }
+          [action.id]: newTrack
         }
       };
+    }
     case PLAY_TRACK:
     case BUFFER_TRACK:
       return {
@@ -241,7 +269,10 @@ const playlist = (state = defaultPlaylistState, action) => {
 
 export default playlist;
 
-export const getTrackDisplayName = (state, id) => {
+export const getTrackDisplayName = (
+  state: PlaylistState,
+  id: number
+): string | null => {
   const track = state.tracks[id];
   if (track == null) {
     return null;

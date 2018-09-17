@@ -1,5 +1,17 @@
+import { Band, MediaTagRequestStatus } from "./types";
 import * as baseSkin from "./baseSkin.json";
-export const BANDS = [60, 170, 310, 600, 1000, 3000, 6000, 12000, 14000, 16000];
+export const BANDS: Band[] = [
+  60,
+  170,
+  310,
+  600,
+  1000,
+  3000,
+  6000,
+  12000,
+  14000,
+  16000
+];
 
 export const WINDOWS = {
   MAIN: "main",
@@ -12,7 +24,11 @@ export const LOAD_STYLE = {
   PLAY: "PLAY"
 };
 
-export const MEDIA_TAG_REQUEST_STATUS = {
+// TODO: Make this an enum?
+export const MEDIA_TAG_REQUEST_STATUS: Record<
+  MediaTagRequestStatus,
+  MediaTagRequestStatus
+> = {
   INITIALIZED: "INITIALIZED",
   FAILED: "FAILED",
   COMPLETE: "COMPLETE",
