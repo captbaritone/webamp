@@ -21,10 +21,10 @@ describe("getTimeObj", () => {
   it("expresses seconds as an object", () => {
     const actual = getTimeObj(1234);
     const expected = {
-      minutesFirstDigit: 2,
-      minutesSecondDigit: 0,
-      secondsFirstDigit: 3,
-      secondsSecondDigit: 4
+      minutesFirstDigit: "2",
+      minutesSecondDigit: "0",
+      secondsFirstDigit: "3",
+      secondsSecondDigit: "4"
     };
     expect(actual).toEqual(expected);
   });
