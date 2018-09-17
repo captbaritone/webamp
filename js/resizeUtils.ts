@@ -14,10 +14,8 @@ interface PositionDiff {
   };
 }
 
-interface SizeDiff {
+export interface SizeDiff {
   [key: string]: {
-    x: number;
-    y: number;
     width: number;
     height: number;
   };
