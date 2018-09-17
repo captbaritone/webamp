@@ -391,6 +391,14 @@ export interface WebampWindow {
   hotkey?: string;
 }
 
+export interface WindowInfo {
+  key: WindowId;
+  height: number;
+  width: number;
+  x: number;
+  y: number;
+}
+
 export interface WindowState {
   focused: string;
   genWindows: { [name: string]: WebampWindow };
