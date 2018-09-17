@@ -1,6 +1,21 @@
 import invariant from "invariant";
 
-export function genMediaTags(file, jsmediatags) {
+export interface MediaTags {}
+
+type JsMediaTagsFile = string | ArrayBuffer;
+interface JsMediaTagsHandlers {
+  onSuccess: (tags: MediaTags) => void;
+  onError: (error: Error) => void;
+}
+
+interface JsMediaTags {
+  read: (file: JsMediaTagsFile, handlers: JsMediaTagsHandlers) => void;
+}
+
+export function genMediaTags(
+  file: JsMediaTagsFile,
+  jsmediatags: JsMediaTags
+): Promise<MediaTags> {
   invariant(
     file != null,
     "Attempted to get the tags of media file without passing a file"
@@ -9,25 +24,19 @@ export function genMediaTags(file, jsmediatags) {
   if (typeof file === "string" && !/^[a-z]+:\/\//i.test(file)) {
     file = `${location.protocol}//${location.host}${location.pathname}${file}`;
   }
-  return new Promise(
-    (resolve, reject) => {
-      try {
-        jsmediatags.read(file, { onSuccess: resolve, onError: reject });
-      } catch (e) {
-        // Possibly jsmediatags could not find a parser for this file?
-        // Nothing to do.
-        // Consider removing this after https://github.com/aadsm/jsmediatags/issues/83 is resolved.
-        reject(e);
-      }
-    },
-    () => {
-      // The dependency failed to load
-    },
-    "jsmediatags"
-  );
+  return new Promise((resolve, reject) => {
+    try {
+      jsmediatags.read(file, { onSuccess: resolve, onError: reject });
+    } catch (e) {
+      // Possibly jsmediatags could not find a parser for this file?
+      // Nothing to do.
+      // Consider removing this after https://github.com/aadsm/jsmediatags/issues/83 is resolved.
+      reject(e);
+    }
+  });
 }
 
-export function genMediaDuration(url) {
+export function genMediaDuration(url: string): Promise<number> {
   invariant(
     typeof url === "string",
     "Attempted to get the duration of media file without passing a url"
@@ -51,29 +60,35 @@ export function genMediaDuration(url) {
   });
 }
 
-export async function genArrayBufferFromFileReference(fileReference) {
+export async function genArrayBufferFromFileReference(
+  fileReference: File
+): Promise<any> {
   invariant(
     fileReference != null,
     "Attempted to get an ArrayBuffer without assing a fileReference"
   );
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = function(e) {
-      resolve(e.target.result);
+    reader.onload = () => {
+      resolve(reader.result as ArrayBuffer);
     };
-    reader.onerror = function(e) {
-      reject(e);
-    };
-
+    reader.onerror = reject;
     reader.readAsArrayBuffer(fileReference);
   });
 }
 
-export async function promptForFileReferences({
-  accept = null,
-  directory = false
-} = {}) {
-  return new Promise(resolve => {
+interface PromptForFileReferenceOptions {
+  accept?: string;
+  directory?: boolean;
+}
+
+export async function promptForFileReferences(
+  { accept, directory = false }: PromptForFileReferenceOptions = {
+    accept,
+    directory: false
+  }
+): Promise<FileList> {
+  return new Promise((resolve: (fileList: FileList) => void) => {
     // Does this represent a memory leak somehow?
     // Can this fail? Do we ever reject?
     const fileInput = document.createElement("input");
@@ -81,32 +96,39 @@ export async function promptForFileReferences({
     fileInput.type = "file";
     fileInput.multiple = true;
     fileInput.webkitdirectory = directory;
+    // @ts-ignore Non-standard
     fileInput.directory = directory;
+    // @ts-ignore Non-standard
     fileInput.mozdirectory = directory;
     // Not entirely sure why this is needed, since the input
     // was just created, but somehow this helps prevent change
     // events from getting swallowed.
     // https://stackoverflow.com/a/12102992/1263117
+
+    // @ts-ignore Technically you can't set this to null, it has to be a string.
+    // But I don't feel like retesting it, so I'll leave it as null
     fileInput.value = null;
-    fileInput.addEventListener("change", e => {
-      resolve(e.target.files);
+    fileInput.addEventListener("change", (e: Event) => {
+      const files = (<HTMLInputElement>e.target).files;
+      resolve(files as FileList);
     });
     fileInput.click();
   });
 }
 
-function urlIsBlobUrl(url) {
+function urlIsBlobUrl(url: string): boolean {
   return /^blob:/.test(url);
 }
 
 // This is not perfect, but... meh: https://stackoverflow.com/a/36756650/1263117
-export function filenameFromUrl(url) {
+export function filenameFromUrl(url: string): string | null {
   if (urlIsBlobUrl(url)) {
     return null;
   }
-  return url
-    .split("/")
-    .pop()
-    .split("#")[0]
-    .split("?")[0];
+
+  const lastSegment = url.split("/").pop();
+  if (lastSegment == null) {
+    return null;
+  }
+  return lastSegment.split("#")[0].split("?")[0];
 }
