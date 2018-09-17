@@ -34,8 +34,8 @@ class Portal extends React.Component<PortalProps> {
 
   render() {
     const style = {
-      top: String(this.props.top),
-      left: String(this.props.left),
+      top: this.props.top,
+      left: this.props.left,
       // WTF Typescript. There's got to be a better way.
       position: "absolute" as "absolute"
     };
@@ -78,7 +78,10 @@ export const LinkNode = (props: LinkNodeProps) => (
 interface NodeProps {
   label: string;
   checked: boolean;
+  hotkey?: string;
   className?: string;
+  // TODO: Figure out how to do passthrough props
+  onClick?: () => void;
 }
 
 export const Node = (props: NodeProps) => {
