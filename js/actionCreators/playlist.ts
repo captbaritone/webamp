@@ -5,7 +5,7 @@ import {
   getSelectedTrackObjects
 } from "../selectors";
 
-import { clamp, sort } from "../utils";
+import { clamp, sort, findLastIndex } from "../utils";
 import {
   REMOVE_TRACKS,
   REMOVE_ALL_TRACKS,
@@ -15,8 +15,9 @@ import {
   SET_PLAYLIST_SCROLL_POSITION,
   DRAG_SELECTED
 } from "../actionTypes";
+import { Dispatchable } from "../types";
 
-export function cropPlaylist() {
+export function cropPlaylist(): Dispatchable {
   return (dispatch, getState) => {
     const state = getState();
     if (getSelectedTrackObjects(state).length === 0) {
@@ -32,7 +33,7 @@ export function cropPlaylist() {
   };
 }
 
-export function removeSelectedTracks() {
+export function removeSelectedTracks(): Dispatchable {
   return (dispatch, getState) => {
     const {
       playlist: { tracks }
@@ -44,19 +45,19 @@ export function removeSelectedTracks() {
   };
 }
 
-export function removeAllTracks() {
+export function removeAllTracks(): Dispatchable {
   return { type: REMOVE_ALL_TRACKS };
 }
 
-export function reverseList() {
+export function reverseList(): Dispatchable {
   return { type: REVERSE_LIST };
 }
 
-export function randomizeList() {
+export function randomizeList(): Dispatchable {
   return { type: RANDOMIZE_LIST };
 }
 
-export function sortListByTitle() {
+export function sortListByTitle(): Dispatchable {
   return (dispatch, getState) => {
     const state = getState();
     const trackOrder = sort(state.playlist.trackOrder, i =>
@@ -66,11 +67,11 @@ export function sortListByTitle() {
   };
 }
 
-export function setPlaylistScrollPosition(position) {
+export function setPlaylistScrollPosition(position: number): Dispatchable {
   return { type: SET_PLAYLIST_SCROLL_POSITION, position };
 }
 
-export function scrollNTracks(n) {
+export function scrollNTracks(n: number): Dispatchable {
   return (dispatch, getState) => {
     const state = getState();
     const overflow = getOverflowTrackCount(state);
@@ -83,7 +84,7 @@ export function scrollNTracks(n) {
   };
 }
 
-export function scrollPlaylistByDelta(e) {
+export function scrollPlaylistByDelta(e: MouseWheelEvent): Dispatchable {
   e.preventDefault();
   return (dispatch, getState) => {
     const state = getState();
@@ -103,24 +104,15 @@ export function scrollPlaylistByDelta(e) {
   };
 }
 
-export function scrollUpFourTracks() {
+export function scrollUpFourTracks(): Dispatchable {
   return scrollNTracks(-4);
 }
 
-export function scrollDownFourTracks() {
+export function scrollDownFourTracks(): Dispatchable {
   return scrollNTracks(4);
 }
 
-function findLastIndex(arr, cb) {
-  for (let i = arr.length - 1; i >= 0; i--) {
-    if (cb(arr[i])) {
-      return i;
-    }
-  }
-  return -1;
-}
-
-export function dragSelected(offset) {
+export function dragSelected(offset: number): Dispatchable {
   return (dispatch, getState) => {
     const {
       playlist: { trackOrder, tracks }
