@@ -40,7 +40,7 @@ export function genMediaDuration(url) {
     const durationChange = () => {
       resolve(audio.duration);
       audio.removeEventListener("durationchange", durationChange);
-      audio.url = null;
+      audio.src = "";
       // TODO: Not sure if this really gets cleaned up.
     };
     audio.addEventListener("durationchange", durationChange);
