@@ -1,4 +1,5 @@
 import { CLOSE_WINAMP, STOP, TOGGLE_VISUALIZER_STYLE } from "../actionTypes";
+import { Dispatchable } from "../types";
 
 export {
   toggleDoubleSizeMode,
@@ -68,13 +69,13 @@ export {
   dragSelected
 } from "./playlist";
 
-export function close() {
+export function close(): Dispatchable {
   return dispatch => {
     dispatch({ type: STOP });
     dispatch({ type: CLOSE_WINAMP });
   };
 }
 
-export function toggleVisualizerStyle() {
+export function toggleVisualizerStyle(): Dispatchable {
   return { type: TOGGLE_VISUALIZER_STYLE };
 }
