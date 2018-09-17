@@ -1,6 +1,6 @@
 import { parseIni } from "./utils";
 
-export function pointPairs(arr) {
+export function pointPairs(arr: string[]) {
   const pairedValues = [];
   for (let i = 0; i < arr.length; i += 2) {
     pairedValues.push(`${arr[i]},${arr[i + 1]}`);
@@ -8,9 +8,11 @@ export function pointPairs(arr) {
   return pairedValues;
 }
 
-export default function regionParser(regionStr) {
+type RegionData = { [section: string]: string[] };
+
+export default function regionParser(regionStr: string) {
   const iniData = parseIni(regionStr);
-  const data = {};
+  const data: RegionData = {};
   Object.keys(iniData).forEach(section => {
     const { numpoints, pointlist } = iniData[section];
     if (!numpoints || !pointlist) {
@@ -32,7 +34,9 @@ export default function regionParser(regionStr) {
       pointIndex += num;
       return polygon;
     });
-    const validPolygons = polygons.filter(polygon => polygon != null);
+    const validPolygons = polygons.filter(
+      polygon => polygon != null
+    ) as string[];
     if (validPolygons.length) {
       data[section] = validPolygons;
     }
