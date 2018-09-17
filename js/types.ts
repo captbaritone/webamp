@@ -3,20 +3,32 @@ type Skin = {
   name: string;
 };
 
-type SkinImages = {
-
-}
 
 type Band = null; // TODO: Use a real type here.
+
+// TODO: Use a type to ensure these keys mirror the CURSORS constant in
+// skinParser.js
+type Cursors = {[cursor: string]: string}
+
+type GenLetterWidths = {[letter: string]: number};
+
+// TODO: Use a type to ensure the keys are one of the known values in PLEDIT.txt
+type PlaylistStyle = {[state: string]: string};
+
+// TODO: Type these keys.
+type SkinImages = {[sprite: string]: string};
+
+// TODO: type these keys
+type SkinRegion = {[windowName: string]: string[]}
 
 // TODO: Fill these out once we actually use them.
 type SkinData = {
       skinImages: SkinImages;
       skinColors: string[];
-      skinPlaylistStyle: null;
-      skinCursors: null;
-      skinRegion: {};
-      skinGenLetterWidths: null;
+      skinPlaylistStyle: PlaylistStyle;
+      skinCursors: Cursors;
+      skinRegion: SkinRegion;
+      skinGenLetterWidths: GenLetterWidths;
       }
 
 export type Action =
@@ -162,15 +174,15 @@ export interface DisplayState {
   disableMarquee: boolean;
   marqueeStep: number;
   skinImages: SkinImages;
-  skinCursors: null;
-  skinRegion: {};
-  skinGenLetterWidths: null;
+  skinCursors: Cursors | null;
+  skinRegion: SkinRegion;
+  skinGenLetterWidths: GenLetterWidths | null;
   skinColors: string[]; // Theoretically this could be a tuple of a specific length
-  skinPlaylistStyle: null;
+  skinPlaylistStyle: PlaylistStyle | null;
   working: boolean;
   closed: boolean;
   loading: boolean;
   playlistScrollPosition: number;
   zIndex: number
-  dummyVizData:null; // TODO: Figure out what kind of data this actually is.
+  dummyVizData: null; // TODO: Figure out what kind of data this actually is.
 }
