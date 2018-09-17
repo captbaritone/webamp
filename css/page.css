@@ -47,7 +47,7 @@ body {
     top: 0;
     content: "";
     width: 42px; /* TODO: This should be derived not hard coded */
-    height: 1px;
+    height: 2px;
     background-color: rgba(255, 255, 255, 0);
     transition: 0.25s ease-out;
 }
