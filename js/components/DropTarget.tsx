@@ -1,24 +1,32 @@
 import React from "react";
 
-export default class DropTarget extends React.Component {
-  supress(e) {
+interface Coord {
+  x: number;
+  y: number;
+}
+
+interface Props {
+  loadFilesFromReferences: () => void;
+  handleDrop(e: React.DragEvent<HTMLDivElement>, coord: Coord): void;
+}
+
+export default class DropTarget extends React.Component<Props> {
+  supress(e: React.DragEvent<HTMLDivElement>) {
     e.stopPropagation();
     e.preventDefault();
     e.dataTransfer.dropEffect = "link";
     e.dataTransfer.effectAllowed = "link";
   }
 
-  handleDrop = e => {
+  handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     this.supress(e);
-    if (!this._node) {
+    const { target } = e;
+    if (!(target instanceof Element)) {
       return;
     }
-    const { x, y } = this._node.getBoundingClientRect();
-    this.props.handleDrop(e, { x, y });
-  };
 
-  _ref = node => {
-    this._node = node;
+    const { left: x, top: y } = target.getBoundingClientRect();
+    this.props.handleDrop(e, { x, y });
   };
 
   render() {
@@ -36,7 +44,6 @@ export default class DropTarget extends React.Component {
         onDragEnter={this.supress}
         onDragOver={this.supress}
         onDrop={this.handleDrop}
-        ref={this._ref}
       />
     );
   }
