@@ -209,7 +209,10 @@ export function shuffle<T>(array: T[]): T[] {
   return sorted;
 }
 
-export function sort<T>(array: T[], iteratee: (value: T) => number): T[] {
+export function sort<T>(
+  array: T[],
+  iteratee: (value: T) => number | string
+): T[] {
   return [...array].sort((a, b) => {
     const aKey = iteratee(a);
     const bKey = iteratee(b);
@@ -318,3 +321,12 @@ export const calculateBoundingBox = (windows: Window[]) =>
     }),
     { top: 0, bottom: 0, left: 0, right: 0 }
   );
+
+export function findLastIndex<T>(arr: T[], cb: (val: T) => boolean) {
+  for (let i = arr.length - 1; i >= 0; i--) {
+    if (cb(arr[i])) {
+      return i;
+    }
+  }
+  return -1;
+}
