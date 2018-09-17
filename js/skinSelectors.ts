@@ -1,7 +1,11 @@
 import { LETTERS } from "./constants";
 import { FONT_LOOKUP, imageConstFromChar } from "./skinSprites";
 
-export const imageSelectors = {
+interface Selectors {
+  [name: string]: string[];
+}
+
+export const imageSelectors: Selectors = {
   MAIN_BALANCE_BACKGROUND: ["#balance"],
   MAIN_BALANCE_THUMB: [
     "#balance::-webkit-slider-thumb",
@@ -329,7 +333,7 @@ LETTERS.forEach(character => {
   ];
 });
 
-export const cursorSelectors = {
+export const cursorSelectors: Selectors = {
   CLOSE: ["#title-bar #close"],
   // This is not quite right. There are some areas that show this cursor
   // but are not clickable.
