@@ -3,7 +3,18 @@ type Skin = {
   name: string;
 };
 
-type Band = null; // TODO: Use a real type here.
+export type Band =
+  | 60
+  | 170
+  | 310
+  | 600
+  | 1000
+  | 3000
+  | 6000
+  | 12000
+  | 14000
+  | 16000;
+type Slider = Band | "preamp";
 
 // TODO: Use a type to ensure these keys mirror the CURSORS constant in
 // skinParser.js
@@ -19,6 +30,8 @@ type SkinImages = { [sprite: string]: string };
 
 // TODO: type these keys
 type SkinRegion = { [windowName: string]: string[] };
+
+type WindowId = string;
 
 // TODO: Fill these out once we actually use them.
 type SkinData = {
@@ -69,9 +82,15 @@ export type Action =
     }
   | {
       type: "ADD_TRACK_FROM_URL";
+      atIndex: number | null;
+      id: string;
+      defaultName: string;
+      duration: number | null;
+      url: string;
     }
   | {
       type: "SET_MEDIA";
+      id: number;
       length: number;
       kbps: number;
       khz: number;
@@ -163,6 +182,127 @@ export type Action =
   | {
       type: "SET_DUMMY_VIZ_DATA";
       data: null;
+    }
+  | {
+      type: "SET_BAND_VALUE";
+      band: Slider;
+      value: number;
+    }
+  | {
+      type: "SET_EQ_ON";
+    }
+  | {
+      type: "SET_EQ_OFF";
+    }
+  | {
+      type: "SET_EQ_AUTO";
+      value: boolean;
+    }
+  | {
+      type: "SET_FOCUSED_WINDOW";
+      window: WindowId;
+    }
+  | {
+      type: "TOGGLE_WINDOW_SHADE_MODE";
+      windowId: WindowId;
+    }
+  | {
+      type: "TOGGLE_WINDOW";
+      windowId: WindowId;
+    }
+  | {
+      type: "CLOSE_WINDOW";
+      windowId: WindowId;
+    }
+  | {
+      type: "SET_WINDOW_VISIBILITY";
+      windowId: WindowId;
+      hidden: boolean;
+    }
+  | {
+      type: "ADD_GEN_WINDOW";
+      windowId: WindowId;
+      title: string;
+      open: boolean;
+    }
+  | {
+      type: "WINDOW_SIZE_CHANGED";
+      windowId: WindowId;
+      size: [number, number];
+    }
+  | {
+      type: "UPDATE_WINDOW_POSITIONS";
+      positions: {};
+    }
+  | {
+      type: "CLICKED_TRACK";
+      index: number;
+    }
+  | {
+      type: "CTRL_CLICKED_TRACK";
+      index: number;
+    }
+  | {
+      type: "SHIFT_CLICKED_TRACK";
+      index: number;
+    }
+  | {
+      type: "SELECT_ALL";
+    }
+  | {
+      type: "SELECT_ZERO";
+    }
+  | {
+      type: "INVERT_SELECTION";
+    }
+  | {
+      type: "REMOVE_ALL_TRACKS";
+    }
+  | {
+      type: "REMOVE_TRACKS";
+      ids: string[];
+    }
+  | {
+      type: "REVERSE_LIST";
+    }
+  | {
+      type: "RANDOMIZE_LIST";
+    }
+  | {
+      type: "SET_TRACK_ORDER";
+      trackOrder: number[];
+    }
+  | {
+      type: "SET_MEDIA_TAGS";
+      id: number;
+      title: string;
+      artist: string;
+      albumArtUrl: string;
+    }
+  | {
+      type: "MEDIA_TAG_REQUEST_INITIALIZED";
+      id: number;
+    }
+  | {
+      type: "MEDIA_TAG_REQUEST_FAILED";
+      id: number;
+    }
+  | {
+      type: "SET_MEDIA_DURATION";
+      id: number;
+      duration: number;
+    }
+  | {
+      type: "PLAY_TRACK";
+      id: number;
+    }
+  | {
+      type: "BUFFER_TRACK";
+      id: number;
+    }
+  | {
+      type: "DRAG_SELECTED";
+      offset: number;
     };
 
 export interface SettingsState {
@@ -189,7 +329,7 @@ export interface MediaState {
 
 export interface UserInputState {
   focus: string | null; // TODO: Convert this to an enum?
-  bandFocused: Band;
+  bandFocused: Band | null;
   scrubPosition: number;
   userMessage: string | null;
 }
@@ -213,4 +353,63 @@ export interface DisplayState {
   playlistScrollPosition: number;
   zIndex: number;
   dummyVizData: null; // TODO: Figure out what kind of data this actually is.
+}
+
+export interface EqualizerState {
+  on: boolean;
+  auto: boolean;
+  sliders: Record<Slider, number>;
+}
+
+export interface Window {
+  title: string;
+  size: [number, number];
+  open: boolean;
+  hidden: boolean;
+  shade?: boolean;
+  canResize: boolean;
+  canShade: boolean;
+  canDouble: boolean;
+  generic: boolean;
+  hotkey?: string;
+}
+
+export interface WindowState {
+  focused: string;
+  genWindows: { [name: string]: Window };
+  positions: {}; // TODO: Make this more strict
+}
+
+export type MediaTagRequestStatus =
+  | "INITIALIZED"
+  | "FAILED"
+  | "COMPLETE"
+  | "NOT_REQUESTED";
+
+export interface PlaylistTrack {
+  artist: string;
+  title: string;
+  url: string;
+  defaultName: string;
+  albumArtUrl: string | null;
+  selected: boolean;
+  mediaTagsRequestStatus: MediaTagRequestStatus;
+}
+
+export interface PlaylistState {
+  trackOrder: number[];
+  tracks: { [id: number]: PlaylistTrack };
+  lastSelectedIndex: number | null;
+  currentTrack: number | null;
+}
+
+export interface AppState {
+  userInput: UserInputState;
+  windows: WindowState;
+  display: DisplayState;
+  settings: SettingsState;
+  equalizer: EqualizerState;
+  playlist: PlaylistState;
+  media: MediaState;
+  network: NetworkState;
 }

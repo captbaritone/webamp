@@ -1,3 +1,4 @@
+import { AppState, Action } from "../types";
 import { combineReducers } from "redux";
 
 import playlist from "./playlist";
@@ -9,7 +10,7 @@ import equalizer from "./equalizer";
 import network from "./network";
 import settings from "./settings";
 
-const reducer = combineReducers({
+const reducer = combineReducers<AppState, Action>({
   userInput,
   windows,
   display,

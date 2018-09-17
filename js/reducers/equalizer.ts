@@ -1,3 +1,5 @@
+import { EqualizerState, Action } from "./../types";
+
 import { BANDS } from "../constants";
 import {
   SET_BAND_VALUE,
@@ -6,20 +8,28 @@ import {
   SET_EQ_OFF
 } from "../actionTypes";
 
-const equalizer = (state, action) => {
-  if (!state) {
-    state = {
-      on: true,
-      auto: false,
-      sliders: {
-        preamp: 50
-      }
-    };
-    BANDS.forEach(band => {
-      state.sliders[band] = 50;
-    });
-    return state;
+const defaultState = {
+  on: true,
+  auto: false,
+  sliders: {
+    preamp: 50,
+    60: 50,
+    170: 50,
+    310: 50,
+    600: 50,
+    1000: 50,
+    3000: 50,
+    6000: 50,
+    12000: 50,
+    14000: 50,
+    16000: 50
   }
+};
+
+const equalizer = (
+  state: EqualizerState = defaultState,
+  action: Action
+): EqualizerState => {
   switch (action.type) {
     case SET_BAND_VALUE:
       const newSliders = { ...state.sliders, [action.band]: action.value };
