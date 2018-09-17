@@ -1,3 +1,4 @@
+import Media from "./media";
 import {
   IS_PLAYING,
   IS_STOPPED,
@@ -20,8 +21,9 @@ import {
 } from "./actionTypes";
 import { next as nextTrack } from "./actionCreators";
 import { getCurrentTrackId } from "./selectors";
+import { MiddlewareStore, Dispatchable, Action, Dispatch } from "./types";
 
-export default media => store => {
+export default (media: Media) => (store: MiddlewareStore) => {
   const {
     media: { volume, balance }
   } = store.getState();
@@ -56,13 +58,17 @@ export default media => store => {
   });
 
   media.on("fileLoaded", () => {
+    const id = getCurrentTrackId(store.getState());
+    if (id == null) {
+      throw new Error("WAT");
+    }
     store.dispatch({
+      id,
       type: SET_MEDIA,
       kbps: "128",
       khz: Math.round(media.sampleRate() / 1000).toString(),
       channels: media.channels(),
-      length: media.duration(),
-      id: getCurrentTrackId(store.getState())
+      length: media.duration()
     });
   });
 
@@ -73,7 +79,7 @@ export default media => store => {
     });
   });
 
-  return next => action => {
+  return (next: Dispatch) => (action: Action) => {
     // TODO: Consider doing this after the action, and using the state as the source of truth.
     switch (action.type) {
       case PLAY:
