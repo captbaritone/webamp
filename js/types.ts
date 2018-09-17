@@ -97,7 +97,7 @@ export type Action =
       id: number;
       defaultName?: string;
       duration?: number;
-      url: string | URL;
+      url: string;
     }
   | {
       type: "SET_MEDIA";
@@ -461,7 +461,7 @@ export interface URLTrack extends TrackInfo {
    *
    * Example: `'https://example.com/song.mp3'`
    */
-  url: string | URL;
+  url: string;
 }
 
 export interface BlobTrack extends TrackInfo {
@@ -479,10 +479,11 @@ export interface BlobTrack extends TrackInfo {
 export type Track = URLTrack | BlobTrack;
 
 export interface PlaylistTrack {
-  artist: string;
-  title: string;
+  id: number;
+  artist?: string;
+  title?: string;
   url: string;
-  defaultName: string;
+  defaultName: string | null;
   albumArtUrl?: string | null;
   selected: boolean;
   mediaTagsRequestStatus: MediaTagRequestStatus;

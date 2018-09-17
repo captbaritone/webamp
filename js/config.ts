@@ -5,8 +5,8 @@ import { DeepPartial } from "redux";
 
 interface Config {
   initialTracks?: Track[];
-  audioUrl?: string | URL;
-  skinUrl?: string | URL;
+  audioUrl?: string;
+  skinUrl?: string;
   disableMarquee?: boolean;
   initialState?: DeepPartial<AppState>;
 }
