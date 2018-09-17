@@ -173,7 +173,7 @@ const playlist = (
           [action.id]: {
             id: action.id,
             selected: false,
-            defaultName: action.defaultName,
+            defaultName: action.defaultName || null,
             duration: action.duration == null ? null : action.duration,
             url: action.url,
             mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.NOT_REQUESTED
