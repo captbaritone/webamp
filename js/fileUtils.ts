@@ -1,8 +1,17 @@
 import invariant from "invariant";
 
-export interface MediaTags {}
+export interface MediaTags {
+  tags: {
+    artist: string;
+    title: string;
+    picture: {
+      data: number[];
+      type: string;
+    };
+  };
+}
 
-type JsMediaTagsFile = string | ArrayBuffer;
+type JsMediaTagsFile = string | ArrayBuffer | Blob;
 interface JsMediaTagsHandlers {
   onSuccess: (tags: MediaTags) => void;
   onError: (error: Error) => void;
@@ -78,7 +87,7 @@ export async function genArrayBufferFromFileReference(
 }
 
 interface PromptForFileReferenceOptions {
-  accept?: string;
+  accept?: string | null;
   directory?: boolean;
 }
 
