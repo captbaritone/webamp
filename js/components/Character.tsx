@@ -1,13 +1,17 @@
 import React from "react";
-import PropTypes from "prop-types";
 
-export const characterClassName = char =>
+interface Props {
+  children: string | number;
+  className?: string;
+}
+
+export const characterClassName = (char: string | number) =>
   `character-${char
     .toString()
     .toLowerCase()
     .charCodeAt(0)}`;
 
-const Character = ({ children: char, className, ...passThrough }) => (
+const Character = ({ children: char, className, ...passThrough }: Props) => (
   <span
     {...passThrough}
     className={`${className || ""} character ${characterClassName(char)}`}
@@ -15,9 +19,5 @@ const Character = ({ children: char, className, ...passThrough }) => (
     {char}
   </span>
 );
-
-Character.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired
-};
 
 export default Character;
