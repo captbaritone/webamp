@@ -1,4 +1,10 @@
-import { AppState, PlaylistTrack, WebampWindow, WindowId } from "./types";
+import {
+  AppState,
+  PlaylistTrack,
+  WebampWindow,
+  WindowId,
+  WindowInfo
+} from "./types";
 import { createSelector } from "reselect";
 import {
   denormalize,
@@ -324,7 +330,7 @@ export function getWindowPixelSize(state: AppState, windowId: WindowId) {
 export const getWindowsInfo = createSelector(
   getWindowSizes,
   getWindowPositions,
-  (sizes, positions) =>
+  (sizes, positions): WindowInfo[] =>
     Object.keys(sizes).map(key => ({ key, ...sizes[key], ...positions[key] }))
 );
 
