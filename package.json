@@ -126,5 +126,6 @@
     "projects": [
       "config/jest.*.js"
     ]
-  }
+  },
+  "prettier": {}
 }
