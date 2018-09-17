@@ -53,43 +53,43 @@ describe("near function", () => {
 
 describe("overlap functions", () => {
   it("overlapY detects when the boxes overlap in the Y axis", () => {
-    const a = { y: 10, height: 50 };
-    const b = { y: 40, height: 50 };
+    const a = { y: 10, height: 50, width: 100, x: 0 };
+    const b = { y: 40, height: 50, width: 100, x: 0 };
     const actual = overlapY(a, b);
     const expected = true;
     expect(actual).toEqual(expected);
   });
   it("overlapY detects when the boxes are within SNAP_DISTANCE on the Y axis", () => {
-    const a = { y: 10, height: 50 };
-    const b = { y: 70, height: 50 };
+    const a = { y: 10, height: 50, width: 100, x: 0 };
+    const b = { y: 70, height: 50, width: 100, x: 0 };
     const actual = overlapY(a, b);
     const expected = true;
     expect(actual).toEqual(expected);
   });
   it("overlapY detects when the boxes do not overlap in the Y axis", () => {
-    const a = { y: 10, height: 50 };
-    const b = { y: 90, height: 50 };
+    const a = { y: 10, height: 50, width: 100, x: 0 };
+    const b = { y: 90, height: 50, width: 100, x: 0 };
     const actual = overlapY(a, b);
     const expected = false;
     expect(actual).toEqual(expected);
   });
   it("overlapX detects when the boxes overlap in the X axis", () => {
-    const a = { x: 10, width: 50 };
-    const b = { x: 40, width: 50 };
+    const a = { x: 10, width: 50, height: 100, y: 0 };
+    const b = { x: 40, width: 50, height: 100, y: 0 };
     const actual = overlapX(a, b);
     const expected = true;
     expect(actual).toEqual(expected);
   });
   it("overlapX detects when the boxes are within SNAP_DISTANCE on the X axis", () => {
-    const a = { x: 10, width: 50 };
-    const b = { x: 70, width: 50 };
+    const a = { x: 10, width: 50, height: 100, y: 0 };
+    const b = { x: 70, width: 50, height: 100, y: 0 };
     const actual = overlapX(a, b);
     const expected = true;
     expect(actual).toEqual(expected);
   });
   it("overlapX detects when the boxes do not overlap in the X axis", () => {
-    const a = { x: 10, width: 50 };
-    const b = { x: 90, width: 50 };
+    const a = { x: 10, width: 50, height: 100, y: 0 };
+    const b = { x: 90, width: 50, height: 100, y: 0 };
     const actual = overlapX(a, b);
     const expected = false;
     expect(actual).toEqual(expected);

@@ -7,6 +7,12 @@ interface Diff {
   x?: number;
   y?: number;
 }
+
+interface BoundingBox {
+  width: number;
+  height: number;
+}
+
 interface Box extends Point {
   width: number;
   height: number;
@@ -96,7 +102,7 @@ export const snapToMany = (boxA: Box, otherBoxes: Box[]): Diff => {
   return { x, y };
 };
 
-export const snapWithin = (boxA: Box, boundingBox: Box): Diff => {
+export const snapWithin = (boxA: Box, boundingBox: BoundingBox): Diff => {
   let x, y;
 
   if (boxA.x - SNAP_DISTANCE < 0) {
