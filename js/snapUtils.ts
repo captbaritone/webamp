@@ -1,22 +1,34 @@
-// box = {x, y, width, height}
+interface Point {
+  x: number;
+  y: number;
+}
+
+interface Diff {
+  x?: number;
+  y?: number;
+}
+interface Box extends Point {
+  width: number;
+  height: number;
+}
 
 export const SNAP_DISTANCE = 15;
 
-export const top = box => box.y;
-export const bottom = box => box.y + box.height;
-export const left = box => box.x;
-export const right = box => box.x + box.width;
+export const top = (box: Box) => box.y;
+export const bottom = (box: Box) => box.y + box.height;
+export const left = (box: Box) => box.x;
+export const right = (box: Box) => box.x + box.width;
 
-export const near = (a, b) => Math.abs(a - b) < SNAP_DISTANCE;
+export const near = (a: number, b: number) => Math.abs(a - b) < SNAP_DISTANCE;
 
 // http://stackoverflow.com/a/3269471/1263117
-export const overlapX = (a, b) =>
+export const overlapX = (a: Box, b: Box) =>
   left(a) <= right(b) + SNAP_DISTANCE && left(b) <= right(a) + SNAP_DISTANCE;
-export const overlapY = (a, b) =>
+export const overlapY = (a: Box, b: Box) =>
   top(a) <= bottom(b) + SNAP_DISTANCE && top(b) <= bottom(a) + SNAP_DISTANCE;
 
 // Give a new position for `boxA` that snaps it to `boxB` if neede.
-export const snap = (boxA, boxB) => {
+export const snap = (boxA: Box, boxB: Box) => {
   let x, y;
 
   // TODO: Refactor/simplify this code
@@ -46,7 +58,7 @@ export const snap = (boxA, boxB) => {
   return { x, y };
 };
 
-export const snapDiff = (a, b) => {
+export const snapDiff = (a: Box, b: Box): Diff => {
   const newPos = snap(a, b);
   return {
     x: newPos.x === undefined ? 0 : newPos.x - a.x,
@@ -55,15 +67,15 @@ export const snapDiff = (a, b) => {
 };
 
 // TODO: Use the first x and y combo
-export const snapDiffManyToMany = (as, bs) => {
-  let x = 0;
-  let y = 0;
+export const snapDiffManyToMany = (as: Box[], bs: Box[]): Diff => {
+  let x: number | undefined = 0;
+  let y: number | undefined = 0;
   for (const a of as) {
     for (const b of bs) {
       const diff = snapDiff(a, b);
       x = x || diff.x;
       y = y || diff.y;
-      if (x > 0 && y > 0) {
+      if (x !== undefined && x > 0 && y !== undefined && y > 0) {
         break;
       }
     }
@@ -71,8 +83,9 @@ export const snapDiffManyToMany = (as, bs) => {
   return { x, y };
 };
 
-export const snapToMany = (boxA, otherBoxes) => {
-  let x, y;
+export const snapToMany = (boxA: Box, otherBoxes: Box[]): Diff => {
+  let x: number | undefined;
+  let y: number | undefined;
 
   otherBoxes.forEach(boxB => {
     const newPos = snap(boxA, boxB);
@@ -83,7 +96,7 @@ export const snapToMany = (boxA, otherBoxes) => {
   return { x, y };
 };
 
-export const snapWithin = (boxA, boundingBox) => {
+export const snapWithin = (boxA: Box, boundingBox: Box): Diff => {
   let x, y;
 
   if (boxA.x - SNAP_DISTANCE < 0) {
@@ -101,7 +114,7 @@ export const snapWithin = (boxA, boundingBox) => {
   return { x, y };
 };
 
-export const snapWithinDiff = (a, b) => {
+export const snapWithinDiff = (a: Box, b: Box) => {
   const newPos = snapWithin(a, b);
   return {
     x: newPos.x === undefined ? 0 : newPos.x - a.x,
@@ -109,7 +122,7 @@ export const snapWithinDiff = (a, b) => {
   };
 };
 
-export const applySnap = (original, ...snaps) =>
+export const applySnap = (original: Point, ...snaps: Diff[]) =>
   snaps.reduce(
     (previous, snapped) => ({
       ...previous,
@@ -119,9 +132,12 @@ export const applySnap = (original, ...snaps) =>
     original
   );
 
-export const boundingBox = nodes => {
+export const boundingBox = (nodes: Box[]) => {
   const boxes = nodes.slice();
   const firstNode = boxes.pop();
+  if (firstNode == null) {
+    throw new Error("boundingBox must be called with at least one node");
+  }
   const bounding = {
     top: top(firstNode),
     right: right(firstNode),
@@ -144,9 +160,11 @@ export const boundingBox = nodes => {
   };
 };
 
-export const traceConnection = areConnected => (candidates, node) => {
+export const traceConnection = (
+  areConnected: (candidate: Box, n: Box) => boolean
+) => (candidates: Box[], node: Box) => {
   const connected = new Set();
-  const checkNode = n => {
+  const checkNode = (n: Box) => {
     for (const candidate of candidates) {
       if (!connected.has(candidate) && areConnected(candidate, n)) {
         connected.add(candidate);
@@ -158,13 +176,13 @@ export const traceConnection = areConnected => (candidates, node) => {
   return connected;
 };
 
-export const applyDiff = (a, b) => ({
+export const applyDiff = (a: Point, b: Point) => ({
   x: a.x + b.x,
   y: a.y + b.y
 });
 
 // TODO: This should not
-export const applyMultipleDiffs = (initial, ...diffs) => {
+export const applyMultipleDiffs = (initial: Point, ...diffs: Point[]) => {
   const metaDiff = diffs.reduce((m, diff) => ({
     // Use the smallest non-zero diff for each axis.
     // TODO: Min should be the absolute value
