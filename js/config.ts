@@ -1,7 +1,18 @@
+import { Track, AppState } from "./types";
+// @ts-ignore
 import llamaAudio from "../mp3/llama-2.91.mp3";
+import { DeepPartial } from "redux";
+
+interface Config {
+  initialTracks?: Track[];
+  audioUrl?: string | URL;
+  skinUrl?: string | URL;
+  disableMarquee?: boolean;
+  initialState?: DeepPartial<AppState>;
+}
 
 const { hash } = window.location;
-let config = {};
+let config: Config = {};
 if (hash) {
   try {
     config = JSON.parse(decodeURIComponent(hash).slice(1));
