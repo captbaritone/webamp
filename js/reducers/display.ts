@@ -1,4 +1,4 @@
-import {DisplayState, Action } from "../types";
+import { DisplayState, Action } from "../types";
 import { createSelector } from "reselect";
 
 import {
@@ -53,7 +53,10 @@ const defaultDisplayState = {
   zIndex: 0
 };
 
-const display = (state: DisplayState = defaultDisplayState, action: Action): DisplayState => {
+const display = (
+  state: DisplayState = defaultDisplayState,
+  action: Action
+): DisplayState => {
   switch (action.type) {
     case TOGGLE_DOUBLESIZE_MODE:
       return { ...state, doubled: !state.doubled };
@@ -76,7 +79,7 @@ const display = (state: DisplayState = defaultDisplayState, action: Action): Dis
     case LOADED:
       return { ...state, loading: false };
     case SET_SKIN_DATA:
-    const {data} = action;
+      const { data } = action;
       return {
         ...state,
         loading: false,
