@@ -99,8 +99,8 @@ export type Action =
       type: "SET_MEDIA";
       id: number;
       length: number;
-      kbps: number;
-      khz: number;
+      kbps: string;
+      khz: string;
       channels: number;
     }
   | {
@@ -310,6 +310,16 @@ export type Action =
   | {
       type: "DRAG_SELECTED";
       offset: number;
+    }
+  | {
+      type: "PLAY";
+    }
+  | {
+      type: "PAUSE";
+    }
+  | {
+      type: "SEEK_TO_PERCENT_COMPLETE";
+      percent: number;
     };
 
 export interface SettingsState {
@@ -324,8 +334,8 @@ export interface MediaState {
   timeMode: string; // TODO: Convert this to an enum
   timeElapsed: number;
   length: number | null;
-  kbps: number | null;
-  khz: number | null;
+  kbps: string | null;
+  khz: string | null;
   volume: number;
   balance: number;
   channels: number | null; // TODO: Convert this to an enum
@@ -422,4 +432,20 @@ export interface AppState {
   playlist: PlaylistState;
   media: MediaState;
   network: NetworkState;
+}
+
+export type GetState = () => AppState;
+
+export type Thunk = (
+  dispatch: Dispatch,
+  getState: GetState
+) => void | Promise<void>;
+
+export type Dispatchable = Action | Thunk;
+
+export type Dispatch = (action: Dispatchable) => void;
+
+export interface MiddlewareStore {
+  dispatch: Dispatch;
+  getState: GetState;
 }

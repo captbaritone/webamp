@@ -15,9 +15,10 @@ import {
 
 import { MEDIA_STATUS } from "../constants";
 import { openMediaFileDialog } from "./";
+import { GetState, Dispatch, Dispatchable } from "../types";
 
-function playRandomTrack() {
-  return (dispatch, getState) => {
+function playRandomTrack(): Dispatchable {
+  return (dispatch: Dispatch, getState: GetState) => {
     const {
       playlist: { trackOrder, currentTrack }
     } = getState();
@@ -34,12 +35,12 @@ function playRandomTrack() {
   };
 }
 
-export function play() {
-  return (dispatch, getState) => {
+export function play(): Dispatchable {
+  return (dispatch: Dispatch, getState: GetState) => {
     const state = getState();
     if (
       state.media.status === MEDIA_STATUS.STOPPED &&
-      state.playlist.curentTrack == null &&
+      state.playlist.currentTrack == null &&
       state.playlist.trackOrder.length === 0
     ) {
       dispatch(openMediaFileDialog());
@@ -49,18 +50,22 @@ export function play() {
   };
 }
 
-export function pause() {
+export function pause(): Dispatchable {
   return (dispatch, getState) => {
     const { status } = getState().media;
-    dispatch({ type: status === MEDIA_STATUS.PLAYING ? PAUSE : PLAY });
+    if (status === MEDIA_STATUS.PLAYING) {
+      dispatch({ type: PAUSE });
+    } else {
+      dispatch({ type: PAUSE });
+    }
   };
 }
 
-export function stop() {
+export function stop(): Dispatchable {
   return { type: STOP };
 }
 
-export function nextN(n) {
+export function nextN(n: number): Dispatchable {
   return (dispatch, getState) => {
     const state = getState();
     if (state.media.shuffle) {
@@ -75,17 +80,20 @@ export function nextN(n) {
   };
 }
 
-export function next() {
+export function next(): Dispatchable {
   return nextN(1);
 }
 
-export function previous() {
+export function previous(): Dispatchable {
   return nextN(-1);
 }
 
-export function seekForward(seconds) {
+export function seekForward(seconds: number): Dispatchable {
   return function(dispatch, getState) {
     const { timeElapsed, length } = getState().media;
+    if (length == null) {
+      return;
+    }
     const newTimeElapsed = timeElapsed + seconds;
     dispatch({
       type: SEEK_TO_PERCENT_COMPLETE,
@@ -94,25 +102,25 @@ export function seekForward(seconds) {
   };
 }
 
-export function seekBackward(seconds) {
+export function seekBackward(seconds: number): Dispatchable {
   return seekForward(-seconds);
 }
 
-export function setVolume(volume) {
+export function setVolume(volume: number): Dispatchable {
   return {
     type: SET_VOLUME,
     volume: clamp(volume, 0, 100)
   };
 }
 
-export function adjustVolume(volumeDiff) {
+export function adjustVolume(volumeDiff: number): Dispatchable {
   return (dispatch, getState) => {
     const currentVolume = getState().media.volume;
     return dispatch(setVolume(currentVolume + volumeDiff));
   };
 }
 
-export function scrollVolume(e) {
+export function scrollVolume(e: WheelEvent): Dispatchable {
   e.preventDefault();
   return (dispatch, getState) => {
     const currentVolume = getState().media.volume;
@@ -121,7 +129,7 @@ export function scrollVolume(e) {
   };
 }
 
-export function setBalance(balance) {
+export function setBalance(balance: number): Dispatchable {
   balance = clamp(balance, -100, 100);
   // The balance clips to the center
   if (Math.abs(balance) < 25) {
@@ -133,10 +141,10 @@ export function setBalance(balance) {
   };
 }
 
-export function toggleRepeat() {
+export function toggleRepeat(): Dispatchable {
   return { type: TOGGLE_REPEAT };
 }
 
-export function toggleShuffle() {
+export function toggleShuffle(): Dispatchable {
   return { type: TOGGLE_SHUFFLE };
 }
