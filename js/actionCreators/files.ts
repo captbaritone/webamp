@@ -38,6 +38,13 @@ import LoadQueue from "../loadQueue";
 
 import { removeAllTracks } from "./playlist";
 import { setPreamp, setEqBand } from "./equalizer";
+import {
+  LoadStyle,
+  Dispatchable,
+  PlaylistTrack,
+  Track,
+  URLTrack
+} from "../types";
 
 // Lower is better
 const DURATION_VISIBLE_PRIORITY = 5;
@@ -47,8 +54,12 @@ const META_DATA_PRIORITY = 20;
 
 const loadQueue = new LoadQueue({ threads: 4 });
 
-export function addTracksFromReferences(fileReferences, loadStyle, atIndex) {
-  const tracks = Array.from(fileReferences).map(file => ({
+export function addTracksFromReferences(
+  fileReferences: FileList,
+  loadStyle: LoadStyle,
+  atIndex: number | undefined
+): Dispatchable {
+  const tracks: Track[] = Array.from(fileReferences).map(file => ({
     blob: file,
     defaultName: file.name
   }));
@@ -58,10 +69,10 @@ export function addTracksFromReferences(fileReferences, loadStyle, atIndex) {
 const SKIN_FILENAME_MATCHER = new RegExp("(wsz|zip)$", "i");
 const EQF_FILENAME_MATCHER = new RegExp("eqf$", "i");
 export function loadFilesFromReferences(
-  fileReferences,
+  fileReferences: FileList,
   loadStyle = LOAD_STYLE.PLAY,
-  atIndex = null
-) {
+  atIndex: number | undefined = undefined
+): Dispatchable {
   return dispatch => {
     if (fileReferences.length < 1) {
       return;
@@ -79,7 +90,9 @@ export function loadFilesFromReferences(
   };
 }
 
-export function setSkinFromArrayBuffer(arrayBuffer) {
+export function setSkinFromArrayBuffer(
+  arrayBuffer: ArrayBuffer | Promise<ArrayBuffer>
+): Dispatchable {
   return async (dispatch, getState, { requireJSZip }) => {
     if (!requireJSZip) {
       alert("Webamp has not been configured to support custom skins.");
@@ -116,7 +129,9 @@ export function setSkinFromArrayBuffer(arrayBuffer) {
   };
 }
 
-export function setSkinFromFileReference(skinFileReference) {
+export function setSkinFromFileReference(
+  skinFileReference: File
+): Dispatchable {
   return async dispatch => {
     dispatch({ type: LOADING });
     const arrayBuffer = await genArrayBufferFromFileReference(
@@ -126,7 +141,7 @@ export function setSkinFromFileReference(skinFileReference) {
   };
 }
 
-export function setSkinFromUrl(url) {
+export function setSkinFromUrl(url: string): Dispatchable {
   return async dispatch => {
     dispatch({ type: LOADING });
     try {
@@ -146,26 +161,26 @@ export function setSkinFromUrl(url) {
 // This function is private, since Winamp consumers can provide means for
 // opening files via other methods. Only use the file type specific
 // versions below, since they can defer to the user-defined behavior.
-function _openFileDialog(accept) {
+function _openFileDialog(accept: string | null): Dispatchable {
   return async dispatch => {
     const fileReferences = await promptForFileReferences({ accept });
     dispatch(loadFilesFromReferences(fileReferences));
   };
 }
 
-export function openEqfFileDialog() {
+export function openEqfFileDialog(): Dispatchable {
   return _openFileDialog(".eqf");
 }
 
-export function openMediaFileDialog() {
-  return _openFileDialog();
+export function openMediaFileDialog(): Dispatchable {
+  return _openFileDialog(null);
 }
 
 export function openSkinFileDialog() {
   return _openFileDialog(".zip, .wsz");
 }
 
-export function fetchMediaDuration(url, id) {
+export function fetchMediaDuration(url: string, id: number): Dispatchable {
   return (dispatch, getState) => {
     loadQueue.push(
       async () => {
@@ -187,7 +202,11 @@ export function fetchMediaDuration(url, id) {
   };
 }
 
-export function loadMediaFiles(tracks, loadStyle = null, atIndex = 0) {
+export function loadMediaFiles(
+  tracks: Track[],
+  loadStyle: LoadStyle | null = null,
+  atIndex = 0
+): Dispatchable {
   return dispatch => {
     if (loadStyle === LOAD_STYLE.PLAY) {
       // I'm the worst. It just so happens that in every case that we autoPlay,
@@ -201,16 +220,21 @@ export function loadMediaFiles(tracks, loadStyle = null, atIndex = 0) {
   };
 }
 
-export function loadMediaFile(track, priority = null, atIndex = 0) {
+export function loadMediaFile(
+  track: Track,
+  priority: LoadStyle | null = null,
+  atIndex = 0
+): Dispatchable {
   return dispatch => {
     const id = uniqueId();
-    const { url, blob, defaultName, metaData, duration } = track;
-    let canonicalUrl = url;
-    if (canonicalUrl == null) {
-      if (blob == null) {
-        throw new Error("Expected track to have either a blob or a url");
-      }
+    const { defaultName, metaData, duration } = track;
+    let canonicalUrl: string;
+    if ("url" in track) {
+      canonicalUrl = track.url.toString();
+    } else if ("blob" in track) {
       canonicalUrl = URL.createObjectURL(track.blob);
+    } else {
+      throw new Error("Expected track to have either a blob or a url");
     }
     dispatch({
       type: ADD_TRACK_FROM_URL,
@@ -240,23 +264,23 @@ export function loadMediaFile(track, priority = null, atIndex = 0) {
     if (metaData != null) {
       const { artist, title } = metaData;
       dispatch({ type: SET_MEDIA_TAGS, artist, title, id });
-    } else if (blob != null) {
+    } else if ("blob" in track) {
       // Blobs can be loaded quickly
-      dispatch(fetchMediaTags(blob, id));
+      dispatch(fetchMediaTags(track.blob, id));
     } else {
       dispatch(queueFetchingMediaTags(id));
     }
   };
 }
 
-function queueFetchingMediaTags(id) {
+function queueFetchingMediaTags(id: number): Dispatchable {
   return (dispatch, getState) => {
     const track = getTracks(getState())[id];
-    return loadQueue.push(
+    loadQueue.push(
       () => dispatch(fetchMediaTags(track.url, id)),
       () => {
         const trackIsVisible = getTrackIsVisibleFunction(getState());
-        return trackIsVisible(track.id)
+        return trackIsVisible(id)
           ? META_DATA_VISIBLE_PRIORITY
           : META_DATA_PRIORITY;
       }
@@ -264,7 +288,7 @@ function queueFetchingMediaTags(id) {
   };
 }
 
-export function fetchMediaTags(file, id) {
+export function fetchMediaTags(file: string | Blob, id: number): Dispatchable {
   return async (dispatch, getState, { requireJSMediaTags }) => {
     dispatch({ type: MEDIA_TAG_REQUEST_INITIALIZED, id });
     try {
@@ -285,7 +309,7 @@ export function fetchMediaTags(file, id) {
   };
 }
 
-export function setEqFromFileReference(fileReference) {
+export function setEqFromFileReference(fileReference: File): Dispatchable {
   return async dispatch => {
     const arrayBuffer = await genArrayBufferFromFileReference(fileReference);
     const eqf = parser(arrayBuffer);
@@ -298,7 +322,7 @@ export function setEqFromFileReference(fileReference) {
   };
 }
 
-export function downloadPreset() {
+export function downloadPreset(): Dispatchable {
   return (dispatch, getState) => {
     const state = getState();
     const data = getEqfData(state);
@@ -309,7 +333,7 @@ export function downloadPreset() {
   };
 }
 
-export function downloadHtmlPlaylist() {
+export function downloadHtmlPlaylist(): Dispatchable {
   return (dispatch, getState) => {
     const uri = getPlaylistURL(getState());
     downloadURI(uri, "Winamp Playlist.html");
