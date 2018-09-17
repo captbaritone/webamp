@@ -2,11 +2,28 @@
 import { BANDS, MEDIA_STATUS } from "../constants";
 import Emitter from "../emitter";
 import ElementSource from "./elementSource";
+import { Band } from "../types";
 // import detectChannels from "./detectChannels";
 
 export default class Media {
+  _emitter: Emitter;
+  _context: AudioContext;
+  _channels: number | null;
+  _balance: number;
+  _staticSource: AnalyserNode;
+  _preamp: GainNode;
+  _chanSplit: ChannelSplitterNode;
+  _leftGain: GainNode;
+  _rightGain: GainNode;
+  _chanMerge: ChannelMergerNode;
+  _analyser: AnalyserNode;
+  _gainNode: GainNode;
+  _source: ElementSource;
+  _bands: { [band: number]: BiquadFilterNode };
+
   constructor() {
     this._emitter = new Emitter();
+    // @ts-ignore Typescript does not know about webkitAudioContext
     this._context = new (window.AudioContext || window.webkitAudioContext)();
     // Fix for iOS and Chrome (Canary) which require that the context be created
     // or resumed by a user interaction.
@@ -114,17 +131,17 @@ export default class Media {
     this._staticSource.connect(this._preamp);
 
     let output = this._preamp;
-    this.bands = {};
+    this._bands = {};
 
     BANDS.forEach((band, i) => {
       const filter = this._context.createBiquadFilter();
 
-      this.bands[band] = filter;
+      this._bands[band] = filter;
 
       if (i === 0) {
         // The first filter, includes all lower frequencies
         filter.type = "lowshelf";
-      } else if (i === band.length - 1) {
+      } else if (i === BANDS.length - 1) {
         // The last filter, includes all higher frequencies
         filter.type = "highshelf";
       } else {
@@ -165,10 +182,9 @@ export default class Media {
     this._chanMerge.connect(this._analyser);
 
     this._gainNode.connect(this._context.destination);
-    window.media = this;
   }
 
-  _setChannels(num) {
+  _setChannels(num: number | null) {
     const assumedChannels = num == null ? 2 : num;
     this._chanSplit.disconnect();
     this._chanSplit.connect(
@@ -239,23 +255,23 @@ export default class Media {
   }
 
   /* Actions with arguments */
-  seekToPercentComplete(percent) {
+  seekToPercentComplete(percent: number) {
     const seekTime = this.duration() * (percent / 100);
     this.seekToTime(seekTime);
   }
 
   // From 0-1
-  setVolume(volume) {
+  setVolume(volume: number) {
     this._gainNode.gain.value = volume / 100;
   }
 
   // From 0-1
-  setPreamp(value) {
+  setPreamp(value: number) {
     this._preamp.gain.value = value / 100;
   }
 
   // From -100 to 100
-  setBalance(balance) {
+  setBalance(balance: number) {
     let changeVal = Math.abs(balance) / 100;
 
     // Hack for Firefox. Having either channel set to 0 seems to revert us
@@ -278,9 +294,9 @@ export default class Media {
     this._balance = balance;
   }
 
-  setEqBand(band, value) {
+  setEqBand(band: Band, value: number) {
     const db = (value / 100) * 24 - 12;
-    this.bands[band].gain.value = db;
+    this._bands[band].gain.value = db;
   }
 
   disableEq() {
@@ -294,16 +310,16 @@ export default class Media {
   }
 
   /* Listeners */
-  on(event, callback) {
+  on(event: string, callback: (...args: any[]) => void) {
     this._emitter.on(event, callback);
   }
 
-  seekToTime(time) {
+  seekToTime(time: number) {
     this._source.seekToTime(time);
   }
 
   // Used only for the initial load, since it must have a CORS header
-  async loadFromUrl(url, autoPlay) {
+  async loadFromUrl(url: string, autoPlay: boolean) {
     this._emitter.trigger("waiting");
     await this._source.loadUrl(url);
     this._setChannels(null);
