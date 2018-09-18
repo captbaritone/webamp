@@ -1,5 +1,9 @@
-import { Action, NetworkState } from "../types";
+import { Action } from "../types";
 import { NETWORK_CONNECTED, NETWORK_DISCONNECTED } from "../actionTypes";
+
+export interface NetworkState {
+  connected: boolean;
+}
 
 const network = (
   state: NetworkState = { connected: true },

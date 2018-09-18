@@ -1,4 +1,4 @@
-import { WindowState, Action } from "../types";
+import { WebampWindow, WindowPositions, Action } from "../types";
 import { WINDOWS } from "../constants";
 import {
   SET_FOCUSED_WINDOW,
@@ -10,6 +10,12 @@ import {
   WINDOW_SIZE_CHANGED,
   TOGGLE_WINDOW_SHADE_MODE
 } from "../actionTypes";
+
+export interface WindowState {
+  focused: string;
+  genWindows: { [name: string]: WebampWindow };
+  positions: WindowPositions;
+}
 
 const defaultWindowsState: WindowState = {
   focused: WINDOWS.MAIN,

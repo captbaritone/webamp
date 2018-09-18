@@ -1,4 +1,11 @@
-import { DisplayState, Action } from "../types";
+import {
+  Action,
+  SkinImages,
+  Cursors,
+  SkinRegion,
+  GenLetterWidths,
+  PlaylistStyle
+} from "../types";
 import { createSelector } from "reselect";
 
 import {
@@ -20,17 +27,26 @@ import {
 } from "../actionTypes";
 import { DEFAULT_SKIN, VISUALIZER_ORDER } from "../constants";
 
-export const getVisualizationOrder = (state: DisplayState): Array<string> => {
-  return [...state.additionalVisualizers, ...VISUALIZER_ORDER];
-};
-
-export const getVisualizerStyle = createSelector(
-  getVisualizationOrder,
-  state => state.visualizerStyle,
-  (visualizationOrder, visualizationStyle) => {
-    return visualizationOrder[visualizationStyle];
-  }
-);
+export interface DisplayState {
+  additionalVisualizers: Array<string>;
+  visualizerStyle: number;
+  doubled: boolean;
+  llama: boolean;
+  disableMarquee: boolean;
+  marqueeStep: number;
+  skinImages: SkinImages;
+  skinCursors: Cursors | null;
+  skinRegion: SkinRegion;
+  skinGenLetterWidths: GenLetterWidths | null;
+  skinColors: string[]; // Theoretically this could be a tuple of a specific length
+  skinPlaylistStyle: PlaylistStyle | null;
+  working: boolean;
+  closed: boolean;
+  loading: boolean;
+  playlistScrollPosition: number;
+  zIndex: number;
+  dummyVizData: null; // TODO: Figure out what kind of data this actually is.
+}
 
 const defaultDisplayState = {
   doubled: false,
@@ -112,3 +128,15 @@ const display = (
   }
 };
 export default display;
+
+export const getVisualizationOrder = (state: DisplayState): Array<string> => {
+  return [...state.additionalVisualizers, ...VISUALIZER_ORDER];
+};
+
+export const getVisualizerStyle = createSelector(
+  getVisualizationOrder,
+  state => state.visualizerStyle,
+  (visualizationOrder, visualizationStyle) => {
+    return visualizationOrder[visualizationStyle];
+  }
+);

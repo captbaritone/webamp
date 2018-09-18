@@ -1,4 +1,4 @@
-import { MediaState, Action } from "../types";
+import { Action } from "../types";
 import {
   PLAY,
   STOP,
@@ -16,6 +16,20 @@ import {
   CHANNEL_COUNT_CHANGED
 } from "../actionTypes";
 import { TIME_MODE, MEDIA_STATUS } from "../constants";
+
+export interface MediaState {
+  timeMode: string; // TODO: Convert this to an enum
+  timeElapsed: number;
+  length: number | null;
+  kbps: string | null;
+  khz: string | null;
+  volume: number;
+  balance: number;
+  channels: number | null; // TODO: Convert this to an enum
+  shuffle: boolean;
+  repeat: boolean;
+  status: string | null; // TODO: Convert this to an enum
+}
 
 const defaultState = {
   timeMode: TIME_MODE.ELAPSED,

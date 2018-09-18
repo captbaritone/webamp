@@ -1,4 +1,4 @@
-import { EqualizerState, Action } from "./../types";
+import { Slider, Action } from "./../types";
 
 import { BANDS } from "../constants";
 import {
@@ -7,6 +7,12 @@ import {
   SET_EQ_ON,
   SET_EQ_OFF
 } from "../actionTypes";
+
+export interface EqualizerState {
+  on: boolean;
+  auto: boolean;
+  sliders: Record<Slider, number>;
+}
 
 const defaultState = {
   on: true,

@@ -1,4 +1,4 @@
-import { PlaylistState, PlaylistTrack, Action } from "../types";
+import { PlaylistTrack, Action } from "../types";
 import {
   SET_MEDIA,
   CLICKED_TRACK,
@@ -26,7 +26,16 @@ import { MEDIA_TAG_REQUEST_STATUS } from "../constants";
 import { filenameFromUrl } from "../fileUtils";
 import { shuffle, moveSelected, objectMap, objectFilter } from "../utils";
 
-const defaultPlaylistState = {
+export interface PlaylistState {
+  trackOrder: number[];
+  // https://github.com/Microsoft/TypeScript/pull/12253#issuecomment-263132208
+  // TODO: Using numbers for keys is kinda annoying. Consider retyping as string
+  tracks: { [id: number]: PlaylistTrack };
+  lastSelectedIndex: number | null;
+  currentTrack: number | null;
+}
+
+const defaultPlaylistState: PlaylistState = {
   trackOrder: [],
   currentTrack: null,
   tracks: {},

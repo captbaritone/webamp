@@ -1,4 +1,13 @@
-type Skin = {
+import { PlaylistState } from "./reducers/playlist";
+import { SettingsState } from "./reducers/settings";
+import { UserInputState } from "./reducers/userInput";
+import { MediaState } from "./reducers/media";
+import { DisplayState } from "./reducers/display";
+import { WindowState } from "./reducers/windows";
+import { EqualizerState } from "./reducers/equalizer";
+import { NetworkState } from "./reducers/network";
+
+export type Skin = {
   url: string;
   name: string;
 };
@@ -19,18 +28,18 @@ export type Slider = Band | "preamp";
 
 // TODO: Use a type to ensure these keys mirror the CURSORS constant in
 // skinParser.js
-type Cursors = { [cursor: string]: string };
+export type Cursors = { [cursor: string]: string };
 
-type GenLetterWidths = { [letter: string]: number };
+export type GenLetterWidths = { [letter: string]: number };
 
 // TODO: Use a type to ensure the keys are one of the known values in PLEDIT.txt
-type PlaylistStyle = { [state: string]: string };
+export type PlaylistStyle = { [state: string]: string };
 
 // TODO: Type these keys.
-type SkinImages = { [sprite: string]: string };
+export type SkinImages = { [sprite: string]: string };
 
 // TODO: type these keys
-type SkinRegion = { [windowName: string]: string[] };
+export type SkinRegion = { [windowName: string]: string[] };
 
 export type WindowId = string;
 
@@ -329,62 +338,6 @@ export type Action =
       type: "MINIMIZE_WINAMP";
     };
 
-export interface SettingsState {
-  availableSkins: Array<Skin>;
-}
-
-export interface NetworkState {
-  connected: boolean;
-}
-
-export interface MediaState {
-  timeMode: string; // TODO: Convert this to an enum
-  timeElapsed: number;
-  length: number | null;
-  kbps: string | null;
-  khz: string | null;
-  volume: number;
-  balance: number;
-  channels: number | null; // TODO: Convert this to an enum
-  shuffle: boolean;
-  repeat: boolean;
-  status: string | null; // TODO: Convert this to an enum
-}
-
-export interface UserInputState {
-  focus: string | null; // TODO: Convert this to an enum?
-  bandFocused: Band | null;
-  scrubPosition: number;
-  userMessage: string | null;
-}
-
-export interface DisplayState {
-  additionalVisualizers: Array<string>;
-  visualizerStyle: number;
-  doubled: boolean;
-  llama: boolean;
-  disableMarquee: boolean;
-  marqueeStep: number;
-  skinImages: SkinImages;
-  skinCursors: Cursors | null;
-  skinRegion: SkinRegion;
-  skinGenLetterWidths: GenLetterWidths | null;
-  skinColors: string[]; // Theoretically this could be a tuple of a specific length
-  skinPlaylistStyle: PlaylistStyle | null;
-  working: boolean;
-  closed: boolean;
-  loading: boolean;
-  playlistScrollPosition: number;
-  zIndex: number;
-  dummyVizData: null; // TODO: Figure out what kind of data this actually is.
-}
-
-export interface EqualizerState {
-  on: boolean;
-  auto: boolean;
-  sliders: Record<Slider, number>;
-}
-
 export interface WebampWindow {
   title: string;
   size: [number, number];
@@ -404,12 +357,6 @@ export interface WindowInfo {
   width: number;
   x: number;
   y: number;
-}
-
-export interface WindowState {
-  focused: string;
-  genWindows: { [name: string]: WebampWindow };
-  positions: WindowPositions;
 }
 
 export type MediaTagRequestStatus =
@@ -488,15 +435,6 @@ export interface PlaylistTrack {
   selected: boolean;
   mediaTagsRequestStatus: MediaTagRequestStatus;
   duration: number | null;
-}
-
-export interface PlaylistState {
-  trackOrder: number[];
-  // https://github.com/Microsoft/TypeScript/pull/12253#issuecomment-263132208
-  // TODO: Using numbers for keys is kinda annoying. Consider retyping as string
-  tracks: { [id: number]: PlaylistTrack };
-  lastSelectedIndex: number | null;
-  currentTrack: number | null;
 }
 
 export interface AppState {

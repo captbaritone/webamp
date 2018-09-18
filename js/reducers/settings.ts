@@ -1,5 +1,9 @@
-import { Action, SettingsState } from "../types";
+import { Action, Skin } from "../types";
 import { SET_AVAILABLE_SKINS } from "../actionTypes";
+
+export interface SettingsState {
+  availableSkins: Array<Skin>;
+}
 
 const defaultSettingsState = {
   availableSkins: []
