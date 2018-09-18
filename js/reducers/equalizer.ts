@@ -1,6 +1,5 @@
 import { Slider, Action } from "./../types";
 
-import { BANDS } from "../constants";
 import {
   SET_BAND_VALUE,
   SET_EQ_AUTO,
