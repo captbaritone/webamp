@@ -60,7 +60,9 @@ export default (media: Media) => (store: MiddlewareStore) => {
   media.on("fileLoaded", () => {
     const id = getCurrentTrackId(store.getState());
     if (id == null) {
-      throw new Error("WAT");
+      // Attempted to set the metadata for a track that was already removed.
+      // Really, the media should have been stopped when the track was removed.
+      return;
     }
     store.dispatch({
       id,
