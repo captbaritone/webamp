@@ -140,7 +140,7 @@ export const nextTrack = (state: AppState, n = 1) => {
 
 const BASE_WINDOW_HEIGHT = 58;
 export const getNumberOfVisibleTracks = (state: AppState) => {
-  const playlistSize = getWindowSize(state, "playlist");
+  const playlistSize = getWindowSize(state)("playlist");
   return Math.floor(
     (BASE_WINDOW_HEIGHT + WINDOW_RESIZE_SEGMENT_HEIGHT * playlistSize[1]) /
       TRACK_HEIGHT
@@ -214,13 +214,18 @@ export const getDuration = (state: AppState): number | null => {
   return currentTrack && currentTrack.duration;
 };
 
-export const getTrackDisplayName = (state: AppState, trackId: number | null) =>
-  fromPlaylist.getTrackDisplayName(getPlaylist(state), trackId);
+export const getTrackDisplayName = createSelector(getPlaylist, playlist => {
+  return (trackId: number | null) =>
+    fromPlaylist.getTrackDisplayName(playlist, trackId);
+});
 
-export const getCurrentTrackDisplayName = (state: AppState) => {
-  const id = getCurrentTrackId(state);
-  return getTrackDisplayName(state, id);
-};
+export const getCurrentTrackDisplayName = createSelector(
+  getCurrentTrackId,
+  getTrackDisplayName,
+  (id, getName) => {
+    return getName(id);
+  }
+);
 
 export const getMinimalMediaText = createSelector(
   getCurrentTrackNumber,
@@ -248,12 +253,12 @@ const getPlaylistDuration = createSelector(getTracks, tracks =>
 );
 
 export const getPlaylistURL = createSelector(
-  state => state,
   getNumberOfTracks,
   getPlaylistDuration,
   getTrackOrder,
   getTracks,
-  (state, numberOfTracks, playlistDuration, trackOrder, tracks) =>
+  getTrackDisplayName,
+  (numberOfTracks, playlistDuration, trackOrder, tracks, getDisplayName) =>
     createPlaylistURL({
       numberOfTracks,
       averageTrackLength: getTimeStr(playlistDuration / numberOfTracks),
@@ -262,9 +267,7 @@ export const getPlaylistURL = createSelector(
       playlistLengthSeconds: Math.floor(playlistDuration % 60),
       tracks: trackOrder.map(
         (id, i) =>
-          `${i + 1}. ${getTrackDisplayName(state, id)} (${getTimeStr(
-            tracks[id].duration
-          )})`
+          `${i + 1}. ${getDisplayName(id)} (${getTimeStr(tracks[id].duration)})`
       )
     })
 );
@@ -289,16 +292,16 @@ function getWPixelSize(w: WebampWindow, doubled: boolean) {
   };
 }
 
-export function getWindowSize(state: AppState, windowId: WindowId) {
-  return state.windows.genWindows[windowId].size;
+export function getWindowSize(state: AppState) {
+  return (windowId: WindowId) => state.windows.genWindows[windowId].size;
 }
 
 export function getWindowOpen(state: AppState) {
   return (windowId: WindowId) => state.windows.genWindows[windowId].open;
 }
 
-export function getWindowShade(state: AppState, windowId: WindowId) {
-  return state.windows.genWindows[windowId].shade;
+export function getWindowShade(state: AppState) {
+  return (windowId: WindowId) => state.windows.genWindows[windowId].shade;
 }
 
 export function getWindowHidden(state: AppState) {
@@ -321,11 +324,9 @@ export const getWindowSizes = createSelector(
   }
 );
 
-export function getWindowPixelSize(state: AppState, windowId: WindowId) {
-  // Rather than compute it directly, we go via `getWindowSizes`
-  // to take advantage of caching.
-  return getWindowSizes(state)[windowId];
-}
+export const getWindowPixelSize = createSelector(getWindowSizes, sizes => {
+  return (windowId: WindowId) => sizes[windowId];
+});
 
 export const getWindowsInfo = createSelector(
   getWindowSizes,

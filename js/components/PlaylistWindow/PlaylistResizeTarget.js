@@ -4,7 +4,7 @@ import { setWindowSize } from "../../actionCreators";
 import { getWindowSize } from "../../selectors";
 
 const mapStateToProps = state => ({
-  currentSize: getWindowSize(state, "playlist"),
+  currentSize: getWindowSize(state)("playlist"),
   id: "playlist-resize-target"
 });
 

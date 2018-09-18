@@ -94,7 +94,7 @@ const mapStateToProps = state => {
   } = state;
   return {
     focused,
-    playlistSize: getWindowSize(state, "playlist"),
+    playlistSize: getWindowSize(state)("playlist"),
     trackOrder: getOrderedTracks(state),
     length,
     name: getMinimalMediaText(state)

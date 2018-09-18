@@ -315,10 +315,10 @@ class Visualizer extends React.Component {
 const mapStateToProps = state => ({
   colors: state.display.skinColors,
   style: getVisualizerStyle(state),
-  width: getWindowShade(state, "main") ? 38 : 76,
-  height: getWindowShade(state, "main") ? 5 : 16,
+  width: getWindowShade(state)("main") ? 38 : 76,
+  height: getWindowShade(state)("main") ? 5 : 16,
   status: state.media.status,
-  windowShade: getWindowShade(state, "main"),
+  windowShade: getWindowShade(state)("main"),
   dummyVizData: state.display.dummyVizData
 });
 

@@ -172,11 +172,11 @@ const mapStateToProps = state => {
   return {
     offset: getScrollOffset(state),
     maxTrackIndex: trackOrder.length - 1,
-    playlistWindowPixelSize: getWindowPixelSize(state, "playlist"),
+    playlistWindowPixelSize: getWindowPixelSize(state)("playlist"),
     focused,
     skinPlaylistStyle: getSkinPlaylistStyle(state),
-    playlistSize: getWindowSize(state, "playlist"),
-    playlistShade: getWindowShade(state, "playlist"),
+    playlistSize: getWindowSize(state)("playlist"),
+    playlistShade: getWindowShade(state)("playlist"),
     duration
   };
 };

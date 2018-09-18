@@ -1,4 +1,4 @@
-import { WebampWindow, WindowInfo, WindowId } from "./types";
+import { WindowInfo, WindowId } from "./types";
 
 interface NewGraph {
   [key: string]: {

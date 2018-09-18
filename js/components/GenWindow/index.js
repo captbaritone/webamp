@@ -95,7 +95,7 @@ GenWindow.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  const { width, height } = getWindowPixelSize(state, ownProps.windowId);
+  const { width, height } = getWindowPixelSize(state)(ownProps.windowId);
   return {
     width,
     height,
