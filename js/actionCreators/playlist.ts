@@ -7,6 +7,7 @@ import {
 
 import { clamp, sort, findLastIndex } from "../utils";
 import {
+  STOP,
   REMOVE_TRACKS,
   REMOVE_ALL_TRACKS,
   REVERSE_LIST,
@@ -50,7 +51,11 @@ export function removeSelectedTracks(): Dispatchable {
 }
 
 export function removeAllTracks(): Dispatchable {
-  return { type: REMOVE_ALL_TRACKS };
+  return dispatch => {
+    // It's a bit funky that we need to do both of these.
+    dispatch({ type: STOP });
+    dispatch({ type: REMOVE_ALL_TRACKS });
+  };
 }
 
 export function reverseList(): Dispatchable {
