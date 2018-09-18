@@ -26,8 +26,6 @@ import { MEDIA_TAG_REQUEST_STATUS } from "../constants";
 import { filenameFromUrl } from "../fileUtils";
 import { shuffle, moveSelected, objectMap, objectFilter } from "../utils";
 
-const foo = objectMap({ foo: 1 }, String);
-
 const defaultPlaylistState = {
   trackOrder: [],
   currentTrack: null,
