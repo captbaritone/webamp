@@ -264,6 +264,7 @@
 ### Czech
 
 - https://www.zive.cz/clanky/zpatky-do-minulosti-winamp-muzete-pouzivat-primo-v-prohlizeci/sc-3-a-191743/default.aspx
+- https://www.zive.cz/clanky/prehistoricky-winamp-se-konecne-docka-navratu-unikla-betaverze/sc-3-a-195099/default.aspx (mention)
 
 ### Croatian
 
