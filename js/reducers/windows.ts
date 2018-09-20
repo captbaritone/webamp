@@ -198,10 +198,11 @@ const windows = (
           }
           return { ...w, ...serializedW };
         }),
-        positions: objectMap(state.positions, (position, windowId) => {
+        // Note: We iterate genWindows here, since the positions object may be empty
+        positions: objectMap(state.genWindows, (position, windowId) => {
           const serializedPosition = serializedPositions[windowId];
           if (serializedPosition == null) {
-            return position;
+            return state.positions[windowId];
           }
           return serializedPosition;
         }),
