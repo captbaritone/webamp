@@ -1,7 +1,7 @@
 import { PlaylistState } from "./reducers/playlist";
 import { SettingsState } from "./reducers/settings";
 import { UserInputState } from "./reducers/userInput";
-import { MediaState } from "./reducers/media";
+import { MediaState, MediaSerializedStateV1 } from "./reducers/media";
 import { DisplayState, DisplaySerializedStateV1 } from "./reducers/display";
 import { WindowState } from "./reducers/windows";
 import {
@@ -505,6 +505,7 @@ export interface SerializedStateV1 {
   windows: WindowSerializedState;
   settings: SettingsSerializedState;
   */
+  media: MediaSerializedStateV1;
   display: DisplaySerializedStateV1;
   equalizer: EqualizerSerializedStateV1;
 }

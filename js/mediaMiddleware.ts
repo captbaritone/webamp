@@ -17,11 +17,19 @@ import {
   SET_EQ_ON,
   PLAY_TRACK,
   BUFFER_TRACK,
-  CHANNEL_COUNT_CHANGED
+  CHANNEL_COUNT_CHANGED,
+  LOAD_SERIALIZED_STATE
 } from "./actionTypes";
 import { next as nextTrack } from "./actionCreators";
-import { getCurrentTrackId } from "./selectors";
-import { MiddlewareStore, Dispatchable, Action, Dispatch } from "./types";
+import * as Selectors from "./selectors";
+import {
+  MiddlewareStore,
+  Dispatchable,
+  Action,
+  Dispatch,
+  Slider
+} from "./types";
+import { objectForEach } from "./utils";
 
 export default (media: Media) => (store: MiddlewareStore) => {
   const {
@@ -58,7 +66,7 @@ export default (media: Media) => (store: MiddlewareStore) => {
   });
 
   media.on("fileLoaded", () => {
-    const id = getCurrentTrackId(store.getState());
+    const id = Selectors.getCurrentTrackId(store.getState());
     if (id == null) {
       // Attempted to set the metadata for a track that was already removed.
       // Really, the media should have been stopped when the track was removed.
@@ -82,7 +90,8 @@ export default (media: Media) => (store: MiddlewareStore) => {
   });
 
   return (next: Dispatch) => (action: Action) => {
-    // TODO: Consider doing this after the action, and using the state as the source of truth.
+    const returnValue = next(action);
+    const state = store.getState();
     switch (action.type) {
       case PLAY:
         media.play();
@@ -94,10 +103,10 @@ export default (media: Media) => (store: MiddlewareStore) => {
         media.stop();
         break;
       case SET_VOLUME:
-        media.setVolume(action.volume);
+        media.setVolume(Selectors.getVolume(state));
         break;
       case SET_BALANCE:
-        media.setBalance(action.balance);
+        media.setBalance(Selectors.getBalance(state));
         break;
       case SEEK_TO_PERCENT_COMPLETE:
         media.seekToPercentComplete(action.percent);
@@ -129,7 +138,27 @@ export default (media: Media) => (store: MiddlewareStore) => {
       case SET_EQ_ON:
         media.enableEq();
         break;
+      case LOAD_SERIALIZED_STATE: {
+        // Set ALL THE THINGS!
+        if (Selectors.getEqualizerEnabled(state)) {
+          media.enableEq();
+        } else {
+          media.disableEq();
+        }
+        media.setVolume(Selectors.getVolume(state));
+        media.setBalance(Selectors.getBalance(state));
+        objectForEach(state.equalizer.sliders, (value, slider) => {
+          if (slider === "preamp") {
+            media.setPreamp(value);
+          } else {
+            // @ts-ignore I don't know how to teach TypeScript about objects
+            // that use Slider as keys
+            media.setEqBand(slider, value);
+          }
+        });
+        break;
+      }
     }
-    return next(action);
+    return returnValue;
   };
 };
