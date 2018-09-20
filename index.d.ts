@@ -161,7 +161,7 @@ export default class Webamp {
   public onTrackDidChange(callback: (track: Track) => any): () => void;
 
   /**
-   * A callback which will be called when Webamp is _about to_ closed. Returns an
+   * A callback which will be called when Webamp is _about to_ close. Returns an
    * "unsubscribe" function. The callback will be passed a `cancel` function
    * which you can use to conditionally prevent Webamp from being closed.
    *

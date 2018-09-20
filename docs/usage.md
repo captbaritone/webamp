@@ -218,10 +218,10 @@ unsubscribe();
 
 ### `onWillClose(callback)`
 
-A callback which will be called when Webamp is _about to_ closed. Returns an "unsubscribe" function. The callback will be passed a `cancel` function which you can use to conditionally prevent Webamp from being closed.
+A callback which will be called when Webamp is _about to_ close. Returns an "unsubscribe" function. The callback will be passed a `cancel` function which you can use to conditionally prevent Webamp from being closed.
 
 ```JavaScript
-const unsubscribe = webamp.onClose((cancel) => {
+const unsubscribe = webamp.onWillClose((cancel) => {
     if (!window.confirm("Are you sure you want to close Webamp?")) {
         cancel();
     }
