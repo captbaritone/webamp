@@ -19,7 +19,8 @@ export {
   setWindowSize,
   toggleWindow,
   updateWindowPositions,
-  toggleMainWindowShadeMode
+  toggleMainWindowShadeMode,
+  windowsHaveBeenCentered
 } from "./windows";
 export {
   play,

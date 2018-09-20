@@ -16,7 +16,8 @@ import {
   seekBackward,
   seekForward,
   next,
-  previous
+  previous,
+  updateWindowPositions
 } from "./actionCreators";
 import { LOAD_STYLE } from "./constants";
 import { uniqueId, objectMap, objectForEach } from "./utils";
@@ -28,7 +29,6 @@ import {
   CLOSE_WINAMP,
   MINIMIZE_WINAMP,
   ADD_GEN_WINDOW,
-  UPDATE_WINDOW_POSITIONS,
   LOADED,
   REGISTER_VISUALIZER,
   SET_Z_INDEX,
@@ -155,10 +155,9 @@ class Winamp {
           this.store.dispatch(setWindowSize(windowId, w.size));
         }
       });
-      this.store.dispatch({
-        type: UPDATE_WINDOW_POSITIONS,
-        positions: objectMap(layout, w => w.position)
-      });
+      this.store.dispatch(
+        updateWindowPositions(objectMap(layout, w => w.position), true)
+      );
     }
 
     if (enableHotkeys) {

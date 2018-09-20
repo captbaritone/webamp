@@ -427,3 +427,7 @@ export function getBalance(state: AppState): number {
 export function getEqualizerEnabled(state: AppState): boolean {
   return state.equalizer.on;
 }
+
+export function getCenterRequested(state: AppState): boolean {
+  return state.windows.centerRequested;
+}
