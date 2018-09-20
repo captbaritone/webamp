@@ -29,6 +29,7 @@ interface SerializedWindow {
 
 export interface WindowsSerializedStateV1 {
   genWindows: { [windowId: string]: SerializedWindow };
+  focused: string;
   centerRequested: boolean;
   positions: WindowPositions;
 }
@@ -185,14 +186,15 @@ const windows = (
       };
     case LOAD_SERIALIZED_STATE: {
       const {
-        genWindows: serializedWindows,
-        positions: serializedPositions,
-        centerRequested: serializedCenterRequested
+        genWindows,
+        positions,
+        centerRequested,
+        focused
       } = action.serializedState.windows;
       return {
         ...state,
         genWindows: objectMap(state.genWindows, (w, windowId) => {
-          const serializedW = serializedWindows[windowId];
+          const serializedW = genWindows[windowId];
           if (serializedW == null) {
             return w;
           }
@@ -200,13 +202,14 @@ const windows = (
         }),
         // Note: We iterate genWindows here, since the positions object may be empty
         positions: objectMap(state.genWindows, (position, windowId) => {
-          const serializedPosition = serializedPositions[windowId];
+          const serializedPosition = positions[windowId];
           if (serializedPosition == null) {
             return state.positions[windowId];
           }
           return serializedPosition;
         }),
-        centerRequested: serializedCenterRequested
+        centerRequested,
+        focused
       };
     }
 
@@ -227,6 +230,7 @@ export function getSerializedState(
         shade: w.shade || false
       };
     }),
+    focused: state.focused,
     positions: state.positions,
     centerRequested: state.centerRequested
   };
