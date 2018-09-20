@@ -64,12 +64,15 @@ class WindowManager extends React.Component {
       const boxWidth = bounding.right - bounding.left;
 
       const move = {
-        x: Math.ceil(offsetLeft + (width - boxWidth) / 2),
-        y: Math.ceil(offsetTop + (height - boxHeight) / 2)
+        x: Math.ceil(offsetLeft - bounding.left + (width - boxWidth) / 2),
+        y: Math.ceil(offsetTop - bounding.top + (height - boxHeight) / 2)
       };
 
       const newPositions = this.props.windowsInfo.reduce(
-        (pos, w) => ({ ...pos, [w.key]: { x: move.x + w.x, y: move.y + w.y } }),
+        (pos, w) => ({
+          ...pos,
+          [w.key]: { x: move.x + w.x, y: move.y + w.y }
+        }),
         {}
       );
 
