@@ -328,15 +328,19 @@ interface Window {
 }
 
 export const calculateBoundingBox = (windows: Window[]) =>
-  windows.reduce(
-    (b, w) => ({
-      left: Math.min(b.left, w.x),
-      top: Math.min(b.top, w.y),
-      bottom: Math.max(b.bottom, w.y + w.height),
-      right: Math.max(b.right, w.x + w.width)
-    }),
-    { top: 0, bottom: 0, left: 0, right: 0 }
-  );
+  windows
+    .map(w => ({
+      left: w.x,
+      top: w.y,
+      bottom: w.y + w.height,
+      right: w.x + w.width
+    }))
+    .reduce((b, w) => ({
+      left: Math.min(b.left, w.left),
+      top: Math.min(b.top, w.top),
+      bottom: Math.max(b.bottom, w.bottom),
+      right: Math.max(b.right, w.right)
+    }));
 
 export function findLastIndex<T>(arr: T[], cb: (val: T) => boolean) {
   for (let i = arr.length - 1; i >= 0; i--) {
