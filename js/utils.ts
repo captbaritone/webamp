@@ -268,6 +268,22 @@ export function debounce<F extends Procedure>(func: F, delay: number): F {
   } as any;
 }
 
+// Trailing edge only throttle
+export function throttle<F extends Procedure>(func: F, delay: number): F {
+  let timeout: NodeJS.Timer | null = null;
+  let callbackArgs: any[] | null = null;
+
+  return function(this: any, ...args: any[]): void {
+    callbackArgs = args;
+    if (!timeout) {
+      timeout = setTimeout(() => {
+        func.apply(this, callbackArgs);
+        timeout = null;
+      }, delay);
+    }
+  } as any;
+}
+
 let counter = 0;
 export function uniqueId() {
   return counter++;

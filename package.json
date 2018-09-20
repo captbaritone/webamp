@@ -89,6 +89,7 @@
     "html-webpack-inline-svg-plugin": "^1.2.4",
     "html-webpack-plugin": "^3.0.6",
     "http-server": "^0.11.1",
+    "idb-kv-store": "^4.4.0",
     "invariant": "^2.2.3",
     "jest": "^23.5.0",
     "jest-image-snapshot": "^2.4.1",
