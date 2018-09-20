@@ -15,6 +15,7 @@ import { objectMap } from "../utils";
 
 export interface WindowsState {
   focused: string;
+  centerRequested: boolean;
   genWindows: { [name: string]: WebampWindow };
   positions: WindowPositions;
 }
@@ -28,11 +29,13 @@ interface SerializedWindow {
 
 export interface WindowsSerializedStateV1 {
   genWindows: { [windowId: string]: SerializedWindow };
+  centerRequested: boolean;
   positions: WindowPositions;
 }
 
 const defaultWindowsState: WindowsState = {
   focused: WINDOWS.MAIN,
+  centerRequested: false,
   genWindows: {
     // TODO: Remove static capabilites and derive them from ids/generic
     main: {
@@ -174,12 +177,17 @@ const windows = (
     case UPDATE_WINDOW_POSITIONS:
       return {
         ...state,
-        positions: { ...state.positions, ...action.positions }
+        positions: {
+          ...state.positions,
+          ...action.positions
+        },
+        centerRequested: action.center
       };
     case LOAD_SERIALIZED_STATE: {
       const {
         genWindows: serializedWindows,
-        positions: serializedPositions
+        positions: serializedPositions,
+        centerRequested: serializedCenterRequested
       } = action.serializedState.windows;
       return {
         ...state,
@@ -196,7 +204,8 @@ const windows = (
             return position;
           }
           return serializedPosition;
-        })
+        }),
+        centerRequested: serializedCenterRequested
       };
     }
 
@@ -217,7 +226,8 @@ export function getSerializedState(
         shade: w.shade || false
       };
     }),
-    positions: state.positions
+    positions: state.positions,
+    centerRequested: state.centerRequested
   };
 }
 

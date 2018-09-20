@@ -256,6 +256,7 @@ export type Action =
   | {
       type: "UPDATE_WINDOW_POSITIONS";
       positions: WindowPositions;
+      center: boolean;
     }
   | {
       type: "CLICKED_TRACK";
