@@ -1,4 +1,5 @@
 import { DEFAULT_SKIN } from "./constants";
+import { WindowInfo } from "./types";
 
 interface Time {
   minutesFirstDigit: string;
@@ -318,16 +319,7 @@ export function objectFilter<V>(
   }, {});
 }
 
-interface Window {
-  left: number;
-  top: number;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
-
-export const calculateBoundingBox = (windows: Window[]) =>
+export const calculateBoundingBox = (windows: WindowInfo[]) =>
   windows
     .map(w => ({
       left: w.x,

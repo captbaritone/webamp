@@ -1,7 +1,10 @@
 import {
   getWindowGraph,
   getWindowSizes,
-  getWindowPositions
+  getWindowPositions,
+  getWindowsInfo,
+  getWindowOpen,
+  getGenWindows
 } from "../selectors";
 
 import { objectMap } from "../utils";
@@ -19,6 +22,9 @@ import {
 import { getPositionDiff, SizeDiff } from "../resizeUtils";
 import { applyDiff } from "../snapUtils";
 import { Action, Dispatchable, WindowId, WindowPositions } from "../types";
+
+import { WINDOW_HEIGHT, WINDOW_WIDTH } from "../constants";
+import { calculateBoundingBox } from "../utils";
 
 // Dispatch an action and, if needed rearrange the windows to preserve
 // the existing edge relationship.
@@ -111,6 +117,70 @@ export function updateWindowPositions(
   return { type: UPDATE_WINDOW_POSITIONS, positions, center };
 }
 
-export function windowsHaveBeenCentered() {
+export function windowsHaveBeenCentered(): Dispatchable {
   return { type: WINDOWS_HAVE_BEEN_CENTERED };
+}
+
+export function centerWindowsIfNeeded(container: HTMLElement): Dispatchable {
+  return (dispatch, getState) => {
+    const state = getState();
+    const { centerRequested } = state.windows;
+    if (!centerRequested) {
+      return;
+    }
+    const genWindows = getGenWindows(state);
+    const windowsInfo = getWindowsInfo(state);
+    const getOpen = getWindowOpen(state);
+    const rect = container.getBoundingClientRect();
+
+    const offsetLeft = rect.left + window.scrollX;
+    const offsetTop = rect.top + window.scrollY;
+    const width = container.scrollWidth;
+    const height = container.scrollHeight;
+
+    if (windowsInfo.some(w => w.x == null || w.y == null)) {
+      // Some windows do not have an initial position, so we'll come up
+      // with your own layout.
+      const windowPositions: WindowPositions = {};
+      const keys: string[] = Object.keys(genWindows).filter(
+        windowId => genWindows[windowId].open
+      );
+      const totalHeight = keys.length * WINDOW_HEIGHT;
+      const globalOffsetLeft = Math.max(0, width / 2 - WINDOW_WIDTH / 2);
+      const globalOffsetTop = Math.max(0, height / 2 - totalHeight / 2);
+      keys.forEach((key, i) => {
+        const offset = WINDOW_HEIGHT * i;
+        windowPositions[key] = {
+          x: Math.ceil(offsetLeft + globalOffsetLeft),
+          y: Math.ceil(offsetTop + (globalOffsetTop + offset))
+        };
+      });
+      dispatch(updateWindowPositions(windowPositions, false));
+    } else {
+      // A layout has been suplied. We will compute the bounding box and
+      // center the given layout.
+      const bounding = calculateBoundingBox(
+        windowsInfo.filter(w => getOpen(w.key))
+      );
+
+      const boxHeight = bounding.bottom - bounding.top;
+      const boxWidth = bounding.right - bounding.left;
+
+      const move = {
+        x: Math.ceil(offsetLeft - bounding.left + (width - boxWidth) / 2),
+        y: Math.ceil(offsetTop - bounding.top + (height - boxHeight) / 2)
+      };
+
+      const newPositions = windowsInfo.reduce(
+        (pos, w) => ({
+          ...pos,
+          [w.key]: { x: move.x + w.x, y: move.y + w.y }
+        }),
+        {}
+      );
+
+      dispatch(updateWindowPositions(newPositions, false));
+    }
+    dispatch(windowsHaveBeenCentered());
+  };
 }
