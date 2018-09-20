@@ -52,7 +52,7 @@ class App extends React.Component {
 
   _setFocus() {
     const binding = this._bindings[this.props.focused];
-    if (binding.node) {
+    if (binding && binding.node) {
       binding.node.focus();
     }
   }
