@@ -28,6 +28,7 @@ import { createPlaylistURL } from "./playlistHtml";
 import * as fromPlaylist from "./reducers/playlist";
 import * as fromDisplay from "./reducers/display";
 import * as fromEqualizer from "./reducers/equalizer";
+import * as fromMedia from "./reducers/media";
 import { generateGraph } from "./resizeUtils";
 
 export const getSliders = (state: AppState) => state.equalizer.sliders;
@@ -408,7 +409,19 @@ export const getChannels = (state: AppState) => state.media.channels;
 export function getSerlializedState(state: AppState): SerializedStateV1 {
   return {
     version: 1,
+    media: fromMedia.getSerializedState(state.media),
     equalizer: fromEqualizer.getSerializedState(state.equalizer),
     display: fromDisplay.getSerializedState(state.display)
   };
+}
+
+export function getVolume(state: AppState): number {
+  return state.media.volume;
+}
+
+export function getBalance(state: AppState): number {
+  return state.media.balance;
+}
+export function getEqualizerEnabled(state: AppState): boolean {
+  return state.equalizer.on;
 }
