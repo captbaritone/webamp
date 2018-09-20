@@ -3,7 +3,7 @@ import { SettingsState } from "./reducers/settings";
 import { UserInputState } from "./reducers/userInput";
 import { MediaState, MediaSerializedStateV1 } from "./reducers/media";
 import { DisplayState, DisplaySerializedStateV1 } from "./reducers/display";
-import { WindowState } from "./reducers/windows";
+import { WindowsState, WindowsSerializedStateV1 } from "./reducers/windows";
 import {
   EqualizerState,
   EqualizerSerializedStateV1
@@ -464,7 +464,7 @@ export interface PlaylistTrack {
 
 export interface AppState {
   userInput: UserInputState;
-  windows: WindowState;
+  windows: WindowsState;
   display: DisplayState;
   settings: SettingsState;
   equalizer: EqualizerState;
@@ -501,10 +501,7 @@ export interface MiddlewareStore {
 
 export interface SerializedStateV1 {
   version: 1;
-  /*
-  windows: WindowSerializedState;
-  settings: SettingsSerializedState;
-  */
+  windows: WindowsSerializedStateV1;
   media: MediaSerializedStateV1;
   display: DisplaySerializedStateV1;
   equalizer: EqualizerSerializedStateV1;
