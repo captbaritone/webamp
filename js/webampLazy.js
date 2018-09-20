@@ -27,7 +27,8 @@ import {
   LOADED,
   REGISTER_VISUALIZER,
   SET_Z_INDEX,
-  SET_MEDIA
+  SET_MEDIA,
+  CLOSE_REQUESTED
 } from "./actionTypes";
 import Emitter from "./emitter";
 
@@ -180,6 +181,12 @@ class Winamp {
   // Replace any existing tracks with this array of tracks, and begin playing.
   setTracksToPlay(tracks) {
     this.store.dispatch(loadMediaFiles(tracks, LOAD_STYLE.PLAY));
+  }
+
+  onWillClose(cb) {
+    return this._actionEmitter.on(CLOSE_REQUESTED, action => {
+      cb(action.cancel);
+    });
   }
 
   onClose(cb) {
