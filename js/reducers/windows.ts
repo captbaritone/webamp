@@ -28,6 +28,7 @@ interface SerializedWindow {
 
 export interface WindowsSerializedStateV1 {
   genWindows: { [windowId: string]: SerializedWindow };
+  positions: WindowPositions;
 }
 
 const defaultWindowsState: WindowsState = {
@@ -176,15 +177,25 @@ const windows = (
         positions: { ...state.positions, ...action.positions }
       };
     case LOAD_SERIALIZED_STATE: {
-      const serializedWindow = action.serializedState.windows.genWindows;
+      const {
+        genWindows: serializedWindows,
+        positions: serializedPositions
+      } = action.serializedState.windows;
       return {
         ...state,
         genWindows: objectMap(state.genWindows, (w, windowId) => {
-          const serializedW = serializedWindow[windowId];
+          const serializedW = serializedWindows[windowId];
           if (serializedW == null || w.generic) {
             return w;
           }
           return { ...w, ...serializedW };
+        }),
+        positions: objectMap(state.positions, (position, windowId) => {
+          const serializedPosition = serializedPositions[windowId];
+          if (serializedPosition == null) {
+            return position;
+          }
+          return serializedPosition;
         })
       };
     }
@@ -205,7 +216,8 @@ export function getSerializedState(
         hidden: w.hidden,
         shade: w.shade || false
       };
-    })
+    }),
+    positions: state.positions
   };
 }
 
