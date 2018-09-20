@@ -5,9 +5,11 @@ import {
   CLOSE_REQUESTED,
   MINIMIZE_WINAMP,
   SET_FOCUS,
-  UNSET_FOCUS
+  UNSET_FOCUS,
+  LOAD_SERIALIZED_STATE
 } from "../actionTypes";
-import { Dispatchable } from "../types";
+import { Dispatchable, SerializedStateV1 } from "../types";
+import { ensureWindowsAreOnScreen } from "./windows";
 
 export {
   toggleDoubleSizeMode,
@@ -21,7 +23,8 @@ export {
   updateWindowPositions,
   toggleMainWindowShadeMode,
   windowsHaveBeenCentered,
-  centerWindowsIfNeeded
+  centerWindowsIfNeeded,
+  ensureWindowsAreOnScreen
 } from "./windows";
 export {
   play,
@@ -109,4 +112,13 @@ export function setFocus(input: string): Dispatchable {
 
 export function unsetFocus(): Dispatchable {
   return { type: UNSET_FOCUS };
+}
+
+export function loadSerializedState(
+  serializedState: SerializedStateV1
+): Dispatchable {
+  return dispatch => {
+    dispatch({ type: LOAD_SERIALIZED_STATE, serializedState });
+    dispatch(ensureWindowsAreOnScreen());
+  };
 }

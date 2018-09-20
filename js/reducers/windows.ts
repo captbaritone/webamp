@@ -9,9 +9,10 @@ import {
   UPDATE_WINDOW_POSITIONS,
   WINDOW_SIZE_CHANGED,
   TOGGLE_WINDOW_SHADE_MODE,
-  LOAD_SERIALIZED_STATE
+  LOAD_SERIALIZED_STATE,
+  RESET_WINDOW_LAYOUT
 } from "../actionTypes";
-import { objectMap } from "../utils";
+import * as Utils from "../utils";
 
 export interface WindowsState {
   focused: string;
@@ -184,6 +185,17 @@ const windows = (
         },
         centerRequested: action.center
       };
+    case RESET_WINDOW_LAYOUT:
+      return {
+        ...state,
+        genWindows: Utils.objectMap(state.genWindows, w => ({
+          ...w,
+          // Not sure why TypeScript can't figure this out for itself.
+          size: [0, 0] as [number, number]
+        })),
+        positions: {},
+        centerRequested: true
+      };
     case LOAD_SERIALIZED_STATE: {
       const {
         genWindows,
@@ -193,7 +205,7 @@ const windows = (
       } = action.serializedState.windows;
       return {
         ...state,
-        genWindows: objectMap(state.genWindows, (w, windowId) => {
+        genWindows: Utils.objectMap(state.genWindows, (w, windowId) => {
           const serializedW = genWindows[windowId];
           if (serializedW == null) {
             return w;
@@ -201,7 +213,7 @@ const windows = (
           return { ...w, ...serializedW };
         }),
         // Note: We iterate genWindows here, since the positions object may be empty
-        positions: objectMap(state.genWindows, (position, windowId) => {
+        positions: Utils.objectMap(state.genWindows, (position, windowId) => {
           const serializedPosition = positions[windowId];
           if (serializedPosition == null) {
             return state.positions[windowId];
@@ -222,7 +234,7 @@ export function getSerializedState(
   state: WindowsState
 ): WindowsSerializedStateV1 {
   return {
-    genWindows: objectMap(state.genWindows, w => {
+    genWindows: Utils.objectMap(state.genWindows, w => {
       return {
         size: w.size,
         open: w.open,

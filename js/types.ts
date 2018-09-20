@@ -350,7 +350,8 @@ export type Action =
   | {
       type: "LOAD_SERIALIZED_STATE";
       serializedState: SerializedStateV1;
-    };
+    }
+  | { type: "RESET_WINDOW_LAYOUT" };
 
 export interface WebampWindow {
   title: string;

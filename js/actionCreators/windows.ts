@@ -1,13 +1,6 @@
-import {
-  getWindowGraph,
-  getWindowSizes,
-  getWindowPositions,
-  getWindowsInfo,
-  getWindowOpen,
-  getGenWindows
-} from "../selectors";
+import * as Selectors from "../selectors";
 
-import { objectMap } from "../utils";
+import * as Utils from "../utils";
 import {
   UPDATE_WINDOW_POSITIONS,
   TOGGLE_DOUBLESIZE_MODE,
@@ -16,7 +9,8 @@ import {
   CLOSE_WINDOW,
   TOGGLE_WINDOW_SHADE_MODE,
   SET_WINDOW_VISIBILITY,
-  WINDOWS_HAVE_BEEN_CENTERED
+  WINDOWS_HAVE_BEEN_CENTERED,
+  RESET_WINDOW_LAYOUT
 } from "../actionTypes";
 
 import { getPositionDiff, SizeDiff } from "../resizeUtils";
@@ -35,12 +29,12 @@ import { calculateBoundingBox } from "../utils";
 function withWindowGraphIntegrity(action: Action): Dispatchable {
   return (dispatch, getState) => {
     const state = getState();
-    const graph = getWindowGraph(state);
-    const originalSizes = getWindowSizes(state);
+    const graph = Selectors.getWindowGraph(state);
+    const originalSizes = Selectors.getWindowSizes(state);
 
     dispatch(action);
 
-    const newSizes = getWindowSizes(getState());
+    const newSizes = Selectors.getWindowSizes(getState());
     const sizeDiff: SizeDiff = {};
     for (const window of Object.keys(newSizes)) {
       const original = originalSizes[window];
@@ -52,9 +46,9 @@ function withWindowGraphIntegrity(action: Action): Dispatchable {
     }
 
     const positionDiff = getPositionDiff(graph, sizeDiff);
-    const windowPositions = getWindowPositions(state);
+    const windowPositions = Selectors.getWindowPositions(state);
 
-    const newPositions = objectMap(windowPositions, (position, key) =>
+    const newPositions = Utils.objectMap(windowPositions, (position, key) =>
       applyDiff(position, positionDiff[key])
     );
 
@@ -121,6 +115,10 @@ export function windowsHaveBeenCentered(): Dispatchable {
   return { type: WINDOWS_HAVE_BEEN_CENTERED };
 }
 
+export function resetWindowLayout(): Dispatchable {
+  return { type: RESET_WINDOW_LAYOUT };
+}
+
 export function centerWindowsIfNeeded(container: HTMLElement): Dispatchable {
   return (dispatch, getState) => {
     const state = getState();
@@ -128,9 +126,10 @@ export function centerWindowsIfNeeded(container: HTMLElement): Dispatchable {
     if (!centerRequested) {
       return;
     }
-    const genWindows = getGenWindows(state);
-    const windowsInfo = getWindowsInfo(state);
-    const getOpen = getWindowOpen(state);
+    const genWindows = Selectors.getGenWindows(state);
+    const windowsInfo = Selectors.getWindowsInfo(state);
+    const getOpen = Selectors.getWindowOpen(state);
+    const getPixelSize = Selectors.getWindowPixelSize(state);
     const rect = container.getBoundingClientRect();
 
     const offsetLeft = rect.left + window.scrollX;
@@ -145,15 +144,18 @@ export function centerWindowsIfNeeded(container: HTMLElement): Dispatchable {
       const keys: string[] = Object.keys(genWindows).filter(
         windowId => genWindows[windowId].open
       );
-      const totalHeight = keys.length * WINDOW_HEIGHT;
+      const totalHeight = keys.reduce((height, key) => {
+        return height + getPixelSize(key).height;
+      }, 0);
       const globalOffsetLeft = Math.max(0, width / 2 - WINDOW_WIDTH / 2);
       const globalOffsetTop = Math.max(0, height / 2 - totalHeight / 2);
-      keys.forEach((key, i) => {
-        const offset = WINDOW_HEIGHT * i;
+      let offset = 0;
+      keys.forEach(key => {
         windowPositions[key] = {
           x: Math.ceil(offsetLeft + globalOffsetLeft),
           y: Math.ceil(offsetTop + (globalOffsetTop + offset))
         };
+        offset += getPixelSize(key).height;
       });
       dispatch(updateWindowPositions(windowPositions, false));
     } else {
@@ -182,5 +184,63 @@ export function centerWindowsIfNeeded(container: HTMLElement): Dispatchable {
       dispatch(updateWindowPositions(newPositions, false));
     }
     dispatch(windowsHaveBeenCentered());
+  };
+}
+
+export function ensureWindowsAreOnScreen(): Dispatchable {
+  return (dispatch, getState) => {
+    const state = getState();
+
+    const windowsInfo = Selectors.getWindowsInfo(state);
+    const getOpen = Selectors.getWindowOpen(state);
+    const { height, width } = Utils.getWindowSize();
+    const bounding = calculateBoundingBox(
+      windowsInfo.filter(w => getOpen(w.key))
+    );
+    const positions = Selectors.getWindowPositions(state);
+
+    // Are we good?
+    if (
+      bounding.left >= 0 &&
+      bounding.top >= 0 &&
+      bounding.right <= width &&
+      bounding.bottom <= height
+    ) {
+      // My work here is done.
+      return;
+    }
+
+    const boundingHeight = bounding.bottom - bounding.top;
+    const boundingWidth = bounding.right - bounding.left;
+
+    // Could we simply shift all the windows by a constant offset?
+    if (boundingWidth <= width && boundingHeight <= height) {
+      let moveY = 0;
+      let moveX = 0;
+      if (bounding.top <= 0) {
+        moveY = bounding.top;
+      } else if (bounding.bottom > height) {
+        moveY = bounding.bottom - height;
+      }
+
+      if (bounding.left <= 0) {
+        moveX = bounding.left;
+      } else if (bounding.right > width) {
+        moveX = bounding.right - width;
+      }
+
+      const newPositions = Utils.objectMap(positions, position => ({
+        x: position.x - moveX,
+        y: position.y - moveY
+      }));
+
+      dispatch(updateWindowPositions(newPositions, false));
+      return;
+    }
+
+    // TODO: Try moving the individual groups to try to fit them in
+
+    // I give up. Just reset everything.
+    dispatch(resetWindowLayout());
   };
 }
