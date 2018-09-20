@@ -4150,6 +4150,13 @@ icss-utils@^2.1.0:
   dependencies:
     postcss "^6.0.1"
 
+idb-kv-store@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/idb-kv-store/-/idb-kv-store-4.4.0.tgz#22c56a8d5f90bd88f818a859db9c58627de278be"
+  dependencies:
+    inherits "^2.0.3"
+    promisize "^1.1.2"
+
 ieee754@^1.1.4:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.8.tgz#be33d40ac10ef1926701f6f08a2d86fbfd1ad3e4"
@@ -6719,6 +6726,10 @@ promise@^7.1.1:
   resolved "https://registry.yarnpkg.com/promise/-/promise-7.3.1.tgz#064b72602b18f90f29192b8b1bc418ffd1ebd3bf"
   dependencies:
     asap "~2.0.3"
+
+promisize@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/promisize/-/promisize-1.1.2.tgz#9b47e2cb2ae497eb1ebadc2c4191d64d15c949d1"
 
 prompts@^0.1.9:
   version "0.1.14"

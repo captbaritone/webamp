@@ -2,9 +2,12 @@ import { PlaylistState } from "./reducers/playlist";
 import { SettingsState } from "./reducers/settings";
 import { UserInputState } from "./reducers/userInput";
 import { MediaState } from "./reducers/media";
-import { DisplayState } from "./reducers/display";
+import { DisplayState, DisplaySerializedStateV1 } from "./reducers/display";
 import { WindowState } from "./reducers/windows";
-import { EqualizerState } from "./reducers/equalizer";
+import {
+  EqualizerState,
+  EqualizerSerializedStateV1
+} from "./reducers/equalizer";
 import { NetworkState } from "./reducers/network";
 
 export type Skin = {
@@ -341,6 +344,10 @@ export type Action =
   | {
       type: "CLOSE_REQUESTED";
       cancel: () => void;
+    }
+  | {
+      type: "LOAD_SERIALIZED_STATE";
+      serializedState: SerializedStateV1;
     };
 
 export interface WebampWindow {
@@ -490,4 +497,14 @@ export type Dispatch = (action: Dispatchable) => void;
 export interface MiddlewareStore {
   dispatch: Dispatch;
   getState: GetState;
+}
+
+export interface SerializedStateV1 {
+  version: 1;
+  /*
+  windows: WindowSerializedState;
+  settings: SettingsSerializedState;
+  */
+  display: DisplaySerializedStateV1;
+  equalizer: EqualizerSerializedStateV1;
 }

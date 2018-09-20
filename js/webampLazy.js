@@ -32,7 +32,8 @@ import {
   LOADED,
   REGISTER_VISUALIZER,
   SET_Z_INDEX,
-  CLOSE_REQUESTED
+  CLOSE_REQUESTED,
+  LOAD_SERIALIZED_STATE
 } from "./actionTypes";
 import Emitter from "./emitter";
 
@@ -229,6 +230,18 @@ class Winamp {
   async skinIsLoaded() {
     // Wait for the skin to load.
     return storeHas(this.store, state => !state.display.loading);
+  }
+
+  loadSerializedState(serializedState) {
+    this.store.dispatch({ type: LOAD_SERIALIZED_STATE, serializedState });
+  }
+
+  getSerializedState() {
+    return Selectors.getSerlializedState(this.store.getState());
+  }
+
+  onStateChange(cb) {
+    return this.store.subscribe(cb);
   }
 
   async renderWhenReady(node) {

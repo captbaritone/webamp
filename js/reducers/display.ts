@@ -23,7 +23,8 @@ import {
   SET_Z_INDEX,
   DISABLE_MARQUEE,
   SET_DUMMY_VIZ_DATA,
-  LOADING
+  LOADING,
+  LOAD_SERIALIZED_STATE
 } from "../actionTypes";
 import { DEFAULT_SKIN, VISUALIZER_ORDER } from "../constants";
 
@@ -46,6 +47,19 @@ export interface DisplayState {
   playlistScrollPosition: number;
   zIndex: number;
   dummyVizData: null; // TODO: Figure out what kind of data this actually is.
+}
+
+export interface DisplaySerializedStateV1 {
+  visualizerStyle: number;
+  doubled: boolean;
+  llama: boolean;
+  marqueeStep: number;
+  skinImages: SkinImages;
+  skinCursors: Cursors | null;
+  skinRegion: SkinRegion;
+  skinGenLetterWidths: GenLetterWidths | null;
+  skinColors: string[]; // Theoretically this could be a tuple of a specific length
+  skinPlaylistStyle: PlaylistStyle | null;
 }
 
 const defaultDisplayState = {
@@ -123,11 +137,43 @@ const display = (
       return { ...state, zIndex: action.zIndex };
     case SET_DUMMY_VIZ_DATA:
       return { ...state, dummyVizData: action.data };
+    case LOAD_SERIALIZED_STATE:
+      return { ...state, ...action.serializedState.display };
     default:
       return state;
   }
 };
 export default display;
+
+export const getSerializedState = (
+  state: DisplayState
+): DisplaySerializedStateV1 => {
+  // My kingdom for a type-safe `_.pick`.
+  const {
+    visualizerStyle,
+    doubled,
+    llama,
+    marqueeStep,
+    skinImages,
+    skinCursors,
+    skinRegion,
+    skinGenLetterWidths,
+    skinColors,
+    skinPlaylistStyle
+  } = state;
+  return {
+    visualizerStyle,
+    doubled,
+    llama,
+    marqueeStep,
+    skinImages,
+    skinCursors,
+    skinRegion,
+    skinGenLetterWidths,
+    skinColors,
+    skinPlaylistStyle
+  };
+};
 
 export const getVisualizationOrder = (state: DisplayState): Array<string> => {
   return [...state.additionalVisualizers, ...VISUALIZER_ORDER];

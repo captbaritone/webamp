@@ -4,10 +4,17 @@ import {
   SET_BAND_VALUE,
   SET_EQ_AUTO,
   SET_EQ_ON,
-  SET_EQ_OFF
+  SET_EQ_OFF,
+  LOAD_SERIALIZED_STATE
 } from "../actionTypes";
 
 export interface EqualizerState {
+  on: boolean;
+  auto: boolean;
+  sliders: Record<Slider, number>;
+}
+
+export interface EqualizerSerializedStateV1 {
   on: boolean;
   auto: boolean;
   sliders: Record<Slider, number>;
@@ -45,9 +52,17 @@ const equalizer = (
       return { ...state, on: false };
     case SET_EQ_AUTO:
       return { ...state, auto: action.value };
+    case LOAD_SERIALIZED_STATE:
+      return action.serializedState.equalizer || state;
     default:
       return state;
   }
 };
+
+export function getSerializedState(
+  state: EqualizerState
+): EqualizerSerializedStateV1 {
+  return state;
+}
 
 export default equalizer;
