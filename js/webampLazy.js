@@ -19,7 +19,8 @@ import {
   previous,
   updateWindowPositions,
   loadSerializedState,
-  ensureWindowsAreOnScreen
+  ensureWindowsAreOnScreen,
+  browserWindowSizeChanged
 } from "./actionCreators";
 import { LOAD_STYLE } from "./constants";
 import * as Utils from "./utils";
@@ -129,8 +130,10 @@ class Winamp {
       this.store.dispatch({ type: NETWORK_DISCONNECTED })
     );
 
+    this.store.dispatch(browserWindowSizeChanged());
     window.addEventListener("resize", () => {
       this.store.dispatch(ensureWindowsAreOnScreen());
+      this.store.dispatch(browserWindowSizeChanged());
     });
 
     if (initialSkin) {

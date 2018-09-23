@@ -24,7 +24,7 @@ export {
   toggleMainWindowShadeMode,
   windowsHaveBeenCentered,
   centerWindowsIfNeeded,
-  ensureWindowsAreOnScreen
+  browserWindowSizeChanged
 } from "./windows";
 export {
   play,
