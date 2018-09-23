@@ -10,7 +10,8 @@ import {
   WINDOW_SIZE_CHANGED,
   TOGGLE_WINDOW_SHADE_MODE,
   LOAD_SERIALIZED_STATE,
-  RESET_WINDOW_LAYOUT
+  RESET_WINDOW_LAYOUT,
+  BROWSER_WINDOW_SIZE_CHANGED
 } from "../actionTypes";
 import * as Utils from "../utils";
 
@@ -19,6 +20,7 @@ export interface WindowsState {
   centerRequested: boolean;
   genWindows: { [name: string]: WebampWindow };
   positions: WindowPositions;
+  browserWindowSize: { height: number; width: number } | null;
 }
 
 interface SerializedWindow {
@@ -77,7 +79,8 @@ const defaultWindowsState: WindowsState = {
       hotkey: "Alt+E"
     }
   },
-  positions: {}
+  positions: {},
+  browserWindowSize: null
 };
 
 const windows = (
@@ -224,6 +227,11 @@ const windows = (
         focused
       };
     }
+    case BROWSER_WINDOW_SIZE_CHANGED:
+      return {
+        ...state,
+        browserWindowSize: { height: action.height, width: action.width }
+      };
 
     default:
       return state;
