@@ -24,6 +24,7 @@ export {
   toggleMainWindowShadeMode,
   windowsHaveBeenCentered,
   centerWindowsIfNeeded,
+  resetWindowLayout,
   browserWindowSizeChanged
 } from "./windows";
 export {
