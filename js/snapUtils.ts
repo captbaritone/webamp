@@ -13,7 +13,7 @@ interface BoundingBox {
   height: number;
 }
 
-interface Box extends Point {
+export interface Box extends Point {
   width: number;
   height: number;
 }
