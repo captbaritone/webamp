@@ -2,16 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import {
-  snapDiffManyToMany,
-  boundingBox,
-  snapWithinDiff,
-  snap,
-  traceConnection,
-  applyDiff,
-  applyMultipleDiffs
-} from "../snapUtils";
-import { getWindowSize } from "../utils";
+import * as SnapUtils from "../snapUtils";
 import * as Selectors from "../selectors";
 import {
   updateWindowPositions,
@@ -21,7 +12,7 @@ import {
 const abuts = (a, b) => {
   // TODO: This is kinda a hack. They should really be touching, not just within snapping distance.
   // Also, overlapping should not count.
-  const wouldMoveTo = snap(a, b);
+  const wouldMoveTo = SnapUtils.snap(a, b);
   return wouldMoveTo.x !== undefined || wouldMoveTo.y !== undefined;
 };
 
@@ -44,7 +35,7 @@ class WindowManager extends React.Component {
     let movingSet = new Set([targetNode]);
     // Only the main window brings other windows along.
     if (key === "main") {
-      const findAllConnected = traceConnection(abuts);
+      const findAllConnected = SnapUtils.traceConnection(abuts);
       movingSet = findAllConnected(windows, targetNode);
     }
 
@@ -64,10 +55,9 @@ class WindowManager extends React.Component {
     const [moving, stationary] = this.movingAndStationaryNodes(key);
 
     const mouseStart = { x: e.clientX, y: e.clientY };
-    // Aparently this is crazy across browsers.
-    const browserSize = getWindowSize();
+    const { browserWindowSize } = this.props;
 
-    const box = boundingBox(moving);
+    const box = SnapUtils.boundingBox(moving);
 
     const handleMouseMove = ee => {
       const proposedDiff = {
@@ -77,22 +67,32 @@ class WindowManager extends React.Component {
 
       const proposedWindows = moving.map(node => ({
         ...node,
-        ...applyDiff(node, proposedDiff)
+        ...SnapUtils.applyDiff(node, proposedDiff)
       }));
 
       const proposedBox = {
         ...box,
-        ...applyDiff(box, proposedDiff)
+        ...SnapUtils.applyDiff(box, proposedDiff)
       };
 
-      const snapDiff = snapDiffManyToMany(proposedWindows, stationary);
+      const snapDiff = SnapUtils.snapDiffManyToMany(
+        proposedWindows,
+        stationary
+      );
 
-      const withinDiff = snapWithinDiff(proposedBox, browserSize);
+      const withinDiff = SnapUtils.snapWithinDiff(
+        proposedBox,
+        browserWindowSize
+      );
 
-      const finalDiff = applyMultipleDiffs(proposedDiff, snapDiff, withinDiff);
+      const finalDiff = SnapUtils.applyMultipleDiffs(
+        proposedDiff,
+        snapDiff,
+        withinDiff
+      );
 
       const windowPositionDiff = moving.reduce((diff, window) => {
-        diff[window.key] = applyDiff(window, finalDiff);
+        diff[window.key] = SnapUtils.applyDiff(window, finalDiff);
         return diff;
       }, {});
 
@@ -139,7 +139,8 @@ WindowManager.propTypes = {
 const mapStateToProps = state => ({
   windowsInfo: Selectors.getWindowsInfo(state),
   getWindowHidden: Selectors.getWindowHidden(state),
-  getWindowOpen: Selectors.getWindowOpen(state)
+  getWindowOpen: Selectors.getWindowOpen(state),
+  browserWindowSize: Selectors.getBrowserWindowSize(state)
 });
 
 const mapDispatchToProps = dispatch => {
