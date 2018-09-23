@@ -8,13 +8,7 @@ import {
   SerializedStateV1
 } from "./types";
 import { createSelector } from "reselect";
-import {
-  denormalize,
-  getTimeStr,
-  clamp,
-  percentToIndex,
-  objectMap
-} from "./utils";
+import * as Utils from "./utils";
 import {
   BANDS,
   TRACK_HEIGHT,
@@ -37,10 +31,10 @@ export const getSliders = (state: AppState) => state.equalizer.sliders;
 export const getEqfData = createSelector(getSliders, sliders => {
   const preset: { [key: string]: number | string } = {
     name: "Entry1",
-    preamp: denormalize(sliders.preamp)
+    preamp: Utils.denormalize(sliders.preamp)
   };
   BANDS.forEach(band => {
-    preset[`hz${band}`] = denormalize(sliders[band]);
+    preset[`hz${band}`] = Utils.denormalize(sliders[band]);
   });
   const eqfData = {
     presets: [preset],
@@ -93,7 +87,9 @@ export const getRunningTimeMessage = createSelector(
   getTotalRunningTime,
   getSelectedRunningTime,
   (totalRunningTime, selectedRunningTime) =>
-    `${getTimeStr(selectedRunningTime)}/${getTimeStr(totalRunningTime)}`
+    `${Utils.getTimeStr(selectedRunningTime)}/${Utils.getTimeStr(
+      totalRunningTime
+    )}`
 );
 
 // TODO: use slectors to get memoization
@@ -141,7 +137,7 @@ export const nextTrack = (state: AppState, n = 1) => {
     return null;
   }
 
-  nextIndex = clamp(nextIndex, 0, trackCount - 1);
+  nextIndex = Utils.clamp(nextIndex, 0, trackCount - 1);
   return trackOrder[nextIndex];
 };
 
@@ -185,7 +181,7 @@ export const getScrollOffset = createSelector(
   getNumberOfVisibleTracks,
   (playlistScrollPosition, trackCount, numberOfVisibleTracks) => {
     const overflow = Math.max(0, trackCount - numberOfVisibleTracks);
-    return percentToIndex(playlistScrollPosition / 100, overflow + 1);
+    return Utils.percentToIndex(playlistScrollPosition / 100, overflow + 1);
   }
 );
 
@@ -291,7 +287,7 @@ export const getMediaText = createSelector(
     minimalMediaText == null
       ? null
       : // TODO: Maybe the `  ***  ` should actually be added by the marquee
-        `${minimalMediaText} (${getTimeStr(duration)})  ***  `
+        `${minimalMediaText} (${Utils.getTimeStr(duration)})  ***  `
 );
 
 export const getNumberOfTracks = (state: AppState) =>
@@ -312,13 +308,15 @@ export const getPlaylistURL = createSelector(
   (numberOfTracks, playlistDuration, trackOrder, tracks, getDisplayName) =>
     createPlaylistURL({
       numberOfTracks,
-      averageTrackLength: getTimeStr(playlistDuration / numberOfTracks),
+      averageTrackLength: Utils.getTimeStr(playlistDuration / numberOfTracks),
       // TODO: Handle hours
       playlistLengthMinutes: Math.floor(playlistDuration / 60),
       playlistLengthSeconds: Math.floor(playlistDuration % 60),
       tracks: trackOrder.map(
         (id, i) =>
-          `${i + 1}. ${getDisplayName(id)} (${getTimeStr(tracks[id].duration)})`
+          `${i + 1}. ${getDisplayName(id)} (${Utils.getTimeStr(
+            tracks[id].duration
+          )})`
       )
     })
 );
@@ -371,7 +369,7 @@ export const getWindowSizes = createSelector(
   getGenWindows,
   getDoubled,
   (windows, doubled) => {
-    return objectMap(windows, w => getWPixelSize(w, doubled));
+    return Utils.objectMap(windows, w => getWPixelSize(w, doubled));
   }
 );
 
