@@ -2,7 +2,17 @@
 
 ### Features
 
-Users can pass an initial layout (TODO: Documentation)
+- Users can pass an initial layout (TODO: Documentation)
+
+## 1.2.0
+
+### Features
+
+- Users can register an `onWillClose` callback, which is passed a `cancel` function. The `cancel` function can be called to prevent Webamp from closing. [#655](https://github.com/captbaritone/webamp/pull/655)
+
+### Internal changes
+
+- Webamp is now mostly built with [TypeScript](https://www.typescriptlang.org/).
 
 ## 1.1.2
 
