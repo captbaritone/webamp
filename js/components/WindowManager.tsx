@@ -1,7 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { ReactNode } from "react";
 import { connect } from "react-redux";
 
+import { Box, Diff } from "../snapUtils";
 import * as SnapUtils from "../snapUtils";
 import * as Selectors from "../selectors";
 import {
@@ -9,14 +9,31 @@ import {
   windowsHaveBeenCentered,
   centerWindowsIfNeeded
 } from "../actionCreators";
-const abuts = (a, b) => {
+import {
+  WindowInfo,
+  Dispatch,
+  WindowPositions,
+  AppState,
+  WindowId
+} from "../types";
+const abuts = (a: Box, b: Box) => {
   // TODO: This is kinda a hack. They should really be touching, not just within snapping distance.
   // Also, overlapping should not count.
   const wouldMoveTo = SnapUtils.snap(a, b);
   return wouldMoveTo.x !== undefined || wouldMoveTo.y !== undefined;
 };
 
-class WindowManager extends React.Component {
+interface Props {
+  centerWindowsIfNeeded(container: HTMLElement): void;
+  container: HTMLElement;
+  windowsInfo: WindowInfo[];
+  browserWindowSize: { height: number; width: number };
+  updateWindowPositions(positions: WindowPositions, center: boolean): void;
+  getWindowHidden(windowId: WindowId): boolean;
+  windows: { [windowId: string]: ReactNode };
+}
+
+class WindowManager extends React.Component<Props> {
   componentDidMount() {
     this.props.centerWindowsIfNeeded(this.props.container);
   }
@@ -25,12 +42,15 @@ class WindowManager extends React.Component {
     this.props.centerWindowsIfNeeded(this.props.container);
   }
 
-  movingAndStationaryNodes(key) {
+  movingAndStationaryNodes(key: WindowId): [WindowInfo[], WindowInfo[]] {
     const windows = this.props.windowsInfo.filter(
       w =>
         this.props.windows[w.key] != null && !this.props.getWindowHidden(w.key)
     );
     const targetNode = windows.find(node => node.key === key);
+    if (targetNode == null) {
+      throw new Error("Tried to move a node that does not exist");
+    }
 
     let movingSet = new Set([targetNode]);
     // Only the main window brings other windows along.
@@ -45,8 +65,8 @@ class WindowManager extends React.Component {
     return [moving, stationary];
   }
 
-  handleMouseDown = (key, e) => {
-    if (!e.target.classList.contains("draggable")) {
+  handleMouseDown = (key: WindowId, e: React.MouseEvent<HTMLDivElement>) => {
+    if (!(e.target as HTMLElement).classList.contains("draggable")) {
       return;
     }
     // Prevent dragging from highlighting text.
@@ -59,7 +79,7 @@ class WindowManager extends React.Component {
 
     const box = SnapUtils.boundingBox(moving);
 
-    const handleMouseMove = ee => {
+    const handleMouseMove = (ee: MouseEvent) => {
       const proposedDiff = {
         x: ee.clientX - mouseStart.x,
         y: ee.clientY - mouseStart.y
@@ -91,10 +111,13 @@ class WindowManager extends React.Component {
         withinDiff
       );
 
-      const windowPositionDiff = moving.reduce((diff, window) => {
-        diff[window.key] = SnapUtils.applyDiff(window, finalDiff);
-        return diff;
-      }, {});
+      const windowPositionDiff = moving.reduce(
+        (diff: { [windowId: string]: Diff }, window) => {
+          diff[window.key] = SnapUtils.applyDiff(window, finalDiff);
+          return diff;
+        },
+        {}
+      );
 
       this.props.updateWindowPositions(windowPositionDiff, false);
     };
@@ -109,7 +132,7 @@ class WindowManager extends React.Component {
   };
 
   render() {
-    const style = {
+    const style: React.CSSProperties = {
       position: "absolute",
       top: 0,
       left: 0
@@ -131,24 +154,19 @@ class WindowManager extends React.Component {
   }
 }
 
-WindowManager.propTypes = {
-  windows: PropTypes.object.isRequired,
-  container: PropTypes.instanceOf(Element).isRequired
-};
-
-const mapStateToProps = state => ({
+const mapStateToProps = (state: AppState) => ({
   windowsInfo: Selectors.getWindowsInfo(state),
   getWindowHidden: Selectors.getWindowHidden(state),
   getWindowOpen: Selectors.getWindowOpen(state),
   browserWindowSize: Selectors.getBrowserWindowSize(state)
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    updateWindowPositions: (positions, centered) =>
+    updateWindowPositions: (positions: WindowPositions, centered: boolean) =>
       dispatch(updateWindowPositions(positions, centered)),
     windowsHaveBeenCentered: () => dispatch(windowsHaveBeenCentered()),
-    centerWindowsIfNeeded: container =>
+    centerWindowsIfNeeded: (container: HTMLElement) =>
       dispatch(centerWindowsIfNeeded(container))
   };
 };
