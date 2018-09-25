@@ -25,11 +25,11 @@ export async function bindToIndexDB(webamp, clearState, useState) {
   }
 
   if (previousSerializedState != null) {
-    webamp.loadSerializedState(previousSerializedState);
+    webamp.__loadSerializedState(previousSerializedState);
   }
 
   async function persist() {
-    const serializedState = webamp.getSerializedState();
+    const serializedState = webamp.__getSerializedState();
     try {
       await localStore.set(LOCAL_STORAGE_KEY, serializedState);
     } catch (e) {
@@ -37,5 +37,5 @@ export async function bindToIndexDB(webamp, clearState, useState) {
     }
   }
 
-  webamp.onStateChange(throttle(persist, 1000));
+  webamp.__onStateChange(throttle(persist, 1000));
 }
