@@ -422,11 +422,9 @@ export function getEqualizerEnabled(state: AppState): boolean {
 export function getCenterRequested(state: AppState): boolean {
   return state.windows.centerRequested;
 }
-}
 
 export function getBrowserWindowSize(
   state: AppState
 ): { height: number; width: number } {
   return state.windows.browserWindowSize;
 }
-
