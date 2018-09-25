@@ -33,11 +33,10 @@ class Portal extends React.Component<PortalProps> {
   }
 
   render() {
-    const style = {
+    const style: React.CSSProperties = {
       top: this.props.top,
       left: this.props.left,
-      // WTF Typescript. There's got to be a better way.
-      position: "absolute" as "absolute"
+      position: "absolute"
     };
     return createPortal(
       <div style={style}>{this.props.children}</div>,
