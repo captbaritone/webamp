@@ -25,7 +25,8 @@ export {
   windowsHaveBeenCentered,
   centerWindowsIfNeeded,
   resetWindowLayout,
-  browserWindowSizeChanged
+  browserWindowSizeChanged,
+  ensureWindowsAreOnScreen
 } from "./windows";
 export {
   play,
