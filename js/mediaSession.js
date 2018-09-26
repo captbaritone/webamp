@@ -1,7 +1,7 @@
 export default function enableMediaSession(webamp) {
   if ("mediaSession" in navigator) {
     /* global MediaMetadata */
-    webamp.__onTrackDidChange(({ title, artist, album, albumArtUrl }) => {
+    webamp.onTrackDidChange(({ title, artist, album, albumArtUrl }) => {
       navigator.mediaSession.metadata = new MediaMetadata({
         title,
         artist,

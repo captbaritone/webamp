@@ -222,7 +222,7 @@ class Winamp {
     return this._actionEmitter.on(CLOSE_WINAMP, cb);
   }
 
-  __onTrackDidChange(cb) {
+  onTrackDidChange(cb) {
     let previousTrackId = null;
     this.store.subscribe(() => {
       const state = this.store.getState();
