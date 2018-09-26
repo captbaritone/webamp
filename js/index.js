@@ -13,6 +13,7 @@ import green from "../skins/Green-Dimension-V2.wsz";
 import MilkdropWindow from "./components/MilkdropWindow";
 import screenshotInitialState from "./screenshotInitialState";
 import WebampLazy from "./webampLazy";
+import enableMediaSession from "./mediaSession";
 import {
   STEP_MARQUEE,
   UPDATE_TIME_ELAPSED,
@@ -65,6 +66,8 @@ const requireJSMediaTags = () => {
     );
   });
 };
+
+const DEFAULT_DOCUMENT_TITLE = document.title;
 
 const NOISY_ACTION_TYPES = new Set([
   STEP_MARQUEE,
@@ -267,6 +270,15 @@ Raven.context(() => {
       cancel();
     }
   });
+
+  webamp.__onTrackDidChange(track => {
+    document.title =
+      track == null
+        ? DEFAULT_DOCUMENT_TITLE
+        : `${track.metaData.title} - ${track.metaData.artist}`;
+  });
+
+  enableMediaSession(webamp);
 
   webamp.renderWhenReady(document.getElementById("app"));
 
