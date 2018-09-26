@@ -271,7 +271,7 @@ Raven.context(() => {
     }
   });
 
-  webamp.__onTrackDidChange(track => {
+  webamp.onTrackDidChange(track => {
     document.title =
       track == null
         ? DEFAULT_DOCUMENT_TITLE
