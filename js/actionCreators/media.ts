@@ -91,14 +91,19 @@ export function previous(): Dispatchable {
 
 export function seekForward(seconds: number): Dispatchable {
   return function(dispatch, getState) {
-    const { timeElapsed, length } = getState().media;
+    dispatch(seekToTime(getState().media.timeElapsed + seconds));
+  };
+}
+
+export function seekToTime(seconds: number): Dispatchable {
+  return function(dispatch, getState) {
+    const { length } = getState().media;
     if (length == null) {
       return;
     }
-    const newTimeElapsed = timeElapsed + seconds;
     dispatch({
       type: SEEK_TO_PERCENT_COMPLETE,
-      percent: (newTimeElapsed / length) * 100
+      percent: (seconds / length) * 100
     });
   };
 }

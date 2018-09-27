@@ -40,6 +40,7 @@ export {
   nextN,
   next,
   previous,
+  seekToTime,
   seekForward,
   seekBackward,
   setVolume,

@@ -8,7 +8,6 @@ import { bindHotkeys } from "./hotkeys";
 import Media from "./media";
 import * as Selectors from "./selectors";
 import * as Actions from "./actionCreators";
-
 import { WINDOWS, LOAD_STYLE } from "./constants";
 import * as Utils from "./utils";
 
@@ -156,6 +155,14 @@ class Winamp {
     this.store.dispatch(Actions.pause());
   }
 
+  stop() {
+    this.store.dispatch(stop());
+  }
+
+  seekToTime(seconds) {
+    this.store.dispatch(Actions.seekToTime(seconds));
+  }
+
   seekBackward(seconds) {
     this.store.dispatch(Actions.seekBackward(seconds));
   }
@@ -190,6 +197,10 @@ class Winamp {
   // Replace any existing tracks with this array of tracks, and begin playing.
   setTracksToPlay(tracks) {
     this.store.dispatch(Actions.loadMediaFiles(tracks, LOAD_STYLE.PLAY));
+  }
+
+  getMediaStatus() {
+    return Selectors.getMediaStatus(this.store.getState());
   }
 
   onWillClose(cb) {
