@@ -250,6 +250,16 @@ class Winamp {
       node
     );
   }
+
+  destroy() {
+    // TODO: Clean up event emitter subscriptions
+    // TODO: Clean up hotkey bindings, if needed
+    // TODO: Clean up the Media instance
+    // TODO: Clean up online/offline subscriptions on window
+    // TODO: Clean up store subscription in onTrackDidChange
+    // TODO: Every storeHas call represents a potential race condition
+    throw new Error("Not implemented");
+  }
 }
 
 export default Winamp;
