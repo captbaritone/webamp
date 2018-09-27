@@ -27,6 +27,7 @@ import {
   SET_EQ_AUTO,
   SET_DUMMY_VIZ_DATA
 } from "./actionTypes";
+import { loadFilesFromReferences } from "./actionCreators";
 
 import {
   skinUrl as configSkinUrl,
@@ -279,6 +280,16 @@ Raven.context(() => {
   });
 
   enableMediaSession(webamp);
+
+  const fileInput = document.createElement("input");
+  fileInput.id = "webamp-file-input";
+  fileInput.style.display = "none";
+  fileInput.type = "file";
+  fileInput.value = null;
+  fileInput.addEventListener("change", e => {
+    webamp.store.dispatch(loadFilesFromReferences(e.target.files));
+  });
+  document.body.appendChild(fileInput);
 
   webamp.renderWhenReady(document.getElementById("app"));
 

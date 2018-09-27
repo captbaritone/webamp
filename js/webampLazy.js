@@ -11,7 +11,6 @@ import {
   setSkinFromUrl,
   loadMediaFiles,
   setWindowSize,
-  loadFilesFromReferences,
   play,
   pause,
   seekBackward,
@@ -92,18 +91,6 @@ class Winamp {
     this.store.dispatch({
       type: navigator.onLine ? NETWORK_CONNECTED : NETWORK_DISCONNECTED
     });
-
-    if (true) {
-      const fileInput = document.createElement("input");
-      fileInput.id = "webamp-file-input";
-      fileInput.style.display = "none";
-      fileInput.type = "file";
-      fileInput.value = null;
-      fileInput.addEventListener("change", e => {
-        this.store.dispatch(loadFilesFromReferences(e.target.files));
-      });
-      document.body.appendChild(fileInput);
-    }
 
     if (zIndex != null) {
       this.store.dispatch({ type: SET_Z_INDEX, zIndex });
