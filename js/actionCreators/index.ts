@@ -2,7 +2,8 @@ import {
   CLOSE_WINAMP,
   STOP,
   TOGGLE_VISUALIZER_STYLE,
-  CLOSE_REQUESTED
+  CLOSE_REQUESTED,
+  MINIMIZE_WINAMP
 } from "../actionTypes";
 import { Dispatchable } from "../types";
 
@@ -92,4 +93,8 @@ export function close(): Dispatchable {
 
 export function toggleVisualizerStyle(): Dispatchable {
   return { type: TOGGLE_VISUALIZER_STYLE };
+}
+
+export function minimize(): Dispatchable {
+  return { type: MINIMIZE_WINAMP };
 }

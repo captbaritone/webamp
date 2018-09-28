@@ -1,7 +1,12 @@
 import React from "react";
 import classnames from "classnames";
 
-interface Props {
+type DivProps = React.DetailedHTMLProps<
+  React.HTMLAttributes<HTMLDivElement>,
+  HTMLDivElement
+>;
+
+interface Props extends DivProps {
   className?: string;
   onMouseDown?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
