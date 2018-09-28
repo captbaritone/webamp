@@ -1,12 +1,19 @@
 import React from "react";
-import PropTypes from "prop-types";
 import {
   WINDOW_RESIZE_SEGMENT_WIDTH,
   WINDOW_RESIZE_SEGMENT_HEIGHT
 } from "../constants";
 
-export default class ResizeTarget extends React.Component {
-  handleMouseDown = e => {
+type Size = [number, number];
+
+interface Props {
+  currentSize: Size;
+  setWindowSize(size: Size): void;
+  widthOnly: boolean;
+}
+
+export default class ResizeTarget extends React.Component<Props> {
+  handleMouseDown = (e: React.MouseEvent) => {
     // Prevent dragging from highlighting text.
     e.preventDefault();
     const [width, height] = this.props.currentSize;
@@ -15,7 +22,7 @@ export default class ResizeTarget extends React.Component {
       y: e.clientY
     };
 
-    const handleMove = ee => {
+    const handleMove = (ee: MouseEvent) => {
       const x = ee.clientX - mouseStart.x;
       const y = ee.clientY - mouseStart.y;
 
@@ -28,7 +35,7 @@ export default class ResizeTarget extends React.Component {
         ? width
         : Math.max(0, height + Math.round(y / WINDOW_RESIZE_SEGMENT_HEIGHT));
 
-      const newSize = [newWidth, newHeight];
+      const newSize: Size = [newWidth, newHeight];
 
       this.props.setWindowSize(newSize);
     };
@@ -40,26 +47,12 @@ export default class ResizeTarget extends React.Component {
   };
 
   render() {
-    /* eslint-disable no-unused-vars */
     const {
       currentSize,
       setWindowSize,
       widthOnly,
       ...passThroughProps
     } = this.props;
-    /* eslint-enable no-unused-vars */
-    return (
-      <div
-        ref={node => (this.node = node)}
-        onMouseDown={this.handleMouseDown}
-        {...passThroughProps}
-      />
-    );
+    return <div onMouseDown={this.handleMouseDown} {...passThroughProps} />;
   }
 }
-
-ResizeTarget.propTypes = {
-  currentSize: PropTypes.arrayOf(PropTypes.number).isRequired,
-  setWindowSize: PropTypes.func.isRequired,
-  widthOnly: PropTypes.bool
-};
