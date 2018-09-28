@@ -400,5 +400,6 @@ export const getVisualizerStyle = (state: AppState) =>
   fromDisplay.getVisualizerStyle(state.display);
 
 export const getVolume = (state: AppState) => state.media.volume;
+export const getBalance = (state: AppState) => state.media.balance;
 
 export const getChannels = (state: AppState) => state.media.channels;

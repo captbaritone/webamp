@@ -1,48 +1,49 @@
 import React, { ChangeEvent } from "react";
 import { connect } from "react-redux";
-import { AppState, Dispatch } from "../types";
+
+import { setBalance } from "../actionCreators";
 import * as Actions from "../actionCreators";
+import { Dispatch, AppState } from "../types";
 import * as Selectors from "../selectors";
 
 interface Props {
   id?: string;
-  volume: number;
+  balance: number;
   showMarquee(): void;
   hideMarquee(): void;
-  setVolume(e: ChangeEvent<HTMLInputElement>): void;
+  setBalance(e: ChangeEvent<HTMLInputElement>): void;
   style?: React.CSSProperties;
   className?: string;
 }
 
-const Volume = (props: Props) => (
+const Balance = (props: Props) => (
   <input
     id={props.id}
+    className={props.className}
     type="range"
-    min="0"
+    min="-100"
     max="100"
     step="1"
-    value={props.volume}
+    value={props.balance}
     style={props.style}
-    className={props.className}
-    onChange={props.setVolume}
+    onChange={props.setBalance}
     onMouseDown={props.showMarquee}
     onMouseUp={props.hideMarquee}
-    title="Volume Bar"
+    title="Balance"
   />
 );
 
 const mapStateToProps = (state: AppState) => ({
-  volume: Selectors.getVolume(state)
+  balance: Selectors.getBalance(state)
 });
-
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  showMarquee: () => dispatch(Actions.setFocus("volume")),
-  hideMarquee: () => dispatch(Actions.unsetFocus()),
-  setVolume: (e: ChangeEvent<HTMLInputElement>) =>
-    dispatch(Actions.setVolume(Number((e.target as HTMLInputElement).value)))
+  setBalance: (e: ChangeEvent<HTMLInputElement>) =>
+    dispatch(setBalance(Number((e.target as HTMLInputElement).value))),
+  showMarquee: () => dispatch(Actions.setFocus("balance")),
+  hideMarquee: () => dispatch(Actions.unsetFocus())
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Volume);
+)(Balance);

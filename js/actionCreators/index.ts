@@ -3,7 +3,9 @@ import {
   STOP,
   TOGGLE_VISUALIZER_STYLE,
   CLOSE_REQUESTED,
-  MINIMIZE_WINAMP
+  MINIMIZE_WINAMP,
+  SET_FOCUS,
+  UNSET_FOCUS
 } from "../actionTypes";
 import { Dispatchable } from "../types";
 
@@ -97,4 +99,12 @@ export function toggleVisualizerStyle(): Dispatchable {
 
 export function minimize(): Dispatchable {
   return { type: MINIMIZE_WINAMP };
+}
+
+export function setFocus(input: string): Dispatchable {
+  return { type: SET_FOCUS, input };
+}
+
+export function unsetFocus(): Dispatchable {
+  return { type: UNSET_FOCUS };
 }
