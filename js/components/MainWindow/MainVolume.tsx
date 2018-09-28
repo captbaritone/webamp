@@ -1,9 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
+import * as Selectors from "../../selectors";
 
 import Volume from "../Volume";
+import { AppState } from "../../types";
 
-const MainVolume = props => {
+interface Props {
+  volume: number;
+}
+
+const MainVolume = (props: Props) => {
   const { volume } = props;
   const percent = volume / 100;
   const sprite = Math.round(percent * 28);
@@ -19,8 +25,8 @@ const MainVolume = props => {
   );
 };
 
-const mapStateToProps = state => ({
-  volume: state.media.volume
+const mapStateToProps = (state: AppState): Props => ({
+  volume: Selectors.getVolume(state)
 });
 
 export default connect(mapStateToProps)(MainVolume);

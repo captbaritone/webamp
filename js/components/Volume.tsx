@@ -1,10 +1,22 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import { connect } from "react-redux";
 import { setVolume } from "../actionCreators";
 
 import { SET_FOCUS, UNSET_FOCUS } from "../actionTypes";
+import { AppState, Dispatch } from "../types";
+import * as Selectors from "../selectors";
 
-const Volume = props => (
+interface Props {
+  id?: string;
+  volume: number;
+  showMarquee(): void;
+  hideMarquee(): void;
+  setVolume(e: ChangeEvent<HTMLInputElement>): void;
+  style?: React.CSSProperties;
+  className?: string;
+}
+
+const Volume = (props: Props) => (
   <input
     id={props.id}
     type="range"
@@ -21,14 +33,15 @@ const Volume = props => (
   />
 );
 
-const mapStateToProps = state => ({
-  volume: state.media.volume
+const mapStateToProps = (state: AppState) => ({
+  volume: Selectors.getVolume(state)
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
   showMarquee: () => dispatch({ type: SET_FOCUS, input: "volume" }),
   hideMarquee: () => dispatch({ type: UNSET_FOCUS }),
-  setVolume: e => dispatch(setVolume(e.target.value))
+  setVolume: (e: ChangeEvent<HTMLInputElement>) =>
+    dispatch(setVolume(Number((e.target as HTMLInputElement).value)))
 });
 
 export default connect(

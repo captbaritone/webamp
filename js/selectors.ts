@@ -398,3 +398,5 @@ export const getSkinPlaylistStyle = (state: AppState) => {
 
 export const getVisualizerStyle = (state: AppState) =>
   fromDisplay.getVisualizerStyle(state.display);
+
+export const getVolume = (state: AppState) => state.media.volume;
