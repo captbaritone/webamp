@@ -42,9 +42,15 @@ function testSerialization<T>({
 }: SerializationTestParams<T>) {
   test(name, () => {
     const firstStore = getStore();
+    // Does not match the expected selection in the initial state
+    expect(selector(firstStore.getState())).not.toEqual(expected);
+
     firstStore.dispatch(action);
     // Ensure we actually changed something
     expect(firstStore.getState()).not.toEqual(getStore().getState());
+
+    // Ensure the expectation is true before we serialize
+    expect(selector(firstStore.getState())).toEqual(expected);
 
     const serializedState = Selectors.getSerlializedState(
       firstStore.getState()
@@ -57,14 +63,20 @@ function testSerialization<T>({
 
     const readSerializedState = readFixture(name);
 
+    // Ensure our serialization strategy hasn't changed since we last serialized
     expect(readSerializedState).toEqual(serializedState);
 
+    // Try to apply this serialized state to the default state
     const secondStore = getStore();
     secondStore.dispatch({
       type: LOAD_SERIALIZED_STATE,
       serializedState: readSerializedState
     });
+
+    // Ensure our restored state conforms to expectation
     expect(selector(secondStore.getState())).toEqual(expected);
+
+    // TODO: Try to apply the serialized state to a complex non-initial state
   });
 }
 
