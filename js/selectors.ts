@@ -5,7 +5,6 @@ import {
   WindowId,
   WindowInfo,
   LoadedURLTrack,
-  SerializedStateV1,
   WindowPositions
 } from "./types";
 import { createSelector } from "reselect";
@@ -26,6 +25,7 @@ import * as fromEqualizer from "./reducers/equalizer";
 import * as fromMedia from "./reducers/media";
 import * as fromWindows from "./reducers/windows";
 import { generateGraph } from "./resizeUtils";
+import { SerializedStateV1 } from "./serializedStates/v1Types";
 
 export const getSliders = (state: AppState) => state.equalizer.sliders;
 

@@ -1,18 +1,12 @@
 import { PlaylistState } from "./reducers/playlist";
 import { SettingsState } from "./reducers/settings";
 import { UserInputState } from "./reducers/userInput";
-import { MediaState, MediaSerializedStateV1 } from "./reducers/media";
-import { DisplayState, DisplaySerializedStateV1 } from "./reducers/display";
-import {
-  WindowsState,
-  WindowsSerializedStateV1,
-  WindowPositions
-} from "./reducers/windows";
-import {
-  EqualizerState,
-  EqualizerSerializedStateV1
-} from "./reducers/equalizer";
+import { MediaState } from "./reducers/media";
+import { DisplayState } from "./reducers/display";
+import { WindowsState, WindowPositions } from "./reducers/windows";
+import { EqualizerState } from "./reducers/equalizer";
 import { NetworkState } from "./reducers/network";
+import { SerializedStateV1 } from "./serializedStates/v1Types";
 
 export {
   WebampWindow,
@@ -482,12 +476,4 @@ export type Dispatch = (action: Dispatchable) => void;
 export interface MiddlewareStore {
   dispatch: Dispatch;
   getState: GetState;
-}
-
-export interface SerializedStateV1 {
-  version: 1;
-  windows: WindowsSerializedStateV1;
-  media: MediaSerializedStateV1;
-  display: DisplaySerializedStateV1;
-  equalizer: EqualizerSerializedStateV1;
 }

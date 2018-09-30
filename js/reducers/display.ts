@@ -27,6 +27,7 @@ import {
   LOAD_SERIALIZED_STATE
 } from "../actionTypes";
 import { DEFAULT_SKIN, VISUALIZER_ORDER } from "../constants";
+import { DisplaySerializedStateV1 } from "../serializedStates/v1Types";
 
 export interface DisplayState {
   additionalVisualizers: Array<string>;
@@ -47,19 +48,6 @@ export interface DisplayState {
   playlistScrollPosition: number;
   zIndex: number;
   dummyVizData: null; // TODO: Figure out what kind of data this actually is.
-}
-
-export interface DisplaySerializedStateV1 {
-  visualizerStyle: number;
-  doubled: boolean;
-  llama: boolean;
-  marqueeStep: number;
-  skinImages: SkinImages;
-  skinCursors: Cursors | null;
-  skinRegion: SkinRegion;
-  skinGenLetterWidths: GenLetterWidths | null;
-  skinColors: string[]; // Theoretically this could be a tuple of a specific length
-  skinPlaylistStyle: PlaylistStyle | null;
 }
 
 const defaultDisplayState = {
