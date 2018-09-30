@@ -10,7 +10,9 @@ import {
   TOGGLE_WINDOW_SHADE_MODE,
   SET_WINDOW_VISIBILITY,
   BROWSER_WINDOW_SIZE_CHANGED,
-  RESET_WINDOW_SIZES
+  RESET_WINDOW_SIZES,
+  TOGGLE_LLAMA_MODE,
+  SET_FOCUSED_WINDOW
 } from "../actionTypes";
 
 import { getPositionDiff, SizeDiff } from "../resizeUtils";
@@ -57,6 +59,10 @@ export function toggleDoubleSizeMode(): Dispatchable {
   return withWindowGraphIntegrity({ type: TOGGLE_DOUBLESIZE_MODE });
 }
 
+export function toggleLlamaMode(): Dispatchable {
+  return { type: TOGGLE_LLAMA_MODE };
+}
+
 export function toggleEqualizerShadeMode(): Dispatchable {
   return withWindowGraphIntegrity({
     type: TOGGLE_WINDOW_SHADE_MODE,
@@ -88,6 +94,10 @@ export function hideWindow(windowId: WindowId): Dispatchable {
 
 export function showWindow(windowId: WindowId): Dispatchable {
   return { type: SET_WINDOW_VISIBILITY, windowId, hidden: false };
+}
+
+export function setFocusedWindow(window: WindowId): Dispatchable {
+  return { type: SET_FOCUSED_WINDOW, window };
 }
 
 export function setWindowSize(
