@@ -7,14 +7,9 @@ import {
   SET_EQ_OFF,
   LOAD_SERIALIZED_STATE
 } from "../actionTypes";
+import { EqualizerSerializedStateV1 } from "../serializedStates/v1Types";
 
 export interface EqualizerState {
-  on: boolean;
-  auto: boolean;
-  sliders: Record<Slider, number>;
-}
-
-export interface EqualizerSerializedStateV1 {
   on: boolean;
   auto: boolean;
   sliders: Record<Slider, number>;
