@@ -4,11 +4,7 @@ import { connect } from "react-redux";
 import { Box, Diff } from "../snapUtils";
 import * as SnapUtils from "../snapUtils";
 import * as Selectors from "../selectors";
-import {
-  updateWindowPositions,
-  windowsHaveBeenCentered,
-  centerWindowsIfNeeded
-} from "../actionCreators";
+import { updateWindowPositions } from "../actionCreators";
 import {
   WindowInfo,
   Dispatch,
@@ -24,7 +20,6 @@ const abuts = (a: Box, b: Box) => {
 };
 
 interface Props {
-  centerWindowsIfNeeded(container: HTMLElement): void;
   container: HTMLElement;
   windowsInfo: WindowInfo[];
   browserWindowSize: { height: number; width: number };
@@ -34,14 +29,6 @@ interface Props {
 }
 
 class WindowManager extends React.Component<Props> {
-  componentDidMount() {
-    this.props.centerWindowsIfNeeded(this.props.container);
-  }
-
-  componentDidUpdate() {
-    this.props.centerWindowsIfNeeded(this.props.container);
-  }
-
   movingAndStationaryNodes(key: WindowId): [WindowInfo[], WindowInfo[]] {
     const windows = this.props.windowsInfo.filter(
       w =>
@@ -163,11 +150,8 @@ const mapStateToProps = (state: AppState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    updateWindowPositions: (positions: WindowPositions, centered: boolean) =>
-      dispatch(updateWindowPositions(positions, centered)),
-    windowsHaveBeenCentered: () => dispatch(windowsHaveBeenCentered()),
-    centerWindowsIfNeeded: (container: HTMLElement) =>
-      dispatch(centerWindowsIfNeeded(container))
+    updateWindowPositions: (positions: WindowPositions) =>
+      dispatch(updateWindowPositions(positions))
   };
 };
 

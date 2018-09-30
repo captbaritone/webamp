@@ -3,12 +3,23 @@ import { SettingsState } from "./reducers/settings";
 import { UserInputState } from "./reducers/userInput";
 import { MediaState, MediaSerializedStateV1 } from "./reducers/media";
 import { DisplayState, DisplaySerializedStateV1 } from "./reducers/display";
-import { WindowsState, WindowsSerializedStateV1 } from "./reducers/windows";
+import {
+  WindowsState,
+  WindowsSerializedStateV1,
+  WindowPositions
+} from "./reducers/windows";
 import {
   EqualizerState,
   EqualizerSerializedStateV1
 } from "./reducers/equalizer";
 import { NetworkState } from "./reducers/network";
+
+export {
+  WebampWindow,
+  WindowInfo,
+  WindowPosition,
+  WindowPositions
+} from "./reducers/windows";
 
 export type Skin = {
   url: string;
@@ -56,13 +67,6 @@ type SkinData = {
   skinGenLetterWidths: GenLetterWidths;
 };
 
-interface WindowPosition {
-  x: number;
-  y: number;
-}
-export type WindowPositions = {
-  [windowId: string]: WindowPosition;
-};
 export type Action =
   | {
       type: "@@init";
@@ -256,7 +260,6 @@ export type Action =
   | {
       type: "UPDATE_WINDOW_POSITIONS";
       positions: WindowPositions;
-      center: boolean;
     }
   | {
       type: "CLICKED_TRACK";
@@ -342,7 +345,6 @@ export type Action =
   | {
       type: "MINIMIZE_WINAMP";
     }
-  | { type: "WINDOWS_HAVE_BEEN_CENTERED" }
   | {
       type: "CLOSE_REQUESTED";
       cancel: () => void;
@@ -351,29 +353,8 @@ export type Action =
       type: "LOAD_SERIALIZED_STATE";
       serializedState: SerializedStateV1;
     }
-  | { type: "RESET_WINDOW_LAYOUT" }
+  | { type: "RESET_WINDOW_SIZES" }
   | { type: "BROWSER_WINDOW_SIZE_CHANGED"; height: number; width: number };
-
-export interface WebampWindow {
-  title: string;
-  size: [number, number];
-  open: boolean;
-  hidden: boolean;
-  shade?: boolean;
-  canResize: boolean;
-  canShade: boolean;
-  canDouble: boolean;
-  generic: boolean;
-  hotkey?: string;
-}
-
-export interface WindowInfo {
-  key: WindowId;
-  height: number;
-  width: number;
-  x: number;
-  y: number;
-}
 
 export type MediaTagRequestStatus =
   | "INITIALIZED"
