@@ -94,7 +94,7 @@ interface PromptForFileReferenceOptions {
 
 export async function promptForFileReferences(
   { accept, directory = false }: PromptForFileReferenceOptions = {
-    accept,
+    accept: null,
     directory: false
   }
 ): Promise<FileList> {
