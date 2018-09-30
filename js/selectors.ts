@@ -354,6 +354,14 @@ export function getWindowHidden(state: AppState) {
   return (windowId: WindowId) => state.windows.genWindows[windowId].hidden;
 }
 
+export function getFocusedWindow(state: AppState): WindowId {
+  return state.windows.focused;
+}
+
+export function getWindowPosition(state: AppState) {
+  return (windowId: WindowId) => state.windows.genWindows[windowId].position;
+}
+
 export const getGenWindows = (state: AppState) => {
   return state.windows.genWindows;
 };
@@ -365,6 +373,10 @@ export const getWindowPositions = createSelector(
 
 export function getDoubled(state: AppState) {
   return state.display.doubled;
+}
+
+export function getLlamaMode(state: AppState) {
+  return state.display.llama;
 }
 
 export const getWindowSizes = createSelector(
@@ -406,6 +418,8 @@ export const getVisualizerStyle = (state: AppState) =>
 
 export const getVolume = (state: AppState) => state.media.volume;
 export const getBalance = (state: AppState) => state.media.balance;
+export const getShuffle = (state: AppState) => state.media.shuffle;
+export const getRepeat = (state: AppState) => state.media.repeat;
 
 export const getChannels = (state: AppState) => state.media.channels;
 export function getSerlializedState(state: AppState): SerializedStateV1 {
@@ -420,6 +434,10 @@ export function getSerlializedState(state: AppState): SerializedStateV1 {
 
 export function getEqualizerEnabled(state: AppState): boolean {
   return state.equalizer.on;
+}
+
+export function getEqualizerAuto(state: AppState): boolean {
+  return state.equalizer.auto;
 }
 
 export function getBrowserWindowSize(
