@@ -309,7 +309,7 @@ export function objectMap<V, N>(
 export function objectFilter<V>(
   obj: { [key: string]: V },
   predicate: (value: V, key: string) => boolean
-) {
+): { [key: string]: V } {
   // TODO: Could return the original reference if no values change
   return Object.keys(obj).reduce((newObj: { [key: string]: V }, key) => {
     if (predicate(obj[key], key)) {
