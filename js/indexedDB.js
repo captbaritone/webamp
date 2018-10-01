@@ -21,7 +21,7 @@ export async function bindToIndexedDB(webamp, clearState, useState) {
   try {
     previousSerializedState = await localStore.get(LOCAL_STORAGE_KEY);
   } catch (e) {
-    console.error("Failed to load the saves state from IndexedDB", e);
+    console.error("Failed to load the saved state from IndexedDB", e);
   }
 
   if (previousSerializedState != null) {
