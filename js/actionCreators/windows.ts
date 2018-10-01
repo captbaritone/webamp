@@ -112,15 +112,21 @@ export function toggleWindow(windowId: WindowId): Dispatchable {
 }
 
 export function updateWindowPositions(
-  positions: WindowPositions
+  positions: WindowPositions,
+  absolute?: boolean
 ): Dispatchable {
-  return { type: UPDATE_WINDOW_POSITIONS, positions };
+  return { type: UPDATE_WINDOW_POSITIONS, positions, absolute };
 }
 
 export function centerWindowsInContainer(container: HTMLElement): Dispatchable {
-  const { left, top } = container.getBoundingClientRect();
-  const { scrollWidth: width, scrollHeight: height } = container;
-  return centerWindows({ left, top, width, height });
+  return (dispatch, getState) => {
+    if (!Selectors.getPositionsAreRelative(getState())) {
+      return;
+    }
+    const { left, top } = container.getBoundingClientRect();
+    const { scrollWidth: width, scrollHeight: height } = container;
+    dispatch(centerWindows({ left, top, width, height }));
+  };
 }
 
 export function centerWindowsInView(): Dispatchable {
@@ -169,7 +175,7 @@ export function centerWindows(box: {
       {}
     );
 
-    dispatch(updateWindowPositions(newPositions));
+    dispatch(updateWindowPositions(newPositions, true));
   };
 }
 

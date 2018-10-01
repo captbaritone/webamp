@@ -224,6 +224,13 @@ describe("can serialize", () => {
   });
 
   testSerialization({
+    name: "window positions are relative",
+    action: Actions.updateWindowPositions({ main: { x: 100, y: 100 } }, true),
+    selector: Selectors.getPositionsAreRelative,
+    expected: false
+  });
+
+  testSerialization({
     name: "focused window",
     action: Actions.setFocusedWindow("equalizer"),
     selector: state => Selectors.getFocusedWindow(state),

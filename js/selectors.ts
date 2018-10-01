@@ -362,6 +362,10 @@ export function getWindowPosition(state: AppState) {
   return (windowId: WindowId) => state.windows.genWindows[windowId].position;
 }
 
+export function getPositionsAreRelative(state: AppState) {
+  return state.windows.positionsAreRelative;
+}
+
 export const getGenWindows = (state: AppState) => {
   return state.windows.genWindows;
 };

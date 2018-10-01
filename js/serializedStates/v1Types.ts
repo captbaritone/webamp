@@ -3,6 +3,7 @@
  */
 
 export interface WindowsSerializedStateV1 {
+  positionsAreRelative: boolean;
   genWindows: {
     [windowId: string]: {
       size: [number, number];

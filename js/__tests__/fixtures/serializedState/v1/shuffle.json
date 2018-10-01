@@ -64,6 +64,7 @@
         "skinPlaylistStyle": null
     },
     "windows": {
+        "positionsAreRelative": true,
         "genWindows": {
             "main": {
                 "size": [
