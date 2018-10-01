@@ -12,7 +12,6 @@ import zaxon from "../skins/ZaxonRemake1-0.wsz";
 import green from "../skins/Green-Dimension-V2.wsz";
 import MilkdropWindow from "./components/MilkdropWindow";
 import screenshotInitialState from "./screenshotInitialState";
-
 import WebampLazy from "./webampLazy";
 import enableMediaSession from "./mediaSession";
 import {
@@ -28,7 +27,6 @@ import {
   SET_EQ_AUTO,
   SET_DUMMY_VIZ_DATA
 } from "./actionTypes";
-
 import { loadFilesFromReferences } from "./actionCreators";
 
 import {
@@ -287,7 +285,6 @@ Raven.context(async () => {
 
   enableMediaSession(webamp);
 
-  // Expose a file input in the DOM for testing.
   const fileInput = document.createElement("input");
   fileInput.id = "webamp-file-input";
   fileInput.style.display = "none";
