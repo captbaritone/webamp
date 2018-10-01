@@ -8,7 +8,7 @@
     },
     "equalizer": {
         "on": true,
-        "auto": true,
+        "auto": false,
         "sliders": {
             "60": 50,
             "170": 50,
@@ -64,7 +64,7 @@
         "skinPlaylistStyle": null
     },
     "windows": {
-        "positionsAreRelative": true,
+        "positionsAreRelative": false,
         "genWindows": {
             "main": {
                 "size": [
@@ -75,8 +75,8 @@
                 "hidden": false,
                 "shade": false,
                 "position": {
-                    "x": 0,
-                    "y": 0
+                    "x": 100,
+                    "y": 100
                 }
             },
             "equalizer": {
