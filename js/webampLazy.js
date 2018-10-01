@@ -17,9 +17,7 @@ import {
   seekForward,
   next,
   previous,
-  updateWindowPositions,
-  loadSerializedState,
-  ensureWindowsAreOnScreen
+  updateWindowPositions
 } from "./actionCreators";
 import { LOAD_STYLE } from "./constants";
 import { uniqueId, objectMap, objectForEach } from "./utils";
@@ -34,7 +32,8 @@ import {
   LOADED,
   REGISTER_VISUALIZER,
   SET_Z_INDEX,
-  CLOSE_REQUESTED
+  CLOSE_REQUESTED,
+  LOAD_SERIALIZED_STATE
 } from "./actionTypes";
 import Emitter from "./emitter";
 
@@ -128,10 +127,6 @@ class Winamp {
     window.addEventListener("offline", () =>
       this.store.dispatch({ type: NETWORK_DISCONNECTED })
     );
-
-    window.addEventListener("resize", () => {
-      this.store.dispatch(ensureWindowsAreOnScreen());
-    });
 
     if (initialSkin) {
       this.store.dispatch(setSkinFromUrl(initialSkin.url));
@@ -238,7 +233,7 @@ class Winamp {
   }
 
   loadSerializedState(serializedState) {
-    this.store.dispatch(loadSerializedState(serializedState));
+    this.store.dispatch({ type: LOAD_SERIALIZED_STATE, serializedState });
   }
 
   getSerializedState() {

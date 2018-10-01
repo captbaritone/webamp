@@ -11,8 +11,7 @@ import {
   applyDiff,
   applyMultipleDiffs
 } from "../snapUtils";
-import { getWindowSize } from "../utils";
-import * as Selectors from "../selectors";
+import { getWindowsInfo, getWindowHidden, getWindowOpen } from "../selectors";
 import {
   updateWindowPositions,
   windowsHaveBeenCentered,
@@ -27,10 +26,6 @@ const abuts = (a, b) => {
 
 class WindowManager extends React.Component {
   componentDidMount() {
-    this.props.centerWindowsIfNeeded(this.props.container);
-  }
-
-  componentDidUpdate() {
     this.props.centerWindowsIfNeeded(this.props.container);
   }
 
@@ -65,7 +60,24 @@ class WindowManager extends React.Component {
 
     const mouseStart = { x: e.clientX, y: e.clientY };
     // Aparently this is crazy across browsers.
-    const browserSize = getWindowSize();
+    const browserSize = {
+      width: Math.max(
+        document.body.scrollWidth,
+        document.documentElement.scrollWidth,
+        document.body.offsetWidth,
+        document.documentElement.offsetWidth,
+        document.body.clientWidth,
+        document.documentElement.clientWidth
+      ),
+      height: Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight,
+        document.body.clientHeight,
+        document.documentElement.clientHeight
+      )
+    };
 
     const box = boundingBox(moving);
 
@@ -137,9 +149,9 @@ WindowManager.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  windowsInfo: Selectors.getWindowsInfo(state),
-  getWindowHidden: Selectors.getWindowHidden(state),
-  getWindowOpen: Selectors.getWindowOpen(state)
+  windowsInfo: getWindowsInfo(state),
+  getWindowHidden: getWindowHidden(state),
+  getWindowOpen: getWindowOpen(state)
 });
 
 const mapDispatchToProps = dispatch => {

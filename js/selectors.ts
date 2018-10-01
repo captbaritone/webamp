@@ -417,6 +417,13 @@ export function getSerlializedState(state: AppState): SerializedStateV1 {
   };
 }
 
+export function getVolume(state: AppState): number {
+  return state.media.volume;
+}
+
+export function getBalance(state: AppState): number {
+  return state.media.balance;
+}
 export function getEqualizerEnabled(state: AppState): boolean {
   return state.equalizer.on;
 }
