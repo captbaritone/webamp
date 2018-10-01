@@ -38,7 +38,7 @@ import {
   disableMarquee
 } from "./config";
 
-import { bindToIndexDB } from "./indexdb";
+import { bindToIndexedDB } from "./indexedDB";
 
 const requireJSZip = () => {
   return new Promise((resolve, reject) => {
@@ -303,7 +303,7 @@ Raven.context(async () => {
   // Expose webamp instance for debugging and integration tests.
   window.__webamp = webamp;
 
-  await bindToIndexDB(webamp, clearState, useState);
+  await bindToIndexedDB(webamp, clearState, useState);
 
   await webamp.renderWhenReady(document.getElementById("app"));
 });
