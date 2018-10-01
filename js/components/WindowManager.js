@@ -11,16 +11,8 @@ import {
   applyDiff,
   applyMultipleDiffs
 } from "../snapUtils";
-import {
-  getWindowsInfo,
-  getWindowHidden,
-  getWindowOpen,
-  getCenterRequested
-} from "../selectors";
-import {
-  updateWindowPositions,
-  windowsHaveBeenCentered
-} from "../actionCreators";
+import { getWindowsInfo, getWindowHidden, getWindowOpen } from "../selectors";
+import { updateWindowPositions } from "../actionCreators";
 import { WINDOW_HEIGHT, WINDOW_WIDTH } from "../constants";
 import { calculateBoundingBox } from "../utils";
 
@@ -33,14 +25,11 @@ const abuts = (a, b) => {
 
 class WindowManager extends React.Component {
   componentDidMount() {
-    this.centerWindowsIfNeeded();
+    this.centerWindows();
   }
 
-  centerWindowsIfNeeded = () => {
-    const { container, centerRequested } = this.props;
-    if (!centerRequested) {
-      return;
-    }
+  centerWindows = () => {
+    const { container } = this.props;
 
     const rect = container.getBoundingClientRect();
     const offsetLeft = rect.left + window.scrollX;
@@ -89,7 +78,6 @@ class WindowManager extends React.Component {
 
       this.props.updateWindowPositions(newPositions);
     }
-    this.props.windowsHaveBeenCentered();
   };
 
   movingAndStationaryNodes(key) {
@@ -222,16 +210,11 @@ WindowManager.propTypes = {
 const mapStateToProps = state => ({
   windowsInfo: getWindowsInfo(state),
   getWindowHidden: getWindowHidden(state),
-  getWindowOpen: getWindowOpen(state),
-  centerRequested: getCenterRequested(state)
+  getWindowOpen: getWindowOpen(state)
 });
 
-const mapDispatchToProps = dispatch => {
-  return {
-    updateWindowPositions: positions =>
-      dispatch(updateWindowPositions(positions)),
-    windowsHaveBeenCentered: () => dispatch(windowsHaveBeenCentered())
-  };
+const mapDispatchToProps = {
+  updateWindowPositions
 };
 
 export default connect(

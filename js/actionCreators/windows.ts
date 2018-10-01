@@ -12,8 +12,7 @@ import {
   TOGGLE_WINDOW,
   CLOSE_WINDOW,
   TOGGLE_WINDOW_SHADE_MODE,
-  SET_WINDOW_VISIBILITY,
-  WINDOWS_HAVE_BEEN_CENTERED
+  SET_WINDOW_VISIBILITY
 } from "../actionTypes";
 
 import { getPositionDiff, SizeDiff } from "../resizeUtils";
@@ -52,7 +51,7 @@ function withWindowGraphIntegrity(action: Action): Dispatchable {
       applyDiff(position, positionDiff[key])
     );
 
-    dispatch(updateWindowPositions(newPositions, false));
+    dispatch(updateWindowPositions(newPositions));
   };
 }
 
@@ -105,12 +104,7 @@ export function toggleWindow(windowId: WindowId): Dispatchable {
 }
 
 export function updateWindowPositions(
-  positions: WindowPositions,
-  center: boolean
+  positions: WindowPositions
 ): Dispatchable {
-  return { type: UPDATE_WINDOW_POSITIONS, positions, center };
-}
-
-export function windowsHaveBeenCentered() {
-  return { type: WINDOWS_HAVE_BEEN_CENTERED };
+  return { type: UPDATE_WINDOW_POSITIONS, positions };
 }
