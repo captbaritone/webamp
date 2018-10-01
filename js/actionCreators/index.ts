@@ -28,9 +28,7 @@ export {
   resetWindowSizes,
   browserWindowSizeChanged,
   ensureWindowsAreOnScreen,
-  stackWindows,
-  toggleLlamaMode,
-  setFocusedWindow
+  stackWindows
 } from "./windows";
 export {
   play,
@@ -54,8 +52,7 @@ export {
   setEqToMid,
   setEqToMin,
   setPreamp,
-  toggleEq,
-  toggleEqAuto
+  toggleEq
 } from "./equalizer";
 export {
   addTracksFromReferences,
