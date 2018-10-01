@@ -185,7 +185,7 @@ const windows = (
         ...state,
         genWindows: objectMap(state.genWindows, (w, windowId) => {
           const serializedW = serializedWindows[windowId];
-          if (serializedW == null) {
+          if (serializedW == null || w.generic) {
             return w;
           }
           return { ...w, ...serializedW };
