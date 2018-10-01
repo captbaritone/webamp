@@ -13,8 +13,7 @@ import {
   TOGGLE_TIME_MODE,
   UPDATE_TIME_ELAPSED,
   ADD_TRACK_FROM_URL,
-  CHANNEL_COUNT_CHANGED,
-  LOAD_SERIALIZED_STATE
+  CHANNEL_COUNT_CHANGED
 } from "../actionTypes";
 import { TIME_MODE, MEDIA_STATUS } from "../constants";
 
@@ -30,13 +29,6 @@ export interface MediaState {
   shuffle: boolean;
   repeat: boolean;
   status: string | null; // TODO: Convert this to an enum
-}
-
-export interface MediaSerializedStateV1 {
-  volume: number;
-  balance: number;
-  shuffle: boolean;
-  repeat: boolean;
 }
 
 const defaultState = {
@@ -106,16 +98,9 @@ const media = (
       return { ...state, repeat: !state.repeat };
     case TOGGLE_SHUFFLE:
       return { ...state, shuffle: !state.shuffle };
-    case LOAD_SERIALIZED_STATE:
-      return { ...state, ...action.serializedState.media };
     default:
       return state;
   }
 };
-
-export function getSerializedState(state: MediaState): MediaSerializedStateV1 {
-  const { volume, balance, shuffle, repeat } = state;
-  return { volume, balance, shuffle, repeat };
-}
 
 export default media;
