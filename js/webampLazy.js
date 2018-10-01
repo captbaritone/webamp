@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 
 import getStore from "./store";
 import App from "./components/App";
-import { bindHotkeys } from "./hotkeys";
+import Hotkeys from "./hotkeys";
 import Media from "./media";
 import * as Selectors from "./selectors";
 import {
@@ -65,7 +65,6 @@ class Winamp {
   }
 
   constructor(options) {
-    this._subscriptions = [];
     this._actionEmitter = new Emitter();
     this.options = options;
     const {
@@ -162,7 +161,7 @@ class Winamp {
     }
 
     if (enableHotkeys) {
-      this._subscriptions.push(bindHotkeys(this.store.dispatch));
+      new Hotkeys(this.store.dispatch);
     }
   }
 
