@@ -20,7 +20,7 @@ export interface WindowsState {
   centerRequested: boolean;
   genWindows: { [name: string]: WebampWindow };
   positions: WindowPositions;
-  browserWindowSize: { height: number; width: number };
+  browserWindowSize: { height: number; width: number } | null;
 }
 
 interface SerializedWindow {
@@ -80,7 +80,7 @@ const defaultWindowsState: WindowsState = {
     }
   },
   positions: {},
-  browserWindowSize: { width: 0, height: 0 }
+  browserWindowSize: null
 };
 
 const windows = (
