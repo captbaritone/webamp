@@ -20,8 +20,7 @@ export {
   toggleWindow,
   updateWindowPositions,
   toggleMainWindowShadeMode,
-  windowsHaveBeenCentered,
-  centerWindowsIfNeeded
+  windowsHaveBeenCentered
 } from "./windows";
 export {
   play,

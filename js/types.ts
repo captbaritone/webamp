@@ -342,7 +342,6 @@ export type Action =
   | {
       type: "MINIMIZE_WINAMP";
     }
-  | { type: "WINDOWS_HAVE_BEEN_CENTERED" }
   | {
       type: "CLOSE_REQUESTED";
       cancel: () => void;
