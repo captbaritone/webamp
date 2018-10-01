@@ -733,10 +733,6 @@
   version "23.3.2"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-23.3.2.tgz#07b90f6adf75d42c34230c026a2529e56c249dbb"
 
-"@types/lodash@^4.14.116":
-  version "4.14.116"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.116.tgz#5ccf215653e3e8c786a58390751033a9adca0eb9"
-
 "@types/node@*":
   version "10.1.0"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.1.0.tgz#2783ee1b6c47cbd4044f4a233976c1ac5fa9e942"
@@ -4154,13 +4150,6 @@ icss-utils@^2.1.0:
   dependencies:
     postcss "^6.0.1"
 
-idb-kv-store@^4.4.0:
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/idb-kv-store/-/idb-kv-store-4.4.0.tgz#22c56a8d5f90bd88f818a859db9c58627de278be"
-  dependencies:
-    inherits "^2.0.3"
-    promisize "^1.1.2"
-
 ieee754@^1.1.4:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.8.tgz#be33d40ac10ef1926701f6f08a2d86fbfd1ad3e4"
@@ -5412,10 +5401,6 @@ lodash@^4.13.1, lodash@^4.15.0, lodash@^4.17.10:
 lodash@^4.14.0, lodash@^4.17.2, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.3.0:
   version "4.17.5"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.5.tgz#99a92d65c0272debe8c96b6057bc8fbfa3bed511"
-
-lodash@^4.17.11:
-  version "4.17.11"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
 
 loglevel@^1.4.1:
   version "1.6.1"
@@ -6734,10 +6719,6 @@ promise@^7.1.1:
   resolved "https://registry.yarnpkg.com/promise/-/promise-7.3.1.tgz#064b72602b18f90f29192b8b1bc418ffd1ebd3bf"
   dependencies:
     asap "~2.0.3"
-
-promisize@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/promisize/-/promisize-1.1.2.tgz#9b47e2cb2ae497eb1ebadc2c4191d64d15c949d1"
 
 prompts@^0.1.9:
   version "0.1.14"

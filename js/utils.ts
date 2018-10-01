@@ -1,5 +1,4 @@
 import { DEFAULT_SKIN } from "./constants";
-import { WindowInfo } from "./types";
 
 interface Time {
   minutesFirstDigit: string;
@@ -255,37 +254,18 @@ export function spliceIn<T>(original: T[], start: number, newValues: T[]): T[] {
   return newArr;
 }
 
-export function debounce(func: Function, delay: number): Function {
-  let timeout: number;
-  let callbackArgs: any[] = [];
+type Procedure = (...args: any[]) => void;
 
-  return function(context: Object, ...args: any[]): void {
-    callbackArgs = args;
-
-    if (timeout != null) {
-      clearTimeout(timeout);
+export function debounce<F extends Procedure>(func: F, delay: number): F {
+  let token: NodeJS.Timer;
+  return function(this: any, ...args: any[]): void {
+    if (token != null) {
+      clearTimeout(token);
     }
-    timeout = window.setTimeout(() => {
-      func.apply(context, callbackArgs);
+    token = setTimeout(() => {
+      func.apply(this, args);
     }, delay);
-  };
-}
-
-// Trailing edge only throttle
-export function throttle(func: Function, delay: number): Function {
-  let timeout: number | null = null;
-  let callbackArgs: any[] = [];
-
-  return function(context: Object, ...args: any[]): void {
-    callbackArgs = args;
-
-    if (!timeout) {
-      timeout = window.setTimeout(() => {
-        func.apply(context, callbackArgs);
-        timeout = null;
-      }, delay);
-    }
-  };
+  } as any;
 }
 
 let counter = 0;
@@ -312,7 +292,7 @@ export function objectMap<V, N>(
 export function objectFilter<V>(
   obj: { [key: string]: V },
   predicate: (value: V, key: string) => boolean
-): { [key: string]: V } {
+) {
   // TODO: Could return the original reference if no values change
   return Object.keys(obj).reduce((newObj: { [key: string]: V }, key) => {
     if (predicate(obj[key], key)) {
@@ -322,20 +302,25 @@ export function objectFilter<V>(
   }, {});
 }
 
-export const calculateBoundingBox = (windows: WindowInfo[]) =>
-  windows
-    .map(w => ({
-      left: w.x,
-      top: w.y,
-      bottom: w.y + w.height,
-      right: w.x + w.width
-    }))
-    .reduce((b, w) => ({
-      left: Math.min(b.left, w.left),
-      top: Math.min(b.top, w.top),
-      bottom: Math.max(b.bottom, w.bottom),
-      right: Math.max(b.right, w.right)
-    }));
+interface Window {
+  left: number;
+  top: number;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+export const calculateBoundingBox = (windows: Window[]) =>
+  windows.reduce(
+    (b, w) => ({
+      left: Math.min(b.left, w.x),
+      top: Math.min(b.top, w.y),
+      bottom: Math.max(b.bottom, w.y + w.height),
+      right: Math.max(b.right, w.x + w.width)
+    }),
+    { top: 0, bottom: 0, left: 0, right: 0 }
+  );
 
 export function findLastIndex<T>(arr: T[], cb: (val: T) => boolean) {
   for (let i = arr.length - 1; i >= 0; i--) {
@@ -344,26 +329,4 @@ export function findLastIndex<T>(arr: T[], cb: (val: T) => boolean) {
     }
   }
   return -1;
-}
-
-export function getWindowSize(): { width: number; height: number } {
-  // Aparently this is crazy across browsers.
-  return {
-    width: Math.max(
-      document.body.scrollWidth,
-      document.documentElement.scrollWidth,
-      document.body.offsetWidth,
-      document.documentElement.offsetWidth,
-      document.body.clientWidth,
-      document.documentElement.clientWidth
-    ),
-    height: Math.max(
-      document.body.scrollHeight,
-      document.documentElement.scrollHeight,
-      document.body.offsetHeight,
-      document.documentElement.offsetHeight,
-      document.body.clientHeight,
-      document.documentElement.clientHeight
-    )
-  };
 }

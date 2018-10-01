@@ -5,12 +5,9 @@ import {
   CLOSE_REQUESTED,
   MINIMIZE_WINAMP,
   SET_FOCUS,
-  UNSET_FOCUS,
-  LOAD_SERIALIZED_STATE
+  UNSET_FOCUS
 } from "../actionTypes";
 import { Dispatchable } from "../types";
-import { ensureWindowsAreOnScreen } from "./windows";
-import { SerializedStateV1 } from "../serializedStates/v1Types";
 
 export {
   toggleDoubleSizeMode,
@@ -22,15 +19,7 @@ export {
   setWindowSize,
   toggleWindow,
   updateWindowPositions,
-  toggleMainWindowShadeMode,
-  centerWindowsInContainer,
-  centerWindowsInView,
-  resetWindowSizes,
-  browserWindowSizeChanged,
-  ensureWindowsAreOnScreen,
-  stackWindows,
-  toggleLlamaMode,
-  setFocusedWindow
+  toggleMainWindowShadeMode
 } from "./windows";
 export {
   play,
@@ -54,8 +43,7 @@ export {
   setEqToMid,
   setEqToMin,
   setPreamp,
-  toggleEq,
-  toggleEqAuto
+  toggleEq
 } from "./equalizer";
 export {
   addTracksFromReferences,
@@ -119,14 +107,4 @@ export function setFocus(input: string): Dispatchable {
 
 export function unsetFocus(): Dispatchable {
   return { type: UNSET_FOCUS };
-}
-
-export function loadSerializedState(
-  // In the future this type should be the union of all versioned types.
-  serializedState: SerializedStateV1
-): Dispatchable {
-  return dispatch => {
-    dispatch({ type: LOAD_SERIALIZED_STATE, serializedState });
-    dispatch(ensureWindowsAreOnScreen());
-  };
 }

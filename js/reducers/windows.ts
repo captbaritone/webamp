@@ -1,4 +1,4 @@
-import { Action, WindowId } from "../types";
+import { WebampWindow, WindowPositions, Action } from "../types";
 import { WINDOWS } from "../constants";
 import {
   SET_FOCUSED_WINDOW,
@@ -8,54 +8,17 @@ import {
   ADD_GEN_WINDOW,
   UPDATE_WINDOW_POSITIONS,
   WINDOW_SIZE_CHANGED,
-  TOGGLE_WINDOW_SHADE_MODE,
-  LOAD_SERIALIZED_STATE,
-  BROWSER_WINDOW_SIZE_CHANGED,
-  RESET_WINDOW_SIZES
+  TOGGLE_WINDOW_SHADE_MODE
 } from "../actionTypes";
-import * as Utils from "../utils";
-import { WindowsSerializedStateV1 } from "../serializedStates/v1Types";
 
-export interface WindowPosition {
-  x: number;
-  y: number;
-}
-
-export type WindowPositions = {
-  [windowId: string]: WindowPosition;
-};
-
-export interface WebampWindow {
-  title: string;
-  size: [number, number];
-  open: boolean;
-  hidden: boolean;
-  shade?: boolean;
-  canResize: boolean;
-  canShade: boolean;
-  canDouble: boolean;
-  generic: boolean;
-  hotkey?: string;
-  position: WindowPosition;
-}
-
-export interface WindowInfo {
-  key: WindowId;
-  height: number;
-  width: number;
-  x: number;
-  y: number;
-}
-export interface WindowsState {
+export interface WindowState {
   focused: string;
   genWindows: { [name: string]: WebampWindow };
-  browserWindowSize: { height: number; width: number };
-  positionsAreRelative: boolean;
+  positions: WindowPositions;
 }
 
-const defaultWindowsState: WindowsState = {
+const defaultWindowsState: WindowState = {
   focused: WINDOWS.MAIN,
-  positionsAreRelative: true,
   genWindows: {
     // TODO: Remove static capabilites and derive them from ids/generic
     main: {
@@ -68,8 +31,7 @@ const defaultWindowsState: WindowsState = {
       canShade: true,
       canDouble: true,
       generic: false,
-      hotkey: "Alt+W",
-      position: { x: 0, y: 0 }
+      hotkey: "Alt+W"
     },
     equalizer: {
       title: "Equalizer",
@@ -81,8 +43,7 @@ const defaultWindowsState: WindowsState = {
       canShade: true,
       canDouble: true,
       generic: false,
-      hotkey: "Alt+G",
-      position: { x: 0, y: 0 }
+      hotkey: "Alt+G"
     },
     playlist: {
       title: "Playlist Editor",
@@ -94,17 +55,16 @@ const defaultWindowsState: WindowsState = {
       canShade: true,
       canDouble: false,
       generic: false,
-      hotkey: "Alt+E",
-      position: { x: 0, y: 0 }
+      hotkey: "Alt+E"
     }
   },
-  browserWindowSize: { width: 0, height: 0 }
+  positions: {}
 };
 
 const windows = (
-  state: WindowsState = defaultWindowsState,
+  state: WindowState = defaultWindowsState,
   action: Action
-): WindowsState => {
+): WindowState => {
   switch (action.type) {
     case SET_FOCUSED_WINDOW:
       return { ...state, focused: action.window };
@@ -176,8 +136,7 @@ const windows = (
             canShade: false,
             canResize: true,
             canDouble: false,
-            generic: true,
-            position: { x: 0, y: 0 }
+            generic: true
           }
         }
       };
@@ -201,71 +160,11 @@ const windows = (
     case UPDATE_WINDOW_POSITIONS:
       return {
         ...state,
-        positionsAreRelative:
-          action.absolute === true ? false : state.positionsAreRelative,
-        genWindows: Utils.objectMap(state.genWindows, (w, windowId) => {
-          const newPosition = action.positions[windowId];
-          if (newPosition == null) {
-            return w;
-          }
-          return { ...w, position: newPosition };
-        })
+        positions: { ...state.positions, ...action.positions }
       };
-    case RESET_WINDOW_SIZES:
-      return {
-        ...state,
-        genWindows: Utils.objectMap(state.genWindows, w => ({
-          ...w,
-          // Not sure why TypeScript can't figure this out for itself.
-          size: [0, 0] as [number, number]
-        }))
-      };
-    case LOAD_SERIALIZED_STATE: {
-      const {
-        genWindows,
-        focused,
-        positionsAreRelative
-      } = action.serializedState.windows;
-      return {
-        ...state,
-        positionsAreRelative,
-        genWindows: Utils.objectMap(state.genWindows, (w, windowId) => {
-          const serializedW = genWindows[windowId];
-          if (serializedW == null) {
-            return w;
-          }
-          return { ...w, ...serializedW };
-        }),
-        focused
-      };
-    }
-    case BROWSER_WINDOW_SIZE_CHANGED:
-      return {
-        ...state,
-        browserWindowSize: { height: action.height, width: action.width }
-      };
-
     default:
       return state;
   }
 };
-
-export function getSerializedState(
-  state: WindowsState
-): WindowsSerializedStateV1 {
-  return {
-    positionsAreRelative: state.positionsAreRelative,
-    genWindows: Utils.objectMap(state.genWindows, w => {
-      return {
-        size: w.size,
-        open: w.open,
-        hidden: w.hidden,
-        shade: w.shade || false,
-        position: w.position
-      };
-    }),
-    focused: state.focused
-  };
-}
 
 export default windows;

@@ -12,7 +12,6 @@ import zaxon from "../skins/ZaxonRemake1-0.wsz";
 import green from "../skins/Green-Dimension-V2.wsz";
 import MilkdropWindow from "./components/MilkdropWindow";
 import screenshotInitialState from "./screenshotInitialState";
-
 import WebampLazy from "./webampLazy";
 import enableMediaSession from "./mediaSession";
 import {
@@ -28,7 +27,6 @@ import {
   SET_EQ_AUTO,
   SET_DUMMY_VIZ_DATA
 } from "./actionTypes";
-
 import { loadFilesFromReferences } from "./actionCreators";
 
 import {
@@ -37,8 +35,6 @@ import {
   initialState,
   disableMarquee
 } from "./config";
-
-import { bindToIndexedDB } from "./indexedDB";
 
 const requireJSZip = () => {
   return new Promise((resolve, reject) => {
@@ -86,15 +82,11 @@ const NOISY_ACTION_TYPES = new Set([
 const MIN_MILKDROP_WIDTH = 725;
 
 let screenshot = false;
-let clearState = false;
-let useState = false;
 let skinUrl = configSkinUrl;
 if ("URLSearchParams" in window) {
   const params = new URLSearchParams(location.search);
   screenshot = params.get("screenshot");
   skinUrl = params.get("skinUrl") || skinUrl;
-  clearState = Boolean(params.get("clearState"));
-  useState = Boolean(params.get("useState"));
 }
 
 function supressDragAndDrop(e) {
@@ -161,7 +153,7 @@ function genAudioFileUrlsFromDropbox() {
   });
 }
 
-Raven.context(async () => {
+Raven.context(() => {
   window.Raven = Raven;
   if (screenshot) {
     document.getElementsByClassName("about")[0].style.visibility = "hidden";
@@ -289,7 +281,6 @@ Raven.context(async () => {
 
   enableMediaSession(webamp);
 
-  // Expose a file input in the DOM for testing.
   const fileInput = document.createElement("input");
   fileInput.id = "webamp-file-input";
   fileInput.style.display = "none";
@@ -300,10 +291,8 @@ Raven.context(async () => {
   });
   document.body.appendChild(fileInput);
 
+  webamp.renderWhenReady(document.getElementById("app"));
+
   // Expose webamp instance for debugging and integration tests.
   window.__webamp = webamp;
-
-  await bindToIndexedDB(webamp, clearState, useState);
-
-  await webamp.renderWhenReady(document.getElementById("app"));
 });

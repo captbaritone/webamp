@@ -3,17 +3,9 @@ import { SettingsState } from "./reducers/settings";
 import { UserInputState } from "./reducers/userInput";
 import { MediaState } from "./reducers/media";
 import { DisplayState } from "./reducers/display";
-import { WindowsState, WindowPositions } from "./reducers/windows";
+import { WindowState } from "./reducers/windows";
 import { EqualizerState } from "./reducers/equalizer";
 import { NetworkState } from "./reducers/network";
-import { SerializedStateV1 } from "./serializedStates/v1Types";
-
-export {
-  WebampWindow,
-  WindowInfo,
-  WindowPosition,
-  WindowPositions
-} from "./reducers/windows";
 
 export type Skin = {
   url: string;
@@ -61,6 +53,13 @@ type SkinData = {
   skinGenLetterWidths: GenLetterWidths;
 };
 
+interface WindowPosition {
+  x: number;
+  y: number;
+}
+export type WindowPositions = {
+  [windowId: string]: WindowPosition;
+};
 export type Action =
   | {
       type: "@@init";
@@ -254,7 +253,6 @@ export type Action =
   | {
       type: "UPDATE_WINDOW_POSITIONS";
       positions: WindowPositions;
-      absolute?: boolean;
     }
   | {
       type: "CLICKED_TRACK";
@@ -343,13 +341,28 @@ export type Action =
   | {
       type: "CLOSE_REQUESTED";
       cancel: () => void;
-    }
-  | {
-      type: "LOAD_SERIALIZED_STATE";
-      serializedState: SerializedStateV1;
-    }
-  | { type: "RESET_WINDOW_SIZES" }
-  | { type: "BROWSER_WINDOW_SIZE_CHANGED"; height: number; width: number };
+    };
+
+export interface WebampWindow {
+  title: string;
+  size: [number, number];
+  open: boolean;
+  hidden: boolean;
+  shade?: boolean;
+  canResize: boolean;
+  canShade: boolean;
+  canDouble: boolean;
+  generic: boolean;
+  hotkey?: string;
+}
+
+export interface WindowInfo {
+  key: WindowId;
+  height: number;
+  width: number;
+  x: number;
+  y: number;
+}
 
 export type MediaTagRequestStatus =
   | "INITIALIZED"
@@ -444,7 +457,7 @@ export interface PlaylistTrack {
 
 export interface AppState {
   userInput: UserInputState;
-  windows: WindowsState;
+  windows: WindowState;
   display: DisplayState;
   settings: SettingsState;
   equalizer: EqualizerState;
