@@ -14,7 +14,6 @@ import {
   RESET_WINDOW_SIZES
 } from "../actionTypes";
 import * as Utils from "../utils";
-import { WindowsSerializedStateV1 } from "../serializedStates/v1Types";
 
 export interface WindowPosition {
   x: number;
@@ -50,6 +49,19 @@ export interface WindowsState {
   focused: string;
   genWindows: { [name: string]: WebampWindow };
   browserWindowSize: { height: number; width: number };
+}
+
+interface SerializedWindow {
+  size: [number, number];
+  open: boolean;
+  hidden: boolean;
+  shade: boolean;
+  position: WindowPosition;
+}
+
+export interface WindowsSerializedStateV1 {
+  genWindows: { [windowId: string]: SerializedWindow };
+  focused: string;
 }
 
 const defaultWindowsState: WindowsState = {

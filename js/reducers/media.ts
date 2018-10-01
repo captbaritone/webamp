@@ -17,7 +17,6 @@ import {
   LOAD_SERIALIZED_STATE
 } from "../actionTypes";
 import { TIME_MODE, MEDIA_STATUS } from "../constants";
-import { MediaSerializedStateV1 } from "../serializedStates/v1Types";
 
 export interface MediaState {
   timeMode: string; // TODO: Convert this to an enum
@@ -31,6 +30,13 @@ export interface MediaState {
   shuffle: boolean;
   repeat: boolean;
   status: string | null; // TODO: Convert this to an enum
+}
+
+export interface MediaSerializedStateV1 {
+  volume: number;
+  balance: number;
+  shuffle: boolean;
+  repeat: boolean;
 }
 
 const defaultState = {

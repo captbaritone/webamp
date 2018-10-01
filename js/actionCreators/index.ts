@@ -8,9 +8,8 @@ import {
   UNSET_FOCUS,
   LOAD_SERIALIZED_STATE
 } from "../actionTypes";
-import { Dispatchable } from "../types";
+import { Dispatchable, SerializedStateV1 } from "../types";
 import { ensureWindowsAreOnScreen } from "./windows";
-import { SerializedStateV1 } from "../serializedStates/v1Types";
 
 export {
   toggleDoubleSizeMode,
@@ -119,7 +118,6 @@ export function unsetFocus(): Dispatchable {
 }
 
 export function loadSerializedState(
-  // In the future this type should be the union of all versioned types.
   serializedState: SerializedStateV1
 ): Dispatchable {
   return dispatch => {
