@@ -351,8 +351,7 @@ export type Action =
       type: "LOAD_SERIALIZED_STATE";
       serializedState: SerializedStateV1;
     }
-  | { type: "RESET_WINDOW_LAYOUT" }
-  | { type: "BROWSER_WINDOW_SIZE_CHANGED"; height: number; width: number };
+  | { type: "RESET_WINDOW_LAYOUT" };
 
 export interface WebampWindow {
   title: string;

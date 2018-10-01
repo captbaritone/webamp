@@ -10,7 +10,7 @@ import {
   TOGGLE_WINDOW_SHADE_MODE,
   SET_WINDOW_VISIBILITY,
   WINDOWS_HAVE_BEEN_CENTERED,
-  BROWSER_WINDOW_SIZE_CHANGED
+  RESET_WINDOW_LAYOUT
 } from "../actionTypes";
 
 import { getPositionDiff, SizeDiff } from "../resizeUtils";
@@ -115,6 +115,10 @@ export function windowsHaveBeenCentered(): Dispatchable {
   return { type: WINDOWS_HAVE_BEEN_CENTERED };
 }
 
+export function resetWindowLayout(): Dispatchable {
+  return { type: RESET_WINDOW_LAYOUT };
+}
+
 export function centerWindowsIfNeeded(container: HTMLElement): Dispatchable {
   return (dispatch, getState) => {
     const state = getState();
@@ -181,11 +185,6 @@ export function centerWindowsIfNeeded(container: HTMLElement): Dispatchable {
     }
     dispatch(windowsHaveBeenCentered());
   };
-}
-
-export function browserWindowSizeChanged() {
-  const { height, width } = Utils.getWindowSize();
-  return { type: BROWSER_WINDOW_SIZE_CHANGED, height, width };
 }
 
 export function ensureWindowsAreOnScreen(): Dispatchable {
