@@ -1592,9 +1592,9 @@ butterchurn-presets@^2.4.7:
     ecma-proposal-math-extensions "0.0.2"
     lodash "^4.17.4"
 
-butterchurn@^2.4.10:
-  version "2.4.10"
-  resolved "https://registry.yarnpkg.com/butterchurn/-/butterchurn-2.4.10.tgz#bf74ed57629a73063f4726e1ddeabb8bc9276ff1"
+butterchurn@^2.5.3:
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/butterchurn/-/butterchurn-2.5.3.tgz#e654aff4031921003323e1741569af7a24bc4102"
   dependencies:
     babel-runtime "^6.26.0"
     ecma-proposal-math-extensions "0.0.2"
