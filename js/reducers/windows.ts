@@ -50,12 +50,10 @@ export interface WindowsState {
   focused: string;
   genWindows: { [name: string]: WebampWindow };
   browserWindowSize: { height: number; width: number };
-  positionsAreRelative: boolean;
 }
 
 const defaultWindowsState: WindowsState = {
   focused: WINDOWS.MAIN,
-  positionsAreRelative: true,
   genWindows: {
     // TODO: Remove static capabilites and derive them from ids/generic
     main: {
@@ -201,8 +199,6 @@ const windows = (
     case UPDATE_WINDOW_POSITIONS:
       return {
         ...state,
-        positionsAreRelative:
-          action.absolute === true ? false : state.positionsAreRelative,
         genWindows: Utils.objectMap(state.genWindows, (w, windowId) => {
           const newPosition = action.positions[windowId];
           if (newPosition == null) {
@@ -221,14 +217,9 @@ const windows = (
         }))
       };
     case LOAD_SERIALIZED_STATE: {
-      const {
-        genWindows,
-        focused,
-        positionsAreRelative
-      } = action.serializedState.windows;
+      const { genWindows, focused } = action.serializedState.windows;
       return {
         ...state,
-        positionsAreRelative,
         genWindows: Utils.objectMap(state.genWindows, (w, windowId) => {
           const serializedW = genWindows[windowId];
           if (serializedW == null) {
@@ -254,7 +245,6 @@ export function getSerializedState(
   state: WindowsState
 ): WindowsSerializedStateV1 {
   return {
-    positionsAreRelative: state.positionsAreRelative,
     genWindows: Utils.objectMap(state.genWindows, w => {
       return {
         size: w.size,
