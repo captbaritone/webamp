@@ -7,8 +7,21 @@ import App from "./components/App";
 import { bindHotkeys } from "./hotkeys";
 import Media from "./media";
 import * as Selectors from "./selectors";
-import * as Actions from "./actionCreators";
-
+import {
+  setSkinFromUrl,
+  loadMediaFiles,
+  setWindowSize,
+  play,
+  pause,
+  seekBackward,
+  seekForward,
+  next,
+  previous,
+  updateWindowPositions,
+  loadSerializedState,
+  ensureWindowsAreOnScreen,
+  browserWindowSizeChanged
+} from "./actionCreators";
 import { LOAD_STYLE } from "./constants";
 import * as Utils from "./utils";
 
@@ -117,14 +130,14 @@ class Winamp {
       this.store.dispatch({ type: NETWORK_DISCONNECTED })
     );
 
-    this.store.dispatch(Actions.browserWindowSizeChanged());
+    this.store.dispatch(browserWindowSizeChanged());
     window.addEventListener("resize", () => {
-      this.store.dispatch(Actions.browserWindowSizeChanged());
-      this.store.dispatch(Actions.ensureWindowsAreOnScreen());
+      this.store.dispatch(ensureWindowsAreOnScreen());
+      this.store.dispatch(browserWindowSizeChanged());
     });
 
     if (initialSkin) {
-      this.store.dispatch(Actions.setSkinFromUrl(initialSkin.url));
+      this.store.dispatch(setSkinFromUrl(initialSkin.url));
     } else {
       // We are using the default skin.
       this.store.dispatch({ type: LOADED });
@@ -144,19 +157,14 @@ class Winamp {
     }
 
     const layout = options.__initialWindowLayout;
-    if (layout == null) {
-      this.store.dispatch(Actions.stackWindows());
-    } else {
+    if (layout != null) {
       Utils.objectForEach(layout, (w, windowId) => {
         if (w.size != null) {
-          this.store.dispatch(Actions.setWindowSize(windowId, w.size));
+          this.store.dispatch(setWindowSize(windowId, w.size));
         }
       });
       this.store.dispatch(
-        Actions.updateWindowPositions(
-          Utils.objectMap(layout, w => w.position),
-          true
-        )
+        updateWindowPositions(Utils.objectMap(layout, w => w.position), true)
       );
     }
 
@@ -166,40 +174,38 @@ class Winamp {
   }
 
   play() {
-    this.store.dispatch(Actions.play());
+    this.store.dispatch(play());
   }
 
   pause() {
-    this.store.dispatch(Actions.pause());
+    this.store.dispatch(pause());
   }
 
   seekBackward(seconds) {
-    this.store.dispatch(Actions.seekBackward(seconds));
+    this.store.dispatch(seekBackward(seconds));
   }
 
   seekForward(seconds) {
-    this.store.dispatch(Actions.seekForward(seconds));
+    this.store.dispatch(seekForward(seconds));
   }
 
   nextTrack() {
-    this.store.dispatch(Actions.next());
+    this.store.dispatch(next());
   }
 
   previousTrack() {
-    this.store.dispatch(Actions.previous());
+    this.store.dispatch(previous());
   }
 
   // Append this array of tracks to the end of the current playlist.
   appendTracks(tracks) {
     const nextIndex = Selectors.getTrackCount(this.store.getState());
-    this.store.dispatch(
-      Actions.loadMediaFiles(tracks, LOAD_STYLE.BUFFER, nextIndex)
-    );
+    this.store.dispatch(loadMediaFiles(tracks, LOAD_STYLE.BUFFER, nextIndex));
   }
 
   // Replace any existing tracks with this array of tracks, and begin playing.
   setTracksToPlay(tracks) {
-    this.store.dispatch(Actions.loadMediaFiles(tracks, LOAD_STYLE.PLAY));
+    this.store.dispatch(loadMediaFiles(tracks, LOAD_STYLE.PLAY));
   }
 
   onWillClose(cb) {
@@ -235,7 +241,7 @@ class Winamp {
   }
 
   __loadSerializedState(serializedState) {
-    this.store.dispatch(Actions.loadSerializedState(serializedState));
+    this.store.dispatch(loadSerializedState(serializedState));
   }
 
   __getSerializedState() {
@@ -247,7 +253,6 @@ class Winamp {
   }
 
   async renderWhenReady(node) {
-    this.store.dispatch(Actions.centerWindowsInContainer(node));
     await this.skinIsLoaded();
     const genWindowComponents = {};
     this.genWindows.forEach(w => {

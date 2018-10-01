@@ -22,12 +22,11 @@ export {
   toggleWindow,
   updateWindowPositions,
   toggleMainWindowShadeMode,
-  centerWindowsInContainer,
-  centerWindowsInView,
-  resetWindowSizes,
+  windowsHaveBeenCentered,
+  centerWindowsIfNeeded,
+  resetWindowLayout,
   browserWindowSizeChanged,
-  ensureWindowsAreOnScreen,
-  stackWindows
+  ensureWindowsAreOnScreen
 } from "./windows";
 export {
   play,

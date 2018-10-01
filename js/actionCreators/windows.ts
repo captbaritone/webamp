@@ -9,13 +9,17 @@ import {
   CLOSE_WINDOW,
   TOGGLE_WINDOW_SHADE_MODE,
   SET_WINDOW_VISIBILITY,
+  WINDOWS_HAVE_BEEN_CENTERED,
   BROWSER_WINDOW_SIZE_CHANGED,
-  RESET_WINDOW_SIZES
+  RESET_WINDOW_LAYOUT
 } from "../actionTypes";
 
 import { getPositionDiff, SizeDiff } from "../resizeUtils";
 import { applyDiff } from "../snapUtils";
 import { Action, Dispatchable, WindowId, WindowPositions } from "../types";
+
+import { WINDOW_HEIGHT, WINDOW_WIDTH } from "../constants";
+import { calculateBoundingBox } from "../utils";
 
 // Dispatch an action and, if needed rearrange the windows to preserve
 // the existing edge relationship.
@@ -49,7 +53,7 @@ function withWindowGraphIntegrity(action: Action): Dispatchable {
       applyDiff(position, positionDiff[key])
     );
 
-    dispatch(updateWindowPositions(newPositions));
+    dispatch(updateWindowPositions(newPositions, false));
   };
 }
 
@@ -102,64 +106,81 @@ export function toggleWindow(windowId: WindowId): Dispatchable {
 }
 
 export function updateWindowPositions(
-  positions: WindowPositions
+  positions: WindowPositions,
+  center: boolean
 ): Dispatchable {
-  return { type: UPDATE_WINDOW_POSITIONS, positions };
+  return { type: UPDATE_WINDOW_POSITIONS, positions, center };
 }
 
-export function centerWindowsInContainer(container: HTMLElement): Dispatchable {
-  const { left, top } = container.getBoundingClientRect();
-  const { scrollWidth: width, scrollHeight: height } = container;
-  return centerWindows({ left, top, width, height });
+export function windowsHaveBeenCentered(): Dispatchable {
+  return { type: WINDOWS_HAVE_BEEN_CENTERED };
 }
 
-export function centerWindowsInView(): Dispatchable {
-  return centerWindows({
-    left: window.scrollX,
-    top: window.scrollY,
-    width: window.innerWidth,
-    height: window.innerHeight
-  });
-}
-
-export function centerWindows(box: {
-  left: number;
-  top: number;
-  width: number;
-  height: number;
-}): Dispatchable {
+export function centerWindowsIfNeeded(container: HTMLElement): Dispatchable {
   return (dispatch, getState) => {
     const state = getState();
+    const { centerRequested } = state.windows;
+    if (!centerRequested) {
+      return;
+    }
+    const genWindows = Selectors.getGenWindows(state);
     const windowsInfo = Selectors.getWindowsInfo(state);
     const getOpen = Selectors.getWindowOpen(state);
-    const { top, left, width, height } = box;
+    const getPixelSize = Selectors.getWindowPixelSize(state);
+    const rect = container.getBoundingClientRect();
 
-    const offsetLeft = left + window.scrollX;
-    const offsetTop = top + window.scrollY;
+    const offsetLeft = rect.left + window.scrollX;
+    const offsetTop = rect.top + window.scrollY;
+    const width = container.scrollWidth;
+    const height = container.scrollHeight;
 
-    // A layout has been suplied. We will compute the bounding box and
-    // center the given layout.
-    const bounding = Utils.calculateBoundingBox(
-      windowsInfo.filter(w => getOpen(w.key))
-    );
+    if (windowsInfo.some(w => w.x == null || w.y == null)) {
+      // Some windows do not have an initial position, so we'll come up
+      // with your own layout.
+      const windowPositions: WindowPositions = {};
+      const keys: string[] = Object.keys(genWindows).filter(
+        windowId => genWindows[windowId].open
+      );
+      const totalHeight = keys.reduce((height, key) => {
+        return height + getPixelSize(key).height;
+      }, 0);
+      const globalOffsetLeft = Math.max(0, width / 2 - WINDOW_WIDTH / 2);
+      const globalOffsetTop = Math.max(0, height / 2 - totalHeight / 2);
+      let offset = 0;
+      keys.forEach(key => {
+        windowPositions[key] = {
+          x: Math.ceil(offsetLeft + globalOffsetLeft),
+          y: Math.ceil(offsetTop + (globalOffsetTop + offset))
+        };
+        offset += getPixelSize(key).height;
+      });
+      dispatch(updateWindowPositions(windowPositions, false));
+    } else {
+      // A layout has been suplied. We will compute the bounding box and
+      // center the given layout.
+      const bounding = calculateBoundingBox(
+        windowsInfo.filter(w => getOpen(w.key))
+      );
 
-    const boxHeight = bounding.bottom - bounding.top;
-    const boxWidth = bounding.right - bounding.left;
+      const boxHeight = bounding.bottom - bounding.top;
+      const boxWidth = bounding.right - bounding.left;
 
-    const move = {
-      x: Math.ceil(offsetLeft - bounding.left + (width - boxWidth) / 2),
-      y: Math.ceil(offsetTop - bounding.top + (height - boxHeight) / 2)
-    };
+      const move = {
+        x: Math.ceil(offsetLeft - bounding.left + (width - boxWidth) / 2),
+        y: Math.ceil(offsetTop - bounding.top + (height - boxHeight) / 2)
+      };
 
-    const newPositions = windowsInfo.reduce(
-      (pos, w) => ({
-        ...pos,
-        [w.key]: { x: move.x + w.x, y: move.y + w.y }
-      }),
-      {}
-    );
+      const newPositions = windowsInfo.reduce(
+        (pos, w) => ({
+          ...pos,
+          [w.key]: { x: move.x + w.x, y: move.y + w.y }
+        }),
+        {}
+      );
 
-    dispatch(updateWindowPositions(newPositions));
+      dispatch(updateWindowPositions(newPositions, false));
+    }
+    dispatch(windowsHaveBeenCentered());
   };
 }
 
@@ -168,16 +189,8 @@ export function browserWindowSizeChanged() {
   return { type: BROWSER_WINDOW_SIZE_CHANGED, height, width };
 }
 
-export function resetWindowSizes(): Dispatchable {
-  return { type: RESET_WINDOW_SIZES };
-}
-
-export function stackWindows(): Dispatchable {
-  return (dispatch, getState) => {
-    dispatch(
-      updateWindowPositions(Selectors.getStackedLayoutPositions(getState()))
-    );
-  };
+export function resetWindowLayout(): Dispatchable {
+  return { type: RESET_WINDOW_LAYOUT };
 }
 
 export function ensureWindowsAreOnScreen(): Dispatchable {
@@ -187,7 +200,7 @@ export function ensureWindowsAreOnScreen(): Dispatchable {
     const windowsInfo = Selectors.getWindowsInfo(state);
     const getOpen = Selectors.getWindowOpen(state);
     const { height, width } = Utils.getWindowSize();
-    const bounding = Utils.calculateBoundingBox(
+    const bounding = calculateBoundingBox(
       windowsInfo.filter(w => getOpen(w.key))
     );
     const positions = Selectors.getWindowPositions(state);
@@ -227,15 +240,13 @@ export function ensureWindowsAreOnScreen(): Dispatchable {
         y: position.y - moveY
       }));
 
-      dispatch(updateWindowPositions(newPositions));
+      dispatch(updateWindowPositions(newPositions, false));
       return;
     }
 
     // TODO: Try moving the individual groups to try to fit them in
 
     // I give up. Just reset everything.
-    dispatch(resetWindowSizes());
-    dispatch(stackWindows());
-    dispatch(centerWindowsInView());
+    dispatch(resetWindowLayout());
   };
 }

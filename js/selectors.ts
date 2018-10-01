@@ -5,8 +5,7 @@ import {
   WindowId,
   WindowInfo,
   LoadedURLTrack,
-  SerializedStateV1,
-  WindowPositions
+  SerializedStateV1
 } from "./types";
 import { createSelector } from "reselect";
 import * as Utils from "./utils";
@@ -322,6 +321,10 @@ export const getPlaylistURL = createSelector(
     })
 );
 
+export function getWindowPositions(state: AppState) {
+  return state.windows.positions;
+}
+
 const WINDOW_HEIGHT = 116;
 const SHADE_WINDOW_HEIGHT = 14;
 
@@ -358,11 +361,6 @@ export const getGenWindows = (state: AppState) => {
   return state.windows.genWindows;
 };
 
-export const getWindowPositions = createSelector(
-  getGenWindows,
-  (windows): WindowPositions => Utils.objectMap(windows, w => w.position)
-);
-
 export function getDoubled(state: AppState) {
   return state.display.doubled;
 }
@@ -379,7 +377,6 @@ export const getWindowPixelSize = createSelector(getWindowSizes, sizes => {
   return (windowId: WindowId) => sizes[windowId];
 });
 
-// TODO: Now that both size and position are stored on genWindows this seems a bit silly.
 export const getWindowsInfo = createSelector(
   getWindowSizes,
   getWindowPositions,
@@ -422,25 +419,12 @@ export function getEqualizerEnabled(state: AppState): boolean {
   return state.equalizer.on;
 }
 
+export function getCenterRequested(state: AppState): boolean {
+  return state.windows.centerRequested;
+}
+
 export function getBrowserWindowSize(
   state: AppState
 ): { height: number; width: number } {
   return state.windows.browserWindowSize;
 }
-
-export const getOpenWindows = createSelector(getGenWindows, genWindows =>
-  Utils.objectFilter(genWindows, w => w.open)
-);
-
-export const getStackedLayoutPositions = createSelector(
-  getOpenWindows,
-  getDoubled,
-  (openWindows, doubled): WindowPositions => {
-    let offset = 0;
-    return Utils.objectMap(openWindows, w => {
-      const position = { x: 0, y: offset };
-      offset += getWPixelSize(w, doubled).height;
-      return position;
-    });
-  }
-);
