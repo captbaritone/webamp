@@ -1,4 +1,6 @@
 import React from "react";
+import { connect } from "react-redux";
+import { getCurrentTrackDisplayName } from "../../selectors";
 import DropTarget from "../DropTarget";
 import PresetOverlay from "./PresetOverlay";
 
@@ -6,7 +8,7 @@ const USER_PRESET_TRANSITION_SECONDS = 5.7;
 const PRESET_TRANSITION_SECONDS = 2.7;
 const MILLISECONDS_BETWEEN_PRESET_TRANSITIONS = 15000;
 
-export default class Milkdrop extends React.Component {
+class Milkdrop extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -64,6 +66,10 @@ export default class Milkdrop extends React.Component {
     ) {
       this.visualizer.setRendererSize(this.props.width, this.props.height);
     }
+
+    if (this.props.trackTitle !== prevProps.trackTitle) {
+      this.visualizer.launchSongTitleAnim(this.props.trackTitle);
+    }
   }
 
   _pauseViz() {
@@ -106,6 +112,10 @@ export default class Milkdrop extends React.Component {
         break;
       case 76: // L
         this.setState({ presetOverlay: !this.state.presetOverlay });
+        e.stopPropagation();
+        break;
+      case 84: // T
+        this.visualizer.launchSongTitleAnim(this.props.trackTitle);
         e.stopPropagation();
         break;
       case 145: // scroll lock
@@ -232,3 +242,9 @@ export default class Milkdrop extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  trackTitle: getCurrentTrackDisplayName(state)
+});
+
+export default connect(mapStateToProps)(Milkdrop);
