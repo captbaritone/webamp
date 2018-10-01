@@ -255,37 +255,34 @@ export function spliceIn<T>(original: T[], start: number, newValues: T[]): T[] {
   return newArr;
 }
 
-export function debounce(func: Function, delay: number): Function {
-  let timeout: number;
-  let callbackArgs: any[] = [];
+type Procedure = (...args: any[]) => void;
 
-  return function(context: Object, ...args: any[]): void {
-    callbackArgs = args;
-
-    if (timeout != null) {
-      clearTimeout(timeout);
+export function debounce<F extends Procedure>(func: F, delay: number): F {
+  let token: NodeJS.Timer;
+  return function(this: any, ...args: any[]): void {
+    if (token != null) {
+      clearTimeout(token);
     }
-    timeout = window.setTimeout(() => {
-      func.apply(context, callbackArgs);
+    token = setTimeout(() => {
+      func.apply(this, args);
     }, delay);
-  };
+  } as any;
 }
 
 // Trailing edge only throttle
-export function throttle(func: Function, delay: number): Function {
-  let timeout: number | null = null;
-  let callbackArgs: any[] = [];
+export function throttle<F extends Procedure>(func: F, delay: number): F {
+  let timeout: NodeJS.Timer | null = null;
+  let callbackArgs: any[] | null = null;
 
-  return function(context: Object, ...args: any[]): void {
+  return function(this: any, ...args: any[]): void {
     callbackArgs = args;
-
     if (!timeout) {
-      timeout = window.setTimeout(() => {
-        func.apply(context, callbackArgs);
+      timeout = setTimeout(() => {
+        func.apply(this, callbackArgs);
         timeout = null;
       }, delay);
     }
-  };
+  } as any;
 }
 
 let counter = 0;
