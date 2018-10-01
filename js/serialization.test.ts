@@ -57,8 +57,6 @@ function testSerialization<T>({
 
     const readSerializedState = readFixture(name);
 
-    expect(readSerializedState).toEqual(serializedState);
-
     const secondStore = getStore();
     secondStore.dispatch({
       type: LOAD_SERIALIZED_STATE,
