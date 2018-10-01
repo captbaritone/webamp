@@ -240,15 +240,15 @@ class Winamp {
     return storeHas(this.store, state => !state.display.loading);
   }
 
-  __loadSerializedState(serializedState) {
+  loadSerializedState(serializedState) {
     this.store.dispatch(loadSerializedState(serializedState));
   }
 
-  __getSerializedState() {
+  getSerializedState() {
     return Selectors.getSerlializedState(this.store.getState());
   }
 
-  __onStateChange(cb) {
+  onStateChange(cb) {
     return this.store.subscribe(cb);
   }
 
