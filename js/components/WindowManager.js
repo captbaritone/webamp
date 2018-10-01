@@ -63,7 +63,7 @@ class WindowManager extends React.Component {
           y: Math.ceil(offsetTop + (globalOffsetTop + offset))
         };
       });
-      this.props.updateWindowPositions(windowPositions, false);
+      this.props.updateWindowPositions(windowPositions);
     } else {
       // A layout has been suplied. We will compute the bounding box and
       // center the given layout.
@@ -87,7 +87,7 @@ class WindowManager extends React.Component {
         {}
       );
 
-      this.props.updateWindowPositions(newPositions, false);
+      this.props.updateWindowPositions(newPositions);
     }
     this.props.windowsHaveBeenCentered();
   };
@@ -171,7 +171,7 @@ class WindowManager extends React.Component {
         return diff;
       }, {});
 
-      this.props.updateWindowPositions(windowPositionDiff, false);
+      this.props.updateWindowPositions(windowPositionDiff);
     };
 
     const removeListeners = () => {
@@ -228,8 +228,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateWindowPositions: (positions, centered) =>
-      dispatch(updateWindowPositions(positions, centered)),
+    updateWindowPositions: positions =>
+      dispatch(updateWindowPositions(positions)),
     windowsHaveBeenCentered: () => dispatch(windowsHaveBeenCentered())
   };
 };
