@@ -29,7 +29,6 @@ import * as fromPlaylist from "./reducers/playlist";
 import * as fromDisplay from "./reducers/display";
 import * as fromEqualizer from "./reducers/equalizer";
 import * as fromMedia from "./reducers/media";
-import * as fromWindows from "./reducers/windows";
 import { generateGraph } from "./resizeUtils";
 
 export const getSliders = (state: AppState) => state.equalizer.sliders;
@@ -412,8 +411,7 @@ export function getSerlializedState(state: AppState): SerializedStateV1 {
     version: 1,
     media: fromMedia.getSerializedState(state.media),
     equalizer: fromEqualizer.getSerializedState(state.equalizer),
-    display: fromDisplay.getSerializedState(state.display),
-    windows: fromWindows.getSerializedState(state.windows)
+    display: fromDisplay.getSerializedState(state.display)
   };
 }
 

@@ -1,4 +1,4 @@
-import { WebampWindow, WindowPositions, Action, WindowId } from "../types";
+import { WebampWindow, WindowPositions, Action } from "../types";
 import { WINDOWS } from "../constants";
 import {
   SET_FOCUSED_WINDOW,
@@ -8,29 +8,16 @@ import {
   ADD_GEN_WINDOW,
   UPDATE_WINDOW_POSITIONS,
   WINDOW_SIZE_CHANGED,
-  TOGGLE_WINDOW_SHADE_MODE,
-  LOAD_SERIALIZED_STATE
+  TOGGLE_WINDOW_SHADE_MODE
 } from "../actionTypes";
-import { objectMap } from "../utils";
 
-export interface WindowsState {
+export interface WindowState {
   focused: string;
   genWindows: { [name: string]: WebampWindow };
   positions: WindowPositions;
 }
 
-interface SerializedWindow {
-  size: [number, number];
-  open: boolean;
-  hidden: boolean;
-  shade: boolean;
-}
-
-export interface WindowsSerializedStateV1 {
-  genWindows: { [windowId: string]: SerializedWindow };
-}
-
-const defaultWindowsState: WindowsState = {
+const defaultWindowsState: WindowState = {
   focused: WINDOWS.MAIN,
   genWindows: {
     // TODO: Remove static capabilites and derive them from ids/generic
@@ -75,9 +62,9 @@ const defaultWindowsState: WindowsState = {
 };
 
 const windows = (
-  state: WindowsState = defaultWindowsState,
+  state: WindowState = defaultWindowsState,
   action: Action
-): WindowsState => {
+): WindowState => {
   switch (action.type) {
     case SET_FOCUSED_WINDOW:
       return { ...state, focused: action.window };
@@ -175,38 +162,9 @@ const windows = (
         ...state,
         positions: { ...state.positions, ...action.positions }
       };
-    case LOAD_SERIALIZED_STATE: {
-      const serializedWindow = action.serializedState.windows.genWindows;
-      return {
-        ...state,
-        genWindows: objectMap(state.genWindows, (w, windowId) => {
-          const serializedW = serializedWindow[windowId];
-          if (serializedW == null || w.generic) {
-            return w;
-          }
-          return { ...w, ...serializedW };
-        })
-      };
-    }
-
     default:
       return state;
   }
 };
-
-export function getSerializedState(
-  state: WindowsState
-): WindowsSerializedStateV1 {
-  return {
-    genWindows: objectMap(state.genWindows, w => {
-      return {
-        size: w.size,
-        open: w.open,
-        hidden: w.hidden,
-        shade: w.shade || false
-      };
-    })
-  };
-}
 
 export default windows;
