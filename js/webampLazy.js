@@ -22,7 +22,7 @@ import {
   ensureWindowsAreOnScreen
 } from "./actionCreators";
 import { LOAD_STYLE } from "./constants";
-import * as Utils from "./utils";
+import { uniqueId, objectMap, objectForEach } from "./utils";
 
 import {
   SET_AVAILABLE_SKINS,
@@ -102,7 +102,7 @@ class Winamp {
     this.genWindows = [];
     if (__extraWindows) {
       this.genWindows = __extraWindows.map(genWindow => ({
-        id: genWindow.id || `${genWindow.title}-${Utils.uniqueId()}`,
+        id: genWindow.id || `${genWindow.title}-${uniqueId()}`,
         ...genWindow
       }));
 
@@ -155,13 +155,13 @@ class Winamp {
 
     const layout = options.__initialWindowLayout;
     if (layout != null) {
-      Utils.objectForEach(layout, (w, windowId) => {
+      objectForEach(layout, (w, windowId) => {
         if (w.size != null) {
           this.store.dispatch(setWindowSize(windowId, w.size));
         }
       });
       this.store.dispatch(
-        updateWindowPositions(Utils.objectMap(layout, w => w.position), true)
+        updateWindowPositions(objectMap(layout, w => w.position), true)
       );
     }
 
