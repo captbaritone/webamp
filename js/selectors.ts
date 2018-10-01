@@ -4,8 +4,7 @@ import {
   WebampWindow,
   WindowId,
   WindowInfo,
-  LoadedURLTrack,
-  SerializedStateV1
+  LoadedURLTrack
 } from "./types";
 import { createSelector } from "reselect";
 import {
@@ -27,7 +26,6 @@ import {
 import { createPlaylistURL } from "./playlistHtml";
 import * as fromPlaylist from "./reducers/playlist";
 import * as fromDisplay from "./reducers/display";
-import * as fromEqualizer from "./reducers/equalizer";
 import { generateGraph } from "./resizeUtils";
 
 export const getSliders = (state: AppState) => state.equalizer.sliders;
@@ -405,10 +403,3 @@ export const getVolume = (state: AppState) => state.media.volume;
 export const getBalance = (state: AppState) => state.media.balance;
 
 export const getChannels = (state: AppState) => state.media.channels;
-export function getSerlializedState(state: AppState): SerializedStateV1 {
-  return {
-    version: 1,
-    equalizer: fromEqualizer.getSerializedState(state.equalizer),
-    display: fromDisplay.getSerializedState(state.display)
-  };
-}

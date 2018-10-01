@@ -36,8 +36,6 @@ import {
   disableMarquee
 } from "./config";
 
-import { bindToIndexDB } from "./indexdb";
-
 const requireJSZip = () => {
   return new Promise((resolve, reject) => {
     require.ensure(
@@ -155,7 +153,7 @@ function genAudioFileUrlsFromDropbox() {
   });
 }
 
-Raven.context(async () => {
+Raven.context(() => {
   window.Raven = Raven;
   if (screenshot) {
     document.getElementsByClassName("about")[0].style.visibility = "hidden";
@@ -293,10 +291,8 @@ Raven.context(async () => {
   });
   document.body.appendChild(fileInput);
 
+  webamp.renderWhenReady(document.getElementById("app"));
+
   // Expose webamp instance for debugging and integration tests.
   window.__webamp = webamp;
-
-  await bindToIndexDB(webamp);
-
-  await webamp.renderWhenReady(document.getElementById("app"));
 });
