@@ -10,6 +10,7 @@ import visor from "../skins/Vizor1-01.wsz";
 import xmms from "../skins/XMMS-Turquoise.wsz";
 import zaxon from "../skins/ZaxonRemake1-0.wsz";
 import green from "../skins/Green-Dimension-V2.wsz";
+import internetArchive from "../skins/Internet-Archive.wsz";
 import MilkdropWindow from "./components/MilkdropWindow";
 import screenshotInitialState from "./screenshotInitialState";
 import WebampLazy from "./webampLazy";
@@ -207,6 +208,7 @@ Raven.context(() => {
     availableSkins: [
       { url: base, name: "<Base Skin>" },
       { url: green, name: "Green Dimension V2" },
+      { url: internetArchive, name: "Internet Archive" },
       { url: osx, name: "Mac OSX v1.5 (Aqua)" },
       { url: topaz, name: "TopazAmp" },
       { url: visor, name: "Vizor" },
