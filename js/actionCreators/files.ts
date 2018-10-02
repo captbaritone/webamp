@@ -180,12 +180,15 @@ export function openSkinFileDialog() {
   return _openFileDialog(".zip, .wsz");
 }
 
-export function fetchMediaDuration(url: string, id: number): Dispatchable {
+export function fetchMediaDuration(
+  url: string | Promise<string>,
+  id: number
+): Dispatchable {
   return (dispatch, getState) => {
     loadQueue.push(
       async () => {
         try {
-          const duration = await genMediaDuration(url);
+          const duration = await genMediaDuration(await url);
           dispatch({ type: SET_MEDIA_DURATION, duration, id });
         } catch (e) {
           // TODO: Should we update the state to indicate that we don't know the length?
@@ -228,9 +231,9 @@ export function loadMediaFile(
   return dispatch => {
     const id = uniqueId();
     const { defaultName, metaData, duration } = track;
-    let canonicalUrl: string;
+    let canonicalUrl: string | Promise<string>;
     if ("url" in track) {
-      canonicalUrl = track.url.toString();
+      canonicalUrl = track.url;
     } else if ("blob" in track) {
       canonicalUrl = URL.createObjectURL(track.blob);
     } else {
@@ -288,11 +291,14 @@ function queueFetchingMediaTags(id: number): Dispatchable {
   };
 }
 
-export function fetchMediaTags(file: string | Blob, id: number): Dispatchable {
+export function fetchMediaTags(
+  file: string | Blob | Promise<string>,
+  id: number
+): Dispatchable {
   return async (dispatch, getState, { requireJSMediaTags }) => {
     dispatch({ type: MEDIA_TAG_REQUEST_INITIALIZED, id });
     try {
-      const data = await genMediaTags(file, await requireJSMediaTags());
+      const data = await genMediaTags(await file, await requireJSMediaTags());
       // There's more data here, but we don't have a use for it yet:
       // https://github.com/aadsm/jsmediatags#shortcuts
       const { artist, title, picture } = data.tags;

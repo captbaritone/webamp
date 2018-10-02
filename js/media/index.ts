@@ -319,9 +319,9 @@ export default class Media {
   }
 
   // Used only for the initial load, since it must have a CORS header
-  async loadFromUrl(url: string, autoPlay: boolean) {
+  async loadFromUrl(url: string | Promise<string>, autoPlay: boolean) {
     this._emitter.trigger("waiting");
-    await this._source.loadUrl(url);
+    await this._source.loadUrl(await url);
     this._setChannels(null);
     this._emitter.trigger("stopWaiting");
     if (autoPlay) {

@@ -130,7 +130,13 @@ function urlIsBlobUrl(url: string): boolean {
 }
 
 // This is not perfect, but... meh: https://stackoverflow.com/a/36756650/1263117
-export function filenameFromUrl(url: string): string | null {
+export function filenameFromUrl(url: string | Promise<string>): string | null {
+  if (
+    typeof url !== "string" &&
+    (typeof url.then === "function" || url instanceof Promise)
+  ) {
+    return null;
+  }
   if (urlIsBlobUrl(url)) {
     return null;
   }
