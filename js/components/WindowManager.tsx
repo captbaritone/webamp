@@ -120,7 +120,7 @@ class WindowManager extends React.Component<Props> {
 
   render() {
     const style: React.CSSProperties = {
-      position: "absolute",
+      position: "fixed",
       top: 0,
       left: 0
     };
