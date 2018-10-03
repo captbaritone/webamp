@@ -4,16 +4,11 @@ import {
   WebampWindow,
   WindowId,
   WindowInfo,
-  LoadedURLTrack
+  LoadedURLTrack,
+  WindowPositions
 } from "./types";
 import { createSelector } from "reselect";
-import {
-  denormalize,
-  getTimeStr,
-  clamp,
-  percentToIndex,
-  objectMap
-} from "./utils";
+import * as Utils from "./utils";
 import {
   BANDS,
   TRACK_HEIGHT,
@@ -26,17 +21,21 @@ import {
 import { createPlaylistURL } from "./playlistHtml";
 import * as fromPlaylist from "./reducers/playlist";
 import * as fromDisplay from "./reducers/display";
+import * as fromEqualizer from "./reducers/equalizer";
+import * as fromMedia from "./reducers/media";
+import * as fromWindows from "./reducers/windows";
 import { generateGraph } from "./resizeUtils";
+import { SerializedStateV1 } from "./serializedStates/v1Types";
 
 export const getSliders = (state: AppState) => state.equalizer.sliders;
 
 export const getEqfData = createSelector(getSliders, sliders => {
   const preset: { [key: string]: number | string } = {
     name: "Entry1",
-    preamp: denormalize(sliders.preamp)
+    preamp: Utils.denormalize(sliders.preamp)
   };
   BANDS.forEach(band => {
-    preset[`hz${band}`] = denormalize(sliders[band]);
+    preset[`hz${band}`] = Utils.denormalize(sliders[band]);
   });
   const eqfData = {
     presets: [preset],
@@ -89,7 +88,9 @@ export const getRunningTimeMessage = createSelector(
   getTotalRunningTime,
   getSelectedRunningTime,
   (totalRunningTime, selectedRunningTime) =>
-    `${getTimeStr(selectedRunningTime)}/${getTimeStr(totalRunningTime)}`
+    `${Utils.getTimeStr(selectedRunningTime)}/${Utils.getTimeStr(
+      totalRunningTime
+    )}`
 );
 
 // TODO: use slectors to get memoization
@@ -137,7 +138,7 @@ export const nextTrack = (state: AppState, n = 1) => {
     return null;
   }
 
-  nextIndex = clamp(nextIndex, 0, trackCount - 1);
+  nextIndex = Utils.clamp(nextIndex, 0, trackCount - 1);
   return trackOrder[nextIndex];
 };
 
@@ -181,7 +182,7 @@ export const getScrollOffset = createSelector(
   getNumberOfVisibleTracks,
   (playlistScrollPosition, trackCount, numberOfVisibleTracks) => {
     const overflow = Math.max(0, trackCount - numberOfVisibleTracks);
-    return percentToIndex(playlistScrollPosition / 100, overflow + 1);
+    return Utils.percentToIndex(playlistScrollPosition / 100, overflow + 1);
   }
 );
 
@@ -287,7 +288,7 @@ export const getMediaText = createSelector(
     minimalMediaText == null
       ? null
       : // TODO: Maybe the `  ***  ` should actually be added by the marquee
-        `${minimalMediaText} (${getTimeStr(duration)})  ***  `
+        `${minimalMediaText} (${Utils.getTimeStr(duration)})  ***  `
 );
 
 export const getNumberOfTracks = (state: AppState) =>
@@ -308,20 +309,18 @@ export const getPlaylistURL = createSelector(
   (numberOfTracks, playlistDuration, trackOrder, tracks, getDisplayName) =>
     createPlaylistURL({
       numberOfTracks,
-      averageTrackLength: getTimeStr(playlistDuration / numberOfTracks),
+      averageTrackLength: Utils.getTimeStr(playlistDuration / numberOfTracks),
       // TODO: Handle hours
       playlistLengthMinutes: Math.floor(playlistDuration / 60),
       playlistLengthSeconds: Math.floor(playlistDuration % 60),
       tracks: trackOrder.map(
         (id, i) =>
-          `${i + 1}. ${getDisplayName(id)} (${getTimeStr(tracks[id].duration)})`
+          `${i + 1}. ${getDisplayName(id)} (${Utils.getTimeStr(
+            tracks[id].duration
+          )})`
       )
     })
 );
-
-export function getWindowPositions(state: AppState) {
-  return state.windows.positions;
-}
 
 const WINDOW_HEIGHT = 116;
 const SHADE_WINDOW_HEIGHT = 14;
@@ -355,19 +354,40 @@ export function getWindowHidden(state: AppState) {
   return (windowId: WindowId) => state.windows.genWindows[windowId].hidden;
 }
 
+export function getFocusedWindow(state: AppState): WindowId {
+  return state.windows.focused;
+}
+
+export function getWindowPosition(state: AppState) {
+  return (windowId: WindowId) => state.windows.genWindows[windowId].position;
+}
+
+export function getPositionsAreRelative(state: AppState) {
+  return state.windows.positionsAreRelative;
+}
+
 export const getGenWindows = (state: AppState) => {
   return state.windows.genWindows;
 };
 
+export const getWindowPositions = createSelector(
+  getGenWindows,
+  (windows): WindowPositions => Utils.objectMap(windows, w => w.position)
+);
+
 export function getDoubled(state: AppState) {
   return state.display.doubled;
+}
+
+export function getLlamaMode(state: AppState) {
+  return state.display.llama;
 }
 
 export const getWindowSizes = createSelector(
   getGenWindows,
   getDoubled,
   (windows, doubled) => {
-    return objectMap(windows, w => getWPixelSize(w, doubled));
+    return Utils.objectMap(windows, w => getWPixelSize(w, doubled));
   }
 );
 
@@ -375,6 +395,7 @@ export const getWindowPixelSize = createSelector(getWindowSizes, sizes => {
   return (windowId: WindowId) => sizes[windowId];
 });
 
+// TODO: Now that both size and position are stored on genWindows this seems a bit silly.
 export const getWindowsInfo = createSelector(
   getWindowSizes,
   getWindowPositions,
@@ -401,5 +422,47 @@ export const getVisualizerStyle = (state: AppState) =>
 
 export const getVolume = (state: AppState) => state.media.volume;
 export const getBalance = (state: AppState) => state.media.balance;
+export const getShuffle = (state: AppState) => state.media.shuffle;
+export const getRepeat = (state: AppState) => state.media.repeat;
 
 export const getChannels = (state: AppState) => state.media.channels;
+export function getSerlializedState(state: AppState): SerializedStateV1 {
+  return {
+    version: 1,
+    media: fromMedia.getSerializedState(state.media),
+    equalizer: fromEqualizer.getSerializedState(state.equalizer),
+    display: fromDisplay.getSerializedState(state.display),
+    windows: fromWindows.getSerializedState(state.windows)
+  };
+}
+
+export function getEqualizerEnabled(state: AppState): boolean {
+  return state.equalizer.on;
+}
+
+export function getEqualizerAuto(state: AppState): boolean {
+  return state.equalizer.auto;
+}
+
+export function getBrowserWindowSize(
+  state: AppState
+): { height: number; width: number } {
+  return state.windows.browserWindowSize;
+}
+
+export const getOpenWindows = createSelector(getGenWindows, genWindows =>
+  Utils.objectFilter(genWindows, w => w.open)
+);
+
+export const getStackedLayoutPositions = createSelector(
+  getOpenWindows,
+  getDoubled,
+  (openWindows, doubled): WindowPositions => {
+    let offset = 0;
+    return Utils.objectMap(openWindows, w => {
+      const position = { x: 0, y: offset };
+      offset += getWPixelSize(w, doubled).height;
+      return position;
+    });
+  }
+);

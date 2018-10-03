@@ -1,6 +1,11 @@
 import { BANDS } from "../constants";
 
-import { SET_EQ_ON, SET_EQ_OFF, SET_BAND_VALUE } from "../actionTypes";
+import {
+  SET_EQ_ON,
+  SET_EQ_OFF,
+  SET_BAND_VALUE,
+  SET_EQ_AUTO
+} from "../actionTypes";
 import { Band, Dispatchable } from "../types";
 
 const BAND_SNAP_DISTANCE = 10;
@@ -50,5 +55,11 @@ export function toggleEq(): Dispatchable {
     } else {
       dispatch({ type: SET_EQ_ON });
     }
+  };
+}
+
+export function toggleEqAuto(): Dispatchable {
+  return (dispatch, getState) => {
+    dispatch({ type: SET_EQ_AUTO, value: !getState().equalizer.auto });
   };
 }
