@@ -3,7 +3,7 @@ interface Point {
   y: number;
 }
 
-interface Diff {
+export interface Diff {
   x?: number;
   y?: number;
 }
@@ -13,7 +13,7 @@ interface BoundingBox {
   height: number;
 }
 
-interface Box extends Point {
+export interface Box extends Point {
   width: number;
   height: number;
 }
@@ -64,7 +64,7 @@ export const snap = (boxA: Box, boxB: Box) => {
   return { x, y };
 };
 
-export const snapDiff = (a: Box, b: Box): Diff => {
+export const snapDiff = (a: Box, b: Box): Point => {
   const newPos = snap(a, b);
   return {
     x: newPos.x === undefined ? 0 : newPos.x - a.x,
@@ -73,7 +73,7 @@ export const snapDiff = (a: Box, b: Box): Diff => {
 };
 
 // TODO: Use the first x and y combo
-export const snapDiffManyToMany = (as: Box[], bs: Box[]): Diff => {
+export const snapDiffManyToMany = (as: Box[], bs: Box[]): Point => {
   let x: number | undefined = 0;
   let y: number | undefined = 0;
   for (const a of as) {
@@ -120,7 +120,7 @@ export const snapWithin = (boxA: Box, boundingBox: BoundingBox): Diff => {
   return { x, y };
 };
 
-export const snapWithinDiff = (a: Box, b: Box) => {
+export const snapWithinDiff = (a: Box, b: BoundingBox) => {
   const newPos = snapWithin(a, b);
   return {
     x: newPos.x === undefined ? 0 : newPos.x - a.x,

@@ -21,7 +21,7 @@ import { TOGGLE_TIME_MODE, TOGGLE_LLAMA_MODE } from "./actionTypes";
 import { arraysAreEqual } from "./utils";
 import { Dispatch } from "./types";
 
-export default function(dispatch: Dispatch) {
+export function bindHotkeys(dispatch: Dispatch): () => void {
   let keylog: number[] = [];
   const trigger = [
     78, // N
@@ -33,7 +33,8 @@ export default function(dispatch: Dispatch) {
     70, // F
     84 // T
   ];
-  document.addEventListener("keydown", e => {
+
+  const listener = (e: KeyboardEvent) => {
     if (e.ctrlKey) {
       switch (e.keyCode) {
         case 68: // CTRL+D
@@ -142,5 +143,10 @@ export default function(dispatch: Dispatch) {
         dispatch({ type: TOGGLE_LLAMA_MODE });
       }
     }
-  });
+  };
+  document.addEventListener("keydown", listener);
+
+  return () => {
+    document.removeEventListener("keydown", listener);
+  };
 }

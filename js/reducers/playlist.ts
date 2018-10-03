@@ -28,9 +28,7 @@ import { shuffle, moveSelected, objectMap, objectFilter } from "../utils";
 
 export interface PlaylistState {
   trackOrder: number[];
-  // https://github.com/Microsoft/TypeScript/pull/12253#issuecomment-263132208
-  // TODO: Using numbers for keys is kinda annoying. Consider retyping as string
-  tracks: { [id: number]: PlaylistTrack };
+  tracks: { [id: string]: PlaylistTrack };
   lastSelectedIndex: number | null;
   currentTrack: number | null;
 }

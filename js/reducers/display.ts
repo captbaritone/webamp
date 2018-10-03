@@ -23,9 +23,11 @@ import {
   SET_Z_INDEX,
   DISABLE_MARQUEE,
   SET_DUMMY_VIZ_DATA,
-  LOADING
+  LOADING,
+  LOAD_SERIALIZED_STATE
 } from "../actionTypes";
 import { DEFAULT_SKIN, VISUALIZER_ORDER } from "../constants";
+import { DisplaySerializedStateV1 } from "../serializedStates/v1Types";
 
 export interface DisplayState {
   additionalVisualizers: Array<string>;
@@ -123,11 +125,43 @@ const display = (
       return { ...state, zIndex: action.zIndex };
     case SET_DUMMY_VIZ_DATA:
       return { ...state, dummyVizData: action.data };
+    case LOAD_SERIALIZED_STATE:
+      return { ...state, ...action.serializedState.display };
     default:
       return state;
   }
 };
 export default display;
+
+export const getSerializedState = (
+  state: DisplayState
+): DisplaySerializedStateV1 => {
+  // My kingdom for a type-safe `_.pick`.
+  const {
+    visualizerStyle,
+    doubled,
+    llama,
+    marqueeStep,
+    skinImages,
+    skinCursors,
+    skinRegion,
+    skinGenLetterWidths,
+    skinColors,
+    skinPlaylistStyle
+  } = state;
+  return {
+    visualizerStyle,
+    doubled,
+    llama,
+    marqueeStep,
+    skinImages,
+    skinCursors,
+    skinRegion,
+    skinGenLetterWidths,
+    skinColors,
+    skinPlaylistStyle
+  };
+};
 
 export const getVisualizationOrder = (state: DisplayState): Array<string> => {
   return [...state.additionalVisualizers, ...VISUALIZER_ORDER];
