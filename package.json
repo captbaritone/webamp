@@ -24,12 +24,12 @@
     "test": "jest --projects config/jest.unit.js config/jest.eslint.js",
     "travis-tests": "npm run test && npm run type-check && npm run build && npm run build-library",
     "tdd": "jest --projects config/jest.unit.js --watch",
-    "format": "prettier --write experiments/**/*.js js/**/*.js js/**/*.ts **/*.d.ts css/**/*.css !css/**/*.min.css",
+    "format": "prettier --write experiments/**/*.js src/js/**/*.js src/js/**/*.ts **/*.d.ts src/css/**/*.css !src/css/**/*.min.css",
     "integration-tests": "npm run build -- --display=errors-only && jest --projects config/jest.integration.js",
-    "build-skin": "rm skins/base-2.91.wsz && cd skins/base-2.91 && zip -x .* -x 'Skining Updates.txt' -r ../base-2.91.wsz .",
-    "build-skin-png": "rm skins/base-2.91-png.wsz && cd skins/base-2.91-png && zip -x .* -x 'Skining Updates.txt' -r ../base-2.91-png.wsz .",
-    "compile-skin": "node scripts/compileSkin.js > css/base-skin.css",
-    "skin-info": "unzip -vl skins/base-2.91.wsz"
+    "build-skin": "rm assets/skins/base-2.91.wsz && cd assets/skins/base-2.91 && zip -x .* -x 'Skining Updates.txt' -r ../base-2.91.wsz .",
+    "build-skin-png": "rm assets/skins/base-2.91-png.wsz && cd assets/skins/base-2.91-png && zip -x .* -x 'Skining Updates.txt' -r ../base-2.91-png.wsz .",
+    "compile-skin": "node scripts/compileSkin.js > src/css/base-skin.css",
+    "skin-info": "unzip -vl assets/skins/base-2.91.wsz"
   },
   "repository": {
     "type": "git",

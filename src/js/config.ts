@@ -1,6 +1,6 @@
 import { Track, AppState } from "./types";
 // @ts-ignore
-import llamaAudio from "../mp3/llama-2.91.mp3";
+import llamaAudio from "../../assets/mp3/llama-2.91.mp3";
 import { DeepPartial } from "redux";
 
 interface Config {

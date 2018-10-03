@@ -49,6 +49,6 @@ const config = merge(common, {
   ]
 });
 
-config.entry.webamp.unshift("./js/googleAnalytics.min.js");
+config.entry.webamp.unshift("./src/js/googleAnalytics.min.js");
 
 module.exports = config;
