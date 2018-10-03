@@ -155,7 +155,7 @@ class Winamp {
       this.store.dispatch(
         Actions.updateWindowPositions(
           Utils.objectMap(layout, w => w.position),
-          true
+          false
         )
       );
     }
