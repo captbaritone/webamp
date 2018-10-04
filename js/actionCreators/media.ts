@@ -56,7 +56,7 @@ export function pause(): Dispatchable {
     if (status === MEDIA_STATUS.PLAYING) {
       dispatch({ type: PAUSE });
     } else {
-      dispatch({ type: PAUSE });
+      dispatch({ type: PLAY });
     }
   };
 }
