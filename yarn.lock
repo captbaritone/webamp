@@ -4172,6 +4172,12 @@ immediate@~3.0.5:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/immediate/-/immediate-3.0.6.tgz#9db1dbd0faf8de6fbe0f5dd5e56bb606280de69b"
 
+immutability-helper@^2.7.1:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/immutability-helper/-/immutability-helper-2.7.1.tgz#5636dbb593e3deb5e572766d42249ea06bae7640"
+  dependencies:
+    invariant "^2.2.0"
+
 import-local@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/import-local/-/import-local-1.0.0.tgz#5e4ffdc03f4fe6c009c6729beb29631c2f8227bc"
@@ -5598,9 +5604,9 @@ milkdrop-eel-parser@^0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/milkdrop-eel-parser/-/milkdrop-eel-parser-0.0.1.tgz#1c1a82bb7877d9df6d45e6f0b602b4cd1a5dc26d"
 
-milkdrop-preset-converter-aws@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/milkdrop-preset-converter-aws/-/milkdrop-preset-converter-aws-0.1.0.tgz#d73efc384c04d581d5c16eb713c6b0241286788b"
+milkdrop-preset-converter-aws@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/milkdrop-preset-converter-aws/-/milkdrop-preset-converter-aws-0.1.4.tgz#bc4286a1a86b742276ca19e3e638794ce7b2b73c"
   dependencies:
     babel-runtime "^6.26.0"
     glsl-optimizer-js "^0.0.2"
