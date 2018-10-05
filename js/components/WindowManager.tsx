@@ -119,12 +119,6 @@ class WindowManager extends React.Component<Props> {
   };
 
   render() {
-    const style: React.CSSProperties = {
-      position: "fixed",
-      top: 0,
-      left: 0
-    };
-
     const windows = this.props.windowsInfo.filter(
       w => this.props.windows[w.key]
     );
@@ -133,7 +127,13 @@ class WindowManager extends React.Component<Props> {
       <div
         key={w.key}
         onMouseDown={e => this.handleMouseDown(w.key, e)}
-        style={{ ...style, transform: `translate(${w.x}px, ${w.y}px)` }}
+        style={{
+          // Note: The css for `#winamp` forces a new rendering context, so
+          // these divs should be position fixed relative to the `#winamp` div.
+          // See the comment block in webamp.css#webamp for more info.
+          position: "fixed",
+          transform: `translate(${w.x}px, ${w.y}px)`
+        }}
       >
         {this.props.windows[w.key]}
       </div>

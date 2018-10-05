@@ -4,6 +4,25 @@
     position: absolute;
     top: 0;
     left: 0;
+    /*
+     * Force a new rendering context. This allows the individual windows to be
+     * positioned `fixed` relative to their parent (this div).
+     * We need individual windows to be `position: fixed;` so that they don't
+     * affect the scroll size of the browser window. If they did affect the
+     * scroll size of the browser window, we would be unable to detect the
+     * natural size of the window to reposition ourselves when the browser
+     * window size changes.
+     *
+     * It's worth noting that this won't work in IE, but that's okay, because
+     * we don't work in IE anyway. `Webamp.browserIsSupported()` will return
+     * false because IE does not support the Web Audio API.
+     *
+     * - https://github.com/captbaritone/webamp/pull/669#issuecomment-427225148
+     * - https://stackoverflow.com/a/38796408/1263117
+     * - https://stackoverflow.com/a/20830413/1263117
+     */
+
+    transform: translateZ(0);
 }
 
 /* Prevent accidental highlighting */
@@ -98,13 +117,15 @@
     image-rendering: -webkit-optimize-contrast; /* Safari */
     image-rendering: pixelated; /* Only in Chrome > 40 */
     -ms-interpolation-mode: nearest-neighbor; /* IE (non-standard property) */
-}
 
-#webamp .window {
     /* Work around rendering bug with clip-path */
     -webkit-transform: translateZ(0);
+    transform: translateZ(0);
 }
+
 #webamp .window.doubled {
+    transform: translateZ(0) scale(2);
+    transform-origin: top left;
     -moz-transform: translateZ(0) scale(2);
     -moz-transform-origin: top left;
     -webkit-transform: translateZ(0) scale(2);
