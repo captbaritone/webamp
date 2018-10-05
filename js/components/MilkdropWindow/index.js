@@ -158,6 +158,7 @@ function presetNameFromURL(url) {
     return decodeURIComponent(presetName);
   } catch (e) {
     // if something goes wrong parsing url, just use url as the preset name
+    console.error(e);
     return url;
   }
 }
@@ -182,7 +183,15 @@ async function loadInitialPreset() {
       return { [presetName]: responseBody };
     } catch (e) {
       console.error(e);
-      alert(`Failed to load MilkDrop preset from ${presetUrl}`);
+
+      if (e instanceof TypeError) {
+        // handle URL not existing
+        alert(`Failed to load MilkDrop preset from ${milkdropPresetUrl}`);
+      } else if (e instanceof Error) {
+        // handle URL bad response
+        alert(`Unable to load MilkDrop preset from ${milkdropPresetUrl}`);
+      }
+
       return null;
     }
   } else if (milkdropPresetUrl) {
@@ -196,7 +205,15 @@ async function loadInitialPreset() {
       return { [presetName]: { file: fileBlob } };
     } catch (e) {
       console.error(e);
-      alert(`Failed to load MilkDrop preset from ${milkdropPresetUrl}`);
+
+      if (e instanceof TypeError) {
+        // handle URL not existing
+        alert(`Failed to load MilkDrop preset from ${milkdropPresetUrl}`);
+      } else if (e instanceof Error) {
+        // handle URL bad response
+        alert(`Unable to load MilkDrop preset from ${milkdropPresetUrl}`);
+      }
+
       return null;
     }
   }
