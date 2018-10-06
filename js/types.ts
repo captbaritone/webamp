@@ -474,6 +474,19 @@ export interface DispatchObject {
 
 export type Dispatch = (action: Dispatchable) => void;
 
+export type Reducer = (state: AppState, action: Action) => AppState;
+
+export type Middleware = (
+  store: Store
+) => (next: Dispatch) => (action: Action) => any;
+
+export interface Store {
+  subscribe(cb: () => void): () => void;
+  dispatch: Dispatch;
+  getState: GetState;
+  replaceReducer(reducer: Reducer): void;
+}
+
 export interface MiddlewareStore {
   dispatch: Dispatch;
   getState: GetState;

@@ -7,7 +7,14 @@ import { merge } from "./utils";
 import { UPDATE_TIME_ELAPSED, STEP_MARQUEE } from "./actionTypes";
 import Media from "./media";
 import Emitter from "./emitter";
-import { Extras, MiddlewareStore, Dispatch, Action, AppState } from "./types";
+import {
+  Extras,
+  MiddlewareStore,
+  Dispatch,
+  Action,
+  AppState,
+  Middleware
+} from "./types";
 
 const compose = composeWithDevTools({
   actionsBlacklist: [UPDATE_TIME_ELAPSED, STEP_MARQUEE]
@@ -16,8 +23,8 @@ const compose = composeWithDevTools({
 export default function(
   media: Media,
   actionEmitter: Emitter,
-  customMiddlewares = [],
-  stateOverrides: DeepPartial<AppState>,
+  customMiddlewares: Middleware[] = [],
+  stateOverrides: DeepPartial<AppState> | undefined,
   extras: Extras
 ) {
   let initialState;
