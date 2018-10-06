@@ -1,4 +1,4 @@
-import { Action } from "../types";
+import { Action, MediaStatus } from "../types";
 import {
   PLAY,
   STOP,
@@ -30,7 +30,7 @@ export interface MediaState {
   channels: number | null; // TODO: Convert this to an enum
   shuffle: boolean;
   repeat: boolean;
-  status: string | null; // TODO: Convert this to an enum
+  status: MediaStatus | null; // TODO: Convert this to an enum
 }
 
 const defaultState = {
