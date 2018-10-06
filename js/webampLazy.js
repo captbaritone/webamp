@@ -120,7 +120,13 @@ class Winamp {
     this.store.dispatch(Actions.browserWindowSizeChanged());
     window.addEventListener("resize", () => {
       this.store.dispatch(Actions.browserWindowSizeChanged());
+      /*
+      Disable this for now, since we can't figure out how to safely measure
+      the natural size of the window when one or more of the Webamp windows
+      extend outside of it.
+
       this.store.dispatch(Actions.ensureWindowsAreOnScreen());
+      */
     });
 
     if (initialSkin) {
