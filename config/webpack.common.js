@@ -2,11 +2,10 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WebpackPwaManifest = require("webpack-pwa-manifest");
 const HtmlWebpackInlineSVGPlugin = require("html-webpack-inline-svg-plugin");
-const webpack = require("webpack");
 
 module.exports = {
   resolve: {
-    extensions: [".js"]
+    extensions: [".js", ".ts", ".tsx"]
   },
   module: {
     rules: [
@@ -15,7 +14,7 @@ module.exports = {
         use: ["style-loader", "css-loader"]
       },
       {
-        test: /\.js$/,
+        test: /\.(js|ts|tsx)?$/,
         exclude: /(node_modules)/,
         use: {
           loader: "babel-loader"
@@ -34,10 +33,9 @@ module.exports = {
         ]
       }
     ],
-    noParse: [/jszip\.js$/, /\.d\.ts$/]
+    noParse: [/jszip\.js$/]
   },
   plugins: [
-    new webpack.IgnorePlugin(/fs/, /file-type/, /debug/), // Ignore fs in music-metadata
     new HtmlWebpackPlugin({
       template: "./index.html"
     }),

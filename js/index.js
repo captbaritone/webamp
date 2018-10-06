@@ -10,9 +10,12 @@ import visor from "../skins/Vizor1-01.wsz";
 import xmms from "../skins/XMMS-Turquoise.wsz";
 import zaxon from "../skins/ZaxonRemake1-0.wsz";
 import green from "../skins/Green-Dimension-V2.wsz";
+import internetArchive from "../skins/Internet-Archive.wsz";
 import MilkdropWindow from "./components/MilkdropWindow";
 import screenshotInitialState from "./screenshotInitialState";
+
 import WebampLazy from "./webampLazy";
+import enableMediaSession from "./mediaSession";
 import {
   STEP_MARQUEE,
   UPDATE_TIME_ELAPSED,
@@ -27,12 +30,16 @@ import {
   SET_DUMMY_VIZ_DATA
 } from "./actionTypes";
 
+import { loadFilesFromReferences } from "./actionCreators";
+
 import {
   skinUrl as configSkinUrl,
   initialTracks,
   initialState,
   disableMarquee
 } from "./config";
+
+import { bindToIndexedDB } from "./indexedDB";
 
 const requireJSZip = () => {
   return new Promise((resolve, reject) => {
@@ -67,6 +74,8 @@ const requireMusicMetadata = () => {
   });
 };
 
+const DEFAULT_DOCUMENT_TITLE = document.title;
+
 const NOISY_ACTION_TYPES = new Set([
   STEP_MARQUEE,
   UPDATE_TIME_ELAPSED,
@@ -79,11 +88,15 @@ const NOISY_ACTION_TYPES = new Set([
 const MIN_MILKDROP_WIDTH = 725;
 
 let screenshot = false;
+let clearState = false;
+let useState = false;
 let skinUrl = configSkinUrl;
 if ("URLSearchParams" in window) {
   const params = new URLSearchParams(location.search);
   screenshot = params.get("screenshot");
   skinUrl = params.get("skinUrl") || skinUrl;
+  clearState = Boolean(params.get("clearState"));
+  useState = Boolean(params.get("useState"));
 }
 
 function supressDragAndDrop(e) {
@@ -150,7 +163,7 @@ function genAudioFileUrlsFromDropbox() {
   });
 }
 
-Raven.context(() => {
+Raven.context(async () => {
   window.Raven = Raven;
   if (screenshot) {
     document.getElementsByClassName("about")[0].style.visibility = "hidden";
@@ -161,7 +174,7 @@ Raven.context(() => {
     return;
   }
   const __extraWindows = [];
-  let __initialWindowLayout = {};
+  let __initialWindowLayout = null;
 
   if (isButterchurnSupported()) {
     const startWithMilkdropHidden =
@@ -204,6 +217,7 @@ Raven.context(() => {
     availableSkins: [
       { url: base, name: "<Base Skin>" },
       { url: green, name: "Green Dimension V2" },
+      { url: internetArchive, name: "Internet Archive" },
       { url: osx, name: "Mac OSX v1.5 (Aqua)" },
       { url: topaz, name: "TopazAmp" },
       { url: visor, name: "Vizor" },
@@ -263,8 +277,36 @@ Raven.context(() => {
     });
   }
 
-  webamp.renderWhenReady(document.getElementById("app"));
+  webamp.onWillClose(cancel => {
+    if (!window.confirm("Are you sure you want to close Webamp?")) {
+      cancel();
+    }
+  });
+
+  webamp.onTrackDidChange(track => {
+    document.title =
+      track == null
+        ? DEFAULT_DOCUMENT_TITLE
+        : `${track.metaData.title} - ${track.metaData.artist}`;
+  });
+
+  enableMediaSession(webamp);
+
+  // Expose a file input in the DOM for testing.
+  const fileInput = document.createElement("input");
+  fileInput.id = "webamp-file-input";
+  fileInput.style.display = "none";
+  fileInput.type = "file";
+  fileInput.value = null;
+  fileInput.addEventListener("change", e => {
+    webamp.store.dispatch(loadFilesFromReferences(e.target.files));
+  });
+  document.body.appendChild(fileInput);
 
   // Expose webamp instance for debugging and integration tests.
   window.__webamp = webamp;
+
+  await bindToIndexedDB(webamp, clearState, useState);
+
+  await webamp.renderWhenReady(document.getElementById("app"));
 });

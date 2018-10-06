@@ -260,4 +260,8 @@ if __name__ == "__main__":
                 filenames.write("%s %s\n" % (md5, os.path.basename(f)))
 
     elif arguments.get("manual"):
-        tweet_skin(arguments.get("hash"))
+        hash = arguments.get("<hash>")
+        if(hash):
+            tweet_skin(hash)
+        else:
+            print("Whoops, no hash")

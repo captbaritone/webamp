@@ -70,6 +70,14 @@ export default class Presets {
     return [startIdx, endIndx];
   }
 
+  loadPresets(presets) {
+    this._keys = Object.keys(presets);
+    this._presets = presets;
+    this._history = [];
+
+    return this._keys.length;
+  }
+
   async next() {
     let idx;
     if (this._randomize || this._history.length === 0) {

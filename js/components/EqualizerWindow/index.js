@@ -106,7 +106,7 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = state => ({
   doubled: state.display.doubled,
   selected: state.windows.focused === WINDOWS.EQUALIZER,
-  shade: getWindowShade(state, "equalizer")
+  shade: getWindowShade(state)("equalizer")
 });
 
 export default connect(

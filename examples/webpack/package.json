@@ -10,6 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "webpack-cli": "^2.0.13",
-    "webamp": "1.1.2"
+    "webamp": "1.2.0"
   }
 }

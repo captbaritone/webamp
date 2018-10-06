@@ -145,7 +145,7 @@ const mapStateToProps = state => {
     windows: { focused }
   } = state;
   return {
-    mainShade: getWindowShade(state, "main"),
+    mainShade: getWindowShade(state)("main"),
     status,
     loading,
     doubled,

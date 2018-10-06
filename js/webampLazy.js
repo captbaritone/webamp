@@ -4,17 +4,13 @@ import { Provider } from "react-redux";
 
 import getStore from "./store";
 import App from "./components/App";
-import Hotkeys from "./hotkeys";
+import { bindHotkeys } from "./hotkeys";
 import Media from "./media";
-import { getTrackCount, getTracks } from "./selectors";
-import {
-  setSkinFromUrl,
-  loadMediaFiles,
-  setWindowSize,
-  loadFilesFromReferences
-} from "./actionCreators";
+import * as Selectors from "./selectors";
+import * as Actions from "./actionCreators";
+
 import { LOAD_STYLE } from "./constants";
-import { uniqueId, objectMap, objectForEach } from "./utils";
+import * as Utils from "./utils";
 
 import {
   SET_AVAILABLE_SKINS,
@@ -23,11 +19,10 @@ import {
   CLOSE_WINAMP,
   MINIMIZE_WINAMP,
   ADD_GEN_WINDOW,
-  UPDATE_WINDOW_POSITIONS,
   LOADED,
   REGISTER_VISUALIZER,
   SET_Z_INDEX,
-  SET_MEDIA
+  CLOSE_REQUESTED
 } from "./actionTypes";
 import Emitter from "./emitter";
 
@@ -59,6 +54,7 @@ class Winamp {
   }
 
   constructor(options) {
+    this._subscriptions = [];
     this._actionEmitter = new Emitter();
     this.options = options;
     const {
@@ -87,18 +83,6 @@ class Winamp {
       type: navigator.onLine ? NETWORK_CONNECTED : NETWORK_DISCONNECTED
     });
 
-    if (true) {
-      const fileInput = document.createElement("input");
-      fileInput.id = "webamp-file-input";
-      fileInput.style.display = "none";
-      fileInput.type = "file";
-      fileInput.value = null;
-      fileInput.addEventListener("change", e => {
-        this.store.dispatch(loadFilesFromReferences(e.target.files));
-      });
-      document.body.appendChild(fileInput);
-    }
-
     if (zIndex != null) {
       this.store.dispatch({ type: SET_Z_INDEX, zIndex });
     }
@@ -106,7 +90,7 @@ class Winamp {
     this.genWindows = [];
     if (__extraWindows) {
       this.genWindows = __extraWindows.map(genWindow => ({
-        id: genWindow.id || `${genWindow.title}-${uniqueId()}`,
+        id: genWindow.id || `${genWindow.title}-${Utils.uniqueId()}`,
         ...genWindow
       }));
 
@@ -133,8 +117,20 @@ class Winamp {
       this.store.dispatch({ type: NETWORK_DISCONNECTED })
     );
 
+    this.store.dispatch(Actions.browserWindowSizeChanged());
+    window.addEventListener("resize", () => {
+      this.store.dispatch(Actions.browserWindowSizeChanged());
+      /*
+      Disable this for now, since we can't figure out how to safely measure
+      the natural size of the window when one or more of the Webamp windows
+      extend outside of it.
+
+      this.store.dispatch(Actions.ensureWindowsAreOnScreen());
+      */
+    });
+
     if (initialSkin) {
-      this.store.dispatch(setSkinFromUrl(initialSkin.url));
+      this.store.dispatch(Actions.setSkinFromUrl(initialSkin.url));
     } else {
       // We are using the default skin.
       this.store.dispatch({ type: LOADED });
@@ -154,32 +150,68 @@ class Winamp {
     }
 
     const layout = options.__initialWindowLayout;
-    if (layout != null) {
-      objectForEach(layout, (w, windowId) => {
+    if (layout == null) {
+      this.store.dispatch(Actions.stackWindows());
+    } else {
+      Utils.objectForEach(layout, (w, windowId) => {
         if (w.size != null) {
-          this.store.dispatch(setWindowSize(windowId, w.size));
+          this.store.dispatch(Actions.setWindowSize(windowId, w.size));
         }
       });
-      this.store.dispatch({
-        type: UPDATE_WINDOW_POSITIONS,
-        positions: objectMap(layout, w => w.position)
-      });
+      this.store.dispatch(
+        Actions.updateWindowPositions(
+          Utils.objectMap(layout, w => w.position),
+          false
+        )
+      );
     }
 
     if (enableHotkeys) {
-      new Hotkeys(this.store.dispatch);
+      this._subscriptions.push(bindHotkeys(this.store.dispatch));
     }
+  }
+
+  play() {
+    this.store.dispatch(Actions.play());
+  }
+
+  pause() {
+    this.store.dispatch(Actions.pause());
+  }
+
+  seekBackward(seconds) {
+    this.store.dispatch(Actions.seekBackward(seconds));
+  }
+
+  seekForward(seconds) {
+    this.store.dispatch(Actions.seekForward(seconds));
+  }
+
+  nextTrack() {
+    this.store.dispatch(Actions.next());
+  }
+
+  previousTrack() {
+    this.store.dispatch(Actions.previous());
   }
 
   // Append this array of tracks to the end of the current playlist.
   appendTracks(tracks) {
-    const nextIndex = getTrackCount(this.store.getState());
-    this.store.dispatch(loadMediaFiles(tracks, LOAD_STYLE.BUFFER, nextIndex));
+    const nextIndex = Selectors.getTrackCount(this.store.getState());
+    this.store.dispatch(
+      Actions.loadMediaFiles(tracks, LOAD_STYLE.BUFFER, nextIndex)
+    );
   }
 
   // Replace any existing tracks with this array of tracks, and begin playing.
   setTracksToPlay(tracks) {
-    this.store.dispatch(loadMediaFiles(tracks, LOAD_STYLE.PLAY));
+    this.store.dispatch(Actions.loadMediaFiles(tracks, LOAD_STYLE.PLAY));
+  }
+
+  onWillClose(cb) {
+    return this._actionEmitter.on(CLOSE_REQUESTED, action => {
+      cb(action.cancel);
+    });
   }
 
   onClose(cb) {
@@ -187,13 +219,15 @@ class Winamp {
   }
 
   onTrackDidChange(cb) {
-    return this._actionEmitter.on(SET_MEDIA, action => {
-      const tracks = getTracks(this.store.getState());
-      const track = tracks[action.id];
-      if (track == null) {
+    let previousTrackId = null;
+    this.store.subscribe(() => {
+      const state = this.store.getState();
+      const trackId = Selectors.getCurrentlyPlayingTrackIdIfLoaded(state);
+      if (trackId === previousTrackId) {
         return;
       }
-      cb({ url: track.url });
+      previousTrackId = trackId;
+      cb(trackId == null ? null : Selectors.getCurrentTrackInfo(state));
     });
   }
 
@@ -206,7 +240,20 @@ class Winamp {
     return storeHas(this.store, state => !state.display.loading);
   }
 
+  __loadSerializedState(serializedState) {
+    this.store.dispatch(Actions.loadSerializedState(serializedState));
+  }
+
+  __getSerializedState() {
+    return Selectors.getSerlializedState(this.store.getState());
+  }
+
+  __onStateChange(cb) {
+    return this.store.subscribe(cb);
+  }
+
   async renderWhenReady(node) {
+    this.store.dispatch(Actions.centerWindowsInContainer(node));
     await this.skinIsLoaded();
     const genWindowComponents = {};
     this.genWindows.forEach(w => {
@@ -224,6 +271,16 @@ class Winamp {
       </Provider>,
       node
     );
+  }
+
+  destroy() {
+    // TODO: Clean up event emitter subscriptions
+    // TODO: Clean up hotkey bindings, if needed
+    // TODO: Clean up the Media instance
+    // TODO: Clean up online/offline subscriptions on window
+    // TODO: Clean up store subscription in onTrackDidChange
+    // TODO: Every storeHas call represents a potential race condition
+    throw new Error("Not implemented");
   }
 }
 

@@ -80,6 +80,8 @@
 - http://www.redferret.net/?p=57922
 - https://hackernoon.com/50-popular-javascript-open-source-projects-on-github-in-2018-469c11b48b8d (mention)
 - https://mashable.com/2018/08/01/old-ways-to-listen-to-music-ranked/ (mention)
+- https://www.thewindowsclub.com/webamp-online-music-player-winamp
+- https://www.techspot.com/news/58728-winamp-recreated-html5.html
 
 ### Russian
 
@@ -103,7 +105,7 @@
 - https://manjaro.ru/blog/soft/pojavilsja-reliz-winamp2-js-desktop.html (forum post)
 - https://mixed.news/news/1123379
 - https://banana.by/index.php?newsid=269984
-- https://zen.yandex.ru/media/apple-iphone.ru/legendarnyi-winamp-teper-mojno-polnocenno-ispolzovat-iz-liubogo-brauzera-5a8280f4a936f46fea003489
+- # https://zen.yandex.ru/media/apple-iphone.ru/legendarnyi-winamp-teper-mojno-polnocenno-ispolzovat-iz-liubogo-brauzera-5a8280f4a936f46fea003489
 
 ### Spanish
 
@@ -236,7 +238,11 @@
 - http://abertoatedemadrugada.com/2018/02/winamp-completamente-funcional-em.html
 - https://canaltech.com.br/musica/desenvolvedor-ressuscita-winamp-em-emulador-com-javascript-108112/
 - https://itovnp.blogspot.com/2018/07/winamp-atraves-de-um-simples-browser.html
+  <<<<<<< HEAD
 - https://pplware.sapo.pt/software/chegou-winamp-funciona-um-browser/
+- https://www.techtudo.com.br/noticias/2018/03/oito-curiosidades-sobre-o-winamp-player-que-era-sucesso-nos-anos-2000.ghtml (mention)
+- # https://tecnoblog.net/234125/winamp-versao-web-navegador/
+  > > > > > > > 318a5ecb... Add more press links
 
 ### Swedish
 
@@ -260,6 +266,7 @@
 ### Czech
 
 - https://www.zive.cz/clanky/zpatky-do-minulosti-winamp-muzete-pouzivat-primo-v-prohlizeci/sc-3-a-191743/default.aspx
+- https://www.zive.cz/clanky/prehistoricky-winamp-se-konecne-docka-navratu-unikla-betaverze/sc-3-a-195099/default.aspx (mention)
 
 ### Croatian
 
