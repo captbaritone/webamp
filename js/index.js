@@ -173,7 +173,7 @@ Raven.context(async () => {
     return;
   }
   const __extraWindows = [];
-  let __initialWindowLayout = {};
+  let __initialWindowLayout = null;
 
   if (isButterchurnSupported()) {
     const startWithMilkdropHidden =
