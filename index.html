@@ -10,9 +10,9 @@
     <meta property="og:description" content="Winamp 2.9 reimplemented in HTML5 and JavaScript" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://webamp.org" />
-    <meta property="og:image" content="https://webamp.org<%= require('./images/preview.png') %>" />
-    <link rel='stylesheet' type='text/css' href="<%= require('!file-loader?name=[path][name]-[hash].[ext]!./css/page.css') %>" />
-    <link rel="shortcut icon" sizes="16x16 32x32" href="<%= require('./images/favicon.ico') %>">
+    <meta property="og:image" content="https://webamp.org<%= require('./assets/images/preview.png') %>" />
+    <link rel='stylesheet' type='text/css' href="<%= require('!file-loader?name=[path][name]-[hash].[ext]!./src/css/page.css') %>" />
+    <link rel="shortcut icon" sizes="16x16 32x32" href="<%= require('./assets/images/favicon.ico') %>">
 
     <!-- See https://goo.gl/OOhYW5 -->
     <!--
@@ -33,14 +33,14 @@
     <meta name="apple-mobile-web-app-title" content="Winamp">
 
     <!-- Homescreen icons -->
-    <link rel="apple-touch-icon" href="<%= require('./images/manifest/icon-48x48.png') %>">
-    <link rel="apple-touch-icon" sizes="72x72" href="<%= require('./images/manifest/icon-72x72.png') %>">
-    <link rel="apple-touch-icon" sizes="96x96" href="<%= require('./images/manifest/icon-96x96.png') %>">
-    <link rel="apple-touch-icon" sizes="144x144" href="<%= require('./images/manifest/icon-144x144.png') %>">
-    <link rel="apple-touch-icon" sizes="192x192" href="<%= require('./images/manifest/icon-192x192.png') %>">
+    <link rel="apple-touch-icon" href="<%= require('./assets/images/manifest/icon-48x48.png') %>">
+    <link rel="apple-touch-icon" sizes="72x72" href="<%= require('./assets/images/manifest/icon-72x72.png') %>">
+    <link rel="apple-touch-icon" sizes="96x96" href="<%= require('./assets/images/manifest/icon-96x96.png') %>">
+    <link rel="apple-touch-icon" sizes="144x144" href="<%= require('./assets/images/manifest/icon-144x144.png') %>">
+    <link rel="apple-touch-icon" sizes="192x192" href="<%= require('./assets/images/manifest/icon-192x192.png') %>">
 
     <!-- Tile icon for Windows 8 (144x144 + tile color) -->
-    <meta name="msapplication-TileImage" content="<%= require('./images/manifest/icon-144x144.png') %>">
+    <meta name="msapplication-TileImage" content="<%= require('./assets/images/manifest/icon-144x144.png') %>">
     <meta name="msapplication-TileColor" content="#4b4b4b">
     <meta name="msapplication-tap-highlight" content="no">
 
@@ -67,14 +67,14 @@
         <p>Try using the most recent version of Chrome, Firefox, Safari or Edge.</p>
     </div>
     <p class='about'>
-        <a target="_blank" href='https://github.com/jberg/butterchurn' id='butterchurn-share' style="background-image: url(<%= require('./images/share/butterchurn-bg.png') %>)">
-            <img inline src="images/share/eye.svg" />
+        <a target="_blank" href='https://github.com/jberg/butterchurn' id='butterchurn-share' style="background-image: url(<%= require('./assets/images/share/butterchurn-bg.png') %>)">
+            <img inline src="assets/images/share/eye.svg" />
         </a>
         <a target="_blank" href='https://twitter.com/captbaritone' id='twitter-share'>
-            <img inline src="images/share/twitter.svg" />
+            <img inline src="assets/images/share/twitter.svg" />
         </a>
         <a target="_blank" href='https://github.com/captbaritone/webamp' id='github-share'>
-            <img inline src="images/share/github.svg" />
+            <img inline src="assets/images/share/github.svg" />
         </a>
     </p>
     <script type="text/javascript">

@@ -15,7 +15,7 @@ import {
 } from "./utils";
 
 const fixture = (filename: string) =>
-  fs.readFileSync(`./js/__tests__/fixtures/${filename}`, "utf8");
+  fs.readFileSync(`./src/js/__tests__/fixtures/${filename}`, "utf8");
 
 describe("getTimeObj", () => {
   it("expresses seconds as an object", () => {
