@@ -1,78 +1,27 @@
 import invariant from "invariant";
-import readStream from "filereader-stream";
 
-import http from "stream-http";
-
-async function sourceToStream(source) {
-  if (typeof source === "string") {
-    // Assume URL
-    return new Promise(resolve => {
-      http.get(source, stream => {
-        resolve({
-          stream,
-          type: stream.headers["content-type"]
-        });
-      });
-    });
+export function genMediaTags(file, mm) {
+  if (typeof file === "string" && !/^[a-z]+:\/\//i.test(file)) {
+    file = `${location.protocol}//${location.host}${location.pathname}${file}`;
   }
-  // Assume Blob
-  return {
-    stream: readStream(source),
-    type: source.name,
-    size: source.size
-  };
-}
-
-export async function genMediaTags(file) {
   invariant(
     file != null,
     "Attempted to get the tags of media file without passing a file"
   );
   // Workaround https://github.com/aadsm/jsmediatags/issues/83
-  if (typeof file === "string" && !/^[a-z]+:\/\//i.test(file)) {
-    file = `${location.protocol}//${location.host}${location.pathname}${file}`;
-  }
-  return require.ensure(
-    ["music-metadata-browser"],
-    async require => {
-      const mm = require("music-metadata-browser");
-      const stream = await sourceToStream(file);
-      return mm.parseStream(stream.stream, stream.type, {
-        duration: true,
-        fileSize: stream.size,
-        skipPostHeaders: true // avoid unnecessary data to be read
-      });
-    },
-    err => {
-      console.error("genMediaTags: Failed to load music-metadata");
-      // The dependency failed to load
-      throw err;
-    },
-    "music-metadata"
-  );
-}
-
-export async function genMediaDuration(url) {
-  invariant(
-    typeof url === "string",
-    "Attempted to get the duration of media file without passing a url"
-  );
-  return new Promise((resolve, reject) => {
-    // TODO: Does this actually stop downloading the file once it's
-    // got the duration?
-    const audio = document.createElement("audio");
-    audio.crossOrigin = "anonymous";
-    const durationChange = () => {
-      resolve(audio.duration);
-      audio.removeEventListener("durationchange", durationChange);
-      audio.url = null;
-      // TODO: Not sure if this really gets cleaned up.
-    };
-    audio.addEventListener("durationchange", durationChange);
-    audio.addEventListener("error", e => {
-      reject(e);
+  // ToDo wire http-reader
+  if (typeof file === "string") {
+    console.log(`genMediaTags(): Parsing url=${file}`);
+    return mm.fetchFromUrl(file, {
+      duration: true,
+      skipPostHeaders: true // avoid unnecessary data to be read
     });
-    audio.src = url;
+  }
+  console.log(`genMediaTags(): Parsing Blob...`);
+  // Assume Blob
+  return mm.parseBlob(file, {
+    duration: true,
+    skipPostHeaders: true // avoid unnecessary data to be read
   });
 }
 

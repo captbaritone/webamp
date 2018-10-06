@@ -15,7 +15,7 @@ import "../../../css/milkdrop-window.css";
 
 // This component is just responsible for loading dependencies.
 // This simplifies the inner <Milkdrop /> component, by allowing
-// it to alwasy assume that it has its dependencies.
+// it to always assume that it has its dependencies.
 class PresetsLoader extends React.Component {
   constructor() {
     super();
@@ -26,9 +26,6 @@ class PresetsLoader extends React.Component {
       isFullscreen: false,
       desktop: false
     };
-    this._handleFullscreenChange = this._handleFullscreenChange.bind(this);
-    this._handleRequestFullsceen = this._handleRequestFullsceen.bind(this);
-    this._toggleDesktop = this._toggleDesktop.bind(this);
   }
 
   isHidden() {
@@ -57,11 +54,11 @@ class PresetsLoader extends React.Component {
     screenfull.off("change", this._handleFullscreenChange);
   }
 
-  _handleFullscreenChange() {
+  _handleFullscreenChange = () => {
     this.setState({ isFullscreen: screenfull.isFullscreen });
-  }
+  };
 
-  _toggleDesktop() {
+  _toggleDesktop = () => {
     if (this.state.desktop) {
       this.props.showWindow(this.props.windowId);
       this.setState({ desktop: false });
@@ -69,9 +66,9 @@ class PresetsLoader extends React.Component {
       this.props.hideWindow(this.props.windowId);
       this.setState({ desktop: true });
     }
-  }
+  };
 
-  _handleRequestFullsceen() {
+  _handleRequestFullsceen = () => {
     if (screenfull.enabled) {
       if (!screenfull.isFullscreen) {
         screenfull.request(this._wrapperNode);
@@ -79,7 +76,7 @@ class PresetsLoader extends React.Component {
         screenfull.exit();
       }
     }
-  }
+  };
 
   _renderMilkdrop(size) {
     const { butterchurn, presets, initialPreset } = this.state;

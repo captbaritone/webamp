@@ -44,10 +44,9 @@ export default class PlaylistMenu extends React.Component {
   constructor(props) {
     super(props);
     this.state = { selected: false };
-    this._handleClick = this._handleClick.bind(this);
   }
 
-  _handleClick(e) {
+  _handleClick = e => {
     const { target } = e;
     const { selected } = this.state;
     if (selected) {
@@ -76,7 +75,7 @@ export default class PlaylistMenu extends React.Component {
     });
 
     this.setState({ selected: true });
-  }
+  };
 
   render() {
     return (

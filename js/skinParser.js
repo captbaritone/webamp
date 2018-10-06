@@ -3,21 +3,6 @@ import regionParser from "./regionParser";
 import { LETTERS, DEFAULT_SKIN } from "./constants";
 import { parseViscolors, parseIni, getFileExtension } from "./utils";
 
-const getJSZip = () => {
-  return new Promise(resolve => {
-    require.ensure(
-      ["jszip/dist/jszip"],
-      require => {
-        resolve(require("jszip/dist/jszip"));
-      },
-      e => {
-        console.error("Error loading JSZip", e);
-      },
-      "jszip"
-    );
-  });
-};
-
 const shallowMerge = objs =>
   objs.reduce((prev, img) => Object.assign(prev, img), {});
 
@@ -249,8 +234,7 @@ async function genGenTextSprites(zip) {
 }
 
 // A promise that, given an array buffer  returns a skin style object
-async function skinParser(zipFileBuffer) {
-  const JSZip = await getJSZip();
+async function skinParser(zipFileBuffer, JSZip) {
   const zip = await JSZip.loadAsync(zipFileBuffer);
   const [
     colors,

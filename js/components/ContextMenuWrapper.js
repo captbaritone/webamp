@@ -10,9 +10,6 @@ export default class ContextMenuWraper extends React.Component {
       offsetTop: null,
       offsetLeft: null
     };
-    this._handleRightClick = this._handleRightClick.bind(this);
-    this._handleGlobalClick = this._handleGlobalClick.bind(this);
-    this._handleGlobalRightClick = this._handleGlobalRightClick.bind(this);
   }
 
   componentWillUnmount() {
@@ -28,18 +25,18 @@ export default class ContextMenuWraper extends React.Component {
     );
   }
 
-  _handleGlobalRightClick() {
+  _handleGlobalRightClick = () => {
     this._closeMenu();
-  }
+  };
 
-  _handleGlobalClick(e) {
+  _handleGlobalClick = e => {
     if (e.button === 2) {
       return;
     }
     this._closeMenu();
-  }
+  };
 
-  _handleRightClick(e) {
+  _handleRightClick = e => {
     const { pageX, pageY } = e;
     this.setState({
       selected: true,
@@ -54,7 +51,7 @@ export default class ContextMenuWraper extends React.Component {
     document.body.addEventListener("contextmenu", this._handleGlobalRightClick);
     e.preventDefault();
     e.stopPropagation();
-  }
+  };
 
   render() {
     const { children, renderContents, ...passThroughProps } = this.props;

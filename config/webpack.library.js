@@ -1,12 +1,14 @@
 const path = require("path");
 const webpack = require("webpack");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
 module.exports = {
   node: {
     // Consider suggesting jsmediatags use: https://github.com/feross/is-buffer
     // Cuts 22k
-    Buffer: false
+    Buffer: false,
+    fs: "empty"
   },
   module: {
     rules: [
@@ -20,7 +22,7 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            forceEnv: "library"
+            envName: "library"
           }
         }
       },
@@ -40,6 +42,11 @@ module.exports = {
     noParse: [/jszip\.js$/, /\.d\.ts$/]
   },
   plugins: [
+    new BundleAnalyzerPlugin({
+      analyzerMode: "static",
+      reportFilename: "library-report.html",
+      openAnalyzer: false
+    }),
     new webpack.DefinePlugin({
       "process.env": {
         NODE_ENV: JSON.stringify("production")
@@ -59,12 +66,15 @@ module.exports = {
   ],
   entry: {
     bundle: "./js/webamp.js",
-    "bundle.min": "./js/webamp.js"
+    "bundle.min": "./js/webamp.js",
+    "lazy-bundle": "./js/webampLazy.js",
+    "lazy-bundle.min": "./js/webampLazy.js"
   },
   output: {
     path: path.resolve(__dirname, "../built"),
     filename: "webamp.[name].js",
     library: "Webamp",
-    libraryTarget: "umd"
+    libraryTarget: "umd",
+    libraryExport: "default"
   }
 };

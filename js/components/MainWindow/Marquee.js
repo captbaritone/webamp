@@ -73,7 +73,6 @@ class Marquee extends React.Component {
   constructor(props) {
     super(props);
     this.state = { stepping: true, dragOffset: 0 };
-    this.handleMouseDown = this.handleMouseDown.bind(this);
     this.stepHandle = null;
   }
 
@@ -91,7 +90,7 @@ class Marquee extends React.Component {
     }
   }
 
-  handleMouseDown(e) {
+  handleMouseDown = e => {
     const xStart = e.clientX;
     this.setState({ stepping: false });
     const handleMouseMove = ee => {
@@ -110,7 +109,7 @@ class Marquee extends React.Component {
 
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
-  }
+  };
 
   render() {
     const { text, marqueeStep } = this.props;

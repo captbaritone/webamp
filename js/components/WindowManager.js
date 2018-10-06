@@ -24,21 +24,16 @@ const abuts = (a, b) => {
 };
 
 class WindowManager extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleMouseDown = this.handleMouseDown.bind(this);
-    this.centerWindows = this.centerWindows.bind(this);
-  }
-
   componentDidMount() {
     this.centerWindows();
   }
 
-  centerWindows() {
+  centerWindows = () => {
     const { container } = this.props;
 
-    const offsetLeft = container.offsetLeft;
-    const offsetTop = container.offsetTop;
+    const rect = container.getBoundingClientRect();
+    const offsetLeft = rect.left + window.scrollX;
+    const offsetTop = rect.top + window.scrollY;
     const width = container.scrollWidth;
     const height = container.scrollHeight;
 
@@ -80,7 +75,7 @@ class WindowManager extends React.Component {
 
       this.props.updateWindowPositions(newPositions);
     }
-  }
+  };
 
   movingAndStationaryNodes(key) {
     const windows = this.props.windowsInfo.filter(
@@ -102,7 +97,7 @@ class WindowManager extends React.Component {
     return [moving, stationary];
   }
 
-  handleMouseDown(key, e) {
+  handleMouseDown = (key, e) => {
     if (!e.target.classList.contains("draggable")) {
       return;
     }
@@ -171,7 +166,7 @@ class WindowManager extends React.Component {
 
     window.addEventListener("mouseup", removeListeners);
     window.addEventListener("mousemove", handleMouseMove);
-  }
+  };
 
   // Keys for the visible windows
   windowKeys() {
@@ -188,26 +183,19 @@ class WindowManager extends React.Component {
       left: 0
     };
 
-    const parentStyle = {
-      position: "absolute",
-      width: 0,
-      height: 0,
-      top: 0,
-      left: 0
-    };
-    return (
-      <div style={parentStyle}>
-        {this.props.windowsInfo.map(w => (
-          <div
-            onMouseDown={e => this.handleMouseDown(w.key, e)}
-            style={{ ...style, transform: `translate(${w.x}px, ${w.y}px)` }}
-            key={w.key}
-          >
-            {this.props.windows[w.key]}
-          </div>
-        ))}
-      </div>
+    const windows = this.props.windowsInfo.filter(
+      w => this.props.windows[w.key]
     );
+
+    return windows.map(w => (
+      <div
+        key={w.key}
+        onMouseDown={e => this.handleMouseDown(w.key, e)}
+        style={{ ...style, transform: `translate(${w.x}px, ${w.y}px)` }}
+      >
+        {this.props.windows[w.key]}
+      </div>
+    ));
   }
 }
 

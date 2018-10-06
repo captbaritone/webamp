@@ -11,7 +11,6 @@ import {
 import {
   promptForFileReferences,
   genArrayBufferFromFileReference,
-  genMediaDuration,
   genMediaTags
 } from "../fileUtils";
 import skinParser from "../skinParser";
@@ -41,9 +40,7 @@ import { removeAllTracks } from "./playlist";
 import { setPreamp, setEqBand } from "./equalizer";
 
 // Lower is better
-const DURATION_VISIBLE_PRIORITY = 5;
 const META_DATA_VISIBLE_PRIORITY = 10;
-const DURATION_PRIORITY = 15;
 const META_DATA_PRIORITY = 20;
 
 const loadQueue = new LoadQueue({ threads: 4 });
@@ -81,10 +78,23 @@ export function loadFilesFromReferences(
 }
 
 export function setSkinFromArrayBuffer(arrayBuffer) {
-  return async dispatch => {
+  return async (dispatch, getState, { requireJSZip }) => {
+    if (!requireJSZip) {
+      alert("Webamp has not been configured to support custom skins.");
+      return;
+    }
     dispatch({ type: LOADING });
+    let JSZip;
     try {
-      const skinData = await skinParser(arrayBuffer);
+      JSZip = await requireJSZip();
+    } catch (e) {
+      console.error(e);
+      dispatch({ type: LOADED });
+      alert("Failed to load the skin parser.");
+      return;
+    }
+    try {
+      const skinData = await skinParser(arrayBuffer, JSZip);
       dispatch({
         type: SET_SKIN_DATA,
         skinImages: skinData.images,
@@ -149,28 +159,6 @@ export function openMediaFileDialog() {
 
 export function openSkinFileDialog() {
   return _openFileDialog(".zip, .wsz");
-}
-
-export function fetchMediaDuration(url, id) {
-  return (dispatch, getState) => {
-    loadQueue.push(
-      async () => {
-        try {
-          const duration = await genMediaDuration(url);
-          dispatch({ type: SET_MEDIA_DURATION, duration, id });
-        } catch (e) {
-          // TODO: Should we update the state to indicate that we don't know the length?
-        }
-      },
-
-      () => {
-        const trackIsVisible = getTrackIsVisibleFunction(getState());
-        return trackIsVisible(id)
-          ? DURATION_VISIBLE_PRIORITY
-          : DURATION_PRIORITY;
-      }
-    );
-  };
 }
 
 export function loadMediaFiles(tracks, loadStyle = null, atIndex = 0) {
@@ -243,12 +231,12 @@ function queueFetchingMediaTags(id) {
 }
 
 export function fetchMediaTags(file, id) {
-  return async dispatch => {
+  return async (dispatch, getState, { requireMusicMetadata }) => {
     dispatch({ type: MEDIA_TAG_REQUEST_INITIALIZED, id });
 
     let metadata;
     try {
-      metadata = await genMediaTags(file);
+      metadata = await genMediaTags(file, await requireMusicMetadata());
       // There's more data here, but we don't have a use for it yet:
       const { artist, title, picture } = metadata.common;
       let albumArtUrl = null;

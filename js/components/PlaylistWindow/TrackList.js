@@ -18,11 +18,6 @@ function getNumberLength(number) {
 }
 
 class TrackList extends React.Component {
-  constructor(props) {
-    super(props);
-    this._handleMoveClick = this._handleMoveClick.bind(this);
-  }
-
   _renderTracks(format) {
     return this.props.trackIds.map((id, i) => (
       <TrackCell
@@ -36,7 +31,7 @@ class TrackList extends React.Component {
     ));
   }
 
-  _handleMoveClick(e) {
+  _handleMoveClick = e => {
     if (!this._node) {
       return;
     }
@@ -61,7 +56,7 @@ class TrackList extends React.Component {
       window.removeEventListener("mousemove", handleMouseMove);
     });
     window.addEventListener("mousemove", handleMouseMove);
-  }
+  };
 
   render() {
     const { tracks, offset } = this.props;
