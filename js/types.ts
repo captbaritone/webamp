@@ -477,7 +477,7 @@ export type Dispatch = (action: Dispatchable) => void;
 export type Reducer = (state: AppState, action: Action) => AppState;
 
 export type Middleware = (
-  store: Store
+  store: MiddlewareStore
 ) => (next: Dispatch) => (action: Action) => any;
 
 export interface Store {
