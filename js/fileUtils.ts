@@ -35,7 +35,6 @@ export function genMediaTags(
     file = `${location.protocol}//${location.host}${location.pathname}${file}`;
   }
   if (typeof file === "string") {
-    console.log(`genMediaTags(): Parsing url=${file}`);
     return mm.fetchFromUrl(file, {
       duration: true,
       skipPostHeaders: true // avoid unnecessary data to be read
