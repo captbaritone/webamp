@@ -116,6 +116,7 @@ interface Options {
       requiresNetwork: boolean;
     }
   ];
+  zIndex: number;
 }
 
 export default class Webamp {
