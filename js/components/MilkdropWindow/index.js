@@ -164,61 +164,47 @@ function presetNameFromURL(url) {
 }
 
 async function loadInitialPreset() {
-  let presetUrl = null;
-  let milkdropPresetUrl = null;
-  if ("URLSearchParams" in window) {
-    const params = new URLSearchParams(location.search);
-    presetUrl = params.get("butterchurnPresetUrl");
-    milkdropPresetUrl = params.get("milkdropPresetUrl");
+  if (!("URLSearchParams" in window)) {
+    return null;
   }
-
-  if (presetUrl) {
-    try {
-      const response = await fetch(presetUrl);
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      const responseBody = await response.json();
-      const presetName = presetNameFromURL(presetUrl);
-      return { [presetName]: responseBody };
-    } catch (e) {
-      console.error(e);
-
-      if (e instanceof TypeError) {
-        // handle URL not existing
-        alert(`Failed to load MilkDrop preset from ${milkdropPresetUrl}`);
-      } else if (e instanceof Error) {
-        // handle URL bad response
-        alert(`Unable to load MilkDrop preset from ${milkdropPresetUrl}`);
-      }
-
-      return null;
-    }
+  const params = new URLSearchParams(location.search);
+  const butterchurnPresetUrl = params.get("butterchurnPresetUrl");
+  const milkdropPresetUrl = params.get("milkdropPresetUrl");
+  if (butterchurnPresetUrl && milkdropPresetUrl) {
+    alert(
+      "Unable to handle both milkdropPresetUrl and butterchurnPresetUrl. Please specify one or the other."
+    );
+  } else if (butterchurnPresetUrl) {
+    return fetchPreset(butterchurnPresetUrl, { isButterchurn: true });
   } else if (milkdropPresetUrl) {
+    return fetchPreset(milkdropPresetUrl, { isButterchurn: false });
+  }
+  return null;
+}
+
+async function fetchPreset(presetUrl, { isButterchurn }) {
+  const response = await fetch(presetUrl);
+  if (!response.ok) {
+    console.error(response.statusText);
+    alert(`Unable to load MilkDrop preset from ${presetUrl}`);
+    return null;
+  }
+  const presetName = presetNameFromURL(presetUrl);
+
+  let preset = null;
+  if (isButterchurn) {
     try {
-      const response = await fetch(milkdropPresetUrl);
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      const fileBlob = await response.blob();
-      const presetName = presetNameFromURL(milkdropPresetUrl);
-      return { [presetName]: { file: fileBlob } };
+      preset = await response.json();
     } catch (e) {
       console.error(e);
-
-      if (e instanceof TypeError) {
-        // handle URL not existing
-        alert(`Failed to load MilkDrop preset from ${milkdropPresetUrl}`);
-      } else if (e instanceof Error) {
-        // handle URL bad response
-        alert(`Unable to load MilkDrop preset from ${milkdropPresetUrl}`);
-      }
-
+      alert(`Failed to parse MilkDrop preset from ${presetUrl}`);
       return null;
     }
+  } else {
+    preset = { file: await response.blob() };
   }
 
-  return null;
+  return { [presetName]: preset };
 }
 
 async function loadInitialDependencies() {
