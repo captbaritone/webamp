@@ -6,7 +6,8 @@ import {
   MINIMIZE_WINAMP,
   SET_FOCUS,
   UNSET_FOCUS,
-  LOAD_SERIALIZED_STATE
+  LOAD_SERIALIZED_STATE,
+  LOAD_DEFAULT_SKIN
 } from "../actionTypes";
 import { Dispatchable } from "../types";
 import { ensureWindowsAreOnScreen } from "./windows";
@@ -129,4 +130,8 @@ export function loadSerializedState(
     dispatch({ type: LOAD_SERIALIZED_STATE, serializedState });
     dispatch(ensureWindowsAreOnScreen());
   };
+}
+
+export function loadDefaultSkin() {
+  return { type: LOAD_DEFAULT_SKIN };
 }

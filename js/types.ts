@@ -349,7 +349,8 @@ export type Action =
       serializedState: SerializedStateV1;
     }
   | { type: "RESET_WINDOW_SIZES" }
-  | { type: "BROWSER_WINDOW_SIZE_CHANGED"; height: number; width: number };
+  | { type: "BROWSER_WINDOW_SIZE_CHANGED"; height: number; width: number }
+  | { type: "LOAD_DEFAULT_SKIN" };
 
 export type MediaTagRequestStatus =
   | "INITIALIZED"

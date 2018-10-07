@@ -24,7 +24,8 @@ import {
   DISABLE_MARQUEE,
   SET_DUMMY_VIZ_DATA,
   LOADING,
-  LOAD_SERIALIZED_STATE
+  LOAD_SERIALIZED_STATE,
+  LOAD_DEFAULT_SKIN
 } from "../actionTypes";
 import { DEFAULT_SKIN, VISUALIZER_ORDER } from "../constants";
 import { DisplaySerializedStateV1 } from "../serializedStates/v1Types";
@@ -76,6 +77,25 @@ const display = (
   action: Action
 ): DisplayState => {
   switch (action.type) {
+    case LOAD_DEFAULT_SKIN:
+      const {
+        skinImages,
+        skinColors,
+        skinCursors,
+        skinPlaylistStyle,
+        skinRegion,
+        skinGenLetterWidths
+      } = defaultDisplayState;
+      return {
+        ...state,
+        skinImages,
+        skinColors,
+        skinCursors,
+        skinPlaylistStyle,
+        skinRegion,
+        skinGenLetterWidths
+      };
+
     case TOGGLE_DOUBLESIZE_MODE:
       return { ...state, doubled: !state.doubled };
     case TOGGLE_LLAMA_MODE:

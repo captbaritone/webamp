@@ -3,7 +3,6 @@
 import Raven from "raven-js";
 import createMiddleware from "raven-for-redux";
 import isButterchurnSupported from "butterchurn/lib/isSupported.min";
-import base from "../skins/base-2.91-png.wsz";
 import osx from "../skins/MacOSXAqua1-5.wsz";
 import topaz from "../skins/TopazAmp1-2.wsz";
 import visor from "../skins/Vizor1-01.wsz";
@@ -214,7 +213,6 @@ Raven.context(async () => {
     initialSkin,
     initialTracks: screenshot ? null : initialTracks,
     availableSkins: [
-      { url: base, name: "<Base Skin>" },
       { url: green, name: "Green Dimension V2" },
       { url: internetArchive, name: "Internet Archive" },
       { url: osx, name: "Mac OSX v1.5 (Aqua)" },

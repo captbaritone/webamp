@@ -3,6 +3,7 @@
 ### Features
 
 - Users can pass an initial layout (TODO: Documentation)
+- The default skin is now included in the Skins section of the options menu by default.
 
 ## 1.2.0
 
