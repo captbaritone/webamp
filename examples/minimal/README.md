@@ -9,5 +9,3 @@ $ git clone git@github.com:captbaritone/webamp.git
 $ cd webamp
 $ open examples/minimal/index.html
 ```
-
-Or just navigate to <https://cdn.rawgit.com/captbaritone/webamp/master/examples/minimal/index.html>
