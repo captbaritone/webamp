@@ -58,7 +58,7 @@ const defaultWindowsState: WindowsState = {
   positionsAreRelative: true,
   genWindows: {
     // TODO: Remove static capabilites and derive them from ids/generic
-    main: {
+    [WINDOWS.MAIN]: {
       title: "Main Window",
       size: [0, 0],
       open: true,
@@ -71,7 +71,7 @@ const defaultWindowsState: WindowsState = {
       hotkey: "Alt+W",
       position: { x: 0, y: 0 }
     },
-    equalizer: {
+    [WINDOWS.EQUALIZER]: {
       title: "Equalizer",
       size: [0, 0],
       open: true,
@@ -84,7 +84,7 @@ const defaultWindowsState: WindowsState = {
       hotkey: "Alt+G",
       position: { x: 0, y: 0 }
     },
-    playlist: {
+    [WINDOWS.PLAYLIST]: {
       title: "Playlist Editor",
       size: [0, 0],
       open: true,
