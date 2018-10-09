@@ -12,6 +12,7 @@ import green from "../skins/Green-Dimension-V2.wsz";
 import internetArchive from "../skins/Internet-Archive.wsz";
 import MilkdropWindow from "./components/MilkdropWindow";
 import screenshotInitialState from "./screenshotInitialState";
+import { WINDOWS } from "./constants";
 
 import WebampLazy from "./webampLazy";
 import enableMediaSession from "./mediaSession";
@@ -190,16 +191,16 @@ Raven.context(async () => {
 
     if (startWithMilkdropHidden) {
       __initialWindowLayout = {
-        main: { position: { x: 0, y: 0 } },
-        equalizer: { position: { x: 0, y: 116 } },
-        playlist: { position: { x: 0, y: 232 }, size: [0, 0] },
+        [WINDOWS.MAIN]: { position: { x: 0, y: 0 } },
+        [WINDOWS.EQUALIZER]: { position: { x: 0, y: 116 } },
+        [WINDOWS.PLAYLIST]: { position: { x: 0, y: 232 }, size: [0, 0] },
         milkdrop: { position: { x: 0, y: 348 }, size: [0, 0] }
       };
     } else {
       __initialWindowLayout = {
-        main: { position: { x: 0, y: 0 } },
-        equalizer: { position: { x: 0, y: 116 } },
-        playlist: { position: { x: 0, y: 232 }, size: [0, 4] },
+        [WINDOWS.MAIN]: { position: { x: 0, y: 0 } },
+        [WINDOWS.EQUALIZER]: { position: { x: 0, y: 116 } },
+        [WINDOWS.PLAYLIST]: { position: { x: 0, y: 232 }, size: [0, 4] },
         milkdrop: { position: { x: 275, y: 0 }, size: [7, 12] }
       };
     }
