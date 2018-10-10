@@ -8,21 +8,57 @@ import { SET_FOCUSED_WINDOW } from "../../actionTypes";
 import { scrollVolume, setWindowSize, closeWindow } from "../../actionCreators";
 import { getWindowPixelSize } from "../../selectors";
 import ResizeTarget from "../ResizeTarget";
+import { AppState, WindowId, Dispatch } from "../../types";
 
-const Text = ({ children }) => {
+interface TextProps {
+  children: string;
+}
+
+const Text = ({ children }: TextProps) => {
   const letters = children.split("");
-  return letters.map((letter, i) => (
-    <div
-      key={i}
-      className={`draggable gen-text-letter gen-text-${
-        letter === " " ? "space" : letter.toLowerCase()
-      }`}
-    />
-  ));
+  return (
+    <React.Fragment>
+      {letters.map((letter, i) => (
+        <div
+          key={i}
+          className={`draggable gen-text-letter gen-text-${
+            letter === " " ? "space" : letter.toLowerCase()
+          }`}
+        />
+      ))}
+    </React.Fragment>
+  );
 };
 
 const CHROME_WIDTH = 19;
 const CHROME_HEIGHT = 34;
+
+interface WindowSize {
+  width: number;
+  height: number;
+}
+
+interface OwnProps {
+  windowId: WindowId;
+  children: (windowSize: WindowSize) => React.ReactNode;
+  title: string;
+}
+
+interface DispatchProps {
+  setFocus: (windowId: WindowId) => void;
+  close: (windowId: WindowId) => void;
+  scrollVolume: (event: React.WheelEvent<HTMLDivElement>) => void;
+  setGenWindowSize: (windowId: WindowId, size: [number, number]) => void;
+}
+
+interface StateProps {
+  windowSize: [number, number];
+  selected: boolean;
+  height: number;
+  width: number;
+}
+
+type Props = OwnProps & DispatchProps & StateProps;
 
 // Named export for testing
 export const GenWindow = ({
@@ -37,7 +73,7 @@ export const GenWindow = ({
   scrollVolume: handleWheel,
   width,
   height
-}) => {
+}: Props) => {
   return (
     <div
       className={classnames("gen-window", "window", { selected })}
@@ -86,15 +122,7 @@ export const GenWindow = ({
   );
 };
 
-GenWindow.propTypes = {
-  title: PropTypes.string.isRequired,
-  windowId: PropTypes.string.isRequired,
-  children: PropTypes.func.isRequired,
-  close: PropTypes.func.isRequired,
-  selected: PropTypes.bool.isRequired
-};
-
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state: AppState, ownProps: OwnProps): StateProps => {
   const { width, height } = getWindowPixelSize(state)(ownProps.windowId);
   return {
     width,
@@ -104,11 +132,15 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-const mapDispatchToProps = {
-  setFocus: windowId => ({ type: SET_FOCUSED_WINDOW, window: windowId }),
-  close: windowId => closeWindow(windowId),
-  setGenWindowSize: setWindowSize,
-  scrollVolume
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
+  return {
+    setFocus: (windowId: WindowId) =>
+      dispatch({ type: SET_FOCUSED_WINDOW, window: windowId }),
+    close: (windowId: WindowId) => dispatch(closeWindow(windowId)),
+    setGenWindowSize: (windowId: WindowId, size: [number, number]) =>
+      dispatch(setWindowSize(windowId, size)),
+    scrollVolume: e => dispatch(scrollVolume(e))
+  };
 };
 
 export default connect(

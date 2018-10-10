@@ -120,7 +120,9 @@ export function adjustVolume(volumeDiff: number): Dispatchable {
   };
 }
 
-export function scrollVolume(e: WheelEvent): Dispatchable {
+export function scrollVolume(
+  e: React.WheelEvent<HTMLDivElement>
+): Dispatchable {
   e.preventDefault();
   return (dispatch, getState) => {
     const currentVolume = getState().media.volume;
