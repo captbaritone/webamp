@@ -22,7 +22,8 @@ import {
   LOADED,
   REGISTER_VISUALIZER,
   SET_Z_INDEX,
-  CLOSE_REQUESTED
+  CLOSE_REQUESTED,
+  ENABLE_MEDIA_LIBRARY
 } from "./actionTypes";
 import Emitter from "./emitter";
 
@@ -109,6 +110,10 @@ class Winamp {
         open: genWindow.open
       });
     });
+
+    if (options.__enableMediaLibrary) {
+      this.store.dispatch({ type: ENABLE_MEDIA_LIBRARY });
+    }
 
     window.addEventListener("online", () =>
       this.store.dispatch({ type: NETWORK_CONNECTED })
