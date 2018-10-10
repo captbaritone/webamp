@@ -722,5 +722,69 @@ export default {
     { name: "GEN_MIDDLE_RIGHT", x: 139, y: 42, width: 8, height: 29 },
     { name: "GEN_MIDDLE_RIGHT_BOTTOM", x: 170, y: 42, width: 8, height: 24 },
     { name: "GEN_CLOSE_SELECTED", x: 148, y: 42, width: 9, height: 9 }
+  ],
+  GENEX: [
+    {
+      name: "GENEX_BUTTON_BACKGROUND_UNPRESSED",
+      x: 0,
+      y: 0,
+      height: 15,
+      width: 47
+    },
+    {
+      name: "GENEX_BUTTON_BACKGROUND_PRESSED",
+      x: 0,
+      y: 1,
+      height: 15,
+      width: 47
+    },
+    { name: "GENEX_SCROLL_UP_UNPRESSED", x: 0, y: 31, height: 14, width: 14 },
+    {
+      name: "GENEX_SCROLL_DOWN_UNPRESSED",
+      x: 14,
+      y: 31,
+      height: 14,
+      width: 14
+    },
+    { name: "GENEX_SCROLL_UP_PRESSED", x: 28, y: 31, height: 14, width: 14 },
+    { name: "GENEX_SCROLL_DOWN_PRESSED", x: 42, y: 31, height: 14, width: 14 },
+    { name: "GENEX_SCROLL_LEFT_UNPRESSED", x: 0, y: 45, height: 14, width: 14 },
+    {
+      name: "GENEX_SCROLL_RIGHT_UNPRESSED",
+      x: 14,
+      y: 45,
+      height: 14,
+      width: 14
+    },
+    { name: "GENEX_SCROLL_LEFT_PRESSED", x: 28, y: 45, height: 14, width: 14 },
+    { name: "GENEX_SCROLL_RIGHT_PRESSED", x: 42, y: 45, height: 14, width: 14 },
+    {
+      name: "GENEX_VERTICAL_SCROLL_HANDLE_UNPRESSED",
+      x: 56,
+      y: 31,
+      height: 28,
+      width: 14
+    },
+    {
+      name: "GENEX_VERTICAL_SCROLL_HANDLE_PRESSED",
+      x: 70,
+      y: 31,
+      height: 28,
+      width: 14
+    },
+    {
+      name: "GENEX_HORIZONTAL_SCROLL_HANDLE_UNPRESSED",
+      x: 84,
+      y: 31,
+      height: 14,
+      width: 28
+    },
+    {
+      name: "GENEX_HORIZONTAL_SCROLL_HANDLE_PRESSED",
+      x: 84,
+      y: 45,
+      height: 14,
+      width: 28
+    }
   ]
 };

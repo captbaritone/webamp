@@ -22,7 +22,8 @@ export const BANDS: Band[] = [
 export const WINDOWS = {
   MAIN: "main",
   PLAYLIST: "playlist",
-  EQUALIZER: "equalizer"
+  EQUALIZER: "equalizer",
+  MEDIA_LIBRARY: "mediaLibrary"
 };
 
 export const LOAD_STYLE: Record<LoadStyle, LoadStyle> = {

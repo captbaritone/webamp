@@ -146,6 +146,72 @@ const Skin = props => {
       cssRules.push(`${CSS_PREFIX} ${matcher} { clip-path: url(#${id}); }`);
     }
   }
+
+  // TODO: Find a way to make this declarative.
+  cssRules.push(
+    `#webamp-media-library {
+       background-color: ${props.skinGenExColors.windowBackground};
+       color: ${props.skinGenExColors.windowText};
+    }`
+  );
+  cssRules.push(
+    `#webamp-media-library input {
+       caret-color: ${props.skinGenExColors.windowText};
+    }`
+  );
+  cssRules.push(
+    `#webamp-media-library .webamp-media-library-item {
+       color: ${props.skinGenExColors.itemForeground};
+       background-color: ${props.skinGenExColors.itemBackground};
+       border-right: 1px solid ${props.skinGenExColors.divider};
+       border-bottom: 1px solid ${props.skinGenExColors.divider};
+    }`
+  );
+  cssRules.push(
+    `#webamp-media-library button {
+       color: ${props.skinGenExColors.buttonText};
+    }`
+  );
+  cssRules.push(
+    `#webamp-media-library .webamp-media-library-vertical-divider {
+    }`
+  );
+  cssRules.push(
+    `#webamp-media-library .webamp-media-library-vertical-divider-line,
+     #webamp-media-library .webamp-media-library-horizontal-divider-line
+     {
+       background-color: ${props.skinGenExColors.divider};
+    }`
+  );
+  cssRules.push(
+    `#webamp-media-library .webamp-media-library-table {
+       color: ${props.skinGenExColors.itemForeground};
+       background-color: ${props.skinGenExColors.itemBackground};
+    }`
+  );
+
+  cssRules.push(
+    `#webamp-media-library .webamp-media-library-table thead {
+       color: ${props.skinGenExColors.listHeaderText};
+       background-color: ${props.skinGenExColors.listHeaderBackground};
+    }`
+  );
+
+  cssRules.push(
+    `#webamp-media-library .webamp-media-library-table thead th {
+       border-top: 1px solid ${props.skinGenExColors.listHeaderFrameTopAndLeft};
+       border-left: 1px solid ${
+         props.skinGenExColors.listHeaderFrameTopAndLeft
+       };
+       border-bottom: 1px solid ${
+         props.skinGenExColors.listHeaderFrameBottomAndRight
+       };
+       border-right: 1px solid ${
+         props.skinGenExColors.listHeaderFrameBottomAndRight
+       };
+    }`
+  );
+
   return (
     <div>
       <Css>{cssRules.join("\n")}</Css>
@@ -158,5 +224,6 @@ export default connect(state => ({
   skinImages: state.display.skinImages,
   skinCursors: state.display.skinCursors,
   skinRegion: state.display.skinRegion,
-  skinGenLetterWidths: state.display.skinGenLetterWidths
+  skinGenLetterWidths: state.display.skinGenLetterWidths,
+  skinGenExColors: state.display.skinGenExColors
 }))(Skin);

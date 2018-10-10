@@ -1,7 +1,7 @@
 import SKIN_SPRITES from "./skinSprites";
 import regionParser from "./regionParser";
 import { LETTERS, DEFAULT_SKIN } from "./constants";
-import { parseViscolors, parseIni, getFileExtension } from "./utils";
+import { parseViscolors, parseIni, getFileExtension, objectMap } from "./utils";
 
 const shallowMerge = objs =>
   objs.reduce((prev, img) => Object.assign(prev, img), {});
@@ -145,16 +145,18 @@ async function genPlaylistStyle(zip) {
 
   // Winamp seems to permit colors that contain too many characters.
   // For compatibility with existing skins, we normalize them here.
-  ["normal", "current", "normalbg", "selectedbg"].forEach(colorKey => {
-    let color = data[colorKey];
-    if (!color) {
-      return;
+  ["normal", "current", "normalbg", "selectedbg", "mbFG", "mbBG"].forEach(
+    colorKey => {
+      let color = data[colorKey];
+      if (!color) {
+        return;
+      }
+      if (color[0] !== "#") {
+        color = `#${color}`;
+      }
+      data[colorKey] = color.slice(0, 7);
     }
-    if (color[0] !== "#") {
-      color = `#${color}`;
-    }
-    data[colorKey] = color.slice(0, 7);
-  });
+  );
 
   return { ...DEFAULT_SKIN.playlistStyle, ...data };
 }
@@ -233,24 +235,97 @@ async function genGenTextSprites(zip) {
   return [letterWidths, getSpriteUrisFromImg(img, sprites)];
 }
 
+async function genGenExColors(zip) {
+  const img = await genImgFromFilename(zip, "GENEX");
+  if (img == null) {
+    return null;
+  }
+
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+  canvas.width = img.width;
+  canvas.height = img.height;
+  context.drawImage(img, 0, 0);
+
+  const getColorAt = x =>
+    `rgb(${context
+      .getImageData(x, 0, 1, 1)
+      // Discard the alpha channel
+      .data.slice(0, 3)
+      .join(",")})`;
+
+  const colors = {
+    // (1) x=48: item background (background to edits, listviews, etc.)
+    itemBackground: 48,
+    // (2) x=50: item foreground (text colour of edits, listviews, etc.)
+    itemForeground: 50,
+    // (3) x=52: window background (used to set the bg color for the dialog)
+    windowBackground: 52,
+    // (4) x=54: button text colour
+    buttonText: 54,
+    // (5) x=56: window text colour
+    windowText: 56,
+    // (6) x=58: colour of dividers and sunken borders
+    divider: 58,
+    // (7) x=60: selection colour for entries inside playlists (nothing else yet)
+    playlistSelection: 60,
+    // (8) x=62: listview header background colour
+    listHeaderBackground: 62,
+    // (9) x=64: listview header text colour
+    listHeaderText: 64,
+    // (10) x=66: listview header frame top and left colour
+    listHeaderFrameTopAndLeft: 66,
+    // (11) x=68: listview header frame bottom and right colour
+    listHeaderFrameBottomAndRight: 68,
+    // (12) x=70: listview header frame colour, when pressed
+    listHeaderFramePressed: 70,
+    // (13) x=72: listview header dead area colour
+    listHeaderDeadArea: 72,
+    // (14) x=74: scrollbar colour #1
+    scrollbarOne: 74,
+    // (15) x=76: scrollbar colour #2
+    scrollbarTwo: 76,
+    // (16) x=78: pressed scrollbar colour #1
+    pressedScrollbarOne: 78,
+    // (17) x=80: pressed scrollbar colour #2
+    pressedScrollbarTwo: 80,
+    // (18) x=82: scrollbar dead area colour
+    scrollbarDeadArea: 82,
+    // (19) x=84 List view text colour highlighted
+    listTextHighlighted: 84,
+    // (20) x=86 List view background colour highlighted
+    listTextHighlightedBackground: 86,
+    // (21) x=88 List view text colour selected
+    listTextSelected: 88,
+    // (22) x=90 List view background colour selected
+    listTextSelectedBackground: 90
+  };
+
+  return objectMap(colors, getColorAt);
+}
+
 // A promise that, given an array buffer  returns a skin style object
 async function skinParser(zipFileBuffer, JSZip) {
   const zip = await JSZip.loadAsync(zipFileBuffer);
+
   const [
     colors,
     playlistStyle,
     images,
     cursors,
     region,
-    genTextSprites
+    genTextSprites,
+    genExColors
   ] = await Promise.all([
     genVizColors(zip),
     genPlaylistStyle(zip),
     genImages(zip),
     genCursors(zip),
     genRegion(zip),
-    genGenTextSprites(zip)
+    genGenTextSprites(zip),
+    genGenExColors(zip)
   ]);
+  console.log(genExColors);
 
   const [genLetterWidths, genTextImages] = genTextSprites || [null, {}];
 
@@ -260,7 +335,8 @@ async function skinParser(zipFileBuffer, JSZip) {
     images: { ...images, ...genTextImages },
     genLetterWidths,
     cursors,
-    region
+    region,
+    genExColors
   };
 }
 

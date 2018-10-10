@@ -125,11 +125,7 @@ class PresetsLoader extends React.Component {
     }
 
     return (
-      <GenWindow
-        ref={this.props.chromeRef}
-        title={this.props.title}
-        windowId={this.props.windowId}
-      >
+      <GenWindow title={this.props.title} windowId={this.props.windowId}>
         {({ height, width }) => (
           <ContextMenuWrapper
             onDoubleClick={this._handleRequestFullsceen}

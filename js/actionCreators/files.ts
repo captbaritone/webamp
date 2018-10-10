@@ -110,6 +110,7 @@ export function setSkinFromArrayBuffer(
     }
     try {
       const skinData = await skinParser(arrayBuffer, JSZip);
+      // @ts-ignore TODO: We still need to type skinParser.
       dispatch({
         type: SET_SKIN_DATA,
         data: {
@@ -118,7 +119,8 @@ export function setSkinFromArrayBuffer(
           skinPlaylistStyle: skinData.playlistStyle,
           skinCursors: skinData.cursors,
           skinRegion: skinData.region,
-          skinGenLetterWidths: skinData.genLetterWidths
+          skinGenLetterWidths: skinData.genLetterWidths,
+          skinGenExColors: skinData.genExColors
         }
       });
     } catch (e) {
