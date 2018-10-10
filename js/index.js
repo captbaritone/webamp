@@ -9,6 +9,7 @@ import visor from "../skins/Vizor1-01.wsz";
 import xmms from "../skins/XMMS-Turquoise.wsz";
 import zaxon from "../skins/ZaxonRemake1-0.wsz";
 import green from "../skins/Green-Dimension-V2.wsz";
+import base from "../skins/base-2.91-png.wsz";
 import internetArchive from "../skins/Internet-Archive.wsz";
 import MilkdropWindow from "./components/MilkdropWindow";
 import screenshotInitialState from "./screenshotInitialState";
@@ -90,9 +91,17 @@ let screenshot = false;
 let clearState = false;
 let useState = false;
 let skinUrl = configSkinUrl;
+let library = false;
 if ("URLSearchParams" in window) {
   const params = new URLSearchParams(location.search);
   screenshot = params.get("screenshot");
+  library = Boolean(params.get("library"));
+  // The default skin CSS baked into the JS library does not have full Media
+  // Library support. If we are going to show the library we have to load a
+  // skin at start time.
+  if (library && skinUrl == null) {
+    skinUrl = base;
+  }
   skinUrl = params.get("skinUrl") || skinUrl;
   clearState = Boolean(params.get("clearState"));
   useState = Boolean(params.get("useState"));
@@ -178,7 +187,7 @@ Raven.context(async () => {
   if (isButterchurnSupported()) {
     const startWithMilkdropHidden =
       document.body.clientWidth < MIN_MILKDROP_WIDTH ||
-      skinUrl != null ||
+      (!library && skinUrl != null) ||
       screenshot;
 
     __extraWindows.push({
@@ -186,7 +195,7 @@ Raven.context(async () => {
       title: "Milkdrop",
       isVisualizer: true,
       Component: MilkdropWindow,
-      open: !startWithMilkdropHidden
+      open: !library && !startWithMilkdropHidden
     });
 
     if (startWithMilkdropHidden) {
@@ -196,6 +205,12 @@ Raven.context(async () => {
         [WINDOWS.PLAYLIST]: { position: { x: 0, y: 232 }, size: [0, 0] },
         milkdrop: { position: { x: 0, y: 348 }, size: [0, 0] }
       };
+      if (library) {
+        __initialWindowLayout[WINDOWS.MEDIA_LIBRARY] = {
+          position: { x: 0, y: 348 },
+          size: [0, 0]
+        };
+      }
     } else {
       __initialWindowLayout = {
         [WINDOWS.MAIN]: { position: { x: 0, y: 0 } },
@@ -203,6 +218,12 @@ Raven.context(async () => {
         [WINDOWS.PLAYLIST]: { position: { x: 0, y: 232 }, size: [0, 4] },
         milkdrop: { position: { x: 275, y: 0 }, size: [7, 12] }
       };
+      if (library) {
+        __initialWindowLayout[WINDOWS.MEDIA_LIBRARY] = {
+          position: { x: 275, y: 0 },
+          size: [7, 12]
+        };
+      }
     }
 
     document.getElementById("butterchurn-share").style.display = "flex";
@@ -239,6 +260,7 @@ Raven.context(async () => {
     requireJSZip,
     requireJSMediaTags,
     __extraWindows,
+    __enableMediaLibrary: library,
     __initialWindowLayout,
     __initialState: screenshot ? screenshotInitialState : initialState,
     __customMiddlewares: [ravenMiddleware]

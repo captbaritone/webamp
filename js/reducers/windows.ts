@@ -11,7 +11,8 @@ import {
   TOGGLE_WINDOW_SHADE_MODE,
   LOAD_SERIALIZED_STATE,
   BROWSER_WINDOW_SIZE_CHANGED,
-  RESET_WINDOW_SIZES
+  RESET_WINDOW_SIZES,
+  ENABLE_MEDIA_LIBRARY
 } from "../actionTypes";
 import * as Utils from "../utils";
 import { WindowsSerializedStateV1 } from "../serializedStates/v1Types";
@@ -96,19 +97,6 @@ const defaultWindowsState: WindowsState = {
       generic: false,
       hotkey: "Alt+E",
       position: { x: 0, y: 0 }
-    },
-    [WINDOWS.MEDIA_LIBRARY]: {
-      title: "Winamp Library",
-      size: [0, 0],
-      open: true,
-      hidden: false,
-      shade: false,
-      canResize: true,
-      canShade: false,
-      canDouble: false,
-      generic: false,
-      hotkey: "Alt+E",
-      position: { x: 0, y: 0 }
     }
   },
   browserWindowSize: { width: 0, height: 0 }
@@ -119,6 +107,26 @@ const windows = (
   action: Action
 ): WindowsState => {
   switch (action.type) {
+    case ENABLE_MEDIA_LIBRARY:
+      return {
+        ...state,
+        genWindows: {
+          ...state.genWindows,
+          [WINDOWS.MEDIA_LIBRARY]: {
+            title: "Winamp Library",
+            size: [0, 0],
+            open: true,
+            hidden: false,
+            shade: false,
+            canResize: true,
+            canShade: false,
+            canDouble: false,
+            generic: false,
+            hotkey: "Alt+E",
+            position: { x: 0, y: 0 }
+          }
+        }
+      };
     case SET_FOCUSED_WINDOW:
       return { ...state, focused: action.window };
     case TOGGLE_WINDOW_SHADE_MODE:
