@@ -8,8 +8,7 @@ import {
   ADD_TRACK_FROM_URL
 } from "../actionTypes";
 import { MEDIA_TAG_REQUEST_STATUS } from "../constants";
-
-import { filenameFromUrl } from "../fileUtils";
+import * as TrackUtils from "../trackUtils";
 
 export interface TracksState {
   [id: string]: PlaylistTrack;
@@ -99,18 +98,6 @@ export const getTrackDisplayName = (
   if (track == null) {
     return null;
   }
-  const { artist, title, defaultName, url } = track;
-  if (artist && title) {
-    return `${artist} - ${title}`;
-  } else if (title) {
-    return title;
-  } else if (defaultName) {
-    return defaultName;
-  } else if (url) {
-    const filename = filenameFromUrl(url);
-    if (filename) {
-      return filename;
-    }
-  }
-  return "???";
+
+  return TrackUtils.trackName(track);
 };
