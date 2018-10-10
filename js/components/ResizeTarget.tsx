@@ -9,7 +9,8 @@ type Size = [number, number];
 interface Props {
   currentSize: Size;
   setWindowSize(size: Size): void;
-  widthOnly: boolean;
+  widthOnly?: boolean;
+  id?: string;
 }
 
 export default class ResizeTarget extends React.Component<Props> {
