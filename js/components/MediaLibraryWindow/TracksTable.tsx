@@ -1,8 +1,16 @@
 import * as React from "react";
+import { connect } from "react-redux";
+import { cursorSelectors } from "../../skinSelectors";
+import * as Selectors from "../../selectors";
+import * as Utils from "../../utils";
+import * as FileUtils from "../../fileUtils";
+import { AppState, PlaylistTrack } from "../../types";
 
-interface Props {}
+interface StateProps {
+  tracks: PlaylistTrack[];
+}
 
-export default class TracksTable extends React.Component<Props> {
+class TracksTable extends React.Component<StateProps> {
   render() {
     return (
       <div
@@ -43,16 +51,24 @@ export default class TracksTable extends React.Component<Props> {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Ben Mason</td>
-                <td>Easy</td>
-                <td>Bad Pands</td>
-                <td>3:25</td>
-                <td>1</td>
-                <td>Primus</td>
-                <td>2001</td>
-                <td>BenMason-Easy.mp3</td>
-              </tr>
+              {this.props.tracks.map(track => {
+                return (
+                  <tr key={track.id}>
+                    <td>{track.artist}</td>
+                    <td>{track.title}</td>
+                    <td>{track.album}</td>
+                    <td>{Utils.getTimeStr(track.duration)}</td>
+                    <td>1</td>
+                    <td>Primus</td>
+                    <td>2001</td>
+                    <td>
+                      {track.url == null
+                        ? track.defaultName
+                        : FileUtils.filenameFromUrl(track.url)}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -67,3 +83,11 @@ export default class TracksTable extends React.Component<Props> {
     );
   }
 }
+
+const mapStateToProps = (state: AppState): StateProps => {
+  return {
+    tracks: Object.values(Selectors.getTracks(state))
+  };
+};
+
+export default connect(mapStateToProps)(TracksTable);
