@@ -4,7 +4,8 @@ import {
   Cursors,
   SkinRegion,
   GenLetterWidths,
-  PlaylistStyle
+  PlaylistStyle,
+  SkinGenExColors
 } from "../types";
 import { createSelector } from "reselect";
 
@@ -43,6 +44,7 @@ export interface DisplayState {
   skinGenLetterWidths: GenLetterWidths | null;
   skinColors: string[]; // Theoretically this could be a tuple of a specific length
   skinPlaylistStyle: PlaylistStyle | null;
+  skinGenExColors: SkinGenExColors;
   working: boolean;
   closed: boolean;
   loading: boolean;
@@ -50,6 +52,31 @@ export interface DisplayState {
   zIndex: number;
   dummyVizData: null; // TODO: Figure out what kind of data this actually is.
 }
+
+const defaultSkinGenExColors = {
+  itemBackground: "rgb(0,0,0)",
+  itemForeground: "rgb(0,255,0)",
+  windowBackground: "rgb(56,55,87)",
+  buttonText: "rgb(57,57,66)",
+  windowText: "rgb(255,255,255)",
+  divider: "rgb(117,116,139)",
+  playlistSelection: "rgb(0,0,198)",
+  listHeaderBackground: "rgb(72,72,120)",
+  listHeaderText: "rgb(255,255,255)",
+  listHeaderFrameTopAndLeft: "rgb(108,108,180)",
+  listHeaderFrameBottomAndRight: "rgb(36,36,60)",
+  listHeaderFramePressed: "rgb(18,18,30)",
+  listHeaderDeadArea: "rgb(36,36,60)",
+  scrollbarOne: "rgb(36,36,60)",
+  scrollbarTwo: "rgb(36,36,60)",
+  pressedScrollbarOne: "rgb(121,130,150)",
+  pressedScrollbarTwo: "rgb(78,88,110)",
+  scrollbarDeadArea: "rgb(36,36,60)",
+  listTextHighlighted: "rgb(0,198,255)",
+  listTextHighlightedBackground: "rgb(0,198,255)",
+  listTextSelected: "rgb(0,198,255)",
+  listTextSelectedBackground: "rgb(0,198,255)"
+};
 
 const defaultDisplayState = {
   doubled: false,
@@ -68,6 +95,7 @@ const defaultDisplayState = {
   dummyVizData: null,
   playlistScrollPosition: 0,
   skinGenLetterWidths: null, // TODO: Get the default value for this?
+  skinGenExColors: defaultSkinGenExColors,
   additionalVisualizers: [],
   zIndex: 0
 };
@@ -84,7 +112,8 @@ const display = (
         skinCursors,
         skinPlaylistStyle,
         skinRegion,
-        skinGenLetterWidths
+        skinGenLetterWidths,
+        skinGenExColors
       } = defaultDisplayState;
       return {
         ...state,
@@ -93,7 +122,8 @@ const display = (
         skinCursors,
         skinPlaylistStyle,
         skinRegion,
-        skinGenLetterWidths
+        skinGenLetterWidths,
+        skinGenExColors
       };
 
     case TOGGLE_DOUBLESIZE_MODE:
@@ -126,7 +156,8 @@ const display = (
         skinPlaylistStyle: data.skinPlaylistStyle,
         skinCursors: data.skinCursors,
         skinRegion: data.skinRegion,
-        skinGenLetterWidths: data.skinGenLetterWidths
+        skinGenLetterWidths: data.skinGenLetterWidths,
+        skinGenExColors: data.skinGenExColors || defaultSkinGenExColors
       };
     case TOGGLE_VISUALIZER_STYLE:
       return {

@@ -1,0 +1,81 @@
+#webamp-media-library {
+    font-size: 10px;
+    font-family: "MS Sans Serif", "Segoe UI", sans-serif;
+    -webkit-font-smoothing: none;
+    padding-right: 2px;
+    padding-bottom: 3px;
+}
+
+#webamp-media-library input {
+    height: 15px;
+    border: none;
+    background-color: inherit;
+    padding: 0;
+}
+
+#webamp-media-library th {
+    font-weight: normal;
+    text-align: left;
+    padding-left: 5px;
+    white-space: nowrap;
+    height: 14px;
+}
+
+#webamp-media-library td {
+    white-space: nowrap;
+}
+#webamp-media-library ul {
+    list-style: none;
+}
+
+#webamp-media-library ul {
+    padding: 0;
+    margin: 0;
+}
+
+#webamp-media-library ul li ul {
+    padding-left: 10px;
+}
+
+#webamp-media-library .webamp-media-library-table {
+    width: 100%;
+    border-spacing: unset;
+}
+#webamp-media-library .webamp-media-library-vertical-divider {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    cursor: col-resize;
+}
+
+#webamp-media-library .webamp-media-library-vertical-divider-line {
+    width: 1px;
+    height: 100%;
+}
+
+#webamp-media-library .webamp-media-library-horizontal-divider {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 0px;
+    padding-right: 0px;
+    cursor: row-resize;
+}
+
+#webamp-media-library .webamp-media-library-horizontal-divider-line {
+    height: 1px;
+    width: 100%;
+}
+
+#webamp-media-library button {
+    border: none;
+    color: inherit;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    height: 18px;
+    cursor: inherit;
+    /* TODO: I think only the center is supposed to stretch */
+    background-size: 100% 18px;
+}

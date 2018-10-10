@@ -96,6 +96,19 @@ const defaultWindowsState: WindowsState = {
       generic: false,
       hotkey: "Alt+E",
       position: { x: 0, y: 0 }
+    },
+    [WINDOWS.MEDIA_LIBRARY]: {
+      title: "Winamp Library",
+      size: [0, 0],
+      open: true,
+      hidden: false,
+      shade: false,
+      canResize: true,
+      canShade: false,
+      canDouble: false,
+      generic: false,
+      hotkey: "Alt+E",
+      position: { x: 0, y: 0 }
     }
   },
   browserWindowSize: { width: 0, height: 0 }

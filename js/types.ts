@@ -50,6 +50,31 @@ export type SkinImages = { [sprite: string]: string };
 // TODO: type these keys
 export type SkinRegion = { [windowName: string]: string[] };
 
+export interface SkinGenExColors {
+  itemBackground: string;
+  itemForeground: string;
+  windowBackground: string;
+  buttonText: string;
+  windowText: string;
+  divider: string;
+  playlistSelection: string;
+  listHeaderBackground: string;
+  listHeaderText: string;
+  listHeaderFrameTopAndLeft: string;
+  listHeaderFrameBottomAndRight: string;
+  listHeaderFramePressed: string;
+  listHeaderDeadArea: string;
+  scrollbarOne: string;
+  scrollbarTwo: string;
+  pressedScrollbarOne: string;
+  pressedScrollbarTwo: string;
+  scrollbarDeadArea: string;
+  listTextHighlighted: string;
+  listTextHighlightedBackground: string;
+  listTextSelected: string;
+  listTextSelectedBackground: string;
+}
+
 export type WindowId = string;
 
 // TODO: Fill these out once we actually use them.
@@ -60,6 +85,7 @@ type SkinData = {
   skinCursors: Cursors;
   skinRegion: SkinRegion;
   skinGenLetterWidths: GenLetterWidths;
+  skinGenExColors: SkinGenExColors | null;
 };
 
 export type Action =

@@ -13,6 +13,7 @@ import WindowManager from "./WindowManager";
 import MainWindow from "./MainWindow";
 import PlaylistWindow from "./PlaylistWindow";
 import EqualizerWindow from "./EqualizerWindow";
+import MediaLibraryWindow from "./MediaLibraryWindow";
 import Skin from "./Skin";
 
 import "../../css/webamp.css";
@@ -116,6 +117,12 @@ class App extends React.Component {
               analyser={media.getAnalyser()}
             />
           );
+        case WINDOWS.MEDIA_LIBRARY:
+          return (
+            <MediaLibraryWindow
+              ref={component => this._gotRef(id, component)}
+            />
+          );
         default:
           if (!w.generic) {
             throw new Error("Tried to render an unknown window:", id);
@@ -123,7 +130,7 @@ class App extends React.Component {
           const Component = genWindowComponents[id];
           return (
             <Component
-              chromeRef={component => this._gotRef(id, component)}
+              ref={component => this._gotRef(id, component)}
               title={w.title}
               windowId={id}
               onFocusedKeyDown={listener => this._emitter.on(id, listener)}

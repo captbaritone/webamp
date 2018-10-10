@@ -430,6 +430,10 @@ export const getSkinPlaylistStyle = (state: AppState): PlaylistStyle => {
   );
 };
 
+export const getSkinGenExColors = (state: AppState) => {
+  return state.display.skinGenExColors;
+};
+
 export const getVisualizerStyle = (state: AppState) =>
   fromDisplay.getVisualizerStyle(state.display);
 
