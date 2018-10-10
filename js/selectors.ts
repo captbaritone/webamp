@@ -5,7 +5,8 @@ import {
   WindowId,
   WindowInfo,
   LoadedURLTrack,
-  WindowPositions
+  WindowPositions,
+  PlaylistStyle
 } from "./types";
 import { createSelector } from "reselect";
 import * as Utils from "./utils";
@@ -64,9 +65,14 @@ const getOrderedTrackObjects = createSelector(
   (tracks, trackOrder): PlaylistTrack[] => trackOrder.map(id => tracks[id])
 );
 
+export const getSelectedTrackIds = (state: AppState): Set<number> => {
+  return state.playlist.selectedTracks;
+};
+
 export const getSelectedTrackObjects = createSelector(
   getOrderedTrackObjects,
-  tracks => tracks.filter(track => track.selected)
+  getSelectedTrackIds,
+  (tracks, selectedIds) => tracks.filter(track => selectedIds.has(track.id))
 );
 
 // If a duration is `null`, it counts as zero, which seems fine enough.
@@ -405,7 +411,7 @@ export const getWindowsInfo = createSelector(
 
 export const getWindowGraph = createSelector(getWindowsInfo, generateGraph);
 
-export const getSkinPlaylistStyle = (state: AppState) => {
+export const getSkinPlaylistStyle = (state: AppState): PlaylistStyle => {
   return (
     state.display.skinPlaylistStyle || {
       normal: "#00FF00",

@@ -7,10 +7,30 @@ import {
   SHIFT_CLICKED_TRACK,
   PLAY_TRACK
 } from "../../actionTypes";
-import { getCurrentTrackId, getSkinPlaylistStyle } from "../../selectors";
+import * as Selectors from "../../selectors";
+import { AppState, Dispatch, PlaylistStyle } from "../../types";
 
-class TrackCell extends React.Component {
-  _onMouseDown = e => {
+interface OwnProps {
+  id: number;
+  index: number;
+  handleMoveClick: (e: React.MouseEvent<HTMLDivElement>) => void;
+}
+
+interface StateProps {
+  selected: boolean;
+  current: boolean;
+  skinPlaylistStyle: PlaylistStyle;
+}
+
+interface DispatchProps {
+  shiftClick: (e: React.MouseEvent<HTMLDivElement>) => void;
+  ctrlClick: (e: React.MouseEvent<HTMLDivElement>) => void;
+  click: () => void;
+  onDoubleClick: () => void;
+}
+
+class TrackCell extends React.Component<OwnProps & StateProps & DispatchProps> {
+  _onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.shiftKey) {
       this.props.shiftClick(e);
       return;
@@ -20,7 +40,7 @@ class TrackCell extends React.Component {
     }
 
     if (!this.props.selected) {
-      this.props.click(e);
+      this.props.click();
     }
 
     this.props.handleMoveClick(e);
@@ -34,9 +54,9 @@ class TrackCell extends React.Component {
       children,
       onDoubleClick
     } = this.props;
-    const style = {
-      backgroundColor: selected ? skinPlaylistStyle.selectedbg : null,
-      color: current ? skinPlaylistStyle.current : null
+    const style: React.CSSProperties = {
+      backgroundColor: selected ? skinPlaylistStyle.selectedbg : undefined,
+      color: current ? skinPlaylistStyle.current : undefined
     };
     return (
       <div
@@ -53,20 +73,18 @@ class TrackCell extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  const {
-    playlist: { tracks }
-  } = state;
-  const current = getCurrentTrackId(state) === ownProps.id;
-  const track = tracks[ownProps.id];
+const mapStateToProps = (state: AppState, ownProps: OwnProps): StateProps => {
   return {
-    skinPlaylistStyle: getSkinPlaylistStyle(state),
-    selected: track.selected,
-    current
+    skinPlaylistStyle: Selectors.getSkinPlaylistStyle(state),
+    selected: Selectors.getSelectedTrackIds(state).has(ownProps.id),
+    current: Selectors.getCurrentTrackId(state) === ownProps.id
   };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (
+  dispatch: Dispatch,
+  ownProps: OwnProps
+): DispatchProps => ({
   shiftClick: e => {
     e.preventDefault();
     return dispatch({ type: SHIFT_CLICKED_TRACK, index: ownProps.index });

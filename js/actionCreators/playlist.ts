@@ -1,9 +1,5 @@
 import { TRACK_HEIGHT } from "../constants";
-import {
-  getScrollOffset,
-  getOverflowTrackCount,
-  getSelectedTrackObjects
-} from "../selectors";
+import * as Selectors from "../selectors";
 
 import { clamp, sort, findLastIndex } from "../utils";
 import {
@@ -21,31 +17,29 @@ import { Dispatchable } from "../types";
 export function cropPlaylist(): Dispatchable {
   return (dispatch, getState) => {
     const state = getState();
-    if (getSelectedTrackObjects(state).length === 0) {
+    if (Selectors.getSelectedTrackObjects(state).length === 0) {
       return;
     }
+    const selectedTrackIds = Selectors.getSelectedTrackIds(state);
     const {
-      playlist: { tracks }
-    } = getState();
+      playlist: { trackOrder }
+    } = state;
     dispatch({
       type: REMOVE_TRACKS,
       // @ts-ignore The keys are numbers, but TypeScript does not trust us.
       // https://github.com/Microsoft/TypeScript/pull/12253#issuecomment-263132208
-      ids: Object.keys(tracks).filter(id => !tracks[id].selected)
+      ids: trackOrder.filter(id => !selectedTrackIds.has(id))
     });
   };
 }
 
 export function removeSelectedTracks(): Dispatchable {
   return (dispatch, getState) => {
-    const {
-      playlist: { tracks }
-    } = getState();
     dispatch({
       type: REMOVE_TRACKS,
       // @ts-ignore The keys are numbers, but TypeScript does not trust us.
       // https://github.com/Microsoft/TypeScript/pull/12253#issuecomment-263132208
-      ids: Object.keys(tracks).filter(id => tracks[id].selected)
+      ids: Array.from(Selectors.getSelectedTrackIds(getState()))
     });
   };
 }
@@ -83,8 +77,8 @@ export function setPlaylistScrollPosition(position: number): Dispatchable {
 export function scrollNTracks(n: number): Dispatchable {
   return (dispatch, getState) => {
     const state = getState();
-    const overflow = getOverflowTrackCount(state);
-    const currentOffset = getScrollOffset(state);
+    const overflow = Selectors.getOverflowTrackCount(state);
+    const currentOffset = Selectors.getScrollOffset(state);
     const position = overflow ? clamp((currentOffset + n) / overflow, 0, 1) : 0;
     return dispatch({
       type: SET_PLAYLIST_SCROLL_POSITION,
@@ -97,7 +91,7 @@ export function scrollPlaylistByDelta(e: MouseWheelEvent): Dispatchable {
   e.preventDefault();
   return (dispatch, getState) => {
     const state = getState();
-    if (getOverflowTrackCount(state)) {
+    if (Selectors.getOverflowTrackCount(state)) {
       e.stopPropagation();
     }
     const totalPixelHeight = state.playlist.trackOrder.length * TRACK_HEIGHT;
@@ -123,18 +117,20 @@ export function scrollDownFourTracks(): Dispatchable {
 
 export function dragSelected(offset: number): Dispatchable {
   return (dispatch, getState) => {
+    const state = getState();
     const {
       playlist: { trackOrder, tracks }
-    } = getState();
+    } = state;
+    const selectedIds = Selectors.getSelectedTrackIds(state);
     const firstSelected = trackOrder.findIndex(
-      trackId => tracks[trackId] && tracks[trackId].selected
+      trackId => tracks[trackId] && selectedIds.has(trackId)
     );
     if (firstSelected === -1) {
       return;
     }
     const lastSelected = findLastIndex(
       trackOrder,
-      trackId => tracks[trackId] && tracks[trackId].selected
+      trackId => tracks[trackId] && selectedIds.has(trackId)
     );
     if (lastSelected === -1) {
       throw new Error("We found a first selected, but not a last selected.");

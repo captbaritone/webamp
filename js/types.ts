@@ -282,7 +282,7 @@ export type Action =
     }
   | {
       type: "REMOVE_TRACKS";
-      ids: string[];
+      ids: number[];
     }
   | {
       type: "REVERSE_LIST";
@@ -438,7 +438,6 @@ export interface PlaylistTrack {
   url: string;
   defaultName: string | null;
   albumArtUrl?: string | null;
-  selected: boolean;
   mediaTagsRequestStatus: MediaTagRequestStatus;
   duration: number | null;
 }

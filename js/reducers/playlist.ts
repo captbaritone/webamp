@@ -31,14 +31,24 @@ export interface PlaylistState {
   tracks: { [id: string]: PlaylistTrack };
   lastSelectedIndex: number | null;
   currentTrack: number | null;
+  selectedTracks: Set<number>;
 }
 
 const defaultPlaylistState: PlaylistState = {
   trackOrder: [],
   currentTrack: null,
   tracks: {},
-  lastSelectedIndex: null
+  lastSelectedIndex: null,
+  selectedTracks: new Set()
 };
+
+function toggleSetMembership<T>(set: Set<T>, value: T): void {
+  if (set.has(value)) {
+    set.delete(value);
+  } else {
+    set.add(value);
+  }
+}
 
 const playlist = (
   state: PlaylistState = defaultPlaylistState,
@@ -46,27 +56,18 @@ const playlist = (
 ): PlaylistState => {
   switch (action.type) {
     case CLICKED_TRACK:
-      const clickedId = String(state.trackOrder[action.index]);
       return {
         ...state,
-        tracks: objectMap<PlaylistTrack, PlaylistTrack>(
-          state.tracks,
-          (track, id) => ({
-            ...track,
-            selected: id === clickedId
-          })
-        ),
+        selectedTracks: new Set([state.trackOrder[action.index]]),
         lastSelectedIndex: action.index
       };
     case CTRL_CLICKED_TRACK:
       const id = state.trackOrder[action.index];
-      const t = state.tracks[id];
+      const newSelectedTracks = new Set(state.selectedTracks);
+      toggleSetMembership(newSelectedTracks, id);
       return {
         ...state,
-        tracks: {
-          ...state.tracks,
-          [id]: { ...t, selected: !t.selected }
-        },
+        selectedTracks: newSelectedTracks,
         // Using this as the lastClickedIndex is kinda funny, since you
         // may have just _un_selected the track. However, this is what
         // Winamp 2 does, so we'll copy it.
@@ -79,45 +80,26 @@ const playlist = (
       const clickedIndex = action.index;
       const start = Math.min(clickedIndex, state.lastSelectedIndex);
       const end = Math.max(clickedIndex, state.lastSelectedIndex);
-      const selected = new Set(state.trackOrder.slice(start, end + 1));
+      const selectedTracks = new Set(state.trackOrder.slice(start, end + 1));
       return {
         ...state,
-        tracks: objectMap<PlaylistTrack, PlaylistTrack>(
-          state.tracks,
-          (track, trackId) => ({
-            ...track,
-            selected: selected.has(Number(trackId))
-          })
-        )
+        selectedTracks
       };
     case SELECT_ALL:
       return {
         ...state,
-        tracks: objectMap<PlaylistTrack, PlaylistTrack>(
-          state.tracks,
-          track => ({ ...track, selected: true })
-        )
+        selectedTracks: new Set(state.trackOrder)
       };
     case SELECT_ZERO:
       return {
         ...state,
-        tracks: objectMap<PlaylistTrack, PlaylistTrack>(
-          state.tracks,
-          track => ({
-            ...track,
-            selected: false
-          })
-        )
+        selectedTracks: new Set()
       };
     case INVERT_SELECTION:
       return {
         ...state,
-        tracks: objectMap<PlaylistTrack, PlaylistTrack>(
-          state.tracks,
-          track => ({
-            ...track,
-            selected: !track.selected
-          })
+        selectedTracks: new Set(
+          state.trackOrder.filter(id => !state.selectedTracks.has(id))
         )
       };
     case REMOVE_ALL_TRACKS:
@@ -127,23 +109,23 @@ const playlist = (
         trackOrder: [],
         currentTrack: null,
         tracks: {},
+        selectedTracks: new Set(),
         lastSelectedIndex: null
       };
     case REMOVE_TRACKS:
       // TODO: Consider disposing of ObjectUrls
-      const actionIds = action.ids.map(Number);
+      const actionIds = new Set(action.ids.map(Number));
       const { currentTrack } = state;
       return {
         ...state,
-        trackOrder: state.trackOrder.filter(
-          trackId => !actionIds.includes(trackId)
-        ),
-        currentTrack: actionIds.includes(Number(currentTrack))
-          ? null
-          : currentTrack,
+        trackOrder: state.trackOrder.filter(trackId => !actionIds.has(trackId)),
+        currentTrack: actionIds.has(Number(currentTrack)) ? null : currentTrack,
         tracks: objectFilter(
           state.tracks,
-          (track, trackId) => !action.ids.includes(trackId)
+          (track, trackId) => !actionIds.has(Number(trackId))
+        ),
+        selectedTracks: new Set(
+          Array.from(state.selectedTracks).filter(id => actionIds.has(id))
         ),
         // TODO: This could probably be made to work, but we clear it just to be safe.
         lastSelectedIndex: null
@@ -177,7 +159,6 @@ const playlist = (
           ...state.tracks,
           [action.id]: {
             id: action.id,
-            selected: false,
             defaultName: action.defaultName || null,
             duration: action.duration == null ? null : action.duration,
             url: action.url,
@@ -262,7 +243,7 @@ const playlist = (
         ...state,
         trackOrder: moveSelected(
           state.trackOrder,
-          i => state.tracks[state.trackOrder[i]].selected,
+          i => state.selectedTracks.has(state.trackOrder[i]),
           action.offset
         ),
         // TODO: This could probably be made to work, but we clear it just to be safe.
