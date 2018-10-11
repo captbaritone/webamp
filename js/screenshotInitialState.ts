@@ -53,7 +53,7 @@ const initialState: DeepPartial<AppState> = {
     kbps: "128",
     khz: "44",
     length: 5,
-    timeElapsed: 1, // This does not seem to work
+    timeElapsed: 3,
     channels: 2
   },
   playlist: {
