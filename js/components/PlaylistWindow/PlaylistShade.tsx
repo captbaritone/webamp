@@ -19,8 +19,23 @@ import {
 import { togglePlaylistShadeMode, closeWindow } from "../../actionCreators";
 import CharacterString from "../CharacterString";
 import PlaylistResizeTarget from "./PlaylistResizeTarget";
+import { AppState, WindowId, Dispatch } from "../../types";
 
-class PlaylistShade extends React.Component {
+interface StateProps {
+  name: string | null;
+  length: number | null;
+  playlistSize: [number, number];
+  focused: WindowId;
+  trackOrder: number[];
+}
+
+interface DispatchProps {
+  focusPlaylist: () => void;
+  close: () => void;
+  toggleShade: () => void;
+}
+
+class PlaylistShade extends React.Component<StateProps & DispatchProps> {
   _addedWidth() {
     return this.props.playlistSize[0] * WINDOW_RESIZE_SEGMENT_WIDTH;
   }
@@ -81,13 +96,19 @@ class PlaylistShade extends React.Component {
   }
 }
 
-const mapDispatchToProps = {
-  focusPlaylist: () => ({ type: SET_FOCUSED_WINDOW, window: WINDOWS.PLAYLIST }),
-  close: () => closeWindow("playlist"),
-  toggleShade: () => togglePlaylistShadeMode()
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
+  return {
+    focusPlaylist: () =>
+      dispatch({
+        type: SET_FOCUSED_WINDOW,
+        window: WINDOWS.PLAYLIST
+      }),
+    close: () => dispatch(closeWindow("playlist")),
+    toggleShade: () => dispatch(togglePlaylistShadeMode())
+  };
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state: AppState): StateProps => {
   const {
     windows: { focused },
     media: { length }
