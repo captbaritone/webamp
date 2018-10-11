@@ -1,62 +1,42 @@
 import React from "react";
 import classnames from "classnames";
 
-let cursorX;
-let cursorY;
-window.document.addEventListener("mousemove", e => {
-  cursorX = e.pageX;
-  cursorY = e.pageY;
-});
+import PlaylistMenuEnry from "./PlaylistMenuEntry";
 
-// We implement hover ourselves, because we hate ourselves and https://stackoverflow.com/a/13259049/1263117
-class Entry extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hover: false };
-  }
-
-  componentDidMount() {
-    const domRect = this.node.getBoundingClientRect();
-    this.setState({
-      hover:
-        cursorX >= domRect.left &&
-        cursorX <= domRect.right &&
-        cursorY >= domRect.top &&
-        cursorY <= domRect.bottom
-    });
-  }
-
-  render() {
-    return (
-      <li
-        ref={node => (this.node = node)}
-        onMouseEnter={() => this.setState({ hover: true })}
-        onMouseLeave={() => this.setState({ hover: false })}
-        className={classnames({ hover: this.state.hover })}
-      >
-        {this.props.children}
-      </li>
-    );
-  }
+interface Props {
+  id: string;
 }
 
-export default class PlaylistMenu extends React.Component {
-  constructor(props) {
+interface State {
+  selected: boolean;
+}
+
+export default class PlaylistMenu extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = { selected: false };
   }
 
-  _handleClick = e => {
+  _handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const { target } = e;
+    if (!(target instanceof Element)) {
+      // TypeScript doesn't realize this will always be true
+      return;
+    }
     const { selected } = this.state;
     if (selected) {
       this.setState({ selected: false });
       return;
     }
 
-    const handleClickOut = ee => {
+    const handleClickOut = (ee: MouseEvent) => {
+      const clickOutTarget = ee.target;
+      if (!(clickOutTarget instanceof Element)) {
+        // TypeScript doesn't realize this will always be true
+        return;
+      }
       // If the click is _not_ inside the menu.
-      if (!target.contains(ee.target)) {
+      if (!target.contains(clickOutTarget)) {
         // If we've clicked on a Context Menu spawed inside this menu, it will
         // register as an external click. However, hiding the menu will remove
         // the Context Menu from the DOM. Therefore, we wait until the next
@@ -90,7 +70,7 @@ export default class PlaylistMenu extends React.Component {
         {this.state.selected && (
           <ul>
             {React.Children.map(this.props.children, (child, i) => (
-              <Entry key={i}>{child}</Entry>
+              <PlaylistMenuEnry key={i}>{child}</PlaylistMenuEnry>
             ))}
           </ul>
         )}
