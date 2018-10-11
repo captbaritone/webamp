@@ -3,24 +3,28 @@ import { AppState } from "./types";
 
 const defaultTracksState = {
   "0": {
+    id: 0,
     title: "Llama Whipping Intro",
     artist: "DJ Mike Llama",
     duration: 5,
     url: ""
   },
   "1": {
+    id: 1,
     title: "Rock Is Dead",
     artist: "Marilyn Manson",
     duration: 191, // 3:11
     url: ""
   },
   "2": {
+    id: 2,
     title: "Spybreak! (Short One)",
     artist: "Propellerheads",
     duration: 240, // 4:00
     url: ""
   },
   "3": {
+    id: 3,
     title: "Bad Blood",
     artist: "Ministry",
     duration: 300, // 5:00
