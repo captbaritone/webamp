@@ -15,20 +15,12 @@ import {
   SET_TRACK_ORDER,
   PLAY_TRACK,
   BUFFER_TRACK,
-  DRAG_SELECTED,
-  SET_MEDIA_TAGS,
-  SET_MEDIA_DURATION,
-  MEDIA_TAG_REQUEST_INITIALIZED,
-  MEDIA_TAG_REQUEST_FAILED
+  DRAG_SELECTED
 } from "../actionTypes";
-import { MEDIA_TAG_REQUEST_STATUS } from "../constants";
-
-import { filenameFromUrl } from "../fileUtils";
-import { shuffle, moveSelected, objectMap, objectFilter } from "../utils";
+import { shuffle, moveSelected } from "../utils";
 
 export interface PlaylistState {
   trackOrder: number[];
-  tracks: { [id: string]: PlaylistTrack };
   lastSelectedIndex: number | null;
   currentTrack: number | null;
   selectedTracks: Set<number>;
@@ -37,7 +29,6 @@ export interface PlaylistState {
 const defaultPlaylistState: PlaylistState = {
   trackOrder: [],
   currentTrack: null,
-  tracks: {},
   lastSelectedIndex: null,
   selectedTracks: new Set()
 };
@@ -108,7 +99,6 @@ const playlist = (
         ...state,
         trackOrder: [],
         currentTrack: null,
-        tracks: {},
         selectedTracks: new Set(),
         lastSelectedIndex: null
       };
@@ -120,10 +110,6 @@ const playlist = (
         ...state,
         trackOrder: state.trackOrder.filter(trackId => !actionIds.has(trackId)),
         currentTrack: actionIds.has(Number(currentTrack)) ? null : currentTrack,
-        tracks: objectFilter(
-          state.tracks,
-          (track, trackId) => !actionIds.has(Number(trackId))
-        ),
         selectedTracks: new Set(
           Array.from(state.selectedTracks).filter(id => actionIds.has(id))
         ),
@@ -155,83 +141,9 @@ const playlist = (
           Number(action.id),
           ...state.trackOrder.slice(atIndex)
         ],
-        tracks: {
-          ...state.tracks,
-          [action.id]: {
-            id: action.id,
-            defaultName: action.defaultName || null,
-            duration: action.duration == null ? null : action.duration,
-            url: action.url,
-            mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.INITIALIZED
-          }
-        },
         // TODO: This could probably be made to work, but we clear it just to be safe.
         lastSelectedIndex: null
       };
-    case SET_MEDIA: {
-      const newTrack = {
-        ...state.tracks[action.id],
-        duration: action.length
-      };
-      return {
-        ...state,
-        tracks: {
-          ...state.tracks,
-          [action.id]: newTrack
-        }
-      };
-    }
-    case SET_MEDIA_TAGS: {
-      return {
-        ...state,
-        tracks: {
-          ...state.tracks,
-          [action.id]: {
-            ...state.tracks[action.id],
-            mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.COMPLETE,
-            title: action.title,
-            artist: action.artist,
-            album: action.album,
-            albumArtUrl: action.albumArtUrl
-          }
-        }
-      };
-    }
-    case MEDIA_TAG_REQUEST_INITIALIZED:
-      return {
-        ...state,
-        tracks: {
-          ...state.tracks,
-          [action.id]: {
-            ...state.tracks[action.id],
-            mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.INITIALIZED
-          }
-        }
-      };
-    case MEDIA_TAG_REQUEST_FAILED:
-      return {
-        ...state,
-        tracks: {
-          ...state.tracks,
-          [action.id]: {
-            ...state.tracks[action.id],
-            mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.FAILED
-          }
-        }
-      };
-    case SET_MEDIA_DURATION: {
-      const newTrack = {
-        ...state.tracks[action.id],
-        duration: action.duration
-      };
-      return {
-        ...state,
-        tracks: {
-          ...state.tracks,
-          [action.id]: newTrack
-        }
-      };
-    }
     case PLAY_TRACK:
     case BUFFER_TRACK:
       return {
@@ -255,30 +167,3 @@ const playlist = (
 };
 
 export default playlist;
-
-export const getTrackDisplayName = (
-  state: PlaylistState,
-  id: number | null = null
-): string | null => {
-  if (id == null) {
-    return null;
-  }
-  const track = state.tracks[id];
-  if (track == null) {
-    return null;
-  }
-  const { artist, title, defaultName, url } = track;
-  if (artist && title) {
-    return `${artist} - ${title}`;
-  } else if (title) {
-    return title;
-  } else if (defaultName) {
-    return defaultName;
-  } else if (url) {
-    const filename = filenameFromUrl(url);
-    if (filename) {
-      return filename;
-    }
-  }
-  return "???";
-};

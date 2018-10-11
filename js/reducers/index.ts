@@ -9,6 +9,7 @@ import userInput from "./userInput";
 import equalizer from "./equalizer";
 import network from "./network";
 import settings from "./settings";
+import tracks from "./tracks";
 
 const reducer = combineReducers<AppState, Action>({
   userInput,
@@ -18,7 +19,8 @@ const reducer = combineReducers<AppState, Action>({
   equalizer,
   playlist,
   media,
-  network
+  network,
+  tracks
 });
 
 export default reducer;

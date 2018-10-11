@@ -5,20 +5,37 @@ import { getTimeStr } from "../../utils";
 import {
   getVisibleTrackIds,
   getScrollOffset,
-  getNumberOfTracks
+  getNumberOfTracks,
+  getTracks
 } from "../../selectors";
 import { TRACK_HEIGHT } from "../../constants";
 import { SELECT_ZERO } from "../../actionTypes";
 import { dragSelected, scrollPlaylistByDelta } from "../../actionCreators";
 import TrackCell from "./TrackCell";
 import TrackTitle from "./TrackTitle";
+import { Dispatch, AppState, PlaylistTrack } from "../../types";
+import { TracksState } from "../../reducers/tracks";
 
-function getNumberLength(number) {
+interface DispatchProps {
+  selectZero: () => void;
+  scrollPlaylistByDelta: (e: React.WheelEvent<HTMLDivElement>) => void;
+  dragSelected: (offset: number) => void;
+}
+
+interface StateProps {
+  trackIds: number[];
+  offset: number;
+  numberOfTracks: number;
+  tracks: TracksState;
+}
+
+function getNumberLength(number: number): number {
   return number.toString().length;
 }
 
-class TrackList extends React.Component {
-  _renderTracks(format) {
+class TrackList extends React.Component<DispatchProps & StateProps> {
+  _node?: HTMLDivElement | null;
+  _renderTracks(format: (id: number, i: number) => JSX.Element | string) {
     return this.props.trackIds.map((id, i) => (
       <TrackCell
         key={id}
@@ -31,14 +48,14 @@ class TrackList extends React.Component {
     ));
   }
 
-  _handleMoveClick = e => {
+  _handleMoveClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!this._node) {
       return;
     }
     const { top, bottom, left, right } = this._node.getBoundingClientRect();
     const mouseStart = e.clientY;
     let lastDiff = 0;
-    const handleMouseMove = ee => {
+    const handleMouseMove = (ee: MouseEvent) => {
       const { clientY: y, clientX: x } = ee;
       if (y < top || y > bottom || x < left || x > right) {
         // Mouse is outside the track list
@@ -61,7 +78,7 @@ class TrackList extends React.Component {
   render() {
     const { tracks, offset } = this.props;
     const maxTrackNumberLength = getNumberLength(this.props.numberOfTracks);
-    const paddedTrackNumForIndex = i =>
+    const paddedTrackNumForIndex = (i: number) =>
       (i + 1 + offset).toString().padStart(maxTrackNumberLength, "\u00A0");
     return (
       <div
@@ -86,16 +103,17 @@ class TrackList extends React.Component {
   }
 }
 
-const mapDispatchToProps = {
-  selectZero: () => ({ type: SELECT_ZERO }),
-  dragSelected,
-  scrollPlaylistByDelta
-};
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
+  selectZero: () => dispatch({ type: SELECT_ZERO }),
+  dragSelected: (offset: number) => dispatch(dragSelected(offset)),
+  scrollPlaylistByDelta: (e: React.WheelEvent<HTMLDivElement>) =>
+    dispatch(scrollPlaylistByDelta(e))
+});
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: AppState): StateProps => ({
   offset: getScrollOffset(state),
   trackIds: getVisibleTrackIds(state),
-  tracks: state.playlist.tracks,
+  tracks: getTracks(state),
   numberOfTracks: getNumberOfTracks(state)
 });
 

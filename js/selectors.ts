@@ -20,7 +20,7 @@ import {
   MEDIA_TAG_REQUEST_STATUS
 } from "./constants";
 import { createPlaylistURL } from "./playlistHtml";
-import * as fromPlaylist from "./reducers/playlist";
+import * as fromTracks from "./reducers/tracks";
 import * as fromDisplay from "./reducers/display";
 import * as fromEqualizer from "./reducers/equalizer";
 import * as fromMedia from "./reducers/media";
@@ -45,8 +45,15 @@ export const getEqfData = createSelector(getSliders, sliders => {
   return eqfData;
 });
 
-export const getTracks = (state: AppState) => state.playlist.tracks;
-const getTrackOrder = (state: AppState) => state.playlist.trackOrder;
+export const getTracks = (state: AppState) => state.tracks;
+
+export const getTrackUrl = (state: AppState) => {
+  return (id: number): string | null => {
+    const track = state.tracks[id];
+    return track == null ? null : track.url;
+  };
+};
+export const getTrackOrder = (state: AppState) => state.playlist.trackOrder;
 
 export const getTrackCount = createSelector(
   getTrackOrder,
@@ -216,17 +223,17 @@ export const getVisibleTracks = createSelector(
 export const getPlaylist = (state: AppState) => state.playlist;
 
 export const getDuration = (state: AppState): number | null => {
-  const { playlist } = state;
+  const { playlist, tracks } = state;
   if (playlist.currentTrack == null) {
     return null;
   }
-  const currentTrack = playlist.tracks[playlist.currentTrack];
+  const currentTrack = tracks[playlist.currentTrack];
   return currentTrack && currentTrack.duration;
 };
 
-export const getTrackDisplayName = createSelector(getPlaylist, playlist => {
+export const getTrackDisplayName = createSelector(getTracks, tracks => {
   return (trackId: number | null) =>
-    fromPlaylist.getTrackDisplayName(playlist, trackId);
+    fromTracks.getTrackDisplayName(tracks, trackId);
 });
 
 export const getCurrentTrackDisplayName = createSelector(
@@ -242,9 +249,9 @@ export const getMediaIsPlaying = (state: AppState) =>
 
 export const getCurrentTrack = createSelector(
   getCurrentTrackId,
-  getPlaylist,
-  (trackId, playlist): PlaylistTrack | null => {
-    return trackId == null ? null : playlist.tracks[trackId];
+  getTracks,
+  (trackId, tracks): PlaylistTrack | null => {
+    return trackId == null ? null : tracks[trackId];
   }
 );
 export const getCurrentlyPlayingTrackIdIfLoaded = createSelector(

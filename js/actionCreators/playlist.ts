@@ -63,8 +63,9 @@ export function randomizeList(): Dispatchable {
 export function sortListByTitle(): Dispatchable {
   return (dispatch, getState) => {
     const state = getState();
-    const trackOrder = sort(state.playlist.trackOrder, i =>
-      `${state.playlist.tracks[i].title}`.toLowerCase()
+    const tracks = Selectors.getTracks(state);
+    const trackOrder = sort(Selectors.getTrackOrder(state), i =>
+      `${tracks[i].title}`.toLowerCase()
     );
     return dispatch({ type: SET_TRACK_ORDER, trackOrder });
   };
@@ -87,7 +88,9 @@ export function scrollNTracks(n: number): Dispatchable {
   };
 }
 
-export function scrollPlaylistByDelta(e: MouseWheelEvent): Dispatchable {
+export function scrollPlaylistByDelta(
+  e: React.WheelEvent<HTMLDivElement>
+): Dispatchable {
   e.preventDefault();
   return (dispatch, getState) => {
     const state = getState();
@@ -118,9 +121,8 @@ export function scrollDownFourTracks(): Dispatchable {
 export function dragSelected(offset: number): Dispatchable {
   return (dispatch, getState) => {
     const state = getState();
-    const {
-      playlist: { trackOrder, tracks }
-    } = state;
+    const tracks = Selectors.getTracks(state);
+    const trackOrder = Selectors.getTrackOrder(state);
     const selectedIds = Selectors.getSelectedTrackIds(state);
     const firstSelected = trackOrder.findIndex(
       trackId => tracks[trackId] && selectedIds.has(trackId)

@@ -22,13 +22,7 @@ import {
 } from "./actionTypes";
 import { next as nextTrack } from "./actionCreators";
 import * as Selectors from "./selectors";
-import {
-  MiddlewareStore,
-  Dispatchable,
-  Action,
-  Dispatch,
-  Slider
-} from "./types";
+import { MiddlewareStore, Action, Dispatch } from "./types";
 import { objectForEach } from "./utils";
 
 export default (media: Media) => (store: MiddlewareStore) => {
@@ -112,16 +106,16 @@ export default (media: Media) => (store: MiddlewareStore) => {
         media.seekToPercentComplete(action.percent);
         break;
       case PLAY_TRACK: {
-        const track = store.getState().playlist.tracks[action.id];
-        if (track != null) {
-          media.loadFromUrl(track.url, true);
+        const url = Selectors.getTrackUrl(store.getState())(action.id);
+        if (url != null) {
+          media.loadFromUrl(url, true);
         }
         break;
       }
       case BUFFER_TRACK: {
-        const track = store.getState().playlist.tracks[action.id];
-        if (track != null) {
-          media.loadFromUrl(track.url, false);
+        const url = Selectors.getTrackUrl(store.getState())(action.id);
+        if (url != null) {
+          media.loadFromUrl(url, false);
         }
         break;
       }

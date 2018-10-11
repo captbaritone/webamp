@@ -7,6 +7,7 @@ import { WindowsState, WindowPositions } from "./reducers/windows";
 import { EqualizerState } from "./reducers/equalizer";
 import { NetworkState } from "./reducers/network";
 import { SerializedStateV1 } from "./serializedStates/v1Types";
+import { TracksState } from "./reducers/tracks";
 
 export {
   WebampWindow,
@@ -451,6 +452,7 @@ export interface AppState {
   playlist: PlaylistState;
   media: MediaState;
   network: NetworkState;
+  tracks: TracksState;
 }
 
 export interface Extras {

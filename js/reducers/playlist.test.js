@@ -4,12 +4,11 @@ import {
   CTRL_CLICKED_TRACK,
   ADD_TRACK_FROM_URL
 } from "../actionTypes";
-import reducer, { getTrackDisplayName } from "./playlist";
+import reducer from "./playlist";
 
 describe("playlist reducer", () => {
   it("can handle adding a track", () => {
     const initialState = {
-      tracks: {},
       trackOrder: [],
       selectedTracks: new Set(),
       lastSelectedIndex: null
@@ -21,15 +20,6 @@ describe("playlist reducer", () => {
       url: "url://some-url"
     });
     expect(nextState).toEqual({
-      tracks: {
-        100: {
-          id: 100,
-          duration: null,
-          defaultName: "My Track Name",
-          mediaTagsRequestStatus: "INITIALIZED",
-          url: "url://some-url"
-        }
-      },
       trackOrder: [100],
       selectedTracks: new Set(),
       lastSelectedIndex: null
@@ -37,10 +27,6 @@ describe("playlist reducer", () => {
   });
   it("defaults to adding new tracks to the end of the list", () => {
     const initialState = {
-      tracks: {
-        2: { id: 2 },
-        3: { id: 3 }
-      },
       trackOrder: [3, 2],
       selectedTracks: new Set(),
       lastSelectedIndex: 0
@@ -52,17 +38,6 @@ describe("playlist reducer", () => {
       url: "url://some-url"
     });
     expect(nextState).toEqual({
-      tracks: {
-        2: { id: 2 },
-        3: { id: 3 },
-        100: {
-          id: 100,
-          duration: null,
-          mediaTagsRequestStatus: "INITIALIZED",
-          defaultName: "My Track Name",
-          url: "url://some-url"
-        }
-      },
       selectedTracks: new Set(),
       trackOrder: [3, 2, 100],
       lastSelectedIndex: null
@@ -70,7 +45,6 @@ describe("playlist reducer", () => {
   });
   it("can handle adding a track at a given index", () => {
     const initialState = {
-      tracks: { 2: { id: 2 }, 3: { id: 3 } },
       selectedTracks: new Set(),
       trackOrder: [3, 2],
       lastSelectedIndex: 0
@@ -83,17 +57,6 @@ describe("playlist reducer", () => {
       atIndex: 1
     });
     expect(nextState).toEqual({
-      tracks: {
-        2: { id: 2 },
-        3: { id: 3 },
-        100: {
-          id: 100,
-          duration: null,
-          mediaTagsRequestStatus: "INITIALIZED",
-          defaultName: "My Track Name",
-          url: "url://some-url"
-        }
-      },
       selectedTracks: new Set(),
       trackOrder: [3, 100, 2],
       lastSelectedIndex: null
@@ -101,7 +64,6 @@ describe("playlist reducer", () => {
   });
   it("can handle clicking a track", () => {
     const initialState = {
-      tracks: { 2: {}, 3: {} },
       trackOrder: [3, 2],
       selectedTracks: new Set(),
       lastSelectedIndex: 0
@@ -112,7 +74,6 @@ describe("playlist reducer", () => {
       index: 1
     });
     expect(nextState).toEqual({
-      tracks: { 2: {}, 3: {} },
       selectedTracks: new Set([2]),
       trackOrder: [3, 2],
       lastSelectedIndex: 1
@@ -120,7 +81,6 @@ describe("playlist reducer", () => {
   });
   it("can handle ctrl-clicking a track", () => {
     const initialState = {
-      tracks: { 2: {}, 3: {} },
       selectedTracks: new Set([2]),
       trackOrder: [3, 2],
       lastSelectedIndex: 1
@@ -131,7 +91,6 @@ describe("playlist reducer", () => {
       index: 0
     });
     expect(nextState).toEqual({
-      tracks: { 2: {}, 3: {} },
       selectedTracks: new Set([2, 3]),
       trackOrder: [3, 2],
       lastSelectedIndex: 0
@@ -139,7 +98,6 @@ describe("playlist reducer", () => {
   });
   it("can handle shift-click", () => {
     const initialState = {
-      tracks: { 0: {}, 1: {}, 2: {}, 3: {} },
       selectedTracks: new Set(),
       trackOrder: [3, 2, 1, 0],
       lastSelectedIndex: 1
@@ -151,57 +109,8 @@ describe("playlist reducer", () => {
     });
     expect(nextState).toEqual({
       lastSelectedIndex: 1,
-      tracks: { 0: {}, 1: {}, 2: {}, 3: {} },
       selectedTracks: new Set([0, 1, 2]),
       trackOrder: [3, 2, 1, 0]
     });
-  });
-});
-
-describe("getTrackDisplayName", () => {
-  const expectDisplayName = (track, expected) => {
-    expect(getTrackDisplayName({ tracks: { "1": track } }, "1")).toBe(expected);
-  };
-  it("uses the artists and title if provided", () => {
-    expectDisplayName(
-      {
-        artist: "Artist",
-        title: "Title",
-        defaultName: "Default Name",
-        url: "https://example.com/dir/filename.mp3"
-      },
-      "Artist - Title"
-    );
-  });
-  it("uses the title if provided", () => {
-    expectDisplayName(
-      {
-        title: "Title",
-        defaultName: "Default Name",
-        url: "https://example.com/dir/filename.mp3"
-      },
-      "Title"
-    );
-  });
-  it("uses a defaultName if provided", () => {
-    expectDisplayName(
-      {
-        defaultName: "Default Name",
-        url: "https://example.com/dir/filename.mp3"
-      },
-      "Default Name"
-    );
-  });
-  it("uses the filename if a URL is provided", () => {
-    expectDisplayName(
-      { url: "https://example.com/dir/filename.mp3" },
-      "filename.mp3"
-    );
-  });
-  it("does not use the filename if a blob URL is provided", () => {
-    expectDisplayName({ url: "blob:foo" }, "???");
-  });
-  it("falls back to '???'", () => {
-    expectDisplayName({}, "???");
   });
 });
