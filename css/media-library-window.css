@@ -1,5 +1,5 @@
 #webamp-media-library {
-    font-size: 10px;
+    font-size: 11px;
     font-family: "MS Sans Serif", "Segoe UI", sans-serif;
     -webkit-font-smoothing: none;
     padding-right: 2px;
@@ -78,4 +78,11 @@
     cursor: inherit;
     /* TODO: I think only the center is supposed to stretch */
     background-size: 100% 18px;
+    min-width: 53px;
+    margin-right: 4px;
+}
+
+#webamp-media-library-track-summary-duration {
+    /* This plus the margin-right on the button add up to 8px; */
+    margin-left: 4px;
 }

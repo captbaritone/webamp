@@ -87,7 +87,9 @@ class TracksTable extends React.Component<StateProps, State> {
           <button>Enqueue</button>
           <button>Play all</button>
           <button>Enqueue all</button>
-          <span>1 item [3:25]</span>
+          <span id="webamp-media-library-track-summary-duration">
+            1 item [3:25]
+          </span>
         </div>
       </div>
     );
