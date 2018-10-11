@@ -8,9 +8,18 @@ import { AppState, PlaylistTrack } from "../../types";
 
 interface StateProps {
   tracks: PlaylistTrack[];
+  filterTracks: (query: string) => PlaylistTrack[];
 }
 
-class TracksTable extends React.Component<StateProps> {
+interface State {
+  filter: string;
+}
+
+class TracksTable extends React.Component<StateProps, State> {
+  constructor(props: StateProps) {
+    super(props);
+    this.state = { filter: "" };
+  }
   render() {
     return (
       <div
@@ -28,6 +37,7 @@ class TracksTable extends React.Component<StateProps> {
             style={{ marginLeft: 12, flexGrow: 1 }}
             type="text"
             className="webamp-media-library-item"
+            onChange={e => this.setState({ filter: e.target.value })}
           />
         </div>
         <div
@@ -51,7 +61,7 @@ class TracksTable extends React.Component<StateProps> {
               </tr>
             </thead>
             <tbody>
-              {this.props.tracks.map(track => {
+              {this.props.filterTracks(this.state.filter).map(track => {
                 return (
                   <tr key={track.id}>
                     <td>{track.artist}</td>
@@ -86,7 +96,8 @@ class TracksTable extends React.Component<StateProps> {
 
 const mapStateToProps = (state: AppState): StateProps => {
   return {
-    tracks: Object.values(Selectors.getTracks(state))
+    tracks: Object.values(Selectors.getTracks(state)),
+    filterTracks: Selectors.getTracksMatchingFilter(state)
   };
 };
 
