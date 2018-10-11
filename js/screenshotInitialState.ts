@@ -1,35 +1,34 @@
+import { DeepPartial } from "redux";
+import { AppState } from "./types";
+
 const defaultTracksState = {
   "0": {
-    selected: false,
     title: "Llama Whipping Intro",
     artist: "DJ Mike Llama",
-    duration: "5",
+    duration: 5,
     url: ""
   },
   "1": {
-    selected: false,
     title: "Rock Is Dead",
     artist: "Marilyn Manson",
-    duration: "191", // 3:11
+    duration: 191, // 3:11
     url: ""
   },
   "2": {
-    selected: true,
     title: "Spybreak! (Short One)",
     artist: "Propellerheads",
-    duration: "240", // 4:00
+    duration: 240, // 4:00
     url: ""
   },
   "3": {
-    selected: false,
     title: "Bad Blood",
     artist: "Ministry",
-    duration: "300", // 5:00
+    duration: 300, // 5:00
     url: ""
   }
 };
 
-const initialState = {
+const initialState: DeepPartial<AppState> = {
   equalizer: {
     sliders: {
       "60": 52,
@@ -47,18 +46,18 @@ const initialState = {
   },
   media: {
     status: "PLAYING",
-    kbps: 128,
-    khz: 44,
+    kbps: "128",
+    khz: "44",
     length: 5,
     timeElapsed: 1, // This does not seem to work
-    channels: 2,
-    name: "1. DJ Mike Llama - Llama Whippin' Intro"
+    channels: 2
   },
   playlist: {
-    tracks: defaultTracksState,
     trackOrder: [0, 1, 2, 3],
-    currentTrack: 0
+    currentTrack: 0,
+    selectedTracks: new Set([2])
   },
+  tracks: defaultTracksState,
   display: {
     working: false
   }
