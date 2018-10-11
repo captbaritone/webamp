@@ -21,6 +21,8 @@ import { TOGGLE_TIME_MODE, TOGGLE_LLAMA_MODE } from "./actionTypes";
 import { arraysAreEqual } from "./utils";
 import { Dispatch } from "./types";
 
+const IGNORE_EVENTS_FROM_TAGS = new Set(["input", "textarea", "select"]);
+
 export function bindHotkeys(dispatch: Dispatch): () => void {
   let keylog: number[] = [];
   const trigger = [
@@ -35,6 +37,12 @@ export function bindHotkeys(dispatch: Dispatch): () => void {
   ];
 
   const listener = (e: KeyboardEvent) => {
+    if (
+      e.target instanceof Element &&
+      IGNORE_EVENTS_FROM_TAGS.has(e.target.tagName.toLowerCase())
+    ) {
+      return;
+    }
     if (e.ctrlKey) {
       switch (e.keyCode) {
         case 68: // CTRL+D
