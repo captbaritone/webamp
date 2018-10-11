@@ -11,7 +11,8 @@ import {
   segment,
   moveSelected,
   spliceIn,
-  getFileExtension
+  getFileExtension,
+  makeCachingFilterFunction
 } from "./utils";
 
 const fixture = (filename: string) =>
@@ -271,5 +272,91 @@ describe("spliceIn", () => {
   it("adds values at the given index", () => {
     const spliced = spliceIn([1, 2, 3], 1, [200]);
     expect(spliced).toEqual([1, 200, 2, 3]);
+  });
+});
+
+describe("makeCachingFilterFunction", () => {
+  test("caches exact queries", () => {
+    const values = ["abc", "b", "c"];
+    const includes = jest.fn((v, query) => v.includes(query));
+    const filter = makeCachingFilterFunction(values, includes);
+    expect(filter("c")).toEqual(["abc", "c"]);
+    expect(includes.mock.calls.length).toBe(3);
+    expect(filter("c")).toEqual(["abc", "c"]);
+    expect(includes.mock.calls.length).toBe(3);
+  });
+
+  test("caches sub queries", () => {
+    const values = ["a--", "ab-", "abc"];
+    const includes = jest.fn((v, query) => v.includes(query));
+    let comparisons = 0;
+    const newComparisons = () => {
+      const recent = includes.mock.calls.length - comparisons;
+      comparisons += recent;
+      return recent;
+    };
+    const filter = makeCachingFilterFunction(values, includes);
+    // Intial search
+    expect(filter("ab")).toEqual(["ab-", "abc"]);
+    expect(newComparisons()).toBe(3); // Looks at all elements
+
+    // Second search where original search is a prefix
+    expect(filter("abc")).toEqual(["abc"]);
+    expect(newComparisons()).toBe(2); // Only reconsiders the previous matches
+
+    // Unique search
+    expect(filter("b")).toEqual(["ab-", "abc"]); // Looks at all elements
+    expect(newComparisons()).toBe(3); // Reconsiders all elements
+
+    expect(filter("bc")).toEqual(["abc"]); // Only reconsidres the matches that already include `b`
+    expect(newComparisons()).toBe(2);
+
+    // Go back to the initial serach
+    expect(filter("ab")).toEqual(["ab-", "abc"]);
+    expect(newComparisons()).toBe(0); // Result is cached
+
+    // A variation on the second search
+    expect(filter("abcd")).toEqual([]);
+    expect(newComparisons()).toBe(1); // Only recondsiders the results of `abc`
+  });
+
+  test("big data", () => {
+    const values = [...Array(10000)].map((val, i) => String(i));
+    const includes = jest.fn((v, query) => v.includes(query));
+    let comparisons = 0;
+    const newComparisons = () => {
+      const recent = includes.mock.calls.length - comparisons;
+      comparisons += recent;
+      return recent;
+    };
+    const filter = makeCachingFilterFunction(values, includes);
+    // Intial search
+    expect(filter("").length).toEqual(10000);
+    expect(newComparisons()).toBe(0); // Looks at zero
+
+    expect(filter("1").length).toEqual(3439);
+    expect(newComparisons()).toBe(10000); // Looks at all elements
+
+    expect(filter("12").length).toEqual(299);
+    expect(newComparisons()).toBe(3439);
+
+    expect(filter("123").length).toEqual(20);
+    expect(newComparisons()).toBe(299);
+
+    expect(filter("1234").length).toEqual(1);
+    expect(newComparisons()).toBe(20);
+
+    expect(filter("12345").length).toEqual(0);
+    expect(newComparisons()).toBe(1);
+
+    // A variation on the initial non-empty query
+    expect(filter("11").length).toEqual(280);
+    expect(newComparisons()).toBe(3439);
+
+    expect(filter("111").length).toEqual(19);
+    expect(newComparisons()).toBe(280);
+
+    expect(filter("1111").length).toEqual(1);
+    expect(newComparisons()).toBe(19);
   });
 });
