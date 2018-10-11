@@ -87,9 +87,11 @@ class MediaLibraryWindow extends React.Component<Props, State> {
               overflow: "hidden"
             }}
           >
+            {/*
             <div style={{ width: this.state.sidebarWidth }}>
               <Sidebar />
             </div>
+          */}
             <div
               className="webamp-media-library-vertical-divider"
               onMouseDown={this._handleSidebarMouseDown}
@@ -106,6 +108,7 @@ class MediaLibraryWindow extends React.Component<Props, State> {
                 overflow: "hidden"
               }}
             >
+              {/*
               <div
                 style={{
                   display: "flex",
@@ -125,6 +128,7 @@ class MediaLibraryWindow extends React.Component<Props, State> {
                 </div>
                 <AlbumsTable />
               </div>
+              */}
               <div
                 className="webamp-media-library-horizontal-divider"
                 onMouseDown={this._handlePlaylistResizeMouseDown}
