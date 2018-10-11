@@ -325,7 +325,6 @@ async function skinParser(zipFileBuffer, JSZip) {
     genGenTextSprites(zip),
     genGenExColors(zip)
   ]);
-  console.log(genExColors);
 
   const [genLetterWidths, genTextImages] = genTextSprites || [null, {}];
 
