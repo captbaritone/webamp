@@ -2,10 +2,15 @@ import React from "react";
 import { connect } from "react-redux";
 import { removeAllTracks } from "../../actionCreators";
 import PlaylistMenu from "./PlaylistMenu";
+import { Dispatch } from "../../types";
 
 /* eslint-disable no-alert */
 
-const ListMenu = props => (
+interface DispatchProps {
+  removeAllTracks: () => void;
+}
+
+const ListMenu = (props: DispatchProps) => (
   <PlaylistMenu id="playlist-list-menu">
     <div className="new-list" onClick={props.removeAllTracks} />
     <div
@@ -19,8 +24,8 @@ const ListMenu = props => (
   </PlaylistMenu>
 );
 
-const mapDispatchToProps = {
-  removeAllTracks
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
+  return { removeAllTracks };
 };
 export default connect(
   null,
