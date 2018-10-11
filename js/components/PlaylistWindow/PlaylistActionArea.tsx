@@ -12,8 +12,18 @@ import {
 
 import MiniTime from "../MiniTime";
 import RunningTimeDisplay from "./RunningTimeDisplay";
+import { Dispatch } from "../../types";
 
-const PlaylistWindow = props => (
+interface Props {
+  previous: () => void;
+  play: () => void;
+  pause: () => void;
+  stop: () => void;
+  next: () => void;
+  openMediaFileDialog: () => void;
+}
+
+const PlaylistWindow = (props: Props) => (
   <React.Fragment>
     <RunningTimeDisplay />
     <div className="playlist-action-buttons">
@@ -31,13 +41,15 @@ const PlaylistWindow = props => (
   </React.Fragment>
 );
 
-const mapDispatchToProps = {
-  play,
-  pause,
-  stop,
-  openMediaFileDialog,
-  next,
-  previous
+const mapDispatchToProps = (dispatch: Dispatch): Props => {
+  return {
+    play: () => dispatch(play()),
+    pause: () => dispatch(pause()),
+    stop: () => dispatch(stop()),
+    openMediaFileDialog: () => dispatch(openMediaFileDialog()),
+    next: () => dispatch(next()),
+    previous: () => dispatch(previous())
+  };
 };
 
 export default connect(
