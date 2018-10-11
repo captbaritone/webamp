@@ -3,18 +3,23 @@ import { connect } from "react-redux";
 
 import CharacterString from "../CharacterString";
 import { getRunningTimeMessage } from "../../selectors";
+import { AppState } from "../../types";
 
 // While all the browsers I care about support String.prototype.padEnd,
 // Not all node versions do, and I want tests to pass in Jest...
 // Sigh.
-function rightPad(str, len, fillChar) {
+function rightPad(str: string, len: number, fillChar: string): string {
   while (str.length < len) {
     str += fillChar;
   }
   return str;
 }
 
-const RunningTimeDisplay = props => (
+interface Props {
+  runningTimeMessage: string;
+}
+
+const RunningTimeDisplay = (props: Props) => (
   <div className="playlist-running-time-display draggable">
     {/* This div is probably not strictly needed */}
     <div>
@@ -25,7 +30,7 @@ const RunningTimeDisplay = props => (
   </div>
 );
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: AppState): Props => ({
   runningTimeMessage: getRunningTimeMessage(state)
 });
 
