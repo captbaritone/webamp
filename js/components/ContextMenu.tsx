@@ -76,7 +76,7 @@ export const LinkNode = (props: LinkNodeProps) => (
 
 interface NodeProps {
   label: string;
-  checked: boolean;
+  checked?: boolean;
   hotkey?: string;
   className?: string;
   // TODO: Figure out how to do passthrough props
@@ -96,8 +96,8 @@ interface ContextMenuProps {
   children: React.ReactNode;
   offsetTop: number;
   offsetLeft: number;
-  top: number;
-  bottom: number;
+  top: boolean;
+  bottom: boolean;
   selected: boolean;
   zIndex: number;
 }

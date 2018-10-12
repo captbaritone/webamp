@@ -4,8 +4,9 @@ import ContextMenu from "./ContextMenu";
 interface Props {
   handle: React.ReactNode;
   children: React.ReactNode;
-  top: number;
-  bottom: number;
+  top?: boolean;
+  bottom?: boolean;
+  style?: React.CSSProperties;
 }
 interface State {
   selected: boolean;
