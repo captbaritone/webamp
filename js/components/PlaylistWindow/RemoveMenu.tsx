@@ -1,4 +1,4 @@
-import React from "react";
+import React, { SFC } from "react";
 import { connect } from "react-redux";
 import {
   cropPlaylist,
@@ -6,10 +6,17 @@ import {
   removeAllTracks
 } from "../../actionCreators";
 import PlaylistMenu from "./PlaylistMenu";
+import { Dispatch } from "../../types";
 
 /* eslint-disable no-alert */
 
-const RemoveMenu = props => (
+interface DispatchProps {
+  removeSelected: () => void;
+  removeAll: () => void;
+  crop: () => void;
+}
+
+const RemoveMenu = (props: DispatchProps) => (
   <PlaylistMenu id="playlist-remove-menu">
     <div
       className="remove-misc"
@@ -21,12 +28,14 @@ const RemoveMenu = props => (
   </PlaylistMenu>
 );
 
-const mapDispatchToProps = {
-  removeSelected: removeSelectedTracks,
-  removeAll: removeAllTracks,
-  crop: cropPlaylist
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
+  return {
+    removeSelected: () => dispatch(removeSelectedTracks()),
+    removeAll: () => dispatch(removeAllTracks()),
+    crop: () => dispatch(cropPlaylist())
+  };
 };
 export default connect(
-  null,
+  () => ({}),
   mapDispatchToProps
 )(RemoveMenu);
