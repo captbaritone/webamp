@@ -3,6 +3,9 @@ import { throttle } from "./utils";
 const LOCAL_STORAGE_KEY = "webamp_state";
 
 export async function bindToIndexedDB(webamp, clearState, useState) {
+  if (!useState) {
+    return;
+  }
   const localStore = new IdbKvStore("webamp_state_database");
 
   if (clearState) {
@@ -11,10 +14,6 @@ export async function bindToIndexedDB(webamp, clearState, useState) {
     } catch (e) {
       console.log("Failed to clear our IndexeddB state", e);
     }
-  }
-
-  if (!useState) {
-    return;
   }
 
   let previousSerializedState = null;
