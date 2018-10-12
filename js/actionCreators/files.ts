@@ -56,7 +56,7 @@ const loadQueue = new LoadQueue({ threads: 4 });
 
 export function addTracksFromReferences(
   fileReferences: FileList,
-  loadStyle: LoadStyle,
+  loadStyle: LoadStyle | null,
   atIndex: number | undefined
 ): Dispatchable {
   const tracks: Track[] = Array.from(fileReferences).map(file => ({
