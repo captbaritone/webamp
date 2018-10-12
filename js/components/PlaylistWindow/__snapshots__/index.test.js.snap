@@ -86,7 +86,7 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
       className="playlist-middle-right draggable"
     >
       <div
-        className="rc-slider rc-slider-vertical playlist-scrollbar"
+        className="rc-slider rc-slider-disabled rc-slider-vertical playlist-scrollbar"
         onBlur={[Function]}
         onFocus={[Function]}
         onKeyDown={[Function]}
