@@ -36,9 +36,44 @@ import TrackList from "./TrackList";
 import ScrollBar from "./ScrollBar";
 
 import "../../../css/playlist-window.css";
+import { AppState, PlaylistStyle, Dispatch } from "../../types";
 
-class PlaylistWindow extends React.Component {
-  _handleDrop = (e, targetCoords) => {
+interface StateProps {
+  offset: number;
+  maxTrackIndex: number;
+  playlistWindowPixelSize: { width: number; height: number };
+  focused: string;
+  skinPlaylistStyle: PlaylistStyle;
+  playlistSize: [number, number];
+  playlistShade: boolean;
+  duration: number | null;
+}
+
+interface DispatchProps {
+  focusPlaylist(): void;
+  close(): void;
+  toggleShade(): void;
+  toggleVisualizerStyle(): void;
+  scrollUpFourTracks(): void;
+  scrollDownFourTracks(): void;
+  loadFilesFromReferences(
+    e: React.DragEvent<HTMLDivElement>,
+    startIndex: number
+  ): void;
+  scrollVolume(e: React.WheelEvent<HTMLDivElement>): void;
+}
+
+interface OwnProps {
+  analyser: AnalyserNode;
+}
+
+type Props = StateProps & DispatchProps & OwnProps;
+
+class PlaylistWindow extends React.Component<Props> {
+  _handleDrop = (
+    e: React.DragEvent<HTMLDivElement>,
+    targetCoords: { x: number; y: number }
+  ) => {
     const top = e.clientY - targetCoords.y;
     const atIndex = clamp(
       this.props.offset + Math.round((top - 23) / TRACK_HEIGHT),
@@ -147,25 +182,27 @@ class PlaylistWindow extends React.Component {
   }
 }
 
-const mapDispatchToProps = {
-  focusPlaylist: () => ({
-    type: SET_FOCUSED_WINDOW,
-    window: WINDOWS.PLAYLIST
-  }),
-  close: () => closeWindow("playlist"),
-  toggleShade: togglePlaylistShadeMode,
-  toggleVisualizerStyle,
-  scrollUpFourTracks,
-  scrollDownFourTracks,
-  loadFilesFromReferences: (e, startIndex) =>
-    loadFilesFromReferences(e.dataTransfer.files, null, startIndex),
-  scrollVolume
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
+  return {
+    focusPlaylist: () => ({
+      type: SET_FOCUSED_WINDOW,
+      window: WINDOWS.PLAYLIST
+    }),
+    close: () => closeWindow("playlist"),
+    toggleShade: togglePlaylistShadeMode,
+    toggleVisualizerStyle,
+    scrollUpFourTracks,
+    scrollDownFourTracks,
+    loadFilesFromReferences: (e, startIndex) =>
+      loadFilesFromReferences(e.dataTransfer.files, null, startIndex),
+    scrollVolume
+  };
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state: AppState): StateProps => {
   const {
     windows: { focused },
-    media: { duration },
+    media: { length },
     playlist: { trackOrder }
   } = state;
 
@@ -176,8 +213,8 @@ const mapStateToProps = state => {
     focused,
     skinPlaylistStyle: getSkinPlaylistStyle(state),
     playlistSize: getWindowSize(state)("playlist"),
-    playlistShade: getWindowShade(state)("playlist"),
-    duration
+    playlistShade: Boolean(getWindowShade(state)("playlist")),
+    duration: length
   };
 };
 

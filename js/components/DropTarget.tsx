@@ -5,8 +5,7 @@ interface Coord {
   y: number;
 }
 
-interface Props {
-  loadFilesFromReferences: () => void;
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   handleDrop(e: React.DragEvent<HTMLDivElement>, coord: Coord): void;
 }
 
@@ -31,8 +30,6 @@ export default class DropTarget extends React.Component<Props> {
 
   render() {
     const {
-      // eslint-disable-next-line no-shadow, no-unused-vars
-      loadFilesFromReferences,
       // eslint-disable-next-line no-shadow, no-unused-vars
       handleDrop,
       ...passThroughProps

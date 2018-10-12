@@ -70,7 +70,7 @@ const SKIN_FILENAME_MATCHER = new RegExp("(wsz|zip)$", "i");
 const EQF_FILENAME_MATCHER = new RegExp("eqf$", "i");
 export function loadFilesFromReferences(
   fileReferences: FileList,
-  loadStyle = LOAD_STYLE.PLAY,
+  loadStyle: LoadStyle | null = LOAD_STYLE.PLAY,
   atIndex: number | undefined = undefined
 ): Dispatchable {
   return dispatch => {

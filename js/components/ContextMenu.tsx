@@ -96,8 +96,8 @@ interface ContextMenuProps {
   children: React.ReactNode;
   offsetTop: number;
   offsetLeft: number;
-  top: boolean;
-  bottom: boolean;
+  top?: boolean;
+  bottom?: boolean;
   selected: boolean;
   zIndex: number;
 }
