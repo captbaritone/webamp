@@ -50,6 +50,25 @@ export type SkinImages = { [sprite: string]: string };
 // TODO: type these keys
 export type SkinRegion = { [windowName: string]: string[] };
 
+export interface DummyVizData {
+  0: 11.75;
+  8: 11.0625;
+  16: 8.5;
+  24: 7.3125;
+  32: 6.75;
+  40: 6.4375;
+  48: 6.25;
+  56: 5.875;
+  64: 5.625;
+  72: 5.25;
+  80: 5.125;
+  88: 4.875;
+  96: 4.8125;
+  104: 4.375;
+  112: 3.625;
+  120: 1.5625;
+}
+
 export interface SkinGenExColors {
   itemBackground: string;
   itemForeground: string;

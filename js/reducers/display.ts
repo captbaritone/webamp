@@ -5,7 +5,8 @@ import {
   SkinRegion,
   GenLetterWidths,
   PlaylistStyle,
-  SkinGenExColors
+  SkinGenExColors,
+  DummyVizData
 } from "../types";
 import { createSelector } from "reselect";
 
@@ -50,7 +51,7 @@ export interface DisplayState {
   loading: boolean;
   playlistScrollPosition: number;
   zIndex: number;
-  dummyVizData: null; // TODO: Figure out what kind of data this actually is.
+  dummyVizData: DummyVizData | null;
 }
 
 const defaultSkinGenExColors = {
@@ -221,7 +222,7 @@ export const getVisualizationOrder = (state: DisplayState): Array<string> => {
 export const getVisualizerStyle = createSelector(
   getVisualizationOrder,
   state => state.visualizerStyle,
-  (visualizationOrder, visualizationStyle) => {
+  (visualizationOrder, visualizationStyle): string => {
     return visualizationOrder[visualizationStyle];
   }
 );
