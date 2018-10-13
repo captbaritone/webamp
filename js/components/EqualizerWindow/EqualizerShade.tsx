@@ -5,8 +5,19 @@ import Balance from "../Balance";
 import { segment } from "../../utils";
 
 import { closeWindow, toggleEqualizerShadeMode } from "../../actionCreators";
+import { AppState, Dispatch } from "../../types";
 
-const EqualizerShade = props => {
+interface StateProps {
+  volume: number;
+  balance: number;
+}
+
+interface DispatchProps {
+  closeWindow(): void;
+  toggleEqualizerShadeMode(): void;
+}
+
+const EqualizerShade = (props: StateProps & DispatchProps) => {
   const { volume, balance } = props;
 
   const classes = ["left", "center", "right"];
@@ -26,12 +37,14 @@ const EqualizerShade = props => {
   );
 };
 
-const mapDispatchToProps = {
-  closeWindow: () => closeWindow("equalizer"),
-  toggleEqualizerShadeMode
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
+  return {
+    closeWindow: () => dispatch(closeWindow("equalizer")),
+    toggleEqualizerShadeMode: () => dispatch(toggleEqualizerShadeMode())
+  };
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: AppState): StateProps => ({
   volume: state.media.volume,
   balance: state.media.balance
 });
