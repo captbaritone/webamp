@@ -4,8 +4,18 @@ import classnames from "classnames";
 
 import { SET_FOCUS, UNSET_FOCUS } from "../../actionTypes";
 import { toggleDoubleSizeMode } from "../../actionCreators";
+import { AppState, Dispatch } from "../../types";
 
-const ClutterBar = props => (
+interface StateProps {
+  doubled: boolean;
+}
+
+interface DispatchProps {
+  handleMouseDown(): void;
+  handleMouseUp(): void;
+}
+
+const ClutterBar = (props: StateProps & DispatchProps) => (
   <div id="clutter-bar">
     <div id="button-o" />
     <div id="button-a" />
@@ -21,11 +31,11 @@ const ClutterBar = props => (
   </div>
 );
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: AppState): StateProps => ({
   doubled: state.display.doubled
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   handleMouseDown: () => dispatch({ type: SET_FOCUS, input: "double" }),
   handleMouseUp: () => {
     dispatch(toggleDoubleSizeMode());
