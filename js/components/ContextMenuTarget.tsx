@@ -1,12 +1,15 @@
 import React from "react";
 import ContextMenu from "./ContextMenu";
 
-interface Props {
+type DivProps = React.DetailedHTMLProps<
+  React.HTMLAttributes<HTMLDivElement>,
+  HTMLDivElement
+>;
+
+interface Props extends DivProps {
   handle: React.ReactNode;
-  children: React.ReactNode;
   top?: boolean;
   bottom?: boolean;
-  style?: React.CSSProperties;
 }
 interface State {
   selected: boolean;
