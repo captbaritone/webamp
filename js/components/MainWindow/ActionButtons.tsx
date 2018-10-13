@@ -1,8 +1,17 @@
 import React from "react";
 import { connect } from "react-redux";
 import { previous, play, pause, stop, next } from "../../actionCreators";
+import { Dispatch } from "../../types";
 
-const ActionButtons = props => (
+interface DispatchProps {
+  previous(): void;
+  play(): void;
+  pause(): void;
+  stop(): void;
+  next(): void;
+}
+
+const ActionButtons = (props: DispatchProps) => (
   <div className="actions">
     <div id="previous" onClick={props.previous} title="Previous Track" />
     <div id="play" onClick={props.play} title="Play" />
@@ -12,7 +21,15 @@ const ActionButtons = props => (
   </div>
 );
 
-const mapDispatchToProps = { previous, play, pause, stop, next };
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
+  return {
+    previous: () => dispatch(previous()),
+    play: () => dispatch(play()),
+    pause: () => dispatch(pause()),
+    stop: () => dispatch(stop()),
+    next: () => dispatch(next())
+  };
+};
 
 export default connect(
   null,
