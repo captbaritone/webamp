@@ -71,8 +71,8 @@ class App extends React.Component {
     this._webampNode.style.bottom = 0;
     this._webampNode.style.overflow = "hidden";
     this.props.browserWindowSizeChanged(Utils.getWindowSize());
-    this._webampNode.style.right = "default";
-    this._webampNode.style.bottom = "default";
+    this._webampNode.style.right = null;
+    this._webampNode.style.bottom = null;
     this._webampNode.style.overflow = "visible";
   };
 
