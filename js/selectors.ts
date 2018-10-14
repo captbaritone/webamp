@@ -23,9 +23,10 @@ import { createPlaylistURL } from "./playlistHtml";
 import * as fromTracks from "./reducers/tracks";
 import * as fromDisplay from "./reducers/display";
 import * as fromEqualizer from "./reducers/equalizer";
-import * as fromMedia from "./reducers/media";
+import media, * as fromMedia from "./reducers/media";
 import * as fromWindows from "./reducers/windows";
 import * as TrackUtils from "./trackUtils";
+import * as MarqueeUtils from "./marqueeUtils";
 import { generateGraph } from "./resizeUtils";
 import { SerializedStateV1 } from "./serializedStates/v1Types";
 
@@ -494,3 +495,46 @@ export const getStackedLayoutPositions = createSelector(
     });
   }
 );
+
+// TODO: Make this a reselect selector
+export const getMarqueeText = (state: AppState): string => {
+  const defaultText = "Winamp 2.91";
+  if (state.userInput.userMessage != null) {
+    return state.userInput.userMessage;
+  }
+  switch (state.userInput.focus) {
+    case "balance":
+      return MarqueeUtils.getBalanceText(state.media.balance);
+    case "volume":
+      return MarqueeUtils.getVolumeText(state.media.volume);
+    case "position":
+      if (state.media.length == null) {
+        // This probably can't ever happen.
+        return defaultText;
+      }
+      return MarqueeUtils.getPositionText(
+        state.media.length,
+        state.userInput.scrubPosition
+      );
+    case "double":
+      return MarqueeUtils.getDoubleSizeModeText(state.display.doubled);
+    case "eq":
+      const band = state.userInput.bandFocused;
+      if (band == null) {
+        // This probably can't ever happen.
+        return defaultText;
+      }
+      return MarqueeUtils.getEqText(band, state.equalizer.sliders[band]);
+    default:
+      break;
+  }
+  if (state.playlist.currentTrack != null) {
+    const mediaText = getMediaText(state);
+    if (mediaText == null) {
+      // This probably can't ever happen.
+      return defaultText;
+    }
+    return mediaText;
+  }
+  return defaultText;
+};
