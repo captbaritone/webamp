@@ -1,4 +1,5 @@
 import { getPositionDiff, generateGraph } from "./resizeUtils";
+
 describe("resizeUtils", () => {
   it("can enter shade mode", () => {
     const graph = {
@@ -225,10 +226,10 @@ describe("resizeUtils", () => {
       d: { below: "c" }
     };
     const sizeDiff = {
-      a: { height: -75 },
-      b: {},
-      c: { height: -75 },
-      d: {}
+      a: { height: -75, width: 0 },
+      b: { height: 0, width: 0 },
+      c: { height: -75, width: 0 },
+      d: { height: 0, width: 0 }
     };
     const actual = getPositionDiff(graph, sizeDiff);
     const expected = {
