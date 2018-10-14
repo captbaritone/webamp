@@ -17,7 +17,13 @@ import {
 
 import { getPositionDiff, SizeDiff } from "../resizeUtils";
 import { applyDiff } from "../snapUtils";
-import { Action, Dispatchable, WindowId, WindowPositions } from "../types";
+import {
+  Action,
+  Dispatchable,
+  WindowId,
+  WindowPositions,
+  Dispatch
+} from "../types";
 
 // Dispatch an action and, if needed rearrange the windows to preserve
 // the existing edge relationship.
@@ -179,9 +185,14 @@ export function centerWindows(box: {
   };
 }
 
-export function browserWindowSizeChanged() {
-  const { height, width } = Utils.getWindowSize();
-  return { type: BROWSER_WINDOW_SIZE_CHANGED, height, width };
+export function browserWindowSizeChanged(size: {
+  height: number;
+  width: number;
+}) {
+  return (dispatch: Dispatch) => {
+    dispatch({ type: BROWSER_WINDOW_SIZE_CHANGED, ...size });
+    dispatch(ensureWindowsAreOnScreen());
+  };
 }
 
 export function resetWindowSizes(): Dispatchable {

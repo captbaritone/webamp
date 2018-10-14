@@ -2,11 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { objectMap } from "../utils";
 import Emitter from "../emitter";
 import { WINDOWS, MEDIA_STATUS } from "../constants";
 import { getVisualizerStyle } from "../selectors";
-import { closeWindow } from "../actionCreators";
+import * as Actions from "../actionCreators";
+import * as Utils from "../utils";
 import ContextMenuWrapper from "./ContextMenuWrapper";
 import MainContextMenu from "./MainWindow/MainContextMenu";
 import WindowManager from "./WindowManager";
@@ -35,9 +35,13 @@ class App extends React.Component {
     this._webampNode.role = "application";
     this._webampNode.style.zIndex = this.props.zIndex;
     document.body.appendChild(this._webampNode);
+
+    this.props.browserWindowSizeChanged(Utils.getWindowSize());
+    window.addEventListener("resize", this._handleWindowResize);
   }
 
   componentWillUnmount() {
+    window.removeEventListener("resize", this._handleWindowResize);
     document.body.removeChild(this._webampNode);
   }
 
@@ -50,6 +54,27 @@ class App extends React.Component {
       this._setFocus();
     }
   }
+
+  _handleWindowResize = () => {
+    if (this._webampNode == null) {
+      return;
+    }
+    // It's a bit tricky to measure the "natural" size of the browser window.
+    // Specifically we want to know how large the window would be without our
+    // own Webamp windows influencing it. To achieve this, we temporarily make
+    // our container `overflow: hidden;`. We then make our container full
+    // screen by setting the bottom/right properties to zero. This second part
+    // allows our Webamp windows to stay visible during the resize. After we
+    // measure, we set the style back so that we don't end up interfering with
+    // click events outside of our Webamp windows.
+    this._webampNode.style.right = 0;
+    this._webampNode.style.bottom = 0;
+    this._webampNode.style.overflow = "hidden";
+    this.props.browserWindowSizeChanged(Utils.getWindowSize());
+    this._webampNode.style.right = "default";
+    this._webampNode.style.bottom = "default";
+    this._webampNode.style.overflow = "visible";
+  };
 
   _setFocus() {
     const binding = this._bindings[this.props.focused];
@@ -93,7 +118,7 @@ class App extends React.Component {
       filePickers,
       genWindowComponents
     } = this.props;
-    return objectMap(genWindowsInfo, (w, id) => {
+    return Utils.objectMap(genWindowsInfo, (w, id) => {
       if (!w.open) {
         return null;
       }
@@ -180,7 +205,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  closeWindow: id => dispatch(closeWindow(id))
+  closeWindow: id => dispatch(Actions.closeWindow(id)),
+  browserWindowSizeChanged: size =>
+    dispatch(Actions.browserWindowSizeChanged(size))
 });
 
 export default connect(
