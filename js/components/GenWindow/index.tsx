@@ -5,7 +5,7 @@ import classnames from "classnames";
 import "../../../css/gen-window.css";
 
 import { SET_FOCUSED_WINDOW } from "../../actionTypes";
-import { scrollVolume, setWindowSize, closeWindow } from "../../actionCreators";
+import { setWindowSize, closeWindow } from "../../actionCreators";
 import { getWindowPixelSize } from "../../selectors";
 import ResizeTarget from "../ResizeTarget";
 import { AppState, WindowId, Dispatch } from "../../types";
@@ -47,7 +47,6 @@ interface OwnProps {
 interface DispatchProps {
   setFocus: (windowId: WindowId) => void;
   close: (windowId: WindowId) => void;
-  scrollVolume: (event: React.WheelEvent<HTMLDivElement>) => void;
   setGenWindowSize: (windowId: WindowId, size: [number, number]) => void;
 }
 
@@ -70,7 +69,6 @@ export const GenWindow = ({
   windowId,
   windowSize,
   setGenWindowSize,
-  scrollVolume: handleWheel,
   width,
   height
 }: Props) => {
@@ -78,7 +76,6 @@ export const GenWindow = ({
     <div
       className={classnames("gen-window", "window", { selected })}
       onMouseDown={() => setFocus(windowId)}
-      onWheel={handleWheel}
       style={{ width, height }}
     >
       <div className="gen-top draggable">
@@ -138,8 +135,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
       dispatch({ type: SET_FOCUSED_WINDOW, window: windowId }),
     close: (windowId: WindowId) => dispatch(closeWindow(windowId)),
     setGenWindowSize: (windowId: WindowId, size: [number, number]) =>
-      dispatch(setWindowSize(windowId, size)),
-    scrollVolume: e => dispatch(scrollVolume(e))
+      dispatch(setWindowSize(windowId, size))
   };
 };
 
