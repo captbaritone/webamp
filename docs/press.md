@@ -275,6 +275,7 @@
 ### Vietnamese
 
 - http://vnreview.vn/tin-tuc-xa-hoi-so/-/view_content/content/2421915/song-lai-thap-nien-90-voi-trai-nghiem-nhung-phan-mem-nay-ngay-tren-trinh-duyet
+- http://genk.vn/trang-web-gia-lap-trinh-phat-nhac-winamp-nay-se-dua-ban-tro-lai-hoi-uc-nhung-cuoi-the-ky-20-20180212175238851.chn
 
 ### Indonsian
 
@@ -291,3 +292,15 @@
 ### Dutch
 
 - https://freshgadgets.nl/nostalgie-je-kunt-winamp-in-je-browser-gebruiken
+
+## Internet Archive
+
+On October 2nd, 2018 the Internet Archive annoucnded Webamp integration. Here are some articles covering that annoucement.
+
+- https://blog.archive.org/2018/10/02/dont-click-on-the-llama/
+- https://www.ghacks.net/2018/10/04/internet-archive-releases-winamp-skins-collection/?utm_source=dlvr.it&utm_medium=twitter
+- https://www.pcactual.com/noticias/actualidad/internet-archive-no-quiere-olvidarse-winamp_14008
+- https://www.guaripetesolutions.us/internet-archive-releases-winamp-skins-collection/
+- https://www.softzone.es/2018/10/04/internet-archive-coleccion-skins-winamp/
+- https://tugatech.com.pt/t26972-internet-archive-disponibiliza-colecoes-de-skins-para-winamp
+- https://www.bardtech.com/internet-archive-releases-winamp-skins-collection/
