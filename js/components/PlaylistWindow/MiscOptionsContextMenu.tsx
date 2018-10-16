@@ -1,3 +1,4 @@
+import Rect from "react";
 import { connect } from "react-redux";
 import { Node } from "../ContextMenu";
 import ContextMenuTarget from "../ContextMenuTarget";
