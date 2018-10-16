@@ -1,6 +1,5 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { cursorSelectors } from "../../skinSelectors";
 import * as Selectors from "../../selectors";
 import * as Utils from "../../utils";
 import * as FileUtils from "../../fileUtils";
