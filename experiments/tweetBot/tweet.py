@@ -222,11 +222,9 @@ def tweet_image(skin_name, md5, skin_url, screenshot_path, double):
 
     img.save(screenshot_path)
 
-    options = {"skinUrl": skin_url}
+    escaped_skin_url = urllib.parse.quote(skin_url)
 
-    options_query = urllib.parse.quote(json.dumps(options))
-
-    winamp2_js_url = "https://webamp.org/#%s" % options_query
+    winamp2_js_url = "https://webamp.org/?%s" % escaped_skin_url
 
     status_message = """%s
 Try Online: %s
