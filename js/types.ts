@@ -519,7 +519,7 @@ export interface AppState {
 
 export interface Extras {
   requireJSZip: () => Promise<never>;
-  requireJSMediaTags: () => Promise<never>;
+  requireMusicMetadata: () => Promise<never>;
 }
 
 export type GetState = () => AppState;

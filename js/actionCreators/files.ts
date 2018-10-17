@@ -291,20 +291,20 @@ function queueFetchingMediaTags(id: number): Dispatchable {
 }
 
 export function fetchMediaTags(file: string | Blob, id: number): Dispatchable {
-  return async (dispatch, getState, { requireJSMediaTags }) => {
+  return async (dispatch, getState, { requireMusicMetadata }) => {
     dispatch({ type: MEDIA_TAG_REQUEST_INITIALIZED, id });
+
     try {
-      const data = await genMediaTags(file, await requireJSMediaTags());
+      const metadata = await genMediaTags(file, await requireMusicMetadata());
       // There's more data here, but we don't have a use for it yet:
-      // https://github.com/aadsm/jsmediatags#shortcuts
-      const { artist, title, album, picture } = data.tags;
+      const { artist, title, album, picture } = metadata.common;
       let albumArtUrl = null;
-      if (picture) {
-        const byteArray = new Uint8Array(picture.data);
-        const blob = new Blob([byteArray], { type: picture.type });
+      if (picture && picture.length >= 1) {
+        const byteArray = new Uint8Array(picture[0].data);
+        const blob = new Blob([byteArray], { type: picture[0].format });
         albumArtUrl = URL.createObjectURL(blob);
       }
-      dispatch({ type: SET_MEDIA_TAGS, artist, title, album, albumArtUrl, id });
+      dispatch({ type: SET_MEDIA_TAGS, artist: artist ? artist : '', title: title ? title : '', album, albumArtUrl, id });
     } catch (e) {
       dispatch({ type: MEDIA_TAG_REQUEST_FAILED, id });
     }

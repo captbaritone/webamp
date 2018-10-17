@@ -43,22 +43,6 @@ import {
 
 import { bindToIndexedDB } from "./indexedDB";
 
-const requireJSMediaTags = () => {
-  return new Promise((resolve, reject) => {
-    require.ensure(
-      ["jsmediatags/dist/jsmediatags"],
-      require => {
-        resolve(require("jsmediatags/dist/jsmediatags"));
-      },
-      e => {
-        console.error("Error loading jsmediatags", e);
-        reject(e);
-      },
-      "jsmediatags"
-    );
-  });
-};
-
 const DEFAULT_DOCUMENT_TITLE = document.title;
 
 const NOISY_ACTION_TYPES = new Set([
@@ -235,7 +219,8 @@ Raven.context(async () => {
     enableHotkeys: true,
     requireJSZip: () =>
       import(/* webpackChunkName: "jszip" */ "jszip/dist/jszip"),
-    requireJSMediaTags,
+    requireMusicMetadata: () =>
+      import(/* webpackChunkName: ""music-metadata-browser */ "music-metadata-browser/dist/index"),
     __extraWindows,
     __enableMediaLibrary: library,
     __initialWindowLayout,

@@ -66,7 +66,7 @@ class Winamp {
       enableHotkeys = false,
       zIndex,
       requireJSZip,
-      requireJSMediaTags,
+      requireMusicMetadata,
       __extraWindows
     } = this.options;
 
@@ -78,7 +78,7 @@ class Winamp {
       this._actionEmitter,
       this.options.__customMiddlewares,
       this.options.__initialState,
-      { requireJSZip, requireJSMediaTags }
+      { requireJSZip, requireMusicMetadata }
     );
     this.store.dispatch({
       type: navigator.onLine ? NETWORK_CONNECTED : NETWORK_DISCONNECTED
