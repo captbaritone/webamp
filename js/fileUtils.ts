@@ -1,49 +1,27 @@
 import invariant from "invariant";
+import { IAudioMetadata } from 'music-metadata-browser'; // Import music-metadata type definitions
 
-export interface MediaTags {
-  tags: {
-    artist: string;
-    title: string;
-    album: string;
-    picture: {
-      data: number[];
-      type: string;
-    };
-  };
-}
-
-type JsMediaTagsFile = string | ArrayBuffer | Blob;
-interface JsMediaTagsHandlers {
-  onSuccess: (tags: MediaTags) => void;
-  onError: (error: Error) => void;
-}
-
-interface JsMediaTags {
-  read: (file: JsMediaTagsFile, handlers: JsMediaTagsHandlers) => void;
-}
+type MediaDataType = string | ArrayBuffer | Blob;
 
 export function genMediaTags(
-  file: JsMediaTagsFile,
-  jsmediatags: JsMediaTags
-): Promise<MediaTags> {
+  file: MediaDataType,
+  musicMetadata: MusicMetadataBrowserApi
+): Promise<IAudioMetadata> {
   invariant(
     file != null,
     "Attempted to get the tags of media file without passing a file"
   );
-  // Workaround https://github.com/aadsm/jsmediatags/issues/83
-  if (typeof file === "string" && !/^[a-z]+:\/\//i.test(file)) {
-    file = `${location.protocol}//${location.host}${location.pathname}${file}`;
+
+  const options = {
+    duration: true,
+    skipPostHeaders: true // avoid unnecessary data to be read
+  };
+
+  if (typeof file === "string") {
+    return musicMetadata.fetchFromUrl(file, options);
   }
-  return new Promise((resolve, reject) => {
-    try {
-      jsmediatags.read(file, { onSuccess: resolve, onError: reject });
-    } catch (e) {
-      // Possibly jsmediatags could not find a parser for this file?
-      // Nothing to do.
-      // Consider removing this after https://github.com/aadsm/jsmediatags/issues/83 is resolved.
-      reject(e);
-    }
-  });
+  // Assume Blob
+  return musicMetadata.parseBlob(file as Blob, options);
 }
 
 export function genMediaDuration(url: string): Promise<number> {
