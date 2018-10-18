@@ -1,7 +1,5 @@
 import invariant from "invariant";
-import { IAudioMetadata, IOptions } from 'music-metadata-browser';
-
-type JsMediaTagsFile = string | ArrayBuffer | Blob;
+import { IAudioMetadata } from 'music-metadata-browser'; // Import music-metadata type definitions
 
 type MediaDataType = string | ArrayBuffer | Blob;
 
