@@ -4,7 +4,6 @@ exports[`GenWindow renders to snapshot 1`] = `
 <div
   className="gen-window window selected"
   onMouseDown={[Function]}
-  onWheel={[Function]}
   style={
     Object {
       "height": undefined,
