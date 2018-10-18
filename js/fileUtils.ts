@@ -13,10 +13,6 @@ export function genMediaTags(
     file != null,
     "Attempted to get the tags of media file without passing a file"
   );
-  // Workaround https://github.com/aadsm/jsmediatags/issues/83
-  if (typeof file === "string" && !/^[a-z]+:\/\//i.test(file)) {
-    file = `${location.protocol}//${location.host}${location.pathname}${file}`;
-  }
 
   const options = {
     duration: true,
