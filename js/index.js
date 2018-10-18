@@ -14,6 +14,7 @@ import internetArchive from "../skins/Internet-Archive.wsz";
 import MilkdropWindow from "./components/MilkdropWindow";
 import screenshotInitialState from "./screenshotInitialState";
 import { WINDOWS } from "./constants";
+import * as Selectors from "./selectors";
 
 import WebampLazy from "./webampLazy";
 import enableMediaSession from "./mediaSession";
@@ -135,16 +136,7 @@ Raven.config(SENTRY_DSN, {
 
 const ravenMiddleware = createMiddleware(Raven, {
   filterBreadcrumbActions,
-  stateTransformer: state => ({
-    ...state,
-    display: {
-      ...state.display,
-      skinGenLetterWidths: "[[REDACTED]]",
-      skinImages: "[[REDACTED]]",
-      skinCursors: "[[REDACTED]]",
-      skinRegion: "[[REDACTED]]"
-    }
-  })
+  stateTransformer: Selectors.getDebugData
 });
 
 // Don't prompt user to install Webamp. It's probably not

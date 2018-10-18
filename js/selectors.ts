@@ -538,3 +538,16 @@ export const getMarqueeText = (state: AppState): string => {
   }
   return defaultText;
 };
+
+export function getDebugData(state: AppState) {
+  return {
+    ...state,
+    display: {
+      ...state.display,
+      skinGenLetterWidths: "[[REDACTED]]",
+      skinImages: "[[REDACTED]]",
+      skinCursors: "[[REDACTED]]",
+      skinRegion: "[[REDACTED]]"
+    }
+  };
+}
