@@ -43,22 +43,6 @@ import {
 
 import { bindToIndexedDB } from "./indexedDB";
 
-const requireJSZip = () => {
-  return new Promise((resolve, reject) => {
-    require.ensure(
-      ["jszip/dist/jszip"],
-      require => {
-        resolve(require("jszip/dist/jszip"));
-      },
-      e => {
-        console.error("Error loading JSZip", e);
-        reject(e);
-      },
-      "jszip"
-    );
-  });
-};
-
 const requireJSMediaTags = () => {
   return new Promise((resolve, reject) => {
     require.ensure(
@@ -249,7 +233,8 @@ Raven.context(async () => {
       }
     ],
     enableHotkeys: true,
-    requireJSZip,
+    requireJSZip: () =>
+      import(/* webpackChunkName: "jszip" */ "jszip/dist/jszip"),
     requireJSMediaTags,
     __extraWindows,
     __enableMediaLibrary: library,

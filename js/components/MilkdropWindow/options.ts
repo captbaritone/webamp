@@ -6,51 +6,36 @@ import {
 async function loadInitialDependencies(): Promise<
   InitialButterchurnDependencies
 > {
-  return new Promise(
-    (
-      resolve: (initialDependencies: InitialButterchurnDependencies) => void,
-      reject
-    ) => {
-      // @ts-ignore Eventually we can replace these with async imports
-      require.ensure(
-        [
-          "butterchurn",
-          "butterchurn-presets/lib/butterchurnPresetsMinimal.min",
-          "butterchurn-presets/lib/butterchurnPresetPackMeta.min"
-        ],
-        // @ts-ignore Eventually we can replace these with async imports
-        require => {
-          const butterchurn = require("butterchurn");
-          const butterchurnMinimalPresets = require("butterchurn-presets/lib/butterchurnPresetsMinimal.min");
-          const presetPackMeta = require("butterchurn-presets/lib/butterchurnPresetPackMeta.min");
-          resolve({
-            butterchurn,
-            minimalPresets: butterchurnMinimalPresets.getPresets(),
-            presetKeys: presetPackMeta.getMainPresetMeta().presets
-          });
-        },
-        reject,
+  const [butterchurn, butterchurnMinimalPresets, presetPackMeta] =
+    // prettier-ignore
+    await Promise.all([
+      import(
+        /* webpackChunkName: "butterchurn-initial-dependencies" */
+        // @ts-ignore
         "butterchurn"
-      );
-    }
-  );
+      ),
+      import(
+        /* webpackChunkName: "butterchurn-initial-dependencies" */
+        // @ts-ignore
+        "butterchurn-presets/lib/butterchurnPresetsMinimal.min"
+      ),
+      import(
+        /* webpackChunkName: "butterchurn-initial-dependencies" */
+        // @ts-ignore
+        "butterchurn-presets/lib/butterchurnPresetPackMeta.min"
+      )
+  ]);
+  return {
+    butterchurn,
+    minimalPresets: butterchurnMinimalPresets.getPresets(),
+    presetKeys: presetPackMeta.getMainPresetMeta().presets
+  };
 }
 
 async function loadNonMinimalPresets() {
-  return new Promise((resolve, reject) => {
-    // @ts-ignore Eventually we can replace these with async imports
-    require.ensure(
-      ["butterchurn-presets/lib/butterchurnPresetsNonMinimal.min"],
-      // @ts-ignore Eventually we can replace these with async imports
-      require => {
-        resolve(
-          require("butterchurn-presets/lib/butterchurnPresetsNonMinimal.min").getPresets()
-        );
-      },
-      reject,
-      "butterchurn-presets"
-    );
-  });
+  return (await import(/* webpackChunkName: "butterchurn-non-minimal-presets" */
+  // @ts-ignore
+  "butterchurn-presets/lib/butterchurnPresetsNonMinimal.min")).getPresets();
 }
 
 const options: ButterchurnOptions = {

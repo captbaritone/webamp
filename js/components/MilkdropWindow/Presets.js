@@ -112,21 +112,10 @@ export default class Presets {
   }
 
   async _convertPreset(file) {
-    return new Promise((resolve, reject) => {
-      require.ensure(
-        ["milkdrop-preset-converter-aws"],
-        async require => {
-          const { convertPreset } = require("milkdrop-preset-converter-aws");
-          try {
-            resolve(convertPreset(file, this._presetConverterEndpoint));
-          } catch (e) {
-            reject(e);
-          }
-        },
-        reject,
-        "milkdrop-preset-converter"
-      );
-    });
+    const {
+      convertPreset
+    } = await import(/* webpackChunkName: "milkdrop-preset-converter" */ "milkdrop-preset-converter-aws");
+    return convertPreset(file, this._presetConverterEndpoint);
   }
 
   async _selectIndex(idx) {
