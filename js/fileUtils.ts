@@ -29,7 +29,7 @@ export function genMediaTags(
 
   const options = {
     duration: true,
-      skipPostHeaders: true // avoid unnecessary data to be read
+    skipPostHeaders: true // avoid unnecessary data to be read
   };
 
   if (typeof file === "string") {
