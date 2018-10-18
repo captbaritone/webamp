@@ -35,10 +35,17 @@ async function readFileAsText(file) {
  * and the remainder can be loaded async via the function `getRest`.
  */
 export default class Presets {
-  constructor({ keys, initialPresets, getRest, randomize = true }) {
+  constructor({
+    keys,
+    initialPresets,
+    getRest,
+    presetConverterEndpoint,
+    randomize = true
+  }) {
     this._keys = keys; // Alphabetical list of preset names
     this._presets = initialPresets; // Presets indexed by name
     this._getRest = getRest; // An async function to get the rest of the presets
+    this._presetConverterEndpoint = presetConverterEndpoint;
     this._history = []; // Indexes into _keys
 
     this._randomize = randomize;
@@ -111,12 +118,7 @@ export default class Presets {
         async require => {
           const { convertPreset } = require("milkdrop-preset-converter-aws");
           try {
-            resolve(
-              convertPreset(
-                file,
-                "https://p2tpeb5v8b.execute-api.us-east-2.amazonaws.com/default/milkdropShaderConverter"
-              )
-            );
+            resolve(convertPreset(file, this._presetConverterEndpoint));
           } catch (e) {
             reject(e);
           }
