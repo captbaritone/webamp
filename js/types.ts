@@ -8,6 +8,7 @@ import { EqualizerState } from "./reducers/equalizer";
 import { NetworkState } from "./reducers/network";
 import { SerializedStateV1 } from "./serializedStates/v1Types";
 import { TracksState } from "./reducers/tracks";
+import { IAudioMetadata, IOptions } from 'music-metadata-browser';
 
 export {
   WebampWindow,
@@ -517,9 +518,41 @@ export interface AppState {
   tracks: TracksState;
 }
 
+/**
+ * Type definition of the music-metadata-browser module.
+ * Ref: https://github.com/Borewit/music-metadata-browser/blob/master/src/index.ts
+ */
+export interface IMusicMetadataBrowserApi {
+
+  /**
+   * Parse Web API File
+   * @param {Blob} blob
+   * @param {IOptions} options Parsing options
+   * @returns {Promise<IAudioMetadata>}
+   */
+  parseBlob(blob: Blob, options?: IOptions): Promise<IAudioMetadata>;
+
+  /**
+   * Parse fetched file, using the Web Fetch API
+   * @param {string} audioTrackUrl URL to download the audio track from
+   * @param {IOptions} options Parsing options
+   * @returns {Promise<IAudioMetadata>}
+   */
+  fetchFromUrl(audioTrackUrl: string, options?: IOptions): Promise<IAudioMetadata>;
+
+  /**
+   * Parse audio from Node Buffer
+   * @param {Stream.Readable} stream Audio input stream
+   * @param {string} mimeType <string> Content specification MIME-type, e.g.: 'audio/mpeg'
+   * @param {IOptions} options Parsing options
+   * @returns {Promise<IAudioMetadata>}
+   */
+  parseBuffer(buf: Buffer, mimeType?: string, options?: IOptions): Promise<IAudioMetadata>;
+}
+
 export interface Extras {
   requireJSZip: () => Promise<never>;
-  requireMusicMetadata: () => Promise<never>;
+  requireMusicMetadata: () => Promise<IMusicMetadataBrowserApi>;
 }
 
 export type GetState = () => AppState;
