@@ -1,11 +1,12 @@
 import invariant from "invariant";
-import { IAudioMetadata } from 'music-metadata-browser'; // Import music-metadata type definitions
+import { IMusicMetadataBrowserApi } from "./types";
+import { IAudioMetadata } from "music-metadata-browser"; // Import music-metadata type definitions
 
 type MediaDataType = string | ArrayBuffer | Blob;
 
 export function genMediaTags(
   file: MediaDataType,
-  musicMetadata: MusicMetadataBrowserApi
+  musicMetadata: IMusicMetadataBrowserApi
 ): Promise<IAudioMetadata> {
   invariant(
     file != null,
