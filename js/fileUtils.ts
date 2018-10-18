@@ -2,10 +2,6 @@ import invariant from "invariant";
 import { IAudioMetadata, IOptions } from 'music-metadata-browser';
 
 type JsMediaTagsFile = string | ArrayBuffer | Blob;
-interface JsMediaTagsHandlers {
-  onSuccess: (tags: IAudioMetadata) => void;
-  onError: (error: Error) => void;
-}
 
 interface MusicMetadataBrowserApi {
 
