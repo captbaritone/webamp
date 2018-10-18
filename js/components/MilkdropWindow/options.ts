@@ -38,7 +38,19 @@ async function loadNonMinimalPresets() {
   "butterchurn-presets/lib/butterchurnPresetsNonMinimal.min")).getPresets();
 }
 
+async function loadConvertPreset() {
+  const { convertPreset } =
+    // prettier-ignore
+    await import(
+    /* webpackChunkName: "milkdrop-preset-converter" */
+    // @ts-ignore
+    "milkdrop-preset-converter-aws"
+  );
+  return convertPreset;
+}
+
 const options: ButterchurnOptions = {
+  loadConvertPreset,
   loadInitialDependencies,
   loadNonMinimalPresets,
   presetConverterEndpoint:

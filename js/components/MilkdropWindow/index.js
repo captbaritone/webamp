@@ -43,15 +43,18 @@ class PresetsLoader extends React.Component {
       loadInitialPreset(this.options)
     ]);
 
+    const presets = new Presets({
+      keys: presetKeys,
+      initialPresets: minimalPresets,
+      getRest: this.options.loadNonMinimalPresets,
+      presetConverterEndpoint: this.options.presetConverterEndpoint,
+      loadConvertPreset: this.options.loadConvertPreset
+    });
+
     this.setState({
       butterchurn,
       initialPreset,
-      presets: new Presets({
-        keys: presetKeys,
-        initialPresets: minimalPresets,
-        getRest: this.options.loadNonMinimalPresets,
-        presetConverterEndpoint: this.options.presetConverterEndpoint
-      })
+      presets
     });
     screenfull.onchange(this._handleFullscreenChange);
   }

@@ -117,6 +117,7 @@ export interface InitialButterchurnDependencies {
 export interface ButterchurnOptions {
   loadNonMinimalPresets(): Promise<any>;
   loadInitialDependencies(): Promise<InitialButterchurnDependencies>;
+  loadConvertPreset(): Promise<any>;
   presetConverterEndpoint: string;
   initialMilkdropPresetUrl?: string | null;
   initialButterchurnPresetUrl?: string | null;
