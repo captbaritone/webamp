@@ -162,7 +162,12 @@ class PlaylistWindow extends React.Component<Props> {
               onClick={this.props.toggleVisualizerStyle}
             >
               {/* TODO: Resize the visualizer so it fits */
-              false && <Visualizer analyser={analyser} />}
+              false && (
+                <Visualizer
+                  // @ts-ignore Visualizer is not yet typed
+                  analyser={analyser}
+                />
+              )}
             </div>
             <PlaylistActionArea />
             <ListMenu />
