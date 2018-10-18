@@ -6,6 +6,7 @@ import GenWindow from "../GenWindow";
 import { hideWindow, showWindow } from "../../actionCreators";
 import MilkdropContextMenu from "./MilkdropContextMenu";
 import Desktop from "./Desktop";
+import options from "./options";
 
 import Presets from "./Presets";
 import Milkdrop from "./Milkdrop";
@@ -19,6 +20,7 @@ import "../../../css/milkdrop-window.css";
 class PresetsLoader extends React.Component {
   constructor() {
     super();
+    this.options = options;
     this.state = {
       presets: null,
       initialPreset: null,
@@ -36,16 +38,23 @@ class PresetsLoader extends React.Component {
     const [
       { butterchurn, presetKeys, minimalPresets },
       initialPreset
-    ] = await Promise.all([loadInitialDependencies(), loadInitialPreset()]);
+    ] = await Promise.all([
+      this.options.loadInitialDependencies(),
+      loadInitialPreset(this.options)
+    ]);
+
+    const presets = new Presets({
+      keys: presetKeys,
+      initialPresets: minimalPresets,
+      getRest: this.options.loadNonMinimalPresets,
+      presetConverterEndpoint: this.options.presetConverterEndpoint,
+      loadConvertPreset: this.options.loadConvertPreset
+    });
 
     this.setState({
       butterchurn,
       initialPreset,
-      presets: new Presets({
-        keys: presetKeys,
-        initialPresets: minimalPresets,
-        getRest: loadNonMinimalPresets
-      })
+      presets
     });
     screenfull.onchange(this._handleFullscreenChange);
   }
@@ -159,21 +168,18 @@ function presetNameFromURL(url) {
   }
 }
 
-async function loadInitialPreset() {
-  if (!("URLSearchParams" in window)) {
-    return null;
-  }
-  const params = new URLSearchParams(location.search);
-  const butterchurnPresetUrl = params.get("butterchurnPresetUrl");
-  const milkdropPresetUrl = params.get("milkdropPresetUrl");
-  if (butterchurnPresetUrl && milkdropPresetUrl) {
+async function loadInitialPreset({
+  initialButterchurnPresetUrl,
+  initialMilkdropPresetUrl
+}) {
+  if (initialButterchurnPresetUrl && initialMilkdropPresetUrl) {
     alert(
       "Unable to handle both milkdropPresetUrl and butterchurnPresetUrl. Please specify one or the other."
     );
-  } else if (butterchurnPresetUrl) {
-    return fetchPreset(butterchurnPresetUrl, { isButterchurn: true });
-  } else if (milkdropPresetUrl) {
-    return fetchPreset(milkdropPresetUrl, { isButterchurn: false });
+  } else if (initialButterchurnPresetUrl) {
+    return fetchPreset(initialButterchurnPresetUrl, { isButterchurn: true });
+  } else if (initialMilkdropPresetUrl) {
+    return fetchPreset(initialMilkdropPresetUrl, { isButterchurn: false });
   }
   return null;
 }
@@ -201,45 +207,6 @@ async function fetchPreset(presetUrl, { isButterchurn }) {
   }
 
   return { [presetName]: preset };
-}
-
-async function loadInitialDependencies() {
-  return new Promise((resolve, reject) => {
-    require.ensure(
-      [
-        "butterchurn",
-        "butterchurn-presets/lib/butterchurnPresetsMinimal.min",
-        "butterchurn-presets/lib/butterchurnPresetPackMeta.min"
-      ],
-      require => {
-        const butterchurn = require("butterchurn");
-        const butterchurnMinimalPresets = require("butterchurn-presets/lib/butterchurnPresetsMinimal.min");
-        const presetPackMeta = require("butterchurn-presets/lib/butterchurnPresetPackMeta.min");
-        resolve({
-          butterchurn,
-          minimalPresets: butterchurnMinimalPresets.getPresets(),
-          presetKeys: presetPackMeta.getMainPresetMeta().presets
-        });
-      },
-      reject,
-      "butterchurn"
-    );
-  });
-}
-
-async function loadNonMinimalPresets() {
-  return new Promise((resolve, reject) => {
-    require.ensure(
-      ["butterchurn-presets/lib/butterchurnPresetsNonMinimal.min"],
-      require => {
-        resolve(
-          require("butterchurn-presets/lib/butterchurnPresetsNonMinimal.min").getPresets()
-        );
-      },
-      reject,
-      "butterchurn-presets"
-    );
-  });
 }
 
 const mapStateToProps = () => ({});

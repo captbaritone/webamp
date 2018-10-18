@@ -14,6 +14,7 @@ import internetArchive from "../skins/Internet-Archive.wsz";
 import MilkdropWindow from "./components/MilkdropWindow";
 import screenshotInitialState from "./screenshotInitialState";
 import { WINDOWS } from "./constants";
+import * as Selectors from "./selectors";
 
 import WebampLazy from "./webampLazy";
 import enableMediaSession from "./mediaSession";
@@ -41,22 +42,6 @@ import {
 } from "./config";
 
 import { bindToIndexedDB } from "./indexedDB";
-
-const requireJSZip = () => {
-  return new Promise((resolve, reject) => {
-    require.ensure(
-      ["jszip/dist/jszip"],
-      require => {
-        resolve(require("jszip/dist/jszip"));
-      },
-      e => {
-        console.error("Error loading JSZip", e);
-        reject(e);
-      },
-      "jszip"
-    );
-  });
-};
 
 const requireMusicMetadata = () => {
   return new Promise((resolve, reject) => {
@@ -135,16 +120,7 @@ Raven.config(SENTRY_DSN, {
 
 const ravenMiddleware = createMiddleware(Raven, {
   filterBreadcrumbActions,
-  stateTransformer: state => ({
-    ...state,
-    display: {
-      ...state.display,
-      skinGenLetterWidths: "[[REDACTED]]",
-      skinImages: "[[REDACTED]]",
-      skinCursors: "[[REDACTED]]",
-      skinRegion: "[[REDACTED]]"
-    }
-  })
+  stateTransformer: Selectors.getDebugData
 });
 
 // Don't prompt user to install Webamp. It's probably not
@@ -257,7 +233,8 @@ Raven.context(async () => {
       }
     ],
     enableHotkeys: true,
-    requireJSZip,
+    requireJSZip: () =>
+      import(/* webpackChunkName: "jszip" */ "jszip/dist/jszip"),
     requireMusicMetadata,
     __extraWindows,
     __enableMediaLibrary: library,

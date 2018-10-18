@@ -20,17 +20,26 @@
     "@babel/preset-react",
     "@babel/preset-typescript"
   ],
-  "plugins": ["@babel/plugin-proposal-object-rest-spread", "@babel/plugin-proposal-class-properties"],
+  "plugins": [
+    "@babel/plugin-proposal-object-rest-spread",
+    "@babel/plugin-proposal-class-properties"
+  ],
   "env": {
     "test": {
       "presets": ["@babel/preset-react"],
-      "plugins": ["@babel/plugin-transform-modules-commonjs"]
+      "plugins": [
+        "@babel/plugin-transform-modules-commonjs",
+        "@babel/plugin-syntax-dynamic-import"
+      ]
     },
     "library": {
       "plugins": [
         "babel-plugin-remove-webpack",
         "@babel/plugin-transform-runtime"
       ]
+    },
+    "production": {
+      "plugins": ["@babel/plugin-syntax-dynamic-import"]
     }
   }
 }
