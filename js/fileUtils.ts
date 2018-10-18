@@ -3,15 +3,10 @@ import { IAudioMetadata, IOptions } from 'music-metadata-browser';
 
 type JsMediaTagsFile = string | ArrayBuffer | Blob;
 
-interface MusicMetadataBrowserApi {
-
-  parseBlob(blob: Blob, options?: IOptions): Promise<IAudioMetadata>;
-
-  fetchFromUrl(audioTrackUrl: string, options?: IOptions): Promise<IAudioMetadata>
-}
+type MediaDataType = string | ArrayBuffer | Blob;
 
 export function genMediaTags(
-  file: JsMediaTagsFile,
+  file: MediaDataType,
   musicMetadata: MusicMetadataBrowserApi
 ): Promise<IAudioMetadata> {
   invariant(
