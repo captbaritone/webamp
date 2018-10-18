@@ -40,12 +40,14 @@ export default class Presets {
     initialPresets,
     getRest,
     presetConverterEndpoint,
+    loadConvertPreset,
     randomize = true
   }) {
     this._keys = keys; // Alphabetical list of preset names
     this._presets = initialPresets; // Presets indexed by name
     this._getRest = getRest; // An async function to get the rest of the presets
     this._presetConverterEndpoint = presetConverterEndpoint;
+    this._loadConvertPreset = loadConvertPreset;
     this._history = []; // Indexes into _keys
 
     this._randomize = randomize;
@@ -112,9 +114,7 @@ export default class Presets {
   }
 
   async _convertPreset(file) {
-    const {
-      convertPreset
-    } = await import(/* webpackChunkName: "milkdrop-preset-converter" */ "milkdrop-preset-converter-aws");
+    const convertPreset = await this._loadConvertPreset();
     return convertPreset(file, this._presetConverterEndpoint);
   }
 
