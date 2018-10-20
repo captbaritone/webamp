@@ -1,130 +1,130 @@
 #webamp .gen-text-space {
-    width: 5px;
+  width: 5px;
 }
 
 #webamp .gen-text-letter {
-    height: 7px;
-    display: inline-block;
+  height: 7px;
+  display: inline-block;
 }
 
 #webamp .gen-window {
-    /* Default size */
-    width: 275px;
-    height: 116px;
-    display: flex;
-    flex-direction: column;
+  /* Default size */
+  width: 275px;
+  height: 116px;
+  display: flex;
+  flex-direction: column;
 }
 
 #webamp .gen-top {
-    height: 20px;
-    display: flex;
-    flex-direction: row;
+  height: 20px;
+  display: flex;
+  flex-direction: row;
 }
 
 #webamp .gen-top-left {
-    width: 25px;
-    height: 20px;
+  width: 25px;
+  height: 20px;
 }
 
 #webamp .gen-top-title {
-    line-height: 7px;
-    margin-top: 2px;
-    /* TODO: This should be a conciquence of the repeating tiles, not hard coded */
-    padding: 0 3px 0 4px;
+  line-height: 7px;
+  margin-top: 2px;
+  /* TODO: This should be a conciquence of the repeating tiles, not hard coded */
+  padding: 0 3px 0 4px;
 }
 
 #webamp .gen-top-left-fill {
-    flex-grow: 1;
-    height: 20px;
-    background-position: left;
+  flex-grow: 1;
+  height: 20px;
+  background-position: left;
 }
 
 #webamp .gen-top-right-fill {
-    flex-grow: 1;
-    height: 20px;
-    background-position: right;
+  flex-grow: 1;
+  height: 20px;
+  background-position: right;
 }
 
 #webamp .gen-top-left-end {
-    width: 25px;
-    height: 20px;
+  width: 25px;
+  height: 20px;
 }
 
 #webamp .gen-top-right {
-    width: 25px;
-    height: 20px;
+  width: 25px;
+  height: 20px;
 }
 
 #webamp .gen-top-right-end {
-    width: 25px;
-    height: 20px;
+  width: 25px;
+  height: 20px;
 }
 
 #webamp .gen-close {
-    width: 9px;
-    height: 9px;
-    position: absolute;
-    right: 2px;
-    top: 3px;
+  width: 9px;
+  height: 9px;
+  position: absolute;
+  right: 2px;
+  top: 3px;
 }
 
 #webamp .gen-middle {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: row;
-    position: relative;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  position: relative;
 }
 
 #webamp .gen-middle-left {
-    width: 11px;
+  width: 11px;
 }
 
 #webamp .gen-middle-left-bottom {
-    width: 11px;
-    height: 24px;
-    bottom: 0;
-    position: absolute;
+  width: 11px;
+  height: 24px;
+  bottom: 0;
+  position: absolute;
 }
 
 #webamp .gen-middle-center {
-    flex-grow: 1;
-    position: relative;
+  flex-grow: 1;
+  position: relative;
 }
 
 #webamp .gen-middle-right {
-    width: 8px;
+  width: 8px;
 }
 
 #webamp .gen-middle-right-bottom {
-    width: 8px;
-    height: 24px;
-    bottom: 0;
-    position: absolute;
+  width: 8px;
+  height: 24px;
+  bottom: 0;
+  position: absolute;
 }
 
 #webamp .gen-bottom {
-    height: 14px;
-    background-repeat: repeat-x;
+  height: 14px;
+  background-repeat: repeat-x;
 }
 
 #webamp .gen-bottom-left {
-    position: absolute;
-    left: 0;
-    width: 125px;
-    height: 14px;
+  position: absolute;
+  left: 0;
+  width: 125px;
+  height: 14px;
 }
 
 #webamp .gen-bottom-right {
-    position: absolute;
-    right: 0;
-    width: 125px;
-    height: 14px;
+  position: absolute;
+  right: 0;
+  width: 125px;
+  height: 14px;
 }
 
 #webamp .gen-bottom-right #gen-resize-target {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    height: 20px;
-    width: 20px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 20px;
+  width: 20px;
 }

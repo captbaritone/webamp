@@ -1,147 +1,147 @@
 /* Rules for the page layout */
 body {
-    background-color: #224eb7;
-    font-family: arial;
-    font-size: 15px;
+  background-color: #224eb7;
+  font-family: arial;
+  font-size: 15px;
 }
 
 #browser-compatibility {
-    display: none;
-    position: absolute;
-    width: 275px;
-    margin-top: -58px;
-    margin-left: -137px;
-    top: 40%;
-    left: 50%;
-    background: white;
-    text-align: center;
+  display: none;
+  position: absolute;
+  width: 275px;
+  margin-top: -58px;
+  margin-left: -137px;
+  top: 40%;
+  left: 50%;
+  background: white;
+  text-align: center;
 }
 
 .about {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    color: white;
-    /* Let users drag windows over this text */
-    z-index: -1;
-    margin: 0;
-    display: flex;
-    flex-direction: row;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  color: white;
+  /* Let users drag windows over this text */
+  z-index: -1;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
 }
 
 .about a {
-    display: flex;
+  display: flex;
 }
 
 .about a svg {
-    margin: 10px 13px;
-    width: 16px;
-    height: 16px;
-    fill: #fff;
-    transition: 0.25s ease-out;
+  margin: 10px 13px;
+  width: 16px;
+  height: 16px;
+  fill: #fff;
+  transition: 0.25s ease-out;
 }
 
 /* TODO: Ideally this would be a border not a :before */
 .about a:before {
-    position: absolute;
-    top: 0;
-    content: "";
-    width: 42px; /* TODO: This should be derived not hard coded */
-    height: 2px;
-    background-color: rgba(255, 255, 255, 0);
-    transition: 0.25s ease-out;
+  position: absolute;
+  top: 0;
+  content: "";
+  width: 42px; /* TODO: This should be derived not hard coded */
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0);
+  transition: 0.25s ease-out;
 }
 
 .about a:hover:before {
-    background-color: rgba(255, 255, 255, 255);
-    transition: 0.25s ease-out;
+  background-color: rgba(255, 255, 255, 255);
+  transition: 0.25s ease-out;
 }
 
 .about a:hover svg {
-    transition: 0.25s ease-out;
-    transform: scale(1.35);
+  transition: 0.25s ease-out;
+  transform: scale(1.35);
 }
 
 #twitter-share {
-    background-color: #1da1f2;
+  background-color: #1da1f2;
 }
 #github-share {
-    background-color: #2d3238;
+  background-color: #2d3238;
 }
 
 #mail-share {
-    background-color: #6a7788;
+  background-color: #6a7788;
 }
 
 #butterchurn-share {
-    display: none; /* Button is only shown if the window gets enabled */
-    background-size: 100%; /* Image is 2x size for retina displays */
-    background-size: 100%; /* Image is 2x size for retina displays */
+  display: none; /* Button is only shown if the window gets enabled */
+  background-size: 100%; /* Image is 2x size for retina displays */
+  background-size: 100%; /* Image is 2x size for retina displays */
 }
 
 #app {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    z-index: -2; /* Place this below the about buttons */
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: -2; /* Place this below the about buttons */
 }
 
 #app #loading {
-    color: white;
-    text-align: center;
-    font-size: 40px;
-    height: 30px;
-    position: absolute;
-    margin: auto;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+  color: white;
+  text-align: center;
+  font-size: 40px;
+  height: 30px;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }
 
 #app #loading .ellipsis-anim span {
-    opacity: 0;
-    -webkit-animation: ellipsis-dot 1s infinite;
-    animation: ellipsis-dot 1s infinite;
+  opacity: 0;
+  -webkit-animation: ellipsis-dot 1s infinite;
+  animation: ellipsis-dot 1s infinite;
 }
 
 #app #loading .ellipsis-anim span:nth-child(1) {
-    -webkit-animation-delay: 0s;
-    animation-delay: 0s;
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
 }
 
 #app #loading .ellipsis-anim span:nth-child(2) {
-    -webkit-animation-delay: 0.1s;
-    animation-delay: 0.1s;
+  -webkit-animation-delay: 0.1s;
+  animation-delay: 0.1s;
 }
 
 #app #loading .ellipsis-anim span:nth-child(3) {
-    -webkit-animation-delay: 0.2s;
-    animation-delay: 0.2s;
+  -webkit-animation-delay: 0.2s;
+  animation-delay: 0.2s;
 }
 
 @-webkit-keyframes ellipsis-dot {
-    0% {
-        opacity: 0;
-    }
-    50% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-    }
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 @keyframes ellipsis-dot {
-    0% {
-        opacity: 0;
-    }
-    50% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-    }
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }

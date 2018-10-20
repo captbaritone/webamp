@@ -304,7 +304,14 @@ export function fetchMediaTags(file: string | Blob, id: number): Dispatchable {
         const blob = new Blob([byteArray], { type: picture[0].format });
         albumArtUrl = URL.createObjectURL(blob);
       }
-      dispatch({ type: SET_MEDIA_TAGS, artist: artist ? artist : '', title: title ? title : '', album, albumArtUrl, id });
+      dispatch({
+        type: SET_MEDIA_TAGS,
+        artist: artist ? artist : "",
+        title: title ? title : "",
+        album,
+        albumArtUrl,
+        id
+      });
     } catch (e) {
       dispatch({ type: MEDIA_TAG_REQUEST_FAILED, id });
     }

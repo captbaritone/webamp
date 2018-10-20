@@ -1,329 +1,329 @@
 /* Styles */
 #webamp #playlist-window {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 #webamp .playlist-top {
-    width: 100%;
-    min-height: 20px;
-    max-height: 20px;
-    position: relative;
-    display: flex;
+  width: 100%;
+  min-height: 20px;
+  max-height: 20px;
+  position: relative;
+  display: flex;
 }
 
 #webamp .playlist-top-left {
-    width: 25px;
+  width: 25px;
 }
 
 #webamp .playlist-top-left-spacer {
-    width: 12px;
+  width: 12px;
 }
 
 #webamp .playlist-top-left-fill {
-    flex-grow: 1;
-    background-position: right;
+  flex-grow: 1;
+  background-position: right;
 }
 
 #webamp .playlist-top-right-spacer {
-    /* This goes to the right of the center */
-    width: 13px;
+  /* This goes to the right of the center */
+  width: 13px;
 }
 
 #webamp .playlist-top-right-fill {
-    flex-grow: 1;
-    background-position: right;
+  flex-grow: 1;
+  background-position: right;
 }
 
 #webamp .playlist-top-title {
-    width: 100px;
+  width: 100px;
 }
 
 #webamp .playlist-top-right {
-    width: 25px;
+  width: 25px;
 }
 
 #webamp .playlist-middle {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: row;
-    overflow: hidden;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
 }
 
 #webamp .playlist-middle-left {
-    background-repeat: repeat-y;
-    width: 12px;
-    min-width: 12px;
+  background-repeat: repeat-y;
+  width: 12px;
+  min-width: 12px;
 }
 
 #webamp .playlist-middle-center {
-    flex-grow: 1;
-    padding: 3px 0;
-    min-width: 0; /* Not sure why this is needed */
+  flex-grow: 1;
+  padding: 3px 0;
+  min-width: 0; /* Not sure why this is needed */
 }
 
 #webamp .playlist-tracks {
-    display: flex;
-    flex: 1 0 auto;
+  display: flex;
+  flex: 1 0 auto;
 }
 
 #webamp .playlist-tracks .track-cell {
-    height: 13px;
-    line-height: 13px;
-    font-size: 9px;
-    letter-spacing: 0.5px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
+  height: 13px;
+  line-height: 13px;
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 
 #webamp .playlist-track-durations > div {
-    padding-right: 3px;
-    text-align: right;
+  padding-right: 3px;
+  text-align: right;
 }
 
 #webamp .playlist-track-titles {
-    flex: 1 1 auto;
-    overflow: hidden;
+  flex: 1 1 auto;
+  overflow: hidden;
 }
 
 #webamp .playlist-track-titles > div {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 #webamp .playlist-middle-right {
-    background-repeat: repeat-y;
-    background-position: top right;
-    width: 20px;
-    min-width: 20px;
-    position: relative;
-    padding-bottom: 18px;
+  background-repeat: repeat-y;
+  background-position: top right;
+  width: 20px;
+  min-width: 20px;
+  position: relative;
+  padding-bottom: 18px;
 }
 
 #webamp .playlist-scrollbar {
-    height: 100%;
-    width: 8px;
-    margin-left: 5px;
+  height: 100%;
+  width: 8px;
+  margin-left: 5px;
 }
 
 #webamp .playlist-scrollbar-handle {
-    width: 8x;
-    height: 18px;
+  width: 8x;
+  height: 18px;
 }
 
 #webamp .playlist-bottom {
-    width: 100%;
-    height: 38px;
-    min-height: 38px;
-    max-height: 38px;
-    position: relative;
+  width: 100%;
+  height: 38px;
+  min-height: 38px;
+  max-height: 38px;
+  position: relative;
 }
 
 #webamp .playlist-bottom-left {
-    width: 125px;
-    height: 100%;
-    position: absolute;
+  width: 125px;
+  height: 100%;
+  position: absolute;
 }
 
 #webamp .playlist-menu li {
-    list-style: none;
-    display: none;
-    width: 22px;
-    height: 18px;
-    padding: 0;
-    margin: 0;
+  list-style: none;
+  display: none;
+  width: 22px;
+  height: 18px;
+  padding: 0;
+  margin: 0;
 }
 
 #webamp .playlist-menu li > div {
-    height: 100%;
+  height: 100%;
 }
 
 #webamp .playlist-menu ul {
-    padding: 0;
-    margin: 0;
-    position: absolute;
-    bottom: 0;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  bottom: 0;
 }
 
 #webamp .playlist-menu.selected li {
-    display: block;
+  display: block;
 }
 
 #webamp .playlist-menu .bar {
-    position: absolute;
-    bottom: 0;
-    left: -3px;
-    width: 3px;
-    height: 54px;
+  position: absolute;
+  bottom: 0;
+  left: -3px;
+  width: 3px;
+  height: 54px;
 }
 
 #webamp #playlist-add-menu {
-    position: absolute;
-    bottom: 12px;
-    left: 14px;
-    width: 22px;
-    height: 18px;
+  position: absolute;
+  bottom: 12px;
+  left: 14px;
+  width: 22px;
+  height: 18px;
 }
 
 #webamp #playlist-remove-menu.playlist-menu .bar {
-    height: 72px;
+  height: 72px;
 }
 
 #webamp #playlist-remove-menu {
-    position: absolute;
-    bottom: 12px;
-    left: 43px;
-    width: 22px;
-    height: 18px;
+  position: absolute;
+  bottom: 12px;
+  left: 43px;
+  width: 22px;
+  height: 18px;
 }
 
 #webamp #playlist-selection-menu {
-    position: absolute;
-    bottom: 12px;
-    left: 72px;
-    width: 22px;
-    height: 18px;
+  position: absolute;
+  bottom: 12px;
+  left: 72px;
+  width: 22px;
+  height: 18px;
 }
 
 #webamp #playlist-misc-menu {
-    position: absolute;
-    bottom: 12px;
-    left: 101px;
-    width: 22px;
-    height: 18px;
+  position: absolute;
+  bottom: 12px;
+  left: 101px;
+  width: 22px;
+  height: 18px;
 }
 
 #webamp #playlist-list-menu {
-    position: absolute;
-    bottom: 12px;
-    right: 22px;
-    width: 22px;
-    height: 18px;
+  position: absolute;
+  bottom: 12px;
+  right: 22px;
+  width: 22px;
+  height: 18px;
 }
 
 #webamp .playlist-bottom-right {
-    width: 150px;
-    height: 100%;
-    position: absolute;
-    right: 0;
+  width: 150px;
+  height: 100%;
+  position: absolute;
+  right: 0;
 }
 
 #webamp .playlist-running-time-display {
-    position: absolute;
-    top: 10px;
-    left: 7px;
-    height: 10px;
+  position: absolute;
+  top: 10px;
+  left: 7px;
+  height: 10px;
 }
 
 #webamp .playlist-action-buttons {
-    position: absolute;
-    top: 22px;
-    left: 3px;
-    display: flex;
+  position: absolute;
+  top: 22px;
+  left: 3px;
+  display: flex;
 }
 
 #webamp .playlist-action-buttons > div {
-    height: 10px;
-    width: 10px;
+  height: 10px;
+  width: 10px;
 }
 
 #webamp #playlist-window .playlist-visualizer {
-    width: 75px;
-    height: 100%;
-    position: absolute;
-    right: 150px;
-    display: none; /* Only show if the window is wide enough */
+  width: 75px;
+  height: 100%;
+  position: absolute;
+  right: 150px;
+  display: none; /* Only show if the window is wide enough */
 }
 
 #webamp #playlist-window.wide .playlist-visualizer {
-    display: block;
+  display: block;
 }
 
 #webamp #playlist-window .mini-time {
-    position: absolute;
-    top: 23px;
-    left: 66px;
+  position: absolute;
+  top: 23px;
+  left: 66px;
 }
 
 #webamp #playlist-window #playlist-resize-target {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    height: 20px;
-    width: 20px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 20px;
+  width: 20px;
 }
 
 #webamp #playlist-close-button {
-    position: absolute;
-    right: 2px;
-    height: 9px;
-    width: 9px;
-    top: 3px;
+  position: absolute;
+  right: 2px;
+  height: 9px;
+  width: 9px;
+  top: 3px;
 }
 
 #webamp #playlist-shade-button {
-    position: absolute;
-    right: 12px;
-    height: 9px;
-    width: 9px;
-    top: 3px;
+  position: absolute;
+  right: 12px;
+  height: 9px;
+  width: 9px;
+  top: 3px;
 }
 
 #webamp #playlist-window-shade {
-    height: 14px;
+  height: 14px;
 }
 
 #webamp #playlist-window-shade .left {
-    height: 14px;
-    background-repeat: no-repeat;
+  height: 14px;
+  background-repeat: no-repeat;
 }
 
 #webamp #playlist-window-shade .right {
-    height: 14px;
-    background-repeat: no-repeat;
-    background-position-x: right;
+  height: 14px;
+  background-repeat: no-repeat;
+  background-position-x: right;
 }
 
 #webamp #playlist-window #playlist-scroll-up-button,
 #webamp #playlist-window #playlist-scroll-down-button {
-    position: absolute;
-    width: 8px;
-    height: 5px;
-    right: 7px;
+  position: absolute;
+  width: 8px;
+  height: 5px;
+  right: 7px;
 }
 
 #webamp #playlist-window #playlist-scroll-up-button {
-    top: 2px;
+  top: 2px;
 }
 #webamp #playlist-window #playlist-scroll-down-button {
-    top: 8px;
+  top: 8px;
 }
 
 #webamp #playlist-window-shade #playlist-resize-target {
-    position: absolute;
-    right: 20px;
-    top: 3px;
-    height: 9px;
-    width: 9px;
+  position: absolute;
+  right: 20px;
+  top: 3px;
+  height: 9px;
+  width: 9px;
 }
 
 #webamp #playlist-shade-track-title {
-    position: absolute;
-    top: 4px;
-    left: 5px;
+  position: absolute;
+  top: 4px;
+  left: 5px;
 }
 
 #webamp #playlist-shade-time {
-    position: absolute;
-    top: 4px;
-    right: 30px;
+  position: absolute;
+  top: 4px;
+  right: 30px;
 }
 
 #webamp #playlist-window #visualizer {
-    position: absolute;
-    /* TODO: These numbers are not quite right */
-    top: 10px;
-    left: 5px;
+  position: absolute;
+  /* TODO: These numbers are not quite right */
+  top: 10px;
+  left: 5px;
 }

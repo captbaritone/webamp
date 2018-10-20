@@ -1,88 +1,88 @@
 #webamp-media-library {
-    font-size: 11px;
-    font-family: "MS Sans Serif", "Segoe UI", sans-serif;
-    -webkit-font-smoothing: none;
-    padding-right: 2px;
-    padding-bottom: 3px;
+  font-size: 11px;
+  font-family: "MS Sans Serif", "Segoe UI", sans-serif;
+  -webkit-font-smoothing: none;
+  padding-right: 2px;
+  padding-bottom: 3px;
 }
 
 #webamp-media-library input {
-    height: 15px;
-    border: none;
-    background-color: inherit;
-    padding: 0;
+  height: 15px;
+  border: none;
+  background-color: inherit;
+  padding: 0;
 }
 
 #webamp-media-library th {
-    font-weight: normal;
-    text-align: left;
-    padding-left: 5px;
-    white-space: nowrap;
-    height: 14px;
+  font-weight: normal;
+  text-align: left;
+  padding-left: 5px;
+  white-space: nowrap;
+  height: 14px;
 }
 
 #webamp-media-library td {
-    white-space: nowrap;
+  white-space: nowrap;
 }
 #webamp-media-library ul {
-    list-style: none;
+  list-style: none;
 }
 
 #webamp-media-library ul {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
 }
 
 #webamp-media-library ul li ul {
-    padding-left: 10px;
+  padding-left: 10px;
 }
 
 #webamp-media-library .webamp-media-library-table {
-    width: 100%;
-    border-spacing: unset;
+  width: 100%;
+  border-spacing: unset;
 }
 #webamp-media-library .webamp-media-library-vertical-divider {
-    padding-top: 2px;
-    padding-bottom: 2px;
-    padding-left: 4px;
-    padding-right: 4px;
-    cursor: col-resize;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 4px;
+  padding-right: 4px;
+  cursor: col-resize;
 }
 
 #webamp-media-library .webamp-media-library-vertical-divider-line {
-    width: 1px;
-    height: 100%;
+  width: 1px;
+  height: 100%;
 }
 
 #webamp-media-library .webamp-media-library-horizontal-divider {
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 0px;
-    padding-right: 0px;
-    cursor: row-resize;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 0px;
+  padding-right: 0px;
+  cursor: row-resize;
 }
 
 #webamp-media-library .webamp-media-library-horizontal-divider-line {
-    height: 1px;
-    width: 100%;
+  height: 1px;
+  width: 100%;
 }
 
 #webamp-media-library button {
-    border: none;
-    color: inherit;
-    padding: 0;
-    font: inherit;
-    cursor: pointer;
-    outline: inherit;
-    height: 18px;
-    cursor: inherit;
-    /* TODO: I think only the center is supposed to stretch */
-    background-size: 100% 18px;
-    min-width: 53px;
-    margin-right: 4px;
+  border: none;
+  color: inherit;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  height: 18px;
+  cursor: inherit;
+  /* TODO: I think only the center is supposed to stretch */
+  background-size: 100% 18px;
+  min-width: 53px;
+  margin-right: 4px;
 }
 
 #webamp-media-library-track-summary-duration {
-    /* This plus the margin-right on the button add up to 8px; */
-    margin-left: 4px;
+  /* This plus the margin-right on the button add up to 8px; */
+  margin-left: 4px;
 }
