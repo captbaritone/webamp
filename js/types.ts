@@ -8,7 +8,7 @@ import { EqualizerState } from "./reducers/equalizer";
 import { NetworkState } from "./reducers/network";
 import { SerializedStateV1 } from "./serializedStates/v1Types";
 import { TracksState } from "./reducers/tracks";
-import { IAudioMetadata, IOptions } from 'music-metadata-browser';
+import { IAudioMetadata, IOptions } from "music-metadata-browser";
 
 export {
   WebampWindow,
@@ -523,7 +523,6 @@ export interface AppState {
  * Ref: https://github.com/Borewit/music-metadata-browser/blob/master/src/index.ts
  */
 export interface IMusicMetadataBrowserApi {
-
   /**
    * Parse Web API File
    * @param {Blob} blob
@@ -538,7 +537,10 @@ export interface IMusicMetadataBrowserApi {
    * @param {IOptions} options Parsing options
    * @returns {Promise<IAudioMetadata>}
    */
-  fetchFromUrl(audioTrackUrl: string, options?: IOptions): Promise<IAudioMetadata>;
+  fetchFromUrl(
+    audioTrackUrl: string,
+    options?: IOptions
+  ): Promise<IAudioMetadata>;
 
   /**
    * Parse audio from Node Buffer
@@ -547,7 +549,11 @@ export interface IMusicMetadataBrowserApi {
    * @param {IOptions} options Parsing options
    * @returns {Promise<IAudioMetadata>}
    */
-  parseBuffer(buf: Buffer, mimeType?: string, options?: IOptions): Promise<IAudioMetadata>;
+  parseBuffer(
+    buf: Buffer,
+    mimeType?: string,
+    options?: IOptions
+  ): Promise<IAudioMetadata>;
 }
 
 export interface Extras {
