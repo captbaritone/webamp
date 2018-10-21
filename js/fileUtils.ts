@@ -54,7 +54,7 @@ export async function genArrayBufferFromFileReference(
 ): Promise<any> {
   invariant(
     fileReference != null,
-    "Attempted to get an ArrayBuffer without assing a fileReference"
+    "Attempt to get an ArrayBuffer without assigning a fileReference"
   );
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -77,7 +77,7 @@ export async function promptForFileReferences(
     directory: false
   }
 ): Promise<FileList> {
-  return new Promise((resolve: (fileList: FileList) => void) => {
+  return new Promise<FileList>(resolve => {
     // Does this represent a memory leak somehow?
     // Can this fail? Do we ever reject?
     const fileInput = document.createElement("input");
