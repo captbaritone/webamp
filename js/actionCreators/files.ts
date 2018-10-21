@@ -56,7 +56,7 @@ const loadQueue = new LoadQueue({ threads: 4 });
 
 export function addTracksFromReferences(
   fileReferences: FileList,
-  loadStyle: LoadStyle | null,
+  loadStyle: LoadStyle,
   atIndex: number | undefined
 ): Dispatchable {
   const tracks: Track[] = Array.from(fileReferences).map(file => ({
@@ -70,7 +70,7 @@ const SKIN_FILENAME_MATCHER = new RegExp("(wsz|zip)$", "i");
 const EQF_FILENAME_MATCHER = new RegExp("eqf$", "i");
 export function loadFilesFromReferences(
   fileReferences: FileList,
-  loadStyle: LoadStyle | null = LOAD_STYLE.PLAY,
+  loadStyle: LoadStyle = LOAD_STYLE.PLAY,
   atIndex: number | undefined = undefined
 ): Dispatchable {
   return dispatch => {
@@ -206,7 +206,7 @@ export function fetchMediaDuration(url: string, id: number): Dispatchable {
 
 export function loadMediaFiles(
   tracks: Track[],
-  loadStyle: LoadStyle | null = null,
+  loadStyle: LoadStyle = LOAD_STYLE.NONE,
   atIndex = 0
 ): Dispatchable {
   return dispatch => {
@@ -216,7 +216,7 @@ export function loadMediaFiles(
       dispatch(removeAllTracks());
     }
     tracks.forEach((track, i) => {
-      const priority = i === 0 && loadStyle != null ? loadStyle : null;
+      const priority = i === 0 ? loadStyle : LOAD_STYLE.NONE;
       dispatch(loadMediaFile(track, priority, atIndex + i));
     });
   };
@@ -224,7 +224,7 @@ export function loadMediaFiles(
 
 export function loadMediaFile(
   track: Track,
-  priority: LoadStyle | null = null,
+  priority: LoadStyle = LOAD_STYLE.NONE,
   atIndex = 0
 ): Dispatchable {
   return dispatch => {
@@ -253,6 +253,7 @@ export function loadMediaFile(
       case LOAD_STYLE.PLAY:
         dispatch({ type: PLAY_TRACK, id });
         break;
+      case LOAD_STYLE.NONE:
       default:
         // If we're not going to load this right away,
         // we should set duration on our own

@@ -192,7 +192,7 @@ class Winamp {
   appendTracks(tracks) {
     const nextIndex = Selectors.getTrackCount(this.store.getState());
     this.store.dispatch(
-      Actions.loadMediaFiles(tracks, LOAD_STYLE.BUFFER, nextIndex)
+      Actions.loadMediaFiles(tracks, LOAD_STYLE.NONE, nextIndex)
     );
   }
 

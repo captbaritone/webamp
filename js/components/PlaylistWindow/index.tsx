@@ -21,6 +21,8 @@ import {
   getSkinPlaylistStyle
 } from "../../selectors";
 
+import { LOAD_STYLE } from "../../constants";
+
 import { clamp } from "../../utils";
 import DropTarget from "../DropTarget";
 import Visualizer from "../Visualizer";
@@ -200,7 +202,13 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
     scrollUpFourTracks: () => dispatch(scrollUpFourTracks()),
     scrollDownFourTracks: () => dispatch(scrollDownFourTracks()),
     loadFilesFromReferences: (e, startIndex) =>
-      dispatch(loadFilesFromReferences(e.dataTransfer.files, null, startIndex)),
+      dispatch(
+        loadFilesFromReferences(
+          e.dataTransfer.files,
+          LOAD_STYLE.NONE,
+          startIndex
+        )
+      ),
     scrollVolume: e => dispatch(scrollVolume(e))
   };
 };

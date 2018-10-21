@@ -424,7 +424,7 @@ export type MediaTagRequestStatus =
 
 export type MediaStatus = "PLAYING" | "STOPPED" | "PAUSED";
 
-export type LoadStyle = "BUFFER" | "PLAY";
+export type LoadStyle = "BUFFER" | "PLAY" | "NONE";
 
 export type TimeMode = "ELAPSED" | "REMAINING";
 

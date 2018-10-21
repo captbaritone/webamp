@@ -28,7 +28,8 @@ export const WINDOWS = {
 
 export const LOAD_STYLE: Record<LoadStyle, LoadStyle> = {
   BUFFER: "BUFFER",
-  PLAY: "PLAY"
+  PLAY: "PLAY",
+  NONE: "NONE"
 };
 
 // TODO: Make this an enum?
