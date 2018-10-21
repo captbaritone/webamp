@@ -196,7 +196,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
       }),
     close: () => dispatch(closeWindow("playlist")),
     toggleShade: () => dispatch(togglePlaylistShadeMode()),
-    toggleVisualizerStyle: () => dispatch(togglePlaylistShadeMode()),
+    toggleVisualizerStyle: () => dispatch(toggleVisualizerStyle()),
     scrollUpFourTracks: () => dispatch(scrollUpFourTracks()),
     scrollDownFourTracks: () => dispatch(scrollDownFourTracks()),
     loadFilesFromReferences: (e, startIndex) =>
