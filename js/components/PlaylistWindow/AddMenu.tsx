@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { LOAD_STYLE } from "../../constants";
 import { getTrackCount } from "../../selectors";
 import { addTracksFromReferences } from "../../actionCreators";
 import { promptForFileReferences } from "../../fileUtils";
@@ -46,7 +47,9 @@ const mapStateToProps = (state: AppState): StateProps => ({
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   addFilesAtIndex: async nextIndex => {
     const fileReferences = await promptForFileReferences();
-    dispatch(addTracksFromReferences(fileReferences, null, nextIndex));
+    dispatch(
+      addTracksFromReferences(fileReferences, LOAD_STYLE.NONE, nextIndex)
+    );
   },
   addDirAtIndex: async nextIndex => {
     if (!DIR_SUPPORT) {
@@ -54,7 +57,9 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
       return;
     }
     const fileReferences = await promptForFileReferences({ directory: true });
-    dispatch(addTracksFromReferences(fileReferences, null, nextIndex));
+    dispatch(
+      addTracksFromReferences(fileReferences, LOAD_STYLE.NONE, nextIndex)
+    );
   }
 });
 
