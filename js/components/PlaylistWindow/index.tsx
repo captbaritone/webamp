@@ -189,18 +189,19 @@ class PlaylistWindow extends React.Component<Props> {
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
   return {
-    focusPlaylist: () => ({
-      type: SET_FOCUSED_WINDOW,
-      window: WINDOWS.PLAYLIST
-    }),
-    close: () => closeWindow("playlist"),
-    toggleShade: togglePlaylistShadeMode,
-    toggleVisualizerStyle,
-    scrollUpFourTracks,
-    scrollDownFourTracks,
+    focusPlaylist: () =>
+      dispatch({
+        type: SET_FOCUSED_WINDOW,
+        window: WINDOWS.PLAYLIST
+      }),
+    close: () => dispatch(closeWindow("playlist")),
+    toggleShade: () => dispatch(togglePlaylistShadeMode()),
+    toggleVisualizerStyle: () => dispatch(togglePlaylistShadeMode()),
+    scrollUpFourTracks: () => dispatch(scrollUpFourTracks()),
+    scrollDownFourTracks: () => dispatch(scrollDownFourTracks()),
     loadFilesFromReferences: (e, startIndex) =>
-      loadFilesFromReferences(e.dataTransfer.files, null, startIndex),
-    scrollVolume
+      dispatch(loadFilesFromReferences(e.dataTransfer.files, null, startIndex)),
+    scrollVolume: e => dispatch(scrollVolume(e))
   };
 };
 
