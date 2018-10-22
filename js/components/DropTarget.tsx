@@ -19,12 +19,14 @@ export default class DropTarget extends React.Component<Props> {
 
   handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     this.supress(e);
-    const { target } = e;
-    if (!(target instanceof Element)) {
+    // TODO: We could probably move this coordinate logic into the playlist.
+    // I think that's the only place it gets used.
+    const { currentTarget } = e;
+    if (!(currentTarget instanceof Element)) {
       return;
     }
 
-    const { left: x, top: y } = target.getBoundingClientRect();
+    const { left: x, top: y } = currentTarget.getBoundingClientRect();
     this.props.handleDrop(e, { x, y });
   };
 
