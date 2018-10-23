@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 import { getCurrentTrackDisplayName } from "../../selectors";
 import DropTarget from "../DropTarget";
 import PresetOverlay from "./PresetOverlay";
@@ -73,8 +72,10 @@ class Milkdrop extends React.Component {
       this.visualizer.setRendererSize(this.props.width, this.props.height);
     }
 
-    if (this.props.trackTitle !== prevProps.trackTitle) {
-      this.visualizer.launchSongTitleAnim(this.props.trackTitle);
+    if (getCurrentTrackDisplayName(this.state) !== prevProps.trackTitle) {
+      this.visualizer.launchSongTitleAnim(
+        getCurrentTrackDisplayName(this.state)
+      );
     }
   }
 
@@ -121,7 +122,9 @@ class Milkdrop extends React.Component {
         e.stopPropagation();
         break;
       case 84: // T
-        this.visualizer.launchSongTitleAnim(this.props.trackTitle);
+        this.visualizer.launchSongTitleAnim(
+          getCurrentTrackDisplayName(this.state)
+        );
         e.stopPropagation();
         break;
       case 145: // scroll lock
@@ -249,8 +252,4 @@ class Milkdrop extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  trackTitle: getCurrentTrackDisplayName(state)
-});
-
-export default connect(mapStateToProps)(Milkdrop);
+export default Milkdrop;

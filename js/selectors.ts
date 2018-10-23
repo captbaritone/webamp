@@ -132,8 +132,12 @@ export const getCurrentTrackNumber = createSelector(
   currentTrackIndex => currentTrackIndex + 1
 );
 
-export const getCurrentTrackId = (state: AppState) =>
-  state.playlist.currentTrack;
+export const getCurrentTrackId = (state: AppState) => {
+  if (state && state.playlist) {
+    return state.playlist.currentTrack;
+  }
+}
+  // console.log(state)
 
 export const nextTrack = (state: AppState, n = 1) => {
   const {
