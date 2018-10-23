@@ -338,7 +338,7 @@ export const cursorSelectors: Selectors = {
   CLOSE: ["#title-bar #close"],
   // This is not quite right. There are some areas that show this cursor
   // but are not clickable.
-  EQSLID: ["#equalizer-window .band rc-slider"],
+  EQSLID: ["#equalizer-window .band .rc-slider"],
   EQNORMAL: ["#equalizer-window"],
   EQCLOSE: ["#equalizer-window #equalizer-close"],
   EQTITLE: [
