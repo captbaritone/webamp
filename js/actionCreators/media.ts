@@ -10,7 +10,8 @@ import {
   TOGGLE_SHUFFLE,
   PLAY,
   PAUSE,
-  PLAY_TRACK
+  PLAY_TRACK,
+  TOGGLE_TIME_MODE
 } from "../actionTypes";
 
 import { MEDIA_STATUS } from "../constants";
@@ -149,4 +150,8 @@ export function toggleRepeat(): Dispatchable {
 
 export function toggleShuffle(): Dispatchable {
   return { type: TOGGLE_SHUFFLE };
+}
+
+export function toggleTimeMode(): Dispatchable {
+  return { type: TOGGLE_TIME_MODE };
 }

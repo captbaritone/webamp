@@ -1,4 +1,4 @@
-import { Action, MediaStatus } from "../types";
+import { Action, MediaStatus, TimeMode } from "../types";
 import {
   PLAY,
   STOP,
@@ -20,7 +20,7 @@ import { TIME_MODE, MEDIA_STATUS } from "../constants";
 import { MediaSerializedStateV1 } from "../serializedStates/v1Types";
 
 export interface MediaState {
-  timeMode: string; // TODO: Convert this to an enum
+  timeMode: TimeMode; // TODO: Convert this to an enum
   timeElapsed: number;
   length: number | null;
   kbps: string | null;

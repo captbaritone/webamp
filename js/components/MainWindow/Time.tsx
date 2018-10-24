@@ -1,11 +1,27 @@
 import React from "react";
 import { connect } from "react-redux";
+import { TimeMode, AppState, Dispatch } from "../../types";
 import { getTimeObj } from "../../utils";
 
-import { TOGGLE_TIME_MODE } from "../../actionTypes";
+import * as Actions from "../../actionCreators";
 import { TIME_MODE } from "../../constants";
 
-const Time = ({ timeElapsed, length, timeMode, toggleTimeMode }) => {
+interface StateProps {
+  timeElapsed: number;
+  length: number;
+  timeMode: TimeMode;
+}
+
+interface DispatchProps {
+  toggleTimeMode(): void;
+}
+
+const Time = ({
+  timeElapsed,
+  length,
+  timeMode,
+  toggleTimeMode
+}: StateProps & DispatchProps) => {
   const seconds =
     timeMode === TIME_MODE.ELAPSED ? timeElapsed : length - timeElapsed;
 
@@ -33,9 +49,12 @@ const Time = ({ timeElapsed, length, timeMode, toggleTimeMode }) => {
   );
 };
 
-const mapStateToProps = state => state.media;
-const mapDispatchToProps = dispatch => ({
-  toggleTimeMode: () => dispatch({ type: TOGGLE_TIME_MODE })
+const mapStateToProps = (state: AppState): StateProps => {
+  const { timeElapsed, length, timeMode } = state.media;
+  return { timeElapsed, length: length || 0, timeMode };
+};
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
+  toggleTimeMode: () => dispatch(Actions.toggleTimeMode())
 });
 
 export default connect(

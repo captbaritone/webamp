@@ -47,7 +47,8 @@ export {
   scrollVolume,
   setBalance,
   toggleRepeat,
-  toggleShuffle
+  toggleShuffle,
+  toggleTimeMode
 } from "./media";
 export {
   setEqBand,
