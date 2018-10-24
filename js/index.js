@@ -220,7 +220,7 @@ Raven.context(async () => {
     requireJSZip: () =>
       import(/* webpackChunkName: "jszip" */ "jszip/dist/jszip"),
     requireMusicMetadata: () =>
-      import(/* webpackChunkName: ""music-metadata-browser */ "music-metadata-browser/dist/index"),
+      import(/* webpackChunkName: "music-metadata-browser" */ "music-metadata-browser/dist/index"),
     __extraWindows,
     __enableMediaLibrary: library,
     __initialWindowLayout,
