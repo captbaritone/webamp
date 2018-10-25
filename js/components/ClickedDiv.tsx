@@ -1,4 +1,5 @@
-import React from "react";
+// @ts-ignore #hook-types
+import React, { useState } from "react";
 import classnames from "classnames";
 
 type DivProps = React.DetailedHTMLProps<
@@ -21,26 +22,21 @@ interface State {
 // This component is an abstraction that tracks if a div has ever been clicked.
 // Look in `skinSelectors` for CSS selectors that look like `#some-id.clicked`
 // for examples of this functionality in use.
-export default class ClickedDiv extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = { clicked: false };
+function ClickedDiv(props: Props) {
+  const [clicked, setClicked] = useState(false);
+  function handleMouseDown(e: React.MouseEvent<HTMLDivElement>) {
+    setClicked(true);
+    if (props.onMouseDown) {
+      props.onMouseDown(e);
+    }
   }
-
-  render() {
-    return (
-      <div
-        {...this.props}
-        className={classnames(this.props.className, this.state)}
-        onMouseDown={e => {
-          if (!this.state.clicked) {
-            this.setState({ clicked: true });
-          }
-          if (this.props.onMouseDown) {
-            this.props.onMouseDown(e);
-          }
-        }}
-      />
-    );
-  }
+  return (
+    <div
+      {...props}
+      className={classnames(props.className, { clicked })}
+      onMouseDown={handleMouseDown}
+    />
+  );
 }
+
+export default ClickedDiv;
