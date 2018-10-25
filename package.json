@@ -139,7 +139,5 @@
     ]
   },
   "prettier": {},
-  "dependencies": {
-    "m3u-parser": "^1.0.3"
-  }
+  "dependencies": {}
 }

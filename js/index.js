@@ -3,7 +3,6 @@
 import Raven from "raven-js";
 import createMiddleware from "raven-for-redux";
 import isButterchurnSupported from "butterchurn/lib/isSupported.min";
-import { parse } from "m3u-parser";
 import osx from "../skins/MacOSXAqua1-5.wsz";
 import topaz from "../skins/TopazAmp1-2.wsz";
 import visor from "../skins/Vizor1-01.wsz";
@@ -16,6 +15,7 @@ import "../mp3/test/01 Ghosts I.mp3";
 import "../mp3/test/02 Ghosts I.mp3";
 import "../mp3/test/03 Ghosts I.mp3";
 import internetArchive from "../skins/Internet-Archive.wsz";
+import m3uParser from "./m3uParser";
 import MilkdropWindow from "./components/MilkdropWindow";
 import screenshotInitialState from "./screenshotInitialState";
 import { WINDOWS } from "./constants";
@@ -305,7 +305,7 @@ Raven.context(async () => {
   const parentDirectory = getParentDirectory(m3u);
   const resonse = await fetch(m3u);
   const text = await resonse.text();
-  const playlist = await parse(text);
+  const playlist = m3uParser(text);
   const m3uTracks = playlist.map(m3uTrack => ({
     url: `${parentDirectory}${m3uTrack.file}`,
     duration: m3uTrack.duration,

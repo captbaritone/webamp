@@ -1376,10 +1376,6 @@ block-stream@*:
   dependencies:
     inherits "~2.0.0"
 
-bluebird@^3.1.1:
-  version "3.5.2"
-  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.2.tgz#1be0908e054a751754549c270489c1505d4ab15a"
-
 bluebird@^3.5.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.1.tgz#d9551f9de98f1fcda1e683d17ee91a0602ee2eb9"
@@ -5495,12 +5491,6 @@ lru-cache@^4.1.1:
   dependencies:
     pseudomap "^1.0.2"
     yallist "^2.1.2"
-
-m3u-parser@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/m3u-parser/-/m3u-parser-1.0.3.tgz#220fbdd5e54ccda7c230fcb09b59fd5ab4ba06a3"
-  dependencies:
-    bluebird "^3.1.1"
 
 macaddress@^0.2.8:
   version "0.2.8"
