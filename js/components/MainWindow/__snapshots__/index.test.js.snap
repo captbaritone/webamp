@@ -65,9 +65,22 @@ exports[`MainWindow renders to snapshot 1`] = `
     <div
       id="clutter-bar"
     >
-      <div
-        id="button-o"
-      />
+      <div>
+        <div
+          className="handle"
+          onClick={[Function]}
+          style={
+            Object {
+              "height": "100%",
+              "width": "100%",
+            }
+          }
+        >
+          <div
+            id="button-o"
+          />
+        </div>
+      </div>
       <div
         id="button-a"
       />

@@ -5,6 +5,8 @@ import classnames from "classnames";
 import { SET_FOCUS, UNSET_FOCUS } from "../../actionTypes";
 import { toggleDoubleSizeMode } from "../../actionCreators";
 import { AppState, Dispatch } from "../../types";
+import OptionsContextMenu from "../OptionsContextMenu";
+import ContextMenuTarget from "../ContextMenuTarget";
 
 interface StateProps {
   doubled: boolean;
@@ -17,7 +19,9 @@ interface DispatchProps {
 
 const ClutterBar = (props: StateProps & DispatchProps) => (
   <div id="clutter-bar">
-    <div id="button-o" />
+    <ContextMenuTarget bottom handle={<div id="button-o" />}>
+      <OptionsContextMenu />
+    </ContextMenuTarget>
     <div id="button-a" />
     <div id="button-i" />
     <div

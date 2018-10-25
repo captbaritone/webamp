@@ -10,6 +10,7 @@ import { getGenWindows } from "../../selectors";
 import { LOAD_STYLE } from "../../constants";
 import { Hr, Node, Parent, LinkNode } from "../ContextMenu";
 import PlaybackContextMenu from "../PlaybackContextMenu";
+import OptionsContextMenu from "../OptionsContextMenu";
 import SkinsContextMenu from "../SkinsContextMenu";
 
 const MainContextMenu = props => (
@@ -55,6 +56,9 @@ const MainContextMenu = props => (
     <Hr />
     <SkinsContextMenu />
     <Hr />
+    <Parent label="Options">
+      <OptionsContextMenu />
+    </Parent>
     <Parent label="Playback">
       <PlaybackContextMenu />
     </Parent>
