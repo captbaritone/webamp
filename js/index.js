@@ -207,7 +207,7 @@ Raven.context(async () => {
     const resonse = await fetch(m3uUrl);
     const text = await resonse.text();
     const playlist = m3uParser(text);
-    tracks = playlist.map(m3uTrack => ({
+    tracks = playlist.tracks.map(m3uTrack => ({
       url: `${parentDirectory}${m3uTrack.file}`,
       duration: m3uTrack.duration,
       defaultName: m3uTrack.title

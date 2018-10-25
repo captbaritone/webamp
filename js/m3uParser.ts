@@ -1,20 +1,33 @@
 const EXTINF_REGEX = /^#EXTINF:(-?)(\d+),(.*)$/;
 
-interface M3uTrack {
+interface ExtendedM3uTrack {
   title: string;
   duration: number;
   file: string;
 }
 
-export default function parseM3u(content: string): Array<M3uTrack> {
-  // TODO: Support Windows line endings
-  const lines = content.split("\n").filter(Boolean);
-  const firstLine = lines[0];
+interface M3uTrack {
+  file: string;
+}
 
-  if (!firstLine || !firstLine.startsWith("#EXTM3U")) {
-    throw new Error("Content is not a valid M3U playlist");
+type Playlist =
+  | { extended: false; tracks: M3uTrack[] }
+  | { extended: true; tracks: ExtendedM3uTrack[] };
+
+function parseSimpleM3u(lines: string[]): Array<M3uTrack> {
+  const tracks = [];
+  for (var i = 1; i < lines.length; i++) {
+    const line = lines[i];
+    if (line.startsWith("#")) {
+      continue;
+    }
+    tracks.push({ file: line.trim() });
   }
 
+  return tracks;
+}
+
+function parseExtendedM3u(lines: string[]): ExtendedM3uTrack[] {
   const tracks = [];
   for (var i = 1; i < lines.length; i++) {
     const line = lines[i];
@@ -36,6 +49,15 @@ export default function parseM3u(content: string): Array<M3uTrack> {
       file: nextLine.trim()
     });
   }
-
   return tracks;
+}
+export default function parseM3u(content: string): Playlist {
+  // TODO: Support Windows line endings
+  const lines = content.split("\n").filter(Boolean);
+  const firstLine = lines[0];
+
+  const extended = Boolean(firstLine && firstLine.startsWith("#EXTM3U"));
+  return extended
+    ? { extended: true, tracks: parseExtendedM3u(lines) }
+    : { extended: false, tracks: parseSimpleM3u(lines) };
 }
