@@ -82,6 +82,6 @@
   margin-left: -3px;
 }
 
-#webamp-context-menu .context-menu li:hover ul {
+#webamp-context-menu .context-menu li:hover > ul {
   display: block;
 }
