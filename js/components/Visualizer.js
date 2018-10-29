@@ -43,6 +43,62 @@ function octaveBucketsForBufferLength(bufferLength) {
   return octaveBuckets;
 }
 
+// Pre-render the background grid
+function preRenderBg(width, height, bgColor, fgColor, windowShade) {
+  // Off-screen canvas for pre-rendering the background
+  const bgCanvas = document.createElement("canvas");
+  bgCanvas.width = width;
+  bgCanvas.height = height;
+
+  const bgCanvasCtx = bgCanvas.getContext("2d");
+  bgCanvasCtx.fillStyle = bgColor;
+  bgCanvasCtx.fillRect(0, 0, width, height);
+  if (!windowShade) {
+    bgCanvasCtx.fillStyle = fgColor;
+    for (let x = 0; x < width; x += 4) {
+      for (let y = PIXEL_DENSITY; y < height; y += 4) {
+        bgCanvasCtx.fillRect(x, y, PIXEL_DENSITY, PIXEL_DENSITY);
+      }
+    }
+  }
+  return bgCanvas;
+}
+
+function preRenderBar(barWidth, height, colors, renderHeight) {
+  /**
+   * The order of the colours is commented in the file: the fist two colours
+   * define the background and dots (check it to see what are the dots), the
+   * next 16 colours are the analyzer's colours from top to bottom, the next
+   * 5 colours are the oscilloscope's ones, from center to top/bottom, the
+   * last colour is for the analyzer's peak markers.
+   */
+
+  // Off-screen canvas for pre-rendering a single bar gradient
+  const barCanvas = document.createElement("canvas");
+  barCanvas.width = barWidth;
+  barCanvas.height = height;
+
+  const offset = 2; // The first two colors are for the background;
+  const gradientColors = colors.slice(offset, offset + GRADIENT_COLOR_COUNT);
+
+  const barCanvasCtx = barCanvas.getContext("2d");
+  const multiplier = GRADIENT_COLOR_COUNT / renderHeight;
+  // In shade mode, the five colors are, from top to bottom:
+  // 214, 102, 0 -- 3
+  // 222, 165, 24 -- 6
+  // 148, 222, 33 -- 9
+  // 57, 181, 16 -- 12
+  // 24, 132, 8 -- 15
+  // TODO: This could probably be improved by iterating backwards
+  for (let i = 0; i < renderHeight; i++) {
+    const colorIndex = GRADIENT_COLOR_COUNT - 1 - Math.floor(i * multiplier);
+    barCanvasCtx.fillStyle = gradientColors[colorIndex];
+    const y = height - i * PIXEL_DENSITY;
+    barCanvasCtx.fillRect(0, y, barWidth, PIXEL_DENSITY);
+  }
+  return barCanvas;
+}
+
 class Visualizer extends React.Component {
   componentDidMount() {
     this.barPeaks = new Array(NUM_BARS).fill(0);
@@ -133,62 +189,23 @@ class Visualizer extends React.Component {
 
   // Pre-render the background grid
   preRenderBg() {
-    // Off-screen canvas for pre-rendering the background
-    this.bgCanvas = document.createElement("canvas");
-    this.bgCanvas.width = this._width();
-    this.bgCanvas.height = this._height();
-
-    const bgCanvasCtx = this.bgCanvas.getContext("2d");
-    bgCanvasCtx.fillStyle = this.props.colors[0];
-    bgCanvasCtx.fillRect(0, 0, this._width(), this._height());
-    if (!this.props.windowShade) {
-      bgCanvasCtx.fillStyle = this.props.colors[1];
-      for (let x = 0; x < this._width(); x += 4) {
-        for (let y = PIXEL_DENSITY; y < this._height(); y += 4) {
-          bgCanvasCtx.fillRect(x, y, PIXEL_DENSITY, PIXEL_DENSITY);
-        }
-      }
-    }
+    this.bgCanvas = preRenderBg(
+      this._width(),
+      this._height(),
+      this.props.colors[0],
+      this.props.colors[1],
+      this.props.windowShade
+    );
   }
 
   // Pre-render the bar gradient
   preRenderBar() {
-    /**
-     * The order of the colours is commented in the file: the fist two colours
-     * define the background and dots (check it to see what are the dots), the
-     * next 16 colours are the analyzer's colours from top to bottom, the next
-     * 5 colours are the oscilloscope's ones, from center to top/bottom, the
-     * last colour is for the analyzer's peak markers.
-     */
-
-    // Off-screen canvas for pre-rendering a single bar gradient
-    const barWidth = this._barWidth();
-    this.barCanvas = document.createElement("canvas");
-    this.barCanvas.width = barWidth;
-    this.barCanvas.height = this._height();
-
-    const offset = 2; // The first two colors are for the background;
-    const gradientColors = this.props.colors.slice(
-      offset,
-      offset + GRADIENT_COLOR_COUNT
+    this.barCanvas = preRenderBar(
+      this._barWidth(),
+      this._height(),
+      this.props.colors,
+      this._renderHeight()
     );
-
-    const barCanvasCtx = this.barCanvas.getContext("2d");
-    const height = this._renderHeight();
-    const multiplier = GRADIENT_COLOR_COUNT / height;
-    // In shade mode, the five colors are, from top to bottom:
-    // 214, 102, 0 -- 3
-    // 222, 165, 24 -- 6
-    // 148, 222, 33 -- 9
-    // 57, 181, 16 -- 12
-    // 24, 132, 8 -- 15
-    // TODO: This could probably be improved by iterating backwards
-    for (let i = 0; i < height; i++) {
-      const colorIndex = GRADIENT_COLOR_COUNT - 1 - Math.floor(i * multiplier);
-      barCanvasCtx.fillStyle = gradientColors[colorIndex];
-      const y = this._height() - i * PIXEL_DENSITY;
-      barCanvasCtx.fillRect(0, y, barWidth, PIXEL_DENSITY);
-    }
   }
 
   paintFrame() {
