@@ -140,17 +140,18 @@ class Winamp {
       this.store.dispatch({ type: SET_AVAILABLE_SKINS, skins: availableSkins });
     }
 
-    if (options.__initialWindowLayout == null) {
+    const layout = options.__initialWindowLayout;
+    if (layout == null) {
       this.store.dispatch(Actions.stackWindows());
     } else {
-      Utils.objectForEach(options.__initialWindowLayout, (w, windowId) => {
+      Utils.objectForEach(layout, (w, windowId) => {
         if (w.size != null) {
           this.store.dispatch(Actions.setWindowSize(windowId, w.size));
         }
       });
       this.store.dispatch(
         Actions.updateWindowPositions(
-          Utils.objectMap(options.__initialWindowLayout, w => w.position),
+          Utils.objectMap(layout, w => w.position),
           false
         )
       );
