@@ -83,7 +83,7 @@ const FALLBACKS = {
   MAIN_BALANCE_THUMB_ACTIVE: "MAIN_VOLUME_THUMB_SELECTED"
 };
 
-const Skin = props => {
+function cssRulesFromProps(props) {
   const { skinImages, skinCursors, skinGenLetterWidths } = props;
   if (!skinImages || !skinCursors) {
     return null;
@@ -137,12 +137,10 @@ const Skin = props => {
     );
   }
 
-  const clipPaths = {};
   for (const [regionName, polygons] of Object.entries(props.skinRegion)) {
     if (polygons) {
       const matcher = mapRegionNamesToMatcher[regionName];
       const id = mapRegionNamesToIds[regionName];
-      clipPaths[id] = polygons;
       cssRules.push(`${CSS_PREFIX} ${matcher} { clip-path: url(#${id}); }`);
     }
   }
@@ -212,6 +210,26 @@ const Skin = props => {
     }`
   );
 
+  return cssRules;
+}
+
+function clipPathsFromProps(props) {
+  const clipPaths = {};
+  for (const [regionName, polygons] of Object.entries(props.skinRegion)) {
+    if (polygons) {
+      const id = mapRegionNamesToIds[regionName];
+      clipPaths[id] = polygons;
+    }
+  }
+  return clipPaths;
+}
+
+const Skin = props => {
+  const cssRules = cssRulesFromProps(props);
+  if (cssRules == null) {
+    return null;
+  }
+  const clipPaths = clipPathsFromProps(props);
   return (
     <div>
       <Css>{cssRules.join("\n")}</Css>
