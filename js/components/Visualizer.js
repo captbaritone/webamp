@@ -22,6 +22,27 @@ function sliceAverage(dataArray, sliceWidth, sliceNumber) {
   return sum / sliceWidth;
 }
 
+function octaveBucketsForBufferLength(bufferLength) {
+  const octaveBuckets = new Array(NUM_BARS).fill(0);
+  const minHz = 200;
+  const maxHz = 22050;
+  const octaveStep = Math.pow(maxHz / minHz, 1 / NUM_BARS);
+
+  octaveBuckets[0] = 0;
+  octaveBuckets[1] = minHz;
+  for (let i = 2; i < NUM_BARS - 1; i++) {
+    octaveBuckets[i] = octaveBuckets[i - 1] * octaveStep;
+  }
+  octaveBuckets[NUM_BARS - 1] = maxHz;
+
+  for (let i = 0; i < NUM_BARS; i++) {
+    const octaveIdx = Math.floor((octaveBuckets[i] / maxHz) * bufferLength);
+    octaveBuckets[i] = octaveIdx;
+  }
+
+  return octaveBuckets;
+}
+
 class Visualizer extends React.Component {
   componentDidMount() {
     this.barPeaks = new Array(NUM_BARS).fill(0);
@@ -84,29 +105,6 @@ class Visualizer extends React.Component {
     return barWidth - 1;
   }
 
-  _generateOctaveBuckets() {
-    const octaveBuckets = new Array(NUM_BARS).fill(0);
-    const minHz = 200;
-    const maxHz = 22050;
-    const octaveStep = Math.pow(maxHz / minHz, 1 / NUM_BARS);
-
-    octaveBuckets[0] = 0;
-    octaveBuckets[1] = minHz;
-    for (let i = 2; i < NUM_BARS - 1; i++) {
-      octaveBuckets[i] = octaveBuckets[i - 1] * octaveStep;
-    }
-    octaveBuckets[NUM_BARS - 1] = maxHz;
-
-    for (let i = 0; i < NUM_BARS; i++) {
-      const octaveIdx = Math.floor(
-        (octaveBuckets[i] / maxHz) * this.bufferLength
-      );
-      octaveBuckets[i] = octaveIdx;
-    }
-
-    return octaveBuckets;
-  }
-
   setStyle() {
     if (!this.props.colors) {
       return;
@@ -124,7 +122,7 @@ class Visualizer extends React.Component {
       this.dataArray = new Uint8Array(this.bufferLength);
 
       if (!this.octaveBuckets) {
-        this.octaveBuckets = this._generateOctaveBuckets();
+        this.octaveBuckets = octaveBucketsForBufferLength(this.bufferLength);
       }
     }
   }
