@@ -154,6 +154,7 @@ class App extends React.Component {
             <MilkdropWindow
               ref={component => this._gotRef(id, component)}
               title={w.title}
+              options={w.options}
               windowId={id}
               onFocusedKeyDown={listener => this._emitter.on(id, listener)}
               analyser={media.getAnalyser()}

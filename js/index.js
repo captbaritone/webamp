@@ -12,6 +12,7 @@ import green from "../skins/Green-Dimension-V2.wsz";
 import base from "../skins/base-2.91-png.wsz";
 import internetArchive from "../skins/Internet-Archive.wsz";
 import screenshotInitialState from "./screenshotInitialState";
+import butterchurnOptions from "./components/MilkdropWindow/options";
 import * as Selectors from "./selectors";
 
 import WebampLazy from "./webampLazy";
@@ -148,7 +149,8 @@ Raven.context(async () => {
       screenshot;
 
     butterchurnConfig = {
-      open: !library && !startWithMilkdropHidden
+      open: !library && !startWithMilkdropHidden,
+      options: butterchurnOptions
     };
   }
 

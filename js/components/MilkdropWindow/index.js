@@ -6,7 +6,6 @@ import GenWindow from "../GenWindow";
 import { hideWindow, showWindow } from "../../actionCreators";
 import MilkdropContextMenu from "./MilkdropContextMenu";
 import Desktop from "./Desktop";
-import options from "./options";
 
 import Presets from "./Presets";
 import Milkdrop from "./Milkdrop";
@@ -18,9 +17,9 @@ import "../../../css/milkdrop-window.css";
 // This simplifies the inner <Milkdrop /> component, by allowing
 // it to always assume that it has its dependencies.
 class PresetsLoader extends React.Component {
-  constructor() {
-    super();
-    this.options = options;
+  constructor(props) {
+    super(props);
+    this.options = props.options;
     this.state = {
       presets: null,
       initialPreset: null,

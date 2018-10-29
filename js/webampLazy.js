@@ -95,7 +95,8 @@ class Winamp {
       this.store.dispatch({ type: REGISTER_VISUALIZER, id: "milkdrop" });
       this.store.dispatch({
         type: ENABLE_MILKDROP,
-        open: options.__butterchurnConfig.open
+        open: options.__butterchurnConfig.open,
+        options: options.__butterchurnConfig.options
       });
 
       if (!options.__butterchurnConfig.open) {

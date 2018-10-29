@@ -1,4 +1,4 @@
-import { Action, WindowId } from "../types";
+import { Action, WindowId, ButterchurnOptions } from "../types";
 import { WINDOWS } from "../constants";
 import {
   SET_FOCUSED_WINDOW,
@@ -31,6 +31,7 @@ export interface WebampWindow {
   title: string;
   size: [number, number];
   open: boolean;
+  options?: ButterchurnOptions;
   hidden: boolean;
   shade?: boolean;
   canResize: boolean;
@@ -137,6 +138,7 @@ const windows = (
             title: "Milkdrop",
             size: [7, 12],
             open: action.open,
+            options: action.options,
             hidden: false,
             shade: false,
             canResize: true,
