@@ -90,42 +90,13 @@ class Winamp {
 
     this.genWindows = [];
 
-    let layout = null;
     if (options.__butterchurnConfig) {
-      this.store.dispatch({ type: REGISTER_VISUALIZER, id: "milkdrop" });
+      this.store.dispatch({ type: REGISTER_VISUALIZER, id: WINDOWS.MILKDROP });
       this.store.dispatch({
         type: ENABLE_MILKDROP,
         open: options.__butterchurnConfig.open,
         options: options.__butterchurnConfig.options
       });
-
-      if (!options.__butterchurnConfig.open) {
-        layout = {
-          [WINDOWS.MAIN]: { position: { x: 0, y: 0 } },
-          [WINDOWS.EQUALIZER]: { position: { x: 0, y: 116 } },
-          [WINDOWS.PLAYLIST]: { position: { x: 0, y: 232 }, size: [0, 0] },
-          [WINDOWS.MILKDROP]: { position: { x: 0, y: 348 }, size: [0, 0] }
-        };
-        if (options.__enableMediaLibrary) {
-          layout[WINDOWS.MEDIA_LIBRARY] = {
-            position: { x: 0, y: 348 },
-            size: [0, 0]
-          };
-        }
-      } else {
-        layout = {
-          [WINDOWS.MAIN]: { position: { x: 0, y: 0 } },
-          [WINDOWS.EQUALIZER]: { position: { x: 0, y: 116 } },
-          [WINDOWS.PLAYLIST]: { position: { x: 0, y: 232 }, size: [0, 4] },
-          [WINDOWS.MILKDROP]: { position: { x: 275, y: 0 }, size: [7, 12] }
-        };
-        if (options.__enableMediaLibrary) {
-          layout[WINDOWS.MEDIA_LIBRARY] = {
-            position: { x: 275, y: 0 },
-            size: [7, 12]
-          };
-        }
-      }
 
       document.getElementById("butterchurn-share").style.display = "flex";
     }
@@ -170,17 +141,17 @@ class Winamp {
       this.store.dispatch({ type: SET_AVAILABLE_SKINS, skins: availableSkins });
     }
 
-    if (layout == null) {
+    if (options.__initialWindowLayout == null) {
       this.store.dispatch(Actions.stackWindows());
     } else {
-      Utils.objectForEach(layout, (w, windowId) => {
+      Utils.objectForEach(options.__initialWindowLayout, (w, windowId) => {
         if (w.size != null) {
           this.store.dispatch(Actions.setWindowSize(windowId, w.size));
         }
       });
       this.store.dispatch(
         Actions.updateWindowPositions(
-          Utils.objectMap(layout, w => w.position),
+          Utils.objectMap(options.__initialWindowLayout, w => w.position),
           false
         )
       );

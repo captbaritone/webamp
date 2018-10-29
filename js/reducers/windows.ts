@@ -136,7 +136,7 @@ const windows = (
           ...state.genWindows,
           [WINDOWS.MILKDROP]: {
             title: "Milkdrop",
-            size: [7, 12],
+            size: [0, 0],
             open: action.open,
             options: action.options,
             hidden: false,
@@ -145,7 +145,7 @@ const windows = (
             canShade: false,
             canDouble: false,
             generic: true,
-            position: { x: 275, y: 0 }
+            position: { x: 0, y: 0 }
           }
         }
       };

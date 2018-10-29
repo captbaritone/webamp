@@ -13,6 +13,7 @@ import base from "../skins/base-2.91-png.wsz";
 import internetArchive from "../skins/Internet-Archive.wsz";
 import screenshotInitialState from "./screenshotInitialState";
 import butterchurnOptions from "./components/MilkdropWindow/options";
+import { WINDOWS } from "./constants";
 import * as Selectors from "./selectors";
 
 import WebampLazy from "./webampLazy";
@@ -141,17 +142,47 @@ Raven.context(async () => {
     return;
   }
 
-  let butterchurnConfig = null;
+  let __butterchurnConfig = null;
+  let __initialWindowLayout = null;
   if (isButterchurnSupported()) {
     const startWithMilkdropHidden =
+      library ||
       document.body.clientWidth < MIN_MILKDROP_WIDTH ||
       (!library && skinUrl != null) ||
       screenshot;
 
-    butterchurnConfig = {
-      open: !library && !startWithMilkdropHidden,
+    __butterchurnConfig = {
+      open: !startWithMilkdropHidden,
       options: butterchurnOptions
     };
+
+    if (startWithMilkdropHidden) {
+      __initialWindowLayout = {
+        [WINDOWS.MAIN]: { position: { x: 0, y: 0 } },
+        [WINDOWS.EQUALIZER]: { position: { x: 0, y: 116 } },
+        [WINDOWS.PLAYLIST]: { position: { x: 0, y: 232 }, size: [0, 0] },
+        [WINDOWS.MILKDROP]: { position: { x: 0, y: 348 }, size: [0, 0] }
+      };
+      if (library) {
+        __initialWindowLayout[WINDOWS.MEDIA_LIBRARY] = {
+          position: { x: 0, y: 348 },
+          size: [0, 0]
+        };
+      }
+    } else {
+      __initialWindowLayout = {
+        [WINDOWS.MAIN]: { position: { x: 0, y: 0 } },
+        [WINDOWS.EQUALIZER]: { position: { x: 0, y: 116 } },
+        [WINDOWS.PLAYLIST]: { position: { x: 0, y: 232 }, size: [0, 4] },
+        [WINDOWS.MILKDROP]: { position: { x: 275, y: 0 }, size: [7, 12] }
+      };
+      if (library) {
+        __initialWindowLayout[WINDOWS.MEDIA_LIBRARY] = {
+          position: { x: 275, y: 0 },
+          size: [7, 12]
+        };
+      }
+    }
   }
 
   const initialSkin = !skinUrl ? null : { url: skinUrl };
@@ -187,8 +218,9 @@ Raven.context(async () => {
     requireMusicMetadata: () =>
       import(/* webpackChunkName: "music-metadata-browser" */ "music-metadata-browser/dist/index"),
     __enableMediaLibrary: library,
+    __initialWindowLayout,
     __initialState: screenshot ? screenshotInitialState : initialState,
-    __butterchurnConfig: butterchurnConfig,
+    __butterchurnConfig,
     __customMiddlewares: [ravenMiddleware]
   });
 
