@@ -143,6 +143,36 @@ function paintOscilloscopeFrame({
   canvasCtx.stroke();
 }
 
+function printBar({
+  x,
+  height,
+  barHeight,
+  barWidth,
+  peakHeight,
+  windowShade,
+  canvasCtx,
+  barCanvas,
+  peakColor
+}) {
+  barHeight = Math.ceil(barHeight) * PIXEL_DENSITY;
+  peakHeight = Math.ceil(peakHeight) * PIXEL_DENSITY;
+  if (barHeight > 0 || peakHeight > 0) {
+    const y = height - barHeight;
+    // Draw the gradient
+    const b = barWidth;
+    if (barHeight > 0) {
+      canvasCtx.drawImage(barCanvas, 0, y, b, barHeight, x, y, b, barHeight);
+    }
+
+    // Draw the gray peak line
+    if (!windowShade) {
+      const peakY = height - peakHeight;
+      canvasCtx.fillStyle = peakColor;
+      canvasCtx.fillRect(x, peakY, b, PIXEL_DENSITY);
+    }
+  }
+}
+
 class Visualizer extends React.Component {
   componentDidMount() {
     this.barPeaks = new Array(NUM_BARS).fill(0);
@@ -273,27 +303,6 @@ class Visualizer extends React.Component {
     });
   }
 
-  _printBar(x, barHeight, peakHeight) {
-    barHeight = Math.ceil(barHeight) * PIXEL_DENSITY;
-    peakHeight = Math.ceil(peakHeight) * PIXEL_DENSITY;
-    if (barHeight > 0 || peakHeight > 0) {
-      const y = this._height() - barHeight;
-      const ctx = this.canvasCtx;
-      // Draw the gradient
-      const b = this._barWidth();
-      if (barHeight > 0) {
-        ctx.drawImage(this.barCanvas, 0, y, b, barHeight, x, y, b, barHeight);
-      }
-
-      // Draw the gray peak line
-      if (!this.props.windowShade) {
-        const peakY = this._height() - peakHeight;
-        ctx.fillStyle = this.props.colors[PEAK_COLOR_INDEX];
-        ctx.fillRect(x, peakY, b, PIXEL_DENSITY);
-      }
-    }
-  }
-
   _paintBarFrame() {
     this.props.analyser.getByteFrequencyData(this.dataArray);
     const heightMultiplier = this._renderHeight() / 256;
@@ -320,11 +329,17 @@ class Visualizer extends React.Component {
       }
       this.barPeaks[j] = barPeak;
 
-      this._printBar(
-        j * xOffset,
-        amplitude * heightMultiplier,
-        barPeak * heightMultiplier
-      );
+      printBar({
+        x: j * xOffset,
+        height: this._height(),
+        barHeight: amplitude * heightMultiplier,
+        barWidth: this._barWidth(),
+        peakHeight: barPeak * heightMultiplier,
+        windowShade: this.props.windowShade,
+        canvasCtx: this.canvasCtx,
+        barCanvas: this.barCanvas,
+        peakColor: this.props.colors[PEAK_COLOR_INDEX]
+      });
     }
   }
 
