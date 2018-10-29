@@ -1,5 +1,5 @@
-import invariant from "invariant";
-import React from "react";
+// @ts-ignore #hook-types
+import React, { useMemo, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { connect } from "react-redux";
 import classnames from "classnames";
@@ -11,39 +11,38 @@ interface PortalProps {
   zIndex: number;
   top: number;
   left: number;
+  children: JSX.Element[] | JSX.Element;
 }
 
-class Portal extends React.Component<PortalProps> {
-  _node?: HTMLDivElement;
+const Portal = (props: PortalProps) => {
+  const node: HTMLDivElement = useMemo(
+    () => {
+      const node = document.createElement("div");
+      node.id = "webamp-context-menu";
+      node.style.position = "absolute";
+      node.style.top = "0";
+      node.style.left = "0";
+      node.style.zIndex = String(props.zIndex + 1);
+      return node;
+    },
+    [props.zIndex]
+  );
 
-  componentWillMount() {
-    this._node = document.createElement("div");
-    this._node.id = "webamp-context-menu";
-    this._node.style.position = "absolute";
-    this._node.style.top = "0";
-    this._node.style.left = "0";
-    this._node.style.zIndex = String(this.props.zIndex + 1);
-    document.body.appendChild(this._node);
-  }
+  useEffect(
+    () => {
+      document.body.appendChild(node);
+      return () => document.body.removeChild(node);
+    },
+    [node]
+  );
 
-  componentWillUnmount() {
-    if (this._node) {
-      document.body.removeChild(this._node);
-    }
-  }
-
-  render() {
-    const style: React.CSSProperties = {
-      top: this.props.top,
-      left: this.props.left,
-      position: "absolute"
-    };
-    return createPortal(
-      <div style={style}>{this.props.children}</div>,
-      this._node!
-    );
-  }
-}
+  const style: React.CSSProperties = {
+    top: props.top,
+    left: props.left,
+    position: "absolute"
+  };
+  return createPortal(<div style={style}>{props.children}</div>, node);
+};
 
 export const Hr = () => (
   <li className="hr">
