@@ -98,6 +98,7 @@ interface ContextMenuProps {
   offsetLeft: number;
   top?: boolean;
   bottom?: boolean;
+  // TODO: Remove this. Just conditionally render in the parent.
   selected: boolean;
   zIndex: number;
 }
