@@ -9,7 +9,7 @@ import Media from "./media";
 import * as Selectors from "./selectors";
 import * as Actions from "./actionCreators";
 
-import { LOAD_STYLE } from "./constants";
+import { WINDOWS, LOAD_STYLE } from "./constants";
 import * as Utils from "./utils";
 
 import {
@@ -23,7 +23,8 @@ import {
   REGISTER_VISUALIZER,
   SET_Z_INDEX,
   CLOSE_REQUESTED,
-  ENABLE_MEDIA_LIBRARY
+  ENABLE_MEDIA_LIBRARY,
+  ENABLE_MILKDROP
 } from "./actionTypes";
 import Emitter from "./emitter";
 
@@ -66,8 +67,7 @@ class Winamp {
       enableHotkeys = false,
       zIndex,
       requireJSZip,
-      requireMusicMetadata,
-      __extraWindows
+      requireMusicMetadata
     } = this.options;
 
     // TODO: Validate required options
@@ -89,17 +89,44 @@ class Winamp {
     }
 
     this.genWindows = [];
-    if (__extraWindows) {
-      this.genWindows = __extraWindows.map(genWindow => ({
-        id: genWindow.id || `${genWindow.title}-${Utils.uniqueId()}`,
-        ...genWindow
-      }));
 
-      __extraWindows.forEach(genWindow => {
-        if (genWindow.isVisualizer) {
-          this.store.dispatch({ type: REGISTER_VISUALIZER, id: genWindow.id });
-        }
+    let layout = null;
+    if (options.__butterchurnConfig) {
+      this.store.dispatch({ type: REGISTER_VISUALIZER, id: "milkdrop" });
+      this.store.dispatch({
+        type: ENABLE_MILKDROP,
+        open: options.__butterchurnConfig.open
       });
+
+      if (!options.__butterchurnConfig.open) {
+        layout = {
+          [WINDOWS.MAIN]: { position: { x: 0, y: 0 } },
+          [WINDOWS.EQUALIZER]: { position: { x: 0, y: 116 } },
+          [WINDOWS.PLAYLIST]: { position: { x: 0, y: 232 }, size: [0, 0] },
+          [WINDOWS.MILKDROP]: { position: { x: 0, y: 348 }, size: [0, 0] }
+        };
+        if (options.__enableMediaLibrary) {
+          layout[WINDOWS.MEDIA_LIBRARY] = {
+            position: { x: 0, y: 348 },
+            size: [0, 0]
+          };
+        }
+      } else {
+        layout = {
+          [WINDOWS.MAIN]: { position: { x: 0, y: 0 } },
+          [WINDOWS.EQUALIZER]: { position: { x: 0, y: 116 } },
+          [WINDOWS.PLAYLIST]: { position: { x: 0, y: 232 }, size: [0, 4] },
+          [WINDOWS.MILKDROP]: { position: { x: 275, y: 0 }, size: [7, 12] }
+        };
+        if (options.__enableMediaLibrary) {
+          layout[WINDOWS.MEDIA_LIBRARY] = {
+            position: { x: 275, y: 0 },
+            size: [7, 12]
+          };
+        }
+      }
+
+      document.getElementById("butterchurn-share").style.display = "flex";
     }
 
     this.genWindows.forEach(genWindow => {
@@ -142,7 +169,6 @@ class Winamp {
       this.store.dispatch({ type: SET_AVAILABLE_SKINS, skins: availableSkins });
     }
 
-    const layout = options.__initialWindowLayout;
     if (layout == null) {
       this.store.dispatch(Actions.stackWindows());
     } else {
