@@ -415,7 +415,7 @@ export type Action =
   | { type: "BROWSER_WINDOW_SIZE_CHANGED"; height: number; width: number }
   | { type: "LOAD_DEFAULT_SKIN" }
   | { type: "ENABLE_MEDIA_LIBRARY" }
-  | { type: "ENABLE_MILKDROP"; open: boolean; options: ButterchurnOptions };
+  | { type: "ENABLE_MILKDROP"; open: boolean; };
 
 export type MediaTagRequestStatus =
   | "INITIALIZED"

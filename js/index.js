@@ -12,7 +12,7 @@ import green from "../skins/Green-Dimension-V2.wsz";
 import base from "../skins/base-2.91-png.wsz";
 import internetArchive from "../skins/Internet-Archive.wsz";
 import screenshotInitialState from "./screenshotInitialState";
-import butterchurnOptions from "./components/MilkdropWindow/options";
+import partialButterchurnOptions from "./components/MilkdropWindow/options";
 import { WINDOWS } from "./constants";
 import * as Selectors from "./selectors";
 
@@ -142,7 +142,7 @@ Raven.context(async () => {
     return;
   }
 
-  let __butterchurnConfig = null;
+  let __butterchurnOptions = null;
   let __initialWindowLayout = null;
   if (isButterchurnSupported()) {
     const startWithMilkdropHidden =
@@ -151,10 +151,10 @@ Raven.context(async () => {
       (!library && skinUrl != null) ||
       screenshot;
 
-    __butterchurnConfig = {
-      open: !startWithMilkdropHidden,
-      options: butterchurnOptions
-    };
+    __butterchurnOptions = Object.assign(
+      { butterchurnOpen: !startWithMilkdropHidden },
+      partialButterchurnOptions
+    );
 
     if (startWithMilkdropHidden) {
       __initialWindowLayout = {
@@ -220,7 +220,7 @@ Raven.context(async () => {
     __enableMediaLibrary: library,
     __initialWindowLayout,
     __initialState: screenshot ? screenshotInitialState : initialState,
-    __butterchurnConfig,
+    __butterchurnOptions,
     __customMiddlewares: [ravenMiddleware]
   });
 

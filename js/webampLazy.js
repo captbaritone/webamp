@@ -90,12 +90,11 @@ class Winamp {
 
     this.genWindows = [];
 
-    if (options.__butterchurnConfig) {
+    if (options.__butterchurnOptions) {
       this.store.dispatch({ type: REGISTER_VISUALIZER, id: WINDOWS.MILKDROP });
       this.store.dispatch({
         type: ENABLE_MILKDROP,
-        open: options.__butterchurnConfig.open,
-        options: options.__butterchurnConfig.options
+        open: options.__butterchurnOptions.butterchurnOpen
       });
 
       document.getElementById("butterchurn-share").style.display = "flex";
@@ -264,6 +263,7 @@ class Winamp {
           container={node}
           filePickers={this.options.filePickers}
           genWindowComponents={genWindowComponents}
+          butterchurnOptions={this.options.__butterchurnOptions}
         />
       </Provider>,
       node
