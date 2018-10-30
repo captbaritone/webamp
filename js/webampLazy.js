@@ -130,7 +130,7 @@ class Winamp {
     }
 
     if (initialTracks) {
-      this.appendTracks(initialTracks);
+      this._bufferTracks(initialTracks);
     }
 
     if (avaliableSkins != null) {
@@ -188,6 +188,12 @@ class Winamp {
     this.store.dispatch(Actions.previous());
   }
 
+  _bufferTracks(tracks) {
+    const nextIndex = Selectors.getTrackCount(this.store.getState());
+    this.store.dispatch(
+      Actions.loadMediaFiles(tracks, LOAD_STYLE.BUFFER, nextIndex)
+    );
+  }
   // Append this array of tracks to the end of the current playlist.
   appendTracks(tracks) {
     const nextIndex = Selectors.getTrackCount(this.store.getState());
