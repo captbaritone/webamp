@@ -24,13 +24,13 @@ module.exports = {
         }
       },
       {
-        test: /\.(wsz|mp3|png|ico|jpg|svg)$/,
+        test: /\.(wsz|mp3|png|ico|jpg|svg|m3u)$/,
         use: [
           {
             loader: "file-loader",
             options: {
               emitFile: true,
-              name: "[path][name]-[hash].[ext]"
+              name: "[path][name].[ext]"
             }
           }
         ]

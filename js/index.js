@@ -10,7 +10,12 @@ import xmms from "../skins/XMMS-Turquoise.wsz";
 import zaxon from "../skins/ZaxonRemake1-0.wsz";
 import green from "../skins/Green-Dimension-V2.wsz";
 import base from "../skins/base-2.91-png.wsz";
+import "../mp3/test.m3u";
+import "../mp3/test/01 Ghosts I.mp3";
+import "../mp3/test/02 Ghosts I.mp3";
+import "../mp3/test/03 Ghosts I.mp3";
 import internetArchive from "../skins/Internet-Archive.wsz";
+import m3uParser from "./m3uParser";
 import MilkdropWindow from "./components/MilkdropWindow";
 import screenshotInitialState from "./screenshotInitialState";
 import { WINDOWS } from "./constants";
@@ -43,6 +48,11 @@ import {
 
 import { bindToIndexedDB } from "./indexedDB";
 
+function getParentDirectory(url) {
+  const r = /[^\/]*$/;
+  return url.replace(r, ""); // '/this/is/a/folder/'
+}
+
 const DEFAULT_DOCUMENT_TITLE = document.title;
 
 const NOISY_ACTION_TYPES = new Set([
@@ -61,6 +71,7 @@ let clearState = false;
 let useState = false;
 let skinUrl = configSkinUrl;
 let library = false;
+let m3uUrl = null;
 if ("URLSearchParams" in window) {
   const params = new URLSearchParams(location.search);
   screenshot = params.get("screenshot");
@@ -74,6 +85,7 @@ if ("URLSearchParams" in window) {
   skinUrl = params.get("skinUrl") || skinUrl;
   clearState = Boolean(params.get("clearState"));
   useState = Boolean(params.get("useState"));
+  m3uUrl = params.get("m3uUrl");
 }
 
 function supressDragAndDrop(e) {
@@ -189,11 +201,24 @@ Raven.context(async () => {
     document.getElementById("butterchurn-share").style.display = "flex";
   }
 
+  let tracks = initialTracks;
+  if (m3uUrl) {
+    const parentDirectory = getParentDirectory(m3uUrl);
+    const resonse = await fetch(m3uUrl);
+    const text = await resonse.text();
+    const playlist = m3uParser(text);
+    tracks = playlist.tracks.map(m3uTrack => ({
+      url: `${parentDirectory}${m3uTrack.file}`,
+      duration: m3uTrack.duration,
+      defaultName: m3uTrack.title
+    }));
+  }
+
   const initialSkin = !skinUrl ? null : { url: skinUrl };
 
   const webamp = new WebampLazy({
     initialSkin,
-    initialTracks: screenshot ? null : initialTracks,
+    initialTracks: screenshot ? null : tracks,
     availableSkins: [
       { url: green, name: "Green Dimension V2" },
       { url: internetArchive, name: "Internet Archive" },
