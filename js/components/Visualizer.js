@@ -99,50 +99,6 @@ function preRenderBar(barWidth, height, colors, renderHeight) {
   return barCanvas;
 }
 
-function paintOscilloscopeFrame({
-  canvasCtx,
-  colors,
-  bufferLength,
-  width,
-  height,
-  dataArray
-}) {
-  canvasCtx.lineWidth = PIXEL_DENSITY;
-
-  // Just use one of the viscolors for now
-  canvasCtx.strokeStyle = colors[18];
-
-  // Since dataArray has more values than we have pixels to display, we
-  // have to average several dataArray values per pixel. We call these
-  // groups slices.
-  //
-  // We use the  2x scale here since we only want to plot values for
-  // "real" pixels.
-  const sliceWidth = Math.floor(bufferLength / width) * PIXEL_DENSITY;
-
-  const h = height;
-
-  canvasCtx.beginPath();
-
-  // Iterate over the width of the canvas in "real" pixels.
-  for (let j = 0; j <= this._renderWidth(); j++) {
-    const amplitude = sliceAverage(dataArray, sliceWidth, j);
-    const percentAmplitude = amplitude / 255; // dataArray gives us bytes
-    const y = (1 - percentAmplitude) * h; // flip y
-    const x = j * PIXEL_DENSITY;
-
-    // Canvas coordinates are in the middle of the pixel by default.
-    // When we want to draw pixel perfect lines, we will need to
-    // account for that here
-    if (x === 0) {
-      canvasCtx.moveTo(x, y);
-    } else {
-      canvasCtx.lineTo(x, y);
-    }
-  }
-  canvasCtx.stroke();
-}
-
 class Visualizer extends React.Component {
   componentDidMount() {
     this.barPeaks = new Array(NUM_BARS).fill(0);
@@ -263,26 +219,54 @@ class Visualizer extends React.Component {
 
   _paintOscilloscopeFrame() {
     this.props.analyser.getByteTimeDomainData(this.dataArray);
-    paintOscilloscopeFrame({
-      canvasCtx: this.canvasCtx,
-      colors: this.props.colors,
-      bufferLength: this.bufferLength,
-      width: this._width(),
-      height: this._height(),
-      dataArray: this.dataArray
-    });
+
+    this.canvasCtx.lineWidth = PIXEL_DENSITY;
+
+    // Just use one of the viscolors for now
+    this.canvasCtx.strokeStyle = this.props.colors[18];
+
+    // Since dataArray has more values than we have pixels to display, we
+    // have to average several dataArray values per pixel. We call these
+    // groups slices.
+    //
+    // We use the  2x scale here since we only want to plot values for
+    // "real" pixels.
+    const sliceWidth =
+      Math.floor(this.bufferLength / this._width()) * PIXEL_DENSITY;
+
+    const h = this._height();
+
+    this.canvasCtx.beginPath();
+
+    // Iterate over the width of the canvas in "real" pixels.
+    for (let j = 0; j <= this._renderWidth(); j++) {
+      const amplitude = sliceAverage(this.dataArray, sliceWidth, j);
+      const percentAmplitude = amplitude / 255; // dataArray gives us bytes
+      const y = (1 - percentAmplitude) * h; // flip y
+      const x = j * PIXEL_DENSITY;
+
+      // Canvas coordinates are in the middle of the pixel by default.
+      // When we want to draw pixel perfect lines, we will need to
+      // account for that here
+      if (x === 0) {
+        this.canvasCtx.moveTo(x, y);
+      } else {
+        this.canvasCtx.lineTo(x, y);
+      }
+    }
+    this.canvasCtx.stroke();
   }
 
-  _printBar(x, barHeight, peakHeight) {
-    barHeight = Math.ceil(barHeight) * PIXEL_DENSITY;
+  _printBar(x, height, peakHeight) {
+    height = Math.ceil(height) * PIXEL_DENSITY;
     peakHeight = Math.ceil(peakHeight) * PIXEL_DENSITY;
-    if (barHeight > 0 || peakHeight > 0) {
-      const y = this._height() - barHeight;
+    if (height > 0 || peakHeight > 0) {
+      const y = this._height() - height;
       const ctx = this.canvasCtx;
       // Draw the gradient
       const b = this._barWidth();
-      if (barHeight > 0) {
-        ctx.drawImage(this.barCanvas, 0, y, b, barHeight, x, y, b, barHeight);
+      if (height > 0) {
+        ctx.drawImage(this.barCanvas, 0, y, b, height, x, y, b, height);
       }
 
       // Draw the gray peak line
