@@ -12,42 +12,35 @@
  * @param {Array} points - point array
  * @param {Number} [tension=0.5] - tension. Typically between [0.0, 1.0] but can be exceeded
  * @param {Number} [numOfSeg=20] - number of segments between two points (line resolution)
- * @param {Boolean} [close=false] - Close the ends making the line continuous
  * @returns {Float32Array} New array with the calculated points that was added to the path
  */
-export function getCurvePoints(points, tension, numOfSeg, close) {
+export function getCurvePoints(points, tension, numOfSeg) {
   "use strict";
 
   // options or defaults
   tension = typeof tension === "number" ? tension : 0.5;
   numOfSeg = numOfSeg ? numOfSeg : 25;
 
-  var pts, // for cloning point array
+  let pts, // for cloning point array
     i = 1,
     l = points.length,
     rPos = 0,
-    rLen = (l - 2) * numOfSeg + 2 + (close ? 2 * numOfSeg : 0),
+    rLen = (l - 2) * numOfSeg + 2,
     res = new Float32Array(rLen),
     cache = new Float32Array((numOfSeg + 2) * 4),
     cachePtr = 4;
 
   pts = points.slice(0);
 
-  if (close) {
-    pts.unshift(points[l - 1]); // insert end point as first point
-    pts.unshift(points[l - 2]);
-    pts.push(points[0], points[1]); // first point as last point
-  } else {
-    pts.unshift(points[1]); // copy 1. point and insert at beginning
-    pts.unshift(points[0]);
-    pts.push(points[l - 2], points[l - 1]); // duplicate end-points
-  }
+  pts.unshift(points[1]); // copy 1. point and insert at beginning
+  pts.unshift(points[0]);
+  pts.push(points[l - 2], points[l - 1]); // duplicate end-points
 
   // cache inner-loop calculations as they are based on t alone
   cache[0] = 1; // 1,0,0,0
 
   for (; i < numOfSeg; i++) {
-    var st = i / numOfSeg,
+    let st = i / numOfSeg,
       st2 = st * st,
       st3 = st2 * st,
       st23 = st3 * 2,
@@ -64,17 +57,9 @@ export function getCurvePoints(points, tension, numOfSeg, close) {
   // calc. points
   parse(pts, cache, l);
 
-  if (close) {
-    //l = points.length;
-    pts = [];
-    pts.push(points[l - 4], points[l - 3], points[l - 2], points[l - 1]); // second last and last
-    pts.push(points[0], points[1], points[2], points[3]); // first and second
-    parse(pts, cache, 4);
-  }
-
   function parse(pts, cache, l) {
     for (var i = 2, t; i < l; i += 2) {
-      var pt1 = pts[i],
+      let pt1 = pts[i],
         pt2 = pts[i + 1],
         pt3 = pts[i + 2],
         pt4 = pts[i + 3],
@@ -84,7 +69,7 @@ export function getCurvePoints(points, tension, numOfSeg, close) {
         t2y = (pts[i + 5] - pt2) * tension;
 
       for (t = 0; t < numOfSeg; t++) {
-        var c = t << 2, //t * 4;
+        let c = t << 2, //t * 4;
           c1 = cache[c],
           c2 = cache[c + 1],
           c3 = cache[c + 2],
@@ -97,7 +82,7 @@ export function getCurvePoints(points, tension, numOfSeg, close) {
   }
 
   // add last point
-  l = close ? 0 : points.length - 2;
+  l = points.length - 2;
   res[rPos++] = points[l];
   res[rPos] = points[l + 1];
 
