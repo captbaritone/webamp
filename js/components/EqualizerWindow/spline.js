@@ -14,13 +14,7 @@
  * @param {Number} [numOfSeg=20] - number of segments between two points (line resolution)
  * @returns {Float32Array} New array with the calculated points that was added to the path
  */
-export function getCurvePoints(points, tension, numOfSeg) {
-  "use strict";
-
-  // options or defaults
-  tension = typeof tension === "number" ? tension : 0.5;
-  numOfSeg = numOfSeg ? numOfSeg : 25;
-
+export function getCurvePoints(points, tension = 0.5, numOfSeg = 25) {
   let pts, // for cloning point array
     i = 1,
     l = points.length,
