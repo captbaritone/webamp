@@ -1,10 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
+import { percentToRange, clamp } from "../../utils";
+import { BANDS } from "../../constants";
 import { getCurvePoints } from "./spline";
 import line from "./bresenham";
-import { percentToRange, clamp } from "../../utils";
-
-import { BANDS } from "../../constants";
 
 const GRAPH_HEIGHT = 19;
 const GRAPH_WIDTH = 113;
