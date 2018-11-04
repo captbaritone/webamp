@@ -8,9 +8,13 @@ interface Props {
 const CharacterString = (props: Props) => {
   const text = `${props.children}` || "";
   const chars = text.split("");
-  return chars.map((character, index) => (
-    <Character key={index + character}>{character}</Character>
-  ));
+  return (
+    <React.Fragment>
+      {chars.map((character, index) => (
+        <Character key={index + character}>{character}</Character>
+      ))}
+    </React.Fragment>
+  );
 };
 
 export default CharacterString;
