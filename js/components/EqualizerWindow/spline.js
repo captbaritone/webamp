@@ -49,29 +49,25 @@ export function getCurvePoints(points, tension = 0.5, numOfSeg = 25) {
   cache[++cachePtr] = 1; // 0,1,0,0
 
   // calc. points
-  parse(pts, cache, l);
+  for (var j = 2, t; j < l; j += 2) {
+    let pt1 = pts[j],
+      pt2 = pts[j + 1],
+      pt3 = pts[j + 2],
+      pt4 = pts[j + 3],
+      t1x = (pt3 - pts[j - 2]) * tension,
+      t1y = (pt4 - pts[j - 1]) * tension,
+      t2x = (pts[j + 4] - pt1) * tension,
+      t2y = (pts[j + 5] - pt2) * tension;
 
-  function parse(pts, cache, l) {
-    for (var i = 2, t; i < l; i += 2) {
-      let pt1 = pts[i],
-        pt2 = pts[i + 1],
-        pt3 = pts[i + 2],
-        pt4 = pts[i + 3],
-        t1x = (pt3 - pts[i - 2]) * tension,
-        t1y = (pt4 - pts[i - 1]) * tension,
-        t2x = (pts[i + 4] - pt1) * tension,
-        t2y = (pts[i + 5] - pt2) * tension;
+    for (t = 0; t < numOfSeg; t++) {
+      let c = t << 2, //t * 4;
+        c1 = cache[c],
+        c2 = cache[c + 1],
+        c3 = cache[c + 2],
+        c4 = cache[c + 3];
 
-      for (t = 0; t < numOfSeg; t++) {
-        let c = t << 2, //t * 4;
-          c1 = cache[c],
-          c2 = cache[c + 1],
-          c3 = cache[c + 2],
-          c4 = cache[c + 3];
-
-        res[rPos++] = c1 * pt1 + c2 * pt3 + c3 * t1x + c4 * t2x;
-        res[rPos++] = c1 * pt2 + c2 * pt4 + c3 * t1y + c4 * t2y;
-      }
+      res[rPos++] = c1 * pt1 + c2 * pt3 + c3 * t1x + c4 * t2x;
+      res[rPos++] = c1 * pt2 + c2 * pt4 + c3 * t1y + c4 * t2y;
     }
   }
 
