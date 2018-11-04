@@ -1,79 +1,104 @@
-/*!	Curve calc function for canvas 2.3.1
- *	Epistemex (c) 2013-2014
- *	License: MIT
- */
+// Adapted from https://github.com/morganherlocker/cubic-spline
 
-/**
- * Calculates an array containing points representing a cardinal spline through given point array.
- * Points must be arranged as: [x1, y1, x2, y2, ..., xn, yn].
- *
- * The points for the cardinal spline are returned as a new array.
- *
- * @param {Array} points - point array
- * @param {Number} [tension=0.5] - tension. Typically between [0.0, 1.0] but can be exceeded
- * @param {Number} [numOfSeg=20] - number of segments between two points (line resolution)
- * @returns {Float32Array} New array with the calculated points that was added to the path
- */
-export function getCurvePoints(points, tension = 0.5, numOfSeg = 25) {
-  let i = 1,
-    l = points.length,
-    rPos = 0,
-    cachePtr = 4;
-  const rLen = (l - 2) * numOfSeg + 2,
-    res = new Float32Array(rLen),
-    cache = new Float32Array((numOfSeg + 2) * 4);
-  // for cloning point array
-  const pts = points.slice(0);
+export default function spline(x, xs, ys) {
+  let ks = xs.map(() => {
+    return 0;
+  });
+  ks = getNaturalKs(xs, ys, ks);
+  let i = 1;
+  while (xs[i] < x) i++;
+  const t = (x - xs[i - 1]) / (xs[i] - xs[i - 1]);
+  const a = ks[i - 1] * (xs[i] - xs[i - 1]) - (ys[i] - ys[i - 1]);
+  const b = -ks[i] * (xs[i] - xs[i - 1]) + (ys[i] - ys[i - 1]);
+  const q =
+    (1 - t) * ys[i - 1] + t * ys[i] + t * (1 - t) * (a * (1 - t) + b * t);
+  return q;
+}
 
-  pts.unshift(points[1]); // copy 1. point and insert at beginning
-  pts.unshift(points[0]);
-  pts.push(points[l - 2], points[l - 1]); // duplicate end-points
+function getNaturalKs(xs, ys, ks) {
+  const n = xs.length - 1;
+  const A = zerosMat(n + 1, n + 2);
 
-  // cache inner-loop calculations as they are based on t alone
-  cache[0] = 1; // 1,0,0,0
-
-  for (; i < numOfSeg; i++) {
-    const st = i / numOfSeg,
-      st2 = st * st,
-      st3 = st2 * st,
-      st23 = st3 * 2,
-      st32 = st2 * 3;
-
-    cache[cachePtr++] = st23 - st32 + 1; // c1
-    cache[cachePtr++] = st32 - st23; // c2
-    cache[cachePtr++] = st3 - 2 * st2 + st; // c3
-    cache[cachePtr++] = st3 - st2; // c4
+  for (
+    let i = 1;
+    i < n;
+    i++ // rows
+  ) {
+    A[i][i - 1] = 1 / (xs[i] - xs[i - 1]);
+    A[i][i] = 2 * (1 / (xs[i] - xs[i - 1]) + 1 / (xs[i + 1] - xs[i]));
+    A[i][i + 1] = 1 / (xs[i + 1] - xs[i]);
+    A[i][n + 1] =
+      3 *
+      ((ys[i] - ys[i - 1]) / ((xs[i] - xs[i - 1]) * (xs[i] - xs[i - 1])) +
+        (ys[i + 1] - ys[i]) / ((xs[i + 1] - xs[i]) * (xs[i + 1] - xs[i])));
   }
 
-  cache[++cachePtr] = 1; // 0,1,0,0
+  A[0][0] = 2 / (xs[1] - xs[0]);
+  A[0][1] = 1 / (xs[1] - xs[0]);
+  A[0][n + 1] = (3 * (ys[1] - ys[0])) / ((xs[1] - xs[0]) * (xs[1] - xs[0]));
 
-  // calc. points
-  for (let j = 2, t; j < l; j += 2) {
-    const pt1 = pts[j],
-      pt2 = pts[j + 1],
-      pt3 = pts[j + 2],
-      pt4 = pts[j + 3],
-      t1x = (pt3 - pts[j - 2]) * tension,
-      t1y = (pt4 - pts[j - 1]) * tension,
-      t2x = (pts[j + 4] - pt1) * tension,
-      t2y = (pts[j + 5] - pt2) * tension;
+  A[n][n - 1] = 1 / (xs[n] - xs[n - 1]);
+  A[n][n] = 2 / (xs[n] - xs[n - 1]);
+  A[n][n + 1] =
+    (3 * (ys[n] - ys[n - 1])) / ((xs[n] - xs[n - 1]) * (xs[n] - xs[n - 1]));
 
-    for (t = 0; t < numOfSeg; t++) {
-      const c = t << 2, //t * 4;
-        c1 = cache[c],
-        c2 = cache[c + 1],
-        c3 = cache[c + 2],
-        c4 = cache[c + 3];
+  return solve(A, ks);
+}
 
-      res[rPos++] = c1 * pt1 + c2 * pt3 + c3 * t1x + c4 * t2x;
-      res[rPos++] = c1 * pt2 + c2 * pt4 + c3 * t1y + c4 * t2y;
+function solve(A, ks) {
+  const m = A.length;
+  for (
+    let k = 0;
+    k < m;
+    k++ // column
+  ) {
+    // pivot for column
+    let i_max = 0;
+    let vali = Number.NEGATIVE_INFINITY;
+    for (var i = k; i < m; i++)
+      if (A[i][k] > vali) {
+        i_max = i;
+        vali = A[i][k];
+      }
+    swapRows(A, k, i_max);
+
+    // for all rows below pivot
+    for (var i = k + 1; i < m; i++) {
+      for (var j = k + 1; j < m + 1; j++)
+        A[i][j] = A[i][j] - A[k][j] * (A[i][k] / A[k][k]);
+      A[i][k] = 0;
     }
   }
+  for (
+    var i = m - 1;
+    i >= 0;
+    i-- // rows = columns
+  ) {
+    const v = A[i][m] / A[i][i];
+    ks[i] = v;
+    for (
+      var j = i - 1;
+      j >= 0;
+      j-- // rows
+    ) {
+      A[j][m] -= A[j][i] * v;
+      A[j][i] = 0;
+    }
+  }
+  return ks;
+}
 
-  // add last point
-  l = points.length - 2;
-  res[rPos++] = points[l];
-  res[rPos] = points[l + 1];
+function zerosMat(r, c) {
+  const A = [];
+  for (let i = 0; i < r; i++) {
+    A.push([]);
+    for (let j = 0; j < c; j++) A[i].push(0);
+  }
+  return A;
+}
 
-  return res;
+function swapRows(m, k, l) {
+  const p = m[k];
+  m[k] = m[l];
+  m[l] = p;
 }

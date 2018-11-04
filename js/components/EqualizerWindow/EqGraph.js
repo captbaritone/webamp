@@ -2,8 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { percentToRange, clamp } from "../../utils";
 import { BANDS } from "../../constants";
-import { getCurvePoints } from "./spline";
-import line from "./bresenham";
+import spline from "./spline";
 
 const GRAPH_HEIGHT = 19;
 const GRAPH_WIDTH = 113;
@@ -81,36 +80,24 @@ class EqGraph extends React.Component {
     const min = 0;
     const max = GRAPH_HEIGHT - 1;
 
-    const points = amplitudes.reduce((prev, value, i) => {
+    const xs = [];
+    const ys = [];
+    amplitudes.forEach((value, i) => {
       const percent = (100 - value) / 100;
-      const y = percentToRange(percent, min, max);
-      const x = i * 12; // Each band is 12 pixels wide
-      return prev.concat(x, y);
-    }, []);
-
-    // Spline between points in order to create nice curves
-    const tension = 0.8;
-    const resolution = 4; // Points in each segment
-    const smoothPoints = getCurvePoints(points, tension, resolution);
-    const smoothPointCoords = [];
-    for (let i = 0; i < smoothPoints.length; i += 2) {
-      // Splining can push peaks out of bounds. So we fudge them back in.
-      const x = Math.round(smoothPoints[i]);
-      const y = Math.round(clamp(smoothPoints[i + 1], min, max));
-      smoothPointCoords.push({ x, y });
-    }
-
-    let prev = smoothPointCoords.shift();
-
-    smoothPointCoords.forEach(next => {
-      for (const point of line(prev, next)) {
-        // Note: Technially, we are double drawing each point given to us by
-        // getCurvePoints, since the end of each line is the same as the start
-        // of the next.
-        this.canvasCtx.fillRect(paddingLeft + point.x, point.y, 1, 1);
-      }
-      prev = next;
+      // Each band is 12 pixels widex
+      xs.push(i * 12);
+      ys.push(percentToRange(percent, min, max));
     });
+
+    const maxX = xs[xs.length - 1];
+    let lastY = ys[0];
+    for (let x = 0; x <= maxX; x++) {
+      const y = clamp(Math.round(spline(x, xs, ys)), 0, GRAPH_HEIGHT - 1);
+      const yTop = Math.min(y, lastY);
+      const height = 1 + Math.abs(lastY - y);
+      this.canvasCtx.fillRect(paddingLeft + x, yTop, 1, height);
+      lastY = y;
+    }
   }
 
   drawPreampLine() {
