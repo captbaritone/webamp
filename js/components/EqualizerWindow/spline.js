@@ -53,31 +53,31 @@ function solve(A, ks) {
     k++ // column
   ) {
     // pivot for column
-    let i_max = 0;
+    let iMax = 0;
     let vali = Number.NEGATIVE_INFINITY;
-    for (var i = k; i < m; i++)
+    for (let i = k; i < m; i++)
       if (A[i][k] > vali) {
-        i_max = i;
+        iMax = i;
         vali = A[i][k];
       }
-    swapRows(A, k, i_max);
+    swapRows(A, k, iMax);
 
     // for all rows below pivot
-    for (var i = k + 1; i < m; i++) {
-      for (var j = k + 1; j < m + 1; j++)
+    for (let i = k + 1; i < m; i++) {
+      for (let j = k + 1; j < m + 1; j++)
         A[i][j] = A[i][j] - A[k][j] * (A[i][k] / A[k][k]);
       A[i][k] = 0;
     }
   }
   for (
-    var i = m - 1;
+    let i = m - 1;
     i >= 0;
     i-- // rows = columns
   ) {
     const v = A[i][m] / A[i][i];
     ks[i] = v;
     for (
-      var j = i - 1;
+      let j = i - 1;
       j >= 0;
       j-- // rows
     ) {
