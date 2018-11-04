@@ -15,16 +15,15 @@
  * @returns {Float32Array} New array with the calculated points that was added to the path
  */
 export function getCurvePoints(points, tension = 0.5, numOfSeg = 25) {
-  let pts, // for cloning point array
-    i = 1,
+  let i = 1,
     l = points.length,
     rPos = 0,
-    rLen = (l - 2) * numOfSeg + 2,
-    res = new Float32Array(rLen),
-    cache = new Float32Array((numOfSeg + 2) * 4),
     cachePtr = 4;
-
-  pts = points.slice(0);
+  const rLen = (l - 2) * numOfSeg + 2,
+    res = new Float32Array(rLen),
+    cache = new Float32Array((numOfSeg + 2) * 4);
+  // for cloning point array
+  const pts = points.slice(0);
 
   pts.unshift(points[1]); // copy 1. point and insert at beginning
   pts.unshift(points[0]);
@@ -34,7 +33,7 @@ export function getCurvePoints(points, tension = 0.5, numOfSeg = 25) {
   cache[0] = 1; // 1,0,0,0
 
   for (; i < numOfSeg; i++) {
-    let st = i / numOfSeg,
+    const st = i / numOfSeg,
       st2 = st * st,
       st3 = st2 * st,
       st23 = st3 * 2,
@@ -49,8 +48,8 @@ export function getCurvePoints(points, tension = 0.5, numOfSeg = 25) {
   cache[++cachePtr] = 1; // 0,1,0,0
 
   // calc. points
-  for (var j = 2, t; j < l; j += 2) {
-    let pt1 = pts[j],
+  for (let j = 2, t; j < l; j += 2) {
+    const pt1 = pts[j],
       pt2 = pts[j + 1],
       pt3 = pts[j + 2],
       pt4 = pts[j + 3],
@@ -60,7 +59,7 @@ export function getCurvePoints(points, tension = 0.5, numOfSeg = 25) {
       t2y = (pts[j + 5] - pt2) * tension;
 
     for (t = 0; t < numOfSeg; t++) {
-      let c = t << 2, //t * 4;
+      const c = t << 2, //t * 4;
         c1 = cache[c],
         c2 = cache[c + 1],
         c3 = cache[c + 2],
