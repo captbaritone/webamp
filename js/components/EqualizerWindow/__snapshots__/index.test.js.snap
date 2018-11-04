@@ -32,9 +32,9 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
       onClick={[Function]}
     />
     <canvas
-      height="32"
+      height={19}
       id="eqGraph"
-      width="152"
+      width={113}
     />
     <div
       id="presets-context"
