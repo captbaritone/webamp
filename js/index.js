@@ -182,9 +182,9 @@ Raven.context(async () => {
           size: [7, 12]
         };
       }
-
-      document.getElementById("butterchurn-share").style.display = "flex";
     }
+
+    document.getElementById("butterchurn-share").style.display = "flex";
   }
 
   const initialSkin = !skinUrl ? null : { url: skinUrl };
