@@ -153,14 +153,9 @@ class App extends React.Component {
           return (
             <MilkdropWindow
               ref={component => this._gotRef(id, component)}
-              title={w.title}
               options={this.props.butterchurnOptions}
-              windowId={id}
               onFocusedKeyDown={listener => this._emitter.on(id, listener)}
               analyser={media.getAnalyser()}
-              isEnabledVisualizer={this.props.visualizerStyle === id}
-              playing={this.props.status === MEDIA_STATUS.PLAYING}
-              close={() => this.props.closeWindow(id)}
             />
           );
         default:

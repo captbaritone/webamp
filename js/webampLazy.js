@@ -96,8 +96,6 @@ class Winamp {
         type: ENABLE_MILKDROP,
         open: options.__butterchurnOptions.butterchurnOpen
       });
-
-      document.getElementById("butterchurn-share").style.display = "flex";
     }
 
     this.genWindows.forEach(genWindow => {

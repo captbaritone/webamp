@@ -151,10 +151,10 @@ Raven.context(async () => {
       (!library && skinUrl != null) ||
       screenshot;
 
-    __butterchurnOptions = Object.assign(
-      { butterchurnOpen: !startWithMilkdropHidden },
-      partialButterchurnOptions
-    );
+    __butterchurnOptions = {
+      ...partialButterchurnOptions,
+      butterchurnOpen: !startWithMilkdropHidden
+    };
 
     if (startWithMilkdropHidden) {
       __initialWindowLayout = {
@@ -182,6 +182,8 @@ Raven.context(async () => {
           size: [7, 12]
         };
       }
+
+      document.getElementById("butterchurn-share").style.display = "flex";
     }
   }
 
