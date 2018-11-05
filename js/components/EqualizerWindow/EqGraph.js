@@ -89,12 +89,12 @@ class EqGraph extends React.Component {
       ys.push(percentToRange(percent, min, max));
     });
 
-    const getY = spline(xs, ys);
+    const allYs = spline(xs, ys);
 
     const maxX = xs[xs.length - 1];
     let lastY = ys[0];
     for (let x = 0; x <= maxX; x++) {
-      const y = clamp(Math.round(getY(x)), 0, GRAPH_HEIGHT - 1);
+      const y = clamp(Math.round(allYs[x]), 0, GRAPH_HEIGHT - 1);
       const yTop = Math.min(y, lastY);
       const height = 1 + Math.abs(lastY - y);
       this.canvasCtx.fillRect(paddingLeft + x, yTop, 1, height);
