@@ -7,8 +7,8 @@ export default function spline(xs, ys) {
   ks = getNaturalKs(xs, ys, ks);
   const maxX = xs[xs.length - 1];
   const allYs = [];
+  let i = 1;
   for (let x = 0; x <= maxX; x++) {
-    let i = 1;
     while (xs[i] < x) i++;
     const t = (x - xs[i - 1]) / (xs[i] - xs[i - 1]);
     const a = ks[i - 1] * (xs[i] - xs[i - 1]) - (ys[i] - ys[i - 1]);
