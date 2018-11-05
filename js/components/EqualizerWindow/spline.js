@@ -1,8 +1,7 @@
 // Adapted from https://github.com/morganherlocker/cubic-spline
 
 export default function spline(xs, ys) {
-  let ks = xs.map(() => 0);
-  ks = getNaturalKs(xs, ys, ks);
+  const ks = getNaturalKs(xs, ys);
   const maxX = xs[xs.length - 1];
   const allYs = [];
   let i = 1;
@@ -18,7 +17,8 @@ export default function spline(xs, ys) {
   return allYs;
 }
 
-function getNaturalKs(xs, ys, ks) {
+function getNaturalKs(xs, ys) {
+  const ks = xs.map(() => 0);
   const n = xs.length - 1;
   const matrix = zerosMatrix(n + 1, n + 2);
 
@@ -51,11 +51,8 @@ function getNaturalKs(xs, ys, ks) {
 
 function solve(matrix, ks) {
   const m = matrix.length;
-  for (
-    let k = 0;
-    k < m;
-    k++ // column
-  ) {
+  // column
+  for (let k = 0; k < m; k++) {
     // pivot for column
     let iMax = 0;
     let vali = Number.NEGATIVE_INFINITY;
@@ -74,18 +71,12 @@ function solve(matrix, ks) {
       matrix[i][k] = 0;
     }
   }
-  for (
-    let i = m - 1;
-    i >= 0;
-    i-- // rows = columns
-  ) {
+  // rows = columns
+  for (let i = m - 1; i >= 0; i--) {
     const v = matrix[i][m] / matrix[i][i];
     ks[i] = v;
-    for (
-      let j = i - 1;
-      j >= 0;
-      j-- // rows
-    ) {
+    // rows
+    for (let j = i - 1; j >= 0; j--) {
       matrix[j][m] -= matrix[j][i] * v;
       matrix[j][i] = 0;
     }
