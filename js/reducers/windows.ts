@@ -5,7 +5,6 @@ import {
   TOGGLE_WINDOW,
   CLOSE_WINDOW,
   SET_WINDOW_VISIBILITY,
-  ADD_GEN_WINDOW,
   UPDATE_WINDOW_POSITIONS,
   WINDOW_SIZE_CHANGED,
   TOGGLE_WINDOW_SHADE_MODE,
@@ -36,7 +35,6 @@ export interface WebampWindow {
   canResize: boolean;
   canShade: boolean;
   canDouble: boolean;
-  generic: boolean;
   hotkey?: string;
   position: WindowPosition;
 }
@@ -69,7 +67,6 @@ const defaultWindowsState: WindowsState = {
       canResize: false,
       canShade: true,
       canDouble: true,
-      generic: false,
       hotkey: "Alt+W",
       position: { x: 0, y: 0 }
     },
@@ -82,7 +79,6 @@ const defaultWindowsState: WindowsState = {
       canResize: false,
       canShade: true,
       canDouble: true,
-      generic: false,
       hotkey: "Alt+G",
       position: { x: 0, y: 0 }
     },
@@ -95,7 +91,6 @@ const defaultWindowsState: WindowsState = {
       canResize: true,
       canShade: true,
       canDouble: false,
-      generic: false,
       hotkey: "Alt+E",
       position: { x: 0, y: 0 }
     }
@@ -122,7 +117,6 @@ const windows = (
             canResize: true,
             canShade: false,
             canDouble: false,
-            generic: false,
             hotkey: "Alt+E",
             position: { x: 0, y: 0 }
           }
@@ -142,7 +136,6 @@ const windows = (
             canResize: true,
             canShade: false,
             canDouble: false,
-            generic: true,
             position: { x: 0, y: 0 }
           }
         }
@@ -201,24 +194,6 @@ const windows = (
           [action.windowId]: {
             ...state.genWindows[action.windowId],
             hidden: action.hidden
-          }
-        }
-      };
-    case ADD_GEN_WINDOW:
-      return {
-        ...state,
-        genWindows: {
-          ...state.genWindows,
-          [action.windowId]: {
-            title: action.title,
-            open: action.open,
-            hidden: false,
-            size: [0, 0],
-            canShade: false,
-            canResize: true,
-            canDouble: false,
-            generic: true,
-            position: { x: 0, y: 0 }
           }
         }
       };

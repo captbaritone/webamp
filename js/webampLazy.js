@@ -18,7 +18,6 @@ import {
   NETWORK_DISCONNECTED,
   CLOSE_WINAMP,
   MINIMIZE_WINAMP,
-  ADD_GEN_WINDOW,
   LOADED,
   REGISTER_VISUALIZER,
   SET_Z_INDEX,
@@ -88,8 +87,6 @@ class Winamp {
       this.store.dispatch({ type: SET_Z_INDEX, zIndex });
     }
 
-    this.genWindows = [];
-
     if (options.__butterchurnOptions) {
       this.store.dispatch({ type: REGISTER_VISUALIZER, id: WINDOWS.MILKDROP });
       this.store.dispatch({
@@ -97,15 +94,6 @@ class Winamp {
         open: options.__butterchurnOptions.butterchurnOpen
       });
     }
-
-    this.genWindows.forEach(genWindow => {
-      this.store.dispatch({
-        type: ADD_GEN_WINDOW,
-        windowId: genWindow.id,
-        title: genWindow.title,
-        open: genWindow.open
-      });
-    });
 
     if (options.__enableMediaLibrary) {
       this.store.dispatch({ type: ENABLE_MEDIA_LIBRARY });
@@ -251,10 +239,6 @@ class Winamp {
   async renderWhenReady(node) {
     this.store.dispatch(Actions.centerWindowsInContainer(node));
     await this.skinIsLoaded();
-    const genWindowComponents = {};
-    this.genWindows.forEach(w => {
-      genWindowComponents[w.id] = w.Component;
-    });
 
     render(
       <Provider store={this.store}>
@@ -262,7 +246,6 @@ class Winamp {
           media={this.media}
           container={node}
           filePickers={this.options.filePickers}
-          genWindowComponents={genWindowComponents}
           butterchurnOptions={this.options.__butterchurnOptions}
         />
       </Provider>,

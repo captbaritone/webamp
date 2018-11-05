@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Emitter from "../emitter";
-import { WINDOWS, MEDIA_STATUS } from "../constants";
+import { WINDOWS } from "../constants";
 import * as Selectors from "../selectors";
 import * as Actions from "../actionCreators";
 import * as Utils from "../utils";
@@ -113,12 +113,7 @@ class App extends React.Component {
   }
 
   _renderWindows() {
-    const {
-      media,
-      genWindowsInfo,
-      filePickers,
-      genWindowComponents
-    } = this.props;
+    const { media, genWindowsInfo, filePickers } = this.props;
     return Utils.objectMap(genWindowsInfo, (w, id) => {
       if (!w.open) {
         return null;
@@ -154,27 +149,13 @@ class App extends React.Component {
             <MilkdropWindow
               ref={component => this._gotRef(id, component)}
               options={this.props.butterchurnOptions}
+              // TODO: Refactor this. I don't think we need this to be generic anymore.
               onFocusedKeyDown={listener => this._emitter.on(id, listener)}
               analyser={media.getAnalyser()}
             />
           );
         default:
-          if (!w.generic) {
-            throw new Error("Tried to render an unknown window:", id);
-          }
-          const Component = genWindowComponents[id];
-          return (
-            <Component
-              ref={component => this._gotRef(id, component)}
-              title={w.title}
-              windowId={id}
-              onFocusedKeyDown={listener => this._emitter.on(id, listener)}
-              analyser={media.getAnalyser()}
-              isEnabledVisualizer={this.props.visualizerStyle === id}
-              playing={this.props.status === MEDIA_STATUS.PLAYING}
-              close={() => this.props.closeWindow(id)}
-            />
-          );
+          throw new Error("Tried to render an unknown window:", id);
       }
     });
   }
