@@ -1,18 +1,20 @@
 // Adapted from https://github.com/morganherlocker/cubic-spline
 
-export default function spline(x, xs, ys) {
+export default function spline(xs, ys) {
   let ks = xs.map(() => {
     return 0;
   });
   ks = getNaturalKs(xs, ys, ks);
-  let i = 1;
-  while (xs[i] < x) i++;
-  const t = (x - xs[i - 1]) / (xs[i] - xs[i - 1]);
-  const a = ks[i - 1] * (xs[i] - xs[i - 1]) - (ys[i] - ys[i - 1]);
-  const b = -ks[i] * (xs[i] - xs[i - 1]) + (ys[i] - ys[i - 1]);
-  const q =
-    (1 - t) * ys[i - 1] + t * ys[i] + t * (1 - t) * (a * (1 - t) + b * t);
-  return q;
+  return x => {
+    let i = 1;
+    while (xs[i] < x) i++;
+    const t = (x - xs[i - 1]) / (xs[i] - xs[i - 1]);
+    const a = ks[i - 1] * (xs[i] - xs[i - 1]) - (ys[i] - ys[i - 1]);
+    const b = -ks[i] * (xs[i] - xs[i - 1]) + (ys[i] - ys[i - 1]);
+    const q =
+      (1 - t) * ys[i - 1] + t * ys[i] + t * (1 - t) * (a * (1 - t) + b * t);
+    return q;
+  };
 }
 
 function getNaturalKs(xs, ys, ks) {
