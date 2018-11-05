@@ -1,9 +1,7 @@
 // Adapted from https://github.com/morganherlocker/cubic-spline
 
 export default function spline(xs, ys) {
-  let ks = xs.map(() => {
-    return 0;
-  });
+  let ks = xs.map(() => 0);
   ks = getNaturalKs(xs, ys, ks);
   const maxX = xs[xs.length - 1];
   const allYs = [];
@@ -22,36 +20,37 @@ export default function spline(xs, ys) {
 
 function getNaturalKs(xs, ys, ks) {
   const n = xs.length - 1;
-  const A = zerosMat(n + 1, n + 2);
+  const matrix = zerosMatrix(n + 1, n + 2);
 
   for (
     let i = 1;
     i < n;
     i++ // rows
   ) {
-    A[i][i - 1] = 1 / (xs[i] - xs[i - 1]);
-    A[i][i] = 2 * (1 / (xs[i] - xs[i - 1]) + 1 / (xs[i + 1] - xs[i]));
-    A[i][i + 1] = 1 / (xs[i + 1] - xs[i]);
-    A[i][n + 1] =
+    matrix[i][i - 1] = 1 / (xs[i] - xs[i - 1]);
+    matrix[i][i] = 2 * (1 / (xs[i] - xs[i - 1]) + 1 / (xs[i + 1] - xs[i]));
+    matrix[i][i + 1] = 1 / (xs[i + 1] - xs[i]);
+    matrix[i][n + 1] =
       3 *
       ((ys[i] - ys[i - 1]) / ((xs[i] - xs[i - 1]) * (xs[i] - xs[i - 1])) +
         (ys[i + 1] - ys[i]) / ((xs[i + 1] - xs[i]) * (xs[i + 1] - xs[i])));
   }
 
-  A[0][0] = 2 / (xs[1] - xs[0]);
-  A[0][1] = 1 / (xs[1] - xs[0]);
-  A[0][n + 1] = (3 * (ys[1] - ys[0])) / ((xs[1] - xs[0]) * (xs[1] - xs[0]));
+  matrix[0][0] = 2 / (xs[1] - xs[0]);
+  matrix[0][1] = 1 / (xs[1] - xs[0]);
+  matrix[0][n + 1] =
+    (3 * (ys[1] - ys[0])) / ((xs[1] - xs[0]) * (xs[1] - xs[0]));
 
-  A[n][n - 1] = 1 / (xs[n] - xs[n - 1]);
-  A[n][n] = 2 / (xs[n] - xs[n - 1]);
-  A[n][n + 1] =
+  matrix[n][n - 1] = 1 / (xs[n] - xs[n - 1]);
+  matrix[n][n] = 2 / (xs[n] - xs[n - 1]);
+  matrix[n][n + 1] =
     (3 * (ys[n] - ys[n - 1])) / ((xs[n] - xs[n - 1]) * (xs[n] - xs[n - 1]));
 
-  return solve(A, ks);
+  return solve(matrix, ks);
 }
 
-function solve(A, ks) {
-  const m = A.length;
+function solve(matrix, ks) {
+  const m = matrix.length;
   for (
     let k = 0;
     k < m;
@@ -61,17 +60,18 @@ function solve(A, ks) {
     let iMax = 0;
     let vali = Number.NEGATIVE_INFINITY;
     for (let i = k; i < m; i++)
-      if (A[i][k] > vali) {
+      if (matrix[i][k] > vali) {
         iMax = i;
-        vali = A[i][k];
+        vali = matrix[i][k];
       }
-    swapRows(A, k, iMax);
+    swapRows(matrix, k, iMax);
 
     // for all rows below pivot
     for (let i = k + 1; i < m; i++) {
       for (let j = k + 1; j < m + 1; j++)
-        A[i][j] = A[i][j] - A[k][j] * (A[i][k] / A[k][k]);
-      A[i][k] = 0;
+        matrix[i][j] =
+          matrix[i][j] - matrix[k][j] * (matrix[i][k] / matrix[k][k]);
+      matrix[i][k] = 0;
     }
   }
   for (
@@ -79,27 +79,29 @@ function solve(A, ks) {
     i >= 0;
     i-- // rows = columns
   ) {
-    const v = A[i][m] / A[i][i];
+    const v = matrix[i][m] / matrix[i][i];
     ks[i] = v;
     for (
       let j = i - 1;
       j >= 0;
       j-- // rows
     ) {
-      A[j][m] -= A[j][i] * v;
-      A[j][i] = 0;
+      matrix[j][m] -= matrix[j][i] * v;
+      matrix[j][i] = 0;
     }
   }
   return ks;
 }
 
-function zerosMat(r, c) {
-  const A = [];
-  for (let i = 0; i < r; i++) {
-    A.push([]);
-    for (let j = 0; j < c; j++) A[i].push(0);
+function zerosMatrix(rows, columns) {
+  const matrix = [];
+  for (let i = 0; i < rows; i++) {
+    matrix.push([]);
+    for (let j = 0; j < columns; j++) {
+      matrix[i].push(0);
+    }
   }
-  return A;
+  return matrix;
 }
 
 function swapRows(m, k, l) {
