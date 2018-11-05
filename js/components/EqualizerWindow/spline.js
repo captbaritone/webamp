@@ -5,7 +5,9 @@ export default function spline(xs, ys) {
     return 0;
   });
   ks = getNaturalKs(xs, ys, ks);
-  const getY = x => {
+  const maxX = xs[xs.length - 1];
+  const allYs = [];
+  for (let x = 0; x <= maxX; x++) {
     let i = 1;
     while (xs[i] < x) i++;
     const t = (x - xs[i - 1]) / (xs[i] - xs[i - 1]);
@@ -13,12 +15,7 @@ export default function spline(xs, ys) {
     const b = -ks[i] * (xs[i] - xs[i - 1]) + (ys[i] - ys[i - 1]);
     const q =
       (1 - t) * ys[i - 1] + t * ys[i] + t * (1 - t) * (a * (1 - t) + b * t);
-    return q;
-  };
-  const maxX = xs[xs.length - 1];
-  const allYs = [];
-  for (let i = 0; i <= maxX; i++) {
-    allYs.push(getY(i));
+    allYs.push(q);
   }
   return allYs;
 }
