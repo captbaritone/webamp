@@ -190,6 +190,7 @@ class Winamp {
       Actions.loadMediaFiles(tracks, LOAD_STYLE.BUFFER, nextIndex)
     );
   }
+
   // Append this array of tracks to the end of the current playlist.
   appendTracks(tracks) {
     const nextIndex = Selectors.getTrackCount(this.store.getState());

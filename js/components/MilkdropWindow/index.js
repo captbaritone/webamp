@@ -210,7 +210,6 @@ async function fetchPreset(presetUrl, { isButterchurn }) {
   return { [presetName]: preset };
 }
 
-
 const mapStateToProps = state => ({
   isEnabledVisualizer: getVisualizerStyle(state) === "milkdrop",
   playing: state.media.status === MEDIA_STATUS.PLAYING
