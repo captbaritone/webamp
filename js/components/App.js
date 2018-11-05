@@ -7,6 +7,7 @@ import { WINDOWS, MEDIA_STATUS } from "../constants";
 import { getVisualizerStyle } from "../selectors";
 import * as Actions from "../actionCreators";
 import * as Utils from "../utils";
+import MilkdropWindow from "../components/MilkdropWindow";
 import ContextMenuWrapper from "./ContextMenuWrapper";
 import MainContextMenu from "./MainWindow/MainContextMenu";
 import WindowManager from "./WindowManager";
@@ -146,6 +147,15 @@ class App extends React.Component {
           return (
             <MediaLibraryWindow
               ref={component => this._gotRef(id, component)}
+            />
+          );
+        case WINDOWS.MILKDROP:
+          return (
+            <MilkdropWindow
+              ref={component => this._gotRef(id, component)}
+              options={this.props.butterchurnOptions}
+              onFocusedKeyDown={listener => this._emitter.on(id, listener)}
+              analyser={media.getAnalyser()}
             />
           );
         default:

@@ -3,10 +3,11 @@ import { connect } from "react-redux";
 import screenfull from "screenfull";
 import ContextMenuWrapper from "../ContextMenuWrapper";
 import GenWindow from "../GenWindow";
-import { hideWindow, showWindow } from "../../actionCreators";
+import { WINDOWS, MEDIA_STATUS } from "../../constants";
+import { getVisualizerStyle } from "../../selectors";
+import * as Actions from "../../actionCreators";
 import MilkdropContextMenu from "./MilkdropContextMenu";
 import Desktop from "./Desktop";
-import options from "./options";
 
 import Presets from "./Presets";
 import Milkdrop from "./Milkdrop";
@@ -18,9 +19,9 @@ import "../../../css/milkdrop-window.css";
 // This simplifies the inner <Milkdrop /> component, by allowing
 // it to always assume that it has its dependencies.
 class PresetsLoader extends React.Component {
-  constructor() {
-    super();
-    this.options = options;
+  constructor(props) {
+    super(props);
+    this.options = props.options;
     this.state = {
       presets: null,
       initialPreset: null,
@@ -69,10 +70,10 @@ class PresetsLoader extends React.Component {
 
   _toggleDesktop = () => {
     if (this.state.desktop) {
-      this.props.showWindow(this.props.windowId);
+      this.props.showWindow(WINDOWS.MILKDROP);
       this.setState({ desktop: false });
     } else {
-      this.props.hideWindow(this.props.windowId);
+      this.props.hideWindow(WINDOWS.MILKDROP);
       this.setState({ desktop: true });
     }
   };
@@ -121,7 +122,7 @@ class PresetsLoader extends React.Component {
           onDoubleClick={this._handleRequestFullsceen}
           renderContents={() => (
             <MilkdropContextMenu
-              close={this.props.close}
+              close={this.props.closeWindow}
               toggleFullscreen={this._handleRequestFullsceen}
               desktopMode={this.state.desktop}
               toggleDesktop={this._toggleDesktop}
@@ -134,13 +135,13 @@ class PresetsLoader extends React.Component {
     }
 
     return (
-      <GenWindow title={this.props.title} windowId={this.props.windowId}>
+      <GenWindow title={"Milkdrop"} windowId={WINDOWS.MILKDROP}>
         {({ height, width }) => (
           <ContextMenuWrapper
             onDoubleClick={this._handleRequestFullsceen}
             renderContents={() => (
               <MilkdropContextMenu
-                close={this.props.close}
+                close={this.props.closeWindow}
                 toggleFullscreen={this._handleRequestFullsceen}
                 desktopMode={this.state.desktop}
                 toggleDesktop={this._toggleDesktop}
@@ -209,10 +210,18 @@ async function fetchPreset(presetUrl, { isButterchurn }) {
   return { [presetName]: preset };
 }
 
-const mapStateToProps = () => ({});
-const mapDispatchProps = { hideWindow, showWindow };
+const mapStateToProps = state => ({
+  isEnabledVisualizer: getVisualizerStyle(state) === WINDOWS.MILKDROP,
+  playing: state.media.status === MEDIA_STATUS.PLAYING
+});
+
+const mapDispatchToProps = dispatch => ({
+  closeWindow: () => dispatch(Actions.closeWindow(WINDOWS.MILKDROP)),
+  hideWindow: () => dispatch(Actions.hideWindow()),
+  showWindow: () => dispatch(Actions.showWindow())
+});
 
 export default connect(
   mapStateToProps,
-  mapDispatchProps
+  mapDispatchToProps
 )(PresetsLoader);

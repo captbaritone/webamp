@@ -11,8 +11,8 @@ import zaxon from "../skins/ZaxonRemake1-0.wsz";
 import green from "../skins/Green-Dimension-V2.wsz";
 import base from "../skins/base-2.91-png.wsz";
 import internetArchive from "../skins/Internet-Archive.wsz";
-import MilkdropWindow from "./components/MilkdropWindow";
 import screenshotInitialState from "./screenshotInitialState";
+import partialButterchurnOptions from "./components/MilkdropWindow/options";
 import { WINDOWS } from "./constants";
 import * as Selectors from "./selectors";
 
@@ -141,29 +141,27 @@ Raven.context(async () => {
     document.getElementById("app").style.visibility = "hidden";
     return;
   }
-  const __extraWindows = [];
-  let __initialWindowLayout = null;
 
+  let __butterchurnOptions = null;
+  let __initialWindowLayout = null;
   if (isButterchurnSupported()) {
     const startWithMilkdropHidden =
+      library ||
       document.body.clientWidth < MIN_MILKDROP_WIDTH ||
       (!library && skinUrl != null) ||
       screenshot;
 
-    __extraWindows.push({
-      id: "milkdrop",
-      title: "Milkdrop",
-      isVisualizer: true,
-      Component: MilkdropWindow,
-      open: !library && !startWithMilkdropHidden
-    });
+    __butterchurnOptions = {
+      ...partialButterchurnOptions,
+      butterchurnOpen: !startWithMilkdropHidden
+    };
 
     if (startWithMilkdropHidden) {
       __initialWindowLayout = {
         [WINDOWS.MAIN]: { position: { x: 0, y: 0 } },
         [WINDOWS.EQUALIZER]: { position: { x: 0, y: 116 } },
         [WINDOWS.PLAYLIST]: { position: { x: 0, y: 232 }, size: [0, 0] },
-        milkdrop: { position: { x: 0, y: 348 }, size: [0, 0] }
+        [WINDOWS.MILKDROP]: { position: { x: 0, y: 348 }, size: [0, 0] }
       };
       if (library) {
         __initialWindowLayout[WINDOWS.MEDIA_LIBRARY] = {
@@ -176,7 +174,7 @@ Raven.context(async () => {
         [WINDOWS.MAIN]: { position: { x: 0, y: 0 } },
         [WINDOWS.EQUALIZER]: { position: { x: 0, y: 116 } },
         [WINDOWS.PLAYLIST]: { position: { x: 0, y: 232 }, size: [0, 4] },
-        milkdrop: { position: { x: 275, y: 0 }, size: [7, 12] }
+        [WINDOWS.MILKDROP]: { position: { x: 275, y: 0 }, size: [7, 12] }
       };
       if (library) {
         __initialWindowLayout[WINDOWS.MEDIA_LIBRARY] = {
@@ -221,10 +219,10 @@ Raven.context(async () => {
       import(/* webpackChunkName: "jszip" */ "jszip/dist/jszip"),
     requireMusicMetadata: () =>
       import(/* webpackChunkName: "music-metadata-browser" */ "music-metadata-browser/dist/index"),
-    __extraWindows,
     __enableMediaLibrary: library,
     __initialWindowLayout,
     __initialState: screenshot ? screenshotInitialState : initialState,
+    __butterchurnOptions,
     __customMiddlewares: [ravenMiddleware]
   });
 

@@ -9,7 +9,7 @@ import Media from "./media";
 import * as Selectors from "./selectors";
 import * as Actions from "./actionCreators";
 
-import { LOAD_STYLE } from "./constants";
+import { WINDOWS, LOAD_STYLE } from "./constants";
 import * as Utils from "./utils";
 
 import {
@@ -23,7 +23,8 @@ import {
   REGISTER_VISUALIZER,
   SET_Z_INDEX,
   CLOSE_REQUESTED,
-  ENABLE_MEDIA_LIBRARY
+  ENABLE_MEDIA_LIBRARY,
+  ENABLE_MILKDROP
 } from "./actionTypes";
 import Emitter from "./emitter";
 
@@ -66,8 +67,7 @@ class Winamp {
       enableHotkeys = false,
       zIndex,
       requireJSZip,
-      requireMusicMetadata,
-      __extraWindows
+      requireMusicMetadata
     } = this.options;
 
     // TODO: Validate required options
@@ -89,16 +89,12 @@ class Winamp {
     }
 
     this.genWindows = [];
-    if (__extraWindows) {
-      this.genWindows = __extraWindows.map(genWindow => ({
-        id: genWindow.id || `${genWindow.title}-${Utils.uniqueId()}`,
-        ...genWindow
-      }));
 
-      __extraWindows.forEach(genWindow => {
-        if (genWindow.isVisualizer) {
-          this.store.dispatch({ type: REGISTER_VISUALIZER, id: genWindow.id });
-        }
+    if (options.__butterchurnOptions) {
+      this.store.dispatch({ type: REGISTER_VISUALIZER, id: WINDOWS.MILKDROP });
+      this.store.dispatch({
+        type: ENABLE_MILKDROP,
+        open: options.__butterchurnOptions.butterchurnOpen
       });
     }
 
@@ -194,6 +190,7 @@ class Winamp {
       Actions.loadMediaFiles(tracks, LOAD_STYLE.BUFFER, nextIndex)
     );
   }
+
   // Append this array of tracks to the end of the current playlist.
   appendTracks(tracks) {
     const nextIndex = Selectors.getTrackCount(this.store.getState());
@@ -266,6 +263,7 @@ class Winamp {
           container={node}
           filePickers={this.options.filePickers}
           genWindowComponents={genWindowComponents}
+          butterchurnOptions={this.options.__butterchurnOptions}
         />
       </Provider>,
       node

@@ -12,7 +12,8 @@ import {
   LOAD_SERIALIZED_STATE,
   BROWSER_WINDOW_SIZE_CHANGED,
   RESET_WINDOW_SIZES,
-  ENABLE_MEDIA_LIBRARY
+  ENABLE_MEDIA_LIBRARY,
+  ENABLE_MILKDROP
 } from "../actionTypes";
 import * as Utils from "../utils";
 import { WindowsSerializedStateV1 } from "../serializedStates/v1Types";
@@ -123,6 +124,25 @@ const windows = (
             canDouble: false,
             generic: false,
             hotkey: "Alt+E",
+            position: { x: 0, y: 0 }
+          }
+        }
+      };
+    case ENABLE_MILKDROP:
+      return {
+        ...state,
+        genWindows: {
+          ...state.genWindows,
+          [WINDOWS.MILKDROP]: {
+            title: "Milkdrop",
+            size: [0, 0],
+            open: action.open,
+            hidden: false,
+            shade: false,
+            canResize: true,
+            canShade: false,
+            canDouble: false,
+            generic: true,
             position: { x: 0, y: 0 }
           }
         }

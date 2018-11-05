@@ -23,7 +23,8 @@ export const WINDOWS = {
   MAIN: "main",
   PLAYLIST: "playlist",
   EQUALIZER: "equalizer",
-  MEDIA_LIBRARY: "mediaLibrary"
+  MEDIA_LIBRARY: "mediaLibrary",
+  MILKDROP: "milkdrop"
 };
 
 export const LOAD_STYLE: Record<LoadStyle, LoadStyle> = {
