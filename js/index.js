@@ -148,7 +148,7 @@ Raven.context(async () => {
     const startWithMilkdropHidden =
       library ||
       document.body.clientWidth < MIN_MILKDROP_WIDTH ||
-      (!library && skinUrl != null) ||
+      skinUrl != null ||
       screenshot;
 
     __butterchurnOptions = {
