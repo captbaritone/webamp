@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import screenfull from "screenfull";
 import ContextMenuWrapper from "../ContextMenuWrapper";
 import GenWindow from "../GenWindow";
-import { WINDOWS, MEDIA_STATUS } from "../../constants";
-import { getVisualizerStyle } from "../../selectors";
+import { WINDOWS } from "../../constants";
+import * as Selectors from "../../selectors";
 import * as Actions from "../../actionCreators";
 import MilkdropContextMenu from "./MilkdropContextMenu";
 import Desktop from "./Desktop";
@@ -70,10 +70,10 @@ class PresetsLoader extends React.Component {
 
   _toggleDesktop = () => {
     if (this.state.desktop) {
-      this.props.showWindow(WINDOWS.MILKDROP);
+      this.props.showWindow();
       this.setState({ desktop: false });
     } else {
-      this.props.hideWindow(WINDOWS.MILKDROP);
+      this.props.hideWindow();
       this.setState({ desktop: true });
     }
   };
@@ -211,14 +211,14 @@ async function fetchPreset(presetUrl, { isButterchurn }) {
 }
 
 const mapStateToProps = state => ({
-  isEnabledVisualizer: getVisualizerStyle(state) === WINDOWS.MILKDROP,
-  playing: state.media.status === MEDIA_STATUS.PLAYING
+  isEnabledVisualizer: Selectors.getVisualizerStyle(state) === WINDOWS.MILKDROP,
+  playing: Selectors.getMediaIsPlaying(state)
 });
 
 const mapDispatchToProps = dispatch => ({
   closeWindow: () => dispatch(Actions.closeWindow(WINDOWS.MILKDROP)),
-  hideWindow: () => dispatch(Actions.hideWindow()),
-  showWindow: () => dispatch(Actions.showWindow())
+  hideWindow: () => dispatch(Actions.hideWindow(WINDOWS.MILKDROP)),
+  showWindow: () => dispatch(Actions.showWindow(WINDOWS.MILKDROP))
 });
 
 export default connect(

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Emitter from "../emitter";
 import { WINDOWS, MEDIA_STATUS } from "../constants";
-import { getVisualizerStyle } from "../selectors";
+import * as Selectors from "../selectors";
 import * as Actions from "../actionCreators";
 import * as Utils from "../utils";
 import MilkdropWindow from "../components/MilkdropWindow";
@@ -206,7 +206,7 @@ App.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  visualizerStyle: getVisualizerStyle(state),
+  visualizerStyle: Selectors.getVisualizerStyle(state),
   status: state.media.status,
   focused: state.windows.focused,
   closed: state.display.closed,
