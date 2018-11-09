@@ -1,6 +1,5 @@
-import { PlaylistTrack, Action } from "../types";
+import { Action } from "../types";
 import {
-  SET_MEDIA,
   CLICKED_TRACK,
   CTRL_CLICKED_TRACK,
   SHIFT_CLICKED_TRACK,

@@ -74,6 +74,7 @@ export {
   fetchMediaTags,
   setEqFromFileReference,
   downloadPreset,
+  setEqFromObject,
   downloadHtmlPlaylist
 } from "./files";
 export {

@@ -124,6 +124,21 @@ export interface ButterchurnOptions {
   initialButterchurnPresetUrl?: string | null;
 }
 
+export interface EqfPreset {
+  name: string;
+  hz60: number;
+  hz170: number;
+  hz310: number;
+  hz600: number;
+  hz1000: number;
+  hz3000: number;
+  hz12000: number;
+  hz14000: number;
+  hz16000: number;
+  hz6000: number;
+  preamp: number;
+}
+
 export type Action =
   | {
       type: "@@init";
@@ -415,7 +430,7 @@ export type Action =
   | { type: "BROWSER_WINDOW_SIZE_CHANGED"; height: number; width: number }
   | { type: "LOAD_DEFAULT_SKIN" }
   | { type: "ENABLE_MEDIA_LIBRARY" }
-  | { type: "ENABLE_MILKDROP"; open: boolean; };
+  | { type: "ENABLE_MILKDROP"; open: boolean };
 
 export type MediaTagRequestStatus =
   | "INITIALIZED"

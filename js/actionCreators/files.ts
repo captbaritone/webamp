@@ -43,7 +43,8 @@ import {
   Dispatchable,
   PlaylistTrack,
   Track,
-  URLTrack
+  URLTrack,
+  EqfPreset
 } from "../types";
 
 // Lower is better
@@ -323,10 +324,16 @@ export function setEqFromFileReference(fileReference: File): Dispatchable {
   return async dispatch => {
     const arrayBuffer = await genArrayBufferFromFileReference(fileReference);
     const eqf = parser(arrayBuffer);
-    const preset = eqf.presets[0];
+    const preset: EqfPreset = eqf.presets[0];
+    dispatch(setEqFromObject(preset));
+  };
+}
 
+export function setEqFromObject(preset: EqfPreset): Dispatchable {
+  return dispatch => {
     dispatch(setPreamp(normalize(preset.preamp)));
     BANDS.forEach(band => {
+      // @ts-ignore band and EqfPreset align
       dispatch(setEqBand(band, normalize(preset[`hz${band}`])));
     });
   };
