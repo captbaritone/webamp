@@ -12,6 +12,7 @@ import * as Selectors from "../../selectors";
 interface StateProps {
   marqueeStep: number;
   text: string;
+  doubled: boolean;
 }
 interface DispatchProps {
   stepMarquee(): void;
@@ -100,7 +101,7 @@ class Marquee extends React.Component<Props, State> {
   };
 
   render() {
-    const { text, marqueeStep } = this.props;
+    const { text, marqueeStep, doubled } = this.props;
     const offset = stepOffset(text, marqueeStep, this.state.dragOffset);
     const offsetPixels = pixelUnits(-offset);
     const style: React.CSSProperties = {
@@ -115,7 +116,14 @@ class Marquee extends React.Component<Props, State> {
         onMouseDown={this.handleMouseDown}
         title="Song Title"
       >
-        <div style={style}>
+        <div
+          style={style}
+          // Force the DOM node to be recreated when the doubled size changes.
+          // This works around a Chrome browser bug where the `will-change: transform;`
+          // on this node seems to cause a change to the `image-rendering:
+          // pixelated;` which we inherit from `#webamp` not to be respected.
+          key={doubled ? "doubled" : "not-doubled"}
+        >
           <CharacterString>{loopText(text)}</CharacterString>
         </div>
       </div>
@@ -125,7 +133,8 @@ class Marquee extends React.Component<Props, State> {
 
 const mapStateToProps = (state: AppState): StateProps => ({
   marqueeStep: state.display.marqueeStep,
-  text: Selectors.getMarqueeText(state)
+  text: Selectors.getMarqueeText(state),
+  doubled: Selectors.getDoubled(state)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
