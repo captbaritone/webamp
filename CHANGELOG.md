@@ -6,6 +6,7 @@
 - The default skin is now included in the Skins section of the options menu by default.
 - jsmediatags has been replaced by music-metadata-browser
 - Fixed a bug ([#687](https://github.com/captbaritone/webamp/issues/687) where `webamp.appendTracks()` would cause currently playing media to pause.
+- Added new Webamp methods: `stop`, `seekToTime`, and `getMediaStatus`.
 
 ## 1.2.0
 

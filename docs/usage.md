@@ -199,6 +199,30 @@ webamp.renderWhenReady(container).then(() => {
 });
 ```
 
+### `stop()`
+
+Stop the currently playing audio. Equivilant to pressing the "stop" button.
+
+```JavaScript
+webamp.stop();
+```
+
+### `seekToTime(seconds)`
+
+Seek to a given time within the current track.
+
+```JavaScript
+webamp.seekToTime(15.5);
+```
+
+### `getMediaStatus()`
+
+Get the current "playing" status. The return value is one of: `"PLAYING"`, `"STOPPED"`, or `"PAUSED"`.
+
+```JavaScript
+const isPlaying = webamp.getMediaStatus() === "PLAYING";
+```
+
 ### `onTrackDidChange(callback)`
 
 A callback which will be called when a new track starts loading. This can happen on startup when the first track starts buffering, or when a subsequent track starts playing. The callback will be called with an object (`{url: 'https://example.com/track.mp3'}`) containing the URL of the track.
