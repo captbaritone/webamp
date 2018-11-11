@@ -307,6 +307,10 @@ class Winamp {
     return this._actionEmitter.on(CLOSE_WINAMP, cb);
   }
 
+  reopen(): void {
+    this.store.dispatch(Actions.open());
+  }
+
   onTrackDidChange(cb: (trackInfo: LoadedURLTrack | null) => void): () => void {
     let previousTrackId: number | null = null;
     return this.store.subscribe(() => {

@@ -254,6 +254,9 @@ export type Action =
       type: "CLOSE_WINAMP";
     }
   | {
+      type: "OPEN_WINAMP";
+    }
+  | {
       type: "LOADING";
     }
   | {

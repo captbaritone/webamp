@@ -12,6 +12,7 @@ import { createSelector } from "reselect";
 
 import {
   CLOSE_WINAMP,
+  OPEN_WINAMP,
   SET_SKIN_DATA,
   START_WORKING,
   STEP_MARQUEE,
@@ -143,6 +144,8 @@ const display = (
       return { ...state, working: true };
     case CLOSE_WINAMP:
       return { ...state, closed: true };
+    case OPEN_WINAMP:
+      return { ...state, closed: false };
     case LOADING:
       return { ...state, loading: true };
     case LOADED:

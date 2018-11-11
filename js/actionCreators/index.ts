@@ -1,5 +1,6 @@
 import {
   CLOSE_WINAMP,
+  OPEN_WINAMP,
   STOP,
   TOGGLE_VISUALIZER_STYLE,
   CLOSE_REQUESTED,
@@ -106,6 +107,10 @@ export function close(): Dispatchable {
       dispatch({ type: CLOSE_WINAMP });
     }
   };
+}
+
+export function open(): Dispatchable {
+  return { type: OPEN_WINAMP };
 }
 
 export function toggleVisualizerStyle(): Dispatchable {

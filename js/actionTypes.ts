@@ -1,5 +1,6 @@
 export const ADD_TRACK_FROM_URL = "ADD_TRACK_FROM_URL";
 export const CLOSE_WINAMP = "CLOSE_WINAMP";
+export const OPEN_WINAMP = "OPEN_WINAMP";
 export const MINIMIZE_WINAMP = "MINIMIZE_WINAMP";
 export const IS_PLAYING = "IS_PLAYING";
 export const IS_STOPPED = "IS_STOPPED";
