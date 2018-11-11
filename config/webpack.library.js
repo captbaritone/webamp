@@ -69,8 +69,8 @@ module.exports = {
   entry: {
     bundle: "./js/webamp.js",
     "bundle.min": "./js/webamp.js",
-    "lazy-bundle": "./js/webampLazy.js",
-    "lazy-bundle.min": "./js/webampLazy.js"
+    "lazy-bundle": "./js/webampLazy.tsx",
+    "lazy-bundle.min": "./js/webampLazy.tsx"
   },
   output: {
     path: path.resolve(__dirname, "../built"),

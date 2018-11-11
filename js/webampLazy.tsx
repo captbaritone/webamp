@@ -2,6 +2,14 @@ import React from "react";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
 
+import {
+  Store,
+  AppState,
+  Track,
+  LoadedURLTrack,
+  Middleware,
+  WindowPosition
+} from "./types";
 import getStore from "./store";
 import App from "./components/App";
 import { bindHotkeys } from "./hotkeys";
@@ -28,9 +36,96 @@ import {
 import Emitter from "./emitter";
 
 import "../css/base-skin.min.css";
+import { SerializedStateV1 } from "./serializedStates/v1Types";
+
+interface Options {
+  /**
+   * An object representing the initial skin to use.
+   *
+   * If omitted, the default skin, included in the bundle, will be used.
+   * Note: This URL must be served the with correct CORs headers.
+   *
+   * Example: `{ url: './path/to/skin.wsz' }`
+   */
+  initialSkin?: {
+    url: string;
+  };
+
+  /**
+   * An array of `Track`s to prepopulate the playlist with.
+   */
+  initialTracks?: Track[];
+
+  /**
+   * An array of objects representing available skins.
+   *
+   * These will appear in the "Options" menu under "Skins".
+   * Note: These URLs must be served with the correct CORs headers.
+   *
+   * Example: `[ { url: "./green.wsz", name: "Green Dimension V2" } ]`
+   */
+  availableSkins?: { url: string; name: string }[];
+
+  /**
+   * Should global hotkeys be enabled?
+   *
+   * Default: `false`
+   */
+  enableHotkeys?: boolean;
+
+  /**
+   * An array of additional file pickers.
+   *
+   * These will appear in the "Options" menu under "Play".
+   *
+   * In the offical version, this option is used to provide a "Dropbox" file picker.
+   */
+  filePickers?: [
+    {
+      /**
+       * The name that will appear in the context menu.
+       *
+       * Example: `"My File Picker..."`
+       */
+      contextMenuName: string;
+
+      /**
+       * A function which returns a Promise that resolves to an array of `Track`s
+       *
+       * Example: `() => Promise.resolve([{ url: './rick_roll.mp3' }])`
+       */
+      filePicker: () => Promise<Track[]>;
+
+      /**
+       * Indicates if this options should be made available when the user is offline.
+       */
+      requiresNetwork: boolean;
+    }
+  ];
+  zIndex: number;
+}
+
+interface PrivateOptions {
+  avaliableSkins?: { url: string; name: string }[]; // Old misspelled name
+  requireJSZip(): Promise<never>; // TODO: Type JSZip
+  requireMusicMetadata(): Promise<any>; // TODO: Type musicmetadata
+  __initialState?: AppState;
+  __customMiddlewares?: Middleware[];
+  __enableMediaLibrary?: boolean;
+  __initialWindowLayout: {
+    [windowId: string]: {
+      size: null | [number, number];
+      position: WindowPosition;
+    };
+  };
+  __butterchurnOptions: { butterchurnOpen: boolean };
+}
 
 // Return a promise that resolves when the store matches a predicate.
-const storeHas = (store, predicate) =>
+const storeHas = (
+  store: Store,
+  predicate: (state: AppState) => boolean
+): Promise<void> =>
   new Promise(resolve => {
     if (predicate(store.getState())) {
       resolve();
@@ -45,16 +140,23 @@ const storeHas = (store, predicate) =>
   });
 
 class Winamp {
+  _subscriptions: (() => void)[]; // TODO: Fix this type
+  _actionEmitter: Emitter;
+  options: Options & PrivateOptions; // TODO: Make this _private
+  media: Media; // TODO: Make this _private
+  store: Store; // TODO: Make this _private
   static browserIsSupported() {
     const supportsAudioApi = !!(
-      window.AudioContext || window.webkitAudioContext
+      window.AudioContext ||
+      // @ts-ignore
+      window.webkitAudioContext
     );
     const supportsCanvas = !!window.document.createElement("canvas").getContext;
     const supportsPromises = typeof Promise !== "undefined";
     return supportsAudioApi && supportsCanvas && supportsPromises;
   }
 
-  constructor(options) {
+  constructor(options: Options & PrivateOptions) {
     this._subscriptions = [];
     this._actionEmitter = new Emitter();
     this.options = options;
@@ -78,10 +180,13 @@ class Winamp {
       this.options.__customMiddlewares,
       this.options.__initialState,
       { requireJSZip, requireMusicMetadata }
-    );
-    this.store.dispatch({
-      type: navigator.onLine ? NETWORK_CONNECTED : NETWORK_DISCONNECTED
-    });
+    ) as Store;
+
+    if (navigator.onLine) {
+      this.store.dispatch({ type: NETWORK_CONNECTED });
+    } else {
+      this.store.dispatch({ type: NETWORK_DISCONNECTED });
+    }
 
     if (zIndex != null) {
       this.store.dispatch({ type: SET_Z_INDEX, zIndex });
@@ -156,11 +261,11 @@ class Winamp {
     this.store.dispatch(Actions.pause());
   }
 
-  seekBackward(seconds) {
+  seekBackward(seconds: number) {
     this.store.dispatch(Actions.seekBackward(seconds));
   }
 
-  seekForward(seconds) {
+  seekForward(seconds: number) {
     this.store.dispatch(Actions.seekForward(seconds));
   }
 
@@ -172,7 +277,7 @@ class Winamp {
     this.store.dispatch(Actions.previous());
   }
 
-  _bufferTracks(tracks) {
+  _bufferTracks(tracks: Track[]) {
     const nextIndex = Selectors.getTrackCount(this.store.getState());
     this.store.dispatch(
       Actions.loadMediaFiles(tracks, LOAD_STYLE.BUFFER, nextIndex)
@@ -180,7 +285,7 @@ class Winamp {
   }
 
   // Append this array of tracks to the end of the current playlist.
-  appendTracks(tracks) {
+  appendTracks(tracks: Track[]) {
     const nextIndex = Selectors.getTrackCount(this.store.getState());
     this.store.dispatch(
       Actions.loadMediaFiles(tracks, LOAD_STYLE.NONE, nextIndex)
@@ -188,23 +293,23 @@ class Winamp {
   }
 
   // Replace any existing tracks with this array of tracks, and begin playing.
-  setTracksToPlay(tracks) {
+  setTracksToPlay(tracks: Track[]) {
     this.store.dispatch(Actions.loadMediaFiles(tracks, LOAD_STYLE.PLAY));
   }
 
-  onWillClose(cb) {
+  onWillClose(cb: (cancel: () => void) => void): () => void {
     return this._actionEmitter.on(CLOSE_REQUESTED, action => {
       cb(action.cancel);
     });
   }
 
-  onClose(cb) {
+  onClose(cb: () => void): () => void {
     return this._actionEmitter.on(CLOSE_WINAMP, cb);
   }
 
-  onTrackDidChange(cb) {
-    let previousTrackId = null;
-    this.store.subscribe(() => {
+  onTrackDidChange(cb: (trackInfo: LoadedURLTrack | null) => void): () => void {
+    let previousTrackId: number | null = null;
+    return this.store.subscribe(() => {
       const state = this.store.getState();
       const trackId = Selectors.getCurrentlyPlayingTrackIdIfLoaded(state);
       if (trackId === previousTrackId) {
@@ -215,16 +320,16 @@ class Winamp {
     });
   }
 
-  onMinimize(cb) {
+  onMinimize(cb: () => void): () => void {
     return this._actionEmitter.on(MINIMIZE_WINAMP, cb);
   }
 
-  async skinIsLoaded() {
+  async skinIsLoaded(): Promise<void> {
     // Wait for the skin to load.
     return storeHas(this.store, state => !state.display.loading);
   }
 
-  __loadSerializedState(serializedState) {
+  __loadSerializedState(serializedState: SerializedStateV1): void {
     this.store.dispatch(Actions.loadSerializedState(serializedState));
   }
 
@@ -232,11 +337,11 @@ class Winamp {
     return Selectors.getSerlializedState(this.store.getState());
   }
 
-  __onStateChange(cb) {
+  __onStateChange(cb: () => void): () => void {
     return this.store.subscribe(cb);
   }
 
-  async renderWhenReady(node) {
+  async renderWhenReady(node: HTMLElement) {
     this.store.dispatch(Actions.centerWindowsInContainer(node));
     await this.skinIsLoaded();
 
