@@ -145,3 +145,31 @@ body {
     opacity: 0;
   }
 }
+
+#webamp-icon {
+  position: fixed;
+  top: 30px;
+  left: 30px;
+  text-align: center;
+  cursor: pointer;
+  image-rendering: pixelated;
+}
+
+#webamp-icon.hidden {
+  display: none;
+}
+
+.webamp-icon-title {
+  color: white;
+  font-family: "MS Sans Serif", "Segoe UI", sans-serif;
+  font-size: 11px;
+  -webkit-font-smoothing: none;
+  margin-top: 5px;
+  width: 100%;
+  border: 1px dotted transparent;
+}
+
+#webamp-icon .selected .webamp-icon-title {
+  background-color: #000080;
+  border-color: white;
+}

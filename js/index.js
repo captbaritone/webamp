@@ -1,6 +1,8 @@
 /* global SENTRY_DSN */
 
 import Raven from "raven-js";
+import React from "react";
+import ReactDOM from "react-dom";
 import createMiddleware from "raven-for-redux";
 import isButterchurnSupported from "butterchurn/lib/isSupported.min";
 import osx from "../skins/MacOSXAqua1-5.wsz";
@@ -17,6 +19,7 @@ import { WINDOWS } from "./constants";
 import * as Selectors from "./selectors";
 
 import WebampLazy from "./webampLazy";
+import WebampIcon from "./WebampIcon";
 import enableMediaSession from "./mediaSession";
 import {
   STEP_MARQUEE,
@@ -257,12 +260,6 @@ Raven.context(async () => {
     });
   }
 
-  webamp.onWillClose(cancel => {
-    if (!window.confirm("Are you sure you want to close Webamp?")) {
-      cancel();
-    }
-  });
-
   webamp.onTrackDidChange(track => {
     document.title =
       track == null
@@ -289,4 +286,9 @@ Raven.context(async () => {
   await bindToIndexedDB(webamp, clearState, useState);
 
   await webamp.renderWhenReady(document.getElementById("app"));
+
+  ReactDOM.render(
+    <WebampIcon webamp={webamp} />,
+    document.getElementById("webamp-icon")
+  );
 });
