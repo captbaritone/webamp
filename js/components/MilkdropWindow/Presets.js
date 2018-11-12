@@ -31,21 +31,17 @@ async function readFileAsText(file) {
  * selection was canceled by a subsequent request before it could be fulfilled.
  * If the request is successful, the promise resolves to the selected preset.
  *
- * We assume a model where some portion of the preset are supplied at initialization
- * and the remainder can be loaded async via the function `getRest`.
  */
 export default class Presets {
   constructor({
     keys,
     initialPresets,
-    getRest,
     presetConverterEndpoint,
     loadConvertPreset,
     randomize = true
   }) {
     this._keys = keys; // Alphabetical list of preset names
     this._presets = initialPresets; // Presets indexed by name
-    this._getRest = getRest; // An async function to get the rest of the presets
     this._presetConverterEndpoint = presetConverterEndpoint;
     this._loadConvertPreset = loadConvertPreset;
     this._history = []; // Indexes into _keys
@@ -120,15 +116,6 @@ export default class Presets {
 
   async _selectIndex(idx) {
     const preset = this._presets[this._keys[idx]];
-    if (!preset) {
-      const rest = await this._getRest();
-      this._presets = Object.assign(this._presets, rest);
-      if (getLast(this._history) !== idx) {
-        // This selection must be obsolete. Return null so that
-        // the caller knows this request got canceled.
-        return null;
-      }
-    }
     if (preset && preset.file) {
       try {
         const fileContents = await readFileAsText(preset.file);

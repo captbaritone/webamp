@@ -36,18 +36,14 @@ class PresetsLoader extends React.Component {
   }
 
   async componentDidMount() {
-    const [
-      { butterchurn, presetKeys, minimalPresets },
-      initialPreset
-    ] = await Promise.all([
+    const [{ butterchurn, minimalPresets }, initialPreset] = await Promise.all([
       this.options.loadInitialDependencies(),
       loadInitialPreset(this.options)
     ]);
 
     const presets = new Presets({
-      keys: presetKeys,
+      keys: Object.keys(minimalPresets),
       initialPresets: minimalPresets,
-      getRest: this.options.loadNonMinimalPresets,
       presetConverterEndpoint: this.options.presetConverterEndpoint,
       loadConvertPreset: this.options.loadConvertPreset
     });

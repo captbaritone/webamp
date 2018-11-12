@@ -6,7 +6,7 @@ import {
 async function loadInitialDependencies(): Promise<
   InitialButterchurnDependencies
 > {
-  const [butterchurn, butterchurnMinimalPresets, presetPackMeta] =
+  const [butterchurn, butterchurnMinimalPresets] =
     // prettier-ignore
     await Promise.all([
       import(
@@ -18,24 +18,12 @@ async function loadInitialDependencies(): Promise<
         /* webpackChunkName: "butterchurn-initial-dependencies" */
         // @ts-ignore
         "butterchurn-presets/lib/butterchurnPresetsMinimal.min"
-      ),
-      import(
-        /* webpackChunkName: "butterchurn-initial-dependencies" */
-        // @ts-ignore
-        "butterchurn-presets/lib/butterchurnPresetPackMeta.min"
       )
   ]);
   return {
     butterchurn,
-    minimalPresets: butterchurnMinimalPresets.getPresets(),
-    presetKeys: presetPackMeta.getMainPresetMeta().presets
+    minimalPresets: butterchurnMinimalPresets.getPresets()
   };
-}
-
-async function loadNonMinimalPresets() {
-  return (await import(/* webpackChunkName: "butterchurn-non-minimal-presets" */
-  // @ts-ignore
-  "butterchurn-presets/lib/butterchurnPresetsNonMinimal.min")).getPresets();
 }
 
 async function loadConvertPreset() {
@@ -52,7 +40,6 @@ async function loadConvertPreset() {
 const options: ButterchurnOptions = {
   loadConvertPreset,
   loadInitialDependencies,
-  loadNonMinimalPresets,
   presetConverterEndpoint:
     "https://p2tpeb5v8b.execute-api.us-east-2.amazonaws.com/default/milkdropShaderConverter"
 };

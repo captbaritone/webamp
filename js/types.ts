@@ -112,11 +112,9 @@ export interface InitialButterchurnDependencies {
   // TODO: Type these
   butterchurn: any;
   minimalPresets: any;
-  presetKeys: any;
 }
 
 export interface ButterchurnOptions {
-  loadNonMinimalPresets(): Promise<any>;
   loadInitialDependencies(): Promise<InitialButterchurnDependencies>;
   loadConvertPreset(): Promise<any>;
   presetConverterEndpoint: string;
