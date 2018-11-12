@@ -100,6 +100,12 @@ function filterBreadcrumbActions(action) {
   return !noisy;
 }
 
+async function loadNonMinimalPresets() {
+  return (await import(/* webpackChunkName: "butterchurn-non-minimal-presets" */
+  // @ts-ignore
+  "butterchurn-presets/lib/butterchurnPresetsNonMinimal.min")).getPresets();
+}
+
 Raven.config(SENTRY_DSN, {
   /* global COMMITHASH */
   release: typeof COMMITHASH !== "undefined" ? COMMITHASH : "DEV"
@@ -291,4 +297,8 @@ Raven.context(async () => {
     <WebampIcon webamp={webamp} />,
     document.getElementById("webamp-icon")
   );
+
+  if (__butterchurnOptions.butterchurnOpen) {
+    webamp.addButterchurnPresets(await loadNonMinimalPresets());
+  }
 });

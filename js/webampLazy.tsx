@@ -333,6 +333,10 @@ class Winamp {
     return storeHas(this.store, state => !state.display.loading);
   }
 
+  addButterchurnPresets(presets: any): void {
+    // not sure the best way to add presets without moving all the preset state to redux
+  }
+
   __loadSerializedState(serializedState: SerializedStateV1): void {
     this.store.dispatch(Actions.loadSerializedState(serializedState));
   }
