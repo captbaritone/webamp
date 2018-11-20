@@ -10,14 +10,19 @@ import { Band, Dispatchable } from "../types";
 
 const BAND_SNAP_DISTANCE = 10;
 const BAND_MID_POINT_VALUE = 50;
-export function setEqBand(band: Band, value: number): Dispatchable {
+
+function _snapBandValue(value: number): number {
   if (
     value < BAND_MID_POINT_VALUE + BAND_SNAP_DISTANCE &&
     value > BAND_MID_POINT_VALUE - BAND_SNAP_DISTANCE
   ) {
-    return { type: SET_BAND_VALUE, band, value: BAND_MID_POINT_VALUE };
+    return BAND_MID_POINT_VALUE;
   }
-  return { type: SET_BAND_VALUE, band, value };
+  return value;
+}
+
+export function setEqBand(band: Band, value: number): Dispatchable {
+  return { type: SET_BAND_VALUE, band, value: _snapBandValue(value) };
 }
 
 function _setEqTo(value: number): Dispatchable {
@@ -45,7 +50,7 @@ export function setEqToMin(): Dispatchable {
 }
 
 export function setPreamp(value: number): Dispatchable {
-  return { type: SET_BAND_VALUE, band: "preamp", value };
+  return { type: SET_BAND_VALUE, band: "preamp", value: _snapBandValue(value) };
 }
 
 export function toggleEq(): Dispatchable {
