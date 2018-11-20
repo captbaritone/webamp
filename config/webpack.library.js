@@ -1,6 +1,6 @@
 const path = require("path");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+const UnminifiedWebpackPlugin = require("unminified-webpack-plugin");
 
 module.exports = {
   mode: "production",
@@ -50,26 +50,16 @@ module.exports = {
       reportFilename: "library-report.html",
       openAnalyzer: false
     }),
-    new UglifyJsPlugin({
-      include: /\.min\.js$/,
-      parallel: true,
-      uglifyOptions: {
-        compress: {
-          // Workaround: https://github.com/mishoo/UglifyJS2/issues/2842
-          inline: false
-        }
-      }
-    })
+    // Also generate non-minified bundles.
+    new UnminifiedWebpackPlugin()
   ],
   performance: {
     // We do some crazy shit okay! Don't judge!
-    maxEntrypointSize: 900000,
-    maxAssetSize: 900000
+    maxEntrypointSize: 9000000,
+    maxAssetSize: 9000000
   },
   entry: {
-    bundle: "./js/webamp.js",
     "bundle.min": "./js/webamp.js",
-    "lazy-bundle": "./js/webampLazy.tsx",
     "lazy-bundle.min": "./js/webampLazy.tsx"
   },
   output: {
