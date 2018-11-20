@@ -26,9 +26,9 @@ async function loadInitialDependencies(): Promise<
       )
   ]);
   return {
-    butterchurn,
-    minimalPresets: butterchurnMinimalPresets.getPresets(),
-    presetKeys: presetPackMeta.getMainPresetMeta().presets
+    butterchurn: butterchurn.default,
+    minimalPresets: butterchurnMinimalPresets.default.getPresets(),
+    presetKeys: presetPackMeta.default.getMainPresetMeta().presets
   };
 }
 

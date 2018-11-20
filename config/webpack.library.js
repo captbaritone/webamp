@@ -1,9 +1,9 @@
 const path = require("path");
-const webpack = require("webpack");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
 module.exports = {
+  mode: "production",
   resolve: {
     extensions: [".js", ".ts", ".tsx"]
   },
@@ -50,11 +50,6 @@ module.exports = {
       reportFilename: "library-report.html",
       openAnalyzer: false
     }),
-    new webpack.DefinePlugin({
-      "process.env": {
-        NODE_ENV: JSON.stringify("production")
-      }
-    }),
     new UglifyJsPlugin({
       include: /\.min\.js$/,
       parallel: true,
@@ -66,6 +61,11 @@ module.exports = {
       }
     })
   ],
+  performance: {
+    // We do some crazy shit okay! Don't judge!
+    maxEntrypointSize: 900000,
+    maxAssetSize: 900000
+  },
   entry: {
     bundle: "./js/webamp.js",
     "bundle.min": "./js/webamp.js",

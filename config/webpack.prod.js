@@ -11,6 +11,7 @@ const gitRevisionPlugin = new GitRevisionPlugin();
 
 const config = merge(common, {
   devtool: "source-map",
+  mode: "production",
   plugins: [
     new BundleAnalyzerPlugin({
       analyzerMode: "static",

@@ -74,6 +74,11 @@ module.exports = {
     }),
     new HtmlWebpackInlineSVGPlugin({ runPreEmit: true })
   ],
+  performance: {
+    // We do some crazy shit okay! Don't judge!
+    maxEntrypointSize: 7000000,
+    maxAssetSize: 7000000
+  },
   entry: {
     webamp: ["./js/index.js"]
   },

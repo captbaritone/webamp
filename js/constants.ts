@@ -5,7 +5,7 @@ import {
   LoadStyle,
   TimeMode
 } from "./types";
-import * as baseSkin from "./baseSkin.json";
+import baseSkin from "./baseSkin.json";
 export const BANDS: Band[] = [
   60,
   170,

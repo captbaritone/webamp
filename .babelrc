@@ -33,10 +33,7 @@
       ]
     },
     "library": {
-      "plugins": [
-        "babel-plugin-remove-webpack",
-        "@babel/plugin-transform-runtime"
-      ]
+      "plugins": ["@babel/plugin-transform-runtime"]
     },
     "production": {
       "plugins": ["@babel/plugin-syntax-dynamic-import"]
