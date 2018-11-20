@@ -8,7 +8,7 @@ import {
 } from "../actionTypes";
 import { Band, Dispatchable } from "../types";
 
-const BAND_SNAP_DISTANCE = 10;
+const BAND_SNAP_DISTANCE = 5;
 const BAND_MID_POINT_VALUE = 50;
 
 function _snapBandValue(value: number): number {
