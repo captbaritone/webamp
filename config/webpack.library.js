@@ -7,12 +7,6 @@ module.exports = {
   resolve: {
     extensions: [".js", ".ts", ".tsx"]
   },
-  node: {
-    // Consider suggesting jsmediatags use: https://github.com/feross/is-buffer
-    // Cuts 22k
-    Buffer: false,
-    fs: "empty"
-  },
   module: {
     rules: [
       {
