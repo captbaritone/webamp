@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classnames from "classnames";
 
@@ -26,10 +25,29 @@ import PresetsContextMenu from "./PresetsContextMenu";
 import EqualizerShade from "./EqualizerShade";
 
 import "../../../css/equalizer-window.css";
+import { Dispatch, Band as BandType, AppState } from "../../types";
 
-const bandClassName = band => `band-${band}`;
+interface StateProps {
+  doubled: boolean;
+  selected: boolean;
+  shade: boolean | undefined;
+}
 
-const EqualizerWindow = props => {
+interface DispatchProps {
+  focusWindow(): void;
+  setPreampValue(value: number): void;
+  setEqToMin(): void;
+  setEqToMid(): void;
+  setEqToMax(): void;
+  setHertzValue(hertz: BandType): (value: number) => void;
+  closeEqualizerWindow(): void;
+  toggleEqualizerShadeMode(): void;
+  scrollVolume(e: React.WheelEvent<HTMLDivElement>): void;
+}
+
+const bandClassName = (band: BandType) => `band-${band}`;
+
+const EqualizerWindow = (props: StateProps & DispatchProps) => {
   const { doubled, selected, shade } = props;
 
   const className = classnames({
@@ -82,28 +100,24 @@ const EqualizerWindow = props => {
   );
 };
 
-EqualizerWindow.propTypes = {
-  doubled: PropTypes.bool.isRequired,
-  selected: PropTypes.bool.isRequired,
-  shade: PropTypes.bool.isRequired
-};
-
 // This does not use the shorthand object syntax becuase `setHertzValue` needs
 // to return a function.
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   focusWindow: () =>
     dispatch({ type: SET_FOCUSED_WINDOW, window: WINDOWS.EQUALIZER }),
-  setPreampValue: value => dispatch(setPreamp(value)),
+  setPreampValue: (value: number) => dispatch(setPreamp(value)),
   setEqToMin: () => dispatch(setEqToMin()),
   setEqToMid: () => dispatch(setEqToMid()),
   setEqToMax: () => dispatch(setEqToMax()),
-  setHertzValue: hertz => value => dispatch(setEqBand(hertz, value)),
+  setHertzValue: (hertz: BandType) => (value: number) =>
+    dispatch(setEqBand(hertz, value)),
   closeEqualizerWindow: () => dispatch(closeWindow("equalizer")),
   toggleEqualizerShadeMode: () => dispatch(toggleEqualizerShadeMode()),
-  scrollVolume: e => dispatch(scrollVolume(e))
+  scrollVolume: (e: React.WheelEvent<HTMLDivElement>) =>
+    dispatch(scrollVolume(e))
 });
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: AppState): StateProps => ({
   doubled: state.display.doubled,
   selected: state.windows.focused === WINDOWS.EQUALIZER,
   shade: getWindowShade(state)("equalizer")
