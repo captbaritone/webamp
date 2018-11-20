@@ -35,7 +35,7 @@ async function loadInitialDependencies(): Promise<
 async function loadNonMinimalPresets() {
   return (await import(/* webpackChunkName: "butterchurn-non-minimal-presets" */
   // @ts-ignore
-  "butterchurn-presets/lib/butterchurnPresetsNonMinimal.min")).getPresets();
+  "butterchurn-presets/lib/butterchurnPresetsNonMinimal.min")).default.getPresets();
 }
 
 async function loadConvertPreset() {
