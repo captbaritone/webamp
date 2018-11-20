@@ -219,10 +219,9 @@ Raven.context(async () => {
     ],
     enableHotkeys: true,
     requireJSZip: () =>
-      import(/* webpackChunkName: "jszip" */ "jszip/dist/jszip").default,
+      import(/* webpackChunkName: "jszip" */ "jszip/dist/jszip"),
     requireMusicMetadata: () =>
-      import(/* webpackChunkName: "music-metadata-browser" */ "music-metadata-browser/dist/index")
-        .default,
+      import(/* webpackChunkName: "music-metadata-browser" */ "music-metadata-browser/dist/index"),
     __enableMediaLibrary: library,
     __initialWindowLayout,
     __initialState: screenshot ? screenshotInitialState : initialState,
