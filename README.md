@@ -29,7 +29,7 @@ See the [usage documentation](./docs/usage.md) for more information.
     # Or: npm install
     npm start
 
-Open `http://localhost:8080/webpack-dev-server/` in your browser.
+`http://localhost:8080/` should automatically open in your browser.
 
     # Run tests and lint checks
     npm test
