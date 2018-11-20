@@ -10,8 +10,7 @@ import {
   setEqToMid,
   setEqToMin,
   closeWindow,
-  toggleEqualizerShadeMode,
-  scrollVolume
+  toggleEqualizerShadeMode
 } from "../../actionCreators";
 
 import { SET_FOCUSED_WINDOW } from "../../actionTypes";
@@ -42,7 +41,6 @@ interface DispatchProps {
   setHertzValue(hertz: BandType): (value: number) => void;
   closeEqualizerWindow(): void;
   toggleEqualizerShadeMode(): void;
-  scrollVolume(e: React.WheelEvent<HTMLDivElement>): void;
 }
 
 const bandClassName = (band: BandType) => `band-${band}`;
@@ -62,7 +60,6 @@ const EqualizerWindow = (props: StateProps & DispatchProps) => {
       id="equalizer-window"
       className={className}
       onMouseDown={props.focusWindow}
-      onWheel={props.scrollVolume}
     >
       {props.shade ? (
         <EqualizerShade />
@@ -112,9 +109,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   setHertzValue: (hertz: BandType) => (value: number) =>
     dispatch(setEqBand(hertz, value)),
   closeEqualizerWindow: () => dispatch(closeWindow("equalizer")),
-  toggleEqualizerShadeMode: () => dispatch(toggleEqualizerShadeMode()),
-  scrollVolume: (e: React.WheelEvent<HTMLDivElement>) =>
-    dispatch(scrollVolume(e))
+  toggleEqualizerShadeMode: () => dispatch(toggleEqualizerShadeMode())
 });
 
 const mapStateToProps = (state: AppState): StateProps => ({
