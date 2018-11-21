@@ -753,6 +753,19 @@
   dependencies:
     "@types/react" "*"
 
+"@types/rc-slider@^8.6.0":
+  version "8.6.0"
+  resolved "https://registry.yarnpkg.com/@types/rc-slider/-/rc-slider-8.6.0.tgz#7f061a920b067825c8455cf481c57b0927889c72"
+  dependencies:
+    "@types/rc-tooltip" "*"
+    "@types/react" "*"
+
+"@types/rc-tooltip@*":
+  version "3.4.12"
+  resolved "https://registry.yarnpkg.com/@types/rc-tooltip/-/rc-tooltip-3.4.12.tgz#7a7aeb036e7378f5adeb6afcba1a905c1804d8a8"
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-dom@^16.0.9":
   version "16.0.9"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.0.9.tgz#73ceb7abe6703822eab6600e65c5c52efd07fb91"
