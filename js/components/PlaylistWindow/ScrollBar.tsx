@@ -1,6 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
-import Slider from "rc-slider";
+
+// Here we import the rc-slider class just to get it's type.
+// We expect the Typescript compiler to not actually include this in the bundle.
+import RcSlider from "rc-slider";
+// @ts-ignore
+import SliderComponent from "rc-slider/lib/Slider";
+// Here we inform TypeScript to use the default export's type for our partial import.
+const Slider = SliderComponent as typeof RcSlider;
 
 import { setPlaylistScrollPosition } from "../../actionCreators";
 import { getVisibleTrackIds, getPlaylistScrollPosition } from "../../selectors";
