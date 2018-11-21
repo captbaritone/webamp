@@ -8,11 +8,11 @@ const puppeteer = require("puppeteer");
   // TODO: allow the skin to be passed in via the CLI.
   try {
     await page.goto(
-      'http://localhost:8081/#{"skinUrl":"/skins/base-2.91.wsz"}'
+      'http://localhost:8080/#{"skinUrl":"/skins/base-2.91.wsz"}'
     );
   } catch (e) {
     console.error(
-      "Error connecting to localhost:8081. Are you running the dev server?",
+      "Error connecting to localhost:8080. Are you running the dev server?",
       "\n\n",
       e
     );
