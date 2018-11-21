@@ -12,8 +12,8 @@ export const imageSelectors: Selectors = {
     "#balance::-moz-range-thumb"
   ],
   MAIN_BALANCE_THUMB_ACTIVE: [
-    "#balance::-webkit-slider-thumb:active",
-    "#balance::-moz-range-thumb:active"
+    "#balance:active::-webkit-slider-thumb",
+    "#balance:active::-moz-range-thumb"
   ],
   MAIN_PREVIOUS_BUTTON: [".actions #previous"],
   MAIN_PREVIOUS_BUTTON_ACTIVE: [".actions #previous:active"],
@@ -82,7 +82,9 @@ export const imageSelectors: Selectors = {
   PLAYLIST_LEFT_TILE: [".playlist-middle-left"],
   PLAYLIST_RIGHT_TILE: [".playlist-middle-right"],
   PLAYLIST_SCROLL_HANDLE: [".playlist-scrollbar-handle"],
-  PLAYLIST_SCROLL_HANDLE_SELECTED: [".playlist-scrollbar-handle:active"],
+  PLAYLIST_SCROLL_HANDLE_SELECTED: [
+    ".playlist-middle-right:active .playlist-scrollbar-handle"
+  ],
   PLAYLIST_BOTTOM_TILE: [".playlist-bottom"],
   PLAYLIST_BOTTOM_LEFT_CORNER: [".playlist-bottom-left"],
   PLAYLIST_BOTTOM_RIGHT_CORNER: [".playlist-bottom-right"],
@@ -286,8 +288,8 @@ export const imageSelectors: Selectors = {
     "#volume input::-moz-range-thumb"
   ],
   MAIN_VOLUME_THUMB_SELECTED: [
-    "#volume input::-webkit-slider-thumb:active",
-    "#volume input::-moz-range-thumb:active"
+    "#volume input:active::-webkit-slider-thumb",
+    "#volume input:active::-moz-range-thumb"
   ],
   GEN_TOP_CENTER_FILL: [".gen-window .gen-top"],
   GEN_TOP_LEFT: [".gen-window .gen-top-left"],
