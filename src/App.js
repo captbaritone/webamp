@@ -2,6 +2,7 @@ import React from "react";
 import skins from "./skins.json";
 import "./App.css";
 import LoadQueue from "./LoadQueue";
+import { Overlay } from "./Overlay";
 
 const hashes = Object.keys(skins);
 
@@ -213,13 +214,18 @@ class App extends React.Component {
       );
     }
     return (
-      <div
-        style={{
-          height: Math.ceil(hashes.length / columnCount) * SKIN_HEIGHT,
-          position: "relative"
-        }}
-      >
-        {skinElements}
+      <div>
+        <div
+          style={{
+            height: Math.ceil(hashes.length / columnCount) * SKIN_HEIGHT,
+            position: "relative"
+          }}
+        >
+          {skinElements}
+        </div>
+        <Overlay>
+          <h1>Hello</h1>
+        </Overlay>
       </div>
     );
   }
