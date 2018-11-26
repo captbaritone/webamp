@@ -57,7 +57,6 @@ class FocusedSkin extends React.Component {
           skinUrl={Utils.skinUrlFromHash(this.props.hash)}
           screenshotUrl={Utils.screenshotUrlFromHash(this.props.hash)}
         />
-        )}
       </div>
     );
   }
