@@ -57,7 +57,14 @@ export default class WebampComponent extends React.Component {
         ref={node => (this._ref = node)}
       >
         <img
-          style={{ width: "100%", height: "100%" }}
+          style={{
+            width: "100%",
+            height: "100%",
+            // Webamp measure the scrollHeight of the container. Making this a
+            // block element ensures the parent element's scrollHeight is not
+            // expanded.
+            display: "block"
+          }}
           src={this.props.screenshotUrl}
         />
       </div>
