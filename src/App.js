@@ -1,111 +1,16 @@
 import React from "react";
 import skins from "./skins.json";
 import "./App.css";
-import LoadQueue from "./LoadQueue";
 import { Overlay } from "./Overlay";
+import Skin from "./Skin";
+import FocusedSkin from "./FocusedSkin";
+import * as Utils from "./utils";
+import { SKIN_WIDTH, SKIN_HEIGHT, SKIN_RATIO } from "./constants";
 
 const hashes = Object.keys(skins);
 
-const SCALE = 1 / 2;
-const SKIN_WIDTH = 275 * SCALE;
-const SKIN_HEIGHT = 348 * SCALE;
-const SKIN_RATIO = SKIN_HEIGHT / SKIN_WIDTH;
 const OVERSCAN_ROWS_LEADING = 10;
 const OVERSCAN_ROWS_TRAILING = 4;
-
-class Skin extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { loaded: false, load: false, enqueuedAs: null };
-    this._controller = new window.AbortController();
-    this._handleLoad = this._handleLoad.bind(this);
-  }
-
-  _getPriority() {
-    return this.props.isOverscan ? 1 : 0;
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this._queued && !(this.state.load || this.state.loaded)) {
-      this._queued.changePriority(this._getPriority());
-      if (this.state.enqueuedAs !== this._getPriority()) {
-        this.setState({ enqueuedAs: this._getPriority() });
-      }
-    }
-  }
-
-  componentDidMount() {
-    this._queued = this.props.queue.enqueue(() => {
-      const signal = this._controller.signal;
-      return fetch(this.props.src, { signal, mode: "no-cors" })
-        .then(() => {
-          this.setState({ load: true });
-        })
-        .catch(e => {});
-    }, this._getPriority());
-    this.setState({ enqueuedAs: this._getPriority() });
-  }
-
-  _handleLoad() {
-    this.setState({ loaded: true });
-  }
-
-  componentWillUnmount() {
-    if (!this.state.loaded) {
-      this._controller.abort();
-    }
-    if (this._queued != null) {
-      this._queued.dispose();
-      this._queued = null;
-    }
-  }
-
-  render() {
-    return (
-      <div
-        className={"skin"}
-        style={{
-          position: "absolute",
-          // Ideally the final backgroundColor would be black
-          // But that makes our opacitly transition kinda funky
-          backgroundColor: this.props.color,
-          width: this.props.width,
-          height: this.props.height,
-          top: this.props.top,
-          left: this.props.left
-        }}
-      >
-        <div className="priority">
-          {this.state.enqueuedAs} -{" "}
-          {this.state.load && !this.state.loaded ? "loading..." : ""}
-        </div>
-        <a href={this.props.href} target="_blank">
-          {this.state.load && (
-            <img
-              src={this.props.src}
-              className={`screenshot ${this.state.loaded ? "loaded" : ""}`}
-              onLoad={this._handleLoad}
-            />
-          )}
-        </a>
-      </div>
-    );
-  }
-}
-
-function getWindowSize() {
-  var w = window,
-    d = document,
-    e = d.documentElement,
-    g = d.getElementsByTagName("body")[0],
-    x = w.innerWidth || e.clientWidth || g.clientWidth,
-    y = w.innerHeight || e.clientHeight || g.clientHeight;
-
-  return {
-    windowWidth: x,
-    windowHeight: y
-  };
-}
 
 function getScrollTop() {
   return window.pageYOffset || document.documentElement.scrollTop;
@@ -116,19 +21,25 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      ...getWindowSize(),
+      ...Utils.getWindowSize(),
       scrollTop: getScrollTop(),
-      scrollDirection: null
+      scrollDirection: null,
+      selectedSkinHash: null,
+      selectedSkinPosition: null
     };
     this._handleScroll();
-    this._queue = new LoadQueue(10);
     this._handleScroll = this._handleScroll.bind(this);
     this._handleResize = this._handleResize.bind(this);
+    this._handleSelectSkin = this._handleSelectSkin.bind(this);
+  }
+
+  _handleSelectSkin(hash, position) {
+    this.setState({ selectedSkinHash: hash, selectedSkinPosition: position });
   }
 
   _handleResize() {
     // TODO: Try to recompute the scroll position
-    this.setState(getWindowSize());
+    this.setState(Utils.getWindowSize());
   }
 
   componentDidMount() {
@@ -200,16 +111,17 @@ class App extends React.Component {
       const left = column * columnWidth;
       skinElements.push(
         <Skin
-          queue={this._queue}
           href={`https://webamp.org/?skinUrl=https://s3.amazonaws.com/webamp-uploaded-skins/skins/${hash}.wsz`}
-          src={`https://s3.amazonaws.com/webamp-uploaded-skins/screenshots/${hash}.png`}
+          src={Utils.screenshotUrlFromHash(hash)}
           key={hash}
+          hash={hash}
           top={top}
           left={left}
           width={columnWidth}
           height={rowHeight}
           color={skins[hash].color}
           isOverscan={isOverscan}
+          selectSkin={this._handleSelectSkin}
         />
       );
     }
@@ -223,9 +135,17 @@ class App extends React.Component {
         >
           {skinElements}
         </div>
-        <Overlay>
-          <h1>Hello</h1>
-        </Overlay>
+        {this.state.selectedSkinHash && (
+          <Overlay>
+            <FocusedSkin
+              hash={this.state.selectedSkinHash}
+              initialHeight={rowHeight}
+              initialWidth={columnWidth}
+              initialTop={this.state.selectedSkinPosition.top}
+              initialLeft={this.state.selectedSkinPosition.left}
+            />
+          </Overlay>
+        )}
       </div>
     );
   }

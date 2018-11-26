@@ -5548,16 +5548,6 @@ react-error-overlay@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-4.0.0.tgz#d198408a85b4070937a98667f500c832f86bd5d4"
 
-react-loadermixin@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/react-loadermixin/-/react-loadermixin-1.0.4.tgz#9708ec75d413d80e09c515c469a68c068352e534"
-  dependencies:
-    xtend "^3.0.0"
-
-react-loadqueueloader@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/react-loadqueueloader/-/react-loadqueueloader-1.0.3.tgz#c3637c1a27725d9c3393f14df30b8bb9eb803f30"
-
 react-redux@^5.0.7:
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-5.0.7.tgz#0dc1076d9afb4670f993ffaef44b8f8c1155a4c8"
@@ -7221,10 +7211,6 @@ xml2js@^0.4.5:
 xmlbuilder@~9.0.1:
   version "9.0.7"
   resolved "https://registry.yarnpkg.com/xmlbuilder/-/xmlbuilder-9.0.7.tgz#132ee63d2ec5565c557e20f4c22df9aca686b10d"
-
-xtend@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/xtend/-/xtend-3.0.0.tgz#5cce7407baf642cba7becda568111c493f59665a"
 
 xtend@^4.0.0, xtend@^4.0.1:
   version "4.0.1"

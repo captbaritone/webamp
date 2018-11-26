@@ -8,8 +8,6 @@
     "image-average-color": "^1.0.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-loadermixin": "^1.0.4",
-    "react-loadqueueloader": "^1.0.3",
     "react-scripts": "1.1.1",
     "shell-escape": "^0.2.0",
     "webamp": "^1.0.0"
@@ -19,5 +17,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  }
+  },
+  "prettier": {}
 }

@@ -38,13 +38,3 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.9);
 }
-
-.modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: red;
-  width: 600px;
-  max-width: 100%;
-}
