@@ -19,8 +19,7 @@ export default class WebampComponent extends React.Component {
   }
 
   async _loadWebamp() {
-    let Webamp;
-    Webamp = await import("webamp");
+    const Webamp = (await import("webamp")).default;
     if (this._unmounted === true) {
       return;
     }
