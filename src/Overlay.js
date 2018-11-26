@@ -15,7 +15,12 @@ class Overlay extends React.Component {
 
   componentDidMount() {
     window.document.addEventListener("keydown", this._handleKeyDown);
-    document.body.classList.add("overlay-open");
+    // TODO: This is technically a race condition, since we could unmount before this fires.
+    requestAnimationFrame(() => {
+      // This does not seem to work the first time.
+      // This should _not_ work on page load
+      document.body.classList.add("overlay-open");
+    });
   }
 
   componentWillUnmount() {
