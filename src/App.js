@@ -1,10 +1,12 @@
 import React from "react";
 import skins from "./skins.json";
 import "./App.css";
-import { Overlay } from "./Overlay";
+import { connect } from "react-redux";
+import Overlay from "./Overlay";
 import Skin from "./Skin";
 import FocusedSkin from "./FocusedSkin";
 import * as Utils from "./utils";
+import * as Selectors from "./redux/selectors";
 import { SKIN_WIDTH, SKIN_HEIGHT, SKIN_RATIO } from "./constants";
 
 const hashes = Object.keys(skins);
@@ -24,7 +26,6 @@ class App extends React.Component {
       ...Utils.getWindowSize(),
       scrollTop: getScrollTop(),
       scrollDirection: null,
-      selectedSkinHash: null,
       selectedSkinPosition: null
     };
     this._handleScroll();
@@ -34,7 +35,7 @@ class App extends React.Component {
   }
 
   _handleSelectSkin(hash, position) {
-    this.setState({ selectedSkinHash: hash, selectedSkinPosition: position });
+    this.props.setSelectedSkin(hash, position);
   }
 
   _handleResize() {
@@ -135,15 +136,9 @@ class App extends React.Component {
         >
           {skinElements}
         </div>
-        {this.state.selectedSkinHash && (
+        {this.props.selectedSkinHash == null || (
           <Overlay>
-            <FocusedSkin
-              hash={this.state.selectedSkinHash}
-              initialHeight={rowHeight}
-              initialWidth={columnWidth}
-              initialTop={this.state.selectedSkinPosition.top}
-              initialLeft={this.state.selectedSkinPosition.left}
-            />
+            <FocusedSkin initialHeight={rowHeight} initialWidth={columnWidth} />
           </Overlay>
         )}
       </div>
@@ -151,4 +146,17 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  selectedSkinHash: Selectors.getSelectedSkinHash(state)
+});
+
+const mapDispatchToProps = dispatch => ({
+  // TODO: Extract to action creator
+  setSelectedSkin(hash, position) {
+    dispatch({ type: "SELECT_SKIN", hash, position });
+  }
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

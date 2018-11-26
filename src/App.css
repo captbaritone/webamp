@@ -1,3 +1,11 @@
+body {
+  margin: 0;
+}
+
+body.overlay-open {
+  overflow: hidden;
+}
+
 .screenshot {
   height: 100%;
   opacity: 0;
@@ -10,31 +18,23 @@
   -webkit-backface-visibility: hidden;
 }
 
-.skin:hover {
-  /*
-  z-index: 10;
-  box-shadow: 0px 0px 15px 5px rgba(46, 46, 139, 0.75);
-  */
-}
-
-.priority {
-  position: absolute;
-  background: white;
-}
-
 .overlay {
-  /* recommendation:
-     don't focus on the number "1000" here, but rather,
-     you should have a documented system for z-index and 
-     follow that system. This number should be pretty
-     high on the scale in that system.
-  */
   z-index: 1000;
-
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.9);
+}
+
+#close-modal {
+  color: white;
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  padding: 0;
+  font-size: 50px;
+  line-height: 50px;
+  text-decoration: none;
 }

@@ -2,6 +2,9 @@ export function screenshotUrlFromHash(hash) {
   return `https://s3.amazonaws.com/webamp-uploaded-skins/screenshots/${hash}.png`;
 }
 
+export function skinUrlFromHash(hash) {
+  return `https://s3.amazonaws.com/webamp-uploaded-skins/skins/${hash}.wsz`;
+}
 export function getWindowSize() {
   var w = window,
     d = document,
