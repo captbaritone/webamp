@@ -18,7 +18,18 @@
 - Sometimes there's extra space at the bottom. Like, the calculation for how much height will be needed is not quite right.
 - Publish to GitHub - In the webamp repo?
 - Search updates should replace query not add a new one to the history
+- Random skin button?
+- Link to open on Webamp
+- "No results" page
+- Keyboard navigation? Previous and next skin when focused?
+- Move images to CDN. Currently it's just s3 directly
+- Add Google Analytics
+- Make Webamp clean up after itself
+- Update title when you pick a skin
 
 ## Requires a server
 
 - Add an opengraph preview image URL to skin permalinks
+- Drag in a skin to upload!
+  - We should detect if we have it or not
+- Allow users to add tags/author info
