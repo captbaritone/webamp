@@ -132,7 +132,7 @@ class App extends React.Component {
             type="text"
             onChange={e => this.props.setSearchQuery(e.target.value)}
             value={this.props.searchQuery || ""}
-            placeholder={"Search Query"}
+            placeholder={"Search..."}
           />
         </div>
         <div
