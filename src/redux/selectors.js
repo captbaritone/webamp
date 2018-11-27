@@ -41,6 +41,7 @@ export function getUrl(state) {
   } else if (query) {
     return `/?query=${encodeURIComponent(query)}`;
   }
+  return "/";
 }
 
 export function getPageTitle(state) {
