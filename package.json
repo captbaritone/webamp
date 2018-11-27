@@ -19,7 +19,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "build-index": "node ./scripts/findSkins.js"
+    "build-index": "node ./scripts/findSkins.js",
+    "create-search-index": "node ./scripts/createSearchIndex.js > index.json"
   },
   "prettier": {},
   "browserslist": [
