@@ -14,7 +14,9 @@ export default class WebampComponent extends React.Component {
     if (this._webamp) {
       // TODO: Repace this with this._webamp.destroy() once we upgrade.
       const close = document.querySelector("#webamp #close");
-      close.click();
+      if (close != null) {
+        close.click();
+      }
     }
   }
 
