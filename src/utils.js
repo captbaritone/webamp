@@ -1,5 +1,11 @@
+import skins from "./skins.json";
+
 export function screenshotUrlFromHash(hash) {
   return `https://s3.amazonaws.com/webamp-uploaded-skins/screenshots/${hash}.png`;
+}
+
+export function filenameFromHash(hash) {
+  return skins[hash].fileName;
 }
 
 export function skinUrlFromHash(hash) {
