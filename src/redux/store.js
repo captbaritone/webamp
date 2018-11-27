@@ -1,4 +1,5 @@
 import { createStore as createReduxStore } from "redux";
+import qs from "qs";
 import * as Selectors from "./selectors";
 
 const defaultState = {
@@ -22,16 +23,19 @@ function reducer(state = defaultState, action) {
         selectedSkinPosition: null
       };
     case "URL_CHANGED":
+      const params = new URLSearchParams(action.location.search);
+      const searchQuery = params != null && params.get("query");
       if (action.location.pathname.startsWith("/skin/")) {
         const segments = action.location.pathname.split("/");
         return {
           ...state,
           selectedSkinHash: segments[2],
           // TODO: This makes no sense
-          selectedSkinPosition: null
+          selectedSkinPosition: null,
+          searchQuery
         };
       }
-      return defaultState;
+      return { ...defaultState, searchQuery };
     case "SET_SEARCH_QUERY":
       return {
         ...state,
@@ -54,6 +58,7 @@ export function createStore() {
   });
   window.onpopstate = function(event) {
     const { state } = event;
+    const query = qs.parse(document.location.search);
     store.dispatch({ type: "URL_CHANGED", location: document.location });
   };
   store.dispatch({ type: "URL_CHANGED", location: document.location });

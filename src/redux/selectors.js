@@ -33,11 +33,13 @@ export function getMatchingSkinHashes(state) {
 }
 
 export function getUrl(state) {
-  if (state.selectedSkinHash) {
+  const hash = getSelectedSkinHash(state);
+  const query = getSearchQuery(state);
+  if (hash) {
     // TODO: Add a human readable version
-    return `/skin/${getSelectedSkinHash(state)}/`;
-  } else {
-    return "/";
+    return `/skin/${hash}/${Utils.filenameFromHash(hash)}`;
+  } else if (query) {
+    return `/?query=${encodeURIComponent(query)}`;
   }
 }
 
