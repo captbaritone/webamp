@@ -2,6 +2,7 @@ import { createStore as createReduxStore } from "redux";
 import * as Selectors from "./selectors";
 
 const defaultState = {
+  searchQuery: null,
   selectedSkinHash: null,
   selectedSkinPosition: null
 };
@@ -31,6 +32,11 @@ function reducer(state = defaultState, action) {
         };
       }
       return defaultState;
+    case "SET_SEARCH_QUERY":
+      return {
+        ...state,
+        searchQuery: action.query
+      };
     default:
       return state;
   }

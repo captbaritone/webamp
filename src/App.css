@@ -2,6 +2,19 @@ body {
   margin: 0;
 }
 
+#search {
+  width: 100%;
+  background: black;
+  padding: 5px;
+  text-align: center;
+}
+
+#search input {
+  width: 100%;
+  border: none;
+  font-size: 40px;
+}
+
 body.overlay-open {
   overflow: hidden;
 }

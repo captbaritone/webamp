@@ -9,8 +9,6 @@ import * as Utils from "./utils";
 import * as Selectors from "./redux/selectors";
 import { SKIN_WIDTH, SKIN_HEIGHT, SKIN_RATIO } from "./constants";
 
-const hashes = Object.keys(skins);
-
 const OVERSCAN_ROWS_LEADING = 10;
 const OVERSCAN_ROWS_TRAILING = 4;
 
@@ -70,6 +68,7 @@ class App extends React.Component {
   }
 
   render() {
+    const hashes = this.props.skinHashes;
     const columnCount = Math.floor(this.state.windowWidth / SKIN_WIDTH);
     const columnWidth = this.state.windowWidth / columnCount; // TODO: Consider flooring this to get things aligned to the pixel
     const rowHeight = columnWidth * SKIN_RATIO;
@@ -128,6 +127,14 @@ class App extends React.Component {
     }
     return (
       <div>
+        <div id="search">
+          <input
+            type="text"
+            onChange={e => this.props.setSearchQuery(e.target.value)}
+            value={this.props.searchQuery || ""}
+            placeholder={"Search Query"}
+          />
+        </div>
         <div
           style={{
             height: Math.ceil(hashes.length / columnCount) * SKIN_HEIGHT,
@@ -147,13 +154,18 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  selectedSkinHash: Selectors.getSelectedSkinHash(state)
+  selectedSkinHash: Selectors.getSelectedSkinHash(state),
+  searchQuery: Selectors.getSearchQuery(state),
+  skinHashes: Selectors.getMatchingSkinHashes(state)
 });
 
 const mapDispatchToProps = dispatch => ({
   // TODO: Extract to action creator
   setSelectedSkin(hash, position) {
     dispatch({ type: "SELECT_SKIN", hash, position });
+  },
+  setSearchQuery(query) {
+    dispatch({ type: "SET_SEARCH_QUERY", query });
   }
 });
 export default connect(
