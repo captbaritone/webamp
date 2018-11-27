@@ -136,6 +136,7 @@ class App extends React.Component {
           />
         </div>
         <div
+          id="infinite-skins"
           style={{
             height: Math.ceil(hashes.length / columnCount) * SKIN_HEIGHT,
             position: "relative"

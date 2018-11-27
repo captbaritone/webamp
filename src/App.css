@@ -4,15 +4,27 @@ body {
 
 #search {
   width: 100%;
+  position: fixed;
+  top: 0;
   background: black;
   padding: 5px;
   text-align: center;
+  height: 50px; /* This matches the margin-top for #infinite-skins */
+  z-index: 5;
+  /* A little shadow below the search bar */
+  -webkit-box-shadow: 0px 10px 15px 0px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0px 10px 15px 0px rgba(0, 0, 0, 0.35);
+  box-shadow: 0px 10px 15px 0px rgba(0, 0, 0, 0.35);
 }
 
 #search input {
   width: 100%;
   border: none;
   font-size: 40px;
+}
+
+#infinite-skins {
+  margin-top: 50px; /* This matches the height of #search */
 }
 
 body.overlay-open {
