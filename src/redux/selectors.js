@@ -25,9 +25,10 @@ export function getMatchingSkinHashes(state) {
   if (searchQuery == null) {
     return hashes;
   }
+  const normalizedSearchQuery = searchQuery.toLowerCase();
   return hashes.filter(hash => {
     const { fileName } = skins[hash];
-    return fileName.includes(searchQuery);
+    return fileName.toLowerCase().includes(normalizedSearchQuery);
   });
 }
 
