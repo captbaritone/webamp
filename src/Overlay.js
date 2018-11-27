@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { connect } from "react-redux";
+import * as ActionCreators from "./redux/actionCreators";
 
 class Overlay extends React.Component {
   constructor() {
@@ -71,7 +72,7 @@ class Overlay extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
   closeModal() {
-    dispatch({ type: "CLOSE_MODAL" });
+    dispatch(ActionCreators.closeModal());
   }
 });
 export default connect(

@@ -1,6 +1,8 @@
 import React from "react";
+import { connect } from "react-redux";
+import * as ActionCreators from "./redux/actionCreators";
 
-export default class WebampComponent extends React.Component {
+class WebampComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = { loading: true };
@@ -43,6 +45,9 @@ export default class WebampComponent extends React.Component {
       zIndex: 99999
     });
 
+    // TODO: Technically we should unsubscribe this on unmount
+    this._webamp.onClose(this.props.closeModal);
+
     setTimeout(async () => {
       await this._webamp.renderWhenReady(this._ref);
     }, 400);
@@ -73,3 +78,13 @@ export default class WebampComponent extends React.Component {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => ({
+  closeModal() {
+    dispatch(ActionCreators.closeModal());
+  }
+});
+export default connect(
+  null,
+  mapDispatchToProps
+)(WebampComponent);
