@@ -1,5 +1,4 @@
 import { createStore as createReduxStore } from "redux";
-import qs from "qs";
 import * as Selectors from "./selectors";
 
 const defaultState = {
@@ -51,14 +50,12 @@ export function createStore() {
   store.subscribe(() => {
     const state = store.getState();
     const url = Selectors.getUrl(state);
-    if (url != lastUrl) {
+    if (url !== lastUrl) {
       window.history.pushState({}, Selectors.getPageTitle(state), url);
       lastUrl = url;
     }
   });
-  window.onpopstate = function(event) {
-    const { state } = event;
-    const query = qs.parse(document.location.search);
+  window.onpopstate = function() {
     store.dispatch({ type: "URL_CHANGED", location: document.location });
   };
   store.dispatch({ type: "URL_CHANGED", location: document.location });
