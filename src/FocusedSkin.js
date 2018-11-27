@@ -57,6 +57,9 @@ class FocusedSkin extends React.Component {
           skinUrl={Utils.skinUrlFromHash(this.props.hash)}
           screenshotUrl={Utils.screenshotUrlFromHash(this.props.hash)}
         />
+        <div className="metadata">
+          <a href={Utils.skinUrlFromHash(this.props.hash)}>Download</a>
+        </div>
       </div>
     );
   }

@@ -43,3 +43,11 @@ body.overlay-open .overlay {
   line-height: 50px;
   text-decoration: none;
 }
+
+#focused-skin .metadata {
+  text-align: center;
+  margin: 10px;
+}
+#focused-skin .metadata a {
+  color: white;
+}
