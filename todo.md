@@ -7,7 +7,6 @@
 - Add a structured search: tags, author, quotes, -
 - Fix the positioning glitch when switching from preview to Webamp
 - Add an about page
-- Close the modal when webamp closes
 - Add archive.org link?
 - Parse/index text files from skins - Maybe use algolia?
 - Pick a better background color. Maybe the average of all skin colors?
