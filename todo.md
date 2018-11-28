@@ -26,6 +26,7 @@
 - Add Google Analytics
 - Make Webamp clean up after itself
 - Update title when you pick a skin
+- Setup Sentry
 
 ## Requires a server
 
