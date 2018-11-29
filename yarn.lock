@@ -1763,9 +1763,9 @@ butterchurn-presets@^2.4.7:
     ecma-proposal-math-extensions "0.0.2"
     lodash "^4.17.4"
 
-butterchurn@^2.5.4:
-  version "2.5.4"
-  resolved "https://registry.yarnpkg.com/butterchurn/-/butterchurn-2.5.4.tgz#644b8bf2d0fca491cfd67e0cf02e47a8b1479e8a"
+butterchurn@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/butterchurn/-/butterchurn-2.6.1.tgz#4b790a9985f9467acddac76a592c237c549f5624"
   dependencies:
     babel-runtime "^6.26.0"
     ecma-proposal-math-extensions "0.0.2"
@@ -5783,22 +5783,22 @@ micromatch@^3.1.8, micromatch@^3.1.9:
     snapdragon "^0.8.1"
     to-regex "^3.0.2"
 
-milkdrop-eel-parser@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/milkdrop-eel-parser/-/milkdrop-eel-parser-0.0.1.tgz#1c1a82bb7877d9df6d45e6f0b602b4cd1a5dc26d"
+milkdrop-eel-parser@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/milkdrop-eel-parser/-/milkdrop-eel-parser-0.0.4.tgz#274224f97b8954ff653b16d029e7e8c2806aea15"
 
-milkdrop-preset-converter-aws@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/milkdrop-preset-converter-aws/-/milkdrop-preset-converter-aws-0.1.0.tgz#d73efc384c04d581d5c16eb713c6b0241286788b"
+milkdrop-preset-converter-aws@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/milkdrop-preset-converter-aws/-/milkdrop-preset-converter-aws-0.1.6.tgz#76f74276e99f48d98f50f6c144d0fee2f0d945d2"
   dependencies:
     babel-runtime "^6.26.0"
     glsl-optimizer-js "^0.0.2"
-    milkdrop-eel-parser "^0.0.1"
-    milkdrop-preset-utils "^0.0.4"
+    milkdrop-eel-parser "^0.0.4"
+    milkdrop-preset-utils "^0.1.0"
 
-milkdrop-preset-utils@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/milkdrop-preset-utils/-/milkdrop-preset-utils-0.0.4.tgz#62676ee9067ea69f6758b20f643d87bb8e7a3188"
+milkdrop-preset-utils@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/milkdrop-preset-utils/-/milkdrop-preset-utils-0.1.0.tgz#2d61a1acf148dd80cd28ffc55db6925f853ad7d7"
   dependencies:
     babel-runtime "^6.26.0"
     lodash "^4.17.4"
