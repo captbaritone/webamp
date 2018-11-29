@@ -3,9 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "algoliasearch": "^3.30.0",
     "async": "^2.6.0",
     "dominant-color": "^0.0.1",
+    "glob": "^7.1.3",
     "image-average-color": "^1.0.0",
+    "lodash": "^4.17.11",
+    "md5-file": "^4.0.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.1.1",
@@ -20,7 +24,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "build-index": "node ./scripts/findSkins.js",
-    "create-search-index": "node ./scripts/createSearchIndex.js > index.json",
+    "create-search-index": "node ./scripts/createSearchIndex.js",
     "extract": "find ../webamp/experiments/automatedScreenshots/skins \"(\" -name \"*.wsz\" -o -name \"*.zip\" \")\" -exec node ./scripts/extractSkinText.js \"{}\" \\;"
   },
   "prettier": {},

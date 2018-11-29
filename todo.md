@@ -23,10 +23,12 @@
 - "No results" page
 - Keyboard navigation? Previous and next skin when focused?
 - Move images to CDN. Currently it's just s3 directly
-- Add Google Analytics
+- Disable Google Analytics in dev
 - Make Webamp clean up after itself
 - Update title when you pick a skin
 - Setup Sentry
+- Press "/" to focus search
+- Restore focus when leaving the modal
 
 ## Requires a server
 
@@ -34,3 +36,9 @@
 - Drag in a skin to upload!
   - We should detect if we have it or not
 - Allow users to add tags/author info
+
+## Future features
+
+- Skin explorer
+  - List files within the zip and let users download them
+  - Special viewer for txt files and bmp files
