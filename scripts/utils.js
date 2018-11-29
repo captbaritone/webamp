@@ -58,5 +58,6 @@ function getFileMd5(filePath) {
 
 module.exports = {
   getSkinMetadata,
-  writeSkinMetadata
+  writeSkinMetadata,
+  getFileMd5
 };
