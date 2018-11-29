@@ -20,7 +20,8 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "build-index": "node ./scripts/findSkins.js",
-    "create-search-index": "node ./scripts/createSearchIndex.js > index.json"
+    "create-search-index": "node ./scripts/createSearchIndex.js > index.json",
+    "extract": "find ../webamp/experiments/automatedScreenshots/skins \"(\" -name \"*.wsz\" -o -name \"*.zip\" \")\" -exec node ./scripts/extractSkinText.js \"{}\" \\;"
   },
   "prettier": {},
   "browserslist": [
