@@ -22,14 +22,10 @@ export function getSearchQuery(state) {
 export function getMatchingSkinHashes(state) {
   const hashes = Object.keys(skins);
   const searchQuery = getSearchQuery(state);
-  if (searchQuery == null) {
+  if (searchQuery == null || state.matchingHashes == null) {
     return hashes;
   }
-  const normalizedSearchQuery = searchQuery.toLowerCase();
-  return hashes.filter(hash => {
-    const { fileName } = skins[hash];
-    return fileName.toLowerCase().includes(normalizedSearchQuery);
-  });
+  return hashes.filter(hash => state.matchingHashes.has(hash));
 }
 
 export function getUrl(state) {

@@ -7,6 +7,7 @@ import Skin from "./Skin";
 import FocusedSkin from "./FocusedSkin";
 import * as Utils from "./utils";
 import * as Selectors from "./redux/selectors";
+import * as Actions from "./redux/actionCreators";
 import { SKIN_WIDTH, SKIN_HEIGHT, SKIN_RATIO } from "./constants";
 
 const OVERSCAN_ROWS_LEADING = 10;
@@ -166,7 +167,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch({ type: "SELECT_SKIN", hash, position });
   },
   setSearchQuery(query) {
-    dispatch({ type: "SET_SEARCH_QUERY", query });
+    dispatch(Actions.searchQueryChanged(query));
   }
 });
 export default connect(

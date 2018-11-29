@@ -1,10 +1,13 @@
-import { createStore as createReduxStore } from "redux";
+import { createStore as createReduxStore, applyMiddleware } from "redux";
+import { createEpicMiddleware } from "redux-observable";
 import * as Selectors from "./selectors";
+import rootEpic from "./epics";
 
 const defaultState = {
   searchQuery: null,
   selectedSkinHash: null,
-  selectedSkinPosition: null
+  selectedSkinPosition: null,
+  matchingHashes: null
 };
 
 function reducer(state = defaultState, action) {
@@ -35,17 +38,25 @@ function reducer(state = defaultState, action) {
         };
       }
       return { ...defaultState, searchQuery };
-    case "SET_SEARCH_QUERY":
+    case "SEARCH_QUERY_CHANGED":
       return {
         ...state,
         searchQuery: action.query
+      };
+    case "GOT_NEW_MATCHING_HASHES":
+      return {
+        ...state,
+        matchingHashes: action.matchingHashes
       };
     default:
       return state;
   }
 }
 export function createStore() {
-  const store = createReduxStore(reducer);
+  const epicMiddleware = createEpicMiddleware();
+
+  const store = createReduxStore(reducer, applyMiddleware(epicMiddleware));
+  epicMiddleware.run(rootEpic);
   let lastUrl = null;
   store.subscribe(() => {
     const state = store.getState();
