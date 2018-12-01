@@ -1,13 +1,10 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { connect } from "react-redux";
-import classnames from "classnames";
 import * as ActionCreators from "./redux/actionCreators";
 
 class WebampComponent extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { loading: true };
   }
   componentDidMount() {
     this._loadWebamp();
@@ -15,6 +12,9 @@ class WebampComponent extends React.Component {
 
   componentWillUnmount() {
     this._unmounted = true;
+    if (this._renderTimeout) {
+      clearTimeout(this._renderTimeout);
+    }
     if (this._webamp) {
       // TODO: Repace this with this._webamp.destroy() once we upgrade.
       const close = document.querySelector("#webamp #close");
@@ -50,17 +50,15 @@ class WebampComponent extends React.Component {
     // TODO: Technically we should unsubscribe this on unmount
     this._webamp.onClose(this.props.closeModal);
 
-    setTimeout(async () => {
+    this._renderTimeout = setTimeout(async () => {
       await this._webamp.renderWhenReady(this._ref);
-      this.setState({ loading: false });
-    }, 400);
-    if (this._unmounted === true) {
-      return;
-    }
+      if (!this._unmounted) {
+        this.props.loaded();
+      }
+    }, 500);
   }
 
   render() {
-    const { loading } = this.state;
     return (
       <div style={{ width: "100%", height: "100%" }}>
         <div
@@ -68,7 +66,7 @@ class WebampComponent extends React.Component {
           style={{ position: "absolute", width: "100%", height: "100%" }}
         />
         <img
-          className={classnames("focused-preview", { loaded: !loading })}
+          className={"focused-preview"}
           style={{
             width: "100%",
             height: "100%",

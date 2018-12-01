@@ -79,11 +79,10 @@ body.overlay-open .overlay {
   color: white;
 }
 
-#focused-skin .focused-preview {
-  -webkit-transition: opacity 400ms ease-in-out;
-  -moz-transition: opacity 400ms ease-in-out;
-  -ms-transition: opacity 400ms ease-in-out;
+#focused-skin {
+  visibility: visible;
 }
-#focused-skin .focused-preview.loaded {
+#focused-skin.loaded {
   opacity: 0;
+  visibility: hidden;
 }
