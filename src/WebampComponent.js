@@ -2,9 +2,22 @@ import React from "react";
 import { connect } from "react-redux";
 import * as ActionCreators from "./redux/actionCreators";
 
+class Disposable {
+  _subscriptions = [];
+  add(subscription) {
+    this._subscriptions.push(subscription);
+  }
+  dispose() {
+    this._subscriptions.forEach(subscription => {
+      subscription();
+    });
+  }
+}
+
 class WebampComponent extends React.Component {
   constructor(props) {
     super(props);
+    this._disposable = new Disposable();
   }
   componentDidMount() {
     this._loadWebamp();
@@ -12,9 +25,8 @@ class WebampComponent extends React.Component {
 
   componentWillUnmount() {
     this._unmounted = true;
-    if (this._renderTimeout) {
-      clearTimeout(this._renderTimeout);
-    }
+    this._disposable.dispose();
+
     if (this._webamp) {
       // TODO: Repace this with this._webamp.destroy() once we upgrade.
       const close = document.querySelector("#webamp #close");
@@ -47,15 +59,17 @@ class WebampComponent extends React.Component {
       zIndex: 1001
     });
 
-    // TODO: Technically we should unsubscribe this on unmount
-    this._webamp.onClose(this.props.closeModal);
+    this._disposable.add(this._webamp.onClose(this.props.closeModal));
 
-    this._renderTimeout = setTimeout(async () => {
+    const renderTimeout = setTimeout(async () => {
       await this._webamp.renderWhenReady(this._ref);
       if (!this._unmounted) {
         this.props.loaded();
       }
     }, 500);
+    this._disposable.add(() => {
+      clearTimeout(renderTimeout);
+    });
   }
 
   render() {
