@@ -1,5 +1,7 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import { connect } from "react-redux";
+import classnames from "classnames";
 import * as ActionCreators from "./redux/actionCreators";
 
 class WebampComponent extends React.Component {
@@ -42,7 +44,7 @@ class WebampComponent extends React.Component {
         }
       ],
       hotkeys: true,
-      zIndex: 99999
+      zIndex: 1001
     });
 
     // TODO: Technically we should unsubscribe this on unmount
@@ -50,27 +52,31 @@ class WebampComponent extends React.Component {
 
     setTimeout(async () => {
       await this._webamp.renderWhenReady(this._ref);
+      this.setState({ loading: false });
     }, 400);
     if (this._unmounted === true) {
       return;
     }
-    // this.setState({ loading: false });
   }
 
   render() {
+    const { loading } = this.state;
     return (
-      <div
-        style={{ width: "100%", height: "100%" }}
-        ref={node => (this._ref = node)}
-      >
+      <div style={{ width: "100%", height: "100%" }}>
+        <div
+          ref={node => (this._ref = node)}
+          style={{ position: "absolute", width: "100%", height: "100%" }}
+        />
         <img
+          className={classnames("focused-preview", { loaded: !loading })}
           style={{
             width: "100%",
             height: "100%",
             // Webamp measure the scrollHeight of the container. Making this a
             // block element ensures the parent element's scrollHeight is not
             // expanded.
-            display: "block"
+            display: "block",
+            zIndex: 1
           }}
           src={this.props.screenshotUrl}
         />

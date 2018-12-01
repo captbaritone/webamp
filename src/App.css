@@ -74,6 +74,16 @@ body.overlay-open .overlay {
   margin: 10px;
   color: white;
 }
+
 #focused-skin .metadata a {
   color: white;
+}
+
+#focused-skin .focused-preview {
+  -webkit-transition: opacity 400ms ease-in-out;
+  -moz-transition: opacity 400ms ease-in-out;
+  -ms-transition: opacity 400ms ease-in-out;
+}
+#focused-skin .focused-preview.loaded {
+  opacity: 0;
 }

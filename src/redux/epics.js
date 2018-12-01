@@ -12,7 +12,7 @@ const urlChangedEpic = actions =>
 
       if (action.location.pathname.startsWith("/skin/")) {
         const segments = action.location.pathname.split("/");
-        return { type: "SELECTED_SKIN", hash: segments[2] };
+        return of({ type: "SELECTED_SKIN", hash: segments[2] });
       }
       if (query == null) {
         return empty();

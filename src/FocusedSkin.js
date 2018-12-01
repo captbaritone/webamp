@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import { connect } from "react-redux";
 import WebampComponent from "./WebampComponent";
 import * as Utils from "./utils";
@@ -19,7 +20,17 @@ class FocusedSkin extends React.Component {
         height: this.props.initialHeight
       };
     }
+    this._imgWrapper = document.createElement("div");
+    this._imgWrapper.style.zIndex = "10002";
+    this._imgWrapper.style.position = "fixed";
+    this._imgWrapper.style.top = 0;
+    document.body.appendChild(this._imgWrapper);
   }
+
+  componentWillUnmount() {
+    document.body.removeChild(this._imgWrapper);
+  }
+
   componentDidMount() {
     setTimeout(() => {
       // TODO: Observe DOM and recenter
@@ -38,7 +49,7 @@ class FocusedSkin extends React.Component {
     };
   }
   render() {
-    return (
+    return ReactDOM.createPortal(
       <div
         id="focused-skin"
         style={{
@@ -63,7 +74,8 @@ class FocusedSkin extends React.Component {
           </div>
           <a href={Utils.skinUrlFromHash(this.props.hash)}>Download</a>
         </div>
-      </div>
+      </div>,
+      this._imgWrapper
     );
   }
 }
