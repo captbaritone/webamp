@@ -61,12 +61,16 @@ class WebampComponent extends React.Component {
 
     this._disposable.add(this._webamp.onClose(this.props.closeModal));
 
-    const renderTimeout = setTimeout(async () => {
-      await this._webamp.renderWhenReady(this._ref);
-      if (!this._unmounted) {
-        this.props.loaded();
-      }
-    }, 500);
+    const renderTimeout = setTimeout(
+      async () => {
+        await this._webamp.renderWhenReady(this._ref);
+        if (!this._unmounted) {
+          this.props.loaded();
+        }
+      },
+      // This number must be higher than the transition time of the CSS animation that puts this in place.
+      500
+    );
     this._disposable.add(() => {
       clearTimeout(renderTimeout);
     });
