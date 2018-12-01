@@ -164,7 +164,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   // TODO: Extract to action creator
   setSelectedSkin(hash, position) {
-    dispatch({ type: "SELECT_SKIN", hash, position });
+    dispatch(Actions.selectedSkin(hash, position));
   },
   setSearchQuery(query) {
     dispatch(Actions.searchQueryChanged(query));

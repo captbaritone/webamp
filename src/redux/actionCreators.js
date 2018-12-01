@@ -5,3 +5,11 @@ export function closeModal() {
 export function searchQueryChanged(query) {
   return { type: "SEARCH_QUERY_CHANGED", query };
 }
+
+export function selectedSkin(hash, position) {
+  return { type: "SELECTED_SKIN", hash, position };
+}
+
+export function gotNewMatchingHashes(matchingHashes) {
+  return { type: "GOT_NEW_MATCHING_HASHES", matchingHashes };
+}

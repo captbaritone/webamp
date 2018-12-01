@@ -12,7 +12,7 @@ const defaultState = {
 
 function reducer(state = defaultState, action) {
   switch (action.type) {
-    case "SELECT_SKIN":
+    case "SELECTED_SKIN":
       return {
         ...state,
         selectedSkinHash: action.hash,
