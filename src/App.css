@@ -41,6 +41,7 @@ body.overlay-open {
   opacity: 1;
   /* https://stackoverflow.com/a/16833496/1263117 */
   -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .overlay {
