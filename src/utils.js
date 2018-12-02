@@ -13,7 +13,7 @@ export function skinUrlFromHash(hash) {
 }
 
 export function getPermalinkUrlFromHash(hash) {
-  return `/skin/${hash}/${filenameFromHash(hash)}/`;
+  return `/skin/${hash}/${filenameFromHash(hash)}`;
 }
 
 export function getWindowSize() {
@@ -28,4 +28,12 @@ export function getWindowSize() {
     windowWidth: x,
     windowHeight: y
   };
+}
+
+export function eventIsLinkClick(event) {
+  return (
+    !event.defaultPrevented && // onClick prevented default
+    event.button === 0 &&
+    !(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey)
+  );
 }

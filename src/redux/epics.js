@@ -26,7 +26,7 @@ const searchEpic = actions =>
   actions.pipe(
     filter(action => action.type === "SEARCH_QUERY_CHANGED"),
     switchMap(({ query }) => {
-      if (query.length === 0) {
+      if (query == null || query.length === 0) {
         return of(Actions.gotNewMatchingHashes(null));
       }
 

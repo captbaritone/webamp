@@ -129,7 +129,19 @@ class App extends React.Component {
     return (
       <div>
         <div id="search">
-          <h1>{"🌩️"}</h1>
+          <h1>
+            <a
+              href="/"
+              onClick={e => {
+                if (Utils.eventIsLinkClick(e)) {
+                  e.preventDefault();
+                  this.props.setSearchQuery(null);
+                }
+              }}
+            >
+              {"🌩️"}
+            </a>
+          </h1>
           <input
             type="text"
             onChange={e => this.props.setSearchQuery(e.target.value)}
