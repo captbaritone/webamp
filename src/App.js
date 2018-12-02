@@ -129,6 +129,7 @@ class App extends React.Component {
     return (
       <div>
         <div id="search">
+          <h1>{"🌩️"}</h1>
           <input
             type="text"
             onChange={e => this.props.setSearchQuery(e.target.value)}
