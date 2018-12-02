@@ -96,7 +96,7 @@ body.overlay-open {
 }
 
 body.overlay-open .overlay {
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.95);
 }
 
 #close-modal {
