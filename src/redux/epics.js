@@ -1,6 +1,7 @@
 import { combineEpics } from "redux-observable";
 import { of, from, empty } from "rxjs";
 import * as Actions from "./actionCreators";
+import * as Selectors from "./selectors";
 import { filter, switchMap, map } from "rxjs/operators";
 import { search } from "../algolia";
 
@@ -39,4 +40,11 @@ const searchEpic = actions =>
     })
   );
 
-export default combineEpics(searchEpic, urlChangedEpic);
+const randomSkinEpic = (actions, states) =>
+  actions.pipe(
+    filter(action => action.type === "REQUESTED_RANDOM_SKIN"),
+    map(() => {
+      return Actions.selectedSkin(Selectors.getRandomSkinHash(states.value));
+    })
+  );
+export default combineEpics(searchEpic, urlChangedEpic, randomSkinEpic);

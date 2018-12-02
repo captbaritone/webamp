@@ -10,6 +10,10 @@ export function selectedSkin(hash, position) {
   return { type: "SELECTED_SKIN", hash, position };
 }
 
+export function requestedRandomSkin() {
+  return { type: "REQUESTED_RANDOM_SKIN" };
+}
+
 export function gotNewMatchingHashes(matchingHashes) {
   return { type: "GOT_NEW_MATCHING_HASHES", matchingHashes };
 }

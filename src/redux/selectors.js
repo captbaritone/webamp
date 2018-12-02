@@ -28,6 +28,13 @@ export function getMatchingSkinHashes(state) {
   return hashes.filter(hash => state.matchingHashes.has(hash));
 }
 
+export function getRandomSkinHash() {
+  const keys = Object.keys(skins);
+  const numberOfSkins = keys.length;
+  const randomIndex = Math.floor(Math.random() * numberOfSkins);
+  return keys[randomIndex];
+}
+
 export function getUrl(state) {
   const hash = getSelectedSkinHash(state);
   const query = getSearchQuery(state);

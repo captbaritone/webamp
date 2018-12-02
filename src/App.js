@@ -148,6 +148,14 @@ class App extends React.Component {
             value={this.props.searchQuery || ""}
             placeholder={"Search..."}
           />
+          <span style={{ flexGrow: 1 }} />
+          <button
+            onClick={() => {
+              this.props.requestRandomSkin();
+            }}
+          >
+            Random
+          </button>
         </div>
         <div
           id="infinite-skins"
@@ -175,12 +183,14 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  // TODO: Extract to action creator
   setSelectedSkin(hash, position) {
     dispatch(Actions.selectedSkin(hash, position));
   },
   setSearchQuery(query) {
     dispatch(Actions.searchQueryChanged(query));
+  },
+  requestRandomSkin() {
+    dispatch(Actions.requestedRandomSkin());
   }
 });
 export default connect(
