@@ -20,6 +20,10 @@ body {
   background-color: rgba(59, 83, 90, 0.9);
 }
 
+a {
+  text-decoration: none;
+}
+
 #search {
   width: 100%;
   position: fixed;

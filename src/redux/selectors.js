@@ -33,7 +33,7 @@ export function getUrl(state) {
   const query = getSearchQuery(state);
   if (hash) {
     // TODO: Add a human readable version
-    return `/skin/${hash}/${Utils.filenameFromHash(hash)}`;
+    return Utils.getPermalinkUrlFromHash(hash);
   } else if (query) {
     return `/?query=${encodeURIComponent(query)}`;
   }

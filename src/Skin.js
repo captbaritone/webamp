@@ -1,4 +1,9 @@
 import React from "react";
+import * as Utils from "./utils";
+
+function isModifiedEvent(event) {
+  return !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
+}
 
 export default class Skin extends React.Component {
   constructor(props) {
@@ -25,7 +30,7 @@ export default class Skin extends React.Component {
 
   render() {
     return (
-      <div
+      <a
         className={"skin"}
         ref={node => (this._ref = node)}
         style={{
@@ -39,17 +44,25 @@ export default class Skin extends React.Component {
           left: this.props.left,
           cursor: "pointer"
         }}
+        onClick={e => {
+          if (
+            !e.defaultPrevented && // onClick prevented default
+            e.button === 0 && // ignore everything but left clicks
+            !isModifiedEvent(e) // ignore clicks with modifier keys
+          ) {
+            e.preventDefault();
+            const { top, left } = this._ref.getBoundingClientRect();
+            this.props.selectSkin(this.props.hash, { top, left });
+          }
+        }}
+        href={Utils.getPermalinkUrlFromHash(this.props.hash)}
       >
         <img
           src={this.props.src}
           className={`screenshot ${this.state.loaded ? "loaded" : ""}`}
           onLoad={this._handleLoad}
-          onClick={() => {
-            const { top, left } = this._ref.getBoundingClientRect();
-            this.props.selectSkin(this.props.hash, { top, left });
-          }}
         />
-      </div>
+      </a>
     );
   }
 }
