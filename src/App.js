@@ -2,6 +2,7 @@ import React from "react";
 import skins from "./skins.json";
 import "./App.css";
 import { connect } from "react-redux";
+import Head from "./Head";
 import Overlay from "./Overlay";
 import Skin from "./Skin";
 import FocusedSkin from "./FocusedSkin";
@@ -128,6 +129,7 @@ class App extends React.Component {
     }
     return (
       <div>
+        <Head />
         <div id="search">
           <h1>
             <a

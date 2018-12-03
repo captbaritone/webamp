@@ -48,5 +48,10 @@ export function getUrl(state) {
 }
 
 export function getPageTitle(state) {
-  return "Winamp Skins";
+  return "Winamp Skin Museum";
+}
+
+export function getPreviewImageUrl(state) {
+  const hash = getSelectedSkinHash(state);
+  return hash == null ? null : Utils.screenshotUrlFromHash(hash);
 }
