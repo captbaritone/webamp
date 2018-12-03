@@ -54,6 +54,7 @@ class Header extends React.Component {
         <span style={{ flexGrow: 1 }} />
         <input
           type="text"
+          className="zoom-on-hover"
           onChange={e => this.props.setSearchQuery(e.target.value)}
           value={this.props.searchQuery || ""}
           placeholder={"Search..."}
@@ -62,6 +63,7 @@ class Header extends React.Component {
           }}
         />
         <button
+          className="zoom-on-hover"
           onClick={() => {
             this.props.requestRandomSkin();
           }}
