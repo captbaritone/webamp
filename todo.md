@@ -1,9 +1,8 @@
 # TODO
 
-- Don't hide filename/download link after skin loads
+- Scroll is not locked in overlay mode on ios
 - Add an about page
 - Add share link to focused mode
-- Button to share search?
 - "No results" page
 - Press "/" to focus search
 - Add React Helmet to enable social sharing links
@@ -14,7 +13,6 @@
 - Detect dupe files
 - Add a structured search: tags, author, quotes, -
 - Add archive.org link?
-- Pick a better background color. Maybe the average of all skin colors?
 - Ensure our skins are up to date
 - Add a feature to let users controll zoom
 - Let users browser text files in skins
@@ -22,14 +20,15 @@
 - Sometimes there's extra space at the bottom. Like, the calculation for how much height will be needed is not quite right.
 - Publish to GitHub - In the webamp repo?
 - Search updates should replace query not add a new one to the history
-- Random skin button?
+- Improve loading of random skin - should not jump
 - Link to open on Webamp
 - Keyboard navigation? Previous and next skin when focused?
 - Move images to CDN. Currently it's just s3 directly
 - Disable Google Analytics in dev
 - Make Webamp clean up after itself
 - Update title when you pick a skin
-- Find a way to start loading Webamp+skin as soon as the user clicks. Currently we have to wait for the animation.
+- Use empty space when search is less than a page for hints
+- Come up with a name
 
 ## Requires a server
 
