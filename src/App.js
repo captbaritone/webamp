@@ -35,7 +35,7 @@ class App extends React.Component {
           }
         />
         {!this._sizeIsSet() || this.props.selectedSkinHash == null || (
-          <Overlay>
+          <Overlay shouldAnimate={this.props.overlayShouldAnimate}>
             <FocusedSkin initialHeight={rowHeight} initialWidth={columnWidth} />
           </Overlay>
         )}
@@ -45,7 +45,8 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  selectedSkinHash: Selectors.getSelectedSkinHash(state)
+  selectedSkinHash: Selectors.getSelectedSkinHash(state),
+  overlayShouldAnimate: Selectors.overlayShouldAnimate(state)
 });
 
 export default connect(mapStateToProps)(App);

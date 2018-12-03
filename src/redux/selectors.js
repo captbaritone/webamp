@@ -9,6 +9,10 @@ export function getSelectedSkinPosition(state) {
   return state.selectedSkinPosition;
 }
 
+export function overlayShouldAnimate(state) {
+  return getSelectedSkinPosition(state) != null;
+}
+
 export function getSelectedSkinUrl(state) {
   const hash = getSelectedSkinHash(state);
   return hash == null ? null : Utils.screenshotUrlFromHash(hash);
