@@ -174,3 +174,9 @@ body.overlay-open .overlay {
 #focused-skin {
   visibility: visible;
 }
+
+@media (max-width: 800px) {
+  #search h1 .name {
+    display: none;
+  }
+}
