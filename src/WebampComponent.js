@@ -1,18 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import * as ActionCreators from "./redux/actionCreators";
-
-class Disposable {
-  _subscriptions = [];
-  add(subscription) {
-    this._subscriptions.push(subscription);
-  }
-  dispose() {
-    this._subscriptions.forEach(subscription => {
-      subscription();
-    });
-  }
-}
+import Disposable from "./Disposable";
 
 class WebampComponent extends React.Component {
   constructor(props) {
@@ -61,19 +50,12 @@ class WebampComponent extends React.Component {
 
     this._disposable.add(this._webamp.onClose(this.props.closeModal));
 
-    const renderTimeout = setTimeout(
-      async () => {
-        await this._webamp.renderWhenReady(this._ref);
-        if (!this._unmounted) {
-          this.props.loaded();
-        }
-      },
-      // This number must be higher than the transition time of the CSS animation that puts this in place.
-      500
-    );
-    this._disposable.add(() => {
-      clearTimeout(renderTimeout);
-    });
+    await this._webamp.renderWhenReady(this._ref);
+    if (!this._unmounted) {
+      this.props.loaded();
+    } else {
+      // TODO: Remove Webamp
+    }
   }
 
   render() {
