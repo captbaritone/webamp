@@ -78,25 +78,10 @@ class WebampComponent extends React.Component {
 
   render() {
     return (
-      <div style={{ width: "100%", height: "100%" }}>
-        <div
-          ref={node => (this._ref = node)}
-          style={{ position: "absolute", width: "100%", height: "100%" }}
-        />
-        <img
-          className={"focused-preview"}
-          style={{
-            width: "100%",
-            height: "100%",
-            // Webamp measure the scrollHeight of the container. Making this a
-            // block element ensures the parent element's scrollHeight is not
-            // expanded.
-            display: "block",
-            zIndex: 1
-          }}
-          src={this.props.screenshotUrl}
-        />
-      </div>
+      <div
+        style={{ width: "100%", height: "100%", position: "absolute" }}
+        ref={node => (this._ref = node)}
+      />
     );
   }
 }

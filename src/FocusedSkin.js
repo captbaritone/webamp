@@ -1,7 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { connect } from "react-redux";
-import classnames from "classnames";
 import WebampComponent from "./WebampComponent";
 import * as Utils from "./utils";
 import * as Selectors from "./redux/selectors";
@@ -22,15 +20,6 @@ class FocusedSkin extends React.Component {
         height: this.props.initialHeight
       };
     }
-    this._imgWrapper = document.createElement("div");
-    this._imgWrapper.style.zIndex = "10002";
-    this._imgWrapper.style.position = "fixed";
-    this._imgWrapper.style.top = 0;
-    document.body.appendChild(this._imgWrapper);
-  }
-
-  componentWillUnmount() {
-    document.body.removeChild(this._imgWrapper);
   }
 
   componentDidMount() {
@@ -39,6 +28,21 @@ class FocusedSkin extends React.Component {
       this.setState(this._getCenteredState());
     }, 0);
   }
+
+  componentWillUnmount() {
+    document.body.classList.remove("webamp-loaded");
+  }
+
+  handleWebampLoaded = () => {
+    document.body.classList.add("webamp-loaded");
+    setTimeout(
+      () => {
+        this.setState({ loaded: true });
+      },
+      // This matches the transition time that Webamp takes to fade in.
+      400
+    );
+  };
 
   _getCenteredState() {
     // TODO: Observe DOM and recenter
@@ -52,10 +56,9 @@ class FocusedSkin extends React.Component {
   }
   render() {
     const { loaded } = this.state;
-    return ReactDOM.createPortal(
+    return (
       <div
         id="focused-skin"
-        className={classnames({ loaded })}
         style={{
           position: "fixed",
           height: this.state.height,
@@ -67,20 +70,35 @@ class FocusedSkin extends React.Component {
             "all 400ms ease-out, height 400ms ease-out, width 400ms ease-out"
         }}
       >
-        <WebampComponent
-          key={this.props.hash} // Don't reuse instances
-          skinUrl={Utils.skinUrlFromHash(this.props.hash)}
-          screenshotUrl={Utils.screenshotUrlFromHash(this.props.hash)}
-          loaded={() => this.setState({ loaded: true })}
-        />
+        <div style={{ width: "100%", height: "100%" }}>
+          <WebampComponent
+            key={this.props.hash} // Don't reuse instances
+            skinUrl={Utils.skinUrlFromHash(this.props.hash)}
+            loaded={this.handleWebampLoaded}
+          />
+          {this.state.loaded || (
+            <img
+              className={"focused-preview"}
+              style={{
+                width: "100%",
+                height: "100%",
+                // Webamp measure the scrollHeight of the container. Making this a
+                // block element ensures the parent element's scrollHeight is not
+                // expanded.
+                display: "block",
+                zIndex: 1
+              }}
+              src={Utils.screenshotUrlFromHash(this.props.hash)}
+            />
+          )}
+        </div>
         <div className="metadata">
           <div className="file-name">
             {Utils.filenameFromHash(this.props.hash)}
           </div>
           <a href={Utils.skinUrlFromHash(this.props.hash)}>Download</a>
         </div>
-      </div>,
-      this._imgWrapper
+      </div>
     );
   }
 }
