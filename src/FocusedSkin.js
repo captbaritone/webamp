@@ -137,6 +137,7 @@ class FocusedSkin extends React.Component {
                   display: "block"
                 }}
                 src={Utils.screenshotUrlFromHash(this.props.hash)}
+                alt={Utils.filenameFromHash(this.props.hash)}
               />
             )}
           </div>
