@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Helmet } from "react-helmet";
 import * as Selectors from "./redux/selectors";
-import { SKIN_WIDTH, SKIN_HEIGHT, SKIN_RATIO } from "./constants";
+import { SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT } from "./constants";
 
 class Head extends React.Component {
   render() {
@@ -34,12 +34,12 @@ class Head extends React.Component {
           <meta
             property="og:image:width"
             key="og:image:width"
-            content={SKIN_WIDTH}
+            content={SCREENSHOT_WIDTH}
           />,
           <meta
             property="og:image:height"
             key="og:image:height"
-            content={SKIN_HEIGHT}
+            content={SCREENSHOT_HEIGHT}
           />,
           <meta
             property="og:image:alt"
