@@ -139,7 +139,8 @@ class App extends React.Component {
                 }
               }}
             >
-              {"🌩️"}
+              <span id="logo">{"🌩️"}</span>
+              <span className="name">Winamp Skin Museum</span>
             </a>
           </h1>
           <input

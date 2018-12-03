@@ -63,8 +63,16 @@ button {
   align-items: center;
 }
 
-#search h1 {
-  margin: 0 20px 0 15px;
+#search h1 #logo {
+  margin: 0 10px 0 15px;
+}
+
+#search h1 .name {
+  margin: 0 30px 0 0px;
+  color: white;
+  font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir,
+    helvetica neue, helvetica, ubuntu, roboto, noto, segoe ui, arial, sans-serif;
+  display: none; /* I'm not yet happy with how this looks */
 }
 
 #search input {
