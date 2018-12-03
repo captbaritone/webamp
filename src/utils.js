@@ -13,7 +13,7 @@ export function skinUrlFromHash(hash) {
 }
 
 export function getPermalinkUrlFromHash(hash) {
-  return `/skin/${hash}/${filenameFromHash(hash)}`;
+  return `/skin/${hash}/${filenameFromHash(hash)}/`;
 }
 
 export function getWindowSize() {
