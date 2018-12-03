@@ -143,13 +143,13 @@ class App extends React.Component {
               <span className="name">Winamp Skin Museum</span>
             </a>
           </h1>
+          <span style={{ flexGrow: 1 }} />
           <input
             type="text"
             onChange={e => this.props.setSearchQuery(e.target.value)}
             value={this.props.searchQuery || ""}
             placeholder={"Search..."}
           />
-          <span style={{ flexGrow: 1 }} />
           <button
             onClick={() => {
               this.props.requestRandomSkin();
