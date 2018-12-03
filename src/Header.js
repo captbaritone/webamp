@@ -1,10 +1,39 @@
-import React from "react";
+import * as React from "react";
 import { connect } from "react-redux";
 import * as Utils from "./utils";
 import * as Selectors from "./redux/selectors";
 import * as Actions from "./redux/actionCreators";
+import Disposable from "./Disposable";
 
 class Header extends React.Component {
+  constructor(props) {
+    super(props);
+    this._disposable = new Disposable();
+    this._inputRef = null;
+  }
+
+  componentDidMount() {
+    const handler = e => {
+      // slash
+      if (e.keyCode === 191) {
+        if (this._inputRef == null) {
+          return;
+        }
+        if (this._inputRef !== document.activeElement) {
+          this._inputRef.focus();
+          e.preventDefault();
+        }
+      }
+    };
+    window.document.addEventListener("keydown", handler);
+    this._disposable.add(() => {
+      window.document.removeEventListener("keydown", handler);
+    });
+  }
+
+  componentWillUnmount() {
+    this._disposable.dispose();
+  }
   render() {
     return (
       <div id="search">
@@ -28,6 +57,9 @@ class Header extends React.Component {
           onChange={e => this.props.setSearchQuery(e.target.value)}
           value={this.props.searchQuery || ""}
           placeholder={"Search..."}
+          ref={node => {
+            this._inputRef = node;
+          }}
         />
         <button
           onClick={() => {

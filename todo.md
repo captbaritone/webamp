@@ -1,5 +1,6 @@
 # TODO
 
+- Sort skins by... something? (Twitter likes?)
 - Scroll is not locked in overlay mode on ios
 - Add an about page
 - Add share link to focused mode
