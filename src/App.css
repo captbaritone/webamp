@@ -1,4 +1,4 @@
-/* Coolors Exported Palette - coolors.co/ed4b6c-f7b54c-06d6a0-4c84b2-684b3a
+/* Coolors Exported Palette - https://coolors.co/ed4b6c-f7b54c-06d6a0-4c84b2-684b3a
 
 HSL
 $color1: hsla(348%, 82%, 61%, 1);
@@ -45,6 +45,14 @@ button {
   cursor: pointer;
 }
 
+.zoom-on-hover {
+  transition: transform 200ms ease-in-out;
+}
+.zoom-on-hover:hover,
+.zoom-on-hover:focus {
+  transform: scale(1.025);
+}
+
 #search {
   width: 100%;
   position: fixed;
@@ -72,7 +80,6 @@ button {
   color: white;
   font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir,
     helvetica neue, helvetica, ubuntu, roboto, noto, segoe ui, arial, sans-serif;
-  display: none; /* I'm not yet happy with how this looks */
 }
 
 #search input {
@@ -98,6 +105,8 @@ button {
 }
 
 body.overlay-open {
+  /* https://stackoverflow.com/a/13645522/1263117 */
+  position: absolute;
   overflow: hidden;
 }
 
