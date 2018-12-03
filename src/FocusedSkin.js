@@ -140,12 +140,12 @@ class FocusedSkin extends React.Component {
               />
             )}
           </div>
-          <div className="metadata">
-            <div className="file-name">
-              {Utils.filenameFromHash(this.props.hash)}
-            </div>
-            <a href={Utils.skinUrlFromHash(this.props.hash)}>Download</a>
-          </div>
+        </div>
+        <div className="metadata">
+          {Utils.filenameFromHash(this.props.hash)}
+          {" ["}
+          <a href={Utils.skinUrlFromHash(this.props.hash)}>Download</a>
+          {"]"}
         </div>
       </React.Fragment>
     );

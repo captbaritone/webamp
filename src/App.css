@@ -139,7 +139,7 @@ body.overlay-open .overlay {
 }
 
 #close-modal {
-  color: white;
+  color: #a7a394;
   position: fixed;
   top: 10px;
   right: 10px;
@@ -149,14 +149,19 @@ body.overlay-open .overlay {
   text-decoration: none;
 }
 
-#focused-skin .metadata {
-  text-align: center;
+.metadata {
+  position: absolute;
   margin: 10px;
-  color: white;
+  color: #a7a394;
+  line-height: 25px;
+  font-family: "Courier New", Courier, monospace;
+  bottom: 0;
+  text-align: center;
+  width: 100%;
 }
 
-#focused-skin .metadata a {
-  color: white;
+.metadata a {
+  color: #a7a394;
 }
 
 #focused-skin {
