@@ -105,8 +105,6 @@ button {
 }
 
 body.overlay-open {
-  /* https://stackoverflow.com/a/13645522/1263117 */
-  position: absolute;
   overflow: hidden;
 }
 
