@@ -1,5 +1,6 @@
 import React from "react";
 import * as Utils from "./utils";
+import { SCREENSHOT_HEIGHT } from "./constants";
 
 export default class Skin extends React.Component {
   constructor(props) {
@@ -51,6 +52,10 @@ export default class Skin extends React.Component {
       >
         <img
           src={this.props.src}
+          style={{
+            imageRendering:
+              this.props.height >= SCREENSHOT_HEIGHT ? "pixelated" : null
+          }}
           className={`screenshot ${this.state.loaded ? "loaded" : ""}`}
           onLoad={this._handleLoad}
           alt={Utils.filenameFromHash(this.props.hash)}
