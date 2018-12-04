@@ -17,7 +17,12 @@ $color5: rgba(104, 75, 58, 1);
 
 body {
   margin: 0;
-  font-family: "Tahoma";
+}
+
+body,
+input,
+buton {
+  font-family: "MS Sans Serif", "Segoe UI", sans-serif;
 }
 
 h1 {
@@ -34,8 +39,6 @@ h1 a {
 #search h1 .name {
   margin: 0 30px 0 0px;
   color: rgba(255, 2550, 2550, 0.9);
-  font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir,
-    helvetica neue, helvetica, ubuntu, roboto, noto, segoe ui, arial, sans-serif;
 }
 
 button {
@@ -118,7 +121,7 @@ button:active {
 }
 
 #search input::placeholder {
-  color: rgb(35, 41, 60);
+  color: rgb(73, 83, 112);
 }
 
 #infinite-skins {
@@ -182,7 +185,6 @@ body.overlay-open .overlay {
   margin: 10px;
   color: #a7a394;
   line-height: 25px;
-  font-family: "Courier New", Courier, monospace;
   bottom: 0;
   text-align: center;
   width: 100%;
