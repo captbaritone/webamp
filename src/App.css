@@ -17,11 +17,25 @@ $color5: rgba(104, 75, 58, 1);
 
 body {
   margin: 0;
-  background-color: rgb(0, 0, 0);
+  font-family: "Tahoma";
 }
 
+h1 {
+  font-size: 20px;
+}
 h1 a {
   text-decoration: none;
+}
+
+#search h1 #logo {
+  margin: 0 10px 0 15px;
+}
+
+#search h1 .name {
+  margin: 0 30px 0 0px;
+  color: rgba(255, 2550, 2550, 0.9);
+  font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir,
+    helvetica neue, helvetica, ubuntu, roboto, noto, segoe ui, arial, sans-serif;
 }
 
 button {
@@ -31,22 +45,21 @@ button {
   background-color: rgb(176, 195, 205);
   margin-right: 25px;
   border: none;
-  font-size: 100%;
+  font-size: 12px;
   box-sizing: border-box;
   border-width: 0.125rem;
   line-height: 1.15;
   height: 100%;
   padding-left: 1rem;
   padding-right: 1rem;
-  border-radius: 9999px;
   outline: none;
   color: rgb(35, 41, 60);
   font-weight: 550;
   cursor: pointer;
-  border-left: 2px solid rgb(235, 255, 255);
-  border-top: 2px solid rgb(235, 255, 255);
-  border-bottom: 2px solid rgb(58, 71, 88);
-  border-right: 2px solid rgb(58, 71, 88);
+  border-left: 1px solid rgb(235, 255, 255);
+  border-top: 1px solid rgb(235, 255, 255);
+  border-bottom: 1px solid rgb(58, 71, 88);
+  border-right: 1px solid rgb(58, 71, 88);
 }
 
 /*
@@ -58,14 +71,6 @@ button:active {
   border-left: 2px solid rgb(58, 71, 88);
 }
 */
-
-.zoom-on-hover {
-  transition: transform 200ms ease-in-out;
-}
-.zoom-on-hover:hover,
-.zoom-on-hover:focus {
-  transform: scale(1.025);
-}
 
 #search {
   width: 100%;
@@ -79,9 +84,9 @@ button:active {
     rgba(25, 25, 39, 1) 100%
   );
   text-align: left;
-  height: 40px; /* This matches the margin-top for #infinite-skins */
+  height: 30px; /* This matches the margin-top for #infinite-skins */
   z-index: 5;
-  padding: 10px 0;
+  padding: 7px 0;
   /* A little shadow below the search bar */
   -webkit-box-shadow: 0px 10px 15px 0px rgba(0, 0, 0, 0.35);
   -moz-box-shadow: 0px 10px 15px 0px rgba(0, 0, 0, 0.35);
@@ -92,37 +97,25 @@ button:active {
   border-bottom: 2px solid rgb(32, 31, 51);
 }
 
-#search h1 #logo {
-  margin: 0 10px 0 15px;
-}
-
-#search h1 .name {
-  margin: 0 30px 0 0px;
-  color: white;
-  font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir,
-    helvetica neue, helvetica, ubuntu, roboto, noto, segoe ui, arial, sans-serif;
-}
-
 #search input {
-  margin-right: 25px;
-  max-width: 400px;
+  margin-right: 15px;
+  max-width: 250px;
   min-width: 100px;
   border: none;
-  font-size: 100%;
+  font-size: 15px;
   box-sizing: border-box;
   line-height: 1.15;
   height: 100%;
   padding-left: 1rem;
   padding-right: 1rem;
-  border-radius: 9999px;
   outline: none;
   flex-grow: 1;
   background-color: rgb(0, 0, 0);
   color: rgb(29, 226, 5);
-  border-top: 2px solid rgb(32, 31, 51);
-  border-left: 2px solid rgb(32, 31, 51);
-  border-bottom: 2px solid rgb(87, 86, 102);
-  border-right: 2px solid rgb(87, 86, 102);
+  border-top: 1px solid rgb(32, 31, 51);
+  border-left: 1px solid rgb(32, 31, 51);
+  border-bottom: 1px solid rgb(87, 86, 102);
+  border-right: 1px solid rgb(87, 86, 102);
 }
 
 #search input::placeholder {
@@ -130,7 +123,7 @@ button:active {
 }
 
 #infinite-skins {
-  margin-top: 60px; /* This matches the height of #search */
+  margin-top: 46px; /* This matches the height of #search */
 }
 
 body.overlay-open {
