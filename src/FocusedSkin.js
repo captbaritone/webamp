@@ -15,7 +15,7 @@ class FocusedSkin extends React.Component {
     // TODO: Handle the case were we come from a permalink
     if (this.props.initialPosition == null) {
       this.state = Object.assign(
-        { loaded: false, transitionComplete: true },
+        { previewLoaded: false, loaded: false, transitionComplete: true },
         this._getCenteredState()
       );
     } else {
@@ -134,8 +134,15 @@ class FocusedSkin extends React.Component {
                   // Webamp measure the scrollHeight of the container. Making this a
                   // block element ensures the parent element's scrollHeight is not
                   // expanded.
-                  display: "block"
+                  display: "block",
+                  opacity:
+                    this.state.previewLoaded ||
+                    this.props.initialPosition != null
+                      ? 1
+                      : 0,
+                  transition: "opacity 0.2s ease-out"
                 }}
+                onLoad={() => this.setState({ previewLoaded: true })}
                 src={Utils.screenshotUrlFromHash(this.props.hash)}
                 alt={Utils.filenameFromHash(this.props.hash)}
               />
