@@ -17,10 +17,14 @@ class WebampComponent extends React.Component {
     this._disposable.dispose();
 
     if (this._webamp) {
-      // TODO: Repace this with this._webamp.destroy() once we upgrade.
-      const close = document.querySelector("#webamp #close");
-      if (close != null) {
-        close.click();
+      if (this._webamp.dispose) {
+        this._webamp.dispose();
+      } else {
+        // TODO: Remove this once we upgrade Webamp
+        const close = document.querySelector("#webamp #close");
+        if (close != null) {
+          close.click();
+        }
       }
     }
   }
