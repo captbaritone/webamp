@@ -21,4 +21,8 @@ export default class Emitter {
       callbacks.forEach(cb => cb(...args));
     }
   }
+
+  dispose() {
+    this._listeners = {};
+  }
 }

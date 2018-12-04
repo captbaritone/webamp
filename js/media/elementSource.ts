@@ -161,4 +161,8 @@ export default class ElementSource {
     this._status = status;
     this._emitter.trigger("statusChange");
   }
+
+  dispose() {
+    this._emitter.dispose();
+  }
 }

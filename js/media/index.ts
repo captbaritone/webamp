@@ -35,6 +35,7 @@ export default class Media {
         await this._context.resume();
 
         if (this._context.state === "running") {
+          // TODO: Add this to the disposable
           document.body.removeEventListener("touchend", resume, false);
           document.body.removeEventListener("click", resume, false);
           document.body.removeEventListener("keydown", resume, false);
@@ -327,5 +328,10 @@ export default class Media {
     if (autoPlay) {
       this.play();
     }
+  }
+
+  dispose() {
+    this._source.dispose();
+    this._emitter.dispose();
   }
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "react-dom";
+import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 
 import {
@@ -37,6 +37,7 @@ import Emitter from "./emitter";
 
 import "../css/base-skin.min.css";
 import { SerializedStateV1 } from "./serializedStates/v1Types";
+import Disposable from "./Disposable";
 
 interface Options {
   /**
@@ -140,8 +141,9 @@ const storeHas = (
   });
 
 class Winamp {
-  _subscriptions: (() => void)[]; // TODO: Fix this type
   _actionEmitter: Emitter;
+  _node: HTMLElement | null;
+  _disposable: Disposable;
   options: Options & PrivateOptions; // TODO: Make this _private
   media: Media; // TODO: Make this _private
   store: Store; // TODO: Make this _private
@@ -157,7 +159,8 @@ class Winamp {
   }
 
   constructor(options: Options & PrivateOptions) {
-    this._subscriptions = [];
+    this._node = null;
+    this._disposable = new Disposable();
     this._actionEmitter = new Emitter();
     this.options = options;
     const {
@@ -204,12 +207,17 @@ class Winamp {
       this.store.dispatch({ type: ENABLE_MEDIA_LIBRARY });
     }
 
-    window.addEventListener("online", () =>
-      this.store.dispatch({ type: NETWORK_CONNECTED })
-    );
-    window.addEventListener("offline", () =>
-      this.store.dispatch({ type: NETWORK_DISCONNECTED })
-    );
+    const handleOnline = () => this.store.dispatch({ type: NETWORK_CONNECTED });
+    const handleOffline = () =>
+      this.store.dispatch({ type: NETWORK_DISCONNECTED });
+
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+
+    this._disposable.add(() => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    });
 
     if (initialSkin) {
       this.store.dispatch(Actions.setSkinFromUrl(initialSkin.url));
@@ -249,7 +257,7 @@ class Winamp {
     }
 
     if (enableHotkeys) {
-      this._subscriptions.push(bindHotkeys(this.store.dispatch));
+      this._disposable.add(bindHotkeys(this.store.dispatch));
     }
   }
 
@@ -348,8 +356,18 @@ class Winamp {
   async renderWhenReady(node: HTMLElement) {
     this.store.dispatch(Actions.centerWindowsInContainer(node));
     await this.skinIsLoaded();
+    if (this._node != null) {
+      throw new Error("Cannot render a Webamp instance twice");
+    }
+    this._node = node;
+    this._disposable.add(() => {
+      if (this._node != null) {
+        ReactDOM.unmountComponentAtNode(this._node);
+        this._node = null;
+      }
+    });
 
-    render(
+    ReactDOM.render(
       <Provider store={this.store}>
         <App
           media={this.media}
@@ -362,14 +380,11 @@ class Winamp {
     );
   }
 
-  destroy() {
-    // TODO: Clean up event emitter subscriptions
-    // TODO: Clean up hotkey bindings, if needed
-    // TODO: Clean up the Media instance
-    // TODO: Clean up online/offline subscriptions on window
+  dispose() {
     // TODO: Clean up store subscription in onTrackDidChange
     // TODO: Every storeHas call represents a potential race condition
-    throw new Error("Not implemented");
+    this._actionEmitter.dispose();
+    this._disposable.dispose();
   }
 }
 
