@@ -1,6 +1,6 @@
 {
   "name": "webamp",
-  "version": "1.3.0-beta.0",
+  "version": "1.3.0-beta.1",
   "description": "Winamp 2 implemented in HTML5 and JavaScript",
   "main": "built/webamp.bundle.js",
   "files": [
