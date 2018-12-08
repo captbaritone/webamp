@@ -1,5 +1,5 @@
 import { combineEpics } from "redux-observable";
-import { of, from, empty } from "rxjs";
+import { of, from } from "rxjs";
 import * as Actions from "./actionCreators";
 import * as Selectors from "./selectors";
 import { filter, switchMap, map } from "rxjs/operators";
@@ -16,10 +16,7 @@ const urlChangedEpic = actions =>
         const segments = action.location.pathname.split("/");
         return of(Actions.selectedSkin(segments[2]));
       }
-      if (query == null) {
-        return empty();
-      }
-      return of(Actions.searchQueryChanged(query));
+      return of(Actions.searchQueryChanged(query || ""));
     })
   );
 

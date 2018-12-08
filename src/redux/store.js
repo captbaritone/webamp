@@ -27,7 +27,9 @@ function reducer(state = defaultState, action) {
     case "SEARCH_QUERY_CHANGED":
       return {
         ...state,
-        searchQuery: action.query
+        searchQuery: action.query,
+        selectedSkinHash: null,
+        selectedSkinPosition: null
       };
     case "GOT_NEW_MATCHING_HASHES":
       return {
