@@ -36,8 +36,13 @@ class SkinTable extends React.Component {
   }
 
   _handleResize() {
-    // TODO: Try to recompute the scroll position
-    this.setState(Utils.getWindowSize());
+    const { windowWidth, windowHeight } = Utils.getWindowSize();
+    if (
+      windowWidth != this.state.windowWidth ||
+      windowHeight != this.state.windowHeight
+    ) {
+      this.setState({ windowWidth, windowHeight });
+    }
     const { rowHeight, columnWidth } = this._getTableDimensions();
     this.props.setCellSize({ rowHeight, columnWidth });
   }
@@ -45,8 +50,9 @@ class SkinTable extends React.Component {
   componentDidMount() {
     window.addEventListener("scroll", this._handleScroll);
     window.addEventListener("resize", this._handleResize);
-    const { rowHeight, columnWidth } = this._getTableDimensions();
-    this.props.setCellSize({ rowHeight, columnWidth });
+    // Our initial render may have caused the scrollbar to appear. So we
+    // remeasure.
+    this._handleResize();
   }
 
   componentWillUnmount() {
