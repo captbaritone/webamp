@@ -1,8 +1,9 @@
 import { combineEpics } from "redux-observable";
-import { of, from } from "rxjs";
+import { of, from, empty } from "rxjs";
 import * as Actions from "./actionCreators";
 import * as Selectors from "./selectors";
-import { filter, switchMap, map } from "rxjs/operators";
+import * as Utils from "../utils";
+import { filter, switchMap, map, ignoreElements, tap } from "rxjs/operators";
 import { search } from "../algolia";
 
 const urlChangedEpic = actions =>
@@ -17,6 +18,21 @@ const urlChangedEpic = actions =>
         return of(Actions.selectedSkin(segments[2]));
       }
       return of(Actions.searchQueryChanged(query || ""));
+    })
+  );
+
+const selectedSkinEpic = actions =>
+  actions.pipe(
+    filter(action => action.type === "SELECTED_SKIN"),
+    switchMap(action => {
+      return from(fetch(Utils.skinUrlFromHash(action.hash))).pipe(
+        switchMap(response => response.blob()),
+        switchMap(async blob => {
+          const JSZip = await import("jszip");
+          return JSZip.loadAsync(blob);
+        }),
+        map(zip => Actions.loadedSkinZip(zip))
+      );
     })
   );
 
@@ -44,4 +60,9 @@ const randomSkinEpic = (actions, states) =>
       return Actions.selectedSkin(Selectors.getRandomSkinHash(states.value));
     })
   );
-export default combineEpics(searchEpic, urlChangedEpic, randomSkinEpic);
+export default combineEpics(
+  searchEpic,
+  urlChangedEpic,
+  selectedSkinEpic,
+  randomSkinEpic
+);

@@ -17,3 +17,7 @@ export function requestedRandomSkin() {
 export function gotNewMatchingHashes(matchingHashes) {
   return { type: "GOT_NEW_MATCHING_HASHES", matchingHashes };
 }
+
+export function loadedSkinZip(zip) {
+  return { type: "LOADED_SKIN_ZIP", zip };
+}

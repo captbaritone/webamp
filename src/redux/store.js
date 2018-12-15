@@ -7,7 +7,8 @@ const defaultState = {
   searchQuery: null,
   selectedSkinHash: null,
   selectedSkinPosition: null,
-  matchingHashes: null
+  matchingHashes: null,
+  skinZip: null
 };
 
 function reducer(state = defaultState, action) {
@@ -16,13 +17,15 @@ function reducer(state = defaultState, action) {
       return {
         ...state,
         selectedSkinHash: action.hash,
-        selectedSkinPosition: action.position
+        selectedSkinPosition: action.position,
+        skinZip: null
       };
     case "CLOSE_MODAL":
       return {
         ...state,
         selectedSkinHash: null,
-        selectedSkinPosition: null
+        selectedSkinPosition: null,
+        skinZip: null
       };
     case "SEARCH_QUERY_CHANGED":
       return {
@@ -35,6 +38,11 @@ function reducer(state = defaultState, action) {
       return {
         ...state,
         matchingHashes: action.matchingHashes
+      };
+    case "LOADED_SKIN_ZIP":
+      return {
+        ...state,
+        skinZip: action.zip
       };
     default:
       return state;
