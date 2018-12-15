@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import WebampComponent from "./WebampComponent";
+import Readme from "./Readme";
 import * as Utils from "./utils";
 import * as Selectors from "./redux/selectors";
 import { SCREENSHOT_HEIGHT, SCREENSHOT_WIDTH } from "./constants";
@@ -98,20 +99,23 @@ class FocusedSkin extends React.Component {
     return (
       <React.Fragment>
         {this.state.centered && (
-          <div
-            style={{
-              position: "fixed",
-              height: SCREENSHOT_HEIGHT,
-              width: SCREENSHOT_WIDTH,
-              transform
-            }}
-          >
-            <WebampComponent
-              key={this.props.hash} // Don't reuse instances
-              skinUrl={Utils.skinUrlFromHash(this.props.hash)}
-              loaded={this.handleWebampLoaded}
-            />
-          </div>
+          <>
+            <div
+              style={{
+                position: "fixed",
+                height: SCREENSHOT_HEIGHT,
+                width: SCREENSHOT_WIDTH,
+                transform
+              }}
+            >
+              <WebampComponent
+                key={this.props.hash} // Don't reuse instances
+                skinUrl={Utils.skinUrlFromHash(this.props.hash)}
+                loaded={this.handleWebampLoaded}
+              />
+            </div>
+            <Readme skinUrl={Utils.skinUrlFromHash(this.props.hash)} />
+          </>
         )}
         <div
           id="focused-skin"
