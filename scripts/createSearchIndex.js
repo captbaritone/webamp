@@ -9,6 +9,7 @@ async function buildSkinIndex(hash) {
   const textMetadata = await getSkinMetadata(hash, "extracted-data");
   return {
     objectID: hash,
+    md5: hash,
     fileName: skins[hash].fileName,
     emails: textMetadata.emails,
     readmeText: textMetadata.raw.slice(0, 1000)
