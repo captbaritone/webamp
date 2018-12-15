@@ -114,6 +114,41 @@ describe("parseViscolors", () => {
     ];
     expect(actual).toEqual(expected);
   });
+  it.only("can parse a malformed viscolors file", () => {
+    // From https://skins.webamp.org/skin/018ddb394f2bfe49efa70bce27b71cb2/Centra_CSS-102_104-3.wsz/
+    const viscolors = fixture("CENTRA_VISCOLOR.TXT");
+    const actual = parseViscolors(viscolors);
+    const expected = [
+      "rgb(110,150,176)", // 0
+      "rgb(165,165,165)", // 1
+      "rgb(55,55,67)", // 2
+      "rgb(55,55,67)", // 3
+      "rgb(55,55,67)", // 4
+      "rgb(55,55,67)", // 5
+      "rgb(55,55,67)", // 6
+      "rgb(55,55,67)", // 7
+      "rgb(55,55,67)", // 8
+      "rgb(55,55,67)", // 9
+      "rgb(55,55,67)", // 10
+      "rgb(55,55,67)", // 11
+      "rgb(55,55,67)", // 12
+      "rgb(55,55,67)", // 13
+      "rgb(55,55,67)", // 14
+      "rgb(55,55,67)", // 15
+      "rgb(55,55,67)", // 16
+      "rgb(55,55,67)", // 17
+      "rgb(55,55,67)", // 18
+      "rgb(55,55,67)", // 19
+      "rgb(55,55,67)", // 20
+      "rgb(55,55,67)", // 21
+      "rgb(55,55,67)", // 22
+      //c 2
+      "rgb(181,189,189)", // 20 = osc 3
+      "rgb(148,156,165)", // 21 = osc 4
+      "rgb(148,156,165)" // 2) = osc 5 (dimmest)
+    ];
+    expect(actual).toEqual(expected);
+  });
 });
 
 describe("parseIni", () => {

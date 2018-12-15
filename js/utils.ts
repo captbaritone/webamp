@@ -82,17 +82,15 @@ export const getFileExtension = (fileName: string): string | null => {
 
 export const parseViscolors = (text: string): string[] => {
   const entries = text.split("\n");
-  const regex = /^(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/;
-  const colors = [];
-  // changed to a hard number to deal with empty lines at the end...
-  // plus it's only meant to be an exact quantity of numbers anyway.
-  // - @PAEz
-  for (let i = 0; i < 24; i++) {
-    const matches = regex.exec(entries[i]);
-    colors[i] = matches
-      ? `rgb(${matches.slice(1, 4).join(",")})`
-      : DEFAULT_SKIN.colors[i];
-  }
+  const regex = /^\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/;
+  const colors = [...DEFAULT_SKIN.colors];
+  entries
+    .map(line => regex.exec(line))
+    .filter(Boolean)
+    .map(matches => (matches as RegExpExecArray).slice(1, 4).join(","))
+    .map((rgb, i) => {
+      colors[i] = `rgb(${rgb})`;
+    });
   return colors;
 };
 
