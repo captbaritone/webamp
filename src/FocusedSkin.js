@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import WebampComponent from "./WebampComponent";
 import Readme from "./Readme";
+import DownloadLink from "./DownloadLink";
 import * as Utils from "./utils";
 import * as Selectors from "./redux/selectors";
 import { SCREENSHOT_HEIGHT, SCREENSHOT_WIDTH } from "./constants";
@@ -156,7 +157,12 @@ class FocusedSkin extends React.Component {
         <div className="metadata">
           {Utils.filenameFromHash(this.props.hash)}
           {" ["}
-          <a href={Utils.skinUrlFromHash(this.props.hash)}>Download</a>
+          <DownloadLink
+            href={Utils.skinUrlFromHash(this.props.hash)}
+            download={Utils.filenameFromHash(this.props.hash)}
+          >
+            Download
+          </DownloadLink>
           {"]"}
         </div>
       </React.Fragment>
