@@ -54,7 +54,6 @@ class Header extends React.Component {
         <span style={{ flexGrow: 1 }} />
         <input
           type="text"
-          className="zoom-on-hover"
           onChange={e => this.props.setSearchQuery(e.target.value)}
           value={this.props.searchQuery || ""}
           placeholder={"Search..."}
@@ -63,12 +62,18 @@ class Header extends React.Component {
           }}
         />
         <button
-          className="zoom-on-hover"
           onClick={() => {
             this.props.requestRandomSkin();
           }}
         >
           Random
+        </button>
+        <button
+          onClick={() => {
+            this.props.requestedAboutPage();
+          }}
+        >
+          ?
         </button>
       </div>
     );
@@ -85,6 +90,9 @@ const mapDispatchToProps = dispatch => ({
   },
   requestRandomSkin() {
     dispatch(Actions.requestedRandomSkin());
+  },
+  requestedAboutPage() {
+    dispatch(Actions.requestedAboutPage());
   }
 });
 export default connect(

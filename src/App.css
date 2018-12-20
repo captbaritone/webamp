@@ -29,8 +29,12 @@ buton {
 h1 {
   font-size: 20px;
 }
+h2 {
+  font-size: 17px;
+}
 h1 a {
   text-decoration: none;
+  color: rgba(255, 2550, 2550, 0.9);
 }
 
 #search h1 #logo {
@@ -39,7 +43,6 @@ h1 a {
 
 #search h1 .name {
   margin: 0 30px 0 0px;
-  color: rgba(255, 2550, 2550, 0.9);
 }
 
 button {
@@ -98,6 +101,7 @@ button:active {
   flex-direction: row;
   align-items: center;
   border-bottom: 2px solid rgb(32, 31, 51);
+  color: rgba(255, 2550, 2550, 0.9);
 }
 
 #search input {
@@ -203,4 +207,14 @@ body.overlay-open .overlay {
   #search h1 .name {
     display: none;
   }
+}
+
+.static-content {
+  position: fixed;
+  background-color: white;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 30px;
+  line-height: 1.4em;
 }

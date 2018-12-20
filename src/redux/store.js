@@ -2,6 +2,7 @@ import { createStore as createReduxStore, applyMiddleware } from "redux";
 import { createEpicMiddleware } from "redux-observable";
 import * as Selectors from "./selectors";
 import rootEpic from "./epics";
+import { ABOUT_PAGE } from "../constants";
 
 const defaultState = {
   searchQuery: null,
@@ -9,7 +10,8 @@ const defaultState = {
   selectedSkinPosition: null,
   matchingHashes: null,
   skinZip: null,
-  focusedSkinFile: null
+  focusedSkinFile: null,
+  activeContentPage: null
 };
 
 function reducer(state = defaultState, action) {
@@ -26,7 +28,8 @@ function reducer(state = defaultState, action) {
         ...state,
         selectedSkinHash: null,
         selectedSkinPosition: null,
-        skinZip: null
+        skinZip: null,
+        activeContentPage: null
       };
     case "SEARCH_QUERY_CHANGED":
       return {
@@ -62,6 +65,11 @@ function reducer(state = defaultState, action) {
           ...state.focusedSkinFile,
           content: action.content
         }
+      };
+    case "REQUESTED_ABOUT_PAGE":
+      return {
+        ...state,
+        activeContentPage: ABOUT_PAGE
       };
     default:
       return state;

@@ -34,3 +34,7 @@ export function selectSkinFile(fileName) {
 export function gotFocusedSkinFile(content) {
   return { type: "GOT_FOCUSED_SKIN_FILE", content };
 }
+
+export function requestedAboutPage() {
+  return { type: "REQUESTED_ABOUT_PAGE" };
+}

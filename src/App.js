@@ -1,11 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
 import Head from "./Head";
+import About from "./About";
 import Header from "./Header";
 import Overlay from "./Overlay";
 import SkinTable from "./SkinTable";
 import FocusedSkin from "./FocusedSkin";
 import * as Selectors from "./redux/selectors";
+import { ABOUT_PAGE } from "./constants";
 
 // Render your table
 
@@ -34,10 +36,20 @@ class App extends React.Component {
             this.setState({ rowHeight, columnWidth })
           }
         />
-        {!this._sizeIsSet() || this.props.selectedSkinHash == null || (
-          <Overlay shouldAnimate={this.props.overlayShouldAnimate}>
-            <FocusedSkin initialHeight={rowHeight} initialWidth={columnWidth} />
+        {this.props.aboutPage ? (
+          <Overlay>
+            <About />
           </Overlay>
+        ) : (
+          !this._sizeIsSet() ||
+          this.props.selectedSkinHash == null || (
+            <Overlay shouldAnimate={this.props.overlayShouldAnimate}>
+              <FocusedSkin
+                initialHeight={rowHeight}
+                initialWidth={columnWidth}
+              />
+            </Overlay>
+          )
         )}
       </div>
     );
@@ -46,7 +58,8 @@ class App extends React.Component {
 
 const mapStateToProps = state => ({
   selectedSkinHash: Selectors.getSelectedSkinHash(state),
-  overlayShouldAnimate: Selectors.overlayShouldAnimate(state)
+  overlayShouldAnimate: Selectors.overlayShouldAnimate(state),
+  aboutPage: Selectors.getActiveContentPage(state) === ABOUT_PAGE
 });
 
 export default connect(mapStateToProps)(App);

@@ -10,6 +10,9 @@ const urlChangedEpic = actions =>
   actions.pipe(
     filter(action => action.type === "URL_CHANGED"),
     switchMap(action => {
+      if (action.location.pathname == "/about/") {
+        return of(Actions.requestedAboutPage());
+      }
       const params = new URLSearchParams(action.location.search);
       const query = params != null && params.get("query");
 

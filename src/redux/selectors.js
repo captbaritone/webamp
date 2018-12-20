@@ -1,5 +1,6 @@
 import * as Utils from "../utils";
 import skins from "../skins.json";
+import { ABOUT_PAGE } from "../constants";
 
 export function getSelectedSkinHash(state) {
   return state.selectedSkinHash;
@@ -40,6 +41,9 @@ export function getRandomSkinHash() {
 }
 
 export function getUrl(state) {
+  if (state.activeContentPage === ABOUT_PAGE) {
+    return "/about/";
+  }
   const hash = getSelectedSkinHash(state);
   const query = getSearchQuery(state);
   if (hash) {
@@ -58,4 +62,8 @@ export function getPageTitle(state) {
 export function getPreviewImageUrl(state) {
   const hash = getSelectedSkinHash(state);
   return hash == null ? null : Utils.screenshotUrlFromHash(hash);
+}
+
+export function getActiveContentPage(state) {
+  return state.activeContentPage;
 }
