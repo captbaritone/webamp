@@ -114,7 +114,7 @@ class FocusedSkin extends React.Component {
                 loaded={this.handleWebampLoaded}
               />
             </div>
-            <Readme skinUrl={Utils.skinUrlFromHash(this.props.hash)} />
+            {/*<Readme skinUrl={Utils.skinUrlFromHash(this.props.hash)} />*/}
           </>
         )}
         <div
