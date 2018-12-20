@@ -17,7 +17,12 @@ class FocusedSkin extends React.Component {
     // TODO: Handle the case were we come from a permalink
     if (this.props.initialPosition == null) {
       this.state = Object.assign(
-        { previewLoaded: false, loaded: false, transitionComplete: true },
+        {
+          previewLoaded: false,
+          loaded: false,
+          transitionComplete: true,
+          showLink: false
+        },
         this._getCenteredState()
       );
     } else {
@@ -28,7 +33,8 @@ class FocusedSkin extends React.Component {
         top: this.props.initialPosition.top,
         left: this.props.initialPosition.left,
         width: this.props.initialWidth,
-        height: this.props.initialHeight
+        height: this.props.initialHeight,
+        showLink: false
       };
     }
     this._webampLoadedEvents = new Subject();
@@ -155,6 +161,37 @@ class FocusedSkin extends React.Component {
           </div>
         </div>
         <div className="metadata">
+          {this.state.showLink && (
+            <div>
+              <input
+                style={{
+                  padding: "5px",
+                  width: "300px",
+                  marginBottom: "10px"
+                }}
+                ref={node => {
+                  this._node = node;
+                }}
+                onFocus={e =>
+                  e.target.setSelectionRange(0, e.target.value.length)
+                }
+                className="permalink-input"
+                value={Utils.getAbsolutePermalinkUrlFromHash(this.props.hash)}
+                readOnly
+                autoFocus
+              />
+              <span
+                style={{
+                  fontSize: "18px",
+                  marginLeft: "5px",
+                  cursor: "pointer"
+                }}
+                onClick={() => this.setState({ showLink: false })}
+              >
+                &times;
+              </span>
+            </div>
+          )}
           {Utils.filenameFromHash(this.props.hash)}
           {" ["}
           <DownloadLink
@@ -163,7 +200,17 @@ class FocusedSkin extends React.Component {
           >
             Download
           </DownloadLink>
-          {"]"}
+          {"]"} {"["}
+          <a
+            href={Utils.getAbsolutePermalinkUrlFromHash(this.props.hash)}
+            onClick={e => {
+              this.setState({ showLink: !this.state.showLink });
+              e.preventDefault();
+            }}
+          >
+            Share
+          </a>
+          {"] "}
         </div>
       </React.Fragment>
     );

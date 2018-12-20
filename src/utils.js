@@ -16,6 +16,10 @@ export function getPermalinkUrlFromHash(hash) {
   return `/skin/${hash}/${filenameFromHash(hash)}/`;
 }
 
+export function getAbsolutePermalinkUrlFromHash(hash) {
+  return window.location.origin + getPermalinkUrlFromHash(hash);
+}
+
 export function getWindowSize() {
   var w = window,
     d = document,
