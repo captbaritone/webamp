@@ -1,49 +1,19 @@
 import React from "react";
 import { connect } from "react-redux";
-import { switchMap } from "rxjs/operators";
-import { from } from "rxjs";
-import Disposable from "./Disposable";
+import * as Actions from "./redux/actionCreators";
 
 class Readme extends React.Component {
-  constructor(props) {
-    super(props);
-    this._disposable = new Disposable();
-    this.state = { focusedFile: null };
-  }
-
-  componentDidMount() {}
-
-  componentDidUpdate(_, oldState) {}
-
-  componentWillUnmount() {
-    this._disposable.dispose();
-  }
-
-  async _focusFile(fileName) {
-    if (this.props.zip == null) {
-      return;
-    }
-
-    const file = await this.props.zip.file(fileName);
-    const type = fileName
-      .split(".")
-      .pop()
-      .toLowerCase();
-    const methodFromType = {
-      txt: "string",
-      bmp: "blob",
-      cur: "blob"
-    };
-    let content = await file.async(methodFromType[type]);
-    this.setState({ focusedFile: { fileName, type, content } });
-  }
-
   _renderFocusedFile() {
-    if (this.state.focusedFile == null) {
+    if (this.props.focusedFile == null) {
       return;
     }
 
-    switch (this.state.focusedFile.type) {
+    const { ext, fileName, content } = this.props.focusedFile;
+    if (content == null) {
+      return;
+    }
+
+    switch (ext) {
       case "txt":
         return (
           <textarea
@@ -51,17 +21,18 @@ class Readme extends React.Component {
               width: "100%",
               height: "300px"
             }}
-          >
-            {this.state.focusedFile.content}
-          </textarea>
+            defaultValue={content}
+          />
         );
       case "bmp":
       case "cur":
-        const mimeType = `image/cur`;
-        const content = URL.createObjectURL(
-          new Blob([this.state.focusedFile.content], { type: mimeType })
+        const mimeType = `image/${ext}`;
+        const url = URL.createObjectURL(
+          new Blob([content], { type: mimeType })
         );
-        return <img src={content} />;
+        return <img src={url} alt={fileName} />;
+      default:
+        return null;
     }
   }
 
@@ -77,24 +48,22 @@ class Readme extends React.Component {
           overflow: "scroll"
         }}
       >
-        <ul style={{ float: "left" }}>
+        <select onChange={e => this.props.selectSkinFile(e.target.value)}>
           {this.props.zip &&
             Object.keys(this.props.zip.files).map(fileName => (
-              <li
+              <option
                 key={fileName}
-                style={{
-                  fontWeight:
-                    this.state.focusedFile &&
-                    this.state.focusedFile.fileName === fileName
-                      ? "bold"
-                      : "normal"
-                }}
+                value={fileName}
+                selected={
+                  this.props.focusedFile &&
+                  this.props.focusedFile.fileName === fileName
+                }
               >
-                <a onClick={() => this._focusFile(fileName)}>{fileName}</a>
-              </li>
+                {fileName}
+              </option>
             ))}
-        </ul>
-        <div style={{ float: "left" }}>{this._renderFocusedFile()}</div>
+        </select>
+        <div>{this._renderFocusedFile()}</div>
       </div>
     );
   }
@@ -102,8 +71,19 @@ class Readme extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    zip: state.skinZip
+    zip: state.skinZip,
+    focusedFile: state.focusedSkinFile
   };
 }
 
-export default connect(mapStateToProps)(Readme);
+function mapDispatchToProps(dispatch) {
+  return {
+    selectSkinFile(fileName) {
+      dispatch(Actions.selectSkinFile(fileName));
+    }
+  };
+}
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Readme);

@@ -21,3 +21,16 @@ export function gotNewMatchingHashes(matchingHashes) {
 export function loadedSkinZip(zip) {
   return { type: "LOADED_SKIN_ZIP", zip };
 }
+
+export function selectSkinFile(fileName) {
+  const ext = fileName
+    .split(".")
+    .pop()
+    .toLowerCase();
+
+  return { type: "SELECTED_SKIN_FILE_TO_FOCUS", fileName, ext };
+}
+
+export function gotFocusedSkinFile(content) {
+  return { type: "GOT_FOCUSED_SKIN_FILE", content };
+}

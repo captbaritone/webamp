@@ -3,7 +3,7 @@ import { of, from, empty } from "rxjs";
 import * as Actions from "./actionCreators";
 import * as Selectors from "./selectors";
 import * as Utils from "../utils";
-import { filter, switchMap, map, ignoreElements, tap } from "rxjs/operators";
+import { filter, switchMap, map, tap } from "rxjs/operators";
 import { search } from "../algolia";
 
 const urlChangedEpic = actions =>
@@ -36,6 +36,28 @@ const selectedSkinEpic = actions =>
     })
   );
 
+const focusedSkinFileEpic = (actions, states) =>
+  actions.pipe(
+    filter(action => action.type === "SELECTED_SKIN_FILE_TO_FOCUS"),
+    switchMap(({ fileName, ext }) => {
+      // TODO: Ensure this is never called with the wrong zip. Should this live in the "got zip" closure?
+      const { skinZip } = states.value;
+      if (skinZip == null) {
+        // TODO: Should this throw?
+        return empty();
+      }
+
+      const methodFromExt = {
+        txt: "string",
+        bmp: "blob",
+        cur: "blob"
+      };
+      return from(skinZip.file(fileName).async(methodFromExt[ext])).pipe(
+        map(content => Actions.gotFocusedSkinFile(content))
+      );
+    })
+  );
+
 const searchEpic = actions =>
   actions.pipe(
     filter(action => action.type === "SEARCH_QUERY_CHANGED"),
@@ -64,5 +86,6 @@ export default combineEpics(
   searchEpic,
   urlChangedEpic,
   selectedSkinEpic,
+  focusedSkinFileEpic,
   randomSkinEpic
 );

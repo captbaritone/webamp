@@ -8,7 +8,8 @@ const defaultState = {
   selectedSkinHash: null,
   selectedSkinPosition: null,
   matchingHashes: null,
-  skinZip: null
+  skinZip: null,
+  focusedSkinFile: null
 };
 
 function reducer(state = defaultState, action) {
@@ -43,6 +44,24 @@ function reducer(state = defaultState, action) {
       return {
         ...state,
         skinZip: action.zip
+      };
+    case "SELECTED_SKIN_FILE_TO_FOCUS": {
+      return {
+        ...state,
+        focusedSkinFile: {
+          content: null,
+          ext: action.ext,
+          fileName: action.fileName
+        }
+      };
+    }
+    case "GOT_FOCUSED_SKIN_FILE":
+      return {
+        ...state,
+        focusedSkinFile: {
+          ...state.focusedSkinFile,
+          content: action.content
+        }
       };
     default:
       return state;

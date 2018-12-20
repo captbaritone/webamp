@@ -38,8 +38,8 @@ class SkinTable extends React.Component {
   _handleResize() {
     const { windowWidth, windowHeight } = Utils.getWindowSize();
     if (
-      windowWidth != this.state.windowWidth ||
-      windowHeight != this.state.windowHeight
+      windowWidth !== this.state.windowWidth ||
+      windowHeight !== this.state.windowHeight
     ) {
       this.setState({ windowWidth, windowHeight });
     }
