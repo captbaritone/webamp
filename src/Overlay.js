@@ -51,7 +51,12 @@ class Overlay extends React.Component {
       <div
         style={{
           width: "100%",
-          height: "100%"
+          height: "100%",
+          // This one werid hack to work around margin collapse which was making
+          // children with top margins cause the top protion of the overlay to
+          // be unclickable: https://stackoverflow.com/a/47351270/1263117
+          display: "flex",
+          flexDirection: "column"
         }}
         onClick={this._handleClick}
         onScroll={e => e.stopPropagation()}
