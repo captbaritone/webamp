@@ -39,21 +39,6 @@ class FocusedSkin extends React.Component {
     }
     this._webampLoadedEvents = new Subject();
     this._transitionBeginEvents = new Subject();
-  }
-
-  componentDidMount() {
-    if (!this.props.centered) {
-      this._disposable.add(
-        timer(0).subscribe(() => {
-          // TODO: Observe DOM and recenter
-          this.setState(this._getCenteredState());
-          this._transitionBeginEvents.next(null);
-        })
-      );
-    } else {
-      this._transitionBeginEvents.next(null);
-    }
-
     const transitionComplete = this._transitionBeginEvents.pipe(delay(500));
 
     // Emit after both Webamp has loaded, and the transition is complete
@@ -76,6 +61,20 @@ class FocusedSkin extends React.Component {
         this.setState({ loaded: true });
       })
     );
+  }
+
+  componentDidMount() {
+    if (!this.state.centered) {
+      this._disposable.add(
+        timer(0).subscribe(() => {
+          // TODO: Observe DOM and recenter
+          this.setState(this._getCenteredState());
+          this._transitionBeginEvents.next(null);
+        })
+      );
+    } else {
+      this._transitionBeginEvents.next(null);
+    }
   }
 
   componentWillUnmount() {
