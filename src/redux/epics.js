@@ -3,14 +3,14 @@ import { of, from, empty } from "rxjs";
 import * as Actions from "./actionCreators";
 import * as Selectors from "./selectors";
 import * as Utils from "../utils";
-import { filter, switchMap, map, tap } from "rxjs/operators";
+import { filter, switchMap, map } from "rxjs/operators";
 import { search } from "../algolia";
 
 const urlChangedEpic = actions =>
   actions.pipe(
     filter(action => action.type === "URL_CHANGED"),
     switchMap(action => {
-      if (action.location.pathname == "/about/") {
+      if (action.location.pathname === "/about/") {
         return of(Actions.requestedAboutPage());
       }
       const params = new URLSearchParams(action.location.search);

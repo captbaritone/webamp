@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import WebampComponent from "./WebampComponent";
-import Readme from "./Readme";
+// import Readme from "./Readme";
 import DownloadLink from "./DownloadLink";
 import * as Utils from "./utils";
 import * as Selectors from "./redux/selectors";

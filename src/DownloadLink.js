@@ -50,6 +50,11 @@ export default class DownloadLink extends React.Component {
   }
 
   render() {
-    return <a {...this.props} href={this.state.href || this.props.href} />;
+    return (
+      <a {...this.props} href={this.state.href || this.props.href}>
+        {/* We have to explicitly set the children to make ESLint happy */}
+        {this.props.children}
+      </a>
+    );
   }
 }
