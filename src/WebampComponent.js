@@ -13,12 +13,7 @@ class WebampComponent extends React.Component {
   }
 
   componentWillUnmount() {
-    this._unmounted = true;
     this._disposable.dispose();
-
-    if (this._webamp) {
-      this._webamp.dispose();
-    }
   }
 
   async _loadWebamp() {
@@ -47,10 +42,13 @@ class WebampComponent extends React.Component {
     this._disposable.add(this._webamp.onClose(this.props.closeModal));
 
     await this._webamp.renderWhenReady(this._ref);
-    if (!this._unmounted) {
-      this.props.loaded();
+    if (this._disposable.disposed) {
+      this._webamp.dispose();
     } else {
-      // TODO: Remove Webamp
+      this._disposable.add(() => {
+        this._webamp.dispose();
+      });
+      this.props.loaded();
     }
   }
 
