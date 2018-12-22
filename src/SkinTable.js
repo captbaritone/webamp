@@ -52,11 +52,38 @@ class SkinTable extends React.Component {
     // Our initial render may have caused the scrollbar to appear. So we
     // remeasure.
     this._handleResize();
+    this._scrollToSelectedSkinIfNeeded();
   }
 
   componentWillUnmount() {
     window.removeEventListener("scroll", this._handleScroll);
     window.removeEventListener("resize", this._handleResize);
+  }
+
+  componentDidUpdate() {
+    this._scrollToSelectedSkinIfNeeded();
+  }
+
+  _scrollToSelectedSkinIfNeeded() {
+    if (this.props.selectedSkinHash == null) {
+      return;
+    }
+
+    const selectedHashIndex = this.props.skinHashes.indexOf(
+      this.props.selectedSkinHash
+    );
+
+    const { start, end } = this._rangeToRender();
+    if (selectedHashIndex < start || selectedHashIndex > end) {
+      const { columnCount, rowHeight } = this._getTableDimensions();
+      const row = Math.floor(selectedHashIndex / columnCount);
+      const scrollTop =
+        row * rowHeight - (this.state.windowHeight - rowHeight) / 2;
+      window.scrollTo({
+        left: 0,
+        top: scrollTop
+      });
+    }
   }
 
   _handleScroll() {
@@ -82,13 +109,26 @@ class SkinTable extends React.Component {
     return { columnWidth, rowHeight, columnCount };
   }
 
-  render() {
-    const { columnWidth, rowHeight, columnCount } = this._getTableDimensions();
+  _rangeToRender() {
+    const { rowHeight, columnCount } = this._getTableDimensions();
     const hashes = this.props.skinHashes;
     // Add one since we might be showing half a row at the top, and half a row at the bottom
     const visibleRows = Math.ceil(this.state.windowHeight / rowHeight) + 1;
 
     const topRow = Math.floor(this.state.scrollTop / rowHeight);
+
+    const firstHashToRender = topRow * columnCount;
+    const lastHashToRender = Math.min(
+      firstHashToRender + visibleRows * columnCount,
+      hashes.length
+    );
+
+    return { start: firstHashToRender, end: lastHashToRender };
+  }
+
+  render() {
+    const { columnWidth, rowHeight, columnCount } = this._getTableDimensions();
+    const hashes = this.props.skinHashes;
 
     const overscanRowsDown =
       this.state.scrollDirection === "DOWN"
@@ -99,11 +139,10 @@ class SkinTable extends React.Component {
         ? OVERSCAN_ROWS_LEADING
         : OVERSCAN_ROWS_TRAILING;
 
-    const firstHashToRender = topRow * columnCount;
-    const lastHashToRender = Math.min(
-      firstHashToRender + visibleRows * columnCount,
-      hashes.length
-    );
+    const {
+      start: firstHashToRender,
+      end: lastHashToRender
+    } = this._rangeToRender();
 
     const firstOverscanHashToRender = Math.max(
       firstHashToRender - overscanRowsUp * columnCount,
@@ -154,7 +193,8 @@ class SkinTable extends React.Component {
 
 const mapStateToProps = state => ({
   skinHashes: Selectors.getMatchingSkinHashes(state),
-  skins: Selectors.getSkins(state)
+  skins: Selectors.getSkins(state),
+  selectedSkinHash: Selectors.getSelectedSkinHash(state)
 });
 
 const mapDispatchToProps = dispatch => ({

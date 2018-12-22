@@ -48,7 +48,10 @@ export const getMatchingSkinHashes = createSelector(
 
 // We should be careful _not_ to memoize this function since it's non determinisitc
 export function getRandomSkinHash(state) {
-  const skinHashes = getSkinHashes(state);
+  const matchingHashes = getMatchingHashes(state);
+  const skinHashes = matchingHashes
+    ? Array.from(matchingHashes)
+    : getSkinHashes(state);
   const numberOfSkins = skinHashes.length;
   const randomIndex = Math.floor(Math.random() * numberOfSkins);
   return skinHashes[randomIndex];
