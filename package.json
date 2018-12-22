@@ -22,7 +22,7 @@
     "reselect": "^4.0.0",
     "rxjs": "^6.3.3",
     "shell-escape": "^0.2.0",
-    "webamp": "^1.3.0-beta.1"
+    "webamp": "^1.3.0-beta.2"
   },
   "scripts": {
     "start": "react-scripts start",

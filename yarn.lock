@@ -8727,9 +8727,9 @@ wbuf@^1.1.0, wbuf@^1.7.2:
   dependencies:
     minimalistic-assert "^1.0.0"
 
-webamp@^1.3.0-beta.1:
-  version "1.3.0-beta.1"
-  resolved "https://registry.yarnpkg.com/webamp/-/webamp-1.3.0-beta.1.tgz#434e834ad6362f3fbfc1208b0f0d405f5183ec19"
+webamp@^1.3.0-beta.2:
+  version "1.3.0-beta.2"
+  resolved "https://registry.yarnpkg.com/webamp/-/webamp-1.3.0-beta.2.tgz#d0493a2dd844ab146546a43fc8ed7ce75ac0504b"
 
 webidl-conversions@^4.0.2:
   version "4.0.2"
