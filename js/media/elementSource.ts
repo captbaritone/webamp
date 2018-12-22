@@ -163,6 +163,8 @@ export default class ElementSource {
   }
 
   dispose() {
+    // TODO: Dispose subscriptions to this.audio
+    this.stop();
     this._emitter.dispose();
   }
 }

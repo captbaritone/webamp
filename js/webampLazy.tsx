@@ -383,6 +383,7 @@ class Winamp {
   dispose() {
     // TODO: Clean up store subscription in onTrackDidChange
     // TODO: Every storeHas call represents a potential race condition
+    this.media.dispose();
     this._actionEmitter.dispose();
     this._disposable.dispose();
   }
