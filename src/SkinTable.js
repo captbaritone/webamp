@@ -1,5 +1,4 @@
 import React from "react";
-import skins from "./skins.json";
 import "./App.css";
 import { connect } from "react-redux";
 import Skin from "./Skin";
@@ -133,7 +132,7 @@ class SkinTable extends React.Component {
           left={left}
           width={columnWidth}
           height={rowHeight}
-          color={skins[hash].color}
+          color={this.props.skins[hash].color}
           isOverscan={isOverscan}
           selectSkin={this._handleSelectSkin}
         />
@@ -154,7 +153,8 @@ class SkinTable extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  skinHashes: Selectors.getMatchingSkinHashes(state)
+  skinHashes: Selectors.getMatchingSkinHashes(state),
+  skins: Selectors.getSkins(state)
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -1,5 +1,6 @@
 import { createStore as createReduxStore, applyMiddleware } from "redux";
 import { createEpicMiddleware } from "redux-observable";
+import skins from "../skins.json";
 import * as Selectors from "./selectors";
 import rootEpic from "./epics";
 import { ABOUT_PAGE } from "../constants";
@@ -11,7 +12,8 @@ const defaultState = {
   matchingHashes: null,
   skinZip: null,
   focusedSkinFile: null,
-  activeContentPage: null
+  activeContentPage: null,
+  skins
 };
 
 function reducer(state = defaultState, action) {

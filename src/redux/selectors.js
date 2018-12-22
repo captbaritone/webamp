@@ -1,5 +1,4 @@
 import * as Utils from "../utils";
-import skins from "../skins.json";
 import { ABOUT_PAGE } from "../constants";
 
 export function getSelectedSkinHash(state) {
@@ -25,19 +24,19 @@ export function getSearchQuery(state) {
 
 // TODO: Memoize this very expensive function
 export function getMatchingSkinHashes(state) {
-  const hashes = Object.keys(skins);
+  const skinHashes = getSkinHashes(state);
   const searchQuery = getSearchQuery(state);
   if (searchQuery == null || state.matchingHashes == null) {
-    return hashes;
+    return skinHashes;
   }
-  return hashes.filter(hash => state.matchingHashes.has(hash));
+  return skinHashes.filter(hash => state.matchingHashes.has(hash));
 }
 
-export function getRandomSkinHash() {
-  const keys = Object.keys(skins);
-  const numberOfSkins = keys.length;
+export function getRandomSkinHash(state) {
+  const skinHashes = getSkinHashes(state);
+  const numberOfSkins = skinHashes.length;
   const randomIndex = Math.floor(Math.random() * numberOfSkins);
-  return keys[randomIndex];
+  return skinHashes[randomIndex];
 }
 
 export function getUrl(state) {
@@ -66,4 +65,13 @@ export function getPreviewImageUrl(state) {
 
 export function getActiveContentPage(state) {
   return state.activeContentPage;
+}
+
+// TODO: This could be memoized
+export function getSkinHashes(state) {
+  return Object.keys(getSkins(state));
+}
+
+export function getSkins(state) {
+  return state.skins;
 }
