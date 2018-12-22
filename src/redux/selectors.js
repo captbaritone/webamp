@@ -31,7 +31,16 @@ export function getMatchingHashes(state) {
 
 export const getSkinHashes = createSelector(
   getSkins,
-  skins => Object.keys(skins)
+  skins => {
+    const hashes = Object.keys(skins);
+    hashes.sort((a, b) => {
+      const aFaves = skins[a].favorites;
+      const bFaves = skins[b].favorites;
+      const res = (bFaves || 0) - (aFaves || 0);
+      return res;
+    });
+    return hashes;
+  }
 );
 
 export const getMatchingSkinHashes = createSelector(

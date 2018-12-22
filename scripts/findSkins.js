@@ -29,6 +29,19 @@ const getFileNames = async () => {
   });
   return fileNames;
 };
+
+const getFavoriteCounts = () => {
+  const content = fs.readFileSync(path.join(__dirname, "../likes.txt"), "utf8");
+  const favorites = {};
+  content.split("\n").forEach(line => {
+    if (!line.length) {
+      return;
+    }
+    const [hash, fileName] = line.split(" ");
+    favorites[hash] = fileName;
+  });
+  return favorites;
+};
 const testFolder = path.join(
   __dirname,
   "../../webamp/experiments/automatedScreenshots/screenshots/"
@@ -53,6 +66,8 @@ const genAverage = img => {
 
 const getFileData = async files => {
   const fileNames = await getFileNames();
+  const favortes = getFavoriteCounts();
+  console.log(favortes);
   const fileData = {};
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
@@ -66,6 +81,7 @@ const getFileData = async files => {
     // Processes
     fileData[md5] = {
       color: (await genAverage(file)).slice(1),
+      favorites: favortes[md5],
       fileName
     };
   }
