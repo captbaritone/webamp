@@ -114,7 +114,8 @@ describe("parseViscolors", () => {
     ];
     expect(actual).toEqual(expected);
   });
-  it.only("can parse a malformed viscolors file", () => {
+
+  it("can parse a malformed viscolors file", () => {
     // From https://skins.webamp.org/skin/018ddb394f2bfe49efa70bce27b71cb2/Centra_CSS-102_104-3.wsz/
     const viscolors = fixture("CENTRA_VISCOLOR.TXT");
     const actual = parseViscolors(viscolors);
@@ -146,6 +147,39 @@ describe("parseViscolors", () => {
       "rgb(181,189,189)", // 20 = osc 3
       "rgb(148,156,165)", // 21 = osc 4
       "rgb(148,156,165)" // 2) = osc 5 (dimmest)
+    ];
+    expect(actual).toEqual(expected);
+  });
+
+  it("does not require commas to separate values", () => {
+    // From https://skins.webamp.org/skin/99c6227d8880e00813a9aa6c4e808c37/valgaav_by_dreamcass-d85bqwp.wsz/
+    const viscolors = fixture("viscolor_valgaav.txt");
+    const actual = parseViscolors(viscolors);
+    const expected = [
+      "rgb(98,111,123)", // color 0 = background
+      "rgb(98,111,123)", // color 1 = dots
+      "rgb(21,21,21)", // 2 = top of spec
+      "rgb(223,176,176)", // 16
+      "rgb(218,168,168)", // 15
+      "rgb(211,158,158)", // 14
+      "rgb(204,147,147)", // 13
+      "rgb(198,137,137)", // 12
+      "rgb(191,127,127)", // 11
+      "rgb(185,117,117)", // 10
+      "rgb(178,107,107)", // 9
+      "rgb(172,97,97)", // 8
+      "rgb(165,86,86)", // 7
+      "rgb(158,76,76)", // 6
+      "rgb(152,66,66)", // 5
+      "rgb(145,56,56)", // 4
+      "rgb(138,46,46)", // 3
+      "rgb(138,46,46)", // 17 = bottom of spec
+      "rgb(138,46,46)", // 18 = osc 1
+      "rgb(158,76,76)", // 19 = osc 2
+      "rgb(178,107,107)", // 20 = osc 3
+      "rgb(198,137,137)", // 21 = osc4
+      "rgb(218,168,168)", // 22 = osc5
+      "rgb(223,176,176)" // 23 = analyzer peak dots
     ];
     expect(actual).toEqual(expected);
   });

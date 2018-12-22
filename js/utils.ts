@@ -82,7 +82,7 @@ export const getFileExtension = (fileName: string): string | null => {
 
 export const parseViscolors = (text: string): string[] => {
   const entries = text.split("\n");
-  const regex = /^\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/;
+  const regex = /^\s*(\d+)\s*,?\s*(\d+)\s*,?\s*(\d+)/;
   const colors = [...DEFAULT_SKIN.colors];
   entries
     .map(line => regex.exec(line))
