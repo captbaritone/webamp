@@ -10,12 +10,14 @@ class Overlay extends React.Component {
     this._node.classList.add("overlay");
     this._handleKeyDown = this._handleKeyDown.bind(this);
     this._handleClick = this._handleClick.bind(this);
+    this._handleTouchMove = this._handleTouchMove.bind(this);
 
     window.document.body.appendChild(this._node);
   }
 
   componentDidMount() {
     window.document.addEventListener("keydown", this._handleKeyDown);
+    window.document.addEventListener("touchmove", this._handleTouchMove);
     // TODO: This is technically a race condition, since we could unmount before this fires.
     if (this.props.shouldAnimate) {
       setTimeout(() => {
@@ -31,7 +33,12 @@ class Overlay extends React.Component {
   componentWillUnmount() {
     window.document.body.removeChild(this._node);
     window.document.removeEventListener("keydown", this._handleKeyDown);
+    window.document.removeEventListener("touchmove", this._handleTouchMove);
     document.body.classList.remove("overlay-open");
+  }
+
+  _handleTouchMove(e) {
+    e.preventDefault();
   }
 
   _handleKeyDown(e) {
