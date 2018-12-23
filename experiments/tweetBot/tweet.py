@@ -7,6 +7,7 @@ Usage:
   tweet.py manual <hash>
   tweet.py list
   tweet.py debug
+  tweet.py sort
 
 Options:
   -h --help               Show this screen.
@@ -16,6 +17,7 @@ Options:
 
 import requests
 import os
+import re
 import random
 import json
 import urllib
@@ -36,6 +38,7 @@ def getChar():
     try:
         # for Windows-based systems
         import msvcrt  # If successful, we are on Windows
+
         return msvcrt.getch()
 
     except ImportError:
@@ -56,13 +59,17 @@ def getChar():
         return answer
 
 
-def tweet(text, img_path=None):
-    api = twitter.Api(
+def get_api():
+    return twitter.Api(
         consumer_key=CONFIG["consumer_key"],
         consumer_secret=CONFIG["consumer_secret"],
         access_token_key=CONFIG["access_token_key"],
         access_token_secret=CONFIG["access_token_secret"],
     )
+
+
+def tweet(text, img_path=None):
+    api = get_api()
     status = api.PostUpdate(text, img_path)
     return "https://twitter.com/winampskins/status/%s" % status.id_str
 
@@ -120,8 +127,7 @@ def review():
         filenames[md5] = filename
         all_skins.append(md5)
 
-    potentials = list(set(all_skins) - set(approved) -
-                      set(tweeted) - set(rejected))
+    potentials = list(set(all_skins) - set(approved) - set(tweeted) - set(rejected))
 
     potentials.sort()
 
@@ -165,7 +171,10 @@ def main(dry):
     number_of_potentials = len(candidates)
     print("Found %s approved skins" % number_of_potentials)
     if number_of_potentials <= 10:
-        msg = "I'm down to only %s approved skins to tweet. You should review some more." % number_of_potentials
+        msg = (
+            "I'm down to only %s approved skins to tweet. You should review some more."
+            % number_of_potentials
+        )
         Webhook(CONFIG["discord_url"], msg=msg).post()
 
     if not number_of_potentials:
@@ -243,6 +252,35 @@ Download: %s""" % (
     print("Done!")
 
 
+# TODO: Deupe and make a generator
+# TODO: Ignore replies
+def get_all_tweets():
+    api = get_api()
+    min_id = None
+    done = False
+    tweets = []
+    while not done:
+        new_tweets = api.GetUserTimeline(
+            screen_name="winampskins",
+            trim_user=True,
+            count=200,
+            include_rts=False,
+            max_id=min_id,
+        )
+        min_id = min([tweet.id for tweet in new_tweets])
+        tweets.extend(new_tweets)
+        if len(new_tweets) == 1:
+            done = True
+
+    return tweets
+
+
+def extract_hash(foo):
+    match = re.search(r"([a-fA-F\d]{32})", foo)
+    if match:
+        return match.group()
+
+
 if __name__ == "__main__":
     arguments = docopt(__doc__, version="Tweet Winamp Skins 0.1")
     dry = arguments.get("--dry")
@@ -259,7 +297,18 @@ if __name__ == "__main__":
 
     elif arguments.get("manual"):
         hash = arguments.get("<hash>")
-        if(hash):
+        if hash:
             tweet_skin(hash)
         else:
             print("Whoops, no hash")
+    elif arguments.get("sort"):
+        api = get_api()
+        all_tweets = get_all_tweets()
+        for tweet in all_tweets:
+            hashes = [extract_hash(url.expanded_url) for url in tweet.urls]
+            if not len(hashes):
+                # print("No hash found in %s" % tweet)
+                # These are mostly replies
+                continue
+            if hashes[0]:
+                print("%s %s" % (hashes[0], tweet.favorite_count))
