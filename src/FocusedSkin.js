@@ -5,9 +5,10 @@ import WebampComponent from "./WebampComponent";
 import DownloadLink from "./DownloadLink";
 import * as Utils from "./utils";
 import * as Selectors from "./redux/selectors";
+import * as Actions from "./redux/actionCreators";
 import { SCREENSHOT_HEIGHT, SCREENSHOT_WIDTH } from "./constants";
-import { delay, first } from "rxjs/operators";
-import { Subject, combineLatest, timer } from "rxjs";
+import { delay } from "rxjs/operators";
+import { Subject, combineLatest, timer, fromEvent } from "rxjs";
 import Disposable from "./Disposable";
 
 class FocusedSkin extends React.Component {
@@ -45,7 +46,7 @@ class FocusedSkin extends React.Component {
     const startWebampFadein = combineLatest(
       this._webampLoadedEvents,
       transitionComplete
-    ).pipe(first());
+    );
 
     // This value matches the opacity transition timing for `#webamp` in CSS
     const webampFadeinComplete = startWebampFadein.pipe(delay(400));
@@ -53,17 +54,26 @@ class FocusedSkin extends React.Component {
     this._disposable.add(
       startWebampFadein.subscribe(() => {
         document.body.classList.add("webamp-loaded");
-        this._disposable.add(() => {
-          document.body.classList.remove("webamp-loaded");
-        });
       }),
       webampFadeinComplete.subscribe(() => {
         this.setState({ loaded: true });
-      })
+      }),
+      () => {
+        document.body.classList.remove("webamp-loaded");
+      }
     );
   }
 
   componentDidMount() {
+    this._disposable.add(
+      fromEvent(window.document, "keydown").subscribe(e => {
+        if (e.key === "ArrowRight") {
+          // this.props.selectRelativeSkin(1);
+        } else if (e.key === "ArrowLeft") {
+          // this.props.selectRelativeSkin(-1);
+        }
+      })
+    );
     if (!this.state.centered) {
       this._disposable.add(
         timer(0).subscribe(() => {
@@ -74,6 +84,12 @@ class FocusedSkin extends React.Component {
       );
     } else {
       this._transitionBeginEvents.next(null);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.skinUrl !== this.props.skinUrl) {
+      document.body.classList.remove("webamp-loaded");
     }
   }
 
@@ -221,4 +237,13 @@ const mapStateToProps = state => ({
   initialPosition: Selectors.getSelectedSkinPosition(state)
 });
 
-export default connect(mapStateToProps)(FocusedSkin);
+const mapDispatchToProps = dispatch => ({
+  selectRelativeSkin(offset) {
+    dispatch(Actions.selectRelativeSkin(offset));
+  }
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(FocusedSkin);

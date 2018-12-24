@@ -38,3 +38,7 @@ export function gotFocusedSkinFile(content) {
 export function requestedAboutPage() {
   return { type: "REQUESTED_ABOUT_PAGE" };
 }
+
+export function selectRelativeSkin(offset) {
+  return { type: "SELECT_RELATIVE_SKIN", offset };
+}

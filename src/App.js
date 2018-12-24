@@ -45,6 +45,7 @@ class App extends React.Component {
           this.props.selectedSkinHash == null || (
             <Overlay shouldAnimate={this.props.overlayShouldAnimate}>
               <FocusedSkin
+                key={this.props.selectedSkinHash}
                 initialHeight={rowHeight}
                 initialWidth={columnWidth}
               />

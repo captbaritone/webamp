@@ -85,10 +85,26 @@ const randomSkinEpic = (actions, states) =>
       return Actions.selectedSkin(Selectors.getRandomSkinHash(states.value));
     })
   );
+
+const selectRelativeSkinEpic = (actions, states) =>
+  actions.pipe(
+    filter(action => action.type === "SELECT_RELATIVE_SKIN"),
+    map(action => {
+      const hashes = Selectors.getMatchingSkinHashes(states.value);
+      const currentIndex = hashes.indexOf(
+        Selectors.getSelectedSkinHash(states.value)
+      );
+      const nextHash =
+        hashes[Utils.clamp(0, hashes.length - 1, currentIndex + action.offset)];
+      return Actions.selectedSkin(nextHash);
+    })
+  );
+
 export default combineEpics(
   searchEpic,
   urlChangedEpic,
   selectedSkinEpic,
   focusedSkinFileEpic,
-  randomSkinEpic
+  randomSkinEpic,
+  selectRelativeSkinEpic
 );

@@ -41,3 +41,7 @@ export function eventIsLinkClick(event) {
     !(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey)
   );
 }
+
+export function clamp(min, max, value) {
+  return Math.min(max, Math.max(min, value));
+}
