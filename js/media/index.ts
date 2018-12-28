@@ -3,7 +3,81 @@ import { BANDS, MEDIA_STATUS } from "../constants";
 import Emitter from "../emitter";
 import ElementSource from "./elementSource";
 import { Band } from "../types";
-// import detectChannels from "./detectChannels";
+
+// Safari does not, yet, support the StereoPannerNode, so we implement a generic
+// interface which is implemented by either a StereoPannerNode, or two gain
+// nodes depending on the support that the browser provides. Hopefully this can
+// be removed in the future.
+interface Panner {
+  connect(source: AudioNode): void;
+  setBalance(balance: number): void;
+  input: AudioNode;
+}
+
+function createSereoPannerNode(context: AudioContext): Panner {
+  if (context.createStereoPanner) {
+    const panner = context.createStereoPanner();
+    return {
+      connect(source: AudioNode) {
+        panner.connect(source);
+      },
+      setBalance(balance: number) {
+        panner.pan.setValueAtTime(balance, context.currentTime);
+      },
+      input: panner
+    };
+  }
+
+  const chanSplit = context.createChannelSplitter(2);
+  const leftGain = context.createGain();
+  const rightGain = context.createGain();
+
+  const chanMerge = context.createChannelMerger(2);
+
+  // I suspect the formatting on these is odd due to Prettier special casing
+  // React Redux's `connect`, but I could be wrong.
+  chanSplit.connect(
+    leftGain,
+    0
+  );
+  chanSplit.connect(
+    rightGain,
+    1
+  );
+
+  leftGain.connect(
+    chanMerge,
+    0,
+    0
+  );
+  rightGain.connect(
+    chanMerge,
+    0,
+    1
+  );
+
+  return {
+    connect(source: AudioNode) {
+      chanMerge.connect(source);
+    },
+    setBalance(balance: number) {
+      if (balance > 0) {
+        // Right
+        leftGain.gain.value = 1 - balance;
+        rightGain.gain.value = 1;
+      } else if (balance < 0) {
+        // Left
+        leftGain.gain.value = 1;
+        rightGain.gain.value = 1 + balance;
+      } else {
+        // Center
+        leftGain.gain.value = 1;
+        rightGain.gain.value = 1;
+      }
+    },
+    input: chanSplit
+  };
+}
 
 export default class Media {
   _emitter: Emitter;
@@ -12,10 +86,7 @@ export default class Media {
   _balance: number;
   _staticSource: AnalyserNode;
   _preamp: GainNode;
-  _chanSplit: ChannelSplitterNode;
-  _leftGain: GainNode;
-  _rightGain: GainNode;
-  _chanMerge: ChannelMergerNode;
+  _panner: Panner;
   _analyser: AnalyserNode;
   _gainNode: GainNode;
   _source: ElementSource;
@@ -60,15 +131,8 @@ export default class Media {
     // Create the preamp node
     this._preamp = this._context.createGain();
 
-    // Create the spliter node
-    this._chanSplit = this._context.createChannelSplitter(2);
-
-    // Create the gains for left and right
-    this._leftGain = this._context.createGain();
-    this._rightGain = this._context.createGain();
-
-    // Create channel merge
-    this._chanMerge = this._context.createChannelMerger(2);
+    // Create the panner node
+    this._panner = createSereoPannerNode(this._context);
 
     // Create the analyser node for the visualizer
     this._analyser = this._context.createAnalyser();
@@ -91,17 +155,7 @@ export default class Media {
     //           [...biquadFilters]     |
     //                    |_____________/
     //                    |
-    //    (split using createChannelSplitter)
-    //                    |
-    //                   / \
-    //                  /   \
-    //          <leftGain><rightGain>
-    //                  \   /
-    //                   \ /
-    //                    |
-    //     (merge using createChannelMerger)
-    //                    |
-    //               <chanMerge>
+    //               <stereoPanner>
     //                    |
     //                    |\
     //                    | <analyser>
@@ -155,48 +209,15 @@ export default class Media {
       output = filter;
     });
 
-    output.connect(this._chanSplit);
+    output.connect(this._panner.input);
 
-    // Connect split channels to left / right gains
-    this._chanSplit.connect(
-      this._leftGain,
-      0
-    );
-    this._chanSplit.connect(
-      this._rightGain,
-      1
-    );
-
-    // Reconnect the left / right gains to the merge node
-    this._leftGain.connect(
-      this._chanMerge,
-      0,
-      0
-    );
-    this._rightGain.connect(
-      this._chanMerge,
-      0,
-      1
-    );
-
-    this._chanMerge.connect(this._gainNode);
-    this._chanMerge.connect(this._analyser);
+    this._panner.connect(this._gainNode);
+    this._panner.connect(this._analyser);
 
     this._gainNode.connect(this._context.destination);
   }
 
   _setChannels(num: number | null) {
-    const assumedChannels = num == null ? 2 : num;
-    this._chanSplit.disconnect();
-    this._chanSplit.connect(
-      this._leftGain,
-      0
-    );
-    // If we only have one channel, use it for both left and right.
-    this._chanSplit.connect(
-      this._rightGain,
-      assumedChannels === 1 ? 0 : 1
-    );
     this._channels = num;
     this._emitter.trigger("channelupdate");
   }
@@ -233,18 +254,6 @@ export default class Media {
   /* Actions */
   async play() {
     await this._source.play();
-    if (this._channels == null) {
-      // Temporarily disabled https://github.com/captbaritone/webamp/issues/551
-      /*
-      detectChannels(this._staticSource)
-        .then(channels => {
-          this._setChannels(channels);
-        })
-        .catch(() => {
-          this._setChannels(null);
-        });
-      */
-    }
   }
 
   pause() {
@@ -273,26 +282,7 @@ export default class Media {
 
   // From -100 to 100
   setBalance(balance: number) {
-    let changeVal = Math.abs(balance) / 100;
-
-    // Hack for Firefox. Having either channel set to 0 seems to revert us
-    // to equal balance.
-    changeVal = changeVal - 0.00000001;
-
-    if (balance > 0) {
-      // Right
-      this._leftGain.gain.value = 1 - changeVal;
-      this._rightGain.gain.value = 1;
-    } else if (balance < 0) {
-      // Left
-      this._leftGain.gain.value = 1;
-      this._rightGain.gain.value = 1 - changeVal;
-    } else {
-      // Center
-      this._leftGain.gain.value = 1;
-      this._rightGain.gain.value = 1;
-    }
-    this._balance = balance;
+    this._panner.setBalance(balance / 100);
   }
 
   setEqBand(band: Band, value: number) {
@@ -302,7 +292,7 @@ export default class Media {
 
   disableEq() {
     this._staticSource.disconnect();
-    this._staticSource.connect(this._chanSplit);
+    this._staticSource.connect(this._panner.input);
   }
 
   enableEq() {
