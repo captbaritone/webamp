@@ -64,10 +64,10 @@
     "@types/invariant": "^2.2.29",
     "@types/jest": "^23.3.2",
     "@types/lodash": "^4.14.116",
+    "@types/rc-slider": "^8.6.0",
     "@types/react": "^16.4.18",
     "@types/react-dom": "^16.0.9",
     "@types/react-redux": "^6.0.9",
-    "@types/rc-slider": "^8.6.0",
     "@types/webaudioapi": "^0.0.27",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^9.0.0-beta.3",
@@ -141,5 +141,7 @@
     ]
   },
   "prettier": {},
-  "dependencies": {}
+  "dependencies": {
+    "stereo-panner-node": "^1.4.0"
+  }
 }
