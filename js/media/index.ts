@@ -1,82 +1,17 @@
 /* Emulate the native <audio> element with Web Audio API */
 import { BANDS, MEDIA_STATUS } from "../constants";
+// Safari does not, yet, support the StereoPannerNode, so we use this polyfill
+// Hopefully this can be removed in thefuture.
+import SteroPannerNode from "stereo-panner-node";
 import Emitter from "../emitter";
 import ElementSource from "./elementSource";
 import { Band } from "../types";
 
-// Safari does not, yet, support the StereoPannerNode, so we implement a generic
-// interface which is implemented by either a StereoPannerNode, or two gain
-// nodes depending on the support that the browser provides. Hopefully this can
-// be removed in the future.
-interface Panner {
-  connect(source: AudioNode): void;
-  setBalance(balance: number): void;
-  input: AudioNode;
-}
-
-function createSereoPannerNode(context: AudioContext): Panner {
-  if (context.createStereoPanner) {
-    const panner = context.createStereoPanner();
-    return {
-      connect(source: AudioNode) {
-        panner.connect(source);
-      },
-      setBalance(balance: number) {
-        panner.pan.setValueAtTime(balance, context.currentTime);
-      },
-      input: panner
-    };
+function createStereoPanner(context: AudioContext): StereoPannerNode {
+  if ("createStereoPanner" in context) {
+    return context.createStereoPanner();
   }
-
-  const chanSplit = context.createChannelSplitter(2);
-  const leftGain = context.createGain();
-  const rightGain = context.createGain();
-
-  const chanMerge = context.createChannelMerger(2);
-
-  // I suspect the formatting on these is odd due to Prettier special casing
-  // React Redux's `connect`, but I could be wrong.
-  chanSplit.connect(
-    leftGain,
-    0
-  );
-  chanSplit.connect(
-    rightGain,
-    1
-  );
-
-  leftGain.connect(
-    chanMerge,
-    0,
-    0
-  );
-  rightGain.connect(
-    chanMerge,
-    0,
-    1
-  );
-
-  return {
-    connect(source: AudioNode) {
-      chanMerge.connect(source);
-    },
-    setBalance(balance: number) {
-      if (balance > 0) {
-        // Right
-        leftGain.gain.value = 1 - balance;
-        rightGain.gain.value = 1;
-      } else if (balance < 0) {
-        // Left
-        leftGain.gain.value = 1;
-        rightGain.gain.value = 1 + balance;
-      } else {
-        // Center
-        leftGain.gain.value = 1;
-        rightGain.gain.value = 1;
-      }
-    },
-    input: chanSplit
-  };
+  return new SteroPannerNode(context);
 }
 
 export default class Media {
@@ -86,7 +21,7 @@ export default class Media {
   _balance: number;
   _staticSource: AnalyserNode;
   _preamp: GainNode;
-  _panner: Panner;
+  _panner: StereoPannerNode;
   _analyser: AnalyserNode;
   _gainNode: GainNode;
   _source: ElementSource;
@@ -132,7 +67,7 @@ export default class Media {
     this._preamp = this._context.createGain();
 
     // Create the panner node
-    this._panner = createSereoPannerNode(this._context);
+    this._panner = createStereoPanner(this._context);
 
     // Create the analyser node for the visualizer
     this._analyser = this._context.createAnalyser();
@@ -209,7 +144,7 @@ export default class Media {
       output = filter;
     });
 
-    output.connect(this._panner.input);
+    output.connect(this._panner);
 
     this._panner.connect(this._gainNode);
     this._panner.connect(this._analyser);
@@ -282,7 +217,7 @@ export default class Media {
 
   // From -100 to 100
   setBalance(balance: number) {
-    this._panner.setBalance(balance / 100);
+    this._panner.pan.setValueAtTime(balance / 100, this._context.currentTime);
   }
 
   setEqBand(band: Band, value: number) {
@@ -292,7 +227,7 @@ export default class Media {
 
   disableEq() {
     this._staticSource.disconnect();
-    this._staticSource.connect(this._panner.input);
+    this._staticSource.connect(this._panner);
   }
 
   enableEq() {
