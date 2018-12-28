@@ -12,10 +12,7 @@ export default class Media {
   _balance: number;
   _staticSource: AnalyserNode;
   _preamp: GainNode;
-  _chanSplit: ChannelSplitterNode;
-  _leftGain: GainNode;
-  _rightGain: GainNode;
-  _chanMerge: ChannelMergerNode;
+  _panner: StereoPannerNode;
   _analyser: AnalyserNode;
   _gainNode: GainNode;
   _source: ElementSource;
@@ -60,15 +57,8 @@ export default class Media {
     // Create the preamp node
     this._preamp = this._context.createGain();
 
-    // Create the spliter node
-    this._chanSplit = this._context.createChannelSplitter(2);
-
-    // Create the gains for left and right
-    this._leftGain = this._context.createGain();
-    this._rightGain = this._context.createGain();
-
-    // Create channel merge
-    this._chanMerge = this._context.createChannelMerger(2);
+    // Create the panner node
+    this._panner = this._context.createStereoPanner();
 
     // Create the analyser node for the visualizer
     this._analyser = this._context.createAnalyser();
@@ -155,50 +145,12 @@ export default class Media {
       output = filter;
     });
 
-    output.connect(this._chanSplit);
+    output.connect(this._panner);
 
-    // Connect split channels to left / right gains
-    this._chanSplit.connect(
-      this._leftGain,
-      0
-    );
-    this._chanSplit.connect(
-      this._rightGain,
-      1
-    );
-
-    // Reconnect the left / right gains to the merge node
-    this._leftGain.connect(
-      this._chanMerge,
-      0,
-      0
-    );
-    this._rightGain.connect(
-      this._chanMerge,
-      0,
-      1
-    );
-
-    this._chanMerge.connect(this._gainNode);
-    this._chanMerge.connect(this._analyser);
+    this._panner.connect(this._gainNode);
+    this._panner.connect(this._analyser);
 
     this._gainNode.connect(this._context.destination);
-  }
-
-  _setChannels(num: number | null) {
-    const assumedChannels = num == null ? 2 : num;
-    this._chanSplit.disconnect();
-    this._chanSplit.connect(
-      this._leftGain,
-      0
-    );
-    // If we only have one channel, use it for both left and right.
-    this._chanSplit.connect(
-      this._rightGain,
-      assumedChannels === 1 ? 0 : 1
-    );
-    this._channels = num;
-    this._emitter.trigger("channelupdate");
   }
 
   getAnalyser() {
@@ -233,18 +185,6 @@ export default class Media {
   /* Actions */
   async play() {
     await this._source.play();
-    if (this._channels == null) {
-      // Temporarily disabled https://github.com/captbaritone/webamp/issues/551
-      /*
-      detectChannels(this._staticSource)
-        .then(channels => {
-          this._setChannels(channels);
-        })
-        .catch(() => {
-          this._setChannels(null);
-        });
-      */
-    }
   }
 
   pause() {
@@ -273,25 +213,7 @@ export default class Media {
 
   // From -100 to 100
   setBalance(balance: number) {
-    let changeVal = Math.abs(balance) / 100;
-
-    // Hack for Firefox. Having either channel set to 0 seems to revert us
-    // to equal balance.
-    changeVal = changeVal - 0.00000001;
-
-    if (balance > 0) {
-      // Right
-      this._leftGain.gain.value = 1 - changeVal;
-      this._rightGain.gain.value = 1;
-    } else if (balance < 0) {
-      // Left
-      this._leftGain.gain.value = 1;
-      this._rightGain.gain.value = 1 - changeVal;
-    } else {
-      // Center
-      this._leftGain.gain.value = 1;
-      this._rightGain.gain.value = 1;
-    }
+    this._panner.pan.setValueAtTime(balance / 100, this._context.currentTime);
     this._balance = balance;
   }
 
@@ -302,7 +224,7 @@ export default class Media {
 
   disableEq() {
     this._staticSource.disconnect();
-    this._staticSource.connect(this._chanSplit);
+    this._staticSource.connect(this._panner);
   }
 
   enableEq() {
@@ -323,7 +245,6 @@ export default class Media {
   async loadFromUrl(url: string, autoPlay: boolean) {
     this._emitter.trigger("waiting");
     await this._source.loadUrl(url);
-    this._setChannels(null);
     this._emitter.trigger("stopWaiting");
     if (autoPlay) {
       this.play();
