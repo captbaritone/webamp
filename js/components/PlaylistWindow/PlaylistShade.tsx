@@ -8,6 +8,7 @@ import {
 } from "../../selectors";
 import { getTimeStr } from "../../utils";
 import { SET_FOCUSED_WINDOW } from "../../actionTypes";
+import * as Selectors from "../../selectors";
 
 import {
   WINDOWS,
@@ -23,7 +24,7 @@ import { AppState, WindowId, Dispatch } from "../../types";
 
 interface StateProps {
   name: string | null;
-  length: number | null;
+  duration: number | null;
   playlistSize: [number, number];
   focused: WindowId;
   trackOrder: number[];
@@ -55,8 +56,8 @@ class PlaylistShade extends React.Component<StateProps & DispatchProps> {
   }
 
   _time() {
-    const { length, name } = this.props;
-    return name == null ? "" : getTimeStr(length);
+    const { duration, name } = this.props;
+    return name == null ? "" : getTimeStr(duration);
   }
 
   render() {
@@ -109,15 +110,15 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
 };
 
 const mapStateToProps = (state: AppState): StateProps => {
+  const duration = Selectors.getDuration(state);
   const {
-    windows: { focused },
-    media: { length }
+    windows: { focused }
   } = state;
   return {
     focused,
     playlistSize: getWindowSize(state)("playlist"),
     trackOrder: getOrderedTracks(state),
-    length,
+    duration,
     name: getMinimalMediaText(state)
   };
 };

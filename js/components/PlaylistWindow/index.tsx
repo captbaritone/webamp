@@ -13,13 +13,7 @@ import {
   scrollVolume,
   closeWindow
 } from "../../actionCreators";
-import {
-  getScrollOffset,
-  getWindowPixelSize,
-  getWindowSize,
-  getWindowShade,
-  getSkinPlaylistStyle
-} from "../../selectors";
+import * as Selectors from "../../selectors";
 
 import { LOAD_STYLE } from "../../constants";
 
@@ -216,19 +210,18 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
 const mapStateToProps = (state: AppState): StateProps => {
   const {
     windows: { focused },
-    media: { length },
     playlist: { trackOrder }
   } = state;
 
   return {
-    offset: getScrollOffset(state),
+    offset: Selectors.getScrollOffset(state),
     maxTrackIndex: trackOrder.length - 1,
-    playlistWindowPixelSize: getWindowPixelSize(state)("playlist"),
+    playlistWindowPixelSize: Selectors.getWindowPixelSize(state)("playlist"),
     focused,
-    skinPlaylistStyle: getSkinPlaylistStyle(state),
-    playlistSize: getWindowSize(state)("playlist"),
-    playlistShade: Boolean(getWindowShade(state)("playlist")),
-    duration: length
+    skinPlaylistStyle: Selectors.getSkinPlaylistStyle(state),
+    playlistSize: Selectors.getWindowSize(state)("playlist"),
+    playlistShade: Boolean(Selectors.getWindowShade(state)("playlist")),
+    duration: Selectors.getDuration(state)
   };
 };
 

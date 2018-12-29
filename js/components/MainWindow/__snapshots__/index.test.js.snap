@@ -317,52 +317,10 @@ exports[`MainWindow renders to snapshot 1`] = `
     </div>
     <div
       id="kbps"
-    >
-      <span
-        className=" character character-110"
-      >
-        n
-      </span>
-      <span
-        className=" character character-117"
-      >
-        u
-      </span>
-      <span
-        className=" character character-108"
-      >
-        l
-      </span>
-      <span
-        className=" character character-108"
-      >
-        l
-      </span>
-    </div>
+    />
     <div
       id="khz"
-    >
-      <span
-        className=" character character-110"
-      >
-        n
-      </span>
-      <span
-        className=" character character-117"
-      >
-        u
-      </span>
-      <span
-        className=" character character-108"
-      >
-        l
-      </span>
-      <span
-        className=" character character-108"
-      >
-        l
-      </span>
-    </div>
+    />
     <div
       className="mono-stereo"
     >

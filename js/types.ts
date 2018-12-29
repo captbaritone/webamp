@@ -17,6 +17,12 @@ export {
   WindowPositions
 } from "./reducers/windows";
 
+export interface FilePicker {
+  contextMenuName: string;
+  filePicker: () => Promise<Track[]>;
+  requiresNetwork: boolean;
+}
+
 export type Skin = {
   url: string;
   name: string;

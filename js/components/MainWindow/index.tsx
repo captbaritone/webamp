@@ -4,7 +4,6 @@ import classnames from "classnames";
 import { WINDOWS, MEDIA_STATUS } from "../../constants";
 import {
   loadFilesFromReferences,
-  removeAllTracks,
   toggleMainWindowShadeMode,
   scrollVolume
 } from "../../actionCreators";
@@ -38,14 +37,45 @@ import Time from "./Time";
 import MainVolume from "./MainVolume";
 
 import "../../../css/main-window.css";
+import {
+  MediaStatus,
+  WindowId,
+  AppState,
+  Dispatch,
+  FilePicker
+} from "../../types";
 
-export class MainWindow extends React.Component {
+interface StateProps {
+  focused: WindowId;
+  loading: boolean;
+  doubled: boolean;
+  mainShade: boolean;
+  llama: boolean;
+  working: boolean;
+  status: MediaStatus | null;
+}
+
+interface DispatchProps {
+  setFocus(): void;
+  loadFilesFromReferences(files: FileList): void;
+  scrollVolume(e: React.WheelEvent<HTMLDivElement>): void;
+  toggleMainWindowShadeMode(): void;
+}
+
+interface OwnProps {
+  analyser: AnalyserNode;
+  filePickers: FilePicker[];
+}
+
+type Props = StateProps & DispatchProps & OwnProps;
+
+export class MainWindow extends React.Component<Props> {
   _handleClick = () => {
     this.props.setFocus();
   };
 
-  _handleDrop = e => {
-    this.props.loadFilesFromReferences(e);
+  _handleDrop = (e: React.DragEvent<HTMLDivElement>): void => {
+    this.props.loadFilesFromReferences(e.dataTransfer.files);
   };
 
   render() {
@@ -91,7 +121,10 @@ export class MainWindow extends React.Component {
             bottom
             handle={<ClickedDiv id="option" title="Winamp Menu" />}
           >
-            <MainContextMenu filePickers={filePickers} />
+            <MainContextMenu
+              // @ts-ignore MainContextMenu is not typed yet
+              filePickers={filePickers}
+            />
           </ContextMenuTarget>
           {mainShade && <MiniTime />}
           <Minimize />
@@ -107,7 +140,10 @@ export class MainWindow extends React.Component {
           />
           <Time />
         </div>
-        <Visualizer analyser={this.props.analyser} />
+        <Visualizer
+          // @ts-ignore Visualizer is not typed yet
+          analyser={this.props.analyser}
+        />
         <div className="media-info">
           <Marquee />
           <Kbps />
@@ -138,14 +174,14 @@ export class MainWindow extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state: AppState): StateProps => {
   const {
     media: { status },
     display: { loading, doubled, llama, working },
     windows: { focused }
   } = state;
   return {
-    mainShade: getWindowShade(state)("main"),
+    mainShade: Boolean(getWindowShade(state)("main")),
     status,
     loading,
     doubled,
@@ -155,12 +191,16 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = {
-  setFocus: () => ({ type: SET_FOCUSED_WINDOW, window: WINDOWS.MAIN }),
-  loadFilesFromReferences: e => loadFilesFromReferences(e.dataTransfer.files),
-  removeAllTracks,
-  toggleMainWindowShadeMode,
-  scrollVolume
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
+  return {
+    setFocus: () =>
+      dispatch({ type: SET_FOCUSED_WINDOW, window: WINDOWS.MAIN }),
+    loadFilesFromReferences: (files: FileList) =>
+      dispatch(loadFilesFromReferences(files)),
+    toggleMainWindowShadeMode: () => dispatch(toggleMainWindowShadeMode()),
+    scrollVolume: (e: React.WheelEvent<HTMLDivElement>) =>
+      dispatch(scrollVolume(e))
+  };
 };
 export default connect(
   mapStateToProps,
