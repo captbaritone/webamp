@@ -37,8 +37,16 @@ const PlaybackContextMenu = props => (
     {/*
     <Node label="Start of list" hotkey="Ctrl+Z" />
     */}
-    <Node label="10 tracks back" hotkey="Num. 1" onClick={() => nextN(-10)} />
-    <Node label="10 tracks fwd" hotkey="Num. 3" onClick={() => nextN(10)} />
+    <Node
+      label="10 tracks back"
+      hotkey="Num. 1"
+      onClick={() => props.nextN(-10)}
+    />
+    <Node
+      label="10 tracks fwd"
+      hotkey="Num. 3"
+      onClick={() => props.nextN(10)}
+    />
     {/*
     <Hr />
     <Node label="Jump to time" hotkey="Ctrl+J" />
@@ -54,7 +62,8 @@ const mapDispatchToProps = {
   stop,
   next,
   seekForward,
-  seekBackward
+  seekBackward,
+  nextN
 };
 
 export default connect(
