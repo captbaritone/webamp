@@ -8,6 +8,7 @@ import {
   SET_VOLUME,
   SET_BALANCE,
   SET_MEDIA,
+  SET_MEDIA_TAGS,
   TOGGLE_REPEAT,
   TOGGLE_SHUFFLE,
   TOGGLE_TIME_MODE,
@@ -91,6 +92,15 @@ const media = (
         kbps: action.kbps,
         khz: action.khz,
         channels: action.channels
+      };
+    case SET_MEDIA_TAGS:
+      const { sampleRate, bitrate, numberOfChannels } = action;
+      const { kbps, khz, channels } = state;
+      return {
+        ...state,
+        kbps: bitrate != null ? String(Math.round(bitrate / 1000)) : kbps,
+        khz: sampleRate != null ? String(Math.round(sampleRate / 1000)) : khz,
+        channels: numberOfChannels != null ? numberOfChannels : channels
       };
     case SET_VOLUME:
       return { ...state, volume: action.volume };

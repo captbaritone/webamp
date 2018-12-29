@@ -300,6 +300,7 @@ export function fetchMediaTags(file: string | Blob, id: number): Dispatchable {
       const metadata = await genMediaTags(file, await requireMusicMetadata());
       // There's more data here, but we don't have a use for it yet:
       const { artist, title, album, picture } = metadata.common;
+      const { numberOfChannels, bitrate, sampleRate } = metadata.format;
       let albumArtUrl = null;
       if (picture && picture.length >= 1) {
         const byteArray = new Uint8Array(picture[0].data);
@@ -312,6 +313,9 @@ export function fetchMediaTags(file: string | Blob, id: number): Dispatchable {
         title: title ? title : "",
         album,
         albumArtUrl,
+        numberOfChannels,
+        bitrate,
+        sampleRate,
         id
       });
     } catch (e) {

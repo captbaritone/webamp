@@ -382,6 +382,9 @@ export type Action =
       artist: string;
       album?: string;
       albumArtUrl?: string | null;
+      numberOfChannels?: number;
+      bitrate?: number;
+      sampleRate?: number;
     }
   | {
       type: "MEDIA_TAG_REQUEST_INITIALIZED";
