@@ -38,14 +38,7 @@ import LoadQueue from "../loadQueue";
 
 import { removeAllTracks } from "./playlist";
 import { setPreamp, setEqBand } from "./equalizer";
-import {
-  LoadStyle,
-  Dispatchable,
-  PlaylistTrack,
-  Track,
-  URLTrack,
-  EqfPreset
-} from "../types";
+import { LoadStyle, Dispatchable, Track, EqfPreset } from "../types";
 
 // Lower is better
 const DURATION_VISIBLE_PRIORITY = 5;
@@ -239,6 +232,7 @@ export function loadMediaFile(
     } else {
       throw new Error("Expected track to have either a blob or a url");
     }
+
     dispatch({
       type: ADD_TRACK_FROM_URL,
       url: canonicalUrl,
