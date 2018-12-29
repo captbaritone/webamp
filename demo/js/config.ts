@@ -1,4 +1,4 @@
-import { Track, AppState } from "./types";
+import { Track, AppState } from "../../js/types";
 // @ts-ignore
 import llamaAudio from "../mp3/llama-2.91.mp3";
 import { DeepPartial } from "redux";

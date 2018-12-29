@@ -1,5 +1,5 @@
-import WebampLazy from "./webampLazy";
-import { LoadedURLTrack } from "./types";
+import WebampLazy from "../webampLazy";
+import { LoadedURLTrack } from "../types";
 
 export default function enableMediaSession(webamp: WebampLazy) {
   if ("mediaSession" in navigator) {

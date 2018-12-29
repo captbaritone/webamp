@@ -5,22 +5,19 @@ import React from "react";
 import ReactDOM from "react-dom";
 import createMiddleware from "raven-for-redux";
 import isButterchurnSupported from "butterchurn/lib/isSupported.min";
-import osx from "../skins/MacOSXAqua1-5.wsz";
-import topaz from "../skins/TopazAmp1-2.wsz";
-import visor from "../skins/Vizor1-01.wsz";
-import xmms from "../skins/XMMS-Turquoise.wsz";
-import zaxon from "../skins/ZaxonRemake1-0.wsz";
-import green from "../skins/Green-Dimension-V2.wsz";
-import base from "../skins/base-2.91-png.wsz";
-import internetArchive from "../skins/Internet-Archive.wsz";
-import screenshotInitialState from "./screenshotInitialState";
-import partialButterchurnOptions from "./components/MilkdropWindow/options";
-import { WINDOWS } from "./constants";
-import * as Selectors from "./selectors";
+import osx from "../../skins/MacOSXAqua1-5.wsz";
+import topaz from "../../skins/TopazAmp1-2.wsz";
+import visor from "../../skins/Vizor1-01.wsz";
+import xmms from "../../skins/XMMS-Turquoise.wsz";
+import zaxon from "../../skins/ZaxonRemake1-0.wsz";
+import green from "../../skins/Green-Dimension-V2.wsz";
+import base from "../../skins/base-2.91-png.wsz";
+import internetArchive from "../../skins/Internet-Archive.wsz";
+import partialButterchurnOptions from "../../js/components/MilkdropWindow/options";
+import { WINDOWS } from "../../js/constants";
+import * as Selectors from "../../js/selectors";
 
-import WebampLazy from "./webampLazy";
-import WebampIcon from "./WebampIcon";
-import enableMediaSession from "./mediaSession";
+import WebampLazy from "../../js/webampLazy";
 import {
   STEP_MARQUEE,
   UPDATE_TIME_ELAPSED,
@@ -33,9 +30,10 @@ import {
   TOGGLE_SHUFFLE,
   SET_EQ_AUTO,
   SET_DUMMY_VIZ_DATA
-} from "./actionTypes";
+} from "../../js/actionTypes";
 
-import { loadFilesFromReferences } from "./actionCreators";
+import { loadFilesFromReferences } from "../../js/actionCreators";
+import { bindToIndexedDB } from "./indexedDB";
 
 import {
   skinUrl as configSkinUrl,
@@ -43,8 +41,9 @@ import {
   initialState,
   disableMarquee
 } from "./config";
-
-import { bindToIndexedDB } from "./indexedDB";
+import WebampIcon from "./WebampIcon";
+import enableMediaSession from "./mediaSession";
+import screenshotInitialState from "./screenshotInitialState";
 
 const DEFAULT_DOCUMENT_TITLE = document.title;
 

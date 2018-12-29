@@ -13,7 +13,11 @@ module.exports = merge(common, {
       )
     }),
     new CopyWebpackPlugin([
-      { from: "js/dev-service-worker.js", to: "service-worker.js", force: true }
+      {
+        from: "./js/dev-service-worker.js",
+        to: "service-worker.js",
+        force: true
+      }
     ])
   ]
 });

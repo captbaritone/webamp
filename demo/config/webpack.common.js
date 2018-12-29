@@ -56,17 +56,17 @@ module.exports = {
       background_color: "#ffffff", // eslint-disable-line camelcase
       icons: [
         {
-          src: path.resolve("./images/manifest/icon-192x192.png"),
+          src: path.resolve("./demo/images/manifest/icon-192x192.png"),
           sizes: "192x192",
           type: "image/png"
         },
         {
-          src: path.resolve("./images/manifest/icon-512x512.png"),
+          src: path.resolve("./demo/images/manifest/icon-512x512.png"),
           sizes: "512x512",
           type: "image/png"
         },
         {
-          src: path.resolve("./images/manifest/icon.svg"),
+          src: path.resolve("./demo/images/manifest/icon.svg"),
           sizes: "513x513",
           type: "image/svg+xml"
         }
@@ -82,6 +82,7 @@ module.exports = {
   entry: {
     webamp: ["./js/index.js"]
   },
+  context: path.resolve(__dirname, "../"),
   output: {
     filename: "[name]-[hash].js",
     chunkFilename: "[name]-[hash].js",

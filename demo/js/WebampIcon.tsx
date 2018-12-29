@@ -1,4 +1,4 @@
-import WebampLazy from "./webampLazy";
+import WebampLazy from "../../js/webampLazy";
 // @ts-ignore #hook-types
 import React, { useEffect, useState, useRef } from "react";
 // @ts-ignore

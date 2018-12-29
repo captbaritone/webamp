@@ -1,5 +1,5 @@
 import { DeepPartial } from "redux";
-import { AppState } from "./types";
+import { AppState } from "../types";
 
 const defaultTracksState = {
   "0": {

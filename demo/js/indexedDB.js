@@ -1,5 +1,5 @@
 import IdbKvStore from "idb-kv-store";
-import { throttle } from "./utils";
+import { throttle } from "../../js/utils";
 const LOCAL_STORAGE_KEY = "webamp_state";
 
 export async function bindToIndexedDB(webamp, clearState, useState) {

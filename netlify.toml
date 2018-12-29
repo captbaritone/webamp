@@ -1,6 +1,6 @@
 [build]
   command = "npm run build && npm run build-library"
-  publish = "built"
+  publish = "demo/built"
 
 # A short URL for listeners of https://changelog.com/podcast/291
 [[redirects]]
