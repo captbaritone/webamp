@@ -1,4 +1,4 @@
-import { AppState, Action } from "../types";
+import { AppState, Action, Dispatchable, Dispatch } from "../types";
 import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
@@ -6,6 +6,7 @@ import { getTimeObj } from "../utils";
 import { TOGGLE_TIME_MODE } from "../actionTypes";
 import { TIME_MODE, MEDIA_STATUS } from "../constants";
 import Character from "./Character";
+import * as Selectors from "../selectors";
 
 import "../../css/mini-time.css";
 
@@ -26,15 +27,20 @@ const Background = () => (
   </React.Fragment>
 );
 
-type StateProps = {
+interface StateProps {
   status: string | null;
   timeMode: string;
   timeElapsed: number;
   length: number | null;
-  toggle: () => void;
-};
+}
 
-const MiniTime = (props: StateProps) => {
+interface DispatchProps {
+  toggle: () => void;
+}
+
+type Props = StateProps & DispatchProps;
+
+const MiniTime = (props: Props) => {
   let seconds = null;
   // TODO: Clean this up: If stopped, just render the background, rather than
   // rendering spaces twice.
@@ -66,14 +72,14 @@ const MiniTime = (props: StateProps) => {
   );
 };
 
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = (state: AppState): StateProps => ({
   status: state.media.status,
   timeMode: state.media.timeMode,
-  timeElapsed: state.media.timeElapsed,
-  length: state.media.length
+  timeElapsed: Selectors.getTimeElapsed(state),
+  length: Selectors.getDuration(state)
 });
 
-const mapDispatchToProps = (dispatch: (action: Action) => void) => ({
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   // TODO: move to actionCreators
   toggle: () => {
     dispatch({ type: TOGGLE_TIME_MODE });

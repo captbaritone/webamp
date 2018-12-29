@@ -4,11 +4,12 @@ import { TimeMode, AppState, Dispatch } from "../../types";
 import { getTimeObj } from "../../utils";
 
 import * as Actions from "../../actionCreators";
+import * as Selectors from "../../selectors";
 import { TIME_MODE } from "../../constants";
 
 interface StateProps {
   timeElapsed: number;
-  length: number;
+  duration: number;
   timeMode: TimeMode;
 }
 
@@ -18,12 +19,12 @@ interface DispatchProps {
 
 const Time = ({
   timeElapsed,
-  length,
+  duration,
   timeMode,
   toggleTimeMode
 }: StateProps & DispatchProps) => {
   const seconds =
-    timeMode === TIME_MODE.ELAPSED ? timeElapsed : length - timeElapsed;
+    timeMode === TIME_MODE.ELAPSED ? timeElapsed : duration - timeElapsed;
 
   const timeObj = getTimeObj(seconds);
   return (
@@ -50,8 +51,10 @@ const Time = ({
 };
 
 const mapStateToProps = (state: AppState): StateProps => {
-  const { timeElapsed, length, timeMode } = state.media;
-  return { timeElapsed, length: length || 0, timeMode };
+  const timeElapsed = Selectors.getTimeElapsed(state);
+  const duration = Selectors.getDuration(state);
+  const { timeMode } = state.media;
+  return { timeElapsed, duration: duration || 0, timeMode };
 };
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   toggleTimeMode: () => dispatch(Actions.toggleTimeMode())

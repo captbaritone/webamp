@@ -14,7 +14,6 @@ import {
   TOGGLE_TIME_MODE,
   UPDATE_TIME_ELAPSED,
   ADD_TRACK_FROM_URL,
-  CHANNEL_COUNT_CHANGED,
   LOAD_SERIALIZED_STATE
 } from "../actionTypes";
 import { TIME_MODE, MEDIA_STATUS } from "../constants";
@@ -23,12 +22,8 @@ import { MediaSerializedStateV1 } from "../serializedStates/v1Types";
 export interface MediaState {
   timeMode: TimeMode; // TODO: Convert this to an enum
   timeElapsed: number;
-  length: number | null;
-  kbps: string | null;
-  khz: string | null;
   volume: number;
   balance: number;
-  channels: number | null; // TODO: Convert this to an enum
   shuffle: boolean;
   repeat: boolean;
   status: MediaStatus | null; // TODO: Convert this to an enum
@@ -37,15 +32,12 @@ export interface MediaState {
 const defaultState = {
   timeMode: TIME_MODE.ELAPSED,
   timeElapsed: 0,
-  length: null, // Consider renaming to "duration"
-  kbps: null,
-  khz: null,
+
   // The winamp ini file declares the default volume as "200".
   // The UI seems to show a default volume near 78, which would
   // math with the default value being 200 out of 255.
   volume: Math.round((200 / 255) * 100),
   balance: 0,
-  channels: null,
   shuffle: false,
   repeat: false,
   // TODO: Enforce possible values
@@ -66,8 +58,6 @@ const media = (
     case STOP:
     case IS_STOPPED:
       return { ...state, status: MEDIA_STATUS.STOPPED };
-    case CHANNEL_COUNT_CHANGED:
-      return { ...state, channels: action.channels };
     case TOGGLE_TIME_MODE:
       const newMode =
         state.timeMode === TIME_MODE.REMAINING
@@ -79,28 +69,11 @@ const media = (
     case ADD_TRACK_FROM_URL:
       return {
         ...state,
-        timeElapsed: 0,
-        length: null,
-        kbps: null,
-        khz: null,
-        channels: null
+        timeElapsed: 0
       };
     case SET_MEDIA:
       return {
-        ...state,
-        length: action.length,
-        kbps: action.kbps,
-        khz: action.khz,
-        channels: action.channels
-      };
-    case SET_MEDIA_TAGS:
-      const { sampleRate, bitrate, numberOfChannels } = action;
-      const { kbps, khz, channels } = state;
-      return {
-        ...state,
-        kbps: bitrate != null ? String(Math.round(bitrate / 1000)) : kbps,
-        khz: sampleRate != null ? String(Math.round(sampleRate / 1000)) : khz,
-        channels: numberOfChannels != null ? numberOfChannels : channels
+        ...state
       };
     case SET_VOLUME:
       return { ...state, volume: action.volume };

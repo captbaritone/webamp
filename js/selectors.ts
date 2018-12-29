@@ -454,7 +454,17 @@ export const getBalance = (state: AppState) => state.media.balance;
 export const getShuffle = (state: AppState) => state.media.shuffle;
 export const getRepeat = (state: AppState) => state.media.repeat;
 
-export const getChannels = (state: AppState) => state.media.channels;
+export const getChannels = createSelector(
+  getCurrentTrack,
+  (track: PlaylistTrack | null): number | null => {
+    return track != null ? track.channels || null : null;
+  }
+);
+
+export const getTimeElapsed = (state: AppState): number => {
+  return state.media.timeElapsed;
+};
+
 export function getSerlializedState(state: AppState): SerializedStateV1 {
   return {
     version: 1,
@@ -496,25 +506,33 @@ export const getStackedLayoutPositions = createSelector(
   }
 );
 
+export const getUserInputFocus = (state: AppState): string | null => {
+  return state.userInput.focus;
+};
+
+export const getUserInputScrubPosition = (state: AppState): number => {
+  return state.userInput.scrubPosition;
+};
 // TODO: Make this a reselect selector
 export const getMarqueeText = (state: AppState): string => {
   const defaultText = "Winamp 2.91";
   if (state.userInput.userMessage != null) {
     return state.userInput.userMessage;
   }
-  switch (state.userInput.focus) {
+  switch (getUserInputFocus(state)) {
     case "balance":
       return MarqueeUtils.getBalanceText(state.media.balance);
     case "volume":
       return MarqueeUtils.getVolumeText(state.media.volume);
     case "position":
-      if (state.media.length == null) {
+      const duration = getDuration(state);
+      if (duration == null) {
         // This probably can't ever happen.
         return defaultText;
       }
       return MarqueeUtils.getPositionText(
-        state.media.length,
-        state.userInput.scrubPosition
+        duration,
+        getUserInputScrubPosition(state)
       );
     case "double":
       return MarqueeUtils.getDoubleSizeModeText(state.display.doubled);
@@ -538,6 +556,20 @@ export const getMarqueeText = (state: AppState): string => {
   }
   return defaultText;
 };
+
+export const getKbps = createSelector(
+  getCurrentTrack,
+  (track: PlaylistTrack | null): string | null => {
+    return track != null ? track.kbps || null : null;
+  }
+);
+
+export const getKhz = createSelector(
+  getCurrentTrack,
+  (track: PlaylistTrack | null): string | null => {
+    return track != null ? track.khz || null : null;
+  }
+);
 
 export function getDebugData(state: AppState) {
   return {

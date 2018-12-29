@@ -42,19 +42,6 @@ const tracks = (
         [action.id]: newTrack
       };
     }
-    case SET_MEDIA_TAGS: {
-      return {
-        ...state,
-        [action.id]: {
-          ...state[action.id],
-          mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.COMPLETE,
-          title: action.title,
-          artist: action.artist,
-          album: action.album,
-          albumArtUrl: action.albumArtUrl
-        }
-      };
-    }
     case MEDIA_TAG_REQUEST_INITIALIZED:
       return {
         ...state,
@@ -80,6 +67,32 @@ const tracks = (
         }
       };
     }
+    case SET_MEDIA_TAGS:
+      const track = state[action.id];
+      const {
+        sampleRate,
+        bitrate,
+        numberOfChannels,
+        title,
+        artist,
+        album,
+        albumArtUrl
+      } = action;
+      const { kbps, khz, channels } = track;
+      return {
+        ...state,
+        [action.id]: {
+          ...track,
+          mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.COMPLETE,
+          title,
+          artist,
+          album,
+          albumArtUrl,
+          kbps: bitrate != null ? String(Math.round(bitrate / 1000)) : kbps,
+          khz: sampleRate != null ? String(Math.round(sampleRate / 1000)) : khz,
+          channels: numberOfChannels != null ? numberOfChannels : channels
+        }
+      };
     default:
       return state;
   }

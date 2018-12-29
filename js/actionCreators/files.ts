@@ -267,7 +267,19 @@ export function loadMediaFile(
 
     if (metaData != null) {
       const { artist, title, album } = metaData;
-      dispatch({ type: SET_MEDIA_TAGS, artist, title, album, id });
+      dispatch({
+        type: SET_MEDIA_TAGS,
+        artist,
+        title,
+        album,
+        // For now, we lie about these next three things.
+        // TODO: Ideally we would leave these as null and force a media data
+        // fetch when the user starts playing.
+        sampleRate: 44000,
+        bitrate: 192000,
+        numberOfChannels: 2,
+        id
+      });
     } else if ("blob" in track) {
       // Blobs can be loaded quickly
       dispatch(fetchMediaTags(track.blob, id));

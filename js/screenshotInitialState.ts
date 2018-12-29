@@ -7,28 +7,40 @@ const defaultTracksState = {
     title: "Llama Whipping Intro",
     artist: "DJ Mike Llama",
     duration: 5,
-    url: ""
+    url: "",
+    kbps: "128",
+    khz: "44",
+    channels: 2
   },
   "1": {
     id: 1,
     title: "Rock Is Dead",
     artist: "Marilyn Manson",
     duration: 191, // 3:11
-    url: ""
+    url: "",
+    kbps: "128",
+    khz: "44",
+    channels: 2
   },
   "2": {
     id: 2,
     title: "Spybreak! (Short One)",
     artist: "Propellerheads",
     duration: 240, // 4:00
-    url: ""
+    url: "",
+    kbps: "128",
+    khz: "44",
+    channels: 2
   },
   "3": {
     id: 3,
     title: "Bad Blood",
     artist: "Ministry",
     duration: 300, // 5:00
-    url: ""
+    url: "",
+    kbps: "128",
+    khz: "44",
+    channels: 2
   }
 };
 
@@ -50,11 +62,7 @@ const initialState: DeepPartial<AppState> = {
   },
   media: {
     status: "PLAYING",
-    kbps: "128",
-    khz: "44",
-    length: 5,
-    timeElapsed: 3,
-    channels: 2
+    timeElapsed: 3
   },
   playlist: {
     trackOrder: [0, 1, 2, 3],

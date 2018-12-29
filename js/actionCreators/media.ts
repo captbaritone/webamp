@@ -17,6 +17,7 @@ import {
 import { MEDIA_STATUS } from "../constants";
 import { openMediaFileDialog } from "./";
 import { GetState, Dispatch, Dispatchable } from "../types";
+import * as Selectors from "../selectors";
 
 function playRandomTrack(): Dispatchable {
   return (dispatch: Dispatch, getState: GetState) => {
@@ -91,14 +92,16 @@ export function previous(): Dispatchable {
 
 export function seekForward(seconds: number): Dispatchable {
   return function(dispatch, getState) {
-    const { timeElapsed, length } = getState().media;
-    if (length == null) {
+    const state = getState();
+    const timeElapsed = Selectors.getTimeElapsed(state);
+    const duration = Selectors.getDuration(state);
+    if (duration == null) {
       return;
     }
     const newTimeElapsed = timeElapsed + seconds;
     dispatch({
       type: SEEK_TO_PERCENT_COMPLETE,
-      percent: (newTimeElapsed / length) * 100
+      percent: (newTimeElapsed / duration) * 100
     });
   };
 }

@@ -17,7 +17,6 @@ function createStereoPanner(context: AudioContext): StereoPannerNode {
 export default class Media {
   _emitter: Emitter;
   _context: AudioContext;
-  _channels: number | null;
   _balance: number;
   _staticSource: AnalyserNode;
   _preamp: GainNode;
@@ -52,8 +51,6 @@ export default class Media {
       document.body.addEventListener("click", resume, false);
       document.body.addEventListener("keydown", resume, false);
     }
-    // We don't currently know how many channels
-    this._channels = null;
     this._balance = 0;
 
     // The _source node has to be recreated each time it's stopped or
@@ -152,11 +149,6 @@ export default class Media {
     this._gainNode.connect(this._context.destination);
   }
 
-  _setChannels(num: number | null) {
-    this._channels = num;
-    this._emitter.trigger("channelupdate");
-  }
-
   getAnalyser() {
     return this._analyser;
   }
@@ -176,14 +168,6 @@ export default class Media {
 
   percentComplete() {
     return (this.timeElapsed() / this.duration()) * 100;
-  }
-
-  channels() {
-    return this._channels == null ? 2 : this._channels;
-  }
-
-  sampleRate() {
-    return this._source.getSampleRate();
   }
 
   /* Actions */
@@ -248,7 +232,6 @@ export default class Media {
   async loadFromUrl(url: string, autoPlay: boolean) {
     this._emitter.trigger("waiting");
     await this._source.loadUrl(url);
-    this._setChannels(null);
     this._emitter.trigger("stopWaiting");
     if (autoPlay) {
       this.play();

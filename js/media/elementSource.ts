@@ -147,16 +147,6 @@ export default class ElementSource {
     return this._audio.currentTime;
   }
 
-  getNumberOfChannels() {
-    return this._source.channelCount;
-  }
-
-  getSampleRate() {
-    // This is a lie. This is the sample rate of the context, not the
-    // underlying source media.
-    return this._context.sampleRate;
-  }
-
   _setStatus(status: MediaStatus) {
     this._status = status;
     this._emitter.trigger("statusChange");

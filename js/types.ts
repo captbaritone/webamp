@@ -169,10 +169,6 @@ export type Action =
       type: "IS_STOPPED";
     }
   | {
-      type: "CHANNEL_COUNT_CHANGED";
-      channels: number;
-    }
-  | {
       type: "TOGGLE_TIME_MODE";
     }
   | {
@@ -526,6 +522,9 @@ export interface PlaylistTrack {
   albumArtUrl?: string | null;
   mediaTagsRequestStatus: MediaTagRequestStatus;
   duration: number | null;
+  kbps?: string;
+  khz: string;
+  channels?: number;
 }
 
 export interface AppState {

@@ -17,7 +17,6 @@ import {
   SET_EQ_ON,
   PLAY_TRACK,
   BUFFER_TRACK,
-  CHANNEL_COUNT_CHANGED,
   LOAD_SERIALIZED_STATE
 } from "./actionTypes";
 import { next as nextTrack } from "./actionCreators";
@@ -70,16 +69,9 @@ export default (media: Media) => (store: MiddlewareStore) => {
       id,
       type: SET_MEDIA,
       kbps: "128",
-      khz: Math.round(media.sampleRate() / 1000).toString(),
-      channels: media.channels(),
+      khz: "44",
+      channels: 2,
       length: media.duration()
-    });
-  });
-
-  media.on("channelupdate", () => {
-    store.dispatch({
-      type: CHANNEL_COUNT_CHANGED,
-      channels: media.channels()
     });
   });
 
