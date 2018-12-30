@@ -4,8 +4,19 @@ import classnames from "classnames";
 import { toggleRepeat } from "../../actionCreators";
 import ContextMenuWraper from "../ContextMenuWrapper";
 import { Node } from "../ContextMenu";
+import { AppState, Dispatch } from "../../types";
 
-const Repeat = ({ repeat, handleClick }) => (
+interface StateProps {
+  repeat: boolean;
+}
+
+interface DispatchProps {
+  handleClick(): void;
+}
+
+type Props = StateProps & DispatchProps;
+
+const Repeat = ({ repeat, handleClick }: Props) => (
   <ContextMenuWraper
     renderContents={() => (
       <Node
@@ -25,11 +36,11 @@ const Repeat = ({ repeat, handleClick }) => (
   </ContextMenuWraper>
 );
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: AppState): StateProps => ({
   repeat: state.media.repeat
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   handleClick: () => dispatch(toggleRepeat())
 });
 
