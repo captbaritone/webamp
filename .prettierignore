@@ -1,2 +1,5 @@
 package.json
+**/*.min.css
+**/base-skin.css
 js/googleAnalytics.min.js
+built/*
