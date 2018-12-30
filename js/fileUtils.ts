@@ -84,6 +84,7 @@ export async function promptForFileReferences(
     if (accept) fileInput.setAttribute("accept", accept);
     fileInput.type = "file";
     fileInput.multiple = true;
+    // @ts-ignore Non-standard
     fileInput.webkitdirectory = directory;
     // @ts-ignore Non-standard
     fileInput.directory = directory;

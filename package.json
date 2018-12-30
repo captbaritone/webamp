@@ -119,7 +119,7 @@
     "style-loader": "^0.23.1",
     "tinyqueue": "^1.2.3",
     "travis-weigh-in": "^1.0.2",
-    "typescript": "^3.0.1",
+    "typescript": "^3.2.2",
     "uglifyjs-webpack-plugin": "^1.2.5",
     "unminified-webpack-plugin": "^2.0.0",
     "url-loader": "^1.1.2",
