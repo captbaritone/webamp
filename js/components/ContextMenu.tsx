@@ -65,6 +65,7 @@ export const Parent = ({ children, label }: ParentProps) => (
 interface LinkNodeProps {
   label: string;
   href: string;
+  target?: string;
 }
 
 export const LinkNode = (props: LinkNodeProps) => (

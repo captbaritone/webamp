@@ -12,8 +12,35 @@ import { Hr, Node, Parent, LinkNode } from "../ContextMenu";
 import PlaybackContextMenu from "../PlaybackContextMenu";
 import OptionsContextMenu from "../OptionsContextMenu";
 import SkinsContextMenu from "../SkinsContextMenu";
+import {
+  AppState,
+  Dispatch,
+  Track,
+  WindowId,
+  FilePicker,
+  LoadStyle
+} from "../../types";
+import { WebampWindow } from "../../reducers/windows";
 
-const MainContextMenu = props => (
+interface StateProps {
+  networkConnected: boolean;
+  genWindows: { [windowId: string]: WebampWindow };
+}
+
+interface DispatchProps {
+  close(): void;
+  openMediaFileDialog(): void;
+  loadMediaFiles(tracks: Track[], loadStyle: LoadStyle): void;
+  toggleGenWindow(windowId: WindowId): void;
+}
+
+interface OwnProps {
+  filePickers: FilePicker[];
+}
+
+type Props = StateProps & DispatchProps & OwnProps;
+
+const MainContextMenu = (props: Props) => (
   <React.Fragment>
     <LinkNode
       href="https://github.com/captbaritone/webamp"
@@ -36,7 +63,7 @@ const MainContextMenu = props => (
                   } catch (e) {
                     console.error("Error loading from file picker", e);
                   }
-                  props.loadMediaFiles(files, LOAD_STYLE.PLAY);
+                  props.loadMediaFiles(files || [], LOAD_STYLE.PLAY);
                 }}
                 label={picker.contextMenuName}
               />
@@ -67,16 +94,19 @@ const MainContextMenu = props => (
   </React.Fragment>
 );
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: AppState): StateProps => ({
   networkConnected: state.network.connected,
   genWindows: getGenWindows(state)
 });
 
-const mapDispatchToProps = {
-  close,
-  openMediaFileDialog,
-  loadMediaFiles,
-  toggleGenWindow: toggleWindow
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
+  return {
+    close: () => dispatch(close()),
+    openMediaFileDialog: () => dispatch(openMediaFileDialog()),
+    loadMediaFiles: (tracks: Track[], loadStyle: LoadStyle) =>
+      dispatch(loadMediaFiles(tracks, loadStyle)),
+    toggleGenWindow: (windowId: WindowId) => dispatch(toggleWindow(windowId))
+  };
 };
 
 export default connect(

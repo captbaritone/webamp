@@ -121,10 +121,7 @@ export class MainWindow extends React.Component<Props> {
             bottom
             handle={<ClickedDiv id="option" title="Winamp Menu" />}
           >
-            <MainContextMenu
-              // @ts-ignore MainContextMenu is not typed yet
-              filePickers={filePickers}
-            />
+            <MainContextMenu filePickers={filePickers} />
           </ContextMenuTarget>
           {mainShade && <MiniTime />}
           <Minimize />
