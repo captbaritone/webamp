@@ -3,8 +3,13 @@ import { connect } from "react-redux";
 import ClickedDiv from "../ClickedDiv";
 
 import { toggleMainWindowShadeMode } from "../../actionCreators";
+import { Dispatch } from "../../types";
 
-const Shade = props => (
+interface DispatchProps {
+  handleClick(): void;
+}
+
+const Shade = (props: DispatchProps) => (
   <ClickedDiv
     id="shade"
     onMouseDown={props.handleClick}
@@ -13,11 +18,13 @@ const Shade = props => (
   />
 );
 
-const mapDispatchToProps = {
-  handleClick: toggleMainWindowShadeMode
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
+  return {
+    handleClick: () => dispatch(toggleMainWindowShadeMode())
+  };
 };
 
 export default connect(
-  () => ({}),
+  null,
   mapDispatchToProps
 )(Shade);
