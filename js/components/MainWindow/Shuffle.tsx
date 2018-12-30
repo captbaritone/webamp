@@ -4,8 +4,18 @@ import classnames from "classnames";
 import { toggleShuffle } from "../../actionCreators";
 import ContextMenuWraper from "../ContextMenuWrapper";
 import { Node } from "../ContextMenu";
+import { Dispatch, AppState } from "../../types";
 
-const Shuffle = ({ shuffle, handleClick }) => (
+interface StateProps {
+  shuffle: boolean;
+}
+
+interface DispatchProps {
+  handleClick(): void;
+}
+
+type Props = StateProps & DispatchProps;
+const Shuffle = ({ shuffle, handleClick }: Props) => (
   <ContextMenuWraper
     renderContents={() => (
       <Node
@@ -24,11 +34,12 @@ const Shuffle = ({ shuffle, handleClick }) => (
     />
   </ContextMenuWraper>
 );
-const mapStateToProps = state => ({
+
+const mapStateToProps = (state: AppState): StateProps => ({
   shuffle: state.media.shuffle
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   handleClick: () => dispatch(toggleShuffle())
 });
 export default connect(
