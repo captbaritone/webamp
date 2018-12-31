@@ -6,6 +6,7 @@ import { DisplayState } from "./reducers/display";
 import { WindowsState, WindowPositions } from "./reducers/windows";
 import { EqualizerState } from "./reducers/equalizer";
 import { NetworkState } from "./reducers/network";
+import { MilkdropState } from "./reducers/milkdrop";
 import { SerializedStateV1 } from "./serializedStates/v1Types";
 import { TracksState } from "./reducers/tracks";
 import { IAudioMetadata, IOptions } from "music-metadata-browser";
@@ -438,7 +439,11 @@ export type Action =
   | { type: "BROWSER_WINDOW_SIZE_CHANGED"; height: number; width: number }
   | { type: "LOAD_DEFAULT_SKIN" }
   | { type: "ENABLE_MEDIA_LIBRARY" }
-  | { type: "ENABLE_MILKDROP"; open: boolean };
+  | { type: "ENABLE_MILKDROP"; open: boolean }
+  | {
+      type: "SET_MILKDROP_DESKTOP";
+      enabled: boolean;
+    };
 
 export type MediaTagRequestStatus =
   | "INITIALIZED"
@@ -543,6 +548,7 @@ export interface AppState {
   media: MediaState;
   network: NetworkState;
   tracks: TracksState;
+  milkdrop: MilkdropState;
 }
 
 /**

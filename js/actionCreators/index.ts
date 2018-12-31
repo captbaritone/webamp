@@ -8,10 +8,12 @@ import {
   SET_FOCUS,
   UNSET_FOCUS,
   LOAD_SERIALIZED_STATE,
-  LOAD_DEFAULT_SKIN
+  LOAD_DEFAULT_SKIN,
+  SET_MILKDROP_DESKTOP
 } from "../actionTypes";
+import { WINDOWS } from "../constants";
 import { Dispatchable } from "../types";
-import { ensureWindowsAreOnScreen } from "./windows";
+import { ensureWindowsAreOnScreen, showWindow, hideWindow } from "./windows";
 import { SerializedStateV1 } from "../serializedStates/v1Types";
 
 export {
@@ -93,6 +95,8 @@ export {
   dragSelected
 } from "./playlist";
 
+import * as Selectors from "../selectors";
+
 export function close(): Dispatchable {
   return dispatch => {
     // TODO: This could probably be improved by adding a "PREVENT_CLOSE" action
@@ -141,4 +145,16 @@ export function loadSerializedState(
 
 export function loadDefaultSkin() {
   return { type: LOAD_DEFAULT_SKIN };
+}
+
+export function toggleMilkdropDesktop(): Dispatchable {
+  return (dispatch, getState) => {
+    if (Selectors.getMilkdropDesktopEnabled(getState())) {
+      dispatch(showWindow(WINDOWS.MILKDROP));
+      dispatch({ type: SET_MILKDROP_DESKTOP, enabled: false });
+    } else {
+      dispatch(hideWindow(WINDOWS.MILKDROP));
+      dispatch({ type: SET_MILKDROP_DESKTOP, enabled: true });
+    }
+  };
 }

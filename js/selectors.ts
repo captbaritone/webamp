@@ -602,3 +602,7 @@ export function getDebugData(state: AppState) {
     }
   };
 }
+
+export function getMilkdropDesktopEnabled(state: AppState): boolean {
+  return state.milkdrop.desktop;
+}

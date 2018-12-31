@@ -26,13 +26,12 @@ class PresetsLoader extends React.Component {
       presets: null,
       initialPreset: null,
       butterchurn: null,
-      isFullscreen: false,
-      desktop: false
+      isFullscren: false
     };
   }
 
   isHidden() {
-    return this.state.desktop;
+    return this.props.desktop;
   }
 
   async componentDidMount() {
@@ -66,16 +65,6 @@ class PresetsLoader extends React.Component {
 
   _handleFullscreenChange = () => {
     this.setState({ isFullscreen: screenfull.isFullscreen });
-  };
-
-  _toggleDesktop = () => {
-    if (this.state.desktop) {
-      this.props.showWindow();
-      this.setState({ desktop: false });
-    } else {
-      this.props.hideWindow();
-      this.setState({ desktop: true });
-    }
   };
 
   _handleRequestFullsceen = () => {
@@ -115,7 +104,7 @@ class PresetsLoader extends React.Component {
   }
 
   render() {
-    if (this.state.desktop) {
+    if (this.props.desktop) {
       const size = { width: window.innerWidth, height: window.innerHeight };
       return (
         <ContextMenuWrapper
@@ -124,8 +113,8 @@ class PresetsLoader extends React.Component {
             <MilkdropContextMenu
               close={this.props.closeWindow}
               toggleFullscreen={this._handleRequestFullsceen}
-              desktopMode={this.state.desktop}
-              toggleDesktop={this._toggleDesktop}
+              desktopMode={this.props.desktop}
+              toggleDesktop={this.props.toggleDesktop}
             />
           )}
         >
@@ -143,8 +132,8 @@ class PresetsLoader extends React.Component {
               <MilkdropContextMenu
                 close={this.props.closeWindow}
                 toggleFullscreen={this._handleRequestFullsceen}
-                desktopMode={this.state.desktop}
-                toggleDesktop={this._toggleDesktop}
+                desktopMode={this.props.desktop}
+                toggleDesktop={this.props.toggleDesktop}
               />
             )}
           >
@@ -212,13 +201,13 @@ async function fetchPreset(presetUrl, { isButterchurn }) {
 
 const mapStateToProps = state => ({
   isEnabledVisualizer: Selectors.getVisualizerStyle(state) === WINDOWS.MILKDROP,
-  playing: Selectors.getMediaIsPlaying(state)
+  playing: Selectors.getMediaIsPlaying(state),
+  desktop: Selectors.getMilkdropDesktopEnabled(state)
 });
 
 const mapDispatchToProps = dispatch => ({
   closeWindow: () => dispatch(Actions.closeWindow(WINDOWS.MILKDROP)),
-  hideWindow: () => dispatch(Actions.hideWindow(WINDOWS.MILKDROP)),
-  showWindow: () => dispatch(Actions.showWindow(WINDOWS.MILKDROP))
+  toggleDesktop: () => dispatch(Actions.toggleMilkdropDesktop())
 });
 
 export default connect(
