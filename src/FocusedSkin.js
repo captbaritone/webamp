@@ -68,9 +68,9 @@ class FocusedSkin extends React.Component {
     this._disposable.add(
       fromEvent(window.document, "keydown").subscribe(e => {
         if (e.key === "ArrowRight") {
-          // this.props.selectRelativeSkin(1);
+          this.props.selectRelativeSkin(1);
         } else if (e.key === "ArrowLeft") {
-          // this.props.selectRelativeSkin(-1);
+          this.props.selectRelativeSkin(-1);
         }
       })
     );
