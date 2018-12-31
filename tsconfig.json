@@ -12,6 +12,6 @@
     "noEmit": true,
     "pretty": true
   },
-  "include": ["js/**/*.js", "js/**/*.ts"],
+  "include": ["**/*.js", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }
