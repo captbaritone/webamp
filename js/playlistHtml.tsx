@@ -1,7 +1,15 @@
 import React from "react";
 import { render } from "react-dom";
 
-export const getAsDataURI = text =>
+interface Props {
+  averageTrackLength: string;
+  numberOfTracks: number;
+  playlistLengthSeconds: number;
+  playlistLengthMinutes: number;
+  tracks: string[];
+}
+
+export const getAsDataURI = (text: string): string =>
   `data:text/html;base64,${window.btoa(text)}`;
 
 // Replaces deprecated "noshade" attribute
@@ -12,9 +20,36 @@ const noshadeStyle = {
   backgroundColor: "gray"
 };
 
+// We use all kinds of non-standard attributes and tags. So we create these fake
+// components to trick Typescript.
+const Body = (props: any) => {
+  // @ts-ignore
+  return <body {...props} />;
+};
+
+const Font = (props: any) => {
+  // @ts-ignore
+  return <font {...props} />;
+};
+
+const Hr = (props: any) => {
+  // @ts-ignore
+  return <hr {...props} />;
+};
+
+const Div = (props: any) => {
+  // @ts-ignore
+  return <div {...props} />;
+};
+
+const Table = (props: any) => {
+  // @ts-ignore
+  return <table {...props} />;
+};
+
 // TODO: Move <html> tag out to the string creation step in order
 // to avoid the warning.
-const Playlist = props => (
+const Playlist = (props: Props) => (
   <html>
     <head>
       <link rel="stylesheet" href="null" />
@@ -27,79 +62,79 @@ const Playlist = props => (
       </style>
       <title>Winamp Generated PlayList</title>
     </head>
-    <body bgcolor="#000080" topmargin="0" leftmargin="0" text="#FFFFFF">
-      <div align="center">
-        <div className="para2" align="center">
+    <Body bgcolor="#000080" topmargin="0" leftmargin="0" text="#FFFFFF">
+      <Div align="center">
+        <Div className="para2" align="center">
           <p>WINAMP</p>
-        </div>
-        <div className="para1" align="center">
+        </Div>
+        <Div className="para1" align="center">
           <p>playlist</p>
-        </div>
-      </div>
-      <hr
+        </Div>
+      </Div>
+      <Hr
         align="left"
         width="90%"
         size="1"
         color="#FFBF00"
         style={noshadeStyle}
       />
-      <div align="right">
-        <table border="0" cellSpacing="0" cellPadding="0" width="98%">
+      <Div align="right">
+        <Table border="0" cellSpacing="0" cellPadding="0" width="98%">
           {/* Added <tbody> tag */}
           <tbody>
             <tr>
               <td>
                 <small>
                   <small>
-                    <font face="Arial" color="#FFBF00">
+                    <Font face="Arial" color="#FFBF00">
                       {props.numberOfTracks}
-                    </font>
-                    <font color="#409FFF" face="Arial">
+                    </Font>
+                    <Font color="#409FFF" face="Arial">
                       {" track in playlist, average track length: "}
-                    </font>
-                    <font face="Arial" color="#FFBF00">
+                    </Font>
+                    <Font face="Arial" color="#FFBF00">
                       {props.averageTrackLength}
-                    </font>
+                    </Font>
                   </small>
                 </small>
                 <br />
                 <small>
                   <small>
-                    <font color="#409FFF" face="Arial">
+                    <Font color="#409FFF" face="Arial">
                       {"Playlist length: "}
-                    </font>
-                    <font face="Arial" color="#FFBF00">
+                    </Font>
+                    <Font face="Arial" color="#FFBF00">
                       {props.playlistLengthMinutes}
-                    </font>
-                    <font color="#409FFF" face="Arial">
+                    </Font>
+                    <Font color="#409FFF" face="Arial">
                       {" minutes "}
-                    </font>
-                    <font face="Arial" color="#FFBF00">
+                    </Font>
+                    <Font face="Arial" color="#FFBF00">
                       {props.playlistLengthSeconds}
-                    </font>
-                    <font color="#409FFF" face="Arial">
+                    </Font>
+                    <Font color="#409FFF" face="Arial">
                       {" second "}
-                    </font>
+                    </Font>
                     <br />
-                    <font color="#409FFF" face="Arial">
+                    <Font color="#409FFF" face="Arial">
                       Right-click <a href="./">here</a> to save this HTML file.
-                    </font>
+                    </Font>
                   </small>
                 </small>
               </td>
             </tr>
           </tbody>
-        </table>
-      </div>
+        </Table>
+      </Div>
       <blockquote>
         <p>
-          <font color="#FFBF00" face="Arial">
+          <Font color="#FFBF00" face="Arial">
             <big>Playlist files:</big>
-          </font>
+          </Font>
           {/* Added closing tag here */}
         </p>
         <ul>
-          <font face="Arial" color="#FFFFFF">
+          <Font face="Arial" color="#FFFFFF">
             <small>
               {props.tracks.map(track => (
                 <span key={track}>
@@ -109,25 +144,25 @@ const Playlist = props => (
               ))}
               {/* Added closing tag here */}
             </small>
-          </font>
+          </Font>
         </ul>
       </blockquote>
-      <hr
+      <Hr
         align="left"
         width="90%"
         size="1"
         color="#FFBF00"
         style={noshadeStyle}
       />
-    </body>
+    </Body>
   </html>
 );
 
-const createPlaylistHTML = props => {
+const createPlaylistHTML = (props: Props): string => {
   const node = document.createElement("div");
   render(<Playlist {...props} />, node);
   return node.innerHTML;
 };
 
-export const createPlaylistURL = props =>
+export const createPlaylistURL = (props: Props): string =>
   getAsDataURI(createPlaylistHTML(props));
