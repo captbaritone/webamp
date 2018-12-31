@@ -15,7 +15,7 @@
     "build": "webpack --config=demo/config/webpack.prod.js",
     "build-library": "webpack --config=config/webpack.library.js",
     "prepublishOnly": "npm run build-library",
-    "serve": "http-server ./built",
+    "serve": "http-server ./demo/built",
     "start": "webpack-dev-server --open --config=demo/config/webpack.dev.js",
     "stats": "webpack --config=demo/config/webpack.prod.js --json > stats.json",
     "stats-library": "webpack --config=config/webpack.library.js --json > stats.json",
