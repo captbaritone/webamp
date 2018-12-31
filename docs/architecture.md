@@ -4,8 +4,8 @@
 
 This repository contains both an NPM module, and a demo page, found at <https://webamp.org>. The NPM module's goal is to provide a widget which can be embedded in any website, where as the demo page depends upon the library, and provides the canonical usage. You can find more information about the library's API in the [usage](./usage.md) document.
 
-* The entry point for the demo page is [index.js](../js/index.js)
-* The entry point for the NPM modules is [webamp.js](../js/webamp.js)
+- The entry point for the demo page is [demo/js/index.js](../demo/js/index.js)
+- The entry point for the NPM modules is [webamp.js](../js/webamp.js)
 
 ## Redux
 
@@ -13,11 +13,11 @@ Within the core library, state is managed by [Redux]. In fact, Redux's own docs 
 
 Our reducers, and the states they control, can be found in the [reducers](../js/reducers/) directory.
 
-Async actions are handled using the [redux-thunk]. You can find all of the actionCreators in the [actionCreators.js](../js/actionCreators.js) file. This is the most complex portion of the app, as it contains all the coordination of our many async actions.
+Async actions are handled using the [redux-thunk]. You can find all of the actionCreators in the [actionCreators.ts](../js/actionCreators.ts) file. This is the most complex portion of the app, as it contains all the coordination of our many async actions.
 
-Any non-trivial value derived from state is computed inside a [selector](../js/selectors.js). Care has been taken to ensure that the structure of the state allows for most common selectors to be a constant time operation. For selectors that are `O(n)`, we use [reselect] to ensure the calculation is only done when dependent values change.
+Any non-trivial value derived from state is computed inside a [selector](../js/selectors.ts). Care has been taken to ensure that the structure of the state allows for most common selectors to be a constant time operation. For selectors that are `O(n)`, we use [reselect] to ensure the calculation is only done when dependent values change.
 
-Coordination between the playing media (which is inherently stateful, and changes over time) and Redux is handed in the [mediaMiddleware](../js/mediaMiddleware.js). This basically listens for events, and triggers the correct methods on our `Media` instance. It also listens events emitted by the media instance, and dispatches the corresponding actions.
+Coordination between the playing media (which is inherently stateful, and changes over time) and Redux is handed in the [mediaMiddleware](../js/mediaMiddleware.ts). This basically listens for events, and triggers the correct methods on our `Media` instance. It also listens events emitted by the media instance, and dispatches the corresponding actions.
 
 ## React
 
@@ -27,7 +27,7 @@ In some places we use [rc-slider](https://github.com/react-component/slider) ins
 
 ## Media
 
-Media (audio files) is managed by our [Media](../js/media/index.js) class. It encapsulates the Web Audio API complexity. Audio manipulation (volume, balance, EQ) is handled in the main `Media` class, but the audio source is managed in [elementSource.js](../js/media/elementSource.js). This class tries to encapsulate some of the complexity required to get the playing of audio files working across all browsers seamlessly. We handle playing audio from a URL source (subject to CORs) and from a local file. Both of these are normalized to a URL before they are passed into our audio aparatus. For local files, we convert the `ArrayBuffer` we get, into a Blob url using `URL.createObjectURL()`. This transformation is handlded inside our Action Creators (see the Redux section above).
+Media (audio files) is managed by our [Media](../js/media/index.ts) class. It encapsulates the Web Audio API complexity. Audio manipulation (volume, balance, EQ) is handled in the main `Media` class, but the audio source is managed in [elementSource.ts](../js/media/elementSource.ts). This class tries to encapsulate some of the complexity required to get the playing of audio files working across all browsers seamlessly. We handle playing audio from a URL source (subject to CORs) and from a local file. Both of these are normalized to a URL before they are passed into our audio aparatus. For local files, we convert the `ArrayBuffer` we get, into a Blob url using `URL.createObjectURL()`. This transformation is handlded inside our Action Creators (see the Redux section above).
 
 The `Winamp` class instantiates a single `Media` instance and passes it's [AnalyserNode](https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode) down through the tree of React components to the visualizer.
 
@@ -39,7 +39,7 @@ In addition to the sprite sheets there are some config files in various formats,
 
 From there, our `Skin` component has a `ClipPaths` sub component which ouputs a series of `<svg>`s representing the clip path for each window into the DOM. Finally, CSS `clip-path` rules representing each window are dynamically generated and added to the injected style sheet.
 
-The parsing of skin files is handed in [skinParser.js](../js/skinParser.js). Rendering the `<svg>` and `<style>` tags is done in [Skin.js](../js/components/Skin.js). The definitions for all the individual sprites live in [skinSpirtes.js](../js/skinSprites.js), and the mapping of skin spirtes to CSS rules lives in [skinSelectors.js](../js/skinSelectors.js).
+The parsing of skin files is handed in [skinParser.js](../js/skinParser.js). Rendering the `<svg>` and `<style>` tags is done in [Skin.js](../js/components/Skin.ts). The definitions for all the individual sprites live in [skinSpirtes.js](../js/skinSprites.ts), and the mapping of skin spirtes to CSS rules lives in [skinSelectors.js](../js/skinSelectors.ts).
 
 ## CSS
 
@@ -47,7 +47,7 @@ CSS style sheets are imported by the components which use them. Each rule is ind
 
 The nature of Winamp skins is such that most elements are absolutely positioned, and have an explicit size. There are a few down sides to our current approach:
 
-1. Much of the size data for the individual sprites is duplicated in the items CSS rules and in [skinSprites.js](../js/skinSprites.js).
+1. Much of the size data for the individual sprites is duplicated in the items CSS rules and in [skinSprites.js](../js/skinSprites.ts).
 2. Style data is lives far away from the individual component, and it can be hard to know where to look for the CSS that corresponds to an individual component.
 
 All windows are rendred with `image-rendering: pixelated;` (or equivilant) so that high density displays don't blur the pixel art UI. This is especially important for "Double" mode, where the main and equalizer windows are twice as large. This doubleing is achived with the CSS: `transform: scale(2)`.
@@ -58,8 +58,8 @@ The visualizer in the main window is a React component [Visualizer.js](../js/com
 
 To improve performance, two off-screen canvases are pre-rendered whenever the skin changes. These are then used as components of the per-frame rendering:
 
-* The textured background.
-* A single vertical bar for the bar graph analyser.
+- The textured background.
+- A single vertical bar for the bar graph analyser.
 
 The actual canvas is rendered at twice the visible size so that "high density" or "retina" displays will not look blury.
 
@@ -70,7 +70,7 @@ The audio portion of the equalizer is handed in the Media class (see above) but 
 The coloring of the curved line is achived by extracting the single-pixel-wide, many-pixel-tall sprite from the skin file, passing it through the Redux state to the graph component, and then drawing the splined line with [CanvasRenderingContext2D.createPattern()
 ](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/createPattern).
 
-You can see the implementation of the equalizer graph in [EqGraph.js](../js/components/EqualizerWindow/EqGraph.js).
+You can see the implementation of the equalizer graph in [EqGraph.js](../js/components/EqualizerWindow/EqGraph.tsx).
 
 The equalizer window can also load/geneate `.eqf` files. The loading and parsing of these has been extracted into its own NPM module: [winamp-eqf](https://www.npmjs.com/package/winamp-eqf).
 
@@ -78,20 +78,20 @@ The equalizer window can also load/geneate `.eqf` files. The loading and parsing
 
 **TODO**
 
-* Windowing
-* Resizing
-* Menus
+- Windowing
+- Resizing
+- Menus
 
 ## Window management
 
-Window position is managed in the [WindowManager.js](../js/components/WindowManager.js) React component. It handles:
+Window position is managed in the [WindowManager.tsx](../js/components/WindowManager.tsx) React component. It handles:
 
-* Dragging windows around (windows can add a `.draggable` class to any node to make it a drag handle)
-* Snapping windows to eachother
-* Snapping windows to the browser edges
-* Creating the initial layout of the windows
+- Dragging windows around (windows can add a `.draggable` class to any node to make it a drag handle)
+- Snapping windows to eachother
+- Snapping windows to the browser edges
+- Creating the initial layout of the windows
 
-Moving windows when their neighbors are resized via "double" or "shade" mode toggles is handled by the `withWindowGraphIntegrity()` higher order action creator in [actionCreators.js](../js/actionCreators.js). It works by:
+Moving windows when their neighbors are resized via "double" or "shade" mode toggles is handled by the `withWindowGraphIntegrity()` higher order action creator in [actionCreators.ts](../js/actionCreators.ts). It works by:
 
 1. Computing a graph where each window is a node, and the edges are where those windows are "touching".
 2. Dispatching the passed in action.
@@ -99,7 +99,7 @@ Moving windows when their neighbors are resized via "double" or "shade" mode tog
 
 ## Dropping files
 
-Webamp allows you to drag files (media files, skins and `.eqf` equalizer presets) onto various windows to load them. This behavior is manged by the [`<DropTarget>`](../js/components/DropTarget.js) component. The component expects to be passed a `handleDrop` handler which will be called with the drop event, and also the `{x, y}` coordinates of the drop within the component. This is needed to allow us to insert dropped tracks at the correct place in the playlist.
+Webamp allows you to drag files (media files, skins and `.eqf` equalizer presets) onto various windows to load them. This behavior is manged by the [`<DropTarget>`](../js/components/DropTarget.tsx) component. The component expects to be passed a `handleDrop` handler which will be called with the drop event, and also the `{x, y}` coordinates of the drop within the component. This is needed to allow us to insert dropped tracks at the correct place in the playlist.
 
 [redux]: https://redux.js.org/
 [redux-thunk]: https://github.com/gaearon/redux-thunk
