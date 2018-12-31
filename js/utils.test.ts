@@ -86,102 +86,136 @@ describe("parseViscolors", () => {
   it("can parse the default viscolors file", () => {
     const viscolors = fixture("VISCOLOR.TXT");
     const actual = parseViscolors(viscolors);
-    const expected = [
-      "rgb(0,0,0)",
-      "rgb(24,33,41)",
-      "rgb(239,49,16)",
-      "rgb(206,41,16)",
-      "rgb(214,90,0)",
-      "rgb(214,102,0)",
-      "rgb(214,115,0)",
-      "rgb(198,123,8)",
-      "rgb(222,165,24)",
-      "rgb(214,181,33)",
-      "rgb(189,222,41)",
-      "rgb(148,222,33)",
-      "rgb(41,206,16)",
-      "rgb(50,190,16)",
-      "rgb(57,181,16)",
-      "rgb(49,156,8)",
-      "rgb(41,148,0)",
-      "rgb(24,132,8)",
-      "rgb(255,255,255)",
-      "rgb(214,214,222)",
-      "rgb(181,189,189)",
-      "rgb(160,170,175)",
-      "rgb(148,156,165)",
-      "rgb(150,150,150)"
-    ];
-    expect(actual).toEqual(expected);
+    expect(actual).toMatchInlineSnapshot(`
+Array [
+  "rgb(0,0,0)",
+  "rgb(24,33,41)",
+  "rgb(239,49,16)",
+  "rgb(206,41,16)",
+  "rgb(214,90,0)",
+  "rgb(214,102,0)",
+  "rgb(214,115,0)",
+  "rgb(198,123,8)",
+  "rgb(222,165,24)",
+  "rgb(214,181,33)",
+  "rgb(189,222,41)",
+  "rgb(148,222,33)",
+  "rgb(41,206,16)",
+  "rgb(50,190,16)",
+  "rgb(57,181,16)",
+  "rgb(49,156,8)",
+  "rgb(41,148,0)",
+  "rgb(24,132,8)",
+  "rgb(255,255,255)",
+  "rgb(214,214,222)",
+  "rgb(181,189,189)",
+  "rgb(160,170,175)",
+  "rgb(148,156,165)",
+  "rgb(150,150,150)",
+]
+`);
   });
 
   it("can parse a malformed viscolors file", () => {
     // From https://skins.webamp.org/skin/018ddb394f2bfe49efa70bce27b71cb2/Centra_CSS-102_104-3.wsz/
     const viscolors = fixture("CENTRA_VISCOLOR.TXT");
     const actual = parseViscolors(viscolors);
-    const expected = [
-      "rgb(110,150,176)", // 0
-      "rgb(165,165,165)", // 1
-      "rgb(55,55,67)", // 2
-      "rgb(55,55,67)", // 3
-      "rgb(55,55,67)", // 4
-      "rgb(55,55,67)", // 5
-      "rgb(55,55,67)", // 6
-      "rgb(55,55,67)", // 7
-      "rgb(55,55,67)", // 8
-      "rgb(55,55,67)", // 9
-      "rgb(55,55,67)", // 10
-      "rgb(55,55,67)", // 11
-      "rgb(55,55,67)", // 12
-      "rgb(55,55,67)", // 13
-      "rgb(55,55,67)", // 14
-      "rgb(55,55,67)", // 15
-      "rgb(55,55,67)", // 16
-      "rgb(55,55,67)", // 17
-      "rgb(55,55,67)", // 18
-      "rgb(55,55,67)", // 19
-      "rgb(55,55,67)", // 20
-      "rgb(55,55,67)", // 21
-      "rgb(55,55,67)", // 22
-      //c 2
-      "rgb(181,189,189)", // 20 = osc 3
-      "rgb(148,156,165)", // 21 = osc 4
-      "rgb(148,156,165)" // 2) = osc 5 (dimmest)
-    ];
-    expect(actual).toEqual(expected);
+    expect(actual).toMatchInlineSnapshot(`
+Array [
+  "rgb(110,150,176)",
+  "rgb(165,165,165)",
+  "rgb(55,55,67)",
+  "rgb(55,55,67)",
+  "rgb(55,55,67)",
+  "rgb(55,55,67)",
+  "rgb(55,55,67)",
+  "rgb(55,55,67)",
+  "rgb(55,55,67)",
+  "rgb(55,55,67)",
+  "rgb(55,55,67)",
+  "rgb(55,55,67)",
+  "rgb(55,55,67)",
+  "rgb(55,55,67)",
+  "rgb(55,55,67)",
+  "rgb(55,55,67)",
+  "rgb(55,55,67)",
+  "rgb(55,55,67)",
+  "rgb(55,55,67)",
+  "rgb(55,55,67)",
+  "rgb(55,55,67)",
+  "rgb(55,55,67)",
+  "rgb(55,55,67)",
+  "rgb(181,189,189)",
+  "rgb(148,156,165)",
+  "rgb(148,156,165)",
+]
+`);
   });
 
   it("does not require commas to separate values", () => {
     // From https://skins.webamp.org/skin/99c6227d8880e00813a9aa6c4e808c37/valgaav_by_dreamcass-d85bqwp.wsz/
     const viscolors = fixture("viscolor_valgaav.txt");
     const actual = parseViscolors(viscolors);
-    const expected = [
-      "rgb(98,111,123)", // color 0 = background
-      "rgb(98,111,123)", // color 1 = dots
-      "rgb(21,21,21)", // 2 = top of spec
-      "rgb(223,176,176)", // 16
-      "rgb(218,168,168)", // 15
-      "rgb(211,158,158)", // 14
-      "rgb(204,147,147)", // 13
-      "rgb(198,137,137)", // 12
-      "rgb(191,127,127)", // 11
-      "rgb(185,117,117)", // 10
-      "rgb(178,107,107)", // 9
-      "rgb(172,97,97)", // 8
-      "rgb(165,86,86)", // 7
-      "rgb(158,76,76)", // 6
-      "rgb(152,66,66)", // 5
-      "rgb(145,56,56)", // 4
-      "rgb(138,46,46)", // 3
-      "rgb(138,46,46)", // 17 = bottom of spec
-      "rgb(138,46,46)", // 18 = osc 1
-      "rgb(158,76,76)", // 19 = osc 2
-      "rgb(178,107,107)", // 20 = osc 3
-      "rgb(198,137,137)", // 21 = osc4
-      "rgb(218,168,168)", // 22 = osc5
-      "rgb(223,176,176)" // 23 = analyzer peak dots
-    ];
-    expect(actual).toEqual(expected);
+    expect(actual).toMatchInlineSnapshot(`
+Array [
+  "rgb(98,111,123)",
+  "rgb(98,111,123)",
+  "rgb(21,21,21)",
+  "rgb(223,176,176)",
+  "rgb(218,168,168)",
+  "rgb(211,158,158)",
+  "rgb(204,147,147)",
+  "rgb(198,137,137)",
+  "rgb(191,127,127)",
+  "rgb(185,117,117)",
+  "rgb(178,107,107)",
+  "rgb(172,97,97)",
+  "rgb(165,86,86)",
+  "rgb(158,76,76)",
+  "rgb(152,66,66)",
+  "rgb(145,56,56)",
+  "rgb(138,46,46)",
+  "rgb(138,46,46)",
+  "rgb(138,46,46)",
+  "rgb(158,76,76)",
+  "rgb(178,107,107)",
+  "rgb(198,137,137)",
+  "rgb(218,168,168)",
+  "rgb(223,176,176)",
+]
+`);
+  });
+  it("allows for trailing lines", () => {
+    const viscolors = fixture("viscolor_green_dimension.txt");
+    const actual = parseViscolors(viscolors);
+    expect(actual).toMatchInlineSnapshot(`
+Array [
+  "rgb(0,0,0)",
+  "rgb(0,0,0)",
+  "rgb(0,50,0)",
+  "rgb(0,56,0)",
+  "rgb(0,63,0)",
+  "rgb(0,70,0)",
+  "rgb(0,76,0)",
+  "rgb(0,83,0)",
+  "rgb(0,89,0)",
+  "rgb(0,96,0)",
+  "rgb(0,103,0)",
+  "rgb(0,109,0)",
+  "rgb(0,116,0)",
+  "rgb(0,123,0)",
+  "rgb(0,129,0)",
+  "rgb(0,136,0)",
+  "rgb(0,143,0)",
+  "rgb(0,150,0)",
+  "rgb(0,63,0)",
+  "rgb(0,76,0)",
+  "rgb(0,96,0)",
+  "rgb(0,116,0)",
+  "rgb(0,150,0)",
+  "rgb(0,255,0)",
+]
+`);
   });
 });
 
