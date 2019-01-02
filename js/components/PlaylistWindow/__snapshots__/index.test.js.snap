@@ -170,10 +170,6 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
       className="playlist-bottom-right draggable"
     >
       <div
-        className="playlist-visualizer"
-        onClick={[Function]}
-      />
-      <div
         className="playlist-running-time-display draggable"
       >
         <div>

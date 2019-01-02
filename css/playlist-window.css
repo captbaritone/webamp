@@ -234,11 +234,6 @@
   height: 100%;
   position: absolute;
   right: 150px;
-  display: none; /* Only show if the window is wide enough */
-}
-
-#webamp #playlist-window.wide .playlist-visualizer {
-  display: block;
 }
 
 #webamp #playlist-window .mini-time {
@@ -321,9 +316,10 @@
   right: 30px;
 }
 
-#webamp #playlist-window #visualizer {
+#webamp #playlist-window .visualizer-wrapper {
   position: absolute;
-  /* TODO: These numbers are not quite right */
-  top: 10px;
-  left: 5px;
+  top: 12px;
+  left: 2px;
+  width: 72px;
+  overflow: hidden;
 }

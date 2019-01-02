@@ -5,7 +5,6 @@ import classnames from "classnames";
 import { WINDOWS, TRACK_HEIGHT } from "../../constants";
 import { SET_FOCUSED_WINDOW } from "../../actionTypes";
 import {
-  toggleVisualizerStyle,
   scrollUpFourTracks,
   scrollDownFourTracks,
   loadFilesFromReferences,
@@ -38,7 +37,9 @@ interface StateProps {
   offset: number;
   maxTrackIndex: number;
   playlistWindowPixelSize: { width: number; height: number };
-  focused: string;
+  showVisualizer: boolean;
+  activateVisualizer: boolean;
+  selected: boolean;
   skinPlaylistStyle: PlaylistStyle;
   playlistSize: [number, number];
   playlistShade: boolean;
@@ -49,7 +50,6 @@ interface DispatchProps {
   focusPlaylist(): void;
   close(): void;
   toggleShade(): void;
-  toggleVisualizerStyle(): void;
   scrollUpFourTracks(): void;
   scrollDownFourTracks(): void;
   loadFilesFromReferences(
@@ -83,13 +83,15 @@ class PlaylistWindow extends React.Component<Props> {
     const {
       skinPlaylistStyle,
       focusPlaylist,
-      focused,
+      selected,
       playlistSize,
       playlistWindowPixelSize,
       playlistShade,
       close,
       toggleShade,
-      analyser
+      analyser,
+      showVisualizer,
+      activateVisualizer
     } = this.props;
     if (playlistShade) {
       return <PlaylistShade />;
@@ -103,10 +105,7 @@ class PlaylistWindow extends React.Component<Props> {
       width: `${playlistWindowPixelSize.width}px`
     };
 
-    const classes = classnames("window", "draggable", {
-      selected: focused === WINDOWS.PLAYLIST,
-      wide: playlistSize[0] > 2
-    });
+    const classes = classnames("window", "draggable", { selected });
 
     const showSpacers = playlistSize[0] % 2 === 0;
 
@@ -153,18 +152,18 @@ class PlaylistWindow extends React.Component<Props> {
           </div>
           <div className="playlist-bottom-center draggable" />
           <div className="playlist-bottom-right draggable">
-            <div
-              className="playlist-visualizer"
-              onClick={this.props.toggleVisualizerStyle}
-            >
-              {/* TODO: Resize the visualizer so it fits */
-              false && (
-                <Visualizer
-                  // @ts-ignore Visualizer is not yet typed
-                  analyser={analyser}
-                />
-              )}
-            </div>
+            {showVisualizer && (
+              <div className="playlist-visualizer">
+                {activateVisualizer && (
+                  <div className="visualizer-wrapper">
+                    <Visualizer
+                      // @ts-ignore Visualizer is not yet typed
+                      analyser={analyser}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
             <PlaylistActionArea />
             <ListMenu />
             <div
@@ -190,9 +189,8 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
         type: SET_FOCUSED_WINDOW,
         window: WINDOWS.PLAYLIST
       }),
-    close: () => dispatch(closeWindow("playlist")),
+    close: () => dispatch(closeWindow(WINDOWS.PLAYLIST)),
     toggleShade: () => dispatch(togglePlaylistShadeMode()),
-    toggleVisualizerStyle: () => dispatch(toggleVisualizerStyle()),
     scrollUpFourTracks: () => dispatch(scrollUpFourTracks()),
     scrollDownFourTracks: () => dispatch(scrollDownFourTracks()),
     loadFilesFromReferences: (e, startIndex) =>
@@ -209,18 +207,22 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
 
 const mapStateToProps = (state: AppState): StateProps => {
   const {
-    windows: { focused },
     playlist: { trackOrder }
   } = state;
+  const playlistSize = Selectors.getWindowSize(state)(WINDOWS.PLAYLIST);
 
   return {
     offset: Selectors.getScrollOffset(state),
     maxTrackIndex: trackOrder.length - 1,
-    playlistWindowPixelSize: Selectors.getWindowPixelSize(state)("playlist"),
-    focused,
+    playlistWindowPixelSize: Selectors.getWindowPixelSize(state)(
+      WINDOWS.PLAYLIST
+    ),
+    showVisualizer: playlistSize[0] > 2,
+    activateVisualizer: !Selectors.getWindowOpen(state)(WINDOWS.MAIN),
+    playlistSize,
+    selected: Selectors.getFocusedWindow(state) === WINDOWS.PLAYLIST,
     skinPlaylistStyle: Selectors.getSkinPlaylistStyle(state),
-    playlistSize: Selectors.getWindowSize(state)("playlist"),
-    playlistShade: Boolean(Selectors.getWindowShade(state)("playlist")),
+    playlistShade: Boolean(Selectors.getWindowShade(state)(WINDOWS.PLAYLIST)),
     duration: Selectors.getDuration(state)
   };
 };
