@@ -58,7 +58,8 @@ export const DEFAULT_SKIN = baseSkin;
 export const VISUALIZERS = {
   OSCILLOSCOPE: "OSCILLOSCOPE",
   BAR: "BAR",
-  NONE: "NONE"
+  NONE: "NONE",
+  MILKDROP: "MILKDROP"
 };
 
 export const VISUALIZER_ORDER = [

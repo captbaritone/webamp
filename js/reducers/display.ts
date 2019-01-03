@@ -22,7 +22,6 @@ import {
   TOGGLE_VISUALIZER_STYLE,
   SET_PLAYLIST_SCROLL_POSITION,
   LOADED,
-  REGISTER_VISUALIZER,
   SET_Z_INDEX,
   DISABLE_MARQUEE,
   SET_DUMMY_VIZ_DATA,
@@ -34,7 +33,6 @@ import { DEFAULT_SKIN, VISUALIZER_ORDER } from "../constants";
 import { DisplaySerializedStateV1 } from "../serializedStates/v1Types";
 
 export interface DisplayState {
-  additionalVisualizers: Array<string>;
   visualizerStyle: number;
   doubled: boolean;
   llama: boolean;
@@ -166,13 +164,7 @@ const display = (
     case TOGGLE_VISUALIZER_STYLE:
       return {
         ...state,
-        visualizerStyle:
-          (state.visualizerStyle + 1) % getVisualizationOrder(state).length
-      };
-    case REGISTER_VISUALIZER:
-      return {
-        ...state,
-        additionalVisualizers: [action.id, ...state.additionalVisualizers]
+        visualizerStyle: (state.visualizerStyle + 1) % VISUALIZER_ORDER.length
       };
     case SET_PLAYLIST_SCROLL_POSITION:
       return { ...state, playlistScrollPosition: action.position };
@@ -218,14 +210,9 @@ export const getSerializedState = (
   };
 };
 
-export const getVisualizationOrder = (state: DisplayState): Array<string> => {
-  return [...state.additionalVisualizers, ...VISUALIZER_ORDER];
-};
-
 export const getVisualizerStyle = createSelector(
-  getVisualizationOrder,
-  state => state.visualizerStyle,
-  (visualizationOrder, visualizationStyle): string => {
-    return visualizationOrder[visualizationStyle];
+  (state: DisplayState) => state.visualizerStyle,
+  (visualizationStyle): string => {
+    return VISUALIZER_ORDER[visualizationStyle];
   }
 );

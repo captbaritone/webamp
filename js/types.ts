@@ -273,10 +273,6 @@ export type Action =
       type: "TOGGLE_VISUALIZER_STYLE";
     }
   | {
-      type: "REGISTER_VISUALIZER";
-      id: string;
-    }
-  | {
       type: "SET_PLAYLIST_SCROLL_POSITION";
       position: number;
     }

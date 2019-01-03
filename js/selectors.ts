@@ -17,7 +17,9 @@ import {
   WINDOW_RESIZE_SEGMENT_HEIGHT,
   WINDOW_WIDTH,
   MEDIA_STATUS,
-  MEDIA_TAG_REQUEST_STATUS
+  MEDIA_TAG_REQUEST_STATUS,
+  WINDOWS,
+  VISUALIZERS
 } from "./constants";
 import { createPlaylistURL } from "./playlistHtml";
 import * as fromTracks from "./reducers/tracks";
@@ -464,8 +466,13 @@ export const getSkinGenExColors = (state: AppState) => {
   return state.display.skinGenExColors;
 };
 
-export const getVisualizerStyle = (state: AppState) =>
-  fromDisplay.getVisualizerStyle(state.display);
+export const getVisualizerStyle = (state: AppState): string => {
+  const milkdrop = state.windows.genWindows[WINDOWS.MILKDROP];
+  if (milkdrop != null && milkdrop.open) {
+    return VISUALIZERS.MILKDROP;
+  }
+  return fromDisplay.getVisualizerStyle(state.display);
+};
 
 export const getVolume = (state: AppState) => state.media.volume;
 export const getBalance = (state: AppState) => state.media.balance;

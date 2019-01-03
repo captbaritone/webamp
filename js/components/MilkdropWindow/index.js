@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import screenfull from "screenfull";
 import ContextMenuWrapper from "../ContextMenuWrapper";
 import GenWindow from "../GenWindow";
-import { WINDOWS } from "../../constants";
+import { WINDOWS, VISUALIZERS } from "../../constants";
 import * as Selectors from "../../selectors";
 import * as Actions from "../../actionCreators";
 import MilkdropContextMenu from "./MilkdropContextMenu";
@@ -200,7 +200,8 @@ async function fetchPreset(presetUrl, { isButterchurn }) {
 }
 
 const mapStateToProps = state => ({
-  isEnabledVisualizer: Selectors.getVisualizerStyle(state) === WINDOWS.MILKDROP,
+  isEnabledVisualizer:
+    Selectors.getVisualizerStyle(state) === VISUALIZERS.MILKDROP,
   playing: Selectors.getMediaIsPlaying(state),
   desktop: Selectors.getMilkdropDesktopEnabled(state)
 });

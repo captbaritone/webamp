@@ -17,7 +17,7 @@ import Media from "./media";
 import * as Selectors from "./selectors";
 import * as Actions from "./actionCreators";
 
-import { WINDOWS, LOAD_STYLE } from "./constants";
+import { LOAD_STYLE } from "./constants";
 import * as Utils from "./utils";
 
 import {
@@ -27,7 +27,6 @@ import {
   CLOSE_WINAMP,
   MINIMIZE_WINAMP,
   LOADED,
-  REGISTER_VISUALIZER,
   SET_Z_INDEX,
   CLOSE_REQUESTED,
   ENABLE_MEDIA_LIBRARY,
@@ -196,7 +195,6 @@ class Winamp {
     }
 
     if (options.__butterchurnOptions) {
-      this.store.dispatch({ type: REGISTER_VISUALIZER, id: WINDOWS.MILKDROP });
       this.store.dispatch({
         type: ENABLE_MILKDROP,
         open: options.__butterchurnOptions.butterchurnOpen
