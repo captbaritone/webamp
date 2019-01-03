@@ -26,7 +26,7 @@ class PresetsLoader extends React.Component {
       presets: null,
       initialPreset: null,
       butterchurn: null,
-      isFullscren: false
+      isFullscreen: false
     };
   }
 
