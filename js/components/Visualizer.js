@@ -7,7 +7,7 @@ import { VISUALIZERS, MEDIA_STATUS } from "../constants";
 
 const PIXEL_DENSITY = 2;
 const NUM_BARS = 20;
-const BAR_WIDTH = 6;
+const BAR_WIDTH = 3 * PIXEL_DENSITY;
 const BAR_PEAK_DROP_RATE = 0.01;
 const GRADIENT_COLOR_COUNT = 16;
 const PEAK_COLOR_INDEX = 23;
@@ -50,14 +50,15 @@ function preRenderBg(width, height, bgColor, fgColor, windowShade) {
   const bgCanvas = document.createElement("canvas");
   bgCanvas.width = width;
   bgCanvas.height = height;
+  const distance = 2 * PIXEL_DENSITY;
 
   const bgCanvasCtx = bgCanvas.getContext("2d");
   bgCanvasCtx.fillStyle = bgColor;
   bgCanvasCtx.fillRect(0, 0, width, height);
   if (!windowShade) {
     bgCanvasCtx.fillStyle = fgColor;
-    for (let x = 0; x < width; x += 4) {
-      for (let y = PIXEL_DENSITY; y < height; y += 4) {
+    for (let x = 0; x < width; x += distance) {
+      for (let y = PIXEL_DENSITY; y < height; y += distance) {
         bgCanvasCtx.fillRect(x, y, PIXEL_DENSITY, PIXEL_DENSITY);
       }
     }
