@@ -7,6 +7,7 @@ import { VISUALIZERS, MEDIA_STATUS } from "../constants";
 
 const PIXEL_DENSITY = 2;
 const NUM_BARS = 20;
+const BAR_WIDTH = 6;
 const BAR_PEAK_DROP_RATE = 0.01;
 const GRADIENT_COLOR_COUNT = 16;
 const PEAK_COLOR_INDEX = 23;
@@ -64,7 +65,7 @@ function preRenderBg(width, height, bgColor, fgColor, windowShade) {
   return bgCanvas;
 }
 
-function preRenderBar(barWidth, height, colors, renderHeight) {
+function preRenderBar(height, colors, renderHeight) {
   /**
    * The order of the colours is commented in the file: the fist two colours
    * define the background and dots (check it to see what are the dots), the
@@ -75,7 +76,7 @@ function preRenderBar(barWidth, height, colors, renderHeight) {
 
   // Off-screen canvas for pre-rendering a single bar gradient
   const barCanvas = document.createElement("canvas");
-  barCanvas.width = barWidth;
+  barCanvas.width = BAR_WIDTH;
   barCanvas.height = height;
 
   const offset = 2; // The first two colors are for the background;
@@ -94,7 +95,7 @@ function preRenderBar(barWidth, height, colors, renderHeight) {
     const colorIndex = GRADIENT_COLOR_COUNT - 1 - Math.floor(i * multiplier);
     barCanvasCtx.fillStyle = gradientColors[colorIndex];
     const y = height - i * PIXEL_DENSITY;
-    barCanvasCtx.fillRect(0, y, barWidth, PIXEL_DENSITY);
+    barCanvasCtx.fillRect(0, y, BAR_WIDTH, PIXEL_DENSITY);
   }
   return barCanvas;
 }
@@ -152,15 +153,6 @@ class Visualizer extends React.Component {
     return this.props.width * PIXEL_DENSITY;
   }
 
-  _barWidth() {
-    const barWidth = Math.floor(this._width() / NUM_BARS);
-    if (barWidth % 2 === 0) {
-      return barWidth;
-    }
-
-    return barWidth - 1;
-  }
-
   setStyle() {
     if (!this.props.colors) {
       return;
@@ -201,7 +193,6 @@ class Visualizer extends React.Component {
   // Pre-render the bar gradient
   preRenderBar() {
     this.barCanvas = preRenderBar(
-      this._barWidth(),
       this._height(),
       this.props.colors,
       this._renderHeight()
@@ -264,7 +255,7 @@ class Visualizer extends React.Component {
       const y = this._height() - height;
       const ctx = this.canvasCtx;
       // Draw the gradient
-      const b = this._barWidth();
+      const b = BAR_WIDTH;
       if (height > 0) {
         ctx.drawImage(this.barCanvas, 0, y, b, height, x, y, b, height);
       }
@@ -281,8 +272,7 @@ class Visualizer extends React.Component {
   _paintBarFrame() {
     this.props.analyser.getByteFrequencyData(this.dataArray);
     const heightMultiplier = this._renderHeight() / 256;
-    const barWidth = this._barWidth();
-    const xOffset = barWidth + PIXEL_DENSITY; // Bar width, plus a pixel of spacing to the right.
+    const xOffset = BAR_WIDTH + PIXEL_DENSITY; // Bar width, plus a pixel of spacing to the right.
     for (let j = 0; j < NUM_BARS - 1; j++) {
       const start = this.octaveBuckets[j];
       const end = this.octaveBuckets[j + 1];
