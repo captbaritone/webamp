@@ -115,7 +115,7 @@
     "redux-devtools-extension": "^2.13.2",
     "redux-thunk": "^2.1.0",
     "reselect": "^3.0.1",
-    "screenfull": "^3.3.2",
+    "screenfull": "^4.0.0",
     "style-loader": "^0.23.1",
     "tinyqueue": "^1.2.3",
     "travis-weigh-in": "^1.0.2",
