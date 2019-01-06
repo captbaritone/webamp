@@ -197,9 +197,10 @@ export default class Media {
   // From 0 to 100
   // The input value here is 0-100 which is kinda wrong, since it represents -12db to 12db.
   // For now, 50 is 0db (no change).
-  // For now we map the values 0-100 to 0.5-1.5
+  // For now we map the values 0-100 to 0.25-1.75
   setPreamp(value: number) {
-    this._preamp.gain.value = 1 + (value - 50) / 100;
+    const percentDelta = (value - 50) * 0.02;
+    this._preamp.gain.value = 1 + percentDelta * 0.75;
   }
 
   // From -100 to 100
