@@ -36,7 +36,7 @@ class WindowManager extends React.Component<Props> {
     );
     const targetNode = windows.find(node => node.key === key);
     if (targetNode == null) {
-      throw new Error("Tried to move a node that does not exist");
+      throw new Error(`Tried to move a node that does not exist: ${key}`);
     }
 
     let movingSet = new Set([targetNode]);
@@ -54,6 +54,11 @@ class WindowManager extends React.Component<Props> {
 
   handleMouseDown = (key: WindowId, e: React.MouseEvent<HTMLDivElement>) => {
     if (!(e.target as HTMLElement).classList.contains("draggable")) {
+      return;
+    }
+
+    if (this.props.getWindowHidden(key)) {
+      // The user may be clicking on full screen Milkdrop.
       return;
     }
     // Prevent dragging from highlighting text.
