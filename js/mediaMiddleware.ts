@@ -26,13 +26,15 @@ import { objectForEach } from "./utils";
 
 export default (media: Media) => (store: MiddlewareStore) => {
   const {
-    media: { volume, balance }
+    media: { volume, balance },
+    equalizer: { sliders }
   } = store.getState();
 
   // Ensure the default state is the canonical value.
   media.setVolume(volume);
   media.setBalance(balance);
-  // TODO: Ensure other values like bands and preamp are in sync
+  media.setPreamp(sliders.preamp);
+  // TODO: Ensure other values like bands are in sync
 
   media.on("timeupdate", () => {
     store.dispatch({
