@@ -7,6 +7,7 @@ import EqualizerWindow from "./index";
 const media = {
   addEventListener: jest.fn(),
   setVolume: jest.fn(),
+  setPreamp: jest.fn(),
   setBalance: jest.fn(),
   getAnalyser: () => null,
   on: jest.fn()
