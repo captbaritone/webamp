@@ -194,9 +194,12 @@ export default class Media {
     this._gainNode.gain.value = volume / 100;
   }
 
-  // From 0-1
+  // From 0 to 100
+  // The input value here is 0-100 which is kinda wrong, since it represents -12db to 12db.
+  // For now, 50 is 0db (no change).
+  // For now we map the values 0-100 to 0.5-1.5
   setPreamp(value: number) {
-    this._preamp.gain.value = value / 100;
+    this._preamp.gain.value = 1 + (value - 50) / 100;
   }
 
   // From -100 to 100
