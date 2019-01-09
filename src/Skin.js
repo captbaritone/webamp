@@ -29,7 +29,9 @@ export default class Skin extends React.Component {
     return (
       <a
         className={"skin"}
-        ref={node => (this._ref = node)}
+        ref={node => {
+          this._ref = node;
+        }}
         style={{
           position: "absolute",
           // Ideally the final backgroundColor would be black
@@ -51,6 +53,7 @@ export default class Skin extends React.Component {
         href={Utils.getPermalinkUrlFromHash(this.props.hash)}
       >
         <img
+          tabIndex={1}
           src={this.props.src}
           style={{
             imageRendering:
