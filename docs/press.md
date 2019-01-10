@@ -43,6 +43,7 @@
 - [User Error](https://www.youtube.com/watch?v=qlm_G0xgK8Q&feature=youtu.be&t=309)
 - [Important if True](https://youtu.be/6B6E2Kv-w04?t=3295)
 - [Binärgewitter](http://blog.binaergewitter.de/2018/02/16/binaergewitter-talk-number-192-bitcoinheizung#t=1:52:13.216) (German)
+- [The Changelog - State of the "log" (2018)](https://changelog.com/podcast/328#t=00:07:200.07) (00:07:40)
 - [Freak Show](https://freakshow.fm/fs214-hoert-euch-doch-mal-zu?t=1:59:05,2:10:51) (German)
 - [Apparatus Pogovori](https://apparatus.si/095apg/) (Slovenian)
 
