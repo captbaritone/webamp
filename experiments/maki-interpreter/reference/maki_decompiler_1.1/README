@@ -1,0 +1,119 @@
+Overview:
+========
+The mdc.pl is a Maki decompiler written in Perl.
+Maki is the Winamp scripting language used for doing cool effects in all
+modern Winamp skins.
+
+mdc de-compiles Maki scripts so that you can figure out what the skin does
+and how it does it.
+
+I wrote the de-compiler as part of a Linux media player that should be able
+to fully use Winamp skins. Even the cool modern ones.
+
+Important Copyright discussion:
+===============================
+When I presented the de-compiler on the Winamp forum there were a lot of 
+discussions about copyright and keeping own scripts secret.
+
+1. Your scripts were never secret. It took me a weekend to write the core
+of the decompiler. Everyone could have done this before.
+
+2. I am completely in favor of Copyright. Breaking Copyright is bad.
+Please don't do it.
+
+3. If you just want to have a look at working scripts, then have a look at
+the MMD3 skin. It comes with source code an the author allows the usage
+of part of the scripts for own projects. (see the comments there)
+
+4. Francis (our guru) closed the discussion with the following comment:
+
+----- >8 ---- cut here ----- >8 ----
+Awesome
+
+Many years ago there was a BBS software called PCBoard, it had scripts, its scripts were compiled. Two guys (one of them was me) wrote their own decompilers, uproar followed. CDC (makers of PCBoard) added an encryption layer, unfortunately PCBoard had to run the scripts somehow, so it had to decrypt them, and so we could do that too (lifting the decryption routine right from pcboard). There was about 4 or 5 different encryptions methods that followed, each new one was greeted (in some instances it was preceeded) by new decompilers that could decompile them too.
+
+Now, did anybody ever use our decompilers to try to appropriate the work of others ? sure, altho very rarely. Did it work ? No, because scripts that are worth stealing are well known, and people just cry RIP! As for scripts that are hiding "secret recipes", well... I suppose they are now as safe as those 'hidden' in the Windows compiled code, or in a Java class.
+
+The morale of the story ? Executable code (wether it is for a real or a virtual cpu) cannot be hidden securely, period.
+
+For this reason, when I designed maki, I made a conscious decision not to try to encrypt the bytecode in any way, because that would have been useless at preventing anything, and the last thing I wanted to do was play the game CDC did, I could only have lost.
+
+Now, this may raise the question of why I even did bother with a compiler in the first place, well, 3 reasons :
+
+- i have a personal preference for compiled scripts: they usually end up running in a more structured VM. Of course you can always precompile packaged source code and run that, but this doesn't factor in the next reasons
+
+- for speed: compiled code is faster, and having the code compiled means you don't have to pre compile it when you load the skin, even the first time
+
+- and yes: so that you could chose wether you released your source or not, because as much of an open source advocate as I am, I like to let people make their own decisions.
+
+Well, that possibility of choice lasted much longer than I expected anyway
+
+Now, as an aside, pretty much anybody who remembers the pcboard era will acknowledge that pcboard script decompilers were mostly 'a force for good'. It may have made a few casualties (it destroyed the concept of shareware scripts for instance), but it helped against trojans and backdoors, it taught many great coders how to script pcb, it allowed incredible customization, and in the end, most scripts were released with sources because of all those reasons. I'm sure that this maki decompiler will help many people too, although I guess (and it's obvious by this thread) that it'll annoy quite a few others.
+
+Now if it *really* annoys you that it's becomes so easy to get at your maki source code, and you feel like doing something about it, then here's a hint for you : http://www.cs.arizona.edu/~collberg...bfuscation.html ... :P
+
+To Ralf2: great job man There were still a few scripts I wasn't able to decompile, but what did decompile worked brilliantly. Have you given any thoughts to reconstructing for/whiles ? I guess they are not used that much in maki anyway eh..? Did you use invokeDebugger at all to help you out ?
+
+Francis.
+
+"Open your sources, your mind will follow"
+
+__________________
+Bluemars - Music For The Space Traveller
+----- >8 ---- cut here ----- >8 ----
+
+
+
+Copying:
+========
+mdc is distributed under the GNU public licence. The lincence is included in 
+the file "Licence".
+In principle the GNU public licence allows you to do everything as long as
+you keep the original copyright notice and the lincence in place.
+This "everything" includes the right to fix bugs and modify the source code
+so you have to distribute the sources as well.
+
+Perl:
+=====
+I wrote this application in Perl because it's a very nice and also portable
+language.
+Now that I am finished it would have been a good idea to use a language 
+with stronger typing to prevent many small bugs that I had.
+However it needs to have garbage collection and dynamic lists, so C and C++
+is not such a good idea.
+Maybe Java, but I guess that I would have needed at least twice as long
+in Java because of typing .elementAt(i) all the time.
+
+Installation:
+=============
+There is not much to install. In principle you could copy the .pm files into
+a perl library path and the .pl file into the "normal" path.
+
+However I propose to leave everything in place and just call "perl mdc.pl" 
+in this directory.
+
+Usage:
+======
+IMPORTANT NOTICE FOR WINDOWS USER: This is a command line tool. You have to
+go to the command line.
+
+mdc will give you a usage message if you call it without parameters or with "-h"
+
+Donations:
+==========
+I am very happy if you want to donate me ridiculous amounts of money. You could
+probably use my Paypal account for this.
+Failing this you could also donate me pizza if you like...
+
+Bugs:
+=====
+Although I tested the decompiler quite well it could always be the case that
+I overlooked an issue.
+As you all know the Maki description is quite terse.
+So if you detected an error then please send me the .maki file and also
+the .m file if possible.
+
+
+
+mdc, copyright Ralf Engels ralf.engels@gmx.de
+
