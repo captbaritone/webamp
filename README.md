@@ -21,6 +21,8 @@ Check out this Twitter thread for an illustrated list of features: https://twitt
 
 I've tried to make it possible to include Webamp in your own project.
 
+For examples of how to add Webamp to your projects, check out out [`examples/` directory](./examples).
+
 See the [usage documentation](./docs/usage.md) for more information.
 
 ## Development
