@@ -55,7 +55,8 @@ export function addTracksFromReferences(
 ): Dispatchable {
   const tracks: Track[] = Array.from(fileReferences).map(file => ({
     blob: file,
-    defaultName: file.name
+    defaultName: file.name,
+    type: file.type
   }));
   return loadMediaFiles(tracks, loadStyle, atIndex);
 }
@@ -216,14 +217,41 @@ export function loadMediaFiles(
   };
 }
 
+const loadJson = async blob => {
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader();
+    fileReader.readAsText(blob);
+    fileReader.onload = (e: any) => {
+      resolve(JSON.parse(e.srcElement.result));
+    };
+    fileReader.onerror = (e: any) => {
+      console.error("Error reading JSON blob");
+      reject(e);
+    };
+  });
+};
+
 export function loadMediaFile(
   track: Track,
   priority: LoadStyle = LOAD_STYLE.NONE,
   atIndex = 0
 ): Dispatchable {
-  return dispatch => {
+  return async dispatch => {
     const id = uniqueId();
-    const { defaultName, metaData, duration } = track;
+    let defaultName = null;
+    let metaData = null;
+    let duration = null;
+
+    if (track.type === "application/json" && "blob" in track) {
+      const data: any = await loadJson(track.blob);
+      defaultName = data.defaultName;
+      metaData = data.metaData;
+      duration = data.duration;
+    } else {
+      defaultName = track.defaultName;
+      metaData = track.metaData;
+      duration = track.duration;
+    }
     let canonicalUrl: string;
     if ("url" in track) {
       canonicalUrl = track.url.toString();
@@ -239,7 +267,9 @@ export function loadMediaFile(
       duration: track.duration,
       defaultName,
       id,
-      atIndex
+      atIndex,
+      mediaType:
+        track.type === "application/json" ? metaData.mediaType : "default"
     });
     switch (priority) {
       case LOAD_STYLE.BUFFER:

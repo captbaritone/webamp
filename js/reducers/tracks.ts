@@ -29,7 +29,8 @@ const tracks = (
           defaultName: action.defaultName || null,
           duration: action.duration == null ? null : action.duration,
           url: action.url,
-          mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.INITIALIZED
+          mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.INITIALIZED,
+          mediaType: action.mediaType
         }
       };
     case SET_MEDIA: {

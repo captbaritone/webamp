@@ -52,10 +52,7 @@ interface DispatchProps {
   toggleShade(): void;
   scrollUpFourTracks(): void;
   scrollDownFourTracks(): void;
-  loadFilesFromReferences(
-    e: React.DragEvent<HTMLDivElement>,
-    startIndex: number
-  ): void;
+  loadFilesFromReferences(files: FileList, startIndex: number): void;
   scrollVolume(e: React.WheelEvent<HTMLDivElement>): void;
 }
 
@@ -76,7 +73,21 @@ class PlaylistWindow extends React.Component<Props> {
       0,
       this.props.maxTrackIndex + 1
     );
-    this.props.loadFilesFromReferences(e, atIndex);
+    let files = e.dataTransfer.files;
+    if (
+      e.dataTransfer.files.length === 0 &&
+      e.dataTransfer.getData("files").length > 0
+    ) {
+      files = JSON.parse(e.dataTransfer.getData("files")).map((file: any) => {
+        const blob = new Blob([JSON.stringify(file)], {
+          type: "application/json"
+        });
+        return new File([blob], file.name, {
+          type: "application/json"
+        });
+      });
+    }
+    this.props.loadFilesFromReferences(files, atIndex);
   };
 
   render() {
@@ -193,14 +204,8 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
     toggleShade: () => dispatch(togglePlaylistShadeMode()),
     scrollUpFourTracks: () => dispatch(scrollUpFourTracks()),
     scrollDownFourTracks: () => dispatch(scrollDownFourTracks()),
-    loadFilesFromReferences: (e, startIndex) =>
-      dispatch(
-        loadFilesFromReferences(
-          e.dataTransfer.files,
-          LOAD_STYLE.NONE,
-          startIndex
-        )
-      ),
+    loadFilesFromReferences: (files, startIndex) =>
+      dispatch(loadFilesFromReferences(files, LOAD_STYLE.NONE, startIndex)),
     scrollVolume: e => dispatch(scrollVolume(e))
   };
 };

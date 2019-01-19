@@ -189,6 +189,7 @@ export type Action =
       defaultName?: string;
       duration?: number;
       url: string;
+      mediaType: string;
     }
   | {
       type: "SET_MEDIA";
@@ -482,6 +483,11 @@ interface TrackInfo {
    * Example: 95
    */
   duration?: number;
+
+  /**
+   * Type can be used to identify other forms of custom track data, e.g. JSON
+   */
+  type: string;
 }
 
 export interface URLTrack extends TrackInfo {
@@ -532,6 +538,7 @@ export interface PlaylistTrack {
   kbps?: string;
   khz: string;
   channels?: number;
+  mediaType: string;
 }
 
 export interface AppState {
