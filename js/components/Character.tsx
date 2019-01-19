@@ -1,4 +1,5 @@
 import React from "react";
+import deburr from "lodash/deburr";
 
 interface Props {
   children: string | number;
@@ -6,8 +7,7 @@ interface Props {
 }
 
 export const characterClassName = (char: string | number) =>
-  `character-${char
-    .toString()
+  `character-${deburr(char.toString())
     .toLowerCase()
     .charCodeAt(0)}`;
 
