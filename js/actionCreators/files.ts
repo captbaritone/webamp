@@ -217,7 +217,7 @@ export function loadMediaFiles(
   };
 }
 
-const loadJson = async blob => {
+const loadJsonTrack = async blob => {
   return new Promise((resolve, reject) => {
     const fileReader = new FileReader();
     fileReader.readAsText(blob);
@@ -243,7 +243,7 @@ export function loadMediaFile(
     let duration = null;
 
     if (track.type === "application/json" && "blob" in track) {
-      const data: any = await loadJson(track.blob);
+      const data: any = await loadJsonTrack(track.blob);
       defaultName = data.defaultName;
       metaData = data.metaData;
       duration = data.duration;
