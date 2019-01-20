@@ -612,3 +612,7 @@ export function getDebugData(state: AppState) {
 export function getMilkdropDesktopEnabled(state: AppState): boolean {
   return state.milkdrop.desktop;
 }
+
+export function getPresets(state: AppState): any {
+  return state.milkdrop.presets;
+}

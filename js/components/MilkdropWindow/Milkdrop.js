@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getCurrentTrackDisplayName } from "../../selectors";
+import * as Selectors from "../../selectors";
 import DropTarget from "../DropTarget";
 import PresetOverlay from "./PresetOverlay";
 
@@ -239,6 +239,9 @@ class Milkdrop extends React.Component {
   }
 
   render() {
+    if (this.props.presets == null) {
+      return null;
+    }
     return (
       <DropTarget id="milkdrop-window" handleDrop={e => this._handleDrop(e)}>
         {this.state.presetOverlay && (
@@ -271,7 +274,8 @@ class Milkdrop extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  trackTitle: getCurrentTrackDisplayName(state)
+  trackTitle: Selectors.getCurrentTrackDisplayName(state),
+  presets: Selectors.getPresets(state)
 });
 
 export default connect(mapStateToProps)(Milkdrop);
