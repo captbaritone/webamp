@@ -439,6 +439,10 @@ export type Action =
   | {
       type: "SET_MILKDROP_DESKTOP";
       enabled: boolean;
+    }
+  | {
+      type: "INITIALIZE_PRESETS";
+      presets: any;
     };
 
 export type MediaTagRequestStatus =

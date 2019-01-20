@@ -23,7 +23,6 @@ class PresetsLoader extends React.Component {
     super(props);
     this.options = props.options;
     this.state = {
-      presets: null,
       initialPreset: null,
       butterchurn: null,
       isFullscreen: false
@@ -50,11 +49,11 @@ class PresetsLoader extends React.Component {
       presetConverterEndpoint: this.options.presetConverterEndpoint,
       loadConvertPreset: this.options.loadConvertPreset
     });
+    this.props.initializePresets(presets);
 
     this.setState({
       butterchurn,
-      initialPreset,
-      presets
+      initialPreset
     });
     screenfull.onchange(this._handleFullscreenChange);
   }
@@ -78,8 +77,8 @@ class PresetsLoader extends React.Component {
   };
 
   _renderMilkdrop(size) {
-    const { butterchurn, presets, initialPreset } = this.state;
-    const loaded = butterchurn != null && presets != null;
+    const { butterchurn, initialPreset } = this.state;
+    const loaded = butterchurn != null;
     const { width, height } = this.state.isFullscreen
       ? { width: screen.width, height: screen.height }
       : size;
@@ -94,7 +93,6 @@ class PresetsLoader extends React.Component {
             width={width}
             height={height}
             isFullscreen={this.state.isFullscreen}
-            presets={presets}
             initialPreset={initialPreset}
             butterchurn={butterchurn}
           />
@@ -208,7 +206,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   closeWindow: () => dispatch(Actions.closeWindow(WINDOWS.MILKDROP)),
-  toggleDesktop: () => dispatch(Actions.toggleMilkdropDesktop())
+  toggleDesktop: () => dispatch(Actions.toggleMilkdropDesktop()),
+  initializePresets: presets => dispatch(Actions.initializePresets(presets))
 });
 
 export default connect(
