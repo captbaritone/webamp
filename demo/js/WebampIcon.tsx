@@ -12,33 +12,27 @@ const WebampIcon = (props: Props) => {
   const ref = useRef();
   const [hidden, setHidden] = useState(true);
   const [selected, setSelected] = useState(false);
-  useEffect(
-    () => {
-      return props.webamp.onClose(() => {
-        setHidden(false);
-        setSelected(false);
-      });
-    },
-    [props.webamp]
-  );
+  useEffect(() => {
+    return props.webamp.onClose(() => {
+      setHidden(false);
+      setSelected(false);
+    });
+  }, [props.webamp]);
 
-  useEffect(
-    () => {
-      if (!selected) {
+  useEffect(() => {
+    if (!selected) {
+      return;
+    }
+    const handleClick = (e: MouseEvent) => {
+      if (ref.current.contains(e.target)) {
         return;
+      } else {
+        setSelected(false);
       }
-      const handleClick = (e: MouseEvent) => {
-        if (ref.current.contains(e.target)) {
-          return;
-        } else {
-          setSelected(false);
-        }
-      };
-      document.addEventListener("click", handleClick);
-      return () => document.removeEventListener("click", handleClick);
-    },
-    [selected]
-  );
+    };
+    document.addEventListener("click", handleClick);
+    return () => document.removeEventListener("click", handleClick);
+  }, [selected]);
   return (
     hidden || (
       <div

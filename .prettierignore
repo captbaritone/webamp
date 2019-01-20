@@ -1,5 +1,8 @@
 package.json
 **/*.min.css
 **/base-skin.css
-js/googleAnalytics.min.js
+demo/js/googleAnalytics.min.js
 built/*
+demo/built/*
+coverage/*
+examples/webpack/bundle.js
