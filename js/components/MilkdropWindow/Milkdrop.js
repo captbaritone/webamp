@@ -147,17 +147,16 @@ class Milkdrop extends React.Component {
     const presetKeys = this.props.presets.getKeys();
     const presets = {};
     const presetIndices = [];
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
+    files.forEach(file => {
       const fileName = file.name;
-      const presetName = fileName.substring(fileName, fileName.length - 5); // remove .milk
+      const presetName = fileName.substring(0, fileName.length - 5); // remove .milk
       const presetIdx = presetKeys.indexOf(presetName);
       if (presetIdx >= 0) {
         presetIndices.push(presetIdx);
       } else {
         presets[presetName] = { file };
       }
-    }
+    });
 
     if (Object.keys(presets).length > 0) {
       const filePresetIndices = this.props.presets.addPresets(presets);
