@@ -443,6 +443,10 @@ export type Action =
   | {
       type: "INITIALIZE_PRESETS";
       presets: any;
+    }
+  | {
+      type: "GOT_BUTTERCHURN";
+      butterchurn: any;
     };
 
 export type MediaTagRequestStatus =

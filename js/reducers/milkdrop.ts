@@ -1,15 +1,20 @@
 import { Action } from "../types";
-import { SET_MILKDROP_DESKTOP, INITIALIZE_PRESETS } from "../actionTypes";
-import { bindActionCreators } from "redux";
+import {
+  SET_MILKDROP_DESKTOP,
+  INITIALIZE_PRESETS,
+  GOT_BUTTERCHURN
+} from "../actionTypes";
 
 export interface MilkdropState {
   desktop: boolean;
   presets: any;
+  butterchurn: any;
 }
 
 const defaultMilkdropState = {
   desktop: false,
-  presets: null
+  presets: null,
+  butterchurn: null
 };
 
 export const milkdrop = (
@@ -21,6 +26,8 @@ export const milkdrop = (
       return { ...state, desktop: action.enabled };
     case INITIALIZE_PRESETS:
       return { ...state, presets: action.presets };
+    case GOT_BUTTERCHURN:
+      return { ...state, butterchurn: action.butterchurn };
     default:
       return state;
   }

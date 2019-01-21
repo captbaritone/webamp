@@ -9,7 +9,6 @@ import * as Actions from "../../actionCreators";
 import MilkdropContextMenu from "./MilkdropContextMenu";
 import Desktop from "./Desktop";
 
-import Presets from "./Presets";
 import Milkdrop from "./Milkdrop";
 import Background from "./Background";
 
@@ -21,12 +20,7 @@ import "../../../css/milkdrop-window.css";
 class PresetsLoader extends React.Component {
   constructor(props) {
     super(props);
-    this.options = props.options;
-    this.state = {
-      initialPreset: null,
-      butterchurn: null,
-      isFullscreen: false
-    };
+    this.state = { isFullscreen: false };
   }
 
   isHidden() {
@@ -34,27 +28,8 @@ class PresetsLoader extends React.Component {
   }
 
   async componentDidMount() {
-    const [
-      { butterchurn, presetKeys, minimalPresets },
-      initialPreset
-    ] = await Promise.all([
-      this.options.loadInitialDependencies(),
-      loadInitialPreset(this.options)
-    ]);
+    this.props.initializePresets(this.props.options);
 
-    const presets = new Presets({
-      keys: presetKeys,
-      initialPresets: minimalPresets,
-      getRest: this.options.loadNonMinimalPresets,
-      presetConverterEndpoint: this.options.presetConverterEndpoint,
-      loadConvertPreset: this.options.loadConvertPreset
-    });
-    this.props.initializePresets(presets);
-
-    this.setState({
-      butterchurn,
-      initialPreset
-    });
     screenfull.onchange(this._handleFullscreenChange);
   }
 
@@ -77,8 +52,6 @@ class PresetsLoader extends React.Component {
   };
 
   _renderMilkdrop(size) {
-    const { butterchurn, initialPreset } = this.state;
-    const loaded = butterchurn != null;
     const { width, height } = this.state.isFullscreen
       ? { width: screen.width, height: screen.height }
       : size;
@@ -87,16 +60,12 @@ class PresetsLoader extends React.Component {
     // does not cause this node to change identity.
     return (
       <Background innerRef={node => (this._wrapperNode = node)}>
-        {loaded && (
-          <Milkdrop
-            {...this.props}
-            width={width}
-            height={height}
-            isFullscreen={this.state.isFullscreen}
-            initialPreset={initialPreset}
-            butterchurn={butterchurn}
-          />
-        )}
+        <Milkdrop
+          {...this.props}
+          width={width}
+          height={height}
+          isFullscreen={this.state.isFullscreen}
+        />
       </Background>
     );
   }
@@ -141,60 +110,6 @@ class PresetsLoader extends React.Component {
       </GenWindow>
     );
   }
-}
-
-function presetNameFromURL(url) {
-  try {
-    const urlParts = url.split("/");
-    const lastPart = urlParts[urlParts.length - 1];
-    const presetName = lastPart.substring(0, lastPart.length - 5); // remove .milk or .json
-    return decodeURIComponent(presetName);
-  } catch (e) {
-    // if something goes wrong parsing url, just use url as the preset name
-    console.error(e);
-    return url;
-  }
-}
-
-async function loadInitialPreset({
-  initialButterchurnPresetUrl,
-  initialMilkdropPresetUrl
-}) {
-  if (initialButterchurnPresetUrl && initialMilkdropPresetUrl) {
-    alert(
-      "Unable to handle both milkdropPresetUrl and butterchurnPresetUrl. Please specify one or the other."
-    );
-  } else if (initialButterchurnPresetUrl) {
-    return fetchPreset(initialButterchurnPresetUrl, { isButterchurn: true });
-  } else if (initialMilkdropPresetUrl) {
-    return fetchPreset(initialMilkdropPresetUrl, { isButterchurn: false });
-  }
-  return null;
-}
-
-async function fetchPreset(presetUrl, { isButterchurn }) {
-  const response = await fetch(presetUrl);
-  if (!response.ok) {
-    console.error(response.statusText);
-    alert(`Unable to load MilkDrop preset from ${presetUrl}`);
-    return null;
-  }
-  const presetName = presetNameFromURL(presetUrl);
-
-  let preset = null;
-  if (isButterchurn) {
-    try {
-      preset = await response.json();
-    } catch (e) {
-      console.error(e);
-      alert(`Failed to parse MilkDrop preset from ${presetUrl}`);
-      return null;
-    }
-  } else {
-    preset = { file: await response.blob() };
-  }
-
-  return { [presetName]: preset };
 }
 
 const mapStateToProps = state => ({

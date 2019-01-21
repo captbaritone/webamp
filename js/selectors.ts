@@ -616,3 +616,7 @@ export function getMilkdropDesktopEnabled(state: AppState): boolean {
 export function getPresets(state: AppState): any {
   return state.milkdrop.presets;
 }
+
+export function getButterchurn(state: AppState): any {
+  return state.milkdrop.butterchurn;
+}
