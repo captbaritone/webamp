@@ -625,3 +625,11 @@ export function getButterchurn(state: AppState): any {
 export function getPresetTransitionType(state: AppState): TransitionType {
   return state.milkdrop.transitionType;
 }
+
+export function getCurrentPreset(state: AppState): any | null {
+  const { currentPresetIndex, presetOrder, presetDefinitions } = state.milkdrop;
+  if (currentPresetIndex == null) {
+    return null;
+  }
+  return presetDefinitions[presetOrder[currentPresetIndex]];
+}

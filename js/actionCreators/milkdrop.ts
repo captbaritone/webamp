@@ -4,30 +4,47 @@ import Presets from "../components/MilkdropWindow/Presets";
 
 export function initializePresets(presetOptions: any): Dispatchable {
   return async dispatch => {
-    const [
-      { butterchurn, presetKeys, minimalPresets },
-      initialPreset
-    ] = await Promise.all([
-      presetOptions.loadInitialDependencies(),
-      _loadInitialPreset(presetOptions)
-    ]);
+    const { loadInitialDependencies, loadNonMinimalPresets } = presetOptions;
+    const {
+      butterchurn,
+      presetKeys,
+      minimalPresets
+    } = await loadInitialDependencies();
 
-    const presets = new Presets({
-      keys: presetKeys,
-      initialPresets: minimalPresets,
-      getRest: presetOptions.loadNonMinimalPresets,
-      presetConverterEndpoint: presetOptions.presetConverterEndpoint,
-      loadConvertPreset: presetOptions.loadConvertPreset
+    const presetDefinitions = presetKeys.map((key: string) => {
+      if (minimalPresets[key] != null) {
+        return {
+          type: "BUTTERCHURN_JSON",
+          name: key,
+          definition: minimalPresets[key]
+        };
+      }
+      return async () => {
+        // TODO: Avoid a race where we try to resolve this promise more than once in parallel.
+        const nonMinimalPresets = await loadNonMinimalPresets();
+        return {
+          type: "BUTTERCHURN_JSON",
+          name: key,
+          definition: nonMinimalPresets[key]
+        };
+      };
     });
 
-    if (initialPreset) {
-      const presetIndices = presets.addPresets(initialPreset);
-      const presetIndex = presetIndices[0];
-      await presets.selectIndex(presetIndex);
-    }
+    dispatch({
+      type: "GOT_BUTTERCHUN_PRESET",
+      json: minimalPresets[presetKeys[1]]
+    });
+
+    setTimeout(() => {
+      console.log(minimalPresets[presetKeys[0]]);
+      dispatch({
+        type: "GOT_BUTTERCHUN_PRESET",
+        json: minimalPresets[presetKeys[0]]
+      });
+    }, 8000);
 
     dispatch({ type: GOT_BUTTERCHURN, butterchurn });
-    dispatch({ type: INITIALIZE_PRESETS, presets });
+    // dispatch({ type: INITIALIZE_PRESETS, presets });
   };
 }
 
@@ -42,25 +59,6 @@ function _presetNameFromURL(url: string): string {
     console.error(e);
     return url;
   }
-}
-
-async function _loadInitialPreset({
-  initialButterchurnPresetUrl,
-  initialMilkdropPresetUrl
-}: {
-  initialButterchurnPresetUrl: string;
-  initialMilkdropPresetUrl: string;
-}) {
-  if (initialButterchurnPresetUrl && initialMilkdropPresetUrl) {
-    alert(
-      "Unable to handle both milkdropPresetUrl and butterchurnPresetUrl. Please specify one or the other."
-    );
-  } else if (initialButterchurnPresetUrl) {
-    return _fetchPreset(initialButterchurnPresetUrl, { isButterchurn: true });
-  } else if (initialMilkdropPresetUrl) {
-    return _fetchPreset(initialMilkdropPresetUrl, { isButterchurn: false });
-  }
-  return null;
 }
 
 async function _fetchPreset(

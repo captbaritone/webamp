@@ -199,6 +199,9 @@ class Winamp {
         type: ENABLE_MILKDROP,
         open: options.__butterchurnOptions.butterchurnOpen
       });
+      this.store.dispatch(
+        Actions.initializePresets(options.__butterchurnOptions)
+      );
     }
 
     if (options.__enableMediaLibrary) {
