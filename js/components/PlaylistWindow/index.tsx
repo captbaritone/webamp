@@ -10,7 +10,8 @@ import {
   loadFilesFromReferences,
   togglePlaylistShadeMode,
   scrollVolume,
-  closeWindow
+  closeWindow,
+  loadMediaFiles
 } from "../../actionCreators";
 import * as Selectors from "../../selectors";
 
@@ -31,7 +32,7 @@ import TrackList from "./TrackList";
 import ScrollBar from "./ScrollBar";
 
 import "../../../css/playlist-window.css";
-import { AppState, PlaylistStyle, Dispatch } from "../../types";
+import { AppState, PlaylistStyle, Dispatch, Track } from "../../types";
 
 interface StateProps {
   offset: number;
@@ -53,6 +54,7 @@ interface DispatchProps {
   scrollUpFourTracks(): void;
   scrollDownFourTracks(): void;
   loadFilesFromReferences(files: FileList, startIndex: number): void;
+  loadMediaFiles(tracks: Track[], startIndex: number): void;
   scrollVolume(e: React.WheelEvent<HTMLDivElement>): void;
 }
 
@@ -73,21 +75,13 @@ class PlaylistWindow extends React.Component<Props> {
       0,
       this.props.maxTrackIndex + 1
     );
-    let files = e.dataTransfer.files;
-    if (
-      e.dataTransfer.files.length === 0 &&
-      e.dataTransfer.getData("files").length > 0
-    ) {
-      files = JSON.parse(e.dataTransfer.getData("files")).map((file: any) => {
-        const blob = new Blob([JSON.stringify(file)], {
-          type: "application/json"
-        });
-        return new File([blob], file.name, {
-          type: "application/json"
-        });
-      });
+    if (e.dataTransfer.getData("tracks").length > 0) {
+      const tracks: Track[] = JSON.parse(e.dataTransfer.getData("tracks"));
+      this.props.loadMediaFiles(tracks, atIndex);
+    } else {
+      let files = e.dataTransfer.files;
+      this.props.loadFilesFromReferences(files, atIndex);
     }
-    this.props.loadFilesFromReferences(files, atIndex);
   };
 
   render() {
@@ -206,6 +200,8 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
     scrollDownFourTracks: () => dispatch(scrollDownFourTracks()),
     loadFilesFromReferences: (files, startIndex) =>
       dispatch(loadFilesFromReferences(files, LOAD_STYLE.NONE, startIndex)),
+    loadMediaFiles: (tracks, startIndex) =>
+      dispatch(loadMediaFiles(tracks, LOAD_STYLE.NONE, startIndex)),
     scrollVolume: e => dispatch(scrollVolume(e))
   };
 };
