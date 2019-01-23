@@ -146,6 +146,12 @@ export interface EqfPreset {
   preamp: number;
 }
 
+export enum TransitionType {
+  IMMEDIATE,
+  DEFAULT,
+  USER_PRESET
+}
+
 export type Action =
   | {
       type: "@@init";

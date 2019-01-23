@@ -6,7 +6,8 @@ import {
   WindowInfo,
   LoadedURLTrack,
   WindowPositions,
-  PlaylistStyle
+  PlaylistStyle,
+  TransitionType
 } from "./types";
 import { createSelector } from "reselect";
 import * as Utils from "./utils";
@@ -619,4 +620,8 @@ export function getPresets(state: AppState): any {
 
 export function getButterchurn(state: AppState): any {
   return state.milkdrop.butterchurn;
+}
+
+export function getPresetTransitionType(state: AppState): TransitionType {
+  return state.milkdrop.transitionType;
 }

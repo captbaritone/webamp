@@ -4,17 +4,20 @@ import {
   INITIALIZE_PRESETS,
   GOT_BUTTERCHURN
 } from "../actionTypes";
+import { TransitionType } from "../types";
 
 export interface MilkdropState {
   desktop: boolean;
   presets: any;
   butterchurn: any;
+  transitionType: TransitionType;
 }
 
 const defaultMilkdropState = {
   desktop: false,
   presets: null,
-  butterchurn: null
+  butterchurn: null,
+  transitionType: TransitionType.DEFAULT
 };
 
 export const milkdrop = (

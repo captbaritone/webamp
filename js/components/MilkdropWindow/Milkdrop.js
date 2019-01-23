@@ -8,6 +8,17 @@ const USER_PRESET_TRANSITION_SECONDS = 5.7;
 const PRESET_TRANSITION_SECONDS = 2.7;
 const MILLISECONDS_BETWEEN_PRESET_TRANSITIONS = 15000;
 
+function transitionTimeFromTransitionType(transitionType) {
+  switch (transitionType) {
+    case "DEFAULT":
+      return PRESET_TRANSITION_SECONDS;
+    case "IMMEDIATE":
+      return 0;
+    case "USER_PRESET":
+      return USER_PRESET_TRANSITION_SECONDS;
+  }
+}
+
 class Milkdrop extends React.Component {
   constructor(props) {
     super(props);
@@ -195,7 +206,7 @@ class Milkdrop extends React.Component {
     this.selectPreset(await this.props.presets.previous(), blendTime);
   }
 
-  selectPreset(preset, blendTime = 0) {
+  selectPreset(preset, blendTime) {
     if (preset != null) {
       this.visualizer.loadPreset(preset, blendTime);
       this._restartCycling();
@@ -265,7 +276,8 @@ class Milkdrop extends React.Component {
 const mapStateToProps = state => ({
   trackTitle: Selectors.getCurrentTrackDisplayName(state),
   presets: Selectors.getPresets(state),
-  butterchurn: Selectors.getButterchurn(state)
+  butterchurn: Selectors.getButterchurn(state),
+  transitionType: Selectors.getPresetTransitionType(state)
 });
 
 export default connect(mapStateToProps)(Milkdrop);
