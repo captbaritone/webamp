@@ -485,7 +485,7 @@ interface TrackInfo {
   duration?: number;
 
   /**
-   * Type can be used to identify other forms of custom track data, e.g. JSON
+   * Type can be used to identify the use of custom media classes
    */
   mediaType?: string;
 }

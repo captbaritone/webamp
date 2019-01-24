@@ -79,8 +79,7 @@ class PlaylistWindow extends React.Component<Props> {
       const tracks: Track[] = JSON.parse(e.dataTransfer.getData("tracks"));
       this.props.loadMediaFiles(tracks, atIndex);
     } else {
-      let files = e.dataTransfer.files;
-      this.props.loadFilesFromReferences(files, atIndex);
+      this.props.loadFilesFromReferences(e.dataTransfer.files, atIndex);
     }
   };
 
