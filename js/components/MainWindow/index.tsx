@@ -5,7 +5,8 @@ import { WINDOWS, MEDIA_STATUS } from "../../constants";
 import {
   loadFilesFromReferences,
   toggleMainWindowShadeMode,
-  scrollVolume
+  scrollVolume,
+  loadMediaFiles
 } from "../../actionCreators";
 import { getWindowShade } from "../../selectors";
 
@@ -42,7 +43,8 @@ import {
   WindowId,
   AppState,
   Dispatch,
-  FilePicker
+  FilePicker,
+  Track
 } from "../../types";
 
 interface StateProps {
@@ -60,6 +62,7 @@ interface DispatchProps {
   loadFilesFromReferences(files: FileList): void;
   scrollVolume(e: React.WheelEvent<HTMLDivElement>): void;
   toggleMainWindowShadeMode(): void;
+  loadMediaFiles(fiels: Track[]): void;
 }
 
 interface OwnProps {
@@ -75,7 +78,12 @@ export class MainWindow extends React.Component<Props> {
   };
 
   _handleDrop = (e: React.DragEvent<HTMLDivElement>): void => {
-    this.props.loadFilesFromReferences(e.dataTransfer.files);
+    if (e.dataTransfer.getData("tracks").length > 0) {
+      const tracks: Track[] = JSON.parse(e.dataTransfer.getData("tracks"));
+      this.props.loadMediaFiles(tracks);
+    } else {
+      this.props.loadFilesFromReferences(e.dataTransfer.files);
+    }
   };
 
   render() {
@@ -196,7 +204,8 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
       dispatch(loadFilesFromReferences(files)),
     toggleMainWindowShadeMode: () => dispatch(toggleMainWindowShadeMode()),
     scrollVolume: (e: React.WheelEvent<HTMLDivElement>) =>
-      dispatch(scrollVolume(e))
+      dispatch(scrollVolume(e)),
+    loadMediaFiles: (tracks: Track[]) => dispatch(loadMediaFiles(tracks))
   };
 };
 export default connect(
