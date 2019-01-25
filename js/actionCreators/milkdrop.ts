@@ -1,6 +1,12 @@
-import { INITIALIZE_PRESETS, GOT_BUTTERCHURN } from "../actionTypes";
-import { Dispatchable } from "../types";
-import Presets from "../components/MilkdropWindow/Presets";
+import {
+  GOT_BUTTERCHURN_PRESETS,
+  GOT_BUTTERCHURN,
+  SELECT_PRESET_AT_INDEX,
+  RESOLVE_PRESET_AT_INDEX,
+  TOGGLE_PRESET_OVERLAY
+} from "../actionTypes";
+import * as Selectors from "../selectors";
+import { Dispatchable, TransitionType } from "../types";
 
 export function initializePresets(presetOptions: any): Dispatchable {
   return async dispatch => {
@@ -10,8 +16,9 @@ export function initializePresets(presetOptions: any): Dispatchable {
       presetKeys,
       minimalPresets
     } = await loadInitialDependencies();
+    dispatch({ type: GOT_BUTTERCHURN, butterchurn });
 
-    const presetDefinitions = presetKeys.map((key: string) => {
+    const presets = presetKeys.map((key: string) => {
       if (minimalPresets[key] != null) {
         return {
           type: "BUTTERCHURN_JSON",
@@ -19,32 +26,66 @@ export function initializePresets(presetOptions: any): Dispatchable {
           definition: minimalPresets[key]
         };
       }
-      return async () => {
-        // TODO: Avoid a race where we try to resolve this promise more than once in parallel.
-        const nonMinimalPresets = await loadNonMinimalPresets();
-        return {
-          type: "BUTTERCHURN_JSON",
-          name: key,
-          definition: nonMinimalPresets[key]
-        };
+      return {
+        type: "LAZY_BUTTERCHURN_JSON",
+        name: key,
+        getDefinition: async () => {
+          // TODO: Avoid a race where we try to resolve this promise more than once in parallel.
+          const nonMinimalPresets = await loadNonMinimalPresets();
+          return nonMinimalPresets[key];
+        }
       };
     });
 
-    dispatch({
-      type: "GOT_BUTTERCHUN_PRESET",
-      json: minimalPresets[presetKeys[1]]
-    });
+    dispatch({ type: GOT_BUTTERCHURN_PRESETS, presets });
+    dispatch(requestPresetAtIndex(0, TransitionType.IMMEDIATE));
+  };
+}
 
-    setTimeout(() => {
-      console.log(minimalPresets[presetKeys[0]]);
-      dispatch({
-        type: "GOT_BUTTERCHUN_PRESET",
-        json: minimalPresets[presetKeys[0]]
-      });
-    }, 8000);
+export function selectNextPreset(): Dispatchable {
+  return (dispatch, getState) => {
+    const state = getState();
+    const currentPresetIndex = Selectors.getCurrentPresetIndex(state);
+    if (currentPresetIndex == null) {
+      return;
+    }
+    const nextPresetIndex = currentPresetIndex + 1;
+    dispatch(requestPresetAtIndex(nextPresetIndex, TransitionType.DEFAULT));
+  };
+}
 
-    dispatch({ type: GOT_BUTTERCHURN, butterchurn });
-    // dispatch({ type: INITIALIZE_PRESETS, presets });
+export function selectRandomPreset(): Dispatchable {
+  return (dispatch, getState) => {
+    const state = getState();
+    const randomIndex = Math.floor(
+      Math.random() * state.milkdrop.presets.length
+    );
+    dispatch(requestPresetAtIndex(randomIndex, TransitionType.DEFAULT));
+  };
+}
+
+export function requestPresetAtIndex(
+  index: number,
+  transitionType: TransitionType
+): Dispatchable {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const preset = state.milkdrop.presets[index];
+    if (preset == null) {
+      // Index might be out of range.
+      return;
+    }
+    switch (preset.type) {
+      case "BUTTERCHURN_JSON":
+        dispatch({ type: SELECT_PRESET_AT_INDEX, index, transitionType });
+        return;
+      case "LAZY_BUTTERCHURN_JSON":
+        const json = await preset.getDefinition();
+        // What if the index has changed?
+        dispatch({ type: RESOLVE_PRESET_AT_INDEX, index, json });
+        dispatch({ type: SELECT_PRESET_AT_INDEX, index, transitionType });
+        return;
+    }
   };
 }
 
@@ -87,4 +128,8 @@ async function _fetchPreset(
   }
 
   return { [presetName]: preset };
+}
+
+export function togglePresetOverlay(): Dispatchable {
+  return { type: TOGGLE_PRESET_OVERLAY };
 }

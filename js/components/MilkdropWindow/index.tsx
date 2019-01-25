@@ -14,20 +14,24 @@ import Visualizer from "./Visualizer";
 
 import "../../../css/milkdrop-window.css";
 import Background from "./Background";
+import PresetOverlay from "./PresetOverlay";
+
+const MILLISECONDS_BETWEEN_PRESET_TRANSITIONS = 15000;
 
 interface StateProps {
   desktop: boolean;
+  overlay: boolean;
 }
 
 interface DispatchProps {
   closeWindow(): void;
   toggleDesktop(): void;
+  togglePresetOverlay(): void;
+  selectRandomPreset(): void;
 }
 
 interface OwnProps {
   analyser: AnalyserNode;
-  height: number;
-  width: number;
   onFocusedKeyDown(cb: (e: KeyboardEvent) => void): () => void;
 }
 
@@ -51,7 +55,7 @@ function Milkdrop(props: Props) {
           // this.props.presets.toggleRandomize();
           break;
         case 76: // L
-          // this.setState({ presetOverlay: !this.state.presetOverlay });
+          props.togglePresetOverlay();
           e.stopPropagation();
           break;
         case 84: // T
@@ -66,10 +70,20 @@ function Milkdrop(props: Props) {
       }
     });
   }, [props.onFocusedKeyDown]);
+
+  // Cycle presets
+  useEffect(() => {
+    const intervalId = setInterval(
+      props.selectRandomPreset,
+      MILLISECONDS_BETWEEN_PRESET_TRANSITIONS
+    );
+    return () => clearImmediate(intervalId);
+  }, [props.selectRandomPreset]);
   return (
     <GenWindow title={"Milkdrop"} windowId={WINDOWS.MILKDROP}>
-      {({ height, width }) => (
+      {({ height, width }: { width: number; height: number }) => (
         <Background>
+          {props.overlay && <PresetOverlay width={width} height={height} />}
           <Visualizer width={width} height={height} analyser={props.analyser} />
         </Background>
       )}
@@ -78,12 +92,15 @@ function Milkdrop(props: Props) {
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
-  desktop: Selectors.getMilkdropDesktopEnabled(state)
+  desktop: Selectors.getMilkdropDesktopEnabled(state),
+  overlay: Selectors.getPresetOverlayOpen(state)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   closeWindow: () => dispatch(Actions.closeWindow(WINDOWS.MILKDROP)),
-  toggleDesktop: () => dispatch(Actions.toggleMilkdropDesktop())
+  toggleDesktop: () => dispatch(Actions.toggleMilkdropDesktop()),
+  togglePresetOverlay: () => dispatch(Actions.togglePresetOverlay()),
+  selectRandomPreset: () => dispatch(Actions.selectRandomPreset())
 });
 
 export default connect(

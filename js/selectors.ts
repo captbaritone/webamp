@@ -626,10 +626,25 @@ export function getPresetTransitionType(state: AppState): TransitionType {
   return state.milkdrop.transitionType;
 }
 
+export function getCurrentPresetIndex(state: AppState): number | null {
+  return state.milkdrop.currentPresetIndex;
+}
 export function getCurrentPreset(state: AppState): any | null {
-  const { currentPresetIndex, presetOrder, presetDefinitions } = state.milkdrop;
-  if (currentPresetIndex == null) {
+  const index = getCurrentPresetIndex(state);
+  if (index == null) {
     return null;
   }
-  return presetDefinitions[presetOrder[currentPresetIndex]];
+  const preset = state.milkdrop.presets[index];
+  if (preset == null || preset.type !== "BUTTERCHURN_JSON") {
+    return null;
+  }
+  return preset.definition;
+}
+
+export function getPresetNames(state: AppState): string[] {
+  return state.milkdrop.presets.map(preset => preset.name);
+}
+
+export function getPresetOverlayOpen(state: AppState): boolean {
+  return state.milkdrop.overlay;
 }

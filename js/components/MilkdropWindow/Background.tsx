@@ -1,6 +1,11 @@
 import React from "react";
 
-const Background = props => {
+interface Props {
+  innerRef?: (node: HTMLElement) => void;
+  children: React.ReactNode;
+}
+
+const Background = (props: Props) => {
   const { innerRef, ...restProps } = props;
   return (
     <div
@@ -17,9 +22,10 @@ const Background = props => {
         height: "100%",
         width: "100%"
       }}
-      tabIndex="0"
-      {...restProps}
-    />
+      tabIndex={0}
+    >
+      {props.children}
+    </div>
   );
 };
 

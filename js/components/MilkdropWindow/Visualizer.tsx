@@ -9,7 +9,7 @@ interface StateProps {
   isEnabledVisualizer: boolean;
   playing: boolean;
   butterchurn: any;
-  trackTitle: string;
+  trackTitle: string | null;
   currentPreset: any;
   transitionType: TransitionType;
 }
@@ -68,6 +68,7 @@ function Visualizer(props: Props) {
 
   // Load presets when they change
   useEffect(() => {
+    console.log("Preset change", props);
     if (visualizer == null || props.currentPreset == null) {
       return;
     }
@@ -92,7 +93,7 @@ function Visualizer(props: Props) {
     if (!shouldAnimate || visualizer == null) {
       return;
     }
-    let animationFrameRequest = null;
+    let animationFrameRequest: number | null = null;
     const loop = () => {
       visualizer.render();
       animationFrameRequest = window.requestAnimationFrame(loop);
