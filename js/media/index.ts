@@ -1,26 +1,23 @@
 /* Emulate the native <audio> element with Web Audio API */
 import { BANDS, MEDIA_STATUS } from "../constants";
-// Safari does not, yet, support the StereoPannerNode, so we use this polyfill
-// Hopefully this can be removed in thefuture.
-import SteroPannerNode from "stereo-panner-node";
+import StereoBalanceNode from "./StereoBalanceNode";
 import Emitter from "../emitter";
 import ElementSource from "./elementSource";
 import { Band } from "../types";
 
-function createStereoPanner(context: AudioContext): StereoPannerNode {
-  if ("createStereoPanner" in context) {
-    return context.createStereoPanner();
-  }
-  return new SteroPannerNode(context);
+interface StereoBalanceNodeType extends AudioNode {
+  constructor(context: AudioContext): StereoBalanceNodeType;
+  balance: {
+    value: number;
+  };
 }
 
 export default class Media {
   _emitter: Emitter;
   _context: AudioContext;
-  _balance: number;
-  _staticSource: AnalyserNode;
+  _balance: StereoBalanceNodeType;
+  _staticSource: GainNode;
   _preamp: GainNode;
-  _panner: StereoPannerNode;
   _analyser: AnalyserNode;
   _gainNode: GainNode;
   _source: ElementSource;
@@ -51,20 +48,15 @@ export default class Media {
       document.body.addEventListener("click", resume, false);
       document.body.addEventListener("keydown", resume, false);
     }
-    this._balance = 0;
-
-    // The _source node has to be recreated each time it's stopped or
-    // paused, so we don't create it here. Instead we create this dummy
-    // node wich the real source will connect to.
 
     // TODO: Maybe we can get rid of this now that we are using AudioAbstraction?
-    this._staticSource = this._context.createAnalyser(); // Just a noop node
+    this._staticSource = this._context.createGain(); // Just a noop node
+
+    // @ts-ignore The way this class has to be monkey patched, makes it very hard to type.
+    this._balance = new StereoBalanceNode(this._context);
 
     // Create the preamp node
     this._preamp = this._context.createGain();
-
-    // Create the panner node
-    this._panner = createStereoPanner(this._context);
 
     // Create the analyser node for the visualizer
     this._analyser = this._context.createAnalyser();
@@ -87,7 +79,9 @@ export default class Media {
     //           [...biquadFilters]     |
     //                    |_____________/
     //                    |
-    //               <stereoPanner>
+    //              <staticSource>
+    //                    |
+    //                <balance>
     //                    |
     //                    |\
     //                    | <analyser>
@@ -141,10 +135,10 @@ export default class Media {
       output = filter;
     });
 
-    output.connect(this._panner);
+    output.connect(this._balance);
 
-    this._panner.connect(this._gainNode);
-    this._panner.connect(this._analyser);
+    this._balance.connect(this._gainNode);
+    this._balance.connect(this._analyser);
 
     this._gainNode.connect(this._context.destination);
   }
@@ -205,7 +199,8 @@ export default class Media {
 
   // From -100 to 100
   setBalance(balance: number) {
-    this._panner.pan.setValueAtTime(balance / 100, this._context.currentTime);
+    // Yo Dawg.
+    this._balance.balance.value = balance / 100;
   }
 
   setEqBand(band: Band, value: number) {
@@ -215,7 +210,7 @@ export default class Media {
 
   disableEq() {
     this._staticSource.disconnect();
-    this._staticSource.connect(this._panner);
+    this._staticSource.connect(this._balance);
   }
 
   enableEq() {

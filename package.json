@@ -141,7 +141,6 @@
   },
   "prettier": {},
   "dependencies": {
-    "lodash": "^4.17.11",
-    "stereo-panner-node": "^1.4.0"
+    "lodash": "^4.17.11"
   }
 }
