@@ -253,6 +253,10 @@ export function spliceIn<T>(original: T[], start: number, newValues: T[]): T[] {
   return newArr;
 }
 
+export function replaceAtIndex<T>(arr: T[], index: number, newValue: T): T[] {
+  return [...arr.slice(0, index), newValue, ...arr.slice(index + 1)];
+}
+
 export function debounce(func: Function, delay: number): Function {
   let timeout: number;
   let callbackArgs: any[] = [];

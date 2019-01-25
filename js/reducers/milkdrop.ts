@@ -1,45 +1,20 @@
-import { Action } from "../types";
+import { Action, PresetId, Preset } from "../types";
 import {
   SET_MILKDROP_DESKTOP,
-  INITIALIZE_PRESETS,
-  GOT_BUTTERCHURN
+  GOT_BUTTERCHURN_PRESETS,
+  GOT_BUTTERCHURN,
+  RESOLVE_PRESET_AT_INDEX,
+  SELECT_PRESET_AT_INDEX,
+  TOGGLE_PRESET_OVERLAY
 } from "../actionTypes";
+import * as Utils from "../utils";
 import { TransitionType } from "../types";
-
-// This is what we actually pass to butterchurn
-type ButterchurnPresetJson = {
-  type: "BUTTERCHURN_JSON";
-  name: string;
-  definition: any;
-};
-
-// A URL that points to a Butterchurn preset
-interface ButterchurnPresetUrl {
-  type: "BUTTERCHURN_URL";
-  url: string;
-}
-
-// A URL that points to a .milk preset
-interface MilkdropPresetUrl {
-  type: "MILKDROP_URL";
-  url: string;
-}
-
-type PresetDefinition =
-  | ButterchurnPresetJson
-  | ButterchurnPresetUrl
-  | MilkdropPresetUrl;
-
-type LazyPresetDefinition = () => Promise<PresetDefinition>;
-
-type PresetId = string;
 
 export interface MilkdropState {
   desktop: boolean;
+  overlay: boolean;
   presetOrder: PresetId[];
-  presetDefinitions: {
-    [presetId: string]: PresetDefinition | LazyPresetDefinition;
-  };
+  presets: Preset[];
   currentPresetIndex: number | null;
   butterchurn: any;
   transitionType: TransitionType;
@@ -47,8 +22,9 @@ export interface MilkdropState {
 
 const defaultMilkdropState = {
   desktop: false,
+  overlay: false,
   presetOrder: [],
-  presetDefinitions: {},
+  presets: [],
   currentPresetIndex: null,
   butterchurn: null,
   transitionType: TransitionType.DEFAULT
@@ -63,16 +39,39 @@ export const milkdrop = (
       return { ...state, desktop: action.enabled };
     case GOT_BUTTERCHURN:
       return { ...state, butterchurn: action.butterchurn };
-    case "GOT_BUTTERCHUN_PRESET":
-      const id = "TEMP";
+    case GOT_BUTTERCHURN_PRESETS:
       return {
         ...state,
-        presetDefinitions: {
-          [id]: action.json
-        },
-        currentPresetIndex: 0,
-        presetOrder: [id]
+        presets: state.presets.concat(
+          action.presets.map(preset => {
+            switch (preset.type) {
+              case "BUTTERCHURN_JSON":
+              case "LAZY_BUTTERCHURN_JSON":
+                return preset;
+              default:
+                throw new Error(`Invalid preset type: ${preset.type}`);
+            }
+          })
+        )
       };
+    case RESOLVE_PRESET_AT_INDEX:
+      const preset = state.presets[action.index];
+      return {
+        ...state,
+        presets: Utils.replaceAtIndex(state.presets, action.index, {
+          name: preset.name,
+          type: "BUTTERCHURN_JSON",
+          definition: action.json
+        })
+      };
+    case SELECT_PRESET_AT_INDEX:
+      return {
+        ...state,
+        currentPresetIndex: action.index,
+        transitionType: action.transitionType
+      };
+    case TOGGLE_PRESET_OVERLAY:
+      return { ...state, overlay: !state.overlay };
     default:
       return state;
   }

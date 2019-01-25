@@ -94,7 +94,13 @@ export {
   scrollDownFourTracks,
   dragSelected
 } from "./playlist";
-export { initializePresets } from "./milkdrop";
+export {
+  initializePresets,
+  requestPresetAtIndex,
+  selectRandomPreset,
+  selectNextPreset,
+  togglePresetOverlay
+} from "./milkdrop";
 
 import * as Selectors from "../selectors";
 

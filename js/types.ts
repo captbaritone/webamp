@@ -131,6 +131,41 @@ export interface ButterchurnOptions {
   initialButterchurnPresetUrl?: string | null;
 }
 
+// This is what we actually pass to butterchurn
+type ButterchurnPresetJson = {
+  type: "BUTTERCHURN_JSON";
+  name: string;
+  definition: Object;
+};
+
+type LazyButterchurnPresetJson = {
+  type: "LAZY_BUTTERCHURN_JSON";
+  name: string;
+  getDefinition: () => Promise<Object>;
+};
+
+// A URL that points to a Butterchurn preset
+interface ButterchurnPresetUrl {
+  type: "BUTTERCHURN_URL";
+  url: string;
+}
+
+// A URL that points to a .milk preset
+interface MilkdropPresetUrl {
+  type: "MILKDROP_URL";
+  url: string;
+}
+
+export type PresetDefinition =
+  | ButterchurnPresetJson
+  | LazyButterchurnPresetJson
+  | ButterchurnPresetUrl
+  | MilkdropPresetUrl;
+
+export type Preset = ButterchurnPresetJson | LazyButterchurnPresetJson;
+
+export type PresetId = string;
+
 export interface EqfPreset {
   name: string;
   hz60: number;
@@ -447,13 +482,24 @@ export type Action =
       enabled: boolean;
     }
   | {
-      type: "INITIALIZE_PRESETS";
-      presets: any;
+      type: "GOT_BUTTERCHURN_PRESETS";
+      presets: PresetDefinition[];
     }
   | {
       type: "GOT_BUTTERCHURN";
       butterchurn: any;
-    };
+    }
+  | {
+      type: "RESOLVE_PRESET_AT_INDEX";
+      index: number;
+      json: Object;
+    }
+  | {
+      type: "SELECT_PRESET_AT_INDEX";
+      index: number;
+      transitionType: TransitionType;
+    }
+  | { type: "TOGGLE_PRESET_OVERLAY" };
 
 export type MediaTagRequestStatus =
   | "INITIALIZED"
