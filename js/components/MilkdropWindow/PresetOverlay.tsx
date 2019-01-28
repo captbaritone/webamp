@@ -5,6 +5,7 @@ import * as Actions from "../../actionCreators";
 import { clamp } from "../../utils";
 import { AppState, Dispatch, TransitionType } from "../../types";
 import { connect } from "react-redux";
+import Disposable from "../../Disposable";
 
 const ENTRY_HEIGHT = 14;
 const HEIGHT_PADDING = 15;
@@ -50,14 +51,33 @@ interface DispatchProps {
 interface OwnProps {
   height: number;
   width: number;
+  onFocusedKeyDown(
+    cb: (e: React.KeyboardEvent<HTMLDivElement>) => void
+  ): () => void;
 }
 
 type Props = StateProps & DispatchProps & OwnProps;
 
 class PresetOverlay extends React.Component<Props, State> {
+  _disposable: Disposable;
+
   constructor(props: Props) {
     super(props);
     this.state = { selectedListIndex: 0 };
+    this._disposable = new Disposable();
+  }
+
+  componentDidMount() {
+    this._disposable.add(
+      // Technically we should handle the case where this prop changes, but we don't.
+      // If we convert to hooks for this component, this would get much easier.
+      // _Also_ ideally we could avoid this prop all together.
+      this.props.onFocusedKeyDown(this._handleFocusedKeyboardInput)
+    );
+  }
+
+  componentWillUnmount() {
+    this._disposable.dispose();
   }
 
   _presetIndexFromListIndex(listIndex: number) {
@@ -151,11 +171,7 @@ class PresetOverlay extends React.Component<Props, State> {
       );
     }
     return (
-      <div
-        style={OUTER_WRAPPER_STYLE}
-        onKeyDown={this._handleFocusedKeyboardInput}
-        tabIndex={-1}
-      >
+      <div style={OUTER_WRAPPER_STYLE}>
         <div
           style={{
             ...INNER_WRAPPER_STYLE,
