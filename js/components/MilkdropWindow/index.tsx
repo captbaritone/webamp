@@ -83,7 +83,13 @@ function Milkdrop(props: Props) {
     <GenWindow title={"Milkdrop"} windowId={WINDOWS.MILKDROP}>
       {({ height, width }: { width: number; height: number }) => (
         <Background>
-          {props.overlay && <PresetOverlay width={width} height={height} />}
+          {props.overlay && (
+            <PresetOverlay
+              width={width}
+              height={height}
+              onFocusedKeyDown={props.onFocusedKeyDown}
+            />
+          )}
           <Visualizer width={width} height={height} analyser={props.analyser} />
         </Background>
       )}
