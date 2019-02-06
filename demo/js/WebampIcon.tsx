@@ -1,5 +1,4 @@
 import WebampLazy from "../../js/webampLazy";
-// @ts-ignore #hook-types
 import React, { useEffect, useState, useRef } from "react";
 // @ts-ignore
 import icon from "../images/manifest/icon-48x48.png";
@@ -9,7 +8,7 @@ interface Props {
 }
 
 const WebampIcon = (props: Props) => {
-  const ref = useRef();
+  const ref = useRef<HTMLDivElement>(null);
   const [hidden, setHidden] = useState(true);
   const [selected, setSelected] = useState(false);
   useEffect(() => {
@@ -24,7 +23,7 @@ const WebampIcon = (props: Props) => {
       return;
     }
     const handleClick = (e: MouseEvent) => {
-      if (ref.current.contains(e.target)) {
+      if (ref.current != null && ref.current.contains(e.target as Element)) {
         return;
       } else {
         setSelected(false);

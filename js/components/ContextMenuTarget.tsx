@@ -1,4 +1,3 @@
-// @ts-ignore #hook-types
 import React, { useState, useRef, useEffect, useMemo } from "react";
 import ContextMenu from "./ContextMenu";
 
@@ -7,7 +6,7 @@ type DivProps = React.DetailedHTMLProps<
   HTMLDivElement
 >;
 
-interface Props extends DivProps {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   handle: React.ReactNode;
   top?: boolean;
   bottom?: boolean;
@@ -16,8 +15,8 @@ interface State {
   selected: boolean;
 }
 
-function getNodeOffset(node?: Element) {
-  if (!node) {
+function getNodeOffset(node: HTMLDivElement | null) {
+  if (node == null) {
     return { top: 0, left: 0 };
   }
 
@@ -28,7 +27,7 @@ function getNodeOffset(node?: Element) {
 }
 
 function ContextMenuTarget(props: Props) {
-  const handleNode = useRef(null);
+  const handleNode = useRef<HTMLDivElement>(null);
   const [selected, setSelected] = useState(false);
   useEffect(() => {
     function handleGlobalClick(e: MouseEvent) {
@@ -51,7 +50,9 @@ function ContextMenuTarget(props: Props) {
     };
   }, [selected, handleNode.current]);
 
-  const offset = useMemo(() => getNodeOffset(handleNode.current), [selected]);
+  const offset = useMemo(() => {
+    return getNodeOffset(handleNode.current);
+  }, [selected, handleNode.current]);
 
   const { handle, children, top, bottom, ...passThroughProps } = props;
   return (

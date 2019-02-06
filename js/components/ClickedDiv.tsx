@@ -1,4 +1,3 @@
-// @ts-ignore #hook-types
 import React, { useState } from "react";
 import classnames from "classnames";
 
