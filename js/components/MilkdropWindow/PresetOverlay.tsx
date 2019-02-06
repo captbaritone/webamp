@@ -161,6 +161,16 @@ class PresetOverlay extends React.Component<Props, State> {
     }
   };
 
+  async loadLocalDir() {
+    const fileReferences = await promptForFileReferences({ directory: true });
+    if (this._disposable.disposed) {
+      return;
+    }
+    // TODO: Technically there is a race condition here, since the component
+    // could get unmounted before the promise resolves.
+    this.props.loadPresets(fileReferences);
+  }
+
   render() {
     const { height, width } = this.props;
     if (this.props.presetKeys == null) {

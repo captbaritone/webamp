@@ -42,6 +42,12 @@ export function initializePresets(presetOptions: any): Dispatchable {
   };
 }
 
+export function appendPresetFileList(presets: FileList[]): Dispatchable {
+  return async dispatch => {
+    dispatch({ type: GOT_BUTTERCHURN_PRESETS, presets });
+  };
+}
+
 export function selectNextPreset(): Dispatchable {
   return (dispatch, getState) => {
     const state = getState();
