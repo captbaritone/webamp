@@ -146,7 +146,7 @@ const rebound = (
 ) => (oldValue: number): number =>
   percentToRange(toPercent(oldMin, oldMax, oldValue), newMin, newMax);
 
-// Convert a .eqf value to a 1-100
+// Convert an .eqf value to a 1-100
 export const normalize = rebound(1, 64, 1, 100);
 
 // Convert a 0-100 to an .eqf value
