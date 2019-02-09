@@ -80,7 +80,7 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
           style={
             Object {
               "bottom": "0%",
-              "height": "50%",
+              "height": "49.494949494949495%",
               "visibility": "visible",
             }
           }
@@ -135,7 +135,7 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
           style={
             Object {
               "bottom": "0%",
-              "height": "50%",
+              "height": "49.494949494949495%",
               "visibility": "visible",
             }
           }
@@ -178,7 +178,7 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
           style={
             Object {
               "bottom": "0%",
-              "height": "50%",
+              "height": "49.494949494949495%",
               "visibility": "visible",
             }
           }
@@ -221,7 +221,7 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
           style={
             Object {
               "bottom": "0%",
-              "height": "50%",
+              "height": "49.494949494949495%",
               "visibility": "visible",
             }
           }
@@ -264,7 +264,7 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
           style={
             Object {
               "bottom": "0%",
-              "height": "50%",
+              "height": "49.494949494949495%",
               "visibility": "visible",
             }
           }
@@ -307,7 +307,7 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
           style={
             Object {
               "bottom": "0%",
-              "height": "50%",
+              "height": "49.494949494949495%",
               "visibility": "visible",
             }
           }
@@ -350,7 +350,7 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
           style={
             Object {
               "bottom": "0%",
-              "height": "50%",
+              "height": "49.494949494949495%",
               "visibility": "visible",
             }
           }
@@ -393,7 +393,7 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
           style={
             Object {
               "bottom": "0%",
-              "height": "50%",
+              "height": "49.494949494949495%",
               "visibility": "visible",
             }
           }
@@ -436,7 +436,7 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
           style={
             Object {
               "bottom": "0%",
-              "height": "50%",
+              "height": "49.494949494949495%",
               "visibility": "visible",
             }
           }
@@ -479,7 +479,7 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
           style={
             Object {
               "bottom": "0%",
-              "height": "50%",
+              "height": "49.494949494949495%",
               "visibility": "visible",
             }
           }
@@ -522,7 +522,7 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
           style={
             Object {
               "bottom": "0%",
-              "height": "50%",
+              "height": "49.494949494949495%",
               "visibility": "visible",
             }
           }
