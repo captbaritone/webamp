@@ -20,17 +20,7 @@ const Shooter = require("./shooter");
   for (const skin of files) {
     console.log("Trying", skin);
     const skinMd5 = md5File.sync(skin);
-    const fileName = `${path.basename(skin).replace(/\//g, "-")}-${skinMd5}`;
     const screenshotPath = `screenshots/${skinMd5}.png`;
-    const flatSkinFile = `flatSkins/${fileName}.wsz`;
-    if (!fs.existsSync(flatSkinFile)) {
-      fs.linkSync(skin, flatSkinFile);
-    }
-    const md5SkinFile = `md5Skins/${skinMd5}.wsz`;
-    if (!fs.existsSync(md5SkinFile)) {
-      console.log("Linked skin from", skin, "to", md5SkinFile);
-      fs.linkSync(skin, md5SkinFile);
-    }
     if (fs.existsSync(screenshotPath)) {
       console.log(screenshotPath, "exists already");
       continue;
