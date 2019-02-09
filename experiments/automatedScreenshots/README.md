@@ -25,7 +25,7 @@ cd experiments/automated_screenshots
 yarn install
 ```
 
-Place skins in `experiments/automated_screenshots/skins`. Subdirectories are fine, `.wsz` files will be searched for recursively.
+Place skins in `experiments/automatedScreenshots/skins`. Subdirectories are fine, `.wsz` files will be searched for recursively.
 
 ```
 npm start
@@ -33,4 +33,4 @@ npm start
 
 Wait...
 
-Find screenshots in `experiments/automated_screenshots/screenshots`.
+Find screenshots in `experiments/automatedScreenshots/screenshots`.
