@@ -143,7 +143,7 @@ export function loadSerializedState(
   };
 }
 
-export function loadDefaultSkin() {
+export function loadDefaultSkin(): Dispatchable {
   return { type: LOAD_DEFAULT_SKIN };
 }
 

@@ -1,9 +1,18 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { ReactNode } from "react";
 import ContextMenu from "./ContextMenu";
 
-export default class ContextMenuWraper extends React.Component {
-  constructor(props) {
+interface Props {
+  renderContents(): ReactNode;
+}
+
+interface State {
+  selected: boolean;
+  offsetTop: number | null;
+  offsetLeft: number | null;
+}
+
+export default class ContextMenuWraper extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       selected: false,
@@ -29,14 +38,14 @@ export default class ContextMenuWraper extends React.Component {
     this._closeMenu();
   };
 
-  _handleGlobalClick = e => {
+  _handleGlobalClick = (e: MouseEvent) => {
     if (e.button === 2) {
       return;
     }
     this._closeMenu();
   };
 
-  _handleRightClick = e => {
+  _handleRightClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const { pageX, pageY } = e;
     this.setState({
       selected: true,
@@ -63,8 +72,8 @@ export default class ContextMenuWraper extends React.Component {
       >
         <ContextMenu
           selected={this.state.selected}
-          offsetTop={this.state.offsetTop}
-          offsetLeft={this.state.offsetLeft}
+          offsetTop={this.state.offsetTop || 0}
+          offsetLeft={this.state.offsetLeft || 0}
         >
           {renderContents()}
         </ContextMenu>
@@ -73,8 +82,3 @@ export default class ContextMenuWraper extends React.Component {
     );
   }
 }
-
-ContextMenuWraper.propTypes = {
-  children: PropTypes.any.isRequired,
-  renderContents: PropTypes.func.isRequired
-};

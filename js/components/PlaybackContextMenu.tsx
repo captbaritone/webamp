@@ -1,18 +1,21 @@
 import React from "react";
 import { connect } from "react-redux";
-import {
-  previous,
-  play,
-  pause,
-  stop,
-  next,
-  seekForward,
-  seekBackward,
-  nextN
-} from "../actionCreators";
+import * as Actions from "../actionCreators";
 import { Hr, Node } from "./ContextMenu";
+import { Dispatch } from "../types";
 
-const PlaybackContextMenu = props => (
+interface Props {
+  previous(): void;
+  play(): void;
+  pause(): void;
+  stop(): void;
+  next(): void;
+  seekBackward(steps: number): void;
+  seekForward(steps: number): void;
+  nextN(steps: number): void;
+}
+
+const PlaybackContextMenu = (props: Props) => (
   <React.Fragment>
     <Node label="Previous" hotkey="Z" onClick={props.previous} />
     <Node label="Play" hotkey="X" onClick={props.play} />
@@ -55,15 +58,17 @@ const PlaybackContextMenu = props => (
   </React.Fragment>
 );
 
-const mapDispatchToProps = {
-  previous,
-  play,
-  pause,
-  stop,
-  next,
-  seekForward,
-  seekBackward,
-  nextN
+const mapDispatchToProps = (dispatch: Dispatch): Props => {
+  return {
+    previous: () => dispatch(Actions.previous()),
+    play: () => dispatch(Actions.play()),
+    pause: () => dispatch(Actions.pause()),
+    stop: () => dispatch(Actions.stop()),
+    next: () => dispatch(Actions.next()),
+    seekForward: steps => dispatch(Actions.seekForward(steps)),
+    seekBackward: steps => dispatch(Actions.seekBackward(steps)),
+    nextN: steps => dispatch(Actions.nextN(steps))
+  };
 };
 
 export default connect(

@@ -4,18 +4,29 @@ import classnames from "classnames";
 
 import { getWindowOpen } from "../../selectors";
 import { toggleWindow } from "../../actionCreators";
+import { AppState } from "../../types";
 
-const EqToggleButton = props => (
+interface StateProps {
+  windowOpen: boolean;
+}
+
+interface DispatchProps {
+  handleClick(e: React.MouseEvent<HTMLDivElement>): void;
+}
+
+type Props = StateProps & DispatchProps;
+
+const EqToggleButton = (props: Props) => (
   <div
     id="equalizer-button"
-    className={classnames({ selected: props.getWindowOpen("equalizer") })}
+    className={classnames({ selected: props.windowOpen })}
     onClick={props.handleClick}
     title="Toggle Graphical Equalizer"
   />
 );
 
-const mapStateToProps = state => ({
-  getWindowOpen: getWindowOpen(state)
+const mapStateToProps = (state: AppState): StateProps => ({
+  windowOpen: getWindowOpen(state)("equalizer")
 });
 
 const mapDispatchToProps = {
