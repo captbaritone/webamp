@@ -39,7 +39,7 @@ class Shooter {
 
   async takeScreenshot(skin, screenshotPath, { minify = false }) {
     await this._ensureInitialized();
-    console.log("Going to try", screenshotPath);
+    console.log("Going to try", screenshotPath, skin);
     try {
       console.log("geting input");
       const handle = await this._page.$("#webamp-file-input");

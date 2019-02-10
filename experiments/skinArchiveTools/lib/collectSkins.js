@@ -2,6 +2,7 @@ const path = require("path");
 const fs = require("fs");
 const fsPromises = require("fs").promises;
 const childProcess = require("child_process");
+const Bluebird = require("bluebird");
 const { memoize } = require("lodash");
 const md5File = require("md5-file/promise");
 const Filehound = require("filehound");
@@ -15,30 +16,41 @@ module.exports = async function collectSkins({
   outputDir,
   filenamesPath
 }) {
+  const flatSkinDir = path.join(outputDir, "md5skins");
   const files = await Filehound.create()
     .ext(["zip", "wsz"])
     .paths(inputDir)
     .find();
 
-  const uniqueFiles = await Utils.unique(files, memoizedMd5File);
+  const seen = new Set();
 
-  const collectionInfo = await Promise.all(
-    uniqueFiles.map(async filePath => {
+  // We use Bluebird so that we can limit the concurrency.
+  const collectionInfo = (await Bluebird.map(
+    files,
+    async filePath => {
       const md5 = await memoizedMd5File(filePath);
-      const skinType = await Utils.skinType(filePath);
-      const md5Path = path.join(outputDir, `${md5}.wsz`);
-      const info = { filePath, md5, skinType, moved: false, md5Path };
-      if (info.skinType !== "CLASSIC") {
+      if (seen.has(md5)) {
+        return null;
+      }
+      seen.add(md5);
+      const md5Path = path.join(flatSkinDir, `${md5}.wsz`);
+      const info = { filePath, md5, moved: false, md5Path };
+      if (fs.existsSync(md5Path)) {
+        info.skinType = FILE_TYPES.CLASSIC;
         return info;
       }
-      const exists = fs.existsSync(info.md5Path);
-      if (!exists) {
-        await fsPromises.link(filePath, info.md5Path);
-        info.moved = true;
+      info.skinType = await Utils.skinType(filePath);
+      if (info.skinType !== FILE_TYPES.CLASSIC) {
+        return info;
       }
+      await fsPromises.link(filePath, info.md5Path);
+      info.moved = true;
       return info;
-    })
-  );
+    },
+    { concurrency: 50 }
+  )).filter(Boolean);
+
+  console.log("moved all files", "---------------------------");
 
   const pathList = collectionInfo
     .map(info => `${info.md5} ${path.relative(inputDir, info.filePath)}`)
@@ -48,7 +60,7 @@ module.exports = async function collectSkins({
   collectionInfo
     .filter(info => info.skinType === FILE_TYPES.PACK)
     .forEach(pack => {
-      const packPath = path.resolve(`./assets/md5Packs/${pack.md5}`);
+      const packPath = path.join(outputDir, `md5Packs/${pack.md5}`);
       if (fs.existsSync(packPath)) {
         return;
       }
@@ -61,7 +73,7 @@ module.exports = async function collectSkins({
   collectionInfo
     .filter(info => info.skinType === FILE_TYPES.INVALID)
     .forEach(async invalid => {
-      const filePath = path.resolve(`./assets/md5Invalids/${invalid.md5}.wsz`);
+      const filePath = path.join(outputDir, `md5Invalids/${invalid.md5}.wsz`);
       if (fs.existsSync(filePath)) {
         return;
       }
@@ -69,7 +81,7 @@ module.exports = async function collectSkins({
     });
   return {
     total: files.length,
-    unique: uniqueFiles.length,
+    unique: collectionInfo.length,
     moved: collectionInfo.filter(info => info.moved).length,
     newScreenshots: collectionInfo.filter(info => info.screenshotCreated)
       .length,

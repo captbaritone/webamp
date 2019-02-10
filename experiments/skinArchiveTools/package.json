@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node lib/index.js ./assets/skins ./assets/md5Skins ./assets/md5Screenshots ./assets/filenames.txt",
+    "start": "node lib/index.js \"/Volumes/Mobile Backup/skins/skins/\" \"/Volumes/Mobile Backup/skins/\" ./assets/filenames.txt",
     "clean": "cd md5Skins && find . -delete"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bluebird": "^3.5.3",
     "filehound": "^1.17.0",
     "imagemin": "^6.1.0",
     "imagemin-optipng": "^6.0.0",

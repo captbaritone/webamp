@@ -11,6 +11,9 @@ module.exports = async function takeScreenshots(skinDir, screenshotDir) {
     .find();
   const shooter = new Shooter();
   for (const filePath of files) {
+    if (!fs.existsSync(filePath)) {
+      throw new Error("wat", filePath);
+    }
     const md5 = await md5File(filePath);
     const screenshotPath = path.join(screenshotDir, `${md5}.png`);
     if (fs.existsSync(screenshotPath)) {
