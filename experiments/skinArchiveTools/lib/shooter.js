@@ -1,7 +1,5 @@
-const fs = require("fs");
 const path = require("path");
 const puppeteer = require("puppeteer");
-const JSZip = require("jszip");
 const imagemin = require("imagemin");
 const imageminOptipng = require("imagemin-optipng");
 
@@ -21,7 +19,7 @@ class Shooter {
     this._page = await this._browser.newPage();
     this._page.setViewport({ width: 275, height: 116 * 3 });
     this._page.on("console", (...args) => {
-      // console.log("PAGE LOG:", ...args);
+      console.log("PAGE LOG:", ...args);
     });
     const url = `http://localhost:8080/?screenshot=1`;
     await this._page.goto(url);

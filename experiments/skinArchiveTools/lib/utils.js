@@ -1,5 +1,5 @@
-const JSZip = require("jszip");
 const fsPromises = require("fs").promises;
+const JSZip = require("jszip");
 const { FILE_TYPES } = require("./constants");
 
 // Reduce an array down to it's unique value given an async hasher function
