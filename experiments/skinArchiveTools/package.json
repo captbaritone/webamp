@@ -1,0 +1,21 @@
+{
+  "name": "skinarchivetools",
+  "version": "1.0.0",
+  "description": "A collection of scripts for managing the Internet Archive's collection of Winamp Skins.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node lib/index.js ./assets/skins ./assets/md5Skins ./assets/md5Screenshots ./assets/filenames.txt",
+    "clean": "cd md5Skins && find . -delete"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "filehound": "^1.17.0",
+    "imagemin": "^6.1.0",
+    "imagemin-optipng": "^6.0.0",
+    "lodash": "^4.17.11",
+    "md5-file": "^4.0.0",
+    "puppeteer": "^1.12.2"
+  }
+}
