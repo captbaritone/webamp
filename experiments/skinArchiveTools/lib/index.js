@@ -8,9 +8,10 @@ const takeScreenshots = require("./takeScreenshots");
  * command <input_dir> <output_dir> <screenshot_dir>
  */
 
-// eslint-disable-next-line no-unused-vars
 const [
+  // eslint-disable-next-line no-unused-vars
   _node,
+  // eslint-disable-next-line no-unused-vars
   _thisFile,
   rawInputDir,
   rawOutputDir,
