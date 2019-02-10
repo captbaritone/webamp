@@ -6,6 +6,7 @@ const { memoize } = require("lodash");
 const md5File = require("md5-file/promise");
 const Filehound = require("filehound");
 const Utils = require("./utils");
+const { FILE_TYPES } = require("./constants");
 
 const memoizedMd5File = memoize(md5File);
 
@@ -45,7 +46,7 @@ module.exports = async function collectSkins({
 
   fsPromises.writeFile(filenamesPath, pathList);
   collectionInfo
-    .filter(info => info.skinType === "PACK")
+    .filter(info => info.skinType === FILE_TYPES.PACK)
     .forEach(pack => {
       const packPath = path.resolve(`./assets/md5Packs/${pack.md5}`);
       if (fs.existsSync(packPath)) {
@@ -58,7 +59,7 @@ module.exports = async function collectSkins({
       }
     });
   collectionInfo
-    .filter(info => info.skinType === "INVALID")
+    .filter(info => info.skinType === FILE_TYPES.INVALID)
     .forEach(async invalid => {
       const filePath = path.resolve(`./assets/md5Invalids/${invalid.md5}.wsz`);
       if (fs.existsSync(filePath)) {
@@ -72,10 +73,14 @@ module.exports = async function collectSkins({
     moved: collectionInfo.filter(info => info.moved).length,
     newScreenshots: collectionInfo.filter(info => info.screenshotCreated)
       .length,
-    classic: collectionInfo.filter(info => info.skinType === "CLASSIC").length,
-    packs: collectionInfo.filter(info => info.skinType === "PACK").length,
-    invalid: collectionInfo.filter(info => info.skinType === "INVALID").length,
-    modern: collectionInfo.filter(info => info.skinType === "MODERN").length,
+    classic: collectionInfo.filter(info => info.skinType === FILE_TYPES.CLASSIC)
+      .length,
+    packs: collectionInfo.filter(info => info.skinType === FILE_TYPES.PACK)
+      .length,
+    invalid: collectionInfo.filter(info => info.skinType === FILE_TYPES.INVALID)
+      .length,
+    modern: collectionInfo.filter(info => info.skinType === FILE_TYPES.MODERN)
+      .length,
     // TODO: Tell modern skins from packs
     nonClassic: collectionInfo.filter(info => !info.classic).length
   };

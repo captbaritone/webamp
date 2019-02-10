@@ -23,6 +23,7 @@ const outputDir = path.resolve(rawOutputDir);
 const screenshotDir = path.resolve(rawScreenshotDir);
 const filenamesPath = path.resolve(rawFilenamesPath);
 
+// It's nice to be able to fiddle these manually
 const collect = true;
 const screenshots = true;
 

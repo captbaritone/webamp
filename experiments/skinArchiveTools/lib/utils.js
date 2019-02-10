@@ -1,5 +1,6 @@
 const JSZip = require("jszip");
 const fsPromises = require("fs").promises;
+const { FILE_TYPES } = require("./constants");
 
 // Reduce an array down to it's unique value given an async hasher function
 async function unique(arr, hasher) {
@@ -24,11 +25,13 @@ async function skinType(skinPath) {
     const zip = await JSZip.loadAsync(buffer);
     if (zip.file(/.*\.(wsz|wal|zip)$/i).length) {
       // This is a collection of skins
-      return "PACK";
+      return FILE_TYPES.PACK;
     }
-    return zip.file(/^main\.bmp$/i).length === 1 ? "CLASSIC" : "MODERN";
+    return zip.file(/^main\.bmp$/i).length === 1
+      ? FILE_TYPES.CLASSIC
+      : FILE_TYPES.MODERN;
   } catch (e) {
-    return "INVALID";
+    return FILE_TYPES.INVALID;
   }
 }
 
