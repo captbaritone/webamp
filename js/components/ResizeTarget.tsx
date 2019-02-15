@@ -14,7 +14,7 @@ interface Props {
 }
 
 export default class ResizeTarget extends React.Component<Props> {
-  handleMouseDown = (e: React.MouseEvent) => {
+  handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     // Prevent dragging from highlighting text.
     e.preventDefault();
     const [width, height] = this.props.currentSize;
