@@ -1,7 +1,7 @@
 import React from "react";
 import deburr from "lodash/deburr";
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLSpanElement> {
   children: string | number;
   className?: string;
 }
@@ -11,16 +11,7 @@ export const characterClassName = (char: string | number) =>
     .toLowerCase()
     .charCodeAt(0)}`;
 
-const Character = ({
-  children: char,
-  className,
-  ...passThrough
-}: Props &
-  // TODO: Seems like there should be a better way to do pass through props
-  React.DetailedHTMLProps<
-    React.HTMLAttributes<HTMLSpanElement>,
-    HTMLSpanElement
-  >) => (
+const Character = ({ children: char, className, ...passThrough }: Props) => (
   <span
     {...passThrough}
     className={`${className || ""} character ${characterClassName(char)}`}
