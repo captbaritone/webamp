@@ -18,6 +18,7 @@
     "filehound": "^1.17.0",
     "imagemin": "^6.1.0",
     "imagemin-optipng": "^6.0.0",
+    "jszip": "^3.1.5",
     "lodash": "^4.17.11",
     "md5-file": "^4.0.0",
     "node-fetch": "^2.3.0",

@@ -11,7 +11,7 @@ const { FILE_TYPES } = require("./constants");
 
 function md5File(filePath) {
   return new Promise((resolve, reject) => {
-    childProcess.execFile(`md5`, ["-q", filePath], (err, stdout, stderr) => {
+    childProcess.execFile(`md5`, ["-q", filePath], (err, stdout) => {
       if (err) {
         // node couldn't execute the command
         reject(err);

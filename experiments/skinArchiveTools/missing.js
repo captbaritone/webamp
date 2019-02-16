@@ -1,7 +1,7 @@
 const path = require("path");
-const fetch = require("node-fetch");
 const fs = require("fs");
 const fsPromises = require("fs").promises;
+const fetch = require("node-fetch");
 
 async function main() {
   const screenshotDir = "/Volumes/Mobile Backup/skins/md5Screenshots/";
