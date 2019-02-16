@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import Slider from "rc-slider";
 import { SET_BAND_FOCUS, UNSET_FOCUS } from "../../actionTypes";
-import { AppState, Dispatch, Band as BandType } from "../../types";
+import { AppState, Dispatch, Slider as SliderType } from "../../types";
 
 interface StateProps {
   value: number;
@@ -14,7 +14,7 @@ interface DispatchProps {
 }
 interface OwnProps {
   id: string;
-  band: BandType;
+  band: SliderType;
   onChange(value: number): void;
 }
 

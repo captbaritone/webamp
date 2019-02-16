@@ -219,7 +219,7 @@ export type Action =
   | {
       type: "SET_BAND_FOCUS";
       input: string;
-      bandFocused: Band;
+      bandFocused: Slider;
     }
   | {
       type: "UNSET_FOCUS";
