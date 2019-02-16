@@ -19,7 +19,14 @@ class Shooter {
     this._page = await this._browser.newPage();
     this._page.setViewport({ width: 275, height: 116 * 3 });
     this._page.on("console", (...args) => {
-      console.log("PAGE LOG:", ...args);
+      console.log("page log:", ...args);
+    });
+    this._page.on("error", e => {
+      console.log(`Page error: ${e.toString()}`);
+    });
+    this._page.on("dialog", async dialog => {
+      console.log(`Page dialog ${dialog.message()}`);
+      await dialog.dismiss();
     });
     const url = `http://localhost:8080/?screenshot=1`;
     await this._page.goto(url);
@@ -63,14 +70,16 @@ class Shooter {
       console.log("Minified", screenshotPath);
     } catch (e) {
       console.error("Something went wrong, restarting browser", e);
+      await this.dispose();
       await this.init();
       throw e;
     }
   }
 
-  dispose() {
+  async dispose() {
     this._ensureInitialized();
-    this._browser.close();
+    await this._page.close();
+    await this._browser.close();
     this._initialized = false;
   }
 }

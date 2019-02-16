@@ -25,7 +25,7 @@ const filenamesPath = path.resolve(rawFilenamesPath);
 
 // It's nice to be able to fiddle these manually
 const collect = true;
-const screenshots = true;
+const screenshots = false;
 
 async function main() {
   if (collect) {

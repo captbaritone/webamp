@@ -4,85 +4,117 @@ const fsPromises = require("fs").promises;
 const childProcess = require("child_process");
 const Bluebird = require("bluebird");
 const { memoize } = require("lodash");
-const md5File = require("md5-file/promise");
+// const md5File = require("md5-file/promise");
 const Filehound = require("filehound");
 const Utils = require("./utils");
 const { FILE_TYPES } = require("./constants");
 
+function md5File(filePath) {
+  return new Promise((resolve, reject) => {
+    childProcess.execFile(`md5`, ["-q", filePath], (err, stdout, stderr) => {
+      if (err) {
+        // node couldn't execute the command
+        reject(err);
+      }
+
+      resolve(stdout.trimRight());
+    });
+  });
+}
+
 const memoizedMd5File = memoize(md5File);
+
+async function collectFile(filePath, outputDir) {
+  const flatSkinDir = path.join(outputDir, "md5skins");
+
+  const md5 = await memoizedMd5File(filePath);
+
+  const md5Path = path.join(flatSkinDir, `${md5}.wsz`);
+  // It's faster to check if the file exists, than to actually look at the skin file
+  // This is just an optimization
+  const skinType = fs.existsSync(md5Path)
+    ? FILE_TYPES.CLASSIC
+    : await Utils.skinType(filePath);
+
+  let destination = null;
+  switch (skinType) {
+    case [FILE_TYPES.CLASSIC]:
+      destination = md5Path;
+      break;
+    /*
+    case [FILE_TYPES.INVALID]:
+      destination = path.join(outputDir, `md5Invalids/${md5}.wsz`);
+      break;
+    case [FILE_TYPES.PACK]:
+      const packPath = path.join(outputDir, `md5Packs/${md5}`);
+      if (fs.existsSync(packPath)) {
+        break;
+      }
+      try {
+        childProcess.execSync(`unzip "${filePath}" -d "${packPath}"`);
+      } catch (e) {
+        console.log(e);
+      }
+      break;
+    */
+    default:
+      //
+      break;
+  }
+  if (destination != null && !fs.existsSync(destination)) {
+    await fsPromises.link(filePath, destination);
+  }
+  return { filePath, md5, md5Path, skinType };
+}
 
 module.exports = async function collectSkins({
   inputDir,
   outputDir,
   filenamesPath
 }) {
-  const flatSkinDir = path.join(outputDir, "md5skins");
   const files = await Filehound.create()
     .ext(["zip", "wsz"])
     .paths(inputDir)
     .find();
 
   const seen = new Set();
+  let tried = 0;
 
+  const interval = setInterval(() => {
+    console.log({ seen: seen.size, tried, total: files.length });
+  }, 10000);
   // We use Bluebird so that we can limit the concurrency.
   const collectionInfo = (await Bluebird.map(
     files,
     async filePath => {
       const md5 = await memoizedMd5File(filePath);
+      tried++;
       if (seen.has(md5)) {
         return null;
       }
       seen.add(md5);
-      const md5Path = path.join(flatSkinDir, `${md5}.wsz`);
-      const info = { filePath, md5, moved: false, md5Path };
-      if (fs.existsSync(md5Path)) {
-        info.skinType = FILE_TYPES.CLASSIC;
-        return info;
-      }
-      info.skinType = await Utils.skinType(filePath);
-      if (info.skinType !== FILE_TYPES.CLASSIC) {
-        return info;
-      }
-      await fsPromises.link(filePath, info.md5Path);
-      info.moved = true;
-      return info;
+      return collectFile(filePath, outputDir);
     },
     { concurrency: 50 }
   )).filter(Boolean);
+  clearInterval(interval);
 
   console.log("moved all files", "---------------------------");
 
-  const pathList = collectionInfo
+  const classics = collectionInfo.filter(
+    info => info.skinType === FILE_TYPES.CLASSIC
+  );
+  const pathList = classics
     .map(info => `${info.md5} ${path.relative(inputDir, info.filePath)}`)
     .join("\n");
 
-  fsPromises.writeFile(filenamesPath, pathList);
-  collectionInfo
-    .filter(info => info.skinType === FILE_TYPES.PACK)
-    .forEach(pack => {
-      const packPath = path.join(outputDir, `md5Packs/${pack.md5}`);
-      if (fs.existsSync(packPath)) {
-        return;
-      }
-      try {
-        childProcess.execSync(`unzip "${pack.filePath}" -d "${packPath}"`);
-      } catch (e) {
-        console.log(e);
-      }
-    });
-  collectionInfo
-    .filter(info => info.skinType === FILE_TYPES.INVALID)
-    .forEach(async invalid => {
-      const filePath = path.join(outputDir, `md5Invalids/${invalid.md5}.wsz`);
-      if (fs.existsSync(filePath)) {
-        return;
-      }
-      await fsPromises.link(invalid.filePath, filePath, invalid.md5Path);
-    });
+  console.log(`Writing ${classics.length} files to ${filenamesPath}`);
+
+  await fsPromises.writeFile(filenamesPath, pathList);
+  console.log("done");
   return {
     total: files.length,
     unique: collectionInfo.length,
-    moved: collectionInfo.filter(info => info.moved).length,
     newScreenshots: collectionInfo.filter(info => info.screenshotCreated)
       .length,
     classic: collectionInfo.filter(info => info.skinType === FILE_TYPES.CLASSIC)
