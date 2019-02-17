@@ -79,7 +79,7 @@ class Marquee extends React.Component<Props, State> {
     }
   }
 
-  handleMouseDown = (e: React.MouseEvent) => {
+  handleMouseDown = (e: React.MouseEvent<HTMLDivElement>): void => {
     const xStart = e.clientX;
     this.setState({ stepping: false });
     const handleMouseMove = (ee: MouseEvent) => {

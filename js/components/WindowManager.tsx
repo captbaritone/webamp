@@ -137,7 +137,9 @@ class WindowManager extends React.Component<Props> {
     return windows.map(w => (
       <div
         key={w.key}
-        onMouseDown={e => this.handleMouseDown(w.key, e)}
+        onMouseDown={(e: React.MouseEvent<HTMLDivElement>) => {
+          this.handleMouseDown(w.key, e);
+        }}
         style={{ ...style, transform: `translate(${w.x}px, ${w.y}px)` }}
       >
         {this.props.windows[w.key]}

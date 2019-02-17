@@ -1,4 +1,3 @@
-// @ts-ignore #hook-types
 import React, { useCallback } from "react";
 
 interface Coord {

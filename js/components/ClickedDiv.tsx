@@ -1,19 +1,9 @@
-// @ts-ignore #hook-types
 import React, { useState } from "react";
 import classnames from "classnames";
 
-type DivProps = React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
->;
-
-interface Props extends DivProps {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
   onMouseDown?: (e: React.MouseEvent<HTMLDivElement>) => void;
-}
-
-interface State {
-  clicked: boolean;
 }
 
 // Winamp has a strange behavior for the buttons at the top of the main window.

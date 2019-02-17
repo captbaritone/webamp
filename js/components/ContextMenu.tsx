@@ -1,4 +1,3 @@
-// @ts-ignore #hook-types
 import React, { useMemo, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { connect } from "react-redux";
@@ -27,7 +26,9 @@ const Portal = (props: PortalProps) => {
 
   useEffect(() => {
     document.body.appendChild(node);
-    return () => document.body.removeChild(node);
+    return () => {
+      document.body.removeChild(node);
+    };
   }, [node]);
 
   const style: React.CSSProperties = {
