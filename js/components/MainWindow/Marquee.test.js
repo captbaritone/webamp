@@ -21,13 +21,13 @@ describe("stepOffset", () => {
     const expected = 5;
     expect(actual).toEqual(expected);
   });
-  it("resets to 0 when step === string.length", () => {
-    const actual = stepOffset(long, long.length, 0);
+  it("resets to 0 when step === string.length + the separator length", () => {
+    const actual = stepOffset(long, long.length + 7, 0);
     const expected = 0;
     expect(actual).toEqual(expected);
   });
-  it("offsets by one char when step = string.length + 1", () => {
-    const actual = stepOffset(long, long.length + 1, 0);
+  it("offsets by one char when step = string.length the separator length + 1", () => {
+    const actual = stepOffset(long, long.length + 7 + 1, 0);
     const expected = 5;
     expect(actual).toEqual(expected);
   });
