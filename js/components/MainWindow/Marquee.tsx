@@ -5,9 +5,10 @@ import { connect } from "react-redux";
 
 import { STEP_MARQUEE } from "../../actionTypes";
 import CharacterString from "../CharacterString";
-import { getMediaText } from "../../selectors";
-import { Slider, AppState, Dispatch } from "../../types";
+import { AppState, Dispatch } from "../../types";
 import * as Selectors from "../../selectors";
+
+const SEPARATOR = "  ***  ";
 
 interface StateProps {
   marqueeStep: number;
@@ -45,7 +46,7 @@ export const stepOffset = (
 
   const stepOffsetWidth = step * CHAR_WIDTH; // Steps move one char at a time
   const offset = stepOffsetWidth + pixels;
-  const stringLength = text.length * CHAR_WIDTH;
+  const stringLength = (text.length + SEPARATOR.length) * CHAR_WIDTH;
 
   return mod(offset, stringLength);
 };
@@ -55,7 +56,9 @@ export const pixelUnits = (pixels: number): string => `${pixels}px`;
 
 // If text is wider than the marquee, it needs to loop
 export const loopText = (text: string): string =>
-  isLong(text) ? `${text}  ***  ${text}` : text.padEnd(MARQUEE_MAX_LENGTH, " ");
+  isLong(text)
+    ? `${text}${SEPARATOR}${text}`
+    : text.padEnd(MARQUEE_MAX_LENGTH, " ");
 
 class Marquee extends React.Component<Props, State> {
   stepHandle: NodeJS.Timer | null;
