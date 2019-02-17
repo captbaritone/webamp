@@ -324,8 +324,7 @@ export const getMediaText = createSelector(
   (minimalMediaText, duration) =>
     minimalMediaText == null
       ? null
-      : // TODO: Maybe the `  ***  ` should actually be added by the marquee
-        `${minimalMediaText} (${Utils.getTimeStr(duration)})  ***  `
+      : `${minimalMediaText} (${Utils.getTimeStr(duration)})`
 );
 
 export const getNumberOfTracks = (state: AppState) =>

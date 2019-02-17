@@ -66,7 +66,7 @@ describe("loopText", () => {
   const short = "This is a short string.";
   it("loops long string", () => {
     const actual = loopText(long);
-    const expected = long + long;
+    const expected = `${long}  ***  ${long}`;
     expect(actual).toEqual(expected);
   });
   it("does not loop sort strings", () => {

@@ -55,7 +55,7 @@ export const pixelUnits = (pixels: number): string => `${pixels}px`;
 
 // If text is wider than the marquee, it needs to loop
 export const loopText = (text: string): string =>
-  isLong(text) ? text + text : text.padEnd(MARQUEE_MAX_LENGTH, " ");
+  isLong(text) ? `${text}  ***  ${text}` : text.padEnd(MARQUEE_MAX_LENGTH, " ");
 
 class Marquee extends React.Component<Props, State> {
   stepHandle: NodeJS.Timer | null;
