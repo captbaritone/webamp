@@ -6,7 +6,13 @@ import {
   TOGGLE_PRESET_OVERLAY
 } from "../actionTypes";
 import * as Selectors from "../selectors";
-import { Dispatchable, TransitionType } from "../types";
+import {
+  Dispatchable,
+  TransitionType,
+  Preset,
+  LazyButterchurnPresetJson
+} from "../types";
+import * as FileUtils from "../fileUtils";
 
 export function initializePresets(presetOptions: any): Dispatchable {
   return async dispatch => {
@@ -18,7 +24,7 @@ export function initializePresets(presetOptions: any): Dispatchable {
     } = await loadInitialDependencies();
     dispatch({ type: GOT_BUTTERCHURN, butterchurn });
 
-    const presets = presetKeys.map((key: string) => {
+    const presets: Preset[] = presetKeys.map((key: string) => {
       if (minimalPresets[key] != null) {
         return {
           type: "BUTTERCHURN_JSON",
@@ -37,14 +43,54 @@ export function initializePresets(presetOptions: any): Dispatchable {
       };
     });
 
-    dispatch({ type: GOT_BUTTERCHURN_PRESETS, presets });
-    dispatch(requestPresetAtIndex(0, TransitionType.IMMEDIATE));
+    dispatch(loadPresets(presets));
   };
 }
 
-export function appendPresetFileList(presets: FileList[]): Dispatchable {
-  return async dispatch => {
+export function loadPresets(presets: Preset[]): Dispatchable {
+  return (dispatch, getState) => {
+    const presetLength = getState().milkdrop.presets.length;
     dispatch({ type: GOT_BUTTERCHURN_PRESETS, presets });
+    dispatch(requestPresetAtIndex(presetLength, TransitionType.IMMEDIATE));
+  };
+}
+
+export function appendPresetFileList(fileList: FileList): Dispatchable {
+  return async dispatch => {
+    const presets: Preset[] = Array.from(fileList).map(file => {
+      const JSON_EXT = ".json";
+      const MILK_EXT = ".milk";
+      const filename = file.name.toLowerCase();
+      if (filename.endsWith(MILK_EXT)) {
+        // Not sure why we need this type definition.
+        const lazy: LazyButterchurnPresetJson = {
+          type: "LAZY_BUTTERCHURN_JSON",
+          name: file.name.slice(0, file.name.length - MILK_EXT.length),
+          getDefinition: async () => {
+            // TODO: Post this blob to the url end point and get the json back
+            return {};
+          }
+        };
+        throw new Error(".milk preset support not yet implemented");
+        return lazy;
+      } else if (filename.endsWith(JSON_EXT)) {
+        // Not sure why we need this type definition.
+        const lazy: LazyButterchurnPresetJson = {
+          type: "LAZY_BUTTERCHURN_JSON",
+          name: file.name.slice(0, file.name.length - JSON_EXT.length),
+          getDefinition: async () => {
+            const str = await FileUtils.genStringFromFileReference(file);
+            // TODO: How should we handle the case where json parsing fails?
+            return JSON.parse(str);
+          }
+        };
+        return lazy;
+      } else {
+        throw new Error("Invalid type");
+      }
+    });
+    dispatch(loadPresets(presets));
+    // TODO: Select the first of these presets
   };
 }
 
@@ -88,6 +134,8 @@ export function requestPresetAtIndex(
       case "LAZY_BUTTERCHURN_JSON":
         const json = await preset.getDefinition();
         // What if the index has changed?
+        // Perhaps we could hold a reference to the preset at the index before
+        // we await and confirm that it hasn't changed after the await?
         dispatch({ type: RESOLVE_PRESET_AT_INDEX, index, json });
         dispatch({ type: SELECT_PRESET_AT_INDEX, index, transitionType });
         return;
@@ -95,45 +143,9 @@ export function requestPresetAtIndex(
   };
 }
 
-function _presetNameFromURL(url: string): string {
-  try {
-    const urlParts = url.split("/");
-    const lastPart = urlParts[urlParts.length - 1];
-    const presetName = lastPart.substring(0, lastPart.length - 5); // remove .milk or .json
-    return decodeURIComponent(presetName);
-  } catch (e) {
-    // if something goes wrong parsing url, just use url as the preset name
-    console.error(e);
-    return url;
-  }
-}
-
-async function _fetchPreset(
-  presetUrl: string,
-  { isButterchurn }: { isButterchurn: boolean }
-) {
-  const response = await fetch(presetUrl);
-  if (!response.ok) {
-    console.error(response.statusText);
-    alert(`Unable to load MilkDrop preset from ${presetUrl}`);
-    return null;
-  }
-  const presetName = _presetNameFromURL(presetUrl);
-
-  let preset = null;
-  if (isButterchurn) {
-    try {
-      preset = await response.json();
-    } catch (e) {
-      console.error(e);
-      alert(`Failed to parse MilkDrop preset from ${presetUrl}`);
-      return null;
-    }
-  } else {
-    preset = { file: await response.blob() };
-  }
-
-  return { [presetName]: preset };
+export function handlePresetDrop(e: React.DragEvent): Dispatchable {
+  // TODO: Ensure we actually select the new preset.
+  return appendPresetFileList(e.dataTransfer.files);
 }
 
 export function togglePresetOverlay(): Dispatchable {

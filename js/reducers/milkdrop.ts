@@ -48,8 +48,6 @@ export const milkdrop = (
               case "BUTTERCHURN_JSON":
               case "LAZY_BUTTERCHURN_JSON":
                 return preset;
-              default:
-                throw new Error(`Invalid preset type: ${preset.type}`);
             }
           })
         )

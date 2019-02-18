@@ -1,20 +1,17 @@
 // @ts-ignore #hook-types
 import React, { useEffect, useState, useRef } from "react";
 import { connect } from "react-redux";
-import screenfull from "screenfull";
-import ContextMenuWrapper from "../ContextMenuWrapper";
 import GenWindow from "../GenWindow";
-import { WINDOWS, VISUALIZERS } from "../../constants";
+import { WINDOWS } from "../../constants";
 import * as Selectors from "../../selectors";
 import * as Actions from "../../actionCreators";
-import MilkdropContextMenu from "./MilkdropContextMenu";
-import Desktop from "./Desktop";
 import { AppState, Dispatch } from "../../types";
 import Visualizer from "./Visualizer";
 
 import "../../../css/milkdrop-window.css";
 import Background from "./Background";
 import PresetOverlay from "./PresetOverlay";
+import DropTarget from "../DropTarget";
 
 const MILLISECONDS_BETWEEN_PRESET_TRANSITIONS = 15000;
 
@@ -28,11 +25,14 @@ interface DispatchProps {
   toggleDesktop(): void;
   togglePresetOverlay(): void;
   selectRandomPreset(): void;
+  handlePresetDrop(e: React.DragEvent): void;
 }
 
 interface OwnProps {
   analyser: AnalyserNode;
-  onFocusedKeyDown(cb: (e: KeyboardEvent) => void): () => void;
+  onFocusedKeyDown(
+    cb: (e: React.KeyboardEvent<HTMLDivElement>) => void
+  ): () => void;
 }
 
 type Props = StateProps & DispatchProps & OwnProps;
@@ -79,18 +79,25 @@ function Milkdrop(props: Props) {
     );
     return () => clearImmediate(intervalId);
   }, [props.selectRandomPreset]);
+
   return (
     <GenWindow title={"Milkdrop"} windowId={WINDOWS.MILKDROP}>
       {({ height, width }: { width: number; height: number }) => (
         <Background>
-          {props.overlay && (
-            <PresetOverlay
+          <DropTarget handleDrop={props.handlePresetDrop}>
+            {props.overlay && (
+              <PresetOverlay
+                width={width}
+                height={height}
+                onFocusedKeyDown={props.onFocusedKeyDown}
+              />
+            )}
+            <Visualizer
               width={width}
               height={height}
-              onFocusedKeyDown={props.onFocusedKeyDown}
+              analyser={props.analyser}
             />
-          )}
-          <Visualizer width={width} height={height} analyser={props.analyser} />
+          </DropTarget>
         </Background>
       )}
     </GenWindow>
@@ -106,7 +113,8 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   closeWindow: () => dispatch(Actions.closeWindow(WINDOWS.MILKDROP)),
   toggleDesktop: () => dispatch(Actions.toggleMilkdropDesktop()),
   togglePresetOverlay: () => dispatch(Actions.togglePresetOverlay()),
-  selectRandomPreset: () => dispatch(Actions.selectRandomPreset())
+  selectRandomPreset: () => dispatch(Actions.selectRandomPreset()),
+  handlePresetDrop: e => dispatch(Actions.handlePresetDrop(e))
 });
 
 export default connect(

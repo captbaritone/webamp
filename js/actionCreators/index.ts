@@ -99,7 +99,9 @@ export {
   requestPresetAtIndex,
   selectRandomPreset,
   selectNextPreset,
-  togglePresetOverlay
+  togglePresetOverlay,
+  appendPresetFileList,
+  handlePresetDrop
 } from "./milkdrop";
 
 import * as Selectors from "../selectors";

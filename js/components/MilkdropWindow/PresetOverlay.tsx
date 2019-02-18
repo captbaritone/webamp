@@ -46,6 +46,7 @@ interface StateProps {
 interface DispatchProps {
   requestPresetAtIndex(i: number): void;
   togglePresetOverlay(): void;
+  appendPresetFileList(fileList: FileList): void;
 }
 
 interface OwnProps {
@@ -168,7 +169,7 @@ class PresetOverlay extends React.Component<Props, State> {
     }
     // TODO: Technically there is a race condition here, since the component
     // could get unmounted before the promise resolves.
-    this.props.loadPresets(fileReferences);
+    this.props.appendPresetFileList(fileReferences);
   }
 
   render() {
@@ -226,7 +227,9 @@ function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
     requestPresetAtIndex: (i: number) => {
       dispatch(Actions.requestPresetAtIndex(i, TransitionType.DEFAULT));
     },
-    togglePresetOverlay: () => dispatch(Actions.togglePresetOverlay())
+    togglePresetOverlay: () => dispatch(Actions.togglePresetOverlay()),
+    appendPresetFileList: (fileList: FileList) =>
+      dispatch(Actions.appendPresetFileList(fileList))
   };
 }
 
