@@ -138,7 +138,7 @@ type ButterchurnPresetJson = {
   definition: Object;
 };
 
-type LazyButterchurnPresetJson = {
+export type LazyButterchurnPresetJson = {
   type: "LAZY_BUTTERCHURN_JSON";
   name: string;
   getDefinition: () => Promise<Object>;
@@ -483,7 +483,7 @@ export type Action =
     }
   | {
       type: "GOT_BUTTERCHURN_PRESETS";
-      presets: PresetDefinition[];
+      presets: Preset[];
     }
   | {
       type: "GOT_BUTTERCHURN";
