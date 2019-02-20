@@ -3,7 +3,7 @@ import { of, from, empty } from "rxjs";
 import * as Actions from "./actionCreators";
 import * as Selectors from "./selectors";
 import * as Utils from "../utils";
-import { filter, switchMap, map } from "rxjs/operators";
+import { filter, switchMap, map, ignoreElements } from "rxjs/operators";
 import { search } from "../algolia";
 
 const urlChangedEpic = actions =>
@@ -18,7 +18,11 @@ const urlChangedEpic = actions =>
 
       if (action.location.pathname.startsWith("/skin/")) {
         const segments = action.location.pathname.split("/");
-        return of(Actions.selectedSkin(segments[2]));
+        const actions = [Actions.selectedSkin(segments[2])];
+        if (segments[3] === "files") {
+          actions.push(Actions.selectSkinFile(segments[4]));
+        }
+        return of(...actions);
       }
       return of(Actions.searchQueryChanged(query || ""));
     })
@@ -34,8 +38,21 @@ const selectedSkinEpic = actions =>
           const JSZip = await import("jszip");
           return JSZip.loadAsync(blob);
         }),
-        map(zip => Actions.loadedSkinZip(zip))
+        switchMap(zip => {
+          return of(Actions.loadedSkinZip(zip), {
+            type: "SELECTED_SKIN_README"
+          });
+        })
       );
+    })
+  );
+
+const loadedSkinZipEpic = actions =>
+  actions.pipe(
+    filter(action => action.type === "LOADED_SKIN_ZIP"),
+    switchMap(action => {
+      // If a file is focused, but not yet loaded, try to load it now?
+      return empty();
     })
   );
 
@@ -46,7 +63,7 @@ const focusedSkinFileEpic = (actions, states) =>
       // TODO: Ensure this is never called with the wrong zip. Should this live in the "got zip" closure?
       const { skinZip } = states.value;
       if (skinZip == null) {
-        // TODO: Should this throw?
+        // We don't have the skin zip yet. We trust that selectedSkinEpic will call this.
         return empty();
       }
 
@@ -58,6 +75,41 @@ const focusedSkinFileEpic = (actions, states) =>
       return from(skinZip.file(fileName).async(methodFromExt[ext])).pipe(
         map(content => Actions.gotFocusedSkinFile(content))
       );
+    })
+  );
+
+const selectSkinReadmeEpic = (actions, states) =>
+  actions.pipe(
+    filter(action => action.type === "SELECTED_SKIN_README"),
+    switchMap(() => {
+      // TODO: Ensure this is never called with the wrong zip. Should this live in the "got zip" closure?
+      const { skinZip } = states.value;
+      if (skinZip == null) {
+        return empty();
+      }
+
+      const readmeFileName = Object.keys(skinZip.files).find(filename => {
+        return (
+          filename.match(/\.txt$/) &&
+          ![
+            "genex.txt",
+            "genexinfo.txt",
+            "gen_gslyrics.txt",
+            "region.txt",
+            "pledit.txt",
+            "viscolor.txt",
+            "winampmb.txt",
+            "gen_ex help.txt",
+            "mbinner.txt"
+            // Skinning Updates.txt ?
+          ].some(name => filename.match(new RegExp(name, "i")))
+        );
+      });
+      if (readmeFileName == null) {
+        return empty();
+      }
+
+      return of(Actions.selectSkinFile(readmeFileName));
     })
   );
 
@@ -106,5 +158,7 @@ export default combineEpics(
   selectedSkinEpic,
   focusedSkinFileEpic,
   randomSkinEpic,
-  selectRelativeSkinEpic
+  selectRelativeSkinEpic,
+  selectSkinReadmeEpic,
+  loadedSkinZipEpic
 );

@@ -1,12 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 import WebampComponent from "./WebampComponent";
-// import Readme from "./Readme";
+import FileExplorer from "./FileExplorer";
 import DownloadLink from "./DownloadLink";
 import * as Utils from "./utils";
 import * as Selectors from "./redux/selectors";
 import * as Actions from "./redux/actionCreators";
-import { SCREENSHOT_HEIGHT, SCREENSHOT_WIDTH } from "./constants";
+import { SCREENSHOT_HEIGHT, SCREENSHOT_WIDTH, SKIN_WIDTH } from "./constants";
 import { delay } from "rxjs/operators";
 import { Subject, combineLatest, timer, fromEvent } from "rxjs";
 import Disposable from "./Disposable";
@@ -136,7 +136,20 @@ class FocusedSkin extends React.Component {
                 loaded={this.handleWebampLoaded}
               />
             </div>
-            {/*<Readme skinUrl={Utils.skinUrlFromHash(this.props.hash)} />*/}
+            {
+              <FileExplorer
+                skinUrl={Utils.skinUrlFromHash(this.props.hash)}
+                style={{
+                  width: "400px",
+                  height: "100%",
+                  top: 0,
+                  transform: `translateX(${
+                    this.props.fileExplorerOpen ? 0 : "-400px"
+                  })`,
+                  transition: "transform 200ms ease-out"
+                }}
+              />
+            }
           </>
         )}
         <div
@@ -215,7 +228,17 @@ class FocusedSkin extends React.Component {
           >
             Download
           </DownloadLink>
-          {"]"} {"["}
+          {"] ["}
+          <a
+            href={"#"}
+            onClick={e => {
+              this.props.openFileExplorer();
+              e.preventDefault();
+            }}
+          >
+            Readme
+          </a>
+          {"] ["}
           <a
             href={Utils.getAbsolutePermalinkUrlFromHash(this.props.hash)}
             onClick={e => {
@@ -234,12 +257,16 @@ class FocusedSkin extends React.Component {
 
 const mapStateToProps = state => ({
   hash: Selectors.getSelectedSkinHash(state),
-  initialPosition: Selectors.getSelectedSkinPosition(state)
+  initialPosition: Selectors.getSelectedSkinPosition(state),
+  fileExplorerOpen: Selectors.getFileExplorerOpen(state)
 });
 
 const mapDispatchToProps = dispatch => ({
   selectRelativeSkin(offset) {
     dispatch(Actions.selectRelativeSkin(offset));
+  },
+  openFileExplorer() {
+    dispatch(Actions.openFileExplorer());
   }
 });
 

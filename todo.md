@@ -1,13 +1,16 @@
 # TODO
 
-- Add archive.org link?
-- Sort skins by... something? (Twitter likes?)
-- Scroll is not locked in overlay mode on ios
-- Fix about page on mobile
-- Fix animation for about page overlay fade in
-- "No results" page
+## Blocking
+
 - Figure out how to get prerendering to work for Facebook
   - Waiting on Netlify
+
+# Future
+
+- Add archive.org link?
+- Scroll is not locked in overlay mode on ios
+- Fix animation for about page overlay fade in
+- "No results" page
 - Setup Sentry
 - Restore focus when leaving the modal
 - Add keyboard navigation to table
@@ -32,7 +35,6 @@
 
 ## Requires a server
 
-- Add an opengraph preview image URL to skin permalinks
 - Drag in a skin to upload!
   - We should detect if we have it or not
 - Allow users to add tags/author info

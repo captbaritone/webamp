@@ -42,3 +42,11 @@ export function requestedAboutPage() {
 export function selectRelativeSkin(offset) {
   return { type: "SELECT_RELATIVE_SKIN", offset };
 }
+
+export function openFileExplorer() {
+  return { type: "OPEN_FILE_EXPLORER" };
+}
+
+export function closeFileExlporer() {
+  return { type: "CLOSE_FILE_EXPLORER" };
+}

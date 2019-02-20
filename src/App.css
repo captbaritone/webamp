@@ -146,6 +146,10 @@ body.webamp-loaded #webamp {
   opacity: 1;
 }
 
+.skin img {
+  box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
 .screenshot {
   height: 100%;
   opacity: 0;
@@ -215,4 +219,18 @@ body.overlay-open .overlay {
   padding: 30px;
   margin: 80px auto;
   line-height: 1.4em;
+}
+
+.readme {
+  background: white;
+}
+
+.readme pre {
+  padding: 10px;
+  width: 100%;
+  height: 100%;
+  white-space: pre-wrap;
+  margin: 0;
+  font-size: 12px;
+  box-sizing: border-box;
 }

@@ -70,13 +70,21 @@ export const getUrl = createSelector(
   getActiveContentPage,
   getSelectedSkinHash,
   getSearchQuery,
-  (activeContentPage, hash, query) => {
+  getFileExplorerOpen,
+  getFocusedSkinFile,
+  (activeContentPage, hash, query, fileExplorerOpen, focusedSkinFile) => {
     if (activeContentPage === ABOUT_PAGE) {
       return "/about/";
     }
     if (hash) {
       // TODO: Add a human readable version
-      return Utils.getPermalinkUrlFromHash(hash);
+      const skinUrl = Utils.getPermalinkUrlFromHash(hash);
+      if (fileExplorerOpen && focusedSkinFile) {
+        return `${skinUrl}files/${encodeURIComponent(
+          focusedSkinFile.fileName
+        )}`;
+      }
+      return skinUrl;
     } else if (query) {
       return `/?query=${encodeURIComponent(query)}`;
     }
@@ -101,4 +109,12 @@ export function getActiveContentPage(state) {
 
 export function getSkins(state) {
   return state.skins;
+}
+
+export function getFileExplorerOpen(state) {
+  return state.fileExplorerOpen;
+}
+
+export function getFocusedSkinFile(state) {
+  return state.focusedSkinFile;
 }
