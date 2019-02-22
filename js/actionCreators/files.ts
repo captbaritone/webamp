@@ -204,14 +204,18 @@ export function loadMedia(
   atIndex = 0
 ): Dispatchable {
   return (dispatch, getState, { handleTrackDropEvent }) => {
-    if (e.dataTransfer.files.length > 0) {
-      dispatch(
-        loadFilesFromReferences(e.dataTransfer.files, loadStyle, atIndex)
-      );
-    } else if (handleTrackDropEvent !== undefined) {
-      const tracks = handleTrackDropEvent(e);
+    const defaultHandler = loadFilesFromReferences(
+      e.dataTransfer.files,
+      loadStyle,
+      atIndex
+    );
+
+    if (handleTrackDropEvent !== undefined) {
+      const tracks = handleTrackDropEvent(e, () => defaultHandler);
       if (tracks !== undefined)
         dispatch(loadMediaFiles(tracks, loadStyle, atIndex));
+    } else {
+      dispatch(defaultHandler);
     }
   };
 }

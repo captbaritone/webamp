@@ -593,7 +593,8 @@ export interface Extras {
   requireJSZip: () => Promise<never>;
   requireMusicMetadata: () => Promise<IMusicMetadataBrowserApi>;
   handleTrackDropEvent: (
-    e: React.DragEvent<HTMLDivElement>
+    e: React.DragEvent<HTMLDivElement>,
+    defaultHandler: () => Dispatchable
   ) => Track[] | undefined;
 }
 

@@ -8,7 +8,8 @@ import {
   Track,
   LoadedURLTrack,
   Middleware,
-  WindowPosition
+  WindowPosition,
+  Dispatchable
 } from "./types";
 import getStore from "./store";
 import App from "./components/App";
@@ -109,7 +110,10 @@ interface PrivateOptions {
   avaliableSkins?: { url: string; name: string }[]; // Old misspelled name
   requireJSZip(): Promise<never>; // TODO: Type JSZip
   requireMusicMetadata(): Promise<any>; // TODO: Type musicmetadata
-  handleTrackDropEvent(): Track[];
+  handleTrackDropEvent(
+    e: React.DragEvent<HTMLDivElement>,
+    defaultHandler: () => Dispatchable
+  ): Track[] | undefined;
   __initialState?: AppState;
   __customMiddlewares?: Middleware[];
   __enableMediaLibrary?: boolean;
