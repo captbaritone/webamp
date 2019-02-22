@@ -189,7 +189,6 @@ export type Action =
       defaultName?: string;
       duration?: number;
       url: string;
-      mediaType?: string;
     }
   | {
       type: "SET_MEDIA";
@@ -487,7 +486,6 @@ interface TrackInfo {
   /**
    * Type can be used to identify the use of custom media classes
    */
-  mediaType?: string;
 }
 
 export interface URLTrack extends TrackInfo {
@@ -538,7 +536,6 @@ export interface PlaylistTrack {
   kbps?: string;
   khz: string;
   channels?: number;
-  mediaType?: string;
 }
 
 export interface AppState {
@@ -595,6 +592,9 @@ export interface IMusicMetadataBrowserApi {
 export interface Extras {
   requireJSZip: () => Promise<never>;
   requireMusicMetadata: () => Promise<IMusicMetadataBrowserApi>;
+  handleTrackDropEvent: (
+    e: React.DragEvent<HTMLDivElement>
+  ) => Track[] | undefined;
 }
 
 export type GetState = () => AppState;
