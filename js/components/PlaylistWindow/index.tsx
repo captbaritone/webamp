@@ -195,8 +195,8 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
     toggleShade: () => dispatch(togglePlaylistShadeMode()),
     scrollUpFourTracks: () => dispatch(scrollUpFourTracks()),
     scrollDownFourTracks: () => dispatch(scrollDownFourTracks()),
-    loadMedia: (e, startIndex) =>
-      dispatch(loadMedia(e, LOAD_STYLE.NONE, startIndex)),
+    loadMedia: (e, loadStyle, startIndex) =>
+      dispatch(loadMedia(e, loadStyle, startIndex)),
     scrollVolume: e => dispatch(scrollVolume(e))
   };
 };
