@@ -72,6 +72,7 @@ export {
   openMediaFileDialog,
   openSkinFileDialog,
   fetchMediaDuration,
+  loadMedia,
   loadMediaFiles,
   loadMediaFile,
   fetchMediaTags,

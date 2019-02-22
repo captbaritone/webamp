@@ -109,6 +109,7 @@ interface PrivateOptions {
   avaliableSkins?: { url: string; name: string }[]; // Old misspelled name
   requireJSZip(): Promise<never>; // TODO: Type JSZip
   requireMusicMetadata(): Promise<any>; // TODO: Type musicmetadata
+  handleTrackDropEvent(): Track[];
   __initialState?: AppState;
   __customMiddlewares?: Middleware[];
   __enableMediaLibrary?: boolean;
@@ -170,7 +171,8 @@ class Winamp {
       enableHotkeys = false,
       zIndex,
       requireJSZip,
-      requireMusicMetadata
+      requireMusicMetadata,
+      handleTrackDropEvent
     } = this.options;
 
     // TODO: Validate required options
@@ -181,7 +183,7 @@ class Winamp {
       this._actionEmitter,
       this.options.__customMiddlewares,
       this.options.__initialState,
-      { requireJSZip, requireMusicMetadata }
+      { requireJSZip, requireMusicMetadata, handleTrackDropEvent }
     ) as Store;
 
     if (navigator.onLine) {

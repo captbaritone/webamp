@@ -198,6 +198,24 @@ export function fetchMediaDuration(url: string, id: number): Dispatchable {
   };
 }
 
+export function loadMedia(
+  e: React.DragEvent<HTMLDivElement>,
+  loadStyle: LoadStyle = LOAD_STYLE.NONE,
+  atIndex = 0
+): Dispatchable {
+  return (dispatch, getState, { handleTrackDropEvent }) => {
+    if (e.dataTransfer.files.length > 0) {
+      dispatch(
+        loadFilesFromReferences(e.dataTransfer.files, loadStyle, atIndex)
+      );
+    } else if (handleTrackDropEvent !== undefined) {
+      const tracks = handleTrackDropEvent(e);
+      if (tracks !== undefined)
+        dispatch(loadMediaFiles(tracks, loadStyle, atIndex));
+    }
+  };
+}
+
 export function loadMediaFiles(
   tracks: Track[],
   loadStyle: LoadStyle = LOAD_STYLE.NONE,
