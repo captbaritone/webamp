@@ -111,9 +111,8 @@ interface PrivateOptions {
   requireJSZip(): Promise<never>; // TODO: Type JSZip
   requireMusicMetadata(): Promise<any>; // TODO: Type musicmetadata
   handleTrackDropEvent(
-    e: React.DragEvent<HTMLDivElement>,
-    defaultHandler: () => Dispatchable
-  ): Track[] | undefined;
+    e: React.DragEvent<HTMLDivElement>
+  ): Promise<Track[] | null>;
   __initialState?: AppState;
   __customMiddlewares?: Middleware[];
   __enableMediaLibrary?: boolean;

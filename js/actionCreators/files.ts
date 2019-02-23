@@ -210,13 +210,14 @@ export function loadMedia(
       atIndex
     );
 
-    if (handleTrackDropEvent !== undefined) {
-      const tracks = handleTrackDropEvent(e, () => defaultHandler);
-      if (tracks !== undefined)
-        dispatch(loadMediaFiles(tracks, loadStyle, atIndex));
-    } else {
-      dispatch(defaultHandler);
-    }
+    if (handleTrackDropEvent)
+      handleTrackDropEvent(e).then(tracks => {
+        if (tracks) dispatch(loadMediaFiles(tracks, loadStyle, atIndex));
+        else {
+          dispatch(defaultHandler);
+        }
+      });
+    else dispatch(defaultHandler);
   };
 }
 
