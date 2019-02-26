@@ -32,7 +32,8 @@ export default function StereoBalanceNode(context) {
   rightGain.connect(merger, 0, 1);
 
   // -1 (left) to 1 (right)
-  function set(value) {
+  function set(rawValue) {
+    const value = Number(rawValue);
     leftGain.gain.value = value > 0 ? 1 - value : 1;
     rightGain.gain.value = value > 0 ? 1 : 1 + value;
     balance = value;
