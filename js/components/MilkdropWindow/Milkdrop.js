@@ -11,6 +11,8 @@ const MILLISECONDS_BETWEEN_PRESET_TRANSITIONS = 15000;
 class Milkdrop extends React.Component {
   constructor(props) {
     super(props);
+    this.__debugState = "CONSTRUCTED";
+    this.__updates = 0;
     this.state = {
       isFullscreen: false,
       presetOverlay: false
@@ -18,6 +20,7 @@ class Milkdrop extends React.Component {
   }
 
   async componentDidMount() {
+    this.__debugState = "MOUNT_STARTED";
     this.visualizer = this.props.butterchurn.createVisualizer(
       this.props.analyser.context,
       this._canvasNode,
@@ -55,9 +58,11 @@ class Milkdrop extends React.Component {
     this._unsubscribeFocusedKeyDown = this.props.onFocusedKeyDown(
       this._handleFocusedKeyboardInput
     );
+    this.__debugState = "MOUNT_ENDED";
   }
 
   componentWillUnmount() {
+    this.__debugState = "WILL_UNMOUNT";
     this._pauseViz();
     this._stopCycling();
     if (this._unsubscribeFocusedKeyDown) {
@@ -66,6 +71,13 @@ class Milkdrop extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    this.__updates++;
+    if (this.visualizer == null) {
+      // https://github.com/captbaritone/webamp/issues/731
+      throw new Error(
+        `Weird bug: State=${this.__debugState} updates=${this.__updates}`
+      );
+    }
     if (
       this.props.width !== prevProps.width ||
       this.props.height !== prevProps.height
