@@ -1,7 +1,7 @@
 // The Web Audio API does not offer an easy way to make a stereo balance
 // control. This is an attempt to fill that void, using an API similar to
 // [StereoPannerNode](https://developer.mozilla.org/en-US/docs/Web/API/StereoPannerNode)
-export default function StereoBalanceNode(context) {
+export default function StereoBalanceNode(context, options) {
   let balance = 0;
 
   // ChannelSplitterNode cannot be told to use a `channelInterperatation` of
@@ -73,6 +73,10 @@ export default function StereoBalanceNode(context) {
       configurable: true
     }
   });
+
+  if (balance !== options.balance) {
+    set(options.balance);
+  }
 
   return upMixer;
 }
