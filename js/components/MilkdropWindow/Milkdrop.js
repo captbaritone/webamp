@@ -32,6 +32,10 @@ class Milkdrop extends React.Component {
         pixelRatio: window.devicePixelRatio || 1
       }
     );
+    if (this.visualizer == null) {
+      // https://github.com/captbaritone/webamp/issues/731
+      throw new Error("Visualizer not initialized. WAT.");
+    }
     this.visualizer.connectAudio(this.props.analyser);
     this.presetCycle = !this.props.initialPreset;
     if (this.props.initialPreset) {
@@ -58,6 +62,10 @@ class Milkdrop extends React.Component {
     this._unsubscribeFocusedKeyDown = this.props.onFocusedKeyDown(
       this._handleFocusedKeyboardInput
     );
+    if (this.visualizer == null) {
+      // https://github.com/captbaritone/webamp/issues/731
+      throw new Error("Visualizer not initialized after await. WAT.");
+    }
     this.__debugState = "MOUNT_ENDED";
   }
 
