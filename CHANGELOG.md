@@ -1,11 +1,47 @@
-## Next version
+## 1.3.0
 
-### Features
+This release is far overdue. In the last six months we've made a huge number of improvements to Webamp.
 
-- Users can pass an initial layout (TODO: Documentation)
-- The default skin is now included in the Skins section of the options menu by default.
-- jsmediatags has been replaced by music-metadata-browser
-- Fixed a bug ([#687](https://github.com/captbaritone/webamp/issues/687) where `webamp.appendTracks()` would cause currently playing media to pause.
+We've fixed multiple longstanding bugs and continued to inch closer to pixel-perfect parity with Winamp. We've added several methods which make it easier to use Webamp in your project. In addition, we've continued to invest in the code by refactoring code to make it more maintainable, and converting the entire project from vanilla JavaScript to TypeScript which should help reduce the number of "dumb" bugs.
+
+See a full list below:
+
+### Features:
+
+- Added methods to the webamp instance to control playback. See the [Usage Docs](./docs/usage.md) for more information:
+  - `webamp.play()`
+  - `webamp.pause()`
+  - `webamp.previousTrack()`
+  - `webamp.nextTrack()`
+  - `webamp.seekForward(seconds)`
+  - `webamp.seekBackward(seconds)`
+- Our ID3 parsing library [jsmediatags](https://github.com/aadsm/jsmediatags) has been replaced by [music-metadata-browser](https://www.npmjs.com/package/music-metadata-browser). This means we now support a broader range of media types, and also that the bitrate and sample rate displayed are now functional
+- The default skin is now included in the Skins section of the options menu by default
+- Implemented the "Options" sub context menu. Click the "O" in the "clutter bar" or select "Options" from the main context menu to see it
+- The equlizer graph is nolonger antialiased. It is now pixelated like real Winamp
+- Added a `.reopen()` method to reopen Webamp after you've closed it ([47ba520](https://github.com/captbaritone/webamp/commit/47ba520c2422d8e4842468a32ca13492845183cd))
+- Stip diacritic marks from song description so it displays better in the marquee ([2b2598](https://github.com/captbaritone/webamp/commit/2b2598329d3891ee8a976b8169066586110a767a))
+
+### Bug Fixes:
+
+- Fixed a longstanding bug where mono audio files would only play in the right channel ([4fd802](https://github.com/captbaritone/webamp/commit/4fd802f96efabb98c3c1573819eed37fec630f90))
+- Fixed a bug ([#687](https://github.com/captbaritone/webamp/issues/687)) where `webamp.appendTracks()` would cause currently playing media to pause.
+- Avoid sticking a file `<input>` into the global DOM ([343686](https://github.com/captbaritone/webamp/commit/343686f7454c4ece95b520fa3ddbf3ecc0198100))
+- Fix a bug where tracks dragged into the playlist were added at the wrong location ([b074e0](https://github.com/captbaritone/webamp/commit/b074e0eff35ac8b1b34efa902681aa19ba2b8629))
+- Fix a bug where skin cursors were not being shown for the equalizer sliders ([65bb59d](https://github.com/captbaritone/webamp/commit/65bb59353dc2da858440a3d753aec02fb771f0cc))
+- The Marquee text is nolonger blury when in "Double Size" mode ([4b5320](https://github.com/captbaritone/webamp/commit/4b53209e0cc0a9e0cd84821d012c1770a940063c))
+- Scrolling in the Equalizer window nolonger changes the volume ([48a937](https://github.com/captbaritone/webamp/commit/48a937da8722ccfd3c2e9df378a847c453c36864))
+- Clicking anywhere in a equalizer slider now makes the button depress ([20e681](20e6811e6f59e82a5765c38b0b33fbed2eb575ee)
+- Parsing of the `viscolor.txt` file in skins is now more permissive, allowing us to support more skins ([0d29ff](0d29ffe3f4b20505005346cbc97d0cdf85664619))
+- The hotkeys to seek forward/backwards 10 tracks now works propery ([7d9ef4](https://github.com/captbaritone/webamp/commit/7d9ef4287f7294f6bdc1db89b717592cf4e48f17))
+- Fix a bug where the preamp level was not applied until you changed it ([f03c88](https://github.com/captbaritone/webamp/commit/f03c88c6d89fd51cbc0538841bb3227accfa0431))
+- Fix a bug where the equalizer sliders would show in the wrong postion when set to the lowest value ([ab5eb3](https://github.com/captbaritone/webamp/commit/ab5eb33026cf9082d7f28f3923d51a29765e25c9))
+
+### Internal Improvements:
+
+- Webamp is now written in [TypeScript](https://www.typescriptlang.org/).
+- Upraded to React and began using a few [hooks](https://reactjs.org/docs/hooks-overview.html).
+- We nolonger depend upon [cardinal-spline-js](https://www.npmjs.com/package/cardinal-spline-js), we use our own implementation.
 
 ## 1.2.0
 
