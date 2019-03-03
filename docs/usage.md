@@ -26,10 +26,10 @@ Or, you can include it via a script tag:
 
 ## Create a container
 
-Create a DOM element somewhere in your HTML document. This will eventually contain Webamp
+Create a DOM element somewhere in your HTML document. This will be used by Webamp to find it's initial position.
 
 ```html
-<div id='winamp-container'></div>
+<div id="winamp-container"></div>
 ```
 
 ## Initialize the JavaScript
@@ -112,7 +112,7 @@ if(Winamp.browserIsSupported()) {
 
 ## Construction
 
-The `Winamp` class is constructed with an options object.
+The `Winamp` class is constructed with an options object. All are optional.
 
 ```JavaScript
 const options = {
@@ -137,6 +137,9 @@ const options = {
     // Optional. (Default: `false`) Should global hotkeys be enabled?
     enableHotkeys: true,
 
+    // Optional. (Default: `0`) The zIndex that Webamp should use.
+    zIndex: 99999,
+
     // Optional. An array of additional file pickers.
     // These will appear in the "Options" menu under "Play".
     // In the offical version. This option is used to provide a "Dropbox" file picker.
@@ -160,7 +163,7 @@ const webamp = new Webamp(options);
 
 The `Webamp` class has the following _instance_ methods:
 
-### `appendTracks(tracks)`
+### `appendTracks(tracks: Track[]): void`
 
 Add an array of `track`s (see above) to the end of the playlist.
 
@@ -172,7 +175,7 @@ webamp.appendTracks([
 ]);
 ```
 
-### `setTracksToPlay(tracks)`
+### `setTracksToPlay(tracks: Track[]): void`
 
 Replace the playlist with an array of `track`s (see above) and begin playing the first track.
 
@@ -184,7 +187,55 @@ webamp.setTracksToPlay([
 ]);
 ```
 
-### `renderWhenReady(domNode)`
+### `previousTrack(): void`
+
+Play the previous track.
+
+```JavaScript
+webamp.previousTrack();
+```
+
+### `nextTrack(): void`
+
+Play the next track.
+
+```JavaScript
+webamp.nextTrack();
+```
+
+### `seekForward(seconds): void`
+
+Seek forward n seconds in the current track.
+
+```JavaScript
+webamp.seekForward(10);
+```
+
+### `seekBackward(seconds): void`
+
+Seek backward n seconds in the current track.
+
+```JavaScript
+webamp.seekBackward(10);
+```
+
+### `pause(): void`
+
+Pause the current track.
+
+```JavaScript
+webamp.pause();
+```
+
+### `play(): void`
+
+Play the current track.
+
+```JavaScript
+webamp.play();
+```
+
+### `renderWhenReady(domNode: HTMLElement): Promise<void>`
 
 Webamp will wait until it has fetched the skin and fully parsed it, and then render itself into a new DOM node at the end of the `<body>` tag.
 
@@ -199,7 +250,7 @@ webamp.renderWhenReady(container).then(() => {
 });
 ```
 
-### `onTrackDidChange(callback)`
+### `onTrackDidChange(cb: (trackInfo: LoadedURLTrack | null) => void): () => void`
 
 A callback which will be called when a new track starts loading. This can happen on startup when the first track starts buffering, or when a subsequent track starts playing. The callback will be called with an object (`{url: 'https://example.com/track.mp3'}`) containing the URL of the track.
 
@@ -216,7 +267,7 @@ const unsubscribe = webamp.onTrackDidChange((track => {
 unsubscribe();
 ```
 
-### `onWillClose(callback)`
+### `onWillClose(cb: (cancel: () => void) => void): () => void`
 
 A callback which will be called when Webamp is _about to_ close. Returns an "unsubscribe" function. The callback will be passed a `cancel` function which you can use to conditionally prevent Webamp from being closed.
 
@@ -231,7 +282,7 @@ const unsubscribe = webamp.onWillClose((cancel) => {
 unsubscribe();
 ```
 
-### `onClose(callback)`
+### `onClose(cb: () => void): () => void`
 
 A callback which will be called when Webamp is closed. Returns an "unsubscribe" function.
 
@@ -244,7 +295,21 @@ const unsubscribe = webamp.onClose(() => {
 unsubscribe();
 ```
 
-### `onMinimize(callback)`
+### `reopen(): void`
+
+After `.close()`ing this instance, you can reopen it by calling this method.
+
+```JavaScript
+const icon = document.getElementById('webamp-icon');
+
+webamp.onClose(() => {
+    icon.addEventListener('click', () => {
+        webamp.reopen();
+    });
+})
+```
+
+### `onMinimize(cb: () => void): () => void`
 
 A callback which will be called when Webamp is minimized. Returns an "unsubscribe" function.
 
@@ -255,6 +320,26 @@ const unsubscribe = webamp.onMinimize(() => {
 
 // If at some point in the future you want to stop listening to these events:
 unsubscribe();
+```
+
+### `skinIsLoaded(): Promise<void>`
+
+Returns a promise that resolves when the skin is done loading.
+
+```JavaScript
+const start = Date.now();
+await webamp.skinIsLoaded();
+console.log(`The skin loaded in ${Date.now() - start}`);
+```
+
+### `dispose(): void`
+
+**Note:** _This method is not fully functional. It is currently impossible to clean up a Winamp instance. This method makes an effort, but it still leaks the whole instance. In the future the behavior of this method will improve, so you might as well call it._
+
+When you are done with a Webamp instance, call this method and Webamp will attempt to clean itself up to avoid memory leaks.
+
+```JavaScript
+webamp.dispose();
 ```
 
 ## Notes

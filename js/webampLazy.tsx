@@ -283,7 +283,7 @@ class Winamp {
     this.store.dispatch(Actions.previous());
   }
 
-  _bufferTracks(tracks: Track[]) {
+  _bufferTracks(tracks: Track[]): void {
     const nextIndex = Selectors.getTrackCount(this.store.getState());
     this.store.dispatch(
       Actions.loadMediaFiles(tracks, LOAD_STYLE.BUFFER, nextIndex)
@@ -291,7 +291,7 @@ class Winamp {
   }
 
   // Append this array of tracks to the end of the current playlist.
-  appendTracks(tracks: Track[]) {
+  appendTracks(tracks: Track[]): void {
     const nextIndex = Selectors.getTrackCount(this.store.getState());
     this.store.dispatch(
       Actions.loadMediaFiles(tracks, LOAD_STYLE.NONE, nextIndex)
@@ -299,7 +299,7 @@ class Winamp {
   }
 
   // Replace any existing tracks with this array of tracks, and begin playing.
-  setTracksToPlay(tracks: Track[]) {
+  setTracksToPlay(tracks: Track[]): void {
     this.store.dispatch(Actions.loadMediaFiles(tracks, LOAD_STYLE.PLAY));
   }
 
@@ -351,7 +351,7 @@ class Winamp {
     return this.store.subscribe(cb);
   }
 
-  async renderWhenReady(node: HTMLElement) {
+  async renderWhenReady(node: HTMLElement): Promise<void> {
     this.store.dispatch(Actions.centerWindowsInContainer(node));
     await this.skinIsLoaded();
     if (this._node != null) {
@@ -378,7 +378,7 @@ class Winamp {
     );
   }
 
-  dispose() {
+  dispose(): void {
     // TODO: Clean up store subscription in onTrackDidChange
     // TODO: Every storeHas call represents a potential race condition
     this.media.dispose();
