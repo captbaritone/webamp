@@ -2,7 +2,7 @@
 
 This release is far overdue. In the last six months we've made a huge number of improvements to Webamp.
 
-We've fixed multiple longstanding bugs and continued to inch closer to pixel-perfect parity with Winamp. We've added several methods which make it easier to use Webamp in your project. In addition, we've continued to invest in the code by refactoring code to make it more maintainable, and converting the entire project from vanilla JavaScript to TypeScript which should help reduce the number of "dumb" bugs.
+We've fixed multiple longstanding bugs. We've continued to inch closer to pixel-perfect parity with Winamp. We've added several methods which make it easier to use Webamp in your project. In addition, we've continued to invest in the code by refactoring code to make it more maintainable.
 
 See a full list below:
 
