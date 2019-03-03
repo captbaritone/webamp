@@ -1,4 +1,4 @@
-[![Travis](https://img.shields.io/travis/captbaritone/webamp.svg)]() [![Codecov](https://img.shields.io/codecov/c/github/captbaritone/webamp.svg)]() [![Discord](https://img.shields.io/discord/434058775012311061.svg)](https://discord.gg/fBTDMqR)
+[![Travis](https://img.shields.io/travis/captbaritone/webamp.svg)](https://travis-ci.org/captbaritone/webamp/) [![Codecov](https://img.shields.io/codecov/c/github/captbaritone/webamp.svg)]() [![Discord](https://img.shields.io/discord/434058775012311061.svg)](https://discord.gg/fBTDMqR)
 
 # Webamp
 
