@@ -8,7 +8,7 @@ A reimplementation of Winamp 2.9 in HTML5 and JavaScript.
 
 ## [Give it a try!](https://webamp.org)
 
-[![Screenshot of Webamp](./demo/images/preview.png)](https://webamp.org)
+[![Screenshot of Webamp](https://raw.githubusercontent.com/captbaritone/webamp/master/demo/images/preview.png)](https://webamp.org)
 
 Works in modern versions of Edge, Firefox, Safari and Chrome. IE is [not
 supported](http://caniuse.com/#feat=audio-api).
@@ -17,15 +17,26 @@ supported](http://caniuse.com/#feat=audio-api).
 
 Check out this Twitter thread for an illustrated list of features: https://twitter.com/captbaritone/status/961274714013319168
 
+## About This Repository
+
+This repository contains a number of different things:
+
+1. `./`: The code for the [Webamp NPM module](https://www.npmjs.com/package/webamp)
+2. `./demo`: The code for the demo site which lives at [webamp.org](https://webamp.org). This includes the Milkdrop integration
+3. `./examples`: A few small examples showing how to use the NPM module
+4. `./experiments`: A few small projects that are either related to Webamp, or may some day be a part of Webamp
+
 ## Use Webamp in your own project
 
-I've tried to make it possible to include Webamp in your own project.
+Its possible to use Webamp as a media player on your own website. In fact, the [Internet Archive](https://archive.org/) offers it as an optional player for all of their archived audio tracks. [Read more](https://blog.archive.org/2018/10/02/dont-click-on-the-llama/).
 
 For examples of how to add Webamp to your projects, check out out [`examples/` directory](./examples).
 
-See the [usage documentation](./docs/usage.md) for more information.
+See the [usage documentation](./docs/usage.md) for more detailed information.
 
 ## Development
+
+I do most development by starting the demo site in dev mode and iterating that way. The following commands will install all dependencies, run an initial development build and then start a local server. Every time you save a file, it will rebuild the bundle and automatically refresh the page.
 
     yarn
     # Or: npm install
@@ -38,22 +49,35 @@ See the [usage documentation](./docs/usage.md) for more information.
 
 ## Building the demo site (webmap.org)
 
+To do an optimized build of the demo site, you can run:
+
     npm run build
+
+If you wish to test this build locally, run:
+
     npm run serve
 
-Open the local ip/port that is output to the console in your browser.
+Then open the local ip/port that is output to the console in your browser.
 
 ## Building the NPM module
 
+The NPM module is built separately from the demo site. To build it run:
+
     npm run build-library
+
+This will write files to `./built`.
 
 ## Testing
 
     npm test
 
-This will run both the tests and the linter.
+This will run the tests the linter and the type checker.
 
-## Deploying
+To update snapshots run
+
+    npm test -u
+
+## Deploying the Demo Site
 
 [Netlify](https://www.netlify.com/) watches GitHub for new versions of master. When a new version is seen, it is automatically built using `npm run build` and pushed to the server. Additionally, Netlify will run a build on every pull request and include a link under the heading "Deploy preview ready!". This enables easy high level testing of pull requests.
 
