@@ -34,7 +34,7 @@ import {
 } from "./actionTypes";
 import Emitter from "./emitter";
 
-import "../css/base-skin.min.css";
+import "../css/base-skin.css";
 import { SerializedStateV1 } from "./serializedStates/v1Types";
 import Disposable from "./Disposable";
 
