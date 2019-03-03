@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node lib/index.js \"/Volumes/Mobile Backup/skins/skins/\" \"/Volumes/Mobile Backup/skins/\" \"/Volumes/Mobile Backup/skins/pathnames.txt\"",
-    "sync-skins": "aws s3 sync \"/Volumes/Mobile Backup/skins/md5Skins/\" s3://webamp-uploaded-skins/skins/",
-    "sync-screenshots": "aws s3 sync \"/Volumes/Mobile Backup/skins/md5Screenshots/\" s3://webamp-uploaded-skins/screenshots/",
+    "sync-skins": "aws s3 sync --acl=public-read \"/Volumes/Mobile Backup/skins/md5Skins/\" s3://webamp-uploaded-skins/skins/",
+    "sync-screenshots": "aws s3 sync --acl=public-read \"/Volumes/Mobile Backup/skins/md5Screenshots/\" s3://webamp-uploaded-skins/screenshots/",
     "sync": "npm run sync-skins && npm run sync-screenshots",
     "clean": "cd md5Skins && find . -delete"
   },
