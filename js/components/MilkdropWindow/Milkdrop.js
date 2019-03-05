@@ -36,6 +36,7 @@ class Milkdrop extends React.Component {
       // https://github.com/captbaritone/webamp/issues/731
       throw new Error("Visualizer not initialized. WAT.");
     }
+    this.__debugState = "VISUALIZER_CREATED";
     this.visualizer.connectAudio(this.props.analyser);
     this.presetCycle = !this.props.initialPreset;
     if (this.props.initialPreset) {
