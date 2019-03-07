@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - node
+  - "11.10.0"
 script: >
   npm run travis-tests # &&
   # gzip -c built/webamp.bundle.min.js > built/webamp.bundle.min.js.gz &&
