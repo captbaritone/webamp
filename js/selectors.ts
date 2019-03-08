@@ -26,7 +26,7 @@ import { createPlaylistURL } from "./playlistHtml";
 import * as fromTracks from "./reducers/tracks";
 import * as fromDisplay from "./reducers/display";
 import * as fromEqualizer from "./reducers/equalizer";
-import media, * as fromMedia from "./reducers/media";
+import * as fromMedia from "./reducers/media";
 import * as fromWindows from "./reducers/windows";
 import * as TrackUtils from "./trackUtils";
 import * as MarqueeUtils from "./marqueeUtils";
