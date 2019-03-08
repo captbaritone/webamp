@@ -1,4 +1,4 @@
-import { Action, PresetId, Preset } from "../types";
+import { Action, PresetId, StatePreset } from "../types";
 import {
   SET_MILKDROP_DESKTOP,
   GOT_BUTTERCHURN_PRESETS,
@@ -14,7 +14,7 @@ export interface MilkdropState {
   desktop: boolean;
   overlay: boolean;
   presetOrder: PresetId[];
-  presets: Preset[];
+  presets: StatePreset[];
   currentPresetIndex: number | null;
   butterchurn: any;
   transitionType: TransitionType;
@@ -42,24 +42,16 @@ export const milkdrop = (
     case GOT_BUTTERCHURN_PRESETS:
       return {
         ...state,
-        presets: state.presets.concat(
-          action.presets.map(preset => {
-            switch (preset.type) {
-              case "BUTTERCHURN_JSON":
-              case "LAZY_BUTTERCHURN_JSON":
-                return preset;
-            }
-          })
-        )
+        presets: state.presets.concat(action.presets)
       };
     case RESOLVE_PRESET_AT_INDEX:
       const preset = state.presets[action.index];
       return {
         ...state,
         presets: Utils.replaceAtIndex(state.presets, action.index, {
+          type: "RESOLVED",
           name: preset.name,
-          type: "BUTTERCHURN_JSON",
-          definition: action.json
+          preset: action.json
         })
       };
     case SELECT_PRESET_AT_INDEX:

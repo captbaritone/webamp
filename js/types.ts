@@ -115,56 +115,38 @@ type SkinData = {
   skinGenExColors: SkinGenExColors | null;
 };
 
-export interface InitialButterchurnDependencies {
-  // TODO: Type these
-  butterchurn: any;
-  minimalPresets: any;
-  presetKeys: any;
-}
-
-export interface ButterchurnOptions {
-  loadNonMinimalPresets(): Promise<any>;
-  loadInitialDependencies(): Promise<InitialButterchurnDependencies>;
-  loadConvertPreset(): Promise<any>;
-  presetConverterEndpoint: string;
-  initialMilkdropPresetUrl?: string | null;
-  initialButterchurnPresetUrl?: string | null;
-}
-
 // This is what we actually pass to butterchurn
 type ButterchurnPresetJson = {
-  type: "BUTTERCHURN_JSON";
   name: string;
-  definition: Object;
-};
-
-export type LazyButterchurnPresetJson = {
-  type: "LAZY_BUTTERCHURN_JSON";
-  name: string;
-  getDefinition: () => Promise<Object>;
+  butterchurnPresetObject: Object;
 };
 
 // A URL that points to a Butterchurn preset
 interface ButterchurnPresetUrl {
-  type: "BUTTERCHURN_URL";
-  url: string;
+  name: string;
+  butterchurnPresetUrl: string;
 }
 
-// A URL that points to a .milk preset
-interface MilkdropPresetUrl {
-  type: "MILKDROP_URL";
-  url: string;
-}
+export type LazyButterchurnPresetJson = {
+  name: string;
+  getButterchrunPresetObject: () => Promise<Object>;
+};
 
-export type PresetDefinition =
+export type Preset =
   | ButterchurnPresetJson
-  | LazyButterchurnPresetJson
   | ButterchurnPresetUrl
-  | MilkdropPresetUrl;
+  | LazyButterchurnPresetJson;
 
-export type Preset = ButterchurnPresetJson | LazyButterchurnPresetJson;
+export type StatePreset =
+  | { type: "RESOLVED"; name: string; preset: Object }
+  | { type: "UNRESOLVED"; name: string; getPreset: () => Promise<Object> };
 
 export type PresetId = string;
+
+export interface ButterchurnOptions {
+  getPresets(): Promise<Preset[]>;
+  importButterchurn(): Promise<any>;
+}
 
 export interface EqfPreset {
   name: string;
@@ -483,7 +465,7 @@ export type Action =
     }
   | {
       type: "GOT_BUTTERCHURN_PRESETS";
-      presets: Preset[];
+      presets: StatePreset[];
     }
   | {
       type: "GOT_BUTTERCHURN";
