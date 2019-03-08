@@ -23,21 +23,23 @@ const MilkdropContextMenu = (props: Props) => (
   <ContextMenuWraper
     onDoubleClick={props.toggleFullscreen}
     renderContents={() => {
-      <>
-        <Node
-          onClick={props.toggleFullscreen}
-          label="Fullscreen"
-          hotkey="Alt+Enter"
-        />
-        <Node
-          onClick={props.toggleDesktop}
-          checked={props.desktop}
-          label="Desktop Mode"
-          hotkey="Alt+D"
-        />
-        <Hr />
-        <Node onClick={props.closeWindow} label="Quit" />
-      </>;
+      return (
+        <>
+          <Node
+            onClick={props.toggleFullscreen}
+            label="Fullscreen"
+            hotkey="Alt+Enter"
+          />
+          <Node
+            onClick={props.toggleDesktop}
+            checked={props.desktop}
+            label="Desktop Mode"
+            hotkey="Alt+D"
+          />
+          <Hr />
+          <Node onClick={props.closeWindow} label="Quit" />
+        </>
+      );
     }}
   />
 );
