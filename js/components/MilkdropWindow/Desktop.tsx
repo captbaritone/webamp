@@ -1,11 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-export default class Desktop extends React.Component {
-  _desktopNode?: HTMLElement;
-  componentWillUnmount() {
-    document.body.removeChild(this._desktopNode);
+interface Props {}
+
+export default class Desktop extends React.Component<Props> {
+  _desktopNode: HTMLElement | null;
+  constructor(props: Props) {
+    super(props);
     this._desktopNode = null;
+  }
+
+  componentWillUnmount() {
+    if (this._desktopNode != null) {
+      document.body.removeChild(this._desktopNode);
+      this._desktopNode = null;
+    }
   }
 
   _getNode() {
