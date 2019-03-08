@@ -5,6 +5,13 @@ import { VISUALIZERS } from "../../constants";
 import * as Selectors from "../../selectors";
 import { AppState, TransitionType } from "../../types";
 
+type ButterchurnVisualizer = {
+  setRendererSize(width: number, height: number): void;
+  loadPreset(preset: Object, transitionTime: number): void;
+  launchSongTitleAnim(title: string): void;
+  render(): void;
+};
+
 interface StateProps {
   isEnabledVisualizer: boolean;
   playing: boolean;
@@ -30,7 +37,9 @@ const TRANSITION_TYPE_DURATIONS = {
 
 function Visualizer(props: Props) {
   const canvasRef = useRef(null);
-  const [visualizer, setVisualizer] = useState(null);
+  const [visualizer, setVisualizer] = useState<ButterchurnVisualizer | null>(
+    null
+  );
 
   // Initialize the visualizer
   useEffect(() => {
@@ -68,7 +77,6 @@ function Visualizer(props: Props) {
 
   // Load presets when they change
   useEffect(() => {
-    console.log("Preset change", props);
     if (visualizer == null || props.currentPreset == null) {
       return;
     }
