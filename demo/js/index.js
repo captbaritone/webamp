@@ -13,7 +13,6 @@ import zaxon from "../../skins/ZaxonRemake1-0.wsz";
 import green from "../../skins/Green-Dimension-V2.wsz";
 import base from "../../skins/base-2.91-png.wsz";
 import internetArchive from "../../skins/Internet-Archive.wsz";
-import partialButterchurnOptions from "../../js/components/MilkdropWindow/options";
 import { WINDOWS } from "../../js/constants";
 import * as Selectors from "../../js/selectors";
 
@@ -147,6 +146,42 @@ Raven.context(async () => {
   let __butterchurnOptions = null;
   let __initialWindowLayout = null;
   if (isButterchurnSupported()) {
+    const partialButterchurnOptions = {
+      importButterchurn: () => {
+        return import(/* webpackChunkName: "butterchurn-initial-dependencies" */
+        // @ts-ignore
+        "butterchurn");
+      },
+      getPresets: async () => {
+        if ("URLSearchParams" in window) {
+          const params = new URLSearchParams(location.search);
+          const butterchurnPresetUrlParam = params.get("butterchurnPresetUrl");
+          const milkdropPresetUrl = params.get("milkdropPresetUrl");
+          const initialPresets = [];
+          if (butterchurnPresetUrlParam) {
+            initialPresets.push({
+              // TODO: Get name
+              name: "foo",
+              butterchurnPresetUrl: butterchurnPresetUrlParam
+            });
+          } else if (milkdropPresetUrl) {
+            throw new Error("We still need to implement this");
+          }
+          const resp = await fetch(
+            "https://unpkg.com/butterchurn-presets-weekly@0.0.2/weeks/week1/presets.json"
+          );
+          // TODO: Fallback to some other presets?
+          const namesToPresetUrls = await resp.json();
+          const presets = Object.entries(namesToPresetUrls).map(
+            ([name, butterchurnPresetUrl]) => {
+              return { name, butterchurnPresetUrl };
+            }
+          );
+          return [...initialPresets, ...presets];
+        }
+        return [];
+      }
+    };
     const startWithMilkdropHidden =
       library ||
       document.body.clientWidth < MIN_MILKDROP_WIDTH ||

@@ -10,44 +10,54 @@ import {
   Dispatchable,
   TransitionType,
   Preset,
-  LazyButterchurnPresetJson
+  ButterchurnOptions,
+  StatePreset
 } from "../types";
 import * as FileUtils from "../fileUtils";
 
-export function initializePresets(presetOptions: any): Dispatchable {
-  return async dispatch => {
-    const { loadInitialDependencies, loadNonMinimalPresets } = presetOptions;
-    const {
-      butterchurn,
-      presetKeys,
-      minimalPresets
-    } = await loadInitialDependencies();
-    dispatch({ type: GOT_BUTTERCHURN, butterchurn });
-
-    const presets: Preset[] = presetKeys.map((key: string) => {
-      if (minimalPresets[key] != null) {
-        return {
-          type: "BUTTERCHURN_JSON",
-          name: key,
-          definition: minimalPresets[key]
-        };
+function normalizePresetTypes(preset: Preset): StatePreset {
+  const { name } = preset;
+  if (preset.butterchurnPresetObject != null) {
+    return {
+      type: "RESOLVED",
+      name,
+      preset: preset.butterchurnPresetObject
+    };
+  } else if (preset.getButterchrunPresetObject) {
+    return {
+      type: "UNRESOLVED",
+      name,
+      getPreset: preset.getButterchrunPresetObject
+    };
+  } else if (preset.butterchurnPresetUrl != null) {
+    return {
+      type: "UNRESOLVED",
+      name,
+      getPreset: async () => {
+        const resp = await fetch(preset.butterchurnPresetUrl);
+        return resp.json();
       }
-      return {
-        type: "LAZY_BUTTERCHURN_JSON",
-        name: key,
-        getDefinition: async () => {
-          // TODO: Avoid a race where we try to resolve this promise more than once in parallel.
-          const nonMinimalPresets = await loadNonMinimalPresets();
-          return nonMinimalPresets[key];
-        }
-      };
+    };
+  }
+  throw new Error("Invalid preset object");
+}
+
+export function initializePresets(
+  presetOptions: ButterchurnOptions
+): Dispatchable {
+  return async dispatch => {
+    const { getPresets, importButterchurn } = presetOptions;
+    importButterchurn().then(butterchurn => {
+      dispatch({ type: GOT_BUTTERCHURN, butterchurn: butterchurn.default });
     });
 
-    dispatch(loadPresets(presets));
+    const presets = await getPresets();
+    const normalizePresets = presets.map(normalizePresetTypes);
+    dispatch(loadPresets(normalizePresets));
   };
 }
 
-export function loadPresets(presets: Preset[]): Dispatchable {
+export function loadPresets(presets: StatePreset[]): Dispatchable {
   return (dispatch, getState) => {
     const presetLength = getState().milkdrop.presets.length;
     dispatch({ type: GOT_BUTTERCHURN_PRESETS, presets });
@@ -57,12 +67,15 @@ export function loadPresets(presets: Preset[]): Dispatchable {
 
 export function appendPresetFileList(fileList: FileList): Dispatchable {
   return async dispatch => {
-    const presets: Preset[] = Array.from(fileList).map(file => {
-      const JSON_EXT = ".json";
-      const MILK_EXT = ".milk";
-      const filename = file.name.toLowerCase();
-      if (filename.endsWith(MILK_EXT)) {
-        // Not sure why we need this type definition.
+    const presets: StatePreset[] = Array.from(fileList).map(
+      (file): StatePreset => {
+        const JSON_EXT = ".json";
+        const MILK_EXT = ".milk";
+        const filename = file.name.toLowerCase();
+        if (filename.endsWith(MILK_EXT)) {
+          throw new Error(".milk preset support not yet implemented");
+          // Not sure why we need this type definition.
+          /*
         const lazy: LazyButterchurnPresetJson = {
           type: "LAZY_BUTTERCHURN_JSON",
           name: file.name.slice(0, file.name.length - MILK_EXT.length),
@@ -71,24 +84,25 @@ export function appendPresetFileList(fileList: FileList): Dispatchable {
             return {};
           }
         };
-        throw new Error(".milk preset support not yet implemented");
         return lazy;
-      } else if (filename.endsWith(JSON_EXT)) {
-        // Not sure why we need this type definition.
-        const lazy: LazyButterchurnPresetJson = {
-          type: "LAZY_BUTTERCHURN_JSON",
-          name: file.name.slice(0, file.name.length - JSON_EXT.length),
-          getDefinition: async () => {
-            const str = await FileUtils.genStringFromFileReference(file);
-            // TODO: How should we handle the case where json parsing fails?
-            return JSON.parse(str);
-          }
-        };
-        return lazy;
-      } else {
-        throw new Error("Invalid type");
+        */
+        } else if (filename.endsWith(JSON_EXT)) {
+          // Not sure why we need this type definition.
+          const lazy: StatePreset = {
+            type: "UNRESOLVED",
+            name: file.name.slice(0, file.name.length - JSON_EXT.length),
+            getPreset: async () => {
+              const str = await FileUtils.genStringFromFileReference(file);
+              // TODO: How should we handle the case where json parsing fails?
+              return JSON.parse(str);
+            }
+          };
+          return lazy;
+        } else {
+          throw new Error("Invalid type");
+        }
       }
-    });
+    );
     dispatch(loadPresets(presets));
     // TODO: Select the first of these presets
   };
@@ -128,11 +142,11 @@ export function requestPresetAtIndex(
       return;
     }
     switch (preset.type) {
-      case "BUTTERCHURN_JSON":
+      case "RESOLVED":
         dispatch({ type: SELECT_PRESET_AT_INDEX, index, transitionType });
         return;
-      case "LAZY_BUTTERCHURN_JSON":
-        const json = await preset.getDefinition();
+      case "UNRESOLVED":
+        const json = await preset.getPreset();
         // What if the index has changed?
         // Perhaps we could hold a reference to the preset at the index before
         // we await and confirm that it hasn't changed after the await?

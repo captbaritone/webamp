@@ -635,10 +635,10 @@ export function getCurrentPreset(state: AppState): any | null {
     return null;
   }
   const preset = state.milkdrop.presets[index];
-  if (preset == null || preset.type !== "BUTTERCHURN_JSON") {
+  if (preset == null || preset.type === "UNRESOLVED") {
     return null;
   }
-  return preset.definition;
+  return preset.preset;
 }
 
 export function getPresetNames(state: AppState): string[] {
