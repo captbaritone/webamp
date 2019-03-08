@@ -1,7 +1,7 @@
 import React from "react";
 
 interface Props {
-  innerRef?: (node: HTMLElement) => void;
+  innerRef?: (node: HTMLDivElement) => void;
   children: React.ReactNode;
 }
 
