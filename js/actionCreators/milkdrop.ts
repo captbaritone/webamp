@@ -3,7 +3,8 @@ import {
   GOT_BUTTERCHURN,
   SELECT_PRESET_AT_INDEX,
   RESOLVE_PRESET_AT_INDEX,
-  TOGGLE_PRESET_OVERLAY
+  TOGGLE_PRESET_OVERLAY,
+  PRESET_REQUESTED
 } from "../actionTypes";
 import * as Selectors from "../selectors";
 import {
@@ -61,7 +62,9 @@ export function loadPresets(presets: StatePreset[]): Dispatchable {
   return (dispatch, getState) => {
     const presetLength = getState().milkdrop.presets.length;
     dispatch({ type: GOT_BUTTERCHURN_PRESETS, presets });
-    dispatch(requestPresetAtIndex(presetLength, TransitionType.IMMEDIATE));
+    dispatch(
+      requestPresetAtIndex(presetLength, TransitionType.IMMEDIATE, true)
+    );
   };
 }
 
@@ -79,7 +82,7 @@ export function appendPresetFileList(fileList: FileList): Dispatchable {
           return {
             type: "UNRESOLVED",
             name: file.name.slice(0, file.name.length - MILK_EXT.length),
-            getPreset: async () => convertPreset(file)
+            getPreset: () => convertPreset(file)
           } as StatePreset;
         } else if (filename.endsWith(JSON_EXT)) {
           return {
@@ -106,29 +109,50 @@ export function selectNextPreset(
   transitionType: TransitionType = TransitionType.DEFAULT
 ): Dispatchable {
   return (dispatch, getState) => {
-    const state = getState();
-    const currentPresetIndex = Selectors.getCurrentPresetIndex(state);
+    const currentPresetIndex = Selectors.getCurrentPresetIndex(getState());
     if (currentPresetIndex == null) {
       return;
     }
     const nextPresetIndex = currentPresetIndex + 1;
-    dispatch(requestPresetAtIndex(nextPresetIndex, transitionType));
+    dispatch(requestPresetAtIndex(nextPresetIndex, transitionType, true));
   };
 }
 
-export function selectRandomPreset(): Dispatchable {
+export function selectPreviousPreset(
+  transitionType: TransitionType = TransitionType.DEFAULT
+): Dispatchable {
   return (dispatch, getState) => {
     const state = getState();
+    const { presetHistory } = state.milkdrop;
+    if (presetHistory.length < 1) {
+      return;
+    }
+    // Awkward. We do -2 becuase the the last track is the current track.
+    const lastPresetIndex = presetHistory[presetHistory.length - 2];
+
+    dispatch(requestPresetAtIndex(lastPresetIndex, transitionType, false));
+  };
+}
+
+export function selectRandomPreset(
+  transitionType: TransitionType = TransitionType.DEFAULT
+): Dispatchable {
+  return (dispatch, getState) => {
+    const state = getState();
+    // TODO: Make this a selector.
     const randomIndex = Math.floor(
       Math.random() * state.milkdrop.presets.length
     );
-    dispatch(requestPresetAtIndex(randomIndex, TransitionType.DEFAULT));
+    dispatch(requestPresetAtIndex(randomIndex, transitionType, true));
   };
 }
 
+// TODO: Technically there's a race here. If you request two presets in a row, the
+// first one may resolve before the second.
 export function requestPresetAtIndex(
   index: number,
-  transitionType: TransitionType
+  transitionType: TransitionType,
+  addToHistory: boolean
 ): Dispatchable {
   return async (dispatch, getState) => {
     const state = getState();
@@ -137,15 +161,14 @@ export function requestPresetAtIndex(
       // Index might be out of range.
       return;
     }
+    dispatch({ type: PRESET_REQUESTED, index, addToHistory });
     switch (preset.type) {
       case "RESOLVED":
         dispatch({ type: SELECT_PRESET_AT_INDEX, index, transitionType });
         return;
       case "UNRESOLVED":
         const json = await preset.getPreset();
-        // What if the index has changed?
-        // Perhaps we could hold a reference to the preset at the index before
-        // we await and confirm that it hasn't changed after the await?
+        // TODO: Ensure that this works correctly even if requests resolve out of order
         dispatch({ type: RESOLVE_PRESET_AT_INDEX, index, json });
         dispatch({ type: SELECT_PRESET_AT_INDEX, index, transitionType });
         return;

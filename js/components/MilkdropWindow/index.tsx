@@ -30,6 +30,7 @@ interface DispatchProps {
   selectRandomPreset(): void;
   handlePresetDrop(e: React.DragEvent): void;
   selectNextPreset(transitionType?: TransitionType): void;
+  selectPreviousPreset(transitionType?: TransitionType): void;
 }
 
 interface OwnProps {
@@ -46,12 +47,13 @@ function Milkdrop(props: Props) {
   // Handle keyboard events
   useEffect(() => {
     return props.onFocusedKeyDown(e => {
+      console.log(e.keyCode);
       switch (e.keyCode) {
         case 32: // spacebar
           props.selectNextPreset();
           break;
         case 8: // backspace
-          // this._prevPreset(0);
+          props.selectPreviousPreset(TransitionType.IMMEDIATE);
           break;
         case 72: // H
           props.selectNextPreset(TransitionType.IMMEDIATE);
@@ -141,7 +143,9 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   selectRandomPreset: () => dispatch(Actions.selectRandomPreset()),
   handlePresetDrop: e => dispatch(Actions.handlePresetDrop(e)),
   selectNextPreset: (transitionType?: TransitionType) =>
-    dispatch(Actions.selectNextPreset(transitionType))
+    dispatch(Actions.selectNextPreset(transitionType)),
+  selectPreviousPreset: (transitionType?: TransitionType) =>
+    dispatch(Actions.selectPreviousPreset(transitionType))
 });
 
 export default connect(
