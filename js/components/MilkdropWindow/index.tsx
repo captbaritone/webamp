@@ -28,6 +28,7 @@ interface DispatchProps {
   toggleDesktop(): void;
   togglePresetOverlay(): void;
   selectRandomPreset(): void;
+  toggleRandomize(): void;
   handlePresetDrop(e: React.DragEvent): void;
   selectNextPreset(transitionType?: TransitionType): void;
   selectPreviousPreset(transitionType?: TransitionType): void;
@@ -47,7 +48,6 @@ function Milkdrop(props: Props) {
   // Handle keyboard events
   useEffect(() => {
     return props.onFocusedKeyDown(e => {
-      console.log(e.keyCode);
       switch (e.keyCode) {
         case 32: // spacebar
           props.selectNextPreset();
@@ -59,7 +59,7 @@ function Milkdrop(props: Props) {
           props.selectNextPreset(TransitionType.IMMEDIATE);
           break;
         case 82: // R
-          // this.props.presets.toggleRandomize();
+          props.toggleRandomize();
           break;
         case 76: // L
           props.togglePresetOverlay();
@@ -141,6 +141,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   toggleDesktop: () => dispatch(Actions.toggleMilkdropDesktop()),
   togglePresetOverlay: () => dispatch(Actions.togglePresetOverlay()),
   selectRandomPreset: () => dispatch(Actions.selectRandomPreset()),
+  toggleRandomize: () => dispatch(Actions.toggleRandomizePresets()),
   handlePresetDrop: e => dispatch(Actions.handlePresetDrop(e)),
   selectNextPreset: (transitionType?: TransitionType) =>
     dispatch(Actions.selectNextPreset(transitionType)),

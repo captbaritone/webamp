@@ -20,6 +20,7 @@ test("handles history correctly", () => {
     { type: "RESOLVED", name: "First", preset: {} },
     { type: "RESOLVED", name: "Second", preset: {} }
   ];
+  store.dispatch(Actions.toggleRandomizePresets());
   // Check initial state
   expect(store.getState().milkdrop.presetHistory).toEqual([]);
   expect(Selectors.getCurrentPreset(store.getState())).toBe(null);
