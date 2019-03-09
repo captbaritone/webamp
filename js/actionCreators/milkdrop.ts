@@ -66,29 +66,23 @@ export function loadPresets(presets: StatePreset[]): Dispatchable {
 }
 
 export function appendPresetFileList(fileList: FileList): Dispatchable {
-  return async dispatch => {
-    const presets: StatePreset[] = Array.from(fileList).map(
-      (file): StatePreset => {
+  return async (dispatch, getState, { convertPreset }) => {
+    const presets: StatePreset[] = Array.from(fileList)
+      .map(file => {
         const JSON_EXT = ".json";
         const MILK_EXT = ".milk";
         const filename = file.name.toLowerCase();
         if (filename.endsWith(MILK_EXT)) {
-          throw new Error(".milk preset support not yet implemented");
-          // Not sure why we need this type definition.
-          /*
-        const lazy: LazyButterchurnPresetJson = {
-          type: "LAZY_BUTTERCHURN_JSON",
-          name: file.name.slice(0, file.name.length - MILK_EXT.length),
-          getDefinition: async () => {
-            // TODO: Post this blob to the url end point and get the json back
-            return {};
+          if (convertPreset == null) {
+            throw new Error("Invalid type");
           }
-        };
-        return lazy;
-        */
+          return {
+            type: "UNRESOLVED",
+            name: file.name.slice(0, file.name.length - MILK_EXT.length),
+            getPreset: async () => convertPreset(file)
+          } as StatePreset;
         } else if (filename.endsWith(JSON_EXT)) {
-          // Not sure why we need this type definition.
-          const lazy: StatePreset = {
+          return {
             type: "UNRESOLVED",
             name: file.name.slice(0, file.name.length - JSON_EXT.length),
             getPreset: async () => {
@@ -96,13 +90,13 @@ export function appendPresetFileList(fileList: FileList): Dispatchable {
               // TODO: How should we handle the case where json parsing fails?
               return JSON.parse(str);
             }
-          };
-          return lazy;
+          } as StatePreset;
         } else {
           throw new Error("Invalid type");
         }
-      }
-    );
+        return null as never;
+      })
+      .filter(Boolean);
     dispatch(loadPresets(presets));
     // TODO: Select the first of these presets
   };
