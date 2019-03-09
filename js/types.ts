@@ -141,8 +141,6 @@ export type StatePreset =
   | { type: "RESOLVED"; name: string; preset: Object }
   | { type: "UNRESOLVED"; name: string; getPreset: () => Promise<Object> };
 
-export type PresetId = string;
-
 export interface ButterchurnOptions {
   getPresets(): Promise<Preset[]>;
   importButterchurn(): Promise<any>;
@@ -468,6 +466,7 @@ export type Action =
       type: "SET_MILKDROP_DESKTOP";
       enabled: boolean;
     }
+  | { type: "PRESET_REQUESTED"; index: number; addToHistory: boolean }
   | {
       type: "GOT_BUTTERCHURN_PRESETS";
       presets: StatePreset[];
