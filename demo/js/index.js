@@ -160,8 +160,10 @@ Raven.context(async () => {
           const initialPresets = [];
           if (butterchurnPresetUrlParam) {
             initialPresets.push({
-              // TODO: Get name
-              name: "foo",
+              name: butterchurnPresetUrlParam.slice(
+                0,
+                butterchurnPresetUrlParam.length - ".json".length
+              ),
               butterchurnPresetUrl: butterchurnPresetUrlParam
             });
           } else if (milkdropPresetUrl) {
