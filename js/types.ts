@@ -476,6 +476,9 @@ export type Action =
       butterchurn: any;
     }
   | {
+      type: "TOGGLE_RANDOMIZE_PRESETS";
+    }
+  | {
       type: "RESOLVE_PRESET_AT_INDEX";
       index: number;
       json: Object;

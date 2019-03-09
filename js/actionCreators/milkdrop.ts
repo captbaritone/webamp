@@ -4,7 +4,8 @@ import {
   SELECT_PRESET_AT_INDEX,
   RESOLVE_PRESET_AT_INDEX,
   TOGGLE_PRESET_OVERLAY,
-  PRESET_REQUESTED
+  PRESET_REQUESTED,
+  TOGGLE_RANDOMIZE_PRESETS
 } from "../actionTypes";
 import * as Selectors from "../selectors";
 import {
@@ -60,11 +61,16 @@ export function initializePresets(
 
 export function loadPresets(presets: StatePreset[]): Dispatchable {
   return (dispatch, getState) => {
-    const presetLength = getState().milkdrop.presets.length;
+    const state = getState();
+    const presetsLength = state.milkdrop.presets.length;
     dispatch({ type: GOT_BUTTERCHURN_PRESETS, presets });
-    dispatch(
-      requestPresetAtIndex(presetLength, TransitionType.IMMEDIATE, true)
-    );
+    if (state.milkdrop.randomize) {
+      dispatch(selectRandomPreset());
+    } else {
+      dispatch(
+        requestPresetAtIndex(presetsLength, TransitionType.IMMEDIATE, true)
+      );
+    }
   };
 }
 
@@ -101,7 +107,6 @@ export function appendPresetFileList(fileList: FileList): Dispatchable {
       })
       .filter(Boolean);
     dispatch(loadPresets(presets));
-    // TODO: Select the first of these presets
   };
 }
 
@@ -109,7 +114,11 @@ export function selectNextPreset(
   transitionType: TransitionType = TransitionType.DEFAULT
 ): Dispatchable {
   return (dispatch, getState) => {
-    const currentPresetIndex = Selectors.getCurrentPresetIndex(getState());
+    const state = getState();
+    if (state.milkdrop.randomize) {
+      return dispatch(selectRandomPreset(transitionType));
+    }
+    const currentPresetIndex = Selectors.getCurrentPresetIndex(state);
     if (currentPresetIndex == null) {
       return;
     }
@@ -182,4 +191,8 @@ export function handlePresetDrop(e: React.DragEvent): Dispatchable {
 
 export function togglePresetOverlay(): Dispatchable {
   return { type: TOGGLE_PRESET_OVERLAY };
+}
+
+export function toggleRandomizePresets(): Dispatchable {
+  return { type: TOGGLE_RANDOMIZE_PRESETS };
 }
