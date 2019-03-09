@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { Hr, Node } from "../ContextMenu";
 import { connect } from "react-redux";
 import { WINDOWS } from "../../constants";
@@ -12,16 +12,19 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  toggleFullscreen(): void;
   closeWindow(): void;
   toggleDesktop(): void;
 }
 
-type Props = StateProps & DispatchProps;
+interface OwnProps {
+  toggleFullscreen(): void;
+  children: ReactNode;
+}
+
+type Props = StateProps & DispatchProps & OwnProps;
 
 const MilkdropContextMenu = (props: Props) => (
   <ContextMenuWraper
-    onDoubleClick={props.toggleFullscreen}
     renderContents={() => {
       return (
         <>
@@ -41,7 +44,9 @@ const MilkdropContextMenu = (props: Props) => (
         </>
       );
     }}
-  />
+  >
+    {props.children}
+  </ContextMenuWraper>
 );
 
 const mapStateToProps = (state: AppState): StateProps => ({
@@ -50,10 +55,7 @@ const mapStateToProps = (state: AppState): StateProps => ({
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   closeWindow: () => dispatch(Actions.closeWindow(WINDOWS.MILKDROP)),
-  toggleDesktop: () => dispatch(Actions.toggleMilkdropDesktop()),
-  toggleFullscreen: () => {
-    throw new Error("Implement fullscreen");
-  }
+  toggleDesktop: () => dispatch(Actions.toggleMilkdropDesktop())
 });
 
 export default connect(

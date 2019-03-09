@@ -146,5 +146,8 @@
       "config/jest.*.js"
     ]
   },
-  "prettier": {}
+  "prettier": {},
+  "dependencies": {
+    "react-full-screen": "^0.2.4"
+  }
 }
