@@ -6,7 +6,7 @@ import GenWindow from "../GenWindow";
 import { WINDOWS } from "../../constants";
 import * as Selectors from "../../selectors";
 import * as Actions from "../../actionCreators";
-import { AppState, Dispatch } from "../../types";
+import { AppState, Dispatch, TransitionType } from "../../types";
 import Visualizer from "./Visualizer";
 
 import "../../../css/milkdrop-window.css";
@@ -29,6 +29,7 @@ interface DispatchProps {
   togglePresetOverlay(): void;
   selectRandomPreset(): void;
   handlePresetDrop(e: React.DragEvent): void;
+  selectNextPreset(transitionType?: TransitionType): void;
 }
 
 interface OwnProps {
@@ -47,13 +48,13 @@ function Milkdrop(props: Props) {
     return props.onFocusedKeyDown(e => {
       switch (e.keyCode) {
         case 32: // spacebar
-          // this._nextPreset(USER_PRESET_TRANSITION_SECONDS);
+          props.selectNextPreset();
           break;
         case 8: // backspace
           // this._prevPreset(0);
           break;
         case 72: // H
-          // this._nextPreset(0);
+          props.selectNextPreset(TransitionType.IMMEDIATE);
           break;
         case 82: // R
           // this.props.presets.toggleRandomize();
@@ -138,7 +139,9 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   toggleDesktop: () => dispatch(Actions.toggleMilkdropDesktop()),
   togglePresetOverlay: () => dispatch(Actions.togglePresetOverlay()),
   selectRandomPreset: () => dispatch(Actions.selectRandomPreset()),
-  handlePresetDrop: e => dispatch(Actions.handlePresetDrop(e))
+  handlePresetDrop: e => dispatch(Actions.handlePresetDrop(e)),
+  selectNextPreset: (transitionType?: TransitionType) =>
+    dispatch(Actions.selectNextPreset(transitionType))
 });
 
 export default connect(

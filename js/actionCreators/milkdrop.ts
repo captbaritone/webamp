@@ -102,7 +102,9 @@ export function appendPresetFileList(fileList: FileList): Dispatchable {
   };
 }
 
-export function selectNextPreset(): Dispatchable {
+export function selectNextPreset(
+  transitionType: TransitionType = TransitionType.DEFAULT
+): Dispatchable {
   return (dispatch, getState) => {
     const state = getState();
     const currentPresetIndex = Selectors.getCurrentPresetIndex(state);
@@ -110,7 +112,7 @@ export function selectNextPreset(): Dispatchable {
       return;
     }
     const nextPresetIndex = currentPresetIndex + 1;
-    dispatch(requestPresetAtIndex(nextPresetIndex, TransitionType.DEFAULT));
+    dispatch(requestPresetAtIndex(nextPresetIndex, transitionType));
   };
 }
 
