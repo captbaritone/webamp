@@ -158,7 +158,6 @@ export function requestPresetAtIndex(
 }
 
 export function handlePresetDrop(e: React.DragEvent): Dispatchable {
-  // TODO: Ensure we actually select the new preset.
   return appendPresetFileList(e.dataTransfer.files);
 }
 
