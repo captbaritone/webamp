@@ -8,7 +8,8 @@ import {
   Track,
   LoadedURLTrack,
   Middleware,
-  WindowPosition
+  WindowPosition,
+  ButterchurnOptions
 } from "./types";
 import getStore from "./store";
 import App from "./components/App";
@@ -19,6 +20,7 @@ import * as Actions from "./actionCreators";
 
 import { LOAD_STYLE } from "./constants";
 import * as Utils from "./utils";
+import * as FileUtils from "./fileUtils";
 
 import {
   SET_AVAILABLE_SKINS,
@@ -118,7 +120,7 @@ interface PrivateOptions {
       position: WindowPosition;
     };
   };
-  __butterchurnOptions: { butterchurnOpen: boolean };
+  __butterchurnOptions: ButterchurnOptions;
 }
 
 // Return a promise that resolves when the store matches a predicate.
@@ -170,8 +172,28 @@ class Winamp {
       enableHotkeys = false,
       zIndex,
       requireJSZip,
-      requireMusicMetadata
+      requireMusicMetadata,
+      __butterchurnOptions
     } = this.options;
+
+    // TODO: Make this much cleaner
+    let convertPreset = null;
+    if (__butterchurnOptions != null) {
+      const {
+        importConvertPreset,
+        presetConverterEndpoint
+      } = __butterchurnOptions;
+
+      if (importConvertPreset != null && presetConverterEndpoint != null) {
+        convertPreset = async (file: File): Promise<Object> => {
+          const { convertPreset } = await importConvertPreset();
+          return convertPreset(
+            await FileUtils.genStringFromFileReference(file),
+            presetConverterEndpoint
+          );
+        };
+      }
+    }
 
     // TODO: Validate required options
 
@@ -181,7 +203,7 @@ class Winamp {
       this._actionEmitter,
       this.options.__customMiddlewares,
       this.options.__initialState,
-      { requireJSZip, requireMusicMetadata }
+      { requireJSZip, requireMusicMetadata, convertPreset }
     ) as Store;
 
     if (navigator.onLine) {

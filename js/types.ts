@@ -146,6 +146,11 @@ export type PresetId = string;
 export interface ButterchurnOptions {
   getPresets(): Promise<Preset[]>;
   importButterchurn(): Promise<any>;
+  importConvertPreset?: () => Promise<{
+    convertPreset(file: string, endpoint: string): Promise<Object>;
+  }>;
+  presetConverterEndpoint?: string;
+  butterchurnOpen: boolean;
 }
 
 export interface EqfPreset {
@@ -628,8 +633,9 @@ export interface IMusicMetadataBrowserApi {
 }
 
 export interface Extras {
-  requireJSZip: () => Promise<never>;
-  requireMusicMetadata: () => Promise<IMusicMetadataBrowserApi>;
+  requireJSZip(): Promise<never>;
+  requireMusicMetadata(): Promise<IMusicMetadataBrowserApi>;
+  convertPreset: ((file: File) => Promise<Object>) | null;
 }
 
 export type GetState = () => AppState;

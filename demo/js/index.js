@@ -152,6 +152,13 @@ Raven.context(async () => {
         // @ts-ignore
         "butterchurn");
       },
+      importConvertPreset: () => {
+        return import(/* webpackChunkName: "milkdrop-preset-converter" */
+        // @ts-ignore
+        "milkdrop-preset-converter-aws");
+      },
+      presetConverterEndpoint:
+        "https://p2tpeb5v8b.execute-api.us-east-2.amazonaws.com/default/milkdropShaderConverter",
       getPresets: async () => {
         if ("URLSearchParams" in window) {
           const params = new URLSearchParams(location.search);
