@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import Fullscreen from "react-full-screen";
 import { connect } from "react-redux";
+import { useWindowSize, useScreenSize } from "../../hooks";
 import GenWindow from "../GenWindow";
 import { WINDOWS } from "../../constants";
 import * as Selectors from "../../selectors";
@@ -13,6 +14,7 @@ import Background from "./Background";
 import PresetOverlay from "./PresetOverlay";
 import DropTarget from "../DropTarget";
 import MilkdropContextMenu from "./MilkdropContextMenu";
+import Desktop from "./Desktop";
 
 const MILLISECONDS_BETWEEN_PRESET_TRANSITIONS = 15000;
 
@@ -37,23 +39,6 @@ interface OwnProps {
 }
 
 type Props = StateProps & DispatchProps & OwnProps;
-
-interface Size {
-  width: number;
-  height: number;
-}
-
-function getScreenSize(): Size {
-  return {
-    width: window.screen.width,
-    height: window.screen.height
-  };
-}
-function useScreenSize() {
-  const [size, setSize] = useState<Size>(getScreenSize());
-  // TODO: We could subscribe to screen size changes.
-  return size;
-}
 
 function Milkdrop(props: Props) {
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
@@ -104,6 +89,17 @@ function Milkdrop(props: Props) {
   ]);
 
   const screenSize = useScreenSize();
+  const windowSize = useWindowSize();
+
+  if (props.desktop) {
+    return (
+      <Desktop>
+        <MilkdropContextMenu toggleFullscreen={toggleFullscreen}>
+          <Visualizer {...windowSize} analyser={props.analyser} />
+        </MilkdropContextMenu>
+      </Desktop>
+    );
+  }
 
   return (
     <GenWindow title={"Milkdrop"} windowId={WINDOWS.MILKDROP}>

@@ -370,6 +370,13 @@ export function getWindowSize(): { width: number; height: number } {
   };
 }
 
+export function getScreenSize(): { width: number; height: number } {
+  return {
+    width: window.screen.width,
+    height: window.screen.height
+  };
+}
+
 export function weakMapMemoize<T extends object, R>(
   func: (value: T) => R
 ): (value: T) => R {
