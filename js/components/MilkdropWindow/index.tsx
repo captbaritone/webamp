@@ -1,5 +1,5 @@
-// @ts-ignore #hook-types
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useCallback } from "react";
+import Fullscreen from "react-full-screen";
 import { connect } from "react-redux";
 import GenWindow from "../GenWindow";
 import { WINDOWS } from "../../constants";
@@ -12,6 +12,7 @@ import "../../../css/milkdrop-window.css";
 import Background from "./Background";
 import PresetOverlay from "./PresetOverlay";
 import DropTarget from "../DropTarget";
+import MilkdropContextMenu from "./MilkdropContextMenu";
 
 const MILLISECONDS_BETWEEN_PRESET_TRANSITIONS = 15000;
 
@@ -37,7 +38,25 @@ interface OwnProps {
 
 type Props = StateProps & DispatchProps & OwnProps;
 
+interface Size {
+  width: number;
+  height: number;
+}
+
+function getScreenSize(): Size {
+  return {
+    width: window.screen.width,
+    height: window.screen.height
+  };
+}
+function useScreenSize() {
+  const [size, setSize] = useState<Size>(getScreenSize());
+  // TODO: We could subscribe to screen size changes.
+  return size;
+}
+
 function Milkdrop(props: Props) {
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   // Handle keyboard events
   useEffect(() => {
     return props.onFocusedKeyDown(e => {
@@ -80,26 +99,35 @@ function Milkdrop(props: Props) {
     return () => clearImmediate(intervalId);
   }, [props.selectRandomPreset]);
 
+  const toggleFullscreen = useCallback(() => setIsFullscreen(!isFullscreen), [
+    setIsFullscreen
+  ]);
+
+  const screenSize = useScreenSize();
+
   return (
     <GenWindow title={"Milkdrop"} windowId={WINDOWS.MILKDROP}>
-      {({ height, width }: { width: number; height: number }) => (
-        <Background>
-          <DropTarget handleDrop={props.handlePresetDrop}>
-            {props.overlay && (
-              <PresetOverlay
-                width={width}
-                height={height}
-                onFocusedKeyDown={props.onFocusedKeyDown}
-              />
-            )}
-            <Visualizer
-              width={width}
-              height={height}
-              analyser={props.analyser}
-            />
-          </DropTarget>
-        </Background>
-      )}
+      {(windowSize: { width: number; height: number }) => {
+        const size = isFullscreen ? screenSize : windowSize;
+        return (
+          <MilkdropContextMenu toggleFullscreen={toggleFullscreen}>
+            <Background>
+              <DropTarget handleDrop={props.handlePresetDrop}>
+                {props.overlay && (
+                  <PresetOverlay
+                    {...size}
+                    onFocusedKeyDown={props.onFocusedKeyDown}
+                  />
+                )}
+                <Fullscreen enabled={isFullscreen} onChange={setIsFullscreen}>
+                  {/* TODO: Figure out how to let double clicking exit fullscreen */}
+                  <Visualizer {...size} analyser={props.analyser} />
+                </Fullscreen>
+              </DropTarget>
+            </Background>
+          </MilkdropContextMenu>
+        );
+      }}
     </GenWindow>
   );
 }
