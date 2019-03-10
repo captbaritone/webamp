@@ -34,27 +34,25 @@ export function getButterchurnOptions(
         const params = new URLSearchParams(location.search);
         const butterchurnPresetUrlParam = params.get("butterchurnPresetUrl");
         const milkdropPresetUrl = params.get("milkdropPresetUrl");
-        const initialPresets = [];
         if (butterchurnPresetUrlParam) {
-          initialPresets.push({
-            name: presetNameFromURL(butterchurnPresetUrlParam),
-            butterchurnPresetUrl: butterchurnPresetUrlParam
-          });
+          return [
+            {
+              name: presetNameFromURL(butterchurnPresetUrlParam),
+              butterchurnPresetUrl: butterchurnPresetUrlParam
+            }
+          ];
         } else if (milkdropPresetUrl) {
           throw new Error("We still need to implement this");
         }
-        const resp = await fetch(
-          "https://unpkg.com/butterchurn-presets-weekly@0.0.2/weeks/week1/presets.json"
-        );
-        // TODO: Fallback to some other presets?
-        const namesToPresetUrls = await resp.json();
-        const presets = Object.keys(namesToPresetUrls).map((name: string) => {
-          const butterchurnPresetUrl: string = namesToPresetUrls[name];
-          return { name, butterchurnPresetUrl };
-        });
-        return [...initialPresets, ...presets];
       }
-      return [];
+      const resp = await fetch(
+        "https://unpkg.com/butterchurn-presets-weekly@0.0.2/weeks/week1/presets.json"
+      );
+      // TODO: Fallback to some other presets?
+      const namesToPresetUrls = await resp.json();
+      return Object.keys(namesToPresetUrls).map((name: string) => {
+        return { name, butterchurnPresetUrl: namesToPresetUrls[name] };
+      });
     },
     butterchurnOpen: !startWithMilkdropHidden
   };
