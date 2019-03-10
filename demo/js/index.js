@@ -5,14 +5,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import createMiddleware from "raven-for-redux";
 import isButterchurnSupported from "butterchurn/lib/isSupported.min";
-import osx from "../../skins/MacOSXAqua1-5.wsz";
-import topaz from "../../skins/TopazAmp1-2.wsz";
-import visor from "../../skins/Vizor1-01.wsz";
-import xmms from "../../skins/XMMS-Turquoise.wsz";
-import zaxon from "../../skins/ZaxonRemake1-0.wsz";
-import green from "../../skins/Green-Dimension-V2.wsz";
 import base from "../../skins/base-2.91-png.wsz";
-import internetArchive from "../../skins/Internet-Archive.wsz";
 import { WINDOWS } from "../../js/constants";
 import * as Selectors from "../../js/selectors";
 
@@ -35,6 +28,7 @@ import { loadFilesFromReferences } from "../../js/actionCreators";
 import { bindToIndexedDB } from "./indexedDB";
 import { getButterchurnOptions } from "./butterchurnOptions";
 import dropboxFilePicker from "./dropboxFilePicker";
+import availableSkins from "./avaliableSkins";
 
 import {
   skinUrl as configSkinUrl,
@@ -175,15 +169,7 @@ Raven.context(async () => {
   const webamp = new WebampLazy({
     initialSkin,
     initialTracks: screenshot ? null : initialTracks,
-    availableSkins: [
-      { url: green, name: "Green Dimension V2" },
-      { url: internetArchive, name: "Internet Archive" },
-      { url: osx, name: "Mac OSX v1.5 (Aqua)" },
-      { url: topaz, name: "TopazAmp" },
-      { url: visor, name: "Vizor" },
-      { url: xmms, name: "XMMS Turquoise " },
-      { url: zaxon, name: "Zaxon Remake" }
-    ],
+    availableSkins,
     filePickers: [dropboxFilePicker],
     enableHotkeys: true,
     requireJSZip: () =>
