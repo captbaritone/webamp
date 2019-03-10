@@ -21,19 +21,19 @@ import * as FileUtils from "../fileUtils";
 
 function normalizePresetTypes(preset: Preset): StatePreset {
   const { name } = preset;
-  if (preset.butterchurnPresetObject != null) {
+  if ("butterchurnPresetObject" in preset) {
     return {
       type: "RESOLVED",
       name,
       preset: preset.butterchurnPresetObject
     };
-  } else if (preset.getButterchrunPresetObject) {
+  } else if ("getButterchrunPresetObject" in preset) {
     return {
       type: "UNRESOLVED",
       name,
       getPreset: preset.getButterchrunPresetObject
     };
-  } else if (preset.butterchurnPresetUrl != null) {
+  } else if ("butterchurnPresetUrl" in preset) {
     return {
       type: "UNRESOLVED",
       name,
