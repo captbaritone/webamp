@@ -652,3 +652,7 @@ export function getPresetOverlayOpen(state: AppState): boolean {
 export function getPresetsAreCycling(state: AppState): boolean {
   return state.milkdrop.cycling;
 }
+
+export function getRandomizePresets(state: AppState): boolean {
+  return state.milkdrop.randomize;
+}
