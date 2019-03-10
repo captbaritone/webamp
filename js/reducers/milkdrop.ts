@@ -7,7 +7,8 @@ import {
   SELECT_PRESET_AT_INDEX,
   TOGGLE_PRESET_OVERLAY,
   PRESET_REQUESTED,
-  TOGGLE_RANDOMIZE_PRESETS
+  TOGGLE_RANDOMIZE_PRESETS,
+  TOGGLE_PRESET_CYCLING
 } from "../actionTypes";
 import * as Utils from "../utils";
 import { TransitionType } from "../types";
@@ -21,6 +22,7 @@ export interface MilkdropState {
   butterchurn: any;
   transitionType: TransitionType;
   randomize: boolean;
+  cycling: boolean;
 }
 
 const defaultMilkdropState = {
@@ -31,7 +33,8 @@ const defaultMilkdropState = {
   currentPresetIndex: null,
   butterchurn: null,
   transitionType: TransitionType.DEFAULT,
-  randomize: true
+  randomize: true,
+  cycling: true
 };
 
 export const milkdrop = (
@@ -79,6 +82,8 @@ export const milkdrop = (
       return { ...state, overlay: !state.overlay };
     case TOGGLE_RANDOMIZE_PRESETS:
       return { ...state, randomize: !state.randomize };
+    case TOGGLE_PRESET_CYCLING:
+      return { ...state, cycling: !state.cycling };
     default:
       return state;
   }

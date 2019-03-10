@@ -648,3 +648,7 @@ export function getPresetNames(state: AppState): string[] {
 export function getPresetOverlayOpen(state: AppState): boolean {
   return state.milkdrop.overlay;
 }
+
+export function getPresetsAreCycling(state: AppState): boolean {
+  return state.milkdrop.cycling;
+}
