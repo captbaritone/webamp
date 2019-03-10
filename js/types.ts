@@ -462,6 +462,7 @@ export type Action =
   | { type: "LOAD_DEFAULT_SKIN" }
   | { type: "ENABLE_MEDIA_LIBRARY" }
   | { type: "ENABLE_MILKDROP"; open: boolean }
+  | { type: "SCHEDULE_MILKDROP_MESSAGE"; message: string }
   | {
       type: "SET_MILKDROP_DESKTOP";
       enabled: boolean;

@@ -18,6 +18,10 @@ interface StateProps {
   trackTitle: string | null;
   currentPreset: any;
   transitionType: TransitionType;
+  message: {
+    text: string;
+    time: number;
+  } | null;
 }
 
 interface OwnProps {
@@ -93,6 +97,21 @@ function Visualizer(props: Props) {
     visualizer.launchSongTitleAnim(props.trackTitle);
   }, [visualizer, props.trackTitle]);
 
+  const lastShownMessage = useRef<null | number>(null);
+
+  useEffect(() => {
+    if (visualizer == null || props.message == null) {
+      return;
+    }
+    if (
+      lastShownMessage.current == null ||
+      props.message.time > lastShownMessage.current
+    ) {
+      lastShownMessage.current = Date.now();
+      visualizer.launchSongTitleAnim(props.message.text);
+    }
+  }, [visualizer, props.message]);
+
   const shouldAnimate = props.playing && props.isEnabledVisualizer;
 
   // Kick off the animation loop
@@ -134,7 +153,8 @@ const mapStateToProps = (state: AppState): StateProps => ({
   butterchurn: Selectors.getButterchurn(state),
   trackTitle: Selectors.getCurrentTrackDisplayName(state),
   currentPreset: Selectors.getCurrentPreset(state),
-  transitionType: Selectors.getPresetTransitionType(state)
+  transitionType: Selectors.getPresetTransitionType(state),
+  message: state.milkdrop.message
 });
 
 export default connect(mapStateToProps)(Visualizer);

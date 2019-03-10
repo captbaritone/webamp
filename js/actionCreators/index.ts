@@ -105,7 +105,8 @@ export {
   handlePresetDrop,
   loadPresets,
   toggleRandomizePresets,
-  togglePresetCycling
+  togglePresetCycling,
+  scheduleMilkdropMessage
 } from "./milkdrop";
 
 import * as Selectors from "../selectors";

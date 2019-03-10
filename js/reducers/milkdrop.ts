@@ -8,10 +8,16 @@ import {
   TOGGLE_PRESET_OVERLAY,
   PRESET_REQUESTED,
   TOGGLE_RANDOMIZE_PRESETS,
-  TOGGLE_PRESET_CYCLING
+  TOGGLE_PRESET_CYCLING,
+  SCHEDULE_MILKDROP_MESSAGE
 } from "../actionTypes";
 import * as Utils from "../utils";
 import { TransitionType } from "../types";
+
+interface Message {
+  text: string;
+  time: number;
+}
 
 export interface MilkdropState {
   desktop: boolean;
@@ -23,6 +29,9 @@ export interface MilkdropState {
   transitionType: TransitionType;
   randomize: boolean;
   cycling: boolean;
+  // TODO: This could probably be simplified to just a date and we could assume
+  // the song title is the message.
+  message: Message | null;
 }
 
 const defaultMilkdropState = {
@@ -34,7 +43,8 @@ const defaultMilkdropState = {
   butterchurn: null,
   transitionType: TransitionType.DEFAULT,
   randomize: true,
-  cycling: true
+  cycling: true,
+  message: null
 };
 
 export const milkdrop = (
@@ -84,6 +94,14 @@ export const milkdrop = (
       return { ...state, randomize: !state.randomize };
     case TOGGLE_PRESET_CYCLING:
       return { ...state, cycling: !state.cycling };
+    case SCHEDULE_MILKDROP_MESSAGE:
+      return {
+        ...state,
+        message: {
+          text: action.message,
+          time: Date.now()
+        }
+      };
     default:
       return state;
   }
