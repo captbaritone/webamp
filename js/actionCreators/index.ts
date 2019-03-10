@@ -104,7 +104,8 @@ export {
   appendPresetFileList,
   handlePresetDrop,
   loadPresets,
-  toggleRandomizePresets
+  toggleRandomizePresets,
+  togglePresetCycling
 } from "./milkdrop";
 
 import * as Selectors from "../selectors";

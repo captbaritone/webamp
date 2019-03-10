@@ -21,6 +21,7 @@ const MILLISECONDS_BETWEEN_PRESET_TRANSITIONS = 15000;
 interface StateProps {
   desktop: boolean;
   overlay: boolean;
+  presetsAreCycling: boolean;
 }
 
 interface DispatchProps {
@@ -29,6 +30,7 @@ interface DispatchProps {
   togglePresetOverlay(): void;
   selectRandomPreset(): void;
   toggleRandomize(): void;
+  toggleCycling(): void;
   handlePresetDrop(e: React.DragEvent): void;
   selectNextPreset(transitionType?: TransitionType): void;
   selectPreviousPreset(transitionType?: TransitionType): void;
@@ -71,8 +73,7 @@ function Milkdrop(props: Props) {
           break;
         case 145: // scroll lock
         case 125: // F14 (scroll lock for OS X)
-          // this.presetCycle = !this.presetCycle;
-          // this._restartCycling();
+          props.toggleCycling();
           break;
       }
     });
@@ -80,12 +81,15 @@ function Milkdrop(props: Props) {
 
   // Cycle presets
   useEffect(() => {
+    if (!props.presetsAreCycling) {
+      return;
+    }
     const intervalId = setInterval(
-      props.selectRandomPreset,
+      props.selectNextPreset,
       MILLISECONDS_BETWEEN_PRESET_TRANSITIONS
     );
     return () => clearImmediate(intervalId);
-  }, [props.selectRandomPreset]);
+  }, [props.selectNextPreset, props.presetsAreCycling]);
 
   const toggleFullscreen = useCallback(() => setIsFullscreen(!isFullscreen), [
     setIsFullscreen
@@ -133,7 +137,8 @@ function Milkdrop(props: Props) {
 
 const mapStateToProps = (state: AppState): StateProps => ({
   desktop: Selectors.getMilkdropDesktopEnabled(state),
-  overlay: Selectors.getPresetOverlayOpen(state)
+  overlay: Selectors.getPresetOverlayOpen(state),
+  presetsAreCycling: Selectors.getPresetsAreCycling(state)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
@@ -142,6 +147,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   togglePresetOverlay: () => dispatch(Actions.togglePresetOverlay()),
   selectRandomPreset: () => dispatch(Actions.selectRandomPreset()),
   toggleRandomize: () => dispatch(Actions.toggleRandomizePresets()),
+  toggleCycling: () => dispatch(Actions.togglePresetCycling()),
   handlePresetDrop: e => dispatch(Actions.handlePresetDrop(e)),
   selectNextPreset: (transitionType?: TransitionType) =>
     dispatch(Actions.selectNextPreset(transitionType)),

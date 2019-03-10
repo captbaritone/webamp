@@ -5,7 +5,8 @@ import {
   RESOLVE_PRESET_AT_INDEX,
   TOGGLE_PRESET_OVERLAY,
   PRESET_REQUESTED,
-  TOGGLE_RANDOMIZE_PRESETS
+  TOGGLE_RANDOMIZE_PRESETS,
+  TOGGLE_PRESET_CYCLING
 } from "../actionTypes";
 import * as Selectors from "../selectors";
 import {
@@ -195,4 +196,8 @@ export function togglePresetOverlay(): Dispatchable {
 
 export function toggleRandomizePresets(): Dispatchable {
   return { type: TOGGLE_RANDOMIZE_PRESETS };
+}
+
+export function togglePresetCycling(): Dispatchable {
+  return { type: TOGGLE_PRESET_CYCLING };
 }
