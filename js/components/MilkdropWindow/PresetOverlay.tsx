@@ -225,7 +225,7 @@ function mapStateToProps(state: AppState): StateProps {
 function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
   return {
     requestPresetAtIndex: (i: number) => {
-      dispatch(Actions.requestPresetAtIndex(i, TransitionType.DEFAULT));
+      dispatch(Actions.requestPresetAtIndex(i, TransitionType.DEFAULT, true));
     },
     togglePresetOverlay: () => dispatch(Actions.togglePresetOverlay()),
     appendPresetFileList: (fileList: FileList) =>

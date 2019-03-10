@@ -65,7 +65,7 @@ export function loadPresets(presets: StatePreset[]): Dispatchable {
     const state = getState();
     const presetsLength = state.milkdrop.presets.length;
     dispatch({ type: GOT_BUTTERCHURN_PRESETS, presets });
-    if (state.milkdrop.randomize) {
+    if (presetsLength === 0 && Selectors.getRandomizePresets(state)) {
       dispatch(selectRandomPreset());
     } else {
       dispatch(
@@ -116,7 +116,7 @@ export function selectNextPreset(
 ): Dispatchable {
   return (dispatch, getState) => {
     const state = getState();
-    if (state.milkdrop.randomize) {
+    if (Selectors.getRandomizePresets(state)) {
       return dispatch(selectRandomPreset(transitionType));
     }
     const currentPresetIndex = Selectors.getCurrentPresetIndex(state);
