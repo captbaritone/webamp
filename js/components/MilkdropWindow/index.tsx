@@ -96,7 +96,8 @@ function Milkdrop(props: Props) {
   }, [props.selectNextPreset, props.presetsAreCycling]);
 
   const toggleFullscreen = useCallback(() => setIsFullscreen(!isFullscreen), [
-    setIsFullscreen
+    setIsFullscreen,
+    isFullscreen
   ]);
 
   const screenSize = useScreenSize();
@@ -127,8 +128,9 @@ function Milkdrop(props: Props) {
                   />
                 )}
                 <Fullscreen enabled={isFullscreen} onChange={setIsFullscreen}>
-                  {/* TODO: Figure out how to let double clicking exit fullscreen */}
-                  <Visualizer {...size} analyser={props.analyser} />
+                  <div onDoubleClick={toggleFullscreen}>
+                    <Visualizer {...size} analyser={props.analyser} />
+                  </div>
                 </Fullscreen>
               </DropTarget>
             </Background>
