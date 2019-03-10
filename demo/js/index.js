@@ -33,6 +33,8 @@ import {
 
 import { loadFilesFromReferences } from "../../js/actionCreators";
 import { bindToIndexedDB } from "./indexedDB";
+import { getButterchurnOptions } from "./butterchurnOptions";
+import dropboxFilePicker from "./dropboxFilePicker";
 
 import {
   skinUrl as configSkinUrl,
@@ -115,23 +117,6 @@ window.addEventListener("beforeinstallprompt", e => {
   e.preventDefault();
 });
 
-// Requires Dropbox's Chooser to be loaded on the page
-function genAudioFileUrlsFromDropbox() {
-  return new Promise((resolve, reject) => {
-    if (window.Dropbox == null) {
-      reject();
-    }
-    window.Dropbox.choose({
-      success: resolve,
-      error: reject,
-      linkType: "direct",
-      folderselect: false,
-      multiselect: true,
-      extensions: ["video", "audio"]
-    });
-  });
-}
-
 Raven.context(async () => {
   window.Raven = Raven;
   if (screenshot) {
@@ -146,61 +131,13 @@ Raven.context(async () => {
   let __butterchurnOptions = null;
   let __initialWindowLayout = null;
   if (isButterchurnSupported()) {
-    const partialButterchurnOptions = {
-      importButterchurn: () => {
-        return import(/* webpackChunkName: "butterchurn-initial-dependencies" */
-        // @ts-ignore
-        "butterchurn");
-      },
-      importConvertPreset: () => {
-        return import(/* webpackChunkName: "milkdrop-preset-converter" */
-        // @ts-ignore
-        "milkdrop-preset-converter-aws");
-      },
-      presetConverterEndpoint:
-        "https://p2tpeb5v8b.execute-api.us-east-2.amazonaws.com/default/milkdropShaderConverter",
-      getPresets: async () => {
-        if ("URLSearchParams" in window) {
-          const params = new URLSearchParams(location.search);
-          const butterchurnPresetUrlParam = params.get("butterchurnPresetUrl");
-          const milkdropPresetUrl = params.get("milkdropPresetUrl");
-          const initialPresets = [];
-          if (butterchurnPresetUrlParam) {
-            initialPresets.push({
-              name: butterchurnPresetUrlParam.slice(
-                0,
-                butterchurnPresetUrlParam.length - ".json".length
-              ),
-              butterchurnPresetUrl: butterchurnPresetUrlParam
-            });
-          } else if (milkdropPresetUrl) {
-            throw new Error("We still need to implement this");
-          }
-          const resp = await fetch(
-            "https://unpkg.com/butterchurn-presets-weekly@0.0.2/weeks/week1/presets.json"
-          );
-          // TODO: Fallback to some other presets?
-          const namesToPresetUrls = await resp.json();
-          const presets = Object.entries(namesToPresetUrls).map(
-            ([name, butterchurnPresetUrl]) => {
-              return { name, butterchurnPresetUrl };
-            }
-          );
-          return [...initialPresets, ...presets];
-        }
-        return [];
-      }
-    };
     const startWithMilkdropHidden =
       library ||
       document.body.clientWidth < MIN_MILKDROP_WIDTH ||
       skinUrl != null ||
       screenshot;
 
-    __butterchurnOptions = {
-      ...partialButterchurnOptions,
-      butterchurnOpen: !startWithMilkdropHidden
-    };
+    __butterchurnOptions = getButterchurnOptions(startWithMilkdropHidden);
 
     if (startWithMilkdropHidden) {
       __initialWindowLayout = {
@@ -247,19 +184,7 @@ Raven.context(async () => {
       { url: xmms, name: "XMMS Turquoise " },
       { url: zaxon, name: "Zaxon Remake" }
     ],
-    filePickers: [
-      {
-        contextMenuName: "Dropbox...",
-        filePicker: async () => {
-          const files = await genAudioFileUrlsFromDropbox();
-          return files.map(file => ({
-            url: file.link,
-            defaultName: file.name
-          }));
-        },
-        requiresNetwork: true
-      }
-    ],
+    filePickers: [dropboxFilePicker],
     enableHotkeys: true,
     requireJSZip: () =>
       import(/* webpackChunkName: "jszip" */ "jszip/dist/jszip"),
