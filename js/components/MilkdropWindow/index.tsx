@@ -22,6 +22,7 @@ interface StateProps {
   desktop: boolean;
   overlay: boolean;
   presetsAreCycling: boolean;
+  trackTitle: string | null;
 }
 
 interface DispatchProps {
@@ -34,6 +35,7 @@ interface DispatchProps {
   handlePresetDrop(e: React.DragEvent): void;
   selectNextPreset(transitionType?: TransitionType): void;
   selectPreviousPreset(transitionType?: TransitionType): void;
+  scheduleMilkdropMessage(message: string): void;
 }
 
 interface OwnProps {
@@ -68,7 +70,9 @@ function Milkdrop(props: Props) {
           e.stopPropagation();
           break;
         case 84: // T
-          // this.visualizer.launchSongTitleAnim(this.props.trackTitle);
+          if (props.trackTitle != null) {
+            props.scheduleMilkdropMessage(props.trackTitle);
+          }
           e.stopPropagation();
           break;
         case 145: // scroll lock
@@ -138,7 +142,8 @@ function Milkdrop(props: Props) {
 const mapStateToProps = (state: AppState): StateProps => ({
   desktop: Selectors.getMilkdropDesktopEnabled(state),
   overlay: Selectors.getPresetOverlayOpen(state),
-  presetsAreCycling: Selectors.getPresetsAreCycling(state)
+  presetsAreCycling: Selectors.getPresetsAreCycling(state),
+  trackTitle: Selectors.getCurrentTrackDisplayName(state)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
@@ -152,7 +157,9 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   selectNextPreset: (transitionType?: TransitionType) =>
     dispatch(Actions.selectNextPreset(transitionType)),
   selectPreviousPreset: (transitionType?: TransitionType) =>
-    dispatch(Actions.selectPreviousPreset(transitionType))
+    dispatch(Actions.selectPreviousPreset(transitionType)),
+  scheduleMilkdropMessage: (message: string) =>
+    dispatch(Actions.scheduleMilkdropMessage(message))
 });
 
 export default connect(

@@ -6,7 +6,8 @@ import {
   TOGGLE_PRESET_OVERLAY,
   PRESET_REQUESTED,
   TOGGLE_RANDOMIZE_PRESETS,
-  TOGGLE_PRESET_CYCLING
+  TOGGLE_PRESET_CYCLING,
+  SCHEDULE_MILKDROP_MESSAGE
 } from "../actionTypes";
 import * as Selectors from "../selectors";
 import {
@@ -200,4 +201,8 @@ export function toggleRandomizePresets(): Dispatchable {
 
 export function togglePresetCycling(): Dispatchable {
   return { type: TOGGLE_PRESET_CYCLING };
+}
+
+export function scheduleMilkdropMessage(message: string): Dispatchable {
+  return { type: SCHEDULE_MILKDROP_MESSAGE, message };
 }
