@@ -218,7 +218,9 @@ Raven.context(async () => {
     document.title =
       track == null
         ? DEFAULT_DOCUMENT_TITLE
-        : `${track.metaData.title} - ${track.metaData.artist}`;
+        : `${track.metaData.title} - ${
+            track.metaData.artist
+          } \u00B7 ${DEFAULT_DOCUMENT_TITLE}`;
   });
 
   enableMediaSession(webamp);
