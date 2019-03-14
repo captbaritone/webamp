@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import Fullscreen from "react-full-screen";
+import Fullscreen from "../Fullscreen";
 import { connect } from "react-redux";
 import { useWindowSize, useScreenSize } from "../../hooks";
 import GenWindow from "../GenWindow";
