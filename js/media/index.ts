@@ -178,46 +178,46 @@ export default class Media {
   }
 
   /* Actions with arguments */
-  seekToPercentComplete(percent: number) {
+
+  seekToPercentComplete(percent) {
     const seekTime = this.duration() * (percent / 100);
     this.seekToTime(seekTime);
-  }
+  } // From 0-1
 
-  // From 0-1
-  setVolume(volume: number) {
+  setVolume(volume) {
     this._gainNode.gain.value = volume / 100;
-  }
-
-  // From 0 to 100
+  } // From 0 to 100
+  
   // The input value here is 0-100 which is kinda wrong, since it represents -12db to 12db.
   // For now, 50 is 0db (no change).
-  // For now we map the values 0-100 to 0.25-1.75
-  setPreamp(value: number) {
-    const percentDelta = (value - 50) * 0.02;
-    this._preamp.gain.value = 1 + percentDelta * 0.75;
-  }
+  // Equation used is: 10^((dB)/20) = x, where x (preamp.gain.value) is passed on to gainnode for boosting or attenuation.
+  // JSFiddle: https://jsfiddle.net/ch00f/7fvabpqk/25/
+  setPreamp(value) {
+    const db = value / 100 * 24 - 12;	  
+    this._preamp.gain.value = Math.pow(10,(db/20));
+  } // From 0 to 100
 
-  // From -100 to 100
-  setBalance(balance: number) {
+  setBalance(balance) {
     // Yo Dawg.
     this._balance.balance.value = balance / 100;
   }
 
-  setEqBand(band: Band, value: number) {
-    const db = (value / 100) * 24 - 12;
+  setEqBand(band, value) {
+   // const db;	  
     this._bands[band].gain.value = db;
   }
 
   disableEq() {
     this._staticSource.disconnect();
+
     this._staticSource.connect(this._balance);
   }
 
   enableEq() {
     this._staticSource.disconnect();
+
     this._staticSource.connect(this._preamp);
   }
-
   /* Listeners */
   on(event: string, callback: (...args: any[]) => void) {
     this._emitter.on(event, callback);
