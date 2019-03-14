@@ -611,7 +611,11 @@ export function getDebugData(state: AppState) {
 }
 
 export function getMilkdropDesktopEnabled(state: AppState): boolean {
-  return state.milkdrop.desktop;
+  return state.milkdrop.display === "DESKTOP";
+}
+
+export function getMilkdropFullscreenEnabled(state: AppState): boolean {
+  return state.milkdrop.display === "FULLSCREEN";
 }
 
 export function getPresets(state: AppState): any {

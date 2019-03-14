@@ -467,6 +467,10 @@ export type Action =
       type: "SET_MILKDROP_DESKTOP";
       enabled: boolean;
     }
+  | {
+      type: "SET_MILKDROP_FULLSCREEN";
+      enabled: boolean;
+    }
   | { type: "PRESET_REQUESTED"; index: number; addToHistory: boolean }
   | {
       type: "GOT_BUTTERCHURN_PRESETS";

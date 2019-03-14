@@ -20,6 +20,7 @@ const MILLISECONDS_BETWEEN_PRESET_TRANSITIONS = 15000;
 
 interface StateProps {
   desktop: boolean;
+  fullscreen: boolean;
   overlay: boolean;
   presetsAreCycling: boolean;
   trackTitle: string | null;
@@ -28,6 +29,8 @@ interface StateProps {
 interface DispatchProps {
   closeWindow(): void;
   toggleDesktop(): void;
+  toggleFullscreen(): void;
+  setFullscreen(fullscreen: boolean): void;
   togglePresetOverlay(): void;
   selectRandomPreset(): void;
   toggleRandomize(): void;
@@ -48,7 +51,6 @@ interface OwnProps {
 type Props = StateProps & DispatchProps & OwnProps;
 
 function Milkdrop(props: Props) {
-  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   // Handle keyboard events
   useEffect(() => {
     return props.onFocusedKeyDown(e => {
@@ -95,18 +97,13 @@ function Milkdrop(props: Props) {
     return () => clearImmediate(intervalId);
   }, [props.selectNextPreset, props.presetsAreCycling]);
 
-  const toggleFullscreen = useCallback(() => setIsFullscreen(!isFullscreen), [
-    setIsFullscreen,
-    isFullscreen
-  ]);
-
   const screenSize = useScreenSize();
   const windowSize = useWindowSize();
 
   if (props.desktop) {
     return (
       <Desktop>
-        <MilkdropContextMenu toggleFullscreen={toggleFullscreen}>
+        <MilkdropContextMenu>
           <Visualizer {...windowSize} analyser={props.analyser} />
         </MilkdropContextMenu>
       </Desktop>
@@ -116,9 +113,9 @@ function Milkdrop(props: Props) {
   return (
     <GenWindow title={"Milkdrop"} windowId={WINDOWS.MILKDROP}>
       {(windowSize: { width: number; height: number }) => {
-        const size = isFullscreen ? screenSize : windowSize;
+        const size = props.fullscreen ? screenSize : windowSize;
         return (
-          <MilkdropContextMenu toggleFullscreen={toggleFullscreen}>
+          <MilkdropContextMenu>
             <Background>
               <DropTarget handleDrop={props.handlePresetDrop}>
                 {props.overlay && (
@@ -127,8 +124,11 @@ function Milkdrop(props: Props) {
                     onFocusedKeyDown={props.onFocusedKeyDown}
                   />
                 )}
-                <Fullscreen enabled={isFullscreen} onChange={setIsFullscreen}>
-                  <div onDoubleClick={toggleFullscreen}>
+                <Fullscreen
+                  enabled={props.fullscreen}
+                  onChange={props.setFullscreen}
+                >
+                  <div onDoubleClick={props.toggleFullscreen}>
                     <Visualizer {...size} analyser={props.analyser} />
                   </div>
                 </Fullscreen>
@@ -143,6 +143,7 @@ function Milkdrop(props: Props) {
 
 const mapStateToProps = (state: AppState): StateProps => ({
   desktop: Selectors.getMilkdropDesktopEnabled(state),
+  fullscreen: Selectors.getMilkdropFullscreenEnabled(state),
   overlay: Selectors.getPresetOverlayOpen(state),
   presetsAreCycling: Selectors.getPresetsAreCycling(state),
   trackTitle: Selectors.getCurrentTrackDisplayName(state)
@@ -151,6 +152,9 @@ const mapStateToProps = (state: AppState): StateProps => ({
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   closeWindow: () => dispatch(Actions.closeWindow(WINDOWS.MILKDROP)),
   toggleDesktop: () => dispatch(Actions.toggleMilkdropDesktop()),
+  toggleFullscreen: () => dispatch(Actions.toggleMilkdropFullscreen()),
+  setFullscreen: (fullscreen: boolean) =>
+    dispatch(Actions.setMilkdropFullscreen(fullscreen)),
   togglePresetOverlay: () => dispatch(Actions.togglePresetOverlay()),
   selectRandomPreset: () => dispatch(Actions.selectRandomPreset()),
   toggleRandomize: () => dispatch(Actions.toggleRandomizePresets()),
