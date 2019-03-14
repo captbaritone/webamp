@@ -187,7 +187,7 @@ export default class Media {
   setVolume(volume: number) {
     this._gainNode.gain.value = volume / 100;
   }
-
+  // from 0 to 100
   // The input value here is 0-100 which is kinda wrong, since it represents -12db to 12db.
   // For now, 50 is 0db (no change).
   // Equation used is: 10^((dB)/20) = x, where x (preamp.gain.value) is passed on to gainnode for boosting or attenuation.
