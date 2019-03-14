@@ -1,6 +1,7 @@
 import { Action, StatePreset } from "../types";
 import {
   SET_MILKDROP_DESKTOP,
+  SET_MILKDROP_FULLSCREEN,
   GOT_BUTTERCHURN_PRESETS,
   GOT_BUTTERCHURN,
   RESOLVE_PRESET_AT_INDEX,
@@ -20,7 +21,7 @@ interface Message {
 }
 
 export interface MilkdropState {
-  desktop: boolean;
+  display: "WINDOW" | "DESKTOP" | "FULLSCREEN";
   overlay: boolean;
   presetHistory: number[];
   presets: StatePreset[];
@@ -34,8 +35,8 @@ export interface MilkdropState {
   message: Message | null;
 }
 
-const defaultMilkdropState = {
-  desktop: false,
+const defaultMilkdropState: MilkdropState = {
+  display: "WINDOW",
   overlay: false,
   presetHistory: [],
   presets: [],
@@ -53,7 +54,9 @@ export const milkdrop = (
 ): MilkdropState => {
   switch (action.type) {
     case SET_MILKDROP_DESKTOP:
-      return { ...state, desktop: action.enabled };
+      return { ...state, display: action.enabled ? "DESKTOP" : "WINDOW" };
+    case SET_MILKDROP_FULLSCREEN:
+      return { ...state, display: action.enabled ? "FULLSCREEN" : "WINDOW" };
     case GOT_BUTTERCHURN:
       return { ...state, butterchurn: action.butterchurn };
     case GOT_BUTTERCHURN_PRESETS:

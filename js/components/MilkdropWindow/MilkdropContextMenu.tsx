@@ -9,15 +9,16 @@ import ContextMenuWraper from "../ContextMenuWrapper";
 
 interface StateProps {
   desktop: boolean;
+  fullscreen: boolean;
 }
 
 interface DispatchProps {
   closeWindow(): void;
   toggleDesktop(): void;
+  toggleFullscreen(): void;
 }
 
 interface OwnProps {
-  toggleFullscreen(): void;
   children: ReactNode;
 }
 
@@ -50,12 +51,14 @@ const MilkdropContextMenu = (props: Props) => (
 );
 
 const mapStateToProps = (state: AppState): StateProps => ({
-  desktop: Selectors.getMilkdropDesktopEnabled(state)
+  desktop: Selectors.getMilkdropDesktopEnabled(state),
+  fullscreen: Selectors.getMilkdropFullscreenEnabled(state)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   closeWindow: () => dispatch(Actions.closeWindow(WINDOWS.MILKDROP)),
-  toggleDesktop: () => dispatch(Actions.toggleMilkdropDesktop())
+  toggleDesktop: () => dispatch(Actions.toggleMilkdropDesktop()),
+  toggleFullscreen: () => dispatch(Actions.toggleMilkdropFullscreen())
 });
 
 export default connect(
