@@ -191,10 +191,10 @@ export default class Media {
   // The input value here is 0-100 which is kinda wrong, since it represents -12db to 12db.
   // For now, 50 is 0db (no change).
   // Equation used is: 10^((dB)/20) = x, where x (preamp.gain.value) is passed on to gainnode for boosting or attenuation.
-  setPreamp(value) {
-    const db = value / 100 * 24 - 12;	  
+  setPreamp(value: number) {
+    const db = (value / 100) * 24 - 12;
     this._preamp.gain.value = Math.pow(10,(db/20));
-  } // From 0 to 100
+  }
 
   // From -100 to 100
   setBalance(balance: number) {
