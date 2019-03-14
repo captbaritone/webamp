@@ -75,6 +75,12 @@ class PresetOverlay extends React.Component<Props, State> {
       // _Also_ ideally we could avoid this prop all together.
       this.props.onFocusedKeyDown(this._handleFocusedKeyboardInput)
     );
+    const { currentPresetIndex } = this.props;
+    if (currentPresetIndex != null) {
+      this.setState({
+        selectedListIndex: this._listIndexFromPresetIndex(currentPresetIndex)
+      });
+    }
   }
 
   componentWillUnmount() {
