@@ -1,5 +1,5 @@
 // Adapted from https://github.com/snakesilk/react-fullscreen
-import React, { ReactNode } from "react";
+import React, { ReactNode, useRef, useLayoutEffect, useEffect } from "react";
 import fscreen from "fscreen";
 
 interface Props {
@@ -8,67 +8,51 @@ interface Props {
   onChange(fullscreen: boolean): void;
 }
 
-class FullScreen extends React.Component<Props> {
-  node?: HTMLDivElement | null;
-
-  constructor(props: Props) {
-    super(props);
+function leaveFullScreen() {
+  if (fscreen.fullscreenEnabled) {
+    fscreen.exitFullscreen();
   }
+}
 
-  componentDidMount() {
-    this.handleProps(this.props);
-    fscreen.addEventListener("fullscreenchange", this.detectFullScreen);
+function enterFullScreen(node: HTMLDivElement) {
+  if (fscreen.fullscreenEnabled) {
+    fscreen.requestFullscreen(node);
   }
+}
 
-  componentWillUnmount() {
-    fscreen.removeEventListener("fullscreenchange", this.detectFullScreen);
-  }
+function FullScreen(props: Props) {
+  const ref = useRef<HTMLDivElement | null>(null);
 
-  componentDidUpdate() {
-    this.handleProps(this.props);
-  }
+  useEffect(() => {
+    function detectFullScreen() {
+      if (props.onChange) {
+        props.onChange(fscreen.fullscreenElement === ref.current);
+      }
+    }
+    fscreen.addEventListener("fullscreenchange", detectFullScreen);
+    return () => {
+      fscreen.removeEventListener("fullscreenchange", detectFullScreen);
+    };
+  }, [props.onChange, ref.current]);
 
-  handleProps(props: Props) {
-    const enabled = fscreen.fullscreenElement === this.node;
+  // This must run in response to a click event, so we'll use useLayoutEffect just in case.
+  useLayoutEffect(() => {
+    const enabled = fscreen.fullscreenElement === ref.current;
     if (enabled && !props.enabled) {
-      this.leaveFullScreen();
-    } else if (!enabled && props.enabled) {
-      this.enterFullScreen();
+      leaveFullScreen();
+    } else if (!enabled && props.enabled && ref.current != null) {
+      enterFullScreen(ref.current);
     }
-  }
+  }, [props.enabled, ref.current]);
 
-  detectFullScreen = () => {
-    if (this.props.onChange) {
-      this.props.onChange(fscreen.fullscreenElement === this.node);
-    }
-  };
-
-  enterFullScreen() {
-    if (fscreen.fullscreenEnabled && this.node != null) {
-      fscreen.requestFullscreen(this.node);
-    }
-  }
-
-  leaveFullScreen() {
-    if (fscreen.fullscreenEnabled) {
-      fscreen.exitFullscreen();
-    }
-  }
-
-  render() {
-    return (
-      <div
-        ref={node => {
-          this.node = node;
-        }}
-        style={
-          this.props.enabled ? { height: "100%", width: "100%" } : undefined
-        }
-      >
-        {this.props.children}
-      </div>
-    );
-  }
+  return (
+    <div
+      ref={ref}
+      style={props.enabled ? { height: "100%", width: "100%" } : undefined}
+    >
+      {props.children}
+    </div>
+  );
 }
 
 export default FullScreen;
