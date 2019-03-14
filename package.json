@@ -60,6 +60,7 @@
     "@babel/preset-typescript": "^7.0.0",
     "@babel/runtime": "^7.0.0",
     "@types/classnames": "^2.2.6",
+    "@types/fscreen": "^1.0.1",
     "@types/invariant": "^2.2.29",
     "@types/jest": "^23.3.2",
     "@types/lodash": "^4.14.116",
@@ -148,6 +149,6 @@
   },
   "prettier": {},
   "dependencies": {
-    "react-full-screen": "^0.2.4"
+    "fscreen": "^1.0.2"
   }
 }
