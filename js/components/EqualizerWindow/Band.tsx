@@ -46,7 +46,7 @@ const Band = ({
 }: Props) => (
   <div id={id} className="band" style={{ backgroundPosition }}>
     <Slider
-      min={1}
+      min={0}
       max={MAX_VALUE}
       step={1}
       value={MAX_VALUE - value}
