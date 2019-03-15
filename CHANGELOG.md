@@ -35,7 +35,7 @@ See a full list below:
 - Parsing of the `viscolor.txt` file in skins is now more permissive, allowing us to support more skins ([0d29ff](0d29ffe3f4b20505005346cbc97d0cdf85664619))
 - The hotkeys to seek forward/backwards 10 tracks now works propery ([7d9ef4](https://github.com/captbaritone/webamp/commit/7d9ef4287f7294f6bdc1db89b717592cf4e48f17))
 - Fix a bug where the preamp level was not applied until you changed it ([f03c88](https://github.com/captbaritone/webamp/commit/f03c88c6d89fd51cbc0538841bb3227accfa0431))
-- Fix a bug where the equalizer sliders would show in the wrong postion when set to the lowest value ([ab5eb3](https://github.com/captbaritone/webamp/commit/ab5eb33026cf9082d7f28f3923d51a29765e25c9))
+- Fix a bug where `.eqf` values were encoded incorrectly ([c634cd](https://github.com/captbaritone/webamp/commit/c634cd8b947e5d2d8b94b38023bc20097737a995))
 - Preamp and EQ now boost/attenuate the same way original winamp 2 did ([#748](https://github.com/captbaritone/webamp/pull/748))
 
 ### Internal Improvements:
