@@ -30,7 +30,7 @@ See the [usage documentation](./docs/usage.md) for more detailed information.
 This repository contains a number of different things:
 
 1. `./`: The code for the [Webamp NPM module](https://www.npmjs.com/package/webamp)
-2. `./demo`: The code for the demo site which lives at [webamp.org](https://webamp.org). This includes the Milkdrop integration
+2. `./demo`: The code for the demo site which lives at [webamp.org](https://webamp.org)
 3. `./examples`: A few small examples showing how to use the NPM module
 4. `./experiments`: A few small projects that are either related to Webamp, or may some day be a part of Webamp
 
