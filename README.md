@@ -17,6 +17,14 @@ supported](http://caniuse.com/#feat=audio-api).
 
 Check out this Twitter thread for an illustrated list of features: https://twitter.com/captbaritone/status/961274714013319168
 
+## Use Webamp in your own project
+
+Its possible to use Webamp as a media player on your own website. In fact, the [Internet Archive](https://archive.org/) offers it as an optional player for all of their archived audio tracks. [Read more](https://blog.archive.org/2018/10/02/dont-click-on-the-llama/).
+
+For examples of how to add Webamp to your projects, check out out [`examples/` directory](./examples).
+
+See the [usage documentation](./docs/usage.md) for more detailed information.
+
 ## About This Repository
 
 This repository contains a number of different things:
@@ -25,14 +33,6 @@ This repository contains a number of different things:
 2. `./demo`: The code for the demo site which lives at [webamp.org](https://webamp.org). This includes the Milkdrop integration
 3. `./examples`: A few small examples showing how to use the NPM module
 4. `./experiments`: A few small projects that are either related to Webamp, or may some day be a part of Webamp
-
-## Use Webamp in your own project
-
-Its possible to use Webamp as a media player on your own website. In fact, the [Internet Archive](https://archive.org/) offers it as an optional player for all of their archived audio tracks. [Read more](https://blog.archive.org/2018/10/02/dont-click-on-the-llama/).
-
-For examples of how to add Webamp to your projects, check out out [`examples/` directory](./examples).
-
-See the [usage documentation](./docs/usage.md) for more detailed information.
 
 ## Development
 
