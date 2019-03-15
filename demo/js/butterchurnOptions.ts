@@ -1,5 +1,12 @@
 import { ButterchurnOptions } from "../../js/types";
 
+const KNOWN_PRESET_URLS_REGEXES = [
+  /^https:\/\/unpkg\.com\/butterchurn-presets\/.*\.json$/,
+  /^https:\/\/unpkg\.com\/butterchurn-presets-weekly\/.*\.json$/,
+  /^https:\/\/archive\.org\/cors\/md_.*\.json$/,
+  /^https:\/\/s3-us-east-2\.amazonaws\.com\/butterchurn-presets\/.*\.json$/
+];
+
 function presetNameFromURL(url: string) {
   try {
     const urlParts = url.split("/");
@@ -35,12 +42,22 @@ export function getButterchurnOptions(
         const butterchurnPresetUrlParam = params.get("butterchurnPresetUrl");
         const milkdropPresetUrl = params.get("milkdropPresetUrl");
         if (butterchurnPresetUrlParam) {
-          return [
-            {
-              name: presetNameFromURL(butterchurnPresetUrlParam),
-              butterchurnPresetUrl: butterchurnPresetUrlParam
-            }
-          ];
+          if (
+            !KNOWN_PRESET_URLS_REGEXES.some(pattern =>
+              pattern.test(butterchurnPresetUrlParam)
+            )
+          ) {
+            console.error(
+              "Unsupported URL passed as butterchurnPresetUrl query param."
+            );
+          } else {
+            return [
+              {
+                name: presetNameFromURL(butterchurnPresetUrlParam),
+                butterchurnPresetUrl: butterchurnPresetUrlParam
+              }
+            ];
+          }
         } else if (milkdropPresetUrl) {
           throw new Error("We still need to implement this");
         }
