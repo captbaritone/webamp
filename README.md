@@ -38,24 +38,25 @@ See the [usage documentation](./docs/usage.md) for more detailed information.
 
 I do most development by starting the demo site in dev mode and iterating that way. The following commands will install all dependencies, run an initial development build and then start a local server. Every time you save a file, it will rebuild the bundle and automatically refresh the page.
 
+    # Clone the repo
+    cd webamp
+    # __Note:__ Please use yarn over npm, since yarn will respect our `yarn.lock` file
     yarn
-    # Or: npm install
-    npm start
 
 `http://localhost:8080/` should automatically open in your browser.
 
     # Run tests and lint checks
-    npm test
+    yarn test
 
 ## Building the demo site (webmap.org)
 
 To do an optimized build of the demo site, you can run:
 
-    npm run build
+    yarn run build
 
 If you wish to test this build locally, run:
 
-    npm run serve
+    yarn run serve
 
 Then open the local ip/port that is output to the console in your browser.
 
@@ -63,19 +64,19 @@ Then open the local ip/port that is output to the console in your browser.
 
 The NPM module is built separately from the demo site. To build it run:
 
-    npm run build-library
+    yarn run build-library
 
 This will write files to `./built`.
 
 ## Testing
 
-    npm test
+    yarn test
 
 This will run the tests the linter and the type checker.
 
 To update snapshots run
 
-    npm test -u
+    yarn test -u
 
 ## Deploying the Demo Site
 
