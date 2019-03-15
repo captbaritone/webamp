@@ -3,23 +3,22 @@ import { getEqfData, nextTrack } from "./selectors";
 describe("getEqfData", () => {
   it("can extract EQF data from the current state", () => {
     const state = reducer(undefined, { type: "@@INIT" });
-    //state = reducer(state, { type: "SET_BAND_VALUE", band: 60, value: 100 });
     const actual = getEqfData(state);
     const expected = {
       presets: [
         {
-          hz60: 32,
-          hz170: 32,
-          hz310: 32,
-          hz600: 32,
-          hz1000: 32,
-          hz3000: 32,
-          hz12000: 32,
-          hz14000: 32,
-          hz16000: 32,
-          hz6000: 32,
+          hz60: 33,
+          hz170: 33,
+          hz310: 33,
+          hz600: 33,
+          hz1000: 33,
+          hz3000: 33,
+          hz12000: 33,
+          hz14000: 33,
+          hz16000: 33,
+          hz6000: 33,
           name: "Entry1",
-          preamp: 32
+          preamp: 33
         }
       ],
       type: "Winamp EQ library file v1.1"

@@ -40,10 +40,10 @@ export const getEqfData = createSelector(
   sliders => {
     const preset: { [key: string]: number | string } = {
       name: "Entry1",
-      preamp: Utils.denormalize(sliders.preamp)
+      preamp: Utils.denormalizeEqBand(sliders.preamp)
     };
     BANDS.forEach(band => {
-      preset[`hz${band}`] = Utils.denormalize(sliders[band]);
+      preset[`hz${band}`] = Utils.denormalizeEqBand(sliders[band]);
     });
     const eqfData = {
       presets: [preset],

@@ -6,8 +6,8 @@ import {
   clamp,
   parseViscolors,
   parseIni,
-  normalize,
-  denormalize,
+  normalizeEqBand,
+  denormalizeEqBand,
   segment,
   moveSelected,
   spliceIn,
@@ -296,12 +296,12 @@ bar = "baz"
 });
 
 test("normalize", () => {
-  expect(normalize(1)).toBe(1);
-  expect(normalize(64)).toBe(100);
+  expect(normalizeEqBand(1)).toBe(0);
+  expect(normalizeEqBand(64)).toBe(100);
 });
 test("denormalize", () => {
-  expect(denormalize(1)).toBe(1);
-  expect(denormalize(100)).toBe(64);
+  expect(denormalizeEqBand(0)).toBe(1);
+  expect(denormalizeEqBand(100)).toBe(64);
 });
 
 describe("segment", () => {

@@ -1,12 +1,7 @@
 import { parser, creator } from "winamp-eqf";
 import { BANDS, LOAD_STYLE } from "../constants";
 
-import {
-  base64FromArrayBuffer,
-  uniqueId,
-  normalize,
-  downloadURI
-} from "../utils";
+import * as Utils from "../utils";
 
 import {
   promptForFileReferences,
@@ -222,7 +217,7 @@ export function loadMediaFile(
   atIndex = 0
 ): Dispatchable {
   return dispatch => {
-    const id = uniqueId();
+    const id = Utils.uniqueId();
     const { defaultName, metaData, duration } = track;
     let canonicalUrl: string;
     if ("url" in track) {
@@ -341,10 +336,10 @@ export function setEqFromFileReference(fileReference: File): Dispatchable {
 
 export function setEqFromObject(preset: EqfPreset): Dispatchable {
   return dispatch => {
-    dispatch(setPreamp(normalize(preset.preamp)));
+    dispatch(setPreamp(Utils.normalizeEqBand(preset.preamp)));
     BANDS.forEach(band => {
       // @ts-ignore band and EqfPreset align
-      dispatch(setEqBand(band, normalize(preset[`hz${band}`])));
+      dispatch(setEqBand(band, Utils.normalizeEqBand(preset[`hz${band}`])));
     });
   };
 }
@@ -354,15 +349,15 @@ export function downloadPreset(): Dispatchable {
     const state = getState();
     const data = getEqfData(state);
     const arrayBuffer = creator(data);
-    const base64 = base64FromArrayBuffer(arrayBuffer);
+    const base64 = Utils.base64FromArrayBuffer(arrayBuffer);
     const dataURI = `data:application/zip;base64,${base64}`;
-    downloadURI(dataURI, "entry.eqf");
+    Utils.downloadURI(dataURI, "entry.eqf");
   };
 }
 
 export function downloadHtmlPlaylist(): Dispatchable {
   return (dispatch, getState) => {
     const uri = getPlaylistURL(getState());
-    downloadURI(uri, "Winamp Playlist.html");
+    Utils.downloadURI(uri, "Winamp Playlist.html");
   };
 }
