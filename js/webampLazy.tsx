@@ -111,6 +111,9 @@ interface PrivateOptions {
   avaliableSkins?: { url: string; name: string }[]; // Old misspelled name
   requireJSZip(): Promise<never>; // TODO: Type JSZip
   requireMusicMetadata(): Promise<any>; // TODO: Type musicmetadata
+  handleTrackDropEvent?: (
+    e: React.DragEvent<HTMLDivElement>
+  ) => Track[] | null | Promise<Track[] | null>;
   __initialState?: AppState;
   __customMiddlewares?: Middleware[];
   __enableMediaLibrary?: boolean;
@@ -173,6 +176,7 @@ class Winamp {
       zIndex,
       requireJSZip,
       requireMusicMetadata,
+      handleTrackDropEvent,
       __butterchurnOptions
     } = this.options;
 
@@ -203,7 +207,13 @@ class Winamp {
       this._actionEmitter,
       this.options.__customMiddlewares,
       this.options.__initialState,
-      { requireJSZip, requireMusicMetadata, convertPreset }
+      {
+        requireJSZip,
+        requireMusicMetadata,
+        convertPreset,
+        // @ts-ignore Typescript is drunk
+        handleTrackDropEvent
+      }
     ) as Store;
 
     if (navigator.onLine) {

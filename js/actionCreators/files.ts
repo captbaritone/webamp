@@ -193,6 +193,25 @@ export function fetchMediaDuration(url: string, id: number): Dispatchable {
   };
 }
 
+export function loadMedia(
+  e: React.DragEvent<HTMLDivElement>,
+  loadStyle: LoadStyle = LOAD_STYLE.NONE,
+  atIndex = 0
+): Dispatchable {
+  const { files } = e.dataTransfer;
+  return async (dispatch, getState, { handleTrackDropEvent }) => {
+    if (handleTrackDropEvent) {
+      const tracks = await handleTrackDropEvent(e);
+
+      if (tracks) {
+        dispatch(loadMediaFiles(tracks, loadStyle, atIndex));
+        return;
+      }
+    }
+    dispatch(loadFilesFromReferences(files, loadStyle, atIndex));
+  };
+}
+
 export function loadMediaFiles(
   tracks: Track[],
   loadStyle: LoadStyle = LOAD_STYLE.NONE,

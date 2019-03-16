@@ -1,4 +1,10 @@
-## 1.3.1
+## NEXT [UNRELEASED]
+
+### Features
+
+- Added optional configuration option `handleTrackDropEvent` which lets you decide how drop events get converted into tracks.
+
+## 1.3.1 [CURRENT]
 
 ### Bug Fixes:
 
