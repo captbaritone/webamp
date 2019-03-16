@@ -113,7 +113,7 @@ interface PrivateOptions {
   requireMusicMetadata(): Promise<any>; // TODO: Type musicmetadata
   handleTrackDropEvent(
     e: React.DragEvent<HTMLDivElement>
-  ): Promise<Track[] | null>;
+  ): Track[] | null | Promise<Track[]> | Promise<null>;
   __initialState?: AppState;
   __customMiddlewares?: Middleware[];
   __enableMediaLibrary?: boolean;
