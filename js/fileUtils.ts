@@ -66,6 +66,19 @@ export async function genArrayBufferFromFileReference(
   });
 }
 
+export async function genStringFromFileReference(
+  fileReference: File
+): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      resolve(reader.result as string);
+    };
+    reader.onerror = reject;
+    reader.readAsText(fileReference);
+  });
+}
+
 interface PromptForFileReferenceOptions {
   accept?: string | null;
   directory?: boolean;

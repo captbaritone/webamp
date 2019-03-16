@@ -9,7 +9,8 @@ import {
   UNSET_FOCUS,
   LOAD_SERIALIZED_STATE,
   LOAD_DEFAULT_SKIN,
-  SET_MILKDROP_DESKTOP
+  SET_MILKDROP_DESKTOP,
+  SET_MILKDROP_FULLSCREEN
 } from "../actionTypes";
 import { WINDOWS } from "../constants";
 import { Dispatchable } from "../types";
@@ -95,6 +96,20 @@ export {
   scrollDownFourTracks,
   dragSelected
 } from "./playlist";
+export {
+  initializePresets,
+  requestPresetAtIndex,
+  selectRandomPreset,
+  selectNextPreset,
+  selectPreviousPreset,
+  togglePresetOverlay,
+  appendPresetFileList,
+  handlePresetDrop,
+  loadPresets,
+  toggleRandomizePresets,
+  togglePresetCycling,
+  scheduleMilkdropMessage
+} from "./milkdrop";
 
 import * as Selectors from "../selectors";
 
@@ -144,7 +159,7 @@ export function loadSerializedState(
   };
 }
 
-export function loadDefaultSkin() {
+export function loadDefaultSkin(): Dispatchable {
   return { type: LOAD_DEFAULT_SKIN };
 }
 
@@ -157,5 +172,16 @@ export function toggleMilkdropDesktop(): Dispatchable {
       dispatch(hideWindow(WINDOWS.MILKDROP));
       dispatch({ type: SET_MILKDROP_DESKTOP, enabled: true });
     }
+  };
+}
+
+export function setMilkdropFullscreen(enabled: boolean): Dispatchable {
+  return { type: SET_MILKDROP_FULLSCREEN, enabled };
+}
+export function toggleMilkdropFullscreen(): Dispatchable {
+  return (dispatch, getState) => {
+    dispatch(
+      setMilkdropFullscreen(!Selectors.getMilkdropFullscreenEnabled(getState()))
+    );
   };
 }

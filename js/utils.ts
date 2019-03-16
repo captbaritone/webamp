@@ -146,11 +146,11 @@ const rebound = (
 ) => (oldValue: number): number =>
   percentToRange(toPercent(oldMin, oldMax, oldValue), newMin, newMax);
 
-// Convert a .eqf value to a 1-100
-export const normalize = rebound(1, 64, 1, 100);
+// Convert an .eqf value to a 0-100
+export const normalizeEqBand = rebound(1, 64, 0, 100);
 
 // Convert a 0-100 to an .eqf value
-export const denormalize = rebound(1, 100, 1, 64);
+export const denormalizeEqBand = rebound(0, 100, 1, 64);
 
 // Merge a `source` object to a `target` recursively
 // TODO: The typing here is a bit of a disaster.
@@ -251,6 +251,10 @@ export function spliceIn<T>(original: T[], start: number, newValues: T[]): T[] {
   const newArr = [...original];
   newArr.splice(start, 0, ...newValues);
   return newArr;
+}
+
+export function replaceAtIndex<T>(arr: T[], index: number, newValue: T): T[] {
+  return [...arr.slice(0, index), newValue, ...arr.slice(index + 1)];
 }
 
 export function debounce(func: Function, delay: number): Function {
@@ -363,6 +367,13 @@ export function getWindowSize(): { width: number; height: number } {
       document.body.clientHeight,
       document.documentElement!.clientHeight
     )
+  };
+}
+
+export function getScreenSize(): { width: number; height: number } {
+  return {
+    width: window.screen.width,
+    height: window.screen.height
   };
 }
 

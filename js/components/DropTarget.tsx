@@ -1,4 +1,3 @@
-// @ts-ignore #hook-types
 import React, { useCallback } from "react";
 
 interface Coord {
@@ -18,21 +17,18 @@ function supress(e: React.DragEvent<HTMLDivElement>) {
 }
 
 const DropTarget = (props: Props) => {
-  const onDrop = useCallback(
-    (e: React.DragEvent<HTMLDivElement>) => {
-      supress(e);
-      // TODO: We could probably move this coordinate logic into the playlist.
-      // I think that's the only place it gets used.
-      const { currentTarget } = e;
-      if (!(currentTarget instanceof Element)) {
-        return;
-      }
+  const onDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    supress(e);
+    // TODO: We could probably move this coordinate logic into the playlist.
+    // I think that's the only place it gets used.
+    const { currentTarget } = e;
+    if (!(currentTarget instanceof Element)) {
+      return;
+    }
 
-      const { left: x, top: y } = currentTarget.getBoundingClientRect();
-      props.handleDrop(e, { x, y });
-    },
-    [props.handleDrop]
-  );
+    const { left: x, top: y } = currentTarget.getBoundingClientRect();
+    props.handleDrop(e, { x, y });
+  }, [props.handleDrop]);
 
   const {
     // eslint-disable-next-line no-shadow, no-unused-vars

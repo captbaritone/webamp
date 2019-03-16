@@ -1,4 +1,4 @@
-import { Action, Band } from "../types";
+import { Action, Slider } from "../types";
 import {
   SET_FOCUS,
   SET_BAND_FOCUS,
@@ -10,7 +10,7 @@ import {
 
 export interface UserInputState {
   focus: string | null; // TODO: Convert this to an enum?
-  bandFocused: Band | null;
+  bandFocused: Slider | null;
   scrubPosition: number;
   userMessage: string | null;
 }

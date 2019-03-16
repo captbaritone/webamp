@@ -115,20 +115,40 @@ type SkinData = {
   skinGenExColors: SkinGenExColors | null;
 };
 
-export interface InitialButterchurnDependencies {
-  // TODO: Type these
-  butterchurn: any;
-  minimalPresets: any;
-  presetKeys: any;
+// This is what we actually pass to butterchurn
+type ButterchurnPresetJson = {
+  name: string;
+  butterchurnPresetObject: Object;
+};
+
+// A URL that points to a Butterchurn preset
+interface ButterchurnPresetUrl {
+  name: string;
+  butterchurnPresetUrl: string;
 }
 
+export type LazyButterchurnPresetJson = {
+  name: string;
+  getButterchrunPresetObject: () => Promise<Object>;
+};
+
+export type Preset =
+  | ButterchurnPresetJson
+  | ButterchurnPresetUrl
+  | LazyButterchurnPresetJson;
+
+export type StatePreset =
+  | { type: "RESOLVED"; name: string; preset: Object }
+  | { type: "UNRESOLVED"; name: string; getPreset: () => Promise<Object> };
+
 export interface ButterchurnOptions {
-  loadNonMinimalPresets(): Promise<any>;
-  loadInitialDependencies(): Promise<InitialButterchurnDependencies>;
-  loadConvertPreset(): Promise<any>;
-  presetConverterEndpoint: string;
-  initialMilkdropPresetUrl?: string | null;
-  initialButterchurnPresetUrl?: string | null;
+  getPresets(): Promise<Preset[]>;
+  importButterchurn(): Promise<any>;
+  importConvertPreset?: () => Promise<{
+    convertPreset(file: string, endpoint: string): Promise<Object>;
+  }>;
+  presetConverterEndpoint?: string;
+  butterchurnOpen: boolean;
 }
 
 export interface EqfPreset {
@@ -144,6 +164,12 @@ export interface EqfPreset {
   hz16000: number;
   hz6000: number;
   preamp: number;
+}
+
+export enum TransitionType {
+  IMMEDIATE,
+  DEFAULT,
+  USER_PRESET
 }
 
 export type Action =
@@ -219,7 +245,7 @@ export type Action =
   | {
       type: "SET_BAND_FOCUS";
       input: string;
-      bandFocused: Band;
+      bandFocused: Slider;
     }
   | {
       type: "UNSET_FOCUS";
@@ -436,10 +462,39 @@ export type Action =
   | { type: "LOAD_DEFAULT_SKIN" }
   | { type: "ENABLE_MEDIA_LIBRARY" }
   | { type: "ENABLE_MILKDROP"; open: boolean }
+  | { type: "SCHEDULE_MILKDROP_MESSAGE"; message: string }
   | {
       type: "SET_MILKDROP_DESKTOP";
       enabled: boolean;
-    };
+    }
+  | {
+      type: "SET_MILKDROP_FULLSCREEN";
+      enabled: boolean;
+    }
+  | { type: "PRESET_REQUESTED"; index: number; addToHistory: boolean }
+  | {
+      type: "GOT_BUTTERCHURN_PRESETS";
+      presets: StatePreset[];
+    }
+  | {
+      type: "GOT_BUTTERCHURN";
+      butterchurn: any;
+    }
+  | {
+      type: "TOGGLE_RANDOMIZE_PRESETS";
+    }
+  | { type: "TOGGLE_PRESET_CYCLING" }
+  | {
+      type: "RESOLVE_PRESET_AT_INDEX";
+      index: number;
+      json: Object;
+    }
+  | {
+      type: "SELECT_PRESET_AT_INDEX";
+      index: number;
+      transitionType: TransitionType;
+    }
+  | { type: "TOGGLE_PRESET_OVERLAY" };
 
 export type MediaTagRequestStatus =
   | "INITIALIZED"
@@ -588,6 +643,7 @@ export interface IMusicMetadataBrowserApi {
 export interface Extras {
   requireJSZip: () => Promise<never>;
   requireMusicMetadata: () => Promise<IMusicMetadataBrowserApi>;
+  convertPreset: ((file: File) => Promise<Object>) | null;
   handleTrackDropEvent: (
     e: React.DragEvent<HTMLDivElement>
   ) => Track[] | null | Promise<Track[]> | Promise<null>;

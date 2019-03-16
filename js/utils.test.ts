@@ -6,13 +6,14 @@ import {
   clamp,
   parseViscolors,
   parseIni,
-  normalize,
-  denormalize,
+  normalizeEqBand,
+  denormalizeEqBand,
   segment,
   moveSelected,
   spliceIn,
   getFileExtension,
-  makeCachingFilterFunction
+  makeCachingFilterFunction,
+  replaceAtIndex
 } from "./utils";
 
 const fixture = (filename: string) =>
@@ -295,12 +296,12 @@ bar = "baz"
 });
 
 test("normalize", () => {
-  expect(normalize(1)).toBe(1);
-  expect(normalize(64)).toBe(100);
+  expect(normalizeEqBand(1)).toBe(0);
+  expect(normalizeEqBand(64)).toBe(100);
 });
 test("denormalize", () => {
-  expect(denormalize(1)).toBe(1);
-  expect(denormalize(100)).toBe(64);
+  expect(denormalizeEqBand(0)).toBe(1);
+  expect(denormalizeEqBand(100)).toBe(64);
 });
 
 describe("segment", () => {
@@ -461,5 +462,11 @@ describe("makeCachingFilterFunction", () => {
 
     expect(filter("1111").length).toEqual(1);
     expect(newComparisons()).toBe(19);
+  });
+});
+
+describe("replaceAtIndex", () => {
+  test("can replace", () => {
+    expect(replaceAtIndex([1, 2, 3, 4], 2, 0)).toEqual([1, 2, 0, 4]);
   });
 });

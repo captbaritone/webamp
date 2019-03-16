@@ -6,7 +6,8 @@ import {
   WindowInfo,
   LoadedURLTrack,
   WindowPositions,
-  PlaylistStyle
+  PlaylistStyle,
+  TransitionType
 } from "./types";
 import { createSelector } from "reselect";
 import * as Utils from "./utils";
@@ -25,7 +26,7 @@ import { createPlaylistURL } from "./playlistHtml";
 import * as fromTracks from "./reducers/tracks";
 import * as fromDisplay from "./reducers/display";
 import * as fromEqualizer from "./reducers/equalizer";
-import media, * as fromMedia from "./reducers/media";
+import * as fromMedia from "./reducers/media";
 import * as fromWindows from "./reducers/windows";
 import * as TrackUtils from "./trackUtils";
 import * as MarqueeUtils from "./marqueeUtils";
@@ -39,10 +40,10 @@ export const getEqfData = createSelector(
   sliders => {
     const preset: { [key: string]: number | string } = {
       name: "Entry1",
-      preamp: Utils.denormalize(sliders.preamp)
+      preamp: Utils.denormalizeEqBand(sliders.preamp)
     };
     BANDS.forEach(band => {
-      preset[`hz${band}`] = Utils.denormalize(sliders[band]);
+      preset[`hz${band}`] = Utils.denormalizeEqBand(sliders[band]);
     });
     const eqfData = {
       presets: [preset],
@@ -324,8 +325,7 @@ export const getMediaText = createSelector(
   (minimalMediaText, duration) =>
     minimalMediaText == null
       ? null
-      : // TODO: Maybe the `  ***  ` should actually be added by the marquee
-        `${minimalMediaText} (${Utils.getTimeStr(duration)})  ***  `
+      : `${minimalMediaText} (${Utils.getTimeStr(duration)})`
 );
 
 export const getNumberOfTracks = (state: AppState) =>
@@ -611,5 +611,52 @@ export function getDebugData(state: AppState) {
 }
 
 export function getMilkdropDesktopEnabled(state: AppState): boolean {
-  return state.milkdrop.desktop;
+  return state.milkdrop.display === "DESKTOP";
+}
+
+export function getMilkdropFullscreenEnabled(state: AppState): boolean {
+  return state.milkdrop.display === "FULLSCREEN";
+}
+
+export function getPresets(state: AppState): any {
+  return state.milkdrop.presets;
+}
+
+export function getButterchurn(state: AppState): any {
+  return state.milkdrop.butterchurn;
+}
+
+export function getPresetTransitionType(state: AppState): TransitionType {
+  return state.milkdrop.transitionType;
+}
+
+export function getCurrentPresetIndex(state: AppState): number | null {
+  return state.milkdrop.currentPresetIndex;
+}
+export function getCurrentPreset(state: AppState): any | null {
+  const index = getCurrentPresetIndex(state);
+  if (index == null) {
+    return null;
+  }
+  const preset = state.milkdrop.presets[index];
+  if (preset == null || preset.type === "UNRESOLVED") {
+    return null;
+  }
+  return preset.preset;
+}
+
+export function getPresetNames(state: AppState): string[] {
+  return state.milkdrop.presets.map(preset => preset.name);
+}
+
+export function getPresetOverlayOpen(state: AppState): boolean {
+  return state.milkdrop.overlay;
+}
+
+export function getPresetsAreCycling(state: AppState): boolean {
+  return state.milkdrop.cycling;
+}
+
+export function getRandomizePresets(state: AppState): boolean {
+  return state.milkdrop.randomize;
 }

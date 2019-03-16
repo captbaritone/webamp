@@ -9,7 +9,7 @@ import {
   LoadedURLTrack,
   Middleware,
   WindowPosition,
-  Dispatchable
+  ButterchurnOptions
 } from "./types";
 import getStore from "./store";
 import App from "./components/App";
@@ -20,6 +20,7 @@ import * as Actions from "./actionCreators";
 
 import { LOAD_STYLE } from "./constants";
 import * as Utils from "./utils";
+import * as FileUtils from "./fileUtils";
 
 import {
   SET_AVAILABLE_SKINS,
@@ -35,7 +36,7 @@ import {
 } from "./actionTypes";
 import Emitter from "./emitter";
 
-import "../css/base-skin.min.css";
+import "../css/base-skin.css";
 import { SerializedStateV1 } from "./serializedStates/v1Types";
 import Disposable from "./Disposable";
 
@@ -122,7 +123,7 @@ interface PrivateOptions {
       position: WindowPosition;
     };
   };
-  __butterchurnOptions: { butterchurnOpen: boolean };
+  __butterchurnOptions: ButterchurnOptions;
 }
 
 // Return a promise that resolves when the store matches a predicate.
@@ -175,8 +176,28 @@ class Winamp {
       zIndex,
       requireJSZip,
       requireMusicMetadata,
-      handleTrackDropEvent
+      handleTrackDropEvent,
+      __butterchurnOptions
     } = this.options;
+
+    // TODO: Make this much cleaner
+    let convertPreset = null;
+    if (__butterchurnOptions != null) {
+      const {
+        importConvertPreset,
+        presetConverterEndpoint
+      } = __butterchurnOptions;
+
+      if (importConvertPreset != null && presetConverterEndpoint != null) {
+        convertPreset = async (file: File): Promise<Object> => {
+          const { convertPreset } = await importConvertPreset();
+          return convertPreset(
+            await FileUtils.genStringFromFileReference(file),
+            presetConverterEndpoint
+          );
+        };
+      }
+    }
 
     // TODO: Validate required options
 
@@ -186,7 +207,12 @@ class Winamp {
       this._actionEmitter,
       this.options.__customMiddlewares,
       this.options.__initialState,
-      { requireJSZip, requireMusicMetadata, handleTrackDropEvent }
+      {
+        requireJSZip,
+        requireMusicMetadata,
+        convertPreset,
+        handleTrackDropEvent
+      }
     ) as Store;
 
     if (navigator.onLine) {
@@ -204,6 +230,9 @@ class Winamp {
         type: ENABLE_MILKDROP,
         open: options.__butterchurnOptions.butterchurnOpen
       });
+      this.store.dispatch(
+        Actions.initializePresets(options.__butterchurnOptions)
+      );
     }
 
     if (options.__enableMediaLibrary) {
@@ -288,7 +317,7 @@ class Winamp {
     this.store.dispatch(Actions.previous());
   }
 
-  _bufferTracks(tracks: Track[]) {
+  _bufferTracks(tracks: Track[]): void {
     const nextIndex = Selectors.getTrackCount(this.store.getState());
     this.store.dispatch(
       Actions.loadMediaFiles(tracks, LOAD_STYLE.BUFFER, nextIndex)
@@ -296,7 +325,7 @@ class Winamp {
   }
 
   // Append this array of tracks to the end of the current playlist.
-  appendTracks(tracks: Track[]) {
+  appendTracks(tracks: Track[]): void {
     const nextIndex = Selectors.getTrackCount(this.store.getState());
     this.store.dispatch(
       Actions.loadMediaFiles(tracks, LOAD_STYLE.NONE, nextIndex)
@@ -304,7 +333,7 @@ class Winamp {
   }
 
   // Replace any existing tracks with this array of tracks, and begin playing.
-  setTracksToPlay(tracks: Track[]) {
+  setTracksToPlay(tracks: Track[]): void {
     this.store.dispatch(Actions.loadMediaFiles(tracks, LOAD_STYLE.PLAY));
   }
 
@@ -356,7 +385,7 @@ class Winamp {
     return this.store.subscribe(cb);
   }
 
-  async renderWhenReady(node: HTMLElement) {
+  async renderWhenReady(node: HTMLElement): Promise<void> {
     this.store.dispatch(Actions.centerWindowsInContainer(node));
     await this.skinIsLoaded();
     if (this._node != null) {
@@ -383,7 +412,7 @@ class Winamp {
     );
   }
 
-  dispose() {
+  dispose(): void {
     // TODO: Clean up store subscription in onTrackDidChange
     // TODO: Every storeHas call represents a potential race condition
     this.media.dispose();

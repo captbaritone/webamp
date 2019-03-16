@@ -116,7 +116,7 @@ interface Options {
       requiresNetwork: boolean;
     }
   ];
-  zIndex: number;
+  zIndex?: number;
 }
 
 export default class Webamp {
@@ -140,6 +140,36 @@ export default class Webamp {
   public setTracksToPlay(tracks: Track[]): void;
 
   /**
+   * Play the previous track
+   */
+  public previousTrack(): void;
+
+  /**
+   * Play the next track
+   */
+  public nextTrack(): void;
+
+  /**
+   * Seek forward n seconds in the curent track
+   */
+  public seekForward(seconds: number): void;
+
+  /**
+   * Seek backward n seconds in the curent track
+   */
+  public seekBackward(seconds: number): void;
+
+  /**
+   * Pause the current tack
+   */
+  public pause(): void;
+
+  /**
+   * Play the current tack
+   */
+  public play(): void;
+
+  /**
    * Webamp will wait until it has fetched the skin and fully parsed it and then render itself.
    *
    * Webamp is rendered into a new DOM node at the end of the <body> tag with the id `#webamp`.
@@ -159,7 +189,9 @@ export default class Webamp {
    *
    * @returns An "unsubscribe" function. Useful if at some point in the future you want to stop listening to these events.
    */
-  public onTrackDidChange(callback: (track: Track) => any): () => void;
+  public onTrackDidChange(
+    cb: (trackInfo: { url: string } | null) => void
+  ): () => void;
 
   /**
    * A callback which will be called when Webamp is _about to_ close. Returns an
@@ -168,14 +200,19 @@ export default class Webamp {
    *
    * @returns An "unsubscribe" function. Useful if at some point in the future you want to stop listening to these events.
    */
-  public onWillClose(callback: (cancel: () => void) => any): () => void;
+  public onWillClose(cb: (cancel: () => void) => void): () => void;
 
   /**
    * A callback which will be called when Webamp is closed.
    *
    * @returns An "unsubscribe" function. Useful if at some point in the future you want to stop listening to these events.
    */
-  public onClose(callback: () => any): () => void;
+  public onClose(cb: () => void): () => void;
+
+  /**
+   * After `.close()`ing this instance, you can reopen it by calling this method.
+   */
+  public reopen(): void;
 
   /**
    * A callback which will be called when Webamp is minimized.
@@ -183,4 +220,20 @@ export default class Webamp {
    * @returns An "unsubscribe" function. Useful if at some point in the future you want to stop listening to these events.
    */
   public onMinimize(callback: () => any): () => void;
+
+  /**
+   * Returns a promise that resolves when the skin is done loading.
+   */
+  public oskinIsLoaded(): Promise<void>;
+
+  /**
+   * **Note:** _This method is not fully functional. It is currently impossible to
+   * clean up a Winamp instance. This method makes an effort, but it still leaks
+   * the whole instance. In the future the behavior of this method will improve,
+   * so you might as well call it._
+   *
+   * When you are done with a Webamp instance, call this method and Webamp will
+   * attempt to clean itself up to avoid memory leaks.
+   */
+  public dispose(): void;
 }

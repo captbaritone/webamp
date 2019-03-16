@@ -5,15 +5,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import createMiddleware from "raven-for-redux";
 import isButterchurnSupported from "butterchurn/lib/isSupported.min";
-import osx from "../../skins/MacOSXAqua1-5.wsz";
-import topaz from "../../skins/TopazAmp1-2.wsz";
-import visor from "../../skins/Vizor1-01.wsz";
-import xmms from "../../skins/XMMS-Turquoise.wsz";
-import zaxon from "../../skins/ZaxonRemake1-0.wsz";
-import green from "../../skins/Green-Dimension-V2.wsz";
 import base from "../../skins/base-2.91-png.wsz";
-import internetArchive from "../../skins/Internet-Archive.wsz";
-import partialButterchurnOptions from "../../js/components/MilkdropWindow/options";
 import { WINDOWS } from "../../js/constants";
 import * as Selectors from "../../js/selectors";
 
@@ -34,6 +26,9 @@ import {
 
 import { loadFilesFromReferences } from "../../js/actionCreators";
 import { bindToIndexedDB } from "./indexedDB";
+import { getButterchurnOptions } from "./butterchurnOptions";
+import dropboxFilePicker from "./dropboxFilePicker";
+import availableSkins from "./avaliableSkins";
 
 import {
   skinUrl as configSkinUrl,
@@ -116,23 +111,6 @@ window.addEventListener("beforeinstallprompt", e => {
   e.preventDefault();
 });
 
-// Requires Dropbox's Chooser to be loaded on the page
-function genAudioFileUrlsFromDropbox() {
-  return new Promise((resolve, reject) => {
-    if (window.Dropbox == null) {
-      reject();
-    }
-    window.Dropbox.choose({
-      success: resolve,
-      error: reject,
-      linkType: "direct",
-      folderselect: false,
-      multiselect: true,
-      extensions: ["video", "audio"]
-    });
-  });
-}
-
 Raven.context(async () => {
   window.Raven = Raven;
   if (screenshot) {
@@ -153,10 +131,7 @@ Raven.context(async () => {
       skinUrl != null ||
       screenshot;
 
-    __butterchurnOptions = {
-      ...partialButterchurnOptions,
-      butterchurnOpen: !startWithMilkdropHidden
-    };
+    __butterchurnOptions = getButterchurnOptions(startWithMilkdropHidden);
 
     if (startWithMilkdropHidden) {
       __initialWindowLayout = {
@@ -194,28 +169,8 @@ Raven.context(async () => {
   const webamp = new WebampLazy({
     initialSkin,
     initialTracks: screenshot ? null : initialTracks,
-    availableSkins: [
-      { url: green, name: "Green Dimension V2" },
-      { url: internetArchive, name: "Internet Archive" },
-      { url: osx, name: "Mac OSX v1.5 (Aqua)" },
-      { url: topaz, name: "TopazAmp" },
-      { url: visor, name: "Vizor" },
-      { url: xmms, name: "XMMS Turquoise " },
-      { url: zaxon, name: "Zaxon Remake" }
-    ],
-    filePickers: [
-      {
-        contextMenuName: "Dropbox...",
-        filePicker: async () => {
-          const files = await genAudioFileUrlsFromDropbox();
-          return files.map(file => ({
-            url: file.link,
-            defaultName: file.name
-          }));
-        },
-        requiresNetwork: true
-      }
-    ],
+    availableSkins,
+    filePickers: [dropboxFilePicker],
     enableHotkeys: true,
     requireJSZip: () =>
       import(/* webpackChunkName: "jszip" */ "jszip/dist/jszip"),
@@ -263,7 +218,9 @@ Raven.context(async () => {
     document.title =
       track == null
         ? DEFAULT_DOCUMENT_TITLE
-        : `${track.metaData.title} - ${track.metaData.artist}`;
+        : `${track.metaData.title} - ${
+            track.metaData.artist
+          } \u00B7 ${DEFAULT_DOCUMENT_TITLE}`;
   });
 
   enableMediaSession(webamp);

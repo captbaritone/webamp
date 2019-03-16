@@ -19,7 +19,11 @@ class TracksTable extends React.Component<StateProps, State> {
     super(props);
     this.state = { filter: "" };
   }
+
   render() {
+    const cellStyle: React.CSSProperties = {
+      whiteSpace: "nowrap"
+    };
     return (
       <div
         style={{
@@ -43,43 +47,57 @@ class TracksTable extends React.Component<StateProps, State> {
           style={{ flexGrow: 1, overflowY: "scroll" }}
           className="webamp-media-library-item"
         >
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns:
+                "[artist] 1fr [title] 1fr [album] 1fr [length] 1fr [track number] 1fr [genere] 1fr [year] 1fr [filename] 1fr",
+              gridColumnGap: 1
+            }}
+          >
+            <div style={cellStyle}>Artist</div>
+            <div style={cellStyle}>Title</div>
+            <div style={cellStyle}>Album</div>
+            <div style={cellStyle}>Length</div>
+            <div style={cellStyle}>Track #</div>
+            <div style={cellStyle}>Genere</div>
+            <div style={cellStyle}>Year</div>
+            <div style={cellStyle}>Filename</div>
+
+            {this.props.filterTracks(this.state.filter).map(track => {
+              return (
+                <React.Fragment key={track.id}>
+                  <div style={cellStyle}>{track.artist}</div>
+                  <div style={cellStyle}>{track.title}</div>
+                  <div style={cellStyle}>{track.album}</div>
+                  <div style={cellStyle}>
+                    {Utils.getTimeStr(track.duration)}
+                  </div>
+                  <div style={cellStyle}>1</div>
+                  <div style={cellStyle}>Primus</div>
+                  <div style={cellStyle}>2001</div>
+                  <div style={cellStyle}>
+                    {track.url == null
+                      ? track.defaultName
+                      : FileUtils.filenameFromUrl(track.url)}
+                  </div>
+                </React.Fragment>
+              );
+            })}
+          </div>
+          {/*
           <table
             className="webamp-media-library-table"
             style={{ overflow: "scroll" }}
           >
             <thead>
               <tr>
-                <th>Artist</th>
-                <th>Title</th>
-                <th>Album</th>
-                <th>Length</th>
-                <th>Track #</th>
-                <th>Genere</th>
-                <th>Year</th>
-                <th>Filename</th>
               </tr>
             </thead>
             <tbody>
-              {this.props.filterTracks(this.state.filter).map(track => {
-                return (
-                  <tr key={track.id}>
-                    <td>{track.artist}</td>
-                    <td>{track.title}</td>
-                    <td>{track.album}</td>
-                    <td>{Utils.getTimeStr(track.duration)}</td>
-                    <td>1</td>
-                    <td>Primus</td>
-                    <td>2001</td>
-                    <td>
-                      {track.url == null
-                        ? track.defaultName
-                        : FileUtils.filenameFromUrl(track.url)}
-                    </td>
-                  </tr>
-                );
-              })}
+             
             </tbody>
-          </table>
+          </table> */}
         </div>
         <div style={{ marginTop: 2 }}>
           <button>Play</button>
