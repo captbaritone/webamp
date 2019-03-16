@@ -53,11 +53,7 @@ interface DispatchProps {
   toggleShade(): void;
   scrollUpFourTracks(): void;
   scrollDownFourTracks(): void;
-  loadMedia(
-    e: React.DragEvent<HTMLDivElement>,
-    loadStyle: LoadStyle,
-    startIndex: number
-  ): void;
+  loadMedia(e: React.DragEvent<HTMLDivElement>, startIndex: number): void;
   scrollVolume(e: React.WheelEvent<HTMLDivElement>): void;
 }
 
@@ -78,7 +74,7 @@ class PlaylistWindow extends React.Component<Props> {
       0,
       this.props.maxTrackIndex + 1
     );
-    this.props.loadMedia(e, LOAD_STYLE.NONE, atIndex);
+    this.props.loadMedia(e, atIndex);
   };
 
   render() {
@@ -195,8 +191,8 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
     toggleShade: () => dispatch(togglePlaylistShadeMode()),
     scrollUpFourTracks: () => dispatch(scrollUpFourTracks()),
     scrollDownFourTracks: () => dispatch(scrollDownFourTracks()),
-    loadMedia: (e, loadStyle, startIndex) =>
-      dispatch(loadMedia(e, loadStyle, startIndex)),
+    loadMedia: (e, startIndex) =>
+      dispatch(loadMedia(e, LOAD_STYLE.NONE, startIndex)),
     scrollVolume: e => dispatch(scrollVolume(e))
   };
 };

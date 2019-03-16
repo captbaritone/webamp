@@ -482,10 +482,6 @@ interface TrackInfo {
    * Example: 95
    */
   duration?: number;
-
-  /**
-   * Type can be used to identify the use of custom media classes
-   */
 }
 
 export interface URLTrack extends TrackInfo {
@@ -594,7 +590,7 @@ export interface Extras {
   requireMusicMetadata: () => Promise<IMusicMetadataBrowserApi>;
   handleTrackDropEvent: (
     e: React.DragEvent<HTMLDivElement>
-  ) => Promise<Track[] | null>;
+  ) => Track[] | null | Promise<Track[]> | Promise<null>;
 }
 
 export type GetState = () => AppState;
