@@ -644,6 +644,9 @@ export interface Extras {
   requireJSZip(): Promise<never>;
   requireMusicMetadata(): Promise<IMusicMetadataBrowserApi>;
   convertPreset: ((file: File) => Promise<Object>) | null;
+  handleTrackDropEvent?: (
+    e: React.DragEvent<HTMLDivElement>
+  ) => Track[] | null | Promise<Track[] | null>;
 }
 
 export type GetState = () => AppState;

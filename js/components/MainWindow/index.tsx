@@ -5,7 +5,8 @@ import { WINDOWS, MEDIA_STATUS } from "../../constants";
 import {
   loadFilesFromReferences,
   toggleMainWindowShadeMode,
-  scrollVolume
+  scrollVolume,
+  loadMedia
 } from "../../actionCreators";
 import { getWindowShade } from "../../selectors";
 
@@ -42,7 +43,8 @@ import {
   WindowId,
   AppState,
   Dispatch,
-  FilePicker
+  FilePicker,
+  Track
 } from "../../types";
 
 interface StateProps {
@@ -60,6 +62,7 @@ interface DispatchProps {
   loadFilesFromReferences(files: FileList): void;
   scrollVolume(e: React.WheelEvent<HTMLDivElement>): void;
   toggleMainWindowShadeMode(): void;
+  loadMedia(e: React.DragEvent<HTMLDivElement>): void;
 }
 
 interface OwnProps {
@@ -72,10 +75,6 @@ type Props = StateProps & DispatchProps & OwnProps;
 export class MainWindow extends React.Component<Props> {
   _handleClick = () => {
     this.props.setFocus();
-  };
-
-  _handleDrop = (e: React.DragEvent<HTMLDivElement>): void => {
-    this.props.loadFilesFromReferences(e.dataTransfer.files);
   };
 
   render() {
@@ -108,7 +107,7 @@ export class MainWindow extends React.Component<Props> {
         id="main-window"
         className={className}
         onMouseDown={this._handleClick}
-        handleDrop={this._handleDrop}
+        handleDrop={this.props.loadMedia}
         onWheel={this.props.scrollVolume}
       >
         <div
@@ -196,7 +195,8 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
       dispatch(loadFilesFromReferences(files)),
     toggleMainWindowShadeMode: () => dispatch(toggleMainWindowShadeMode()),
     scrollVolume: (e: React.WheelEvent<HTMLDivElement>) =>
-      dispatch(scrollVolume(e))
+      dispatch(scrollVolume(e)),
+    loadMedia: (e: React.DragEvent<HTMLDivElement>) => dispatch(loadMedia(e))
   };
 };
 export default connect(

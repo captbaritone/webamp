@@ -10,7 +10,8 @@ import {
   loadFilesFromReferences,
   togglePlaylistShadeMode,
   scrollVolume,
-  closeWindow
+  closeWindow,
+  loadMedia
 } from "../../actionCreators";
 import * as Selectors from "../../selectors";
 
@@ -31,7 +32,7 @@ import TrackList from "./TrackList";
 import ScrollBar from "./ScrollBar";
 
 import "../../../css/playlist-window.css";
-import { AppState, PlaylistStyle, Dispatch } from "../../types";
+import { AppState, PlaylistStyle, Dispatch, LoadStyle } from "../../types";
 
 interface StateProps {
   offset: number;
@@ -52,10 +53,7 @@ interface DispatchProps {
   toggleShade(): void;
   scrollUpFourTracks(): void;
   scrollDownFourTracks(): void;
-  loadFilesFromReferences(
-    e: React.DragEvent<HTMLDivElement>,
-    startIndex: number
-  ): void;
+  loadMedia(e: React.DragEvent<HTMLDivElement>, startIndex: number): void;
   scrollVolume(e: React.WheelEvent<HTMLDivElement>): void;
 }
 
@@ -76,7 +74,7 @@ class PlaylistWindow extends React.Component<Props> {
       0,
       this.props.maxTrackIndex + 1
     );
-    this.props.loadFilesFromReferences(e, atIndex);
+    this.props.loadMedia(e, atIndex);
   };
 
   render() {
@@ -185,22 +183,13 @@ class PlaylistWindow extends React.Component<Props> {
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
   return {
     focusPlaylist: () =>
-      dispatch({
-        type: SET_FOCUSED_WINDOW,
-        window: WINDOWS.PLAYLIST
-      }),
+      dispatch({ type: SET_FOCUSED_WINDOW, window: WINDOWS.PLAYLIST }),
     close: () => dispatch(closeWindow(WINDOWS.PLAYLIST)),
     toggleShade: () => dispatch(togglePlaylistShadeMode()),
     scrollUpFourTracks: () => dispatch(scrollUpFourTracks()),
     scrollDownFourTracks: () => dispatch(scrollDownFourTracks()),
-    loadFilesFromReferences: (e, startIndex) =>
-      dispatch(
-        loadFilesFromReferences(
-          e.dataTransfer.files,
-          LOAD_STYLE.NONE,
-          startIndex
-        )
-      ),
+    loadMedia: (e, startIndex) =>
+      dispatch(loadMedia(e, LOAD_STYLE.NONE, startIndex)),
     scrollVolume: e => dispatch(scrollVolume(e))
   };
 };
