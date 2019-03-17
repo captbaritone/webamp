@@ -3,6 +3,7 @@ const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const UnminifiedWebpackPlugin = require("unminified-webpack-plugin");
 
 module.exports = {
+  devtool: "source-map",
   mode: "production",
   resolve: {
     extensions: [".js", ".ts", ".tsx"]
