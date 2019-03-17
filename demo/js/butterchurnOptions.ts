@@ -20,6 +20,15 @@ function presetNameFromURL(url: string) {
   }
 }
 
+async function loadButterchurnPresetMapURL(url) {
+  const resp = await fetch(url);
+  // TODO: Fallback to some other presets?
+  const namesToPresetUrls = await resp.json();
+  return Object.keys(namesToPresetUrls).map((name: string) => {
+    return { name, butterchurnPresetUrl: namesToPresetUrls[name] };
+  });
+}
+
 export function getButterchurnOptions(
   startWithMilkdropHidden: boolean
 ): ButterchurnOptions {
@@ -40,8 +49,11 @@ export function getButterchurnOptions(
       if ("URLSearchParams" in window) {
         const params = new URLSearchParams(location.search);
         const butterchurnPresetUrlParam = params.get("butterchurnPresetUrl");
+        const butterchurnPresetMapUrlParam = params.get("butterchurnPresetMapUrl");
         const milkdropPresetUrl = params.get("milkdropPresetUrl");
-        if (butterchurnPresetUrlParam) {
+        if (butterchurnPresetMapUrlParam) {
+          return await loadButterchurnPresetMapURL(butterchurnPresetMapUrlParam);
+        } else if (butterchurnPresetUrlParam) {
           if (
             !KNOWN_PRESET_URLS_REGEXES.some(pattern =>
               pattern.test(butterchurnPresetUrlParam)
@@ -62,14 +74,7 @@ export function getButterchurnOptions(
           throw new Error("We still need to implement this");
         }
       }
-      const resp = await fetch(
-        "https://unpkg.com/butterchurn-presets-weekly@0.0.2/weeks/week1/presets.json"
-      );
-      // TODO: Fallback to some other presets?
-      const namesToPresetUrls = await resp.json();
-      return Object.keys(namesToPresetUrls).map((name: string) => {
-        return { name, butterchurnPresetUrl: namesToPresetUrls[name] };
-      });
+      return await loadButterchurnPresetMapURL("https://unpkg.com/butterchurn-presets-weekly@0.0.2/weeks/week1/presets.json");
     },
     butterchurnOpen: !startWithMilkdropHidden
   };
