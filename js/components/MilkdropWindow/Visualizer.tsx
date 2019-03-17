@@ -79,14 +79,23 @@ function Visualizer(props: Props) {
   }, [visualizer, props.width, props.height]);
 
   // Load presets when they change
+  const hasLoadedPreset = useRef<boolean>(false);
   useEffect(() => {
     if (visualizer == null || props.currentPreset == null) {
       return;
     }
-    visualizer.loadPreset(
-      props.currentPreset,
-      TRANSITION_TYPE_DURATIONS[props.transitionType]
-    );
+    if (hasLoadedPreset.current) {
+      visualizer.loadPreset(
+        props.currentPreset,
+        TRANSITION_TYPE_DURATIONS[props.transitionType]
+      );
+    } else {
+      visualizer.loadPreset(
+        props.currentPreset,
+        TRANSITION_TYPE_DURATIONS[TransitionType.IMMEDIATE]
+      );
+      hasLoadedPreset.current = true;
+    }
   }, [visualizer, props.currentPreset]);
 
   // Handle title animations
