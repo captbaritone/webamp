@@ -103,7 +103,7 @@ export function appendPresetFileList(fileList: FileList): Dispatchable {
             }
           } as StatePreset;
         } else {
-          throw new Error("Invalid type");
+          console.error("Invalid type preset when loading directory");
         }
         return null as never;
       })
