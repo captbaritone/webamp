@@ -22,7 +22,6 @@ function presetNameFromURL(url: string) {
 
 async function loadButterchurnPresetMapURL(url) {
   const resp = await fetch(url);
-  // TODO: Fallback to some other presets?
   const namesToPresetUrls = await resp.json();
   return Object.keys(namesToPresetUrls).map((name: string) => {
     return { name, butterchurnPresetUrl: namesToPresetUrls[name] };
@@ -84,6 +83,7 @@ export function getButterchurnOptions(
           throw new Error("We still need to implement this");
         }
       }
+      // TODO: Fallback to some other presets?
       return await loadButterchurnPresetMapURL("https://unpkg.com/butterchurn-presets-weekly@0.0.2/weeks/week1/presets.json");
     },
     butterchurnOpen: !startWithMilkdropHidden
