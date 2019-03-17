@@ -4,7 +4,7 @@ import { LoadedURLTrack } from "../../js/types";
 export default function enableMediaSession(webamp: WebampLazy) {
   if ("mediaSession" in navigator) {
     /* global MediaMetadata */
-    webamp.onTrackDidChange((track: LoadedURLTrack | null) => {
+    webamp.onTrackDidChange(track => {
       if (track == null) {
         return;
       }

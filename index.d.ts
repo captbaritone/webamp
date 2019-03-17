@@ -45,6 +45,16 @@ interface BlobTrack extends TrackInfo {
   blob: Blob;
 }
 
+interface LoadedURLTrack {
+  url: string;
+  metaData: {
+    artist: string | null;
+    title: string | null;
+    album: string | null;
+    albumArtUrl: string | null;
+  };
+}
+
 /**
  * Many methods on the webamp instance deal with track.
  *
@@ -190,7 +200,7 @@ export default class Webamp {
    * @returns An "unsubscribe" function. Useful if at some point in the future you want to stop listening to these events.
    */
   public onTrackDidChange(
-    cb: (trackInfo: { url: string } | null) => void
+    cb: (trackInfo: LoadedURLTrack | null) => void
   ): () => void;
 
   /**
