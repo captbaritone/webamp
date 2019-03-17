@@ -1,3 +1,9 @@
+## 1.3.1
+
+### Bug Fixes:
+
+- Fix issue where `music-metadata-browser` was not imported correctly, and id3 tags could not be read. ([324fc2](https://github.com/captbaritone/webamp/commit/324fc29ca6c94fa54091608323842ba0604e0b4c))
+
 ## 1.3.0
 
 This release is far overdue. In the last six months we've made a huge number of improvements to Webamp.
