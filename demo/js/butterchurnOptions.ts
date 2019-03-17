@@ -52,7 +52,17 @@ export function getButterchurnOptions(
         const butterchurnPresetMapUrlParam = params.get("butterchurnPresetMapUrl");
         const milkdropPresetUrl = params.get("milkdropPresetUrl");
         if (butterchurnPresetMapUrlParam) {
-          return await loadButterchurnPresetMapURL(butterchurnPresetMapUrlParam);
+          if (
+            !KNOWN_PRESET_URLS_REGEXES.some(pattern =>
+              pattern.test(butterchurnPresetMapUrlParam)
+            )
+          ) {
+            console.error(
+              "Unsupported URL passed as butterchurnPresetMapUrl query param."
+            );
+          } else {
+            return await loadButterchurnPresetMapURL(butterchurnPresetMapUrlParam);
+          }
         } else if (butterchurnPresetUrlParam) {
           if (
             !KNOWN_PRESET_URLS_REGEXES.some(pattern =>
