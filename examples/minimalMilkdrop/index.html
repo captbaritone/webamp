@@ -24,9 +24,9 @@
                 duration: 5.322286
             }],
             __butterchurnOptions: {
-                importButterchurn: () => Promise.resolve(butterchurn),
+                importButterchurn: () => Promise.resolve(window.butterchurn),
                 getPresets: () => {
-                    const presets = butterchurnPresets.getPresets();
+                    const presets = window.butterchurnPresets.getPresets();
                     return Object.keys(presets).map((name) => {
                         return {
                             name,
