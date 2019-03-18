@@ -33,7 +33,7 @@ const WebampIcon = (props: Props) => {
     return () => document.removeEventListener("click", handleClick);
   }, [selected]);
   return (
-    hidden || (
+    !hidden && (
       <div
         ref={ref}
         onDoubleClick={() => {
