@@ -1,5 +1,6 @@
 import { parser, creator } from "winamp-eqf";
 import { BANDS, LOAD_STYLE } from "../constants";
+import JSZip from "jszip";
 
 import * as Utils from "../utils";
 
@@ -88,7 +89,7 @@ export function setSkinFromArrayBuffer(
       return;
     }
     dispatch({ type: LOADING });
-    let JSZip;
+    let JSZip: JSZip;
     try {
       JSZip = await requireJSZip();
     } catch (e) {
