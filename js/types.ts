@@ -1,3 +1,4 @@
+import JSZip from "jszip";
 import { PlaylistState } from "./reducers/playlist";
 import { SettingsState } from "./reducers/settings";
 import { UserInputState } from "./reducers/userInput";
@@ -308,7 +309,7 @@ export type Action =
     }
   | {
       type: "SET_DUMMY_VIZ_DATA";
-      data: null;
+      data: DummyVizData;
     }
   | {
       type: "SET_BAND_VALUE";
@@ -641,7 +642,7 @@ export interface IMusicMetadataBrowserApi {
 }
 
 export interface Extras {
-  requireJSZip(): Promise<never>;
+  requireJSZip(): Promise<JSZip>;
   requireMusicMetadata(): Promise<IMusicMetadataBrowserApi>;
   convertPreset: ((file: File) => Promise<Object>) | null;
   handleTrackDropEvent?: (

@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
+import JSZip from "jszip";
 
 import {
   Store,
@@ -39,8 +40,9 @@ import Emitter from "./emitter";
 import "../css/base-skin.css";
 import { SerializedStateV1 } from "./serializedStates/v1Types";
 import Disposable from "./Disposable";
+import { DeepPartial } from "redux";
 
-interface Options {
+export interface Options {
   /**
    * An object representing the initial skin to use.
    *
@@ -104,26 +106,26 @@ interface Options {
       requiresNetwork: boolean;
     }
   ];
-  zIndex: number;
+  zIndex?: number;
 }
 
 interface PrivateOptions {
   avaliableSkins?: { url: string; name: string }[]; // Old misspelled name
-  requireJSZip(): Promise<never>; // TODO: Type JSZip
+  requireJSZip(): Promise<JSZip>; // TODO: Type JSZip
   requireMusicMetadata(): Promise<any>; // TODO: Type musicmetadata
   handleTrackDropEvent?: (
     e: React.DragEvent<HTMLDivElement>
   ) => Track[] | null | Promise<Track[] | null>;
-  __initialState?: AppState;
+  __initialState?: DeepPartial<AppState>;
   __customMiddlewares?: Middleware[];
   __enableMediaLibrary?: boolean;
-  __initialWindowLayout: {
+  __initialWindowLayout?: {
     [windowId: string]: {
       size: null | [number, number];
       position: WindowPosition;
     };
   };
-  __butterchurnOptions: ButterchurnOptions;
+  __butterchurnOptions?: ButterchurnOptions;
 }
 
 // Return a promise that resolves when the store matches a predicate.

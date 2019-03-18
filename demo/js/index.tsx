@@ -5,6 +5,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import createMiddleware from "raven-for-redux";
 import isButterchurnSupported from "butterchurn/lib/isSupported.min";
+import JSZip from "jszip";
+// @ts-ignore
 import base from "../../skins/base-2.91-png.wsz";
 import { WINDOWS } from "../../js/constants";
 import * as Selectors from "../../js/selectors";
@@ -40,6 +42,9 @@ import WebampIcon from "./WebampIcon";
 import enableMediaSession from "./mediaSession";
 import screenshotInitialState from "./screenshotInitialState";
 
+declare const SENTRY_DSN: string | undefined;
+declare const COMMITHASH: string | undefined;
+
 const DEFAULT_DOCUMENT_TITLE = document.title;
 
 const NOISY_ACTION_TYPES = new Set([
@@ -53,7 +58,7 @@ const NOISY_ACTION_TYPES = new Set([
 
 const MIN_MILKDROP_WIDTH = 725;
 
-let screenshot = false;
+let screenshot = null;
 let clearState = false;
 let useState = false;
 let skinUrl = configSkinUrl;
@@ -112,9 +117,13 @@ window.addEventListener("beforeinstallprompt", e => {
 });
 
 Raven.context(async () => {
+  // @ts-ignore
   window.Raven = Raven;
   if (screenshot) {
-    document.getElementsByClassName("about")[0].style.visibility = "hidden";
+    const aboutNode = document.getElementsByClassName("about")[0];
+    if (aboutNode != null) {
+      (aboutNode as HTMLElement).style.visibility = "hidden";
+    }
   }
   if (!WebampLazy.browserIsSupported()) {
     document.getElementById("browser-compatibility").style.display = "block";
@@ -172,8 +181,8 @@ Raven.context(async () => {
     availableSkins,
     filePickers: [dropboxFilePicker],
     enableHotkeys: true,
-    requireJSZip: () =>
-      import(/* webpackChunkName: "jszip" */ "jszip/dist/jszip"),
+    requireJSZip: async () =>
+      (await import(/* webpackChunkName: "jszip" */ "jszip")).default,
     requireMusicMetadata: () =>
       import(/* webpackChunkName: "music-metadata-browser" */ "music-metadata-browser/dist/index"),
     __enableMediaLibrary: library,
@@ -231,12 +240,15 @@ Raven.context(async () => {
   fileInput.style.display = "none";
   fileInput.type = "file";
   fileInput.value = null;
-  fileInput.addEventListener("change", e => {
-    webamp.store.dispatch(loadFilesFromReferences(e.target.files));
+  fileInput.addEventListener("change", (e: Event) => {
+    webamp.store.dispatch(
+      loadFilesFromReferences((e.target as HTMLInputElement).files)
+    );
   });
   document.body.appendChild(fileInput);
 
   // Expose webamp instance for debugging and integration tests.
+  // @ts-ignore
   window.__webamp = webamp;
 
   await bindToIndexedDB(webamp, clearState, useState);
