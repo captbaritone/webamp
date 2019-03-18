@@ -48,7 +48,7 @@ I do most development by starting the demo site in dev mode and iterating that w
     # Run tests and lint checks
     yarn test
 
-## Building the demo site (webmap.org)
+## Building the demo site (webamp.org)
 
 To do an optimized build of the demo site, you can run:
 
