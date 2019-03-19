@@ -15,9 +15,9 @@ const Shooter = require("./shooter");
 const CACHE_PATH = "/Volumes/Mobile Backup/skins/cache/";
 
 const [
-  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _node,
-  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _thisFile,
   rawInputDir,
   rawOutputDir

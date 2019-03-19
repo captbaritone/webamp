@@ -1,14 +1,20 @@
 {
-  "parser": "babel-eslint",
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": 8,
+    "jsx": true,
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true,
       "experimentalObjectRestSpread": true
     }
   },
-  "plugins": ["react", "prettier", "import", "no-constructor-bind"],
+  "plugins": [
+    "react",
+    "prettier",
+    "import",
+    "no-constructor-bind",
+    "@typescript-eslint"
+  ],
   "settings": {
     "react": {
       "version": "15.2"
@@ -101,7 +107,10 @@
     "no-unneeded-ternary": "error",
     "no-unreachable": "error",
     "no-unused-expressions": "error",
-    "no-unused-vars": "error",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "ignoreRestSiblings": true }
+    ],
     "no-use-before-define": ["error", "nofunc"],
     "no-useless-rename": "error",
     "no-var": "error",
