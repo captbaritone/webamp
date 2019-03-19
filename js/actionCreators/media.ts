@@ -1,5 +1,3 @@
-import { nextTrack } from "../selectors";
-
 import { clamp } from "../utils";
 import {
   SEEK_TO_PERCENT_COMPLETE,
@@ -74,7 +72,7 @@ export function nextN(n: number): Dispatchable {
       dispatch(playRandomTrack());
       return;
     }
-    const nextTrackId = nextTrack(state, n);
+    const nextTrackId = Selectors.nextTrack(state, n);
     if (nextTrackId == null) {
       return;
     }
