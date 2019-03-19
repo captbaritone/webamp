@@ -1,4 +1,4 @@
-# Minimal Example
+# Minimal Lazy Loading Example
 
 ## API is still being finalized and may change when released
 
@@ -10,7 +10,7 @@ To try it out:
 
 ```
 $ git clone git@github.com:captbaritone/webamp.git
-$ cd webamp/examples/webpack/
+$ cd webamp/examples/webpackLazyLoad/
 $ npm install
 $ npm run build
 $ open index.html
