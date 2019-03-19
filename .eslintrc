@@ -52,7 +52,11 @@
     "dot-notation": "error",
     "eqeqeq": ["error", "smart"],
     "guard-for-in": "error",
-    "lines-between-class-members": "warn",
+    "lines-between-class-members": [
+      "warn",
+      "always",
+      { "exceptAfterSingleLine": true }
+    ],
     "max-depth": ["warn", 4],
     "max-params": ["warn", 5],
     "new-cap": "error",
