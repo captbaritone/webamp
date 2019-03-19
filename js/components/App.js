@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Emitter from "../emitter";
 import { WINDOWS } from "../constants";
@@ -181,10 +180,6 @@ class App extends React.Component {
     );
   }
 }
-
-App.propTypes = {
-  container: PropTypes.instanceOf(Element),
-};
 
 const mapStateToProps = state => ({
   visualizerStyle: Selectors.getVisualizerStyle(state),
