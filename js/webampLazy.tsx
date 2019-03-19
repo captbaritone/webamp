@@ -145,6 +145,7 @@ const storeHas = (
   });
 
 class Winamp {
+  _instanceClass: string;
   _actionEmitter: Emitter;
   _node: HTMLElement | null;
   _disposable: Disposable;
@@ -163,6 +164,7 @@ class Winamp {
   }
 
   constructor(options: Options & PrivateOptions) {
+    this._instanceClass = `webamp-instance-${Utils.uniqueId()}`;
     this._node = null;
     this._disposable = new Disposable();
     this._actionEmitter = new Emitter();
@@ -403,6 +405,7 @@ class Winamp {
     ReactDOM.render(
       <Provider store={this.store}>
         <App
+          instanceClass={this._instanceClass}
           media={this.media}
           container={node}
           filePickers={this.options.filePickers}

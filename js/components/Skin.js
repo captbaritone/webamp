@@ -88,13 +88,14 @@ function cssRulesFromProps(props) {
   if (!skinImages || !skinCursors) {
     return null;
   }
+  const cssPrefix = `${CSS_PREFIX}.${props.instanceClass}`;
   const cssRules = [];
   Object.keys(imageSelectors).forEach(imageName => {
     const imageUrl = skinImages[imageName] || skinImages[FALLBACKS[imageName]];
     if (imageUrl) {
       imageSelectors[imageName].forEach(selector => {
         cssRules.push(
-          `${CSS_PREFIX} ${selector} {background-image: url(${imageUrl})}`
+          `${cssPrefix} ${selector} {background-image: url(${imageUrl})}`
         );
       });
     }
@@ -105,10 +106,10 @@ function cssRulesFromProps(props) {
       const width = skinGenLetterWidths[`GEN_TEXT_${letter}`];
       const selectedWidth = skinGenLetterWidths[`GEN_TEXT_SELECTED_${letter}`];
       cssRules.push(
-        `${CSS_PREFIX} .gen-text-${letter.toLowerCase()} {width: ${width}px;}`
+        `${cssPrefix} .gen-text-${letter.toLowerCase()} {width: ${width}px;}`
       );
       cssRules.push(
-        `${CSS_PREFIX} .selected .gen-text-${letter.toLowerCase()} {width: ${selectedWidth}px;}`
+        `${cssPrefix} .selected .gen-text-${letter.toLowerCase()} {width: ${selectedWidth}px;}`
       );
     });
   }
@@ -122,7 +123,7 @@ function cssRulesFromProps(props) {
             // Maybe our CSS name spacing should be based on some other class/id
             // than the one we use for defining the main div.
             // That way it could be shared by both the player and the context menu.
-            selector.startsWith("#webamp-context-menu") ? "" : CSS_PREFIX
+            selector.startsWith("#webamp-context-menu") ? "" : cssPrefix
           } ${selector} {cursor: url(${cursorUrl}), auto}`
         );
       });
@@ -133,7 +134,7 @@ function cssRulesFromProps(props) {
     // This alternate number file requires that the minus sign be
     // formatted differently.
     cssRules.push(
-      `${CSS_PREFIX} .status #time #minus-sign { top: 0px; left: -1px; width: 9px; height: 13px; }`
+      `${cssPrefix} .status #time #minus-sign { top: 0px; left: -1px; width: 9px; height: 13px; }`
     );
   }
 
@@ -141,24 +142,24 @@ function cssRulesFromProps(props) {
     if (polygons) {
       const matcher = mapRegionNamesToMatcher[regionName];
       const id = mapRegionNamesToIds[regionName];
-      cssRules.push(`${CSS_PREFIX} ${matcher} { clip-path: url(#${id}); }`);
+      cssRules.push(`${cssPrefix} ${matcher} { clip-path: url(#${id}); }`);
     }
   }
 
   // TODO: Find a way to make this declarative.
   cssRules.push(
-    `#webamp-media-library {
+    `${cssPrefix} #webamp-media-library {
        background-color: ${props.skinGenExColors.windowBackground};
        color: ${props.skinGenExColors.windowText};
     }`
   );
   cssRules.push(
-    `#webamp-media-library input {
+    `${cssPrefix} #webamp-media-library input {
        caret-color: ${props.skinGenExColors.windowText};
     }`
   );
   cssRules.push(
-    `#webamp-media-library .webamp-media-library-item {
+    `${cssPrefix} #webamp-media-library .webamp-media-library-item {
        color: ${props.skinGenExColors.itemForeground};
        background-color: ${props.skinGenExColors.itemBackground};
        border-right: 1px solid ${props.skinGenExColors.divider};
@@ -166,37 +167,37 @@ function cssRulesFromProps(props) {
     }`
   );
   cssRules.push(
-    `#webamp-media-library button {
+    `${cssPrefix} #webamp-media-library button {
        color: ${props.skinGenExColors.buttonText};
     }`
   );
   cssRules.push(
-    `#webamp-media-library .webamp-media-library-vertical-divider {
+    `${cssPrefix} #webamp-media-library .webamp-media-library-vertical-divider {
     }`
   );
   cssRules.push(
-    `#webamp-media-library .webamp-media-library-vertical-divider-line,
+    `${cssPrefix} #webamp-media-library .webamp-media-library-vertical-divider-line,
      #webamp-media-library .webamp-media-library-horizontal-divider-line
      {
        background-color: ${props.skinGenExColors.divider};
     }`
   );
   cssRules.push(
-    `#webamp-media-library .webamp-media-library-table {
+    `${cssPrefix} #webamp-media-library .webamp-media-library-table {
        color: ${props.skinGenExColors.itemForeground};
        background-color: ${props.skinGenExColors.itemBackground};
     }`
   );
 
   cssRules.push(
-    `#webamp-media-library .webamp-media-library-table thead {
+    `${cssPrefix} #webamp-media-library .webamp-media-library-table thead {
        color: ${props.skinGenExColors.listHeaderText};
        background-color: ${props.skinGenExColors.listHeaderBackground};
     }`
   );
 
   cssRules.push(
-    `#webamp-media-library .webamp-media-library-table thead th {
+    `${cssPrefix} #webamp-media-library .webamp-media-library-table thead th {
        border-top: 1px solid ${props.skinGenExColors.listHeaderFrameTopAndLeft};
        border-left: 1px solid ${
          props.skinGenExColors.listHeaderFrameTopAndLeft
@@ -229,11 +230,14 @@ const Skin = props => {
   if (cssRules == null) {
     return null;
   }
+  console.log(cssRules);
+  console.log(props.instanceId);
   const clipPaths = clipPathsFromProps(props);
   return (
-    <div>
+    <div id="">
       <Css>{cssRules.join("\n")}</Css>
       <ClipPaths>{clipPaths}</ClipPaths>
+      {props.children}
     </div>
   );
 };

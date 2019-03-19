@@ -35,6 +35,7 @@ class App extends React.Component {
     this._webampNode.id = "webamp";
     this._webampNode.role = "application";
     this._webampNode.style.zIndex = this.props.zIndex;
+    this._webampNode.classList.add(this.props.instanceClass);
     document.body.appendChild(this._webampNode);
 
     this.props.browserWindowSizeChanged(Utils.getWindowSize());
@@ -167,8 +168,9 @@ class App extends React.Component {
     }
     return ReactDOM.createPortal(
       <React.Fragment>
-        <Skin />
+        <Skin instanceClass={this.props.instanceClass} />
         <ContextMenuWrapper
+          // instanceId={this.props.instanceId}
           renderContents={() => <MainContextMenu filePickers={filePickers} />}
         >
           <WindowManager
