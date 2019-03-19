@@ -14,8 +14,9 @@ import {
 } from "../actionTypes";
 import { WINDOWS } from "../constants";
 import { Dispatchable } from "../types";
-import { ensureWindowsAreOnScreen, showWindow, hideWindow } from "./windows";
 import { SerializedStateV1 } from "../serializedStates/v1Types";
+import * as Selectors from "../selectors";
+import { ensureWindowsAreOnScreen, showWindow, hideWindow } from "./windows";
 
 export {
   toggleDoubleSizeMode,
@@ -110,8 +111,6 @@ export {
   togglePresetCycling,
   scheduleMilkdropMessage
 } from "./milkdrop";
-
-import * as Selectors from "../selectors";
 
 export function close(): Dispatchable {
   return dispatch => {

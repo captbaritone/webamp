@@ -6,12 +6,13 @@ import { connect } from "react-redux";
 import RcSlider from "rc-slider";
 // @ts-ignore
 import SliderComponent from "rc-slider/lib/Slider";
-// Here we inform TypeScript to use the default export's type for our partial import.
-const Slider = SliderComponent as typeof RcSlider;
 
 import { setPlaylistScrollPosition } from "../../actionCreators";
 import { getVisibleTrackIds, getPlaylistScrollPosition } from "../../selectors";
 import { AppState, Dispatch } from "../../types";
+
+// Here we inform TypeScript to use the default export's type for our partial import.
+const Slider = SliderComponent as typeof RcSlider;
 
 interface StateProps {
   playlistScrollPosition: number;
