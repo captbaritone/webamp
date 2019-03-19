@@ -101,7 +101,7 @@
     "no-octal-escape": "error",
     "no-proto": "error",
     "no-redeclare": "error",
-    "no-shadow": "error",
+    "no-shadow": "warn",
     "no-spaced-func": "error",
     "no-this-before-super": "error",
     "no-throw-literal": "error",
@@ -112,7 +112,7 @@
     "no-unreachable": "error",
     "no-unused-expressions": "error",
     "@typescript-eslint/no-unused-vars": [
-      "error",
+      "warn",
       { "ignoreRestSiblings": true }
     ],
     "no-use-before-define": ["error", "nofunc"],
@@ -129,7 +129,7 @@
     "react/jsx-boolean-value": "error",
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
-    "react/prefer-stateless-function": "error",
+    "react/prefer-stateless-function": "warn",
     "react/prefer-es6-class": "error",
     "react/jsx-pascal-case": "error",
     "react/require-render-return": "error",
@@ -147,7 +147,7 @@
     "import/no-extraneous-dependencies": "error",
     "import/no-named-as-default-member": "error",
     "import/no-unresolved": "error",
-    "import/order": "error",
+    "import/order": "warn",
     "no-constructor-bind/no-constructor-bind": "error"
   }
 }
