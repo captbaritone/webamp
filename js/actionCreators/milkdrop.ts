@@ -102,9 +102,9 @@ export function appendPresetFileList(fileList: FileList): Dispatchable {
               return JSON.parse(str);
             }
           } as StatePreset;
-        } else {
-          console.error("Invalid type preset when loading directory");
         }
+        console.error("Invalid type preset when loading directory");
+
         return null as never;
       })
       .filter(Boolean);
