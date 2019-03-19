@@ -1,11 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
-import {
-  getOrderedTracks,
-  getMinimalMediaText,
-  getWindowSize
-} from "../../selectors";
 import { getTimeStr } from "../../utils";
 import { SET_FOCUSED_WINDOW } from "../../actionTypes";
 import * as Selectors from "../../selectors";
@@ -116,10 +111,10 @@ const mapStateToProps = (state: AppState): StateProps => {
   } = state;
   return {
     focused,
-    playlistSize: getWindowSize(state)("playlist"),
-    trackOrder: getOrderedTracks(state),
+    playlistSize: Selectors.getWindowSize(state)("playlist"),
+    trackOrder: Selectors.getOrderedTracks(state),
     duration,
-    name: getMinimalMediaText(state)
+    name: Selectors.getMinimalMediaText(state)
   };
 };
 

@@ -1,4 +1,4 @@
-import { Action, StatePreset } from "../types";
+import { Action, StatePreset, TransitionType } from "../types";
 import {
   SET_MILKDROP_DESKTOP,
   SET_MILKDROP_FULLSCREEN,
@@ -13,7 +13,6 @@ import {
   SCHEDULE_MILKDROP_MESSAGE
 } from "../actionTypes";
 import * as Utils from "../utils";
-import { TransitionType } from "../types";
 
 interface Message {
   text: string;

@@ -1,7 +1,6 @@
 import React, { ReactNode } from "react";
 import { connect } from "react-redux";
 
-import { Box, Diff } from "../snapUtils";
 import * as SnapUtils from "../snapUtils";
 import * as Selectors from "../selectors";
 import { updateWindowPositions } from "../actionCreators";
@@ -12,7 +11,7 @@ import {
   AppState,
   WindowId
 } from "../types";
-const abuts = (a: Box, b: Box) => {
+const abuts = (a: SnapUtils.Box, b: SnapUtils.Box) => {
   // TODO: This is kinda a hack. They should really be touching, not just within snapping distance.
   // Also, overlapping should not count.
   const wouldMoveTo = SnapUtils.snap(a, b);
@@ -104,7 +103,7 @@ class WindowManager extends React.Component<Props> {
       );
 
       const windowPositionDiff = moving.reduce(
-        (diff: { [windowId: string]: Diff }, window) => {
+        (diff: { [windowId: string]: SnapUtils.Diff }, window) => {
           diff[window.key] = SnapUtils.applyDiff(window, finalDiff);
           return diff;
         },

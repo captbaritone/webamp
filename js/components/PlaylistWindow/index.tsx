@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
 
-import { WINDOWS, TRACK_HEIGHT } from "../../constants";
+import { WINDOWS, TRACK_HEIGHT, LOAD_STYLE } from "../../constants";
 import { SET_FOCUSED_WINDOW } from "../../actionTypes";
 import {
   scrollUpFourTracks,
@@ -14,8 +14,6 @@ import {
   loadMedia
 } from "../../actionCreators";
 import * as Selectors from "../../selectors";
-
-import { LOAD_STYLE } from "../../constants";
 
 import { clamp } from "../../utils";
 import DropTarget from "../DropTarget";

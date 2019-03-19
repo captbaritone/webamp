@@ -1,7 +1,6 @@
 import React, { ChangeEvent } from "react";
 import { connect } from "react-redux";
 
-import { setBalance } from "../actionCreators";
 import * as Actions from "../actionCreators";
 import { Dispatch, AppState } from "../types";
 import * as Selectors from "../selectors";
@@ -38,7 +37,7 @@ const mapStateToProps = (state: AppState) => ({
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   setBalance: (e: ChangeEvent<HTMLInputElement>) =>
-    dispatch(setBalance(Number((e.target as HTMLInputElement).value))),
+    dispatch(Actions.setBalance(Number((e.target as HTMLInputElement).value))),
   showMarquee: () => dispatch(Actions.setFocus("balance")),
   hideMarquee: () => dispatch(Actions.unsetFocus())
 });
