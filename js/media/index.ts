@@ -1,9 +1,9 @@
 /* Emulate the native <audio> element with Web Audio API */
 import { BANDS, MEDIA_STATUS } from "../constants";
-import StereoBalanceNode from "./StereoBalanceNode";
-import Emitter from "../emitter";
-import ElementSource from "./elementSource";
 import { Band } from "../types";
+import Emitter from "../emitter";
+import StereoBalanceNode from "./StereoBalanceNode";
+import ElementSource from "./elementSource";
 
 interface StereoBalanceNodeType extends AudioNode {
   constructor(context: AudioContext): StereoBalanceNodeType;
