@@ -48,7 +48,9 @@ export function getButterchurnOptions(
       if ("URLSearchParams" in window) {
         const params = new URLSearchParams(location.search);
         const butterchurnPresetUrlParam = params.get("butterchurnPresetUrl");
-        const butterchurnPresetMapUrlParam = params.get("butterchurnPresetMapUrl");
+        const butterchurnPresetMapUrlParam = params.get(
+          "butterchurnPresetMapUrl"
+        );
         const milkdropPresetUrl = params.get("milkdropPresetUrl");
         if (butterchurnPresetMapUrlParam) {
           if (
@@ -60,7 +62,7 @@ export function getButterchurnOptions(
               "Unsupported URL passed as butterchurnPresetMapUrl query param."
             );
           } else {
-            return await loadButterchurnPresetMapURL(butterchurnPresetMapUrlParam);
+            return loadButterchurnPresetMapURL(butterchurnPresetMapUrlParam);
           }
         } else if (butterchurnPresetUrlParam) {
           if (
@@ -84,7 +86,9 @@ export function getButterchurnOptions(
         }
       }
       // TODO: Fallback to some other presets?
-      return await loadButterchurnPresetMapURL("https://unpkg.com/butterchurn-presets-weekly@0.0.2/weeks/week1/presets.json");
+      return loadButterchurnPresetMapURL(
+        "https://unpkg.com/butterchurn-presets-weekly@0.0.2/weeks/week1/presets.json"
+      );
     },
     butterchurnOpen: !startWithMilkdropHidden
   };
