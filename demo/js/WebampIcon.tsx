@@ -25,9 +25,8 @@ const WebampIcon = (props: Props) => {
     const handleClick = (e: MouseEvent) => {
       if (ref.current != null && ref.current.contains(e.target as Element)) {
         return;
-      } else {
-        setSelected(false);
       }
+      setSelected(false);
     };
     document.addEventListener("click", handleClick);
     return () => document.removeEventListener("click", handleClick);
