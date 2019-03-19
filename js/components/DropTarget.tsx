@@ -23,18 +23,21 @@ const DropTarget = (props: Props) => {
     ...passThroughProps
   } = props;
 
-  const onDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
-    supress(e);
-    // TODO: We could probably move this coordinate logic into the playlist.
-    // I think that's the only place it gets used.
-    const { currentTarget } = e;
-    if (!(currentTarget instanceof Element)) {
-      return;
-    }
+  const onDrop = useCallback(
+    (e: React.DragEvent<HTMLDivElement>) => {
+      supress(e);
+      // TODO: We could probably move this coordinate logic into the playlist.
+      // I think that's the only place it gets used.
+      const { currentTarget } = e;
+      if (!(currentTarget instanceof Element)) {
+        return;
+      }
 
-    const { left: x, top: y } = currentTarget.getBoundingClientRect();
-    handleDrop(e, { x, y });
-  }, [handleDrop]);
+      const { left: x, top: y } = currentTarget.getBoundingClientRect();
+      handleDrop(e, { x, y });
+    },
+    [handleDrop]
+  );
   return (
     <div
       {...passThroughProps}
