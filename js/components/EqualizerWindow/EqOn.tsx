@@ -1,5 +1,5 @@
 import React from "react";
-import { connect, DispatchProp } from "react-redux";
+import { connect } from "react-redux";
 import classnames from "classnames";
 
 import { toggleEq } from "../../actionCreators";

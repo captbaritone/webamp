@@ -80,10 +80,6 @@ function testSerialization<T>({
   });
 }
 
-const defaultSerializedState = Selectors.getSerlializedState(
-  getStore().getState()
-);
-
 function getStore() {
   const extras = {};
   const enhancer = applyMiddleware(thunk.withExtraArgument(extras));

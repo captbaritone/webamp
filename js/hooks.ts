@@ -7,7 +7,7 @@ interface Size {
 }
 
 export function useScreenSize() {
-  const [size, setSize] = useState<Size>(Utils.getScreenSize());
+  const [size] = useState<Size>(Utils.getScreenSize());
   // TODO: We could subscribe to screen size changes.
   return size;
 }

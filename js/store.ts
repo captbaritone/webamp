@@ -7,14 +7,7 @@ import { merge } from "./utils";
 import { UPDATE_TIME_ELAPSED, STEP_MARQUEE } from "./actionTypes";
 import Media from "./media";
 import Emitter from "./emitter";
-import {
-  Extras,
-  MiddlewareStore,
-  Dispatch,
-  Action,
-  AppState,
-  Middleware,
-} from "./types";
+import { Extras, Dispatch, Action, AppState, Middleware } from "./types";
 
 const compose = composeWithDevTools({
   actionsBlacklist: [UPDATE_TIME_ELAPSED, STEP_MARQUEE],
@@ -35,10 +28,7 @@ export default function(
     );
   }
 
-  // eslint-disable-next-line no-unused-vars
-  const emitterMiddleware = (store: MiddlewareStore) => (next: Dispatch) => (
-    action: Action
-  ) => {
+  const emitterMiddleware = () => (next: Dispatch) => (action: Action) => {
     actionEmitter.trigger(action.type, action);
     return next(action);
   };

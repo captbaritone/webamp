@@ -70,10 +70,9 @@ class MediaLibraryWindow extends React.Component<Props, State> {
   };
 
   render() {
-    const colors = this.props.skinGenExColors;
     return (
       <GenWindow title={"Winamp Library"} windowId={WINDOWS.MEDIA_LIBRARY}>
-        {({ height, width }: { height: number; width: number }) => (
+        {() => (
           <div
             id="webamp-media-library"
             style={{

@@ -6,7 +6,7 @@ interface Props {
 }
 
 const Background = (props: Props) => {
-  const { innerRef, ...restProps } = props;
+  const { innerRef } = props;
   return (
     <div
       ref={innerRef}

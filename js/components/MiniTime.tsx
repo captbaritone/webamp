@@ -1,4 +1,4 @@
-import { AppState, Action, Dispatchable, Dispatch } from "../types";
+import { AppState, Dispatch } from "../types";
 import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";

@@ -7,7 +7,6 @@ import { SET_FOCUSED_WINDOW } from "../../actionTypes";
 import {
   scrollUpFourTracks,
   scrollDownFourTracks,
-  loadFilesFromReferences,
   togglePlaylistShadeMode,
   scrollVolume,
   closeWindow,
@@ -30,7 +29,7 @@ import TrackList from "./TrackList";
 import ScrollBar from "./ScrollBar";
 
 import "../../../css/playlist-window.css";
-import { AppState, PlaylistStyle, Dispatch, LoadStyle } from "../../types";
+import { AppState, PlaylistStyle, Dispatch } from "../../types";
 
 interface StateProps {
   offset: number;

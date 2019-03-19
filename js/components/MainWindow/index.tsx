@@ -44,7 +44,6 @@ import {
   AppState,
   Dispatch,
   FilePicker,
-  Track,
 } from "../../types";
 
 interface StateProps {

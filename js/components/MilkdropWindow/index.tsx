@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect } from "react";
 import Fullscreen from "../Fullscreen";
 import { connect } from "react-redux";
 import { useWindowSize, useScreenSize } from "../../hooks";

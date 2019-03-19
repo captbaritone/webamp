@@ -13,7 +13,7 @@ import { SELECT_ZERO } from "../../actionTypes";
 import { dragSelected, scrollPlaylistByDelta } from "../../actionCreators";
 import TrackCell from "./TrackCell";
 import TrackTitle from "./TrackTitle";
-import { Dispatch, AppState, PlaylistTrack } from "../../types";
+import { Dispatch, AppState } from "../../types";
 import { TracksState } from "../../reducers/tracks";
 
 interface DispatchProps {

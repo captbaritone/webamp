@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { Hr, Node, Parent } from "./ContextMenu";
+import { Hr, Node } from "./ContextMenu";
 import SkinsContextMenu from "./SkinsContextMenu";
 import { Dispatch, TimeMode, AppState } from "../types";
 import * as Actions from "../actionCreators";
