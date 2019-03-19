@@ -130,7 +130,6 @@
     "react/jsx-boolean-value": "error",
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
-    "react/prefer-stateless-function": "warn",
     "react/prefer-es6-class": "error",
     "react/jsx-pascal-case": "error",
     "react/require-render-return": "error",
