@@ -13,7 +13,7 @@
     "index.d.ts"
   ],
   "scripts": {
-    "lint": "eslint .",
+    "lint": "eslint . --ext ts,tsx,js",
     "type-check": "tsc",
     "build": "webpack --config=demo/config/webpack.prod.js",
     "build-library": "webpack --config=config/webpack.library.js",
@@ -23,8 +23,8 @@
     "stats": "webpack --config=demo/config/webpack.prod.js --json > stats.json",
     "stats-library": "webpack --config=config/webpack.library.js --json > stats.json",
     "weight": "npm run build-library > /dev/null && gzip-size built/webamp.bundle.min.js",
-    "test": "jest --projects config/jest.unit.js config/jest.eslint.js",
-    "travis-tests": "npm run test && npm run type-check && npm run build && npm run build-library",
+    "test": "jest --projects config/jest.unit.js",
+    "travis-tests": "npm run test && npm run test && npm run type-check && npm run build && npm run build-library",
     "tdd": "jest --projects config/jest.unit.js --watch",
     "format": "prettier --write \"**/*.{js,ts,tsx,d.ts,css}\"",
     "integration-tests": "npm run build -- --display=errors-only && jest --projects config/jest.integration.js",
@@ -106,7 +106,6 @@
     "jest-image-snapshot": "^2.4.1",
     "jest-mock-random": "^1.0.2",
     "jest-puppeteer": "^3.0.1",
-    "jest-runner-eslint": "^0.4.0",
     "jszip": "^3.1.3",
     "lodash": "^4.17.11",
     "milkdrop-preset-converter-aws": "^0.1.6",
