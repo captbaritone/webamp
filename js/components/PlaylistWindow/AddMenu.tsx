@@ -31,7 +31,7 @@ const DIR_SUPPORT =
 const AddMenu = ({
   nextIndex,
   addFilesAtIndex,
-  addDirAtIndex
+  addDirAtIndex,
 }: StateProps & DispatchProps) => (
   <PlaylistMenu id="playlist-add-menu">
     <div className="add-url" onClick={() => alert("Not supported in Webamp")} />
@@ -41,7 +41,7 @@ const AddMenu = ({
 );
 
 const mapStateToProps = (state: AppState): StateProps => ({
-  nextIndex: getTrackCount(state)
+  nextIndex: getTrackCount(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
@@ -60,7 +60,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
     dispatch(
       addTracksFromReferences(fileReferences, LOAD_STYLE.NONE, nextIndex)
     );
-  }
+  },
 });
 
 export default connect(

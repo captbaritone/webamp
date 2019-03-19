@@ -27,7 +27,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
     play: () => dispatch(play()),
     pause: () => dispatch(pause()),
     stop: () => dispatch(stop()),
-    next: () => dispatch(next())
+    next: () => dispatch(next()),
   };
 };
 

@@ -12,7 +12,7 @@ import {
   BROWSER_WINDOW_SIZE_CHANGED,
   RESET_WINDOW_SIZES,
   TOGGLE_LLAMA_MODE,
-  SET_FOCUSED_WINDOW
+  SET_FOCUSED_WINDOW,
 } from "../actionTypes";
 
 import { getPositionDiff, SizeDiff } from "../resizeUtils";
@@ -22,7 +22,7 @@ import {
   Dispatchable,
   WindowId,
   WindowPositions,
-  Dispatch
+  Dispatch,
 } from "../types";
 
 // Dispatch an action and, if needed rearrange the windows to preserve
@@ -46,7 +46,7 @@ function withWindowGraphIntegrity(action: Action): Dispatchable {
       const current = newSizes[window];
       sizeDiff[window] = {
         height: current.height - original.height,
-        width: current.width - original.width
+        width: current.width - original.width,
       };
     }
 
@@ -72,21 +72,21 @@ export function toggleLlamaMode(): Dispatchable {
 export function toggleEqualizerShadeMode(): Dispatchable {
   return withWindowGraphIntegrity({
     type: TOGGLE_WINDOW_SHADE_MODE,
-    windowId: "equalizer"
+    windowId: "equalizer",
   });
 }
 
 export function toggleMainWindowShadeMode(): Dispatchable {
   return withWindowGraphIntegrity({
     type: TOGGLE_WINDOW_SHADE_MODE,
-    windowId: "main"
+    windowId: "main",
   });
 }
 
 export function togglePlaylistShadeMode(): Dispatchable {
   return withWindowGraphIntegrity({
     type: TOGGLE_WINDOW_SHADE_MODE,
-    windowId: "playlist"
+    windowId: "playlist",
   });
 }
 
@@ -140,7 +140,7 @@ export function centerWindowsInView(): Dispatchable {
     left: window.scrollX,
     top: window.scrollY,
     width: window.innerWidth,
-    height: window.innerHeight
+    height: window.innerHeight,
   });
 }
 
@@ -170,13 +170,13 @@ export function centerWindows(box: {
 
     const move = {
       x: Math.ceil(offsetLeft - bounding.left + (width - boxWidth) / 2),
-      y: Math.ceil(offsetTop - bounding.top + (height - boxHeight) / 2)
+      y: Math.ceil(offsetTop - bounding.top + (height - boxHeight) / 2),
     };
 
     const newPositions = windowsInfo.reduce(
       (pos, w) => ({
         ...pos,
-        [w.key]: { x: move.x + w.x, y: move.y + w.y }
+        [w.key]: { x: move.x + w.x, y: move.y + w.y },
       }),
       {}
     );
@@ -251,7 +251,7 @@ export function ensureWindowsAreOnScreen(): Dispatchable {
 
       const newPositions = Utils.objectMap(positions, position => ({
         x: position.x - moveX,
-        y: position.y - moveY
+        y: position.y - moveY,
       }));
 
       dispatch(updateWindowPositions(newPositions));

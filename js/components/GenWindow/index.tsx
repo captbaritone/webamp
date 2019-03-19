@@ -69,7 +69,7 @@ export const GenWindow = ({
   windowSize,
   setGenWindowSize,
   width,
-  height
+  height,
 }: Props) => {
   return (
     <div
@@ -97,7 +97,7 @@ export const GenWindow = ({
         <div className="gen-middle-center">
           {children({
             width: width - CHROME_WIDTH,
-            height: height - CHROME_HEIGHT
+            height: height - CHROME_HEIGHT,
           })}
         </div>
         <div className="gen-middle-right draggable">
@@ -124,7 +124,7 @@ const mapStateToProps = (state: AppState, ownProps: OwnProps): StateProps => {
     width,
     height,
     selected: state.windows.focused === ownProps.windowId,
-    windowSize: state.windows.genWindows[ownProps.windowId].size
+    windowSize: state.windows.genWindows[ownProps.windowId].size,
   };
 };
 
@@ -134,7 +134,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
       dispatch({ type: SET_FOCUSED_WINDOW, window: windowId }),
     close: (windowId: WindowId) => dispatch(closeWindow(windowId)),
     setGenWindowSize: (windowId: WindowId, size: [number, number]) =>
-      dispatch(setWindowSize(windowId, size))
+      dispatch(setWindowSize(windowId, size)),
   };
 };
 

@@ -12,14 +12,14 @@ const mapRegionNamesToIds = {
   normal: "mainWindowClipPath",
   windowshade: "shadeMainWindowClipPath",
   equalizer: "equalizerWindowClipPath",
-  equalizerws: "shadeEqualizerWindowClipPath"
+  equalizerws: "shadeEqualizerWindowClipPath",
 };
 
 const mapRegionNamesToMatcher = {
   normal: "#main-window:not(.shade)",
   windowshade: "#main-window.shade",
   equalizer: "#equalizer-window:not(.shade)",
-  equalizerws: "#equalizer-window.shade"
+  equalizerws: "#equalizer-window.shade",
 };
 
 const numExIsUsed = skinImages => !!skinImages.DIGIT_0_EX;
@@ -80,7 +80,7 @@ class ClipPaths extends React.Component {
 const FALLBACKS = {
   MAIN_BALANCE_BACKGROUND: "MAIN_VOLUME_BACKGROUND",
   MAIN_BALANCE_THUMB: "MAIN_VOLUME_THUMB",
-  MAIN_BALANCE_THUMB_ACTIVE: "MAIN_VOLUME_THUMB_SELECTED"
+  MAIN_BALANCE_THUMB_ACTIVE: "MAIN_VOLUME_THUMB_SELECTED",
 };
 
 function cssRulesFromProps(props) {
@@ -243,5 +243,5 @@ export default connect(state => ({
   skinCursors: state.display.skinCursors,
   skinRegion: state.display.skinRegion,
   skinGenLetterWidths: state.display.skinGenLetterWidths,
-  skinGenExColors: state.display.skinGenExColors
+  skinGenExColors: state.display.skinGenExColors,
 }))(Skin);

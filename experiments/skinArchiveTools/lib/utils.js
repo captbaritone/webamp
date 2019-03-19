@@ -76,7 +76,7 @@ function archive(skin, itemName) {
         screenshotPath,
         `${filename}.wsz`,
         getArchiveTitle(skin),
-        itemName
+        itemName,
       ],
       (err, stdout) => {
         if (err) {
@@ -117,5 +117,5 @@ module.exports = {
   md5File,
   archive,
   getArchiveItemName,
-  getArchiveTitle
+  getArchiveTitle,
 };

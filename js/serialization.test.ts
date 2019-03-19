@@ -38,7 +38,7 @@ function testSerialization<T>({
   name,
   action,
   selector,
-  expected
+  expected,
 }: SerializationTestParams<T>) {
   test(name, () => {
     const firstStore = getStore();
@@ -70,7 +70,7 @@ function testSerialization<T>({
     const secondStore = getStore();
     secondStore.dispatch({
       type: LOAD_SERIALIZED_STATE,
-      serializedState: readSerializedState
+      serializedState: readSerializedState,
     });
 
     // Ensure our restored state conforms to expectation
@@ -99,7 +99,7 @@ describe("can serialize", () => {
     const newStore = getStore();
     newStore.dispatch({
       type: LOAD_SERIALIZED_STATE,
-      serializedState
+      serializedState,
     });
     expect(store.getState()).toEqual(newStore.getState());
   });
@@ -109,28 +109,28 @@ describe("can serialize", () => {
     name: "volume",
     action: Actions.setVolume(50),
     selector: Selectors.getVolume,
-    expected: 50
+    expected: 50,
   });
 
   testSerialization({
     name: "balance",
     action: Actions.setBalance(40),
     selector: Selectors.getBalance,
-    expected: 40
+    expected: 40,
   });
 
   testSerialization({
     name: "shuffle",
     action: Actions.toggleShuffle(),
     selector: Selectors.getShuffle,
-    expected: true
+    expected: true,
   });
 
   testSerialization({
     name: "repeat",
     action: Actions.toggleRepeat(),
     selector: Selectors.getRepeat,
-    expected: true
+    expected: true,
   });
 
   /* Equalizer */
@@ -138,28 +138,28 @@ describe("can serialize", () => {
     name: "equalizer on",
     action: Actions.toggleEq(),
     selector: Selectors.getEqualizerEnabled,
-    expected: false
+    expected: false,
   });
 
   testSerialization({
     name: "equalizer auto",
     action: Actions.toggleEqAuto(),
     selector: Selectors.getEqualizerAuto,
-    expected: true
+    expected: true,
   });
 
   testSerialization({
     name: "equalizer band",
     action: Actions.setEqBand(60, 100),
     selector: state => Selectors.getSliders(state)[60],
-    expected: 100
+    expected: 100,
   });
 
   testSerialization({
     name: "equalizer preamp",
     action: Actions.setPreamp(10),
     selector: state => Selectors.getSliders(state).preamp,
-    expected: 10
+    expected: 10,
   });
 
   /* Display */
@@ -167,14 +167,14 @@ describe("can serialize", () => {
     name: "double mode",
     action: Actions.toggleDoubleSizeMode(),
     selector: Selectors.getDoubled,
-    expected: true
+    expected: true,
   });
 
   testSerialization({
     name: "llama mode",
     action: Actions.toggleLlamaMode(),
     selector: Selectors.getLlamaMode,
-    expected: true
+    expected: true,
   });
 
   // TODO
@@ -192,48 +192,48 @@ describe("can serialize", () => {
     name: "window size",
     action: Actions.setWindowSize("playlist", [4, 5]),
     selector: state => Selectors.getWindowSize(state)("playlist"),
-    expected: [4, 5]
+    expected: [4, 5],
   });
 
   testSerialization({
     name: "window open",
     action: Actions.closeWindow("playlist"),
     selector: state => Selectors.getWindowOpen(state)("playlist"),
-    expected: false
+    expected: false,
   });
 
   testSerialization({
     name: "window hidden",
     action: Actions.hideWindow("playlist"),
     selector: state => Selectors.getWindowHidden(state)("playlist"),
-    expected: true
+    expected: true,
   });
 
   testSerialization({
     name: "window shade",
     action: Actions.toggleEqualizerShadeMode(),
     selector: state => Selectors.getWindowShade(state)("equalizer"),
-    expected: true
+    expected: true,
   });
 
   testSerialization({
     name: "main window position",
     action: Actions.updateWindowPositions({ main: { x: 100, y: 100 } }),
     selector: state => Selectors.getWindowPosition(state)("main"),
-    expected: { x: 100, y: 100 }
+    expected: { x: 100, y: 100 },
   });
 
   testSerialization({
     name: "window positions are relative",
     action: Actions.updateWindowPositions({ main: { x: 100, y: 100 } }, true),
     selector: Selectors.getPositionsAreRelative,
-    expected: false
+    expected: false,
   });
 
   testSerialization({
     name: "focused window",
     action: Actions.setFocusedWindow("equalizer"),
     selector: state => Selectors.getFocusedWindow(state),
-    expected: "equalizer"
+    expected: "equalizer",
   });
 });

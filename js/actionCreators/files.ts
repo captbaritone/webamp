@@ -7,14 +7,14 @@ import {
   promptForFileReferences,
   genArrayBufferFromFileReference,
   genMediaDuration,
-  genMediaTags
+  genMediaTags,
 } from "../fileUtils";
 import skinParser from "../skinParser";
 import {
   getTracks,
   getTrackIsVisibleFunction,
   getEqfData,
-  getPlaylistURL
+  getPlaylistURL,
 } from "../selectors";
 
 import {
@@ -27,7 +27,7 @@ import {
   MEDIA_TAG_REQUEST_FAILED,
   SET_SKIN_DATA,
   LOADED,
-  LOADING
+  LOADING,
 } from "../actionTypes";
 import LoadQueue from "../loadQueue";
 
@@ -50,7 +50,7 @@ export function addTracksFromReferences(
 ): Dispatchable {
   const tracks: Track[] = Array.from(fileReferences).map(file => ({
     blob: file,
-    defaultName: file.name
+    defaultName: file.name,
   }));
   return loadMediaFiles(tracks, loadStyle, atIndex);
 }
@@ -109,8 +109,8 @@ export function setSkinFromArrayBuffer(
           skinCursors: skinData.cursors,
           skinRegion: skinData.region,
           skinGenLetterWidths: skinData.genLetterWidths,
-          skinGenExColors: skinData.genExColors
-        }
+          skinGenExColors: skinData.genExColors,
+        },
       });
     } catch (e) {
       console.error(e);
@@ -253,7 +253,7 @@ export function loadMediaFile(
       duration: track.duration,
       defaultName,
       id,
-      atIndex
+      atIndex,
     });
     switch (priority) {
       case LOAD_STYLE.BUFFER:
@@ -286,7 +286,7 @@ export function loadMediaFile(
         sampleRate: 44000,
         bitrate: 192000,
         numberOfChannels: 2,
-        id
+        id,
       });
     } else if ("blob" in track) {
       // Blobs can be loaded quickly
@@ -336,7 +336,7 @@ export function fetchMediaTags(file: string | Blob, id: number): Dispatchable {
         numberOfChannels,
         bitrate,
         sampleRate,
-        id
+        id,
       });
     } catch (e) {
       dispatch({ type: MEDIA_TAG_REQUEST_FAILED, id });

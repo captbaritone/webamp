@@ -7,7 +7,7 @@ class Winamp extends WebampLazy {
     super({
       ...options,
       requireJSZip: () => JSZip,
-      requireMusicMetadata: () => musicMetadataBrowser
+      requireMusicMetadata: () => musicMetadataBrowser,
     });
   }
 }

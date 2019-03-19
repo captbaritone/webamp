@@ -146,7 +146,7 @@ const mapStateToProps = (state: AppState): StateProps => ({
   fullscreen: Selectors.getMilkdropFullscreenEnabled(state),
   overlay: Selectors.getPresetOverlayOpen(state),
   presetsAreCycling: Selectors.getPresetsAreCycling(state),
-  trackTitle: Selectors.getCurrentTrackDisplayName(state)
+  trackTitle: Selectors.getCurrentTrackDisplayName(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
@@ -165,7 +165,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   selectPreviousPreset: (transitionType?: TransitionType) =>
     dispatch(Actions.selectPreviousPreset(transitionType)),
   scheduleMilkdropMessage: (message: string) =>
-    dispatch(Actions.scheduleMilkdropMessage(message))
+    dispatch(Actions.scheduleMilkdropMessage(message)),
 });
 
 export default connect(

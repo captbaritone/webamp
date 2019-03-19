@@ -10,7 +10,7 @@ import {
   WINDOW_RESIZE_SEGMENT_WIDTH,
   WINDOW_WIDTH,
   CHARACTER_WIDTH,
-  UTF8_ELLIPSIS
+  UTF8_ELLIPSIS,
 } from "../../constants";
 import { togglePlaylistShadeMode, closeWindow } from "../../actionCreators";
 import CharacterString from "../CharacterString";
@@ -59,11 +59,11 @@ class PlaylistShade extends React.Component<StateProps & DispatchProps> {
     const { toggleShade, close, focusPlaylist, focused } = this.props;
 
     const style = {
-      width: `${WINDOW_WIDTH + this._addedWidth()}px`
+      width: `${WINDOW_WIDTH + this._addedWidth()}px`,
     };
 
     const classes = classnames("window", "draggable", {
-      selected: focused === WINDOWS.PLAYLIST
+      selected: focused === WINDOWS.PLAYLIST,
     });
 
     return (
@@ -97,24 +97,24 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
     focusPlaylist: () =>
       dispatch({
         type: SET_FOCUSED_WINDOW,
-        window: WINDOWS.PLAYLIST
+        window: WINDOWS.PLAYLIST,
       }),
     close: () => dispatch(closeWindow("playlist")),
-    toggleShade: () => dispatch(togglePlaylistShadeMode())
+    toggleShade: () => dispatch(togglePlaylistShadeMode()),
   };
 };
 
 const mapStateToProps = (state: AppState): StateProps => {
   const duration = Selectors.getDuration(state);
   const {
-    windows: { focused }
+    windows: { focused },
   } = state;
   return {
     focused,
     playlistSize: Selectors.getWindowSize(state)("playlist"),
     trackOrder: Selectors.getOrderedTracks(state),
     duration,
-    name: Selectors.getMinimalMediaText(state)
+    name: Selectors.getMinimalMediaText(state),
   };
 };
 

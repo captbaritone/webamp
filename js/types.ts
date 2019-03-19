@@ -15,7 +15,7 @@ export {
   WebampWindow,
   WindowInfo,
   WindowPosition,
-  WindowPositions
+  WindowPositions,
 } from "./reducers/windows";
 
 export interface FilePicker {
@@ -169,7 +169,7 @@ export interface EqfPreset {
 export enum TransitionType {
   IMMEDIATE,
   DEFAULT,
-  USER_PRESET
+  USER_PRESET,
 }
 
 export type Action =

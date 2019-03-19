@@ -20,7 +20,7 @@ const Background = (props: Props) => {
         left: 0,
         right: 0,
         height: "100%",
-        width: "100%"
+        width: "100%",
       }}
       tabIndex={0}
     >

@@ -20,7 +20,7 @@ const Shade = (props: DispatchProps) => (
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
   return {
-    handleClick: () => dispatch(toggleMainWindowShadeMode())
+    handleClick: () => dispatch(toggleMainWindowShadeMode()),
   };
 };
 

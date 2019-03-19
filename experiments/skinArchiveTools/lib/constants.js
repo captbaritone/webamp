@@ -2,7 +2,7 @@ const FILE_TYPES = {
   INVALID: "INVALID",
   CLASSIC: "CLASSIC",
   MODERN: "MODERN",
-  PACK: "PACK"
+  PACK: "PACK",
 };
 
 module.exports = { FILE_TYPES };

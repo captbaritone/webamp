@@ -18,7 +18,7 @@ const EqOn = (props: StateProps & DispatchProps) => {
     <div
       id="on"
       className={classnames({
-        selected: props.on
+        selected: props.on,
       })}
       onClick={props.toggleEq}
     />
@@ -26,7 +26,7 @@ const EqOn = (props: StateProps & DispatchProps) => {
 };
 
 const mapStateToProps = (state: AppState): StateProps => ({
-  on: state.equalizer.on
+  on: state.equalizer.on,
 });
 
 const mapDispatchProps = (dispatch: Dispatch): DispatchProps => {

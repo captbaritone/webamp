@@ -19,7 +19,7 @@ const TrackTitle = (props: OwnProps & StateProps) => (
 );
 
 const mapStateToProps = (state: AppState, ownProps: OwnProps): StateProps => ({
-  title: getTrackDisplayName(state)(ownProps.id)
+  title: getTrackDisplayName(state)(ownProps.id),
 });
 
 export default connect(mapStateToProps)(TrackTitle);

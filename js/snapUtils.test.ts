@@ -11,7 +11,7 @@ import {
   applySnap,
   snapDiff,
   boundingBox,
-  applyMultipleDiffs
+  applyMultipleDiffs,
 } from "./snapUtils";
 
 describe("side functions", () => {
@@ -392,33 +392,33 @@ describe("boundingBox function", () => {
   it("returns the larger box when one fits entire within another", () => {
     const boxes = [
       { x: 10, y: 10, width: 100, height: 100 },
-      { x: 20, y: 20, width: 80, height: 80 }
+      { x: 20, y: 20, width: 80, height: 80 },
     ];
     expect(boundingBox(boxes)).toEqual(boxes[0]);
   });
   it("returns countaing box of two boxes", () => {
     const boxes = [
       { x: 10, y: 10, width: 100, height: 100 },
-      { x: 120, y: 220, width: 100, height: 100 }
+      { x: 120, y: 220, width: 100, height: 100 },
     ];
     expect(boundingBox(boxes)).toEqual({
       x: 10,
       y: 10,
       width: 210,
-      height: 310
+      height: 310,
     });
   });
   it("returns countaing box of three boxes", () => {
     const boxes = [
       { x: 10, y: 10, width: 100, height: 100 },
       { x: 120, y: 220, width: 100, height: 100 },
-      { x: 3, y: 220, width: 100, height: 100 }
+      { x: 3, y: 220, width: 100, height: 100 },
     ];
     expect(boundingBox(boxes)).toEqual({
       x: 3,
       y: 10,
       width: 217,
-      height: 310
+      height: 310,
     });
   });
 });

@@ -21,7 +21,7 @@ const Time = ({
   timeElapsed,
   duration,
   timeMode,
-  toggleTimeMode
+  toggleTimeMode,
 }: StateProps & DispatchProps) => {
   const seconds =
     timeMode === TIME_MODE.ELAPSED ? timeElapsed : duration - timeElapsed;
@@ -57,7 +57,7 @@ const mapStateToProps = (state: AppState): StateProps => {
   return { timeElapsed, duration: duration || 0, timeMode };
 };
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-  toggleTimeMode: () => dispatch(Actions.toggleTimeMode())
+  toggleTimeMode: () => dispatch(Actions.toggleTimeMode()),
 });
 
 export default connect(

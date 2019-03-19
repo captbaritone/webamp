@@ -14,7 +14,7 @@ import {
   SET_TRACK_ORDER,
   PLAY_TRACK,
   BUFFER_TRACK,
-  DRAG_SELECTED
+  DRAG_SELECTED,
 } from "../actionTypes";
 import { shuffle, moveSelected } from "../utils";
 
@@ -29,7 +29,7 @@ const defaultPlaylistState: PlaylistState = {
   trackOrder: [],
   currentTrack: null,
   lastSelectedIndex: null,
-  selectedTracks: new Set()
+  selectedTracks: new Set(),
 };
 
 function toggleSetMembership<T>(set: Set<T>, value: T): void {
@@ -49,7 +49,7 @@ const playlist = (
       return {
         ...state,
         selectedTracks: new Set([state.trackOrder[action.index]]),
-        lastSelectedIndex: action.index
+        lastSelectedIndex: action.index,
       };
     case CTRL_CLICKED_TRACK:
       const id = state.trackOrder[action.index];
@@ -61,7 +61,7 @@ const playlist = (
         // Using this as the lastClickedIndex is kinda funny, since you
         // may have just _un_selected the track. However, this is what
         // Winamp 2 does, so we'll copy it.
-        lastSelectedIndex: action.index
+        lastSelectedIndex: action.index,
       };
     case SHIFT_CLICKED_TRACK:
       if (state.lastSelectedIndex == null) {
@@ -73,24 +73,24 @@ const playlist = (
       const selectedTracks = new Set(state.trackOrder.slice(start, end + 1));
       return {
         ...state,
-        selectedTracks
+        selectedTracks,
       };
     case SELECT_ALL:
       return {
         ...state,
-        selectedTracks: new Set(state.trackOrder)
+        selectedTracks: new Set(state.trackOrder),
       };
     case SELECT_ZERO:
       return {
         ...state,
-        selectedTracks: new Set()
+        selectedTracks: new Set(),
       };
     case INVERT_SELECTION:
       return {
         ...state,
         selectedTracks: new Set(
           state.trackOrder.filter(id => !state.selectedTracks.has(id))
-        )
+        ),
       };
     case REMOVE_ALL_TRACKS:
       // TODO: Consider disposing of ObjectUrls
@@ -99,7 +99,7 @@ const playlist = (
         trackOrder: [],
         currentTrack: null,
         selectedTracks: new Set(),
-        lastSelectedIndex: null
+        lastSelectedIndex: null,
       };
     case REMOVE_TRACKS:
       // TODO: Consider disposing of ObjectUrls
@@ -113,19 +113,19 @@ const playlist = (
           Array.from(state.selectedTracks).filter(id => actionIds.has(id))
         ),
         // TODO: This could probably be made to work, but we clear it just to be safe.
-        lastSelectedIndex: null
+        lastSelectedIndex: null,
       };
     case REVERSE_LIST:
       return {
         ...state,
         trackOrder: [...state.trackOrder].reverse(),
         // TODO: This could probably be made to work, but we clear it just to be safe.
-        lastSelectedIndex: null
+        lastSelectedIndex: null,
       };
     case RANDOMIZE_LIST:
       return {
         ...state,
-        trackOrder: shuffle(state.trackOrder)
+        trackOrder: shuffle(state.trackOrder),
       };
     case SET_TRACK_ORDER:
       const { trackOrder } = action;
@@ -138,16 +138,16 @@ const playlist = (
         trackOrder: [
           ...state.trackOrder.slice(0, atIndex),
           Number(action.id),
-          ...state.trackOrder.slice(atIndex)
+          ...state.trackOrder.slice(atIndex),
         ],
         // TODO: This could probably be made to work, but we clear it just to be safe.
-        lastSelectedIndex: null
+        lastSelectedIndex: null,
       };
     case PLAY_TRACK:
     case BUFFER_TRACK:
       return {
         ...state,
-        currentTrack: action.id
+        currentTrack: action.id,
       };
     case DRAG_SELECTED:
       return {
@@ -158,7 +158,7 @@ const playlist = (
           action.offset
         ),
         // TODO: This could probably be made to work, but we clear it just to be safe.
-        lastSelectedIndex: null
+        lastSelectedIndex: null,
       };
     default:
       return state;

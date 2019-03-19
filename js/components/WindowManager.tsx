@@ -9,7 +9,7 @@ import {
   Dispatch,
   WindowPositions,
   AppState,
-  WindowId
+  WindowId,
 } from "../types";
 const abuts = (a: SnapUtils.Box, b: SnapUtils.Box) => {
   // TODO: This is kinda a hack. They should really be touching, not just within snapping distance.
@@ -73,17 +73,17 @@ class WindowManager extends React.Component<Props> {
     const handleMouseMove = (ee: MouseEvent) => {
       const proposedDiff = {
         x: ee.clientX - mouseStart.x,
-        y: ee.clientY - mouseStart.y
+        y: ee.clientY - mouseStart.y,
       };
 
       const proposedWindows = moving.map(node => ({
         ...node,
-        ...SnapUtils.applyDiff(node, proposedDiff)
+        ...SnapUtils.applyDiff(node, proposedDiff),
       }));
 
       const proposedBox = {
         ...box,
-        ...SnapUtils.applyDiff(box, proposedDiff)
+        ...SnapUtils.applyDiff(box, proposedDiff),
       };
 
       const snapDiff = SnapUtils.snapDiffManyToMany(
@@ -126,7 +126,7 @@ class WindowManager extends React.Component<Props> {
     const style: React.CSSProperties = {
       position: "absolute",
       top: 0,
-      left: 0
+      left: 0,
     };
 
     const windows = this.props.windowsInfo.filter(
@@ -151,13 +151,13 @@ const mapStateToProps = (state: AppState) => ({
   windowsInfo: Selectors.getWindowsInfo(state),
   getWindowHidden: Selectors.getWindowHidden(state),
   getWindowOpen: Selectors.getWindowOpen(state),
-  browserWindowSize: Selectors.getBrowserWindowSize(state)
+  browserWindowSize: Selectors.getBrowserWindowSize(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     updateWindowPositions: (positions: WindowPositions) =>
-      dispatch(updateWindowPositions(positions))
+      dispatch(updateWindowPositions(positions)),
   };
 };
 

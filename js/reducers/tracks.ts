@@ -5,7 +5,7 @@ import {
   SET_MEDIA_DURATION,
   MEDIA_TAG_REQUEST_INITIALIZED,
   MEDIA_TAG_REQUEST_FAILED,
-  ADD_TRACK_FROM_URL
+  ADD_TRACK_FROM_URL,
 } from "../actionTypes";
 import { MEDIA_TAG_REQUEST_STATUS } from "../constants";
 import * as TrackUtils from "../trackUtils";
@@ -29,17 +29,17 @@ const tracks = (
           defaultName: action.defaultName || null,
           duration: action.duration == null ? null : action.duration,
           url: action.url,
-          mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.INITIALIZED
-        }
+          mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.INITIALIZED,
+        },
       };
     case SET_MEDIA: {
       const newTrack = {
         ...state[action.id],
-        duration: action.length
+        duration: action.length,
       };
       return {
         ...state,
-        [action.id]: newTrack
+        [action.id]: newTrack,
       };
     }
     case MEDIA_TAG_REQUEST_INITIALIZED:
@@ -47,24 +47,24 @@ const tracks = (
         ...state,
         [action.id]: {
           ...state[action.id],
-          mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.INITIALIZED
-        }
+          mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.INITIALIZED,
+        },
       };
     case MEDIA_TAG_REQUEST_FAILED:
       return {
         ...state,
         [action.id]: {
           ...state[action.id],
-          mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.FAILED
-        }
+          mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.FAILED,
+        },
       };
     case SET_MEDIA_DURATION: {
       return {
         ...state,
         [action.id]: {
           ...state[action.id],
-          duration: action.duration
-        }
+          duration: action.duration,
+        },
       };
     }
     case SET_MEDIA_TAGS:
@@ -76,7 +76,7 @@ const tracks = (
         title,
         artist,
         album,
-        albumArtUrl
+        albumArtUrl,
       } = action;
       const { kbps, khz, channels } = track;
       return {
@@ -90,8 +90,8 @@ const tracks = (
           albumArtUrl,
           kbps: bitrate != null ? String(Math.round(bitrate / 1000)) : kbps,
           khz: sampleRate != null ? String(Math.round(sampleRate / 1000)) : khz,
-          channels: numberOfChannels != null ? numberOfChannels : channels
-        }
+          channels: numberOfChannels != null ? numberOfChannels : channels,
+        },
       };
     default:
       return state;

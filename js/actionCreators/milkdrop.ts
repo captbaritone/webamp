@@ -7,7 +7,7 @@ import {
   PRESET_REQUESTED,
   TOGGLE_RANDOMIZE_PRESETS,
   TOGGLE_PRESET_CYCLING,
-  SCHEDULE_MILKDROP_MESSAGE
+  SCHEDULE_MILKDROP_MESSAGE,
 } from "../actionTypes";
 import * as Selectors from "../selectors";
 import {
@@ -15,7 +15,7 @@ import {
   TransitionType,
   Preset,
   ButterchurnOptions,
-  StatePreset
+  StatePreset,
 } from "../types";
 import * as FileUtils from "../fileUtils";
 
@@ -25,13 +25,13 @@ function normalizePresetTypes(preset: Preset): StatePreset {
     return {
       type: "RESOLVED",
       name,
-      preset: preset.butterchurnPresetObject
+      preset: preset.butterchurnPresetObject,
     };
   } else if ("getButterchrunPresetObject" in preset) {
     return {
       type: "UNRESOLVED",
       name,
-      getPreset: preset.getButterchrunPresetObject
+      getPreset: preset.getButterchrunPresetObject,
     };
   } else if ("butterchurnPresetUrl" in preset) {
     return {
@@ -40,7 +40,7 @@ function normalizePresetTypes(preset: Preset): StatePreset {
       getPreset: async () => {
         const resp = await fetch(preset.butterchurnPresetUrl);
         return resp.json();
-      }
+      },
     };
   }
   throw new Error("Invalid preset object");
@@ -90,7 +90,7 @@ export function appendPresetFileList(fileList: FileList): Dispatchable {
           return {
             type: "UNRESOLVED",
             name: file.name.slice(0, file.name.length - MILK_EXT.length),
-            getPreset: () => convertPreset(file)
+            getPreset: () => convertPreset(file),
           } as StatePreset;
         } else if (filename.endsWith(JSON_EXT)) {
           return {
@@ -100,7 +100,7 @@ export function appendPresetFileList(fileList: FileList): Dispatchable {
               const str = await FileUtils.genStringFromFileReference(file);
               // TODO: How should we handle the case where json parsing fails?
               return JSON.parse(str);
-            }
+            },
           } as StatePreset;
         }
         console.error("Invalid type preset when loading directory");

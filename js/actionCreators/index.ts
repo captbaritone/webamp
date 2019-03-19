@@ -10,7 +10,7 @@ import {
   LOAD_SERIALIZED_STATE,
   LOAD_DEFAULT_SKIN,
   SET_MILKDROP_DESKTOP,
-  SET_MILKDROP_FULLSCREEN
+  SET_MILKDROP_FULLSCREEN,
 } from "../actionTypes";
 import { WINDOWS } from "../constants";
 import { Dispatchable } from "../types";
@@ -36,7 +36,7 @@ export {
   ensureWindowsAreOnScreen,
   stackWindows,
   toggleLlamaMode,
-  setFocusedWindow
+  setFocusedWindow,
 } from "./windows";
 export {
   play,
@@ -53,7 +53,7 @@ export {
   setBalance,
   toggleRepeat,
   toggleShuffle,
-  toggleTimeMode
+  toggleTimeMode,
 } from "./media";
 export {
   setEqBand,
@@ -62,7 +62,7 @@ export {
   setEqToMin,
   setPreamp,
   toggleEq,
-  toggleEqAuto
+  toggleEqAuto,
 } from "./equalizer";
 export {
   addTracksFromReferences,
@@ -81,7 +81,7 @@ export {
   setEqFromFileReference,
   downloadPreset,
   setEqFromObject,
-  downloadHtmlPlaylist
+  downloadHtmlPlaylist,
 } from "./files";
 export {
   cropPlaylist,
@@ -95,7 +95,7 @@ export {
   scrollPlaylistByDelta,
   scrollUpFourTracks,
   scrollDownFourTracks,
-  dragSelected
+  dragSelected,
 } from "./playlist";
 export {
   initializePresets,
@@ -109,7 +109,7 @@ export {
   loadPresets,
   toggleRandomizePresets,
   togglePresetCycling,
-  scheduleMilkdropMessage
+  scheduleMilkdropMessage,
 } from "./milkdrop";
 
 export function close(): Dispatchable {

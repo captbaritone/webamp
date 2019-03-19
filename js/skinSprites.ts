@@ -68,7 +68,7 @@ export const FONT_LOOKUP: { [letter: string]: [number, number] } = {
   "<": [1, 22],
   ">": [1, 23],
   "{": [1, 22],
-  "}": [1, 23]
+  "}": [1, 23],
 };
 
 export const imageConstFromChar = (char: string) =>
@@ -86,7 +86,7 @@ for (const key in FONT_LOOKUP) {
       y: position[0] * CHAR_Y,
       x: position[1] * CHAR_X,
       width: CHAR_X,
-      height: CHAR_Y
+      height: CHAR_Y,
     });
   }
 }
@@ -95,7 +95,7 @@ export default {
   BALANCE: [
     { name: "MAIN_BALANCE_BACKGROUND", x: 9, y: 0, width: 38, height: 420 },
     { name: "MAIN_BALANCE_THUMB", x: 15, y: 422, width: 14, height: 11 },
-    { name: "MAIN_BALANCE_THUMB_ACTIVE", x: 0, y: 422, width: 14, height: 11 }
+    { name: "MAIN_BALANCE_THUMB_ACTIVE", x: 0, y: 422, width: 14, height: 11 },
   ],
   CBUTTONS: [
     { name: "MAIN_PREVIOUS_BUTTON", x: 0, y: 0, width: 23, height: 18 },
@@ -104,7 +104,7 @@ export default {
       x: 0,
       y: 18,
       width: 23,
-      height: 18
+      height: 18,
     },
     { name: "MAIN_PLAY_BUTTON", x: 23, y: 0, width: 23, height: 18 },
     { name: "MAIN_PLAY_BUTTON_ACTIVE", x: 23, y: 18, width: 23, height: 18 },
@@ -115,16 +115,16 @@ export default {
     { name: "MAIN_NEXT_BUTTON", x: 92, y: 0, width: 23, height: 18 },
     { name: "MAIN_NEXT_BUTTON_ACTIVE", x: 92, y: 18, width: 22, height: 18 },
     { name: "MAIN_EJECT_BUTTON", x: 114, y: 0, width: 22, height: 16 },
-    { name: "MAIN_EJECT_BUTTON_ACTIVE", x: 114, y: 16, width: 22, height: 16 }
+    { name: "MAIN_EJECT_BUTTON_ACTIVE", x: 114, y: 16, width: 22, height: 16 },
   ],
   MAIN: [
-    { name: "MAIN_WINDOW_BACKGROUND", x: 0, y: 0, width: 275, height: 116 }
+    { name: "MAIN_WINDOW_BACKGROUND", x: 0, y: 0, width: 275, height: 116 },
   ],
   MONOSTER: [
     { name: "MAIN_STEREO", x: 0, y: 12, width: 29, height: 12 },
     { name: "MAIN_STEREO_SELECTED", x: 0, y: 0, width: 29, height: 12 },
     { name: "MAIN_MONO", x: 29, y: 12, width: 27, height: 12 },
-    { name: "MAIN_MONO_SELECTED", x: 29, y: 0, width: 27, height: 12 }
+    { name: "MAIN_MONO_SELECTED", x: 29, y: 0, width: 27, height: 12 },
   ],
   NUMBERS: [
     { name: "NO_MINUS_SIGN", x: 9, y: 6, width: 5, height: 1 },
@@ -138,7 +138,7 @@ export default {
     { name: "DIGIT_6", x: 54, y: 0, width: 9, height: 13 },
     { name: "DIGIT_7", x: 63, y: 0, width: 9, height: 13 },
     { name: "DIGIT_8", x: 72, y: 0, width: 9, height: 13 },
-    { name: "DIGIT_9", x: 81, y: 0, width: 9, height: 13 }
+    { name: "DIGIT_9", x: 81, y: 0, width: 9, height: 13 },
   ],
   NUMS_EX: [
     { name: "NO_MINUS_SIGN_EX", x: 90, y: 0, width: 9, height: 13 },
@@ -152,14 +152,14 @@ export default {
     { name: "DIGIT_6_EX", x: 54, y: 0, width: 9, height: 13 },
     { name: "DIGIT_7_EX", x: 63, y: 0, width: 9, height: 13 },
     { name: "DIGIT_8_EX", x: 72, y: 0, width: 9, height: 13 },
-    { name: "DIGIT_9_EX", x: 81, y: 0, width: 9, height: 13 }
+    { name: "DIGIT_9_EX", x: 81, y: 0, width: 9, height: 13 },
   ],
   PLAYPAUS: [
     { name: "MAIN_PLAYING_INDICATOR", x: 0, y: 0, width: 9, height: 9 },
     { name: "MAIN_PAUSED_INDICATOR", x: 9, y: 0, width: 9, height: 9 },
     { name: "MAIN_STOPPED_INDICATOR", x: 18, y: 0, width: 9, height: 9 },
     { name: "MAIN_NOT_WORKING_INDICATOR", x: 36, y: 0, width: 9, height: 9 },
-    { name: "MAIN_WORKING_INDICATOR", x: 39, y: 0, width: 9, height: 9 }
+    { name: "MAIN_WORKING_INDICATOR", x: 39, y: 0, width: 9, height: 9 },
   ],
   PLEDIT: [
     { name: "PLAYLIST_TOP_TILE", x: 127, y: 21, width: 25, height: 20 },
@@ -170,14 +170,14 @@ export default {
       x: 153,
       y: 21,
       width: 25,
-      height: 20
+      height: 20,
     },
     {
       name: "PLAYLIST_TOP_TILE_SELECTED",
       x: 127,
       y: 0,
       width: 25,
-      height: 20
+      height: 20,
     },
     { name: "PLAYLIST_TOP_LEFT_SELECTED", x: 0, y: 0, width: 25, height: 20 },
     {
@@ -185,14 +185,14 @@ export default {
       x: 26,
       y: 0,
       width: 100,
-      height: 20
+      height: 20,
     },
     {
       name: "PLAYLIST_TOP_RIGHT_CORNER_SELECTED",
       x: 153,
       y: 0,
       width: 25,
-      height: 20
+      height: 20,
     },
     { name: "PLAYLIST_LEFT_TILE", x: 0, y: 42, width: 12, height: 29 },
     { name: "PLAYLIST_RIGHT_TILE", x: 31, y: 42, width: 20, height: 29 },
@@ -202,21 +202,21 @@ export default {
       x: 0,
       y: 72,
       width: 125,
-      height: 38
+      height: 38,
     },
     {
       name: "PLAYLIST_BOTTOM_RIGHT_CORNER",
       x: 126,
       y: 72,
       width: 150,
-      height: 38
+      height: 38,
     },
     {
       name: "PLAYLIST_VISUALIZER_BACKGROUND",
       x: 205,
       y: 0,
       width: 75,
-      height: 38
+      height: 38,
     },
     { name: "PLAYLIST_SHADE_BACKGROUND", x: 72, y: 57, width: 25, height: 14 },
     {
@@ -224,28 +224,28 @@ export default {
       x: 72,
       y: 42,
       width: 25,
-      height: 14
+      height: 14,
     },
     {
       name: "PLAYLIST_SHADE_BACKGROUND_RIGHT",
       x: 99,
       y: 57,
       width: 50,
-      height: 14
+      height: 14,
     },
     {
       name: "PLAYLIST_SHADE_BACKGROUND_RIGHT_SELECTED",
       x: 99,
       y: 42,
       width: 50,
-      height: 14
+      height: 14,
     },
     {
       name: "PLAYLIST_SCROLL_HANDLE_SELECTED",
       x: 61,
       y: 53,
       width: 8,
-      height: 18
+      height: 18,
     },
     { name: "PLAYLIST_SCROLL_HANDLE", x: 52, y: 53, width: 8, height: 18 },
     { name: "PLAYLIST_ADD_URL", x: 0, y: 111, width: 22, height: 18 },
@@ -258,7 +258,7 @@ export default {
       x: 23,
       y: 149,
       width: 22,
-      height: 18
+      height: 18,
     },
     { name: "PLAYLIST_REMOVE_ALL", x: 54, y: 111, width: 22, height: 18 },
     {
@@ -266,7 +266,7 @@ export default {
       x: 77,
       y: 111,
       width: 22,
-      height: 18
+      height: 18,
     },
     { name: "PLAYLIST_CROP", x: 54, y: 130, width: 22, height: 18 },
     { name: "PLAYLIST_CROP_SELECTED", x: 77, y: 130, width: 22, height: 18 },
@@ -276,7 +276,7 @@ export default {
       x: 77,
       y: 149,
       width: 22,
-      height: 18
+      height: 18,
     },
     { name: "PLAYLIST_REMOVE_MISC", x: 54, y: 168, width: 22, height: 18 },
     {
@@ -284,21 +284,21 @@ export default {
       x: 77,
       y: 168,
       width: 22,
-      height: 18
+      height: 18,
     },
     {
       name: "PLAYLIST_INVERT_SELECTION",
       x: 104,
       y: 111,
       width: 22,
-      height: 18
+      height: 18,
     },
     {
       name: "PLAYLIST_INVERT_SELECTION_SELECTED",
       x: 127,
       y: 111,
       width: 22,
-      height: 18
+      height: 18,
     },
     { name: "PLAYLIST_SELECT_ZERO", x: 104, y: 130, width: 22, height: 18 },
     {
@@ -306,7 +306,7 @@ export default {
       x: 127,
       y: 130,
       width: 22,
-      height: 18
+      height: 18,
     },
     { name: "PLAYLIST_SELECT_ALL", x: 104, y: 149, width: 22, height: 18 },
     {
@@ -314,7 +314,7 @@ export default {
       x: 127,
       y: 149,
       width: 22,
-      height: 18
+      height: 18,
     },
     { name: "PLAYLIST_SORT_LIST", x: 154, y: 111, width: 22, height: 18 },
     {
@@ -322,7 +322,7 @@ export default {
       x: 177,
       y: 111,
       width: 22,
-      height: 18
+      height: 18,
     },
     { name: "PLAYLIST_FILE_INFO", x: 154, y: 130, width: 22, height: 18 },
     {
@@ -330,7 +330,7 @@ export default {
       x: 177,
       y: 130,
       width: 22,
-      height: 18
+      height: 18,
     },
     { name: "PLAYLIST_MISC_OPTIONS", x: 154, y: 149, width: 22, height: 18 },
     {
@@ -338,7 +338,7 @@ export default {
       x: 177,
       y: 149,
       width: 22,
-      height: 18
+      height: 18,
     },
     { name: "PLAYLIST_NEW_LIST", x: 204, y: 111, width: 22, height: 18 },
     {
@@ -346,7 +346,7 @@ export default {
       x: 227,
       y: 111,
       width: 22,
-      height: 18
+      height: 18,
     },
     { name: "PLAYLIST_SAVE_LIST", x: 204, y: 130, width: 22, height: 18 },
     {
@@ -354,7 +354,7 @@ export default {
       x: 227,
       y: 130,
       width: 22,
-      height: 18
+      height: 18,
     },
     { name: "PLAYLIST_LOAD_LIST", x: 204, y: 149, width: 22, height: 18 },
     {
@@ -362,7 +362,7 @@ export default {
       x: 227,
       y: 149,
       width: 22,
-      height: 18
+      height: 18,
     },
     { name: "PLAYLIST_ADD_MENU_BAR", x: 48, y: 111, width: 3, height: 54 },
     { name: "PLAYLIST_REMOVE_MENU_BAR", x: 100, y: 111, width: 3, height: 72 },
@@ -371,7 +371,7 @@ export default {
     { name: "PLAYLIST_LIST_BAR", x: 250, y: 111, width: 3, height: 54 },
     { name: "PLAYLIST_CLOSE_SELECTED", x: 52, y: 42, width: 9, height: 9 },
     { name: "PLAYLIST_COLLAPSE_SELECTED", x: 62, y: 42, width: 9, height: 9 },
-    { name: "PLAYLIST_EXPAND_SELECTED", x: 150, y: 42, width: 9, height: 9 }
+    { name: "PLAYLIST_EXPAND_SELECTED", x: 150, y: 42, width: 9, height: 9 },
   ],
   EQ_EX: [
     {
@@ -379,7 +379,7 @@ export default {
       x: 0,
       y: 0,
       width: 275,
-      height: 14
+      height: 14,
     },
     { name: "EQ_SHADE_BACKGROUND", x: 0, y: 15, width: 275, height: 14 },
     { name: "EQ_SHADE_VOLUME_SLIDER_LEFT", x: 1, y: 30, width: 3, height: 7 },
@@ -391,19 +391,19 @@ export default {
       x: 14,
       y: 30,
       width: 3,
-      height: 7
+      height: 7,
     },
     {
       name: "EQ_SHADE_BALANCE_SLIDER_RIGHT",
       x: 17,
       y: 30,
       width: 3,
-      height: 7
+      height: 7,
     },
     { name: "EQ_MAXIMIZE_BUTTON_ACTIVE", x: 1, y: 38, width: 9, height: 9 },
     { name: "EQ_MINIMIZE_BUTTON_ACTIVE", x: 1, y: 47, width: 9, height: 9 },
     { name: "EQ_CLOSE_BUTTON", x: 11, y: 38, width: 9, height: 9 },
-    { name: "EQ_CLOSE_BUTTON_ACTIVE", x: 11, y: 47, width: 9, height: 9 }
+    { name: "EQ_CLOSE_BUTTON_ACTIVE", x: 11, y: 47, width: 9, height: 9 },
   ],
   EQMAIN: [
     { name: "EQ_WINDOW_BACKGROUND", x: 0, y: 0, width: 275, height: 116 },
@@ -420,7 +420,7 @@ export default {
       x: 187,
       y: 119,
       width: 26,
-      height: 12
+      height: 12,
     },
     { name: "EQ_AUTO_BUTTON", x: 36, y: 119, width: 32, height: 12 },
     {
@@ -428,7 +428,7 @@ export default {
       x: 154,
       y: 119,
       width: 32,
-      height: 12
+      height: 12,
     },
     { name: "EQ_AUTO_BUTTON_SELECTED", x: 95, y: 119, width: 32, height: 12 },
     {
@@ -436,7 +436,7 @@ export default {
       x: 213,
       y: 119,
       width: 32,
-      height: 12
+      height: 12,
     },
     { name: "EQ_GRAPH_BACKGROUND", x: 0, y: 294, width: 113, height: 19 },
     { name: "EQ_GRAPH_LINE_COLORS", x: 115, y: 294, width: 1, height: 19 },
@@ -446,9 +446,9 @@ export default {
       x: 224,
       y: 176,
       width: 44,
-      height: 12
+      height: 12,
     },
-    { name: "EQ_PREAMP_LINE", x: 0, y: 314, width: 113, height: 1 }
+    { name: "EQ_PREAMP_LINE", x: 0, y: 314, width: 113, height: 1 },
   ],
   POSBAR: [
     {
@@ -456,22 +456,22 @@ export default {
       x: 0,
       y: 0,
       width: 248,
-      height: 10
+      height: 10,
     },
     {
       name: "MAIN_POSITION_SLIDER_THUMB",
       x: 248,
       y: 0,
       width: 29,
-      height: 10
+      height: 10,
     },
     {
       name: "MAIN_POSITION_SLIDER_THUMB_SELECTED",
       x: 278,
       y: 0,
       width: 29,
-      height: 10
-    }
+      height: 10,
+    },
   ],
   SHUFREP: [
     { name: "MAIN_SHUFFLE_BUTTON", x: 28, y: 0, width: 47, height: 15 },
@@ -480,21 +480,21 @@ export default {
       x: 28,
       y: 15,
       width: 47,
-      height: 15
+      height: 15,
     },
     {
       name: "MAIN_SHUFFLE_BUTTON_SELECTED",
       x: 28,
       y: 30,
       width: 47,
-      height: 15
+      height: 15,
     },
     {
       name: "MAIN_SHUFFLE_BUTTON_SELECTED_DEPRESSED",
       x: 28,
       y: 45,
       width: 47,
-      height: 15
+      height: 15,
     },
     { name: "MAIN_REPEAT_BUTTON", x: 0, y: 0, width: 28, height: 15 },
     {
@@ -502,21 +502,21 @@ export default {
       x: 0,
       y: 15,
       width: 28,
-      height: 15
+      height: 15,
     },
     {
       name: "MAIN_REPEAT_BUTTON_SELECTED",
       x: 0,
       y: 30,
       width: 28,
-      height: 15
+      height: 15,
     },
     {
       name: "MAIN_REPEAT_BUTTON_SELECTED_DEPRESSED",
       x: 0,
       y: 45,
       width: 28,
-      height: 15
+      height: 15,
     },
     { name: "MAIN_EQ_BUTTON", x: 0, y: 61, width: 23, height: 12 },
     { name: "MAIN_EQ_BUTTON_SELECTED", x: 0, y: 73, width: 23, height: 12 },
@@ -526,7 +526,7 @@ export default {
       x: 46,
       y: 73,
       width: 23,
-      height: 12
+      height: 12,
     },
     { name: "MAIN_PLAYLIST_BUTTON", x: 23, y: 61, width: 23, height: 12 },
     {
@@ -534,22 +534,22 @@ export default {
       x: 23,
       y: 73,
       width: 23,
-      height: 12
+      height: 12,
     },
     {
       name: "MAIN_PLAYLIST_BUTTON_DEPRESSED",
       x: 69,
       y: 61,
       width: 23,
-      height: 12
+      height: 12,
     },
     {
       name: "MAIN_PLAYLIST_BUTTON_DEPRESSED_SELECTED",
       x: 69,
       y: 73,
       width: 23,
-      height: 12
-    }
+      height: 12,
+    },
   ],
   TEXT: characterSprites,
   TITLEBAR: [
@@ -560,14 +560,14 @@ export default {
       x: 27,
       y: 72,
       width: 275,
-      height: 14
+      height: 14,
     },
     {
       name: "MAIN_EASTER_EGG_TITLE_BAR_SELECTED",
       x: 27,
       y: 57,
       width: 275,
-      height: 14
+      height: 14,
     },
     { name: "MAIN_OPTIONS_BUTTON", x: 0, y: 0, width: 9, height: 9 },
     {
@@ -575,7 +575,7 @@ export default {
       x: 0,
       y: 9,
       width: 9,
-      height: 9
+      height: 9,
     },
     { name: "MAIN_MINIMIZE_BUTTON", x: 9, y: 0, width: 9, height: 9 },
     {
@@ -583,7 +583,7 @@ export default {
       x: 9,
       y: 9,
       width: 9,
-      height: 9
+      height: 9,
     },
     { name: "MAIN_SHADE_BUTTON", x: 0, y: 18, width: 9, height: 9 },
     { name: "MAIN_SHADE_BUTTON_DEPRESSED", x: 9, y: 18, width: 9, height: 9 },
@@ -594,49 +594,49 @@ export default {
       x: 304,
       y: 0,
       width: 8,
-      height: 43
+      height: 43,
     },
     {
       name: "MAIN_CLUTTER_BAR_BACKGROUND_DISABLED",
       x: 312,
       y: 0,
       width: 8,
-      height: 43
+      height: 43,
     },
     {
       name: "MAIN_CLUTTER_BAR_BUTTON_O_SELECTED",
       x: 304,
       y: 47,
       width: 8,
-      height: 8
+      height: 8,
     },
     {
       name: "MAIN_CLUTTER_BAR_BUTTON_A_SELECTED",
       x: 312,
       y: 55,
       width: 8,
-      height: 7
+      height: 7,
     },
     {
       name: "MAIN_CLUTTER_BAR_BUTTON_I_SELECTED",
       x: 320,
       y: 62,
       width: 8,
-      height: 7
+      height: 7,
     },
     {
       name: "MAIN_CLUTTER_BAR_BUTTON_D_SELECTED",
       x: 328,
       y: 69,
       width: 8,
-      height: 8
+      height: 8,
     },
     {
       name: "MAIN_CLUTTER_BAR_BUTTON_V_SELECTED",
       x: 336,
       y: 77,
       width: 8,
-      height: 7
+      height: 7,
     },
     { name: "MAIN_SHADE_BACKGROUND", x: 27, y: 42, width: 275, height: 14 },
     {
@@ -644,7 +644,7 @@ export default {
       x: 27,
       y: 29,
       width: 275,
-      height: 14
+      height: 14,
     },
     { name: "MAIN_SHADE_BUTTON_SELECTED", x: 0, y: 27, width: 9, height: 9 },
     {
@@ -652,14 +652,14 @@ export default {
       x: 9,
       y: 27,
       width: 9,
-      height: 9
+      height: 9,
     },
     {
       name: "MAIN_SHADE_POSITION_BACKGROUND",
       x: 0,
       y: 36,
       width: 17,
-      height: 7
+      height: 7,
     },
     { name: "MAIN_SHADE_POSITION_THUMB", x: 20, y: 36, width: 3, height: 7 },
     {
@@ -667,15 +667,15 @@ export default {
       x: 17,
       y: 36,
       width: 3,
-      height: 7
+      height: 7,
     },
     {
       name: "MAIN_SHADE_POSITION_THUMB_RIGHT",
       x: 23,
       y: 36,
       width: 3,
-      height: 7
-    }
+      height: 7,
+    },
   ],
   VOLUME: [
     { name: "MAIN_VOLUME_BACKGROUND", x: 0, y: 0, width: 68, height: 420 },
@@ -685,8 +685,8 @@ export default {
       x: 0,
       y: 422,
       width: 14,
-      height: 11
-    }
+      height: 11,
+    },
   ],
   GEN: [
     { name: "GEN_TOP_LEFT_SELECTED", x: 0, y: 0, width: 25, height: 20 },
@@ -696,7 +696,7 @@ export default {
       x: 52,
       y: 0,
       width: 25,
-      height: 20
+      height: 20,
     },
     { name: "GEN_TOP_RIGHT_END_SELECTED", x: 78, y: 0, width: 25, height: 20 },
     {
@@ -704,7 +704,7 @@ export default {
       x: 104,
       y: 0,
       width: 25,
-      height: 20
+      height: 20,
     },
     { name: "GEN_TOP_RIGHT_SELECTED", x: 130, y: 0, width: 25, height: 20 },
 
@@ -721,7 +721,7 @@ export default {
     { name: "GEN_MIDDLE_LEFT_BOTTOM", x: 158, y: 42, width: 11, height: 24 },
     { name: "GEN_MIDDLE_RIGHT", x: 139, y: 42, width: 8, height: 29 },
     { name: "GEN_MIDDLE_RIGHT_BOTTOM", x: 170, y: 42, width: 8, height: 24 },
-    { name: "GEN_CLOSE_SELECTED", x: 148, y: 42, width: 9, height: 9 }
+    { name: "GEN_CLOSE_SELECTED", x: 148, y: 42, width: 9, height: 9 },
   ],
   GENEX: [
     {
@@ -729,14 +729,14 @@ export default {
       x: 0,
       y: 0,
       height: 15,
-      width: 47
+      width: 47,
     },
     {
       name: "GENEX_BUTTON_BACKGROUND_PRESSED",
       x: 0,
       y: 1,
       height: 15,
-      width: 47
+      width: 47,
     },
     { name: "GENEX_SCROLL_UP_UNPRESSED", x: 0, y: 31, height: 14, width: 14 },
     {
@@ -744,7 +744,7 @@ export default {
       x: 14,
       y: 31,
       height: 14,
-      width: 14
+      width: 14,
     },
     { name: "GENEX_SCROLL_UP_PRESSED", x: 28, y: 31, height: 14, width: 14 },
     { name: "GENEX_SCROLL_DOWN_PRESSED", x: 42, y: 31, height: 14, width: 14 },
@@ -754,7 +754,7 @@ export default {
       x: 14,
       y: 45,
       height: 14,
-      width: 14
+      width: 14,
     },
     { name: "GENEX_SCROLL_LEFT_PRESSED", x: 28, y: 45, height: 14, width: 14 },
     { name: "GENEX_SCROLL_RIGHT_PRESSED", x: 42, y: 45, height: 14, width: 14 },
@@ -763,28 +763,28 @@ export default {
       x: 56,
       y: 31,
       height: 28,
-      width: 14
+      width: 14,
     },
     {
       name: "GENEX_VERTICAL_SCROLL_HANDLE_PRESSED",
       x: 70,
       y: 31,
       height: 28,
-      width: 14
+      width: 14,
     },
     {
       name: "GENEX_HORIZONTAL_SCROLL_HANDLE_UNPRESSED",
       x: 84,
       y: 31,
       height: 14,
-      width: 28
+      width: 28,
     },
     {
       name: "GENEX_HORIZONTAL_SCROLL_HANDLE_PRESSED",
       x: 84,
       y: 45,
       height: 14,
-      width: 28
-    }
-  ]
+      width: 28,
+    },
+  ],
 };

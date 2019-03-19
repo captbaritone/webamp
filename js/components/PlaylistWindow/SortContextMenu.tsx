@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import {
   reverseList,
   randomizeList,
-  sortListByTitle
+  sortListByTitle,
 } from "../../actionCreators";
 
 import { Hr, Node } from "../ContextMenu";
@@ -35,7 +35,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
   return {
     reverseList: () => dispatch(reverseList()),
     randomizeList: () => dispatch(randomizeList()),
-    sortListByTitle: () => dispatch(sortListByTitle())
+    sortListByTitle: () => dispatch(sortListByTitle()),
   };
 };
 

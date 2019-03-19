@@ -13,7 +13,7 @@ const Minimize = ({ minimize }: Props) => (
 );
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  minimize: () => dispatch(Actions.minimize())
+  minimize: () => dispatch(Actions.minimize()),
 });
 
 export default connect(

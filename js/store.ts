@@ -13,11 +13,11 @@ import {
   Dispatch,
   Action,
   AppState,
-  Middleware
+  Middleware,
 } from "./types";
 
 const compose = composeWithDevTools({
-  actionsBlacklist: [UPDATE_TIME_ELAPSED, STEP_MARQUEE]
+  actionsBlacklist: [UPDATE_TIME_ELAPSED, STEP_MARQUEE],
 });
 
 export default function(
@@ -49,7 +49,7 @@ export default function(
         thunk.withExtraArgument(extras),
         mediaMiddleware(media),
         emitterMiddleware,
-        ...customMiddlewares
+        ...customMiddlewares,
       ].filter(Boolean)
     )
   );

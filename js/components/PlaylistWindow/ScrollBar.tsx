@@ -42,14 +42,14 @@ const ScrollBar = (props: StateProps & DispatchProps) => (
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
   return {
     setPlaylistScrollPosition: position =>
-      dispatch(setPlaylistScrollPosition(100 - position))
+      dispatch(setPlaylistScrollPosition(100 - position)),
   };
 };
 
 const mapStateToProps = (state: AppState): StateProps => ({
   playlistScrollPosition: getPlaylistScrollPosition(state),
   allTracksAreVisible:
-    getVisibleTrackIds(state).length === state.playlist.trackOrder.length
+    getVisibleTrackIds(state).length === state.playlist.trackOrder.length,
 });
 
 export default connect(

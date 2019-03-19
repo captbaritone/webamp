@@ -23,7 +23,7 @@ const MainBalance = (props: StateProps) => (
 );
 
 const mapStateToProps = (state: AppState): StateProps => ({
-  balance: state.media.balance
+  balance: state.media.balance,
 });
 
 export default connect(mapStateToProps)(MainBalance);

@@ -6,7 +6,7 @@ import {
   getVisibleTrackIds,
   getScrollOffset,
   getNumberOfTracks,
-  getTracks
+  getTracks,
 } from "../../selectors";
 import { TRACK_HEIGHT } from "../../constants";
 import { SELECT_ZERO } from "../../actionTypes";
@@ -107,14 +107,14 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   selectZero: () => dispatch({ type: SELECT_ZERO }),
   dragSelected: (offset: number) => dispatch(dragSelected(offset)),
   scrollPlaylistByDelta: (e: React.WheelEvent<HTMLDivElement>) =>
-    dispatch(scrollPlaylistByDelta(e))
+    dispatch(scrollPlaylistByDelta(e)),
 });
 
 const mapStateToProps = (state: AppState): StateProps => ({
   offset: getScrollOffset(state),
   trackIds: getVisibleTrackIds(state),
   tracks: getTracks(state),
-  numberOfTracks: getNumberOfTracks(state)
+  numberOfTracks: getNumberOfTracks(state),
 });
 
 export default connect(

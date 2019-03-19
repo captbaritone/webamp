@@ -5,7 +5,7 @@ import {
   SET_EQ_AUTO,
   SET_EQ_ON,
   SET_EQ_OFF,
-  LOAD_SERIALIZED_STATE
+  LOAD_SERIALIZED_STATE,
 } from "../actionTypes";
 import { EqualizerSerializedStateV1 } from "../serializedStates/v1Types";
 
@@ -29,8 +29,8 @@ const defaultState = {
     6000: 50,
     12000: 50,
     14000: 50,
-    16000: 50
-  }
+    16000: 50,
+  },
 };
 
 const equalizer = (

@@ -6,7 +6,7 @@ import {
   GenLetterWidths,
   PlaylistStyle,
   SkinGenExColors,
-  DummyVizData
+  DummyVizData,
 } from "../types";
 import { createSelector } from "reselect";
 
@@ -27,7 +27,7 @@ import {
   SET_DUMMY_VIZ_DATA,
   LOADING,
   LOAD_SERIALIZED_STATE,
-  LOAD_DEFAULT_SKIN
+  LOAD_DEFAULT_SKIN,
 } from "../actionTypes";
 import { DEFAULT_SKIN, VISUALIZER_ORDER } from "../constants";
 import { DisplaySerializedStateV1 } from "../serializedStates/v1Types";
@@ -75,7 +75,7 @@ const defaultSkinGenExColors = {
   listTextHighlighted: "rgb(0,198,255)",
   listTextHighlightedBackground: "rgb(0,198,255)",
   listTextSelected: "rgb(0,198,255)",
-  listTextSelectedBackground: "rgb(0,198,255)"
+  listTextSelectedBackground: "rgb(0,198,255)",
 };
 
 const defaultDisplayState = {
@@ -97,7 +97,7 @@ const defaultDisplayState = {
   skinGenLetterWidths: null, // TODO: Get the default value for this?
   skinGenExColors: defaultSkinGenExColors,
   additionalVisualizers: [],
-  zIndex: 0
+  zIndex: 0,
 };
 
 const display = (
@@ -113,7 +113,7 @@ const display = (
         skinPlaylistStyle,
         skinRegion,
         skinGenLetterWidths,
-        skinGenExColors
+        skinGenExColors,
       } = defaultDisplayState;
       return {
         ...state,
@@ -123,7 +123,7 @@ const display = (
         skinPlaylistStyle,
         skinRegion,
         skinGenLetterWidths,
-        skinGenExColors
+        skinGenExColors,
       };
 
     case TOGGLE_DOUBLESIZE_MODE:
@@ -159,12 +159,12 @@ const display = (
         skinCursors: data.skinCursors,
         skinRegion: data.skinRegion,
         skinGenLetterWidths: data.skinGenLetterWidths,
-        skinGenExColors: data.skinGenExColors || defaultSkinGenExColors
+        skinGenExColors: data.skinGenExColors || defaultSkinGenExColors,
       };
     case TOGGLE_VISUALIZER_STYLE:
       return {
         ...state,
-        visualizerStyle: (state.visualizerStyle + 1) % VISUALIZER_ORDER.length
+        visualizerStyle: (state.visualizerStyle + 1) % VISUALIZER_ORDER.length,
       };
     case SET_PLAYLIST_SCROLL_POSITION:
       return { ...state, playlistScrollPosition: action.position };
@@ -194,7 +194,7 @@ export const getSerializedState = (
     skinRegion,
     skinGenLetterWidths,
     skinColors,
-    skinPlaylistStyle
+    skinPlaylistStyle,
   } = state;
   return {
     visualizerStyle,
@@ -206,7 +206,7 @@ export const getSerializedState = (
     skinRegion,
     skinGenLetterWidths,
     skinColors,
-    skinPlaylistStyle
+    skinPlaylistStyle,
   };
 };
 

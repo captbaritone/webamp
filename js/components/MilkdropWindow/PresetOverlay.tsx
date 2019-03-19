@@ -16,14 +16,14 @@ const LOADING_STYLE: React.CSSProperties = {
   top: 0,
   left: 0,
   color: "white",
-  background: "rgba(0.33, 0.33, 0.33, 0.33)"
+  background: "rgba(0.33, 0.33, 0.33, 0.33)",
 };
 
 const OUTER_WRAPPER_STYLE: React.CSSProperties = {
   position: "absolute",
   top: 0,
   left: 0,
-  padding: "15px 10px 0 10px"
+  padding: "15px 10px 0 10px",
 };
 
 const INNER_WRAPPER_STYLE: React.CSSProperties = {
@@ -31,7 +31,7 @@ const INNER_WRAPPER_STYLE: React.CSSProperties = {
   whiteSpace: "nowrap",
   overflow: "hidden",
   background: "rgba(0, 0, 0, 0.815)",
-  fontSize: "12px"
+  fontSize: "12px",
 };
 
 interface State {
@@ -78,7 +78,7 @@ class PresetOverlay extends React.Component<Props, State> {
     const { currentPresetIndex } = this.props;
     if (currentPresetIndex != null) {
       this.setState({
-        selectedListIndex: this._listIndexFromPresetIndex(currentPresetIndex)
+        selectedListIndex: this._listIndexFromPresetIndex(currentPresetIndex),
       });
     }
   }
@@ -138,7 +138,7 @@ class PresetOverlay extends React.Component<Props, State> {
     switch (e.keyCode) {
       case 38: // up arrow
         this.setState({
-          selectedListIndex: Math.max(this.state.selectedListIndex - 1, 0)
+          selectedListIndex: Math.max(this.state.selectedListIndex - 1, 0),
         });
         e.stopPropagation();
         break;
@@ -147,7 +147,7 @@ class PresetOverlay extends React.Component<Props, State> {
           selectedListIndex: Math.min(
             this.state.selectedListIndex + 1,
             this._maxListIndex()
-          )
+          ),
         });
         e.stopPropagation();
         break;
@@ -193,7 +193,7 @@ class PresetOverlay extends React.Component<Props, State> {
           style={{
             ...INNER_WRAPPER_STYLE,
             width: width - 20 - WIDTH_PADDING,
-            maxHeight: height - HEIGHT_PADDING
+            maxHeight: height - HEIGHT_PADDING,
           }}
         >
           <ul style={{ listStyleType: "none", padding: 0, margin: 0 }}>
@@ -224,7 +224,7 @@ export function getRangeCenteredOnIndex(
 function mapStateToProps(state: AppState): StateProps {
   return {
     presetKeys: Selectors.getPresetNames(state),
-    currentPresetIndex: Selectors.getCurrentPresetIndex(state)
+    currentPresetIndex: Selectors.getCurrentPresetIndex(state),
   };
 }
 
@@ -235,7 +235,7 @@ function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
     },
     togglePresetOverlay: () => dispatch(Actions.togglePresetOverlay()),
     appendPresetFileList: (fileList: FileList) =>
-      dispatch(Actions.appendPresetFileList(fileList))
+      dispatch(Actions.appendPresetFileList(fileList)),
   };
 }
 

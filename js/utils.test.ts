@@ -13,7 +13,7 @@ import {
   spliceIn,
   getFileExtension,
   makeCachingFilterFunction,
-  replaceAtIndex
+  replaceAtIndex,
 } from "./utils";
 
 const fixture = (filename: string) =>
@@ -26,7 +26,7 @@ describe("getTimeObj", () => {
       minutesFirstDigit: "2",
       minutesSecondDigit: "0",
       secondsFirstDigit: "3",
-      secondsSecondDigit: "4"
+      secondsSecondDigit: "4",
     };
     expect(actual).toEqual(expected);
   });
@@ -230,8 +230,8 @@ describe("parseIni", () => {
         current: "#FFFFFF",
         normalbg: "#000000",
         selectedbg: "#0000FF",
-        font: "Arial"
-      }
+        font: "Arial",
+      },
     };
     expect(actual).toEqual(expected);
   });
@@ -247,8 +247,8 @@ describe("parseIni", () => {
         selectedbg: "#2B4242",
         font: "Arial",
         mbbg: "#000000",
-        mbfg: "#89D8D1"
-      }
+        mbfg: "#89D8D1",
+      },
     };
     expect(actual).toEqual(expected);
   });
@@ -260,8 +260,8 @@ bar = baz
 `);
     const expected = {
       foo: {
-        bar: "baz"
-      }
+        bar: "baz",
+      },
     };
     expect(actual).toEqual(expected);
   });
@@ -275,8 +275,8 @@ bar = baz
         current: "#FFFFFF",
         normalbg: "#000000",
         selectedbg: "#0000FF",
-        font: "Ricky's cool font!"
-      }
+        font: "Ricky's cool font!",
+      },
     };
     expect(actual).toEqual(expected);
   });
@@ -288,8 +288,8 @@ bar = "baz"
   `);
     const expected = {
       foo: {
-        bar: "baz"
-      }
+        bar: "baz",
+      },
     };
     expect(actual).toEqual(expected);
   });

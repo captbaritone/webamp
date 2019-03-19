@@ -34,7 +34,7 @@ const Portal = (props: PortalProps) => {
   const style: React.CSSProperties = {
     top: props.top,
     left: props.left,
-    position: "absolute"
+    position: "absolute",
   };
   return createPortal(<div style={style}>{props.children}</div>, node);
 };
@@ -107,7 +107,7 @@ class ContextMenu extends React.Component<ContextMenuProps> {
       top,
       bottom,
       selected,
-      zIndex
+      zIndex,
     } = this.props;
     return (
       selected && (
@@ -122,7 +122,7 @@ class ContextMenu extends React.Component<ContextMenuProps> {
 }
 
 const mapStateToProps = (state: AppState) => ({
-  zIndex: state.display.zIndex
+  zIndex: state.display.zIndex,
 });
 
 export default connect(mapStateToProps)(ContextMenu);

@@ -9,11 +9,11 @@ export const imageSelectors: Selectors = {
   MAIN_BALANCE_BACKGROUND: ["#balance"],
   MAIN_BALANCE_THUMB: [
     "#balance::-webkit-slider-thumb",
-    "#balance::-moz-range-thumb"
+    "#balance::-moz-range-thumb",
   ],
   MAIN_BALANCE_THUMB_ACTIVE: [
     "#balance:active::-webkit-slider-thumb",
-    "#balance:active::-moz-range-thumb"
+    "#balance:active::-moz-range-thumb",
   ],
   MAIN_PREVIOUS_BUTTON: [".actions #previous"],
   MAIN_PREVIOUS_BUTTON_ACTIVE: [".actions #previous:active"],
@@ -65,7 +65,7 @@ export const imageSelectors: Selectors = {
     ".playlist-top-left-fill",
     ".playlist-top-left-spacer",
     ".playlist-top-right-fill",
-    ".playlist-top-right-spacer"
+    ".playlist-top-right-spacer",
   ],
   PLAYLIST_TOP_LEFT_CORNER: [".playlist-top-left"],
   PLAYLIST_TITLE_BAR: [".playlist-top-title"],
@@ -74,7 +74,7 @@ export const imageSelectors: Selectors = {
     ".selected .playlist-top-left-fill",
     ".selected .playlist-top-left-spacer",
     ".selected .playlist-top-right-fill",
-    ".selected .playlist-top-right-spacer"
+    ".selected .playlist-top-right-spacer",
   ],
   PLAYLIST_TOP_LEFT_SELECTED: [".selected .playlist-top-left"],
   PLAYLIST_TITLE_BAR_SELECTED: [".selected .playlist-top-title"],
@@ -83,7 +83,7 @@ export const imageSelectors: Selectors = {
   PLAYLIST_RIGHT_TILE: [".playlist-middle-right"],
   PLAYLIST_SCROLL_HANDLE: [".playlist-scrollbar-handle"],
   PLAYLIST_SCROLL_HANDLE_SELECTED: [
-    ".playlist-middle-right:active .playlist-scrollbar-handle"
+    ".playlist-middle-right:active .playlist-scrollbar-handle",
   ],
   PLAYLIST_BOTTOM_TILE: [".playlist-bottom"],
   PLAYLIST_BOTTOM_LEFT_CORNER: [".playlist-bottom-left"],
@@ -93,7 +93,7 @@ export const imageSelectors: Selectors = {
   PLAYLIST_SHADE_BACKGROUND_LEFT: ["#playlist-window-shade .left"],
   PLAYLIST_SHADE_BACKGROUND_RIGHT: ["#playlist-window-shade .right"],
   PLAYLIST_SHADE_BACKGROUND_RIGHT_SELECTED: [
-    "#playlist-window-shade.selected .right"
+    "#playlist-window-shade.selected .right",
   ],
 
   PLAYLIST_ADD_MENU_BAR: ["#playlist-add-menu.selected .bar"],
@@ -111,7 +111,7 @@ export const imageSelectors: Selectors = {
   PLAYLIST_CROP_SELECTED: ["#playlist-remove-menu .hover .crop"],
   PLAYLIST_REMOVE_SELECTED: ["#playlist-remove-menu .remove-selected"],
   PLAYLIST_REMOVE_SELECTED_SELECTED: [
-    "#playlist-remove-menu .hover .remove-selected"
+    "#playlist-remove-menu .hover .remove-selected",
   ],
   PLAYLIST_REMOVE_MISC: ["#playlist-remove-menu .remove-misc"],
   PLAYLIST_REMOVE_MISC_SELECTED: ["#playlist-remove-menu .hover .remove-misc"],
@@ -119,20 +119,20 @@ export const imageSelectors: Selectors = {
   PLAYLIST_SELECT_MENU_BAR: ["#playlist-selection-menu.selected .bar"],
   PLAYLIST_INVERT_SELECTION: ["#playlist-selection-menu .invert-selection"],
   PLAYLIST_INVERT_SELECTION_SELECTED: [
-    "#playlist-selection-menu .hover .invert-selection"
+    "#playlist-selection-menu .hover .invert-selection",
   ],
   PLAYLIST_SELECT_ZERO: ["#playlist-selection-menu .select-zero"],
   PLAYLIST_SELECT_ZERO_SELECTED: [
-    "#playlist-selection-menu .hover .select-zero"
+    "#playlist-selection-menu .hover .select-zero",
   ],
   PLAYLIST_SELECT_ALL: ["#playlist-selection-menu .select-all"],
   PLAYLIST_SELECT_ALL_SELECTED: ["#playlist-selection-menu .hover .select-all"],
   PLAYLIST_CLOSE_SELECTED: ["#playlist-close-button:active"],
   PLAYLIST_COLLAPSE_SELECTED: [
-    "#playlist-window #playlist-shade-button:active"
+    "#playlist-window #playlist-shade-button:active",
   ],
   PLAYLIST_EXPAND_SELECTED: [
-    "#playlist-window-shade #playlist-shade-button:active"
+    "#playlist-window-shade #playlist-shade-button:active",
   ],
 
   PLAYLIST_MISC_MENU_BAR: ["#playlist-misc-menu.selected .bar"],
@@ -175,42 +175,42 @@ export const imageSelectors: Selectors = {
   EQ_SHADE_BACKGROUND_SELECTED: ["#equalizer-window.shade.selected"],
   EQ_SHADE_VOLUME_SLIDER_LEFT: [
     "#equalizer-volume.left::-webkit-slider-thumb",
-    "#equalizer-volume.left::-moz-range-thumb"
+    "#equalizer-volume.left::-moz-range-thumb",
   ],
   EQ_SHADE_VOLUME_SLIDER_CENTER: [
     "#equalizer-volume.center::-webkit-slider-thumb",
-    "#equalizer-volume.center::-moz-range-thumb"
+    "#equalizer-volume.center::-moz-range-thumb",
   ],
   EQ_SHADE_VOLUME_SLIDER_RIGHT: [
     "#equalizer-volume.right::-webkit-slider-thumb",
-    "#equalizer-volume.right::-moz-range-thumb"
+    "#equalizer-volume.right::-moz-range-thumb",
   ],
   EQ_SHADE_BALANCE_SLIDER_LEFT: [
     "#equalizer-balance.left::-webkit-slider-thumb",
-    "#equalizer-balance.left::-moz-range-thumb"
+    "#equalizer-balance.left::-moz-range-thumb",
   ],
   EQ_SHADE_BALANCE_SLIDER_CENTER: [
     "#equalizer-balance.center::-webkit-slider-thumb",
-    "#equalizer-balance.center::-moz-range-thumb"
+    "#equalizer-balance.center::-moz-range-thumb",
   ],
   EQ_SHADE_BALANCE_SLIDER_RIGHT: [
     "#equalizer-balance.right::-webkit-slider-thumb",
-    "#equalizer-balance.right::-moz-range-thumb"
+    "#equalizer-balance.right::-moz-range-thumb",
   ],
   EQ_MAXIMIZE_BUTTON_ACTIVE: ["#equalizer-shade:active"],
   EQ_MINIMIZE_BUTTON_ACTIVE: [
-    "#equalizer-window.shade #equalizer-shade:active"
+    "#equalizer-window.shade #equalizer-shade:active",
   ],
   EQ_CLOSE_BUTTON: ["#equalizer-window.selected #equalizer-close"],
   EQ_CLOSE_BUTTON_ACTIVE: ["#equalizer-window #equalizer-close:active"],
   MAIN_POSITION_SLIDER_BACKGROUND: ["#position"],
   MAIN_POSITION_SLIDER_THUMB: [
     "#position::-webkit-slider-thumb",
-    "#position::-moz-range-thumb"
+    "#position::-moz-range-thumb",
   ],
   MAIN_POSITION_SLIDER_THUMB_SELECTED: [
     "#position:active::-webkit-slider-thumb",
-    "#position:active::-moz-range-thumb"
+    "#position:active::-moz-range-thumb",
   ],
   MAIN_SHUFFLE_BUTTON: ["#shuffle"],
   MAIN_SHUFFLE_BUTTON_DEPRESSED: ["#shuffle:active"],
@@ -235,7 +235,7 @@ export const imageSelectors: Selectors = {
   MAIN_OPTIONS_BUTTON: [".selected #title-bar #option.clicked"],
   MAIN_OPTIONS_BUTTON_DEPRESSED: [
     ".selected #title-bar #option:active",
-    ".selected #title-bar #option.selected"
+    ".selected #title-bar #option.selected",
   ],
   MAIN_MINIMIZE_BUTTON: [".selected #title-bar #minimize.clicked"],
   MAIN_MINIMIZE_BUTTON_DEPRESSED: [".selected #title-bar #minimize:active"],
@@ -247,23 +247,23 @@ export const imageSelectors: Selectors = {
   MAIN_CLUTTER_BAR_BACKGROUND_DISABLED: ["#clutter-bar.disabled"],
   MAIN_CLUTTER_BAR_BUTTON_O_SELECTED: [
     "#button-o:active",
-    "#button-0.selected"
+    "#button-0.selected",
   ],
   MAIN_CLUTTER_BAR_BUTTON_A_SELECTED: [
     "#button-a:active",
-    "#button-a.selected"
+    "#button-a.selected",
   ],
   MAIN_CLUTTER_BAR_BUTTON_I_SELECTED: [
     "#button-i:active",
-    "#button-i.selected"
+    "#button-i.selected",
   ],
   MAIN_CLUTTER_BAR_BUTTON_D_SELECTED: [
     "#button-d:active",
-    "#button-d.selected"
+    "#button-d.selected",
   ],
   MAIN_CLUTTER_BAR_BUTTON_V_SELECTED: [
     "#button-v:active",
-    "#button-v.selected"
+    "#button-v.selected",
   ],
   MAIN_SHADE_BACKGROUND: [".shade #title-bar"],
   MAIN_SHADE_BACKGROUND_SELECTED: [".shade.selected #title-bar"],
@@ -272,24 +272,24 @@ export const imageSelectors: Selectors = {
   MAIN_SHADE_POSITION_BACKGROUND: [".shade #position"],
   MAIN_SHADE_POSITION_THUMB: [
     ".shade #position::-moz-range-thumb",
-    ".shade #position::-webkit-slider-thumb"
+    ".shade #position::-webkit-slider-thumb",
   ],
   MAIN_SHADE_POSITION_THUMB_LEFT: [
     ".shade #position.left::-moz-range-thumb",
-    ".shade #position.left::-webkit-slider-thumb"
+    ".shade #position.left::-webkit-slider-thumb",
   ],
   MAIN_SHADE_POSITION_THUMB_RIGHT: [
     ".shade #position.right::-moz-range-thumb",
-    ".shade #position.right::-webkit-slider-thumb"
+    ".shade #position.right::-webkit-slider-thumb",
   ],
   MAIN_VOLUME_BACKGROUND: ["#volume"],
   MAIN_VOLUME_THUMB: [
     "#volume input::-webkit-slider-thumb",
-    "#volume input::-moz-range-thumb"
+    "#volume input::-moz-range-thumb",
   ],
   MAIN_VOLUME_THUMB_SELECTED: [
     "#volume input:active::-webkit-slider-thumb",
-    "#volume input:active::-moz-range-thumb"
+    "#volume input:active::-moz-range-thumb",
   ],
   GEN_TOP_CENTER_FILL: [".gen-window .gen-top"],
   GEN_TOP_LEFT: [".gen-window .gen-top-left"],
@@ -298,7 +298,7 @@ export const imageSelectors: Selectors = {
   GEN_TOP_RIGHT_END: [".gen-window .gen-top-right-end"],
   GEN_TOP_LEFT_RIGHT_FILL: [
     ".gen-window .gen-top-left-fill",
-    ".gen-window .gen-top-right-fill"
+    ".gen-window .gen-top-right-fill",
   ],
 
   GEN_TOP_CENTER_FILL_SELECTED: [".gen-window.selected .gen-top"],
@@ -308,7 +308,7 @@ export const imageSelectors: Selectors = {
   GEN_TOP_RIGHT_END_SELECTED: [".gen-window.selected .gen-top-right-end"],
   GEN_TOP_LEFT_RIGHT_FILL_SELECTED: [
     ".gen-window.selected .gen-top-left-fill",
-    ".gen-window.selected .gen-top-right-fill"
+    ".gen-window.selected .gen-top-right-fill",
   ],
   GEN_BOTTOM_LEFT: [".gen-window .gen-bottom-left"],
   GEN_BOTTOM_RIGHT: [".gen-window .gen-bottom-right"],
@@ -318,7 +318,7 @@ export const imageSelectors: Selectors = {
   GEN_MIDDLE_RIGHT: [".gen-window .gen-middle-right"],
   GEN_MIDDLE_RIGHT_BOTTOM: [".gen-window .gen-middle-right-bottom"],
   GEN_CLOSE_SELECTED: [".gen-window .gen-close:active"],
-  GENEX_BUTTON_BACKGROUND_UNPRESSED: ["#webamp-media-library button"]
+  GENEX_BUTTON_BACKGROUND_UNPRESSED: ["#webamp-media-library button"],
 };
 
 Object.keys(FONT_LOOKUP).forEach(character => {
@@ -329,10 +329,10 @@ Object.keys(FONT_LOOKUP).forEach(character => {
 
 LETTERS.forEach(character => {
   imageSelectors[`GEN_TEXT_${character}`] = [
-    `.gen-text-${character.toLowerCase()}`
+    `.gen-text-${character.toLowerCase()}`,
   ];
   imageSelectors[`GEN_TEXT_SELECTED_${character}`] = [
-    `.gen-window.selected .gen-text-${character.toLowerCase()}`
+    `.gen-window.selected .gen-text-${character.toLowerCase()}`,
   ];
 });
 
@@ -346,7 +346,7 @@ export const cursorSelectors: Selectors = {
   EQTITLE: [
     "#equalizer-window .title-bar",
     "#equalizer-window.shade",
-    "#equalizer-window.shade input"
+    "#equalizer-window.shade input",
   ],
   MAINMENU: ["#main-window #option", "#webamp-context-menu .context-menu"],
   MIN: ["#main-window #minimize"],
@@ -355,7 +355,7 @@ export const cursorSelectors: Selectors = {
     ".window",
     ".window input", // Otherwise
     "#main-window",
-    "#main-window.shade #title-bar"
+    "#main-window.shade #title-bar",
   ],
   MMENU: ["#main-window.shade #option"],
   PNORMAL: ["#playlist-window"],
@@ -365,11 +365,11 @@ export const cursorSelectors: Selectors = {
   PTBAR: ["#playlist-window .playlist-top"],
   PCLOSE: [
     "#playlist-window #playlist-close-button",
-    "#playlist-window-shade #playlist-close-button"
+    "#playlist-window-shade #playlist-close-button",
   ],
   PWINBUT: [
     "#playlist-window #playlist-shade-button",
-    "#playlist-window-shade #playlist-shade-button"
+    "#playlist-window-shade #playlist-shade-button",
   ],
   POSBAR: ["#main-window #position"],
   PSIZE: ["#playlist-window #playlist-resize-target"],
@@ -382,5 +382,5 @@ export const cursorSelectors: Selectors = {
   VOLBAL: ["#volume", "#volume input", "#balance"],
   WINBUT: ["#main-window #shade"],
   WSNORMAL: ["#main-window.shade #title-bar"],
-  WSPOSBAR: ["#main-window.shade #position"]
+  WSPOSBAR: ["#main-window.shade #position"],
 };

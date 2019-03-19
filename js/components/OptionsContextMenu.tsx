@@ -67,7 +67,7 @@ const mapStateToProps = (state: AppState): StateProps => {
     doubled: state.display.doubled,
     timeMode: state.media.timeMode,
     repeat: state.media.repeat,
-    shuffle: state.media.shuffle
+    shuffle: state.media.shuffle,
   };
 };
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
@@ -75,7 +75,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
     toggleTimeMode: () => dispatch(Actions.toggleTimeMode()),
     toggleDoubleSizeMode: () => dispatch(Actions.toggleDoubleSizeMode()),
     toggleRepeat: () => dispatch(Actions.toggleRepeat()),
-    toggleShuffle: () => dispatch(Actions.toggleShuffle())
+    toggleShuffle: () => dispatch(Actions.toggleShuffle()),
   };
 };
 

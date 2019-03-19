@@ -36,7 +36,7 @@ const ClutterBar = (props: StateProps & DispatchProps) => (
 );
 
 const mapStateToProps = (state: AppState): StateProps => ({
-  doubled: state.display.doubled
+  doubled: state.display.doubled,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
@@ -44,7 +44,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   handleMouseUp: () => {
     dispatch(toggleDoubleSizeMode());
     dispatch({ type: UNSET_FOCUS });
-  }
+  },
 });
 
 export default connect(

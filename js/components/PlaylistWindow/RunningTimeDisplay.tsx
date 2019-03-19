@@ -31,7 +31,7 @@ const RunningTimeDisplay = (props: Props) => (
 );
 
 const mapStateToProps = (state: AppState): Props => ({
-  runningTimeMessage: getRunningTimeMessage(state)
+  runningTimeMessage: getRunningTimeMessage(state),
 });
 
 export default connect(mapStateToProps)(RunningTimeDisplay);

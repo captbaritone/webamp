@@ -5,18 +5,18 @@ describe("resizeUtils", () => {
     const graph = {
       a: {},
       b: { below: "a" },
-      c: { below: "b" }
+      c: { below: "b" },
     };
     const sizeDiff = {
       a: { height: -75, width: 0 },
       b: { height: 0, width: 0 },
-      c: { height: 0, width: 0 }
+      c: { height: 0, width: 0 },
     };
     const actual = getPositionDiff(graph, sizeDiff);
     const expected = {
       a: { x: 0, y: 0 },
       b: { x: 0, y: -75 },
-      c: { x: 0, y: -75 }
+      c: { x: 0, y: -75 },
     };
     expect(actual).toEqual(expected);
   });
@@ -24,18 +24,18 @@ describe("resizeUtils", () => {
     const graph = {
       a: {},
       b: { below: "a" },
-      c: { below: "b" }
+      c: { below: "b" },
     };
     const sizeDiff = {
       a: { height: 0, width: 0 },
       b: { height: -75, width: 0 },
-      c: { height: 0, width: 0 }
+      c: { height: 0, width: 0 },
     };
     const actual = getPositionDiff(graph, sizeDiff);
     const expected = {
       a: { x: 0, y: 0 },
       b: { x: 0, y: 0 },
-      c: { x: 0, y: -75 }
+      c: { x: 0, y: -75 },
     };
     expect(actual).toEqual(expected);
   });
@@ -43,18 +43,18 @@ describe("resizeUtils", () => {
     const graph = {
       a: {},
       b: { below: "a" },
-      c: { below: "b" }
+      c: { below: "b" },
     };
     const sizeDiff = {
       a: { height: 75, width: 0 },
       b: { height: 0, width: 0 },
-      c: { height: 0, width: 0 }
+      c: { height: 0, width: 0 },
     };
     const actual = getPositionDiff(graph, sizeDiff);
     const expected = {
       a: { x: 0, y: 0 },
       b: { x: 0, y: 75 },
-      c: { x: 0, y: 75 }
+      c: { x: 0, y: 75 },
     };
     expect(actual).toEqual(expected);
   });
@@ -62,18 +62,18 @@ describe("resizeUtils", () => {
     const graph = {
       a: {},
       b: { below: "a" },
-      c: { below: "b" }
+      c: { below: "b" },
     };
     const sizeDiff = {
       a: { height: 100, width: 100 },
       b: { height: 100, width: 100 },
-      c: { height: 100, width: 100 }
+      c: { height: 100, width: 100 },
     };
     const actual = getPositionDiff(graph, sizeDiff);
     const expected = {
       a: { x: 0, y: 0 },
       b: { x: 0, y: 100 },
-      c: { x: 0, y: 200 }
+      c: { x: 0, y: 200 },
     };
     expect(actual).toEqual(expected);
   });
@@ -82,20 +82,20 @@ describe("resizeUtils", () => {
       a: {},
       b: { right: "a" },
       c: { below: "a" },
-      d: { below: "b", right: "c" }
+      d: { below: "b", right: "c" },
     };
     const sizeDiff = {
       a: { height: 100, width: 100 },
       b: { height: 100, width: 100 },
       c: { height: 100, width: 100 },
-      d: { height: 100, width: 100 }
+      d: { height: 100, width: 100 },
     };
     const actual = getPositionDiff(graph, sizeDiff);
     const expected = {
       a: { x: 0, y: 0 },
       b: { x: 100, y: 0 },
       c: { x: 0, y: 100 },
-      d: { x: 100, y: 100 }
+      d: { x: 100, y: 100 },
     };
     expect(actual).toEqual(expected);
   });
@@ -111,7 +111,7 @@ describe("resizeUtils", () => {
 
       g: { below: "d" },
       h: { below: "e", right: "g" },
-      i: { below: "f", right: "h" }
+      i: { below: "f", right: "h" },
     };
     const sizeDiff = {
       a: { height: 100, width: 100 },
@@ -124,7 +124,7 @@ describe("resizeUtils", () => {
 
       g: { height: 100, width: 100 },
       h: { height: 100, width: 100 },
-      i: { height: 100, width: 100 }
+      i: { height: 100, width: 100 },
     };
     const actual = getPositionDiff(graph, sizeDiff);
     const expected = {
@@ -138,7 +138,7 @@ describe("resizeUtils", () => {
 
       g: { x: 0, y: 200 },
       h: { x: 100, y: 200 },
-      i: { x: 200, y: 200 }
+      i: { x: 200, y: 200 },
     };
     expect(actual).toEqual(expected);
   });
@@ -146,18 +146,18 @@ describe("resizeUtils", () => {
     const graph = {
       a: {},
       b: { below: "a" },
-      c: { below: "b" }
+      c: { below: "b" },
     };
     const sizeDiff = {
       a: { height: -100, width: -100 },
       b: { height: -100, width: -100 },
-      c: { height: -100, width: -100 }
+      c: { height: -100, width: -100 },
     };
     const actual = getPositionDiff(graph, sizeDiff);
     const expected = {
       a: { x: 0, y: 0 },
       b: { x: 0, y: -100 },
-      c: { x: 0, y: -200 }
+      c: { x: 0, y: -200 },
     };
     expect(actual).toEqual(expected);
   });
@@ -165,18 +165,18 @@ describe("resizeUtils", () => {
     const graph = {
       a: {},
       b: { right: "a" },
-      c: { right: "b" }
+      c: { right: "b" },
     };
     const sizeDiff = {
       a: { height: -75, width: 0 },
       b: { height: 0, width: 0 },
-      c: { height: 0, width: 0 }
+      c: { height: 0, width: 0 },
     };
     const actual = getPositionDiff(graph, sizeDiff);
     const expected = {
       a: { x: 0, y: 0 },
       b: { x: 0, y: 0 },
-      c: { x: 0, y: 0 }
+      c: { x: 0, y: 0 },
     };
     expect(actual).toEqual(expected);
   });
@@ -184,18 +184,18 @@ describe("resizeUtils", () => {
     const graph = {
       a: {},
       b: { right: "a" },
-      c: { right: "b" }
+      c: { right: "b" },
     };
     const sizeDiff = {
       a: { height: 100, width: 100 },
       b: { height: 100, width: 100 },
-      c: { height: 100, width: 100 }
+      c: { height: 100, width: 100 },
     };
     const actual = getPositionDiff(graph, sizeDiff);
     const expected = {
       a: { x: 0, y: 0 },
       b: { x: 100, y: 0 },
-      c: { x: 200, y: 0 }
+      c: { x: 200, y: 0 },
     };
     expect(actual).toEqual(expected);
   });
@@ -203,18 +203,18 @@ describe("resizeUtils", () => {
     const graph = {
       a: {},
       b: { right: "a" },
-      c: { right: "b" }
+      c: { right: "b" },
     };
     const sizeDiff = {
       a: { height: -100, width: -100 },
       b: { height: -100, width: -100 },
-      c: { height: -100, width: -100 }
+      c: { height: -100, width: -100 },
     };
     const actual = getPositionDiff(graph, sizeDiff);
     const expected = {
       a: { x: 0, y: 0 },
       b: { x: -100, y: 0 },
-      c: { x: -200, y: 0 }
+      c: { x: -200, y: 0 },
     };
     expect(actual).toEqual(expected);
   });
@@ -223,20 +223,20 @@ describe("resizeUtils", () => {
       a: {},
       b: { below: "a" },
       c: {},
-      d: { below: "c" }
+      d: { below: "c" },
     };
     const sizeDiff = {
       a: { height: -75, width: 0 },
       b: { height: 0, width: 0 },
       c: { height: -75, width: 0 },
-      d: { height: 0, width: 0 }
+      d: { height: 0, width: 0 },
     };
     const actual = getPositionDiff(graph, sizeDiff);
     const expected = {
       a: { x: 0, y: 0 },
       b: { x: 0, y: -75 },
       c: { x: 0, y: 0 },
-      d: { x: 0, y: -75 }
+      d: { x: 0, y: -75 },
     };
     expect(actual).toEqual(expected);
   });
@@ -246,62 +246,62 @@ describe("generateGraph", () => {
     const actual = generateGraph([
       { key: "a", x: 0, y: 0, width: 100, height: 100 },
       { key: "b", x: 0, y: 100, width: 100, height: 100 },
-      { key: "c", x: 0, y: 200, width: 100, height: 100 }
+      { key: "c", x: 0, y: 200, width: 100, height: 100 },
     ]);
     expect(actual).toEqual({
       a: {},
       b: { below: "a" },
-      c: { below: "b" }
+      c: { below: "b" },
     });
   });
   it("of disconnected windows", () => {
     const actual = generateGraph([
       { key: "a", x: 0, y: 0, width: 100, height: 100 },
-      { key: "b", x: 0, y: 110, width: 100, height: 100 }
+      { key: "b", x: 0, y: 110, width: 100, height: 100 },
     ]);
     expect(actual).toEqual({
       a: {},
-      b: {}
+      b: {},
     });
   });
   it("of windows that touch in y, but the lower one is to the right", () => {
     const actual = generateGraph([
       { key: "a", x: 0, y: 0, width: 100, height: 100 },
-      { key: "b", x: 110, y: 100, width: 100, height: 100 }
+      { key: "b", x: 110, y: 100, width: 100, height: 100 },
     ]);
     expect(actual).toEqual({
       a: {},
-      b: {}
+      b: {},
     });
   });
   it("of windows that touch in y, but the lower one is to the left", () => {
     const actual = generateGraph([
       { key: "a", x: 110, y: 0, width: 100, height: 100 },
-      { key: "b", x: 0, y: 100, width: 100, height: 100 }
+      { key: "b", x: 0, y: 100, width: 100, height: 100 },
     ]);
     expect(actual).toEqual({
       a: {},
-      b: {}
+      b: {},
     });
   });
   it("of windows that touch in x, but the right one is below", () => {
     const actual = generateGraph([
       { key: "a", x: 0, y: 0, width: 100, height: 100 },
-      { key: "b", x: 100, y: 110, width: 100, height: 100 }
+      { key: "b", x: 100, y: 110, width: 100, height: 100 },
     ]);
     expect(actual).toEqual({
       a: {},
-      b: {}
+      b: {},
     });
   });
   it("of windows that touch in x, but the right one is above", () => {
     const actual = generateGraph([
       { key: "a", x: 0, y: 110, width: 100, height: 100 },
-      { key: "b", x: 100, y: 0, width: 100, height: 100 }
+      { key: "b", x: 100, y: 0, width: 100, height: 100 },
     ]);
     expect(actual).toEqual({
       a: {},
-      b: {}
+      b: {},
     });
   });
 });

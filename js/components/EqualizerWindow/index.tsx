@@ -10,7 +10,7 @@ import {
   setEqToMid,
   setEqToMin,
   closeWindow,
-  toggleEqualizerShadeMode
+  toggleEqualizerShadeMode,
 } from "../../actionCreators";
 
 import { SET_FOCUSED_WINDOW } from "../../actionTypes";
@@ -53,7 +53,7 @@ const EqualizerWindow = (props: StateProps & DispatchProps) => {
     doubled,
     shade,
     window: true,
-    draggable: true
+    draggable: true,
   });
   return (
     <div
@@ -109,13 +109,13 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   setHertzValue: (hertz: BandType) => (value: number) =>
     dispatch(setEqBand(hertz, value)),
   closeEqualizerWindow: () => dispatch(closeWindow("equalizer")),
-  toggleEqualizerShadeMode: () => dispatch(toggleEqualizerShadeMode())
+  toggleEqualizerShadeMode: () => dispatch(toggleEqualizerShadeMode()),
 });
 
 const mapStateToProps = (state: AppState): StateProps => ({
   doubled: state.display.doubled,
   selected: state.windows.focused === WINDOWS.EQUALIZER,
-  shade: getWindowShade(state)("equalizer")
+  shade: getWindowShade(state)("equalizer"),
 });
 
 export default connect(

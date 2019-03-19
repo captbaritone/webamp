@@ -35,7 +35,7 @@ type Props = StateProps & OwnProps;
 const TRANSITION_TYPE_DURATIONS = {
   [TransitionType.DEFAULT]: 2.7,
   [TransitionType.IMMEDIATE]: 0,
-  [TransitionType.USER_PRESET]: 5.7
+  [TransitionType.USER_PRESET]: 5.7,
 };
 
 function Visualizer(props: Props) {
@@ -63,7 +63,7 @@ function Visualizer(props: Props) {
         height: props.height,
         meshWidth: 32,
         meshHeight: 24,
-        pixelRatio: window.devicePixelRatio || 1
+        pixelRatio: window.devicePixelRatio || 1,
       }
     );
     _visualizer.connectAudio(props.analyser);
@@ -148,7 +148,7 @@ function Visualizer(props: Props) {
       style={{
         height: "100%",
         width: "100%",
-        display: props.isEnabledVisualizer ? "block" : "none"
+        display: props.isEnabledVisualizer ? "block" : "none",
       }}
       ref={canvasRef}
     />
@@ -163,7 +163,7 @@ const mapStateToProps = (state: AppState): StateProps => ({
   trackTitle: Selectors.getCurrentTrackDisplayName(state),
   currentPreset: Selectors.getCurrentPreset(state),
   transitionType: Selectors.getPresetTransitionType(state),
-  message: state.milkdrop.message
+  message: state.milkdrop.message,
 });
 
 export default connect(mapStateToProps)(Visualizer);

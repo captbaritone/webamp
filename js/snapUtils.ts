@@ -68,7 +68,7 @@ export const snapDiff = (a: Box, b: Box): Point => {
   const newPos = snap(a, b);
   return {
     x: newPos.x === undefined ? 0 : newPos.x - a.x,
-    y: newPos.y === undefined ? 0 : newPos.y - a.y
+    y: newPos.y === undefined ? 0 : newPos.y - a.y,
   };
 };
 
@@ -124,7 +124,7 @@ export const snapWithinDiff = (a: Box, b: BoundingBox) => {
   const newPos = snapWithin(a, b);
   return {
     x: newPos.x === undefined ? 0 : newPos.x - a.x,
-    y: newPos.y === undefined ? 0 : newPos.y - a.y
+    y: newPos.y === undefined ? 0 : newPos.y - a.y,
   };
 };
 
@@ -133,7 +133,7 @@ export const applySnap = (original: Point, ...snaps: Diff[]) =>
     (previous, snapped) => ({
       ...previous,
       x: typeof snapped.x !== "undefined" ? snapped.x : previous.x,
-      y: typeof snapped.y !== "undefined" ? snapped.y : previous.y
+      y: typeof snapped.y !== "undefined" ? snapped.y : previous.y,
     }),
     original
   );
@@ -148,7 +148,7 @@ export const boundingBox = (nodes: Box[]) => {
     top: top(firstNode),
     right: right(firstNode),
     bottom: bottom(firstNode),
-    left: left(firstNode)
+    left: left(firstNode),
   };
 
   boxes.forEach(node => {
@@ -162,7 +162,7 @@ export const boundingBox = (nodes: Box[]) => {
     x: bounding.left,
     y: bounding.top,
     width: bounding.right - bounding.left,
-    height: bounding.bottom - bounding.top
+    height: bounding.bottom - bounding.top,
   };
 };
 
@@ -184,7 +184,7 @@ export const traceConnection = (
 
 export const applyDiff = (a: Point, b: Point) => ({
   x: a.x + b.x,
-  y: a.y + b.y
+  y: a.y + b.y,
 });
 
 // TODO: This should not
@@ -193,7 +193,7 @@ export const applyMultipleDiffs = (initial: Point, ...diffs: Point[]) => {
     // Use the smallest non-zero diff for each axis.
     // TODO: Min should be the absolute value
     x: m.x === 0 || diff.x === 0 ? m.x + diff.x : Math.min(m.x, diff.x),
-    y: m.y === 0 || diff.y === 0 ? m.y + diff.y : Math.min(m.y, diff.y)
+    y: m.y === 0 || diff.y === 0 ? m.y + diff.y : Math.min(m.y, diff.y),
   }));
   return applyDiff(initial, metaDiff);
 };

@@ -9,7 +9,7 @@ import {
   LoadedURLTrack,
   Middleware,
   WindowPosition,
-  ButterchurnOptions
+  ButterchurnOptions,
 } from "./types";
 import getStore from "./store";
 import App from "./components/App";
@@ -32,7 +32,7 @@ import {
   SET_Z_INDEX,
   CLOSE_REQUESTED,
   ENABLE_MEDIA_LIBRARY,
-  ENABLE_MILKDROP
+  ENABLE_MILKDROP,
 } from "./actionTypes";
 import Emitter from "./emitter";
 
@@ -177,7 +177,7 @@ class Winamp {
       requireJSZip,
       requireMusicMetadata,
       handleTrackDropEvent,
-      __butterchurnOptions
+      __butterchurnOptions,
     } = this.options;
 
     // TODO: Make this much cleaner
@@ -185,7 +185,7 @@ class Winamp {
     if (__butterchurnOptions != null) {
       const {
         importConvertPreset,
-        presetConverterEndpoint
+        presetConverterEndpoint,
       } = __butterchurnOptions;
 
       if (importConvertPreset != null && presetConverterEndpoint != null) {
@@ -212,7 +212,7 @@ class Winamp {
         requireMusicMetadata,
         convertPreset,
         // @ts-ignore Typescript is drunk
-        handleTrackDropEvent
+        handleTrackDropEvent,
       }
     ) as Store;
 
@@ -229,7 +229,7 @@ class Winamp {
     if (options.__butterchurnOptions) {
       this.store.dispatch({
         type: ENABLE_MILKDROP,
-        open: options.__butterchurnOptions.butterchurnOpen
+        open: options.__butterchurnOptions.butterchurnOpen,
       });
       this.store.dispatch(
         Actions.initializePresets(options.__butterchurnOptions)

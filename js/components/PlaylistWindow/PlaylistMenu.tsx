@@ -46,12 +46,12 @@ export default class PlaylistMenu extends React.Component<Props, State> {
           this.setState({ selected: false });
         }, 0);
         window.document.removeEventListener("click", handleClickOut, {
-          capture: true
+          capture: true,
         });
       }
     };
     window.document.addEventListener("click", handleClickOut, {
-      capture: true
+      capture: true,
     });
 
     this.setState({ selected: true });
@@ -62,7 +62,7 @@ export default class PlaylistMenu extends React.Component<Props, State> {
       <div
         id={this.props.id}
         className={classnames("playlist-menu", {
-          selected: this.state.selected
+          selected: this.state.selected,
         })}
         onClick={this._handleClick}
       >

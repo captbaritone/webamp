@@ -15,11 +15,11 @@ const PlaylistToggleButton = props => (
 );
 
 const mapStateToProps = state => ({
-  getWindowOpen: getWindowOpen(state)
+  getWindowOpen: getWindowOpen(state),
 });
 
 const mapDispatchToProps = {
-  handleClick: () => toggleWindow("playlist")
+  handleClick: () => toggleWindow("playlist"),
 };
 
 export default connect(

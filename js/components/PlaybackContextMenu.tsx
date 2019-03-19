@@ -67,7 +67,7 @@ const mapDispatchToProps = (dispatch: Dispatch): Props => {
     next: () => dispatch(Actions.next()),
     seekForward: steps => dispatch(Actions.seekForward(steps)),
     seekBackward: steps => dispatch(Actions.seekBackward(steps)),
-    nextN: steps => dispatch(Actions.nextN(steps))
+    nextN: steps => dispatch(Actions.nextN(steps)),
   };
 };
 

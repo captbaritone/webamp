@@ -5,7 +5,7 @@ const imageminOptipng = require("imagemin-optipng");
 
 function min(imgPath) {
   return imagemin([imgPath], path.dirname(imgPath), {
-    use: [imageminOptipng()]
+    use: [imageminOptipng()],
   });
 }
 
@@ -61,7 +61,7 @@ class Shooter {
         path: screenshotPath,
         omitBackground: true, // Make screenshot transparent
         // https://github.com/GoogleChrome/puppeteer/issues/703#issuecomment-366041479
-        clip: { x: 0, y: 0, width: 275, height: 116 * 3 }
+        clip: { x: 0, y: 0, width: 275, height: 116 * 3 },
       });
       console.log("Wrote screenshot to", screenshotPath);
       if (minify) {

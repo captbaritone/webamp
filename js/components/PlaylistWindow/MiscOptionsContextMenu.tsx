@@ -21,7 +21,7 @@ const MiscOptionsContextMenu = (props: DispatchProps) => (
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
   return {
-    downloadHtmlPlaylist: () => dispatch(downloadHtmlPlaylist())
+    downloadHtmlPlaylist: () => dispatch(downloadHtmlPlaylist()),
   };
 };
 export const ConnectedMiscOptionsContextMenu = connect(

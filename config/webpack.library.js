@@ -6,7 +6,7 @@ module.exports = {
   devtool: "source-map",
   mode: "production",
   resolve: {
-    extensions: [".js", ".ts", ".tsx"]
+    extensions: [".js", ".ts", ".tsx"],
   },
   module: {
     rules: [
@@ -21,11 +21,11 @@ module.exports = {
             options: {
               plugins: [
                 require("cssnano"),
-                require("../scripts/postcss-optimize-data-uri-pngs")
-              ]
-            }
-          }
-        ]
+                require("../scripts/postcss-optimize-data-uri-pngs"),
+              ],
+            },
+          },
+        ],
       },
       {
         test: /\.(js|ts|tsx)$/,
@@ -33,36 +33,36 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            envName: "library"
-          }
-        }
-      }
+            envName: "library",
+          },
+        },
+      },
     ],
-    noParse: [/jszip\.js$/]
+    noParse: [/jszip\.js$/],
   },
   plugins: [
     new BundleAnalyzerPlugin({
       analyzerMode: "static",
       reportFilename: "library-report.html",
-      openAnalyzer: false
+      openAnalyzer: false,
     }),
     // Also generate non-minified bundles.
-    new UnminifiedWebpackPlugin()
+    new UnminifiedWebpackPlugin(),
   ],
   performance: {
     // We do some crazy shit okay! Don't judge!
     maxEntrypointSize: 9000000,
-    maxAssetSize: 9000000
+    maxAssetSize: 9000000,
   },
   entry: {
     "bundle.min": "./js/webamp.js",
-    "lazy-bundle.min": "./js/webampLazy.tsx"
+    "lazy-bundle.min": "./js/webampLazy.tsx",
   },
   output: {
     path: path.resolve(__dirname, "../built"),
     filename: "webamp.[name].js",
     library: "Webamp",
     libraryTarget: "umd",
-    libraryExport: "default"
-  }
+    libraryExport: "default",
+  },
 };

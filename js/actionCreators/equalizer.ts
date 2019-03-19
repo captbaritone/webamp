@@ -4,7 +4,7 @@ import {
   SET_EQ_ON,
   SET_EQ_OFF,
   SET_BAND_VALUE,
-  SET_EQ_AUTO
+  SET_EQ_AUTO,
 } from "../actionTypes";
 import { Band, Dispatchable } from "../types";
 
@@ -31,7 +31,7 @@ function _setEqTo(value: number): Dispatchable {
       dispatch({
         type: SET_BAND_VALUE,
         value,
-        band: band
+        band: band,
       });
     });
   };

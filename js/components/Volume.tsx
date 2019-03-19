@@ -32,14 +32,14 @@ const Volume = (props: Props) => (
 );
 
 const mapStateToProps = (state: AppState) => ({
-  volume: Selectors.getVolume(state)
+  volume: Selectors.getVolume(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   showMarquee: () => dispatch(Actions.setFocus("volume")),
   hideMarquee: () => dispatch(Actions.unsetFocus()),
   setVolume: (e: ChangeEvent<HTMLInputElement>) =>
-    dispatch(Actions.setVolume(Number((e.target as HTMLInputElement).value)))
+    dispatch(Actions.setVolume(Number((e.target as HTMLInputElement).value))),
 });
 
 export default connect(

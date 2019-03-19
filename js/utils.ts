@@ -21,7 +21,7 @@ export const getTimeObj = (time: number | null): Time => {
       minutesFirstDigit: " ",
       minutesSecondDigit: " ",
       secondsFirstDigit: " ",
-      secondsSecondDigit: " "
+      secondsSecondDigit: " ",
     };
   }
   const minutes = Math.floor(time / 60);
@@ -34,21 +34,21 @@ export const getTimeObj = (time: number | null): Time => {
           String(Math.floor(minutes / 10)),
           String(Math.floor(minutes % 10)),
           String(Math.floor(seconds / 10)),
-          String(Math.floor(seconds % 10))
+          String(Math.floor(seconds % 10)),
         ];
 
   const [
     minutesFirstDigit,
     minutesSecondDigit,
     secondsFirstDigit,
-    secondsSecondDigit
+    secondsSecondDigit,
   ] = digits;
 
   return {
     minutesFirstDigit,
     minutesSecondDigit,
     secondsFirstDigit,
-    secondsSecondDigit
+    secondsSecondDigit,
   };
 };
 
@@ -63,7 +63,7 @@ export const getTimeStr = (
     minutesFirstDigit,
     minutesSecondDigit,
     secondsFirstDigit,
-    secondsSecondDigit
+    secondsSecondDigit,
   } = getTimeObj(time);
 
   return [
@@ -71,7 +71,7 @@ export const getTimeStr = (
     minutesSecondDigit,
     ":",
     secondsFirstDigit,
-    secondsSecondDigit
+    secondsSecondDigit,
   ].join("");
 };
 
@@ -330,13 +330,13 @@ export const calculateBoundingBox = (windows: WindowInfo[]) =>
       left: w.x,
       top: w.y,
       bottom: w.y + w.height,
-      right: w.x + w.width
+      right: w.x + w.width,
     }))
     .reduce((b, w) => ({
       left: Math.min(b.left, w.left),
       top: Math.min(b.top, w.top),
       bottom: Math.max(b.bottom, w.bottom),
-      right: Math.max(b.right, w.right)
+      right: Math.max(b.right, w.right),
     }));
 
 export function findLastIndex<T>(arr: T[], cb: (val: T) => boolean) {
@@ -366,14 +366,14 @@ export function getWindowSize(): { width: number; height: number } {
       document.documentElement!.offsetHeight,
       document.body.clientHeight,
       document.documentElement!.clientHeight
-    )
+    ),
   };
 }
 
 export function getScreenSize(): { width: number; height: number } {
   return {
     width: window.screen.width,
-    height: window.screen.height
+    height: window.screen.height,
   };
 }
 
@@ -402,7 +402,7 @@ export function makeCachingFilterFunction<V>(
 ) {
   const cache: Cache<V> = {
     results: values,
-    subCaches: {}
+    subCaches: {},
   };
   return (query: string): V[] => {
     let queryCache: Cache<V> = cache;

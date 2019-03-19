@@ -10,7 +10,7 @@ import {
   PRESET_REQUESTED,
   TOGGLE_RANDOMIZE_PRESETS,
   TOGGLE_PRESET_CYCLING,
-  SCHEDULE_MILKDROP_MESSAGE
+  SCHEDULE_MILKDROP_MESSAGE,
 } from "../actionTypes";
 import * as Utils from "../utils";
 
@@ -44,7 +44,7 @@ const defaultMilkdropState: MilkdropState = {
   transitionType: TransitionType.DEFAULT,
   randomize: true,
   cycling: true,
-  message: null
+  message: null,
 };
 
 export const milkdrop = (
@@ -61,18 +61,18 @@ export const milkdrop = (
     case GOT_BUTTERCHURN_PRESETS:
       return {
         ...state,
-        presets: state.presets.concat(action.presets)
+        presets: state.presets.concat(action.presets),
       };
     case PRESET_REQUESTED:
       if (action.addToHistory) {
         return {
           ...state,
-          presetHistory: [...state.presetHistory, action.index]
+          presetHistory: [...state.presetHistory, action.index],
         };
       }
       return {
         ...state,
-        presetHistory: state.presetHistory.slice(0, -1)
+        presetHistory: state.presetHistory.slice(0, -1),
       };
     case RESOLVE_PRESET_AT_INDEX:
       const preset = state.presets[action.index];
@@ -81,14 +81,14 @@ export const milkdrop = (
         presets: Utils.replaceAtIndex(state.presets, action.index, {
           type: "RESOLVED",
           name: preset.name,
-          preset: action.json
-        })
+          preset: action.json,
+        }),
       };
     case SELECT_PRESET_AT_INDEX:
       return {
         ...state,
         currentPresetIndex: action.index,
-        transitionType: action.transitionType
+        transitionType: action.transitionType,
       };
     case TOGGLE_PRESET_OVERLAY:
       return { ...state, overlay: !state.overlay };
@@ -101,8 +101,8 @@ export const milkdrop = (
         ...state,
         message: {
           text: action.message,
-          time: Date.now()
-        }
+          time: Date.now(),
+        },
       };
     default:
       return state;

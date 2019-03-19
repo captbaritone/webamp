@@ -110,7 +110,7 @@ class Marquee extends React.Component<Props, State> {
     const style: React.CSSProperties = {
       whiteSpace: "nowrap",
       willChange: "transform",
-      transform: `translateX(${offsetPixels})`
+      transform: `translateX(${offsetPixels})`,
     };
     return (
       <div
@@ -137,12 +137,12 @@ class Marquee extends React.Component<Props, State> {
 const mapStateToProps = (state: AppState): StateProps => ({
   marqueeStep: state.display.marqueeStep,
   text: Selectors.getMarqueeText(state),
-  doubled: Selectors.getDoubled(state)
+  doubled: Selectors.getDoubled(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
   return {
-    stepMarquee: () => dispatch({ type: STEP_MARQUEE })
+    stepMarquee: () => dispatch({ type: STEP_MARQUEE }),
   };
 };
 

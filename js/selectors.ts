@@ -7,7 +7,7 @@ import {
   LoadedURLTrack,
   WindowPositions,
   PlaylistStyle,
-  TransitionType
+  TransitionType,
 } from "./types";
 import { createSelector } from "reselect";
 import * as Utils from "./utils";
@@ -20,7 +20,7 @@ import {
   MEDIA_STATUS,
   MEDIA_TAG_REQUEST_STATUS,
   WINDOWS,
-  VISUALIZERS
+  VISUALIZERS,
 } from "./constants";
 import { createPlaylistURL } from "./playlistHtml";
 import * as fromTracks from "./reducers/tracks";
@@ -40,14 +40,14 @@ export const getEqfData = createSelector(
   sliders => {
     const preset: { [key: string]: number | string } = {
       name: "Entry1",
-      preamp: Utils.denormalizeEqBand(sliders.preamp)
+      preamp: Utils.denormalizeEqBand(sliders.preamp),
     };
     BANDS.forEach(band => {
       preset[`hz${band}`] = Utils.denormalizeEqBand(sliders[band]);
     });
     const eqfData = {
       presets: [preset],
-      type: "Winamp EQ library file v1.1"
+      type: "Winamp EQ library file v1.1",
     };
     return eqfData;
   }
@@ -148,7 +148,7 @@ export const getCurrentTrackId = (state: AppState) =>
 export const nextTrack = (state: AppState, n = 1) => {
   const {
     playlist: { trackOrder },
-    media: { repeat }
+    media: { repeat },
   } = state;
   const trackCount = getTrackCount(state);
   if (trackCount === 0) {
@@ -307,8 +307,8 @@ export const getCurrentTrackInfo = createSelector(
         title: track.title || null,
         artist: track.artist || null,
         album: track.album || null,
-        albumArtUrl: track.albumArtUrl || null
-      }
+        albumArtUrl: track.albumArtUrl || null,
+      },
     };
   }
 );
@@ -357,7 +357,7 @@ export const getPlaylistURL = createSelector(
           `${i + 1}. ${getDisplayName(id)} (${Utils.getTimeStr(
             tracks[id].duration
           )})`
-      )
+      ),
     })
 );
 
@@ -369,11 +369,11 @@ function getWPixelSize(w: WebampWindow, doubled: boolean) {
   const doubledMultiplier = doubled && w.canDouble ? 2 : 1;
   const pix = {
     height: WINDOW_HEIGHT + height * WINDOW_RESIZE_SEGMENT_HEIGHT,
-    width: WINDOW_WIDTH + width * WINDOW_RESIZE_SEGMENT_WIDTH
+    width: WINDOW_WIDTH + width * WINDOW_RESIZE_SEGMENT_WIDTH,
   };
   return {
     height: (w.shade ? SHADE_WINDOW_HEIGHT : pix.height) * doubledMultiplier,
-    width: pix.width * doubledMultiplier
+    width: pix.width * doubledMultiplier,
   };
 }
 
@@ -457,7 +457,7 @@ export const getSkinPlaylistStyle = (state: AppState): PlaylistStyle => {
       current: "#FFFFFF",
       normalbg: "#000000",
       selectedbg: "#0000C6",
-      font: "Arial"
+      font: "Arial",
     }
   );
 };
@@ -496,7 +496,7 @@ export function getSerlializedState(state: AppState): SerializedStateV1 {
     media: fromMedia.getSerializedState(state.media),
     equalizer: fromEqualizer.getSerializedState(state.equalizer),
     display: fromDisplay.getSerializedState(state.display),
-    windows: fromWindows.getSerializedState(state.windows)
+    windows: fromWindows.getSerializedState(state.windows),
   };
 }
 
@@ -605,8 +605,8 @@ export function getDebugData(state: AppState) {
       skinGenLetterWidths: "[[REDACTED]]",
       skinImages: "[[REDACTED]]",
       skinCursors: "[[REDACTED]]",
-      skinRegion: "[[REDACTED]]"
-    }
+      skinRegion: "[[REDACTED]]",
+    },
   };
 }
 

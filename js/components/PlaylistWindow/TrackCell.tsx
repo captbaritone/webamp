@@ -5,7 +5,7 @@ import {
   CLICKED_TRACK,
   CTRL_CLICKED_TRACK,
   SHIFT_CLICKED_TRACK,
-  PLAY_TRACK
+  PLAY_TRACK,
 } from "../../actionTypes";
 import * as Selectors from "../../selectors";
 import { AppState, Dispatch, PlaylistStyle } from "../../types";
@@ -52,11 +52,11 @@ class TrackCell extends React.Component<OwnProps & StateProps & DispatchProps> {
       selected,
       current,
       children,
-      onDoubleClick
+      onDoubleClick,
     } = this.props;
     const style: React.CSSProperties = {
       backgroundColor: selected ? skinPlaylistStyle.selectedbg : undefined,
-      color: current ? skinPlaylistStyle.current : undefined
+      color: current ? skinPlaylistStyle.current : undefined,
     };
     return (
       <div
@@ -77,7 +77,7 @@ const mapStateToProps = (state: AppState, ownProps: OwnProps): StateProps => {
   return {
     skinPlaylistStyle: Selectors.getSkinPlaylistStyle(state),
     selected: Selectors.getSelectedTrackIds(state).has(ownProps.id),
-    current: Selectors.getCurrentTrackId(state) === ownProps.id
+    current: Selectors.getCurrentTrackId(state) === ownProps.id,
   };
 };
 
@@ -94,7 +94,7 @@ const mapDispatchToProps = (
     return dispatch({ type: CTRL_CLICKED_TRACK, index: ownProps.index });
   },
   click: () => dispatch({ type: CLICKED_TRACK, index: ownProps.index }),
-  onDoubleClick: () => dispatch({ type: PLAY_TRACK, id: ownProps.id })
+  onDoubleClick: () => dispatch({ type: PLAY_TRACK, id: ownProps.id }),
 });
 
 export default connect(

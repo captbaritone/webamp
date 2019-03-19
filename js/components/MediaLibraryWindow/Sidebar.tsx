@@ -7,7 +7,7 @@ export default class Sidebar extends React.Component {
         style={{
           display: "flex",
           flexDirection: "column",
-          height: "100%"
+          height: "100%",
         }}
       >
         <div className="webamp-media-library-item" style={{ flexGrow: 1 }}>
@@ -33,7 +33,7 @@ export default class Sidebar extends React.Component {
         <button
           style={{
             width: "100%",
-            marginTop: 1
+            marginTop: 1,
           }}
         >
           Library

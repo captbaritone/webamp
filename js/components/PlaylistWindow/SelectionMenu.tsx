@@ -22,7 +22,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
   return {
     invertSelection: () => dispatch({ type: INVERT_SELECTION }),
     selectAll: () => dispatch({ type: SELECT_ALL }),
-    selectZero: () => dispatch({ type: SELECT_ZERO })
+    selectZero: () => dispatch({ type: SELECT_ZERO }),
   };
 };
 export default connect(

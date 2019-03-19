@@ -5,7 +5,7 @@ const HtmlWebpackInlineSVGPlugin = require("html-webpack-inline-svg-plugin");
 
 module.exports = {
   resolve: {
-    extensions: [".js", ".ts", ".tsx"]
+    extensions: [".js", ".ts", ".tsx"],
   },
   module: {
     rules: [
@@ -20,11 +20,11 @@ module.exports = {
             options: {
               plugins: [
                 require("cssnano"),
-                require("../../scripts/postcss-optimize-data-uri-pngs")
-              ]
-            }
-          }
-        ]
+                require("../../scripts/postcss-optimize-data-uri-pngs"),
+              ],
+            },
+          },
+        ],
       },
       {
         test: /\.(js|ts|tsx)?$/,
@@ -32,9 +32,9 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            envName: "production"
-          }
-        }
+            envName: "production",
+          },
+        },
       },
       {
         test: /\.(wsz|mp3|png|ico|jpg|svg)$/,
@@ -43,17 +43,17 @@ module.exports = {
             loader: "file-loader",
             options: {
               emitFile: true,
-              name: "[path][name]-[hash].[ext]"
-            }
-          }
-        ]
-      }
+              name: "[path][name]-[hash].[ext]",
+            },
+          },
+        ],
+      },
     ],
-    noParse: [/jszip\.js$/]
+    noParse: [/jszip\.js$/],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./index.html"
+      template: "./index.html",
     }),
     // Automatically generates the manifest.json file inside the built
     // directory, and injects a tag into the gererated index.html file
@@ -71,35 +71,38 @@ module.exports = {
         {
           src: path.resolve("./demo/images/manifest/icon-192x192.png"),
           sizes: "192x192",
-          type: "image/png"
+          type: "image/png",
         },
         {
           src: path.resolve("./demo/images/manifest/icon-512x512.png"),
           sizes: "512x512",
-          type: "image/png"
+          type: "image/png",
         },
         {
           src: path.resolve("./demo/images/manifest/icon.svg"),
           sizes: "513x513",
-          type: "image/svg+xml"
-        }
-      ].map(icon => ({ ...icon, destination: path.join("images", "manifest") }))
+          type: "image/svg+xml",
+        },
+      ].map(icon => ({
+        ...icon,
+        destination: path.join("images", "manifest"),
+      })),
     }),
-    new HtmlWebpackInlineSVGPlugin({ runPreEmit: true })
+    new HtmlWebpackInlineSVGPlugin({ runPreEmit: true }),
   ],
   performance: {
     // We do some crazy shit okay! Don't judge!
     maxEntrypointSize: 7000000,
-    maxAssetSize: 7000000
+    maxAssetSize: 7000000,
   },
   entry: {
-    webamp: ["./js/index.js"]
+    webamp: ["./js/index.js"],
   },
   context: path.resolve(__dirname, "../"),
   output: {
     filename: "[name]-[hash].js",
     chunkFilename: "[name]-[hash].js",
     publicPath: "/",
-    path: path.resolve(__dirname, "../built")
-  }
+    path: path.resolve(__dirname, "../built"),
+  },
 };

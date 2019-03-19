@@ -17,7 +17,7 @@ const noshadeStyle = {
   height: "2px",
   borderWidth: 0,
   color: "gray",
-  backgroundColor: "gray"
+  backgroundColor: "gray",
 };
 
 // We use all kinds of non-standard attributes and tags. So we create these fake

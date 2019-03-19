@@ -4,7 +4,7 @@ import {
   close,
   openMediaFileDialog,
   loadMediaFiles,
-  toggleWindow
+  toggleWindow,
 } from "../../actionCreators";
 import { getGenWindows } from "../../selectors";
 import { LOAD_STYLE } from "../../constants";
@@ -18,7 +18,7 @@ import {
   Track,
   WindowId,
   FilePicker,
-  LoadStyle
+  LoadStyle,
 } from "../../types";
 import { WebampWindow } from "../../reducers/windows";
 
@@ -96,7 +96,7 @@ const MainContextMenu = (props: Props) => (
 
 const mapStateToProps = (state: AppState): StateProps => ({
   networkConnected: state.network.connected,
-  genWindows: getGenWindows(state)
+  genWindows: getGenWindows(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
@@ -105,7 +105,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
     openMediaFileDialog: () => dispatch(openMediaFileDialog()),
     loadMediaFiles: (tracks: Track[], loadStyle: LoadStyle) =>
       dispatch(loadMediaFiles(tracks, loadStyle)),
-    toggleGenWindow: (windowId: WindowId) => dispatch(toggleWindow(windowId))
+    toggleGenWindow: (windowId: WindowId) => dispatch(toggleWindow(windowId)),
   };
 };
 

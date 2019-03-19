@@ -26,7 +26,7 @@ class MediaLibraryWindow extends React.Component<Props, State> {
     this.state = {
       sidebarWidth: 100,
       topPlaylistSectionHeight: 200,
-      artistsPanelWidth: 150
+      artistsPanelWidth: 150,
     };
   }
 
@@ -44,7 +44,7 @@ class MediaLibraryWindow extends React.Component<Props, State> {
     const initialWidth = this.state.sidebarWidth;
     this._onMouseMove((moveEvent: MouseEvent) => {
       this.setState({
-        sidebarWidth: initialWidth + moveEvent.pageX - startX
+        sidebarWidth: initialWidth + moveEvent.pageX - startX,
       });
     });
   };
@@ -54,7 +54,7 @@ class MediaLibraryWindow extends React.Component<Props, State> {
     const initialHeight = this.state.topPlaylistSectionHeight;
     this._onMouseMove((moveEvent: MouseEvent) => {
       this.setState({
-        topPlaylistSectionHeight: initialHeight + moveEvent.pageY - startY
+        topPlaylistSectionHeight: initialHeight + moveEvent.pageY - startY,
       });
     });
   };
@@ -64,7 +64,7 @@ class MediaLibraryWindow extends React.Component<Props, State> {
     const initialWidth = this.state.artistsPanelWidth;
     this._onMouseMove((moveEvent: MouseEvent) => {
       this.setState({
-        artistsPanelWidth: initialWidth + moveEvent.pageX - startX
+        artistsPanelWidth: initialWidth + moveEvent.pageX - startX,
       });
     });
   };
@@ -84,7 +84,7 @@ class MediaLibraryWindow extends React.Component<Props, State> {
               right: 0,
               display: "flex",
               flexDirection: "row",
-              overflow: "hidden"
+              overflow: "hidden",
             }}
           >
             <div style={{ width: this.state.sidebarWidth }}>
@@ -103,7 +103,7 @@ class MediaLibraryWindow extends React.Component<Props, State> {
                 flexShrink: 1,
                 flexGrow: 1,
                 // https://stackoverflow.com/a/35609992/1263117
-                overflow: "hidden"
+                overflow: "hidden",
               }}
             >
               <div
@@ -111,7 +111,7 @@ class MediaLibraryWindow extends React.Component<Props, State> {
                   display: "flex",
                   flexDirection: "row",
                   flexShrink: 0,
-                  height: this.state.topPlaylistSectionHeight
+                  height: this.state.topPlaylistSectionHeight,
                 }}
               >
                 <div style={{ width: this.state.artistsPanelWidth }}>
@@ -142,7 +142,7 @@ class MediaLibraryWindow extends React.Component<Props, State> {
 
 const mapStateToProps = (state: AppState) => {
   return {
-    skinGenExColors: Selectors.getSkinGenExColors(state)
+    skinGenExColors: Selectors.getSkinGenExColors(state),
   };
 };
 export default connect(mapStateToProps)(MediaLibraryWindow);

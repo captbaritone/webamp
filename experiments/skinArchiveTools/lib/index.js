@@ -20,7 +20,7 @@ const [
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _thisFile,
   rawInputDir,
-  rawOutputDir
+  rawOutputDir,
 ] = process.argv;
 
 const inputDir = path.resolve(rawInputDir);
@@ -182,7 +182,7 @@ async function main() {
           `${skin.md5}.png`
         );
         await shooter.takeScreenshot(getPath(skin), screenshotPath, {
-          minify: true
+          minify: true,
         });
         skin.screenshotPath = screenshotPath;
         i++;

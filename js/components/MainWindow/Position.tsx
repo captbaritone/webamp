@@ -6,7 +6,7 @@ import {
   SEEK_TO_PERCENT_COMPLETE,
   SET_FOCUS,
   UNSET_FOCUS,
-  SET_SCRUB_POSITION
+  SET_SCRUB_POSITION,
 } from "../../actionTypes";
 import * as Selectors from "../../selectors";
 
@@ -26,7 +26,7 @@ const Position = ({
   position,
   seekToPercentComplete,
   displayedPosition,
-  setPosition
+  setPosition,
 }: Props) => {
   // In shade mode, the position slider shows up differently depending on if
   // it's near the start, middle or end of its progress
@@ -69,7 +69,7 @@ const mapStateToProps = (state: AppState): StateProps => {
 
   return {
     displayedPosition,
-    position
+    position,
   };
 };
 
@@ -77,7 +77,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   seekToPercentComplete: e => {
     dispatch({
       type: SEEK_TO_PERCENT_COMPLETE,
-      percent: Number((e.target as HTMLInputElement).value)
+      percent: Number((e.target as HTMLInputElement).value),
     });
     dispatch({ type: UNSET_FOCUS });
   },
@@ -85,9 +85,9 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
     dispatch({ type: SET_FOCUS, input: "position" });
     dispatch({
       type: SET_SCRUB_POSITION,
-      position: Number((e.target as HTMLInputElement).value)
+      position: Number((e.target as HTMLInputElement).value),
     });
-  }
+  },
 });
 
 export default connect(

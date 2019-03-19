@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import {
   cropPlaylist,
   removeSelectedTracks,
-  removeAllTracks
+  removeAllTracks,
 } from "../../actionCreators";
 import PlaylistMenu from "./PlaylistMenu";
 import { Dispatch } from "../../types";
@@ -32,7 +32,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
   return {
     removeSelected: () => dispatch(removeSelectedTracks()),
     removeAll: () => dispatch(removeAllTracks()),
-    crop: () => dispatch(cropPlaylist())
+    crop: () => dispatch(cropPlaylist()),
   };
 };
 export default connect(

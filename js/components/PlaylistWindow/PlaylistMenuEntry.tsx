@@ -31,7 +31,7 @@ export default class PlaylistMenuEntry extends React.Component<Props, State> {
         cursorX >= domRect.left &&
         cursorX <= domRect.right &&
         cursorY >= domRect.top &&
-        cursorY <= domRect.bottom
+        cursorY <= domRect.bottom,
     });
   }
 

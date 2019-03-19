@@ -36,11 +36,11 @@ const Shuffle = ({ shuffle, handleClick }: Props) => (
 );
 
 const mapStateToProps = (state: AppState): StateProps => ({
-  shuffle: state.media.shuffle
+  shuffle: state.media.shuffle,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-  handleClick: () => dispatch(toggleShuffle())
+  handleClick: () => dispatch(toggleShuffle()),
 });
 export default connect(
   mapStateToProps,

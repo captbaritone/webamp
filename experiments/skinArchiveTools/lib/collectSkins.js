@@ -49,7 +49,7 @@ module.exports = async function collectSkins({ inputDir, cache }) {
       } else {
         cache[md5] = {
           md5,
-          filePaths: [filePath]
+          filePaths: [filePath],
         };
       }
     },

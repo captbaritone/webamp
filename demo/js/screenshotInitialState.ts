@@ -10,7 +10,7 @@ const defaultTracksState = {
     url: "",
     kbps: "128",
     khz: "44",
-    channels: 2
+    channels: 2,
   },
   "1": {
     id: 1,
@@ -20,7 +20,7 @@ const defaultTracksState = {
     url: "",
     kbps: "128",
     khz: "44",
-    channels: 2
+    channels: 2,
   },
   "2": {
     id: 2,
@@ -30,7 +30,7 @@ const defaultTracksState = {
     url: "",
     kbps: "128",
     khz: "44",
-    channels: 2
+    channels: 2,
   },
   "3": {
     id: 3,
@@ -40,8 +40,8 @@ const defaultTracksState = {
     url: "",
     kbps: "128",
     khz: "44",
-    channels: 2
-  }
+    channels: 2,
+  },
 };
 
 const initialState: DeepPartial<AppState> = {
@@ -57,22 +57,22 @@ const initialState: DeepPartial<AppState> = {
       "12000": 19,
       "14000": 34,
       "16000": 75,
-      preamp: 56
-    }
+      preamp: 56,
+    },
   },
   media: {
     status: "PLAYING",
-    timeElapsed: 3
+    timeElapsed: 3,
   },
   playlist: {
     trackOrder: [0, 1, 2, 3],
     currentTrack: 0,
-    selectedTracks: new Set([2])
+    selectedTracks: new Set([2]),
   },
   tracks: defaultTracksState,
   display: {
-    working: false
-  }
+    working: false,
+  },
 };
 
 export default initialState;

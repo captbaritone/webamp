@@ -22,7 +22,7 @@ const reducer = combineReducers<AppState, Action>({
   media,
   network,
   tracks,
-  milkdrop
+  milkdrop,
 });
 
 export default reducer;

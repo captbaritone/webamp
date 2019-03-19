@@ -20,5 +20,5 @@ export default [
   { url: topaz, name: "TopazAmp" },
   { url: visor, name: "Vizor" },
   { url: xmms, name: "XMMS Turquoise " },
-  { url: zaxon, name: "Zaxon Remake" }
+  { url: zaxon, name: "Zaxon Remake" },
 ];

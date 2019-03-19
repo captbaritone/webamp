@@ -59,7 +59,7 @@ const MiniTime = (props: Props) => {
     <div
       onClick={props.toggle}
       className={classnames("mini-time", "countdown", {
-        blinking: props.status === MEDIA_STATUS.PAUSED
+        blinking: props.status === MEDIA_STATUS.PAUSED,
       })}
     >
       <Background />
@@ -76,14 +76,14 @@ const mapStateToProps = (state: AppState): StateProps => ({
   status: state.media.status,
   timeMode: state.media.timeMode,
   timeElapsed: Selectors.getTimeElapsed(state),
-  length: Selectors.getDuration(state)
+  length: Selectors.getDuration(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   // TODO: move to actionCreators
   toggle: () => {
     dispatch({ type: TOGGLE_TIME_MODE });
-  }
+  },
 });
 
 export default connect(

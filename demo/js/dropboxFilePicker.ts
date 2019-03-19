@@ -19,7 +19,7 @@ function genAudioFileUrlsFromDropbox(): Promise<DropboxFile[]> {
       linkType: "direct",
       folderselect: false,
       multiselect: true,
-      extensions: ["video", "audio"]
+      extensions: ["video", "audio"],
     });
   });
 }
@@ -33,10 +33,10 @@ const dropboxFilePicker: FilePicker = {
     const files = await genAudioFileUrlsFromDropbox();
     return files.map(file => ({
       url: file.link,
-      defaultName: file.name
+      defaultName: file.name,
     }));
   },
-  requiresNetwork: true
+  requiresNetwork: true,
 };
 
 export default dropboxFilePicker;

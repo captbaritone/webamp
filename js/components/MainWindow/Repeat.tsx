@@ -37,11 +37,11 @@ const Repeat = ({ repeat, handleClick }: Props) => (
 );
 
 const mapStateToProps = (state: AppState): StateProps => ({
-  repeat: state.media.repeat
+  repeat: state.media.repeat,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-  handleClick: () => dispatch(toggleRepeat())
+  handleClick: () => dispatch(toggleRepeat()),
 });
 
 export default connect(

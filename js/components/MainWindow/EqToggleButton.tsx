@@ -26,11 +26,11 @@ const EqToggleButton = (props: Props) => (
 );
 
 const mapStateToProps = (state: AppState): StateProps => ({
-  windowOpen: getWindowOpen(state)("equalizer")
+  windowOpen: getWindowOpen(state)("equalizer"),
 });
 
 const mapDispatchToProps = {
-  handleClick: () => toggleWindow("equalizer")
+  handleClick: () => toggleWindow("equalizer"),
 };
 
 export default connect(

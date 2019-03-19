@@ -8,7 +8,7 @@ describe("userInput reducer", () => {
       focus: null,
       scrubPosition: 0,
       bandFocused: null,
-      userMessage: null
+      userMessage: null,
     });
   });
   it("can set focus", () => {
@@ -16,13 +16,13 @@ describe("userInput reducer", () => {
       type: SET_FOCUS,
       input: "foo",
       bandFocused: null,
-      userMessage: null
+      userMessage: null,
     });
     expect(newState).toEqual({
       focus: "foo",
       scrubPosition: 0,
       bandFocused: null,
-      userMessage: null
+      userMessage: null,
     });
   });
   it("can unset focus", () => {
@@ -34,7 +34,7 @@ describe("userInput reducer", () => {
       focus: null,
       scrubPosition: 0,
       bandFocused: null,
-      userMessage: null
+      userMessage: null,
     });
   });
   it("can set scrub position", () => {
@@ -42,13 +42,13 @@ describe("userInput reducer", () => {
       type: SET_SCRUB_POSITION,
       position: 5,
       bandFocused: null,
-      userMessage: null
+      userMessage: null,
     });
     expect(newState).toEqual({
       focus: null,
       scrubPosition: 5,
       bandFocused: null,
-      userMessage: null
+      userMessage: null,
     });
   });
 });

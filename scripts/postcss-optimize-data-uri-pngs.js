@@ -9,7 +9,7 @@ const DATA_URL_PROPS_REGEX = /^(background(?:-image)?)|(content)|(cursor)/;
 async function optimizeDataUri(dataUri) {
   const buffer = dataUriToBuffer(dataUri);
   const optimized = await imagemin.buffer(buffer, {
-    use: [imageminOptipng()]
+    use: [imageminOptipng()],
   });
   return `data:image/png;base64,${optimized.toString("base64")}`;
 }

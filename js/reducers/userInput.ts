@@ -5,7 +5,7 @@ import {
   SET_SCRUB_POSITION,
   UNSET_FOCUS,
   SET_USER_MESSAGE,
-  UNSET_USER_MESSAGE
+  UNSET_USER_MESSAGE,
 } from "../actionTypes";
 
 export interface UserInputState {
@@ -19,7 +19,7 @@ const defaultUserInput = {
   focus: null,
   bandFocused: null,
   scrubPosition: 0,
-  userMessage: null
+  userMessage: null,
 };
 
 export const userInput = (

@@ -16,13 +16,13 @@ interface DispatchProps {
 
 const mapStateToProps = (state: AppState): StateProps => ({
   currentSize: getWindowSize(state)("playlist"),
-  id: "playlist-resize-target"
+  id: "playlist-resize-target",
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     setWindowSize: (size: [number, number]) =>
-      dispatch(setWindowSize("playlist", size))
+      dispatch(setWindowSize("playlist", size)),
   };
 };
 

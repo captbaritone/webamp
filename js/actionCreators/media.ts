@@ -9,7 +9,7 @@ import {
   PLAY,
   PAUSE,
   PLAY_TRACK,
-  TOGGLE_TIME_MODE
+  TOGGLE_TIME_MODE,
 } from "../actionTypes";
 
 import { MEDIA_STATUS } from "../constants";
@@ -20,7 +20,7 @@ import * as Selectors from "../selectors";
 function playRandomTrack(): Dispatchable {
   return (dispatch: Dispatch, getState: GetState) => {
     const {
-      playlist: { trackOrder, currentTrack }
+      playlist: { trackOrder, currentTrack },
     } = getState();
     if (trackOrder.length === 0) {
       return;
@@ -99,7 +99,7 @@ export function seekForward(seconds: number): Dispatchable {
     const newTimeElapsed = timeElapsed + seconds;
     dispatch({
       type: SEEK_TO_PERCENT_COMPLETE,
-      percent: (newTimeElapsed / duration) * 100
+      percent: (newTimeElapsed / duration) * 100,
     });
   };
 }
@@ -111,7 +111,7 @@ export function seekBackward(seconds: number): Dispatchable {
 export function setVolume(volume: number): Dispatchable {
   return {
     type: SET_VOLUME,
-    volume: clamp(volume, 0, 100)
+    volume: clamp(volume, 0, 100),
   };
 }
 
@@ -141,7 +141,7 @@ export function setBalance(balance: number): Dispatchable {
   }
   return {
     type: SET_BALANCE,
-    balance
+    balance,
   };
 }
 

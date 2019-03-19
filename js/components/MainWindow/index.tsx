@@ -6,7 +6,7 @@ import {
   loadFilesFromReferences,
   toggleMainWindowShadeMode,
   scrollVolume,
-  loadMedia
+  loadMedia,
 } from "../../actionCreators";
 import { getWindowShade } from "../../selectors";
 
@@ -44,7 +44,7 @@ import {
   AppState,
   Dispatch,
   FilePicker,
-  Track
+  Track,
 } from "../../types";
 
 interface StateProps {
@@ -86,7 +86,7 @@ export class MainWindow extends React.Component<Props> {
       llama,
       status,
       working,
-      filePickers
+      filePickers,
     } = this.props;
 
     const className = classnames({
@@ -99,7 +99,7 @@ export class MainWindow extends React.Component<Props> {
       draggable: true,
       loading,
       doubled,
-      llama
+      llama,
     });
 
     return (
@@ -174,7 +174,7 @@ const mapStateToProps = (state: AppState): StateProps => {
   const {
     media: { status },
     display: { loading, doubled, llama, working },
-    windows: { focused }
+    windows: { focused },
   } = state;
   return {
     mainShade: Boolean(getWindowShade(state)("main")),
@@ -183,7 +183,7 @@ const mapStateToProps = (state: AppState): StateProps => {
     doubled,
     llama,
     working,
-    focused
+    focused,
   };
 };
 
@@ -196,7 +196,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
     toggleMainWindowShadeMode: () => dispatch(toggleMainWindowShadeMode()),
     scrollVolume: (e: React.WheelEvent<HTMLDivElement>) =>
       dispatch(scrollVolume(e)),
-    loadMedia: (e: React.DragEvent<HTMLDivElement>) => dispatch(loadMedia(e))
+    loadMedia: (e: React.DragEvent<HTMLDivElement>) => dispatch(loadMedia(e)),
   };
 };
 export default connect(

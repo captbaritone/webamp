@@ -14,7 +14,7 @@ import {
   TOGGLE_TIME_MODE,
   UPDATE_TIME_ELAPSED,
   ADD_TRACK_FROM_URL,
-  LOAD_SERIALIZED_STATE
+  LOAD_SERIALIZED_STATE,
 } from "../actionTypes";
 import { TIME_MODE, MEDIA_STATUS } from "../constants";
 import { MediaSerializedStateV1 } from "../serializedStates/v1Types";
@@ -41,7 +41,7 @@ const defaultState = {
   shuffle: false,
   repeat: false,
   // TODO: Enforce possible values
-  status: MEDIA_STATUS.STOPPED
+  status: MEDIA_STATUS.STOPPED,
 };
 
 const media = (
@@ -69,11 +69,11 @@ const media = (
     case ADD_TRACK_FROM_URL:
       return {
         ...state,
-        timeElapsed: 0
+        timeElapsed: 0,
       };
     case SET_MEDIA:
       return {
-        ...state
+        ...state,
       };
     case SET_VOLUME:
       return { ...state, volume: action.volume };

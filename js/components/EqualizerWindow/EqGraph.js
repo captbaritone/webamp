@@ -60,7 +60,7 @@ class EqGraph extends React.Component {
       colorsCanvas.height = height;
       colorsCtx.drawImage(bgImage, 0, 0, width, height);
       this.setState({
-        colorPattern: this.canvasCtx.createPattern(colorsCanvas, "repeat-x")
+        colorPattern: this.canvasCtx.createPattern(colorsCanvas, "repeat-x"),
       });
     };
     bgImage.src = lineColorsImage;
@@ -137,5 +137,5 @@ class EqGraph extends React.Component {
 export default connect(state => ({
   ...state.equalizer.sliders,
   lineColorsImage: state.display.skinImages.EQ_GRAPH_LINE_COLORS,
-  preampLineUrl: state.display.skinImages.EQ_PREAMP_LINE
+  preampLineUrl: state.display.skinImages.EQ_PREAMP_LINE,
 }))(EqGraph);

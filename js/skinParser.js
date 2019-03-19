@@ -30,7 +30,7 @@ const CURSORS = [
   "VOLBAL",
   "WINBUT",
   "WSNORMAL",
-  "WSPOSBAR"
+  "WSPOSBAR",
   /*
    * > There are usually 4 more cursors in the skins: volbar.cur, wsclose.cur,
    * > wswinbut.cur, wsmin.cur, but they are never used, at least in the last
@@ -87,7 +87,7 @@ async function genFileFromZip(zip, fileName, ext, mode) {
   // Return a promise (awaitable).
   return {
     contents: await files[0].async(mode),
-    name: files[0].name
+    name: files[0].name,
   };
 }
 
@@ -178,7 +178,7 @@ async function genImages(zip) {
 async function genCursors(zip) {
   const cursorObjs = await Promise.all(
     CURSORS.map(async cursorName => ({
-      [cursorName]: await getCursorFromFilename(zip, cursorName)
+      [cursorName]: await getCursorFromFilename(zip, cursorName),
     }))
   );
   return shallowMerge(cursorObjs);
@@ -227,7 +227,7 @@ async function genGenTextSprites(zip) {
   const letterWidths = {};
   const sprites = [
     ...getLetters(88, "GEN_TEXT_SELECTED"),
-    ...getLetters(96, "GEN_TEXT")
+    ...getLetters(96, "GEN_TEXT"),
   ];
   sprites.forEach(sprite => {
     letterWidths[sprite.name] = sprite.width;
@@ -298,7 +298,7 @@ async function genGenExColors(zip) {
     // (21) x=88 List view text colour selected
     listTextSelected: 88,
     // (22) x=90 List view background colour selected
-    listTextSelectedBackground: 90
+    listTextSelectedBackground: 90,
   };
 
   return objectMap(colors, getColorAt);
@@ -315,7 +315,7 @@ async function skinParser(zipFileBuffer, JSZip) {
     cursors,
     region,
     genTextSprites,
-    genExColors
+    genExColors,
   ] = await Promise.all([
     genVizColors(zip),
     genPlaylistStyle(zip),
@@ -323,7 +323,7 @@ async function skinParser(zipFileBuffer, JSZip) {
     genCursors(zip),
     genRegion(zip),
     genGenTextSprites(zip),
-    genGenExColors(zip)
+    genGenExColors(zip),
   ]);
 
   const [genLetterWidths, genTextImages] = genTextSprites || [null, {}];
@@ -335,7 +335,7 @@ async function skinParser(zipFileBuffer, JSZip) {
     genLetterWidths,
     cursors,
     region,
-    genExColors
+    genExColors,
   };
 }
 

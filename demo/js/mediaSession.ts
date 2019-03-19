@@ -9,7 +9,7 @@ export default function enableMediaSession(webamp: WebampLazy) {
         return;
       }
       const {
-        metaData: { title, artist, album, albumArtUrl }
+        metaData: { title, artist, album, albumArtUrl },
       } = track;
       // @ts-ignore TypeScript does not know about the Media Session API: https://github.com/Microsoft/TypeScript/issues/19473
       navigator.mediaSession.metadata = new MediaMetadata({
@@ -19,13 +19,13 @@ export default function enableMediaSession(webamp: WebampLazy) {
         artwork: albumArtUrl
           ? [
               {
-                src: albumArtUrl
+                src: albumArtUrl,
                 // We don't currently know these.
                 // sizes: "96x96",
                 // type: "image/png"
-              }
+              },
             ]
-          : []
+          : [],
       });
     });
 

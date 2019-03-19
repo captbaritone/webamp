@@ -35,7 +35,7 @@ export const initialTracks = config.initialTracks || [
   {
     metaData: { artist: "DJ Mike Llama", title: "Llama Whippin' Intro" },
     url: llamaAudio,
-    duration: 5.322286
+    duration: 5.322286,
   },
   {
     url:
@@ -44,8 +44,8 @@ export const initialTracks = config.initialTracks || [
     metaData: {
       title: "Heroines",
       artist: "Diablo Swing Orchestra",
-      album
-    }
+      album,
+    },
   },
   {
     url:
@@ -54,8 +54,8 @@ export const initialTracks = config.initialTracks || [
     metaData: {
       title: "We Are Going To Eclecfunk Your Ass",
       artist: "Eclectek",
-      album
-    }
+      album,
+    },
   },
   {
     url:
@@ -64,8 +64,8 @@ export const initialTracks = config.initialTracks || [
     metaData: {
       title: "Seventeen",
       artist: "Auto-Pilot",
-      album
-    }
+      album,
+    },
   },
   {
     url:
@@ -74,8 +74,8 @@ export const initialTracks = config.initialTracks || [
     metaData: {
       title: "Microphone",
       artist: "Muha",
-      album
-    }
+      album,
+    },
   },
   {
     url:
@@ -84,8 +84,8 @@ export const initialTracks = config.initialTracks || [
     metaData: {
       title: "Stumble",
       artist: "Just Plain Ant",
-      album
-    }
+      album,
+    },
   },
   {
     url:
@@ -94,8 +94,8 @@ export const initialTracks = config.initialTracks || [
     metaData: {
       title: "God Damn",
       artist: "Sleaze",
-      album
-    }
+      album,
+    },
   },
   {
     url:
@@ -104,8 +104,8 @@ export const initialTracks = config.initialTracks || [
     metaData: {
       title: "Hola Hola Bossa Nova",
       artist: "Juanitos",
-      album
-    }
+      album,
+    },
   },
   {
     url:
@@ -114,8 +114,8 @@ export const initialTracks = config.initialTracks || [
     metaData: {
       title: "Resolutions (Chris Summer Remix)",
       artist: "Entertainment for the Braindead",
-      album
-    }
+      album,
+    },
   },
   {
     url:
@@ -124,8 +124,8 @@ export const initialTracks = config.initialTracks || [
     metaData: {
       title: "Trail",
       artist: "Nobara Hayakawa",
-      album
-    }
+      album,
+    },
   },
   {
     url:
@@ -134,8 +134,8 @@ export const initialTracks = config.initialTracks || [
     metaData: {
       title: "Tongue Tied",
       artist: "Paper Navy",
-      album
-    }
+      album,
+    },
   },
   {
     url:
@@ -144,8 +144,8 @@ export const initialTracks = config.initialTracks || [
     metaData: {
       title: "Garage",
       artist: "60 Tigres",
-      album
-    }
+      album,
+    },
   },
   {
     url:
@@ -154,9 +154,9 @@ export const initialTracks = config.initialTracks || [
     metaData: {
       title: "The Cycle (Featuring Mista Mista)",
       artist: "CM aka Creative",
-      album
-    }
-  }
+      album,
+    },
+  },
 ];
 
 export const disableMarquee = config.disableMarquee || false;

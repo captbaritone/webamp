@@ -1,7 +1,7 @@
 import React from "react";
 import {
   WINDOW_RESIZE_SEGMENT_WIDTH,
-  WINDOW_RESIZE_SEGMENT_HEIGHT
+  WINDOW_RESIZE_SEGMENT_HEIGHT,
 } from "../constants";
 
 type Size = [number, number];
@@ -20,7 +20,7 @@ export default class ResizeTarget extends React.Component<Props> {
     const [width, height] = this.props.currentSize;
     const mouseStart = {
       x: e.clientX,
-      y: e.clientY
+      y: e.clientY,
     };
 
     const handleMove = (ee: MouseEvent) => {

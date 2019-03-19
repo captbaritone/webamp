@@ -42,7 +42,7 @@ const Band = ({
   id,
   onChange,
   handleMouseDown,
-  handleMouseUp
+  handleMouseUp,
 }: Props) => (
   <div id={id} className="band" style={{ backgroundPosition }}>
     <Slider
@@ -74,7 +74,7 @@ const mapDispatchToProps = (
 ): DispatchProps => ({
   handleMouseDown: () =>
     dispatch({ type: SET_BAND_FOCUS, input: "eq", bandFocused: ownProps.band }),
-  handleMouseUp: () => dispatch({ type: UNSET_FOCUS })
+  handleMouseUp: () => dispatch({ type: UNSET_FOCUS }),
 });
 
 export default connect(

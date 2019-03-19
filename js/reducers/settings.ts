@@ -6,7 +6,7 @@ export interface SettingsState {
 }
 
 const defaultSettingsState = {
-  availableSkins: []
+  availableSkins: [],
 };
 
 const settings = (

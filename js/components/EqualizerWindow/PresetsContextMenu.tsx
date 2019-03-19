@@ -4,7 +4,7 @@ import builtin from "../../../presets/builtin.json";
 import {
   openEqfFileDialog,
   downloadPreset,
-  setEqFromObject
+  setEqFromObject,
 } from "../../actionCreators";
 import { Node, Parent, Hr } from "../ContextMenu";
 import ContextMenuTarget from "../ContextMenuTarget";
@@ -37,7 +37,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
   return {
     openEqfFileDialog: () => dispatch(openEqfFileDialog()),
     downloadPreset: () => dispatch(downloadPreset()),
-    setEqFromObject: preset => dispatch(setEqFromObject(preset))
+    setEqFromObject: preset => dispatch(setEqFromObject(preset)),
   };
 };
 

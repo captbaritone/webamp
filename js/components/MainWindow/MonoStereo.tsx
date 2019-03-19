@@ -20,7 +20,7 @@ const MonoStereo = (props: Props) => (
 
 const mapStateToProps = (state: AppState): Props => {
   return {
-    channels: Selectors.getChannels(state)
+    channels: Selectors.getChannels(state),
   };
 };
 

@@ -17,7 +17,7 @@ import {
   SET_EQ_ON,
   PLAY_TRACK,
   BUFFER_TRACK,
-  LOAD_SERIALIZED_STATE
+  LOAD_SERIALIZED_STATE,
 } from "./actionTypes";
 import { next as nextTrack } from "./actionCreators";
 import * as Selectors from "./selectors";
@@ -27,7 +27,7 @@ import { objectForEach } from "./utils";
 export default (media: Media) => (store: MiddlewareStore) => {
   const {
     media: { volume, balance },
-    equalizer: { sliders }
+    equalizer: { sliders },
   } = store.getState();
 
   // Ensure the default state is the canonical value.
@@ -39,7 +39,7 @@ export default (media: Media) => (store: MiddlewareStore) => {
   media.on("timeupdate", () => {
     store.dispatch({
       type: UPDATE_TIME_ELAPSED,
-      elapsed: media.timeElapsed()
+      elapsed: media.timeElapsed(),
     });
   });
 
@@ -73,7 +73,7 @@ export default (media: Media) => (store: MiddlewareStore) => {
       kbps: "128",
       khz: "44",
       channels: 2,
-      length: media.duration()
+      length: media.duration(),
     });
   });
 

@@ -15,7 +15,7 @@ describe("getTrackDisplayName", () => {
         artist: "Artist",
         title: "Title",
         defaultName: "Default Name",
-        url: "https://example.com/dir/filename.mp3"
+        url: "https://example.com/dir/filename.mp3",
       },
       "Artist - Title"
     );
@@ -25,7 +25,7 @@ describe("getTrackDisplayName", () => {
       {
         title: "Title",
         defaultName: "Default Name",
-        url: "https://example.com/dir/filename.mp3"
+        url: "https://example.com/dir/filename.mp3",
       },
       "Title"
     );
@@ -34,7 +34,7 @@ describe("getTrackDisplayName", () => {
     expectDisplayName(
       {
         defaultName: "Default Name",
-        url: "https://example.com/dir/filename.mp3"
+        url: "https://example.com/dir/filename.mp3",
       },
       "Default Name"
     );

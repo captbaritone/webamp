@@ -17,7 +17,7 @@ export default class ContextMenuWraper extends React.Component<Props, State> {
     this.state = {
       selected: false,
       offsetTop: null,
-      offsetLeft: null
+      offsetLeft: null,
     };
   }
 
@@ -52,7 +52,7 @@ export default class ContextMenuWraper extends React.Component<Props, State> {
       // TODO: We could do an initial render to see if the menu fits here
       // and do a second render if it does not.
       offsetTop: pageY,
-      offsetLeft: pageX
+      offsetLeft: pageX,
     });
     // Even if you right click multiple times before closeing,
     // we should only end up with one global listener.

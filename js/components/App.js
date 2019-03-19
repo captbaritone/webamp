@@ -108,7 +108,7 @@ class App extends React.Component {
       node,
       remove: () => {
         node.removeEventListener("keydown", listener);
-      }
+      },
     };
   }
 
@@ -183,7 +183,7 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-  container: PropTypes.instanceOf(Element)
+  container: PropTypes.instanceOf(Element),
 };
 
 const mapStateToProps = state => ({
@@ -192,13 +192,13 @@ const mapStateToProps = state => ({
   focused: state.windows.focused,
   closed: state.display.closed,
   genWindowsInfo: state.windows.genWindows,
-  zIndex: state.display.zIndex
+  zIndex: state.display.zIndex,
 });
 
 const mapDispatchToProps = dispatch => ({
   closeWindow: id => dispatch(Actions.closeWindow(id)),
   browserWindowSizeChanged: size =>
-    dispatch(Actions.browserWindowSizeChanged(size))
+    dispatch(Actions.browserWindowSizeChanged(size)),
 });
 
 export default connect(

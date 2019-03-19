@@ -22,14 +22,14 @@ class TracksTable extends React.Component<StateProps, State> {
 
   render() {
     const cellStyle: React.CSSProperties = {
-      whiteSpace: "nowrap"
+      whiteSpace: "nowrap",
     };
     return (
       <div
         style={{
           display: "flex",
           flexDirection: "column",
-          flexGrow: 2
+          flexGrow: 2,
         }}
       >
         <div
@@ -52,7 +52,7 @@ class TracksTable extends React.Component<StateProps, State> {
               display: "grid",
               gridTemplateColumns:
                 "[artist] 1fr [title] 1fr [album] 1fr [length] 1fr [track number] 1fr [genere] 1fr [year] 1fr [filename] 1fr",
-              gridColumnGap: 1
+              gridColumnGap: 1,
             }}
           >
             <div style={cellStyle}>Artist</div>
@@ -116,7 +116,7 @@ class TracksTable extends React.Component<StateProps, State> {
 const mapStateToProps = (state: AppState): StateProps => {
   return {
     tracks: Object.values(Selectors.getTracks(state)),
-    filterTracks: Selectors.getTracksMatchingFilter(state)
+    filterTracks: Selectors.getTracksMatchingFilter(state),
   };
 };
 

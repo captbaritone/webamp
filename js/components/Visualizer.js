@@ -325,11 +325,11 @@ const mapStateToProps = state => ({
   height: getWindowShade(state)("main") ? 5 : 16,
   status: state.media.status,
   windowShade: getWindowShade(state)("main"),
-  dummyVizData: state.display.dummyVizData
+  dummyVizData: state.display.dummyVizData,
 });
 
 const mapDispatchToProps = {
-  toggleVisualizerStyle
+  toggleVisualizerStyle,
 };
 
 export default connect(

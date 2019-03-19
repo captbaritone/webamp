@@ -10,7 +10,7 @@ import {
   RANDOMIZE_LIST,
   SET_TRACK_ORDER,
   SET_PLAYLIST_SCROLL_POSITION,
-  DRAG_SELECTED
+  DRAG_SELECTED,
 } from "../actionTypes";
 import { Dispatchable } from "../types";
 
@@ -22,13 +22,13 @@ export function cropPlaylist(): Dispatchable {
     }
     const selectedTrackIds = Selectors.getSelectedTrackIds(state);
     const {
-      playlist: { trackOrder }
+      playlist: { trackOrder },
     } = state;
     dispatch({
       type: REMOVE_TRACKS,
       // @ts-ignore The keys are numbers, but TypeScript does not trust us.
       // https://github.com/Microsoft/TypeScript/pull/12253#issuecomment-263132208
-      ids: trackOrder.filter(id => !selectedTrackIds.has(id))
+      ids: trackOrder.filter(id => !selectedTrackIds.has(id)),
     });
   };
 }
@@ -39,7 +39,7 @@ export function removeSelectedTracks(): Dispatchable {
       type: REMOVE_TRACKS,
       // @ts-ignore The keys are numbers, but TypeScript does not trust us.
       // https://github.com/Microsoft/TypeScript/pull/12253#issuecomment-263132208
-      ids: Array.from(Selectors.getSelectedTrackIds(getState()))
+      ids: Array.from(Selectors.getSelectedTrackIds(getState())),
     });
   };
 }
@@ -83,7 +83,7 @@ export function scrollNTracks(n: number): Dispatchable {
     const position = overflow ? clamp((currentOffset + n) / overflow, 0, 1) : 0;
     return dispatch({
       type: SET_PLAYLIST_SCROLL_POSITION,
-      position: position * 100
+      position: position * 100,
     });
   };
 }
@@ -105,7 +105,7 @@ export function scrollPlaylistByDelta(
         state.display.playlistScrollPosition + percentDelta,
         0,
         100
-      )
+      ),
     });
   };
 }

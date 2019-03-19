@@ -26,7 +26,7 @@ module.exports = async function takeScreenshots(skinDir, screenshotDir) {
       continue;
     }
     await shooter.takeScreenshot(filePath, screenshotPath, {
-      minify: true
+      minify: true,
     });
     shotCount++;
   }

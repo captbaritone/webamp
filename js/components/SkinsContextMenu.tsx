@@ -32,7 +32,7 @@ const SkinContextMenu = (props: Props) => (
 );
 
 const mapStateToProps = (state: AppState): StateProps => ({
-  availableSkins: state.settings.availableSkins
+  availableSkins: state.settings.availableSkins,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
@@ -45,7 +45,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
     },
     setSkin(url: string) {
       dispatch(Actions.setSkinFromUrl(url));
-    }
+    },
   };
 };
 

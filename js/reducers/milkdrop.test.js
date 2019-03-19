@@ -10,7 +10,7 @@ const media = {
   setBalance: jest.fn(),
   setPreamp: jest.fn(),
   getAnalyser: () => null,
-  on: jest.fn()
+  on: jest.fn(),
 };
 
 test("The first tack is picked at random", () => {
@@ -19,7 +19,7 @@ test("The first tack is picked at random", () => {
     { type: "RESOLVED", name: "First", preset: {} },
     { type: "RESOLVED", name: "Second", preset: {} },
     { type: "RESOLVED", name: "Third", preset: {} },
-    { type: "RESOLVED", name: "Fourth", preset: {} }
+    { type: "RESOLVED", name: "Fourth", preset: {} },
   ];
   Math.random = () => 0.5;
   // Just confirm that the default setting is correct
@@ -32,7 +32,7 @@ test("handles history (prev/next) correctly", () => {
   const store = createStore(media, new Emitter());
   const mockPreset = [
     { type: "RESOLVED", name: "First", preset: {} },
-    { type: "RESOLVED", name: "Second", preset: {} }
+    { type: "RESOLVED", name: "Second", preset: {} },
   ];
   expect(Selectors.getRandomizePresets(store.getState())).toBe(true);
   store.dispatch(Actions.toggleRandomizePresets());
@@ -73,7 +73,7 @@ test("selectes the first preset in a new set when added", async () => {
   const store = createStore(media, new Emitter());
   const mockPreset = [
     { type: "RESOLVED", name: "First", preset: {} },
-    { type: "RESOLVED", name: "Second", preset: {} }
+    { type: "RESOLVED", name: "Second", preset: {} },
   ];
   store.dispatch(Actions.toggleRandomizePresets());
 
@@ -84,7 +84,7 @@ test("selectes the first preset in a new set when added", async () => {
   const presetPromise = Promise.resolve({});
   // Load some more presets
   const newMockPresets = [
-    { type: "UNRESOLVED", name: "First", getPreset: () => presetPromise }
+    { type: "UNRESOLVED", name: "First", getPreset: () => presetPromise },
   ];
   store.dispatch(Actions.loadPresets(newMockPresets));
   // The new presets are not selected right away

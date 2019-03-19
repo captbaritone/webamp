@@ -48,7 +48,7 @@ export default function StereoBalanceNode(context, options = { balance: 0 }) {
   // we'll want to.
   const audioParam = {};
   Object.defineProperties(audioParam, {
-    value: { get, set, enumerable: true, configurable: true }
+    value: { get, set, enumerable: true, configurable: true },
   });
 
   // The way the `.connect` API works, we can't actually construct our own
@@ -58,20 +58,20 @@ export default function StereoBalanceNode(context, options = { balance: 0 }) {
       value: audioParam,
       enumerable: true,
       writable: false,
-      configurable: true
+      configurable: true,
     },
     connect: {
       value: AudioNode.prototype.connect.bind(merger),
       enumerable: false,
       writable: false,
-      configurable: true
+      configurable: true,
     },
     disconnect: {
       value: AudioNode.prototype.disconnect.bind(merger),
       enumerable: false,
       writable: false,
-      configurable: true
-    }
+      configurable: true,
+    },
   });
 
   if (balance !== options.balance) {

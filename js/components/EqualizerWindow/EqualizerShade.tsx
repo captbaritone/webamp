@@ -40,13 +40,13 @@ const EqualizerShade = (props: StateProps & DispatchProps) => {
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
   return {
     closeWindow: () => dispatch(closeWindow("equalizer")),
-    toggleEqualizerShadeMode: () => dispatch(toggleEqualizerShadeMode())
+    toggleEqualizerShadeMode: () => dispatch(toggleEqualizerShadeMode()),
   };
 };
 
 const mapStateToProps = (state: AppState): StateProps => ({
   volume: state.media.volume,
-  balance: state.media.balance
+  balance: state.media.balance,
 });
 
 export default connect(

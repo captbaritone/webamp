@@ -10,7 +10,7 @@ const media = {
   setPreamp: jest.fn(),
   setBalance: jest.fn(),
   getAnalyser: () => null,
-  on: jest.fn()
+  on: jest.fn(),
 };
 
 const canvasMockify = require("canvas-mock");

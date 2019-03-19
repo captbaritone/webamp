@@ -16,7 +16,7 @@ const MainVolume = (props: Props) => {
   const offset = (sprite - 1) * 15;
 
   const style = {
-    backgroundPosition: `0 -${offset}px`
+    backgroundPosition: `0 -${offset}px`,
   };
   return (
     <div id="volume" style={style}>
@@ -26,7 +26,7 @@ const MainVolume = (props: Props) => {
 };
 
 const mapStateToProps = (state: AppState): Props => ({
-  volume: Selectors.getVolume(state)
+  volume: Selectors.getVolume(state),
 });
 
 export default connect(mapStateToProps)(MainVolume);

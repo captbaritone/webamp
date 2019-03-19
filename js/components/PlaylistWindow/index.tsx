@@ -11,7 +11,7 @@ import {
   togglePlaylistShadeMode,
   scrollVolume,
   closeWindow,
-  loadMedia
+  loadMedia,
 } from "../../actionCreators";
 import * as Selectors from "../../selectors";
 
@@ -87,7 +87,7 @@ class PlaylistWindow extends React.Component<Props> {
       toggleShade,
       analyser,
       showVisualizer,
-      activateVisualizer
+      activateVisualizer,
     } = this.props;
     if (playlistShade) {
       return <PlaylistShade />;
@@ -98,7 +98,7 @@ class PlaylistWindow extends React.Component<Props> {
       backgroundColor: skinPlaylistStyle.normalbg,
       fontFamily: `${skinPlaylistStyle.font}, Arial, sans-serif`,
       height: `${playlistWindowPixelSize.height}px`,
-      width: `${playlistWindowPixelSize.width}px`
+      width: `${playlistWindowPixelSize.width}px`,
     };
 
     const classes = classnames("window", "draggable", { selected });
@@ -188,13 +188,13 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
     scrollDownFourTracks: () => dispatch(scrollDownFourTracks()),
     loadMedia: (e, startIndex) =>
       dispatch(loadMedia(e, LOAD_STYLE.NONE, startIndex)),
-    scrollVolume: e => dispatch(scrollVolume(e))
+    scrollVolume: e => dispatch(scrollVolume(e)),
   };
 };
 
 const mapStateToProps = (state: AppState): StateProps => {
   const {
-    playlist: { trackOrder }
+    playlist: { trackOrder },
   } = state;
   const playlistSize = Selectors.getWindowSize(state)(WINDOWS.PLAYLIST);
 
@@ -210,7 +210,7 @@ const mapStateToProps = (state: AppState): StateProps => {
     selected: Selectors.getFocusedWindow(state) === WINDOWS.PLAYLIST,
     skinPlaylistStyle: Selectors.getSkinPlaylistStyle(state),
     playlistShade: Boolean(Selectors.getWindowShade(state)(WINDOWS.PLAYLIST)),
-    duration: Selectors.getDuration(state)
+    duration: Selectors.getDuration(state),
   };
 };
 

@@ -13,7 +13,7 @@ import {
   next,
   previous,
   toggleDoubleSizeMode,
-  toggleWindow
+  toggleWindow,
 } from "./actionCreators";
 
 import { TOGGLE_TIME_MODE, TOGGLE_LLAMA_MODE } from "./actionTypes";
@@ -33,7 +33,7 @@ export function bindHotkeys(dispatch: Dispatch): () => void {
     83, // S
     79, // O
     70, // F
-    84 // T
+    84, // T
   ];
 
   const listener = (e: KeyboardEvent) => {

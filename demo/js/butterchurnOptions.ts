@@ -4,7 +4,7 @@ const KNOWN_PRESET_URLS_REGEXES = [
   /^https:\/\/unpkg\.com\/butterchurn-presets\/.*\.json$/,
   /^https:\/\/unpkg\.com\/butterchurn-presets-weekly\/.*\.json$/,
   /^https:\/\/archive\.org\/cors\/md_.*\.json$/,
-  /^https:\/\/s3-us-east-2\.amazonaws\.com\/butterchurn-presets\/.*\.json$/
+  /^https:\/\/s3-us-east-2\.amazonaws\.com\/butterchurn-presets\/.*\.json$/,
 ];
 
 function presetNameFromURL(url: string) {
@@ -77,8 +77,8 @@ export function getButterchurnOptions(
             return [
               {
                 name: presetNameFromURL(butterchurnPresetUrlParam),
-                butterchurnPresetUrl: butterchurnPresetUrlParam
-              }
+                butterchurnPresetUrl: butterchurnPresetUrlParam,
+              },
             ];
           }
         } else if (milkdropPresetUrl) {
@@ -90,6 +90,6 @@ export function getButterchurnOptions(
         "https://unpkg.com/butterchurn-presets-weekly@0.0.2/weeks/week1/presets.json"
       );
     },
-    butterchurnOpen: !startWithMilkdropHidden
+    butterchurnOpen: !startWithMilkdropHidden,
   };
 }

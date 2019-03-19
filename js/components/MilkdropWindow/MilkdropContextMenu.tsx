@@ -52,13 +52,13 @@ const MilkdropContextMenu = (props: Props) => (
 
 const mapStateToProps = (state: AppState): StateProps => ({
   desktop: Selectors.getMilkdropDesktopEnabled(state),
-  fullscreen: Selectors.getMilkdropFullscreenEnabled(state)
+  fullscreen: Selectors.getMilkdropFullscreenEnabled(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   closeWindow: () => dispatch(Actions.closeWindow(WINDOWS.MILKDROP)),
   toggleDesktop: () => dispatch(Actions.toggleMilkdropDesktop()),
-  toggleFullscreen: () => dispatch(Actions.toggleMilkdropFullscreen())
+  toggleFullscreen: () => dispatch(Actions.toggleMilkdropFullscreen()),
 });
 
 export default connect(

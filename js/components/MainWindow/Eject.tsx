@@ -13,7 +13,7 @@ const Eject = (props: DispatchProps) => (
 );
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-  openMediaFileDialog: () => dispatch(Actions.openMediaFileDialog())
+  openMediaFileDialog: () => dispatch(Actions.openMediaFileDialog()),
 });
 
 export default connect(

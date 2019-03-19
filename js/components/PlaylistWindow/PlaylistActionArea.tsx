@@ -7,7 +7,7 @@ import {
   stop,
   next,
   previous,
-  openMediaFileDialog
+  openMediaFileDialog,
 } from "../../actionCreators";
 
 import MiniTime from "../MiniTime";
@@ -48,7 +48,7 @@ const mapDispatchToProps = (dispatch: Dispatch): Props => {
     stop: () => dispatch(stop()),
     openMediaFileDialog: () => dispatch(openMediaFileDialog()),
     next: () => dispatch(next()),
-    previous: () => dispatch(previous())
+    previous: () => dispatch(previous()),
   };
 };
 

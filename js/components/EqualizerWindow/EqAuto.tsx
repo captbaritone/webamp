@@ -24,7 +24,7 @@ const mapStateToProps = (state: AppState): StateProps => {
 const mapDispatchToProps = () => (dispatch: Dispatch): DispatchProps => {
   // We don't support auto.
   return {
-    toggleAuto: () => dispatch({ type: SET_EQ_AUTO, value: false })
+    toggleAuto: () => dispatch({ type: SET_EQ_AUTO, value: false }),
   };
 };
 

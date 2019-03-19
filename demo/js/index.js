@@ -21,7 +21,7 @@ import {
   TOGGLE_REPEAT,
   TOGGLE_SHUFFLE,
   SET_EQ_AUTO,
-  SET_DUMMY_VIZ_DATA
+  SET_DUMMY_VIZ_DATA,
 } from "../../js/actionTypes";
 
 import { loadFilesFromReferences } from "../../js/actionCreators";
@@ -34,7 +34,7 @@ import {
   skinUrl as configSkinUrl,
   initialTracks,
   initialState,
-  disableMarquee
+  disableMarquee,
 } from "./config";
 import WebampIcon from "./WebampIcon";
 import enableMediaSession from "./mediaSession";
@@ -48,7 +48,7 @@ const NOISY_ACTION_TYPES = new Set([
   UPDATE_WINDOW_POSITIONS,
   SET_VOLUME,
   SET_BALANCE,
-  SET_BAND_VALUE
+  SET_BAND_VALUE,
 ]);
 
 const MIN_MILKDROP_WIDTH = 725;
@@ -96,12 +96,12 @@ function filterBreadcrumbActions(action) {
 
 Raven.config(SENTRY_DSN, {
   /* global COMMITHASH */
-  release: typeof COMMITHASH !== "undefined" ? COMMITHASH : "DEV"
+  release: typeof COMMITHASH !== "undefined" ? COMMITHASH : "DEV",
 }).install();
 
 const ravenMiddleware = createMiddleware(Raven, {
   filterBreadcrumbActions,
-  stateTransformer: Selectors.getDebugData
+  stateTransformer: Selectors.getDebugData,
 });
 
 // Don't prompt user to install Webamp. It's probably not
@@ -138,12 +138,12 @@ Raven.context(async () => {
         [WINDOWS.MAIN]: { position: { x: 0, y: 0 } },
         [WINDOWS.EQUALIZER]: { position: { x: 0, y: 116 } },
         [WINDOWS.PLAYLIST]: { position: { x: 0, y: 232 }, size: [0, 0] },
-        [WINDOWS.MILKDROP]: { position: { x: 0, y: 348 }, size: [0, 0] }
+        [WINDOWS.MILKDROP]: { position: { x: 0, y: 348 }, size: [0, 0] },
       };
       if (library) {
         __initialWindowLayout[WINDOWS.MEDIA_LIBRARY] = {
           position: { x: 0, y: 348 },
-          size: [0, 0]
+          size: [0, 0],
         };
       }
     } else {
@@ -151,12 +151,12 @@ Raven.context(async () => {
         [WINDOWS.MAIN]: { position: { x: 0, y: 0 } },
         [WINDOWS.EQUALIZER]: { position: { x: 0, y: 116 } },
         [WINDOWS.PLAYLIST]: { position: { x: 0, y: 232 }, size: [0, 4] },
-        [WINDOWS.MILKDROP]: { position: { x: 275, y: 0 }, size: [7, 12] }
+        [WINDOWS.MILKDROP]: { position: { x: 275, y: 0 }, size: [7, 12] },
       };
       if (library) {
         __initialWindowLayout[WINDOWS.MEDIA_LIBRARY] = {
           position: { x: 275, y: 0 },
-          size: [7, 12]
+          size: [7, 12],
         };
       }
     }
@@ -180,7 +180,7 @@ Raven.context(async () => {
     __initialWindowLayout,
     __initialState: screenshot ? screenshotInitialState : initialState,
     __butterchurnOptions,
-    __customMiddlewares: [ravenMiddleware]
+    __customMiddlewares: [ravenMiddleware],
   });
 
   if (disableMarquee || screenshot) {
@@ -209,8 +209,8 @@ Raven.context(async () => {
         96: 4.8125,
         104: 4.375,
         112: 3.625,
-        120: 1.5625
-      }
+        120: 1.5625,
+      },
     });
   }
 

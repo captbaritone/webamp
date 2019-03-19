@@ -33,13 +33,13 @@ const Balance = (props: Props) => (
 );
 
 const mapStateToProps = (state: AppState) => ({
-  balance: Selectors.getBalance(state)
+  balance: Selectors.getBalance(state),
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   setBalance: (e: ChangeEvent<HTMLInputElement>) =>
     dispatch(Actions.setBalance(Number((e.target as HTMLInputElement).value))),
   showMarquee: () => dispatch(Actions.setFocus("balance")),
-  hideMarquee: () => dispatch(Actions.unsetFocus())
+  hideMarquee: () => dispatch(Actions.unsetFocus()),
 });
 
 export default connect(
