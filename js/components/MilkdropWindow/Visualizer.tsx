@@ -38,7 +38,19 @@ const TRANSITION_TYPE_DURATIONS = {
   [TransitionType.USER_PRESET]: 5.7,
 };
 
-function Visualizer(props: Props) {
+function Visualizer(_props: Props) {
+  const {
+    butterchurn,
+    analyser,
+    width,
+    height,
+    currentPreset,
+    transitionType,
+    trackTitle,
+    isEnabledVisualizer,
+    message,
+    playing,
+  } = _props;
   const canvasRef = useRef(null);
   const [visualizer, setVisualizer] = useState<ButterchurnVisualizer | null>(
     null
@@ -46,7 +58,7 @@ function Visualizer(props: Props) {
 
   // Initialize the visualizer
   useEffect(() => {
-    if (canvasRef.current == null || props.butterchurn == null) {
+    if (canvasRef.current == null || butterchurn == null) {
       return;
     }
     if (visualizer != null) {
@@ -55,73 +67,75 @@ function Visualizer(props: Props) {
       // node, or the canvas, that change won't be respected.
       return;
     }
-    const _visualizer = props.butterchurn.createVisualizer(
-      props.analyser.context,
+    const _visualizer = butterchurn.createVisualizer(
+      analyser.context,
       canvasRef.current,
       {
-        width: props.width,
-        height: props.height,
+        width,
+        height,
         meshWidth: 32,
         meshHeight: 24,
         pixelRatio: window.devicePixelRatio || 1,
       }
     );
-    _visualizer.connectAudio(props.analyser);
+    _visualizer.connectAudio(analyser);
     setVisualizer(_visualizer);
-  }, [canvasRef.current, props.butterchurn, props.analyser]);
+  }, [butterchurn, analyser, height, width, visualizer]);
 
   // Ensure render size stays up to date
   useEffect(() => {
     if (visualizer == null) {
       return;
     }
-    visualizer.setRendererSize(props.width, props.height);
-  }, [visualizer, props.width, props.height]);
+    visualizer.setRendererSize(width, height);
+  }, [visualizer, width, height]);
 
   // Load presets when they change
   const hasLoadedPreset = useRef<boolean>(false);
   useEffect(() => {
-    if (visualizer == null || props.currentPreset == null) {
+    if (visualizer == null || currentPreset == null) {
       return;
     }
     if (hasLoadedPreset.current) {
       visualizer.loadPreset(
-        props.currentPreset,
-        TRANSITION_TYPE_DURATIONS[props.transitionType]
+        currentPreset,
+        TRANSITION_TYPE_DURATIONS[transitionType]
       );
     } else {
       visualizer.loadPreset(
-        props.currentPreset,
+        currentPreset,
         TRANSITION_TYPE_DURATIONS[TransitionType.IMMEDIATE]
       );
       hasLoadedPreset.current = true;
     }
-  }, [visualizer, props.currentPreset]);
+    // We don't want to trigger the transition if the transition type changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [visualizer, currentPreset]);
 
   // Handle title animations
   useEffect(() => {
-    if (visualizer == null || !props.trackTitle) {
+    if (visualizer == null || !trackTitle) {
       return;
     }
-    visualizer.launchSongTitleAnim(props.trackTitle);
-  }, [visualizer, props.trackTitle]);
+    visualizer.launchSongTitleAnim(trackTitle);
+  }, [visualizer, trackTitle]);
 
   const lastShownMessage = useRef<null | number>(null);
 
   useEffect(() => {
-    if (visualizer == null || props.message == null) {
+    if (visualizer == null || message == null) {
       return;
     }
     if (
       lastShownMessage.current == null ||
-      props.message.time > lastShownMessage.current
+      message.time > lastShownMessage.current
     ) {
       lastShownMessage.current = Date.now();
-      visualizer.launchSongTitleAnim(props.message.text);
+      visualizer.launchSongTitleAnim(message.text);
     }
-  }, [visualizer, props.message]);
+  }, [visualizer, message]);
 
-  const shouldAnimate = props.playing && props.isEnabledVisualizer;
+  const shouldAnimate = playing && isEnabledVisualizer;
 
   // Kick off the animation loop
   useEffect(() => {
@@ -143,12 +157,12 @@ function Visualizer(props: Props) {
 
   return (
     <canvas
-      height={props.height}
-      width={props.width}
+      height={height}
+      width={width}
       style={{
         height: "100%",
         width: "100%",
-        display: props.isEnabledVisualizer ? "block" : "none",
+        display: isEnabledVisualizer ? "block" : "none",
       }}
       ref={canvasRef}
     />

@@ -50,40 +50,63 @@ interface OwnProps {
 
 type Props = StateProps & DispatchProps & OwnProps;
 
-function Milkdrop(props: Props) {
+function useMilkdropKeyBindings(props: Props) {
+  const {
+    onFocusedKeyDown,
+    selectNextPreset,
+    selectPreviousPreset,
+    toggleRandomize,
+    togglePresetOverlay,
+    scheduleMilkdropMessage,
+    trackTitle,
+    toggleCycling,
+  } = props;
   // Handle keyboard events
   useEffect(() => {
-    return props.onFocusedKeyDown(e => {
+    return onFocusedKeyDown(e => {
       switch (e.keyCode) {
         case 32: // spacebar
-          props.selectNextPreset();
+          selectNextPreset();
           break;
         case 8: // backspace
-          props.selectPreviousPreset(TransitionType.IMMEDIATE);
+          selectPreviousPreset(TransitionType.IMMEDIATE);
           break;
         case 72: // H
-          props.selectNextPreset(TransitionType.IMMEDIATE);
+          selectNextPreset(TransitionType.IMMEDIATE);
           break;
         case 82: // R
-          props.toggleRandomize();
+          toggleRandomize();
           break;
         case 76: // L
-          props.togglePresetOverlay();
+          togglePresetOverlay();
           e.stopPropagation();
           break;
         case 84: // T
-          if (props.trackTitle != null) {
-            props.scheduleMilkdropMessage(props.trackTitle);
+          if (trackTitle != null) {
+            scheduleMilkdropMessage(trackTitle);
           }
           e.stopPropagation();
           break;
         case 145: // scroll lock
         case 125: // F14 (scroll lock for OS X)
-          props.toggleCycling();
+          toggleCycling();
           break;
       }
     });
-  }, [props.onFocusedKeyDown]);
+  }, [
+    onFocusedKeyDown,
+    selectNextPreset,
+    selectPreviousPreset,
+    toggleRandomize,
+    togglePresetOverlay,
+    scheduleMilkdropMessage,
+    trackTitle,
+    toggleCycling,
+  ]);
+}
+
+function Milkdrop(props: Props) {
+  useMilkdropKeyBindings(props);
 
   // Cycle presets
   useEffect(() => {

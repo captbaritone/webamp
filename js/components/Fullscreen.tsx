@@ -21,29 +21,30 @@ function enterFullScreen(node: HTMLDivElement) {
 }
 
 function FullScreen(props: Props) {
+  const { onChange, enabled } = props;
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     function detectFullScreen() {
-      if (props.onChange) {
-        props.onChange(fscreen.fullscreenElement === ref.current);
+      if (onChange) {
+        onChange(fscreen.fullscreenElement === ref.current);
       }
     }
     fscreen.addEventListener("fullscreenchange", detectFullScreen);
     return () => {
       fscreen.removeEventListener("fullscreenchange", detectFullScreen);
     };
-  }, [props.onChange, ref.current]);
+  }, [onChange]);
 
   // This must run in response to a click event, so we'll use useLayoutEffect just in case.
   useLayoutEffect(() => {
-    const enabled = fscreen.fullscreenElement === ref.current;
-    if (enabled && !props.enabled) {
+    const isEnabled = fscreen.fullscreenElement === ref.current;
+    if (isEnabled && !enabled) {
       leaveFullScreen();
-    } else if (!enabled && props.enabled && ref.current != null) {
+    } else if (!isEnabled && enabled && ref.current != null) {
       enterFullScreen(ref.current);
     }
-  }, [props.enabled, ref.current]);
+  }, [enabled]);
 
   return (
     <div

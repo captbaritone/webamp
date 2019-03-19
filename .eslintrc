@@ -13,7 +13,8 @@
     "prettier",
     "import",
     "no-constructor-bind",
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "react-hooks"
   ],
   "settings": {
     "react": {
@@ -148,6 +149,8 @@
     "import/no-named-as-default-member": "error",
     "import/no-unresolved": "error",
     "import/order": "warn",
-    "no-constructor-bind/no-constructor-bind": "error"
+    "no-constructor-bind/no-constructor-bind": "error",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "error"
   }
 }

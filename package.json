@@ -150,8 +150,11 @@
       "config/jest.*.js"
     ]
   },
-  "prettier": {"trailingComma": "es5"},
+  "prettier": {
+    "trailingComma": "es5"
+  },
   "dependencies": {
+    "eslint-plugin-react-hooks": "^1.5.1",
     "fscreen": "^1.0.2"
   }
 }

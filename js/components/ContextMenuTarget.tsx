@@ -48,11 +48,11 @@ function ContextMenuTarget(props: Props) {
     return () => {
       document.removeEventListener("click", handleGlobalClick);
     };
-  }, [selected, handleNode.current]);
+  }, [selected]);
 
   const offset = useMemo(() => {
     return getNodeOffset(handleNode.current);
-  }, [selected, handleNode.current]);
+  }, []);
 
   const { handle, children, top, bottom, ...passThroughProps } = props;
   return (

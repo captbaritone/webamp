@@ -14,14 +14,14 @@ export function useScreenSize() {
 
 export function useWindowSize() {
   const [size, setSize] = useState<Size>(Utils.getWindowSize());
-  const hander = Utils.throttle(() => {
+  const handler = Utils.throttle(() => {
     setSize(Utils.getWindowSize());
   }, 100) as () => void;
   useEffect(() => {
-    window.addEventListener("resize", hander);
+    window.addEventListener("resize", handler);
     return () => {
-      window.removeEventListener("resize", hander);
+      window.removeEventListener("resize", handler);
     };
-  }, [setSize]);
+  }, [setSize, handler]);
   return size;
 }
