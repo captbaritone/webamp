@@ -29,9 +29,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "build-index": "node ./scripts/findSkins.js",
+    "find-skins": "node ./scripts/findSkins.js",
     "create-search-index": "node ./scripts/createSearchIndex.js",
-    "extract": "find ../webamp/experiments/automatedScreenshots/skins \"(\" -name \"*.wsz\" -o -name \"*.zip\" \")\" -exec node ./scripts/extractSkinText.js \"{}\" \\;"
+    "extract": "node ./scripts/extractSkinText.js \"/Volumes/Mobile Backup/skins/md5Skins/\""
   },
   "prettier": {},
   "browserslist": [
@@ -42,5 +42,8 @@
   ],
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "devDependencies": {
+    "bluebird": "^3.5.3"
   }
 }

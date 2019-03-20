@@ -1,11 +1,13 @@
 const path = require("path");
+const fs = require("fs");
+const Bluebird = require("bluebird");
 var { exec } = require("child_process");
 const Utils = require("./utils");
 
-async function extractTextData(path) {
-  const reg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g;
-  const extract = value => (value && value.match(reg)) || [];
+const reg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g;
+const extract = value => (value && value.match(reg)) || [];
 
+async function extractTextData(path) {
   const ignoreFiles = [
     "genex.txt",
     "genexinfo.txt",
@@ -33,8 +35,8 @@ async function extractTextData(path) {
   const raw = await new Promise((resolve, reject) => {
     exec(cmd, function(error, stdout, stderr) {
       if (error != null) {
-        //reject(error);
-        //return;
+        // reject(error);
+        // return;
       }
       resolve(stdout);
     });
@@ -43,15 +45,34 @@ async function extractTextData(path) {
   return { raw, emails: extract(raw) };
 }
 
-async function writeTextData(skinPath) {
-  const data = await extractTextData(skinPath);
-  const md5 = await Utils.getFileMd5(skinPath);
-  const skinMetadataPath = await Utils.writeSkinMetadata(
-    md5,
-    "extracted-data",
-    data
-  );
-  console.log("Done", skinMetadataPath);
+async function writeTextData(skinPath, md5) {
+  try {
+    const data = await extractTextData(skinPath);
+    const skinMetadataPath = await Utils.writeSkinMetadata(
+      md5,
+      "extracted-data",
+      data
+    );
+    console.log("Done", skinMetadataPath);
+  } catch (e) {
+    console.error(e);
+  }
 }
 
-writeTextData(path.join(process.cwd(), process.argv[2]));
+function main() {
+  const dir = process.argv[2];
+  console.log("Reading dir");
+  const files = fs.readdirSync(dir);
+  console.log(`Found ${files.length} files`);
+  return Bluebird.map(
+    files,
+    file => {
+      const filePath = path.join(dir, file);
+      const md5 = path.basename(file, ".wsz");
+      return writeTextData(filePath, md5);
+    },
+    { concurrency: 10 }
+  );
+}
+
+main();

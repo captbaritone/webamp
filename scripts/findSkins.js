@@ -1,31 +1,21 @@
 const fs = require("fs");
 const path = require("path");
 const exec = require("child_process").exec;
+const Bluebird = require("bluebird");
 const shellescape = require("shell-escape");
-const https = require("https");
-
-const FILENAME_URL =
-  "https://s3-us-west-2.amazonaws.com/winamp2-js-skins/filenames.txt";
 
 const getFileNames = async () => {
-  const content = await new Promise(resolve =>
-    https.get(FILENAME_URL, response => {
-      var data = "";
-      response.on("data", function(chunk) {
-        data += chunk;
-      });
-      response.on("end", function() {
-        resolve(data);
-      });
-    })
+  const content = fs.readFileSync(
+    "/Volumes/Mobile Backup/skins/pathnames.txt",
+    "utf8"
   );
   const fileNames = {};
   content.split("\n").forEach(line => {
     if (!line.length) {
       return;
     }
-    const [hash, fileName] = line.split(" ");
-    fileNames[hash] = fileName;
+    const [hash, pathName] = line.split(" ");
+    fileNames[hash] = path.basename(pathName);
   });
   return fileNames;
 };
@@ -42,9 +32,9 @@ const getFavoriteCounts = () => {
   });
   return favorites;
 };
-const testFolder = path.join(
+const testFolder = path.resolve(
   __dirname,
-  "../../webamp/experiments/automatedScreenshots/screenshots/"
+  "/Volumes/Mobile Backup/skins/md5Screenshots"
 );
 const files = fs
   .readdirSync(testFolder)
@@ -69,22 +59,23 @@ const getFileData = async files => {
   const favortes = getFavoriteCounts();
   console.log(favortes);
   const fileData = {};
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i];
-    const md5 = path.basename(file, ".png");
-    const fileName = fileNames[md5];
-    if (!fileName) {
-      console.warn("no file name for ", md5);
-      continue;
-    }
-    // Intentional blocking async loop so we don't use too many child
-    // Processes
-    fileData[md5] = {
-      color: (await genAverage(file)).slice(1),
-      favorites: favortes[md5],
-      fileName
-    };
-  }
+  await Bluebird.map(
+    files,
+    async file => {
+      const md5 = path.basename(file, ".png");
+      const fileName = fileNames[md5];
+      if (!fileName) {
+        console.warn("no file name for ", md5);
+        return;
+      }
+      fileData[md5] = {
+        color: (await genAverage(file)).slice(1),
+        favorites: favortes[md5],
+        fileName
+      };
+    },
+    { concurrency: 10 }
+  );
   return fileData;
 };
 
