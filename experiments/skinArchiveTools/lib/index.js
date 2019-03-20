@@ -4,6 +4,8 @@ const Bluebird = require("bluebird");
 const collectSkins = require("./collectSkins");
 const Utils = require("./utils");
 const { FILE_TYPES } = require("./constants");
+const { getColor } = require("./color");
+const { extractTextData } = require("./readme");
 const Shooter = require("./shooter");
 
 /**
@@ -32,8 +34,11 @@ const getTypes = false;
 const moveHome = false;
 const screenshots = false;
 const detectGenerated = false;
-const archive = true;
+const archive = false;
 const force = false;
+const color = false;
+const favorites = false;
+const readme = true;
 const cacheFilePath = path.join(CACHE_PATH, "info.json");
 
 function getPath(skin) {
@@ -48,8 +53,15 @@ async function main() {
   // Run this if new files are added
   const start = Date.now();
   let cache = JSON.parse(fs.readFileSync(cacheFilePath, "utf8"));
-
   console.log("parsed cache in ", (Date.now() - start) / 1000, "seconds");
+
+  // Writing a backup
+  const cacheBackupFilePath = path.join(
+    CACHE_PATH,
+    `backup-${Date.now()}.json`
+  );
+  fs.writeFileSync(cacheBackupFilePath, JSON.stringify(cache, null, 2));
+  console.log(`Wrote a backup of the cache to ${cacheBackupFilePath}`);
 
   function report() {
     let classic = 0;
@@ -89,7 +101,7 @@ async function main() {
   }
 
   function save() {
-    fs.writeFileSync(cacheFilePath, JSON.stringify(cache));
+    fs.writeFileSync(cacheFilePath, JSON.stringify(cache, null, 2));
   }
 
   console.log("Starting with...");
@@ -107,7 +119,9 @@ async function main() {
       if (md5Path === skin.md5Path) {
         return;
       }
-      fs.linkSync(getPath(skin), md5Path);
+      if (!fs.existsSync(md5Path)) {
+        fs.linkSync(getPath(skin), md5Path);
+      }
       skin.md5Path = md5Path;
     });
     save();
@@ -159,8 +173,10 @@ async function main() {
     console.log("Taking screenshots");
     const skins = Object.values(cache);
     let i = 0;
+    let j = 0;
     const interval = setInterval(() => {
       console.log(`Took ${i} screenshots`);
+      console.log(`Found ${j} screenshots`);
       console.log("Saving...");
 
       save();
@@ -181,16 +197,21 @@ async function main() {
           "md5Screenshots",
           `${skin.md5}.png`
         );
-        await shooter.takeScreenshot(getPath(skin), screenshotPath, {
-          minify: true,
-        });
+        if (!fs.existsSync(screenshotPath) || force) {
+          await shooter.takeScreenshot(getPath(skin), screenshotPath, {
+            minify: true,
+          });
+          i++;
+        } else {
+          j++;
+        }
         skin.screenshotPath = screenshotPath;
-        i++;
       }
       shooter.dispose();
     }
     clearInterval(interval);
     console.log(`Took ${i} screenshots`);
+    console.log(`Found ${j} screenshots`);
     save();
   }
 
@@ -259,6 +280,100 @@ async function main() {
       },
       { concurrency: 4 }
     );
+    save();
+  }
+
+  if (color) {
+    const classicSkins = Object.values(cache).filter(
+      skin => skin.type === FILE_TYPES.CLASSIC
+    );
+    let i = 0;
+    const interval = setInterval(() => {
+      console.log(`Found the average color of ${i} skins`);
+      console.log("Saving...");
+
+      save();
+    }, 10000);
+
+    await Bluebird.map(
+      classicSkins,
+      async skin => {
+        if (skin.screenshotPath == null) {
+          console.log("Could not extract color from skin");
+          return;
+        }
+        if (skin.averageColor != null && !force) {
+          return;
+        }
+        const averageColor = await getColor(skin.screenshotPath);
+        skin.averageColor = averageColor;
+        i++;
+      },
+      { concurrency: 10 }
+    );
+    clearInterval(interval);
+    save();
+  }
+
+  if (favorites) {
+    const content = fs.readFileSync(
+      path.join("/Volumes/Mobile Backup/skins/", "likes.txt"),
+      "utf8"
+    );
+    content.split("\n").forEach(line => {
+      if (!line.length) {
+        return;
+      }
+      const [hash, likes] = line.split(" ");
+      const skin = cache[hash];
+      if (!skin) {
+        console.log(`Found like for unknown skin ${hash}`);
+        return;
+      }
+      skin.twitterLikes = likes;
+    });
+    save();
+  }
+
+  if (readme) {
+    const classicSkins = Object.values(cache).filter(
+      skin => skin.type === FILE_TYPES.CLASSIC
+    );
+    let i = 0;
+    const interval = setInterval(() => {
+      console.log(`Found readme text for ${i} skins`);
+      console.log("Saving...");
+
+      save();
+    }, 10000);
+
+    await Bluebird.map(
+      classicSkins,
+      async skin => {
+        const readmePath = path.join(outputDir, "readmes", `${skin.md5}.txt`);
+        // if (skin.readmePath || skin.emails) {
+        if (skin.readmePath !== undefined) {
+          return;
+        }
+        if (fs.existsSync(readmePath)) {
+          skin.readmePath = readmePath;
+          i++;
+          return;
+        }
+        const { emails, raw } = await extractTextData(skin.md5Path);
+        skin.emails = emails;
+        if (raw) {
+          fs.writeFileSync(readmePath, raw);
+          skin.readmePath = readmePath;
+        } else {
+          // Note that we extracted it, but found nothing
+          skin.readmePath = null;
+          i++;
+        }
+      },
+      { concurrency: 10 }
+    );
+    clearInterval(interval);
     save();
   }
   console.log("Ended with...");
