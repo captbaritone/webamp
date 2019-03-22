@@ -176,10 +176,6 @@ class Visualizer extends React.Component {
     }
   }
 
-  clear() {
-    this.canvasCtx.drawImage(this.bgCanvas, 0, 0);
-  }
-
   // Pre-render the background grid
   preRenderBg() {
     this.bgCanvas = preRenderBg(
@@ -201,11 +197,17 @@ class Visualizer extends React.Component {
   }
 
   paintFrame() {
-    this.clear();
-    if (this.props.style === VISUALIZERS.OSCILLOSCOPE) {
-      this._paintOscilloscopeFrame();
-    } else if (this.props.style === VISUALIZERS.BAR) {
-      this._paintBarFrame();
+    switch (this.props.style) {
+      case VISUALIZERS.OSCILLOSCOPE:
+        this.canvasCtx.drawImage(this.bgCanvas, 0, 0);
+        this._paintOscilloscopeFrame();
+        break;
+      case VISUALIZERS.BAR:
+        this.canvasCtx.drawImage(this.bgCanvas, 0, 0);
+        this._paintBarFrame();
+        break;
+      default:
+        this.canvasCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
   }
 
