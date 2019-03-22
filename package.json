@@ -22,9 +22,8 @@
     "start": "webpack-dev-server --open --config=demo/config/webpack.dev.js",
     "stats": "webpack --config=demo/config/webpack.prod.js --json > stats.json",
     "stats-library": "webpack --config=config/webpack.library.js --json > stats.json",
-    "weight": "npm run build-library > /dev/null && gzip-size built/webamp.bundle.min.js",
     "test": "jest --projects config/jest.unit.js",
-    "travis-tests": "npm run test && npm run test && npm run type-check && npm run build && npm run build-library",
+    "travis-tests": "npm run test && npm run test && npm run type-check && npm run build && npm run build-library && npm run weight",
     "tdd": "jest --projects config/jest.unit.js --watch",
     "format": "prettier --write \"**/*.{js,ts,tsx,d.ts,css}\"",
     "integration-tests": "npm run build -- --display=errors-only && jest --projects config/jest.integration.js",
@@ -32,7 +31,8 @@
     "build-skin-png": "rm skins/base-2.91-png.wsz && cd skins/base-2.91-png && zip -x .* -x 'Skining Updates.txt' -r ../base-2.91-png.wsz .",
     "compile-skin": "node scripts/compileSkin.js > css/base-skin.css",
     "skin-info": "unzip -vl skins/base-2.91.wsz",
-    "build-presets": "node scripts/parsePresetFiles.js > presets/builtin.json"
+    "build-presets": "node scripts/parsePresetFiles.js > presets/builtin.json",
+    "weight": "bundlesize"
   },
   "repository": {
     "type": "git",
@@ -79,6 +79,7 @@
     "babel-eslint": "^9.0.0-beta.3",
     "babel-jest": "^23.4.2",
     "babel-loader": "^8.0.4",
+    "bundlesize": "^0.17.1",
     "butterchurn": "^2.6.7",
     "canvas-mock": "0.0.0",
     "classnames": "^2.2.5",
@@ -94,7 +95,6 @@
     "eslint-plugin-react": "^7.7.0",
     "file-loader": "^2.0.0",
     "git-revision-webpack-plugin": "^3.0.3",
-    "gzip-size-cli": "^2.0.0",
     "html-webpack-inline-svg-plugin": "^1.2.4",
     "html-webpack-plugin": "^3.2.0",
     "http-server": "^0.11.1",
@@ -129,7 +129,6 @@
     "screenfull": "^4.0.0",
     "style-loader": "^0.23.1",
     "tinyqueue": "^1.2.3",
-    "travis-weigh-in": "^1.0.2",
     "typescript": "^3.2.2",
     "uglifyjs-webpack-plugin": "^1.2.5",
     "unminified-webpack-plugin": "^2.0.0",
@@ -156,5 +155,13 @@
   "dependencies": {
     "eslint-plugin-react-hooks": "^1.5.1",
     "fscreen": "^1.0.2"
-  }
+  },
+  "bundlesize": [
+    {
+      "path": "./built/webamp.bundle.min.js"
+    },
+    {
+      "path": "./demo/built/webamp-*.js"
+    }
+  ]
 }
