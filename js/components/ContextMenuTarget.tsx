@@ -48,11 +48,13 @@ function ContextMenuTarget(props: Props) {
     return () => {
       document.removeEventListener("click", handleGlobalClick);
     };
-  }, [selected]);
+    // eslint-disable-next-line
+  }, [selected, handleNode.current]);
 
   const offset = useMemo(() => {
     return getNodeOffset(handleNode.current);
-  }, []);
+    // eslint-disable-next-line
+  }, [handleNode.current]);
 
   const { handle, children, top, bottom, ...passThroughProps } = props;
   return (
