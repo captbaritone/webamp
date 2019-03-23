@@ -81,12 +81,14 @@ class MediaLibraryWindow extends React.Component<Props, State> {
               bottom: 0,
               left: 0,
               right: 0,
-              display: "flex",
-              flexDirection: "row",
+              display: "grid",
+              gridTemplateColumns: `[sidebar] ${
+                this.state.sidebarWidth
+              }px [vert-divider] 9px [media-area] auto`,
               overflow: "hidden",
             }}
           >
-            <div style={{ width: this.state.sidebarWidth }}>
+            <div>
               <Sidebar />
             </div>
             <div
