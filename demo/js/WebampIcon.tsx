@@ -1,7 +1,11 @@
 import WebampLazy from "../../js/webampLazy";
 import React, { useEffect, useState, useRef } from "react";
 // @ts-ignore
-import icon from "../images/manifest/icon-48x48.png";
+import iconLarge from "../images/manifest/icon-96x96.png";
+// @ts-ignore
+import iconSmall from "../images/manifest/icon-48x48.png";
+
+const icon = window.devicePixelRatio > 1 ? iconLarge : iconSmall;
 
 interface Props {
   webamp: WebampLazy;
@@ -43,7 +47,7 @@ const WebampIcon = (props: Props) => {
         onClick={() => setSelected(true)}
         className={selected ? "selected" : ""}
       >
-        <img src={icon} />
+        <img src={icon} style={{ width: 48, height: 48 }} />
         <div className="webamp-icon-title">Webamp</div>
       </div>
     )
