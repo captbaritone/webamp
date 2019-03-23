@@ -48,13 +48,15 @@ function ContextMenuTarget(props: Props) {
     return () => {
       document.removeEventListener("click", handleGlobalClick);
     };
-    // eslint-disable-next-line
-  }, [selected, handleNode.current]);
+  }, [selected]);
 
   const offset = useMemo(() => {
-    return getNodeOffset(handleNode.current);
-    // eslint-disable-next-line
-  }, [handleNode.current]);
+    return selected
+      ? getNodeOffset(handleNode.current)
+      : // Kinda awkward. This is a nonsense return value since we only use
+        //this value when we are selected.
+        { top: 0, left: 0 };
+  }, [selected]);
 
   const { handle, children, top, bottom, ...passThroughProps } = props;
   return (
