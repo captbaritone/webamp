@@ -113,14 +113,16 @@ window.addEventListener("beforeinstallprompt", e => {
 
 Raven.context(async () => {
   window.Raven = Raven;
+  const about = document.getElementsByClassName("about")[0];
   if (screenshot) {
-    document.getElementsByClassName("about")[0].style.visibility = "hidden";
+    about.style.visibility = "hidden";
   }
   if (!WebampLazy.browserIsSupported()) {
     document.getElementById("browser-compatibility").style.display = "block";
     document.getElementById("app").style.visibility = "hidden";
     return;
   }
+  about.classList.add("loaded");
 
   let __butterchurnOptions = null;
   let __initialWindowLayout = null;

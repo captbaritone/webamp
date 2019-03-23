@@ -25,8 +25,12 @@ body {
   /* Let users drag windows over this text */
   z-index: -1;
   margin: 0;
-  display: flex;
+  display: none;
   flex-direction: row;
+}
+
+.about.loaded {
+  display: flex;
 }
 
 .about a {
