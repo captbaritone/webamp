@@ -4,6 +4,12 @@
   -webkit-font-smoothing: none;
   padding-right: 2px;
   padding-bottom: 3px;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -webkit-touch-callout: none;
+  -o-user-select: none;
+  -moz-user-select: none;
 }
 
 #webamp-media-library input {
@@ -50,6 +56,11 @@
 #webamp-media-library .webamp-media-library-horizontal-divider-line {
   height: 1px;
   width: 100%;
+}
+
+#webamp-media-library .webamp-media-library-item {
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 #webamp-media-library button {
