@@ -30,6 +30,7 @@ class TracksTable extends React.Component<StateProps, State> {
           display: "flex",
           flexDirection: "column",
           flexGrow: 2,
+          height: "100%",
         }}
       >
         <div
