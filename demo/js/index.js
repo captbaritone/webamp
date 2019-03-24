@@ -10,19 +10,6 @@ import { WINDOWS } from "../../js/constants";
 import * as Selectors from "../../js/selectors";
 
 import WebampLazy from "../../js/webampLazy";
-import {
-  STEP_MARQUEE,
-  UPDATE_TIME_ELAPSED,
-  UPDATE_WINDOW_POSITIONS,
-  SET_VOLUME,
-  SET_BALANCE,
-  SET_BAND_VALUE,
-  DISABLE_MARQUEE,
-  TOGGLE_REPEAT,
-  TOGGLE_SHUFFLE,
-  SET_EQ_AUTO,
-  SET_DUMMY_VIZ_DATA,
-} from "../../js/actionTypes";
 
 import { loadFilesFromReferences } from "../../js/actionCreators";
 import { bindToIndexedDB } from "./indexedDB";
@@ -43,12 +30,12 @@ import screenshotInitialState from "./screenshotInitialState";
 const DEFAULT_DOCUMENT_TITLE = document.title;
 
 const NOISY_ACTION_TYPES = new Set([
-  STEP_MARQUEE,
-  UPDATE_TIME_ELAPSED,
-  UPDATE_WINDOW_POSITIONS,
-  SET_VOLUME,
-  SET_BALANCE,
-  SET_BAND_VALUE,
+  "STEP_MARQUEE",
+  "UPDATE_TIME_ELAPSED",
+  "UPDATE_WINDOW_POSITIONS",
+  "SET_VOLUME",
+  "SET_BALANCE",
+  "SET_BAND_VALUE",
 ]);
 
 const MIN_MILKDROP_WIDTH = 725;
@@ -181,15 +168,15 @@ Raven.context(async () => {
   });
 
   if (disableMarquee || screenshot) {
-    webamp.store.dispatch({ type: DISABLE_MARQUEE });
+    webamp.store.dispatch({ type: "DISABLE_MARQUEE" });
   }
   if (screenshot) {
     window.document.body.style.backgroundColor = "#000";
-    webamp.store.dispatch({ type: TOGGLE_REPEAT });
-    webamp.store.dispatch({ type: TOGGLE_SHUFFLE });
-    webamp.store.dispatch({ type: SET_EQ_AUTO, value: true });
+    webamp.store.dispatch({ type: "TOGGLE_REPEAT" });
+    webamp.store.dispatch({ type: "TOGGLE_SHUFFLE" });
+    webamp.store.dispatch({ type: "SET_EQ_AUTO", value: true });
     webamp.store.dispatch({
-      type: SET_DUMMY_VIZ_DATA,
+      type: "SET_DUMMY_VIZ_DATA",
       data: {
         0: 11.75,
         8: 11.0625,

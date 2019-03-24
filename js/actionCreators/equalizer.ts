@@ -1,11 +1,5 @@
 import { BANDS } from "../constants";
 
-import {
-  SET_EQ_ON,
-  SET_EQ_OFF,
-  SET_BAND_VALUE,
-  SET_EQ_AUTO,
-} from "../actionTypes";
 import { Band, Dispatchable } from "../types";
 
 const BAND_SNAP_DISTANCE = 5;
@@ -22,17 +16,13 @@ function _snapBandValue(value: number): number {
 }
 
 export function setEqBand(band: Band, value: number): Dispatchable {
-  return { type: SET_BAND_VALUE, band, value: _snapBandValue(value) };
+  return { type: "SET_BAND_VALUE", band, value: _snapBandValue(value) };
 }
 
 function _setEqTo(value: number): Dispatchable {
   return dispatch => {
     Object.values(BANDS).forEach(band => {
-      dispatch({
-        type: SET_BAND_VALUE,
-        value,
-        band: band,
-      });
+      dispatch({ type: "SET_BAND_VALUE", value, band: band });
     });
   };
 }
@@ -50,21 +40,25 @@ export function setEqToMin(): Dispatchable {
 }
 
 export function setPreamp(value: number): Dispatchable {
-  return { type: SET_BAND_VALUE, band: "preamp", value: _snapBandValue(value) };
+  return {
+    type: "SET_BAND_VALUE",
+    band: "preamp",
+    value: _snapBandValue(value),
+  };
 }
 
 export function toggleEq(): Dispatchable {
   return (dispatch, getState) => {
     if (getState().equalizer.on) {
-      dispatch({ type: SET_EQ_OFF });
+      dispatch({ type: "SET_EQ_OFF" });
     } else {
-      dispatch({ type: SET_EQ_ON });
+      dispatch({ type: "SET_EQ_ON" });
     }
   };
 }
 
 export function toggleEqAuto(): Dispatchable {
   return (dispatch, getState) => {
-    dispatch({ type: SET_EQ_AUTO, value: !getState().equalizer.auto });
+    dispatch({ type: "SET_EQ_AUTO", value: !getState().equalizer.auto });
   };
 }

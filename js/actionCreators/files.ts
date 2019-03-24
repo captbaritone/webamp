@@ -17,18 +17,6 @@ import {
   getPlaylistURL,
 } from "../selectors";
 
-import {
-  ADD_TRACK_FROM_URL,
-  PLAY_TRACK,
-  BUFFER_TRACK,
-  SET_MEDIA_TAGS,
-  SET_MEDIA_DURATION,
-  MEDIA_TAG_REQUEST_INITIALIZED,
-  MEDIA_TAG_REQUEST_FAILED,
-  SET_SKIN_DATA,
-  LOADED,
-  LOADING,
-} from "../actionTypes";
 import LoadQueue from "../loadQueue";
 
 import { removeAllTracks } from "./playlist";
@@ -87,13 +75,13 @@ export function setSkinFromArrayBuffer(
       alert("Webamp has not been configured to support custom skins.");
       return;
     }
-    dispatch({ type: LOADING });
+    dispatch({ type: "LOADING" });
     let JSZip;
     try {
       JSZip = await requireJSZip();
     } catch (e) {
       console.error(e);
-      dispatch({ type: LOADED });
+      dispatch({ type: "LOADED" });
       alert("Failed to load the skin parser.");
       return;
     }
@@ -101,7 +89,7 @@ export function setSkinFromArrayBuffer(
       const skinData = await skinParser(arrayBuffer, JSZip);
       // @ts-ignore TODO: We still need to type skinParser.
       dispatch({
-        type: SET_SKIN_DATA,
+        type: "SET_SKIN_DATA",
         data: {
           skinImages: skinData.images,
           skinColors: skinData.colors,
@@ -114,7 +102,7 @@ export function setSkinFromArrayBuffer(
       });
     } catch (e) {
       console.error(e);
-      dispatch({ type: LOADED });
+      dispatch({ type: "LOADED" });
       alert(`Failed to parse skin`);
     }
   };
@@ -124,7 +112,7 @@ export function setSkinFromFileReference(
   skinFileReference: File
 ): Dispatchable {
   return async dispatch => {
-    dispatch({ type: LOADING });
+    dispatch({ type: "LOADING" });
     const arrayBuffer = await genArrayBufferFromFileReference(
       skinFileReference
     );
@@ -134,7 +122,7 @@ export function setSkinFromFileReference(
 
 export function setSkinFromUrl(url: string): Dispatchable {
   return async dispatch => {
-    dispatch({ type: LOADING });
+    dispatch({ type: "LOADING" });
     try {
       const response = await fetch(url);
       if (!response.ok) {
@@ -143,7 +131,7 @@ export function setSkinFromUrl(url: string): Dispatchable {
       dispatch(setSkinFromArrayBuffer(response.arrayBuffer()));
     } catch (e) {
       console.error(e);
-      dispatch({ type: LOADED });
+      dispatch({ type: "LOADED" });
       alert(`Failed to download skin from ${url}`);
     }
   };
@@ -177,7 +165,7 @@ export function fetchMediaDuration(url: string, id: number): Dispatchable {
       async () => {
         try {
           const duration = await genMediaDuration(url);
-          dispatch({ type: SET_MEDIA_DURATION, duration, id });
+          dispatch({ type: "SET_MEDIA_DURATION", duration, id });
         } catch (e) {
           // TODO: Should we update the state to indicate that we don't know the length?
         }
@@ -248,7 +236,7 @@ export function loadMediaFile(
     }
 
     dispatch({
-      type: ADD_TRACK_FROM_URL,
+      type: "ADD_TRACK_FROM_URL",
       url: canonicalUrl,
       duration: track.duration,
       defaultName,
@@ -257,17 +245,17 @@ export function loadMediaFile(
     });
     switch (priority) {
       case LOAD_STYLE.BUFFER:
-        dispatch({ type: BUFFER_TRACK, id });
+        dispatch({ type: "BUFFER_TRACK", id });
         break;
       case LOAD_STYLE.PLAY:
-        dispatch({ type: PLAY_TRACK, id });
+        dispatch({ type: "PLAY_TRACK", id });
         break;
       case LOAD_STYLE.NONE:
       default:
         // If we're not going to load this right away,
         // we should set duration on our own
         if (duration != null) {
-          dispatch({ type: SET_MEDIA_DURATION, duration, id });
+          dispatch({ type: "SET_MEDIA_DURATION", duration, id });
         } else {
           dispatch(fetchMediaDuration(canonicalUrl, id));
         }
@@ -276,7 +264,7 @@ export function loadMediaFile(
     if (metaData != null) {
       const { artist, title, album } = metaData;
       dispatch({
-        type: SET_MEDIA_TAGS,
+        type: "SET_MEDIA_TAGS",
         artist,
         title,
         album,
@@ -314,7 +302,7 @@ function queueFetchingMediaTags(id: number): Dispatchable {
 
 export function fetchMediaTags(file: string | Blob, id: number): Dispatchable {
   return async (dispatch, getState, { requireMusicMetadata }) => {
-    dispatch({ type: MEDIA_TAG_REQUEST_INITIALIZED, id });
+    dispatch({ type: "MEDIA_TAG_REQUEST_INITIALIZED", id });
 
     try {
       const metadata = await genMediaTags(file, await requireMusicMetadata());
@@ -328,7 +316,7 @@ export function fetchMediaTags(file: string | Blob, id: number): Dispatchable {
         albumArtUrl = URL.createObjectURL(blob);
       }
       dispatch({
-        type: SET_MEDIA_TAGS,
+        type: "SET_MEDIA_TAGS",
         artist: artist ? artist : "",
         title: title ? title : "",
         album,
@@ -339,7 +327,7 @@ export function fetchMediaTags(file: string | Blob, id: number): Dispatchable {
         id,
       });
     } catch (e) {
-      dispatch({ type: MEDIA_TAG_REQUEST_FAILED, id });
+      dispatch({ type: "MEDIA_TAG_REQUEST_FAILED", id });
     }
   };
 }

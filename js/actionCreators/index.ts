@@ -1,17 +1,3 @@
-import {
-  CLOSE_WINAMP,
-  OPEN_WINAMP,
-  STOP,
-  TOGGLE_VISUALIZER_STYLE,
-  CLOSE_REQUESTED,
-  MINIMIZE_WINAMP,
-  SET_FOCUS,
-  UNSET_FOCUS,
-  LOAD_SERIALIZED_STATE,
-  LOAD_DEFAULT_SKIN,
-  SET_MILKDROP_DESKTOP,
-  SET_MILKDROP_FULLSCREEN,
-} from "../actionTypes";
 import { WINDOWS } from "../constants";
 import { Dispatchable } from "../types";
 import { SerializedStateV1 } from "../serializedStates/v1Types";
@@ -120,32 +106,32 @@ export function close(): Dispatchable {
     const cancel = () => {
       defaultPrevented = true;
     };
-    dispatch({ type: CLOSE_REQUESTED, cancel });
+    dispatch({ type: "CLOSE_REQUESTED", cancel });
     if (!defaultPrevented) {
-      dispatch({ type: STOP });
-      dispatch({ type: CLOSE_WINAMP });
+      dispatch({ type: "STOP" });
+      dispatch({ type: "CLOSE_WINAMP" });
     }
   };
 }
 
 export function open(): Dispatchable {
-  return { type: OPEN_WINAMP };
+  return { type: "OPEN_WINAMP" };
 }
 
 export function toggleVisualizerStyle(): Dispatchable {
-  return { type: TOGGLE_VISUALIZER_STYLE };
+  return { type: "TOGGLE_VISUALIZER_STYLE" };
 }
 
 export function minimize(): Dispatchable {
-  return { type: MINIMIZE_WINAMP };
+  return { type: "MINIMIZE_WINAMP" };
 }
 
 export function setFocus(input: string): Dispatchable {
-  return { type: SET_FOCUS, input };
+  return { type: "SET_FOCUS", input };
 }
 
 export function unsetFocus(): Dispatchable {
-  return { type: UNSET_FOCUS };
+  return { type: "UNSET_FOCUS" };
 }
 
 export function loadSerializedState(
@@ -153,29 +139,29 @@ export function loadSerializedState(
   serializedState: SerializedStateV1
 ): Dispatchable {
   return dispatch => {
-    dispatch({ type: LOAD_SERIALIZED_STATE, serializedState });
+    dispatch({ type: "LOAD_SERIALIZED_STATE", serializedState });
     dispatch(ensureWindowsAreOnScreen());
   };
 }
 
 export function loadDefaultSkin(): Dispatchable {
-  return { type: LOAD_DEFAULT_SKIN };
+  return { type: "LOAD_DEFAULT_SKIN" };
 }
 
 export function toggleMilkdropDesktop(): Dispatchable {
   return (dispatch, getState) => {
     if (Selectors.getMilkdropDesktopEnabled(getState())) {
       dispatch(showWindow(WINDOWS.MILKDROP));
-      dispatch({ type: SET_MILKDROP_DESKTOP, enabled: false });
+      dispatch({ type: "SET_MILKDROP_DESKTOP", enabled: false });
     } else {
       dispatch(hideWindow(WINDOWS.MILKDROP));
-      dispatch({ type: SET_MILKDROP_DESKTOP, enabled: true });
+      dispatch({ type: "SET_MILKDROP_DESKTOP", enabled: true });
     }
   };
 }
 
 export function setMilkdropFullscreen(enabled: boolean): Dispatchable {
-  return { type: SET_MILKDROP_FULLSCREEN, enabled };
+  return { type: "SET_MILKDROP_FULLSCREEN", enabled };
 }
 export function toggleMilkdropFullscreen(): Dispatchable {
   return (dispatch, getState) => {

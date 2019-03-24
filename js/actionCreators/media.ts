@@ -1,16 +1,4 @@
 import { clamp } from "../utils";
-import {
-  SEEK_TO_PERCENT_COMPLETE,
-  SET_BALANCE,
-  SET_VOLUME,
-  STOP,
-  TOGGLE_REPEAT,
-  TOGGLE_SHUFFLE,
-  PLAY,
-  PAUSE,
-  PLAY_TRACK,
-  TOGGLE_TIME_MODE,
-} from "../actionTypes";
 
 import { MEDIA_STATUS } from "../constants";
 import { openMediaFileDialog } from "./";
@@ -31,7 +19,7 @@ function playRandomTrack(): Dispatchable {
     } while (nextId === currentTrack && trackOrder.length > 1);
     // TODO: Sigh... Technically, we should detect if we are looping only repeat if we are.
     // I think this would require pre-computing the "random" order of a playlist.
-    dispatch({ type: PLAY_TRACK, id: nextId });
+    dispatch({ type: "PLAY_TRACK", id: nextId });
   };
 }
 
@@ -45,7 +33,7 @@ export function play(): Dispatchable {
     ) {
       dispatch(openMediaFileDialog());
     } else {
-      dispatch({ type: PLAY });
+      dispatch({ type: "PLAY" });
     }
   };
 }
@@ -54,15 +42,15 @@ export function pause(): Dispatchable {
   return (dispatch, getState) => {
     const { status } = getState().media;
     if (status === MEDIA_STATUS.PLAYING) {
-      dispatch({ type: PAUSE });
+      dispatch({ type: "PAUSE" });
     } else {
-      dispatch({ type: PLAY });
+      dispatch({ type: "PLAY" });
     }
   };
 }
 
 export function stop(): Dispatchable {
-  return { type: STOP };
+  return { type: "STOP" };
 }
 
 export function nextN(n: number): Dispatchable {
@@ -76,7 +64,7 @@ export function nextN(n: number): Dispatchable {
     if (nextTrackId == null) {
       return;
     }
-    dispatch({ type: PLAY_TRACK, id: nextTrackId });
+    dispatch({ type: "PLAY_TRACK", id: nextTrackId });
   };
 }
 
@@ -98,7 +86,7 @@ export function seekForward(seconds: number): Dispatchable {
     }
     const newTimeElapsed = timeElapsed + seconds;
     dispatch({
-      type: SEEK_TO_PERCENT_COMPLETE,
+      type: "SEEK_TO_PERCENT_COMPLETE",
       percent: (newTimeElapsed / duration) * 100,
     });
   };
@@ -110,7 +98,7 @@ export function seekBackward(seconds: number): Dispatchable {
 
 export function setVolume(volume: number): Dispatchable {
   return {
-    type: SET_VOLUME,
+    type: "SET_VOLUME",
     volume: clamp(volume, 0, 100),
   };
 }
@@ -140,19 +128,19 @@ export function setBalance(balance: number): Dispatchable {
     balance = 0;
   }
   return {
-    type: SET_BALANCE,
+    type: "SET_BALANCE",
     balance,
   };
 }
 
 export function toggleRepeat(): Dispatchable {
-  return { type: TOGGLE_REPEAT };
+  return { type: "TOGGLE_REPEAT" };
 }
 
 export function toggleShuffle(): Dispatchable {
-  return { type: TOGGLE_SHUFFLE };
+  return { type: "TOGGLE_SHUFFLE" };
 }
 
 export function toggleTimeMode(): Dispatchable {
-  return { type: TOGGLE_TIME_MODE };
+  return { type: "TOGGLE_TIME_MODE" };
 }
