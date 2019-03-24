@@ -135,19 +135,20 @@ Raven.context(async () => {
 
     __butterchurnOptions = getButterchurnOptions(startWithMilkdropHidden);
 
-    if (startWithMilkdropHidden) {
+    if (library) {
+      __initialWindowLayout = {
+        [WINDOWS.MAIN]: { position: { x: 0, y: 0 } },
+        [WINDOWS.EQUALIZER]: { position: { x: 0, y: 116 } },
+        [WINDOWS.PLAYLIST]: { position: { x: 0, y: 232 }, size: [0, 4] },
+        [WINDOWS.MEDIA_LIBRARY]: { position: { x: 275, y: 0 }, size: [7, 12] },
+      };
+    } else if (startWithMilkdropHidden) {
       __initialWindowLayout = {
         [WINDOWS.MAIN]: { position: { x: 0, y: 0 } },
         [WINDOWS.EQUALIZER]: { position: { x: 0, y: 116 } },
         [WINDOWS.PLAYLIST]: { position: { x: 0, y: 232 }, size: [0, 0] },
         [WINDOWS.MILKDROP]: { position: { x: 0, y: 348 }, size: [0, 0] },
       };
-      if (library) {
-        __initialWindowLayout[WINDOWS.MEDIA_LIBRARY] = {
-          position: { x: 0, y: 348 },
-          size: [0, 0],
-        };
-      }
     } else {
       __initialWindowLayout = {
         [WINDOWS.MAIN]: { position: { x: 0, y: 0 } },
@@ -155,12 +156,6 @@ Raven.context(async () => {
         [WINDOWS.PLAYLIST]: { position: { x: 0, y: 232 }, size: [0, 4] },
         [WINDOWS.MILKDROP]: { position: { x: 275, y: 0 }, size: [7, 12] },
       };
-      if (library) {
-        __initialWindowLayout[WINDOWS.MEDIA_LIBRARY] = {
-          position: { x: 275, y: 0 },
-          size: [7, 12],
-        };
-      }
     }
 
     document.getElementById("butterchurn-share").style.display = "flex";
