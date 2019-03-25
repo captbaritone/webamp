@@ -8,6 +8,7 @@
 ### Bug Fixes:
 
 - Fix a bug where context menus could appear in the wrong location ([95db2d](https://github.com/captbaritone/webamp/commit/95db2d08b6b189f5b9da577d23aca44b04c462a8))
+- Fix a bug where pressing next/previous when stopped would play the track ([#740](https://github.com/captbaritone/webamp/issues/730))
 
 ## 1.3.1 [CURRENT]
 
