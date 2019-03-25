@@ -191,6 +191,8 @@ webamp.setTracksToPlay([
 
 Play the previous track.
 
+**Since** 1.3.0
+
 ```JavaScript
 webamp.previousTrack();
 ```
@@ -198,6 +200,8 @@ webamp.previousTrack();
 ### `nextTrack(): void`
 
 Play the next track.
+
+**Since** 1.3.0
 
 ```JavaScript
 webamp.nextTrack();
@@ -207,6 +211,8 @@ webamp.nextTrack();
 
 Seek forward n seconds in the current track.
 
+**Since** 1.3.0
+
 ```JavaScript
 webamp.seekForward(10);
 ```
@@ -214,6 +220,8 @@ webamp.seekForward(10);
 ### `seekBackward(seconds): void`
 
 Seek backward n seconds in the current track.
+
+**Since** 1.3.0
 
 ```JavaScript
 webamp.seekBackward(10);
@@ -223,6 +231,8 @@ webamp.seekBackward(10);
 
 Seek to a given time within the current track.
 
+**Since** Unreleased
+
 ```JavaScript
 webamp.seekToTime(15.5);
 ```
@@ -230,6 +240,8 @@ webamp.seekToTime(15.5);
 ### `getMediaStatus()`
 
 Get the current "playing" status. The return value is one of: `"PLAYING"`, `"STOPPED"`, or `"PAUSED"`.
+
+**Since** Unreleased
 
 ```JavaScript
 const isPlaying = webamp.getMediaStatus() === "PLAYING";
@@ -239,6 +251,8 @@ const isPlaying = webamp.getMediaStatus() === "PLAYING";
 
 Pause the current track.
 
+**Since** 1.3.0
+
 ```JavaScript
 webamp.pause();
 ```
@@ -247,6 +261,8 @@ webamp.pause();
 
 Play the current track.
 
+**Since** 1.3.0
+
 ```JavaScript
 webamp.play();
 ```
@@ -254,6 +270,8 @@ webamp.play();
 ### `stop(): void`
 
 Stop the currently playing audio. Equivilant to pressing the "stop" button.
+
+**Since** unreleased
 
 ```JavaScript
 webamp.stop();
@@ -322,6 +340,8 @@ unsubscribe();
 ### `reopen(): void`
 
 After `.close()`ing this instance, you can reopen it by calling this method.
+
+**Since** 1.3.0
 
 ```JavaScript
 const icon = document.getElementById('webamp-icon');
