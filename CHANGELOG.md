@@ -3,6 +3,7 @@
 ### Features
 
 - Added optional configuration option `handleTrackDropEvent` which lets you decide how drop events get converted into tracks.
+- New Webamp instance methods: `.stop()`, `.getMediaStatus()`, and `.seekToTime(seconds)`. See [usage.md](./docs/usage.md) for more details.
 
 ### Bug Fixes:
 

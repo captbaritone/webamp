@@ -219,6 +219,22 @@ Seek backward n seconds in the current track.
 webamp.seekBackward(10);
 ```
 
+### `seekToTime(seconds)`
+
+Seek to a given time within the current track.
+
+```JavaScript
+webamp.seekToTime(15.5);
+```
+
+### `getMediaStatus()`
+
+Get the current "playing" status. The return value is one of: `"PLAYING"`, `"STOPPED"`, or `"PAUSED"`.
+
+```JavaScript
+const isPlaying = webamp.getMediaStatus() === "PLAYING";
+```
+
 ### `pause(): void`
 
 Pause the current track.
@@ -233,6 +249,14 @@ Play the current track.
 
 ```JavaScript
 webamp.play();
+```
+
+### `stop(): void`
+
+Stop the currently playing audio. Equivilant to pressing the "stop" button.
+
+```JavaScript
+webamp.stop();
 ```
 
 ### `renderWhenReady(domNode: HTMLElement): Promise<void>`

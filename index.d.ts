@@ -170,6 +170,11 @@ export default class Webamp {
   public seekBackward(seconds: number): void;
 
   /**
+   * Seek to a given time within the current track
+   */
+  public seekToTime(seconds: number): void;
+
+  /**
    * Pause the current tack
    */
   public pause(): void;
@@ -178,6 +183,11 @@ export default class Webamp {
    * Play the current tack
    */
   public play(): void;
+
+  /**
+   * Stop the currently playing audio. Equivilant to pressing the "stop" button
+   */
+  public stop(): void;
 
   /**
    * Webamp will wait until it has fetched the skin and fully parsed it and then render itself.
@@ -202,6 +212,11 @@ export default class Webamp {
   public onTrackDidChange(
     cb: (trackInfo: LoadedURLTrack | null) => void
   ): () => void;
+
+  /**
+   * Get the current "playing" status.
+   */
+  public getMediaStatus(): "PLAYING" | "STOPPED" | "PAUSED";
 
   /**
    * A callback which will be called when Webamp is _about to_ close. Returns an

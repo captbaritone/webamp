@@ -25,7 +25,7 @@ export interface MediaState {
   balance: number;
   shuffle: boolean;
   repeat: boolean;
-  status: MediaStatus | null; // TODO: Convert this to an enum
+  status: MediaStatus;
 }
 
 const defaultState = {

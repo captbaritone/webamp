@@ -88,19 +88,23 @@ export function previous(): Dispatchable {
   return nextN(-1);
 }
 
-export function seekForward(seconds: number): Dispatchable {
+export function seekToTime(seconds: number): Dispatchable {
   return function(dispatch, getState) {
     const state = getState();
-    const timeElapsed = Selectors.getTimeElapsed(state);
     const duration = Selectors.getDuration(state);
     if (duration == null) {
       return;
     }
-    const newTimeElapsed = timeElapsed + seconds;
     dispatch({
       type: SEEK_TO_PERCENT_COMPLETE,
-      percent: (newTimeElapsed / duration) * 100,
+      percent: (seconds / duration) * 100,
     });
+  };
+}
+export function seekForward(seconds: number): Dispatchable {
+  return function(dispatch, getState) {
+    const timeElapsed = Selectors.getTimeElapsed(getState());
+    dispatch(seekToTime(timeElapsed + seconds));
   };
 }
 

@@ -302,12 +302,20 @@ class Winamp {
     this.store.dispatch(Actions.pause());
   }
 
+  stop() {
+    this.store.dispatch(Actions.stop());
+  }
+
   seekBackward(seconds: number) {
     this.store.dispatch(Actions.seekBackward(seconds));
   }
 
   seekForward(seconds: number) {
     this.store.dispatch(Actions.seekForward(seconds));
+  }
+
+  seekToTime(seconds: number) {
+    this.store.dispatch(Actions.seekToTime(seconds));
   }
 
   nextTrack() {
@@ -336,6 +344,10 @@ class Winamp {
   // Replace any existing tracks with this array of tracks, and begin playing.
   setTracksToPlay(tracks: Track[]): void {
     this.store.dispatch(Actions.loadMediaFiles(tracks, LOAD_STYLE.PLAY));
+  }
+
+  getMediaStatus() {
+    return Selectors.getMediaStatus(this.store.getState());
   }
 
   onWillClose(cb: (cancel: () => void) => void): () => void {

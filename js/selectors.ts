@@ -8,6 +8,7 @@ import {
   WindowPositions,
   PlaylistStyle,
   TransitionType,
+  MediaStatus,
 } from "./types";
 import { createSelector } from "reselect";
 import * as Utils from "./utils";
@@ -268,6 +269,10 @@ export const getCurrentTrackDisplayName = createSelector(
     return getName(id);
   }
 );
+
+export const getMediaStatus = (state: AppState): MediaStatus | null => {
+  return state.media.status;
+};
 
 export const getMediaIsPlaying = (state: AppState) =>
   state.media.status === MEDIA_STATUS.PLAYING;
