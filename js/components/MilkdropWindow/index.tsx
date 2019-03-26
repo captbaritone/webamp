@@ -23,6 +23,7 @@ interface StateProps {
   fullscreen: boolean;
   overlay: boolean;
   presetsAreCycling: boolean;
+  currentPresetIndex: number | null; // Index
   trackTitle: string | null;
 }
 
@@ -117,8 +118,8 @@ function Milkdrop(props: Props) {
       props.selectNextPreset,
       MILLISECONDS_BETWEEN_PRESET_TRANSITIONS
     );
-    return () => clearImmediate(intervalId);
-  }, [props.selectNextPreset, props.presetsAreCycling]);
+    return () => clearInterval(intervalId);
+  }, [props.selectNextPreset, props.presetsAreCycling, props.currentPresetIndex]);
 
   const screenSize = useScreenSize();
   const windowSize = useWindowSize();
@@ -169,6 +170,7 @@ const mapStateToProps = (state: AppState): StateProps => ({
   fullscreen: Selectors.getMilkdropFullscreenEnabled(state),
   overlay: Selectors.getPresetOverlayOpen(state),
   presetsAreCycling: Selectors.getPresetsAreCycling(state),
+  currentPresetIndex: Selectors.getCurrentPresetIndex(state),
   trackTitle: Selectors.getCurrentTrackDisplayName(state),
 });
 
