@@ -109,7 +109,7 @@ const windows = (
         genWindows: {
           ...state.genWindows,
           [WINDOWS.MEDIA_LIBRARY]: {
-            title: "Winamp Library",
+            title: "Library",
             size: [0, 0],
             open: true,
             hidden: false,
