@@ -24,12 +24,11 @@ for (const command of commands) {
 
 async function handleHelp(message, args) {
   const commandHelp = commands
-    .map(
-      command =>
-        `\`!${command.command} ${command.usage || ""}\` -- ${
-          command.description
-        }`
-    )
+    .map(command => {
+      return `\`!${command.command} ${command.usage || ""}\` -- ${
+        command.description
+      }`;
+    })
     .join("\n");
 
   const help = `
