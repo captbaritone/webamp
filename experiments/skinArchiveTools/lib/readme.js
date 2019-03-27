@@ -1,6 +1,6 @@
 const { exec } = require("child_process");
 
-const reg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g;
+const reg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi;
 const extract = value => (value && value.match(reg)) || [];
 
 async function extractTextData(skinPath) {
@@ -13,7 +13,7 @@ async function extractTextData(skinPath) {
     "viscolor.txt",
     "winampmb.txt",
     "gen_ex help.txt",
-    "mbinner.txt"
+    "mbinner.txt",
     // Skinning Updates.txt ?
   ];
 
@@ -42,5 +42,5 @@ async function extractTextData(skinPath) {
 }
 
 module.exports = {
-  extractTextData
+  extractTextData,
 };
