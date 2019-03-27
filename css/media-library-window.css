@@ -63,19 +63,21 @@
   white-space: nowrap;
 }
 
-#webamp-media-library button {
+#webamp-media-library .library-button {
   border: none;
-  color: inherit;
   padding: 0;
-  font: inherit;
   cursor: pointer;
   outline: inherit;
-  height: 18px;
+  height: 15px;
   cursor: inherit;
-  /* TODO: I think only the center is supposed to stretch */
-  background-size: 100% 18px;
-  min-width: 53px;
+  display: inline-grid;
+  grid-template-columns: 4px auto 4px;
   margin-right: 4px;
+  align-items: stretch;
+}
+
+#webamp-media-library .library-button-center {
+  text-align: center;
 }
 
 #webamp-media-library-track-summary-duration {

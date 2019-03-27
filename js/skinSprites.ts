@@ -725,11 +725,25 @@ export default {
   ],
   GENEX: [
     {
-      name: "GENEX_BUTTON_BACKGROUND_UNPRESSED",
+      name: "GENEX_BUTTON_BACKGROUND_LEFT_UNPRESSED",
       x: 0,
       y: 0,
       height: 15,
-      width: 47,
+      width: 4,
+    },
+    {
+      name: "GENEX_BUTTON_BACKGROUND_CENTER_UNPRESSED",
+      x: 4,
+      y: 0,
+      height: 15,
+      width: 39,
+    },
+    {
+      name: "GENEX_BUTTON_BACKGROUND_RIGHT_UNPRESSED",
+      x: 43,
+      y: 0,
+      height: 15,
+      width: 4,
     },
     {
       name: "GENEX_BUTTON_BACKGROUND_PRESSED",

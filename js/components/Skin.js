@@ -166,7 +166,7 @@ function cssRulesFromProps(props) {
     }`
   );
   cssRules.push(
-    `#webamp-media-library button {
+    `#webamp-media-library .library-button-center {
        color: ${props.skinGenExColors.buttonText};
     }`
   );

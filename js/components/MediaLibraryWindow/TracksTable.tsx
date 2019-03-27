@@ -4,6 +4,7 @@ import * as Selectors from "../../selectors";
 import * as Utils from "../../utils";
 import * as FileUtils from "../../fileUtils";
 import { AppState, PlaylistTrack } from "../../types";
+import LibraryButton from "./LibraryButton";
 
 interface StateProps {
   tracks: PlaylistTrack[];
@@ -101,10 +102,10 @@ class TracksTable extends React.Component<StateProps, State> {
           </table> */}
         </div>
         <div style={{ marginTop: 2 }}>
-          <button>Play</button>
-          <button>Enqueue</button>
-          <button>Play all</button>
-          <button>Enqueue all</button>
+          <LibraryButton>Play</LibraryButton>
+          <LibraryButton>Enqueue</LibraryButton>
+          <LibraryButton>Play all</LibraryButton>
+          <LibraryButton>Enqueue all</LibraryButton>
           <span id="webamp-media-library-track-summary-duration">
             1 item [3:25]
           </span>
