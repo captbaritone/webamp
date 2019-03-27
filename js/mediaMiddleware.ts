@@ -1,7 +1,6 @@
 import Media from "./media";
 import {
   IS_PLAYING,
-  IS_STOPPED,
   PAUSE,
   PLAY,
   SEEK_TO_PERCENT_COMPLETE,
@@ -44,7 +43,6 @@ export default (media: Media) => (store: MiddlewareStore) => {
   });
 
   media.on("ended", () => {
-    store.dispatch({ type: IS_STOPPED });
     store.dispatch(nextTrack());
   });
 

@@ -146,11 +146,30 @@ export const getCurrentTrackNumber = createSelector(
 export const getCurrentTrackId = (state: AppState) =>
   state.playlist.currentTrack;
 
-export const nextTrack = (state: AppState, n = 1) => {
+// TODO: Sigh... Technically, we should detect if we are looping only repeat if we are.
+// I think this would require pre-computing the "random" order of a playlist.
+export const getRandomTrackId = (state: AppState): number | null => {
+  const {
+    playlist: { trackOrder, currentTrack },
+  } = state;
+  if (trackOrder.length === 0) {
+    return null;
+  }
+  let nextId;
+  do {
+    nextId = trackOrder[Math.floor(trackOrder.length * Math.random())];
+  } while (nextId === currentTrack && trackOrder.length > 1);
+  return nextId;
+};
+
+export const getNextTrackId = (state: AppState, n = 1) => {
   const {
     playlist: { trackOrder },
-    media: { repeat },
+    media: { repeat, shuffle },
   } = state;
+  if (shuffle) {
+    return getRandomTrackId(state);
+  }
   const trackCount = getTrackCount(state);
   if (trackCount === 0) {
     return null;

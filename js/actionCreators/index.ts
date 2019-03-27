@@ -49,6 +49,7 @@ export {
   seekForward,
   seekBackward,
   setVolume,
+  playTrack,
   adjustVolume,
   scrollVolume,
   setBalance,

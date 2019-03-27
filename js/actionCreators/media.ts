@@ -11,6 +11,7 @@ import {
   PLAY_TRACK,
   TOGGLE_TIME_MODE,
   BUFFER_TRACK,
+  IS_STOPPED,
 } from "../actionTypes";
 
 import { MEDIA_STATUS } from "../constants";
@@ -18,25 +19,7 @@ import { openMediaFileDialog } from "./";
 import { GetState, Dispatch, Dispatchable } from "../types";
 import * as Selectors from "../selectors";
 
-function playRandomTrack(): Dispatchable {
-  return (dispatch: Dispatch, getState: GetState) => {
-    const {
-      playlist: { trackOrder, currentTrack },
-    } = getState();
-    if (trackOrder.length === 0) {
-      return;
-    }
-    let nextId;
-    do {
-      nextId = trackOrder[Math.floor(trackOrder.length * Math.random())];
-    } while (nextId === currentTrack && trackOrder.length > 1);
-    // TODO: Sigh... Technically, we should detect if we are looping only repeat if we are.
-    // I think this would require pre-computing the "random" order of a playlist.
-    dispatch(playTrack(nextId));
-  };
-}
-
-function playTrack(id: number): Dispatchable {
+export function playTrack(id: number): Dispatchable {
   return (dispatch, getState) => {
     const state = getState();
     const isStopped = Selectors.getMediaStatus(state) === MEDIA_STATUS.STOPPED;
@@ -80,13 +63,9 @@ export function stop(): Dispatchable {
 
 export function nextN(n: number): Dispatchable {
   return (dispatch, getState) => {
-    const state = getState();
-    if (state.media.shuffle) {
-      dispatch(playRandomTrack());
-      return;
-    }
-    const nextTrackId = Selectors.nextTrack(state, n);
+    const nextTrackId = Selectors.getNextTrackId(getState(), n);
     if (nextTrackId == null) {
+      dispatch({ type: IS_STOPPED });
       return;
     }
     dispatch(playTrack(nextTrackId));
