@@ -311,4 +311,4 @@ if __name__ == "__main__":
                 # These are mostly replies
                 continue
             if hashes[0]:
-                print("%s %s" % (hashes[0], tweet.favorite_count))
+                print("%s %s %s" % (hashes[0], tweet.favorite_count, tweet.id))
