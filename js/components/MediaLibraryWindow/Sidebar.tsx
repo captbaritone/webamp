@@ -12,7 +12,7 @@ export default class Sidebar extends React.Component {
         }}
       >
         <div className="webamp-media-library-item" style={{ flexGrow: 1 }}>
-          <ul>
+          <ul style={{ margin: 3 }}>
             <li>
               Local Media
               <ul>

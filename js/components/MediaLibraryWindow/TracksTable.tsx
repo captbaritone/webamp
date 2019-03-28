@@ -23,20 +23,20 @@ class TracksTable extends React.Component<StateProps, State> {
   }
 
   render() {
-    const cellStyle: React.CSSProperties = {
-      whiteSpace: "nowrap",
-    };
     return (
       <div
         style={{
           display: "flex",
           flexDirection: "column",
-          flexGrow: 2,
           height: "100%",
         }}
       >
         <div
-          style={{ paddingBottom: 3, display: "flex", flexDirection: "row" }}
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            height: 23,
+          }}
         >
           <span>Search:</span>
           <input
