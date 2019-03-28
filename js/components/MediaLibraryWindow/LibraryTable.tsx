@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import classnames from "classnames";
 
 interface Props {
   headings: Array<string>;
@@ -27,7 +28,9 @@ export default function LibraryTable(props: Props) {
       >
         <div style={rowStyle} className="library-table-heading">
           {props.headings.map((heading, i) => (
-            <div key={`heading-${i}-${heading}`}>{heading}</div>
+            <div key={`heading-${i}-${heading}`} style={{ paddingLeft: 5 }}>
+              {heading}
+            </div>
           ))}
         </div>
         {props.rows.map((row, i) => (
@@ -35,13 +38,18 @@ export default function LibraryTable(props: Props) {
             style={{
               ...rowStyle,
               boxSizing: "border-box",
-              border: i === selectedRow ? "1px solid red" : "none",
             }}
+            className={classnames("library-table-row", {
+              selected: i === selectedRow,
+            })}
             onClick={() => setSelectedRow(i)}
             key={`row-${i}`}
           >
             {row.map((text, j) => (
-              <div style={{ overflow: "hidden" }} key={`cell-${j}`}>
+              <div
+                style={{ overflow: "hidden", paddingLeft: 6 }}
+                key={`cell-${j}`}
+              >
                 {text}
               </div>
             ))}
