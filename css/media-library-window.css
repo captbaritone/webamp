@@ -68,6 +68,17 @@
   margin-bottom: 1px;
 }
 
+#webamp-media-library
+  .webamp-media-library-table
+  .library-table-heading
+  > div:active {
+  margin-right: 0px;
+  margin-bottom: 0px;
+  margin-top: 1px;
+  margin-left: 1px;
+  border: 1px solid transparent;
+}
+
 #webamp-media-library .library-button {
   border: none;
   padding: 0;
