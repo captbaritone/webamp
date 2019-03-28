@@ -189,14 +189,15 @@ function cssRulesFromProps(props) {
   );
 
   cssRules.push(
-    `#webamp-media-library .webamp-media-library-table thead {
-       color: ${props.skinGenExColors.listHeaderText};
-       background-color: ${props.skinGenExColors.listHeaderBackground};
+    `#webamp-media-library .webamp-media-library-table .library-table-heading {
+       background-color: ${props.skinGenExColors.listHeaderFramePressed};
     }`
   );
 
   cssRules.push(
-    `#webamp-media-library .webamp-media-library-table thead th {
+    `#webamp-media-library .webamp-media-library-table .library-table-heading > div {
+       color: ${props.skinGenExColors.listHeaderText};
+       background-color: ${props.skinGenExColors.listHeaderBackground};
        border-top: 1px solid ${props.skinGenExColors.listHeaderFrameTopAndLeft};
        border-left: 1px solid ${
          props.skinGenExColors.listHeaderFrameTopAndLeft
@@ -209,7 +210,6 @@ function cssRulesFromProps(props) {
        };
     }`
   );
-
   return cssRules;
 }
 

@@ -63,6 +63,11 @@
   white-space: nowrap;
 }
 
+#webamp-media-library .webamp-media-library-table .library-table-heading > div {
+  margin-right: 1px;
+  margin-bottom: 1px;
+}
+
 #webamp-media-library .library-button {
   border: none;
   padding: 0;

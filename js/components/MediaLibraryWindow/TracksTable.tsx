@@ -1,10 +1,11 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import * as Selectors from "../../selectors";
+import { AppState, PlaylistTrack } from "../../types";
 import * as Utils from "../../utils";
 import * as FileUtils from "../../fileUtils";
-import { AppState, PlaylistTrack } from "../../types";
 import LibraryButton from "./LibraryButton";
+import LibraryTable from "./LibraryTable";
 
 interface StateProps {
   tracks: PlaylistTrack[];
@@ -45,62 +46,34 @@ class TracksTable extends React.Component<StateProps, State> {
             onChange={e => this.setState({ filter: e.target.value })}
           />
         </div>
-        <div
-          style={{ flexGrow: 1, overflowY: "scroll" }}
-          className="webamp-media-library-item"
-        >
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns:
-                "[artist] 1fr [title] 1fr [album] 1fr [length] 1fr [track number] 1fr [genere] 1fr [year] 1fr [filename] 1fr",
-              gridColumnGap: 1,
-            }}
-          >
-            <div style={cellStyle}>Artist</div>
-            <div style={cellStyle}>Title</div>
-            <div style={cellStyle}>Album</div>
-            <div style={cellStyle}>Length</div>
-            <div style={cellStyle}>Track #</div>
-            <div style={cellStyle}>Genere</div>
-            <div style={cellStyle}>Year</div>
-            <div style={cellStyle}>Filename</div>
+        <LibraryTable
+          headings={[
+            "Artist",
+            "Title",
+            "Album",
+            "Length",
+            "Track #",
+            "Genere",
+            "Year",
+            "Filename",
+          ]}
+          rows={this.props.filterTracks(this.state.filter).map(track => {
+            return [
+              track.artist,
+              track.title,
+              track.album,
+              Utils.getTimeStr(track.duration),
+              1,
+              "Primus",
+              2001,
+              track.url == null
+                ? track.defaultName
+                : FileUtils.filenameFromUrl(track.url),
+            ];
+          })}
+          widths={[100, 100, 100, 100, 100, 100, 100, 100]}
+        />
 
-            {this.props.filterTracks(this.state.filter).map(track => {
-              return (
-                <React.Fragment key={track.id}>
-                  <div style={cellStyle}>{track.artist}</div>
-                  <div style={cellStyle}>{track.title}</div>
-                  <div style={cellStyle}>{track.album}</div>
-                  <div style={cellStyle}>
-                    {Utils.getTimeStr(track.duration)}
-                  </div>
-                  <div style={cellStyle}>1</div>
-                  <div style={cellStyle}>Primus</div>
-                  <div style={cellStyle}>2001</div>
-                  <div style={cellStyle}>
-                    {track.url == null
-                      ? track.defaultName
-                      : FileUtils.filenameFromUrl(track.url)}
-                  </div>
-                </React.Fragment>
-              );
-            })}
-          </div>
-          {/*
-          <table
-            className="webamp-media-library-table"
-            style={{ overflow: "scroll" }}
-          >
-            <thead>
-              <tr>
-              </tr>
-            </thead>
-            <tbody>
-
-            </tbody>
-          </table> */}
-        </div>
         <div style={{ marginTop: 2 }}>
           <LibraryButton>Play</LibraryButton>
           <LibraryButton>Enqueue</LibraryButton>
