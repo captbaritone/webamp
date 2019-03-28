@@ -213,6 +213,7 @@ function cssRulesFromProps(props) {
   cssRules.push(
     `#webamp-media-library .webamp-media-library-table .library-table-row.selected {
       background-color: ${props.skinGenExColors.playlistSelection};
+      color: ${props.skinGenExColors.listHeaderText};
     }`
   );
   return cssRules;
