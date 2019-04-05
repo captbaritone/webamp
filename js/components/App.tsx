@@ -55,7 +55,6 @@ type Props = StateProps & DispatchProps & OwnProps;
  * Constructs the windows to render, and tracks focus.
  */
 class App extends React.Component<Props> {
-  // TODO: #any
   _emitter: Emitter;
   _bindings: {
     [windowId: string]: { node: HTMLElement; remove(): void } | null;
