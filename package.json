@@ -102,7 +102,7 @@
     "imagemin": "^6.1.0",
     "imagemin-optipng": "^6.0.0",
     "invariant": "^2.2.3",
-    "jest": "^24.1.0",
+    "jest": "^24.5.0",
     "jest-image-snapshot": "^2.4.1",
     "jest-mock-random": "^1.0.2",
     "jest-puppeteer": "^3.0.1",
