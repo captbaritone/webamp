@@ -42,7 +42,10 @@ class App extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener("resize", this._handleWindowResize);
-    document.body.removeChild(this._webampNode);
+    const parentNode = this._webampNode.parentNode;
+    if (parentNode != null) {
+      parentNode.removeChild(this._webampNode);
+    }
   }
 
   componentDidMount() {
