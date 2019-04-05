@@ -29,8 +29,7 @@ import { WebampWindow } from "../reducers/windows";
 import Media from "../media";
 
 interface StateProps {
-  // TODO: #any
-  visualizerStyle: any;
+  visualizerStyle: string;
   status: MediaStatus;
   focused: WindowId;
   closed: boolean;
@@ -132,8 +131,7 @@ class App extends React.Component<Props> {
     }
   }
 
-  // FIXME #any
-  _gotRef(windowId: WindowId, comp: any) {
+  _gotRef(windowId: WindowId, comp: React.Component<any> | null) {
     if (comp == null) {
       const binding = this._bindings[windowId];
       if (binding != null && binding.remove) {
