@@ -1,7 +1,7 @@
 const { getCache } = require("../info");
 const { getStats } = require("../s3");
 
-async function handler(message, args) {
+async function handler(message) {
   const info = getCache();
   let classic = 0;
   const { tweeted, approved, rejected } = await getStats();

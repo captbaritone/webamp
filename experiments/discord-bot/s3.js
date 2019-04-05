@@ -20,7 +20,7 @@ function getFile(key) {
 function putFile(key, body) {
   return new Promise((resolve, reject) => {
     const bucketName = "winamp2-js-skins";
-    s3.putObject({ Bucket: bucketName, Key: key, Body: body }, (err, data) => {
+    s3.putObject({ Bucket: bucketName, Key: key, Body: body }, err => {
       if (err) {
         reject(err);
         return;

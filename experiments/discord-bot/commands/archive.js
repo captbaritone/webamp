@@ -6,7 +6,7 @@ const md5Buffer = require("md5");
 const { getInfo } = require("../info");
 const Skin = require("./skin");
 
-async function handler(message, args) {
+async function handler(message) {
   const { attachments } = message;
   if (attachments.length < 1) {
     await message.channel.send("Could not archive. No attachment found.");

@@ -28,8 +28,8 @@ async function extractTextData(skinPath) {
   // TODO: Escape path
   const cmd = `unzip ${listFlag} -C "${skinPath}" "file_id.diz" "*.txt" ${ignoreArgs}`;
 
-  const raw = await new Promise((resolve, reject) => {
-    exec(cmd, (error, stdout, stderr) => {
+  const raw = await new Promise(resolve => {
+    exec(cmd, (error, stdout) => {
       if (error != null) {
         // reject(error);
         // return;
