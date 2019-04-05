@@ -119,7 +119,11 @@ function Milkdrop(props: Props) {
       MILLISECONDS_BETWEEN_PRESET_TRANSITIONS
     );
     return () => clearInterval(intervalId);
-  }, [props.selectNextPreset, props.presetsAreCycling, props.currentPresetIndex]);
+  }, [
+    props.selectNextPreset,
+    props.presetsAreCycling,
+    props.currentPresetIndex,
+  ]);
 
   const screenSize = useScreenSize();
   const windowSize = useWindowSize();
