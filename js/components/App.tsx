@@ -60,8 +60,10 @@ class App extends React.Component<Props> {
   _emitter: Emitter;
   // TODO: #any
   _windowNodes: { [windowId: string]: any };
-  // TODO: #any
-  _bindings: any;
+  _bindings: {
+    [windowId: string]: { node: HTMLElement; remove(): void } | null;
+  };
+
   _webampNode: HTMLDivElement | null;
   constructor(props: Props) {
     super(props);
@@ -137,7 +139,7 @@ class App extends React.Component<Props> {
   _gotRef(windowId: WindowId, comp: any) {
     if (comp == null) {
       const binding = this._bindings[windowId];
-      if (binding.remove) {
+      if (binding != null && binding.remove) {
         binding.remove();
       }
       this._bindings[windowId] = null;
