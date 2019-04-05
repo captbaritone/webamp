@@ -58,8 +58,6 @@ type Props = StateProps & DispatchProps & OwnProps;
 class App extends React.Component<Props> {
   // TODO: #any
   _emitter: Emitter;
-  // TODO: #any
-  _windowNodes: { [windowId: string]: any };
   _bindings: {
     [windowId: string]: { node: HTMLElement; remove(): void } | null;
   };
@@ -68,7 +66,6 @@ class App extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
     this._emitter = new Emitter();
-    this._windowNodes = {};
     this._bindings = {};
     this._webampNode = null;
   }
