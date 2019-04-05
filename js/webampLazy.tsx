@@ -417,8 +417,7 @@ class Winamp {
         <App
           media={this.media}
           container={node}
-          filePickers={this.options.filePickers}
-          butterchurnOptions={this.options.__butterchurnOptions}
+          filePickers={this.options.filePickers || []}
         />
       </Provider>,
       node

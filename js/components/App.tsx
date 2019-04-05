@@ -2,6 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { connect } from "react-redux";
 import Emitter from "../emitter";
+import {
+  WindowId,
+  AppState,
+  Dispatch,
+  Size,
+  MediaStatus,
+  FilePicker,
+} from "../types";
 import { WINDOWS } from "../constants";
 import * as Selectors from "../selectors";
 import * as Actions from "../actionCreators";
@@ -17,23 +25,58 @@ import MediaLibraryWindow from "./MediaLibraryWindow";
 import Skin from "./Skin";
 
 import "../../css/webamp.css";
+import { WebampWindow } from "../reducers/windows";
+import Media from "../media";
+
+interface StateProps {
+  // TODO: #any
+  visualizerStyle: any;
+  status: MediaStatus;
+  focused: WindowId;
+  closed: boolean;
+  // TODO: Get only the info we really need
+  genWindowsInfo: { [windowId: string]: WebampWindow };
+  zIndex: number;
+}
+
+interface DispatchProps {
+  closeWindow(id: WindowId): void;
+  browserWindowSizeChanged(size: Size): void;
+}
+
+interface OwnProps {
+  container: HTMLElement;
+  filePickers: FilePicker[];
+  media: Media;
+}
+
+type Props = StateProps & DispatchProps & OwnProps;
 
 /**
  * Constructs the windows to render, and tracks focus.
  */
-class App extends React.Component {
-  constructor() {
-    super();
+class App extends React.Component<Props> {
+  // TODO: #any
+  _emitter: Emitter;
+  // TODO: #any
+  _windowNodes: { [windowId: string]: any };
+  // TODO: #any
+  _bindings: any;
+  _webampNode: HTMLDivElement | null;
+  constructor(props: Props) {
+    super(props);
     this._emitter = new Emitter();
     this._windowNodes = {};
     this._bindings = {};
+    this._webampNode = null;
   }
 
   componentWillMount() {
     this._webampNode = document.createElement("div");
     this._webampNode.id = "webamp";
+    // @ts-ignore I think I'm supposed to set this with setAttribute, but I can't confirm.
     this._webampNode.role = "application";
-    this._webampNode.style.zIndex = this.props.zIndex;
+    this._webampNode.style.zIndex = String(this.props.zIndex);
     document.body.appendChild(this._webampNode);
 
     this.props.browserWindowSizeChanged(Utils.getWindowSize());
@@ -42,9 +85,13 @@ class App extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener("resize", this._handleWindowResize);
-    const parentNode = this._webampNode.parentNode;
+    const webampNode = this._webampNode;
+    if (webampNode == null) {
+      return;
+    }
+    const parentNode = webampNode.parentNode;
     if (parentNode != null) {
-      parentNode.removeChild(this._webampNode);
+      parentNode.removeChild(webampNode!);
     }
   }
 
@@ -52,7 +99,7 @@ class App extends React.Component {
     this._setFocus();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     if (prevProps.focused !== this.props.focused) {
       this._setFocus();
     }
@@ -70,8 +117,8 @@ class App extends React.Component {
     // allows our Webamp windows to stay visible during the resize. After we
     // measure, we set the style back so that we don't end up interfering with
     // click events outside of our Webamp windows.
-    this._webampNode.style.right = 0;
-    this._webampNode.style.bottom = 0;
+    this._webampNode.style.right = "0";
+    this._webampNode.style.bottom = "0";
     this._webampNode.style.overflow = "hidden";
     this.props.browserWindowSizeChanged(Utils.getWindowSize());
     this._webampNode.style.right = null;
@@ -86,7 +133,8 @@ class App extends React.Component {
     }
   }
 
-  _gotRef(windowId, comp) {
+  // FIXME #any
+  _gotRef(windowId: WindowId, comp: any) {
     if (comp == null) {
       const binding = this._bindings[windowId];
       if (binding.remove) {
@@ -96,14 +144,14 @@ class App extends React.Component {
       return;
     }
 
-    const node = ReactDOM.findDOMNode(comp);
+    const node = ReactDOM.findDOMNode(comp) as HTMLElement;
     const binding = this._bindings[windowId];
-    if (binding && binding.node === node) {
+    if (node == null || (binding && binding.node === node)) {
       return;
     }
 
     node.tabIndex = -1;
-    const listener = e => this._emitter.trigger(windowId, e);
+    const listener = (e: Event) => this._emitter.trigger(windowId, e);
     node.addEventListener("keydown", listener);
 
     this._bindings[windowId] = {
@@ -150,21 +198,20 @@ class App extends React.Component {
           return (
             <MilkdropWindow
               ref={component => this._gotRef(id, component)}
-              options={this.props.butterchurnOptions}
               // TODO: Refactor this. I don't think we need this to be generic anymore.
               onFocusedKeyDown={listener => this._emitter.on(id, listener)}
               analyser={media.getAnalyser()}
             />
           );
         default:
-          throw new Error("Tried to render an unknown window:", id);
+          throw new Error(`Tried to render an unknown window: ${id}`);
       }
     });
   }
 
   render() {
     const { closed, container, filePickers } = this.props;
-    if (closed) {
+    if (closed || this._webampNode == null) {
       return null;
     }
     return ReactDOM.createPortal(
@@ -184,20 +231,24 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  visualizerStyle: Selectors.getVisualizerStyle(state),
-  status: state.media.status,
-  focused: state.windows.focused,
-  closed: state.display.closed,
-  genWindowsInfo: state.windows.genWindows,
-  zIndex: state.display.zIndex,
-});
+const mapStateToProps = (state: AppState): StateProps => {
+  return {
+    visualizerStyle: Selectors.getVisualizerStyle(state),
+    status: state.media.status,
+    focused: state.windows.focused,
+    closed: state.display.closed,
+    genWindowsInfo: state.windows.genWindows,
+    zIndex: state.display.zIndex,
+  };
+};
 
-const mapDispatchToProps = dispatch => ({
-  closeWindow: id => dispatch(Actions.closeWindow(id)),
-  browserWindowSizeChanged: size =>
-    dispatch(Actions.browserWindowSizeChanged(size)),
-});
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
+  return {
+    closeWindow: (id: WindowId) => dispatch(Actions.closeWindow(id)),
+    browserWindowSizeChanged: (size: Size) =>
+      dispatch(Actions.browserWindowSizeChanged(size)),
+  };
+};
 
 export default connect(
   mapStateToProps,

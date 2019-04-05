@@ -172,6 +172,11 @@ export enum TransitionType {
   USER_PRESET,
 }
 
+export interface Size {
+  width: number;
+  height: number;
+}
+
 export type Action =
   | {
       type: "@@init";
