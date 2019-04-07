@@ -127,6 +127,7 @@ interface PrivateOptions {
 }
 
 // Return a promise that resolves when the store matches a predicate.
+// TODO #leak
 const storeHas = (
   store: Store,
   predicate: (state: AppState) => boolean
@@ -366,6 +367,7 @@ class Winamp {
 
   onTrackDidChange(cb: (trackInfo: LoadedURLTrack | null) => void): () => void {
     let previousTrackId: number | null = null;
+    // TODO #leak
     return this.store.subscribe(() => {
       const state = this.store.getState();
       const trackId = Selectors.getCurrentlyPlayingTrackIdIfLoaded(state);
@@ -383,6 +385,7 @@ class Winamp {
 
   async skinIsLoaded(): Promise<void> {
     // Wait for the skin to load.
+    // TODO #leak
     return storeHas(this.store, state => !state.display.loading);
   }
 
@@ -395,12 +398,14 @@ class Winamp {
   }
 
   __onStateChange(cb: () => void): () => void {
+    // TODO #leak
     return this.store.subscribe(cb);
   }
 
   async renderWhenReady(node: HTMLElement): Promise<void> {
     this.store.dispatch(Actions.centerWindowsInContainer(node));
     await this.skinIsLoaded();
+    // TODO #race We may have been destroyed
     if (this._node != null) {
       throw new Error("Cannot render a Webamp instance twice");
     }

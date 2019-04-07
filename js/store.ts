@@ -9,6 +9,7 @@ import Media from "./media";
 import Emitter from "./emitter";
 import { Extras, Dispatch, Action, AppState, Middleware } from "./types";
 
+// TODO: Move to demo
 const compose = composeWithDevTools({
   actionsBlacklist: [UPDATE_TIME_ELAPSED, STEP_MARQUEE],
 });

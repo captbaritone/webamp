@@ -32,6 +32,7 @@ export default class Media {
     // https://developers.google.com/web/updates/2017/09/autoplay-policy-changes
     // https://gist.github.com/laziel/7aefabe99ee57b16081c
     // Via: https://stackoverflow.com/a/43395068/1263117
+    // TODO #leak
     if (this._context.state === "suspended") {
       const resume = async () => {
         await this._context.resume();
@@ -231,6 +232,7 @@ export default class Media {
   async loadFromUrl(url: string, autoPlay: boolean) {
     this._emitter.trigger("waiting");
     await this._source.loadUrl(url);
+    // TODO #race
     this._emitter.trigger("stopWaiting");
     if (autoPlay) {
       this.play();

@@ -63,7 +63,9 @@ class App extends React.Component<Props> {
   _webampNode: HTMLDivElement | null;
   constructor(props: Props) {
     super(props);
+    // TODO #leak
     this._emitter = new Emitter();
+    // TODO #leak
     this._bindings = {};
     this._webampNode = null;
   }

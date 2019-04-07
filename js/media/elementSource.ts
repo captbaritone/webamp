@@ -25,25 +25,30 @@ export default class ElementSource {
     this._stalled = false;
     this._status = MEDIA_STATUS.STOPPED;
 
+    // TODO: #leak
     this._audio.addEventListener("suspend", () => {
       this._setStalled(true);
     });
 
+    // TODO: #leak
     this._audio.addEventListener("durationchange", () => {
       this._emitter.trigger("loaded");
       this._setStalled(false);
     });
 
+    // TODO: #leak
     this._audio.addEventListener("ended", () => {
       this._emitter.trigger("ended");
       this._setStatus(MEDIA_STATUS.STOPPED);
     });
 
     // TODO: Throttle to 50 (if needed)
+    // TODO: #leak
     this._audio.addEventListener("timeupdate", () => {
       this._emitter.trigger("positionChange");
     });
 
+    // TODO: #leak
     this._audio.addEventListener("error", e => {
       switch (this._audio.error!.code) {
         case 1:
@@ -99,6 +104,7 @@ export default class ElementSource {
     }
     try {
       await this._audio.play();
+      // TODO #race
     } catch (err) {
       //
     }
