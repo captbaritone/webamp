@@ -7,7 +7,7 @@ async function reviewSkin(message) {
     filename,
     md5,
     title: `Review: ${filename}`,
-    dest: message.client.channels
+    dest: message.channel
   });
 }
 
