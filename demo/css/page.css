@@ -1,6 +1,6 @@
 /* Rules for the page layout */
 body {
-  background-color: #224eb7;
+  background-color: rgb(58, 110, 165);
   font-family: arial;
   font-size: 15px;
 }
@@ -77,7 +77,7 @@ body {
 }
 
 #music-credits {
-  background-color: rgb(76, 51, 134);
+  background-color: rgb(89, 141, 197);
 }
 
 #butterchurn-share {
