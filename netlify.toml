@@ -6,3 +6,6 @@
 [[redirects]]
   from = "/changelog"
   to = "/#%7B\"initialTracks\"%3A%5B%7B\"url\"%3A\"https%3A%2F%2Fcdn.changelog.com%2Fuploads%2Fpodcast%2F291%2Fthe-changelog-291.mp3\"%2C\"metaData\"%3A%7B\"artist\"%3A\"Changelog%20Podcast\"%2C\"title\"%3A\"Winamp2-js\"%7D%7D%5D%7D"
+[[redirects]]
+  from = "/about"
+  to = "https://github.com/captbaritone/webamp"

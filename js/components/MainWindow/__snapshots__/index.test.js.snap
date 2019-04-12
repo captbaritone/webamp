@@ -472,7 +472,7 @@ exports[`MainWindow renders to snapshot 1`] = `
     </div>
   </div>
   <a
-    href="https://github.com/captbaritone/webamp"
+    href="https://webamp.org/about"
     id="about"
     target="blank"
     title="About"

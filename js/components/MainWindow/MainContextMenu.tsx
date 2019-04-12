@@ -43,7 +43,7 @@ type Props = StateProps & DispatchProps & OwnProps;
 const MainContextMenu = (props: Props) => (
   <React.Fragment>
     <LinkNode
-      href="https://github.com/captbaritone/webamp"
+      href="https://webamp.org/about"
       target="_blank"
       label="Webamp..."
     />
