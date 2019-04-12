@@ -29,6 +29,12 @@ body {
   flex-direction: row;
 }
 
+@media all and (display-mode: fullscreen) {
+  .about {
+    display: none;
+  }
+}
+
 .about.loaded {
   display: flex;
 }
