@@ -16,10 +16,10 @@ import {
 
 import { MEDIA_STATUS } from "../constants";
 import { openMediaFileDialog } from "./";
-import { GetState, Dispatch, Dispatchable } from "../types";
+import { GetState, Dispatch, Thunk, Action } from "../types";
 import * as Selectors from "../selectors";
 
-export function playTrack(id: number): Dispatchable {
+export function playTrack(id: number): Thunk {
   return (dispatch, getState) => {
     const state = getState();
     const isStopped = Selectors.getMediaStatus(state) === MEDIA_STATUS.STOPPED;
@@ -31,7 +31,7 @@ export function playTrack(id: number): Dispatchable {
   };
 }
 
-export function play(): Dispatchable {
+export function play(): Thunk {
   return (dispatch: Dispatch, getState: GetState) => {
     const state = getState();
     if (
@@ -46,7 +46,7 @@ export function play(): Dispatchable {
   };
 }
 
-export function pause(): Dispatchable {
+export function pause(): Thunk {
   return (dispatch, getState) => {
     const { status } = getState().media;
     if (status === MEDIA_STATUS.PLAYING) {
@@ -57,11 +57,11 @@ export function pause(): Dispatchable {
   };
 }
 
-export function stop(): Dispatchable {
+export function stop(): Action {
   return { type: STOP };
 }
 
-export function nextN(n: number): Dispatchable {
+export function nextN(n: number): Thunk {
   return (dispatch, getState) => {
     const nextTrackId = Selectors.getNextTrackId(getState(), n);
     if (nextTrackId == null) {
@@ -72,15 +72,15 @@ export function nextN(n: number): Dispatchable {
   };
 }
 
-export function next(): Dispatchable {
+export function next(): Thunk {
   return nextN(1);
 }
 
-export function previous(): Dispatchable {
+export function previous(): Thunk {
   return nextN(-1);
 }
 
-export function seekToTime(seconds: number): Dispatchable {
+export function seekToTime(seconds: number): Thunk {
   return function(dispatch, getState) {
     const state = getState();
     const duration = Selectors.getDuration(state);
@@ -93,34 +93,32 @@ export function seekToTime(seconds: number): Dispatchable {
     });
   };
 }
-export function seekForward(seconds: number): Dispatchable {
+export function seekForward(seconds: number): Thunk {
   return function(dispatch, getState) {
     const timeElapsed = Selectors.getTimeElapsed(getState());
     dispatch(seekToTime(timeElapsed + seconds));
   };
 }
 
-export function seekBackward(seconds: number): Dispatchable {
+export function seekBackward(seconds: number): Thunk {
   return seekForward(-seconds);
 }
 
-export function setVolume(volume: number): Dispatchable {
+export function setVolume(volume: number): Action {
   return {
     type: SET_VOLUME,
     volume: clamp(volume, 0, 100),
   };
 }
 
-export function adjustVolume(volumeDiff: number): Dispatchable {
+export function adjustVolume(volumeDiff: number): Thunk {
   return (dispatch, getState) => {
     const currentVolume = getState().media.volume;
     return dispatch(setVolume(currentVolume + volumeDiff));
   };
 }
 
-export function scrollVolume(
-  e: React.WheelEvent<HTMLDivElement>
-): Dispatchable {
+export function scrollVolume(e: React.WheelEvent<HTMLDivElement>): Thunk {
   e.preventDefault();
   return (dispatch, getState) => {
     const currentVolume = getState().media.volume;
@@ -129,7 +127,7 @@ export function scrollVolume(
   };
 }
 
-export function setBalance(balance: number): Dispatchable {
+export function setBalance(balance: number): Action {
   balance = clamp(balance, -100, 100);
   // The balance clips to the center
   if (Math.abs(balance) < 25) {
@@ -141,14 +139,14 @@ export function setBalance(balance: number): Dispatchable {
   };
 }
 
-export function toggleRepeat(): Dispatchable {
+export function toggleRepeat(): Action {
   return { type: TOGGLE_REPEAT };
 }
 
-export function toggleShuffle(): Dispatchable {
+export function toggleShuffle(): Action {
   return { type: TOGGLE_SHUFFLE };
 }
 
-export function toggleTimeMode(): Dispatchable {
+export function toggleTimeMode(): Action {
   return { type: TOGGLE_TIME_MODE };
 }

@@ -13,7 +13,7 @@ import {
   SET_MILKDROP_FULLSCREEN,
 } from "../actionTypes";
 import { WINDOWS } from "../constants";
-import { Dispatchable } from "../types";
+import { Thunk, Action } from "../types";
 import { SerializedStateV1 } from "../serializedStates/v1Types";
 import * as Selectors from "../selectors";
 import { ensureWindowsAreOnScreen, showWindow, hideWindow } from "./windows";
@@ -112,7 +112,7 @@ export {
   scheduleMilkdropMessage,
 } from "./milkdrop";
 
-export function close(): Dispatchable {
+export function close(): Thunk {
   return dispatch => {
     // TODO: This could probably be improved by adding a "PREVENT_CLOSE" action
     // or something, but this works okay for now.
@@ -128,41 +128,41 @@ export function close(): Dispatchable {
   };
 }
 
-export function open(): Dispatchable {
+export function open(): Action {
   return { type: OPEN_WINAMP };
 }
 
-export function toggleVisualizerStyle(): Dispatchable {
+export function toggleVisualizerStyle(): Action {
   return { type: TOGGLE_VISUALIZER_STYLE };
 }
 
-export function minimize(): Dispatchable {
+export function minimize(): Action {
   return { type: MINIMIZE_WINAMP };
 }
 
-export function setFocus(input: string): Dispatchable {
+export function setFocus(input: string): Action {
   return { type: SET_FOCUS, input };
 }
 
-export function unsetFocus(): Dispatchable {
+export function unsetFocus(): Action {
   return { type: UNSET_FOCUS };
 }
 
 export function loadSerializedState(
   // In the future this type should be the union of all versioned types.
   serializedState: SerializedStateV1
-): Dispatchable {
+): Thunk {
   return dispatch => {
     dispatch({ type: LOAD_SERIALIZED_STATE, serializedState });
     dispatch(ensureWindowsAreOnScreen());
   };
 }
 
-export function loadDefaultSkin(): Dispatchable {
+export function loadDefaultSkin(): Action {
   return { type: LOAD_DEFAULT_SKIN };
 }
 
-export function toggleMilkdropDesktop(): Dispatchable {
+export function toggleMilkdropDesktop(): Thunk {
   return (dispatch, getState) => {
     if (Selectors.getMilkdropDesktopEnabled(getState())) {
       dispatch(showWindow(WINDOWS.MILKDROP));
@@ -174,10 +174,10 @@ export function toggleMilkdropDesktop(): Dispatchable {
   };
 }
 
-export function setMilkdropFullscreen(enabled: boolean): Dispatchable {
+export function setMilkdropFullscreen(enabled: boolean): Action {
   return { type: SET_MILKDROP_FULLSCREEN, enabled };
 }
-export function toggleMilkdropFullscreen(): Dispatchable {
+export function toggleMilkdropFullscreen(): Thunk {
   return (dispatch, getState) => {
     dispatch(
       setMilkdropFullscreen(!Selectors.getMilkdropFullscreenEnabled(getState()))

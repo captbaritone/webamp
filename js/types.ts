@@ -2,6 +2,7 @@ import { PlaylistState } from "./reducers/playlist";
 import { SettingsState } from "./reducers/settings";
 import { UserInputState } from "./reducers/userInput";
 import { MediaState } from "./reducers/media";
+import { ThunkDispatch, ThunkAction } from "redux-thunk";
 import { DisplayState } from "./reducers/display";
 import { WindowsState, WindowPositions } from "./reducers/windows";
 import { EqualizerState } from "./reducers/equalizer";
@@ -110,7 +111,7 @@ export interface SkinGenExColors {
 export type WindowId = string;
 
 // TODO: Fill these out once we actually use them.
-type SkinData = {
+export type SkinData = {
   skinImages: SkinImages;
   skinColors: string[];
   skinPlaylistStyle: PlaylistStyle;
@@ -661,19 +662,9 @@ export interface Extras {
 
 export type GetState = () => AppState;
 
-export type Thunk = (
-  dispatch: Dispatch,
-  getState: GetState,
-  extras: Extras
-) => void | Promise<void>;
+export type Thunk = ThunkAction<void, AppState, Extras, Action>;
 
-export type Dispatchable = Action | Thunk;
-
-export interface DispatchObject {
-  [prop: string]: (...args: any[]) => Dispatchable;
-}
-
-export type Dispatch = (action: Dispatchable) => void;
+export type Dispatch = ThunkDispatch<AppState, Extras, Action>;
 
 export type Reducer = (state: AppState, action: Action) => AppState;
 
