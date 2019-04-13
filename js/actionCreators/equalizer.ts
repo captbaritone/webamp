@@ -6,7 +6,7 @@ import {
   SET_BAND_VALUE,
   SET_EQ_AUTO,
 } from "../actionTypes";
-import { Band, Dispatchable } from "../types";
+import { Band, Thunk, Action } from "../types";
 
 const BAND_SNAP_DISTANCE = 5;
 const BAND_MID_POINT_VALUE = 50;
@@ -21,11 +21,11 @@ function _snapBandValue(value: number): number {
   return value;
 }
 
-export function setEqBand(band: Band, value: number): Dispatchable {
+export function setEqBand(band: Band, value: number): Action {
   return { type: SET_BAND_VALUE, band, value: _snapBandValue(value) };
 }
 
-function _setEqTo(value: number): Dispatchable {
+function _setEqTo(value: number): Thunk {
   return dispatch => {
     Object.values(BANDS).forEach(band => {
       dispatch({
@@ -37,23 +37,23 @@ function _setEqTo(value: number): Dispatchable {
   };
 }
 
-export function setEqToMax(): Dispatchable {
+export function setEqToMax(): Thunk {
   return _setEqTo(100);
 }
 
-export function setEqToMid(): Dispatchable {
+export function setEqToMid(): Thunk {
   return _setEqTo(50);
 }
 
-export function setEqToMin(): Dispatchable {
+export function setEqToMin(): Thunk {
   return _setEqTo(0);
 }
 
-export function setPreamp(value: number): Dispatchable {
+export function setPreamp(value: number): Action {
   return { type: SET_BAND_VALUE, band: "preamp", value: _snapBandValue(value) };
 }
 
-export function toggleEq(): Dispatchable {
+export function toggleEq(): Thunk {
   return (dispatch, getState) => {
     if (getState().equalizer.on) {
       dispatch({ type: SET_EQ_OFF });
@@ -63,7 +63,7 @@ export function toggleEq(): Dispatchable {
   };
 }
 
-export function toggleEqAuto(): Dispatchable {
+export function toggleEqAuto(): Thunk {
   return (dispatch, getState) => {
     dispatch({ type: SET_EQ_AUTO, value: !getState().equalizer.auto });
   };

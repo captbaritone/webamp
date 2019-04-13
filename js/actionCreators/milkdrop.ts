@@ -11,11 +11,12 @@ import {
 } from "../actionTypes";
 import * as Selectors from "../selectors";
 import {
-  Dispatchable,
   TransitionType,
   Preset,
   ButterchurnOptions,
   StatePreset,
+  Thunk,
+  Action,
 } from "../types";
 import * as FileUtils from "../fileUtils";
 
@@ -46,9 +47,7 @@ function normalizePresetTypes(preset: Preset): StatePreset {
   throw new Error("Invalid preset object");
 }
 
-export function initializePresets(
-  presetOptions: ButterchurnOptions
-): Dispatchable {
+export function initializePresets(presetOptions: ButterchurnOptions): Thunk {
   return async dispatch => {
     const { getPresets, importButterchurn } = presetOptions;
     importButterchurn().then(butterchurn => {
@@ -61,7 +60,7 @@ export function initializePresets(
   };
 }
 
-export function loadPresets(presets: StatePreset[]): Dispatchable {
+export function loadPresets(presets: StatePreset[]): Thunk {
   return (dispatch, getState) => {
     const state = getState();
     const presetsLength = state.milkdrop.presets.length;
@@ -76,7 +75,7 @@ export function loadPresets(presets: StatePreset[]): Dispatchable {
   };
 }
 
-export function appendPresetFileList(fileList: FileList): Dispatchable {
+export function appendPresetFileList(fileList: FileList): Thunk {
   return async (dispatch, getState, { convertPreset }) => {
     const presets: StatePreset[] = Array.from(fileList)
       .map(file => {
@@ -114,7 +113,7 @@ export function appendPresetFileList(fileList: FileList): Dispatchable {
 
 export function selectNextPreset(
   transitionType: TransitionType = TransitionType.DEFAULT
-): Dispatchable {
+): Thunk {
   return (dispatch, getState) => {
     const state = getState();
     if (Selectors.getRandomizePresets(state)) {
@@ -131,7 +130,7 @@ export function selectNextPreset(
 
 export function selectPreviousPreset(
   transitionType: TransitionType = TransitionType.DEFAULT
-): Dispatchable {
+): Thunk {
   return (dispatch, getState) => {
     const state = getState();
     const { presetHistory } = state.milkdrop;
@@ -147,7 +146,7 @@ export function selectPreviousPreset(
 
 export function selectRandomPreset(
   transitionType: TransitionType = TransitionType.DEFAULT
-): Dispatchable {
+): Thunk {
   return (dispatch, getState) => {
     const state = getState();
     // TODO: Make this a selector.
@@ -164,7 +163,7 @@ export function requestPresetAtIndex(
   index: number,
   transitionType: TransitionType,
   addToHistory: boolean
-): Dispatchable {
+): Thunk {
   return async (dispatch, getState) => {
     const state = getState();
     const preset = state.milkdrop.presets[index];
@@ -187,22 +186,22 @@ export function requestPresetAtIndex(
   };
 }
 
-export function handlePresetDrop(e: React.DragEvent): Dispatchable {
+export function handlePresetDrop(e: React.DragEvent): Thunk {
   return appendPresetFileList(e.dataTransfer.files);
 }
 
-export function togglePresetOverlay(): Dispatchable {
+export function togglePresetOverlay(): Action {
   return { type: TOGGLE_PRESET_OVERLAY };
 }
 
-export function toggleRandomizePresets(): Dispatchable {
+export function toggleRandomizePresets(): Action {
   return { type: TOGGLE_RANDOMIZE_PRESETS };
 }
 
-export function togglePresetCycling(): Dispatchable {
+export function togglePresetCycling(): Action {
   return { type: TOGGLE_PRESET_CYCLING };
 }
 
-export function scheduleMilkdropMessage(message: string): Dispatchable {
+export function scheduleMilkdropMessage(message: string): Action {
   return { type: SCHEDULE_MILKDROP_MESSAGE, message };
 }

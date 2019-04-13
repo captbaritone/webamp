@@ -9,7 +9,7 @@ import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { LOAD_SERIALIZED_STATE } from "./actionTypes";
 import { SerializedStateV1 } from "./serializedStates/v1Types";
-import { Dispatchable, AppState } from "./types";
+import { AppState, Action } from "./types";
 
 function fixturePath(name: string) {
   return path.join(
@@ -29,7 +29,7 @@ function readFixture(name: string): SerializedStateV1 {
 
 interface SerializationTestParams<T> {
   name: string;
-  action: Dispatchable;
+  action: Action;
   selector(state: AppState): T;
   expected: T;
 }
@@ -132,6 +132,7 @@ describe("can serialize", () => {
   /* Equalizer */
   testSerialization({
     name: "equalizer on",
+    // @ts-ignore
     action: Actions.toggleEq(),
     selector: Selectors.getEqualizerEnabled,
     expected: false,
@@ -139,6 +140,7 @@ describe("can serialize", () => {
 
   testSerialization({
     name: "equalizer auto",
+    // @ts-ignore
     action: Actions.toggleEqAuto(),
     selector: Selectors.getEqualizerAuto,
     expected: true,
@@ -161,6 +163,7 @@ describe("can serialize", () => {
   /* Display */
   testSerialization({
     name: "double mode",
+    // @ts-ignore
     action: Actions.toggleDoubleSizeMode(),
     selector: Selectors.getDoubled,
     expected: true,
@@ -207,8 +210,9 @@ describe("can serialize", () => {
 
   testSerialization({
     name: "window shade",
+    // @ts-ignore
     action: Actions.toggleEqualizerShadeMode(),
-    selector: state => Selectors.getWindowShade(state)("equalizer"),
+    selector: state => Boolean(Selectors.getWindowShade(state)("equalizer")),
     expected: true,
   });
 

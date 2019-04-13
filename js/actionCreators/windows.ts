@@ -17,13 +17,7 @@ import {
 
 import { getPositionDiff, SizeDiff } from "../resizeUtils";
 import { applyDiff } from "../snapUtils";
-import {
-  Action,
-  Dispatchable,
-  WindowId,
-  WindowPositions,
-  Dispatch,
-} from "../types";
+import { Action, Thunk, WindowId, WindowPositions, Dispatch } from "../types";
 
 // Dispatch an action and, if needed rearrange the windows to preserve
 // the existing edge relationship.
@@ -31,7 +25,7 @@ import {
 // Works by checking the edges before the action is dispatched. Then,
 // after disatching, calculating what position change would be required
 // to restore those relationships.
-function withWindowGraphIntegrity(action: Action): Dispatchable {
+function withWindowGraphIntegrity(action: Action): Thunk {
   return (dispatch, getState) => {
     const state = getState();
     const graph = Selectors.getWindowGraph(state);
@@ -61,70 +55,70 @@ function withWindowGraphIntegrity(action: Action): Dispatchable {
   };
 }
 
-export function toggleDoubleSizeMode(): Dispatchable {
+export function toggleDoubleSizeMode(): Thunk {
   return withWindowGraphIntegrity({ type: TOGGLE_DOUBLESIZE_MODE });
 }
 
-export function toggleLlamaMode(): Dispatchable {
+export function toggleLlamaMode(): Action {
   return { type: TOGGLE_LLAMA_MODE };
 }
 
-export function toggleEqualizerShadeMode(): Dispatchable {
+export function toggleEqualizerShadeMode(): Thunk {
   return withWindowGraphIntegrity({
     type: TOGGLE_WINDOW_SHADE_MODE,
     windowId: "equalizer",
   });
 }
 
-export function toggleMainWindowShadeMode(): Dispatchable {
+export function toggleMainWindowShadeMode(): Thunk {
   return withWindowGraphIntegrity({
     type: TOGGLE_WINDOW_SHADE_MODE,
     windowId: "main",
   });
 }
 
-export function togglePlaylistShadeMode(): Dispatchable {
+export function togglePlaylistShadeMode(): Thunk {
   return withWindowGraphIntegrity({
     type: TOGGLE_WINDOW_SHADE_MODE,
     windowId: "playlist",
   });
 }
 
-export function closeWindow(windowId: WindowId): Dispatchable {
+export function closeWindow(windowId: WindowId): Action {
   return { type: CLOSE_WINDOW, windowId };
 }
 
-export function hideWindow(windowId: WindowId): Dispatchable {
+export function hideWindow(windowId: WindowId): Action {
   return { type: SET_WINDOW_VISIBILITY, windowId, hidden: true };
 }
 
-export function showWindow(windowId: WindowId): Dispatchable {
+export function showWindow(windowId: WindowId): Action {
   return { type: SET_WINDOW_VISIBILITY, windowId, hidden: false };
 }
 
-export function setFocusedWindow(window: WindowId): Dispatchable {
+export function setFocusedWindow(window: WindowId): Action {
   return { type: SET_FOCUSED_WINDOW, window };
 }
 
 export function setWindowSize(
   windowId: WindowId,
   size: [number, number]
-): Dispatchable {
+): Action {
   return { type: WINDOW_SIZE_CHANGED, windowId, size };
 }
 
-export function toggleWindow(windowId: WindowId): Dispatchable {
+export function toggleWindow(windowId: WindowId): Action {
   return { type: TOGGLE_WINDOW, windowId };
 }
 
 export function updateWindowPositions(
   positions: WindowPositions,
   absolute?: boolean
-): Dispatchable {
+): Action {
   return { type: UPDATE_WINDOW_POSITIONS, positions, absolute };
 }
 
-export function centerWindowsInContainer(container: HTMLElement): Dispatchable {
+export function centerWindowsInContainer(container: HTMLElement): Thunk {
   return (dispatch, getState) => {
     if (!Selectors.getPositionsAreRelative(getState())) {
       return;
@@ -135,7 +129,7 @@ export function centerWindowsInContainer(container: HTMLElement): Dispatchable {
   };
 }
 
-export function centerWindowsInView(): Dispatchable {
+export function centerWindowsInView(): Thunk {
   return centerWindows({
     left: window.scrollX,
     top: window.scrollY,
@@ -149,7 +143,7 @@ export function centerWindows(box: {
   top: number;
   width: number;
   height: number;
-}): Dispatchable {
+}): Thunk {
   return (dispatch, getState) => {
     const state = getState();
     const windowsInfo = Selectors.getWindowsInfo(state);
@@ -188,18 +182,18 @@ export function centerWindows(box: {
 export function browserWindowSizeChanged(size: {
   height: number;
   width: number;
-}) {
+}): Thunk {
   return (dispatch: Dispatch) => {
     dispatch({ type: BROWSER_WINDOW_SIZE_CHANGED, ...size });
     dispatch(ensureWindowsAreOnScreen());
   };
 }
 
-export function resetWindowSizes(): Dispatchable {
+export function resetWindowSizes(): Action {
   return { type: RESET_WINDOW_SIZES };
 }
 
-export function stackWindows(): Dispatchable {
+export function stackWindows(): Thunk {
   return (dispatch, getState) => {
     dispatch(
       updateWindowPositions(Selectors.getStackedLayoutPositions(getState()))
@@ -207,7 +201,7 @@ export function stackWindows(): Dispatchable {
   };
 }
 
-export function ensureWindowsAreOnScreen(): Dispatchable {
+export function ensureWindowsAreOnScreen(): Thunk {
   return (dispatch, getState) => {
     const state = getState();
 

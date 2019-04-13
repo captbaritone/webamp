@@ -12,9 +12,9 @@ import {
   SET_PLAYLIST_SCROLL_POSITION,
   DRAG_SELECTED,
 } from "../actionTypes";
-import { Dispatchable } from "../types";
+import { Thunk, Action } from "../types";
 
-export function cropPlaylist(): Dispatchable {
+export function cropPlaylist(): Thunk {
   return (dispatch, getState) => {
     const state = getState();
     if (Selectors.getSelectedTrackObjects(state).length === 0) {
@@ -33,7 +33,7 @@ export function cropPlaylist(): Dispatchable {
   };
 }
 
-export function removeSelectedTracks(): Dispatchable {
+export function removeSelectedTracks(): Thunk {
   return (dispatch, getState) => {
     dispatch({
       type: REMOVE_TRACKS,
@@ -44,7 +44,7 @@ export function removeSelectedTracks(): Dispatchable {
   };
 }
 
-export function removeAllTracks(): Dispatchable {
+export function removeAllTracks(): Thunk {
   return dispatch => {
     // It's a bit funky that we need to do both of these.
     dispatch({ type: STOP });
@@ -52,15 +52,15 @@ export function removeAllTracks(): Dispatchable {
   };
 }
 
-export function reverseList(): Dispatchable {
+export function reverseList(): Action {
   return { type: REVERSE_LIST };
 }
 
-export function randomizeList(): Dispatchable {
+export function randomizeList(): Action {
   return { type: RANDOMIZE_LIST };
 }
 
-export function sortListByTitle(): Dispatchable {
+export function sortListByTitle(): Thunk {
   return (dispatch, getState) => {
     const state = getState();
     const tracks = Selectors.getTracks(state);
@@ -71,11 +71,11 @@ export function sortListByTitle(): Dispatchable {
   };
 }
 
-export function setPlaylistScrollPosition(position: number): Dispatchable {
+export function setPlaylistScrollPosition(position: number): Action {
   return { type: SET_PLAYLIST_SCROLL_POSITION, position };
 }
 
-export function scrollNTracks(n: number): Dispatchable {
+export function scrollNTracks(n: number): Thunk {
   return (dispatch, getState) => {
     const state = getState();
     const overflow = Selectors.getOverflowTrackCount(state);
@@ -90,7 +90,7 @@ export function scrollNTracks(n: number): Dispatchable {
 
 export function scrollPlaylistByDelta(
   e: React.WheelEvent<HTMLDivElement>
-): Dispatchable {
+): Thunk {
   e.preventDefault();
   return (dispatch, getState) => {
     const state = getState();
@@ -110,15 +110,15 @@ export function scrollPlaylistByDelta(
   };
 }
 
-export function scrollUpFourTracks(): Dispatchable {
+export function scrollUpFourTracks(): Thunk {
   return scrollNTracks(-4);
 }
 
-export function scrollDownFourTracks(): Dispatchable {
+export function scrollDownFourTracks(): Thunk {
   return scrollNTracks(4);
 }
 
-export function dragSelected(offset: number): Dispatchable {
+export function dragSelected(offset: number): Thunk {
   return (dispatch, getState) => {
     const state = getState();
     const tracks = Selectors.getTracks(state);

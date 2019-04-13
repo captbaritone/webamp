@@ -10,6 +10,7 @@ import {
   Middleware,
   WindowPosition,
   ButterchurnOptions,
+  Action,
 } from "./types";
 import getStore from "./store";
 import App from "./components/App";
@@ -418,7 +419,7 @@ class Winamp {
     });
 
     ReactDOM.render(
-      <Provider store={this.store}>
+      <Provider<Action> store={this.store}>
         <App
           media={this.media}
           container={node}
