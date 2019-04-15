@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import Fullscreen from "../Fullscreen";
 import { connect } from "react-redux";
 import { useWindowSize, useScreenSize } from "../../hooks";
@@ -44,16 +44,12 @@ interface DispatchProps {
 
 interface OwnProps {
   analyser: AnalyserNode;
-  onFocusedKeyDown(
-    cb: (e: React.KeyboardEvent<HTMLDivElement>) => void
-  ): () => void;
 }
 
 type Props = StateProps & DispatchProps & OwnProps;
 
-function useMilkdropKeyBindings(props: Props) {
+function useKeyHandler(props: Props) {
   const {
-    onFocusedKeyDown,
     selectNextPreset,
     selectPreviousPreset,
     toggleRandomize,
@@ -63,8 +59,8 @@ function useMilkdropKeyBindings(props: Props) {
     toggleCycling,
   } = props;
   // Handle keyboard events
-  useEffect(() => {
-    return onFocusedKeyDown(e => {
+  return useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
       switch (e.keyCode) {
         case 32: // spacebar
           selectNextPreset();
@@ -93,21 +89,21 @@ function useMilkdropKeyBindings(props: Props) {
           toggleCycling();
           break;
       }
-    });
-  }, [
-    onFocusedKeyDown,
-    selectNextPreset,
-    selectPreviousPreset,
-    toggleRandomize,
-    togglePresetOverlay,
-    scheduleMilkdropMessage,
-    trackTitle,
-    toggleCycling,
-  ]);
+    },
+    [
+      selectNextPreset,
+      selectPreviousPreset,
+      toggleRandomize,
+      togglePresetOverlay,
+      scheduleMilkdropMessage,
+      trackTitle,
+      toggleCycling,
+    ]
+  );
 }
 
 function Milkdrop(props: Props) {
-  useMilkdropKeyBindings(props);
+  const handleKeyDown = useKeyHandler(props);
 
   // Cycle presets
   useEffect(() => {
@@ -139,19 +135,18 @@ function Milkdrop(props: Props) {
   }
 
   return (
-    <GenWindow title={"Milkdrop"} windowId={WINDOWS.MILKDROP}>
+    <GenWindow
+      title={"Milkdrop"}
+      windowId={WINDOWS.MILKDROP}
+      onKeyDown={handleKeyDown}
+    >
       {(windowSize: { width: number; height: number }) => {
         const size = props.fullscreen ? screenSize : windowSize;
         return (
           <MilkdropContextMenu>
             <Background>
               <DropTarget handleDrop={props.handlePresetDrop}>
-                {props.overlay && (
-                  <PresetOverlay
-                    {...size}
-                    onFocusedKeyDown={props.onFocusedKeyDown}
-                  />
-                )}
+                {props.overlay && <PresetOverlay {...size} />}
                 <Fullscreen
                   enabled={props.fullscreen}
                   onChange={props.setFullscreen}

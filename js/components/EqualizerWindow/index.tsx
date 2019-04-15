@@ -13,7 +13,6 @@ import {
   toggleEqualizerShadeMode,
 } from "../../actionCreators";
 
-import { SET_FOCUSED_WINDOW } from "../../actionTypes";
 import { getWindowShade } from "../../selectors";
 
 import Band from "./Band";
@@ -25,6 +24,7 @@ import EqualizerShade from "./EqualizerShade";
 
 import "../../../css/equalizer-window.css";
 import { Dispatch, Band as BandType, AppState } from "../../types";
+import FocusTarget from "../FocusTarget";
 
 interface StateProps {
   doubled: boolean;
@@ -33,7 +33,6 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  focusWindow(): void;
   setPreampValue(value: number): void;
   setEqToMin(): void;
   setEqToMid(): void;
@@ -56,43 +55,41 @@ const EqualizerWindow = (props: StateProps & DispatchProps) => {
     draggable: true,
   });
   return (
-    <div
-      id="equalizer-window"
-      className={className}
-      onMouseDown={props.focusWindow}
-    >
-      {props.shade ? (
-        <EqualizerShade />
-      ) : (
-        <div>
-          <div
-            className="equalizer-top title-bar draggable"
-            onDoubleClick={props.toggleEqualizerShadeMode}
-          >
+    <div id="equalizer-window" className={className}>
+      <FocusTarget windowId={WINDOWS.EQUALIZER}>
+        {props.shade ? (
+          <EqualizerShade />
+        ) : (
+          <div>
             <div
-              id="equalizer-shade"
-              onClick={props.toggleEqualizerShadeMode}
-            />
-            <div id="equalizer-close" onClick={props.closeEqualizerWindow} />
+              className="equalizer-top title-bar draggable"
+              onDoubleClick={props.toggleEqualizerShadeMode}
+            >
+              <div
+                id="equalizer-shade"
+                onClick={props.toggleEqualizerShadeMode}
+              />
+              <div id="equalizer-close" onClick={props.closeEqualizerWindow} />
+            </div>
+            <EqOn />
+            <EqAuto />
+            <EqGraph />
+            <PresetsContextMenu />
+            <Band id="preamp" band="preamp" onChange={props.setPreampValue} />
+            <div id="plus12db" onClick={props.setEqToMax} />
+            <div id="zerodb" onClick={props.setEqToMid} />
+            <div id="minus12db" onClick={props.setEqToMin} />
+            {BANDS.map(hertz => (
+              <Band
+                key={hertz}
+                id={bandClassName(hertz)}
+                band={hertz}
+                onChange={props.setHertzValue(hertz)}
+              />
+            ))}
           </div>
-          <EqOn />
-          <EqAuto />
-          <EqGraph />
-          <PresetsContextMenu />
-          <Band id="preamp" band="preamp" onChange={props.setPreampValue} />
-          <div id="plus12db" onClick={props.setEqToMax} />
-          <div id="zerodb" onClick={props.setEqToMid} />
-          <div id="minus12db" onClick={props.setEqToMin} />
-          {BANDS.map(hertz => (
-            <Band
-              key={hertz}
-              id={bandClassName(hertz)}
-              band={hertz}
-              onChange={props.setHertzValue(hertz)}
-            />
-          ))}
-        </div>
-      )}
+        )}
+      </FocusTarget>
     </div>
   );
 };
@@ -100,8 +97,6 @@ const EqualizerWindow = (props: StateProps & DispatchProps) => {
 // This does not use the shorthand object syntax becuase `setHertzValue` needs
 // to return a function.
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-  focusWindow: () =>
-    dispatch({ type: SET_FOCUSED_WINDOW, window: WINDOWS.EQUALIZER }),
   setPreampValue: (value: number) => dispatch(setPreamp(value)),
   setEqToMin: () => dispatch(setEqToMin()),
   setEqToMid: () => dispatch(setEqToMid()),
