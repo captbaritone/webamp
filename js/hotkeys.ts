@@ -24,7 +24,7 @@ import { Dispatch } from "./types";
 const IGNORE_EVENTS_FROM_TAGS = new Set(["input", "textarea", "select"]);
 
 export function bindHotkeys(dispatch: Dispatch): () => void {
-  let keylog: number[] = [];
+  let currentPos: number = 0;
   const trigger = [
     78, // N
     85, // U
@@ -145,9 +145,8 @@ export function bindHotkeys(dispatch: Dispatch): () => void {
 
     // Ignore escape. Usually this gets swallowed by the browser, but not always.
     if (e.keyCode !== 27) {
-      keylog.push(e.keyCode);
-      keylog = keylog.slice(-8);
-      if (arraysAreEqual(keylog, trigger)) {
+      currentPos = e.keyCode === trigger[currentPos] ? currentPos + 1 : 0;
+      if (currentPos === trigger.length) {
         dispatch({ type: TOGGLE_LLAMA_MODE });
       }
     }
