@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useRef, useEffect } from "react";
 import { WindowId, AppState, Dispatch } from "../types";
 import * as Actions from "../actionCreators";
 import * as Selectors from "../selectors";
@@ -12,7 +12,7 @@ interface StateProps {
 }
 
 interface OwnProps {
-  onKeyDown?(e: React.KeyboardEvent<HTMLDivElement>): void;
+  onKeyDown?(e: KeyboardEvent): void;
   windowId: WindowId;
   children: React.ReactNode;
 }
@@ -21,24 +21,32 @@ type Props = StateProps & DispatchProps & OwnProps;
 
 function FocusTarget(props: Props) {
   const { onKeyDown, focusedWindowId, windowId, setFocus, children } = props;
-  const keyDownHandler = useCallback(
-    e => {
-      if (windowId === focusedWindowId && onKeyDown != null) {
-        onKeyDown(e);
-      }
-    },
-    [onKeyDown, windowId, focusedWindowId]
-  );
 
   const focusHandler = useCallback(() => {
     if (windowId !== focusedWindowId) {
       setFocus(windowId);
     }
-  }, [windowId, focusedWindowId]);
+  }, [windowId, focusedWindowId, setFocus]);
+
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const { current } = ref;
+    if (current == null) {
+      return;
+    }
+    const listener = (e: KeyboardEvent) => {
+      if (windowId === focusedWindowId && onKeyDown != null) {
+        onKeyDown(e);
+      }
+    };
+    current.addEventListener("keydown", listener);
+    return () => current.removeEventListener("keydown", listener);
+  }, [onKeyDown, windowId, focusedWindowId]);
 
   return (
     <div
-      onFocus={keyDownHandler}
+      ref={ref}
       onMouseDown={focusHandler}
       tabIndex={-1}
       style={{ height: "100%", width: "100%" }}

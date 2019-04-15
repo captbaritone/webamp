@@ -60,7 +60,7 @@ function useKeyHandler(props: Props) {
   } = props;
   // Handle keyboard events
   return useCallback(
-    (e: React.KeyboardEvent<HTMLDivElement>) => {
+    (e: KeyboardEvent) => {
       switch (e.keyCode) {
         case 32: // spacebar
           selectNextPreset();

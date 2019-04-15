@@ -41,7 +41,7 @@ interface OwnProps {
   windowId: WindowId;
   children: (windowSize: WindowSize) => React.ReactNode;
   title: string;
-  onKeyDown?(e: React.KeyboardEvent<HTMLDivElement>): void;
+  onKeyDown?(e: KeyboardEvent): void;
 }
 
 interface DispatchProps {
@@ -72,11 +72,10 @@ export const GenWindow = ({
   onKeyDown,
 }: Props) => {
   return (
-    <FocusTarget windowId={windowId}>
+    <FocusTarget windowId={windowId} onKeyDown={onKeyDown}>
       <div
         className={classnames("gen-window", "window", { selected })}
         style={{ width, height }}
-        onKeyDown={onKeyDown}
       >
         <div className="gen-top draggable">
           <div className="gen-top-left draggable" />

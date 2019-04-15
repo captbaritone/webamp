@@ -180,6 +180,8 @@ class PresetOverlay extends React.Component<Props, State> {
     }
     return (
       <div
+        ref={node => node != null && node.focus()}
+        tabIndex={-1}
         style={OUTER_WRAPPER_STYLE}
         onKeyDown={this._handleFocusedKeyboardInput}
       >
