@@ -180,9 +180,6 @@ export function segment<V>(
   return newValues[percentToIndex(ratio, newValues.length)];
 }
 
-export const arraysAreEqual = (a: any[], b: any[]): boolean =>
-  a.length === b.length && a.every((value, i) => value === b[i]);
-
 // https://bost.ocks.org/mike/shuffle/
 // Shuffle an array in O(n)
 export function shuffle<T>(array: T[]): T[] {
