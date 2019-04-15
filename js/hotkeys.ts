@@ -18,7 +18,6 @@ import {
 
 import { TOGGLE_TIME_MODE, TOGGLE_LLAMA_MODE } from "./actionTypes";
 
-import { arraysAreEqual } from "./utils";
 import { Dispatch } from "./types";
 
 const IGNORE_EVENTS_FROM_TAGS = new Set(["input", "textarea", "select"]);
