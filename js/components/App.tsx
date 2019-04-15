@@ -55,18 +55,9 @@ type Props = StateProps & DispatchProps & OwnProps;
  * Constructs the windows to render, and tracks focus.
  */
 class App extends React.Component<Props> {
-  _emitter: Emitter;
-  _bindings: {
-    [windowId: string]: { node: HTMLElement; remove(): void } | null;
-  };
-
   _webampNode: HTMLDivElement | null;
   constructor(props: Props) {
     super(props);
-    // TODO #leak
-    this._emitter = new Emitter();
-    // TODO #leak
-    this._bindings = {};
     this._webampNode = null;
   }
 
@@ -94,16 +85,6 @@ class App extends React.Component<Props> {
     }
   }
 
-  componentDidMount() {
-    this._setFocus();
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    if (prevProps.focused !== this.props.focused) {
-      this._setFocus();
-    }
-  }
-
   _handleWindowResize = () => {
     if (this._webampNode == null) {
       return;
@@ -125,41 +106,6 @@ class App extends React.Component<Props> {
     this._webampNode.style.overflow = "visible";
   };
 
-  _setFocus() {
-    const binding = this._bindings[this.props.focused];
-    if (binding && binding.node) {
-      binding.node.focus();
-    }
-  }
-
-  _gotRef(windowId: WindowId, comp: React.Component<any> | null) {
-    if (comp == null) {
-      const binding = this._bindings[windowId];
-      if (binding != null && binding.remove) {
-        binding.remove();
-      }
-      this._bindings[windowId] = null;
-      return;
-    }
-
-    const node = ReactDOM.findDOMNode(comp) as HTMLElement;
-    const binding = this._bindings[windowId];
-    if (node == null || (binding && binding.node === node)) {
-      return;
-    }
-
-    node.tabIndex = -1;
-    const listener = (e: Event) => this._emitter.trigger(windowId, e);
-    node.addEventListener("keydown", listener);
-
-    this._bindings[windowId] = {
-      node,
-      remove: () => {
-        node.removeEventListener("keydown", listener);
-      },
-    };
-  }
-
   _renderWindows() {
     const { media, genWindowsInfo, filePickers } = this.props;
     return Utils.objectMap(genWindowsInfo, (w, id) => {
@@ -170,37 +116,18 @@ class App extends React.Component<Props> {
         case WINDOWS.MAIN:
           return (
             <MainWindow
-              ref={component => this._gotRef(id, component)}
               analyser={media.getAnalyser()}
               filePickers={filePickers}
             />
           );
         case WINDOWS.EQUALIZER:
-          return (
-            <EqualizerWindow ref={component => this._gotRef(id, component)} />
-          );
+          return <EqualizerWindow />;
         case WINDOWS.PLAYLIST:
-          return (
-            <PlaylistWindow
-              ref={component => this._gotRef(id, component)}
-              analyser={media.getAnalyser()}
-            />
-          );
+          return <PlaylistWindow analyser={media.getAnalyser()} />;
         case WINDOWS.MEDIA_LIBRARY:
-          return (
-            <MediaLibraryWindow
-              ref={component => this._gotRef(id, component)}
-            />
-          );
+          return <MediaLibraryWindow />;
         case WINDOWS.MILKDROP:
-          return (
-            <MilkdropWindow
-              ref={component => this._gotRef(id, component)}
-              // TODO: Refactor this. I don't think we need this to be generic anymore.
-              onFocusedKeyDown={listener => this._emitter.on(id, listener)}
-              analyser={media.getAnalyser()}
-            />
-          );
+          return <MilkdropWindow analyser={media.getAnalyser()} />;
         default:
           throw new Error(`Tried to render an unknown window: ${id}`);
       }

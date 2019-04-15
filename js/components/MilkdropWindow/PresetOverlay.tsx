@@ -52,9 +52,6 @@ interface DispatchProps {
 interface OwnProps {
   height: number;
   width: number;
-  onFocusedKeyDown(
-    cb: (e: React.KeyboardEvent<HTMLDivElement>) => void
-  ): () => void;
 }
 
 type Props = StateProps & DispatchProps & OwnProps;
@@ -69,12 +66,6 @@ class PresetOverlay extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    this._disposable.add(
-      // Technically we should handle the case where this prop changes, but we don't.
-      // If we convert to hooks for this component, this would get much easier.
-      // _Also_ ideally we could avoid this prop all together.
-      this.props.onFocusedKeyDown(this._handleFocusedKeyboardInput)
-    );
     const { currentPresetIndex } = this.props;
     if (currentPresetIndex != null) {
       this.setState({
@@ -188,7 +179,10 @@ class PresetOverlay extends React.Component<Props, State> {
       );
     }
     return (
-      <div style={OUTER_WRAPPER_STYLE}>
+      <div
+        style={OUTER_WRAPPER_STYLE}
+        onKeyDown={this._handleFocusedKeyboardInput}
+      >
         <div
           style={{
             ...INNER_WRAPPER_STYLE,

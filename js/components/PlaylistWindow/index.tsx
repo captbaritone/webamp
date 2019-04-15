@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import classnames from "classnames";
 
 import { WINDOWS, TRACK_HEIGHT, LOAD_STYLE } from "../../constants";
-import { SET_FOCUSED_WINDOW } from "../../actionTypes";
 import {
   scrollUpFourTracks,
   scrollDownFourTracks,
@@ -30,6 +29,7 @@ import ScrollBar from "./ScrollBar";
 
 import "../../../css/playlist-window.css";
 import { AppState, PlaylistStyle, Dispatch } from "../../types";
+import FocusTarget from "../FocusTarget";
 
 interface StateProps {
   offset: number;
@@ -45,7 +45,6 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  focusPlaylist(): void;
   close(): void;
   toggleShade(): void;
   scrollUpFourTracks(): void;
@@ -77,7 +76,6 @@ class PlaylistWindow extends React.Component<Props> {
   render() {
     const {
       skinPlaylistStyle,
-      focusPlaylist,
       selected,
       playlistSize,
       playlistWindowPixelSize,
@@ -109,69 +107,70 @@ class PlaylistWindow extends React.Component<Props> {
         id="playlist-window"
         className={classes}
         style={style}
-        onMouseDown={focusPlaylist}
         handleDrop={this._handleDrop}
         onWheel={this.props.scrollVolume}
       >
-        <div className="playlist-top draggable" onDoubleClick={toggleShade}>
-          <div className="playlist-top-left draggable" />
-          {showSpacers && (
-            <div className="playlist-top-left-spacer draggable" />
-          )}
-          <div className="playlist-top-left-fill draggable" />
-          <div className="playlist-top-title draggable" />
-          {showSpacers && (
-            <div className="playlist-top-right-spacer draggable" />
-          )}
-          <div className="playlist-top-right-fill draggable" />
-          <div className="playlist-top-right draggable">
-            <div id="playlist-shade-button" onClick={toggleShade} />
-            <div id="playlist-close-button" onClick={close} />
-          </div>
-        </div>
-        <div className="playlist-middle draggable">
-          <div className="playlist-middle-left draggable" />
-          <div className="playlist-middle-center">
-            <TrackList />
-          </div>
-          <div className="playlist-middle-right draggable">
-            <ScrollBar />
-          </div>
-        </div>
-        <div className="playlist-bottom draggable">
-          <div className="playlist-bottom-left draggable">
-            <AddMenu />
-            <RemoveMenu />
-            <SelectionMenu />
-            <MiscMenu />
-          </div>
-          <div className="playlist-bottom-center draggable" />
-          <div className="playlist-bottom-right draggable">
-            {showVisualizer && (
-              <div className="playlist-visualizer">
-                {activateVisualizer && (
-                  <div className="visualizer-wrapper">
-                    <Visualizer
-                      // @ts-ignore Visualizer is not yet typed
-                      analyser={analyser}
-                    />
-                  </div>
-                )}
-              </div>
+        <FocusTarget windowId={WINDOWS.PLAYLIST}>
+          <div className="playlist-top draggable" onDoubleClick={toggleShade}>
+            <div className="playlist-top-left draggable" />
+            {showSpacers && (
+              <div className="playlist-top-left-spacer draggable" />
             )}
-            <PlaylistActionArea />
-            <ListMenu />
-            <div
-              id="playlist-scroll-up-button"
-              onClick={this.props.scrollUpFourTracks}
-            />
-            <div
-              id="playlist-scroll-down-button"
-              onClick={this.props.scrollDownFourTracks}
-            />
-            <PlaylistResizeTarget />
+            <div className="playlist-top-left-fill draggable" />
+            <div className="playlist-top-title draggable" />
+            {showSpacers && (
+              <div className="playlist-top-right-spacer draggable" />
+            )}
+            <div className="playlist-top-right-fill draggable" />
+            <div className="playlist-top-right draggable">
+              <div id="playlist-shade-button" onClick={toggleShade} />
+              <div id="playlist-close-button" onClick={close} />
+            </div>
           </div>
-        </div>
+          <div className="playlist-middle draggable">
+            <div className="playlist-middle-left draggable" />
+            <div className="playlist-middle-center">
+              <TrackList />
+            </div>
+            <div className="playlist-middle-right draggable">
+              <ScrollBar />
+            </div>
+          </div>
+          <div className="playlist-bottom draggable">
+            <div className="playlist-bottom-left draggable">
+              <AddMenu />
+              <RemoveMenu />
+              <SelectionMenu />
+              <MiscMenu />
+            </div>
+            <div className="playlist-bottom-center draggable" />
+            <div className="playlist-bottom-right draggable">
+              {showVisualizer && (
+                <div className="playlist-visualizer">
+                  {activateVisualizer && (
+                    <div className="visualizer-wrapper">
+                      <Visualizer
+                        // @ts-ignore Visualizer is not yet typed
+                        analyser={analyser}
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
+              <PlaylistActionArea />
+              <ListMenu />
+              <div
+                id="playlist-scroll-up-button"
+                onClick={this.props.scrollUpFourTracks}
+              />
+              <div
+                id="playlist-scroll-down-button"
+                onClick={this.props.scrollDownFourTracks}
+              />
+              <PlaylistResizeTarget />
+            </div>
+          </div>
+        </FocusTarget>
       </DropTarget>
     );
   }
@@ -179,8 +178,6 @@ class PlaylistWindow extends React.Component<Props> {
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
   return {
-    focusPlaylist: () =>
-      dispatch({ type: SET_FOCUSED_WINDOW, window: WINDOWS.PLAYLIST }),
     close: () => dispatch(closeWindow(WINDOWS.PLAYLIST)),
     toggleShade: () => dispatch(togglePlaylistShadeMode()),
     scrollUpFourTracks: () => dispatch(scrollUpFourTracks()),

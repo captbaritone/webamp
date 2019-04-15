@@ -45,6 +45,7 @@ import {
   Dispatch,
   FilePicker,
 } from "../../types";
+import FocusTarget from "../FocusTarget";
 
 interface StateProps {
   focused: WindowId;
@@ -57,7 +58,6 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  setFocus(): void;
   loadFilesFromReferences(files: FileList): void;
   scrollVolume(e: React.WheelEvent<HTMLDivElement>): void;
   toggleMainWindowShadeMode(): void;
@@ -72,10 +72,6 @@ interface OwnProps {
 type Props = StateProps & DispatchProps & OwnProps;
 
 export class MainWindow extends React.Component<Props> {
-  _handleClick = () => {
-    this.props.setFocus();
-  };
-
   render() {
     const {
       focused,
@@ -105,65 +101,66 @@ export class MainWindow extends React.Component<Props> {
       <DropTarget
         id="main-window"
         className={className}
-        onMouseDown={this._handleClick}
         handleDrop={this.props.loadMedia}
         onWheel={this.props.scrollVolume}
       >
-        <div
-          id="title-bar"
-          className="selected draggable"
-          onDoubleClick={this.props.toggleMainWindowShadeMode}
-        >
-          <ContextMenuTarget
-            id="option-context"
-            bottom
-            handle={<ClickedDiv id="option" title="Winamp Menu" />}
-          >
-            <MainContextMenu filePickers={filePickers} />
-          </ContextMenuTarget>
-          {mainShade && <MiniTime />}
-          <Minimize />
-          <Shade />
-          <Close />
-        </div>
-        <div className="status">
-          <ClutterBar />
-          {!working && <div id="play-pause" />}
+        <FocusTarget windowId={WINDOWS.MAIN}>
           <div
-            id="work-indicator"
-            className={classnames({ selected: working })}
+            id="title-bar"
+            className="selected draggable"
+            onDoubleClick={this.props.toggleMainWindowShadeMode}
+          >
+            <ContextMenuTarget
+              id="option-context"
+              bottom
+              handle={<ClickedDiv id="option" title="Winamp Menu" />}
+            >
+              <MainContextMenu filePickers={filePickers} />
+            </ContextMenuTarget>
+            {mainShade && <MiniTime />}
+            <Minimize />
+            <Shade />
+            <Close />
+          </div>
+          <div className="status">
+            <ClutterBar />
+            {!working && <div id="play-pause" />}
+            <div
+              id="work-indicator"
+              className={classnames({ selected: working })}
+            />
+            <Time />
+          </div>
+          <Visualizer
+            // @ts-ignore Visualizer is not typed yet
+            analyser={this.props.analyser}
           />
-          <Time />
-        </div>
-        <Visualizer
-          // @ts-ignore Visualizer is not typed yet
-          analyser={this.props.analyser}
-        />
-        <div className="media-info">
-          <Marquee />
-          <Kbps />
-          <Khz />
-          <MonoStereo />
-        </div>
-        <MainVolume />
-        <MainBalance />
-        <div className="windows">
-          <EqToggleButton />
-          <PlaylistToggleButton />
-        </div>
-        <Position />
-        <ActionButtons />
-        <Eject />
-        <div className="shuffle-repeat">
-          <Shuffle />
-          <Repeat />
-        </div>
-        <a
-          id="about"
-          target="blank"
-          href="https://webamp.org/about"
-          title="About"
-        />
+          <div className="media-info">
+            <Marquee />
+            <Kbps />
+            <Khz />
+            <MonoStereo />
+          </div>
+          <MainVolume />
+          <MainBalance />
+          <div className="windows">
+            <EqToggleButton />
+            <PlaylistToggleButton />
+          </div>
+          <Position />
+          <ActionButtons />
+          <Eject />
+          <div className="shuffle-repeat">
+            <Shuffle />
+            <Repeat />
+          </div>
+          <a
+            id="about"
+            target="blank"
+            href="https://webamp.org/about"
+            title="About"
+          />
+        </FocusTarget>
       </DropTarget>
     );
   }
@@ -188,8 +185,6 @@ const mapStateToProps = (state: AppState): StateProps => {
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
   return {
-    setFocus: () =>
-      dispatch({ type: SET_FOCUSED_WINDOW, window: WINDOWS.MAIN }),
     loadFilesFromReferences: (files: FileList) =>
       dispatch(loadFilesFromReferences(files)),
     toggleMainWindowShadeMode: () => dispatch(toggleMainWindowShadeMode()),
@@ -200,5 +195,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
 };
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
+  null,
+  { forwardRef: true }
 )(MainWindow);
