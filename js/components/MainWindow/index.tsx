@@ -13,7 +13,6 @@ import { getWindowShade } from "../../selectors";
 import DropTarget from "../DropTarget";
 import MiniTime from "../MiniTime";
 
-import { SET_FOCUSED_WINDOW } from "../../actionTypes";
 import ClickedDiv from "../ClickedDiv";
 import ContextMenuTarget from "../ContextMenuTarget";
 import Visualizer from "../Visualizer";
