@@ -60,8 +60,6 @@ class WindowManager extends React.Component<Props> {
       // The user may be clicking on full screen Milkdrop.
       return;
     }
-    // Prevent dragging from highlighting text.
-    e.preventDefault();
 
     const [moving, stationary] = this.movingAndStationaryNodes(key);
 
