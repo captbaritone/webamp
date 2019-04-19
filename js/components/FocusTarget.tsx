@@ -28,31 +28,21 @@ function FocusTarget(props: Props) {
     }
   }, [windowId, focusedWindowId, setFocus]);
 
-  const blurHandler = useCallback(() => {
-    setFocus(null);
-  }, [setFocus]);
-
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const { current } = ref;
-    if (current == null) {
+    if (current == null || onKeyDown == null) {
       return;
     }
-    const listener = (e: KeyboardEvent) => {
-      if (windowId === focusedWindowId && onKeyDown != null) {
-        onKeyDown(e);
-      }
-    };
-    current.addEventListener("keydown", listener);
-    return () => current.removeEventListener("keydown", listener);
+    current.addEventListener("keydown", onKeyDown);
+    return () => current.removeEventListener("keydown", onKeyDown);
   }, [onKeyDown, windowId, focusedWindowId]);
 
   return (
     <div
       ref={ref}
-      onMouseDown={focusHandler}
-      onBlur={blurHandler}
+      onFocus={focusHandler}
       tabIndex={-1}
       style={{ height: "100%", width: "100%" }}
     >
