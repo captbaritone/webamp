@@ -21,7 +21,7 @@ interface StateProps {
   name: string | null;
   duration: number | null;
   playlistSize: [number, number];
-  focused: WindowId;
+  focused: WindowId | null;
   trackOrder: number[];
 }
 

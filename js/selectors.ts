@@ -417,7 +417,7 @@ export function getWindowHidden(state: AppState) {
   return (windowId: WindowId) => state.windows.genWindows[windowId].hidden;
 }
 
-export function getFocusedWindow(state: AppState): WindowId {
+export function getFocusedWindow(state: AppState): WindowId | null {
   return state.windows.focused;
 }
 

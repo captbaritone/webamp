@@ -190,10 +190,6 @@ export function handlePresetDrop(e: React.DragEvent): Thunk {
   return appendPresetFileList(e.dataTransfer.files);
 }
 
-export function togglePresetOverlay(): Action {
-  return { type: TOGGLE_PRESET_OVERLAY };
-}
-
 export function toggleRandomizePresets(): Action {
   return { type: TOGGLE_RANDOMIZE_PRESETS };
 }

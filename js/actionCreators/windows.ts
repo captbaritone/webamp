@@ -96,7 +96,7 @@ export function showWindow(windowId: WindowId): Action {
   return { type: SET_WINDOW_VISIBILITY, windowId, hidden: false };
 }
 
-export function setFocusedWindow(window: WindowId): Action {
+export function setFocusedWindow(window: WindowId | null): Action {
   return { type: SET_FOCUSED_WINDOW, window };
 }
 

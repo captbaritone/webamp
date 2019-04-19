@@ -5,10 +5,10 @@ import * as Selectors from "../selectors";
 import { connect } from "react-redux";
 
 interface DispatchProps {
-  setFocus(windowId: WindowId): void;
+  setFocus(windowId: WindowId | null): void;
 }
 interface StateProps {
-  focusedWindowId: WindowId;
+  focusedWindowId: WindowId | null;
 }
 
 interface OwnProps {
@@ -27,6 +27,10 @@ function FocusTarget(props: Props) {
       setFocus(windowId);
     }
   }, [windowId, focusedWindowId, setFocus]);
+
+  const blurHandler = useCallback(() => {
+    setFocus(null);
+  }, [setFocus]);
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -48,6 +52,7 @@ function FocusTarget(props: Props) {
     <div
       ref={ref}
       onMouseDown={focusHandler}
+      onBlur={blurHandler}
       tabIndex={-1}
       style={{ height: "100%", width: "100%" }}
     >

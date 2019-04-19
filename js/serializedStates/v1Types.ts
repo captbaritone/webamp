@@ -13,7 +13,7 @@ export interface WindowsSerializedStateV1 {
       position: { x: number; y: number };
     };
   };
-  focused: string;
+  focused: string | null;
 }
 
 export interface DisplaySerializedStateV1 {

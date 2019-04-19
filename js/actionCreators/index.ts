@@ -11,12 +11,18 @@ import {
   LOAD_DEFAULT_SKIN,
   SET_MILKDROP_DESKTOP,
   SET_MILKDROP_FULLSCREEN,
+  TOGGLE_PRESET_OVERLAY,
 } from "../actionTypes";
 import { WINDOWS } from "../constants";
 import { Thunk, Action } from "../types";
 import { SerializedStateV1 } from "../serializedStates/v1Types";
 import * as Selectors from "../selectors";
-import { ensureWindowsAreOnScreen, showWindow, hideWindow } from "./windows";
+import {
+  ensureWindowsAreOnScreen,
+  showWindow,
+  hideWindow,
+  setFocusedWindow,
+} from "./windows";
 
 export {
   toggleDoubleSizeMode,
@@ -103,7 +109,6 @@ export {
   selectRandomPreset,
   selectNextPreset,
   selectPreviousPreset,
-  togglePresetOverlay,
   appendPresetFileList,
   handlePresetDrop,
   loadPresets,
@@ -182,5 +187,15 @@ export function toggleMilkdropFullscreen(): Thunk {
     dispatch(
       setMilkdropFullscreen(!Selectors.getMilkdropFullscreenEnabled(getState()))
     );
+  };
+}
+
+export function togglePresetOverlay(): Thunk {
+  return (dispatch, getState) => {
+    if (Selectors.getPresetOverlayOpen(getState())) {
+      dispatch(setFocusedWindow(WINDOWS.MILKDROP));
+    }
+
+    dispatch({ type: TOGGLE_PRESET_OVERLAY });
   };
 }
