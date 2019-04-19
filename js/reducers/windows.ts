@@ -47,7 +47,7 @@ export interface WindowInfo {
   y: number;
 }
 export interface WindowsState {
-  focused: string;
+  focused: WindowId | null;
   genWindows: { [name: string]: WebampWindow };
   browserWindowSize: { height: number; width: number };
   positionsAreRelative: boolean;

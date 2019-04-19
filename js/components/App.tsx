@@ -30,7 +30,6 @@ import Media from "../media";
 interface StateProps {
   visualizerStyle: string;
   status: MediaStatus;
-  focused: WindowId;
   closed: boolean;
   // TODO: Get only the info we really need
   genWindowsInfo: { [windowId: string]: WebampWindow };
@@ -51,7 +50,7 @@ interface OwnProps {
 type Props = StateProps & DispatchProps & OwnProps;
 
 /**
- * Constructs the windows to render, and tracks focus.
+ * Constructs the windows to render
  */
 class App extends React.Component<Props> {
   _webampNode: HTMLDivElement | null;
@@ -159,7 +158,6 @@ const mapStateToProps = (state: AppState): StateProps => {
   return {
     visualizerStyle: Selectors.getVisualizerStyle(state),
     status: state.media.status,
-    focused: state.windows.focused,
     closed: state.display.closed,
     genWindowsInfo: state.windows.genWindows,
     zIndex: state.display.zIndex,

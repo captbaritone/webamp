@@ -47,7 +47,7 @@ import {
 import FocusTarget from "../FocusTarget";
 
 interface StateProps {
-  focused: WindowId;
+  focused: WindowId | null;
   loading: boolean;
   doubled: boolean;
   mainShade: boolean;

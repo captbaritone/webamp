@@ -338,7 +338,7 @@ export type Action =
     }
   | {
       type: "SET_FOCUSED_WINDOW";
-      window: WindowId;
+      window: WindowId | null;
     }
   | {
       type: "TOGGLE_WINDOW_SHADE_MODE";
