@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import * as SnapUtils from "../snapUtils";
 import * as Selectors from "../selectors";
-import { updateWindowPositions } from "../actionCreators";
+import * as Actions from "../actionCreators";
 import {
   WindowInfo,
   Dispatch,
@@ -25,6 +25,7 @@ interface Props {
   updateWindowPositions(positions: WindowPositions, center: boolean): void;
   getWindowHidden(windowId: WindowId): boolean;
   windows: { [windowId: string]: ReactNode };
+  clearWindowFocus(): void;
 }
 
 class WindowManager extends React.Component<Props> {
@@ -134,6 +135,16 @@ class WindowManager extends React.Component<Props> {
     return windows.map(w => (
       <div
         key={w.key}
+        onBlur={e => {
+          const { currentTarget, relatedTarget } = e;
+          if (
+            currentTarget === relatedTarget ||
+            currentTarget.contains(relatedTarget)
+          ) {
+            return;
+          }
+          this.props.clearWindowFocus();
+        }}
         onMouseDown={(e: React.MouseEvent<HTMLDivElement>) => {
           this.handleMouseDown(w.key, e);
         }}
@@ -155,7 +166,8 @@ const mapStateToProps = (state: AppState) => ({
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     updateWindowPositions: (positions: WindowPositions) =>
-      dispatch(updateWindowPositions(positions)),
+      dispatch(Actions.updateWindowPositions(positions)),
+    clearWindowFocus: () => dispatch(Actions.setFocusedWindow(null)),
   };
 };
 
