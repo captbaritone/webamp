@@ -51,24 +51,16 @@ const CURSORS = [
    */
 ];
 
-async function genFileFromZip(zip, fileName, ext, mode) {
-  const regex = new RegExp(`^(.*/)?${fileName}(\.${ext})?$`, "i");
-  const files = zip.file(regex);
-  if (!files.length) {
-    return null;
-  }
-  // Return a promise (awaitable).
-  return {
-    contents: await files[0].async(mode),
-    name: files[0].name,
-  };
-}
-
 async function genImgFromFilename(zip, fileName) {
   // Winamp only supports .bmp images, but WACUP set a precidence of supporting
   // .png as well to reduce size. Since we care about size as well, we follow
   // suit. Our default skin uses .png to save 14kb.
-  const file = await genFileFromZip(zip, fileName, "(png|bmp)", "blob");
+  const file = await SkinParserUtils.getFileFromZip(
+    zip,
+    fileName,
+    "(png|bmp)",
+    "blob"
+  );
   if (!file) {
     return null;
   }
@@ -90,12 +82,22 @@ async function genSpriteUrisFromFilename(zip, fileName) {
 }
 
 async function getCursorFromFilename(zip, fileName) {
-  const file = await genFileFromZip(zip, fileName, "CUR", "base64");
+  const file = await SkinParserUtils.getFileFromZip(
+    zip,
+    fileName,
+    "CUR",
+    "base64"
+  );
   return file && `data:image/x-win-bitmap;base64,${file.contents}`;
 }
 
 async function genPlaylistStyle(zip) {
-  const pledit = await genFileFromZip(zip, "PLEDIT", "txt", "text");
+  const pledit = await SkinParserUtils.getFileFromZip(
+    zip,
+    "PLEDIT",
+    "txt",
+    "text"
+  );
   const data = pledit && parseIni(pledit.contents).text;
   if (!data) {
     // Corrupt or missing PLEDIT.txt file.
@@ -121,7 +123,12 @@ async function genPlaylistStyle(zip) {
 }
 
 async function genVizColors(zip) {
-  const viscolor = await genFileFromZip(zip, "VISCOLOR", "txt", "text");
+  const viscolor = await SkinParserUtils.getFileFromZip(
+    zip,
+    "VISCOLOR",
+    "txt",
+    "text"
+  );
   return viscolor ? parseViscolors(viscolor.contents) : DEFAULT_SKIN.colors;
 }
 
@@ -144,7 +151,12 @@ async function genCursors(zip) {
 }
 
 async function genRegion(zip) {
-  const region = await genFileFromZip(zip, "REGION", "txt", "text");
+  const region = await SkinParserUtils.getFileFromZip(
+    zip,
+    "REGION",
+    "txt",
+    "text"
+  );
   return region ? regionParser(region.contents) : {};
 }
 

@@ -1,4 +1,23 @@
+import JSZip from "jszip";
 import { Sprite } from "./skinSprites";
+
+export async function getFileFromZip(
+  zip: JSZip,
+  fileName: string,
+  ext: string,
+  mode: "blob" | "text" | "base64"
+) {
+  const regex = new RegExp(`^(.*/)?${fileName}(\.${ext})?$`, "i");
+  const files = zip.file(regex);
+  if (!files.length) {
+    return null;
+  }
+  // Return a promise (awaitable).
+  return {
+    contents: await files[0].async(mode),
+    name: files[0].name,
+  };
+}
 
 function fallbackGetImgFromBlob(blob: Blob): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
