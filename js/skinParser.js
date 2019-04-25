@@ -2,6 +2,7 @@ import SKIN_SPRITES from "./skinSprites";
 import regionParser from "./regionParser";
 import { LETTERS, DEFAULT_SKIN } from "./constants";
 import { parseViscolors, parseIni, getFileExtension, objectMap } from "./utils";
+import * as SkinParserUtils from "./skinParserUtils";
 
 const shallowMerge = objs =>
   objs.reduce((prev, img) => Object.assign(prev, img), {});
@@ -50,34 +51,6 @@ const CURSORS = [
    */
 ];
 
-const _genImgFromBlob = async blob =>
-  new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => {
-      // Schedule cleanup of object url?
-      // Maybe on next tick, or with requestidlecallback
-      resolve(img);
-    };
-    img.onerror = () => reject("Failed to decode image");
-    img.src = URL.createObjectURL(blob);
-  });
-
-const genImgFromBlob = async blob => {
-  if (window.createImageBitmap) {
-    try {
-      // Use this faster native browser API if available.
-      return await window.createImageBitmap(blob);
-    } catch (e) {
-      console.warn(
-        "Encountered an error with createImageBitmap. Falling back to Image approach."
-      );
-      // There are some bugs in the new API. In case something goes wrong, we call fall back.
-      return _genImgFromBlob(blob);
-    }
-  }
-  return _genImgFromBlob(blob);
-};
-
 async function genFileFromZip(zip, fileName, ext, mode) {
   const regex = new RegExp(`^(.*/)?${fileName}(\.${ext})?$`, "i");
   const files = zip.file(regex);
@@ -119,7 +92,7 @@ async function genImgFromFilename(zip, fileName) {
   // mime type, but it looks like Firefox does not. So we specify it here
   // explicitly.
   const typedBlob = new Blob([file.contents], { type: mimeType });
-  return genImgFromBlob(typedBlob);
+  return SkinParserUtils.getImgFromBlob(typedBlob);
 }
 
 async function genSpriteUrisFromFilename(zip, fileName) {
