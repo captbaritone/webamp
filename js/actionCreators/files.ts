@@ -68,7 +68,7 @@ export function loadFilesFromReferences(
     } else if (fileReferences.length === 1) {
       const fileReference = fileReferences[0];
       if (SKIN_FILENAME_MATCHER.test(fileReference.name)) {
-        dispatch(setSkinFromFileReference(fileReference));
+        dispatch(setSkinFromBlob(fileReference));
         return;
       } else if (EQF_FILENAME_MATCHER.test(fileReference.name)) {
         dispatch(setEqFromFileReference(fileReference));
@@ -79,8 +79,8 @@ export function loadFilesFromReferences(
   };
 }
 
-export function setSkinFromArrayBuffer(
-  arrayBuffer: ArrayBuffer | Promise<ArrayBuffer>
+export function setSkinFromBlob(
+  arrayBuffer: Blob | Promise<Blob>
 ): Dispatchable {
   return async (dispatch, getState, { requireJSZip }) => {
     if (!requireJSZip) {
@@ -120,18 +120,6 @@ export function setSkinFromArrayBuffer(
   };
 }
 
-export function setSkinFromFileReference(
-  skinFileReference: File
-): Dispatchable {
-  return async dispatch => {
-    dispatch({ type: LOADING });
-    const arrayBuffer = await genArrayBufferFromFileReference(
-      skinFileReference
-    );
-    dispatch(setSkinFromArrayBuffer(arrayBuffer));
-  };
-}
-
 export function setSkinFromUrl(url: string): Dispatchable {
   return async dispatch => {
     dispatch({ type: LOADING });
@@ -140,7 +128,7 @@ export function setSkinFromUrl(url: string): Dispatchable {
       if (!response.ok) {
         throw new Error(response.statusText);
       }
-      dispatch(setSkinFromArrayBuffer(response.arrayBuffer()));
+      dispatch(setSkinFromBlob(response.blob()));
     } catch (e) {
       console.error(e);
       dispatch({ type: LOADED });

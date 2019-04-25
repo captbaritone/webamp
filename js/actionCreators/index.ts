@@ -69,8 +69,6 @@ export {
 export {
   addTracksFromReferences,
   loadFilesFromReferences,
-  setSkinFromArrayBuffer,
-  setSkinFromFileReference,
   setSkinFromUrl,
   openEqfFileDialog,
   openMediaFileDialog,
