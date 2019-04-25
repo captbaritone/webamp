@@ -64,20 +64,6 @@ async function genFileFromZip(zip, fileName, ext, mode) {
   };
 }
 
-function getSpriteUrisFromImg(img, sprites) {
-  const canvas = document.createElement("canvas");
-  const context = canvas.getContext("2d");
-  return sprites.reduce((images, sprite) => {
-    canvas.height = sprite.height;
-    canvas.width = sprite.width;
-
-    context.drawImage(img, -sprite.x, -sprite.y);
-    const image = canvas.toDataURL();
-    images[sprite.name] = image;
-    return images;
-  }, {});
-}
-
 async function genImgFromFilename(zip, fileName) {
   // Winamp only supports .bmp images, but WACUP set a precidence of supporting
   // .png as well to reduce size. Since we care about size as well, we follow
@@ -100,7 +86,7 @@ async function genSpriteUrisFromFilename(zip, fileName) {
   if (img == null) {
     return {};
   }
-  return getSpriteUrisFromImg(img, SKIN_SPRITES[fileName]);
+  return SkinParserUtils.getSpriteUrisFromImg(img, SKIN_SPRITES[fileName]);
 }
 
 async function getCursorFromFilename(zip, fileName) {
@@ -141,7 +127,7 @@ async function genVizColors(zip) {
 
 async function genImages(zip) {
   const imageObjs = await Promise.all(
-    Object.keys(SKIN_SPRITES).map(async fileName =>
+    Object.keys(SKIN_SPRITES).map(fileName =>
       genSpriteUrisFromFilename(zip, fileName)
     )
   );
@@ -205,7 +191,7 @@ async function genGenTextSprites(zip) {
   sprites.forEach(sprite => {
     letterWidths[sprite.name] = sprite.width;
   });
-  return [letterWidths, getSpriteUrisFromImg(img, sprites)];
+  return [letterWidths, SkinParserUtils.getSpriteUrisFromImg(img, sprites)];
 }
 
 async function genGenExColors(zip) {

@@ -1,3 +1,5 @@
+import { Sprite } from "./skinSprites";
+
 function fallbackGetImgFromBlob(blob: Blob): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const img = new Image();
@@ -27,4 +29,25 @@ export function getImgFromBlob(
     }
   }
   return fallbackGetImgFromBlob(blob);
+}
+
+export function getSpriteUrisFromImg(
+  img: HTMLImageElement | ImageBitmap,
+  sprites: Sprite[]
+): { [spriteName: string]: string } {
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+  if (context == null) {
+    throw new Error("Failed to get canvas context");
+  }
+  const images: { [spriteName: string]: string } = {};
+  sprites.forEach(sprite => {
+    canvas.height = sprite.height;
+    canvas.width = sprite.width;
+
+    context.drawImage(img, -sprite.x, -sprite.y);
+    const image = canvas.toDataURL();
+    images[sprite.name] = image;
+  });
+  return images;
 }

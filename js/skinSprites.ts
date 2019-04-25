@@ -1,4 +1,15 @@
 import { UTF8_ELLIPSIS } from "./constants";
+
+export type SpriteName = string;
+
+export interface Sprite {
+  name: SpriteName;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
 /* TODO: There are too many " " and "_" characters */
 export const FONT_LOOKUP: { [letter: string]: [number, number] } = {
   a: [0, 0],
@@ -91,7 +102,11 @@ for (const key in FONT_LOOKUP) {
   }
 }
 
-export default {
+interface SpriteMap {
+  [sheet: string]: Sprite[];
+}
+
+const sprites: SpriteMap = {
   BALANCE: [
     { name: "MAIN_BALANCE_BACKGROUND", x: 9, y: 0, width: 38, height: 420 },
     { name: "MAIN_BALANCE_THUMB", x: 15, y: 422, width: 14, height: 11 },
@@ -802,3 +817,5 @@ export default {
     },
   ],
 };
+
+export default sprites;
