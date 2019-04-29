@@ -1,7 +1,7 @@
 import SKIN_SPRITES from "./skinSprites";
 import regionParser from "./regionParser";
 import { LETTERS, DEFAULT_SKIN } from "./constants";
-import { parseViscolors, parseIni, getFileExtension, objectMap } from "./utils";
+import { parseViscolors, parseIni, objectMap } from "./utils";
 import * as SkinParserUtils from "./skinParserUtils";
 
 const shallowMerge = objs =>
@@ -65,7 +65,8 @@ async function genImgFromFilename(zip, fileName) {
     return null;
   }
 
-  const mimeType = `image/${getFileExtension(file.name) || "*"}`;
+  const mimeType = `image/${SkinParserUtils.getFileExtension(file.name) ||
+    "*"}`;
   // The spec for createImageBitmap() says the browser should try to sniff the
   // mime type, but it looks like Firefox does not. So we specify it here
   // explicitly.

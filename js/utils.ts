@@ -75,11 +75,6 @@ export const getTimeStr = (
   ].join("");
 };
 
-export const getFileExtension = (fileName: string): string | null => {
-  const matches = /\.([a-z]{3,4})$/i.exec(fileName);
-  return matches ? matches[1].toLowerCase() : null;
-};
-
 export const parseViscolors = (text: string): string[] => {
   const entries = text.split("\n");
   const regex = /^\s*(\d+)\s*,?\s*(\d+)\s*,?\s*(\d+)/;

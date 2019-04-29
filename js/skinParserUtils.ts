@@ -1,6 +1,11 @@
 import JSZip from "jszip";
 import { Sprite } from "./skinSprites";
 
+export const getFileExtension = (fileName: string): string | null => {
+  const matches = /\.([a-z]{3,4})$/i.exec(fileName);
+  return matches ? matches[1].toLowerCase() : null;
+};
+
 export async function getFileFromZip(
   zip: JSZip,
   fileName: string,
