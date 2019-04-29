@@ -1,10 +1,17 @@
 import JSZip from "jszip";
+import { PlaylistStyle } from "./types";
 import SKIN_SPRITES, { Sprite } from "./skinSprites";
+import { DEFAULT_SKIN } from "./constants";
+import * as Utils from "./utils";
 
 export const getFileExtension = (fileName: string): string | null => {
   const matches = /\.([a-z]{3,4})$/i.exec(fileName);
   return matches ? matches[1].toLowerCase() : null;
 };
+
+function getFilenameRegex(base: string, ext: string): RegExp {
+  return new RegExp(`^(.*/)?${base}(\.${ext})?$`, "i");
+}
 
 export async function getFileFromZip(
   zip: JSZip,
@@ -12,8 +19,7 @@ export async function getFileFromZip(
   ext: string,
   mode: "blob" | "text" | "base64"
 ) {
-  const regex = new RegExp(`^(.*/)?${fileName}(\.${ext})?$`, "i");
-  const files = zip.file(regex);
+  const files = zip.file(getFilenameRegex(fileName, ext));
   if (!files.length) {
     return null;
   }
@@ -115,4 +121,38 @@ export async function getCursorFromFilename(
   return file == null
     ? null
     : `data:image/x-win-bitmap;base64,${file.contents}`;
+}
+
+export async function getPlaylistStyle(zip: JSZip): Promise<PlaylistStyle> {
+  const files = zip.file(getFilenameRegex("PLEDIT", "txt"));
+  const file = files[0];
+  if (file == null) {
+    return DEFAULT_SKIN.playlistStyle;
+  }
+  const ini = await file.async("text");
+  if (ini == null) {
+    return DEFAULT_SKIN.playlistStyle;
+  }
+  const data = ini && Utils.parseIni(ini).text;
+  if (!data) {
+    // Corrupt or missing PLEDIT.txt file.
+    return DEFAULT_SKIN.playlistStyle;
+  }
+
+  // Winamp seems to permit colors that contain too many characters.
+  // For compatibility with existing skins, we normalize them here.
+  ["normal", "current", "normalbg", "selectedbg", "mbFG", "mbBG"].forEach(
+    colorKey => {
+      let color = data[colorKey];
+      if (!color) {
+        return;
+      }
+      if (color[0] !== "#") {
+        color = `#${color}`;
+      }
+      data[colorKey] = color.slice(0, 7);
+    }
+  );
+
+  return { ...DEFAULT_SKIN.playlistStyle, ...data };
 }

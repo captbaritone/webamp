@@ -1,7 +1,7 @@
 import SKIN_SPRITES from "./skinSprites";
 import regionParser from "./regionParser";
 import { LETTERS, DEFAULT_SKIN } from "./constants";
-import { parseViscolors, parseIni, objectMap } from "./utils";
+import { parseViscolors, objectMap } from "./utils";
 import * as SkinParserUtils from "./skinParserUtils";
 
 const shallowMerge = objs =>
@@ -50,37 +50,6 @@ const CURSORS = [
    *
    */
 ];
-
-async function genPlaylistStyle(zip) {
-  const pledit = await SkinParserUtils.getFileFromZip(
-    zip,
-    "PLEDIT",
-    "txt",
-    "text"
-  );
-  const data = pledit && parseIni(pledit.contents).text;
-  if (!data) {
-    // Corrupt or missing PLEDIT.txt file.
-    return DEFAULT_SKIN.playlistStyle;
-  }
-
-  // Winamp seems to permit colors that contain too many characters.
-  // For compatibility with existing skins, we normalize them here.
-  ["normal", "current", "normalbg", "selectedbg", "mbFG", "mbBG"].forEach(
-    colorKey => {
-      let color = data[colorKey];
-      if (!color) {
-        return;
-      }
-      if (color[0] !== "#") {
-        color = `#${color}`;
-      }
-      data[colorKey] = color.slice(0, 7);
-    }
-  );
-
-  return { ...DEFAULT_SKIN.playlistStyle, ...data };
-}
 
 async function genVizColors(zip) {
   const viscolor = await SkinParserUtils.getFileFromZip(
@@ -252,7 +221,7 @@ async function skinParser(zipFileBuffer, JSZip) {
     genExColors,
   ] = await Promise.all([
     genVizColors(zip),
-    genPlaylistStyle(zip),
+    SkinParserUtils.getPlaylistStyle(zip),
     genImages(zip),
     genCursors(zip),
     genRegion(zip),

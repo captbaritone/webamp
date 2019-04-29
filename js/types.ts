@@ -49,8 +49,13 @@ export type Cursors = { [cursor: string]: string };
 
 export type GenLetterWidths = { [letter: string]: number };
 
-// TODO: Use a type to ensure the keys are one of the known values in PLEDIT.txt
-export type PlaylistStyle = { [state: string]: string };
+export interface PlaylistStyle {
+  normal: string;
+  current: string;
+  normalbg: string;
+  selectedbg: string;
+  font: string;
+}
 
 // TODO: Type these keys.
 export type SkinImages = { [sprite: string]: string };
