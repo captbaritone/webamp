@@ -51,16 +51,6 @@ const CURSORS = [
    */
 ];
 
-async function getCursorFromFilename(zip, fileName) {
-  const file = await SkinParserUtils.getFileFromZip(
-    zip,
-    fileName,
-    "CUR",
-    "base64"
-  );
-  return file && `data:image/x-win-bitmap;base64,${file.contents}`;
-}
-
 async function genPlaylistStyle(zip) {
   const pledit = await SkinParserUtils.getFileFromZip(
     zip,
@@ -114,7 +104,10 @@ async function genImages(zip) {
 async function genCursors(zip) {
   const cursorObjs = await Promise.all(
     CURSORS.map(async cursorName => ({
-      [cursorName]: await getCursorFromFilename(zip, cursorName),
+      [cursorName]: await SkinParserUtils.getCursorFromFilename(
+        zip,
+        cursorName
+      ),
     }))
   );
   return shallowMerge(cursorObjs);

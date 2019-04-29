@@ -106,3 +106,13 @@ export async function getSpriteUrisFromFilename(
   }
   return getSpriteUrisFromImg(img, SKIN_SPRITES[fileName]);
 }
+
+export async function getCursorFromFilename(
+  zip: JSZip,
+  fileName: string
+): Promise<string | null> {
+  const file = await getFileFromZip(zip, fileName, "CUR", "base64");
+  return file == null
+    ? null
+    : `data:image/x-win-bitmap;base64,${file.contents}`;
+}
