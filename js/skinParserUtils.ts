@@ -1,5 +1,5 @@
 import JSZip from "jszip";
-import { Sprite } from "./skinSprites";
+import SKIN_SPRITES, { Sprite } from "./skinSprites";
 
 export const getFileExtension = (fileName: string): string | null => {
   const matches = /\.([a-z]{3,4})$/i.exec(fileName);
@@ -94,4 +94,15 @@ export async function getImgFromFilename(
   // explicitly.
   const typedBlob = new Blob([file.contents], { type: mimeType });
   return getImgFromBlob(typedBlob);
+}
+
+export async function getSpriteUrisFromFilename(
+  zip: JSZip,
+  fileName: string
+): Promise<{ [spriteName: string]: string }> {
+  const img = await getImgFromFilename(zip, fileName);
+  if (img == null) {
+    return {};
+  }
+  return getSpriteUrisFromImg(img, SKIN_SPRITES[fileName]);
 }

@@ -51,14 +51,6 @@ const CURSORS = [
    */
 ];
 
-async function genSpriteUrisFromFilename(zip, fileName) {
-  const img = await SkinParserUtils.getImgFromFilename(zip, fileName);
-  if (img == null) {
-    return {};
-  }
-  return SkinParserUtils.getSpriteUrisFromImg(img, SKIN_SPRITES[fileName]);
-}
-
 async function getCursorFromFilename(zip, fileName) {
   const file = await SkinParserUtils.getFileFromZip(
     zip,
@@ -113,7 +105,7 @@ async function genVizColors(zip) {
 async function genImages(zip) {
   const imageObjs = await Promise.all(
     Object.keys(SKIN_SPRITES).map(fileName =>
-      genSpriteUrisFromFilename(zip, fileName)
+      SkinParserUtils.getSpriteUrisFromFilename(zip, fileName)
     )
   );
   // Merge all the objects into a single object. Tests assert that sprite keys are unique.
