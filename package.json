@@ -120,7 +120,7 @@
     "rc-slider": "^8.1.5",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-redux": "^7.0.2",
+    "react-redux": "^6.0.0",
     "react-test-renderer": "^16.8.1",
     "redux": "^4.0.1",
     "redux-devtools-extension": "^2.13.2",
