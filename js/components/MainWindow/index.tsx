@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
-import { WINDOWS, MEDIA_STATUS } from "../../constants";
+import { WINDOWS, MEDIA_STATUS, LOAD_STYLE } from "../../constants";
 import {
   loadFilesFromReferences,
   toggleMainWindowShadeMode,
@@ -189,7 +189,8 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
     toggleMainWindowShadeMode: () => dispatch(toggleMainWindowShadeMode()),
     scrollVolume: (e: React.WheelEvent<HTMLDivElement>) =>
       dispatch(scrollVolume(e)),
-    loadMedia: (e: React.DragEvent<HTMLDivElement>) => dispatch(loadMedia(e)),
+    loadMedia: (e: React.DragEvent<HTMLDivElement>) =>
+      dispatch(loadMedia(e, LOAD_STYLE.PLAY)),
   };
 };
 export default connect(
