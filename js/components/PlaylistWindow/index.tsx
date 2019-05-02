@@ -103,14 +103,14 @@ class PlaylistWindow extends React.Component<Props> {
     const showSpacers = playlistSize[0] % 2 === 0;
 
     return (
-      <DropTarget
-        id="playlist-window"
-        className={classes}
-        style={style}
-        handleDrop={this._handleDrop}
-        onWheel={this.props.scrollVolume}
-      >
-        <FocusTarget windowId={WINDOWS.PLAYLIST}>
+      <FocusTarget windowId={WINDOWS.PLAYLIST}>
+        <DropTarget
+          id="playlist-window"
+          className={classes}
+          style={style}
+          handleDrop={this._handleDrop}
+          onWheel={this.props.scrollVolume}
+        >
           <div className="playlist-top draggable" onDoubleClick={toggleShade}>
             <div className="playlist-top-left draggable" />
             {showSpacers && (
@@ -170,8 +170,8 @@ class PlaylistWindow extends React.Component<Props> {
               <PlaylistResizeTarget />
             </div>
           </div>
-        </FocusTarget>
-      </DropTarget>
+        </DropTarget>
+      </FocusTarget>
     );
   }
 }

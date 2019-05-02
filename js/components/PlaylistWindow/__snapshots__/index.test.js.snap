@@ -2,32 +2,32 @@
 
 exports[`PlaylistWindow renders to snapshot 1`] = `
 <div
-  className="window draggable"
-  id="playlist-window"
-  onDragEnter={[Function]}
-  onDragOver={[Function]}
-  onDragStart={[Function]}
-  onDrop={[Function]}
-  onWheel={[Function]}
+  onFocus={[Function]}
   style={
     Object {
-      "backgroundColor": "#000000",
-      "color": "#00FF00",
-      "fontFamily": "Arial, Arial, sans-serif",
-      "height": "116px",
-      "width": "275px",
+      "height": "100%",
+      "width": "100%",
     }
   }
+  tabIndex={-1}
 >
   <div
-    onFocus={[Function]}
+    className="window draggable"
+    id="playlist-window"
+    onDragEnter={[Function]}
+    onDragOver={[Function]}
+    onDragStart={[Function]}
+    onDrop={[Function]}
+    onWheel={[Function]}
     style={
       Object {
-        "height": "100%",
-        "width": "100%",
+        "backgroundColor": "#000000",
+        "color": "#00FF00",
+        "fontFamily": "Arial, Arial, sans-serif",
+        "height": "116px",
+        "width": "275px",
       }
     }
-    tabIndex={-1}
   >
     <div
       className="playlist-top draggable"
