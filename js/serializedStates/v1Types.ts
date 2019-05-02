@@ -26,7 +26,13 @@ export interface DisplaySerializedStateV1 {
   skinRegion: { [windowName: string]: string[] };
   skinGenLetterWidths: { [letter: string]: number } | null;
   skinColors: string[]; // Theoretically this could be a tuple of a specific length
-  skinPlaylistStyle: { [state: string]: string } | null;
+  skinPlaylistStyle: {
+    normal: string;
+    current: string;
+    normalbg: string;
+    selectedbg: string;
+    font: string;
+  } | null;
 }
 
 export interface EqualizerSerializedStateV1 {
