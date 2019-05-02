@@ -1,20 +1,11 @@
 import React from "react";
 import { Provider } from "react-redux";
 import renderer from "react-test-renderer";
-import getStore from "../../store";
+import mockGetStore from "../../__mocks__/storeMock";
+import media from "../../__mocks__/mediaMock";
 import { SET_SKIN_DATA } from "../../actionTypes";
-import Emitter from "../../emitter";
 
 import MainWindow from "./index";
-
-const media = {
-  addEventListener: jest.fn(),
-  setVolume: jest.fn(),
-  setBalance: jest.fn(),
-  setPreamp: jest.fn(),
-  getAnalyser: () => null,
-  on: jest.fn(),
-};
 
 const canvasMockify = require("canvas-mock");
 
@@ -30,7 +21,7 @@ function createNodeMock(element) {
 describe("MainWindow", () => {
   let store;
   beforeEach(() => {
-    store = getStore(media, new Emitter());
+    store = mockGetStore();
     store.dispatch({ type: SET_SKIN_DATA, data: {} });
   });
 
