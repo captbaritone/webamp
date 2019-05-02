@@ -13,7 +13,6 @@ export const characterClassName = (char: string | number) =>
 
 const Character = React.memo(
   ({ children: char, className, ...passThrough }: Props) => {
-    console.log(char);
     return (
       <span
         {...passThrough}
