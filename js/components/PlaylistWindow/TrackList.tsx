@@ -75,6 +75,10 @@ class TrackList extends React.Component<DispatchProps & StateProps> {
     window.addEventListener("mousemove", handleMouseMove);
   };
 
+  _handleRef = (node: HTMLDivElement | null) => {
+    this._node = node;
+  };
+
   render() {
     const { tracks, offset } = this.props;
     const maxTrackNumberLength = getNumberLength(this.props.numberOfTracks);
@@ -82,9 +86,7 @@ class TrackList extends React.Component<DispatchProps & StateProps> {
       (i + 1 + offset).toString().padStart(maxTrackNumberLength, "\u00A0");
     return (
       <div
-        ref={node => {
-          this._node = node;
-        }}
+        ref={this._handleRef}
         className="playlist-tracks"
         style={{ height: "100%" }}
         onClick={this.props.selectZero}

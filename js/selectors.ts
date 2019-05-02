@@ -401,22 +401,6 @@ function getWPixelSize(w: WebampWindow, doubled: boolean) {
   };
 }
 
-export function getWindowSize(state: AppState) {
-  return (windowId: WindowId) => state.windows.genWindows[windowId].size;
-}
-
-export function getWindowOpen(state: AppState) {
-  return (windowId: WindowId) => state.windows.genWindows[windowId].open;
-}
-
-export function getWindowShade(state: AppState) {
-  return (windowId: WindowId) => state.windows.genWindows[windowId].shade;
-}
-
-export function getWindowHidden(state: AppState) {
-  return (windowId: WindowId) => state.windows.genWindows[windowId].hidden;
-}
-
 export function getFocusedWindow(state: AppState): WindowId | null {
   return state.windows.focused;
 }
@@ -432,6 +416,34 @@ export function getPositionsAreRelative(state: AppState) {
 export const getGenWindows = (state: AppState) => {
   return state.windows.genWindows;
 };
+
+export const getWindowOpen = createSelector(
+  getGenWindows,
+  genWindows => {
+    return (windowId: WindowId) => genWindows[windowId].open;
+  }
+);
+
+export const getWindowHidden = createSelector(
+  getGenWindows,
+  genWindows => {
+    return (windowId: WindowId) => genWindows[windowId].hidden;
+  }
+);
+
+export const getWindowShade = createSelector(
+  getGenWindows,
+  genWindows => {
+    return (windowId: WindowId) => genWindows[windowId].shade;
+  }
+);
+
+export const getWindowSize = createSelector(
+  getGenWindows,
+  genWindows => {
+    return (windowId: WindowId) => genWindows[windowId].size;
+  }
+);
 
 export const getWindowPositions = createSelector(
   getGenWindows,
@@ -474,16 +486,16 @@ export const getWindowGraph = createSelector(
   generateGraph
 );
 
+const defaultPlaylistStyle = {
+  normal: "#00FF00",
+  current: "#FFFFFF",
+  normalbg: "#000000",
+  selectedbg: "#0000C6",
+  font: "Arial",
+};
+
 export const getSkinPlaylistStyle = (state: AppState): PlaylistStyle => {
-  return (
-    state.display.skinPlaylistStyle || {
-      normal: "#00FF00",
-      current: "#FFFFFF",
-      normalbg: "#000000",
-      selectedbg: "#0000C6",
-      font: "Arial",
-    }
-  );
+  return state.display.skinPlaylistStyle || defaultPlaylistStyle;
 };
 
 export const getSkinGenExColors = (state: AppState) => {
