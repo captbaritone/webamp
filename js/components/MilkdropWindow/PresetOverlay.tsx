@@ -169,6 +169,12 @@ class PresetOverlay extends React.Component<Props, State> {
     this.props.appendPresetFileList(fileReferences);
   }
 
+  _handleNode = (node: HTMLDivElement | null) => {
+    if (node != null && document.activeElement !== node) {
+      node.focus();
+    }
+  };
+
   render() {
     const { height, width } = this.props;
     if (this.props.presetKeys == null) {
@@ -180,7 +186,7 @@ class PresetOverlay extends React.Component<Props, State> {
     }
     return (
       <div
-        ref={node => node != null && node.focus()}
+        ref={this._handleNode}
         tabIndex={-1}
         style={OUTER_WRAPPER_STYLE}
         onKeyDown={this._handleFocusedKeyboardInput}

@@ -39,6 +39,25 @@ function FocusTarget(props: Props) {
     return () => current.removeEventListener("keydown", onKeyDown);
   }, [onKeyDown, windowId, focusedWindowId]);
 
+  useEffect(() => {
+    const { current } = ref;
+    if (current == null || windowId !== focusedWindowId) {
+      return;
+    }
+
+    // I give up. I can't figure out how to type this.
+    const out: EventListener = (e: any) => {
+      if (!(e.currentTarget as Element).contains(e.relatedTarget as Element)) {
+        current.focus();
+      }
+    };
+    // https://github.com/facebook/react/issues/6410
+    // React does not implement focusout. In this case we prefer focusout to
+    // blur because it gets triggered when a child with focus unmounts.
+    current.addEventListener("focusout", out);
+    return () => current.removeEventListener("focusout", out);
+  }, [windowId, focusedWindowId]);
+
   return (
     <div
       ref={ref}
