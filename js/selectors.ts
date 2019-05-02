@@ -461,6 +461,7 @@ export function getLlamaMode(state: AppState) {
   return state.display.llama;
 }
 
+// TODO: This is poorly memoized. It invalidates when a window moves.
 export const getWindowSizes = createSelector(
   getGenWindows,
   getDoubled,
