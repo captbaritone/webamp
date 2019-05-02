@@ -135,7 +135,8 @@ class WindowManager extends React.Component<Props> {
     return windows.map(w => (
       <div
         key={w.key}
-        onBlur={e => {
+        // I give up on trying to type things with `relatedTarget`.
+        onBlur={(e: any) => {
           const { currentTarget, relatedTarget } = e;
           if (
             currentTarget === relatedTarget ||
