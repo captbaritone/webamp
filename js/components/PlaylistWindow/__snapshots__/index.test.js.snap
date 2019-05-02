@@ -113,7 +113,6 @@ exports[`PlaylistWindow renders to snapshot 1`] = `
               Object {
                 "bottom": "0%",
                 "height": "0%",
-                "visibility": "visible",
               }
             }
           />
