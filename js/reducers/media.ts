@@ -12,7 +12,6 @@ import {
   TOGGLE_SHUFFLE,
   TOGGLE_TIME_MODE,
   UPDATE_TIME_ELAPSED,
-  ADD_TRACK_FROM_URL,
   LOAD_SERIALIZED_STATE,
 } from "../actionTypes";
 import { TIME_MODE, MEDIA_STATUS } from "../constants";
@@ -65,11 +64,6 @@ const media = (
       return { ...state, timeMode: newMode };
     case UPDATE_TIME_ELAPSED:
       return { ...state, timeElapsed: action.elapsed };
-    case ADD_TRACK_FROM_URL:
-      return {
-        ...state,
-        timeElapsed: 0,
-      };
     case SET_MEDIA:
       return {
         ...state,
