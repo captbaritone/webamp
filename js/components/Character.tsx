@@ -11,13 +11,18 @@ export const characterClassName = (char: string | number) =>
     .toLowerCase()
     .charCodeAt(0)}`;
 
-const Character = ({ children: char, className, ...passThrough }: Props) => (
-  <span
-    {...passThrough}
-    className={`${className || ""} character ${characterClassName(char)}`}
-  >
-    {char}
-  </span>
+const Character = React.memo(
+  ({ children: char, className, ...passThrough }: Props) => {
+    console.log(char);
+    return (
+      <span
+        {...passThrough}
+        className={`${className || ""} character ${characterClassName(char)}`}
+      >
+        {char}
+      </span>
+    );
+  }
 );
 
 export default Character;

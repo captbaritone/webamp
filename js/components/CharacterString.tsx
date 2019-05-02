@@ -5,7 +5,7 @@ interface Props {
   children: string;
 }
 
-const CharacterString = (props: Props) => {
+const CharacterString = React.memo((props: Props) => {
   const text = `${props.children}` || "";
   const chars = text.split("");
   return (
@@ -15,6 +15,6 @@ const CharacterString = (props: Props) => {
       ))}
     </React.Fragment>
   );
-};
+});
 
 export default CharacterString;
