@@ -197,14 +197,54 @@ export const getNextTrackId = (state: AppState, n = 1) => {
   return trackOrder[nextIndex];
 };
 
-const BASE_WINDOW_HEIGHT = 58;
-export const getNumberOfVisibleTracks = (state: AppState) => {
-  const playlistSize = getWindowSize(state)("playlist");
-  return Math.floor(
-    (BASE_WINDOW_HEIGHT + WINDOW_RESIZE_SEGMENT_HEIGHT * playlistSize[1]) /
-      TRACK_HEIGHT
-  );
+export const getGenWindows = (state: AppState) => {
+  return state.windows.genWindows;
 };
+
+export const getWindowOpen = createSelector(
+  getGenWindows,
+  genWindows => {
+    return (windowId: WindowId) => genWindows[windowId].open;
+  }
+);
+
+export const getWindowHidden = createSelector(
+  getGenWindows,
+  genWindows => {
+    return (windowId: WindowId) => genWindows[windowId].hidden;
+  }
+);
+
+export const getWindowShade = createSelector(
+  getGenWindows,
+  genWindows => {
+    return (windowId: WindowId) => genWindows[windowId].shade;
+  }
+);
+
+export const getWindowSize = createSelector(
+  getGenWindows,
+  genWindows => {
+    return (windowId: WindowId) => genWindows[windowId].size;
+  }
+);
+
+export const getWindowPositions = createSelector(
+  getGenWindows,
+  (windows): WindowPositions => Utils.objectMap(windows, w => w.position)
+);
+
+const BASE_WINDOW_HEIGHT = 58;
+export const getNumberOfVisibleTracks = createSelector(
+  getWindowSize,
+  getWindowSize_ => {
+    const playlistSize = getWindowSize_("playlist");
+    return Math.floor(
+      (BASE_WINDOW_HEIGHT + WINDOW_RESIZE_SEGMENT_HEIGHT * playlistSize[1]) /
+        TRACK_HEIGHT
+    );
+  }
+);
 
 export const getOverflowTrackCount = createSelector(
   getTrackCount,
@@ -412,43 +452,6 @@ export function getWindowPosition(state: AppState) {
 export function getPositionsAreRelative(state: AppState) {
   return state.windows.positionsAreRelative;
 }
-
-export const getGenWindows = (state: AppState) => {
-  return state.windows.genWindows;
-};
-
-export const getWindowOpen = createSelector(
-  getGenWindows,
-  genWindows => {
-    return (windowId: WindowId) => genWindows[windowId].open;
-  }
-);
-
-export const getWindowHidden = createSelector(
-  getGenWindows,
-  genWindows => {
-    return (windowId: WindowId) => genWindows[windowId].hidden;
-  }
-);
-
-export const getWindowShade = createSelector(
-  getGenWindows,
-  genWindows => {
-    return (windowId: WindowId) => genWindows[windowId].shade;
-  }
-);
-
-export const getWindowSize = createSelector(
-  getGenWindows,
-  genWindows => {
-    return (windowId: WindowId) => genWindows[windowId].size;
-  }
-);
-
-export const getWindowPositions = createSelector(
-  getGenWindows,
-  (windows): WindowPositions => Utils.objectMap(windows, w => w.position)
-);
 
 export function getDoubled(state: AppState) {
   return state.display.doubled;
