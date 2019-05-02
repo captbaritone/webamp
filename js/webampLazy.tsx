@@ -125,6 +125,7 @@ interface PrivateOptions {
     };
   };
   __butterchurnOptions: ButterchurnOptions;
+  // This is used by https://winampify.io/ to proxy through to Spotify's API.
   __customMediaClass: typeof Media; // This should have the same interface as Media
 }
 
