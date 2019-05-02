@@ -12,6 +12,9 @@ interface StereoBalanceNodeType extends AudioNode {
   };
 }
 
+// NOTE: While this is not technically a public API, https://winampify.io/ is
+// replacing this class with a custom version. Breaking changes to this API
+// surface should be communicated to Remi.
 export default class Media {
   _emitter: Emitter;
   _context: AudioContext;
