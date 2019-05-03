@@ -477,12 +477,30 @@ export const getWindowPixelSize = createSelector(
   }
 );
 
+const getWindowOrder = (state: AppState): WindowId[] =>
+  state.windows.windowOrder;
+
+export const getNormalizedWindowOrder = createSelector(
+  getWindowOrder,
+  getGenWindows,
+  (windowOrder, genWindows): WindowId[] => {
+    return [
+      WINDOWS.MAIN,
+      ...windowOrder.filter(
+        windowId => windowId !== WINDOWS.MAIN && genWindows[windowId] != null
+      ),
+    ];
+  }
+);
+
 // TODO: Now that both size and position are stored on genWindows this seems a bit silly.
 export const getWindowsInfo = createSelector(
   getWindowSizes,
   getWindowPositions,
-  (sizes, positions): WindowInfo[] =>
-    Object.keys(sizes).map(key => ({ key, ...sizes[key], ...positions[key] }))
+  getNormalizedWindowOrder,
+  (sizes, positions, windowOrder): WindowInfo[] => {
+    return windowOrder.map(key => ({ key, ...sizes[key], ...positions[key] }));
+  }
 );
 
 export const getWindowGraph = createSelector(

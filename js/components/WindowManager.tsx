@@ -18,15 +18,23 @@ const abuts = (a: SnapUtils.Box, b: SnapUtils.Box) => {
   return wouldMoveTo.x !== undefined || wouldMoveTo.y !== undefined;
 };
 
-interface Props {
-  container: HTMLElement;
+interface StateProps {
   windowsInfo: WindowInfo[];
   browserWindowSize: { height: number; width: number };
-  updateWindowPositions(positions: WindowPositions, center: boolean): void;
   getWindowHidden(windowId: WindowId): boolean;
-  windows: { [windowId: string]: ReactNode };
+}
+
+interface DispatchProps {
+  updateWindowPositions(positions: WindowPositions, center: boolean): void;
   clearWindowFocus(): void;
 }
+
+interface OwnProps {
+  windows: { [windowId: string]: ReactNode };
+  container: HTMLElement;
+}
+
+type Props = StateProps & DispatchProps & OwnProps;
 
 class WindowManager extends React.Component<Props> {
   movingAndStationaryNodes(key: WindowId): [WindowInfo[], WindowInfo[]] {
@@ -157,14 +165,13 @@ class WindowManager extends React.Component<Props> {
   }
 }
 
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = (state: AppState): StateProps => ({
   windowsInfo: Selectors.getWindowsInfo(state),
   getWindowHidden: Selectors.getWindowHidden(state),
-  getWindowOpen: Selectors.getWindowOpen(state),
   browserWindowSize: Selectors.getBrowserWindowSize(state),
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
   return {
     updateWindowPositions: (positions: WindowPositions) =>
       dispatch(Actions.updateWindowPositions(positions)),

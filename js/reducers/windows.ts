@@ -51,6 +51,7 @@ export interface WindowsState {
   genWindows: { [name: string]: WebampWindow };
   browserWindowSize: { height: number; width: number };
   positionsAreRelative: boolean;
+  windowOrder: WindowId[];
 }
 
 const defaultWindowsState: WindowsState = {
@@ -96,6 +97,13 @@ const defaultWindowsState: WindowsState = {
     },
   },
   browserWindowSize: { width: 0, height: 0 },
+  windowOrder: [
+    WINDOWS.PLAYLIST,
+    WINDOWS.EQUALIZER,
+    WINDOWS.MILKDROP,
+    WINDOWS.MEDIA_LIBRARY,
+    WINDOWS.MAIN,
+  ],
 };
 
 const windows = (
@@ -141,7 +149,14 @@ const windows = (
         },
       };
     case SET_FOCUSED_WINDOW:
-      return { ...state, focused: action.window };
+      let windowOrder = state.windowOrder;
+      if (action.window != null) {
+        windowOrder = [
+          ...state.windowOrder.filter(windowId => windowId !== action.window),
+          action.window,
+        ];
+      }
+      return { ...state, focused: action.window, windowOrder };
     case TOGGLE_WINDOW_SHADE_MODE:
       const { canShade } = state.genWindows[action.windowId];
       if (!canShade) {
