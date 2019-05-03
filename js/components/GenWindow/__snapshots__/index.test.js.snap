@@ -3,6 +3,7 @@
 exports[`GenWindow renders to snapshot 1`] = `
 <div
   onFocus={[Function]}
+  onMouseDown={[Function]}
   style={
     Object {
       "height": "100%",
