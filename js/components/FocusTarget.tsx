@@ -61,6 +61,7 @@ function FocusTarget(props: Props) {
   return (
     <div
       ref={ref}
+      onMouseDown={focusHandler}
       onFocus={focusHandler}
       tabIndex={-1}
       style={{ height: "100%", width: "100%" }}
