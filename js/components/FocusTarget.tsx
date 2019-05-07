@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useEffect } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { WindowId, AppState, Dispatch } from "../types";
 import * as Actions from "../actionCreators";
 import * as Selectors from "../selectors";
@@ -28,39 +28,37 @@ function FocusTarget(props: Props) {
     }
   }, [windowId, focusedWindowId, setFocus]);
 
-  const ref = useRef<HTMLDivElement>(null);
+  const [ref, setRef] = useState<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const { current } = ref;
-    if (current == null || onKeyDown == null) {
+    if (ref == null || onKeyDown == null) {
       return;
     }
-    current.addEventListener("keydown", onKeyDown);
-    return () => current.removeEventListener("keydown", onKeyDown);
-  }, [onKeyDown, windowId, focusedWindowId]);
+    ref.addEventListener("keydown", onKeyDown);
+    return () => ref.removeEventListener("keydown", onKeyDown);
+  }, [onKeyDown, windowId, focusedWindowId, ref]);
 
   useEffect(() => {
-    const { current } = ref;
-    if (current == null || windowId !== focusedWindowId) {
+    if (ref == null || windowId !== focusedWindowId) {
       return;
     }
 
     // I give up. I can't figure out how to type this.
     const out: EventListener = (e: any) => {
-      if (!(e.currentTarget as Element).contains(e.relatedTarget as Element)) {
-        current.focus();
+      if (e.relatedTarget == null) {
+        ref.focus();
       }
     };
     // https://github.com/facebook/react/issues/6410
     // React does not implement focusout. In this case we prefer focusout to
     // blur because it gets triggered when a child with focus unmounts.
-    current.addEventListener("focusout", out);
-    return () => current.removeEventListener("focusout", out);
-  }, [windowId, focusedWindowId]);
+    ref.addEventListener("focusout", out);
+    return () => ref.removeEventListener("focusout", out);
+  }, [windowId, focusedWindowId, ref]);
 
   return (
     <div
-      ref={ref}
+      ref={setRef}
       onMouseDown={focusHandler}
       onFocus={focusHandler}
       tabIndex={-1}
