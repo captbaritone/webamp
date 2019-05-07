@@ -39,6 +39,7 @@ interface StateProps {
 interface DispatchProps {
   closeWindow(id: WindowId): void;
   browserWindowSizeChanged(size: Size): void;
+  clearFocus(): void;
 }
 
 interface OwnProps {
@@ -54,9 +55,11 @@ type Props = StateProps & DispatchProps & OwnProps;
  */
 class App extends React.Component<Props> {
   _webampNode: HTMLDivElement | null;
+  _focusNode: HTMLDivElement | null;
   constructor(props: Props) {
     super(props);
     this._webampNode = null;
+    this._focusNode = null;
   }
 
   componentWillMount() {
@@ -71,6 +74,12 @@ class App extends React.Component<Props> {
     window.addEventListener("resize", this._handleWindowResize);
   }
 
+  componentDidMount() {
+    if (this._focusNode != null) {
+      this._focusNode.addEventListener("focusout", this._clearFocus);
+    }
+  }
+
   componentWillUnmount() {
     window.removeEventListener("resize", this._handleWindowResize);
     const webampNode = this._webampNode;
@@ -81,7 +90,23 @@ class App extends React.Component<Props> {
     if (parentNode != null) {
       parentNode.removeChild(webampNode!);
     }
+
+    // This assumes only one this._focusNode per mount
+    // I'm not going to bother fixing this now. We'll solve those when we move to hooks here.
+    if (this._focusNode != null) {
+      this._focusNode.removeEventListener("focusout", this._clearFocus);
+    }
   }
+
+  _clearFocus: EventListener = e => {
+    const { target } = e;
+    if (this._focusNode == null || target == null) {
+      return;
+    }
+    if (!this._focusNode.contains(target as Element)) {
+      this.props.clearFocus();
+    }
+  };
 
   _handleWindowResize = () => {
     if (this._webampNode == null) {
@@ -132,13 +157,17 @@ class App extends React.Component<Props> {
     });
   }
 
+  _handleRef = (node: HTMLDivElement | null) => {
+    this._focusNode = node;
+  };
+
   render() {
     const { closed, container, filePickers } = this.props;
     if (closed || this._webampNode == null) {
       return null;
     }
     return ReactDOM.createPortal(
-      <React.Fragment>
+      <div ref={this._handleRef}>
         <Skin />
         <ContextMenuWrapper
           renderContents={() => <MainContextMenu filePickers={filePickers} />}
@@ -148,7 +177,7 @@ class App extends React.Component<Props> {
             container={container}
           />
         </ContextMenuWrapper>
-      </React.Fragment>,
+      </div>,
       this._webampNode
     );
   }
@@ -169,6 +198,9 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
     closeWindow: (id: WindowId) => dispatch(Actions.closeWindow(id)),
     browserWindowSizeChanged: (size: Size) =>
       dispatch(Actions.browserWindowSizeChanged(size)),
+    clearFocus: () => {
+      dispatch(Actions.setFocusedWindow(null));
+    },
   };
 };
 
