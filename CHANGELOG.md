@@ -4,12 +4,20 @@
 
 - Added optional configuration option `handleTrackDropEvent` which lets you decide how drop events get converted into tracks.
 - New Webamp instance methods: `.stop()`, `.getMediaStatus()`, and `.seekToTime(seconds)`. See [usage.md](./docs/usage.md) for more details.
+- Windows are now layered in the order in which they were focused ([5ee1a4](https://github.com/captbaritone/webamp/commit/5ee1a4f7b024d9e667c41d24c961404e463009c4))
+- When focusing somethign other than Webamp, it's now possible for no windows to be selected ([6132ac](https://github.com/captbaritone/webamp/commit/6132acdf2cd42b56bf757fa101fc08203e84fd67))
 
 ### Bug Fixes:
 
 - Fix a bug where context menus could appear in the wrong location ([95db2d](https://github.com/captbaritone/webamp/commit/95db2d08b6b189f5b9da577d23aca44b04c462a8))
 - Fix a bug where pressing next/previous when stopped would play the track ([#740](https://github.com/captbaritone/webamp/issues/730))
 - Fix a bug where `webamp.dispose` would error if the `#webamp` node had been reparented to anything other than `document.body`.
+- Fix a bug where tracks dropped in the main window were not autoplayed ([f8167d](https://github.com/captbaritone/webamp/commit/f8167dd32209e1a71958190abc037df79642a2cb))
+
+### Internal Improvements:
+
+- Upgraded [React Redux](https://github.com/reduxjs/react-redux) ([c3c3ad](https://github.com/captbaritone/webamp/commit/c3c3ad69abacdc34b58f3385b39b2634e9271590))
+- Several improvements to the performance of rendering Redux updates ([c75214](https://github.com/captbaritone/webamp/commit/c75214dcd7475b27f24c159cda26117a143ff740), [73f87b](https://github.com/captbaritone/webamp/commit/73f87be7c34acf5d0d5227a2a1b0e9718da11875), [4322aa](https://github.com/captbaritone/webamp/commit/4322aade4b5a60926c280e1807c4592cf915b497), [e89aa2](https://github.com/captbaritone/webamp/commit/e89aa266121ba7f890b96351d2da46314b7589e7),)
 
 ## 1.3.1 [CURRENT]
 
