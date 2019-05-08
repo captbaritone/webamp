@@ -38,22 +38,39 @@ function FocusTarget(props: Props) {
     return () => ref.removeEventListener("keydown", onKeyDown);
   }, [onKeyDown, windowId, focusedWindowId, ref]);
 
+  // It's possible for a child component to gain focus and then become
+  // unmounted. In that case, the browser will return focus to the `<body>`.
+  // In the following hook, use a `MutationObserver` to watch for that behavior
+  // and refocus the containing FocusTarget when it happens.
+  //
+  // I tried a number of other approaches using `focus/blur/focusin/focusout` on
+  // various DOM nodes, and was unable to find a solution which would trigger in
+  // this senario in Firefox. Therefore we use this `MutationObserver` approach.
   useEffect(() => {
+    // Only create the `MutationObserver` within the currently focused target.
     if (ref == null || windowId !== focusedWindowId) {
       return;
     }
 
-    // I give up. I can't figure out how to type this.
-    const out: EventListener = (e: any) => {
-      if (e.relatedTarget == null) {
+    const observer = new MutationObserver(mutations => {
+      // In the common case we won't have focused the body, so we can do this
+      // inexpensive check first to avoid calling the more expensive `O(n)`
+      // check of the individual mutations.
+      if (document.activeElement !== document.body) {
+        return;
+      }
+      if (mutations.some(mutation => mutation.removedNodes.length > 0)) {
         ref.focus();
       }
-    };
-    // https://github.com/facebook/react/issues/6410
-    // React does not implement focusout. In this case we prefer focusout to
-    // blur because it gets triggered when a child with focus unmounts.
-    ref.addEventListener("focusout", out);
-    return () => ref.removeEventListener("focusout", out);
+    });
+
+    observer.observe(ref, {
+      subtree: true,
+      attributes: false,
+      childList: true,
+    });
+
+    return () => observer.disconnect();
   }, [windowId, focusedWindowId, ref]);
 
   return (
