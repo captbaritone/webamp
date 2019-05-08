@@ -58,23 +58,30 @@ const EqualizerWindow = (props: StateProps & DispatchProps) => {
     <div id="equalizer-window" className={className}>
       <FocusTarget windowId={WINDOWS.EQUALIZER}>
         {props.shade ? (
-          <EqualizerShade />
+          <React.StrictMode>
+            <EqualizerShade />
+          </React.StrictMode>
         ) : (
           <div>
-            <div
-              className="equalizer-top title-bar draggable"
-              onDoubleClick={props.toggleEqualizerShadeMode}
-            >
+            <React.StrictMode>
               <div
-                id="equalizer-shade"
-                onClick={props.toggleEqualizerShadeMode}
-              />
-              <div id="equalizer-close" onClick={props.closeEqualizerWindow} />
-            </div>
-            <EqOn />
-            <EqAuto />
-            <EqGraph />
-            <PresetsContextMenu />
+                className="equalizer-top title-bar draggable"
+                onDoubleClick={props.toggleEqualizerShadeMode}
+              >
+                <div
+                  id="equalizer-shade"
+                  onClick={props.toggleEqualizerShadeMode}
+                />
+                <div
+                  id="equalizer-close"
+                  onClick={props.closeEqualizerWindow}
+                />
+              </div>
+              <EqOn />
+              <EqAuto />
+              <EqGraph />
+              <PresetsContextMenu />
+            </React.StrictMode>
             <Band id="preamp" band="preamp" onChange={props.setPreampValue} />
             <div id="plus12db" onClick={props.setEqToMax} />
             <div id="zerodb" onClick={props.setEqToMid} />

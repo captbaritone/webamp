@@ -97,70 +97,72 @@ export class MainWindow extends React.Component<Props> {
     });
 
     return (
-      <DropTarget
-        id="main-window"
-        className={className}
-        handleDrop={this.props.loadMedia}
-        onWheel={this.props.scrollVolume}
-      >
-        <FocusTarget windowId={WINDOWS.MAIN}>
-          <div
-            id="title-bar"
-            className="selected draggable"
-            onDoubleClick={this.props.toggleMainWindowShadeMode}
-          >
-            <ContextMenuTarget
-              id="option-context"
-              bottom
-              handle={<ClickedDiv id="option" title="Winamp Menu" />}
-            >
-              <MainContextMenu filePickers={filePickers} />
-            </ContextMenuTarget>
-            {mainShade && <MiniTime />}
-            <Minimize />
-            <Shade />
-            <Close />
-          </div>
-          <div className="status">
-            <ClutterBar />
-            {!working && <div id="play-pause" />}
+      <React.StrictMode>
+        <DropTarget
+          id="main-window"
+          className={className}
+          handleDrop={this.props.loadMedia}
+          onWheel={this.props.scrollVolume}
+        >
+          <FocusTarget windowId={WINDOWS.MAIN}>
             <div
-              id="work-indicator"
-              className={classnames({ selected: working })}
+              id="title-bar"
+              className="selected draggable"
+              onDoubleClick={this.props.toggleMainWindowShadeMode}
+            >
+              <ContextMenuTarget
+                id="option-context"
+                bottom
+                handle={<ClickedDiv id="option" title="Winamp Menu" />}
+              >
+                <MainContextMenu filePickers={filePickers} />
+              </ContextMenuTarget>
+              {mainShade && <MiniTime />}
+              <Minimize />
+              <Shade />
+              <Close />
+            </div>
+            <div className="status">
+              <ClutterBar />
+              {!working && <div id="play-pause" />}
+              <div
+                id="work-indicator"
+                className={classnames({ selected: working })}
+              />
+              <Time />
+            </div>
+            <Visualizer
+              // @ts-ignore Visualizer is not typed yet
+              analyser={this.props.analyser}
             />
-            <Time />
-          </div>
-          <Visualizer
-            // @ts-ignore Visualizer is not typed yet
-            analyser={this.props.analyser}
-          />
-          <div className="media-info">
-            <Marquee />
-            <Kbps />
-            <Khz />
-            <MonoStereo />
-          </div>
-          <MainVolume />
-          <MainBalance />
-          <div className="windows">
-            <EqToggleButton />
-            <PlaylistToggleButton />
-          </div>
-          <Position />
-          <ActionButtons />
-          <Eject />
-          <div className="shuffle-repeat">
-            <Shuffle />
-            <Repeat />
-          </div>
-          <a
-            id="about"
-            target="blank"
-            href="https://webamp.org/about"
-            title="About"
-          />
-        </FocusTarget>
-      </DropTarget>
+            <div className="media-info">
+              <Marquee />
+              <Kbps />
+              <Khz />
+              <MonoStereo />
+            </div>
+            <MainVolume />
+            <MainBalance />
+            <div className="windows">
+              <EqToggleButton />
+              <PlaylistToggleButton />
+            </div>
+            <Position />
+            <ActionButtons />
+            <Eject />
+            <div className="shuffle-repeat">
+              <Shuffle />
+              <Repeat />
+            </div>
+            <a
+              id="about"
+              target="blank"
+              href="https://webamp.org/about"
+              title="About"
+            />
+          </FocusTarget>
+        </DropTarget>
+      </React.StrictMode>
     );
   }
 }

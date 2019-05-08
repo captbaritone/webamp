@@ -111,65 +111,71 @@ class PlaylistWindow extends React.Component<Props> {
           handleDrop={this._handleDrop}
           onWheel={this.props.scrollVolume}
         >
-          <div className="playlist-top draggable" onDoubleClick={toggleShade}>
-            <div className="playlist-top-left draggable" />
-            {showSpacers && (
-              <div className="playlist-top-left-spacer draggable" />
-            )}
-            <div className="playlist-top-left-fill draggable" />
-            <div className="playlist-top-title draggable" />
-            {showSpacers && (
-              <div className="playlist-top-right-spacer draggable" />
-            )}
-            <div className="playlist-top-right-fill draggable" />
-            <div className="playlist-top-right draggable">
-              <div id="playlist-shade-button" onClick={toggleShade} />
-              <div id="playlist-close-button" onClick={close} />
+          <React.StrictMode>
+            <div className="playlist-top draggable" onDoubleClick={toggleShade}>
+              <div className="playlist-top-left draggable" />
+              {showSpacers && (
+                <div className="playlist-top-left-spacer draggable" />
+              )}
+              <div className="playlist-top-left-fill draggable" />
+              <div className="playlist-top-title draggable" />
+              {showSpacers && (
+                <div className="playlist-top-right-spacer draggable" />
+              )}
+              <div className="playlist-top-right-fill draggable" />
+              <div className="playlist-top-right draggable">
+                <div id="playlist-shade-button" onClick={toggleShade} />
+                <div id="playlist-close-button" onClick={close} />
+              </div>
             </div>
-          </div>
+          </React.StrictMode>
           <div className="playlist-middle draggable">
-            <div className="playlist-middle-left draggable" />
-            <div className="playlist-middle-center">
-              <TrackList />
-            </div>
+            <React.StrictMode>
+              <div className="playlist-middle-left draggable" />
+              <div className="playlist-middle-center">
+                <TrackList />
+              </div>
+            </React.StrictMode>
             <div className="playlist-middle-right draggable">
               <ScrollBar />
             </div>
           </div>
-          <div className="playlist-bottom draggable">
-            <div className="playlist-bottom-left draggable">
-              <AddMenu />
-              <RemoveMenu />
-              <SelectionMenu />
-              <MiscMenu />
+          <React.StrictMode>
+            <div className="playlist-bottom draggable">
+              <div className="playlist-bottom-left draggable">
+                <AddMenu />
+                <RemoveMenu />
+                <SelectionMenu />
+                <MiscMenu />
+              </div>
+              <div className="playlist-bottom-center draggable" />
+              <div className="playlist-bottom-right draggable">
+                {showVisualizer && (
+                  <div className="playlist-visualizer">
+                    {activateVisualizer && (
+                      <div className="visualizer-wrapper">
+                        <Visualizer
+                          // @ts-ignore Visualizer is not yet typed
+                          analyser={analyser}
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
+                <PlaylistActionArea />
+                <ListMenu />
+                <div
+                  id="playlist-scroll-up-button"
+                  onClick={this.props.scrollUpFourTracks}
+                />
+                <div
+                  id="playlist-scroll-down-button"
+                  onClick={this.props.scrollDownFourTracks}
+                />
+                <PlaylistResizeTarget />
+              </div>
             </div>
-            <div className="playlist-bottom-center draggable" />
-            <div className="playlist-bottom-right draggable">
-              {showVisualizer && (
-                <div className="playlist-visualizer">
-                  {activateVisualizer && (
-                    <div className="visualizer-wrapper">
-                      <Visualizer
-                        // @ts-ignore Visualizer is not yet typed
-                        analyser={analyser}
-                      />
-                    </div>
-                  )}
-                </div>
-              )}
-              <PlaylistActionArea />
-              <ListMenu />
-              <div
-                id="playlist-scroll-up-button"
-                onClick={this.props.scrollUpFourTracks}
-              />
-              <div
-                id="playlist-scroll-down-button"
-                onClick={this.props.scrollDownFourTracks}
-              />
-              <PlaylistResizeTarget />
-            </div>
-          </div>
+          </React.StrictMode>
         </DropTarget>
       </FocusTarget>
     );

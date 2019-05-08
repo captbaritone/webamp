@@ -135,32 +135,34 @@ function Milkdrop(props: Props) {
   }
 
   return (
-    <GenWindow
-      title={"Milkdrop"}
-      windowId={WINDOWS.MILKDROP}
-      onKeyDown={handleKeyDown}
-    >
-      {(windowSize: { width: number; height: number }) => {
-        const size = props.fullscreen ? screenSize : windowSize;
-        return (
-          <MilkdropContextMenu>
-            <Background>
-              <DropTarget handleDrop={props.handlePresetDrop}>
-                {props.overlay && <PresetOverlay {...size} />}
-                <Fullscreen
-                  enabled={props.fullscreen}
-                  onChange={props.setFullscreen}
-                >
-                  <div onDoubleClick={props.toggleFullscreen}>
-                    <Visualizer {...size} analyser={props.analyser} />
-                  </div>
-                </Fullscreen>
-              </DropTarget>
-            </Background>
-          </MilkdropContextMenu>
-        );
-      }}
-    </GenWindow>
+    <React.StrictMode>
+      <GenWindow
+        title={"Milkdrop"}
+        windowId={WINDOWS.MILKDROP}
+        onKeyDown={handleKeyDown}
+      >
+        {(windowSize: { width: number; height: number }) => {
+          const size = props.fullscreen ? screenSize : windowSize;
+          return (
+            <MilkdropContextMenu>
+              <Background>
+                <DropTarget handleDrop={props.handlePresetDrop}>
+                  {props.overlay && <PresetOverlay {...size} />}
+                  <Fullscreen
+                    enabled={props.fullscreen}
+                    onChange={props.setFullscreen}
+                  >
+                    <div onDoubleClick={props.toggleFullscreen}>
+                      <Visualizer {...size} analyser={props.analyser} />
+                    </div>
+                  </Fullscreen>
+                </DropTarget>
+              </Background>
+            </MilkdropContextMenu>
+          );
+        }}
+      </GenWindow>
+    </React.StrictMode>
   );
 }
 

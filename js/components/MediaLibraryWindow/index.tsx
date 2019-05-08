@@ -9,12 +9,14 @@ import LibraryLayout from "./LibraryLayout";
 export default class MediaLibraryWindow extends React.Component<{}> {
   render() {
     return (
-      <LibraryLayout
-        sidebar={<Sidebar />}
-        artists={<ArtistsTable />}
-        albums={<AlbumsTable />}
-        tracks={<TracksTable />}
-      />
+      <React.StrictMode>
+        <LibraryLayout
+          sidebar={<Sidebar />}
+          artists={<ArtistsTable />}
+          albums={<AlbumsTable />}
+          tracks={<TracksTable />}
+        />
+      </React.StrictMode>
     );
   }
 }
