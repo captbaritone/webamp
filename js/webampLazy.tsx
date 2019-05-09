@@ -390,7 +390,18 @@ class Winamp {
   async skinIsLoaded(): Promise<void> {
     // Wait for the skin to load.
     // TODO #leak
-    return storeHas(this.store, state => !state.display.loading);
+    await storeHas(this.store, state => !state.display.loading);
+    // We attempt to pre-resolve these promises before we declare the skin
+    // loaded. That's because `<EqGraph>` needs these in order to render fully.
+    // As long as these are resolved before we attempt to render, we can ensure
+    // that we will have all the data we need on first paint.
+    //
+    // Note: This won't help for non-initial skin loads.
+    await Promise.all([
+      Selectors.getPreampLineImage(this.store.getState()),
+      Selectors.getLineColorsImage(this.store.getState()),
+    ]);
+    return;
   }
 
   __loadSerializedState(serializedState: SerializedStateV1): void {

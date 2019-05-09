@@ -14,6 +14,17 @@ interface IniData {
   };
 }
 
+export function imgFromUrl(url: string): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      resolve(img);
+    };
+    img.onerror = reject;
+    img.src = url;
+  });
+}
+
 export const getTimeObj = (time: number | null): Time => {
   if (time == null) {
     // If we clean up `<MiniTime />` we don't need to do this any more.

@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { percentToRange, clamp } from "../../utils";
 import { BANDS } from "../../constants";
 import spline from "./spline";
+import * as Selectros from "../../selectors";
 
 const GRAPH_HEIGHT = 19;
 const GRAPH_WIDTH = 113;
@@ -18,12 +19,8 @@ class EqGraph extends React.Component {
     this.width = Number(this.canvas.width);
     this.height = Number(this.canvas.height);
 
-    if (this.props.lineColorsImage) {
-      this.createColorPattern(this.props.lineColorsImage);
-    }
-    if (this.props.preampLineUrl) {
-      this.createPreampLineImage(this.props.preampLineUrl);
-    }
+    this.createColorPattern(this.props.lineColorsImagePromise);
+    this.createPreampLineImage(this.props.preampLineImagePromise);
   }
 
   componentDidUpdate() {
@@ -33,37 +30,35 @@ class EqGraph extends React.Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    if (this.props.lineColorsImage !== nextProps.lineColorsImage) {
-      this.createColorPattern(nextProps.lineColorsImage);
+    if (
+      this.props.lineColorsImagePromise !== nextProps.lineColorsImagePromise
+    ) {
+      this.createColorPattern(nextProps.lineColorsImagePromise);
     }
-    if (this.props.preampLineUrl !== nextProps.preampLineUrl) {
-      this.createPreampLineImage(nextProps.preampLineUrl);
+    if (
+      this.props.preampLineImagePromise !== nextProps.preampLineImagePromise
+    ) {
+      this.createPreampLineImage(nextProps.preampLineImagePromise);
     }
     return true;
   }
 
-  createPreampLineImage(preampLineUrl) {
-    const preampLineImg = new Image();
-    preampLineImg.onload = () => {
-      this.setState({ preampLineImg });
-    };
-    preampLineImg.src = preampLineUrl;
+  async createPreampLineImage(preampLineImagePromise) {
+    const preampLineImg = await preampLineImagePromise;
+    this.setState({ preampLineImg });
   }
 
-  createColorPattern(lineColorsImage) {
-    const bgImage = new Image();
-    bgImage.onload = () => {
-      const { width, height } = bgImage;
-      const colorsCanvas = document.createElement("canvas");
-      const colorsCtx = colorsCanvas.getContext("2d");
-      colorsCanvas.width = width;
-      colorsCanvas.height = height;
-      colorsCtx.drawImage(bgImage, 0, 0, width, height);
-      this.setState({
-        colorPattern: this.canvasCtx.createPattern(colorsCanvas, "repeat-x"),
-      });
-    };
-    bgImage.src = lineColorsImage;
+  async createColorPattern(lineColorsImagePromise) {
+    const bgImage = await lineColorsImagePromise;
+    const { width, height } = bgImage;
+    const colorsCanvas = document.createElement("canvas");
+    const colorsCtx = colorsCanvas.getContext("2d");
+    colorsCanvas.width = width;
+    colorsCanvas.height = height;
+    colorsCtx.drawImage(bgImage, 0, 0, width, height);
+    this.setState({
+      colorPattern: this.canvasCtx.createPattern(colorsCanvas, "repeat-x"),
+    });
   }
 
   drawEqLine() {
@@ -136,6 +131,11 @@ class EqGraph extends React.Component {
 
 export default connect(state => ({
   ...state.equalizer.sliders,
-  lineColorsImage: state.display.skinImages.EQ_GRAPH_LINE_COLORS,
-  preampLineUrl: state.display.skinImages.EQ_PREAMP_LINE,
+  // WebampLazy.skinIsLoaded() makes an effort to ensure that these promises are
+  // already resolved before our initial render. This means our setStates
+  // should get called on a microtask and we should rerender with this loaded
+  // before we paint.
+  // This does not work when loading skins after initial render.
+  lineColorsImagePromise: Selectros.getLineColorsImage(state),
+  preampLineImagePromise: Selectros.getPreampLineImage(state),
 }))(EqGraph);
