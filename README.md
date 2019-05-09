@@ -92,7 +92,7 @@ There are some "feature flags" which you can manipulate by passing a specially c
 
 - `skinUrl` (string) Url of the default skin to use. Note, this file must be served with the correct Allows Origin header.
 - `audioUrl` (string) Url of the default audio file to use. Note, this file must be served with the correct Allows Origin header.
-- `initialState` (object) Override the [initial Redux state](js/reducers.js). Values from this object will be recursively merged into the actual default state.
+- `initialState` (object) Override the [initial Redux state](js/reducers/index.ts). Values from this object will be recursively merged into the actual default state.
 
 **Note:** These are intended mostly as development tools and are subject to change at any time.
 
