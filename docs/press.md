@@ -294,7 +294,7 @@
 
 ## Internet Archive
 
-On October 2nd, 2018 the Internet Archive annoucnded Webamp integration. Here are some articles covering that annoucement.
+On October 2nd, 2018 the Internet Archive announced Webamp integration. Here are some articles covering that annoucement.
 
 - https://blog.archive.org/2018/10/02/dont-click-on-the-llama/
 - https://www.ghacks.net/2018/10/04/internet-archive-releases-winamp-skins-collection/?utm_source=dlvr.it&utm_medium=twitter
