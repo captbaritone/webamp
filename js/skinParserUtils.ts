@@ -31,16 +31,7 @@ export async function getFileFromZip(
 }
 
 function fallbackGetImgFromBlob(blob: Blob): Promise<HTMLImageElement> {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => {
-      // Schedule cleanup of object url?
-      // Maybe on next tick, or with requestidlecallback
-      resolve(img);
-    };
-    img.onerror = () => reject("Failed to decode image");
-    img.src = URL.createObjectURL(blob);
-  });
+  return Utils.imgFromUrl(URL.createObjectURL(blob));
 }
 
 export function getImgFromBlob(
