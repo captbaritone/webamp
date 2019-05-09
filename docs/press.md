@@ -34,7 +34,7 @@
 
 ## Documentation
 
-- [Redux Documentation](https://redux.js.org/docs/introduction/LearningResources.html#apps-and-examples)
+- [Redux Documentation](https://redux.js.org/introduction/learning-resources#apps-and-examples)
 
 ## Podcast Mentions
 
@@ -103,7 +103,7 @@
 - https://tech.onliner.by/2018/02/09/winamp-5
 - http://fonotekaelektrika.com/2018/02/winamp-%D0%B2-%D0%B1%D1%80%D0%B0%D1%83%D0%B7%D1%8A%D1%80/
 - https://toocha.me/winamp-web/
-- https://manjaro.ru/blog/soft/pojavilsja-reliz-winamp2-js-desktop.html (forum post)
+- https://manjaro.ru/soft/poyavilsya-reliz-winamp2-js-desktop.html (forum post)
 - https://mixed.news/news/1123379
 - https://banana.by/index.php?newsid=269984
 - https://zen.yandex.ru/media/apple-iphone.ru/legendarnyi-winamp-teper-mojno-polnocenno-ispolzovat-iz-liubogo-brauzera-5a8280f4a936f46fea003489

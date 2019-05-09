@@ -13,7 +13,7 @@ Within the core library, state is managed by [Redux]. In fact, Redux's own docs 
 
 Our reducers, and the states they control, can be found in the [reducers](../js/reducers/) directory.
 
-Async actions are handled using the [redux-thunk]. You can find all of the actionCreators in the [actionCreators.ts](../js/actionCreators.ts) file. This is the most complex portion of the app, as it contains all the coordination of our many async actions.
+Async actions are handled using the [redux-thunk]. You can find all of the actionCreators in the [actionCreators](../js/actionCreators/index.ts) file. This is the most complex portion of the app, as it contains all the coordination of our many async actions.
 
 Any non-trivial value derived from state is computed inside a [selector](../js/selectors.ts). Care has been taken to ensure that the structure of the state allows for most common selectors to be a constant time operation. For selectors that are `O(n)`, we use [reselect] to ensure the calculation is only done when dependent values change.
 
@@ -39,7 +39,7 @@ In addition to the sprite sheets there are some config files in various formats,
 
 From there, our `Skin` component has a `ClipPaths` sub component which ouputs a series of `<svg>`s representing the clip path for each window into the DOM. Finally, CSS `clip-path` rules representing each window are dynamically generated and added to the injected style sheet.
 
-The parsing of skin files is handed in [skinParser.js](../js/skinParser.js). Rendering the `<svg>` and `<style>` tags is done in [Skin.js](../js/components/Skin.ts). The definitions for all the individual sprites live in [skinSpirtes.js](../js/skinSprites.ts), and the mapping of skin spirtes to CSS rules lives in [skinSelectors.js](../js/skinSelectors.ts).
+The parsing of skin files is handed in [skinParser.js](../js/skinParser.js). Rendering the `<svg>` and `<style>` tags is done in [Skin.js](../js/components/Skin.js). The definitions for all the individual sprites live in [skinSpirtes.js](../js/skinSprites.ts), and the mapping of skin spirtes to CSS rules lives in [skinSelectors.js](../js/skinSelectors.ts).
 
 ## CSS
 
@@ -54,7 +54,7 @@ All windows are rendred with `image-rendering: pixelated;` (or equivilant) so th
 
 ## Visualizer
 
-The visualizer in the main window is a React component [Visualizer.js](../js/components/MainWindow/Visualizer.js) that gets passed skin data from the Redux store, an [analyser node](https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode) and some various user settings (which visualizer should be shown? are we playing?). All computation is done such that it works both in the "regular" mode, but also in shade mode. In shade mode the dimension values are just different.
+The visualizer in the main window is a React component [Visualizer.js](../js/components/Visualizer.js) that gets passed skin data from the Redux store, an [analyser node](https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode) and some various user settings (which visualizer should be shown? are we playing?). All computation is done such that it works both in the "regular" mode, but also in shade mode. In shade mode the dimension values are just different.
 
 To improve performance, two off-screen canvases are pre-rendered whenever the skin changes. These are then used as components of the per-frame rendering:
 
@@ -65,12 +65,12 @@ The actual canvas is rendered at twice the visible size so that "high density" o
 
 ## Equalizer
 
-The audio portion of the equalizer is handed in the Media class (see above) but the visual representation of the current equalizer settings is created using [cardinal-spline-js] which calculates the curved line for us.
+The audio portion of the equalizer is handed in the Media class (see above) but the visual representation of the current equalizer settings is created using [spline.js] which calculates the curved line for us.
 
 The coloring of the curved line is achived by extracting the single-pixel-wide, many-pixel-tall sprite from the skin file, passing it through the Redux state to the graph component, and then drawing the splined line with [CanvasRenderingContext2D.createPattern()
 ](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/createPattern).
 
-You can see the implementation of the equalizer graph in [EqGraph.js](../js/components/EqualizerWindow/EqGraph.tsx).
+You can see the implementation of the equalizer graph in [EqGraph.js](../js/components/EqualizerWindow/EqGraph.js).
 
 The equalizer window can also load/geneate `.eqf` files. The loading and parsing of these has been extracted into its own NPM module: [winamp-eqf](https://www.npmjs.com/package/winamp-eqf).
 
@@ -91,7 +91,7 @@ Window position is managed in the [WindowManager.tsx](../js/components/WindowMan
 - Snapping windows to the browser edges
 - Creating the initial layout of the windows
 
-Moving windows when their neighbors are resized via "double" or "shade" mode toggles is handled by the `withWindowGraphIntegrity()` higher order action creator in [actionCreators.ts](../js/actionCreators.ts). It works by:
+Moving windows when their neighbors are resized via "double" or "shade" mode toggles is handled by the `withWindowGraphIntegrity()` higher order action creator in [actionCreators](../js/actionCreators/index.ts). It works by:
 
 1. Computing a graph where each window is a node, and the edges are where those windows are "touching".
 2. Dispatching the passed in action.
@@ -104,8 +104,8 @@ Webamp allows you to drag files (media files, skins and `.eqf` equalizer presets
 [redux]: https://redux.js.org/
 [redux-thunk]: https://github.com/gaearon/redux-thunk
 [reselect]: https://github.com/reactjs/reselect
-[connect]: https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options
+[connect]: https://react-redux.js.org/api/connect
 [jszip]: https://stuk.github.io/jszip/
 [data uris]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
 [98.js.org]: https://98.js.org
-[cardinal-spline-js]: https://github.com/epistemex/cardinal-spline-js
+[spline.js]: ../js/Components/EqualizerWindow/spline.js
