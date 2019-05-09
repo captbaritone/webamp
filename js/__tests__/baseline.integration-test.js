@@ -18,7 +18,7 @@ test("can 'pose' for a screenshot", async () => {
 test("can load a skin via the query params", async () => {
   await page.goto(
     // If this test starts to fail, check that the cache-bust location of the skin has not changed.
-    `http://localhost:8080/?skinUrl=skins/MacOSXAqua1-5-88dbd4e043795c98625462a908a2d965.wsz#{"disableMarquee":true}`
+    `http://localhost:8080/?skinUrl=_/skins/MacOSXAqua1-5-88dbd4e043795c98625462a908a2d965.wsz#{"disableMarquee":true}`
   );
   expect(await page.screenshot()).toMatchImageSnapshot();
 });
@@ -26,7 +26,6 @@ test("can load a skin via the query params", async () => {
 test("should render the Topaz skin", async () => {
   await page.goto(`http://localhost:8080/#{"disableMarquee":true}`);
   expect(page).toUploadFile("#webamp-file-input", "./skins/TopazAmp1-2.wsz");
-  await new Promise(resolve => setTimeout(resolve, 200));
   expect(await page.screenshot()).toMatchImageSnapshot();
 });
 
