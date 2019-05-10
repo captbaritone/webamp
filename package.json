@@ -23,7 +23,7 @@
     "stats": "webpack --config=demo/config/webpack.prod.js --json > stats.json",
     "stats-library": "webpack --config=config/webpack.library.js --json > stats.json",
     "test": "jest --projects config/jest.unit.js",
-    "travis-tests": "npm run integration-tests",
+    "travis-tests": "npm run test && npm run test && npm run type-check && npm run build && npm run build-library && npm run weight && npm run integration-tests",
     "tdd": "jest --projects config/jest.unit.js --watch",
     "format": "prettier --write \"**/*.{js,ts,tsx,d.ts,css}\"",
     "integration-tests": "npm run build -- --display=errors-only && jest --projects config/jest.integration.js --runInBand",
