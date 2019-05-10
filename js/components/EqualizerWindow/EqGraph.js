@@ -49,15 +49,11 @@ class EqGraph extends React.Component {
   }
 
   async createColorPattern(lineColorsImagePromise) {
-    const bgImage = await lineColorsImagePromise;
-    const { width, height } = bgImage;
-    const colorsCanvas = document.createElement("canvas");
-    const colorsCtx = colorsCanvas.getContext("2d");
-    colorsCanvas.width = width;
-    colorsCanvas.height = height;
-    colorsCtx.drawImage(bgImage, 0, 0, width, height);
     this.setState({
-      colorPattern: this.canvasCtx.createPattern(colorsCanvas, "repeat-x"),
+      colorPattern: this.canvasCtx.createPattern(
+        await lineColorsImagePromise,
+        "repeat-x"
+      ),
     });
   }
 
