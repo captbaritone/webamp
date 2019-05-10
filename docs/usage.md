@@ -93,6 +93,39 @@ const track = {
 };
 ```
 
+To set the initial layout, initialize `Webamp` with an `__initialWindowLayout` property, like so:
+
+```
+__initialWindowLayout: {
+    main: {
+        position: {
+            x: 0,
+            y: 0
+        }
+    },
+    equalizer: {
+        position: {
+            x: 0,
+            y: 116
+        }
+    },
+    playlist: {
+        position: {
+            x: 0,
+            y: 232
+        },
+        size: [0, 4]
+    },
+    milkdrop: {
+        position: {
+            x: 275,
+            y: 0
+        },
+        size: [7, 12]
+    }
+}
+```
+
 ## Static Methods
 
 The `Winamp` class has the following _static_ methods:
