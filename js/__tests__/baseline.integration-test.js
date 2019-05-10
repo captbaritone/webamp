@@ -2,30 +2,32 @@ const { toMatchImageSnapshot } = require("jest-image-snapshot");
 
 expect.extend({ toMatchImageSnapshot });
 
+const DOMAIN = "http://localhost:8080";
+
 // Hack to ensure changing the hash causes a page reload
 beforeEach(async () => page.goto(`http://example.com`));
 
 test("should render the default skin", async () => {
-  await page.goto(`http://localhost:8080/#{"disableMarquee":true}`);
+  await page.goto(`${DOMAIN}/#{"disableMarquee":true}`);
   expect(await page.screenshot()).toMatchImageSnapshot();
 });
 
 test("can 'pose' for a screenshot", async () => {
-  await page.goto(`http://localhost:8080/?screenshot=1`);
+  await page.goto(`${DOMAIN}/?screenshot=1`);
   expect(await page.screenshot()).toMatchImageSnapshot();
 });
 
 test("can load a skin via the query params", async () => {
   await page.goto(
     // If this test starts to fail, check that the cache-bust location of the skin has not changed.
-    `http://localhost:8080/?skinUrl=_/skins/MacOSXAqua1-5-88dbd4e043795c98625462a908a2d965.wsz#{"disableMarquee":true}`
+    `${DOMAIN}/?skinUrl=_/skins/MacOSXAqua1-5-88dbd4e043795c98625462a908a2d965.wsz#{"disableMarquee":true}`
   );
   await page.evaluate(() => window.__webamp.skinIsLoaded());
   expect(await page.screenshot()).toMatchImageSnapshot();
 });
 
 test("should render the Topaz skin", async () => {
-  await page.goto(`http://localhost:8080/#{"disableMarquee":true}`);
+  await page.goto(`${DOMAIN}/#{"disableMarquee":true}`);
   await expect(page).toUploadFile(
     "#webamp-file-input",
     "./skins/TopazAmp1-2.wsz"
@@ -35,7 +37,7 @@ test("should render the Topaz skin", async () => {
 });
 
 test("should render a skin that defines transparent regions", async () => {
-  await page.goto(`http://localhost:8080/#{"disableMarquee":true}`);
+  await page.goto(`${DOMAIN}/#{"disableMarquee":true}`);
   await expect(page).toUploadFile(
     "#webamp-file-input",
     "./skins/Green-Dimension-V2.wsz"
@@ -45,7 +47,7 @@ test("should render a skin that defines transparent regions", async () => {
 });
 
 test("uses the volume spirtes as a fallback when balance spirtes are missing", async () => {
-  await page.goto(`http://localhost:8080/#{"disableMarquee":true}`);
+  await page.goto(`${DOMAIN}/#{"disableMarquee":true}`);
   await expect(page).toUploadFile(
     "#webamp-file-input",
     "./skins/AmigaPPC-dark.wsz"
@@ -55,7 +57,7 @@ test("uses the volume spirtes as a fallback when balance spirtes are missing", a
 });
 
 test("pads empty space in the marquee with the space character", async () => {
-  await page.goto(`http://localhost:8080/#{"disableMarquee":true}`);
+  await page.goto(`${DOMAIN}/#{"disableMarquee":true}`);
   // This skin has noticeable light blue where it expects the marquee to always cover.
   await expect(page).toUploadFile(
     "#webamp-file-input",
