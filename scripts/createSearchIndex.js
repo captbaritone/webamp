@@ -1,9 +1,16 @@
+const path = require("path");
+const fs = require("fs");
 const skins = require("../src/skins.json");
 const algoliasearch = require("algoliasearch");
 const { getSkinMetadata } = require("./utils");
 
 const client = algoliasearch("HQ9I5Z6IM5", "f5357f4070cdb6ed652d9c3feeede89f");
 const index = client.initIndex("Skins");
+
+const CACHE_PATH = "/Volumes/Mobile Backup/skins/cache/";
+const info = JSON.parse(
+  fs.readFileSync(path.join(CACHE_PATH, "info.json"), "utf8")
+);
 
 function tuncate(str, len) {
   const overflow = str.length - len;
@@ -18,38 +25,46 @@ function tuncate(str, len) {
   return `${start} ########### ${end}`;
 }
 
-async function buildSkinIndex(hash) {
-  const textMetadata = await getSkinMetadata(hash, "extracted-data");
+async function buildSkinIndex(skin) {
+  const { md5, filePaths } = skin;
+  if (!filePaths || filePaths.length === 0) {
+    console.warn("no file name for ", md5);
+    return;
+  }
+  const fileName = path.basename(filePaths[0]);
+  let readmeText = null;
+  if (skin.readmePath) {
+    readmeText = tuncate(fs.readFileSync(skin.readmePath, "utf8"), 4800);
+  }
   return {
-    objectID: hash,
-    md5: hash,
-    fileName: skins[hash].fileName,
-    emails: textMetadata.emails,
-    readmeText: tuncate(textMetadata.raw, 4800)
+    objectID: skin.md5,
+    md5,
+    fileName,
+    emails: skin.emails || null,
+    readmeText
   };
 }
 
 const indexesPromise = Promise.all(
-  Object.keys(skins).map(hash => {
-    return buildSkinIndex(hash);
-  })
+  Object.values(info)
+    .filter(skin => skin.type === "CLASSIC")
+    .map(skin => {
+      return buildSkinIndex(skin);
+    })
 );
 
 async function go() {
+  console.log("Building index");
   const indexes = await indexesPromise;
-  const large = indexes.filter(index => {
-    return index.readmeText.length > 4790;
-  });
-  large.map(l => {
-    return l.fileName;
-  });
 
-  return new Promise((resolve, reject) => {
+  console.log("Writing index");
+  const results = await new Promise((resolve, reject) => {
     index.saveObjects(indexes, function(err, content) {
       if (err != null) reject(err);
       resolve(content);
     });
   });
+  console.log("done!", results);
 }
 
 go(); // .then(content => console.log("Updated index for:", content.length));

@@ -4,6 +4,7 @@ import * as Utils from "./utils";
 import * as Selectors from "./redux/selectors";
 import * as Actions from "./redux/actionCreators";
 import Disposable from "./Disposable";
+import { ReactComponent as AlgoliaLogo } from "./searchByAlgoliaDarkbBackground.svg";
 
 class Header extends React.Component {
   constructor(props) {
@@ -52,7 +53,14 @@ class Header extends React.Component {
           </a>
         </h1>
         <span style={{ flexGrow: 1 }} />
+        <AlgoliaLogo
+          style={{
+            opacity: this.props.searchQuery.length > 0 ? 0.5 : 0,
+            transition: "opacity ease-in 300ms"
+          }}
+        />
         <input
+          style={{ marginLeft: 10 }}
           type="text"
           onChange={e => this.props.setSearchQuery(e.target.value)}
           value={this.props.searchQuery || ""}
