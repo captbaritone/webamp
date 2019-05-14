@@ -21,7 +21,7 @@ Or, you can include it via a script tag:
 
 ```html
 <!-- You can use this URL, or download it and check it into your own project -->
-<script src="https://unpkg.com/webamp@1.0.0/built/webamp.bundle.min.js"></script>
+<script src="https://unpkg.com/webamp@1.4.0/built/webamp.bundle.min.js"></script>
 ```
 
 ## Create a container
@@ -46,7 +46,9 @@ if(!Webamp.browserIsSupported()) {
     throw new Error("What's the point of anything?")
 }
 
+// All configuration options are optional.
 const webamp = new Webamp({
+  // Optional.
   initialTracks: [{
     metaData: {
       artist: "DJ Mike Llama",
@@ -154,7 +156,14 @@ const options = {
         // A boolean indicating if this options should be made
         // available when the user is offline.
         requiresNetwork: true
-    }]
+    }],
+
+    // Optional. Provide a custom way to derive `Track` objects from a drop event.
+    // Useful if your website has some DOM representation of a track that you can map to a URL/blob.
+    handleTrackDropEvent: async (e) => {
+        // Return an array of `Track` objects, see documentation below, or `null` to get the default drop behavior.
+        // You may optionally wrap the return value in a promise.
+    }
 };
 const webamp = new Webamp(options);
 ```
@@ -231,7 +240,7 @@ webamp.seekBackward(10);
 
 Seek to a given time within the current track.
 
-**Since** Unreleased
+**Since** 1.4.0
 
 ```JavaScript
 webamp.seekToTime(15.5);
@@ -241,7 +250,7 @@ webamp.seekToTime(15.5);
 
 Get the current "playing" status. The return value is one of: `"PLAYING"`, `"STOPPED"`, or `"PAUSED"`.
 
-**Since** Unreleased
+**Since** 1.4.0
 
 ```JavaScript
 const isPlaying = webamp.getMediaStatus() === "PLAYING";
@@ -271,7 +280,7 @@ webamp.play();
 
 Stop the currently playing audio. Equivilant to pressing the "stop" button.
 
-**Since** unreleased
+**Since** 1.4.0
 
 ```JavaScript
 webamp.stop();

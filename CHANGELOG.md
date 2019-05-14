@@ -1,4 +1,4 @@
-## NEXT [UNRELEASED]
+## 1.4.0
 
 ### Features
 

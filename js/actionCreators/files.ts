@@ -188,7 +188,7 @@ export function loadMedia(
     if (handleTrackDropEvent) {
       const tracks = await handleTrackDropEvent(e);
 
-      if (tracks) {
+      if (tracks != null) {
         dispatch(loadMediaFiles(tracks, loadStyle, atIndex));
         return;
       }

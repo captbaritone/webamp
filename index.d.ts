@@ -127,6 +127,10 @@ interface Options {
     }
   ];
   zIndex?: number;
+
+  handleTrackDropEvent?: (
+    e: React.DragEvent<HTMLDivElement>
+  ) => Track[] | null | Promise<Track[] | null>;
 }
 
 export default class Webamp {

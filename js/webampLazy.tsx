@@ -105,16 +105,16 @@ interface Options {
       requiresNetwork: boolean;
     }
   ];
-  zIndex: number;
+  zIndex?: number;
+  handleTrackDropEvent?: (
+    e: React.DragEvent<HTMLDivElement>
+  ) => Track[] | null | Promise<Track[] | null>;
 }
 
 interface PrivateOptions {
   avaliableSkins?: { url: string; name: string }[]; // Old misspelled name
   requireJSZip(): Promise<never>; // TODO: Type JSZip
   requireMusicMetadata(): Promise<any>; // TODO: Type musicmetadata
-  handleTrackDropEvent?: (
-    e: React.DragEvent<HTMLDivElement>
-  ) => Track[] | null | Promise<Track[] | null>;
   __initialState?: AppState;
   __customMiddlewares?: Middleware[];
   __enableMediaLibrary?: boolean;
