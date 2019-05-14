@@ -5,7 +5,7 @@
 - Added optional configuration option `handleTrackDropEvent` which lets you decide how drop events get converted into tracks.
 - New Webamp instance methods: `.stop()`, `.getMediaStatus()`, and `.seekToTime(seconds)`. See [usage.md](./docs/usage.md) for more details.
 - Windows are now layered in the order in which they were focused ([5ee1a4](https://github.com/captbaritone/webamp/commit/5ee1a4f7b024d9e667c41d24c961404e463009c4))
-- When focusing somethign other than Webamp, it's now possible for no windows to be selected ([6132ac](https://github.com/captbaritone/webamp/commit/6132acdf2cd42b56bf757fa101fc08203e84fd67))
+- When focusing something other than Webamp, it's now possible for no windows to be selected ([6132ac](https://github.com/captbaritone/webamp/commit/6132acdf2cd42b56bf757fa101fc08203e84fd67))
 
 ### Bug Fixes:
 
