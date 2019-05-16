@@ -1,8 +1,6 @@
 const path = require("path");
 const fs = require("fs");
-const skins = require("../src/skins.json");
 const algoliasearch = require("algoliasearch");
-const { getSkinMetadata } = require("./utils");
 
 const client = algoliasearch("HQ9I5Z6IM5", "f5357f4070cdb6ed652d9c3feeede89f");
 const index = client.initIndex("Skins");
@@ -38,9 +36,9 @@ async function buildSkinIndex(skin) {
   }
   return {
     objectID: skin.md5,
-    md5,
-    fileName,
-    emails: skin.emails || null,
+    //md5,
+    //fileName,
+    // emails: skin.emails || null,
     readmeText
   };
 }
@@ -48,18 +46,16 @@ async function buildSkinIndex(skin) {
 const indexesPromise = Promise.all(
   Object.values(info)
     .filter(skin => skin.type === "CLASSIC")
-    .map(skin => {
-      return buildSkinIndex(skin);
-    })
+    .filter(skin => skin.readmePath)
+    .map(skin => buildSkinIndex(skin))
 );
 
 async function go() {
-  console.log("Building index");
   const indexes = await indexesPromise;
 
   console.log("Writing index");
   const results = await new Promise((resolve, reject) => {
-    index.saveObjects(indexes, function(err, content) {
+    index.partialUpdateObjects(indexes, function(err, content) {
       if (err != null) reject(err);
       resolve(content);
     });

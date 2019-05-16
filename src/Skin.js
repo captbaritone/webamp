@@ -61,7 +61,7 @@ export default class Skin extends React.Component {
           }}
           className={`screenshot ${this.state.loaded ? "loaded" : ""}`}
           onLoad={this._handleLoad}
-          alt={Utils.filenameFromHash(this.props.hash)}
+          alt={this.props.fileName}
         />
       </a>
     );

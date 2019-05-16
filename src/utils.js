@@ -1,11 +1,5 @@
-import skins from "./skins.json";
-
 export function screenshotUrlFromHash(hash) {
   return `https://s3.amazonaws.com/webamp-uploaded-skins/screenshots/${hash}.png`;
-}
-
-export function filenameFromHash(hash) {
-  return skins[hash].fileName;
 }
 
 export function skinUrlFromHash(hash) {
@@ -13,7 +7,8 @@ export function skinUrlFromHash(hash) {
 }
 
 export function getPermalinkUrlFromHash(hash) {
-  return `/skin/${hash}/${filenameFromHash(hash)}/`;
+  // TODO: Make this a selector
+  return `/skin/${hash}/${hash}/`;
 }
 
 export function getAbsolutePermalinkUrlFromHash(hash) {

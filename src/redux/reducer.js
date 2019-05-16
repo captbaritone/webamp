@@ -1,5 +1,11 @@
-import skins from "../skins.json";
+import skinChunkData from "../skinData/skins.json";
+import firstSkinChunk from "../skinData/skins-0.json";
 import { ABOUT_PAGE } from "../constants";
+
+const skins = {};
+firstSkinChunk.forEach(skin => {
+  skins[skin.md5] = skin;
+});
 
 const defaultState = {
   searchQuery: null,
@@ -10,7 +16,8 @@ const defaultState = {
   focusedSkinFile: null,
   fileExplorerOpen: false,
   activeContentPage: null,
-  skins
+  skins,
+  skinChunkData
 };
 
 export default function reducer(state = defaultState, action) {

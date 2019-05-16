@@ -7,8 +7,7 @@ const info = JSON.parse(
 );
 
 const getFileData = async () => {
-  const fileData = {};
-  await Bluebird.map(
+  const fileData = await Bluebird.map(
     Object.values(info).filter(skin => skin.type === "CLASSIC"),
     async skin => {
       const md5 = skin.md5;
@@ -18,22 +17,43 @@ const getFileData = async () => {
         return;
       }
       if (skin.twitterLikes) {
-        console.log({ skin });
+        // console.log({ skin });
       }
       const fileName = path.basename(filePaths[0]);
-      fileData[md5] = {
+      return {
         color: skin.averageColor,
         favorites: skin.twitterLikes,
-        fileName
+        fileName,
+        md5
       };
     },
     { concurrency: 10 }
   );
-  return fileData;
+  const orderedFileData = fileData.sort((a, b) => {
+    return a.favorites < b.favorites;
+  });
+  return orderedFileData.map(({ favorites, ...rest }) => rest);
 };
 
-console.log("Extracting skin data from cache");
+const CHUNK_SIZE = 100;
 getFileData().then(data => {
-  const json = JSON.stringify(data);
-  fs.writeFileSync("src/skins.json", json, "utf8");
+  let start = 0;
+  const chunkFileNames = [];
+  let chunkNumber = 0;
+  while (start <= data.length) {
+    const end = start + CHUNK_SIZE;
+
+    const chunk = data.slice(start, end);
+    const json = JSON.stringify(chunk);
+    const fileName = `skins-${chunkNumber}.json`;
+    fs.writeFileSync(path.join("src", "skinData", fileName), json, "utf8");
+    chunkFileNames.push(fileName);
+    start = end;
+    chunkNumber++;
+  }
+  const json = JSON.stringify({
+    numberOfSkins: data.length,
+    chunkFileNames
+  });
+  fs.writeFileSync("src/skinData/skins.json", json, "utf8");
 });

@@ -182,8 +182,8 @@ class FocusedSkin extends React.Component {
                   transition: "opacity 0.2s ease-out"
                 }}
                 onLoad={() => this.setState({ previewLoaded: true })}
-                src={Utils.screenshotUrlFromHash(this.props.hash)}
-                alt={Utils.filenameFromHash(this.props.hash)}
+                src={this.props.fileName}
+                alt={this.props.fileName}
               />
             )}
           </div>
@@ -220,11 +220,11 @@ class FocusedSkin extends React.Component {
               </span>
             </div>
           )}
-          {Utils.filenameFromHash(this.props.hash)}
+          {this.props.fileName}
           {" ["}
           <DownloadLink
             href={Utils.skinUrlFromHash(this.props.hash)}
-            download={Utils.filenameFromHash(this.props.hash)}
+            download={this.props.fileName}
           >
             Download
           </DownloadLink>
@@ -255,10 +255,11 @@ class FocusedSkin extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, ownProps) => ({
   hash: Selectors.getSelectedSkinHash(state),
   initialPosition: Selectors.getSelectedSkinPosition(state),
-  fileExplorerOpen: Selectors.getFileExplorerOpen(state)
+  fileExplorerOpen: Selectors.getFileExplorerOpen(state),
+  fileName: state.skins[ownProps.md5].fileName
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -111,7 +111,7 @@ class SkinTable extends React.Component {
 
   _rangeToRender() {
     const { rowHeight, columnCount } = this._getTableDimensions();
-    const hashes = this.props.skinHashes;
+    const { skinCount } = this.props;
     // Add one since we might be showing half a row at the top, and half a row at the bottom
     const visibleRows = Math.ceil(this.state.windowHeight / rowHeight) + 1;
 
@@ -120,7 +120,7 @@ class SkinTable extends React.Component {
     const firstHashToRender = topRow * columnCount;
     const lastHashToRender = Math.min(
       firstHashToRender + visibleRows * columnCount,
-      hashes.length
+      skinCount
     );
 
     return { start: firstHashToRender, end: lastHashToRender };
@@ -128,6 +128,7 @@ class SkinTable extends React.Component {
 
   render() {
     const { columnWidth, rowHeight, columnCount } = this._getTableDimensions();
+    const { skinCount } = this.props;
     const hashes = this.props.skinHashes;
 
     const overscanRowsDown =
@@ -150,7 +151,7 @@ class SkinTable extends React.Component {
     );
     const lastOverscanHashToRender = Math.min(
       lastHashToRender + overscanRowsDown * columnCount,
-      hashes.length
+      skinCount
     );
 
     const skinElements = [];
@@ -161,27 +162,46 @@ class SkinTable extends React.Component {
       const top = row * rowHeight;
       const column = i % columnCount;
       const left = column * columnWidth;
-      skinElements.push(
-        <Skin
-          href={`https://webamp.org/?skinUrl=https://s3.amazonaws.com/webamp-uploaded-skins/skins/${hash}.wsz`}
-          src={Utils.screenshotUrlFromHash(hash)}
-          key={hash}
-          hash={hash}
-          top={top}
-          left={left}
-          width={columnWidth}
-          height={rowHeight}
-          color={this.props.skins[hash].color}
-          isOverscan={isOverscan}
-          selectSkin={this._handleSelectSkin}
-        />
-      );
+      if (hash == null) {
+        // TODO: Pick a random color?
+        // TODO: What happens if they click?
+        skinElements.push(
+          <div
+            key={`placeholder-${i}`}
+            style={{
+              top,
+              left,
+              width: columnWidth,
+              height: rowHeight,
+              position: "absolute",
+              backgroundColor: "magenta"
+            }}
+          />
+        );
+      } else {
+        skinElements.push(
+          <Skin
+            href={`https://webamp.org/?skinUrl=https://s3.amazonaws.com/webamp-uploaded-skins/skins/${hash}.wsz`}
+            src={Utils.screenshotUrlFromHash(hash)}
+            key={hash}
+            hash={hash}
+            top={top}
+            left={left}
+            width={columnWidth}
+            height={rowHeight}
+            color={this.props.skins[hash].color}
+            isOverscan={isOverscan}
+            selectSkin={this._handleSelectSkin}
+            fileName={this.props.skins[hash].fileName}
+          />
+        );
+      }
     }
     return (
       <div
         id="infinite-skins"
         style={{
-          height: Math.ceil(hashes.length / columnCount) * SKIN_HEIGHT,
+          height: Math.ceil(this.props.skinCount / columnCount) * SKIN_HEIGHT,
           position: "relative"
         }}
       >
@@ -194,6 +214,8 @@ class SkinTable extends React.Component {
 const mapStateToProps = state => ({
   skinHashes: Selectors.getMatchingSkinHashes(state),
   skins: Selectors.getSkins(state),
+  // TODO: #lazy Get the length from the chunk metadata
+  skinCount: state.skinChunkData.numberOfSkins,
   selectedSkinHash: Selectors.getSelectedSkinHash(state)
 });
 
