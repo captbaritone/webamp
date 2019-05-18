@@ -8,7 +8,7 @@ export function search(query) {
     index.search(
       {
         query,
-        attributes: ["objectID", "fileName"],
+        attributes: ["objectID", "fileName", "color"],
         attributesToHighlight: [],
         hitsPerPage: 1000,
         // https://www.algolia.com/doc/api-reference/api-parameters/typoTolerance/

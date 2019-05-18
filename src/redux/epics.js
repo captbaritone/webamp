@@ -133,7 +133,7 @@ const searchEpic = actions =>
           const matchingSkins = content.hits.map(hit => ({
             hash: hit.objectID,
             fileName: hit.fileName,
-            color: "pink" // TODO Index the color
+            color: hit.color
           }));
           return Actions.gotNewMatchingSkins(matchingSkins);
         })

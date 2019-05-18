@@ -67,8 +67,7 @@ const mapStateToProps = (state, ownProps) => {
   });
   return {
     requestToken,
-    skin,
-    selectedSkinHash: Selectors.getSelectedSkinHash(state)
+    skin
   };
 };
 

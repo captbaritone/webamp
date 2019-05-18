@@ -35,24 +35,27 @@ async function buildSkinIndex(skin) {
     readmeText = tuncate(fs.readFileSync(skin.readmePath, "utf8"), 4800);
   }
   return {
-    objectID: skin.md5,
+    objectID: skin.md5
     //md5,
     //fileName,
     // emails: skin.emails || null,
-    readmeText
+    // readmeText
+    // color: skin.averageColor
+    // twitterLikes: Number(skin.twitterLikes || 0)
   };
 }
 
 const indexesPromise = Promise.all(
   Object.values(info)
     .filter(skin => skin.type === "CLASSIC")
-    .filter(skin => skin.readmePath)
     .map(skin => buildSkinIndex(skin))
 );
 
 async function go() {
   const indexes = await indexesPromise;
 
+  console.log("Index turned off. Turn it on if you really mean it");
+  return;
   console.log("Writing index");
   const results = await new Promise((resolve, reject) => {
     index.partialUpdateObjects(indexes, function(err, content) {

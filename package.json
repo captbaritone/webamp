@@ -30,7 +30,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "find-skins": "node ./scripts/findSkins.js",
-    "create-search-index": "node ./scripts/createSearchIndex.js",
+    "index": "node ./scripts/createSearchIndex.js",
     "extract": "node ./scripts/extractSkinText.js \"/Volumes/Mobile Backup/skins/md5Skins/\""
   },
   "prettier": {},
