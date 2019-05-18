@@ -248,6 +248,15 @@ class FocusedSkin extends React.Component {
           >
             Share
           </a>
+          {"] ["}
+          <a
+            href={`https://webamp.org?skinUrl=${Utils.skinUrlFromHash(
+              this.props.hash
+            )}`}
+            target="_new"
+          >
+            Webamp
+          </a>
           {"] "}
         </div>
       </React.Fragment>
