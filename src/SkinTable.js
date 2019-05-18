@@ -1,222 +1,54 @@
 import React from "react";
 import "./App.css";
 import { connect } from "react-redux";
-import Skin from "./Skin";
-import * as Utils from "./utils";
 import * as Selectors from "./redux/selectors";
 import * as Actions from "./redux/actionCreators";
-import { SKIN_WIDTH, SKIN_HEIGHT, SKIN_RATIO } from "./constants";
+import { FixedSizeGrid as Grid } from "react-window";
+import Cell from "./Cell";
 
-const OVERSCAN_ROWS_LEADING = 10;
-const OVERSCAN_ROWS_TRAILING = 4;
-
-function getScrollTop() {
-  return window.pageYOffset || document.documentElement.scrollTop;
-}
-// Render your table
-
-class SkinTable extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      ...Utils.getWindowSize(),
-      scrollTop: getScrollTop(),
-      scrollDirection: null,
-      selectedSkinPosition: null
-    };
-    this._handleScroll();
-    this._handleScroll = this._handleScroll.bind(this);
-    this._handleResize = this._handleResize.bind(this);
-    this._handleSelectSkin = this._handleSelectSkin.bind(this);
-  }
-
-  _handleSelectSkin(hash, position) {
-    this.props.setSelectedSkin(hash, position);
-  }
-
-  _handleResize() {
-    const { windowWidth, windowHeight } = Utils.getWindowSize();
-    if (
-      windowWidth !== this.state.windowWidth ||
-      windowHeight !== this.state.windowHeight
-    ) {
-      this.setState({ windowWidth, windowHeight });
-    }
-    const { rowHeight, columnWidth } = this._getTableDimensions();
-    this.props.setCellSize({ rowHeight, columnWidth });
-  }
-
-  componentDidMount() {
-    window.addEventListener("scroll", this._handleScroll);
-    window.addEventListener("resize", this._handleResize);
-    // Our initial render may have caused the scrollbar to appear. So we
-    // remeasure.
-    this._handleResize();
-    this._scrollToSelectedSkinIfNeeded();
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("scroll", this._handleScroll);
-    window.removeEventListener("resize", this._handleResize);
-  }
-
-  componentDidUpdate() {
-    this._scrollToSelectedSkinIfNeeded();
-  }
-
-  _scrollToSelectedSkinIfNeeded() {
-    if (this.props.selectedSkinHash == null) {
-      return;
-    }
-
-    const selectedHashIndex = this.props.skinHashes.indexOf(
-      this.props.selectedSkinHash
-    );
-
-    const { start, end } = this._rangeToRender();
-    if (selectedHashIndex < start || selectedHashIndex > end) {
-      const { columnCount, rowHeight } = this._getTableDimensions();
-      const row = Math.floor(selectedHashIndex / columnCount);
-      const scrollTop =
-        row * rowHeight - (this.state.windowHeight - rowHeight) / 2;
-      window.scrollTo({
-        left: 0,
-        top: scrollTop
-      });
-    }
-  }
-
-  _handleScroll() {
-    // If there's a timer, cancel it
-    if (this._timeout) {
-      window.cancelAnimationFrame(this._timeout);
-    }
-
-    this._timeout = window.requestAnimationFrame(() => {
-      // Run our scroll functions
-      const newScrollTop = getScrollTop();
-      this.setState({
-        scrollTop: newScrollTop,
-        scrollDirection: newScrollTop > this.state.scrollTop ? "DOWN" : "UP"
-      });
+const SkinTable = ({
+  columnCount,
+  columnWidth,
+  rowHeight,
+  windowHeight,
+  skinCount,
+  windowWidth,
+  getSkinData
+}) => {
+  function itemKey({ columnIndex, rowIndex }) {
+    const { requestToken, data: skin } = getSkinData({
+      columnIndex,
+      rowIndex,
+      columnCount
     });
-  }
-
-  _getTableDimensions() {
-    const columnCount = Math.floor(this.state.windowWidth / SKIN_WIDTH);
-    const columnWidth = this.state.windowWidth / columnCount; // TODO: Consider flooring this to get things aligned to the pixel
-    const rowHeight = columnWidth * SKIN_RATIO;
-    return { columnWidth, rowHeight, columnCount };
-  }
-
-  _rangeToRender() {
-    const { rowHeight, columnCount } = this._getTableDimensions();
-    const { skinCount } = this.props;
-    // Add one since we might be showing half a row at the top, and half a row at the bottom
-    const visibleRows = Math.ceil(this.state.windowHeight / rowHeight) + 1;
-
-    const topRow = Math.floor(this.state.scrollTop / rowHeight);
-
-    const firstHashToRender = topRow * columnCount;
-    const lastHashToRender = Math.min(
-      firstHashToRender + visibleRows * columnCount,
-      skinCount
-    );
-
-    return { start: firstHashToRender, end: lastHashToRender };
-  }
-
-  render() {
-    const { columnWidth, rowHeight, columnCount } = this._getTableDimensions();
-    const { skinCount } = this.props;
-    const hashes = this.props.skinHashes;
-
-    const overscanRowsDown =
-      this.state.scrollDirection === "DOWN"
-        ? OVERSCAN_ROWS_LEADING
-        : OVERSCAN_ROWS_TRAILING;
-    const overscanRowsUp =
-      this.state.scrollDirection === "UP"
-        ? OVERSCAN_ROWS_LEADING
-        : OVERSCAN_ROWS_TRAILING;
-
-    const {
-      start: firstHashToRender,
-      end: lastHashToRender
-    } = this._rangeToRender();
-
-    const firstOverscanHashToRender = Math.max(
-      firstHashToRender - overscanRowsUp * columnCount,
-      0
-    );
-    const lastOverscanHashToRender = Math.min(
-      lastHashToRender + overscanRowsDown * columnCount,
-      skinCount
-    );
-
-    const skinElements = [];
-    for (let i = firstOverscanHashToRender; i < lastOverscanHashToRender; i++) {
-      const isOverscan = i < firstHashToRender || i > lastHashToRender;
-      const hash = hashes[i];
-      const row = Math.floor(i / columnCount);
-      const top = row * rowHeight;
-      const column = i % columnCount;
-      const left = column * columnWidth;
-      if (hash == null) {
-        // TODO: Pick a random color?
-        // TODO: What happens if they click?
-        skinElements.push(
-          <div
-            key={`placeholder-${i}`}
-            style={{
-              top,
-              left,
-              width: columnWidth,
-              height: rowHeight,
-              position: "absolute",
-              backgroundColor: "magenta"
-            }}
-          />
-        );
-      } else {
-        skinElements.push(
-          <Skin
-            href={`https://webamp.org/?skinUrl=https://s3.amazonaws.com/webamp-uploaded-skins/skins/${hash}.wsz`}
-            src={Utils.screenshotUrlFromHash(hash)}
-            key={hash}
-            hash={hash}
-            top={top}
-            left={left}
-            width={columnWidth}
-            height={rowHeight}
-            color={this.props.skins[hash].color}
-            isOverscan={isOverscan}
-            selectSkin={this._handleSelectSkin}
-            fileName={this.props.skins[hash].fileName}
-          />
-        );
-      }
+    if (skin == null && requestToken == null) {
+      return `empty-cell-${columnIndex}-${rowIndex}`;
     }
-    return (
-      <div
-        id="infinite-skins"
-        style={{
-          height: Math.ceil(this.props.skinCount / columnCount) * SKIN_HEIGHT,
-          position: "relative"
-        }}
-      >
-        {skinElements}
-      </div>
-    );
+    return skin ? skin.hash : `unfectched-index-${requestToken}`;
   }
-}
+  return (
+    <div id="infinite-skins">
+      <Grid
+        itemKey={itemKey}
+        itemData={{ columnCount, width: columnWidth, height: rowHeight }}
+        columnCount={columnCount}
+        columnWidth={columnWidth}
+        height={windowHeight}
+        rowCount={Math.ceil(skinCount / columnCount)}
+        rowHeight={rowHeight}
+        width={windowWidth}
+        overscanRowsCount={5}
+      >
+        {Cell}
+      </Grid>
+    </div>
+  );
+};
 
 const mapStateToProps = state => ({
-  skinHashes: Selectors.getMatchingSkinHashes(state),
-  skins: Selectors.getSkins(state),
-  // TODO: #lazy Get the length from the chunk metadata
-  skinCount: state.skinChunkData.numberOfSkins,
-  selectedSkinHash: Selectors.getSelectedSkinHash(state)
+  skinCount: Selectors.getCurrentSkinCount(state),
+  selectedSkinHash: Selectors.getSelectedSkinHash(state),
+  getSkinData: Selectors.getSkinDataGetter(state)
 });
 
 const mapDispatchToProps = dispatch => ({

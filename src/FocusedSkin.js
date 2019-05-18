@@ -182,7 +182,7 @@ class FocusedSkin extends React.Component {
                   transition: "opacity 0.2s ease-out"
                 }}
                 onLoad={() => this.setState({ previewLoaded: true })}
-                src={this.props.fileName}
+                src={Utils.screenshotUrlFromHash(this.props.hash)}
                 alt={this.props.fileName}
               />
             )}
@@ -259,7 +259,7 @@ const mapStateToProps = (state, ownProps) => ({
   hash: Selectors.getSelectedSkinHash(state),
   initialPosition: Selectors.getSelectedSkinPosition(state),
   fileExplorerOpen: Selectors.getFileExplorerOpen(state),
-  fileName: state.skins[ownProps.md5].fileName
+  fileName: state.skins[ownProps.hash].fileName
 });
 
 const mapDispatchToProps = dispatch => ({

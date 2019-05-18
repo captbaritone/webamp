@@ -1,16 +1,20 @@
-import skinChunkData from "../skinData/skins.json";
-import firstSkinChunk from "../skinData/skins-0.json";
+import skinChunkData from "../skins.json";
+import firstSkinChunk from "../skins-0.json";
 import { ABOUT_PAGE } from "../constants";
 
 const skins = {};
+const defaultSkins = [];
 firstSkinChunk.forEach(skin => {
   skins[skin.md5] = skin;
+  defaultSkins.push(skin.md5);
 });
+console.log(skinChunkData);
 
 const defaultState = {
   searchQuery: null,
   selectedSkinPosition: null,
-  matchingHashes: null,
+  matchingSkins: null,
+  defaultSkins,
   selectedSkinHash: null,
   skinZip: null,
   focusedSkinFile: null,
@@ -22,6 +26,23 @@ const defaultState = {
 
 export default function reducer(state = defaultState, action) {
   switch (action.type) {
+    case "GOT_SKIN_CHUNK": {
+      const newSkins = { ...state.skins };
+      const newDefaultSkins = [...state.defaultSkins];
+      action.payload.forEach((skin, i) => {
+        newSkins[skin.md5] = skin;
+        // TODO: Do this with splice
+        // TODO: Get chunk size from state
+        // TODO: validate the chunk number is in bounds
+        // TODO: validate that we don't alredy have this chunk
+        newDefaultSkins[action.chunk * 100 + i] = skin.md5;
+      });
+      return {
+        ...state,
+        skins: newSkins,
+        defaultSkins: newDefaultSkins
+      };
+    }
     case "SELECTED_SKIN":
       return {
         ...state,
@@ -46,10 +67,21 @@ export default function reducer(state = defaultState, action) {
         selectedSkinPosition: null,
         focusedSkinFile: null
       };
-    case "GOT_NEW_MATCHING_HASHES":
+    case "GOT_NEW_MATCHING_SKINS":
+      let newSkins = state.skins;
+      if (action.skins != null) {
+        newSkins = { ...state.skins };
+        // Add skins to the cache
+        action.skins.forEach(skin => {
+          if (newSkins[skin.hash] == null) {
+            newSkins[skin.hash] = skin;
+          }
+        });
+      }
       return {
         ...state,
-        matchingHashes: action.matchingHashes
+        matchingSkins: action.skins,
+        skins: newSkins
       };
     case "LOADED_SKIN_ZIP":
       return {

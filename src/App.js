@@ -8,53 +8,65 @@ import SkinTable from "./SkinTable";
 import FocusedSkin from "./FocusedSkin";
 import * as Selectors from "./redux/selectors";
 import { ABOUT_PAGE } from "./constants";
+import * as Utils from "./utils";
+import { SKIN_WIDTH, SKIN_RATIO } from "./constants";
 
 // Render your table
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      rowHeight: null,
-      columnWidth: null
+const getTableDimensions = windowWidth => {
+  const columnCount = Math.floor(windowWidth / SKIN_WIDTH);
+  const columnWidth = windowWidth / columnCount; // TODO: Consider flooring this to get things aligned to the pixel
+  const rowHeight = columnWidth * SKIN_RATIO;
+  return { columnWidth, rowHeight, columnCount };
+};
+
+function useWindowSize() {
+  const [windowSize, setWindowSize] = React.useState(Utils.getWindowSize());
+  React.useEffect(() => {
+    // TODO: Consider thottle
+    const handleResize = () => {
+      setWindowSize(Utils.getWindowSize());
     };
-  }
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  return windowSize;
+}
 
-  _sizeIsSet() {
-    return this.state.rowHeight !== null && this.state.columnWidth !== null;
-  }
-
-  render() {
-    const rowHeight = 100;
-    const columnWidth = 100;
-    return (
-      <div>
-        <Head />
-        <Header />
-        <SkinTable
-          setCellSize={({ rowHeight, columnWidth }) =>
-            this.setState({ rowHeight, columnWidth })
-          }
-        />
-        {this.props.aboutPage ? (
-          <Overlay>
-            <About />
+function App(props) {
+  const { windowWidth, windowHeight } = useWindowSize();
+  const { columnWidth, rowHeight, columnCount } = getTableDimensions(
+    windowWidth
+  );
+  return (
+    <div>
+      <Head />
+      <Header />
+      <SkinTable
+        columnCount={columnCount}
+        columnWidth={columnWidth}
+        rowHeight={rowHeight}
+        windowHeight={windowHeight}
+        windowWidth={windowWidth}
+      />
+      {props.aboutPage ? (
+        <Overlay>
+          <About />
+        </Overlay>
+      ) : (
+        props.selectedSkinHash == null || (
+          <Overlay shouldAnimate={props.overlayShouldAnimate}>
+            <FocusedSkin
+              key={props.selectedSkinHash}
+              hash={props.selectedSkinHash}
+              initialHeight={rowHeight}
+              initialWidth={columnWidth}
+            />
           </Overlay>
-        ) : (
-          !this._sizeIsSet() ||
-          this.props.selectedSkinHash == null || (
-            <Overlay shouldAnimate={this.props.overlayShouldAnimate}>
-              <FocusedSkin
-                key={this.props.selectedSkinHash}
-                initialHeight={rowHeight}
-                initialWidth={columnWidth}
-              />
-            </Overlay>
-          )
-        )}
-      </div>
-    );
-  }
+        )
+      )}
+    </div>
+  );
 }
 
 const mapStateToProps = state => ({

@@ -22,4 +22,4 @@ yarn-error.log*
 
 public/screenshots
 metadata/
-src/skinData/
+public/skinData/

@@ -1,5 +1,16 @@
 # TODO
 
+## Rewrite
+
+Add color to index
+Add tweet likes to index
+Crawl/index IA view count
+
+Handle case where search results area loading
+Handle slow search
+
+Define a Skin interface which has all skin data or dummy skin data with a loading function
+
 ## Blocking
 
 - Figure out how to get prerendering to work for Facebook

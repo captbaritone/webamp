@@ -22,7 +22,7 @@ const getFileData = async () => {
       const fileName = path.basename(filePaths[0]);
       return {
         color: skin.averageColor,
-        favorites: skin.twitterLikes,
+        favorites: skin.twitterLikes || 0,
         fileName,
         md5
       };
@@ -30,12 +30,14 @@ const getFileData = async () => {
     { concurrency: 10 }
   );
   const orderedFileData = fileData.sort((a, b) => {
-    return a.favorites < b.favorites;
+    return b.favorites - a.favorites;
   });
   return orderedFileData.map(({ favorites, ...rest }) => rest);
 };
 
-const CHUNK_SIZE = 100;
+const SKIN_DATA_ROOT = "public/skinData";
+const BOOTSTRAP_SKIN_DATA_ROOT = "src";
+const CHUNK_SIZE = 500;
 getFileData().then(data => {
   let start = 0;
   const chunkFileNames = [];
@@ -46,14 +48,30 @@ getFileData().then(data => {
     const chunk = data.slice(start, end);
     const json = JSON.stringify(chunk);
     const fileName = `skins-${chunkNumber}.json`;
-    fs.writeFileSync(path.join("src", "skinData", fileName), json, "utf8");
+    fs.writeFileSync(path.join(SKIN_DATA_ROOT, fileName), json, "utf8");
+    if (chunkNumber === 0) {
+      fs.writeFileSync(
+        path.join(BOOTSTRAP_SKIN_DATA_ROOT, fileName),
+        json,
+        "utf8"
+      );
+    }
     chunkFileNames.push(fileName);
     start = end;
     chunkNumber++;
   }
-  const json = JSON.stringify({
-    numberOfSkins: data.length,
-    chunkFileNames
-  });
-  fs.writeFileSync("src/skinData/skins.json", json, "utf8");
+  const json = JSON.stringify(
+    {
+      chunkSize: CHUNK_SIZE,
+      numberOfSkins: data.length,
+      chunkFileNames
+    },
+    null,
+    2
+  );
+  fs.writeFileSync(
+    path.join(BOOTSTRAP_SKIN_DATA_ROOT, "skins.json"),
+    json,
+    "utf8"
+  );
 });

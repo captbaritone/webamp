@@ -25,42 +25,70 @@ export function getSearchQuery(state) {
   return state.searchQuery;
 }
 
-export function getMatchingHashes(state) {
-  return state.matchingHashes;
+export function getMatchingSkins(state) {
+  return state.matchingSkins;
 }
 
-export const getSkinHashes = createSelector(
+export const getSkinHashes = state => {
+  return state.defaultSkins;
+};
+
+export const getCurrentSkinCount = createSelector(
+  getMatchingSkins,
+  getSkinHashes,
+  (matchingSkins, skinHashes) => {
+    return matchingSkins == null ? skinHashes.length : matchingSkins.length;
+  }
+);
+
+/**
+ * Skin Interface
+ * {
+ *    data: {
+ *     hash: string,
+ *     fileName: string,
+ *     color: string,
+ *    } | null,
+ *    requestToken: string | number
+ * }
+ */
+
+export const getSkinDataGetter = createSelector(
   getSkins,
-  skins => {
-    const hashes = Object.keys(skins);
-    hashes.sort((a, b) => {
-      const aFaves = skins[a].favorites;
-      const bFaves = skins[b].favorites;
-      const res = (bFaves || 0) - (aFaves || 0);
-      return res;
-    });
-    return hashes;
+  getSkinHashes,
+  getMatchingSkins,
+  (skins, skinHashes, matchingSkins) => {
+    return ({ columnIndex, columnCount, rowIndex }) => {
+      const index = rowIndex * columnCount + columnIndex;
+      if (matchingSkins) {
+        const data = matchingSkins[index];
+        return { data };
+      }
+      const hash = skinHashes[index];
+      if (hash == null) {
+        return { data: null, requestToken: index };
+      }
+      const { fileName, color } = skins[hash];
+      return { data: { fileName, color, hash } };
+    };
   }
 );
 
 export const getMatchingSkinHashes = createSelector(
   getSkinHashes,
   getSearchQuery,
-  getMatchingHashes,
-  (skinHashes, searchQuery, matchingHashes) => {
-    if (searchQuery == null || matchingHashes == null) {
+  getMatchingSkins,
+  (skinHashes, searchQuery, matchingSkins) => {
+    if (searchQuery == null || matchingSkins == null) {
       return skinHashes;
     }
-    return skinHashes.filter(hash => matchingHashes.has(hash));
+    return matchingSkins.map(skin => skin.hash);
   }
 );
 
 // We should be careful _not_ to memoize this function since it's non determinisitc
 export function getRandomSkinHash(state) {
-  const matchingHashes = getMatchingHashes(state);
-  const skinHashes = matchingHashes
-    ? Array.from(matchingHashes)
-    : getSkinHashes(state);
+  const skinHashes = getMatchingSkinHashes(state);
   const numberOfSkins = skinHashes.length;
   const randomIndex = Math.floor(Math.random() * numberOfSkins);
   return skinHashes[randomIndex];

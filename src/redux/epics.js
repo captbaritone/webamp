@@ -3,7 +3,14 @@ import { of, from, empty } from "rxjs";
 import * as Actions from "./actionCreators";
 import * as Selectors from "./selectors";
 import * as Utils from "../utils";
-import { filter, switchMap, map, ignoreElements } from "rxjs/operators";
+import {
+  filter,
+  switchMap,
+  map,
+  ignoreElements,
+  mergeMap,
+  tap
+} from "rxjs/operators";
 import { search } from "../algolia";
 
 const urlChangedEpic = actions =>
@@ -118,13 +125,17 @@ const searchEpic = actions =>
     filter(action => action.type === "SEARCH_QUERY_CHANGED"),
     switchMap(({ query }) => {
       if (query == null || query.length === 0) {
-        return of(Actions.gotNewMatchingHashes(null));
+        return of(Actions.gotNewMatchingSkins(null));
       }
 
       return from(search(query)).pipe(
         map(content => {
-          const matchingHashes = new Set(content.hits.map(hit => hit.objectID));
-          return Actions.gotNewMatchingHashes(matchingHashes);
+          const matchingSkins = content.hits.map(hit => ({
+            hash: hit.objectID,
+            fileName: hit.fileName,
+            color: "pink" // TODO Index the color
+          }));
+          return Actions.gotNewMatchingSkins(matchingSkins);
         })
       );
     })
@@ -136,6 +147,27 @@ const randomSkinEpic = (actions, states) =>
     map(() => {
       return Actions.selectedSkin(Selectors.getRandomSkinHash(states.value));
     })
+  );
+
+const chunkState = {};
+
+const unloadedSkinEpic = (actions, states) =>
+  actions.pipe(
+    filter(action => action.type === "REQUEST_UNLOADED_SKIN"),
+    mergeMap(async ({ index }) => {
+      const state = states.value;
+      const chunkSize = state.skinChunkData.chunkSize || 100;
+      const chunk = Math.floor(index / (chunkSize - 1));
+      if (chunkState[chunk] != null) {
+        return null;
+      }
+      console.log({ chunk });
+      chunkState[chunk] = "fetching";
+      const response = await fetch(`/skinData/skins-${chunk}.json`);
+      const payload = await response.json();
+      return { type: "GOT_SKIN_CHUNK", chunk, payload };
+    }),
+    filter(Boolean)
   );
 
 const selectRelativeSkinEpic = (actions, states) =>
@@ -160,5 +192,6 @@ export default combineEpics(
   randomSkinEpic,
   selectRelativeSkinEpic,
   selectSkinReadmeEpic,
-  loadedSkinZipEpic
+  loadedSkinZipEpic,
+  unloadedSkinEpic
 );

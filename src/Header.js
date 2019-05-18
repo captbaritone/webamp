@@ -55,7 +55,7 @@ class Header extends React.Component {
         <span style={{ flexGrow: 1 }} />
         <AlgoliaLogo
           style={{
-            opacity: this.props.searchQuery.length > 0 ? 0.5 : 0,
+            opacity: this.props.searchQuery ? 0.5 : 0,
             transition: "opacity ease-in 300ms"
           }}
         />

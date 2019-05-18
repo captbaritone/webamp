@@ -11,6 +11,11 @@ export function getPermalinkUrlFromHash(hash) {
   return `/skin/${hash}/${hash}/`;
 }
 
+export function getPermalinkUrlFromHashAndFilename(hash, fileName) {
+  // TODO: Make this a selector
+  return `/skin/${hash}/${fileName}/`;
+}
+
 export function getAbsolutePermalinkUrlFromHash(hash) {
   return window.location.origin + getPermalinkUrlFromHash(hash);
 }

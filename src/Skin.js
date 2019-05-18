@@ -6,23 +6,12 @@ export default class Skin extends React.Component {
   constructor(props) {
     super(props);
     this.state = { loaded: false, focused: false };
-    this._controller = new window.AbortController();
     this._handleLoad = this._handleLoad.bind(this);
     this._ref = null;
   }
 
-  _getPriority() {
-    return this.props.isOverscan ? 1 : 0;
-  }
-
   _handleLoad() {
     this.setState({ loaded: true });
-  }
-
-  componentWillUnmount() {
-    if (!this.state.loaded) {
-      this._controller.abort();
-    }
   }
 
   render() {
@@ -33,14 +22,13 @@ export default class Skin extends React.Component {
           this._ref = node;
         }}
         style={{
-          position: "absolute",
+          ...this.props.style,
+          display: "block",
+          height: this.props.height,
+          width: this.props.width,
           // Ideally the final backgroundColor would be black
           // But that makes our opacitly transition kinda funky
           backgroundColor: this.props.color,
-          width: this.props.width,
-          height: this.props.height,
-          top: this.props.top,
-          left: this.props.left,
           cursor: "pointer"
         }}
         onClick={e => {
@@ -50,7 +38,7 @@ export default class Skin extends React.Component {
             this.props.selectSkin(this.props.hash, { top, left });
           }
         }}
-        href={Utils.getPermalinkUrlFromHash(this.props.hash)}
+        href={this.props.permalink}
       >
         <img
           tabIndex={1}
