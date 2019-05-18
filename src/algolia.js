@@ -16,7 +16,6 @@ export function search(query) {
         typoTolerance: "min"
       },
       (err, content) => {
-        console.log(content);
         if (err != null) {
           reject(err);
           return;

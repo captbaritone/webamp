@@ -161,7 +161,6 @@ const unloadedSkinEpic = (actions, states) =>
       if (chunkState[chunk] != null) {
         return null;
       }
-      console.log({ chunk });
       chunkState[chunk] = "fetching";
       const response = await fetch(`/skinData/skins-${chunk}.json`);
       const payload = await response.json();

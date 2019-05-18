@@ -8,7 +8,6 @@ firstSkinChunk.forEach(skin => {
   skins[skin.md5] = skin;
   defaultSkins.push(skin.md5);
 });
-console.log(skinChunkData);
 
 const defaultState = {
   searchQuery: null,
