@@ -387,6 +387,10 @@ class Winamp {
     return this._actionEmitter.on(MINIMIZE_WINAMP, cb);
   }
 
+  setSkinFromUrl(url: string): void {
+    this.store.dispatch(Actions.setSkinFromUrl(url));
+  }
+
   async skinIsLoaded(): Promise<void> {
     // Wait for the skin to load.
     // TODO #leak
