@@ -53,12 +53,17 @@ class Header extends React.Component {
           </a>
         </h1>
         <span style={{ flexGrow: 1 }} />
-        <AlgoliaLogo
+        <a
+          href="https://www.algolia.com/"
+          target="_blank"
+          rel="noopener noreferrer"
           style={{
             opacity: this.props.searchQuery ? 0.5 : 0,
             transition: "opacity ease-in 300ms"
           }}
-        />
+        >
+          <AlgoliaLogo />
+        </a>
         <input
           style={{ marginLeft: 10 }}
           type="text"
