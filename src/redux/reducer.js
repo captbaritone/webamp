@@ -25,6 +25,12 @@ const defaultState = {
 
 export default function reducer(state = defaultState, action) {
   switch (action.type) {
+    case "GOT_SKIN_DATA": {
+      return {
+        ...state,
+        skins: { ...state.skins, [action.hash]: action.data }
+      };
+    }
     case "GOT_SKIN_CHUNK": {
       const newSkins = { ...state.skins };
       const newDefaultSkins = [...state.defaultSkins];

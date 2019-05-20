@@ -14,7 +14,8 @@ const Cell = React.memo(props => {
     skin,
     requestToken,
     setSelectedSkin,
-    requestUnloadedSkin
+    requestUnloadedSkin,
+    permalinkUrl
   } = props;
   const { width, height } = data;
   React.useEffect(() => {
@@ -51,7 +52,8 @@ const Cell = React.memo(props => {
       width={width}
       selectSkin={setSelectedSkin}
       color={color}
-      permalink={Utils.getPermalinkUrlFromHashAndFilename(hash, skin.fileName)}
+      // TODO: This is werid because there is an implicit assumption that this is always avaliable if we have the skin
+      permalink={permalinkUrl}
     />
   );
 });
@@ -65,9 +67,13 @@ const mapStateToProps = (state, ownProps) => {
     rowIndex,
     columnIndex
   });
+  const getPermalinkUrlFromHash = Selectors.getPermalinkUrlFromHashGetter(
+    state
+  );
   return {
     requestToken,
-    skin
+    skin,
+    permalinkUrl: skin == null ? null : getPermalinkUrlFromHash(skin.hash)
   };
 };
 

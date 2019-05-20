@@ -6,10 +6,11 @@ import DownloadLink from "./DownloadLink";
 import * as Utils from "./utils";
 import * as Selectors from "./redux/selectors";
 import * as Actions from "./redux/actionCreators";
-import { SCREENSHOT_HEIGHT, SCREENSHOT_WIDTH, SKIN_WIDTH } from "./constants";
+import { SCREENSHOT_HEIGHT, SCREENSHOT_WIDTH } from "./constants";
 import { delay } from "rxjs/operators";
-import { Subject, combineLatest, timer, fromEvent } from "rxjs";
+import { Subject, combineLatest, timer, fromEvent, from } from "rxjs";
 import Disposable from "./Disposable";
+import { search } from "./algolia";
 
 class FocusedSkin extends React.Component {
   constructor(props) {
@@ -64,7 +65,40 @@ class FocusedSkin extends React.Component {
     );
   }
 
+  _fetchSkinData() {
+    if (this.props.skinData != null) {
+      return;
+    }
+    // OMG Giant hack. Kill this please. We should be able to get this data from our own server.
+    from(
+      search(this.props.hash, { hitsPerPage: 2, typoTolerance: 0 })
+    ).subscribe(results => {
+      if (results.nbHits.length === 1) {
+        console.error(
+          "Failed to get skin data for hash",
+          this.props.hash,
+          results
+        );
+        return;
+      }
+      if (results.nbHits.length > 1) {
+        console.error(
+          "Failed to uniquely get skin data for hash",
+          this.props.hash
+        );
+        return;
+      }
+      const { fileName, color } = results.hits[0];
+      this.props.gotSkinData(this.props.hash, {
+        md5: this.props.hash,
+        fileName,
+        color
+      });
+    });
+  }
+
   componentDidMount() {
+    this._fetchSkinData();
     this._disposable.add(
       fromEvent(window.document, "keydown").subscribe(e => {
         if (e.key === "ArrowRight") {
@@ -183,7 +217,7 @@ class FocusedSkin extends React.Component {
                 }}
                 onLoad={() => this.setState({ previewLoaded: true })}
                 src={Utils.screenshotUrlFromHash(this.props.hash)}
-                alt={this.props.fileName}
+                alt={this.props.skinData && this.props.skinData.fileName}
               />
             )}
           </div>
@@ -204,7 +238,7 @@ class FocusedSkin extends React.Component {
                   e.target.setSelectionRange(0, e.target.value.length)
                 }
                 className="permalink-input"
-                value={Utils.getAbsolutePermalinkUrlFromHash(this.props.hash)}
+                value={this.props.absolutePermalink}
                 readOnly
                 autoFocus
               />
@@ -220,7 +254,9 @@ class FocusedSkin extends React.Component {
               </span>
             </div>
           )}
-          {this.props.fileName}
+          {this.props.skinData
+            ? this.props.skinData.fileName
+            : "Filename loading..."}
           {" ["}
           <DownloadLink
             href={Utils.skinUrlFromHash(this.props.hash)}
@@ -240,7 +276,7 @@ class FocusedSkin extends React.Component {
           </a>
           {"] ["}
           <a
-            href={Utils.getAbsolutePermalinkUrlFromHash(this.props.hash)}
+            href={this.props.absolutePermalink}
             onClick={e => {
               this.setState({ showLink: !this.state.showLink });
               e.preventDefault();
@@ -264,14 +300,22 @@ class FocusedSkin extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => ({
-  hash: Selectors.getSelectedSkinHash(state),
-  initialPosition: Selectors.getSelectedSkinPosition(state),
-  fileExplorerOpen: Selectors.getFileExplorerOpen(state),
-  fileName: state.skins[ownProps.hash].fileName
-});
+const mapStateToProps = (state, ownProps) => {
+  return {
+    hash: Selectors.getSelectedSkinHash(state),
+    initialPosition: Selectors.getSelectedSkinPosition(state),
+    fileExplorerOpen: Selectors.getFileExplorerOpen(state),
+    skinData: state.skins[ownProps.hash] || null,
+    absolutePermalink: Selectors.getAbsolutePermalinkUrlFromHashGetter(state)(
+      ownProps.hash
+    )
+  };
+};
 
 const mapDispatchToProps = dispatch => ({
+  gotSkinData(hash, data) {
+    dispatch({ type: "GOT_SKIN_DATA", hash, data });
+  },
   selectRelativeSkin(offset) {
     dispatch(Actions.selectRelativeSkin(offset));
   },

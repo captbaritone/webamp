@@ -6,20 +6,6 @@ export function skinUrlFromHash(hash) {
   return `https://s3.amazonaws.com/webamp-uploaded-skins/skins/${hash}.wsz`;
 }
 
-export function getPermalinkUrlFromHash(hash) {
-  // TODO: Make this a selector
-  return `/skin/${hash}/${hash}/`;
-}
-
-export function getPermalinkUrlFromHashAndFilename(hash, fileName) {
-  // TODO: Make this a selector
-  return `/skin/${hash}/${fileName}/`;
-}
-
-export function getAbsolutePermalinkUrlFromHash(hash) {
-  return window.location.origin + getPermalinkUrlFromHash(hash);
-}
-
 export function getWindowSize() {
   var w = window,
     d = document,

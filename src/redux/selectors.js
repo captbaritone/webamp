@@ -94,19 +94,50 @@ export function getRandomSkinHash(state) {
   return skinHashes[randomIndex];
 }
 
+export const getPermalinkUrlFromHashGetter = createSelector(
+  getSkins,
+  skins => {
+    return hash => {
+      const skin = skins[hash];
+      if (skin == null) {
+        return `/skin/${hash}/`;
+      }
+      return `/skin/${hash}/${skin.fileName}/`;
+    };
+  }
+);
+
+export const getAbsolutePermalinkUrlFromHashGetter = createSelector(
+  getPermalinkUrlFromHashGetter,
+  getPermalinkUrlFromHash => {
+    return hash => {
+      return window.location.origin + getPermalinkUrlFromHash(hash);
+    };
+  }
+);
+
 export const getUrl = createSelector(
   getActiveContentPage,
   getSelectedSkinHash,
   getSearchQuery,
   getFileExplorerOpen,
   getFocusedSkinFile,
-  (activeContentPage, hash, query, fileExplorerOpen, focusedSkinFile) => {
+  getSkins,
+  getPermalinkUrlFromHashGetter,
+  (
+    activeContentPage,
+    hash,
+    query,
+    fileExplorerOpen,
+    focusedSkinFile,
+    skins,
+    getPermalinkUrlFromHash
+  ) => {
     if (activeContentPage === ABOUT_PAGE) {
       return "/about/";
     }
     if (hash) {
-      // TODO: Add a human readable version
-      const skinUrl = Utils.getPermalinkUrlFromHash(hash);
+      const skinUrl = getPermalinkUrlFromHash(hash);
       if (fileExplorerOpen && focusedSkinFile) {
         return `${skinUrl}files/${encodeURIComponent(
           focusedSkinFile.fileName

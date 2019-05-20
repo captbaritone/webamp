@@ -3,14 +3,7 @@ import { of, from, empty } from "rxjs";
 import * as Actions from "./actionCreators";
 import * as Selectors from "./selectors";
 import * as Utils from "../utils";
-import {
-  filter,
-  switchMap,
-  map,
-  ignoreElements,
-  mergeMap,
-  tap
-} from "rxjs/operators";
+import { filter, switchMap, map, mergeMap } from "rxjs/operators";
 import { search } from "../algolia";
 
 const urlChangedEpic = actions =>
