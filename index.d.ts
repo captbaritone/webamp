@@ -253,7 +253,7 @@ export default class Webamp {
   /**
    * Returns a promise that resolves when the skin is done loading.
    */
-  public oskinIsLoaded(): Promise<void>;
+  public skinIsLoaded(): Promise<void>;
 
   /**
    * **Note:** _This method is not fully functional. It is currently impossible to
