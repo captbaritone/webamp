@@ -154,7 +154,9 @@
   },
   "dependencies": {
     "eslint-plugin-react-hooks": "^1.5.1",
-    "fscreen": "^1.0.2"
+    "fscreen": "^1.0.2",
+    "redux-observable": "^1.1.0",
+    "rxjs": "^6.5.2"
   },
   "bundlesize": [
     {
