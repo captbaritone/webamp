@@ -36,8 +36,11 @@ export const getSkinHashes = state => {
 export const getCurrentSkinCount = createSelector(
   getMatchingSkins,
   getSkinHashes,
-  (matchingSkins, skinHashes) => {
-    return matchingSkins == null ? skinHashes.length : matchingSkins.length;
+  state => state.skinChunkData,
+  (matchingSkins, skinHashes, skinChunkData) => {
+    return matchingSkins == null
+      ? skinChunkData.numberOfSkins
+      : matchingSkins.length;
   }
 );
 
