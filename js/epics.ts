@@ -27,7 +27,7 @@ export const fetchMediaTagsEpic = (
         of({
           type: MEDIA_TAG_REQUEST_INITIALIZED,
           id,
-        } as const),
+        } as Action),
         defer(async () => {
           const musicMetadata = await requireMusicMetadata();
           const metadata = await genMediaTags(file, musicMetadata);
@@ -50,14 +50,14 @@ export const fetchMediaTagsEpic = (
             bitrate,
             sampleRate,
             id,
-          } as const;
+          } as Action;
         }).pipe(
           catchError(e => {
             console.error("Failed to fetch media tags", e);
             return of({
               type: MEDIA_TAG_REQUEST_FAILED,
               id,
-            } as const);
+            } as Action);
           })
         )
       );
