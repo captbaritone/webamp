@@ -106,6 +106,17 @@ There are a few related projects that have communites:
 - [Webvs](https://gitter.im/visbot/AVS) -
   A Winamp AVS like visualization library for the web. ([Gitter chat](https://gitter.im/visbot/AVS))
 
+## In the Wild
+
+A list of public websites that are using Webamp:
+
+- [Internet Archvie](https://blog.archive.org/2018/10/02/dont-click-on-the-llama/) - The Internet Archive lets you preview winamp skins and listen to audio tracks using Webamp.
+- [Winampify.io](https://winampify.io/) - An online Spotify client using Webamp
+- [Webamp Desktop](https://desktop.webamp.org/) - An Electron app version of Webamp.
+- [98.js.org](https://98.js.org/) - A Windows 98 clone in JavaScript ([GitHub](https://github.com/1j01/98))
+- [winxp.now.sh](https://winxp.now.sh/) - A Windows XP clone in JavaScript with React ([GitHub](https://github.com/ShizukuIchi))
+- [www.dkdomino.zone](https://www.dkdomino.zone/album.html) - Someone's personal music player.
+
 ## Reference
 
 - [skinspecs.pdf](http://members.xoom.it/skinart/tutorial/skinspecs..pdf)

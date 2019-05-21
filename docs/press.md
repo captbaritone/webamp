@@ -167,6 +167,7 @@
 - https://www.maennersache.de/winamp-simulator-neues-browser-plugin-befoerdert-dich-zurueck-ins-jahr-1999-aol-webamp-jordan-eldredge-9063.html#
 - https://www.abendblatt.de/ratgeber/multimedia/article212250123/Surftipp-Kultiger-MP3-Player-im-Browser.html
 - https://www.techbook.de/entertainment/sound/surftipp-kultiger-mp3-player-im-browser
+- https://seeseekey.net/archive/124127/
 
 ### Polish
 
