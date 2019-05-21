@@ -379,6 +379,8 @@ unsubscribe();
 
 Updates the skin used by the webamp instance. Note that this does not happen immediately. If you want to be notified when the skin load is complete, use `.skinIsLoaded()`, which returns a promise which you can await.
 
+**Since** 1.4.1-beta01 (unreleased)
+
 ### `skinIsLoaded(): Promise<void>`
 
 Returns a promise that resolves when the skin is done loading.
