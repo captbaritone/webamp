@@ -1,3 +1,9 @@
+## Next
+
+### Features
+
+- New Webamp instance method: `.setSkinFromUrl(url)`. See [usage.md](./docs/usage.md) for more details.
+
 ## 1.4.0
 
 ### Features
