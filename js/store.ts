@@ -8,6 +8,8 @@ import { UPDATE_TIME_ELAPSED, STEP_MARQUEE } from "./actionTypes";
 import Media from "./media";
 import Emitter from "./emitter";
 import { Extras, Dispatch, Action, AppState, Middleware } from "./types";
+import { createEpicMiddleware, combineEpics } from "redux-observable";
+import * as Epics from "./epics";
 
 // TODO: Move to demo
 const compose = composeWithDevTools({
@@ -34,10 +36,15 @@ export default function(
     return next(action);
   };
 
+  const epicMiddleware = createEpicMiddleware({
+    dependencies: extras,
+  });
+
   const enhancer = compose(
     applyMiddleware(
       ...[
         thunk.withExtraArgument(extras),
+        epicMiddleware,
         mediaMiddleware(media),
         emitterMiddleware,
         ...customMiddlewares,
@@ -50,5 +57,7 @@ export default function(
   const store = initialState
     ? createStore(reducer, initialState, enhancer)
     : createStore(reducer, enhancer);
+
+  epicMiddleware.run(combineEpics(...Object.values(Epics)));
   return store;
 }
