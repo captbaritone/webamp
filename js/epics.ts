@@ -1,6 +1,7 @@
 import { Observable, of, defer, concat } from "rxjs";
-import { filter, mergeMap, catchError } from "rxjs/operators";
-import { Action, AppState, Extras } from "./types";
+import { ofType } from "redux-observable";
+import { mergeMap, catchError } from "rxjs/operators";
+import { Action, Extras, AppState } from "./types";
 import {
   MEDIA_TAG_REQUEST_INITIALIZED,
   SET_MEDIA_TAGS,
@@ -15,7 +16,7 @@ export const fetchMediaTagsEpic = (
   { requireMusicMetadata }: Extras
 ): Observable<Action> => {
   return actions.pipe(
-    filter(action => action.type === FETCH_MEDIA_TAGS),
+    ofType(FETCH_MEDIA_TAGS),
     mergeMap(action => {
       // TODO: Check out https://github.com/piotrwitek/typesafe-actions
       if (action.type !== FETCH_MEDIA_TAGS) {
