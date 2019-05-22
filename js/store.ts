@@ -8,7 +8,11 @@ import { UPDATE_TIME_ELAPSED, STEP_MARQUEE } from "./actionTypes";
 import Media from "./media";
 import Emitter from "./emitter";
 import { Extras, Dispatch, Action, AppState, Middleware } from "./types";
-import { createEpicMiddleware, combineEpics } from "redux-observable";
+import {
+  createEpicMiddleware,
+  combineEpics,
+  EpicMiddleware,
+} from "redux-observable";
 import * as Epics from "./epics";
 
 // TODO: Move to demo
@@ -36,7 +40,12 @@ export default function(
     return next(action);
   };
 
-  const epicMiddleware = createEpicMiddleware({
+  const epicMiddleware: EpicMiddleware<
+    Action,
+    Action,
+    AppState,
+    Extras
+  > = createEpicMiddleware({
     dependencies: extras,
   });
 
