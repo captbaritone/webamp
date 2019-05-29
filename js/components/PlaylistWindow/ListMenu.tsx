@@ -1,7 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import { removeAllTracks } from "../../actionCreators";
+import * as Actions from "../../actionCreators";
 import PlaylistMenu from "./PlaylistMenu";
+import { Dispatch } from "../../types";
 
 /* eslint-disable no-alert */
 
@@ -23,9 +24,10 @@ const ListMenu = (props: DispatchProps) => (
   </PlaylistMenu>
 );
 
-const mapDispatchToProps = (): DispatchProps => {
-  return { removeAllTracks };
-};
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
+  removeAllTracks: () => dispatch(Actions.removeAllTracks()),
+});
+
 export default connect(
   null,
   mapDispatchToProps
