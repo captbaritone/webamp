@@ -1,6 +1,7 @@
 const { COMMANDS } = require("./constants");
+const Command = require("./command");
 const MAGIC = "FG";
-const ENCODING = "utf8";
+const ENCODING = "ascii";
 
 class Parser {
   _readMagic() {
@@ -102,6 +103,11 @@ class Parser {
     while (i < code.length) {
       const opCode = code.charCodeAt(i);
       const command = COMMANDS[opCode];
+      if (command == null) {
+        // console.warn(`Missing command opCode: ${opCode}`);
+        i++;
+        continue;
+      }
       if (command.arg == null) {
         i++;
         continue;
@@ -152,6 +158,37 @@ class Parser {
     return this._readStringOfLength(this._readUInt16LE());
   }
 
+  _decodeCode({ functionsCode, types, variables, functionNames, functions }) {
+    let pos = 0;
+    const localFunctions = {};
+    const results = [];
+    const poss = [];
+    while (pos < functionsCode.length) {
+      poss.push(pos);
+      const command = new Command({
+        functionsCode,
+        pos,
+        types,
+        variables,
+        functionNames,
+        localFunctions
+      });
+      pos += command.size;
+      results.push(command);
+    }
+    // TODO: Don't mutate
+    Object.values(localFunctions).forEach(localFunction => {
+      functions.push(localFunction);
+    });
+
+    functions.sort((a, b) => {
+      // TODO: Confirm that I have this the right way round
+      return a.offset - b.offset;
+    });
+
+    return results;
+  }
+
   parse(buffer) {
     this._buffer = buffer;
     this._i = 0;
@@ -165,6 +202,13 @@ class Parser {
     const constants = this._readConstants();
     const functions = this._readFunctions();
     const functionsCode = this._readFunctionsCode();
+    const decoding = this._decodeCode({
+      functionsCode,
+      types,
+      variables,
+      functionNames,
+      functions
+    });
     this._readCommands(functionsCode);
     return {
       magic,
@@ -173,7 +217,8 @@ class Parser {
       variables,
       constants,
       functionsCode,
-      functions
+      functions,
+      decoding
     };
   }
 }

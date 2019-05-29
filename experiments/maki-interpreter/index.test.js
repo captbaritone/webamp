@@ -8,26 +8,26 @@ function parseFile(relativePath) {
 }
 
 describe("standardframe.maki", () => {
-  let debug;
+  let maki;
   beforeEach(() => {
-    debug = parseFile("./fixtures/standardframe.maki");
+    maki = parseFile("./fixtures/standardframe.maki");
   });
 
   test("can read magic", () => {
-    expect(debug.magic).toBe("FG");
+    expect(maki.magic).toBe("FG");
   });
 
   test("can read byte code", () => {
-    expect(debug.types.length).toBe(33);
-    expect(debug.types[0]).toBe("516549714a510d87b5a6e391e7f33532");
-    debug.types.forEach(type => {
+    expect(maki.types.length).toBe(33);
+    expect(maki.types[0]).toBe("516549714a510d87b5a6e391e7f33532");
+    maki.types.forEach(type => {
       expect(type.length).toBe(32);
     });
   });
 
   test("can read functionNames", () => {
-    expect(debug.functionNames.length).toBe(12);
-    expect(debug.functionNames.map(func => func.name)).toEqual([
+    expect(maki.functionNames.length).toBe(12);
+    expect(maki.functionNames.map(func => func.name)).toEqual([
       "onScriptLoaded",
       "getScriptGroup",
       "getParam",
@@ -41,31 +41,41 @@ describe("standardframe.maki", () => {
       "newGroup",
       "init"
     ]);
-    debug.functionNames.forEach(func => {
-      expect(debug.types[func.classType]).not.toBe(undefined);
+    maki.functionNames.forEach(func => {
+      expect(maki.types[func.classType]).not.toBe(undefined);
     });
   });
 
   test("can read variables", () => {
-    expect(debug.variables.length).toBe(56);
-    debug.variables.forEach(variable => {
-      expect(debug.types[variable.type]).not.toBe(undefined);
+    expect(maki.variables.length).toBe(56);
+    maki.variables.forEach(variable => {
+      expect(maki.types[variable.type]).not.toBe(undefined);
     });
   });
 
   test("can read constants", () => {
-    expect(debug.constants.length).toBe(23);
+    expect(maki.constants.length).toBe(23);
   });
 
   test("can read functions", () => {
-    expect(debug.functions).toEqual([
+    // console.log(maki.functions);
+    expect(maki.functions).toEqual([
       { varNum: 0, offset: 0, funcNum: 0 },
       { varNum: 0, offset: 296, funcNum: 4 },
+      { function: { code: [], name: "func332", offset: 332 }, offset: 332 },
       { varNum: 2, offset: 559, funcNum: 9 }
     ]);
   });
 
   test("can read function code", () => {
-    expect(debug.functionsCode.length).toBe(1004);
+    expect(maki.functionsCode.length).toBe(1004);
+  });
+
+  test("can read function code", () => {
+    expect(maki.functionsCode.length).toBe(1004);
+  });
+
+  test("can read decoding", () => {
+    expect(maki.decoding.length).toBe(256);
   });
 });
