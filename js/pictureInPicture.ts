@@ -1,4 +1,5 @@
 import React from "react";
+import { useOnUnmount } from "./hooks";
 
 export function videoFromCanvasIsSupported() {
   const canvas = document.createElement("canvas");
@@ -51,7 +52,7 @@ export function pictureInPictureIsSupported() {
 interface PictureInPictureOptions {
   video: HTMLVideoElement | null;
   enabled: boolean;
-  onChange(cb: (enabled: boolean) => void): void;
+  onChange(enabled: boolean): void;
 }
 
 export function usePictureInPicture({
@@ -62,11 +63,10 @@ export function usePictureInPicture({
   const [actuallyEnabled, setActuallyEnabled] = React.useState(false);
   // Wrap the local setEnabled call so that its always called with the change handler.
   const wrappedSetEnabled = React.useCallback(
-    newValue => {
-      if (newValue === enabled) {
-        return;
+    (newValue: boolean) => {
+      if (newValue !== enabled) {
+        onChange(newValue);
       }
-      onChange(newValue);
       setActuallyEnabled(newValue);
     },
     [enabled, onChange]
@@ -89,7 +89,7 @@ export function usePictureInPicture({
     };
   }, [video, wrappedSetEnabled]);
 
-  //
+  // Apply the user's `enabled` state if needed.
   React.useEffect(() => {
     if (video == null || enabled === actuallyEnabled) {
       return;
@@ -105,6 +105,7 @@ export function usePictureInPicture({
         // has never been painted into a video and trying to open that video in
         // picture in picture.
         console.error("Failed to enter picture in picture mode", e);
+        // TODO: Technically, this callback could be stale.
         if (mounted) wrappedSetEnabled(false);
       });
     } else {
@@ -112,6 +113,7 @@ export function usePictureInPicture({
       // @ts-ignore
       document.exitPictureInPicture().catch((e: Error) => {
         console.error("Failed to exit picture in picture mode", e);
+        // TODO: Technically, this callback could be stale.
         if (mounted) wrappedSetEnabled(true);
       });
     }
@@ -120,4 +122,17 @@ export function usePictureInPicture({
       mounted = false;
     };
   }, [video, enabled, actuallyEnabled, wrappedSetEnabled]);
+
+  // When the component that owns the video is unmounted, we want the
+  // picture-in-picture to close as well.
+  const onUnmount = React.useCallback(() => {
+    if (actuallyEnabled) {
+      document.exitPictureInPicture();
+    }
+    if (enabled) {
+      onChange(false);
+    }
+  }, [actuallyEnabled, onChange, enabled]);
+
+  useOnUnmount(onUnmount);
 }

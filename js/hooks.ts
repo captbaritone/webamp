@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import * as Utils from "./utils";
 
 interface Size {
@@ -24,4 +24,16 @@ export function useWindowSize() {
     };
   }, [setSize, handler]);
   return size;
+}
+
+// Call a callback when the component unmounts.
+export function useOnUnmount(unmountCallback: () => void) {
+  const onUnmountRef = React.useRef(unmountCallback);
+  // Could/should I just assing this during render rather than scheduling for after the render?
+  React.useEffect(() => {
+    onUnmountRef.current = unmountCallback;
+  }, [unmountCallback]);
+  React.useEffect(() => {
+    return () => onUnmountRef.current();
+  }, []);
 }
