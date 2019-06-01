@@ -44,6 +44,7 @@ export function useVideoFromCanvas({
 }
 
 export function pictureInPictureIsSupported() {
+  // @ts-ignore
   return document.exitPictureInPicture != null;
 }
 
@@ -98,6 +99,7 @@ export function usePictureInPicture({
 
     if (enabled) {
       // Returns a promise which we could theoretically await.
+      // @ts-ignore
       video.requestPictureInPicture().catch((e: Error) => {
         // I've seen this happen when rendering the MediaStream of a canvas that
         // has never been painted into a video and trying to open that video in
@@ -107,6 +109,7 @@ export function usePictureInPicture({
       });
     } else {
       // Returns a promise which we could theoretically await.
+      // @ts-ignore
       document.exitPictureInPicture().catch((e: Error) => {
         console.error("Failed to exit picture in picture mode", e);
         if (mounted) wrappedSetEnabled(true);
