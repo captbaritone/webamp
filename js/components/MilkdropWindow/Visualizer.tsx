@@ -2,7 +2,12 @@ import React, { useEffect, useState, useRef } from "react";
 import { connect } from "react-redux";
 import { VISUALIZERS } from "../../constants";
 import * as Selectors from "../../selectors";
-import { AppState, TransitionType } from "../../types";
+import * as Actions from "../../actionCreators";
+import { AppState, TransitionType, Dispatch } from "../../types";
+import {
+  usePictureInPicture,
+  useVideoFromCanvas,
+} from "../../pictureInPicture";
 
 type ButterchurnVisualizer = {
   setRendererSize(width: number, height: number): void;
@@ -22,6 +27,11 @@ interface StateProps {
     text: string;
     time: number;
   } | null;
+  pictureInPicture: boolean;
+}
+
+interface DispatchProps {
+  togglePictureInPicture(): void;
 }
 
 interface OwnProps {
@@ -30,7 +40,7 @@ interface OwnProps {
   width: number;
 }
 
-type Props = StateProps & OwnProps;
+type Props = StateProps & DispatchProps & OwnProps;
 
 const TRANSITION_TYPE_DURATIONS = {
   [TransitionType.DEFAULT]: 2.7,
@@ -50,15 +60,17 @@ function Visualizer(_props: Props) {
     isEnabledVisualizer,
     message,
     playing,
+    pictureInPicture,
+    togglePictureInPicture,
   } = _props;
-  const canvasRef = useRef(null);
+  const [canvas, setCanvas] = useState<null | HTMLCanvasElement>(null);
   const [visualizer, setVisualizer] = useState<ButterchurnVisualizer | null>(
     null
   );
 
   // Initialize the visualizer
   useEffect(() => {
-    if (canvasRef.current == null || butterchurn == null) {
+    if (canvas == null || butterchurn == null) {
       return;
     }
     if (visualizer != null) {
@@ -67,20 +79,16 @@ function Visualizer(_props: Props) {
       // node, or the canvas, that change won't be respected.
       return;
     }
-    const _visualizer = butterchurn.createVisualizer(
-      analyser.context,
-      canvasRef.current,
-      {
-        width,
-        height,
-        meshWidth: 32,
-        meshHeight: 24,
-        pixelRatio: window.devicePixelRatio || 1,
-      }
-    );
+    const _visualizer = butterchurn.createVisualizer(analyser.context, canvas, {
+      width,
+      height,
+      meshWidth: 32,
+      meshHeight: 24,
+      pixelRatio: window.devicePixelRatio || 1,
+    });
     _visualizer.connectAudio(analyser);
     setVisualizer(_visualizer);
-  }, [butterchurn, analyser, height, width, visualizer]);
+  }, [canvas, butterchurn, analyser, height, width, visualizer]);
 
   // Ensure render size stays up to date
   useEffect(() => {
@@ -155,16 +163,35 @@ function Visualizer(_props: Props) {
     };
   }, [visualizer, shouldAnimate]);
 
+  const handlePictureInPictureChange = React.useCallback(
+    enabled => {
+      if (enabled === pictureInPicture) {
+        return;
+      }
+      togglePictureInPicture();
+    },
+    [pictureInPicture, togglePictureInPicture]
+  );
+
+  const video = useVideoFromCanvas({ canvas, playing });
+
+  usePictureInPicture({
+    video,
+    enabled: pictureInPicture,
+    onChange: handlePictureInPictureChange,
+  });
+
   return (
     <canvas
+      id="milkdrop"
       height={height}
       width={width}
       style={{
         height: "100%",
         width: "100%",
-        display: isEnabledVisualizer ? "block" : "none",
+        display: isEnabledVisualizer && !pictureInPicture ? "block" : "none",
       }}
-      ref={canvasRef}
+      ref={setCanvas}
     />
   );
 }
@@ -178,6 +205,16 @@ const mapStateToProps = (state: AppState): StateProps => ({
   currentPreset: Selectors.getCurrentPreset(state),
   transitionType: Selectors.getPresetTransitionType(state),
   message: state.milkdrop.message,
+  pictureInPicture: Selectors.getMilkdropPictureInPictureEnabled(state),
 });
 
-export default connect(mapStateToProps)(Visualizer);
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
+  return {
+    togglePictureInPicture: () => dispatch(Actions.togglePictureInPicture()),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Visualizer);

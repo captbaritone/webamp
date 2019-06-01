@@ -10,12 +10,14 @@ import ContextMenuWraper from "../ContextMenuWrapper";
 interface StateProps {
   desktop: boolean;
   fullscreen: boolean;
+  pictureInPicture: boolean;
 }
 
 interface DispatchProps {
   closeWindow(): void;
   toggleDesktop(): void;
   toggleFullscreen(): void;
+  togglePictureInPicture(): void;
 }
 
 interface OwnProps {
@@ -40,6 +42,12 @@ const MilkdropContextMenu = (props: Props) => (
             label="Desktop Mode"
             hotkey="Alt+D"
           />
+          <Node
+            onClick={props.togglePictureInPicture}
+            checked={props.pictureInPicture}
+            label="Picture-in Picture"
+            hotkey="Alt+D"
+          />
           <Hr />
           <Node onClick={props.closeWindow} label="Quit" />
         </>
@@ -53,12 +61,14 @@ const MilkdropContextMenu = (props: Props) => (
 const mapStateToProps = (state: AppState): StateProps => ({
   desktop: Selectors.getMilkdropDesktopEnabled(state),
   fullscreen: Selectors.getMilkdropFullscreenEnabled(state),
+  pictureInPicture: Selectors.getMilkdropPictureInPictureEnabled(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   closeWindow: () => dispatch(Actions.closeWindow(WINDOWS.MILKDROP)),
   toggleDesktop: () => dispatch(Actions.toggleMilkdropDesktop()),
   toggleFullscreen: () => dispatch(Actions.toggleMilkdropFullscreen()),
+  togglePictureInPicture: () => dispatch(Actions.togglePictureInPicture()),
 });
 
 export default connect(

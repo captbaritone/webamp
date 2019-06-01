@@ -672,6 +672,10 @@ export function getMilkdropDesktopEnabled(state: AppState): boolean {
   return state.milkdrop.display === "DESKTOP";
 }
 
+export function getMilkdropPictureInPictureEnabled(state: AppState): boolean {
+  return state.milkdrop.display === "PICTURE_IN_PICTURE";
+}
+
 export function getMilkdropFullscreenEnabled(state: AppState): boolean {
   return state.milkdrop.display === "FULLSCREEN";
 }

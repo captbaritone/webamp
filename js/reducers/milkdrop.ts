@@ -11,6 +11,7 @@ import {
   TOGGLE_RANDOMIZE_PRESETS,
   TOGGLE_PRESET_CYCLING,
   SCHEDULE_MILKDROP_MESSAGE,
+  TOGGLE_PICTURE_IN_PICTURE,
 } from "../actionTypes";
 import * as Utils from "../utils";
 
@@ -20,7 +21,7 @@ interface Message {
 }
 
 export interface MilkdropState {
-  display: "WINDOW" | "DESKTOP" | "FULLSCREEN";
+  display: "WINDOW" | "DESKTOP" | "FULLSCREEN" | "PICTURE_IN_PICTURE";
   overlay: boolean;
   presetHistory: number[];
   presets: StatePreset[];
@@ -56,6 +57,13 @@ export const milkdrop = (
       return { ...state, display: action.enabled ? "DESKTOP" : "WINDOW" };
     case SET_MILKDROP_FULLSCREEN:
       return { ...state, display: action.enabled ? "FULLSCREEN" : "WINDOW" };
+    case TOGGLE_PICTURE_IN_PICTURE: {
+      const isPictureInPicture = state.display === "PICTURE_IN_PICTURE";
+      return {
+        ...state,
+        display: isPictureInPicture ? "WINDOW" : "PICTURE_IN_PICTURE",
+      };
+    }
     case GOT_BUTTERCHURN:
       return { ...state, butterchurn: action.butterchurn };
     case GOT_BUTTERCHURN_PRESETS:

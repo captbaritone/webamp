@@ -509,7 +509,8 @@ export type Action =
       index: number;
       transitionType: TransitionType;
     }
-  | { type: "TOGGLE_PRESET_OVERLAY" };
+  | { type: "TOGGLE_PRESET_OVERLAY" }
+  | { type: "TOGGLE_PICTURE_IN_PICTURE" };
 
 export type MediaTagRequestStatus =
   | "INITIALIZED"
