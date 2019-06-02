@@ -10,25 +10,34 @@ export function videoFromCanvasIsSupported() {
 interface VideoFromCanvasOptions {
   canvas: HTMLCanvasElement | null;
   playing: boolean;
+  contextType: "webgl2" | "2d";
 }
 export function useVideoFromCanvas({
   canvas,
   playing,
+  contextType,
 }: VideoFromCanvasOptions): HTMLVideoElement | null {
   // Create an HTMLVideoElement from the passed canvas
   const video = React.useMemo(() => {
     if (canvas == null) {
       return null;
     }
+    // @ts-ignore
+    if (canvas.captureStream == null) {
+      return null;
+    }
     const v = document.createElement("video");
     v.muted = true;
+    // Firefox will blow up if you try to capture a stream without initializing
+    // a context. So we get the context here just to be sure.
+    canvas.getContext(contextType);
     // @ts-ignore
     v.srcObject = canvas.captureStream(60 /* fps */);
     return v;
-  }, [canvas]);
+  }, [canvas, contextType]);
 
   // Ensure the video element's playing status stays in sync with the audio.
-  // This is important because Chrome decided which media control buttons
+  // This is important because Chrome decides which media control buttons
   // (play/pause) to show based upon the video's status.
   React.useEffect(() => {
     if (video == null || video.paused !== playing) {
@@ -46,7 +55,7 @@ export function useVideoFromCanvas({
 
 export function pictureInPictureIsSupported() {
   // @ts-ignore
-  return document.exitPictureInPicture != null;
+  return Boolean(document.pictureInPictureEnabled);
 }
 
 interface PictureInPictureOptions {
@@ -91,7 +100,11 @@ export function usePictureInPicture({
 
   // Apply the user's `enabled` state if needed.
   React.useEffect(() => {
-    if (video == null || enabled === actuallyEnabled) {
+    if (
+      video == null ||
+      enabled === actuallyEnabled ||
+      !pictureInPictureIsSupported()
+    ) {
       return;
     }
 
@@ -126,7 +139,8 @@ export function usePictureInPicture({
   // When the component that owns the video is unmounted, we want the
   // picture-in-picture to close as well.
   const onUnmount = React.useCallback(() => {
-    if (actuallyEnabled) {
+    if (actuallyEnabled && pictureInPictureIsSupported()) {
+      // @ts-ignore
       document.exitPictureInPicture();
     }
     if (enabled) {

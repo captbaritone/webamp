@@ -6,6 +6,7 @@ import * as Selectors from "../../selectors";
 import * as Actions from "../../actionCreators";
 import { AppState, Dispatch } from "../../types";
 import ContextMenuWraper from "../ContextMenuWrapper";
+import { pictureInPictureIsSupported } from "../../pictureInPicture";
 
 interface StateProps {
   desktop: boolean;
@@ -42,12 +43,14 @@ const MilkdropContextMenu = (props: Props) => (
             label="Desktop Mode"
             hotkey="Alt+D"
           />
-          <Node
-            onClick={props.togglePictureInPicture}
-            checked={props.pictureInPicture}
-            label="Picture-in Picture"
-            hotkey="Alt+D"
-          />
+          {pictureInPictureIsSupported() && (
+            <Node
+              onClick={props.togglePictureInPicture}
+              checked={props.pictureInPicture}
+              label="Picture-in Picture"
+              hotkey="Alt+D"
+            />
+          )}
           <Hr />
           <Node onClick={props.closeWindow} label="Quit" />
         </>

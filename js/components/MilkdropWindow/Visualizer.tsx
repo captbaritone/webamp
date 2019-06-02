@@ -87,6 +87,9 @@ function Visualizer(_props: Props) {
       pixelRatio: window.devicePixelRatio || 1,
     });
     _visualizer.connectAudio(analyser);
+    // Picture-in-picture mode requires that the canvas contex already be established or it will
+    // error. This forces that.
+    _visualizer.render();
     setVisualizer(_visualizer);
   }, [canvas, butterchurn, analyser, height, width, visualizer]);
 
@@ -173,7 +176,7 @@ function Visualizer(_props: Props) {
     [pictureInPicture, togglePictureInPicture]
   );
 
-  const video = useVideoFromCanvas({ canvas, playing });
+  const video = useVideoFromCanvas({ canvas, playing, contextType: "webgl2" });
 
   usePictureInPicture({
     video,
