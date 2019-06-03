@@ -30,9 +30,24 @@ See the [usage documentation](./docs/usage.md) for more detailed information.
 This repository contains a number of different things:
 
 1. `./`: The code for the [Webamp NPM module](https://www.npmjs.com/package/webamp)
-2. `./demo`: The code for the demo site which lives at [webamp.org](https://webamp.org)
+2. `./demo`: The code for the demo site which lives at [webamp.org](https://webamp.org), see the next section for more details
 3. `./examples`: A few small examples showing how to use the NPM module
 4. `./experiments`: A few small projects that are either related to Webamp, or may some day be a part of Webamp
+
+## About the Demo Site
+
+The demo site, [webamp.org](https://webamp.org), uses the same interface as the NPM module but adds the following functionality by utilizing Webamp's public API
+
+- Error reporting using [Sentry](https://sentry.io)
+- Analytics using [Google Analytics](https://analytics.google.com/analytics/web/)
+- Updating document's title to reflect the currently playing track
+- [Media Session API](https://developer.mozilla.org/en-US/docs/Web/API/Media_Session_API) integration
+
+Additionally, it makes use of some private Webamp APIs to add the following functionality:
+
+- [Butterchun](https://github.com/jberg/butterchurn) integration to render [MilkDrop](https://en.wikipedia.org/wiki/MilkDrop) visualizations. We intend to make this part of the public API soon.
+- "Screenshot" mode `https://webamp.org/?screenshot=1` which can be used together with [Puppeteer](https://github.com/GoogleChrome/puppeteer) to automate the generation of Winamp skin screenshots
+-
 
 ## Development
 
