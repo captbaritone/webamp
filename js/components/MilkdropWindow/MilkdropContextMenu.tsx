@@ -47,8 +47,7 @@ const MilkdropContextMenu = (props: Props) => (
             <Node
               onClick={props.togglePictureInPicture}
               checked={props.pictureInPicture}
-              label="Picture-in Picture"
-              hotkey="Alt+D"
+              label="Picture-in-Picture"
             />
           )}
           <Hr />
