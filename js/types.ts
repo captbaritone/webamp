@@ -4,7 +4,13 @@ import { UserInputState } from "./reducers/userInput";
 import { MediaState } from "./reducers/media";
 import { ThunkDispatch, ThunkAction } from "redux-thunk";
 import { DisplayState } from "./reducers/display";
-import { WindowsState, WindowPositions } from "./reducers/windows";
+import {
+  WindowsState,
+  WindowPositions,
+  WebampWindow,
+  WindowInfo,
+  WindowPosition,
+} from "./reducers/windows";
 import { EqualizerState } from "./reducers/equalizer";
 import { NetworkState } from "./reducers/network";
 import { MilkdropState } from "./reducers/milkdrop";
@@ -12,12 +18,10 @@ import { SerializedStateV1 } from "./serializedStates/v1Types";
 import { TracksState } from "./reducers/tracks";
 import { IAudioMetadata, IOptions } from "music-metadata-browser";
 
-export {
-  WebampWindow,
-  WindowInfo,
-  WindowPosition,
-  WindowPositions,
-} from "./reducers/windows";
+export type WebampWindow = WebampWindow;
+export type WindowInfo = WindowInfo;
+export type WindowPosition = WindowPosition;
+export type WindowPositions = WindowPositions;
 
 export interface FilePicker {
   contextMenuName: string;
