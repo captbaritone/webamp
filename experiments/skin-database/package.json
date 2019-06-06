@@ -1,0 +1,15 @@
+{
+  "name": "skin-database",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.469.0",
+    "express": "^4.17.1",
+    "monk": "^7.0.0",
+    "node-fetch": "^2.6.0"
+  },
+  "scripts": {
+    "serve": "node index.js"
+  }
+}
