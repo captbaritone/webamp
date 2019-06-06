@@ -6,9 +6,13 @@
   "dependencies": {
     "aws-sdk": "^2.429.0",
     "discord.js": "^11.4.2",
+    "imagemin": "^6.1.0",
+    "imagemin-optipng": "^7.0.0",
     "md5": "^2.2.1",
     "node-fetch": "^2.3.0",
-    "rgb-hex": "^2.1.0"
+    "puppeteer": "^1.17.0",
+    "rgb-hex": "^2.1.0",
+    "temp": "^0.9.0"
   },
   "scripts": {
     "start": "node index.js"

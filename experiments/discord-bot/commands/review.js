@@ -12,11 +12,12 @@ async function reviewSkin(message) {
 }
 
 async function handler(message, args) {
-  const [arg1] = args;
-  const count = arg1 ? Math.min(arg1, 10) : 1;
-  if (count > 1) {
-    message.channel.send(`Going to show ${count} skins to review`);
+  let [count] = args;
+  if (count > 50) {
+    message.channel.send(`You can only review up to ${count} skins at a time.`);
+    count = 50
   }
+  message.channel.send(`Going to show ${count} skins to review.`);
   let i = Number(count);
   while (i--) {
     await reviewSkin(message);

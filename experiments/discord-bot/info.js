@@ -1,13 +1,13 @@
 const path = require("path");
 const fs = require("fs");
+const config = require("./config");
 
 let cache = null;
 
 function getCache() {
   if (cache == null) {
     cache = JSON.parse(
-      fs.readFileSync(
-        path.join("/Volumes/Mobile Backup/skins/cache", "info.json"),
+      fs.readFileSync(config.cachePath,
         "utf8"
       )
     );

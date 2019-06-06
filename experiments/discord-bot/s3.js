@@ -62,9 +62,9 @@ async function getStats() {
     getFile("tweeted.txt")
   ]);
   return {
-    approved: new Set(approved).size - new Set(tweeted).size,
-    rejected: new Set(rejected).size,
-    tweeted: new Set(tweeted).size
+    approved: new Set(getLines(approved)).size,
+    rejected: new Set(getLines(rejected)).size,
+    tweeted: new Set(getLines(tweeted)).size,
   };
 }
 

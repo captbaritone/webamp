@@ -22,7 +22,7 @@ for (const command of commands) {
   handlers[command.command] = command.handler;
 }
 
-async function handleHelp(message) {
+async function handleHelp(message, args) {
   const commandHelp = commands
     .map(command => {
       return `\`!${command.command} ${command.usage || ""}\` -- ${
