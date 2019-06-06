@@ -114,6 +114,24 @@ def append_line(path, line):
     s3.meta.client.upload_file(temp_path, "winamp2-js-skins", path)
 
 
+def get_filename(hash):
+    dirname = os.path.dirname(__file__)
+    filename = os.path.join(dirname, '../discord-bot/info.json')
+    filenames = dict()
+    with open(filename) as json_file:
+        data = json.load(json_file)
+        for md5 in data:
+            skin = data[md5]
+            pathnames = skin.get('filePaths')
+            if len(pathnames) < 1:
+                continue
+            firstpathname = pathnames[0]
+            path, filename = os.path.split(firstpathname)
+            filenames[md5] = filename
+
+    return filenames.get(hash)
+
+
 def review():
     approved = get_lines("approved.txt")
     tweeted = get_lines("tweeted.txt")
@@ -186,12 +204,8 @@ def main(dry):
 
 def tweet_skin(md5):
     print("Going to Tweet the skin with md5 hash %s" % md5)
-    filenames = dict()
-    for pair in get_lines("filenames.txt"):
-        [file_md5, filename] = pair.strip().split(" ")
-        filenames[file_md5] = filename
 
-    skin_name = filenames[md5]
+    skin_name = get_filename(md5)
     assert skin_name
     skin_url = get_skin_url(md5)
     screenshot_url = get_screenshot_url(md5)
