@@ -6,7 +6,7 @@ const skins = db.get("skins");
 const iaItems = db.get("internetArchiveItems");
 // const info = require("/Volumes/Mobile Backup/skins/cache/info.json");
 const { getStatus } = require("./s3");
-const port = 3000;
+const port = 3001;
 
 // TODO: Look into 766c4fad9088037ab4839b18292be8b1
 // Has huge number of filenames in info.json
