@@ -24,12 +24,16 @@ async function postSkin({ filename, md5, title, dest }) {
     embed.addField("Warning", "Cached metadata not found", true);
   } else {
     if (info.averageColor) {
-      const color = rgbHex(info.averageColor);
-      if (String(color).length === 6) {
-        embed.setColor(`#${color}`);
-      } else {
-        console.log("Did not get a safe color from ", info.averageColor);
-        console.log("Got ", color);
+      try {
+        const color = rgbHex(info.averageColor);
+        if (String(color).length === 6) {
+          embed.setColor(`#${color}`);
+        } else {
+          console.log("Did not get a safe color from ", info.averageColor);
+          console.log("Got ", color);
+        }
+      } catch (e) {
+        console.error("could not use color", info.averageColor);
       }
     }
     if (info.emails != null && info.emails.length) {

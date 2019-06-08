@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const fetch = require("node-fetch");
 const md5Buffer = require("md5");
+const config = require("../../config");
 
 const { getInfo } = require("../info");
 const Skin = require("./skin");
@@ -30,7 +31,7 @@ async function handler(message) {
     if (info == null) {
       fs.writeFileSync(
         path.join(
-          "/Volumes/Mobile Backup/skins/skins/discord-bot",
+          config.uploadDir,
           // TODO: Use a sub directory using md5 to avoid collision
           // file.md5,
           file.filename
