@@ -3,7 +3,7 @@ const temp = require("temp").track();
 const fs = require("fs");
 const fetch = require("node-fetch");
 const md5Buffer = require("md5");
-const Shooter = require("../shooter");
+const Shooter = require("../../shooter");
 
 async function handler(message, args) {
   console.log("Trying to take a screenshot");
