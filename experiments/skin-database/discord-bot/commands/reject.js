@@ -1,4 +1,4 @@
-const { reject, getStatus } = require("../s3");
+const { reject, getStatus } = require("../../s3");
 const Utils = require("../utils");
 
 const { getFilename } = require("../info");

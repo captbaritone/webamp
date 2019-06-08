@@ -1,4 +1,4 @@
-const { approve, getStatus } = require("../s3");
+const { approve, getStatus } = require("../../s3");
 const Utils = require("../utils");
 
 const { getFilename } = require("../info");

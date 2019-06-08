@@ -1,6 +1,7 @@
 const fs = require("fs");
+const path = require("path");
 const Discord = require("discord.js");
-const config = require("./config");
+const config = require("../config");
 
 const client = new Discord.Client();
 
@@ -12,7 +13,7 @@ const handlers = {
 };
 
 const commands = fs
-  .readdirSync("./commands")
+  .readdirSync(path.resolve(__dirname, "./commands"))
   .filter(file => file.endsWith(".js"))
   .map(file => {
     return require(`./commands/${file}`);

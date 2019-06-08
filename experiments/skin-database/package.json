@@ -5,11 +5,17 @@
   "license": "MIT",
   "dependencies": {
     "aws-sdk": "^2.469.0",
+    "discord.js": "^11.4.2",
     "express": "^4.17.1",
+    "md5": "^2.2.1",
+    "rgb-hex": "^2.1.0",
     "monk": "^7.0.0",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.0",
+    "yargs": "^13.2.4"
   },
   "scripts": {
-    "serve": "node index.js"
+    "serve": "node index.js",
+    "tweet": "./cli.js tweet",
+    "bot": "node ./discord-bot/index.js"
   }
 }

@@ -1,4 +1,4 @@
-const { getSkinToReview } = require("../s3");
+const { getSkinToReview } = require("../../s3");
 const Utils = require("../utils");
 
 async function reviewSkin(message) {

@@ -15,10 +15,12 @@ function getCache() {
   return cache;
 }
 
+// TODO: Make async and rewriting using DB
 function getInfo(md5) {
   return getCache()[md5];
 }
 
+// TODO: Make async and rewriting using DB
 function getFilename(md5) {
   const info = getInfo(md5);
   return info.filePaths.map(filepath => path.basename(filepath))[0];

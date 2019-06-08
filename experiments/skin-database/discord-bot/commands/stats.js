@@ -1,5 +1,5 @@
 const { getCache } = require("../info");
-const { getStats } = require("../s3");
+const { getStats } = require("../../s3");
 
 async function handler(message) {
   const info = getCache();

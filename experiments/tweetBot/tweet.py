@@ -2,9 +2,7 @@
 """Tweet Winamp Skins
 
 Usage:
-  tweet.py post [--dry]
-  tweet.py review [--dry]
-  tweet.py manual <hash>
+  tweet.py tweet <hash> <filename> [--dry]
   tweet.py list
   tweet.py debug
   tweet.py sort
@@ -15,6 +13,7 @@ Options:
   --dry                   Don't actually post a tweet
 """
 
+import sys
 import requests
 import os
 import re
@@ -30,33 +29,10 @@ from docopt import docopt
 from collections import defaultdict
 from discord_hooks import Webhook
 
+print(sys.argv)
+
 # Create webhook
 from config import CONFIG
-
-
-def getChar():
-    try:
-        # for Windows-based systems
-        import msvcrt  # If successful, we are on Windows
-
-        return msvcrt.getch()
-
-    except ImportError:
-        # for POSIX-based systems (with termios & tty support)
-        import tty
-        import sys
-        import termios  # raises ImportError if unsupported
-
-        fd = sys.stdin.fileno()
-        oldSettings = termios.tcgetattr(fd)
-
-        try:
-            tty.setcbreak(fd)
-            answer = sys.stdin.read(1)
-        finally:
-            termios.tcsetattr(fd, termios.TCSADRAIN, oldSettings)
-
-        return answer
 
 
 def get_api():
@@ -114,85 +90,16 @@ def append_line(path, line):
     s3.meta.client.upload_file(temp_path, "winamp2-js-skins", path)
 
 
-def review():
-    approved = get_lines("approved.txt")
-    tweeted = get_lines("tweeted.txt")
-    rejected = get_lines("rejected.txt")
-
-    all_skins = []
-
-    filenames = dict()
-    for pair in get_lines("filenames.txt"):
-        [md5, filename] = pair.strip().split(" ")
-        filenames[md5] = filename
-        all_skins.append(md5)
-
-    potentials = list(set(all_skins) - set(approved) - set(tweeted) - set(rejected))
-
-    potentials.sort()
-
-    number_of_potentials = len(potentials)
-
-    print("%s skins to review. Look busy!" % number_of_potentials)
-
-    for md5 in potentials:
-        screenshot_url = get_screenshot_url(md5)
-        screenshot_path = NamedTemporaryFile(suffix="png").name
-        try:
-            urllib.request.urlretrieve(screenshot_url, screenshot_path)
-        except urllib.request.HTTPError:
-            print("Failed to download %s" % screenshot_url)
-            continue
-        skin_name = filenames[md5]
-        print("Found %s" % skin_name)
-        os.system('open --background "%s"' % screenshot_path)
-        print("Approve? (y/n/q/t)")
-        res = getChar()
-        if res is "q":
-            return
-        elif res is "y":
-            append_line("approved.txt", md5)
-            print("Approved %s" % skin_name)
-        elif res is "n":
-            append_line("rejected.txt", md5)
-            print("Rejected %s" % skin_name)
-        elif res is "t":
-            tweet_skin(md5)
-            return
-        else:
-            print("Invalid input")
+# Not currently used.
+def notify(number_of_potential):
+    msg = (
+        "I'm down to only %s approved skins to tweet. You should review some more."
+        % number_of_potentials
+    )
+    Webhook(CONFIG["discord_url"], msg=msg).post()
 
 
-def main(dry):
-    approved = get_lines("approved.txt")
-    tweeted = get_lines("tweeted.txt")
-
-    candidates = list(set(approved) - set(tweeted))
-    number_of_potentials = len(candidates)
-    print("Found %s approved skins" % number_of_potentials)
-    if number_of_potentials <= 10:
-        msg = (
-            "I'm down to only %s approved skins to tweet. You should review some more."
-            % number_of_potentials
-        )
-        Webhook(CONFIG["discord_url"], msg=msg).post()
-
-    if not number_of_potentials:
-        print("Exiting")
-        return
-
-    tweet_skin(candidates[0])
-
-
-def tweet_skin(md5):
-    print("Going to Tweet the skin with md5 hash %s" % md5)
-    filenames = dict()
-    for pair in get_lines("filenames.txt"):
-        [file_md5, filename] = pair.strip().split(" ")
-        filenames[file_md5] = filename
-
-    skin_name = filenames[md5]
-    assert skin_name
+def tweet_skin(md5, skin_name, dry):
     skin_url = get_skin_url(md5)
     screenshot_url = get_screenshot_url(md5)
 
@@ -203,7 +110,7 @@ def tweet_skin(md5):
         print("URL %s is no good. Aborting." % skin_url)
         return
 
-    tweet_image(skin_name, md5, skin_url, screenshot_path, True)
+    tweet_image(skin_name, md5, skin_url, screenshot_path, dry)
 
 
 def get_skin_url(md5):
@@ -214,7 +121,7 @@ def get_screenshot_url(md5):
     return "https://s3.amazonaws.com/webamp-uploaded-skins/screenshots/%s.png" % md5
 
 
-def tweet_image(skin_name, md5, skin_url, screenshot_path, double):
+def tweet_image(skin_name, md5, skin_url, screenshot_path, dry):
     # Trick Twitter into keeping the skin a PNG
     img = Image.open(screenshot_path)
     img = img.convert("RGBA")  # ensure 32-bit
@@ -225,9 +132,8 @@ def tweet_image(skin_name, md5, skin_url, screenshot_path, double):
     pixels[w - 1, h - 1] = pixels[w - 1, h - 1][:3] + (243,)
 
     # Resize to 2x so that pixels remain a bit more crisp when resized
-    if double:
-        w, h = (2 * w, 2 * h)
-        img = img.resize((w, h), 0)
+    w, h = (2 * w, 2 * h)
+    img = img.resize((w, h), 0)
 
     img.save(screenshot_path)
 
@@ -284,23 +190,17 @@ def extract_hash(foo):
 if __name__ == "__main__":
     arguments = docopt(__doc__, version="Tweet Winamp Skins 0.1")
     dry = arguments.get("--dry")
-    if arguments.get("review"):
-        review()
-    elif arguments.get("post"):
-        main(dry=dry)
-    elif arguments.get("list"):
+    if arguments.get("list"):
         filenames = open("filenames.txt", "w")
         for f in find("../automatedScreenshots/skins"):
             if f.endswith(".wsz"):
                 md5 = md5_file(f)
                 filenames.write("%s %s\n" % (md5, os.path.basename(f)))
 
-    elif arguments.get("manual"):
+    elif arguments.get("tweet"):
         hash = arguments.get("<hash>")
-        if hash:
-            tweet_skin(hash)
-        else:
-            print("Whoops, no hash")
+        filename = arguments.get("<filename>")
+        tweet_skin(hash, filename, dry)
     elif arguments.get("sort"):
         api = get_api()
         all_tweets = get_all_tweets()
