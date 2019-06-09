@@ -1,5 +1,5 @@
 const fetch = require("node-fetch");
-const db = require("./db");
+const db = require("../db");
 const iaItems = db.get("internetArchiveItems");
 
 async function fetchMetadata(identifier) {

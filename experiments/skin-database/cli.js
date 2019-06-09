@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 const argv = require("yargs").argv;
 const findTweetableSkin = require("./tasks/findTweetableSkins");
+const fetchInternetArchiveMetadata = require("./tasks/fetchInternetArchiveMetadata");
 const path = require("path");
+const Skins = require("./data/skins");
 
 const { spawn } = require("child_process");
 
@@ -44,9 +46,27 @@ async function main() {
           //, "--dry"
         ]
       );
+      break;
       console.log({ output });
 
       console.log("Done");
+    case "fetch-metadata":
+      console.log("Going to download metadata from the Internet Archive");
+      await fetchInternetArchiveMetadata();
+      console.log("Done");
+      break;
+    case "metadata": {
+      const hash = argv._[1];
+      console.log(await Skins.getInternetArchiveUrl(hash));
+      break;
+    }
+    case "skin": {
+      const hash = argv._[1];
+      console.log(await Skins.getSkinByMd5(hash));
+      break;
+    }
+    default:
+      console.log(`Unknown command ${argv._[0]}`);
   }
 }
 

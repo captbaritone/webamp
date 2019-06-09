@@ -1,26 +1,22 @@
 const { getSkinToReview } = require("../../s3");
 const Utils = require("../utils");
+const Skins = require("../../data/skins");
 
 async function reviewSkin(message) {
-  const { filename, md5 } = await getSkinToReview();
+  const { md5 } = await getSkinToReview();
   await Utils.postSkin({
-    filename,
     md5,
-    title: `Review: ${filename}`,
+    title: filename => `Review: ${filename}`,
     dest: message.channel
   });
 }
 
 async function handler(message, args) {
-  let [count] = args;
+  let count = args[0] || 1;
   if (count > 50) {
-    if (count > 1) {
-      message.channel.send(
-        `You can only review up to ${count} skins at a time.`
-      );
-      message.channel.send(`Going to show ${count} skins to review`);
-      count = 50;
-    }
+    message.channel.send(`You can only review up to ${count} skins at a time.`);
+    message.channel.send(`Going to show ${count} skins to review`);
+    count = 50;
   }
   message.channel.send(`Going to show ${count} skins to review.`);
   let i = Number(count);

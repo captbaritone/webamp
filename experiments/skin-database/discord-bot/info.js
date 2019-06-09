@@ -6,10 +6,7 @@ let cache = null;
 function getCache() {
   if (cache == null) {
     cache = JSON.parse(
-      fs.readFileSync(
-        path.join("/Volumes/Mobile Backup/skins/cache", "info.json"),
-        "utf8"
-      )
+      fs.readFileSync(path.join(__dirname, "../info.json"), "utf8")
     );
   }
   return cache;
