@@ -1,4 +1,3 @@
-const { getFilename } = require("../info");
 const Utils = require("../utils");
 async function handler(message, args) {
   const [md5] = args;

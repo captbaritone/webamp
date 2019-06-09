@@ -4,7 +4,6 @@ const findTweetableSkin = require("./tasks/findTweetableSkins");
 const fetchInternetArchiveMetadata = require("./tasks/fetchInternetArchiveMetadata");
 const path = require("path");
 const Skins = require("./data/skins");
-const db = require("./db");
 
 const { spawn } = require("child_process");
 
@@ -47,10 +46,10 @@ async function main() {
           //, "--dry"
         ]
       );
-      break;
       console.log({ output });
 
       console.log("Done");
+      break;
     case "fetch-metadata":
       console.log("Going to download metadata from the Internet Archive");
       await fetchInternetArchiveMetadata();

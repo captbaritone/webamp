@@ -1,6 +1,6 @@
 const Utils = require("../utils");
 
-const { getCache, getFilename } = require("../info");
+const { getCache } = require("../info");
 
 async function handler(message) {
   const cache = getCache();

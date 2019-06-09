@@ -4,31 +4,6 @@ const skins = db.get("skins");
 const iaItems = db.get("internetArchiveItems");
 const S3 = require("../s3");
 
-function getFilenames(skin) {
-  return Array.from(new Set((skin.filePaths || []).map(p => path.basename(p))));
-}
-
-async function getAll() {
-  const skinRecords = await skins.find(
-    { type: "CLASSIC" },
-    {
-      limit: 10,
-      fields: {
-        md5: 1,
-        filenames: 1,
-        averageColor: 1,
-        emails: 1,
-        filePaths: 1,
-        screenshotUrl: 1,
-        tweetUrl: 1,
-        twitterLikes: 1,
-      },
-    }
-  );
-
-  return skinRecords.map(getSkinRecord);
-}
-
 function getSkinRecord(skin) {
   const {
     md5,
