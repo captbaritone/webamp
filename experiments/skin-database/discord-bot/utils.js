@@ -35,7 +35,8 @@ async function postSkin({ md5, title, dest }) {
     .setImage(screenshotUrl);
 
   if (readmeText) {
-    embed.setDescription(`\`\`\`${readmeText}\`\`\``);
+    // Trim the readme since Discord will reject it otherwise.
+    embed.setDescription(`\`\`\`${readmeText.slice(0, 2000)}\`\`\``);
   }
   if (averageColor) {
     try {
