@@ -86,4 +86,3 @@ class Shooter {
 }
 
 module.exports = Shooter;
-s;

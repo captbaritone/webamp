@@ -5,7 +5,7 @@
   "license": "MIT",
   "dependencies": {
     "aws-sdk": "^2.469.0",
-    "discord.js": "^11.4.2",
+    "discord.js": "^11.5.1",
     "express": "^4.17.1",
     "imagemin": "^6.1.0",
     "imagemin-optipng": "^7.0.0",
@@ -18,8 +18,9 @@
     "yargs": "^13.2.4"
   },
   "scripts": {
-    "serve": "node index.js",
+    "start": "node index.js",
     "tweet": "./cli.js tweet",
+    "fetch-metadata": "./cli.js fetch-metadata",
     "bot": "node ./discord-bot/index.js"
   }
 }

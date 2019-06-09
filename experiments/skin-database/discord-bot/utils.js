@@ -1,63 +1,76 @@
 const Discord = require("discord.js");
 const rgbHex = require("rgb-hex");
-const { getInfo } = require("./info");
+const Skins = require("../data/skins");
+const { getInfo, getFilename } = require("./info");
 const { approve, reject, getStatus } = require("./s3");
 
 const filter = reaction => {
   return ["👍", "👎"].some(name => reaction.emoji.name === name);
 };
 
-async function postSkin({ filename, md5, title, dest }) {
-  const screenshotUrl = `https://s3.amazonaws.com/webamp-uploaded-skins/screenshots/${md5}.png`;
-  const skinUrl = `https://s3.amazonaws.com/webamp-uploaded-skins/skins/${md5}.wsz`;
-  const webampUrl = `https://webamp.org?skinUrl=${skinUrl}`;
+async function postSkin({ md5, title, dest }) {
+  const skin = await Skins.getSkinByMd5(md5);
+  const {
+    canonicalFilename,
+    screenshotUrl,
+    skinUrl,
+    webampUrl,
+    averageColor,
+    emails,
+    tweetUrl,
+    twitterLikes,
+    tweetStatus,
+    internetArchiveUrl,
+    internetArchiveItemName,
+    readmeText
+  } = skin;
+  console.log(skin);
+  title = title ? title(canonicalFilename) : canonicalFilename;
 
   const embed = new Discord.RichEmbed()
     .setTitle(title)
     .addField("Try Online", `[webamp.org](${webampUrl})`, true)
-    .addField("Download", `[${filename}](${skinUrl})`, true)
+    .addField("Download", `[${canonicalFilename}](${skinUrl})`, true)
     .addField("Md5", md5, true)
     .setImage(screenshotUrl);
 
-  const info = getInfo(md5);
-  if (info == null) {
-    embed.addField("Warning", "Cached metadata not found", true);
+  if (readmeText) {
+    embed.setDescription(`\`\`\`${readmeText}\`\`\``);
+  }
+  if (averageColor) {
+    try {
+      const color = rgbHex(averageColor);
+      if (String(color).length === 6) {
+        embed.setColor(`#${color}`);
+      } else {
+        console.log("Did not get a safe color from ", averageColor);
+        console.log("Got ", color);
+      }
+    } catch (e) {
+      console.error("could not use color", averageColor);
+    }
+  }
+  if (emails != null && emails.length) {
+    embed.addField("Emails", emails.join(", "), true);
+  }
+  if (tweetUrl != null) {
+    let likes = "";
+    if (twitterLikes != null) {
+      likes = `(${Number(twitterLikes).toLocaleString()} likes) `;
+    }
+    embed.addField("Tweet Status", `[Tweeted](${tweetUrl}) ${likes}🐦`, true);
   } else {
-    if (info.averageColor) {
-      try {
-        const color = rgbHex(info.averageColor);
-        if (String(color).length === 6) {
-          embed.setColor(`#${color}`);
-        } else {
-          console.log("Did not get a safe color from ", info.averageColor);
-          console.log("Got ", color);
-        }
-      } catch (e) {
-        console.error("could not use color", info.averageColor);
-      }
+    if (tweetStatus === "UNREVIEWED") {
+      embed.setFooter("React with 👍 or 👎 to approve or deny");
     }
-    if (info.emails != null && info.emails.length) {
-      const uniqueEmails = Array.from(new Set(info.emails));
-      // TODO: Fix email parsing
-      embed.addField("Emails", uniqueEmails.join(", "), true);
-    }
-    if (info.tweetUrl != null) {
-      let likes = "";
-      if (info.twitterLikes != null) {
-        likes = `(${Number(info.twitterLikes).toLocaleString()} likes) `;
-      }
-      embed.addField(
-        "Tweet Status",
-        `[Tweeted](${info.tweetUrl}) ${likes}🐦`,
-        true
-      );
-    } else {
-      const status = await getStatus(md5);
-      if (status === "UNREVIEWED") {
-        embed.setFooter("React with 👍 or 👎 to approve or deny");
-      }
-      embed.addField("Tweet Status", getPrettyTwitterStatus(status), true);
-    }
+    embed.addField("Tweet Status", getPrettyTwitterStatus(tweetStatus), true);
+  }
+  if (internetArchiveUrl) {
+    embed.addField(
+      "Internet Archive",
+      `[${internetArchiveItemName || "Permalink"}](${internetArchiveUrl})`,
+      true
+    );
   }
 
   const msg = await dest.send(embed);
@@ -69,13 +82,17 @@ async function postSkin({ filename, md5, title, dest }) {
       case "👍":
         await approve(md5);
         console.log(`${user.username} approved ${md5}`);
-        await msg.channel.send(`${filename} was approved by ${user.username}`);
+        await msg.channel.send(
+          `${canonicalFilename} was approved by ${user.username}`
+        );
         msg.react("✅");
         break;
       case "👎":
         await reject(md5);
         console.log(`${user.username} rejected ${md5}`);
-        await msg.channel.send(`${filename} was rejected by ${user.username}`);
+        await msg.channel.send(
+          `${canonicalFilename} was rejected by ${user.username}`
+        );
         msg.react("❌");
         break;
     }

@@ -2,90 +2,18 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const db = require("./db");
-const skins = db.get("skins");
 const iaItems = db.get("internetArchiveItems");
 // const info = require("/Volumes/Mobile Backup/skins/cache/info.json");
-const { getStatus } = require("./s3");
-const port = 3000;
+const Skins = require("./data/skins");
+const port = 3001;
 
 // TODO: Look into 766c4fad9088037ab4839b18292be8b1
 // Has huge number of filenames in info.json
-
-function getFilenames(skin) {
-  return Array.from(new Set((skin.filePaths || []).map(p => path.basename(p))));
-}
-
-function getSkinRecord(skin) {
-  const {
-    md5,
-    averageColor,
-    emails,
-    screenshotUrl,
-    skinUrl,
-    tweetUrl,
-    twitterLikes,
-  } = skin;
-  return {
-    skinUrl,
-    screenshotUrl,
-    md5,
-    averageColor,
-    fileNames: getFilenames(skin),
-    emails,
-    tweetUrl,
-    twitterLikes,
-  };
-}
-
-async function getProp(md5, prop) {
-  const skin = await skins.findOne({ md5, type: "CLASSIC" });
-  const value = skin && skin[prop];
-  return value == null ? null : value;
-}
 
 app.set("json spaces", 2);
 
 app.get("/", async (req, res) => {
   res.send("Hello World!");
-});
-
-app.get("/skins/", async (req, res) => {
-  const skinRecords = await skins.find(
-    { type: "CLASSIC" },
-    {
-      limit: 10,
-      fields: {
-        md5: 1,
-        filenames: 1,
-        averageColor: 1,
-        emails: 1,
-        filePaths: 1,
-        screenshotUrl: 1,
-        skinUrl: 1,
-        tweetUrl: 1,
-        twitterLikes: 1,
-      },
-    }
-  );
-
-  res.json(skinRecords.map(getSkinRecord));
-});
-
-app.get("/items/", async (req, res) => {
-  const items = await iaItems.find(
-    { metadata: { $ne: null } },
-    {
-      limit: 10,
-      fields: {
-        metadata: 1,
-        identifier: 1,
-      },
-    }
-  );
-
-  const todo = await iaItems.count({ metadata: { $eq: null } });
-
-  res.json({ items, todo });
 });
 
 app.get("/items/:identifier", async (req, res) => {
@@ -98,42 +26,19 @@ app.get("/items/:identifier", async (req, res) => {
   res.json(item);
 });
 
-app.get("/tweets/", async (req, res) => {
-  const skinRecords = await skins.find(
-    { type: "CLASSIC", tweetUrl: { $ne: null } },
-    {
-      limit: 10,
-      fields: {
-        md5: 1,
-        filenames: 1,
-        averageColor: 1,
-        emails: 1,
-        filePaths: 1,
-        screenshotUrl: 1,
-        skinUrl: 1,
-        tweetUrl: 1,
-        twitterLikes: 1,
-        // md5: 1,
-      },
-    }
-  );
-
-  res.json(skinRecords.map(getSkinRecord));
-});
-
 app.get("/skins/:md5", async (req, res) => {
   const { md5 } = req.params;
-  const skin = await skins.findOne({ md5, type: "CLASSIC" });
+  const skin = await Skins.getSkinByMd5(md5);
   if (skin == null) {
     res.status(404).json();
     return;
   }
-  res.json({ ...getSkinRecord(skin), tweetStatus: await getStatus(md5) });
+  res.json(skin);
 });
 
 app.get("/skins/:md5/readme.txt", async (req, res) => {
   const { md5 } = req.params;
-  const readmeText = await getProp(md5, "readmeText");
+  const readmeText = await Skins.getReadme(md5);
   if (readmeText == null) {
     // TODO: make this 404
     res.send("");
@@ -144,7 +49,7 @@ app.get("/skins/:md5/readme.txt", async (req, res) => {
 
 app.get("/skins/:md5/screenshot.png", async (req, res) => {
   const { md5 } = req.params;
-  const screenshotUrl = await getProp(md5, "screenshotUrl");
+  const screenshotUrl = await Skins.getScreenshotUrl(md5);
   if (screenshotUrl == null) {
     res.status(404).send();
     return;
@@ -154,7 +59,7 @@ app.get("/skins/:md5/screenshot.png", async (req, res) => {
 
 app.get("/skins/:md5/download", async (req, res) => {
   const { md5 } = req.params;
-  const skinUrl = await getProp(md5, "skinUrl");
+  const skinUrl = await Skins.getSkinUrl(md5);
   if (skinUrl == null) {
     res.status(404).send();
     return;

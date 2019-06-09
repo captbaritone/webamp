@@ -7,11 +7,8 @@ async function handler(message) {
   const skins = Object.values(cache).filter(skin => skin.type === "CLASSIC");
   const skin = skins[Math.floor(Math.random() * skins.length)];
   const { md5 } = skin;
-  const filename = getFilename(md5);
   await Utils.postSkin({
-    filename,
     md5,
-    title: `${filename}`,
     dest: message.channel
   });
 }

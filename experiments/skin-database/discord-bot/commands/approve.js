@@ -6,11 +6,6 @@ const TWEET_BOT_CHANNEL_ID = "445577489834704906";
 
 async function handler(message, args) {
   const [md5] = args;
-  const filename = getFilename(md5);
-  if (filename == null) {
-    await message.channel.send(`Could not find a skin matching ${md5}`);
-    return;
-  }
   const status = await getStatus(md5);
   if (status !== "UNREVIEWED") {
     await message.channel.send(`This skin has already been reviewed.`);
@@ -19,9 +14,8 @@ async function handler(message, args) {
   await approve(md5);
   const tweetBotChannel = message.client.channels.get(TWEET_BOT_CHANNEL_ID);
   await Utils.postSkin({
-    filename,
     md5,
-    title: `Approved: ${filename}`,
+    title: filename => `Approved: ${filename}`,
     dest: tweetBotChannel
   });
   await tweetBotChannel.send(
