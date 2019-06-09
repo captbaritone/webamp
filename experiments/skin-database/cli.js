@@ -4,6 +4,7 @@ const findTweetableSkin = require("./tasks/findTweetableSkins");
 const fetchInternetArchiveMetadata = require("./tasks/fetchInternetArchiveMetadata");
 const path = require("path");
 const Skins = require("./data/skins");
+const db = require("./db");
 
 const { spawn } = require("child_process");
 
@@ -68,6 +69,7 @@ async function main() {
     default:
       console.log(`Unknown command ${argv._[0]}`);
   }
+  // await db.close();
 }
 
 main();
