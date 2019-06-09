@@ -34,12 +34,11 @@ async function fetchAllMetadata(limit) {
 // https://archive.org/advancedsearch.php?q=collection%3Awinampskins&fl%5B%5D=identifier&rows=100000&page=1&output=json
 module.exports = async function main() {
   let delay = 60000;
-  let timeout = null;
   async function go() {
     console.log("Gonna fetch some more");
     try {
       const count = await fetchAllMetadata(500);
-      if(count < 1) {
+      if (count < 1) {
         console.log("Done.");
         return;
       }
@@ -48,7 +47,7 @@ module.exports = async function main() {
       delay += 60000;
     }
     console.log("Scheduling another", delay / 1000);
-    timeout = setTimeout(go, delay);
+    setTimeout(go, delay);
   }
 
   go();

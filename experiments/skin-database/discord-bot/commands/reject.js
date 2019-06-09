@@ -1,7 +1,6 @@
 const { reject, getStatus } = require("../../s3");
 const Utils = require("../utils");
 
-const { getFilename } = require("../info");
 const TWEET_BOT_CHANNEL_ID = "445577489834704906";
 
 async function handler(message, args) {
@@ -13,9 +12,14 @@ async function handler(message, args) {
   }
   await reject(md5);
   const tweetBotChannel = message.client.channels.get(TWEET_BOT_CHANNEL_ID);
+  let filename = null;
   await Utils.postSkin({
     md5,
-    title: filename => `Rejected: ${filename}`,
+    title: f => {
+      // Hack to get access to the file name
+      filename = f;
+      return `Rejected: ${f}`;
+    },
     dest: tweetBotChannel
   });
   await tweetBotChannel.send(

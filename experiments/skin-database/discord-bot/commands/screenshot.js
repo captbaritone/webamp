@@ -1,11 +1,12 @@
 const Discord = require("discord.js");
+// eslint-disable-next-line
 const temp = require("temp").track();
 const fs = require("fs");
 const fetch = require("node-fetch");
 const md5Buffer = require("md5");
 const Shooter = require("../../shooter");
 
-async function handler(message, args) {
+async function handler(message) {
   console.log("Trying to take a screenshot");
   const { attachments } = message;
   if (attachments.length < 1) {

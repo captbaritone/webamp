@@ -1,5 +1,4 @@
 const express = require("express");
-const path = require("path");
 const app = express();
 const db = require("./db");
 const iaItems = db.get("internetArchiveItems");
@@ -71,6 +70,7 @@ app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
 async function main() {
   return;
+  /*
   const found = 0;
   const bulkUpdates = Object.values(info)
     .map((skin, i, collection) => {
@@ -94,6 +94,7 @@ async function main() {
     .filter(Boolean);
   await skins.bulkWrite(bulkUpdates);
   console.log("done");
+  */
 }
 
 main();

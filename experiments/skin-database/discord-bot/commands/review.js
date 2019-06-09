@@ -1,6 +1,5 @@
 const { getSkinToReview } = require("../../s3");
 const Utils = require("../utils");
-const Skins = require("../../data/skins");
 
 async function reviewSkin(message) {
   const { md5 } = await getSkinToReview();
