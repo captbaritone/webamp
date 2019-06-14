@@ -57,6 +57,8 @@ function Layout({
   return (
     <>
       <img
+        data-node-type="layout"
+        data-node-id={id}
         src={image.imgUrl}
         style={{
           minWidth: Number(minimum_w),
@@ -77,6 +79,8 @@ function Layer({ id, image, children, x, y }) {
   return (
     <>
       <img
+        data-node-type="Layer"
+        data-node-id={id}
         src={img.imgUrl}
         style={{ position: "absolute", top: Number(y), left: Number(x) }}
       />
@@ -93,6 +97,8 @@ function Button({ id, image, action, x, y, downImage, tooltip, children }) {
   const img = data[imgId.toLowerCase()];
   return (
     <div
+      data-node-type="button"
+      data-node-id={id}
       onMouseDown={e => {
         setDown(true);
         document.addEventListener("mouseup", () => {
