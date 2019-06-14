@@ -20,7 +20,9 @@ function promisify(func) {
 }
 
 async function getSkin() {
-  const resp = await fetch(process.env.PUBLIC_URL + "/CornerAmp_Redux.wal");
+  const resp = await fetch(
+    process.env.PUBLIC_URL + "/skins/CornerAmp_Redux.wal"
+  );
   const blob = await resp.blob();
   const zip = await JSZip.loadAsync(blob);
   const player = zip.file("xml/player-elements.xml");
