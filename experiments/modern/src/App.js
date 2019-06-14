@@ -5,18 +5,39 @@ import { xml2js } from "xml-js";
 
 const SkinContext = React.createContext(null);
 
-function promisify(func) {
-  return function(...args) {
-    return new Promise((resolve, reject) => {
-      func(...args, (err, data) => {
-        if (err != null) {
-          reject(err);
-          return;
-        }
-        resolve(data);
-      });
-    });
-  };
+async function readXml(zip, file) {
+  // TODO: Handle case where file is not found
+  // TODO: Escape `file` for rejex characters
+  const text = await zip.file(new RegExp(file, "i"))[0].async("text");
+  return xml2js(text, { compact: false, elementsKey: "children" });
+}
+
+async function walkAsync(xml, visitor) {
+  await visitor(xml);
+  if (xml.children != null) {
+    await Promise.all(xml.children.map(child => walkAsync(child, visitor)));
+  }
+  return xml;
+}
+
+async function resolveIncludes(xml, zip) {
+  // TODO: Use _.memoize or similar
+  const includes = {};
+  async function readInclude(file) {
+    if (!includes[file]) {
+      includes[file] = readXml(zip, file);
+    }
+    return includes[file];
+  }
+
+  return walkAsync(xml, async node => {
+    if (node.name === "include") {
+      // TODO: Normalize file names so that they hit the same cache
+      const includeXml = await readInclude(node.attributes.file);
+      node.children = includeXml.children;
+    }
+    return xml;
+  });
 }
 
 async function getSkin() {
@@ -25,6 +46,10 @@ async function getSkin() {
   );
   const blob = await resp.blob();
   const zip = await JSZip.loadAsync(blob);
+
+  const skinXml = await readXml(zip, "skin.xml");
+  const resolved = await resolveIncludes(skinXml, zip);
+  console.log(resolved);
   const player = zip.file("xml/player-elements.xml");
   const xml = await player.async("text");
 
@@ -32,8 +57,6 @@ async function getSkin() {
     compact: false,
     elementsKey: "children",
   });
-
-  console.log(zip.files);
 
   const images = {};
   // TODO: Clearly more complicated than it needed to be.
@@ -50,7 +73,7 @@ async function getSkin() {
         break;
       }
       case "truetypefont": {
-        console.log(element);
+        //console.log(element);
         break;
       }
       default: {
