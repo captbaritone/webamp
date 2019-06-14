@@ -1,8 +1,25 @@
 import React from "react";
 import JSZip from "jszip";
 import "./App.css";
-import { xml2js } from "xml-js";
 import * as Utils from "./utils";
+
+const IGNORE_IDS = new Set([
+  // The maki script shows/hides these depending on which corner you are in
+  "main2",
+  "main3",
+  "main4",
+  "Title2",
+  "Title3",
+  "Title4",
+  "mask2",
+  "mask3",
+  "mask4",
+  // These need the maki script to get sized
+  "volumethumb",
+  "seekfull",
+  "seek1",
+  "Repeat",
+]);
 
 const SkinContext = React.createContext(null);
 
@@ -37,7 +54,11 @@ async function getSkin() {
       }
     }
   }
-  return images;
+
+  const player = await Utils.readXml(zip, "xml/player-normal.xml");
+  // Gross hack returing a tuple here. We're just doing some crazy stuff to get
+  // some data returned in the laziest way possible
+  return [player, images];
 }
 
 function Layout({
@@ -127,6 +148,38 @@ function ToggleButton(props) {
   return <Button {...props} />;
 }
 
+const NODE_NAME_TO_COMPONENT = {
+  layout: Layout,
+  layer: Layer,
+  button: Button,
+  togglebutton: ToggleButton,
+};
+
+// Given a skin XML node, pick which component to use, and render it.
+function XmlNode({ node }) {
+  const attributes = node.attributes;
+  if (attributes && IGNORE_IDS.has(attributes.id)) {
+    return null;
+  }
+  if (node.name == null) {
+    // This is likely a comment
+    return null;
+  }
+  const Component = NODE_NAME_TO_COMPONENT[node.name];
+  if (Component == null) {
+    console.warn("Unknown node type", node.name);
+    return null;
+  }
+  const childNodes = node.children || [];
+  return (
+    <Component {...attributes}>
+      {childNodes.map((childNode, i) => (
+        <XmlNode key={i} node={childNode} />
+      ))}
+    </Component>
+  );
+}
+
 function App() {
   const [data, setData] = React.useState(null);
   React.useEffect(() => {
@@ -135,175 +188,11 @@ function App() {
   if (data == null) {
     return <h1>Loading...</h1>;
   }
+  const [skin, images] = data;
   return (
-    <SkinContext.Provider value={data}>
-      <div style={{ position: "relative" }}>
-        <Layout background="player.bg">
-          <Layer image="player.bg1" />
-          <Layer id="Title1" x="0" y="92" image="Title1" move="0" />
-          {/* 
-          <Layer id="Title2" x="180" y="92" image="Title2" move="0" />
-          <Layer id="Title3" x="0" y="42" image="Title3" move="0" />
-          <Layer id="Title4" x="181" y="35" image="Title4" move="0" />
-          */}
-          <Button
-            id="Previous"
-            action="PREV"
-            x="13"
-            y="183"
-            image="player.button.previous"
-            downImage="player.button.previous.pressed"
-            tooltip="Previous"
-          />
-          <Button
-            id="Play"
-            action="PLAY"
-            x="37"
-            y="142"
-            image="player.button.play"
-            downImage="player.button.play.pressed"
-            tooltip="Play"
-          />
-          <Button
-            id="Pause"
-            action="PAUSE"
-            x="66"
-            y="102"
-            image="player.button.pause"
-            downImage="player.button.pause.pressed"
-            tooltip="Pause"
-          />
-          <Button
-            id="Stop"
-            action="STOP"
-            x="104"
-            y="65"
-            image="player.button.stop"
-            downImage="player.button.stop.pressed"
-            tooltip="Stop"
-          />
-          <Button
-            id="Next"
-            action="NEXT"
-            x="148"
-            y="36"
-            image="player.button.next"
-            downImage="player.button.next.pressed"
-            tooltip="Next"
-          />
-          <Button
-            id="Eject"
-            action="EJECT"
-            x="198"
-            y="14"
-            image="player.button.eject"
-            downImage="player.button.eject.pressed"
-            tooltip="Eject"
-          />
-
-          <ToggleButton
-            id="Repeat"
-            x="136"
-            y="-15"
-            image="player.toggler.repeat.disabled"
-            downImage="player.toggler.repeat.pressed"
-            activeImage="player.toggler.repeat.enabled"
-            tooltip="Repeat"
-            cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Repeat"
-            cfgval="2"
-          />
-          <ToggleButton
-            id="Crossfade"
-            x="78"
-            y="-1"
-            image="player.toggler.crossfade.disabled"
-            downImage="player.toggler.crossfade.pressed"
-            activeImage="player.toggler.crossfade.enabled"
-            tooltip="Crossfade"
-            cfgattrib="{FC3EAF78-C66E-4ED2-A0AA-1494DFCC13FF};Enable crossfading"
-          />
-          <ToggleButton
-            id="Shuffle"
-            x="109"
-            y="-1"
-            image="player.toggler.shuffle.disabled"
-            downImage="player.toggler.shuffle.pressed"
-            activeImage="player.toggler.shuffle.enabled"
-            tooltip="Shuffle"
-            cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Shuffle"
-          />
-          <Button
-            id="eq"
-            action="TOGGLE"
-            param="eq"
-            x="0"
-            y="-1"
-            image="player.switch.eq.disabled"
-            downImage="player.switch.eq.pressed"
-            activeImage="player.switch.eq.enabled"
-            tooltip="Toggle Equalizer"
-          />
-          <Button
-            id="ml"
-            action="TOGGLE"
-            param="guid:ml"
-            x="25"
-            y="-1"
-            image="player.switch.ml.disabled"
-            downImage="player.switch.ml.pressed"
-            activeImage="player.switch.ml.enabled"
-            tooltip="Toggle Music Library"
-          />
-          <Button
-            id="pl"
-            action="TOGGLE"
-            param="guid:pl"
-            x="51"
-            y="-1"
-            image="player.switch.playlist.disabled"
-            downImage="player.switch.playlist.pressed"
-            activeImage="player.switch.playlist.enabled"
-            tooltip="Toggle Playlist Editor"
-          />
-        </Layout>
-      </div>
+    <SkinContext.Provider value={images}>
+      <XmlNode node={skin.children[0]} />
     </SkinContext.Provider>
-  );
-  return (
-    <div className="App">
-      <table>
-        <tbody>
-          {data &&
-            Object.entries(data).map(([key, image]) => {
-              let imgElement = null;
-              if (image.w || image.h) {
-                imgElement = (
-                  <div
-                    style={{
-                      backgroundPositionX: -Number(image.x),
-                      backgroundPositionx: -Number(image.y),
-                      width: Number(image.w),
-                      height: Number(image.h),
-                      backgroundImage: `url(${image.imgUrl})`,
-                    }}
-                  />
-                );
-              } else {
-                imgElement = <img src={image.imgUrl} />;
-              }
-              return (
-                <tr key={key}>
-                  <td>{key}</td>
-                  <td>
-                    <pre>{JSON.stringify(image, null, 2)}</pre>
-                  </td>
-                  <td>{imgElement}</td>
-                </tr>
-              );
-            })}
-        </tbody>
-      </table>
-    </div>
   );
 }
 
