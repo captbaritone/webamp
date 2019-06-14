@@ -29,15 +29,17 @@ async function getSkin() {
   );
   const blob = await resp.blob();
   const zip = await JSZip.loadAsync(blob);
-  const elementsDoc = await Utils.readXml(zip, "xml/player-elements.xml");
+  const skinXml = await Utils.inlineIncludes(
+    await Utils.readXml(zip, "skin.xml"),
+    zip
+  );
 
   const images = {};
-  // TODO: Clearly more complicated than it needed to be.
-  const elements = elementsDoc.children[0].children;
-  for (const element of elements) {
-    switch (element.name) {
+  await Utils.asyncTreeMap(skinXml, async node => {
+    // TODO: This is probalby only valid if in an `<elements>` node
+    switch (node.name) {
       case "bitmap": {
-        const { file, gammagroup, h, id, w, x, y } = element.attributes;
+        const { file, gammagroup, h, id, w, x, y } = node.attributes;
         // TODO: Escape file for regex
         const img = Utils.getCaseInsensitveFile(zip, file);
         const imgBlob = await img.async("blob");
@@ -50,10 +52,11 @@ async function getSkin() {
         break;
       }
       default: {
-        console.error(`Unknonw node ${element.name}`);
+        console.error(`Unknonw node ${node.name}`);
       }
     }
-  }
+    return node;
+  });
 
   const player = await Utils.readXml(zip, "xml/player-normal.xml");
   // Gross hack returing a tuple here. We're just doing some crazy stuff to get
