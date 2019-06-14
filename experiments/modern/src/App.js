@@ -14,6 +14,11 @@ const IGNORE_IDS = new Set([
   "mask2",
   "mask3",
   "mask4",
+  "placeholder", // This looks like something related to an EQ window
+  "Scaler",
+  "toggle",
+  "presets",
+  "auto",
   // These need the maki script to get sized
   "volumethumb",
   "seekfull",
@@ -52,16 +57,15 @@ async function getSkin() {
         break;
       }
       default: {
-        console.error(`Unknonw node ${node.name}`);
+        // console.error(`Unknown node ${node.name}`);
       }
     }
     return node;
   });
 
-  const player = await Utils.readXml(zip, "xml/player-normal.xml");
   // Gross hack returing a tuple here. We're just doing some crazy stuff to get
   // some data returned in the laziest way possible
-  return [player, images];
+  return [skinXml, images];
 }
 
 function Layout({
@@ -77,6 +81,11 @@ function Layout({
   children,
 }) {
   const data = React.useContext(SkinContext);
+  if (background == null) {
+    console.warn("Got a Layouer without a background. Rendering null", id);
+    return null;
+  }
+
   const image = data[background];
   return (
     <>
@@ -99,7 +108,15 @@ function Layout({
 
 function Layer({ id, image, children, x, y }) {
   const data = React.useContext(SkinContext);
+  if (image == null) {
+    console.warn("Got an Layer without an image. Rendering null", id);
+    return null;
+  }
   const img = data[image.toLowerCase()];
+  if (img == null) {
+    console.warn("Unable to find image to render. Rendering null", image);
+    return null;
+  }
   return (
     <>
       <img
@@ -117,8 +134,17 @@ function Button({ id, image, action, x, y, downImage, tooltip, children }) {
   const data = React.useContext(SkinContext);
   const [down, setDown] = React.useState(false);
   const imgId = down ? downImage : image;
+  if (imgId == null) {
+    console.warn("Got a Button without a imgId. Rendering null", id);
+    return null;
+  }
   // TODO: These seem to be switching too fast
   const img = data[imgId.toLowerCase()];
+  if (img == null) {
+    console.warn("Unable to find image to render. Rendering null", image);
+    return null;
+  }
+
   return (
     <div
       data-node-type="button"
@@ -169,18 +195,18 @@ function XmlNode({ node }) {
     return null;
   }
   const Component = NODE_NAME_TO_COMPONENT[node.name];
+  const childNodes = node.children || [];
+  const children = childNodes.map((childNode, i) => (
+    <XmlNode key={i} node={childNode} />
+  ));
   if (Component == null) {
     console.warn("Unknown node type", node.name);
+    if (childNodes.length) {
+      return <>{children}</>;
+    }
     return null;
   }
-  const childNodes = node.children || [];
-  return (
-    <Component {...attributes}>
-      {childNodes.map((childNode, i) => (
-        <XmlNode key={i} node={childNode} />
-      ))}
-    </Component>
-  );
+  return <Component {...attributes}>{children}</Component>;
 }
 
 function App() {
@@ -191,10 +217,17 @@ function App() {
   if (data == null) {
     return <h1>Loading...</h1>;
   }
-  const [skin, images] = data;
+  const [skinXml, images] = data;
   return (
     <SkinContext.Provider value={images}>
-      <XmlNode node={skin.children[0]} />
+      <XmlNode
+        node={
+          // TODO: This is not quite right. Really we should only be rendering the
+          // portion of the XML that is actually view code.
+          // For now we just render the whole thing and ignore whatever we don't recognize
+          skinXml.children[0]
+        }
+      />
     </SkinContext.Provider>
   );
 }
