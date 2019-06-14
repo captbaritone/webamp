@@ -12,14 +12,7 @@ async function getSkin() {
   );
   const blob = await resp.blob();
   const zip = await JSZip.loadAsync(blob);
-
-  const player = Utils.getCaseInsensitveFile(zip, "xml/player-elements.xml");
-  const xml = await player.async("text");
-
-  const elementsDoc = await xml2js(xml, {
-    compact: false,
-    elementsKey: "children",
-  });
+  const elementsDoc = await Utils.readXml(zip, "xml/player-elements.xml");
 
   const images = {};
   // TODO: Clearly more complicated than it needed to be.
