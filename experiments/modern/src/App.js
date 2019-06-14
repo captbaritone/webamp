@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "./logo.svg";
 import JSZip from "jszip";
 import "./App.css";
 import { xml2js } from "xml-js";
