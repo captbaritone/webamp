@@ -101,14 +101,23 @@ export const parseViscolors = (text: string): string[] => {
 };
 
 const SECTION_REGEX = /^\s*\[(.+?)\]\s*$/;
-const PROPERTY_REGEX = /^\s*([^;].*)\s*=\s*(.*)\s*$/;
+const PROPERTY_REGEX = /^\s*([^;][^=]*)\s*=\s*(.*)\s*$/;
 
 export const parseIni = (text: string): IniData => {
   let section: string, match;
   return text.split(/[\r\n]+/g).reduce((data: IniData, line) => {
     if ((match = line.match(PROPERTY_REGEX)) && section != null) {
-      const value = match[2].replace(/(^")|("$)|(^')|('$)/gi, "");
-      data[section][match[1].trim().toLowerCase()] = value;
+      const key = match[1].trim().toLowerCase();
+      const value = match[2]
+        // Ignore anything after a second `=`
+        // TODO: What if this is inside quotes or escaped?
+        .replace(/=.*$/g, "")
+        .trim()
+        // Strip quotes
+        // TODO: What about escaped quotes?
+        // TODO: What about unbalanced quotes?
+        .replace(/(^")|("$)|(^')|('$)/g, "");
+      data[section][key] = value;
     } else if ((match = line.match(SECTION_REGEX))) {
       section = match[1].trim().toLowerCase();
       data[section] = {};

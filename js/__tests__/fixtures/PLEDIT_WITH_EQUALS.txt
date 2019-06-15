@@ -1,0 +1,8 @@
+[text]
+current=#606060	= current song title highlight
+normal=#000000	= normal song title color
+selectedbg=#6685A5	= selected song background
+normalbg=#7897B7	= the normal background
+MBFG=#000000		= MiniBrowser's font color
+mbbg=#7897B7		= MiniBrowsere's font background color
+font=Ariel		= the font

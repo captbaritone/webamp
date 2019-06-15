@@ -265,6 +265,24 @@ bar = baz
     expect(actual).toEqual(expected);
   });
 
+  it("can parse a pledit.txt file that uses = to mark comments", () => {
+    const pledit = fixture("PLEDIT_WITH_EQUALS.TXT");
+    const actual = parseIni(pledit);
+
+    const expected = {
+      text: {
+        normal: "#000000",
+        mbfg: "#000000",
+        current: "#606060",
+        normalbg: "#7897B7",
+        selectedbg: "#6685A5",
+        mbbg: "#7897B7",
+        font: "Ariel",
+      },
+    };
+    expect(actual).toEqual(expected);
+  });
+
   it("allows quotes around values", () => {
     const actual = parseIni(`
 [foo]
