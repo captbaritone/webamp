@@ -509,12 +509,7 @@ export type Action =
       index: number;
       transitionType: TransitionType;
     }
-  | { type: "TOGGLE_PRESET_OVERLAY" }
-  | {
-      type: "FETCH_MEDIA_TAGS";
-      file: string | Blob;
-      id: number;
-    };
+  | { type: "TOGGLE_PRESET_OVERLAY" };
 
 export type MediaTagRequestStatus =
   | "INITIALIZED"
