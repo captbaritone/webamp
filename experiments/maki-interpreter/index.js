@@ -198,7 +198,7 @@ class Parser {
     const variables = this._readVariables();
     const constants = this._readConstants();
     const functions = this._readFunctions();
-    const decoding = this._decodeCode({
+    const commands = this._decodeCode({
       types,
       variables,
       functionNames,
@@ -211,7 +211,7 @@ class Parser {
       variables,
       constants,
       functions,
-      decoding
+      commands
     };
   }
 }
