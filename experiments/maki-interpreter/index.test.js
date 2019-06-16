@@ -71,6 +71,7 @@ describe("standardframe.maki", () => {
       "init"
     ]);
     expect(maki.functionNames.every(func => func.class != null)).toBe(true);
+    expect(maki.functionNames.every(func => func.function != null)).toBe(true);
   });
 
   test("can read variables", () => {

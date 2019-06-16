@@ -3933,6 +3933,23 @@ Object.keys(objects).forEach(key => {
   normalizedObjects[key.toLowerCase()] = objects[key];
 });
 
+const objectsByName = {};
+Object.values(objects).forEach(object => {
+  objectsByName[object.name] = object;
+});
+
+Object.values(normalizedObjects).forEach(object => {
+  const parentClass = objectsByName[object.parent];
+  if (parentClass == null) {
+    if (object.parent === "@{00000000-0000-0000-0000-000000000000}@") {
+    } else {
+      console.log(`Could not find parent class named ${object.parent}`);
+      throw new Error("wat");
+    }
+  }
+  object.parentClass = parentClass;
+});
+
 function getClass(id) {
   // https://en.wikipedia.org/wiki/Universally_unique_identifier#Encoding
   const formattedId = id.replace(
@@ -3943,4 +3960,18 @@ function getClass(id) {
   return normalizedObjects[formattedId.toLowerCase()];
 }
 
-module.exports = { getClass };
+function getObjectFunction(klass, functionName) {
+  const method = klass.functions.find(func => {
+    // TODO: This could probably be normalized at load time, or evern sooner.
+    return func.name.toLowerCase() === functionName.toLowerCase();
+  });
+  if (method != null) {
+    return method;
+  }
+  if (klass.parentClass == null) {
+    throw new Error(`Could not find method ${functionName} on ${klass.name}.`);
+  }
+  return getObjectFunction(klass.parentClass, functionName);
+}
+
+module.exports = { getClass, getObjectFunction };
