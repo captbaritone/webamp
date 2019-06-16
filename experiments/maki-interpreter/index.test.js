@@ -57,13 +57,12 @@ describe("standardframe.maki", () => {
     expect(maki.constants.length).toBe(23);
   });
 
-  test.skip("can read functions", () => {
-    // console.log(maki.functions);
+  test("can read functions", () => {
     expect(maki.functions).toEqual([
       { varNum: 0, offset: 0, funcNum: 0 },
       { varNum: 0, offset: 296, funcNum: 4 },
-      { function: { code: [], name: "func332", offset: 332 }, offset: 332 },
-      { varNum: 2, offset: 559, funcNum: 9 }
+      { varNum: 2, offset: 559, funcNum: 9 },
+      { function: { code: [], name: "func722", offset: 722 }, offset: 722 }
     ]);
   });
 
