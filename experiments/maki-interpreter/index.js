@@ -37,13 +37,12 @@ class Parser {
     let count = this._readUInt32LE();
     const functionNames = [];
     while (count--) {
-      const func = {};
-      func.classCode = this._readUInt16LE();
+      const classCode = this._readUInt16LE();
       // Offset into our parsed types
-      func.classType = func.classCode & 0xff;
-      func.dummy2 = this._readUInt16LE();
-      func.name = this._readString();
-      functionNames.push(func);
+      const classType = classCode & 0xff;
+      const dummy2 = this._readUInt16LE();
+      const name = this._readString();
+      functionNames.push({ classCode, classType, dummy2, name });
     }
     return functionNames;
   }
