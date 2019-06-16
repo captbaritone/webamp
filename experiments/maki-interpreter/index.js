@@ -1,7 +1,7 @@
 const { COMMANDS } = require("./constants");
 const Command = require("./command");
 const MAGIC = "FG";
-const ENCODING = "ascii";
+const ENCODING = "binary";
 
 class Parser {
   _readMagic() {
@@ -125,11 +125,6 @@ class Parser {
     }
   }
 
-  _readFunctionsCode() {
-    const code = this._readStringOfLength(this._readUInt32LE());
-    return code;
-  }
-
   _readUInt32LE() {
     const int = this._buffer.readUInt32LE(this._i);
     this._i += 4;
@@ -158,15 +153,17 @@ class Parser {
     return this._readStringOfLength(this._readUInt16LE());
   }
 
-  _decodeCode({ functionsCode, types, variables, functionNames, functions }) {
+  _decodeCode({ types, variables, functionNames, functions }) {
+    const length = this._readUInt32LE();
+    const commandsBuffer = this._buffer.slice(this._i, this._i + length);
+    this._i += length;
+
     let pos = 0;
     const localFunctions = {};
     const results = [];
-    const poss = [];
-    while (pos < functionsCode.length) {
-      poss.push(pos);
+    while (pos < commandsBuffer.length) {
       const command = new Command({
-        functionsCode,
+        commandsBuffer,
         pos,
         types,
         variables,
@@ -201,22 +198,18 @@ class Parser {
     const variables = this._readVariables();
     const constants = this._readConstants();
     const functions = this._readFunctions();
-    const functionsCode = this._readFunctionsCode();
     const decoding = this._decodeCode({
-      functionsCode,
       types,
       variables,
       functionNames,
       functions
     });
-    this._readCommands(functionsCode);
     return {
       magic,
       types,
       functionNames,
       variables,
       constants,
-      functionsCode,
       functions,
       decoding
     };
