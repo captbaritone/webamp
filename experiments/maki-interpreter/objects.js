@@ -3925,14 +3925,22 @@ const objects = {
   }
 };
 
-function getObject(id) {
+// TODO: We could probably just fix the keys used in this file to already be normalized
+// We might even want to normalize the to match the formatting we get out the file. That could
+// avoid the awkward regex inside `getClass()`.
+const normalizedObjects = {};
+Object.keys(objects).forEach(key => {
+  normalizedObjects[key.toLowerCase()] = objects[key];
+});
+
+function getClass(id) {
   // https://en.wikipedia.org/wiki/Universally_unique_identifier#Encoding
   const formattedId = id.replace(
     /(........)(....)(....)(..)(..)(..)(..)(..)(..)(..)(..)/,
     "$1$3$2$7$6$5$4$11$10$9$8"
   );
 
-  return objects[formattedId.toUpperCase()];
+  return normalizedObjects[formattedId.toLowerCase()];
 }
 
-module.exports = { getObject };
+module.exports = { getClass };

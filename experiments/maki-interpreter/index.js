@@ -1,5 +1,6 @@
 const { COMMANDS } = require("./constants");
 const Command = require("./command");
+const { getClass } = require("./objects");
 const MAGIC = "FG";
 const ENCODING = "binary";
 
@@ -28,21 +29,29 @@ class Parser {
           .toString(16)
           .padStart(8, "0");
       }
-      types.push(identifier);
+      const klass = getClass(identifier);
+      if (klass == null) {
+        throw new Error(`Could not find class for id: ${identifier}`);
+      }
+      types.push(klass);
     }
     return types;
   }
 
-  _readFunctionsNames() {
+  _readFunctionsNames({ types }) {
     let count = this._readUInt32LE();
     const functionNames = [];
     while (count--) {
       const classCode = this._readUInt16LE();
       // Offset into our parsed types
-      const classType = classCode & 0xff;
+      const typeOffset = classCode & 0xff;
       const dummy2 = this._readUInt16LE();
       const name = this._readString();
-      functionNames.push({ classCode, classType, dummy2, name });
+      functionNames.push({
+        dummy2,
+        name,
+        class: types[typeOffset]
+      });
     }
     return functionNames;
   }
@@ -195,7 +204,7 @@ class Parser {
     this._readVersion();
     this._readUInt32LE(); // Not sure what we are skipping over here. Just some UInt 32.
     const types = this._readTypes();
-    const functionNames = this._readFunctionsNames();
+    const functionNames = this._readFunctionsNames({ types });
     const variables = this._readVariables();
     const constants = this._readConstants();
     const functions = this._readFunctions();
