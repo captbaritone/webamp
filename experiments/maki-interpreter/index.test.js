@@ -92,8 +92,8 @@ describe("standardframe.maki", () => {
   [33, 1]
 ];
 
-  test("can read decoding", () => {
-    maki.decoding.forEach((command, i) => {
+  test("can read commands", () => {
+    maki.commands.forEach((command, i) => {
       const [expectedOpcode, expectedSize] = expectedCommands[i];
       if (expectedOpcode !== command.opcode) {
         throw new Error(
@@ -108,6 +108,6 @@ describe("standardframe.maki", () => {
         );
       }
     });
-    expect(maki.decoding.length).toBe(256);
+    expect(maki.commands.length).toBe(expectedCommands.length);
   });
 });
