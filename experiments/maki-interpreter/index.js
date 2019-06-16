@@ -24,9 +24,11 @@ class Parser {
       let identifier = "";
       let chunks = 4;
       while (chunks--) {
-        identifier += this._readUInt32LE().toString(16);
+        identifier += this._readUInt32LE()
+          .toString(16)
+          .padStart(8, "0");
       }
-      types.push(identifier.padStart(32, "0"));
+      types.push(identifier);
     }
     return types;
   }
