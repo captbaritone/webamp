@@ -3925,4 +3925,14 @@ const objects = {
   }
 };
 
-export default objects;
+function getObject(id) {
+  // https://en.wikipedia.org/wiki/Universally_unique_identifier#Encoding
+  const formattedId = id.replace(
+    /(........)(....)(....)(..)(..)(..)(..)(..)(..)(..)(..)/,
+    "$1$3$2$7$6$5$4$11$10$9$8"
+  );
+
+  return objects[formattedId.toUpperCase()];
+}
+
+module.exports = { getObject };
