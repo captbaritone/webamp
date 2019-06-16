@@ -1,6 +1,6 @@
 const { COMMANDS } = require("./constants");
 const Command = require("./command");
-const { getClass } = require("./objects");
+const { getClass, getObjectFunction } = require("./objects");
 const MAGIC = "FG";
 const ENCODING = "binary";
 
@@ -47,10 +47,12 @@ class Parser {
       const typeOffset = classCode & 0xff;
       const dummy2 = this._readUInt16LE();
       const name = this._readString();
+      const klass = types[typeOffset];
       functionNames.push({
         dummy2,
         name,
-        class: types[typeOffset]
+        class: klass,
+        function: getObjectFunction(klass, name)
       });
     }
     return functionNames;
