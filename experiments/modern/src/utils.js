@@ -6,9 +6,12 @@ export function getCaseInsensitveFile(zip, filename) {
 }
 
 // Read a
-export async function readXml(zip, file) {
-  // TODO: Handle case where file is not found
-  const text = await getCaseInsensitveFile(zip, file).async("text");
+export async function readXml(zip, filepath) {
+  const file = await getCaseInsensitveFile(zip, filepath);
+  if (file == null) {
+    return null;
+  }
+  const text = await file.async("text");
   return xml2js(text, { compact: false, elementsKey: "children" });
 }
 
@@ -33,8 +36,16 @@ export async function inlineIncludes(xml, zip) {
     if (node.name === "include") {
       // TODO: Normalize file names so that they hit the same cache
       // TODO: Ensure this node does not already have children for some reason
-      const { children } = await readXml(zip, node.attributes.file);
-      return { ...node, children };
+      const includedFile = await readXml(zip, node.attributes.file);
+      if (includedFile == null) {
+        console.warn(
+          `Tried to include a file that could not be found: ${
+            node.attributes.file
+          }`
+        );
+        return node;
+      }
+      return { ...node, children: includedFile.children };
     }
     return node;
   });
