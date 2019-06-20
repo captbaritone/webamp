@@ -82,7 +82,7 @@ function Layout({
 }) {
   const data = React.useContext(SkinContext);
   if (background == null) {
-    console.warn("Got a Layouer without a background. Rendering null", id);
+    console.warn("Got a Layout without a background. Rendering null", id);
     return null;
   }
 
