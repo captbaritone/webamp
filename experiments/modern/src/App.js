@@ -177,11 +177,16 @@ function ToggleButton(props) {
   return <Button {...props} />;
 }
 
+function GroupDef(props) {
+  return <div {...props} />;
+}
+
 const NODE_NAME_TO_COMPONENT = {
   layout: Layout,
   layer: Layer,
   button: Button,
   togglebutton: ToggleButton,
+  groupef: GroupDef,
 };
 
 // Given a skin XML node, pick which component to use, and render it.
