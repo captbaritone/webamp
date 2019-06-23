@@ -3,9 +3,10 @@ const path = require("path");
 const fetch = require("node-fetch");
 const md5Buffer = require("md5");
 const config = require("../../config");
+const Skins = require("../../data/skins");
+const Utils = require("../utils");
 
 const { getInfo } = require("../info");
-const Skin = require("./skin");
 
 async function handler(message) {
   const { attachments } = message;
@@ -26,9 +27,27 @@ async function handler(message) {
     })
   );
 
+  // Compute MD5
+  // Upload to S3
+  // Record the filepath
+  // Take a screenshot
+  // Upload screenshot to S3
+  // Extract the readme
+  // Extract the emails
+  // Extract the average color
+  // Upload to Internet Archive
+  // Store the Internet Archive item name
+  // Construct IA Webamp URL
+
   for (const file of files) {
-    const info = await getInfo(file.md5);
-    if (info == null) {
+    const skin = await Skins.getSkinByMd5(file.md5);
+    if (skin != null) {
+      await message.channel.send(`This skin is already in our collection.`);
+      await Utils.postSkin({
+        md5: file.md5,
+        dest: message.channel
+      });
+    } else {
       fs.writeFileSync(
         path.join(
           config.uploadDir,
@@ -40,14 +59,9 @@ async function handler(message) {
       );
       await message.channel.send(
         `Thanks! ${
-          file.filename
+        file.filename
         } is a brand new skin. 👏 It has been queued for archiving.`
       );
-    } else {
-      await message.channel.send(
-        `We already have ${file.filename} in our collection`
-      );
-      await Skin.handler(message, [file.md5]);
     }
   }
 }

@@ -3,6 +3,7 @@ const argv = require("yargs").argv;
 const findTweetableSkin = require("./tasks/findTweetableSkins");
 const fetchInternetArchiveMetadata = require("./tasks/fetchInternetArchiveMetadata");
 const path = require("path");
+const logger = require("./logger");
 const Skins = require("./data/skins");
 
 const { spawn } = require("child_process");
@@ -46,9 +47,7 @@ async function main() {
           //, "--dry"
         ]
       );
-      console.log({ output });
-
-      console.log("Done");
+      logger.info("Tweeted a skin", { md5, filename, ...output });
       break;
     case "fetch-metadata":
       console.log("Going to download metadata from the Internet Archive");

@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const Discord = require("discord.js");
 const config = require("../config");
+const logger = require("../logger");
 
 const client = new Discord.Client();
 
@@ -52,17 +53,17 @@ client.on("message", async message => {
     return;
   }
   const command = rawCommand.slice(1);
-  console.log("New command: ", command);
-  console.log("User: ", message.author.username);
-  console.log("Arguments: ", args);
+  logger.info('User triggered WebampBot command', {command, user: message.author.username, args, channel: message.channel.name || 'DM'});
   const handler = handlers[command];
-  if (handler != null) {
-    handler(message, args);
+  if(handler == null) {
+    logger.warn('Unknown command', {command, user: message.author.username, args});
+    return;
   }
+  handler(message, args);
 });
 
-client.on("error", error => {
-  console.error("The WebSocket encountered an error:", error);
+client.on("error", e => {
+  logger.error('The WebSocket encountered an error:', e);
 });
 
 client.login(config.discordToken);

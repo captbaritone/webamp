@@ -2,6 +2,8 @@ const Discord = require("discord.js");
 const rgbHex = require("rgb-hex");
 const Skins = require("../data/skins");
 const { approve, reject } = require("./s3");
+const logger = require("../logger");
+const { approve, reject } = require("./s3");
 
 const filter = reaction => {
   return ["👍", "👎"].some(name => reaction.emoji.name === name);
@@ -9,6 +11,10 @@ const filter = reaction => {
 
 async function postSkin({ md5, title, dest }) {
   const skin = await Skins.getSkinByMd5(md5);
+  if (skin == null) {
+    logger.warn("Could not find skin for md5", { md5 });
+    return;
+  }
   const {
     canonicalFilename,
     screenshotUrl,
@@ -23,7 +29,6 @@ async function postSkin({ md5, title, dest }) {
     internetArchiveItemName,
     readmeText
   } = skin;
-  console.log(skin);
   title = title ? title(canonicalFilename) : canonicalFilename;
 
   const embed = new Discord.RichEmbed()
@@ -43,11 +48,15 @@ async function postSkin({ md5, title, dest }) {
       if (String(color).length === 6) {
         embed.setColor(`#${color}`);
       } else {
-        console.log("Did not get a safe color from ", averageColor);
-        console.log("Got ", color);
+        logger.warn(
+          "Did not get a safe color from ",
+          averageColor,
+          "got",
+          color
+        );
       }
     } catch (e) {
-      console.error("could not use color", averageColor);
+      logger.error("Could not use color", averageColor);
     }
   }
   if (emails != null && emails.length) {
@@ -81,7 +90,7 @@ async function postSkin({ md5, title, dest }) {
     switch (vote.emoji.name) {
       case "👍":
         await approve(md5);
-        console.log(`${user.username} approved ${md5}`);
+        logger.info(`${user.username} approved ${md5}`);
         await msg.channel.send(
           `${canonicalFilename} was approved by ${user.username}`
         );
@@ -89,7 +98,7 @@ async function postSkin({ md5, title, dest }) {
         break;
       case "👎":
         await reject(md5);
-        console.log(`${user.username} rejected ${md5}`);
+        logger.info(`${user.username} rejected ${md5}`);
         await msg.channel.send(
           `${canonicalFilename} was rejected by ${user.username}`
         );
