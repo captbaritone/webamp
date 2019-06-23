@@ -69,14 +69,12 @@ async function getStats() {
 }
 
 async function getSkinToReview() {
-  console.log("Reading from s3...");
   const [filenames, approved, rejected, tweeted] = await Promise.all([
     getFile("filenames.txt"),
     getFile("approved.txt"),
     getFile("rejected.txt"),
     getFile("tweeted.txt")
   ]);
-  console.log("Got all files");
 
   const approvedSet = new Set(getLines(approved));
   const rejectedSet = new Set(getLines(rejected));
@@ -94,7 +92,6 @@ async function getSkinToReview() {
       tweetedSet.has(md5)
     );
   });
-  console.log(toReview.length, "skins to review");
   return toReview[0];
 }
 
