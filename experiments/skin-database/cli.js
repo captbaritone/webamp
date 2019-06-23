@@ -2,6 +2,7 @@
 const argv = require("yargs").argv;
 const findTweetableSkin = require("./tasks/findTweetableSkins");
 const fetchInternetArchiveMetadata = require("./tasks/fetchInternetArchiveMetadata");
+const ensureInternetArchiveItemsIndexByMd5 = require("./tasks/ensureInternetArchiveItemsIndexByMd5");
 const path = require("path");
 const logger = require("./logger");
 const Skins = require("./data/skins");
@@ -52,8 +53,10 @@ async function main() {
     case "fetch-metadata":
       console.log("Going to download metadata from the Internet Archive");
       await fetchInternetArchiveMetadata();
-      console.log("Done");
       break;
+
+    case "ensure-md5s":
+      await ensureInternetArchiveItemsIndexByMd5();
     case "metadata": {
       const hash = argv._[1];
       console.log(await Skins.getInternetArchiveUrl(hash));
@@ -67,7 +70,7 @@ async function main() {
     default:
       console.log(`Unknown command ${argv._[0]}`);
   }
-  // await db.close();
+  await db.close();
 }
 
 main();

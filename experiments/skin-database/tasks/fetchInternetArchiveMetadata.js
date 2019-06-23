@@ -33,22 +33,29 @@ async function fetchAllMetadata(limit) {
 // TODO: Refetch collections from:
 // https://archive.org/advancedsearch.php?q=collection%3Awinampskins&fl%5B%5D=identifier&rows=100000&page=1&output=json
 module.exports = async function main() {
-  let delay = 60000;
-  async function go() {
-    console.log("Gonna fetch some more");
-    try {
-      const count = await fetchAllMetadata(500);
-      if (count < 1) {
-        console.log("Done.");
-        return;
+  return new Promise((resolve, reject) => {
+    let delay = 60000;
+    let timeout = null;
+    async function go() {
+      console.log("Gonna fetch some more");
+      try {
+        const count = await fetchAllMetadata(500);
+        if (count < 1) {
+          if (timeout != null) {
+            // I don't think this can ever happen
+            clearTimeout(timeout);
+          }
+          console.log("Done.");
+          resolve();
+          return;
+        }
+      } catch (e) {
+        console.error(e);
+        delay += 60000;
       }
-    } catch (e) {
-      console.error(e);
-      delay += 60000;
+      timeout = setTimeout(go, delay);
     }
-    console.log("Scheduling another", delay / 1000);
-    setTimeout(go, delay);
-  }
 
-  go();
+    go();
+  });
 };

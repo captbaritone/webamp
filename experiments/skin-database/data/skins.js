@@ -14,7 +14,6 @@ function getSkinRecord(skin) {
     readmeText,
     filePaths,
   } = skin;
-  console.log(skin);
   const fileNames = filePaths.map(p => path.basename(p));
   const skinUrl = `https://s3.amazonaws.com/webamp-uploaded-skins/skins/${md5}.wsz`;
   return {
@@ -38,18 +37,41 @@ async function getProp(md5, prop) {
   return value == null ? null : value;
 }
 
+const IA_URL = /^(https:\/\/)?archive.org\/details\/([^\/]+)\/?/;
+const MD5 = /([a-fA-F0-9]{32})/;
+
+async function getMd5ByAnything(anything) {
+  const md5Match = anything.match(MD5);
+  if (md5Match != null) {
+    const md5 = md5Match[1];
+    return md5;
+  }
+  const itemMatchResult = anything.match(IA_URL);
+  if (itemMatchResult != null) {
+    const itemName = itemMatchResult[2];
+    const md5 = await getMd5FromInternetArchvieItemName(itemName);
+    if (md5 != null) {
+      return md5;
+    }
+  }
+  const md5 = await getMd5FromInternetArchvieItemName(anything);
+  if (md5 != null) {
+    return md5;
+  }
+}
+
 async function getSkinByMd5(md5) {
   const skin = await skins.findOne({ md5, type: "CLASSIC" });
   if (skin == null) {
     return null;
   }
-  const internetArchiveItemName = await getInternetArchiveItemName(md5);
-  const internetArchiveUrl = await getInternetArchiveUrl(md5);
+  const internetArchiveItem = await getInternetArchiveItem(md5);
+  const itemName = internetArchiveItem.identifier;
   const tweetStatus = await getTweetStatus(md5);
   return {
     ...getSkinRecord(skin),
-    internetArchiveUrl,
-    internetArchiveItemName,
+    internetArchiveUrl: getInternetArchiveUrl(itemName),
+    internetArchiveItemName: itemName,
     tweetStatus,
   };
 }
@@ -74,23 +96,16 @@ async function getInternetArchiveItemName(md5) {
   return item.identifier;
 }
 async function getInternetArchiveItem(md5) {
-  return iaItems.findOne(
-    { "metadata.files.md5": md5 },
-    {
-      fields: {
-        metadata: 1,
-        identifier: 1,
-      },
-    }
-  );
+  return iaItems.findOne({ md5: md5 });
 }
 
-async function getInternetArchiveUrl(md5) {
-  const itemName = await getInternetArchiveItemName(md5);
-  if (itemName == null) {
-    return null;
-  }
-  return `https://archive.org/details/${itemName}`;
+async function getMd5FromInternetArchvieItemName(itemName) {
+  const item = await iaItems.findOne({ identifier: itemName }, { md5: 1 });
+  return item == null ? null : item.md5;
+}
+
+function getInternetArchiveUrl(itemName) {
+  return itemName == null ? null : `https://archive.org/details/${itemName}`;
 }
 
 async function getTweetStatus(md5) {
@@ -98,6 +113,7 @@ async function getTweetStatus(md5) {
 }
 
 module.exports = {
+  getMd5ByAnything,
   getReadme,
   getScreenshotUrl,
   getSkinUrl,
