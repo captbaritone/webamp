@@ -3,6 +3,9 @@ const path = require("path");
 const Discord = require("discord.js");
 const config = require("../config");
 const logger = require("../logger");
+const DiscordWinstonTransport = require("../DiscordWinstonTransport");
+
+const CAPTBARITONE_USER_ID = "254029485463044116";
 
 const client = new Discord.Client();
 
@@ -53,17 +56,33 @@ client.on("message", async message => {
     return;
   }
   const command = rawCommand.slice(1);
-  logger.info('User triggered WebampBot command', {command, user: message.author.username, args, channel: message.channel.name || 'DM'});
+  logger.info("User triggered WebampBot command", {
+    command,
+    user: message.author.username,
+    args,
+    channel: message.channel.name || "DM"
+  });
   const handler = handlers[command];
-  if(handler == null) {
-    logger.warn('Unknown command', {command, user: message.author.username, args});
+  if (handler == null) {
+    logger.warn("Unknown command", {
+      command,
+      user: message.author.username,
+      args
+    });
     return;
   }
   handler(message, args);
 });
 
 client.on("error", e => {
-  logger.error('The WebSocket encountered an error:', e);
+  logger.error("The WebSocket encountered an error:", e);
 });
 
-client.login(config.discordToken);
+async function main() {
+  await client.login(config.discordToken);
+  const captbaritone = await client.fetchUser(CAPTBARITONE_USER_ID);
+  const channel = await captbaritone.createDM();
+  logger.add(new DiscordWinstonTransport(channel));
+}
+
+main();
