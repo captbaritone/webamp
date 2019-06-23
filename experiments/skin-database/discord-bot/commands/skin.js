@@ -1,6 +1,8 @@
 const Utils = require("../utils");
+const Skins = require("../../data/skins");
 async function handler(message, args) {
-  const [md5] = args;
+  const [anything] = args;
+  const md5 = await Skins.getMd5ByAnything(anything);
   await Utils.postSkin({
     md5,
     dest: message.channel
