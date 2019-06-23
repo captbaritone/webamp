@@ -25,15 +25,7 @@ class Command {
     this.size = 1;
 
     if (this.command == null) {
-      // I don't think this ever happens in a real .maki file
-      // throw new Error(`Unknown opcode "${opcode}"`);
-      // But the decompiler tries to do something...
-      this.command = {
-        name: `unknown ${opcode}`,
-        in: 0,
-        out: 0
-      };
-      return;
+      throw new Error(`Unknown opcode "${opcode}"`);
     }
 
     if (this.command.arg == null) {
@@ -45,13 +37,7 @@ class Command {
     let arg = null;
     switch (argType) {
       case "var": {
-        const variable = commandsBuffer.readUInt32LE(pos + 1);
-        if (variables[variable] != null) {
-          arg = variables[variable];
-        } else {
-          arg = new Variable(-1, -0, "unknown");
-        }
-        arg.name = `Unknown ${variable}`;
+        arg = commandsBuffer.readUInt32LE(pos + 1);
         break;
       }
       case "line": {
@@ -64,11 +50,7 @@ class Command {
         if (functionNames[variable] != null) {
           arg = functionNames[variable].function;
         } else {
-          arg = {
-            name: `unknown Object function ${variable}`,
-            parameters: [],
-            return: "unknown"
-          };
+          throw new Error("unknown Object function");
         }
         break;
       }
