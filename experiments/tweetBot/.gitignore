@@ -1,3 +1,4 @@
 config.py
 *.pyc
 action_log.json
+env/
