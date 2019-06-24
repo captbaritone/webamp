@@ -77,7 +77,7 @@ describe("standardframe.maki", () => {
   test("can read variables", () => {
     expect(maki.variables.length).toBe(56);
     maki.variables.forEach(variable => {
-      expect(maki.types[variable.type]).not.toBe(undefined);
+      expect(variable.type).not.toBe(undefined);
     });
   });
 

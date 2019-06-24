@@ -1,6 +1,7 @@
 const { COMMANDS } = require("./constants");
 const Command = require("./command");
 const { getClass, getObjectFunction } = require("./objects");
+const Variable = require("./variable");
 const MAGIC = "FG";
 const ENCODING = "binary";
 
@@ -58,11 +59,11 @@ class Parser {
     return functionNames;
   }
 
-  _readVariables() {
+  _readVariables({ types }) {
     let count = this._readUInt32LE();
     const variables = [];
     while (count--) {
-      const type = this._readUInt8();
+      const typeOffset = this._readUInt8();
       const object = this._readUInt8();
       const subClass = this._readUInt16LE();
       const uinit1 = this._readUInt16LE();
@@ -71,8 +72,8 @@ class Parser {
       const uinit4 = this._readUInt16LE();
       const global = this._readUInt8();
       const system = this._readUInt8();
-      const variable = {
-        type,
+      const props = {
+        typeOffset,
         object,
         subClass,
         uinit1,
@@ -82,7 +83,27 @@ class Parser {
         global,
         system
       };
-      variables.push(variable);
+
+      if (object) {
+        const type = types[typeOffset];
+        if (type == null) {
+          throw new Error("Invalid type");
+        }
+        variables.push(new Variable({ ...props, type }));
+      } else if (subClass) {
+        const type = variables[typeOffset];
+        if (type == null) {
+          throw new Error("Invalid type");
+        }
+        variables.push(new Variable({ ...props, type }));
+      } else {
+        const type = types[typeOffset];
+        if (type == null) {
+          throw new Error("Invalid type");
+        }
+        console.log(type.name);
+        variables.push(new Variable({ ...props, type }));
+      }
     }
     return variables;
   }
@@ -91,6 +112,7 @@ class Parser {
     let count = this._readUInt32LE();
     const constants = [];
     while (count--) {
+      // This is an index into the variables array.
       const varNum = this._readUInt32LE();
       const value = this._readString();
       constants.push({ varNum, value });
@@ -207,7 +229,7 @@ class Parser {
     this._readUInt32LE(); // Not sure what we are skipping over here. Just some UInt 32.
     const types = this._readTypes();
     const functionNames = this._readFunctionsNames({ types });
-    const variables = this._readVariables();
+    const variables = this._readVariables({ types });
     const constants = this._readConstants();
     const functions = this._readFunctions();
     const commands = this._decodeCode({
