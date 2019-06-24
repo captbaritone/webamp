@@ -5,6 +5,14 @@ const Variable = require("./variable");
 const MAGIC = "FG";
 const ENCODING = "binary";
 
+const PRIMITIVE_TYPES = {
+  5: "BOOLEAN",
+  2: "INT",
+  3: "FLOAT",
+  4: "DOUBLE",
+  6: "STRING"
+};
+
 class Parser {
   _readMagic() {
     const magic = this._readStringOfLength(MAGIC.length);
@@ -97,25 +105,50 @@ class Parser {
         }
         variables.push(new Variable({ ...props, type }));
       } else {
-        const type = types[typeOffset];
-        if (type == null) {
+        const typeName = PRIMITIVE_TYPES[typeOffset];
+        if (typeName == null) {
           throw new Error("Invalid type");
         }
-        console.log(type.name);
-        variables.push(new Variable({ ...props, type }));
+        let value = null;
+
+        switch (typeName) {
+          // BOOLEAN
+          case PRIMITIVE_TYPES[5]:
+          // INT
+          case PRIMITIVE_TYPES[2]:
+            value = uinit1;
+            break;
+          case PRIMITIVE_TYPES[3]:
+          case PRIMITIVE_TYPES[4]:
+            const exponent = (uint2 & 0xff80) >> 7;
+            const mantisse = ((0x80 | (uint2 & 0x7f)) << 16) | uint1;
+            value = mantisse * 2.0 ** (exponent - 0x96);
+            break;
+          case PRIMITIVE_TYPES[6]:
+            // This will likely get set by constants later on.
+            break;
+        }
+        if (value == null) {
+          // throw new Error("Failed to set value");
+        }
+        const variable = new Variable({ ...props, type: { name: typeName } });
+        variable.setValue(value);
+        variables.push(variable);
       }
     }
     return variables;
   }
 
-  _readConstants() {
+  _readConstants({ variables }) {
     let count = this._readUInt32LE();
     const constants = [];
     while (count--) {
-      // This is an index into the variables array.
-      const varNum = this._readUInt32LE();
+      const i = this._readUInt32LE();
+      const variable = variables[i];
       const value = this._readString();
-      constants.push({ varNum, value });
+      // TODO: Don't mutate
+      variable.setValue(value);
+      constants.push({ varNum: i, value });
     }
     return constants;
   }
@@ -230,7 +263,7 @@ class Parser {
     const types = this._readTypes();
     const functionNames = this._readFunctionsNames({ types });
     const variables = this._readVariables({ types });
-    const constants = this._readConstants();
+    const constants = this._readConstants({ variables });
     const functions = this._readFunctions();
     const commands = this._decodeCode({
       types,
