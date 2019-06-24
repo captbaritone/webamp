@@ -2,57 +2,99 @@ const fs = require("fs");
 const path = require("path");
 const { parse } = require("./");
 
+const log = true;
+
 function parseFile(relativePath) {
   const buffer = fs.readFileSync(path.join(__dirname, relativePath));
   return parse(buffer);
 }
 
-class Group {}
-
-const System = {
-  getScriptGroup() {
-    return new Group();
-  }
-};
-
 function interpret({ commands: rawCommands, variables, types }) {
-  const commands = rawCommands.slice(0, 5);
-  const environment = {
-    System
-  };
+  // Debug utility to pretty print a value/variable
+  function prettyPrint(offset) {
+    const value = variables[offset] || offset;
+    if (value == null) {
+      return "NULL";
+    }
+    let name = value;
+    if (value.type) {
+      name = `Variable(${value.type.name}) ${
+        value.getValue() ? "" : "(empty)"
+      }`;
+    }
+    return name;
+  }
+
+  const commands = rawCommands.slice(0, 86);
   const stack = [];
   let i = 0;
   while (i < commands.length) {
     const command = commands[i];
+
     switch (command.opcode) {
       // push
       case 1: {
         // What are these? Do they have names?
         const offsetIntoVariables = command.arguments[0];
         const variable = variables[offsetIntoVariables];
-        console.log(variable);
         stack.push(variable);
+        break;
+      }
+      // pop
+      case 2: {
+        stack.pop();
         break;
       }
       // call
       case 24: {
         const funcDefinition = command.arguments[0];
-        const { name } = funcDefinition;
+        const { name, parameters } = funcDefinition;
+        const methodArgs = [];
+        // This might be the wrong order
+        parameters.forEach(() => {
+          methodArgs.push(stack.pop());
+        });
         const variable = stack.pop();
-        const type = types[variable.type];
-        const obj = environment[type.name];
+        const obj = variable.getValue();
         stack.push(obj[name]());
+        break;
+      }
+      // return
+      case 33: {
+        const posVar = stack.pop();
+        const pos = posVar.getValue();
+        // TODO: What is this supposed to do?
+        i += pos;
         break;
       }
       // mov
       case 48: {
         const a = stack.pop();
         const b = stack.pop();
+        b.setValue(a);
         stack.push(a);
         break;
       }
+      default:
+        throw new Error(`Unhandled opcode ${command.opcode}`);
     }
     i++;
+
+    // Print some debug info
+    if (log) {
+      console.log(
+        i + 1,
+        command.command.name.toUpperCase(),
+        command.opcode,
+        command.arguments.map(offset => {
+          return prettyPrint(offset);
+        })
+      );
+      stack.forEach((value, i) => {
+        const name = prettyPrint(value);
+        console.log("    ", i + 1, name);
+      });
+    }
   }
 }
 
