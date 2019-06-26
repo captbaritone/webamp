@@ -25,6 +25,7 @@ interface StateProps {
   presetsAreCycling: boolean;
   currentPresetIndex: number | null; // Index
   trackTitle: string | null;
+  mediaIsPlaying: boolean;
 }
 
 interface DispatchProps {
@@ -107,7 +108,7 @@ function Milkdrop(props: Props) {
 
   // Cycle presets
   useEffect(() => {
-    if (!props.presetsAreCycling) {
+    if (!props.presetsAreCycling || !props.mediaIsPlaying) {
       return;
     }
     const intervalId = setInterval(
@@ -119,6 +120,7 @@ function Milkdrop(props: Props) {
     props.selectNextPreset,
     props.presetsAreCycling,
     props.currentPresetIndex,
+    props.mediaIsPlaying,
   ]);
 
   const screenSize = useScreenSize();
@@ -173,6 +175,7 @@ const mapStateToProps = (state: AppState): StateProps => ({
   presetsAreCycling: Selectors.getPresetsAreCycling(state),
   currentPresetIndex: Selectors.getCurrentPresetIndex(state),
   trackTitle: Selectors.getCurrentTrackDisplayName(state),
+  mediaIsPlaying: Selectors.getMediaIsPlaying(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
