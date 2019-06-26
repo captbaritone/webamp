@@ -25,6 +25,8 @@ function interpret({ commands: rawCommands, variables, types }) {
     return name;
   }
 
+  // Run all the commands that are safe to run. Increment this number to find
+  // the next bug.
   const commands = rawCommands.slice(0, 86);
   const stack = [];
   let i = 0;
@@ -37,6 +39,9 @@ function interpret({ commands: rawCommands, variables, types }) {
         // What are these? Do they have names?
         const offsetIntoVariables = command.arguments[0];
         const variable = variables[offsetIntoVariables];
+        // Maybe we should be pushing the actual value on the stack?
+        // Do we ever assign to a variable that we get from the stack?
+        // Or do all variables come in via arguments?
         stack.push(variable);
         break;
       }
@@ -50,13 +55,13 @@ function interpret({ commands: rawCommands, variables, types }) {
         const funcDefinition = command.arguments[0];
         const { name, parameters } = funcDefinition;
         const methodArgs = [];
-        // This might be the wrong order
+        // This might be in reverse order
         parameters.forEach(() => {
           methodArgs.push(stack.pop());
         });
         const variable = stack.pop();
         const obj = variable.getValue();
-        stack.push(obj[name]());
+        stack.push(obj[name](...methodArgs));
         break;
       }
       // return
