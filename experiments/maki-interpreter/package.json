@@ -9,7 +9,7 @@
     "tdd": "jest --watch",
     "decompile": "cd reference/maki_decompiler_1.1 && perl mdc.pl ../../fixtures/standardframe.maki",
     "interpret": "node ./cli.js ./fixtures/standardframe.maki",
-    "debug": "node ./cli.js --inspect-brk ./fixtures/standardframe.maki"
+    "debug": "node --inspect-brk ./cli.js ./fixtures/standardframe.maki"
   },
   "devDependencies": {
     "glob": "^7.1.4",
