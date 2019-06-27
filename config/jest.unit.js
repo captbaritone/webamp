@@ -14,4 +14,5 @@ module.exports = {
   transform: {
     "^.+\\.(js|ts|tsx)$": "babel-jest",
   },
+  testPathIgnorePatterns: ["/node_modules/", "/experiments/"]
 };
