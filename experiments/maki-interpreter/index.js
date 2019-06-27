@@ -127,9 +127,8 @@ class Parser {
           case PRIMITIVE_TYPES[6]:
             // This will likely get set by constants later on.
             break;
-        }
-        if (value == null) {
-          // throw new Error("Failed to set value");
+          default:
+            throw new Error("Invalid primitive type");
         }
         const variable = new Variable({ ...props, type: { name: typeName } });
         variable.setValue(value);
