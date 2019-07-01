@@ -1,6 +1,4 @@
 const { COMMANDS } = require("./constants");
-const Command = require("./command");
-const { getClass, getObjectFunction } = require("./objects");
 const Variable = require("./variable");
 const MAGIC = "FG";
 const ENCODING = "binary";
@@ -27,9 +25,9 @@ class Parser {
     this._i += 2;
   }
 
-  _readTypes() {
+  _readClasses() {
     let count = this._readUInt32LE();
-    const types = [];
+    const classes = [];
     while (count--) {
       let identifier = "";
       let chunks = 4;
@@ -38,36 +36,31 @@ class Parser {
           .toString(16)
           .padStart(8, "0");
       }
-      const klass = getClass(identifier);
-      if (klass == null) {
-        throw new Error(`Could not find class for id: ${identifier}`);
-      }
-      types.push(klass);
+      classes.push(identifier);
     }
-    return types;
+    return classes;
   }
 
-  _readFunctionsNames({ types }) {
+  _readMethods() {
     let count = this._readUInt32LE();
-    const functionNames = [];
+    const methods = [];
     while (count--) {
       const classCode = this._readUInt16LE();
       // Offset into our parsed types
       const typeOffset = classCode & 0xff;
+      // This is probably the second half of a uint32
       const dummy2 = this._readUInt16LE();
       const name = this._readString();
-      const klass = types[typeOffset];
-      functionNames.push({
+      methods.push({
         dummy2,
         name,
-        class: klass,
-        function: getObjectFunction(klass, name)
+        typeOffset
       });
     }
-    return functionNames;
+    return methods;
   }
 
-  _readVariables({ types }) {
+  _readVariables({ classes }) {
     let count = this._readUInt32LE();
     const variables = [];
     while (count--) {
@@ -93,17 +86,21 @@ class Parser {
       };
 
       if (object) {
-        const type = types[typeOffset];
-        if (type == null) {
+        const klass = classes[typeOffset];
+        if (klass == null) {
           throw new Error("Invalid type");
         }
-        variables.push(new Variable({ ...props, type }));
+        variables.push(
+          new Variable({ ...props, type: klass, typeName: "OBJECT" })
+        );
       } else if (subClass) {
-        const type = variables[typeOffset];
-        if (type == null) {
+        const variable = variables[typeOffset];
+        if (variable == null) {
           throw new Error("Invalid type");
         }
-        variables.push(new Variable({ ...props, type }));
+        variables.push(
+          new Variable({ ...props, type: variable, typeName: "SUBCLASS" })
+        );
       } else {
         const typeName = PRIMITIVE_TYPES[typeOffset];
         if (typeName == null) {
@@ -130,7 +127,7 @@ class Parser {
           default:
             throw new Error("Invalid primitive type");
         }
-        const variable = new Variable({ ...props, type: { name: typeName } });
+        const variable = new Variable({ ...props, type: typeName, typeName });
         variable.setValue(value);
         variables.push(variable);
       }
@@ -140,28 +137,25 @@ class Parser {
 
   _readConstants({ variables }) {
     let count = this._readUInt32LE();
-    const constants = [];
     while (count--) {
       const i = this._readUInt32LE();
       const variable = variables[i];
       const value = this._readString();
       // TODO: Don't mutate
       variable.setValue(value);
-      constants.push({ varNum: i, value });
     }
-    return constants;
   }
 
-  _readFunctions() {
+  _readBindings() {
     let count = this._readUInt32LE();
-    const functions = [];
+    const bindings = [];
     while (count--) {
-      const varNum = this._readUInt32LE();
-      const funcNum = this._readUInt32LE();
-      const offset = this._readUInt32LE();
-      functions.push({ varNum, offset, funcNum });
+      const variableOffset = this._readUInt32LE();
+      const methodOffset = this._readUInt32LE();
+      const binaryOffset = this._readUInt32LE();
+      bindings.push({ variableOffset, binaryOffset, methodOffset });
     }
-    return functions;
+    return bindings;
   }
 
   _readCommands(code) {
@@ -219,7 +213,7 @@ class Parser {
     return this._readStringOfLength(this._readUInt16LE());
   }
 
-  _decodeCode({ types, variables, functionNames, functions }) {
+  _decodeCode({ classes, variables, methods, bindings }) {
     const length = this._readUInt32LE();
     const commandsBuffer = this._buffer.slice(this._i, this._i + length);
     this._i += length;
@@ -228,28 +222,104 @@ class Parser {
     const localFunctions = {};
     const results = [];
     while (pos < commandsBuffer.length) {
-      const command = new Command({
+      const command = this._parseComand({
         commandsBuffer,
         pos,
-        types,
+        classes,
         variables,
-        functionNames,
+        methods,
         localFunctions
       });
-      pos += command.size;
+      pos += command._size;
       results.push(command);
     }
     // TODO: Don't mutate
     Object.values(localFunctions).forEach(localFunction => {
-      functions.push(localFunction);
+      bindings.push(localFunction);
     });
 
-    functions.sort((a, b) => {
-      // TODO: Confirm that I have this the right way round
-      return a.offset - b.offset;
+    bindings.sort((a, b) => {
+      return a.binaryOffset - b.binaryOffset;
     });
 
     return results;
+  }
+
+  _parseComand({ commandsBuffer, pos, localFunctions }) {
+    const command = {};
+    const opcode = commandsBuffer.readInt8(pos);
+    command.offset = pos;
+    command.pos = pos;
+    command.opcode = opcode;
+    command.arguments = [];
+    command.command = COMMANDS[opcode];
+    command._size = 1;
+
+    if (command.command == null) {
+      throw new Error(`Unknown opcode "${opcode}"`);
+    }
+
+    if (command.command.arg == null) {
+      command._size = 1;
+      return command;
+    }
+
+    const argType = command.command.arg;
+    let arg = null;
+    switch (argType) {
+      case "var": {
+        arg = commandsBuffer.readUInt32LE(pos + 1);
+        break;
+      }
+      case "line": {
+        arg = commandsBuffer.readUInt32LE(pos + 1) + 5;
+        break;
+      }
+      case "objFunc": {
+        // TODO: ClassesOffset
+        arg = commandsBuffer.readUInt32LE(pos + 1);
+        break;
+      }
+      case "func": {
+        // Note in the perl code here: "todo, something strange going on here..."
+        const variable = commandsBuffer.readUInt32LE(pos + 1) + 5;
+        const offset = variable + pos;
+        arg = {
+          name: `func${offset}`,
+          code: [],
+          offset
+        };
+        if (localFunctions[offset] == null) {
+          localFunctions[offset] = {
+            function: arg,
+            offset
+          };
+        }
+        break;
+      }
+      case "obj": {
+        // Classes Offset
+        arg = commandsBuffer.readUInt32LE(pos + 1);
+        break;
+      }
+    }
+
+    command.arguments = [arg];
+    command._size = 5;
+
+    // From perl: look forward for a stack protection block
+    // (why do I have to look FORWARD. stupid nullsoft)
+    if (
+      commandsBuffer.length > pos + 5 + 4 &&
+      commandsBuffer.readUInt32LE(pos + 5) >= 0xffff0000
+    ) {
+      command._size += 4;
+    }
+
+    if (opcode === 112) {
+      command._size += 1;
+    }
+    return command;
   }
 
   parse(buffer) {
@@ -259,24 +329,43 @@ class Parser {
     const magic = this._readMagic();
     this._readVersion();
     this._readUInt32LE(); // Not sure what we are skipping over here. Just some UInt 32.
-    const types = this._readTypes();
-    const functionNames = this._readFunctionsNames({ types });
-    const variables = this._readVariables({ types });
-    const constants = this._readConstants({ variables });
-    const functions = this._readFunctions();
+    const classes = this._readClasses();
+    const methods = this._readMethods();
+    const variables = this._readVariables({ classes });
+    this._readConstants({ variables });
+    const bindings = this._readBindings();
     const commands = this._decodeCode({
-      types,
+      classes,
       variables,
-      functionNames,
-      functions
+      methods,
+      bindings
+    });
+
+    // Map binary offsets to command indexes.
+    // Some bindings/functions ask us to jump to a place in the binary data and
+    // start executing. However, we want to do all the parsing up front, and just
+    // return a list of commands. This map allows anything that mentions a binary
+    // offset to find the command they should jump to.
+    const offsetToCommand = {};
+    commands.forEach((command, i) => {
+      if (command.offset != null) {
+        offsetToCommand[command.offset] = i;
+      }
+    });
+
+    const resolvedBindings = bindings.map(binding => {
+      const { binaryOffset, ...rest } = binding;
+      return {
+        commandOffset: offsetToCommand[binaryOffset],
+        ...rest
+      };
     });
     return {
       magic,
-      types,
-      functionNames,
+      classes,
+      methods,
       variables,
-      constants,
-      functions,
+      bindings: resolvedBindings,
       commands
     };
   }

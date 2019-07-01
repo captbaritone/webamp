@@ -18,6 +18,7 @@
   },
   "prettier": {},
   "dependencies": {
-    "jszip": "^3.2.1"
+    "jszip": "^3.2.1",
+    "typescript": "^3.5.2"
   }
 }

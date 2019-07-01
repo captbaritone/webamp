@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { parse } = require("./");
+const { getClass } = require("./objects");
 
 function parseFile(relativePath) {
   const buffer = fs.readFileSync(path.join(__dirname, relativePath));
@@ -17,8 +18,8 @@ describe("standardframe.maki", () => {
     expect(maki.magic).toBe("FG");
   });
 
-  test("can read types", () => {
-    expect(maki.types.map(klass => klass.name)).toEqual([
+  test("can read classes", () => {
+    expect(maki.classes.map(klass => getClass(klass).name)).toEqual([
       "Object",
       "System",
       "Container",
@@ -55,8 +56,8 @@ describe("standardframe.maki", () => {
     ]);
   });
 
-  test("can read functionNames", () => {
-    expect(maki.functionNames.map(func => func.name)).toEqual([
+  test("can read methods", () => {
+    expect(maki.methods.map(func => func.name)).toEqual([
       "onScriptLoaded",
       "getScriptGroup",
       "getParam",
@@ -70,20 +71,26 @@ describe("standardframe.maki", () => {
       "newGroup",
       "init"
     ]);
-    expect(maki.functionNames.every(func => func.class != null)).toBe(true);
-    expect(maki.functionNames.every(func => func.function != null)).toBe(true);
+    expect(maki.methods.every(func => func.typeOffset != null)).toBe(true);
   });
 
   test("can read variables", () => {
     expect(maki.variables.length).toBe(56);
-    expect(maki.variables.map(variable => variable.type.name))
-      .toMatchInlineSnapshot(`
+    expect(
+      maki.variables.map(variable => {
+        const { typeName, type } = variable;
+        if (typeName === "OBJECT") {
+          return type;
+        }
+        return typeName;
+      })
+    ).toMatchInlineSnapshot(`
       Array [
-        "System",
+        "d6f50f6449b793fa66baf193983eaeef",
         "INT",
-        "Group",
-        "Group",
-        "Group",
+        "45be95e5419120725fbb5c93fd17f1f9",
+        "45be95e5419120725fbb5c93fd17f1f9",
+        "45be95e5419120725fbb5c93fd17f1f9",
         "STRING",
         "STRING",
         "STRING",
@@ -92,8 +99,8 @@ describe("standardframe.maki", () => {
         "STRING",
         "STRING",
         "STRING",
-        "Layer",
-        "Button",
+        "5ab9fa1545579a7d5765c8aba97cc6a6",
+        "698eddcd4fec8f1e44f9129b45ff09f9",
         "STRING",
         "STRING",
         "INT",
@@ -142,21 +149,18 @@ describe("standardframe.maki", () => {
     });
   });
 
-  test("can read constants", () => {
-    expect(maki.constants.length).toBe(23);
-  });
-
-  test("can read functions", () => {
-    expect(maki.functions).toEqual([
-      { varNum: 0, offset: 0, funcNum: 0 },
-      { varNum: 0, offset: 296, funcNum: 4 },
-      { varNum: 2, offset: 559, funcNum: 9 },
+  test("can read bindings", () => {
+    expect(maki.bindings).toEqual([
+      { variableOffset: 0, commandOffset: 0, methodOffset: 0 },
+      { variableOffset: 0, commandOffset: 76, methodOffset: 4 },
+      { variableOffset: 2, commandOffset: 143, methodOffset: 9 },
       { function: { code: [], name: "func722", offset: 722 }, offset: 722 }
     ]);
   });
 
   // [opcode, size] as output by the Perl decompiler
   // prettier-ignore
+  // TODO: Get rid of the size values here, they are not used any more
   const expectedCommands = [
   [1, 5], [1, 5], [24, 5], [48, 1], [2, 1], [1, 5], [1, 5], [24, 5], [48, 1], [2, 1], [1, 5],
   [1, 5], [1, 5], [1, 5], [1, 5], [24, 5], [48, 1], [2, 1], [1, 5], [1, 5], [1, 5], [1, 5],
@@ -183,17 +187,12 @@ describe("standardframe.maki", () => {
 
   test("can read commands", () => {
     maki.commands.forEach((command, i) => {
-      const [expectedOpcode, expectedSize] = expectedCommands[i];
+      const [expectedOpcode] = expectedCommands[i];
       if (expectedOpcode !== command.opcode) {
         throw new Error(
           `Command ${i} reported opcode ${
             command.opcode
           }. Expected ${expectedOpcode}`
-        );
-      }
-      if (expectedSize !== command.size) {
-        throw new Error(
-          `Command ${i} reported size ${command.size}. Expected ${expectedSize}`
         );
       }
     });
