@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const run = require("./index");
+const run = require("./interpreter");
 const runtime = require("./runtime");
 const System = require("./runtime/System");
 
