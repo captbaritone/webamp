@@ -5,6 +5,16 @@ const onScriptLoadedCallbacks = [];
 const onSetXuiParamCallbacks = [];
 
 class System extends MakiObject {
+  /**
+   * getClassName()
+   *
+   * Returns the class name for the object.
+   * @ret The class name.
+   */
+  static getClassName() {
+    return "System";
+  }
+
   _start() {
     onScriptLoadedCallbacks.forEach(cb => {
       cb();
