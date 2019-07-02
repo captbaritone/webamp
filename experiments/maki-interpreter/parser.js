@@ -1,270 +1,379 @@
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
+const { COMMANDS } = require("./constants");
+const Variable = require("./variable");
+const MAGIC = "FG";
+const ENCODING = "binary";
+
+const PRIMITIVE_TYPES = {
+  5: "BOOLEAN",
+  2: "INT",
+  3: "FLOAT",
+  4: "DOUBLE",
+  6: "STRING"
 };
-var COMMANDS = require("./constants").COMMANDS;
-var Command = require("./command");
-var _a = require("./objects"), getClass = _a.getClass, getObjectFunction = _a.getObjectFunction;
-var Variable = require("./variable");
-var MAGIC = "FG";
-var ENCODING = "binary";
-var PRIMITIVE_TYPES = {
-    5: "BOOLEAN",
-    2: "INT",
-    3: "FLOAT",
-    4: "DOUBLE",
-    6: "STRING"
-};
-var Parser = /** @class */ (function () {
-    function Parser() {
+
+class Parser {
+  _readMagic() {
+    const magic = this._readStringOfLength(MAGIC.length);
+    if (magic !== MAGIC) {
+      throw new Error("Magic number does not mach. Is this a maki file?");
     }
-    Parser.prototype._readMagic = function () {
-        var magic = this._readStringOfLength(MAGIC.length);
-        if (magic !== MAGIC) {
-            throw new Error("Magic number does not mach. Is this a maki file?");
+    return magic;
+  }
+
+  _readVersion() {
+    // No idea what we're actually expecting here.
+    this._i += 2;
+  }
+
+  _readClasses() {
+    let count = this._readUInt32LE();
+    const classes = [];
+    while (count--) {
+      let identifier = "";
+      let chunks = 4;
+      while (chunks--) {
+        identifier += this._readUInt32LE()
+          .toString(16)
+          .padStart(8, "0");
+      }
+      classes.push(identifier);
+    }
+    return classes;
+  }
+
+  _readMethods() {
+    let count = this._readUInt32LE();
+    const methods = [];
+    while (count--) {
+      const classCode = this._readUInt16LE();
+      // Offset into our parsed types
+      const typeOffset = classCode & 0xff;
+      // This is probably the second half of a uint32
+      const dummy2 = this._readUInt16LE();
+      const name = this._readString();
+      methods.push({
+        dummy2,
+        name,
+        typeOffset
+      });
+    }
+    return methods;
+  }
+
+  _readVariables({ classes }) {
+    let count = this._readUInt32LE();
+    const variables = [];
+    while (count--) {
+      const typeOffset = this._readUInt8();
+      const object = this._readUInt8();
+      const subClass = this._readUInt16LE();
+      const uinit1 = this._readUInt16LE();
+      const uinit2 = this._readUInt16LE();
+      const uinit3 = this._readUInt16LE();
+      const uinit4 = this._readUInt16LE();
+      const global = this._readUInt8();
+      const system = this._readUInt8();
+      const props = {
+        typeOffset,
+        object,
+        subClass,
+        uinit1,
+        uinit2,
+        uinit3,
+        uinit4,
+        global,
+        system
+      };
+
+      if (object) {
+        const klass = classes[typeOffset];
+        if (klass == null) {
+          throw new Error("Invalid type");
         }
-        return magic;
-    };
-    Parser.prototype._readVersion = function () {
-        // No idea what we're actually expecting here.
-        this._i += 2;
-    };
-    Parser.prototype._readTypes = function () {
-        var count = this._readUInt32LE();
-        var types = [];
-        while (count--) {
-            var identifier = "";
-            var chunks = 4;
-            while (chunks--) {
-                identifier += this._readUInt32LE()
-                    .toString(16)
-                    .padStart(8, "0");
-            }
-            var klass = getClass(identifier);
-            if (klass == null) {
-                throw new Error("Could not find class for id: " + identifier);
-            }
-            types.push(klass);
+        variables.push(
+          new Variable({ ...props, type: klass, typeName: "OBJECT" })
+        );
+      } else if (subClass) {
+        const variable = variables[typeOffset];
+        if (variable == null) {
+          throw new Error("Invalid type");
         }
-        return types;
-    };
-    Parser.prototype._readFunctionsNames = function (_a) {
-        var types = _a.types;
-        var count = this._readUInt32LE();
-        var functionNames = [];
-        while (count--) {
-            var classCode = this._readUInt16LE();
-            // Offset into our parsed types
-            var typeOffset = classCode & 0xff;
-            var dummy2 = this._readUInt16LE();
-            var name_1 = this._readString();
-            var klass = types[typeOffset];
-            functionNames.push({
-                dummy2: dummy2,
-                name: name_1,
-                "class": klass,
-                "function": getObjectFunction(klass, name_1)
-            });
+        variables.push(
+          new Variable({ ...props, type: variable, typeName: "SUBCLASS" })
+        );
+      } else {
+        const typeName = PRIMITIVE_TYPES[typeOffset];
+        if (typeName == null) {
+          throw new Error("Invalid type");
         }
-        return functionNames;
-    };
-    Parser.prototype._readVariables = function (_a) {
-        var types = _a.types;
-        var count = this._readUInt32LE();
-        var variables = [];
-        while (count--) {
-            var typeOffset = this._readUInt8();
-            var object = this._readUInt8();
-            var subClass = this._readUInt16LE();
-            var uinit1 = this._readUInt16LE();
-            var uinit2 = this._readUInt16LE();
-            var uinit3 = this._readUInt16LE();
-            var uinit4 = this._readUInt16LE();
-            var global_1 = this._readUInt8();
-            var system = this._readUInt8();
-            var props = {
-                typeOffset: typeOffset,
-                object: object,
-                subClass: subClass,
-                uinit1: uinit1,
-                uinit2: uinit2,
-                uinit3: uinit3,
-                uinit4: uinit4,
-                global: global_1,
-                system: system
-            };
-            if (object) {
-                var type = types[typeOffset];
-                if (type == null) {
-                    throw new Error("Invalid type");
-                }
-                variables.push(new Variable(__assign({}, props, { type: type })));
-            }
-            else if (subClass) {
-                var type = variables[typeOffset];
-                if (type == null) {
-                    throw new Error("Invalid type");
-                }
-                variables.push(new Variable(__assign({}, props, { type: type })));
-            }
-            else {
-                var typeName = PRIMITIVE_TYPES[typeOffset];
-                if (typeName == null) {
-                    throw new Error("Invalid type");
-                }
-                var value = null;
-                switch (typeName) {
-                    // BOOLEAN
-                    case PRIMITIVE_TYPES[5]:
-                    // INT
-                    case PRIMITIVE_TYPES[2]:
-                        value = uinit1;
-                        break;
-                    case PRIMITIVE_TYPES[3]:
-                    case PRIMITIVE_TYPES[4]:
-                        var exponent = (uint2 & 0xff80) >> 7;
-                        var mantisse = ((0x80 | (uint2 & 0x7f)) << 16) | uint1;
-                        value = mantisse * Math.pow(2.0, (exponent - 0x96));
-                        break;
-                    case PRIMITIVE_TYPES[6]:
-                        // This will likely get set by constants later on.
-                        break;
-                }
-                if (value == null) {
-                    // throw new Error("Failed to set value");
-                }
-                var variable = new Variable(__assign({}, props, { type: { name: typeName } }));
-                variable.setValue(value);
-                variables.push(variable);
-            }
+        let value = null;
+
+        switch (typeName) {
+          // BOOLEAN
+          case PRIMITIVE_TYPES[5]:
+          // INT
+          case PRIMITIVE_TYPES[2]:
+            value = uinit1;
+            break;
+          case PRIMITIVE_TYPES[3]:
+          case PRIMITIVE_TYPES[4]:
+            const exponent = (uinit2 & 0xff80) >> 7;
+            const mantisse = ((0x80 | (uinit2 & 0x7f)) << 16) | uinit1;
+            value = mantisse * 2.0 ** (exponent - 0x96);
+            break;
+          case PRIMITIVE_TYPES[6]:
+            // This will likely get set by constants later on.
+            break;
+          default:
+            throw new Error("Invalid primitive type");
         }
-        return variables;
-    };
-    Parser.prototype._readConstants = function (_a) {
-        var variables = _a.variables;
-        var count = this._readUInt32LE();
-        var constants = [];
-        while (count--) {
-            var i = this._readUInt32LE();
-            var variable = variables[i];
-            var value = this._readString();
-            // TODO: Don't mutate
-            variable.setValue(value);
-            constants.push({ varNum: i, value: value });
-        }
-        return constants;
-    };
-    Parser.prototype._readFunctions = function () {
-        var count = this._readUInt32LE();
-        var functions = [];
-        while (count--) {
-            var varNum = this._readUInt32LE();
-            var funcNum = this._readUInt32LE();
-            var offset = this._readUInt32LE();
-            functions.push({ varNum: varNum, offset: offset, funcNum: funcNum });
-        }
-        return functions;
-    };
-    Parser.prototype._readUInt32LE = function () {
-        var int = this._buffer.readUInt32LE(this._i);
-        this._i += 4;
-        return int;
-    };
-    Parser.prototype._readUInt16LE = function () {
-        var int = this._buffer.readUInt16LE(this._i);
-        this._i += 2;
-        return int;
-    };
-    Parser.prototype._readUInt8 = function () {
-        var int = this._buffer.readUInt8(this._i);
-        this._i++;
-        return int;
-    };
-    Parser.prototype._readStringOfLength = function (length) {
-        var str = this._buffer.toString(ENCODING, this._i, this._i + length);
-        this._i += length;
-        return str;
-    };
-    Parser.prototype._readString = function () {
-        return this._readStringOfLength(this._readUInt16LE());
-    };
-    Parser.prototype._decodeCode = function (_a) {
-        var commandsBuffer = _a.commandsBuffer, types = _a.types, variables = _a.variables, functionNames = _a.functionNames, functions = _a.functions, start = _a.start;
-        var pos = start;
-        var localFunctions = {};
-        var results = [];
-        var done = false;
-        while (pos < commandsBuffer.length && !done) {
-            var command = new Command({
-                commandsBuffer: commandsBuffer,
-                pos: pos,
-                types: types,
-                variables: variables,
-                functionNames: functionNames,
-                localFunctions: localFunctions
-            });
-            pos += command.size;
-            results.push(command);
-            // Only parse until the return value
-            if (command.opcode === 33) {
-                done = true;
-            }
-        }
-        // TODO: Don't mutate
-        Object.values(localFunctions).forEach(function (localFunction) {
-            functions.push(localFunction);
-        });
-        functions.sort(function (a, b) {
-            // TODO: Confirm that I have this the right way round
-            return a.offset - b.offset;
-        });
-        return results;
-    };
-    Parser.prototype.parse = function (buffer) {
-        var _this = this;
-        this._buffer = buffer;
-        this._i = 0;
-        var magic = this._readMagic();
-        this._readVersion();
-        this._readUInt32LE(); // Not sure what we are skipping over here. Just some UInt 32.
-        var types = this._readTypes();
-        var functionNames = this._readFunctionsNames({ types: types });
-        var variables = this._readVariables({ types: types });
-        var constants = this._readConstants({ variables: variables });
-        var functions = this._readFunctions();
-        var length = this._readUInt32LE();
-        var commandsBuffer = this._buffer.slice(this._i, this._i + length);
-        this._i += length;
-        functions.forEach(function (func) {
-            func.commands = _this._decodeCode({
-                commandsBuffer: commandsBuffer,
-                start: func.offset,
-                types: types,
-                variables: variables,
-                functionNames: functionNames,
-                functions: functions
-            });
-        });
-        return {
-            magic: magic,
-            types: types,
-            functionNames: functionNames,
-            variables: variables,
-            constants: constants,
-            functions: functions
+        const variable = new Variable({ ...props, type: typeName, typeName });
+        variable.setValue(value);
+        variables.push(variable);
+      }
+    }
+    return variables;
+  }
+
+  _readConstants({ variables }) {
+    let count = this._readUInt32LE();
+    while (count--) {
+      const i = this._readUInt32LE();
+      const variable = variables[i];
+      const value = this._readString();
+      // TODO: Don't mutate
+      variable.setValue(value);
+    }
+  }
+
+  _readBindings() {
+    let count = this._readUInt32LE();
+    const bindings = [];
+    while (count--) {
+      const variableOffset = this._readUInt32LE();
+      const methodOffset = this._readUInt32LE();
+      const binaryOffset = this._readUInt32LE();
+      bindings.push({ variableOffset, binaryOffset, methodOffset });
+    }
+    return bindings;
+  }
+
+  _readCommands(code) {
+    let i = 0;
+    while (i < code.length) {
+      const opCode = code.charCodeAt(i);
+      const command = COMMANDS[opCode];
+      if (command == null) {
+        // console.warn(`Missing command opCode: ${opCode}`);
+        i++;
+        continue;
+      }
+      if (command.arg == null) {
+        i++;
+        continue;
+      }
+      switch (command.arg) {
+        case "var":
+          // This is the index into this._debug.variables
+          // this._readUInt32LE();
+          i += 5;
+          break;
+        default:
+          i += 5;
+      }
+      // console.log({ command });
+    }
+  }
+
+  _readUInt32LE() {
+    const int = this._buffer.readUInt32LE(this._i);
+    this._i += 4;
+    return int;
+  }
+
+  _readUInt16LE() {
+    const int = this._buffer.readUInt16LE(this._i);
+    this._i += 2;
+    return int;
+  }
+
+  _readUInt8() {
+    const int = this._buffer.readUInt8(this._i);
+    this._i++;
+    return int;
+  }
+
+  _readStringOfLength(length) {
+    const str = this._buffer.toString(ENCODING, this._i, this._i + length);
+    this._i += length;
+    return str;
+  }
+
+  _readString() {
+    return this._readStringOfLength(this._readUInt16LE());
+  }
+
+  _decodeCode({ classes, variables, methods, bindings }) {
+    const length = this._readUInt32LE();
+    const commandsBuffer = this._buffer.slice(this._i, this._i + length);
+    this._i += length;
+
+    let pos = 0;
+    const localFunctions = {};
+    const results = [];
+    while (pos < commandsBuffer.length) {
+      const command = this._parseComand({
+        commandsBuffer,
+        pos,
+        classes,
+        variables,
+        methods,
+        localFunctions
+      });
+      pos += command._size;
+      results.push(command);
+    }
+    // TODO: Don't mutate
+    Object.values(localFunctions).forEach(localFunction => {
+      bindings.push(localFunction);
+    });
+
+    bindings.sort((a, b) => {
+      return a.binaryOffset - b.binaryOffset;
+    });
+
+    return results;
+  }
+
+  _parseComand({ commandsBuffer, pos, localFunctions }) {
+    const command = {};
+    const opcode = commandsBuffer.readInt8(pos);
+    command.offset = pos;
+    command.pos = pos;
+    command.opcode = opcode;
+    command.arguments = [];
+    command.command = COMMANDS[opcode];
+    command._size = 1;
+
+    if (command.command == null) {
+      throw new Error(`Unknown opcode "${opcode}"`);
+    }
+
+    if (command.command.arg == null) {
+      command._size = 1;
+      return command;
+    }
+
+    const argType = command.command.arg;
+    let arg = null;
+    switch (argType) {
+      case "var": {
+        arg = commandsBuffer.readUInt32LE(pos + 1);
+        break;
+      }
+      case "line": {
+        arg = commandsBuffer.readUInt32LE(pos + 1) + 5;
+        break;
+      }
+      case "objFunc": {
+        // TODO: ClassesOffset
+        arg = commandsBuffer.readUInt32LE(pos + 1);
+        break;
+      }
+      case "func": {
+        // Note in the perl code here: "todo, something strange going on here..."
+        const variable = commandsBuffer.readUInt32LE(pos + 1) + 5;
+        const offset = variable + pos;
+        arg = {
+          name: `func${offset}`,
+          code: [],
+          offset
         };
+        if (localFunctions[offset] == null) {
+          localFunctions[offset] = {
+            function: arg,
+            offset
+          };
+        }
+        break;
+      }
+      case "obj": {
+        // Classes Offset
+        arg = commandsBuffer.readUInt32LE(pos + 1);
+        break;
+      }
+    }
+
+    command.arguments = [arg];
+    command._size = 5;
+
+    // From perl: look forward for a stack protection block
+    // (why do I have to look FORWARD. stupid nullsoft)
+    if (
+      commandsBuffer.length > pos + 5 + 4 &&
+      commandsBuffer.readUInt32LE(pos + 5) >= 0xffff0000
+    ) {
+      command._size += 4;
+    }
+
+    if (opcode === 112) {
+      command._size += 1;
+    }
+    return command;
+  }
+
+  parse(buffer) {
+    this._buffer = buffer;
+    this._i = 0;
+
+    const magic = this._readMagic();
+    this._readVersion();
+    this._readUInt32LE(); // Not sure what we are skipping over here. Just some UInt 32.
+    const classes = this._readClasses();
+    const methods = this._readMethods();
+    const variables = this._readVariables({ classes });
+    this._readConstants({ variables });
+    const bindings = this._readBindings();
+    const commands = this._decodeCode({
+      classes,
+      variables,
+      methods,
+      bindings
+    });
+
+    // Map binary offsets to command indexes.
+    // Some bindings/functions ask us to jump to a place in the binary data and
+    // start executing. However, we want to do all the parsing up front, and just
+    // return a list of commands. This map allows anything that mentions a binary
+    // offset to find the command they should jump to.
+    const offsetToCommand = {};
+    commands.forEach((command, i) => {
+      if (command.offset != null) {
+        offsetToCommand[command.offset] = i;
+      }
+    });
+
+    const resolvedBindings = bindings.map(binding => {
+      const { binaryOffset, ...rest } = binding;
+      return {
+        commandOffset: offsetToCommand[binaryOffset],
+        ...rest
+      };
+    });
+    return {
+      magic,
+      classes,
+      methods,
+      variables,
+      bindings: resolvedBindings,
+      commands
     };
-    return Parser;
-}());
-function parse(buffer) {
-    var parser = new Parser();
-    return parser.parse(buffer);
+  }
 }
-module.exports = { parse: parse };
+
+function parse(buffer) {
+  const parser = new Parser();
+  return parser.parse(buffer);
+}
+
+module.exports = parse;
