@@ -1,13 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const { parse } = require("./");
-const { getClass } = require("./objects");
-const interpret = require("./interpreter");
-
-function parseFile(relativePath) {
-  const buffer = fs.readFileSync(path.join(__dirname, relativePath));
-  return parse(buffer);
-}
+const run = require("./index");
 
 class GuiObject {}
 class Group extends GuiObject {
@@ -56,60 +49,11 @@ const runtime = {
   e90dc47b4ae7840d0b042cb0fcf775d2: Container
 };
 
-function getClassName(klass) {
-  return klass
-    .toString()
-    .split("\n")[0]
-    .split(" ")
-    .slice(0, 2)
-    .join(" ");
-}
-
 function main() {
   const relativePath = process.argv[2];
-  const { commands, variables, classes, methods, bindings } = parseFile(
-    relativePath
-  );
-
+  const buffer = fs.readFileSync(path.join(__dirname, relativePath));
   const system = new System();
-
-  // Set the System global
-  variables[0].setValue(system);
-
-  // Replace class hashes with those from the runtime
-  const resolvedClasses = classes.map(hash => {
-    const resolved = runtime[hash];
-    if (resolved == null) {
-      const klass = getClass(hash);
-      console.warn(
-        `Class missing from runtime: ${hash} expected ${klass.name}`
-      );
-    }
-    return resolved;
-  });
-
-  bindings.forEach(binding => {
-    const handler = () => {
-      return interpret({
-        start: binding.commandOffset,
-        commands,
-        variables,
-        classes: resolvedClasses,
-        runtime,
-        methods
-      });
-    };
-
-    if (binding.variableOffset === 0) {
-      const obj = variables[binding.variableOffset].getValue();
-      const method = methods[binding.methodOffset];
-      obj[method.name](handler);
-    } else {
-      console.log("Not binding to non-system events", binding);
-    }
-  });
-
-  system._start();
+  run({ runtime, buffer, system });
 }
 
 main();
