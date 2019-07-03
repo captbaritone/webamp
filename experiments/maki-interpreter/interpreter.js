@@ -8,7 +8,7 @@ function main({ runtime, buffer, system }) {
   // Set the System global
   program.variables[0].setValue(system);
 
-  // Replace class hashes with those from the runtime
+  // Replace class hashes with actual JavaScript classes from the runtime
   program.classes = program.classes.map(hash => {
     const resolved = runtime[hash];
     if (resolved == null) {
@@ -20,11 +20,13 @@ function main({ runtime, buffer, system }) {
     return resolved;
   });
 
+  // Bind toplevel handlers.
   program.bindings.forEach(binding => {
     const handler = () => {
       return interpret(binding.commandOffset, program);
     };
 
+    // For now we only know how to handle System handlers.
     if (binding.variableOffset === 0) {
       const obj = program.variables[binding.variableOffset].getValue();
       const method = program.methods[binding.methodOffset];
