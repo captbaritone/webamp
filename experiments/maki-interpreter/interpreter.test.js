@@ -10,23 +10,34 @@ function runFile(relativePath) {
   interpret({ runtime, buffer, system, log: false });
 }
 
-describe("v1.1.1.b3 (Winamp 3.0 full)", () => {
-  test("can call messageBox with hello World", () => {
-    const mockMessageBox = jest.fn();
-    // The VM depends upon the arity of this function, so we can't use
-    // `mockMessageBox` directly.
-    System.prototype.messageBox = function(a, b, c, d) {
-      mockMessageBox(a, b, c, d);
-    };
-    runFile(
-      "./reference/maki_compiler/v1.1.1.b3 (Winamp 3.0 full)/hello_world.maki"
-    );
-    expect(mockMessageBox).toHaveBeenCalledTimes(1);
-    expect(mockMessageBox).toHaveBeenCalledWith(
-      "Hello World",
-      "Hello Title",
-      1,
-      null
-    );
+let mockMessageBox;
+beforeEach(() => {
+  mockMessageBox = jest.fn();
+  // The VM depends upon the arity of this function, so we can't use
+  // `mockMessageBox` directly.
+  System.prototype.messageBox = function(a, b, c, d) {
+    mockMessageBox(...arguments);
+  };
+});
+
+describe("can call messageBox with hello World", () => {
+  const versions = [
+    // "v1.1.0.a9 (Winamp 3 alpha 8r)",
+    "v1.1.1.b3 (Winamp 3.0 build 488d)",
+    "v1.1.1.b3 (Winamp 3.0 full)"
+    // "v1.1.13 (Winamp 5.02)",
+    // "v1.2.0 (Winamp 5.66)"
+  ];
+  versions.forEach(version => {
+    test(`with bytecode compiled by ${version}`, () => {
+      runFile(`./reference/maki_compiler/${version}/hello_world.maki`);
+      expect(mockMessageBox).toHaveBeenCalledTimes(1);
+      expect(mockMessageBox).toHaveBeenCalledWith(
+        "Hello World",
+        "Hello Title",
+        1,
+        null
+      );
+    });
   });
 });
