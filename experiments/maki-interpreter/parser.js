@@ -20,10 +20,6 @@ class MakiFile {
     this._i = 0;
   }
 
-  advanceDEPRECATED(n) {
-    this._i += n;
-  }
-
   readUInt32LE() {
     const int = this._buffer.readUInt32LE(this._i);
     this._i += 4;
@@ -53,7 +49,9 @@ class MakiFile {
   }
 
   getNextNBytesDEPRECATED(length) {
-    return this._buffer.slice(this._i, this._i + length);
+    const bytes = this._buffer.slice(this._i, this._i + length);
+    this._i += lengthn;
+    return bytes;
   }
 }
 
@@ -203,7 +201,6 @@ function readBindings(makiFile) {
 function decodeCode({ makiFile, classes, variables, methods, bindings }) {
   const length = makiFile.readUInt32LE();
   const commandsBuffer = makiFile.getNextNBytesDEPRECATED(length);
-  makiFile.advanceDEPRECATED(length);
 
   let pos = 0;
   const localFunctions = {};
