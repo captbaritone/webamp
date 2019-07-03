@@ -12,13 +12,8 @@ function interpret(start, { commands, methods, variables, classes }) {
     switch (command.opcode) {
       // push
       case 1: {
-        // What are these? Do they have names?
         const offsetIntoVariables = command.arguments[0];
-        const variable = variables[offsetIntoVariables];
-        // Maybe we should be pushing the actual value on the stack?
-        // Do we ever assign to a variable that we get from the stack?
-        // Or do all variables come in via arguments?
-        stack.push(variable);
+        stack.push(variables[offsetIntoVariables]);
         break;
       }
       // pop
@@ -32,12 +27,13 @@ function interpret(start, { commands, methods, variables, classes }) {
         const { name: methodName, typeOffset: classesOffset } = methods[
           methodOffset
         ];
-        // TODO: Find a better way to get the argCount
         const klass = classes[classesOffset];
+        // This is a bit awkward. Because the variables are stored on the stack
+        // before the object, we have to find the number of arguments without
+        // actually having access to the object instance.
         let argCount = klass.prototype[methodName].length;
 
         const methodArgs = [];
-        // This might be in reverse order
         while (argCount--) {
           methodArgs.push(stack.pop());
         }
@@ -55,8 +51,6 @@ function interpret(start, { commands, methods, variables, classes }) {
       case 48: {
         const a = stack.pop();
         const b = stack.pop();
-        // console.log("MOVE");
-        // console.log(b.typeName, a);
         b.setValue(a);
         stack.push(a);
         break;
