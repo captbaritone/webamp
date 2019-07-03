@@ -1,0 +1,5 @@
+extern class @{61A7ABAD-7D79-41f6-B1D0-E1808603A4F4}@ Object _predecl PlDir;
+
+extern PlDir.showCurrentlyPlayingEntry();
+
+

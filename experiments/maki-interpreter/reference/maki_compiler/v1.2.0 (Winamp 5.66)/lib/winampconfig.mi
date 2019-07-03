@@ -1,0 +1,73 @@
+//----------------------------------------------------------------------------------------------------------------
+// winampconfig.mi
+//
+// your best way to get winamp config states
+//----------------------------------------------------------------------------------------------------------------
+
+#ifndef __WINAMPCONFIG_MI
+#define __WINAMPCONFIG_MI
+
+extern class @{B2AD3F2B-31ED-4e31-BC6D-E9951CD555BB}@ Object _predecl WinampConfig;
+extern class @{FC17844E-C72B-4518-A068-A8F930A5BA80}@ Object WinampConfigGroup;
+
+
+// WinampConfig
+
+extern WinampConfigGroup WinampConfig.getGroup(String config_group_guid);
+
+// WinampConfigGroup
+
+extern Boolean WinampConfigGroup.getBool(String itemname);
+extern WinampConfigGroup.setBool(String itemname, Boolean itemvalue);
+
+extern Int WinampConfigGroup.getInt(String itemname);
+extern WinampConfigGroup.setInt(String itemname);
+
+extern String WinampConfigGroup.getString(String itemname);
+extern WinampConfigGroup.setString(String itemname);
+
+
+/*
+BENSKI:
+basically, make a WinampConfig object, and call getGroup with a guid (see below) and then you can get & set values from the WinampConfigGroup object it returns.
+
+I plan on adding more types to get/set in the WinampConfigGroup object later... these were just the minimum number to get you your two video options.  Once we get this working, I'll add getString, getInt, etc.
+
+The WinampConfig stuff differs from system.setPrivateString (and family).  It sets/gets Winamp configuration items directly.  Some items are read-only.  You can not store your own values, and it does not save the values to studio.xnf (they are saved wherever the underlying configuration value is saved, normally winamp.ini).  There's also no callback if items change.
+
+Some values to get you started
+
+Video config group guid: {2135E318-6919-4bcf-99D2-62BE3FCA8FA6}
+The two config items you requested are named:
+autoopen
+autoclose
+
+Other interesting groups/items (these are read-only for now... If there are any you'd like to have modifiable, let me know)
+
+more items in the video group:
+name: "overlay"
+name: "YV12"
+name: "vsync"
+name: "ddraw"
+name: "gdiplus"
+description: experimental GDI+ video renderer.  Used mainly for video on Vista
+
+Internet Config Group: {C0A565DC-0CFE-405a-A27C-468B0C8A3A5C}
+name: "proxy"
+description: proxy server setting.  Won't be retrievable until I make a "getString" function which I will shortly
+name: "proxy80"
+description: boolean value as to whether the proxy is only required for port 80
+
+Playback Config Group: {B6CB4A7C-A8D0-4c55-8E60-9F7A7A23DA0F}
+name: "bits"
+name: "mono"
+name: "surround"
+name: "dither"
+name: "replaygain"
+name: "replaygain_mode"
+name: "replaygain_source"
+name: "replaygain_preferred_only"
+name: "non_replaygain"
+*/
+
+#endif
