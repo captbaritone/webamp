@@ -35,8 +35,8 @@ class System extends MakiObject {
   getParam() {
     return "Some String";
   }
-  messagebox(message, var2, var3, var4) {
-    alert(message);
+  messageBox(message, msgtitle, flag, notanymoreId) {
+    console.log({ message, msgtitle, flag, notanymoreId });
   }
 }
 
