@@ -35,7 +35,7 @@ function interpret(start, { commands, methods, variables, classes }) {
 
         const methodArgs = [];
         while (argCount--) {
-          methodArgs.push(stack.pop());
+          methodArgs.push(stack.pop().getValue());
         }
         const variable = stack.pop();
         const obj = variable.getValue();
