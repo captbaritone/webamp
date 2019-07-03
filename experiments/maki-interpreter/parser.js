@@ -50,7 +50,7 @@ class MakiFile {
 
   getNextNBytesDEPRECATED(length) {
     const bytes = this._buffer.slice(this._i, this._i + length);
-    this._i += lengthn;
+    this._i += length;
     return bytes;
   }
 }
