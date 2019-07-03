@@ -2,7 +2,7 @@ const parse = require("./parser");
 const { getClass } = require("./objects");
 const interpret = require("./virtualMachine");
 
-function main({ runtime, buffer, system }) {
+function main({ runtime, buffer, system, log }) {
   const program = parse(buffer);
 
   // Set the System global
@@ -11,7 +11,7 @@ function main({ runtime, buffer, system }) {
   // Replace class hashes with actual JavaScript classes from the runtime
   program.classes = program.classes.map(hash => {
     const resolved = runtime[hash];
-    if (resolved == null) {
+    if (resolved == null && log) {
       const klass = getClass(hash);
       console.warn(
         `Class missing from runtime: ${hash} expected ${klass.name}`
@@ -23,7 +23,7 @@ function main({ runtime, buffer, system }) {
   // Bind toplevel handlers.
   program.bindings.forEach(binding => {
     const handler = () => {
-      return interpret(binding.commandOffset, program);
+      return interpret(binding.commandOffset, program, { log });
     };
 
     // For now we only know how to handle System handlers.

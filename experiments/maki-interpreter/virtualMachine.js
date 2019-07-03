@@ -1,7 +1,7 @@
 const { printCommand } = require("./prettyPrinter");
 
-const log = true;
-function interpret(start, { commands, methods, variables, classes }) {
+function interpret(start, program, { log = false }) {
+  const { commands, methods, variables, classes } = program;
   // Run all the commands that are safe to run. Increment this number to find
   // the next bug.
   const stack = [];
