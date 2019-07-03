@@ -11,9 +11,55 @@ const PRIMITIVE_TYPES = {
   6: "STRING"
 };
 
+// Holds a buffer and a pointer. Consumers can consume bytesoff the end of the
+// file. When we want to run in the browser, we can refactor this class to use a
+// typed array: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays
+class MakiFile {
+  constructor(buffer) {
+    this._buffer = buffer;
+    this._i = 0;
+  }
+
+  advanceDEPRECATED(n) {
+    this._i += n;
+  }
+
+  readUInt32LE() {
+    const int = this._buffer.readUInt32LE(this._i);
+    this._i += 4;
+    return int;
+  }
+
+  readUInt16LE() {
+    const int = this._buffer.readUInt16LE(this._i);
+    this._i += 2;
+    return int;
+  }
+
+  readUInt8() {
+    const int = this._buffer.readUInt8(this._i);
+    this._i++;
+    return int;
+  }
+
+  readStringOfLength(length) {
+    const str = this._buffer.toString(ENCODING, this._i, this._i + length);
+    this._i += length;
+    return str;
+  }
+
+  readString() {
+    return this.readStringOfLength(this.readUInt16LE());
+  }
+
+  getNextNBytesDEPRECATED(length) {
+    return this._buffer.slice(this._i, this._i + length);
+  }
+}
+
 class Parser {
   _readMagic() {
-    const magic = this._readStringOfLength(MAGIC.length);
+    const magic = this._makiFile.readStringOfLength(MAGIC.length);
     if (magic !== MAGIC) {
       throw new Error("Magic number does not mach. Is this a maki file?");
     }
@@ -22,17 +68,18 @@ class Parser {
 
   _readVersion() {
     // No idea what we're actually expecting here.
-    this._i += 2;
+    this._makiFile.advanceDEPRECATED(2);
   }
 
   _readClasses() {
-    let count = this._readUInt32LE();
+    let count = this._makiFile.readUInt32LE();
     const classes = [];
     while (count--) {
       let identifier = "";
       let chunks = 4;
       while (chunks--) {
-        identifier += this._readUInt32LE()
+        identifier += this._makiFile
+          .readUInt32LE()
           .toString(16)
           .padStart(8, "0");
       }
@@ -42,15 +89,15 @@ class Parser {
   }
 
   _readMethods() {
-    let count = this._readUInt32LE();
+    let count = this._makiFile.readUInt32LE();
     const methods = [];
     while (count--) {
-      const classCode = this._readUInt16LE();
+      const classCode = this._makiFile.readUInt16LE();
       // Offset into our parsed types
       const typeOffset = classCode & 0xff;
       // This is probably the second half of a uint32
-      const dummy2 = this._readUInt16LE();
-      const name = this._readString();
+      const dummy2 = this._makiFile.readUInt16LE();
+      const name = this._makiFile.readString();
       methods.push({
         dummy2,
         name,
@@ -61,18 +108,18 @@ class Parser {
   }
 
   _readVariables({ classes }) {
-    let count = this._readUInt32LE();
+    let count = this._makiFile.readUInt32LE();
     const variables = [];
     while (count--) {
-      const typeOffset = this._readUInt8();
-      const object = this._readUInt8();
-      const subClass = this._readUInt16LE();
-      const uinit1 = this._readUInt16LE();
-      const uinit2 = this._readUInt16LE();
-      const uinit3 = this._readUInt16LE();
-      const uinit4 = this._readUInt16LE();
-      const global = this._readUInt8();
-      const system = this._readUInt8();
+      const typeOffset = this._makiFile.readUInt8();
+      const object = this._makiFile.readUInt8();
+      const subClass = this._makiFile.readUInt16LE();
+      const uinit1 = this._makiFile.readUInt16LE();
+      const uinit2 = this._makiFile.readUInt16LE();
+      const uinit3 = this._makiFile.readUInt16LE();
+      const uinit4 = this._makiFile.readUInt16LE();
+      const global = this._makiFile.readUInt8();
+      const system = this._makiFile.readUInt8();
       const props = {
         typeOffset,
         object,
@@ -136,23 +183,23 @@ class Parser {
   }
 
   _readConstants({ variables }) {
-    let count = this._readUInt32LE();
+    let count = this._makiFile.readUInt32LE();
     while (count--) {
-      const i = this._readUInt32LE();
+      const i = this._makiFile.readUInt32LE();
       const variable = variables[i];
-      const value = this._readString();
+      const value = this._makiFile.readString();
       // TODO: Don't mutate
       variable.setValue(value);
     }
   }
 
   _readBindings() {
-    let count = this._readUInt32LE();
+    let count = this._makiFile.readUInt32LE();
     const bindings = [];
     while (count--) {
-      const variableOffset = this._readUInt32LE();
-      const methodOffset = this._readUInt32LE();
-      const binaryOffset = this._readUInt32LE();
+      const variableOffset = this._makiFile.readUInt32LE();
+      const methodOffset = this._makiFile.readUInt32LE();
+      const binaryOffset = this._makiFile.readUInt32LE();
       bindings.push({ variableOffset, binaryOffset, methodOffset });
     }
     return bindings;
@@ -185,38 +232,10 @@ class Parser {
     }
   }
 
-  _readUInt32LE() {
-    const int = this._buffer.readUInt32LE(this._i);
-    this._i += 4;
-    return int;
-  }
-
-  _readUInt16LE() {
-    const int = this._buffer.readUInt16LE(this._i);
-    this._i += 2;
-    return int;
-  }
-
-  _readUInt8() {
-    const int = this._buffer.readUInt8(this._i);
-    this._i++;
-    return int;
-  }
-
-  _readStringOfLength(length) {
-    const str = this._buffer.toString(ENCODING, this._i, this._i + length);
-    this._i += length;
-    return str;
-  }
-
-  _readString() {
-    return this._readStringOfLength(this._readUInt16LE());
-  }
-
   _decodeCode({ classes, variables, methods, bindings }) {
-    const length = this._readUInt32LE();
-    const commandsBuffer = this._buffer.slice(this._i, this._i + length);
-    this._i += length;
+    const length = this._makiFile.readUInt32LE();
+    const commandsBuffer = this._makiFile.getNextNBytesDEPRECATED(length);
+    this._makiFile.advanceDEPRECATED(length);
 
     let pos = 0;
     const localFunctions = {};
@@ -245,6 +264,7 @@ class Parser {
     return results;
   }
 
+  // TODO: Refactor this to consume bytes directly off the end of MakiFile
   _parseComand({ commandsBuffer, pos, localFunctions }) {
     const command = {};
     const opcode = commandsBuffer.readInt8(pos);
@@ -323,12 +343,11 @@ class Parser {
   }
 
   parse(buffer) {
-    this._buffer = buffer;
-    this._i = 0;
+    this._makiFile = new MakiFile(buffer);
 
     const magic = this._readMagic();
     this._readVersion();
-    this._readUInt32LE(); // Not sure what we are skipping over here. Just some UInt 32.
+    this._makiFile.readUInt32LE(); // Not sure what we are skipping over here. Just some UInt 32.
     const classes = this._readClasses();
     const methods = this._readMethods();
     const variables = this._readVariables({ classes });
