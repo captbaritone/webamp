@@ -1,0 +1,392 @@
+//----------------------------------------------------------------------------------------------------------------
+// std.mi
+//
+// standard definitions for internal objects
+//----------------------------------------------------------------------------------------------------------------
+
+// GUIDS
+
+extern class @{51654971-0D87-4a51-91E3-A6B53235F3E7}@ @{00000000-0000-0000-0000-000000000000}@ Object;
+extern class @{D6F50F64-93FA-49b7-93F1-BA66EFAE3E98}@ Object SystemObject;
+extern class @{E90DC47B-840D-4ae7-B02C-040BD275F7FC}@ Object Container;
+extern class @{00C074A0-FEA2-49a0-BE8D-FABBDB161640}@ Object Wac;
+extern class @{B2023AB5-434D-4ba1-BEAE-59637503F3C6}@ Object &List;
+extern class @{38603665-461B-42a7-AA75-D83F6667BF73}@ Object &Map;
+extern class @{F4787AF4-B2BB-4ef7-9CFB-E74BA9BEA88D}@ Object &PopupMenu;
+extern class @{3A370C02-3CBF-439f-84F1-86885BCF1E36}@ Object &Region;
+extern class @{5D0C5BB6-7DE1-4b1f-A70F-8D1659941941}@ Object &Timer;
+extern class @{4EE3E199-C636-4bec-97CD-78BC9C8628B0}@ Object &GuiObject;
+extern class @{45BE95E5-2072-4191-935C-BB5FF9F117FD}@ GuiObject &Group;
+extern class @{60906D4E-537E-482e-B004-CC9461885672}@ Group &Layout;
+extern class @{403ABCC0-6F22-4bd6-8BA4-10C829932547}@ GuiObject &Component;
+extern class @{97AA3E4D-F4D0-4fa8-817B-0AF22A454983}@ GuiObject &ComponentBucket;
+extern class @{64E4BBFA-81F4-49d9-B0C0-A85B2EC3BCFD}@ GuiObject &Edit;
+extern class @{62B65E3F-375E-408d-8DEA-76814AB91B77}@ GuiObject &Slider;
+extern class @{CE4F97BE-77B0-4e19-9956-D49833C96C27}@ GuiObject &Vis;
+extern class @{A8C2200D-51EB-4b2a-BA7F-5D4BC65D4C71}@ GuiObject &Browser;
+extern class @{8D1EBA38-489E-483e-B960-8D1F43C5C405}@ GuiObject &EqVis;
+extern class @{0F08C940-AF39-4b23-80F3-B8C48F7EBB59}@ GuiObject &Status;
+extern class @{EFAA8672-310E-41fa-B7DC-85A9525BCB4B}@ GuiObject &Text;
+extern class @{7DFD3244-3751-4e7c-BF40-82AE5F3ADC33}@ GuiObject &Title;
+extern class @{5AB9FA15-9A7D-4557-ABC8-6557A6C67CA9}@ GuiObject &Layer;
+extern class @{698EDDCD-8F1E-4fec-9B12-F944F909FF45}@ GuiObject &Button;
+extern class @{6B64CD27-5A26-4c4b-8C59-E6A70CF6493A}@ Layer &AnimatedLayer;
+extern class @{B4DCCFFF-81FE-4bcc-961B-720FD5BE0FFF}@ Button &ToggleButton;
+
+// class tree member functions & events
+
+  // Object
+
+extern String Object.getClassName();
+extern String Object.getId();
+extern Int Object.onNotify(String, int, int);
+
+  // System
+
+extern SystemObject.onScriptLoaded();
+extern SystemObject.onScriptUnloading();
+extern SystemObject.onQuit();
+extern SystemObject.onKeyDown(String);
+extern SystemObject.onCreateLayout(Layout);
+extern SystemObject.onShowLayout(Layout);
+extern SystemObject.onHideLayout(Layout);
+extern SystemObject.onStop();
+extern SystemObject.onPlay();
+extern SystemObject.onPause();
+extern SystemObject.onResume();
+extern SystemObject.onTitleChange(String);
+extern SystemObject.onEqBandChanged(int, int);
+extern SystemObject.onEqPreampChanged(int);
+extern SystemObject.onEqChanged(int);
+extern SystemObject.onVolumeChanged(int);
+extern SystemObject.onSeek(int);
+extern Container SystemObject.getContainer(String);
+extern Container SystemObject.newDynamicContainer(String);
+extern Int SystemObject.getNumContainers();
+extern Container SystemObject.enumContainer(Int);
+extern Wac SystemObject.getWac(String);
+extern Int SystemObject.messageBox(String, String, Int, String);
+extern String SystemObject.getPlayItemString();
+extern Int SystemObject.getPlayItemLength();
+extern String SystemObject.getPlayItemMetaDataString(String);
+extern SystemObject.playFile(String);
+extern Int SystemObject.getLeftVuMeter();
+extern Int SystemObject.getRightVuMeter();
+extern Int SystemObject.getVolume();
+extern SystemObject.setVolume(Int);
+extern SystemObject.play();
+extern SystemObject.stop();
+extern SystemObject.pause();
+extern SystemObject.next();
+extern SystemObject.previous();
+extern SystemObject.eject();
+extern SystemObject.seekTo(Int);
+extern Int SystemObject.getPosition();
+extern SystemObject.setEqBand(int, Int);
+extern SystemObject.setEqPreamp(Int);
+extern SystemObject.setEq(Int);
+extern Int SystemObject.getEqBand(int);
+extern int SystemObject.getEqPreamp();
+extern int SystemObject.getEq();
+extern int SystemObject.getMousePosX();
+extern int SystemObject.getMousePosY();
+extern String SystemObject.integerToString(Int);
+extern Int SystemObject.StringToInteger(String);
+extern String SystemObject.floatToString(float, int);
+extern Float SystemObject.stringToFloat(String);
+extern String SystemObject.integerToTime(Int);
+extern String SystemObject.strmid(String, Int, Int);
+extern String SystemObject.Strleft(string, int);
+extern string SystemObject.strright(string, int);
+extern int SystemObject.strsearch(string, string);
+extern int SystemObject.strlen(string);
+extern string SystemObject.strupper(string);
+extern string SystemObject.strlower(string);
+extern string SystemObject.urlEncode(string);
+extern string SystemObject.removePath(string);
+extern string SystemObject.getToken(string, string, int);
+extern double SystemObject.sin(double);
+extern double SystemObject.cos(double);
+extern double SystemObject.tan(double);
+extern double SystemObject.asin(double);
+extern double SystemObject.acos(double);
+extern double SystemObject.atan(double);
+extern double SystemObject.pow(double);
+extern double SystemObject.sqr(double);
+extern double SystemObject.sqrt(double);
+extern int SystemObject.random(int);
+extern SystemObject.setPrivateString(string, string, string);
+extern SystemObject.setPrivateInt(string, string, int);
+extern String SystemObject.getPrivateString(String, String, String);
+extern Int SystemObject.getPrivateInt(String, String, Int);
+extern SystemObject.setPublicString(String, String);
+extern SystemObject.setPublicInt(String, Int);
+extern String SystemObject.getPublicString(String, String);
+extern Int SystemObject.getPublicInt(String, Int);
+extern String SystemObject.getParam();
+extern Int SystemObject.getViewportWidth();
+extern Int SystemObject.getViewportHeight();
+extern SystemObject.debugString(String, Int);
+extern SystemObject.ddeSend(String, String, Int);
+
+  // Container
+
+extern Container.onSwitchToLayout(Layout);
+extern Container.onHideLayout(Layout);
+extern Container.onShowLayout(Layout);
+extern Layout Container.getLayout(String);
+extern Int Container.getNumLayouts();
+extern Layout Container.enumLayout(Int);
+extern Container.switchToLayout(Layout);
+extern Container.show();
+extern Container.hide();
+extern Container.toggle();
+
+  // Wac
+
+extern String Wac.getGuid();
+extern String Wac.getName();
+extern Int Wac.sendCommand(String, Int, Int, String);
+extern Wac.show();
+extern Wac.hide();
+extern Boolean Wac.isVisible();
+extern Wac.onNotify(String, Int, Int);
+extern Wac.onShow();
+extern Wac.onHide();
+extern Wac.setStatusBar(Boolean);
+extern Boolean Wac.getStatusBar();
+
+
+  // GuiObject
+
+extern GuiObject.show();
+extern GuiObject.hide();
+extern int GuiObject.isVisible();
+extern GuiObject.onSetVisible(Boolean);
+extern GuiObject.setAlpha(int);
+extern int GuiObject.getAlpha();
+extern GuiObject.onLeftButtonUp(int, int);
+extern GuiObject.onLeftButtonDown(int, int);
+extern GuiObject.onRightButtonUp(int, int);
+extern GuiObject.onRightButtonDown(int, int);
+extern GuiObject.onRightButtonDblClk(int, int);
+extern GuiObject.onLeftButtonDblClk(int, int);
+extern GuiObject.onMouseMove(int, int);
+extern GuiObject.onEnterArea();
+extern GuiObject.onLeaveArea();
+extern GuiObject.setEnabled(boolean);
+extern boolean GuiObject.getEnabled();
+extern GuiObject.onEnable(boolean);
+extern GuiObject.resize(int, int, int, int);
+extern GuiObject.onResize(int, int, int, int);
+extern boolean GuiObject.isMouseOver(int, int);
+extern int GuiObject.getLeft();
+extern int GuiObject.getTop();
+extern int GuiObject.getWidth();
+extern int GuiObject.getHeight();
+extern GuiObject.setTargetX(int);
+extern GuiObject.setTargetY(int);
+extern GuiObject.setTargetW(int);
+extern GuiObject.setTargetH(int);
+extern GuiObject.setTargetA(int);
+extern GuiObject.setTargetSpeed(float);
+extern GuiObject.gotoTarget();
+extern GuiObject.onTargetReached();
+extern boolean GuiObject.isGoingToTarget();
+extern GuiObject.setXmlParam(String, String);
+extern GuiObject.init(Layout);
+extern GuiObject.bringToFront();
+extern GuiObject.bringToBack();
+extern GuiObject.bringAbove(GuiObject);
+extern GuiObject.bringBelow(GuiObject);
+  // Group
+
+extern GuiObject Group.getObject(String);
+extern Int Group.getNumObjects();
+extern GuiObject Group.enumObject(Int);
+extern Group.onCreateObject(GuiObject);
+extern Int Group.getMousePosX();
+extern Int Group.getMousePosY();
+
+
+  // Layout
+
+extern Layout.onDock();
+extern Layout.onUndock();
+extern Layout.onScale(Double);
+extern Double Layout.getScale();
+extern Layout.setScale(Double);
+
+
+  // List
+
+extern List.addItem(Any);
+extern List.removeItem(int);
+extern Any List.enumItem(int);
+extern Int List.findItem(Any);
+extern int List.getNumItems();
+extern List.removeAll();
+
+  // Map
+
+extern Int Map.getValue(int, int);
+extern Boolean Map.inRegion(int, int);
+extern Map.loadMap(String);
+extern Int Map.getWidth();
+extern Int Map.getHeight();
+extern Region Map.getRegion();
+
+  // PopupMenu
+
+extern PopupMenu.addSubMenu(PopupMenu, String);
+extern PopupMenu.addCommand(String, Int, Boolean, Boolean);
+extern PopupMenu.addSeparator();
+extern Int PopupMenu.popAtXY(int, int);
+extern Int PopupMenu.popAtMouse();
+extern Int PopupMenu.getNumCommands();
+extern PopupMenu.checkCommand(int, boolean);
+extern PopupMenu.disableCommand(int, boolean);
+
+  // Region
+
+extern Region.add(Region);
+extern Region.sub(Region);
+extern Region.offset(int, int);
+extern Region.stretch(double);
+extern Region.copy(Region);
+extern Region.loadFromMap(Map, Int, Boolean);
+extern Region.loadFromBitmap(String);
+extern Int Region.getBoundingBoX();
+extern Int Region.getBoundingBoY();
+extern Int Region.getBoundingBoW();
+extern Int Region.getBoundingBoH();
+
+  // Timer
+
+extern Timer.onTimer();
+extern Timer.setDelay(int);
+extern Int Timer.getDelay();
+extern Timer.start();
+extern Timer.stop();
+
+  // Component
+
+extern Component.onGetWac(Wac);
+extern String Component.getGuid();
+extern Wac Component.getWac();
+extern Component.setRegionFromMap(Map, Int, Boolean);
+extern Component.setRegion(Region);
+
+  // Edit
+
+extern Edit.onEnter();
+extern Edit.onAbort();
+extern Edit.onIdleEditUpdate();
+extern Edit.onEditUpdate();
+extern Edit.setText(String);
+extern String Edit.getText();
+
+  // Slider
+
+extern Slider.onSetPosition(int);
+extern Slider.onPostedPosition(int);
+extern Slider.onSetFinalPosition(int);
+extern Slider.setPosition(int);
+extern Int Slider.getPosition();
+
+  // Vis
+
+extern Vis.onFrame();
+extern Vis.setRealtime(Boolean);
+extern Boolean Vis.getRealtime();
+
+  // Browser
+
+extern Browser.gotoUrl(String);
+extern Browser.back();
+extern Browser.forward();
+
+  // Text
+
+extern Text.setText(String);
+
+  // Layer
+
+extern Layer.onBeginResize(int, int, int, int);
+extern Layer.onEndResize(int, int, int, int);
+extern Layer.fx_onInit();
+extern Layer.fx_onFrame();
+extern Double Layer.fx_onGetPixelR(double, double, double, double);
+extern Double Layer.fx_onGetPixelD(double, double, double, double);
+extern Double Layer.fx_onGetPixelX(double, double, double, double);
+extern Double Layer.fx_onGetPixelY(double, double, double, double);
+extern Double Layer.fx_onGetPixelA(double, double, double, double);
+extern Layer.setRegionFromMap(Map, int, boolean);
+extern Layer.setRegion(Region);
+extern Layer.fx_setEnabled(boolean);
+extern Boolean Layer.fx_getEnabled();
+extern Layer.fx_setWrap(Boolean);
+extern Boolean Layer.fx_getWrap();
+extern Layer.fx_setRect(Boolean);
+extern Boolean Layer.fx_getRect();
+extern Layer.fx_setBgFx(Boolean);
+extern Boolean Layer.fx_getBgFx();
+extern Layer.fx_setClear(Boolean);
+extern Boolean Layer.fx_getClear();
+extern Layer.fx_setSpeed(Int);
+extern Int Layer.fx_getSpeed();
+extern Layer.fx_setRealtime(Boolean);
+extern Boolean Layer.fx_getRealtime();
+extern Layer.fx_setLocalized(Boolean);
+extern Boolean Layer.fx_getLocalized();
+extern Layer.fx_setBilinear(Boolean);
+extern Boolean Layer.fx_getBilinear();
+extern Layer.fx_setAlphaMode(Boolean);
+extern Boolean Layer.fx_getAlphaMode();
+extern Layer.fx_setGridSize(Int, Int);
+extern Layer.fx_update();
+extern Layer.fx_restart();
+
+  // Button
+
+extern Button.onActivate();
+extern Button.onLeftClick();
+extern Button.onRightClick();
+extern Button.setActivated(Boolean);
+extern Boolean Button.getActivated();
+extern Button.leftClick();
+extern Button.rightClick();
+
+  // AnimatedLayer
+
+extern AnimatedLayer.onPlay();
+extern AnimatedLayer.onPause();
+extern AnimatedLayer.onResume();
+extern AnimatedLayer.onStop();
+extern AnimatedLayer.onFrame(Int);
+extern AnimatedLayer.setSpeed(Int);
+extern AnimatedLayer.gotoFrame(int);
+extern AnimatedLayer.setStartFrame(Int);
+extern AnimatedLayer.setEndFrame(int);
+extern AnimatedLayer.setAutoReplay(Boolean);
+extern AnimatedLayer.play();
+extern AnimatedLayer.stop();
+extern AnimatedLayer.pause();
+extern Boolean AnimatedLayer.isPlaying();
+extern Boolean AnimatedLayer.isPaused();
+extern Boolean AnimatedLayer.isStopped();
+extern Int AnimatedLayer.getStartFrame();
+extern Int AnimatedLayer.getEndFrame();
+extern Int AnimatedLayer.getLength();
+extern Int AnimatedLayer.getDirection();
+extern Boolean AnimatedLayer.getAutoReplay();
+extern Int AnimatedLayer.getCurFrame();
+extern AnimatedLayer.setRealtime(Boolean);
+
+  // ToggleButton
+
+extern ToggleButton.onToggle(Boolean);
+
+
+.CODE
+

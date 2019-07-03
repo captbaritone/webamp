@@ -1,0 +1,2472 @@
+//----------------------------------------------------------------------------------------------------------------
+// std.mi
+//
+// standard definitions for internal objects
+//----------------------------------------------------------------------------------------------------------------
+
+#ifndef __STD_MI
+#define __STD_MI
+
+#ifndef true
+#define true 1
+#endif
+#ifndef false
+#define false 0
+#endif
+
+#define MC_TARGET "Winamp 5.02 (skin version 1.1)"
+
+// GUIDS
+extern class @{51654971-0D87-4a51-91E3-A6B53235F3E7}@ @{00000000-0000-0000-0000-000000000000}@ Object;
+extern class @{D6F50F64-93FA-49b7-93F1-BA66EFAE3E98}@ Object _predecl System;
+extern class @{E90DC47B-840D-4ae7-B02C-040BD275F7FC}@ Object Container;
+extern class @{00C074A0-FEA2-49a0-BE8D-FABBDB161640}@ Object Wac;
+extern class @{B2023AB5-434D-4ba1-BEAE-59637503F3C6}@ Object &List;
+extern class @{38603665-461B-42a7-AA75-D83F6667BF73}@ Object &Map;
+extern class @{F4787AF4-B2BB-4ef7-9CFB-E74BA9BEA88D}@ Object &PopupMenu;
+extern class @{3A370C02-3CBF-439f-84F1-86885BCF1E36}@ Object &Region;
+extern class @{5D0C5BB6-7DE1-4b1f-A70F-8D1659941941}@ Object &Timer;
+extern class @{A5376FA1-4E94-411a-83F6-05EC5EEA5F0A}@ Object &FeedWatcher;
+extern class @{4EE3E199-C636-4bec-97CD-78BC9C8628B0}@ Object &GuiObject;
+extern class @{45BE95E5-2072-4191-935C-BB5FF9F117FD}@ GuiObject &Group;
+extern class @{60906D4E-537E-482e-B004-CC9461885672}@ Group &Layout;
+extern class @{403ABCC0-6F22-4bd6-8BA4-10C829932547}@ GuiObject &Component;
+extern class @{97AA3E4D-F4D0-4fa8-817B-0AF22A454983}@ GuiObject &ComponentBucket;
+extern class @{64E4BBFA-81F4-49d9-B0C0-A85B2EC3BCFD}@ GuiObject &Edit;
+extern class @{62B65E3F-375E-408d-8DEA-76814AB91B77}@ GuiObject &Slider;
+extern class @{CE4F97BE-77B0-4e19-9956-D49833C96C27}@ GuiObject &Vis;
+extern class @{A8C2200D-51EB-4b2a-BA7F-5D4BC65D4C71}@ GuiObject &Browser;
+extern class @{8D1EBA38-489E-483e-B960-8D1F43C5C405}@ GuiObject &EqVis;
+extern class @{0F08C940-AF39-4b23-80F3-B8C48F7EBB59}@ GuiObject &Status;
+extern class @{EFAA8672-310E-41fa-B7DC-85A9525BCB4B}@ GuiObject &Text;
+extern class @{7DFD3244-3751-4e7c-BF40-82AE5F3ADC33}@ GuiObject &Title;
+extern class @{5AB9FA15-9A7D-4557-ABC8-6557A6C67CA9}@ GuiObject &Layer;
+extern class @{698EDDCD-8F1E-4fec-9B12-F944F909FF45}@ GuiObject &Button;
+extern class @{6B64CD27-5A26-4c4b-8C59-E6A70CF6493A}@ Layer &AnimatedLayer;
+extern class @{B4DCCFFF-81FE-4bcc-961B-720FD5BE0FFF}@ Button &ToggleButton;
+extern class @{01E28CE1-B059-11d5-979F-E4DE6F51760A}@ GuiObject &GroupList;
+extern class @{80F0F8BD-1BA5-42a6-A093-3236A00C8D4A}@ Group &CfgGroup;
+extern class @{CDCB785D-81F2-4253-8F05-61B872283CFA}@ GuiObject &QueryList;
+extern class @{9B2E341B-6C98-40fa-8B85-0C1B6EE89405}@ GuiObject &MouseRedir;
+extern class @{36D59B71-03FD-4af8-9795-0502B7DB267A}@ GuiObject &DropDownList;
+extern class @{7FD5F210-ACC4-48df-A6A0-5451576CDC76}@ GuiObject &LayoutStatus;
+extern class @{B5BAA535-05B3-4dcb-ADC1-E618D28F6896}@ GuiObject &TabSheet;
+extern class @{6129FEC1-DAB7-4d51-9165-01CA0C1B70DB}@ GuiObject &GuiList;
+extern class @{D59514F7-ED36-45e8-980F-3F4EA0522CD9}@ GuiObject &GuiTree;
+extern class @{9B3B4B82-667A-420e-8FFC-794115809C02}@ Object &TreeItem;
+extern class @{1D8631C8-80D0-4792-9F98-BD5D36B49136}@ GuiObject &MenuButton;
+extern class @{C7ED3199-5319-4798-9863-60B15A298CAA}@ GuiObject &CheckBox;
+extern class @{2D2D1376-BE0A-4CB9-BC0C-57E6E4C999F5}@ GuiObject &Form;
+
+#define WindowHolder Component
+
+// class tree member functions & events
+
+//*****************************************************************************
+// Object CLASS
+//*****************************************************************************
+/**
+ Object Class.
+
+ @short    This is the base class from which all other classes inherit.
+ @author   Nullsoft Inc.
+ @ver  1.0
+*/
+
+/**
+ getClassName()
+
+ Returns the class name for the object.
+
+ @ret The class name.
+*/
+extern String Object.getClassName();
+
+/**
+ getId()
+
+*/
+extern String Object.getId();
+
+/**
+ onNotify()
+
+ @ret
+ @param  command
+ @param  param
+ @param  a
+ @param  b
+*/
+extern Int Object.onNotify(String command, String param, int a, int b);
+
+//*****************************************************************************
+// System CLASS
+//*****************************************************************************
+/**
+ System Class.
+
+ @short    The system class are basic system functions accessible to all.
+ @author   Nullsoft Inc.
+ @ver  1.0
+*/
+
+/**
+ onScriptLoaded()
+
+ Hookable. Event happens when script has just finished being loaded.
+ No params.
+*/
+extern System.onScriptLoaded();
+
+/**
+ onScriptUnloading()
+
+ Hookable. Event happens when script is going to be unloaded.
+ No params.
+*/
+extern System.onScriptUnloading();
+
+/**
+ onQuit()
+
+ Hookable. Event happens when the user quits the application.
+ No params.
+*/
+extern System.onQuit();
+
+/**
+ onSetXuiParam(String param, String value)
+
+ Hookable. Event happens when the script is in a group implementing
+ an xuiobject and a parameter has not been recognized by the group or
+ the embedded object.
+
+ No params.
+*/
+extern System.onSetXuiParam(String param, String value);
+
+/**
+ onKeyDown()
+
+ Hookable. Event happens when the user presses a key on the keyboard.
+
+ @param  key   The key that was pressed.
+*/
+extern System.onKeyDown(String key);
+
+/**
+ onAccelerator()
+
+ Hookable. Event happens when the user presses an accelerator key.
+
+ @param  action   The action to perform (from locales)
+ @param  section  The locales section for the accelerator.
+ @param  key      The key, ie: "tab", "ctrl+a".
+*/
+extern System.onAccelerator(String action, String section, String key);
+
+/**
+ onCreateLayout()
+
+ Hookable. Event happens when a layout is created.
+
+ @param  _layout   The layout that was just created.
+*/
+extern System.onCreateLayout(Layout _layout);
+
+/**
+ onShowLayout()
+
+ Hookable. Event happens when a layout is about to be shown.
+ This even only happens if the layout was previously hidden.
+
+ @param  _layout   The layout that's about to be shown.
+*/
+extern System.onShowLayout(Layout _layout);
+
+/**
+ onHideLayout()
+
+ Hookable.
+
+ @param  _layout   The layout that's about to be hidden.
+*/
+extern System.onHideLayout(Layout _layout);
+
+/**
+ onStop()
+
+ Hookable. Event happens when Winamp3 stops playing a file.
+ No params.
+*/
+extern System.onStop();
+
+/**
+ onPlay()
+
+ Hookable. Event happens when Winamp3 starts playing a file.
+ No params.
+*/
+extern System.onPlay();
+
+/**
+ onPause()
+
+ Hookable. Event happens when Winamp3 pauses playback.
+ No params.
+*/
+extern System.onPause();
+
+/**
+ onResume()
+
+ Hookable. Event happens when Winamp3 resumes playback.
+ Event only happens when the song was previously set in a paused state.
+ No params.
+*/
+extern System.onResume();
+
+/**
+ onTitleChange()
+
+ Hookable. Event happens when the song title changes.
+*/
+extern System.onTitleChange(String newtitle);
+
+extern System.onTitle2Change(String newtitle2);
+extern System.onInfoChange(String info);
+extern System.onStatusMsg(String msg);
+
+/**
+ onEqBandChanged()
+
+ Hookable. Event happens when an equalizer band changes values.
+ The bands are numbered from 0 to 9 (0 being 60Hz and 9 being 16kHz)
+ and their values range from -127 to +127.
+
+ @param  band      The frequency band that has changed.
+ @param  newvalue  The new value of the frequency band.
+*/
+extern System.onEqBandChanged(int band, int newvalue);
+
+/**
+ onEqPreampChanged()
+
+ Hookable. Event happens when the equalizer pre-amp has changed
+ values. Range of the value is from -127 to +127.
+
+ @param  newvalue  The new pre-amp value.
+*/
+extern System.onEqPreampChanged(int newvalue);
+
+/**
+ onEqChanged()
+
+ Hookable. Event happens when the EQ is switched on or off.
+ 0 means the EQ was turned off. 1 means it was turned on.
+ You might want to use true and false to verify this, it's a bit
+ more elegant. :)
+
+ @param  newstatus   The new status of the EQ.
+*/
+extern System.onEqChanged(int newstatus);
+
+/**
+ onVolumeChanged()
+
+ Hookable. Event happens when the volume was changed.
+ The range of the volume is from 0 to 255.
+
+ @param  newvol    The new volume value.
+*/
+extern System.onVolumeChanged(int newvol);
+
+/**
+ onSeek()
+
+ Hookable. Event happens when the user seeks
+ to a position in the track.
+
+ @param  newpos    The seekers new position.
+*/
+extern System.onSeek(int newpos);
+
+/**
+ getContainer()
+
+ @ret                 The requested container.
+ @param  container_id    The containers identifier string.
+*/
+extern Container System.getContainer(String container_id);
+
+/**
+ newDynamicContainer()
+
+ @ret                 The new container.
+ @param  container_id    The identifier for the container you want to create.
+*/
+extern Container System.newDynamicContainer(String container_id);
+
+/**
+ newGroup()
+
+ @ret             The new group.
+ @param  group_id    The identifier for the group you want to create.
+*/
+extern Group System.newGroup(String group_id);
+
+extern Layout System.newGroupAsLayout(String group_id);
+
+/**
+ getNumContainers()
+
+ Get the number of containers currently created.
+
+ @ret The number of containers.
+*/
+extern Int System.getNumContainers();
+
+/**
+ enumContainer()
+
+ Returns the name of the container associated with it's number.
+ Use getNumContainers() to fetch the number of containers present.
+ The containers are numbered from 0 to the value returned by getNumContainers().
+
+ @ret       The name of the specified container.
+ @param  num   The container's number for which you want to know the name.
+*/  
+extern Container System.enumContainer(Int num);
+
+/**
+ getWac()
+
+ Gets the reference to the wac identified by the guid sent.
+
+ @ret The requested WAC.
+ @param  wac_guid  The WAC's GUID.
+*/
+extern Wac System.getWac(String wac_guid);
+
+/**
+ messageBox()
+
+ Creates a message box.
+ The flag paramater lets you set the style of the message box.
+ Just use the OR bitwise operator to set the style you want.
+ Here's a list of the flags you can use:
+
+ MSGBOX_OK         Adds an OK button.      (1)
+ MSGBOX_CANCEL     Adds a CANCEL button.   (2)
+ MSGBOX_YES        Adds a YES button.      (4)
+ MSGBOX_NO         Adds a NO button.       (8)
+ MSGBOX_ALL        Adds ALL buttons.       (16)
+ MSGBOX_NEXT       Adds a NEXT button.     (32)
+ MSGBOX_PREVIOUS   Adds a PREVIOUS button. (64)
+
+ Note that the notanymore_id parameter stores the users answer in the 
+ configuration file with the entry name specified by it's value.
+
+ @ret   The value of the button that was pressed (example: if OK is pressed, 1 is returned).
+ @param    message         The message you want to display.
+ @param    msgtitle        The title of the message box.
+ @param    flag            The message box style you want.
+ @param    notanymore_id   Configuration item name in which to store the users answer.
+*/
+extern Int System.messageBox(String message, String msgtitle, Int flag, String notanymore_id);
+
+/**
+ getPlayItemString()
+
+ @ret The name of what is playing.
+*/
+extern String System.getPlayItemString();
+
+/**
+ getPlayItemLength()
+
+ Get the length of the track currently playing, in milliseconds.
+ 
+ @ret Length of the track, in seconds.
+*/
+extern Int System.getPlayItemLength();
+
+/**
+ getPlayItemMetaDataString()
+
+ Get metadata for the track currently playing. The metadata field names that
+ are available are the following:
+
+ **ADD LIST**
+
+ @ret                 The requested metadata.
+ @param  metadataname    The name of the metadata field you want to read.
+*/
+extern String System.getPlayItemMetaDataString(String metadataname);
+extern String System.getPlayItemDisplayTitle();
+
+/**
+ getExtFamily()
+
+  Gets registered family for given extension (i.e. mp3 -> "Audio")
+
+  @ret The registered family for given extension.
+  @param ext The extension in question.
+*/
+extern String System.getExtFamily(String ext);
+
+/**
+ playFile()
+
+ Play the requested file. Path and filename are required
+ with proper extension (example: playFile("c:\music\mp3\file.mp3"); ).
+ It also works with URL's (example: playFile("http://myshoutcast.com:8000"); ).
+
+ @param  playitem  The path and filename to play.
+*/
+extern System.playFile(String playitem);
+
+/**
+ getLeftVuMeter()
+
+ Get the value of the left vu meter.
+ Range is from 0 to 255. Linear.
+
+ @ret The value of the left vu meter.
+*/
+extern Int System.getLeftVuMeter();
+
+/**
+ getRightVuMeter()
+
+ Get the value of the right vu meter.
+ Range is from 0 to 255. Linear.
+
+ @ret The value of the left vu meter.
+*/
+extern Int System.getRightVuMeter();
+
+/**
+ getVolume()
+
+ Get the current volume. Range is from 0 to 255.
+
+ @ret The current volume.
+*/
+extern Int System.getVolume();
+
+/**
+ setVolume()
+
+ Set the volume to the desired value.
+ Range is from 0 to 255.
+
+ @param vol  The desired volume value.
+*/
+extern System.setVolume(Int vol);
+
+/**
+ play()
+
+ Trigger the play event.
+*/
+extern System.play();
+
+/**
+ stop()
+
+ Trigger the stop event.
+*/
+extern System.stop();
+
+/**
+ pause()
+
+ Trigger the pause event.
+*/
+extern System.pause();
+
+/**
+ next()
+
+ Trigger the next event.
+*/
+extern System.next();
+
+/**
+ previous()
+
+ Trigger the previous event.
+*/
+extern System.previous();
+
+/**
+ eject()
+
+ Trigger the eject event.
+*/
+extern System.eject();
+
+/**
+ seekTo()
+
+ Seek to the desired position in the track. Range is from
+ 0 to SONG LENGTH (in milliseconds).
+*/
+extern System.seekTo(Int pos);
+
+/**
+ getPosition()
+
+ Get the current position in the track currently playing,
+ in milliseconds.
+
+ @ret The current position in the track.
+*/
+extern Int System.getPosition();
+
+/**
+ setEqBand()
+
+ Sets the requested equalizer band to the specified value.
+ The bands are numbered from 0 (60Hz) to 9 (16kHz) and
+ each range from -127 to +127.
+
+ @param  band  The EQ band to set.
+ @param  value The desired value for the specified band.
+*/
+extern System.setEqBand(int band, Int value);
+
+/**
+ setEqPreamp()
+
+ Set the equalizer pre-amp to the desired value.
+ Range is from -127 to +127 (0 means no preamp).
+
+ @param  value The desired value for the pre-amp.
+*/
+extern System.setEqPreamp(Int value);
+
+/**
+ Set the equalizer to the desired state. On or off.
+ 0 is off, 1 is on.
+
+ @param  onoff The desired state for the eq.
+*/
+extern System.setEq(Int onoff);
+
+/**
+ getEqBand()
+
+ Get the value of an equalizer band. The bands
+ are numbered from 0 (60Hz) to 9 (16kHz). The return
+ value range is from -127 to +127.
+
+ @ret       The value of the band.
+ @param  band  The eq band number you want to get.
+*/
+extern Int System.getEqBand(int band);
+
+/**
+ getEqPreamp()
+
+ Get the equalizer preamp value. The value range is
+ from -127 to +127 (0 means no preamp).
+
+ @ret The preamp's current value.
+*/
+extern int System.getEqPreamp();
+
+/**
+ getEq()
+
+ Get the equalizer state. 0 for off, 1 for on.
+ Remember to compare return value to true and false.
+
+ @ret The EQ's state.
+*/
+extern int System.getEq();
+
+/**
+ getMousePosX()
+
+ This returns the X position of the mouse in the screen,
+ using the screen coordinate system.
+
+ @ret The mouse's current X pos.
+*/
+extern int System.getMousePosX();
+
+/**
+ getMousePosY()
+
+ This returns the Y position of the mouse in the screen,
+ using the screen coordinate system.
+
+ @ret The mouse's current Y pos.
+*/
+extern int System.getMousePosY();
+
+/**
+ integerToString()
+
+ Get the string representation of an integer.
+
+ @ret         The string equivalent of the integer.
+ @param  value   The integer to change into a string.
+*/
+extern String System.integerToString(Int value);
+
+/**
+ StringToInteger()
+
+ Get the integer representation of a string.
+
+ @ret     The integer equivalent of the string.
+ @param  str The string to change into an integer.
+*/
+extern Int System.StringToInteger(String str);
+
+/**
+ floatToString()
+
+ Get the string representation of a floating point number.
+
+ @ret         The string representation of the float number.
+ @param  value   The float to convert.
+ @param  ndigits Number of digits after the decimal point you want.
+*/
+extern String System.floatToString(float value, int ndigits);
+
+/**
+ stringToFloat()
+
+ Get the floating point representation of a string.
+
+ @ret     The float representation of the string.
+ @param  str The string to convert.
+*/
+extern Float System.stringToFloat(String str);
+
+/**
+ integerToLongTime()
+
+ Convert a time in seconds to a HH:MM:SS value.
+
+ @ret       The string representation of the time (HH:MM:SS).
+ @param  value Timestamp to use.
+*/
+extern String System.integerToLongTime(Int value);
+
+/**
+ integerToTime()
+
+ Convert a time in seconds to a MM:SS value.
+
+ @ret       The string representation of the time (MM:SS).
+ @param  value Timestamp to use.
+*/
+extern String System.integerToTime(Int value);
+
+extern String System.dateToTime(Int datetime); // prints the time from a date with the same format as integerToTime
+extern String System.dateToLongTime(Int datetime); // prints the time from a date with the same format as integerToLongTime
+extern String System.formatDate(Int datetime); // formats the date according to the locales - short date format
+extern String System.formatLongDate(Int datetime); // formats the date according to the locales - long date format
+extern Int System.getDateYear(Int datetime); // returns the datetime's year since 1900
+extern Int System.getDateMonth(Int datetime); // returns the datetime's month (0-11)
+extern Int System.getDateDay(Int datetime); // returns the datetime's day of the month (1-31)
+extern Int System.getDateDow(Int datetime); // returns the datetime's day of the week (0-6)
+extern Int System.getDateDoy(Int datetime); // returns the datetime's day of the year (0-365)
+extern Int System.getDateHour(Int datetime); // returns the datetime's hour (0-23)
+extern Int System.getDateMin(Int datetime); // returns the datetime's minutes (0-59)
+extern Int System.getDateSec(Int datetime); // returns the datetime's seconds (0-59)
+extern Int System.getDateDst(Int datetime); // returns the datetime's daylight savings flag 
+extern Int System.getDate(); // returns the datetime, use with the above functions
+
+/**
+ strmid()
+ 
+ Get a substring from a string.
+
+ @ret       The substring.
+ @param  str   The string.
+ @param  start The start position.
+ @param  len   The length of the string to extract, from start position.
+*/
+extern String System.strmid(String str, Int start, Int len);
+
+/**
+ strleft()
+
+ Get a substring from a string, starting from the left.
+
+ @ret         The substring.
+ @param  str     The string.
+ @param  nchars  The length of the string to extract, from the left.
+*/
+extern String System.Strleft(string str, int nchars);
+
+/**
+ strright()
+
+ Get a substring from a string, starting from the right. Since
+ the start point is the right of the string (or the end). It will
+ extract the string starting from the END going towards the BEGINNING.
+
+ @ret         The substring.
+ @param  str     The string.
+ @param  nchars  The length of the string to extract, from the right.
+*/
+extern string System.strright(string str, int nchars);
+
+/**
+ strsearch()
+
+ Search a string for any occurance of substring. If the substring was
+ found in the string, it will return the position of the substring in
+ the string searched. If the substring is not found, the return value
+ is -1.
+
+ @ret         Position at which the substring was found.
+ @param  str     The string to search in.
+ @param  substr  The substring to find.
+*/
+extern int System.strsearch(string str, string substr);
+
+/**
+ strlen()
+
+ Returns the length of the string.
+
+ @ret     The length of the string.
+ @param  str The string.
+*/
+extern int System.strlen(string str);
+
+/**
+ strupper()
+
+ Convert a string to all uppercase.
+
+ @ret     The uppercase string.
+ @param  str The string to uppercase.
+*/
+extern string System.strupper(string str);
+
+/**
+ strlower()
+
+ Convert a string to all lowercase.
+
+ @ret     The lowercase string.
+ @param  str The string to lowercase.
+*/
+extern string System.strlower(string str);
+
+/**
+ urlEncode()
+
+ URL Encode a string. Characters that are NOT encoded
+ are: All letters, All digits, underscore (_), dash (-) and 
+ period (.).
+
+ @ret       The URL encoded string.
+ @param  url   The string to URL encode.
+*/
+extern string System.urlEncode(string url);
+
+/**
+ removePath()
+
+ Remove the path from a full filename. (example:
+ c:\music\mp3\test.mp3 -> test.mp3)
+ Also works on URLs.
+ 
+ @ret    The filename with the path removed.
+ @param str The fullpath of a file.
+*/
+extern string System.removePath(string str);
+
+/**
+ getPath()
+
+ Gets the path from a full filename. (example:
+ c:\music\mp3\test.mp3 -> c:\music\mp3)
+ Also works on URLs.
+ 
+ @ret    The path with the filename removed.
+ @param str The fullpath of a file.
+*/
+extern string System.getPath(string str);
+
+/**
+ getExtension()
+
+ Gets the extension from a filename. (example:
+ c:\music\mp3\test.mp3 -> mp3)
+ Also works on URLs.
+ 
+ @ret    The extension of the filename.
+ @param str The fullpath of a file.
+*/
+extern string System.getExtension(string str);
+
+/**
+ getToken()
+
+ Retreive a token from a list of tokens seperated by separator.
+ The index starts at 0, not 1, so be careful.
+ Here's a short example:
+   getToken("1,2,3,4,5", ",", 3);
+ Would return, 3. If the token you ask for doesn't exist, an 
+ empty string is returned.
+
+ @ret             The token requested.
+ @param  str         The tokenenized string.
+ @param  separator   The separator to use.
+ @param  tokennum    The token to retreive.
+*/
+extern string System.getToken(string str, string separator, int tokennum);
+
+/**
+ sin()
+
+ Takes an angle in radians and returns the ratio of two sides of a right triangle. 
+ The ratio is the length of the side opposite the angle divided by the length 
+ of the hypotenuse. The result range is from -1 to 1.
+
+ Converting from degrees to radians can be done by multiplying degrees by PI/180.
+
+ @ret       The sine value of the angle.
+ @param  value The angle for which you want to know the sine value.
+*/
+extern double System.sin(double value);
+
+/**
+ cos()
+
+ Takes an angle in radians and returns the ratio of the two sides of a right triangle.
+ The ratio is the length of the side adjacent to the angle divided by the length of the
+ hypotenuse. The result is range is from -1 to 1.
+
+ @ret       The cosine value of the angle.
+ @param  value The angle for which you want to know the cosine value.
+*/
+extern double System.cos(double value);
+
+/**
+ tan()
+
+ Takes an angle in radians and returns the ratio between two sides of a right triangle.
+ The ratio is sin(x) divided by cos(x).
+
+ @ret       The tangent value of the angle.
+ @param  value The angle for which you want to know the tangent value.
+*/
+extern double System.tan(double value);
+
+/**
+ asin()
+
+ Takes a sine value ranging from -1 to 1 and returns the angle in radians.
+ The return value ranges from -PI/2 to +PI/2.
+
+ @ret       The angle in radians.
+ @param  value The sine value for which you want to know the angle.
+*/
+extern double System.asin(double value);
+
+/**
+ acos()
+
+ Takes a cosine value ranging from -1 to 1 and returns the angle in radians.
+ The return value ranges from -PI/2 to +PI/2.
+
+ @ret       The angle in radians.
+ @param  value The cosine value for which you want to know the angle.
+*/
+extern double System.acos(double value);
+
+/**
+ atan()
+
+ Takes an angle in radians and returns the ration between two sides of a right triangle.
+ The ratio is cos(x) divided by sin(x).
+
+ @ret     The arc tangent value of the angle.
+*/
+extern double System.atan(double value);
+
+/**
+  atan2()
+  
+  @ret The arctangent of y/x.
+*/
+extern double System.atan2(double y, double x);
+  
+
+/**
+ pow()
+
+ Elevate a number to the N'th power.
+
+ @ret         The number
+ @param  value   The number you want to elevate to the N power.
+ @param  pvalue  The power to which you want to elevate the number.
+*/
+extern double System.pow(double value, double pvalue);
+
+/**
+ sqr()
+
+ Get the square of a number.
+
+ @ret       The number, squared.
+ @param  value The number for which you want the square value.
+*/
+extern double System.sqr(double value);
+
+/**
+ sqrt()
+
+ Get the square root of a number.
+
+ @ret       The square root of the number.
+ @param  value The number for which you want the square root value.
+*/
+extern double System.sqrt(double value);
+
+/**
+ random()
+
+ Get a randomely generated number. The random number will not
+ be bigger than the max value indicated. Smallest value is 0.
+
+ @ret     The random number.
+ @param  max The maximum value of the random number to return.
+*/
+extern int System.random(int max);
+
+/**
+ setPrivateString()
+
+ Create a private config entry for your script, of String type.
+ 
+ @param  section   The section for the entry.
+ @param  item      The item name for the entry.
+ @param  value     The value of the entry.
+*/
+extern System.setPrivateString(string section, string item, string value);
+
+/**
+ setPrivateInt()
+
+ Create a private config entry for your script, of Int type.
+
+ @param  section   The section for the entry.
+ @param  item      The item name for the entry.
+ @param  value     The value of the entry.
+*/
+extern System.setPrivateInt(string section, string item, int value);
+
+/**
+ getPrivateString()
+
+ Read a private config entry of String type. Returns
+ the specified default value if the section and item isn't
+ found.  
+
+ @ret           The value of the config entry.
+ @param  section   The section from which to read the entry.
+ @param  item      The name of the item to read.
+ @param  defvalue  The default value to return if no item is found.
+*/
+extern String System.getPrivateString(String section, String item, String defvalue);
+
+/**
+ getPrivateInt()
+
+ Read a private config entry of Integer type. Returns
+ the specified default value if the section and item isn't
+ found.  
+
+ @ret           The value of the config entry.
+ @param  section   The section from which to read the entry.
+ @param  item      The name of the item to read.
+ @param  defvalue  The defautl value to return if no item is found.
+*/
+extern Int System.getPrivateInt(String section, String item, Int defvalue);
+
+/**
+ setPublicString()
+
+ Create a public config entry for your script, of String type.
+
+ @param  item  The item name for the entry.
+ @param  value The value of the entry.
+*/
+extern System.setPublicString(String item, String value);
+
+/**
+ setPublicInt()
+
+ Create a public config entry for your script, of Int type.
+
+ @param  item  The item name of the entry.
+ @param  value The value of the entry.
+*/
+extern System.setPublicInt(String item, Int value);
+
+/**
+ getPublicString()
+
+ Read a public config entry of String type. Returns 
+ the specified default value if the item isn't found.
+
+ @ret           The value of the config entry.
+ @param  item      The item name to read.
+ @param  defvalue  The default value to return if no item is found.
+*/
+extern String System.getPublicString(String item, String defvalue);
+
+/**
+ getPublicInt()
+
+ Read a public config entry of Integer type. Returns
+ the specified default value if the item isn't found.
+
+ @ret           The value of the config entry.
+ @param  item      The item name to read.
+ @param  defvalue  The default value to return if no item is found.
+*/
+extern Int System.getPublicInt(String item, Int defvalue);
+
+/**
+ getParam()
+
+ Get the parameters with which the script is called.
+ This is the 'param="..."' attribute in the <script ...>
+ skin XML tag.
+
+ @ret The parameter for the script.
+*/
+extern String System.getParam();
+
+/**
+ getScriptGroup()
+
+ Get the group in which the script is instantiated. Returns
+ Null if it's not instantiated in a group.
+
+ @ret 
+*/
+extern Group System.getScriptGroup();
+
+/**
+ getViewPortWidth()
+
+ Get the user's screen width in pixels.
+
+ @ret The width of the user's screen.
+*/
+extern Int System.getViewportWidth();
+extern Int System.getViewportWidthFromPoint(int x, int y);
+
+/**
+ getViewPortHeight()
+
+ Get the user's screen height in pixels.
+
+ @ret The height of the user's screen.
+*/
+extern Int System.getViewportHeight();
+extern Int System.getViewportHeightFromPoint(int x, int y);
+
+extern Int System.getViewportLeft();
+extern Int System.getViewportLeftFromPoint(int x, int y);
+extern Int System.getViewportTop();
+extern Int System.getViewportTopFromPoint(int x, int y);
+
+/**
+ debugString()
+
+ Send a debug message to the Wasabi Console.
+ The severity ranges from 0 (not serious) to 9 (very serious).
+
+ @param  str       The debug message.
+ @param  severity  The severity of the error.
+*/
+extern System.debugString(String str, Int severity);
+
+/**
+ ddeSend()
+
+ Send a DDE message to an application. The minimum
+ interval between messages is specified in milliseconds.
+ Here's an example:
+
+ ddeSend("mIRC", "/msg #channel I'm using Winamp3", 300);
+
+ @param  application   The DDE server name of the application.
+ @param  command       The command to send.
+ @param  mininterval   The minimum interval to respect between messages (in ms).
+*/
+extern System.ddeSend(String application, String command, Int mininterval);
+
+/**
+ onLookForComponent()
+
+ Hookable. Event happens when the component with the
+ specified GUID is going to be shown. Don't forget
+ to return the component when you're done doing what
+ you want to do (example: animate something).
+
+ @ret       The component requested.
+ @param  guid  The requested components GUID.
+
+*/
+extern Component System.onLookForComponent(String guid);
+
+/**
+ getCurAppLeft()
+
+ Get the applications current left coordinate in the screen,
+ using the screen coordinate system.
+
+ @ret The left coordinate of the application.
+*/
+extern Int System.getCurAppLeft();
+
+/**
+ getCurAppTop()
+
+ Get the applications current top coordinate in the screen,
+ using the screen coordinate system.
+
+ @ret The top coordinate of the application.
+*/
+extern Int System.getCurAppTop();
+
+/**
+ getCurAppWidth()
+
+ Get the applications current window width, in pixels.
+
+ @ret The width of the application window.
+*/
+extern Int System.getCurAppWidth();
+
+/**
+ getCurAppHeight()
+
+ Get the applications current window height, in pixels.
+
+ @ret The height of the application window.
+*/
+extern Int System.getCurAppHeight();
+
+/**
+ isAppActive()
+
+ Get the current status of the application. If it's active,
+ it means the application has focus. True is active, false is
+ inactive.
+
+ @ret The application's status.
+*/
+extern Boolean System.isAppActive();
+
+/**
+ getSkinName()
+
+ Get the skin name for the loaded skin.
+
+ @ret The skin's name.
+*/
+extern String System.getSkinName();
+extern System.switchSkin(String skinname);
+extern Int System.isLoadingSkin(); // 1 if loading, -1 if UNloading, 0 otherwise
+extern System.lockUI();
+extern System.unlockUI();
+
+/**
+ getMainBrowser()
+
+ Get a reference to the main browser object.
+ This is the browser object that's defined with
+ mainmb="1" in the skin XML.
+
+ @ret A reference to the main browser object.
+*/
+extern Browser System.getMainBrowser();
+extern System.popMainBrowser();
+extern System.navigateUrl(String url); 
+
+/**
+ isObjectValid()
+
+ Verifies if an object is valid. You can also verify
+ this using the Null object. True means the object is valid,
+ false means it isn't.
+
+ @ret   The validity of the object.
+ @param  o The object you want to verify.
+*/
+extern Boolean System.isObjectValid(Object o);
+
+/**
+ integer()
+
+ Takes a Double and returns the closest integer representation.
+
+ @ret   The integer representation of the double.
+ @param  d The double for which you want an integer representation.
+*/
+extern Int System.integer(Double d);
+extern Double System.frac(Double d);
+
+/**
+ getTimeOfDay()
+
+ Read the current time of the day. Returns a number that's
+ the number of milliseconds since the start of the day (0:00).
+
+ @ret The number of milliseconds since midnight.
+*/
+extern Int System.getTimeOfDay();
+
+/**
+ setMenuTransparency()
+
+ Set the menu's transparency value (alpha blending). Ranges 
+ from 0 to 255. 0 being totally transparent and 255 being 
+ totally opaque.
+
+ @param alphavalue   The transparency value to set.
+*/
+extern System.setMenuTransparency(int alphavalue);
+
+extern Boolean System.onGetCancelComponent(String guid, boolean goingvisible);
+
+#define STATUS_PAUSED -1
+#define STATUS_STOPPED 0
+#define STATUS_PLAYING 1
+
+/**
+ getStatus()
+
+ returns the status of the main player core.
+
+ @ret STATUS_PAUSED (-1) if paused, STATUS_STOPPED (0) if stopped, STATUS_PLAYING (1) if playing.
+*/
+extern Int System.getStatus();
+
+#define VK_SHIFT   16
+#define VK_CONTROL 17
+#define VK_ALT     18
+
+/**
+ Int isKeyDown(int vk_code)
+
+ Checks if a virtual key (like VK_CONTROL, VK_SHIFT, VK_ALT) is pressed.
+
+ @ret 1 if key is pressed, 0 if not.
+*/
+
+extern Int System.isKeyDown(int vk_code);
+
+/**
+ setClipboardText(String text)
+
+ Sets the given text to the clipboard.
+*/
+
+extern System.setClipboardText(String _text);
+
+/**
+ String Chr(Int charnum)
+
+ Returns a string the ascii char.
+*/
+
+extern String System.Chr(Int charnum);
+
+// extlist should be like "jpeg files|*.jpg|all files|*.*||"
+// note the extra | on the end
+extern String System.selectFile(String extlist, String id, String prev_filename);
+extern System.systemMenu();
+extern System.windowMenu();
+extern System.triggerAction(GuiObject context, String actionname, String actionparam);
+extern GuiObject System.showWindow(String guidorgroupid, String preferedcontainer, Boolean transient); // "" = default container, returns the hosted window
+extern System.hideWindow(GuiObject hw); // hw = hosted window, returned by showWindow
+extern System.hideNamedWindow(String guidorgroup); // hides the last created wnd with this guid/groupname
+extern Boolean System.isNamedWindowVisible(String guidorgroup); 
+//extern System.setAtom(String atomname, Object object);
+//extern Object System.getAtom(String atomname);
+extern System.invokeDebugger();
+extern Int System.isVideo();
+extern Int System.isVideoFullscreen();
+extern Int System.getIdealVideoWidth(); // -1 if video has never been open this session, otherwise the ideal width of the currently (or last) video played
+extern Int System.getIdealVideoHeight(); // -1 if video has never been open this session, otherwise the ideal height of the currently (or last) video played
+extern Int System.isMinimized();
+extern System.minimizeApplication();
+extern System.restoreApplication();
+extern System.activateApplication();
+extern Int System.getPlaylistLength(); // number of items in the playlist
+extern Int System.getPlaylistIndex(); // currently playing item in the playlist (or next to play if stopped)
+extern Boolean System.isDesktopAlphaAvailable();
+extern Boolean System.isTransparencyAvailable();
+extern Int System.onShowNotification(); // return 1 if you implement it 
+extern String System.getSongInfoText(); // same as what gets in a text object with display="SONGINFO"
+extern Int System.getVisBand(int channel, int band); // 0,1 / 0..75
+extern Double System.getRuntimeVersion(); // returns the maki runtime version, up to 5.01 = 0.0, 5.02+ = 1.0
+
+//*****************************************************************************
+// Container CLASS
+//*****************************************************************************
+/**
+ Container Class.
+
+ @short    The container class enables you to control current containers and also create them.
+ @author   Nullsoft Inc.
+ @ver  1.0
+*/
+
+/**
+ onSwitchToLayout()
+
+ Hookable. Event happens when a container is going to switch 
+ from the currently active layout to another layout (newlayout).
+
+ @param newlayout  The new layout that will be used.
+*/
+extern Container.onSwitchToLayout(Layout newlayout);
+extern Container.onBeforeSwitchToLayout(Layout oldlayout, Layout newlayout);
+extern Container.setXmlParam(String param, String value);
+/**
+ onHideLayout()
+
+ Hookable. Event happens when a container is about to hide
+ the currently active layout (_layout).
+
+ @param  _layout The layout that's going to be hidden.
+*/
+extern Container.onHideLayout(Layout _layout);
+
+/**
+ onShowLayout()
+
+ Hookable. Event happens when a container is about to
+ show a layout (_layout).
+
+ @param  _layout The layout about to be shown
+*/
+extern Container.onShowLayout(Layout _layout);
+
+/**
+ getLayout()
+
+ Get the layout associated with the an id.
+ This corresponds to the "id=..." attribute in
+ the XML tag <layout .. />.
+ 
+ @ret             The layout associated with the id.
+ @param  layout_id   The id of the layout you wish to retrieve.
+*/
+extern Layout Container.getLayout(String layout_id);
+
+/**
+ getNumLayouts()
+
+ Get the number of layouts contained in the
+ container.
+
+ @ret       The number of layouts.
+*/
+extern Int Container.getNumLayouts();
+
+/**
+ enumLayout()
+
+ Get the layout by it's index number.
+ Range is from 0 to the value returned 
+ by getNumLayouts() - 1.
+
+ @ret       The layout.
+ @param  num   The index number of the layout you want.
+*/
+extern Layout Container.enumLayout(Int num);
+
+/**
+ switchToLayout()
+
+ Switch to a perticular layout by using the
+ desired layout's id. This corresponds to the
+ "id=..." attribute in the XML tag <layout .. />.
+
+ @param  layout_id   The id of the layout to which you want to switch.
+*/
+extern Container.switchToLayout(String layout_id);
+
+/**
+ show()
+
+ Trigger the show event.
+*/
+extern Container.show();
+
+/**
+ hide()
+
+ Trigger the hide event.
+*/
+extern Container.hide();
+// this one destroys it if the container is dynamic, or hides otherwise
+extern Container.close();
+
+/**
+ toggle()
+
+ Toggle the containers state between Shown / Hidden.
+*/
+extern Container.toggle();
+
+/**
+ isDynamic()
+
+ Tells you if the current container is a dynamic 
+ container or not. Values are true (1) for dynamic
+ false (0) for static.
+
+ @ret The container type (dynamic or static).
+*/
+extern Int Container.isDynamic();
+
+extern Container.setName(String name);
+extern Layout Container.getCurLayout();
+
+//*****************************************************************************
+// WAC CLASS
+//*****************************************************************************
+/**
+ WAC Class.
+
+ @short    .
+ @author   Nullsoft Inc.
+ @ver  1.0
+*/
+ 
+/**
+ getGuid()
+
+ Get the GUID of the WAC.
+
+ @ret The GUID of the WAC.
+*/
+extern String Wac.getGuid();
+
+/**
+ getName()
+
+ Get the name of the WAC.
+
+ @ret The name of the WAC.
+*/
+extern String Wac.getName();
+
+/**
+ sendCommand()
+
+ 
+*/
+extern Int Wac.sendCommand(String cmd, Int param1, Int param2, String param3);
+
+/**
+ show()
+
+ Trigger the show event.
+*/
+extern Wac.show();
+
+/**
+ hide()
+
+ Trigger the hide event.
+*/
+extern Wac.hide();
+
+/**
+ isVisible()
+
+
+*/
+extern Boolean Wac.isVisible();
+
+/**
+ onNotify()
+
+
+*/
+extern Wac.onNotify(String notifstr, Int a, Int b);
+
+/**
+ onShow()
+
+ Hookable. The event happens when the WAC is about
+ to be shown.
+*/
+extern Wac.onShow();
+
+/**
+ onHide()
+
+ Hookable. The event happens when the WAC is about
+ to be hidden.
+*/
+extern Wac.onHide();
+
+/**
+ setStatusBar()
+
+ Set the status bars visibility.
+ Sending true will make the status bar 
+ visible while sending false will hide
+ it.
+
+ @param  onoff   The status bars visibility.
+*/
+extern Wac.setStatusBar(Boolean onoff);
+
+/**
+ getStatusBar()
+
+ Get the status bars visibility. True means
+ it's visible, false means it's hidden.
+
+ @ret The status bars visibility.
+*/
+extern Boolean Wac.getStatusBar();
+
+//*****************************************************************************
+// GUIOBJECT CLASS
+//*****************************************************************************
+/**
+ GuiObject Class.
+
+ @short    .
+ @author   Nullsoft Inc.
+ @ver  1.0
+*/
+ 
+/**
+ show()
+
+ Trigger the show event.
+*/
+extern GuiObject.show();
+
+/**
+ hide()
+
+ Trigger the hide event.
+*/ 
+extern GuiObject.hide();
+
+/**
+ isVisible()
+
+ Get the visibility status of the object.
+ False means it's hidden, true means it's
+ visible.
+
+ @ret The visibility status of the object.
+*/
+extern int GuiObject.isVisible();
+
+/**
+ onSetVisible()
+
+ Hookable. Event happens when the visibility
+ status of the object is changed from visible to
+ hidden or vice-versa.
+
+ @param  onoff   The objects visibility status.
+*/
+extern GuiObject.onSetVisible(Boolean onoff);
+
+/**
+ setAlpha()
+
+ Set the alphablending value of the object.
+ Value ranges from 0 (fully transparent) to 
+ 255 (fully opaque).
+
+ @param  alpha   The alpha value.
+*/
+extern GuiObject.setAlpha(int alpha);
+
+/**
+ getAlpha()
+
+ Get the current alphablending value of
+ the object. Value ranges from 0 (fully
+ transparent) to 255 (fully opaque).
+
+ @ret The alpha value.
+*/
+extern int GuiObject.getAlpha();
+
+/**
+ onLeftButtonUp()
+
+ Hookable. Event happens when the left mouse
+ button was previously down and is now up.
+
+ @param  x   The X position in the screen where the cursor was when the event was triggered.
+ @param  y   The Y position in the screen where the cursor was when the event was triggered.
+*/
+extern GuiObject.onLeftButtonUp(int x, int y);
+
+/**
+ onLeftButtonDown()
+
+ Hookable. Event happens when the left mouse button
+ is pressed.
+
+ @param  x   The X position in the screen where the cursor was when the event was triggered.
+ @param  y   The Y position in the screen where the cursor was when the event was triggered.
+*/
+extern GuiObject.onLeftButtonDown(int x, int y);
+
+/**
+ onRightButtonUp()
+
+ Hookable. Event happens when the right mouse button
+ was previously down and is now up.
+
+ @param  x   The X position in the screen where the cursor was when the event was triggered.
+ @param  y   The Y position in the screen where the cursor was when the event was triggered.
+*/
+extern GuiObject.onRightButtonUp(int x, int y);
+
+/**
+ onRightButtonDown()
+
+ Hookable. Event happens when the right mouse button
+ is pressed.
+
+ @param  x   The X position in the screen where the cursor was when the event was triggered.
+ @param  y   The Y position in the screen where the cursor was when the event was triggered.
+*/
+extern GuiObject.onRightButtonDown(int x, int y);
+
+/**
+ onRightButtonDlbClk()
+
+ Hookable. Event happens when the right mouse button
+ is double clicked.
+
+ @param  x   The X position in the screen where the cursor was when the event was triggered.
+ @param  y   The Y position in the screen where the cursor was when the event was triggered.
+*/
+extern GuiObject.onRightButtonDblClk(int x, int y);
+
+/**
+ onLeftButtonDlbClk()
+
+ Hookable. Event happens when the left mouse button
+ is double clicked.
+
+ @param  x   The X position in the screen where the cursor was when the event was triggered.
+ @param  y   The Y position in the screen where the cursor was when the event was triggered.
+*/
+extern GuiObject.onLeftButtonDblClk(int x, int y);
+
+/**
+ onMouseMove()
+
+ Hookable. Event happens when the mouse is moved.
+
+ @param  x   The new X screen position of the mouse.
+ @param  y   The new Y screen position of the mouse.
+*/
+extern GuiObject.onMouseMove(int x, int y);
+
+/**
+ onEnterArea()
+
+ Hookable. Event happens when the mouse
+ enters the objects area.
+*/
+extern GuiObject.onEnterArea();
+
+/**
+ onLeaveArea()
+
+ Hookable. Event happens when the mouse
+ leaves the objects area.
+*/
+extern GuiObject.onLeaveArea();
+
+/**
+ setEnabled()
+*/
+extern GuiObject.setEnabled(boolean onoff);
+
+/**
+ getEnabled()
+*/
+extern boolean GuiObject.getEnabled();
+
+/**
+ onEnabled()
+*/
+extern GuiObject.onEnable(boolean onoff);
+
+/**
+ resize()
+
+ Resize the object to the desired size and position.
+
+ @param  x   The X position where to anchor the object before resize.
+ @param  y   The Y position where to anchor the object before resize.
+ @param  w   The width you wish the object to have.
+ @param  h   The height you wish the object to have.
+*/
+extern GuiObject.resize(int x, int y, int w, int h);
+
+/**
+ onResize()
+
+ Hookable. Event happens when the object is about
+ to be resized.
+
+ @param  x   The X position where the object will be anchored.
+ @param  y   The Y position where the object will be anchored.
+ @param  w   The width the object will have.
+ @param  h   The height the object will have.
+*/
+extern GuiObject.onResize(int x, int y, int w, int h);
+
+/**
+ isMouseOver()
+ 
+*/
+extern boolean GuiObject.isMouseOver(int x, int y);
+
+/**
+ getLeft()
+
+ Get the X position, in the screen, of the 
+ left edge of the object.
+
+ @ret The left edge's position (in screen coordinates).
+*/
+extern int GuiObject.getLeft();
+
+/**
+ getTop()
+
+ Get the Y position, in the screen, of the
+ top edge of the object.
+
+ @ret The top edge's position (in screen coordinates).
+*/
+extern int GuiObject.getTop();
+
+/**
+ getWidth()
+
+ Get the width of the object, in pixels.
+
+ @ret The width of the object.
+*/
+extern int GuiObject.getWidth();
+
+/**
+ getHeight()
+
+ Get the height of the object, in pixels.
+
+ @ret The height of the object.
+*/
+extern int GuiObject.getHeight();
+
+/**
+ setTargetX()
+
+ Set a target X position, in the screen, for
+ the object.
+
+ @param  x   The target X position of the object.
+*/
+extern GuiObject.setTargetX(int x);
+
+/**
+ setTargetY()
+
+ Set a target Y position, in the screen, for
+ the object.
+
+ @param  y   The target Y position of the object.
+*/
+extern GuiObject.setTargetY(int y);
+
+/**
+ setTargetW()
+
+ Set a target width, in pixels, for the object.
+
+ @param  w   The target width of the object.
+*/
+extern GuiObject.setTargetW(int w);
+
+/**
+ setTargetH()
+
+ Set a target height, in pixels, for the object.
+
+ @param  h   The target height of the object.
+*/
+extern GuiObject.setTargetH(int r);
+
+/**
+ setTargetA()
+
+ Set a target alphablending value for the object.
+ The value range is from 0 (totally transparent)
+ to 255 (totally opaque).
+
+ @param  alpha   The target alpha value.
+*/
+extern GuiObject.setTargetA(int alpha);
+
+/**
+ setTargetSpeed()
+
+ The amount of time in which you wish to arrive at
+ the target(s) previously set, in seconds.
+
+ @param  insecond    The number of seconds in which to reach the target.
+*/
+extern GuiObject.setTargetSpeed(float insecond);
+
+/**
+ gotoTarget()
+
+ Begin transition to previously set target.
+*/
+extern GuiObject.gotoTarget();
+
+/**
+ onTargetReached()
+
+ Hookable. Event happens when the object has reached
+ it's previously set target.
+*/
+extern GuiObject.onTargetReached();
+extern GuiObject.cancelTarget();
+/**
+ isGoingToTarget() 
+ 
+*/
+extern GuiObject.reverseTarget(int reverse); // modifies the x/y targets so that they compensate for gained width/height. useful to make drawers that open up without jittering
+extern GuiObject.onStartup();
+extern boolean GuiObject.isGoingToTarget();
+extern GuiObject.setXmlParam(String param, String value);
+extern String GuiObject.getXmlParam(String param);
+extern GuiObject.init(Group parent);
+extern GuiObject.bringToFront();
+extern GuiObject.bringToBack();
+extern GuiObject.bringAbove(GuiObject guiobj);
+extern GuiObject.bringBelow(GuiObject guiobj);
+extern Int GuiObject.getGuiX();
+extern Int GuiObject.getGuiY();
+extern Int GuiObject.getGuiW();
+extern Int GuiObject.getGuiH();
+extern Int GuiObject.getGuiRelatX();
+extern Int GuiObject.getGuiRelatY();
+extern Int GuiObject.getGuiRelatW();
+extern Int GuiObject.getGuiRelatH();
+extern Boolean GuiObject.isActive();
+extern GuiObject GuiObject.getParent();
+extern Layout GuiObject.getParentLayout();
+extern GuiObject GuiObject.getTopParent();
+extern int GuiObject.runModal();
+extern GuiObject.endModal(int retcode);
+extern GuiObject GuiObject.findObject(String id);
+extern GuiObject GuiObject.findObjectXY(int x, int y);
+extern String GuiObject.getName();
+extern int GuiObject.clientToScreenX(int x);
+extern int GuiObject.clientToScreenY(int y);
+extern int GuiObject.clientToScreenW(int w);
+extern int GuiObject.clientToScreenH(int h);
+extern int GuiObject.screenToClientX(int x);
+extern int GuiObject.screenToClientY(int y);
+extern int GuiObject.screenToClientW(int w);
+extern int GuiObject.screenToClientH(int h);
+extern int GuiObject.getAutoWidth();
+extern int GuiObject.getAutoHeight();
+extern GuiObject.setFocus();
+extern GuiObject.onChar(String c);
+extern GuiObject.onAccelerator(String accel);
+extern Boolean GuiObject.isMouseOverRect();
+extern Object GuiObject.getInterface(String interface_guid);
+
+#define VK_PRIOR    33
+#define VK_NEXT     34
+#define VK_END      35
+#define VK_HOME     36
+#define VK_LEFT     37
+#define VK_UP       38
+#define VK_RIGHT    39
+#define VK_DOWN     40
+
+extern GuiObject.onKeyDown(int vk_code);
+extern GuiObject.onKeyUp(int vk_code);
+extern GuiObject.onGetFocus();
+extern GuiObject.onKillFocus();
+extern Int GuiObject.sendAction(String action, String param, Int x, int y, int p1, int p2);
+extern Int GuiObject.onAction(String action, String param, Int x, int y, int p1, int p2, GuiObject source);
+  // Group
+
+extern GuiObject Group.getObject(String object_id);
+extern Int Group.getNumObjects();
+extern GuiObject Group.enumObject(Int num);
+extern Group.onCreateObject(GuiObject newobj);
+extern Int Group.getMousePosX();
+extern Int Group.getMousePosY();
+extern Boolean Group.isLayout();
+
+
+  // Layout
+
+extern Layout.onDock();
+extern Layout.onUndock();
+extern Layout.onScale(Double newscalevalue);
+extern Double Layout.getScale();
+extern Layout.setScale(Double scalevalue);
+extern Layout.setDesktopAlpha(Boolean onoff);
+extern Boolean Layout.getDesktopAlpha();
+extern Container Layout.getContainer();
+extern Layout.center();
+extern Layout.onMove();
+extern Layout.onEndMove();
+extern Layout.onUserResize(int x, int y, int w, int h);
+extern Layout.snapAdjust(int left, int top, int right, int bottom);
+extern Int Layout.getSnapAdjustTop();
+extern Int Layout.getSnapAdjustRight();
+extern Int Layout.getSnapAdjustLeft();
+extern Int Layout.getSnapAdjustBottom();
+extern Layout.setRedrawOnResize(int wantredrawonresize);
+extern Layout.beforeRedock();
+extern Layout.redock();
+extern Boolean Layout.isTransparencySafe();
+extern Boolean Layout.isLayoutAnimationSafe();
+extern Layout.onMouseEnterLayout();
+extern Layout.onMouseLeaveLayout();
+extern Layout.onSnapAdjustChanged();
+
+  // List
+
+extern List.addItem(Any _object);
+extern List.removeItem(int pos);
+extern Any List.enumItem(int pos);
+extern Int List.findItem(Any _object);
+extern int List.getNumItems();
+extern List.removeAll();
+
+  // Map
+
+extern Int Map.getValue(int x, int y);
+extern Boolean Map.inRegion(int x, int y);
+extern Map.loadMap(String bitmapid);
+extern Int Map.getWidth();
+extern Int Map.getHeight();
+extern Region Map.getRegion();
+
+  // PopupMenu
+
+extern PopupMenu.addSubMenu(PopupMenu submenu, String submenutext);
+extern PopupMenu.addCommand(String cmdtxt, Int cmd_id, Boolean checked, Boolean disabled);
+extern PopupMenu.addSeparator();
+extern Int PopupMenu.popAtXY(int x, int y);
+extern Int PopupMenu.popAtMouse();
+extern Int PopupMenu.getNumCommands();
+extern PopupMenu.checkCommand(int cmd_id, boolean check);
+extern PopupMenu.disableCommand(int cmd_id, boolean disable);
+
+  // Region
+
+extern Region.add(Region reg);
+extern Region.sub(Region reg);
+extern Region.offset(int x, int y);
+extern Region.stretch(double r);
+extern Region.copy(Region reg);
+extern Region.loadFromMap(Map regionmap, Int threshold, Boolean reversed);
+extern Region.loadFromBitmap(String bitmapid);
+extern Int Region.getBoundingBoxX();
+extern Int Region.getBoundingBoxY();
+extern Int Region.getBoundingBoxW();
+extern Int Region.getBoundingBoxH();
+
+  // Timer
+
+extern Timer.onTimer();
+extern Timer.setDelay(int millisec);
+extern Int Timer.getDelay();
+extern Timer.start();
+extern Timer.stop();
+extern Timer.isRunning();
+extern Int Timer.getSkipped();
+
+  // FeedWatcher
+extern Int FeedWatcher.setFeed(String feed_id);
+extern FeedWatcher.releaseFeed();
+extern FeedWatcher.onFeedChange(String new_feeddata);
+
+  // Component
+
+extern Component.onGetWac(Wac wacobj);
+extern Component.onGiveUpWac(Wac wacobj);
+extern String Component.getGuid();
+extern Wac Component.getWac();
+extern Component.setRegionFromMap(Map regionmap, Int threshold, Boolean reverse);
+extern Component.setRegion(Region reg);
+extern Component.setAcceptWac(Boolean onoff);
+extern GuiObject Component.getContent();
+
+  // Edit
+
+extern Edit.onEnter();
+extern Edit.onAbort();
+extern Edit.onIdleEditUpdate();
+extern Edit.onEditUpdate();
+extern Edit.setText(String txt); 
+extern Edit.setAutoEnter(boolean onoff);
+extern Int Edit.getAutoEnter();
+extern String Edit.getText();
+extern Edit.selectAll();
+extern Edit.enter();
+extern Edit.setIdleEnabled(boolean onoff);
+extern Int Edit.getIdleEnabled();
+
+  // Slider
+
+extern Slider.onSetPosition(int newpos);
+extern Slider.onPostedPosition(int newpos);
+extern Slider.onSetFinalPosition(int pos);
+extern Slider.setPosition(int pos);
+extern Int Slider.getPosition();
+extern Slider.lock(); // locks descendant core collbacks
+extern Slider.unlock(); // unloads them
+
+
+  // Vis
+
+extern Vis.onFrame();
+extern Vis.setRealtime(Boolean onoff);
+extern Boolean Vis.getRealtime();
+extern Int Vis.getMode();
+extern Vis.setMode(Int mode);
+extern Vis.nextMode();
+
+  // Browser
+
+extern Browser.navigateUrl(String url);
+extern Browser.back();
+extern Browser.forward();
+extern Browser.stop();
+extern Browser.refresh();
+extern Browser.home();
+extern Browser.setTargetName(String targetname);
+extern Boolean Browser.onBeforeNavigate(String url, Int flags, String targetframename); // return TRUE to cancel navigation
+extern Browser.onDocumentComplete(String url);
+
+
+  // Text
+
+extern Text.setText(String txt); // changes the display/text="something" param
+extern Text.setAlternateText(String txt); // overrides the display/text parameter with a custom string, set "" to cancel
+extern String Text.getText();
+extern int Text.getTextWidth();
+extern Text.onTextChanged(String newtxt);
+
+  // Layer
+
+extern Layer.onBeginResize(int x, int y, int w, int h);
+extern Layer.onEndResize(int x, int y, int w, int h);
+extern Layer.fx_onInit();
+extern Layer.fx_onFrame();
+extern Double Layer.fx_onGetPixelR(double r, double d, double x, double y);
+extern Double Layer.fx_onGetPixelD(double r, double d, double x, double y);
+extern Double Layer.fx_onGetPixelX(double r, double d, double x, double y);
+extern Double Layer.fx_onGetPixelY(double r, double d, double x, double y);
+extern Double Layer.fx_onGetPixelA(double r, double d, double x, double y);
+extern Layer.setRegionFromMap(Map regionmap, int threshold, boolean reverse);
+extern Layer.setRegion(Region reg);
+extern Layer.fx_setEnabled(boolean onoff);
+extern Boolean Layer.fx_getEnabled();
+extern Layer.fx_setWrap(Boolean onoff);
+extern Boolean Layer.fx_getWrap();
+extern Layer.fx_setRect(Boolean onoff);
+extern Boolean Layer.fx_getRect();
+extern Layer.fx_setBgFx(Boolean onoff);
+extern Boolean Layer.fx_getBgFx();
+extern Layer.fx_setClear(Boolean onoff);
+extern Boolean Layer.fx_getClear();
+extern Layer.fx_setSpeed(Int msperframe);
+extern Int Layer.fx_getSpeed();
+extern Layer.fx_setRealtime(Boolean onoff);
+extern Boolean Layer.fx_getRealtime();
+extern Layer.fx_setLocalized(Boolean onoff);
+extern Boolean Layer.fx_getLocalized();
+extern Layer.fx_setBilinear(Boolean onoff);
+extern Boolean Layer.fx_getBilinear();
+extern Layer.fx_setAlphaMode(Boolean onoff);
+extern Boolean Layer.fx_getAlphaMode();
+extern Layer.fx_setGridSize(Int x, Int y);
+extern Layer.fx_update();
+extern Layer.fx_restart();
+
+  // Button
+
+extern Button.onActivate(int activated);
+extern Button.onLeftClick();
+extern Button.onRightClick();
+extern Button.setActivated(Boolean onoff);
+extern Button.setActivatedNoCallback(Boolean onoff);
+extern Boolean Button.getActivated();
+extern Button.leftClick();
+extern Button.rightClick();
+
+  // AnimatedLayer
+
+extern AnimatedLayer.onPlay();
+extern AnimatedLayer.onPause();
+extern AnimatedLayer.onResume();
+extern AnimatedLayer.onStop();
+extern AnimatedLayer.onFrame(Int framenum);
+extern AnimatedLayer.setSpeed(Int msperframe);
+extern AnimatedLayer.gotoFrame(int framenum);
+extern AnimatedLayer.setStartFrame(Int framenum);
+extern AnimatedLayer.setEndFrame(int framenum);
+extern AnimatedLayer.setAutoReplay(Boolean onoff);
+extern AnimatedLayer.play();
+extern AnimatedLayer.stop();
+extern AnimatedLayer.pause();
+extern Boolean AnimatedLayer.isPlaying();
+extern Boolean AnimatedLayer.isPaused();
+extern Boolean AnimatedLayer.isStopped();
+extern Int AnimatedLayer.getStartFrame();
+extern Int AnimatedLayer.getEndFrame();
+extern Int AnimatedLayer.getLength();
+extern Int AnimatedLayer.getDirection();
+extern Boolean AnimatedLayer.getAutoReplay();
+extern Int AnimatedLayer.getCurFrame();
+extern AnimatedLayer.setRealtime(Boolean onoff);
+
+  // ToggleButton
+
+extern ToggleButton.onToggle(Boolean);
+
+  // GroupList
+
+extern Group GroupList.instantiate(String group_id, int num_groups);
+extern Int GroupList.getNumItems();
+extern Group GroupList.enumItem(int num);
+extern GroupList.removeAll();
+extern GroupList.scrollToPercent(Int percent);
+
+  // CfgGroup
+
+extern Int CfgGroup.cfgGetInt();
+extern CfgGroup.cfgSetInt(Int intvalue);
+extern String CfgGroup.cfgGetString();
+extern Int CfgGroup.cfgGetFloat();
+extern CfgGroup.cfgSetFloat(Float floatvalue);
+extern CfgGroup.cfgSetString(String strvalue);
+extern CfgGroup.onCfgChanged();
+extern String CfgGroup.cfgGetGuid();
+extern String CfgGroup.cfgGetName();
+
+  // QueryList
+
+extern QueryList.onResetQuery();
+
+  // MouseRedir
+
+extern MouseRedir.setRedirection(GuiObject o);
+extern GuiObject MouseRedir.getRedirection();
+extern MouseRedir.setRegionFromMap(Map regionmap, Int threshold, Boolean reverse);
+extern MouseRedir.setRegion(Region reg);
+
+  // DropDownList
+
+extern String DropDownList.getItemSelected();
+extern DropDownList.onSelect(Int id, Int hover);
+extern DropDownList.setListHeight(Int h);
+extern DropDownList.openList();
+extern DropDownList.closeList();
+extern DropDownList.setItems(String lotsofitems);
+extern Int DropDownList.addItem(String _text); 
+extern DropDownList.delItem(Int id);
+extern Int DropDownList.findItem(String _text);
+extern Int DropDownList.getNumItems();
+extern DropDownList.selectItem(Int id, Int hover);
+extern String DropDownList.getItemText(Int id);
+extern Int DropDownList.getSelected();
+extern String DropDownList.getSelectedText();
+extern String DropDownList.getCustomText();
+extern DropDownList.deleteAllItems();
+extern DropDownList.setNoItemText(String txt);
+
+
+  // LayoutStatus
+
+extern LayoutStatus.callme(String str); 
+
+  // TabSheet
+
+extern Int TabSheet.getCurPage();
+extern TabSheet.setCurPage(Int a);
+
+  // GuiList
+
+extern Int GuiList.getNumItems();
+extern Int GuiList.getWantAutoDeselect();
+extern GuiList.setWantAutoDeselect(Int want);
+extern GuiList.onSetVisible(Int show);
+extern GuiList.setAutoSort(Int dosort);
+extern GuiList.next();
+extern GuiList.selectCurrent();
+extern GuiList.selectFirstEntry();
+extern GuiList.previous();
+extern GuiList.pagedown();
+extern GuiList.pageup();
+extern GuiList.home();
+extern GuiList.end();
+extern GuiList.reset();
+extern Int GuiList.addColumn(String name, Int width, Int numeric);
+extern Int GuiList.getNumColumns();
+extern Int GuiList.getColumnWidth(Int column);
+extern GuiList.setColumnWidth(Int column, Int newwidth);
+extern String GuiList.getColumnLabel(Int column);
+extern GuiList.setColumnLabel(Int column, String newlabel);
+extern Int GuiList.getColumnNumeric(Int column);
+extern GuiList.setColumnDynamic(Int column, Int isdynamic);
+extern Int GuiList.isColumnDynamic(Int column);
+extern GuiList.setMinimumSize(Int size);
+extern Int GuiList.addItem(String label);
+extern Int GuiList.insertItem(Int pos, String label);
+extern Int GuiList.getLastAddedItemPos();
+extern GuiList.setSubItem(Int pos, Int subpos, String txt);
+extern GuiList.deleteAllItems();
+extern Int GuiList.deleteByPos(Int pos);
+extern String GuiList.getItemLabel(Int pos, Int subpos);
+extern GuiList.setItemLabel(Int pos, String _text);
+extern Int GuiList.getItemSelected(Int pos);
+extern Int GuiList.isItemFocused(Int pos);
+extern Int GuiList.getItemFocused();
+extern GuiList.setItemFocused(Int pos);
+extern GuiList.ensureItemVisible(Int pos);
+extern GuiList.invalidateColumns();
+extern Int GuiList.scrollAbsolute(Int x);
+extern Int GuiList.scrollRelative(Int x);
+extern GuiList.scrollLeft(Int lines);
+extern GuiList.scrollRight(Int lines);
+extern GuiList.scrollUp(Int lines);
+extern GuiList.scrollDown(Int lines);
+extern String GuiList.getSubitemText(Int pos, Int subpos);
+extern Int GuiList.getFirstItemSelected();
+extern Int GuiList.getNextItemSelected(Int lastpos);
+extern Int GuiList.selectAll();
+extern Int GuiList.deselectAll();
+extern Int GuiList.invertSelection();
+extern Int GuiList.invalidateItem(Int pos);
+extern Int GuiList.getFirstItemVisible();
+extern Int GuiList.getLastItemVisible();
+extern Int GuiList.setFontSize(Int size);
+extern Int GuiList.getFontSize();
+extern GuiList.jumpToNext(Int c);
+extern GuiList.scrollToItem(Int pos);
+extern GuiList.resort();
+extern Int GuiList.getSortDirection();
+extern Int GuiList.getSortColumn();
+extern GuiList.setSortColumn(Int col);
+extern GuiList.setSortDirection(Int dir);
+extern Int GuiList.getItemCount();
+extern GuiList.setSelectionStart(Int pos);
+extern GuiList.setSelectionEnd(Int pos);
+extern GuiList.setSelected(Int pos, Int selected);
+extern GuiList.toggleSelection(Int pos, Int setfocus);
+extern Int GuiList.getHeaderHeight();
+extern Int GuiList.getPreventMultipleSelection();
+extern Int GuiList.setPreventMultipleSelection(Int val);
+extern GuiList.moveItem(Int from, Int to);
+extern GuiList.onSelectAll();
+extern GuiList.onDelete();
+extern GuiList.onDoubleClick(Int itemnum);
+extern GuiList.onLeftClick(Int itemnum);
+extern GuiList.onSecondLeftClick(Int itemnum);
+extern Int GuiList.onRightClick(Int itemnum);
+extern Int GuiList.onColumnDblClick(Int col, Int x, Int y);
+extern Int GuiList.onColumnLabelClick(Int col, Int x, Int y);
+extern GuiList.onItemSelection(Int itemnum, Int selected);
+
+  // GuiTree
+
+extern Int GuiTree.onWantAutoContextMenu();
+extern Int GuiTree.onMouseWheelUp(Int clicked, Int lines);
+extern Int GuiTree.onMouseWheelDown(Int clicked, Int lines);
+extern Int GuiTree.onContextMenu(Int x, Int y);
+extern Int GuiTree.onChar(Int c);
+extern GuiTree.onItemRecvDrop(TreeItem item);
+extern GuiTree.onLabelChange(TreeItem item);
+extern GuiTree.onItemSelected(TreeItem item);
+extern GuiTree.onItemDeselected(TreeItem item);
+
+extern Int GuiTree.getNumRootItems();
+extern TreeItem GuiTree.enumRootItem(Int which);
+extern GuiTree.jumpToNext(Int c);
+extern GuiTree.ensureItemVisible(TreeItem item);
+extern Int GuiTree.getContentsWidth();
+extern Int GuiTree.getContentsHeight();
+extern TreeItem GuiTree.addTreeItem(TreeItem item, TreeItem par, Int sorted, Int haschildtab);
+extern Int GuiTree.removeTreeItem(TreeItem item);
+extern GuiTree.moveTreeItem(TreeItem item, TreeItem newparent);
+extern GuiTree.deleteAllItems();
+extern Int GuiTree.expandItem(TreeItem item);
+extern GuiTree.expandItemDeferred(TreeItem item);
+extern Int GuiTree.collapseItem(TreeItem item);
+extern GuiTree.collapseItemDeferred(TreeItem item);
+extern GuiTree.selectItem(TreeItem item);
+extern GuiTree.selectItemDeferred(TreeItem item);
+extern GuiTree.delItemDeferred(TreeItem item);
+extern GuiTree.hiliteItem(TreeItem item);
+extern GuiTree.unhiliteItem(TreeItem item);
+extern TreeItem GuiTree.getCurItem();
+extern TreeItem GuiTree.hitTest(Int x, Int y);
+extern GuiTree.editItemLabel(TreeItem item);
+extern GuiTree.cancelEditLabel(Int destroyit);
+extern GuiTree.setAutoEdit(Int ae);
+extern Int GuiTree.getAutoEdit();
+extern TreeItem GuiTree.getByLabel(TreeItem item, String  name);
+extern GuiTree.setSorted(Int dosort);
+extern Int  GuiTree.getSorted();
+extern GuiTree.sortTreeItems();
+extern TreeItem GuiTree.getSibling(TreeItem item);
+extern GuiTree.setAutoCollapse(Int doautocollapse);
+extern Int GuiTree.setFontSize(Int newsize);
+extern Int GuiTree.getFontSize();
+extern Int GuiTree.getNumVisibleChildItems(TreeItem c);
+extern Int GuiTree.getNumVisibleItems();
+extern TreeItem GuiTree.enumVisibleItems(Int n);
+extern TreeItem GuiTree.enumVisibleChildItems(TreeItem c, Int n);
+extern TreeItem GuiTree.enumAllItems(Int n);
+extern Int GuiTree.getItemRectX(TreeItem item);
+extern Int GuiTree.getItemRectY(TreeItem item);
+extern Int GuiTree.getItemRectW(TreeItem item);
+extern Int GuiTree.getItemRectH(TreeItem item);
+// extern TreeItem GuiTree.getItemFromPoint(Int x, Int y);
+
+
+
+  // TreeItem
+
+extern Int TreeItem.getNumChildren();
+extern TreeItem.setLabel(String label);
+extern String TreeItem.getLabel();
+extern TreeItem.ensureVisible();
+extern TreeItem TreeItem.getNthChild(Int nth);
+extern TreeItem TreeItem.getChild();
+extern TreeItem TreeItem.getChildSibling(TreeItem _item);
+extern TreeItem TreeItem.getSibling();
+extern TreeItem TreeItem.getParent();
+extern TreeItem.editLabel();
+extern Int TreeItem.hasSubItems();
+extern TreeItem.setSorted(Int issorted);
+extern TreeItem.setChildTab(Int haschildtab);
+extern Int TreeItem.isSorted();
+extern Int TreeItem.isCollapsed();
+extern Int TreeItem.isExpanded();
+extern TreeItem.invalidate();
+extern Int TreeItem.isSelected();
+extern Int TreeItem.isHilited();
+extern TreeItem.setHilited(Int ishilited);
+extern Int TreeItem.collapse();
+extern Int TreeItem.expand();
+extern GuiTree TreeItem.getTree();
+// return 1 to override default behaviour of stuff.
+extern TreeItem.onTreeAdd();
+extern TreeItem.onTreeRemove();
+extern TreeItem.onSelect();
+extern TreeItem.onDeselect();
+extern Int TreeItem.onLeftDoubleClick();
+extern Int TreeItem.onRightDoubleClick();
+extern Int TreeItem.onChar(Int key);
+extern TreeItem.onExpand();
+extern TreeItem.onCollapse();
+extern Int TreeItem.onBeginLabelEdit();
+extern Int TreeItem.onEndLabelEdit(String newlabel);
+extern Int TreeItem.onContextMenu(Int x, Int y);
+
+  // MenuButton
+
+extern MenuButton.onOpenMenu();
+extern MenuButton.onCloseMenu();
+extern MenuButton.onSelectItem(String item);
+extern MenuButton.openMenu();
+extern MenuButton.closeMenu();
+
+  // CheckBox
+
+extern CheckBox.onToggle(int newstate);
+extern CheckBox.setChecked(int checked);
+extern Int CheckBox.isChecked();
+extern CheckBox.setText(String txt);
+extern String CheckBox.getText();
+
+  // Form
+extern Int Form.getContentsHeight();
+extern Form.newCell(String groupname);
+extern Form.nextRow();
+extern Form.deleteAll();
+
+ // ComponentBucket
+extern Int ComponentBucket.getMaxHeight(); // for verticalcompbucks
+extern Int ComponentBucket.getMaxWidth(); // for horizontal compbucks
+extern Int ComponentBucket.setScroll(int x);
+extern Int ComponentBucket.getScroll();
+extern Int ComponentBucket.getNumChildren();
+extern GuiObject ComponentBucket.enumChildren(int n);
+
+// predecl system symbols
+.CODE
+
+#define APP_NAME "Winamp"
+
+// This function is called by System.onScriptLoaded() as the first thing it does. Subsequent events check __deprecated_runtime
+// before continuing. If you have no System.onScriptLoaded(), you will have no version check.
+
+// This is to ensure that runtimes that do not have stack protection (that is wa3, wa5 and wa5.01) do
+// not crash when trying to unexisting functions (with parameters, since parameterless functions would 
+// not crash), that is, functions that are meant for a higher version number than that of the runtime 
+// the script is running on.
+
+Function Int versionCheck();
+Int versionCheck() {
+  Double v = getRuntimeVersion();
+  if (v < 1 || v > 65535) {
+    __deprecated_runtime = 1;
+    messageBox("This script requires " + MC_TARGET, "Error", 1, "");
+    return 0;
+  }
+  return 1;
+}
+
+// begin protecting the stack, anything below this requires a getVersion() >= 1 and <= 65535
+.STACKPROT
+
+#endif
+

@@ -1,0 +1,81 @@
+/**
+	Note:
+	This file is a relict of Winamp3/Wasabi.Player.
+	I have tested it and it seems not to work :(
+	If anyone get's this one to work lemme know: martin@skinconsortium.com
+**/
+
+extern class @{F857BECA-8E19-41f1-973E-097E39649F03}@ Object _predecl CoreAdmin;
+extern class @{2825A91B-D488-4245-AAF1-7059CF88437B}@ Object &Core;
+
+extern Core CoreAdmin.getNamedCore(String name);
+extern Core CoreAdmin.newNamedCore(String name);
+extern Int CoreAdmin.freeCore(Core name);
+extern Int CoreAdmin.freeCoreByName(String name);
+
+
+extern Core.playFile(String filename);
+extern Core.stop();
+extern Core.setVolume(Int volume);
+extern Core.getStatus();
+
+// I love keyboard macros.
+extern Int Core.onStarted();
+extern Int Core.onStopped();
+extern Int Core.onPaused();
+extern Int Core.onUnpaused();
+extern Int Core.onSeeked(Int newpos);
+extern Int Core.onVolumeChange(Int newvol);
+extern Int Core.onPanChange(Int newpan);
+extern Int Core.onEQStatusChange(Int newval);
+extern Int Core.onEQPreampChange(Int newval);
+extern Int Core.onEQBandChange(Int band, Int newval);
+extern Int Core.onEQAutoChange(Int newval);
+extern Int Core.onCoreStatusMsg(String msgtext);
+extern Int Core.onWarningMsg(String msgtext);
+extern Int Core.onErrorMsg(String msgtext);
+extern Int Core.onTitleChange(String newtitle);
+extern Int Core.onTitle2Change(String newtitle2);
+extern Int Core.onInfoChange(String info);
+extern Int Core.onUrlChange(String url);
+extern Int Core.onLengthChange(Int newlength);
+extern Int Core.onNextFile();
+extern Int Core.onNeedNextFile(Int fileid);
+extern Int Core.onSetNextFile(String playstring);
+extern Int Core.onErrorOccured(Int severity, String errortext);
+extern Int Core.onAbortCurrentSong();
+extern Int Core.onEndOfDecode();
+extern Int Core.onFileComplete(String playstring);
+extern Int Core.onConvertersChainRebuilt();
+extern Int Core.onMediaFamilyChange(String newfamily);
+
+extern Int Core.setNextFile(String pstr);
+extern Int Core.getStatus();
+extern String Core.getCurrent();
+extern Int Core.getCurPlaybackNumber();
+extern Int Core.getNumTracks();
+extern Int Core.getPosition();
+extern Int Core.getWritePosition();
+extern Int Core.setPosition(Int ms);
+extern Int Core.getLength();
+extern Int Core.getVolume();
+extern Core.setVolume(Int vol);
+extern Int Core.getPan();
+extern Core.setPan(Int bal);
+extern Core.setMute(Int mute);
+extern Int Core.getMute();
+extern Int Core.getLeftVuMeter();
+extern Int Core.getRightVuMeter();
+extern Core.userButton(Int ubutton);
+extern Int Core.getEqStatus();
+extern Core.setEqStatus(Int enable);
+extern Int Core.getEqPreamp();
+extern Core.setEqPreamp(Int pre);
+extern Int Core.getEqBand(Int band);
+extern Core.setEqBand(Int band, Int val);
+extern Int Core.getEqAuto();
+extern Core.setEqAuto(Int enable);
+extern Core.setCustomMsg(String msgtext);
+extern Core.setPriority(Int priority);
+extern Int Core.getPriority();
+extern Core.rebuildConvertersChain();
