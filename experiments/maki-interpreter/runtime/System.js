@@ -1,9 +1,6 @@
 const Group = require("./Group");
 const MakiObject = require("./MakiObject");
 
-const onScriptLoadedCallbacks = [];
-const onSetXuiParamCallbacks = [];
-
 class System extends MakiObject {
   /**
    * getClassName()
@@ -15,16 +12,22 @@ class System extends MakiObject {
     return "System";
   }
 
+  constructor() {
+    super();
+    this._onScriptLoadedCallbacks = [];
+    this._onSetXuiParamCallbacks = [];
+  }
+
   _start() {
-    onScriptLoadedCallbacks.forEach(cb => {
+    this._onScriptLoadedCallbacks.forEach(cb => {
       cb();
     });
   }
   onScriptLoaded(cb) {
-    onScriptLoadedCallbacks.push(cb);
+    this._onScriptLoadedCallbacks.push(cb);
   }
   onSetXuiParam(cb) {
-    onSetXuiParamCallbacks.push(cb);
+    this._onSetXuiParamCallbacks.push(cb);
   }
   getScriptGroup() {
     return new Group();
