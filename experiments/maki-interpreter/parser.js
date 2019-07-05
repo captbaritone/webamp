@@ -22,12 +22,12 @@ class MakiFile {
   }
 
   readUInt32LE() {
-    const int = this.peakUInt32LE();
+    const int = this.peekUInt32LE();
     this._i += 4;
     return int;
   }
 
-  peakUInt32LE() {
+  peekUInt32LE() {
     const int = this._buffer.readUInt32LE(this._i);
     const arrInt = this.__readUInt32LE__arr();
     if (int !== arrInt) {
@@ -332,7 +332,7 @@ function parseComand({ makiFile, length, pos, localFunctions }) {
   if (
     // Is there another UInt32 to read?
     length > pos + 5 + 4 &&
-    makiFile.peakUInt32LE() >= 0xffff0000
+    makiFile.peekUInt32LE() >= 0xffff0000
   ) {
     makiFile.readUInt32LE();
   }
