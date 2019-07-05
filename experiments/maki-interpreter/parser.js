@@ -292,6 +292,8 @@ function parseComand({ makiFile, length, pos, localFunctions }) {
       arg = argValue;
       break;
     }
+    default:
+      throw new Error("Invalid argType");
   }
 
   command.arguments = [arg];
