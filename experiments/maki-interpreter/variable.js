@@ -1,8 +1,7 @@
 class Variable {
-  constructor(props) {
-    this._props = props;
-    this.type = props.type;
-    this.typeName = props.typeName;
+  constructor({ type, typeName }) {
+    this.type = type;
+    this.typeName = typeName;
   }
 
   getValue() {
