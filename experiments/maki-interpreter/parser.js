@@ -16,34 +16,68 @@ const PRIMITIVE_TYPES = {
 // typed array: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays
 class MakiFile {
   constructor(buffer) {
+    this._arr = new Uint8Array(buffer);
     this._buffer = buffer;
     this._i = 0;
   }
 
   readUInt32LE() {
-    const int = this._buffer.readUInt32LE(this._i);
+    const int = this.peakUInt32LE();
     this._i += 4;
     return int;
   }
 
   peakUInt32LE() {
-    return this._buffer.readUInt32LE(this._i);
+    const int = this._buffer.readUInt32LE(this._i);
+    const arrInt = this.__readUInt32LE__arr();
+    if (int !== arrInt) {
+      throw new Error("Array value does not equal buffer value");
+    }
+    return int;
+  }
+
+  __readUInt32LE__arr() {
+    const offset = this._i >>> 0;
+
+    return (
+      (this._arr[offset] |
+        (this._arr[offset + 1] << 8) |
+        (this._arr[offset + 2] << 16)) +
+      this._arr[offset + 3] * 0x1000000
+    );
   }
 
   readUInt16LE() {
     const int = this._buffer.readUInt16LE(this._i);
+    const arrInt = this.__readUInt16LE__arr();
+    if (int !== arrInt) {
+      throw new Error("Array value does not equal buffer value");
+    }
     this._i += 2;
     return int;
   }
 
+  __readUInt16LE__arr() {
+    const offset = this._i >>> 0;
+    return this._arr[offset] | (this._arr[offset + 1] << 8);
+  }
+
   readUInt8() {
     const int = this._buffer.readUInt8(this._i);
+    const arrInt = this._arr[this._i];
+    if (int !== arrInt) {
+      throw new Error("Array value does not equal buffer value");
+    }
     this._i++;
     return int;
   }
 
   readStringOfLength(length) {
     const str = this._buffer.toString(ENCODING, this._i, this._i + length);
+    const arrStr = this.__readString__arr(length);
+    if (str !== arrStr) {
+      throw new Error("Array value does not equal buffer value");
+    }
     this._i += length;
     return str;
   }
@@ -54,6 +88,16 @@ class MakiFile {
 
   getPosition() {
     return this._i;
+  }
+
+  __readString__arr(length) {
+    let ret = "";
+    const end = Math.min(this._arr.length, this._i + length);
+
+    for (var i = this._i; i < end; ++i) {
+      ret += String.fromCharCode(this._arr[i]);
+    }
+    return ret;
   }
 }
 
@@ -115,34 +159,19 @@ function readVariables({ makiFile, classes }) {
     const uinit4 = makiFile.readUInt16LE();
     const global = makiFile.readUInt8();
     const system = makiFile.readUInt8();
-    const props = {
-      typeOffset,
-      object,
-      subClass,
-      uinit1,
-      uinit2,
-      uinit3,
-      uinit4,
-      global,
-      system
-    };
 
     if (object) {
       const klass = classes[typeOffset];
       if (klass == null) {
         throw new Error("Invalid type");
       }
-      variables.push(
-        new Variable({ ...props, type: klass, typeName: "OBJECT" })
-      );
+      variables.push(new Variable({ type: klass, typeName: "OBJECT" }));
     } else if (subClass) {
       const variable = variables[typeOffset];
       if (variable == null) {
         throw new Error("Invalid type");
       }
-      variables.push(
-        new Variable({ ...props, type: variable, typeName: "SUBCLASS" })
-      );
+      variables.push(new Variable({ type: variable, typeName: "SUBCLASS" }));
     } else {
       const typeName = PRIMITIVE_TYPES[typeOffset];
       if (typeName == null) {
@@ -171,7 +200,7 @@ function readVariables({ makiFile, classes }) {
         default:
           throw new Error("Invalid primitive type");
       }
-      const variable = new Variable({ ...props, type: typeName, typeName });
+      const variable = new Variable({ type: typeName, typeName });
       variable.setValue(value);
       variables.push(variable);
     }
