@@ -26,6 +26,10 @@ class MakiFile {
     return int;
   }
 
+  peakUInt32LE() {
+    return this._buffer.readUInt32LE(this._i);
+  }
+
   readUInt16LE() {
     const int = this._buffer.readUInt16LE(this._i);
     this._i += 2;
@@ -48,10 +52,8 @@ class MakiFile {
     return this.readStringOfLength(this.readUInt16LE());
   }
 
-  getNextNBytesDEPRECATED(length) {
-    const bytes = this._buffer.slice(this._i, this._i + length);
-    this._i += length;
-    return bytes;
+  getPosition() {
+    return this._i;
   }
 }
 
@@ -93,9 +95,9 @@ function readMethods(makiFile) {
     // Offset into our parsed types
     const typeOffset = classCode & 0xff;
     // This is probably the second half of a uint32
-    const dummy2 = makiFile.readUInt16LE();
+    makiFile.readUInt16LE();
     const name = makiFile.readString();
-    methods.push({ dummy2, name, typeOffset });
+    methods.push({ name, typeOffset });
   }
   return methods;
 }
@@ -151,6 +153,8 @@ function readVariables({ makiFile, classes }) {
       switch (typeName) {
         // BOOLEAN
         case PRIMITIVE_TYPES[5]:
+          value = uinit1;
+          break;
         // INT
         case PRIMITIVE_TYPES[2]:
           value = uinit1;
@@ -200,21 +204,23 @@ function readBindings(makiFile) {
 
 function decodeCode({ makiFile, classes, variables, methods, bindings }) {
   const length = makiFile.readUInt32LE();
-  const commandsBuffer = makiFile.getNextNBytesDEPRECATED(length);
+  const start = makiFile.getPosition();
 
-  let pos = 0;
+  function getPos() {
+    return makiFile.getPosition() - start;
+  }
   const localFunctions = {};
   const results = [];
-  while (pos < commandsBuffer.length) {
+  while (makiFile.getPosition() < start + length) {
     const command = parseComand({
-      commandsBuffer,
-      pos,
+      makiFile,
+      length,
+      pos: getPos(),
       classes,
       variables,
       methods,
       localFunctions
     });
-    pos += command._size;
     results.push(command);
   }
   // TODO: Don't mutate
@@ -230,44 +236,43 @@ function decodeCode({ makiFile, classes, variables, methods, bindings }) {
 }
 
 // TODO: Refactor this to consume bytes directly off the end of MakiFile
-function parseComand({ commandsBuffer, pos, localFunctions }) {
+function parseComand({ makiFile, length, pos, localFunctions }) {
   const command = {};
-  const opcode = commandsBuffer.readInt8(pos);
+  const opcode = makiFile.readUInt8();
   command.offset = pos;
   command.pos = pos;
   command.opcode = opcode;
   command.arguments = [];
   command.command = COMMANDS[opcode];
-  command._size = 1;
 
   if (command.command == null) {
     throw new Error(`Unknown opcode "${opcode}"`);
   }
 
   if (command.command.arg == null) {
-    command._size = 1;
     return command;
   }
 
+  const argValue = makiFile.readUInt32LE();
   const argType = command.command.arg;
   let arg = null;
   switch (argType) {
     case "var": {
-      arg = commandsBuffer.readUInt32LE(pos + 1);
+      arg = argValue;
       break;
     }
     case "line": {
-      arg = commandsBuffer.readUInt32LE(pos + 1) + 5;
+      arg = argValue + 5;
       break;
     }
     case "objFunc": {
       // TODO: ClassesOffset
-      arg = commandsBuffer.readUInt32LE(pos + 1);
+      arg = argValue;
       break;
     }
     case "func": {
       // Note in the perl code here: "todo, something strange going on here..."
-      const variable = commandsBuffer.readUInt32LE(pos + 1) + 5;
+      const variable = argValue + 5;
       const offset = variable + pos;
       arg = {
         name: `func${offset}`,
@@ -284,25 +289,25 @@ function parseComand({ commandsBuffer, pos, localFunctions }) {
     }
     case "obj": {
       // Classes Offset
-      arg = commandsBuffer.readUInt32LE(pos + 1);
+      arg = argValue;
       break;
     }
   }
 
   command.arguments = [arg];
-  command._size = 5;
 
   // From perl: look forward for a stack protection block
   // (why do I have to look FORWARD. stupid nullsoft)
   if (
-    commandsBuffer.length > pos + 5 + 4 &&
-    commandsBuffer.readUInt32LE(pos + 5) >= 0xffff0000
+    // Is there another UInt32 to read?
+    length > pos + 5 + 4 &&
+    makiFile.peakUInt32LE() >= 0xffff0000
   ) {
-    command._size += 4;
+    makiFile.readUInt32LE();
   }
 
   if (opcode === 112) {
-    command._size += 1;
+    makiFile.readUInt8();
   }
   return command;
 }
@@ -319,7 +324,7 @@ function parse(buffer) {
   readConstants({ makiFile: makiFile, variables });
   const bindings = readBindings(makiFile);
   const commands = decodeCode({
-    makiFile: makiFile,
+    makiFile,
     classes,
     variables,
     methods,
