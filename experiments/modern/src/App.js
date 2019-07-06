@@ -2,6 +2,9 @@ import React from "react";
 import JSZip from "jszip";
 import "./App.css";
 import * as Utils from "./utils";
+// const runtime = require("./maki-interpreter/runtime");
+// const System = require("./maki-interpreter/runtime/System");
+// const interpret = require("./maki-interpreter/interpreter");
 
 const IGNORE_IDS = new Set([
   // The maki script shows/hides these depending on which corner you are in
@@ -39,6 +42,8 @@ async function getSkin() {
     zip
   );
 
+  // const system = new System();
+
   const images = {};
   await Utils.asyncTreeMap(skinXml, async node => {
     // TODO: This is probalby only valid if in an `<elements>` node
@@ -54,6 +59,17 @@ async function getSkin() {
       }
       case "truetypefont": {
         //console.log(element);
+        break;
+      }
+      case "script": {
+        const { file, param } = node.attributes;
+        if (!file.endsWith("standardframe.maki")) {
+          break;
+        }
+        const scriptFile = Utils.getCaseInsensitveFile(zip, file);
+        const data = await scriptFile.async("uint8array");
+        // interpret({ data, system, runtime, log: true });
+        console.log(data);
         break;
       }
       default: {
