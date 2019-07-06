@@ -1,5 +1,5 @@
 const parse = require("./parser");
-const { getClass } = require("./objects");
+const { getClass, getFormattedId } = require("./objects");
 const interpret = require("./virtualMachine");
 
 function main({ runtime, data, system, log }) {
@@ -14,7 +14,10 @@ function main({ runtime, data, system, log }) {
     if (resolved == null && log) {
       const klass = getClass(hash);
       console.warn(
-        `Class missing from runtime: ${hash} expected ${klass.name}`
+        `Class missing from runtime: ${hash}`,
+        klass == null
+          ? `(formatted ID: ${getFormattedId(hash)})`
+          : `expected ${klass.name}`
       );
     }
     return resolved;
