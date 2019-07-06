@@ -6,8 +6,8 @@ const interpret = require("./interpreter");
 
 function runFile(relativePath) {
   const system = new System();
-  const buffer = fs.readFileSync(path.join(__dirname, relativePath));
-  interpret({ runtime, buffer, system, log: false });
+  const data = fs.readFileSync(path.join(__dirname, relativePath));
+  interpret({ runtime, data, system, log: false });
 }
 
 let mockMessageBox;
@@ -24,7 +24,7 @@ describe("can call messageBox with hello World", () => {
   const versions = [
     // "v1.1.0.a9 (Winamp 3 alpha 8r)",
     "v1.1.1.b3 (Winamp 3.0 build 488d)",
-    "v1.1.1.b3 (Winamp 3.0 full)"
+    "v1.1.1.b3 (Winamp 3.0 full)",
     // "v1.1.13 (Winamp 5.02)",
     // "v1.2.0 (Winamp 5.66)"
   ];

@@ -8,9 +8,9 @@ const System = require("./runtime/System");
 
 function main() {
   const relativePath = process.argv[2];
-  const buffer = fs.readFileSync(path.join(__dirname, relativePath));
+  const data = fs.readFileSync(path.join(__dirname, relativePath));
   const system = new System();
-  run({ runtime, buffer, system, log: true });
+  run({ runtime, data, system, log: true });
 }
 
 main();

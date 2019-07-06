@@ -14,8 +14,8 @@ const PRIMITIVE_TYPES = {
 // file. When we want to run in the browser, we can refactor this class to use a
 // typed array: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays
 class MakiFile {
-  constructor(buffer) {
-    this._arr = new Uint8Array(buffer);
+  constructor(data) {
+    this._arr = new Uint8Array(data);
     this._i = 0;
   }
 
