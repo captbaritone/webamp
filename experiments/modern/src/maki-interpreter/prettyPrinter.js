@@ -11,7 +11,11 @@ function printValue(value) {
   switch (variable.typeName) {
     case "OBJECT":
       const obj = runtime[variable.type];
-      type = obj.getClassName();
+      if (obj == null) {
+        type = "Unknown object";
+      } else {
+        type = obj.getClassName();
+      }
       break;
     case "STRING":
       const str = variable.getValue();
