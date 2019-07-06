@@ -1,68 +1,23 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Modern Winamp Skins
 
-## Available Scripts
+This package is part of an experiment to see if we could bring "modern" Winamp skins to the browser. It's still very early. If you have any qeustions or are interested in getting involved, feel free to check out our [Discord server](https://discord.gg/mEcRbVq).
 
-In the project directory, you can run:
+- We have a master task here which is sometimes up to date: https://github.com/captbaritone/webamp/issues/796
+- We have a shared Dropbox Paper doc with up to date notes, but it will likely be hard to newcomers to read. You can find it [here](https://paper.dropbox.com/doc/Webamp-Modern-Skins-Notes--AgWp4Jwdobq13VLYYOgwJGOCAQ-UpeDNptmJ0t6aN1jlWbfU).
 
-### `npm start`
+## Maki Interpreter
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+One of the biggest challenges to this project is that modern skins could define their own behavior by writing scripts in a custom language called Maki (Make a Killer Interface). One of the critical pieces of this project will be to write a working Maki interpreter and runtime in browser-compatible JavaScript. We have made good progress on this front. The work on that project lives in `src/maki-interpreter` and has its own [readme](./src/maki-interpreter/readme.md).
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## Running
 
-### `npm test`
+This project is _very_ incomplete. Still, you can see some of what we have working so far by starting a dev server. The project was boot strapped with [Create React App](https://facebook.github.io/create-react-app/) so you can get it running with:
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+yarn
+yarn start
+```
 
-### `npm run build`
+## Tests
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Some things have tests. You can run them by running `yarn test` in this directory. Note that they do not currently run as part of his repostiorie`s Travis tests.
