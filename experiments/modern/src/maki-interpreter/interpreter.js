@@ -2,8 +2,8 @@ const parse = require("./parser");
 const { getClass } = require("./objects");
 const interpret = require("./virtualMachine");
 
-function main({ runtime, buffer, system, log }) {
-  const program = parse(buffer);
+function main({ runtime, data, system, log }) {
+  const program = parse(data);
 
   // Set the System global
   program.variables[0].setValue(system);
