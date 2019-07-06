@@ -1,14 +1,13 @@
 const { COMMANDS } = require("./constants");
 const Variable = require("./variable");
 const MAGIC = "FG";
-const ENCODING = "binary";
 
 const PRIMITIVE_TYPES = {
   5: "BOOLEAN",
   2: "INT",
   3: "FLOAT",
   4: "DOUBLE",
-  6: "STRING"
+  6: "STRING",
 };
 
 // Holds a buffer and a pointer. Consumers can consume bytesoff the end of the
@@ -17,7 +16,6 @@ const PRIMITIVE_TYPES = {
 class MakiFile {
   constructor(buffer) {
     this._arr = new Uint8Array(buffer);
-    this._buffer = buffer;
     this._i = 0;
   }
 
@@ -28,15 +26,6 @@ class MakiFile {
   }
 
   peekUInt32LE() {
-    const int = this._buffer.readUInt32LE(this._i);
-    const arrInt = this.__readUInt32LE__arr();
-    if (int !== arrInt) {
-      throw new Error("Array value does not equal buffer value");
-    }
-    return int;
-  }
-
-  __readUInt32LE__arr() {
     const offset = this._i >>> 0;
 
     return (
@@ -48,38 +37,26 @@ class MakiFile {
   }
 
   readUInt16LE() {
-    const int = this._buffer.readUInt16LE(this._i);
-    const arrInt = this.__readUInt16LE__arr();
-    if (int !== arrInt) {
-      throw new Error("Array value does not equal buffer value");
-    }
-    this._i += 2;
-    return int;
-  }
-
-  __readUInt16LE__arr() {
     const offset = this._i >>> 0;
+    this._i += 2;
     return this._arr[offset] | (this._arr[offset + 1] << 8);
   }
 
   readUInt8() {
-    const int = this._buffer.readUInt8(this._i);
-    const arrInt = this._arr[this._i];
-    if (int !== arrInt) {
-      throw new Error("Array value does not equal buffer value");
-    }
+    const int = this._arr[this._i];
     this._i++;
     return int;
   }
 
   readStringOfLength(length) {
-    const str = this._buffer.toString(ENCODING, this._i, this._i + length);
-    const arrStr = this.__readString__arr(length);
-    if (str !== arrStr) {
-      throw new Error("Array value does not equal buffer value");
+    let ret = "";
+    const end = Math.min(this._arr.length, this._i + length);
+
+    for (var i = this._i; i < end; ++i) {
+      ret += String.fromCharCode(this._arr[i]);
     }
     this._i += length;
-    return str;
+    return ret;
   }
 
   readString() {
@@ -88,16 +65,6 @@ class MakiFile {
 
   getPosition() {
     return this._i;
-  }
-
-  __readString__arr(length) {
-    let ret = "";
-    const end = Math.min(this._arr.length, this._i + length);
-
-    for (var i = this._i; i < end; ++i) {
-      ret += String.fromCharCode(this._arr[i]);
-    }
-    return ret;
   }
 }
 
@@ -248,7 +215,7 @@ function decodeCode({ makiFile, classes, variables, methods, bindings }) {
       classes,
       variables,
       methods,
-      localFunctions
+      localFunctions,
     });
     results.push(command);
   }
@@ -306,12 +273,12 @@ function parseComand({ makiFile, length, pos, localFunctions }) {
       arg = {
         name: `func${offset}`,
         code: [],
-        offset
+        offset,
       };
       if (localFunctions[offset] == null) {
         localFunctions[offset] = {
           function: arg,
-          offset
+          offset,
         };
       }
       break;
@@ -359,7 +326,7 @@ function parse(buffer) {
     classes,
     variables,
     methods,
-    bindings
+    bindings,
   });
 
   // Map binary offsets to command indexes.
@@ -378,7 +345,7 @@ function parse(buffer) {
     const { binaryOffset, ...rest } = binding;
     return {
       commandOffset: offsetToCommand[binaryOffset],
-      ...rest
+      ...rest,
     };
   });
   return {
@@ -387,7 +354,7 @@ function parse(buffer) {
     methods,
     variables,
     bindings: resolvedBindings,
-    commands
+    commands,
   };
 }
 
