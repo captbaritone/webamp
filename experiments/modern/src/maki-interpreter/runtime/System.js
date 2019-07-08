@@ -12,23 +12,10 @@ class System extends MakiObject {
     return "System";
   }
 
-  constructor() {
-    super();
-    this._onScriptLoadedCallbacks = [];
-    this._onSetXuiParamCallbacks = [];
+  js_start() {
+    this.js_trigger("onScriptLoaded");
   }
 
-  _start() {
-    this._onScriptLoadedCallbacks.forEach(cb => {
-      cb();
-    });
-  }
-  onScriptLoaded(cb) {
-    this._onScriptLoadedCallbacks.push(cb);
-  }
-  onSetXuiParam(cb) {
-    this._onSetXuiParamCallbacks.push(cb);
-  }
   getScriptGroup() {
     return new Group();
   }

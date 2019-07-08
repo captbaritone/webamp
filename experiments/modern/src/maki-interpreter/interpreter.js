@@ -29,20 +29,13 @@ function main({ runtime, data, system, log }) {
       return interpret(binding.commandOffset, program, { log });
     };
 
-    // For now we only know how to handle System handlers.
-    if (binding.variableOffset === 0) {
-      const obj = program.variables[binding.variableOffset].getValue();
-      const method = program.methods[binding.methodOffset];
-      obj[method.name](handler);
-    } else {
-      console.warn(
-        "Not Implemented: Not binding to non-system events",
-        binding
-      );
-    }
+    const variable = program.variables[binding.variableOffset];
+
+    const method = program.methods[binding.methodOffset];
+    variable.hook(method.name, handler);
   });
 
-  system._start();
+  system.js_start();
 }
 
 module.exports = main;
