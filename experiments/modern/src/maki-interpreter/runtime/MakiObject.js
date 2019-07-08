@@ -1,4 +1,22 @@
+const Emitter = require("../Emitter");
+
 class MakiObject {
+  constructor() {
+    this._emitter = new Emitter();
+  }
+
+  js_trigger(eventName, ...args) {
+    this._emitter.trigger(eventName, args);
+  }
+
+  js_listenToAll(cb) {
+    return this._emitter.listenToAll(cb);
+  }
+
+  js_dispose() {
+    this._emitter.dispose();
+  }
+
   /**
    * getClassName()
    *
