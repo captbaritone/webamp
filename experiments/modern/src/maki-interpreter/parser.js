@@ -214,13 +214,15 @@ function decodeCode({ makiFile, classes, variables, methods }) {
 
 // TODO: Refactor this to consume bytes directly off the end of MakiFile
 function parseComand({ makiFile, length, pos, localFunctions }) {
-  const command = {};
   const opcode = makiFile.readUInt8();
-  command.offset = pos;
-  command.pos = pos;
-  command.opcode = opcode;
-  command.arguments = [];
-  command.command = COMMANDS[opcode];
+  const command = {
+    offset: pos,
+    pos,
+    opcode,
+    // TODO: This should just be a single nullable value I think
+    arguments: [],
+    command: COMMANDS[opcode],
+  };
 
   if (command.command == null) {
     throw new Error(`Unknown opcode "${opcode}"`);
@@ -285,6 +287,7 @@ function parseComand({ makiFile, length, pos, localFunctions }) {
     makiFile.readUInt32LE();
   }
 
+  // TODO: What even is this?
   if (opcode === 112) {
     makiFile.readUInt8();
   }
@@ -295,8 +298,12 @@ function parse(buffer) {
   const makiFile = new MakiFile(buffer);
 
   const magic = readMagic(makiFile);
-  readVersion(makiFile);
-  makiFile.readUInt32LE(); // Not sure what we are skipping over here. Just some UInt 32.
+  // TODO: What format is this? Does it even change between compiler versions?
+  // Maybe it's the std.mi version?
+  const version = readVersion(makiFile);
+  // Not sure what we are skipping over here. Just some UInt 32.
+  // Maybe it's additional version info?
+  const extraVersion = makiFile.readUInt32LE();
   const classes = readClasses(makiFile);
   const methods = readMethods(makiFile);
   const variables = readVariables({ makiFile: makiFile, classes });
@@ -336,6 +343,8 @@ function parse(buffer) {
     bindings: resolvedBindings,
     commands,
     localFunctions,
+    version,
+    extraVersion,
   };
 }
 
