@@ -198,7 +198,7 @@ function readBindings(makiFile) {
   return bindings;
 }
 
-function decodeCode({ makiFile, classes, variables, methods, bindings }) {
+function decodeCode({ makiFile, classes, variables, methods }) {
   const length = makiFile.readUInt32LE();
   const start = makiFile.getPosition();
 
@@ -206,29 +206,18 @@ function decodeCode({ makiFile, classes, variables, methods, bindings }) {
     return makiFile.getPosition() - start;
   }
   const localFunctions = {};
-  const results = [];
+  const commands = [];
   while (makiFile.getPosition() < start + length) {
     const command = parseComand({
       makiFile,
       length,
       pos: getPos(),
-      classes,
-      variables,
-      methods,
       localFunctions,
     });
-    results.push(command);
+    commands.push(command);
   }
-  // TODO: Don't mutate
-  Object.values(localFunctions).forEach(localFunction => {
-    bindings.push(localFunction);
-  });
 
-  bindings.sort((a, b) => {
-    return a.binaryOffset - b.binaryOffset;
-  });
-
-  return results;
+  return { commands, localFunctions };
 }
 
 // TODO: Refactor this to consume bytes directly off the end of MakiFile
@@ -321,12 +310,11 @@ function parse(buffer) {
   const variables = readVariables({ makiFile: makiFile, classes });
   readConstants({ makiFile: makiFile, variables });
   const bindings = readBindings(makiFile);
-  const commands = decodeCode({
+  const { commands, localFunctions } = decodeCode({
     makiFile,
     classes,
     variables,
     methods,
-    bindings,
   });
 
   // Map binary offsets to command indexes.
@@ -355,6 +343,7 @@ function parse(buffer) {
     variables,
     bindings: resolvedBindings,
     commands,
+    localFunctions,
   };
 }
 

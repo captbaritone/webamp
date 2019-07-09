@@ -52,7 +52,7 @@ describe("standardframe.maki", () => {
       "MouseRedir",
       "DropDownList",
       "LayoutStatus",
-      "TabSheet"
+      "TabSheet",
     ]);
   });
 
@@ -69,7 +69,7 @@ describe("standardframe.maki", () => {
       "messagebox",
       "onNotify",
       "newGroup",
-      "init"
+      "init",
     ]);
     expect(maki.methods.every(func => func.typeOffset != null)).toBe(true);
   });
@@ -154,8 +154,16 @@ describe("standardframe.maki", () => {
       { variableOffset: 0, commandOffset: 0, methodOffset: 0 },
       { variableOffset: 0, commandOffset: 76, methodOffset: 4 },
       { variableOffset: 2, commandOffset: 143, methodOffset: 9 },
-      { function: { code: [], name: "func722", offset: 722 }, offset: 722 }
     ]);
+  });
+
+  test("can read localFunctions", () => {
+    expect(maki.localFunctions).toEqual({
+      "722": {
+        function: { code: [], name: "func722", offset: 722 },
+        offset: 722,
+      },
+    });
   });
 
   // [opcode, size] as output by the Perl decompiler
@@ -416,7 +424,7 @@ describe("standardframe.maki", () => {
     [24],
     [2],
     [1],
-    [33]
+    [33],
   ];
 
   test("can read commands", () => {
