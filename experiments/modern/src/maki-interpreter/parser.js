@@ -202,19 +202,11 @@ function decodeCode({ makiFile, classes, variables, methods }) {
   const length = makiFile.readUInt32LE();
   const start = makiFile.getPosition();
 
-  function getPos() {
-    return makiFile.getPosition() - start;
-  }
   const localFunctions = {};
   const commands = [];
   while (makiFile.getPosition() < start + length) {
-    const command = parseComand({
-      makiFile,
-      length,
-      pos: getPos(),
-      localFunctions,
-    });
-    commands.push(command);
+    const pos = makiFile.getPosition() - start;
+    commands.push(parseComand({ makiFile, length, pos, localFunctions }));
   }
 
   return { commands, localFunctions };
