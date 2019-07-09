@@ -5,9 +5,6 @@ const interpret = require("./virtualMachine");
 function main({ runtime, data, system, log }) {
   const program = parse(data);
 
-  // Set the System global
-  program.variables[0].setValue(system);
-
   // Replace class hashes with actual JavaScript classes from the runtime
   program.classes = program.classes.map(hash => {
     const resolved = runtime[hash];
@@ -23,18 +20,21 @@ function main({ runtime, data, system, log }) {
     return resolved;
   });
 
-  // Bind toplevel handlers.
+  // Bind top level hooks.
   program.bindings.forEach(binding => {
-    const handler = () => {
-      return interpret(binding.commandOffset, program, { log });
-    };
-
-    const variable = program.variables[binding.variableOffset];
-
-    const method = program.methods[binding.methodOffset];
-    variable.hook(method.name, handler);
+    const { commandOffset, variableOffset, methodOffset } = binding;
+    const variable = program.variables[variableOffset];
+    const method = program.methods[methodOffset];
+    // TODO: Handle disposing of this.
+    // TODO: Handle passing in variables.
+    variable.hook(method.name, () => {
+      interpret(commandOffset, program, { log });
+    });
   });
 
+  // Set the System global
+  // TODO: We could confirm that this variable has the "system" flag set.
+  program.variables[0].setValue(system);
   system.js_start();
 }
 
