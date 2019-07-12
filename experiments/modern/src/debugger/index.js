@@ -70,8 +70,10 @@ const initialState = {
 
 function Debugger({ maki }) {
   // This is all a huge disaster
+  const getNextStepPromiseRef = React.useRef(null);
   const [next, setNext] = React.useState(() => {});
-  const [breakPoints, setBreakpoints] = React.useState(new Set());
+  const [breakPoints, setBreakpoints] = React.useState(new Set([2]));
+  const [paused, setPaused] = React.useState(false);
   const [state, dispatch] = React.useReducer((state, action) => {
     switch (action.type) {
       case "STEPPED":
@@ -90,6 +92,19 @@ function Debugger({ maki }) {
 
   const { variables, stack, commands, commandOffset } = state;
 
+  getNextStepPromiseRef.current = i => {
+    if (!paused) {
+      if (breakPoints.has(i)) {
+        setPaused(true);
+      } else {
+        return;
+      }
+    }
+    return new Promise((resolve, reject) => {
+      // setState accepts a creator function, so we have to pass a function that returns our function.
+      setNext(() => resolve);
+    });
+  };
   const system = new System();
 
   React.useEffect(() => {
@@ -99,10 +114,6 @@ function Debugger({ maki }) {
       system,
       logger: ({ i, stack, program }) => {
         const { variables, commands } = program;
-        const done = new Promise((resolve, reject) => {
-          // setState accepts a creator function, so we have to pass a function that returns our function.
-          setNext(() => resolve);
-        });
         dispatch({
           type: "STEPPED",
           variables,
@@ -110,7 +121,7 @@ function Debugger({ maki }) {
           commandOffset: i,
           stack,
         });
-        return done;
+        return getNextStepPromiseRef.current(i);
       },
     });
   }, []);
@@ -144,6 +155,18 @@ function Debugger({ maki }) {
     >
       <div style={{ gridArea: "commands", overflow: "scroll" }}>
         <button onClick={next}>Next</button>
+        {paused ? (
+          <button
+            onClick={() => {
+              setPaused(false);
+              next();
+            }}
+          >
+            Play
+          </button>
+        ) : (
+          <button onClick={() => setPaused(true)}>Pause</button>
+        )}
         <h2>Commands</h2>
         <table>
           <tbody>
@@ -155,7 +178,33 @@ function Debugger({ maki }) {
                   }}
                   key={i}
                 >
-                  <td>{i}</td>
+                  <td>
+                    {breakPoints.has(i) ? (
+                      <button
+                        onClick={() => {
+                          const newBreakPoints = new Set(breakPoints);
+                          newBreakPoints.delete(i);
+                          setBreakpoints(newBreakPoints);
+                          if (commandOffset === i) {
+                            next();
+                          }
+                        }}
+                      >
+                        Clear
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          const newBreakPoints = new Set(breakPoints);
+                          newBreakPoints.add(i);
+                          setBreakpoints(newBreakPoints);
+                        }}
+                      >
+                        Pause
+                      </button>
+                    )}
+                    {i}
+                  </td>
                   <td>
                     <Command command={command} variables={variables} />
                   </td>
