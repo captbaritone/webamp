@@ -154,6 +154,38 @@ async function interpret(start, program, { logger = null }) {
         stack.push(aValue);
         break;
       }
+      // postinc
+      case 56: {
+        const a = stack.pop();
+        const aValue = a.getValue();
+        a.setValue(aValue + 1);
+        stack.push(aValue);
+        break;
+      }
+      // postdec
+      case 57: {
+        const a = stack.pop();
+        const aValue = a.getValue();
+        a.setValue(aValue - 1);
+        stack.push(aValue);
+        break;
+      }
+      // preinc
+      case 58: {
+        const a = stack.pop();
+        const aValue = a.getValue() + 1;
+        a.setValue(aValue);
+        stack.push(aValue);
+        break;
+      }
+      // predec
+      case 59: {
+        const a = stack.pop();
+        const aValue = a.getValue() - 1;
+        a.setValue(aValue);
+        stack.push(aValue);
+        break;
+      }
       // + (add)
       case 64: {
         const a = stack.pop();
@@ -230,6 +262,34 @@ async function interpret(start, program, { logger = null }) {
         const a = stack.pop();
         const aValue = a instanceof Variable ? a.getValue() : a;
         stack.push(-aValue);
+        break;
+      }
+      // logAnd (&&)
+      case 80: {
+        const a = stack.pop();
+        const aValue = a instanceof Variable ? a.getValue() : a;
+        if (!aValue) {
+          stack.push(false);
+          break;
+        }
+
+        const b = stack.pop();
+        const bValue = b instanceof Variable ? b.getValue() : b;
+        stack.push(!!bValue);
+        break;
+      }
+      // logOr ||
+      case 81: {
+        const a = stack.pop();
+        const aValue = a instanceof Variable ? a.getValue() : a;
+        if (aValue) {
+          stack.push(true);
+          break;
+        }
+
+        const b = stack.pop();
+        const bValue = b instanceof Variable ? b.getValue() : b;
+        stack.push(!!bValue);
         break;
       }
       // <<
