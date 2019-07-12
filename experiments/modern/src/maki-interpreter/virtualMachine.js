@@ -1,12 +1,6 @@
 const Variable = require("./variable");
 
 function coerceTypes (var1, var2, val1, val2) {
-  if (var1.type === 'INT') {
-    if (var2.type === 'FLOAT' || var2.type === 'DOUBLE') {
-      return [val1, Math.floor(val2)];
-    }
-  }
-
   if (var2.type === 'INT') {
     if (var1.type === 'FLOAT' || var1.type === 'DOUBLE') {
       return [Math.floor(val1), val2];
