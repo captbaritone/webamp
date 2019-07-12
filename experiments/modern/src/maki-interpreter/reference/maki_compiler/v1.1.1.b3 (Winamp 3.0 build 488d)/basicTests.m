@@ -16,6 +16,18 @@ System.onScriptLoaded()
         messageBox("2.2 + 2.2 = 4.4", "Fail", 1, "");
     }
 
+    if (sum + sumFloat == sumFloat + sum) {
+        messageBox("4 + 4.4 = 4.4 + 4 (not implict casting)", "Success", 0, "");
+    } else {
+        messageBox("4 + 4.4 = 4.4 + 4 (not implict casting)", "Fail", 1, "");
+    }
+
+    if (true + true == 2) {
+        messageBox("#t + #t = 2", "Success", 0, "");
+    } else {
+        messageBox("#t + #t = 2", "Fail", 1, "");
+    }
+
     if (3 - 2 == 1) {
         messageBox("3 - 2 = 1", "Success", 0, "");
     } else {
@@ -44,6 +56,36 @@ System.onScriptLoaded()
         messageBox("2 * 1.5 = 3", "Success", 0, "");
     } else {
         messageBox("2 * 1.5 = 3", "Fail", 1, "");
+    }
+
+    if (true * 3 == 3) {
+        messageBox("#t * 3 = 3", "Success", 0, "");
+    } else {
+        messageBox("#t * 3 = 3", "Fail", 1, "");
+    }
+
+    if (false * 3 == 0) {
+        messageBox("#f * 3 = 0", "Success", 0, "");
+    } else {
+        messageBox("#f * 3 = 0", "Fail", 1, "");
+    }
+
+    if (true * 0.25 == 0.25) {
+        messageBox("#t * 0.25 = 0.25", "Success", 0, "");
+    } else {
+        messageBox("#t * 0.25 = 0.25", "Fail", 1, "");
+    }
+
+    if (0.25 * true == 0.25) {
+        messageBox("0.25 * #t = 0.25", "Success", 0, "");
+    } else {
+        messageBox("0.25 * #t = 0.25", "Fail", 1, "");
+    }
+
+    if (false * 0.25 == 0) {
+        messageBox("#f * 0.25 = 0", "Success", 0, "");
+    } else {
+        messageBox("#f * 0.25 = 0", "Fail", 1, "");
     }
 
     if (6 / 3 == 2) {
@@ -132,6 +174,24 @@ System.onScriptLoaded()
         messageBox("[int] 4 = [float] 4.4 (autocasting types)", "Fail", 1, "");
     }
 
+    if (!(sumFloat == sum)) {
+        messageBox("! [float] 4.4 = [int] 4 (not autocasting types)", "Success", 0, "");
+    } else {
+        messageBox("! [float] 4.4 = [int] 4 (not autocasting types)", "Fail", 1, "");
+    }
+
+    if (sumFloat != sum) {
+        messageBox("[float] 4.4 != [int] 4 (not autocasting types)", "Success", 0, "");
+    } else {
+        messageBox("[float] 4.4 != [int] 4 (not autocasting types)", "Fail", 1, "");
+    }
+
+    if (!(sum != sumFloat)) {
+        messageBox("! [int] 4 != [float] 4.4 (autocasting types)", "Success", 0, "");
+    } else {
+        messageBox("! [int] 4 != [float] 4.4 (autocasting types)", "Fail", 1, "");
+    }
+
     if (sum <= sumFloat) {
         messageBox("[int] 4 <= [float] 4.4 (autocasting types)", "Success", 0, "");
     } else {
@@ -144,16 +204,41 @@ System.onScriptLoaded()
         messageBox("[int] 4 >= [float] 4.4 (autocasting types)", "Fail", 1, "");
     }
 
+    if (!(sumFloat <= sum)) {
+        messageBox("! [float] 4.4 <= [int] 4 (not autocasting types)", "Success", 0, "");
+    } else {
+        messageBox("! [float] 4.4 <= [int] 4 (not autocasting types)", "Fail", 1, "");
+    }
+
+    if (sumFloat >= sum) {
+        messageBox("[float] 4.4 >= [int] 4 (not autocasting types)", "Success", 0, "");
+    } else {
+        messageBox("[float] 4.4 >= [int] 4 (not autocasting types)", "Fail", 1, "");
+    }
+
+
     if (!(sum < sumFloat)) {
         messageBox("! [int] 4 < [float] 4.4 (autocasting types)", "Success", 0, "");
     } else {
         messageBox("! [int] 4 < [float] 4.4 (autocasting types)", "Fail", 1, "");
     }
 
+    if (!(sumFloat < sum)) {
+        messageBox("! [float] 4.4 < [int] 4 (not autocasting types)", "Success", 0, "");
+    } else {
+        messageBox("! [float] 4.4 < [int] 4 (not autocasting types)", "Fail", 1, "");
+    }
+
     if (!(sum > sumFloat)) {
         messageBox("! [int] 4 > [float] 4.4 (autocasting types)", "Success", 0, "");
     } else {
         messageBox("! [int] 4 > [float] 4.4 (autocasting types)", "Fail", 1, "");
+    }
+
+    if (sumFloat > sum) {
+        messageBox("[float] 4.4 > [int] 4 (not autocasting types)", "Success", 0, "");
+    } else {
+        messageBox("[float] 4.4 > [int] 4 (not autocasting types)", "Fail", 1, "");
     }
 
     Int tempOne = 1;
@@ -204,9 +289,9 @@ System.onScriptLoaded()
 
     Boolean f = false;
     if (!f) {
-        messageBox("!f", "Success", 0, "");
+        messageBox("!#f", "Success", 0, "");
     } else {
-        messageBox("!f", "Fail", 1, "");
+        messageBox("!#f", "Fail", 1, "");
     }
 
     if (!0) {
@@ -216,62 +301,83 @@ System.onScriptLoaded()
     }
 
     if (!1 == false) {
-        messageBox("!1 == false", "Success", 0, "");
+        messageBox("!1 == #f", "Success", 0, "");
     } else {
-        messageBox("!1 == false", "Fail", 1, "");
+        messageBox("!1 == #f", "Fail", 1, "");
     }
 
     if (1 == true) {
-        messageBox("1 == true", "Success", 0, "");
+        messageBox("1 == #t", "Success", 0, "");
     } else {
-        messageBox("1 == true", "Fail", 1, "");
+        messageBox("1 == #t", "Fail", 1, "");
     }
 
     if (0 == false) {
-        messageBox("0 == false", "Success", 0, "");
+        messageBox("0 == #f", "Success", 0, "");
     } else {
-        messageBox("0 == false", "Fail", 1, "");
+        messageBox("0 == #f", "Fail", 1, "");
     }
 
     if (true && true) {
-        messageBox("true && true", "Success", 0, "");
+        messageBox("#t && #t", "Success", 0, "");
     } else {
-        messageBox("true && true", "Fail", 1, "");
+        messageBox("#t && #t", "Fail", 1, "");
     }
 
     if (!(true && false)) {
-        messageBox("!(true && false)", "Success", 0, "");
+        messageBox("!(#t && #f)", "Success", 0, "");
     } else {
-        messageBox("!(true && false)", "Fail", 1, "");
+        messageBox("!(#t && #f)", "Fail", 1, "");
     }
 
     if (!(false && false)) {
-        messageBox("!(false && false)", "Success", 0, "");
+        messageBox("!(#f && #f)", "Success", 0, "");
     } else {
-        messageBox("!(false && false)", "Fail", 1, "");
+        messageBox("!(#f && #f)", "Fail", 1, "");
     }
 
     if (true || true) {
-        messageBox("true || true", "Success", 0, "");
+        messageBox("#t || #t", "Success", 0, "");
     } else {
-        messageBox("true || true", "Fail", 1, "");
+        messageBox("#t || #t", "Fail", 1, "");
     }
 
     if (true || false) {
-        messageBox("true || false", "Success", 0, "");
+        messageBox("#t || #f", "Success", 0, "");
     } else {
-        messageBox("true || false", "Fail", 1, "");
+        messageBox("#t || #f", "Fail", 1, "");
     }
 
     if (false || true) {
-        messageBox("false || true", "Success", 0, "");
+        messageBox("#f || #t", "Success", 0, "");
     } else {
-        messageBox("false || true", "Fail", 1, "");
+        messageBox("#f || #t", "Fail", 1, "");
     }
 
     if (!(false || false)) {
-        messageBox("!(false || false)", "Success", 0, "");
+        messageBox("!(#f || #f)", "Success", 0, "");
     } else {
-        messageBox("!(false || false)", "Fail", 1, "");
+        messageBox("!(#f || #f)", "Fail", 1, "");
+    }
+
+    Int n = 1;
+    if (true || ++n) {
+        if (n == 2) {
+            messageBox("#t || ++n (doesn't short circuit)", "Success", 0, "");
+        } else {
+            messageBox("#t || ++n (did short circuit)", "Fail", 1, "");
+        }
+    } else {
+        messageBox("#t || ++n", "Fail", 1, "");
+    }
+
+    if (!(false && ++n)) {
+        if (n == 3) {
+            messageBox("!(#f && ++ n) (doesn't short circuit)", "Success", 0, "");
+        } else {
+            messageBox("!(#f && ++ n) (did short circuit)", "Fail", 1, "");
+        }
+    } else {
+        messageBox("!(#f && ++ n)", "Fail", 1, "");
     }
 }
