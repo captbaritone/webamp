@@ -32,6 +32,15 @@ async function interpret(start, program, { logger = null }) {
         stack.pop();
         break;
       }
+      // popTo
+      case 3: {
+        const a = stack.pop();
+        let aValue = a instanceof Variable ? a.getValue() : a;
+        const offsetIntoVariables = command.arguments[0];
+        const toVar = variables[offsetIntoVariables];
+        toVar.setValue(aValue);
+        break;
+      }
       // ==
       case 8: {
         const a = stack.pop();
@@ -132,6 +141,13 @@ async function interpret(start, program, { logger = null }) {
         const variable = stack.pop();
         const obj = variable.getValue();
         stack.push(obj[methodName](...methodArgs));
+        break;
+      }
+      // callGlobal
+      case 25: {
+        const offset = command.arguments[0].offset;
+        const nextCommandIndex = offsetToCommand[offset];
+        i = nextCommandIndex - 1;
         break;
       }
       // return
