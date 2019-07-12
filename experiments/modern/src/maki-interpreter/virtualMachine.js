@@ -1,6 +1,4 @@
-const { printCommand } = require("./prettyPrinter");
-
-function interpret(start, program, { log = false }) {
+function interpret(start, program, { logger = null }) {
   const { commands, methods, variables, classes, offsetToCommand } = program;
 
   // Run all the commands that are safe to run. Increment this number to find
@@ -102,8 +100,8 @@ function interpret(start, program, { log = false }) {
     }
 
     // Print some debug info
-    if (log) {
-      printCommand({ i, command, stack, variables });
+    if (logger) {
+      logger({ i, command, stack, variables });
     }
   }
 }
