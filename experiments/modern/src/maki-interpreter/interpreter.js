@@ -26,7 +26,7 @@ function main({ runtime, data, system, log, logger }) {
     const { commandOffset, variableOffset, methodOffset } = binding;
     const variable = program.variables[variableOffset];
     const method = program.methods[methodOffset];
-    const logger = log ? printCommand : null;
+    // const logger = log ? printCommand : logger;
     // TODO: Handle disposing of this.
     // TODO: Handle passing in variables.
     variable.hook(method.name, () => {

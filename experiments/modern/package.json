@@ -6,6 +6,7 @@
     "jszip": "^3.2.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-dropzone": "^10.1.5",
     "react-scripts": "3.0.1",
     "xml-js": "^1.6.11"
   },
@@ -14,9 +15,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test --no-watchman",
     "eject": "react-scripts eject",
-    "decompile": "cd src/maki-interpreter/reference/maki_decompiler_1.1 && perl mdc.pl ../../fixtures/standardframe.maki",
-    "interpret": "node ./src/maki-interpreter/cli.js ./fixtures/standardframe.maki",
-    "debug": "node --inspect-brk ./src/maki-interpreter/cli.js ./fixtures/standardframe.maki"
+    "decompile": "cd src/maki-interpreter/reference/maki_decompiler_1.1 && perl mdc.pl \"../../reference/maki_compiler/v1.1.1.b3 (Winamp 3.0 full)/basicTests.maki\"",
+    "interpret": "node ./src/maki-interpreter/cli.js \"./reference/maki_compiler/v1.1.13 (Winamp 5.02)/hello_world.maki\"",
+    "debug": "node --inspect-brk ./src/maki-interpreter/cli.js ./reference/maki_compiler/v1.1.13 (Winamp 5.02)/hello_world.maki"
   },
   "eslintConfig": {
     "extends": "react-app"

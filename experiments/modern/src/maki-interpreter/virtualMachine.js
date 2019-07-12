@@ -1,12 +1,13 @@
-function interpret(start, program, { logger = null }) {
+const Variable = require("./variable");
+
+async function interpret(start, program, { logger = null }) {
   const { commands, methods, variables, classes, offsetToCommand } = program;
 
   // Run all the commands that are safe to run. Increment this number to find
   // the next bug.
   const stack = [];
-  let i = start - 1;
+  let i = start;
   while (i < commands.length) {
-    i++;
     const command = commands[i];
 
     switch (command.opcode) {
@@ -25,7 +26,11 @@ function interpret(start, program, { logger = null }) {
       case 8: {
         const a = stack.pop();
         const b = stack.pop();
-        stack.push(a.getValue() === b.getValue());
+        // I'm suspicious about this. Should we really be storing both values
+        // and variables on the stack.
+        const aValue = a instanceof Variable ? a.getValue() : a;
+        const bValue = b instanceof Variable ? b.getValue() : b;
+        stack.push(aValue === bValue);
         break;
       }
       // jumpIf
@@ -88,20 +93,94 @@ function interpret(start, program, { logger = null }) {
         stack.push(a.getValue() + b.getValue());
         break;
       }
-      // >>
+      // - (subtract)
+      case 65: {
+        const a = stack.pop();
+        const b = stack.pop();
+        const aValue = a instanceof Variable ? a.getValue() : a;
+        const bValue = b instanceof Variable ? b.getValue() : b;
+        stack.push(bValue - aValue);
+        break;
+      }
+      // * (multiply)
+      case 66: {
+        const a = stack.pop();
+        const b = stack.pop();
+        const aValue = a instanceof Variable ? a.getValue() : a;
+        const bValue = b instanceof Variable ? b.getValue() : b;
+        stack.push(bValue * aValue);
+        break;
+      }
+      // / (divide)
+      case 67: {
+        const a = stack.pop();
+        const b = stack.pop();
+        const aValue = a instanceof Variable ? a.getValue() : a;
+        const bValue = b instanceof Variable ? b.getValue() : b;
+        stack.push(bValue / aValue);
+        break;
+      }
+      // % (mod)
+      case 68: {
+        const a = stack.pop();
+        const b = stack.pop();
+        const aValue = a instanceof Variable ? a.getValue() : a;
+        const bValue = b instanceof Variable ? b.getValue() : b;
+        stack.push(bValue % aValue);
+        break;
+      }
+      // & (binary and)
+      case 72: {
+        const a = stack.pop();
+        const b = stack.pop();
+        const aValue = a instanceof Variable ? a.getValue() : a;
+        const bValue = b instanceof Variable ? b.getValue() : b;
+        stack.push(bValue & aValue);
+        break;
+      }
+      // | (binary or)
+      case 73: {
+        const a = stack.pop();
+        const b = stack.pop();
+        const aValue = a instanceof Variable ? a.getValue() : a;
+        const bValue = b instanceof Variable ? b.getValue() : b;
+        stack.push(bValue | aValue);
+        break;
+      }
+      // - (negative)
+      case 76: {
+        const a = stack.pop();
+        stack.push(-a.getValue());
+        break;
+      }
+      // <<
       case 88: {
         const a = stack.pop();
         const b = stack.pop();
-        stack.push(a >> b);
+        const aValue = a instanceof Variable ? a.getValue() : a;
+        const bValue = b instanceof Variable ? b.getValue() : b;
+        stack.push(aValue << bValue);
+        break;
+      }
+      // >>
+      case 89: {
+        const a = stack.pop();
+        const b = stack.pop();
+        const aValue = a instanceof Variable ? a.getValue() : a;
+        const bValue = b instanceof Variable ? b.getValue() : b;
+        stack.push(bValue >> aValue);
         break;
       }
       default:
         throw new Error(`Unhandled opcode ${command.opcode}`);
     }
 
+    i++;
     // Print some debug info
     if (logger) {
-      logger({ i, command, stack, variables });
+      const done = logger({ i, command, stack, variables, program });
+      console.log(done);
+      await done;
     }
   }
 }
