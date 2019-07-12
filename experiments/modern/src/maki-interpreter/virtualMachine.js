@@ -125,7 +125,10 @@ async function interpret(start, program, { logger = null }) {
         const a = stack.pop();
         const b = stack.pop();
         const aValue = a instanceof Variable ? a.getValue() : a;
-        const bValue = b instanceof Variable ? b.getValue() : b;
+        let bValue = b instanceof Variable ? b.getValue() : b;
+        if (b.type === 'FLOAT' || b.type === 'DOUBLE') {
+          bValue = Math.floor(bValue);
+        }
         stack.push(bValue % aValue);
         break;
       }
