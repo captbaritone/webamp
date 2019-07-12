@@ -1,5 +1,21 @@
 const Variable = require("./variable");
 
+function coerceTypes (var1, var2, val1, val2) {
+  if (var1.type === 'INT') {
+    if (var2.type === 'FLOAT' || var2.type === 'DOUBLE') {
+      return [val1, Math.floor(val2)];
+    }
+  }
+
+  if (var2.type === 'INT') {
+    if (var1.type === 'FLOAT' || var1.type === 'DOUBLE') {
+      return [Math.floor(val1), val2];
+    }
+  }
+
+  return [val1, val2];
+}
+
 async function interpret(start, program, { logger = null }) {
   const { commands, methods, variables, classes, offsetToCommand } = program;
 
@@ -28,9 +44,60 @@ async function interpret(start, program, { logger = null }) {
         const b = stack.pop();
         // I'm suspicious about this. Should we really be storing both values
         // and variables on the stack.
-        const aValue = a instanceof Variable ? a.getValue() : a;
-        const bValue = b instanceof Variable ? b.getValue() : b;
+        let aValue = a instanceof Variable ? a.getValue() : a;
+        let bValue = b instanceof Variable ? b.getValue() : b;
+        [aValue, bValue] = coerceTypes(a, b, aValue, bValue);
         stack.push(aValue === bValue);
+        break;
+      }
+      // !=
+      case 9: {
+        const a = stack.pop();
+        const b = stack.pop();
+        let aValue = a instanceof Variable ? a.getValue() : a;
+        let bValue = b instanceof Variable ? b.getValue() : b;
+        [aValue, bValue] = coerceTypes(a, b, aValue, bValue);
+        stack.push(aValue !== bValue);
+        break;
+      }
+      // >
+      case 10: {
+        const a = stack.pop();
+        const b = stack.pop();
+        let aValue = a instanceof Variable ? a.getValue() : a;
+        let bValue = b instanceof Variable ? b.getValue() : b;
+        [aValue, bValue] = coerceTypes(a, b, aValue, bValue);
+        stack.push(bValue > aValue);
+        break;
+      }
+      // >=
+      case 11: {
+        const a = stack.pop();
+        const b = stack.pop();
+        let aValue = a instanceof Variable ? a.getValue() : a;
+        let bValue = b instanceof Variable ? b.getValue() : b;
+        [aValue, bValue] = coerceTypes(a, b, aValue, bValue);
+        stack.push(bValue >= aValue);
+        break;
+      }
+      // <
+      case 12: {
+        const a = stack.pop();
+        const b = stack.pop();
+        let aValue = a instanceof Variable ? a.getValue() : a;
+        let bValue = b instanceof Variable ? b.getValue() : b;
+        [aValue, bValue] = coerceTypes(a, b, aValue, bValue);
+        stack.push(bValue < aValue);
+        break;
+      }
+      // <=
+      case 13: {
+        const a = stack.pop();
+        const b = stack.pop();
+        let aValue = a instanceof Variable ? a.getValue() : a;
+        let bValue = b instanceof Variable ? b.getValue() : b;
+        [aValue, bValue] = coerceTypes(a, b, aValue, bValue);
+        stack.push(bValue <= aValue);
         break;
       }
       // jumpIf
@@ -82,8 +149,9 @@ async function interpret(start, program, { logger = null }) {
       case 48: {
         const a = stack.pop();
         const b = stack.pop();
-        b.setValue(a);
-        stack.push(a);
+        const aValue = a instanceof Variable ? a.getValue() : a;
+        b.setValue(aValue);
+        stack.push(aValue);
         break;
       }
       // + (add)
@@ -150,10 +218,18 @@ async function interpret(start, program, { logger = null }) {
         stack.push(bValue | aValue);
         break;
       }
+      // ! (not)
+      case 74: {
+        const a = stack.pop();
+        const aValue = a instanceof Variable ? a.getValue() : a;
+        stack.push(aValue ? 0 : 1);
+        break;
+      }
       // - (negative)
       case 76: {
         const a = stack.pop();
-        stack.push(-a.getValue());
+        const aValue = a instanceof Variable ? a.getValue() : a;
+        stack.push(-aValue);
         break;
       }
       // <<
