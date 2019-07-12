@@ -61,13 +61,35 @@ async function fetchTestScript() {
 }
 */
 
+const initialState = {
+  variables: [],
+  stack: [],
+  commands: [],
+  commandOffset: 0,
+};
+
 function Debugger({ maki }) {
   // This is all a huge disaster
-  const [commandOffset, setCommandOffset] = React.useState(0);
-  const [variables, setVariables] = React.useState(null);
-  const [stack, setStack] = React.useState(null);
-  const [commands, setCommands] = React.useState(null);
   const [next, setNext] = React.useState(() => {});
+  const [breakPoints, setBreakpoints] = React.useState(new Set());
+  const [state, dispatch] = React.useReducer((state, action) => {
+    switch (action.type) {
+      case "STEPPED":
+        const { variables, commands, commandOffset, stack } = action;
+        return {
+          ...state,
+          variables,
+          commands,
+          commandOffset,
+          stack,
+        };
+      default:
+        throw new Error("Unknown action type");
+    }
+  }, initialState);
+
+  const { variables, stack, commands, commandOffset } = state;
+
   const system = new System();
 
   React.useEffect(() => {
@@ -76,14 +98,18 @@ function Debugger({ maki }) {
       data: maki,
       system,
       logger: ({ i, stack, program }) => {
+        const { variables, commands } = program;
         const done = new Promise((resolve, reject) => {
           // setState accepts a creator function, so we have to pass a function that returns our function.
           setNext(() => resolve);
         });
-        setVariables([...program.variables]);
-        setStack([...stack]);
-        setCommands([...program.commands]);
-        setCommandOffset(i);
+        dispatch({
+          type: "STEPPED",
+          variables,
+          commands,
+          commandOffset: i,
+          stack,
+        });
         return done;
       },
     });
@@ -96,7 +122,7 @@ function Debugger({ maki }) {
           next();
           break;
         default:
-          console.log(e.key);
+        // console.log(e.key);
       }
     }
     document.addEventListener("keydown", handler);
