@@ -68,7 +68,7 @@ describe("can use basic operators", () => {
   }
 
   versions.forEach(version => {
-    test(`with bytecode compiled by ${version}`, () => {
+    test(`with basic test bytecode compiled by ${version}`, () => {
       try {
         runFile(`./reference/maki_compiler/${version}/basicTests.maki`);
       } catch (e) {
@@ -135,6 +135,21 @@ describe("can use basic operators", () => {
           "!(#f || #f)",
           "#t || ++n (doesn't short circuit)",
           "!(#f && ++ n) (doesn\'t short circuit)"
+        ].map(successOutputFromMessage)
+      );
+    });
+
+    test(`with simple functions test bytecode compiled by ${version}`, () => {
+      try {
+        runFile(`./reference/maki_compiler/${version}/simpleFunctions.maki`);
+      } catch (e) {
+        // Uncomment this next line to find the next bug to work on.
+        console.error(e);
+      }
+      expect(mockMessageBox.mock.calls).toEqual(
+        [
+          "simple custom function",
+          "simple custom function with implicit cast",
         ].map(successOutputFromMessage)
       );
     });
