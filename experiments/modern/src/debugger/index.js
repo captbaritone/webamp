@@ -72,8 +72,8 @@ function Debugger({ maki }) {
   // This is all a huge disaster
   const getNextStepPromiseRef = React.useRef(null);
   const [next, setNext] = React.useState(() => {});
-  const [breakPoints, setBreakpoints] = React.useState(new Set([2]));
-  const [paused, setPaused] = React.useState(false);
+  const [breakPoints, setBreakpoints] = React.useState(new Set([]));
+  const [paused, setPaused] = React.useState(true);
   const [state, dispatch] = React.useReducer((state, action) => {
     switch (action.type) {
       case "STEPPED":
