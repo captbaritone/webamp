@@ -39,14 +39,14 @@ function interpret(start, program, { log = false }) {
         }
         const offset = command.arguments[0];
         const nextCommandIndex = offsetToCommand[offset];
-        i = nextCommandIndex;
+        i = nextCommandIndex - 1;
         break;
       }
       // jump
       case 18: {
         const offset = command.arguments[0];
         const nextCommandIndex = offsetToCommand[offset];
-        i = nextCommandIndex;
+        i = nextCommandIndex - 1;
         break;
       }
       // call
