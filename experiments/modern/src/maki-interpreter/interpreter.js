@@ -1,6 +1,7 @@
 const parse = require("./parser");
 const { getClass, getFormattedId } = require("./objects");
 const interpret = require("./virtualMachine");
+const { printCommand } = require("./prettyPrinter");
 
 function main({ runtime, data, system, log }) {
   const program = parse(data);
@@ -30,6 +31,11 @@ function main({ runtime, data, system, log }) {
     variable.hook(method.name, () => {
       interpret(commandOffset, program, { log });
     });
+  });
+
+  const { commands, variables } = program;
+  commands.forEach((command, i) => {
+    // printCommand({ i, command, stack: [], variables });
   });
 
   // Set the System global
