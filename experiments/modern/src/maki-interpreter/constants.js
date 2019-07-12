@@ -6,7 +6,7 @@ const COMMANDS = {
     short: "popTo",
     arg: "var",
     in: "0",
-    out: "0"
+    out: "0",
     // note in fact popTo takes one
     // argument but it is not visible to the parser because popTo
     // is always at the start of a function
@@ -29,7 +29,7 @@ const COMMANDS = {
     name: "ret",
     short: "return",
     in: "1",
-    out: "0" // note: we claim that return
+    out: "0", // note: we claim that return
     // pops one argument from the stack, which ist not the full truth.
   },
 
@@ -56,6 +56,10 @@ const COMMANDS = {
   "80": { name: "logAnd", short: "&&", in: "2", out: "1" },
   "81": { name: "logOr", short: "||", in: "2", out: "1" },
 
+  // The decompiler has these next two as 90 and 91.
+  "88": { name: "lshift", short: "<<", in: "2", out: "1" },
+  "89": { name: "rshift", short: ">>", in: "2", out: "1" },
+
   "90": { name: "lshift", short: "<<", in: "2", out: "1" },
   "91": { name: "rshift", short: ">>", in: "2", out: "1" },
 
@@ -66,7 +70,7 @@ const COMMANDS = {
 
   "300": { name: "blockStart", short: "{", in: "0", out: "0" },
 
-  "301": { name: "blockEnd", short: "}", in: "0", out: "0" }
+  "301": { name: "blockEnd", short: "}", in: "0", out: "0" },
 };
 
 module.exports = { COMMANDS };
