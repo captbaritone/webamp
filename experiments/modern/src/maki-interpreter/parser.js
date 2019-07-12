@@ -332,11 +332,10 @@ function parse(buffer) {
   });
 
   const resolvedBindings = bindings.map(binding => {
-    const { binaryOffset, ...rest } = binding;
-    return {
-      commandOffset: offsetToCommand[binaryOffset],
-      ...rest,
-    };
+    return Object.assign({}, binding, {
+      commandOffset: offsetToCommand[binding.binaryOffset],
+      binaryOffset: undefined,
+    });
   });
   return {
     magic,
