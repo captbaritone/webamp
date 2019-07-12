@@ -68,7 +68,7 @@ describe("can use basic operators", () => {
   }
 
   versions.forEach(version => {
-    test.only(`with bytecode compiled by ${version}`, () => {
+    test(`with bytecode compiled by ${version}`, () => {
       try {
         runFile(`./reference/maki_compiler/${version}/basicTests.maki`);
       } catch (e) {
