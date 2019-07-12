@@ -3,7 +3,7 @@ const { getClass, getFormattedId } = require("./objects");
 const interpret = require("./virtualMachine");
 const { printCommand } = require("./prettyPrinter");
 
-function main({ runtime, data, system, log }) {
+function main({ runtime, data, system, log, logger }) {
   const program = parse(data);
 
   // Replace class hashes with actual JavaScript classes from the runtime
@@ -26,10 +26,11 @@ function main({ runtime, data, system, log }) {
     const { commandOffset, variableOffset, methodOffset } = binding;
     const variable = program.variables[variableOffset];
     const method = program.methods[methodOffset];
+    const logger = log ? printCommand : null;
     // TODO: Handle disposing of this.
     // TODO: Handle passing in variables.
     variable.hook(method.name, () => {
-      interpret(commandOffset, program, { log });
+      interpret(commandOffset, program, { logger });
     });
   });
 
