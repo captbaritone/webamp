@@ -15,7 +15,7 @@ const VERSIONS = {
 function runFile(relativePath) {
   const system = new System();
   const data = fs.readFileSync(path.join(__dirname, relativePath));
-  interpret({ runtime, data, system, log: true });
+  interpret({ runtime, data, system, log: false });
 }
 
 let mockMessageBox;
@@ -76,7 +76,7 @@ describe("can use basic operators", () => {
         console.error(e);
       }
       expect(mockMessageBox.mock.calls).toEqual(
-        ["2 + 2 = 4"].map(successOutputFromMessage)
+        ["2 + 2 = 4", "2.2 + 2.2 = 4.4"].map(successOutputFromMessage)
       );
     });
   });
