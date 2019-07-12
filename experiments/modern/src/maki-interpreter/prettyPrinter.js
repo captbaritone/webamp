@@ -24,6 +24,15 @@ function printValue(value) {
     case "INT":
       type = "INT";
       break;
+    case "FLOAT":
+      type = "FLOAT";
+      break;
+    case "DOUBLE":
+      type = "DOUBLE";
+      break;
+    case "BOOLEAN":
+      type = "BOOLEAN";
+      break;
     default:
       throw new Error(`Unknown variable type ${variable.typeName}`);
   }
@@ -32,7 +41,7 @@ function printValue(value) {
 
 function printCommand({ i, command, stack, variables }) {
   console.log(
-    i,
+    `${i} (${command.start} + ${command.offset})`,
     command.command.name.toUpperCase(),
     command.opcode,
     command.arguments.map(offset => {

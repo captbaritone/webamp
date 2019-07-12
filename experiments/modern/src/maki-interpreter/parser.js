@@ -206,17 +206,20 @@ function decodeCode({ makiFile, classes, variables, methods }) {
   const commands = [];
   while (makiFile.getPosition() < start + length) {
     const pos = makiFile.getPosition() - start;
-    commands.push(parseComand({ makiFile, length, pos, localFunctions }));
+    commands.push(
+      parseComand({ start, makiFile, length, pos, localFunctions })
+    );
   }
 
   return { commands, localFunctions };
 }
 
 // TODO: Refactor this to consume bytes directly off the end of MakiFile
-function parseComand({ makiFile, length, pos, localFunctions }) {
+function parseComand({ start, makiFile, length, pos, localFunctions }) {
   const opcode = makiFile.readUInt8();
   const command = {
     offset: pos,
+    start,
     pos,
     opcode,
     // TODO: This should just be a single nullable value I think
@@ -241,7 +244,7 @@ function parseComand({ makiFile, length, pos, localFunctions }) {
       break;
     }
     case "line": {
-      arg = argValue + 5;
+      arg = argValue + 5 + pos;
       break;
     }
     case "objFunc": {
@@ -345,6 +348,7 @@ function parse(buffer) {
     localFunctions,
     version,
     extraVersion,
+    offsetToCommand,
   };
 }
 

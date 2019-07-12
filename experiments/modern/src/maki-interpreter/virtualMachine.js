@@ -1,12 +1,14 @@
 const { printCommand } = require("./prettyPrinter");
 
 function interpret(start, program, { log = false }) {
-  const { commands, methods, variables, classes } = program;
+  const { commands, methods, variables, classes, offsetToCommand } = program;
+
   // Run all the commands that are safe to run. Increment this number to find
   // the next bug.
   const stack = [];
-  let i = start;
+  let i = start - 1;
   while (i < commands.length) {
+    i++;
     const command = commands[i];
 
     switch (command.opcode) {
@@ -19,6 +21,32 @@ function interpret(start, program, { log = false }) {
       // pop
       case 2: {
         stack.pop();
+        break;
+      }
+      // ==
+      case 8: {
+        const a = stack.pop();
+        const b = stack.pop();
+        stack.push(a.getValue() === b.getValue());
+        break;
+      }
+      // jumpIf
+      case 16: {
+        const value = stack.pop();
+        // This seems backwards. Seems like we're doing a "jump if not"
+        if (value) {
+          break;
+        }
+        const offset = command.arguments[0];
+        const nextCommandIndex = offsetToCommand[offset];
+        i = nextCommandIndex;
+        break;
+      }
+      // jump
+      case 18: {
+        const offset = command.arguments[0];
+        const nextCommandIndex = offsetToCommand[offset];
+        i = nextCommandIndex;
         break;
       }
       // call
@@ -55,6 +83,20 @@ function interpret(start, program, { log = false }) {
         stack.push(a);
         break;
       }
+      // + (add)
+      case 64: {
+        const a = stack.pop();
+        const b = stack.pop();
+        stack.push(a.getValue() + b.getValue());
+        break;
+      }
+      // >>
+      case 88: {
+        const a = stack.pop();
+        const b = stack.pop();
+        stack.push(a >> b);
+        break;
+      }
       default:
         throw new Error(`Unhandled opcode ${command.opcode}`);
     }
@@ -63,7 +105,6 @@ function interpret(start, program, { log = false }) {
     if (log) {
       printCommand({ i, command, stack, variables });
     }
-    i++;
   }
 }
 
