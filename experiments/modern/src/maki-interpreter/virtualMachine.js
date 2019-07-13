@@ -1,8 +1,8 @@
 const Variable = require("./variable");
 
-function coerceTypes (var1, var2, val1, val2) {
-  if (var2.type === 'INT') {
-    if (var1.type === 'FLOAT' || var1.type === 'DOUBLE') {
+function coerceTypes(var1, var2, val1, val2) {
+  if (var2.type === "INT") {
+    if (var1.type === "FLOAT" || var1.type === "DOUBLE") {
       return Math.floor(val1);
     }
   }
@@ -154,7 +154,9 @@ async function interpret(start, program, stack, { logger = null }) {
         }
         const offset = command.arguments[0].offset;
         const nextCommandIndex = offsetToCommand[offset];
-        const value = await interpret(nextCommandIndex, program, stack, { logger });
+        const value = await interpret(nextCommandIndex, program, stack, {
+          logger,
+        });
         stack.push(value);
         break;
       }
@@ -248,7 +250,7 @@ async function interpret(start, program, stack, { logger = null }) {
         const b = stack.pop();
         const aValue = a instanceof Variable ? a.getValue() : a;
         let bValue = b instanceof Variable ? b.getValue() : b;
-        if (b.type === 'FLOAT' || b.type === 'DOUBLE') {
+        if (b.type === "FLOAT" || b.type === "DOUBLE") {
           bValue = Math.floor(bValue);
         }
         stack.push(bValue % aValue);

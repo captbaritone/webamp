@@ -34,7 +34,7 @@ describe("can call messageBox with hello World", () => {
     VERSIONS.WINAMP_3_BETA,
     VERSIONS.WINAMP_3_FULL,
     VERSIONS.WINAMP_5_02,
-    VERSIONS.WINAMP_5_66
+    VERSIONS.WINAMP_5_66,
   ];
   versions.forEach(version => {
     test(`with bytecode compiled by ${version}`, () => {
@@ -57,7 +57,7 @@ describe("can use basic operators", () => {
     VERSIONS.WINAMP_3_BETA,
     VERSIONS.WINAMP_3_FULL,
     VERSIONS.WINAMP_5_02,
-    VERSIONS.WINAMP_5_66
+    VERSIONS.WINAMP_5_66,
   ];
 
   // The basicTest.m file that jberg prepared follows a convention for what a
@@ -134,14 +134,16 @@ describe("can use basic operators", () => {
           "#f || #t",
           "!(#f || #f)",
           "#t || ++n (doesn't short circuit)",
-          "!(#f && ++ n) (doesn\'t short circuit)"
+          "!(#f && ++ n) (doesn't short circuit)",
         ].map(successOutputFromMessage)
       );
     });
 
     test(`with simple functions test bytecode compiled by ${version}`, async () => {
       try {
-        await runFile(`./reference/maki_compiler/${version}/simpleFunctions.maki`);
+        await runFile(
+          `./reference/maki_compiler/${version}/simpleFunctions.maki`
+        );
       } catch (e) {
         // Uncomment this next line to find the next bug to work on.
         console.error(e);

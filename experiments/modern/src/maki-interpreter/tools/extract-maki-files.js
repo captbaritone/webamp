@@ -30,13 +30,13 @@ async function main(skinPath) {
         zip.file(/\.maki$/i).map(async file => {
           return {
             name: file.name,
-            buffer: await file.async("nodebuffer")
+            buffer: await file.async("nodebuffer"),
           };
         })
       );
       return {
         path: walPath,
-        makis
+        makis,
       };
     })
   );
