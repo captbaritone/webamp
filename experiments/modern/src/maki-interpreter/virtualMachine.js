@@ -160,7 +160,10 @@ async function interpret(start, program, stack, { logger = null }) {
       case 48: {
         const a = stack.pop();
         const b = stack.pop();
-        const aValue = a instanceof Variable ? a.getValue() : a;
+        let aValue = a instanceof Variable ? a.getValue() : a;
+        if (b.type === "INT" && !Number.isInteger(aValue)) {
+          aValue = Math.floor(aValue);
+        }
         b.setValue(aValue);
         stack.push(aValue);
         break;
