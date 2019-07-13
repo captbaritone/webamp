@@ -12,10 +12,10 @@ const VERSIONS = {
   WINAMP_5_66: "v1.2.0 (Winamp 5.66)",
 };
 
-function runFile(relativePath) {
+async function runFile(relativePath) {
   const system = new System();
   const data = fs.readFileSync(path.join(__dirname, relativePath));
-  interpret({ runtime, data, system, log: false });
+  await interpret({ runtime, data, system, log: false });
 }
 
 let mockMessageBox;
@@ -33,8 +33,8 @@ describe("can call messageBox with hello World", () => {
     // VERSIONS.WINAMP_3_ALPHA,
     VERSIONS.WINAMP_3_BETA,
     VERSIONS.WINAMP_3_FULL,
-    // VERSIONS.WINAMP_5_22,
-    // VERSIONS.WINAMP_5.66
+    VERSIONS.WINAMP_5_02,
+    VERSIONS.WINAMP_5_66
   ];
   versions.forEach(version => {
     test(`with bytecode compiled by ${version}`, () => {
@@ -55,9 +55,9 @@ describe("can use basic operators", () => {
     // jberg could not get the script to compile on this version
     // VERSIONS.WINAMP_3_ALPHA,
     VERSIONS.WINAMP_3_BETA,
-    //VERSIONS.WINAMP_3_FULL,
-    // VERSIONS.WINAMP_5_22,
-    // VERSIONS.WINAMP_5.66
+    VERSIONS.WINAMP_3_FULL,
+    VERSIONS.WINAMP_5_02,
+    VERSIONS.WINAMP_5_66
   ];
 
   // The basicTest.m file that jberg prepared follows a convention for what a
@@ -68,9 +68,9 @@ describe("can use basic operators", () => {
   }
 
   versions.forEach(version => {
-    test(`with bytecode compiled by ${version}`, () => {
+    test(`with basic test bytecode compiled by ${version}`, async () => {
       try {
-        runFile(`./reference/maki_compiler/${version}/basicTests.maki`);
+        await runFile(`./reference/maki_compiler/${version}/basicTests.maki`);
       } catch (e) {
         // Uncomment this next line to find the next bug to work on.
         console.error(e);
@@ -135,6 +135,21 @@ describe("can use basic operators", () => {
           "!(#f || #f)",
           "#t || ++n (doesn't short circuit)",
           "!(#f && ++ n) (doesn\'t short circuit)"
+        ].map(successOutputFromMessage)
+      );
+    });
+
+    test(`with simple functions test bytecode compiled by ${version}`, async () => {
+      try {
+        await runFile(`./reference/maki_compiler/${version}/simpleFunctions.maki`);
+      } catch (e) {
+        // Uncomment this next line to find the next bug to work on.
+        console.error(e);
+      }
+      expect(mockMessageBox.mock.calls).toEqual(
+        [
+          "simple custom function",
+          "simple custom function with implicit cast",
         ].map(successOutputFromMessage)
       );
     });

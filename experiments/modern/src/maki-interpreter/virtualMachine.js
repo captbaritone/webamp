@@ -10,12 +10,11 @@ function coerceTypes (var1, var2, val1, val2) {
   return val1;
 }
 
-async function interpret(start, program, { logger = null }) {
+async function interpret(start, program, stack, { logger = null }) {
   const { commands, methods, variables, classes, offsetToCommand } = program;
 
   // Run all the commands that are safe to run. Increment this number to find
   // the next bug.
-  const stack = [];
   let i = start;
   while (i < commands.length) {
     const command = commands[i];
@@ -30,6 +29,15 @@ async function interpret(start, program, { logger = null }) {
       // pop
       case 2: {
         stack.pop();
+        break;
+      }
+      // popTo
+      case 3: {
+        const a = stack.pop();
+        let aValue = a instanceof Variable ? a.getValue() : a;
+        const offsetIntoVariables = command.arguments[0];
+        const toVar = variables[offsetIntoVariables];
+        toVar.setValue(aValue);
         break;
       }
       // ==
@@ -114,7 +122,9 @@ async function interpret(start, program, { logger = null }) {
         break;
       }
       // call
-      case 24: {
+      // strangeCall (seems to behave just like regular call)
+      case 24:
+      case 112: {
         const methodOffset = command.arguments[0];
         const { name: methodName, typeOffset: classesOffset } = methods[
           methodOffset
@@ -134,16 +144,34 @@ async function interpret(start, program, { logger = null }) {
         stack.push(obj[methodName](...methodArgs));
         break;
       }
+      // callGlobal
+      case 25: {
+        // This is where the version checked wa5 scripts start with this offset
+        if (command.arguments[0].offset === 4294967296) {
+          // skip ahead to where the real program begins
+          i = i + 3;
+          break;
+        }
+        const offset = command.arguments[0].offset;
+        const nextCommandIndex = offsetToCommand[offset];
+        const value = await interpret(nextCommandIndex, program, stack, { logger });
+        stack.push(value);
+        break;
+      }
       // return
       case 33: {
-        const variable = stack.pop();
-        return variable.getValue();
+        const a = stack.pop();
+        const aValue = a instanceof Variable ? a.getValue() : a;
+        return aValue;
       }
       // mov
       case 48: {
         const a = stack.pop();
         const b = stack.pop();
-        const aValue = a instanceof Variable ? a.getValue() : a;
+        let aValue = a instanceof Variable ? a.getValue() : a;
+        if (b.type === "INT" && !Number.isInteger(aValue)) {
+          aValue = Math.floor(aValue);
+        }
         b.setValue(aValue);
         stack.push(aValue);
         break;
