@@ -12,10 +12,10 @@ const VERSIONS = {
   WINAMP_5_66: "v1.2.0 (Winamp 5.66)",
 };
 
-function runFile(relativePath) {
+async function runFile(relativePath) {
   const system = new System();
   const data = fs.readFileSync(path.join(__dirname, relativePath));
-  interpret({ runtime, data, system, log: false });
+  await interpret({ runtime, data, system, log: false });
 }
 
 let mockMessageBox;
@@ -68,9 +68,9 @@ describe("can use basic operators", () => {
   }
 
   versions.forEach(version => {
-    test(`with basic test bytecode compiled by ${version}`, () => {
+    test(`with basic test bytecode compiled by ${version}`, async () => {
       try {
-        runFile(`./reference/maki_compiler/${version}/basicTests.maki`);
+        await runFile(`./reference/maki_compiler/${version}/basicTests.maki`);
       } catch (e) {
         // Uncomment this next line to find the next bug to work on.
         console.error(e);
@@ -139,9 +139,9 @@ describe("can use basic operators", () => {
       );
     });
 
-    test(`with simple functions test bytecode compiled by ${version}`, () => {
+    test(`with simple functions test bytecode compiled by ${version}`, async () => {
       try {
-        runFile(`./reference/maki_compiler/${version}/simpleFunctions.maki`);
+        await runFile(`./reference/maki_compiler/${version}/simpleFunctions.maki`);
       } catch (e) {
         // Uncomment this next line to find the next bug to work on.
         console.error(e);
