@@ -35,14 +35,14 @@ async function main(paths) {
     });
   });
   console.log({
-    totalFunctionCount: Object.keys(functionCounts).length
+    totalFunctionCount: Object.keys(functionCounts).length,
     // functionCounts
   });
 }
 
 const paths = [
   "/Volumes/Mobile Backup/skins/skins/dump/Stylish/micro/micro.wal",
-  "/Volumes/Mobile Backup/skins/skins/random/Winamp Skins/Skins/WTF/Almin_Agic_Skin.wal"
+  "/Volumes/Mobile Backup/skins/skins/random/Winamp Skins/Skins/WTF/Almin_Agic_Skin.wal",
 ];
 
 main(paths);
