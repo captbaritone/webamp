@@ -5,7 +5,7 @@ import path from "path";
 
 async function getSkinZip() {
   const skinBuffer = await fsPromises.readFile(
-    path.join(__dirname, "../public/skins/CornerAmp_Redux.zip")
+    path.join(__dirname, "../public/skins/CornerAmp_Redux.wal")
   );
   return JSZip.loadAsync(skinBuffer);
 }
