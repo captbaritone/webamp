@@ -122,7 +122,7 @@ async function interpret(start, program, stack, { logger = null }) {
         break;
       }
       // call
-      // strangeCall
+      // strangeCall (seems to behave just like regular call)
       case 24:
       case 112: {
         const methodOffset = command.arguments[0];
@@ -146,7 +146,9 @@ async function interpret(start, program, stack, { logger = null }) {
       }
       // callGlobal
       case 25: {
+        // This is where the version checked wa5 scripts start with this offset
         if (command.arguments[0].offset === 4294967296) {
+          // skip ahead to where the real program begins
           i = i + 3;
           break;
         }
