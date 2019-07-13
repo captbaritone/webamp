@@ -30,7 +30,7 @@ function main({ runtime, data, system, log, logger }) {
     // TODO: Handle disposing of this.
     // TODO: Handle passing in variables.
     variable.hook(method.name, () => {
-      interpret(commandOffset, program, { logger });
+      interpret(commandOffset, program, [], { logger });
     });
   });
 
