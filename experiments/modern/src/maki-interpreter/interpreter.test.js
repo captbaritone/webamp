@@ -33,8 +33,8 @@ describe("can call messageBox with hello World", () => {
     // VERSIONS.WINAMP_3_ALPHA,
     VERSIONS.WINAMP_3_BETA,
     VERSIONS.WINAMP_3_FULL,
-    // VERSIONS.WINAMP_5_22,
-    // VERSIONS.WINAMP_5.66
+    VERSIONS.WINAMP_5_02,
+    VERSIONS.WINAMP_5_66
   ];
   versions.forEach(version => {
     test(`with bytecode compiled by ${version}`, () => {
@@ -55,9 +55,9 @@ describe("can use basic operators", () => {
     // jberg could not get the script to compile on this version
     // VERSIONS.WINAMP_3_ALPHA,
     VERSIONS.WINAMP_3_BETA,
-    //VERSIONS.WINAMP_3_FULL,
-    // VERSIONS.WINAMP_5_22,
-    // VERSIONS.WINAMP_5.66
+    VERSIONS.WINAMP_3_FULL,
+    VERSIONS.WINAMP_5_02,
+    VERSIONS.WINAMP_5_66
   ];
 
   // The basicTest.m file that jberg prepared follows a convention for what a

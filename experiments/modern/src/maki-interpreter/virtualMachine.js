@@ -122,7 +122,9 @@ async function interpret(start, program, stack, { logger = null }) {
         break;
       }
       // call
-      case 24: {
+      // strangeCall
+      case 24:
+      case 112: {
         const methodOffset = command.arguments[0];
         const { name: methodName, typeOffset: classesOffset } = methods[
           methodOffset
@@ -144,6 +146,10 @@ async function interpret(start, program, stack, { logger = null }) {
       }
       // callGlobal
       case 25: {
+        if (command.arguments[0].offset === 4294967296) {
+          i = i + 3;
+          break;
+        }
         const offset = command.arguments[0].offset;
         const nextCommandIndex = offsetToCommand[offset];
         const value = await interpret(nextCommandIndex, program, stack, { logger });
