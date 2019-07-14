@@ -22,7 +22,7 @@ async function interpret(start, program, stack = [], { logger = null }) {
     switch (command.opcode) {
       // push
       case 1: {
-        const offsetIntoVariables = command.arguments[0];
+        const offsetIntoVariables = command.arg;
         stack.push(variables[offsetIntoVariables]);
         break;
       }
@@ -35,7 +35,7 @@ async function interpret(start, program, stack = [], { logger = null }) {
       case 3: {
         const a = stack.pop();
         let aValue = a instanceof Variable ? a.getValue() : a;
-        const offsetIntoVariables = command.arguments[0];
+        const offsetIntoVariables = command.arg;
         const toVar = variables[offsetIntoVariables];
         toVar.setValue(aValue);
         break;
@@ -109,14 +109,14 @@ async function interpret(start, program, stack = [], { logger = null }) {
         if (value) {
           break;
         }
-        const offset = command.arguments[0];
+        const offset = command.arg;
         const nextCommandIndex = offsetToCommand[offset];
         i = nextCommandIndex - 1;
         break;
       }
       // jump
       case 18: {
-        const offset = command.arguments[0];
+        const offset = command.arg;
         const nextCommandIndex = offsetToCommand[offset];
         i = nextCommandIndex - 1;
         break;
@@ -125,7 +125,7 @@ async function interpret(start, program, stack = [], { logger = null }) {
       // strangeCall (seems to behave just like regular call)
       case 24:
       case 112: {
-        const methodOffset = command.arguments[0];
+        const methodOffset = command.arg;
         const { name: methodName, typeOffset: classesOffset } = methods[
           methodOffset
         ];
@@ -147,12 +147,12 @@ async function interpret(start, program, stack = [], { logger = null }) {
       // callGlobal
       case 25: {
         // This is where the version checked wa5 scripts start with this offset
-        if (command.arguments[0].offset === 4294967296) {
+        if (command.arg.offset === 4294967296) {
           // skip ahead to where the real program begins
           i = i + 3;
           break;
         }
-        const offset = command.arguments[0].offset;
+        const offset = command.arg.offset;
         const nextCommandIndex = offsetToCommand[offset];
         const value = await interpret(nextCommandIndex, program, stack, {
           logger,
