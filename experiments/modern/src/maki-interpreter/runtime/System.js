@@ -12,8 +12,8 @@ class System extends MakiObject {
     return "System";
   }
 
-  js_start() {
-    this.js_trigger("onScriptLoaded");
+  async js_start() {
+    await this.js_trigger("onScriptLoaded");
   }
 
   getScriptGroup() {

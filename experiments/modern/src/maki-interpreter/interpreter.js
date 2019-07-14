@@ -3,7 +3,7 @@ const { getClass, getFormattedId } = require("./objects");
 const interpret = require("./virtualMachine");
 const { printCommand } = require("./prettyPrinter");
 
-function main({ runtime, data, system, log, logger }) {
+async function main({ runtime, data, system, log, logger }) {
   const program = parse(data);
 
   // Replace class hashes with actual JavaScript classes from the runtime
@@ -29,8 +29,8 @@ function main({ runtime, data, system, log, logger }) {
     // const logger = log ? printCommand : logger;
     // TODO: Handle disposing of this.
     // TODO: Handle passing in variables.
-    variable.hook(method.name, () => {
-      interpret(commandOffset, program, [], { logger });
+    variable.hook(method.name, async () => {
+      await interpret(commandOffset, program, [], { logger });
     });
   });
 
@@ -42,7 +42,7 @@ function main({ runtime, data, system, log, logger }) {
   // Set the System global
   // TODO: We could confirm that this variable has the "system" flag set.
   program.variables[0].setValue(system);
-  system.js_start();
+  await system.js_start();
 }
 
 module.exports = main;
