@@ -341,9 +341,7 @@ async function interpret(start, program, stack = [], { logger = null }) {
     i++;
     // Print some debug info
     if (logger) {
-      const done = logger({ i, command, stack, variables, program });
-      console.log(done);
-      await done;
+      await logger({ i, command, stack, variables, program });
     }
   }
 }
