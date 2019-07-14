@@ -49,7 +49,7 @@ async function interpret(start, program, stack = [], { logger = null }) {
         let aValue = a instanceof Variable ? a.getValue() : a;
         let bValue = b instanceof Variable ? b.getValue() : b;
         aValue = coerceTypes(a, b, aValue, bValue);
-        stack.push(aValue === bValue);
+        stack.push(bValue === aValue);
         break;
       }
       // !=
@@ -59,7 +59,7 @@ async function interpret(start, program, stack = [], { logger = null }) {
         let aValue = a instanceof Variable ? a.getValue() : a;
         let bValue = b instanceof Variable ? b.getValue() : b;
         aValue = coerceTypes(a, b, aValue, bValue);
-        stack.push(aValue !== bValue);
+        stack.push(bValue !== aValue);
         break;
       }
       // >
@@ -214,7 +214,7 @@ async function interpret(start, program, stack = [], { logger = null }) {
       case 64: {
         const a = stack.pop();
         const b = stack.pop();
-        stack.push(a.getValue() + b.getValue());
+        stack.push(b.getValue() + a.getValue());
         break;
       }
       // - (subtract)
@@ -322,7 +322,7 @@ async function interpret(start, program, stack = [], { logger = null }) {
         const b = stack.pop();
         const aValue = a instanceof Variable ? a.getValue() : a;
         const bValue = b instanceof Variable ? b.getValue() : b;
-        stack.push(aValue << bValue);
+        stack.push(bValue << aValue);
         break;
       }
       // >>
