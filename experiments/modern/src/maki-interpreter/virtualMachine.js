@@ -10,7 +10,7 @@ function coerceTypes(var1, var2, val1, val2) {
   return val1;
 }
 
-async function interpret(start, program, stack, { logger = null }) {
+async function interpret(start, program, stack = [], { logger = null }) {
   const { commands, methods, variables, classes, offsetToCommand } = program;
 
   // Run all the commands that are safe to run. Increment this number to find
@@ -171,7 +171,7 @@ async function interpret(start, program, stack, { logger = null }) {
         const a = stack.pop();
         const b = stack.pop();
         let aValue = a instanceof Variable ? a.getValue() : a;
-        if (b.type === "INT" && !Number.isInteger(aValue)) {
+        if (b.type === "INT") {
           aValue = Math.floor(aValue);
         }
         b.setValue(aValue);
