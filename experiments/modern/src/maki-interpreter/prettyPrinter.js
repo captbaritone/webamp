@@ -44,9 +44,7 @@ function printCommand({ i, command, stack, variables }) {
     `${i} (${command.start} + ${command.offset})`,
     command.command.name.toUpperCase(),
     command.opcode,
-    command.arguments.map(offset => {
-      return printValue(variables[offset]);
-    })
+    printValue(variables[command.arg])
   );
   stack.forEach((value, j) => {
     const name = printValue(value, { runtime });

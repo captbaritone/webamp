@@ -222,8 +222,7 @@ function parseComand({ start, makiFile, length, pos, localFunctions }) {
     start,
     pos,
     opcode,
-    // TODO: This should just be a single nullable value I think
-    arguments: [],
+    arg: null,
     command: COMMANDS[opcode],
   };
 
@@ -278,7 +277,7 @@ function parseComand({ start, makiFile, length, pos, localFunctions }) {
       throw new Error("Invalid argType");
   }
 
-  command.arguments = [arg];
+  command.arg = arg;
 
   // From perl: look forward for a stack protection block
   // (why do I have to look FORWARD. stupid nullsoft)

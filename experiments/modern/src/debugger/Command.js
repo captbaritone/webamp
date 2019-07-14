@@ -1,7 +1,7 @@
 import React from "react";
 import Variable from "./Variable";
 export default function Command({ command, variables }) {
-  const arg = command.arguments[0];
+  const { arg } = command;
   let foo = null;
   switch (command.opcode) {
     case 1:
