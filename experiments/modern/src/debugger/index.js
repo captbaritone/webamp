@@ -18,6 +18,37 @@ function readFileAsArrayBuffer(file) {
   });
 }
 
+// Like React.useReducer except state updates are deferred to the animation
+// frame.
+//
+// This is usefull if you need to be able to dispatch within a hot loop, but
+// don't want to incur the performence cost of triggering React renders on each
+// dispatch. This comes at a cost:
+//
+// It may be possible to expose, via the UI, a dispatch callback which would be
+// invalid for the current state.
+//
+// Known bugs:
+// - This may trigger a state update after the component has unmounted.
+// - Theoretically, I think we should use a ref to hold the uncomitted state,
+//   not just a variable.
+function useThrottledReducer(reducer, initialState) {
+  const [_state, setState] = React.useState(initialState);
+  let state = _state;
+  let timeout = null;
+  function dispatch(action) {
+    if (timeout != null) {
+      window.cancelAnimationFrame(timeout);
+    }
+    state = reducer(state, action);
+    timeout = window.requestAnimationFrame(() => {
+      setState(state);
+    }, 0);
+  }
+
+  return [state, dispatch];
+}
+
 function Wrapper() {
   const [maki, setMaki] = React.useState(null);
   const onDrop = React.useCallback(async acceptedFiles => {
@@ -74,7 +105,7 @@ function Debugger({ maki }) {
   const [next, setNext] = React.useState(() => {});
   const [breakPoints, setBreakpoints] = React.useState(new Set([]));
   const [paused, setPaused] = React.useState(true);
-  const [state, dispatch] = React.useReducer((state, action) => {
+  const [state, dispatch] = useThrottledReducer((state, action) => {
     switch (action.type) {
       case "STEPPED":
         const { variables, commands, commandOffset, stack } = action;
