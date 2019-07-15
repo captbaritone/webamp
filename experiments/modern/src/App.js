@@ -31,6 +31,16 @@ const IGNORE_IDS = new Set([
 
 const SkinContext = React.createContext(null);
 
+async function loadImage (imgUrl) {
+  return await new Promise(resolve => {
+    const img = new Image();
+    img.addEventListener("load", function() {
+      resolve(img);
+    });
+    img.src = imgUrl;
+  });
+}
+
 async function getSkin() {
   const resp = await fetch(
     process.env.PUBLIC_URL + "/skins/CornerAmp_Redux.wal"
@@ -49,11 +59,18 @@ async function getSkin() {
     // TODO: This is probalby only valid if in an `<elements>` node
     switch (node.name) {
       case "bitmap": {
-        const { file, gammagroup, h, id, w, x, y } = node.attributes;
+        let { file, gammagroup, h, id, w, x, y } = node.attributes;
         // TODO: Escape file for regex
         const img = Utils.getCaseInsensitveFile(zip, file);
         const imgBlob = await img.async("blob");
         const imgUrl = URL.createObjectURL(imgBlob);
+        if (w  === undefined || h  === undefined) {
+          const image = await loadImage(imgUrl);
+          w = image.width;
+          h = image.height;
+          x = (x !== undefined) ? x : 0;
+          y = (y !== undefined) ? y : 0;
+        }
         images[id.toLowerCase()] = { file, gammagroup, h, w, x, y, imgUrl };
         break;
       }
