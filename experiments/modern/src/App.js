@@ -35,7 +35,7 @@ async function loadImage (imgUrl) {
   return await new Promise(resolve => {
     const img = new Image();
     img.addEventListener("load", function() {
-      resolve([img.width, img.height]);
+      resolve(img);
     });
     img.src = imgUrl;
   });
@@ -65,11 +65,11 @@ async function getSkin() {
         const imgBlob = await img.async("blob");
         const imgUrl = URL.createObjectURL(imgBlob);
         if (w  === undefined || h  === undefined) {
-          let [width, height] = await loadImage(imgUrl);
-          w = width;
-          h = height;
-          x = 0;
-          y = 0;
+          const image = await loadImage(imgUrl);
+          w = image.width;
+          h = image.height;
+          x = (x !== undefined) ? x : 0;
+          y = (y !== undefined) ? y : 0;
         }
         images[id.toLowerCase()] = { file, gammagroup, h, w, x, y, imgUrl };
         break;
