@@ -13,13 +13,22 @@ function coerceTypes(var1, var2, val1, val2) {
 async function interpret(start, program, stack = [], { logger = null }) {
   const { commands, methods, variables, classes, offsetToCommand } = program;
 
-  function twoArgOperator(operator) {
+  function twoArgCoercingOperator(operator) {
     const a = stack.pop();
     const b = stack.pop();
     let aValue = a instanceof Variable ? a.getValue() : a;
     const bValue = b instanceof Variable ? b.getValue() : b;
 
     aValue = coerceTypes(a, b, aValue, bValue);
+    stack.push(operator(bValue, aValue));
+  }
+
+  function twoArgOperator(operator) {
+    const a = stack.pop();
+    const b = stack.pop();
+    const aValue = a instanceof Variable ? a.getValue() : a;
+    const bValue = b instanceof Variable ? b.getValue() : b;
+
     stack.push(operator(bValue, aValue));
   }
 
@@ -52,32 +61,32 @@ async function interpret(start, program, stack = [], { logger = null }) {
       }
       // ==
       case 8: {
-        twoArgOperator((b, a) => b === a);
+        twoArgCoercingOperator((b, a) => b === a);
         break;
       }
       // !=
       case 9: {
-        twoArgOperator((b, a) => b !== a);
+        twoArgCoercingOperator((b, a) => b !== a);
         break;
       }
       // >
       case 10: {
-        twoArgOperator((b, a) => b > a);
+        twoArgCoercingOperator((b, a) => b > a);
         break;
       }
       // >=
       case 11: {
-        twoArgOperator((b, a) => b >= a);
+        twoArgCoercingOperator((b, a) => b >= a);
         break;
       }
       // <
       case 12: {
-        twoArgOperator((b, a) => b < a);
+        twoArgCoercingOperator((b, a) => b < a);
         break;
       }
       // <=
       case 13: {
-        twoArgOperator((b, a) => b <= a);
+        twoArgCoercingOperator((b, a) => b <= a);
         break;
       }
       // jumpIf
@@ -190,11 +199,7 @@ async function interpret(start, program, stack = [], { logger = null }) {
       }
       // + (add)
       case 64: {
-        const a = stack.pop();
-        const b = stack.pop();
-        stack.push(b.getValue() + a.getValue());
-        // TODO: Why can't we use twoArgOperator here?
-        // twoArgOperator((b, a) => b + a);
+        twoArgOperator((b, a) => b + a);
         break;
       }
       // - (subtract)
@@ -204,13 +209,7 @@ async function interpret(start, program, stack = [], { logger = null }) {
       }
       // * (multiply)
       case 66: {
-        const a = stack.pop();
-        const b = stack.pop();
-        const aValue = a instanceof Variable ? a.getValue() : a;
-        const bValue = b instanceof Variable ? b.getValue() : b;
-        stack.push(bValue * aValue);
-        // TODO: Why can't we use twoArgOperator here?
-        // twoArgOperator((b, a) => b * a);
+        twoArgOperator((b, a) => b * a);
         break;
       }
       // / (divide)
@@ -224,12 +223,11 @@ async function interpret(start, program, stack = [], { logger = null }) {
         const b = stack.pop();
         const aValue = a instanceof Variable ? a.getValue() : a;
         let bValue = b instanceof Variable ? b.getValue() : b;
+        // Need to coerce LHS if not int, RHS is always int (enforced by compiler)
         if (b.type === "FLOAT" || b.type === "DOUBLE") {
           bValue = Math.floor(bValue);
         }
         stack.push(bValue % aValue);
-        // TODO: Why can't we use twoArgOperator here?
-        // twoArgOperator((b, a) => b % a);
         break;
       }
       // & (binary and)
@@ -258,30 +256,12 @@ async function interpret(start, program, stack = [], { logger = null }) {
       }
       // logAnd (&&)
       case 80: {
-        const a = stack.pop();
-        const aValue = a instanceof Variable ? a.getValue() : a;
-        if (!aValue) {
-          stack.push(false);
-          break;
-        }
-
-        const b = stack.pop();
-        const bValue = b instanceof Variable ? b.getValue() : b;
-        stack.push(!!bValue);
+        twoArgOperator((b, a) => b && a);
         break;
       }
       // logOr ||
       case 81: {
-        const a = stack.pop();
-        const aValue = a instanceof Variable ? a.getValue() : a;
-        if (aValue) {
-          stack.push(true);
-          break;
-        }
-
-        const b = stack.pop();
-        const bValue = b instanceof Variable ? b.getValue() : b;
-        stack.push(!!bValue);
+        twoArgOperator((b, a) => b || a);
         break;
       }
       // <<
