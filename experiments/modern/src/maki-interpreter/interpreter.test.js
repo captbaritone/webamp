@@ -152,6 +152,15 @@ describe("can use basic operators", () => {
         [
           "simple custom function",
           "simple custom function with implicit cast",
+          "fib(2) == 0 (should be 1)",
+          "fib(3) == -3 (should be 2)",
+          "fib(9) == -63 (should be 34)",
+          "fib(20) == -360 (should be 6765)",
+          "global num == 0",
+          "shadow num == 5",
+          "localNum == 20",
+          "global num == 0",
+          "localNum == 20",
         ].map(successOutputFromMessage)
       );
     });
