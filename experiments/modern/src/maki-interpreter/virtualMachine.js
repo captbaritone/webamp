@@ -37,6 +37,10 @@ async function interpret(start, program, stack = [], { logger = null }) {
   let i = start;
   while (i < commands.length) {
     const command = commands[i];
+    // Print some debug info
+    if (logger) {
+      await logger({ i, command, stack, variables, program });
+    }
 
     switch (command.opcode) {
       // push
@@ -279,10 +283,6 @@ async function interpret(start, program, stack = [], { logger = null }) {
     }
 
     i++;
-    // Print some debug info
-    if (logger) {
-      await logger({ i, command, stack, variables, program });
-    }
   }
 }
 
