@@ -97,6 +97,7 @@ const initialState = {
   stack: [],
   commands: [],
   commandOffset: 0,
+  messages: [],
 };
 
 function Debugger({ maki }) {
@@ -116,12 +117,17 @@ function Debugger({ maki }) {
           commandOffset,
           stack,
         };
+      case "GOT_MESSAGE":
+        return {
+          ...state,
+          messages: [...state.messages, action.message],
+        };
       default:
         throw new Error("Unknown action type");
     }
   }, initialState);
 
-  const { variables, stack, commands, commandOffset } = state;
+  const { variables, stack, commands, commandOffset, messages } = state;
 
   getNextStepPromiseRef.current = i => {
     if (!paused) {
@@ -136,7 +142,16 @@ function Debugger({ maki }) {
       setNext(() => resolve);
     });
   };
-  const system = new System();
+  const system = React.useMemo(() => {
+    const sys = new System();
+    sys.messageBox = function(message, messageTitle, flag, notanymoreId) {
+      dispatch({
+        type: "GOT_MESSAGE",
+        message: { message, messageTitle, flag, notanymoreId },
+      });
+    };
+    return sys;
+  });
 
   React.useEffect(() => {
     run({
@@ -179,11 +194,49 @@ function Debugger({ maki }) {
         gridTemplateRows: "30% 70%",
         height: "100vh",
         gridTemplateAreas: `
-            "commands stack"
+            "messages stack"
             "commands variables"
             `,
       }}
     >
+      <div style={{ gridArea: "messages", overflow: "scroll" }}>
+        <h2>
+          Messages{" "}
+          <span style={{ backgroundColor: "lightgreen" }}>
+            {
+              messages.filter(({ messageTitle }) => messageTitle === "Success")
+                .length
+            }
+          </span>
+          /{messages.length}
+        </h2>
+        <table>
+          <tbody>
+            {messages.map(
+              ({ message, messageTitle, flag, notanymoreId }, i) => (
+                <tr key={i}>
+                  <td>{i}</td>
+                  <td>{message}</td>
+                  <td
+                    style={{
+                      backgroundColor:
+                        messageTitle === "Success"
+                          ? "lightgreen"
+                          : messageTitle === "Fail"
+                          ? "pink"
+                          : "none",
+                    }}
+                  >
+                    {messageTitle}
+                  </td>
+                  <td>{flag}</td>
+                  <td>{notanymoreId}</td>
+                </tr>
+              )
+            )}
+          </tbody>
+        </table>
+      </div>
       <div style={{ gridArea: "commands", overflow: "scroll" }}>
         <button onClick={next}>Next</button>
         {paused ? (
