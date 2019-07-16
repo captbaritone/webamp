@@ -34,6 +34,7 @@ async function interpret(start, program, stack = [], { logger = null }) {
 
   // Run all the commands that are safe to run. Increment this number to find
   // the next bug.
+  const maxOffset = Math.max(...Object.keys(offsetToCommand));
   let i = start;
   while (i < commands.length) {
     const command = commands[i];
@@ -143,7 +144,11 @@ async function interpret(start, program, stack = [], { logger = null }) {
           i = i + 3;
           break;
         }
-        const offset = command.arg.offset;
+        let offset = command.arg.offset;
+        // handle offsets that are over maxOffset that seem to be the wrong sign
+        if (offset > maxOffset) {
+          offset = (offset - 4294967296);
+        }
         const nextCommandIndex = offsetToCommand[offset];
         const value = await interpret(nextCommandIndex, program, stack, {
           logger,
