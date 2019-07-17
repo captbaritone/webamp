@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
-const System = require("./runtime/System");
-const runtime = require("./runtime");
+const System = require("../runtime/System");
+const runtime = require("../runtime");
 const interpret = require("./interpreter");
 
 const VERSIONS = {

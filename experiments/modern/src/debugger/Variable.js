@@ -1,4 +1,4 @@
-import runtime from "../maki-interpreter/runtime";
+import runtime from "../runtime";
 
 function quote(str) {
   return `"${str}"`;
