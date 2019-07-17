@@ -150,13 +150,20 @@ function Layer({ id, image, children, x, y }) {
     console.warn("Unable to find image to render. Rendering null", image);
     return null;
   }
+  const params = {};
+  if (x !== undefined) {
+    params.left = Number(x);
+  }
+  if (y !== undefined) {
+    params.top = Number(y);
+  }
   return (
     <>
       <img
         data-node-type="Layer"
         data-node-id={id}
         src={img.imgUrl}
-        style={{ position: "absolute", top: Number(y), left: Number(x) }}
+        style={Object.assign({ position: "absolute" }, params)}
       />
       {children}
     </>
@@ -166,7 +173,7 @@ function Layer({ id, image, children, x, y }) {
 function Button({ id, image, action, x, y, downImage, tooltip, children }) {
   const data = React.useContext(SkinContext);
   const [down, setDown] = React.useState(false);
-  const imgId = down ? downImage : image;
+  const imgId = down && downImage ? downImage : image;
   if (imgId == null) {
     console.warn("Got a Button without a imgId. Rendering null", id);
     return null;
@@ -195,7 +202,7 @@ function Button({ id, image, action, x, y, downImage, tooltip, children }) {
         top: Number(y),
         left: Number(x),
         backgroundPositionX: -Number(img.x),
-        backgroundPositionx: -Number(img.y),
+        backgroundPositionY: -Number(img.y),
         width: Number(img.w),
         height: Number(img.h),
         backgroundImage: `url(${img.imgUrl})`,
