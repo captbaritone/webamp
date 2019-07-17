@@ -1,5 +1,5 @@
 const Variable = require("./variable");
-const runtime = require("./runtime");
+const runtime = require("../runtime");
 
 // Debug utility to pretty print a value/variable
 function printValue(value) {

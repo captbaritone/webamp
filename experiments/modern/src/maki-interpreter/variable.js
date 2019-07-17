@@ -1,4 +1,4 @@
-const Emitter = require("./Emitter");
+const Emitter = require("../Emitter");
 
 class Variable {
   constructor({ type, typeName }) {
