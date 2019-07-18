@@ -23,6 +23,7 @@ System.onScriptLoaded()
         messageBox("simple custom function with implicit cast", "Fail", 1, "");
     }
 
+    // It seems like the way that MAKI compiles functions messes up recursive calls
     if (fib(2) == 0) {
         messageBox("fib(2) == 0 (should be 1)", "Success", 0, "");
     } else {
