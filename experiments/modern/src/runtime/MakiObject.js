@@ -5,8 +5,8 @@ class MakiObject {
     this._emitter = new Emitter();
   }
 
-  js_trigger(eventName, ...args) {
-    this._emitter.trigger(eventName, args);
+  async js_trigger(eventName, ...args) {
+    await this._emitter.trigger(eventName, args);
   }
 
   js_listenToAll(cb) {
