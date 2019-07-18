@@ -17,9 +17,9 @@ class Variable {
       this._unsubscribeFromValue();
     }
     if (this.typeName === "OBJECT") {
-      this._unsubscribeFromValue = value.js_listenToAll((eventName, args) => {
-        this._emitter.trigger(eventName, args);
-      });
+      this._unsubscribeFromValue = value.js_listenToAll((eventName, args) =>
+        this._emitter.trigger(eventName, args)
+      );
     }
     this._value = value;
   }
