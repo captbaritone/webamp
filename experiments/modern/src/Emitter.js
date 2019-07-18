@@ -18,17 +18,11 @@ class Emitter {
   }
 
   async trigger(eventName, ...args) {
-    await Promise.all(this._globalHooks.map(cb => new Promise(async resolve => {
-      await cb(eventName, args);
-      resolve();
-    })));
+    await Promise.all(this._globalHooks.map(cb => cb(eventName, args)));
     if (this._hooks[eventName] == null) {
       return;
     }
-    await Promise.all(this._hooks[eventName].map(cb => new Promise(async resolve => {
-      await cb(...args);
-      resolve();
-    })));
+    await Promise.all(this._hooks[eventName].map(cb => cb(...args)));
   }
 
   listenToAll(cb) {

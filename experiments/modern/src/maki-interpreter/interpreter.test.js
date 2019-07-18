@@ -37,8 +37,8 @@ describe("can call messageBox with hello World", () => {
     VERSIONS.WINAMP_5_66,
   ];
   versions.forEach(version => {
-    test(`with bytecode compiled by ${version}`, () => {
-      runFile(`./reference/maki_compiler/${version}/hello_world.maki`);
+    test(`with bytecode compiled by ${version}`, async () => {
+      await runFile(`./reference/maki_compiler/${version}/hello_world.maki`);
       expect(mockMessageBox).toHaveBeenCalledTimes(1);
       expect(mockMessageBox).toHaveBeenCalledWith(
         "Hello World",
