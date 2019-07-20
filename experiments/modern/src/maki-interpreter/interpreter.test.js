@@ -18,6 +18,13 @@ async function runFile(relativePath) {
   await interpret({ runtime, data, system, log: false });
 }
 
+// The basicTest.m file that jberg prepared follows a convention for what a
+// passing test looks like. This ultility function lets us just write the
+// message, since the rest is common for all success messages.
+function successOutputFromMessage(message) {
+  return [message, "Success", 0, ""];
+}
+
 let mockMessageBox;
 beforeEach(() => {
   mockMessageBox = jest.fn();
@@ -59,13 +66,6 @@ describe("can use basic operators", () => {
     VERSIONS.WINAMP_5_02,
     VERSIONS.WINAMP_5_66,
   ];
-
-  // The basicTest.m file that jberg prepared follows a convention for what a
-  // passing test looks like. This ultility function lets us just write the
-  // message, since the rest is common for all success messages.
-  function successOutputFromMessage(message) {
-    return [message, "Success", 0, ""];
-  }
 
   versions.forEach(version => {
     test(`with basic test bytecode compiled by ${version}`, async () => {
@@ -133,8 +133,21 @@ describe("can use basic operators", () => {
         ].map(successOutputFromMessage)
       );
     });
+  });
+});
 
-    test(`with simple functions test bytecode compiled by ${version}`, async () => {
+describe("can use simple functions", () => {
+  const versions = [
+    // jberg could not get the script to compile on this version
+    // VERSIONS.WINAMP_3_ALPHA,
+    VERSIONS.WINAMP_3_BETA,
+    VERSIONS.WINAMP_3_FULL,
+    VERSIONS.WINAMP_5_02,
+    VERSIONS.WINAMP_5_66,
+  ];
+
+  versions.forEach(version => {
+    test(`with bytecode compiled by ${version}`, async () => {
       await runFile(
         `./reference/maki_compiler/${version}/simpleFunctions.maki`
       );
