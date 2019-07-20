@@ -32,9 +32,11 @@ async function interpret(start, program, stack = [], { logger = null }) {
     stack.push(operator(bValue, aValue));
   }
 
-  // Run all the commands that are safe to run. Increment this number to find
-  // the next bug.
-  const maxOffset = Math.max(...Object.keys(offsetToCommand));
+  function jumpToOffset(offset) {
+    const nextCommandIndex = offsetToCommand[offset];
+    return nextCommandIndex - 1;
+  }
+
   let i = start;
   while (i < commands.length) {
     const command = commands[i];
@@ -103,16 +105,22 @@ async function interpret(start, program, stack = [], { logger = null }) {
         if (value) {
           break;
         }
-        const offset = command.arg;
-        const nextCommandIndex = offsetToCommand[offset];
-        i = nextCommandIndex - 1;
+        i = jumpToOffset(command.arg);
+        break;
+      }
+      // jumpIfNot
+      case 17: {
+        const value = stack.pop();
+        // This seems backwards. Same as above
+        if (!value) {
+          break;
+        }
+        i = jumpToOffset(command.arg);
         break;
       }
       // jump
       case 18: {
-        const offset = command.arg;
-        const nextCommandIndex = offsetToCommand[offset];
-        i = nextCommandIndex - 1;
+        i = jumpToOffset(command.arg);
         break;
       }
       // call
@@ -140,15 +148,7 @@ async function interpret(start, program, stack = [], { logger = null }) {
       }
       // callGlobal
       case 25: {
-        let offset = command.arg;
-        // This is where the version checked wa5 scripts start with this offset
-        if (offset === 0) {
-          // skip ahead to where the real program begins
-          // TODO: Why is this magic?
-          i = i + 3;
-          break;
-        }
-        // handle offsets that are over maxOffset that seem to be the wrong sign
+        const offset = command.arg;
         const nextCommandIndex = offsetToCommand[offset];
         // Remove this await when we can run the VM synchronously.
         // See GitHub issue #814
