@@ -69,12 +69,7 @@ describe("can use basic operators", () => {
 
   versions.forEach(version => {
     test(`with basic test bytecode compiled by ${version}`, async () => {
-      try {
-        await runFile(`./reference/maki_compiler/${version}/basicTests.maki`);
-      } catch (e) {
-        // Uncomment this next line to find the next bug to work on.
-        console.error(e);
-      }
+      await runFile(`./reference/maki_compiler/${version}/basicTests.maki`);
       expect(mockMessageBox.mock.calls).toEqual(
         [
           "2 + 2 = 4",
@@ -140,14 +135,9 @@ describe("can use basic operators", () => {
     });
 
     test(`with simple functions test bytecode compiled by ${version}`, async () => {
-      try {
-        await runFile(
-          `./reference/maki_compiler/${version}/simpleFunctions.maki`
-        );
-      } catch (e) {
-        // Uncomment this next line to find the next bug to work on.
-        console.error(e);
-      }
+      await runFile(
+        `./reference/maki_compiler/${version}/simpleFunctions.maki`
+      );
       expect(mockMessageBox.mock.calls).toEqual(
         [
           "simple custom function",
