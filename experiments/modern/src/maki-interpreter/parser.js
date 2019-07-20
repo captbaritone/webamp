@@ -229,10 +229,6 @@ function parseComand({ start, makiFile, length, pos }) {
 
   let arg = null;
   switch (argType) {
-    case "var": {
-      arg = makiFile.readUInt32LE();
-      break;
-    }
     case "func":
       // Note in the perl code here: "todo, something strange going on here..."
       arg = makiFile.readUInt32LE() + 5 + pos;
@@ -241,16 +237,11 @@ function parseComand({ start, makiFile, length, pos }) {
       arg = makiFile.readUInt32LE() + 5 + pos;
       break;
     }
-    case "objFunc": {
-      // TODO: ClassesOffset
+    case "var":
+    case "objFunc":
+    case "obj":
       arg = makiFile.readUInt32LE();
       break;
-    }
-    case "obj": {
-      // Classes Offset
-      arg = makiFile.readUInt32LE();
-      break;
-    }
     default:
       throw new Error("Invalid argType");
   }
