@@ -220,18 +220,13 @@ function parseComand({ start, makiFile, length, pos }) {
     pos,
     opcode,
     arg: null,
-    command: COMMANDS[opcode],
   };
 
-  if (command.command == null) {
-    throw new Error(`Unknown opcode "${opcode}"`);
-  }
-
-  if (command.command.arg == null) {
+  const argType = COMMANDS[opcode].arg;
+  if (argType == null) {
     return command;
   }
 
-  const argType = command.command.arg;
   let arg = null;
   switch (argType) {
     case "var": {
