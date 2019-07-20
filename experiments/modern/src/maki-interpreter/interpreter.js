@@ -30,6 +30,8 @@ async function main({ runtime, data, system, log, logger }) {
     // TODO: Handle disposing of this.
     // TODO: Handle passing in variables.
     variable.hook(method.name, async () => {
+      // Remove this await when we can run the VM synchronously.
+      // See GitHub issue #814
       await interpret(commandOffset, program, [], { logger });
     });
   });

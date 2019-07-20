@@ -15,6 +15,8 @@ const VERSIONS = {
 async function runFile(relativePath) {
   const system = new System();
   const data = fs.readFileSync(path.join(__dirname, relativePath));
+  // Remove this await when we can run the VM synchronously.
+  // See GitHub issue #814
   await interpret({ runtime, data, system, log: false });
 }
 
@@ -45,6 +47,8 @@ describe("can call messageBox with hello World", () => {
   ];
   versions.forEach(version => {
     test(`with bytecode compiled by ${version}`, async () => {
+      // Remove this await when we can run the VM synchronously.
+      // See GitHub issue #814
       await runFile(`./reference/maki_compiler/${version}/hello_world.maki`);
       expect(mockMessageBox).toHaveBeenCalledTimes(1);
       expect(mockMessageBox).toHaveBeenCalledWith(
@@ -69,6 +73,8 @@ describe("can use basic operators", () => {
 
   versions.forEach(version => {
     test(`with basic test bytecode compiled by ${version}`, async () => {
+      // Remove this await when we can run the VM synchronously.
+      // See GitHub issue #814
       await runFile(`./reference/maki_compiler/${version}/basicTests.maki`);
       expect(mockMessageBox.mock.calls).toEqual(
         [
@@ -148,6 +154,8 @@ describe("can use simple functions", () => {
 
   versions.forEach(version => {
     test(`with bytecode compiled by ${version}`, async () => {
+      // Remove this await when we can run the VM synchronously.
+      // See GitHub issue #814
       await runFile(
         `./reference/maki_compiler/${version}/simpleFunctions.maki`
       );

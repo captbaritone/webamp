@@ -13,6 +13,8 @@ class System extends MakiObject {
   }
 
   async js_start() {
+    // Remove this await when we can run the VM synchronously.
+    // See GitHub issue #814
     await this.js_trigger("onScriptLoaded");
   }
 

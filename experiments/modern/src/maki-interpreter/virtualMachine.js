@@ -40,6 +40,8 @@ async function interpret(start, program, stack = [], { logger = null }) {
     const command = commands[i];
     // Print some debug info
     if (logger) {
+      // Remove this await when we can run the VM synchronously.
+      // See GitHub issue #814
       await logger({ i, command, stack, variables, program });
     }
 
@@ -148,6 +150,8 @@ async function interpret(start, program, stack = [], { logger = null }) {
         }
         // handle offsets that are over maxOffset that seem to be the wrong sign
         const nextCommandIndex = offsetToCommand[offset];
+        // Remove this await when we can run the VM synchronously.
+        // See GitHub issue #814
         const value = await interpret(nextCommandIndex, program, stack, {
           logger,
         });
