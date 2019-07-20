@@ -1,5 +1,6 @@
 import React from "react";
 import Variable from "./Variable";
+const { COMMANDS } = require("../maki-interpreter/constants");
 export default function Command({ command, variables }) {
   const { arg } = command;
   let foo = null;
@@ -17,7 +18,7 @@ export default function Command({ command, variables }) {
   }
   return (
     <>
-      ({command.opcode}) {command.command.name.toUpperCase()} {foo}
+      ({command.opcode}) {COMMANDS[command.opcode].name.toUpperCase()} {foo}
     </>
   );
 }
