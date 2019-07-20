@@ -15,6 +15,14 @@ export async function readXml(zip, filepath) {
   return xml2js(text, { compact: false, elementsKey: "children" });
 }
 
+export async function readUint8array(zip, filepath) {
+  const file = await getCaseInsensitveFile(zip, filepath);
+  if (file == null) {
+    return null;
+  }
+  return file.async("uint8array");
+}
+
 // Transform an xml tree structure by mapping over each node breadth first
 // Parents are mapped before their children
 // Children are mapped in parallel
