@@ -19,6 +19,18 @@ class MakiFile {
     this._i = 0;
   }
 
+  readInt32LE() {
+    const offset = this._i >>> 0;
+    this._i += 4;
+
+    return (
+      this._arr[offset] |
+      (this._arr[offset + 1] << 8) |
+      (this._arr[offset + 2] << 16) |
+      (this._arr[offset + 3] << 24)
+    );
+  }
+
   readUInt32LE() {
     const int = this.peekUInt32LE();
     this._i += 4;
@@ -230,13 +242,10 @@ function parseComand({ start, makiFile, length, pos }) {
   let arg = null;
   switch (argType) {
     case "func":
+    case "line":
       // Note in the perl code here: "todo, something strange going on here..."
-      arg = makiFile.readUInt32LE() + 5 + pos;
+      arg = makiFile.readInt32LE() + 5 + pos;
       break;
-    case "line": {
-      arg = makiFile.readUInt32LE() + 5 + pos;
-      break;
-    }
     case "var":
     case "objFunc":
     case "obj":
