@@ -147,7 +147,7 @@ async function interpret(start, program, stack = [], { logger = null }) {
         let offset = command.arg.offset;
         // handle offsets that are over maxOffset that seem to be the wrong sign
         if (offset > maxOffset) {
-          offset = (offset - 4294967296);
+          offset = offset - 4294967296;
         }
         const nextCommandIndex = offsetToCommand[offset];
         const value = await interpret(nextCommandIndex, program, stack, {
