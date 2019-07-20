@@ -21,6 +21,9 @@ class System extends MakiObject {
   getScriptGroup() {
     return new Group();
   }
+  getRuntimeVersion() {
+    return "5.666";
+  }
   getToken(str, separator, tokennum) {
     return "Some Token String";
   }
