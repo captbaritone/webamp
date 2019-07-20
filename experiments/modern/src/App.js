@@ -31,7 +31,7 @@ const IGNORE_IDS = new Set([
 
 const SkinContext = React.createContext(null);
 
-async function loadImage (imgUrl) {
+async function loadImage(imgUrl) {
   return await new Promise(resolve => {
     const img = new Image();
     img.addEventListener("load", function() {
@@ -64,12 +64,12 @@ async function getSkin() {
         const img = Utils.getCaseInsensitveFile(zip, file);
         const imgBlob = await img.async("blob");
         const imgUrl = URL.createObjectURL(imgBlob);
-        if (w  === undefined || h  === undefined) {
+        if (w === undefined || h === undefined) {
           const image = await loadImage(imgUrl);
           w = image.width;
           h = image.height;
-          x = (x !== undefined) ? x : 0;
-          y = (y !== undefined) ? y : 0;
+          x = x !== undefined ? x : 0;
+          y = y !== undefined ? y : 0;
         }
         images[id.toLowerCase()] = { file, gammagroup, h, w, x, y, imgUrl };
         break;
