@@ -32,9 +32,11 @@ async function interpret(start, program, stack = [], { logger = null }) {
     stack.push(operator(bValue, aValue));
   }
 
-  // Run all the commands that are safe to run. Increment this number to find
-  // the next bug.
-  const maxOffset = Math.max(...Object.keys(offsetToCommand));
+  function jumpToOffset(offset) {
+    const nextCommandIndex = offsetToCommand[offset];
+    return nextCommandIndex - 1;
+  }
+
   let i = start;
   while (i < commands.length) {
     const command = commands[i];
@@ -103,9 +105,7 @@ async function interpret(start, program, stack = [], { logger = null }) {
         if (value) {
           break;
         }
-        const offset = command.arg;
-        const nextCommandIndex = offsetToCommand[offset];
-        i = nextCommandIndex - 1;
+        i = jumpToOffset(command.arg);
         break;
       }
       // jumpIfNot
@@ -115,16 +115,12 @@ async function interpret(start, program, stack = [], { logger = null }) {
         if (!value) {
           break;
         }
-        const offset = command.arg;
-        const nextCommandIndex = offsetToCommand[offset];
-        i = nextCommandIndex - 1;
+        i = jumpToOffset(command.arg);
         break;
       }
       // jump
       case 18: {
-        const offset = command.arg;
-        const nextCommandIndex = offsetToCommand[offset];
-        i = nextCommandIndex - 1;
+        i = jumpToOffset(command.arg);
         break;
       }
       // call
