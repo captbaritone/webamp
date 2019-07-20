@@ -202,20 +202,17 @@ function decodeCode({ makiFile, classes, variables, methods }) {
   const length = makiFile.readUInt32LE();
   const start = makiFile.getPosition();
 
-  const localFunctions = {};
   const commands = [];
   while (makiFile.getPosition() < start + length) {
     const pos = makiFile.getPosition() - start;
-    commands.push(
-      parseComand({ start, makiFile, length, pos, localFunctions })
-    );
+    commands.push(parseComand({ start, makiFile, length, pos }));
   }
 
-  return { commands, localFunctions };
+  return commands;
 }
 
 // TODO: Refactor this to consume bytes directly off the end of MakiFile
-function parseComand({ start, makiFile, length, pos, localFunctions }) {
+function parseComand({ start, makiFile, length, pos }) {
   const opcode = makiFile.readUInt8();
   const command = {
     offset: pos,
@@ -254,17 +251,7 @@ function parseComand({ start, makiFile, length, pos, localFunctions }) {
       // Note in the perl code here: "todo, something strange going on here..."
       const variable = makiFile.readUInt32LE() + 5;
       const offset = variable + pos;
-      arg = {
-        name: `func${offset}`,
-        code: [],
-        offset,
-      };
-      if (localFunctions[offset] == null) {
-        localFunctions[offset] = {
-          function: arg,
-          offset,
-        };
-      }
+      arg = offset;
       break;
     }
     case "obj": {
@@ -310,7 +297,7 @@ function parse(buffer) {
   const variables = readVariables({ makiFile: makiFile, classes });
   readConstants({ makiFile: makiFile, variables });
   const bindings = readBindings(makiFile);
-  const { commands, localFunctions } = decodeCode({
+  const commands = decodeCode({
     makiFile,
     classes,
     variables,
@@ -342,7 +329,6 @@ function parse(buffer) {
     variables,
     bindings: resolvedBindings,
     commands,
-    localFunctions,
     version,
     extraVersion,
     offsetToCommand,
