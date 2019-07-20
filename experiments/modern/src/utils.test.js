@@ -25,7 +25,7 @@ describe("readXml", () => {
   });
 });
 
-describe("asyncTreeMao", () => {
+describe("asyncTreeMap", () => {
   it("runs parents before children", async () => {
     const callNodeNames = new Set();
     const mapper = node => {
@@ -63,5 +63,39 @@ describe("inlineIncludes", () => {
     const xml = await Utils.readXml(zip, "SkIn.XmL");
     const resolvedXml = await Utils.inlineIncludes(xml, zip);
     expect(resolvedXml).toMatchSnapshot();
+  });
+});
+
+describe("asyncDepthFirstFlatMap", () => {
+  test("encounters children first", async () => {
+    const encounterd = [];
+    const mapper = async node => {
+      encounterd.push(node.name);
+      if (node.replaceWithChildren) {
+        return node.children;
+      }
+      return { ...node, name: node.name.toLowerCase() };
+    };
+
+    const start = {
+      name: "A",
+      children: [
+        { name: "B" },
+        {
+          name: "C",
+          children: [
+            { name: "E" },
+            { name: "F", replaceWithChildren: true, children: [{ name: "G" }] },
+          ],
+          replaceWithChildren: true,
+        },
+        { name: "D" },
+      ],
+    };
+    expect(await Utils.asyncDepthFirstFlatMap(start, mapper)).toEqual({
+      name: "a",
+      children: [{ name: "b" }, { name: "e" }, { name: "g" }, { name: "d" }],
+    });
+    expect(encounterd).toEqual(["B", "E", "G", "D", "F", "C", "A"]);
   });
 });
