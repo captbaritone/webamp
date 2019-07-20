@@ -139,12 +139,12 @@ async function interpret(start, program, stack = [], { logger = null }) {
       // callGlobal
       case 25: {
         // This is where the version checked wa5 scripts start with this offset
-        if (command.arg.offset === 4294967296) {
+        if (command.arg === 4294967296) {
           // skip ahead to where the real program begins
           i = i + 3;
           break;
         }
-        let offset = command.arg.offset;
+        let offset = command.arg;
         // handle offsets that are over maxOffset that seem to be the wrong sign
         if (offset > maxOffset) {
           offset = offset - 4294967296;

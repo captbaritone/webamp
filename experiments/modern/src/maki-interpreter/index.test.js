@@ -157,15 +157,6 @@ describe("standardframe.maki", () => {
     ]);
   });
 
-  test("can read localFunctions", () => {
-    expect(maki.localFunctions).toEqual({
-      "722": {
-        function: { code: [], name: "func722", offset: 722 },
-        offset: 722,
-      },
-    });
-  });
-
   // [opcode, size] as output by the Perl decompiler
   // TODO: Get rid of the size values here, they are not used any more
   // prettier-ignore
