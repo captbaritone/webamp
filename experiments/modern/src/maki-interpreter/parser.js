@@ -233,6 +233,10 @@ function parseComand({ start, makiFile, length, pos }) {
       arg = makiFile.readUInt32LE();
       break;
     }
+    case "func":
+      // Note in the perl code here: "todo, something strange going on here..."
+      arg = makiFile.readUInt32LE() + 5 + pos;
+      break;
     case "line": {
       arg = makiFile.readUInt32LE() + 5 + pos;
       break;
@@ -240,13 +244,6 @@ function parseComand({ start, makiFile, length, pos }) {
     case "objFunc": {
       // TODO: ClassesOffset
       arg = makiFile.readUInt32LE();
-      break;
-    }
-    case "func": {
-      // Note in the perl code here: "todo, something strange going on here..."
-      const variable = makiFile.readUInt32LE() + 5;
-      const offset = variable + pos;
-      arg = offset;
       break;
     }
     case "obj": {
