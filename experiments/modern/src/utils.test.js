@@ -60,9 +60,28 @@ describe("asyncTreeMap", () => {
 describe("inlineIncludes", () => {
   it("inlines the contents of included files as children of the include node", async () => {
     const zip = await getSkinZip();
+    const originalFile = zip.file;
+    zip.file = jest.fn(path => originalFile.call(zip, path));
+
     const xml = await Utils.readXml(zip, "SkIn.XmL");
     const resolvedXml = await Utils.inlineIncludes(xml, zip);
     expect(resolvedXml).toMatchSnapshot();
+    expect(zip.file.mock.calls.map(args => args[0])).toMatchInlineSnapshot(`
+      Array [
+        /SkIn\\.XmL/i,
+        /xml\\\\/system-colors\\.xml/i,
+        /xml\\\\/standardframe\\.xml/i,
+        /xml\\\\/player\\.xml/i,
+        /xml\\\\/pledit\\.xml/i,
+        /xml\\\\/video\\.xml/i,
+        /xml\\\\/eq\\.xml/i,
+        /xml\\\\/color-presets\\.xml/i,
+        /xml\\\\/color-themes\\.xml/i,
+        /studio-elements\\.xml/i,
+        /player-elements\\.xml/i,
+        /player-normal\\.xml/i,
+      ]
+    `);
   });
 });
 
