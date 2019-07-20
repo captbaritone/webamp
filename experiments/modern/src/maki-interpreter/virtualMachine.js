@@ -108,6 +108,18 @@ async function interpret(start, program, stack = [], { logger = null }) {
         i = nextCommandIndex - 1;
         break;
       }
+      // jumpIfNot
+      case 17: {
+        const value = stack.pop();
+        // This seems backwards. Same as above
+        if (!value) {
+          break;
+        }
+        const offset = command.arg;
+        const nextCommandIndex = offsetToCommand[offset];
+        i = nextCommandIndex - 1;
+        break;
+      }
       // jump
       case 18: {
         const offset = command.arg;
@@ -140,15 +152,7 @@ async function interpret(start, program, stack = [], { logger = null }) {
       }
       // callGlobal
       case 25: {
-        let offset = command.arg;
-        // This is where the version checked wa5 scripts start with this offset
-        if (offset === 0) {
-          // skip ahead to where the real program begins
-          // TODO: Why is this magic?
-          i = i + 3;
-          break;
-        }
-        // handle offsets that are over maxOffset that seem to be the wrong sign
+        const offset = command.arg;
         const nextCommandIndex = offsetToCommand[offset];
         // Remove this await when we can run the VM synchronously.
         // See GitHub issue #814
