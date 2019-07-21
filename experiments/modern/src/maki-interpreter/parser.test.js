@@ -29,7 +29,7 @@ describe("can parse without crashing", () => {
       versions.forEach(version => {
         test(`compiled with compiler version ${version}`, () => {
           expect(() => {
-            parseFile(`./reference/maki_compiler/${version}/${script}`);
+            parseFile(`../../resources/maki_compiler/${version}/${script}`);
           }).not.toThrow();
         });
       });

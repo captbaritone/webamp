@@ -5,7 +5,8 @@ const runtime = require("../runtime");
 const interpret = require("./interpreter");
 const { VERSIONS } = require("./testConstants");
 
-async function runFile(relativePath) {
+async function runFile(version, fileName) {
+  const relativePath = `../../resources/maki_compiler/${version}/${fileName}`;
   const system = new System();
   const data = fs.readFileSync(path.join(__dirname, relativePath));
   // Remove this await when we can run the VM synchronously.
@@ -42,7 +43,7 @@ describe("can call messageBox with hello World", () => {
     test(`with bytecode compiled by ${version}`, async () => {
       // Remove this await when we can run the VM synchronously.
       // See GitHub issue #814
-      await runFile(`./reference/maki_compiler/${version}/hello_world.maki`);
+      await runFile(version, "hello_world.maki");
       expect(mockMessageBox).toHaveBeenCalledTimes(1);
       expect(mockMessageBox).toHaveBeenCalledWith(
         "Hello World",
@@ -68,7 +69,7 @@ describe("can use basic operators", () => {
     test(`with basic test bytecode compiled by ${version}`, async () => {
       // Remove this await when we can run the VM synchronously.
       // See GitHub issue #814
-      await runFile(`./reference/maki_compiler/${version}/basicTests.maki`);
+      await runFile(version, "basicTests.maki");
       expect(mockMessageBox.mock.calls).toEqual(
         [
           "2 + 2 = 4",
@@ -149,9 +150,7 @@ describe("can use simple functions", () => {
     test(`with bytecode compiled by ${version}`, async () => {
       // Remove this await when we can run the VM synchronously.
       // See GitHub issue #814
-      await runFile(
-        `./reference/maki_compiler/${version}/simpleFunctions.maki`
-      );
+      await runFile(version, "simpleFunctions.maki");
       expect(mockMessageBox.mock.calls).toEqual(
         [
           "simple custom function",
