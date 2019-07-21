@@ -25,38 +25,6 @@ describe("readXml", () => {
   });
 });
 
-describe("asyncTreeMap", () => {
-  it("runs parents before children", async () => {
-    const callNodeNames = new Set();
-    const mapper = node => {
-      callNodeNames.add(node.name);
-      if (node.name === "root.2") {
-        const children = [{ name: "root.2.1" }];
-        return { ...node, children };
-      }
-      return node;
-    };
-
-    const structure = {
-      name: "root",
-      children: [{ name: "root.1" }, { name: "root.2" }, { name: "root.3" }],
-    };
-
-    const mappedStructure = await Utils.asyncTreeMap(structure, mapper);
-    expect(callNodeNames).toEqual(
-      new Set(["root", "root.1", "root.2", "root.2.1", "root.3"])
-    );
-    expect(mappedStructure).toEqual({
-      name: "root",
-      children: [
-        { name: "root.1" },
-        { name: "root.2", children: [{ name: "root.2.1" }] },
-        { name: "root.3" },
-      ],
-    });
-  });
-});
-
 describe("inlineIncludes", () => {
   test("asyncTreeFlatMap", async () => {
     const playerElements = {

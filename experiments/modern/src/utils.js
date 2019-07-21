@@ -96,19 +96,3 @@ export async function inlineIncludes(xml, zip) {
     return includedFile.children;
   });
 }
-
-// Transform an tree structure by mapping over each node breadth first
-// Parents are mapped before their children
-// Children are mapped in parallel
-export async function asyncTreeMap(node, mapper) {
-  const mapped = await mapper(node);
-  if (mapped.children == null) {
-    return mapped;
-  }
-  const promises = mapped.children.map(child => {
-    return asyncTreeMap(child, mapper);
-  });
-  const children = await Promise.all(promises);
-
-  return { ...mapped, children };
-}
