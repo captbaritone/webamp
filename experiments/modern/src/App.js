@@ -55,7 +55,7 @@ async function getSkin() {
   // const system = new System();
 
   const images = {};
-  await Utils.asyncTreeMap(skinXml, async node => {
+  await Utils.asyncTreeFlatMap(skinXml, async node => {
     // TODO: This is probalby only valid if in an `<elements>` node
     switch (node.name) {
       case "bitmap": {
