@@ -2,11 +2,40 @@ const fs = require("fs");
 const path = require("path");
 const parse = require("./parser");
 const { getClass } = require("./objects");
+const { VERSIONS } = require("./testConstants");
 
 function parseFile(relativePath) {
   const buffer = fs.readFileSync(path.join(__dirname, relativePath));
   return parse(buffer);
 }
+
+describe("can parse without crashing", () => {
+  const versions = [
+    // VERSIONS.WINAMP_3_ALPHA,
+    VERSIONS.WINAMP_3_BETA,
+    VERSIONS.WINAMP_3_FULL,
+    VERSIONS.WINAMP_5_02,
+    VERSIONS.WINAMP_5_66,
+  ];
+
+  const scripts = [
+    "hello_world.maki",
+    "basicTests.maki",
+    "simpleFunctions.maki",
+  ];
+
+  scripts.forEach(script => {
+    describe(`script ${script}`, () => {
+      versions.forEach(version => {
+        test(`compiled with compiler version ${version}`, () => {
+          expect(() => {
+            parseFile(`./reference/maki_compiler/${version}/${script}`);
+          }).not.toThrow();
+        });
+      });
+    });
+  });
+});
 
 describe("standardframe.maki", () => {
   let maki;
