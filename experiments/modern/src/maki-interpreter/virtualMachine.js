@@ -11,7 +11,7 @@ function coerceTypes(var1, var2, val1, val2) {
 }
 
 async function interpret(start, program, stack = [], { logger = null }) {
-  const { commands, methods, variables, classes, offsetToCommand } = program;
+  const { commands, methods, variables, classes } = program;
 
   function twoArgCoercingOperator(operator) {
     const a = stack.pop();
@@ -30,11 +30,6 @@ async function interpret(start, program, stack = [], { logger = null }) {
     const bValue = b instanceof Variable ? b.getValue() : b;
 
     stack.push(operator(bValue, aValue));
-  }
-
-  function jumpToOffset(offset) {
-    const nextCommandIndex = offsetToCommand[offset];
-    return nextCommandIndex - 1;
   }
 
   let i = start;
@@ -105,7 +100,7 @@ async function interpret(start, program, stack = [], { logger = null }) {
         if (value) {
           break;
         }
-        i = jumpToOffset(command.arg);
+        i = command.arg - 1;
         break;
       }
       // jumpIfNot
@@ -115,12 +110,12 @@ async function interpret(start, program, stack = [], { logger = null }) {
         if (!value) {
           break;
         }
-        i = jumpToOffset(command.arg);
+        i = command.arg - 1;
         break;
       }
       // jump
       case 18: {
-        i = jumpToOffset(command.arg);
+        i = command.arg - 1;
         break;
       }
       // call
@@ -149,10 +144,9 @@ async function interpret(start, program, stack = [], { logger = null }) {
       // callGlobal
       case 25: {
         const offset = command.arg;
-        const nextCommandIndex = offsetToCommand[offset];
         // Remove this await when we can run the VM synchronously.
         // See GitHub issue #814
-        const value = await interpret(nextCommandIndex, program, stack, {
+        const value = await interpret(offset, program, stack, {
           logger,
         });
         stack.push(value);

@@ -10,6 +10,22 @@ const PRIMITIVE_TYPES = {
   6: "STRING",
 };
 
+// TODO: Don't depend upon COMMANDS
+function opcodeToArgType(opcode) {
+  const argType = COMMANDS[opcode].arg;
+  switch (argType) {
+    case "func":
+    case "line":
+      return "COMMAND_OFFSET";
+    case "var":
+    case "objFunc":
+    case "obj":
+      return "VARIABLE_OFFSET";
+    default:
+      return "NONE";
+  }
+}
+
 // Holds a buffer and a pointer. Consumers can consume bytesoff the end of the
 // file. When we want to run in the browser, we can refactor this class to use a
 // typed array: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays
@@ -232,23 +248,20 @@ function parseComand({ start, makiFile, length, pos }) {
     pos,
     opcode,
     arg: null,
+    argType: opcodeToArgType(opcode),
   };
 
-  const argType = COMMANDS[opcode].arg;
-  if (argType == null) {
+  if (command.argType == "NONE") {
     return command;
   }
 
   let arg = null;
-  switch (argType) {
-    case "func":
-    case "line":
+  switch (command.argType) {
+    case "COMMAND_OFFSET":
       // Note in the perl code here: "todo, something strange going on here..."
       arg = makiFile.readInt32LE() + 5 + pos;
       break;
-    case "var":
-    case "objFunc":
-    case "obj":
+    case "VARIABLE_OFFSET":
       arg = makiFile.readUInt32LE();
       break;
     default:
@@ -314,16 +327,22 @@ function parse(buffer) {
       binaryOffset: undefined,
     });
   });
+
+  const resolvedCommands = commands.map(command => {
+    if (command.argType === "COMMAND_OFFSET") {
+      return Object.assign({}, command, { arg: offsetToCommand[command.arg] });
+    }
+    return command;
+  });
   return {
     magic,
     classes,
     methods,
     variables,
     bindings: resolvedBindings,
-    commands,
+    commands: resolvedCommands,
     version,
     extraVersion,
-    offsetToCommand,
   };
 }
 
