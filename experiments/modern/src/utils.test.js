@@ -25,40 +25,58 @@ describe("readXml", () => {
   });
 });
 
-describe("asyncTreeMap", () => {
-  it("runs parents before children", async () => {
-    const callNodeNames = new Set();
-    const mapper = node => {
-      callNodeNames.add(node.name);
-      if (node.name === "root.2") {
-        const children = [{ name: "root.2.1" }];
-        return { ...node, children };
+describe("inlineIncludes", () => {
+  test("asyncTreeFlatMap", async () => {
+    const playerElements = {
+      name: "player-elements",
+      children: [{ name: "player-elements-child" }],
+    };
+    const playerNormal = {
+      name: "player-normal",
+      children: [{ name: "player-normal-child" }],
+    };
+    const player = {
+      name: "player",
+      children: [
+        {
+          name: "player-elements-include",
+          include: playerElements,
+        },
+        {
+          name: "main-container",
+          children: [
+            {
+              name: "player-normal-include",
+              include: playerNormal,
+            },
+          ],
+        },
+      ],
+    };
+
+    const xml = {
+      name: "root",
+      children: [{ name: "meta" }, { name: "include player", include: player }],
+    };
+
+    function resolveInclude(node) {
+      if (node.include) {
+        return node.include.children;
       }
       return node;
-    };
-
-    const structure = {
-      name: "root",
-      children: [{ name: "root.1" }, { name: "root.2" }, { name: "root.3" }],
-    };
-
-    const mappedStructure = await Utils.asyncTreeMap(structure, mapper);
-    expect(callNodeNames).toEqual(
-      new Set(["root", "root.1", "root.2", "root.2.1", "root.3"])
-    );
-    expect(mappedStructure).toEqual({
+    }
+    const resolved = await Utils.asyncTreeFlatMap(xml, resolveInclude);
+    expect(resolved).toEqual({
       name: "root",
       children: [
-        { name: "root.1" },
-        { name: "root.2", children: [{ name: "root.2.1" }] },
-        { name: "root.3" },
+        { name: "meta" },
+        { name: "player-elements-child" },
+        { name: "main-container", children: [{ name: "player-normal-child" }] },
       ],
     });
   });
-});
 
-describe("inlineIncludes", () => {
-  it("inlines the contents of included files as children of the include node", async () => {
+  test("inlines the contents of included files as children of the include node", async () => {
     const zip = await getSkinZip();
     const originalFile = zip.file;
     zip.file = jest.fn(path => originalFile.call(zip, path));
@@ -85,16 +103,27 @@ describe("inlineIncludes", () => {
   });
 });
 
-describe("asyncDepthFirstFlatMap", () => {
+describe("asyncFlatMap", () => {
+  test("recurses", async () => {
+    const start = ["parent", ["child", ["grandchild"], "sibling"], "partner"];
+    expect(await Utils.asyncFlatMap(start, v => Promise.resolve(v))).toEqual([
+      "parent",
+      "child",
+      "grandchild",
+      "sibling",
+      "partner",
+    ]);
+  });
+});
+
+describe("asyncTreeFlatMap", () => {
   test("encounters children first", async () => {
-    const encounterd = [];
-    const mapper = async node => {
-      encounterd.push(node.name);
+    const mapper = jest.fn(async node => {
       if (node.replaceWithChildren) {
         return node.children;
       }
       return { ...node, name: node.name.toLowerCase() };
-    };
+    });
 
     const start = {
       name: "A",
@@ -111,10 +140,12 @@ describe("asyncDepthFirstFlatMap", () => {
         { name: "D" },
       ],
     };
-    expect(await Utils.asyncDepthFirstFlatMap(start, mapper)).toEqual({
-      name: "a",
+    expect(await Utils.asyncTreeFlatMap(start, mapper)).toEqual({
+      name: "A",
       children: [{ name: "b" }, { name: "e" }, { name: "g" }, { name: "d" }],
     });
-    expect(encounterd).toEqual(["B", "E", "G", "D", "F", "C", "A"]);
+
+    const callOrder = mapper.mock.calls.map(args => args[0].name);
+    expect(callOrder).toEqual(["B", "C", "D", "E", "F", "G"]);
   });
 });
