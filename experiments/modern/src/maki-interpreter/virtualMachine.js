@@ -10,7 +10,7 @@ function coerceTypes(var1, var2, val1, val2) {
   return val1;
 }
 
-async function interpret(start, program, stack = [], { logger = null }) {
+function interpret(start, program, stack = [], { logger = null }) {
   const { commands, methods, variables, classes } = program;
 
   function twoArgCoercingOperator(operator) {
@@ -37,9 +37,7 @@ async function interpret(start, program, stack = [], { logger = null }) {
     const command = commands[i];
     // Print some debug info
     if (logger) {
-      // Remove this await when we can run the VM synchronously.
-      // See GitHub issue #814
-      await logger({ i, command, stack, variables, program });
+      logger({ i, command, stack, variables, program });
     }
 
     switch (command.opcode) {
@@ -144,9 +142,7 @@ async function interpret(start, program, stack = [], { logger = null }) {
       // callGlobal
       case 25: {
         const offset = command.arg;
-        // Remove this await when we can run the VM synchronously.
-        // See GitHub issue #814
-        const value = await interpret(offset, program, stack, {
+        const value = interpret(offset, program, stack, {
           logger,
         });
         stack.push(value);
