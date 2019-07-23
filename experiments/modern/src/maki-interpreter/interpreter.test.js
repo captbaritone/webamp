@@ -5,13 +5,11 @@ const runtime = require("../runtime");
 const interpret = require("./interpreter");
 const { VERSIONS } = require("./testConstants");
 
-async function runFile(version, fileName) {
+function runFile(version, fileName) {
   const relativePath = `../../resources/maki_compiler/${version}/${fileName}`;
   const system = new System();
   const data = fs.readFileSync(path.join(__dirname, relativePath));
-  // Remove this await when we can run the VM synchronously.
-  // See GitHub issue #814
-  await interpret({ runtime, data, system, log: false });
+  interpret({ runtime, data, system, log: false });
 }
 
 // The basicTest.m file that jberg prepared follows a convention for what a
@@ -40,10 +38,8 @@ describe("can call messageBox with hello World", () => {
     VERSIONS.WINAMP_5_66,
   ];
   versions.forEach(version => {
-    test(`with bytecode compiled by ${version}`, async () => {
-      // Remove this await when we can run the VM synchronously.
-      // See GitHub issue #814
-      await runFile(version, "hello_world.maki");
+    test(`with bytecode compiled by ${version}`, () => {
+      runFile(version, "hello_world.maki");
       expect(mockMessageBox).toHaveBeenCalledTimes(1);
       expect(mockMessageBox).toHaveBeenCalledWith(
         "Hello World",
@@ -66,10 +62,8 @@ describe("can use basic operators", () => {
   ];
 
   versions.forEach(version => {
-    test(`with basic test bytecode compiled by ${version}`, async () => {
-      // Remove this await when we can run the VM synchronously.
-      // See GitHub issue #814
-      await runFile(version, "basicTests.maki");
+    test(`with basic test bytecode compiled by ${version}`, () => {
+      runFile(version, "basicTests.maki");
       expect(mockMessageBox.mock.calls).toEqual(
         [
           "2 + 2 = 4",
@@ -147,10 +141,8 @@ describe("can use simple functions", () => {
   ];
 
   versions.forEach(version => {
-    test(`with bytecode compiled by ${version}`, async () => {
-      // Remove this await when we can run the VM synchronously.
-      // See GitHub issue #814
-      await runFile(version, "simpleFunctions.maki");
+    test(`with bytecode compiled by ${version}`, () => {
+      runFile(version, "simpleFunctions.maki");
       expect(mockMessageBox.mock.calls).toEqual(
         [
           "simple custom function",

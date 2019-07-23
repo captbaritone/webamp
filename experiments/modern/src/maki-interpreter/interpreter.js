@@ -3,7 +3,7 @@ const { getClass, getFormattedId } = require("./objects");
 const interpret = require("./virtualMachine");
 const { printCommand } = require("./prettyPrinter");
 
-async function main({ runtime, data, system, log, logger }) {
+function main({ runtime, data, system, log, logger }) {
   const program = parse(data);
 
   // Replace class hashes with actual JavaScript classes from the runtime
@@ -29,10 +29,8 @@ async function main({ runtime, data, system, log, logger }) {
     // const logger = log ? printCommand : logger;
     // TODO: Handle disposing of this.
     // TODO: Handle passing in variables.
-    variable.hook(method.name, async () => {
-      // Remove this await when we can run the VM synchronously.
-      // See GitHub issue #814
-      await interpret(commandOffset, program, [], { logger });
+    variable.hook(method.name, () => {
+      interpret(commandOffset, program, [], { logger });
     });
   });
 
@@ -44,7 +42,7 @@ async function main({ runtime, data, system, log, logger }) {
   // Set the System global
   // TODO: We could confirm that this variable has the "system" flag set.
   program.variables[0].setValue(system);
-  await system.js_start();
+  system.js_start();
 }
 
 module.exports = main;

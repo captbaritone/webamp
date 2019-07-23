@@ -5,10 +5,8 @@ class MakiObject {
     this._emitter = new Emitter();
   }
 
-  async js_trigger(eventName, ...args) {
-    // Remove this await when we can run the VM synchronously.
-    // See GitHub issue #814
-    await this._emitter.trigger(eventName, args);
+  js_trigger(eventName, ...args) {
+    this._emitter.trigger(eventName, args);
   }
 
   js_listenToAll(cb) {
