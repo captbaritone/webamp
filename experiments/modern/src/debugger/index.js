@@ -163,6 +163,11 @@ function Debugger({ maki }) {
     if (!paused) next();
   }, [paused]);
 
+  // When we get a new generator, immediatly take the first step.
+  React.useEffect(() => {
+    next();
+  }, [gen]);
+
   React.useEffect(() => {
     function handler(e) {
       switch (e.key) {
