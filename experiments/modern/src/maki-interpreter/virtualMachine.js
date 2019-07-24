@@ -41,14 +41,15 @@ function* interpret(start, program, stack = []) {
     stack.push(operator(bValue, aValue));
   }
 
-  let i = start;
-  while (i < commands.length) {
-    const command = commands[i];
+  // Instruction Pointer
+  let ip = start;
+  while (ip < commands.length) {
+    const command = commands[ip];
     // This probably incurrs some perf cost. If it does, we can pass in a flag
     // to enable it only when we are debugging. When we are not, (in prod) we
     // can just jump right over it and we will execute straight through to the
     // return value on the first call to `.next()`.
-    yield { i, command, stack, variables, commands };
+    yield { i: ip, command, stack, variables, commands };
 
     switch (command.opcode) {
       // push
@@ -290,7 +291,7 @@ function* interpret(start, program, stack = []) {
         throw new Error(`Unhandled opcode ${command.opcode}`);
     }
 
-    i++;
+    ip++;
   }
 }
 
