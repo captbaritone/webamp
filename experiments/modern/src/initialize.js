@@ -1,5 +1,23 @@
 import * as Utils from "./utils";
-import JSZip from "jszip";
+
+function splitValues(s) {
+  const retArr = [];
+  const arr = s.split(",");
+  for (let i = 0; i < arr.length; i++) {
+    retArr.push(arr[i]);
+  }
+  return arr.map((v) => parseFloat(v));
+}
+
+async function loadImage(imgUrl) {
+  return await new Promise(resolve => {
+    const img = new Image();
+    img.addEventListener("load", function() {
+      resolve(img);
+    });
+    img.src = imgUrl;
+  });
+}
 
 const schema = {
   groupdef: [
@@ -42,7 +60,7 @@ const schema = {
     "homepage",
     "screenshot",
   ],
-  wasabixml: ["skininfo", "scripts", "elements", "groupdef", "container"],
+  wasabixml: ["skininfo", "scripts", "elements", "groupdef", "container", "gammaset"],
   // same as above, wa3 vs wa5
   winampabstractionlayer: [
     "skininfo",
@@ -50,6 +68,7 @@ const schema = {
     "elements",
     "groupdef",
     "container",
+    "gammaset",
   ],
   gammaset: ["gammagroup"],
 };
@@ -66,7 +85,12 @@ const parsers = {
   screenshot: () => {},
   container: () => {},
   scripts: () => {},
-  gammaset: () => {},
+  gammaset: (node, parent, registry) => {
+    const gammaId = node.attributes.id;
+    if (!registry.gammasets.hasOwnProperty(gammaId)) {
+      registry.gammasets[gammaId] = {};
+    }
+  },
   color: () => {},
   layer: () => {},
   layoutstatus: () => {},
@@ -76,10 +100,29 @@ const parsers = {
   layout: () => {},
   sendparams: () => {},
   elements: () => {},
-  bitmap: () => {},
+  bitmap: async (node, parent, registry, zip) => {
+    let { file, gammagroup, h, id, w, x, y } = node.attributes;
+    // TODO: Escape file for regex
+    const img = Utils.getCaseInsensitveFile(zip, file);
+    const imgBlob = await img.async("blob");
+    const imgUrl = URL.createObjectURL(imgBlob);
+    if (w === undefined || h === undefined) {
+      const image = await loadImage(imgUrl);
+      w = image.width;
+      h = image.height;
+      x = x !== undefined ? x : 0;
+      y = y !== undefined ? y : 0;
+    }
+    registry.images[id.toLowerCase()] = { file, gammagroup, h, w, x, y, imgUrl };
+  },
   eqvis: () => {},
   slider: () => {},
-  gammagroup: () => {},
+  gammagroup: (node, parent, registry) => {
+    const gammaId = parent.attributes.id;
+    const attributeId = node.attributes.id;
+    const attributeValues = splitValues(node.attributes.value);
+    registry.gammasets[gammaId][attributeId] = attributeValues;
+  },
   truetypefont: () => {},
   component: () => {},
   text: () => {},
@@ -149,14 +192,10 @@ async function parseChildren(node, parsedParent, registry, zip) {
   );
 }
 
-async function initialize(registry, skinBlob) {
-  const zip = await JSZip.loadAsync(skinBlob);
-  const skinXml = await Utils.inlineIncludes(
-    await Utils.readXml(zip, "skin.xml"),
-    zip
-  );
-
+async function initialize(zip, skinXml) {
+  const registry = { scripts: [], gammasets: {}, images: {} };
   await parseChildren(skinXml.children[0], null, registry, zip);
+  return registry;
 }
 
 export default initialize;

@@ -33,77 +33,20 @@ const IGNORE_IDS = new Set([
 
 const SkinContext = React.createContext(null);
 
-async function loadImage(imgUrl) {
-  return await new Promise(resolve => {
-    const img = new Image();
-    img.addEventListener("load", function() {
-      resolve(img);
-    });
-    img.src = imgUrl;
-  });
-}
-
 async function getSkin() {
-  const resp = await fetch(process.env.PUBLIC_URL + "/skins/simple.wal");
+  const resp = await fetch(process.env.PUBLIC_URL + "/skins/CornerAmp_Redux.wal");
   const blob = await resp.blob();
-  const zip = null;
-
-  const registry = { scripts: [] };
-  await initialize(registry, blob);
-  console.log("registry: ", registry);
-  throw new Error("done");
+  const zip = await JSZip.loadAsync(blob);
   const skinXml = await Utils.inlineIncludes(
     await Utils.readXml(zip, "skin.xml"),
     zip
   );
 
-  // const system = new System();
-
-  const images = {};
-  await Utils.asyncTreeFlatMap(skinXml, async node => {
-    // TODO: This is probalby only valid if in an `<elements>` node
-    switch (node.name) {
-      case "bitmap": {
-        let { file, gammagroup, h, id, w, x, y } = node.attributes;
-        // TODO: Escape file for regex
-        const img = Utils.getCaseInsensitveFile(zip, file);
-        const imgBlob = await img.async("blob");
-        const imgUrl = URL.createObjectURL(imgBlob);
-        if (w === undefined || h === undefined) {
-          const image = await loadImage(imgUrl);
-          w = image.width;
-          h = image.height;
-          x = x !== undefined ? x : 0;
-          y = y !== undefined ? y : 0;
-        }
-        images[id.toLowerCase()] = { file, gammagroup, h, w, x, y, imgUrl };
-        break;
-      }
-      case "truetypefont": {
-        //console.log(element);
-        break;
-      }
-      case "script": {
-        const { file, param } = node.attributes;
-        if (!file.endsWith("standardframe.maki")) {
-          break;
-        }
-        const scriptFile = Utils.getCaseInsensitveFile(zip, file);
-        const data = await scriptFile.async("uint8array");
-        // interpret({ data, system, runtime, log: true });
-        console.log(data);
-        break;
-      }
-      default: {
-        // console.error(`Unknown node ${node.name}`);
-      }
-    }
-    return node;
-  });
+  const registry = await initialize(zip, skinXml);
 
   // Gross hack returing a tuple here. We're just doing some crazy stuff to get
   // some data returned in the laziest way possible
-  return [skinXml, images];
+  return [skinXml, registry];
 }
 
 function Layout({
@@ -267,9 +210,9 @@ function App() {
   if (data == null) {
     return <h1>Loading...</h1>;
   }
-  const [skinXml, images] = data;
+  const [skinXml, registry] = data;
   return (
-    <SkinContext.Provider value={images}>
+    <SkinContext.Provider value={registry.images}>
       <XmlNode
         node={
           // TODO: This is not quite right. Really we should only be rendering the
