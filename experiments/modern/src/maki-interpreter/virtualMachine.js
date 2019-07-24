@@ -10,7 +10,7 @@ function coerceTypes(var1, var2, val1, val2) {
   return val1;
 }
 
-function* interpret(start, program, stack = [], { logger = null }) {
+function* interpret(start, program, stack = []) {
   const { commands, methods, variables, classes } = program;
 
   function twoArgCoercingOperator(operator) {
@@ -35,9 +35,7 @@ function* interpret(start, program, stack = [], { logger = null }) {
   let i = start;
   while (i < commands.length) {
     const command = commands[i];
-    if (logger) {
-      yield { i, command, stack, variables, program };
-    }
+    yield { i, command, stack, variables, program };
 
     switch (command.opcode) {
       // push
@@ -141,9 +139,7 @@ function* interpret(start, program, stack = [], { logger = null }) {
       // callGlobal
       case 25: {
         const offset = command.arg;
-        const value = yield* interpret(offset, program, stack, {
-          logger,
-        });
+        const value = yield* interpret(offset, program, stack);
         stack.push(value);
         break;
       }
