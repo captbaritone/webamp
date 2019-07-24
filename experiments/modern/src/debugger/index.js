@@ -134,8 +134,7 @@ function Debugger({ maki }) {
 
   const nextValue = React.useCallback(
     value => {
-      const { i, stack, program } = value;
-      const { variables, commands } = program;
+      const { i, stack, variables, commands } = value;
       dispatch({
         type: "STEPPED",
         variables,
