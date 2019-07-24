@@ -54,14 +54,6 @@ function Wrapper() {
   );
 }
 
-const initialState = {
-  variables: [],
-  stack: [],
-  commands: [],
-  commandOffset: 0,
-  messages: [],
-};
-
 // Given a generator and a handler function, returns a function `next` which,
 // when called, will `.next` values off the generator and pass them to `handler`
 // until `handler` returns `false`.
@@ -83,6 +75,15 @@ function useNextGeneratorValue(gen, handler) {
   }, [gen, handler]);
 }
 
+const initialState = {
+  variables: [],
+  stack: [],
+  commands: [],
+  commandOffset: 0,
+  messages: [],
+  paused: true,
+};
+
 function reducer(state, action) {
   switch (action.type) {
     case "STEPPED":
@@ -99,6 +100,11 @@ function reducer(state, action) {
         ...state,
         messages: [...state.messages, action.message],
       };
+    case "PAUSE":
+      return { ...state, paused: true };
+    case "UNPAUSE":
+      return { ...state, paused: false };
+
     default:
       throw new Error("Unknown action type");
   }
@@ -107,10 +113,9 @@ function reducer(state, action) {
 function Debugger({ maki }) {
   const [gen, setGen] = React.useState(null);
   const [breakPoints, setBreakpoints] = React.useState(new Set([]));
-  const [paused, setPaused] = React.useState(true);
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
-  const { variables, stack, commands, commandOffset, messages } = state;
+  const { variables, stack, commands, commandOffset, messages, paused } = state;
 
   const system = React.useMemo(() => {
     const sys = new System();
@@ -142,13 +147,13 @@ function Debugger({ maki }) {
         return false;
       }
       if (breakPoints.has(i)) {
-        setPaused(true);
+        dispatch({ type: "PAUSE" });
         return;
       }
 
       return true;
     },
-    [dispatch, paused, breakPoints, setPaused]
+    [dispatch, paused, breakPoints]
   );
 
   const next = useNextGeneratorValue(gen, nextValue);
@@ -226,15 +231,9 @@ function Debugger({ maki }) {
       <div style={{ gridArea: "commands", overflow: "scroll" }}>
         <button onClick={next}>Next</button>
         {paused ? (
-          <button
-            onClick={() => {
-              setPaused(false);
-            }}
-          >
-            Play
-          </button>
+          <button onClick={() => dispatch({ type: "UNPAUSE" })}>Play</button>
         ) : (
-          <button onClick={() => setPaused(true)}>Pause</button>
+          <button onClick={() => dispatch({ type: "PAUSE" })}>Pause</button>
         )}
         <h2>Commands</h2>
         <table>
