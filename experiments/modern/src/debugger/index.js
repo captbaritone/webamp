@@ -18,37 +18,6 @@ function readFileAsArrayBuffer(file) {
   });
 }
 
-// Like React.useReducer except state updates are deferred to the animation
-// frame.
-//
-// This is usefull if you need to be able to dispatch within a hot loop, but
-// don't want to incur the performence cost of triggering React renders on each
-// dispatch. This comes at a cost:
-//
-// It may be possible to expose, via the UI, a dispatch callback which would be
-// invalid for the current state.
-//
-// Known bugs:
-// - This may trigger a state update after the component has unmounted.
-// - Theoretically, I think we should use a ref to hold the uncomitted state,
-//   not just a variable.
-function useThrottledReducer(reducer, initialState) {
-  const [_state, setState] = React.useState(initialState);
-  let state = _state;
-  let timeout = null;
-  function dispatch(action) {
-    if (timeout != null) {
-      window.cancelAnimationFrame(timeout);
-    }
-    state = reducer(state, action);
-    timeout = window.requestAnimationFrame(() => {
-      setState(state);
-    }, 0);
-  }
-
-  return [state, dispatch];
-}
-
 function Wrapper() {
   const [maki, setMaki] = React.useState(null);
   const onDrop = React.useCallback(async acceptedFiles => {
@@ -85,13 +54,6 @@ function Wrapper() {
   );
 }
 
-/*
-async function fetchTestScript() {
-  const response = await fetch(basicTestUrl);
-  return response.arrayBuffer();
-}
-*/
-
 const initialState = {
   variables: [],
   stack: [],
@@ -100,48 +62,56 @@ const initialState = {
   messages: [],
 };
 
+// Given a generator and a handler function, returns a function `next` which,
+// when called, will `.next` values off the generator and pass them to `handler`
+// until `handler` returns `false`.
+function useNextGeneratorValue(gen, handler) {
+  return React.useMemo(() => {
+    if (gen == null) {
+      // TODO: Return null and disable the next button
+      return () => {};
+    }
+    return () => {
+      let ret = gen.next();
+      while (!ret.done) {
+        if (handler(ret.value) === false) {
+          return;
+        }
+        ret = gen.next();
+      }
+    };
+  }, [gen, handler]);
+}
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "STEPPED":
+      const { variables, commands, commandOffset, stack } = action;
+      return {
+        ...state,
+        variables,
+        commands,
+        commandOffset,
+        stack,
+      };
+    case "GOT_MESSAGE":
+      return {
+        ...state,
+        messages: [...state.messages, action.message],
+      };
+    default:
+      throw new Error("Unknown action type");
+  }
+}
+
 function Debugger({ maki }) {
-  // This is all a huge disaster
-  const getNextStepPromiseRef = React.useRef(null);
-  const [next, setNext] = React.useState(() => {});
+  const [gen, setGen] = React.useState(null);
   const [breakPoints, setBreakpoints] = React.useState(new Set([]));
   const [paused, setPaused] = React.useState(true);
-  const [state, dispatch] = useThrottledReducer((state, action) => {
-    switch (action.type) {
-      case "STEPPED":
-        const { variables, commands, commandOffset, stack } = action;
-        return {
-          ...state,
-          variables,
-          commands,
-          commandOffset,
-          stack,
-        };
-      case "GOT_MESSAGE":
-        return {
-          ...state,
-          messages: [...state.messages, action.message],
-        };
-      default:
-        throw new Error("Unknown action type");
-    }
-  }, initialState);
+  const [state, dispatch] = React.useReducer(reducer, initialState);
 
   const { variables, stack, commands, commandOffset, messages } = state;
 
-  getNextStepPromiseRef.current = i => {
-    if (!paused) {
-      if (breakPoints.has(i)) {
-        setPaused(true);
-      } else {
-        return;
-      }
-    }
-    return new Promise((resolve, reject) => {
-      // setState accepts a creator function, so we have to pass a function that returns our function.
-      setNext(() => resolve);
-    });
-  };
   const system = React.useMemo(() => {
     const sys = new System();
     sys.messageBox = function(message, messageTitle, flag, notanymoreId) {
@@ -151,26 +121,42 @@ function Debugger({ maki }) {
       });
     };
     return sys;
-  });
+  }, [dispatch]);
 
   React.useEffect(() => {
-    run({
-      runtime,
-      data: maki,
-      system,
-      logger: ({ i, stack, program }) => {
-        const { variables, commands } = program;
-        dispatch({
-          type: "STEPPED",
-          variables,
-          commands,
-          commandOffset: i,
-          stack,
-        });
-        return getNextStepPromiseRef.current(i);
-      },
-    });
+    run({ runtime, data: maki, system, debugHandler: setGen });
   }, []);
+
+  const nextValue = React.useCallback(
+    value => {
+      const { i, stack, program } = value;
+      const { variables, commands } = program;
+      dispatch({
+        type: "STEPPED",
+        variables,
+        commands,
+        commandOffset: i,
+        stack,
+      });
+      if (paused) {
+        return false;
+      }
+      if (breakPoints.has(i)) {
+        setPaused(true);
+        return;
+      }
+
+      return true;
+    },
+    [dispatch, paused, breakPoints, setPaused]
+  );
+
+  const next = useNextGeneratorValue(gen, nextValue);
+
+  // When we unpause, we should resume
+  React.useEffect(() => {
+    if (!paused) next();
+  }, [paused]);
 
   React.useEffect(() => {
     function handler(e) {
@@ -243,7 +229,6 @@ function Debugger({ maki }) {
           <button
             onClick={() => {
               setPaused(false);
-              next();
             }}
           >
             Play
