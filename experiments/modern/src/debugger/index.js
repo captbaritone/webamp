@@ -254,9 +254,6 @@ function Debugger({ maki }) {
                           const newBreakPoints = new Set(breakPoints);
                           newBreakPoints.delete(i);
                           setBreakpoints(newBreakPoints);
-                          if (commandOffset === i) {
-                            next();
-                          }
                         }}
                       >
                         Clear
