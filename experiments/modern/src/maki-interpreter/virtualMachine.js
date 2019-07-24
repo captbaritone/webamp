@@ -35,7 +35,9 @@ function* interpret(start, program, stack = []) {
   let i = start;
   while (i < commands.length) {
     const command = commands[i];
-    yield { i, command, stack, variables, program };
+    {
+      yield { i, command, stack, variables, commands };
+    }
 
     switch (command.opcode) {
       // push
