@@ -11,7 +11,7 @@ function runGeneratorUntilReturn(gen) {
   return val.value;
 }
 
-function main({ runtime, data, system, log, logger }) {
+function main({ runtime, data, system, log, debugHandler }) {
   const program = parse(data);
 
   // Replace class hashes with actual JavaScript classes from the runtime
@@ -29,6 +29,8 @@ function main({ runtime, data, system, log, logger }) {
     return resolved;
   });
 
+  const handler = debugHandler || runGeneratorUntilReturn;
+
   // Bind top level hooks.
   program.bindings.forEach(binding => {
     const { commandOffset, variableOffset, methodOffset } = binding;
@@ -38,9 +40,7 @@ function main({ runtime, data, system, log, logger }) {
     // TODO: Handle disposing of this.
     // TODO: Handle passing in variables.
     variable.hook(method.name, () => {
-      runGeneratorUntilReturn(
-        interpret(commandOffset, program, [], { logger })
-      );
+      handler(interpret(commandOffset, program, []));
     });
   });
 
