@@ -3,6 +3,14 @@ const { getClass, getFormattedId } = require("./objects");
 const interpret = require("./virtualMachine");
 const { printCommand } = require("./prettyPrinter");
 
+function runGeneratorUntilReturn(gen) {
+  let val = gen.next();
+  while (!val.done) {
+    val = gen.next();
+  }
+  return val.value;
+}
+
 function main({ runtime, data, system, log, logger }) {
   const program = parse(data);
 
@@ -30,7 +38,9 @@ function main({ runtime, data, system, log, logger }) {
     // TODO: Handle disposing of this.
     // TODO: Handle passing in variables.
     variable.hook(method.name, () => {
-      interpret(commandOffset, program, [], { logger });
+      runGeneratorUntilReturn(
+        interpret(commandOffset, program, [], { logger })
+      );
     });
   });
 
