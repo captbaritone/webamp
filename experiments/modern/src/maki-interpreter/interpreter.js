@@ -1,8 +1,10 @@
 const parse = require("./parser");
 const { getClass, getFormattedId } = require("./objects");
 const interpret = require("./virtualMachine");
-const { printCommand } = require("./prettyPrinter");
 
+// Note: if this incurs a performance overhead, we could pass a flag into the VM
+// to not yield in production. In that case, we would never even enter the
+// `while` loop.
 function runGeneratorUntilReturn(gen) {
   let val = gen.next();
   while (!val.done) {
@@ -40,6 +42,11 @@ function main({ runtime, data, system, log, debugHandler }) {
     // TODO: Handle disposing of this.
     // TODO: Handle passing in variables.
     variable.hook(method.name, () => {
+      // Interpret is a generator that yields before each command is exectued.
+      // `handler` is reponsible for `.next()`ing until the program execution is
+      // complete (the generator is "done"). In production this is done
+      // synchronously. In the debugger, if execution is paused, it's done
+      // async.
       handler(interpret(commandOffset, program, []));
     });
   });
