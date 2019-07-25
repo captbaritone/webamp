@@ -161,3 +161,27 @@ describe("can use simple functions", () => {
     });
   });
 });
+
+describe("can run same object test", () => {
+  const versions = [
+    // jberg could not get the script to compile on this version
+    // VERSIONS.WINAMP_3_ALPHA,
+    VERSIONS.WINAMP_3_BETA,
+    VERSIONS.WINAMP_3_FULL,
+    VERSIONS.WINAMP_5_02,
+    VERSIONS.WINAMP_5_66,
+  ];
+
+  versions.forEach(version => {
+    test(`with bytecode compiled by ${version}`, () => {
+      runFile(version, "sameObjectTest.maki");
+      expect(mockMessageBox.mock.calls).toEqual(
+        [
+          "empty object equal each other",
+          "same object equal each other",
+          "different objects do not equal each other",
+        ].map(successOutputFromMessage)
+      );
+    });
+  });
+});
