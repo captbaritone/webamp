@@ -2,12 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
 import { WINDOWS, MEDIA_STATUS, LOAD_STYLE } from "../../constants";
-import {
-  loadFilesFromReferences,
-  toggleMainWindowShadeMode,
-  scrollVolume,
-  loadMedia,
-} from "../../actionCreators";
+import * as Actions from "../../actionCreators";
 import { getWindowShade } from "../../selectors";
 
 import DropTarget from "../DropTarget";
@@ -57,7 +52,6 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  loadFilesFromReferences(files: FileList): void;
   scrollVolume(e: React.WheelEvent<HTMLDivElement>): void;
   toggleMainWindowShadeMode(): void;
   loadMedia(e: React.DragEvent<HTMLDivElement>): void;
@@ -70,102 +64,100 @@ interface OwnProps {
 
 type Props = StateProps & DispatchProps & OwnProps;
 
-export class MainWindow extends React.Component<Props> {
-  render() {
-    const {
-      focused,
-      loading,
-      doubled,
-      mainShade,
-      llama,
-      status,
-      working,
-      filePickers,
-    } = this.props;
+const MainWindow = (props: Props) => {
+  const {
+    focused,
+    loading,
+    doubled,
+    mainShade,
+    llama,
+    status,
+    working,
+    filePickers,
+  } = props;
 
-    const className = classnames({
-      window: true,
-      play: status === MEDIA_STATUS.PLAYING,
-      stop: status === MEDIA_STATUS.STOPPED,
-      pause: status === MEDIA_STATUS.PAUSED,
-      selected: focused === WINDOWS.MAIN,
-      shade: mainShade,
-      draggable: true,
-      loading,
-      doubled,
-      llama,
-    });
+  const className = classnames({
+    window: true,
+    play: status === MEDIA_STATUS.PLAYING,
+    stop: status === MEDIA_STATUS.STOPPED,
+    pause: status === MEDIA_STATUS.PAUSED,
+    selected: focused === WINDOWS.MAIN,
+    shade: mainShade,
+    draggable: true,
+    loading,
+    doubled,
+    llama,
+  });
 
-    return (
-      <React.StrictMode>
-        <DropTarget
-          id="main-window"
-          className={className}
-          handleDrop={this.props.loadMedia}
-          onWheel={this.props.scrollVolume}
-        >
-          <FocusTarget windowId={WINDOWS.MAIN}>
-            <div
-              id="title-bar"
-              className="selected draggable"
-              onDoubleClick={this.props.toggleMainWindowShadeMode}
+  return (
+    <React.StrictMode>
+      <DropTarget
+        id="main-window"
+        className={className}
+        handleDrop={props.loadMedia}
+        onWheel={props.scrollVolume}
+      >
+        <FocusTarget windowId={WINDOWS.MAIN}>
+          <div
+            id="title-bar"
+            className="selected draggable"
+            onDoubleClick={props.toggleMainWindowShadeMode}
+          >
+            <ContextMenuTarget
+              id="option-context"
+              bottom
+              handle={<ClickedDiv id="option" title="Winamp Menu" />}
             >
-              <ContextMenuTarget
-                id="option-context"
-                bottom
-                handle={<ClickedDiv id="option" title="Winamp Menu" />}
-              >
-                <MainContextMenu filePickers={filePickers} />
-              </ContextMenuTarget>
-              {mainShade && <MiniTime />}
-              <Minimize />
-              <Shade />
-              <Close />
-            </div>
-            <div className="status">
-              <ClutterBar />
-              {!working && <div id="play-pause" />}
-              <div
-                id="work-indicator"
-                className={classnames({ selected: working })}
-              />
-              <Time />
-            </div>
-            <Visualizer
-              // @ts-ignore Visualizer is not typed yet
-              analyser={this.props.analyser}
+              <MainContextMenu filePickers={filePickers} />
+            </ContextMenuTarget>
+            {mainShade && <MiniTime />}
+            <Minimize />
+            <Shade />
+            <Close />
+          </div>
+          <div className="status">
+            <ClutterBar />
+            {!working && <div id="play-pause" />}
+            <div
+              id="work-indicator"
+              className={classnames({ selected: working })}
             />
-            <div className="media-info">
-              <Marquee />
-              <Kbps />
-              <Khz />
-              <MonoStereo />
-            </div>
-            <MainVolume />
-            <MainBalance />
-            <div className="windows">
-              <EqToggleButton />
-              <PlaylistToggleButton />
-            </div>
-            <Position />
-            <ActionButtons />
-            <Eject />
-            <div className="shuffle-repeat">
-              <Shuffle />
-              <Repeat />
-            </div>
-            <a
-              id="about"
-              target="_blank"
-              href="https://webamp.org/about"
-              title="About"
-            />
-          </FocusTarget>
-        </DropTarget>
-      </React.StrictMode>
-    );
-  }
-}
+            <Time />
+          </div>
+          <Visualizer
+            // @ts-ignore Visualizer is not typed yet
+            analyser={props.analyser}
+          />
+          <div className="media-info">
+            <Marquee />
+            <Kbps />
+            <Khz />
+            <MonoStereo />
+          </div>
+          <MainVolume />
+          <MainBalance />
+          <div className="windows">
+            <EqToggleButton />
+            <PlaylistToggleButton />
+          </div>
+          <Position />
+          <ActionButtons />
+          <Eject />
+          <div className="shuffle-repeat">
+            <Shuffle />
+            <Repeat />
+          </div>
+          <a
+            id="about"
+            target="_blank"
+            href="https://webamp.org/about"
+            title="About"
+          />
+        </FocusTarget>
+      </DropTarget>
+    </React.StrictMode>
+  );
+};
 
 const mapStateToProps = (state: AppState): StateProps => {
   const {
@@ -186,13 +178,12 @@ const mapStateToProps = (state: AppState): StateProps => {
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
   return {
-    loadFilesFromReferences: (files: FileList) =>
-      dispatch(loadFilesFromReferences(files)),
-    toggleMainWindowShadeMode: () => dispatch(toggleMainWindowShadeMode()),
+    toggleMainWindowShadeMode: () =>
+      dispatch(Actions.toggleMainWindowShadeMode()),
     scrollVolume: (e: React.WheelEvent<HTMLDivElement>) =>
-      dispatch(scrollVolume(e)),
+      dispatch(Actions.scrollVolume(e)),
     loadMedia: (e: React.DragEvent<HTMLDivElement>) =>
-      dispatch(loadMedia(e, LOAD_STYLE.PLAY)),
+      dispatch(Actions.loadMedia(e, LOAD_STYLE.PLAY)),
   };
 };
 export default connect(
