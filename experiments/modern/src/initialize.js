@@ -19,8 +19,13 @@ async function loadImage(imgUrl) {
   });
 }
 
+function uuid () {
+  return '_' + Math.random().toString(36).substr(2, 9);
+}
+
 const schema = {
   groupdef: [
+    "scripts",
     "layer",
     "layoutstatus",
     "hideobject",
@@ -36,6 +41,17 @@ const schema = {
     "wasabi:button",
     "text",
     "vis",
+  ],
+  group: [
+    "button",
+    "layer",
+    "text",
+    "vis",
+    "group",
+    "scripts",
+    "layoutstatus",
+    "hideobject",
+    "wasabi:titlebar",
   ],
   layout: [
     "wasabi:standardframe:status",
@@ -73,33 +89,52 @@ const schema = {
   gammaset: ["gammagroup"],
 };
 
+const noop = (node) => node;
+
 const parsers = {
-  groupdef(node, parent, registry, zip) {},
-  skininfo: () => {},
-  version: () => {},
-  name: () => {},
-  comment: () => {},
-  author: () => {},
-  email: () => {},
-  homepage: () => {},
-  screenshot: () => {},
-  container: () => {},
-  scripts: () => {},
+  groupdef: (node, parent, registry) => {
+    const attributeId = node.attributes.id;
+    registry.groupdefs[attributeId] = node;
+
+    return node;
+  },
+  skininfo: noop,
+  version: noop,
+  name: noop,
+  comment: noop,
+  author: noop,
+  email: noop,
+  homepage: noop,
+  screenshot: noop,
+  container: noop,
+  scripts: noop,
   gammaset: (node, parent, registry) => {
     const gammaId = node.attributes.id;
     if (!registry.gammasets.hasOwnProperty(gammaId)) {
       registry.gammasets[gammaId] = {};
     }
+
+    return node;
   },
-  color: () => {},
-  layer: () => {},
-  layoutstatus: () => {},
-  hideobject: () => {},
-  button: () => {},
-  group: () => {},
-  layout: () => {},
-  sendparams: () => {},
-  elements: () => {},
+  color: noop,
+  layer: noop,
+  layoutstatus: noop,
+  hideobject: noop,
+  button: noop,
+  group: (node, parent, registry) => {
+    if (!node.children || node.children.length === 0) {
+      const groupdef = registry.groupdefs[node.attributes.id];
+      if (groupdef) {
+        console.log({ ...node, ...groupdef, name: "group" });
+        return { ...node, ...groupdef, name: "group" };
+      }
+    }
+
+    return node;
+  },
+  layout: noop,
+  sendparams: noop,
+  elements: noop,
   bitmap: async (node, parent, registry, zip) => {
     let { file, gammagroup, h, id, w, x, y } = node.attributes;
     // TODO: Escape file for regex
@@ -114,38 +149,44 @@ const parsers = {
       y = y !== undefined ? y : 0;
     }
     registry.images[id.toLowerCase()] = { file, gammagroup, h, w, x, y, imgUrl };
+
+    return node;
   },
-  eqvis: () => {},
-  slider: () => {},
+  eqvis: noop,
+  slider: noop,
   gammagroup: (node, parent, registry) => {
     const gammaId = parent.attributes.id;
     const attributeId = node.attributes.id;
     const attributeValues = splitValues(node.attributes.value);
     registry.gammasets[gammaId][attributeId] = attributeValues;
+
+    return node;
   },
-  truetypefont: () => {},
-  component: () => {},
-  text: () => {},
-  layer: () => {},
-  button: () => {},
-  togglebutton: () => {},
-  status: () => {},
-  slider: () => {},
-  bitmapfont: () => {},
-  vis: () => {},
-  "wasabi:titlebar": () => {},
-  "colorthemes:list": () => {},
-  "wasabi:standardframe:status": () => {},
-  "wasabi:standardframe:nostatus": () => {},
-  "wasabi:button": () => {},
+  truetypefont: noop,
+  component: noop,
+  text: noop,
+  layer: noop,
+  button: noop,
+  togglebutton: noop,
+  status: noop,
+  slider: noop,
+  bitmapfont: noop,
+  vis: noop,
+  "wasabi:titlebar": noop,
+  "colorthemes:list": noop,
+  "wasabi:standardframe:status": noop,
+  "wasabi:standardframe:nostatus": noop,
+  "wasabi:button": noop,
   async script(node, parent, registry, zip) {
     const { id, file, param } = node.attributes;
     const script = await Utils.readUint8array(zip, file);
     registry.scripts.push({ parent, id, param, script });
+
+    return { ...node, script, param };
   },
 };
 
-async function parseChildren(node, parsedParent, registry, zip) {
+async function parseChildren(node, registry, zip) {
   if (node.type === "comment") {
     return;
   }
@@ -155,14 +196,14 @@ async function parseChildren(node, parsedParent, registry, zip) {
   }
 
   const validChildren = new Set(schema[node.name.toLowerCase()]);
-  await Promise.all(
+  let resolvedChildren = await Promise.all(
     node.children.map(async child => {
       if (child.type === "comment") {
         return;
       }
       if (child.type === "text") {
         // TODO: Handle text
-        return;
+        return { node: child, id: uuid() };
       }
       if (child.name == null) {
         console.error(child);
@@ -175,7 +216,6 @@ async function parseChildren(node, parsedParent, registry, zip) {
       }
 
       if (!validChildren.has(childName)) {
-        debugger;
         throw new Error(`Invalid child of a ${node.name}: ${childName}`);
       }
 
@@ -185,17 +225,28 @@ async function parseChildren(node, parsedParent, registry, zip) {
         return;
       }
       const parsedChild = await childParser(child, node, registry, zip);
-      if (child.children != null) {
-        await parseChildren(child, parsedChild, registry, zip);
+      const returnNode = { node: parsedChild, id: uuid() };
+      if (parsedChild.children != null) {
+        const parsedChildren = await parseChildren(parsedChild, registry, zip);
+        returnNode.children = parsedChildren.children;
       }
+      return returnNode;
     })
   );
+  // remove comments other trimmed nodes
+  resolvedChildren = resolvedChildren.filter(item => item !== undefined);
+
+  return {
+    node: node,
+    children: resolvedChildren
+  };
 }
 
 async function initialize(zip, skinXml) {
-  const registry = { scripts: [], gammasets: {}, images: {} };
-  await parseChildren(skinXml.children[0], null, registry, zip);
-  return registry;
+  const registry = { scripts: [], gammasets: {}, images: {}, groupdefs: {} };
+  const nodes = await parseChildren(skinXml.children[0], registry, zip);
+  nodes.id = uuid();
+  return { nodes, registry };
 }
 
 export default initialize;

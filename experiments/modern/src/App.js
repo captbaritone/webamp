@@ -42,11 +42,11 @@ async function getSkin() {
     zip
   );
 
-  const registry = await initialize(zip, skinXml);
+  const { nodes, registry } = await initialize(zip, skinXml);
 
   // Gross hack returing a tuple here. We're just doing some crazy stuff to get
   // some data returned in the laziest way possible
-  return [skinXml, registry];
+  return [skinXml, nodes, registry];
 }
 
 function Layout({
@@ -162,11 +162,11 @@ function Button({ id, image, action, x, y, downImage, tooltip, children }) {
 }
 
 function ToggleButton(props) {
-  return <Button {...props} />;
+  return <Button data-node-type="togglebutton" {...props} />;
 }
 
-function GroupDef(props) {
-  return <div {...props} />;
+function Group(props) {
+  return <div data-node-type="group" {...props} />;
 }
 
 const NODE_NAME_TO_COMPONENT = {
@@ -174,26 +174,27 @@ const NODE_NAME_TO_COMPONENT = {
   layer: Layer,
   button: Button,
   togglebutton: ToggleButton,
-  groupef: GroupDef,
+  group: Group,
 };
 
 // Given a skin XML node, pick which component to use, and render it.
 function XmlNode({ node }) {
-  const attributes = node.attributes;
+  const attributes = node.node.attributes;
+  const name = node.node.name;
   if (attributes && IGNORE_IDS.has(attributes.id)) {
     return null;
   }
-  if (node.name == null) {
+  if (name == null) {
     // This is likely a comment
     return null;
   }
-  const Component = NODE_NAME_TO_COMPONENT[node.name];
+  const Component = NODE_NAME_TO_COMPONENT[name];
   const childNodes = node.children || [];
   const children = childNodes.map((childNode, i) => (
-    <XmlNode key={i} node={childNode} />
+    <XmlNode key={i} parent={node} node={childNode} />
   ));
   if (Component == null) {
-    console.warn("Unknown node type", node.name);
+    console.warn("Unknown node type", name);
     if (childNodes.length) {
       return <>{children}</>;
     }
@@ -210,16 +211,11 @@ function App() {
   if (data == null) {
     return <h1>Loading...</h1>;
   }
-  const [skinXml, registry] = data;
+  const [skinXml, nodes, registry] = data;
   return (
     <SkinContext.Provider value={registry.images}>
       <XmlNode
-        node={
-          // TODO: This is not quite right. Really we should only be rendering the
-          // portion of the XML that is actually view code.
-          // For now we just render the whole thing and ignore whatever we don't recognize
-          skinXml.children[0]
-        }
+        node={nodes}
       />
     </SkinContext.Provider>
   );
