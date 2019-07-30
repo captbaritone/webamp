@@ -166,7 +166,20 @@ function ToggleButton(props) {
 }
 
 function Group(props) {
-  return <div data-node-type="group" {...props} />;
+  const { id, children, x, y} = props;
+  const style = {
+    position: "absolute",
+  };
+  if (x !== undefined) {
+    style.left = Number(x);
+  }
+  if (y !== undefined) {
+    style.top = Number(y);
+  }
+  return <div
+           data-node-type="group"
+           data-node-id={id}
+           style={style}>{children}</div>;
 }
 
 const NODE_NAME_TO_COMPONENT = {
