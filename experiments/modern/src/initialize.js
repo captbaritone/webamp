@@ -173,6 +173,9 @@ const parsers = {
     let { file, gammagroup, h, id, w, x, y } = node.attributes;
     // TODO: Escape file for regex
     const img = Utils.getCaseInsensitveFile(zip, file);
+    if (img === undefined) {
+      return node;
+    }
     const imgBlob = await img.async("blob");
     const imgUrl = URL.createObjectURL(imgBlob);
     if (w === undefined || h === undefined) {
