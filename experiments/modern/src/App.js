@@ -192,8 +192,8 @@ const NODE_NAME_TO_COMPONENT = {
 
 // Given a skin XML node, pick which component to use, and render it.
 function XmlNode({ node }) {
-  const attributes = node.node.attributes;
-  const name = node.node.name;
+  const attributes = node.attributes;
+  const name = node.name;
   if (attributes && IGNORE_IDS.has(attributes.id)) {
     return null;
   }

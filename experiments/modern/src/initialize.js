@@ -253,7 +253,7 @@ async function parseChildren(node, registry, zip) {
       }
       if (child.type === "text") {
         // TODO: Handle text
-        return { node: child, id: uuid() };
+        return { ...child, id: uuid() };
       }
       if (child.name == null) {
         console.error(child);
@@ -275,7 +275,7 @@ async function parseChildren(node, registry, zip) {
         return;
       }
       const parsedChild = await childParser(child, node, registry, zip);
-      const returnNode = { node: parsedChild, id: uuid() };
+      const returnNode = { ...parsedChild, id: uuid() };
       if (parsedChild.children != null) {
         const parsedChildren = await parseChildren(parsedChild, registry, zip);
         returnNode.children = parsedChildren.children;
@@ -287,7 +287,7 @@ async function parseChildren(node, registry, zip) {
   resolvedChildren = resolvedChildren.filter(item => item !== undefined);
 
   return {
-    node: node,
+    ...node,
     children: resolvedChildren
   };
 }
