@@ -125,8 +125,12 @@ const parsers = {
     if (!node.children || node.children.length === 0) {
       const groupdef = registry.groupdefs[node.attributes.id];
       if (groupdef) {
-        console.log({ ...node, ...groupdef, name: "group" });
-        return { ...node, ...groupdef, name: "group" };
+        return {
+          ...node,
+          ...groupdef,
+          attributes: { ...node.attributes, ...groupdef.attributes },
+          name: "group",
+        };
       }
     }
 
