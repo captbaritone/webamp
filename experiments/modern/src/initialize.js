@@ -242,7 +242,7 @@ async function parseChildren(node, registry, zip) {
   }
 
   const validChildren = new Set(schema[node.name.toLowerCase()]);
-  let resolvedChildren = await Promise.all(
+  const resolvedChildren = await Promise.all(
     node.children.map(async child => {
       if (child.type === "comment") {
         return;
@@ -280,11 +280,11 @@ async function parseChildren(node, registry, zip) {
     })
   );
   // remove comments other trimmed nodes
-  resolvedChildren = resolvedChildren.filter(item => item !== undefined);
+  const filteredChildren = resolvedChildren.filter(item => item !== undefined);
 
   return {
     ...node,
-    children: resolvedChildren
+    children: filteredChildren
   };
 }
 
