@@ -19,8 +19,9 @@ async function loadImage(imgUrl) {
   });
 }
 
-function uuid () {
-  return '_' + Math.random().toString(36).substr(2, 9);
+let idCount = 0;
+function getId() {
+  return '_' + idCount++;
 }
 
 const schema = {
@@ -253,7 +254,7 @@ async function parseChildren(node, registry, zip) {
       }
       if (child.type === "text") {
         // TODO: Handle text
-        return { ...child, id: uuid() };
+        return { ...child, id: getId() };
       }
       if (child.name == null) {
         console.error(child);
@@ -275,7 +276,7 @@ async function parseChildren(node, registry, zip) {
         return;
       }
       const parsedChild = await childParser(child, node, registry, zip);
-      const returnNode = { ...parsedChild, id: uuid() };
+      const returnNode = { ...parsedChild, id: getId() };
       if (parsedChild.children != null) {
         const parsedChildren = await parseChildren(parsedChild, registry, zip);
         returnNode.children = parsedChildren.children;
@@ -295,7 +296,7 @@ async function parseChildren(node, registry, zip) {
 async function initialize(zip, skinXml) {
   const registry = { scripts: [], gammasets: {}, images: {}, groupdefs: {} };
   const nodes = await parseChildren(skinXml.children[0], registry, zip);
-  nodes.id = uuid();
+  nodes.id = getId();
   return { nodes, registry };
 }
 
