@@ -1,12 +1,7 @@
 import * as Utils from "./utils";
 
-function splitValues(s) {
-  const retArr = [];
-  const arr = s.split(",");
-  for (let i = 0; i < arr.length; i++) {
-    retArr.push(arr[i]);
-  }
-  return arr.map((v) => parseFloat(v));
+function splitValues(str) {
+  return str.split(",").map(parseFloat);
 }
 
 async function loadImage(imgUrl) {
