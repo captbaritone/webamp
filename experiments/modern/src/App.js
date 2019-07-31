@@ -33,77 +33,20 @@ const IGNORE_IDS = new Set([
 
 const SkinContext = React.createContext(null);
 
-async function loadImage(imgUrl) {
-  return await new Promise(resolve => {
-    const img = new Image();
-    img.addEventListener("load", function() {
-      resolve(img);
-    });
-    img.src = imgUrl;
-  });
-}
-
 async function getSkin() {
-  const resp = await fetch(process.env.PUBLIC_URL + "/skins/simple.wal");
+  const resp = await fetch(process.env.PUBLIC_URL + "/skins/CornerAmp_Redux.wal");
   const blob = await resp.blob();
-  const zip = null;
-
-  const registry = { scripts: [] };
-  await initialize(registry, blob);
-  console.log("registry: ", registry);
-  throw new Error("done");
+  const zip = await JSZip.loadAsync(blob);
   const skinXml = await Utils.inlineIncludes(
     await Utils.readXml(zip, "skin.xml"),
     zip
   );
 
-  // const system = new System();
-
-  const images = {};
-  await Utils.asyncTreeFlatMap(skinXml, async node => {
-    // TODO: This is probalby only valid if in an `<elements>` node
-    switch (node.name) {
-      case "bitmap": {
-        let { file, gammagroup, h, id, w, x, y } = node.attributes;
-        // TODO: Escape file for regex
-        const img = Utils.getCaseInsensitveFile(zip, file);
-        const imgBlob = await img.async("blob");
-        const imgUrl = URL.createObjectURL(imgBlob);
-        if (w === undefined || h === undefined) {
-          const image = await loadImage(imgUrl);
-          w = image.width;
-          h = image.height;
-          x = x !== undefined ? x : 0;
-          y = y !== undefined ? y : 0;
-        }
-        images[id.toLowerCase()] = { file, gammagroup, h, w, x, y, imgUrl };
-        break;
-      }
-      case "truetypefont": {
-        //console.log(element);
-        break;
-      }
-      case "script": {
-        const { file, param } = node.attributes;
-        if (!file.endsWith("standardframe.maki")) {
-          break;
-        }
-        const scriptFile = Utils.getCaseInsensitveFile(zip, file);
-        const data = await scriptFile.async("uint8array");
-        // interpret({ data, system, runtime, log: true });
-        console.log(data);
-        break;
-      }
-      default: {
-        // console.error(`Unknown node ${node.name}`);
-      }
-    }
-    return node;
-  });
+  const { nodes, registry } = await initialize(zip, skinXml);
 
   // Gross hack returing a tuple here. We're just doing some crazy stuff to get
   // some data returned in the laziest way possible
-  return [skinXml, images];
+  return [skinXml, nodes, registry];
 }
 
 function Layout({
@@ -219,11 +162,24 @@ function Button({ id, image, action, x, y, downImage, tooltip, children }) {
 }
 
 function ToggleButton(props) {
-  return <Button {...props} />;
+  return <Button data-node-type="togglebutton" {...props} />;
 }
 
-function GroupDef(props) {
-  return <div {...props} />;
+function Group(props) {
+  const { id, children, x, y} = props;
+  const style = {
+    position: "absolute",
+  };
+  if (x !== undefined) {
+    style.left = Number(x);
+  }
+  if (y !== undefined) {
+    style.top = Number(y);
+  }
+  return <div
+           data-node-type="group"
+           data-node-id={id}
+           style={style}>{children}</div>;
 }
 
 const NODE_NAME_TO_COMPONENT = {
@@ -231,26 +187,27 @@ const NODE_NAME_TO_COMPONENT = {
   layer: Layer,
   button: Button,
   togglebutton: ToggleButton,
-  groupef: GroupDef,
+  group: Group,
 };
 
 // Given a skin XML node, pick which component to use, and render it.
 function XmlNode({ node }) {
   const attributes = node.attributes;
+  const name = node.name;
   if (attributes && IGNORE_IDS.has(attributes.id)) {
     return null;
   }
-  if (node.name == null) {
+  if (name == null) {
     // This is likely a comment
     return null;
   }
-  const Component = NODE_NAME_TO_COMPONENT[node.name];
+  const Component = NODE_NAME_TO_COMPONENT[name];
   const childNodes = node.children || [];
   const children = childNodes.map((childNode, i) => (
-    <XmlNode key={i} node={childNode} />
+    <XmlNode key={i} parent={node} node={childNode} />
   ));
   if (Component == null) {
-    console.warn("Unknown node type", node.name);
+    console.warn("Unknown node type", name);
     if (childNodes.length) {
       return <>{children}</>;
     }
@@ -267,16 +224,11 @@ function App() {
   if (data == null) {
     return <h1>Loading...</h1>;
   }
-  const [skinXml, images] = data;
+  const [skinXml, nodes, registry] = data;
   return (
-    <SkinContext.Provider value={images}>
+    <SkinContext.Provider value={registry.images}>
       <XmlNode
-        node={
-          // TODO: This is not quite right. Really we should only be rendering the
-          // portion of the XML that is actually view code.
-          // For now we just render the whole thing and ignore whatever we don't recognize
-          skinXml.children[0]
-        }
+        node={nodes}
       />
     </SkinContext.Provider>
   );

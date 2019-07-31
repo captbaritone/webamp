@@ -1,8 +1,27 @@
 import * as Utils from "./utils";
-import JSZip from "jszip";
+
+function splitValues(str) {
+  return str.split(",").map(parseFloat);
+}
+
+async function loadImage(imgUrl) {
+  return await new Promise(resolve => {
+    const img = new Image();
+    img.addEventListener("load", function() {
+      resolve(img);
+    });
+    img.src = imgUrl;
+  });
+}
+
+let idCount = 0;
+function getId() {
+  return '_' + idCount++;
+}
 
 const schema = {
   groupdef: [
+    "scripts",
     "layer",
     "layoutstatus",
     "hideobject",
@@ -18,6 +37,39 @@ const schema = {
     "wasabi:button",
     "text",
     "vis",
+    "grid",
+    "rect",
+    "animatedlayer",
+    "nstatesbutton",
+    "togglebutton",
+    "songticker",
+    "menu",
+    "status",
+    "albumart",
+    "playlistplus",
+  ],
+  group: [
+    "button",
+    "layer",
+    "text",
+    "vis",
+    "group",
+    "scripts",
+    "layoutstatus",
+    "hideobject",
+    "wasabi:titlebar",
+    "menu",
+    "nstatesbutton",
+    "status",
+    "script",
+    "songticker",
+    "grid",
+    "animatedlayer",
+    "togglebutton",
+    "slider",
+    "rect",
+    "eqvis",
+    "playlistplus",
   ],
   layout: [
     "wasabi:standardframe:status",
@@ -29,10 +81,16 @@ const schema = {
     "status",
     "slider",
     "group",
+    "sendparams",
+    "script",
+    "grid",
+    "vis",
+    "rect",
+    "component",
   ],
   container: ["groupdef", "layout", "scripts"],
   scripts: ["script"],
-  elements: ["color", "bitmap", "bitmapfont", "truetypefont"],
+  elements: ["color", "bitmap", "bitmapfont", "truetypefont", "cursor", "elementalias"],
   skininfo: [
     "version",
     "name",
@@ -42,7 +100,7 @@ const schema = {
     "homepage",
     "screenshot",
   ],
-  wasabixml: ["skininfo", "scripts", "elements", "groupdef", "container"],
+  wasabixml: ["skininfo", "scripts", "elements", "groupdef", "container", "gammaset"],
   // same as above, wa3 vs wa5
   winampabstractionlayer: [
     "skininfo",
@@ -50,59 +108,131 @@ const schema = {
     "elements",
     "groupdef",
     "container",
+    "gammaset",
+    "accelerators",
   ],
   gammaset: ["gammagroup"],
+  accelerators: ["accelerator"],
 };
 
+const noop = (node) => node;
+
 const parsers = {
-  groupdef(node, parent, registry, zip) {},
-  skininfo: () => {},
-  version: () => {},
-  name: () => {},
-  comment: () => {},
-  author: () => {},
-  email: () => {},
-  homepage: () => {},
-  screenshot: () => {},
-  container: () => {},
-  scripts: () => {},
-  gammaset: () => {},
-  color: () => {},
-  layer: () => {},
-  layoutstatus: () => {},
-  hideobject: () => {},
-  button: () => {},
-  group: () => {},
-  layout: () => {},
-  sendparams: () => {},
-  elements: () => {},
-  bitmap: () => {},
-  eqvis: () => {},
-  slider: () => {},
-  gammagroup: () => {},
-  truetypefont: () => {},
-  component: () => {},
-  text: () => {},
-  layer: () => {},
-  button: () => {},
-  togglebutton: () => {},
-  status: () => {},
-  slider: () => {},
-  bitmapfont: () => {},
-  vis: () => {},
-  "wasabi:titlebar": () => {},
-  "colorthemes:list": () => {},
-  "wasabi:standardframe:status": () => {},
-  "wasabi:standardframe:nostatus": () => {},
-  "wasabi:button": () => {},
+  groupdef: (node, parent, registry) => {
+    const attributeId = node.attributes.id;
+    registry.groupdefs[attributeId] = node;
+
+    return node;
+  },
+  skininfo: noop,
+  version: noop,
+  name: noop,
+  comment: noop,
+  author: noop,
+  email: noop,
+  homepage: noop,
+  screenshot: noop,
+  container: noop,
+  scripts: noop,
+  gammaset: (node, parent, registry) => {
+    const gammaId = node.attributes.id;
+    if (!registry.gammasets.hasOwnProperty(gammaId)) {
+      registry.gammasets[gammaId] = {};
+    }
+
+    return node;
+  },
+  color: noop,
+  layer: noop,
+  layoutstatus: noop,
+  hideobject: noop,
+  button: noop,
+  group: (node, parent, registry) => {
+    if (!node.children || node.children.length === 0) {
+      const groupdef = registry.groupdefs[node.attributes.id];
+      if (groupdef) {
+        return {
+          ...node,
+          ...groupdef,
+          attributes: { ...node.attributes, ...groupdef.attributes },
+          name: "group",
+        };
+      }
+    }
+
+    return node;
+  },
+  layout: noop,
+  sendparams: noop,
+  elements: noop,
+  bitmap: async (node, parent, registry, zip) => {
+    let { file, gammagroup, h, id, w, x, y } = node.attributes;
+    // TODO: Escape file for regex
+    const img = Utils.getCaseInsensitveFile(zip, file);
+    if (img === undefined) {
+      return node;
+    }
+    const imgBlob = await img.async("blob");
+    const imgUrl = URL.createObjectURL(imgBlob);
+    if (w === undefined || h === undefined) {
+      const image = await loadImage(imgUrl);
+      w = image.width;
+      h = image.height;
+      x = x !== undefined ? x : 0;
+      y = y !== undefined ? y : 0;
+    }
+    registry.images[id.toLowerCase()] = { file, gammagroup, h, w, x, y, imgUrl };
+
+    return node;
+  },
+  eqvis: noop,
+  slider: noop,
+  gammagroup: (node, parent, registry) => {
+    const gammaId = parent.attributes.id;
+    const attributeId = node.attributes.id;
+    const attributeValues = splitValues(node.attributes.value);
+    registry.gammasets[gammaId][attributeId] = attributeValues;
+
+    return node;
+  },
+  truetypefont: noop,
+  component: noop,
+  text: noop,
+  layer: noop,
+  button: noop,
+  togglebutton: noop,
+  status: noop,
+  slider: noop,
+  bitmapfont: noop,
+  vis: noop,
+  "wasabi:titlebar": noop,
+  "colorthemes:list": noop,
+  "wasabi:standardframe:status": noop,
+  "wasabi:standardframe:nostatus": noop,
+  "wasabi:button": noop,
+  accelerators: noop,
+  accelerator: noop,
+  cursor: noop,
+  elementalias: noop,
+  grid: noop,
+  rect: noop,
+  animatedlayer: noop,
+  nstatesbutton: noop,
+  songticker: noop,
+  menu: noop,
+  status: noop,
+  albumart: noop,
+  playlistplus: noop,
   async script(node, parent, registry, zip) {
     const { id, file, param } = node.attributes;
     const script = await Utils.readUint8array(zip, file);
     registry.scripts.push({ parent, id, param, script });
+
+    return { ...node, script, param };
   },
 };
 
-async function parseChildren(node, parsedParent, registry, zip) {
+async function parseChildren(node, registry, zip) {
   if (node.type === "comment") {
     return;
   }
@@ -112,14 +242,14 @@ async function parseChildren(node, parsedParent, registry, zip) {
   }
 
   const validChildren = new Set(schema[node.name.toLowerCase()]);
-  await Promise.all(
+  const resolvedChildren = await Promise.all(
     node.children.map(async child => {
       if (child.type === "comment") {
         return;
       }
       if (child.type === "text") {
         // TODO: Handle text
-        return;
+        return { ...child, id: getId() };
       }
       if (child.name == null) {
         console.error(child);
@@ -132,7 +262,6 @@ async function parseChildren(node, parsedParent, registry, zip) {
       }
 
       if (!validChildren.has(childName)) {
-        debugger;
         throw new Error(`Invalid child of a ${node.name}: ${childName}`);
       }
 
@@ -142,21 +271,28 @@ async function parseChildren(node, parsedParent, registry, zip) {
         return;
       }
       const parsedChild = await childParser(child, node, registry, zip);
-      if (child.children != null) {
-        await parseChildren(child, parsedChild, registry, zip);
+      const returnNode = { ...parsedChild, id: getId() };
+      if (parsedChild.children != null) {
+        const parsedChildren = await parseChildren(parsedChild, registry, zip);
+        returnNode.children = parsedChildren.children;
       }
+      return returnNode;
     })
   );
+  // remove comments other trimmed nodes
+  const filteredChildren = resolvedChildren.filter(item => item !== undefined);
+
+  return {
+    ...node,
+    children: filteredChildren
+  };
 }
 
-async function initialize(registry, skinBlob) {
-  const zip = await JSZip.loadAsync(skinBlob);
-  const skinXml = await Utils.inlineIncludes(
-    await Utils.readXml(zip, "skin.xml"),
-    zip
-  );
-
-  await parseChildren(skinXml.children[0], null, registry, zip);
+async function initialize(zip, skinXml) {
+  const registry = { scripts: [], gammasets: {}, images: {}, groupdefs: {} };
+  const nodes = await parseChildren(skinXml.children[0], registry, zip);
+  nodes.id = getId();
+  return { nodes, registry };
 }
 
 export default initialize;
