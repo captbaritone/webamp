@@ -91,7 +91,7 @@ export async function inlineIncludes(xml, zip) {
           node.attributes.file
         }`
       );
-      return node;
+      return [];
     }
     return includedFile.children;
   });

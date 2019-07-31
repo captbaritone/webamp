@@ -2,6 +2,8 @@ import React from "react";
 import JSZip from "jszip";
 import "./App.css";
 import * as Utils from "./utils";
+import initialize from "./initialize";
+
 // const runtime = require("./maki-interpreter/runtime");
 // const System = require("./maki-interpreter/runtime/System");
 // const interpret = require("./maki-interpreter/interpreter");
@@ -42,11 +44,14 @@ async function loadImage(imgUrl) {
 }
 
 async function getSkin() {
-  const resp = await fetch(
-    process.env.PUBLIC_URL + "/skins/CornerAmp_Redux.wal"
-  );
+  const resp = await fetch(process.env.PUBLIC_URL + "/skins/simple.wal");
   const blob = await resp.blob();
-  const zip = await JSZip.loadAsync(blob);
+  const zip = null;
+
+  const registry = { scripts: [] };
+  await initialize(registry, blob);
+  console.log("registry: ", registry);
+  throw new Error("done");
   const skinXml = await Utils.inlineIncludes(
     await Utils.readXml(zip, "skin.xml"),
     zip
