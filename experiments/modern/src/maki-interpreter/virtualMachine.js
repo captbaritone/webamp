@@ -109,7 +109,7 @@ function* interpret(start, program, stack = []) {
         if (value) {
           break;
         }
-        i = command.arg - 1;
+        ip = command.arg - 1;
         break;
       }
       // jumpIfNot
@@ -119,12 +119,12 @@ function* interpret(start, program, stack = []) {
         if (!value) {
           break;
         }
-        i = command.arg - 1;
+        ip = command.arg - 1;
         break;
       }
       // jump
       case 18: {
-        i = command.arg - 1;
+        ip = command.arg - 1;
         break;
       }
       // call
