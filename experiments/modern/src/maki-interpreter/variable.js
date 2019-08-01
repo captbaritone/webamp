@@ -17,7 +17,7 @@ class Variable {
     if (this._unsubscribeFromValue != null) {
       this._unsubscribeFromValue();
     }
-    if (this.global && this.typeName === "OBJECT" && value && value.js_listenToAll) {
+    if (this.global && this.typeName === "OBJECT" && value !== null) {
       this._unsubscribeFromValue = value.js_listenToAll((eventName, args) => {
         this._emitter.trigger(eventName, args);
       });
