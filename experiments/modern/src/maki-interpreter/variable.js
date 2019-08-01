@@ -1,9 +1,10 @@
 const Emitter = require("../Emitter");
 
 class Variable {
-  constructor({ type, typeName }) {
+  constructor({ type, typeName, global }) {
     this.type = type;
     this.typeName = typeName;
+    this.global = global;
     this._emitter = new Emitter();
     this._unsubscribeFromValue = null;
   }
@@ -16,7 +17,7 @@ class Variable {
     if (this._unsubscribeFromValue != null) {
       this._unsubscribeFromValue();
     }
-    if (this.typeName === "OBJECT") {
+    if (this.global && this.typeName === "OBJECT" && value && value.js_listenToAll) {
       this._unsubscribeFromValue = value.js_listenToAll((eventName, args) => {
         this._emitter.trigger(eventName, args);
       });
