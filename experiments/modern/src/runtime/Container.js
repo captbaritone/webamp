@@ -1,4 +1,5 @@
 const GuiObject = require("./GuiObject");
+const { findDescendantByTypeAndId } = require("../utils");
 
 class Container extends GuiObject {
   /**
@@ -11,7 +12,7 @@ class Container extends GuiObject {
     return "Container";
   }
   getLayout(id) {
-    return this.findDescendantByTypeAndId(this, "layout", id);
+    return findDescendantByTypeAndId(this, "layout", id);
   }
 }
 

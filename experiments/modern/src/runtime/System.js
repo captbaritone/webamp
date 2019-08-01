@@ -1,5 +1,6 @@
 const Group = require("./Group");
 const MakiObject = require("./MakiObject");
+const { findDescendantByTypeAndId } = require("../utils");
 
 class System extends MakiObject {
   constructor(scriptGroup = new Group()) {
@@ -30,7 +31,7 @@ class System extends MakiObject {
     return this.scriptGroup;
   }
   getContainer(id) {
-    return this.root.findDescendantByTypeAndId(this.root, "container", id);
+    return findDescendantByTypeAndId(this.root, "container", id);
   }
   getRuntimeVersion() {
     return "5.666";

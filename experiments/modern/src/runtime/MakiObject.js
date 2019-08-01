@@ -69,31 +69,6 @@ class MakiObject {
   getId() {
     throw new Error("getId not implemented");
   }
-
-  // I wanted this to be in Utils, but was having issues importing utils here because of const/require
-  findDescendantByTypeAndId(node, type, id) {
-    if (node.children.length === 0) {
-      return null;
-    }
-
-    for(let i = 0; i < node.children.length; i++) {
-      const child = node.children[i];
-      if ((!type || child.xmlNode.name === type) &&
-          (child.xmlNode.attributes !== undefined && child.xmlNode.attributes.id === id)) {
-        return child;
-      }
-    }
-
-    for(let i = 0; i < node.children.length; i++) {
-      const child = node.children[i];
-      const descendant = this.findDescendantByTypeAndId(child, type, id);
-      if (descendant) {
-        return descendant;
-      }
-    }
-
-    return null;
-  }
 }
 
 module.exports = MakiObject;

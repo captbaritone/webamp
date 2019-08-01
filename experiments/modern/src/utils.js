@@ -108,3 +108,27 @@ export function findParentNodeOfType(node, type) {
     }
   }
 }
+
+export function findDescendantByTypeAndId(node, type, id) {
+  if (node.children.length === 0) {
+    return null;
+  }
+
+  for(let i = 0; i < node.children.length; i++) {
+    const child = node.children[i];
+    if ((!type || child.xmlNode.name === type) &&
+        (child.xmlNode.attributes !== undefined && child.xmlNode.attributes.id === id)) {
+      return child;
+    }
+  }
+
+  for(let i = 0; i < node.children.length; i++) {
+    const child = node.children[i];
+    const descendant = findDescendantByTypeAndId(child, type, id);
+    if (descendant) {
+      return descendant;
+    }
+  }
+
+  return null;
+}

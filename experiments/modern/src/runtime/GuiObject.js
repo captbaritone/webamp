@@ -1,4 +1,5 @@
 const MakiObject = require("./MakiObject");
+const { findDescendantByTypeAndId } = require("../utils");
 
 class GuiObject extends MakiObject {
   /**
@@ -11,7 +12,7 @@ class GuiObject extends MakiObject {
     return "GuiObject";
   }
   findObject(id) {
-    return this.findDescendantByTypeAndId(this, null, id);
+    return findDescendantByTypeAndId(this, null, id);
   }
   init(newRoot) {
     newRoot.js_addChild(this);
