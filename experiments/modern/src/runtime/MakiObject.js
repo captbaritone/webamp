@@ -79,7 +79,7 @@ class MakiObject {
     for(let i = 0; i < node.children.length; i++) {
       const child = node.children[i];
       if ((!type || child.xmlNode.name === type) &&
-          (child.xmlNode.attributes !== null && child.xmlNode.attributes.id === id)) {
+          (child.xmlNode.attributes !== undefined && child.xmlNode.attributes.id === id)) {
         return child;
       }
     }
