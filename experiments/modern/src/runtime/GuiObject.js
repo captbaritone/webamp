@@ -14,7 +14,8 @@ class GuiObject extends MakiObject {
     return this.findDescendantByTypeAndId(this, null, id);
   }
   init(newRoot) {
-    return null;
+    newRoot.js_addChild(this);
+    return this;
   }
   setXmlParam(param, value) {
     this.xmlNode.attributes[param] = value;
