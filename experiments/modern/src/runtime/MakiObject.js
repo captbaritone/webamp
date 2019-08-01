@@ -7,6 +7,20 @@ class MakiObject {
     this.children = [];
     this.hooks = {};
     this._emitter = new Emitter();
+
+    if (!this.xmlNode) {
+      // When dynamically creating a new object with `new` we need to add an underlying "XML"
+      // node that we can edit
+      this.xmlNode = {
+        children: [],
+        attributes: {
+          id: null,
+        },
+        // ugly but works for now
+        name: this.constructor.name.toLowerCase(),
+        type: 'element'
+      }
+    }
   }
 
   addChild(child) {
@@ -64,7 +78,8 @@ class MakiObject {
 
     for(let i = 0; i < node.children.length; i++) {
       const child = node.children[i];
-      if ((!type || child.xmlNode.name === type) && child.xmlNode.attributes.id === id) {
+      if ((!type || child.xmlNode.name === type) &&
+          (child.xmlNode.attributes && child.xmlNode.attributes.id === id)) {
         return child;
       }
     }
