@@ -1,4 +1,5 @@
 const GuiObject = require("./GuiObject");
+const { findParentNodeOfType } = require("../utils");
 
 class Layout extends GuiObject {
   /**
@@ -11,7 +12,7 @@ class Layout extends GuiObject {
     return "Layout";
   }
   getContainer() {
-    return null;
+    return findParentNodeOfType(this, ["container"]);;
   }
 }
 
