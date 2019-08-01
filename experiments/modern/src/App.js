@@ -238,6 +238,7 @@ function App() {
           default: {
           }
         }
+        return node;
       });
 
       setData({ root, registry });
