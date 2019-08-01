@@ -133,7 +133,7 @@ function Button({ id, image, action, x, y, downImage, tooltip, node, children })
     return null;
   }
 
-  const hooks = node.getActiveHooks();
+  const hooks = node.js_getActiveHooks();
 
   return (
     <div

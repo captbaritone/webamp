@@ -282,7 +282,7 @@ async function parseChildren(node, registry, zip) {
   // remove comments other trimmed nodes
   const filteredChildren = resolvedChildren.filter(item => item !== undefined);
 
-  node.addChildren(filteredChildren);
+  node.js_addChildren(filteredChildren);
 }
 
 async function initialize(zip, skinXml) {

@@ -23,11 +23,11 @@ class MakiObject {
     }
   }
 
-  addChild(child) {
+  js_addChild(child) {
     this.children.push(child);
   }
 
-  addChildren(children) {
+  js_addChildren(children) {
     this.children = this.children.concat(children);
   }
 
@@ -44,11 +44,11 @@ class MakiObject {
   }
 
   // updating hooks like this is probably totally wrong, but just hacking for now
-  updateHooks (node, hooks) {
+  js_updateHooks (node, hooks) {
     this.hooks[node] = hooks;
   }
 
-  getActiveHooks () {
+  js_getActiveHooks () {
     const hookArrs = Object.values(this.hooks);
     return hookArrs.reduce((acc, val) => acc.concat(val), []);
   }
