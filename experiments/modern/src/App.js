@@ -37,7 +37,8 @@ const IGNORE_IDS = new Set([
 const SkinContext = React.createContext(null);
 
 async function getSkin() {
-  const resp = await fetch(process.env.PUBLIC_URL + "/skins/CornerAmp_Redux.wal");
+  // const resp = await fetch(process.env.PUBLIC_URL + "/skins/CornerAmp_Redux.wal");
+  const resp = await fetch(process.env.PUBLIC_URL + "/skins/simple.wal");
   const blob = await resp.blob();
   const zip = await JSZip.loadAsync(blob);
   const skinXml = await Utils.inlineIncludes(
