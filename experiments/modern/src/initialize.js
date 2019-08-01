@@ -1,5 +1,6 @@
 import * as Utils from "./utils";
 const MakiObject = require("./runtime/MakiObject");
+const WinampAbstractionLayer = require("./runtime/WinampAbstractionLayer");
 const Layout = require('./runtime/Layout');
 const Container = require('./runtime/Container');
 const Group = require("./runtime/Group");
@@ -286,7 +287,7 @@ async function parseChildren(node, registry, zip) {
 
 async function initialize(zip, skinXml) {
   const registry = { scripts: [], gammasets: {}, images: {}, groupdefs: {} };
-  const root = new MakiObject(skinXml.children[0], null);
+  const root = new WinampAbstractionLayer(skinXml.children[0], null);
   await parseChildren(root, registry, zip);
   return { root, registry };
 }
