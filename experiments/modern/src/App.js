@@ -208,8 +208,8 @@ function XmlNode({ node }) {
   if (attributes && IGNORE_IDS.has(attributes.id)) {
     return null;
   }
-  if (name == null) {
-    // This is likely a comment
+  if (name == null || name === "groupdef") {
+    // name is null is likely a comment
     return null;
   }
   const Component = NODE_NAME_TO_COMPONENT[name];
@@ -234,20 +234,24 @@ function App() {
       // Execute scripts
       await Utils.asyncTreeFlatMap(root, async node => {
         switch (node.xmlNode.name) {
+          case "groupdef": {
+            // removes groupdefs from consideration (only run scripts when actually referenced by group)
+            return {};
+          }
           case "script": {
             // TODO: stop ignoring standardframe
             if (node.xmlNode.file.endsWith("standardframe.maki")) {
               break;
             }
-            const scriptGroup = Utils.findParentNodeOfType(node, ["Group", "WinampAbstractionLayer"]);
+            const scriptGroup = Utils.findParentNodeOfType(node, ["group", "WinampAbstractionLayer"]);
             const system = new System(scriptGroup);
             await interpret({ runtime, data: node.xmlNode.script, system, log: false });
-            break;
+            return node;
           }
           default: {
+            return node;
           }
         }
-        return node;
       });
 
       setData({ root, registry });
