@@ -10,12 +10,6 @@ class Button extends GuiObject {
   static getClassName() {
     return "Button";
   }
-  init(newRoot) {
-    return null;
-  }
-  setXMLParam(param, value) {
-    return null;
-  }
 }
 
 module.exports = Button;

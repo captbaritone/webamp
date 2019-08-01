@@ -14,9 +14,6 @@ class Group extends GuiObject {
     // Not sure this is correct, but it is my understanding this is just an alias
     return this.findObject(id);
   }
-  setXmlParam(param, value) {
-    throw new Error("Not implemented");
-  }
 }
 
 module.exports = Group;
