@@ -228,7 +228,7 @@ const parsers = {
     const script = await Utils.readUint8array(zip, file);
     registry.scripts.push({ parent, id, param, script });
 
-    const newNode = { ...node, script, param };
+    const newNode = { ...node, script, param, file };
     return new MakiObject(newNode, parent);
   },
 };

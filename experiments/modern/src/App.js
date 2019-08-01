@@ -230,6 +230,10 @@ function App() {
       await Utils.asyncTreeFlatMap(root, async node => {
         switch (node.xmlNode.name) {
           case "script": {
+            // TODO: stop ignoring standardframe
+            if (node.xmlNode.file.endsWith("standardframe.maki")) {
+              break;
+            }
             const scriptGroup = Utils.findParentNodeOfType(node, ["Group", "WinampAbstractionLayer"]);
             const system = new System(scriptGroup);
             await interpret({ runtime, data: node.xmlNode.script, system, log: false });
