@@ -42,11 +42,7 @@ async function getSkin() {
     zip
   );
 
-  const { nodes, registry } = await initialize(zip, skinXml);
-
-  // Gross hack returing a tuple here. We're just doing some crazy stuff to get
-  // some data returned in the laziest way possible
-  return [skinXml, nodes, registry];
+  return await initialize(zip, skinXml);
 }
 
 function Layout({
@@ -192,8 +188,8 @@ const NODE_NAME_TO_COMPONENT = {
 
 // Given a skin XML node, pick which component to use, and render it.
 function XmlNode({ node }) {
-  const attributes = node.attributes;
-  const name = node.name;
+  const attributes = node.xmlNode.attributes;
+  const name = node.xmlNode.name;
   if (attributes && IGNORE_IDS.has(attributes.id)) {
     return null;
   }
@@ -204,7 +200,7 @@ function XmlNode({ node }) {
   const Component = NODE_NAME_TO_COMPONENT[name];
   const childNodes = node.children || [];
   const children = childNodes.map((childNode, i) => (
-    <XmlNode key={i} parent={node} node={childNode} />
+    <XmlNode key={i} node={childNode} />
   ));
   if (Component == null) {
     console.warn("Unknown node type", name);
@@ -224,12 +220,10 @@ function App() {
   if (data == null) {
     return <h1>Loading...</h1>;
   }
-  const [skinXml, nodes, registry] = data;
+  const { root, registry } = data;
   return (
     <SkinContext.Provider value={registry.images}>
-      <XmlNode
-        node={nodes}
-      />
+      <XmlNode node={root} />
     </SkinContext.Provider>
   );
 }

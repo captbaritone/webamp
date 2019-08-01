@@ -1,8 +1,19 @@
 const Emitter = require("../Emitter");
 
 class MakiObject {
-  constructor() {
+  constructor(node, parent) {
+    this.xmlNode = node;
+    this.parent = parent;
+    this.children = [];
     this._emitter = new Emitter();
+  }
+
+  addChild(child) {
+    this.children.push(child);
+  }
+
+  addChildren(children) {
+    this.children = this.children.concat(children);
   }
 
   js_trigger(eventName, ...args) {

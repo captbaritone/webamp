@@ -2,6 +2,12 @@ const Group = require("./Group");
 const MakiObject = require("./MakiObject");
 
 class System extends MakiObject {
+  constructor(scriptGroup =  new Group()) {
+    super(null, null);
+
+    this.scriptGroup = scriptGroup;
+  }
+
   /**
    * getClassName()
    *
@@ -17,7 +23,7 @@ class System extends MakiObject {
   }
 
   getScriptGroup() {
-    return new Group();
+    return this.scriptGroup;
   }
   getRuntimeVersion() {
     return "5.666";

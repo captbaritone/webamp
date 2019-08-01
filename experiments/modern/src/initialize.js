@@ -1,4 +1,8 @@
 import * as Utils from "./utils";
+const MakiObject = require("./runtime/MakiObject");
+const GuiObject = require("./runtime/GuiObject");
+const Group = require("./runtime/Group");
+const Button = require("./runtime/Button");
 
 function splitValues(str) {
   return str.split(",").map(parseFloat);
@@ -12,11 +16,6 @@ async function loadImage(imgUrl) {
     });
     img.src = imgUrl;
   });
-}
-
-let idCount = 0;
-function getId() {
-  return '_' + idCount++;
 }
 
 const schema = {
@@ -115,14 +114,14 @@ const schema = {
   accelerators: ["accelerator"],
 };
 
-const noop = (node) => node;
+const noop = (node, parent) => new MakiObject(node, parent);
 
 const parsers = {
   groupdef: (node, parent, registry) => {
     const attributeId = node.attributes.id;
     registry.groupdefs[attributeId] = node;
 
-    return node;
+    return new MakiObject(node, parent);
   },
   skininfo: noop,
   version: noop,
@@ -140,7 +139,7 @@ const parsers = {
       registry.gammasets[gammaId] = {};
     }
 
-    return node;
+    return new MakiObject(node, parent);
   },
   color: noop,
   layer: noop,
@@ -151,16 +150,17 @@ const parsers = {
     if (!node.children || node.children.length === 0) {
       const groupdef = registry.groupdefs[node.attributes.id];
       if (groupdef) {
-        return {
+        const newNode = {
           ...node,
           ...groupdef,
           attributes: { ...node.attributes, ...groupdef.attributes },
           name: "group",
         };
+        return new MakiObject(newNode, parent);
       }
     }
 
-    return node;
+    return new MakiObject(node, parent);
   },
   layout: noop,
   sendparams: noop,
@@ -170,7 +170,7 @@ const parsers = {
     // TODO: Escape file for regex
     const img = Utils.getCaseInsensitveFile(zip, file);
     if (img === undefined) {
-      return node;
+      return new MakiObject(node, parent);
     }
     const imgBlob = await img.async("blob");
     const imgUrl = URL.createObjectURL(imgBlob);
@@ -183,17 +183,17 @@ const parsers = {
     }
     registry.images[id.toLowerCase()] = { file, gammagroup, h, w, x, y, imgUrl };
 
-    return node;
+    return new MakiObject(node, parent);
   },
   eqvis: noop,
   slider: noop,
   gammagroup: (node, parent, registry) => {
-    const gammaId = parent.attributes.id;
+    const gammaId = parent.xmlNode.attributes.id;
     const attributeId = node.attributes.id;
     const attributeValues = splitValues(node.attributes.value);
     registry.gammasets[gammaId][attributeId] = attributeValues;
 
-    return node;
+    return new MakiObject(node, parent);
   },
   truetypefont: noop,
   component: noop,
@@ -228,28 +228,29 @@ const parsers = {
     const script = await Utils.readUint8array(zip, file);
     registry.scripts.push({ parent, id, param, script });
 
-    return { ...node, script, param };
+    const newNode = { ...node, script, param };
+    return new MakiObject(newNode, parent);
   },
 };
 
 async function parseChildren(node, registry, zip) {
-  if (node.type === "comment") {
+  if (node.xmlNode.type === "comment") {
     return;
   }
-  if (node.name == null) {
-    console.error(node);
+  if (node.xmlNode.name == null) {
+    console.error(node.xmlNode);
     throw new Error("Unknown node");
   }
 
-  const validChildren = new Set(schema[node.name.toLowerCase()]);
+  const validChildren = new Set(schema[node.xmlNode.name.toLowerCase()]);
   const resolvedChildren = await Promise.all(
-    node.children.map(async child => {
+    node.xmlNode.children.map(async child => {
       if (child.type === "comment") {
         return;
       }
       if (child.type === "text") {
         // TODO: Handle text
-        return { ...child, id: getId() };
+        return new MakiObject({ ...child }, node);
       }
       if (child.name == null) {
         console.error(child);
@@ -257,12 +258,12 @@ async function parseChildren(node, registry, zip) {
       }
       const childName = child.name.toLowerCase();
       if (childName == null) {
-        console.error(node);
+        console.error(node.xmlNode);
         throw new Error("Unknown node");
       }
 
       if (!validChildren.has(childName)) {
-        throw new Error(`Invalid child of a ${node.name}: ${childName}`);
+        throw new Error(`Invalid child of a ${node.xmlNode.name}: ${childName}`);
       }
 
       const childParser = parsers[childName];
@@ -271,28 +272,23 @@ async function parseChildren(node, registry, zip) {
         return;
       }
       const parsedChild = await childParser(child, node, registry, zip);
-      const returnNode = { ...parsedChild, id: getId() };
-      if (parsedChild.children != null) {
-        const parsedChildren = await parseChildren(parsedChild, registry, zip);
-        returnNode.children = parsedChildren.children;
+      if (parsedChild.xmlNode.children != null && parsedChild.xmlNode.children.length > 0) {
+        await parseChildren(parsedChild, registry, zip);
       }
-      return returnNode;
+      return parsedChild;
     })
   );
   // remove comments other trimmed nodes
   const filteredChildren = resolvedChildren.filter(item => item !== undefined);
 
-  return {
-    ...node,
-    children: filteredChildren
-  };
+  node.addChildren(filteredChildren);
 }
 
 async function initialize(zip, skinXml) {
   const registry = { scripts: [], gammasets: {}, images: {}, groupdefs: {} };
-  const nodes = await parseChildren(skinXml.children[0], registry, zip);
-  nodes.id = getId();
-  return { nodes, registry };
+  const root = new MakiObject(skinXml.children[0], null);
+  await parseChildren(root, registry, zip);
+  return { root, registry };
 }
 
 export default initialize;
