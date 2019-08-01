@@ -290,8 +290,8 @@ function* interpret(start, program, stack = []) {
       // new
       case 96: {
         const classesOffset = command.arg;
-        const klass = classes[classesOffset];
-        const klassInst = new klass();
+        const Klass = classes[classesOffset];
+        const klassInst = new Klass();
         stack.push(klassInst);
         break;
       }
