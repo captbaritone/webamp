@@ -27,7 +27,7 @@ class GuiObject extends MakiObject {
   }
   getXmlParam(param) {
     const attributes = this.xmlNode.attributes;
-    if (attributes && attributes.hasOwnProperty(param)) {
+    if (attributes !== null && attributes.hasOwnProperty(param)) {
       return attributes[param];
     }
     return null;
