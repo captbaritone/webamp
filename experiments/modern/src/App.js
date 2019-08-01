@@ -134,6 +134,14 @@ function Button({ id, image, action, x, y, downImage, tooltip, node, children })
   }
 
   const hooks = node.js_getActiveHooks();
+  const eventHandlers = {};
+  if (hooks.includes("onLeftClick")) {
+    eventHandlers["onClick"] = e => {
+      if (hooks.includes("onLeftClick")) {
+        node.js_trigger("onLeftClick");
+      }
+    };
+  }
 
   return (
     <div
@@ -146,11 +154,7 @@ function Button({ id, image, action, x, y, downImage, tooltip, node, children })
           setDown(false);
         });
       }}
-      onClick={e => {
-        if (hooks.includes("onLeftClick")) {
-          node.js_trigger("onLeftClick");
-        }
-      }}
+      {...eventHandlers}
       title={tooltip}
       style={{
         position: "absolute",
