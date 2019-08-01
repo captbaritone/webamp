@@ -1,6 +1,7 @@
 import * as Utils from "./utils";
 const MakiObject = require("./runtime/MakiObject");
-const GuiObject = require("./runtime/GuiObject");
+const Layout = require('./runtime/Layout');
+const Container = require('./runtime/Container');
 const Group = require("./runtime/Group");
 const Button = require("./runtime/Button");
 
@@ -131,7 +132,7 @@ const parsers = {
   email: noop,
   homepage: noop,
   screenshot: noop,
-  container: noop,
+  container: (node, parent) => new Container(node, parent),
   scripts: noop,
   gammaset: (node, parent, registry) => {
     const gammaId = node.attributes.id;
@@ -145,7 +146,7 @@ const parsers = {
   layer: noop,
   layoutstatus: noop,
   hideobject: noop,
-  button: noop,
+  button: (node, parent) => new Button(node, parent),
   group: (node, parent, registry) => {
     if (!node.children || node.children.length === 0) {
       const groupdef = registry.groupdefs[node.attributes.id];
@@ -156,13 +157,13 @@ const parsers = {
           attributes: { ...node.attributes, ...groupdef.attributes },
           name: "group",
         };
-        return new MakiObject(newNode, parent);
+        return new Group(newNode, parent);
       }
     }
 
-    return new MakiObject(node, parent);
+    return new Group(node, parent);
   },
-  layout: noop,
+  layout: (node, parent) => new Layout(node, parent),
   sendparams: noop,
   elements: noop,
   bitmap: async (node, parent, registry, zip) => {
@@ -199,7 +200,6 @@ const parsers = {
   component: noop,
   text: noop,
   layer: noop,
-  button: noop,
   togglebutton: noop,
   status: noop,
   slider: noop,
