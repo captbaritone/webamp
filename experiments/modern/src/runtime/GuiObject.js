@@ -10,6 +10,9 @@ class GuiObject extends MakiObject {
   static getClassName() {
     return "GuiObject";
   }
+  findObject(id) {
+    return this.findDescendantByTypeAndId(this, null, id);
+  }
 }
 
 module.exports = GuiObject;

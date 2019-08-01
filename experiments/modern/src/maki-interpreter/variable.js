@@ -21,6 +21,7 @@ class Variable {
       this._unsubscribeFromValue = value.js_listenToAll((eventName, args) => {
         this._emitter.trigger(eventName, args);
       });
+      value.updateHooks(this, Object.keys(this._emitter._hooks));
     }
     this._value = value;
   }

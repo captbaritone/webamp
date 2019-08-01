@@ -96,3 +96,15 @@ export async function inlineIncludes(xml, zip) {
     return includedFile.children;
   });
 }
+
+// Operations on trees
+export function findParentNodeOfType(node, type) {
+  let n = node;
+  while(n.parent !== null) {
+    n = n.parent;
+    if ((!Array.isArray(type) && n.xmlNode.name === type) ||
+        (Array.isArray(type) && type.includes(n.xmlNode.name))) {
+      return n;
+    }
+  }
+}

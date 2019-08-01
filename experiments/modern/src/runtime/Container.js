@@ -11,7 +11,7 @@ class Container extends GuiObject {
     return "Container";
   }
   getLayout(id) {
-    return null;
+    return this.findDescendantByTypeAndId(this, "layout", id);
   }
 }
 

@@ -2,10 +2,14 @@ const Group = require("./Group");
 const MakiObject = require("./MakiObject");
 
 class System extends MakiObject {
-  constructor(scriptGroup =  new Group()) {
+  constructor(scriptGroup = new Group()) {
     super(null, null);
 
     this.scriptGroup = scriptGroup;
+    this.root = scriptGroup;
+    while(this.root.parent) {
+      this.root = this.root.parent;
+    }
   }
 
   /**
@@ -24,6 +28,9 @@ class System extends MakiObject {
 
   getScriptGroup() {
     return this.scriptGroup;
+  }
+  getContainer(id) {
+    return this.root.findDescendantByTypeAndId(this.root, "container", id);
   }
   getRuntimeVersion() {
     return "5.666";

@@ -3,6 +3,9 @@ import JSZip from "jszip";
 import "./App.css";
 import * as Utils from "./utils";
 import initialize from "./initialize";
+const System = require("./runtime/System");
+const runtime = require("./runtime");
+const interpret = require("./maki-interpreter/interpreter");
 
 // const runtime = require("./maki-interpreter/runtime");
 // const System = require("./maki-interpreter/runtime/System");
@@ -114,7 +117,7 @@ function Layer({ id, image, children, x, y }) {
   );
 }
 
-function Button({ id, image, action, x, y, downImage, tooltip, children }) {
+function Button({ id, image, action, x, y, downImage, tooltip, node, children }) {
   const data = React.useContext(SkinContext);
   const [down, setDown] = React.useState(false);
   const imgId = down && downImage ? downImage : image;
@@ -129,6 +132,8 @@ function Button({ id, image, action, x, y, downImage, tooltip, children }) {
     return null;
   }
 
+  const hooks = node.getActiveHooks();
+
   return (
     <div
       data-node-type="button"
@@ -139,6 +144,11 @@ function Button({ id, image, action, x, y, downImage, tooltip, children }) {
           // TODO: This could be unmounted
           setDown(false);
         });
+      }}
+      onClick={e => {
+        if (hooks.includes("onLeftClick")) {
+          node.js_trigger("onLeftClick");
+        }
       }}
       title={tooltip}
       style={{
@@ -209,13 +219,29 @@ function XmlNode({ node }) {
     }
     return null;
   }
-  return <Component {...attributes}>{children}</Component>;
+  return <Component node={node} {...attributes}>{children}</Component>;
 }
 
 function App() {
   const [data, setData] = React.useState(null);
   React.useEffect(() => {
-    getSkin().then(setData);
+    getSkin().then(async ({ root, registry }) => {
+      // Execute scripts
+      await Utils.asyncTreeFlatMap(root, async node => {
+        switch (node.xmlNode.name) {
+          case "script": {
+            const scriptGroup = Utils.findParentNodeOfType(node, ["Group", "WinampAbstractionLayer"]);
+            const system = new System(scriptGroup);
+            await interpret({ runtime, data: node.xmlNode.script, system, log: false });
+            break;
+          }
+          default: {
+          }
+        }
+      });
+
+      setData({ root, registry });
+    });
   }, []);
   if (data == null) {
     return <h1>Loading...</h1>;
