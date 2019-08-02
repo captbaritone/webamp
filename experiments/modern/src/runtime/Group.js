@@ -2,17 +2,17 @@ const GuiObject = require("./GuiObject");
 
 class Group extends GuiObject {
   /**
-   * getClassName()
+   * getclassname()
    *
    * Returns the class name for the object.
    * @ret The class name.
    */
-  static getClassName() {
+  static getclassname() {
     return "Group";
   }
-  getObject(id) {
+  getobject(id) {
     // Not sure this is correct, but it is my understanding this is just an alias
-    return this.findObject(id);
+    return this.findobject(id);
   }
 }
 

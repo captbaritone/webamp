@@ -12,7 +12,7 @@ export default function Variable({ variable }) {
       if (obj == null) {
         type = "Unknown object";
       } else {
-        type = obj.getClassName();
+        type = obj.getclassname();
       }
       break;
     case "STRING": {
