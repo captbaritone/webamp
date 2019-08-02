@@ -45,6 +45,23 @@ class System extends MakiObject {
   messagebox(message, msgtitle, flag, notanymoreId) {
     console.log({ message, msgtitle, flag, notanymoreId });
   }
+  integerToString(value) {
+    return value.toString();
+  }
+  getPrivateInt(section, item, defvalue) {
+    return defvalue;
+  }
+  setPrivateInt(section, item, defvalue) {
+  }
+  getleftvumeter() {
+    return 0.5;
+  }
+  getrightvumeter() {
+    return 0.5;
+  }
+  getvolume() {
+    return 1;
+  }
 }
 
 module.exports = System;

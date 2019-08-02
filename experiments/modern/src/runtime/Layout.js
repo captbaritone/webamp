@@ -14,6 +14,15 @@ class Layout extends GuiObject {
   getcontainer() {
     return findParentNodeOfType(this, ["container"]);;
   }
+
+  resize(x, y, w, h) {
+    this.xmlNode.attributes.x = x;
+    this.xmlNode.attributes.y = y;
+    this.xmlNode.attributes.minimum_w = w;
+    this.xmlNode.attributes.maximum_w = w;
+    this.xmlNode.attributes.minimum_h = h;
+    this.xmlNode.attributes.maximum_h = h;
+  }
 }
 
 module.exports = Layout;

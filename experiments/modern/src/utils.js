@@ -114,10 +114,13 @@ export function findDescendantByTypeAndId(node, type, id) {
     return null;
   }
 
+  const idLC = id.toLowerCase();
   for(let i = 0; i < node.children.length; i++) {
     const child = node.children[i];
     if ((!type || child.xmlNode.name === type) &&
-        (child.xmlNode.attributes !== undefined && child.xmlNode.attributes.id === id)) {
+        (child.xmlNode.attributes !== undefined &&
+         child.xmlNode.attributes.id !== undefined &&
+         child.xmlNode.attributes.id.toLowerCase() === idLC)) {
       return child;
     }
   }

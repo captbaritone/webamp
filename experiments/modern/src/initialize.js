@@ -2,9 +2,13 @@ import * as Utils from "./utils";
 const MakiObject = require("./runtime/MakiObject");
 const WinampAbstractionLayer = require("./runtime/WinampAbstractionLayer");
 const Layout = require('./runtime/Layout');
+const Layer = require('./runtime/Layer');
 const Container = require('./runtime/Container');
 const Group = require("./runtime/Group");
 const Button = require("./runtime/Button");
+const ToggleButton = require("./runtime/ToggleButton");
+const Text = require("./runtime/Text");
+const Status = require("./runtime/Status");
 
 function splitValues(str) {
   return str.split(",").map(parseFloat);
@@ -144,7 +148,7 @@ const parsers = {
     return new MakiObject(node, parent);
   },
   color: noop,
-  layer: noop,
+  layer: (node, parent) => new Layer(node, parent),
   layoutstatus: noop,
   hideobject: noop,
   button: (node, parent) => new Button(node, parent),
@@ -199,10 +203,9 @@ const parsers = {
   },
   truetypefont: noop,
   component: noop,
-  text: noop,
-  layer: noop,
-  togglebutton: noop,
-  status: noop,
+  text: (node, parent) => new Text(node, parent),
+  togglebutton: (node, parent) => new ToggleButton(node, parent),
+  status: (node, parent) => new Status(node, parent),
   slider: noop,
   bitmapfont: noop,
   vis: noop,
@@ -221,7 +224,6 @@ const parsers = {
   nstatesbutton: noop,
   songticker: noop,
   menu: noop,
-  status: noop,
   albumart: noop,
   playlistplus: noop,
   async script(node, parent, registry, zip) {
