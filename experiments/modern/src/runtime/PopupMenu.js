@@ -1,22 +1,28 @@
 const GuiObject = require("./GuiObject");
+const { unimplementedWarning } = require("../utils");
 
 class PopupMenu extends GuiObject {
   /**
-   * getClassName()
+   * getclassname()
    *
    * Returns the class name for the object.
    * @ret The class name.
    */
-  static getClassName() {
+  static getclassname() {
     return "PopupMenu";
   }
-  addCommand(txt, id, checked, disabled) {
+  addcommand(txt, id, checked, disabled) {
+    unimplementedWarning('addcommand');
   }
-  addSeparator() {
-
+  addseparator() {
+    unimplementedWarning('addseparator');
   }
-  // checkCommand(id, check) {}
-  // popAtMouse() {}
+  checkcommand(id, check) {
+    unimplementedWarning('checkcommand');
+  }
+  popatmouse() {
+    unimplementedWarning('popatmouse');
+  }
 }
 
 module.exports = PopupMenu;

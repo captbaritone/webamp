@@ -2,12 +2,12 @@ const Button = require("./Button");
 
 class ToggleButton extends Button {
   /**
-   * getClassName()
+   * getclassname()
    *
    * Returns the class name for the object.
    * @ret The class name.
    */
-  static getClassName() {
+  static getclassname() {
     return "ToggleButton";
   }
 }

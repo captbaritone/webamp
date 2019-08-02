@@ -97,6 +97,10 @@ export async function inlineIncludes(xml, zip) {
   });
 }
 
+export function unimplementedWarning(name) {
+  console.warn(`Executing unimplemented MAKI function: ${name}`);
+}
+
 // Operations on trees
 export function findParentNodeOfType(node, type) {
   let n = node;

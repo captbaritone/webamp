@@ -1,6 +1,6 @@
 const Group = require("./Group");
 const MakiObject = require("./MakiObject");
-const { findDescendantByTypeAndId } = require("../utils");
+const { findDescendantByTypeAndId, unimplementedWarning } = require("../utils");
 
 class System extends MakiObject {
   constructor(scriptGroup = new Group()) {
@@ -37,29 +37,36 @@ class System extends MakiObject {
     return "5.666";
   }
   gettoken(str, separator, tokennum) {
+    unimplementedWarning('gettoken');
     return "Some Token String";
   }
   getparam() {
+    unimplementedWarning('getparam');
     return "Some String";
   }
   messagebox(message, msgtitle, flag, notanymoreId) {
     console.log({ message, msgtitle, flag, notanymoreId });
   }
-  integerToString(value) {
+  integertostring(value) {
     return value.toString();
   }
-  getPrivateInt(section, item, defvalue) {
+  getprivateint(section, item, defvalue) {
+    unimplementedWarning('getprivateint');
     return defvalue;
   }
-  setPrivateInt(section, item, defvalue) {
+  setprivateint(section, item, defvalue) {
+    unimplementedWarning('setprivateint');
   }
   getleftvumeter() {
+    unimplementedWarning('getleftvumeter');
     return 0.5;
   }
   getrightvumeter() {
+    unimplementedWarning('getrightvumeter');
     return 0.5;
   }
   getvolume() {
+    unimplementedWarning('getvolume');
     return 1;
   }
 }
