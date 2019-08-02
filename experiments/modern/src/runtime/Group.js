@@ -10,11 +10,9 @@ class Group extends GuiObject {
   static getClassName() {
     return "Group";
   }
-  findObject(id) {
-    throw new Error("Not implemented");
-  }
-  setXmlParam(id, value) {
-    throw new Error("Not implemented");
+  getObject(id) {
+    // Not sure this is correct, but it is my understanding this is just an alias
+    return this.findObject(id);
   }
 }
 

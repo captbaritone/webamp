@@ -3,6 +3,9 @@ import JSZip from "jszip";
 import "./App.css";
 import * as Utils from "./utils";
 import initialize from "./initialize";
+const System = require("./runtime/System");
+const runtime = require("./runtime");
+const interpret = require("./maki-interpreter/interpreter");
 
 // const runtime = require("./maki-interpreter/runtime");
 // const System = require("./maki-interpreter/runtime/System");
@@ -34,7 +37,8 @@ const IGNORE_IDS = new Set([
 const SkinContext = React.createContext(null);
 
 async function getSkin() {
-  const resp = await fetch(process.env.PUBLIC_URL + "/skins/CornerAmp_Redux.wal");
+  // const resp = await fetch(process.env.PUBLIC_URL + "/skins/CornerAmp_Redux.wal");
+  const resp = await fetch(process.env.PUBLIC_URL + "/skins/simple.wal");
   const blob = await resp.blob();
   const zip = await JSZip.loadAsync(blob);
   const skinXml = await Utils.inlineIncludes(
@@ -42,11 +46,7 @@ async function getSkin() {
     zip
   );
 
-  const { nodes, registry } = await initialize(zip, skinXml);
-
-  // Gross hack returing a tuple here. We're just doing some crazy stuff to get
-  // some data returned in the laziest way possible
-  return [skinXml, nodes, registry];
+  return await initialize(zip, skinXml);
 }
 
 function Layout({
@@ -118,7 +118,7 @@ function Layer({ id, image, children, x, y }) {
   );
 }
 
-function Button({ id, image, action, x, y, downImage, tooltip, children }) {
+function Button({ id, image, action, x, y, downImage, tooltip, node, children }) {
   const data = React.useContext(SkinContext);
   const [down, setDown] = React.useState(false);
   const imgId = down && downImage ? downImage : image;
@@ -133,6 +133,16 @@ function Button({ id, image, action, x, y, downImage, tooltip, children }) {
     return null;
   }
 
+  const hooks = node.js_getActiveHooks();
+  const eventHandlers = {};
+  if (hooks.includes("onLeftClick")) {
+    eventHandlers["onClick"] = e => {
+      if (hooks.includes("onLeftClick")) {
+        node.js_trigger("onLeftClick");
+      }
+    };
+  }
+
   return (
     <div
       data-node-type="button"
@@ -144,6 +154,7 @@ function Button({ id, image, action, x, y, downImage, tooltip, children }) {
           setDown(false);
         });
       }}
+      {...eventHandlers}
       title={tooltip}
       style={{
         position: "absolute",
@@ -192,19 +203,19 @@ const NODE_NAME_TO_COMPONENT = {
 
 // Given a skin XML node, pick which component to use, and render it.
 function XmlNode({ node }) {
-  const attributes = node.attributes;
-  const name = node.name;
+  const attributes = node.xmlNode.attributes;
+  const name = node.xmlNode.name;
   if (attributes && IGNORE_IDS.has(attributes.id)) {
     return null;
   }
-  if (name == null) {
-    // This is likely a comment
+  if (name == null || name === "groupdef") {
+    // name is null is likely a comment
     return null;
   }
   const Component = NODE_NAME_TO_COMPONENT[name];
   const childNodes = node.children || [];
   const children = childNodes.map((childNode, i) => (
-    <XmlNode key={i} parent={node} node={childNode} />
+    <XmlNode key={i} node={childNode} />
   ));
   if (Component == null) {
     console.warn("Unknown node type", name);
@@ -213,23 +224,46 @@ function XmlNode({ node }) {
     }
     return null;
   }
-  return <Component {...attributes}>{children}</Component>;
+  return <Component node={node} {...attributes}>{children}</Component>;
 }
 
 function App() {
   const [data, setData] = React.useState(null);
   React.useEffect(() => {
-    getSkin().then(setData);
+    getSkin().then(async ({ root, registry }) => {
+      // Execute scripts
+      await Utils.asyncTreeFlatMap(root, async node => {
+        switch (node.xmlNode.name) {
+          case "groupdef": {
+            // removes groupdefs from consideration (only run scripts when actually referenced by group)
+            return {};
+          }
+          case "script": {
+            // TODO: stop ignoring standardframe
+            if (node.xmlNode.file.endsWith("standardframe.maki")) {
+              break;
+            }
+            const scriptGroup = Utils.findParentNodeOfType(node, ["group", "WinampAbstractionLayer"]);
+            const system = new System(scriptGroup);
+            await interpret({ runtime, data: node.xmlNode.script, system, log: false });
+            return node;
+          }
+          default: {
+            return node;
+          }
+        }
+      });
+
+      setData({ root, registry });
+    });
   }, []);
   if (data == null) {
     return <h1>Loading...</h1>;
   }
-  const [skinXml, nodes, registry] = data;
+  const { root, registry } = data;
   return (
     <SkinContext.Provider value={registry.images}>
-      <XmlNode
-        node={nodes}
-      />
+      <XmlNode node={root} />
     </SkinContext.Provider>
   );
 }
