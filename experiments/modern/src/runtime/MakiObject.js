@@ -5,7 +5,6 @@ class MakiObject {
     this.xmlNode = node;
     this.parent = parent;
     this.children = [];
-    this.hooks = {};
     this._emitter = new Emitter();
 
     if (!this.xmlNode) {
@@ -41,16 +40,6 @@ class MakiObject {
 
   js_dispose() {
     this._emitter.dispose();
-  }
-
-  // updating hooks like this is probably totally wrong, but just hacking for now
-  js_updateHooks (node, hooks) {
-    this.hooks[node] = hooks;
-  }
-
-  js_getActiveHooks () {
-    const hookArrs = Object.values(this.hooks);
-    return hookArrs.reduce((acc, val) => acc.concat(val), []);
   }
 
   /**
