@@ -96,3 +96,39 @@ export async function inlineIncludes(xml, zip) {
     return includedFile.children;
   });
 }
+
+// Operations on trees
+export function findParentNodeOfType(node, type) {
+  let n = node;
+  while(n.parent !== null) {
+    n = n.parent;
+    if ((!Array.isArray(type) && n.xmlNode.name === type) ||
+        (Array.isArray(type) && type.includes(n.xmlNode.name))) {
+      return n;
+    }
+  }
+}
+
+export function findDescendantByTypeAndId(node, type, id) {
+  if (node.children.length === 0) {
+    return null;
+  }
+
+  for(let i = 0; i < node.children.length; i++) {
+    const child = node.children[i];
+    if ((!type || child.xmlNode.name === type) &&
+        (child.xmlNode.attributes !== undefined && child.xmlNode.attributes.id === id)) {
+      return child;
+    }
+  }
+
+  for(let i = 0; i < node.children.length; i++) {
+    const child = node.children[i];
+    const descendant = findDescendantByTypeAndId(child, type, id);
+    if (descendant) {
+      return descendant;
+    }
+  }
+
+  return null;
+}

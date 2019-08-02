@@ -287,6 +287,14 @@ function* interpret(start, program, stack = []) {
         twoArgOperator((b, a) => b >> a);
         break;
       }
+      // new
+      case 96: {
+        const classesOffset = command.arg;
+        const Klass = classes[classesOffset];
+        const klassInst = new Klass();
+        stack.push(klassInst);
+        break;
+      }
       default:
         throw new Error(`Unhandled opcode ${command.opcode}`);
     }
