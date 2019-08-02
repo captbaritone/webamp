@@ -7,33 +7,6 @@ const System = require("./runtime/System");
 const runtime = require("./runtime");
 const interpret = require("./maki-interpreter/interpreter");
 
-// const runtime = require("./maki-interpreter/runtime");
-// const System = require("./maki-interpreter/runtime/System");
-// const interpret = require("./maki-interpreter/interpreter");
-
-const IGNORE_IDS = new Set([
-  // The maki script shows/hides these depending on which corner you are in
-  "main2",
-  "main3",
-  "main4",
-  "Title2",
-  "Title3",
-  "Title4",
-  "mask2",
-  "mask3",
-  "mask4",
-  "placeholder", // This looks like something related to an EQ window
-  "Scaler",
-  "toggle",
-  "presets",
-  "auto",
-  // These need the maki script to get sized
-  "volumethumb",
-  "seekfull",
-  "seek1",
-  "Repeat",
-]);
-
 const SkinContext = React.createContext(null);
 
 async function getSkin() {
@@ -47,6 +20,26 @@ async function getSkin() {
   );
 
   return await initialize(zip, skinXml);
+}
+
+function Container(props) {
+  const { id, children, default_x, default_y, default_visible } = props;
+  const style = {
+    position: "absolute",
+  };
+  if (default_x !== undefined) {
+    style.left = Number(default_x);
+  }
+  if (default_y !== undefined) {
+    style.top = Number(default_y);
+  }
+  if (default_visible !== undefined) {
+    style.display = default_visible ? "block" : "none";
+  }
+  return <div
+           data-node-type="container"
+           data-node-id={id}
+           style={style}>{children}</div>;
 }
 
 function Layout({
@@ -105,13 +98,25 @@ function Layer({ id, image, children, x, y }) {
   if (y !== undefined) {
     params.top = Number(y);
   }
+  if (img.x !== undefined) {
+    params.backgroundPositionX = -Number(img.x);
+  }
+  if (img.y !== undefined) {
+    params.backgroundPositionY = -Number(img.y);
+  }
+  if (img.w !== undefined) {
+    params.width = Number(img.w);
+  }
+  if (img.h !== undefined) {
+    params.height = Number(img.h);
+  }
   return (
     <>
       <img
         data-node-type="Layer"
         data-node-id={id}
         src={img.imgUrl}
-        style={Object.assign({ position: "absolute" }, params)}
+        style={{ position: "absolute", ...params }}
       />
       {children}
     </>
@@ -189,6 +194,7 @@ function Group(props) {
 }
 
 const NODE_NAME_TO_COMPONENT = {
+  container: Container,
   layout: Layout,
   layer: Layer,
   button: Button,
@@ -200,9 +206,6 @@ const NODE_NAME_TO_COMPONENT = {
 function XmlNode({ node }) {
   const attributes = node.xmlNode.attributes;
   const name = node.xmlNode.name;
-  if (attributes && IGNORE_IDS.has(attributes.id)) {
-    return null;
-  }
   if (name == null || name === "groupdef") {
     // name is null is likely a comment
     return null;
@@ -210,7 +213,7 @@ function XmlNode({ node }) {
   const Component = NODE_NAME_TO_COMPONENT[name];
   const childNodes = node.children || [];
   const children = childNodes.map((childNode, i) => (
-    <XmlNode key={i} node={childNode} />
+    childNode.visible && <XmlNode key={i} node={childNode} />
   ));
   if (Component == null) {
     console.warn("Unknown node type", name);
@@ -238,7 +241,7 @@ function App() {
             if (node.xmlNode.file.endsWith("standardframe.maki")) {
               break;
             }
-            const scriptGroup = Utils.findParentNodeOfType(node, ["group", "WinampAbstractionLayer"]);
+            const scriptGroup = Utils.findParentNodeOfType(node, ["group", "WinampAbstractionLayer", "WasabiXML"]);
             const system = new System(scriptGroup);
             await interpret({ runtime, data: node.xmlNode.script, system, log: false });
             return node;
@@ -256,6 +259,7 @@ function App() {
     return <h1>Loading...</h1>;
   }
   const { root, registry } = data;
+
   return (
     <SkinContext.Provider value={registry.images}>
       <XmlNode node={root} />
