@@ -10,7 +10,7 @@ import {
   TransitionType,
   MediaStatus,
 } from "./types";
-import { createSelector } from "reselect";
+import { createSelector, defaultMemoize } from "reselect";
 import * as Utils from "./utils";
 import {
   BANDS,
@@ -316,8 +316,9 @@ export const getDuration = (state: AppState): number | null => {
 export const getTrackDisplayName = createSelector(
   getTracks,
   tracks => {
-    return (trackId: number | null) =>
-      fromTracks.getTrackDisplayName(tracks, trackId);
+    return defaultMemoize((trackId: number | null) =>
+      fromTracks.getTrackDisplayName(tracks, trackId)
+    );
   }
 );
 
