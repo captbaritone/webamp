@@ -43,19 +43,19 @@ class MakiObject {
   }
 
   /**
-   * getClassName()
+   * getclassname()
    *
    * Returns the class name for the object.
    * @ret The class name.
    */
-  static getClassName() {
+  static getclassname() {
     return "Object";
   }
 
   /**
    * getId()
    */
-  getId() {
+  getid() {
     throw new Error("getId not implemented");
   }
 }

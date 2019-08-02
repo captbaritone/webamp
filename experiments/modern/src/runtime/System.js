@@ -14,12 +14,12 @@ class System extends MakiObject {
   }
 
   /**
-   * getClassName()
+   * getclassname()
    *
    * Returns the class name for the object.
    * @ret The class name.
    */
-  static getClassName() {
+  static getclassname() {
     return "System";
   }
 
@@ -27,22 +27,22 @@ class System extends MakiObject {
     this.js_trigger("onScriptLoaded");
   }
 
-  getScriptGroup() {
+  getscriptgroup() {
     return this.scriptGroup;
   }
-  getContainer(id) {
+  getcontainer(id) {
     return findDescendantByTypeAndId(this.root, "container", id);
   }
-  getRuntimeVersion() {
+  getruntimeversion() {
     return "5.666";
   }
-  getToken(str, separator, tokennum) {
+  gettoken(str, separator, tokennum) {
     return "Some Token String";
   }
-  getParam() {
+  getparam() {
     return "Some String";
   }
-  messageBox(message, msgtitle, flag, notanymoreId) {
+  messagebox(message, msgtitle, flag, notanymoreId) {
     console.log({ message, msgtitle, flag, notanymoreId });
   }
 }
