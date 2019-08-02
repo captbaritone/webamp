@@ -132,9 +132,11 @@ function* interpret(start, program, stack = []) {
       case 24:
       case 112: {
         const methodOffset = command.arg;
-        const { name: methodName, typeOffset: classesOffset } = methods[
+        let { name: methodName, typeOffset: classesOffset } = methods[
           methodOffset
         ];
+        methodName = methodName.toLowerCase();
+
         const klass = classes[classesOffset];
         // This is a bit awkward. Because the variables are stored on the stack
         // before the object, we have to find the number of arguments without

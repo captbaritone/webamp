@@ -24,7 +24,7 @@ beforeEach(() => {
   mockMessageBox = jest.fn();
   // The VM depends upon the arity of this function, so we can't use
   // `mockMessageBox` directly.
-  System.prototype.messageBox = function(a, b, c, d) {
+  System.prototype.messagebox = function(a, b, c, d) {
     mockMessageBox(...arguments);
   };
 });
