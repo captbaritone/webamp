@@ -1,7 +1,12 @@
 const MakiObject = require("./MakiObject");
-const { findDescendantByTypeAndId } = require("../utils");
+const { findDescendantByTypeAndId, unimplementedWarning } = require("../utils");
 
 class GuiObject extends MakiObject {
+  constructor(node, parent) {
+    super(node, parent);
+
+    this.visible = true;
+  }
   /**
    * getclassname()
    *
@@ -13,6 +18,10 @@ class GuiObject extends MakiObject {
   }
   findobject(id) {
     return findDescendantByTypeAndId(this, null, id);
+  }
+  getobject(id) {
+    // Not sure this is correct, but it is my understanding this is just an alias
+    return this.findobject(id);
   }
   init(newRoot) {
     newRoot.js_addChild(this);
@@ -31,6 +40,36 @@ class GuiObject extends MakiObject {
   }
   getparent() {
     return this.parent;
+  }
+
+  show() {
+    this.visible = true;
+  }
+
+  hide() {
+    this.visible = false;
+  }
+
+  gettop() {
+    unimplementedWarning('gettop');
+    return 5;
+  }
+
+  getheight() {
+    unimplementedWarning('getheight');
+    return 100;
+  }
+
+  getwidth() {
+    unimplementedWarning('getwidth');
+    return 100;
+  }
+
+  resize(x, y, w, h) {
+    this.xmlNode.attributes.x = x;
+    this.xmlNode.attributes.y = y;
+    this.xmlNode.attributes.w = w;
+    this.xmlNode.attributes.h = h;
   }
 }
 

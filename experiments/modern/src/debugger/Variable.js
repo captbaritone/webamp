@@ -7,7 +7,7 @@ function quote(str) {
 export default function Variable({ variable }) {
   let type = "UNKOWN";
   switch (variable.typeName) {
-    case "OBJECT":
+    case "OBJECT": {
       const obj = runtime[variable.type];
       if (obj == null) {
         type = "Unknown object";
@@ -15,6 +15,16 @@ export default function Variable({ variable }) {
         type = obj.getclassname();
       }
       break;
+    }
+    case "SUBCLASS": {
+      const obj = runtime[variable.type.type];
+      if (obj == null) {
+        type = "Unknown object";
+      } else {
+        type = obj.getClassName();
+      }
+      break;
+    }
     case "STRING": {
       const value = variable.getValue();
       return `${variable.typeName}(${value == null ? "NULL" : quote(value)})`;

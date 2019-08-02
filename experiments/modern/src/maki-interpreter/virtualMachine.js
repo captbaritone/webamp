@@ -138,6 +138,9 @@ function* interpret(start, program, stack = []) {
         methodName = methodName.toLowerCase();
 
         const klass = classes[classesOffset];
+        if (!klass) {
+          throw new Error("Need to add a missing class to runtime");
+        }
         // This is a bit awkward. Because the variables are stored on the stack
         // before the object, we have to find the number of arguments without
         // actually having access to the object instance.
@@ -145,10 +148,12 @@ function* interpret(start, program, stack = []) {
 
         const methodArgs = [];
         while (argCount--) {
-          methodArgs.push(stack.pop().getValue());
+          const a = stack.pop();
+          const aValue = a instanceof Variable ? a.getValue() : a;
+          methodArgs.push(aValue);
         }
         const variable = stack.pop();
-        const obj = variable.getValue();
+        const obj = variable instanceof Variable ? variable.getValue() : variable;
         stack.push(obj[methodName](...methodArgs));
         break;
       }
