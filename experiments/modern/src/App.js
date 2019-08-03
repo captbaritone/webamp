@@ -43,6 +43,7 @@ function Container(props) {
 }
 
 function Layout({
+  node,
   id,
   background,
   desktopalpha,
@@ -60,7 +61,12 @@ function Layout({
     return null;
   }
 
-  const image = data[background];
+  const image = node.js_imageLookup(background);
+  if (image == null) {
+    console.warn("Unable to find image to render. Rendering null", background);
+    return null;
+  }
+
   return (
     <>
       <img
@@ -80,13 +86,13 @@ function Layout({
   );
 }
 
-function Layer({ id, image, children, x, y }) {
+function Layer({ node, id, image, children, x, y }) {
   const data = React.useContext(SkinContext);
   if (image == null) {
     console.warn("Got an Layer without an image. Rendering null", id);
     return null;
   }
-  const img = data[image.toLowerCase()];
+  const img = node.js_imageLookup(image.toLowerCase());
   if (img == null) {
     console.warn("Unable to find image to render. Rendering null", image);
     return null;
@@ -132,7 +138,7 @@ function Button({ id, image, action, x, y, downImage, tooltip, node, children })
     return null;
   }
   // TODO: These seem to be switching too fast
-  const img = data[imgId.toLowerCase()];
+  const img = node.js_imageLookup(imgId);
   if (img == null) {
     console.warn("Unable to find image to render. Rendering null", image);
     return null;

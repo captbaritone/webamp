@@ -1,9 +1,11 @@
 const Emitter = require("../Emitter");
+const { findElementById } = require("../utils");
 
 class MakiObject {
-  constructor(node, parent) {
+  constructor(node, parent, annotations = {}) {
     this.xmlNode = node;
     this.parent = parent;
+    this.js_annotations = annotations;
     this.children = [];
     this._emitter = new Emitter();
 
@@ -40,6 +42,15 @@ class MakiObject {
 
   js_dispose() {
     this._emitter.dispose();
+  }
+
+  js_imageLookup(id) {
+    const element = findElementById(this, id);
+    if (element) {
+      return element.js_annotations;
+    }
+
+    return null;
   }
 
   /**

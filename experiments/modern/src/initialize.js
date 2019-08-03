@@ -4,6 +4,7 @@ const WinampAbstractionLayer = require("./runtime/WinampAbstractionLayer");
 const Layout = require('./runtime/Layout');
 const Layer = require('./runtime/Layer');
 const Container = require('./runtime/Container');
+const Elements = require("./runtime/Elements");
 const Group = require("./runtime/Group");
 const Button = require("./runtime/Button");
 const ToggleButton = require("./runtime/ToggleButton");
@@ -170,7 +171,7 @@ const parsers = {
   },
   layout: (node, parent) => new Layout(node, parent),
   sendparams: noop,
-  elements: noop,
+  elements: (node, parent) => new Elements(node, parent),
   bitmap: async (node, parent, registry, zip) => {
     let { file, gammagroup, h, id, w, x, y } = node.attributes;
     // TODO: Escape file for regex
@@ -187,9 +188,17 @@ const parsers = {
       x = x !== undefined ? x : 0;
       y = y !== undefined ? y : 0;
     }
-    registry.images[id.toLowerCase()] = { file, gammagroup, h, w, x, y, imgUrl };
 
-    return new MakiObject(node, parent);
+    return new MakiObject(node, parent, {
+      id,
+      file,
+      gammagroup,
+      h,
+      w,
+      x,
+      y,
+      imgUrl,
+    });
   },
   eqvis: noop,
   slider: noop,

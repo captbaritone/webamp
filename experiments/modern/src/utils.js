@@ -1,4 +1,5 @@
 import { xml2js } from "xml-js";
+const Elements = require("./runtime/Elements");
 
 export function getCaseInsensitveFile(zip, filename) {
   // TODO: Escape `file` for rejex characters
@@ -135,6 +136,47 @@ export function findDescendantByTypeAndId(node, type, id) {
     if (descendant) {
       return descendant;
     }
+  }
+
+  return null;
+}
+
+function getPreviousSiblings(node, parent) {
+  const children = parent.children;
+  for (let i = 0; i < children.length; i++) {
+    if (children[i] === node) {
+      if (i === 0) {
+        return [];
+      }
+
+      return children.slice(0, i);
+    }
+  }
+
+  return [];
+}
+
+function findDirectDescendantById(node, id) {
+  const children = node.children;
+  for (let i = 0; i < children.length; i++) {
+    const child = children[i];
+    if (child.xmlNode.attributes.id === id) {
+      return child;
+    }
+  }
+}
+
+export function findElementById(node, id) {
+  let currentNode = node;
+  while (currentNode.parent !== null) {
+    let parent = currentNode.parent;
+    const prevSiblings = getPreviousSiblings(currentNode, parent);
+    for (let i = 0; i < prevSiblings.length; i++) {
+      if (prevSiblings[i] instanceof Elements) {
+        return findDirectDescendantById(prevSiblings[i], id);
+      }
+    }
+    currentNode = parent;
   }
 
   return null;
