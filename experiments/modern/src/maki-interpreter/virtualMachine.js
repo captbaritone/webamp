@@ -22,6 +22,11 @@ function coerceTypes(var1, var2, val1, val2) {
 function* interpret(start, program, stack = []) {
   const { commands, methods, variables, classes } = program;
 
+  function popStackValue() {
+    const v = stack.pop();
+    return v instanceof Variable ? v.getValue() : v;
+  }
+
   function twoArgCoercingOperator(operator) {
     const a = stack.pop();
     const b = stack.pop();
@@ -33,10 +38,8 @@ function* interpret(start, program, stack = []) {
   }
 
   function twoArgOperator(operator) {
-    const a = stack.pop();
-    const b = stack.pop();
-    const aValue = a instanceof Variable ? a.getValue() : a;
-    const bValue = b instanceof Variable ? b.getValue() : b;
+    const aValue = popStackValue();
+    const bValue = popStackValue();
 
     stack.push(operator(bValue, aValue));
   }
@@ -65,8 +68,7 @@ function* interpret(start, program, stack = []) {
       }
       // popTo
       case 3: {
-        const a = stack.pop();
-        let aValue = a instanceof Variable ? a.getValue() : a;
+        const aValue = popStackValue();
         const offsetIntoVariables = command.arg;
         const toVar = variables[offsetIntoVariables];
         toVar.setValue(aValue);
@@ -104,7 +106,7 @@ function* interpret(start, program, stack = []) {
       }
       // jumpIf
       case 16: {
-        const value = stack.pop();
+        const value = popStackValue();
         // This seems backwards. Seems like we're doing a "jump if not"
         if (value) {
           break;
@@ -114,7 +116,7 @@ function* interpret(start, program, stack = []) {
       }
       // jumpIfNot
       case 17: {
-        const value = stack.pop();
+        const value = popStackValue();
         // This seems backwards. Same as above
         if (!value) {
           break;
@@ -148,12 +150,10 @@ function* interpret(start, program, stack = []) {
 
         const methodArgs = [];
         while (argCount--) {
-          const a = stack.pop();
-          const aValue = a instanceof Variable ? a.getValue() : a;
+          const aValue = popStackValue();
           methodArgs.push(aValue);
         }
-        const variable = stack.pop();
-        const obj = variable instanceof Variable ? variable.getValue() : variable;
+        const obj = popStackValue();
         stack.push(obj[methodName](...methodArgs));
         break;
       }
@@ -169,8 +169,7 @@ function* interpret(start, program, stack = []) {
       }
       // return
       case 33: {
-        const a = stack.pop();
-        const aValue = a instanceof Variable ? a.getValue() : a;
+        const aValue = popStackValue();
         return aValue;
       }
       // mov
@@ -262,15 +261,13 @@ function* interpret(start, program, stack = []) {
       }
       // ! (not)
       case 74: {
-        const a = stack.pop();
-        const aValue = a instanceof Variable ? a.getValue() : a;
+        const aValue = popStackValue();
         stack.push(aValue ? 0 : 1);
         break;
       }
       // - (negative)
       case 76: {
-        const a = stack.pop();
-        const aValue = a instanceof Variable ? a.getValue() : a;
+        const aValue = popStackValue();
         stack.push(-aValue);
         break;
       }
