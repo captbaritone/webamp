@@ -7,8 +7,6 @@ const System = require("./runtime/System");
 const runtime = require("./runtime");
 const interpret = require("./maki-interpreter/interpreter");
 
-const SkinContext = React.createContext(null);
-
 async function getSkin() {
   // const resp = await fetch(process.env.PUBLIC_URL + "/skins/CornerAmp_Redux.wal");
   const resp = await fetch(process.env.PUBLIC_URL + "/skins/simple.wal");
@@ -43,6 +41,7 @@ function Container(props) {
 }
 
 function Layout({
+  node,
   id,
   background,
   desktopalpha,
@@ -54,13 +53,17 @@ function Layout({
   droptarget,
   children,
 }) {
-  const data = React.useContext(SkinContext);
   if (background == null) {
     console.warn("Got a Layout without a background. Rendering null", id);
     return null;
   }
 
-  const image = data[background];
+  const image = node.js_imageLookup(background);
+  if (image == null) {
+    console.warn("Unable to find image to render. Rendering null", background);
+    return null;
+  }
+
   return (
     <>
       <img
@@ -80,13 +83,12 @@ function Layout({
   );
 }
 
-function Layer({ id, image, children, x, y }) {
-  const data = React.useContext(SkinContext);
+function Layer({ node, id, image, children, x, y }) {
   if (image == null) {
     console.warn("Got an Layer without an image. Rendering null", id);
     return null;
   }
-  const img = data[image.toLowerCase()];
+  const img = node.js_imageLookup(image.toLowerCase());
   if (img == null) {
     console.warn("Unable to find image to render. Rendering null", image);
     return null;
@@ -124,7 +126,6 @@ function Layer({ id, image, children, x, y }) {
 }
 
 function Button({ id, image, action, x, y, downImage, tooltip, node, children }) {
-  const data = React.useContext(SkinContext);
   const [down, setDown] = React.useState(false);
   const imgId = down && downImage ? downImage : image;
   if (imgId == null) {
@@ -132,7 +133,7 @@ function Button({ id, image, action, x, y, downImage, tooltip, node, children })
     return null;
   }
   // TODO: These seem to be switching too fast
-  const img = data[imgId.toLowerCase()];
+  const img = node.js_imageLookup(imgId);
   if (img == null) {
     console.warn("Unable to find image to render. Rendering null", image);
     return null;
@@ -228,7 +229,7 @@ function XmlNode({ node }) {
 function App() {
   const [data, setData] = React.useState(null);
   React.useEffect(() => {
-    getSkin().then(async ({ root, registry }) => {
+    getSkin().then(async root => {
       // Execute scripts
       await Utils.asyncTreeFlatMap(root, async node => {
         switch (node.xmlNode.name) {
@@ -238,12 +239,17 @@ function App() {
           }
           case "script": {
             // TODO: stop ignoring standardframe
-            if (node.xmlNode.file.endsWith("standardframe.maki")) {
+            if (node.xmlNode.attributes.file.endsWith("standardframe.maki")) {
               break;
             }
             const scriptGroup = Utils.findParentNodeOfType(node, ["group", "WinampAbstractionLayer", "WasabiXML"]);
             const system = new System(scriptGroup);
-            await interpret({ runtime, data: node.xmlNode.script, system, log: false });
+            await interpret({
+              runtime,
+              data: node.js_annotations.script,
+              system,
+              log: false,
+            });
             return node;
           }
           default: {
@@ -252,19 +258,15 @@ function App() {
         }
       });
 
-      setData({ root, registry });
+      setData(root);
     });
   }, []);
   if (data == null) {
     return <h1>Loading...</h1>;
   }
-  const { root, registry } = data;
+  const root = data;
 
-  return (
-    <SkinContext.Provider value={registry.images}>
-      <XmlNode node={root} />
-    </SkinContext.Provider>
-  );
+  return <XmlNode node={root} />;
 }
 
 export default App;
