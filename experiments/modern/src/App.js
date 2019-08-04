@@ -229,7 +229,7 @@ function XmlNode({ node }) {
 function App() {
   const [data, setData] = React.useState(null);
   React.useEffect(() => {
-    getSkin().then(async ({ root, registry }) => {
+    getSkin().then(async root => {
       // Execute scripts
       await Utils.asyncTreeFlatMap(root, async node => {
         switch (node.xmlNode.name) {
@@ -239,7 +239,7 @@ function App() {
           }
           case "script": {
             // TODO: stop ignoring standardframe
-            if (node.xmlNode.file.endsWith("standardframe.maki")) {
+            if (node.xmlNode.attributes.file.endsWith("standardframe.maki")) {
               break;
             }
             const scriptGroup = Utils.findParentNodeOfType(node, ["group", "WinampAbstractionLayer", "WasabiXML"]);
@@ -253,13 +253,13 @@ function App() {
         }
       });
 
-      setData({ root, registry });
+      setData(root);
     });
   }, []);
   if (data == null) {
     return <h1>Loading...</h1>;
   }
-  const { root, registry } = data;
+  const root = data;
 
   return <XmlNode node={root} />;
 }
