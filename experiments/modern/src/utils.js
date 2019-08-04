@@ -158,13 +158,7 @@ function getPreviousSiblings(node, parent) {
 }
 
 function findDirectDescendantById(node, id) {
-  const children = node.children;
-  for (let i = 0; i < children.length; i++) {
-    const child = children[i];
-    if (child.xmlNode.attributes.id === id) {
-      return child;
-    }
-  }
+  return node.children.find(item => item.xmlNode.attributes.id === id);
 }
 
 export function findElementById(node, id) {
