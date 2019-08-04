@@ -1,5 +1,6 @@
 import { xml2js } from "xml-js";
 const Elements = require("./runtime/Elements");
+const GroupDef = require("./runtime/GroupDef");
 
 export function getCaseInsensitveFile(zip, filename) {
   // TODO: Escape `file` for rejex characters
@@ -182,14 +183,14 @@ export function findElementById(node, id) {
   return null;
 }
 
-export function findElementByTypeAndId(node, type, id) {
+export function findGroupDefById(node, id) {
   let currentNode = node;
   while (currentNode.parent) {
     let parent = currentNode.parent;
     const prevSiblings = getPreviousSiblings(currentNode, parent);
     for (let i = 0; i < prevSiblings.length; i++) {
       if (
-        prevSiblings[i].xmlNode.name === type &&
+        prevSiblings[i] instanceof GroupDef &&
         prevSiblings[i].xmlNode.attributes.id === id
       ) {
         return prevSiblings[i];
