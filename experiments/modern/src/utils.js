@@ -146,6 +146,8 @@ function findDirectDescendantById(node, id) {
   return node.children.find(item => item.xmlNode.attributes.id === id);
 }
 
+// Search up the tree for <Elements> nodes that are in node's lexical scope.
+// return the first child of an <Elements> that matches id
 export function findElementById(node, id) {
   let currentNode = node;
   while (currentNode.parent) {
@@ -166,6 +168,7 @@ export function findElementById(node, id) {
   return null;
 }
 
+// Search up the tree for a <GroupDef> node that is in node's lexical scope and matches id.
 export function findGroupDefById(node, id) {
   let currentNode = node;
   while (currentNode.parent) {
