@@ -1,6 +1,6 @@
 const MakiObject = require("./MakiObject");
 
-class Elements extends MakiObject {
+class JsGammaSet extends MakiObject {
   /**
    * getclassname()
    *
@@ -8,8 +8,8 @@ class Elements extends MakiObject {
    * @ret The class name.
    */
   static getclassname() {
-    return "Elements";
+    return "GammaSet";
   }
 }
 
-module.exports = Elements;
+module.exports = JsGammaSet;

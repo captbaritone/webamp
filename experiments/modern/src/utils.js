@@ -1,6 +1,6 @@
 import { xml2js } from "xml-js";
-const Elements = require("./runtime/Elements");
-const GroupDef = require("./runtime/GroupDef");
+const JsElements = require("./runtime/JsElements");
+const JsGroupDef = require("./runtime/JsGroupDef");
 
 export function getCaseInsensitveFile(zip, filename) {
   // TODO: Escape `file` for rejex characters
@@ -173,7 +173,7 @@ function findInLexicalScope(node, pred) {
 // return the first child of an <Elements> that matches id
 export function findElementById(node, id) {
   return findInLexicalScope(node, child => {
-    if (child instanceof Elements) {
+    if (child instanceof JsElements) {
       const element = findDirectDescendantById(child, id);
       if (element) {
         return element;
@@ -185,7 +185,7 @@ export function findElementById(node, id) {
 // Search up the tree for a <GroupDef> node that is in node's lexical scope and matches id.
 export function findGroupDefById(node, id) {
   return findInLexicalScope(node, child => {
-    if (child instanceof GroupDef && child.xmlNode.attributes.id === id) {
+    if (child instanceof JsGroupDef && child.xmlNode.attributes.id === id) {
       return child;
     }
   });

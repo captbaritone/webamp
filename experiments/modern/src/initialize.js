@@ -4,9 +4,9 @@ const WinampAbstractionLayer = require("./runtime/WinampAbstractionLayer");
 const Layout = require('./runtime/Layout');
 const Layer = require('./runtime/Layer');
 const Container = require('./runtime/Container');
-const Elements = require("./runtime/Elements");
-const GammaSet = require("./runtime/GammaSet");
-const GroupDef = require("./runtime/GroupDef");
+const JsElements = require("./runtime/JsElements");
+const JsGammaSet = require("./runtime/JsGammaSet");
+const JsGroupDef = require("./runtime/JsGroupDef");
 const Group = require("./runtime/Group");
 const Button = require("./runtime/Button");
 const ToggleButton = require("./runtime/ToggleButton");
@@ -122,7 +122,7 @@ const schema = {
 const noop = (node, parent) => new MakiObject(node, parent);
 
 const parsers = {
-  groupdef: (node, parent) => new GroupDef(node, parent),
+  groupdef: (node, parent) => new JsGroupDef(node, parent),
   skininfo: noop,
   version: noop,
   name: noop,
@@ -133,7 +133,7 @@ const parsers = {
   screenshot: noop,
   container: (node, parent) => new Container(node, parent),
   scripts: noop,
-  gammaset: (node, parent) => new GammaSet(node, parent),
+  gammaset: (node, parent) => new JsGammaSet(node, parent),
   color: noop,
   layer: (node, parent) => new Layer(node, parent),
   layoutstatus: noop,
@@ -142,7 +142,7 @@ const parsers = {
   group: (node, parent) => new Group(node, parent),
   layout: (node, parent) => new Layout(node, parent),
   sendparams: noop,
-  elements: (node, parent) => new Elements(node, parent),
+  elements: (node, parent) => new JsElements(node, parent),
   bitmap: async (node, parent, zip) => {
     let { file, gammagroup, h, id, w, x, y } = node.attributes;
     // TODO: Escape file for regex

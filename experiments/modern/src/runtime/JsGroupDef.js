@@ -1,6 +1,6 @@
 const MakiObject = require("./MakiObject");
 
-class GroupDef extends MakiObject {
+class JsGroupDef extends MakiObject {
   /**
    * getclassname()
    *
@@ -12,4 +12,4 @@ class GroupDef extends MakiObject {
   }
 }
 
-module.exports = GroupDef;
+module.exports = JsGroupDef;
