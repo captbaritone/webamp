@@ -69,6 +69,13 @@ class System extends MakiObject {
     unimplementedWarning("getvolume");
     return 1;
   }
+  getplayitemlength() {
+    unimplementedWarning("getplayitemlength");
+    return 100000;
+  }
+  seekto(pos) {
+    unimplementedWarning("seekto");
+  }
 }
 
 export default System;
