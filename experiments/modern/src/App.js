@@ -7,8 +7,6 @@ const System = require("./runtime/System");
 const runtime = require("./runtime");
 const interpret = require("./maki-interpreter/interpreter");
 
-const SkinContext = React.createContext(null);
-
 async function getSkin() {
   // const resp = await fetch(process.env.PUBLIC_URL + "/skins/CornerAmp_Redux.wal");
   const resp = await fetch(process.env.PUBLIC_URL + "/skins/simple.wal");
@@ -55,7 +53,6 @@ function Layout({
   droptarget,
   children,
 }) {
-  const data = React.useContext(SkinContext);
   if (background == null) {
     console.warn("Got a Layout without a background. Rendering null", id);
     return null;
@@ -87,7 +84,6 @@ function Layout({
 }
 
 function Layer({ node, id, image, children, x, y }) {
-  const data = React.useContext(SkinContext);
   if (image == null) {
     console.warn("Got an Layer without an image. Rendering null", id);
     return null;
@@ -130,7 +126,6 @@ function Layer({ node, id, image, children, x, y }) {
 }
 
 function Button({ id, image, action, x, y, downImage, tooltip, node, children }) {
-  const data = React.useContext(SkinContext);
   const [down, setDown] = React.useState(false);
   const imgId = down && downImage ? downImage : image;
   if (imgId == null) {
@@ -266,11 +261,7 @@ function App() {
   }
   const { root, registry } = data;
 
-  return (
-    <SkinContext.Provider value={registry.images}>
-      <XmlNode node={root} />
-    </SkinContext.Provider>
-  );
+  return <XmlNode node={root} />;
 }
 
 export default App;
