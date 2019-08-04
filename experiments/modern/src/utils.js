@@ -142,21 +142,6 @@ export function findDescendantByTypeAndId(node, type, id) {
   return null;
 }
 
-function getPreviousSiblings(node, parent) {
-  const children = parent.children;
-  for (let i = 0; i < children.length; i++) {
-    if (children[i] === node) {
-      if (i === 0) {
-        return [];
-      }
-
-      return children.slice(0, i);
-    }
-  }
-
-  return [];
-}
-
 function findDirectDescendantById(node, id) {
   return node.children.find(item => item.xmlNode.attributes.id === id);
 }
@@ -165,10 +150,14 @@ export function findElementById(node, id) {
   let currentNode = node;
   while (currentNode.parent) {
     let parent = currentNode.parent;
-    const prevSiblings = getPreviousSiblings(currentNode, parent);
-    for (let i = 0; i < prevSiblings.length; i++) {
-      if (prevSiblings[i] instanceof Elements) {
-        return findDirectDescendantById(prevSiblings[i], id);
+    const children = parent.children;
+    for (let i = 0; i < children.length; i++) {
+      if (children[i] === node) {
+        break;
+      }
+
+      if (children[i] instanceof Elements) {
+        return findDirectDescendantById(children[i], id);
       }
     }
     currentNode = parent;
@@ -181,13 +170,17 @@ export function findGroupDefById(node, id) {
   let currentNode = node;
   while (currentNode.parent) {
     let parent = currentNode.parent;
-    const prevSiblings = getPreviousSiblings(currentNode, parent);
-    for (let i = 0; i < prevSiblings.length; i++) {
+    const children = parent.children;
+    for (let i = 0; i < children.length; i++) {
+      if (children[i] === node) {
+        break;
+      }
+
       if (
-        prevSiblings[i] instanceof GroupDef &&
-        prevSiblings[i].xmlNode.attributes.id === id
+        children[i] instanceof GroupDef &&
+        children[i].xmlNode.attributes.id === id
       ) {
-        return prevSiblings[i];
+        return children[i];
       }
     }
     currentNode = parent;
