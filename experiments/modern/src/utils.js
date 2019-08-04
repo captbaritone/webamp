@@ -146,23 +146,21 @@ function findDirectDescendantById(node, id) {
   return node.children.find(item => item.xmlNode.attributes.id === id);
 }
 
-// Search up the tree for <Elements> nodes that are in node's lexical scope.
-// return the first child of an <Elements> that matches id
-export function findElementById(node, id) {
+// Search up the tree for a node that is in `node`'s lexical scope and pred returns node
+function findInLexicalScope(node, pred) {
   let currentNode = node;
   while (currentNode.parent) {
     let parent = currentNode.parent;
     const children = parent.children;
     for (let i = 0; i < children.length; i++) {
-      if (children[i] === node) {
+      const child = children[i];
+      if (child === currentNode) {
         break;
       }
 
-      if (children[i] instanceof Elements) {
-        const element = findDirectDescendantById(children[i], id);
-        if (element) {
-          return element;
-        }
+      const item = pred(child);
+      if (item) {
+        return item;
       }
     }
     currentNode = parent;
@@ -171,26 +169,24 @@ export function findElementById(node, id) {
   return null;
 }
 
-// Search up the tree for a <GroupDef> node that is in node's lexical scope and matches id.
-export function findGroupDefById(node, id) {
-  let currentNode = node;
-  while (currentNode.parent) {
-    let parent = currentNode.parent;
-    const children = parent.children;
-    for (let i = 0; i < children.length; i++) {
-      if (children[i] === node) {
-        break;
-      }
-
-      if (
-        children[i] instanceof GroupDef &&
-        children[i].xmlNode.attributes.id === id
-      ) {
-        return children[i];
+// Search up the tree for <Elements> nodes that are in node's lexical scope.
+// return the first child of an <Elements> that matches id
+export function findElementById(node, id) {
+  return findInLexicalScope(node, child => {
+    if (child instanceof Elements) {
+      const element = findDirectDescendantById(child, id);
+      if (element) {
+        return element;
       }
     }
-    currentNode = parent;
-  }
+  });
+}
 
-  return null;
+// Search up the tree for a <GroupDef> node that is in node's lexical scope and matches id.
+export function findGroupDefById(node, id) {
+  return findInLexicalScope(node, child => {
+    if (child instanceof GroupDef && child.xmlNode.attributes.id === id) {
+      return child;
+    }
+  });
 }
