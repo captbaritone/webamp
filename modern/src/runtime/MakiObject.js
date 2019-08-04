@@ -3,25 +3,18 @@ import { findElementById, findGroupDefById } from "../utils";
 
 class MakiObject {
   constructor(node, parent, annotations = {}) {
-    this.xmlNode = node;
+    if (node) {
+      this.attributes = node.attributes;
+      this.name = node.name;
+    } else {
+      // When dynamically creating an object with `new` we have no underlying node
+      this.attributes = {};
+      this.name = this.constructor.name.toLowerCase();
+    }
     this.parent = parent;
     this.js_annotations = annotations;
     this.children = [];
     this._emitter = new Emitter();
-
-    if (!this.xmlNode) {
-      // When dynamically creating a new object with `new` we need to add an underlying "XML"
-      // node that we can edit
-      this.xmlNode = {
-        children: [],
-        attributes: {
-          id: null,
-        },
-        // ugly but works for now
-        name: this.constructor.name.toLowerCase(),
-        type: "element",
-      };
-    }
   }
 
   js_addChild(child) {

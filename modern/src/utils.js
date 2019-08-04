@@ -106,8 +106,8 @@ export function findParentNodeOfType(node, type) {
   while (n.parent) {
     n = n.parent;
     if (
-      (!Array.isArray(type) && n.xmlNode.name === type) ||
-      (Array.isArray(type) && type.includes(n.xmlNode.name))
+      (!Array.isArray(type) && n.name === type) ||
+      (Array.isArray(type) && type.includes(n.name))
     ) {
       return n;
     }
@@ -123,10 +123,10 @@ export function findDescendantByTypeAndId(node, type, id) {
   for (let i = 0; i < node.children.length; i++) {
     const child = node.children[i];
     if (
-      (!type || child.xmlNode.name === type) &&
-      (child.xmlNode.attributes !== undefined &&
-        child.xmlNode.attributes.id !== undefined &&
-        child.xmlNode.attributes.id.toLowerCase() === idLC)
+      (!type || child.name === type) &&
+      (child.attributes !== undefined &&
+        child.attributes.id !== undefined &&
+        child.attributes.id.toLowerCase() === idLC)
     ) {
       return child;
     }
@@ -144,7 +144,7 @@ export function findDescendantByTypeAndId(node, type, id) {
 }
 
 function findDirectDescendantById(node, id) {
-  return node.children.find(item => item.xmlNode.attributes.id === id);
+  return node.children.find(item => item.attributes.id === id);
 }
 
 // Search up the tree for a node that is in `node`'s lexical scope and pred returns node
@@ -189,7 +189,7 @@ export function findGroupDefById(node, id) {
     if (
       child.getclassname &&
       child.getclassname() === "GroupDef" &&
-      child.xmlNode.attributes.id === id
+      child.attributes.id === id
     ) {
       return child;
     }
