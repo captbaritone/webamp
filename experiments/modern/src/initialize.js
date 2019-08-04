@@ -265,6 +265,13 @@ async function applyGroupDefs(root) {
       case "group": {
         if (!node.children || node.children.length === 0) {
           const groupdef = node.js_groupdefLookup(node.xmlNode.attributes.id);
+          if (!groupdef) {
+            console.warn(
+              "Unable to find groupdef. Rendering null",
+              node.xmlNode.attributes.id
+            );
+            return {};
+          }
           node.children = groupdef.children;
           // Do we need to copy the items instead of just changing the parent?
           node.children.forEach(item => {
