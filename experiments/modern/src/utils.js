@@ -159,7 +159,10 @@ export function findElementById(node, id) {
       }
 
       if (children[i] instanceof Elements) {
-        return findDirectDescendantById(children[i], id);
+        const element = findDirectDescendantById(children[i], id);
+        if (element) {
+          return element;
+        }
       }
     }
     currentNode = parent;
