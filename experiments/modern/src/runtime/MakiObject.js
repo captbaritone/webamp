@@ -1,5 +1,5 @@
 const Emitter = require("../Emitter");
-const { findElementById } = require("../utils");
+const { findElementById, findElementByTypeAndId } = require("../utils");
 
 class MakiObject {
   constructor(node, parent, annotations = {}) {
@@ -48,6 +48,15 @@ class MakiObject {
     const element = findElementById(this, id);
     if (element) {
       return element.js_annotations;
+    }
+
+    return null;
+  }
+
+  js_groupdefLookup(id) {
+    const groupdef = findElementByTypeAndId(this, "groupdef", id);
+    if (groupdef) {
+      return groupdef;
     }
 
     return null;

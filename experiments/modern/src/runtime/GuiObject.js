@@ -24,6 +24,7 @@ class GuiObject extends MakiObject {
     return this.findobject(id);
   }
   init(newRoot) {
+    this.parent = newRoot;
     newRoot.js_addChild(this);
     return this;
   }

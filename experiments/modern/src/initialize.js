@@ -5,15 +5,13 @@ const Layout = require('./runtime/Layout');
 const Layer = require('./runtime/Layer');
 const Container = require('./runtime/Container');
 const Elements = require("./runtime/Elements");
+const GammaSet = require("./runtime/GammaSet");
+const GroupDef = require("./runtime/GroupDef");
 const Group = require("./runtime/Group");
 const Button = require("./runtime/Button");
 const ToggleButton = require("./runtime/ToggleButton");
 const Text = require("./runtime/Text");
 const Status = require("./runtime/Status");
-
-function splitValues(str) {
-  return str.split(",").map(parseFloat);
-}
 
 async function loadImage(imgUrl) {
   return await new Promise(resolve => {
@@ -124,12 +122,7 @@ const schema = {
 const noop = (node, parent) => new MakiObject(node, parent);
 
 const parsers = {
-  groupdef: (node, parent, registry) => {
-    const attributeId = node.attributes.id;
-    registry.groupdefs[attributeId] = node;
-
-    return new MakiObject(node, parent);
-  },
+  groupdef: (node, parent) => new GroupDef(node, parent),
   skininfo: noop,
   version: noop,
   name: noop,
@@ -140,39 +133,17 @@ const parsers = {
   screenshot: noop,
   container: (node, parent) => new Container(node, parent),
   scripts: noop,
-  gammaset: (node, parent, registry) => {
-    const gammaId = node.attributes.id;
-    if (!registry.gammasets.hasOwnProperty(gammaId)) {
-      registry.gammasets[gammaId] = {};
-    }
-
-    return new MakiObject(node, parent);
-  },
+  gammaset: (node, parent) => new GammaSet(node, parent),
   color: noop,
   layer: (node, parent) => new Layer(node, parent),
   layoutstatus: noop,
   hideobject: noop,
   button: (node, parent) => new Button(node, parent),
-  group: (node, parent, registry) => {
-    if (!node.children || node.children.length === 0) {
-      const groupdef = registry.groupdefs[node.attributes.id];
-      if (groupdef) {
-        const newNode = {
-          ...node,
-          ...groupdef,
-          attributes: { ...node.attributes, ...groupdef.attributes },
-          name: "group",
-        };
-        return new Group(newNode, parent);
-      }
-    }
-
-    return new Group(node, parent);
-  },
+  group: (node, parent) => new Group(node, parent),
   layout: (node, parent) => new Layout(node, parent),
   sendparams: noop,
   elements: (node, parent) => new Elements(node, parent),
-  bitmap: async (node, parent, registry, zip) => {
+  bitmap: async (node, parent, zip) => {
     let { file, gammagroup, h, id, w, x, y } = node.attributes;
     // TODO: Escape file for regex
     const img = Utils.getCaseInsensitveFile(zip, file);
@@ -202,14 +173,7 @@ const parsers = {
   },
   eqvis: noop,
   slider: noop,
-  gammagroup: (node, parent, registry) => {
-    const gammaId = parent.xmlNode.attributes.id;
-    const attributeId = node.attributes.id;
-    const attributeValues = splitValues(node.attributes.value);
-    registry.gammasets[gammaId][attributeId] = attributeValues;
-
-    return new MakiObject(node, parent);
-  },
+  gammagroup: noop,
   truetypefont: noop,
   component: noop,
   text: (node, parent) => new Text(node, parent),
@@ -235,17 +199,13 @@ const parsers = {
   menu: noop,
   albumart: noop,
   playlistplus: noop,
-  async script(node, parent, registry, zip) {
-    const { id, file, param } = node.attributes;
-    const script = await Utils.readUint8array(zip, file);
-    registry.scripts.push({ parent, id, param, script });
-
-    const newNode = { ...node, script, param, file };
-    return new MakiObject(newNode, parent);
+  async script(node, parent, zip) {
+    const script = await Utils.readUint8array(zip, node.attributes.file);
+    return new MakiObject(node, parent, { script });
   },
 };
 
-async function parseChildren(node, registry, zip) {
+async function parseChildren(node, zip) {
   if (node.xmlNode.type === "comment") {
     return;
   }
@@ -283,9 +243,12 @@ async function parseChildren(node, registry, zip) {
         throw new Error(`Missing parser for ${childName}`);
         return;
       }
-      const parsedChild = await childParser(child, node, registry, zip);
-      if (parsedChild.xmlNode.children != null && parsedChild.xmlNode.children.length > 0) {
-        await parseChildren(parsedChild, registry, zip);
+      const parsedChild = await childParser(child, node, zip);
+      if (
+        parsedChild.xmlNode.children != null &&
+        parsedChild.xmlNode.children.length > 0
+      ) {
+        await parseChildren(parsedChild, zip);
       }
       return parsedChild;
     })
@@ -296,11 +259,36 @@ async function parseChildren(node, registry, zip) {
   node.js_addChildren(filteredChildren);
 }
 
+async function applyGroupDefs(root) {
+  await Utils.asyncTreeFlatMap(root, async node => {
+    switch (node.xmlNode.name) {
+      case "group": {
+        if (!node.children || node.children.length === 0) {
+          const groupdef = node.js_groupdefLookup(node.xmlNode.attributes.id);
+          node.children = groupdef.children;
+          // Do we need to copy the items instead of just changing the parent?
+          node.children.forEach(item => {
+            item.parent = node;
+          });
+          node.xmlNode.attributes = {
+            ...node.xmlNode.attributes,
+            ...groupdef.xmlNode.attributes,
+          };
+        }
+        return {};
+      }
+      default: {
+        return node;
+      }
+    }
+  });
+}
+
 async function initialize(zip, skinXml) {
-  const registry = { scripts: [], gammasets: {}, images: {}, groupdefs: {} };
   const root = new WinampAbstractionLayer(skinXml.children[0], null);
-  await parseChildren(root, registry, zip);
-  return { root, registry };
+  await parseChildren(root, zip);
+  await applyGroupDefs(root);
+  return root;
 }
 
 export default initialize;

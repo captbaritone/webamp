@@ -105,7 +105,7 @@ export function unimplementedWarning(name) {
 // Operations on trees
 export function findParentNodeOfType(node, type) {
   let n = node;
-  while(n.parent !== null) {
+  while (n.parent) {
     n = n.parent;
     if ((!Array.isArray(type) && n.xmlNode.name === type) ||
         (Array.isArray(type) && type.includes(n.xmlNode.name))) {
@@ -130,7 +130,7 @@ export function findDescendantByTypeAndId(node, type, id) {
     }
   }
 
-  for(let i = 0; i < node.children.length; i++) {
+  for (let i = 0; i < node.children.length; i++) {
     const child = node.children[i];
     const descendant = findDescendantByTypeAndId(child, type, id);
     if (descendant) {
@@ -168,12 +168,31 @@ function findDirectDescendantById(node, id) {
 
 export function findElementById(node, id) {
   let currentNode = node;
-  while (currentNode.parent !== null) {
+  while (currentNode.parent) {
     let parent = currentNode.parent;
     const prevSiblings = getPreviousSiblings(currentNode, parent);
     for (let i = 0; i < prevSiblings.length; i++) {
       if (prevSiblings[i] instanceof Elements) {
         return findDirectDescendantById(prevSiblings[i], id);
+      }
+    }
+    currentNode = parent;
+  }
+
+  return null;
+}
+
+export function findElementByTypeAndId(node, type, id) {
+  let currentNode = node;
+  while (currentNode.parent) {
+    let parent = currentNode.parent;
+    const prevSiblings = getPreviousSiblings(currentNode, parent);
+    for (let i = 0; i < prevSiblings.length; i++) {
+      if (
+        prevSiblings[i].xmlNode.name === type &&
+        prevSiblings[i].xmlNode.attributes.id === id
+      ) {
+        return prevSiblings[i];
       }
     }
     currentNode = parent;

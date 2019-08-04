@@ -244,7 +244,12 @@ function App() {
             }
             const scriptGroup = Utils.findParentNodeOfType(node, ["group", "WinampAbstractionLayer", "WasabiXML"]);
             const system = new System(scriptGroup);
-            await interpret({ runtime, data: node.xmlNode.script, system, log: false });
+            await interpret({
+              runtime,
+              data: node.js_annotations.script,
+              system,
+              log: false,
+            });
             return node;
           }
           default: {
