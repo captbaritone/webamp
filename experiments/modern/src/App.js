@@ -45,8 +45,8 @@ function GuiObjectEvents({ node, children }) {
         }
       }}
       onMouseMove={e => node.js_trigger("onMouseMove", e.clientX, e.clientY)}
-      onMouseOver={e => node.js_trigger("onEnterArea", e.clientX, e.clientY)}
-      onMouseOut={e => node.js_trigger("onLeaveArea", e.clientX, e.clientY)}
+      onMouseEnter={e => node.js_trigger("onEnterArea", e.clientX, e.clientY)}
+      onMouseLeave={e => node.js_trigger("onLeaveArea", e.clientX, e.clientY)}
       onDragEnter={e => node.js_trigger("onDragEnter")}
       onDragLeave={e => node.js_trigger("onDragLeave")}
       onDragOver={e => node.js_trigger("onDragOver", e.clientX, e.clientY)}
