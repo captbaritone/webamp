@@ -1,5 +1,5 @@
-const Emitter = require("../Emitter");
-const { findElementById, findGroupDefById } = require("../utils");
+import Emitter from "../Emitter";
+import { findElementById, findGroupDefById } from "../utils";
 
 class MakiObject {
   constructor(node, parent, annotations = {}) {
@@ -80,4 +80,4 @@ class MakiObject {
   }
 }
 
-module.exports = MakiObject;
+export default MakiObject;

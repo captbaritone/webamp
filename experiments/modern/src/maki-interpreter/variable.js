@@ -1,4 +1,4 @@
-const Emitter = require("../Emitter");
+import Emitter from "../Emitter";
 
 class Variable {
   constructor({ type, typeName, global }) {
@@ -37,4 +37,4 @@ class Variable {
   }
 }
 
-module.exports = Variable;
+export default Variable;

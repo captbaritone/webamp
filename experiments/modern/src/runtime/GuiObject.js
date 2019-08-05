@@ -1,5 +1,5 @@
-const MakiObject = require("./MakiObject");
-const { findDescendantByTypeAndId, unimplementedWarning } = require("../utils");
+import MakiObject from "./MakiObject";
+import { findDescendantByTypeAndId, unimplementedWarning } from "../utils";
 
 class GuiObject extends MakiObject {
   constructor(node, parent) {
@@ -74,4 +74,4 @@ class GuiObject extends MakiObject {
   }
 }
 
-module.exports = GuiObject;
+export default GuiObject;

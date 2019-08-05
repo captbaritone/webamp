@@ -1,5 +1,5 @@
-const GuiObject = require("./GuiObject");
-const { findParentNodeOfType } = require("../utils");
+import GuiObject from "./GuiObject";
+import { findParentNodeOfType } from "../utils";
 
 class Layout extends GuiObject {
   /**
@@ -25,4 +25,4 @@ class Layout extends GuiObject {
   }
 }
 
-module.exports = Layout;
+export default Layout;

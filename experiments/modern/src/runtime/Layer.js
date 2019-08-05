@@ -1,4 +1,4 @@
-const GuiObject = require("./GuiObject");
+import GuiObject from "./GuiObject";
 
 class Layer extends GuiObject {
   /**
@@ -12,4 +12,4 @@ class Layer extends GuiObject {
   }
 }
 
-module.exports = Layer;
+export default Layer;

@@ -1,4 +1,4 @@
-const GuiObject = require("./GuiObject");
+import GuiObject from "./GuiObject";
 
 class Slider extends GuiObject {
   /**
@@ -12,4 +12,4 @@ class Slider extends GuiObject {
   }
 }
 
-module.exports = Slider;
+export default Slider;

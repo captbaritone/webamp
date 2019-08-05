@@ -1,4 +1,4 @@
-const MakiObject = require("./MakiObject");
+import MakiObject from "./MakiObject";
 
 class JsGammaSet extends MakiObject {
   /**
@@ -12,4 +12,4 @@ class JsGammaSet extends MakiObject {
   }
 }
 
-module.exports = JsGammaSet;
+export default JsGammaSet;

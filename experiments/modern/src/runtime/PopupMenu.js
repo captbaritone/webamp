@@ -1,5 +1,5 @@
-const GuiObject = require("./GuiObject");
-const { unimplementedWarning } = require("../utils");
+import GuiObject from "./GuiObject";
+import { unimplementedWarning } from "../utils";
 
 class PopupMenu extends GuiObject {
   /**
@@ -25,4 +25,4 @@ class PopupMenu extends GuiObject {
   }
 }
 
-module.exports = PopupMenu;
+export default PopupMenu;

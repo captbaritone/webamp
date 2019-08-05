@@ -1,6 +1,7 @@
 import React from "react";
 import Variable from "./Variable";
-const { COMMANDS } = require("../maki-interpreter/constants");
+import { COMMANDS } from "../maki-interpreter/constants";
+
 export default function Command({ command, variables }) {
   const { arg } = command;
   let foo = null;

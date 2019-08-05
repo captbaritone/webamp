@@ -3,9 +3,9 @@ import JSZip from "jszip";
 import "./App.css";
 import * as Utils from "./utils";
 import initialize from "./initialize";
-const System = require("./runtime/System");
-const runtime = require("./runtime");
-const interpret = require("./maki-interpreter/interpreter");
+import System from "./runtime/System";
+import runtime from "./runtime";
+import interpret from "./maki-interpreter/interpreter";
 
 async function getSkin() {
   // const resp = await fetch(process.env.PUBLIC_URL + "/skins/CornerAmp_Redux.wal");
@@ -34,10 +34,11 @@ function Container(props) {
   if (default_visible !== undefined) {
     style.display = default_visible ? "block" : "none";
   }
-  return <div
-           data-node-type="container"
-           data-node-id={id}
-           style={style}>{children}</div>;
+  return (
+    <div data-node-type="container" data-node-id={id} style={style}>
+      {children}
+    </div>
+  );
 }
 
 function Layout({
@@ -125,7 +126,17 @@ function Layer({ node, id, image, children, x, y }) {
   );
 }
 
-function Button({ id, image, action, x, y, downImage, tooltip, node, children }) {
+function Button({
+  id,
+  image,
+  action,
+  x,
+  y,
+  downImage,
+  tooltip,
+  node,
+  children,
+}) {
   const [down, setDown] = React.useState(false);
   const imgId = down && downImage ? downImage : image;
   if (imgId == null) {
@@ -178,7 +189,7 @@ function ToggleButton(props) {
 }
 
 function Group(props) {
-  const { id, children, x, y} = props;
+  const { id, children, x, y } = props;
   const style = {
     position: "absolute",
   };
@@ -188,10 +199,11 @@ function Group(props) {
   if (y !== undefined) {
     style.top = Number(y);
   }
-  return <div
-           data-node-type="group"
-           data-node-id={id}
-           style={style}>{children}</div>;
+  return (
+    <div data-node-type="group" data-node-id={id} style={style}>
+      {children}
+    </div>
+  );
 }
 
 const NODE_NAME_TO_COMPONENT = {
@@ -213,9 +225,9 @@ function XmlNode({ node }) {
   }
   const Component = NODE_NAME_TO_COMPONENT[name];
   const childNodes = node.children || [];
-  const children = childNodes.map((childNode, i) => (
-    childNode.visible && <XmlNode key={i} node={childNode} />
-  ));
+  const children = childNodes.map(
+    (childNode, i) => childNode.visible && <XmlNode key={i} node={childNode} />
+  );
   if (Component == null) {
     console.warn("Unknown node type", name);
     if (childNodes.length) {
@@ -223,7 +235,11 @@ function XmlNode({ node }) {
     }
     return null;
   }
-  return <Component node={node} {...attributes}>{children}</Component>;
+  return (
+    <Component node={node} {...attributes}>
+      {children}
+    </Component>
+  );
 }
 
 function App() {
@@ -242,7 +258,11 @@ function App() {
             if (node.xmlNode.attributes.file.endsWith("standardframe.maki")) {
               break;
             }
-            const scriptGroup = Utils.findParentNodeOfType(node, ["group", "WinampAbstractionLayer", "WasabiXML"]);
+            const scriptGroup = Utils.findParentNodeOfType(node, [
+              "group",
+              "WinampAbstractionLayer",
+              "WasabiXML",
+            ]);
             const system = new System(scriptGroup);
             await interpret({
               runtime,

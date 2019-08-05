@@ -1,11 +1,11 @@
-const fs = require("fs");
-const path = require("path");
-const parse = require("./parser");
-const { getClass } = require("./objects");
-const { VERSIONS } = require("./testConstants");
+import { readFileSync } from "fs";
+import { join } from "path";
+import parse from "./parser";
+import { getClass } from "./objects";
+import { VERSIONS } from "./testConstants";
 
 function parseFile(relativePath) {
-  const buffer = fs.readFileSync(path.join(__dirname, relativePath));
+  const buffer = readFileSync(join(__dirname, relativePath));
   return parse(buffer);
 }
 

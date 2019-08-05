@@ -1,4 +1,4 @@
-const GuiObject = require("./GuiObject");
+import GuiObject from "./GuiObject";
 
 class Button extends GuiObject {
   /**
@@ -12,4 +12,4 @@ class Button extends GuiObject {
   }
 }
 
-module.exports = Button;
+export default Button;

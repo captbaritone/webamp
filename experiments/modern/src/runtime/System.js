@@ -1,6 +1,6 @@
-const Group = require("./Group");
-const MakiObject = require("./MakiObject");
-const { findDescendantByTypeAndId, unimplementedWarning } = require("../utils");
+import Group from "./Group";
+import MakiObject from "./MakiObject";
+import { findDescendantByTypeAndId, unimplementedWarning } from "../utils";
 
 class System extends MakiObject {
   constructor(scriptGroup = new Group()) {
@@ -71,4 +71,4 @@ class System extends MakiObject {
   }
 }
 
-module.exports = System;
+export default System;

@@ -1,16 +1,16 @@
-const System = require("./System");
-const Button = require("./Button");
-const ToggleButton = require("./ToggleButton");
-const Group = require("./Group");
-const Layout = require('./Layout');
-const Layer = require('./Layer');
-const PopupMenu = require('./PopupMenu');
-const List = require('./List');
-const Status = require('./Status');
-const Text = require('./Text');
-const Container = require('./Container');
-const GuiObject = require("./GuiObject");
-const MakiObject = require("./MakiObject");
+import System from "./System";
+import Button from "./Button";
+import ToggleButton from "./ToggleButton";
+import Group from "./Group";
+import Layout from "./Layout";
+import Layer from "./Layer";
+import PopupMenu from "./PopupMenu";
+import List from "./List";
+import Status from "./Status";
+import Text from "./Text";
+import Container from "./Container";
+import GuiObject from "./GuiObject";
+import MakiObject from "./MakiObject";
 
 const runtime = {
   "516549714a510d87b5a6e391e7f33532": MakiObject,
@@ -28,4 +28,4 @@ const runtime = {
   efaa867241fa310ea985dcb74bcb5b52: Text,
 };
 
-module.exports = runtime;
+export default runtime;

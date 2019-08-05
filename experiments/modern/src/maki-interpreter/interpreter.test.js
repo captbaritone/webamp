@@ -1,14 +1,14 @@
-const fs = require("fs");
-const path = require("path");
-const System = require("../runtime/System");
-const runtime = require("../runtime");
-const interpret = require("./interpreter");
-const { VERSIONS } = require("./testConstants");
+import { readFileSync } from "fs";
+import { join } from "path";
+import System from "../runtime/System";
+import runtime from "../runtime";
+import interpret from "./interpreter";
+import { VERSIONS } from "./testConstants";
 
 function runFile(version, fileName) {
   const relativePath = `../../resources/maki_compiler/${version}/${fileName}`;
   const system = new System();
-  const data = fs.readFileSync(path.join(__dirname, relativePath));
+  const data = readFileSync(join(__dirname, relativePath));
   interpret({ runtime, data, system, log: false });
 }
 

@@ -1,4 +1,4 @@
-const Group = require("./Group");
+import Group from "./Group";
 
 // Needs to behavve like a group to work with top level scripts that call `getScriptGroup`
 class WinampAbstractionLayer extends Group {
@@ -13,4 +13,4 @@ class WinampAbstractionLayer extends Group {
   }
 }
 
-module.exports = WinampAbstractionLayer;
+export default WinampAbstractionLayer;

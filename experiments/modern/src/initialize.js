@@ -1,17 +1,21 @@
-import * as Utils from "./utils";
-const MakiObject = require("./runtime/MakiObject");
-const WinampAbstractionLayer = require("./runtime/WinampAbstractionLayer");
-const Layout = require('./runtime/Layout');
-const Layer = require('./runtime/Layer');
-const Container = require('./runtime/Container');
-const JsElements = require("./runtime/JsElements");
-const JsGammaSet = require("./runtime/JsGammaSet");
-const JsGroupDef = require("./runtime/JsGroupDef");
-const Group = require("./runtime/Group");
-const Button = require("./runtime/Button");
-const ToggleButton = require("./runtime/ToggleButton");
-const Text = require("./runtime/Text");
-const Status = require("./runtime/Status");
+import {
+  getCaseInsensitveFile,
+  readUint8array,
+  asyncTreeFlatMap,
+} from "./utils";
+import MakiObject from "./runtime/MakiObject";
+import WinampAbstractionLayer from "./runtime/WinampAbstractionLayer";
+import Layout from "./runtime/Layout";
+import Layer from "./runtime/Layer";
+import Container from "./runtime/Container";
+import JsElements from "./runtime/JsElements";
+import JsGammaSet from "./runtime/JsGammaSet";
+import JsGroupDef from "./runtime/JsGroupDef";
+import Group from "./runtime/Group";
+import Button from "./runtime/Button";
+import ToggleButton from "./runtime/ToggleButton";
+import Text from "./runtime/Text";
+import Status from "./runtime/Status";
 
 async function loadImage(imgUrl) {
   return await new Promise(resolve => {
@@ -94,7 +98,14 @@ const schema = {
   ],
   container: ["groupdef", "layout", "scripts"],
   scripts: ["script"],
-  elements: ["color", "bitmap", "bitmapfont", "truetypefont", "cursor", "elementalias"],
+  elements: [
+    "color",
+    "bitmap",
+    "bitmapfont",
+    "truetypefont",
+    "cursor",
+    "elementalias",
+  ],
   skininfo: [
     "version",
     "name",
@@ -104,7 +115,14 @@ const schema = {
     "homepage",
     "screenshot",
   ],
-  wasabixml: ["skininfo", "scripts", "elements", "groupdef", "container", "gammaset"],
+  wasabixml: [
+    "skininfo",
+    "scripts",
+    "elements",
+    "groupdef",
+    "container",
+    "gammaset",
+  ],
   // same as above, wa3 vs wa5
   winampabstractionlayer: [
     "skininfo",
@@ -146,7 +164,7 @@ const parsers = {
   bitmap: async (node, parent, zip) => {
     let { file, gammagroup, h, id, w, x, y } = node.attributes;
     // TODO: Escape file for regex
-    const img = Utils.getCaseInsensitveFile(zip, file);
+    const img = getCaseInsensitveFile(zip, file);
     if (img === undefined) {
       return new MakiObject(node, parent);
     }
@@ -200,7 +218,7 @@ const parsers = {
   albumart: noop,
   playlistplus: noop,
   async script(node, parent, zip) {
-    const script = await Utils.readUint8array(zip, node.attributes.file);
+    const script = await readUint8array(zip, node.attributes.file);
     return new MakiObject(node, parent, { script });
   },
 };
@@ -235,7 +253,9 @@ async function parseChildren(node, zip) {
       }
 
       if (!validChildren.has(childName)) {
-        throw new Error(`Invalid child of a ${node.xmlNode.name}: ${childName}`);
+        throw new Error(
+          `Invalid child of a ${node.xmlNode.name}: ${childName}`
+        );
       }
 
       const childParser = parsers[childName];
@@ -260,7 +280,7 @@ async function parseChildren(node, zip) {
 }
 
 async function applyGroupDefs(root) {
-  await Utils.asyncTreeFlatMap(root, async node => {
+  await asyncTreeFlatMap(root, async node => {
     switch (node.xmlNode.name) {
       case "group": {
         if (!node.children || node.children.length === 0) {
