@@ -1,9 +1,9 @@
 import * as Utils from "./utils";
 const MakiObject = require("./runtime/MakiObject");
 const WinampAbstractionLayer = require("./runtime/WinampAbstractionLayer");
-const Layout = require('./runtime/Layout');
-const Layer = require('./runtime/Layer');
-const Container = require('./runtime/Container');
+const Layout = require("./runtime/Layout");
+const Layer = require("./runtime/Layer");
+const Container = require("./runtime/Container");
 const JsElements = require("./runtime/JsElements");
 const JsGammaSet = require("./runtime/JsGammaSet");
 const JsGroupDef = require("./runtime/JsGroupDef");
@@ -94,7 +94,14 @@ const schema = {
   ],
   container: ["groupdef", "layout", "scripts"],
   scripts: ["script"],
-  elements: ["color", "bitmap", "bitmapfont", "truetypefont", "cursor", "elementalias"],
+  elements: [
+    "color",
+    "bitmap",
+    "bitmapfont",
+    "truetypefont",
+    "cursor",
+    "elementalias",
+  ],
   skininfo: [
     "version",
     "name",
@@ -104,7 +111,14 @@ const schema = {
     "homepage",
     "screenshot",
   ],
-  wasabixml: ["skininfo", "scripts", "elements", "groupdef", "container", "gammaset"],
+  wasabixml: [
+    "skininfo",
+    "scripts",
+    "elements",
+    "groupdef",
+    "container",
+    "gammaset",
+  ],
   // same as above, wa3 vs wa5
   winampabstractionlayer: [
     "skininfo",
@@ -235,7 +249,9 @@ async function parseChildren(node, zip) {
       }
 
       if (!validChildren.has(childName)) {
-        throw new Error(`Invalid child of a ${node.xmlNode.name}: ${childName}`);
+        throw new Error(
+          `Invalid child of a ${node.xmlNode.name}: ${childName}`
+        );
       }
 
       const childParser = parsers[childName];

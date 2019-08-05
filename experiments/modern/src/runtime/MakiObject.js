@@ -19,8 +19,8 @@ class MakiObject {
         },
         // ugly but works for now
         name: this.constructor.name.toLowerCase(),
-        type: 'element'
-      }
+        type: "element",
+      };
     }
   }
 

@@ -108,8 +108,10 @@ export function findParentNodeOfType(node, type) {
   let n = node;
   while (n.parent) {
     n = n.parent;
-    if ((!Array.isArray(type) && n.xmlNode.name === type) ||
-        (Array.isArray(type) && type.includes(n.xmlNode.name))) {
+    if (
+      (!Array.isArray(type) && n.xmlNode.name === type) ||
+      (Array.isArray(type) && type.includes(n.xmlNode.name))
+    ) {
       return n;
     }
   }
@@ -121,12 +123,14 @@ export function findDescendantByTypeAndId(node, type, id) {
   }
 
   const idLC = id.toLowerCase();
-  for(let i = 0; i < node.children.length; i++) {
+  for (let i = 0; i < node.children.length; i++) {
     const child = node.children[i];
-    if ((!type || child.xmlNode.name === type) &&
-        (child.xmlNode.attributes !== undefined &&
-         child.xmlNode.attributes.id !== undefined &&
-         child.xmlNode.attributes.id.toLowerCase() === idLC)) {
+    if (
+      (!type || child.xmlNode.name === type) &&
+      (child.xmlNode.attributes !== undefined &&
+        child.xmlNode.attributes.id !== undefined &&
+        child.xmlNode.attributes.id.toLowerCase() === idLC)
+    ) {
       return child;
     }
   }

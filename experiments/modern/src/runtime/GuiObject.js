@@ -52,17 +52,17 @@ class GuiObject extends MakiObject {
   }
 
   gettop() {
-    unimplementedWarning('gettop');
+    unimplementedWarning("gettop");
     return 5;
   }
 
   getheight() {
-    unimplementedWarning('getheight');
+    unimplementedWarning("getheight");
     return 100;
   }
 
   getwidth() {
-    unimplementedWarning('getwidth');
+    unimplementedWarning("getwidth");
     return 100;
   }
 
