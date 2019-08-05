@@ -275,7 +275,7 @@ async function parseChildren(node, children, zip) {
 }
 
 async function applyGroupDefs(root) {
-  await Utils.asyncTreeFlatMap(root, async node => {
+  await asyncTreeFlatMap(root, async node => {
     switch (node.name) {
       case "group": {
         if (!node.children || node.children.length === 0) {
