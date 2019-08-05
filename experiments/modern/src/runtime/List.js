@@ -1,4 +1,4 @@
-const GuiObject = require("./GuiObject");
+import GuiObject from "./GuiObject";
 
 class List extends GuiObject {
   /**
@@ -12,4 +12,4 @@ class List extends GuiObject {
   }
 }
 
-module.exports = List;
+export default List;

@@ -1,5 +1,5 @@
-const Variable = require("./variable");
-const runtime = require("../runtime");
+import Variable from "./variable";
+import runtime from "../runtime";
 
 // Debug utility to pretty print a value/variable
 function printValue(value) {
@@ -52,4 +52,4 @@ function printCommand({ i, command, stack, variables }) {
   });
 }
 
-module.exports = { printCommand };
+export default { printCommand };

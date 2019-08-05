@@ -1,6 +1,6 @@
-const parse = require("./parser");
-const { getClass, getFormattedId } = require("./objects");
-const interpret = require("./virtualMachine");
+import parse from "./parser";
+import { getClass, getFormattedId } from "./objects";
+import interpret from "./virtualMachine";
 
 // Note: if this incurs a performance overhead, we could pass a flag into the VM
 // to not yield in production. In that case, we would never even enter the
@@ -62,4 +62,4 @@ function main({ runtime, data, system, log, debugHandler }) {
   system.js_start();
 }
 
-module.exports = main;
+export default main;

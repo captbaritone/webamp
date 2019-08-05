@@ -1,4 +1,4 @@
-const MakiObject = require("./MakiObject");
+import MakiObject from "./MakiObject";
 
 class JsGroupDef extends MakiObject {
   /**
@@ -12,4 +12,4 @@ class JsGroupDef extends MakiObject {
   }
 }
 
-module.exports = JsGroupDef;
+export default JsGroupDef;

@@ -1,5 +1,5 @@
-const GuiObject = require("./GuiObject");
-const { findDescendantByTypeAndId } = require("../utils");
+import GuiObject from "./GuiObject";
+import { findDescendantByTypeAndId } from "../utils";
 
 class Container extends GuiObject {
   /**
@@ -16,4 +16,4 @@ class Container extends GuiObject {
   }
 }
 
-module.exports = Container;
+export default Container;

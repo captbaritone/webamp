@@ -1,4 +1,4 @@
-const Variable = require("./variable");
+import Variable from "./variable";
 
 function coerceTypes(var1, var2, val1, val2) {
   if (var2.type === "INT") {
@@ -307,4 +307,4 @@ function* interpret(start, program, stack = []) {
   }
 }
 
-module.exports = interpret;
+export default interpret;

@@ -1,4 +1,4 @@
-const Button = require("./Button");
+import Button from "./Button";
 
 class ToggleButton extends Button {
   /**
@@ -12,4 +12,4 @@ class ToggleButton extends Button {
   }
 }
 
-module.exports = ToggleButton;
+export default ToggleButton;

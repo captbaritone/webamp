@@ -1,4 +1,4 @@
-const GuiObject = require("./GuiObject");
+import GuiObject from "./GuiObject";
 
 class Text extends GuiObject {
   /**
@@ -12,4 +12,4 @@ class Text extends GuiObject {
   }
 }
 
-module.exports = Text;
+export default Text;

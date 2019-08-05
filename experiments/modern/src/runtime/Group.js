@@ -1,4 +1,4 @@
-const GuiObject = require("./GuiObject");
+import GuiObject from "./GuiObject";
 
 class Group extends GuiObject {
   /**
@@ -16,4 +16,4 @@ class Group extends GuiObject {
   }
 }
 
-module.exports = Group;
+export default Group;

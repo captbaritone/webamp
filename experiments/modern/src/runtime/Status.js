@@ -1,4 +1,4 @@
-const GuiObject = require("./GuiObject");
+import GuiObject from "./GuiObject";
 
 class Status extends GuiObject {
   /**
@@ -12,4 +12,4 @@ class Status extends GuiObject {
   }
 }
 
-module.exports = Status;
+export default Status;

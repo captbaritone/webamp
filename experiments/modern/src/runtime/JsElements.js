@@ -1,4 +1,4 @@
-const MakiObject = require("./MakiObject");
+import MakiObject from "./MakiObject";
 
 class JsElements extends MakiObject {
   /**
@@ -12,4 +12,4 @@ class JsElements extends MakiObject {
   }
 }
 
-module.exports = JsElements;
+export default JsElements;
