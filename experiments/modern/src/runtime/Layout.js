@@ -8,11 +8,11 @@ class Layout extends GuiObject {
    * Returns the class name for the object.
    * @ret The class name.
    */
-  static getclassname() {
+  getclassaname() {
     return "Layout";
   }
   getcontainer() {
-    return findParentNodeOfType(this, ["container"]);;
+    return findParentNodeOfType(this, ["container"]);
   }
 
   resize(x, y, w, h) {

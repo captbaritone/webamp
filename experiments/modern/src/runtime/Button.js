@@ -7,7 +7,7 @@ class Button extends GuiObject {
    * Returns the class name for the object.
    * @ret The class name.
    */
-  static getclassname() {
+  getclassname() {
     return "Button";
   }
 }

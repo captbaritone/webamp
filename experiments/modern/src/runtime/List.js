@@ -7,7 +7,7 @@ class List extends GuiObject {
    * Returns the class name for the object.
    * @ret The class name.
    */
-  static getclassname() {
+  getclassaname() {
     return "List";
   }
 }

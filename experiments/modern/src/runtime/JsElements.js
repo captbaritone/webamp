@@ -7,7 +7,7 @@ class JsElements extends MakiObject {
    * Returns the class name for the object.
    * @ret The class name.
    */
-  static getclassname() {
+  getclassname() {
     return "Elements";
   }
 }

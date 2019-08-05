@@ -7,7 +7,7 @@ class JsGammaSet extends MakiObject {
    * Returns the class name for the object.
    * @ret The class name.
    */
-  static getclassname() {
+  getclassaname() {
     return "GammaSet";
   }
 }
