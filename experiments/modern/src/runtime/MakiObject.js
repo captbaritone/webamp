@@ -19,8 +19,8 @@ class MakiObject {
         },
         // ugly but works for now
         name: this.constructor.name.toLowerCase(),
-        type: 'element'
-      }
+        type: "element",
+      };
     }
   }
 
@@ -68,7 +68,7 @@ class MakiObject {
    * Returns the class name for the object.
    * @ret The class name.
    */
-  static getclassname() {
+  getclassaname() {
     return "Object";
   }
 

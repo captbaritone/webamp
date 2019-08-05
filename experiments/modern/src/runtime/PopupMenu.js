@@ -8,20 +8,20 @@ class PopupMenu extends GuiObject {
    * Returns the class name for the object.
    * @ret The class name.
    */
-  static getclassname() {
+  getclassaname() {
     return "PopupMenu";
   }
   addcommand(txt, id, checked, disabled) {
-    unimplementedWarning('addcommand');
+    unimplementedWarning("addcommand");
   }
   addseparator() {
-    unimplementedWarning('addseparator');
+    unimplementedWarning("addseparator");
   }
   checkcommand(id, check) {
-    unimplementedWarning('checkcommand');
+    unimplementedWarning("checkcommand");
   }
   popatmouse() {
-    unimplementedWarning('popatmouse');
+    unimplementedWarning("popatmouse");
   }
 }
 

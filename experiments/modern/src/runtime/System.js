@@ -8,7 +8,7 @@ class System extends MakiObject {
 
     this.scriptGroup = scriptGroup;
     this.root = scriptGroup;
-    while(this.root.parent) {
+    while (this.root.parent) {
       this.root = this.root.parent;
     }
   }
@@ -19,7 +19,7 @@ class System extends MakiObject {
    * Returns the class name for the object.
    * @ret The class name.
    */
-  static getclassname() {
+  getclassaname() {
     return "System";
   }
 
@@ -37,11 +37,11 @@ class System extends MakiObject {
     return "5.666";
   }
   gettoken(str, separator, tokennum) {
-    unimplementedWarning('gettoken');
+    unimplementedWarning("gettoken");
     return "Some Token String";
   }
   getparam() {
-    unimplementedWarning('getparam');
+    unimplementedWarning("getparam");
     return "Some String";
   }
   messagebox(message, msgtitle, flag, notanymoreId) {
@@ -51,22 +51,22 @@ class System extends MakiObject {
     return value.toString();
   }
   getprivateint(section, item, defvalue) {
-    unimplementedWarning('getprivateint');
+    unimplementedWarning("getprivateint");
     return defvalue;
   }
   setprivateint(section, item, defvalue) {
-    unimplementedWarning('setprivateint');
+    unimplementedWarning("setprivateint");
   }
   getleftvumeter() {
-    unimplementedWarning('getleftvumeter');
+    unimplementedWarning("getleftvumeter");
     return 0.5;
   }
   getrightvumeter() {
-    unimplementedWarning('getrightvumeter');
+    unimplementedWarning("getrightvumeter");
     return 0.5;
   }
   getvolume() {
-    unimplementedWarning('getvolume');
+    unimplementedWarning("getvolume");
     return 1;
   }
 }

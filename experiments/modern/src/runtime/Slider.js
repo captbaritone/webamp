@@ -7,7 +7,7 @@ class Slider extends GuiObject {
    * Returns the class name for the object.
    * @ret The class name.
    */
-  static getClassName() {
+  getclassaname() {
     return "Slider";
   }
 }
