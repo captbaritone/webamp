@@ -8,7 +8,7 @@ class WinampAbstractionLayer extends Group {
    * Returns the class name for the object.
    * @ret The class name.
    */
-  getclassaname() {
+  getclassname() {
     return "WinampAbstractionLayer";
   }
 }

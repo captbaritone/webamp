@@ -7,7 +7,7 @@ class Group extends GuiObject {
    * Returns the class name for the object.
    * @ret The class name.
    */
-  getclassaname() {
+  getclassname() {
     return "Group";
   }
   getobject(id) {
