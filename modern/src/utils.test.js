@@ -5,7 +5,7 @@ import path from "path";
 
 async function getSkinZip() {
   const skinBuffer = await fsPromises.readFile(
-    path.join(__dirname, "../public/skins/CornerAmp_Redux.wal")
+    path.join(__dirname, "../skins/CornerAmp_Redux.wal")
   );
   return JSZip.loadAsync(skinBuffer);
 }
@@ -85,21 +85,21 @@ describe("inlineIncludes", () => {
     const resolvedXml = await Utils.inlineIncludes(xml, zip);
     expect(resolvedXml).toMatchSnapshot();
     expect(zip.file.mock.calls.map(args => args[0])).toMatchInlineSnapshot(`
-      Array [
-        /SkIn\\.XmL/i,
-        /xml\\\\/system-colors\\.xml/i,
-        /xml\\\\/standardframe\\.xml/i,
-        /xml\\\\/player\\.xml/i,
-        /xml\\\\/pledit\\.xml/i,
-        /xml\\\\/video\\.xml/i,
-        /xml\\\\/eq\\.xml/i,
-        /xml\\\\/color-presets\\.xml/i,
-        /xml\\\\/color-themes\\.xml/i,
-        /studio-elements\\.xml/i,
-        /player-elements\\.xml/i,
-        /player-normal\\.xml/i,
-      ]
-    `);
+Array [
+  /SkIn\\.XmL/i,
+  /xml\\\\/system-colors\\.xml/i,
+  /xml\\\\/standardframe\\.xml/i,
+  /xml\\\\/player\\.xml/i,
+  /xml\\\\/pledit\\.xml/i,
+  /xml\\\\/video\\.xml/i,
+  /xml\\\\/eq\\.xml/i,
+  /xml\\\\/color-presets\\.xml/i,
+  /xml\\\\/color-themes\\.xml/i,
+  /studio-elements\\.xml/i,
+  /player-elements\\.xml/i,
+  /player-normal\\.xml/i,
+]
+`);
   });
 });
 
