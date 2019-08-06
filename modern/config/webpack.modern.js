@@ -40,6 +40,7 @@ module.exports = {
   },
   devServer: {
     contentBase: path.join(__dirname, "../"),
+    historyApiFallback: true,
   },
   entry: {
     modern: ["./modern/src/index.js"],
