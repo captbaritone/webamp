@@ -147,8 +147,7 @@ function findDirectDescendantById(node, id) {
   return node.children.find(item => item.attributes.id === id);
 }
 
-// Search up the tree for a node that is in `node`'s lexical scope and pred returns node
-function findInLexicalScope(node, predicate) {
+function* iterateLexicalScope(node) {
   let currentNode = node;
   while (currentNode.parent) {
     let { parent } = currentNode;
@@ -158,40 +157,43 @@ function findInLexicalScope(node, predicate) {
       if (child === currentNode) {
         break;
       }
-
-      const item = predicate(child);
-      if (item) {
-        return item;
-      }
+      yield child;
     }
     currentNode = parent;
   }
+}
 
+// Search up the tree for a node that is in `node`'s lexical that matches `predicate`.
+function findInLexicalScope(node, predicate) {
+  for (const child of iterateLexicalScope(node)) {
+    if (predicate(child)) {
+      return child;
+    }
+  }
   return null;
 }
 
 // Search up the tree for <Elements> nodes that are in node's lexical scope.
 // return the first child of an <Elements> that matches id
 export function findElementById(node, id) {
-  return findInLexicalScope(node, child => {
+  for (const child of iterateLexicalScope(node)) {
     if (child.getclassname && child.getclassname() === "Elements") {
       const element = findDirectDescendantById(child, id);
       if (element) {
         return element;
       }
     }
-  });
+  }
+  return null;
 }
 
 // Search up the tree for a <GroupDef> node that is in node's lexical scope and matches id.
 export function findGroupDefById(node, id) {
   return findInLexicalScope(node, child => {
-    if (
+    return (
       child.getclassname &&
       child.getclassname() === "GroupDef" &&
       child.attributes.id === id
-    ) {
-      return child;
-    }
+    );
   });
 }
