@@ -12,7 +12,8 @@ export default function Variable({ variable }) {
       if (obj == null) {
         type = "Unknown object";
       } else {
-        type = obj.getclassname();
+        // Bit of a hack. We should probably fix this.
+        type = obj.prototype.getclassname();
       }
       break;
     }
