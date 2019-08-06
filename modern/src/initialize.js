@@ -20,7 +20,7 @@ import Status from "./runtime/Status";
 async function loadImage(imgUrl) {
   return await new Promise(resolve => {
     const img = new Image();
-    img.addEventListener("load", function() {
+    img.addEventListener("load", () => {
       resolve(img);
     });
     img.src = imgUrl;

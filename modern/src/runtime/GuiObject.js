@@ -7,6 +7,7 @@ class GuiObject extends MakiObject {
 
     this.visible = true;
   }
+
   /**
    * getclassname()
    *
@@ -16,22 +17,27 @@ class GuiObject extends MakiObject {
   getclassname() {
     return "GuiObject";
   }
+
   findobject(id) {
     return findDescendantByTypeAndId(this, null, id);
   }
+
   getobject(id) {
     // Not sure this is correct, but it is my understanding this is just an alias
     return this.findobject(id);
   }
+
   init(newRoot) {
     this.parent = newRoot;
     newRoot.js_addChild(this);
     return this;
   }
+
   setxmlparam(param, value) {
     this.xmlNode.attributes[param] = value;
     return value;
   }
+
   getxmlparam(param) {
     const attributes = this.xmlNode.attributes;
     if (attributes !== undefined && attributes.hasOwnProperty(param)) {
@@ -39,6 +45,7 @@ class GuiObject extends MakiObject {
     }
     return null;
   }
+
   getparent() {
     return this.parent;
   }

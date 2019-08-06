@@ -11,15 +11,19 @@ class PopupMenu extends GuiObject {
   getclassname() {
     return "PopupMenu";
   }
+
   addcommand(txt, id, checked, disabled) {
     unimplementedWarning("addcommand");
   }
+
   addseparator() {
     unimplementedWarning("addseparator");
   }
+
   checkcommand(id, check) {
     unimplementedWarning("checkcommand");
   }
+
   popatmouse() {
     unimplementedWarning("popatmouse");
   }

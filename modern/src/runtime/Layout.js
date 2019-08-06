@@ -11,6 +11,7 @@ class Layout extends GuiObject {
   getclassname() {
     return "Layout";
   }
+
   getcontainer() {
     return findParentNodeOfType(this, ["container"]);
   }

@@ -10,6 +10,7 @@ class Group extends GuiObject {
   getclassname() {
     return "Group";
   }
+
   getobject(id) {
     // Not sure this is correct, but it is my understanding this is just an alias
     return this.findobject(id);
