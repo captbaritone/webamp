@@ -30,49 +30,62 @@ class System extends MakiObject {
   getscriptgroup() {
     return this.scriptGroup;
   }
+
   getcontainer(id) {
     return findDescendantByTypeAndId(this.root, "container", id);
   }
+
   getruntimeversion() {
     return "5.666";
   }
+
   gettoken(str, separator, tokennum) {
     unimplementedWarning("gettoken");
     return "Some Token String";
   }
+
   getparam() {
     unimplementedWarning("getparam");
     return "Some String";
   }
+
   messagebox(message, msgtitle, flag, notanymoreId) {
     console.log({ message, msgtitle, flag, notanymoreId });
   }
+
   integertostring(value) {
     return value.toString();
   }
+
   getprivateint(section, item, defvalue) {
     unimplementedWarning("getprivateint");
     return defvalue;
   }
+
   setprivateint(section, item, defvalue) {
     unimplementedWarning("setprivateint");
   }
+
   getleftvumeter() {
     unimplementedWarning("getleftvumeter");
     return 0.5;
   }
+
   getrightvumeter() {
     unimplementedWarning("getrightvumeter");
     return 0.5;
   }
+
   getvolume() {
     unimplementedWarning("getvolume");
     return 1;
   }
+
   getplayitemlength() {
     unimplementedWarning("getplayitemlength");
     return 100000;
   }
+
   seekto(pos) {
     unimplementedWarning("seekto");
   }

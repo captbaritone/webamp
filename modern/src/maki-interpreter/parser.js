@@ -80,7 +80,7 @@ class MakiFile {
     let ret = "";
     const end = Math.min(this._arr.length, this._i + length);
 
-    for (var i = this._i; i < end; ++i) {
+    for (let i = this._i; i < end; ++i) {
       ret += String.fromCharCode(this._arr[i]);
     }
     this._i += length;
