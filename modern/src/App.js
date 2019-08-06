@@ -6,10 +6,11 @@ import initialize from "./initialize";
 import System from "./runtime/System";
 import runtime from "./runtime";
 import interpret from "./maki-interpreter/interpreter";
+import simpleSkin from "../skins/simple.wal";
 
 async function getSkin() {
   // const resp = await fetch(process.env.PUBLIC_URL + "/skins/CornerAmp_Redux.wal");
-  const resp = await fetch(process.env.PUBLIC_URL + "/skins/simple.wal");
+  const resp = await fetch(simpleSkin);
   const blob = await resp.blob();
   const zip = await JSZip.loadAsync(blob);
   const skinXml = await Utils.inlineIncludes(

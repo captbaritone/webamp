@@ -20,13 +20,14 @@
     "prepublishOnly": "npm run build-library",
     "serve": "http-server ./demo/built",
     "start": "webpack-dev-server --open --config=demo/config/webpack.dev.js",
+    "modern": "webpack-dev-server --open --config=modern/config/webpack.modern.js",
     "stats": "webpack --config=demo/config/webpack.prod.js --json > stats.json",
     "stats-library": "webpack --config=config/webpack.library.js --json > stats.json",
-    "test": "jest --projects config/jest.unit.js",
+    "test": "jest --config=config/jest.unit.js",
     "travis-tests": "npm run test && npm run test && npm run type-check && npm run build && npm run build-library && npm run integration-tests",
-    "tdd": "jest --projects config/jest.unit.js --watch",
+    "tdd": "jest --config=config/jest.unit.js --watch",
     "format": "prettier --write \"**/*.{js,ts,tsx,d.ts,css}\"",
-    "integration-tests": "npm run build -- --display=errors-only && jest --projects config/jest.integration.js --runInBand",
+    "integration-tests": "npm run build -- --display=errors-only && jest --config=config/jest.integration.js --runInBand",
     "build-skin": "rm skins/base-2.91.wsz && cd skins/base-2.91 && zip -x .* -x 'Skining Updates.txt' -r ../base-2.91.wsz .",
     "build-skin-png": "rm skins/base-2.91-png.wsz && cd skins/base-2.91-png && zip -x .* -x 'Skining Updates.txt' -r ../base-2.91-png.wsz .",
     "compile-skin": "node scripts/compileSkin.js > css/base-skin.css",
@@ -152,6 +153,8 @@
   },
   "dependencies": {
     "eslint-plugin-react-hooks": "^1.5.1",
-    "fscreen": "^1.0.2"
+    "fscreen": "^1.0.2",
+    "react-dropzone": "^10.1.7",
+    "xml-js": "^1.6.11"
   }
 }
