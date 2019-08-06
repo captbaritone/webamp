@@ -7,7 +7,7 @@ class DiscordWinstonTransport extends Transport {
   }
 
   async log(info, callback) {
-    const { message, ...rest } = info;
+    const { message } = info;
     await this._channel.send(`${message}`);
     // Perform the writing to the remote service
     callback();

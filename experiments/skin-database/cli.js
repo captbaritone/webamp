@@ -6,6 +6,7 @@ const ensureInternetArchiveItemsIndexByMd5 = require("./tasks/ensureInternetArch
 const path = require("path");
 const logger = require("./logger");
 const Skins = require("./data/skins");
+const db = require("./db");
 
 const { spawn } = require("child_process");
 
@@ -57,6 +58,7 @@ async function main() {
 
     case "ensure-md5s":
       await ensureInternetArchiveItemsIndexByMd5();
+      break;
     case "metadata": {
       const hash = argv._[1];
       console.log(await Skins.getInternetArchiveUrl(hash));

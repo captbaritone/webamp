@@ -6,8 +6,6 @@ const config = require("../../config");
 const Skins = require("../../data/skins");
 const Utils = require("../utils");
 
-const { getInfo } = require("../info");
-
 async function handler(message) {
   const { attachments } = message;
   if (attachments.length < 1) {
