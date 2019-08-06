@@ -8,7 +8,7 @@ class PopupMenu extends GuiObject {
    * Returns the class name for the object.
    * @ret The class name.
    */
-  getclassaname() {
+  getclassname() {
     return "PopupMenu";
   }
   addcommand(txt, id, checked, disabled) {

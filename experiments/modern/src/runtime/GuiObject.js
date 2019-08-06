@@ -13,7 +13,7 @@ class GuiObject extends MakiObject {
    * Returns the class name for the object.
    * @ret The class name.
    */
-  getclassaname() {
+  getclassname() {
     return "GuiObject";
   }
   findobject(id) {
