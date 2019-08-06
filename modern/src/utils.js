@@ -148,7 +148,7 @@ function findDirectDescendantById(node, id) {
 }
 
 // Search up the tree for a node that is in `node`'s lexical scope and pred returns node
-function findInLexicalScope(node, pred) {
+function findInLexicalScope(node, predicate) {
   let currentNode = node;
   while (currentNode.parent) {
     const parent = currentNode.parent;
@@ -159,7 +159,7 @@ function findInLexicalScope(node, pred) {
         break;
       }
 
-      const item = pred(child);
+      const item = predicate(child);
       if (item) {
         return item;
       }
