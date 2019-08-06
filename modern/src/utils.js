@@ -45,9 +45,8 @@ export async function asyncFlatMap(arr, mapper) {
   const childPromises = mapped.map(async item => {
     if (Array.isArray(item)) {
       return await asyncFlatMap(item, mapper);
-    } else {
-      return item;
     }
+    return item;
   });
   return flatten(await Promise.all(childPromises));
 }
@@ -152,7 +151,7 @@ function findDirectDescendantById(node, id) {
 function findInLexicalScope(node, pred) {
   let currentNode = node;
   while (currentNode.parent) {
-    let parent = currentNode.parent;
+    const parent = currentNode.parent;
     const children = parent.children;
     for (let i = 0; i < children.length; i++) {
       const child = children[i];

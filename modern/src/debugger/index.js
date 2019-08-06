@@ -130,7 +130,7 @@ function Debugger({ maki }) {
 
   React.useEffect(() => {
     run({ runtime, data: maki, system, debugHandler: setGen });
-  }, []);
+  }, [maki, system]);
 
   const nextValue = React.useCallback(
     value => {
@@ -160,12 +160,12 @@ function Debugger({ maki }) {
   // When we unpause, we should resume
   React.useEffect(() => {
     if (!paused) next();
-  }, [paused]);
+  }, [next, paused]);
 
   // When we get a new generator, immediatly take the first step.
   React.useEffect(() => {
     next();
-  }, [gen]);
+  }, [gen, next]);
 
   React.useEffect(() => {
     function handler(e) {
