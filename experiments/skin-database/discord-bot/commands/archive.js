@@ -59,7 +59,7 @@ async function handler(message) {
       );
       await message.channel.send(
         `Thanks! ${
-        file.filename
+          file.filename
         } is a brand new skin. 👏 It has been queued for archiving.`
       );
     }
