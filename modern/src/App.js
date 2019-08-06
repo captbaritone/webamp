@@ -111,10 +111,10 @@ function Layout({
         data-node-id={id}
         src={image.imgUrl}
         style={{
-          minWidth: Number(minimum_w),
-          minHeight: Number(minimum_h),
-          maxWidth: Number(maximum_w),
-          maxHeight: Number(maximum_h),
+          minWidth: minimum_w == null ? null : Number(minimum_w),
+          minHeight: minimum_h == null ? null : Number(minimum_h),
+          maxWidth: maximum_w == null ? null : Number(maximum_w),
+          maxHeight: maximum_h == null ? null : Number(maximum_h),
           position: "absolute",
         }}
       />
