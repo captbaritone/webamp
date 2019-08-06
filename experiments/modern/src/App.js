@@ -20,6 +20,44 @@ async function getSkin() {
   return await initialize(zip, skinXml);
 }
 
+function GuiObjectEvents({ node, children }) {
+  return (
+    <div
+      onMouseDown={e => {
+        if (e.button === 2) {
+          node.js_trigger("onRightButtonDown", e.clientX, e.clientY);
+        } else {
+          node.js_trigger("onLeftButtonDown", e.clientX, e.clientY);
+        }
+      }}
+      onMouseUp={e => {
+        if (e.button === 2) {
+          node.js_trigger("onRightButtonUp", e.clientX, e.clientY);
+        } else {
+          node.js_trigger("onLeftButtonUp", e.clientX, e.clientY);
+        }
+      }}
+      onDoubleClick={e => {
+        if (e.button === 2) {
+          node.js_trigger("onRightButtonDblClk", e.clientX, e.clientY);
+        } else {
+          node.js_trigger("onLeftButtonDblClk", e.clientX, e.clientY);
+        }
+      }}
+      onMouseMove={e => node.js_trigger("onMouseMove", e.clientX, e.clientY)}
+      onMouseEnter={e => node.js_trigger("onEnterArea", e.clientX, e.clientY)}
+      onMouseLeave={e => node.js_trigger("onLeaveArea", e.clientX, e.clientY)}
+      onDragEnter={e => node.js_trigger("onDragEnter")}
+      onDragLeave={e => node.js_trigger("onDragLeave")}
+      onDragOver={e => node.js_trigger("onDragOver", e.clientX, e.clientY)}
+      onKeyUp={e => node.js_trigger("onKeyUp", e.keyCode)}
+      onKeyDown={e => node.js_trigger("onKeyDown", e.keyCode)}
+    >
+      {children}
+    </div>
+  );
+}
+
 function Container(props) {
   const { id, children, default_x, default_y, default_visible } = props;
   const style = {
@@ -150,11 +188,6 @@ function Button({
     return null;
   }
 
-  const eventHandlers = {};
-  eventHandlers["onClick"] = e => {
-    node.js_trigger("onLeftClick");
-  };
-
   return (
     <div
       data-node-type="button"
@@ -166,7 +199,13 @@ function Button({
           setDown(false);
         });
       }}
-      {...eventHandlers}
+      onClick={e => {
+        if (e.button === 2) {
+          node.js_trigger("onRightClick");
+        } else {
+          node.js_trigger("onLeftClick");
+        }
+      }}
       title={tooltip}
       style={{
         position: "absolute",
@@ -236,9 +275,11 @@ function XmlNode({ node }) {
     return null;
   }
   return (
-    <Component node={node} {...attributes}>
-      {children}
-    </Component>
+    <GuiObjectEvents node={node}>
+      <Component node={node} {...attributes}>
+        {children}
+      </Component>
+    </GuiObjectEvents>
   );
 }
 

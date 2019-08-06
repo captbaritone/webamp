@@ -56,6 +56,11 @@ class GuiObject extends MakiObject {
     return 5;
   }
 
+  getleft() {
+    unimplementedWarning("getleft");
+    return 5;
+  }
+
   getheight() {
     unimplementedWarning("getheight");
     return 100;
