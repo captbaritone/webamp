@@ -88,13 +88,6 @@ async function getSkinUrl(md5) {
   return getProp(md5, "skinUrl");
 }
 
-async function getInternetArchiveItemName(md5) {
-  const item = await getInternetArchiveItem(md5);
-  if (item == null) {
-    return null;
-  }
-  return item.identifier;
-}
 async function getInternetArchiveItem(md5) {
   return iaItems.findOne({ md5: md5 });
 }

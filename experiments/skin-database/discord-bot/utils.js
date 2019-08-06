@@ -3,7 +3,6 @@ const rgbHex = require("rgb-hex");
 const Skins = require("../data/skins");
 const { approve, reject } = require("./s3");
 const logger = require("../logger");
-const { approve, reject } = require("./s3");
 
 const filter = reaction => {
   return ["👍", "👎"].some(name => reaction.emoji.name === name);

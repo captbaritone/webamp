@@ -1,4 +1,3 @@
-const fetch = require("node-fetch");
 const db = require("../db");
 const iaItems = db.get("internetArchiveItems");
 
@@ -17,7 +16,7 @@ module.exports = async function main() {
     const skinFiles = item.metadata.files.filter(file => {
       return file.name.endsWith(".wsz");
     });
-    if (skinFiles.length != 1) {
+    if (skinFiles.length !== 1) {
       console.warn(
         `Found a skin item with ${skinFiles.length} skin files. Identifier: ${
           item.identifier

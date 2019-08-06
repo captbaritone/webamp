@@ -2,7 +2,5 @@
 built/
 coverage/
 **/node_modules/
-experiments/winamp-skin-museum/
-experiments/skin-database/
 modern/
 examples/webpack/bundle.js
