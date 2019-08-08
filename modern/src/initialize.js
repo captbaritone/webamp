@@ -223,18 +223,18 @@ const parsers = {
   },
 };
 
-async function parseChildren(node, zip) {
-  if (node.xmlNode.type === "comment") {
+async function parseChildren(node, children, zip) {
+  if (node.type === "comment") {
     return;
   }
-  if (node.xmlNode.name == null) {
-    console.error(node.xmlNode);
+  if (node.name == null) {
+    console.error(node);
     throw new Error("Unknown node");
   }
 
-  const validChildren = new Set(schema[node.xmlNode.name.toLowerCase()]);
+  const validChildren = new Set(schema[node.name.toLowerCase()]);
   const resolvedChildren = await Promise.all(
-    node.xmlNode.children.map(async child => {
+    children.map(async child => {
       if (child.type === "comment") {
         return;
       }
@@ -248,14 +248,12 @@ async function parseChildren(node, zip) {
       }
       const childName = child.name.toLowerCase();
       if (childName == null) {
-        console.error(node.xmlNode);
+        console.error(node);
         throw new Error("Unknown node");
       }
 
       if (!validChildren.has(childName)) {
-        throw new Error(
-          `Invalid child of a ${node.xmlNode.name}: ${childName}`
-        );
+        throw new Error(`Invalid child of a ${node.name}: ${childName}`);
       }
 
       const childParser = parsers[childName];
@@ -264,11 +262,8 @@ async function parseChildren(node, zip) {
         return;
       }
       const parsedChild = await childParser(child, node, zip);
-      if (
-        parsedChild.xmlNode.children != null &&
-        parsedChild.xmlNode.children.length > 0
-      ) {
-        await parseChildren(parsedChild, zip);
+      if (child.children != null && child.children.length > 0) {
+        await parseChildren(parsedChild, child.children, zip);
       }
       return parsedChild;
     })
@@ -281,14 +276,14 @@ async function parseChildren(node, zip) {
 
 async function applyGroupDefs(root) {
   await asyncTreeFlatMap(root, async node => {
-    switch (node.xmlNode.name) {
+    switch (node.name) {
       case "group": {
         if (!node.children || node.children.length === 0) {
-          const groupdef = node.js_groupdefLookup(node.xmlNode.attributes.id);
+          const groupdef = node.js_groupdefLookup(node.attributes.id);
           if (!groupdef) {
             console.warn(
               "Unable to find groupdef. Rendering null",
-              node.xmlNode.attributes.id
+              node.attributes.id
             );
             return {};
           }
@@ -297,9 +292,9 @@ async function applyGroupDefs(root) {
           node.children.forEach(item => {
             item.parent = node;
           });
-          node.xmlNode.attributes = {
-            ...node.xmlNode.attributes,
-            ...groupdef.xmlNode.attributes,
+          node.attributes = {
+            ...node.attributes,
+            ...groupdef.attributes,
           };
         }
         return {};
@@ -312,8 +307,9 @@ async function applyGroupDefs(root) {
 }
 
 async function initialize(zip, skinXml) {
+  const xmlRoot = skinXml.children[0];
   const root = new WinampAbstractionLayer(skinXml.children[0], null);
-  await parseChildren(root, zip);
+  await parseChildren(root, xmlRoot.children, zip);
   await applyGroupDefs(root);
   return root;
 }

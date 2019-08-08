@@ -257,8 +257,8 @@ const NODE_NAME_TO_COMPONENT = {
 
 // Given a skin XML node, pick which component to use, and render it.
 function XmlNode({ node }) {
-  const attributes = node.xmlNode.attributes;
-  const name = node.xmlNode.name;
+  const attributes = node.attributes;
+  const name = node.name;
   if (name == null || name === "groupdef") {
     // name is null is likely a comment
     return null;
@@ -290,14 +290,14 @@ function App() {
     getSkin().then(async root => {
       // Execute scripts
       await Utils.asyncTreeFlatMap(root, async node => {
-        switch (node.xmlNode.name) {
+        switch (node.name) {
           case "groupdef": {
             // removes groupdefs from consideration (only run scripts when actually referenced by group)
             return {};
           }
           case "script": {
             // TODO: stop ignoring standardframe
-            if (node.xmlNode.attributes.file.endsWith("standardframe.maki")) {
+            if (node.attributes.file.endsWith("standardframe.maki")) {
               break;
             }
             const scriptGroup = Utils.findParentNodeOfType(node, [

@@ -34,12 +34,12 @@ class GuiObject extends MakiObject {
   }
 
   setxmlparam(param, value) {
-    this.xmlNode.attributes[param] = value;
+    this.attributes[param] = value;
     return value;
   }
 
   getxmlparam(param) {
-    const attributes = this.xmlNode.attributes;
+    const attributes = this.attributes;
     if (attributes !== undefined && attributes.hasOwnProperty(param)) {
       return attributes[param];
     }
@@ -79,10 +79,10 @@ class GuiObject extends MakiObject {
   }
 
   resize(x, y, w, h) {
-    this.xmlNode.attributes.x = x;
-    this.xmlNode.attributes.y = y;
-    this.xmlNode.attributes.w = w;
-    this.xmlNode.attributes.h = h;
+    this.attributes.x = x;
+    this.attributes.y = y;
+    this.attributes.w = w;
+    this.attributes.h = h;
   }
 }
 
