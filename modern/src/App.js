@@ -35,11 +35,11 @@ function handleMouseButtonEventDispatch(
   leftEventName,
   rightEventName
 ) {
-  if (event.button === 2) {
-    handleMouseEventDispatch(node, event, rightEventName);
-  } else {
-    handleMouseEventDispatch(node, event, leftEventName);
-  }
+  handleMouseEventDispatch(
+    node,
+    event,
+    event.button === 2 ? rightEventName : leftEventName
+  );
 }
 
 function GuiObjectEvents({ node, children }) {
