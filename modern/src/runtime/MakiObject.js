@@ -4,7 +4,7 @@ import { findElementById, findGroupDefById } from "../utils";
 class MakiObject {
   constructor(node, parent, annotations = {}) {
     if (node) {
-      this.attributes = node.attributes;
+      this.attributes = node.attributes || {};
       this.name = node.name;
     } else {
       // When dynamically creating an object with `new` we have no underlying node

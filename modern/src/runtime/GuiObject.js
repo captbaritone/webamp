@@ -39,11 +39,7 @@ class GuiObject extends MakiObject {
   }
 
   getxmlparam(param) {
-    const attributes = this.attributes;
-    if (attributes !== undefined && attributes.hasOwnProperty(param)) {
-      return attributes[param];
-    }
-    return null;
+    return this.attributes[param];
   }
 
   getparent() {
@@ -59,31 +55,19 @@ class GuiObject extends MakiObject {
   }
 
   gettop() {
-    if (this.attributes) {
-      return this.attributes.y || 0;
-    }
-    return 0;
+    return this.attributes.y || 0;
   }
 
   getleft() {
-    if (this.attributes) {
-      return this.attributes.x || 0;
-    }
-    return 0;
+    return this.attributes.x || 0;
   }
 
   getheight() {
-    if (this.attributes) {
-      return this.attributes.h || 0;
-    }
-    return 0;
+    return this.attributes.h || 0;
   }
 
   getwidth() {
-    if (this.attributes) {
-      return this.attributes.w || 0;
-    }
-    return 0;
+    return this.attributes.w || 0;
   }
 
   resize(x, y, w, h) {
