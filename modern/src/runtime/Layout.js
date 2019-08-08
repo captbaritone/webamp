@@ -17,12 +17,12 @@ class Layout extends GuiObject {
   }
 
   resize(x, y, w, h) {
-    this.xmlNode.attributes.x = x;
-    this.xmlNode.attributes.y = y;
-    this.xmlNode.attributes.minimum_w = w;
-    this.xmlNode.attributes.maximum_w = w;
-    this.xmlNode.attributes.minimum_h = h;
-    this.xmlNode.attributes.maximum_h = h;
+    this.attributes.x = x;
+    this.attributes.y = y;
+    this.attributes.minimum_w = w;
+    this.attributes.maximum_w = w;
+    this.attributes.minimum_h = h;
+    this.attributes.maximum_h = h;
   }
 }
 
