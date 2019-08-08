@@ -6,11 +6,12 @@ import initialize from "./initialize";
 import System from "./runtime/System";
 import runtime from "./runtime";
 import interpret from "./maki-interpreter/interpreter";
-import simpleSkin from "../skins/simple.wal";
+// import simpleSkin from "../skins/simple.wal";
+import cornerSkin from "../skins/CornerAmp_Redux.wal";
 
 async function getSkin() {
-  // const resp = await fetch(process.env.PUBLIC_URL + "/skins/CornerAmp_Redux.wal");
-  const resp = await fetch(simpleSkin);
+  const resp = await fetch(cornerSkin);
+  // const resp = await fetch(simpleSkin);
   const blob = await resp.blob();
   const zip = await JSZip.loadAsync(blob);
   const skinXml = await Utils.inlineIncludes(
@@ -21,36 +22,59 @@ async function getSkin() {
   return await initialize(zip, skinXml);
 }
 
+function handleMouseEventDispatch(node, event, eventName) {
+  const rect = event.target.getBoundingClientRect();
+  const x = event.clientX - rect.left;
+  const y = event.clientY - rect.top;
+  node.js_trigger(eventName, x, y);
+}
+
+function handleMouseButtonEventDispatch(
+  node,
+  event,
+  leftEventName,
+  rightEventName
+) {
+  handleMouseEventDispatch(
+    node,
+    event,
+    event.button === 2 ? rightEventName : leftEventName
+  );
+}
+
 function GuiObjectEvents({ node, children }) {
   return (
     <div
-      onMouseDown={e => {
-        if (e.button === 2) {
-          node.js_trigger("onRightButtonDown", e.clientX, e.clientY);
-        } else {
-          node.js_trigger("onLeftButtonDown", e.clientX, e.clientY);
-        }
-      }}
-      onMouseUp={e => {
-        if (e.button === 2) {
-          node.js_trigger("onRightButtonUp", e.clientX, e.clientY);
-        } else {
-          node.js_trigger("onLeftButtonUp", e.clientX, e.clientY);
-        }
-      }}
-      onDoubleClick={e => {
-        if (e.button === 2) {
-          node.js_trigger("onRightButtonDblClk", e.clientX, e.clientY);
-        } else {
-          node.js_trigger("onLeftButtonDblClk", e.clientX, e.clientY);
-        }
-      }}
-      onMouseMove={e => node.js_trigger("onMouseMove", e.clientX, e.clientY)}
-      onMouseEnter={e => node.js_trigger("onEnterArea", e.clientX, e.clientY)}
-      onMouseLeave={e => node.js_trigger("onLeaveArea", e.clientX, e.clientY)}
+      onMouseDown={e =>
+        handleMouseButtonEventDispatch(
+          node,
+          e,
+          "onLeftButtonDown",
+          "onRightButtonDown"
+        )
+      }
+      onMouseUp={e =>
+        handleMouseButtonEventDispatch(
+          node,
+          e,
+          "onLeftButtonUp",
+          "onRightButtonUp"
+        )
+      }
+      onDoubleClick={e =>
+        handleMouseButtonEventDispatch(
+          node,
+          e,
+          "onLeftButtonDblClk",
+          "onRightButtonDblClk"
+        )
+      }
+      onMouseMove={e => handleMouseEventDispatch(node, e, "onMouseMove")}
+      onMouseEnter={e => handleMouseEventDispatch(node, e, "onEnterArea")}
+      onMouseLeave={e => handleMouseEventDispatch(node, e, "onLeaveArea")}
       onDragEnter={e => node.js_trigger("onDragEnter")}
       onDragLeave={e => node.js_trigger("onDragLeave")}
-      onDragOver={e => node.js_trigger("onDragOver", e.clientX, e.clientY)}
+      onDragOver={e => handleMouseEventDispatch(node, e, "onDragOver")}
       onKeyUp={e => node.js_trigger("onKeyUp", e.keyCode)}
       onKeyDown={e => node.js_trigger("onKeyDown", e.keyCode)}
     >
@@ -110,6 +134,7 @@ function Layout({
         data-node-type="layout"
         data-node-id={id}
         src={image.imgUrl}
+        draggable={false}
         style={{
           minWidth: minimum_w == null ? null : Number(minimum_w),
           minHeight: minimum_h == null ? null : Number(minimum_h),
@@ -158,6 +183,7 @@ function Layer({ node, id, image, children, x, y }) {
         data-node-type="Layer"
         data-node-id={id}
         src={img.imgUrl}
+        draggable={false}
         style={{ position: "absolute", ...params }}
       />
       {children}

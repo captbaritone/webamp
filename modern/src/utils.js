@@ -124,8 +124,7 @@ export function findDescendantByTypeAndId(node, type, id) {
     const child = node.children[i];
     if (
       (!type || child.name === type) &&
-      (child.attributes !== undefined &&
-        child.attributes.id !== undefined &&
+      (child.attributes.id !== undefined &&
         child.attributes.id.toLowerCase() === idLC)
     ) {
       return child;

@@ -11,6 +11,9 @@ class System extends MakiObject {
     while (this.root.parent) {
       this.root = this.root.parent;
     }
+
+    // These properties will probably live somewhere else eventually
+    this.volume = 127;
   }
 
   /**
@@ -76,9 +79,13 @@ class System extends MakiObject {
     return 0.5;
   }
 
+  // Seems like volume is 0-255
   getvolume() {
-    unimplementedWarning("getvolume");
-    return 1;
+    return this.volume;
+  }
+
+  setvolume(vol) {
+    this.volume = vol;
   }
 
   getplayitemlength() {
