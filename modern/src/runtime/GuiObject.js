@@ -59,23 +59,31 @@ class GuiObject extends MakiObject {
   }
 
   gettop() {
-    unimplementedWarning("gettop");
-    return 5;
+    if (this.attributes) {
+      return this.attributes.y || 0;
+    }
+    return 0;
   }
 
   getleft() {
-    unimplementedWarning("getleft");
-    return 5;
+    if (this.attributes) {
+      return this.attributes.x || 0;
+    }
+    return 0;
   }
 
   getheight() {
-    unimplementedWarning("getheight");
-    return 100;
+    if (this.attributes) {
+      return this.attributes.h || 0;
+    }
+    return 0;
   }
 
   getwidth() {
-    unimplementedWarning("getwidth");
-    return 100;
+    if (this.attributes) {
+      return this.attributes.w || 0;
+    }
+    return 0;
   }
 
   resize(x, y, w, h) {
