@@ -119,7 +119,7 @@ function Debugger({ maki }) {
 
   const system = React.useMemo(() => {
     const sys = new System();
-    sys.messageBox = function(message, messageTitle, flag, notanymoreId) {
+    sys.messagebox = function(message, messageTitle, flag, notanymoreId) {
       dispatch({
         type: "GOT_MESSAGE",
         message: { message, messageTitle, flag, notanymoreId },
