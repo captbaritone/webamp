@@ -1,28 +1,25 @@
 import React from "react";
-import { connect } from "react-redux";
 import classnames from "classnames";
 
-import { getWindowOpen } from "../../selectors";
-import { toggleWindow } from "../../actionCreators";
+import * as Selectors from "../../selectors";
+import * as Actions from "../../actionCreators";
+import { useTypedSelector, useActionCreator } from "../../hooks";
 
-const PlaylistToggleButton = props => (
-  <div
-    id="playlist-button"
-    className={classnames({ selected: props.selected })}
-    onClick={props.handleClick}
-    title="Toggle Playlist Editor"
-  />
-);
+function togglePlaylist() {
+  return Actions.toggleWindow("playlist");
+}
 
-const mapStateToProps = state => ({
-  selected: getWindowOpen(state)("playlist"),
+const PlaylistToggleButton = React.memo(() => {
+  const selected = useTypedSelector(Selectors.getWindowOpen)("playlist");
+  const handleClick = useActionCreator(togglePlaylist);
+  return (
+    <div
+      id="playlist-button"
+      className={classnames({ selected })}
+      onClick={handleClick}
+      title="Toggle Playlist Editor"
+    />
+  );
 });
 
-const mapDispatchToProps = {
-  handleClick: () => toggleWindow("playlist"),
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PlaylistToggleButton);
+export default PlaylistToggleButton;

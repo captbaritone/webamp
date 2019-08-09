@@ -1,37 +1,21 @@
 import React from "react";
-import { connect } from "react-redux";
-import { previous, play, pause, stop, next } from "../../actionCreators";
-import { Dispatch } from "../../types";
+import * as Actions from "../../actionCreators";
+import { useActionCreator } from "../../hooks";
 
-interface DispatchProps {
-  previous(): void;
-  play(): void;
-  pause(): void;
-  stop(): void;
-  next(): void;
-}
+const ActionButtons = React.memo(() => {
+  const previous = useActionCreator(Actions.previous);
+  const play = useActionCreator(Actions.play);
+  const pause = useActionCreator(Actions.pause);
+  const next = useActionCreator(Actions.next);
+  return (
+    <div className="actions">
+      <div id="previous" onClick={previous} title="Previous Track" />
+      <div id="play" onClick={play} title="Play" />
+      <div id="pause" onClick={pause} title="Pause" />
+      <div id="stop" onClick={stop} title="Stop" />
+      <div id="next" onClick={next} title="Next Track" />
+    </div>
+  );
+});
 
-const ActionButtons = (props: DispatchProps) => (
-  <div className="actions">
-    <div id="previous" onClick={props.previous} title="Previous Track" />
-    <div id="play" onClick={props.play} title="Play" />
-    <div id="pause" onClick={props.pause} title="Pause" />
-    <div id="stop" onClick={props.stop} title="Stop" />
-    <div id="next" onClick={props.next} title="Next Track" />
-  </div>
-);
-
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
-  return {
-    previous: () => dispatch(previous()),
-    play: () => dispatch(play()),
-    pause: () => dispatch(pause()),
-    stop: () => dispatch(stop()),
-    next: () => dispatch(next()),
-  };
-};
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(ActionButtons);
+export default ActionButtons;

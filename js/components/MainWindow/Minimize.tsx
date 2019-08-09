@@ -1,22 +1,11 @@
 import React from "react";
-import { connect } from "react-redux";
 import ClickedDiv from "../ClickedDiv";
 import * as Actions from "../../actionCreators";
-import { Dispatch } from "../../types";
+import { useActionCreator } from "../../hooks";
 
-interface Props {
-  minimize(): void;
-}
-
-const Minimize = ({ minimize }: Props) => (
-  <ClickedDiv id="minimize" title="Minimize" onClick={minimize} />
-);
-
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  minimize: () => dispatch(Actions.minimize()),
+const Minimize = React.memo(() => {
+  const minimize = useActionCreator(Actions.minimize);
+  return <ClickedDiv id="minimize" title="Minimize" onClick={minimize} />;
 });
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(Minimize);
+export default Minimize;
