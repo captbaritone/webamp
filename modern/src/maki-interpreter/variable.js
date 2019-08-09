@@ -18,9 +18,11 @@ class Variable {
       this._unsubscribeFromValue();
     }
     if (this.global && this.typeName === "OBJECT" && value !== null) {
-      this._unsubscribeFromValue = value.js_listenToAll((eventName, args) => {
-        this._emitter.trigger(eventName, args);
-      });
+      this._unsubscribeFromValue = value.js_listenToAll(
+        (eventName, ...args) => {
+          this._emitter.trigger(eventName, ...args);
+        }
+      );
     }
     this._value = value;
   }
