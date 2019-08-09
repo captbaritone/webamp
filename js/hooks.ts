@@ -1,5 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import * as Utils from "./utils";
+import { Action, Thunk, AppState } from "./types";
 
 interface Size {
   width: number;
@@ -24,4 +26,19 @@ export function useWindowSize() {
     };
   }, [setSize, handler]);
   return size;
+}
+
+export function useActionCreator<T extends (...args: any[]) => Action | Thunk>(
+  actionCreator: T
+): (...funcArgs: Parameters<T>) => void {
+  const dispatch = useDispatch();
+  return useCallback((...args) => dispatch(actionCreator(...args)), [
+    dispatch,
+    actionCreator,
+  ]);
+}
+
+// TODO: Return useSelector directly and apply the type without wrapping
+export function useTypedSelector<T>(selector: (state: AppState) => T): T {
+  return useSelector(selector);
 }

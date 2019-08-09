@@ -1,12 +1,8 @@
 import React from "react";
-import { connect } from "react-redux";
 
 import Balance from "../Balance";
-import { AppState } from "../../types";
-
-interface StateProps {
-  balance: number;
-}
+import * as Selectors from "../../selectors";
+import { useTypedSelector } from "../../hooks";
 
 export const offsetFromBalance = (balance: number): number => {
   const percent = Math.abs(balance) / 100;
@@ -15,15 +11,14 @@ export const offsetFromBalance = (balance: number): number => {
   return offset;
 };
 
-const MainBalance = (props: StateProps) => (
-  <Balance
-    id="balance"
-    style={{ backgroundPosition: `0 -${offsetFromBalance(props.balance)}px` }}
-  />
-);
-
-const mapStateToProps = (state: AppState): StateProps => ({
-  balance: state.media.balance,
+const MainBalance = React.memo(() => {
+  const balance = useTypedSelector(Selectors.getBalance);
+  return (
+    <Balance
+      id="balance"
+      style={{ backgroundPosition: `0 -${offsetFromBalance(balance)}px` }}
+    />
+  );
 });
 
-export default connect(mapStateToProps)(MainBalance);
+export default MainBalance;

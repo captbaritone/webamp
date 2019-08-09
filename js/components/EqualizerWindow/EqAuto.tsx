@@ -1,34 +1,15 @@
 import React from "react";
-import { connect } from "react-redux";
 import classnames from "classnames";
 
-import { SET_EQ_AUTO } from "../../actionTypes";
-import { Dispatch, AppState } from "../../types";
+import * as Actions from "../../actionCreators";
+import { useTypedSelector, useActionCreator } from "../../hooks";
 
-interface StateProps {
-  auto: boolean;
-}
+const EqAuto = React.memo(() => {
+  const selected = useTypedSelector(state => state.equalizer.auto);
+  const toggleAuto = useActionCreator(Actions.toggleEqAuto);
+  return (
+    <div id="auto" className={classnames({ selected })} onClick={toggleAuto} />
+  );
+});
 
-interface DispatchProps {
-  toggleAuto(): void;
-}
-
-const EqAuto = (props: StateProps & DispatchProps) => {
-  const className = classnames({ selected: props.auto });
-  return <div id="auto" className={className} onClick={props.toggleAuto} />;
-};
-
-const mapStateToProps = (state: AppState): StateProps => {
-  return { auto: state.equalizer.auto };
-};
-const mapDispatchToProps = () => (dispatch: Dispatch): DispatchProps => {
-  // We don't support auto.
-  return {
-    toggleAuto: () => dispatch({ type: SET_EQ_AUTO, value: false }),
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EqAuto);
+export default EqAuto;

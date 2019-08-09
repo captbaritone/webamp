@@ -1,27 +1,16 @@
 import React from "react";
-import { connect } from "react-redux";
 import classnames from "classnames";
-import { AppState } from "../../types";
 import * as Selectors from "../../selectors";
+import { useTypedSelector } from "../../hooks";
 
-interface Props {
-  channels: number | null;
-}
+const MonoStereo = React.memo(() => {
+  const channels = useTypedSelector(Selectors.getChannels);
+  return (
+    <div className="mono-stereo">
+      <div id="stereo" className={classnames({ selected: channels === 2 })} />
+      <div id="mono" className={classnames({ selected: channels === 1 })} />
+    </div>
+  );
+});
 
-const MonoStereo = (props: Props) => (
-  <div className="mono-stereo">
-    <div
-      id="stereo"
-      className={classnames({ selected: props.channels === 2 })}
-    />
-    <div id="mono" className={classnames({ selected: props.channels === 1 })} />
-  </div>
-);
-
-const mapStateToProps = (state: AppState): Props => {
-  return {
-    channels: Selectors.getChannels(state),
-  };
-};
-
-export default connect(mapStateToProps)(MonoStereo);
+export default MonoStereo;
