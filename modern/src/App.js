@@ -197,6 +197,9 @@ function Layer({ node, id, image, children, x, y }) {
   if (img.h !== undefined) {
     params.height = Number(img.h);
   }
+  if (id === "volumethumb") {
+    params.border = "1px solid black";
+  }
   return (
     <>
       <img
