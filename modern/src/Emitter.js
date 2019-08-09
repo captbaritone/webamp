@@ -18,7 +18,7 @@ class Emitter {
   }
 
   trigger(eventName, ...args) {
-    this._globalHooks.map(cb => cb(eventName, args));
+    this._globalHooks.map(cb => cb(eventName, ...args));
     if (this._hooks[eventName] == null) {
       return;
     }
