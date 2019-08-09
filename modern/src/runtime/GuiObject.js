@@ -35,6 +35,7 @@ class GuiObject extends MakiObject {
 
   setxmlparam(param, value) {
     this.attributes[param] = value;
+    this.js_trigger("js_update");
     return value;
   }
 
@@ -55,19 +56,19 @@ class GuiObject extends MakiObject {
   }
 
   gettop() {
-    return this.attributes.y || 0;
+    return Number(this.attributes.y) || 0;
   }
 
   getleft() {
-    return this.attributes.x || 0;
+    return Number(this.attributes.x) || 0;
   }
 
   getheight() {
-    return this.attributes.h || 0;
+    return Number(this.attributes.h) || 0;
   }
 
   getwidth() {
-    return this.attributes.w || 0;
+    return Number(this.attributes.w) || 0;
   }
 
   resize(x, y, w, h) {
