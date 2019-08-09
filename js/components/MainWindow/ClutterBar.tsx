@@ -1,53 +1,45 @@
 import React from "react";
-import { connect } from "react-redux";
 import classnames from "classnames";
 
-import { SET_FOCUS, UNSET_FOCUS } from "../../actionTypes";
-import { toggleDoubleSizeMode } from "../../actionCreators";
-import { AppState, Dispatch } from "../../types";
+import * as Actions from "../../actionCreators";
+import { Action, Dispatch, Thunk } from "../../types";
 import OptionsContextMenu from "../OptionsContextMenu";
 import ContextMenuTarget from "../ContextMenuTarget";
+import { useActionCreator, useTypedSelector } from "../../hooks";
+import * as Selectors from "../../selectors";
 
-interface StateProps {
-  doubled: boolean;
+function setFocusDouble(): Action {
+  return Actions.setFocus("double");
 }
 
-interface DispatchProps {
-  handleMouseDown(): void;
-  handleMouseUp(): void;
+function mouseUp(): Thunk {
+  return dispatch => {
+    dispatch(Actions.toggleDoubleSizeMode());
+    dispatch(Actions.unsetFocus());
+  };
 }
 
-const ClutterBar = (props: StateProps & DispatchProps) => (
-  <div id="clutter-bar">
-    <ContextMenuTarget bottom handle={<div id="button-o" />}>
-      <OptionsContextMenu />
-    </ContextMenuTarget>
-    <div id="button-a" />
-    <div id="button-i" />
-    <div
-      title={"Toggle Doublesize Mode"}
-      id="button-d"
-      className={classnames({ selected: props.doubled })}
-      onMouseUp={props.handleMouseUp}
-      onMouseDown={props.handleMouseDown}
-    />
-    <div id="button-v" />
-  </div>
-);
-
-const mapStateToProps = (state: AppState): StateProps => ({
-  doubled: state.display.doubled,
+const ClutterBar = React.memo(() => {
+  const handleMouseDown = useActionCreator(setFocusDouble);
+  const handleMouseUp = useActionCreator(mouseUp);
+  const doubled = useTypedSelector(Selectors.getDoubled);
+  return (
+    <div id="clutter-bar">
+      <ContextMenuTarget bottom handle={<div id="button-o" />}>
+        <OptionsContextMenu />
+      </ContextMenuTarget>
+      <div id="button-a" />
+      <div id="button-i" />
+      <div
+        title={"Toggle Doublesize Mode"}
+        id="button-d"
+        className={classnames({ selected: doubled })}
+        onMouseUp={handleMouseUp}
+        onMouseDown={handleMouseDown}
+      />
+      <div id="button-v" />
+    </div>
+  );
 });
 
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-  handleMouseDown: () => dispatch({ type: SET_FOCUS, input: "double" }),
-  handleMouseUp: () => {
-    dispatch(toggleDoubleSizeMode());
-    dispatch({ type: UNSET_FOCUS });
-  },
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ClutterBar);
+export default ClutterBar;

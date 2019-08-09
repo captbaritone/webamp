@@ -139,14 +139,6 @@ describe("can serialize", () => {
   });
 
   testSerialization({
-    name: "equalizer auto",
-    // @ts-ignore
-    action: Actions.toggleEqAuto(),
-    selector: Selectors.getEqualizerAuto,
-    expected: true,
-  });
-
-  testSerialization({
     name: "equalizer band",
     action: Actions.setEqBand(60, 100),
     selector: state => Selectors.getSliders(state)[60],

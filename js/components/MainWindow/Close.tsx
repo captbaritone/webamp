@@ -1,23 +1,12 @@
 import React from "react";
-import { connect } from "react-redux";
 import ClickedDiv from "../ClickedDiv";
+import { useActionCreator } from "../../hooks";
 
-import { close } from "../../actionCreators";
-import { Dispatch } from "../../types";
+import * as Actions from "../../actionCreators";
 
-interface DispatchProps {
-  onClick: () => void;
-}
+const Close = React.memo(() => {
+  const close = useActionCreator(Actions.close);
+  return <ClickedDiv id="close" onClick={close} title="Close" />;
+});
 
-const Close = ({ onClick }: DispatchProps) => (
-  <ClickedDiv id="close" onClick={onClick} title="Close" />
-);
-
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
-  return { onClick: () => dispatch(close()) };
-};
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(Close);
+export default Close;
