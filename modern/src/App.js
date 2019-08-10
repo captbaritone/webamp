@@ -33,7 +33,9 @@ function setupUpdates(node) {
   });
 }
 
-function handleMouseEventDispatch(node, event, eventName) {
+function handleMouseEventDispatch(node, event, eventType, eventName) {
+  event.stopPropagation();
+
   let relativeParent = event.target.offsetParent;
   while (
     relativeParent.offsetParent &&
@@ -44,17 +46,44 @@ function handleMouseEventDispatch(node, event, eventName) {
   const x = event.clientX - relativeParent.offsetLeft;
   const y = event.clientY - relativeParent.offsetTop;
   node.js_trigger(eventName, x, y);
+
+  event.target.style.display = "none";
+  const newNode = document.elementFromPoint(event.clientX, event.clientY);
+  if (newNode.style.position === "absolute") {
+    const newEvent = document.createEvent("MouseEvents");
+    newEvent.initMouseEvent(
+      eventType,
+      event.canBubble,
+      event.cancelable,
+      event.view,
+      event.detail,
+      event.screenX,
+      event.screenY,
+      event.clientX,
+      event.clientY,
+      event.ctrlKey,
+      event.altKey,
+      event.shiftKey,
+      event.metaKey,
+      event.button,
+      event.relatedTarget
+    );
+    newNode.dispatchEvent(newEvent);
+  }
+  event.target.style.display = "";
 }
 
 function handleMouseButtonEventDispatch(
   node,
   event,
+  eventType,
   leftEventName,
   rightEventName
 ) {
   handleMouseEventDispatch(
     node,
     event,
+    eventType,
     event.button === 2 ? rightEventName : leftEventName
   );
 }
@@ -67,6 +96,7 @@ function GuiObjectEvents({ Component, node, children }) {
         handleMouseButtonEventDispatch(
           node,
           e,
+          "onMouseDown",
           "onLeftButtonDown",
           "onRightButtonDown"
         )
@@ -75,6 +105,7 @@ function GuiObjectEvents({ Component, node, children }) {
         handleMouseButtonEventDispatch(
           node,
           e,
+          "onMouseUp",
           "onLeftButtonUp",
           "onRightButtonUp"
         )
@@ -83,16 +114,25 @@ function GuiObjectEvents({ Component, node, children }) {
         handleMouseButtonEventDispatch(
           node,
           e,
+          "onDoubleClick",
           "onLeftButtonDblClk",
           "onRightButtonDblClk"
         )
       }
-      onMouseMove={e => handleMouseEventDispatch(node, e, "onMouseMove")}
-      onMouseEnter={e => handleMouseEventDispatch(node, e, "onEnterArea")}
-      onMouseLeave={e => handleMouseEventDispatch(node, e, "onLeaveArea")}
+      onMouseMove={e =>
+        handleMouseEventDispatch(node, e, "onMouseMove", "onMouseMove")
+      }
+      onMouseEnter={e =>
+        handleMouseEventDispatch(node, e, "onMouseEnter", "onEnterArea")
+      }
+      onMouseLeave={e =>
+        handleMouseEventDispatch(node, e, "onMouseLeave", "onLeaveArea")
+      }
       onDragEnter={e => node.js_trigger("onDragEnter")}
       onDragLeave={e => node.js_trigger("onDragLeave")}
-      onDragOver={e => handleMouseEventDispatch(node, e, "onDragOver")}
+      onDragOver={e =>
+        handleMouseEventDispatch(node, e, "onDragOver", "onDragOver")
+      }
       onKeyUp={e => node.js_trigger("onKeyUp", e.keyCode)}
       onKeyDown={e => node.js_trigger("onKeyDown", e.keyCode)}
     >
