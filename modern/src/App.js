@@ -43,7 +43,7 @@ function handleMouseEventDispatch(node, event, eventName) {
 
   event.target.style.display = "none";
   const newNode = document.elementFromPoint(event.clientX, event.clientY);
-  if (newNode.style.position === "absolute") {
+  if (newNode !== document.body && newNode.tagName !== "HTML") {
     const newEvent = document.createEvent("MouseEvents");
     newEvent.initMouseEvent(
       event.nativeEvent.type,
