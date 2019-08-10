@@ -28,8 +28,11 @@ function setupUpdates(node) {
 }
 
 function handleMouseEventDispatch(node, event, eventName) {
+  // We manually propagate the event using x/y coordinates to handle absolute positioned elements
   event.stopPropagation();
 
+  // In order to properly calculate the x/y coordinates like MAKI does we need
+  // to find the top level absolute positioned element and calculate based off of that
   let relativeParent = event.target.offsetParent;
   while (
     relativeParent.offsetParent &&
@@ -41,6 +44,9 @@ function handleMouseEventDispatch(node, event, eventName) {
   const y = event.clientY - relativeParent.offsetTop;
   node.js_trigger(eventName, x, y);
 
+  // We need to hide the current element to calcualte the other nodes that are behind it
+  // This wouldn't normally be necessary with bubbling, but we need to handle absolute
+  // positioned sibling elements to replicate how MAKI works
   event.target.style.display = "none";
   const newNode = document.elementFromPoint(event.clientX, event.clientY);
   if (newNode !== document.body && newNode.tagName !== "HTML") {
