@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 import JSZip from "jszip";
 import "./App.css";
 import * as Utils from "./utils";
@@ -24,13 +24,7 @@ async function getSkin() {
 
 function setupUpdates(node) {
   const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
-  let once = true;
-  node.js_listen("js_update", () => {
-    if (once) {
-      once = false;
-      forceUpdate();
-    }
-  });
+  useEffect(() => node.js_listen("js_update", forceUpdate));
 }
 
 function handleMouseEventDispatch(node, event, eventName) {
