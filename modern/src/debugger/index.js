@@ -1,5 +1,5 @@
 import React from "react";
-import run from "../maki-interpreter/interpreter";
+import { run } from "../maki-interpreter/virtualMachine";
 import System from "../runtime/System";
 import runtime from "../runtime";
 import Variable from "./Variable";

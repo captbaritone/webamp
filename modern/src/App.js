@@ -5,7 +5,7 @@ import * as Utils from "./utils";
 import initialize from "./initialize";
 import System from "./runtime/System";
 import runtime from "./runtime";
-import interpret from "./maki-interpreter/interpreter";
+import { run } from "./maki-interpreter/virtualMachine";
 // import simpleSkin from "../skins/simple.wal";
 import cornerSkin from "../skins/CornerAmp_Redux.wal";
 
@@ -315,7 +315,7 @@ function App() {
   React.useEffect(() => {
     getSkin().then(async root => {
       // Execute scripts
-      await Utils.asyncTreeFlatMap(root, async node => {
+      await Utils.asyncTreeFlatMap(root, node => {
         switch (node.name) {
           case "groupdef": {
             // removes groupdefs from consideration (only run scripts when actually referenced by group)
@@ -332,7 +332,7 @@ function App() {
               "WasabiXML",
             ]);
             const system = new System(scriptGroup);
-            await interpret({
+            run({
               runtime,
               data: node.js_annotations.script,
               system,
