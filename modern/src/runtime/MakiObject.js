@@ -29,6 +29,10 @@ class MakiObject {
     this._emitter.trigger(eventName, ...args);
   }
 
+  js_listen(eventName, cb) {
+    return this._emitter.listen(eventName, cb);
+  }
+
   js_listenToAll(cb) {
     return this._emitter.listenToAll(cb);
   }

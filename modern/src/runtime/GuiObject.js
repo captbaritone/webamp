@@ -35,6 +35,7 @@ class GuiObject extends MakiObject {
 
   setxmlparam(param, value) {
     this.attributes[param] = value;
+    this.js_trigger("js_update");
     return value;
   }
 
