@@ -20,7 +20,7 @@ class Variable {
     if (this.global && this.typeName === "OBJECT" && value !== null) {
       this._unsubscribeFromValue = value.js_listenToAll(
         (eventName, ...args) => {
-          this._emitter.trigger(eventName, ...args);
+          this._emitter.trigger(eventName.toLowerCase(), ...args);
         }
       );
     }
@@ -28,7 +28,7 @@ class Variable {
   }
 
   hook(eventName, cb) {
-    this._emitter.listen(eventName, cb);
+    this._emitter.listen(eventName.toLowerCase(), cb);
   }
 
   dispose() {
