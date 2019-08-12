@@ -28,9 +28,13 @@ function useJsUpdates(node) {
 }
 
 function handleMouseEventDispatch(node, event, eventName) {
-  const rect = event.target.getBoundingClientRect();
-  const x = event.clientX - rect.left;
-  const y = event.clientY - rect.top;
+  event.stopPropagation();
+
+  // In order to properly calculate the x/y coordinates like MAKI does we need
+  // to find the container element and calculate based off of that
+  const container = Utils.findParentNodeOfType(node, ["container"]);
+  const x = event.clientX - container.getleft();
+  const y = event.clientY - container.gettop();
   node.js_trigger(eventName, x, y);
 
   if (event.nativeEvent.type === "mousedown") {
