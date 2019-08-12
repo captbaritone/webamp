@@ -27,6 +27,30 @@ function handleMouseEventDispatch(node, event, eventName) {
   const x = event.clientX - rect.left;
   const y = event.clientY - rect.top;
   node.js_trigger(eventName, x, y);
+
+  if (event.nativeEvent.type === "mousedown") {
+    // We need to persist the react event so we can access the target
+    event.persist();
+    document.addEventListener("mouseup", function globalMouseUp(ev) {
+      document.removeEventListener("mouseup", globalMouseUp);
+      // Create an object that looks and acts like an event, but has mixed
+      // properties from original mousedown event and new mouseup event
+      const fakeEvent = {
+        target: event.target,
+        clientX: ev.clientX,
+        clientY: ev.clientY,
+        nativeEvent: {
+          type: "mouseup",
+        },
+        stopPropagation: ev.stopPropagation.bind(ev),
+      };
+      handleMouseEventDispatch(
+        node,
+        fakeEvent,
+        eventName === "onLeftButtonDown" ? "onLeftButtonUp" : "onRightButtonUp"
+      );
+    });
+  }
 }
 
 function handleMouseButtonEventDispatch(
@@ -51,14 +75,6 @@ function GuiObjectEvents({ node, children }) {
           e,
           "onLeftButtonDown",
           "onRightButtonDown"
-        )
-      }
-      onMouseUp={e =>
-        handleMouseButtonEventDispatch(
-          node,
-          e,
-          "onLeftButtonUp",
-          "onRightButtonUp"
         )
       }
       onDoubleClick={e =>
