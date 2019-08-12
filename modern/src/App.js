@@ -1,29 +1,10 @@
 import React, { useEffect, useReducer } from "react";
-import JSZip from "jszip";
 import "./App.css";
-import * as Utils from "./utils";
-import initialize from "./initialize";
-import System from "./runtime/System";
-import runtime from "./runtime";
-import { run } from "./maki-interpreter/virtualMachine";
 import * as Actions from "./Actions";
 import * as Selectors from "./Selectors";
 // import simpleSkin from "../skins/simple.wal";
 import cornerSkin from "../skins/CornerAmp_Redux.wal";
 import { useDispatch, useSelector } from "react-redux";
-
-async function getSkin() {
-  const resp = await fetch(cornerSkin);
-  // const resp = await fetch(simpleSkin);
-  const blob = await resp.blob();
-  const zip = await JSZip.loadAsync(blob);
-  const skinXml = await Utils.inlineIncludes(
-    await Utils.readXml(zip, "skin.xml"),
-    zip
-  );
-
-  return await initialize(zip, skinXml);
-}
 
 function useJsUpdates(node) {
   const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
@@ -341,49 +322,13 @@ function XmlNode({ node }) {
 
 function App() {
   const dispatch = useDispatch();
-  const data = useSelector(Selectors.getMakiTree);
+  const root = useSelector(Selectors.getMakiTree);
   React.useEffect(() => {
-    getSkin().then(async root => {
-      // Execute scripts
-      await Utils.asyncTreeFlatMap(root, node => {
-        switch (node.name) {
-          case "groupdef": {
-            // removes groupdefs from consideration (only run scripts when actually referenced by group)
-            return {};
-          }
-          case "script": {
-            // TODO: stop ignoring standardframe
-            if (node.attributes.file.endsWith("standardframe.maki")) {
-              break;
-            }
-            const scriptGroup = Utils.findParentNodeOfType(node, [
-              "group",
-              "WinampAbstractionLayer",
-              "WasabiXML",
-            ]);
-            const system = new System(scriptGroup);
-            run({
-              runtime,
-              data: node.js_annotations.script,
-              system,
-              log: false,
-            });
-            return node;
-          }
-          default: {
-            return node;
-          }
-        }
-      });
-
-      dispatch(Actions.setMakiTree(root));
-    });
+    dispatch(Actions.gotSkinUrl(cornerSkin));
   }, []);
-  if (data == null) {
+  if (root == null) {
     return <h1>Loading...</h1>;
   }
-  const root = data;
-
   return <XmlNode node={root} />;
 }
 

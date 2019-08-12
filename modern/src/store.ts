@@ -1,5 +1,6 @@
 import { ModernAppState, ModernAction } from "./types";
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
 
 const defaultState = { makiTree: null };
 
@@ -16,5 +17,5 @@ function reducer(
 }
 
 export function create() {
-  return createStore(reducer);
+  return createStore(reducer, applyMiddleware(thunk));
 }
