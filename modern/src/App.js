@@ -6,8 +6,11 @@ import initialize from "./initialize";
 import System from "./runtime/System";
 import runtime from "./runtime";
 import { run } from "./maki-interpreter/virtualMachine";
+import * as Actions from "./Actions";
+import * as Selectors from "./Selectors";
 // import simpleSkin from "../skins/simple.wal";
 import cornerSkin from "../skins/CornerAmp_Redux.wal";
+import { useDispatch, useSelector } from "react-redux";
 
 async function getSkin() {
   const resp = await fetch(cornerSkin);
@@ -337,7 +340,8 @@ function XmlNode({ node }) {
 }
 
 function App() {
-  const [data, setData] = React.useState(null);
+  const dispatch = useDispatch();
+  const data = useSelector(Selectors.getMakiTree);
   React.useEffect(() => {
     getSkin().then(async root => {
       // Execute scripts
@@ -372,7 +376,7 @@ function App() {
         }
       });
 
-      setData(root);
+      dispatch(Actions.setMakiTree(root));
     });
   }, []);
   if (data == null) {
