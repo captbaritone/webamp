@@ -22,7 +22,7 @@ async function getSkin() {
   return await initialize(zip, skinXml);
 }
 
-function setupUpdates(node) {
+function useJsUpdates(node) {
   const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
   useEffect(() => node.js_listen("js_update", forceUpdate));
 }
@@ -48,7 +48,7 @@ function handleMouseButtonEventDispatch(
 }
 
 function GuiObjectEvents({ Component, node, children }) {
-  setupUpdates(node);
+  useJsUpdates(node);
   return (
     <div
       onMouseDown={e =>
