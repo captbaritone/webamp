@@ -8,7 +8,6 @@ import runtime from "./runtime";
 
 async function getMakiTreeFromUrl(skinUrl: string): Promise<MakiTree> {
   const resp = await fetch(skinUrl);
-  // const resp = await fetch(simpleSkin);
   const blob = await resp.blob();
   const zip = await JSZip.loadAsync(blob);
   const skinXml = await Utils.inlineIncludes(
