@@ -13,7 +13,13 @@ function runGeneratorUntilReturn(gen) {
   return val.value;
 }
 
-export function run({ runtime, data, system, log, debugHandler }) {
+export function run({
+  runtime,
+  data,
+  system,
+  log,
+  debugHandler = runGeneratorUntilReturn,
+}) {
   const program = parse(data);
 
   // Replace class hashes with actual JavaScript classes from the runtime
@@ -31,8 +37,6 @@ export function run({ runtime, data, system, log, debugHandler }) {
     return resolved;
   });
 
-  const handler = debugHandler || runGeneratorUntilReturn;
-
   // Bind top level hooks.
   program.bindings.forEach(binding => {
     const { commandOffset, variableOffset, methodOffset } = binding;
@@ -47,7 +51,7 @@ export function run({ runtime, data, system, log, debugHandler }) {
       // complete (the generator is "done"). In production this is done
       // synchronously. In the debugger, if execution is paused, it's done
       // async.
-      handler(interpret(commandOffset, program, args.reverse()));
+      debugHandler(interpret(commandOffset, program, args.reverse()));
     });
   });
 
