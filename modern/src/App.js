@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useReducer } from "react";
 import JSZip from "jszip";
 import "./App.css";
 import * as Utils from "./utils";
@@ -22,6 +22,11 @@ async function getSkin() {
   return await initialize(zip, skinXml);
 }
 
+function setupUpdates(node) {
+  const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
+  useEffect(() => node.js_listen("js_update", forceUpdate));
+}
+
 function handleMouseEventDispatch(node, event, eventName) {
   const rect = event.target.getBoundingClientRect();
   const x = event.clientX - rect.left;
@@ -42,7 +47,8 @@ function handleMouseButtonEventDispatch(
   );
 }
 
-function GuiObjectEvents({ node, children }) {
+function GuiObjectEvents({ Component, node, children }) {
+  setupUpdates(node);
   return (
     <div
       onMouseDown={e =>
@@ -78,7 +84,9 @@ function GuiObjectEvents({ node, children }) {
       onKeyUp={e => node.js_trigger("onKeyUp", e.keyCode)}
       onKeyDown={e => node.js_trigger("onKeyDown", e.keyCode)}
     >
-      {children}
+      <Component node={node} {...node.attributes}>
+        {children}
+      </Component>
     </div>
   );
 }
@@ -302,10 +310,8 @@ function XmlNode({ node }) {
     return null;
   }
   return (
-    <GuiObjectEvents node={node}>
-      <Component node={node} {...attributes}>
-        {children}
-      </Component>
+    <GuiObjectEvents Component={Component} node={node}>
+      {children}
     </GuiObjectEvents>
   );
 }
