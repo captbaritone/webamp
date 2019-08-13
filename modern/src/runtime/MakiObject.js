@@ -2,7 +2,8 @@ import Emitter from "../Emitter";
 import { findElementById, findGroupDefById } from "../utils";
 
 class MakiObject {
-  constructor(node, parent, annotations = {}) {
+  constructor(node, parent, annotations = {}, store) {
+    this._store = store;
     if (node) {
       this.attributes = node.attributes || {};
       this.name = node.name;

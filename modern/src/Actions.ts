@@ -1,4 +1,4 @@
-import { MakiTree, ModernAction } from "./types";
+import { MakiTree, ModernAction, ModernStore } from "./types";
 import JSZip from "jszip";
 import * as Utils from "./utils";
 import initialize from "./initialize";
@@ -22,7 +22,7 @@ export function setMakiTree(makiTree: MakiTree): ModernAction {
   return { type: "SET_MAKI_TREE", makiTree };
 }
 
-export function gotSkinUrl(skinUrl: string) {
+export function gotSkinUrl(skinUrl: string, store: ModernStore) {
   return async dispatch => {
     const makiTree = await getMakiTreeFromUrl(skinUrl);
     // Execute scripts
@@ -42,7 +42,7 @@ export function gotSkinUrl(skinUrl: string) {
             "WinampAbstractionLayer",
             "WasabiXML",
           ]);
-          const system = new System(scriptGroup);
+          const system = new System(scriptGroup, store);
           run({
             runtime,
             data: node.js_annotations.script,
@@ -59,4 +59,8 @@ export function gotSkinUrl(skinUrl: string) {
 
     dispatch(setMakiTree(makiTree));
   };
+}
+
+export function setVolume(volume: number) {
+  return { type: "SET_VOLUME", volume };
 }

@@ -1,19 +1,18 @@
 import Group from "./Group";
 import MakiObject from "./MakiObject";
 import { findDescendantByTypeAndId, unimplementedWarning } from "../utils";
+import * as Actions from "../Actions";
+import * as Selectors from "../Selectors";
 
 class System extends MakiObject {
-  constructor(scriptGroup = new Group()) {
-    super(null, null);
+  constructor(scriptGroup = new Group(), store) {
+    super(null, null, {}, store);
 
     this.scriptGroup = scriptGroup;
     this.root = scriptGroup;
     while (this.root.parent) {
       this.root = this.root.parent;
     }
-
-    // These properties will probably live somewhere else eventually
-    this.volume = 127;
   }
 
   /**
@@ -81,11 +80,11 @@ class System extends MakiObject {
 
   // Seems like volume is 0-255
   getvolume() {
-    return this.volume;
+    return Selectors.getVolume(this._store.getState());
   }
 
-  setvolume(vol) {
-    this.volume = vol;
+  setvolume(volume) {
+    return this._store.dispatch(Actions.setVolume(volume));
   }
 
   getplayitemlength() {
