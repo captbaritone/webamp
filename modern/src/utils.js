@@ -101,16 +101,29 @@ export function unimplementedWarning(name) {
 }
 
 // Operations on trees
+function isNodeOfType(node, type) {
+  const isTypeArray = Array.isArray(type);
+  return (
+    (!isTypeArray && node.name === type) ||
+    (isTypeArray && type.includes(node.name))
+  );
+}
+
 export function findParentNodeOfType(node, type) {
   let n = node;
   while (n.parent) {
     n = n.parent;
-    if (
-      (!Array.isArray(type) && n.name === type) ||
-      (Array.isArray(type) && type.includes(n.name))
-    ) {
+    if (isNodeOfType(n, type)) {
       return n;
     }
+  }
+}
+
+export function findParentOrCurrentNodeOfType(node, type) {
+  if (isNodeOfType(node, type)) {
+    return node;
+  } else {
+    return findParentNodeOfType(node, type);
   }
 }
 
