@@ -32,7 +32,7 @@ function handleMouseEventDispatch(node, event, eventName) {
 
   // In order to properly calculate the x/y coordinates like MAKI does we need
   // to find the container element and calculate based off of that
-  const container = Utils.findParentNodeOfType(node, ["container"]);
+  const container = Utils.findParentOrCurrentNodeOfType(node, "container");
   const x = event.clientX - container.getleft();
   const y = event.clientY - container.gettop();
   node.js_trigger(eventName, x, y);
