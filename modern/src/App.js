@@ -5,7 +5,7 @@ import * as Actions from "./Actions";
 import * as Selectors from "./Selectors";
 // import simpleSkin from "../skins/simple.wal";
 import cornerSkin from "../skins/CornerAmp_Redux.wal";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
 
 function useJsUpdates(node) {
   const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
@@ -323,9 +323,10 @@ function XmlNode({ node }) {
 
 function App() {
   const dispatch = useDispatch();
+  const store = useStore();
   const root = useSelector(Selectors.getMakiTree);
   React.useEffect(() => {
-    dispatch(Actions.gotSkinUrl(cornerSkin));
+    dispatch(Actions.gotSkinUrl(cornerSkin, store));
   }, []);
   if (root == null) {
     return <h1>Loading...</h1>;
