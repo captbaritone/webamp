@@ -1,4 +1,4 @@
-import { MakiTree, ModernAction, ModernStore } from "./types";
+import { MakiTree, ModernAction, ModernStore, XmlTree } from "./types";
 import JSZip from "jszip";
 import * as Utils from "./utils";
 import initialize from "./initialize";
@@ -6,25 +6,32 @@ import { run } from "./maki-interpreter/virtualMachine";
 import System from "./runtime/System";
 import runtime from "./runtime";
 
-async function getMakiTreeFromUrl(skinUrl: string): Promise<MakiTree> {
+async function getZipFromUrl(skinUrl: string): Promise<JSZip> {
   const resp = await fetch(skinUrl);
   const blob = await resp.blob();
-  const zip = await JSZip.loadAsync(blob);
-  const skinXml = await Utils.inlineIncludes(
-    await Utils.readXml(zip, "skin.xml"),
-    zip
-  );
-
-  return await initialize(zip, skinXml);
+  return JSZip.loadAsync(blob);
 }
 
 export function setMakiTree(makiTree: MakiTree): ModernAction {
   return { type: "SET_MAKI_TREE", makiTree };
 }
 
+export function setXmlTree(xmlTree: XmlTree): ModernAction {
+  return { type: "SET_XML_TREE", xmlTree };
+}
+
 export function gotSkinUrl(skinUrl: string, store: ModernStore) {
   return async dispatch => {
-    const makiTree = await getMakiTreeFromUrl(skinUrl);
+    const zip = await getZipFromUrl(skinUrl);
+
+    const xmlTree = await Utils.inlineIncludes(
+      await Utils.readXml(zip, "skin.xml"),
+      zip
+    );
+
+    dispatch(setXmlTree(xmlTree));
+
+    const makiTree = await initialize(zip, xmlTree);
     // Execute scripts
     await Utils.asyncTreeFlatMap(makiTree, node => {
       switch (node.name) {
