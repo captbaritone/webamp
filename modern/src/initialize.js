@@ -23,6 +23,9 @@ async function loadImage(imgUrl) {
     img.addEventListener("load", () => {
       resolve(img);
     });
+    img.addEventListener("error", e => {
+      reject(e);
+    });
     img.src = imgUrl;
   });
 }
