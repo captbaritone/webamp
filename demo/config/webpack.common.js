@@ -37,7 +37,7 @@ module.exports = {
         },
       },
       {
-        test: /\.(wsz|mp3|png|ico|jpg|svg)$/,
+        test: /\.(wsz|wal|mp3|png|ico|jpg|svg)$/,
         use: [
           {
             loader: "file-loader",
@@ -54,6 +54,12 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: "./index.html",
+      chunks: ["webamp"],
+    }),
+    new HtmlWebpackPlugin({
+      filename: "modern/index.html",
+      template: "../modern/index.html",
+      chunks: ["modern"],
     }),
     // Automatically generates the manifest.json file inside the built
     // directory, and injects a tag into the gererated index.html file
@@ -97,6 +103,7 @@ module.exports = {
   },
   entry: {
     webamp: ["./js/index.js"],
+    modern: ["../modern/src/index.js"],
   },
   context: path.resolve(__dirname, "../"),
   output: {

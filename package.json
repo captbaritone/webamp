@@ -20,7 +20,6 @@
     "prepublishOnly": "npm run build-library",
     "serve": "http-server ./demo/built",
     "start": "webpack-dev-server --open --config=demo/config/webpack.dev.js",
-    "modern": "webpack-dev-server --open --config=modern/config/webpack.modern.js",
     "stats": "webpack --config=demo/config/webpack.prod.js --json > stats.json",
     "stats-library": "webpack --config=config/webpack.library.js --json > stats.json",
     "test": "jest --config=config/jest.unit.js",
