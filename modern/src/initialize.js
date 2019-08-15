@@ -58,6 +58,8 @@ const schema = {
     "status",
     "albumart",
     "playlistplus",
+    "syscmds",
+    "guiobject",
   ],
   group: [
     "button",
@@ -108,6 +110,7 @@ const schema = {
     "truetypefont",
     "cursor",
     "elementalias",
+    "groupdef",
   ],
   skininfo: [
     "version",
@@ -135,6 +138,7 @@ const schema = {
     "container",
     "gammaset",
     "accelerators",
+    "color",
   ],
   gammaset: ["gammagroup"],
   accelerators: ["accelerator"],
@@ -145,9 +149,11 @@ const noop = (node, parent) => new MakiObject(node, parent);
 const parsers = {
   groupdef: (node, parent) => new JsGroupDef(node, parent),
   skininfo: noop,
+  guiobject: noop,
   version: noop,
   name: noop,
   comment: noop,
+  syscmds: noop,
   author: noop,
   email: noop,
   homepage: noop,
