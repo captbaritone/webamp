@@ -13,7 +13,7 @@ class Layout extends GuiObject {
   }
 
   getcontainer() {
-    return findParentNodeOfType(this, ["container"]);
+    return findParentNodeOfType(this, new Set(["container"]));
   }
 
   resize(x, y, w, h) {

@@ -49,11 +49,10 @@ function gotSkinZip(zip: JSZip, store: ModernStore) {
           if (node.attributes.file.endsWith("standardframe.maki")) {
             break;
           }
-          const scriptGroup = Utils.findParentNodeOfType(node, [
-            "group",
-            "WinampAbstractionLayer",
-            "WasabiXML",
-          ]);
+          const scriptGroup = Utils.findParentNodeOfType(
+            node,
+            new Set(["group", "WinampAbstractionLayer", "WasabiXML"])
+          );
           const system = new System(scriptGroup, store);
           run({
             runtime,
