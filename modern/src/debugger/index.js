@@ -35,8 +35,8 @@ function Wrapper() {
     <div
       {...getRootProps()}
       style={{
-        height: "100vh",
-        width: "100vw",
+        height: "100%",
+        width: "100%",
         backgroundColor: isDragActive ? "yellow" : "white",
       }}
     >

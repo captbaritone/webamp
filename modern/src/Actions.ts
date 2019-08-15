@@ -6,12 +6,6 @@ import { run } from "./maki-interpreter/virtualMachine";
 import System from "./runtime/System";
 import runtime from "./runtime";
 
-async function getZipFromUrl(skinUrl: string): Promise<JSZip> {
-  const resp = await fetch(skinUrl);
-  const blob = await resp.blob();
-  return JSZip.loadAsync(blob);
-}
-
 export function setMakiTree(makiTree: MakiTree): ModernAction {
   return { type: "SET_MAKI_TREE", makiTree };
 }
@@ -22,8 +16,19 @@ export function setXmlTree(xmlTree: XmlTree): ModernAction {
 
 export function gotSkinUrl(skinUrl: string, store: ModernStore) {
   return async dispatch => {
-    const zip = await getZipFromUrl(skinUrl);
+    const resp = await fetch(skinUrl);
+    dispatch(gotSkinBlob(await resp.blob(), store));
+  };
+}
 
+export function gotSkinBlob(blob: Blob, store: ModernStore) {
+  return async dispatch => {
+    dispatch(gotSkinZip(await JSZip.loadAsync(blob), store));
+  };
+}
+
+function gotSkinZip(zip: JSZip, store: ModernStore) {
+  return async dispatch => {
     const xmlTree = await Utils.inlineIncludes(
       await Utils.readXml(zip, "skin.xml"),
       zip
