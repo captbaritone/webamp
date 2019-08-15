@@ -24,8 +24,8 @@ class PopupMenu extends GuiObject {
     unimplementedWarning("checkcommand");
   }
 
-  popatmouse() {
-    unimplementedWarning("popatmouse");
+  *popatmouse() {
+    yield 3;
   }
 }
 

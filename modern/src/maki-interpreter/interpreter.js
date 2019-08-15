@@ -1,4 +1,5 @@
 import Variable from "./variable";
+import { isGeneratorFunction, unimplementedWarning } from "../utils";
 
 function coerceTypes(var1, var2, val1, val2) {
   if (var2.type === "INT") {
@@ -154,7 +155,12 @@ export function* interpret(start, program, stack = []) {
           methodArgs.push(aValue);
         }
         const obj = popStackValue();
-        stack.push(obj[methodName](...methodArgs));
+        if (isGeneratorFunction(obj[methodName])) {
+          const ret = obj[methodName](...methodArgs).next();
+          stack.push(ret.value);
+        } else {
+          stack.push(obj[methodName](...methodArgs));
+        }
         break;
       }
       // callGlobal
@@ -171,6 +177,12 @@ export function* interpret(start, program, stack = []) {
       case 33: {
         const aValue = popStackValue();
         return aValue;
+      }
+      // complete
+      case 40: {
+        // noop for now
+        unimplementedWarning("OPCODE: complete");
+        break;
       }
       // mov
       case 48: {
