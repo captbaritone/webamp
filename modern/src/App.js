@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import "./App.css";
 import * as Utils from "./utils";
 import * as Actions from "./Actions";
@@ -6,6 +6,9 @@ import * as Selectors from "./Selectors";
 // import simpleSkin from "../skins/simple.wal";
 import cornerSkin from "../skins/CornerAmp_Redux.wal";
 import { useDispatch, useSelector, useStore } from "react-redux";
+import DropTarget from "../../js/components/DropTarget";
+import Debugger from "./debugger";
+import Sidebar from "./Sidebar";
 
 function useJsUpdates(node) {
   const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
@@ -327,11 +330,25 @@ function App() {
   const root = useSelector(Selectors.getMakiTree);
   React.useEffect(() => {
     dispatch(Actions.gotSkinUrl(cornerSkin, store));
-  }, []);
+  }, [store]);
   if (root == null) {
     return <h1>Loading...</h1>;
   }
-  return <XmlNode node={root} />;
+  return (
+    <div style={{ width: "100vw", height: "100vh", display: "flex" }}>
+      <DropTarget
+        style={{ width: "100%", height: "100%" }}
+        handleDrop={e => {
+          dispatch(Actions.gotSkinBlob(e.dataTransfer.files[0]));
+        }}
+      >
+        <XmlNode node={root} />
+      </DropTarget>
+      <Sidebar>
+        <Debugger />
+      </Sidebar>
+    </div>
+  );
 }
 
 export default App;
