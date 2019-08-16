@@ -49,10 +49,12 @@ class GuiObject extends MakiObject {
 
   show() {
     this.visible = true;
+    this.parent.js_trigger("js_update");
   }
 
   hide() {
     this.visible = false;
+    this.parent.js_trigger("js_update");
   }
 
   gettop() {

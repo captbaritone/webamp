@@ -147,6 +147,11 @@ export function* interpret(start, program, stack = []) {
         // This is a bit awkward. Because the variables are stored on the stack
         // before the object, we have to find the number of arguments without
         // actually having access to the object instance.
+        if (!klass.prototype[methodName]) {
+          throw new Error(
+            `Need to add missing function (${methodName}) to ${klass.name}`
+          );
+        }
         let argCount = klass.prototype[methodName].length;
 
         const methodArgs = [];
@@ -307,7 +312,8 @@ export function* interpret(start, program, stack = []) {
       case 96: {
         const classesOffset = command.arg;
         const Klass = classes[classesOffset];
-        const klassInst = new Klass();
+        const system = variables[0].getValue();
+        const klassInst = new Klass(null, system.scriptGroup);
         stack.push(klassInst);
         break;
       }

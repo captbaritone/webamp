@@ -2,6 +2,13 @@ import GuiObject from "./GuiObject";
 import { unimplementedWarning } from "../utils";
 
 class PopupMenu extends GuiObject {
+  constructor(node, parent) {
+    super(node, parent);
+
+    this.commands = [];
+    this.resolveCmdSelection = null;
+  }
+
   /**
    * getclassname()
    *
@@ -13,11 +20,16 @@ class PopupMenu extends GuiObject {
   }
 
   addcommand(txt, id, checked, disabled) {
-    unimplementedWarning("addcommand");
+    this.commands.push({
+      name: txt,
+      id,
+      checked,
+      disabled,
+    });
   }
 
   addseparator() {
-    unimplementedWarning("addseparator");
+    this.commands.push({ id: "separator" });
   }
 
   checkcommand(id, check) {
@@ -26,9 +38,14 @@ class PopupMenu extends GuiObject {
 
   popatmouse() {
     return new Promise(resolve => {
-      setTimeout(() => {
-        resolve(2);
-      }, 2000);
+      this.resolveCmdSelection = value => {
+        this.parent.js_removeChild(this);
+        this.parent.js_trigger("js_update");
+        resolve(value);
+      };
+
+      this.parent.js_addChild(this);
+      this.parent.js_trigger("js_update");
     });
   }
 }
