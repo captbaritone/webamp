@@ -148,22 +148,25 @@ function Layout({
   }
 
   return (
-    <>
-      <img
-        data-node-type="layout"
-        data-node-id={id}
-        src={image.imgUrl}
-        draggable={false}
-        style={{
-          minWidth: minimum_w == null ? null : Number(minimum_w),
-          minHeight: minimum_h == null ? null : Number(minimum_h),
-          maxWidth: maximum_w == null ? null : Number(maximum_w),
-          maxHeight: maximum_h == null ? null : Number(maximum_h),
-          position: "absolute",
-        }}
-      />
+    <div
+      data-node-type="layout"
+      data-node-id={id}
+      src={image.imgUrl}
+      draggable={false}
+      style={{
+        backgroundImage: `url(${image.imgUrl})`,
+        width: image.w,
+        height: image.h,
+        // TODO: This combo of height/minHeight ect is a bit odd. How should we combine these?
+        minWidth: minimum_w == null ? null : Number(minimum_w),
+        minHeight: minimum_h == null ? null : Number(minimum_h),
+        maxWidth: maximum_w == null ? null : Number(maximum_w),
+        maxHeight: maximum_h == null ? null : Number(maximum_h),
+        position: "absolute",
+      }}
+    >
       {children}
-    </>
+    </div>
   );
 }
 
@@ -196,17 +199,18 @@ function Layer({ node, id, image, children, x, y }) {
   if (img.h !== undefined) {
     params.height = Number(img.h);
   }
+  if (img.imgUrl !== undefined) {
+    params.backgroundImage = `url(${img.imgUrl}`;
+  }
   return (
-    <>
-      <img
-        data-node-type="Layer"
-        data-node-id={id}
-        src={img.imgUrl}
-        draggable={false}
-        style={{ position: "absolute", ...params }}
-      />
+    <div
+      data-node-type="Layer"
+      data-node-id={id}
+      draggable={false}
+      style={{ position: "absolute", ...params }}
+    >
       {children}
-    </>
+    </div>
   );
 }
 
