@@ -156,7 +156,7 @@ export function* interpret(start, program, stack = []) {
         }
         const obj = popStackValue();
         const ret = obj[methodName](...methodArgs);
-        if (ret && isPromise(ret)) {
+        if (isPromise(ret)) {
           stack.push(yield ret);
         } else {
           stack.push(ret);

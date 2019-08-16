@@ -1,7 +1,7 @@
 import { xml2js } from "xml-js";
 
 export function isPromise(obj) {
-  return "function" == typeof obj.then;
+  return obj && typeof obj.then === "function";
 }
 
 export function getCaseInsensitveFile(zip, filename) {

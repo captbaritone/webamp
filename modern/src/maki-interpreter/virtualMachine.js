@@ -10,7 +10,7 @@ async function runGeneratorUntilReturn(gen) {
   let val = gen.next();
   while (!val.done) {
     val = gen.next();
-    if (val.value && isPromise(val.value)) {
+    if (isPromise(val.value)) {
       gen.next(await val.value);
     }
   }
