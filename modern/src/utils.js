@@ -1,19 +1,7 @@
 import { xml2js } from "xml-js";
 
-// From https://github.com/tj/co
-function isGenerator(obj) {
-  return "function" == typeof obj.next && "function" == typeof obj.throw;
-}
-
-export function isGeneratorFunction(obj) {
-  var constructor = obj.constructor;
-  if (!constructor) return false;
-  if (
-    "GeneratorFunction" === constructor.name ||
-    "GeneratorFunction" === constructor.displayName
-  )
-    return true;
-  return isGenerator(constructor.prototype);
+export function isPromise(obj) {
+  return "function" == typeof obj.then;
 }
 
 export function getCaseInsensitveFile(zip, filename) {

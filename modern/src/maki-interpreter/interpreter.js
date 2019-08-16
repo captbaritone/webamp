@@ -1,5 +1,5 @@
 import Variable from "./variable";
-import { isGeneratorFunction, unimplementedWarning } from "../utils";
+import { isPromise, unimplementedWarning } from "../utils";
 
 function coerceTypes(var1, var2, val1, val2) {
   if (var2.type === "INT") {
@@ -155,11 +155,11 @@ export function* interpret(start, program, stack = []) {
           methodArgs.push(aValue);
         }
         const obj = popStackValue();
-        if (isGeneratorFunction(obj[methodName])) {
-          const ret = obj[methodName](...methodArgs).next();
-          stack.push(ret.value);
+        const ret = obj[methodName](...methodArgs);
+        if (ret && isPromise(ret)) {
+          stack.push(yield ret);
         } else {
-          stack.push(obj[methodName](...methodArgs));
+          stack.push(ret);
         }
         break;
       }
