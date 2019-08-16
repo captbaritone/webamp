@@ -10,7 +10,7 @@ class MakiObject {
     } else {
       // When dynamically creating an object with `new` we have no underlying node
       this.attributes = {};
-      this.name = this.constructor.name.toLowerCase();
+      this.name = this.getclassname().toLowerCase();
     }
     this.parent = parent;
     this.js_annotations = annotations;
@@ -71,7 +71,7 @@ class MakiObject {
    * @ret The class name.
    */
   getclassname() {
-    return "Object";
+    return "MakiObject";
   }
 
   /**
