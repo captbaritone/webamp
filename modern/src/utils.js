@@ -1,5 +1,9 @@
 import { xml2js } from "xml-js";
 
+export function isPromise(obj) {
+  return obj && typeof obj.then === "function";
+}
+
 export function getCaseInsensitveFile(zip, filename) {
   // TODO: Escape `file` for rejex characters
   return zip.file(new RegExp(filename, "i"))[0];

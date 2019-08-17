@@ -1,4 +1,5 @@
 import Variable from "./variable";
+import { isPromise, unimplementedWarning } from "../utils";
 
 function coerceTypes(var1, var2, val1, val2) {
   if (var2.type === "INT") {
@@ -146,6 +147,11 @@ export function* interpret(start, program, stack = []) {
         // This is a bit awkward. Because the variables are stored on the stack
         // before the object, we have to find the number of arguments without
         // actually having access to the object instance.
+        if (!klass.prototype[methodName]) {
+          throw new Error(
+            `Need to add missing function (${methodName}) to ${klass.name}`
+          );
+        }
         let argCount = klass.prototype[methodName].length;
 
         const methodArgs = [];
@@ -154,7 +160,12 @@ export function* interpret(start, program, stack = []) {
           methodArgs.push(aValue);
         }
         const obj = popStackValue();
-        stack.push(obj[methodName](...methodArgs));
+        const ret = obj[methodName](...methodArgs);
+        if (isPromise(ret)) {
+          stack.push(yield ret);
+        } else {
+          stack.push(ret);
+        }
         break;
       }
       // callGlobal
@@ -171,6 +182,12 @@ export function* interpret(start, program, stack = []) {
       case 33: {
         const aValue = popStackValue();
         return aValue;
+      }
+      // complete
+      case 40: {
+        // noop for now
+        unimplementedWarning("OPCODE: complete");
+        break;
       }
       // mov
       case 48: {
@@ -295,7 +312,8 @@ export function* interpret(start, program, stack = []) {
       case 96: {
         const classesOffset = command.arg;
         const Klass = classes[classesOffset];
-        const klassInst = new Klass();
+        const system = variables[0].getValue();
+        const klassInst = new Klass(null, system.scriptGroup);
         stack.push(klassInst);
         break;
       }

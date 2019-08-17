@@ -15,6 +15,8 @@ function useJsUpdates(node) {
   useEffect(() => node.js_listen("js_update", forceUpdate));
 }
 
+let mouseposition;
+
 function handleMouseEventDispatch(node, event, eventName) {
   event.stopPropagation();
 
@@ -24,9 +26,15 @@ function handleMouseEventDispatch(node, event, eventName) {
     node,
     new Set(["container"])
   );
-  const x = event.clientX - container.getleft();
-  const y = event.clientY - container.gettop();
+  const clientX = event.clientX;
+  const clientY = event.clientY;
+  const x = clientX - container.getleft();
+  const y = clientY - container.gettop();
   node.js_trigger(eventName, x, y);
+
+  if (event.nativeEvent.type === "mousemove") {
+    mouseposition = { x: clientX, y: clientY };
+  }
 
   if (event.nativeEvent.type === "mousedown") {
     // We need to persist the react event so we can access the target
@@ -67,7 +75,6 @@ function handleMouseButtonEventDispatch(
 }
 
 function GuiObjectEvents({ Component, node, children }) {
-  useJsUpdates(node);
   return (
     <div
       onMouseDown={e =>
@@ -94,6 +101,10 @@ function GuiObjectEvents({ Component, node, children }) {
       onDragOver={e => handleMouseEventDispatch(node, e, "onDragOver")}
       onKeyUp={e => node.js_trigger("onKeyUp", e.keyCode)}
       onKeyDown={e => node.js_trigger("onKeyDown", e.keyCode)}
+      onContextMenu={e => {
+        e.preventDefault();
+        return false;
+      }}
     >
       <Component node={node} {...node.attributes}>
         {children}
@@ -273,6 +284,41 @@ function Button({
   );
 }
 
+function Popupmenu({ id, node }) {
+  const children = node.commands.map(item => {
+    if (item.id === "seperator") {
+      return <li />;
+    }
+    return (
+      <li
+        key={item.id}
+        onClick={() => {
+          node.js_selectCommand(item.id);
+        }}
+      >
+        {item.name}
+      </li>
+    );
+  });
+  const { x, y } = mouseposition;
+  // TODO: Actually properly style element
+  return (
+    <div
+      data-node-type="Popmenu"
+      data-node-id={id}
+      style={{
+        position: "absolute",
+        top: Number(y),
+        left: Number(x),
+        backgroundColor: "#000000",
+        color: "#FFFFFF",
+      }}
+    >
+      <ul>{children}</ul>
+    </div>
+  );
+}
+
 function ToggleButton(props) {
   return <Button data-node-type="togglebutton" {...props} />;
 }
@@ -302,7 +348,10 @@ const NODE_NAME_TO_COMPONENT = {
   button: Button,
   togglebutton: ToggleButton,
   group: Group,
+  popupmenu: Popupmenu,
 };
+
+const NODE_NO_EVENTS = new Set(["popupmenu"]);
 
 // Given a skin XML node, pick which component to use, and render it.
 function XmlNode({ node }) {
@@ -312,6 +361,7 @@ function XmlNode({ node }) {
     // name is null is likely a comment
     return null;
   }
+  useJsUpdates(node);
   const Component = NODE_NAME_TO_COMPONENT[name];
   const childNodes = node.children || [];
   const children = childNodes.map(
@@ -324,6 +374,15 @@ function XmlNode({ node }) {
     }
     return null;
   }
+
+  if (NODE_NO_EVENTS.has(name)) {
+    return (
+      <Component node={node} {...node.attributes}>
+        {children}
+      </Component>
+    );
+  }
+
   return (
     <GuiObjectEvents Component={Component} node={node}>
       {children}

@@ -95,6 +95,20 @@ class System extends MakiObject {
   seekto(pos) {
     unimplementedWarning("seekto");
   }
+
+  getviewportheight() {
+    return Math.max(
+      document.documentElement.clientHeight,
+      window.innerHeight || 0
+    );
+  }
+
+  getviewportwidth() {
+    return Math.max(
+      document.documentElement.clientWidth,
+      window.innerWidth || 0
+    );
+  }
 }
 
 export default System;
