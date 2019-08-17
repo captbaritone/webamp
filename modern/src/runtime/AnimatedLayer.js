@@ -1,6 +1,6 @@
-import Layout from "./Layout";
+import Layer from "./Layer";
 
-class AnimatedLayer extends Layout {
+class AnimatedLayer extends Layer {
   /**
    * getclassname()
    *
