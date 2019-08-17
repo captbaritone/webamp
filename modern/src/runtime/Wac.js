@@ -1,6 +1,6 @@
 import MakiObject from "./MakiObject";
 
-class List extends MakiObject {
+class Wac extends MakiObject {
   /**
    * getclassname()
    *
@@ -8,8 +8,8 @@ class List extends MakiObject {
    * @ret The class name.
    */
   getclassname() {
-    return "List";
+    return "Wac";
   }
 }
 
-export default List;
+export default Wac;
