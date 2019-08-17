@@ -2,6 +2,13 @@ import MakiObject from "./MakiObject";
 import { unimplementedWarning } from "../utils";
 
 class PopupMenu extends MakiObject {
+  constructor(node, parent) {
+    super(node, parent);
+
+    this.commands = [];
+    this.js_selectCommand = null;
+  }
+
   /**
    * getclassname()
    *
@@ -13,11 +20,16 @@ class PopupMenu extends MakiObject {
   }
 
   addcommand(txt, id, checked, disabled) {
-    unimplementedWarning("addcommand");
+    this.commands.push({
+      name: txt,
+      id,
+      checked,
+      disabled,
+    });
   }
 
   addseparator() {
-    unimplementedWarning("addseparator");
+    this.commands.push({ id: "separator" });
   }
 
   checkcommand(id, check) {
@@ -25,7 +37,16 @@ class PopupMenu extends MakiObject {
   }
 
   popatmouse() {
-    unimplementedWarning("popatmouse");
+    return new Promise(resolve => {
+      this.js_selectCommand = value => {
+        this.parent.js_removeChild(this);
+        this.parent.js_trigger("js_update");
+        resolve(value);
+      };
+
+      this.parent.js_addChild(this);
+      this.parent.js_trigger("js_update");
+    });
   }
 }
 

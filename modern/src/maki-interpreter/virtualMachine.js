@@ -1,14 +1,18 @@
 import parse from "./parser";
 import { getClass, getFormattedId } from "./objects";
 import { interpret } from "./interpreter";
+import { isPromise } from "../utils";
 
 // Note: if this incurs a performance overhead, we could pass a flag into the VM
 // to not yield in production. In that case, we would never even enter the
 // `while` loop.
-function runGeneratorUntilReturn(gen) {
+async function runGeneratorUntilReturn(gen) {
   let val = gen.next();
   while (!val.done) {
     val = gen.next();
+    if (isPromise(val.value)) {
+      gen.next(await val.value);
+    }
   }
   return val.value;
 }
