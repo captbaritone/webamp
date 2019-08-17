@@ -1,7 +1,7 @@
-import GuiObject from "./GuiObject";
+import Group from "./Group";
 import { findParentNodeOfType } from "../utils";
 
-class Layout extends GuiObject {
+class Layout extends Group {
   /**
    * getclassname()
    *

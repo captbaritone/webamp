@@ -3950,7 +3950,7 @@ Object.values(normalizedObjects).forEach(object => {
   object.parentClass = parentClass;
 });
 
-function getFormattedId(id) {
+export function getFormattedId(id) {
   // https://en.wikipedia.org/wiki/Universally_unique_identifier#Encoding
   const formattedId = id.replace(
     /(........)(....)(....)(..)(..)(..)(..)(..)(..)(..)(..)/,
@@ -3959,11 +3959,11 @@ function getFormattedId(id) {
   return formattedId.toLowerCase();
 }
 
-function getClass(id) {
+export function getClass(id) {
   return normalizedObjects[getFormattedId(id)];
 }
 
-function getObjectFunction(klass, functionName) {
+export function getObjectFunction(klass, functionName) {
   const method = klass.functions.find(func => {
     // TODO: This could probably be normalized at load time, or evern sooner.
     return func.name.toLowerCase() === functionName.toLowerCase();
@@ -3976,5 +3976,3 @@ function getObjectFunction(klass, functionName) {
   }
   return getObjectFunction(klass.parentClass, functionName);
 }
-
-module.exports = { getClass, getObjectFunction, getFormattedId };
