@@ -1,6 +1,6 @@
-import MakiObject from "./MakiObject";
+import Group from "./Group";
 
-class List extends MakiObject {
+class CfgGroup extends Group {
   /**
    * getclassname()
    *
@@ -8,8 +8,8 @@ class List extends MakiObject {
    * @ret The class name.
    */
   getclassname() {
-    return "List";
+    return "CfgGroup";
   }
 }
 
-export default List;
+export default CfgGroup;

@@ -1,7 +1,7 @@
-import GuiObject from "./GuiObject";
+import MakiObject from "./MakiObject";
 import { unimplementedWarning } from "../utils";
 
-class PopupMenu extends GuiObject {
+class PopupMenu extends MakiObject {
   /**
    * getclassname()
    *

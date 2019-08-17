@@ -1,6 +1,6 @@
 import MakiObject from "./MakiObject";
 
-class List extends MakiObject {
+class Region extends MakiObject {
   /**
    * getclassname()
    *
@@ -8,8 +8,8 @@ class List extends MakiObject {
    * @ret The class name.
    */
   getclassname() {
-    return "List";
+    return "Region";
   }
 }
 
-export default List;
+export default Region;

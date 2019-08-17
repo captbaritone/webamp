@@ -1,6 +1,6 @@
-import MakiObject from "./MakiObject";
+import Layout from "./Layout";
 
-class List extends MakiObject {
+class AnimatedLayer extends Layout {
   /**
    * getclassname()
    *
@@ -8,8 +8,8 @@ class List extends MakiObject {
    * @ret The class name.
    */
   getclassname() {
-    return "List";
+    return "AnimatedLayer";
   }
 }
 
-export default List;
+export default AnimatedLayer;
