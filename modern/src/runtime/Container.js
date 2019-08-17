@@ -1,7 +1,7 @@
-import GuiObject from "./GuiObject";
+import MakiObject from "./MakiObject";
 import { findDescendantByTypeAndId } from "../utils";
 
-class Container extends GuiObject {
+class Container extends MakiObject {
   /**
    * getclassname()
    *
