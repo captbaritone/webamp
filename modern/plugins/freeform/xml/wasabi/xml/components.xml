@@ -1,0 +1,103 @@
+<!-- =================================================================================================== -->
+
+<!--
+
+     This defines the wasabi default containers. A window can request to be shown inside a specific container by id.
+     When the container id does not exist, all containers are checked in reverse to find one with a 'hold' parameter
+     that matches the window to show. Note that scripts get the opportunity to override this so you can distribute
+     your containers programatically.
+
+     The predefined wasabi container ids are the following :
+
+      resizable_status   
+      resizable_nostatus 
+      static             
+      modal              
+
+-->
+<!-- =================================================================================================== -->
+
+
+  <groupdef id="component.content.group">
+    <WindowHolder
+      x="0"
+      y="0"
+      w="0"
+      relatw="1"
+      h="0"
+      relath="1"
+      hold="@ALL@"
+    />
+  </groupdef>
+ 
+<!-- =================================================================================================== -->
+     Resizable windows with a status bar, ie: playlist editor, media library 
+<!-- =================================================================================================== -->
+
+  <container id="resizable_status" name=":componenttitle" dynamic="1" hold="@all@" default_x="275" default_y="0">
+
+   <layout id="normal" minimum_h="116" minimum_w="275">
+
+     <Wasabi:StandardFrame:Status id="wasabi.standardframe"
+      x="0" y="0" w="0" h="0" relatw="1" relath="1" 
+      content="component.content.group" 
+     />
+
+   </layout>
+
+  </container>
+
+
+
+<!-- =================================================================================================== -->
+     Resizable windows without a status bar
+<!-- =================================================================================================== -->
+
+  <container id="resizable_nostatus" name=":componenttitle" dynamic="1" hold="@all@" default_x="275" default_y="0">
+   
+   <layout id="resizable_nostatus" minimum_h="116" minimum_w="275">
+
+     <Wasabi:StandardFrame:NoStatus 
+      x="0" y="0" w="0" h="0" relatw="1" relath="1" 
+      content="component.content.group" 
+     />
+
+   </layout>
+
+  </container>
+
+
+
+<!-- =================================================================================================== -->
+     modal windows, window intended to look like dialog boxes or messageboxes 
+<!-- =================================================================================================== -->
+  <container id="modal" name=":componenttitle" dynamic="1" hold="@all@" default_x="275" default_y="0">
+ 
+   <layout id="modal" minimum_h="116" minimum_w="275">
+
+     <Wasabi:StandardFrame:Modal
+      x="0" y="0" w="0" h="0" relatw="1" relath="1" 
+      content="component.content.group" 
+     />
+
+   </layout>
+
+  </container>
+
+
+
+<!-- =================================================================================================== -->
+     static windows, ie: preferences
+<!-- =================================================================================================== -->
+  <container id="static" name=":componenttitle" dynamic="1" hold="@all@" default_x="275" default_y="0">
+
+   <layout id="static" minimum_h="116" minimum_w="275">
+
+     <Wasabi:StandardFrame:Static 
+      x="0" y="0" w="0" h="0" relatw="1" relath="1" 
+      content="component.content.group" 
+     />
+
+   </layout>
+
+  </container>

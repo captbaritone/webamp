@@ -1,0 +1,43 @@
+<!-- =======================================================================================================
+
+  <Wasabi:EditBox /> implementation
+
+======================================================================================================== -->
+
+<groupdef id="wasabi.edit" inherit_group="wasabi.objectframe.group" xuitag="Wasabi:EditBox" embed_xui="wasabi.edit.box" h="20">
+  <edit
+    id="wasabi.edit.box"
+    x="1" y="1"
+    w="-2" h="-2"
+    relatw="1" relath="1"
+    autoselect="1"
+  />
+</groupdef>
+
+<groupdef id="wasabi.multiline.edit" inherit_group="wasabi.objectframe.group" xuitag="Wasabi:Editor" embed_xui="wasabi.edit.box" h="60">
+  <edit
+    id="wasabi.edit.box"
+    x="1" y="1"
+    w="-2" h="-2"
+    relatw="1" relath="1"
+    multiline="1"
+    vscroll="1" autohscroll="1"
+  />
+</groupdef>
+
+
+
+<!-- This group is unused for now -->
+
+<!--
+
+<groupdef id="wasabi.edit.disabled" inherit_group="wasabi.objectframe.group" hideobject="wasabi.objectframe.center">
+  <text
+    id="wasabi.edit.box"
+    x="1" y="1"
+    w="-2" h="-2"
+    relatw="1" relath="1"
+  />
+</groupdef>
+
+-->

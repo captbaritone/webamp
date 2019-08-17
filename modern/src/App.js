@@ -141,7 +141,8 @@ function Layout({
     return null;
   }
 
-  const image = node.js_imageLookup(background);
+  const sharedMakiTree = useSelector(Selectors.getSharedMakiTree);
+  const image = node.js_imageLookup(background, sharedMakiTree);
   if (image == null) {
     console.warn("Unable to find image to render. Rendering null", background);
     return null;
@@ -175,7 +176,8 @@ function Layer({ node, id, image, children, x, y }) {
     console.warn("Got an Layer without an image. Rendering null", id);
     return null;
   }
-  const img = node.js_imageLookup(image.toLowerCase());
+  const sharedMakiTree = useSelector(Selectors.getSharedMakiTree);
+  const img = node.js_imageLookup(image.toLowerCase(), sharedMakiTree);
   if (img == null) {
     console.warn("Unable to find image to render. Rendering null", image);
     return null;
@@ -232,7 +234,8 @@ function Button({
     return null;
   }
   // TODO: These seem to be switching too fast
-  const img = node.js_imageLookup(imgId);
+  const sharedMakiTree = useSelector(Selectors.getSharedMakiTree);
+  const img = node.js_imageLookup(imgId, sharedMakiTree);
   if (img == null) {
     console.warn("Unable to find image to render. Rendering null", image);
     return null;
@@ -346,7 +349,7 @@ function App() {
       <DropTarget
         style={{ width: "100%", height: "100%" }}
         handleDrop={e => {
-          dispatch(Actions.gotSkinBlob(e.dataTransfer.files[0]));
+          dispatch(Actions.gotSkinBlob(e.dataTransfer.files[0], store));
         }}
       >
         <XmlNode node={root} />

@@ -1,0 +1,100 @@
+<include file="groups/buttonbar.xml" />
+<include file="groups/objectframe.xml" />
+<include file="groups/panel.xml" />
+<include file="groups/window.xml" />
+<include file="groups/window-embedded.xml" />
+
+
+<!-- Unused for now, see system-elements.xml for overriding default button art -->
+
+<!--
+
+<groupdef id="wasabi.button.normal">
+  <grid
+    id="button.normal.grid"
+    x="0" y="0"
+    w="0" h="0"
+    relatw="1" relath="1"
+    topleft="wasabi.button.top.left"
+    top="wasabi.button.top"
+    topright="wasabi.button.top.right"
+    left="wasabi.button.left"
+    middle="wasabi.button.center"
+    right="wasabi.button.right"
+    bottomleft="wasabi.button.bottom.left"
+    bottom="wasabi.button.bottom"
+    bottomright="wasabi.button.bottom.right"
+  />
+  <text
+     id="button.text"
+     x="6" y="4"
+     w="-13" h="11"
+     relatw="1"
+     default="Button"
+     align="center"
+     font="wasabi.font.button.normal"
+  />
+</groupdef>
+
+<groupdef id="wasabi.button.pressed">
+  <grid
+    id="button.pressed.grid"
+    x="0" y="0"
+    w="0" h="0"
+    relatw="1" relath="1"
+    topleft="wasabi.button.pressed.top.left"
+    top="wasabi.button.pressed.top"
+    topright="wasabi.button.pressed.top.right"
+    left="wasabi.button.pressed.left"
+    middle="wasabi.button.pressed.center"
+    right="wasabi.button.pressed.right"
+    bottomleft="wasabi.button.pressed.bottom.left"
+    bottom="wasabi.button.pressed.bottom"
+    bottomright="wasabi.button.pressed.bottom.right"
+  />
+  <text
+     id="button.text"
+     x="7" y="5"
+     w="-13" h="11"
+     relatw="1"
+     default="Button"
+     font="wasabi.font.button.normal"
+  />
+</groupdef>
+
+<groupdef id="wasabi.button">
+
+  <group id="wasabi.button.normal"
+    x="0" y="0"
+    w="0" h="0"
+    relatw="1" relath="1"
+  />
+  
+</groupdef>
+
+-->
+
+
+<!-- Unused for now, see system-elements.xml for overriding default divider art -->
+
+<!--
+
+<groupdef id="wasabi.frame.divider">
+  <grid
+    id="wasabi.frame.grid"
+    x="0" y="0"
+    w="0" h="0"
+    relatw="1" relath="1"
+    topleft="wasabi.frame.divider.top.left"
+    top="wasabi.frame.divider.top"
+    topright="wasabi.frame.divider.top.right"
+    left="wasabi.frame.divider.left"
+    middle="wasabi.frame.divider.center"
+    right="wasabi.frame.divider.right"
+    bottomleft="wasabi.frame.divider.bottom.left"
+    bottom="wasabi.frame.divider.bottom"
+    bottomright="wasabi.frame.divider.bottom.right"
+  />
+</groupdef>
+-->
+

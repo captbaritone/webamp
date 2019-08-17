@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<WinampAbstractionLayer version="1.3">
+
+<elements>
+  <bitmap id="wasabi.gen_ff.about.wasabilogo" file="wasabi.png"/>
+  <bitmap id="wasabi.gen_ff.about.title" file="title.png"/>
+  <truetypefont id="wasabi.gen_ff.about.font" file="BarcodeFont.ttf" allowmapping="0"/>
+</elements>
+
+<groupdef id="wasabi.gen_ff.about" w="320" h="200" rectrgn="1">
+  <rect fitparent="1" color="255,255,255" filled="1" />
+  <layer 
+    id="logo"
+    image="wasabi.gen_ff.about.wasabilogo"
+    x="-111" relatx="1" y="-10" 
+  />
+  <layer 
+    id="title"
+    image="wasabi.gen_ff.about.title"
+    x="16" y="-75" relaty="1"
+  />
+  <text
+    id="txth1"
+    x="22" y="20" italic="1" w="260" h="16" 
+    default="Powered by :"
+    font="Arial" fontsize="18" color="0,0,0" alpha="255"
+  />
+  <text
+    id="txth2"
+    x="22" y="20" italic="1" w="260" h="16" 
+    default=""
+    font="Arial" fontsize="18" color="0,0,0" alpha="255"
+  />
+  <text
+    id="txtm1"
+    x="7" y="50" w="-120" relatw="1" align="center"
+    default="Nullsoft Wasabi"
+    font="wasabi.gen_ff.about.font" fontsize="72" color="0,0,0" alpha="255"
+  />
+  <text
+    id="txtm2"
+    x="7" y="50" w="-120" relatw="1" align="center"
+    default="" alpha="0"
+    font="wasabi.gen_ff.about.font" fontsize="72" color="0,0,0" 
+  />
+  <text
+    id="version"
+    x="164" y="-32" w="0" relatw="1" relaty="1" 
+    default="Version x"
+    font="Arial" fontsize="16" color="0,0,0" alpha="255"
+  />
+  <guiobject fitparent="1" />
+  <script file="about.maki"/>
+
+</groupdef>
+
+
+</WinampAbstractionLayer>

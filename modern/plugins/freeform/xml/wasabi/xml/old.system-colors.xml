@@ -1,0 +1,61 @@
+<!-- 
+
+  system-colors.xml
+
+
+  this file contains all the static color definitions for Wasabi. An objects that does not rely on a group will use 
+  one of these elements to decide what color to use.
+
+-->
+
+
+<elements>
+
+   <!-- Generic Trees -->
+   <color id="studio.tree.text" value="196,255,196"/> <!-- Item text color -->
+   <color id="studio.tree.selected" value="0,0,128"/> <!-- Select item text background color -->
+   <color id="studio.tree.hilited" value="0,255,255"/> <!-- Hilited item text background color -->
+   <color id="studio.tree.hiliteddrop" value="0,64,128"/> <!-- Drop marker color -->
+
+   <!-- Generic Lists -->
+   <color id="studio.list.text" value="196,255,196"/> <!-- List item text color -->
+   <color id="studio.list.item.selected" value="0,0,128"/> <!-- Selected item text background color -->
+   <color id="studio.list.item.focused" value="0,0,128"/> <!-- Focused item text background color -->
+   <color id="studio.list.column.background" value="102,102,102"/> <!-- Columns background color -->
+   <color id="studio.list.column.text" value="255,255,255"/> <!-- Columns text color -->
+   <color id="studio.list.item.selected.fg" value="255,255,255" /><!-- Selected item text foreground color -->
+   
+   <!-- Item Lists, Lists with playable items -->
+   <color id="common.itemlist.outline.current" value="255,255,0"/> <!-- Currently playing outline color -->
+   <color id="common.itemlist.outline.focus" value="0,128,128"/> <!-- Focused item dashed outline color -->
+   <color id="common.itemlist.selborder" value="64,64,196"/>
+
+   <!-- Message box -->
+   <color id="studio.msgBox.background" value="32,32,32"/> <!-- Messagebox background color -->
+   <color id="studio.textBar.text" value="248,248,248"/> <!-- Text object & message box text color -->
+   <color id="studio.textBar.background" value="32,32,32"/> <!-- Text object & message box text background color -->
+
+   <!-- Buttons -->
+   <color id="studio.button.text" value="0,0,0"/> <!-- Buttons text color -->
+   <color id="studio.button.hiliteText" value="0,240,0"/> <!-- Buttons hilite text color, used by tab windows-->
+   <color id="studio.button.dimmedText" value="64,64,64"/> <!-- Buttons dimmed text color, when disabled -->
+
+   <!-- Popup menus -->
+   <color id="studio.popup.text" value="0,0,0"/> <!-- Menu items text color -->
+   <color id="studio.popup.hiliteText" value="255,255,255"/> <!-- Hilited item text color -->
+   <color id="studio.popup.dimmedText" value="64,64,64"/> <!-- Disabled item text color -->
+
+   <!-- Components -->
+   <color id="studio.component.title.foreground" value="255,255,255"/> <!-- Old title bar text color when using TTF -->
+   <color id="studio.component.title.border" value="1,1,1"/> <!-- Old title bar text outline when using TTF -->
+
+   <!-- labeled windows -->
+   <color id="common.labelwnd.foreground" value="220,220,220"/> <!-- Text foreground color -->
+   <color id="common.labelwnd.background" value="0,0,0"/> <!-- Text drop shadow color -->
+
+   <!-- edit wnds -->
+   <color id="wasabi.edit.selection" value="127,127,127" gammagroup="Backgrounds"/> <!-- Selected text -->
+   <color id="wasabi.edit.text" value="196,255,196" gammagroup="Text"/> <!--Text -->
+   <color id="wasabi.edit.background" value="0,0,0" gammagroup="Backgrounds"/> <!--Text background -->
+
+</elements>

@@ -1,0 +1,7 @@
+<include file="editbox/editbox.xml" />
+<include file="slider/slider.xml" />
+<include file="titlebar/titlebar.xml" />
+<include file="standardframe/standardframe.xml" />
+<include file="text/text.xml" />
+<include file="button/button.xml" />
+<include file="browser/browser.xml" />

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<WinampAbstractionLayer version="0.7">
+
+<elements>
+
+  <bitmap id="wasabi.tabsheet.button.topleft" file="buttons.png" x="0" y="0" w="10" h="10" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.tabsheet.button.top" file="buttons.png" x="10" y="0" w="46" h="10" gammagroup="Backgrounds" />
+  <bitmap id="wasabi.tabsheet.button.topright" file="buttons.png" x="56" y="0" w="10" h="10" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.tabsheet.button.left" file="buttons.png" x="0" y="10" w="10" h="15" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.tabsheet.button.right" file="buttons.png" x="56" y="10" w="10" h="15" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.tabsheet.button.bottom" file="buttons.png" x="0" y="26" w="66" h="2" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.tabsheet.button.shade.topleft" file="buttons.png" x="0" y="29" w="10" h="10" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.tabsheet.button.shade.top" file="buttons.png" x="10" y="29" w="46" h="10" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.tabsheet.button.shade.topright" file="buttons.png" x="56" y="29" w="10" h="10" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.tabsheet.button.shade.left" file="buttons.png" x="0" y="39" w="10" h="11" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.tabsheet.button.shade.middle" file="buttons.png" x="10" y="39" w="46" h="11" gammagroup="Backgrounds"/>
+  <bitmap id="wasabi.tabsheet.button.shade.right" file="buttons.png" x="56" y="39" w="10" h="11" gammagroup="Backgrounds"/>
+
+</elements>
+
+<groupdef id="wasabi.tabsheet">
+   <layer
+     id="panel.left.stretch"
+     x="0" y="0"
+     h="-2"
+     relath="1"
+     image="wasabi.panel.left"
+   />
+   <layer
+     id="panel.right.stretch"
+     x="-2" y="0"
+     h="-2"
+     relatx="1" relath="1"
+     image="wasabi.panel.right"
+   />
+   <layer
+     id="panel.bottom.left.corner"
+     x="0" y="-2"
+     relaty="1"
+     image="wasabi.panel.bottom.left"
+   />
+   <layer
+     id="panel.bottom.stretch"
+     x="2" y="-2"
+     relaty="1"
+     w="-4"
+     relatw="1"
+     image="wasabi.panel.bottom"
+   />
+   <layer
+     id="panel.bottom.right.corner"
+     x="-2" y="-2"
+     relatx="1" relaty="1"
+     image="wasabi.panel.bottom.right"
+   />
+</groupdef>
+
+<groupdef id="wasabi.tabsheet.button.selected.group" h="25" autowidthsource="text">
+
+  <Layer x="0" y="0" w="0" h="0" relatw="1" relath="1" renderbasetexture="1" />
+
+  <Grid x="0" y="0" w="0" h="0" relatw="1" relath="1"
+        topleft =  "wasabi.tabsheet.button.topleft"
+        top =      "wasabi.tabsheet.button.top"
+        topright = "wasabi.tabsheet.button.topright"
+        left =     "wasabi.tabsheet.button.left"
+        right =    "wasabi.tabsheet.button.right"
+  />
+
+  <text
+    id="text" ticker="1"
+    default="Active Tab" 
+    x="5" y="6"
+    w="-13" relatw="1" h="14"
+    font="tahoma" fontsize="14"
+    color="wasabi.text.color"
+   />
+
+
+  <Layer id="mousetrap" x="0" y="0" w="0" h="0" relatw="1" relath="1" />
+
+</groupdef>
+
+<groupdef id="wasabi.tabsheet.button.unselected.group" h="25" autowidthsource="text">
+
+  <Layer x="0" y="0" w="0" h="0" relatw="1" relath="1" renderbasetexture="1" />
+
+  <Grid x="0" y="3" w="0" h="-3" relatw="1" relath="1"
+        topleft =  "wasabi.tabsheet.button.shade.topleft"
+        top =      "wasabi.tabsheet.button.shade.top"
+        topright = "wasabi.tabsheet.button.shade.topright"
+        left =     "wasabi.tabsheet.button.shade.left"
+        middle =   "wasabi.tabsheet.button.shade.middle"
+        right =    "wasabi.tabsheet.button.shade.right"
+  />
+
+  <Grid x="0" y="3" w="0" h="-3" relatw="1" relath="1"
+        topleft =  "wasabi.tabsheet.button.topleft"
+        top =      "wasabi.tabsheet.button.top"
+        topright = "wasabi.tabsheet.button.topright"
+        left =     "wasabi.tabsheet.button.left"
+        right =    "wasabi.tabsheet.button.right"
+  />
+
+  <Layer x="0" y="-2" relaty="1" w="0" relatw="1" h="2" image="wasabi.tabsheet.button.bottom" />
+
+  <text
+    id="text" ticker="1"
+    default="Inactive Tab" 
+    x="5" y="9"
+    w="-13" relatw="1" h="14"
+    font="tahoma" fontsize="14"
+    color="200,200,200"
+   />
+
+  <Layer id="mousetrap" x="0" y="0" w="0" h="0" relatw="1" relath="1" />
+
+</groupdef>
+
+<groupdef id="wasabi.tabsheet.nobutton.group" h="25">
+  <Layer x="0" y="-2" relaty="1" w="0" relatw="1" h="2" image="wasabi.tabsheet.button.bottom" />
+</groupdef>
+
+<groupdef id="wasabi.tabsheet.content" inherit_group="wasabi.tabsheet">
+  <GuiObject id="content" x="2" y="2" w="-4" relatw="1" h="-2" relath="1" />
+</groupdef>
+
+<groupdef id="wasabi.tabsheet.content.noborder">
+  <GuiObject id="content" x="0" y="0" w="0" relatw="1" h="0" relath="1" />
+</groupdef>
+
+
+</WinampAbstractionLayer>

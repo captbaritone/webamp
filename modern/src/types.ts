@@ -9,11 +9,13 @@ export type XmlTree = XmlNode;
 
 export type ModernAppState = {
   makiTree: MakiTree | null;
+  sharedMakiTree: MakiTree | null;
   xmlTree: XmlTree | null;
   volume: number;
 };
 export type ModernAction =
   | { type: "SET_MAKI_TREE"; makiTree: MakiTree }
+  | { type: "SET_SHARED_MAKI_TREE"; makiTree: MakiTree }
   | { type: "SET_XML_TREE"; xmlTree: XmlTree }
   | { type: "SET_VOLUME"; volume: number };
 

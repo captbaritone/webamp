@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<WinampAbstractionLayer version="0.7">
+
+<elements>
+  <bitmap id="wasabi.bitmapnotfound" file="wacs/xml/guiobjects/wasabi/window/error.png" />
+  <bitmap id="wasabi.transparent" file="wacs/xml/guiobjects/wasabi/window/transparent.png" />
+</elements>
+
+<include file="xml/system-colors.xml"/>
+<include file="xml/system-groups.xml"/>
+<include file="xml/system-elements.xml"/>
+<include file="xml/system-config.xml"/>
+<include file="xml/components.xml"/>
+
+<include file="xml/garbage-elements.xml"/>
+
+<include file="xml/xui/xuiobjects.xml"/>
+
+</WinampAbstractionLayer>

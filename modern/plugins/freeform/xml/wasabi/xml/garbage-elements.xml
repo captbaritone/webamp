@@ -1,0 +1,16 @@
+<!-- These elements are garbage and will be removed in the final release. We didn't have time
+to remove them for this beta however, they will be removed so please don't refer to these in your
+code. Thank you.-->
+
+<elements>
+  <!-- These elements will be removed all together, they are only being referenced by the pop-up dialog -->
+  <bitmap id="studio.border.upperLeft" file="window/window-elements.png" x="0" y="0" h="2" w="2"/>
+  <bitmap id="studio.border.upperRight" file="window/window-elements.png" x="34" y="0" h="2" w="2"/>
+  <bitmap id="studio.border.lowerLeft" file="window/window-elements.png" x="0" y="34" h="2" w="2"/>
+  <bitmap id="studio.border.lowerRight" file="window/window-elements.png" x="34" y="34" h="2" w="2"/>
+  <bitmap id="studio.border.top" file="window/window-elements.png" x="3" y="0" h="2" w="30"/>
+  <bitmap id="studio.border.left" file="window/window-elements.png" x="0" y="3" h="30" w="2"/>
+  <bitmap id="studio.border.bottom" file="window/window-elements.png" x="3" y="34" h="2" w="30"/>
+  <bitmap id="studio.border.right" file="window/window-elements.png" x="34" y="3" h="30" w="2"/>
+
+</elements>

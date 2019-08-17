@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<WinampAbstractionLayer version="0.7">
+
+<groupdef id="wasabi.menubutton.down" inherit_group="wasabi.panel">
+  <script id="menubutton" file="menubutton.maki" />
+</groupdef>
+
+<groupdef id="wasabi.menubutton.group" >
+  <group 
+    id="wasabi.menubutton.down"
+    x="0" y="0"
+    w="0" h="0"
+    relatw="1" relath="1"
+    visible="0"
+  />
+  <Wasabi:Text 
+    id="wasabi.menubutton.text" color="white"
+    x="3" y="3"
+    w="-3" h="-6"
+    relatw="1" relath="1" 
+    shadowx="1" shadowy="1" shadowcolor="black"
+  />
+  <MenuSurface x="0" y="0" w="0" h="0" relatw="1" relath="1" />
+</groupdef>
+
+</WinampAbstractionLayer>

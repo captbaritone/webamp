@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<WinampAbstractionLayer version="0.7">
+
+<!-- This defines the statusbar content of a layoutstatus object -->
+
+<elements>
+   <color id="wasabi.statusbar.text" value="248,248,248" /> <!-- Component status text color when using TTF -->
+</elements>
+
+
+<groupdef id="wasabi.statusbar" default_h="12">
+
+  <group id="wasabi.objectframe.group" x="0" y="0" w="0" h="0" relatw="1" relath="1" />
+
+  <!-- nonmodal progress bar -->
+  <rect id="wasabi.statusbar.progress.outline" x="-104" relatx="1" y="3" w="100" h="8" filled="0" color="0,128,128" visible="0" />
+  <rect id="wasabi.statusbar.progress.inside" x="-104" relatx="1" y="3" w="1" h="8" filled="1" color="0,192,192" visible="0" />
+
+  <!-- text line -->
+  <text id="wasabi.statusbar.text" x="6" y="1" w="-12" relatw="1" h="-1" relath="1" font="studio.component.statusbar" />
+
+</groupdef>
+
+
+</WinampAbstractionLayer>

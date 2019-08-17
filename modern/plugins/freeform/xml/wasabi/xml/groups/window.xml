@@ -1,0 +1,9 @@
+<groupdef id="wasabi.window">
+   <layer
+     id="window.center.stretch"
+     x="0" y="0"
+     w="0" h="0"
+     relatw="1" relath="1"
+     image="wasabi.window.center"
+   />
+</groupdef>

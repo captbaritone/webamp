@@ -1,0 +1,12 @@
+<groupdef id="wasabi.itb.xui" xuitag="Wasabi:IconButton" embed_xui="itb.button" autowidthsource="itb.text" autoheightsource="itb.layer">
+
+	<layer id="itb.layer" x="0" y="0"/>
+	<text id="itb.text" x="20" y="0" move="0" antialias="0" color="255,255,255" relath="1" valign="top"/>
+
+	<button id="itb.button" rectrgn="1"
+		x="0" y="0" w="0" h="0" relatw="1" relath="1"
+	/>
+	
+	<script file="xml/xui/browser/IconTextButton.maki"/>
+
+</groupdef>

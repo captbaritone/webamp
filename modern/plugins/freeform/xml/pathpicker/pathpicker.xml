@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<WinampAbstractionLayer version="0.7">
+
+<groupdef id="wasabi.pathpicker.main.group" >
+  <group 
+    id="wasabi.objectframe.group"
+    x="0" y="0"
+    w="0" h="0"
+    relatw="1" relath="1"
+  />
+  <Wasabi:Text 
+    id="pathpicker.text"
+    x="3" y="3"
+    w="-23" h="-6"
+    relatw="1" relath="1"
+  />
+  <Wasabi:Button 
+    id="pathpicker.button"
+    x="-18" y="1"
+    w="17" h="-2"
+    relatx="1" relath="1"
+    image="wasabi.button.label.ellipses"
+    center_image="1"
+   />
+</groupdef>
+
+</WinampAbstractionLayer>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<WinampAbstractionLayer version="0.7">
+
+<include file="tooltips-elements.xml"/>
+
+<groupdef id="wasabi.tooltip.group" h="17" noactivation="1">
+   <grid
+     id="tooltip.grid"
+     x="0" y="0"
+     w="-16" h="0"
+     sysregion="1"
+     relatw="1" relath="1"
+     topleft="wasabi.tooltip.top.left"
+     top="wasabi.tooltip.top"
+     topright="wasabi.tooltip.top.right"
+     left="wasabi.tooltip.left"
+     middle="wasabi.tooltip.center"
+     right="wasabi.tooltip.right"
+     bottomleft="wasabi.tooltip.bottom.left"
+     bottom="wasabi.tooltip.bottom"
+     bottomright="wasabi.tooltip.bottom.right"
+   />
+   <text
+     id="tooltip.text"
+     x="2" y="1"
+     w="0" h="-2"
+     relatw="1" relath="1"
+     default="Tooltip Sample"
+     font="Arial" fontsize="14" color="wasabi.tooltips.textcolor"
+   />
+  <script id="tip" file="tooltips.maki"/> 
+
+</groupdef>
+
+</WinampAbstractionLayer>

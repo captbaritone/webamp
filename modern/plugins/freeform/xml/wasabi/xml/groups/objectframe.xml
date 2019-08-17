@@ -1,0 +1,17 @@
+<groupdef id="wasabi.objectframe.group">
+  <grid
+    id="objectframe.grid"
+    x="0" y="0"
+    w="0" h="0"
+    relatw="1" relath="1"
+    topleft="wasabi.objectframe.top.left"
+    top="wasabi.objectframe.top"
+    topright="wasabi.objectframe.top.right"
+    left="wasabi.objectframe.left"
+    middle="wasabi.objectframe.center"
+    right="wasabi.objectframe.right"
+    bottomleft="wasabi.objectframe.bottom.left"
+    bottom="wasabi.objectframe.bottom"
+    bottomright="wasabi.objectframe.bottom.right"
+  />
+</groupdef>

@@ -1,0 +1,74 @@
+-- Variables Table ---------------------------------------------------
+var# |                Class |                                    What 
+----------------------------------------------------------------------
+0000 |               System |                                   System*
+0001 |                  Int |                                     NULL
+0002 |                Group |                               frameGroup
+0003 |                Group |                                  content
+0004 |                Group |                                 titlebar
+0005 |               String |                                        x
+0006 |               String |                                        y
+0007 |               String |                                        w
+0008 |               String |                                        h
+0009 |               String |                                       rx
+000A |               String |                                       ry
+000B |               String |                                       rw
+000C |               String |                                       rh
+000D |                Layer |                               mouselayer
+000E |               Button |                                  Sysmenu
+000F |               String |                                    param
+0010 |               String |                                      ","
+0011 |                  Int |                                        0
+0012 |                  Int |                                        1
+0013 |                  Int |                                        2
+0014 |                  Int |                                        3
+0015 |                  Int |                                        4
+0016 |                  Int |                                        5
+0017 |                  Int |                                        6
+0018 |                  Int |                                        7
+0019 |               String |                                "sysmenu"
+001A |               String |                                    param
+001B |               String |                                    value
+001C |               String |                                "content"
+001D |               String |                        "wasabi.titlebar"
+001E |               String |                              "mousetrap"
+001F |               String |                          "padtitleright"
+0020 |               String |                           "padtitleleft"
+0021 |               String |                                  "shade"
+0022 |               String |                         "dblclickaction"
+0023 |               String |                                "switch;"
+0024 |               String | "Cannot set shade parameter for StandardFrame object, no mousetrap found"
+0025 |               String |                             "Skin Error"
+0026 |               String |                                       ""
+0027 |               String |                                      cmd
+0028 |               String |                                    param
+0029 |                  Int |                                        a
+002A |                  Int |                                        b
+002B |               String |                                 _command
+002C |               String |                                   _param
+002D |               String |                                  groupid
+002E |               String |                               "group \""
+002F |               String |                           "\" not found"
+0030 |               String |                            "ButtonGroup"
+0031 |               String |                                      "x"
+0032 |               String |                                      "y"
+0033 |               String |                                      "w"
+0034 |               String |                                      "h"
+0035 |               String |                                 "relatx"
+0036 |               String |                                 "relaty"
+0037 |               String |                                 "relatw"
+0038 |               String |                                 "relath"
+0039 |               String |                         "sysmenu.status"
+003A |         LayoutStatus |                                  _status
+003B |               String |                               "{system}"
+-- Events Table ------------------------------------------------------
+var# |         Code Pointer |                                    What 
+----------------------------------------------------------------------
+0000 |                 0000 |                    System.onScriptLoaded
+0000 |                 013E |                     System.onSetXuiParam
+0002 |                 0235 |                      frameGroup.onNotify
+000E |                 03F2 |                      Sysmenu.onLeftClick
+-- User Functions Table ----------------------------------------------
+               Code Pointer |                                    What 
+----------------------------------------------------------------------
+                       02D8 |                              setNewGroup

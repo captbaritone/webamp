@@ -1,0 +1,12 @@
+<elements>
+   <bitmap id="wasabi.tooltip.top.left" file="tooltips-elements.png" x="0" y="0" h="4" w="4" gammagroup="Tooltips Background"/>
+   <bitmap id="wasabi.tooltip.top" file="tooltips-elements.png" x="4" y="0" h="4" w="8" gammagroup="Tooltips Background"/>
+   <bitmap id="wasabi.tooltip.top.right" file="tooltips-elements.png" x="13" y="0" h="4" w="4" gammagroup="Tooltips Background"/>
+   <bitmap id="wasabi.tooltip.left" file="tooltips-elements.png" x="0" y="4" h="8" w="4" gammagroup="Tooltips Background"/>
+   <bitmap id="wasabi.tooltip.center" file="tooltips-elements.png" x="4" y="4" h="8" w="8" gammagroup="Tooltips Background"/>
+   <bitmap id="wasabi.tooltip.right" file="tooltips-elements.png" x="13" y="4" h="8" w="4" gammagroup="Tooltips Background"/>
+   <bitmap id="wasabi.tooltip.bottom.left" file="tooltips-elements.png" x="0" y="13" h="4" w="4" gammagroup="Tooltips Background"/>
+   <bitmap id="wasabi.tooltip.bottom" file="tooltips-elements.png" x="4" y="13" h="4" w="8" gammagroup="Tooltips Background"/>
+   <bitmap id="wasabi.tooltip.bottom.right" file="tooltips-elements.png" x="13" y="13" h="4" w="4" gammagroup="Tooltips Background"/>
+   <color id="wasabi.tooltips.textcolor" value="0,0,0" gammagroup="Tooltips Text" />
+</elements>

@@ -1,0 +1,17 @@
+<groupdef id="wasabi.window.embedded">
+  <grid
+    id="window.embedded.grid"
+    x="0" y="0"
+    w="0" h="0"
+    relatw="1" relath="1"
+    topleft="wasabi.window.top.left"
+    top="wasabi.window.top"
+    topright="wasabi.window.top.right"
+    left="wasabi.window.left"
+    middle="wasabi.window.center"
+    right="wasabi.window.right"
+    bottomleft="wasabi.window.bottom.left"
+    bottom="wasabi.window.bottom"
+    bottomright="wasabi.window.bottom.right"
+  />
+</groupdef>

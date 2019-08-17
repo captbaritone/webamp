@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<WinampAbstractionLayer version="0.7">
+
+<groupdef id="wasabi.popup.main.group" inherit_group="wasabi.panel" background="studio.popup.background" rectrgn="1" autowidthsource="popup.content" autoheightsource="popup.content">
+  <GroupList id="popup.content" x="2" y="2" w="-4" h="-4" relatw="1" relath="1" />
+</groupdef>
+
+<groupdef id="wasabi.popup.image.item">
+  <layer id="popup.item.layer" x="16" y="0" w="0" relatw="1" h="0" relath="1" />
+</groupdef>
+
+<groupdef id="wasabi.popup.text.item" h="16" autowidthsource="popup.item.text" >
+  <rect id="popup.background" color="128,128,230" filled="1" x="0" y="0" w="0" h="0" relatw="1" relath="1" alpha="0"/>
+  <button
+    id="popup.item.checkmark"
+    x="2" y="3" h="9" w="10"
+    activeimage="wasabi.popup.menu.check"
+  />
+  <text
+    id="popup.item.text" 
+    default="Popup Item" 
+    x="42" y="0"
+    w="-28" relatw="1" h="15"
+    font="arial" fontsize="14"
+    color="black"
+  />
+  <button
+    id="popup.item.submenuarrow"
+    x="-8" relatx="1" y="3" w="10" h="9"
+    activeimage="wasabi.popup.menu.submenu"
+  />
+  <script file="popupitem.maki" />
+</groupdef>
+
+<groupdef id="wasabi.popup.separator.item">
+  <group id="wasabi.panel" x="1" y="0" w="-2" relatw="1" h="0" relath="1" />
+</groupdef>
+
+</WinampAbstractionLayer>

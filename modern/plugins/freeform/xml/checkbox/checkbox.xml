@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<WinampAbstractionLayer version="0.7">
+
+<groupdef id="wasabi.checkbox.group" h="18" autowidthsource="checkbox.text">
+
+  <!-- DO NOT CHANGE THESE IDS!! -->
+  <group
+    id="wasabi.objectframe.group"
+    x="2" y="4"
+    w="11" h="11"
+  />
+  <ToggleButton
+    id="checkbox.toggle"
+    x="4" y="6" 
+    image="wasabi.button.checkbox"
+    activeImage="wasabi.button.checkbox.pressed"
+    rectrgn="1"
+  />
+
+  <Wasabi:Text 
+    id="checkbox.text"
+    default="ERROR"
+    x="14" y="2"
+    w="-14" h="14"
+    relatw="1" wrap="1"
+  />
+
+</groupdef>
+
+<groupdef id="wasabi.radiobutton.group" h="18" autowidthsource="checkbox.text">
+
+  <!-- DO NOT CHANGE THESE IDS!! -->
+  <layer 
+    id="radio.background"
+    image="wasabi.button.radio.background"
+    x="2" y="4"
+  />
+  <layer 
+    id="radio.background.display"
+    image="wasabi.button.radio.background.display"
+    x="3" y="5"
+  />
+  <togglebutton
+    id="checkbox.toggle"
+    x="4" y="6" 
+    image="wasabi.button.radio"
+    activeImage="wasabi.button.radio.pressed"
+    rectrgn="1"
+  />
+  <Wasabi:Text 
+    id="checkbox.text"
+    default="ERROR"
+    x="14" y="2"
+    w="-14" h="14"
+    relatw="1" wrap="1"
+  />
+
+</groupdef>
+
+
+</WinampAbstractionLayer>

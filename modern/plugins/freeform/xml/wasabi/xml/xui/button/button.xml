@@ -1,0 +1,36 @@
+<!-- =======================================================================================================
+
+  <Wasabi:Button /> implementation
+
+    Available parameters : 
+
+      - Everything from Group class
+      - Everything from Button class
+
+    Required objects :
+
+      - Button id="wasabi.button"
+
+======================================================================================================== -->
+
+<groupdef id="wasabi.button.group" xuitag="Wasabi:Button" embed_xui="wasabi.button" h="21" autowidthsource="wasabi.button">
+  <button
+    id="wasabi.button" 
+    x="0" y="0"
+    w="0" h="0"
+    relatw="1" relath="1"
+    borders="1"
+    wantfocus="1"
+  />
+</groupdef>
+
+<groupdef id="wasabi.togglebutton.group" xuitag="Wasabi:ToggleButton" embed_xui="wasabi.button" h="21" autowidthsource="wasabi.button">
+  <Togglebutton
+    id="wasabi.button" 
+    x="0" y="0"
+    w="0" h="0"
+    relatw="1" relath="1"
+    borders="1"
+    wantfocus="1"
+  />
+</groupdef>

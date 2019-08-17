@@ -11,8 +11,16 @@ export async function readXml(zip, filepath) {
   if (file == null) {
     return null;
   }
-  const text = await file.async("text");
-  return xml2js(text, { compact: false, elementsKey: "children" });
+
+  try {
+    const text = await file.async("text");
+    return xml2js(text, { compact: false, elementsKey: "children" });
+  } catch (e) {
+    console.warn(`Error reading XML from ${filepath}`, e);
+    return {
+      children: [],
+    };
+  }
 }
 
 export async function readUint8array(zip, filepath) {

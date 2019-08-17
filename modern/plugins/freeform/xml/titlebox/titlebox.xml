@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<WinampAbstractionLayer version="0.7">
+
+<groupdef id="wasabi.titlebox">
+
+   <layer
+     id="groupbox.bottom.stretch"
+     x="3" y="-3"
+     w="-6"
+     relaty="1" relatw="1"
+     image="wasabi.groupbox.bottom"
+   />
+   <layer
+     id="groupbox.left.stretch"
+     x="0" y="9"
+     h="-12"
+     relath="1"
+     image="wasabi.groupbox.left"
+   />
+   <layer
+     id="groupbox.right.stretch"
+     x="-3" y="9"
+     h="-12"
+     relatx="1" relath="1"
+     image="wasabi.groupbox.right"
+   />
+   <layer
+     id="groupbox.bottom.left.corner"
+     x="0" y="-3"
+     relaty="1"
+     image="wasabi.groupbox.bottom.left"
+   />
+   <layer
+     id="groupbox.bottom.right.corner"
+     x="-3" y="-3"
+     relatx="1" relaty="1"
+     image="wasabi.groupbox.bottom.right"
+   />   
+</groupdef>
+
+<!-- =================================================================================================== -->
+<!-- This is the group that holds the content of the TitleBox (what was specified using the content="some.group.id"
+     parameter in <TitleBox />). The CustomObject (which must have "titlebox.content" id) is the one ending up 
+     holding the content so you can change the coordinates or add decorations around it here -->
+
+     <groupdef id="wasabi.titlebox.main.group" inherit_group="wasabi.titlebox" autoheightsource="titlebox.content" autowidthsource="titlebox.content">
+        <CustomObject id="titlebox.content" x="8" y="16" w="-16" h="-23" relatw="1" relath="1" />
+     </groupdef>
+
+
+
+<!-- =================================================================================================== -->
+<!-- This group appears on the left of the title in the TitleBox object. if centered="1" was specified, this
+     group will be strecthed so as to have the label group (see below) in the center of the titlebar. 
+     Otherwise, its width is fixed -->
+
+     <groupdef id="wasabi.titlebox.left.group" w="6" h="13">
+       <layer
+         id="groupbox.top.left.corner"
+         x="0" y="6"
+         image="wasabi.groupbox.top.left"
+       />
+       <layer
+         id="groupbox.top.stretch"
+         x="3" y="6"
+         w="3"
+         image="wasabi.groupbox.top"
+       />
+     </groupdef>
+
+
+
+<!-- =================================================================================================== -->
+<!-- This group is the one holding the label for the TitleBox object, it should contain a Text object with
+     id="titlebox.text". The group will be stretched automatically to the size it needs to hold the full text -->
+
+     <groupdef id="wasabi.titlebox.center.group" h="13" autowidthsource="titlebox.text" >
+       <text
+         id="titlebox.text" 
+         default="ERROR"
+         x="0" y="-1"
+         w="0" relatw="1" h="0" relath="1"
+         font="tahoma" fontsize="14"
+         color="wasabi.text.color" 
+       />
+     </groupdef>
+
+
+
+<!-- =================================================================================================== -->
+<!-- This is the last of the title groups for the TitleBox object, this one is on the right and is stretched 
+     all the way to the right of the content area. -->
+
+     <groupdef id="wasabi.titlebox.right.group" w="0" relatw="1" h="13">
+       <layer
+         id="groupbox.top.stretch"
+         x="0" y="6"
+         w="-3"
+         relatw="1"
+         image="wasabi.groupbox.top"
+       />
+       <layer
+         id="groupbox.top.right.corner"
+         x="-3" y="6"
+         relatx="1"
+         image="wasabi.groupbox.top.right"
+       />
+     </groupdef>
+
+
+
+<!-- =================================================================================================== -->
+<!-- This is an example of how to use this control -->
+
+     <!-- First the content -->
+     <groupdef id="example.titlebox.content" autoheightsource="lastitem" w="300">
+       <Wasabi:CheckBox x="0" y="0" text="This is a config option"/>
+       <Wasabi:CheckBox x="0" y="16" text="This is another config option"/>
+       <Wasabi:CheckBox x="0" y="32" text="This is yet another config option"/>
+       <Wasabi:CheckBox x="0" y="48" id="lastitem" text="This is another damn config option"/>
+     </groupdef>
+
+
+     <!-- Then the object itself, with the content as parameter.
+
+          add register_autopopup="1" to the groupdef to test -->
+
+     <groupdef id="example.titlebox.main" name="TitleBox Example" >
+       <Wasabi:TitleBox x="50" y="50" title="Group title" content="example.titlebox.content" />
+     </groupdef>
+
+
+
+</WinampAbstractionLayer>

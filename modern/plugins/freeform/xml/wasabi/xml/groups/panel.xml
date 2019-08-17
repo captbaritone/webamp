@@ -1,0 +1,16 @@
+<groupdef id="wasabi.panel">
+  <grid
+    id="panel.grid"
+    x="0" y="0"
+    w="0" h="0"
+    relatw="1" relath="1"
+    topleft="wasabi.panel.top.left"
+    top="wasabi.panel.top"
+    topright="wasabi.panel.top.right"
+    left="wasabi.panel.left"
+    right="wasabi.panel.right"
+    bottomleft="wasabi.panel.bottom.left"
+    bottom="wasabi.panel.bottom"
+    bottomright="wasabi.panel.bottom.right"
+  />   
+</groupdef>

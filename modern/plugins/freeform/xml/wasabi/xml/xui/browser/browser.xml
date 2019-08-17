@@ -1,0 +1,349 @@
+<!-- ==============================================================
+	<Winamp:Browser/>
+
+	@author:	Martin Poehlmann
+	@version:	1.1
+
+	sendActions:	openurl, search
+
+	usage:		1) include init_browser.m in your loadattribs.m
+				2) paste a <winamp:browser/> object somewhere in your skin
+				3) alter the default images if you like
+
+	note:		Design and gammagroups are aligned to fit with
+				Bento. So overide the bitmaps in your skin in
+				order to change them.
+
+=============================================================== -->
+
+<elements>
+
+	<bitmap id="browser.editframe.left" file="xml/xui/browser/browser.png" x="0" y="78" h="22" w="4" gammagroup="ComponentFrame"/>
+	<bitmap id="browser.editframe.center" file="xml/xui/browser/browser.png" x="4" y="78" h="22" w="2" gammagroup="ComponentFrame"/>
+	<bitmap id="browser.editframe.right" file="xml/xui/browser/browser.png" x="6" y="78" h="22" w="4" gammagroup="ComponentFrame"/>
+
+	<bitmap id="browser.button.back.normal" file="xml/xui/browser/browser.png" x="8" y="0" h="26" w="21" gammagroup="WindowText"/>
+	<bitmap id="browser.button.back.hover" file="xml/xui/browser/browser.png" x="8" y="26" h="26" w="21" gammagroup="WindowText"/>
+	<bitmap id="browser.button.back.down" file="xml/xui/browser/browser.png" x="8" y="52" h="26" w="21" gammagroup="WindowText"/>
+
+	<bitmap id="browser.button.forth.normal" file="xml/xui/browser/browser.png" x="29" y="0" h="26" w="21" gammagroup="WindowText"/>
+	<bitmap id="browser.button.forth.hover" file="xml/xui/browser/browser.png" x="29" y="26" h="26" w="21" gammagroup="WindowText"/>
+	<bitmap id="browser.button.forth.down" file="xml/xui/browser/browser.png" x="29" y="52" h="26" w="21" gammagroup="WindowText"/>
+
+	<bitmap id="browser.button.reload.normal" file="xml/xui/browser/browser.png" x="50" y="0" h="26" w="21" gammagroup="WindowText"/>
+	<bitmap id="browser.button.reload.hover" file="xml/xui/browser/browser.png" x="50" y="26" h="26" w="21" gammagroup="WindowText"/>
+	<bitmap id="browser.button.reload.down" file="xml/xui/browser/browser.png" x="50" y="52" h="26" w="21" gammagroup="WindowText"/>
+
+	<bitmap id="browser.button.stop.normal" file="xml/xui/browser/browser.png" x="71" y="0" h="26" w="21" gammagroup="WindowText"/>
+	<bitmap id="browser.button.stop.hover" file="xml/xui/browser/browser.png" x="71" y="26" h="26" w="21" gammagroup="WindowText"/>
+	<bitmap id="browser.button.stop.down" file="xml/xui/browser/browser.png" x="71" y="52" h="26" w="21" gammagroup="WindowText"/>
+
+	<bitmap id="browser.button.home.normal" file="xml/xui/browser/browser.png" x="92" y="0" h="26" w="21" gammagroup="WindowText"/>
+	<bitmap id="browser.button.home.hover" file="xml/xui/browser/browser.png" x="92" y="26" h="26" w="21" gammagroup="WindowText"/>
+	<bitmap id="browser.button.home.down" file="xml/xui/browser/browser.png" x="92" y="52" h="26" w="21" gammagroup="WindowText"/>
+
+	<bitmap id="browser.button.links.normal" file="xml/xui/browser/browser.png" x="113" y="0" h="26" w="21" gammagroup="WindowText"/>
+	<bitmap id="browser.button.links.hover" file="xml/xui/browser/browser.png" x="113" y="26" h="26" w="21" gammagroup="WindowText"/>
+	<bitmap id="browser.button.links.down" file="xml/xui/browser/browser.png" x="113" y="52" h="26" w="21" gammagroup="WindowText"/>
+
+	<bitmap id="browser.button.go.normal" file="xml/xui/browser/browser.png" x="145" y="78" h="16" w="11" gammagroup="PlayerButton"/>
+	<bitmap id="browser.button.search.normal" file="xml/xui/browser/browser.png" x="108" y="152" h="16" w="31" gammagroup="PlayerButton"/>
+
+	<bitmap id="browser.button.search.winamp.normal" file="xml/xui/browser/browser.png" x="45" y="78" h="16" w="25" gammagroup="none"/>
+	<bitmap id="browser.button.search.google.normal" file="xml/xui/browser/browser.png" x="20" y="78" h="16" w="25" gammagroup="none"/>
+	<bitmap id="browser.button.search.aol.normal" file="xml/xui/browser/browser.png" x="70" y="78" h="16" w="25" gammagroup="none"/>
+	<bitmap id="browser.button.search.eventful.normal" file="xml/xui/browser/browser.png" x="95" y="78" h="16" w="25" gammagroup="none"/>
+	<bitmap id="browser.button.search.pollstar.normal" file="xml/xui/browser/browser.png" x="0" y="180" h="16" w="25" gammagroup="none"/>
+	<bitmap id="browser.button.search.wiki.normal" file="xml/xui/browser/browser.png" x="25" y="180" h="16" w="25" gammagroup="none"/>
+	<bitmap id="browser.button.search.bit.normal" file="xml/xui/browser/browser.png" x="50" y="180" h="16" w="25" gammagroup="none"/>
+	<bitmap id="browser.button.search.jambase.normal" file="xml/xui/browser/browser.png" x="75" y="180" h="16" w="25" gammagroup="none"/>
+	<bitmap id="browser.button.search.ln.normal" file="xml/xui/browser/browser.png" x="100" y="180" h="16" w="25" gammagroup="none"/>
+	<bitmap id="browser.button.search.ontour.normal" file="xml/xui/browser/browser.png" x="125" y="180" h="16" w="25" gammagroup="none"/>
+	<bitmap id="browser.button.search.truveo.normal" file="xml/xui/browser/browser.png" x="120" y="78" h="16" w="25" gammagroup="none"/>
+
+	<bitmap id="browser.button.scraper.hide.normal" file="xml/xui/browser/browser2.png" x="17" y="0" h="13" w="17" gammagroup="WindowText"/>
+	<bitmap id="browser.button.scraper.hide.hover" file="xml/xui/browser/browser2.png" x="17" y="13" h="13" w="17" gammagroup="WindowText"/>
+	<bitmap id="browser.button.scraper.hide.down" file="xml/xui/browser/browser2.png" x="17" y="26" h="13" w="17" gammagroup="WindowText"/>
+
+	<bitmap id="browser.button.scraper.show.normal" file="xml/xui/browser/browser2.png" x="0" y="0" h="13" w="17" gammagroup="WindowText"/>
+	<bitmap id="browser.button.scraper.show.hover" file="xml/xui/browser/browser2.png" x="0" y="13" h="13" w="17" gammagroup="WindowText"/>
+	<bitmap id="browser.button.scraper.show.down" file="xml/xui/browser/browser2.png" x="0" y="26" h="13" w="17" gammagroup="WindowText"/>
+
+	<bitmap id="browser.button.scraper.play.normal" file="xml/xui/browser/browser2.png" x="34" y="0" h="13" w="17" gammagroup="WindowText"/>
+	<bitmap id="browser.button.scraper.play.hover" file="xml/xui/browser/browser2.png" x="34" y="13" h="13" w="17" gammagroup="WindowText"/>
+	<bitmap id="browser.button.scraper.play.down" file="xml/xui/browser/browser2.png" x="34" y="26" h="13" w="17" gammagroup="WindowText"/>
+
+	<bitmap id="browser.button.scraper.download.normal" file="xml/xui/browser/browser2.png" x="51" y="0" h="13" w="17" gammagroup="WindowText"/>
+	<bitmap id="browser.button.scraper.download.hover" file="xml/xui/browser/browser2.png" x="51" y="13" h="13" w="17" gammagroup="WindowText"/>
+	<bitmap id="browser.button.scraper.download.down" file="xml/xui/browser/browser2.png" x="51" y="26" h="13" w="17" gammagroup="WindowText"/>
+
+	<bitmap id="browser.button.scraper.rescan.normal" file="xml/xui/browser/browser2.png" x="68" y="0" h="13" w="17" gammagroup="WindowText"/>
+	<bitmap id="browser.button.scraper.rescan.hover" file="xml/xui/browser/browser2.png" x="68" y="13" h="13" w="17" gammagroup="WindowText"/>
+	<bitmap id="browser.button.scraper.rescan.down" file="xml/xui/browser/browser2.png" x="68" y="26" h="13" w="17" gammagroup="WindowText"/>
+
+	<bitmap id="browser.button.scraper.normal" file="xml/xui/browser/browser2.png" x="0" y="39" h="18" w="20" gammagroup="WindowText"/>
+	<bitmap id="browser.button.scraper.hover" file="xml/xui/browser/browser2.png" x="0" y="57" h="18" w="20" gammagroup="WindowText"/>
+	<bitmap id="browser.button.scraper.down" file="xml/xui/browser/browser2.png" x="0" y="76" h="18" w="20" gammagroup="WindowText"/>
+
+	<bitmap id="browser.button.dlds.normal" file="xml/xui/browser/browser2.png" x="20" y="39" h="18" w="20" gammagroup="WindowText"/>
+	<bitmap id="browser.button.dlds.hover" file="xml/xui/browser/browser2.png" x="20" y="57" h="18" w="20" gammagroup="WindowText"/>
+	<bitmap id="browser.button.dlds.down" file="xml/xui/browser/browser2.png" x="20" y="76" h="18" w="20" gammagroup="WindowText"/>
+
+	<bitmap id="browser.button.settings.normal" file="xml/xui/browser/browser2.png" x="40" y="39" h="18" w="20" gammagroup="WindowText"/>
+	<bitmap id="browser.button.settings.hover" file="xml/xui/browser/browser2.png" x="40" y="57" h="18" w="20" gammagroup="WindowText"/>
+	<bitmap id="browser.button.settings.down" file="xml/xui/browser/browser2.png" x="40" y="76" h="18" w="20" gammagroup="WindowText"/>
+
+	<bitmap id="browser.list.label" file="xml/xui/browser/browser2.png" x="0" y="93" w="32" h="12" gammagroup="DisplayText"/>
+	<bitmap id="browser.list.label2" file="xml/xui/browser/browser2.png" x="0" y="93" w="16" h="12" gammagroup="DisplayText"/>
+
+	<color id="browser.text" value="172,172,172" gammagroup="WindowText" />
+	<color id="browser.text.active" value="238,238,238" gammagroup="WindowText" />
+
+</elements>
+
+<include file="stringtable.xml"/>
+<include file="icontextbutton.xml"/>
+
+<groupdef id="winamp.xui.browser" embed_xui="webbrowser" xuitag="Winamp:Browser">
+
+	<Button id="browser.back"
+		x="4" h="26" w="21" y="2" rectrgn="1"
+		image="browser.button.back.normal"
+		hoverImage="browser.button.back.hover"
+		downImage="browser.button.back.down"
+		tooltip="Go Back"
+	/>
+	<Button id="browser.fwd"
+		x="25" h="26" w="21" y="2" rectrgn="1"
+		image="browser.button.forth.normal"
+		hoverImage="browser.button.forth.hover"
+		downImage="browser.button.forth.down"
+		tooltip="Go Forward"
+	/>
+	<Button id="browser.refresh"
+		x="46" h="26" w="21" y="2" rectrgn="1"
+		image="browser.button.reload.normal"
+		hoverImage="browser.button.reload.hover"
+		downImage="browser.button.reload.down"
+		tooltip="Reload Page"
+	/>
+	<Button id="browser.stop"
+		x="67" h="26" w="21" y="2" rectrgn="1"
+		image="browser.button.stop.normal"
+		hoverImage="browser.button.stop.hover"
+		downImage="browser.button.stop.down"
+		tooltip="Cancel Loading"
+	/>
+	<Button id="browser.home"
+		x="88" h="26" w="21" y="2" rectrgn="1"
+		image="browser.button.home.normal"
+		hoverImage="browser.button.home.hover"
+		downImage="browser.button.home.down"
+		tooltip="Home"
+	/>
+	<Button id="browser.links"
+		x="109" h="26" w="21" y="2" rectrgn="1"
+		image="browser.button.links.normal"
+		hoverImage="browser.button.links.hover"
+		downImage="browser.button.links.down"
+		tooltip="Quick Links"
+	/>
+	<group id="browser.navurl" x="134" y="3" h="22" w="-303" relatw="1" />
+
+	<group id="browser.search" x="-167" y="3" h="22" w="163" relatx="1" />
+
+	<Wasabi:Frame id="browser.dualwnd" x="1" y="29" w="-2" relath="1" h="-28" from="bottom" relatw="1" orientation="h" maxheight="null" left="browser.itself" right="browser.scraper" minheight="55" height="100" jump="0"/>
+
+	<script file="xml/xui/browser/browser.maki" param="\"/>
+
+</groupdef>
+
+<groupdef id="browser.itself">
+
+	<browser id="webbrowser" fitparent="1" url="http://www.winamp.com" wantfocus="0"/>
+
+</groupdef>
+
+<groupdef id="browser.navurl">
+
+	<grid x="0" y="0" h="22" w="0" relatw="1"
+		left="browser.editframe.left"
+		middle="browser.editframe.center"
+		right="browser.editframe.right"
+	/>
+
+	<Wasabi:HistoryEditBox id="browser.hedit" x="4" h="18" w="-34" relatw="1" y="2" text="http://www.winamp.com" navbuttons="0" wantfocus="0" antialias="0"/>
+	<Wasabi:Button id="browser.navigate" x="-27" relatx="1" h="18" w="23" y="2" image="browser.button.go.normal" center_image="1" tooltip="Go to This URL"/>
+
+</groupdef>
+
+<groupdef id="browser.search">
+
+	<grid x="0" y="0" h="22" w="0" relatw="1"
+		left="browser.editframe.left"
+		middle="browser.editframe.center"
+		right="browser.editframe.right"
+	/>
+
+	<Wasabi:Button id="search.choose" x="4" y="2" w="31" h="18"
+		tooltip="Choose Your Search Engine"
+		image="browser.button.search.winamp.normal" center_image="1" 
+		action="search" param="choose" action_target="webbrowser"
+	/>
+
+	<Wasabi:EditBox id="search.edit" x="35" y="2" relatw="1" w="-83" h="18" text=""/>
+	<Wasabi:Button id="search.go" x="-45" relatx="1" h="18" w="41" y="2"
+		image="browser.button.search.normal"
+		tooltip="Go Search"
+		center_image="1" action="search" param="go" action_target="webbrowser"
+	/>
+
+</groupdef>
+
+<groupdef id="scraper.mode">
+
+	<Wasabi:IconButton id="browser.scraper.play" rectrgn="1"
+		x="-267" h="13" y="2" relatx="1"
+		icon_id="browser.button.scraper.play"
+		translate="2"
+		label="@nullsoft.browser#8"
+		label_y="-2"
+		label_x="18"
+		label_color="browser.text"
+		tooltip="@nullsoft.browser#9"
+	/>
+
+	<Wasabi:IconButton id="browser.scraper.download" rectrgn="1"
+		x="-218" h="13" y="2" relatx="1"
+		icon_id="browser.button.scraper.download"
+		translate="2"
+		label="@nullsoft.browser#6"
+		label_y="-2"
+		label_x="18"
+		label_color="browser.text"
+		tooltip="@nullsoft.browser#7"
+	/>
+
+	<Wasabi:IconButton id="browser.scraper.rescan" rectrgn="1"
+		x="-139" h="13" y="2" relatx="1"
+		icon_id="browser.button.scraper.rescan"
+		translate="2"
+		label="@nullsoft.browser#4"
+		label_y="-2"
+		label_x="18"
+		label_color="browser.text"
+		tooltip="@nullsoft.browser#5"
+	/>
+
+	<Wasabi:IconButton id="scraper.switch" x="7" y="0" rectrgn="1" ghost="1"
+		icon_id="browser.button.scraper"
+		translate="2"
+		label="@nullsoft.browser#10"
+		label_y="0"
+		label_x="20"
+		label_color="browser.text.active"		
+	/>
+
+	<Wasabi:IconButton id="dlds.switch" x="110" y="0" rectrgn="1"
+		icon_id="browser.button.dlds"
+		translate="2"
+		label="@nullsoft.browser#12"
+		label_y="0"
+		label_x="20"
+		label_color="browser.text"
+		tooltip="@nullsoft.browser#13"	
+	/>
+
+	<List x="0" w="0" y="19" h="-19" relatw="1" relath="1"
+		id="scraper.results"
+		multiselect="1" autodeselect="1" sort="0" focusonclick="1"
+		numcolumns="2" columnwidths="270;-1" wa5style="1" 
+		visible="1"
+	/>
+
+</groupdef>
+
+<groupdef id="dlds.mode">
+
+	<Wasabi:IconButton id="scraper.switch" x="7" y="0" rectrgn="1" 
+		icon_id="browser.button.scraper"
+		translate="2"
+		label="@nullsoft.browser#10"
+		label_y="0"
+		label_x="20"
+		label_color="browser.text"
+		tootip="@nullsoft.browser#11"
+	/>
+
+	<Wasabi:IconButton id="dlds.switch" x="110" y="0" rectrgn="1" ghost="1"
+		icon_id="browser.button.dlds"
+		translate="2"
+		label="@nullsoft.browser#12"
+		label_y="0"
+		label_x="20"
+		label_color="browser.text.active"
+	/>
+
+	<DownloadsList x="0" w="0" y="19" h="-19" relatw="1" relath="1"
+		id="scraper.downloads"
+		NOCOLHEADER="0"
+	/>
+
+	<Wasabi:IconButton id="browser.dlds.play" rectrgn="1"
+		x="-118" h="13" y="2" relatx="1"
+		icon_id="browser.button.scraper.play"
+		translate="2"
+		label="@nullsoft.browser#8"
+		label_y="-2"
+		label_x="18"
+		label_color="browser.text"
+		action="PLAY_SELECTED"
+		action_target="scraper.downloads"
+		tooltip="@nullsoft.browser#9"
+	/>
+
+</groupdef>
+
+<groupdef id="browser.scraper">
+
+	<rect x="0" y="18" w="0" relath="1" h="-18" relatw="1" filled="1" color="color.display.bg" />
+
+	<guiobject fitparent="1" wantfocus="1" />
+
+	<Wasabi:IconButton id="browser.dlds.settings" rectrgn="1"
+		x="196" y="0"
+		icon_id="browser.button.settings"
+		translate="2"
+		label="@nullsoft.browser#14"
+		label_y="0"
+		label_x="20"
+		label_color="browser.text"
+		tooltip="@nullsoft.browser#15"
+	/>
+
+	<Wasabi:IconButton id="browser.scraper.show" rectrgn="1"
+		x="-56" h="13" y="2" relatx="1"
+		icon_id="browser.button.scraper.show"
+		translate="2"
+		label="@nullsoft.browser#2"
+		label_y="-2"
+		label_x="18"
+		label_color="browser.text"
+		tooltip="@nullsoft.browser#3"
+	/>
+
+	<Wasabi:IconButton id="browser.scraper.hide" rectrgn="1"
+		x="-56" h="13" y="2" relatx="1"
+		icon_id="browser.button.scraper.hide"
+		translate="2"
+		label="@nullsoft.browser#0"
+		label_y="-2"
+		label_x="18"
+		label_color="browser.text"
+		tooltip="@nullsoft.browser#1"
+	/>
+
+	<group id="scraper.mode" fitparent="1"/>
+	<group id="dlds.mode"  fitparent="1" visible="0"/>
+
+</groupdef>

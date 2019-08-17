@@ -1,0 +1,45 @@
+<!-- This group defines the layout of a toolbar like panel. For instance it is used by the filterlist object to
+     display a list of available fields, or by typesheet objects implementing a sidecar button bar
+
+     Required objects:
+
+       <Text id="buttonbar.text" />
+       <Button id="mousetrap" />
+
+-->
+
+<groupdef id="wasabi.buttonbar.stack" default_h="18">
+  <grid
+    id=""
+    x="0" y="0"
+    w="0" h="0"
+    relatw="1" relath="1"
+    topleft="wasabi.label.top.left"
+    top="wasabi.label.top"
+    topright="wasabi.label.top.right"
+    left="wasabi.label.left"
+    middle="wasabi.label.middle"
+    right="wasabi.label.right"
+    bottomleft="wasabi.label.bottom.left"
+    bottom="wasabi.label.bottom"
+    bottomright="wasabi.label.bottom.right"
+  />  
+  <text
+    id="buttonbar.text"
+    x="5" y="0"
+    w="-10" h="0"
+    relatw="1" relath="1"
+    default="Error"
+    font="Arial" fontsize="15"
+    color="wasabi.text.color" shadowcolor="wasabi.text.color.inverse" shadowx="1" shadowy="1"
+  />
+  <layer
+    id="buttonbar.arrow"
+    x="-15" y="8" 
+    valign="center"
+    relatx="1"
+    image="wasabi.button.label.arrow.down"
+  />
+  <button id="mousetrap" x="0" y="0" w="0" h="0" relatw="1" relath="1" rectrgn="1"/>
+</groupdef>
+

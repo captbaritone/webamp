@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<WinampAbstractionLayer version="0.7">
+
+<groupdef id="wasabi.dropdownlist.main.group" inherit_group="wasabi.objectframe.group">
+  <Wasabi:Text 
+    id="dropdownlist.text"
+    x="3" y="3"
+    w="-23" h="-6"
+    relatw="1" relath="1"
+  />
+  <Wasabi:button
+    id="dropdownlist.button"
+    x="-18" y="1"
+    w="17" h="-2"
+    relatx="1" relath="1"
+    image="wasabi.button.label.arrow.down"
+    center_image="1" wantfocus="0"
+   />
+   <sendparams target="wasabi.button" group="combobox.button" wantfocus="0" />
+</groupdef>
+
+<groupdef id="wasabi.dropdownlist.list.group" minimum_h="64" background="studio.BaseTexture">
+  <grid
+    id="dropdownlist.grid"
+    x="0" y="0"
+    w="0" h="0"
+    relatw="1" relath="1"
+    topleft="wasabi.dropdownlist.list.top.left"
+    top="wasabi.dropdownlist.list.top"
+    topright="wasabi.dropdownlist.list.top.right"
+    left="wasabi.dropdownlist.list.left"
+    middle="wasabi.dropdownlist.list.center"
+    right="wasabi.dropdownlist.list.right"
+    bottomleft="wasabi.dropdownlist.list.bottom.left"
+    bottom="wasabi.dropdownlist.list.bottom"
+    bottomright="wasabi.dropdownlist.list.bottom.right"
+    sysregion="1"
+  />
+  <list id="dropdownlist.list" x="2" y="2" w="-4" h="-4" relatw="1" relath="1" nocolheader="1"/>
+  <layer x="0" y="-2" relaty="1" w="0" relatw="1" h="2" resize="bottom" />
+</groupdef>
+
+</WinampAbstractionLayer>

@@ -1,0 +1,226 @@
+<!--  This file contains aliases to old ids for backward compatibility to 488 (winamp3.0) -->
+
+
+<!-- ============== -->
+<!-- BITMAP ALIASES -->
+<!-- ============== -->
+<elements>
+
+<!-- Base Texture -->
+  <elementalias id="studio.basetexture" target="wasabi.basetexture" />
+
+
+<!-- Frame windows -->
+  <elementalias id="studio.framewnd.verticaldivider" target="wasabi.framewnd.verticaldivider"/>
+  <elementalias id="studio.framewnd.verticalgrabber" target="wasabi.framewnd.verticalgrabber"/>
+  <elementalias id="studio.framewnd.horizontaldivider" target="wasabi.framewnd.horizontaldivider"/>
+  <elementalias id="studio.framewnd.horizontalgrabber" target="wasabi.framewnd.horizontalgrabber"/>
+  <elementalias id="studio.framewnd.windowshade" target="wasabi.framewnd.windowshade"/>
+  
+<!-- Generic Lists and Trees -->
+  <elementalias id="studio.list.background" target="wasabi.list.background"/>
+  <elementalias id="sutdio.list.background" target="wasabi.list.background"/> <!-- typos suck -->
+  <elementalias id="studio.tree.background" target="wasabi.tree.background"/>
+  <elementalias id="studio.tree.tab.closed" target="wasabi.tree.tab.closed"/>
+  <elementalias id="studio.tree.tab.open" target="wasabi.tree.tab.open"/>
+  <elementalias id="studio.tree.link.top.bottom" target="wasabi.tree.link.top.bottom"/>
+  <elementalias id="studio.tree.link.top.right" target="wasabi.tree.link.top.right"/>
+  <elementalias id="studio.tree.link.top.rightBottom" target="wasabi.tree.link.top.rightBottom"/>
+  <elementalias id="studio.tree.link.tab.top.bottom" target="wasabi.tree.link.tab.top.bottom"/>
+  <elementalias id="studio.tree.link.tab.top.right" target="wasabi.tree.link.tab.top.right"/>
+  <elementalias id="studio.tree.link.tab.top.rightBottom" target="wasabi.tree.link.tab.top.rightBottom"/>
+
+<!-- Scrollbars (on List, Tree, etc...) -->
+  <elementalias id="studio.scrollbar.horizontal.left" target="wasabi.scrollbar.horizontal.left"/>
+  <elementalias id="studio.scrollbar.horizontal.left.hilite" target="wasabi.scrollbar.horizontal.left.hover"/>
+  <elementalias id="studio.scrollbar.horizontal.left.pressed" target="wasabi.scrollbar.horizontal.left.pressed"/>
+  <elementalias id="studio.scrollbar.horizontal.right" target="wasabi.scrollbar.horizontal.right"/>
+  <elementalias id="studio.scrollbar.horizontal.right.hilite" target="wasabi.scrollbar.horizontal.right.hover"/>
+  <elementalias id="studio.scrollbar.horizontal.right.pressed" target="wasabi.scrollbar.horizontal.right.pressed"/>
+  <elementalias id="studio.scrollbar.horizontal.button" target="wasabi.scrollbar.horizontal.button"/>
+  <elementalias id="studio.scrollbar.horizontal.button.hilite" target="wasabi.scrollbar.horizontal.button.hover"/>
+  <elementalias id="studio.scrollbar.horizontal.button.pressed" target="wasabi.scrollbar.horizontal.button.pressed"/>
+  <elementalias id="studio.scrollbar.vertical.left" target="wasabi.scrollbar.vertical.left"/>
+  <elementalias id="studio.scrollbar.vertical.left.hilite" target="wasabi.scrollbar.vertical.left.hover"/>
+  <elementalias id="studio.scrollbar.vertical.left.pressed" target="wasabi.scrollbar.vertical.left.pressed"/>
+  <elementalias id="studio.scrollbar.vertical.right" target="wasabi.scrollbar.vertical.right"/>
+  <elementalias id="studio.scrollbar.vertical.right.hilite" target="wasabi.scrollbar.vertical.right.hover"/>
+  <elementalias id="studio.scrollbar.vertical.right.pressed" target="wasabi.scrollbar.vertical.right.pressed"/>
+  <elementalias id="studio.scrollbar.vertical.button" target="wasabi.scrollbar.vertical.button"/>
+  <elementalias id="studio.scrollbar.vertical.button.hilite" target="wasabi.scrollbar.vertical.button.hover"/>
+  <elementalias id="studio.scrollbar.vertical.button.pressed" target="wasabi.scrollbar.vertical.button.pressed"/>
+
+
+<!-- labelwnd titles -->
+  <elementalias id="studio.label.upperleft" target="wasabi.label.top.left"/>
+  <elementalias id="studio.label.top" target="wasabi.label.top"/>
+  <elementalias id="studio.label.upperright" target="wasabi.label.top.right"/>
+  <elementalias id="studio.label.left" target="wasabi.label.left"/>
+  <elementalias id="studio.label.middle" target="wasabi.label.middle"/>
+  <elementalias id="studio.label.right" target="wasabi.label.right"/>
+  <elementalias id="studio.label.lowerleft" target="wasabi.label.bottom.left"/>
+  <elementalias id="studio.label.bottom" target="wasabi.label.bottom"/>
+  <elementalias id="studio.label.lowerright" target="wasabi.label.bottom.right"/>
+
+
+<!-- default button -->
+  <elementalias id="studio.button.upperLeft" target="wasabi.button.top.left"/>
+  <elementalias id="studio.button.top" target="wasabi.button.top"/>
+  <elementalias id="studio.button.upperRight" target="wasabi.button.top.right"/>
+  <elementalias id="studio.button.left" target="wasabi.button.left"/>
+  <elementalias id="studio.button.middle" target="wasabi.button.middle"/>
+  <elementalias id="studio.button.right" target="wasabi.button.right"/>
+  <elementalias id="studio.button.lowerLeft" target="wasabi.button.bottom.left"/>
+  <elementalias id="studio.button.bottom" target="wasabi.button.bottom"/>
+  <elementalias id="studio.button.lowerRight" target="wasabi.button.bottom.right"/>
+  <elementalias id="studio.button.pressed.upperLeft" target="wasabi.button.pressed.top.left"/>
+  <elementalias id="studio.button.pressed.top" target="wasabi.button.pressed.top"/>
+  <elementalias id="studio.button.pressed.upperRight" target="wasabi.button.pressed.top.right"/>
+  <elementalias id="studio.button.pressed.left" target="wasabi.button.pressed.left"/>
+  <elementalias id="studio.button.pressed.middle" target="wasabi.button.pressed.middle"/>
+  <elementalias id="studio.button.pressed.right" target="wasabi.button.pressed.right"/>
+  <elementalias id="studio.button.pressed.lowerLeft" target="wasabi.button.pressed.bottom.left"/>
+  <elementalias id="studio.button.pressed.bottom" target="wasabi.button.pressed.bottom"/>
+  <elementalias id="studio.button.pressed.lowerRight" target="wasabi.button.pressed.bottom.right"/>
+
+
+<!-- Popup menus -->
+  <elementalias id="studio.button.checkmark" target="wasabi.popup.menu.check"/>
+  <elementalias id="studio.popup.submenuIcon" target="wasabi.popup.menu.submenu"/>
+  <elementalias id="studio.popup.seperator" target="wasabi.popup.menu.seperator"/>
+  <elementalias id="studio.popup.background" target="wasabi.popup.menu.background"/>
+  <elementalias id="studio.popup.border.topLeft" target="wasabi.popup.menu.border.topLeft"/>
+  <elementalias id="studio.popup.border.top" target="wasabi.popup.menu.border.top"/>
+  <elementalias id="studio.popup.border.topRight" target="wasabi.popup.menu.border.topRight"/>
+  <elementalias id="studio.popup.border.left" target="wasabi.popup.menu.border.left"/>
+  <elementalias id="studio.popup.border.right" target="wasabi.popup.menu.border.right"/>
+  <elementalias id="studio.popup.border.bottomLeft" target="wasabi.popup.menu.border.bottomLeft"/>
+  <elementalias id="studio.popup.border.bottom" target="wasabi.popup.menu.border.bottom"/>
+  <elementalias id="studio.popup.border.bottomRight" target="wasabi.popup.menu.border.bottomRight"/>
+  <elementalias id="studio.popup.selection.left" target="wasabi.popup.menu.selection.left"/>
+  <elementalias id="studio.popup.selection.right" target="wasabi.popup.menu.selection.right"/>
+  <elementalias id="studio.popup.selection.center" target="wasabi.popup.menu.selection.center"/>
+
+<!-- Sliders -->
+  <elementalias id="studio.seekbar.left" target="wasabi.slider.horizontal.left"/>
+  <elementalias id="studio.seekbar.middle" target="wasabi.slider.horizontal.middle"/>
+  <elementalias id="studio.seekbar.right" target="wasabi.slider.horizontal.right"/>
+  <elementalias id="studio.seekbar.top" target="wasabi.slider.vertical.top"/>
+  <elementalias id="studio.seekbar.middle" target="wasabi.slider.horizontal.middle"/>
+  <elementalias id="studio.seekbar.bottom" target="wasabi.slider.vertical.bottom"/>
+  <elementalias id="studio.seekbar.button.nonpressed" target="wasabi.slider.horizontal.button"/>
+  <elementalias id="studio.seekbar.button.pressed" target="wasabi.slider.horizontal.button.pressed"/>
+
+</elements>
+
+
+<!-- ============= -->
+<!-- COLOR ALIASES -->
+<!-- ============= -->
+<elements>
+
+<!-- Generic Trees -->
+  <elementalias id="studio.tree.text" target="wasabi.tree.text"/>
+  <elementalias id="studio.tree.selected" target="wasabi.tree.selected"/>
+  <elementalias id="studio.tree.hiliteddrop" target="wasabi.tree.hiliteddrop"/>
+
+
+<!-- Generic Lists -->
+  <elementalias id="studio.list.text" target="wasabi.list.text"/>
+  <elementalias id="studio.list.item.selected" target="wasabi.list.item.selected"/>
+  <elementalias id="studio.list.item.focused" target="wasabi.list.item.focused"/>
+  <elementalias id="studio.list.column.background" target="wasabi.list.column.background"/>
+  <elementalias id="studio.list.column.text" target="wasabi.list.column.text"/>
+  <elementalias id="studio.list.item.selected.fg" target="wasabi.list.item.selected.fg"/>
+  <elementalias id="studio.list.column.separator" target="wasabi.list.column.separator"/>
+
+
+<!-- Item Lists, Lists with playable items -->
+  <elementalias id="common.itemlist.outline.current" target="wasabi.itemlist.outline.current"/>
+  <elementalias id="common.itemlist.outline.focus" target="wasabi.itemlist.outline.focus"/>
+  <elementalias id="common.itemlist.selborder" target="wasabi.itemlist.selborder"/>
+
+
+<!-- Message box -->
+  <elementalias id="studio.msgBox.background" target="wasabi.msgBox.background"/>
+  <elementalias id="studio.textBar.text" target="wasabi.textBar.text"/>
+  <elementalias id="studio.textBar.background" target="wasabi.textBar.background"/>
+
+
+<!-- Buttons -->
+  <elementalias id="studio.button.text" target="wasabi.button.text"/>
+  <elementalias id="studio.button.hiliteText" target="wasabi.button.hiliteText"/>
+  <elementalias id="studio.button.dimmedText" target="wasabi.button.dimmedText"/>
+
+
+<!-- Popup menus -->
+  <elementalias id="studio.popup.text" target="wasabi.popup.text"/>
+  <elementalias id="studio.popup.hiliteText" target="wasabi.popup.hiliteText"/>
+  <elementalias id="studio.popup.dimmedText" target="wasabi.popup.dimmedText"/>
+
+
+<!-- Components -->
+  <elementalias id="studio.component.title.foreground" target="wasabi.component.title.foreground"/>
+  <elementalias id="studio.component.title.border" target="wasabi.component.title.border"/>
+
+
+<!-- labeled windows -->
+  <elementalias id="common.labelwnd.foreground" target="wasabi.labelwnd.foreground"/>
+  <elementalias id="common.labelwnd.background" target="wasabi.labelwnd.background"/>
+
+</elements>
+
+
+<!-- NOT USED.  WISHFUL THINKING.
+
+__NOBODY USES THESE.
+  <bitmap id="wasabi.frame.divider.arrow.left" file="window/window-elements.png" x="56" y="124" h="7" w="4"/>
+  <bitmap id="wasabi.frame.divider.arrow.right" file="window/window-elements.png" x="60" y="124" h="7" w="4"/>
+  <bitmap id="wasabi.frame.divider.top.left" file="window/window-elements.png" x="115" y="31" h="3" w="3"/>
+  <bitmap id="wasabi.frame.divider.top" file="window/window-elements.png" x="118" y="31" h="3" w="10"/>
+  <bitmap id="wasabi.frame.divider.top.right" file="window/window-elements.png" x="128" y="31" h="3" w="3"/>
+  <bitmap id="wasabi.frame.divider.left" file="window/window-elements.png" x="115" y="34" h="10" w="3"/>
+  <bitmap id="wasabi.frame.divider.center" file="window/window-elements.png" x="118" y="34" h="10" w="10"/>
+  <bitmap id="wasabi.frame.divider.right" file="window/window-elements.png" x="128" y="34" h="10" w="3"/>
+  <bitmap id="wasabi.frame.divider.bottom.left" file="window/window-elements.png" x="115" y="44" h="3" w="3"/>
+  <bitmap id="wasabi.frame.divider.bottom" file="window/window-elements.png" x="118" y="44" h="3" w="10"/>
+  <bitmap id="wasabi.frame.divider.bottom.right" file="window/window-elements.png" x="128" y="44" h="3" w="3"/>
+
+__TREE DOES NOT USE SORT ICON.
+  <bitmap id="studio.tree.sort.icon" file="window/tree-sort-icon.png" gammagroup="Tree Color"/>
+
+__SCROLLBARS DO NOT HAVE A BACKGROUND ELEMENT.
+  <bitmap id="studio.scrollbar.horizontal.background" file="window/window-elements.png" x="58" y="52" h="13" w="41" gammagroup="Scrollbar Backgrounds"/>
+  <bitmap id="wasabi.scrollbar.horizontal.background" file="window/window-elements.png" x="58" y="52" h="13" w="41" gammagroup="Scrollbar Backgrounds"/>
+  <bitmap id="studio.scrollbar.vertical.background" file="window/window-elements.png" x="39" y="55" h="41" w="13" gammagroup="Scrollbar Backgrounds"/>
+  <bitmap id="wasabi.scrollbar.vertical.background" file="window/window-elements.png" x="39" y="55" h="41" w="13" gammagroup="Scrollbar Backgrounds"/>
+
+__BUTTONS ON THE SCROLLBARS ONLY HAVE ONE ELEMENT.
+  <bitmap id="wasabi.scrollbar.horizontal.button.left" file="window/window-elements.png" x="57" y="13" h="13" w="3" gammagroup="Scrollbar Buttons"/>
+  <bitmap id="wasabi.scrollbar.horizontal.button.middle" file="window/window-elements.png" x="60" y="13" h="13" w="35" gammagroup="Scrollbar Buttons"/>
+  <bitmap id="wasabi.scrollbar.horizontal.button.right" file="window/window-elements.png" x="95" y="13" h="13" w="3" gammagroup="Scrollbar Buttons"/>
+  <bitmap id="wasabi.scrollbar.horizontal.button.left.hover" file="window/window-elements.png" x="57" y="26" h="13" w="3" gammagroup="Scrollbar Buttons"/>
+  <bitmap id="wasabi.scrollbar.horizontal.button.middle.hover" file="window/window-elements.png" x="60" y="26" h="13" w="35" gammagroup="Scrollbar Buttons"/>
+  <bitmap id="wasabi.scrollbar.horizontal.button.right.hover" file="window/window-elements.png" x="95" y="26" h="13" w="3" gammagroup="Scrollbar Buttons"/>
+  <bitmap id="wasabi.scrollbar.horizontal.button.left.pressed" file="window/window-elements.png" x="57" y="39" h="13" w="3" gammagroup="Scrollbar Buttons"/>
+  <bitmap id="wasabi.scrollbar.horizontal.button.middle.pressed" file="window/window-elements.png" x="60" y="39" h="13" w="35" gammagroup="Scrollbar Buttons"/>
+  <bitmap id="wasabi.scrollbar.horizontal.button.right.pressed" file="window/window-elements.png" x="95" y="39" h="13" w="3" gammagroup="Scrollbar Buttons"/>
+  <bitmap id="wasabi.scrollbar.vertical.button.top" file="window/window-elements.png" x="0" y="55" h="3" w="13" gammagroup="Scrollbar Buttons"/>
+  <bitmap id="wasabi.scrollbar.vertical.button.middle" file="window/window-elements.png" x="0" y="58" h="35" w="13" gammagroup="Scrollbar Buttons"/>
+  <bitmap id="wasabi.scrollbar.vertical.button.bottom" file="window/window-elements.png" x="0" y="93" h="3" w="13" gammagroup="Scrollbar Buttons"/>
+  <bitmap id="wasabi.scrollbar.vertical.button.top.hover" file="window/window-elements.png" x="13" y="55" h="3" w="13" gammagroup="Scrollbar Buttons"/>
+  <bitmap id="wasabi.scrollbar.vertical.button.middle.hover" file="window/window-elements.png" x="13" y="58" h="35" w="13" gammagroup="Scrollbar Buttons"/>
+  <bitmap id="wasabi.scrollbar.vertical.button.bottom.hover" file="window/window-elements.png" x="13" y="93" h="3" w="13" gammagroup="Scrollbar Buttons"/>
+  <bitmap id="wasabi.scrollbar.vertical.button.top.pressed" file="window/window-elements.png" x="26" y="55" h="3" w="13" gammagroup="Scrollbar Buttons"/>
+  <bitmap id="wasabi.scrollbar.vertical.button.middle.pressed" file="window/window-elements.png" x="26" y="58" h="35" w="13" gammagroup="Scrollbar Buttons"/>
+  <bitmap id="wasabi.scrollbar.vertical.button.bottom.pressed" file="window/window-elements.png" x="26" y="93" h="3" w="13" gammagroup="Scrollbar Buttons"/>
+
+__NOBODY USES THESE, EITHER.
+  <bitmap id="studio.statusbar.left" file="window/window-elements.png" x="94" y="0" h="12" w="12"/>
+  <bitmap id="studio.statusbar.middle" file="window/window-elements.png" x="107" y="0" h="12" w="12"/>
+  <bitmap id="studio.statusbar.right" file="window/window-elements.png" x="120" y="0" h="12" w="12"/>
+
+__NOR THIS COLOR.
+  <color id="studio.tree.hilited" value="0,255,255"/> 
+
+-->

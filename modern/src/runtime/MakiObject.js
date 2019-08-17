@@ -1,5 +1,9 @@
 import Emitter from "../Emitter";
-import { findElementById, findGroupDefById } from "../utils";
+import {
+  findElementById,
+  findDescendantByTypeAndId,
+  findGroupDefById,
+} from "../utils";
 
 class MakiObject {
   constructor(node, parent, annotations = {}, store) {
@@ -42,19 +46,41 @@ class MakiObject {
     this._emitter.dispose();
   }
 
-  js_imageLookup(id) {
+  js_imageLookup(id, sharedMakiTree) {
     const element = findElementById(this, id);
     if (element) {
       return element.js_annotations;
     }
 
+    if (sharedMakiTree) {
+      const sharedElement = findDescendantByTypeAndId(
+        sharedMakiTree,
+        "bitmap",
+        id
+      );
+      if (sharedElement) {
+        return sharedElement.js_annotations;
+      }
+    }
+
     return null;
   }
 
-  js_groupdefLookup(id) {
+  js_groupdefLookup(id, sharedMakiTree) {
     const groupdef = findGroupDefById(this, id);
     if (groupdef) {
       return groupdef;
+    }
+
+    if (sharedMakiTree) {
+      const sharedGroupdef = findDescendantByTypeAndId(
+        sharedMakiTree,
+        "groupdef",
+        id
+      );
+      if (sharedGroupdef) {
+        return sharedGroupdef;
+      }
     }
 
     return null;

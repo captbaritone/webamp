@@ -1,0 +1,87 @@
+<!-- 
+
+  system-colors.xml
+
+
+  this file contains all the static color definitions for Wasabi. An objects that does not rely on a group will use 
+  one of these elements to decide what color to use.
+
+
+
+  Just like in system-elements.xml, the elements beginning with "studio." and "common." have
+  been moved to system-element-aliases.xml for backwards compatibility.  If you are building a
+  skin for Winamp3 (Wasabi Build 488), you should override these element IDs and include the
+  aliases file in your own skin.
+
+-->
+
+
+<elements>
+
+<!-- Generic Trees -->
+  <color id="wasabi.tree.text" value="196,255,196" gammagroup="Text"/> <!-- Item text color -->
+  <color id="wasabi.tree.selected" value="0,0,128" gammagroup="Text Backgrounds"/> <!-- Select item text background color -->
+  <color id="wasabi.tree.hiliteddrop" value="0,64,128"/> <!-- Drop marker color -->
+
+  
+<!-- Generic Lists -->
+  <color id="wasabi.list.text" value="196,255,196" gammagroup="Text"/> <!-- List item text color -->
+  <color id="wasabi.list.item.selected" value="0,0,128" gammagroup="Text Backgrounds"/> <!-- Selected item text background color -->
+  <color id="wasabi.list.item.focused" value="0,0,128" gammagroup="Text Backgrounds"/> <!-- Focused item text background color -->
+  <color id="wasabi.list.column.background" value="102,102,102" gammagroup="Text Backgrounds"/> <!-- Columns background color -->
+  <color id="wasabi.list.column.text" value="255,255,255" gammagroup="Text"/> <!-- Columns text color -->
+  <color id="wasabi.list.item.selected.fg" value="255,255,255" gammagroup="Text"/> <!-- Selected item text foreground color -->
+  <color id="wasabi.list.column.separator" value="128,128,128"  gammagroup="Backgrounds"/> <!-- Color of line between columns -->
+
+  <!-- Haven't changed listwnd.cpp yet!!! -->
+
+
+<!-- Item Lists, Lists with playable items -->
+  <color id="wasabi.itemlist.outline.current" value="255,255,0"/> <!-- Currently playing outline color -->
+  <color id="wasabi.itemlist.outline.focus" value="0,128,128"/> <!-- Focused item dashed outline color -->
+  <color id="wasabi.itemlist.selborder" value="64,64,196"/>
+
+
+<!-- Message box -->
+  <color id="wasabi.msgBox.background" value="32,32,32" gammagroup="Backgrounds"/> <!-- Messagebox background color -->
+  <color id="wasabi.textBar.text" value="248,248,248" gammagroup="Text"/> <!-- Text object & message box text color -->
+  <color id="wasabi.textBar.background" value="32,32,32" gammagroup="Text Backgrounds"/> <!-- Text object & message box text background color -->
+
+
+<!-- Buttons -->
+  <color id="wasabi.button.text" value="0,0,0" gammagroup="Text"/> <!-- Buttons text color -->
+  <color id="wasabi.button.hiliteText" value="0,240,0" gammagroup="Text"/> <!-- Buttons hilite text color, used by tab windows-->
+  <color id="wasabi.button.dimmedText" value="64,64,64" gammagroup="Text"/> <!-- Buttons dimmed text color, when disabled -->
+
+
+<!-- Popup menus -->
+  <color id="wasabi.popup.text" value="0,0,0" gammagroup="Text"/> <!-- Menu items text color -->
+  <color id="wasabi.popup.hiliteText" value="255,255,255" gammagroup="Text"/> <!-- Hilited item text color -->
+  <color id="wasabi.popup.dimmedText" value="64,64,64" gammagroup="Text"/> <!-- Disabled item text color -->
+
+
+<!-- Components -->
+  <color id="wasabi.component.title.foreground" value="255,255,255" gammagroup="Text"/> <!-- Old title bar text color when using TTF -->
+  <color id="wasabi.component.title.border" value="1,1,1" gammagroup="Text Backgrounds"/> <!-- Old title bar text outline when using TTF -->
+
+
+<!-- labeled windows -->
+  <color id="wasabi.labelwnd.foreground" value="220,220,220" gammagroup="Text"/> <!-- Text foreground color -->
+  <color id="wasabi.labelwnd.background" value="0,0,0" gammagroup="Text Backgrounds"/> <!-- Text drop shadow color -->
+
+
+<!-- edit wnds -->
+  <color id="wasabi.edit.selection" value="127,127,127" gammagroup="Text Backgrounds"/> <!-- Selected text -->
+  <color id="wasabi.edit.text" value="196,255,196" gammagroup="Text"/> <!--Text -->
+  <color id="wasabi.edit.background" value="0,0,0" gammagroup="Text Backgrounds"/> <!--Text background -->
+
+</elements>
+
+<elements>
+  <color id="wasabi.text.color" value="255,255,255" gammagroup="Text"/>
+  <color id="wasabi.text.color.inverse" value="0,0,0" gammagroup="Text Inverse"/>
+</elements>
+
+<include file="system-element-aliases.xml"/>
+<!-- also included in system-elements.xml, but it doesnt hurt to be thorough.  I think. :) -->
+

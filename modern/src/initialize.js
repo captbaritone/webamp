@@ -60,6 +60,15 @@ const schema = {
     "playlistplus",
     "syscmds",
     "guiobject",
+    "componentbucket",
+    "edit",
+    "wasabi:frame",
+    "browser",
+    "wasabi:historyeditbox",
+    "wasabi:editbox",
+    "wasabi:iconbutton",
+    "list",
+    "downloadslist",
   ],
   group: [
     "button",
@@ -100,6 +109,7 @@ const schema = {
     "vis",
     "rect",
     "component",
+    "hideobject",
   ],
   container: ["groupdef", "layout", "scripts"],
   scripts: ["script"],
@@ -139,9 +149,11 @@ const schema = {
     "gammaset",
     "accelerators",
     "color",
+    "stringtable",
   ],
   gammaset: ["gammagroup"],
   accelerators: ["accelerator"],
+  stringtable: ["stringentry"],
 };
 
 const noop = (node, parent) => new MakiObject(node, parent);
@@ -203,6 +215,13 @@ const parsers = {
   gammagroup: noop,
   truetypefont: noop,
   component: noop,
+  componentbucket: noop,
+  stringtable: noop,
+  stringentry: noop,
+  edit: noop,
+  browser: noop,
+  list: noop,
+  downloadslist: noop,
   text: (node, parent) => new Text(node, parent),
   togglebutton: (node, parent) => new ToggleButton(node, parent),
   status: (node, parent) => new Status(node, parent),
@@ -214,6 +233,10 @@ const parsers = {
   "wasabi:standardframe:status": noop,
   "wasabi:standardframe:nostatus": noop,
   "wasabi:button": noop,
+  "wasabi:frame": noop,
+  "wasabi:historyeditbox": noop,
+  "wasabi:editbox": noop,
+  "wasabi:iconbutton": noop,
   accelerators: noop,
   accelerator: noop,
   cursor: noop,
@@ -283,12 +306,15 @@ async function parseChildren(node, children, zip) {
   node.js_addChildren(filteredChildren);
 }
 
-async function applyGroupDefs(root) {
+async function applyGroupDefs(root, sharedMakiTree) {
   await asyncTreeFlatMap(root, async node => {
     switch (node.name) {
       case "group": {
         if (!node.children || node.children.length === 0) {
-          const groupdef = node.js_groupdefLookup(node.attributes.id);
+          const groupdef = node.js_groupdefLookup(
+            node.attributes.id,
+            sharedMakiTree
+          );
           if (!groupdef) {
             console.warn(
               "Unable to find groupdef. Rendering null",
@@ -315,11 +341,11 @@ async function applyGroupDefs(root) {
   });
 }
 
-async function initialize(zip, skinXml) {
+async function initialize(zip, skinXml, sharedMakiTree = null) {
   const xmlRoot = skinXml.children[0];
   const root = new WinampAbstractionLayer(skinXml.children[0], null);
   await parseChildren(root, xmlRoot.children, zip);
-  await applyGroupDefs(root);
+  await applyGroupDefs(root, sharedMakiTree);
   return root;
 }
 

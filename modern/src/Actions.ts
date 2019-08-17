@@ -5,9 +5,14 @@ import initialize from "./initialize";
 import { run } from "./maki-interpreter/virtualMachine";
 import System from "./runtime/System";
 import runtime from "./runtime";
+import freeform from "../plugins/freeform.wal";
 
 export function setMakiTree(makiTree: MakiTree): ModernAction {
   return { type: "SET_MAKI_TREE", makiTree };
+}
+
+export function setSharedMakiTree(makiTree: MakiTree): ModernAction {
+  return { type: "SET_SHARED_MAKI_TREE", makiTree };
 }
 
 export function setXmlTree(xmlTree: XmlTree): ModernAction {
@@ -29,6 +34,20 @@ export function gotSkinBlob(blob: Blob, store: ModernStore) {
 
 function gotSkinZip(zip: JSZip, store: ModernStore) {
   return async dispatch => {
+    if (!store.getState().sharedMakiTree) {
+      const resp = await fetch(freeform);
+      const blob = await resp.blob();
+      const sharedZip = await JSZip.loadAsync(blob);
+      const sharedXmlTree = await Utils.inlineIncludes(
+        await Utils.readXml(sharedZip, "freeform/xml/wasabi/wasabi.xml"),
+        sharedZip
+      );
+
+      const sharedMakiTree = await initialize(sharedZip, sharedXmlTree);
+
+      dispatch(setSharedMakiTree(sharedMakiTree));
+    }
+
     const xmlTree = await Utils.inlineIncludes(
       await Utils.readXml(zip, "skin.xml"),
       zip
@@ -36,7 +55,8 @@ function gotSkinZip(zip: JSZip, store: ModernStore) {
 
     dispatch(setXmlTree(xmlTree));
 
-    const makiTree = await initialize(zip, xmlTree);
+    const sharedMakiTree = store.getState().sharedMakiTree;
+    const makiTree = await initialize(zip, xmlTree, sharedMakiTree);
     // Execute scripts
     await Utils.asyncTreeFlatMap(makiTree, node => {
       switch (node.name) {
