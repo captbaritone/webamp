@@ -1,6 +1,6 @@
 import MakiObject from "./MakiObject";
 
-class List extends MakiObject {
+class Map extends MakiObject {
   /**
    * getclassname()
    *
@@ -8,8 +8,8 @@ class List extends MakiObject {
    * @ret The class name.
    */
   getclassname() {
-    return "List";
+    return "Map";
   }
 }
 
-export default List;
+export default Map;
