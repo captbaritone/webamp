@@ -293,7 +293,7 @@ function Popupmenu({ id, node }) {
       <li
         key={item.id}
         onClick={() => {
-          node.resolveCmdSelection(item.id);
+          node.js_selectCommand(item.id);
         }}
       >
         {item.name}

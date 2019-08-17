@@ -6,7 +6,7 @@ class PopupMenu extends GuiObject {
     super(node, parent);
 
     this.commands = [];
-    this.resolveCmdSelection = null;
+    this.js_selectCommand = null;
   }
 
   /**
@@ -38,7 +38,7 @@ class PopupMenu extends GuiObject {
 
   popatmouse() {
     return new Promise(resolve => {
-      this.resolveCmdSelection = value => {
+      this.js_selectCommand = value => {
         this.parent.js_removeChild(this);
         this.parent.js_trigger("js_update");
         resolve(value);
