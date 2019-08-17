@@ -49,13 +49,13 @@ export function run({
     // const logger = log ? printCommand : logger;
     // TODO: Handle disposing of this.
     // TODO: Handle passing in variables.
-    variable.hook(method.name, async (...args) => {
+    variable.hook(method.name, (...args) => {
       // Interpret is a generator that yields before each command is exectued.
       // `handler` is reponsible for `.next()`ing until the program execution is
       // complete (the generator is "done"). In production this is done
       // synchronously. In the debugger, if execution is paused, it's done
       // async.
-      await debugHandler(interpret(commandOffset, program, args.reverse()));
+      debugHandler(interpret(commandOffset, program, args.reverse()));
     });
   });
 
