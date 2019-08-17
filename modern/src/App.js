@@ -301,6 +301,7 @@ function Popupmenu({ id, node }) {
     );
   });
   const { x, y } = mouseposition;
+  // TODO: Actually properly style element
   return (
     <div
       data-node-type="Popmenu"
