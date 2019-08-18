@@ -454,7 +454,13 @@ const NODE_NO_EVENTS = new Set(["popupmenu"]);
 function XmlNode({ node }) {
   const attributes = node.attributes;
   const name = node.name;
-  if (name == null || name === "groupdef") {
+  if (
+    name == null ||
+    name === "groupdef" ||
+    name === "elements" ||
+    name === "gammaset" ||
+    name === "scripts"
+  ) {
     // name is null is likely a comment
     return null;
   }
