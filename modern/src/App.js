@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useReducer } from "react";
 import "./App.css";
 import * as Utils from "./utils";
 import * as Actions from "./Actions";
@@ -11,7 +11,7 @@ import Debugger from "./debugger";
 import Sidebar from "./Sidebar";
 
 function useJsUpdates(node) {
-  const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
   useEffect(() => node.js_listen("js_update", forceUpdate));
 }
 
@@ -96,8 +96,8 @@ function GuiObjectEvents({ Component, node, children }) {
       onMouseMove={e => handleMouseEventDispatch(node, e, "onMouseMove")}
       onMouseEnter={e => handleMouseEventDispatch(node, e, "onEnterArea")}
       onMouseLeave={e => handleMouseEventDispatch(node, e, "onLeaveArea")}
-      onDragEnter={e => node.js_trigger("onDragEnter")}
-      onDragLeave={e => node.js_trigger("onDragLeave")}
+      onDragEnter={() => node.js_trigger("onDragEnter")}
+      onDragLeave={() => node.js_trigger("onDragLeave")}
       onDragOver={e => handleMouseEventDispatch(node, e, "onDragOver")}
       onKeyUp={e => node.js_trigger("onKeyUp", e.keyCode)}
       onKeyDown={e => node.js_trigger("onKeyDown", e.keyCode)}
@@ -138,7 +138,7 @@ function Layout({
   node,
   id,
   background,
-  desktopalpha,
+  // desktopalpha,
   drawBackground,
   x,
   y,
@@ -148,7 +148,7 @@ function Layout({
   maximum_h,
   minimum_w,
   maximum_w,
-  droptarget,
+  // droptarget,
   children,
 }) {
   if (drawBackground && background == null) {
@@ -265,7 +265,7 @@ function Layer({ node, id, image, children, x, y }) {
 function Button({
   id,
   image,
-  action,
+  // action,
   x,
   y,
   downImage,
@@ -290,7 +290,7 @@ function Button({
     <div
       data-node-type="button"
       data-node-id={id}
-      onMouseDown={e => {
+      onMouseDown={() => {
         setDown(true);
         document.addEventListener("mouseup", () => {
           // TODO: This could be unmounted
@@ -379,17 +379,17 @@ function Group(props) {
 }
 
 function Text({
-  node,
+  // node,
   id,
   children,
   display,
-  ticker,
-  antialias,
+  // ticker,
+  // antialias,
   x,
   y,
   w,
   h,
-  font,
+  // font,
   fontsize,
   color,
   align,
@@ -452,8 +452,7 @@ const NODE_NO_EVENTS = new Set(["popupmenu"]);
 
 // Given a skin XML node, pick which component to use, and render it.
 function XmlNode({ node }) {
-  const attributes = node.attributes;
-  const name = node.name;
+  const { name } = node;
   if (
     name == null ||
     name === "groupdef" ||

@@ -1,7 +1,7 @@
 import Variable from "./variable";
 import { isPromise, unimplementedWarning } from "../utils";
 
-function coerceTypes(var1, var2, val1, val2) {
+function coerceTypes(var1, var2, val1 /* val2 */) {
   if (var2.type === "INT") {
     if (var1.type === "FLOAT" || var1.type === "DOUBLE") {
       return Math.floor(val1);

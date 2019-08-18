@@ -150,10 +150,10 @@ function readVariables({ makiFile, classes }) {
     const subClass = makiFile.readUInt16LE();
     const uinit1 = makiFile.readUInt16LE();
     const uinit2 = makiFile.readUInt16LE();
-    const uinit3 = makiFile.readUInt16LE();
-    const uinit4 = makiFile.readUInt16LE();
+    makiFile.readUInt16LE(); // uinit3
+    makiFile.readUInt16LE(); //uinit4
     const global = makiFile.readUInt8();
-    const system = makiFile.readUInt8();
+    makiFile.readUInt8(); // system
 
     if (object) {
       const klass = classes[typeOffset];
@@ -234,7 +234,7 @@ function readBindings(makiFile) {
   return bindings;
 }
 
-function decodeCode({ makiFile, classes, variables, methods }) {
+function decodeCode({ makiFile }) {
   const length = makiFile.readUInt32LE();
   const start = makiFile.getPosition();
 
@@ -310,12 +310,7 @@ function parse(buffer) {
   const variables = readVariables({ makiFile: makiFile, classes });
   readConstants({ makiFile: makiFile, variables });
   const bindings = readBindings(makiFile);
-  const commands = decodeCode({
-    makiFile,
-    classes,
-    variables,
-    methods,
-  });
+  const commands = decodeCode({ makiFile });
 
   // Map binary offsets to command indexes.
   // Some bindings/functions ask us to jump to a place in the binary data and
