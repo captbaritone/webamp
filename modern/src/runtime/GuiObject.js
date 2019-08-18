@@ -22,11 +22,6 @@ class GuiObject extends MakiObject {
     return findDescendantByTypeAndId(this, null, id);
   }
 
-  getobject(id) {
-    // Not sure this is correct, but it is my understanding this is just an alias
-    return this.findobject(id);
-  }
-
   init(newRoot) {
     this.parent = newRoot;
     newRoot.js_addChild(this);
@@ -78,6 +73,11 @@ class GuiObject extends MakiObject {
     this.attributes.y = y;
     this.attributes.w = w;
     this.attributes.h = h;
+    // TODO: Confirm that GuiObject actually supports these min/max attributes
+    this.attributes.minimum_w = w;
+    this.attributes.maximum_w = w;
+    this.attributes.minimum_h = h;
+    this.attributes.maximum_h = h;
   }
 }
 
