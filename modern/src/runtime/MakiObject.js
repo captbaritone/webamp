@@ -71,7 +71,7 @@ class MakiObject {
    * @ret The class name.
    */
   getclassname() {
-    return "MakiObject";
+    return "Object";
   }
 
   /**
