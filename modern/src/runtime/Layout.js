@@ -15,15 +15,6 @@ class Layout extends Group {
   getcontainer() {
     return findParentNodeOfType(this, new Set(["container"]));
   }
-
-  resize(x, y, w, h) {
-    this.attributes.x = x;
-    this.attributes.y = y;
-    this.attributes.minimum_w = w;
-    this.attributes.maximum_w = w;
-    this.attributes.minimum_h = h;
-    this.attributes.maximum_h = h;
-  }
 }
 
 export default Layout;
