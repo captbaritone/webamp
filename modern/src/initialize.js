@@ -30,120 +30,6 @@ async function loadImage(imgUrl) {
   });
 }
 
-const schema = {
-  groupdef: [
-    "scripts",
-    "layer",
-    "layoutstatus",
-    "hideobject",
-    "button",
-    "wasabi:titlebar",
-    "group",
-    "script",
-    "sendparams",
-    "eqvis",
-    "slider",
-    "component",
-    "colorthemes:list",
-    "wasabi:button",
-    "text",
-    "vis",
-    "grid",
-    "rect",
-    "animatedlayer",
-    "nstatesbutton",
-    "togglebutton",
-    "songticker",
-    "menu",
-    "status",
-    "albumart",
-    "playlistplus",
-    "syscmds",
-    "guiobject",
-  ],
-  group: [
-    "button",
-    "layer",
-    "text",
-    "vis",
-    "group",
-    "scripts",
-    "layoutstatus",
-    "hideobject",
-    "wasabi:titlebar",
-    "menu",
-    "nstatesbutton",
-    "status",
-    "script",
-    "songticker",
-    "grid",
-    "animatedlayer",
-    "togglebutton",
-    "slider",
-    "rect",
-    "eqvis",
-    "playlistplus",
-  ],
-  layout: [
-    "wasabi:standardframe:status",
-    "text",
-    "wasabi:standardframe:nostatus",
-    "layer",
-    "button",
-    "togglebutton",
-    "status",
-    "slider",
-    "group",
-    "sendparams",
-    "script",
-    "grid",
-    "vis",
-    "rect",
-    "component",
-  ],
-  container: ["groupdef", "layout", "scripts"],
-  scripts: ["script"],
-  elements: [
-    "color",
-    "bitmap",
-    "bitmapfont",
-    "truetypefont",
-    "cursor",
-    "elementalias",
-    "groupdef",
-  ],
-  skininfo: [
-    "version",
-    "name",
-    "author",
-    "comment",
-    "email",
-    "homepage",
-    "screenshot",
-  ],
-  wasabixml: [
-    "skininfo",
-    "scripts",
-    "elements",
-    "groupdef",
-    "container",
-    "gammaset",
-  ],
-  // same as above, wa3 vs wa5
-  winampabstractionlayer: [
-    "skininfo",
-    "scripts",
-    "elements",
-    "groupdef",
-    "container",
-    "gammaset",
-    "accelerators",
-    "color",
-  ],
-  gammaset: ["gammagroup"],
-  accelerators: ["accelerator"],
-};
-
 const noop = (node, parent) => new MakiObject(node, parent);
 
 const parsers = {
@@ -241,7 +127,6 @@ async function parseChildren(node, children, zip) {
     throw new Error("Unknown node");
   }
 
-  const validChildren = new Set(schema[node.name.toLowerCase()]);
   const resolvedChildren = await Promise.all(
     children.map(async child => {
       if (child.type === "comment") {
@@ -261,14 +146,10 @@ async function parseChildren(node, children, zip) {
         throw new Error("Unknown node");
       }
 
-      if (!validChildren.has(childName)) {
-        throw new Error(`Invalid child of a ${node.name}: ${childName}`);
-      }
-
-      const childParser = parsers[childName];
+      let childParser = parsers[childName];
       if (childParser == null) {
-        throw new Error(`Missing parser for ${childName}`);
-        return;
+        console.warn(`Missing parser in initialize for ${childName}`);
+        childParser = noop;
       }
       const parsedChild = await childParser(child, node, zip);
       if (child.children != null && child.children.length > 0) {
