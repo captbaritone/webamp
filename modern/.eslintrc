@@ -4,7 +4,6 @@
     "camelcase": "off",
     "no-shadow": "off",
     "no-nested-ternary": "off",
-    "no-undef": "off",
     "react-hooks/rules-of-hooks": "off",
     "react-hooks/exhaustive-deps": "off",
     "no-return-await": "off",
