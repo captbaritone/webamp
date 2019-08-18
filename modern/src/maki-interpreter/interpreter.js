@@ -135,9 +135,9 @@ export function* interpret(start, program, stack = []) {
       case 24:
       case 112: {
         const methodOffset = command.arg;
-        let { name: methodName, typeOffset: classesOffset } = methods[
-          methodOffset
-        ];
+        const method = methods[methodOffset];
+        let methodName = method.name;
+        const classesOffset = method.typeOffset;
         methodName = methodName.toLowerCase();
 
         const klass = classes[classesOffset];
