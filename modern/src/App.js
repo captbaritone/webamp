@@ -28,8 +28,8 @@ function handleMouseEventDispatch(node, event, eventName) {
   );
   const clientX = event.clientX;
   const clientY = event.clientY;
-  const x = clientX - container.getleft();
-  const y = clientY - container.gettop();
+  const x = clientX - (Number(container.attributes.x) || 0);
+  const y = clientY - (Number(container.attributes.y) || 0);
   node.js_trigger(eventName, x, y);
 
   if (event.nativeEvent.type === "mousemove") {
@@ -468,7 +468,10 @@ function XmlNode({ node }) {
   const Component = NODE_NAME_TO_COMPONENT[name];
   const childNodes = node.children || [];
   const children = childNodes.map(
-    (childNode, i) => childNode.visible && <XmlNode key={i} node={childNode} />
+    (childNode, i) =>
+      (childNode.visible || childNode.visible === undefined) && (
+        <XmlNode key={i} node={childNode} />
+      )
   );
   if (Component == null) {
     console.warn("Unknown node type", name);
