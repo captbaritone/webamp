@@ -61,11 +61,17 @@ class GuiObject extends MakiObject {
   }
 
   getheight() {
-    return Number(this.attributes.h) || 0;
+    // TODO
+    // I don't know how it gets calculated exactly, but if a node has a minimum
+    // and maximum h, but no h, getwidth still returns a value, return min for now
+    return Number(this.attributes.h) || Number(this.attributes.minimum_h) || 0;
   }
 
   getwidth() {
-    return Number(this.attributes.w) || 0;
+    // TODO
+    // I don't know how it gets calculated exactly, but if a node has a minimum
+    // and maximum w, but no w, getwidth still returns a value, return min for now
+    return Number(this.attributes.w) || Number(this.attributes.minimum_w) || 0;
   }
 
   resize(x, y, w, h) {
