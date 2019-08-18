@@ -2,7 +2,7 @@ import React from "react";
 import classnames from "classnames";
 
 import * as Actions from "../../actionCreators";
-import { Action, Dispatch, Thunk } from "../../types";
+import { Action, Thunk } from "../../types";
 import OptionsContextMenu from "../OptionsContextMenu";
 import ContextMenuTarget from "../ContextMenuTarget";
 import { useActionCreator, useTypedSelector } from "../../hooks";
