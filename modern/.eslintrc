@@ -1,0 +1,18 @@
+{
+  "rules": {
+    // TODO: Turn these all back on
+    "camelcase": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "prefer-const": "off",
+    "no-shadow": "off",
+    "no-nested-ternary": "off",
+    "no-dupe-keys": "off",
+    "no-undef": "off",
+    "react-hooks/rules-of-hooks": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "no-return-await": "off",
+    "eqeqeq": "off",
+    "no-else-return": "off",
+    "import/no-extraneous-dependencies": "off"
+  }
+}

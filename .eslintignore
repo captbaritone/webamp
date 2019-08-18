@@ -2,5 +2,4 @@
 built/
 coverage/
 **/node_modules/
-modern/
 examples/webpack/bundle.js
