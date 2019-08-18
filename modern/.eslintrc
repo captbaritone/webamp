@@ -6,7 +6,6 @@
     "no-nested-ternary": "off",
     "react-hooks/rules-of-hooks": "off",
     "react-hooks/exhaustive-deps": "off",
-    "no-return-await": "off",
     "eqeqeq": "off",
     "no-else-return": "off",
     "import/no-extraneous-dependencies": "off"
