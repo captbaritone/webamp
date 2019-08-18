@@ -18,7 +18,7 @@ import Text from "./runtime/Text";
 import Status from "./runtime/Status";
 
 async function loadImage(imgUrl) {
-  return await new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     const img = new Image();
     img.addEventListener("load", () => {
       resolve(img);

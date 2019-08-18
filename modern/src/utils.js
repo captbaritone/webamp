@@ -48,7 +48,7 @@ export async function asyncFlatMap(arr, mapper) {
   const mapped = await Promise.all(arr.map(mapper));
   const childPromises = mapped.map(async item => {
     if (Array.isArray(item)) {
-      return await asyncFlatMap(item, mapper);
+      return asyncFlatMap(item, mapper);
     }
     return item;
   });
