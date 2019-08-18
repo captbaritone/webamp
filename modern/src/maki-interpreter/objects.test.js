@@ -10,7 +10,7 @@ const getMakiMethods = obj =>
     );
   });
 
-for (let [key, Klass] of Object.entries(runtime)) {
+for (const [key, Klass] of Object.entries(runtime)) {
   const obj = getClass(key);
   describe(`${obj.name}`, () => {
     test("implements getclassname()", () => {
@@ -30,7 +30,7 @@ for (let [key, Klass] of Object.entries(runtime)) {
 describe("Maki classes", () => {
   const runtimeMethods = new Set();
   const objectMethods = new Set();
-  for (let [key, Klass] of Object.entries(runtime)) {
+  for (const [key, Klass] of Object.entries(runtime)) {
     const obj = getClass(key);
     getMakiMethods(Klass.prototype).forEach(methodName => {
       runtimeMethods.add(`${obj.name}.${methodName}`);

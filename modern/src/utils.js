@@ -158,7 +158,7 @@ function findDirectDescendantById(node, id) {
 function* iterateLexicalScope(node) {
   let currentNode = node;
   while (currentNode.parent) {
-    let { parent } = currentNode;
+    const { parent } = currentNode;
     const { children } = parent;
     for (let i = 0; i < children.length; i++) {
       const child = children[i];

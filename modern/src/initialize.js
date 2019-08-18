@@ -57,7 +57,8 @@ const parsers = {
   sendparams: noop,
   elements: (node, parent) => new JsElements(node, parent),
   bitmap: async (node, parent, zip) => {
-    let { file, gammagroup, h, id, w, x, y } = node.attributes;
+    let { h, w, x, y } = node.attributes;
+    const { file, gammagroup, id } = node.attributes;
     // TODO: Escape file for regex
     const img = getCaseInsensitveFile(zip, file);
     if (img === undefined) {

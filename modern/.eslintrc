@@ -2,7 +2,6 @@
   "rules": {
     // TODO: Turn these all back on
     "camelcase": "off",
-    "prefer-const": "off",
     "no-shadow": "off",
     "no-nested-ternary": "off",
     "no-undef": "off",
