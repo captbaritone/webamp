@@ -118,9 +118,8 @@ export function findParentNodeOfType(node, type) {
 export function findParentOrCurrentNodeOfType(node, type) {
   if (type.has(node.name)) {
     return node;
-  } else {
-    return findParentNodeOfType(node, type);
   }
+  return findParentNodeOfType(node, type);
 }
 
 export function findDescendantByTypeAndId(node, type, id) {
