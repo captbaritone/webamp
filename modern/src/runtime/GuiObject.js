@@ -1,5 +1,5 @@
 import MakiObject from "./MakiObject";
-import { findDescendantByTypeAndId, unimplementedWarning } from "../utils";
+import { findDescendantByTypeAndId } from "../utils";
 
 class GuiObject extends MakiObject {
   constructor(node, parent) {

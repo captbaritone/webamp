@@ -2,7 +2,6 @@
   "rules": {
     // TODO: Turn these all back on
     "camelcase": "off",
-    "@typescript-eslint/no-unused-vars": "off",
     "prefer-const": "off",
     "no-shadow": "off",
     "no-nested-ternary": "off",

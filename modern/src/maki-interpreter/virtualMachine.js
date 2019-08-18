@@ -59,8 +59,8 @@ export function run({
     });
   });
 
-  const { commands, variables } = program;
-  commands.forEach((command, i) => {
+  const { commands /* variables */ } = program;
+  commands.forEach((/* command, i*/) => {
     // printCommand({ i, command, stack: [], variables });
   });
 
