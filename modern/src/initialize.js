@@ -92,7 +92,6 @@ const parsers = {
   text: (node, parent) => new Text(node, parent),
   togglebutton: (node, parent) => new ToggleButton(node, parent),
   status: (node, parent) => new Status(node, parent),
-  slider: noop,
   bitmapfont: noop,
   vis: noop,
   "wasabi:titlebar": noop,
