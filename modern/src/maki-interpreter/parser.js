@@ -259,7 +259,7 @@ function parseComand({ start, makiFile, length, pos }) {
     argType: opcodeToArgType(opcode),
   };
 
-  if (command.argType == "NONE") {
+  if (command.argType === "NONE") {
     return command;
   }
 
