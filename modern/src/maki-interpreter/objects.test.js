@@ -27,7 +27,7 @@ for (let [key, Klass] of Object.entries(runtime)) {
   });
 }
 
-test("Track all missing methods", () => {
+describe("Maki classes", () => {
   const runtimeMethods = new Set();
   const objectMethods = new Set();
   for (let [key, Klass] of Object.entries(runtime)) {
@@ -40,9 +40,31 @@ test("Track all missing methods", () => {
     });
   }
 
-  const missing = [...objectMethods].filter(x => !runtimeMethods.has(x)).sort();
+  test("have no extra methods", () => {
+    // getclassname _should_ be implemented on Object and let each class inherit
+    // it. However it's far easier to implement it on each class directly, so
+    // we'll allow that.
+    function isntGetClassname(method) {
+      return !/\.getclassname$/.test(method);
+    }
 
-  expect(missing).toMatchInlineSnapshot(`
+    function isntMakiMethod(method) {
+      return !objectMethods.has(method);
+    }
+
+    const extra = [...runtimeMethods]
+      .filter(isntMakiMethod)
+      .filter(isntGetClassname);
+
+    expect(extra).toEqual([]);
+  });
+
+  test("Track all missing methods", () => {
+    const missing = [...objectMethods]
+      .filter(x => !runtimeMethods.has(x))
+      .sort();
+
+    expect(missing).toMatchInlineSnapshot(`
 Array [
   "AnimatedLayer.getautoreplay",
   "AnimatedLayer.getcurframe",
@@ -696,4 +718,5 @@ Array [
   "Wac.show",
 ]
 `);
+  });
 });
