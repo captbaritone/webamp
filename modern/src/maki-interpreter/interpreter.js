@@ -32,16 +32,8 @@ export function* interpret(start, program, stack = []) {
     const a = stack.pop();
     const b = stack.pop();
     let aValue = a instanceof Variable ? a.getValue() : a;
-    let bValue = b instanceof Variable ? b.getValue() : b;
+    const bValue = b instanceof Variable ? b.getValue() : b;
 
-    // NULL automatically gets converted to 0 in MAKI scripts, so coerce
-    // null objects to 0 when comparing values
-    if (a.typeName === "OBJECT" && aValue === null) {
-      aValue = 0;
-    }
-    if (b.typeName === "OBJECT" && bValue === null) {
-      bValue = 0;
-    }
     aValue = coerceTypes(a, b, aValue, bValue);
     stack.push(operator(bValue, aValue));
   }
@@ -169,11 +161,17 @@ export function* interpret(start, program, stack = []) {
         }
         const obj = popStackValue();
         const ret = obj[methodName](...methodArgs);
+        let value;
         if (isPromise(ret)) {
-          stack.push(yield ret);
+          value = yield ret;
         } else {
-          stack.push(ret);
+          value = ret;
         }
+        if (value === null) {
+          // variables[1] holds global NULL value
+          value = variables[1];
+        }
+        stack.push(value);
         break;
       }
       // callGlobal
