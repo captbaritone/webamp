@@ -140,6 +140,10 @@ function Layout({
   background,
   desktopalpha,
   drawBackground,
+  x,
+  y,
+  w,
+  h,
   minimum_h,
   maximum_h,
   minimum_w,
@@ -147,33 +151,66 @@ function Layout({
   droptarget,
   children,
 }) {
-  if (background == null) {
+  if (drawBackground && background == null) {
     console.warn("Got a Layout without a background. Rendering null", id);
     return null;
   }
 
-  const image = node.js_imageLookup(background);
-  if (image == null) {
-    console.warn("Unable to find image to render. Rendering null", background);
-    return null;
+  if (drawBackground) {
+    const image = node.js_imageLookup(background);
+    if (image == null) {
+      console.warn(
+        "Unable to find image to render. Rendering null",
+        background
+      );
+      return null;
+    }
+
+    return (
+      <div
+        data-node-type="layout"
+        data-node-id={id}
+        src={image.imgUrl}
+        draggable={false}
+        style={{
+          backgroundImage: `url(${image.imgUrl})`,
+          width: image.w,
+          height: image.h,
+          // TODO: This combo of height/minHeight ect is a bit odd. How should we combine these?
+          minWidth: minimum_w == null ? null : Number(minimum_w),
+          minHeight: minimum_h == null ? null : Number(minimum_h),
+          maxWidth: maximum_w == null ? null : Number(maximum_w),
+          maxHeight: maximum_h == null ? null : Number(maximum_h),
+          position: "absolute",
+        }}
+      >
+        {children}
+      </div>
+    );
+  }
+
+  const params = {};
+  if (x !== undefined) {
+    params.left = Number(x);
+  }
+  if (y !== undefined) {
+    params.top = Number(y);
+  }
+  if (w !== undefined) {
+    params.width = Number(w);
+  }
+  if (h !== undefined) {
+    params.height = Number(h);
   }
 
   return (
     <div
       data-node-type="layout"
       data-node-id={id}
-      src={image.imgUrl}
       draggable={false}
       style={{
-        backgroundImage: `url(${image.imgUrl})`,
-        width: image.w,
-        height: image.h,
-        // TODO: This combo of height/minHeight ect is a bit odd. How should we combine these?
-        minWidth: minimum_w == null ? null : Number(minimum_w),
-        minHeight: minimum_h == null ? null : Number(minimum_h),
-        maxWidth: maximum_w == null ? null : Number(maximum_w),
-        maxHeight: maximum_h == null ? null : Number(maximum_h),
         position: "absolute",
+        ...params,
       }}
     >
       {children}
