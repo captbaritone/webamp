@@ -2,10 +2,7 @@
   "rules": {
     // TODO: Turn these all back on
     "camelcase": "off",
-    "no-shadow": "off",
-    "no-nested-ternary": "off",
     "react-hooks/rules-of-hooks": "off",
-    "react-hooks/exhaustive-deps": "off",
-    "import/no-extraneous-dependencies": "off"
+    "react-hooks/exhaustive-deps": "off"
   }
 }
