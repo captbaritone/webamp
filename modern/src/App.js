@@ -341,6 +341,65 @@ function Group(props) {
   );
 }
 
+function Text({
+  node,
+  id,
+  children,
+  display,
+  ticker,
+  antialias,
+  x,
+  y,
+  w,
+  h,
+  font,
+  fontsize,
+  color,
+  align,
+}) {
+  const params = {};
+  if (x !== undefined) {
+    params.left = Number(x);
+  }
+  if (y !== undefined) {
+    params.top = Number(y);
+  }
+  if (w !== undefined) {
+    params.width = Number(w);
+  }
+  if (h !== undefined) {
+    params.height = Number(h);
+  }
+  if (color !== undefined) {
+    params.color = `rgb(${color})`;
+  }
+  if (fontsize !== undefined) {
+    params.fontSize = `${fontsize}px`;
+  }
+  if (align !== undefined) {
+    params.textAlign = align;
+  }
+  // display is actually a keyword that is looked up in some sort of map
+  // e.g. songname, time
+  const nodeText = display;
+  return (
+    <div
+      data-node-type="Text"
+      data-node-id={id}
+      draggable={false}
+      style={{
+        position: "absolute",
+        userSelect: "none",
+        MozUserSelect: "none",
+        ...params,
+      }}
+    >
+      {nodeText}
+      {children}
+    </div>
+  );
+}
+
 const NODE_NAME_TO_COMPONENT = {
   container: Container,
   layout: Layout,
@@ -349,6 +408,7 @@ const NODE_NAME_TO_COMPONENT = {
   togglebutton: ToggleButton,
   group: Group,
   popupmenu: Popupmenu,
+  text: Text,
 };
 
 const NODE_NO_EVENTS = new Set(["popupmenu"]);
