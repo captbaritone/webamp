@@ -379,6 +379,9 @@ function Text({
   if (align !== undefined) {
     params.textAlign = align;
   }
+  // display is actually a keyword that is looked up in some sort of map
+  // e.g. songname, time
+  const nodeText = display;
   return (
     <div
       data-node-type="Text"
@@ -391,7 +394,7 @@ function Text({
         ...params,
       }}
     >
-      {display}
+      {nodeText}
       {children}
     </div>
   );
