@@ -5,6 +5,12 @@ export function getId() {
   return i++;
 }
 
+// Depth-first tree map
+export function mapTree(node, cb) {
+  const children = node.children || [];
+  return cb({ ...node, children: children.map(child => mapTree(child, cb)) });
+}
+
 export function isPromise(obj) {
   return obj && typeof obj.then === "function";
 }

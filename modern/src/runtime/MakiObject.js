@@ -1,17 +1,15 @@
 import Emitter from "../Emitter";
-import {
-  findElementById,
-  findGroupDefById,
-  unimplementedWarning,
-} from "../utils";
+import * as Utils from "../utils";
 
 class MakiObject {
   constructor(node, parent, annotations = {}, store) {
     this._store = store;
     if (node) {
+      this._uid = node.uid;
       this.attributes = node.attributes || {};
       this.name = node.name;
     } else {
+      this._uid = Utils.getId();
       // When dynamically creating an object with `new` we have no underlying node
       this.attributes = {};
       this.name = this.getclassname().toLowerCase();
@@ -56,7 +54,7 @@ class MakiObject {
   }
 
   js_imageLookup(id) {
-    const element = findElementById(this, id);
+    const element = Utils.findElementById(this, id);
     if (element) {
       return element.js_annotations;
     }
@@ -65,7 +63,7 @@ class MakiObject {
   }
 
   js_groupdefLookup(id) {
-    const groupdef = findGroupDefById(this, id);
+    const groupdef = Utils.findGroupDefById(this, id);
     if (groupdef) {
       return groupdef;
     }
@@ -91,7 +89,7 @@ class MakiObject {
   }
 
   onnotify(command, param, a, b) {
-    unimplementedWarning("onnotify");
+    Utils.unimplementedWarning("onnotify");
     return 0;
   }
 }
