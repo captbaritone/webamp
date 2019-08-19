@@ -155,21 +155,21 @@ function readVariables({ makiFile, classes }) {
     const global = makiFile.readUInt8();
     makiFile.readUInt8(); // system
 
-    if (object) {
-      const klass = classes[typeOffset];
-      if (klass == null) {
-        throw new Error("Invalid type");
-      }
-      variables.push(
-        new Variable({ type: klass, typeName: "OBJECT", global: !!global })
-      );
-    } else if (subClass) {
+    if (subClass) {
       const variable = variables[typeOffset];
       if (variable == null) {
         throw new Error("Invalid type");
       }
       variables.push(
         new Variable({ type: variable, typeName: "SUBCLASS", global: !!global })
+      );
+    } else if (object) {
+      const klass = classes[typeOffset];
+      if (klass == null) {
+        throw new Error("Invalid type");
+      }
+      variables.push(
+        new Variable({ type: klass, typeName: "OBJECT", global: !!global })
       );
     } else {
       const typeName = PRIMITIVE_TYPES[typeOffset];
