@@ -160,7 +160,13 @@ export function* interpret(start, program, stack = []) {
           methodArgs.push(aValue);
         }
         const obj = popStackValue();
-        const ret = obj[methodName](...methodArgs);
+        let ret;
+        if (obj === 0) {
+          console.warn(`Trying to execute ${methodName} on NULL reference`);
+          ret = null;
+        } else {
+          ret = obj[methodName](...methodArgs);
+        }
         let value;
         if (isPromise(ret)) {
           value = yield ret;
