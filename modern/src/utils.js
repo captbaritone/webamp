@@ -1,5 +1,10 @@
 import { xml2js } from "xml-js";
 
+let i = 0;
+export function getId() {
+  return i++;
+}
+
 export function isPromise(obj) {
   return obj && typeof obj.then === "function";
 }

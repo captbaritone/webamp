@@ -2,6 +2,7 @@ import { MakiTree, ModernAction, ModernStore, XmlTree } from "./types";
 import JSZip from "jszip";
 import * as Utils from "./utils";
 import initialize from "./initialize";
+import initializeStateTree from "./initializeStateTree";
 import { run } from "./maki-interpreter/virtualMachine";
 import System from "./runtime/System";
 import runtime from "./runtime";
@@ -10,8 +11,13 @@ export function setMakiTree(makiTree: MakiTree): ModernAction {
   return { type: "SET_MAKI_TREE", makiTree };
 }
 
-export function setXmlTree(xmlTree: XmlTree): ModernAction {
-  return { type: "SET_XML_TREE", xmlTree };
+export function setXmlTree(xmlTree: XmlTree) {
+  return async dispatch => {
+    dispatch({
+      type: "SET_XML_TREE",
+      xmlTree: await initializeStateTree(xmlTree),
+    });
+  };
 }
 
 export function gotSkinUrl(skinUrl: string, store: ModernStore) {
