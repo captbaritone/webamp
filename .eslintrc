@@ -14,7 +14,8 @@
     "import",
     "no-constructor-bind",
     "@typescript-eslint",
-    "react-hooks"
+    "react-hooks",
+    "eslint-plugin-local-rules"
   ],
   "settings": {
     "react": {

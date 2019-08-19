@@ -1,7 +1,7 @@
 import Group from "./Group";
 
 // Needs to behavve like a group to work with top level scripts that call `getScriptGroup`
-class WinampAbstractionLayer extends Group {
+class JsWinampAbstractionLayer extends Group {
   /**
    * getclassname()
    *
@@ -9,8 +9,8 @@ class WinampAbstractionLayer extends Group {
    * @ret The class name.
    */
   getclassname() {
-    return "WinampAbstractionLayer";
+    return "JsWinampAbstractionLayer";
   }
 }
 
-export default WinampAbstractionLayer;
+export default JsWinampAbstractionLayer;
