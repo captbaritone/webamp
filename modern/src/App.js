@@ -551,7 +551,7 @@ function App() {
       <DropTarget
         style={{ width: "100%", height: "100%" }}
         handleDrop={e => {
-          dispatch(Actions.gotSkinBlob(e.dataTransfer.files[0]));
+          dispatch(Actions.gotSkinBlob(e.dataTransfer.files[0], store));
         }}
       >
         <XmlNode node={root} />
@@ -559,7 +559,7 @@ function App() {
       <select
         style={{ position: "absolute", bottom: 0 }}
         onChange={e => {
-          dispatch(Actions.gotSkinUrl(e.target.value));
+          dispatch(Actions.gotSkinUrl(e.target.value, store));
         }}
       >
         {skinUrls.map(url => (
