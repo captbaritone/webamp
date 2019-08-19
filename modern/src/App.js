@@ -10,6 +10,47 @@ import DropTarget from "../../js/components/DropTarget";
 import Debugger from "./debugger";
 import Sidebar from "./Sidebar";
 
+const skinUrls = [
+  cornerSkin,
+  "https://archive.org/cors/winampskin_MMD3/MMD3.wal",
+  "https://archive.org/cors/winampskin_The_Official_Ford_Sync_Winamp5_Skin/The_Official_Ford_Sync_Winamp5_Skin.wal",
+  "https://archive.org/cors/winampskin_ZDL_GOLD_STACK/ZDL_GOLD_STACK.wal",
+  "https://archive.org/cors/winampskin_BLAKK/BLAKK.wal",
+  "https://archive.org/cors/winampskin_Braun_CC_50/Braun_CC_50.wal",
+  "https://archive.org/cors/winampskin_Walk_Hard_Winamp5_Skin/Walk_Hard_Winamp5_Skin.wal",
+  "https://archive.org/cors/winampskin_Freddy_vs_Jason/Freddy_vs_Jason.wal",
+  "https://archive.org/cors/winampskin_The_Official_Grind_Winamp_3_Skin/The_Official_Grind_Winamp_3_Skin.wal",
+  "https://archive.org/cors/winampskin_The_KidsWB_Winamp_3_Skin/The_KidsWB_Winamp_3_Skin.wal",
+  "https://archive.org/cors/winampskin_Sailor_Moon_Modern_version_1/Sailor_Moon_Modern_version_1.wal",
+  "https://archive.org/cors/winampskin_Dr_Who_--_Monsters_and_Villains/Dr_Who_--_Monsters_and_Villains.wal",
+  "https://archive.org/cors/winampskin_Official_Linkin_Park_Skin/Official_Linkin_Park_Skin.wal",
+  "https://archive.org/cors/winampskin_Resin/Resin.wal",
+  "https://archive.org/cors/winampskin_PAD/PAD.wal",
+  "https://archive.org/cors/winampskin_MIPOD/MIPOD.wal",
+  "https://archive.org/cors/winampskin_Ebonite_2.0/Ebonite_2_1.wal",
+  "https://archive.org/cors/winampskin_Drone_v1dot1/Drone_v1.wal",
+  "https://archive.org/cors/winampskin_Hoop_Life_Modern/Hoop_Life_WA3_version.wal",
+  "https://archive.org/cors/winampskin_Austin_Powers_Goldmember_Skin/Official_Austin_Powers_3_Skin.wal",
+  "https://archive.org/cors/winampskin_Coca_Cola_My_Coke_Music/Coca_Cola__My_Coke_Music.wal",
+  "https://archive.org/cors/winampskin_Barracuda_Winamp/Barracuda_Winamp.wal",
+  "https://archive.org/cors/winampskin_Nike_total_90_aerow/Nike_total_90_aerow.wal",
+  "https://archive.org/cors/winampskin_Metallica_Metallica/Metallica_Metallica.wal",
+  "https://archive.org/cors/winampskin_Epsilux/Epsilux.wal",
+  "https://archive.org/cors/winampskin_Official_Witchblade_TV_Series_Skin/Official_Witchblade_TV_Series_Skin.wal",
+  "https://archive.org/cors/winampskin_ocrana/ocrana.wal",
+  "https://archive.org/cors/winampskin_Clean_AMP/Clean_AMP.wal",
+  "https://archive.org/cors/winampskin_Xbox_Amp/Xbox_Amp.wal",
+  "https://archive.org/cors/winampskin_Lapis_Lazuli/Lapis_Lazuli.wal",
+  "https://archive.org/cors/winampskin_The_Punisher_Winamp_5_Skin/The_Punisher_Winamp_5_Skin.wal",
+  "https://archive.org/cors/winampskin_The_Chronicles_of_Riddick/The_Chronicles_of_Riddick.wal",
+  "https://archive.org/cors/winampskin_Official_Midnight_Club_2_skin/Official_Midnight_Club_2_skin.wal",
+  "https://archive.org/cors/winampskin_Official_Torque_Winamp5_Skin/Official_Torque_Winamp5_Skin.wal",
+  "https://archive.org/cors/winampskin_Official_Mad_Magazine_Skin/Official_Mad_Magazine_Skin.wal",
+  "https://archive.org/cors/winampskin_PUMA_v1.08_Speed_Boot_Winamp5_Skin/PUMA_v1.08_Speed_Boot_Winamp5_Skin.wal",
+  "https://archive.org/cors/winampskin_EMP/EMP.wal",
+  "https://archive.org/cors/winampskin_Devay/Devay.wal",
+];
+
 function useJsUpdates(node) {
   const [, forceUpdate] = useReducer(x => x + 1, 0);
   useEffect(() => node.js_listen("js_update", forceUpdate));
@@ -500,7 +541,7 @@ function App() {
   const store = useStore();
   const root = useSelector(Selectors.getMakiTree);
   React.useEffect(() => {
-    dispatch(Actions.gotSkinUrl(cornerSkin, store));
+    dispatch(Actions.gotSkinUrl(skinUrls[0], store));
   }, [store]);
   if (root == null) {
     return <h1>Loading...</h1>;
