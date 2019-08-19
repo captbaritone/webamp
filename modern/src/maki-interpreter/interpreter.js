@@ -323,6 +323,12 @@ export function* interpret(start, program, stack = []) {
         stack.push(klassInst);
         break;
       }
+      // delete
+      case 97: {
+        const aValue = popStackValue();
+        aValue.js_delete();
+        break;
+      }
       default:
         throw new Error(`Unhandled opcode ${command.opcode}`);
     }

@@ -34,6 +34,11 @@ class MakiObject {
     this.children = this.children.filter(item => item !== child);
   }
 
+  js_delete() {
+    this.parent.js_removeChild(this);
+    this.parent.js_trigger("js_update");
+  }
+
   js_trigger(eventName, ...args) {
     this._emitter.trigger(eventName.toLowerCase(), ...args);
   }
