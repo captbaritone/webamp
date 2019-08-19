@@ -161,11 +161,17 @@ export function* interpret(start, program, stack = []) {
         }
         const obj = popStackValue();
         const ret = obj[methodName](...methodArgs);
+        let value;
         if (isPromise(ret)) {
-          stack.push(yield ret);
+          value = yield ret;
         } else {
-          stack.push(ret);
+          value = ret;
         }
+        if (value === null) {
+          // variables[1] holds global NULL value
+          value = variables[1];
+        }
+        stack.push(value);
         break;
       }
       // callGlobal
