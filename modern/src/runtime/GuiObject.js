@@ -1,5 +1,9 @@
 import MakiObject from "./MakiObject";
-import { findDescendantByTypeAndId } from "../utils";
+import {
+  findDescendantByTypeAndId,
+  findParentNodeOfType,
+  unimplementedWarning,
+} from "../utils";
 
 class GuiObject extends MakiObject {
   constructor(node, parent) {
@@ -40,6 +44,10 @@ class GuiObject extends MakiObject {
 
   getparent() {
     return this.parent;
+  }
+
+  getparentlayout() {
+    return findParentNodeOfType(this, new Set(["layout"]));
   }
 
   show() {
@@ -84,6 +92,10 @@ class GuiObject extends MakiObject {
     this.attributes.maximum_w = w;
     this.attributes.minimum_h = h;
     this.attributes.maximum_h = h;
+  }
+
+  setalpha(alpha) {
+    unimplementedWarning("setAlpha");
   }
 }
 
