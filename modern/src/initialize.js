@@ -4,7 +4,7 @@ import {
   asyncTreeFlatMap,
 } from "./utils";
 import MakiObject from "./runtime/MakiObject";
-import WinampAbstractionLayer from "./runtime/WinampAbstractionLayer";
+import JsWinampAbstractionLayer from "./runtime/JsWinampAbstractionLayer";
 import Layout from "./runtime/Layout";
 import Layer from "./runtime/Layer";
 import Container from "./runtime/Container";
@@ -198,7 +198,7 @@ async function applyGroupDefs(root) {
 
 async function initialize(zip, skinXml) {
   const xmlRoot = skinXml.children[0];
-  const root = new WinampAbstractionLayer(skinXml.children[0], null);
+  const root = new JsWinampAbstractionLayer(skinXml.children[0], null);
   await parseChildren(root, xmlRoot.children, zip);
   await applyGroupDefs(root);
   return root;
