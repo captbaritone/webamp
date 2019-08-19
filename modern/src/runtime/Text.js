@@ -1,4 +1,5 @@
 import GuiObject from "./GuiObject";
+import { unimplementedWarning } from "../utils";
 
 class Text extends GuiObject {
   /**
@@ -9,6 +10,10 @@ class Text extends GuiObject {
    */
   getclassname() {
     return "Text";
+  }
+
+  setalternatetext(txt) {
+    unimplementedWarning("setalternatetext");
   }
 }
 
