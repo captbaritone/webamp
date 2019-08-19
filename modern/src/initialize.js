@@ -4,6 +4,7 @@ import {
   asyncTreeFlatMap,
 } from "./utils";
 import MakiObject from "./runtime/MakiObject";
+import GuiObject from "./runtime/GuiObject";
 import JsWinampAbstractionLayer from "./runtime/JsWinampAbstractionLayer";
 import Layout from "./runtime/Layout";
 import Layer from "./runtime/Layer";
@@ -16,6 +17,11 @@ import Button from "./runtime/Button";
 import ToggleButton from "./runtime/ToggleButton";
 import Text from "./runtime/Text";
 import Status from "./runtime/Status";
+import Slider from "./runtime/Slider";
+import Vis from "./runtime/Vis";
+import EqVis from "./runtime/EqVis";
+import AnimatedLayer from "./runtime/AnimatedLayer";
+import Component from "./runtime/Component";
 
 async function loadImage(imgUrl) {
   return new Promise((resolve, reject) => {
@@ -30,7 +36,7 @@ async function loadImage(imgUrl) {
   });
 }
 
-const noop = (node, parent) => new MakiObject(node, parent);
+const noop = (node, parent) => new GuiObject(node, parent);
 
 const parsers = {
   groupdef: (node, parent) => new JsGroupDef(node, parent),
@@ -85,16 +91,16 @@ const parsers = {
       imgUrl,
     });
   },
-  eqvis: noop,
-  slider: noop,
+  eqvis: (node, parent) => new EqVis(node, parent),
+  slider: (node, parent) => new Slider(node, parent),
   gammagroup: noop,
   truetypefont: noop,
-  component: noop,
+  component: (node, parent) => new Component(node, parent),
   text: (node, parent) => new Text(node, parent),
   togglebutton: (node, parent) => new ToggleButton(node, parent),
   status: (node, parent) => new Status(node, parent),
   bitmapfont: noop,
-  vis: noop,
+  vis: (node, parent) => new Vis(node, parent),
   "wasabi:titlebar": noop,
   "colorthemes:list": noop,
   "wasabi:standardframe:status": noop,
@@ -106,7 +112,7 @@ const parsers = {
   elementalias: noop,
   grid: noop,
   rect: noop,
-  animatedlayer: noop,
+  animatedlayer: (node, parent) => new AnimatedLayer(node, parent),
   nstatesbutton: noop,
   songticker: noop,
   menu: noop,
