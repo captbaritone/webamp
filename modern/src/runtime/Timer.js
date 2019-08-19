@@ -1,4 +1,5 @@
 import MakiObject from "./MakiObject";
+import { unimplementedWarning } from "../utils";
 
 class Timer extends MakiObject {
   /**
@@ -9,6 +10,18 @@ class Timer extends MakiObject {
    */
   getclassname() {
     return "Timer";
+  }
+
+  setdelay(millisec) {
+    unimplementedWarning("setDelay");
+  }
+
+  start() {
+    unimplementedWarning("start");
+  }
+
+  stop() {
+    unimplementedWarning("stop");
   }
 }
 

@@ -1,4 +1,5 @@
 import GuiObject from "./GuiObject";
+import { unimplementedWarning } from "../utils";
 
 class Slider extends GuiObject {
   /**
@@ -9,6 +10,15 @@ class Slider extends GuiObject {
    */
   getclassname() {
     return "Slider";
+  }
+
+  getposition() {
+    unimplementedWarning("getposition");
+    return 0;
+  }
+
+  onsetposition(newpos) {
+    unimplementedWarning("onsetposition");
   }
 }
 

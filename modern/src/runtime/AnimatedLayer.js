@@ -1,4 +1,5 @@
 import Layer from "./Layer";
+import { unimplementedWarning } from "../utils";
 
 class AnimatedLayer extends Layer {
   /**
@@ -9,6 +10,31 @@ class AnimatedLayer extends Layer {
    */
   getclassname() {
     return "AnimatedLayer";
+  }
+
+  play() {
+    unimplementedWarning("play");
+  }
+
+  pause() {
+    unimplementedWarning("pause");
+  }
+
+  stop() {
+    unimplementedWarning("stop");
+  }
+
+  setspeed(msperframe) {
+    unimplementedWarning("setspeed");
+  }
+
+  gotoframe(framenum) {
+    unimplementedWarning("gotoframe");
+  }
+
+  getlength() {
+    unimplementedWarning("getlength");
+    return 10;
   }
 }
 

@@ -51,6 +51,40 @@ class System extends MakiObject {
     return "Some String";
   }
 
+  getskinname() {
+    unimplementedWarning("getskinname");
+    return "Some String";
+  }
+
+  getplayitemstring() {
+    unimplementedWarning("getplayitemstring");
+    return "Some String";
+  }
+
+  geteq() {
+    unimplementedWarning("geteq");
+    return 0;
+  }
+
+  oneqchanged(newstatus) {
+    unimplementedWarning("newstatus");
+  }
+
+  geteqband(band) {
+    unimplementedWarning("geteqband");
+    return 0;
+  }
+
+  geteqpreamp() {
+    unimplementedWarning("geteqpreamp");
+    return 0;
+  }
+
+  getstatus() {
+    unimplementedWarning("getstatus");
+    return 0;
+  }
+
   messagebox(message, msgtitle, flag, notanymoreId) {
     console.log({ message, msgtitle, flag, notanymoreId });
   }

@@ -1,4 +1,5 @@
 import MakiObject from "./MakiObject";
+import { unimplementedWarning } from "../utils";
 
 class Map extends MakiObject {
   /**
@@ -9,6 +10,20 @@ class Map extends MakiObject {
    */
   getclassname() {
     return "Map";
+  }
+
+  loadmap(bitmapid) {
+    unimplementedWarning("loadmap");
+  }
+
+  getwidth() {
+    unimplementedWarning("getwidth");
+    return 10;
+  }
+
+  getheight() {
+    unimplementedWarning("getheight");
+    return 10;
   }
 }
 
