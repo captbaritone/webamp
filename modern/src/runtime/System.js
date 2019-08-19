@@ -59,6 +59,10 @@ class System extends MakiObject {
     return value.toString();
   }
 
+  stringtointeger(str) {
+    return parseInt(str, 10);
+  }
+
   getprivateint(section, item, defvalue) {
     unimplementedWarning("getprivateint");
     return defvalue;
