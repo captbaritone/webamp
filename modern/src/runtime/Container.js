@@ -28,6 +28,12 @@ class Container extends MakiObject {
     this.parent.js_trigger("js_update");
   }
 
+  setxmlparam(param, value) {
+    this.attributes[param] = value;
+    this.js_trigger("js_update");
+    return value;
+  }
+
   getlayout(id) {
     return findDescendantByTypeAndId(this, "layout", id);
   }
