@@ -1,5 +1,9 @@
 import Emitter from "../Emitter";
-import { findElementById, findGroupDefById } from "../utils";
+import {
+  findElementById,
+  findGroupDefById,
+  unimplementedWarning,
+} from "../utils";
 
 class MakiObject {
   constructor(node, parent, annotations = {}, store) {
@@ -79,6 +83,11 @@ class MakiObject {
    */
   getid() {
     throw new Error("getId not implemented");
+  }
+
+  onnotify(command, param, a, b) {
+    unimplementedWarning("onnotify");
+    return 0;
   }
 }
 

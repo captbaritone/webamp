@@ -1,4 +1,5 @@
 import GuiObject from "./GuiObject";
+import { unimplementedWarning } from "../utils";
 
 class Layer extends GuiObject {
   /**
@@ -9,6 +10,14 @@ class Layer extends GuiObject {
    */
   getclassname() {
     return "Layer";
+  }
+
+  setregion(reg) {
+    unimplementedWarning("setregion");
+  }
+
+  setregionfrommap(regionmap, threshold, reverse) {
+    unimplementedWarning("setregion");
   }
 }
 

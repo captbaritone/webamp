@@ -1,4 +1,5 @@
 import Button from "./Button";
+import { unimplementedWarning } from "../utils";
 
 class ToggleButton extends Button {
   /**
@@ -9,6 +10,10 @@ class ToggleButton extends Button {
    */
   getclassname() {
     return "ToggleButton";
+  }
+
+  ontoggle(onnoff) {
+    unimplementedWarning("ontoggle");
   }
 }
 

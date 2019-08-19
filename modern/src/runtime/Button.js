@@ -1,4 +1,5 @@
 import GuiObject from "./GuiObject";
+import { unimplementedWarning } from "../utils";
 
 class Button extends GuiObject {
   /**
@@ -9,6 +10,19 @@ class Button extends GuiObject {
    */
   getclassname() {
     return "Button";
+  }
+
+  onactivate(activated) {
+    unimplementedWarning("onactivate");
+  }
+
+  setactivated(onoff) {
+    unimplementedWarning("setactivated");
+  }
+
+  getactivated() {
+    unimplementedWarning("getactivated");
+    return false;
   }
 }
 

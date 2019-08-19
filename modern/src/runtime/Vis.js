@@ -1,4 +1,5 @@
 import GuiObject from "./GuiObject";
+import { unimplementedWarning } from "../utils";
 
 class Vis extends GuiObject {
   /**
@@ -9,6 +10,10 @@ class Vis extends GuiObject {
    */
   getclassname() {
     return "Vis";
+  }
+
+  setmode(mode) {
+    unimplementedWarning("setmode");
   }
 }
 
