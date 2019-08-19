@@ -556,6 +556,18 @@ function App() {
       >
         <XmlNode node={root} />
       </DropTarget>
+      <select
+        style={{ position: "absolute", bottom: 0 }}
+        onChange={e => {
+          dispatch(Actions.gotSkinUrl(e.target.value));
+        }}
+      >
+        {skinUrls.map(url => (
+          <option value={url} key={url}>
+            {url}
+          </option>
+        ))}
+      </select>
       <Sidebar>
         <Debugger />
       </Sidebar>
