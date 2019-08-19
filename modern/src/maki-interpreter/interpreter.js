@@ -162,6 +162,7 @@ export function* interpret(start, program, stack = []) {
         const obj = popStackValue();
         let ret;
         if (obj === 0) {
+          // TODO: Check if Winamp throws runtime errors for these
           console.warn(`Trying to execute ${methodName} on NULL reference`);
           ret = null;
         } else {
