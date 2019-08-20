@@ -42,3 +42,7 @@ export function useActionCreator<T extends (...args: any[]) => Action | Thunk>(
 export function useTypedSelector<T>(selector: (state: AppState) => T): T {
   return useSelector(selector);
 }
+
+export function useTypedDispatch(): (action: Action | Thunk) => void {
+  return useDispatch;
+}

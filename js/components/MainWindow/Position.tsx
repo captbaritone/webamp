@@ -1,6 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
-import { AppState, Dispatch } from "../../types";
 
 import {
   SEEK_TO_PERCENT_COMPLETE,
@@ -9,25 +7,54 @@ import {
   SET_SCRUB_POSITION,
 } from "../../actionTypes";
 import * as Selectors from "../../selectors";
-
-interface StateProps {
-  displayedPosition: number;
-  position: number;
-}
+import { useTypedSelector, useTypedDispatch } from "../../hooks";
 
 interface DispatchProps {
   seekToPercentComplete(e: React.MouseEvent<HTMLInputElement>): void;
   setPosition(e: React.MouseEvent<HTMLInputElement>): void;
 }
 
-type Props = StateProps & DispatchProps;
+type Props = DispatchProps;
 
-const Position = ({
-  position,
-  seekToPercentComplete,
-  displayedPosition,
-  setPosition,
-}: Props) => {
+function usePosition() {
+  const duration = useTypedSelector(Selectors.getDuration);
+  const timeElapsed = useTypedSelector(Selectors.getTimeElapsed);
+  const position = duration ? (Math.floor(timeElapsed) / duration) * 100 : 0;
+  const scrubPosition = useTypedSelector(Selectors.getUserInputScrubPosition);
+  const userInputFocus = useTypedSelector(Selectors.getUserInputFocus);
+
+  const displayedPosition =
+    userInputFocus === "position" ? scrubPosition : position;
+
+  return [position, displayedPosition];
+}
+
+const Position = React.memo(() => {
+  const [position, displayedPosition] = usePosition();
+  const dispatch = useTypedDispatch();
+
+  const seekToPercentComplete = React.useCallback(
+    e => {
+      dispatch({
+        type: SEEK_TO_PERCENT_COMPLETE,
+        percent: Number((e.target as HTMLInputElement).value),
+      });
+      dispatch({ type: UNSET_FOCUS });
+    },
+    [dispatch]
+  );
+
+  const setPosition = React.useCallback(
+    e => {
+      dispatch({ type: SET_FOCUS, input: "position" });
+      dispatch({
+        type: SET_SCRUB_POSITION,
+        position: Number((e.target as HTMLInputElement).value),
+      });
+    },
+    [dispatch]
+  );
+
   // In shade mode, the position slider shows up differently depending on if
   // it's near the start, middle or end of its progress
   let className = "";
@@ -55,42 +82,6 @@ const Position = ({
       title="Seeking Bar"
     />
   );
-};
-
-const mapStateToProps = (state: AppState): StateProps => {
-  const duration = Selectors.getDuration(state);
-  const timeElapsed = Selectors.getTimeElapsed(state);
-  const userInputFocus = Selectors.getUserInputFocus(state);
-  const scrubPosition = Selectors.getUserInputScrubPosition(state);
-  const position = duration ? (Math.floor(timeElapsed) / duration) * 100 : 0;
-
-  const displayedPosition =
-    userInputFocus === "position" ? scrubPosition : position;
-
-  return {
-    displayedPosition,
-    position,
-  };
-};
-
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-  seekToPercentComplete: e => {
-    dispatch({
-      type: SEEK_TO_PERCENT_COMPLETE,
-      percent: Number((e.target as HTMLInputElement).value),
-    });
-    dispatch({ type: UNSET_FOCUS });
-  },
-  setPosition: e => {
-    dispatch({ type: SET_FOCUS, input: "position" });
-    dispatch({
-      type: SET_SCRUB_POSITION,
-      position: Number((e.target as HTMLInputElement).value),
-    });
-  },
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Position);
+export default Position;
