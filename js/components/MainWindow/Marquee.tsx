@@ -1,25 +1,12 @@
 // Single line text display that can animate and hold multiple registers
 // Knows how to display various modes like tracking, volume, balance, etc.
 import React from "react";
-import { connect } from "react-redux";
-
-import { STEP_MARQUEE } from "../../actionTypes";
 import CharacterString from "../CharacterString";
-import { AppState, Dispatch } from "../../types";
+import * as Actions from "../../actionCreators";
 import * as Selectors from "../../selectors";
+import { useTypedSelector, useActionCreator } from "../../hooks";
 
 const SEPARATOR = "  ***  ";
-
-interface StateProps {
-  marqueeStep: number;
-  text: string;
-  doubled: boolean;
-}
-interface DispatchProps {
-  stepMarquee(): void;
-}
-
-type Props = StateProps & DispatchProps;
 
 const CHAR_WIDTH = 5;
 const MARQUEE_MAX_LENGTH = 31;
@@ -128,7 +115,11 @@ function useDragX() {
   return { handleMouseDown, dragOffset, dragging: mouseDownX != null };
 }
 
-function Marquee({ text, marqueeStep, doubled, stepMarquee }: Props) {
+const Marquee = React.memo(() => {
+  const text = useTypedSelector(Selectors.getMarqueeText);
+  const doubled = useTypedSelector(Selectors.getDoubled);
+  const marqueeStep = useTypedSelector(Selectors.getMarqueeStep);
+  const stepMarquee = useActionCreator(Actions.stepMarquee);
   const { handleMouseDown, dragOffset, dragging } = useDragX();
   const offset = stepOffset(text, marqueeStep, dragOffset);
   const offsetPixels = pixelUnits(-offset);
@@ -159,21 +150,6 @@ function Marquee({ text, marqueeStep, doubled, stepMarquee }: Props) {
       </div>
     </div>
   );
-}
-
-const mapStateToProps = (state: AppState): StateProps => ({
-  marqueeStep: state.display.marqueeStep,
-  text: Selectors.getMarqueeText(state),
-  doubled: Selectors.getDoubled(state),
 });
 
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
-  return {
-    stepMarquee: () => dispatch({ type: STEP_MARQUEE }),
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Marquee);
+export default Marquee;
