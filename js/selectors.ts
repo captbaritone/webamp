@@ -9,6 +9,7 @@ import {
   PlaylistStyle,
   TransitionType,
   MediaStatus,
+  TimeMode,
 } from "./types";
 import { createSelector, defaultMemoize } from "reselect";
 import * as Utils from "./utils";
@@ -748,4 +749,8 @@ export function getMarqueeStep(state: AppState): number {
 
 export function getNetworkConnected(state: AppState): boolean {
   return state.network.connected;
+}
+
+export function getTimeMode(state: AppState): TimeMode {
+  return state.media.timeMode;
 }
