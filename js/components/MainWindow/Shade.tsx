@@ -1,30 +1,19 @@
 import React from "react";
-import { connect } from "react-redux";
 import ClickedDiv from "../ClickedDiv";
 
-import { toggleMainWindowShadeMode } from "../../actionCreators";
-import { Dispatch } from "../../types";
+import * as Actions from "../../actionCreators";
+import { useActionCreator } from "../../hooks";
 
-interface DispatchProps {
-  handleClick(): void;
-}
+const Shade = React.memo(() => {
+  const handleClick = useActionCreator(Actions.toggleMainWindowShadeMode);
+  return (
+    <ClickedDiv
+      id="shade"
+      onMouseDown={handleClick}
+      onDoubleClick={e => e.stopPropagation()}
+      title="Toggle Windowshade Mode"
+    />
+  );
+});
 
-const Shade = (props: DispatchProps) => (
-  <ClickedDiv
-    id="shade"
-    onMouseDown={props.handleClick}
-    onDoubleClick={e => e.stopPropagation()}
-    title="Toggle Windowshade Mode"
-  />
-);
-
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
-  return {
-    handleClick: () => dispatch(toggleMainWindowShadeMode()),
-  };
-};
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(Shade);
+export default Shade;
