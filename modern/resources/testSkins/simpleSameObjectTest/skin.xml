@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<WinampAbstractionLayer version="1.35">
+  <skininfo>
+    <version>1.0</version>
+    <name>Simple Skin for Testing</name>
+    <comment>Created by jberg for testing Webamp, based on skin by pixelpusher for the official Winamp3 skinning site.</comment>
+    <author>jberg</author>
+  </skininfo>
+  <include file="xml/player.xml"/>
+
+	<scripts>
+		<script file="scripts/script.maki"/>
+	</scripts>
+</WinampAbstractionLayer>
