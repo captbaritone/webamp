@@ -1,9 +1,7 @@
 import React from "react";
-import { connect } from "react-redux";
 import classnames from "classnames";
 import { WINDOWS, MEDIA_STATUS, LOAD_STYLE } from "../../constants";
 import * as Actions from "../../actionCreators";
-import { getWindowShade } from "../../selectors";
 
 import DropTarget from "../DropTarget";
 import MiniTime from "../MiniTime";
@@ -30,51 +28,30 @@ import Minimize from "./Minimize";
 import Shuffle from "./Shuffle";
 import Time from "./Time";
 import MainVolume from "./MainVolume";
+import * as Selectors from "../../selectors";
 
 import "../../../css/main-window.css";
-import {
-  MediaStatus,
-  WindowId,
-  AppState,
-  Dispatch,
-  FilePicker,
-} from "../../types";
+import { FilePicker } from "../../types";
 import FocusTarget from "../FocusTarget";
+import { useActionCreator, useTypedSelector } from "../../hooks";
 
-interface StateProps {
-  focused: WindowId | null;
-  loading: boolean;
-  doubled: boolean;
-  mainShade: boolean;
-  llama: boolean;
-  working: boolean;
-  status: MediaStatus | null;
-}
-
-interface DispatchProps {
-  scrollVolume(e: React.WheelEvent<HTMLDivElement>): void;
-  toggleMainWindowShadeMode(): void;
-  loadMedia(e: React.DragEvent<HTMLDivElement>): void;
-}
-
-interface OwnProps {
+interface Props {
   analyser: AnalyserNode;
   filePickers: FilePicker[];
 }
 
-type Props = StateProps & DispatchProps & OwnProps;
+function loadMediaAndPlay(e: React.DragEvent<HTMLDivElement>) {
+  return Actions.loadMedia(e, LOAD_STYLE.PLAY);
+}
 
-const MainWindow = (props: Props) => {
-  const {
-    focused,
-    loading,
-    doubled,
-    mainShade,
-    llama,
-    status,
-    working,
-    filePickers,
-  } = props;
+const MainWindow = React.memo(({ analyser, filePickers }: Props) => {
+  const mainShade = useTypedSelector(Selectors.getWindowShade)("main");
+  const status = useTypedSelector(Selectors.getMediaStatus);
+  const focused = useTypedSelector(Selectors.getFocusedWindow);
+  const loading = useTypedSelector(Selectors.getLoading);
+  const doubled = useTypedSelector(Selectors.getDoubled);
+  const llama = useTypedSelector(Selectors.getLlamaMode);
+  const working = useTypedSelector(Selectors.getWorking);
 
   const className = classnames({
     window: true,
@@ -89,19 +66,25 @@ const MainWindow = (props: Props) => {
     llama,
   });
 
+  const toggleMainWindowShadeMode = useActionCreator(
+    Actions.toggleMainWindowShadeMode
+  );
+  const scrollVolume = useActionCreator(Actions.scrollVolume);
+  const loadMedia = useActionCreator(loadMediaAndPlay);
+
   return (
     <React.StrictMode>
       <DropTarget
         id="main-window"
         className={className}
-        handleDrop={props.loadMedia}
-        onWheel={props.scrollVolume}
+        handleDrop={loadMedia}
+        onWheel={scrollVolume}
       >
         <FocusTarget windowId={WINDOWS.MAIN}>
           <div
             id="title-bar"
             className="selected draggable"
-            onDoubleClick={props.toggleMainWindowShadeMode}
+            onDoubleClick={toggleMainWindowShadeMode}
           >
             <ContextMenuTarget
               id="option-context"
@@ -126,7 +109,7 @@ const MainWindow = (props: Props) => {
           </div>
           <Visualizer
             // @ts-ignore Visualizer is not typed yet
-            analyser={props.analyser}
+            analyser={analyser}
           />
           <div className="media-info">
             <Marquee />
@@ -157,38 +140,6 @@ const MainWindow = (props: Props) => {
       </DropTarget>
     </React.StrictMode>
   );
-};
+});
 
-const mapStateToProps = (state: AppState): StateProps => {
-  const {
-    media: { status },
-    display: { loading, doubled, llama, working },
-    windows: { focused },
-  } = state;
-  return {
-    mainShade: Boolean(getWindowShade(state)("main")),
-    status,
-    loading,
-    doubled,
-    llama,
-    working,
-    focused,
-  };
-};
-
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
-  return {
-    toggleMainWindowShadeMode: () =>
-      dispatch(Actions.toggleMainWindowShadeMode()),
-    scrollVolume: (e: React.WheelEvent<HTMLDivElement>) =>
-      dispatch(Actions.scrollVolume(e)),
-    loadMedia: (e: React.DragEvent<HTMLDivElement>) =>
-      dispatch(Actions.loadMedia(e, LOAD_STYLE.PLAY)),
-  };
-};
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  null,
-  { forwardRef: true }
-)(MainWindow);
+export default MainWindow;
