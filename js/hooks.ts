@@ -44,5 +44,5 @@ export function useTypedSelector<T>(selector: (state: AppState) => T): T {
 }
 
 export function useTypedDispatch(): (action: Action | Thunk) => void {
-  return useDispatch;
+  return useDispatch();
 }
