@@ -1,39 +1,25 @@
 import React from "react";
-import { connect } from "react-redux";
 import classnames from "classnames";
 
-import { getWindowOpen } from "../../selectors";
-import { toggleWindow } from "../../actionCreators";
-import { AppState } from "../../types";
+import * as Selectors from "../../selectors";
+import * as Actions from "../../actionCreators";
+import { useActionCreator, useTypedSelector } from "../../hooks";
 
-interface StateProps {
-  windowOpen: boolean;
+function toggleEqualizer() {
+  return Actions.toggleWindow("equalizer");
 }
 
-interface DispatchProps {
-  handleClick(e: React.MouseEvent<HTMLDivElement>): void;
-}
-
-type Props = StateProps & DispatchProps;
-
-const EqToggleButton = (props: Props) => (
-  <div
-    id="equalizer-button"
-    className={classnames({ selected: props.windowOpen })}
-    onClick={props.handleClick}
-    title="Toggle Graphical Equalizer"
-  />
-);
-
-const mapStateToProps = (state: AppState): StateProps => ({
-  windowOpen: getWindowOpen(state)("equalizer"),
+const EqToggleButton = React.memo(() => {
+  const handleClick = useActionCreator(toggleEqualizer);
+  const windowOpen = useTypedSelector(Selectors.getWindowOpen)("equalizer");
+  return (
+    <div
+      id="equalizer-button"
+      className={classnames({ selected: windowOpen })}
+      onClick={handleClick}
+      title="Toggle Graphical Equalizer"
+    />
+  );
 });
 
-const mapDispatchToProps = {
-  handleClick: () => toggleWindow("equalizer"),
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EqToggleButton);
+export default EqToggleButton;

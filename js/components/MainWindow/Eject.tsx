@@ -1,22 +1,11 @@
 import React from "react";
-import { connect } from "react-redux";
 
 import * as Actions from "../../actionCreators";
-import { Dispatch } from "../../types";
+import { useActionCreator } from "../../hooks";
 
-interface DispatchProps {
-  openMediaFileDialog(): void;
-}
-
-const Eject = (props: DispatchProps) => (
-  <div id="eject" onClick={props.openMediaFileDialog} title="Open File(s)" />
-);
-
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-  openMediaFileDialog: () => dispatch(Actions.openMediaFileDialog()),
+const Eject = React.memo(() => {
+  const openMediaFileDialog = useActionCreator(Actions.openMediaFileDialog);
+  return <div id="eject" onClick={openMediaFileDialog} title="Open File(s)" />;
 });
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(Eject);
+export default Eject;
