@@ -12,6 +12,14 @@ class Button extends GuiObject {
     return "Button";
   }
 
+  leftclick() {
+    this.js_trigger("onLeftClick");
+  }
+
+  rightclick() {
+    this.js_trigger("onRightClick");
+  }
+
   onactivate(activated) {
     unimplementedWarning("onactivate");
   }
