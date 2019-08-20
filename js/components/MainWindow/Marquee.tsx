@@ -60,78 +60,110 @@ export const loopText = (text: string): string =>
     ? `${text}${SEPARATOR}${text}`
     : text.padEnd(MARQUEE_MAX_LENGTH, " ");
 
-class Marquee extends React.Component<Props, State> {
-  stepHandle: NodeJS.Timer | null;
-  constructor(props: Props) {
-    super(props);
-    this.state = { stepping: true, dragOffset: 0 };
-    this.stepHandle = null;
-  }
+interface UseStepperArgs {
+  step: () => void;
+  dragging: boolean;
+}
 
-  componentDidMount() {
-    this.stepHandle = setInterval(() => {
-      if (this.state.stepping) {
-        this.props.stepMarquee();
-      }
-    }, 220);
-  }
-
-  componentWillUnmount() {
-    if (this.stepHandle) {
-      clearTimeout(this.stepHandle);
+// Call `step` every second, except when dragging. Resume stepping 1 second after dragging ceases.
+function useStepper({ step, dragging }: UseStepperArgs): void {
+  const [stepping, setStepping] = React.useState(true);
+  React.useEffect(() => {
+    if (stepping === false) {
+      return;
     }
-  }
+    const stepHandle = setInterval(step, 220);
+    return () => clearInterval(stepHandle);
+  }, [step, stepping]);
 
-  handleMouseDown = (e: React.MouseEvent<HTMLDivElement>): void => {
-    const xStart = e.clientX;
-    this.setState({ stepping: false });
+  React.useEffect(() => {
+    if (dragging) {
+      setStepping(false);
+      return;
+    }
+    const steppingTimeout = window.setTimeout(() => {
+      setStepping(true);
+    }, 1000);
+    return () => {
+      window.clearTimeout(steppingTimeout);
+    };
+  }, [dragging]);
+}
+
+// When user calls `handleMouseDown`, and moves the mouse, `dragOffset` will update as they drag.
+function useDragX() {
+  const [mouseDownX, setMouseDownX] = React.useState<number | null>(null);
+  const [dragOffset, setDragOffset] = React.useState(0);
+
+  React.useEffect(() => {
+    if (mouseDownX == null) {
+      return;
+    }
+    const xStart = mouseDownX;
     const handleMouseMove = (ee: MouseEvent) => {
       const diff = ee.clientX - xStart;
-      this.setState({ dragOffset: -diff });
+      setDragOffset(-diff);
     };
 
+    // TODO: Use `once` or something instead of this flag nonsense
+    let cleanedUp = false;
     const handleMouseUp = () => {
+      if (cleanedUp) {
+        return;
+      }
       document.removeEventListener("mousemove", handleMouseMove);
-      // TODO: Remove this listener
-      setTimeout(() => {
-        this.setState({ stepping: true });
-      }, 1000);
       document.removeEventListener("mouseUp", handleMouseUp);
+      setMouseDownX(null);
+      cleanedUp = true;
     };
 
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
+
+    return handleMouseUp;
+  }, [mouseDownX]);
+
+  const handleMouseDown = React.useCallback(
+    (e: React.MouseEvent<HTMLDivElement>): void => {
+      setMouseDownX(e.clientX);
+    },
+    []
+  );
+
+  return { handleMouseDown, dragOffset, dragging: mouseDownX != null };
+}
+
+function Marquee({ text, marqueeStep, doubled, stepMarquee }: Props) {
+  const { handleMouseDown, dragOffset, dragging } = useDragX();
+  const offset = stepOffset(text, marqueeStep, dragOffset);
+  const offsetPixels = pixelUnits(-offset);
+  const style: React.CSSProperties = {
+    whiteSpace: "nowrap",
+    willChange: "transform",
+    transform: `translateX(${offsetPixels})`,
   };
 
-  render() {
-    const { text, marqueeStep, doubled } = this.props;
-    const offset = stepOffset(text, marqueeStep, this.state.dragOffset);
-    const offsetPixels = pixelUnits(-offset);
-    const style: React.CSSProperties = {
-      whiteSpace: "nowrap",
-      willChange: "transform",
-      transform: `translateX(${offsetPixels})`,
-    };
-    return (
+  useStepper({ step: stepMarquee, dragging });
+
+  return (
+    <div
+      id="marquee"
+      className="text"
+      onMouseDown={handleMouseDown}
+      title="Song Title"
+    >
       <div
-        id="marquee"
-        className="text"
-        onMouseDown={this.handleMouseDown}
-        title="Song Title"
+        style={style}
+        // Force the DOM node to be recreated when the doubled size changes.
+        // This works around a Chrome browser bug where the `will-change: transform;`
+        // on this node seems to cause a change to the `image-rendering:
+        // pixelated;` which we inherit from `#webamp` not to be respected.
+        key={doubled ? "doubled" : "not-doubled"}
       >
-        <div
-          style={style}
-          // Force the DOM node to be recreated when the doubled size changes.
-          // This works around a Chrome browser bug where the `will-change: transform;`
-          // on this node seems to cause a change to the `image-rendering:
-          // pixelated;` which we inherit from `#webamp` not to be respected.
-          key={doubled ? "doubled" : "not-doubled"}
-        >
-          <CharacterString>{loopText(text)}</CharacterString>
-        </div>
+        <CharacterString>{loopText(text)}</CharacterString>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
