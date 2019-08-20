@@ -21,11 +21,6 @@ interface DispatchProps {
 
 type Props = StateProps & DispatchProps;
 
-interface State {
-  stepping: boolean;
-  dragOffset: number;
-}
-
 const CHAR_WIDTH = 5;
 const MARQUEE_MAX_LENGTH = 31;
 
