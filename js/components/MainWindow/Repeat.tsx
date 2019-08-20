@@ -1,50 +1,33 @@
 import React from "react";
-import { connect } from "react-redux";
 import classnames from "classnames";
-import { toggleRepeat } from "../../actionCreators";
+import * as Actions from "../../actionCreators";
+import * as Selectors from "../../selectors";
 import ContextMenuWraper from "../ContextMenuWrapper";
 import { Node } from "../ContextMenu";
-import { AppState, Dispatch } from "../../types";
+import { useTypedSelector, useActionCreator } from "../../hooks";
 
-interface StateProps {
-  repeat: boolean;
-}
-
-interface DispatchProps {
-  handleClick(): void;
-}
-
-type Props = StateProps & DispatchProps;
-
-const Repeat = ({ repeat, handleClick }: Props) => (
-  <ContextMenuWraper
-    renderContents={() => (
-      <Node
-        checked={repeat}
-        label="Repeat"
+const Repeat = React.memo(() => {
+  const repeat = useTypedSelector(Selectors.getRepeat);
+  const handleClick = useActionCreator(Actions.toggleRepeat);
+  return (
+    <ContextMenuWraper
+      renderContents={() => (
+        <Node
+          checked={repeat}
+          label="Repeat"
+          onClick={handleClick}
+          hotkey="(R)"
+        />
+      )}
+    >
+      <div
+        id="repeat"
+        className={classnames({ selected: repeat })}
         onClick={handleClick}
-        hotkey="(R)"
+        title="Toggle Repeat"
       />
-    )}
-  >
-    <div
-      id="repeat"
-      className={classnames({ selected: repeat })}
-      onClick={handleClick}
-      title="Toggle Repeat"
-    />
-  </ContextMenuWraper>
-);
-
-const mapStateToProps = (state: AppState): StateProps => ({
-  repeat: state.media.repeat,
+    </ContextMenuWraper>
+  );
 });
 
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-  handleClick: () => dispatch(toggleRepeat()),
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Repeat);
+export default Repeat;
