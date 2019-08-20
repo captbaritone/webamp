@@ -1,32 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-interface Props {}
+const Desktop = React.memo(({ children }) => {
+  const [desktopNode] = React.useState(() => document.createElement("div"));
 
-export default class Desktop extends React.Component<Props> {
-  _desktopNode: HTMLElement | null;
-  constructor(props: Props) {
-    super(props);
-    this._desktopNode = null;
-  }
+  React.useEffect(() => {
+    desktopNode.classList.add("webamp-desktop");
+    document.body.appendChild(desktopNode);
+    return () => {
+      document.body.removeChild(desktopNode);
+    };
+  }, [desktopNode]);
 
-  componentWillUnmount() {
-    if (this._desktopNode != null) {
-      document.body.removeChild(this._desktopNode);
-      this._desktopNode = null;
-    }
-  }
+  return ReactDOM.createPortal(children, desktopNode);
+});
 
-  _getNode() {
-    if (this._desktopNode == null) {
-      this._desktopNode = document.createElement("div");
-      this._desktopNode.classList.add("webamp-desktop");
-      document.body.appendChild(this._desktopNode);
-    }
-    return this._desktopNode;
-  }
-
-  render() {
-    return ReactDOM.createPortal(this.props.children, this._getNode());
-  }
-}
+export default Desktop;
