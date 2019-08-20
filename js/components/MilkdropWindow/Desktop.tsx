@@ -1,7 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-const Desktop = React.memo(({ children }) => {
+interface Props {
+  children: React.ReactNode;
+}
+
+const Desktop = React.memo(({ children }: Props) => {
   const [desktopNode] = React.useState(() => document.createElement("div"));
 
   React.useEffect(() => {
