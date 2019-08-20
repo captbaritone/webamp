@@ -28,15 +28,32 @@
     }
   },
   "env": {
-    "browser": true,
     "node": true,
     "amd": true,
     "es6": true,
     "jest": true
   },
+  // TODO: Consider removing some of these.
+  // https://github.com/facebook/create-react-app/pull/1840
+  // Create React App and "Standard" only allow the following:
+  // * document
+  // * window
+  // * console
+  // * navigator
   "globals": {
-    "page": true,
-    "browser": true
+    "window": true,
+    "document": true,
+    "console": true,
+    "navigator": true,
+    "alert": true,
+    "Blob": true,
+    "fetch": true,
+    "FileReader": true,
+    "Element": true,
+    "AudioNode": true,
+    "MutationObserver": true,
+    "Image": true,
+    "location": true
   },
   "rules": {
     "no-multiple-empty-lines": [
