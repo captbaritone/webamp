@@ -745,3 +745,7 @@ export const getLineColorsImage = createSelector(
 export function getMarqueeStep(state: AppState): number {
   return state.display.marqueeStep;
 }
+
+export function getNetworkConnected(state: AppState): boolean {
+  return state.network.connected;
+}
