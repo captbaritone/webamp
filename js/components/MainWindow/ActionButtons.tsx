@@ -7,6 +7,7 @@ const ActionButtons = React.memo(() => {
   const play = useActionCreator(Actions.play);
   const pause = useActionCreator(Actions.pause);
   const next = useActionCreator(Actions.next);
+  const stop = useActionCreator(Actions.stop);
   return (
     <div className="actions">
       <div id="previous" onClick={previous} title="Previous Track" />
