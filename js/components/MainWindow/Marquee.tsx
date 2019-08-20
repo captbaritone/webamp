@@ -123,11 +123,6 @@ const Marquee = React.memo(() => {
   const { handleMouseDown, dragOffset, dragging } = useDragX();
   const offset = stepOffset(text, marqueeStep, dragOffset);
   const offsetPixels = pixelUnits(-offset);
-  const style: React.CSSProperties = {
-    whiteSpace: "nowrap",
-    willChange: "transform",
-    transform: `translateX(${offsetPixels})`,
-  };
 
   useStepper({ step: stepMarquee, dragging });
 
@@ -139,7 +134,11 @@ const Marquee = React.memo(() => {
       title="Song Title"
     >
       <div
-        style={style}
+        style={{
+          whiteSpace: "nowrap",
+          willChange: "transform",
+          transform: `translateX(${offsetPixels})`,
+        }}
         // Force the DOM node to be recreated when the doubled size changes.
         // This works around a Chrome browser bug where the `will-change: transform;`
         // on this node seems to cause a change to the `image-rendering:
