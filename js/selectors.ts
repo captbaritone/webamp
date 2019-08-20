@@ -754,3 +754,11 @@ export function getNetworkConnected(state: AppState): boolean {
 export function getTimeMode(state: AppState): TimeMode {
   return state.media.timeMode;
 }
+
+export function getLoading(state: AppState): boolean {
+  return state.display.loading;
+}
+
+export function getWorking(state: AppState): boolean {
+  return state.display.working;
+}
