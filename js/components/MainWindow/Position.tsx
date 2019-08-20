@@ -9,13 +9,6 @@ import {
 import * as Selectors from "../../selectors";
 import { useTypedSelector, useTypedDispatch } from "../../hooks";
 
-interface DispatchProps {
-  seekToPercentComplete(e: React.MouseEvent<HTMLInputElement>): void;
-  setPosition(e: React.MouseEvent<HTMLInputElement>): void;
-}
-
-type Props = DispatchProps;
-
 function usePosition() {
   const duration = useTypedSelector(Selectors.getDuration);
   const timeElapsed = useTypedSelector(Selectors.getTimeElapsed);
