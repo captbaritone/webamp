@@ -741,3 +741,7 @@ export const getLineColorsImage = createSelector(
     return Utils.imgFromUrl(url);
   }
 );
+
+export function getMarqueeStep(state: AppState): number {
+  return state.display.marqueeStep;
+}
