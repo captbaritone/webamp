@@ -9,9 +9,14 @@ export function isPromise(obj) {
   return obj && typeof obj.then === "function";
 }
 
+// Convert windows filename slashes to forward slashes
+function fixFilenameSlashes(filename) {
+  return filename.replace(/\\/g, "/");
+}
+
 export function getCaseInsensitveFile(zip, filename) {
   // TODO: Escape `file` for rejex characters
-  return zip.file(new RegExp(filename, "i"))[0];
+  return zip.file(new RegExp(fixFilenameSlashes(filename), "i"))[0];
 }
 
 // Read a
