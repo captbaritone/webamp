@@ -57,7 +57,7 @@ function gotSkinZip(zip: JSZip, store: ModernStore) {
           }
           const scriptGroup = Utils.findParentNodeOfType(
             node,
-            new Set(["group", "JsWinampAbstractionLayer", "WasabiXML"])
+            new Set(["group", "WinampAbstractionLayer", "WasabiXML"])
           );
           const system = new System(scriptGroup, store);
           run({
