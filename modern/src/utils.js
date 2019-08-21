@@ -9,6 +9,7 @@ export function isPromise(obj) {
   return obj && typeof obj.then === "function";
 }
 
+// Convert windows filename slashes to forward slashes
 function fixFilenameSlashes(filename) {
   return filename.replace(/\\/g, "/");
 }
