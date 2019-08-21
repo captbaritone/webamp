@@ -214,3 +214,27 @@ export function findGroupDefById(node, id) {
     );
   });
 }
+
+// This is intentionally async since we may want to sub it out for an async
+// function in a node environment
+export async function getUrlFromBlob(blob) {
+  return URL.createObjectURL(blob);
+}
+
+async function loadImage(imgUrl) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.addEventListener("load", () => {
+      resolve(img);
+    });
+    img.addEventListener("error", e => {
+      reject(e);
+    });
+    img.src = imgUrl;
+  });
+}
+
+export async function getSizeFromUrl(imgUrl) {
+  const { width, height } = await loadImage(imgUrl);
+  return { width, height };
+}
