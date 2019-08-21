@@ -1,8 +1,4 @@
-import {
-  getCaseInsensitveFile,
-  readUint8array,
-  asyncTreeFlatMap,
-} from "./utils";
+import * as Utils from "./utils";
 import MakiObject from "./runtime/MakiObject";
 import GuiObject from "./runtime/GuiObject";
 import JsWinampAbstractionLayer from "./runtime/JsWinampAbstractionLayer";
@@ -22,19 +18,6 @@ import Vis from "./runtime/Vis";
 import EqVis from "./runtime/EqVis";
 import AnimatedLayer from "./runtime/AnimatedLayer";
 import Component from "./runtime/Component";
-
-async function loadImage(imgUrl) {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.addEventListener("load", () => {
-      resolve(img);
-    });
-    img.addEventListener("error", e => {
-      reject(e);
-    });
-    img.src = imgUrl;
-  });
-}
 
 const noop = (node, parent) => new GuiObject(node, parent);
 
@@ -66,16 +49,16 @@ const parsers = {
     let { h, w, x, y } = node.attributes;
     const { file, gammagroup, id } = node.attributes;
     // TODO: Escape file for regex
-    const img = getCaseInsensitveFile(zip, file);
+    const img = Utils.getCaseInsensitveFile(zip, file);
     if (img === undefined) {
       return new MakiObject(node, parent);
     }
     const imgBlob = await img.async("blob");
-    const imgUrl = URL.createObjectURL(imgBlob);
+    const imgUrl = await Utils.getUrlFromBlob(imgBlob);
     if (w === undefined || h === undefined) {
-      const image = await loadImage(imgUrl);
-      w = image.width;
-      h = image.height;
+      const { width, height } = await Utils.getSizeFromUrl(imgUrl);
+      w = width;
+      h = height;
       x = x !== undefined ? x : 0;
       y = y !== undefined ? y : 0;
     }
@@ -119,7 +102,7 @@ const parsers = {
   albumart: noop,
   playlistplus: noop,
   async script(node, parent, zip) {
-    const script = await readUint8array(zip, node.attributes.file);
+    const script = await Utils.readUint8array(zip, node.attributes.file);
     return new MakiObject(node, parent, { script });
   },
 };
@@ -171,7 +154,7 @@ async function parseChildren(node, children, zip) {
 }
 
 async function applyGroupDefs(root) {
-  await asyncTreeFlatMap(root, async node => {
+  await Utils.asyncTreeFlatMap(root, async node => {
     switch (node.name) {
       case "group": {
         if (!node.children || node.children.length === 0) {
