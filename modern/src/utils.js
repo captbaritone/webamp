@@ -97,11 +97,12 @@ export async function inlineIncludes(xml, zip) {
       return node;
     }
     // TODO: Normalize file names so that they hit the same cache
-    const filename = fixFilenameSlashes(node.attributes.file);
-    const includedFile = await readXml(zip, filename);
+    const includedFile = await readXml(zip, node.attributes.file);
     if (includedFile == null) {
       console.warn(
-        `Tried to include a file that could not be found: ${filename}`
+        `Tried to include a file that could not be found: ${
+          node.attributes.file
+        }`
       );
       return [];
     }
