@@ -9,9 +9,13 @@ export function isPromise(obj) {
   return obj && typeof obj.then === "function";
 }
 
+function fixFilenameSlashes(filename) {
+  return filename.replace(/\\/g, "/");
+}
+
 export function getCaseInsensitveFile(zip, filename) {
   // TODO: Escape `file` for rejex characters
-  return zip.file(new RegExp(filename, "i"))[0];
+  return zip.file(new RegExp(fixFilenameSlashes(filename), "i"))[0];
 }
 
 // Read a
@@ -92,12 +96,11 @@ export async function inlineIncludes(xml, zip) {
       return node;
     }
     // TODO: Normalize file names so that they hit the same cache
-    const includedFile = await readXml(zip, node.attributes.file);
+    const filename = fixFilenameSlashes(node.attributes.file);
+    const includedFile = await readXml(zip, filename);
     if (includedFile == null) {
       console.warn(
-        `Tried to include a file that could not be found: ${
-          node.attributes.file
-        }`
+        `Tried to include a file that could not be found: ${filename}`
       );
       return [];
     }
