@@ -45,7 +45,7 @@ function gotSkinZip(zip: JSZip, store: ModernStore) {
 
     dispatch(setXmlTree(xmlTree));
 
-    const makiTree = await initialize(zip, xmlTree);
+    const makiTree = await initialize(zip, xmlTree, store);
     // Execute scripts
     await Utils.asyncTreeFlatMap(makiTree, node => {
       switch (node.name) {
