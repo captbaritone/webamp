@@ -536,12 +536,27 @@ function XmlNode({ node }) {
   );
 }
 
+function getSkinUrlFromQueryParams() {
+  const searchParams = new URLSearchParams(window.location.search);
+  return searchParams.get("skinUrl");
+}
+
+function setSkinUrlToQueryParams(skinUrl) {
+  const searchParams = new URLSearchParams(window.location.search);
+  searchParams.set("skinUrl", skinUrl);
+  const newRelativePathQuery = `${
+    window.location.pathname
+  }?${searchParams.toString()}`;
+  window.history.pushState(null, "", newRelativePathQuery);
+}
+
 function App() {
   const dispatch = useDispatch();
   const store = useStore();
   const root = useSelector(Selectors.getMakiTree);
   React.useEffect(() => {
-    dispatch(Actions.gotSkinUrl(skinUrls[0], store));
+    const defaultSkinUrl = getSkinUrlFromQueryParams() || skinUrls[0];
+    dispatch(Actions.gotSkinUrl(defaultSkinUrl, store));
   }, [store]);
   if (root == null) {
     return <h1>Loading...</h1>;
@@ -559,7 +574,10 @@ function App() {
       <select
         style={{ position: "absolute", bottom: 0 }}
         onChange={e => {
-          dispatch(Actions.gotSkinUrl(e.target.value, store));
+          const newSkinUrl = e.target.value;
+          // TODO: This should really go in a middleware somewhere.
+          setSkinUrlToQueryParams(newSkinUrl);
+          dispatch(Actions.gotSkinUrl(newSkinUrl, store));
         }}
       >
         {skinUrls.map(url => (
