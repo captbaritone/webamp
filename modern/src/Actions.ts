@@ -33,7 +33,7 @@ export function gotSkinBlob(blob: Blob, store: ModernStore) {
   };
 }
 
-function gotSkinZip(zip: JSZip, store: ModernStore) {
+export function gotSkinZip(zip: JSZip, store: ModernStore) {
   return async dispatch => {
     const xmlTree = await Utils.inlineIncludes(
       await Utils.readXml(zip, "skin.xml"),

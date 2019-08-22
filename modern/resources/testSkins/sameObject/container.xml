@@ -1,0 +1,6 @@
+<container id="main">
+  <layout id="normal">
+	<button id="Play" />
+	<button id="Pause" />
+  </layout>
+</container>
