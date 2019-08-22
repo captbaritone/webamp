@@ -11,6 +11,7 @@ export type ModernAppState = {
   makiTree: MakiTree | null;
   xmlTree: XmlTree | null;
   volume: number;
+  skinLoaded: boolean;
 };
 export type ModernAction =
   | { type: "SET_MAKI_TREE"; makiTree: MakiTree }
