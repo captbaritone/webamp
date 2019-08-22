@@ -36,6 +36,9 @@ import GuiTree from "./GuiTree";
 import TreeItem from "./TreeItem";
 import MenuButton from "./MenuButton";
 import CheckBox from "./CheckBox";
+import Config from "./Config";
+import ConfigItem from "./ConfigItem";
+import ConfigAttribute from "./ConfigAttribute";
 
 const runtime = {
   "516549714a510d87b5a6e391e7f33532": MakiObject,
@@ -76,6 +79,9 @@ const runtime = {
   "9b3b4b82420e667a4179fc8f029c8015": TreeItem,
   "1d8631c8479280d05dbd989f3691b436": MenuButton,
   c7ed319947985319b1606398aa8c295a: CheckBox,
+  "593dba224976d07771f452b90b405536": Config,
+  d40302824d873aab32128d87d5fcad6f: ConfigItem,
+  "24dec2834a36b76e249ecc8c736c6bc4": ConfigAttribute,
 };
 
 export default runtime;
