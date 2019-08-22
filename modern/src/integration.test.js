@@ -6,8 +6,8 @@ import * as Actions from "./Actions";
 import * as Utils from "./utils";
 import System from "./runtime/System";
 
-test("simpleSameObjectTest", async () => {
-  const messages = await runSkin("simpleSameObjectTest");
+test("sameObject", async () => {
+  const messages = await runSkin("sameObject");
 
   expect(messages).toEqual([
     ["empty object equal each other", "Success", 0, ""],
@@ -16,8 +16,8 @@ test("simpleSameObjectTest", async () => {
   ]);
 });
 
-test("simpleClickTest", async () => {
-  const messages = await runSkin("simpleClickTest");
+test("simpleClick", async () => {
+  const messages = await runSkin("simpleClick");
 
   expect(messages).toEqual([
     ["onScriptLoaded", "Success", 0, ""],

@@ -4,12 +4,11 @@
   <skininfo>
     <version>1.0</version>
     <name>Simple Skin for Testing</name>
-    <comment>Created by jberg for testing Webamp, based on skin by pixelpusher for the official Winamp3 skinning site.</comment>
+    <comment>Created by jberg for testing Webamp</comment>
     <author>jberg</author>
   </skininfo>
-  <include file="xml/player.xml"/>
-
-	<scripts>
-		<script file="scripts/script.maki"/>
-	</scripts>
+  <include file="container.xml"/>
+  <scripts>
+    <script file="script.maki"/>
+  </scripts>
 </WinampAbstractionLayer>
