@@ -24,6 +24,7 @@ module.exports = {
         recommended: false,
       },
       schema: [],
+      fixable: "code",
     },
     create: function(context) {
       let currentObject = null;
@@ -66,11 +67,42 @@ module.exports = {
             });
           }
         },
-        ClassBody: function() {
+        ClassBody: function(node) {
           if (currentObject == null) {
             return;
           }
-          // TODO: Check for missing methods
+
+          const implementedMethodNames = new Set(
+            node.body
+              .filter(prop => prop.type === "MethodDefinition")
+              .map(method => method.key.name)
+          );
+
+          currentObject.functions.forEach(func => {
+            const methodName = func.name.toLowerCase();
+            if (implementedMethodNames.has(methodName)) {
+              return;
+            }
+            const args = func.parameters.map(([, name]) => name).join(", ");
+
+            // We rely on Prettier to clean this up.
+            // We also expect `unimplementedWarning` to already be imported.
+            const methodString = `
+              ${methodName}(${args}) {
+                unimplementedWarning("${methodName}");
+                return;
+              }
+            `;
+
+            const lastChild = node.body[node.body.length - 1];
+            context.report({
+              node: node,
+              message: `Missing method ${methodName}`,
+              fix: fixer => {
+                return fixer.insertTextAfter(lastChild, methodString);
+              },
+            });
+          });
         },
         MethodDefinition: function(node) {
           if (currentObject == null) {
