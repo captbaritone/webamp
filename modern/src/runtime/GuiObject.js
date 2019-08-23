@@ -118,12 +118,12 @@ class GuiObject extends MakiObject {
   }
 
   setalpha(alpha) {
-    this.attributes.alpha = parseInt(alpha) / 255;
+    this.attributes.alpha = parseInt(alpha, 10) / 255;
     this.js_trigger("js_update");
   }
 
   settargeta(alpha) {
-    this.attributes.alpha = parseInt(alpha) / 255;
+    this.attributes.alpha = parseInt(alpha, 10) / 255;
     this.js_trigger("js_update");
   }
 
