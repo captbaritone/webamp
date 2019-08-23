@@ -115,7 +115,7 @@ function handleMouseButtonEventDispatch(
   );
 }
 
-function GuiObjectEvents({ Component, node, children }) {
+function GuiObjectEvents({ Component, node, style, children }) {
   return (
     <div
       onMouseDown={e =>
@@ -146,6 +146,7 @@ function GuiObjectEvents({ Component, node, children }) {
         e.preventDefault();
         return false;
       }}
+      style={style}
     >
       <Component node={node} {...node.attributes}>
         {children}
@@ -529,8 +530,17 @@ function XmlNode({ node }) {
     );
   }
 
+  const { alpha, ghost } = node.attributes;
+
   return (
-    <GuiObjectEvents Component={Component} node={node}>
+    <GuiObjectEvents
+      Component={Component}
+      node={node}
+      style={{
+        opacity: alpha === 0 || alpha ? Number(alpha) : 1,
+        pointerEvents: ghost === 1 ? "none" : null,
+      }}
+    >
       {children}
     </GuiObjectEvents>
   );

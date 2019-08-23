@@ -118,7 +118,13 @@ class GuiObject extends MakiObject {
   }
 
   setalpha(alpha) {
-    unimplementedWarning("setAlpha");
+    this.attributes.alpha = parseInt(alpha) / 255;
+    this.js_trigger("js_update");
+  }
+
+  settargeta(alpha) {
+    this.attributes.alpha = parseInt(alpha) / 255;
+    this.js_trigger("js_update");
   }
 
   isvisible() {
