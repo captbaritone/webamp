@@ -65,11 +65,14 @@ async function runSkin(skinDirectory) {
   const zip = new JSZip();
   buildZipFromDirectory(skinDirectoryPath, zip, skinDirectoryPath);
 
-  const actual = System.prototype.messagebox;
+  /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+  function fakeMessageBox(a, b, c, d) {
+    // This function has four fake arguments because we check the arity of the
+    // method in the VM to determine how many values to pop off the stack.
+  }
+  expect(fakeMessageBox.length).toBe(System.prototype.messagebox.length);
 
-  // I have no idea why calling out to the actual method (which just calls
-  // console.log) is requried.
-  const mockMessageBox = jest.fn(actual);
+  const mockMessageBox = jest.fn(fakeMessageBox);
   System.prototype.messagebox = mockMessageBox;
 
   const store = create();
