@@ -24,6 +24,20 @@ for (const [key, Klass] of Object.entries(runtime)) {
       }
       expect(Parent.prototype.getclassname()).toBe(obj.parent);
     });
+    describe("methods have the correct arity", () => {
+      obj.functions.forEach(func => {
+        const methodName = func.name.toLowerCase();
+        // Once all methods are implemented this check can be removed.
+        // For now we have a separate test which checks that we haven't
+        // regressed on the methods we've implemented.
+        if (Klass.prototype.hasOwnProperty(methodName)) {
+          const actual = Klass.prototype[func.name.toLowerCase()].length;
+          test(`${obj.name}.${func.name} has an arity of ${actual}`, () => {
+            expect(func.parameters.length).toBe(actual);
+          });
+        }
+      });
+    });
   });
 }
 
