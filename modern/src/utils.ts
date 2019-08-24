@@ -17,6 +17,14 @@ export function isPromise(obj) {
   return obj && typeof obj.then === "function";
 }
 
+export function isString(obj) {
+  return obj && typeof obj === "string";
+}
+
+export function isObject(obj) {
+  return obj === Object(obj);
+}
+
 // Convert windows filename slashes to forward slashes
 function fixFilenameSlashes(filename) {
   return filename.replace(/\\/g, "/");

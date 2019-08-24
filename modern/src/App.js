@@ -210,7 +210,12 @@ function Layout({
   }
 
   if (drawBackground) {
-    const image = node.js_imageLookup(background);
+    let image;
+    if (Utils.isObject(background)) {
+      image = background;
+    } else {
+      image = node.js_imageLookup(background);
+    }
     if (image == null) {
       console.warn(
         "Unable to find image to render. Rendering null",
@@ -275,12 +280,17 @@ function Layout({
   );
 }
 
-function Layer({ node, id, image, x, y }) {
+function Layer({ node, id, image, children, x, y, w, h }) {
   if (image == null) {
     console.warn("Got an Layer without an image. Rendering null", id);
     return null;
   }
-  const img = node.js_imageLookup(image.toLowerCase());
+  let img;
+  if (Utils.isObject(image)) {
+    img = image;
+  } else {
+    img = node.js_imageLookup(image.toLowerCase());
+  }
   if (img == null) {
     console.warn("Unable to find image to render. Rendering null", image);
     return null;
@@ -338,7 +348,12 @@ function Button({
     return null;
   }
   // TODO: These seem to be switching too fast
-  const img = node.js_imageLookup(imgId);
+  let img;
+  if (Utils.isObject(imgId)) {
+    img = imgId;
+  } else {
+    img = node.js_imageLookup(imgId);
+  }
   if (img == null) {
     console.warn("Unable to find image to render. Rendering null", image);
     return null;

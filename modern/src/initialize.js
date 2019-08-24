@@ -19,6 +19,40 @@ import EqVis from "./runtime/EqVis";
 import AnimatedLayer from "./runtime/AnimatedLayer";
 import Component from "./runtime/Component";
 
+async function prepareMakiImage(node, zip, file) {
+  let { h, w } = node.attributes;
+  // TODO: Escape file for regex
+  const img = Utils.getCaseInsensitveFile(zip, file);
+  if (img === undefined) {
+    return {};
+  }
+  const imgBlob = await img.async("blob");
+  const imgUrl = await Utils.getUrlFromBlob(imgBlob);
+  if (w === undefined || h === undefined) {
+    const { width, height } = await Utils.getSizeFromUrl(imgUrl);
+    w = width;
+    h = height;
+  }
+
+  return {
+    h,
+    w,
+    imgUrl,
+  };
+}
+
+async function createWithImageLookups(Klass, node, parent, zip, imagePaths) {
+  imagePaths.forEach(async path => {
+    const image = node.attributes[path];
+    if (Utils.isString(image) && image.endsWith(".png")) {
+      const imageAnnotations = await prepareMakiImage(node, zip, image);
+      node.attributes[path] = imageAnnotations;
+    }
+  });
+
+  return new Klass(node, parent);
+}
+
 const noop = (node, parent, zip, store) =>
   new GuiObject(node, parent, undefined, store);
 
@@ -41,52 +75,34 @@ const parsers = {
   gammaset: (node, parent, zip, store) =>
     new JsGammaSet(node, parent, undefined, store),
   color: noop,
-  layer: (node, parent, zip, store) =>
-    new Layer(node, parent, undefined, store),
+  layer: async (node, parent, zip, store) =>
+    createWithImageLookups(Layer, node, parent, zip, store, ["image"]),
   layoutstatus: noop,
   hideobject: noop,
-  button: (node, parent, zip, store) =>
-    new Button(node, parent, undefined, store),
+  button: async (node, parent, zip, store) =>
+    createWithImageLookups(Button, node, parent, zip, store, [
+      "image",
+      "downImage",
+    ]),
   group: (node, parent, zip, store) =>
     new Group(node, parent, undefined, store),
-  layout: (node, parent, zip, store) =>
-    new Layout(node, parent, undefined, store),
+  layout: async (node, parent, zip, store) =>
+    createWithImageLookups(Layout, node, parent, zip, store, ["background"]),
   sendparams: noop,
   elements: (node, parent, zip, store) =>
     new JsElements(node, parent, undefined, store),
   bitmap: async (node, parent, zip, store) => {
-    let { h, w, x, y } = node.attributes;
-    const { file, gammagroup, id } = node.attributes;
-    // TODO: Escape file for regex
-    const img = Utils.getCaseInsensitveFile(zip, file);
-    if (img === undefined) {
-      return new MakiObject(node, parent);
-    }
-    const imgBlob = await img.async("blob");
-    const imgUrl = await Utils.getUrlFromBlob(imgBlob);
-    if (w === undefined || h === undefined) {
-      const { width, height } = await Utils.getSizeFromUrl(imgUrl);
-      w = width;
-      h = height;
-      x = x !== undefined ? x : 0;
-      y = y !== undefined ? y : 0;
-    }
-
-    return new MakiObject(
+    const imgAnnotations = await prepareMakiImage(
       node,
-      parent,
-      {
-        id,
-        file,
-        gammagroup,
-        h,
-        w,
-        x,
-        y,
-        imgUrl,
-      },
-      store
+      zip,
+      node.attributes.file
     );
+
+    const { x, y } = node.attributes;
+    imgAnnotations.x = x !== undefined ? x : 0;
+    imgAnnotations.y = y !== undefined ? y : 0;
+
+    return new MakiObject(node, parent, imgAnnotations, store);
   },
   eqvis: (node, parent, zip, store) =>
     new EqVis(node, parent, undefined, store),
@@ -97,8 +113,11 @@ const parsers = {
   component: (node, parent, zip, store) =>
     new Component(node, parent, undefined, store),
   text: (node, parent, zip, store) => new Text(node, parent, undefined, store),
-  togglebutton: (node, parent, zip, store) =>
-    new ToggleButton(node, parent, undefined, store),
+  togglebutton: async (node, parent, zip, store) =>
+    createWithImageLookups(ToggleButton, node, parent, zip, store, [
+      "image",
+      "downImage",
+    ]),
   status: (node, parent, zip, store) =>
     new Status(node, parent, undefined, store),
   bitmapfont: noop,
