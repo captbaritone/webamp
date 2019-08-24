@@ -42,6 +42,7 @@ async function prepareMakiImage(node, zip, file) {
 }
 
 function imagePathsFromNode(node) {
+  if (!node.name) return [];
   switch (node.name.toLowerCase()) {
     case "layer": {
       return ["image"];
