@@ -41,7 +41,28 @@ async function prepareMakiImage(node, zip, file) {
   };
 }
 
-async function createWithImageLookups(Klass, node, parent, zip, imagePaths) {
+function imagePathsFromNode(node) {
+  switch (node.name) {
+    case "layer": {
+      return ["image"];
+    }
+    case "layout": {
+      return ["background"];
+    }
+    case "button": {
+      return ["image", "downImage"];
+    }
+    case "togglebutton": {
+      return ["image", "downImage"];
+    }
+    default: {
+      return [];
+    }
+  }
+}
+
+async function createWithImageLookups(Klass, node, parent, zip, store) {
+  const imagePaths = imagePathsFromNode(node);
   imagePaths.forEach(async path => {
     const image = node.attributes[path];
     if (Utils.isString(image) && image.endsWith(".png")) {
@@ -50,7 +71,7 @@ async function createWithImageLookups(Klass, node, parent, zip, imagePaths) {
     }
   });
 
-  return new Klass(node, parent);
+  return new Klass(node, parent, undefined, store);
 }
 
 const noop = (node, parent, zip, store) =>
@@ -76,18 +97,15 @@ const parsers = {
     new JsGammaSet(node, parent, undefined, store),
   color: noop,
   layer: async (node, parent, zip, store) =>
-    createWithImageLookups(Layer, node, parent, zip, store, ["image"]),
+    createWithImageLookups(Layer, node, parent, zip, store),
   layoutstatus: noop,
   hideobject: noop,
   button: async (node, parent, zip, store) =>
-    createWithImageLookups(Button, node, parent, zip, store, [
-      "image",
-      "downImage",
-    ]),
+    createWithImageLookups(Button, node, parent, zip, store),
   group: (node, parent, zip, store) =>
     new Group(node, parent, undefined, store),
   layout: async (node, parent, zip, store) =>
-    createWithImageLookups(Layout, node, parent, zip, store, ["background"]),
+    createWithImageLookups(Layout, node, parent, zip, store),
   sendparams: noop,
   elements: (node, parent, zip, store) =>
     new JsElements(node, parent, undefined, store),
@@ -114,10 +132,7 @@ const parsers = {
     new Component(node, parent, undefined, store),
   text: (node, parent, zip, store) => new Text(node, parent, undefined, store),
   togglebutton: async (node, parent, zip, store) =>
-    createWithImageLookups(ToggleButton, node, parent, zip, store, [
-      "image",
-      "downImage",
-    ]),
+    createWithImageLookups(ToggleButton, node, parent, zip, store),
   status: (node, parent, zip, store) =>
     new Status(node, parent, undefined, store),
   bitmapfont: noop,
