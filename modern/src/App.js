@@ -189,7 +189,6 @@ function Container(props) {
 }
 
 function Layout({
-  node,
   id,
   background,
   // desktopalpha,
@@ -275,7 +274,7 @@ function Layout({
   );
 }
 
-function Layer({ node, id, image, children, x, y }) {
+function Layer({ id, image, children, x, y }) {
   if (image == null) {
     console.warn("Got an Layer without an image. Rendering null", id);
     return null;
