@@ -210,12 +210,7 @@ function Layout({
   }
 
   if (drawBackground) {
-    let image;
-    if (Utils.isObject(background)) {
-      image = background;
-    } else {
-      image = node.js_imageLookup(background);
-    }
+    const image = background;
     if (image == null) {
       console.warn(
         "Unable to find image to render. Rendering null",
@@ -285,12 +280,7 @@ function Layer({ node, id, image, children, x, y }) {
     console.warn("Got an Layer without an image. Rendering null", id);
     return null;
   }
-  let img;
-  if (Utils.isObject(image)) {
-    img = image;
-  } else {
-    img = node.js_imageLookup(image.toLowerCase());
-  }
+  const img = image;
   if (img == null) {
     console.warn("Unable to find image to render. Rendering null", image);
     return null;
@@ -342,20 +332,10 @@ function Button({
   node,
 }) {
   const [down, setDown] = React.useState(false);
-  const imgId = down && downImage ? downImage : image;
-  if (imgId == null) {
-    console.warn("Got a Button without a imgId. Rendering null", id);
-    return null;
-  }
   // TODO: These seem to be switching too fast
-  let img;
-  if (Utils.isObject(imgId)) {
-    img = imgId;
-  } else {
-    img = node.js_imageLookup(imgId);
-  }
+  const img = down && downImage ? downImage : image;
   if (img == null) {
-    console.warn("Unable to find image to render. Rendering null", image);
+    console.warn("Got a Button without a img. Rendering null", id);
     return null;
   }
 

@@ -204,6 +204,27 @@ async function parseChildren(node, children, zip, store) {
   node.js_addChildren(filteredChildren);
 }
 
+function nodeImageLookup(node) {
+  const imagePaths = imagePathsFromNode(node);
+  imagePaths.forEach(path => {
+    const image = node.attributes[path];
+    let img;
+    if (Utils.isString(image)) {
+      img = node.js_imageLookup(image.toLowerCase());
+    } else {
+      img = image;
+    }
+    node.attributes[path] = img;
+  });
+}
+
+function applyImageLookups(root) {
+  Utils.asyncTreeFlatMap(root, node => {
+    nodeImageLookup(node, ["image"]);
+    return node;
+  });
+}
+
 async function applyGroupDefs(root) {
   await Utils.asyncTreeFlatMap(root, async node => {
     switch (node.name) {
@@ -245,6 +266,7 @@ async function initialize(zip, skinXml, store) {
     store
   );
   await parseChildren(root, xmlRoot.children, zip, store);
+  applyImageLookups(root);
   await applyGroupDefs(root);
   return root;
 }
