@@ -42,16 +42,14 @@ async function prepareMakiImage(node, zip, file) {
 }
 
 function imagePathsFromNode(node) {
-  switch (node.name) {
+  switch (node.name.toLowerCase()) {
     case "layer": {
       return ["image"];
     }
     case "layout": {
       return ["background"];
     }
-    case "button": {
-      return ["image", "downImage"];
-    }
+    case "button":
     case "togglebutton": {
       return ["image", "downImage"];
     }
@@ -220,7 +218,7 @@ function nodeImageLookup(node) {
 
 function applyImageLookups(root) {
   Utils.asyncTreeFlatMap(root, node => {
-    nodeImageLookup(node, ["image"]);
+    nodeImageLookup(node);
     return node;
   });
 }
