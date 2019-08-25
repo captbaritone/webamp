@@ -4,10 +4,11 @@ import {
   findParentNodeOfType,
   unimplementedWarning,
 } from "../utils";
+import * as MakiSelectors from "../MakiSelectors";
 
 class GuiObject extends MakiObject {
-  constructor(node, parent) {
-    super(node, parent);
+  constructor(node, parent, annotations, store) {
+    super(node, parent, annotations, store);
 
     this.visible = true;
   }
@@ -61,7 +62,14 @@ class GuiObject extends MakiObject {
   }
 
   gettop() {
-    return Number(this.attributes.y) || 0;
+    const stateTop = MakiSelectors.getTop(this._uid)(this._store.getState());
+    const makiTop = Number(this.attributes.y) || 0;
+    if (stateTop !== makiTop) {
+      console.error(
+        `Maki state ${makiTop} is out of sync with tree state ${stateTop}`
+      );
+    }
+    return makiTop;
   }
 
   getleft() {
