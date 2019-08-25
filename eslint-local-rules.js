@@ -96,6 +96,10 @@ module.exports = {
             return;
           }
 
+          if (methodName.startsWith("_")) {
+            return;
+          }
+
           const func = methods[methodName];
           if (func == null) {
             context.report({
