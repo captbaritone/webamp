@@ -117,6 +117,7 @@ class GuiObject extends MakiObject {
     this.attributes.maximum_h = h;
   }
 
+  // alpha range from 0-255
   setalpha(alpha) {
     this.attributes.alpha = parseInt(alpha, 10) / 255;
     this.js_trigger("js_update");
@@ -227,6 +228,7 @@ class GuiObject extends MakiObject {
     return;
   }
 
+  // alpha range from 0-255
   settargeta(alpha) {
     this.attributes.alpha = parseInt(alpha, 10) / 255;
     this.js_trigger("js_update");
