@@ -32,6 +32,21 @@ class Button extends GuiObject {
     unimplementedWarning("getactivated");
     return false;
   }
+
+  onleftclick() {
+    unimplementedWarning("onleftclick");
+    return;
+  }
+
+  onrightclick() {
+    unimplementedWarning("onrightclick");
+    return;
+  }
+
+  setactivatednocallback(onoff) {
+    unimplementedWarning("setactivatednocallback");
+    return;
+  }
 }
 
 export default Button;

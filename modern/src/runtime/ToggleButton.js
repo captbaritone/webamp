@@ -15,6 +15,11 @@ class ToggleButton extends Button {
   ontoggle(onnoff) {
     unimplementedWarning("ontoggle");
   }
+
+  getcurcfgval() {
+    unimplementedWarning("getcurcfgval");
+    return;
+  }
 }
 
 export default ToggleButton;

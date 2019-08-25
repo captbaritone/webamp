@@ -17,6 +17,16 @@ class Config extends MakiObject {
     unimplementedWarning("newitem");
     return new ConfigItem(null, this);
   }
+
+  getitem(item_name) {
+    unimplementedWarning("getitem");
+    return;
+  }
+
+  getitembyguid(item_guid) {
+    unimplementedWarning("getitembyguid");
+    return;
+  }
 }
 
 export default Config;

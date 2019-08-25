@@ -15,6 +15,31 @@ class Vis extends GuiObject {
   setmode(mode) {
     unimplementedWarning("setmode");
   }
+
+  onframe() {
+    unimplementedWarning("onframe");
+    return;
+  }
+
+  setrealtime(onoff) {
+    unimplementedWarning("setrealtime");
+    return;
+  }
+
+  getrealtime() {
+    unimplementedWarning("getrealtime");
+    return;
+  }
+
+  getmode() {
+    unimplementedWarning("getmode");
+    return;
+  }
+
+  nextmode() {
+    unimplementedWarning("nextmode");
+    return;
+  }
 }
 
 export default Vis;

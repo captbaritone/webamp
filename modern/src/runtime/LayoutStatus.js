@@ -1,4 +1,5 @@
 import GuiObject from "./GuiObject";
+import { unimplementedWarning } from "../utils";
 
 class LayoutStatus extends GuiObject {
   /**
@@ -9,6 +10,11 @@ class LayoutStatus extends GuiObject {
    */
   getclassname() {
     return "LayoutStatus";
+  }
+
+  callme(str) {
+    unimplementedWarning("callme");
+    return;
   }
 }
 
