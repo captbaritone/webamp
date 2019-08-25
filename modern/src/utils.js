@@ -5,6 +5,12 @@ export function getId() {
   return i++;
 }
 
+// Depth-first tree map
+export function mapTree(node, cb) {
+  const children = node.children || [];
+  return cb({ ...node, children: children.map(child => mapTree(child, cb)) });
+}
+
 export function isPromise(obj) {
   return obj && typeof obj.then === "function";
 }
@@ -112,6 +118,21 @@ export async function inlineIncludes(xml, zip) {
 
 export function unimplementedWarning(name) {
   console.warn(`Executing unimplemented MAKI function: ${name}`);
+}
+
+// Bredth-first search in a tree
+export function findInTree(node, predicate) {
+  if (predicate(node)) {
+    return node;
+  }
+  const children = node.children || [];
+  for (const child of children) {
+    const found = findInTree(child, predicate);
+    if (found != null) {
+      return found;
+    }
+  }
+  return null;
 }
 
 // Operations on trees

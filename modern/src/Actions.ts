@@ -35,14 +35,17 @@ export function gotSkinBlob(blob: Blob, store: ModernStore) {
 
 export function gotSkinZip(zip: JSZip, store: ModernStore) {
   return async dispatch => {
-    const xmlTree = await Utils.inlineIncludes(
+    const rawXmlTree = await Utils.inlineIncludes(
       await Utils.readXml(zip, "skin.xml"),
       zip
     );
+    const xmlTree = Utils.mapTree(rawXmlTree, node => {
+      return { ...node, uid: Utils.getId() };
+    });
 
     dispatch(setXmlTree(xmlTree));
 
-    const makiTree = await initialize(zip, xmlTree);
+    const makiTree = await initialize(zip, xmlTree, store);
     // Execute scripts
     await Utils.asyncTreeFlatMap(makiTree, node => {
       switch (node.name) {
