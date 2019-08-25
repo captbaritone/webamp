@@ -15,13 +15,13 @@ interface PortalProps {
 
 const Portal = (props: PortalProps) => {
   const node: HTMLDivElement = useMemo(() => {
-    const node = document.createElement("div");
-    node.id = "webamp-context-menu";
-    node.style.position = "absolute";
-    node.style.top = "0";
-    node.style.left = "0";
-    node.style.zIndex = String(props.zIndex + 1);
-    return node;
+    const div = document.createElement("div");
+    div.id = "webamp-context-menu";
+    div.style.position = "absolute";
+    div.style.top = "0";
+    div.style.left = "0";
+    div.style.zIndex = String(props.zIndex + 1);
+    return div;
   }, [props.zIndex]);
 
   useEffect(() => {

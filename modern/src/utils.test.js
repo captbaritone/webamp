@@ -79,7 +79,7 @@ describe("inlineIncludes", () => {
   test("inlines the contents of included files as children of the include node", async () => {
     const zip = await getSkinZip();
     const originalFile = zip.file;
-    zip.file = jest.fn(path => originalFile.call(zip, path));
+    zip.file = jest.fn(filePath => originalFile.call(zip, filePath));
 
     const xml = await Utils.readXml(zip, "SkIn.XmL");
     const resolvedXml = await Utils.inlineIncludes(xml, zip);

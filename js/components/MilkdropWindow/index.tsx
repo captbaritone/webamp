@@ -143,8 +143,8 @@ function Milkdrop(props: Props) {
         windowId={WINDOWS.MILKDROP}
         onKeyDown={handleKeyDown}
       >
-        {(windowSize: { width: number; height: number }) => {
-          const size = props.fullscreen ? screenSize : windowSize;
+        {(genWindowSize: { width: number; height: number }) => {
+          const size = props.fullscreen ? screenSize : genWindowSize;
           return (
             <MilkdropContextMenu>
               <Background>
