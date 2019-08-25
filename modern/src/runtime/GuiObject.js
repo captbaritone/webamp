@@ -117,8 +117,10 @@ class GuiObject extends MakiObject {
     this.attributes.maximum_h = h;
   }
 
+  // alpha range from 0-255
   setalpha(alpha) {
-    unimplementedWarning("setAlpha");
+    this.attributes.alpha = parseInt(alpha, 10) / 255;
+    this.js_trigger("js_update");
   }
 
   isvisible() {
@@ -226,9 +228,10 @@ class GuiObject extends MakiObject {
     return;
   }
 
+  // alpha range from 0-255
   settargeta(alpha) {
-    unimplementedWarning("settargeta");
-    return;
+    this.attributes.alpha = parseInt(alpha, 10) / 255;
+    this.js_trigger("js_update");
   }
 
   settargetspeed(insecond) {
