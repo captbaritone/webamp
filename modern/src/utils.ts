@@ -18,7 +18,7 @@ export function isPromise(obj) {
 }
 
 export function isString(obj) {
-  return obj && typeof obj === "string";
+  return typeof obj === "string";
 }
 
 export function isObject(obj) {

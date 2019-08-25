@@ -64,7 +64,7 @@ async function createWithImageLookups(Klass, node, parent, zip, store) {
   const imagePaths = imagePathsFromNode(node);
   imagePaths.forEach(async path => {
     const image = node.attributes[path];
-    if (Utils.isString(image) && image.endsWith(".png")) {
+    if (image && Utils.isString(image) && image.endsWith(".png")) {
       const imageAnnotations = await prepareMakiImage(node, zip, image);
       node.attributes[path] = imageAnnotations;
     }
@@ -208,7 +208,7 @@ function nodeImageLookup(node) {
   imagePaths.forEach(path => {
     const image = node.attributes[path];
     let img;
-    if (Utils.isString(image)) {
+    if (image && Utils.isString(image)) {
       img = node.js_imageLookup(image.toLowerCase());
     } else {
       img = image;
