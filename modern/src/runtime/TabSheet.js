@@ -1,4 +1,5 @@
 import GuiObject from "./GuiObject";
+import { unimplementedWarning } from "../utils";
 
 class TabSheet extends GuiObject {
   /**
@@ -9,6 +10,16 @@ class TabSheet extends GuiObject {
    */
   getclassname() {
     return "TabSheet";
+  }
+
+  getcurpage() {
+    unimplementedWarning("getcurpage");
+    return;
+  }
+
+  setcurpage(a) {
+    unimplementedWarning("setcurpage");
+    return;
   }
 }
 

@@ -23,6 +23,26 @@ class Timer extends MakiObject {
   stop() {
     unimplementedWarning("stop");
   }
+
+  ontimer() {
+    unimplementedWarning("ontimer");
+    return;
+  }
+
+  getdelay() {
+    unimplementedWarning("getdelay");
+    return;
+  }
+
+  isrunning() {
+    unimplementedWarning("isrunning");
+    return;
+  }
+
+  getskipped() {
+    unimplementedWarning("getskipped");
+    return;
+  }
 }
 
 export default Timer;

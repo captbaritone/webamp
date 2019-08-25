@@ -1,4 +1,5 @@
 import GuiObject from "./GuiObject";
+import { unimplementedWarning } from "../utils";
 
 class MenuButton extends GuiObject {
   /**
@@ -9,6 +10,31 @@ class MenuButton extends GuiObject {
    */
   getclassname() {
     return "MenuButton";
+  }
+
+  onopenmenu() {
+    unimplementedWarning("onopenmenu");
+    return;
+  }
+
+  onclosemenu() {
+    unimplementedWarning("onclosemenu");
+    return;
+  }
+
+  onselectitem(item) {
+    unimplementedWarning("onselectitem");
+    return;
+  }
+
+  openmenu() {
+    unimplementedWarning("openmenu");
+    return;
+  }
+
+  closemenu() {
+    unimplementedWarning("closemenu");
+    return;
   }
 }
 

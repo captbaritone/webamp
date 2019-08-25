@@ -1,4 +1,5 @@
 import GuiObject from "./GuiObject";
+import { unimplementedWarning } from "../utils";
 
 class GroupList extends GuiObject {
   /**
@@ -9,6 +10,31 @@ class GroupList extends GuiObject {
    */
   getclassname() {
     return "GroupList";
+  }
+
+  instantiate(group_id, num_groups) {
+    unimplementedWarning("instantiate");
+    return;
+  }
+
+  getnumitems() {
+    unimplementedWarning("getnumitems");
+    return;
+  }
+
+  enumitem(num) {
+    unimplementedWarning("enumitem");
+    return;
+  }
+
+  removeall() {
+    unimplementedWarning("removeall");
+    return;
+  }
+
+  scrolltopercent(percent) {
+    unimplementedWarning("scrolltopercent");
+    return;
   }
 }
 

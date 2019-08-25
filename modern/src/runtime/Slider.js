@@ -20,6 +20,31 @@ class Slider extends GuiObject {
   onsetposition(newpos) {
     unimplementedWarning("onsetposition");
   }
+
+  onpostedposition(newpos) {
+    unimplementedWarning("onpostedposition");
+    return;
+  }
+
+  onsetfinalposition(pos) {
+    unimplementedWarning("onsetfinalposition");
+    return;
+  }
+
+  setposition(pos) {
+    unimplementedWarning("setposition");
+    return;
+  }
+
+  lock() {
+    unimplementedWarning("lock");
+    return;
+  }
+
+  unlock() {
+    unimplementedWarning("unlock");
+    return;
+  }
 }
 
 export default Slider;
