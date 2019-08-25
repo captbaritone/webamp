@@ -6,6 +6,7 @@ const getMakiMethods = obj =>
     return (
       typeof obj[name] === "function" &&
       !name.startsWith("js_") &&
+      !name.startsWith("_") &&
       name !== "constructor"
     );
   });
