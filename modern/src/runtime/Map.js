@@ -25,6 +25,21 @@ class Map extends MakiObject {
     unimplementedWarning("getheight");
     return 10;
   }
+
+  getvalue(x, y) {
+    unimplementedWarning("getvalue");
+    return;
+  }
+
+  inregion(x, y) {
+    unimplementedWarning("inregion");
+    return;
+  }
+
+  getregion() {
+    unimplementedWarning("getregion");
+    return;
+  }
 }
 
 export default Map;

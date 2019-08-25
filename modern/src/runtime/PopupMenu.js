@@ -48,6 +48,26 @@ class PopupMenu extends MakiObject {
       this.parent.js_trigger("js_update");
     });
   }
+
+  addsubmenu(submenu, submenutext) {
+    unimplementedWarning("addsubmenu");
+    return;
+  }
+
+  popatxy(x, y) {
+    unimplementedWarning("popatxy");
+    return;
+  }
+
+  getnumcommands() {
+    unimplementedWarning("getnumcommands");
+    return;
+  }
+
+  disablecommand(cmd_id, disable) {
+    unimplementedWarning("disablecommand");
+    return;
+  }
 }
 
 export default PopupMenu;

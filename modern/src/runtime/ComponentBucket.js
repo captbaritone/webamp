@@ -1,4 +1,5 @@
 import GuiObject from "./GuiObject";
+import { unimplementedWarning } from "../utils";
 
 class ComponentBucket extends GuiObject {
   /**
@@ -9,6 +10,36 @@ class ComponentBucket extends GuiObject {
    */
   getclassname() {
     return "ComponentBucket";
+  }
+
+  getmaxheight() {
+    unimplementedWarning("getmaxheight");
+    return;
+  }
+
+  getmaxwidth() {
+    unimplementedWarning("getmaxwidth");
+    return;
+  }
+
+  setscroll(x) {
+    unimplementedWarning("setscroll");
+    return;
+  }
+
+  getscroll() {
+    unimplementedWarning("getscroll");
+    return;
+  }
+
+  getnumchildren() {
+    unimplementedWarning("getnumchildren");
+    return;
+  }
+
+  enumchildren(n) {
+    unimplementedWarning("enumchildren");
+    return;
   }
 }
 

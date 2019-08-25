@@ -1,4 +1,5 @@
 import GuiObject from "./GuiObject";
+import { unimplementedWarning } from "../utils";
 
 class QueryList extends GuiObject {
   /**
@@ -9,6 +10,11 @@ class QueryList extends GuiObject {
    */
   getclassname() {
     return "QueryList";
+  }
+
+  onresetquery() {
+    unimplementedWarning("onresetquery");
+    return;
   }
 }
 

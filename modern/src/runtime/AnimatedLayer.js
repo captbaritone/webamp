@@ -36,6 +36,91 @@ class AnimatedLayer extends Layer {
     unimplementedWarning("getlength");
     return 10;
   }
+
+  onplay() {
+    unimplementedWarning("onplay");
+    return;
+  }
+
+  onpause() {
+    unimplementedWarning("onpause");
+    return;
+  }
+
+  onresume() {
+    unimplementedWarning("onresume");
+    return;
+  }
+
+  onstop() {
+    unimplementedWarning("onstop");
+    return;
+  }
+
+  onframe(framenum) {
+    unimplementedWarning("onframe");
+    return;
+  }
+
+  setstartframe(framenum) {
+    unimplementedWarning("setstartframe");
+    return;
+  }
+
+  setendframe(framenum) {
+    unimplementedWarning("setendframe");
+    return;
+  }
+
+  setautoreplay(onoff) {
+    unimplementedWarning("setautoreplay");
+    return;
+  }
+
+  isplaying() {
+    unimplementedWarning("isplaying");
+    return;
+  }
+
+  ispaused() {
+    unimplementedWarning("ispaused");
+    return;
+  }
+
+  isstopped() {
+    unimplementedWarning("isstopped");
+    return;
+  }
+
+  getstartframe() {
+    unimplementedWarning("getstartframe");
+    return;
+  }
+
+  getendframe() {
+    unimplementedWarning("getendframe");
+    return;
+  }
+
+  getdirection() {
+    unimplementedWarning("getdirection");
+    return;
+  }
+
+  getautoreplay() {
+    unimplementedWarning("getautoreplay");
+    return;
+  }
+
+  getcurframe() {
+    unimplementedWarning("getcurframe");
+    return;
+  }
+
+  setrealtime(onoff) {
+    unimplementedWarning("setrealtime");
+    return;
+  }
 }
 
 export default AnimatedLayer;

@@ -105,6 +105,348 @@ class GuiObject extends MakiObject {
   setalpha(alpha) {
     unimplementedWarning("setAlpha");
   }
+
+  isvisible() {
+    unimplementedWarning("isvisible");
+    return;
+  }
+
+  onsetvisible(onoff) {
+    unimplementedWarning("onsetvisible");
+    return;
+  }
+
+  getalpha() {
+    unimplementedWarning("getalpha");
+    return;
+  }
+
+  onleftbuttonup(x, y) {
+    unimplementedWarning("onleftbuttonup");
+    return;
+  }
+
+  onleftbuttondown(x, y) {
+    unimplementedWarning("onleftbuttondown");
+    return;
+  }
+
+  onrightbuttonup(x, y) {
+    unimplementedWarning("onrightbuttonup");
+    return;
+  }
+
+  onrightbuttondown(x, y) {
+    unimplementedWarning("onrightbuttondown");
+    return;
+  }
+
+  onrightbuttondblclk(x, y) {
+    unimplementedWarning("onrightbuttondblclk");
+    return;
+  }
+
+  onleftbuttondblclk(x, y) {
+    unimplementedWarning("onleftbuttondblclk");
+    return;
+  }
+
+  onmousemove(x, y) {
+    unimplementedWarning("onmousemove");
+    return;
+  }
+
+  onenterarea() {
+    unimplementedWarning("onenterarea");
+    return;
+  }
+
+  onleavearea() {
+    unimplementedWarning("onleavearea");
+    return;
+  }
+
+  setenabled(onoff) {
+    unimplementedWarning("setenabled");
+    return;
+  }
+
+  getenabled() {
+    unimplementedWarning("getenabled");
+    return;
+  }
+
+  onenable(onoff) {
+    unimplementedWarning("onenable");
+    return;
+  }
+
+  onresize(x, y, w, h) {
+    unimplementedWarning("onresize");
+    return;
+  }
+
+  ismouseover(x, y) {
+    unimplementedWarning("ismouseover");
+    return;
+  }
+
+  settargetx(x) {
+    unimplementedWarning("settargetx");
+    return;
+  }
+
+  settargety(y) {
+    unimplementedWarning("settargety");
+    return;
+  }
+
+  settargetw(w) {
+    unimplementedWarning("settargetw");
+    return;
+  }
+
+  settargeth(r) {
+    unimplementedWarning("settargeth");
+    return;
+  }
+
+  settargeta(alpha) {
+    unimplementedWarning("settargeta");
+    return;
+  }
+
+  settargetspeed(insecond) {
+    unimplementedWarning("settargetspeed");
+    return;
+  }
+
+  gototarget() {
+    unimplementedWarning("gototarget");
+    return;
+  }
+
+  ontargetreached() {
+    unimplementedWarning("ontargetreached");
+    return;
+  }
+
+  canceltarget() {
+    unimplementedWarning("canceltarget");
+    return;
+  }
+
+  reversetarget(reverse) {
+    unimplementedWarning("reversetarget");
+    return;
+  }
+
+  onstartup() {
+    unimplementedWarning("onstartup");
+    return;
+  }
+
+  isgoingtotarget() {
+    unimplementedWarning("isgoingtotarget");
+    return;
+  }
+
+  bringtofront() {
+    unimplementedWarning("bringtofront");
+    return;
+  }
+
+  bringtoback() {
+    unimplementedWarning("bringtoback");
+    return;
+  }
+
+  bringabove(guiobj) {
+    unimplementedWarning("bringabove");
+    return;
+  }
+
+  bringbelow(guiobj) {
+    unimplementedWarning("bringbelow");
+    return;
+  }
+
+  getguix() {
+    unimplementedWarning("getguix");
+    return;
+  }
+
+  getguiy() {
+    unimplementedWarning("getguiy");
+    return;
+  }
+
+  getguiw() {
+    unimplementedWarning("getguiw");
+    return;
+  }
+
+  getguih() {
+    unimplementedWarning("getguih");
+    return;
+  }
+
+  getguirelatx() {
+    unimplementedWarning("getguirelatx");
+    return;
+  }
+
+  getguirelaty() {
+    unimplementedWarning("getguirelaty");
+    return;
+  }
+
+  getguirelatw() {
+    unimplementedWarning("getguirelatw");
+    return;
+  }
+
+  getguirelath() {
+    unimplementedWarning("getguirelath");
+    return;
+  }
+
+  isactive() {
+    unimplementedWarning("isactive");
+    return;
+  }
+
+  gettopparent() {
+    unimplementedWarning("gettopparent");
+    return;
+  }
+
+  runmodal() {
+    unimplementedWarning("runmodal");
+    return;
+  }
+
+  endmodal(retcode) {
+    unimplementedWarning("endmodal");
+    return;
+  }
+
+  findobjectxy(x, y) {
+    unimplementedWarning("findobjectxy");
+    return;
+  }
+
+  getname() {
+    unimplementedWarning("getname");
+    return;
+  }
+
+  clienttoscreenx(x) {
+    unimplementedWarning("clienttoscreenx");
+    return;
+  }
+
+  clienttoscreeny(y) {
+    unimplementedWarning("clienttoscreeny");
+    return;
+  }
+
+  clienttoscreenw(w) {
+    unimplementedWarning("clienttoscreenw");
+    return;
+  }
+
+  clienttoscreenh(h) {
+    unimplementedWarning("clienttoscreenh");
+    return;
+  }
+
+  screentoclientx(x) {
+    unimplementedWarning("screentoclientx");
+    return;
+  }
+
+  screentoclienty(y) {
+    unimplementedWarning("screentoclienty");
+    return;
+  }
+
+  screentoclientw(w) {
+    unimplementedWarning("screentoclientw");
+    return;
+  }
+
+  screentoclienth(h) {
+    unimplementedWarning("screentoclienth");
+    return;
+  }
+
+  getautowidth() {
+    unimplementedWarning("getautowidth");
+    return;
+  }
+
+  getautoheight() {
+    unimplementedWarning("getautoheight");
+    return;
+  }
+
+  setfocus() {
+    unimplementedWarning("setfocus");
+    return;
+  }
+
+  onchar(c) {
+    unimplementedWarning("onchar");
+    return;
+  }
+
+  onaccelerator(accel) {
+    unimplementedWarning("onaccelerator");
+    return;
+  }
+
+  ismouseoverrect() {
+    unimplementedWarning("ismouseoverrect");
+    return;
+  }
+
+  getinterface(interface_guid) {
+    unimplementedWarning("getinterface");
+    return;
+  }
+
+  onkeydown(vk_code) {
+    unimplementedWarning("onkeydown");
+    return;
+  }
+
+  onkeyup(vk_code) {
+    unimplementedWarning("onkeyup");
+    return;
+  }
+
+  ongetfocus() {
+    unimplementedWarning("ongetfocus");
+    return;
+  }
+
+  onkillfocus() {
+    unimplementedWarning("onkillfocus");
+    return;
+  }
+
+  /* eslint-disable-next-line max-params */
+  sendaction(action, param, x, y, p1, p2) {
+    unimplementedWarning("sendaction");
+    return;
+  }
+
+  /* eslint-disable-next-line max-params */
+  onaction(action, param, x, y, p1, p2, source) {
+    unimplementedWarning("onaction");
+    return;
+  }
 }
 
 export default GuiObject;

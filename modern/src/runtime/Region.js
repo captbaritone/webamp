@@ -19,6 +19,51 @@ class Region extends MakiObject {
   offset(x, y) {
     unimplementedWarning("offset");
   }
+
+  add(reg) {
+    unimplementedWarning("add");
+    return;
+  }
+
+  sub(reg) {
+    unimplementedWarning("sub");
+    return;
+  }
+
+  stretch(r) {
+    unimplementedWarning("stretch");
+    return;
+  }
+
+  copy(reg) {
+    unimplementedWarning("copy");
+    return;
+  }
+
+  loadfrombitmap(bitmapid) {
+    unimplementedWarning("loadfrombitmap");
+    return;
+  }
+
+  getboundingboxx() {
+    unimplementedWarning("getboundingboxx");
+    return;
+  }
+
+  getboundingboxy() {
+    unimplementedWarning("getboundingboxy");
+    return;
+  }
+
+  getboundingboxw() {
+    unimplementedWarning("getboundingboxw");
+    return;
+  }
+
+  getboundingboxh() {
+    unimplementedWarning("getboundingboxh");
+    return;
+  }
 }
 
 export default Region;

@@ -15,6 +15,26 @@ class Text extends GuiObject {
   setalternatetext(txt) {
     unimplementedWarning("setalternatetext");
   }
+
+  settext(txt) {
+    unimplementedWarning("settext");
+    return;
+  }
+
+  gettext() {
+    unimplementedWarning("gettext");
+    return;
+  }
+
+  gettextwidth() {
+    unimplementedWarning("gettextwidth");
+    return;
+  }
+
+  ontextchanged(newtxt) {
+    unimplementedWarning("ontextchanged");
+    return;
+  }
 }
 
 export default Text;
