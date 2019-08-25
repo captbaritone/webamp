@@ -195,8 +195,8 @@ class Winamp {
 
       if (importConvertPreset != null && presetConverterEndpoint != null) {
         convertPreset = async (file: File): Promise<Object> => {
-          const { convertPreset } = await importConvertPreset();
-          return convertPreset(
+          const { convertPreset: convert } = await importConvertPreset();
+          return convert(
             await FileUtils.genStringFromFileReference(file),
             presetConverterEndpoint
           );

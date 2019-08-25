@@ -18,6 +18,17 @@ function readFileAsArrayBuffer(file) {
   });
 }
 
+function backgroundColorFromMessageTitle(messageTitle) {
+  switch (messageTitle) {
+    case "Success":
+      return "lightgreen";
+    case "Fial":
+      return "pink";
+    default:
+      return "none";
+  }
+}
+
 function Wrapper() {
   const [maki, setMaki] = React.useState(null);
   const onDrop = React.useCallback(async acceptedFiles => {
@@ -134,18 +145,17 @@ function Debugger({ maki }) {
 
   const nextValue = React.useCallback(
     value => {
-      const { i, stack, variables, commands } = value;
       dispatch({
         type: "STEPPED",
-        variables,
-        commands,
-        commandOffset: i,
-        stack,
+        variables: value.variables,
+        commands: value.commands,
+        commandOffset: value.i,
+        stack: value.stack,
       });
       if (paused) {
         return false;
       }
-      if (breakPoints.has(i)) {
+      if (breakPoints.has(value.i)) {
         dispatch({ type: "PAUSE" });
         return;
       }
@@ -208,26 +218,20 @@ function Debugger({ maki }) {
         <table>
           <tbody>
             {messages.map(
-              ({ message, messageTitle, flag, notanymoreId }, i) => (
-                <tr key={i}>
-                  <td>{i}</td>
-                  <td>{message}</td>
-                  <td
-                    style={{
-                      backgroundColor:
-                        messageTitle === "Success"
-                          ? "lightgreen"
-                          : messageTitle === "Fail"
-                          ? "pink"
-                          : "none",
-                    }}
-                  >
-                    {messageTitle}
-                  </td>
-                  <td>{flag}</td>
-                  <td>{notanymoreId}</td>
-                </tr>
-              )
+              ({ message, messageTitle, flag, notanymoreId }, i) => {
+                const backgroundColor = backgroundColorFromMessageTitle(
+                  messageTitle
+                );
+                return (
+                  <tr key={i}>
+                    <td>{i}</td>
+                    <td>{message}</td>
+                    <td style={{ backgroundColor }}>{messageTitle}</td>
+                    <td>{flag}</td>
+                    <td>{notanymoreId}</td>
+                  </tr>
+                );
+              }
             )}
           </tbody>
         </table>

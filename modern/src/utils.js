@@ -1,8 +1,8 @@
 import { xml2js } from "xml-js";
 
-let i = 0;
+let nextId = 0;
 export function getId() {
-  return i++;
+  return nextId++;
 }
 
 // Depth-first tree map

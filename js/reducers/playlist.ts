@@ -51,7 +51,7 @@ const playlist = (
         selectedTracks: new Set([state.trackOrder[action.index]]),
         lastSelectedIndex: action.index,
       };
-    case CTRL_CLICKED_TRACK:
+    case CTRL_CLICKED_TRACK: {
       const id = state.trackOrder[action.index];
       const newSelectedTracks = new Set(state.selectedTracks);
       toggleSetMembership(newSelectedTracks, id);
@@ -63,6 +63,7 @@ const playlist = (
         // Winamp 2 does, so we'll copy it.
         lastSelectedIndex: action.index,
       };
+    }
     case SHIFT_CLICKED_TRACK:
       if (state.lastSelectedIndex == null) {
         return state;

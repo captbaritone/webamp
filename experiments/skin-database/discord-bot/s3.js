@@ -4,11 +4,11 @@ AWS.config.update({ region: "us-west-2" });
 const s3 = new AWS.S3();
 
 function getFile(key) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, rejectPromise) => {
     const bucketName = "winamp2-js-skins";
     s3.getObject({ Bucket: bucketName, Key: key }, (err, data) => {
       if (err) {
-        reject(err);
+        rejectPromise(err);
         return;
       }
       const body = Buffer.from(data.Body).toString("utf8");
@@ -18,11 +18,11 @@ function getFile(key) {
 }
 
 function putFile(key, body) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, rejectPromise) => {
     const bucketName = "winamp2-js-skins";
     s3.putObject({ Bucket: bucketName, Key: key, Body: body }, err => {
       if (err) {
-        reject(err);
+        rejectPromise(err);
         return;
       }
       resolve();
