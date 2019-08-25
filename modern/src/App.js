@@ -116,6 +116,8 @@ function handleMouseButtonEventDispatch(
 }
 
 function GuiObjectEvents({ Component, node, children }) {
+  const { alpha, ghost } = node.attributes;
+
   return (
     <div
       onMouseDown={e =>
@@ -145,6 +147,10 @@ function GuiObjectEvents({ Component, node, children }) {
       onContextMenu={e => {
         e.preventDefault();
         return false;
+      }}
+      style={{
+        opacity: alpha == null ? 1 : Number(alpha),
+        pointerEvents: ghost === 1 ? "none" : null,
       }}
     >
       <Component node={node} {...node.attributes}>
