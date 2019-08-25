@@ -428,11 +428,13 @@ class GuiObject extends MakiObject {
     return;
   }
 
+  /* eslint-disable-next-line max-params */
   sendaction(action, param, x, y, p1, p2) {
     unimplementedWarning("sendaction");
     return;
   }
 
+  /* eslint-disable-next-line max-params */
   onaction(action, param, x, y, p1, p2, source) {
     unimplementedWarning("onaction");
     return;
