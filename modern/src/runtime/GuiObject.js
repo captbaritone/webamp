@@ -122,11 +122,6 @@ class GuiObject extends MakiObject {
     this.js_trigger("js_update");
   }
 
-  settargeta(alpha) {
-    this.attributes.alpha = parseInt(alpha, 10) / 255;
-    this.js_trigger("js_update");
-  }
-
   isvisible() {
     unimplementedWarning("isvisible");
     return;
@@ -233,8 +228,8 @@ class GuiObject extends MakiObject {
   }
 
   settargeta(alpha) {
-    unimplementedWarning("settargeta");
-    return;
+    this.attributes.alpha = parseInt(alpha, 10) / 255;
+    this.js_trigger("js_update");
   }
 
   settargetspeed(insecond) {
