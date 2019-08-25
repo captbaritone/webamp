@@ -11,6 +11,25 @@ class GuiObject extends MakiObject {
     super(node, parent, annotations, store);
 
     this.visible = true;
+    this._selectorCache = new Map();
+  }
+
+  _useUidSelector(selector) {
+    // TODO: use memoize for this
+    if (!this._selectorCache.has(selector)) {
+      this._selectorCache.set(selector, selector(this._uid));
+    }
+    return this._selectorCache.get(selector)(this._store.getState());
+  }
+
+  _compareToUidSelector(value, selector) {
+    const selectorValue = this._useUidSelector(selector);
+    if (selectorValue !== value) {
+      console.error(
+        `Maki state ${value} is out of sync with tree state ${selectorValue}`
+      );
+    }
+    return value;
   }
 
   /**
@@ -62,14 +81,10 @@ class GuiObject extends MakiObject {
   }
 
   gettop() {
-    const stateTop = MakiSelectors.getTop(this._uid)(this._store.getState());
-    const makiTop = Number(this.attributes.y) || 0;
-    if (stateTop !== makiTop) {
-      console.error(
-        `Maki state ${makiTop} is out of sync with tree state ${stateTop}`
-      );
-    }
-    return makiTop;
+    return this._compareToUidSelector(
+      Number(this.attributes.y) || 0,
+      MakiSelectors.getTop
+    );
   }
 
   getleft() {
