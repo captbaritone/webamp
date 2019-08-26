@@ -158,13 +158,13 @@ export function findDescendantByTypeAndId(node, type, id) {
     return null;
   }
 
-  const idLC = id.toLowerCase();
+  const lowerCaseId = id.toLowerCase();
   for (let i = 0; i < node.children.length; i++) {
     const child = node.children[i];
     if (
       (!type || child.name === type) &&
       (child.attributes.id !== undefined &&
-        child.attributes.id.toLowerCase() === idLC)
+        child.attributes.id.toLowerCase() === lowerCaseId)
     ) {
       return child;
     }
