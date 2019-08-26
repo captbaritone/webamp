@@ -57,7 +57,7 @@ export function gotSkinZip(zip: JSZip, store: ModernStore) {
 
     const makiTree = await initialize(zip, xmlTree, store);
     // Execute scripts
-    await Utils.asyncTreeFlatMap(makiTree, node => {
+    await Utils.asyncTreeFlatMap(makiTree, async node => {
       switch (node.name) {
         case "groupdef": {
           // removes groupdefs from consideration (only run scripts when actually referenced by group)
@@ -73,9 +73,10 @@ export function gotSkinZip(zip: JSZip, store: ModernStore) {
             new Set(["group", "WinampAbstractionLayer", "WasabiXML"])
           );
           const system = new System(scriptGroup, store);
+          const script = await Utils.readUint8array(zip, node.attributes.file);
           run({
             runtime,
-            data: node.js_annotations.script,
+            data: script,
             system,
             log: false,
           });
