@@ -121,10 +121,7 @@ const parsers = {
   menu: noop,
   albumart: noop,
   playlistplus: noop,
-  async script(node, parent, zip, store) {
-    const script = await Utils.readUint8array(zip, node.attributes.file);
-    return new MakiObject(node, parent, { script }, store);
-  },
+  script: noop,
 };
 
 async function parseChildren(node, children, zip, store) {
