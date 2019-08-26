@@ -303,6 +303,8 @@ export function findXmlElementById(node, id, root) {
   if (root.uid === node.uid) {
     // Search ends if we find the node that initiated the search, since it means we weren't able to
     // find the match in its scope
+    // Return the node itself as a kind of sentinel value to look for, since finding the node is an
+    // ending condition for the search
     return node;
   } else if (root.name === "elements") {
     const element = findDirectDescendantById(root, id);
