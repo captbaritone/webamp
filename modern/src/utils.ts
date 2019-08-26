@@ -237,9 +237,9 @@ export function findDescendantByTypeAndId(node, type, id) {
 }
 
 function findDirectDescendantById(node, id) {
-  const idLC = id.toLowerCase();
+  const lowerCaseId = id.toLowerCase();
   return node.children.find(
-    item => item.attributes && item.attributes.id.toLowerCase() === idLC
+    item => item.attributes && item.attributes.id.toLowerCase() === lowerCaseId
   );
 }
 
