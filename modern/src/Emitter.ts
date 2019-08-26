@@ -1,5 +1,5 @@
 // TODO: Merge with the Webamp emitter
-class Emitter {
+export default class Emitter {
   _hooks: { [eventName: string]: Array<(...args: any[]) => void> };
   _globalHooks: Array<(eventName: string, ...args: any[]) => void>;
   constructor() {

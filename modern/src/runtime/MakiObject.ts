@@ -1,8 +1,23 @@
 import Emitter from "../Emitter";
 import * as Utils from "../utils";
+import { ModernStore, ResolvedXmlNode } from "../types";
 
 class MakiObject {
-  constructor(node, parent, annotations = {}, store) {
+  name: string;
+  _uid: number;
+  _store: ModernStore;
+  attributes: Object;
+  parent: MakiObject;
+  _emitter: Emitter;
+  children: MakiObject[];
+  js_annotations: Object;
+
+  constructor(
+    node: ResolvedXmlNode,
+    parent: MakiObject,
+    annotations: Object = {},
+    store: ModernStore
+  ) {
     this._store = store;
     if (node) {
       this._uid = node.uid;
@@ -20,15 +35,15 @@ class MakiObject {
     this._emitter = new Emitter();
   }
 
-  js_addChild(child) {
+  js_addChild(child: MakiObject) {
     this.children.push(child);
   }
 
-  js_addChildren(children) {
+  js_addChildren(children: MakiObject[]) {
     this.children = this.children.concat(children);
   }
 
-  js_removeChild(child) {
+  js_removeChild(child: MakiObject) {
     this.children = this.children.filter(item => item !== child);
   }
 
@@ -53,7 +68,7 @@ class MakiObject {
     this._emitter.dispose();
   }
 
-  js_imageLookup(id) {
+  js_imageLookup(id: string) {
     const element = Utils.findElementById(this, id);
     if (element) {
       return element.js_annotations;
@@ -62,7 +77,7 @@ class MakiObject {
     return null;
   }
 
-  js_groupdefLookup(id) {
+  js_groupdefLookup(id: string) {
     const groupdef = Utils.findGroupDefById(this, id);
     if (groupdef) {
       return groupdef;

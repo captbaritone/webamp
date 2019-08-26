@@ -1,4 +1,11 @@
-import { MakiTree, ModernAction, ModernStore, XmlTree } from "./types";
+import {
+  MakiTree,
+  ModernAction,
+  ModernStore,
+  XmlTree,
+  ResolvedXmlNode,
+  XmlNode,
+} from "./types";
 import JSZip from "jszip";
 import * as Utils from "./utils";
 import initialize from "./initialize";
@@ -39,9 +46,12 @@ export function gotSkinZip(zip: JSZip, store: ModernStore) {
       await Utils.readXml(zip, "skin.xml"),
       zip
     );
-    const xmlTree = Utils.mapTree(rawXmlTree, node => {
-      return { ...node, uid: Utils.getId() };
-    });
+    const xmlTree: ResolvedXmlNode = Utils.mapTree(
+      rawXmlTree,
+      (node: XmlNode): ResolvedXmlNode => {
+        return { ...node, uid: Utils.getId() };
+      }
+    );
 
     dispatch(setXmlTree(xmlTree));
 

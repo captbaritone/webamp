@@ -2,9 +2,17 @@
 export type MakiTree = any;
 
 export type XmlNode = {
+  parent: XmlNode;
   children: XmlNode[];
+  attributes: Object;
+  name: string;
 };
 
+export interface ResolvedXmlNode extends XmlNode {
+  uid: number;
+}
+
+// What is a tree, but a single root node?
 export type XmlTree = XmlNode;
 
 export type ModernAppState = {
