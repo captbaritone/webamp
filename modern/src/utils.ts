@@ -294,8 +294,11 @@ export function findGroupDefById(node, id) {
   });
 }
 
-// Search up the tree for <Elements> nodes that are in node's lexical scope.
-// return the first child of an <Elements> that matches id
+// Search down the tree for <Elements> nodes that are in node's lexical scope.
+// return the first child of an <Elements> that matches id unless we find
+// node first, in that case we didn't find the element
+// TODO: this might be overly generous, including some definitions that
+// shouldn't be accessible. But it's working for now :-X
 export function findXmlElementById(node, id, root) {
   if (root.uid === node.uid) {
     // Search ends if we find the node that initiated the search, since it means we weren't able to
