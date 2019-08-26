@@ -41,5 +41,3 @@ export default class Emitter {
     this._globalHooks = null;
   }
 }
-
-module.exports = Emitter;
