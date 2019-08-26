@@ -1,4 +1,6 @@
+import JSZip from "jszip";
 import { xml2js } from "xml-js";
+import { XmlNode } from "./types";
 
 let nextId = 0;
 export function getId() {
@@ -20,22 +22,32 @@ function fixFilenameSlashes(filename) {
   return filename.replace(/\\/g, "/");
 }
 
-export function getCaseInsensitveFile(zip, filename) {
+export function getCaseInsensitveFile(
+  zip: JSZip,
+  filename: string
+): JSZip.JSZipObject {
   // TODO: Escape `file` for rejex characters
   return zip.file(new RegExp(fixFilenameSlashes(filename), "i"))[0];
 }
 
 // Read a
-export async function readXml(zip, filepath) {
+export async function readXml(zip: JSZip, filepath: string): Promise<XmlNode> {
   const file = await getCaseInsensitveFile(zip, filepath);
   if (file == null) {
     return null;
   }
   const text = await file.async("text");
+  // @ts-ignore Due to the way it's config object interface works, xml2js is
+  // bascially impossible to type. For example, you can specify what key to use
+  // for `elements`. We choose `children` but the types assume the default
+  // `elements`.
   return xml2js(text, { compact: false, elementsKey: "children" });
 }
 
-export async function readUint8array(zip, filepath) {
+export async function readUint8array(
+  zip: JSZip,
+  filepath: string
+): Promise<Uint8Array> {
   const file = await getCaseInsensitveFile(zip, filepath);
   if (file == null) {
     return null;
@@ -45,7 +57,7 @@ export async function readUint8array(zip, filepath) {
 
 // I any of the values in `arr` are themselves arrays, interpolate the nested
 // array into the top level array.
-function flatten(arr) {
+function flatten<T>(arr: Array<T | Array<T>>): Array<T> {
   const newArr = [];
   arr.forEach(item => {
     if (Array.isArray(item)) {
@@ -60,7 +72,10 @@ function flatten(arr) {
 // Map an async function over an array. If the value returned from the mapper is
 // an array, it recursively maps the function over that array's values, and then
 // interpoates the resulting flat array into the top level array of results.
-export async function asyncFlatMap(arr, mapper) {
+export async function asyncFlatMap<T, R>(
+  arr: Array<T>,
+  mapper: (value: T) => R | Array<T>
+): Promise<Array<R>> {
   const mapped = await Promise.all(arr.map(mapper));
   const childPromises = mapped.map(async item => {
     if (Array.isArray(item)) {
@@ -97,7 +112,10 @@ export async function asyncTreeFlatMap(node, mapper) {
 
 // Given an XML file and a zip which it came from, replace all `<inline />` elements
 // with the contents of the file to be included.
-export async function inlineIncludes(xml, zip) {
+export async function inlineIncludes(
+  xml: XmlNode,
+  zip: JSZip
+): Promise<XmlNode> {
   return asyncTreeFlatMap(xml, async node => {
     if (node.name !== "include") {
       return node;
@@ -116,7 +134,7 @@ export async function inlineIncludes(xml, zip) {
   });
 }
 
-export function unimplementedWarning(name) {
+export function unimplementedWarning(name: string): void {
   console.warn(`Executing unimplemented MAKI function: ${name}`);
 }
 
@@ -135,7 +153,10 @@ export function findInTree(node, predicate) {
   return null;
 }
 
-export function findParent(node, predicate) {
+export function findParent<T extends { parent: T | null }>(
+  node: T,
+  predicate: (node: T) => boolean
+): T | null {
   let n = node;
   while (n.parent) {
     n = n.parent;
@@ -148,8 +169,8 @@ export function findParent(node, predicate) {
 }
 
 // Operations on trees
-export function findParentNodeOfType(node, type) {
-  return findParent(node, node => type.has(node.name));
+export function findParentNodeOfType(node, type: Set<string>) {
+  return findParent(node, n => type.has(n.name));
 }
 
 export function findParentOrCurrentNodeOfType(node, type) {
@@ -244,11 +265,13 @@ export function findGroupDefById(node, id) {
 
 // This is intentionally async since we may want to sub it out for an async
 // function in a node environment
-export async function getUrlFromBlob(blob) {
+export async function getUrlFromBlob(blob: Blob): Promise<string> {
   return URL.createObjectURL(blob);
 }
 
-async function loadImage(imgUrl) {
+async function loadImage(
+  imgUrl: string
+): Promise<{ width: number; height: number }> {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.addEventListener("load", () => {
@@ -261,7 +284,9 @@ async function loadImage(imgUrl) {
   });
 }
 
-export async function getSizeFromUrl(imgUrl) {
+export async function getSizeFromUrl(
+  imgUrl: string
+): Promise<{ width: number; height: number }> {
   const { width, height } = await loadImage(imgUrl);
   return { width, height };
 }
