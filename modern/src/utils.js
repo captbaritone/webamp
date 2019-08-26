@@ -135,15 +135,21 @@ export function findInTree(node, predicate) {
   return null;
 }
 
-// Operations on trees
-export function findParentNodeOfType(node, type) {
+export function findParent(node, predicate) {
   let n = node;
   while (n.parent) {
     n = n.parent;
-    if (type.has(n.name)) {
+    if (predicate(n)) {
       return n;
     }
   }
+
+  return null;
+}
+
+// Operations on trees
+export function findParentNodeOfType(node, type) {
+  return findParent(node, node => type.has(node.name));
 }
 
 export function findParentOrCurrentNodeOfType(node, type) {
