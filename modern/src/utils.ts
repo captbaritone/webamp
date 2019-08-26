@@ -237,7 +237,10 @@ export function findDescendantByTypeAndId(node, type, id) {
 }
 
 function findDirectDescendantById(node, id) {
-  return node.children.find(item => item.attributes.id === id);
+  const idLC = id.toLowerCase();
+  return node.children.find(
+    item => item.attributes && item.attributes.id.toLowerCase() === idLC
+  );
 }
 
 function* iterateLexicalScope(node) {
@@ -289,6 +292,34 @@ export function findGroupDefById(node, id) {
       child.attributes.id === id
     );
   });
+}
+
+// Search up the tree for <Elements> nodes that are in node's lexical scope.
+// return the first child of an <Elements> that matches id
+export function findXmlElementById(node, id, root) {
+  if (root.uid === node.uid) {
+    // Search ends if we find the node that initiated the search, since it means we weren't able to
+    // find the match in its scope
+    return node;
+  } else if (root.name === "elements") {
+    const element = findDirectDescendantById(root, id);
+    if (element) {
+      return element;
+    }
+  } else {
+    const children = root.children || [];
+    for (const child of children) {
+      const element = findXmlElementById(node, id, child);
+      if (element) {
+        if (element.uid === node.uid) {
+          // This happens when we find the node before we find the declaration, which means it
+          // either doesn't exist or it wouldn't be in scope
+          return null;
+        }
+        return element;
+      }
+    }
+  }
 }
 
 // This is intentionally async since we may want to sub it out for an async

@@ -60,19 +60,6 @@ function imagePathsFromNode(node) {
   }
 }
 
-async function createWithImageLookups(Klass, node, parent, zip, store) {
-  const imagePaths = imagePathsFromNode(node);
-  imagePaths.forEach(async path => {
-    const image = node.attributes[path];
-    if (image && Utils.isString(image) && image.endsWith(".png")) {
-      const imageAnnotations = await prepareMakiImage(node, zip, image);
-      node.attributes[path] = imageAnnotations;
-    }
-  });
-
-  return new Klass(node, parent, undefined, store);
-}
-
 const noop = (node, parent, zip, store) =>
   new GuiObject(node, parent, undefined, store);
 
@@ -95,32 +82,20 @@ const parsers = {
   gammaset: (node, parent, zip, store) =>
     new JsGammaSet(node, parent, undefined, store),
   color: noop,
-  layer: async (node, parent, zip, store) =>
-    createWithImageLookups(Layer, node, parent, zip, store),
+  layer: (node, parent, zip, store) =>
+    new Layer(node, parent, undefined, store),
   layoutstatus: noop,
   hideobject: noop,
-  button: async (node, parent, zip, store) =>
-    createWithImageLookups(Button, node, parent, zip, store),
+  button: (node, parent, zip, store) =>
+    new Button(node, parent, undefined, store),
   group: (node, parent, zip, store) =>
     new Group(node, parent, undefined, store),
-  layout: async (node, parent, zip, store) =>
-    createWithImageLookups(Layout, node, parent, zip, store),
+  layout: (node, parent, zip, store) =>
+    new Layout(node, parent, undefined, store),
   sendparams: noop,
   elements: (node, parent, zip, store) =>
     new JsElements(node, parent, undefined, store),
-  bitmap: async (node, parent, zip, store) => {
-    const imgAnnotations = await prepareMakiImage(
-      node,
-      zip,
-      node.attributes.file
-    );
-
-    const { x, y } = node.attributes;
-    imgAnnotations.x = x !== undefined ? x : 0;
-    imgAnnotations.y = y !== undefined ? y : 0;
-
-    return new MakiObject(node, parent, imgAnnotations, store);
-  },
+  bitmap: noop,
   eqvis: (node, parent, zip, store) =>
     new EqVis(node, parent, undefined, store),
   slider: (node, parent, zip, store) =>
@@ -130,8 +105,8 @@ const parsers = {
   component: (node, parent, zip, store) =>
     new Component(node, parent, undefined, store),
   text: (node, parent, zip, store) => new Text(node, parent, undefined, store),
-  togglebutton: async (node, parent, zip, store) =>
-    createWithImageLookups(ToggleButton, node, parent, zip, store),
+  togglebutton: (node, parent, zip, store) =>
+    new ToggleButton(node, parent, undefined, store),
   status: (node, parent, zip, store) =>
     new Status(node, parent, undefined, store),
   bitmapfont: noop,
@@ -203,23 +178,42 @@ async function parseChildren(node, children, zip, store) {
   node.js_addChildren(filteredChildren);
 }
 
-function nodeImageLookup(node) {
+async function nodeImageLookup(node, root, zip) {
   const imagePaths = imagePathsFromNode(node);
-  imagePaths.forEach(path => {
-    const image = node.attributes[path];
-    let img;
-    if (image && Utils.isString(image)) {
-      img = node.js_imageLookup(image.toLowerCase());
-    } else {
-      img = image;
-    }
-    node.attributes[path] = img;
-  });
+  if (imagePaths) {
+    await Promise.all(
+      imagePaths.map(async path => {
+        const image = node.attributes[path];
+        if (image && Utils.isString(image)) {
+          let img;
+          if (image.endsWith(".png")) {
+            img = await prepareMakiImage(node, zip, image);
+          } else {
+            const elementNode = Utils.findXmlElementById(node, image, root);
+            if (elementNode) {
+              img = await prepareMakiImage(
+                elementNode,
+                zip,
+                elementNode.attributes.file
+              );
+
+              const { x, y } = elementNode.attributes;
+              img.x = x !== undefined ? x : 0;
+              img.y = y !== undefined ? y : 0;
+            } else {
+              console.warn("Unable to find image:", image);
+            }
+          }
+          node.attributes[path] = img;
+        }
+      })
+    );
+  }
 }
 
-function applyImageLookups(root) {
-  Utils.asyncTreeFlatMap(root, node => {
-    nodeImageLookup(node);
+async function applyImageLookups(root, zip) {
+  await Utils.asyncTreeFlatMap(root, async node => {
+    await nodeImageLookup(node, root, zip);
     return node;
   });
 }
@@ -258,14 +252,9 @@ async function applyGroupDefs(root) {
 
 async function initialize(zip, skinXml, store) {
   const xmlRoot = skinXml.children[0];
-  const root = new JsWinampAbstractionLayer(
-    skinXml.children[0],
-    null,
-    undefined,
-    store
-  );
+  await applyImageLookups(xmlRoot, zip);
+  const root = new JsWinampAbstractionLayer(xmlRoot, null, undefined, store);
   await parseChildren(root, xmlRoot.children, zip, store);
-  applyImageLookups(root);
   await applyGroupDefs(root);
   return root;
 }
