@@ -41,7 +41,7 @@ async function prepareMakiImage(node, zip, file) {
   };
 }
 
-function imagePathsFromNode(node) {
+function imageAttributesFromNode(node) {
   if (!node.name) return [];
   switch (node.name.toLowerCase()) {
     case "layer": {
@@ -179,10 +179,10 @@ async function parseChildren(node, children, zip, store) {
 }
 
 async function nodeImageLookup(node, root, zip) {
-  const imagePaths = imagePathsFromNode(node);
-  if (imagePaths) {
+  const imageAttributes = imageAttributesFromNode(node);
+  if (imageAttributes) {
     await Promise.all(
-      imagePaths.map(async path => {
+      imageAttributes.map(async path => {
         const image = node.attributes[path];
         if (image && Utils.isString(image)) {
           let img;
