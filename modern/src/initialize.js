@@ -180,35 +180,37 @@ async function parseChildren(node, children, zip, store) {
 
 async function nodeImageLookup(node, root, zip) {
   const imageAttributes = imageAttributesFromNode(node);
-  if (imageAttributes) {
-    await Promise.all(
-      imageAttributes.map(async path => {
-        const image = node.attributes[path];
-        if (image && Utils.isString(image)) {
-          let img;
-          if (image.endsWith(".png")) {
-            img = await prepareMakiImage(node, zip, image);
-          } else {
-            const elementNode = Utils.findXmlElementById(node, image, root);
-            if (elementNode) {
-              img = await prepareMakiImage(
-                elementNode,
-                zip,
-                elementNode.attributes.file
-              );
-
-              const { x, y } = elementNode.attributes;
-              img.x = x !== undefined ? x : 0;
-              img.y = y !== undefined ? y : 0;
-            } else {
-              console.warn("Unable to find image:", image);
-            }
-          }
-          node.attributes[path] = img;
-        }
-      })
-    );
+  if (!imageAttributes || imageAttributes.length === 0) {
+    return;
   }
+  await Promise.all(
+    imageAttributes.map(async path => {
+      const image = node.attributes[path];
+      if (!image || !Utils.isString(image)) {
+        return;
+      }
+      let img;
+      if (image.endsWith(".png")) {
+        img = await prepareMakiImage(node, zip, image);
+      } else {
+        const elementNode = Utils.findXmlElementById(node, image, root);
+        if (elementNode) {
+          img = await prepareMakiImage(
+            elementNode,
+            zip,
+            elementNode.attributes.file
+          );
+
+          const { x, y } = elementNode.attributes;
+          img.x = x !== undefined ? x : 0;
+          img.y = y !== undefined ? y : 0;
+        } else {
+          console.warn("Unable to find image:", image);
+        }
+      }
+      node.attributes[path] = img;
+    })
+  );
 }
 
 async function applyImageLookups(root, zip) {
