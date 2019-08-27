@@ -279,8 +279,7 @@ function Layer({ id, image, children, x, y }) {
     console.warn("Got an Layer without an image. Rendering null", id);
     return null;
   }
-  const img = image;
-  if (img == null) {
+  if (image == null) {
     console.warn("Unable to find image to render. Rendering null", image);
     return null;
   }
@@ -291,20 +290,20 @@ function Layer({ id, image, children, x, y }) {
   if (y !== undefined) {
     params.top = Number(y);
   }
-  if (img.x !== undefined) {
-    params.backgroundPositionX = -Number(img.x);
+  if (image.x !== undefined) {
+    params.backgroundPositionX = -Number(image.x);
   }
-  if (img.y !== undefined) {
-    params.backgroundPositionY = -Number(img.y);
+  if (image.y !== undefined) {
+    params.backgroundPositionY = -Number(image.y);
   }
-  if (img.w !== undefined) {
-    params.width = Number(img.w);
+  if (image.w !== undefined) {
+    params.width = Number(image.w);
   }
-  if (img.h !== undefined) {
-    params.height = Number(img.h);
+  if (image.h !== undefined) {
+    params.height = Number(image.h);
   }
-  if (img.imgUrl !== undefined) {
-    params.backgroundImage = `url(${img.imgUrl}`;
+  if (image.imgUrl !== undefined) {
+    params.backgroundImage = `url(${image.imgUrl}`;
   }
   return (
     <GuiObjectEvents node={node}>
