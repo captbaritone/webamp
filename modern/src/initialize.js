@@ -183,6 +183,9 @@ async function nodeImageLookup(node, root, zip) {
   if (!imageAttributes || imageAttributes.length === 0) {
     return;
   }
+  if (!node.attributes.js_assets) {
+    node.attributes.js_assets = {};
+  }
   await Promise.all(
     imageAttributes.map(async path => {
       const image = node.attributes[path];
@@ -208,7 +211,7 @@ async function nodeImageLookup(node, root, zip) {
           console.warn("Unable to find image:", image);
         }
       }
-      node.attributes[path] = img;
+      node.attributes.js_assets[path.toLowerCase()] = img;
     })
   );
 }
