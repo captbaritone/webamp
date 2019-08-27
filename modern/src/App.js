@@ -210,7 +210,7 @@ function Layout({
   }
 
   if (drawBackground) {
-    const image = js_assets["background"];
+    const image = js_assets.background;
     if (image == null) {
       console.warn(
         "Unable to find image to render. Rendering null",
@@ -280,7 +280,7 @@ function Layer({ id, js_assets, image, children, x, y }) {
     console.warn("Got an Layer without an image. Rendering null", id);
     return null;
   }
-  const img = js_assets["image"];
+  const img = js_assets.image;
   if (img == null) {
     console.warn("Unable to find image to render. Rendering null", image);
     return null;
@@ -324,7 +324,7 @@ function Layer({ id, js_assets, image, children, x, y }) {
 function Button({
   id,
   js_assets,
-  image,
+  // image,
   // action,
   x,
   y,
@@ -334,7 +334,7 @@ function Button({
 }) {
   const [down, setDown] = React.useState(false);
   // TODO: These seem to be switching too fast
-  const img = down && downImage ? js_assets["downimage"] : js_assets["image"];
+  const img = down && downImage ? js_assets.downimage : js_assets.image;
   if (img == null) {
     console.warn("Got a Button without a img. Rendering null", id);
     return null;
