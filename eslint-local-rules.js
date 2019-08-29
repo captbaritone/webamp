@@ -179,7 +179,7 @@ module.exports = {
             }
             const expectedTypeData = TYPE_MAP[type.toLowerCase()];
             if (expectedTypeData == null) {
-              // console.warn(`Missing type data for ${type}.`);
+              console.warn(`Missing type data for ${type}.`);
               return;
             }
             const fix = fixer => {
@@ -189,7 +189,6 @@ module.exports = {
               );
             };
             if (actual.typeAnnotation == null) {
-              // TODO: Report missing types
               context.report({
                 node: actual,
                 message: `Missing type for Maki argument. Expected \`${
