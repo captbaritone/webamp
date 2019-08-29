@@ -16,3 +16,22 @@ export function getTop(uid) {
     return Number(node.attributes.y) || 0;
   };
 }
+
+export function getPathToUid(uid: number) {
+  return state => {
+    return Utils.findPathToNode(state.xmlTree, node => node.uid === uid);
+  };
+}
+
+export function getNodeAtPath(path: number[]) {
+  return state => {
+    let node = state.xmlTree;
+    path.forEach(offset => {
+      if (node == null) {
+        return null;
+      }
+      node = node.children[offset];
+    });
+    return node;
+  };
+}
