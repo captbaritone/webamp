@@ -22,7 +22,7 @@ class MenuButton extends GuiObject {
     return;
   }
 
-  onselectitem(item) {
+  onselectitem(item: string) {
     unimplementedWarning("onselectitem");
     return;
   }

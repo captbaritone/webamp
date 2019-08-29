@@ -26,7 +26,7 @@ class Layout extends Group {
     return;
   }
 
-  onscale(newscalevalue) {
+  onscale(newscalevalue: number) {
     unimplementedWarning("onscale");
     return;
   }
@@ -36,12 +36,12 @@ class Layout extends Group {
     return;
   }
 
-  setscale(scalevalue) {
+  setscale(scalevalue: number) {
     unimplementedWarning("setscale");
     return;
   }
 
-  setdesktopalpha(onoff) {
+  setdesktopalpha(onoff: boolean) {
     unimplementedWarning("setdesktopalpha");
     return;
   }
@@ -66,12 +66,12 @@ class Layout extends Group {
     return;
   }
 
-  onuserresize(x, y, w, h) {
+  onuserresize(x: number, y: number, w: number, h: number) {
     unimplementedWarning("onuserresize");
     return;
   }
 
-  snapadjust(left, top, right, bottom) {
+  snapadjust(left: number, top: number, right: number, bottom: number) {
     unimplementedWarning("snapadjust");
     return;
   }
@@ -96,7 +96,7 @@ class Layout extends Group {
     return;
   }
 
-  setredrawonresize(wantredrawonresize) {
+  setredrawonresize(wantredrawonresize: number) {
     unimplementedWarning("setredrawonresize");
     return;
   }

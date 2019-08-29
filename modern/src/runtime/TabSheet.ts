@@ -17,7 +17,7 @@ class TabSheet extends GuiObject {
     return;
   }
 
-  setcurpage(a) {
+  setcurpage(a: number) {
     unimplementedWarning("setcurpage");
     return;
   }

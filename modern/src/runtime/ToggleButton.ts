@@ -12,7 +12,7 @@ class ToggleButton extends Button {
     return "ToggleButton";
   }
 
-  ontoggle(onnoff) {
+  ontoggle(onnoff: boolean) {
     unimplementedWarning("ontoggle");
   }
 

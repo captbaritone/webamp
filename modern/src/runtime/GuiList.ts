@@ -22,17 +22,17 @@ class GuiList extends GuiObject {
     return;
   }
 
-  setwantautodeselect(want) {
+  setwantautodeselect(want: number) {
     unimplementedWarning("setwantautodeselect");
     return;
   }
 
-  onsetvisible(show) {
+  onsetvisible(show: number) {
     unimplementedWarning("onsetvisible");
     return;
   }
 
-  setautosort(dosort) {
+  setautosort(dosort: number) {
     unimplementedWarning("setautosort");
     return;
   }
@@ -82,7 +82,7 @@ class GuiList extends GuiObject {
     return;
   }
 
-  addcolumn(name, width, numeric) {
+  addcolumn(name: string, width: number, numeric: number) {
     unimplementedWarning("addcolumn");
     return;
   }
@@ -92,52 +92,52 @@ class GuiList extends GuiObject {
     return;
   }
 
-  getcolumnwidth(column) {
+  getcolumnwidth(column: number) {
     unimplementedWarning("getcolumnwidth");
     return;
   }
 
-  setcolumnwidth(column, newwidth) {
+  setcolumnwidth(column: number, newwidth: number) {
     unimplementedWarning("setcolumnwidth");
     return;
   }
 
-  getcolumnlabel(column) {
+  getcolumnlabel(column: number) {
     unimplementedWarning("getcolumnlabel");
     return;
   }
 
-  setcolumnlabel(column, newlabel) {
+  setcolumnlabel(column: number, newlabel: string) {
     unimplementedWarning("setcolumnlabel");
     return;
   }
 
-  getcolumnnumeric(column) {
+  getcolumnnumeric(column: number) {
     unimplementedWarning("getcolumnnumeric");
     return;
   }
 
-  setcolumndynamic(column, isdynamic) {
+  setcolumndynamic(column: number, isdynamic: number) {
     unimplementedWarning("setcolumndynamic");
     return;
   }
 
-  iscolumndynamic(column) {
+  iscolumndynamic(column: number) {
     unimplementedWarning("iscolumndynamic");
     return;
   }
 
-  setminimumsize(size) {
+  setminimumsize(size: number) {
     unimplementedWarning("setminimumsize");
     return;
   }
 
-  additem(label) {
+  additem(label: string) {
     unimplementedWarning("additem");
     return;
   }
 
-  insertitem(pos, label) {
+  insertitem(pos: number, label: string) {
     unimplementedWarning("insertitem");
     return;
   }
@@ -147,7 +147,7 @@ class GuiList extends GuiObject {
     return;
   }
 
-  setsubitem(pos, subpos, txt) {
+  setsubitem(pos: number, subpos: number, txt: string) {
     unimplementedWarning("setsubitem");
     return;
   }
@@ -157,27 +157,27 @@ class GuiList extends GuiObject {
     return;
   }
 
-  deletebypos(pos) {
+  deletebypos(pos: number) {
     unimplementedWarning("deletebypos");
     return;
   }
 
-  getitemlabel(pos, subpos) {
+  getitemlabel(pos: number, subpos: number) {
     unimplementedWarning("getitemlabel");
     return;
   }
 
-  setitemlabel(pos, _text) {
+  setitemlabel(pos: number, _text: string) {
     unimplementedWarning("setitemlabel");
     return;
   }
 
-  getitemselected(pos) {
+  getitemselected(pos: number) {
     unimplementedWarning("getitemselected");
     return;
   }
 
-  isitemfocused(pos) {
+  isitemfocused(pos: number) {
     unimplementedWarning("isitemfocused");
     return;
   }
@@ -187,12 +187,12 @@ class GuiList extends GuiObject {
     return;
   }
 
-  setitemfocused(pos) {
+  setitemfocused(pos: number) {
     unimplementedWarning("setitemfocused");
     return;
   }
 
-  ensureitemvisible(pos) {
+  ensureitemvisible(pos: number) {
     unimplementedWarning("ensureitemvisible");
     return;
   }
@@ -202,37 +202,37 @@ class GuiList extends GuiObject {
     return;
   }
 
-  scrollabsolute(x) {
+  scrollabsolute(x: number) {
     unimplementedWarning("scrollabsolute");
     return;
   }
 
-  scrollrelative(x) {
+  scrollrelative(x: number) {
     unimplementedWarning("scrollrelative");
     return;
   }
 
-  scrollleft(lines) {
+  scrollleft(lines: number) {
     unimplementedWarning("scrollleft");
     return;
   }
 
-  scrollright(lines) {
+  scrollright(lines: number) {
     unimplementedWarning("scrollright");
     return;
   }
 
-  scrollup(lines) {
+  scrollup(lines: number) {
     unimplementedWarning("scrollup");
     return;
   }
 
-  scrolldown(lines) {
+  scrolldown(lines: number) {
     unimplementedWarning("scrolldown");
     return;
   }
 
-  getsubitemtext(pos, subpos) {
+  getsubitemtext(pos: number, subpos: number) {
     unimplementedWarning("getsubitemtext");
     return;
   }
@@ -242,7 +242,7 @@ class GuiList extends GuiObject {
     return;
   }
 
-  getnextitemselected(lastpos) {
+  getnextitemselected(lastpos: number) {
     unimplementedWarning("getnextitemselected");
     return;
   }
@@ -262,7 +262,7 @@ class GuiList extends GuiObject {
     return;
   }
 
-  invalidateitem(pos) {
+  invalidateitem(pos: number) {
     unimplementedWarning("invalidateitem");
     return;
   }
@@ -277,7 +277,7 @@ class GuiList extends GuiObject {
     return;
   }
 
-  setfontsize(size) {
+  setfontsize(size: number) {
     unimplementedWarning("setfontsize");
     return;
   }
@@ -287,12 +287,12 @@ class GuiList extends GuiObject {
     return;
   }
 
-  jumptonext(c) {
+  jumptonext(c: number) {
     unimplementedWarning("jumptonext");
     return;
   }
 
-  scrolltoitem(pos) {
+  scrolltoitem(pos: number) {
     unimplementedWarning("scrolltoitem");
     return;
   }
@@ -312,12 +312,12 @@ class GuiList extends GuiObject {
     return;
   }
 
-  setsortcolumn(col) {
+  setsortcolumn(col: number) {
     unimplementedWarning("setsortcolumn");
     return;
   }
 
-  setsortdirection(dir) {
+  setsortdirection(dir: number) {
     unimplementedWarning("setsortdirection");
     return;
   }
@@ -327,22 +327,22 @@ class GuiList extends GuiObject {
     return;
   }
 
-  setselectionstart(pos) {
+  setselectionstart(pos: number) {
     unimplementedWarning("setselectionstart");
     return;
   }
 
-  setselectionend(pos) {
+  setselectionend(pos: number) {
     unimplementedWarning("setselectionend");
     return;
   }
 
-  setselected(pos, selected) {
+  setselected(pos: number, selected: number) {
     unimplementedWarning("setselected");
     return;
   }
 
-  toggleselection(pos, setfocus) {
+  toggleselection(pos: number, setfocus: number) {
     unimplementedWarning("toggleselection");
     return;
   }
@@ -357,12 +357,12 @@ class GuiList extends GuiObject {
     return;
   }
 
-  setpreventmultipleselection(val) {
+  setpreventmultipleselection(val: number) {
     unimplementedWarning("setpreventmultipleselection");
     return;
   }
 
-  moveitem(from, to) {
+  moveitem(from: number, to: number) {
     unimplementedWarning("moveitem");
     return;
   }
@@ -377,37 +377,37 @@ class GuiList extends GuiObject {
     return;
   }
 
-  ondoubleclick(itemnum) {
+  ondoubleclick(itemnum: number) {
     unimplementedWarning("ondoubleclick");
     return;
   }
 
-  onleftclick(itemnum) {
+  onleftclick(itemnum: number) {
     unimplementedWarning("onleftclick");
     return;
   }
 
-  onsecondleftclick(itemnum) {
+  onsecondleftclick(itemnum: number) {
     unimplementedWarning("onsecondleftclick");
     return;
   }
 
-  onrightclick(itemnum) {
+  onrightclick(itemnum: number) {
     unimplementedWarning("onrightclick");
     return;
   }
 
-  oncolumndblclick(col, x, y) {
+  oncolumndblclick(col: number, x: number, y: number) {
     unimplementedWarning("oncolumndblclick");
     return;
   }
 
-  oncolumnlabelclick(col, x, y) {
+  oncolumnlabelclick(col: number, x: number, y: number) {
     unimplementedWarning("oncolumnlabelclick");
     return;
   }
 
-  onitemselection(itemnum, selected) {
+  onitemselection(itemnum: number, selected: number) {
     unimplementedWarning("onitemselection");
     return;
   }

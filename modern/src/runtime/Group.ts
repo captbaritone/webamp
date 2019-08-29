@@ -12,7 +12,7 @@ class Group extends GuiObject {
     return "Group";
   }
 
-  getobject(id) {
+  getobject(id: string) {
     // Not sure this is correct, but it is my understanding this is just an alias
     return this.findobject(id);
   }
@@ -22,7 +22,7 @@ class Group extends GuiObject {
     return;
   }
 
-  enumobject(num) {
+  enumobject(num: number) {
     unimplementedWarning("enumobject");
     return;
   }

@@ -28,13 +28,13 @@ class Container extends MakiObject {
     this.parent.js_trigger("js_update");
   }
 
-  setxmlparam(param, value) {
+  setxmlparam(param: string, value: string) {
     this.attributes[param] = value;
     this.js_trigger("js_update");
     return value;
   }
 
-  getlayout(id) {
+  getlayout(id: string) {
     return findDescendantByTypeAndId(this, "layout", id);
   }
 
@@ -63,12 +63,12 @@ class Container extends MakiObject {
     return;
   }
 
-  enumlayout(num) {
+  enumlayout(num: number) {
     unimplementedWarning("enumlayout");
     return;
   }
 
-  switchtolayout(layout_id) {
+  switchtolayout(layout_id: string) {
     unimplementedWarning("switchtolayout");
     return;
   }
@@ -88,7 +88,7 @@ class Container extends MakiObject {
     return;
   }
 
-  setname(name) {
+  setname(name: string) {
     unimplementedWarning("setname");
     return;
   }

@@ -103,7 +103,7 @@ class MakiObject {
     throw new Error("getId not implemented");
   }
 
-  onnotify(command, param, a, b) {
+  onnotify(command: string, param: string, a: number, b: number) {
     Utils.unimplementedWarning("onnotify");
     return 0;
   }

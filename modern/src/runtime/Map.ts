@@ -12,7 +12,7 @@ class Map extends MakiObject {
     return "Map";
   }
 
-  loadmap(bitmapid) {
+  loadmap(bitmapid: string) {
     unimplementedWarning("loadmap");
   }
 
@@ -26,12 +26,12 @@ class Map extends MakiObject {
     return 10;
   }
 
-  getvalue(x, y) {
+  getvalue(x: number, y: number) {
     unimplementedWarning("getvalue");
     return;
   }
 
-  inregion(x, y) {
+  inregion(x: number, y: number) {
     unimplementedWarning("inregion");
     return;
   }

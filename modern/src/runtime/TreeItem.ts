@@ -17,7 +17,7 @@ class TreeItem extends MakiObject {
     return;
   }
 
-  setlabel(label) {
+  setlabel(label: string) {
     unimplementedWarning("setlabel");
     return;
   }
@@ -32,7 +32,7 @@ class TreeItem extends MakiObject {
     return;
   }
 
-  getnthchild(nth) {
+  getnthchild(nth: number) {
     unimplementedWarning("getnthchild");
     return;
   }
@@ -67,12 +67,12 @@ class TreeItem extends MakiObject {
     return;
   }
 
-  setsorted(issorted) {
+  setsorted(issorted: number) {
     unimplementedWarning("setsorted");
     return;
   }
 
-  setchildtab(haschildtab) {
+  setchildtab(haschildtab: number) {
     unimplementedWarning("setchildtab");
     return;
   }
@@ -107,7 +107,7 @@ class TreeItem extends MakiObject {
     return;
   }
 
-  sethilited(ishilited) {
+  sethilited(ishilited: number) {
     unimplementedWarning("sethilited");
     return;
   }
@@ -157,7 +157,7 @@ class TreeItem extends MakiObject {
     return;
   }
 
-  onchar(key) {
+  onchar(key: number) {
     unimplementedWarning("onchar");
     return;
   }
@@ -177,12 +177,12 @@ class TreeItem extends MakiObject {
     return;
   }
 
-  onendlabeledit(newlabel) {
+  onendlabeledit(newlabel: string) {
     unimplementedWarning("onendlabeledit");
     return;
   }
 
-  oncontextmenu(x, y) {
+  oncontextmenu(x: number, y: number) {
     unimplementedWarning("oncontextmenu");
     return;
   }

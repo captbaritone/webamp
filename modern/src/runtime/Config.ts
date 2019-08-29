@@ -13,17 +13,17 @@ class Config extends MakiObject {
     return "Config";
   }
 
-  newitem(item_name, item_guid) {
+  newitem(item_name: string, item_guid: string) {
     unimplementedWarning("newitem");
     return new ConfigItem(null, this);
   }
 
-  getitem(item_name) {
+  getitem(item_name: string) {
     unimplementedWarning("getitem");
     return;
   }
 
-  getitembyguid(item_guid) {
+  getitembyguid(item_guid: string) {
     unimplementedWarning("getitembyguid");
     return;
   }

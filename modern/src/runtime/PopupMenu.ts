@@ -19,7 +19,7 @@ class PopupMenu extends MakiObject {
     return "PopupMenu";
   }
 
-  addcommand(txt, id, checked, disabled) {
+  addcommand(txt: string, id: number, checked: boolean, disabled: boolean) {
     this.commands.push({
       name: txt,
       id,
@@ -32,7 +32,7 @@ class PopupMenu extends MakiObject {
     this.commands.push({ id: "separator" });
   }
 
-  checkcommand(id, check) {
+  checkcommand(id: number, check: boolean) {
     unimplementedWarning("checkcommand");
   }
 
@@ -49,12 +49,12 @@ class PopupMenu extends MakiObject {
     });
   }
 
-  addsubmenu(submenu, submenutext) {
+  addsubmenu(submenu, submenutext: string) {
     unimplementedWarning("addsubmenu");
     return;
   }
 
-  popatxy(x, y) {
+  popatxy(x: number, y: number) {
     unimplementedWarning("popatxy");
     return;
   }
@@ -64,7 +64,7 @@ class PopupMenu extends MakiObject {
     return;
   }
 
-  disablecommand(cmd_id, disable) {
+  disablecommand(cmd_id: number, disable: boolean) {
     unimplementedWarning("disablecommand");
     return;
   }

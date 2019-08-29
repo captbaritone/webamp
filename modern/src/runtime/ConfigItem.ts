@@ -12,17 +12,17 @@ class ConfigItem extends MakiObject {
     return "ConfigItem";
   }
 
-  getattribute(attr_name) {
+  getattribute(attr_name: string) {
     unimplementedWarning("getattribute");
     return;
   }
 
-  newattribute(attr_name, default_val) {
+  newattribute(attr_name: string, default_val: string) {
     unimplementedWarning("newattribute");
     return;
   }
 
-  getguid(attr_name) {
+  getguid(attr_name: string) {
     unimplementedWarning("getguid");
     return;
   }

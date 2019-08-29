@@ -22,7 +22,7 @@ class MouseRedir extends GuiObject {
     return;
   }
 
-  setregionfrommap(regionmap, threshold, reverse) {
+  setregionfrommap(regionmap, threshold: number, reverse: boolean) {
     unimplementedWarning("setregionfrommap");
     return;
   }

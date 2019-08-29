@@ -12,7 +12,7 @@ class Timer extends MakiObject {
     return "Timer";
   }
 
-  setdelay(millisec) {
+  setdelay(millisec: number) {
     unimplementedWarning("setDelay");
   }
 
