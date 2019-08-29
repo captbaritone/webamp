@@ -17,22 +17,22 @@ class GuiTree extends GuiObject {
     return;
   }
 
-  onmousewheelup(clicked, lines) {
+  onmousewheelup(clicked: number, lines: number) {
     unimplementedWarning("onmousewheelup");
     return;
   }
 
-  onmousewheeldown(clicked, lines) {
+  onmousewheeldown(clicked: number, lines: number) {
     unimplementedWarning("onmousewheeldown");
     return;
   }
 
-  oncontextmenu(x, y) {
+  oncontextmenu(x: number, y: number) {
     unimplementedWarning("oncontextmenu");
     return;
   }
 
-  onchar(c) {
+  onchar(c: number) {
     unimplementedWarning("onchar");
     return;
   }
@@ -62,12 +62,12 @@ class GuiTree extends GuiObject {
     return;
   }
 
-  enumrootitem(which) {
+  enumrootitem(which: number) {
     unimplementedWarning("enumrootitem");
     return;
   }
 
-  jumptonext(c) {
+  jumptonext(c: number) {
     unimplementedWarning("jumptonext");
     return;
   }
@@ -87,7 +87,7 @@ class GuiTree extends GuiObject {
     return;
   }
 
-  addtreeitem(item, par, sorted, haschildtab) {
+  addtreeitem(item, par, sorted: number, haschildtab: number) {
     unimplementedWarning("addtreeitem");
     return;
   }
@@ -157,7 +157,7 @@ class GuiTree extends GuiObject {
     return;
   }
 
-  hittest(x, y) {
+  hittest(x: number, y: number) {
     unimplementedWarning("hittest");
     return;
   }
@@ -167,12 +167,12 @@ class GuiTree extends GuiObject {
     return;
   }
 
-  canceleditlabel(destroyit) {
+  canceleditlabel(destroyit: number) {
     unimplementedWarning("canceleditlabel");
     return;
   }
 
-  setautoedit(ae) {
+  setautoedit(ae: number) {
     unimplementedWarning("setautoedit");
     return;
   }
@@ -182,12 +182,12 @@ class GuiTree extends GuiObject {
     return;
   }
 
-  getbylabel(item, name) {
+  getbylabel(item, name: string) {
     unimplementedWarning("getbylabel");
     return;
   }
 
-  setsorted(dosort) {
+  setsorted(dosort: number) {
     unimplementedWarning("setsorted");
     return;
   }
@@ -207,12 +207,12 @@ class GuiTree extends GuiObject {
     return;
   }
 
-  setautocollapse(doautocollapse) {
+  setautocollapse(doautocollapse: number) {
     unimplementedWarning("setautocollapse");
     return;
   }
 
-  setfontsize(newsize) {
+  setfontsize(newsize: number) {
     unimplementedWarning("setfontsize");
     return;
   }
@@ -232,17 +232,17 @@ class GuiTree extends GuiObject {
     return;
   }
 
-  enumvisibleitems(n) {
+  enumvisibleitems(n: number) {
     unimplementedWarning("enumvisibleitems");
     return;
   }
 
-  enumvisiblechilditems(c, n) {
+  enumvisiblechilditems(c, n: number) {
     unimplementedWarning("enumvisiblechilditems");
     return;
   }
 
-  enumallitems(n) {
+  enumallitems(n: number) {
     unimplementedWarning("enumallitems");
     return;
   }
@@ -267,7 +267,7 @@ class GuiTree extends GuiObject {
     return;
   }
 
-  getitemfrompoint(x, y) {
+  getitemfrompoint(x: number, y: number) {
     unimplementedWarning("getitemfrompoint");
     return;
   }

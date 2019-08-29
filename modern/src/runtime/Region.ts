@@ -12,11 +12,11 @@ class Region extends MakiObject {
     return "Region";
   }
 
-  loadfrommap(regionmap, threshold, reversed) {
+  loadfrommap(regionmap, threshold: number, reversed: boolean) {
     unimplementedWarning("loadFromMap");
   }
 
-  offset(x, y) {
+  offset(x: number, y: number) {
     unimplementedWarning("offset");
   }
 
@@ -30,7 +30,7 @@ class Region extends MakiObject {
     return;
   }
 
-  stretch(r) {
+  stretch(r: number) {
     unimplementedWarning("stretch");
     return;
   }
@@ -40,7 +40,7 @@ class Region extends MakiObject {
     return;
   }
 
-  loadfrombitmap(bitmapid) {
+  loadfrombitmap(bitmapid: string) {
     unimplementedWarning("loadfrombitmap");
     return;
   }

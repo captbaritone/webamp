@@ -22,7 +22,7 @@ class Wac extends MakiObject {
     return;
   }
 
-  sendcommand(cmd, param1, param2, param3) {
+  sendcommand(cmd: string, param1: number, param2: number, param3: string) {
     unimplementedWarning("sendcommand");
     return;
   }
@@ -42,7 +42,7 @@ class Wac extends MakiObject {
     return;
   }
 
-  onnotify(notifstr, a, b) {
+  onnotify(notifstr: string, a: number, b: number) {
     unimplementedWarning("onnotify");
     return;
   }
@@ -57,7 +57,7 @@ class Wac extends MakiObject {
     return;
   }
 
-  setstatusbar(onoff) {
+  setstatusbar(onoff: boolean) {
     unimplementedWarning("setstatusbar");
     return;
   }

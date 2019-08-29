@@ -17,21 +17,21 @@ class Slider extends GuiObject {
     return 0;
   }
 
-  onsetposition(newpos) {
+  onsetposition(newpos: number) {
     unimplementedWarning("onsetposition");
   }
 
-  onpostedposition(newpos) {
+  onpostedposition(newpos: number) {
     unimplementedWarning("onpostedposition");
     return;
   }
 
-  onsetfinalposition(pos) {
+  onsetfinalposition(pos: number) {
     unimplementedWarning("onsetfinalposition");
     return;
   }
 
-  setposition(pos) {
+  setposition(pos: number) {
     unimplementedWarning("setposition");
     return;
   }

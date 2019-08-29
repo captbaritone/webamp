@@ -17,12 +17,12 @@ class DropDownList extends GuiObject {
     return;
   }
 
-  onselect(id, hover) {
+  onselect(id: number, hover: number) {
     unimplementedWarning("onselect");
     return;
   }
 
-  setlistheight(h) {
+  setlistheight(h: number) {
     unimplementedWarning("setlistheight");
     return;
   }
@@ -37,22 +37,22 @@ class DropDownList extends GuiObject {
     return;
   }
 
-  setitems(lotsofitems) {
+  setitems(lotsofitems: string) {
     unimplementedWarning("setitems");
     return;
   }
 
-  additem(_text) {
+  additem(_text: string) {
     unimplementedWarning("additem");
     return;
   }
 
-  delitem(id) {
+  delitem(id: number) {
     unimplementedWarning("delitem");
     return;
   }
 
-  finditem(_text) {
+  finditem(_text: string) {
     unimplementedWarning("finditem");
     return;
   }
@@ -62,12 +62,12 @@ class DropDownList extends GuiObject {
     return;
   }
 
-  selectitem(id, hover) {
+  selectitem(id: number, hover: number) {
     unimplementedWarning("selectitem");
     return;
   }
 
-  getitemtext(id) {
+  getitemtext(id: number) {
     unimplementedWarning("getitemtext");
     return;
   }
@@ -92,7 +92,7 @@ class DropDownList extends GuiObject {
     return;
   }
 
-  setnoitemtext(txt) {
+  setnoitemtext(txt: string) {
     unimplementedWarning("setnoitemtext");
     return;
   }

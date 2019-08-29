@@ -22,7 +22,7 @@ class ComponentBucket extends GuiObject {
     return;
   }
 
-  setscroll(x) {
+  setscroll(x: number) {
     unimplementedWarning("setscroll");
     return;
   }
@@ -37,7 +37,7 @@ class ComponentBucket extends GuiObject {
     return;
   }
 
-  enumchildren(n) {
+  enumchildren(n: number) {
     unimplementedWarning("enumchildren");
     return;
   }

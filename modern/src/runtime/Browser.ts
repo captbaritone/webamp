@@ -12,7 +12,7 @@ class Browser extends GuiObject {
     return "Browser";
   }
 
-  navigateurl(url) {
+  navigateurl(url: string) {
     unimplementedWarning("navigateurl");
     return;
   }
@@ -42,17 +42,17 @@ class Browser extends GuiObject {
     return;
   }
 
-  settargetname(targetname) {
+  settargetname(targetname: string) {
     unimplementedWarning("settargetname");
     return;
   }
 
-  onbeforenavigate(url, flags, targetframename) {
+  onbeforenavigate(url: string, flags: number, targetframename: string) {
     unimplementedWarning("onbeforenavigate");
     return;
   }
 
-  ondocumentcomplete(url) {
+  ondocumentcomplete(url: string) {
     unimplementedWarning("ondocumentcomplete");
     return;
   }

@@ -12,7 +12,7 @@ class GroupList extends GuiObject {
     return "GroupList";
   }
 
-  instantiate(group_id, num_groups) {
+  instantiate(group_id: string, num_groups: number) {
     unimplementedWarning("instantiate");
     return;
   }
@@ -22,7 +22,7 @@ class GroupList extends GuiObject {
     return;
   }
 
-  enumitem(num) {
+  enumitem(num: number) {
     unimplementedWarning("enumitem");
     return;
   }
@@ -32,7 +32,7 @@ class GroupList extends GuiObject {
     return;
   }
 
-  scrolltopercent(percent) {
+  scrolltopercent(percent: number) {
     unimplementedWarning("scrolltopercent");
     return;
   }

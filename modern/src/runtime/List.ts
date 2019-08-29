@@ -17,12 +17,12 @@ class List extends MakiObject {
     return;
   }
 
-  removeitem(pos) {
+  removeitem(pos: number) {
     unimplementedWarning("removeitem");
     return;
   }
 
-  enumitem(pos) {
+  enumitem(pos: number) {
     unimplementedWarning("enumitem");
     return;
   }

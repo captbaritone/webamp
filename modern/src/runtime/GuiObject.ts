@@ -42,7 +42,7 @@ class GuiObject extends MakiObject {
     return "GuiObject";
   }
 
-  findobject(id) {
+  findobject(id: string) {
     return findDescendantByTypeAndId(this, null, id);
   }
 
@@ -52,13 +52,13 @@ class GuiObject extends MakiObject {
     return this;
   }
 
-  setxmlparam(param, value) {
+  setxmlparam(param: string, value: string) {
     this.attributes[param] = value;
     this.js_trigger("js_update");
     return value;
   }
 
-  getxmlparam(param) {
+  getxmlparam(param: string) {
     return this.attributes[param];
   }
 
@@ -105,7 +105,7 @@ class GuiObject extends MakiObject {
     return Number(this.attributes.w) || Number(this.attributes.minimum_w) || 0;
   }
 
-  resize(x, y, w, h) {
+  resize(x: number, y: number, w: number, h: number) {
     this.attributes.x = x;
     this.attributes.y = y;
     this.attributes.w = w;
@@ -118,7 +118,7 @@ class GuiObject extends MakiObject {
   }
 
   // alpha range from 0-255
-  setalpha(alpha) {
+  setalpha(alpha: number) {
     this.attributes.alpha = parseInt(alpha, 10) / 255;
     this.js_trigger("js_update");
   }
@@ -128,7 +128,7 @@ class GuiObject extends MakiObject {
     return;
   }
 
-  onsetvisible(onoff) {
+  onsetvisible(onoff: boolean) {
     unimplementedWarning("onsetvisible");
     return;
   }
@@ -138,37 +138,37 @@ class GuiObject extends MakiObject {
     return;
   }
 
-  onleftbuttonup(x, y) {
+  onleftbuttonup(x: number, y: number) {
     unimplementedWarning("onleftbuttonup");
     return;
   }
 
-  onleftbuttondown(x, y) {
+  onleftbuttondown(x: number, y: number) {
     unimplementedWarning("onleftbuttondown");
     return;
   }
 
-  onrightbuttonup(x, y) {
+  onrightbuttonup(x: number, y: number) {
     unimplementedWarning("onrightbuttonup");
     return;
   }
 
-  onrightbuttondown(x, y) {
+  onrightbuttondown(x: number, y: number) {
     unimplementedWarning("onrightbuttondown");
     return;
   }
 
-  onrightbuttondblclk(x, y) {
+  onrightbuttondblclk(x: number, y: number) {
     unimplementedWarning("onrightbuttondblclk");
     return;
   }
 
-  onleftbuttondblclk(x, y) {
+  onleftbuttondblclk(x: number, y: number) {
     unimplementedWarning("onleftbuttondblclk");
     return;
   }
 
-  onmousemove(x, y) {
+  onmousemove(x: number, y: number) {
     unimplementedWarning("onmousemove");
     return;
   }
@@ -183,7 +183,7 @@ class GuiObject extends MakiObject {
     return;
   }
 
-  setenabled(onoff) {
+  setenabled(onoff: boolean) {
     unimplementedWarning("setenabled");
     return;
   }
@@ -193,48 +193,48 @@ class GuiObject extends MakiObject {
     return;
   }
 
-  onenable(onoff) {
+  onenable(onoff: boolean) {
     unimplementedWarning("onenable");
     return;
   }
 
-  onresize(x, y, w, h) {
+  onresize(x: number, y: number, w: number, h: number) {
     unimplementedWarning("onresize");
     return;
   }
 
-  ismouseover(x, y) {
+  ismouseover(x: number, y: number) {
     unimplementedWarning("ismouseover");
     return;
   }
 
-  settargetx(x) {
+  settargetx(x: number) {
     unimplementedWarning("settargetx");
     return;
   }
 
-  settargety(y) {
+  settargety(y: number) {
     unimplementedWarning("settargety");
     return;
   }
 
-  settargetw(w) {
+  settargetw(w: number) {
     unimplementedWarning("settargetw");
     return;
   }
 
-  settargeth(r) {
+  settargeth(r: number) {
     unimplementedWarning("settargeth");
     return;
   }
 
   // alpha range from 0-255
-  settargeta(alpha) {
+  settargeta(alpha: number) {
     this.attributes.alpha = parseInt(alpha, 10) / 255;
     this.js_trigger("js_update");
   }
 
-  settargetspeed(insecond) {
+  settargetspeed(insecond: number) {
     unimplementedWarning("settargetspeed");
     return;
   }
@@ -254,7 +254,7 @@ class GuiObject extends MakiObject {
     return;
   }
 
-  reversetarget(reverse) {
+  reversetarget(reverse: number) {
     unimplementedWarning("reversetarget");
     return;
   }
@@ -344,12 +344,12 @@ class GuiObject extends MakiObject {
     return;
   }
 
-  endmodal(retcode) {
+  endmodal(retcode: number) {
     unimplementedWarning("endmodal");
     return;
   }
 
-  findobjectxy(x, y) {
+  findobjectxy(x: number, y: number) {
     unimplementedWarning("findobjectxy");
     return;
   }
@@ -359,42 +359,42 @@ class GuiObject extends MakiObject {
     return;
   }
 
-  clienttoscreenx(x) {
+  clienttoscreenx(x: number) {
     unimplementedWarning("clienttoscreenx");
     return;
   }
 
-  clienttoscreeny(y) {
+  clienttoscreeny(y: number) {
     unimplementedWarning("clienttoscreeny");
     return;
   }
 
-  clienttoscreenw(w) {
+  clienttoscreenw(w: number) {
     unimplementedWarning("clienttoscreenw");
     return;
   }
 
-  clienttoscreenh(h) {
+  clienttoscreenh(h: number) {
     unimplementedWarning("clienttoscreenh");
     return;
   }
 
-  screentoclientx(x) {
+  screentoclientx(x: number) {
     unimplementedWarning("screentoclientx");
     return;
   }
 
-  screentoclienty(y) {
+  screentoclienty(y: number) {
     unimplementedWarning("screentoclienty");
     return;
   }
 
-  screentoclientw(w) {
+  screentoclientw(w: number) {
     unimplementedWarning("screentoclientw");
     return;
   }
 
-  screentoclienth(h) {
+  screentoclienth(h: number) {
     unimplementedWarning("screentoclienth");
     return;
   }
@@ -414,12 +414,12 @@ class GuiObject extends MakiObject {
     return;
   }
 
-  onchar(c) {
+  onchar(c: string) {
     unimplementedWarning("onchar");
     return;
   }
 
-  onaccelerator(accel) {
+  onaccelerator(accel: string) {
     unimplementedWarning("onaccelerator");
     return;
   }
@@ -429,17 +429,17 @@ class GuiObject extends MakiObject {
     return;
   }
 
-  getinterface(interface_guid) {
+  getinterface(interface_guid: string) {
     unimplementedWarning("getinterface");
     return;
   }
 
-  onkeydown(vk_code) {
+  onkeydown(vk_code: number) {
     unimplementedWarning("onkeydown");
     return;
   }
 
-  onkeyup(vk_code) {
+  onkeyup(vk_code: number) {
     unimplementedWarning("onkeyup");
     return;
   }
@@ -455,13 +455,28 @@ class GuiObject extends MakiObject {
   }
 
   /* eslint-disable-next-line max-params */
-  sendaction(action, param, x, y, p1, p2) {
+  sendaction(
+    action: string,
+    param: string,
+    x: number,
+    y: number,
+    p1: number,
+    p2: number
+  ) {
     unimplementedWarning("sendaction");
     return;
   }
 
   /* eslint-disable-next-line max-params */
-  onaction(action, param, x, y, p1, p2, source) {
+  onaction(
+    action: string,
+    param: string,
+    x: number,
+    y: number,
+    p1: number,
+    p2: number,
+    source
+  ) {
     unimplementedWarning("onaction");
     return;
   }

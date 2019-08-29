@@ -12,7 +12,7 @@ class Vis extends GuiObject {
     return "Vis";
   }
 
-  setmode(mode) {
+  setmode(mode: number) {
     unimplementedWarning("setmode");
   }
 
@@ -21,7 +21,7 @@ class Vis extends GuiObject {
     return;
   }
 
-  setrealtime(onoff) {
+  setrealtime(onoff: boolean) {
     unimplementedWarning("setrealtime");
     return;
   }

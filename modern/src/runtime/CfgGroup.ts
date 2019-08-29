@@ -17,7 +17,7 @@ class CfgGroup extends Group {
     return;
   }
 
-  cfgsetint(intvalue) {
+  cfgsetint(intvalue: number) {
     unimplementedWarning("cfgsetint");
     return;
   }
@@ -32,12 +32,12 @@ class CfgGroup extends Group {
     return;
   }
 
-  cfgsetfloat(floatvalue) {
+  cfgsetfloat(floatvalue: number) {
     unimplementedWarning("cfgsetfloat");
     return;
   }
 
-  cfgsetstring(strvalue) {
+  cfgsetstring(strvalue: string) {
     unimplementedWarning("cfgsetstring");
     return;
   }

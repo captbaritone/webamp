@@ -16,16 +16,16 @@ class Layer extends GuiObject {
     unimplementedWarning("setregion");
   }
 
-  setregionfrommap(regionmap, threshold, reverse) {
+  setregionfrommap(regionmap, threshold: number, reverse: boolean) {
     unimplementedWarning("setregion");
   }
 
-  onbeginresize(x, y, w, h) {
+  onbeginresize(x: number, y: number, w: number, h: number) {
     unimplementedWarning("onbeginresize");
     return;
   }
 
-  onendresize(x, y, w, h) {
+  onendresize(x: number, y: number, w: number, h: number) {
     unimplementedWarning("onendresize");
     return;
   }
@@ -40,32 +40,32 @@ class Layer extends GuiObject {
     return;
   }
 
-  fx_ongetpixelr(r, d, x, y) {
+  fx_ongetpixelr(r: number, d: number, x: number, y: number) {
     unimplementedWarning("fx_ongetpixelr");
     return;
   }
 
-  fx_ongetpixeld(r, d, x, y) {
+  fx_ongetpixeld(r: number, d: number, x: number, y: number) {
     unimplementedWarning("fx_ongetpixeld");
     return;
   }
 
-  fx_ongetpixelx(r, d, x, y) {
+  fx_ongetpixelx(r: number, d: number, x: number, y: number) {
     unimplementedWarning("fx_ongetpixelx");
     return;
   }
 
-  fx_ongetpixely(r, d, x, y) {
+  fx_ongetpixely(r: number, d: number, x: number, y: number) {
     unimplementedWarning("fx_ongetpixely");
     return;
   }
 
-  fx_ongetpixela(r, d, x, y) {
+  fx_ongetpixela(r: number, d: number, x: number, y: number) {
     unimplementedWarning("fx_ongetpixela");
     return;
   }
 
-  fx_setenabled(onoff) {
+  fx_setenabled(onoff: boolean) {
     unimplementedWarning("fx_setenabled");
     return;
   }
@@ -75,7 +75,7 @@ class Layer extends GuiObject {
     return;
   }
 
-  fx_setwrap(onoff) {
+  fx_setwrap(onoff: boolean) {
     unimplementedWarning("fx_setwrap");
     return;
   }
@@ -85,7 +85,7 @@ class Layer extends GuiObject {
     return;
   }
 
-  fx_setrect(onoff) {
+  fx_setrect(onoff: boolean) {
     unimplementedWarning("fx_setrect");
     return;
   }
@@ -95,7 +95,7 @@ class Layer extends GuiObject {
     return;
   }
 
-  fx_setbgfx(onoff) {
+  fx_setbgfx(onoff: boolean) {
     unimplementedWarning("fx_setbgfx");
     return;
   }
@@ -105,7 +105,7 @@ class Layer extends GuiObject {
     return;
   }
 
-  fx_setclear(onoff) {
+  fx_setclear(onoff: boolean) {
     unimplementedWarning("fx_setclear");
     return;
   }
@@ -115,7 +115,7 @@ class Layer extends GuiObject {
     return;
   }
 
-  fx_setspeed(msperframe) {
+  fx_setspeed(msperframe: number) {
     unimplementedWarning("fx_setspeed");
     return;
   }
@@ -125,7 +125,7 @@ class Layer extends GuiObject {
     return;
   }
 
-  fx_setrealtime(onoff) {
+  fx_setrealtime(onoff: boolean) {
     unimplementedWarning("fx_setrealtime");
     return;
   }
@@ -135,7 +135,7 @@ class Layer extends GuiObject {
     return;
   }
 
-  fx_setlocalized(onoff) {
+  fx_setlocalized(onoff: boolean) {
     unimplementedWarning("fx_setlocalized");
     return;
   }
@@ -145,7 +145,7 @@ class Layer extends GuiObject {
     return;
   }
 
-  fx_setbilinear(onoff) {
+  fx_setbilinear(onoff: boolean) {
     unimplementedWarning("fx_setbilinear");
     return;
   }
@@ -155,7 +155,7 @@ class Layer extends GuiObject {
     return;
   }
 
-  fx_setalphamode(onoff) {
+  fx_setalphamode(onoff: boolean) {
     unimplementedWarning("fx_setalphamode");
     return;
   }
@@ -165,7 +165,7 @@ class Layer extends GuiObject {
     return;
   }
 
-  fx_setgridsize(x, y) {
+  fx_setgridsize(x: number, y: number) {
     unimplementedWarning("fx_setgridsize");
     return;
   }

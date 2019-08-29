@@ -12,7 +12,7 @@ class ConfigAttribute extends MakiObject {
     return "ConfigAttribute";
   }
 
-  setdata(value) {
+  setdata(value: string) {
     unimplementedWarning("setdata");
     return;
   }

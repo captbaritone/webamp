@@ -33,7 +33,7 @@ class System extends MakiObject {
     return this.scriptGroup;
   }
 
-  getcontainer(id) {
+  getcontainer(id: string) {
     return findDescendantByTypeAndId(this.root, "container", id);
   }
 
@@ -41,7 +41,7 @@ class System extends MakiObject {
     return "5.666";
   }
 
-  gettoken(str, separator, tokennum) {
+  gettoken(str: string, separator: string, tokennum: number) {
     unimplementedWarning("gettoken");
     return "Some Token String";
   }
@@ -66,11 +66,11 @@ class System extends MakiObject {
     return 0;
   }
 
-  oneqchanged(newstatus) {
+  oneqchanged(newstatus: number) {
     unimplementedWarning("newstatus");
   }
 
-  geteqband(band) {
+  geteqband(band: number) {
     unimplementedWarning("geteqband");
     return 0;
   }
@@ -85,24 +85,29 @@ class System extends MakiObject {
     return 0;
   }
 
-  messagebox(message, msgtitle, flag, notanymoreId) {
+  messagebox(
+    message: string,
+    msgtitle: string,
+    flag: number,
+    notanymoreId: string
+  ) {
     console.log({ message, msgtitle, flag, notanymoreId });
   }
 
-  integertostring(value) {
+  integertostring(value: number) {
     return value.toString();
   }
 
-  stringtointeger(str) {
+  stringtointeger(str: string) {
     return parseInt(str, 10);
   }
 
-  getprivateint(section, item, defvalue) {
+  getprivateint(section: string, item: string, defvalue: number) {
     unimplementedWarning("getprivateint");
     return defvalue;
   }
 
-  setprivateint(section, item, defvalue) {
+  setprivateint(section: string, item: string, defvalue: number) {
     unimplementedWarning("setprivateint");
   }
 
@@ -121,7 +126,7 @@ class System extends MakiObject {
     return Selectors.getVolume(this._store.getState());
   }
 
-  setvolume(volume) {
+  setvolume(volume: number) {
     return this._store.dispatch(Actions.setVolume(volume));
   }
 
@@ -130,7 +135,7 @@ class System extends MakiObject {
     return 100000;
   }
 
-  seekto(pos) {
+  seekto(pos: number) {
     unimplementedWarning("seekto");
   }
 
@@ -163,17 +168,17 @@ class System extends MakiObject {
     return;
   }
 
-  onsetxuiparam(param, value) {
+  onsetxuiparam(param: string, value: string) {
     unimplementedWarning("onsetxuiparam");
     return;
   }
 
-  onkeydown(key) {
+  onkeydown(key: string) {
     unimplementedWarning("onkeydown");
     return;
   }
 
-  onaccelerator(action, section, key) {
+  onaccelerator(action: string, section: string, key: string) {
     unimplementedWarning("onaccelerator");
     return;
   }
@@ -213,57 +218,57 @@ class System extends MakiObject {
     return;
   }
 
-  ontitlechange(newtitle) {
+  ontitlechange(newtitle: string) {
     unimplementedWarning("ontitlechange");
     return;
   }
 
-  ontitle2change(newtitle2) {
+  ontitle2change(newtitle2: string) {
     unimplementedWarning("ontitle2change");
     return;
   }
 
-  oninfochange(info) {
+  oninfochange(info: string) {
     unimplementedWarning("oninfochange");
     return;
   }
 
-  onstatusmsg(msg) {
+  onstatusmsg(msg: string) {
     unimplementedWarning("onstatusmsg");
     return;
   }
 
-  oneqbandchanged(band, newvalue) {
+  oneqbandchanged(band: number, newvalue: number) {
     unimplementedWarning("oneqbandchanged");
     return;
   }
 
-  oneqpreampchanged(newvalue) {
+  oneqpreampchanged(newvalue: number) {
     unimplementedWarning("oneqpreampchanged");
     return;
   }
 
-  onvolumechanged(newvol) {
+  onvolumechanged(newvol: number) {
     unimplementedWarning("onvolumechanged");
     return;
   }
 
-  onseek(newpos) {
+  onseek(newpos: number) {
     unimplementedWarning("onseek");
     return;
   }
 
-  newdynamiccontainer(container_id) {
+  newdynamiccontainer(container_id: string) {
     unimplementedWarning("newdynamiccontainer");
     return;
   }
 
-  newgroup(group_id) {
+  newgroup(group_id: string) {
     unimplementedWarning("newgroup");
     return;
   }
 
-  newgroupaslayout(group_id) {
+  newgroupaslayout(group_id: string) {
     unimplementedWarning("newgroupaslayout");
     return;
   }
@@ -273,17 +278,17 @@ class System extends MakiObject {
     return;
   }
 
-  enumcontainer(num) {
+  enumcontainer(num: number) {
     unimplementedWarning("enumcontainer");
     return;
   }
 
-  getwac(wac_guid) {
+  getwac(wac_guid: string) {
     unimplementedWarning("getwac");
     return;
   }
 
-  getplayitemmetadatastring(metadataname) {
+  getplayitemmetadatastring(metadataname: string) {
     unimplementedWarning("getplayitemmetadatastring");
     return;
   }
@@ -293,12 +298,12 @@ class System extends MakiObject {
     return;
   }
 
-  getextfamily(ext) {
+  getextfamily(ext: string) {
     unimplementedWarning("getextfamily");
     return;
   }
 
-  playfile(playitem) {
+  playfile(playitem: string) {
     unimplementedWarning("playfile");
     return;
   }
@@ -338,17 +343,17 @@ class System extends MakiObject {
     return;
   }
 
-  seteqband(band, value) {
+  seteqband(band: number, value: number) {
     unimplementedWarning("seteqband");
     return;
   }
 
-  seteqpreamp(value) {
+  seteqpreamp(value: number) {
     unimplementedWarning("seteqpreamp");
     return;
   }
 
-  seteq(onoff) {
+  seteq(onoff: number) {
     unimplementedWarning("seteq");
     return;
   }
@@ -363,87 +368,87 @@ class System extends MakiObject {
     return;
   }
 
-  floattostring(value, ndigits) {
+  floattostring(value: number, ndigits: number) {
     unimplementedWarning("floattostring");
     return;
   }
 
-  stringtofloat(str) {
+  stringtofloat(str: string) {
     unimplementedWarning("stringtofloat");
     return;
   }
 
-  integertolongtime(value) {
+  integertolongtime(value: number) {
     unimplementedWarning("integertolongtime");
     return;
   }
 
-  integertotime(value) {
+  integertotime(value: number) {
     unimplementedWarning("integertotime");
     return;
   }
 
-  datetotime(datetime) {
+  datetotime(datetime: number) {
     unimplementedWarning("datetotime");
     return;
   }
 
-  datetolongtime(datetime) {
+  datetolongtime(datetime: number) {
     unimplementedWarning("datetolongtime");
     return;
   }
 
-  formatdate(datetime) {
+  formatdate(datetime: number) {
     unimplementedWarning("formatdate");
     return;
   }
 
-  formatlongdate(datetime) {
+  formatlongdate(datetime: number) {
     unimplementedWarning("formatlongdate");
     return;
   }
 
-  getdateyear(datetime) {
+  getdateyear(datetime: number) {
     unimplementedWarning("getdateyear");
     return;
   }
 
-  getdatemonth(datetime) {
+  getdatemonth(datetime: number) {
     unimplementedWarning("getdatemonth");
     return;
   }
 
-  getdateday(datetime) {
+  getdateday(datetime: number) {
     unimplementedWarning("getdateday");
     return;
   }
 
-  getdatedow(datetime) {
+  getdatedow(datetime: number) {
     unimplementedWarning("getdatedow");
     return;
   }
 
-  getdatedoy(datetime) {
+  getdatedoy(datetime: number) {
     unimplementedWarning("getdatedoy");
     return;
   }
 
-  getdatehour(datetime) {
+  getdatehour(datetime: number) {
     unimplementedWarning("getdatehour");
     return;
   }
 
-  getdatemin(datetime) {
+  getdatemin(datetime: number) {
     unimplementedWarning("getdatemin");
     return;
   }
 
-  getdatesec(datetime) {
+  getdatesec(datetime: number) {
     unimplementedWarning("getdatesec");
     return;
   }
 
-  getdatedst(datetime) {
+  getdatedst(datetime: number) {
     unimplementedWarning("getdatedst");
     return;
   }
@@ -453,152 +458,152 @@ class System extends MakiObject {
     return;
   }
 
-  strmid(str, start, len) {
+  strmid(str: string, start: number, len: number) {
     unimplementedWarning("strmid");
     return;
   }
 
-  strleft(str, nchars) {
+  strleft(str: string, nchars: number) {
     unimplementedWarning("strleft");
     return;
   }
 
-  strright(str, nchars) {
+  strright(str: string, nchars: number) {
     unimplementedWarning("strright");
     return;
   }
 
-  strsearch(str, substr) {
+  strsearch(str: string, substr: string) {
     unimplementedWarning("strsearch");
     return;
   }
 
-  strlen(str) {
+  strlen(str: string) {
     unimplementedWarning("strlen");
     return;
   }
 
-  strupper(str) {
+  strupper(str: string) {
     unimplementedWarning("strupper");
     return;
   }
 
-  strlower(str) {
+  strlower(str: string) {
     unimplementedWarning("strlower");
     return;
   }
 
-  urlencode(url) {
+  urlencode(url: string) {
     unimplementedWarning("urlencode");
     return;
   }
 
-  removepath(str) {
+  removepath(str: string) {
     unimplementedWarning("removepath");
     return;
   }
 
-  getpath(str) {
+  getpath(str: string) {
     unimplementedWarning("getpath");
     return;
   }
 
-  getextension(str) {
+  getextension(str: string) {
     unimplementedWarning("getextension");
     return;
   }
 
-  sin(value) {
+  sin(value: number) {
     unimplementedWarning("sin");
     return;
   }
 
-  cos(value) {
+  cos(value: number) {
     unimplementedWarning("cos");
     return;
   }
 
-  tan(value) {
+  tan(value: number) {
     unimplementedWarning("tan");
     return;
   }
 
-  asin(value) {
+  asin(value: number) {
     unimplementedWarning("asin");
     return;
   }
 
-  acos(value) {
+  acos(value: number) {
     unimplementedWarning("acos");
     return;
   }
 
-  atan(value) {
+  atan(value: number) {
     unimplementedWarning("atan");
     return;
   }
 
-  atan2(y, x) {
+  atan2(y: number, x: number) {
     unimplementedWarning("atan2");
     return;
   }
 
-  pow(value, pvalue) {
+  pow(value: number, pvalue: number) {
     unimplementedWarning("pow");
     return;
   }
 
-  sqr(value) {
+  sqr(value: number) {
     unimplementedWarning("sqr");
     return;
   }
 
-  sqrt(value) {
+  sqrt(value: number) {
     unimplementedWarning("sqrt");
     return;
   }
 
-  random(max) {
+  random(max: number) {
     unimplementedWarning("random");
     return;
   }
 
-  setprivatestring(section, item, value) {
+  setprivatestring(section: string, item: string, value: string) {
     unimplementedWarning("setprivatestring");
     return;
   }
 
-  getprivatestring(section, item, defvalue) {
+  getprivatestring(section: string, item: string, defvalue: string) {
     unimplementedWarning("getprivatestring");
     return;
   }
 
-  setpublicstring(item, value) {
+  setpublicstring(item: string, value: string) {
     unimplementedWarning("setpublicstring");
     return;
   }
 
-  setpublicint(item, value) {
+  setpublicint(item: string, value: number) {
     unimplementedWarning("setpublicint");
     return;
   }
 
-  getpublicstring(item, defvalue) {
+  getpublicstring(item: string, defvalue: string) {
     unimplementedWarning("getpublicstring");
     return;
   }
 
-  getpublicint(item, defvalue) {
+  getpublicint(item: string, defvalue: number) {
     unimplementedWarning("getpublicint");
     return;
   }
 
-  getviewportwidthfrompoint(x, y) {
+  getviewportwidthfrompoint(x: number, y: number) {
     unimplementedWarning("getviewportwidthfrompoint");
     return;
   }
 
-  getviewportheightfrompoint(x, y) {
+  getviewportheightfrompoint(x: number, y: number) {
     unimplementedWarning("getviewportheightfrompoint");
     return;
   }
@@ -608,7 +613,7 @@ class System extends MakiObject {
     return;
   }
 
-  getviewportleftfrompoint(x, y) {
+  getviewportleftfrompoint(x: number, y: number) {
     unimplementedWarning("getviewportleftfrompoint");
     return;
   }
@@ -618,22 +623,22 @@ class System extends MakiObject {
     return;
   }
 
-  getviewporttopfrompoint(x, y) {
+  getviewporttopfrompoint(x: number, y: number) {
     unimplementedWarning("getviewporttopfrompoint");
     return;
   }
 
-  debugstring(str, severity) {
+  debugstring(str: string, severity: number) {
     unimplementedWarning("debugstring");
     return;
   }
 
-  ddesend(application, command, mininterval) {
+  ddesend(application: string, command: string, mininterval: number) {
     unimplementedWarning("ddesend");
     return;
   }
 
-  onlookforcomponent(guid) {
+  onlookforcomponent(guid: string) {
     unimplementedWarning("onlookforcomponent");
     return;
   }
@@ -663,7 +668,7 @@ class System extends MakiObject {
     return;
   }
 
-  switchskin(skinname) {
+  switchskin(skinname: string) {
     unimplementedWarning("switchskin");
     return;
   }
@@ -693,7 +698,7 @@ class System extends MakiObject {
     return;
   }
 
-  navigateurl(url) {
+  navigateurl(url: string) {
     unimplementedWarning("navigateurl");
     return;
   }
@@ -703,12 +708,12 @@ class System extends MakiObject {
     return;
   }
 
-  integer(d) {
+  integer(d: number) {
     unimplementedWarning("integer");
     return;
   }
 
-  frac(d) {
+  frac(d: number) {
     unimplementedWarning("frac");
     return;
   }
@@ -718,32 +723,32 @@ class System extends MakiObject {
     return;
   }
 
-  setmenutransparency(alphavalue) {
+  setmenutransparency(alphavalue: number) {
     unimplementedWarning("setmenutransparency");
     return;
   }
 
-  ongetcancelcomponent(guid, goingvisible) {
+  ongetcancelcomponent(guid: string, goingvisible: boolean) {
     unimplementedWarning("ongetcancelcomponent");
     return;
   }
 
-  iskeydown(vk_code) {
+  iskeydown(vk_code: number) {
     unimplementedWarning("iskeydown");
     return;
   }
 
-  setclipboardtext(_text) {
+  setclipboardtext(_text: string) {
     unimplementedWarning("setclipboardtext");
     return;
   }
 
-  chr(charnum) {
+  chr(charnum: number) {
     unimplementedWarning("chr");
     return;
   }
 
-  selectfile(extlist, id, prev_filename) {
+  selectfile(extlist: string, id: string, prev_filename: string) {
     unimplementedWarning("selectfile");
     return;
   }
@@ -758,12 +763,16 @@ class System extends MakiObject {
     return;
   }
 
-  triggeraction(context, actionname, actionparam) {
+  triggeraction(context, actionname: string, actionparam: string) {
     unimplementedWarning("triggeraction");
     return;
   }
 
-  showwindow(guidorgroupid, preferedcontainer, transient) {
+  showwindow(
+    guidorgroupid: string,
+    preferedcontainer: string,
+    transient: boolean
+  ) {
     unimplementedWarning("showwindow");
     return;
   }
@@ -773,22 +782,22 @@ class System extends MakiObject {
     return;
   }
 
-  hidenamedwindow(guidorgroup) {
+  hidenamedwindow(guidorgroup: string) {
     unimplementedWarning("hidenamedwindow");
     return;
   }
 
-  isnamedwindowvisible(guidorgroup) {
+  isnamedwindowvisible(guidorgroup: string) {
     unimplementedWarning("isnamedwindowvisible");
     return;
   }
 
-  setatom(atomname, object) {
+  setatom(atomname: string, object) {
     unimplementedWarning("setatom");
     return;
   }
 
-  getatom(atomname) {
+  getatom(atomname: string) {
     unimplementedWarning("getatom");
     return;
   }
@@ -868,7 +877,7 @@ class System extends MakiObject {
     return;
   }
 
-  getvisband(channel, band) {
+  getvisband(channel: number, band: number) {
     unimplementedWarning("getvisband");
     return;
   }

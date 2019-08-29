@@ -24,11 +24,11 @@ class AnimatedLayer extends Layer {
     unimplementedWarning("stop");
   }
 
-  setspeed(msperframe) {
+  setspeed(msperframe: number) {
     unimplementedWarning("setspeed");
   }
 
-  gotoframe(framenum) {
+  gotoframe(framenum: number) {
     unimplementedWarning("gotoframe");
   }
 
@@ -57,22 +57,22 @@ class AnimatedLayer extends Layer {
     return;
   }
 
-  onframe(framenum) {
+  onframe(framenum: number) {
     unimplementedWarning("onframe");
     return;
   }
 
-  setstartframe(framenum) {
+  setstartframe(framenum: number) {
     unimplementedWarning("setstartframe");
     return;
   }
 
-  setendframe(framenum) {
+  setendframe(framenum: number) {
     unimplementedWarning("setendframe");
     return;
   }
 
-  setautoreplay(onoff) {
+  setautoreplay(onoff: boolean) {
     unimplementedWarning("setautoreplay");
     return;
   }
@@ -117,7 +117,7 @@ class AnimatedLayer extends Layer {
     return;
   }
 
-  setrealtime(onoff) {
+  setrealtime(onoff: boolean) {
     unimplementedWarning("setrealtime");
     return;
   }

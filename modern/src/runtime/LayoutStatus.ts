@@ -12,7 +12,7 @@ class LayoutStatus extends GuiObject {
     return "LayoutStatus";
   }
 
-  callme(str) {
+  callme(str: string) {
     unimplementedWarning("callme");
     return;
   }

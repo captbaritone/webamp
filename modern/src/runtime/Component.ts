@@ -32,7 +32,7 @@ class Component extends GuiObject {
     return;
   }
 
-  setregionfrommap(regionmap, threshold, reverse) {
+  setregionfrommap(regionmap, threshold: number, reverse: boolean) {
     unimplementedWarning("setregionfrommap");
     return;
   }
@@ -42,7 +42,7 @@ class Component extends GuiObject {
     return;
   }
 
-  setacceptwac(onoff) {
+  setacceptwac(onoff: boolean) {
     unimplementedWarning("setacceptwac");
     return;
   }

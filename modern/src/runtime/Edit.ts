@@ -32,12 +32,12 @@ class Edit extends GuiObject {
     return;
   }
 
-  settext(txt) {
+  settext(txt: string) {
     unimplementedWarning("settext");
     return;
   }
 
-  setautoenter(onoff) {
+  setautoenter(onoff: boolean) {
     unimplementedWarning("setautoenter");
     return;
   }
@@ -62,7 +62,7 @@ class Edit extends GuiObject {
     return;
   }
 
-  setidleenabled(onoff) {
+  setidleenabled(onoff: boolean) {
     unimplementedWarning("setidleenabled");
     return;
   }

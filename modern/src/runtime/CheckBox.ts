@@ -12,12 +12,12 @@ class CheckBox extends GuiObject {
     return "CheckBox";
   }
 
-  ontoggle(newstate) {
+  ontoggle(newstate: number) {
     unimplementedWarning("ontoggle");
     return;
   }
 
-  setchecked(checked) {
+  setchecked(checked: number) {
     unimplementedWarning("setchecked");
     return;
   }
@@ -27,7 +27,7 @@ class CheckBox extends GuiObject {
     return;
   }
 
-  settext(txt) {
+  settext(txt: string) {
     unimplementedWarning("settext");
     return;
   }
