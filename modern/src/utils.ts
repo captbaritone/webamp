@@ -138,8 +138,28 @@ export function unimplementedWarning(name: string): void {
   console.warn(`Executing unimplemented MAKI function: ${name}`);
 }
 
+// Bredth-first search in a tree that returns the path to the node
+export function findPathToNode<T extends { children: T[] }>(
+  node: T,
+  predicate: (candidate: T) => boolean
+): number[] {
+  if (predicate(node)) {
+    return [];
+  }
+  const children = node.children || [];
+  for (let i = 0; i < children.length; i++) {
+    const child = children[i];
+
+    const found = findPathToNode(child, predicate);
+    if (found != null) {
+      return [i, ...found];
+    }
+  }
+  return null;
+}
+
 // Bredth-first search in a tree
-export function findInTree(node, predicate) {
+export function findInTree<T extends { children: T[] }>(node: T, predicate): T {
   if (predicate(node)) {
     return node;
   }
