@@ -59,11 +59,6 @@ export function run({
     });
   });
 
-  const { commands /* variables */ } = program;
-  commands.forEach((/* command, i*/) => {
-    // printCommand({ i, command, stack: [], variables });
-  });
-
   // Set the System global
   // TODO: We could confirm that this variable has the "system" flag set.
   program.variables[0].setValue(system);
