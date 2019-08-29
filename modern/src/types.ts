@@ -2,7 +2,6 @@
 export type MakiTree = any;
 
 export type XmlNode = {
-  parent: XmlNode;
   children: XmlNode[];
   attributes: Object;
   name: string;
