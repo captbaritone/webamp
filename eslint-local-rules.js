@@ -15,6 +15,29 @@ for (const value of Object.values(objects)) {
   objectsByName[normalizeClassName(value.name)] = value;
 }
 
+const TYPE_MAP = {
+  string: {
+    typeScriptName: "TSStringKeyword",
+    stringRepresentation: "string",
+  },
+  double: {
+    typeScriptName: "TSNumberKeyword",
+    stringRepresentation: "number",
+  },
+  int: {
+    typeScriptName: "TSNumberKeyword",
+    stringRepresentation: "number",
+  },
+  boolean: {
+    typeScriptName: "TSBooleanKeyword",
+    stringRepresentation: "boolean",
+  },
+  float: {
+    typeScriptName: "TSNumberKeyword",
+    stringRepresentation: "number",
+  },
+};
+
 module.exports = {
   "maki-methods": {
     meta: {
@@ -140,20 +163,56 @@ module.exports = {
             });
             return;
           }
-          /*
 
-          const args = node.value.params.map(param => param.name);
+          const { params } = node.value;
 
-          func.parameters.forEach(([, name], i) => {
-            const actual = args[i];
-            if (actual !== name) {
+          func.parameters.forEach(([type, name], i) => {
+            const actual = params[i];
+            if (actual.name !== name) {
+              // Turned off since some of the maki names are bad.
+              /*
               context.report({
                 node: node.value.params[i],
                 message: `Invalid Maki method argument name \`${actual}\`. Expected \`${name}\`.`,
               });
+              */
+            }
+            const expectedTypeData = TYPE_MAP[type.toLowerCase()];
+            if (expectedTypeData == null) {
+              // console.warn(`Missing type data for ${type}.`);
+              return;
+            }
+            const fix = fixer => {
+              return fixer.replaceText(
+                actual,
+                `${actual.name}: ${expectedTypeData.stringRepresentation}`
+              );
+            };
+            if (actual.typeAnnotation == null) {
+              // TODO: Report missing types
+              context.report({
+                node: actual,
+                message: `Missing type for Maki argument. Expected \`${
+                  expectedTypeData.stringRepresentation
+                }\`.`,
+                fix,
+              });
+              return;
+            }
+
+            const actualTypeScriptName =
+              actual.typeAnnotation.typeAnnotation.type;
+
+            if (actualTypeScriptName !== expectedTypeData.typeScriptName) {
+              context.report({
+                node: actual,
+                message: `Invalid type for Maki argument. Expected \`${
+                  expectedTypeData.typeScriptName
+                }\`.`,
+                fix,
+              });
             }
           });
-          */
         },
       };
     },
