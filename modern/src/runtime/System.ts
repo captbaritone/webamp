@@ -5,10 +5,12 @@ import * as Actions from "../Actions";
 import * as Selectors from "../Selectors";
 
 class System extends MakiObject {
-  constructor(scriptGroup = new Group(), store) {
+  scriptGroup: Group;
+  root: MakiObject;
+  constructor(scriptGroup, store) {
     super(null, null, {}, store);
 
-    this.scriptGroup = scriptGroup;
+    this.scriptGroup = scriptGroup == null ? new Group() : scriptGroup;
     this.root = scriptGroup;
     while (this.root.parent) {
       this.root = this.root.parent;
