@@ -96,7 +96,10 @@ class Container extends MakiObject {
 
   getcurlayout() {
     unimplementedWarning("getcurlayout");
-    return;
+    // TODO: For now we just always show the first layout. I think that's the default.
+    return this.children.find(childNode => {
+      return childNode.getclassname() === "Layout";
+    });
   }
 }
 
