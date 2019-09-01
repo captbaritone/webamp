@@ -174,6 +174,7 @@ function Container(props) {
   if (default_visible !== undefined) {
     style.display = default_visible ? "block" : "none";
   }
+
   return (
     <div data-node-type="container" data-node-id={id} style={style}>
       {children}
