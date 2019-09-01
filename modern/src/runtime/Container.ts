@@ -2,6 +2,7 @@ import MakiObject from "./MakiObject";
 import { findDescendantByTypeAndId, unimplementedWarning } from "../utils";
 
 class Container extends MakiObject {
+  visible: boolean;
   constructor(node, parent) {
     super(node, parent);
 
