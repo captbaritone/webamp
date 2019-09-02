@@ -253,7 +253,6 @@ function parseComand({ start, makiFile, length, pos }) {
   const command = {
     offset: pos,
     start,
-    pos,
     opcode,
     arg: null,
     argType: opcodeToArgType(opcode),
@@ -307,8 +306,8 @@ function parse(buffer) {
   const extraVersion = makiFile.readUInt32LE();
   const classes = readClasses(makiFile);
   const methods = readMethods(makiFile);
-  const variables = readVariables({ makiFile: makiFile, classes });
-  readConstants({ makiFile: makiFile, variables });
+  const variables = readVariables({ makiFile, classes });
+  readConstants({ makiFile, variables });
   const bindings = readBindings(makiFile);
   const commands = decodeCode({ makiFile });
 
