@@ -511,11 +511,12 @@ function DummyComponent({ node }) {
 }
 
 function XmlChildren({ node }) {
-  const childNodes = node.children || [];
-  const children = childNodes.map((childNode, i) => (
+  if (node.children == null) {
+    return null;
+  }
+  return node.children.map((childNode, i) => (
     <XmlNode key={i} node={childNode} {...childNode.attributes} />
   ));
-  return children;
 }
 
 // Given a skin XML node, pick which component to use, and render it.
