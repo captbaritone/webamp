@@ -293,7 +293,6 @@ Set {
   "Group.getmouseposx",
   "Group.getmouseposy",
   "Group.islayout",
-  "GuiObject.isvisible",
   "GuiObject.onsetvisible",
   "GuiObject.getalpha",
   "GuiObject.onleftbuttonup",
