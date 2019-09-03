@@ -117,6 +117,9 @@ function handleMouseButtonEventDispatch(
 
 function GuiObjectEvents({ node, children }) {
   const { alpha, ghost } = node.attributes;
+  if (!node.isvisible()) {
+    return null;
+  }
 
   return (
     <div
@@ -174,11 +177,9 @@ function Container(props) {
   }
 
   return (
-    <GuiObjectEvents node={node}>
-      <div data-node-type="container" data-node-id={id} style={style}>
-        <XmlChildren node={node} />
-      </div>
-    </GuiObjectEvents>
+    <div data-node-type="container" data-node-id={id} style={style}>
+      <XmlChildren node={node} />
+    </div>
   );
 }
 
@@ -511,12 +512,9 @@ function DummyComponent({ node }) {
 
 function XmlChildren({ node }) {
   const childNodes = node.children || [];
-  const children = childNodes.map(
-    (childNode, i) =>
-      (childNode.visible || childNode.visible === undefined) && (
-        <XmlNode key={i} node={childNode} {...childNode.attributes} />
-      )
-  );
+  const children = childNodes.map((childNode, i) => (
+    <XmlNode key={i} node={childNode} {...childNode.attributes} />
+  ));
   return children;
 }
 

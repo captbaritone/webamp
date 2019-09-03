@@ -7,6 +7,7 @@ import {
 import * as MakiSelectors from "../MakiSelectors";
 
 class GuiObject extends MakiObject {
+  visible: boolean;
   constructor(node, parent, annotations, store) {
     super(node, parent, annotations, store);
 
@@ -124,7 +125,7 @@ class GuiObject extends MakiObject {
   }
 
   isvisible() {
-    unimplementedWarning("isvisible");
+    return this.visible;
     return;
   }
 
