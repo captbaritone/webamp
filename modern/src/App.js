@@ -159,7 +159,7 @@ function GuiObjectEvents({ node, children }) {
 }
 
 function Container(props) {
-  const { id, node, children, default_x, default_y, default_visible } = props;
+  const { id, node, default_x, default_y, default_visible } = props;
   const style = {
     position: "absolute",
   };
@@ -176,7 +176,7 @@ function Container(props) {
   return (
     <GuiObjectEvents node={node}>
       <div data-node-type="container" data-node-id={id} style={style}>
-        {children}
+        <XmlChildren node={node} />
       </div>
     </GuiObjectEvents>
   );
@@ -197,7 +197,6 @@ function Layout({
   minimum_w,
   maximum_w,
   // droptarget,
-  children,
 }) {
   if (drawBackground && background == null) {
     console.warn("Got a Layout without a background. Rendering null", id);
@@ -233,7 +232,7 @@ function Layout({
             position: "absolute",
           }}
         >
-          {children}
+          <XmlChildren node={node} />
         </div>
       </GuiObjectEvents>
     );
@@ -264,7 +263,7 @@ function Layout({
           ...params,
         }}
       >
-        {children}
+        <XmlChildren node={node} />
       </div>
     </GuiObjectEvents>
   );
@@ -325,7 +324,6 @@ function Button({
   downImage,
   tooltip,
   node,
-  children,
 }) {
   const [down, setDown] = React.useState(false);
   const imgId = down && downImage ? downImage : image;
@@ -371,7 +369,7 @@ function Button({
           backgroundImage: `url(${img.imgUrl})`,
         }}
       >
-        {children}
+        <XmlChildren node={node} />
       </div>
     </GuiObjectEvents>
   );
@@ -416,7 +414,7 @@ function ToggleButton(props) {
   return <Button data-node-type="togglebutton" {...props} />;
 }
 
-function Group({ node, id, children, x, y }) {
+function Group({ node, id, x, y }) {
   const style = {
     position: "absolute",
   };
@@ -429,7 +427,7 @@ function Group({ node, id, children, x, y }) {
   return (
     <GuiObjectEvents node={node}>
       <div data-node-type="group" data-node-id={id} style={style}>
-        {children}
+        <XmlChildren node={node} />
       </div>
     </GuiObjectEvents>
   );
@@ -438,7 +436,6 @@ function Group({ node, id, children, x, y }) {
 function Text({
   node,
   id,
-  children,
   display,
   // ticker,
   // antialias,
@@ -490,7 +487,7 @@ function Text({
         }}
       >
         {nodeText}
-        {children}
+        <XmlChildren node={node} />
       </div>
     </GuiObjectEvents>
   );
@@ -507,9 +504,9 @@ const NODE_NAME_TO_COMPONENT = {
   text: Text,
 };
 
-function DummyComponent({ node, children }) {
+function DummyComponent({ node }) {
   console.warn("Unknown node type", node.name);
-  return <>{children}</>;
+  return <XmlChildren node={node} />;
 }
 
 function XmlChildren({ node }) {
@@ -538,11 +535,7 @@ function XmlNode({ node }) {
   }
   useJsUpdates(node);
   const Component = NODE_NAME_TO_COMPONENT[name] || DummyComponent;
-  return (
-    <Component node={node} {...node.attributes}>
-      <XmlChildren node={node} />
-    </Component>
-  );
+  return <Component node={node} {...node.attributes} />;
 }
 
 function getSkinUrlFromQueryParams() {
