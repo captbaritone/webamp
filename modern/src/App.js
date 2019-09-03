@@ -507,6 +507,11 @@ const NODE_NAME_TO_COMPONENT = {
   text: Text,
 };
 
+function DummyComponent({ node, children }) {
+  console.warn("Unknown node type", node.name);
+  return <>{children}</>;
+}
+
 // Given a skin XML node, pick which component to use, and render it.
 function XmlNode({ node }) {
   const { name } = node;
@@ -521,7 +526,7 @@ function XmlNode({ node }) {
     return null;
   }
   useJsUpdates(node);
-  const Component = NODE_NAME_TO_COMPONENT[name];
+  const Component = NODE_NAME_TO_COMPONENT[name] || DummyComponent;
   const childNodes = node.children || [];
   const children = childNodes.map(
     (childNode, i) =>
@@ -529,14 +534,6 @@ function XmlNode({ node }) {
         <XmlNode key={i} node={childNode} {...childNode.attributes} />
       )
   );
-  if (Component == null) {
-    console.warn("Unknown node type", name);
-    if (childNodes.length) {
-      return <>{children}</>;
-    }
-    return null;
-  }
-
   return (
     <Component node={node} {...node.attributes}>
       {children}
