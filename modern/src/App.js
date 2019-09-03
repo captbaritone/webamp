@@ -176,9 +176,14 @@ function Container(props) {
     style.display = default_visible ? "block" : "none";
   }
 
+  const layout = node.getcurlayout();
+  if (layout == null) {
+    return null;
+  }
+
   return (
     <div data-node-type="container" data-node-id={id} style={style}>
-      <XmlChildren node={node} />
+      <XmlNode node={layout} />
     </div>
   );
 }
