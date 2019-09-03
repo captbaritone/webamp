@@ -115,7 +115,7 @@ function handleMouseButtonEventDispatch(
   );
 }
 
-function GuiObjectEvents({ Component, node, children }) {
+function GuiObjectEvents({ node, children }) {
   const { alpha, ghost } = node.attributes;
 
   return (
@@ -153,15 +153,13 @@ function GuiObjectEvents({ Component, node, children }) {
         pointerEvents: ghost === 1 ? "none" : null,
       }}
     >
-      <Component node={node} {...node.attributes}>
-        {children}
-      </Component>
+      {children}
     </div>
   );
 }
 
 function Container(props) {
-  const { id, children, default_x, default_y, default_visible } = props;
+  const { id, node, children, default_x, default_y, default_visible } = props;
   const style = {
     position: "absolute",
   };
@@ -176,9 +174,11 @@ function Container(props) {
   }
 
   return (
-    <div data-node-type="container" data-node-id={id} style={style}>
-      {children}
-    </div>
+    <GuiObjectEvents node={node}>
+      <div data-node-type="container" data-node-id={id} style={style}>
+        {children}
+      </div>
+    </GuiObjectEvents>
   );
 }
 
@@ -215,25 +215,27 @@ function Layout({
     }
 
     return (
-      <div
-        data-node-type="layout"
-        data-node-id={id}
-        src={image.imgUrl}
-        draggable={false}
-        style={{
-          backgroundImage: `url(${image.imgUrl})`,
-          width: image.w,
-          height: image.h,
-          // TODO: This combo of height/minHeight ect is a bit odd. How should we combine these?
-          minWidth: minimum_w == null ? null : Number(minimum_w),
-          minHeight: minimum_h == null ? null : Number(minimum_h),
-          maxWidth: maximum_w == null ? null : Number(maximum_w),
-          maxHeight: maximum_h == null ? null : Number(maximum_h),
-          position: "absolute",
-        }}
-      >
-        {children}
-      </div>
+      <GuiObjectEvents node={node}>
+        <div
+          data-node-type="layout"
+          data-node-id={id}
+          src={image.imgUrl}
+          draggable={false}
+          style={{
+            backgroundImage: `url(${image.imgUrl})`,
+            width: image.w,
+            height: image.h,
+            // TODO: This combo of height/minHeight ect is a bit odd. How should we combine these?
+            minWidth: minimum_w == null ? null : Number(minimum_w),
+            minHeight: minimum_h == null ? null : Number(minimum_h),
+            maxWidth: maximum_w == null ? null : Number(maximum_w),
+            maxHeight: maximum_h == null ? null : Number(maximum_h),
+            position: "absolute",
+          }}
+        >
+          {children}
+        </div>
+      </GuiObjectEvents>
     );
   }
 
@@ -252,21 +254,23 @@ function Layout({
   }
 
   return (
-    <div
-      data-node-type="layout"
-      data-node-id={id}
-      draggable={false}
-      style={{
-        position: "absolute",
-        ...params,
-      }}
-    >
-      {children}
-    </div>
+    <GuiObjectEvents node={node}>
+      <div
+        data-node-type="layout"
+        data-node-id={id}
+        draggable={false}
+        style={{
+          position: "absolute",
+          ...params,
+        }}
+      >
+        {children}
+      </div>
+    </GuiObjectEvents>
   );
 }
 
-function Layer({ node, id, image, children, x, y }) {
+function Layer({ node, id, image, x, y }) {
   if (image == null) {
     console.warn("Got an Layer without an image. Rendering null", id);
     return null;
@@ -299,14 +303,16 @@ function Layer({ node, id, image, children, x, y }) {
     params.backgroundImage = `url(${img.imgUrl}`;
   }
   return (
-    <div
-      data-node-type="Layer"
-      data-node-id={id}
-      draggable={false}
-      style={{ position: "absolute", ...params }}
-    >
-      {children}
-    </div>
+    <GuiObjectEvents node={node}>
+      <div
+        data-node-type="Layer"
+        data-node-id={id}
+        draggable={false}
+        style={{ position: "absolute", ...params }}
+      >
+        <XmlChildren node={node} />
+      </div>
+    </GuiObjectEvents>
   );
 }
 
@@ -335,37 +341,39 @@ function Button({
   }
 
   return (
-    <div
-      data-node-type="button"
-      data-node-id={id}
-      onMouseDown={() => {
-        setDown(true);
-        document.addEventListener("mouseup", () => {
-          // TODO: This could be unmounted
-          setDown(false);
-        });
-      }}
-      onClick={e => {
-        if (e.button === 2) {
-          node.js_trigger("onRightClick");
-        } else {
-          node.js_trigger("onLeftClick");
-        }
-      }}
-      title={tooltip}
-      style={{
-        position: "absolute",
-        top: Number(y),
-        left: Number(x),
-        backgroundPositionX: -Number(img.x),
-        backgroundPositionY: -Number(img.y),
-        width: Number(img.w),
-        height: Number(img.h),
-        backgroundImage: `url(${img.imgUrl})`,
-      }}
-    >
-      {children}
-    </div>
+    <GuiObjectEvents node={node}>
+      <div
+        data-node-type="button"
+        data-node-id={id}
+        onMouseDown={() => {
+          setDown(true);
+          document.addEventListener("mouseup", () => {
+            // TODO: This could be unmounted
+            setDown(false);
+          });
+        }}
+        onClick={e => {
+          if (e.button === 2) {
+            node.js_trigger("onRightClick");
+          } else {
+            node.js_trigger("onLeftClick");
+          }
+        }}
+        title={tooltip}
+        style={{
+          position: "absolute",
+          top: Number(y),
+          left: Number(x),
+          backgroundPositionX: -Number(img.x),
+          backgroundPositionY: -Number(img.y),
+          width: Number(img.w),
+          height: Number(img.h),
+          backgroundImage: `url(${img.imgUrl})`,
+        }}
+      >
+        {children}
+      </div>
+    </GuiObjectEvents>
   );
 }
 
@@ -408,8 +416,7 @@ function ToggleButton(props) {
   return <Button data-node-type="togglebutton" {...props} />;
 }
 
-function Group(props) {
-  const { id, children, x, y } = props;
+function Group({ node, id, children, x, y }) {
   const style = {
     position: "absolute",
   };
@@ -420,14 +427,16 @@ function Group(props) {
     style.top = Number(y);
   }
   return (
-    <div data-node-type="group" data-node-id={id} style={style}>
-      {children}
-    </div>
+    <GuiObjectEvents node={node}>
+      <div data-node-type="group" data-node-id={id} style={style}>
+        {children}
+      </div>
+    </GuiObjectEvents>
   );
 }
 
 function Text({
-  // node,
+  node,
   id,
   children,
   display,
@@ -468,20 +477,22 @@ function Text({
   // e.g. songname, time
   const nodeText = display;
   return (
-    <div
-      data-node-type="Text"
-      data-node-id={id}
-      draggable={false}
-      style={{
-        position: "absolute",
-        userSelect: "none",
-        MozUserSelect: "none",
-        ...params,
-      }}
-    >
-      {nodeText}
-      {children}
-    </div>
+    <GuiObjectEvents node={node}>
+      <div
+        data-node-type="Text"
+        data-node-id={id}
+        draggable={false}
+        style={{
+          position: "absolute",
+          userSelect: "none",
+          MozUserSelect: "none",
+          ...params,
+        }}
+      >
+        {nodeText}
+        {children}
+      </div>
+    </GuiObjectEvents>
   );
 }
 
@@ -495,8 +506,6 @@ const NODE_NAME_TO_COMPONENT = {
   popupmenu: Popupmenu,
   text: Text,
 };
-
-const NODE_NO_EVENTS = new Set(["popupmenu"]);
 
 // Given a skin XML node, pick which component to use, and render it.
 function XmlNode({ node }) {
@@ -517,7 +526,7 @@ function XmlNode({ node }) {
   const children = childNodes.map(
     (childNode, i) =>
       (childNode.visible || childNode.visible === undefined) && (
-        <XmlNode key={i} node={childNode} />
+        <XmlNode key={i} node={childNode} {...childNode.attributes} />
       )
   );
   if (Component == null) {
@@ -528,18 +537,10 @@ function XmlNode({ node }) {
     return null;
   }
 
-  if (NODE_NO_EVENTS.has(name)) {
-    return (
-      <Component node={node} {...node.attributes}>
-        {children}
-      </Component>
-    );
-  }
-
   return (
-    <GuiObjectEvents Component={Component} node={node}>
+    <Component node={node} {...node.attributes}>
       {children}
-    </GuiObjectEvents>
+    </Component>
   );
 }
 
