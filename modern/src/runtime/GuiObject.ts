@@ -126,7 +126,6 @@ class GuiObject extends MakiObject {
 
   isvisible() {
     return this.visible;
-    return;
   }
 
   onsetvisible(onoff: boolean) {
