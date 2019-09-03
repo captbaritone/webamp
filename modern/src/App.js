@@ -512,6 +512,17 @@ function DummyComponent({ node, children }) {
   return <>{children}</>;
 }
 
+function XmlChildren({ node }) {
+  const childNodes = node.children || [];
+  const children = childNodes.map(
+    (childNode, i) =>
+      (childNode.visible || childNode.visible === undefined) && (
+        <XmlNode key={i} node={childNode} {...childNode.attributes} />
+      )
+  );
+  return children;
+}
+
 // Given a skin XML node, pick which component to use, and render it.
 function XmlNode({ node }) {
   const { name } = node;
@@ -527,16 +538,9 @@ function XmlNode({ node }) {
   }
   useJsUpdates(node);
   const Component = NODE_NAME_TO_COMPONENT[name] || DummyComponent;
-  const childNodes = node.children || [];
-  const children = childNodes.map(
-    (childNode, i) =>
-      (childNode.visible || childNode.visible === undefined) && (
-        <XmlNode key={i} node={childNode} {...childNode.attributes} />
-      )
-  );
   return (
     <Component node={node} {...node.attributes}>
-      {children}
+      <XmlChildren node={node} />
     </Component>
   );
 }
