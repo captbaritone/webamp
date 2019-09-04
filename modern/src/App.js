@@ -152,7 +152,7 @@ function GuiObjectEvents({ node, children }) {
         return false;
       }}
       style={{
-        opacity: alpha == null ? 1 : Number(alpha),
+        opacity: alpha == null ? 1 : alpha / 100,
         pointerEvents: ghost === 1 ? "none" : null,
       }}
     >
