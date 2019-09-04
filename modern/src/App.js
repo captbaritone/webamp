@@ -276,7 +276,7 @@ function Layout({
   );
 }
 
-function Layer({ id, node, js_assets, image, children, x, y }) {
+function Layer({ id, node, js_assets, image, x, y }) {
   if (image == null) {
     console.warn("Got an Layer without an image. Rendering null", id);
     return null;
