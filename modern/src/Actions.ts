@@ -66,7 +66,7 @@ export function gotSkinZip(zip: JSZip, store: ModernStore) {
         case "script": {
           // TODO: stop ignoring standardframe
           if (node.attributes.file.endsWith("standardframe.maki")) {
-            break;
+            return node;
           }
           const scriptGroup = Utils.findParentNodeOfType(
             node,
