@@ -7,6 +7,8 @@ import * as Selectors from "../Selectors";
 class System extends MakiObject {
   scriptGroup: Group;
   root: MakiObject;
+  _privateInt: Map<string, Map<string, number>>;
+  _privateString: Map<string, Map<string, string>>;
   constructor(scriptGroup, store) {
     super(null, null, {}, store);
 
@@ -15,6 +17,9 @@ class System extends MakiObject {
     while (this.root.parent) {
       this.root = this.root.parent;
     }
+    // TODO: Replace these with a DefaultMap once we have one.
+    this._privateInt = new Map();
+    this._privateString = new Map();
   }
 
   /**
@@ -104,13 +109,20 @@ class System extends MakiObject {
     return parseInt(str, 10);
   }
 
-  getprivateint(section: string, item: string, defvalue: number) {
-    unimplementedWarning("getprivateint");
-    return defvalue;
+  getprivateint(section: string, item: string, defvalue: number): number {
+    if (!this._privateInt.has(section)) {
+      return defvalue;
+    }
+    this._privateInt.get(section).get(item);
   }
 
-  setprivateint(section: string, item: string, defvalue: number) {
-    unimplementedWarning("setprivateint");
+  // I think `defvalue` here is a typo that we inherited from std.mi. It should just be `value`.
+  setprivateint(section: string, item: string, defvalue: number): void {
+    if (!this._privateInt.has(section)) {
+      this._privateInt.set(section, new Map([[item, defvalue]]));
+    } else {
+      this._privateInt.get(section).set(item, defvalue);
+    }
   }
 
   getleftvumeter() {
@@ -480,24 +492,20 @@ class System extends MakiObject {
     return;
   }
 
-  strlen(str: string) {
-    unimplementedWarning("strlen");
-    return;
+  strlen(str: string): number {
+    return str.length;
   }
 
-  strupper(str: string) {
-    unimplementedWarning("strupper");
-    return;
+  strupper(str: string): string {
+    return str.toUpperCase();
   }
 
-  strlower(str: string) {
-    unimplementedWarning("strlower");
-    return;
+  strlower(str: string): string {
+    return str.toLowerCase();
   }
 
-  urlencode(url: string) {
-    unimplementedWarning("urlencode");
-    return;
+  urlencode(url: string): string {
+    return encodeURI(url);
   }
 
   removepath(str: string) {
@@ -516,53 +524,43 @@ class System extends MakiObject {
   }
 
   sin(value: number) {
-    unimplementedWarning("sin");
-    return;
+    return Math.sin(value);
   }
 
   cos(value: number) {
-    unimplementedWarning("cos");
-    return;
+    return Math.cos(value);
   }
 
   tan(value: number) {
-    unimplementedWarning("tan");
-    return;
+    return Math.tan(value);
   }
 
   asin(value: number) {
-    unimplementedWarning("asin");
-    return;
+    return Math.asin(value);
   }
 
   acos(value: number) {
-    unimplementedWarning("acos");
-    return;
+    return Math.acos(value);
   }
 
   atan(value: number) {
-    unimplementedWarning("atan");
-    return;
+    return Math.atan(value);
   }
 
   atan2(y: number, x: number) {
-    unimplementedWarning("atan2");
-    return;
+    return Math.atan2(y, x);
   }
 
   pow(value: number, pvalue: number) {
-    unimplementedWarning("pow");
-    return;
+    return Math.pow(value, pvalue);
   }
 
   sqr(value: number) {
-    unimplementedWarning("sqr");
-    return;
+    return Math.pow(value, 2);
   }
 
   sqrt(value: number) {
-    unimplementedWarning("sqrt");
-    return;
+    return Math.sqrt(value);
   }
 
   random(max: number) {
@@ -571,13 +569,18 @@ class System extends MakiObject {
   }
 
   setprivatestring(section: string, item: string, value: string) {
-    unimplementedWarning("setprivatestring");
-    return;
+    if (!this._privateString.has(section)) {
+      this._privateString.set(section, new Map([[item, value]]));
+    } else {
+      this._privateString.get(section).set(item, value);
+    }
   }
 
   getprivatestring(section: string, item: string, defvalue: string) {
-    unimplementedWarning("getprivatestring");
-    return;
+    if (!this._privateString.has(section)) {
+      return defvalue;
+    }
+    this._privateString.get(section).get(item);
   }
 
   setpublicstring(item: string, value: string) {
@@ -745,9 +748,8 @@ class System extends MakiObject {
     return;
   }
 
-  chr(charnum: number) {
-    unimplementedWarning("chr");
-    return;
+  chr(charnum: number): string {
+    return String.fromCharCode(charnum);
   }
 
   selectfile(extlist: string, id: string, prev_filename: string) {
