@@ -508,7 +508,7 @@ class System extends MakiObject {
     return encodeURI(url);
   }
 
-  removepath(str: string) {
+  removepath(str: string): string {
     unimplementedWarning("removepath");
     return;
   }
@@ -523,7 +523,7 @@ class System extends MakiObject {
     return;
   }
 
-  sin(value: number) {
+  sin(value: number): number {
     return Math.sin(value);
   }
 
@@ -543,7 +543,7 @@ class System extends MakiObject {
     return Math.acos(value);
   }
 
-  atan(value: number) {
+  atan(value: number): number {
     return Math.atan(value);
   }
 
@@ -555,20 +555,19 @@ class System extends MakiObject {
     return Math.pow(value, pvalue);
   }
 
-  sqr(value: number) {
+  sqr(value: number): number {
     return Math.pow(value, 2);
   }
 
-  sqrt(value: number) {
+  sqrt(value: number): number {
     return Math.sqrt(value);
   }
 
-  random(max: number) {
-    unimplementedWarning("random");
-    return;
+  random(max: number): number {
+    return Math.floor(Math.random() * max);
   }
 
-  setprivatestring(section: string, item: string, value: string) {
+  setprivatestring(section: string, item: string, value: string): void {
     if (!this._privateString.has(section)) {
       this._privateString.set(section, new Map([[item, value]]));
     } else {
@@ -576,7 +575,7 @@ class System extends MakiObject {
     }
   }
 
-  getprivatestring(section: string, item: string, defvalue: string) {
+  getprivatestring(section: string, item: string, defvalue: string): string {
     if (!this._privateString.has(section)) {
       return defvalue;
     }
