@@ -47,16 +47,14 @@ class GuiObject extends MakiObject {
     return findDescendantByTypeAndId(this, null, id);
   }
 
-  init(newRoot) {
+  init(newRoot): void {
     this.parent = newRoot;
     newRoot.js_addChild(this);
-    return this;
   }
 
-  setxmlparam(param: string, value: string) {
+  setxmlparam(param: string, value: string): void {
     this.attributes[param] = value;
     this.js_trigger("js_update");
-    return value;
   }
 
   getxmlparam(param: string) {
@@ -71,42 +69,42 @@ class GuiObject extends MakiObject {
     return findParentNodeOfType(this, new Set(["layout"]));
   }
 
-  show() {
+  show(): void {
     this.visible = true;
     this.parent.js_trigger("js_update");
   }
 
-  hide() {
+  hide(): void {
     this.visible = false;
     this.parent.js_trigger("js_update");
   }
 
-  gettop() {
+  gettop(): number {
     return this._compareToUidSelector(
       Number(this.attributes.y) || 0,
       MakiSelectors.getTop
     );
   }
 
-  getleft() {
+  getleft(): number {
     return Number(this.attributes.x) || 0;
   }
 
-  getheight() {
+  getheight(): number {
     // TODO
     // I don't know how it gets calculated exactly, but if a node has a minimum
     // and maximum h, but no h, getwidth still returns a value, return min for now
     return Number(this.attributes.h) || Number(this.attributes.minimum_h) || 0;
   }
 
-  getwidth() {
+  getwidth(): number {
     // TODO
     // I don't know how it gets calculated exactly, but if a node has a minimum
     // and maximum w, but no w, getwidth still returns a value, return min for now
     return Number(this.attributes.w) || Number(this.attributes.minimum_w) || 0;
   }
 
-  resize(x: number, y: number, w: number, h: number) {
+  resize(x: number, y: number, w: number, h: number): void {
     this.attributes.x = x;
     this.attributes.y = y;
     this.attributes.w = w;
@@ -119,13 +117,12 @@ class GuiObject extends MakiObject {
   }
 
   // alpha range from 0-255
-  setalpha(alpha: number) {
+  setalpha(alpha: number): void {
     this.attributes.alpha = alpha;
-    this.js_trigger("js_update");
   }
 
-  isvisible() {
-    return this.visible;
+  isvisible(): number {
+    return this.visible ? 1 : 0;
   }
 
   onsetvisible(onoff: boolean) {
@@ -229,7 +226,8 @@ class GuiObject extends MakiObject {
   }
 
   // alpha range from 0-255
-  settargeta(alpha: number) {
+  settargeta(alpha: number): void {
+    unimplementedWarning("settargeta");
     this.attributes.alpha = alpha;
     this.js_trigger("js_update");
   }

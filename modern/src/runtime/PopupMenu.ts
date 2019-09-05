@@ -19,7 +19,12 @@ class PopupMenu extends MakiObject {
     return "PopupMenu";
   }
 
-  addcommand(txt: string, id: number, checked: boolean, disabled: boolean) {
+  addcommand(
+    txt: string,
+    id: number,
+    checked: boolean,
+    disabled: boolean
+  ): void {
     this.commands.push({
       name: txt,
       id,
@@ -28,7 +33,7 @@ class PopupMenu extends MakiObject {
     });
   }
 
-  addseparator() {
+  addseparator(): void {
     this.commands.push({ id: "separator" });
   }
 

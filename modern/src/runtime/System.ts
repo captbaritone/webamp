@@ -140,7 +140,7 @@ class System extends MakiObject {
     return Selectors.getVolume(this._store.getState());
   }
 
-  setvolume(volume: number) {
+  setvolume(volume: number): void {
     return this._store.dispatch(Actions.setVolume(volume));
   }
 
@@ -527,19 +527,19 @@ class System extends MakiObject {
     return Math.sin(value);
   }
 
-  cos(value: number) {
+  cos(value: number): number {
     return Math.cos(value);
   }
 
-  tan(value: number) {
+  tan(value: number): number {
     return Math.tan(value);
   }
 
-  asin(value: number) {
+  asin(value: number): number {
     return Math.asin(value);
   }
 
-  acos(value: number) {
+  acos(value: number): number {
     return Math.acos(value);
   }
 
@@ -547,11 +547,11 @@ class System extends MakiObject {
     return Math.atan(value);
   }
 
-  atan2(y: number, x: number) {
+  atan2(y: number, x: number): number {
     return Math.atan2(y, x);
   }
 
-  pow(value: number, pvalue: number) {
+  pow(value: number, pvalue: number): number {
     return Math.pow(value, pvalue);
   }
 
