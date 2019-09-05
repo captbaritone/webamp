@@ -119,6 +119,7 @@ class GuiObject extends MakiObject {
   // alpha range from 0-255
   setalpha(alpha: number): void {
     this.attributes.alpha = alpha;
+    this.js_trigger("js_update");
   }
 
   isvisible(): number {
