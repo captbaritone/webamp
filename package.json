@@ -64,6 +64,7 @@
     "@babel/preset-typescript": "^7.0.0",
     "@babel/runtime": "^7.0.0",
     "@types/classnames": "^2.2.6",
+    "@types/css-font-loading-module": "^0.0.2",
     "@types/fscreen": "^1.0.1",
     "@types/invariant": "^2.2.29",
     "@types/jest": "^23.3.2",

@@ -102,7 +102,15 @@ const parsers = {
   slider: (node, parent, zip, store) =>
     new Slider(node, parent, undefined, store),
   gammagroup: noop,
-  truetypefont: noop,
+  truetypefont: async (node, parent, zip, store) => {
+    const { file } = node.attributes;
+    const font = Utils.getCaseInsensitveFile(zip, file);
+    const fontBlob = await font.async("blob");
+    const fontUrl = await Utils.getUrlFromBlob(fontBlob);
+    const fontFamily = `font-${Utils.getId()}-${file.replace(/\./, "_")}`;
+    await Utils.loadFont(fontUrl, fontFamily);
+    return new MakiObject(node, parent, { fontFamily }, store);
+  },
   component: (node, parent, zip, store) =>
     new Component(node, parent, undefined, store),
   text: (node, parent, zip, store) => new Text(node, parent, undefined, store),
