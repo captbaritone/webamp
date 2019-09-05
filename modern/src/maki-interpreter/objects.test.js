@@ -173,7 +173,6 @@ Set {
   "System.removepath",
   "System.getpath",
   "System.getextension",
-  "System.random",
   "System.setpublicstring",
   "System.setpublicint",
   "System.getpublicstring",
