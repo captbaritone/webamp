@@ -92,6 +92,6 @@ export function gotSkinZip(zip: JSZip, store: ModernStore) {
   };
 }
 
-export function setVolume(volume: number) {
+export function setVolume(volume: number): ModernAction {
   return { type: "SET_VOLUME", volume };
 }
