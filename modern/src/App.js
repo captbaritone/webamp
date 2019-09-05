@@ -321,6 +321,82 @@ function Layer({ node, id, image, x, y }) {
   );
 }
 
+function AnimatedLayer({
+  node,
+  id,
+  image,
+  x,
+  y,
+  w,
+  h,
+  framewidth,
+  frameheight,
+}) {
+  if (image == null) {
+    console.warn("Got an AnimatedLayer without an image. Rendering null", id);
+    return null;
+  }
+
+  const img = node.js_imageLookup(image.toLowerCase());
+  const frameNum = node.getcurframe();
+
+  const params = {};
+  if (x !== undefined) {
+    params.left = Number(x);
+  }
+  if (y !== undefined) {
+    params.top = Number(y);
+  }
+
+  if (framewidth !== undefined) {
+    params.width = Number(framewidth);
+    params.backgroundPositionX =
+      -(Number(framewidth) * frameNum) % Number(img.w);
+  } else if (w !== undefined) {
+    params.width = Number(w);
+    params.backgroundPositionX = -(Number(w) * frameNum) % Number(img.w);
+  } else {
+    if (img.w !== undefined) {
+      params.width = Number(img.w);
+    }
+    if (img.x !== undefined) {
+      params.backgroundPositionX = -Number(img.x);
+    }
+  }
+
+  if (frameheight !== undefined) {
+    params.height = Number(frameheight);
+    params.backgroundPositionY = -Number(frameheight) * frameNum;
+  } else if (h !== undefined) {
+    params.height = Number(h);
+    params.backgroundPositionY = -Number(h) * frameNum;
+  } else {
+    if (img.h !== undefined) {
+      params.height = Number(img.h);
+    }
+    if (img.y !== undefined) {
+      params.backgroundPositionY = -Number(img.y);
+    }
+  }
+
+  if (img.imgUrl !== undefined) {
+    params.backgroundImage = `url(${img.imgUrl}`;
+  }
+
+  return (
+    <GuiObjectEvents node={node}>
+      <div
+        data-node-type="AnimatedLayer"
+        data-node-id={id}
+        draggable={false}
+        style={{ position: "absolute", ...params }}
+      >
+        <XmlChildren node={node} />
+      </div>
+    </GuiObjectEvents>
+  );
+}
+
 function Button({
   id,
   image,
@@ -508,6 +584,7 @@ const NODE_NAME_TO_COMPONENT = {
   group: Group,
   popupmenu: Popupmenu,
   text: Text,
+  animatedlayer: AnimatedLayer,
 };
 
 function DummyComponent({ node }) {
@@ -526,15 +603,21 @@ function XmlChildren({ node }) {
 
 // Given a skin XML node, pick which component to use, and render it.
 function XmlNode({ node }) {
-  const { name } = node;
+  let { name } = node;
+  if (name == null) {
+    // name is null is likely a comment
+    return null;
+  }
+  name = name.toLowerCase();
   if (
-    name == null ||
     name === "groupdef" ||
     name === "elements" ||
     name === "gammaset" ||
-    name === "scripts"
+    name === "scripts" ||
+    name === "script" ||
+    name === "skininfo"
   ) {
-    // name is null is likely a comment
+    // these nodes dont need to be rendered
     return null;
   }
   useJsUpdates(node);

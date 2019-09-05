@@ -2,6 +2,97 @@ import Layer from "./Layer";
 import { unimplementedWarning } from "../utils";
 
 class AnimatedLayer extends Layer {
+  _playing: boolean;
+  _frameNum: number;
+
+  constructor(node, parent, annotations, store) {
+    super(node, parent, annotations, store);
+
+    if (!node.attributes.hasOwnProperty("autoplay")) {
+      node.attributes.autoplay = "0";
+    }
+
+    if (!node.attributes.hasOwnProperty("autoreplay")) {
+      node.attributes.autoreplay = "1";
+    }
+
+    if (!node.attributes.hasOwnProperty("speed")) {
+      node.attributes.speed = "200";
+    }
+
+    node.attributes.autoplay = !!Number(node.attributes.autoplay);
+    node.attributes.autoreplay = !!Number(node.attributes.autoreplay);
+
+    this._initializeStartEnd(node);
+
+    this._playing = node.attributes.autoplay;
+    this._frameNum = node.attributes.start || 0;
+
+    this.js_listen("js_framechange", () => {
+      this._frameNum += 1;
+      if (this._frameNum > Number(this.getendframe())) {
+        this._frameNum = this.getstartframe();
+        if (!node.attributes.autoreplay) {
+          return;
+        }
+      }
+      this.js_trigger("js_update");
+
+      if (this._playing) {
+        setTimeout(
+          () => this.js_trigger("js_framechange"),
+          Number(node.attributes.speed)
+        );
+      }
+    });
+
+    if (this._playing) {
+      this.js_trigger("js_framechange");
+    }
+  }
+
+  _initializeStartEnd(node) {
+    if (
+      node.attributes.start !== undefined &&
+      node.attributes.end !== undefined
+    ) {
+      return;
+    }
+
+    const image = this.js_imageLookup(node.attributes.image);
+    if (!image) {
+      console.warn("Could not find image: ", node.attributes.image);
+      return;
+    }
+
+    let start, end;
+    if (node.attributes.frameheight) {
+      start = 0;
+      end = Math.ceil(image.h / node.attributes.frameheight);
+    } else if (node.attributes.framewidth) {
+      start = 0;
+      end = Math.ceil(image.w / node.attributes.framewidth);
+    } else {
+      // In the general case where we don't have a frameheight/framewidth and
+      // the start/end are not both set, we calculate the end frame by
+      // calculating the end in both directions and picking the longer repeat length
+      const width =
+        node.attributes.w !== undefined ? node.attributes.w : image.w;
+      const height =
+        node.attributes.h !== undefined ? node.attributes.h : image.h;
+      start = 0;
+      end = Math.max(Math.ceil(image.w / width), Math.ceil(image.h / height));
+    }
+
+    if (node.attributes.start !== undefined) {
+      node.attributes.start = start;
+    }
+
+    if (node.attributes.end !== undefined) {
+      node.attributes.end = end;
+    }
+  }
+
   /**
    * getclassname()
    *
@@ -13,28 +104,32 @@ class AnimatedLayer extends Layer {
   }
 
   play() {
-    unimplementedWarning("play");
+    // TODO: do we need to trigger something for `onplay`/`onresume` events?
+    this._playing = true;
+    this.js_trigger("js_framechange");
   }
 
   pause() {
-    unimplementedWarning("pause");
+    // TODO: do we need to trigger something for `onpause` events?
+    this._playing = false;
   }
 
   stop() {
-    unimplementedWarning("stop");
+    // TODO: do we need to trigger something for `onstop` events?
+    this._playing = false;
+    this._frameNum = this.getstartframe();
   }
 
   setspeed(msperframe: number) {
-    unimplementedWarning("setspeed");
+    this.attributes.speed = msperframe;
   }
 
   gotoframe(framenum: number) {
-    unimplementedWarning("gotoframe");
+    this._frameNum = framenum;
   }
 
   getlength() {
-    unimplementedWarning("getlength");
-    return 10;
+    return Number(this.getendframe()) - Number(this.getstartframe());
   }
 
   onplay() {
@@ -63,23 +158,19 @@ class AnimatedLayer extends Layer {
   }
 
   setstartframe(framenum: number) {
-    unimplementedWarning("setstartframe");
-    return;
+    this.attributes.start = framenum;
   }
 
   setendframe(framenum: number) {
-    unimplementedWarning("setendframe");
-    return;
+    this.attributes.end = framenum;
   }
 
   setautoreplay(onoff: boolean) {
-    unimplementedWarning("setautoreplay");
-    return;
+    this.attributes.autoreplay = onoff;
   }
 
   isplaying() {
-    unimplementedWarning("isplaying");
-    return;
+    return this._playing;
   }
 
   ispaused() {
@@ -93,13 +184,11 @@ class AnimatedLayer extends Layer {
   }
 
   getstartframe() {
-    unimplementedWarning("getstartframe");
-    return;
+    return this.attributes.start;
   }
 
   getendframe() {
-    unimplementedWarning("getendframe");
-    return;
+    return this.attributes.end;
   }
 
   getdirection() {
@@ -108,13 +197,11 @@ class AnimatedLayer extends Layer {
   }
 
   getautoreplay() {
-    unimplementedWarning("getautoreplay");
-    return;
+    return this.attributes.autoreplay;
   }
 
   getcurframe() {
-    unimplementedWarning("getcurframe");
-    return;
+    return this._frameNum;
   }
 
   setrealtime(onoff: boolean) {
