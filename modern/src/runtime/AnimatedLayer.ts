@@ -22,6 +22,9 @@ class AnimatedLayer extends Layer {
 
     node.attributes.autoplay = !!Number(node.attributes.autoplay);
     node.attributes.autoreplay = !!Number(node.attributes.autoreplay);
+    node.attributes.speed = Number(node.attributes.speed);
+    node.attributes.start = Number(node.attributes.start);
+    node.attributes.end = Number(node.attributes.end);
 
     this._initializeStartEnd(node);
 
@@ -30,7 +33,7 @@ class AnimatedLayer extends Layer {
 
     this.js_listen("js_framechange", () => {
       this._frameNum += 1;
-      if (this._frameNum > Number(this.getendframe())) {
+      if (this._frameNum > this.getendframe()) {
         this._frameNum = this.getstartframe();
         if (!node.attributes.autoreplay) {
           return;
@@ -41,7 +44,7 @@ class AnimatedLayer extends Layer {
       if (this._playing) {
         setTimeout(
           () => this.js_trigger("js_framechange"),
-          Number(node.attributes.speed)
+          node.attributes.speed
         );
       }
     });
@@ -99,37 +102,37 @@ class AnimatedLayer extends Layer {
    * Returns the class name for the object.
    * @ret The class name.
    */
-  getclassname() {
+  getclassname(): string {
     return "AnimatedLayer";
   }
 
-  play() {
+  play(): void {
     // TODO: do we need to trigger something for `onplay`/`onresume` events?
     this._playing = true;
     this.js_trigger("js_framechange");
   }
 
-  pause() {
+  pause(): void {
     // TODO: do we need to trigger something for `onpause` events?
     this._playing = false;
   }
 
-  stop() {
+  stop(): void {
     // TODO: do we need to trigger something for `onstop` events?
     this._playing = false;
     this._frameNum = this.getstartframe();
   }
 
-  setspeed(msperframe: number) {
+  setspeed(msperframe: number): void {
     this.attributes.speed = msperframe;
   }
 
-  gotoframe(framenum: number) {
+  gotoframe(framenum: number): void {
     this._frameNum = framenum;
   }
 
-  getlength() {
-    return Number(this.getendframe()) - Number(this.getstartframe());
+  getlength(): number {
+    return this.getendframe() - this.getstartframe();
   }
 
   onplay() {
@@ -157,19 +160,19 @@ class AnimatedLayer extends Layer {
     return;
   }
 
-  setstartframe(framenum: number) {
+  setstartframe(framenum: number): void {
     this.attributes.start = framenum;
   }
 
-  setendframe(framenum: number) {
+  setendframe(framenum: number): void {
     this.attributes.end = framenum;
   }
 
-  setautoreplay(onoff: boolean) {
+  setautoreplay(onoff: boolean): void {
     this.attributes.autoreplay = onoff;
   }
 
-  isplaying() {
+  isplaying(): boolean {
     return this._playing;
   }
 
@@ -183,11 +186,11 @@ class AnimatedLayer extends Layer {
     return;
   }
 
-  getstartframe() {
+  getstartframe(): number {
     return this.attributes.start;
   }
 
-  getendframe() {
+  getendframe(): number {
     return this.attributes.end;
   }
 
@@ -196,11 +199,11 @@ class AnimatedLayer extends Layer {
     return;
   }
 
-  getautoreplay() {
+  getautoreplay(): boolean {
     return this.attributes.autoreplay;
   }
 
-  getcurframe() {
+  getcurframe(): number {
     return this._frameNum;
   }
 
