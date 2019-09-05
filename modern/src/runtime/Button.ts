@@ -12,11 +12,11 @@ class Button extends GuiObject {
     return "Button";
   }
 
-  leftclick() {
+  leftclick(): void {
     this.js_trigger("onLeftClick");
   }
 
-  rightclick() {
+  rightclick(): void {
     this.js_trigger("onRightClick");
   }
 

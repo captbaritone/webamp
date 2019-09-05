@@ -16,6 +16,11 @@ for (const value of Object.values(objects)) {
 }
 
 const TYPE_MAP = {
+  // This might be wrong. Maybe it really is an empty string? Or Null?
+  "": {
+    typeScriptName: "TSVoidKeyword",
+    stringRepresentation: "void",
+  },
   string: {
     typeScriptName: "TSStringKeyword",
     stringRepresentation: "string",
@@ -164,7 +169,42 @@ module.exports = {
             return;
           }
 
-          const { params } = node.value;
+          const { params, returnType, body } = node.value;
+          const sourceCode = context.getSourceCode();
+
+          if (returnType == null) {
+            const expectedTypeData = TYPE_MAP[func.result];
+            if (
+              expectedTypeData != null &&
+              !sourceCode.getText(node).includes("unimplementedWarning")
+            ) {
+              context.report({
+                node: body,
+                message: `Missing return type for Maki method. Expected \`${
+                  expectedTypeData.stringRepresentation
+                }\`.`,
+                fix: fixer => {
+                  return fixer.insertTextBefore(
+                    body,
+                    `: ${expectedTypeData.stringRepresentation}`
+                  );
+                },
+              });
+            }
+          } else {
+            const expectedTypeData = TYPE_MAP[func.result];
+            if (
+              expectedTypeData != null &&
+              expectedTypeData.typeScriptName !== returnType.typeAnnotation.type
+            ) {
+              context.report({
+                node: returnType,
+                message: `Incorrect return type for Maki method. Expected \`${
+                  expectedTypeData.stringRepresentation
+                }\`.`,
+              });
+            }
+          }
 
           func.parameters.forEach(([type, name], i) => {
             const actual = params[i];
@@ -179,7 +219,7 @@ module.exports = {
             }
             const expectedTypeData = TYPE_MAP[type.toLowerCase()];
             if (expectedTypeData == null) {
-              console.warn(`Missing type data for ${type}.`);
+              // console.warn(`Missing type data for ${type}.`);
               return;
             }
             const fix = fixer => {

@@ -19,20 +19,19 @@ class Container extends MakiObject {
     return "Container";
   }
 
-  show() {
+  show(): void {
     this.visible = true;
     this.parent.js_trigger("js_update");
   }
 
-  hide() {
+  hide(): void {
     this.visible = false;
     this.parent.js_trigger("js_update");
   }
 
-  setxmlparam(param: string, value: string) {
+  setxmlparam(param: string, value: string): void {
     this.attributes[param] = value;
     this.js_trigger("js_update");
-    return value;
   }
 
   getlayout(id: string) {
