@@ -293,6 +293,7 @@ Set {
   "GuiObject.settargety",
   "GuiObject.settargetw",
   "GuiObject.settargeth",
+  "GuiObject.settargeta",
   "GuiObject.settargetspeed",
   "GuiObject.gototarget",
   "GuiObject.ontargetreached",
