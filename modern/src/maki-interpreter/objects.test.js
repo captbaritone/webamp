@@ -148,8 +148,6 @@ Set {
   "System.seteq",
   "System.getmouseposx",
   "System.getmouseposy",
-  "System.floattostring",
-  "System.stringtofloat",
   "System.integertolongtime",
   "System.integertotime",
   "System.datetotime",
