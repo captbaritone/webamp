@@ -129,6 +129,7 @@ class AnimatedLayer extends Layer {
 
   gotoframe(framenum: number): void {
     this._frameNum = framenum;
+    this.js_trigger("js_update");
   }
 
   getlength(): number {
