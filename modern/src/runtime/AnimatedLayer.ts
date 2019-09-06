@@ -8,34 +8,18 @@ class AnimatedLayer extends Layer {
   constructor(node, parent, annotations, store) {
     super(node, parent, annotations, store);
 
-    if (!node.attributes.hasOwnProperty("autoplay")) {
-      node.attributes.autoplay = "0";
-    }
+    this._setAttributeDefaults(this.attributes);
+    this._convertAttributeTypes(this.attributes);
+    this._initializeStartAndEnd(this.attributes);
 
-    if (!node.attributes.hasOwnProperty("autoreplay")) {
-      node.attributes.autoreplay = "1";
-    }
-
-    if (!node.attributes.hasOwnProperty("speed")) {
-      node.attributes.speed = "200";
-    }
-
-    node.attributes.autoplay = !!Number(node.attributes.autoplay);
-    node.attributes.autoreplay = !!Number(node.attributes.autoreplay);
-    node.attributes.speed = Number(node.attributes.speed);
-    node.attributes.start = Number(node.attributes.start);
-    node.attributes.end = Number(node.attributes.end);
-
-    this._initializeStartEnd(node);
-
-    this._playing = node.attributes.autoplay;
-    this._frameNum = node.attributes.start || 0;
+    this._playing = this.attributes.autoplay;
+    this._frameNum = this.attributes.start || 0;
 
     this.js_listen("js_framechange", () => {
       this._frameNum += 1;
       if (this._frameNum > this.getendframe()) {
         this._frameNum = this.getstartframe();
-        if (!node.attributes.autoreplay) {
+        if (!this.attributes.autoreplay) {
           return;
         }
       }
@@ -44,7 +28,7 @@ class AnimatedLayer extends Layer {
       if (this._playing) {
         setTimeout(
           () => this.js_trigger("js_framechange"),
-          node.attributes.speed
+          this.attributes.speed
         );
       }
     });
@@ -54,45 +38,67 @@ class AnimatedLayer extends Layer {
     }
   }
 
-  _initializeStartEnd(node) {
-    if (
-      node.attributes.start !== undefined &&
-      node.attributes.end !== undefined
-    ) {
+  _setAttributeDefaults(attributes: Object): void {
+    if (attributes.autoplay == null) {
+      attributes.autoplay = "0";
+    }
+    if (attributes.autoreplay == null) {
+      attributes.autoreplay = "1";
+    }
+    if (attributes.speed == null) {
+      attributes.speed = "200";
+    }
+  }
+
+  _convertAttributeTypes(attributes: Object): void {
+    if (attributes.autoplay != null) {
+      attributes.autoplay = !!Number(attributes.autoplay);
+    }
+    if (attributes.autoreplay != null) {
+      attributes.autoreplay = !!Number(attributes.autoreplay);
+    }
+    if (attributes.speed != null) {
+      attributes.speed = Number(attributes.speed);
+    }
+    if (attributes.start != null) {
+      attributes.start = Number(attributes.start);
+    }
+    if (attributes.end != null) {
+      attributes.end = Number(attributes.end);
+    }
+  }
+
+  _initializeStartAndEnd(attributes: Object): void {
+    if (attributes.start != null && attributes.end != null) {
       return;
     }
 
-    const image = this.js_imageLookup(node.attributes.image);
+    const image = this.js_imageLookup(attributes.image);
     if (!image) {
-      console.warn("Could not find image: ", node.attributes.image);
+      console.warn("Could not find image: ", attributes.image);
       return;
     }
 
-    let start, end;
-    if (node.attributes.frameheight) {
-      start = 0;
-      end = Math.ceil(image.h / node.attributes.frameheight);
-    } else if (node.attributes.framewidth) {
-      start = 0;
-      end = Math.ceil(image.w / node.attributes.framewidth);
-    } else {
-      // In the general case where we don't have a frameheight/framewidth and
-      // the start/end are not both set, we calculate the end frame by
-      // calculating the end in both directions and picking the longer repeat length
-      const width =
-        node.attributes.w !== undefined ? node.attributes.w : image.w;
-      const height =
-        node.attributes.h !== undefined ? node.attributes.h : image.h;
-      start = 0;
-      end = Math.max(Math.ceil(image.w / width), Math.ceil(image.h / height));
+    if (attributes.start != null) {
+      attributes.start = 0;
     }
 
-    if (node.attributes.start !== undefined) {
-      node.attributes.start = start;
-    }
-
-    if (node.attributes.end !== undefined) {
-      node.attributes.end = end;
+    if (attributes.end != null) {
+      if (attributes.frameheight) {
+        attributes.end = Math.ceil(image.h / attributes.frameheight);
+      } else if (attributes.framewidth) {
+        attributes.end = Math.ceil(image.w / attributes.framewidth);
+      } else {
+        // In the general case where we don't have a frameheight/framewidth and
+        // the start/end are not both set, we calculate the end frame by
+        // calculating the end in both directions and picking the longer repeat length
+        const width = attributes.w != null ? attributes.w : image.w;
+        const height = attributes.h != null ? attributes.h : image.h;
+        attributes.end = Math.max(
+          Math.ceil(image.w / width),
+          Math.ceil(image.h / height)
+        );
+      }
     }
   }
 
