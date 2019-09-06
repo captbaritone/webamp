@@ -135,6 +135,7 @@ class GuiObject extends MakiObject {
     this.attributes.maximum_w = w;
     this.attributes.minimum_h = h;
     this.attributes.maximum_h = h;
+    this.js_trigger("js_update");
   }
 
   // alpha range from 0-255
