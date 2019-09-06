@@ -24,57 +24,47 @@ const mapRegionNamesToMatcher = {
 
 const numExIsUsed = skinImages => !!skinImages.DIGIT_0_EX;
 
-class Css extends React.Component {
-  componentWillMount() {
-    const style = document.createElement("style");
-    style.type = "text/css";
-    style.id = "webamp-skin";
+function Css({ children }) {
+  const style = React.useMemo(() => {
+    const s = document.createElement("style");
+    s.type = "text/css";
+    s.id = "webamp-skin";
+    return s;
+  }, []);
+
+  React.useLayoutEffect(() => {
     document.head.appendChild(style);
-    this.style = style;
-  }
+    return () => style.remove();
+  }, [style]);
 
-  componentWillUnmount() {
-    this.style.remove();
-    this.style = null;
-  }
-
-  render() {
-    return createPortal(this.props.children, this.style);
-  }
+  return createPortal(children, style);
 }
+// this.props.children should be an object containing arrays of strings. The
+// keys are ids, and the arrays are arrays of polygon point strings
+function ClipPaths({ children }) {
+  const paths = React.useMemo(() => {
+    return document.createElement("div");
+  }, []);
 
-class ClipPaths extends React.Component {
-  componentWillMount() {
-    const paths = document.createElement("div");
+  React.useLayoutEffect(() => {
     document.body.appendChild(paths);
-    this.paths = paths;
-  }
+    return () => paths.remove();
+  }, [paths]);
 
-  componentWillUnmount() {
-    this.paths.remove();
-    this.paths = null;
-  }
-
-  render() {
-    // this.props.children should be an object containing arrays of strings. The
-    // keys are ids, and the arrays are arrays of polygon point strings
-    const { children } = this.props;
-
-    return createPortal(
-      <svg height={0} width={0}>
-        <defs>
-          {Object.keys(children).map(id => (
-            <clipPath id={id} key={id}>
-              {children[id].map((points, i) => (
-                <polygon points={points} key={i} />
-              ))}
-            </clipPath>
-          ))}
-        </defs>
-      </svg>,
-      this.paths
-    );
-  }
+  return createPortal(
+    <svg height={0} width={0}>
+      <defs>
+        {Object.keys(children).map(id => (
+          <clipPath id={id} key={id}>
+            {children[id].map((points, i) => (
+              <polygon points={points} key={i} />
+            ))}
+          </clipPath>
+        ))}
+      </defs>
+    </svg>,
+    paths
+  );
 }
 
 const FALLBACKS = {
