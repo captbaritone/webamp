@@ -145,17 +145,19 @@ class App extends React.Component<Props> {
       return null;
     }
     return ReactDOM.createPortal(
-      <div onBlur={this._handleBlur}>
-        <Skin />
-        <ContextMenuWrapper
-          renderContents={() => <MainContextMenu filePickers={filePickers} />}
-        >
-          <WindowManager
-            windows={this._renderWindows()}
-            container={container}
-          />
-        </ContextMenuWrapper>
-      </div>,
+      <React.StrictMode>
+        <div onBlur={this._handleBlur}>
+          <Skin />
+          <ContextMenuWrapper
+            renderContents={() => <MainContextMenu filePickers={filePickers} />}
+          >
+            <WindowManager
+              windows={this._renderWindows()}
+              container={container}
+            />
+          </ContextMenuWrapper>
+        </div>
+      </React.StrictMode>,
       this._webampNode
     );
   }
