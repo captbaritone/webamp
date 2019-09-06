@@ -79,14 +79,14 @@ class AnimatedLayer extends Layer {
       return;
     }
 
-    if (attributes.start != null) {
+    if (attributes.start == null) {
       attributes.start = 0;
     }
 
-    if (attributes.end != null) {
-      if (attributes.frameheight) {
+    if (attributes.end == null) {
+      if (attributes.frameheight != null) {
         attributes.end = Math.ceil(image.h / attributes.frameheight);
-      } else if (attributes.framewidth) {
+      } else if (attributes.framewidth != null) {
         attributes.end = Math.ceil(image.w / attributes.framewidth);
       } else {
         // In the general case where we don't have a frameheight/framewidth and
