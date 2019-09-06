@@ -11,8 +11,29 @@ class GuiObject extends MakiObject {
   constructor(node, parent, annotations, store) {
     super(node, parent, annotations, store);
 
+    this._setAttributeDefaults(this.attributes);
+    this._convertAttributeTypes(this.attributes);
+
     this.visible = true;
     this._selectorCache = new Map();
+  }
+
+  _setAttributeDefaults(attributes) {
+    if (attributes.alpha == null) {
+      attributes.alpha = "255";
+    }
+    if (attributes.ghost == null) {
+      attributes.ghost = "0";
+    }
+  }
+
+  _convertAttributeTypes(attributes) {
+    if (attributes.alpha != null) {
+      attributes.alpha = Number(attributes.alpha);
+    }
+    if (attributes.ghost != null) {
+      attributes.ghost = !!Number(attributes.ghost);
+    }
   }
 
   _useUidSelector(selector) {
