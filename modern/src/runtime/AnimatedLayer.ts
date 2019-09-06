@@ -85,8 +85,8 @@ class AnimatedLayer extends Layer {
   }
 
   _animationLoop() {
-    requestAnimationFrame(() => {
-      const currentTime = performance.now();
+    window.requestAnimationFrame(() => {
+      const currentTime = window.performance.now();
       if (currentTime > this._animationStartTime + this.attributes.speed) {
         this._animationStartTime = currentTime;
         this.js_trigger("js_framechange");
