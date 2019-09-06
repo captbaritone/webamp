@@ -340,47 +340,47 @@ function AnimatedLayer({
   const img = node.js_imageLookup(image.toLowerCase());
   const frameNum = node.getcurframe();
 
-  const params = {};
+  const style = {};
   if (x !== undefined) {
-    params.left = Number(x);
+    style.left = Number(x);
   }
   if (y !== undefined) {
-    params.top = Number(y);
+    style.top = Number(y);
   }
 
   if (framewidth !== undefined) {
-    params.width = Number(framewidth);
-    params.backgroundPositionX =
+    style.width = Number(framewidth);
+    style.backgroundPositionX =
       -(Number(framewidth) * frameNum) % Number(img.w);
   } else if (w !== undefined) {
-    params.width = Number(w);
-    params.backgroundPositionX = -(Number(w) * frameNum) % Number(img.w);
+    style.width = Number(w);
+    style.backgroundPositionX = -(Number(w) * frameNum) % Number(img.w);
   } else {
     if (img.w !== undefined) {
-      params.width = Number(img.w);
+      style.width = Number(img.w);
     }
     if (img.x !== undefined) {
-      params.backgroundPositionX = -Number(img.x);
+      style.backgroundPositionX = -Number(img.x);
     }
   }
 
   if (frameheight !== undefined) {
-    params.height = Number(frameheight);
-    params.backgroundPositionY = -Number(frameheight) * frameNum;
+    style.height = Number(frameheight);
+    style.backgroundPositionY = -Number(frameheight) * frameNum;
   } else if (h !== undefined) {
-    params.height = Number(h);
-    params.backgroundPositionY = -Number(h) * frameNum;
+    style.height = Number(h);
+    style.backgroundPositionY = -Number(h) * frameNum;
   } else {
     if (img.h !== undefined) {
-      params.height = Number(img.h);
+      style.height = Number(img.h);
     }
     if (img.y !== undefined) {
-      params.backgroundPositionY = -Number(img.y);
+      style.backgroundPositionY = -Number(img.y);
     }
   }
 
   if (img.imgUrl !== undefined) {
-    params.backgroundImage = `url(${img.imgUrl}`;
+    style.backgroundImage = `url(${img.imgUrl}`;
   }
 
   return (
@@ -389,7 +389,7 @@ function AnimatedLayer({
         data-node-type="AnimatedLayer"
         data-node-id={id}
         draggable={false}
-        style={{ position: "absolute", ...params }}
+        style={{ position: "absolute", ...style }}
       >
         <XmlChildren node={node} />
       </div>
