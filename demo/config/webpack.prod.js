@@ -3,6 +3,7 @@ const merge = require("webpack-merge");
 const workboxPlugin = require("workbox-webpack-plugin");
 const GitRevisionPlugin = require("git-revision-webpack-plugin");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+const CopyPlugin = require("copy-webpack-plugin");
 
 const common = require("./webpack.common.js");
 
@@ -32,6 +33,7 @@ const config = merge(common, {
       // .mp3s from service workers.
       exclude: [/\.mp3/, /\.wsz/],
     }),
+    new CopyPlugin([{ from: "timidity", to: "demo/timidity" }]),
   ],
 });
 
