@@ -153,7 +153,7 @@ function GuiObjectEvents({ node, children }) {
       }}
       style={{
         opacity: alpha == null ? 1 : alpha / 255,
-        pointerEvents: ghost === 1 ? "none" : null,
+        pointerEvents: ghost ? "none" : null,
       }}
     >
       {children}
@@ -329,6 +329,7 @@ function Button({
   y,
   downImage,
   tooltip,
+  ghost,
   node,
 }) {
   const [down, setDown] = React.useState(false);
@@ -373,6 +374,7 @@ function Button({
           width: Number(img.w),
           height: Number(img.h),
           backgroundImage: `url(${img.imgUrl})`,
+          pointerEvents: ghost ? "none" : null,
         }}
       >
         <XmlChildren node={node} />
