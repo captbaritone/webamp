@@ -321,6 +321,86 @@ function Layer({ node, id, image, x, y }) {
   );
 }
 
+function animatedLayerOffsetAndSize(
+  frameNum,
+  frameSize,
+  layerSize,
+  imgSize,
+  imgOffset
+) {
+  let size, offset;
+  if (frameSize !== undefined) {
+    size = Number(frameSize);
+    offset = -Number(frameSize) * frameNum;
+  } else if (layerSize !== undefined) {
+    size = Number(layerSize);
+    offset = -Number(layerSize) * frameNum;
+  } else {
+    if (imgSize !== undefined) {
+      size = Number(imgSize);
+    }
+    if (imgOffset !== undefined) {
+      offset = -Number(imgOffset);
+    }
+  }
+  return { offset, size };
+}
+
+function AnimatedLayer({
+  node,
+  id,
+  image,
+  x,
+  y,
+  w,
+  h,
+  framewidth,
+  frameheight,
+}) {
+  if (image == null) {
+    console.warn("Got an AnimatedLayer without an image. Rendering null", id);
+    return null;
+  }
+
+  const img = node.js_imageLookup(image.toLowerCase());
+  const frameNum = node.getcurframe();
+
+  let style = {};
+  if (x !== undefined) {
+    style.left = Number(x);
+  }
+  if (y !== undefined) {
+    style.top = Number(y);
+  }
+
+  const {
+    offset: backgroundPositionX,
+    size: width,
+  } = animatedLayerOffsetAndSize(frameNum, framewidth, w, img.w, img.x);
+  const {
+    offset: backgroundPositionY,
+    size: height,
+  } = animatedLayerOffsetAndSize(frameNum, frameheight, h, img.h, img.y);
+  style = { ...style, width, height, backgroundPositionX, backgroundPositionY };
+
+  if (img.imgUrl !== undefined) {
+    style.backgroundImage = `url(${img.imgUrl}`;
+  }
+
+  return (
+    <GuiObjectEvents node={node}>
+      <div
+        data-node-type="AnimatedLayer"
+        data-node-id={id}
+        draggable={false}
+        style={{ position: "absolute", ...style }}
+      >
+        <XmlChildren node={node} />
+      </div>
+    </GuiObjectEvents>
+  );
+}
+
 function Button({
   id,
   image,
@@ -510,6 +590,7 @@ const NODE_NAME_TO_COMPONENT = {
   group: Group,
   popupmenu: Popupmenu,
   text: Text,
+  animatedlayer: AnimatedLayer,
 };
 
 function DummyComponent({ node }) {
@@ -528,15 +609,21 @@ function XmlChildren({ node }) {
 
 // Given a skin XML node, pick which component to use, and render it.
 function XmlNode({ node }) {
-  const { name } = node;
+  let { name } = node;
+  if (name == null) {
+    // name is null is likely a comment
+    return null;
+  }
+  name = name.toLowerCase();
   if (
-    name == null ||
     name === "groupdef" ||
     name === "elements" ||
     name === "gammaset" ||
-    name === "scripts"
+    name === "scripts" ||
+    name === "script" ||
+    name === "skininfo"
   ) {
-    // name is null is likely a comment
+    // these nodes dont need to be rendered
     return null;
   }
   useJsUpdates(node);

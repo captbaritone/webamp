@@ -2,39 +2,159 @@ import Layer from "./Layer";
 import { unimplementedWarning } from "../utils";
 
 class AnimatedLayer extends Layer {
+  _playing: boolean;
+  _frameNum: number;
+  _animationStartTime: number;
+
+  constructor(node, parent, annotations, store) {
+    super(node, parent, annotations, store);
+
+    this._setAttributeDefaults(this.attributes);
+    this._convertAttributeTypes(this.attributes);
+    this._initializeStartAndEnd(this.attributes);
+
+    this._playing = this.attributes.autoplay;
+    this._frameNum = this.attributes.start || 0;
+    this._animationStartTime = 0;
+
+    this._setupAnimationLoop();
+  }
+
+  _setAttributeDefaults(attributes: Object): void {
+    if (attributes.autoplay == null) {
+      attributes.autoplay = "0";
+    }
+    if (attributes.autoreplay == null) {
+      attributes.autoreplay = "1";
+    }
+    if (attributes.speed == null) {
+      attributes.speed = "200";
+    }
+  }
+
+  _convertAttributeTypes(attributes: Object): void {
+    if (attributes.autoplay != null) {
+      attributes.autoplay = !!Number(attributes.autoplay);
+    }
+    if (attributes.autoreplay != null) {
+      attributes.autoreplay = !!Number(attributes.autoreplay);
+    }
+    if (attributes.speed != null) {
+      attributes.speed = Number(attributes.speed);
+    }
+    if (attributes.start != null) {
+      attributes.start = Number(attributes.start);
+    }
+    if (attributes.end != null) {
+      attributes.end = Number(attributes.end);
+    }
+  }
+
+  _initializeStartAndEnd(attributes: Object): void {
+    if (attributes.start != null && attributes.end != null) {
+      return;
+    }
+
+    const image = this.js_imageLookup(attributes.image);
+    if (!image) {
+      console.warn("Could not find image: ", attributes.image);
+      return;
+    }
+
+    if (attributes.start == null) {
+      attributes.start = 0;
+    }
+
+    if (attributes.end == null) {
+      if (attributes.frameheight != null) {
+        attributes.end = Math.ceil(image.h / attributes.frameheight);
+      } else if (attributes.framewidth != null) {
+        attributes.end = Math.ceil(image.w / attributes.framewidth);
+      } else {
+        // In the general case where we don't have a frameheight/framewidth and
+        // the start/end are not both set, we calculate the end frame by
+        // calculating the end in both directions and picking the longer repeat length
+        const width = attributes.w != null ? attributes.w : image.w;
+        const height = attributes.h != null ? attributes.h : image.h;
+        attributes.end = Math.max(
+          Math.ceil(image.w / width),
+          Math.ceil(image.h / height)
+        );
+      }
+    }
+  }
+
+  _animationLoop() {
+    window.requestAnimationFrame(() => {
+      const currentTime = window.performance.now();
+      if (currentTime > this._animationStartTime + this.attributes.speed) {
+        this._animationStartTime = currentTime;
+        this.js_trigger("js_framechange");
+      } else {
+        this._animationLoop();
+      }
+    });
+  }
+
+  _setupAnimationLoop() {
+    this.js_listen("js_framechange", () => {
+      this._frameNum += 1;
+      if (this._frameNum > this.getendframe()) {
+        this._frameNum = this.getstartframe();
+        if (!this.attributes.autoreplay) {
+          return;
+        }
+      }
+      this.js_trigger("js_update");
+
+      if (this._playing) {
+        this._animationLoop();
+      }
+    });
+
+    if (this._playing) {
+      this.js_trigger("js_framechange");
+    }
+  }
+
   /**
    * getclassname()
    *
    * Returns the class name for the object.
    * @ret The class name.
    */
-  getclassname() {
+  getclassname(): string {
     return "AnimatedLayer";
   }
 
-  play() {
-    unimplementedWarning("play");
+  play(): void {
+    // TODO: do we need to trigger something for `onplay`/`onresume` events?
+    this._playing = true;
+    this.js_trigger("js_framechange");
   }
 
-  pause() {
-    unimplementedWarning("pause");
+  pause(): void {
+    // TODO: do we need to trigger something for `onpause` events?
+    this._playing = false;
   }
 
-  stop() {
-    unimplementedWarning("stop");
+  stop(): void {
+    // TODO: do we need to trigger something for `onstop` events?
+    this._playing = false;
+    this._frameNum = this.getstartframe();
   }
 
-  setspeed(msperframe: number) {
-    unimplementedWarning("setspeed");
+  setspeed(msperframe: number): void {
+    this.attributes.speed = msperframe;
   }
 
-  gotoframe(framenum: number) {
-    unimplementedWarning("gotoframe");
+  gotoframe(framenum: number): void {
+    this._frameNum = framenum;
+    this.js_trigger("js_update");
   }
 
-  getlength() {
-    unimplementedWarning("getlength");
-    return 10;
+  getlength(): number {
+    return this.getendframe() - this.getstartframe();
   }
 
   onplay() {
@@ -62,24 +182,21 @@ class AnimatedLayer extends Layer {
     return;
   }
 
-  setstartframe(framenum: number) {
-    unimplementedWarning("setstartframe");
-    return;
+  setstartframe(framenum: number): void {
+    this.attributes.start = framenum;
   }
 
-  setendframe(framenum: number) {
-    unimplementedWarning("setendframe");
-    return;
+  setendframe(framenum: number): void {
+    this.attributes.end = framenum;
   }
 
-  setautoreplay(onoff: boolean) {
-    unimplementedWarning("setautoreplay");
-    return;
+  setautoreplay(onoff: boolean): void {
+    // TODO: should this trigger the animation if it isn't currently runnnig?
+    this.attributes.autoreplay = onoff;
   }
 
-  isplaying() {
-    unimplementedWarning("isplaying");
-    return;
+  isplaying(): boolean {
+    return this._playing;
   }
 
   ispaused() {
@@ -92,14 +209,12 @@ class AnimatedLayer extends Layer {
     return;
   }
 
-  getstartframe() {
-    unimplementedWarning("getstartframe");
-    return;
+  getstartframe(): number {
+    return this.attributes.start;
   }
 
-  getendframe() {
-    unimplementedWarning("getendframe");
-    return;
+  getendframe(): number {
+    return this.attributes.end;
   }
 
   getdirection() {
@@ -107,14 +222,12 @@ class AnimatedLayer extends Layer {
     return;
   }
 
-  getautoreplay() {
-    unimplementedWarning("getautoreplay");
-    return;
+  getautoreplay(): boolean {
+    return this.attributes.autoreplay;
   }
 
-  getcurframe() {
-    unimplementedWarning("getcurframe");
-    return;
+  getcurframe(): number {
+    return this._frameNum;
   }
 
   setrealtime(onoff: boolean) {
