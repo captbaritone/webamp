@@ -37,7 +37,7 @@ module.exports = {
         },
       },
       {
-        test: /\.(wsz|wal|mp3|png|ico|jpg|svg)$/,
+        test: /\.(wsz|wal|mp3|png|ico|jpg|svg|mid)$/,
         use: [
           {
             loader: "file-loader",

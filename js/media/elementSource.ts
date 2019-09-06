@@ -2,6 +2,7 @@ import Emitter from "../emitter";
 import { clamp } from "../utils";
 import { MEDIA_STATUS } from "../constants";
 import { MediaStatus } from "../types";
+import Timidity from "../../demo/timidity/bundle.js";
 
 export default class ElementSource {
   _emitter: Emitter;
@@ -11,6 +12,7 @@ export default class ElementSource {
   _audio: HTMLAudioElement;
   _stalled: boolean;
   _status: MediaStatus;
+  _player: Timidity;
 
   on(eventType: string, cb: (...args: any[]) => void) {
     return this._emitter.on(eventType, cb);
@@ -25,27 +27,27 @@ export default class ElementSource {
     this._stalled = false;
     this._status = MEDIA_STATUS.STOPPED;
 
+    this._player = new Timidity("/demo/timidity/");
+
     // TODO: #leak
-    this._audio.addEventListener("suspend", () => {
+    this._player.on("unstarted", () => {
       this._setStalled(true);
     });
 
     // TODO: #leak
-    this._audio.addEventListener("durationchange", () => {
+    this._player.on("playing", () => {
       this._emitter.trigger("loaded");
       this._setStalled(false);
+    });
+
+    this._player.on("timeupdate", () => {
+      this._emitter.trigger("positionChange");
     });
 
     // TODO: #leak
     this._audio.addEventListener("ended", () => {
       this._emitter.trigger("ended");
       this._setStatus(MEDIA_STATUS.STOPPED);
-    });
-
-    // TODO: Throttle to 50 (if needed)
-    // TODO: #leak
-    this._audio.addEventListener("timeupdate", () => {
-      this._emitter.trigger("positionChange");
     });
 
     // TODO: #leak
@@ -95,46 +97,33 @@ export default class ElementSource {
   // Async for now, for compatibility with BufferAudioSource
   // TODO: This does not need to be async
   async loadUrl(url: string) {
-    this._audio.src = url;
+    this._player.load(url);
+    this._emitter.trigger("loaded");
   }
 
   async play() {
-    if (this._status !== MEDIA_STATUS.PAUSED) {
-      this.seekToTime(0);
-    }
-    try {
-      await this._audio.play();
-      // TODO #race
-    } catch (err) {
-      //
-    }
+    this._player.play();
     this._setStatus(MEDIA_STATUS.PLAYING);
   }
 
   pause() {
-    this._audio.pause();
+    this._player.pause();
     this._setStatus(MEDIA_STATUS.PAUSED);
   }
 
   stop() {
-    this._audio.pause();
-    this._audio.currentTime = 0;
+    this._player.pause();
+    this._player.seek(0);
     this._setStatus(MEDIA_STATUS.STOPPED);
   }
 
   seekToTime(time: number) {
-    /* TODO: We could check if this is actually seekable:
-    const { seekable } = this._audio;
-    for (let i = 0; i < seekable.length; i++) {
-      console.log("start", seekable.start(i), "end", seekable.end(i));
-    }
-    */
-    this._audio.currentTime = clamp(time, 0, this.getDuration());
+    this._player.seek(time);
     this._emitter.trigger("positionChange");
   }
 
   getStalled() {
-    return this._stalled;
+    return false;
   }
 
   getStatus() {
@@ -142,15 +131,11 @@ export default class ElementSource {
   }
 
   getDuration() {
-    const { duration } = this._audio;
-    // Safari on iOS currently has a strange behavior where it reports
-    // the duration as infinity if an Accept-Ranges header is not returned.
-    // For now, 0 is better even though it's still wrong.
-    return isNaN(duration) || duration === Infinity ? 0 : duration;
+    return this._player.duration;
   }
 
   getTimeElapsed() {
-    return this._audio.currentTime;
+    return this._player.currentTime;
   }
 
   _setStatus(status: MediaStatus) {

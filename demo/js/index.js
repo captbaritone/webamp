@@ -8,6 +8,7 @@ import isButterchurnSupported from "butterchurn/lib/isSupported.min";
 import base from "../../skins/base-2.91-png.wsz";
 import { WINDOWS } from "../../js/constants";
 import * as Selectors from "../../js/selectors";
+import "./timidity";
 
 import WebampLazy from "../../js/webampLazy";
 import {
