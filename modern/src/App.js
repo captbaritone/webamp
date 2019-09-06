@@ -321,6 +321,31 @@ function Layer({ node, id, image, x, y }) {
   );
 }
 
+function animatedLayerOffsetAndSize(
+  frameNum,
+  frameSize,
+  layerSize,
+  imgSize,
+  imgOffset
+) {
+  let size, offset;
+  if (frameSize !== undefined) {
+    size = Number(frameSize);
+    offset = -Number(frameSize) * frameNum;
+  } else if (layerSize !== undefined) {
+    size = Number(layerSize);
+    offset = -Number(layerSize) * frameNum;
+  } else {
+    if (imgSize !== undefined) {
+      size = Number(imgSize);
+    }
+    if (imgOffset !== undefined) {
+      offset = -Number(imgOffset);
+    }
+  }
+  return { offset, size };
+}
+
 function AnimatedLayer({
   node,
   id,
@@ -340,7 +365,7 @@ function AnimatedLayer({
   const img = node.js_imageLookup(image.toLowerCase());
   const frameNum = node.getcurframe();
 
-  const style = {};
+  let style = {};
   if (x !== undefined) {
     style.left = Number(x);
   }
@@ -348,36 +373,15 @@ function AnimatedLayer({
     style.top = Number(y);
   }
 
-  if (framewidth !== undefined) {
-    style.width = Number(framewidth);
-    style.backgroundPositionX =
-      -(Number(framewidth) * frameNum) % Number(img.w);
-  } else if (w !== undefined) {
-    style.width = Number(w);
-    style.backgroundPositionX = -(Number(w) * frameNum) % Number(img.w);
-  } else {
-    if (img.w !== undefined) {
-      style.width = Number(img.w);
-    }
-    if (img.x !== undefined) {
-      style.backgroundPositionX = -Number(img.x);
-    }
-  }
-
-  if (frameheight !== undefined) {
-    style.height = Number(frameheight);
-    style.backgroundPositionY = -Number(frameheight) * frameNum;
-  } else if (h !== undefined) {
-    style.height = Number(h);
-    style.backgroundPositionY = -Number(h) * frameNum;
-  } else {
-    if (img.h !== undefined) {
-      style.height = Number(img.h);
-    }
-    if (img.y !== undefined) {
-      style.backgroundPositionY = -Number(img.y);
-    }
-  }
+  const {
+    offset: backgroundPositionX,
+    size: width,
+  } = animatedLayerOffsetAndSize(frameNum, framewidth, w, img.w, img.x);
+  const {
+    offset: backgroundPositionY,
+    size: height,
+  } = animatedLayerOffsetAndSize(frameNum, frameheight, h, img.h, img.y);
+  style = { ...style, width, height, backgroundPositionX, backgroundPositionY };
 
   if (img.imgUrl !== undefined) {
     style.backgroundImage = `url(${img.imgUrl}`;
