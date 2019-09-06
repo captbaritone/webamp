@@ -1,0 +1,51 @@
+# GNU Makefile for targeting DOS using DJGPP (GCC)
+# (DJGPP-2.05 or newer is required for DXE3 build.)
+
+ifeq ($(CROSS),)
+CC=gcc
+AS=as
+AR=ar
+RANLIB=ranlib
+else
+CC=$(CROSS)-gcc
+AS=$(CROSS)-as
+AR=$(CROSS)-ar
+RANLIB=$(CROSS)-ranlib
+endif
+DXE3GEN=dxe3gen
+
+CPPFLAGS = -DTIMIDITY_BUILD
+ARFLAGS = cr
+# to build a debug version :
+#CPPFLAGS+= -DTIMIDITY_DEBUG
+
+CFLAGS = -O2 -Wall -ffast-math
+
+.SUFFIXES:
+.SUFFIXES: .o .c
+
+COMPILE=$(CC) $(CFLAGS) $(CPPFLAGS) -I. -c
+
+OBJ=common.o instrum.o mix.o output.o playmidi.o readmidi.o resample.o stream.o tables.o timidity.o
+
+.PHONY: clean
+
+# The build targets
+TARGETS = libtimidity.a libtimidity_dxe.a timidity.dxe
+
+all: $(TARGETS)
+
+clean:
+	$(RM) *.o *.a *.dxe
+
+libtimidity.a: $(OBJ)
+	$(AR) $(ARFLAGS) $@ $^
+	$(RANLIB) $@
+
+libtimidity_dxe.a: timidity.dxe
+timidity.dxe: $(OBJ)
+	-$(DXE3GEN) -Y libtimidity_dxe.a -o $@ -E _mid_ -U  $^
+
+.c.o:
+	$(COMPILE) -o $@ $<
+

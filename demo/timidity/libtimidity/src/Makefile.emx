@@ -1,0 +1,40 @@
+# Makefile for OS/2 using EMX environment.
+# builds timidity.a static library
+
+CC=gcc
+AS=as
+AR=ar
+RANLIB=ranlib
+LD=$(CC)
+
+CFLAGS = -I. -Wall -Zmt
+CPPFLAGS = -DTIMIDITY_BUILD
+# to build a debug version:
+#CPPFLAGS+= -DTIMIDITY_DEBUG
+LDFLAGS = -Zmt
+ARFLAGS = cr
+
+ifeq ($(DEBUG),1)
+CFLAGS += -g
+else
+CFLAGS += -O2 -ffast-math
+LDFLAGS+= -s
+endif
+
+LIBSTATIC=timidity.a
+
+OBJ=common.o instrum.o mix.o output.o playmidi.o readmidi.o resample.o stream.o tables.o timidity.o
+
+all: $(LIBSTATIC)
+
+$(LIBSTATIC): $(OBJ)
+	$(AR) $(ARFLAGS) $@ $^
+	-$(RANLIB) $@
+
+%.o: %.c
+	$(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
+
+clean:
+	$(RM) *.o
+distclean: clean
+	$(RM) $(LIBSTATIC)

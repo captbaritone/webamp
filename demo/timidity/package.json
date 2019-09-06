@@ -1,0 +1,61 @@
+{
+  "name": "timidity",
+  "description": "Play MIDI files in the browser w/ Web Audio, WebAssembly, and libtimidity",
+  "version": "1.2.0",
+  "author": {
+    "name": "Feross Aboukhadijeh",
+    "email": "feross@feross.org",
+    "url": "https://feross.org"
+  },
+  "browserify": {
+    "transform": [
+      "brfs"
+    ]
+  },
+  "bugs": {
+    "url": "https://github.com/feross/timidity/issues"
+  },
+  "dependencies": {
+    "brfs": "^2.0.2",
+    "debug": "^4.1.1",
+    "freepats": "^1.0.1"
+  },
+  "devDependencies": {
+    "babel-minify": "^0.5.0",
+    "browserify": "^16.5.0",
+    "standard": "*"
+  },
+  "homepage": "https://bitmidi.com",
+  "keywords": [
+    "api",
+    "libtimidity",
+    "mid file",
+    "midi",
+    "midi api",
+    "midi file",
+    "midi player",
+    "player",
+    "timidity",
+    "browser",
+    "web audio",
+    "webassembly",
+    "soundfont"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/feross/timidity.git"
+  },
+  "scripts": {
+    "build": "./tools/build.sh",
+    "download": "./tools/download.sh",
+    "size": "npm run build && browserify . | minify | gzip | wc -c && cat libtimidity.wasm | gzip | wc -c",
+    "test": "standard"
+  },
+  "standard": {
+    "ignore": [
+      "libtimidity.js"
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+# Makefile for windows for the lcc-win32 compiler.
+
+CC=lcc.exe
+LIB=lcclib.exe
+LINK=lcclnk.exe
+
+# If you want to build a static library, comment out the following two lines
+# and uncomment the next two.
+LIBS=$(DLLNAME)
+CFLAGS= -A /DWIN32 /DTIMIDITY_BUILD /DDLL_EXPORT
+#LIBS=$(LIBSTATIC)
+#CFLAGS= -A /DWIN32 /DTIMIDITY_BUILD /DTIMIDITY_STATIC
+
+# to build a debug version   : add  /DTIMIDITY_DEBUG    to CFLAGS
+
+# Compile command
+COMPILE=$(CC) -errout=err.out $(CFLAGS) /I.
+
+.SUFFIXES:
+.SUFFIXES: .o .c
+
+LIBNAME=timidity.lib
+DLLNAME=timidity.dll
+LIBSTATIC=timidity_static.lib
+
+OBJ=common.o instrum.o mix.o output.o playmidi.o readmidi.o resample.o stream.o tables.o timidity.o
+
+all: $(LIBS)
+
+clean:
+	FOR %F IN ( $(LIBNAME) $(LIBSTATIC) $(DLLNAME) timidity.exp *.o ) DO IF EXIST %F ERASE %F
+
+# lcc doesn't seem to do well without a *.def with dll exports
+$(DLLNAME): $(OBJ) timidity.def
+	$(LINK) /DLL /NOUNDERSCORES /OUT:$(DLLNAME) $(OBJ) timidity.def
+
+$(LIBSTATIC): $(OBJ)
+	$(LIB) /OUT:$(LIBSTATIC) *.o
+
+.c.o:
+	$(COMPILE) /Fo$@ $<

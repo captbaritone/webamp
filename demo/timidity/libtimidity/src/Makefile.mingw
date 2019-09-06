@@ -1,0 +1,78 @@
+# Makefile for targetting win32/win64
+# Requires a native or cross MinGW or MinGW-w64 compiler-set
+# and GNU make (gmake or mingw32-make or whatever)
+
+ifeq ($(CROSS),)
+CC=gcc
+AS=as
+AR=ar
+RANLIB=ranlib
+else
+CC=$(CROSS)-gcc
+AS=$(CROSS)-as
+AR=$(CROSS)-ar
+RANLIB=$(CROSS)-ranlib
+endif
+#RM=del
+RM=rm -f
+
+ARFLAGS = cr
+CPPFLAGS=-DTIMIDITY_BUILD
+LDLIBS=
+# to build a debug version :
+#CPPFLAGS+= -DTIMIDITY_DEBUG
+
+# Compiler flags
+CFLAGS=-O2 -Wall
+CFLAGS+=-ffast-math
+#CFLAGS+=-g
+LDFLAGS=
+#LDLIBS+=-lm
+
+COMPILE=$(CC) $(CFLAGS) $(CPPFLAGS) -I. -c
+
+.SUFFIXES:
+.SUFFIXES: .o .c
+
+DLL_VER=2
+
+CPPFLAGS_DLL=-DDLL_EXPORT=1
+CPPFLAGS_STATIC=-DTIMIDITY_STATIC=1
+
+LIBNAME=libtimidity.dll.a
+LIBSTATIC=libtimidity.a
+DLLNAME=libtimidity-$(DLL_VER).dll
+DEFNAME=libtimidity-$(DLL_VER).def
+
+LIBS=$(LIBNAME) $(DLLNAME)
+
+OBJ=common.o instrum.o mix.o output.o playmidi.o readmidi.o resample.o stream.o tables.o timidity.o
+
+help:
+	@echo "Valid targets:"
+	@echo ""
+	@echo "  $(MAKE) dll        : build dll and import library"
+	@echo "  $(MAKE) static     : build static library"
+	@echo ""
+
+clean:
+	$(RM) $(DLLNAME) $(LIBNAME) $(LIBSTATIC) $(DEFNAME) *.o
+
+dll: $(DLLNAME) $(LIBNAME)
+static: $(LIBSTATIC)
+
+$(DLLNAME): CPPFLAGS+=$(CPPFLAGS_DLL)
+$(LIBNAME): $(DLLNAME)
+$(DLLNAME): $(OBJ)
+	$(CC) -shared -o $(DLLNAME) $(OBJ) $(LDFLAGS) $(LDLIBS) \
+		-Wl,--enable-auto-image-base -Wl,--no-undefined \
+		-Xlinker --output-def -Xlinker $(DEFNAME) \
+		-Xlinker --out-implib -Xlinker $(LIBNAME)
+
+$(LIBSTATIC): CPPFLAGS+=$(CPPFLAGS_STATIC)
+$(LIBSTATIC): $(OBJ)
+	$(AR) $(ARFLAGS) $@ $(OBJ)
+	$(RANLIB) $@
+
+.c.o:
+	$(COMPILE) -o $@ $<

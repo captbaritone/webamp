@@ -1,0 +1,85 @@
+---------------------------------*-text-*---------------------------------
+
+    TiMidity -- Experimental MIDI to WAVE converter
+    Copyright (C) 1995 Tuukka Toivonen <toivonen@clinet.fi>
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+--------------------------------------------------------------------------
+
+        This is the README file for TiMidity v0.2i
+
+	TiMidity is a MIDI to WAVE converter that uses Gravis
+Ultrasound(*)-compatible patch files to generate digital audio data
+from General MIDI files. The audio data can be played through any
+sound device or stored on disk. On a fast machine, music can be
+played in real time. TiMidity runs under Linux, FreeBSD, HP-UX, SunOS, and
+Win32, and porting to other systems with gcc should be easy.
+
+	TiMidity Features:
+
+	* 32 or more dynamically allocated fully independent voices
+	* Compatibility with GUS patch files
+	* Output to 16- or 8-bit PCM or uLaw audio device, file, or
+          stdout at any sampling rate
+	* Optional interactive mode with real-time status display
+	  under ncurses and SLang terminal control libraries. Also
+          a user friendly motif interface since version 0.2h
+	* Support for transparent loading of compressed MIDI files and
+	  patch files
+
+	* Support for the following MIDI events:
+	  - Program change
+	  - Key pressure
+	  - Channel main volume
+	  - Tempo
+	  - Panning
+	  - Damper pedal (Sustain)
+	  - Pitch wheel
+	  - Pitch wheel sensitivity
+	  - Change drum set
+
+* The file "CHANGES" contains a brief list of what has changed since
+  the previous version. Please check it if you've been using a TiMidity
+  version older than 0.2d. You may have to modify your configuration
+  files slightly -- look at the included "gravis.cfg" for examples.
+
+* Installation instructions are in the file "INSTALL".
+
+* Instructions for use can be found in the manual page "timidity.man",
+  preformatted in "timidity.txt", and in comments in the configuration
+  files.
+
+* The GNU General Public License can, as always, be found in the file
+  "COPYING".
+
+* TiMidity requires sampled instruments (patches) to play MIDI files. You
+  should get the file "timidity-lib-0.1.tar.gz" and unpack it in the same
+  directory where you unpacked the source code archive. You'll want more
+  patches later -- read the file "FAQ" for pointers.
+
+* The latest version of TiMidity can be found on the TiMidity Home Page,
+  URL http://www.clinet.fi/~toivonen/timidity/
+
+  An alternative URL for Motif version is http://www.loria.fr/~pagel
+
+* If you have any comments or suggestions, please email me!
+
+
+                        Tuukka Toivonen <toivonen@clinet.fi>
+
+[(*) Any Registered Trademarks used anywhere in the documentation or
+source code for TiMidity are acknowledged as belonging to their
+respective owners.]

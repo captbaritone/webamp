@@ -1,0 +1,36 @@
+# GNU Makefile for targeting m68k-amigaos using VBCC.
+
+CC=vc
+#MKLIB=join $(OBJ) as $(LIB)
+MKLIB=cat $(OBJ) > $(LIB)
+
+# compiler flags
+CFLAGS   =-O1 -speed -c99
+CFLAGS  +=-cpu=68020 -fpu=68881
+INCLUDE  =-I.
+CPPFLAGS =-DTIMIDITY_BUILD
+CPPFLAGS+=-D__AMIGA__
+CPPFLAGS+=-DWORDS_BIGENDIAN=1
+
+# to build a debug version :
+#CPPFLAGS+= -DTIMIDITY_DEBUG
+
+COMPILE=$(CC) $(CFLAGS) $(INCLUDE) $(CPPFLAGS) -c
+
+.SUFFIXES:
+.SUFFIXES: .o .c
+
+LIB=timidity.lib
+
+OBJ=common.o instrum.o mix.o output.o playmidi.o readmidi.o resample.o stream.o tables.o timidity.o
+
+all: $(LIB)
+
+clean:
+	$(RM) $(LIB) *.a *.o
+
+$(LIB): $(OBJ)
+	$(MKLIB)
+
+.c.o:
+	$(COMPILE) -o $@ $<

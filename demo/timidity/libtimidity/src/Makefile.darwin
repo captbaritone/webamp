@@ -1,0 +1,75 @@
+# libtimidity Makefile for targetting Darwin (i.e. Mac OS X)
+# Edit the compiler/linker flags, etc. to meet your needs
+
+ifeq ($(CROSS),)
+CC=gcc
+AS=as
+AR=ar
+RANLIB=ranlib
+LIPO=lipo
+else
+CC=$(CROSS)-gcc
+AS=$(CROSS)-as
+AR=$(CROSS)-ar
+RANLIB=$(CROSS)-ranlib
+LIPO=$(CROSS)-lipo
+endif
+
+ARFLAGS = cr
+CPPFLAGS=-DTIMIDITY_BUILD
+LDLIBS=
+# to build a debug version :
+#CPPFLAGS+= -DTIMIDITY_DEBUG
+
+# compiler flags
+CFLAGS=-O2 -Wall
+CFLAGS+=-fno-common -ffast-math
+CFLAGS+=-fvisibility=hidden -DSYM_VISIBILITY
+#CFLAGS+=-g
+LDFLAGS =-Wl,-single_module
+LDFLAGS+=-Wl,-install_name,"@executable_path/$(LIBSHARED)"
+LDFLAGS+=-Wl,-compatibility_version,3.0 -Wl,-current_version,3.0
+
+# specifically for 10.5 and newer:
+#CFLAGS+=-mmacosx-version-min=10.5
+#LDFLAGS+=-mmacosx-version-min=10.5
+# specifically for 10.6 and newer:
+#CFLAGS+=-mmacosx-version-min=10.6
+#LDFLAGS+=-mmacosx-version-min=10.6 -Wl,-lbundle1.o
+
+COMPILE=$(CC) $(CFLAGS) $(CPPFLAGS) -I. -c
+
+.SUFFIXES:
+.SUFFIXES: .o .c
+
+DYLIB_VER=2
+#LIBSHARED=libtimidity.$(DYLIB_VER).dylib
+LIBSHARED=libtimidity.dylib
+LIBSTATIC=libtimidity.a
+
+LIBS=$(LIBSHARED)
+
+OBJ=common.o instrum.o mix.o output.o playmidi.o readmidi.o resample.o stream.o tables.o timidity.o
+
+help:
+	@echo "Valid targets:"
+	@echo ""
+	@echo "  $(MAKE) dylib         : build libtimidity.dylib shared lib"
+	@echo "  $(MAKE) static        : build libtimidity.a static library"
+	@echo ""
+
+clean:
+	rm -f $(LIBSHARED) $(LIBSTATIC) *.o
+
+dylib: $(LIBSHARED)
+static: $(LIBSTATIC)
+
+$(LIBSHARED): $(OBJ)
+	$(CC) -dynamiclib -o $(LIBSHARED) $(OBJ) $(LDFLAGS) $(LDLIBS)
+
+$(LIBSTATIC): $(OBJ)
+	$(AR) $(ARFLAGS) $@ $(OBJ)
+	$(RANLIB) $@
+
+.c.o:
+	$(COMPILE) -o $@ $<

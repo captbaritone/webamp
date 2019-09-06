@@ -1,0 +1,71 @@
+# Makefile for Windows using Open Watcom compiler.
+#
+# wmake -f OWMakefile.win32
+# - builds timidity.dll and its import library timidity.lib
+#
+# wmake -f OWMakefile.win32 target=static
+# - builds the static library timidity_static.lib
+
+!ifndef target
+target = dll
+!endif
+
+INCLUDES=-I.
+CPPFLAGS=-DTIMIDITY_BUILD
+# to build a debug version  :
+#CPPFLAGS+= -DTIMIDITY_DEBUG
+
+CFLAGS = -bt=nt -bm -fp5 -fpi87 -mf -oeatxh -w4 -ei -zp8 -zq
+# -5s  :  Pentium stack calling conventions.
+# -5r  :  Pentium register calling conventions.
+CFLAGS+= -5s
+DLLFLAGS=-bd
+
+.SUFFIXES:
+.SUFFIXES: .obj .c
+
+DLLNAME=timidity.dll
+EXPNAME=timidity.exp
+LIBNAME=timidity.lib
+LIBSTATIC=timidity_static.lib
+
+!ifeq target static
+CPPFLAGS+= -DTIMIDITY_STATIC
+BLD_TARGET=$(LIBSTATIC)
+!else
+CPPFLAGS+= -DDLL_EXPORT
+CFLAGS+= $(DLLFLAGS)
+BLD_TARGET=$(DLLNAME)
+!endif
+
+COMPILE=wcc386 $(CFLAGS) $(CPPFLAGS) $(INCLUDES)
+
+OBJ=common.obj instrum.obj mix.obj output.obj playmidi.obj readmidi.obj resample.obj stream.obj tables.obj timidity.obj
+
+all: $(BLD_TARGET)
+
+# rely on symbol name, not ordinal: -irn switch of wlib is default, but -inn is not.
+$(DLLNAME): $(OBJ)
+	wlink NAM $@ SYSTEM nt_dll INITINSTANCE TERMINSTANCE FIL {$(OBJ)} OPTION IMPF=$(EXPNAME)
+	wlib -q -b -n -c -pa -s -t -zld -ii -io -inn $(LIBNAME) +$(DLLNAME)
+
+$(LIBSTATIC): $(OBJ)
+	wlib -q -b -n -c -pa -s -t -zld -ii -io $@ $(OBJ)
+
+.c.obj:
+	$(COMPILE) -fo=$^@ $<
+
+!ifndef __UNIX__
+distclean: clean .symbolic
+	@if exist $(LIBSTATIC) del $(LIBSTATIC)
+	@if exist $(DLLNAME) del $(DLLNAME)
+	@if exist $(EXPNAME) del $(EXPNAME)
+	@if exist $(LIBNAME) del $(LIBNAME)
+clean: .symbolic
+	@if exist *.obj del *.obj
+!else
+distclean: clean .symbolic
+	rm -f $(DLLNAME) $(EXPNAME) $(LIBNAME) $(LIBSTATIC)
+clean: .symbolic
+	rm -f *.obj
+!endif

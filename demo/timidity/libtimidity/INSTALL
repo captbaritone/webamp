@@ -1,0 +1,30 @@
+INSTALL file for libtimidity
+============================
+
+In most systems just run:
+ $ ./configure
+ $ make
+
+You need GNU make.  On BSD or SysV systems, you may need to use gmake
+instead of make.  Use ./configure --help to see configuration options.
+Hint:  You may want to use --with-timidty-cfg=/path/to/timidity.cfg .
+To install the library and development components, run "make install"
+as the superuser.  This will install the shared and static libraries,
+header file and pkg-config file into directories under /usr/local or a
+different location selected with the --prefix option in configure.
+
+To cross-compile, you will need to use the --host option of configury.
+For example:
+$ ./configure --host=powerpc-apple-darwin9    # for Mac OS X (powerpc)
+$ ./configure --host=i686-pc-mingw32          # for Windows (win32)
+$ ./configure --host=x86_64-w64-mingw32       # for Windows (win64)
+
+For Mac OS X, we provide an XCode project file for your convinence.
+
+For Windows, we provide a Visual Studio project file (for VS2005 or
+newer) for your convinence.
+
+We also provide standalone makefiles for Windows (for both MinGW and
+LCC), Mac OS X (i.e. Darwin), DOS (for DJGPP), OS/2 (for OpenWatcom),
+as well as MorphOS, AmigaOS and AROS: you can use them for compiling
+on the relevant native system, or for cross-compiling.

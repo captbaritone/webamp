@@ -1,0 +1,2 @@
+* Need documentation
+* Error handling API (mid_errno, mid_strerror)

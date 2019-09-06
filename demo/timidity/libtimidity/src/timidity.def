@@ -1,0 +1,26 @@
+EXPORTS
+    mid_dlspatches_free @1
+    mid_dlspatches_load @2
+    mid_exit @3
+    mid_get_version @4
+    mid_init @5
+    mid_init_no_config @6
+    mid_istream_close @7
+    mid_istream_open_callbacks @8
+    mid_istream_open_file @9
+    mid_istream_open_fp @10
+    mid_istream_open_mem @11
+    mid_istream_read @12
+    mid_istream_seek @13
+    mid_istream_skip @14
+    mid_istream_tell @15
+    mid_song_free @16
+    mid_song_get_meta @17
+    mid_song_get_time @18
+    mid_song_get_total_time @19
+    mid_song_load @20
+    mid_song_load_dls @21
+    mid_song_read_wave @22
+    mid_song_seek @23
+    mid_song_set_volume @24
+    mid_song_start @25

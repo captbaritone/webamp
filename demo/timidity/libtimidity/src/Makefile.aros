@@ -1,0 +1,45 @@
+# GNU Makefile for targeting i386-aros using GCC.
+
+ifeq ($(CROSS),)
+CC=gcc
+AS=as
+AR=ar
+RANLIB=ranlib
+else
+CC=$(CROSS)-gcc
+AS=$(CROSS)-as
+AR=$(CROSS)-ar
+RANLIB=$(CROSS)-ranlib
+endif
+
+# compiler flags
+CFLAGS   =-O2 -Wall
+CFLAGS  +=-ffast-math -fno-common
+#CFLAGS  +=-g
+INCLUDE  =-I.
+ARFLAGS  = cr
+CPPFLAGS =-DTIMIDITY_BUILD
+
+# to build a debug version :
+#CPPFLAGS+= -DTIMIDITY_DEBUG
+
+COMPILE=$(CC) $(CFLAGS) $(INCLUDE) $(CPPFLAGS) -c
+
+.SUFFIXES:
+.SUFFIXES: .o .c
+
+LIB=libtimidity.a
+
+OBJ=common.o instrum.o mix.o output.o playmidi.o readmidi.o resample.o stream.o tables.o timidity.o
+
+all: $(LIB)
+
+clean:
+	$(RM) $(LIB) *.lib *.o
+
+$(LIB): $(OBJ)
+	$(AR) $(ARFLAGS) $@ $(OBJ)
+	$(RANLIB) $@
+
+.c.o:
+	$(COMPILE) -o $@ $<

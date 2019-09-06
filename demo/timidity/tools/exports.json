@@ -1,0 +1,17 @@
+[
+	"_free",
+	"_malloc",
+	"_mid_alloc_options",
+	"_mid_exit",
+	"_mid_get_load_request",
+	"_mid_get_load_request_count",
+	"_mid_init",
+	"_mid_istream_close",
+	"_mid_istream_open_mem",
+	"_mid_song_free",
+	"_mid_song_get_time",
+	"_mid_song_get_total_time",
+	"_mid_song_load",
+	"_mid_song_read_wave",
+	"_mid_song_seek",
+	"_mid_song_start"]

@@ -1,0 +1,524 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		636ED3241D9B173500577E46 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 636ED3231D9B173500577E46 /* InfoPlist.strings */; };
+		636ED3401D9B1CBA00577E46 /* timidity.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 63EEA9A61D9B0B1E00A956E0 /* timidity.h */; };
+		63EEA9A71D9B0B1E00A956E0 /* common.c in Sources */ = {isa = PBXBuildFile; fileRef = 63EEA9861D9B0B1E00A956E0 /* common.c */; };
+		63EEA9A81D9B0B1E00A956E0 /* common.h in Headers */ = {isa = PBXBuildFile; fileRef = 63EEA9871D9B0B1E00A956E0 /* common.h */; };
+		63EEA9AC1D9B0B1E00A956E0 /* ospaths.h in Headers */ = {isa = PBXBuildFile; fileRef = 63EEA98B1D9B0B1E00A956E0 /* ospaths.h */; };
+		63EEA9AF1D9B0B1E00A956E0 /* instrum.c in Sources */ = {isa = PBXBuildFile; fileRef = 63EEA98E1D9B0B1E00A956E0 /* instrum.c */; };
+		63EEA9B01D9B0B1E00A956E0 /* instrum.h in Headers */ = {isa = PBXBuildFile; fileRef = 63EEA98F1D9B0B1E00A956E0 /* instrum.h */; };
+		63EEA9B11D9B0B1E00A956E0 /* mix.c in Sources */ = {isa = PBXBuildFile; fileRef = 63EEA9901D9B0B1E00A956E0 /* mix.c */; };
+		63EEA9B21D9B0B1E00A956E0 /* mix.h in Headers */ = {isa = PBXBuildFile; fileRef = 63EEA9911D9B0B1E00A956E0 /* mix.h */; };
+		63EEA9B31D9B0B1E00A956E0 /* options.h in Headers */ = {isa = PBXBuildFile; fileRef = 63EEA9921D9B0B1E00A956E0 /* options.h */; };
+		63EEA9B41D9B0B1E00A956E0 /* output.c in Sources */ = {isa = PBXBuildFile; fileRef = 63EEA9931D9B0B1E00A956E0 /* output.c */; };
+		63EEA9B51D9B0B1E00A956E0 /* output.h in Headers */ = {isa = PBXBuildFile; fileRef = 63EEA9941D9B0B1E00A956E0 /* output.h */; };
+		63EEA9B61D9B0B1E00A956E0 /* playmidi.c in Sources */ = {isa = PBXBuildFile; fileRef = 63EEA9951D9B0B1E00A956E0 /* playmidi.c */; };
+		63EEA9B71D9B0B1E00A956E0 /* playmidi.h in Headers */ = {isa = PBXBuildFile; fileRef = 63EEA9961D9B0B1E00A956E0 /* playmidi.h */; };
+		63EEA9B81D9B0B1E00A956E0 /* readmidi.c in Sources */ = {isa = PBXBuildFile; fileRef = 63EEA9971D9B0B1E00A956E0 /* readmidi.c */; };
+		63EEA9B91D9B0B1E00A956E0 /* readmidi.h in Headers */ = {isa = PBXBuildFile; fileRef = 63EEA9981D9B0B1E00A956E0 /* readmidi.h */; };
+		63EEA9BB1D9B0B1E00A956E0 /* resample.c in Sources */ = {isa = PBXBuildFile; fileRef = 63EEA99A1D9B0B1E00A956E0 /* resample.c */; };
+		63EEA9BC1D9B0B1E00A956E0 /* resample.h in Headers */ = {isa = PBXBuildFile; fileRef = 63EEA99B1D9B0B1E00A956E0 /* resample.h */; };
+		63EEA9C11D9B0B1E00A956E0 /* stream.c in Sources */ = {isa = PBXBuildFile; fileRef = 63EEA9A01D9B0B1E00A956E0 /* stream.c */; };
+		63EEA9C21D9B0B1E00A956E0 /* tables.c in Sources */ = {isa = PBXBuildFile; fileRef = 63EEA9A11D9B0B1E00A956E0 /* tables.c */; };
+		63EEA9C31D9B0B1E00A956E0 /* tables.h in Headers */ = {isa = PBXBuildFile; fileRef = 63EEA9A21D9B0B1E00A956E0 /* tables.h */; };
+		63EEA9C41D9B0B1E00A956E0 /* timi_endian.h in Headers */ = {isa = PBXBuildFile; fileRef = 63EEA9A31D9B0B1E00A956E0 /* timi_endian.h */; };
+		63EEA9C51D9B0B1E00A956E0 /* timidity_internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 63EEA9A41D9B0B1E00A956E0 /* timidity_internal.h */; };
+		63EEA9C61D9B0B1E00A956E0 /* timidity.c in Sources */ = {isa = PBXBuildFile; fileRef = 63EEA9A51D9B0B1E00A956E0 /* timidity.c */; };
+		63EEA9C71D9B0B1E00A956E0 /* timidity.h in Headers */ = {isa = PBXBuildFile; fileRef = 63EEA9A61D9B0B1E00A956E0 /* timidity.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		63EEA9C81D9B0B1E00A956E0 /* common.c in Sources */ = {isa = PBXBuildFile; fileRef = 63EEA9861D9B0B1E00A956E0 /* common.c */; };
+		63EEA9C91D9B0B1E00A956E0 /* common.h in Headers */ = {isa = PBXBuildFile; fileRef = 63EEA9871D9B0B1E00A956E0 /* common.h */; };
+		63EEA9CD1D9B0B1E00A956E0 /* ospaths.h in Headers */ = {isa = PBXBuildFile; fileRef = 63EEA98B1D9B0B1E00A956E0 /* ospaths.h */; };
+		63EEA9D01D9B0B1E00A956E0 /* instrum.c in Sources */ = {isa = PBXBuildFile; fileRef = 63EEA98E1D9B0B1E00A956E0 /* instrum.c */; };
+		63EEA9D11D9B0B1E00A956E0 /* instrum.h in Headers */ = {isa = PBXBuildFile; fileRef = 63EEA98F1D9B0B1E00A956E0 /* instrum.h */; };
+		63EEA9D21D9B0B1E00A956E0 /* mix.c in Sources */ = {isa = PBXBuildFile; fileRef = 63EEA9901D9B0B1E00A956E0 /* mix.c */; };
+		63EEA9D31D9B0B1E00A956E0 /* mix.h in Headers */ = {isa = PBXBuildFile; fileRef = 63EEA9911D9B0B1E00A956E0 /* mix.h */; };
+		63EEA9D41D9B0B1E00A956E0 /* options.h in Headers */ = {isa = PBXBuildFile; fileRef = 63EEA9921D9B0B1E00A956E0 /* options.h */; };
+		63EEA9D51D9B0B1E00A956E0 /* output.c in Sources */ = {isa = PBXBuildFile; fileRef = 63EEA9931D9B0B1E00A956E0 /* output.c */; };
+		63EEA9D61D9B0B1E00A956E0 /* output.h in Headers */ = {isa = PBXBuildFile; fileRef = 63EEA9941D9B0B1E00A956E0 /* output.h */; };
+		63EEA9D71D9B0B1E00A956E0 /* playmidi.c in Sources */ = {isa = PBXBuildFile; fileRef = 63EEA9951D9B0B1E00A956E0 /* playmidi.c */; };
+		63EEA9D81D9B0B1E00A956E0 /* playmidi.h in Headers */ = {isa = PBXBuildFile; fileRef = 63EEA9961D9B0B1E00A956E0 /* playmidi.h */; };
+		63EEA9D91D9B0B1E00A956E0 /* readmidi.c in Sources */ = {isa = PBXBuildFile; fileRef = 63EEA9971D9B0B1E00A956E0 /* readmidi.c */; };
+		63EEA9DA1D9B0B1E00A956E0 /* readmidi.h in Headers */ = {isa = PBXBuildFile; fileRef = 63EEA9981D9B0B1E00A956E0 /* readmidi.h */; };
+		63EEA9DC1D9B0B1E00A956E0 /* resample.c in Sources */ = {isa = PBXBuildFile; fileRef = 63EEA99A1D9B0B1E00A956E0 /* resample.c */; };
+		63EEA9DD1D9B0B1E00A956E0 /* resample.h in Headers */ = {isa = PBXBuildFile; fileRef = 63EEA99B1D9B0B1E00A956E0 /* resample.h */; };
+		63EEA9E21D9B0B1E00A956E0 /* stream.c in Sources */ = {isa = PBXBuildFile; fileRef = 63EEA9A01D9B0B1E00A956E0 /* stream.c */; };
+		63EEA9E31D9B0B1E00A956E0 /* tables.c in Sources */ = {isa = PBXBuildFile; fileRef = 63EEA9A11D9B0B1E00A956E0 /* tables.c */; };
+		63EEA9E41D9B0B1E00A956E0 /* tables.h in Headers */ = {isa = PBXBuildFile; fileRef = 63EEA9A21D9B0B1E00A956E0 /* tables.h */; };
+		63EEA9E51D9B0B1E00A956E0 /* timi_endian.h in Headers */ = {isa = PBXBuildFile; fileRef = 63EEA9A31D9B0B1E00A956E0 /* timi_endian.h */; };
+		63EEA9E61D9B0B1E00A956E0 /* timidity_internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 63EEA9A41D9B0B1E00A956E0 /* timidity_internal.h */; };
+		63EEA9E71D9B0B1E00A956E0 /* timidity.c in Sources */ = {isa = PBXBuildFile; fileRef = 63EEA9A51D9B0B1E00A956E0 /* timidity.c */; };
+		63EEA9E81D9B0B1E00A956E0 /* timidity.h in Headers */ = {isa = PBXBuildFile; fileRef = 63EEA9A61D9B0B1E00A956E0 /* timidity.h */; settings = {ATTRIBUTES = (Public, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		636ED33F1D9B1C7E00577E46 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				636ED3401D9B1CBA00577E46 /* timidity.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		636ED3231D9B173500577E46 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = InfoPlist.strings; sourceTree = "<group>"; };
+		63A00BC51D9B09CA00C50EA5 /* libtimidity.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libtimidity.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		63EEA9861D9B0B1E00A956E0 /* common.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = common.c; path = ../common.c; sourceTree = SOURCE_ROOT; };
+		63EEA9871D9B0B1E00A956E0 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = common.h; path = ../common.h; sourceTree = SOURCE_ROOT; };
+		63EEA98B1D9B0B1E00A956E0 /* ospaths.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ospaths.h; path = ../ospaths.h; sourceTree = SOURCE_ROOT; };
+		63EEA98E1D9B0B1E00A956E0 /* instrum.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = instrum.c; path = ../instrum.c; sourceTree = SOURCE_ROOT; };
+		63EEA98F1D9B0B1E00A956E0 /* instrum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = instrum.h; path = ../instrum.h; sourceTree = SOURCE_ROOT; };
+		63EEA9901D9B0B1E00A956E0 /* mix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mix.c; path = ../mix.c; sourceTree = SOURCE_ROOT; };
+		63EEA9911D9B0B1E00A956E0 /* mix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mix.h; path = ../mix.h; sourceTree = SOURCE_ROOT; };
+		63EEA9921D9B0B1E00A956E0 /* options.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = options.h; path = ../options.h; sourceTree = SOURCE_ROOT; };
+		63EEA9931D9B0B1E00A956E0 /* output.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = output.c; path = ../output.c; sourceTree = SOURCE_ROOT; };
+		63EEA9941D9B0B1E00A956E0 /* output.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = output.h; path = ../output.h; sourceTree = SOURCE_ROOT; };
+		63EEA9951D9B0B1E00A956E0 /* playmidi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = playmidi.c; path = ../playmidi.c; sourceTree = SOURCE_ROOT; };
+		63EEA9961D9B0B1E00A956E0 /* playmidi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = playmidi.h; path = ../playmidi.h; sourceTree = SOURCE_ROOT; };
+		63EEA9971D9B0B1E00A956E0 /* readmidi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = readmidi.c; path = ../readmidi.c; sourceTree = SOURCE_ROOT; };
+		63EEA9981D9B0B1E00A956E0 /* readmidi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = readmidi.h; path = ../readmidi.h; sourceTree = SOURCE_ROOT; };
+		63EEA99A1D9B0B1E00A956E0 /* resample.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = resample.c; path = ../resample.c; sourceTree = SOURCE_ROOT; };
+		63EEA99B1D9B0B1E00A956E0 /* resample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = resample.h; path = ../resample.h; sourceTree = SOURCE_ROOT; };
+		63EEA9A01D9B0B1E00A956E0 /* stream.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = stream.c; path = ../stream.c; sourceTree = SOURCE_ROOT; };
+		63EEA9A11D9B0B1E00A956E0 /* tables.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tables.c; path = ../tables.c; sourceTree = SOURCE_ROOT; };
+		63EEA9A21D9B0B1E00A956E0 /* tables.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tables.h; path = ../tables.h; sourceTree = SOURCE_ROOT; };
+		63EEA9A31D9B0B1E00A956E0 /* timi_endian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = timi_endian.h; path = ../timi_endian.h; sourceTree = SOURCE_ROOT; };
+		63EEA9A41D9B0B1E00A956E0 /* timidity_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = timidity_internal.h; path = ../timidity_internal.h; sourceTree = SOURCE_ROOT; };
+		63EEA9A51D9B0B1E00A956E0 /* timidity.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = timidity.c; path = ../timidity.c; sourceTree = SOURCE_ROOT; };
+		63EEA9A61D9B0B1E00A956E0 /* timidity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = timidity.h; path = ../timidity.h; sourceTree = SOURCE_ROOT; };
+		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8DC2EF5B0486A6940098B216 /* timidity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = timidity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		63A00BC31D9B09CA00C50EA5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8DC2EF560486A6940098B216 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		034768DFFF38A50411DB9C8B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8DC2EF5B0486A6940098B216 /* timidity.framework */,
+				63A00BC51D9B09CA00C50EA5 /* libtimidity.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0867D691FE84028FC02AAC07 /* libtimidity */ = {
+			isa = PBXGroup;
+			children = (
+				636ED3211D9B164A00577E46 /* Library */,
+				089C1665FE841158C02AAC07 /* Resources */,
+				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
+				034768DFFF38A50411DB9C8B /* Products */,
+				8DC2EF5A0486A6940098B216 /* Info.plist */,
+			);
+			name = libtimidity;
+			sourceTree = "<group>";
+		};
+		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7B0FEA5585E11CA2CBB /* Linked Frameworks */,
+				1058C7B2FEA5585E11CA2CBB /* Other Frameworks */,
+			);
+			name = "External Frameworks and Libraries";
+			sourceTree = "<group>";
+		};
+		089C1665FE841158C02AAC07 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				636ED3231D9B173500577E46 /* InfoPlist.strings */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		1058C7B0FEA5585E11CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7B2FEA5585E11CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		636ED3211D9B164A00577E46 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				63EEA9861D9B0B1E00A956E0 /* common.c */,
+				63EEA9871D9B0B1E00A956E0 /* common.h */,
+				63EEA98B1D9B0B1E00A956E0 /* ospaths.h */,
+				63EEA98E1D9B0B1E00A956E0 /* instrum.c */,
+				63EEA98F1D9B0B1E00A956E0 /* instrum.h */,
+				63EEA9901D9B0B1E00A956E0 /* mix.c */,
+				63EEA9911D9B0B1E00A956E0 /* mix.h */,
+				63EEA9921D9B0B1E00A956E0 /* options.h */,
+				63EEA9931D9B0B1E00A956E0 /* output.c */,
+				63EEA9941D9B0B1E00A956E0 /* output.h */,
+				63EEA9951D9B0B1E00A956E0 /* playmidi.c */,
+				63EEA9961D9B0B1E00A956E0 /* playmidi.h */,
+				63EEA9971D9B0B1E00A956E0 /* readmidi.c */,
+				63EEA9981D9B0B1E00A956E0 /* readmidi.h */,
+				63EEA99A1D9B0B1E00A956E0 /* resample.c */,
+				63EEA99B1D9B0B1E00A956E0 /* resample.h */,
+				63EEA9A01D9B0B1E00A956E0 /* stream.c */,
+				63EEA9A11D9B0B1E00A956E0 /* tables.c */,
+				63EEA9A21D9B0B1E00A956E0 /* tables.h */,
+				63EEA9A31D9B0B1E00A956E0 /* timi_endian.h */,
+				63EEA9A41D9B0B1E00A956E0 /* timidity_internal.h */,
+				63EEA9A51D9B0B1E00A956E0 /* timidity.c */,
+				63EEA9A61D9B0B1E00A956E0 /* timidity.h */,
+			);
+			name = Library;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		63A00BC11D9B09CA00C50EA5 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				63EEA9C91D9B0B1E00A956E0 /* common.h in Headers */,
+				63EEA9CD1D9B0B1E00A956E0 /* ospaths.h in Headers */,
+				63EEA9D11D9B0B1E00A956E0 /* instrum.h in Headers */,
+				63EEA9D31D9B0B1E00A956E0 /* mix.h in Headers */,
+				63EEA9D41D9B0B1E00A956E0 /* options.h in Headers */,
+				63EEA9D61D9B0B1E00A956E0 /* output.h in Headers */,
+				63EEA9D81D9B0B1E00A956E0 /* playmidi.h in Headers */,
+				63EEA9DA1D9B0B1E00A956E0 /* readmidi.h in Headers */,
+				63EEA9DD1D9B0B1E00A956E0 /* resample.h in Headers */,
+				63EEA9E41D9B0B1E00A956E0 /* tables.h in Headers */,
+				63EEA9E51D9B0B1E00A956E0 /* timi_endian.h in Headers */,
+				63EEA9E81D9B0B1E00A956E0 /* timidity.h in Headers */,
+				63EEA9E61D9B0B1E00A956E0 /* timidity_internal.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8DC2EF500486A6940098B216 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				63EEA9A81D9B0B1E00A956E0 /* common.h in Headers */,
+				63EEA9AC1D9B0B1E00A956E0 /* ospaths.h in Headers */,
+				63EEA9B01D9B0B1E00A956E0 /* instrum.h in Headers */,
+				63EEA9B21D9B0B1E00A956E0 /* mix.h in Headers */,
+				63EEA9B31D9B0B1E00A956E0 /* options.h in Headers */,
+				63EEA9B51D9B0B1E00A956E0 /* output.h in Headers */,
+				63EEA9B71D9B0B1E00A956E0 /* playmidi.h in Headers */,
+				63EEA9B91D9B0B1E00A956E0 /* readmidi.h in Headers */,
+				63EEA9BC1D9B0B1E00A956E0 /* resample.h in Headers */,
+				63EEA9C31D9B0B1E00A956E0 /* tables.h in Headers */,
+				63EEA9C41D9B0B1E00A956E0 /* timi_endian.h in Headers */,
+				63EEA9C51D9B0B1E00A956E0 /* timidity_internal.h in Headers */,
+				63EEA9C71D9B0B1E00A956E0 /* timidity.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		63A00BC41D9B09CA00C50EA5 /* libtimidity Static Library */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 63A00BC81D9B09EA00C50EA5 /* Build configuration list for PBXNativeTarget "libtimidity Static Library" */;
+			buildPhases = (
+				63A00BC11D9B09CA00C50EA5 /* Headers */,
+				63A00BC21D9B09CA00C50EA5 /* Sources */,
+				63A00BC31D9B09CA00C50EA5 /* Frameworks */,
+				636ED33F1D9B1C7E00577E46 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "libtimidity Static Library";
+			productName = "Static Library";
+			productReference = 63A00BC51D9B09CA00C50EA5 /* libtimidity.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		8DC2EF4F0486A6940098B216 /* libtimidity */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "libtimidity" */;
+			buildPhases = (
+				8DC2EF500486A6940098B216 /* Headers */,
+				8DC2EF520486A6940098B216 /* Resources */,
+				8DC2EF540486A6940098B216 /* Sources */,
+				8DC2EF560486A6940098B216 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = libtimidity;
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = libtimidity;
+			productReference = 8DC2EF5B0486A6940098B216 /* timidity.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0867D690FE84028FC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "libtimidity" */;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 0867D691FE84028FC02AAC07 /* libtimidity */;
+			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8DC2EF4F0486A6940098B216 /* libtimidity */,
+				63A00BC41D9B09CA00C50EA5 /* libtimidity Static Library */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8DC2EF520486A6940098B216 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				636ED3241D9B173500577E46 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		63A00BC21D9B09CA00C50EA5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				63EEA9C81D9B0B1E00A956E0 /* common.c in Sources */,
+				63EEA9D01D9B0B1E00A956E0 /* instrum.c in Sources */,
+				63EEA9D21D9B0B1E00A956E0 /* mix.c in Sources */,
+				63EEA9D51D9B0B1E00A956E0 /* output.c in Sources */,
+				63EEA9D71D9B0B1E00A956E0 /* playmidi.c in Sources */,
+				63EEA9D91D9B0B1E00A956E0 /* readmidi.c in Sources */,
+				63EEA9DC1D9B0B1E00A956E0 /* resample.c in Sources */,
+				63EEA9E21D9B0B1E00A956E0 /* stream.c in Sources */,
+				63EEA9E31D9B0B1E00A956E0 /* tables.c in Sources */,
+				63EEA9E71D9B0B1E00A956E0 /* timidity.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8DC2EF540486A6940098B216 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				63EEA9A71D9B0B1E00A956E0 /* common.c in Sources */,
+				63EEA9AF1D9B0B1E00A956E0 /* instrum.c in Sources */,
+				63EEA9B11D9B0B1E00A956E0 /* mix.c in Sources */,
+				63EEA9B41D9B0B1E00A956E0 /* output.c in Sources */,
+				63EEA9B61D9B0B1E00A956E0 /* playmidi.c in Sources */,
+				63EEA9B81D9B0B1E00A956E0 /* readmidi.c in Sources */,
+				63EEA9BB1D9B0B1E00A956E0 /* resample.c in Sources */,
+				63EEA9C11D9B0B1E00A956E0 /* stream.c in Sources */,
+				63EEA9C21D9B0B1E00A956E0 /* tables.c in Sources */,
+				63EEA9C61D9B0B1E00A956E0 /* timidity.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB91AE08733DA50010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				DYLIB_COMPATIBILITY_VERSION = 3;
+				DYLIB_CURRENT_VERSION = 3;
+				EXPORTED_SYMBOLS_FILE = libtimidity.exports;
+				FRAMEWORK_VERSION = A;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = TIMIDITY_BUILD;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "@executable_path/../Frameworks";
+				OTHER_CFLAGS = "-ffast-math";
+				PRODUCT_NAME = timidity;
+				SKIP_INSTALL = YES;
+				WARNING_CFLAGS = "-Wall";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Debug;
+		};
+		1DEB91AF08733DA50010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 3;
+				DYLIB_CURRENT_VERSION = 3;
+				EXPORTED_SYMBOLS_FILE = libtimidity.exports;
+				FRAMEWORK_VERSION = A;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_MODEL_TUNING = G5;
+				GCC_PREPROCESSOR_DEFINITIONS = TIMIDITY_BUILD;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "@executable_path/../Frameworks";
+				OTHER_CFLAGS = "-ffast-math";
+				PRODUCT_NAME = timidity;
+				SKIP_INSTALL = YES;
+				WARNING_CFLAGS = "-Wall";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Release;
+		};
+		1DEB91B208733DA50010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Debug;
+		};
+		1DEB91B308733DA50010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = NO;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+		63A00BC61D9B09CC00C50EA5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					TIMIDITY_BUILD,
+					TIMIDITY_STATIC,
+				);
+				INSTALL_PATH = /usr/local/lib;
+				OTHER_CFLAGS = "-ffast-math";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = timidity;
+				WARNING_CFLAGS = "-Wall";
+			};
+			name = Debug;
+		};
+		63A00BC71D9B09CC00C50EA5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					TIMIDITY_BUILD,
+					TIMIDITY_STATIC,
+				);
+				INSTALL_PATH = /usr/local/lib;
+				OTHER_CFLAGS = "-ffast-math";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = timidity;
+				WARNING_CFLAGS = "-Wall";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "libtimidity" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB91AE08733DA50010E9CD /* Debug */,
+				1DEB91AF08733DA50010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "libtimidity" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB91B208733DA50010E9CD /* Debug */,
+				1DEB91B308733DA50010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		63A00BC81D9B09EA00C50EA5 /* Build configuration list for PBXNativeTarget "libtimidity Static Library" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				63A00BC61D9B09CC00C50EA5 /* Debug */,
+				63A00BC71D9B09CC00C50EA5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0867D690FE84028FC02AAC07 /* Project object */;
+}
