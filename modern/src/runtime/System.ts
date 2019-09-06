@@ -382,14 +382,12 @@ class System extends MakiObject {
     return;
   }
 
-  floattostring(value: number, ndigits: number) {
-    unimplementedWarning("floattostring");
-    return;
+  floattostring(value: number, ndigits: number): string {
+    return value.toFixed(ndigits).toString();
   }
 
-  stringtofloat(str: string) {
-    unimplementedWarning("stringtofloat");
-    return;
+  stringtofloat(str: string): number {
+    return parseFloat(str);
   }
 
   integertolongtime(value: number) {
