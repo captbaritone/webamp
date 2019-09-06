@@ -73,72 +73,70 @@ const MainWindow = React.memo(({ analyser, filePickers }: Props) => {
   const loadMedia = useActionCreator(loadMediaAndPlay);
 
   return (
-    <React.StrictMode>
-      <DropTarget
-        id="main-window"
-        className={className}
-        handleDrop={loadMedia}
-        onWheel={scrollVolume}
-      >
-        <FocusTarget windowId={WINDOWS.MAIN}>
-          <div
-            id="title-bar"
-            className="selected draggable"
-            onDoubleClick={toggleMainWindowShadeMode}
+    <DropTarget
+      id="main-window"
+      className={className}
+      handleDrop={loadMedia}
+      onWheel={scrollVolume}
+    >
+      <FocusTarget windowId={WINDOWS.MAIN}>
+        <div
+          id="title-bar"
+          className="selected draggable"
+          onDoubleClick={toggleMainWindowShadeMode}
+        >
+          <ContextMenuTarget
+            id="option-context"
+            bottom
+            handle={<ClickedDiv id="option" title="Winamp Menu" />}
           >
-            <ContextMenuTarget
-              id="option-context"
-              bottom
-              handle={<ClickedDiv id="option" title="Winamp Menu" />}
-            >
-              <MainContextMenu filePickers={filePickers} />
-            </ContextMenuTarget>
-            {mainShade && <MiniTime />}
-            <Minimize />
-            <Shade />
-            <Close />
-          </div>
-          <div className="status">
-            <ClutterBar />
-            {!working && <div id="play-pause" />}
-            <div
-              id="work-indicator"
-              className={classnames({ selected: working })}
-            />
-            <Time />
-          </div>
-          <Visualizer
-            // @ts-ignore Visualizer is not typed yet
-            analyser={analyser}
+            <MainContextMenu filePickers={filePickers} />
+          </ContextMenuTarget>
+          {mainShade && <MiniTime />}
+          <Minimize />
+          <Shade />
+          <Close />
+        </div>
+        <div className="status">
+          <ClutterBar />
+          {!working && <div id="play-pause" />}
+          <div
+            id="work-indicator"
+            className={classnames({ selected: working })}
           />
-          <div className="media-info">
-            <Marquee />
-            <Kbps />
-            <Khz />
-            <MonoStereo />
-          </div>
-          <MainVolume />
-          <MainBalance />
-          <div className="windows">
-            <EqToggleButton />
-            <PlaylistToggleButton />
-          </div>
-          <Position />
-          <ActionButtons />
-          <Eject />
-          <div className="shuffle-repeat">
-            <Shuffle />
-            <Repeat />
-          </div>
-          <a
-            id="about"
-            target="_blank"
-            href="https://webamp.org/about"
-            title="About"
-          />
-        </FocusTarget>
-      </DropTarget>
-    </React.StrictMode>
+          <Time />
+        </div>
+        <Visualizer
+          // @ts-ignore Visualizer is not typed yet
+          analyser={analyser}
+        />
+        <div className="media-info">
+          <Marquee />
+          <Kbps />
+          <Khz />
+          <MonoStereo />
+        </div>
+        <MainVolume />
+        <MainBalance />
+        <div className="windows">
+          <EqToggleButton />
+          <PlaylistToggleButton />
+        </div>
+        <Position />
+        <ActionButtons />
+        <Eject />
+        <div className="shuffle-repeat">
+          <Shuffle />
+          <Repeat />
+        </div>
+        <a
+          id="about"
+          target="_blank"
+          href="https://webamp.org/about"
+          title="About"
+        />
+      </FocusTarget>
+    </DropTarget>
   );
 });
 
