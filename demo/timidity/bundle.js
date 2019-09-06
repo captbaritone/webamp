@@ -1,402 +1,411 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Timidity = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-const Debug = require('debug')
-const EventEmitter = require('events').EventEmitter
+const Debug = require("debug");
+const EventEmitter = require("events").EventEmitter;
 
-const LibTimidity = require('./libtimidity')
+const LibTimidity = require("./libtimidity");
 
-const debug = Debug('timidity')
-const debugVerbose = Debug('timidity:verbose')
+const debug = Debug("timidity");
+const debugVerbose = Debug("timidity:verbose");
 
 // Inlined at build time by 'brfs' browserify transform
-const TIMIDITY_CFG = "\ndrumset 0\n\n 25\tDrum_000/025_Snare_Roll.pat \n 26\tDrum_000/026_Snap.pat \n 27\tDrum_000/027_High_Q.pat \n 31\tDrum_000/031_Sticks.pat \n 32\tDrum_000/032_Square_Click.pat \n 33\tDrum_000/033_Metronome_Click.pat \n 34\tDrum_000/034_Metronome_Bell.pat \n 35\tDrum_000/035_Kick_1.pat amp=100\n 36\tDrum_000/036_Kick_2.pat amp=100\n 37\tDrum_000/037_Stick_Rim.pat \n 38\tDrum_000/038_Snare_1.pat \n 39\tDrum_000/039_Clap_Hand.pat amp=100\n 40\tDrum_000/040_Snare_2.pat \n 41\tDrum_000/041_Tom_Low_2.pat amp=100\n 42\tDrum_000/042_Hi-Hat_Closed.pat \n 43\tDrum_000/043_Tom_Low_1.pat amp=100\n 44\tDrum_000/044_Hi-Hat_Pedal.pat \n 45\tDrum_000/045_Tom_Mid_2.pat amp=100\n 46\tDrum_000/046_Hi-Hat_Open.pat \n 47\tDrum_000/047_Tom_Mid_1.pat amp=100\n 48\tDrum_000/048_Tom_High_2.pat amp=100\n 49\tDrum_000/049_Cymbal_Crash_1.pat \n 50\tDrum_000/050_Tom_High_1.pat amp=100\n 51\tDrum_000/051_Cymbal_Ride_1.pat \n 52\tDrum_000/052_Cymbal_Chinese.pat \n 53\tDrum_000/053_Cymbal_Ride_Bell.pat amp=100\n 54\tDrum_000/054_Tombourine.pat \n 55\tDrum_000/055_Cymbal_Splash.pat \n 56\tDrum_000/056_Cow_Bell.pat \n 57\tDrum_000/057_Cymbal_Crash_2.pat \n 58\tDrum_000/058_Vibra-Slap.pat \n 59\tDrum_000/059_Cymbal_Ride_2.pat \n 60\tDrum_000/060_Bongo_High.pat \n 61\tDrum_000/061_Bongo_Low.pat \n 62\tDrum_000/062_Conga_High_1_Mute.pat \n 63\tDrum_000/063_Conga_High_2_Open.pat \n 64\tDrum_000/064_Conga_Low.pat \n 65\tDrum_000/065_Timbale_High.pat \n 66\tDrum_000/066_Timbale_Low.pat \n 67\tDrum_000/067_Agogo_High.pat \n 68\tDrum_000/068_Agogo_Low.pat \n 69\tDrum_000/069_Cabasa.pat amp=100\n 70\tDrum_000/070_Maracas.pat \n 71\tDrum_000/071_Whistle_1_High_Short.pat \n 72\tDrum_000/072_Whistle_2_Low_Long.pat \n 73\tDrum_000/073_Guiro_1_Short.pat \n 74\tDrum_000/074_Guiro_2_Long.pat \n 75\tDrum_000/075_Claves.pat amp=100\n 76\tDrum_000/076_Wood_Block_1_High.pat \n 77\tDrum_000/077_Wood_Block_2_Low.pat \n 78\tDrum_000/078_Cuica_1_Mute.pat amp=100\n 79\tDrum_000/079_Cuica_2_Open.pat amp=100\n 80\tDrum_000/080_Triangle_1_Mute.pat \n 81\tDrum_000/081_Triangle_2_Open.pat \n 82\tDrum_000/082_Shaker.pat \n 84\tDrum_000/084_Belltree.pat \n\nbank 0\n\n 0\tTone_000/000_Acoustic_Grand_Piano.pat amp=120 pan=center\n 1\tTone_000/001_Acoustic_Brite_Piano.pat \n 2\tTone_000/002_Electric_Grand_Piano.pat \n 4\tTone_000/004_Electric_Piano_1_Rhodes.pat \n 5\tTone_000/005_Electric_Piano_2_Chorused_Yamaha_DX.pat \n 6\tTone_000/006_Harpsichord.pat \n 7\tTone_000/007_Clavinet.pat \n 8\tTone_000/008_Celesta.pat \n 9\tTone_000/009_Glockenspiel.pat \n 13\tTone_000/013_Xylophone.pat \n 14\tTone_000/014_Tubular_Bells.pat \n 15\tTone_000/015_Dulcimer.pat \n 16\tTone_000/016_Hammond_Organ.pat \n 19\tTone_000/019_Church_Organ.pat \n 21\tTone_000/021_Accordion.pat \n 23\tTone_000/023_Tango_Accordion.pat \n 24\tTone_000/024_Nylon_Guitar.pat \n 25\tTone_000/025_Steel_Guitar.pat \n 26\tTone_000/026_Jazz_Guitar.pat \n 27\tTone_000/027_Clean_Electric_Guitar.pat \n 28\tTone_000/028_Muted_Electric_Guitar.pat \n 29\tTone_000/029_Overdriven_Guitar.pat \n 30\tTone_000/030_Distortion_Guitar.pat \n 32\tTone_000/032_Acoustic_Bass.pat \n 33\tTone_000/033_Finger_Bass.pat \n 34\tTone_000/034_Pick_Bass.pat \n 35\tTone_000/035_Fretless_Bass.pat \n 36\tTone_000/036_Slap_Bass_1.pat \n 37\tTone_000/037_Slap_Bass_2.pat \n 38\tTone_000/038_Synth_Bass_1.pat \n 40\tTone_000/040_Violin.pat \n 42\tTone_000/042_Cello.pat \n 44\tTone_000/044_Tremolo_Strings.pat \n 45\tTone_000/045_Pizzicato_Strings.pat \n 46\tTone_000/046_Harp.pat \n 47\tTone_000/047_Timpani.pat \n 48\tTone_000/048_String_Ensemble_1_Marcato.pat \n 53\tTone_000/053_Voice_Oohs.pat \n 56\tTone_000/056_Trumpet.pat \n 57\tTone_000/057_Trombone.pat \n 58\tTone_000/058_Tuba.pat \n 59\tTone_000/059_Muted_Trumpet.pat \n 60\tTone_000/060_French_Horn.pat \n 61\tTone_000/061_Brass_Section.pat \n 64\tTone_000/064_Soprano_Sax.pat \n 65\tTone_000/065_Alto_Sax.pat \n 66\tTone_000/066_Tenor_Sax.pat \n 67\tTone_000/067_Baritone_Sax.pat \n 68\tTone_000/068_Oboe.pat \n 69\tTone_000/069_English_Horn.pat \n 70\tTone_000/070_Bassoon.pat \n 71\tTone_000/071_Clarinet.pat \n 72\tTone_000/072_Piccolo.pat \n 73\tTone_000/073_Flute.pat \n 74\tTone_000/074_Recorder.pat \n 75\tTone_000/075_Pan_Flute.pat \n 76\tTone_000/076_Bottle_Blow.pat \n 79\tTone_000/079_Ocarina.pat \n 80\tTone_000/080_Square_Wave.pat \n 84\tTone_000/084_Charang.pat \n 88\tTone_000/088_New_Age.pat \n 94\tTone_000/094_Halo_Pad.pat \n 95\tTone_000/095_Sweep_Pad.pat \n 98\tTone_000/098_Crystal.pat \n 101\tTone_000/101_Goblins--Unicorn.pat \n 102\tTone_000/102_Echo_Voice.pat \n 104\tTone_000/104_Sitar.pat \n 114\tTone_000/114_Steel_Drums.pat \n 115\tTone_000/115_Wood_Block.pat \n 120\tTone_000/120_Guitar_Fret_Noise.pat \n 122\tTone_000/122_Seashore.pat \n 125\tTone_000/125_Helicopter.pat \n\n"
+const TIMIDITY_CFG = "\ndrumset 0\n\n 25\tDrum_000/025_Snare_Roll.pat \n 26\tDrum_000/026_Snap.pat \n 27\tDrum_000/027_High_Q.pat \n 31\tDrum_000/031_Sticks.pat \n 32\tDrum_000/032_Square_Click.pat \n 33\tDrum_000/033_Metronome_Click.pat \n 34\tDrum_000/034_Metronome_Bell.pat \n 35\tDrum_000/035_Kick_1.pat amp=100\n 36\tDrum_000/036_Kick_2.pat amp=100\n 37\tDrum_000/037_Stick_Rim.pat \n 38\tDrum_000/038_Snare_1.pat \n 39\tDrum_000/039_Clap_Hand.pat amp=100\n 40\tDrum_000/040_Snare_2.pat \n 41\tDrum_000/041_Tom_Low_2.pat amp=100\n 42\tDrum_000/042_Hi-Hat_Closed.pat \n 43\tDrum_000/043_Tom_Low_1.pat amp=100\n 44\tDrum_000/044_Hi-Hat_Pedal.pat \n 45\tDrum_000/045_Tom_Mid_2.pat amp=100\n 46\tDrum_000/046_Hi-Hat_Open.pat \n 47\tDrum_000/047_Tom_Mid_1.pat amp=100\n 48\tDrum_000/048_Tom_High_2.pat amp=100\n 49\tDrum_000/049_Cymbal_Crash_1.pat \n 50\tDrum_000/050_Tom_High_1.pat amp=100\n 51\tDrum_000/051_Cymbal_Ride_1.pat \n 52\tDrum_000/052_Cymbal_Chinese.pat \n 53\tDrum_000/053_Cymbal_Ride_Bell.pat amp=100\n 54\tDrum_000/054_Tombourine.pat \n 55\tDrum_000/055_Cymbal_Splash.pat \n 56\tDrum_000/056_Cow_Bell.pat \n 57\tDrum_000/057_Cymbal_Crash_2.pat \n 58\tDrum_000/058_Vibra-Slap.pat \n 59\tDrum_000/059_Cymbal_Ride_2.pat \n 60\tDrum_000/060_Bongo_High.pat \n 61\tDrum_000/061_Bongo_Low.pat \n 62\tDrum_000/062_Conga_High_1_Mute.pat \n 63\tDrum_000/063_Conga_High_2_Open.pat \n 64\tDrum_000/064_Conga_Low.pat \n 65\tDrum_000/065_Timbale_High.pat \n 66\tDrum_000/066_Timbale_Low.pat \n 67\tDrum_000/067_Agogo_High.pat \n 68\tDrum_000/068_Agogo_Low.pat \n 69\tDrum_000/069_Cabasa.pat amp=100\n 70\tDrum_000/070_Maracas.pat \n 71\tDrum_000/071_Whistle_1_High_Short.pat \n 72\tDrum_000/072_Whistle_2_Low_Long.pat \n 73\tDrum_000/073_Guiro_1_Short.pat \n 74\tDrum_000/074_Guiro_2_Long.pat \n 75\tDrum_000/075_Claves.pat amp=100\n 76\tDrum_000/076_Wood_Block_1_High.pat \n 77\tDrum_000/077_Wood_Block_2_Low.pat \n 78\tDrum_000/078_Cuica_1_Mute.pat amp=100\n 79\tDrum_000/079_Cuica_2_Open.pat amp=100\n 80\tDrum_000/080_Triangle_1_Mute.pat \n 81\tDrum_000/081_Triangle_2_Open.pat \n 82\tDrum_000/082_Shaker.pat \n 84\tDrum_000/084_Belltree.pat \n\nbank 0\n\n 0\tTone_000/000_Acoustic_Grand_Piano.pat amp=120 pan=center\n 1\tTone_000/001_Acoustic_Brite_Piano.pat \n 2\tTone_000/002_Electric_Grand_Piano.pat \n 4\tTone_000/004_Electric_Piano_1_Rhodes.pat \n 5\tTone_000/005_Electric_Piano_2_Chorused_Yamaha_DX.pat \n 6\tTone_000/006_Harpsichord.pat \n 7\tTone_000/007_Clavinet.pat \n 8\tTone_000/008_Celesta.pat \n 9\tTone_000/009_Glockenspiel.pat \n 13\tTone_000/013_Xylophone.pat \n 14\tTone_000/014_Tubular_Bells.pat \n 15\tTone_000/015_Dulcimer.pat \n 16\tTone_000/016_Hammond_Organ.pat \n 19\tTone_000/019_Church_Organ.pat \n 21\tTone_000/021_Accordion.pat \n 23\tTone_000/023_Tango_Accordion.pat \n 24\tTone_000/024_Nylon_Guitar.pat \n 25\tTone_000/025_Steel_Guitar.pat \n 26\tTone_000/026_Jazz_Guitar.pat \n 27\tTone_000/027_Clean_Electric_Guitar.pat \n 28\tTone_000/028_Muted_Electric_Guitar.pat \n 29\tTone_000/029_Overdriven_Guitar.pat \n 30\tTone_000/030_Distortion_Guitar.pat \n 32\tTone_000/032_Acoustic_Bass.pat \n 33\tTone_000/033_Finger_Bass.pat \n 34\tTone_000/034_Pick_Bass.pat \n 35\tTone_000/035_Fretless_Bass.pat \n 36\tTone_000/036_Slap_Bass_1.pat \n 37\tTone_000/037_Slap_Bass_2.pat \n 38\tTone_000/038_Synth_Bass_1.pat \n 40\tTone_000/040_Violin.pat \n 42\tTone_000/042_Cello.pat \n 44\tTone_000/044_Tremolo_Strings.pat \n 45\tTone_000/045_Pizzicato_Strings.pat \n 46\tTone_000/046_Harp.pat \n 47\tTone_000/047_Timpani.pat \n 48\tTone_000/048_String_Ensemble_1_Marcato.pat \n 53\tTone_000/053_Voice_Oohs.pat \n 56\tTone_000/056_Trumpet.pat \n 57\tTone_000/057_Trombone.pat \n 58\tTone_000/058_Tuba.pat \n 59\tTone_000/059_Muted_Trumpet.pat \n 60\tTone_000/060_French_Horn.pat \n 61\tTone_000/061_Brass_Section.pat \n 64\tTone_000/064_Soprano_Sax.pat \n 65\tTone_000/065_Alto_Sax.pat \n 66\tTone_000/066_Tenor_Sax.pat \n 67\tTone_000/067_Baritone_Sax.pat \n 68\tTone_000/068_Oboe.pat \n 69\tTone_000/069_English_Horn.pat \n 70\tTone_000/070_Bassoon.pat \n 71\tTone_000/071_Clarinet.pat \n 72\tTone_000/072_Piccolo.pat \n 73\tTone_000/073_Flute.pat \n 74\tTone_000/074_Recorder.pat \n 75\tTone_000/075_Pan_Flute.pat \n 76\tTone_000/076_Bottle_Blow.pat \n 79\tTone_000/079_Ocarina.pat \n 80\tTone_000/080_Square_Wave.pat \n 84\tTone_000/084_Charang.pat \n 88\tTone_000/088_New_Age.pat \n 94\tTone_000/094_Halo_Pad.pat \n 95\tTone_000/095_Sweep_Pad.pat \n 98\tTone_000/098_Crystal.pat \n 101\tTone_000/101_Goblins--Unicorn.pat \n 102\tTone_000/102_Echo_Voice.pat \n 104\tTone_000/104_Sitar.pat \n 114\tTone_000/114_Steel_Drums.pat \n 115\tTone_000/115_Wood_Block.pat \n 120\tTone_000/120_Guitar_Fret_Noise.pat \n 122\tTone_000/122_Seashore.pat \n 125\tTone_000/125_Helicopter.pat \n\n";
 
-const SAMPLE_RATE = 44100
-const AUDIO_FORMAT = 0x8010 // format of the rendered audio 's16'
-const NUM_CHANNELS = 2 // stereo (2 channels)
-const BYTES_PER_SAMPLE = 2 * NUM_CHANNELS
-const BUFFER_SIZE = 16384 // buffer size for each render() call
+const SAMPLE_RATE = 44100;
+const AUDIO_FORMAT = 0x8010; // format of the rendered audio 's16'
+const NUM_CHANNELS = 2; // stereo (2 channels)
+const BYTES_PER_SAMPLE = 2 * NUM_CHANNELS;
+const BUFFER_SIZE = 16384; // buffer size for each render() call
 
-const AudioContext = typeof window !== 'undefined' &&
-  (window.AudioContext || window.webkitAudioContext)
+const AudioContext =
+  typeof window !== "undefined" &&
+  (window.AudioContext || window.webkitAudioContext);
 
 class Timidity extends EventEmitter {
-  constructor (baseUrl = '/') {
-    super()
+  constructor({ baseUrl = "/", audioContext, destination }) {
+    super();
 
-    this.destroyed = false
+    this.destroyed = false;
 
-    if (!baseUrl.endsWith('/')) baseUrl += '/'
-    this._baseUrl = new URL(baseUrl, window.location.origin).href
+    if (!baseUrl.endsWith("/")) baseUrl += "/";
+    this._baseUrl = new URL(baseUrl, window.location.origin).href;
 
-    this._ready = false
-    this._playing = false
-    this._pendingFetches = {} // instrument -> fetch
-    this._songPtr = 0
-    this._bufferPtr = 0
-    this._array = new Int16Array(BUFFER_SIZE * 2)
-    this._currentUrlOrBuf = null // currently loading url or buf
-    this._interval = null
+    this._ready = false;
+    this._playing = false;
+    this._pendingFetches = {}; // instrument -> fetch
+    this._songPtr = 0;
+    this._bufferPtr = 0;
+    this._array = new Int16Array(BUFFER_SIZE * 2);
+    this._currentUrlOrBuf = null; // currently loading url or buf
+    this._interval = null;
 
-    this._startInterval = this._startInterval.bind(this)
-    this._stopInterval = this._stopInterval.bind(this)
+    this._startInterval = this._startInterval.bind(this);
+    this._stopInterval = this._stopInterval.bind(this);
 
     // If the Timidity constructor was not invoked inside a user-initiated event
     // handler, then the AudioContext will be suspended. See:
     // https://developers.google.com/web/updates/2017/09/autoplay-policy-changes
-    this._audioContext = new AudioContext()
+    this._audioContext = audioContext || new AudioContext();
 
     // Start the 'onaudioprocess' events flowing
     this._node = this._audioContext.createScriptProcessor(
       BUFFER_SIZE,
       0,
       NUM_CHANNELS
-    )
-    this._onAudioProcess = this._onAudioProcess.bind(this)
-    this._node.addEventListener('audioprocess', this._onAudioProcess)
-    this._node.connect(this._audioContext.destination)
+    );
+    this._onAudioProcess = this._onAudioProcess.bind(this);
+    this._node.addEventListener("audioprocess", this._onAudioProcess);
+    this._node.connect(destination || this._audioContext.destination);
 
     this._lib = LibTimidity({
       locateFile: file => new URL(file, this._baseUrl).href,
-      onRuntimeInitialized: () => this._onLibReady()
-    })
+      onRuntimeInitialized: () => this._onLibReady(),
+    });
   }
 
-  _onLibReady () {
-    this._lib.FS.writeFile('/timidity.cfg', TIMIDITY_CFG)
+  _onLibReady() {
+    this._lib.FS.writeFile("/timidity.cfg", TIMIDITY_CFG);
 
-    const result = this._lib._mid_init('/timidity.cfg')
+    const result = this._lib._mid_init("/timidity.cfg");
     if (result !== 0) {
-      return this._destroy(new Error('Failed to initialize libtimidity'))
+      return this._destroy(new Error("Failed to initialize libtimidity"));
     }
 
-    this._bufferPtr = this._lib._malloc(BUFFER_SIZE * BYTES_PER_SAMPLE)
+    this._bufferPtr = this._lib._malloc(BUFFER_SIZE * BYTES_PER_SAMPLE);
 
-    debugVerbose('Initialized libtimidity')
-    this._ready = true
-    this.emit('_ready')
+    debugVerbose("Initialized libtimidity");
+    this._ready = true;
+    this.emit("_ready");
   }
 
-  async load (urlOrBuf) {
-    debug('load %o', urlOrBuf)
-    if (this.destroyed) throw new Error('load() called after destroy()')
+  async load(urlOrBuf) {
+    debug("load %o", urlOrBuf);
+    if (this.destroyed) throw new Error("load() called after destroy()");
 
     // If the Timidity constructor was not invoked inside a user-initiated event
     // handler, then the AudioContext will be suspended. Attempt to resume it.
-    this._audioContext.resume()
+    this._audioContext.resume();
 
     // If a song already exists, destroy it before starting a new one
-    if (this._songPtr) this._destroySong()
+    if (this._songPtr) this._destroySong();
 
-    this.emit('unstarted')
-    this._stopInterval()
+    this.emit("unstarted");
+    this._stopInterval();
 
-    if (!this._ready) return this.once('_ready', () => this.load(urlOrBuf))
+    if (!this._ready) return this.once("_ready", () => this.load(urlOrBuf));
 
-    this.emit('buffering')
+    this.emit("buffering");
 
     // Save the url or buf to load. Allows detection of when a new interleaved
     // load() starts so we can abort this load.
-    this._currentUrlOrBuf = urlOrBuf
+    this._currentUrlOrBuf = urlOrBuf;
 
-    let midiBuf
-    if (typeof urlOrBuf === 'string') {
-      midiBuf = await this._fetch(new URL(urlOrBuf, this._baseUrl))
+    let midiBuf;
+    if (typeof urlOrBuf === "string") {
+      midiBuf = await this._fetch(new URL(urlOrBuf, this._baseUrl));
       // If another load() started while awaiting, abort this load
-      if (this._currentUrlOrBuf !== urlOrBuf) return
+      if (this._currentUrlOrBuf !== urlOrBuf) return;
     } else if (urlOrBuf instanceof Uint8Array) {
-      midiBuf = urlOrBuf
+      midiBuf = urlOrBuf;
     } else {
-      throw new Error('load() expects a `string` or `Uint8Array` argument')
+      throw new Error("load() expects a `string` or `Uint8Array` argument");
     }
 
-    let songPtr = this._loadSong(midiBuf)
+    let songPtr = this._loadSong(midiBuf);
 
     // Are we missing instrument files?
-    let missingCount = this._lib._mid_get_load_request_count(songPtr)
+    let missingCount = this._lib._mid_get_load_request_count(songPtr);
     if (missingCount > 0) {
-      let missingInstruments = this._getMissingInstruments(songPtr, missingCount)
-      debugVerbose('Fetching instruments: %o', missingInstruments)
+      let missingInstruments = this._getMissingInstruments(
+        songPtr,
+        missingCount
+      );
+      debugVerbose("Fetching instruments: %o", missingInstruments);
 
       // Wait for all instruments to load
       await Promise.all(
         missingInstruments.map(instrument => this._fetchInstrument(instrument))
-      )
+      );
 
       // If another load() started while awaiting, abort this load
-      if (this._currentUrlOrBuf !== urlOrBuf) return
+      if (this._currentUrlOrBuf !== urlOrBuf) return;
 
       // Retry the song load, now that instruments have been loaded
-      this._lib._mid_song_free(songPtr)
-      songPtr = this._loadSong(midiBuf)
+      this._lib._mid_song_free(songPtr);
+      songPtr = this._loadSong(midiBuf);
 
       // Are we STILL missing instrument files? Then our General MIDI soundset
       // is probably missing instrument files.
-      missingCount = this._lib._mid_get_load_request_count(songPtr)
+      missingCount = this._lib._mid_get_load_request_count(songPtr);
 
       // Print out missing instrument names
       if (missingCount > 0) {
-        missingInstruments = this._getMissingInstruments(songPtr, missingCount)
-        debug('Playing with missing instruments: %o', missingInstruments)
+        missingInstruments = this._getMissingInstruments(songPtr, missingCount);
+        debug("Playing with missing instruments: %o", missingInstruments);
       }
     }
 
-    this._songPtr = songPtr
-    this._lib._mid_song_start(this._songPtr)
-    debugVerbose('Song and instruments are loaded')
+    this._songPtr = songPtr;
+    this._lib._mid_song_start(this._songPtr);
+    debugVerbose("Song and instruments are loaded");
   }
 
-  _getMissingInstruments (songPtr, missingCount) {
-    const missingInstruments = []
+  _getMissingInstruments(songPtr, missingCount) {
+    const missingInstruments = [];
     for (let i = 0; i < missingCount; i++) {
-      const instrumentPtr = this._lib._mid_get_load_request(songPtr, i)
-      const instrument = this._lib.UTF8ToString(instrumentPtr)
-      missingInstruments.push(instrument)
+      const instrumentPtr = this._lib._mid_get_load_request(songPtr, i);
+      const instrument = this._lib.UTF8ToString(instrumentPtr);
+      missingInstruments.push(instrument);
     }
-    return missingInstruments
+    return missingInstruments;
   }
 
-  _loadSong (midiBuf) {
+  _loadSong(midiBuf) {
     const optsPtr = this._lib._mid_alloc_options(
       SAMPLE_RATE,
       AUDIO_FORMAT,
       NUM_CHANNELS,
       BUFFER_SIZE
-    )
+    );
 
     // Copy the MIDI buffer into the heap
-    const midiBufPtr = this._lib._malloc(midiBuf.byteLength)
-    this._lib.HEAPU8.set(midiBuf, midiBufPtr)
+    const midiBufPtr = this._lib._malloc(midiBuf.byteLength);
+    this._lib.HEAPU8.set(midiBuf, midiBufPtr);
 
     // Create a stream
-    const iStreamPtr = this._lib._mid_istream_open_mem(midiBufPtr, midiBuf.byteLength)
+    const iStreamPtr = this._lib._mid_istream_open_mem(
+      midiBufPtr,
+      midiBuf.byteLength
+    );
 
     // Load the song
-    const songPtr = this._lib._mid_song_load(iStreamPtr, optsPtr)
+    const songPtr = this._lib._mid_song_load(iStreamPtr, optsPtr);
 
     // Free resources no longer needed
-    this._lib._mid_istream_close(iStreamPtr)
-    this._lib._free(optsPtr)
-    this._lib._free(midiBufPtr)
+    this._lib._mid_istream_close(iStreamPtr);
+    this._lib._free(optsPtr);
+    this._lib._free(midiBufPtr);
 
     if (songPtr === 0) {
-      return this._destroy(new Error('Failed to load MIDI file'))
+      return this._destroy(new Error("Failed to load MIDI file"));
     }
 
-    return songPtr
+    return songPtr;
   }
 
-  async _fetchInstrument (instrument) {
+  async _fetchInstrument(instrument) {
     if (this._pendingFetches[instrument]) {
       // If this instrument is already in the process of being fetched, return
       // the existing promise to prevent duplicate fetches.
-      return this._pendingFetches[instrument]
+      return this._pendingFetches[instrument];
     }
 
-    const url = new URL(instrument, this._baseUrl)
-    const bufPromise = this._fetch(url)
-    this._pendingFetches[instrument] = bufPromise
+    const url = new URL(instrument, this._baseUrl);
+    const bufPromise = this._fetch(url);
+    this._pendingFetches[instrument] = bufPromise;
 
-    const buf = await bufPromise
-    this._writeInstrumentFile(instrument, buf)
+    const buf = await bufPromise;
+    this._writeInstrumentFile(instrument, buf);
 
-    delete this._pendingFetches[instrument]
+    delete this._pendingFetches[instrument];
 
-    return buf
+    return buf;
   }
 
-  _writeInstrumentFile (instrument, buf) {
+  _writeInstrumentFile(instrument, buf) {
     const folderPath = instrument
-      .split('/')
+      .split("/")
       .slice(0, -1) // remove basename
-      .join('/')
-    this._mkdirp(folderPath)
-    this._lib.FS.writeFile(instrument, buf, { encoding: 'binary' })
+      .join("/");
+    this._mkdirp(folderPath);
+    this._lib.FS.writeFile(instrument, buf, { encoding: "binary" });
   }
 
-  _mkdirp (folderPath) {
-    const pathParts = folderPath.split('/')
-    let dirPath = '/'
+  _mkdirp(folderPath) {
+    const pathParts = folderPath.split("/");
+    let dirPath = "/";
     for (let i = 0; i < pathParts.length; i++) {
-      const curPart = pathParts[i]
+      const curPart = pathParts[i];
       try {
-        this._lib.FS.mkdir(`${dirPath}${curPart}`)
+        this._lib.FS.mkdir(`${dirPath}${curPart}`);
       } catch (err) {}
-      dirPath += `${curPart}/`
+      dirPath += `${curPart}/`;
     }
   }
 
-  async _fetch (url) {
+  async _fetch(url) {
     const opts = {
-      mode: 'cors',
-      credentials: 'same-origin'
-    }
-    const response = await window.fetch(url, opts)
-    if (response.status !== 200) throw new Error(`Could not load ${url}`)
+      mode: "cors",
+      credentials: "same-origin",
+    };
+    const response = await window.fetch(url, opts);
+    if (response.status !== 200) throw new Error(`Could not load ${url}`);
 
-    const arrayBuffer = await response.arrayBuffer()
-    const buf = new Uint8Array(arrayBuffer)
-    return buf
+    const arrayBuffer = await response.arrayBuffer();
+    const buf = new Uint8Array(arrayBuffer);
+    return buf;
   }
 
-  play () {
-    debug('play')
-    if (this.destroyed) throw new Error('play() called after destroy()')
+  play() {
+    debug("play");
+    if (this.destroyed) throw new Error("play() called after destroy()");
 
     // If the Timidity constructor was not invoked inside a user-initiated event
     // handler, then the AudioContext will be suspended. Attempt to resume it.
-    this._audioContext.resume()
+    this._audioContext.resume();
 
-    this._playing = true
+    this._playing = true;
     if (this._ready && !this._currentUrlOrBuf) {
-      this.emit('playing')
-      this._startInterval()
+      this.emit("playing");
+      this._startInterval();
     }
   }
 
-  _onAudioProcess (event) {
-    const sampleCount = (this._songPtr && this._playing)
-      ? this._readMidiData()
-      : 0
+  _onAudioProcess(event) {
+    const sampleCount =
+      this._songPtr && this._playing ? this._readMidiData() : 0;
 
     if (sampleCount > 0 && this._currentUrlOrBuf) {
-      this._currentUrlOrBuf = null
-      this.emit('playing')
-      this._startInterval()
+      this._currentUrlOrBuf = null;
+      this.emit("playing");
+      this._startInterval();
     }
 
-    const output0 = event.outputBuffer.getChannelData(0)
-    const output1 = event.outputBuffer.getChannelData(1)
+    const output0 = event.outputBuffer.getChannelData(0);
+    const output1 = event.outputBuffer.getChannelData(1);
 
     for (let i = 0; i < sampleCount; i++) {
-      output0[i] = this._array[i * 2] / 0x7FFF
-      output1[i] = this._array[i * 2 + 1] / 0x7FFF
+      output0[i] = this._array[i * 2] / 0x7fff;
+      output1[i] = this._array[i * 2 + 1] / 0x7fff;
     }
 
     for (let i = sampleCount; i < BUFFER_SIZE; i++) {
-      output0[i] = 0
-      output1[i] = 0
+      output0[i] = 0;
+      output1[i] = 0;
     }
 
     if (this._songPtr && this._playing && sampleCount === 0) {
       // Reached the end of the file
-      this.seek(0)
-      this.pause()
-      this._lib._mid_song_start(this._songPtr)
-      this.emit('ended')
+      this.seek(0);
+      this.pause();
+      this._lib._mid_song_start(this._songPtr);
+      this.emit("ended");
     }
   }
 
-  _readMidiData () {
+  _readMidiData() {
     const byteCount = this._lib._mid_song_read_wave(
       this._songPtr,
       this._bufferPtr,
       BUFFER_SIZE * BYTES_PER_SAMPLE
-    )
-    const sampleCount = byteCount / BYTES_PER_SAMPLE
+    );
+    const sampleCount = byteCount / BYTES_PER_SAMPLE;
 
     // Was anything output? If not, don't bother copying anything
     if (sampleCount === 0) {
-      return 0
+      return 0;
     }
 
     this._array.set(
-      this._lib.HEAP16.subarray(this._bufferPtr / 2, (this._bufferPtr + byteCount) / 2)
-    )
+      this._lib.HEAP16.subarray(
+        this._bufferPtr / 2,
+        (this._bufferPtr + byteCount) / 2
+      )
+    );
 
-    return sampleCount
+    return sampleCount;
   }
 
-  pause () {
-    debug('pause')
-    if (this.destroyed) throw new Error('pause() called after destroy()')
+  pause() {
+    debug("pause");
+    if (this.destroyed) throw new Error("pause() called after destroy()");
 
-    this._playing = false
-    this._stopInterval()
-    this.emit('paused')
+    this._playing = false;
+    this._stopInterval();
+    this.emit("paused");
   }
 
-  seek (time) {
-    debug('seek %d', time)
-    if (this.destroyed) throw new Error('seek() called after destroy()')
-    if (!this._songPtr) return // ignore seek if there is no song loaded yet
+  seek(time) {
+    debug("seek %d", time);
+    if (this.destroyed) throw new Error("seek() called after destroy()");
+    if (!this._songPtr) return; // ignore seek if there is no song loaded yet
 
-    const timeMs = Math.floor(time * 1000)
-    this._lib._mid_song_seek(this._songPtr, timeMs)
-    this._onTimeupdate()
+    const timeMs = Math.floor(time * 1000);
+    this._lib._mid_song_seek(this._songPtr, timeMs);
+    this._onTimeupdate();
   }
 
-  get currentTime () {
-    if (this.destroyed || !this._songPtr) return 0
-    return this._lib._mid_song_get_time(this._songPtr) / 1000
+  get currentTime() {
+    if (this.destroyed || !this._songPtr) return 0;
+    return this._lib._mid_song_get_time(this._songPtr) / 1000;
   }
 
-  get duration () {
-    if (this.destroyed || !this._songPtr) return 1
-    return this._lib._mid_song_get_total_time(this._songPtr) / 1000
+  get duration() {
+    if (this.destroyed || !this._songPtr) return 1;
+    return this._lib._mid_song_get_total_time(this._songPtr) / 1000;
   }
 
   /**
    * This event fires when the time indicated by the `currentTime` property
    * has been updated.
    */
-  _onTimeupdate () {
-    this.emit('timeupdate', this.currentTime)
+  _onTimeupdate() {
+    this.emit("timeupdate", this.currentTime);
   }
 
-  _startInterval () {
-    this._onTimeupdate()
-    this._interval = setInterval(() => this._onTimeupdate(), 1000)
+  _startInterval() {
+    this._onTimeupdate();
+    this._interval = setInterval(() => this._onTimeupdate(), 1000);
   }
 
-  _stopInterval () {
-    this._onTimeupdate()
-    clearInterval(this._interval)
-    this._interval = null
+  _stopInterval() {
+    this._onTimeupdate();
+    clearInterval(this._interval);
+    this._interval = null;
   }
 
-  destroy () {
-    debug('destroy')
-    if (this.destroyed) throw new Error('destroy() called after destroy()')
-    this._destroy()
+  destroy() {
+    debug("destroy");
+    if (this.destroyed) throw new Error("destroy() called after destroy()");
+    this._destroy();
   }
 
-  _destroy (err) {
-    if (this.destroyed) return
-    this.destroyed = true
+  _destroy(err) {
+    if (this.destroyed) return;
+    this.destroyed = true;
 
-    this._stopInterval()
+    this._stopInterval();
 
-    this._array = null
+    this._array = null;
 
     if (this._songPtr) {
-      this._destroySong()
+      this._destroySong();
     }
 
     if (this._bufferPtr) {
-      this._lib._free(this._bufferPtr)
-      this._bufferPtr = 0
+      this._lib._free(this._bufferPtr);
+      this._bufferPtr = 0;
     }
 
     if (this._node) {
-      this._node.disconnect()
-      this._node.removeEventListener('audioprocess', this._onAudioProcess)
+      this._node.disconnect();
+      this._node.removeEventListener("audioprocess", this._onAudioProcess);
     }
 
     if (this._audioContext) {
-      this._audioContext.close()
+      this._audioContext.close();
     }
 
-    if (err) this.emit('error', err)
-    debug('destroyed (err %o)', err)
+    if (err) this.emit("error", err);
+    debug("destroyed (err %o)", err);
   }
 
-  _destroySong () {
-    this._lib._mid_song_free(this._songPtr)
-    this._songPtr = 0
+  _destroySong() {
+    this._lib._mid_song_free(this._songPtr);
+    this._songPtr = 0;
   }
 }
 
-module.exports = Timidity
+module.exports = Timidity;
 
 },{"./libtimidity":2,"debug":3,"events":5}],2:[function(require,module,exports){
 
