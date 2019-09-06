@@ -1,4 +1,5 @@
 import GuiObject from "./GuiObject";
+import * as Selectors from "../Selectors";
 import { unimplementedWarning } from "../utils";
 
 class Group extends GuiObject {
@@ -32,14 +33,12 @@ class Group extends GuiObject {
     return;
   }
 
-  getmouseposx() {
-    unimplementedWarning("getmouseposx");
-    return;
+  getmouseposx(): number {
+    return Selectors.getMousePosition(this._store.getState()).x;
   }
 
-  getmouseposy() {
-    unimplementedWarning("getmouseposy");
-    return;
+  getmouseposy(): number {
+    return Selectors.getMousePosition(this._store.getState()).y;
   }
 
   islayout() {

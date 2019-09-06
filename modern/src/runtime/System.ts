@@ -372,14 +372,12 @@ class System extends MakiObject {
     return;
   }
 
-  getmouseposx() {
-    unimplementedWarning("getmouseposx");
-    return;
+  getmouseposx(): number {
+    return Selectors.getMousePosition(this._store.getState()).x;
   }
 
-  getmouseposy() {
-    unimplementedWarning("getmouseposy");
-    return;
+  getmouseposy(): number {
+    return Selectors.getMousePosition(this._store.getState()).y;
   }
 
   floattostring(value: number, ndigits: number): string {

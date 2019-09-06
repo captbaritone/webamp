@@ -6,6 +6,8 @@ import thunk from "redux-thunk";
 const defaultState = {
   makiTree: null,
   volume: 127,
+  mousePosX: 0,
+  mousePosY: 0,
   xmlTree: null,
   skinLoaded: false,
 };
@@ -21,6 +23,12 @@ function reducer(
       return { ...state, xmlTree: action.xmlTree };
     case "SET_VOLUME":
       return { ...state, volume: action.volume };
+    case "SET_MOUSEPOSITION":
+      return {
+        ...state,
+        mousePosX: action.mousePosX,
+        mousePosY: action.mousePosY,
+      };
 
     default:
       return state;
