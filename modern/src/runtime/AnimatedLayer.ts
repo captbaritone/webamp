@@ -4,6 +4,7 @@ import { unimplementedWarning } from "../utils";
 class AnimatedLayer extends Layer {
   _playing: boolean;
   _frameNum: number;
+  _animationStartTime: number;
 
   constructor(node, parent, annotations, store) {
     super(node, parent, annotations, store);
@@ -14,28 +15,9 @@ class AnimatedLayer extends Layer {
 
     this._playing = this.attributes.autoplay;
     this._frameNum = this.attributes.start || 0;
+    this._animationStartTime = 0;
 
-    this.js_listen("js_framechange", () => {
-      this._frameNum += 1;
-      if (this._frameNum > this.getendframe()) {
-        this._frameNum = this.getstartframe();
-        if (!this.attributes.autoreplay) {
-          return;
-        }
-      }
-      this.js_trigger("js_update");
-
-      if (this._playing) {
-        setTimeout(
-          () => this.js_trigger("js_framechange"),
-          this.attributes.speed
-        );
-      }
-    });
-
-    if (this._playing) {
-      this.js_trigger("js_framechange");
-    }
+    this._setupAnimationLoop();
   }
 
   _setAttributeDefaults(attributes: Object): void {
@@ -99,6 +81,39 @@ class AnimatedLayer extends Layer {
           Math.ceil(image.h / height)
         );
       }
+    }
+  }
+
+  _animationLoop() {
+    requestAnimationFrame(() => {
+      const currentTime = performance.now();
+      if (currentTime > this._animationStartTime + this.attributes.speed) {
+        this._animationStartTime = currentTime;
+        this.js_trigger("js_framechange");
+      } else {
+        this._animationLoop();
+      }
+    });
+  }
+
+  _setupAnimationLoop() {
+    this.js_listen("js_framechange", () => {
+      this._frameNum += 1;
+      if (this._frameNum > this.getendframe()) {
+        this._frameNum = this.getstartframe();
+        if (!this.attributes.autoreplay) {
+          return;
+        }
+      }
+      this.js_trigger("js_update");
+
+      if (this._playing) {
+        this._animationLoop();
+      }
+    });
+
+    if (this._playing) {
+      this.js_trigger("js_framechange");
     }
   }
 
@@ -176,6 +191,7 @@ class AnimatedLayer extends Layer {
   }
 
   setautoreplay(onoff: boolean): void {
+    // TODO: should this trigger the animation if it isn't currently runnnig?
     this.attributes.autoreplay = onoff;
   }
 
