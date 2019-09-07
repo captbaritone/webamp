@@ -18,15 +18,12 @@ export type ModernAppState = {
   makiTree: MakiTree | null;
   xmlTree: XmlTree | null;
   volume: number;
-  mousePosX: number;
-  mousePosY: number;
   skinLoaded: boolean;
 };
 export type ModernAction =
   | { type: "SET_MAKI_TREE"; makiTree: MakiTree }
   | { type: "SET_XML_TREE"; xmlTree: XmlTree }
-  | { type: "SET_VOLUME"; volume: number }
-  | { type: "SET_MOUSEPOSITION"; mousePosX: number; mousePosY: number };
+  | { type: "SET_VOLUME"; volume: number };
 
 export type ModernDispatch = (action: ModernAction) => void;
 

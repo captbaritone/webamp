@@ -95,10 +95,3 @@ export function gotSkinZip(zip: JSZip, store: ModernStore) {
 export function setVolume(volume: number): ModernAction {
   return { type: "SET_VOLUME", volume };
 }
-
-export function setMousePosition(
-  mousePosX: number,
-  mousePosY: number
-): ModernAction {
-  return { type: "SET_MOUSEPOSITION", mousePosX, mousePosY };
-}

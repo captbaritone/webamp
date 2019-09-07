@@ -1,6 +1,5 @@
 import GuiObject from "./GuiObject";
-import * as Selectors from "../Selectors";
-import { unimplementedWarning } from "../utils";
+import { getMousePosition, unimplementedWarning } from "../utils";
 
 class Group extends GuiObject {
   /**
@@ -34,11 +33,11 @@ class Group extends GuiObject {
   }
 
   getmouseposx(): number {
-    return Selectors.getMousePosition(this._store.getState()).x;
+    return getMousePosition().x;
   }
 
   getmouseposy(): number {
-    return Selectors.getMousePosition(this._store.getState()).y;
+    return getMousePosition().y;
   }
 
   islayout() {

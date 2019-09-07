@@ -1,6 +1,10 @@
 import Group from "./Group";
 import MakiObject from "./MakiObject";
-import { findDescendantByTypeAndId, unimplementedWarning } from "../utils";
+import {
+  findDescendantByTypeAndId,
+  getMousePosition,
+  unimplementedWarning,
+} from "../utils";
 import * as Actions from "../Actions";
 import * as Selectors from "../Selectors";
 
@@ -373,11 +377,11 @@ class System extends MakiObject {
   }
 
   getmouseposx(): number {
-    return Selectors.getMousePosition(this._store.getState()).x;
+    return getMousePosition().x;
   }
 
   getmouseposy(): number {
-    return Selectors.getMousePosition(this._store.getState()).y;
+    return getMousePosition().y;
   }
 
   floattostring(value: number, ndigits: number): string {

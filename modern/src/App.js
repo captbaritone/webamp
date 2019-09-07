@@ -646,19 +646,6 @@ function App() {
     const defaultSkinUrl = getSkinUrlFromQueryParams() || skinUrls[0];
     dispatch(Actions.gotSkinUrl(defaultSkinUrl, store));
   }, [store]);
-
-  function handleMouseMove(e) {
-    dispatch(Actions.setMousePosition(e.clientX, e.clientY));
-  }
-
-  useEffect(() => {
-    document.addEventListener("mousemove", handleMouseMove);
-
-    return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, []);
-
   if (root == null) {
     return <h1>Loading...</h1>;
   }
