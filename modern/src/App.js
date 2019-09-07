@@ -56,8 +56,6 @@ function useJsUpdates(node) {
   useEffect(() => node.js_listen("js_update", forceUpdate));
 }
 
-let mouseposition;
-
 function handleMouseEventDispatch(node, event, eventName) {
   event.stopPropagation();
 
@@ -72,10 +70,6 @@ function handleMouseEventDispatch(node, event, eventName) {
   const x = clientX - (Number(container.attributes.x) || 0);
   const y = clientY - (Number(container.attributes.y) || 0);
   node.js_trigger(eventName, x, y);
-
-  if (event.nativeEvent.type === "mousemove") {
-    mouseposition = { x: clientX, y: clientY };
-  }
 
   if (event.nativeEvent.type === "mousedown") {
     // We need to persist the react event so we can access the target
@@ -465,7 +459,7 @@ function Button({
   );
 }
 
-function Popupmenu({ id, node }) {
+function Popupmenu({ id, node, x, y }) {
   const children = node.commands.map(item => {
     if (item.id === "seperator") {
       return <li />;
@@ -481,7 +475,6 @@ function Popupmenu({ id, node }) {
       </li>
     );
   });
-  const { x, y } = mouseposition;
   // TODO: Actually properly style element
   return (
     <div

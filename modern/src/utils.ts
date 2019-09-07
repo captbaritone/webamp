@@ -310,3 +310,14 @@ export async function getSizeFromUrl(
   const { width, height } = await loadImage(imgUrl);
   return { width, height };
 }
+
+let mousePosition = { x: 0, y: 0 };
+function handleMouseMove(e) {
+  mousePosition = { x: e.clientX, y: e.clientY };
+}
+
+document.addEventListener("mousemove", handleMouseMove);
+
+export function getMousePosition() {
+  return mousePosition;
+}
