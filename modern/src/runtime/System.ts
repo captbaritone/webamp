@@ -392,7 +392,7 @@ class System extends MakiObject {
     return parseFloat(str);
   }
 
-  _atLeast2Digits(n: number): string {
+  _atLeastTwoDigits(n: number): string {
     return n > 9 ? n.toString() : `0${n}`;
   }
 
@@ -402,16 +402,18 @@ class System extends MakiObject {
     const remainingTime = value - hours * 3600;
     const minutes = Math.floor(remainingTime / 60);
     const seconds = remainingTime - minutes * 60;
-    return `${this._atLeast2Digits(hours)}:${this._atLeast2Digits(
+    return `${this._atLeastTwoDigits(hours)}:${this._atLeastTwoDigits(
       minutes
-    )}:${this._atLeast2Digits(seconds)}`;
+    )}:${this._atLeastTwoDigits(seconds)}`;
   }
 
   // Convert a time in seconds to a MM:SS value.
   integertotime(value: number): string {
     const minutes = Math.floor(value / 60);
     const seconds = value - minutes * 60;
-    return `${this._atLeast2Digits(minutes)}:${this._atLeast2Digits(seconds)}`;
+    return `${this._atLeastTwoDigits(minutes)}:${this._atLeastTwoDigits(
+      seconds
+    )}`;
   }
 
   datetotime(datetime: number) {
