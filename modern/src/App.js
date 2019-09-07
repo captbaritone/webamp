@@ -230,6 +230,7 @@ function Layout({
             backgroundImage: `url(${image.imgUrl})`,
             width: image.w,
             height: image.h,
+            overflow: "hidden",
             // TODO: This combo of height/minHeight ect is a bit odd. How should we combine these?
             minWidth: minimum_w == null ? null : Number(minimum_w),
             minHeight: minimum_h == null ? null : Number(minimum_h),
@@ -266,6 +267,7 @@ function Layout({
         draggable={false}
         style={{
           position: "absolute",
+          overflow: "hidden",
           ...params,
         }}
       >
