@@ -248,9 +248,11 @@ function Layout({
   }
   if (w !== undefined) {
     params.width = Number(w);
+    params.overflow = "hidden";
   }
   if (h !== undefined) {
     params.height = Number(h);
+    params.overflow = "hidden";
   }
 
   return (
@@ -261,7 +263,6 @@ function Layout({
         draggable={false}
         style={{
           position: "absolute",
-          overflow: "hidden",
           ...params,
         }}
       >
