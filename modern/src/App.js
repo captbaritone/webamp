@@ -163,26 +163,22 @@ function GuiObjectEvents({ node, children }) {
 
 function Container(props) {
   const { id, node, default_x, default_y, default_visible } = props;
-  const style = {
-    position: "absolute",
-  };
-  if (default_x !== undefined) {
-    style.left = Number(default_x);
-  }
-  if (default_y !== undefined) {
-    style.top = Number(default_y);
-  }
-  if (default_visible !== undefined) {
-    style.display = default_visible ? "block" : "none";
-  }
-
   const layout = node.getcurlayout();
   if (layout == null) {
     return null;
   }
 
   return (
-    <div data-node-type="container" data-node-id={id} style={style}>
+    <div
+      data-node-type="container"
+      data-node-id={id}
+      style={{
+        position: "absolute",
+        left: default_x == null ? null : Number(default_x),
+        top: default_y == null ? null : Number(default_y),
+        display: default_visible != null && default_visible ? "block" : "none",
+      }}
+    >
       <XmlNode node={layout} />
     </div>
   );
@@ -209,6 +205,9 @@ function Layout({
     return null;
   }
 
+  const style = {
+    position: "absolute",
+  };
   if (drawBackground) {
     const image = node.js_imageLookup(background);
     if (image == null) {
@@ -224,41 +223,24 @@ function Layout({
         <div
           data-node-type="layout"
           data-node-id={id}
-          src={image.imgUrl}
           draggable={false}
           style={{
-            backgroundImage: `url(${image.imgUrl})`,
-            width: image.w,
-            height: image.h,
+            ...style,
             overflow: "hidden",
+            backgroundImage: `url(${image.imgUrl})`,
+            width: image.w == null ? null : Number(image.w),
+            height: image.h == null ? null : Number(image.h),
             // TODO: This combo of height/minHeight ect is a bit odd. How should we combine these?
-            minWidth: minimum_w == null ? null : Number(minimum_w),
-            minHeight: minimum_h == null ? null : Number(minimum_h),
-            maxWidth: maximum_w == null ? null : Number(maximum_w),
-            maxHeight: maximum_h == null ? null : Number(maximum_h),
-            position: "absolute",
+            minWidth: minimum_w == null ? minimum_w : Number(minimum_w),
+            minHeight: minimum_h == null ? minimum_h : Number(minimum_h),
+            maxWidth: maximum_w == null ? maximum_w : Number(maximum_w),
+            maxHeight: maximum_h == null ? maximum_h : Number(maximum_h),
           }}
         >
           <XmlChildren node={node} />
         </div>
       </GuiObjectEvents>
     );
-  }
-
-  const params = {};
-  if (x !== undefined) {
-    params.left = Number(x);
-  }
-  if (y !== undefined) {
-    params.top = Number(y);
-  }
-  if (w !== undefined) {
-    params.width = Number(w);
-    params.overflow = "hidden";
-  }
-  if (h !== undefined) {
-    params.height = Number(h);
-    params.overflow = "hidden";
   }
 
   return (
@@ -268,8 +250,12 @@ function Layout({
         data-node-id={id}
         draggable={false}
         style={{
-          position: "absolute",
-          ...params,
+          ...style,
+          left: x == null ? null : Number(x),
+          top: y == null ? null : Number(y),
+          width: w == null ? null : Number(w),
+          height: h == null ? null : Number(h),
+          overflow: w !== null && h != null ? "hidden" : null,
         }}
       >
         <XmlChildren node={node} />
@@ -288,35 +274,23 @@ function Layer({ node, id, image, x, y }) {
     console.warn("Unable to find image to render. Rendering null", image);
     return null;
   }
-  const params = {};
-  if (x !== undefined) {
-    params.left = Number(x);
-  }
-  if (y !== undefined) {
-    params.top = Number(y);
-  }
-  if (img.x !== undefined) {
-    params.backgroundPositionX = -Number(img.x);
-  }
-  if (img.y !== undefined) {
-    params.backgroundPositionY = -Number(img.y);
-  }
-  if (img.w !== undefined) {
-    params.width = Number(img.w);
-  }
-  if (img.h !== undefined) {
-    params.height = Number(img.h);
-  }
-  if (img.imgUrl !== undefined) {
-    params.backgroundImage = `url(${img.imgUrl}`;
-  }
+
   return (
     <GuiObjectEvents node={node}>
       <div
         data-node-type="Layer"
         data-node-id={id}
         draggable={false}
-        style={{ position: "absolute", ...params }}
+        style={{
+          position: "absolute",
+          left: x == null ? null : Number(x),
+          top: y == null ? null : Number(y),
+          backgroundPositionX: img.x == null ? null : -Number(img.x),
+          backgroundPositionY: img.y == null ? null : -Number(img.y),
+          width: img.w == null ? null : Number(img.w),
+          height: img.h == null ? null : Number(img.h),
+          backgroundImage: img.imgUrl == null ? null : `url(${img.imgUrl}`,
+        }}
       >
         <XmlChildren node={node} />
       </div>
@@ -368,14 +342,6 @@ function AnimatedLayer({
   const img = node.js_imageLookup(image.toLowerCase());
   const frameNum = node.getcurframe();
 
-  let style = {};
-  if (x !== undefined) {
-    style.left = Number(x);
-  }
-  if (y !== undefined) {
-    style.top = Number(y);
-  }
-
   const {
     offset: backgroundPositionX,
     size: width,
@@ -384,11 +350,6 @@ function AnimatedLayer({
     offset: backgroundPositionY,
     size: height,
   } = animatedLayerOffsetAndSize(frameNum, frameheight, h, img.h, img.y);
-  style = { ...style, width, height, backgroundPositionX, backgroundPositionY };
-
-  if (img.imgUrl !== undefined) {
-    style.backgroundImage = `url(${img.imgUrl}`;
-  }
 
   return (
     <GuiObjectEvents node={node}>
@@ -396,7 +357,22 @@ function AnimatedLayer({
         data-node-type="AnimatedLayer"
         data-node-id={id}
         draggable={false}
-        style={{ position: "absolute", ...style }}
+        style={{
+          position: "absolute",
+          left: x == null ? null : Number(x),
+          top: y == null ? null : Number(y),
+          width: width == null ? width : Number(width),
+          height: height == null ? height : Number(height),
+          backgroundPositionX:
+            backgroundPositionX == null
+              ? backgroundPositionX
+              : Number(backgroundPositionX),
+          backgroundPositionY:
+            backgroundPositionY == null
+              ? backgroundPositionY
+              : Number(backgroundPositionY),
+          backgroundImage: img.imgUrl == null ? null : `url(${img.imgUrl}`,
+        }}
       >
         <XmlChildren node={node} />
       </div>
@@ -450,12 +426,12 @@ function Button({
         title={tooltip}
         style={{
           position: "absolute",
-          top: Number(y),
-          left: Number(x),
-          backgroundPositionX: -Number(img.x),
-          backgroundPositionY: -Number(img.y),
-          width: Number(img.w),
-          height: Number(img.h),
+          left: x == null ? null : Number(x),
+          top: y == null ? null : Number(y),
+          backgroundPositionX: img.x == null ? null : -Number(img.x),
+          backgroundPositionY: img.y == null ? null : -Number(img.y),
+          width: img.w == null ? null : Number(img.w),
+          height: img.h == null ? null : Number(img.h),
           backgroundImage: `url(${img.imgUrl})`,
           pointerEvents: ghost ? "none" : null,
         }}
@@ -489,8 +465,8 @@ function Popupmenu({ id, node, x, y }) {
       data-node-id={id}
       style={{
         position: "absolute",
-        top: Number(y),
-        left: Number(x),
+        left: x == null ? null : Number(x),
+        top: y == null ? null : Number(y),
         backgroundColor: "#000000",
         color: "#FFFFFF",
       }}
@@ -505,18 +481,17 @@ function ToggleButton(props) {
 }
 
 function Group({ node, id, x, y }) {
-  const style = {
-    position: "absolute",
-  };
-  if (x !== undefined) {
-    style.left = Number(x);
-  }
-  if (y !== undefined) {
-    style.top = Number(y);
-  }
   return (
     <GuiObjectEvents node={node}>
-      <div data-node-type="group" data-node-id={id} style={style}>
+      <div
+        data-node-type="group"
+        data-node-id={id}
+        style={{
+          position: "absolute",
+          left: x == null ? null : Number(x),
+          top: y == null ? null : Number(y),
+        }}
+      >
         <XmlChildren node={node} />
       </div>
     </GuiObjectEvents>
@@ -538,28 +513,6 @@ function Text({
   color,
   align,
 }) {
-  const params = {};
-  if (x !== undefined) {
-    params.left = Number(x);
-  }
-  if (y !== undefined) {
-    params.top = Number(y);
-  }
-  if (w !== undefined) {
-    params.width = Number(w);
-  }
-  if (h !== undefined) {
-    params.height = Number(h);
-  }
-  if (color !== undefined) {
-    params.color = `rgb(${color})`;
-  }
-  if (fontsize !== undefined) {
-    params.fontSize = `${fontsize}px`;
-  }
-  if (align !== undefined) {
-    params.textAlign = align;
-  }
   // display is actually a keyword that is looked up in some sort of map
   // e.g. songname, time
   const nodeText = display;
@@ -573,7 +526,13 @@ function Text({
           position: "absolute",
           userSelect: "none",
           MozUserSelect: "none",
-          ...params,
+          left: x == null ? null : Number(x),
+          top: y == null ? null : Number(y),
+          width: w == null ? null : Number(w),
+          height: h == null ? null : Number(h),
+          color: color == null ? null : `rgb(${color})`,
+          fontSize: fontsize == null ? null : `${fontsize}px`,
+          textAlign: align,
         }}
       >
         {nodeText}
