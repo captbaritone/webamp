@@ -1,5 +1,5 @@
 import GuiObject from "./GuiObject";
-import { unimplementedWarning } from "../utils";
+import { getMousePosition, unimplementedWarning } from "../utils";
 
 class Group extends GuiObject {
   /**
@@ -32,14 +32,12 @@ class Group extends GuiObject {
     return;
   }
 
-  getmouseposx() {
-    unimplementedWarning("getmouseposx");
-    return;
+  getmouseposx(): number {
+    return getMousePosition().x;
   }
 
-  getmouseposy() {
-    unimplementedWarning("getmouseposy");
-    return;
+  getmouseposy(): number {
+    return getMousePosition().y;
   }
 
   islayout() {
