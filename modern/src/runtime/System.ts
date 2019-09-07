@@ -52,9 +52,12 @@ class System extends MakiObject {
     return "5.666";
   }
 
-  gettoken(str: string, separator: string, tokennum: number) {
-    unimplementedWarning("gettoken");
-    return "Some Token String";
+  gettoken(str: string, separator: string, tokennum: number): string {
+    const tokens = str.split(separator);
+    if (tokens.length > tokennum) {
+      return tokens[tokennum];
+    }
+    return "";
   }
 
   getparam() {
@@ -514,24 +517,20 @@ class System extends MakiObject {
     return Math.floor(Date.now() / 1000);
   }
 
-  strmid(str: string, start: number, len: number) {
-    unimplementedWarning("strmid");
-    return;
+  strmid(str: string, start: number, len: number): string {
+    return str.substring(start, start + len);
   }
 
-  strleft(str: string, nchars: number) {
-    unimplementedWarning("strleft");
-    return;
+  strleft(str: string, nchars: number): string {
+    return str.substring(nchars);
   }
 
-  strright(str: string, nchars: number) {
-    unimplementedWarning("strright");
-    return;
+  strright(str: string, nchars: number): string {
+    return str.substring(str.length - nchars);
   }
 
-  strsearch(str: string, substr: string) {
-    unimplementedWarning("strsearch");
-    return;
+  strsearch(str: string, substr: string): number {
+    return str.indexOf(substr);
   }
 
   strlen(str: string): number {
