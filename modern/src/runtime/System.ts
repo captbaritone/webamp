@@ -392,14 +392,28 @@ class System extends MakiObject {
     return parseFloat(str);
   }
 
-  integertolongtime(value: number) {
-    unimplementedWarning("integertolongtime");
-    return;
+  _atLeastTwoDigits(n: number): string {
+    return n > 9 ? n.toString() : `0${n}`;
   }
 
-  integertotime(value: number) {
-    unimplementedWarning("integertotime");
-    return;
+  // Convert a time in seconds to a HH:MM:SS value.
+  integertolongtime(value: number): string {
+    const hours = Math.floor(value / 3600);
+    const remainingTime = value - hours * 3600;
+    const minutes = Math.floor(remainingTime / 60);
+    const seconds = remainingTime - minutes * 60;
+    return `${this._atLeastTwoDigits(hours)}:${this._atLeastTwoDigits(
+      minutes
+    )}:${this._atLeastTwoDigits(seconds)}`;
+  }
+
+  // Convert a time in seconds to a MM:SS value.
+  integertotime(value: number): string {
+    const minutes = Math.floor(value / 60);
+    const seconds = value - minutes * 60;
+    return `${this._atLeastTwoDigits(minutes)}:${this._atLeastTwoDigits(
+      seconds
+    )}`;
   }
 
   datetotime(datetime: number) {
@@ -712,19 +726,19 @@ class System extends MakiObject {
     return;
   }
 
-  integer(d: number) {
-    unimplementedWarning("integer");
-    return;
+  // Takes a Double and returns the closest integer representation.
+  integer(d: number): number {
+    return Math.round(d);
   }
 
-  frac(d: number) {
-    unimplementedWarning("frac");
-    return;
+  frac(d: number): number {
+    return d - Math.floor(d);
   }
 
-  gettimeofday() {
-    unimplementedWarning("gettimeofday");
-    return;
+  // Returns ms since midnight
+  gettimeofday(): number {
+    const date = new Date();
+    return date.getTime() - date.setHours(0, 0, 0, 0);
   }
 
   setmenutransparency(alphavalue: number) {
