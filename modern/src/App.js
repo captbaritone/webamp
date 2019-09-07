@@ -252,6 +252,7 @@ function Layout({
   }
   if (h !== undefined) {
     params.height = Number(h);
+    params.overflow = "hidden";
   }
 
   return (
