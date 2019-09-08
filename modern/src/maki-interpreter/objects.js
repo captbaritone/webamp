@@ -2171,7 +2171,7 @@ const objects = {
       {
         parameters: [],
         name: "isRunning",
-        result: "",
+        result: "boolean",
       },
       {
         parameters: [],
