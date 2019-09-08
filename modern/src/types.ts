@@ -18,6 +18,8 @@ export type ModernAppState = {
   makiTree: MakiTree | null;
   xmlTree: XmlTree | null;
   volume: number;
+  rightVUMeter: number;
+  leftVUMeter: number;
   skinLoaded: boolean;
 };
 export type ModernAction =

@@ -6,6 +6,8 @@ import thunk from "redux-thunk";
 const defaultState = {
   makiTree: null,
   volume: 127,
+  rightVUMeter: 127,
+  leftVUMeter: 127,
   xmlTree: null,
   skinLoaded: false,
 };

@@ -101,8 +101,6 @@ Set {
   "System.geteqband",
   "System.geteqpreamp",
   "System.getstatus",
-  "System.getleftvumeter",
-  "System.getrightvumeter",
   "System.getplayitemlength",
   "System.seekto",
   "System.onscriptloaded",
