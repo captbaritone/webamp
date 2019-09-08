@@ -129,14 +129,12 @@ class System extends MakiObject {
     }
   }
 
-  getleftvumeter() {
-    unimplementedWarning("getleftvumeter");
-    return 0.5;
+  getleftvumeter(): number {
+    return Selectors.getLeftVUMeter(this._store.getState());
   }
 
-  getrightvumeter() {
-    unimplementedWarning("getrightvumeter");
-    return 0.5;
+  getrightvumeter(): number {
+    return Selectors.getRightVUMeter(this._store.getState());
   }
 
   // Seems like volume is 0-255
