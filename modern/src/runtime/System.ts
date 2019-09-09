@@ -467,9 +467,9 @@ class System extends MakiObject {
     return `${dateString} ${timeString}`;
   }
 
-  getdateyear(datetime: number) {
-    unimplementedWarning("getdateyear");
-    return;
+  getdateyear(datetime: number): number {
+    const date = new Date(datetime * 1000);
+    return date.getYear();
   }
 
   getdatemonth(datetime: number): number {
@@ -482,8 +482,8 @@ class System extends MakiObject {
     return date.getDate();
   }
 
+  // MAKI starts at 0: Sunday just like JS
   getdatedow(datetime: number): number {
-    // TODO: Double check if MAKI starts on 0: Sunday too
     const date = new Date(datetime * 1000);
     return date.getDay();
   }
@@ -509,9 +509,16 @@ class System extends MakiObject {
     return date.getSeconds();
   }
 
-  getdatedst(datetime: number) {
-    unimplementedWarning("getdatedst");
-    return;
+  // Based on https://stackoverflow.com/questions/11887934/how-to-check-if-the-dst-daylight-saving-time-is-in-effect-and-if-it-is-whats
+  _stdTimezoneOffset(date) {
+    var jan = new Date(date.getFullYear(), 0, 1);
+    var jul = new Date(date.getFullYear(), 6, 1);
+    return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+  }
+
+  getdatedst(datetime: number): number {
+    const date = new Date(datetime * 1000);
+    return date.getTimezoneOffset() < this._stdTimezoneOffset(date) ? 1 : 0;
   }
 
   getdate(): number {
