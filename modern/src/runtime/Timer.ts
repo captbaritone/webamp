@@ -39,6 +39,7 @@ class Timer extends MakiObject {
   }
 
   start(): void {
+    this._animationStartTime = performance.now();
     this._animationLoop();
   }
 
