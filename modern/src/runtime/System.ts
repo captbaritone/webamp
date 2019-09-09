@@ -399,7 +399,7 @@ class System extends MakiObject {
     const hours = Math.floor(value / 3600);
     const remainingTime = value - hours * 3600;
     const minutes = Math.floor(remainingTime / 60);
-    const seconds = remainingTime - minutes * 60;
+    const seconds = Math.floor(remainingTime - minutes * 60);
     return `${this._atLeastTwoDigits(hours)}:${this._atLeastTwoDigits(
       minutes
     )}:${this._atLeastTwoDigits(seconds)}`;
@@ -408,30 +408,59 @@ class System extends MakiObject {
   // Convert a time in seconds to a MM:SS value.
   integertotime(value: number): string {
     const minutes = Math.floor(value / 60);
-    const seconds = value - minutes * 60;
+    const seconds = Math.floor(value - minutes * 60);
     return `${this._atLeastTwoDigits(minutes)}:${this._atLeastTwoDigits(
       seconds
     )}`;
   }
 
-  datetotime(datetime: number) {
-    unimplementedWarning("datetotime");
-    return;
+  // datetime in HH:MM format (docs imply it is in the same format as integertotime
+  // which would be MM:SS, but I tested in winamp and it is HH:MM)
+  // (e.g. 17:44)
+  datetotime(datetime: number): string {
+    const date = new Date(datetime * 1000);
+    const seconds = (date.getTime() - date.setHours(0, 0, 0, 0)) / 1000;
+    const longtime = this.integertolongtime(seconds);
+    return longtime.substring(0, longtime.length - 3);
   }
 
-  datetolongtime(datetime: number) {
-    unimplementedWarning("datetolongtime");
-    return;
+  // datetime in HH:MM:SS format
+  // (e.g. 17:44:58)
+  datetolongtime(datetime: number): string {
+    const date = new Date(datetime * 1000);
+    const seconds = (date.getTime() - date.setHours(0, 0, 0, 0)) / 1000;
+    return this.integertolongtime(seconds);
   }
 
-  formatdate(datetime: number) {
-    unimplementedWarning("formatdate");
-    return;
+  // datetime in MM/DD/YY HH:MM:SS format
+  // (e.g. 09/08/19 17:44:58)
+  formatdate(datetime: number): string {
+    const date = new Date(datetime * 1000);
+    const dateCopy = new Date(date.getTime());
+    const seconds = (date.getTime() - date.setHours(0, 0, 0, 0)) / 1000;
+    const dateString = dateCopy.toLocaleDateString("en-US", {
+      year: "2-digit",
+      month: "2-digit",
+      day: "2-digit",
+    });
+    const timeString = this.integertolongtime(seconds);
+    return `${dateString} ${timeString}`;
   }
 
-  formatlongdate(datetime: number) {
-    unimplementedWarning("formatlongdate");
-    return;
+  // datetime in DayOfWeek, Month DD, YYYY HH:MM:SS format
+  // (e.g. Sunday, September 08, 2019 17:44:58)
+  formatlongdate(datetime: number): string {
+    const date = new Date(datetime * 1000);
+    const dateCopy = new Date(date.getTime());
+    const seconds = (date.getTime() - date.setHours(0, 0, 0, 0)) / 1000;
+    const dateString = dateCopy.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "2-digit",
+    });
+    const timeString = this.integertolongtime(seconds);
+    return `${dateString} ${timeString}`;
   }
 
   getdateyear(datetime: number) {
@@ -439,39 +468,41 @@ class System extends MakiObject {
     return;
   }
 
-  getdatemonth(datetime: number) {
-    unimplementedWarning("getdatemonth");
-    return;
+  getdatemonth(datetime: number): number {
+    const date = new Date(datetime * 1000);
+    return date.getMonth();
   }
 
-  getdateday(datetime: number) {
-    unimplementedWarning("getdateday");
-    return;
+  getdateday(datetime: number): number {
+    const date = new Date(datetime * 1000);
+    return date.getDate();
   }
 
-  getdatedow(datetime: number) {
-    unimplementedWarning("getdatedow");
-    return;
+  getdatedow(datetime: number): number {
+    // TODO: Double check if MAKI starts on 0: Sunday too
+    const date = new Date(datetime * 1000);
+    return date.getDay();
   }
 
-  getdatedoy(datetime: number) {
-    unimplementedWarning("getdatedoy");
-    return;
+  getdatedoy(datetime: number): number {
+    const date = new Date(datetime * 1000);
+    const start = new Date(date.getFullYear(), 0, 0);
+    return Math.floor((date.getTime() - start.getTime()) / 86400000);
   }
 
-  getdatehour(datetime: number) {
-    unimplementedWarning("getdatehour");
-    return;
+  getdatehour(datetime: number): number {
+    const date = new Date(datetime * 1000);
+    return date.getHours();
   }
 
-  getdatemin(datetime: number) {
-    unimplementedWarning("getdatemin");
-    return;
+  getdatemin(datetime: number): number {
+    const date = new Date(datetime * 1000);
+    return date.getMinutes();
   }
 
-  getdatesec(datetime: number) {
-    unimplementedWarning("getdatesec");
-    return;
+  getdatesec(datetime: number): number {
+    const date = new Date(datetime * 1000);
+    return date.getSeconds();
   }
 
   getdatedst(datetime: number) {
@@ -479,9 +510,8 @@ class System extends MakiObject {
     return;
   }
 
-  getdate() {
-    unimplementedWarning("getdate");
-    return;
+  getdate(): number {
+    return Math.floor(Date.now() / 1000);
   }
 
   strmid(str: string, start: number, len: number) {
