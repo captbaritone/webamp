@@ -144,8 +144,6 @@ Set {
   "System.seteqband",
   "System.seteqpreamp",
   "System.seteq",
-  "System.getdateyear",
-  "System.getdatedst",
   "System.strmid",
   "System.strleft",
   "System.strright",
