@@ -414,12 +414,18 @@ class System extends MakiObject {
     )}`;
   }
 
+  _getDateTimeInMs(date: Date): number {
+    const dateTime = date.getTime();
+    const dateCopy = new Date(dateTime);
+    return dateTime - dateCopy.setHours(0, 0, 0, 0);
+  }
+
   // datetime in HH:MM format (docs imply it is in the same format as integertotime
   // which would be MM:SS, but I tested in winamp and it is HH:MM)
   // (e.g. 17:44)
   datetotime(datetime: number): string {
     const date = new Date(datetime * 1000);
-    const seconds = (date.getTime() - date.setHours(0, 0, 0, 0)) / 1000;
+    const seconds = this._getDateTimeInMs(date) / 1000;
     const longtime = this.integertolongtime(seconds);
     return longtime.substring(0, longtime.length - 3);
   }
@@ -428,7 +434,7 @@ class System extends MakiObject {
   // (e.g. 17:44:58)
   datetolongtime(datetime: number): string {
     const date = new Date(datetime * 1000);
-    const seconds = (date.getTime() - date.setHours(0, 0, 0, 0)) / 1000;
+    const seconds = this._getDateTimeInMs(date) / 1000;
     return this.integertolongtime(seconds);
   }
 
@@ -436,9 +442,8 @@ class System extends MakiObject {
   // (e.g. 09/08/19 17:44:58)
   formatdate(datetime: number): string {
     const date = new Date(datetime * 1000);
-    const dateCopy = new Date(date.getTime());
-    const seconds = (date.getTime() - date.setHours(0, 0, 0, 0)) / 1000;
-    const dateString = dateCopy.toLocaleDateString("en-US", {
+    const seconds = this._getDateTimeInMs(date) / 1000;
+    const dateString = date.toLocaleDateString("en-US", {
       year: "2-digit",
       month: "2-digit",
       day: "2-digit",
@@ -451,9 +456,8 @@ class System extends MakiObject {
   // (e.g. Sunday, September 08, 2019 17:44:58)
   formatlongdate(datetime: number): string {
     const date = new Date(datetime * 1000);
-    const dateCopy = new Date(date.getTime());
-    const seconds = (date.getTime() - date.setHours(0, 0, 0, 0)) / 1000;
-    const dateString = dateCopy.toLocaleDateString("en-US", {
+    const seconds = this._getDateTimeInMs(date) / 1000;
+    const dateString = date.toLocaleDateString("en-US", {
       weekday: "long",
       year: "numeric",
       month: "long",
@@ -766,7 +770,7 @@ class System extends MakiObject {
   // Returns ms since midnight
   gettimeofday(): number {
     const date = new Date();
-    return date.getTime() - date.setHours(0, 0, 0, 0);
+    return this._getDateTimeInMs(date);
   }
 
   setmenutransparency(alphavalue: number) {
