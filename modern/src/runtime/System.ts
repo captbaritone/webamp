@@ -467,43 +467,51 @@ class System extends MakiObject {
     return `${dateString} ${timeString}`;
   }
 
+  // returns the datetime's year since 1900
   getdateyear(datetime: number): number {
     const date = new Date(datetime * 1000);
     return date.getYear();
   }
 
+  // returns the datetime's month (0-11)
   getdatemonth(datetime: number): number {
     const date = new Date(datetime * 1000);
     return date.getMonth();
   }
 
+  // returns the datetime's day of the month (1-31)
   getdateday(datetime: number): number {
     const date = new Date(datetime * 1000);
     return date.getDate();
   }
 
-  // MAKI starts at 0: Sunday just like JS
+  // returns the datetime's day of the week (0-6)
+  // MAKI starts with Sunday like JS
   getdatedow(datetime: number): number {
     const date = new Date(datetime * 1000);
     return date.getDay();
   }
 
+  // returns the datetime's day of the year (0-365)
   getdatedoy(datetime: number): number {
     const date = new Date(datetime * 1000);
     const start = new Date(date.getFullYear(), 0, 0);
     return Math.floor((date.getTime() - start.getTime()) / 86400000);
   }
 
+  // returns the datetime's hour (0-23)
   getdatehour(datetime: number): number {
     const date = new Date(datetime * 1000);
     return date.getHours();
   }
 
+  // returns the datetime's minutes (0-59)
   getdatemin(datetime: number): number {
     const date = new Date(datetime * 1000);
     return date.getMinutes();
   }
 
+  // returns the datetime's seconds (0-59)
   getdatesec(datetime: number): number {
     const date = new Date(datetime * 1000);
     return date.getSeconds();
@@ -516,11 +524,13 @@ class System extends MakiObject {
     return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
   }
 
+  // returns the datetime's daylight savings flag
   getdatedst(datetime: number): number {
     const date = new Date(datetime * 1000);
     return date.getTimezoneOffset() < this._stdTimezoneOffset(date) ? 1 : 0;
   }
 
+  // returns the datetime in seconds, use with the above functions
   getdate(): number {
     return Math.floor(Date.now() / 1000);
   }
