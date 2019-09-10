@@ -121,14 +121,6 @@ GuiObject.getalpha
 GuiObject.setenabled
 GuiObject.getenabled
 GuiObject.ismouseover
-GuiObject.settargetx
-GuiObject.settargety
-GuiObject.settargetw
-GuiObject.settargeth
-GuiObject.settargeta
-GuiObject.settargetspeed
-GuiObject.gototarget
-GuiObject.canceltarget
 GuiObject.reversetarget
 GuiObject.isgoingtotarget
 GuiObject.bringtofront
