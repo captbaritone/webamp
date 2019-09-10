@@ -498,8 +498,8 @@ class System extends MakiObject {
 
   // Based on https://stackoverflow.com/questions/11887934/how-to-check-if-the-dst-daylight-saving-time-is-in-effect-and-if-it-is-whats
   _stdTimezoneOffset(date) {
-    var jan = new Date(date.getFullYear(), 0, 1);
-    var jul = new Date(date.getFullYear(), 6, 1);
+    const jan = new Date(date.getFullYear(), 0, 1);
+    const jul = new Date(date.getFullYear(), 6, 1);
     return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
   }
 
