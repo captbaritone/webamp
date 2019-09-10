@@ -52,6 +52,7 @@ class System extends MakiObject {
     return "5.666";
   }
 
+  // Retreive a token from a list of tokens seperated by separator.
   gettoken(str: string, separator: string, tokennum: number): string {
     const tokens = str.split(separator);
     if (tokens.length > tokennum) {
@@ -517,18 +518,27 @@ class System extends MakiObject {
     return Math.floor(Date.now() / 1000);
   }
 
+  // Get a substring from a string.
   strmid(str: string, start: number, len: number): string {
     return str.substring(start, start + len);
   }
 
+  // Get a substring from a string, starting from the left.
   strleft(str: string, nchars: number): string {
     return str.substring(nchars);
   }
 
+  // Get a substring from a string, starting from the right. Since
+  // the start point is the right of the string (or the end). It will
+  // extract the string starting from the END going towards the BEGINNING.
   strright(str: string, nchars: number): string {
     return str.substring(str.length - nchars);
   }
 
+  // Search a string for any occurance of substring. If the substring was
+  // found in the string, it will return the position of the substring in
+  // the string searched. If the substring is not found, the return value
+  // is -1.
   strsearch(str: string, substr: string): number {
     return str.indexOf(substr);
   }
