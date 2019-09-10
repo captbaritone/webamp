@@ -91,7 +91,6 @@ describe("Maki classes", () => {
   test("Track unimplemented methods", () => {
     expect(unimplementedRuntimeMethods).toMatchInlineSnapshot(`
 Set {
-  "System.gettoken",
   "System.getparam",
   "System.getskinname",
   "System.getplayitemstring",
@@ -121,10 +120,6 @@ Set {
   "System.seteqband",
   "System.seteqpreamp",
   "System.seteq",
-  "System.strmid",
-  "System.strleft",
-  "System.strright",
-  "System.strsearch",
   "System.removepath",
   "System.getpath",
   "System.getextension",

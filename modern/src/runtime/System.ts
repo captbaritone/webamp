@@ -52,9 +52,13 @@ class System extends MakiObject {
     return "5.666";
   }
 
-  gettoken(str: string, separator: string, tokennum: number) {
-    unimplementedWarning("gettoken");
-    return "Some Token String";
+  // Retreive a token from a list of tokens seperated by separator.
+  gettoken(str: string, separator: string, tokennum: number): string {
+    const tokens = str.split(separator);
+    if (tokens.length > tokennum) {
+      return tokens[tokennum];
+    }
+    return "";
   }
 
   getparam() {
@@ -514,24 +518,29 @@ class System extends MakiObject {
     return Math.floor(Date.now() / 1000);
   }
 
-  strmid(str: string, start: number, len: number) {
-    unimplementedWarning("strmid");
-    return;
+  // Get a substring from a string.
+  strmid(str: string, start: number, len: number): string {
+    return str.substring(start, start + len);
   }
 
-  strleft(str: string, nchars: number) {
-    unimplementedWarning("strleft");
-    return;
+  // Get a substring from a string, starting from the left.
+  strleft(str: string, nchars: number): string {
+    return str.substring(0, nchars);
   }
 
-  strright(str: string, nchars: number) {
-    unimplementedWarning("strright");
-    return;
+  // Get a substring from a string, starting from the right. Since
+  // the start point is the right of the string (or the end). It will
+  // extract the string starting from the END going towards the BEGINNING.
+  strright(str: string, nchars: number): string {
+    return str.substring(str.length - nchars);
   }
 
-  strsearch(str: string, substr: string) {
-    unimplementedWarning("strsearch");
-    return;
+  // Search a string for any occurance of substring. If the substring was
+  // found in the string, it will return the position of the substring in
+  // the string searched. If the substring is not found, the return value
+  // is -1.
+  strsearch(str: string, substr: string): number {
+    return str.indexOf(substr);
   }
 
   strlen(str: string): number {
