@@ -449,7 +449,7 @@ class System extends MakiObject {
   // returns the datetime's year since 1900
   getdateyear(datetime: number): number {
     const date = new Date(datetime * 1000);
-    return date.getYear();
+    return date.getFullYear() - 1900;
   }
 
   // returns the datetime's month (0-11)
