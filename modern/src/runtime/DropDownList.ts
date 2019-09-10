@@ -17,9 +17,8 @@ class DropDownList extends GuiObject {
     return;
   }
 
-  onselect(id: number, hover: number) {
-    unimplementedWarning("onselect");
-    return;
+  onselect(id: number, hover: number): void {
+    this.js_trigger("onSelect", id, hover);
   }
 
   setlistheight(h: number) {

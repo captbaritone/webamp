@@ -12,49 +12,55 @@ class GuiTree extends GuiObject {
     return "GuiTree";
   }
 
-  onwantautocontextmenu() {
+  onwantautocontextmenu(): number {
     unimplementedWarning("onwantautocontextmenu");
-    return;
+    this.js_trigger("onWantAutoContextMenu");
+    // TODO: not sure what we shuld return
+    return 0;
   }
 
-  onmousewheelup(clicked: number, lines: number) {
+  onmousewheelup(clicked: number, lines: number): number {
     unimplementedWarning("onmousewheelup");
-    return;
+    this.js_trigger("onMouseWheelUp", clicked, lines);
+    // TODO: not sure what we shuld return
+    return 0;
   }
 
-  onmousewheeldown(clicked: number, lines: number) {
+  onmousewheeldown(clicked: number, lines: number): number {
     unimplementedWarning("onmousewheeldown");
-    return;
+    this.js_trigger("onMouseWheelDown", clicked, lines);
+    // TODO: not sure what we shuld return
+    return 0;
   }
 
-  oncontextmenu(x: number, y: number) {
+  oncontextmenu(x: number, y: number): number {
     unimplementedWarning("oncontextmenu");
-    return;
+    this.js_trigger("onContextMenu", x, y);
+    // TODO: not sure what we shuld return
+    return 0;
   }
 
-  onchar(c: number) {
+  onchar(c: number): number {
     unimplementedWarning("onchar");
-    return;
+    this.js_trigger("onChar", c);
+    // TODO: not sure what we shuld return
+    return 0;
   }
 
-  onitemrecvdrop(item) {
-    unimplementedWarning("onitemrecvdrop");
-    return;
+  onitemrecvdrop(item): void {
+    this.js_trigger("onItemRecvDrop", item);
   }
 
-  onlabelchange(item) {
-    unimplementedWarning("onlabelchange");
-    return;
+  onlabelchange(item): void {
+    this.js_trigger("onLabelChange", item);
   }
 
-  onitemselected(item) {
-    unimplementedWarning("onitemselected");
-    return;
+  onitemselected(item): void {
+    this.js_trigger("onItemSelected", item);
   }
 
-  onitemdeselected(item) {
-    unimplementedWarning("onitemdeselected");
-    return;
+  onitemdeselected(item): void {
+    this.js_trigger("onItemDeselected", item);
   }
 
   getnumrootitems() {

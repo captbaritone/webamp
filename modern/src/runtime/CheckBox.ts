@@ -12,9 +12,8 @@ class CheckBox extends GuiObject {
     return "CheckBox";
   }
 
-  ontoggle(newstate: number) {
-    unimplementedWarning("ontoggle");
-    return;
+  ontoggle(newstate: number): void {
+    this.js_trigger("onToggle", newstate);
   }
 
   setchecked(checked: number) {

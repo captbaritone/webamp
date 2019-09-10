@@ -1,5 +1,4 @@
 import GuiObject from "./GuiObject";
-import { unimplementedWarning } from "../utils";
 
 class QueryList extends GuiObject {
   /**
@@ -12,9 +11,8 @@ class QueryList extends GuiObject {
     return "QueryList";
   }
 
-  onresetquery() {
-    unimplementedWarning("onresetquery");
-    return;
+  onresetquery(): void {
+    this.js_trigger("onResetQuery");
   }
 }
 

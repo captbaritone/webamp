@@ -127,64 +127,52 @@ class TreeItem extends MakiObject {
     return;
   }
 
-  ontreeadd() {
-    unimplementedWarning("ontreeadd");
-    return;
+  ontreeadd(): void {
+    this.js_trigger("onTreeAdd");
   }
 
-  ontreeremove() {
-    unimplementedWarning("ontreeremove");
-    return;
+  ontreeremove(): void {
+    this.js_trigger("onTreeRemove");
   }
 
-  onselect() {
-    unimplementedWarning("onselect");
-    return;
+  onselect(): void {
+    this.js_trigger("onSelect");
   }
 
-  ondeselect() {
-    unimplementedWarning("ondeselect");
-    return;
+  ondeselect(): void {
+    this.js_trigger("onDeselect");
   }
 
-  onleftdoubleclick() {
-    unimplementedWarning("onleftdoubleclick");
-    return;
+  onleftdoubleclick(): void {
+    this.js_trigger("onLeftDoubleClick");
   }
 
-  onrightdoubleclick() {
-    unimplementedWarning("onrightdoubleclick");
-    return;
+  onrightdoubleclick(): void {
+    this.js_trigger("onRightDoubleClick");
   }
 
-  onchar(key: number) {
-    unimplementedWarning("onchar");
-    return;
+  onchar(key: number): void {
+    this.js_trigger("onChar", key);
   }
 
-  onexpand() {
-    unimplementedWarning("onexpand");
-    return;
+  onexpand(): void {
+    this.js_trigger("onExpand");
   }
 
-  oncollapse() {
-    unimplementedWarning("oncollapse");
-    return;
+  oncollapse(): void {
+    this.js_trigger("onCollapse");
   }
 
-  onbeginlabeledit() {
-    unimplementedWarning("onbeginlabeledit");
-    return;
+  onbeginlabeledit(): void {
+    this.js_trigger("onBeginLabelEdit");
   }
 
-  onendlabeledit(newlabel: string) {
-    unimplementedWarning("onendlabeledit");
-    return;
+  onendlabeledit(newlabel: string): void {
+    this.js_trigger("onEndLabelEdit", newlabel);
   }
 
-  oncontextmenu(x: number, y: number) {
-    unimplementedWarning("oncontextmenu");
-    return;
+  oncontextmenu(x: number, y: number): void {
+    this.js_trigger("onContextMenu", x, y);
   }
 }
 

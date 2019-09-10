@@ -77,8 +77,8 @@ class System extends MakiObject {
     return 0;
   }
 
-  oneqchanged(newstatus: number) {
-    unimplementedWarning("newstatus");
+  oneqchanged(newstatus: number): void {
+    this.js_trigger("onEqChanged", newstatus);
   }
 
   geteqband(band: number) {
@@ -169,109 +169,88 @@ class System extends MakiObject {
     );
   }
 
-  onscriptloaded() {
-    unimplementedWarning("onscriptloaded");
-    return;
+  onscriptloaded(): void {
+    this.js_trigger("onScriptLoaded");
   }
 
-  onscriptunloading() {
-    unimplementedWarning("onscriptunloading");
-    return;
+  onscriptunloading(): void {
+    this.js_trigger("onScriptUnloading");
   }
 
-  onquit() {
-    unimplementedWarning("onquit");
-    return;
+  onquit(): void {
+    this.js_trigger("onQuit");
   }
 
-  onsetxuiparam(param: string, value: string) {
-    unimplementedWarning("onsetxuiparam");
-    return;
+  onsetxuiparam(param: string, value: string): void {
+    this.js_trigger("onSetXuiParam", param, value);
   }
 
-  onkeydown(key: string) {
-    unimplementedWarning("onkeydown");
-    return;
+  onkeydown(key: string): void {
+    this.js_trigger("onKeyDown", key);
   }
 
-  onaccelerator(action: string, section: string, key: string) {
-    unimplementedWarning("onaccelerator");
-    return;
+  onaccelerator(action: string, section: string, key: string): void {
+    this.js_trigger("onAccelerator", action, section, key);
   }
 
-  oncreatelayout(_layout) {
-    unimplementedWarning("oncreatelayout");
-    return;
+  oncreatelayout(_layout): void {
+    this.js_trigger("onCreateLayout", _layout);
   }
 
-  onshowlayout(_layout) {
-    unimplementedWarning("onshowlayout");
-    return;
+  onshowlayout(_layout): void {
+    this.js_trigger("onShowLayout", _layout);
   }
 
-  onhidelayout(_layout) {
-    unimplementedWarning("onhidelayout");
-    return;
+  onhidelayout(_layout): void {
+    this.js_trigger("onHideLayout", _layout);
   }
 
-  onstop() {
-    unimplementedWarning("onstop");
-    return;
+  onstop(): void {
+    this.js_trigger("onStop");
   }
 
-  onplay() {
-    unimplementedWarning("onplay");
-    return;
+  onplay(): void {
+    this.js_trigger("onPlay");
   }
 
-  onpause() {
-    unimplementedWarning("onpause");
-    return;
+  onpause(): void {
+    this.js_trigger("onPause");
   }
 
-  onresume() {
-    unimplementedWarning("onresume");
-    return;
+  onresume(): void {
+    this.js_trigger("onResume");
   }
 
-  ontitlechange(newtitle: string) {
-    unimplementedWarning("ontitlechange");
-    return;
+  ontitlechange(newtitle: string): void {
+    this.js_trigger("onTitleChange", newtitle);
   }
 
-  ontitle2change(newtitle2: string) {
-    unimplementedWarning("ontitle2change");
-    return;
+  ontitle2change(newtitle2: string): void {
+    this.js_trigger("onTitle2Change", newtitle2);
   }
 
-  oninfochange(info: string) {
-    unimplementedWarning("oninfochange");
-    return;
+  oninfochange(info: string): void {
+    this.js_trigger("onInfoChange", info);
   }
 
-  onstatusmsg(msg: string) {
-    unimplementedWarning("onstatusmsg");
-    return;
+  onstatusmsg(msg: string): void {
+    this.js_trigger("onStatusMsg", msg);
   }
 
-  oneqbandchanged(band: number, newvalue: number) {
-    unimplementedWarning("oneqbandchanged");
-    return;
+  oneqbandchanged(band: number, newvalue: number): void {
+    this.js_trigger("onEqBandChanged", band, newvalue);
   }
 
-  oneqpreampchanged(newvalue: number) {
-    unimplementedWarning("oneqpreampchanged");
-    return;
+  oneqpreampchanged(newvalue: number): void {
+    this.js_trigger("onEqPreampChanged", newvalue);
   }
 
-  onvolumechanged(newvol: number) {
-    unimplementedWarning("onvolumechanged");
-    return;
+  onvolumechanged(newvol: number): void {
+    this.js_trigger("onVolumeChanged", newvol);
   }
 
-  onseek(newpos: number) {
-    unimplementedWarning("onseek");
-    return;
+  onseek(newpos: number): void {
+    this.js_trigger("onSeek", newpos);
   }
 
   newdynamiccontainer(container_id: string) {
@@ -744,9 +723,11 @@ class System extends MakiObject {
     return;
   }
 
-  ongetcancelcomponent(guid: string, goingvisible: boolean) {
+  ongetcancelcomponent(guid: string, goingvisible: boolean): boolean {
     unimplementedWarning("ongetcancelcomponent");
-    return;
+    this.js_trigger("onGetCancelComponent", guid, goingvisible);
+    // TODO: not sure what we shuld return
+    return true;
   }
 
   iskeydown(vk_code: number) {
@@ -882,9 +863,9 @@ class System extends MakiObject {
     return;
   }
 
-  onshownotification() {
-    unimplementedWarning("onshownotification");
-    return;
+  onshownotification(): number {
+    this.js_trigger("onShowNotification");
+    return 1; // return 1 if you implement it
   }
 
   getsonginfotext() {

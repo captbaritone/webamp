@@ -20,14 +20,12 @@ class Layer extends GuiObject {
     unimplementedWarning("setregion");
   }
 
-  onbeginresize(x: number, y: number, w: number, h: number) {
-    unimplementedWarning("onbeginresize");
-    return;
+  onbeginresize(x: number, y: number, w: number, h: number): void {
+    this.js_trigger("onBeginResize", x, y, w, h);
   }
 
-  onendresize(x: number, y: number, w: number, h: number) {
-    unimplementedWarning("onendresize");
-    return;
+  onendresize(x: number, y: number, w: number, h: number): void {
+    this.js_trigger("onEndResize", x, y, w, h);
   }
 
   fx_oninit() {

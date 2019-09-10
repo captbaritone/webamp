@@ -31,9 +31,8 @@ class Text extends GuiObject {
     return;
   }
 
-  ontextchanged(newtxt: string) {
-    unimplementedWarning("ontextchanged");
-    return;
+  ontextchanged(newtxt: string): void {
+    this.js_trigger("onTextChanged", newtxt);
   }
 }
 

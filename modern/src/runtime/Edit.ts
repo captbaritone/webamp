@@ -12,24 +12,20 @@ class Edit extends GuiObject {
     return "Edit";
   }
 
-  onenter() {
-    unimplementedWarning("onenter");
-    return;
+  onenter(): void {
+    this.js_trigger("onEnter");
   }
 
-  onabort() {
-    unimplementedWarning("onabort");
-    return;
+  onabort(): void {
+    this.js_trigger("onAbort");
   }
 
-  onidleeditupdate() {
-    unimplementedWarning("onidleeditupdate");
-    return;
+  onidleeditupdate(): void {
+    this.js_trigger("onIdleEditUpdate");
   }
 
-  oneditupdate() {
-    unimplementedWarning("oneditupdate");
-    return;
+  oneditupdate(): void {
+    this.js_trigger("onEditUpdate");
   }
 
   settext(txt: string) {

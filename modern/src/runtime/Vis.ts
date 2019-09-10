@@ -16,9 +16,8 @@ class Vis extends GuiObject {
     unimplementedWarning("setmode");
   }
 
-  onframe() {
-    unimplementedWarning("onframe");
-    return;
+  onframe(): void {
+    this.js_trigger("onFrame");
   }
 
   setrealtime(onoff: boolean) {
