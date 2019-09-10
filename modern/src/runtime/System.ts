@@ -525,7 +525,7 @@ class System extends MakiObject {
 
   // Get a substring from a string, starting from the left.
   strleft(str: string, nchars: number): string {
-    return str.substring(nchars);
+    return str.substring(0, nchars);
   }
 
   // Get a substring from a string, starting from the right. Since
