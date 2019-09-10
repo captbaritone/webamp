@@ -2171,7 +2171,7 @@ const objects = {
       {
         parameters: [],
         name: "isRunning",
-        result: "",
+        result: "boolean", // The std.mi has this set as void, but we checked in Winamp and confirmed it returns 0/1
       },
       {
         parameters: [],
