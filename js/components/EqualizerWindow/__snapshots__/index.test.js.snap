@@ -91,6 +91,7 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
               Object {
                 "bottom": "0%",
                 "height": "50%",
+                "top": "auto",
               }
             }
           />
@@ -145,6 +146,7 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
               Object {
                 "bottom": "0%",
                 "height": "50%",
+                "top": "auto",
               }
             }
           />
@@ -187,6 +189,7 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
               Object {
                 "bottom": "0%",
                 "height": "50%",
+                "top": "auto",
               }
             }
           />
@@ -229,6 +232,7 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
               Object {
                 "bottom": "0%",
                 "height": "50%",
+                "top": "auto",
               }
             }
           />
@@ -271,6 +275,7 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
               Object {
                 "bottom": "0%",
                 "height": "50%",
+                "top": "auto",
               }
             }
           />
@@ -313,6 +318,7 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
               Object {
                 "bottom": "0%",
                 "height": "50%",
+                "top": "auto",
               }
             }
           />
@@ -355,6 +361,7 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
               Object {
                 "bottom": "0%",
                 "height": "50%",
+                "top": "auto",
               }
             }
           />
@@ -397,6 +404,7 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
               Object {
                 "bottom": "0%",
                 "height": "50%",
+                "top": "auto",
               }
             }
           />
@@ -439,6 +447,7 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
               Object {
                 "bottom": "0%",
                 "height": "50%",
+                "top": "auto",
               }
             }
           />
@@ -481,6 +490,7 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
               Object {
                 "bottom": "0%",
                 "height": "50%",
+                "top": "auto",
               }
             }
           />
@@ -523,6 +533,7 @@ exports[`EqualizerWindow renders to snapshot 1`] = `
               Object {
                 "bottom": "0%",
                 "height": "50%",
+                "top": "auto",
               }
             }
           />
