@@ -31,6 +31,12 @@ class GuiObject extends MakiObject {
     if (attributes.alpha == null) {
       attributes.alpha = "255";
     }
+    if (attributes.x == null) {
+      attributes.x = "0";
+    }
+    if (attributes.y == null) {
+      attributes.y = "0";
+    }
     if (attributes.ghost == null) {
       attributes.ghost = "0";
     }
@@ -39,6 +45,12 @@ class GuiObject extends MakiObject {
   _convertAttributeTypes(attributes) {
     if (attributes.alpha != null) {
       attributes.alpha = Number(attributes.alpha);
+    }
+    if (attributes.x != null) {
+      attributes.x = Number(attributes.x);
+    }
+    if (attributes.y != null) {
+      attributes.y = Number(attributes.y);
     }
     if (attributes.ghost != null) {
       attributes.ghost = !!Number(attributes.ghost);
@@ -281,15 +293,10 @@ class GuiObject extends MakiObject {
     ["alpha", "x", "y", "w", "h"].forEach(attr => {
       if (this._targetParams[attr] != null) {
         this._transitionParams[attr] = true;
-        if (this.attributes[attr] != null) {
-          this._startParams[attr] = this.attributes[attr];
-        } else if (attr === "alpha") {
-          this._startParams[attr] = 255;
-        } else if (attr === "x" || attr === "y") {
-          this._startParams[attr] = 0;
-        } else {
-          this._startParams[attr] = this._targetParams[attr];
-        }
+        this._startParams[attr] =
+          this.attributes[attr] != null
+            ? this.attributes[attr]
+            : this._targetParams[attr];
       }
     });
 
