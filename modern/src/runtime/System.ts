@@ -378,7 +378,7 @@ class System extends MakiObject {
     const hours = Math.floor(value / 3600);
     const remainingTime = value - hours * 3600;
     const minutes = Math.floor(remainingTime / 60);
-    const seconds = remainingTime - minutes * 60;
+    const seconds = Math.floor(remainingTime - minutes * 60);
     return `${this._atLeastTwoDigits(hours)}:${this._atLeastTwoDigits(
       minutes
     )}:${this._atLeastTwoDigits(seconds)}`;
@@ -387,80 +387,131 @@ class System extends MakiObject {
   // Convert a time in seconds to a MM:SS value.
   integertotime(value: number): string {
     const minutes = Math.floor(value / 60);
-    const seconds = value - minutes * 60;
+    const seconds = Math.floor(value - minutes * 60);
     return `${this._atLeastTwoDigits(minutes)}:${this._atLeastTwoDigits(
       seconds
     )}`;
   }
 
-  datetotime(datetime: number) {
-    unimplementedWarning("datetotime");
-    return;
+  _getDateTimeInMs(date: Date): number {
+    const dateTime = date.getTime();
+    const dateCopy = new Date(dateTime);
+    return dateTime - dateCopy.setHours(0, 0, 0, 0);
   }
 
-  datetolongtime(datetime: number) {
-    unimplementedWarning("datetolongtime");
-    return;
+  // datetime in HH:MM format (docs imply it is in the same format as integertotime
+  // which would be MM:SS, but I tested in winamp and it is HH:MM)
+  // (e.g. 17:44)
+  datetotime(datetime: number): string {
+    const date = new Date(datetime * 1000);
+    const seconds = this._getDateTimeInMs(date) / 1000;
+    const longtime = this.integertolongtime(seconds);
+    return longtime.substring(0, longtime.length - 3);
   }
 
-  formatdate(datetime: number) {
-    unimplementedWarning("formatdate");
-    return;
+  // datetime in HH:MM:SS format
+  // (e.g. 17:44:58)
+  datetolongtime(datetime: number): string {
+    const date = new Date(datetime * 1000);
+    const seconds = this._getDateTimeInMs(date) / 1000;
+    return this.integertolongtime(seconds);
   }
 
-  formatlongdate(datetime: number) {
-    unimplementedWarning("formatlongdate");
-    return;
+  // datetime in MM/DD/YY HH:MM:SS format
+  // (e.g. 09/08/19 17:44:58)
+  formatdate(datetime: number): string {
+    const date = new Date(datetime * 1000);
+    const seconds = this._getDateTimeInMs(date) / 1000;
+    const dateString = date.toLocaleDateString("en-US", {
+      year: "2-digit",
+      month: "2-digit",
+      day: "2-digit",
+    });
+    const timeString = this.integertolongtime(seconds);
+    return `${dateString} ${timeString}`;
   }
 
-  getdateyear(datetime: number) {
-    unimplementedWarning("getdateyear");
-    return;
+  // datetime in DayOfWeek, Month DD, YYYY HH:MM:SS format
+  // (e.g. Sunday, September 08, 2019 17:44:58)
+  formatlongdate(datetime: number): string {
+    const date = new Date(datetime * 1000);
+    const seconds = this._getDateTimeInMs(date) / 1000;
+    const dateString = date.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "2-digit",
+    });
+    const timeString = this.integertolongtime(seconds);
+    return `${dateString} ${timeString}`;
   }
 
-  getdatemonth(datetime: number) {
-    unimplementedWarning("getdatemonth");
-    return;
+  // returns the datetime's year since 1900
+  getdateyear(datetime: number): number {
+    const date = new Date(datetime * 1000);
+    return date.getYear();
   }
 
-  getdateday(datetime: number) {
-    unimplementedWarning("getdateday");
-    return;
+  // returns the datetime's month (0-11)
+  getdatemonth(datetime: number): number {
+    const date = new Date(datetime * 1000);
+    return date.getMonth();
   }
 
-  getdatedow(datetime: number) {
-    unimplementedWarning("getdatedow");
-    return;
+  // returns the datetime's day of the month (1-31)
+  getdateday(datetime: number): number {
+    const date = new Date(datetime * 1000);
+    return date.getDate();
   }
 
-  getdatedoy(datetime: number) {
-    unimplementedWarning("getdatedoy");
-    return;
+  // returns the datetime's day of the week (0-6)
+  // MAKI starts with Sunday like JS
+  getdatedow(datetime: number): number {
+    const date = new Date(datetime * 1000);
+    return date.getDay();
   }
 
-  getdatehour(datetime: number) {
-    unimplementedWarning("getdatehour");
-    return;
+  // returns the datetime's day of the year (0-365)
+  getdatedoy(datetime: number): number {
+    const date = new Date(datetime * 1000);
+    const start = new Date(date.getFullYear(), 0, 0);
+    return Math.floor((date.getTime() - start.getTime()) / 86400000);
   }
 
-  getdatemin(datetime: number) {
-    unimplementedWarning("getdatemin");
-    return;
+  // returns the datetime's hour (0-23)
+  getdatehour(datetime: number): number {
+    const date = new Date(datetime * 1000);
+    return date.getHours();
   }
 
-  getdatesec(datetime: number) {
-    unimplementedWarning("getdatesec");
-    return;
+  // returns the datetime's minutes (0-59)
+  getdatemin(datetime: number): number {
+    const date = new Date(datetime * 1000);
+    return date.getMinutes();
   }
 
-  getdatedst(datetime: number) {
-    unimplementedWarning("getdatedst");
-    return;
+  // returns the datetime's seconds (0-59)
+  getdatesec(datetime: number): number {
+    const date = new Date(datetime * 1000);
+    return date.getSeconds();
   }
 
-  getdate() {
-    unimplementedWarning("getdate");
-    return;
+  // Based on https://stackoverflow.com/questions/11887934/how-to-check-if-the-dst-daylight-saving-time-is-in-effect-and-if-it-is-whats
+  _stdTimezoneOffset(date) {
+    var jan = new Date(date.getFullYear(), 0, 1);
+    var jul = new Date(date.getFullYear(), 6, 1);
+    return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+  }
+
+  // returns the datetime's daylight savings flag
+  getdatedst(datetime: number): number {
+    const date = new Date(datetime * 1000);
+    return date.getTimezoneOffset() < this._stdTimezoneOffset(date) ? 1 : 0;
+  }
+
+  // returns the datetime in seconds, use with the above functions
+  getdate(): number {
+    return Math.floor(Date.now() / 1000);
   }
 
   strmid(str: string, start: number, len: number) {
@@ -715,7 +766,7 @@ class System extends MakiObject {
   // Returns ms since midnight
   gettimeofday(): number {
     const date = new Date();
-    return date.getTime() - date.setHours(0, 0, 0, 0);
+    return this._getDateTimeInMs(date);
   }
 
   setmenutransparency(alphavalue: number) {
