@@ -27,9 +27,8 @@ class GuiList extends GuiObject {
     return;
   }
 
-  onsetvisible(show: number) {
-    unimplementedWarning("onsetvisible");
-    return;
+  onsetvisible(show: number): void {
+    this.js_trigger("onSetVisible", show);
   }
 
   setautosort(dosort: number) {
@@ -367,49 +366,49 @@ class GuiList extends GuiObject {
     return;
   }
 
-  onselectall() {
-    unimplementedWarning("onselectall");
-    return;
+  onselectall(): void {
+    this.js_trigger("onSelectAll");
   }
 
-  ondelete() {
-    unimplementedWarning("ondelete");
-    return;
+  ondelete(): void {
+    this.js_trigger("onDelete");
   }
 
-  ondoubleclick(itemnum: number) {
-    unimplementedWarning("ondoubleclick");
-    return;
+  ondoubleclick(itemnum: number): void {
+    this.js_trigger("onDoubleClick", itemnum);
   }
 
-  onleftclick(itemnum: number) {
-    unimplementedWarning("onleftclick");
-    return;
+  onleftclick(itemnum: number): void {
+    this.js_trigger("onLeftClick", itemnum);
   }
 
-  onsecondleftclick(itemnum: number) {
-    unimplementedWarning("onsecondleftclick");
-    return;
+  onsecondleftclick(itemnum: number): void {
+    this.js_trigger("onSecondLeftClick", itemnum);
   }
 
-  onrightclick(itemnum: number) {
+  onrightclick(itemnum: number): number {
     unimplementedWarning("onrightclick");
-    return;
+    this.js_trigger("onRightClick", itemnum);
+    // TODO: not sure what we shuld return
+    return 0;
   }
 
-  oncolumndblclick(col: number, x: number, y: number) {
+  oncolumndblclick(col: number, x: number, y: number): number {
     unimplementedWarning("oncolumndblclick");
-    return;
+    this.js_trigger("onColumnDblClick", col, x, y);
+    // TODO: not sure what we shuld return
+    return 0;
   }
 
-  oncolumnlabelclick(col: number, x: number, y: number) {
+  oncolumnlabelclick(col: number, x: number, y: number): number {
     unimplementedWarning("oncolumnlabelclick");
-    return;
+    this.js_trigger("onColumnLabelClick", col, x, y);
+    // TODO: not sure what we shuld return
+    return 0;
   }
 
-  onitemselection(itemnum: number, selected: number) {
-    unimplementedWarning("onitemselection");
-    return;
+  onitemselection(itemnum: number, selected: number): void {
+    this.js_trigger("onItemSelection", itemnum, selected);
   }
 }
 

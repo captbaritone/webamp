@@ -42,19 +42,16 @@ class Wac extends MakiObject {
     return;
   }
 
-  onnotify(notifstr: string, a: number, b: number) {
-    unimplementedWarning("onnotify");
-    return;
+  onnotify(notifstr: string, a: number, b: number): void {
+    this.js_trigger("onNotify", notifstr, a, b);
   }
 
-  onshow() {
-    unimplementedWarning("onshow");
-    return;
+  onshow(): void {
+    this.js_trigger("onShow");
   }
 
-  onhide() {
-    unimplementedWarning("onhide");
-    return;
+  onhide(): void {
+    this.js_trigger("onHide");
   }
 
   setstatusbar(onoff: boolean) {

@@ -148,9 +148,8 @@ class GuiObject extends MakiObject {
     return this.visible ? 1 : 0;
   }
 
-  onsetvisible(onoff: boolean) {
-    unimplementedWarning("onsetvisible");
-    return;
+  onsetvisible(onoff: boolean): void {
+    this.js_trigger("onSetVisible", onoff);
   }
 
   getalpha() {
@@ -158,49 +157,40 @@ class GuiObject extends MakiObject {
     return;
   }
 
-  onleftbuttonup(x: number, y: number) {
-    unimplementedWarning("onleftbuttonup");
-    return;
+  onleftbuttonup(x: number, y: number): void {
+    this.js_trigger("onLeftButtonUp", x, y);
   }
 
-  onleftbuttondown(x: number, y: number) {
-    unimplementedWarning("onleftbuttondown");
-    return;
+  onleftbuttondown(x: number, y: number): void {
+    this.js_trigger("onLeftButtonDown", x, y);
   }
 
-  onrightbuttonup(x: number, y: number) {
-    unimplementedWarning("onrightbuttonup");
-    return;
+  onrightbuttonup(x: number, y: number): void {
+    this.js_trigger("onRightButtonUp", x, y);
   }
 
-  onrightbuttondown(x: number, y: number) {
-    unimplementedWarning("onrightbuttondown");
-    return;
+  onrightbuttondown(x: number, y: number): void {
+    this.js_trigger("onRightButtonDown", x, y);
   }
 
-  onrightbuttondblclk(x: number, y: number) {
-    unimplementedWarning("onrightbuttondblclk");
-    return;
+  onrightbuttondblclk(x: number, y: number): void {
+    this.js_trigger("onRightButtonDblClk", x, y);
   }
 
-  onleftbuttondblclk(x: number, y: number) {
-    unimplementedWarning("onleftbuttondblclk");
-    return;
+  onleftbuttondblclk(x: number, y: number): void {
+    this.js_trigger("onLeftButtonDblClk", x, y);
   }
 
-  onmousemove(x: number, y: number) {
-    unimplementedWarning("onmousemove");
-    return;
+  onmousemove(x: number, y: number): void {
+    this.js_trigger("onMouseMove", x, y);
   }
 
-  onenterarea() {
-    unimplementedWarning("onenterarea");
-    return;
+  onenterarea(): void {
+    this.js_trigger("onEnterArea");
   }
 
-  onleavearea() {
-    unimplementedWarning("onleavearea");
-    return;
+  onleavearea(): void {
+    this.js_trigger("onLeaveArea");
   }
 
   setenabled(onoff: boolean) {
@@ -213,14 +203,12 @@ class GuiObject extends MakiObject {
     return;
   }
 
-  onenable(onoff: boolean) {
-    unimplementedWarning("onenable");
-    return;
+  onenable(onoff: boolean): void {
+    this.js_trigger("onEnable", onoff);
   }
 
-  onresize(x: number, y: number, w: number, h: number) {
-    unimplementedWarning("onresize");
-    return;
+  onresize(x: number, y: number, w: number, h: number): void {
+    this.js_trigger("onResize", x, y, w, h);
   }
 
   ismouseover(x: number, y: number) {
@@ -265,9 +253,8 @@ class GuiObject extends MakiObject {
     return;
   }
 
-  ontargetreached() {
-    unimplementedWarning("ontargetreached");
-    return;
+  ontargetreached(): void {
+    this.js_trigger("onTargetReached");
   }
 
   canceltarget() {
@@ -280,9 +267,8 @@ class GuiObject extends MakiObject {
     return;
   }
 
-  onstartup() {
-    unimplementedWarning("onstartup");
-    return;
+  onstartup(): void {
+    this.js_trigger("onStartup");
   }
 
   isgoingtotarget() {
@@ -435,14 +421,12 @@ class GuiObject extends MakiObject {
     return;
   }
 
-  onchar(c: string) {
-    unimplementedWarning("onchar");
-    return;
+  onchar(c: string): void {
+    this.js_trigger("onChar", c);
   }
 
-  onaccelerator(accel: string) {
-    unimplementedWarning("onaccelerator");
-    return;
+  onaccelerator(accel: string): void {
+    this.js_trigger("onAccelerator", accel);
   }
 
   ismouseoverrect() {
@@ -455,24 +439,20 @@ class GuiObject extends MakiObject {
     return;
   }
 
-  onkeydown(vk_code: number) {
-    unimplementedWarning("onkeydown");
-    return;
+  onkeydown(vk_code: number): void {
+    this.js_trigger("onKeyDown", vk_code);
   }
 
-  onkeyup(vk_code: number) {
-    unimplementedWarning("onkeyup");
-    return;
+  onkeyup(vk_code: number): void {
+    this.js_trigger("onKeyUp", vk_code);
   }
 
-  ongetfocus() {
-    unimplementedWarning("ongetfocus");
-    return;
+  ongetfocus(): void {
+    this.js_trigger("onGetFocus");
   }
 
-  onkillfocus() {
-    unimplementedWarning("onkillfocus");
-    return;
+  onkillfocus(): void {
+    this.js_trigger("onKillFocus");
   }
 
   /* eslint-disable-next-line max-params */
@@ -497,9 +477,11 @@ class GuiObject extends MakiObject {
     p1: number,
     p2: number,
     source
-  ) {
+  ): number {
     unimplementedWarning("onaction");
-    return;
+    this.js_trigger("onAction", action, param, x, y, p1, p2, source);
+    // TODO: not sure what we shuld return
+    return 0;
   }
 }
 

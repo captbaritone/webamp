@@ -157,29 +157,24 @@ class AnimatedLayer extends Layer {
     return this.getendframe() - this.getstartframe();
   }
 
-  onplay() {
-    unimplementedWarning("onplay");
-    return;
+  onplay(): void {
+    this.js_trigger("onPlay");
   }
 
-  onpause() {
-    unimplementedWarning("onpause");
-    return;
+  onpause(): void {
+    this.js_trigger("onPause");
   }
 
-  onresume() {
-    unimplementedWarning("onresume");
-    return;
+  onresume(): void {
+    this.js_trigger("onResume");
   }
 
-  onstop() {
-    unimplementedWarning("onstop");
-    return;
+  onstop(): void {
+    this.js_trigger("onStop");
   }
 
-  onframe(framenum: number) {
-    unimplementedWarning("onframe");
-    return;
+  onframe(framenum: number): void {
+    this.js_trigger("onFrame", framenum);
   }
 
   setstartframe(framenum: number): void {

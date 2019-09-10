@@ -17,18 +17,16 @@ class Slider extends GuiObject {
     return 0;
   }
 
-  onsetposition(newpos: number) {
-    unimplementedWarning("onsetposition");
+  onsetposition(newpos: number): void {
+    this.js_trigger("onSetPosition", newpos);
   }
 
-  onpostedposition(newpos: number) {
-    unimplementedWarning("onpostedposition");
-    return;
+  onpostedposition(newpos: number): void {
+    this.js_trigger("onPostedPosition", newpos);
   }
 
-  onsetfinalposition(pos: number) {
-    unimplementedWarning("onsetfinalposition");
-    return;
+  onsetfinalposition(pos: number): void {
+    this.js_trigger("onSetFinalPosition", pos);
   }
 
   setposition(pos: number) {

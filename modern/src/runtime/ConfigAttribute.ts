@@ -22,9 +22,8 @@ class ConfigAttribute extends MakiObject {
     return;
   }
 
-  ondatachanged() {
-    unimplementedWarning("ondatachanged");
-    return;
+  ondatachanged(): void {
+    this.js_trigger("onDataChanged");
   }
 
   getparentitem() {

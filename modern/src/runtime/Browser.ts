@@ -47,14 +47,12 @@ class Browser extends GuiObject {
     return;
   }
 
-  onbeforenavigate(url: string, flags: number, targetframename: string) {
-    unimplementedWarning("onbeforenavigate");
-    return;
+  onbeforenavigate(url: string, flags: number, targetframename: string): void {
+    this.js_trigger("onBeforeNavigate", url, flags, targetframename);
   }
 
-  ondocumentcomplete(url: string) {
-    unimplementedWarning("ondocumentcomplete");
-    return;
+  ondocumentcomplete(url: string): void {
+    this.js_trigger("onDocumentComplete", url);
   }
 }
 

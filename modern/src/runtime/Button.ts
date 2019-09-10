@@ -20,8 +20,8 @@ class Button extends GuiObject {
     this.js_trigger("onRightClick");
   }
 
-  onactivate(activated: number) {
-    unimplementedWarning("onactivate");
+  onactivate(activated: number): void {
+    this.js_trigger("onActivate", activated);
   }
 
   setactivated(onoff: boolean) {
@@ -33,14 +33,12 @@ class Button extends GuiObject {
     return false;
   }
 
-  onleftclick() {
-    unimplementedWarning("onleftclick");
-    return;
+  onleftclick(): void {
+    this.js_trigger("onLeftClick");
   }
 
-  onrightclick() {
-    unimplementedWarning("onrightclick");
-    return;
+  onrightclick(): void {
+    this.js_trigger("onRightClick");
   }
 
   setactivatednocallback(onoff: boolean) {
