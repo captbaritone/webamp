@@ -1,48 +1,83 @@
-const fs = require("fs");
-const { parse } = require("../");
-const JSZip = require("jszip");
+#!/usr/bin/env node
 
-async function getFunctionNames(absolutePath) {
+const fs = require("fs");
+const path = require("path");
+const parse = require("../parser").default;
+const JSZip = require("jszip");
+const { getClass, getFunctionObject } = require("../objects");
+const glob = require("glob");
+
+function findWals(parentDir) {
+  return new Promise((resolve, reject) => {
+    glob("**/*.wal", { cwd: parentDir }, (err, files) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(files.map(filePath => path.join(parentDir, filePath)));
+    });
+  });
+}
+
+function sumCountObjects(obj1, obj2) {
+  return Object.keys(obj2).reduce((summaryObj, key) => {
+    if (summaryObj[key] == null) {
+      summaryObj[key] = 1;
+    } else {
+      summaryObj[key]++;
+    }
+    return summaryObj;
+  }, Object.assign({}, obj1));
+}
+
+async function getCallCountsFromWal(absolutePath) {
   const buffer = fs.readFileSync(absolutePath);
   const zip = await JSZip.loadAsync(buffer);
   const files = zip.file(/\.maki$/);
   const buffers = await Promise.all(
     files.map(file => file.async("nodebuffer"))
   );
-  const functionNames = buffers.reduce((_functionNames, buf) => {
-    const maki = parse(buf);
-    maki.functionNames.forEach(func => {
-      const className = maki.types[func.classType];
-      _functionNames.add(`${className}::${func.name}`);
-    });
-    return _functionNames;
-  }, new Set());
-  return functionNames;
+  return buffers.map(getCallCountsFromMaki).reduce(sumCountObjects);
 }
 
-async function main(paths) {
-  const results = await Promise.all(
-    paths.map(async path => {
-      const functionNames = await getFunctionNames(path);
-      return { path, functionNames };
+function getCallCountsFromMaki(buffer) {
+  const maki = parse(buffer);
+  return maki.commands
+    .filter(command => command.opcode === 112)
+    .map(command => {
+      const method = maki.methods[command.arg];
+      const classId = maki.classes[method.typeOffset];
+      const klass = getClass(classId);
+      if (klass == null) {
+        throw new Error(`Unknown class ID: ${classId}`);
+      }
+      const parentClass = getFunctionObject(klass, method.name);
+      return `${parentClass.name}.${method.name.toLowerCase()}`;
     })
-  );
-  const functionCounts = {};
-  results.forEach(skin => {
-    skin.functionNames.forEach(name => {
-      const originalCount = functionCounts[name];
-      functionCounts[name] = (originalCount || 0) + 1;
-    });
-  });
-  console.log({
-    totalFunctionCount: Object.keys(functionCounts).length,
-    // functionCounts
-  });
+    .map(methodName => ({ [methodName]: 1 }))
+    .reduce(sumCountObjects, {});
 }
 
-const paths = [
-  "/Volumes/Mobile Backup/skins/skins/dump/Stylish/micro/micro.wal",
-  "/Volumes/Mobile Backup/skins/skins/random/Winamp Skins/Skins/WTF/Almin_Agic_Skin.wal",
-];
+function setObjectValuesToOne(obj) {
+  const newObj = {};
+  Object.keys(obj).forEach(key => {
+    if (obj[key] != null) {
+      newObj[key] = 1;
+    }
+  });
 
-main(paths);
+  return newObj;
+}
+
+async function main(parentDir) {
+  const paths = await findWals(parentDir);
+  const callCounts = await Promise.all(paths.map(getCallCountsFromWal));
+  const totalCalls = callCounts.reduce(sumCountObjects);
+  const foundInSkins = callCounts
+    .map(setObjectValuesToOne)
+    .reduce(sumCountObjects);
+
+  const result = { totalCalls, foundInSkins };
+  console.log(JSON.stringify(result, null, 2));
+}
+
+main(path.join(__dirname, "../../../skins/"));

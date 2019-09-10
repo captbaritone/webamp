@@ -3977,4 +3977,24 @@ function getObjectFunction(klass, functionName) {
   return getObjectFunction(klass.parentClass, functionName);
 }
 
-module.exports = { objects, getFormattedId, getClass, getObjectFunction };
+function getFunctionObject(klass, functionName) {
+  const method = klass.functions.find(func => {
+    // TODO: This could probably be normalized at load time, or evern sooner.
+    return func.name.toLowerCase() === functionName.toLowerCase();
+  });
+  if (method != null) {
+    return klass;
+  }
+  if (klass.parentClass == null) {
+    throw new Error(`Could not find method ${functionName} on ${klass.name}.`);
+  }
+  return getFunctionObject(klass.parentClass, functionName);
+}
+
+module.exports = {
+  objects,
+  getFormattedId,
+  getClass,
+  getObjectFunction,
+  getFunctionObject,
+};
