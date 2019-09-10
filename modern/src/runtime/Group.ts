@@ -27,9 +27,8 @@ class Group extends GuiObject {
     return;
   }
 
-  oncreateobject(newobj) {
-    unimplementedWarning("oncreateobject");
-    return;
+  oncreateobject(newobj): void {
+    this.js_trigger("onCreateObject", newobj);
   }
 
   getmouseposx(): number {

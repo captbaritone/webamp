@@ -12,8 +12,8 @@ class ToggleButton extends Button {
     return "ToggleButton";
   }
 
-  ontoggle(onnoff: boolean) {
-    unimplementedWarning("ontoggle");
+  ontoggle(onnoff: boolean): void {
+    this.js_trigger("onToggle", onnoff);
   }
 
   getcurcfgval() {

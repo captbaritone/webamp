@@ -12,19 +12,16 @@ class MenuButton extends GuiObject {
     return "MenuButton";
   }
 
-  onopenmenu() {
-    unimplementedWarning("onopenmenu");
-    return;
+  onopenmenu(): void {
+    this.js_trigger("onOpenMenu");
   }
 
-  onclosemenu() {
-    unimplementedWarning("onclosemenu");
-    return;
+  onclosemenu(): void {
+    this.js_trigger("onCloseMenu");
   }
 
-  onselectitem(item: string) {
-    unimplementedWarning("onselectitem");
-    return;
+  onselectitem(item: string): void {
+    this.js_trigger("onSelectItem", item);
   }
 
   openmenu() {

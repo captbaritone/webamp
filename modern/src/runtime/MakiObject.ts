@@ -103,8 +103,8 @@ class MakiObject {
     throw new Error("getId not implemented");
   }
 
-  onnotify(command: string, param: string, a: number, b: number) {
-    Utils.unimplementedWarning("onnotify");
+  onnotify(command: string, param: string, a: number, b: number): number {
+    this.js_trigger("onNotify", command, param, a, b);
     return 0;
   }
 }

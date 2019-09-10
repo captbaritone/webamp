@@ -16,19 +16,16 @@ class Layout extends Group {
     return findParentNodeOfType(this, new Set(["container"]));
   }
 
-  ondock() {
-    unimplementedWarning("ondock");
-    return;
+  ondock(): void {
+    this.js_trigger("onDock");
   }
 
-  onundock() {
-    unimplementedWarning("onundock");
-    return;
+  onundock(): void {
+    this.js_trigger("onUnDock");
   }
 
-  onscale(newscalevalue: number) {
-    unimplementedWarning("onscale");
-    return;
+  onscale(newscalevalue: number): void {
+    this.js_trigger("onScale", newscalevalue);
   }
 
   getscale() {
@@ -56,19 +53,16 @@ class Layout extends Group {
     return;
   }
 
-  onmove() {
-    unimplementedWarning("onmove");
-    return;
+  onmove(): void {
+    this.js_trigger("onMove");
   }
 
-  onendmove() {
-    unimplementedWarning("onendmove");
-    return;
+  onendmove(): void {
+    this.js_trigger("onEndMove");
   }
 
-  onuserresize(x: number, y: number, w: number, h: number) {
-    unimplementedWarning("onuserresize");
-    return;
+  onuserresize(x: number, y: number, w: number, h: number): void {
+    this.js_trigger("onUserResize", x, y, w, h);
   }
 
   snapadjust(left: number, top: number, right: number, bottom: number) {
@@ -121,19 +115,16 @@ class Layout extends Group {
     return;
   }
 
-  onmouseenterlayout() {
-    unimplementedWarning("onmouseenterlayout");
-    return;
+  onmouseenterlayout(): void {
+    this.js_trigger("onMousEenterLayout");
   }
 
-  onmouseleavelayout() {
-    unimplementedWarning("onmouseleavelayout");
-    return;
+  onmouseleavelayout(): void {
+    this.js_trigger("onMouseLeaveLayout");
   }
 
-  onsnapadjustchanged() {
-    unimplementedWarning("onsnapadjustchanged");
-    return;
+  onsnapadjustchanged(): void {
+    this.js_trigger("onSnapAdjustChanged");
   }
 }
 

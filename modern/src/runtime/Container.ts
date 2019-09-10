@@ -38,24 +38,20 @@ class Container extends MakiObject {
     return findDescendantByTypeAndId(this, "layout", id);
   }
 
-  onswitchtolayout(newlayout) {
-    unimplementedWarning("onswitchtolayout");
-    return;
+  onswitchtolayout(newlayout): void {
+    this.js_trigger("onSwitchToLayout", newlayout);
   }
 
-  onbeforeswitchtolayout(oldlayout, newlayout) {
-    unimplementedWarning("onbeforeswitchtolayout");
-    return;
+  onbeforeswitchtolayout(oldlayout, newlayout): void {
+    this.js_trigger("onBeforeSwitchToLayout", oldlayout, newlayout);
   }
 
-  onhidelayout(_layout) {
-    unimplementedWarning("onhidelayout");
-    return;
+  onhidelayout(_layout): void {
+    this.js_trigger("onHideLayout", _layout);
   }
 
-  onshowlayout(_layout) {
-    unimplementedWarning("onshowlayout");
-    return;
+  onshowlayout(_layout): void {
+    this.js_trigger("onShowLayout", _layout);
   }
 
   getnumlayouts() {

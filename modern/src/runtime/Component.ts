@@ -12,14 +12,12 @@ class Component extends GuiObject {
     return "Component";
   }
 
-  ongetwac(wacobj) {
-    unimplementedWarning("ongetwac");
-    return;
+  ongetwac(wacobj): void {
+    this.js_trigger("onGetWac", wacobj);
   }
 
-  ongiveupwac(wacobj) {
-    unimplementedWarning("ongiveupwac");
-    return;
+  ongiveupwac(wacobj): void {
+    this.js_trigger("onGiveUpWac", wacobj);
   }
 
   getguid() {

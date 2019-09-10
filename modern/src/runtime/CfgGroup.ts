@@ -42,9 +42,8 @@ class CfgGroup extends Group {
     return;
   }
 
-  oncfgchanged() {
-    unimplementedWarning("oncfgchanged");
-    return;
+  oncfgchanged(): void {
+    this.js_trigger("onCfgChanged");
   }
 
   cfggetguid() {
