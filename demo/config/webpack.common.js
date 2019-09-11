@@ -61,6 +61,14 @@ module.exports = {
       template: "../modern/index.html",
       chunks: ["modern"],
     }),
+    // Ideally we could just do this via client-side routing, but it's tricky
+    // with both the real app and this sub directory. So we just hack it to
+    // duplicate the html file in both places and move on with our lives.
+    new HtmlWebpackPlugin({
+      filename: "modern/ready/index.html",
+      template: "../modern/index.html",
+      chunks: ["modern"],
+    }),
     // Automatically generates the manifest.json file inside the built
     // directory, and injects a tag into the gererated index.html file
     // it also, applies cache-busting for all the icons.
@@ -104,6 +112,7 @@ module.exports = {
   entry: {
     webamp: ["./js/index.js"],
     modern: ["../modern/src/index.js"],
+    wat: ["../modern/src/index.js"],
   },
   context: path.resolve(__dirname, "../"),
   output: {
