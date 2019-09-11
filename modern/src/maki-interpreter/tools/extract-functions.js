@@ -21,9 +21,9 @@ function findWals(parentDir) {
 function sumCountObjects(obj1, obj2) {
   return Object.keys(obj2).reduce((summaryObj, key) => {
     if (summaryObj[key] == null) {
-      summaryObj[key] = 1;
+      summaryObj[key] = obj2[key];
     } else {
-      summaryObj[key]++;
+      summaryObj[key] += obj2[key];
     }
     return summaryObj;
   }, Object.assign({}, obj1));
