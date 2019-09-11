@@ -39,6 +39,10 @@ Object.keys(objects).forEach(key => {
   });
 });
 
+const foundMethods = normalizedMethods.filter(
+  method => method.foundInSkins > 0
+);
+
 function PercentBox({ number, total, label }) {
   const percent = total === 0 ? 1 : number / total;
 
@@ -111,7 +115,12 @@ export default function() {
       <PercentBox
         number={IMPLEMENTED_METHOD_COUNT}
         total={METHOD_COUNT}
-        label="Methods"
+        label="All Methods"
+      />
+      <PercentBox
+        number={foundMethods.filter(method => method.implemented).length}
+        total={foundMethods.length}
+        label="Used Methods"
       />
       <input
         placeholder={"Search..."}
