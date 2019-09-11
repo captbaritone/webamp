@@ -36,7 +36,7 @@ async function getCallCountsFromWal(absolutePath) {
   const buffers = await Promise.all(
     files.map(file => file.async("nodebuffer"))
   );
-  return buffers.map(getCallCountsFromMaki).reduce(sumCountObjects);
+  return buffers.map(getCallCountsFromMaki).reduce(sumCountObjects, {});
 }
 
 function getCallCountsFromMaki(buffer) {
@@ -70,7 +70,18 @@ function setObjectValuesToOne(obj) {
 
 async function main(parentDir) {
   const paths = await findWals(parentDir);
-  const callCounts = await Promise.all(paths.map(getCallCountsFromWal));
+  const callCounts = await Promise.all(
+    // This script runs out of memory, so we'll limit skins until we
+    // improve the script to be less dumb.
+    paths.slice(0, 500).map(async walPath => {
+      try {
+        return await getCallCountsFromWal(walPath);
+      } catch (e) {
+        // TODO: Investigate these.
+        return {};
+      }
+    })
+  );
   const totalCalls = callCounts.reduce(sumCountObjects);
   const foundInSkins = callCounts
     .map(setObjectValuesToOne)
@@ -80,4 +91,4 @@ async function main(parentDir) {
   console.log(JSON.stringify(result, null, 2));
 }
 
-main(path.join(__dirname, "../../../skins/"));
+main("/Volumes/Mobile Backup/skins/skins/");
