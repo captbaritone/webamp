@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useReducer, Suspense } from "react";
 import "./App.css";
 import * as Utils from "./utils";
 import * as Actions from "./Actions";
@@ -9,6 +9,7 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import DropTarget from "../../js/components/DropTarget";
 import Debugger from "./debugger";
 import Sidebar from "./Sidebar";
+const Dashboard = React.lazy(() => import("./Dashboard"));
 
 const skinUrls = [
   cornerSkin,
@@ -647,7 +648,11 @@ function setSkinUrlToQueryParams(skinUrl) {
   window.history.pushState(null, "", newRelativePathQuery);
 }
 
-function App() {
+function Loading() {
+  return <h1>Loading...</h1>;
+}
+
+function Modern() {
   const dispatch = useDispatch();
   const store = useStore();
   const root = useSelector(Selectors.getMakiTree);
@@ -656,7 +661,7 @@ function App() {
     dispatch(Actions.gotSkinUrl(defaultSkinUrl, store));
   }, [store]);
   if (root == null) {
-    return <h1>Loading...</h1>;
+    return <Loading />;
   }
   return (
     <div style={{ width: "100vw", height: "100vh", display: "flex" }}>
@@ -687,6 +692,13 @@ function App() {
         <Debugger />
       </Sidebar>
     </div>
+  );
+}
+function App() {
+  return (
+    <Suspense fallback={<Loading />}>
+      {window.location.pathname.includes("ready") ? <Dashboard /> : <Modern />}
+    </Suspense>
   );
 }
 
