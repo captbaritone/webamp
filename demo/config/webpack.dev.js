@@ -6,6 +6,9 @@ const common = require("./webpack.common.js");
 module.exports = merge(common, {
   devtool: "source-map",
   mode: "development",
+  devServer: {
+    overlay: true,
+  },
   plugins: [
     new webpack.DefinePlugin({
       SENTRY_DSN: JSON.stringify(
