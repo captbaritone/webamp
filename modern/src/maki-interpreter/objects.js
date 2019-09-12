@@ -3943,8 +3943,7 @@ Object.values(normalizedObjects).forEach(object => {
   if (parentClass == null) {
     if (object.parent === "@{00000000-0000-0000-0000-000000000000}@") {
     } else {
-      console.log(`Could not find parent class named ${object.parent}`);
-      throw new Error("wat");
+      throw new Error(`Could not find parent class named ${object.parent}`);
     }
   }
   object.parentClass = parentClass;
