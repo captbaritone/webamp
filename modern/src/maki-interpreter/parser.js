@@ -244,15 +244,15 @@ function decodeCode({ makiFile }) {
 
   const commands = [];
   while (makiFile.getPosition() < start + length) {
-    const pos = makiFile.getPosition() - start;
-    commands.push(parseComand({ start, makiFile, length, pos }));
+    commands.push(parseComand({ start, makiFile, length }));
   }
 
   return commands;
 }
 
 // TODO: Refactor this to consume bytes directly off the end of MakiFile
-function parseComand({ start, makiFile, length, pos }) {
+function parseComand({ start, makiFile, length }) {
+  const pos = makiFile.getPosition() - start;
   const opcode = makiFile.readUInt8();
   const command = {
     offset: pos,
@@ -288,6 +288,7 @@ function parseComand({ start, makiFile, length, pos }) {
     length > pos + 5 + 4 &&
     makiFile.peekUInt32LE() >= 0xffff0000
   ) {
+    console.log("STACK PROTECTION");
     makiFile.readUInt32LE();
   }
 
