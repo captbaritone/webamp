@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const parse = require("../parser").default;
 const JSZip = require("jszip");
-const { getClass, getFunctionObject } = require("../objects");
+const { getClass, getFunctionObject, getFormattedId } = require("../objects");
 const glob = require("glob");
 
 const CALL_OPCODES = new Set([24, 112]);
@@ -50,7 +50,7 @@ function getCallCountsFromMaki(buffer) {
       const classId = maki.classes[method.typeOffset];
       const klass = getClass(classId);
       if (klass == null) {
-        throw new Error(`Unknown class ID: ${classId}`);
+        throw new Error(`Unknown class ID: ${getFormattedId(classId)}`);
       }
       const parentClass = getFunctionObject(klass, method.name);
       return `${parentClass.name}.${method.name.toLowerCase()}`;
@@ -71,6 +71,7 @@ function setObjectValuesToOne(obj) {
 }
 
 async function main(parentDir) {
+  const errors = [];
   const paths = await findWals(parentDir);
   const callCounts = await Promise.all(
     // This script runs out of memory, so we'll limit skins until we
@@ -79,7 +80,10 @@ async function main(parentDir) {
       try {
         return await getCallCountsFromWal(walPath);
       } catch (e) {
+        const errorLine = e.toString().split("\n")[0];
+        errors.push({ [errorLine]: 1 });
         // TODO: Investigate these.
+        console.error(`Error getting calld data from ${walPath}`, e);
         return {};
       }
     })
@@ -89,6 +93,7 @@ async function main(parentDir) {
     .map(setObjectValuesToOne)
     .reduce(sumCountObjects);
 
+  console.error(JSON.stringify(errors.reduce(sumCountObjects, {}), null, 2));
   const result = { totalCalls, foundInSkins };
   console.log(JSON.stringify(result, null, 2));
 }
