@@ -37,6 +37,17 @@ describe("can parse without crashing", () => {
   });
 });
 
+describe("regressions", () => {
+  describe.skip("https://github.com/captbaritone/webamp/issues/898", () => {
+    test("minimal", () => {
+      parseFile("./fixtures/issue_898/minimal.maki");
+    });
+    test("real world", () => {
+      parseFile("./fixtures/issue_898/multipass_system.maki");
+    });
+  });
+});
+
 describe("standardframe.maki", () => {
   let maki;
   beforeEach(() => {
