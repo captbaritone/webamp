@@ -12,8 +12,12 @@ const PRIMITIVE_TYPES = {
 
 // TODO: Don't depend upon COMMANDS
 function opcodeToArgType(opcode) {
-  const argType = COMMANDS[opcode].arg;
-  switch (argType) {
+  const command = COMMANDS[opcode];
+  if (command == null) {
+    throw new Error(`Unknown opcode ${opcode}`);
+  }
+
+  switch (command.arg) {
     case "func":
     case "line":
       return "COMMAND_OFFSET";
