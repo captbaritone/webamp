@@ -7,6 +7,8 @@ const JSZip = require("jszip");
 const { getClass, getFunctionObject } = require("../objects");
 const glob = require("glob");
 
+const CALL_OPCODES = new Set([24, 112]);
+
 function findWals(parentDir) {
   return new Promise((resolve, reject) => {
     glob("**/*.wal", { cwd: parentDir }, (err, files) => {
@@ -42,7 +44,7 @@ async function getCallCountsFromWal(absolutePath) {
 function getCallCountsFromMaki(buffer) {
   const maki = parse(buffer);
   return maki.commands
-    .filter(command => command.opcode === 112)
+    .filter(command => CALL_OPCODES.has(command.opcode))
     .map(command => {
       const method = maki.methods[command.arg];
       const classId = maki.classes[method.typeOffset];
