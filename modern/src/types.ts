@@ -5,11 +5,8 @@ export type XmlNode = {
   children: XmlNode[];
   attributes: Object;
   name: string;
-};
-
-export interface ResolvedXmlNode extends XmlNode {
   uid: number;
-}
+};
 
 // What is a tree, but a single root node?
 export type XmlTree = XmlNode;
