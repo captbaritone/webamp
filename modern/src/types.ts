@@ -14,7 +14,7 @@ export interface ResolvedXmlNode extends XmlNode {
 // What is a tree, but a single root node?
 export type XmlTree = XmlNode;
 
-export type ModernAppState = {
+export type ModernSkinState = {
   makiTree: MakiTree | null;
   xmlTree: XmlTree | null;
   volume: number;
@@ -22,6 +22,11 @@ export type ModernAppState = {
   leftVUMeter: number;
   skinLoaded: boolean;
 };
+
+export type ModernAppState = {
+  modernSkin: ModernSkinState;
+};
+
 export type ModernAction =
   | { type: "SET_MAKI_TREE"; makiTree: MakiTree }
   | { type: "SET_XML_TREE"; xmlTree: XmlTree }
