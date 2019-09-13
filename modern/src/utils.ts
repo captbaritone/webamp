@@ -159,7 +159,10 @@ export function findPathToNode<T extends { children: T[] }>(
 }
 
 // Bredth-first search in a tree
-export function findInTree<T extends { children: T[] }>(node: T, predicate): T {
+export function findInTree<T extends { children: T[] }>(
+  node: T,
+  predicate
+): T | null {
   if (predicate(node)) {
     return node;
   }
