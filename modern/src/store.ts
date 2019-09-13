@@ -1,5 +1,5 @@
-import { ModernAppState, ModernAction } from "./types";
-import { createStore, applyMiddleware } from "redux";
+import { ModernSkinState, ModernAction } from "./types";
+import { createStore, applyMiddleware, combineReducers } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
 
@@ -12,10 +12,10 @@ const defaultState = {
   skinLoaded: false,
 };
 
-function reducer(
-  state: ModernAppState = defaultState,
+function modernSkinReducer(
+  state: ModernSkinState = defaultState,
   action: ModernAction
-): ModernAppState {
+): ModernSkinState {
   switch (action.type) {
     case "SET_MAKI_TREE":
       return { ...state, makiTree: action.makiTree, skinLoaded: true };
@@ -23,11 +23,14 @@ function reducer(
       return { ...state, xmlTree: action.xmlTree };
     case "SET_VOLUME":
       return { ...state, volume: action.volume };
-
     default:
       return state;
   }
 }
+
+const reducer = combineReducers({
+  modernSkin: modernSkinReducer,
+});
 
 export function create() {
   return createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
