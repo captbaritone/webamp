@@ -77,7 +77,7 @@ async function runSkin(skinDirectory) {
 
   const store = create();
   store.dispatch(Actions.gotSkinZip(zip, store));
-  await isInState(store, state => state.skinLoaded);
+  await isInState(store, state => state.modernSkin.skinLoaded);
 
   return mockMessageBox.mock.calls;
 }
