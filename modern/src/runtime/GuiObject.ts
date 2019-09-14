@@ -8,6 +8,12 @@ import * as MakiSelectors from "../MakiSelectors";
 
 class GuiObject extends MakiObject {
   visible: boolean;
+  _targetAnimationSpeed: number;
+  _startParams: Object;
+  _targetParams: Object;
+  _transitionParams: Object;
+  _targetAnimationStartTime: number;
+  _targetAnimationCancelID: number;
   constructor(node, parent, annotations, store) {
     super(node, parent, annotations, store);
 
@@ -15,12 +21,21 @@ class GuiObject extends MakiObject {
     this._convertAttributeTypes(this.attributes);
 
     this.visible = true;
+    this._startParams = {};
+    this._targetParams = {};
+    this._transitionParams = {};
     this._selectorCache = new Map();
   }
 
   _setAttributeDefaults(attributes) {
     if (attributes.alpha == null) {
       attributes.alpha = "255";
+    }
+    if (attributes.x == null) {
+      attributes.x = "0";
+    }
+    if (attributes.y == null) {
+      attributes.y = "0";
     }
     if (attributes.ghost == null) {
       attributes.ghost = "0";
@@ -30,6 +45,12 @@ class GuiObject extends MakiObject {
   _convertAttributeTypes(attributes) {
     if (attributes.alpha != null) {
       attributes.alpha = Number(attributes.alpha);
+    }
+    if (attributes.x != null) {
+      attributes.x = Number(attributes.x);
+    }
+    if (attributes.y != null) {
+      attributes.y = Number(attributes.y);
     }
     if (attributes.ghost != null) {
       attributes.ghost = !!Number(attributes.ghost);
@@ -216,50 +237,82 @@ class GuiObject extends MakiObject {
     return;
   }
 
-  settargetx(x: number) {
-    unimplementedWarning("settargetx");
-    return;
+  settargetx(x: number): void {
+    this._targetParams.x = x;
   }
 
-  settargety(y: number) {
-    unimplementedWarning("settargety");
-    return;
+  settargety(y: number): void {
+    this._targetParams.y = y;
   }
 
-  settargetw(w: number) {
-    unimplementedWarning("settargetw");
-    return;
+  settargetw(w: number): void {
+    this._targetParams.w = w;
   }
 
-  settargeth(r: number) {
-    unimplementedWarning("settargeth");
-    return;
+  // r? OK...
+  settargeth(r: number): void {
+    this._targetParams.h = r;
   }
 
   // alpha range from 0-255
   settargeta(alpha: number): void {
-    unimplementedWarning("settargeta");
-    this.attributes.alpha = alpha;
-    this.js_trigger("js_update");
+    this._targetParams.alpha = alpha;
   }
 
-  settargetspeed(insecond: number) {
-    unimplementedWarning("settargetspeed");
-    return;
+  settargetspeed(insecond: number): void {
+    this._targetAnimationSpeed = insecond * 1000;
   }
 
-  gototarget() {
-    unimplementedWarning("gototarget");
-    return;
+  _targetAnimationLoop(): void {
+    this._targetAnimationCancelID = window.requestAnimationFrame(
+      currentTime => {
+        const progress =
+          (currentTime - this._targetAnimationStartTime) /
+          this._targetAnimationSpeed;
+        if (progress > 1) {
+          this._startParams = {};
+          this._targetParams = {};
+          this.ontargetreached();
+          return;
+        }
+        ["alpha", "x", "y", "w", "h"].forEach(attr => {
+          if (this._transitionParams[attr]) {
+            this.attributes[attr] =
+              this._targetParams[attr] * progress +
+              this._startParams[attr] * (1 - progress);
+          }
+        });
+        this.js_trigger("js_update");
+        this._targetAnimationLoop();
+      }
+    );
+  }
+
+  gototarget(): void {
+    this._transitionParams = {};
+    ["alpha", "x", "y", "w", "h"].forEach(attr => {
+      if (this._targetParams[attr] != null) {
+        this._transitionParams[attr] = true;
+        this._startParams[attr] =
+          this.attributes[attr] != null
+            ? this.attributes[attr]
+            : this._targetParams[attr];
+      }
+    });
+
+    this._targetAnimationStartTime = window.performance.now();
+    this._targetAnimationLoop();
   }
 
   ontargetreached(): void {
     this.js_trigger("onTargetReached");
   }
 
-  canceltarget() {
-    unimplementedWarning("canceltarget");
-    return;
+  canceltarget(): void {
+    window.cancelAnimationFrame(this._targetAnimationCancelID);
+    this._targetAnimationCancelID = null;
+    this._startParams = {};
+    this._targetParams = {};
   }
 
   reversetarget(reverse: number) {
