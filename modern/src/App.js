@@ -531,7 +531,7 @@ function Text({
   y,
   w,
   h,
-  // font,
+  font,
   fontsize,
   color,
   align,
@@ -561,18 +561,23 @@ function Text({
   // display is actually a keyword that is looked up in some sort of map
   // e.g. songname, time
   const nodeText = display;
+  const js_attributes = node.js_fontLookup(font.toLowerCase());
+  const fontFamily = js_attributes == null ? null : js_attributes.fontFamily;
+  const style = {
+    position: "absolute",
+    userSelect: "none",
+    MozUserSelect: "none",
+    ...params,
+    fontFamily,
+  };
+
   return (
     <GuiObjectEvents node={node}>
       <div
         data-node-type="Text"
         data-node-id={id}
         draggable={false}
-        style={{
-          position: "absolute",
-          userSelect: "none",
-          MozUserSelect: "none",
-          ...params,
-        }}
+        style={style}
       >
         {nodeText}
         <XmlChildren node={node} />

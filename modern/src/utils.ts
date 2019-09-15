@@ -351,6 +351,22 @@ async function loadImage(
   });
 }
 
+/* global FontFace */
+// Types for FontFace provided by @types/css-font-loading-module
+// TODO: Offer some way to clean this up
+export async function loadFont(fontUrl: string, name: string) {
+  // Note: Incompatible with non-chromium Edge (#901)
+  console.log({ fontFamily: name });
+  const font = new FontFace(name, `url(${fontUrl})`);
+  const loadedFont = await font.load();
+  document.fonts.add(loadedFont);
+
+  /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+  function remove() {
+    document.fonts.delete(loadedFont);
+  }
+}
+
 export async function getSizeFromUrl(
   imgUrl: string
 ): Promise<{ width: number; height: number }> {
