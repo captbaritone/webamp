@@ -55,7 +55,7 @@ class AnimatedLayer extends Layer {
       return;
     }
 
-    const image = this.js_imageLookup(attributes.image);
+    const image = attributes.js_assets.image;
     if (!image) {
       console.warn("Could not find image: ", attributes.image);
       return;
