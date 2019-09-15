@@ -44,7 +44,8 @@ async function prepareMakiImage(node, zip, file) {
 function imageAttributesFromNode(node) {
   if (!node.name) return [];
   switch (node.name.toLowerCase()) {
-    case "layer": {
+    case "layer":
+    case "animatedlayer": {
       return ["image"];
     }
     case "layout": {
