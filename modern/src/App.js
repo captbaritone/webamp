@@ -354,7 +354,7 @@ function animatedLayerOffsetAndSize(
 function AnimatedLayer({
   node,
   id,
-  image,
+  js_assets,
   x,
   y,
   w,
@@ -362,12 +362,12 @@ function AnimatedLayer({
   framewidth,
   frameheight,
 }) {
-  if (image == null) {
+  const img = js_assets.image;
+  if (img == null) {
     console.warn("Got an AnimatedLayer without an image. Rendering null", id);
     return null;
   }
 
-  const img = node.js_imageLookup(image.toLowerCase());
   const frameNum = node.getcurframe();
 
   let style = {};
