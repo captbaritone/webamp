@@ -190,8 +190,9 @@ function Container(props) {
 }
 
 function Layout({
-  node,
   id,
+  node,
+  js_assets,
   background,
   // desktopalpha,
   drawBackground,
@@ -211,7 +212,7 @@ function Layout({
   }
 
   if (drawBackground) {
-    const image = node.js_imageLookup(background);
+    const image = js_assets.background;
     if (image == null) {
       console.warn(
         "Unable to find image to render. Rendering null",
@@ -279,12 +280,12 @@ function Layout({
   );
 }
 
-function Layer({ node, id, image, x, y }) {
+function Layer({ id, node, js_assets, image, x, y }) {
   if (image == null) {
     console.warn("Got an Layer without an image. Rendering null", id);
     return null;
   }
-  const img = node.js_imageLookup(image.toLowerCase());
+  const img = js_assets.image;
   if (img == null) {
     console.warn("Unable to find image to render. Rendering null", image);
     return null;
@@ -407,7 +408,8 @@ function AnimatedLayer({
 
 function Button({
   id,
-  image,
+  js_assets,
+  // image,
   // action,
   x,
   y,
@@ -417,15 +419,10 @@ function Button({
   node,
 }) {
   const [down, setDown] = React.useState(false);
-  const imgId = down && downImage ? downImage : image;
-  if (imgId == null) {
-    console.warn("Got a Button without a imgId. Rendering null", id);
-    return null;
-  }
   // TODO: These seem to be switching too fast
-  const img = node.js_imageLookup(imgId);
+  const img = down && downImage ? js_assets.downimage : js_assets.image;
   if (img == null) {
-    console.warn("Unable to find image to render. Rendering null", image);
+    console.warn("Got a Button without a img. Rendering null", id);
     return null;
   }
 

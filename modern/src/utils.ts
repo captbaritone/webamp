@@ -17,6 +17,14 @@ export function isPromise(obj) {
   return obj && typeof obj.then === "function";
 }
 
+export function isString(obj) {
+  return typeof obj === "string";
+}
+
+export function isObject(obj) {
+  return obj === Object(obj);
+}
+
 // Convert windows filename slashes to forward slashes
 function fixFilenameSlashes(filename) {
   return filename.replace(/\\/g, "/");
@@ -232,7 +240,10 @@ export function findDescendantByTypeAndId(node, type, id) {
 }
 
 function findDirectDescendantById(node, id) {
-  return node.children.find(item => item.attributes.id === id);
+  const lowerCaseId = id.toLowerCase();
+  return node.children.find(
+    item => item.attributes && item.attributes.id.toLowerCase() === lowerCaseId
+  );
 }
 
 function* iterateLexicalScope(node) {
@@ -284,6 +295,39 @@ export function findGroupDefById(node, id) {
       child.attributes.id === id
     );
   });
+}
+
+// Search down the tree for <Elements> nodes that are in node's lexical scope.
+// return the first child of an <Elements> that matches id unless we find
+// node first, in that case we didn't find the element
+// TODO: this might be overly generous, including some definitions that
+// shouldn't be accessible. But it's working for now :-X
+export function findXmlElementById(node, id, root) {
+  if (root.uid === node.uid) {
+    // Search ends if we find the node that initiated the search, since it means we weren't able to
+    // find the match in its scope
+    // Return the node itself as a kind of sentinel value to look for, since finding the node is an
+    // ending condition for the search
+    return node;
+  } else if (root.name === "elements") {
+    const element = findDirectDescendantById(root, id);
+    if (element) {
+      return element;
+    }
+  } else {
+    const children = root.children || [];
+    for (const child of children) {
+      const element = findXmlElementById(node, id, child);
+      if (element) {
+        if (element.uid === node.uid) {
+          // This happens when we find the node before we find the declaration, which means it
+          // either doesn't exist or it wouldn't be in scope
+          return null;
+        }
+        return element;
+      }
+    }
+  }
 }
 
 // This is intentionally async since we may want to sub it out for an async

@@ -19,6 +19,47 @@ import EqVis from "./runtime/EqVis";
 import AnimatedLayer from "./runtime/AnimatedLayer";
 import Component from "./runtime/Component";
 
+async function prepareMakiImage(node, zip, file) {
+  let { h, w } = node.attributes;
+  // TODO: Escape file for regex
+  const img = Utils.getCaseInsensitveFile(zip, file);
+  if (img === undefined) {
+    return {};
+  }
+  const imgBlob = await img.async("blob");
+  const imgUrl = await Utils.getUrlFromBlob(imgBlob);
+  if (w === undefined || h === undefined) {
+    const { width, height } = await Utils.getSizeFromUrl(imgUrl);
+    w = width;
+    h = height;
+  }
+
+  return {
+    h,
+    w,
+    imgUrl,
+  };
+}
+
+function imageAttributesFromNode(node) {
+  if (!node.name) return [];
+  switch (node.name.toLowerCase()) {
+    case "layer": {
+      return ["image"];
+    }
+    case "layout": {
+      return ["background"];
+    }
+    case "button":
+    case "togglebutton": {
+      return ["image", "downImage"];
+    }
+    default: {
+      return [];
+    }
+  }
+}
+
 const noop = (node, parent, zip, store) =>
   new GuiObject(node, parent, undefined, store);
 
@@ -54,40 +95,7 @@ const parsers = {
   sendparams: noop,
   elements: (node, parent, zip, store) =>
     new JsElements(node, parent, undefined, store),
-  bitmap: async (node, parent, zip, store) => {
-    let { h, w, x, y } = node.attributes;
-    const { file, gammagroup, id } = node.attributes;
-    // TODO: Escape file for regex
-    const img = Utils.getCaseInsensitveFile(zip, file);
-    if (img === undefined) {
-      return new MakiObject(node, parent);
-    }
-    const imgBlob = await img.async("blob");
-    const imgUrl = await Utils.getUrlFromBlob(imgBlob);
-    if (w === undefined || h === undefined) {
-      const { width, height } = await Utils.getSizeFromUrl(imgUrl);
-      w = width;
-      h = height;
-      x = x !== undefined ? x : 0;
-      y = y !== undefined ? y : 0;
-    }
-
-    return new MakiObject(
-      node,
-      parent,
-      {
-        id,
-        file,
-        gammagroup,
-        h,
-        w,
-        x,
-        y,
-        imgUrl,
-      },
-      store
-    );
-  },
+  bitmap: noop,
   eqvis: (node, parent, zip, store) =>
     new EqVis(node, parent, undefined, store),
   slider: (node, parent, zip, store) =>
@@ -170,6 +178,51 @@ async function parseChildren(node, children, zip, store) {
   node.js_addChildren(filteredChildren);
 }
 
+async function nodeImageLookup(node, root, zip) {
+  const imageAttributes = imageAttributesFromNode(node);
+  if (!imageAttributes || imageAttributes.length === 0) {
+    return;
+  }
+  if (!node.attributes.js_assets) {
+    node.attributes.js_assets = {};
+  }
+  await Promise.all(
+    imageAttributes.map(async attribute => {
+      const image = node.attributes[attribute];
+      if (!image || !Utils.isString(image)) {
+        return;
+      }
+      let img;
+      if (image.endsWith(".png")) {
+        img = await prepareMakiImage(node, zip, image);
+      } else {
+        const elementNode = Utils.findXmlElementById(node, image, root);
+        if (elementNode) {
+          img = await prepareMakiImage(
+            elementNode,
+            zip,
+            elementNode.attributes.file
+          );
+
+          const { x, y } = elementNode.attributes;
+          img.x = x !== undefined ? x : 0;
+          img.y = y !== undefined ? y : 0;
+        } else {
+          console.warn("Unable to find image:", image);
+        }
+      }
+      node.attributes.js_assets[attribute.toLowerCase()] = img;
+    })
+  );
+}
+
+async function applyImageLookups(root, zip) {
+  await Utils.asyncTreeFlatMap(root, async node => {
+    await nodeImageLookup(node, root, zip);
+    return node;
+  });
+}
+
 async function applyGroupDefs(root) {
   await Utils.asyncTreeFlatMap(root, async node => {
     switch (node.name) {
@@ -204,12 +257,8 @@ async function applyGroupDefs(root) {
 
 async function initialize(zip, skinXml, store) {
   const xmlRoot = skinXml.children[0];
-  const root = new JsWinampAbstractionLayer(
-    skinXml.children[0],
-    null,
-    undefined,
-    store
-  );
+  await applyImageLookups(xmlRoot, zip);
+  const root = new JsWinampAbstractionLayer(xmlRoot, null, undefined, store);
   await parseChildren(root, xmlRoot.children, zip, store);
   await applyGroupDefs(root);
   return root;
