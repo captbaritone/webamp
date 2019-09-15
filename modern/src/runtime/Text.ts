@@ -23,7 +23,7 @@ class Text extends GuiObject {
 
   gettext() {
     unimplementedWarning("gettext");
-    return;
+    return "";
   }
 
   gettextwidth() {
