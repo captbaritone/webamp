@@ -68,6 +68,24 @@ class MakiObject {
     this._emitter.dispose();
   }
 
+  js_imageLookup(id: string) {
+    const element = Utils.findElementById(this, id);
+    if (element) {
+      return element.js_annotations;
+    }
+
+    return null;
+  }
+
+  js_fontLookup(id: string) {
+    const element = Utils.findElementById(this, id);
+    if (element) {
+      return element.js_annotations;
+    }
+
+    return null;
+  }
+
   js_groupdefLookup(id: string) {
     const groupdef = Utils.findGroupDefById(this, id);
     if (groupdef) {
