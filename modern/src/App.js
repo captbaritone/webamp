@@ -613,7 +613,7 @@ function XmlChildren({ node }) {
 }
 
 // Given a skin XML node, pick which component to use, and render it.
-function XmlNode({ node }) {
+const XmlNode = React.memo(({ node }) => {
   let { name } = node;
   if (name == null) {
     // name is null is likely a comment
@@ -634,7 +634,7 @@ function XmlNode({ node }) {
   useJsUpdates(node);
   const Component = NODE_NAME_TO_COMPONENT[name] || DummyComponent;
   return <Component node={node} {...node.attributes} />;
-}
+});
 
 function getSkinUrlFromQueryParams() {
   const searchParams = new URLSearchParams(window.location.search);
