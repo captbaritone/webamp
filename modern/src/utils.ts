@@ -356,7 +356,6 @@ async function loadImage(
 // TODO: Offer some way to clean this up
 export async function loadFont(fontUrl: string, name: string) {
   // Note: Incompatible with non-chromium Edge (#901)
-  console.log({ fontFamily: name });
   const font = new FontFace(name, `url(${fontUrl})`);
   const loadedFont = await font.load();
   document.fonts.add(loadedFont);
