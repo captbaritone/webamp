@@ -58,11 +58,6 @@ const skinUrls = [
   "https://archive.org/cors/winampskin_Devay/Devay.wal",
 ];
 
-function useJsUpdates(node) {
-  const [, forceUpdate] = useReducer(x => x + 1, 0);
-  useEffect(() => node.js_listen("js_update", forceUpdate));
-}
-
 function handleMouseEventDispatch(node, event, eventName) {
   event.stopPropagation();
 
@@ -612,8 +607,16 @@ function XmlChildren({ node }) {
   ));
 }
 
+const MemoizedXmlNode = React.memo(
+  ({ node, name }) => {
+    const Component = NODE_NAME_TO_COMPONENT[name] || DummyComponent;
+    return <Component node={node} {...node.attributes} />;
+  },
+  (prevProps, nextProps) => prevProps.version === nextProps.version
+);
+
 // Given a skin XML node, pick which component to use, and render it.
-const XmlNode = React.memo(({ node }) => {
+function XmlNode({ node }) {
   let { name } = node;
   if (name == null) {
     // name is null is likely a comment
@@ -631,10 +634,12 @@ const XmlNode = React.memo(({ node }) => {
     // these nodes dont need to be rendered
     return null;
   }
-  useJsUpdates(node);
-  const Component = NODE_NAME_TO_COMPONENT[name] || DummyComponent;
-  return <Component node={node} {...node.attributes} />;
-});
+
+  const [version, forceUpdate] = useReducer(x => x + 1, 0);
+  useEffect(() => node.js_listen("js_update", forceUpdate));
+
+  return <MemoizedXmlNode node={node} name={name} version={version} />;
+}
 
 function getSkinUrlFromQueryParams() {
   const searchParams = new URLSearchParams(window.location.search);
