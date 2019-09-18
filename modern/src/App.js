@@ -162,7 +162,9 @@ function GuiObjectEvents({ makiObject, children }) {
   );
 }
 
-function Container({ id, makiObject, default_x, default_y, default_visible }) {
+function Container({ makiObject }) {
+  const { id, default_x, default_y, default_visible } = makiObject.attributes;
+
   const style = {
     position: "absolute",
   };
@@ -188,23 +190,23 @@ function Container({ id, makiObject, default_x, default_y, default_visible }) {
   );
 }
 
-function Layout({
-  id,
-  makiObject,
-  js_assets,
-  background,
-  // desktopalpha,
-  drawBackground,
-  x,
-  y,
-  w,
-  h,
-  minimum_h,
-  maximum_h,
-  minimum_w,
-  maximum_w,
-  // droptarget,
-}) {
+function Layout({ makiObject }) {
+  const {
+    id,
+    js_assets,
+    background,
+    // desktopalpha,
+    drawBackground,
+    x,
+    y,
+    w,
+    h,
+    minimum_h,
+    maximum_h,
+    minimum_w,
+    maximum_w,
+    // droptarget,
+  } = makiObject.attributes;
   if (drawBackground && background == null) {
     console.warn("Got a Layout without a background. Rendering null", id);
     return null;
@@ -279,7 +281,8 @@ function Layout({
   );
 }
 
-function Layer({ id, makiObject, js_assets, image, x, y }) {
+function Layer({ makiObject }) {
+  const { id, js_assets, image, x, y } = makiObject.attributes;
   if (image == null) {
     console.warn("Got an Layer without an image. Rendering null", id);
     return null;
@@ -350,17 +353,17 @@ function animatedLayerOffsetAndSize(
   return { offset, size };
 }
 
-function AnimatedLayer({
-  makiObject,
-  id,
-  js_assets,
-  x,
-  y,
-  w,
-  h,
-  framewidth,
-  frameheight,
-}) {
+function AnimatedLayer({ makiObject }) {
+  const {
+    id,
+    js_assets,
+    x,
+    y,
+    w,
+    h,
+    framewidth,
+    frameheight,
+  } = makiObject.attributes;
   const img = js_assets.image;
   if (img == null) {
     console.warn("Got an AnimatedLayer without an image. Rendering null", id);
@@ -405,18 +408,18 @@ function AnimatedLayer({
   );
 }
 
-function Button({
-  id,
-  js_assets,
-  // image,
-  // action,
-  x,
-  y,
-  downImage,
-  tooltip,
-  ghost,
-  makiObject,
-}) {
+function Button({ makiObject }) {
+  const {
+    id,
+    js_assets,
+    // image,
+    // action,
+    x,
+    y,
+    downImage,
+    tooltip,
+    ghost,
+  } = makiObject.attributes;
   const [down, setDown] = React.useState(false);
   // TODO: These seem to be switching too fast
   const img = down && downImage ? js_assets.downimage : js_assets.image;
@@ -463,7 +466,9 @@ function Button({
   );
 }
 
-function Popupmenu({ id, makiObject, x, y }) {
+function Popupmenu({ makiObject }) {
+  const { id, x, y } = makiObject.attributes;
+
   const children = makiObject.commands.map(item => {
     if (item.id === "seperator") {
       return <li />;
@@ -497,11 +502,12 @@ function Popupmenu({ id, makiObject, x, y }) {
   );
 }
 
-function ToggleButton(props) {
-  return <Button data-node-type="togglebutton" {...props} />;
+function ToggleButton({ makiObject }) {
+  return <Button makiObject={makiObject} />;
 }
 
-function Group({ makiObject, id, x, y }) {
+function Group({ makiObject }) {
+  const { id, x, y } = makiObject.attributes;
   const style = {
     position: "absolute",
   };
@@ -520,21 +526,21 @@ function Group({ makiObject, id, x, y }) {
   );
 }
 
-function Text({
-  makiObject,
-  id,
-  display,
-  // ticker,
-  // antialias,
-  x,
-  y,
-  w,
-  h,
-  font,
-  fontsize,
-  color,
-  align,
-}) {
+function Text({ makiObject }) {
+  const {
+    id,
+    display,
+    // ticker,
+    // antialias,
+    x,
+    y,
+    w,
+    h,
+    font,
+    fontsize,
+    color,
+    align,
+  } = makiObject.attributes;
   const params = {};
   if (x !== undefined) {
     params.left = Number(x);
@@ -607,11 +613,7 @@ function MakiChildren({ makiObject }) {
     return null;
   }
   return makiObject.children.map((childMakiObject, i) => (
-    <Maki
-      key={i}
-      makiObject={childMakiObject}
-      {...childMakiObject.attributes}
-    />
+    <Maki key={i} makiObject={childMakiObject} />
   ));
 }
 
@@ -636,7 +638,7 @@ const Maki = React.memo(({ makiObject }) => {
   }
   useJsUpdates(makiObject);
   const Component = NODE_NAME_TO_COMPONENT[name] || DummyComponent;
-  return <Component makiObject={makiObject} {...makiObject.attributes} />;
+  return <Component makiObject={makiObject} />;
 });
 
 function getSkinUrlFromQueryParams() {
