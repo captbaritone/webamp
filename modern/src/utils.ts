@@ -3,30 +3,40 @@ import { xml2js } from "xml-js";
 import { XmlNode } from "./types";
 
 let nextId = 0;
-export function getId() {
+export function getId(): number {
   return nextId++;
 }
 
-// Depth-first tree map
-export function mapTree(node, cb) {
+// Breadth-first tree map
+// TODO: Type this so the return type is different than the initial type
+// NOTE: This does not apply the callback to the root node. It probably should,
+// but I'm too lazy to figure out how to write it.
+export function mapTreeBreadth<T extends { children: T[] }>(
+  node: T,
+  cb: (node: T, parent: T) => T
+) {
   const children = node.children || [];
-  return cb({ ...node, children: children.map(child => mapTree(child, cb)) });
+  const mappedChildren = children.map(child => {
+    const newChild = cb(child, node);
+    return mapTreeBreadth(newChild, cb);
+  });
+  return { ...node, children: mappedChildren };
 }
 
-export function isPromise(obj) {
+export function isPromise(obj: any): boolean {
   return obj && typeof obj.then === "function";
 }
 
-export function isString(obj) {
+export function isString(obj: any): boolean {
   return typeof obj === "string";
 }
 
-export function isObject(obj) {
+export function isObject(obj: any): boolean {
   return obj === Object(obj);
 }
 
 // Convert windows filename slashes to forward slashes
-function fixFilenameSlashes(filename) {
+function fixFilenameSlashes(filename: string): string {
   return filename.replace(/\\/g, "/");
 }
 
@@ -200,11 +210,15 @@ export function findParent<T extends { parent: T | null }>(
 }
 
 // Operations on trees
-export function findParentNodeOfType(node, type: Set<string>) {
+export function findParentNodeOfType<
+  T extends { parent: T | null; name: string }
+>(node: T, type: Set<string>): T {
   return findParent(node, n => type.has(n.name));
 }
 
-export function findParentOrCurrentNodeOfType(node, type) {
+export function findParentOrCurrentNodeOfType<
+  T extends { parent: T | null; name: string }
+>(node: T, type: Set<string>): T {
   if (type.has(node.name)) {
     return node;
   }
