@@ -58,25 +58,25 @@ const skinUrls = [
   "https://archive.org/cors/winampskin_Devay/Devay.wal",
 ];
 
-function useJsUpdates(node) {
+function useJsUpdates(makiObject) {
   const [, forceUpdate] = useReducer(x => x + 1, 0);
-  useEffect(() => node.js_listen("js_update", forceUpdate));
+  useEffect(() => makiObject.js_listen("js_update", forceUpdate));
 }
 
-function handleMouseEventDispatch(node, event, eventName) {
+function handleMouseEventDispatch(makiObject, event, eventName) {
   event.stopPropagation();
 
   // In order to properly calculate the x/y coordinates like MAKI does we need
   // to find the container element and calculate based off of that
   const container = Utils.findParentOrCurrentNodeOfType(
-    node,
+    makiObject,
     new Set(["container"])
   );
   const clientX = event.clientX;
   const clientY = event.clientY;
   const x = clientX - (Number(container.attributes.x) || 0);
   const y = clientY - (Number(container.attributes.y) || 0);
-  node.js_trigger(eventName, x, y);
+  makiObject.js_trigger(eventName, x, y);
 
   if (event.nativeEvent.type === "mousedown") {
     // We need to persist the react event so we can access the target
@@ -95,7 +95,7 @@ function handleMouseEventDispatch(node, event, eventName) {
         stopPropagation: ev.stopPropagation.bind(ev),
       };
       handleMouseEventDispatch(
-        node,
+        makiObject,
         fakeEvent,
         eventName === "onLeftButtonDown" ? "onLeftButtonUp" : "onRightButtonUp"
       );
@@ -104,21 +104,21 @@ function handleMouseEventDispatch(node, event, eventName) {
 }
 
 function handleMouseButtonEventDispatch(
-  node,
+  makiObject,
   event,
   leftEventName,
   rightEventName
 ) {
   handleMouseEventDispatch(
-    node,
+    makiObject,
     event,
     event.button === 2 ? rightEventName : leftEventName
   );
 }
 
-function GuiObjectEvents({ node, children }) {
-  const { alpha, ghost } = node.attributes;
-  if (!node.isvisible()) {
+function GuiObjectEvents({ makiObject, children }) {
+  const { alpha, ghost } = makiObject.attributes;
+  if (!makiObject.isvisible()) {
     return null;
   }
 
@@ -126,7 +126,7 @@ function GuiObjectEvents({ node, children }) {
     <div
       onMouseDown={e =>
         handleMouseButtonEventDispatch(
-          node,
+          makiObject,
           e,
           "onLeftButtonDown",
           "onRightButtonDown"
@@ -134,20 +134,20 @@ function GuiObjectEvents({ node, children }) {
       }
       onDoubleClick={e =>
         handleMouseButtonEventDispatch(
-          node,
+          makiObject,
           e,
           "onLeftButtonDblClk",
           "onRightButtonDblClk"
         )
       }
-      onMouseMove={e => handleMouseEventDispatch(node, e, "onMouseMove")}
-      onMouseEnter={e => handleMouseEventDispatch(node, e, "onEnterArea")}
-      onMouseLeave={e => handleMouseEventDispatch(node, e, "onLeaveArea")}
-      onDragEnter={() => node.js_trigger("onDragEnter")}
-      onDragLeave={() => node.js_trigger("onDragLeave")}
-      onDragOver={e => handleMouseEventDispatch(node, e, "onDragOver")}
-      onKeyUp={e => node.js_trigger("onKeyUp", e.keyCode)}
-      onKeyDown={e => node.js_trigger("onKeyDown", e.keyCode)}
+      onMouseMove={e => handleMouseEventDispatch(makiObject, e, "onMouseMove")}
+      onMouseEnter={e => handleMouseEventDispatch(makiObject, e, "onEnterArea")}
+      onMouseLeave={e => handleMouseEventDispatch(makiObject, e, "onLeaveArea")}
+      onDragEnter={() => makiObject.js_trigger("onDragEnter")}
+      onDragLeave={() => makiObject.js_trigger("onDragLeave")}
+      onDragOver={e => handleMouseEventDispatch(makiObject, e, "onDragOver")}
+      onKeyUp={e => makiObject.js_trigger("onKeyUp", e.keyCode)}
+      onKeyDown={e => makiObject.js_trigger("onKeyDown", e.keyCode)}
       onContextMenu={e => {
         e.preventDefault();
         return false;
@@ -162,8 +162,7 @@ function GuiObjectEvents({ node, children }) {
   );
 }
 
-function Container(props) {
-  const { id, node, default_x, default_y, default_visible } = props;
+function Container({ id, makiObject, default_x, default_y, default_visible }) {
   const style = {
     position: "absolute",
   };
@@ -177,21 +176,21 @@ function Container(props) {
     style.display = default_visible ? "block" : "none";
   }
 
-  const layout = node.getcurlayout();
+  const layout = makiObject.getcurlayout();
   if (layout == null) {
     return null;
   }
 
   return (
     <div data-node-type="container" data-node-id={id} style={style}>
-      <XmlNode node={layout} />
+      <Maki makiObject={layout} />
     </div>
   );
 }
 
 function Layout({
   id,
-  node,
+  makiObject,
   js_assets,
   background,
   // desktopalpha,
@@ -222,7 +221,7 @@ function Layout({
     }
 
     return (
-      <GuiObjectEvents node={node}>
+      <GuiObjectEvents makiObject={makiObject}>
         <div
           data-node-type="layout"
           data-node-id={id}
@@ -241,7 +240,7 @@ function Layout({
             position: "absolute",
           }}
         >
-          <XmlChildren node={node} />
+          <MakiChildren makiObject={makiObject} />
         </div>
       </GuiObjectEvents>
     );
@@ -264,7 +263,7 @@ function Layout({
   }
 
   return (
-    <GuiObjectEvents node={node}>
+    <GuiObjectEvents makiObject={makiObject}>
       <div
         data-node-type="layout"
         data-node-id={id}
@@ -274,13 +273,13 @@ function Layout({
           ...params,
         }}
       >
-        <XmlChildren node={node} />
+        <MakiChildren makiObject={makiObject} />
       </div>
     </GuiObjectEvents>
   );
 }
 
-function Layer({ id, node, js_assets, image, x, y }) {
+function Layer({ id, makiObject, js_assets, image, x, y }) {
   if (image == null) {
     console.warn("Got an Layer without an image. Rendering null", id);
     return null;
@@ -313,14 +312,14 @@ function Layer({ id, node, js_assets, image, x, y }) {
     params.backgroundImage = `url(${img.imgUrl}`;
   }
   return (
-    <GuiObjectEvents node={node}>
+    <GuiObjectEvents makiObject={makiObject}>
       <div
         data-node-type="Layer"
         data-node-id={id}
         draggable={false}
         style={{ position: "absolute", ...params }}
       >
-        <XmlChildren node={node} />
+        <MakiChildren makiObject={makiObject} />
       </div>
     </GuiObjectEvents>
   );
@@ -352,7 +351,7 @@ function animatedLayerOffsetAndSize(
 }
 
 function AnimatedLayer({
-  node,
+  makiObject,
   id,
   js_assets,
   x,
@@ -368,7 +367,7 @@ function AnimatedLayer({
     return null;
   }
 
-  const frameNum = node.getcurframe();
+  const frameNum = makiObject.getcurframe();
 
   let style = {};
   if (x !== undefined) {
@@ -393,14 +392,14 @@ function AnimatedLayer({
   }
 
   return (
-    <GuiObjectEvents node={node}>
+    <GuiObjectEvents makiObject={makiObject}>
       <div
         data-node-type="AnimatedLayer"
         data-node-id={id}
         draggable={false}
         style={{ position: "absolute", ...style }}
       >
-        <XmlChildren node={node} />
+        <MakiChildren makiObject={makiObject} />
       </div>
     </GuiObjectEvents>
   );
@@ -416,7 +415,7 @@ function Button({
   downImage,
   tooltip,
   ghost,
-  node,
+  makiObject,
 }) {
   const [down, setDown] = React.useState(false);
   // TODO: These seem to be switching too fast
@@ -427,7 +426,7 @@ function Button({
   }
 
   return (
-    <GuiObjectEvents node={node}>
+    <GuiObjectEvents makiObject={makiObject}>
       <div
         data-node-type="button"
         data-node-id={id}
@@ -440,9 +439,9 @@ function Button({
         }}
         onClick={e => {
           if (e.button === 2) {
-            node.js_trigger("onRightClick");
+            makiObject.js_trigger("onRightClick");
           } else {
-            node.js_trigger("onLeftClick");
+            makiObject.js_trigger("onLeftClick");
           }
         }}
         title={tooltip}
@@ -458,14 +457,14 @@ function Button({
           pointerEvents: ghost ? "none" : null,
         }}
       >
-        <XmlChildren node={node} />
+        <MakiChildren makiObject={makiObject} />
       </div>
     </GuiObjectEvents>
   );
 }
 
-function Popupmenu({ id, node, x, y }) {
-  const children = node.commands.map(item => {
+function Popupmenu({ id, makiObject, x, y }) {
+  const children = makiObject.commands.map(item => {
     if (item.id === "seperator") {
       return <li />;
     }
@@ -473,7 +472,7 @@ function Popupmenu({ id, node, x, y }) {
       <li
         key={item.id}
         onClick={() => {
-          node.js_selectCommand(item.id);
+          makiObject.js_selectCommand(item.id);
         }}
       >
         {item.name}
@@ -502,7 +501,7 @@ function ToggleButton(props) {
   return <Button data-node-type="togglebutton" {...props} />;
 }
 
-function Group({ node, id, x, y }) {
+function Group({ makiObject, id, x, y }) {
   const style = {
     position: "absolute",
   };
@@ -513,16 +512,16 @@ function Group({ node, id, x, y }) {
     style.top = Number(y);
   }
   return (
-    <GuiObjectEvents node={node}>
+    <GuiObjectEvents makiObject={makiObject}>
       <div data-node-type="group" data-node-id={id} style={style}>
-        <XmlChildren node={node} />
+        <MakiChildren makiObject={makiObject} />
       </div>
     </GuiObjectEvents>
   );
 }
 
 function Text({
-  node,
+  makiObject,
   id,
   display,
   // ticker,
@@ -561,7 +560,7 @@ function Text({
   // display is actually a keyword that is looked up in some sort of map
   // e.g. songname, time
   const nodeText = display;
-  const js_attributes = node.js_fontLookup(font.toLowerCase());
+  const js_attributes = makiObject.js_fontLookup(font.toLowerCase());
   const fontFamily = js_attributes == null ? null : js_attributes.fontFamily;
   const style = {
     position: "absolute",
@@ -572,7 +571,7 @@ function Text({
   };
 
   return (
-    <GuiObjectEvents node={node}>
+    <GuiObjectEvents makiObject={makiObject}>
       <div
         data-node-type="Text"
         data-node-id={id}
@@ -580,7 +579,7 @@ function Text({
         style={style}
       >
         {nodeText}
-        <XmlChildren node={node} />
+        <MakiChildren makiObject={makiObject} />
       </div>
     </GuiObjectEvents>
   );
@@ -598,23 +597,27 @@ const NODE_NAME_TO_COMPONENT = {
   animatedlayer: AnimatedLayer,
 };
 
-function DummyComponent({ node }) {
-  console.warn("Unknown node type", node.name);
-  return <XmlChildren node={node} />;
+function DummyComponent({ makiObject }) {
+  console.warn("Unknown makiObject type", makiObject.name);
+  return <MakiChildren makiObject={makiObject} />;
 }
 
-function XmlChildren({ node }) {
-  if (node.children == null) {
+function MakiChildren({ makiObject }) {
+  if (makiObject.children == null) {
     return null;
   }
-  return node.children.map((childNode, i) => (
-    <XmlNode key={i} node={childNode} {...childNode.attributes} />
+  return makiObject.children.map((childMakiObject, i) => (
+    <Maki
+      key={i}
+      makiObject={childMakiObject}
+      {...childMakiObject.attributes}
+    />
   ));
 }
 
 // Given a skin XML node, pick which component to use, and render it.
-const XmlNode = React.memo(({ node }) => {
-  let { name } = node;
+const Maki = React.memo(({ makiObject }) => {
+  let { name } = makiObject;
   if (name == null) {
     // name is null is likely a comment
     return null;
@@ -631,9 +634,9 @@ const XmlNode = React.memo(({ node }) => {
     // these nodes dont need to be rendered
     return null;
   }
-  useJsUpdates(node);
+  useJsUpdates(makiObject);
   const Component = NODE_NAME_TO_COMPONENT[name] || DummyComponent;
-  return <Component node={node} {...node.attributes} />;
+  return <Component makiObject={makiObject} {...makiObject.attributes} />;
 });
 
 function getSkinUrlFromQueryParams() {
@@ -673,7 +676,7 @@ function Modern() {
           dispatch(Actions.gotSkinBlob(e.dataTransfer.files[0], store));
         }}
       >
-        <XmlNode node={root} />
+        <Maki makiObject={root} />
       </DropTarget>
       <select
         style={{ position: "absolute", bottom: 0 }}
