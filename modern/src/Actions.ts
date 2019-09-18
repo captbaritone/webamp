@@ -40,9 +40,12 @@ export function gotSkinZip(zip: JSZip, store: ModernStore) {
       await Utils.readXml(zip, "skin.xml"),
       zip
     );
-    const xmlTree = Utils.mapTree(rawXmlTree, (node: XmlNode) => {
-      return { ...node, uid: Utils.getId() };
-    });
+    const xmlTree = Utils.mapTreeBreadth(
+      rawXmlTree,
+      (node: XmlNode, parent: XmlNode) => {
+        return { ...node, uid: Utils.getId(), parent };
+      }
+    );
 
     dispatch(setXmlTree(xmlTree));
 
