@@ -1,12 +1,26 @@
 import MakiObject from "./MakiObject";
 import { unimplementedWarning } from "../utils";
+import { XmlNode } from "../types";
+
+type Command =
+  | {
+      name: string;
+      id: number;
+      checked: boolean;
+      disabled: boolean;
+    }
+  | {
+      name: "separator";
+    };
 
 class PopupMenu extends MakiObject {
-  constructor(node, parent) {
-    super(node, parent);
+  _commands: Command[];
+  js_selectCommand: (id: number) => void;
+  constructor(node: XmlNode, parent: MakiObject, annotations: Object) {
+    super(node, parent, annotations);
 
-    this.commands = [];
-    this.js_selectCommand = null;
+    this._commands = [];
+    this.js_selectCommand = (id: number) => {};
   }
 
   /**
@@ -25,7 +39,7 @@ class PopupMenu extends MakiObject {
     checked: boolean,
     disabled: boolean
   ): void {
-    this.commands.push({
+    this._commands.push({
       name: txt,
       id,
       checked,
@@ -34,21 +48,21 @@ class PopupMenu extends MakiObject {
   }
 
   addseparator(): void {
-    this.commands.push({ id: "separator" });
+    this._commands.push({ id: "separator" });
   }
 
   checkcommand(id: number, check: boolean) {
     unimplementedWarning("checkcommand");
   }
 
-  popatmouse() {
+  popatmouse(): Promise<number> {
     this.attributes.x = this.parent.getmouseposx();
     this.attributes.y = this.parent.getmouseposy();
     return new Promise(resolve => {
-      this.js_selectCommand = value => {
+      this.js_selectCommand = id => {
         this.parent.js_removeChild(this);
         this.parent.js_trigger("js_update");
-        resolve(value);
+        resolve(id);
       };
 
       this.parent.js_addChild(this);
@@ -56,7 +70,7 @@ class PopupMenu extends MakiObject {
     });
   }
 
-  addsubmenu(submenu, submenutext: string) {
+  addsubmenu(submenu: PopupMenu, submenutext: string) {
     unimplementedWarning("addsubmenu");
     return;
   }
