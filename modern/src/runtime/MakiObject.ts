@@ -1,12 +1,11 @@
 import Emitter from "../Emitter";
 import * as Utils from "../utils";
-import { ModernStore, XmlNode } from "../types";
+import { XmlNode } from "../types";
 
 class MakiObject {
   _node: XmlNode;
   name: string;
   _uid: number;
-  _store: ModernStore;
   // TODO: This should really just be `string | undefined` and we should handle
   // type conversion differently. Having one type that holds both the pre and
   // post type coerced values is too confusing.
@@ -16,14 +15,8 @@ class MakiObject {
   children: MakiObject[];
   js_annotations: Object;
 
-  constructor(
-    node: XmlNode,
-    parent: MakiObject,
-    annotations: Object = {},
-    store: ModernStore
-  ) {
+  constructor(node: XmlNode, parent: MakiObject, annotations: Object = {}) {
     this._node = node;
-    this._store = store;
     if (node) {
       this._uid = node.uid;
       this.attributes = node.attributes || {};

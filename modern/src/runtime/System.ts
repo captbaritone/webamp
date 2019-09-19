@@ -7,14 +7,17 @@ import {
 } from "../utils";
 import * as Actions from "../Actions";
 import * as Selectors from "../Selectors";
+import { ModernStore } from "../types";
 
 class System extends MakiObject {
   scriptGroup: Group;
   root: MakiObject;
+  _store: ModernStore;
   _privateInt: Map<string, Map<string, number>>;
   _privateString: Map<string, Map<string, string>>;
   constructor(scriptGroup, store) {
-    super(null, null, {}, store);
+    super(null, null, {});
+    this._store = store;
 
     this.scriptGroup = scriptGroup == null ? new Group() : scriptGroup;
     this.root = scriptGroup;

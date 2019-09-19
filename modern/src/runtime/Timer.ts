@@ -6,8 +6,8 @@ class Timer extends MakiObject {
   _animationStartTime: number;
   _animationCancelID: number;
 
-  constructor(node, parent, annotations, store) {
-    super(node, parent, annotations, store);
+  constructor(node, parent, annotations) {
+    super(node, parent, annotations);
 
     this._speed = 200;
     this._animationStartTime = 0;
