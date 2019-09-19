@@ -243,7 +243,7 @@ export function findParentOrCurrentNodeOfType<
 
 export function findDescendantByTypeAndId<
   T extends { children: T[]; name: string; attributes?: { id?: string } }
->(node: T, type: string, id: string): T | null {
+>(node: T, type: string | null, id: string): T | null {
   if (node.children.length === 0) {
     return null;
   }
