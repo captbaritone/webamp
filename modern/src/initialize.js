@@ -61,12 +61,10 @@ function imageAttributesFromNode(node) {
   }
 }
 
-const noop = (node, parent, zip, store) =>
-  new GuiObject(node, parent, undefined, store);
+const noop = (node, parent, zip) => new GuiObject(node, parent, undefined);
 
 const parsers = {
-  groupdef: (node, parent, zip, store) =>
-    new JsGroupDef(node, parent, undefined, store),
+  groupdef: (node, parent, zip) => new JsGroupDef(node, parent, undefined),
   skininfo: noop,
   guiobject: noop,
   version: noop,
@@ -77,49 +75,38 @@ const parsers = {
   email: noop,
   homepage: noop,
   screenshot: noop,
-  container: (node, parent, zip, store) =>
-    new Container(node, parent, undefined, store),
+  container: (node, parent, zip) => new Container(node, parent, undefined),
   scripts: noop,
-  gammaset: (node, parent, zip, store) =>
-    new JsGammaSet(node, parent, undefined, store),
+  gammaset: (node, parent, zip) => new JsGammaSet(node, parent, undefined),
   color: noop,
-  layer: (node, parent, zip, store) =>
-    new Layer(node, parent, undefined, store),
+  layer: (node, parent, zip) => new Layer(node, parent, undefined),
   layoutstatus: noop,
   hideobject: noop,
-  button: (node, parent, zip, store) =>
-    new Button(node, parent, undefined, store),
-  group: (node, parent, zip, store) =>
-    new Group(node, parent, undefined, store),
-  layout: (node, parent, zip, store) =>
-    new Layout(node, parent, undefined, store),
+  button: (node, parent, zip) => new Button(node, parent, undefined),
+  group: (node, parent, zip) => new Group(node, parent, undefined),
+  layout: (node, parent, zip) => new Layout(node, parent, undefined),
   sendparams: noop,
-  elements: (node, parent, zip, store) =>
-    new JsElements(node, parent, undefined, store),
+  elements: (node, parent, zip) => new JsElements(node, parent, undefined),
   bitmap: noop,
-  eqvis: (node, parent, zip, store) =>
-    new EqVis(node, parent, undefined, store),
-  slider: (node, parent, zip, store) =>
-    new Slider(node, parent, undefined, store),
+  eqvis: (node, parent, zip) => new EqVis(node, parent, undefined),
+  slider: (node, parent, zip) => new Slider(node, parent, undefined),
   gammagroup: noop,
-  truetypefont: async (node, parent, zip, store) => {
+  truetypefont: async (node, parent, zip) => {
     const { file } = node.attributes;
     const font = Utils.getCaseInsensitveFile(zip, file);
     const fontBlob = await font.async("blob");
     const fontUrl = await Utils.getUrlFromBlob(fontBlob);
     const fontFamily = `font-${Utils.getId()}-${file.replace(/\./, "_")}`;
     await Utils.loadFont(fontUrl, fontFamily);
-    return new MakiObject(node, parent, { fontFamily }, store);
+    return new MakiObject(node, parent, { fontFamily });
   },
-  component: (node, parent, zip, store) =>
-    new Component(node, parent, undefined, store),
-  text: (node, parent, zip, store) => new Text(node, parent, undefined, store),
-  togglebutton: (node, parent, zip, store) =>
-    new ToggleButton(node, parent, undefined, store),
-  status: (node, parent, zip, store) =>
-    new Status(node, parent, undefined, store),
+  component: (node, parent, zip) => new Component(node, parent, undefined),
+  text: (node, parent, zip) => new Text(node, parent, undefined),
+  togglebutton: (node, parent, zip) =>
+    new ToggleButton(node, parent, undefined),
+  status: (node, parent, zip) => new Status(node, parent, undefined),
   bitmapfont: noop,
-  vis: (node, parent, zip, store) => new Vis(node, parent, undefined, store),
+  vis: (node, parent, zip) => new Vis(node, parent, undefined),
   "wasabi:titlebar": noop,
   "colorthemes:list": noop,
   "wasabi:standardframe:status": noop,
@@ -131,8 +118,8 @@ const parsers = {
   elementalias: noop,
   grid: noop,
   rect: noop,
-  animatedlayer: (node, parent, zip, store) =>
-    new AnimatedLayer(node, parent, undefined, store),
+  animatedlayer: (node, parent, zip) =>
+    new AnimatedLayer(node, parent, undefined),
   nstatesbutton: noop,
   songticker: noop,
   menu: noop,
@@ -141,7 +128,7 @@ const parsers = {
   script: noop,
 };
 
-async function parseChildren(node, children, zip, store) {
+async function parseChildren(node, children, zip) {
   if (node.type === "comment") {
     return;
   }
@@ -157,7 +144,7 @@ async function parseChildren(node, children, zip, store) {
       }
       if (child.type === "text") {
         // TODO: Handle text
-        return new MakiObject({ ...child }, node, undefined, store);
+        return new MakiObject({ ...child }, node, undefined);
       }
       if (child.name == null) {
         console.error(child);
@@ -174,10 +161,10 @@ async function parseChildren(node, children, zip, store) {
         console.warn(`Missing parser in initialize for ${childName}`);
         childParser = noop;
       }
-      const parsedChild = await childParser(child, node, zip, store);
+      const parsedChild = await childParser(child, node, zip);
       child.maki = parsedChild;
       if (child.children != null && child.children.length > 0) {
-        await parseChildren(parsedChild, child.children, zip, store);
+        await parseChildren(parsedChild, child.children, zip);
       }
       return parsedChild;
     })
@@ -265,11 +252,11 @@ async function applyGroupDefs(root) {
   });
 }
 
-async function initialize(zip, skinXml, store) {
+async function initialize(zip, skinXml) {
   const xmlRoot = skinXml.children[0];
   await applyImageLookups(xmlRoot, zip);
-  const root = new JsWinampAbstractionLayer(xmlRoot, null, undefined, store);
-  await parseChildren(root, xmlRoot.children, zip, store);
+  const root = new JsWinampAbstractionLayer(xmlRoot, null, undefined);
+  await parseChildren(root, xmlRoot.children, zip);
   await applyGroupDefs(root);
   return root;
 }

@@ -6,8 +6,8 @@ class AnimatedLayer extends Layer {
   _frameNum: number;
   _animationStartTime: number;
 
-  constructor(node, parent, annotations, store) {
-    super(node, parent, annotations, store);
+  constructor(node, parent, annotations) {
+    super(node, parent, annotations);
 
     this._setAttributeDefaults();
     this._convertAttributeTypes();
