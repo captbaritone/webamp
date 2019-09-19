@@ -1,12 +1,13 @@
 import MakiObject from "./MakiObject";
 import { unimplementedWarning } from "../utils";
+import { XmlNode } from "../types";
 
 class Timer extends MakiObject {
   _speed: number;
   _animationStartTime: number;
-  _animationCancelID: number;
+  _animationCancelID: number | null;
 
-  constructor(node, parent, annotations) {
+  constructor(node: XmlNode, parent: MakiObject, annotations: Object = {}) {
     super(node, parent, annotations);
 
     this._speed = 200;
@@ -44,6 +45,10 @@ class Timer extends MakiObject {
   }
 
   stop(): void {
+    if (this._animationCancelID == null) {
+      return;
+    }
+
     window.cancelAnimationFrame(this._animationCancelID);
     this._animationCancelID = null;
   }
