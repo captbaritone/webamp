@@ -37,7 +37,7 @@ export default class Emitter {
 
   dispose() {
     // Note: This will cause any future trigger or hook to cause a runtime error.
-    this._hooks = null;
-    this._globalHooks = null;
+    this._hooks = {};
+    this._globalHooks = [];
   }
 }

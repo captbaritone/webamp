@@ -1,6 +1,7 @@
 import JSZip from "jszip";
 import { xml2js } from "xml-js";
 import { XmlNode } from "./types";
+import MakiObject from "./runtime/MakiObject";
 
 let nextId = 0;
 export function getId(): number {
@@ -14,7 +15,7 @@ export function getId(): number {
 export function mapTreeBreadth<T extends { children: T[] }>(
   node: T,
   cb: (node: T, parent: T) => T
-) {
+): T {
   const children = node.children || [];
   const mappedChildren = children.map(child => {
     const newChild = cb(child, node);
@@ -49,7 +50,10 @@ export function getCaseInsensitveFile(
 }
 
 // Read a
-export async function readXml(zip: JSZip, filepath: string): Promise<XmlNode> {
+export async function readXml(
+  zip: JSZip,
+  filepath: string
+): Promise<XmlNode | null> {
   const file = await getCaseInsensitveFile(zip, filepath);
   if (file == null) {
     return null;
@@ -65,7 +69,7 @@ export async function readXml(zip: JSZip, filepath: string): Promise<XmlNode> {
 export async function readUint8array(
   zip: JSZip,
   filepath: string
-): Promise<Uint8Array> {
+): Promise<Uint8Array | null> {
   const file = await getCaseInsensitveFile(zip, filepath);
   if (file == null) {
     return null;
@@ -75,8 +79,8 @@ export async function readUint8array(
 
 // I any of the values in `arr` are themselves arrays, interpolate the nested
 // array into the top level array.
-function flatten<T>(arr: Array<T | Array<T>>): Array<T> {
-  const newArr = [];
+function flatten<T>(arr: Array<T | T[]>): T[] {
+  const newArr: T[] = [];
   arr.forEach(item => {
     if (Array.isArray(item)) {
       newArr.push(...item);
@@ -92,8 +96,8 @@ function flatten<T>(arr: Array<T | Array<T>>): Array<T> {
 // interpoates the resulting flat array into the top level array of results.
 export async function asyncFlatMap<T, R>(
   arr: Array<T>,
-  mapper: (value: T) => R | Array<T>
-): Promise<Array<R>> {
+  mapper: (value: T) => Promise<T[] | R>
+): Promise<R[]> {
   const mapped = await Promise.all(arr.map(mapper));
   const childPromises = mapped.map(async item => {
     if (Array.isArray(item)) {
@@ -113,7 +117,10 @@ export async function asyncFlatMap<T, R>(
 //
 // Note: The root node will not be transformed by the mapper, since the mapper
 // could potentially return multiple nodes.
-export async function asyncTreeFlatMap(node, mapper) {
+export async function asyncTreeFlatMap<T extends { children: T[] }>(
+  node: T,
+  mapper: (node: T) => Promise<T[] | T>
+): Promise<T> {
   const { children } = node;
   if (children == null) {
     return node;
@@ -122,7 +129,13 @@ export async function asyncTreeFlatMap(node, mapper) {
   const mappedChildren = await asyncFlatMap(children, mapper);
 
   const recursedChildren = await Promise.all(
-    mappedChildren.map(child => asyncTreeFlatMap(child, mapper))
+    mappedChildren.map(child =>
+      asyncTreeFlatMap(
+        // @ts-ignore FixMe
+        child,
+        mapper
+      )
+    )
   );
 
   return { ...node, children: recursedChildren };
@@ -136,6 +149,9 @@ export async function inlineIncludes(
 ): Promise<XmlNode> {
   return asyncTreeFlatMap(xml, async node => {
     if (node.name !== "include") {
+      return node;
+    }
+    if (node.attributes.file == null) {
       return node;
     }
     // TODO: Normalize file names so that they hit the same cache
@@ -160,7 +176,7 @@ export function unimplementedWarning(name: string): void {
 export function findPathToNode<T extends { children: T[] }>(
   node: T,
   predicate: (candidate: T) => boolean
-): number[] {
+): number[] | null {
   if (predicate(node)) {
     return [];
   }
@@ -179,7 +195,7 @@ export function findPathToNode<T extends { children: T[] }>(
 // Bredth-first search in a tree
 export function findInTree<T extends { children: T[] }>(
   node: T,
-  predicate
+  predicate: (node: T) => boolean
 ): T | null {
   if (predicate(node)) {
     return node;
@@ -212,20 +228,22 @@ export function findParent<T extends { parent: T | null }>(
 // Operations on trees
 export function findParentNodeOfType<
   T extends { parent: T | null; name: string }
->(node: T, type: Set<string>): T {
+>(node: T, type: Set<string>): T | null {
   return findParent(node, n => type.has(n.name));
 }
 
 export function findParentOrCurrentNodeOfType<
   T extends { parent: T | null; name: string }
->(node: T, type: Set<string>): T {
+>(node: T, type: Set<string>): T | null {
   if (type.has(node.name)) {
     return node;
   }
   return findParentNodeOfType(node, type);
 }
 
-export function findDescendantByTypeAndId(node, type, id) {
+export function findDescendantByTypeAndId<
+  T extends { children: T[]; name: string; attributes?: { id?: string } }
+>(node: T, type: string, id: string): T | null {
   if (node.children.length === 0) {
     return null;
   }
@@ -235,6 +253,7 @@ export function findDescendantByTypeAndId(node, type, id) {
     const child = node.children[i];
     if (
       (!type || child.name === type) &&
+      child.attributes &&
       (child.attributes.id !== undefined &&
         child.attributes.id.toLowerCase() === lowerCaseId)
     ) {
@@ -253,14 +272,22 @@ export function findDescendantByTypeAndId(node, type, id) {
   return null;
 }
 
-function findDirectDescendantById(node, id) {
+function findDirectDescendantById<
+  T extends { children: T[]; attributes?: { id?: string } }
+>(node: T, id: string): T | undefined {
   const lowerCaseId = id.toLowerCase();
-  return node.children.find(
-    item => item.attributes && item.attributes.id.toLowerCase() === lowerCaseId
+  return node.children.find(item =>
+    Boolean(
+      item.attributes &&
+        item.attributes.id &&
+        item.attributes.id.toLowerCase() === lowerCaseId
+    )
   );
 }
 
-function* iterateLexicalScope(node) {
+function* iterateLexicalScope<
+  T extends { children: T[]; parent: T | undefined }
+>(node: T): IterableIterator<T> {
   let currentNode = node;
   while (currentNode.parent) {
     const { parent } = currentNode;
@@ -277,7 +304,10 @@ function* iterateLexicalScope(node) {
 }
 
 // Search up the tree for a node that is in `node`'s lexical that matches `predicate`.
-function findInLexicalScope(node, predicate) {
+function findInLexicalScope<T extends { children: T[]; parent: T | undefined }>(
+  node: T,
+  predicate: (node: T) => boolean
+): T | null {
   for (const child of iterateLexicalScope(node)) {
     if (predicate(child)) {
       return child;
@@ -288,7 +318,10 @@ function findInLexicalScope(node, predicate) {
 
 // Search up the tree for <Elements> nodes that are in node's lexical scope.
 // return the first child of an <Elements> that matches id
-export function findElementById(node, id) {
+export function findElementById(
+  node: MakiObject,
+  id: string
+): MakiObject | null {
   for (const child of iterateLexicalScope(node)) {
     if (child.getclassname && child.getclassname() === "Elements") {
       const element = findDirectDescendantById(child, id);
@@ -301,11 +334,15 @@ export function findElementById(node, id) {
 }
 
 // Search up the tree for a <GroupDef> node that is in node's lexical scope and matches id.
-export function findGroupDefById(node, id) {
+export function findGroupDefById(
+  node: MakiObject,
+  id: String
+): MakiObject | null {
   return findInLexicalScope(node, child => {
     return (
       child.getclassname &&
       child.getclassname() === "GroupDef" &&
+      // @ts-ignore We don't have good typing for attributes
       child.attributes.id === id
     );
   });
@@ -316,7 +353,11 @@ export function findGroupDefById(node, id) {
 // node first, in that case we didn't find the element
 // TODO: this might be overly generous, including some definitions that
 // shouldn't be accessible. But it's working for now :-X
-export function findXmlElementById(node, id, root) {
+export function findXmlElementById(
+  node: XmlNode,
+  id: string,
+  root: XmlNode
+): XmlNode | null {
   if (root.uid === node.uid) {
     // Search ends if we find the node that initiated the search, since it means we weren't able to
     // find the match in its scope
@@ -342,6 +383,7 @@ export function findXmlElementById(node, id, root) {
       }
     }
   }
+  return null;
 }
 
 // This is intentionally async since we may want to sub it out for an async
@@ -388,7 +430,7 @@ export async function getSizeFromUrl(
 }
 
 let mousePosition = { x: 0, y: 0 };
-function handleMouseMove(e) {
+function handleMouseMove(e: MouseEvent): void {
   mousePosition = { x: e.clientX, y: e.clientY };
 }
 

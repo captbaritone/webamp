@@ -3,9 +3,9 @@ export type MakiTree = any;
 
 export type XmlNode = {
   children: XmlNode[];
-  attributes: Object;
+  attributes: { id?: string; file?: string };
   name: string;
-  uid: number;
+  uid: number; // TODO: They don't start with these. Do we need types for each stage?
 };
 
 // What is a tree, but a single root node?
