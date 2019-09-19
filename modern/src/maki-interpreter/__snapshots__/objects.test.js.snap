@@ -192,12 +192,6 @@ Layout.beforeredock
 Layout.redock
 Layout.istransparencysafe
 Layout.islayoutanimationsafe
-List.additem
-List.removeitem
-List.enumitem
-List.finditem
-List.getnumitems
-List.removeall
 Layer.setregion
 Layer.setregionfrommap
 Layer.fx_oninit
