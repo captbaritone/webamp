@@ -41,6 +41,10 @@ const TYPE_MAP = {
     typeScriptName: "TSNumberKeyword",
     stringRepresentation: "number",
   },
+  any: {
+    typeScriptName: "TSAnyKeyword",
+    stringRepresentation: "any",
+  },
 };
 
 module.exports = {

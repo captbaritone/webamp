@@ -1,7 +1,13 @@
 import MakiObject from "./MakiObject";
-import { unimplementedWarning } from "../utils";
 
 class List extends MakiObject {
+  _list: Array<any>;
+
+  constructor(node, parent, annotations, store) {
+    super(node, parent, annotations, store);
+    this._list = [];
+  }
+
   /**
    * getclassname()
    *
@@ -12,34 +18,28 @@ class List extends MakiObject {
     return "List";
   }
 
-  additem(_object) {
-    unimplementedWarning("additem");
-    return;
+  additem(object: any): void {
+    this._list.push(object);
   }
 
-  removeitem(pos: number) {
-    unimplementedWarning("removeitem");
-    return;
+  removeitem(pos: number): void {
+    this._list.splice(pos, 1);
   }
 
-  enumitem(pos: number) {
-    unimplementedWarning("enumitem");
-    return;
+  enumitem(pos: number): any {
+    return this._list[pos];
   }
 
-  finditem(_object) {
-    unimplementedWarning("finditem");
-    return;
+  finditem(obj: any): number {
+    return this._list.indexOf(obj);
   }
 
-  getnumitems() {
-    unimplementedWarning("getnumitems");
-    return;
+  getnumitems(): number {
+    return this._list.length;
   }
 
-  removeall() {
-    unimplementedWarning("removeall");
-    return;
+  removeall(): void {
+    this._list = [];
   }
 }
 
