@@ -1,8 +1,9 @@
 import Emitter from "../Emitter";
 import * as Utils from "../utils";
-import { ModernStore, ResolvedXmlNode } from "../types";
+import { ModernStore, XmlNode } from "../types";
 
 class MakiObject {
+  _node: XmlNode;
   name: string;
   _uid: number;
   _store: ModernStore;
@@ -13,11 +14,12 @@ class MakiObject {
   js_annotations: Object;
 
   constructor(
-    node: ResolvedXmlNode,
+    node: XmlNode,
     parent: MakiObject,
     annotations: Object = {},
     store: ModernStore
   ) {
+    this._node = node;
     this._store = store;
     if (node) {
       this._uid = node.uid;
@@ -45,6 +47,10 @@ class MakiObject {
 
   js_removeChild(child: MakiObject) {
     this.children = this.children.filter(item => item !== child);
+  }
+
+  js_getChildren(): MakiObject[] {
+    return this.children;
   }
 
   js_delete() {
