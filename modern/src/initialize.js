@@ -175,6 +175,7 @@ async function parseChildren(node, children, zip, store) {
         childParser = noop;
       }
       const parsedChild = await childParser(child, node, zip, store);
+      child.maki = parsedChild;
       if (child.children != null && child.children.length > 0) {
         await parseChildren(parsedChild, child.children, zip, store);
       }

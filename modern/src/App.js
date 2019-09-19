@@ -609,12 +609,9 @@ function DummyComponent({ makiObject }) {
 }
 
 function MakiChildren({ makiObject }) {
-  if (makiObject.children == null) {
-    return null;
-  }
-  return makiObject.children.map((childMakiObject, i) => (
-    <Maki key={i} makiObject={childMakiObject} />
-  ));
+  return makiObject
+    .js_getChildren()
+    .map((childMakiObject, i) => <Maki key={i} makiObject={childMakiObject} />);
 }
 
 // Given a skin XML node, pick which component to use, and render it.
