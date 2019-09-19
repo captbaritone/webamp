@@ -27,7 +27,7 @@ class Group extends GuiObject {
     return;
   }
 
-  oncreateobject(newobj): void {
+  oncreateobject(newobj: GuiObject): void {
     this.js_trigger("onCreateObject", newobj);
   }
 

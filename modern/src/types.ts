@@ -3,7 +3,7 @@ export type MakiTree = any;
 
 export type XmlNode = {
   children: XmlNode[];
-  attributes: { id?: string; file?: string };
+  attributes: { [key: string]: string | undefined };
   name: string;
   uid: number; // TODO: They don't start with these. Do we need types for each stage?
 };

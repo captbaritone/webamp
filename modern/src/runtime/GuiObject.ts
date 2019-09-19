@@ -4,45 +4,71 @@ import {
   findParentNodeOfType,
   unimplementedWarning,
 } from "../utils";
-import * as MakiSelectors from "../MakiSelectors";
+import { ModernStore, XmlNode } from "../types";
+
+type TargetParams = {
+  alpha?: number;
+  x?: number;
+  y?: number;
+  w?: number;
+  h?: number;
+};
+
+type TransitionParams = {
+  alpha?: { start: number; end: number };
+  x?: { start: number; end: number };
+  y?: { start: number; end: number };
+  w?: { start: number; end: number };
+  h?: { start: number; end: number };
+};
+
+type AnimationPropKeys = "alpha" | "x" | "y" | "w" | "h";
+
+const ANIMATION_PROP_KEYS: AnimationPropKeys[] = ["alpha", "x", "y", "w", "h"];
 
 class GuiObject extends MakiObject {
   visible: boolean;
   _targetAnimationSpeed: number;
-  _startParams: Object;
-  _targetParams: Object;
-  _transitionParams: Object;
+  _targetParams: TargetParams;
+  _transitionParams: TransitionParams;
   _targetAnimationStartTime: number;
-  _targetAnimationCancelID: number;
-  constructor(node, parent, annotations, store) {
+  _targetAnimationCancelID: number | null;
+  constructor(
+    node: XmlNode,
+    parent: MakiObject,
+    annotations: Object = {},
+    store: ModernStore
+  ) {
     super(node, parent, annotations, store);
 
-    this._setAttributeDefaults(this.attributes);
-    this._convertAttributeTypes(this.attributes);
+    this._setAttributeDefaults();
+    this._convertAttributeTypes();
 
     this.visible = true;
-    this._startParams = {};
+    this._targetAnimationSpeed = 0;
     this._targetParams = {};
     this._transitionParams = {};
-    this._selectorCache = new Map();
+    this._targetAnimationStartTime = 0;
+    this._targetAnimationCancelID = null;
   }
 
-  _setAttributeDefaults(attributes) {
-    if (attributes.alpha == null) {
-      attributes.alpha = "255";
+  _setAttributeDefaults() {
+    if (this.attributes.alpha == null) {
+      this.attributes.alpha = "255";
     }
-    if (attributes.x == null) {
-      attributes.x = "0";
+    if (this.attributes.x == null) {
+      this.attributes.x = "0";
     }
-    if (attributes.y == null) {
-      attributes.y = "0";
+    if (this.attributes.y == null) {
+      this.attributes.y = "0";
     }
-    if (attributes.ghost == null) {
-      attributes.ghost = "0";
+    if (this.attributes.ghost == null) {
+      this.attributes.ghost = "0";
     }
   }
 
-  _convertAttributeTypes(attributes) {
+  _convertAttributeTypes() {
+    const { attributes } = this;
     if (attributes.alpha != null) {
       attributes.alpha = Number(attributes.alpha);
     }
@@ -57,24 +83,6 @@ class GuiObject extends MakiObject {
     }
   }
 
-  _useUidSelector(selector) {
-    // TODO: use memoize for this
-    if (!this._selectorCache.has(selector)) {
-      this._selectorCache.set(selector, selector(this._uid));
-    }
-    return this._selectorCache.get(selector)(this._store.getState());
-  }
-
-  _compareToUidSelector(value, selector) {
-    const selectorValue = this._useUidSelector(selector);
-    if (selectorValue !== value) {
-      console.error(
-        `Maki state ${value} is out of sync with tree state ${selectorValue}`
-      );
-    }
-    return value;
-  }
-
   /**
    * getclassname()
    *
@@ -86,10 +94,11 @@ class GuiObject extends MakiObject {
   }
 
   findobject(id: string) {
-    return findDescendantByTypeAndId(this, null, id);
+    const self: MakiObject = this;
+    return findDescendantByTypeAndId(self, null, id);
   }
 
-  init(newRoot): void {
+  init(newRoot: MakiObject): void {
     this.parent = newRoot;
     newRoot.js_addChild(this);
   }
@@ -107,8 +116,10 @@ class GuiObject extends MakiObject {
     return this.parent;
   }
 
-  getparentlayout() {
-    return findParentNodeOfType(this, new Set(["layout"]));
+  // TODO: Make this return a `Layout` once `Layout` is typed.
+  getparentlayout(): MakiObject | null {
+    const self: MakiObject = this;
+    return findParentNodeOfType(self, new Set(["layout"]));
   }
 
   show(): void {
@@ -122,10 +133,7 @@ class GuiObject extends MakiObject {
   }
 
   gettop(): number {
-    return this._compareToUidSelector(
-      Number(this.attributes.y) || 0,
-      MakiSelectors.getTop
-    );
+    return Number(this.attributes.y) || 0;
   }
 
   getleft(): number {
@@ -270,17 +278,17 @@ class GuiObject extends MakiObject {
           (currentTime - this._targetAnimationStartTime) /
           this._targetAnimationSpeed;
         if (progress > 1) {
-          this._startParams = {};
           this._targetParams = {};
           this.ontargetreached();
           return;
         }
-        ["alpha", "x", "y", "w", "h"].forEach(attr => {
-          if (this._transitionParams[attr]) {
-            this.attributes[attr] =
-              this._targetParams[attr] * progress +
-              this._startParams[attr] * (1 - progress);
+        ANIMATION_PROP_KEYS.forEach(attr => {
+          const transition = this._transitionParams[attr];
+          if (transition == null) {
+            return;
           }
+          const { start, end } = transition;
+          this.attributes[attr] = end * progress + start * (1 - progress);
         });
         this.js_trigger("js_update");
         this._targetAnimationLoop();
@@ -290,14 +298,18 @@ class GuiObject extends MakiObject {
 
   gototarget(): void {
     this._transitionParams = {};
-    ["alpha", "x", "y", "w", "h"].forEach(attr => {
-      if (this._targetParams[attr] != null) {
-        this._transitionParams[attr] = true;
-        this._startParams[attr] =
-          this.attributes[attr] != null
-            ? this.attributes[attr]
-            : this._targetParams[attr];
+    ANIMATION_PROP_KEYS.forEach(attr => {
+      const target = this._targetParams[attr];
+      if (target == null) {
+        return;
       }
+
+      const attribute = this.attributes[attr];
+
+      this._transitionParams[attr] = {
+        start: attribute != null ? Number(attribute) : target,
+        end: target,
+      };
     });
 
     this._targetAnimationStartTime = window.performance.now();
@@ -309,9 +321,10 @@ class GuiObject extends MakiObject {
   }
 
   canceltarget(): void {
-    window.cancelAnimationFrame(this._targetAnimationCancelID);
+    if (this._targetAnimationCancelID != null) {
+      window.cancelAnimationFrame(this._targetAnimationCancelID);
+    }
     this._targetAnimationCancelID = null;
-    this._startParams = {};
     this._targetParams = {};
   }
 
@@ -339,12 +352,12 @@ class GuiObject extends MakiObject {
     return;
   }
 
-  bringabove(guiobj) {
+  bringabove(guiobj: GuiObject) {
     unimplementedWarning("bringabove");
     return;
   }
 
-  bringbelow(guiobj) {
+  bringbelow(guiobj: GuiObject) {
     unimplementedWarning("bringbelow");
     return;
   }
@@ -529,7 +542,7 @@ class GuiObject extends MakiObject {
     y: number,
     p1: number,
     p2: number,
-    source
+    source: GuiObject
   ): number {
     unimplementedWarning("onaction");
     this.js_trigger("onAction", action, param, x, y, p1, p2, source);

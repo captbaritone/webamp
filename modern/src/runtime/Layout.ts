@@ -1,5 +1,6 @@
 import Group from "./Group";
 import { findParentNodeOfType, unimplementedWarning } from "../utils";
+import MakiObject from "./MakiObject";
 
 class Layout extends Group {
   /**
@@ -13,7 +14,8 @@ class Layout extends Group {
   }
 
   getcontainer() {
-    return findParentNodeOfType(this, new Set(["container"]));
+    const self: MakiObject = this;
+    return findParentNodeOfType(self, new Set(["container"]));
   }
 
   ondock(): void {

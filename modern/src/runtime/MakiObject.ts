@@ -7,7 +7,10 @@ class MakiObject {
   name: string;
   _uid: number;
   _store: ModernStore;
-  attributes: Object;
+  // TODO: This should really just be `string | undefined` and we should handle
+  // type conversion differently. Having one type that holds both the pre and
+  // post type coerced values is too confusing.
+  attributes: { [key: string]: string | number | boolean | undefined };
   parent: MakiObject;
   _emitter: Emitter;
   children: MakiObject[];

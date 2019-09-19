@@ -9,9 +9,9 @@ class AnimatedLayer extends Layer {
   constructor(node, parent, annotations, store) {
     super(node, parent, annotations, store);
 
-    this._setAttributeDefaults(this.attributes);
-    this._convertAttributeTypes(this.attributes);
-    this._initializeStartAndEnd(this.attributes);
+    this._setAttributeDefaults();
+    this._convertAttributeTypes();
+    this._initializeStartAndEnd();
 
     this._playing = this.attributes.autoplay;
     this._frameNum = this.attributes.start || 0;
@@ -20,7 +20,8 @@ class AnimatedLayer extends Layer {
     this._setupAnimationLoop();
   }
 
-  _setAttributeDefaults(attributes: Object): void {
+  _setAttributeDefaults(): void {
+    const { attributes } = this;
     if (attributes.autoplay == null) {
       attributes.autoplay = "0";
     }
@@ -32,7 +33,8 @@ class AnimatedLayer extends Layer {
     }
   }
 
-  _convertAttributeTypes(attributes: Object): void {
+  _convertAttributeTypes(): void {
+    const { attributes } = this;
     if (attributes.autoplay != null) {
       attributes.autoplay = !!Number(attributes.autoplay);
     }
@@ -50,7 +52,8 @@ class AnimatedLayer extends Layer {
     }
   }
 
-  _initializeStartAndEnd(attributes: Object): void {
+  _initializeStartAndEnd(): void {
+    const { attributes } = this;
     if (attributes.start != null && attributes.end != null) {
       return;
     }
