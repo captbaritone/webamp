@@ -12,6 +12,13 @@
     "noEmit": true,
     "pretty": true
   },
-  "include": ["js/**/*.js", "js/**/*.ts", "js/**/*.tsx"],
+  "include": [
+    "js/**/*.js",
+    "js/**/*.ts",
+    "js/**/*.tsx",
+    "modern/src/utils.ts",
+    "modern/src/Emitter.ts",
+    "modern/src/runtime/MakiObject.ts"
+  ],
   "exclude": ["node_modules", "**/*.spec.ts", "demo/built"]
 }

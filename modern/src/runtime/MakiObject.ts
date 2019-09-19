@@ -58,15 +58,15 @@ class MakiObject {
     this.parent.js_trigger("js_update");
   }
 
-  js_trigger(eventName, ...args) {
+  js_trigger(eventName: string, ...args: any[]): void {
     this._emitter.trigger(eventName.toLowerCase(), ...args);
   }
 
-  js_listen(eventName, cb) {
+  js_listen(eventName: string, cb: (...args: any[]) => void) {
     return this._emitter.listen(eventName, cb);
   }
 
-  js_listenToAll(cb) {
+  js_listenToAll(cb: (eventName: string, ...args: any[]) => void) {
     return this._emitter.listenToAll(cb);
   }
 
