@@ -21,7 +21,8 @@
     "modern/src/runtime/MakiObject.ts",
     "modern/src/runtime/GuiObject.ts",
     "modern/src/runtime/Layout.ts",
-    "modern/src/runtime/Group.ts"
+    "modern/src/runtime/Group.ts",
+    "modern/src/runtime/Timer.ts"
   ],
   "exclude": ["node_modules", "**/*.spec.ts", "demo/built"]
 }
