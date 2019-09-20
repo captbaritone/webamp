@@ -22,7 +22,9 @@
     "modern/src/runtime/GuiObject.ts",
     "modern/src/runtime/Layout.ts",
     "modern/src/runtime/Group.ts",
-    "modern/src/runtime/Timer.ts"
+    "modern/src/runtime/Timer.ts",
+    "modern/src/runtime/Config.ts",
+    "modern/src/runtime/ConfigItem.ts"
   ],
   "exclude": ["node_modules", "**/*.spec.ts", "demo/built"]
 }
