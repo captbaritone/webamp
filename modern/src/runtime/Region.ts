@@ -1,5 +1,6 @@
 import MakiObject from "./MakiObject";
 import { unimplementedWarning } from "../utils";
+import MakiMap from "./Map";
 
 class Region extends MakiObject {
   /**
@@ -12,7 +13,7 @@ class Region extends MakiObject {
     return "Region";
   }
 
-  loadfrommap(regionmap, threshold: number, reversed: boolean) {
+  loadfrommap(regionmap: MakiMap, threshold: number, reversed: boolean) {
     unimplementedWarning("loadFromMap");
   }
 
@@ -20,12 +21,12 @@ class Region extends MakiObject {
     unimplementedWarning("offset");
   }
 
-  add(reg) {
+  add(reg: Region) {
     unimplementedWarning("add");
     return;
   }
 
-  sub(reg) {
+  sub(reg: Region) {
     unimplementedWarning("sub");
     return;
   }
@@ -35,7 +36,7 @@ class Region extends MakiObject {
     return;
   }
 
-  copy(reg) {
+  copy(reg: Region) {
     unimplementedWarning("copy");
     return;
   }

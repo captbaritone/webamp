@@ -24,7 +24,12 @@
     "modern/src/runtime/Group.ts",
     "modern/src/runtime/Timer.ts",
     "modern/src/runtime/Config.ts",
-    "modern/src/runtime/ConfigItem.ts"
+    "modern/src/runtime/ConfigItem.ts",
+    "modern/src/runtime/Component.ts",
+    "modern/src/runtime/Browser.ts",
+    "modern/src/runtime/Wac.ts",
+    "modern/src/runtime/Map.ts",
+    "modern/src/runtime/Region.ts"
   ],
   "exclude": ["node_modules", "**/*.spec.ts", "demo/built"]
 }
