@@ -1,10 +1,12 @@
 import MakiObject from "./MakiObject";
 import { findDescendantByTypeAndId, unimplementedWarning } from "../utils";
+import { XmlNode } from "../types";
+import Layout from "./Layout";
 
 class Container extends MakiObject {
   visible: boolean;
-  constructor(node, parent) {
-    super(node, parent);
+  constructor(node: XmlNode, parent: MakiObject, annotations: Object = {}) {
+    super(node, parent, annotations);
 
     this.visible = true;
   }
@@ -35,22 +37,23 @@ class Container extends MakiObject {
   }
 
   getlayout(id: string) {
-    return findDescendantByTypeAndId(this, "layout", id);
+    const self: MakiObject = this;
+    return findDescendantByTypeAndId(self, "layout", id);
   }
 
-  onswitchtolayout(newlayout): void {
+  onswitchtolayout(newlayout: Layout): void {
     this.js_trigger("onSwitchToLayout", newlayout);
   }
 
-  onbeforeswitchtolayout(oldlayout, newlayout): void {
+  onbeforeswitchtolayout(oldlayout: Layout, newlayout: Layout): void {
     this.js_trigger("onBeforeSwitchToLayout", oldlayout, newlayout);
   }
 
-  onhidelayout(_layout): void {
+  onhidelayout(_layout: Layout): void {
     this.js_trigger("onHideLayout", _layout);
   }
 
-  onshowlayout(_layout): void {
+  onshowlayout(_layout: Layout): void {
     this.js_trigger("onShowLayout", _layout);
   }
 

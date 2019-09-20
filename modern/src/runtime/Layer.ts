@@ -1,5 +1,7 @@
 import GuiObject from "./GuiObject";
 import { unimplementedWarning } from "../utils";
+import Region from "./Region";
+import MakiMap from "./Map";
 
 class Layer extends GuiObject {
   /**
@@ -12,11 +14,11 @@ class Layer extends GuiObject {
     return "Layer";
   }
 
-  setregion(reg) {
+  setregion(reg: Region) {
     unimplementedWarning("setregion");
   }
 
-  setregionfrommap(regionmap, threshold: number, reverse: boolean) {
+  setregionfrommap(regionmap: MakiMap, threshold: number, reverse: boolean) {
     unimplementedWarning("setregion");
   }
 

@@ -40,7 +40,12 @@
     "modern/src/runtime/GroupList.ts",
     "modern/src/runtime/GuiList.ts",
     "modern/src/runtime/List.ts",
-    "modern/src/runtime/MouseRedir.ts"
+    "modern/src/runtime/MouseRedir.ts",
+    "modern/src/runtime/Layer.ts",
+    "modern/src/runtime/Container.ts"
+    // "modern/src/runtime/PopMenu.ts",
+    // "modern/src/runtime/AnimationLayer.ts",
+    // "modern/src/runtime/System.ts"
   ],
   "exclude": ["node_modules", "**/*.spec.ts", "demo/built"]
 }
