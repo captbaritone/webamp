@@ -1,12 +1,14 @@
 import Layer from "./Layer";
 import { unimplementedWarning } from "../utils";
+import { XmlNode } from "../types";
+import MakiObject from "./MakiObject";
 
 class AnimatedLayer extends Layer {
   _playing: boolean;
   _frameNum: number;
   _animationStartTime: number;
 
-  constructor(node, parent, annotations) {
+  constructor(node: XmlNode, parent: MakiObject, annotations: Object = {}) {
     super(node, parent, annotations);
 
     this._setAttributeDefaults();
