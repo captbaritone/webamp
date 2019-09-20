@@ -8,6 +8,9 @@ import {
 import * as Actions from "../Actions";
 import * as Selectors from "../Selectors";
 import { ModernStore } from "../types";
+import Layout from "./Layout";
+import { Context } from "react";
+import GuiObject from "./GuiObject";
 
 class System extends MakiObject {
   scriptGroup: Group;
@@ -15,7 +18,7 @@ class System extends MakiObject {
   _store: ModernStore;
   _privateInt: Map<string, Map<string, number>>;
   _privateString: Map<string, Map<string, string>>;
-  constructor(scriptGroup, store) {
+  constructor(scriptGroup, store: ModernStore) {
     super(null, null, {});
     this._store = store;
 
@@ -124,7 +127,7 @@ class System extends MakiObject {
     if (!this._privateInt.has(section)) {
       return defvalue;
     }
-    this._privateInt.get(section).get(item);
+    return this._privateInt.get(section).get(item);
   }
 
   // I think `defvalue` here is a typo that we inherited from std.mi. It should just be `value`.
@@ -132,6 +135,7 @@ class System extends MakiObject {
     if (!this._privateInt.has(section)) {
       this._privateInt.set(section, new Map([[item, defvalue]]));
     } else {
+      // @ts-ignore We know the section exists
       this._privateInt.get(section).set(item, defvalue);
     }
   }
@@ -200,15 +204,15 @@ class System extends MakiObject {
     this.js_trigger("onAccelerator", action, section, key);
   }
 
-  oncreatelayout(_layout): void {
+  oncreatelayout(_layout: Layout): void {
     this.js_trigger("onCreateLayout", _layout);
   }
 
-  onshowlayout(_layout): void {
+  onshowlayout(_layout: Layout): void {
     this.js_trigger("onShowLayout", _layout);
   }
 
-  onhidelayout(_layout): void {
+  onhidelayout(_layout: Layout): void {
     this.js_trigger("onHideLayout", _layout);
   }
 
@@ -562,9 +566,8 @@ class System extends MakiObject {
     return encodeURI(url);
   }
 
-  removepath(str: string): string {
+  removepath(str: string) {
     unimplementedWarning("removepath");
-    return;
   }
 
   getpath(str: string) {
@@ -625,6 +628,7 @@ class System extends MakiObject {
     if (!this._privateString.has(section)) {
       this._privateString.set(section, new Map([[item, value]]));
     } else {
+      // @ts-ignore We know the section exists
       this._privateString.get(section).set(item, value);
     }
   }
@@ -633,6 +637,7 @@ class System extends MakiObject {
     if (!this._privateString.has(section)) {
       return defvalue;
     }
+    // @ts-ignore We know the section exists
     this._privateString.get(section).get(item);
   }
 
@@ -761,7 +766,7 @@ class System extends MakiObject {
     return;
   }
 
-  isobjectvalid(o) {
+  isobjectvalid(o: MakiObject) {
     unimplementedWarning("isobjectvalid");
     return;
   }
@@ -822,7 +827,7 @@ class System extends MakiObject {
     return;
   }
 
-  triggeraction(context, actionname: string, actionparam: string) {
+  triggeraction(context: GuiObject, actionname: string, actionparam: string) {
     unimplementedWarning("triggeraction");
     return;
   }
@@ -836,7 +841,7 @@ class System extends MakiObject {
     return;
   }
 
-  hidewindow(hw) {
+  hidewindow(hw: GuiObject) {
     unimplementedWarning("hidewindow");
     return;
   }
@@ -851,7 +856,7 @@ class System extends MakiObject {
     return;
   }
 
-  setatom(atomname: string, object) {
+  setatom(atomname: string, object: MakiObject) {
     unimplementedWarning("setatom");
     return;
   }

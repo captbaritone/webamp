@@ -15,7 +15,7 @@ class AnimatedLayer extends Layer {
     this._convertAttributeTypes();
     this._initializeStartAndEnd();
 
-    this._playing = this.attributes.autoplay;
+    this._playing = Boolean(this.attributes.autoplay);
     this._frameNum = this.attributes.start || 0;
     this._animationStartTime = 0;
 
