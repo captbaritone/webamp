@@ -15,6 +15,9 @@ class Config extends MakiObject {
 
   newitem(item_name: string, item_guid: string) {
     unimplementedWarning("newitem");
+    // @ts-ignore Currently ConfigItem has no XMLNode which is busted, but
+    // should change once we get better machanisms for adding children to a
+    // mutable XML state tree.
     return new ConfigItem(null, this);
   }
 
