@@ -42,6 +42,9 @@ class Wac extends MakiObject {
     return;
   }
 
+  // @ts-ignore This (deprecated) method's signature does not quite match the
+  // same method on MakiObject. This method is not used by any skins as far as
+  // we know, so we'll just ignore the issue for now.
   onnotify(notifstr: string, a: number, b: number): void {
     this.js_trigger("onNotify", notifstr, a, b);
   }

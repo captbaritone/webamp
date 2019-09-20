@@ -1,5 +1,8 @@
 import GuiObject from "./GuiObject";
 import { unimplementedWarning } from "../utils";
+import Wac from "./Wac";
+import MakiMap from "./Map";
+import Region from "./Region";
 
 class Component extends GuiObject {
   /**
@@ -12,11 +15,11 @@ class Component extends GuiObject {
     return "Component";
   }
 
-  ongetwac(wacobj): void {
+  ongetwac(wacobj: Wac): void {
     this.js_trigger("onGetWac", wacobj);
   }
 
-  ongiveupwac(wacobj): void {
+  ongiveupwac(wacobj: Wac): void {
     this.js_trigger("onGiveUpWac", wacobj);
   }
 
@@ -30,12 +33,12 @@ class Component extends GuiObject {
     return;
   }
 
-  setregionfrommap(regionmap, threshold: number, reverse: boolean) {
+  setregionfrommap(regionmap: MakiMap, threshold: number, reverse: boolean) {
     unimplementedWarning("setregionfrommap");
     return;
   }
 
-  setregion(reg) {
+  setregion(reg: Region) {
     unimplementedWarning("setregion");
     return;
   }
