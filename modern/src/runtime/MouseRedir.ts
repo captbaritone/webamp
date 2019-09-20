@@ -1,5 +1,7 @@
 import GuiObject from "./GuiObject";
 import { unimplementedWarning } from "../utils";
+import MakiMap from "./Map";
+import Region from "./Region";
 
 class MouseRedir extends GuiObject {
   /**
@@ -12,7 +14,7 @@ class MouseRedir extends GuiObject {
     return "MouseRedir";
   }
 
-  setredirection(o) {
+  setredirection(o: GuiObject) {
     unimplementedWarning("setredirection");
     return;
   }
@@ -22,12 +24,12 @@ class MouseRedir extends GuiObject {
     return;
   }
 
-  setregionfrommap(regionmap, threshold: number, reverse: boolean) {
+  setregionfrommap(regionmap: MakiMap, threshold: number, reverse: boolean) {
     unimplementedWarning("setregionfrommap");
     return;
   }
 
-  setregion(reg) {
+  setregion(reg: Region) {
     unimplementedWarning("setregion");
     return;
   }
