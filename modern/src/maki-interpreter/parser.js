@@ -288,7 +288,6 @@ function parseComand({ start, makiFile, length }) {
     length > pos + 5 + 4 &&
     makiFile.peekUInt32LE() >= 0xffff0000
   ) {
-    console.log("STACK PROTECTION");
     makiFile.readUInt32LE();
   }
 
