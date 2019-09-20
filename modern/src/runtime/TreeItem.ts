@@ -42,7 +42,7 @@ class TreeItem extends MakiObject {
     return;
   }
 
-  getchildsibling(_item) {
+  getchildsibling(_item: TreeItem) {
     unimplementedWarning("getchildsibling");
     return;
   }
