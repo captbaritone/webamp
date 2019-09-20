@@ -1,5 +1,6 @@
 import GuiObject from "./GuiObject";
 import { unimplementedWarning } from "../utils";
+import TreeItem from "./TreeItem";
 
 class GuiTree extends GuiObject {
   /**
@@ -40,6 +41,7 @@ class GuiTree extends GuiObject {
     return 0;
   }
 
+  // @ts-ignore Type does not match that of parent.
   onchar(c: number): number {
     unimplementedWarning("onchar");
     this.js_trigger("onChar", c);
@@ -47,19 +49,19 @@ class GuiTree extends GuiObject {
     return 0;
   }
 
-  onitemrecvdrop(item): void {
+  onitemrecvdrop(item: TreeItem): void {
     this.js_trigger("onItemRecvDrop", item);
   }
 
-  onlabelchange(item): void {
+  onlabelchange(item: TreeItem): void {
     this.js_trigger("onLabelChange", item);
   }
 
-  onitemselected(item): void {
+  onitemselected(item: TreeItem): void {
     this.js_trigger("onItemSelected", item);
   }
 
-  onitemdeselected(item): void {
+  onitemdeselected(item: TreeItem): void {
     this.js_trigger("onItemDeselected", item);
   }
 
@@ -78,7 +80,7 @@ class GuiTree extends GuiObject {
     return;
   }
 
-  ensureitemvisible(item) {
+  ensureitemvisible(item: TreeItem) {
     unimplementedWarning("ensureitemvisible");
     return;
   }
@@ -93,17 +95,22 @@ class GuiTree extends GuiObject {
     return;
   }
 
-  addtreeitem(item, par, sorted: number, haschildtab: number) {
+  addtreeitem(
+    item: TreeItem,
+    par: TreeItem,
+    sorted: number,
+    haschildtab: number
+  ) {
     unimplementedWarning("addtreeitem");
     return;
   }
 
-  removetreeitem(item) {
+  removetreeitem(item: TreeItem) {
     unimplementedWarning("removetreeitem");
     return;
   }
 
-  movetreeitem(item, newparent) {
+  movetreeitem(item: TreeItem, newparent: TreeItem) {
     unimplementedWarning("movetreeitem");
     return;
   }
@@ -113,47 +120,47 @@ class GuiTree extends GuiObject {
     return;
   }
 
-  expanditem(item) {
+  expanditem(item: TreeItem) {
     unimplementedWarning("expanditem");
     return;
   }
 
-  expanditemdeferred(item) {
+  expanditemdeferred(item: TreeItem) {
     unimplementedWarning("expanditemdeferred");
     return;
   }
 
-  collapseitem(item) {
+  collapseitem(item: TreeItem) {
     unimplementedWarning("collapseitem");
     return;
   }
 
-  collapseitemdeferred(item) {
+  collapseitemdeferred(item: TreeItem) {
     unimplementedWarning("collapseitemdeferred");
     return;
   }
 
-  selectitem(item) {
+  selectitem(item: TreeItem) {
     unimplementedWarning("selectitem");
     return;
   }
 
-  selectitemdeferred(item) {
+  selectitemdeferred(item: TreeItem) {
     unimplementedWarning("selectitemdeferred");
     return;
   }
 
-  delitemdeferred(item) {
+  delitemdeferred(item: TreeItem) {
     unimplementedWarning("delitemdeferred");
     return;
   }
 
-  hiliteitem(item) {
+  hiliteitem(item: TreeItem) {
     unimplementedWarning("hiliteitem");
     return;
   }
 
-  unhiliteitem(item) {
+  unhiliteitem(item: TreeItem) {
     unimplementedWarning("unhiliteitem");
     return;
   }
@@ -168,7 +175,7 @@ class GuiTree extends GuiObject {
     return;
   }
 
-  edititemlabel(item) {
+  edititemlabel(item: TreeItem) {
     unimplementedWarning("edititemlabel");
     return;
   }
@@ -188,7 +195,7 @@ class GuiTree extends GuiObject {
     return;
   }
 
-  getbylabel(item, name: string) {
+  getbylabel(item: TreeItem, name: string) {
     unimplementedWarning("getbylabel");
     return;
   }
@@ -208,7 +215,7 @@ class GuiTree extends GuiObject {
     return;
   }
 
-  getsibling(item) {
+  getsibling(item: TreeItem) {
     unimplementedWarning("getsibling");
     return;
   }
@@ -228,7 +235,7 @@ class GuiTree extends GuiObject {
     return;
   }
 
-  getnumvisiblechilditems(c) {
+  getnumvisiblechilditems(c: TreeItem) {
     unimplementedWarning("getnumvisiblechilditems");
     return;
   }
@@ -243,7 +250,7 @@ class GuiTree extends GuiObject {
     return;
   }
 
-  enumvisiblechilditems(c, n: number) {
+  enumvisiblechilditems(c: TreeItem, n: number) {
     unimplementedWarning("enumvisiblechilditems");
     return;
   }
@@ -253,22 +260,22 @@ class GuiTree extends GuiObject {
     return;
   }
 
-  getitemrectx(item) {
+  getitemrectx(item: TreeItem) {
     unimplementedWarning("getitemrectx");
     return;
   }
 
-  getitemrecty(item) {
+  getitemrecty(item: TreeItem) {
     unimplementedWarning("getitemrecty");
     return;
   }
 
-  getitemrectw(item) {
+  getitemrectw(item: TreeItem) {
     unimplementedWarning("getitemrectw");
     return;
   }
 
-  getitemrecth(item) {
+  getitemrecth(item: TreeItem) {
     unimplementedWarning("getitemrecth");
     return;
   }

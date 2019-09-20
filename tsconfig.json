@@ -29,7 +29,17 @@
     "modern/src/runtime/Browser.ts",
     "modern/src/runtime/Wac.ts",
     "modern/src/runtime/Map.ts",
-    "modern/src/runtime/Region.ts"
+    "modern/src/runtime/Region.ts",
+    "modern/src/runtime/Browser.ts",
+    "modern/src/runtime/Button.ts",
+    "modern/src/runtime/CfgGroup.ts",
+    "modern/src/runtime/CheckBox.ts",
+    "modern/src/runtime/ConfigItem.ts",
+    "modern/src/runtime/ConfigAttribute.ts",
+    "modern/src/runtime/Config.ts",
+    "modern/src/runtime/GroupList.ts",
+    "modern/src/runtime/GuiList.ts",
+    "modern/src/runtime/GuiTree.ts"
   ],
   "exclude": ["node_modules", "**/*.spec.ts", "demo/built"]
 }

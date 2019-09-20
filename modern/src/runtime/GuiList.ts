@@ -27,6 +27,7 @@ class GuiList extends GuiObject {
     return;
   }
 
+  // @ts-ignore Type does not match that of parent.
   onsetvisible(show: number): void {
     this.js_trigger("onSetVisible", show);
   }
