@@ -39,7 +39,8 @@
     "modern/src/runtime/Config.ts",
     "modern/src/runtime/GroupList.ts",
     "modern/src/runtime/GuiList.ts",
-    "modern/src/runtime/GuiTree.ts"
+    "modern/src/runtime/List.ts",
+    "modern/src/runtime/MouseRedir.ts"
   ],
   "exclude": ["node_modules", "**/*.spec.ts", "demo/built"]
 }

@@ -1,10 +1,11 @@
 import MakiObject from "./MakiObject";
+import { XmlNode } from "../types";
 
 class List extends MakiObject {
   _list: Array<any>;
 
-  constructor(node, parent, annotations, store) {
-    super(node, parent, annotations, store);
+  constructor(node: XmlNode, parent: MakiObject, annotations: Object = {}) {
+    super(node, parent, annotations);
     this._list = [];
   }
 
