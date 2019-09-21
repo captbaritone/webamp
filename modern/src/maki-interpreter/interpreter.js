@@ -319,7 +319,7 @@ export function* interpret(start, program, stack = []) {
         const classesOffset = command.arg;
         const Klass = classes[classesOffset];
         const system = variables[0].getValue();
-        const klassInst = new Klass(null, system.scriptGroup);
+        const klassInst = new Klass(null, system.getscriptgroup());
         stack.push(klassInst);
         break;
       }
