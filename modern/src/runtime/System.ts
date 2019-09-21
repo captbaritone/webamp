@@ -13,19 +13,19 @@ import { Context } from "react";
 import GuiObject from "./GuiObject";
 
 class System extends MakiObject {
-  scriptGroup: Group;
-  root: MakiObject;
+  _scriptGroup: Group;
+  _root: MakiObject;
   _store: ModernStore;
   _privateInt: Map<string, Map<string, number>>;
   _privateString: Map<string, Map<string, string>>;
-  constructor(scriptGroup, store: ModernStore) {
-    super(null, null, {});
+  constructor(scriptGroup: Group | null, store: ModernStore) {
+    super(null, null);
     this._store = store;
 
-    this.scriptGroup = scriptGroup == null ? new Group() : scriptGroup;
-    this.root = scriptGroup;
-    while (this.root.parent) {
-      this.root = this.root.parent;
+    this._scriptGroup = scriptGroup == null ? new Group() : scriptGroup;
+    this._root = this._scriptGroup;
+    while (this._root.parent) {
+      this._root = this._root.parent;
     }
     // TODO: Replace these with a DefaultMap once we have one.
     this._privateInt = new Map();
@@ -47,11 +47,11 @@ class System extends MakiObject {
   }
 
   getscriptgroup() {
-    return this.scriptGroup;
+    return this._scriptGroup;
   }
 
   getcontainer(id: string) {
-    return findDescendantByTypeAndId(this.root, "container", id);
+    return findDescendantByTypeAndId(this._root, "container", id);
   }
 
   getruntimeversion() {
@@ -127,6 +127,7 @@ class System extends MakiObject {
     if (!this._privateInt.has(section)) {
       return defvalue;
     }
+    // @ts-ignore We know this section exists
     return this._privateInt.get(section).get(item);
   }
 
@@ -508,7 +509,7 @@ class System extends MakiObject {
   }
 
   // Based on https://stackoverflow.com/questions/11887934/how-to-check-if-the-dst-daylight-saving-time-is-in-effect-and-if-it-is-whats
-  _stdTimezoneOffset(date) {
+  _stdTimezoneOffset(date: Date): number {
     const jan = new Date(date.getFullYear(), 0, 1);
     const jul = new Date(date.getFullYear(), 6, 1);
     return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());

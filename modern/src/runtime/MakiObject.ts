@@ -15,13 +15,24 @@ class MakiObject {
   children: MakiObject[];
   js_annotations: Object;
 
-  constructor(node: XmlNode, parent: MakiObject, annotations: Object = {}) {
-    this._node = node;
+  constructor(
+    node: XmlNode | null,
+    parent: MakiObject,
+    annotations: Object = {}
+  ) {
     if (node) {
+      this._node = node;
       this._uid = node.uid;
       this.attributes = node.attributes || {};
       this.name = node.name;
     } else {
+      // This feels like a hack.
+      this._node = {
+        children: [],
+        attributes: {},
+        uid: Utils.getId(),
+        name: this.getclassname().toLowerCase(),
+      };
       this._uid = Utils.getId();
       // When dynamically creating an object with `new` we have no underlying node
       this.attributes = {};
