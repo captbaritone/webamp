@@ -1,6 +1,7 @@
 import MakiObject from "./MakiObject";
 import { unimplementedWarning } from "../utils";
 import { XmlNode } from "../types";
+import Group from "./Group";
 
 type Command =
   | {
@@ -10,17 +11,30 @@ type Command =
       disabled: boolean;
     }
   | {
-      name: "separator";
+      id: "separator";
     };
 
 class PopupMenu extends MakiObject {
   _commands: Command[];
+  _guiParent: Group;
   js_selectCommand: (id: number) => void;
   constructor(node: XmlNode, parent: MakiObject, annotations: Object) {
     super(node, parent, annotations);
 
+    if (!(parent instanceof Group)) {
+      throw new Error(
+        "Tried to create a PopupMenu with a parent that is not a GuiObject"
+      );
+    }
+    // MakiOjbect.parent is just a MakiObject, but we expect the parent to have GuiObject properties/methods.
+    this._guiParent = parent;
+
     this._commands = [];
     this.js_selectCommand = (id: number) => {};
+  }
+
+  js_getCommands(): Command[] {
+    return this._commands;
   }
 
   /**
@@ -43,12 +57,7 @@ class PopupMenu extends MakiObject {
     checked: boolean,
     disabled: boolean
   ): void {
-    this._commands.push({
-      name: txt,
-      id,
-      checked,
-      disabled,
-    });
+    this._commands.push({ name: txt, id, checked, disabled });
   }
 
   addseparator(): void {
@@ -60,8 +69,8 @@ class PopupMenu extends MakiObject {
   }
 
   popatmouse(): Promise<number> {
-    this.attributes.x = this.parent.getmouseposx();
-    this.attributes.y = this.parent.getmouseposy();
+    this.attributes.x = this._guiParent.getmouseposx();
+    this.attributes.y = this._guiParent.getmouseposy();
     return new Promise(resolve => {
       this.js_selectCommand = id => {
         this.parent.js_removeChild(this);
