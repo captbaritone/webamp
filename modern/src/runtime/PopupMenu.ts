@@ -33,7 +33,7 @@ class PopupMenu extends MakiObject {
     return "PopupMenu";
   }
 
-  js_getCommands () {
+  js_getCommands(): Command[] {
     return this._commands;
   }
 
