@@ -469,7 +469,7 @@ function Button({ makiObject }) {
 function Popupmenu({ makiObject }) {
   const { id, x, y } = makiObject.attributes;
 
-  const children = makiObject.commands.map(item => {
+  const children = makiObject.js_getCommands().map(item => {
     if (item.id === "seperator") {
       return <li />;
     }
