@@ -73,27 +73,30 @@ function setObjectValuesToOne(obj) {
 async function main(parentDir) {
   const errors = [];
   const paths = await findWals(parentDir);
-  const callCounts = await Promise.all(
-    // This script runs out of memory, so we'll limit skins until we
-    // improve the script to be less dumb.
-    paths.slice(0, 500).map(async walPath => {
-      try {
-        return await getCallCountsFromWal(walPath);
-      } catch (e) {
-        const errorLine = e.toString().split("\n")[0];
-        errors.push({ [errorLine]: 1 });
-        // TODO: Investigate these.
-        console.error(`Error getting calld data from ${walPath}`, e);
-        return {};
-      }
-    })
-  );
+  const callCounts = [];
+
+  // getCallCountsFromWal loads the skin into memory, in order to avoid loading
+  // all skins into memory, which leads to us running out or memory, we
+  // purposefully run them syncronously. If we find this is too slow we could do
+  // something like https://www.npmjs.com/package/p-limit
+  for (const walPath of paths.slice(0, 500)) {
+    try {
+      callCounts.push(await getCallCountsFromWal(walPath));
+    } catch (e) {
+      const errorLine = e.toString().split("\n")[0];
+      errors.push({ [errorLine]: 1 });
+      // TODO: Investigate these.
+      console.error(`Error getting calld data from ${walPath}`, e);
+    }
+  }
   const totalCalls = callCounts.reduce(sumCountObjects);
   const foundInSkins = callCounts
     .map(setObjectValuesToOne)
     .reduce(sumCountObjects);
 
-  console.error(JSON.stringify(errors.reduce(sumCountObjects, {}), null, 2));
+  if (errors.length) {
+    console.error(JSON.stringify(errors.reduce(sumCountObjects, {}), null, 2));
+  }
   const result = { totalCalls, foundInSkins };
   console.log(JSON.stringify(result, null, 2));
 }
