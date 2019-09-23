@@ -8,6 +8,7 @@ const { getClass, getFunctionObject, getFormattedId } = require("../objects");
 const glob = require("glob");
 
 const CALL_OPCODES = new Set([24, 112]);
+const SKIN_FILENAME_BLACKLIST = new Set(["Fuzzy_Muffins.wal"]);
 
 function findWals(parentDir) {
   return new Promise((resolve, reject) => {
@@ -79,8 +80,13 @@ async function main(parentDir) {
   // all skins into memory, which leads to us running out or memory, we
   // purposefully run them syncronously. If we find this is too slow we could do
   // something like https://www.npmjs.com/package/p-limit
-  for (const walPath of paths.slice(0, 500)) {
+  for (const walPath of paths) {
     try {
+      const fileName = path.basename(walPath);
+      if (SKIN_FILENAME_BLACKLIST.has(fileName)) {
+        continue;
+      }
+      console.error(`Working on ${walPath}`);
       callCounts.push(await getCallCountsFromWal(walPath));
     } catch (e) {
       const errorLine = e.toString().split("\n")[0];
