@@ -12,7 +12,7 @@ import Container from "./Container";
 import GuiObject from "./GuiObject";
 import MakiObject from "./MakiObject";
 import Wac from "./Wac";
-import Map from "./Map";
+import MakiMap from "./Map";
 import Region from "./Region";
 import Timer from "./Timer";
 import AnimatedLayer from "./AnimatedLayer";
@@ -44,7 +44,7 @@ const runtime = {
   "516549714a510d87b5a6e391e7f33532": MakiObject,
   d6f50f6449b793fa66baf193983eaeef: System,
   "00c074a049a0fea2bbfa8dbe401616db": Wac,
-  "3860366542a7461b3fd875aa73bf6766": Map,
+  "3860366542a7461b3fd875aa73bf6766": MakiMap,
   "3a370c02439f3cbf8886f184361ecf5b": Region,
   "5d0c5bb64b1f7de1168d0fa741199459": Timer,
   "45be95e5419120725fbb5c93fd17f1f9": Group,
