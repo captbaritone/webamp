@@ -1,4 +1,4 @@
-const objects = {
+const std = {
   E90DC47B840D4ae7B02C040BD275F7FC: {
     functions: [
       {
@@ -3924,6 +3924,22 @@ const objects = {
     name: "ConfigAttribute",
   },
 };
+
+const pldir = {
+  "61A7ABAD7D7941f6B1D0E1808603A4F4": {
+    functions: [
+      {
+        parameters: [],
+        name: "showCurrentlyPlayingEntry",
+        result: "",
+      },
+    ],
+    parent: "Object",
+    name: "PlDir",
+  },
+};
+
+const objects = { ...std, ...pldir };
 
 // TODO: We could probably just fix the keys used in this file to already be normalized
 // We might even want to normalize the to match the formatting we get out the file. That could
