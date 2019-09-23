@@ -1,34 +1,19 @@
 # Maki Interpreter
 
-One possible future for Webamp would be to support "modern" skins. The biggest blocker to this is that modern skins suport a custom scripting language called Maki.
+This interpreter is part of our broader experiment in getting "modern" Winamp skins working in the browser. For more information about the project read the [Modern Winamp Skins Readme](../../README.md).
 
-This project is an investigation into how feasible it would be to write a .maki interpreter in JavaScript. Maki is a compiled language, so this interpreter plans to parse/evaluate the compiled byte code. Most of the hard work of figuring out how to write the parser has already been done as part of Ralf Engels' [Maki Decompiler](http://www.rengels.de/maki_decompiler/). The first stage of this project is just to reimplement the parser portion of the decompiler in JavaScript.
+Maki is a compiled language, so this interpreter parses/evaluates the compiled byte code. Most of the hard work of figuring out how to write the parser has already been done as part of Ralf Engels' [Maki Decompiler](http://www.rengels.de/maki_decompiler/).
 
 ## Architecture
 
-- [Parser](./parser.js): Given a Buffer containing the binary data of a `.maki` file, returns a JSON serializeable representation of the script.
-- [Runtime](./runtime/index.js): A JavaScript object mapping class unique ids to JavaScript implementations of those classes.
-- [Virtual Machine](./virtualMachine): Given a parsed `.maki` file, and a command offset, exectues the `.maki` script starting at that command, and returing the value returned from executing that function.
-- [Interpreter](./interpreter): This ties all of the above pieces together. Given a Buffer containing a `.maki` script, a Runtime, and an instance of `System`, it parses the `.maki` file, and then binds the runtime into the parsed `.maki` program. This consists of populating the `System` variable, and binding the class ids defined in the script to the actual JavaScript implementations of those classes. Finally it kicks off execution by triggering `System.onScriptLoaded()`.
-- [Cli](./cli.js): A command line script that, given the path to a `.maki` file will run it through the Interpreter.
-
-## Roadmap
-
-- [x] Parse top level bytecode (constants, types, variables)
-- [ ] Evaluate function code
-- [ ] Implement core of standard library
-- [ ] ???
-
-## Tools
-
-- `yarn parse` Run the parser on the fixture .maki file. This is useful for `console.log` debugging.
-- `yarn decompile` Run the Perl decompiler on the fixture .maki file. This is useful for sticking `print();` statements in the Perl and trying to figure out what exactly it does.
-- `yarn tdd` Run the tests in "watch" mode. Great for [TDD](https://en.wikipedia.org/wiki/Test-driven_development)
-- `yarn interpret` Interpret the test script. Currently this just logs the commands and stack as they get executed.
+- [Parser](./parser.js): Given a Blob containing the binary data of a `.maki` file, returns a JSON serializeable representation of the script.
+- [Runtime](./runtime/index.js): A JavaScript object mapping class' unique ids to JavaScript implementations of those classes.
+- [Interpreter](./interpreter): Given a parsed `.maki` file, and a command offset, exectues the `.maki` script starting at that command, and returing the value returned from executing that function.
+- [Virtual Machine](./virtualMachine): This ties all of the above pieces together. Given a Buffer containing a `.maki` script, a Runtime, and an instance of `System`, it parses the `.maki` file, and then binds the runtime into the parsed `.maki` program. This consists of populating the `System` variable, and binding the class ids defined in the script to the actual JavaScript implementations of those classes. Finally it kicks off execution by triggering `System.onScriptLoaded()`.
 
 ## Structure of a `.maki` file
 
-The bytecode contained in a .maki file takes the following form (I think. I'm still trying to gock it). These are my notes trying to write down what I understand so far.
+The bytecode contained in a .maki file takes the following form (I think. I'm still trying to grock it). These are my notes trying to write down what I understand so far. Most of this was infered from reading the
 
 1. The "magic" string "FG". This might be some kind attempt to validate that this is realy a `.maki` file?
 2. A version number (which we currently ignore)
