@@ -47,12 +47,7 @@ async function postSkin({ md5, title, dest }) {
       if (String(color).length === 6) {
         embed.setColor(`#${color}`);
       } else {
-        logger.warn(
-          "Did not get a safe color from ",
-          averageColor,
-          "got",
-          color
-        );
+        logger.warn("Did not get a safe color", { averageColor, color });
       }
     } catch (e) {
       logger.error("Could not use color", averageColor);
