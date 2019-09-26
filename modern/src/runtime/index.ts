@@ -39,6 +39,7 @@ import CheckBox from "./CheckBox";
 import Config from "./Config";
 import ConfigItem from "./ConfigItem";
 import ConfigAttribute from "./ConfigAttribute";
+import PlDir from "./PlDir";
 
 const runtime = {
   "516549714a510d87b5a6e391e7f33532": MakiObject,
@@ -82,6 +83,7 @@ const runtime = {
   "593dba224976d07771f452b90b405536": Config,
   d40302824d873aab32128d87d5fcad6f: ConfigItem,
   "24dec2834a36b76e249ecc8c736c6bc4": ConfigAttribute,
+  "345beebc49210229b66cbe90d9799aa4": PlDir,
 };
 
 export default runtime;
