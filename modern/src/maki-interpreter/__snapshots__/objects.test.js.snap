@@ -459,5 +459,13 @@ ConfigItem.getguid
 ConfigAttribute.setdata
 ConfigAttribute.getdata
 ConfigAttribute.getparentitem
-ConfigAttribute.getattributename"
+ConfigAttribute.getattributename
+PlDir.showcurrentlyplayingentry
+FeedWatcher.setfeed
+FeedWatcher.releasefeed
+FeedWatcher.onfeedchange
+Form.getcontentsheight
+Form.newcell
+Form.nextrow
+Form.deleteall"
 `;

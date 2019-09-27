@@ -51,7 +51,9 @@ function getCallCountsFromMaki(buffer) {
       const classId = maki.classes[method.typeOffset];
       const klass = getClass(classId);
       if (klass == null) {
-        throw new Error(`Unknown class ID: ${getFormattedId(classId)}`);
+        throw new Error(
+          `Unknown class ID: ${getFormattedId(classId)} aka ${classId} (raw)`
+        );
       }
       const parentClass = getFunctionObject(klass, method.name);
       return `${parentClass.name}.${method.name.toLowerCase()}`;
