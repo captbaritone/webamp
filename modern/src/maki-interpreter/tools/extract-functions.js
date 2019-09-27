@@ -76,10 +76,9 @@ async function main(parentDir) {
   const paths = await findWals(parentDir);
   const callCounts = [];
 
-  // getCallCountsFromWal loads the skin into memory, in order to avoid loading
-  // all skins into memory, which leads to us running out or memory, we
-  // purposefully run them syncronously. If we find this is too slow we could do
-  // something like https://www.npmjs.com/package/p-limit
+  // Originally we moved to doing one skin at a time because we thougth it was
+  // causing memory issues, now we know it's not, but it's still faster to do
+  // one at a time for some reason.  ¯\_(ツ)_/¯
   for (const walPath of paths) {
     try {
       const fileName = path.basename(walPath);
