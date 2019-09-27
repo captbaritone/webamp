@@ -78,6 +78,13 @@ describe("Maki classes", () => {
     });
   }
 
+  test("All classes are implemented", () => {
+    const getName = Klass => Klass.prototype.getclassname();
+    const actualNames = Object.values(runtime).map(getName);
+    const expectedNames = Object.values(objects).map(obj => obj.name);
+    expect(new Set(actualNames)).toEqual(new Set(expectedNames));
+  });
+
   test("have no extra methods", () => {
     // getclassname _should_ be implemented on Object and let each class inherit
     // it. However it's far easier to implement it on each class directly, so

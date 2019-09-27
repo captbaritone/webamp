@@ -39,6 +39,9 @@ import CheckBox from "./CheckBox";
 import Config from "./Config";
 import ConfigItem from "./ConfigItem";
 import ConfigAttribute from "./ConfigAttribute";
+import PlDir from "./PlDir";
+import FeedWatcher from "./FeedWatcher";
+import Form from "./Form";
 
 const runtime = {
   "516549714a510d87b5a6e391e7f33532": MakiObject,
@@ -82,6 +85,22 @@ const runtime = {
   "593dba224976d07771f452b90b405536": Config,
   d40302824d873aab32128d87d5fcad6f: ConfigItem,
   "24dec2834a36b76e249ecc8c736c6bc4": ConfigAttribute,
+  "61a7abad41f67d7980e1d0b1f4a40386": PlDir,
+  a5376fa1411a4e94ec05f6830a5fea5e: FeedWatcher,
+  "2d2d13764cb9be0ae6570cbcf599c9e4": Form,
+  /*
+  // https://github.com/captbaritone/webamp/pull/933#issuecomment-535690208
+
+  a5376fa1411a4e94ec05f6830a5fea5e: FeedWatcher,
+  6dcb05e448c28ac4f04993b14af50e91: AlbumArtLayer,
+  aee235ff498febd1e0d7af961a54d4da: ColorMgr,
+  b8e867b04da72715db53baa5acfefca1: Application,
+  f857beca41f18e197e093e97039f6439: CoreAdmin,
+  2825a91b4245d4885970f1aa7b4388cf: Core,
+  e2bbc14d417384f6ebb2b3bd5055662f: Frame,
+  836f8b2e4db4e0d10a0d7f93d1dcc804: File,
+
+  */
 };
 
 export default runtime;
