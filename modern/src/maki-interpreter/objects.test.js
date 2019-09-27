@@ -1,5 +1,20 @@
-import { getClass } from "./objects";
+import { getClass, getFormattedId, objects } from "./objects";
 import runtime from "../runtime";
+
+test("getFormattedId() is reversable", () => {
+  Object.keys(runtime).forEach(id => {
+    const formattedId = getFormattedId(id);
+    const inverse = getFormattedId(formattedId);
+    expect(inverse).toBe(id);
+  });
+  Object.keys(objects)
+    .map(id => id.toLowerCase())
+    .forEach(id => {
+      const formattedId = getFormattedId(id);
+      const inverse = getFormattedId(formattedId);
+      expect(inverse).toBe(id);
+    });
+});
 
 const getMakiMethods = obj =>
   Object.getOwnPropertyNames(obj).filter(name => {
