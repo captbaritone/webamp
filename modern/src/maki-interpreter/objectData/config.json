@@ -62,7 +62,7 @@
           ],
           [
             "String",
-            "default_val"
+            "default_value"
           ]
         ]
       },
@@ -75,6 +75,11 @@
             "attr_name"
           ]
         ]
+      },
+      {
+        "result": "String",
+        "name": "getName",
+        "parameters": []
       }
     ],
     "name": "ConfigItem"
