@@ -17,7 +17,7 @@ import Slider from "./runtime/Slider";
 import Vis from "./runtime/Vis";
 import EqVis from "./runtime/EqVis";
 import AnimatedLayer from "./runtime/AnimatedLayer";
-import Component from "./runtime/Component";
+import WindowHolder from "./runtime/WindowHolder";
 
 async function prepareMakiImage(node, zip, file) {
   let { h, w } = node.attributes;
@@ -100,7 +100,7 @@ const parsers = {
     await Utils.loadFont(fontUrl, fontFamily);
     return new MakiObject(node, parent, { fontFamily });
   },
-  component: (node, parent) => new Component(node, parent, undefined),
+  component: (node, parent) => new WindowHolder(node, parent, undefined),
   text: (node, parent) => new Text(node, parent, undefined),
   togglebutton: (node, parent) => new ToggleButton(node, parent, undefined),
   status: (node, parent) => new Status(node, parent, undefined),

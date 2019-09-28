@@ -72,7 +72,7 @@ describe("standardframe.maki", () => {
       "GuiObject",
       "Group",
       "Layout",
-      "Component",
+      "WindowHolder",
       "ComponentBucket",
       "Edit",
       "Slider",

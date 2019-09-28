@@ -18,7 +18,7 @@ class Layout extends Group {
     return findParentNodeOfType(self, new Set(["container"]));
   }
 
-  ondock(): void {
+  ondock(side: number): void {
     this.js_trigger("onDock");
   }
 

@@ -544,6 +544,31 @@ class GuiObject extends MakiObject {
     // TODO: not sure what we shuld return
     return 0;
   }
+
+  onmousewheelup(clicked: number, lines: number) {
+    unimplementedWarning("onmousewheelup");
+    return;
+  }
+
+  onmousewheeldown(clicked: number, lines: number) {
+    unimplementedWarning("onmousewheeldown");
+    return;
+  }
+
+  ondragenter() {
+    unimplementedWarning("ondragenter");
+    return;
+  }
+
+  ondragover(x: number, y: number) {
+    unimplementedWarning("ondragover");
+    return;
+  }
+
+  ondragleave() {
+    unimplementedWarning("ondragleave");
+    return;
+  }
 }
 
 export default GuiObject;

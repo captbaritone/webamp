@@ -99,6 +99,21 @@ class Container extends MakiObject {
       return childNode.getclassname() === "Layout";
     });
   }
+
+  getname() {
+    unimplementedWarning("getname");
+    return;
+  }
+
+  getguid() {
+    unimplementedWarning("getguid");
+    return;
+  }
+
+  onaddcontent(wnd, id: string, guid: string) {
+    unimplementedWarning("onaddcontent");
+    return;
+  }
 }
 
 export default Container;

@@ -1,5 +1,6 @@
 import MakiObject from "./MakiObject";
 import { XmlNode } from "../types";
+import * as Utils from "../utils";
 
 class List extends MakiObject {
   _list: Array<any>;
@@ -41,6 +42,11 @@ class List extends MakiObject {
 
   removeall(): void {
     this._list = [];
+  }
+
+  finditem2(_object: any, startItem: number) {
+    Utils.unimplementedWarning("finditem2");
+    return;
   }
 }
 

@@ -10,11 +10,10 @@ import path from "path";
 
 const compilers = path.join(__dirname, "../../../resources/maki_compiler/");
 
-const lib502 = path.join(compilers, "v1.1.13 (Winamp 5.02)/lib/");
 const lib566 = path.join(compilers, "v1.2.0 (Winamp 5.66)/lib/");
 
 test("std.mi", () => {
-  const parsedObjects = parseFile(path.join(lib502, "std.mi"));
+  const parsedObjects = parseFile(path.join(lib566, "std.mi"));
   expect(parsedObjects).toEqual(std);
 });
 
