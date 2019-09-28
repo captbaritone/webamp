@@ -82,8 +82,12 @@ describe("Maki classes", () => {
 
   test("All classes are implemented", () => {
     const getName = Klass => Klass.prototype.getclassname();
-    const actualNames = Object.values(runtime).map(getName);
-    const expectedNames = Object.values(objects).map(obj => obj.name);
+    const actualNames = Object.keys(runtime).map(
+      id => `${getName(runtime[id])} (${id})`
+    );
+    const expectedNames = Object.keys(objects).map(
+      id => `${objects[id].name} (${getFormattedId(id)})`
+    );
     expect(new Set(actualNames)).toEqual(new Set(expectedNames));
   });
 
