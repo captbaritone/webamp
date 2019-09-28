@@ -32,7 +32,8 @@
     "compile-skin": "node scripts/compileSkin.js > css/base-skin.css",
     "skin-info": "unzip -vl skins/base-2.91.wsz",
     "build-presets": "node scripts/parsePresetFiles.js > presets/builtin.json",
-    "analyze-wals": "babel-node --extensions=\".ts,.js,.tsx\" modern/src/maki-interpreter/tools/extract-functions.js > modern/resources/maki-skin-data.json"
+    "analyze-wals": "babel-node --extensions=\".ts,.js,.tsx\" modern/src/maki-interpreter/tools/extract-functions.js > modern/resources/maki-skin-data.json",
+    "extract-object-types": "babel-node --extensions=\".ts,.js,.tsx\" modern/src/maki-interpreter/tools/extract-object-types.js"
   },
   "repository": {
     "type": "git",
