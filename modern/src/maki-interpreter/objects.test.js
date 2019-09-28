@@ -47,7 +47,9 @@ for (const [key, Klass] of Object.entries(runtime)) {
         // For now we have a separate test which checks that we haven't
         // regressed on the methods we've implemented.
         const hasMethodOnSelf = Klass.prototype.hasOwnProperty(methodName);
-        expect(hasMethodOnSelf).toBe(true);
+        test(`Has the method ${obj.name}.${func.name}`, () => {
+          expect(hasMethodOnSelf).toBe(true);
+        });
         if (!hasMethodOnSelf) {
           return;
         }
