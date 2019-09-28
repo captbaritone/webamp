@@ -10,8 +10,8 @@ import path from "path";
 
 const compilers = path.join(__dirname, "../../../resources/maki_compiler/");
 
-const lib30full = path.join(compilers, "v1.1.1.b3 (Winamp 3.0 full)/Lib/");
 const lib502 = path.join(compilers, "v1.1.13 (Winamp 5.02)/lib/");
+const lib566 = path.join(compilers, "v1.2.0 (Winamp 5.66)/lib/");
 const libUnknown = path.join(compilers, "Unknown (Winamp 5.03)/lib/");
 
 test("std.mi", () => {
@@ -25,6 +25,6 @@ test("config.mi", () => {
 });
 
 test("pldir.mi", () => {
-  const parsedObjects = parseFile(path.join(lib30full, "pldir.mi"));
+  const parsedObjects = parseFile(path.join(lib566, "pldir.mi"));
   expect(parsedObjects).toEqual(pldir);
 });
