@@ -29,7 +29,7 @@ function parseFile(filePath) {
     if (methodMatch) {
       const result = methodMatch[1] == null ? "" : methodMatch[1].trim();
       const className = methodMatch[2].toLowerCase();
-      const name = methodMatch[3];
+      const name = methodMatch[3].trim();
       const rawArgs = methodMatch[4].split(/\s*,\s*/);
       const parameters = rawArgs.filter(Boolean).map(rawArg => {
         const argMatch = /^\s*(.*\s+)?(.*)\s*/.exec(rawArg);
