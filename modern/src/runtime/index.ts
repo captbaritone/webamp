@@ -42,6 +42,7 @@ import ConfigAttribute from "./ConfigAttribute";
 import PlDir from "./PlDir";
 import FeedWatcher from "./FeedWatcher";
 import Form from "./Form";
+import PlEdit from "./PlEdit";
 
 const runtime = {
   "516549714a510d87b5a6e391e7f33532": MakiObject,
@@ -88,6 +89,7 @@ const runtime = {
   "61a7abad41f67d7980e1d0b1f4a40386": PlDir,
   a5376fa1411a4e94ec05f6830a5fea5e: FeedWatcher,
   "2d2d13764cb9be0ae6570cbcf599c9e4": Form,
+  "345beebc49210229b66cbe90d9799aa4": PlEdit,
   /*
   // https://github.com/captbaritone/webamp/pull/933#issuecomment-535690208
 
