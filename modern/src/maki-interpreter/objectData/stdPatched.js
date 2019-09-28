@@ -1,4 +1,4 @@
-import std from "./std.json";
+const std = require("./std.json");
 
 // Between myself and the author of the decompiler, a number of manual tweaks
 // have been made to our current object definitions. This function recreates
@@ -30,4 +30,4 @@ std.B4DCCFFF81FE4bcc961B720FD5BE0FFF.functions.push({
   result: "Int",
 });
 
-export default std;
+module.exports = std;

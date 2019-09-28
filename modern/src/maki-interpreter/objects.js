@@ -1,6 +1,6 @@
-import stdPatched from "./objectData/stdPatched";
-import pldir from "./objectData/pldir.json";
-import config from "./objectData/config.json";
+const stdPatched = require("./objectData/stdPatched");
+const pldir = require("./objectData/pldir.json");
+const config = require("./objectData/config.json");
 
 const objects = { ...stdPatched, ...pldir, ...config };
 
