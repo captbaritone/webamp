@@ -1,0 +1,13 @@
+{
+  "61A7ABAD7D7941f6B1D0E1808603A4F4": {
+    "parent": "Object",
+    "functions": [
+      {
+        "result": "",
+        "name": "showCurrentlyPlayingEntry",
+        "parameters": []
+      }
+    ],
+    "name": "PlDir"
+  }
+}
