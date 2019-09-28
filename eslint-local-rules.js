@@ -211,7 +211,16 @@ module.exports = {
           }
 
           func.parameters.forEach(([type, name], i) => {
+            const expectedTypeData = TYPE_MAP[type.toLowerCase()];
+
             const actual = params[i];
+            if (actual == null) {
+              context.report({
+                node: node.value,
+                message: `Missing Maki method argument. Expected \`${name}\`.`,
+              });
+              return;
+            }
             if (actual.name !== name) {
               // Turned off since some of the maki names are bad.
               /*
@@ -221,7 +230,6 @@ module.exports = {
               });
               */
             }
-            const expectedTypeData = TYPE_MAP[type.toLowerCase()];
             if (expectedTypeData == null) {
               // console.warn(`Missing type data for ${type}.`);
               return;
