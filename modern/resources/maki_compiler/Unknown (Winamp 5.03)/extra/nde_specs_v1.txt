@@ -1,0 +1,189 @@
+                          Nullsoft Database Engine Format Specifications v1.0
+                          ---------------------------------------------------
+
+
+
+
+
+
+
+1. Tables
+---------
+
+Tables are saved using two files, one containing the data, and one containing the indexes :
+
+Data file  : <filename>.DAT
+Index file : <filename>.IDX
+
+
+2. Index File Structure
+-----------------------
+
+Note that string types are not zero terminated, they are either of fixed size (indicated in the following tables)
+or their size is determined by another field. 
+
+
+==================================================================================================
+Offset                      Data Type      Size                  Field
+==================================================================================================
+0                           STRING         8                     "NDEINDEX"
+8                           INT            4                     Number of records
+12                          INDEX          4*NumberOfRecords     Primary Index (insertion order)       
+
+Optional :
+
+4*NumberOfRecords+12        INDEX          4*NumberOfRecords     First Secondary Index
+2*(4*NumberOfRecords)+12    INDEX          4*NumberOfRecords     Second Secondary Index
+...
+==================================================================================================
+
+
+The INDEX type is a simple array of INT (4 bytes) where each entry represents the offset of the record in the datafile.
+Thus, INDEX[0] gives you the offset for the first record of that index.
+
+
+3. Data File Structure
+----------------------
+
+The data file is a simple data pool from which structured data is pulled. The file begins with a 8 bytes long
+string signature that reads "NDETABLE", there rest is the data.
+
+Records are fetched directly from the data pool using the offset stored in each appropriate index, using the
+beginning of the file as offset 0.
+
+4. Records Structure
+--------------------
+
+A record is a linked list made of 'field' elements, and so, when you retrieve a record, you actually retrieve the
+first field of a linked list, and then add each new field to the record structure (or class) as you read more of them,
+following the chain.
+
+Record 0 is a list of the columns that make our table.
+Record 1 is a list of the indexes that are found in the index file.
+Record 2 is the first record of the table, it is a list of fields of various types (ie, int, string, etc)
+
+
+5. Fields Structures
+--------------------
+
+The following structures indicate offsets relative to the beginning of the (sub)structures.
+
+Field :
+
+==================================================================================================
+Offset                      Data Type      Size                  Field
+==================================================================================================
+0                           UCHAR          1                     Column ID
+1                           UCHAR          1                     Field Type
+2                           INT            4                     Size of field data
+6                           INT            4                     Next field position in table data pool
+10                          INT            4                     Previous field position in table data pool
+14                          FIELDDATA      SizeOfFieldData       Field data
+==================================================================================================
+
+Field Types :
+
+FIELD_UNDEFINED   = 255
+FIELD_COLUMN      = 0
+FIELD_INDEX       = 1
+FIELD_REDIRECTOR  = 2
+FIELD_STRING      = 3
+FIELD_INTEGER     = 4
+FIELD_BOOLEAN     = 5
+FIELD_BINARY      = 6
+FIELD_GUID        = 7
+FIELD_FLOAT       = 9
+FIELD_DATETIME    = 10
+FIELD_LENGTH      = 11
+
+Field Data Types :
+
+ * Column Field :
+
+  ==================================================================================================
+  Offset                      Data Type      Size                  Field
+  ==================================================================================================
+  0                           UCHAR          1                     Column Field Type (ie, FIELD_INTEGER)
+  1                           UCHAR          1                     Index unique values (0/1)
+  2                           UCHAR          1                     Size of column name string
+  3                           STRING         SizeOfColumnName      Public name of the column
+  ==================================================================================================
+
+ * Index Field :
+
+  ==================================================================================================
+  Offset                      Data Type      Size                  Field
+  ==================================================================================================
+  0                           INT            4                     Offset of this index in the index file
+  4                           INT            4                     Type of the field on which this index sorts (FIELD_UNDEFINED for the primary index)
+  8                           UCHAR          1                     Size of index name string  
+  9                           STRING         SizeOfIndexName       Public name of the index
+  ==================================================================================================
+
+
+ * Redirector Field :
+
+  ==================================================================================================
+  Offset                      Data Type      Size                  Field
+  ==================================================================================================
+  0                           INT            4                     Redirection offset in the data pool
+  ==================================================================================================
+
+  If you read a redirector field, you should move to the appropriate offset and read a new field there.
+
+ * String Field :
+
+  ==================================================================================================
+  Offset                      Data Type      Size                  Field
+  ==================================================================================================
+  0                           USHORT         2                     Size of string
+  2                           STRING         SizeOfString          String
+  ==================================================================================================
+
+ * Integer Field, DateTime Field, Length Field :
+
+  ==================================================================================================
+  Offset                      Data Type      Size                  Field
+  ==================================================================================================
+  0                           INT            4                     Integer value
+  ==================================================================================================
+
+  Length fields are exactly the same as integer fields, but instead of holding some unknown quantity, they have been 
+  marked as lengths by the application.
+
+  For DateTime fields, the value is to be interpreted as a standard C time_t value.
+
+ * Boolean Field :
+
+  ==================================================================================================
+  Offset                      Data Type      Size                  Field
+  ==================================================================================================
+  0                           UCHAR          1                     Boolean value
+  ==================================================================================================
+
+ * Binary Field :
+
+  ==================================================================================================
+  Offset                      Data Type      Size                  Field
+  ==================================================================================================
+  0                           USHORT         2                     Size of binary data
+  2                           BINARY         SizeOfBinaryData      Binary data
+  ==================================================================================================
+
+ * GUID Field :
+
+  ==================================================================================================
+  Offset                      Data Type      Size                  Field
+  ==================================================================================================
+  0                           GUID           16                    Guid data
+  ==================================================================================================
+
+ * Float Field :
+
+  ==================================================================================================
+  Offset                      Data Type      Size                  Field
+  ==================================================================================================
+  0                           FLOAT          4                     Float value
+  ==================================================================================================
+
+ 
