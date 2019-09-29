@@ -68,6 +68,9 @@ const COMMANDS = {
 
   "112": { name: "strangeCall", arg: "objFunc", in: "0", out: "1" },
 
+  // Mystery opcode
+  // "255": { name: "MYSTERY", short: "WAT", in: "0", out: "0" },
+
   "300": { name: "blockStart", short: "{", in: "0", out: "0" },
 
   "301": { name: "blockEnd", short: "}", in: "0", out: "0" },
