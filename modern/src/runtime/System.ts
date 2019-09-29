@@ -946,6 +946,275 @@ class System extends MakiObject {
     unimplementedWarning("getvisband");
     return;
   }
+
+  onviewportchanged(width: number, height: number) {
+    unimplementedWarning("onviewportchanged");
+    return;
+  }
+
+  onurlchange(url: string) {
+    unimplementedWarning("onurlchange");
+    return;
+  }
+
+  oneqfreqchanged(isiso: number) {
+    unimplementedWarning("oneqfreqchanged");
+    return;
+  }
+
+  enumembedguid(num: number) {
+    unimplementedWarning("enumembedguid");
+    return;
+  }
+
+  getmetadatastring(filename: string, metadataname: string) {
+    unimplementedWarning("getmetadatastring");
+    return;
+  }
+
+  getcurrenttrackrating() {
+    unimplementedWarning("getcurrenttrackrating");
+    return;
+  }
+
+  oncurrenttrackrated(rating: number) {
+    unimplementedWarning("oncurrenttrackrated");
+    return;
+  }
+
+  setcurrenttrackrating(rating: number) {
+    unimplementedWarning("setcurrenttrackrating");
+    return;
+  }
+
+  getdecodername(playitem: string) {
+    unimplementedWarning("getdecodername");
+    return;
+  }
+
+  getalbumart(playitem: string) {
+    unimplementedWarning("getalbumart");
+    return;
+  }
+
+  downloadmedia(
+    url: string,
+    destinationPath: string,
+    wantAddToML: boolean,
+    notifyDownloadsList: boolean
+  ) {
+    unimplementedWarning("downloadmedia");
+    return;
+  }
+
+  downloadurl(
+    url: string,
+    destination_filename: string,
+    progress_dialog_title: string
+  ) {
+    unimplementedWarning("downloadurl");
+    return;
+  }
+
+  ondownloadfinished(url: string, success: boolean, filename: string) {
+    unimplementedWarning("ondownloadfinished");
+    return;
+  }
+
+  getdownloadpath() {
+    unimplementedWarning("getdownloadpath");
+    return;
+  }
+
+  setdownloadpath(new_path: string) {
+    unimplementedWarning("setdownloadpath");
+    return;
+  }
+
+  enqueuefile(playitem: string) {
+    unimplementedWarning("enqueuefile");
+    return;
+  }
+
+  urldecode(url: string) {
+    unimplementedWarning("urldecode");
+    return;
+  }
+
+  parseatf(topass: string) {
+    unimplementedWarning("parseatf");
+    return;
+  }
+
+  log10(value: number) {
+    unimplementedWarning("log10");
+    return;
+  }
+
+  ln(value: number) {
+    unimplementedWarning("ln");
+    return;
+  }
+
+  getviewportwidthfromguiobject(g) {
+    unimplementedWarning("getviewportwidthfromguiobject");
+    return;
+  }
+
+  getmonitorwidth() {
+    unimplementedWarning("getmonitorwidth");
+    return;
+  }
+
+  getmonitorwidthfrompoint(x: number, y: number) {
+    unimplementedWarning("getmonitorwidthfrompoint");
+    return;
+  }
+
+  getmonitorwidthfromguiobject(g) {
+    unimplementedWarning("getmonitorwidthfromguiobject");
+    return;
+  }
+
+  onmousemove(x: number, y: number) {
+    unimplementedWarning("onmousemove");
+    return;
+  }
+
+  getviewportheightfromguiobject(g) {
+    unimplementedWarning("getviewportheightfromguiobject");
+    return;
+  }
+
+  getmonitorheight() {
+    unimplementedWarning("getmonitorheight");
+    return;
+  }
+
+  getmonitorheightfrompoint(x: number, y: number) {
+    unimplementedWarning("getmonitorheightfrompoint");
+    return;
+  }
+
+  getmonitorheightfromguiobject(g) {
+    unimplementedWarning("getmonitorheightfromguiobject");
+    return;
+  }
+
+  getmonitorleft() {
+    unimplementedWarning("getmonitorleft");
+    return;
+  }
+
+  getmonitorleftfromguiobject(g) {
+    unimplementedWarning("getmonitorleftfromguiobject");
+    return;
+  }
+
+  getmonitorleftfrompoint(x: number, y: number) {
+    unimplementedWarning("getmonitorleftfrompoint");
+    return;
+  }
+
+  getmonitortop() {
+    unimplementedWarning("getmonitortop");
+    return;
+  }
+
+  getmonitortopfromguiobject(g) {
+    unimplementedWarning("getmonitortopfromguiobject");
+    return;
+  }
+
+  getmonitortopfrompoint(x: number, y: number) {
+    unimplementedWarning("getmonitortopfrompoint");
+    return;
+  }
+
+  getviewportleftfromguiobject(g) {
+    unimplementedWarning("getviewportleftfromguiobject");
+    return;
+  }
+
+  getviewporttopfromguiobject(g) {
+    unimplementedWarning("getviewporttopfromguiobject");
+    return;
+  }
+
+  navigateurlbrowser(url: string) {
+    unimplementedWarning("navigateurlbrowser");
+    return;
+  }
+
+  onopenurl(url: string) {
+    unimplementedWarning("onopenurl");
+    return;
+  }
+
+  translate(str: string) {
+    unimplementedWarning("translate");
+    return;
+  }
+
+  getstring(table: string, id: number) {
+    unimplementedWarning("getstring");
+    return;
+  }
+
+  getlanguageid() {
+    unimplementedWarning("getlanguageid");
+    return;
+  }
+
+  selectfolder(wnd_title: string, wnd_info: string, default_path: string) {
+    unimplementedWarning("selectfolder");
+    return;
+  }
+
+  hasvideosupport() {
+    unimplementedWarning("hasvideosupport");
+    return;
+  }
+
+  clearplaylist() {
+    unimplementedWarning("clearplaylist");
+    return;
+  }
+
+  getsonginfotexttranslated() {
+    unimplementedWarning("getsonginfotexttranslated");
+    return;
+  }
+
+  iswa2componentvisible(guid: string) {
+    unimplementedWarning("iswa2componentvisible");
+    return;
+  }
+
+  hidewa2component(guid: string) {
+    unimplementedWarning("hidewa2component");
+    return;
+  }
+
+  isproversion() {
+    unimplementedWarning("isproversion");
+    return;
+  }
+
+  getwinampversion() {
+    unimplementedWarning("getwinampversion");
+    return;
+  }
+
+  getbuildnumber() {
+    unimplementedWarning("getbuildnumber");
+    return;
+  }
+
+  getfilesize(fullfilename: string) {
+    unimplementedWarning("getfilesize");
+    return;
+  }
 }
 
 export default System;

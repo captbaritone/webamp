@@ -4,13 +4,12 @@ import fs from "fs";
 
 const compilers = path.join(__dirname, "../../../resources/maki_compiler/");
 
-const lib502 = path.join(compilers, "v1.1.13 (Winamp 5.02)/lib/");
 const lib566 = path.join(compilers, "v1.2.0 (Winamp 5.66)/lib/");
 
 const files = {
   pldir: path.join(lib566, "pldir.mi"),
   config: path.join(lib566, "config.mi"),
-  std: path.join(lib502, "std.mi"),
+  std: path.join(lib566, "std.mi"),
 };
 
 Object.keys(files).forEach(name => {

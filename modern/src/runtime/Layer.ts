@@ -179,6 +179,11 @@ class Layer extends GuiObject {
     unimplementedWarning("fx_restart");
     return;
   }
+
+  isinvalid() {
+    unimplementedWarning("isinvalid");
+    return;
+  }
 }
 
 export default Layer;

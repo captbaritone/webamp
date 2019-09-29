@@ -40,6 +40,11 @@ class Map extends MakiObject {
     unimplementedWarning("getregion");
     return;
   }
+
+  getargbvalue(x: number, y: number, channel: number) {
+    unimplementedWarning("getargbvalue");
+    return;
+  }
 }
 
 export default Map;
