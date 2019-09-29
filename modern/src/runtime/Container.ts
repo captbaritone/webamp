@@ -1,4 +1,5 @@
 import MakiObject from "./MakiObject";
+import GuiObject from "./GuiObject";
 import { findDescendantByTypeAndId, unimplementedWarning } from "../utils";
 import { XmlNode } from "../types";
 import Layout from "./Layout";
@@ -110,7 +111,7 @@ class Container extends MakiObject {
     return;
   }
 
-  onaddcontent(wnd, id: string, guid: string) {
+  onaddcontent(wnd: GuiObject, id: string, guid: string) {
     unimplementedWarning("onaddcontent");
     return;
   }
