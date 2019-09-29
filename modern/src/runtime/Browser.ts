@@ -54,6 +54,36 @@ class Browser extends GuiObject {
   ondocumentcomplete(url: string): void {
     this.js_trigger("onDocumentComplete", url);
   }
+
+  ondocumentready(url: string) {
+    unimplementedWarning("ondocumentready");
+    return;
+  }
+
+  getdocumenttitle() {
+    unimplementedWarning("getdocumenttitle");
+    return;
+  }
+
+  onnavigateerror(url: string, code: number) {
+    unimplementedWarning("onnavigateerror");
+    return;
+  }
+
+  setcancelieerrorpage(cancel: boolean) {
+    unimplementedWarning("setcancelieerrorpage");
+    return;
+  }
+
+  scrape() {
+    unimplementedWarning("scrape");
+    return;
+  }
+
+  onmedialink(url: string) {
+    unimplementedWarning("onmedialink");
+    return;
+  }
 }
 
 export default Browser;

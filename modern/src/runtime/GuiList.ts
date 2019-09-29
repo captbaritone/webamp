@@ -411,6 +411,51 @@ class GuiList extends GuiObject {
   onitemselection(itemnum: number, selected: number): void {
     this.js_trigger("onItemSelection", itemnum, selected);
   }
+
+  setitemicon(pos: number, bitmapId: string) {
+    unimplementedWarning("setitemicon");
+    return;
+  }
+
+  getitemicon(pos: number) {
+    unimplementedWarning("getitemicon");
+    return;
+  }
+
+  setshowicons(showThem: number) {
+    unimplementedWarning("setshowicons");
+    return;
+  }
+
+  getshowicons() {
+    unimplementedWarning("getshowicons");
+    return;
+  }
+
+  seticonwidth(width: number) {
+    unimplementedWarning("seticonwidth");
+    return;
+  }
+
+  seticonheight(width: number) {
+    unimplementedWarning("seticonheight");
+    return;
+  }
+
+  geticonwidth() {
+    unimplementedWarning("geticonwidth");
+    return;
+  }
+
+  geticonheight() {
+    unimplementedWarning("geticonheight");
+    return;
+  }
+
+  oniconleftclick(itemnum: number, x: number, y: number) {
+    unimplementedWarning("oniconleftclick");
+    return;
+  }
 }
 
 export default GuiList;

@@ -129,6 +129,20 @@
       },
       {
         "result": "",
+        "name": "onViewPortChanged",
+        "parameters": [
+          [
+            "int",
+            "width"
+          ],
+          [
+            "int",
+            "height"
+          ]
+        ]
+      },
+      {
+        "result": "",
         "name": "onStop",
         "parameters": []
       },
@@ -164,6 +178,16 @@
           [
             "String",
             "newtitle2"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "onUrlChange",
+        "parameters": [
+          [
+            "String",
+            "url"
           ]
         ]
       },
@@ -218,6 +242,16 @@
           [
             "int",
             "newstatus"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "onEqFreqChanged",
+        "parameters": [
+          [
+            "int",
+            "isiso"
           ]
         ]
       },
@@ -297,6 +331,16 @@
         ]
       },
       {
+        "result": "String",
+        "name": "enumEmbedGUID",
+        "parameters": [
+          [
+            "int",
+            "num"
+          ]
+        ]
+      },
+      {
         "result": "Wac",
         "name": "getWac",
         "parameters": [
@@ -350,8 +394,47 @@
       },
       {
         "result": "String",
+        "name": "getMetaDataString",
+        "parameters": [
+          [
+            "String",
+            "filename"
+          ],
+          [
+            "String",
+            "metadataname"
+          ]
+        ]
+      },
+      {
+        "result": "String",
         "name": "getPlayItemDisplayTitle",
         "parameters": []
+      },
+      {
+        "result": "Int",
+        "name": "getCurrentTrackRating",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "onCurrentTrackRated",
+        "parameters": [
+          [
+            "int",
+            "rating"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "setCurrentTrackRating",
+        "parameters": [
+          [
+            "int",
+            "rating"
+          ]
+        ]
       },
       {
         "result": "String",
@@ -364,8 +447,111 @@
         ]
       },
       {
+        "result": "String",
+        "name": "getDecoderName",
+        "parameters": [
+          [
+            "string",
+            "playitem"
+          ]
+        ]
+      },
+      {
         "result": "",
         "name": "playFile",
+        "parameters": [
+          [
+            "String",
+            "playitem"
+          ]
+        ]
+      },
+      {
+        "result": "Int",
+        "name": "getAlbumArt",
+        "parameters": [
+          [
+            "String",
+            "playitem"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "downloadMedia",
+        "parameters": [
+          [
+            "String",
+            "url"
+          ],
+          [
+            "String",
+            "destinationPath"
+          ],
+          [
+            "boolean",
+            "wantAddToML"
+          ],
+          [
+            "boolean",
+            "notifyDownloadsList"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "downloadURL",
+        "parameters": [
+          [
+            "String",
+            "url"
+          ],
+          [
+            "String",
+            "destination_filename"
+          ],
+          [
+            "String",
+            "progress_dialog_title"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "onDownloadFinished",
+        "parameters": [
+          [
+            "String",
+            "url"
+          ],
+          [
+            "boolean",
+            "success"
+          ],
+          [
+            "String",
+            "filename"
+          ]
+        ]
+      },
+      {
+        "result": "String",
+        "name": "getDownloadPath",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "setDownloadPath",
+        "parameters": [
+          [
+            "String",
+            "new_path"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "enqueueFile",
         "parameters": [
           [
             "String",
@@ -726,7 +912,7 @@
       },
       {
         "result": "String",
-        "name": "Strleft",
+        "name": "strleft",
         "parameters": [
           [
             "string",
@@ -803,6 +989,26 @@
           [
             "string",
             "url"
+          ]
+        ]
+      },
+      {
+        "result": "string",
+        "name": "urlDecode",
+        "parameters": [
+          [
+            "string",
+            "url"
+          ]
+        ]
+      },
+      {
+        "result": "string",
+        "name": "parseATF",
+        "parameters": [
+          [
+            "string",
+            "topass"
           ]
         ]
       },
@@ -945,6 +1151,26 @@
       {
         "result": "double",
         "name": "sqr",
+        "parameters": [
+          [
+            "double",
+            "value"
+          ]
+        ]
+      },
+      {
+        "result": "double",
+        "name": "log10",
+        "parameters": [
+          [
+            "double",
+            "value"
+          ]
+        ]
+      },
+      {
+        "result": "double",
+        "name": "ln",
         "parameters": [
           [
             "double",
@@ -1117,7 +1343,60 @@
       },
       {
         "result": "Int",
+        "name": "getViewportWidthFromGuiObject",
+        "parameters": [
+          [
+            "GuiObject",
+            "g"
+          ]
+        ]
+      },
+      {
+        "result": "Int",
         "name": "getViewportWidthFromPoint",
+        "parameters": [
+          [
+            "int",
+            "x"
+          ],
+          [
+            "int",
+            "y"
+          ]
+        ]
+      },
+      {
+        "result": "Int",
+        "name": "getMonitorWidth",
+        "parameters": []
+      },
+      {
+        "result": "Int",
+        "name": "getMonitorWidthFromPoint",
+        "parameters": [
+          [
+            "int",
+            "x"
+          ],
+          [
+            "int",
+            "y"
+          ]
+        ]
+      },
+      {
+        "result": "Int",
+        "name": "getMonitorWidthFromGuiObject",
+        "parameters": [
+          [
+            "GuiObject",
+            "g"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "onMouseMove",
         "parameters": [
           [
             "int",
@@ -1136,7 +1415,104 @@
       },
       {
         "result": "Int",
+        "name": "getViewportHeightFromGuiObject",
+        "parameters": [
+          [
+            "GuiObject",
+            "g"
+          ]
+        ]
+      },
+      {
+        "result": "Int",
         "name": "getViewportHeightFromPoint",
+        "parameters": [
+          [
+            "int",
+            "x"
+          ],
+          [
+            "int",
+            "y"
+          ]
+        ]
+      },
+      {
+        "result": "Int",
+        "name": "getMonitorHeight",
+        "parameters": []
+      },
+      {
+        "result": "Int",
+        "name": "getMonitorHeightFromPoint",
+        "parameters": [
+          [
+            "int",
+            "x"
+          ],
+          [
+            "int",
+            "y"
+          ]
+        ]
+      },
+      {
+        "result": "Int",
+        "name": "getMonitorHeightFromGuiObject",
+        "parameters": [
+          [
+            "GuiObject",
+            "g"
+          ]
+        ]
+      },
+      {
+        "result": "Int",
+        "name": "getMonitorLeft",
+        "parameters": []
+      },
+      {
+        "result": "Int",
+        "name": "getMonitorLeftFromGuiObject",
+        "parameters": [
+          [
+            "GuiObject",
+            "g"
+          ]
+        ]
+      },
+      {
+        "result": "Int",
+        "name": "getMonitorLeftFromPoint",
+        "parameters": [
+          [
+            "int",
+            "x"
+          ],
+          [
+            "int",
+            "y"
+          ]
+        ]
+      },
+      {
+        "result": "Int",
+        "name": "getMonitorTop",
+        "parameters": []
+      },
+      {
+        "result": "Int",
+        "name": "getMonitorTopFromGuiObject",
+        "parameters": [
+          [
+            "GuiObject",
+            "g"
+          ]
+        ]
+      },
+      {
+        "result": "Int",
+        "name": "getMonitorTopFromPoint",
         "parameters": [
           [
             "int",
@@ -1152,6 +1528,16 @@
         "result": "Int",
         "name": "getViewportLeft",
         "parameters": []
+      },
+      {
+        "result": "Int",
+        "name": "getViewportLeftFromGuiObject",
+        "parameters": [
+          [
+            "GuiObject",
+            "g"
+          ]
+        ]
       },
       {
         "result": "Int",
@@ -1171,6 +1557,16 @@
         "result": "Int",
         "name": "getViewportTop",
         "parameters": []
+      },
+      {
+        "result": "Int",
+        "name": "getViewportTopFromGuiObject",
+        "parameters": [
+          [
+            "GuiObject",
+            "g"
+          ]
+        ]
       },
       {
         "result": "Int",
@@ -1219,7 +1615,7 @@
         ]
       },
       {
-        "result": "Component",
+        "result": "WindowHolder",
         "name": "onLookForComponent",
         "parameters": [
           [
@@ -1299,6 +1695,26 @@
         "parameters": [
           [
             "String",
+            "url"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "navigateUrlBrowser",
+        "parameters": [
+          [
+            "String",
+            "url"
+          ]
+        ]
+      },
+      {
+        "result": "Boolean",
+        "name": "onOpenURL",
+        "parameters": [
+          [
+            "string",
             "url"
           ]
         ]
@@ -1399,6 +1815,35 @@
       },
       {
         "result": "String",
+        "name": "translate",
+        "parameters": [
+          [
+            "String",
+            "str"
+          ]
+        ]
+      },
+      {
+        "result": "String",
+        "name": "getString",
+        "parameters": [
+          [
+            "String",
+            "table"
+          ],
+          [
+            "int",
+            "id"
+          ]
+        ]
+      },
+      {
+        "result": "String",
+        "name": "getLanguageId",
+        "parameters": []
+      },
+      {
+        "result": "String",
         "name": "selectFile",
         "parameters": [
           [
@@ -1412,6 +1857,24 @@
           [
             "String",
             "prev_filename"
+          ]
+        ]
+      },
+      {
+        "result": "String",
+        "name": "selectFolder",
+        "parameters": [
+          [
+            "String",
+            "wnd_title"
+          ],
+          [
+            "String",
+            "wnd_info"
+          ],
+          [
+            "String",
+            "default_path"
           ]
         ]
       },
@@ -1521,6 +1984,11 @@
         "parameters": []
       },
       {
+        "result": "int",
+        "name": "hasVideoSupport",
+        "parameters": []
+      },
+      {
         "result": "Int",
         "name": "isVideo",
         "parameters": []
@@ -1571,6 +2039,11 @@
         "parameters": []
       },
       {
+        "result": "",
+        "name": "clearPlaylist",
+        "parameters": []
+      },
+      {
         "result": "Boolean",
         "name": "isDesktopAlphaAvailable",
         "parameters": []
@@ -1591,6 +2064,11 @@
         "parameters": []
       },
       {
+        "result": "String",
+        "name": "getSongInfoTextTranslated",
+        "parameters": []
+      },
+      {
         "result": "Int",
         "name": "getVisBand",
         "parameters": [
@@ -1608,6 +2086,51 @@
         "result": "Double",
         "name": "getRuntimeVersion",
         "parameters": []
+      },
+      {
+        "result": "Int",
+        "name": "isWa2ComponentVisible",
+        "parameters": [
+          [
+            "String",
+            "guid"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "hideWa2Component",
+        "parameters": [
+          [
+            "String",
+            "guid"
+          ]
+        ]
+      },
+      {
+        "result": "boolean",
+        "name": "isProVersion",
+        "parameters": []
+      },
+      {
+        "result": "String",
+        "name": "getWinampVersion",
+        "parameters": []
+      },
+      {
+        "result": "Int",
+        "name": "getBuildNumber",
+        "parameters": []
+      },
+      {
+        "result": "int",
+        "name": "getFileSize",
+        "parameters": [
+          [
+            "String",
+            "fullfilename"
+          ]
+        ]
       }
     ],
     "name": "System"
@@ -1744,9 +2267,37 @@
         ]
       },
       {
+        "result": "String",
+        "name": "getName",
+        "parameters": []
+      },
+      {
+        "result": "String",
+        "name": "getGuid",
+        "parameters": []
+      },
+      {
         "result": "Layout",
         "name": "getCurLayout",
         "parameters": []
+      },
+      {
+        "result": "",
+        "name": "onAddContent",
+        "parameters": [
+          [
+            "GuiObject",
+            "wnd"
+          ],
+          [
+            "String",
+            "id"
+          ],
+          [
+            "String",
+            "guid"
+          ]
+        ]
       }
     ],
     "name": "Container"
@@ -1891,6 +2442,20 @@
         ]
       },
       {
+        "result": "Int",
+        "name": "findItem2",
+        "parameters": [
+          [
+            "Any",
+            "_object"
+          ],
+          [
+            "int",
+            "startItem"
+          ]
+        ]
+      },
+      {
         "result": "int",
         "name": "getNumItems",
         "parameters": []
@@ -1902,6 +2467,51 @@
       }
     ],
     "name": "List"
+  },
+  "87C65778E74349fe85F909CC532AFD56": {
+    "parent": "Object",
+    "functions": [
+      {
+        "result": "boolean",
+        "name": "getItem",
+        "parameters": [
+          [
+            "int",
+            "n"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "setItem",
+        "parameters": [
+          [
+            "int",
+            "n"
+          ],
+          [
+            "boolean",
+            "val"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "setSize",
+        "parameters": [
+          [
+            "int",
+            "s"
+          ]
+        ]
+      },
+      {
+        "result": "int",
+        "name": "getSize",
+        "parameters": []
+      }
+    ],
+    "name": "BitList"
   },
   "38603665461B42a7AA75D83F6667BF73": {
     "parent": "Object",
@@ -1917,6 +2527,24 @@
           [
             "int",
             "y"
+          ]
+        ]
+      },
+      {
+        "result": "Int",
+        "name": "getARGBValue",
+        "parameters": [
+          [
+            "int",
+            "x"
+          ],
+          [
+            "int",
+            "y"
+          ],
+          [
+            "int",
+            "channel"
           ]
         ]
       },
@@ -2370,6 +2998,34 @@
           [
             "int",
             "y"
+          ]
+        ]
+      },
+      {
+        "result": "int",
+        "name": "onMouseWheelUp",
+        "parameters": [
+          [
+            "int",
+            "clicked"
+          ],
+          [
+            "int",
+            "lines"
+          ]
+        ]
+      },
+      {
+        "result": "int",
+        "name": "onMouseWheelDown",
+        "parameters": [
+          [
+            "int",
+            "clicked"
+          ],
+          [
+            "int",
+            "lines"
           ]
         ]
       },
@@ -2895,6 +3551,30 @@
       },
       {
         "result": "",
+        "name": "onDragEnter",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "onDragOver",
+        "parameters": [
+          [
+            "int",
+            "x"
+          ],
+          [
+            "int",
+            "y"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "onDragLeave",
+        "parameters": []
+      },
+      {
+        "result": "",
         "name": "onKeyDown",
         "parameters": [
           [
@@ -3052,7 +3732,12 @@
       {
         "result": "",
         "name": "onDock",
-        "parameters": []
+        "parameters": [
+          [
+            "int",
+            "side"
+          ]
+        ]
       },
       {
         "result": "",
@@ -3236,36 +3921,6 @@
     "functions": [
       {
         "result": "",
-        "name": "onGetWac",
-        "parameters": [
-          [
-            "Wac",
-            "wacobj"
-          ]
-        ]
-      },
-      {
-        "result": "",
-        "name": "onGiveUpWac",
-        "parameters": [
-          [
-            "Wac",
-            "wacobj"
-          ]
-        ]
-      },
-      {
-        "result": "String",
-        "name": "getGuid",
-        "parameters": []
-      },
-      {
-        "result": "Wac",
-        "name": "getWac",
-        "parameters": []
-      },
-      {
-        "result": "",
         "name": "setRegionFromMap",
         "parameters": [
           [
@@ -3293,6 +3948,46 @@
         ]
       },
       {
+        "result": "GuiObject",
+        "name": "getContent",
+        "parameters": []
+      },
+      {
+        "result": "String",
+        "name": "getGuid",
+        "parameters": []
+      },
+      {
+        "result": "String",
+        "name": "getComponentName",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "onGetWac",
+        "parameters": [
+          [
+            "Wac",
+            "wacobj"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "onGiveUpWac",
+        "parameters": [
+          [
+            "Wac",
+            "wacobj"
+          ]
+        ]
+      },
+      {
+        "result": "Wac",
+        "name": "getWac",
+        "parameters": []
+      },
+      {
         "result": "",
         "name": "setAcceptWac",
         "parameters": [
@@ -3301,14 +3996,9 @@
             "onoff"
           ]
         ]
-      },
-      {
-        "result": "GuiObject",
-        "name": "getContent",
-        "parameters": []
       }
     ],
-    "name": "Component"
+    "name": "WindowHolder"
   },
   "97AA3E4DF4D04fa8817B0AF22A454983": {
     "parent": "GuiObject",
@@ -3616,6 +4306,60 @@
         "parameters": [
           [
             "String",
+            "url"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "onDocumentReady",
+        "parameters": [
+          [
+            "String",
+            "url"
+          ]
+        ]
+      },
+      {
+        "result": "String",
+        "name": "getDocumentTitle",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "onNavigateError",
+        "parameters": [
+          [
+            "String",
+            "url"
+          ],
+          [
+            "int",
+            "code"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "setCancelIEErrorPage",
+        "parameters": [
+          [
+            "boolean",
+            "cancel"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "scrape",
+        "parameters": []
+      },
+      {
+        "result": "string",
+        "name": "onMediaLink",
+        "parameters": [
+          [
+            "string",
             "url"
           ]
         ]
@@ -4052,6 +4796,11 @@
         "result": "",
         "name": "fx_restart",
         "parameters": []
+      },
+      {
+        "result": "Boolean",
+        "name": "isInvalid",
+        "parameters": []
       }
     ],
     "name": "Layer"
@@ -4273,6 +5022,32 @@
     ],
     "name": "AnimatedLayer"
   },
+  "6DCB05E48AC448c2B19349F0910EF54A": {
+    "parent": "Layer",
+    "functions": [
+      {
+        "result": "",
+        "name": "refresh",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "isLoading",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "onAlbumArtLoaded",
+        "parameters": [
+          [
+            "boolean",
+            "success"
+          ]
+        ]
+      }
+    ],
+    "name": "AlbumArtLayer"
+  },
   "B4DCCFFF81FE4bcc961B720FD5BE0FFF": {
     "parent": "Button",
     "functions": [
@@ -4282,9 +5057,14 @@
         "parameters": [
           [
             "Boolean",
-            "unknown_arg_name"
+            "onoff"
           ]
         ]
+      },
+      {
+        "result": "int",
+        "name": "getCurCfgVal",
+        "parameters": []
       }
     ],
     "name": "ToggleButton"
@@ -4335,6 +5115,16 @@
             "percent"
           ]
         ]
+      },
+      {
+        "result": "",
+        "name": "setRedraw",
+        "parameters": [
+          [
+            "int",
+            "redraw"
+          ]
+        ]
       }
     ],
     "name": "GroupList"
@@ -4363,7 +5153,7 @@
         "parameters": []
       },
       {
-        "result": "Int",
+        "result": "Float",
         "name": "cfgGetFloat",
         "parameters": []
       },
@@ -4651,91 +5441,6 @@
     "functions": [
       {
         "result": "Int",
-        "name": "getNumItems",
-        "parameters": []
-      },
-      {
-        "result": "Int",
-        "name": "getWantAutoDeselect",
-        "parameters": []
-      },
-      {
-        "result": "",
-        "name": "setWantAutoDeselect",
-        "parameters": [
-          [
-            "Int",
-            "want"
-          ]
-        ]
-      },
-      {
-        "result": "",
-        "name": "onSetVisible",
-        "parameters": [
-          [
-            "Int",
-            "show"
-          ]
-        ]
-      },
-      {
-        "result": "",
-        "name": "setAutoSort",
-        "parameters": [
-          [
-            "Int",
-            "dosort"
-          ]
-        ]
-      },
-      {
-        "result": "",
-        "name": "next",
-        "parameters": []
-      },
-      {
-        "result": "",
-        "name": "selectCurrent",
-        "parameters": []
-      },
-      {
-        "result": "",
-        "name": "selectFirstEntry",
-        "parameters": []
-      },
-      {
-        "result": "",
-        "name": "previous",
-        "parameters": []
-      },
-      {
-        "result": "",
-        "name": "pagedown",
-        "parameters": []
-      },
-      {
-        "result": "",
-        "name": "pageup",
-        "parameters": []
-      },
-      {
-        "result": "",
-        "name": "home",
-        "parameters": []
-      },
-      {
-        "result": "",
-        "name": "end",
-        "parameters": []
-      },
-      {
-        "result": "",
-        "name": "reset",
-        "parameters": []
-      },
-      {
-        "result": "Int",
         "name": "addColumn",
         "parameters": [
           [
@@ -4841,13 +5546,18 @@
       },
       {
         "result": "",
-        "name": "setMinimumSize",
-        "parameters": [
-          [
-            "Int",
-            "size"
-          ]
-        ]
+        "name": "invalidateColumns",
+        "parameters": []
+      },
+      {
+        "result": "Int",
+        "name": "getNumItems",
+        "parameters": []
+      },
+      {
+        "result": "Int",
+        "name": "getItemCount",
+        "parameters": []
       },
       {
         "result": "Int",
@@ -4926,6 +5636,20 @@
         ]
       },
       {
+        "result": "String",
+        "name": "getSubitemText",
+        "parameters": [
+          [
+            "Int",
+            "pos"
+          ],
+          [
+            "Int",
+            "subpos"
+          ]
+        ]
+      },
+      {
         "result": "",
         "name": "setItemLabel",
         "parameters": [
@@ -4941,7 +5665,7 @@
       },
       {
         "result": "Int",
-        "name": "getItemSelected",
+        "name": "invalidateItem",
         "parameters": [
           [
             "Int",
@@ -4951,28 +5675,197 @@
       },
       {
         "result": "Int",
-        "name": "isItemFocused",
-        "parameters": [
-          [
-            "Int",
-            "pos"
-          ]
-        ]
+        "name": "getFirstItemVisible",
+        "parameters": []
       },
       {
         "result": "Int",
-        "name": "getItemFocused",
+        "name": "getLastItemVisible",
         "parameters": []
       },
       {
         "result": "",
-        "name": "setItemFocused",
+        "name": "setItemIcon",
+        "parameters": [
+          [
+            "Int",
+            "pos"
+          ],
+          [
+            "String",
+            "bitmapId"
+          ]
+        ]
+      },
+      {
+        "result": "String",
+        "name": "getItemIcon",
         "parameters": [
           [
             "Int",
             "pos"
           ]
         ]
+      },
+      {
+        "result": "",
+        "name": "setMinimumSize",
+        "parameters": [
+          [
+            "Int",
+            "size"
+          ]
+        ]
+      },
+      {
+        "result": "Int",
+        "name": "getWantAutoDeselect",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "setWantAutoDeselect",
+        "parameters": [
+          [
+            "Int",
+            "want"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "onSetVisible",
+        "parameters": [
+          [
+            "Int",
+            "show"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "setAutoSort",
+        "parameters": [
+          [
+            "Int",
+            "dosort"
+          ]
+        ]
+      },
+      {
+        "result": "Int",
+        "name": "setFontSize",
+        "parameters": [
+          [
+            "Int",
+            "size"
+          ]
+        ]
+      },
+      {
+        "result": "Int",
+        "name": "getFontSize",
+        "parameters": []
+      },
+      {
+        "result": "Int",
+        "name": "getHeaderHeight",
+        "parameters": []
+      },
+      {
+        "result": "Int",
+        "name": "getPreventMultipleSelection",
+        "parameters": []
+      },
+      {
+        "result": "Int",
+        "name": "setPreventMultipleSelection",
+        "parameters": [
+          [
+            "Int",
+            "val"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "setShowIcons",
+        "parameters": [
+          [
+            "int",
+            "showThem"
+          ]
+        ]
+      },
+      {
+        "result": "Int",
+        "name": "getShowIcons",
+        "parameters": []
+      },
+      {
+        "result": "Int",
+        "name": "setIconWidth",
+        "parameters": [
+          [
+            "int",
+            "width"
+          ]
+        ]
+      },
+      {
+        "result": "Int",
+        "name": "setIconHeight",
+        "parameters": [
+          [
+            "int",
+            "width"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "getIconWidth",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "getIconHeight",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "next",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "previous",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "pagedown",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "pageup",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "home",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "end",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "reset",
+        "parameters": []
       },
       {
         "result": "",
@@ -4983,11 +5876,6 @@
             "pos"
           ]
         ]
-      },
-      {
-        "result": "",
-        "name": "invalidateColumns",
-        "parameters": []
       },
       {
         "result": "Int",
@@ -5050,16 +5938,67 @@
         ]
       },
       {
-        "result": "String",
-        "name": "getSubitemText",
+        "result": "",
+        "name": "jumpToNext",
+        "parameters": [
+          [
+            "Int",
+            "c"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "scrollToItem",
         "parameters": [
           [
             "Int",
             "pos"
-          ],
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "selectCurrent",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "selectFirstEntry",
+        "parameters": []
+      },
+      {
+        "result": "Int",
+        "name": "getItemSelected",
+        "parameters": [
           [
             "Int",
-            "subpos"
+            "pos"
+          ]
+        ]
+      },
+      {
+        "result": "Int",
+        "name": "isItemFocused",
+        "parameters": [
+          [
+            "Int",
+            "pos"
+          ]
+        ]
+      },
+      {
+        "result": "Int",
+        "name": "getItemFocused",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "setItemFocused",
+        "parameters": [
+          [
+            "Int",
+            "pos"
           ]
         ]
       },
@@ -5091,101 +6030,6 @@
       {
         "result": "Int",
         "name": "invertSelection",
-        "parameters": []
-      },
-      {
-        "result": "Int",
-        "name": "invalidateItem",
-        "parameters": [
-          [
-            "Int",
-            "pos"
-          ]
-        ]
-      },
-      {
-        "result": "Int",
-        "name": "getFirstItemVisible",
-        "parameters": []
-      },
-      {
-        "result": "Int",
-        "name": "getLastItemVisible",
-        "parameters": []
-      },
-      {
-        "result": "Int",
-        "name": "setFontSize",
-        "parameters": [
-          [
-            "Int",
-            "size"
-          ]
-        ]
-      },
-      {
-        "result": "Int",
-        "name": "getFontSize",
-        "parameters": []
-      },
-      {
-        "result": "",
-        "name": "jumpToNext",
-        "parameters": [
-          [
-            "Int",
-            "c"
-          ]
-        ]
-      },
-      {
-        "result": "",
-        "name": "scrollToItem",
-        "parameters": [
-          [
-            "Int",
-            "pos"
-          ]
-        ]
-      },
-      {
-        "result": "",
-        "name": "resort",
-        "parameters": []
-      },
-      {
-        "result": "Int",
-        "name": "getSortDirection",
-        "parameters": []
-      },
-      {
-        "result": "Int",
-        "name": "getSortColumn",
-        "parameters": []
-      },
-      {
-        "result": "",
-        "name": "setSortColumn",
-        "parameters": [
-          [
-            "Int",
-            "col"
-          ]
-        ]
-      },
-      {
-        "result": "",
-        "name": "setSortDirection",
-        "parameters": [
-          [
-            "Int",
-            "dir"
-          ]
-        ]
-      },
-      {
-        "result": "Int",
-        "name": "getItemCount",
         "parameters": []
       },
       {
@@ -5237,22 +6081,37 @@
         ]
       },
       {
-        "result": "Int",
-        "name": "getHeaderHeight",
+        "result": "",
+        "name": "resort",
         "parameters": []
       },
       {
         "result": "Int",
-        "name": "getPreventMultipleSelection",
+        "name": "getSortDirection",
         "parameters": []
       },
       {
         "result": "Int",
-        "name": "setPreventMultipleSelection",
+        "name": "getSortColumn",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "setSortColumn",
         "parameters": [
           [
             "Int",
-            "val"
+            "col"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "setSortDirection",
+        "parameters": [
+          [
+            "Int",
+            "dir"
           ]
         ]
       },
@@ -5367,6 +6226,24 @@
           [
             "Int",
             "selected"
+          ]
+        ]
+      },
+      {
+        "result": "Int",
+        "name": "onIconLeftClick",
+        "parameters": [
+          [
+            "int",
+            "itemnum"
+          ],
+          [
+            "int",
+            "x"
+          ],
+          [
+            "int",
+            "y"
           ]
         ]
       }
@@ -6230,5 +7107,137 @@
       }
     ],
     "name": "Form"
+  },
+  "E2BBC14D84F64173BDB3B2EB2F665550": {
+    "parent": "GuiObject",
+    "functions": [
+      {
+        "result": "Int",
+        "name": "getPosition",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "setPosition",
+        "parameters": [
+          [
+            "Int",
+            "position"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "onSetPosition",
+        "parameters": [
+          [
+            "Int",
+            "position"
+          ]
+        ]
+      }
+    ],
+    "name": "Frame"
+  },
+  "73C00594961F401B9B1B672427AC4165": {
+    "parent": "GuiObject",
+    "functions": [
+      {
+        "result": "",
+        "name": "setMenuGroup",
+        "parameters": [
+          [
+            "String",
+            "groupId"
+          ]
+        ]
+      },
+      {
+        "result": "String",
+        "name": "getMenuGroup",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "setMenu",
+        "parameters": [
+          [
+            "String",
+            "menuId"
+          ]
+        ]
+      },
+      {
+        "result": "String",
+        "name": "getMenu",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "spawnMenu",
+        "parameters": [
+          [
+            "int",
+            "monitor"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "cancelMenu",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "setNormalId",
+        "parameters": [
+          [
+            "String",
+            "id"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "setDownId",
+        "parameters": [
+          [
+            "String",
+            "id"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "setHoverId",
+        "parameters": [
+          [
+            "String",
+            "id"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "onOpenMenu",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "onCloseMenu",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "nextMenu",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "previousMenu",
+        "parameters": []
+      }
+    ],
+    "name": "Menu"
   }
 }

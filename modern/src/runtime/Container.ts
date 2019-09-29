@@ -1,4 +1,5 @@
 import MakiObject from "./MakiObject";
+import GuiObject from "./GuiObject";
 import { findDescendantByTypeAndId, unimplementedWarning } from "../utils";
 import { XmlNode } from "../types";
 import Layout from "./Layout";
@@ -98,6 +99,21 @@ class Container extends MakiObject {
     return this.js_getChildren().find(childNode => {
       return childNode.getclassname() === "Layout";
     });
+  }
+
+  getname() {
+    unimplementedWarning("getname");
+    return;
+  }
+
+  getguid() {
+    unimplementedWarning("getguid");
+    return;
+  }
+
+  onaddcontent(wnd: GuiObject, id: string, guid: string) {
+    unimplementedWarning("onaddcontent");
+    return;
   }
 }
 

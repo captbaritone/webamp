@@ -36,6 +36,11 @@ class GroupList extends GuiObject {
     unimplementedWarning("scrolltopercent");
     return;
   }
+
+  setredraw(redraw: number) {
+    unimplementedWarning("setredraw");
+    return;
+  }
 }
 
 export default GroupList;

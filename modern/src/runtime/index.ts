@@ -16,7 +16,7 @@ import MakiMap from "./Map";
 import Region from "./Region";
 import Timer from "./Timer";
 import AnimatedLayer from "./AnimatedLayer";
-import Component from "./Component";
+import WindowHolder from "./WindowHolder";
 import ComponentBucket from "./ComponentBucket";
 import Edit from "./Edit";
 import Slider from "./Slider";
@@ -43,6 +43,10 @@ import PlDir from "./PlDir";
 import FeedWatcher from "./FeedWatcher";
 import Form from "./Form";
 import PlEdit from "./PlEdit";
+import Frame from "./Frame";
+import Menu from "./Menu";
+import BitList from "./BitList";
+import AlbumArtLayer from "./AlbumArtLayer";
 
 const runtime = {
   "516549714a510d87b5a6e391e7f33532": MakiObject,
@@ -63,7 +67,7 @@ const runtime = {
   "5ab9fa1545579a7d5765c8aba97cc6a6": Layer,
   "0f08c9404b23af39c4b8f38059bb7e8f": Status,
   efaa867241fa310ea985dcb74bcb5b52: Text,
-  "403abcc04bd66f22c810a48b47259329": Component,
+  "403abcc04bd66f22c810a48b47259329": WindowHolder,
   "97aa3e4d4fa8f4d0f20a7b818349452a": ComponentBucket,
   "64e4bbfa49d981f45ba8c0b0fdbcc32e": Edit,
   "62b65e3f408d375e8176ea8d771bb94a": Slider,
@@ -89,17 +93,19 @@ const runtime = {
   "61a7abad41f67d7980e1d0b1f4a40386": PlDir,
   a5376fa1411a4e94ec05f6830a5fea5e: FeedWatcher,
   "2d2d13764cb9be0ae6570cbcf599c9e4": Form,
+  e2bbc14d417384f6ebb2b3bd5055662f: Frame,
   "345beebc49210229b66cbe90d9799aa4": PlEdit,
+  "6dcb05e448c28ac4f04993b14af50e91": AlbumArtLayer,
+  "87c6577849fee743cc09f98556fd2a53": BitList,
+  "73c00594401b961f24671b9b6541ac27": Menu,
   /*
   // https://github.com/captbaritone/webamp/pull/933#issuecomment-535690208
 
   a5376fa1411a4e94ec05f6830a5fea5e: FeedWatcher,
-  6dcb05e448c28ac4f04993b14af50e91: AlbumArtLayer,
   aee235ff498febd1e0d7af961a54d4da: ColorMgr,
   b8e867b04da72715db53baa5acfefca1: Application,
   f857beca41f18e197e093e97039f6439: CoreAdmin,
   2825a91b4245d4885970f1aa7b4388cf: Core,
-  e2bbc14d417384f6ebb2b3bd5055662f: Frame,
   836f8b2e4db4e0d10a0d7f93d1dcc804: File,
 
   */

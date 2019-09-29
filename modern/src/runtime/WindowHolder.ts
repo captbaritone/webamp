@@ -4,7 +4,7 @@ import Wac from "./Wac";
 import MakiMap from "./Map";
 import Region from "./Region";
 
-class Component extends GuiObject {
+class WindowHolder extends GuiObject {
   /**
    * getClassName()
    *
@@ -12,7 +12,7 @@ class Component extends GuiObject {
    * @ret The class name.
    */
   getclassname() {
-    return "Component";
+    return "WindowHolder";
   }
 
   ongetwac(wacobj: Wac): void {
@@ -52,6 +52,11 @@ class Component extends GuiObject {
     unimplementedWarning("getcontent");
     return;
   }
+
+  getcomponentname() {
+    unimplementedWarning("getcomponentname");
+    return;
+  }
 }
 
-export default Component;
+export default WindowHolder;
