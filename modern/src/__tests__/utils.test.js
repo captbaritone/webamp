@@ -1,11 +1,11 @@
-import * as Utils from "./utils";
+import * as Utils from "../utils";
 import JSZip from "jszip";
 import { promises as fsPromises } from "fs";
 import path from "path";
 
 async function getSkinZip() {
   const skinBuffer = await fsPromises.readFile(
-    path.join(__dirname, "../skins/CornerAmp_Redux.wal")
+    path.join(__dirname, "../../skins/CornerAmp_Redux.wal")
   );
   return JSZip.loadAsync(skinBuffer);
 }

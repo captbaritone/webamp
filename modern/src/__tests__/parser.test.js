@@ -1,7 +1,7 @@
 import { readFileSync } from "fs";
 import { join } from "path";
-import parse from "./parser";
-import { getClass } from "./objects";
+import parse from "../maki-interpreter/parser";
+import { getClass } from "../maki-interpreter/objects";
 import { VERSIONS } from "./testConstants";
 
 function parseFile(relativePath) {
@@ -37,13 +37,16 @@ describe("can parse without crashing", () => {
   });
 });
 
-describe("regressions", () => {
-  describe.skip("https://github.com/captbaritone/webamp/issues/898", () => {
+describe.skip("regressions", () => {
+  describe("https://github.com/captbaritone/webamp/issues/898", () => {
     test("minimal", () => {
-      parseFile("./fixtures/issue_898/minimal.maki");
+      parseFile("../../resources/fixtures/issue_898/minimal.maki");
     });
-    test("real world", () => {
-      parseFile("./fixtures/issue_898/multipass_system.maki");
+    test("real world", () => {});
+  });
+  describe.skip("foo", () => {
+    test("CproTabs", () => {
+      parseFile("../../resources/fixtures/foo/CproTabs.maki");
     });
   });
 });
@@ -51,7 +54,7 @@ describe("regressions", () => {
 describe("standardframe.maki", () => {
   let maki;
   beforeEach(() => {
-    maki = parseFile("./fixtures/standardframe.maki");
+    maki = parseFile("../../resources/fixtures/standardframe.maki");
   });
 
   test("can read magic", () => {
