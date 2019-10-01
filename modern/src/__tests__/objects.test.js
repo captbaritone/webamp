@@ -1,4 +1,4 @@
-import { getClass, getFormattedId, objects } from "./objects";
+import { getClass, getFormattedId, objects } from "../maki-interpreter/objects";
 import runtime from "../runtime";
 
 test("getFormattedId() is reversable", () => {

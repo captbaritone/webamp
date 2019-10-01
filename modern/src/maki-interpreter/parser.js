@@ -103,6 +103,7 @@ class MakiFile {
 function readMagic(makiFile) {
   const magic = makiFile.readStringOfLength(MAGIC.length);
   if (magic !== MAGIC) {
+    console.error({ magic });
     throw new Error("Magic number does not mach. Is this a maki file?");
   }
   return magic;
@@ -298,8 +299,8 @@ function parseComand({ start, makiFile, length }) {
   return command;
 }
 
-function parse(buffer) {
-  const makiFile = new MakiFile(buffer);
+function parse(data) {
+  const makiFile = new MakiFile(data);
 
   const magic = readMagic(makiFile);
   // TODO: What format is this? Does it even change between compiler versions?

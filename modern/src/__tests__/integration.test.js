@@ -1,10 +1,10 @@
 import path from "path";
 import fs from "fs";
 import JSZip from "jszip";
-import { create } from "./store";
-import * as Actions from "./Actions";
-import * as Utils from "./utils";
-import System from "./runtime/System";
+import { create } from "../store";
+import * as Actions from "../Actions";
+import * as Utils from "../utils";
+import System from "../runtime/System";
 
 test("sameObject", async () => {
   const messages = await runSkin("sameObject");
@@ -59,7 +59,7 @@ function isInState(store, predicate) {
 async function runSkin(skinDirectory) {
   const skinDirectoryPath = path.join(
     __dirname,
-    "../resources/testSkins/",
+    "../../resources/testSkins/",
     skinDirectory
   );
   const zip = new JSZip();
