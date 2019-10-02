@@ -1,6 +1,6 @@
 import React from "react";
 import { objects } from "./maki-interpreter/objects";
-import snapshotString from "./maki-interpreter/__snapshots__/objects.test.js.snap";
+import snapshotString from "./__tests__/__snapshots__/objects.test.js.snap";
 import methodData from "../resources/maki-skin-data.json";
 
 const methodsSting =
