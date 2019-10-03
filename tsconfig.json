@@ -71,8 +71,12 @@
     "modern/src/runtime/Vis.ts",
     "modern/src/runtime/Wac.ts",
     "modern/src/runtime/WindowHolder.ts",
-    "modern/src/runtime/*.ts",
-    "modern/src/utils.ts"
+    // "modern/src/Actions.ts",
+    "modern/src/utils.ts",
+    "modern/src/initializeStateTree.ts",
+    "modern/src/Selectors.ts",
+    // "modern/src/Store.ts",
+    "modern/src/types.ts"
   ],
   "exclude": ["node_modules", "**/*.spec.ts", "demo/built"]
 }
