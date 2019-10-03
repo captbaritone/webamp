@@ -293,7 +293,7 @@ function parseComand({ start, makiFile, length }) {
   }
 
   // TODO: What even is this?
-  if (opcode === 112) {
+  if (opcode === 112 /* strangeCall */) {
     makiFile.readUInt8();
   }
   return command;
