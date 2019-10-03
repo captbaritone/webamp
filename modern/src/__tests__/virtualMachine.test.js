@@ -93,6 +93,8 @@ Success: !(#f || #f)
 Success: #t || ++n (doesn't short circuit)
 Success: !(#f && ++ n) (doesn't short circuit)"
 `);
+});
+test("hello_world", () => {
   expect(runScript("hello_world.maki")).toMatchInlineSnapshot(
     `"Hello Title: Hello World"`
   );
