@@ -18,6 +18,7 @@
     "js/**/*.tsx",
     "modern/src/Emitter.ts",
     "modern/src/runtime/AlbumArtLayer.ts",
+    // "modern/src/runtime/AnimatedLayer.ts",
     "modern/src/runtime/BitList.ts",
     "modern/src/runtime/Browser.ts",
     "modern/src/runtime/Button.ts",
@@ -60,6 +61,7 @@
     "modern/src/runtime/Region.ts",
     "modern/src/runtime/Slider.ts",
     "modern/src/runtime/Status.ts",
+    // "modern/src/runtime/System.ts",
     "modern/src/runtime/TabSheet.ts",
     "modern/src/runtime/Text.ts",
     "modern/src/runtime/Timer.ts",
@@ -69,8 +71,8 @@
     "modern/src/runtime/Vis.ts",
     "modern/src/runtime/Wac.ts",
     "modern/src/runtime/WindowHolder.ts",
+    "modern/src/runtime/*.ts",
     "modern/src/utils.ts"
-    // "modern/src/runtime/System.ts"
   ],
   "exclude": ["node_modules", "**/*.spec.ts", "demo/built"]
 }
