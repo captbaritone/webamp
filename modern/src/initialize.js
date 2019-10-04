@@ -5,6 +5,7 @@ import JsWinampAbstractionLayer from "./runtime/JsWinampAbstractionLayer";
 import Layout from "./runtime/Layout";
 import Layer from "./runtime/Layer";
 import Container from "./runtime/Container";
+import JsScript from "./runtime/JsScript";
 import JsElements from "./runtime/JsElements";
 import JsGammaSet from "./runtime/JsGammaSet";
 import JsGroupDef from "./runtime/JsGroupDef";
@@ -123,7 +124,7 @@ const parsers = {
   menu: noop,
   albumart: noop,
   playlistplus: noop,
-  script: noop,
+  script: (node, parent) => new JsScript(node, parent, undefined),
 };
 
 async function parseChildren(node, children, zip) {

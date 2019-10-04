@@ -14,7 +14,6 @@ class MakiObject {
   _emitter: Emitter;
   children: MakiObject[];
   js_annotations: Object;
-  system: MakiObject | undefined;
 
   constructor(
     node: XmlNode | null,

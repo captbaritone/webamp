@@ -7,6 +7,7 @@ import { run } from "./maki-interpreter/virtualMachine";
 import System from "./runtime/System";
 import runtime from "./runtime";
 import MakiObject from "./runtime/MakiObject";
+import JsScript from "./runtime/JsScript";
 
 export function setMakiTree(makiTree: MakiTree): ModernAction {
   return { type: "SET_MAKI_TREE", makiTree };
@@ -36,21 +37,11 @@ export function gotSkinBlob(blob: Blob, store: ModernStore) {
 
 async function unloadSkin(makiTree) {
   await Utils.asyncTreeFlatMap(makiTree, async (node: MakiObject) => {
-    switch (node.name) {
-      case "groupdef": {
-        // removes groupdefs from consideration (only run scripts when actually referenced by group)
-        return {};
-      }
-      case "script": {
-        if (node.system) {
-          node.system.onscriptunloading();
-        }
-        return node;
-      }
-      default: {
-        return node;
-      }
+    if (node instanceof JsScript && node.system) {
+      node.system.onscriptunloading();
     }
+
+    return node;
   });
 }
 
@@ -59,6 +50,7 @@ export function gotSkinZip(zip: JSZip, store: ModernStore) {
     // unload current skin if one has been loaded
     if (store.getState().modernSkin.skinLoaded) {
       unloadSkin(store.getState().modernSkin.makiTree);
+      dispatch({ type: "UNLOAD_SKIN" });
     }
 
     const rawXmlTree = await Utils.inlineIncludes(
