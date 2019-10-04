@@ -34,8 +34,33 @@ export function gotSkinBlob(blob: Blob, store: ModernStore) {
   };
 }
 
+async function unloadSkin(makiTree) {
+  await Utils.asyncTreeFlatMap(makiTree, async (node: MakiObject) => {
+    switch (node.name) {
+      case "groupdef": {
+        // removes groupdefs from consideration (only run scripts when actually referenced by group)
+        return {};
+      }
+      case "script": {
+        if (node.system) {
+          node.system.onscriptunloading();
+        }
+        return node;
+      }
+      default: {
+        return node;
+      }
+    }
+  });
+}
+
 export function gotSkinZip(zip: JSZip, store: ModernStore) {
   return async dispatch => {
+    // unload current skin if one has been loaded
+    if (store.getState().modernSkin.skinLoaded) {
+      unloadSkin(store.getState().modernSkin.makiTree);
+    }
+
     const rawXmlTree = await Utils.inlineIncludes(
       await Utils.readXml(zip, "skin.xml"),
       zip
@@ -66,12 +91,12 @@ export function gotSkinZip(zip: JSZip, store: ModernStore) {
             node,
             new Set(["group", "WinampAbstractionLayer", "WasabiXML"])
           );
-          const system = new System(scriptGroup, store);
+          node.system = new System(scriptGroup, store);
           const script = await Utils.readUint8array(zip, node.attributes.file);
           run({
             runtime,
             data: script,
-            system,
+            system: node.system,
             log: false,
           });
           return node;

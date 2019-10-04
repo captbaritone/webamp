@@ -25,6 +25,13 @@ class Timer extends MakiObject {
     });
   }
 
+  js_delete() {
+    if (this._animationCancelID != null) {
+      window.cancelAnimationFrame(this._animationCancelID);
+    }
+    super.js_delete();
+  }
+
   /**
    * getclassname()
    *
