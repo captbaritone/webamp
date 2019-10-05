@@ -49,7 +49,7 @@ export function gotSkinZip(zip: JSZip, store: ModernStore) {
   return async dispatch => {
     // unload current skin if one has been loaded
     if (store.getState().modernSkin.skinLoaded) {
-      unloadSkin(store.getState().modernSkin.makiTree);
+      await unloadSkin(store.getState().modernSkin.makiTree);
       dispatch({ type: "UNLOAD_SKIN" });
     }
 
