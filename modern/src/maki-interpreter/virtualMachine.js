@@ -62,5 +62,5 @@ export function run({
   // Set the System global
   // TODO: We could confirm that this variable has the "system" flag set.
   program.variables[0].setValue(system);
-  system.js_start();
+  system.onscriptloaded();
 }

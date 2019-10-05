@@ -21,6 +21,8 @@ function modernSkinReducer(
       return { ...state, makiTree: action.makiTree, skinLoaded: true };
     case "SET_XML_TREE":
       return { ...state, xmlTree: action.xmlTree };
+    case "SKIN_UNLOADED":
+      return { ...state, xmlTree: null, makiTree: null, skinLoaded: false };
     case "SET_VOLUME":
       return { ...state, volume: action.volume };
     default:

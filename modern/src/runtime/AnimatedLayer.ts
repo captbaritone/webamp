@@ -7,6 +7,7 @@ class AnimatedLayer extends Layer {
   _playing: boolean;
   _frameNum: number;
   _animationStartTime: number;
+  _animationCancelID: number | null;
 
   constructor(node: XmlNode, parent: MakiObject, annotations: Object = {}) {
     super(node, parent, annotations);
@@ -18,6 +19,7 @@ class AnimatedLayer extends Layer {
     this._playing = Boolean(this.attributes.autoplay);
     this._frameNum = this.attributes.start || 0;
     this._animationStartTime = 0;
+    this._animationCancelID = null;
 
     this._setupAnimationLoop();
   }
@@ -90,7 +92,7 @@ class AnimatedLayer extends Layer {
   }
 
   _animationLoop() {
-    window.requestAnimationFrame(() => {
+    this._animationCancelID = window.requestAnimationFrame(() => {
       const currentTime = window.performance.now();
       if (currentTime > this._animationStartTime + this.attributes.speed) {
         this._animationStartTime = currentTime;
@@ -120,6 +122,13 @@ class AnimatedLayer extends Layer {
     if (this._playing) {
       this.js_trigger("js_framechange");
     }
+  }
+
+  js_delete() {
+    if (this._animationCancelID != null) {
+      window.cancelAnimationFrame(this._animationCancelID);
+    }
+    super.js_delete();
   }
 
   /**

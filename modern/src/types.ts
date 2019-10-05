@@ -27,6 +27,7 @@ export type ModernAppState = {
 export type ModernAction =
   | { type: "SET_MAKI_TREE"; makiTree: MakiTree }
   | { type: "SET_XML_TREE"; xmlTree: XmlTree }
+  | { type: "SKIN_UNLOADED" }
   | { type: "SET_VOLUME"; volume: number };
 
 export type ModernDispatch = (action: ModernAction) => void;
