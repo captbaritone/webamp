@@ -7,6 +7,7 @@ import { run } from "./maki-interpreter/virtualMachine";
 import System from "./runtime/System";
 import runtime from "./runtime";
 import MakiObject from "./runtime/MakiObject";
+import JsScript from "./runtime/JsScript";
 
 export function setMakiTree(makiTree: MakiTree): ModernAction {
   return { type: "SET_MAKI_TREE", makiTree };
@@ -34,8 +35,24 @@ export function gotSkinBlob(blob: Blob, store: ModernStore) {
   };
 }
 
+async function unloadSkin(makiTree) {
+  await Utils.asyncTreeFlatMap(makiTree, async (node: MakiObject) => {
+    if (node instanceof JsScript && node.system) {
+      node.system.onscriptunloading();
+    }
+
+    return node;
+  });
+}
+
 export function gotSkinZip(zip: JSZip, store: ModernStore) {
   return async dispatch => {
+    // unload current skin if one has been loaded
+    if (store.getState().modernSkin.skinLoaded) {
+      await unloadSkin(store.getState().modernSkin.makiTree);
+      dispatch({ type: "SKIN_UNLOADED" });
+    }
+
     const rawXmlTree = await Utils.inlineIncludes(
       await Utils.readXml(zip, "skin.xml"),
       zip
@@ -66,12 +83,12 @@ export function gotSkinZip(zip: JSZip, store: ModernStore) {
             node,
             new Set(["group", "WinampAbstractionLayer", "WasabiXML"])
           );
-          const system = new System(scriptGroup, store);
+          node.system = new System(scriptGroup, store);
           const script = await Utils.readUint8array(zip, node.attributes.file);
           run({
             runtime,
             data: script,
-            system,
+            system: node.system,
             log: false,
           });
           return node;
