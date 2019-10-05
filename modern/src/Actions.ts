@@ -50,7 +50,7 @@ export function gotSkinZip(zip: JSZip, store: ModernStore) {
     // unload current skin if one has been loaded
     if (store.getState().modernSkin.skinLoaded) {
       await unloadSkin(store.getState().modernSkin.makiTree);
-      dispatch({ type: "UNLOAD_SKIN" });
+      dispatch({ type: "SKIN_UNLOADED" });
     }
 
     const rawXmlTree = await Utils.inlineIncludes(
