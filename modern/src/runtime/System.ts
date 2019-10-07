@@ -9,7 +9,6 @@ import * as Actions from "../Actions";
 import * as Selectors from "../Selectors";
 import { ModernStore } from "../types";
 import Layout from "./Layout";
-import { Context } from "react";
 import GuiObject from "./GuiObject";
 
 class System extends MakiObject {
