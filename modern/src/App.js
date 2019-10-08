@@ -566,8 +566,11 @@ function Text({ makiObject }) {
   // display is actually a keyword that is looked up in some sort of map
   // e.g. songname, time
   const nodeText = display;
-  const js_attributes = makiObject.js_fontLookup(font.toLowerCase());
-  const fontFamily = js_attributes == null ? null : js_attributes.fontFamily;
+  let fontFamily;
+  if (font) {
+    const js_attributes = makiObject.js_fontLookup(font.toLowerCase());
+    fontFamily = js_attributes == null ? null : js_attributes.fontFamily;
+  }
   const style = {
     position: "absolute",
     userSelect: "none",
