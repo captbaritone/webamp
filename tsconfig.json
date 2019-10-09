@@ -18,7 +18,7 @@
     "js/**/*.tsx",
     "modern/src/Emitter.ts",
     "modern/src/runtime/AlbumArtLayer.ts",
-    // "modern/src/runtime/AnimatedLayer.ts",
+    "modern/src/runtime/AnimatedLayer.ts",
     "modern/src/runtime/BitList.ts",
     "modern/src/runtime/Browser.ts",
     "modern/src/runtime/Button.ts",
