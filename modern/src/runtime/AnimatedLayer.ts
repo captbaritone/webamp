@@ -3,98 +3,119 @@ import { unimplementedWarning } from "../utils";
 import { XmlNode } from "../types";
 import MakiObject from "./MakiObject";
 
+// Eventually we will want to type the attributes for each MakiObject. To do
+// that we will need patterns and utilities that make it easy. This is a first
+// stab at a pattern with a few utility functions. The idea is that the
+// attributes we expect are all typed as optional strings, since I think all XML
+// attributes are optional. Then we have utility functions which handle type
+// coersion with default values.
+//
+// My goal is that the XML attributes parsed in
+// the constructor and pulled into typed local properties.
+type JSImage = {
+  imgUrl: string;
+  h: number;
+  w: number;
+  x: number;
+  y: number;
+};
+
+type Attributes = {
+  js_assets: {
+    image: JSImage;
+  };
+  end?: string;
+  frameheight?: string;
+  framewidth?: string;
+  autoplay?: string;
+  autoreplay?: string;
+  start?: string;
+  speed?: string;
+  h?: string;
+  w?: string;
+};
+
+function getNumber(attr: string | undefined, fallback: number): number {
+  return attr === undefined ? fallback : Number(attr);
+}
+
+function getBoolean(attr: string | undefined, fallback: boolean): boolean {
+  // TODO: Check if there are othe values that parse as `true`, there probably are.
+  return attr === undefined ? fallback : attr === "1";
+}
+
 class AnimatedLayer extends Layer {
+  _typedAttributes: Attributes;
   _playing: boolean;
+  _autoReplay: boolean;
+  _start: number;
+  _end: number;
+  _speed: number;
   _frameNum: number;
   _animationStartTime: number;
   _animationCancelID: number | null;
 
   constructor(node: XmlNode, parent: MakiObject, annotations: Object = {}) {
     super(node, parent, annotations);
+    // @ts-ignore For now MakiObject defines a much-too-generic version of
+    // attributes. Eventually we will want to be able to define the XML node we
+    // expect locally. For now we will just cheat.
+    this._typedAttributes = this.attributes;
+    const { autoplay, autoreplay, start, speed } = this._typedAttributes;
 
-    this._setAttributeDefaults();
-    this._convertAttributeTypes();
-    this._initializeStartAndEnd();
+    this._playing = getBoolean(autoplay, true);
+    this._autoReplay = getBoolean(autoreplay, true);
+    this._frameNum = getNumber(start, 0);
+    this._start = getNumber(start, 0);
+    this._speed = getNumber(speed, 200);
+    this._end = this._initializeEnd();
 
-    this._playing = Boolean(this.attributes.autoplay);
-    this._frameNum = this.attributes.start || 0;
     this._animationStartTime = 0;
     this._animationCancelID = null;
 
     this._setupAnimationLoop();
   }
 
-  _setAttributeDefaults(): void {
-    const { attributes } = this;
-    if (attributes.autoplay == null) {
-      attributes.autoplay = "0";
-    }
-    if (attributes.autoreplay == null) {
-      attributes.autoreplay = "1";
-    }
-    if (attributes.speed == null) {
-      attributes.speed = "200";
-    }
-  }
+  _initializeEnd(): number {
+    const {
+      end,
+      js_assets,
+      frameheight,
+      framewidth,
+      w,
+      h,
+    } = this._typedAttributes;
 
-  _convertAttributeTypes(): void {
-    const { attributes } = this;
-    if (attributes.autoplay != null) {
-      attributes.autoplay = !!Number(attributes.autoplay);
-    }
-    if (attributes.autoreplay != null) {
-      attributes.autoreplay = !!Number(attributes.autoreplay);
-    }
-    if (attributes.speed != null) {
-      attributes.speed = Number(attributes.speed);
-    }
-    if (attributes.start != null) {
-      attributes.start = Number(attributes.start);
-    }
-    if (attributes.end != null) {
-      attributes.end = Number(attributes.end);
-    }
-  }
-
-  _initializeStartAndEnd(): void {
-    const { attributes } = this;
-    if (attributes.start != null && attributes.end != null) {
-      return;
+    if (end != null) {
+      return getNumber(end, 0);
     }
 
-    const image = attributes.js_assets.image;
+    const { image } = js_assets;
     if (!image) {
-      console.warn("Could not find image: ", attributes.image);
-      return;
+      console.warn("Could not find js_assets image");
+      return 0;
     }
 
-    if (attributes.start == null) {
-      attributes.start = 0;
-    }
+    const typedFrameHeight = getNumber(frameheight, 0);
+    const typedFrameWidth = getNumber(framewidth, 0);
 
-    if (attributes.end == null) {
-      if (attributes.frameheight != null) {
-        attributes.end = Math.ceil(image.h / attributes.frameheight);
-      } else if (attributes.framewidth != null) {
-        attributes.end = Math.ceil(image.w / attributes.framewidth);
-      } else {
-        // In the general case where we don't have a frameheight/framewidth and
-        // the start/end are not both set, we calculate the end frame by
-        // calculating the end in both directions and picking the longer repeat length
-        const width = attributes.w != null ? attributes.w : image.w;
-        const height = attributes.h != null ? attributes.h : image.h;
-        attributes.end = Math.max(
-          Math.ceil(image.w / width),
-          Math.ceil(image.h / height)
-        );
-      }
+    if (typedFrameHeight !== 0) {
+      return Math.ceil(image.h / typedFrameHeight);
+    } else if (typedFrameWidth !== 0) {
+      return Math.ceil(image.w / typedFrameWidth);
     }
+    // In the general case where we don't have a frameheight/framewidth and
+    // the start/end are not both set, we calculate the end frame by
+    // calculating the end in both directions and picking the longer repeat length
+    const width = getNumber(w, image.w);
+    const height = getNumber(h, image.h);
+    return Math.max(Math.ceil(image.w / width), Math.ceil(image.h / height));
   }
 
   _animationLoop() {
     this._animationCancelID = window.requestAnimationFrame(() => {
       const currentTime = window.performance.now();
-      if (currentTime > this._animationStartTime + this.attributes.speed) {
+      if (currentTime > this._animationStartTime + this._speed) {
         this._animationStartTime = currentTime;
         this.js_trigger("js_framechange");
       } else {
@@ -108,7 +129,7 @@ class AnimatedLayer extends Layer {
       this._frameNum += 1;
       if (this._frameNum > this.getendframe()) {
         this._frameNum = this.getstartframe();
-        if (!this.attributes.autoreplay) {
+        if (!this._autoReplay) {
           return;
         }
       }
@@ -159,7 +180,7 @@ class AnimatedLayer extends Layer {
   }
 
   setspeed(msperframe: number): void {
-    this.attributes.speed = msperframe;
+    this._speed = msperframe;
   }
 
   gotoframe(framenum: number): void {
@@ -192,7 +213,7 @@ class AnimatedLayer extends Layer {
   }
 
   setstartframe(framenum: number): void {
-    this.attributes.start = framenum;
+    this._start = framenum;
   }
 
   setendframe(framenum: number): void {
@@ -201,7 +222,7 @@ class AnimatedLayer extends Layer {
 
   setautoreplay(onoff: boolean): void {
     // TODO: should this trigger the animation if it isn't currently runnnig?
-    this.attributes.autoreplay = onoff;
+    this._autoReplay = onoff;
   }
 
   isplaying(): boolean {
@@ -219,11 +240,11 @@ class AnimatedLayer extends Layer {
   }
 
   getstartframe(): number {
-    return this.attributes.start;
+    return this._start;
   }
 
   getendframe(): number {
-    return this.attributes.end;
+    return this._end;
   }
 
   getdirection() {
@@ -232,7 +253,7 @@ class AnimatedLayer extends Layer {
   }
 
   getautoreplay(): boolean {
-    return this.attributes.autoreplay;
+    return this._autoReplay;
   }
 
   getcurframe(): number {
