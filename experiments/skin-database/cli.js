@@ -72,7 +72,6 @@ async function main() {
     default:
       console.log(`Unknown command ${argv._[0]}`);
   }
-  await db.close();
 }
 
 main();
