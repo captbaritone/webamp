@@ -64,7 +64,8 @@ client.on("message", async message => {
     logger.warn("Unknown command", {
       command,
       user: message.author.username,
-      args
+      args,
+      alert: true
     });
     return;
   }
