@@ -634,7 +634,7 @@ class System extends MakiObject {
       return defvalue;
     }
     // @ts-ignore We know the section exists
-    this._privateString.get(section).get(item);
+    return this._privateString.get(section).get(item);
   }
 
   setpublicstring(item: string, value: string) {
@@ -1051,7 +1051,7 @@ class System extends MakiObject {
     return;
   }
 
-  getviewportwidthfromguiobject(g) {
+  getviewportwidthfromguiobject(g: GuiObject) {
     unimplementedWarning("getviewportwidthfromguiobject");
     return;
   }
@@ -1066,7 +1066,7 @@ class System extends MakiObject {
     return;
   }
 
-  getmonitorwidthfromguiobject(g) {
+  getmonitorwidthfromguiobject(g: GuiObject) {
     unimplementedWarning("getmonitorwidthfromguiobject");
     return;
   }
@@ -1076,7 +1076,7 @@ class System extends MakiObject {
     return;
   }
 
-  getviewportheightfromguiobject(g) {
+  getviewportheightfromguiobject(g: GuiObject) {
     unimplementedWarning("getviewportheightfromguiobject");
     return;
   }
@@ -1091,7 +1091,7 @@ class System extends MakiObject {
     return;
   }
 
-  getmonitorheightfromguiobject(g) {
+  getmonitorheightfromguiobject(g: GuiObject) {
     unimplementedWarning("getmonitorheightfromguiobject");
     return;
   }
@@ -1101,7 +1101,7 @@ class System extends MakiObject {
     return;
   }
 
-  getmonitorleftfromguiobject(g) {
+  getmonitorleftfromguiobject(g: GuiObject) {
     unimplementedWarning("getmonitorleftfromguiobject");
     return;
   }
@@ -1116,7 +1116,7 @@ class System extends MakiObject {
     return;
   }
 
-  getmonitortopfromguiobject(g) {
+  getmonitortopfromguiobject(g: GuiObject) {
     unimplementedWarning("getmonitortopfromguiobject");
     return;
   }
@@ -1126,12 +1126,12 @@ class System extends MakiObject {
     return;
   }
 
-  getviewportleftfromguiobject(g) {
+  getviewportleftfromguiobject(g: GuiObject) {
     unimplementedWarning("getviewportleftfromguiobject");
     return;
   }
 
-  getviewporttopfromguiobject(g) {
+  getviewporttopfromguiobject(g: GuiObject) {
     unimplementedWarning("getviewporttopfromguiobject");
     return;
   }
