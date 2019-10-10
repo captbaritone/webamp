@@ -151,4 +151,5 @@ module.exports = {
   getStats,
   getSkinToTweet,
   markAsTweeted,
+  getTweetableSkins,
 };
