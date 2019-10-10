@@ -26,11 +26,6 @@ from tempfile import NamedTemporaryFile
 from PIL import Image
 from docopt import docopt
 from collections import defaultdict
-from discord_hooks import Webhook
-
-print(sys.argv)
-
-# Create webhook
 from config import CONFIG
 
 
@@ -83,7 +78,7 @@ def tweet_skin(md5, skin_name, dry):
         print("URL %s is no good. Aborting." % skin_url)
         return
 
-    tweet_image(skin_name, md5, skin_url, screenshot_path, dry)
+    return tweet_image(skin_name, md5, skin_url, screenshot_path, dry)
 
 
 def get_skin_url(md5):
@@ -122,12 +117,8 @@ Download: %s""" % (
         skin_url,
     )
     if not dry:
-        url = tweet(status_message, screenshot_path)
-        Webhook(CONFIG["discord_url"], msg=url).post()
-    else:
-        print("Would have tweeted: %s" % status_message)
-        print("With media file: %s" % screenshot_path)
-    print("Done!")
+        return tweet(status_message, screenshot_path)
+    return "DUMMY URL"
 
 
 # TODO: Deupe and make a generator
@@ -172,7 +163,7 @@ if __name__ == "__main__":
     elif arguments.get("tweet"):
         hash = arguments.get("<hash>")
         filename = arguments.get("<filename>")
-        tweet_skin(hash, filename, dry)
+        print(tweet_skin(hash, filename, dry))
     elif arguments.get("sort"):
         api = get_api()
         all_tweets = get_all_tweets()
