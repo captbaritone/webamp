@@ -4,7 +4,7 @@ const { getStats } = require("../../s3");
 async function handler(message) {
   const info = getCache();
   let classic = 0;
-  const { tweeted, approved, rejected } = await getStats();
+  const { tweeted, approved, rejected, tweetable } = await getStats();
   Object.values(info).forEach(skin => {
     if (skin.type === "CLASSIC") {
       classic++;
@@ -14,6 +14,7 @@ async function handler(message) {
 Tweeted: ${tweeted.toLocaleString()}
 Rejected: ${rejected.toLocaleString()}
 Approved: ${approved.toLocaleString()}
+Tweetable: ${tweetable.toLocaleString()}
  `);
 }
 

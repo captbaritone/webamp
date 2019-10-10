@@ -56,15 +56,17 @@ async function getStatus(md5) {
 }
 
 async function getStats() {
-  const [approved, rejected, tweeted] = await Promise.all([
+  const [approved, rejected, tweeted, tweetable] = await Promise.all([
     getFile("approved.txt"),
     getFile("rejected.txt"),
     getFile("tweeted.txt"),
+    getTweetableSkins()
   ]);
   return {
-    approved: new Set(approved).size - new Set(tweeted).size,
-    rejected: new Set(rejected).size,
-    tweeted: new Set(tweeted).size,
+    approved: new Set(getLines(approved)).size,
+    rejected: new Set(getLines(rejected)).size,
+    tweeted: new Set(getLines(tweeted)).size,
+    tweetable: tweetable.length
   };
 }
 
@@ -98,6 +100,33 @@ async function getSkinToReview() {
   return toReview[0];
 }
 
+async function getTweetableSkins() {
+  console.log("Reading from s3...");
+  const [filenames, approved, rejected, tweeted] = await Promise.all([
+    getFile("filenames.txt"),
+    getFile("approved.txt"),
+    getFile("rejected.txt"),
+    getFile("tweeted.txt"),
+  ]);
+  console.log("Got all files");
+
+  const rejectedSet = new Set(getLines(rejected));
+  const tweetedSet = new Set(getLines(tweeted));
+  const approvedSet = new Set(getLines(approved));
+
+  const filenameLines = getLines(filenames);
+  return filenameLines.map(line => {
+    const [md5, ...filename] = line.split(" ");
+    return { md5, filename: filename.join(" ") };
+  }).filter(({md5}) => {
+    return approvedSet.has(md5) && !rejectedSet.has(md5) && !tweetedSet.has(md5);
+  });
+}
+async function getSkinToTweet() {
+  const tweetableSkins = await getTweetableSkins();
+  return tweetableSkins[0] || null;
+}
+
 async function appendLine(key, line) {
   const currentContent = await getFile(key);
   const newContent = `${currentContent}${line}\n`;
@@ -112,4 +141,4 @@ async function reject(md5) {
   return appendLine("rejected.txt", md5);
 }
 
-module.exports = { getSkinToReview, approve, reject, getStatus, getStats };
+module.exports = { getSkinToReview, approve, reject, getStatus, getStats, getSkinToTweet };
