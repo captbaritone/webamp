@@ -72,9 +72,9 @@ async function main() {
       webhook.send(output.trim());
       await S3.markAsTweeted(md5);
       const remainingSkinCount = tweetableSkins.length - 1;
-      if (remainingSkinCount < 20) {
+      if (remainingSkinCount < 10) {
         webhook.send(
-          `Only ${remainingSkinCount} approved skins left! Could someone please \`!review\` some more?`
+          `Only ${remainingSkinCount} approved skins left. Could someone please \`!review\` some more?`
         );
       }
       logger.info("Tweeted a skin", {
