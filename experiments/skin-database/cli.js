@@ -7,6 +7,7 @@ const path = require("path");
 const logger = require("./logger");
 const Skins = require("./data/skins");
 const db = require("./db");
+const S3 = require("./s3");
 
 const { spawn } = require("child_process");
 
@@ -39,7 +40,12 @@ function spawnPromise(command, args) {
 async function main() {
   switch (argv._[0]) {
     case "tweet":
-      const { md5, filename } = await findTweetableSkin();
+      const tweetableSkin = await findTweetableSkin();
+      if(tweetableSkin == null) {
+        logger.info("Could not find a skin to tweet");
+        break;
+      }
+      const { md5, filename } = tweetableSkin;
       const output = await spawnPromise(
         path.resolve(__dirname, "../tweetBot/tweet.py"),
         [
@@ -49,6 +55,7 @@ async function main() {
           //, "--dry"
         ]
       );
+      S3.markAsTweeted(md5);
       logger.info("Tweeted a skin", { md5, filename, output });
       break;
     case "fetch-metadata":
