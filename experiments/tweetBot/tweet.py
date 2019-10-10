@@ -151,7 +151,7 @@ Download: %s""" % (
     if not dry:
         url = tweet(status_message, screenshot_path)
         Webhook(CONFIG["discord_url"], msg=url).post()
-        append_line("tweeted.txt", md5)
+        # append_line("tweeted.txt", md5)
     else:
         print("Would have tweeted: %s" % status_message)
         print("With media file: %s" % screenshot_path)

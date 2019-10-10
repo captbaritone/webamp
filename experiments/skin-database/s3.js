@@ -60,25 +60,23 @@ async function getStats() {
     getFile("approved.txt"),
     getFile("rejected.txt"),
     getFile("tweeted.txt"),
-    getTweetableSkins()
+    getTweetableSkins(),
   ]);
   return {
     approved: new Set(getLines(approved)).size,
     rejected: new Set(getLines(rejected)).size,
     tweeted: new Set(getLines(tweeted)).size,
-    tweetable: tweetable.length
+    tweetable: tweetable.length,
   };
 }
 
 async function getSkinToReview() {
-  console.log("Reading from s3...");
   const [filenames, approved, rejected, tweeted] = await Promise.all([
     getFile("filenames.txt"),
     getFile("approved.txt"),
     getFile("rejected.txt"),
     getFile("tweeted.txt"),
   ]);
-  console.log("Got all files");
 
   const approvedSet = new Set(getLines(approved));
   const rejectedSet = new Set(getLines(rejected));
@@ -89,38 +87,38 @@ async function getSkinToReview() {
     const [md5, ...filename] = line.split(" ");
     return { md5, filename: filename.join(" ") };
   });
-  const toReview = skins.filter(({ md5 }) => {
+  return skins.find(({ md5 }) => {
     return !(
       approvedSet.has(md5) ||
       rejectedSet.has(md5) ||
       tweetedSet.has(md5)
     );
   });
-  console.log(toReview.length, "skins to review");
-  return toReview[0];
 }
 
 async function getTweetableSkins() {
-  console.log("Reading from s3...");
   const [filenames, approved, rejected, tweeted] = await Promise.all([
     getFile("filenames.txt"),
     getFile("approved.txt"),
     getFile("rejected.txt"),
     getFile("tweeted.txt"),
   ]);
-  console.log("Got all files");
 
   const rejectedSet = new Set(getLines(rejected));
   const tweetedSet = new Set(getLines(tweeted));
   const approvedSet = new Set(getLines(approved));
 
   const filenameLines = getLines(filenames);
-  return filenameLines.map(line => {
-    const [md5, ...filename] = line.split(" ");
-    return { md5, filename: filename.join(" ") };
-  }).filter(({md5}) => {
-    return approvedSet.has(md5) && !rejectedSet.has(md5) && !tweetedSet.has(md5);
-  });
+  return filenameLines
+    .map(line => {
+      const [md5, ...filename] = line.split(" ");
+      return { md5, filename: filename.join(" ") };
+    })
+    .filter(({ md5 }) => {
+      return (
+        approvedSet.has(md5) && !rejectedSet.has(md5) && !tweetedSet.has(md5)
+      );
+    });
 }
 async function getSkinToTweet() {
   const tweetableSkins = await getTweetableSkins();
@@ -141,4 +139,16 @@ async function reject(md5) {
   return appendLine("rejected.txt", md5);
 }
 
-module.exports = { getSkinToReview, approve, reject, getStatus, getStats, getSkinToTweet };
+async function markAsTweeted(md5) {
+  return appendLine("tweeted.txt", md5);
+}
+
+module.exports = {
+  getSkinToReview,
+  approve,
+  reject,
+  getStatus,
+  getStats,
+  getSkinToTweet,
+  markAsTweeted,
+};
