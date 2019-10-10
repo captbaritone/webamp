@@ -10,7 +10,7 @@ const filter = reaction => {
 async function postSkin({ md5, title, dest }) {
   const skin = await Skins.getSkinByMd5(md5);
   if (skin == null) {
-    logger.warn("Could not find skin for md5", { md5 });
+    logger.warn("Could not find skin for md5", { md5, alert: true });
     return;
   }
   const {
@@ -46,10 +46,14 @@ async function postSkin({ md5, title, dest }) {
       if (String(color).length === 6) {
         embed.setColor(`#${color}`);
       } else {
-        logger.warn("Did not get a safe color", { averageColor, color });
+        logger.warn("Did not get a safe color", {
+          averageColor,
+          color,
+          warn: true
+        });
       }
     } catch (e) {
-      logger.error("Could not use color", averageColor);
+      logger.error("Could not use color", { averageColor, alert: true });
     }
   }
   if (emails != null && emails.length) {

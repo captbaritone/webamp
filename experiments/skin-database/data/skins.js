@@ -64,7 +64,7 @@ async function getMd5ByAnything(anything) {
 async function getSkinByMd5(md5) {
   const skin = await skins.findOne({ md5, type: "CLASSIC" });
   if (skin == null) {
-    logger.warn("Could not find skin in database", { md5 });
+    logger.warn("Could not find skin in database", { md5, alert: true });
     return null;
   }
   const internetArchiveItem = await getInternetArchiveItem(md5);
