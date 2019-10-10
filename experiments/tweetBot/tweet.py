@@ -21,7 +21,6 @@ import random
 import json
 import urllib
 import hashlib
-import boto3
 import twitter
 from tempfile import NamedTemporaryFile
 from PIL import Image
@@ -71,32 +70,6 @@ def md5_file(path):
         for chunk in iter(lambda: f.read(4096), b""):
             hash_md5.update(chunk)
     return hash_md5.hexdigest()
-
-
-def get_lines(path):
-    temp_path = NamedTemporaryFile().name
-    s3 = boto3.resource("s3")
-    s3.meta.client.download_file("winamp2-js-skins", path, temp_path)
-    with open(temp_path, "r") as f:
-        return [l.strip() for l in f.readlines()]
-
-
-def append_line(path, line):
-    temp_path = NamedTemporaryFile().name
-    s3 = boto3.resource("s3")
-    s3.meta.client.download_file("winamp2-js-skins", path, temp_path)
-    with open(temp_path, "a") as f:
-        f.write("%s\n" % line)
-    s3.meta.client.upload_file(temp_path, "winamp2-js-skins", path)
-
-
-# Not currently used.
-def notify(number_of_potential):
-    msg = (
-        "I'm down to only %s approved skins to tweet. You should review some more."
-        % number_of_potentials
-    )
-    Webhook(CONFIG["discord_url"], msg=msg).post()
 
 
 def tweet_skin(md5, skin_name, dry):
@@ -151,7 +124,6 @@ Download: %s""" % (
     if not dry:
         url = tweet(status_message, screenshot_path)
         Webhook(CONFIG["discord_url"], msg=url).post()
-        # append_line("tweeted.txt", md5)
     else:
         print("Would have tweeted: %s" % status_message)
         print("With media file: %s" % screenshot_path)
