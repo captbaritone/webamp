@@ -1,11 +1,8 @@
 const fs = require("fs");
 const path = require("path");
 const Discord = require("discord.js");
-const config = require("../config");
 const logger = require("../logger");
 const DiscordWinstonTransport = require("../DiscordWinstonTransport");
-
-const CAPTBARITONE_USER_ID = "254029485463044116";
 
 const client = new Discord.Client();
 
@@ -79,10 +76,7 @@ client.on("error", e => {
 });
 
 async function main() {
-  await client.login(config.discordToken);
-  const captbaritone = await client.fetchUser(CAPTBARITONE_USER_ID);
-  const channel = await captbaritone.createDM();
-  logger.add(new DiscordWinstonTransport(channel));
+  DiscordWinstonTransport.addToLogger(client, logger);
 }
 
 main();

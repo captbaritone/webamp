@@ -1,9 +1,17 @@
+const config = require("./config");
 const { Transport } = require("winston");
 
 class DiscordWinstonTransport extends Transport {
   constructor(channel) {
     super();
     this._channel = channel;
+  }
+
+  static async addToLogger(client, logger) {
+    await client.login(config.discordToken);
+    const captbaritone = await client.fetchUser(config.CAPTBARITONE_USER_ID);
+    const channel = await captbaritone.createDM();
+    logger.add(new DiscordWinstonTransport(channel));
   }
 
   async log(info, callback) {
