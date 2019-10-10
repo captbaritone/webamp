@@ -1,4 +1,11 @@
-import { MakiTree, ModernAction, ModernStore, XmlTree, XmlNode } from "./types";
+import {
+  MakiTree,
+  ModernAction,
+  ModernStore,
+  XmlTree,
+  XmlNode,
+  Thunk,
+} from "./types";
 import JSZip from "jszip";
 import * as Utils from "./utils";
 import initialize from "./initialize";
@@ -13,7 +20,7 @@ export function setMakiTree(makiTree: MakiTree): ModernAction {
   return { type: "SET_MAKI_TREE", makiTree };
 }
 
-export function setXmlTree(xmlTree: XmlTree) {
+export function setXmlTree(xmlTree: XmlTree): Thunk {
   return async dispatch => {
     dispatch({
       type: "SET_XML_TREE",
@@ -22,20 +29,20 @@ export function setXmlTree(xmlTree: XmlTree) {
   };
 }
 
-export function gotSkinUrl(skinUrl: string, store: ModernStore) {
+export function gotSkinUrl(skinUrl: string, store: ModernStore): Thunk {
   return async dispatch => {
     const resp = await fetch(skinUrl);
     dispatch(gotSkinBlob(await resp.blob(), store));
   };
 }
 
-export function gotSkinBlob(blob: Blob, store: ModernStore) {
+export function gotSkinBlob(blob: Blob, store: ModernStore): Thunk {
   return async dispatch => {
     dispatch(gotSkinZip(await JSZip.loadAsync(blob), store));
   };
 }
 
-async function unloadSkin(makiTree) {
+async function unloadSkin(makiTree: MakiTree): Promise<void> {
   await Utils.asyncTreeFlatMap(makiTree, async (node: MakiObject) => {
     if (node instanceof JsScript && node.system) {
       node.system.onscriptunloading();
@@ -45,7 +52,7 @@ async function unloadSkin(makiTree) {
   });
 }
 
-export function gotSkinZip(zip: JSZip, store: ModernStore) {
+export function gotSkinZip(zip: JSZip, store: ModernStore): Thunk {
   return async dispatch => {
     // unload current skin if one has been loaded
     if (store.getState().modernSkin.skinLoaded) {
@@ -53,10 +60,11 @@ export function gotSkinZip(zip: JSZip, store: ModernStore) {
       dispatch({ type: "SKIN_UNLOADED" });
     }
 
-    const rawXmlTree = await Utils.inlineIncludes(
-      await Utils.readXml(zip, "skin.xml"),
-      zip
-    );
+    const skinXml = await Utils.readXml(zip, "skin.xml");
+    if (skinXml == null) {
+      throw new Error("Could not find skin.xml in skin");
+    }
+    const rawXmlTree = await Utils.inlineIncludes(skinXml, zip);
     const xmlTree = Utils.mapTreeBreadth(
       rawXmlTree,
       (node: XmlNode, parent: XmlNode) => {
@@ -66,7 +74,7 @@ export function gotSkinZip(zip: JSZip, store: ModernStore) {
 
     dispatch(setXmlTree(xmlTree));
 
-    const makiTree = await initialize(zip, xmlTree, store);
+    const makiTree = await initialize(zip, xmlTree);
     // Execute scripts
     await Utils.asyncTreeFlatMap(makiTree, async (node: MakiObject) => {
       switch (node.name) {

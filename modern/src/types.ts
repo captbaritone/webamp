@@ -30,7 +30,12 @@ export type ModernAction =
   | { type: "SKIN_UNLOADED" }
   | { type: "SET_VOLUME"; volume: number };
 
-export type ModernDispatch = (action: ModernAction) => void;
+export type ModernDispatch = (action: ModernAction | Thunk) => void;
+
+export type Thunk = (
+  dispatch: ModernDispatch,
+  getState: () => ModernAppState
+) => void;
 
 export type ModernStore = {
   getState(): ModernAppState;
