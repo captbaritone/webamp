@@ -3,6 +3,7 @@ const path = require("path");
 const skins = db.get("skins");
 const iaItems = db.get("internetArchiveItems");
 const S3 = require("../s3");
+const logger = require("../logger");
 
 function getSkinRecord(skin) {
   const {
@@ -63,19 +64,22 @@ async function getMd5ByAnything(anything) {
 async function getSkinByMd5(md5) {
   const skin = await skins.findOne({ md5, type: "CLASSIC" });
   if (skin == null) {
+    logger.warn("Could not find skin in database", { md5 });
     return null;
   }
   const internetArchiveItem = await getInternetArchiveItem(md5);
-  if(internetArchiveItem == null) {
-    return null;
+  let internetArchiveUrl = null;
+  let internetArchiveItemName = null;
+  if (internetArchiveItem != null) {
+    internetArchiveItemName = internetArchiveItem.identifier;
+    internetArchiveUrl = getInternetArchiveUrl(internetArchiveItemName);
   }
-  const itemName = internetArchiveItem.identifier;
   const tweetStatus = await getTweetStatus(md5);
   return {
     ...getSkinRecord(skin),
-    internetArchiveUrl: getInternetArchiveUrl(itemName),
-    internetArchiveItemName: itemName,
     tweetStatus,
+    internetArchiveItemName,
+    internetArchiveUrl,
   };
 }
 
