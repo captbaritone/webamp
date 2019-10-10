@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 const argv = require("yargs").argv;
-const findTweetableSkin = require("./tasks/findTweetableSkins");
 const fetchInternetArchiveMetadata = require("./tasks/fetchInternetArchiveMetadata");
 const ensureInternetArchiveItemsIndexByMd5 = require("./tasks/ensureInternetArchiveItemsIndexByMd5");
 const path = require("path");
