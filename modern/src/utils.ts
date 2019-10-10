@@ -434,7 +434,10 @@ function handleMouseMove(e: MouseEvent): void {
   mousePosition = { x: e.clientX, y: e.clientY };
 }
 
-document.addEventListener("mousemove", handleMouseMove);
+// It's possible we are in a Node envionment
+if (typeof document !== "undefined") {
+  document.addEventListener("mousemove", handleMouseMove);
+}
 
 export function getMousePosition() {
   return mousePosition;
