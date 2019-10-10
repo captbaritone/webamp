@@ -1,7 +1,6 @@
 const Discord = require("discord.js");
 const rgbHex = require("rgb-hex");
 const Skins = require("../data/skins");
-const { approve, reject } = require("./s3");
 const logger = require("../logger");
 
 const filter = reaction => {

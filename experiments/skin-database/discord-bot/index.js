@@ -56,7 +56,7 @@ client.on("message", async message => {
     return;
   }
   const command = rawCommand.slice(1);
-  logger.info("User triggered WebampBot command", {
+  logger.info(`User triggered WebampBot command`, {
     command,
     user: message.author.username,
     args,
