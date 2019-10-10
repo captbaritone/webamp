@@ -49,7 +49,7 @@ async function main() {
           //, "--dry"
         ]
       );
-      logger.info("Tweeted a skin", { md5, filename, ...output });
+      logger.info("Tweeted a skin", { md5, filename, output });
       break;
     case "fetch-metadata":
       console.log("Going to download metadata from the Internet Archive");
