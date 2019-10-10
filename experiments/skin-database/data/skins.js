@@ -66,6 +66,9 @@ async function getSkinByMd5(md5) {
     return null;
   }
   const internetArchiveItem = await getInternetArchiveItem(md5);
+  if(internetArchiveItem == null) {
+    return null;
+  }
   const itemName = internetArchiveItem.identifier;
   const tweetStatus = await getTweetStatus(md5);
   return {
