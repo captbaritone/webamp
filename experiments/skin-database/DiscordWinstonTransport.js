@@ -15,7 +15,10 @@ class DiscordWinstonTransport extends Transport {
   }
 
   async log(info, callback) {
-    const { message, ...rest } = info;
+    const { message, alert, ...rest } = info;
+    if (!alert) {
+      return;
+    }
     let dataString = null;
     try {
       dataString = JSON.stringify(rest, null, 2);
