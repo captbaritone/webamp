@@ -2,14 +2,9 @@
 
 const fs = require("fs");
 const path = require("path");
-const parse = require("../parser").default;
 const JSZip = require("jszip");
 const Utils = require("../../utils");
-const { getClass, getFunctionObject, getFormattedId } = require("../objects");
 const glob = require("glob");
-
-const CALL_OPCODES = new Set([24, 112]);
-const SKIN_FILENAME_BLACKLIST = new Set(["Fuzzy_Muffins.wal"]);
 
 function findWals(parentDir) {
   return new Promise((resolve, reject) => {
@@ -68,10 +63,6 @@ async function main(parentDir) {
   // one at a time for some reason.  ¯\_(ツ)_/¯
   for (const walPath of paths) {
     try {
-      const fileName = path.basename(walPath);
-      if (SKIN_FILENAME_BLACKLIST.has(fileName)) {
-        continue;
-      }
       console.error(`Working on ${walPath}`);
       attributeData.push(...(await getAttributeDataFromWal(walPath)));
     } catch (e) {
