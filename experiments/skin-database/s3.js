@@ -120,10 +120,6 @@ async function getTweetableSkins() {
       );
     });
 }
-async function getSkinToTweet() {
-  const tweetableSkins = await getTweetableSkins();
-  return tweetableSkins[0] || null;
-}
 
 async function appendLine(key, line) {
   const currentContent = await getFile(key);
@@ -149,7 +145,6 @@ module.exports = {
   reject,
   getStatus,
   getStats,
-  getSkinToTweet,
   markAsTweeted,
   getTweetableSkins,
 };
