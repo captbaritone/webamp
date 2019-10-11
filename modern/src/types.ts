@@ -12,7 +12,6 @@ export type XmlNode = {
 export type XmlTree = XmlNode;
 
 export type ModernSkinState = {
-  skinUrl: string | null;
   makiTree: MakiTree | null;
   xmlTree: XmlTree | null;
   volume: number;
@@ -26,7 +25,6 @@ export type ModernAppState = {
 };
 
 export type ModernAction =
-  | { type: "SET_SKIN_URL"; skinUrl: string }
   | { type: "SET_MAKI_TREE"; makiTree: MakiTree }
   | { type: "SET_XML_TREE"; xmlTree: XmlTree }
   | { type: "SKIN_UNLOADED" }

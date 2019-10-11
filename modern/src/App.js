@@ -663,9 +663,10 @@ function Modern() {
   const dispatch = useDispatch();
   const store = useStore();
   const root = useSelector(Selectors.getMakiTree);
-  const skinUrl = useSelector(Selectors.getSkinUrl);
+  const [skinUrl, setSkinUrl] = React.useState(null);
   React.useEffect(() => {
     const defaultSkinUrl = getSkinUrlFromQueryParams() || skinUrls[0];
+    setSkinUrl(defaultSkinUrl);
     dispatch(Actions.gotSkinUrl(defaultSkinUrl, store));
   }, [store]);
   if (root == null) {
@@ -686,6 +687,7 @@ function Modern() {
         value={skinUrl}
         onChange={e => {
           const newSkinUrl = e.target.value;
+          setSkinUrl(newSkinUrl);
           // TODO: This should really go in a middleware somewhere.
           setSkinUrlToQueryParams(newSkinUrl);
           dispatch(Actions.gotSkinUrl(newSkinUrl, store));
