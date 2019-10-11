@@ -95,6 +95,10 @@ const parsers = {
   truetypefont: async (node, parent, zip) => {
     const { file } = node.attributes;
     const font = Utils.getCaseInsensitveFile(zip, file);
+    if (!font) {
+      console.warn(`Unable to find font file ${file}`);
+      return new MakiObject(node, parent);
+    }
     const fontBlob = await font.async("blob");
     const fontUrl = await Utils.getUrlFromBlob(fontBlob);
     const fontFamily = `font-${Utils.getId()}-${file.replace(/\./, "_")}`;
