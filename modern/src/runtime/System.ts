@@ -119,7 +119,10 @@ class System extends MakiObject {
   }
 
   getprivateint(section: string, item: string, defvalue: number): number {
-    if (!this._privateInt.has(section)) {
+    if (
+      !this._privateInt.has(section) ||
+      !this._privateInt.get(section).has(item)
+    ) {
       return defvalue;
     }
     // @ts-ignore We know this section exists
@@ -630,7 +633,10 @@ class System extends MakiObject {
   }
 
   getprivatestring(section: string, item: string, defvalue: string): string {
-    if (!this._privateString.has(section)) {
+    if (
+      !this._privateString.has(section) ||
+      !this._privateString.get(section).has(item)
+    ) {
       return defvalue;
     }
     // @ts-ignore We know the section exists
