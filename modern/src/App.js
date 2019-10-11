@@ -282,7 +282,7 @@ function Layout({ makiObject }) {
 }
 
 function Layer({ makiObject }) {
-  const { id, js_assets, image, x, y } = makiObject.attributes;
+  const { id, js_assets, image, x, y, w, h } = makiObject.attributes;
   if (image == null) {
     console.warn("Got an Layer without an image. Rendering null", id);
     return null;
@@ -305,11 +305,19 @@ function Layer({ makiObject }) {
   if (img.y !== undefined) {
     params.backgroundPositionY = -Number(img.y);
   }
-  if (img.w !== undefined) {
-    params.width = Number(img.w);
+  if (w !== undefined || img.w !== undefined) {
+    if (w) {
+      params.width = Number(w);
+    } else {
+      params.width = Number(img.w);
+    }
   }
-  if (img.h !== undefined) {
-    params.height = Number(img.h);
+  if (h !== undefined || img.h !== undefined) {
+    if (h) {
+      params.height = Number(h);
+    } else {
+      params.height = Number(img.h);
+    }
   }
   if (img.imgUrl !== undefined) {
     params.backgroundImage = `url(${img.imgUrl}`;
