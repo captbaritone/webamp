@@ -98,7 +98,12 @@ const parsers = {
     const fontBlob = await font.async("blob");
     const fontUrl = await Utils.getUrlFromBlob(fontBlob);
     const fontFamily = `font-${Utils.getId()}-${file.replace(/\./, "_")}`;
-    await Utils.loadFont(fontUrl, fontFamily);
+    try {
+      await Utils.loadFont(fontUrl, fontFamily);
+    } catch {
+      console.warn(`Failed to load font ${fontFamily}`);
+      return new MakiObject(node, parent);
+    }
     return new MakiObject(node, parent, { fontFamily });
   },
   component: (node, parent) => new WindowHolder(node, parent, undefined),
