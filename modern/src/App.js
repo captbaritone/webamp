@@ -663,6 +663,7 @@ function Modern() {
   const dispatch = useDispatch();
   const store = useStore();
   const root = useSelector(Selectors.getMakiTree);
+  const skinUrl = useSelector(Selectors.getSkinUrl);
   React.useEffect(() => {
     const defaultSkinUrl = getSkinUrlFromQueryParams() || skinUrls[0];
     dispatch(Actions.gotSkinUrl(defaultSkinUrl, store));
@@ -682,6 +683,7 @@ function Modern() {
       </DropTarget>
       <select
         style={{ position: "absolute", bottom: 0 }}
+        value={skinUrl}
         onChange={e => {
           const newSkinUrl = e.target.value;
           // TODO: This should really go in a middleware somewhere.

@@ -16,6 +16,10 @@ import runtime from "./runtime";
 import MakiObject from "./runtime/MakiObject";
 import JsScript from "./runtime/JsScript";
 
+function setSkinUrl(skinUrl: string): ModernAction {
+  return { type: "SET_SKIN_URL", skinUrl };
+}
+
 export function setMakiTree(makiTree: MakiTree): ModernAction {
   return { type: "SET_MAKI_TREE", makiTree };
 }
@@ -31,6 +35,7 @@ export function setXmlTree(xmlTree: XmlTree): Thunk {
 
 export function gotSkinUrl(skinUrl: string, store: ModernStore): Thunk {
   return async dispatch => {
+    dispatch(setSkinUrl(skinUrl));
     const resp = await fetch(skinUrl);
     dispatch(gotSkinBlob(await resp.blob(), store));
   };

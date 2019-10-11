@@ -1,5 +1,9 @@
 import { ModernAppState, MakiTree } from "./types";
 
+export function getSkinUrl(state: ModernAppState): MakiTree | null {
+  return state.modernSkin.skinUrl;
+}
+
 export function getMakiTree(state: ModernAppState): MakiTree | null {
   return state.modernSkin.makiTree;
 }

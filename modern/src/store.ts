@@ -4,6 +4,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
 
 const defaultState = {
+  skinUrl: null,
   makiTree: null,
   volume: 127,
   rightVUMeter: 127,
@@ -17,6 +18,8 @@ function modernSkinReducer(
   action: ModernAction
 ): ModernSkinState {
   switch (action.type) {
+    case "SET_SKIN_URL":
+      return { ...state, skinUrl: action.skinUrl };
     case "SET_MAKI_TREE":
       return { ...state, makiTree: action.makiTree, skinLoaded: true };
     case "SET_XML_TREE":
