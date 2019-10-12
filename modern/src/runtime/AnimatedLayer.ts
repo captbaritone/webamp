@@ -63,7 +63,7 @@ class AnimatedLayer extends Layer {
     this._typedAttributes = this.attributes;
     const { autoplay, autoreplay, start, speed } = this._typedAttributes;
 
-    this._playing = getBoolean(autoplay, true);
+    this._playing = getBoolean(autoplay, false);
     this._autoReplay = getBoolean(autoreplay, true);
     this._frameNum = getNumber(start, 0);
     this._start = getNumber(start, 0);
