@@ -63,6 +63,7 @@ class AnimatedLayer extends Layer {
     this._typedAttributes = this.attributes;
     const { autoplay, autoreplay, start, speed } = this._typedAttributes;
 
+    // Default values from http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Canimatedlayer.2F.3E
     this._playing = getBoolean(autoplay, false);
     this._autoReplay = getBoolean(autoreplay, true);
     this._frameNum = getNumber(start, 0);
