@@ -305,19 +305,15 @@ function Layer({ makiObject }) {
   if (img.y !== undefined) {
     params.backgroundPositionY = -Number(img.y);
   }
-  if (w !== undefined || img.w !== undefined) {
-    if (w) {
-      params.width = Number(w);
-    } else {
-      params.width = Number(img.w);
-    }
+  if (w !== undefined) {
+    params.width = Number(w);
+  } else if (img.w !== undefined) {
+    params.width = Number(img.w);
   }
-  if (h !== undefined || img.h !== undefined) {
-    if (h) {
-      params.height = Number(h);
-    } else {
-      params.height = Number(img.h);
-    }
+  if (h !== undefined) {
+    params.height = Number(h);
+  } else if (img.h !== undefined) {
+    params.height = Number(img.h);
   }
   if (img.imgUrl !== undefined) {
     params.backgroundImage = `url(${img.imgUrl}`;
