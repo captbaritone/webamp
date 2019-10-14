@@ -226,16 +226,18 @@ export function findParent<T extends { parent: T | null }>(
 }
 
 // Operations on trees
-export function findParentNodeOfType<
-  T extends { parent: T | null; name: string }
->(node: T, type: Set<string>): T | null {
-  return findParent(node, n => type.has(n.name));
+export function findParentNodeOfType(
+  node: MakiObject,
+  type: Set<string>
+): MakiObject | null {
+  return findParent(node, n => type.has(n.name.toLowerCase()));
 }
 
-export function findParentOrCurrentNodeOfType<
-  T extends { parent: T | null; name: string }
->(node: T, type: Set<string>): T | null {
-  if (type.has(node.name)) {
+export function findParentOrCurrentNodeOfType(
+  node: MakiObject,
+  type: Set<string>
+): MakiObject | null {
+  if (type.has(node.name.toLowerCase())) {
     return node;
   }
   return findParentNodeOfType(node, type);

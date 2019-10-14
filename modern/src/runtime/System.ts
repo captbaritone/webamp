@@ -17,7 +17,7 @@ class System extends MakiObject {
   _store: ModernStore;
   _privateInt: Map<string, Map<string, number>>;
   _privateString: Map<string, Map<string, string>>;
-  constructor(scriptGroup: Group | null, store: ModernStore) {
+  constructor(scriptGroup: MakiObject | null, store: ModernStore) {
     super(null, null);
     this._store = store;
 
