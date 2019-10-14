@@ -2,7 +2,11 @@ const { getSkinToReview } = require("../../s3");
 const Utils = require("../utils");
 
 async function reviewSkin(message) {
-  const { md5 } = await getSkinToReview();
+  const skin = await getSkinToReview();
+  if(skin == null) {
+    throw new Error("No skins to review");
+  }
+  const {md5, filename} = skin;
   await Utils.postSkin({
     md5,
     title: filename => `Review: ${filename}`,
