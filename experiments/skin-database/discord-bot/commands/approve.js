@@ -1,4 +1,4 @@
-const { approve, getStatus } = require("../../s3");
+const { approve, getStatus } = require("../../data/skins");
 const Utils = require("../utils");
 
 const TWEET_BOT_CHANNEL_ID = "445577489834704906";

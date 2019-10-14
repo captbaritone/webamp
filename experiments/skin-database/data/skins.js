@@ -5,6 +5,17 @@ const iaItems = db.get("internetArchiveItems");
 const S3 = require("../s3");
 const logger = require("../logger");
 
+const TWEETABLE_QUERY = {
+  tweeted: { $ne: true },
+  approved: true,
+  rejected: { $ne: true },
+};
+
+const REVIEWABLE_QUERY = {
+  tweeted: { $ne: true },
+  approved: { $ne: true },
+  rejected: { $ne: true },
+};
 function getSkinRecord(skin) {
   const {
     md5,
@@ -74,7 +85,7 @@ async function getSkinByMd5(md5) {
     internetArchiveItemName = internetArchiveItem.identifier;
     internetArchiveUrl = getInternetArchiveUrl(internetArchiveItemName);
   }
-  const tweetStatus = await getTweetStatus(md5);
+  const tweetStatus = await getStatus(md5);
   return {
     ...getSkinRecord(skin),
     tweetStatus,
@@ -108,8 +119,79 @@ function getInternetArchiveUrl(itemName) {
   return itemName == null ? null : `https://archive.org/details/${itemName}`;
 }
 
-async function getTweetStatus(md5) {
-  return S3.getStatus(md5);
+function getTweetableSkinCount() {
+  return skins.count(TWEETABLE_QUERY);
+}
+
+async function markAsTweeted(md5) {
+  await skins.findOneAndUpdate({ md5 }, { $set: { tweeted: true } });
+  return S3.markAsTweeted(md5);
+}
+
+async function getStatus(md5) {
+  const skin = await skins.findOne({ md5 });
+  if (skin.tweeted) {
+    return "TWEETED";
+  }
+  if (skin.rejected) {
+    return "REJECTED";
+  }
+  if (skin.approved) {
+    return "APPROVED";
+  }
+  return "UNREVIEWED";
+}
+
+async function approve(md5) {
+  await skins.findOneAndUpdate({ md5 }, { $set: { approved: true } });
+  return S3.approve(md5);
+}
+
+async function reject(md5) {
+  await skins.findOneAndUpdate({ md5 }, { $set: { rejected: true } });
+  return S3.reject(md5);
+}
+
+async function getSkinToReview() {
+  const skin = await skins.findOne(REVIEWABLE_QUERY);
+  const { canonicalFilename, md5 } = getSkinRecord(skin);
+  return { filename: canonicalFilename, md5 };
+}
+
+async function getSkinToTweet() {
+  const skin = await skins.findOne(TWEETABLE_QUERY);
+  if (skin == null) {
+    return null;
+  }
+  const { canonicalFilename, md5 } = getSkinRecord(skin);
+  return { filename: canonicalFilename, md5 };
+}
+
+async function getStats() {
+  const approved = await skins.count({ approved: true });
+  const rejected = await skins.count({ rejected: true });
+  const tweeted = await skins.count({ tweeted: true });
+  const tweetable = await getTweetableSkinCount();
+  return { approved, rejected, tweeted, tweetable };
+}
+
+async function reconcile() {
+  const [approved, rejected, tweeted] = await Promise.all([
+    S3.getAllApproved(),
+    S3.getAllRejected(),
+    S3.getAllTweeted(),
+  ]);
+  await Promise.all([
+    ...approved.map(md5 =>
+      skins.findOneAndUpdate({ md5 }, { $set: { approved: true } })
+    ),
+    ...rejected.map(md5 =>
+      skins.findOneAndUpdate({ md5 }, { $set: { rejected: true } })
+    ),
+    ...tweeted.map(md5 =>
+      skins.findOneAndUpdate({ md5 }, { $set: { tweeted: true } })
+    ),
+  ]);
 }
 
 module.exports = {
@@ -118,6 +200,14 @@ module.exports = {
   getScreenshotUrl,
   getSkinUrl,
   getInternetArchiveUrl,
-  getTweetStatus,
   getSkinByMd5,
+  markAsTweeted,
+  getStatus,
+  approve,
+  reject,
+  getSkinToReview,
+  getStats,
+  getTweetableSkinCount,
+  reconcile,
+  getSkinToTweet,
 };

@@ -1,12 +1,12 @@
-const { getSkinToReview } = require("../../s3");
+const Skins = require("../../data/skins");
 const Utils = require("../utils");
 
 async function reviewSkin(message) {
-  const skin = await getSkinToReview();
-  if(skin == null) {
+  const skin = await Skins.getSkinToReview();
+  if (skin == null) {
     throw new Error("No skins to review");
   }
-  const {md5, filename} = skin;
+  const { md5 } = skin;
   await Utils.postSkin({
     md5,
     title: filename => `Review: ${filename}`,
@@ -27,7 +27,10 @@ async function handler(message, args) {
     await reviewSkin(message);
   }
   if (count > 1) {
-    message.channel.send(`Done reviewing ${count} skins. Thanks!`);
+    const tweetableCount = await Skins.getTweetableSkinCount();
+    message.channel.send(
+      `Done reviewing ${count} skins. There are now ${tweetableCount} Tweetable skins. Thanks!`
+    );
   }
 }
 

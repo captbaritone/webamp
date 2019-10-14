@@ -3,3 +3,4 @@ built/
 coverage/
 **/node_modules/
 examples/webpack/bundle.js
+experiments/tweetBot/env/

@@ -7,7 +7,6 @@ const logger = require("./logger");
 const DiscordWinstonTransport = require("./DiscordWinstonTransport");
 const Skins = require("./data/skins");
 const db = require("./db");
-const S3 = require("./s3");
 const Discord = require("discord.js");
 const config = require("./config");
 
@@ -49,8 +48,8 @@ async function main() {
   );
   switch (argv._[0]) {
     case "tweet":
-      const tweetableSkins = await S3.getTweetableSkins();
-      if (tweetableSkins.length === 0) {
+      const tweetableSkin = await Skins.getSkinToTweet();
+      if (tweetableSkin == null) {
         webhook.send(
           "Oops! I ran out of skins to tweet. Could someone please `!review` some more?"
         );
@@ -58,7 +57,6 @@ async function main() {
         break;
       }
 
-      const tweetableSkin = tweetableSkins[0];
       const { md5, filename } = tweetableSkin;
       const output = await spawnPromise(
         path.resolve(__dirname, "../tweetBot/tweet.py"),
@@ -70,8 +68,8 @@ async function main() {
         ]
       );
       webhook.send(output.trim());
-      await S3.markAsTweeted(md5);
-      const remainingSkinCount = tweetableSkins.length - 1;
+      await Skins.markAsTweeted(md5);
+      const remainingSkinCount = await Skins.getTweetableSkinCount();
       if (remainingSkinCount < 10) {
         webhook.send(
           `Only ${remainingSkinCount} approved skins left. Could someone please \`!review\` some more?`
@@ -94,6 +92,10 @@ async function main() {
     case "metadata": {
       const hash = argv._[1];
       console.log(await Skins.getInternetArchiveUrl(hash));
+      break;
+    }
+    case "reconcile": {
+      await Skins.reconcile();
       break;
     }
     case "skin": {
