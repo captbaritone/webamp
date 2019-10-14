@@ -87,7 +87,7 @@ async function postSkin({ md5, title, dest }) {
     const user = vote.users.first();
     switch (vote.emoji.name) {
       case "👍":
-        await approve(md5);
+        await Skins.approve(md5);
         logger.info(`${user.username} approved ${md5}`);
         await msg.channel.send(
           `${canonicalFilename} was approved by ${user.username}`
@@ -95,7 +95,7 @@ async function postSkin({ md5, title, dest }) {
         msg.react("✅");
         break;
       case "👎":
-        await reject(md5);
+        await Skins.reject(md5);
         logger.info(`${user.username} rejected ${md5}`);
         await msg.channel.send(
           `${canonicalFilename} was rejected by ${user.username}`

@@ -31,7 +31,22 @@ function putFile(key, body) {
 }
 
 function getLines(body) {
-  return body.split("\n").map(line => line.trim());
+  return body
+    .trim()
+    .split("\n")
+    .map(line => line.trim());
+}
+
+async function getAllApproved() {
+  return getLines(await getFile("approved.txt"));
+}
+
+async function getAllRejected() {
+  return getLines(await getFile("rejected.txt"));
+}
+
+async function getAllTweeted() {
+  return getLines(await getFile("tweeted.txt"));
 }
 
 async function getStatus(md5) {
@@ -147,4 +162,7 @@ module.exports = {
   getStats,
   markAsTweeted,
   getTweetableSkins,
+  getAllApproved,
+  getAllRejected,
+  getAllTweeted,
 };
