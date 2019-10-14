@@ -12,7 +12,7 @@ import Layout from "./Layout";
 import GuiObject from "./GuiObject";
 
 class System extends MakiObject {
-  _scriptGroup: Group;
+  _scriptGroup: MakiObject;
   _root: MakiObject;
   _store: ModernStore;
   _privateInt: Map<string, Map<string, number>>;
@@ -21,7 +21,8 @@ class System extends MakiObject {
     super(null, null);
     this._store = store;
 
-    this._scriptGroup = scriptGroup == null ? new Group() : scriptGroup;
+    this._scriptGroup =
+      scriptGroup == null ? new Group(null, null) : scriptGroup;
     this._root = this._scriptGroup;
     while (this._root.parent) {
       this._root = this._root.parent;

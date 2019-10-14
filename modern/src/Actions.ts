@@ -74,7 +74,7 @@ export function gotSkinZip(zip: JSZip, store: ModernStore): Thunk {
 
     dispatch(setXmlTree(xmlTree));
 
-    const makiTree = await initialize(zip, xmlTree);
+    const makiTree: MakiObject = await initialize(zip, xmlTree);
     // Execute scripts
     await Utils.asyncTreeFlatMap(makiTree, async (node: MakiObject) => {
       if (!(node instanceof JsScript)) {
