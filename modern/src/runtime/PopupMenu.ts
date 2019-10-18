@@ -17,9 +17,12 @@ type Command =
 class PopupMenu extends MakiObject {
   _commands: Command[];
   _guiParent: Group;
+  parent: MakiObject;
   js_selectCommand: (id: number) => void;
+
   constructor(node: XmlNode, parent: MakiObject, annotations: Object) {
     super(node, parent, annotations);
+    this.parent = parent;
 
     if (!(parent instanceof Group)) {
       throw new Error(

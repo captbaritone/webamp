@@ -13,6 +13,11 @@ class JsScript extends MakiObject {
   getclassname() {
     return "Script";
   }
+
+  getScriptPath(): string | null {
+    const { file } = this.attributes;
+    return file == null ? null : String(file);
+  }
 }
 
 export default JsScript;

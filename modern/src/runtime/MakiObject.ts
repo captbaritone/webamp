@@ -10,14 +10,14 @@ class MakiObject {
   // type conversion differently. Having one type that holds both the pre and
   // post type coerced values is too confusing.
   attributes: { [key: string]: string | number | boolean | undefined };
-  parent: MakiObject;
+  parent: MakiObject | null;
   _emitter: Emitter;
   children: MakiObject[];
   js_annotations: Object;
 
   constructor(
     node: XmlNode | null,
-    parent: MakiObject,
+    parent: MakiObject | null,
     annotations: Object = {}
   ) {
     if (node) {
@@ -61,6 +61,9 @@ class MakiObject {
   }
 
   js_delete() {
+    if (this.parent == null) {
+      return;
+    }
     this.parent.js_removeChild(this);
     this.parent.js_trigger("js_update");
   }

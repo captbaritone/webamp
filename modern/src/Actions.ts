@@ -74,37 +74,42 @@ export function gotSkinZip(zip: JSZip, store: ModernStore): Thunk {
 
     dispatch(setXmlTree(xmlTree));
 
-    const makiTree = await initialize(zip, xmlTree);
+    const makiTree: MakiObject = await initialize(zip, xmlTree);
     // Execute scripts
     await Utils.asyncTreeFlatMap(makiTree, async (node: MakiObject) => {
-      switch (node.name) {
-        case "groupdef": {
-          // removes groupdefs from consideration (only run scripts when actually referenced by group)
-          return {};
-        }
-        case "script": {
-          // TODO: stop ignoring standardframe
-          if (node.attributes.file.endsWith("standardframe.maki")) {
-            return node;
-          }
-          const scriptGroup = Utils.findParentNodeOfType(
-            node,
-            new Set(["group", "WinampAbstractionLayer", "WasabiXML"])
-          );
-          node.system = new System(scriptGroup, store);
-          const script = await Utils.readUint8array(zip, node.attributes.file);
-          run({
-            runtime,
-            data: script,
-            system: node.system,
-            log: false,
-          });
-          return node;
-        }
-        default: {
-          return node;
-        }
+      if (!(node instanceof JsScript)) {
+        return node;
       }
+      const scriptPath = node.getScriptPath();
+      if (scriptPath == null) {
+        return node;
+      }
+      if (scriptPath.endsWith("standardframe.maki")) {
+        // TODO: stop ignoring standardframe
+        return node;
+      }
+
+      // removes groupdefs from consideration (only run scripts when actually referenced by group)
+      if (Utils.findParentNodeOfType(node, new Set(["groupdef"]))) {
+        return node;
+      }
+      const scriptGroup = Utils.findParentNodeOfType(
+        node,
+        new Set(["group", "winampabstractionlayer", "wasabixml"])
+      );
+      node.system = new System(scriptGroup, store);
+      const script = await Utils.readUint8array(zip, scriptPath);
+      if (script == null) {
+        console.warn(`Unable to find script at ${scriptPath}`);
+        return node;
+      }
+      run({
+        runtime,
+        data: script,
+        system: node.system,
+        log: false,
+      });
+      return node;
     });
 
     dispatch(setMakiTree(makiTree));
