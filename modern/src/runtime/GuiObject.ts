@@ -33,7 +33,11 @@ class GuiObject extends MakiObject {
   _transitionParams: TransitionParams;
   _targetAnimationStartTime: number;
   _targetAnimationCancelID: number | null;
-  constructor(node: XmlNode, parent: MakiObject, annotations: Object = {}) {
+  constructor(
+    node: XmlNode | null,
+    parent: MakiObject | null,
+    annotations: Object = {}
+  ) {
     super(node, parent, annotations);
 
     this._setAttributeDefaults();

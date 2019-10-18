@@ -12,16 +12,17 @@ import Layout from "./Layout";
 import GuiObject from "./GuiObject";
 
 class System extends MakiObject {
-  _scriptGroup: Group;
+  _scriptGroup: MakiObject;
   _root: MakiObject;
   _store: ModernStore;
   _privateInt: Map<string, Map<string, number>>;
   _privateString: Map<string, Map<string, string>>;
-  constructor(scriptGroup: Group | null, store: ModernStore) {
+  constructor(scriptGroup: MakiObject | null, store: ModernStore) {
     super(null, null);
     this._store = store;
 
-    this._scriptGroup = scriptGroup == null ? new Group() : scriptGroup;
+    this._scriptGroup =
+      scriptGroup == null ? new Group(null, null) : scriptGroup;
     this._root = this._scriptGroup;
     while (this._root.parent) {
       this._root = this._root.parent;
@@ -121,6 +122,7 @@ class System extends MakiObject {
   getprivateint(section: string, item: string, defvalue: number): number {
     if (
       !this._privateInt.has(section) ||
+      // @ts-ignore We know this section exists
       !this._privateInt.get(section).has(item)
     ) {
       return defvalue;
@@ -635,6 +637,7 @@ class System extends MakiObject {
   getprivatestring(section: string, item: string, defvalue: string): string {
     if (
       !this._privateString.has(section) ||
+      // @ts-ignore We know this section exists
       !this._privateString.get(section).has(item)
     ) {
       return defvalue;

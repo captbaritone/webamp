@@ -226,16 +226,18 @@ export function findParent<T extends { parent: T | null }>(
 }
 
 // Operations on trees
-export function findParentNodeOfType<
-  T extends { parent: T | null; name: string }
->(node: T, type: Set<string>): T | null {
-  return findParent(node, n => type.has(n.name));
+export function findParentNodeOfType(
+  node: MakiObject,
+  type: Set<string>
+): MakiObject | null {
+  return findParent(node, n => type.has(n.name.toLowerCase()));
 }
 
-export function findParentOrCurrentNodeOfType<
-  T extends { parent: T | null; name: string }
->(node: T, type: Set<string>): T | null {
-  if (type.has(node.name)) {
+export function findParentOrCurrentNodeOfType(
+  node: MakiObject,
+  type: Set<string>
+): MakiObject | null {
+  if (type.has(node.name.toLowerCase())) {
     return node;
   }
   return findParentNodeOfType(node, type);
@@ -285,9 +287,7 @@ function findDirectDescendantById<
   );
 }
 
-function* iterateLexicalScope<
-  T extends { children: T[]; parent: T | undefined }
->(node: T): IterableIterator<T> {
+function* iterateLexicalScope(node: MakiObject): IterableIterator<MakiObject> {
   let currentNode = node;
   while (currentNode.parent) {
     const { parent } = currentNode;
@@ -304,10 +304,10 @@ function* iterateLexicalScope<
 }
 
 // Search up the tree for a node that is in `node`'s lexical that matches `predicate`.
-function findInLexicalScope<T extends { children: T[]; parent: T | undefined }>(
-  node: T,
-  predicate: (node: T) => boolean
-): T | null {
+function findInLexicalScope(
+  node: MakiObject,
+  predicate: (node: MakiObject) => boolean
+): MakiObject | null {
   for (const child of iterateLexicalScope(node)) {
     if (predicate(child)) {
       return child;
