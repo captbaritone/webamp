@@ -101,7 +101,7 @@ export default function() {
   const sortDecending = (a, b) => (b[sortKey] < a[sortKey] ? 1 : -1);
   const sortFunction = sortDirection === "ASC" ? sortAscending : sortDecending;
 
-  let filterFunction: (string) => boolean = () => true;
+  let filterFunction = () => true;
   if (searchQuery) {
     const normalizedQuery = searchQuery.toLowerCase();
 

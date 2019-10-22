@@ -20,7 +20,7 @@ function presetNameFromURL(url: string) {
   }
 }
 
-async function loadButterchurnPresetMapURL(url) {
+async function loadButterchurnPresetMapURL(url: string) {
   const resp = await fetch(url);
   const namesToPresetUrls = await resp.json();
   return Object.keys(namesToPresetUrls).map((name: string) => {
