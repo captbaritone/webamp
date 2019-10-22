@@ -159,6 +159,11 @@ export function centerWindows(box: {
       windowsInfo.filter(w => getOpen(w.key))
     );
 
+    if (bounding == null) {
+      // There are no windows to center
+      return;
+    }
+
     const boxHeight = bounding.bottom - bounding.top;
     const boxWidth = bounding.right - bounding.left;
 
@@ -211,6 +216,10 @@ export function ensureWindowsAreOnScreen(): Thunk {
     const bounding = Utils.calculateBoundingBox(
       windowsInfo.filter(w => getOpen(w.key))
     );
+    if (bounding == null) {
+      // There are no windows visible, so there's no work to do.
+      return;
+    }
     const positions = Selectors.getWindowPositions(state);
 
     // Are we good?
