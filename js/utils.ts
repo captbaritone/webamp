@@ -336,20 +336,23 @@ export function objectFilter<V>(
   }, {});
 }
 
-export const calculateBoundingBox = (windows: WindowInfo[]) =>
-  windows
-    .map(w => ({
-      left: w.x,
-      top: w.y,
-      bottom: w.y + w.height,
-      right: w.x + w.width,
-    }))
-    .reduce((b, w) => ({
-      left: Math.min(b.left, w.left),
-      top: Math.min(b.top, w.top),
-      bottom: Math.max(b.bottom, w.bottom),
-      right: Math.max(b.right, w.right),
-    }));
+export const calculateBoundingBox = (windows: WindowInfo[]) => {
+  if (windows.length === 0) {
+    return null;
+  }
+  const windowSizes = windows.map(w => ({
+    left: w.x,
+    top: w.y,
+    bottom: w.y + w.height,
+    right: w.x + w.width,
+  }));
+  return windowSizes.reduce((b, w) => ({
+    left: Math.min(b.left, w.left),
+    top: Math.min(b.top, w.top),
+    bottom: Math.max(b.bottom, w.bottom),
+    right: Math.max(b.right, w.right),
+  }));
+};
 
 export function findLastIndex<T>(arr: T[], cb: (val: T) => boolean) {
   for (let i = arr.length - 1; i >= 0; i--) {
