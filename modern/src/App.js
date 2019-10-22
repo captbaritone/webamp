@@ -672,7 +672,7 @@ function Modern() {
     const defaultSkinUrl = getSkinUrlFromQueryParams() || skinUrls[0];
     setSkinUrl(defaultSkinUrl);
     dispatch(Actions.gotSkinUrl(defaultSkinUrl, store));
-  }, [store]);
+  }, [store, dispatch]);
   if (root == null) {
     return <Loading />;
   }

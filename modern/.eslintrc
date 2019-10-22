@@ -1,8 +1,6 @@
 {
   "rules": {
     // TODO: Turn these all back on
-    "camelcase": "off",
-    "react-hooks/rules-of-hooks": "off",
-    "react-hooks/exhaustive-deps": "off"
+    "camelcase": "off"
   }
 }
