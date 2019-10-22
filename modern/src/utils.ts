@@ -351,7 +351,18 @@ export function findXmlElementById(
 // This is intentionally async since we may want to sub it out for an async
 // function in a node environment
 export async function getUrlFromBlob(blob: Blob): Promise<string> {
-  return URL.createObjectURL(blob);
+  // We initiallay used `URL.createObjectURL(blob)` here, but it had an issue
+  // where, when used as a background imaged, they would take more than one
+  // frame to load resulting in a white flash when switching background iamges.
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      // @ts-ignore This API is not very type-friendly.
+      resolve(e.target.result);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
 }
 
 async function loadImage(
