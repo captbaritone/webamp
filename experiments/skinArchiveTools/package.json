@@ -16,7 +16,7 @@
   "dependencies": {
     "bluebird": "^3.5.3",
     "filehound": "^1.17.0",
-    "imagemin": "^6.1.0",
+    "imagemin": "^7.0.0",
     "imagemin-optipng": "^6.0.0",
     "jszip": "^3.1.5",
     "lodash": "^4.17.13",
