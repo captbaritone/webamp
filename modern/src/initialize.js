@@ -62,10 +62,10 @@ function imageAttributesFromNode(node) {
   }
 }
 
-const noop = (node, parent) => new GuiObject(node, parent, undefined);
+const noop = (node, parent) => new GuiObject(node, parent);
 
 const parsers = {
-  groupdef: (node, parent) => new JsGroupDef(node, parent, undefined),
+  groupdef: (node, parent) => new JsGroupDef(node, parent),
   skininfo: noop,
   guiobject: noop,
   version: noop,
@@ -76,21 +76,21 @@ const parsers = {
   email: noop,
   homepage: noop,
   screenshot: noop,
-  container: (node, parent) => new Container(node, parent, undefined),
+  container: (node, parent) => new Container(node, parent),
   scripts: noop,
-  gammaset: (node, parent) => new JsGammaSet(node, parent, undefined),
+  gammaset: (node, parent) => new JsGammaSet(node, parent),
   color: noop,
-  layer: (node, parent) => new Layer(node, parent, undefined),
+  layer: (node, parent) => new Layer(node, parent),
   layoutstatus: noop,
   hideobject: noop,
-  button: (node, parent) => new Button(node, parent, undefined),
-  group: (node, parent) => new Group(node, parent, undefined),
-  layout: (node, parent) => new Layout(node, parent, undefined),
+  button: (node, parent) => new Button(node, parent),
+  group: (node, parent) => new Group(node, parent),
+  layout: (node, parent) => new Layout(node, parent),
   sendparams: noop,
-  elements: (node, parent) => new JsElements(node, parent, undefined),
+  elements: (node, parent) => new JsElements(node, parent),
   bitmap: noop,
-  eqvis: (node, parent) => new EqVis(node, parent, undefined),
-  slider: (node, parent) => new Slider(node, parent, undefined),
+  eqvis: (node, parent) => new EqVis(node, parent),
+  slider: (node, parent) => new Slider(node, parent),
   gammagroup: noop,
   truetypefont: async (node, parent, zip) => {
     const { file } = node.attributes;
@@ -110,12 +110,12 @@ const parsers = {
     }
     return new MakiObject(node, parent, { fontFamily });
   },
-  component: (node, parent) => new WindowHolder(node, parent, undefined),
-  text: (node, parent) => new Text(node, parent, undefined),
-  togglebutton: (node, parent) => new ToggleButton(node, parent, undefined),
-  status: (node, parent) => new Status(node, parent, undefined),
+  component: (node, parent) => new WindowHolder(node, parent),
+  text: (node, parent) => new Text(node, parent),
+  togglebutton: (node, parent) => new ToggleButton(node, parent),
+  status: (node, parent) => new Status(node, parent),
   bitmapfont: noop,
-  vis: (node, parent) => new Vis(node, parent, undefined),
+  vis: (node, parent) => new Vis(node, parent),
   "wasabi:titlebar": noop,
   "colorthemes:list": noop,
   "wasabi:standardframe:status": noop,
@@ -127,13 +127,13 @@ const parsers = {
   elementalias: noop,
   grid: noop,
   rect: noop,
-  animatedlayer: (node, parent) => new AnimatedLayer(node, parent, undefined),
+  animatedlayer: (node, parent) => new AnimatedLayer(node, parent),
   nstatesbutton: noop,
   songticker: noop,
   menu: noop,
   albumart: noop,
   playlistplus: noop,
-  script: (node, parent) => new JsScript(node, parent, undefined),
+  script: (node, parent) => new JsScript(node, parent),
 };
 
 async function parseChildren(node, children, zip) {
