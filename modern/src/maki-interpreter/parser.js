@@ -103,8 +103,9 @@ class MakiFile {
 function readMagic(makiFile) {
   const magic = makiFile.readStringOfLength(MAGIC.length);
   if (magic !== MAGIC) {
-    console.error({ magic });
-    throw new Error("Magic number does not mach. Is this a maki file?");
+    throw new Error(
+      `Magic "${magic}" does not mach "${MAGIC}". Is this a maki file?`
+    );
   }
   return magic;
 }
@@ -287,9 +288,11 @@ function parseComand({ start, makiFile, length }) {
   if (
     // Is there another UInt32 to read?
     length > pos + 5 + 4 &&
-    makiFile.peekUInt32LE() >= 0xffff0000
+    makiFile.peekUInt32LE() >= 0xffff0000 &&
+    makiFile.peekUInt32LE() <= 0xffff000f
   ) {
-    makiFile.readUInt32LE();
+    command.foo = true;
+    command.stackProtection = makiFile.readUInt32LE();
   }
 
   // TODO: What even is this?
