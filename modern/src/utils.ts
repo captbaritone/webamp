@@ -2,6 +2,7 @@ import JSZip from "jszip";
 import { xml2js } from "xml-js";
 import { XmlNode } from "./types";
 import MakiObject from "./runtime/MakiObject";
+import GuiObject from "./runtime/GuiObject";
 
 let nextId = 0;
 export function getId(): number {
@@ -414,4 +415,43 @@ if (typeof document !== "undefined") {
 
 export function getMousePosition() {
   return mousePosition;
+}
+
+export function imageAttributesFromNode(node: XmlNode): Array<string> {
+  if (!node.name) return [];
+  switch (node.name.toLowerCase()) {
+    case "layer":
+    case "animatedlayer": {
+      return ["image"];
+    }
+    case "layout": {
+      return ["background"];
+    }
+    case "button":
+    case "togglebutton": {
+      return ["image", "downImage"];
+    }
+    default: {
+      return [];
+    }
+  }
+}
+
+export function baseImageAttributeFromObject(obj: GuiObject): string | null {
+  switch (obj.getclassname()) {
+    case "Layer":
+    case "AnimatedLayer": {
+      return "image";
+    }
+    case "Layout": {
+      return "background";
+    }
+    case "Button":
+    case "ToggleButton": {
+      return "image";
+    }
+    default: {
+      return null;
+    }
+  }
 }

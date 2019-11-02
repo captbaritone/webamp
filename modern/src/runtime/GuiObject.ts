@@ -2,6 +2,7 @@ import MakiObject from "./MakiObject";
 import {
   findDescendantByTypeAndId,
   findParentNodeOfType,
+  baseImageAttributeFromObject,
   unimplementedWarning,
 } from "../utils";
 import { ModernStore, XmlNode } from "../types";
@@ -140,29 +141,41 @@ class GuiObject extends MakiObject {
   }
 
   getheight(): number {
-    // TODO
-    // I don't know how it gets calculated exactly, but if a node has a minimum
-    // and maximum h, but no h, getwidth still returns a value, return min for now
-    // TODO: Need to return actual current width which can be based on underlying image
-    // CornerAmp has a calls like: obj.resize(newX, newY, obj.getwidth(), obj.getheight()),
-    // but the object has no width/height set, so it needs to return the width/height
-    // that potentially uses the image size like we do in the renderer.
-    // This is made more complicated because images depend on the current state and are
-    // potentially different attributes for different MakiObjects
-    return Number(this.attributes.h) || Number(this.attributes.minimum_h) || 0;
+    if (this.attributes.h !== undefined) {
+      return Number(this.attributes.h);
+    } else {
+      const baseImage = baseImageAttributeFromObject(this);
+      if (baseImage) {
+        // TODO: fix the type on this, we currently have better typing for this in
+        // AnimatedLayer where we convert to _typedAttributes, as we apply that new
+        // standard up to GuiObject/MakiObject we should be able to remove the ignore
+        // @ts-ignore
+        const image = this.attributes.js_assets[baseImage];
+        if (image && image.h !== undefined) {
+          return image.h;
+        }
+      }
+    }
+    return 0;
   }
 
   getwidth(): number {
-    // TODO
-    // I don't know how it gets calculated exactly, but if a node has a minimum
-    // and maximum w, but no w, getwidth still returns a value, return min for now
-    // TODO: Need to return actual current width which can be based on underlying image
-    // CornerAmp has a calls like: obj.resize(newX, newY, obj.getwidth(), obj.getheight()),
-    // but the object has no width/height set, so it needs to return the width/height
-    // that potentially uses the image size like we do in the renderer.
-    // This is made more complicated because images depend on the current state and are
-    // potentially different attributes for different MakiObjects
-    return Number(this.attributes.w) || Number(this.attributes.minimum_w) || 0;
+    if (this.attributes.w !== undefined) {
+      return Number(this.attributes.w);
+    } else {
+      const baseImage = baseImageAttributeFromObject(this);
+      if (baseImage) {
+        // TODO: fix the type on this, we currently have better typing for this in
+        // AnimatedLayer where we convert to _typedAttributes, as we apply that new
+        // standard up to GuiObject/MakiObject we should be able to remove the ignore
+        // @ts-ignore
+        const image = this.attributes.js_assets[baseImage];
+        if (image && image.w !== undefined) {
+          return image.w;
+        }
+      }
+    }
+    return 0;
   }
 
   resize(x: number, y: number, w: number, h: number): void {

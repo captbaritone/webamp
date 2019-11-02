@@ -42,26 +42,6 @@ async function prepareMakiImage(node, zip, file) {
   };
 }
 
-function imageAttributesFromNode(node) {
-  if (!node.name) return [];
-  switch (node.name.toLowerCase()) {
-    case "layer":
-    case "animatedlayer": {
-      return ["image"];
-    }
-    case "layout": {
-      return ["background"];
-    }
-    case "button":
-    case "togglebutton": {
-      return ["image", "downImage"];
-    }
-    default: {
-      return [];
-    }
-  }
-}
-
 const noop = (node, parent) => new GuiObject(node, parent);
 
 const parsers = {
@@ -184,7 +164,7 @@ async function parseChildren(node, children, zip) {
 }
 
 async function nodeImageLookup(node, root, zip) {
-  const imageAttributes = imageAttributesFromNode(node);
+  const imageAttributes = Utils.imageAttributesFromNode(node);
   if (!imageAttributes || imageAttributes.length === 0) {
     return;
   }
