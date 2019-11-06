@@ -25,7 +25,6 @@ import {
 } from "../../js/actionTypes";
 
 import { loadFilesFromReferences } from "../../js/actionCreators";
-import { bindToIndexedDB } from "./indexedDB";
 import { getButterchurnOptions } from "./butterchurnOptions";
 import dropboxFilePicker from "./dropboxFilePicker";
 import availableSkins from "./avaliableSkins";
@@ -54,8 +53,6 @@ const NOISY_ACTION_TYPES = new Set([
 const MIN_MILKDROP_WIDTH = 725;
 
 let screenshot = false;
-let clearState = false;
-let useState = false;
 let skinUrl = configSkinUrl;
 let library = false;
 if ("URLSearchParams" in window) {
@@ -69,8 +66,6 @@ if ("URLSearchParams" in window) {
     skinUrl = base;
   }
   skinUrl = params.get("skinUrl") || skinUrl;
-  clearState = Boolean(params.get("clearState"));
-  useState = Boolean(params.get("useState"));
 }
 
 function supressDragAndDrop(e) {
@@ -172,7 +167,9 @@ Raven.context(async () => {
     requireJSZip: () =>
       import(/* webpackChunkName: "jszip" */ "jszip/dist/jszip"),
     requireMusicMetadata: () =>
-      import(/* webpackChunkName: "music-metadata-browser" */ "music-metadata-browser/dist/index"),
+      import(
+        /* webpackChunkName: "music-metadata-browser" */ "music-metadata-browser/dist/index"
+      ),
     __enableMediaLibrary: library,
     __initialWindowLayout,
     __initialState: screenshot ? screenshotInitialState : initialState,
@@ -215,9 +212,7 @@ Raven.context(async () => {
     document.title =
       track == null
         ? DEFAULT_DOCUMENT_TITLE
-        : `${track.metaData.title} - ${
-            track.metaData.artist
-          } \u00B7 ${DEFAULT_DOCUMENT_TITLE}`;
+        : `${track.metaData.title} - ${track.metaData.artist} \u00B7 ${DEFAULT_DOCUMENT_TITLE}`;
   });
 
   enableMediaSession(webamp);
@@ -235,8 +230,6 @@ Raven.context(async () => {
 
   // Expose webamp instance for debugging and integration tests.
   window.__webamp = webamp;
-
-  await bindToIndexedDB(webamp, clearState, useState);
 
   await webamp.renderWhenReady(document.getElementById("app"));
 
