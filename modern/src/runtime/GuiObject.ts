@@ -5,7 +5,7 @@ import {
   baseImageAttributeFromObject,
   unimplementedWarning,
 } from "../utils";
-import { ModernStore, XmlNode } from "../types";
+import { XmlNode } from "../types";
 
 type TargetParams = {
   alpha?: number;

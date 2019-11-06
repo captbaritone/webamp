@@ -89,7 +89,7 @@
     "no-dupe-keys": "error",
     "no-duplicate-case": "error",
     "no-duplicate-imports": "error",
-    "no-else-return": "warn",
+    "no-else-return": "error",
     "no-empty-character-class": "error",
     "no-eval": "error",
     "no-ex-assign": "error",
