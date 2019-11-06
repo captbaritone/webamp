@@ -159,9 +159,7 @@ export async function inlineIncludes(
     const includedFile = await readXml(zip, node.attributes.file);
     if (includedFile == null) {
       console.warn(
-        `Tried to include a file that could not be found: ${
-          node.attributes.file
-        }`
+        `Tried to include a file that could not be found: ${node.attributes.file}`
       );
       return [];
     }

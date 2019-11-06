@@ -220,9 +220,7 @@ Array [
       const expectedOpcode = expectedCommands[i];
       if (expectedOpcode !== command.opcode) {
         throw new Error(
-          `Command ${i} reported opcode ${
-            command.opcode
-          }. Expected ${expectedOpcode}`
+          `Command ${i} reported opcode ${command.opcode}. Expected ${expectedOpcode}`
         );
       }
     });

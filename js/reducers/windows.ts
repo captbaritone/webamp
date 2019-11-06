@@ -154,9 +154,7 @@ const windows = (
       const { canShade } = state.genWindows[action.windowId];
       if (!canShade) {
         throw new Error(
-          `Tried to shade/unshade a window that cannot be shaded: ${
-            action.windowId
-          }`
+          `Tried to shade/unshade a window that cannot be shaded: ${action.windowId}`
         );
       }
       return {
