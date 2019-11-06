@@ -12,7 +12,6 @@
     "react",
     "prettier",
     "import",
-    "no-constructor-bind",
     "@typescript-eslint",
     "react-hooks",
     "eslint-plugin-local-rules"
@@ -164,7 +163,6 @@
     "import/no-extraneous-dependencies": "error",
     "import/no-named-as-default-member": "error",
     "import/no-unresolved": "error",
-    "no-constructor-bind/no-constructor-bind": "error",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "error"
   }
