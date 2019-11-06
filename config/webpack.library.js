@@ -1,6 +1,5 @@
 const path = require("path");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
-const UnminifiedWebpackPlugin = require("unminified-webpack-plugin");
 
 module.exports = {
   devtool: "source-map",
@@ -46,8 +45,6 @@ module.exports = {
       reportFilename: "library-report.html",
       openAnalyzer: false,
     }),
-    // Also generate non-minified bundles.
-    new UnminifiedWebpackPlugin(),
   ],
   performance: {
     // We do some crazy shit okay! Don't judge!
@@ -55,7 +52,9 @@ module.exports = {
     maxAssetSize: 9000000,
   },
   entry: {
+    bundle: "./js/webamp.js",
     "bundle.min": "./js/webamp.js",
+    "lazy-bundle": "./js/webampLazy.tsx",
     "lazy-bundle.min": "./js/webampLazy.tsx",
   },
   output: {
