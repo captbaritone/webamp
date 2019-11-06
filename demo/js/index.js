@@ -167,9 +167,7 @@ Raven.context(async () => {
     requireJSZip: () =>
       import(/* webpackChunkName: "jszip" */ "jszip/dist/jszip"),
     requireMusicMetadata: () =>
-      import(
-        /* webpackChunkName: "music-metadata-browser" */ "music-metadata-browser/dist/index"
-      ),
+      import(/* webpackChunkName: "music-metadata-browser" */ "music-metadata-browser/dist/index"),
     __enableMediaLibrary: library,
     __initialWindowLayout,
     __initialState: screenshot ? screenshotInitialState : initialState,
@@ -212,7 +210,9 @@ Raven.context(async () => {
     document.title =
       track == null
         ? DEFAULT_DOCUMENT_TITLE
-        : `${track.metaData.title} - ${track.metaData.artist} \u00B7 ${DEFAULT_DOCUMENT_TITLE}`;
+        : `${track.metaData.title} - ${
+            track.metaData.artist
+          } \u00B7 ${DEFAULT_DOCUMENT_TITLE}`;
   });
 
   enableMediaSession(webamp);
