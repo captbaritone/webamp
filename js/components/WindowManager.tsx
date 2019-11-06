@@ -10,8 +10,10 @@ import {
   WindowPositions,
   AppState,
   WindowId,
+  Box,
+  Point,
 } from "../types";
-const abuts = (a: SnapUtils.Box, b: SnapUtils.Box) => {
+const abuts = (a: Box, b: Box) => {
   // TODO: This is kinda a hack. They should really be touching, not just within snapping distance.
   // Also, overlapping should not count.
   const wouldMoveTo = SnapUtils.snap(a, b);
@@ -50,7 +52,7 @@ class WindowManager extends React.Component<Props> {
     let movingSet = new Set([targetNode]);
     // Only the main window brings other windows along.
     if (key === "main") {
-      const findAllConnected = SnapUtils.traceConnection(abuts);
+      const findAllConnected = SnapUtils.traceConnection<WindowInfo>(abuts);
       movingSet = findAllConnected(windows, targetNode);
     }
 
@@ -110,7 +112,7 @@ class WindowManager extends React.Component<Props> {
       );
 
       const windowPositionDiff = moving.reduce(
-        (diff: { [windowId: string]: SnapUtils.Diff }, window) => {
+        (diff: { [windowId: string]: Point }, window) => {
           diff[window.key] = SnapUtils.applyDiff(window, finalDiff);
           return diff;
         },

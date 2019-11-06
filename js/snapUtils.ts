@@ -1,22 +1,4 @@
-interface Point {
-  x: number;
-  y: number;
-}
-
-export interface Diff {
-  x?: number;
-  y?: number;
-}
-
-interface BoundingBox {
-  width: number;
-  height: number;
-}
-
-export interface Box extends Point {
-  width: number;
-  height: number;
-}
+import { Box, Point, Diff, BoundingBox } from "./types";
 
 export const SNAP_DISTANCE = 15;
 
@@ -166,21 +148,23 @@ export const boundingBox = (nodes: Box[]) => {
   };
 };
 
-export const traceConnection = (
+export function traceConnection<B extends Box>(
   areConnected: (candidate: Box, n: Box) => boolean
-) => (candidates: Box[], node: Box) => {
-  const connected = new Set();
-  const checkNode = (n: Box) => {
-    for (const candidate of candidates) {
-      if (!connected.has(candidate) && areConnected(candidate, n)) {
-        connected.add(candidate);
-        checkNode(candidate);
+) {
+  return (candidates: B[], node: B): Set<B> => {
+    const connected = new Set<B>();
+    const checkNode = (n: B) => {
+      for (const candidate of candidates) {
+        if (!connected.has(candidate) && areConnected(candidate, n)) {
+          connected.add(candidate);
+          checkNode(candidate);
+        }
       }
-    }
+    };
+    checkNode(node);
+    return connected;
   };
-  checkNode(node);
-  return connected;
-};
+}
 
 export const applyDiff = (a: Point, b: Point) => ({
   x: a.x + b.x,

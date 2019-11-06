@@ -1,4 +1,4 @@
-import { Action, WindowId } from "../types";
+import { Action, WindowId, Box, Point } from "../types";
 import { WINDOWS } from "../constants";
 import {
   SET_FOCUSED_WINDOW,
@@ -17,10 +17,7 @@ import {
 import * as Utils from "../utils";
 import { WindowsSerializedStateV1 } from "../serializedStates/v1Types";
 
-export interface WindowPosition {
-  x: number;
-  y: number;
-}
+export type WindowPosition = Point;
 
 export type WindowPositions = {
   [windowId: string]: WindowPosition;
@@ -39,12 +36,8 @@ export interface WebampWindow {
   position: WindowPosition;
 }
 
-export interface WindowInfo {
+export interface WindowInfo extends Box {
   key: WindowId;
-  height: number;
-  width: number;
-  x: number;
-  y: number;
 }
 export interface WindowsState {
   focused: WindowId | null;
