@@ -6,10 +6,7 @@ const DiscordWinstonTransport = require("../DiscordWinstonTransport");
 
 const client = new Discord.Client();
 
-function handleStats() {}
-
 const handlers = {
-  stats: handleStats,
   help: handleHelp
 };
 

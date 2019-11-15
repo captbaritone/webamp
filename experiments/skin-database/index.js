@@ -5,6 +5,7 @@ const iaItems = db.get("internetArchiveItems");
 // const info = require("/Volumes/Mobile Backup/skins/cache/info.json");
 const Skins = require("./data/skins");
 const port = 3001;
+const graphql = require("./graphql").default;
 
 // TODO: Look into 766c4fad9088037ab4839b18292be8b1
 // Has huge number of filenames in info.json
@@ -65,6 +66,8 @@ app.get("/skins/:md5/download", async (req, res) => {
   }
   res.redirect(301, skinUrl);
 });
+
+app.use(graphql());
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 

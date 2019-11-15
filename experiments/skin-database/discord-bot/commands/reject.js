@@ -1,7 +1,6 @@
 const { reject, getStatus } = require("../../data/skins");
 const Utils = require("../utils");
-
-const TWEET_BOT_CHANNEL_ID = "445577489834704906";
+const { TWEET_BOT_CHANNEL_ID } = require("../../config");
 
 async function handler(message, args) {
   const [md5] = args;
