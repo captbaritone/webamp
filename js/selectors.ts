@@ -721,24 +721,30 @@ export function getRandomizePresets(state: AppState): boolean {
   return state.milkdrop.randomize;
 }
 
-export function getPreampLineUrl(state: AppState): string {
+export function getPreampLineUrl(state: AppState): string | null {
   return state.display.skinImages.EQ_PREAMP_LINE;
 }
 
-export function getLineColorsUrl(state: AppState): string {
+export function getLineColorsUrl(state: AppState): string | null {
   return state.display.skinImages.EQ_GRAPH_LINE_COLORS;
 }
 
 export const getPreampLineImage = createSelector(
   getPreampLineUrl,
-  async (url): Promise<HTMLImageElement> => {
+  async (url): Promise<HTMLImageElement | null> => {
+    if (url == null) {
+      return null;
+    }
     return Utils.imgFromUrl(url);
   }
 );
 
 export const getLineColorsImage = createSelector(
   getLineColorsUrl,
-  async (url): Promise<HTMLImageElement> => {
+  async (url): Promise<HTMLImageElement | null> => {
+    if (url == null) {
+      return null;
+    }
     return Utils.imgFromUrl(url);
   }
 );
