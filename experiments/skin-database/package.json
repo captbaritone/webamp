@@ -7,6 +7,7 @@
     "aws-sdk": "^2.469.0",
     "discord.js": "^11.5.1",
     "express": "^4.17.1",
+    "image-hash": "^3.5.1",
     "imagemin": "^7.0.0",
     "imagemin-optipng": "^7.0.0",
     "md5": "^2.2.1",
