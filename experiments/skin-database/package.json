@@ -9,6 +9,8 @@
     "express": "^4.17.1",
     "image-hash": "^3.5.1",
     "imagemin": "^7.0.0",
+    "express-graphql": "^0.9.0",
+    "graphql": "^14.5.8",
     "imagemin-optipng": "^7.0.0",
     "md5": "^2.2.1",
     "monk": "^7.0.0",
