@@ -1,9 +1,9 @@
-var graphqlHTTP = require("express-graphql");
-var { buildSchema } = require("graphql");
+const graphqlHTTP = require("express-graphql");
+const { buildSchema } = require("graphql");
 const Skins = require("./data/skins");
 
 // Construct a schema, using GraphQL schema language
-var schema = buildSchema(`
+const schema = buildSchema(`
 enum TweetStatus {
     TWEETED
     REJECTED
@@ -120,7 +120,7 @@ class Skin {
 }
 
 // The root provides a resolver function for each API endpoint
-var root = {
+const root = {
   skin: ({ md5 }) => {
     return new Skin(md5);
   },

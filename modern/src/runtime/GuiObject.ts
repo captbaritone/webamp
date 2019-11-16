@@ -143,38 +143,38 @@ class GuiObject extends MakiObject {
   getheight(): number {
     if (this.attributes.h !== undefined) {
       return Number(this.attributes.h);
-    } else {
-      const baseImage = baseImageAttributeFromObject(this);
-      if (baseImage) {
-        // TODO: fix the type on this, we currently have better typing for this in
-        // AnimatedLayer where we convert to _typedAttributes, as we apply that new
-        // standard up to GuiObject/MakiObject we should be able to remove the ignore
-        // @ts-ignore
-        const image = this.attributes.js_assets[baseImage];
-        if (image && image.h !== undefined) {
-          return image.h;
-        }
+    }
+    const baseImage = baseImageAttributeFromObject(this);
+    if (baseImage) {
+      // TODO: fix the type on this, we currently have better typing for this in
+      // AnimatedLayer where we convert to _typedAttributes, as we apply that new
+      // standard up to GuiObject/MakiObject we should be able to remove the ignore
+      // @ts-ignore
+      const image = this.attributes.js_assets[baseImage];
+      if (image && image.h !== undefined) {
+        return image.h;
       }
     }
+
     return 0;
   }
 
   getwidth(): number {
     if (this.attributes.w !== undefined) {
       return Number(this.attributes.w);
-    } else {
-      const baseImage = baseImageAttributeFromObject(this);
-      if (baseImage) {
-        // TODO: fix the type on this, we currently have better typing for this in
-        // AnimatedLayer where we convert to _typedAttributes, as we apply that new
-        // standard up to GuiObject/MakiObject we should be able to remove the ignore
-        // @ts-ignore
-        const image = this.attributes.js_assets[baseImage];
-        if (image && image.w !== undefined) {
-          return image.w;
-        }
+    }
+    const baseImage = baseImageAttributeFromObject(this);
+    if (baseImage) {
+      // TODO: fix the type on this, we currently have better typing for this in
+      // AnimatedLayer where we convert to _typedAttributes, as we apply that new
+      // standard up to GuiObject/MakiObject we should be able to remove the ignore
+      // @ts-ignore
+      const image = this.attributes.js_assets[baseImage];
+      if (image && image.w !== undefined) {
+        return image.w;
       }
     }
+
     return 0;
   }
 
