@@ -9,14 +9,14 @@ const TWEETABLE_QUERY = {
   tweeted: { $ne: true },
   approved: true,
   rejected: { $ne: true },
-  type: "CLASSIC"
+  type: "CLASSIC",
 };
 
 const REVIEWABLE_QUERY = {
   tweeted: { $ne: true },
   approved: { $ne: true },
   rejected: { $ne: true },
-  type: "CLASSIC"
+  type: "CLASSIC",
 };
 function getSkinRecord(skin) {
   const {
