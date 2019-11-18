@@ -18,9 +18,7 @@ module.exports = async function main() {
     });
     if (skinFiles.length !== 1) {
       console.warn(
-        `Found a skin item with ${skinFiles.length} skin files. Identifier: ${
-          item.identifier
-        }`
+        `Found a skin item with ${skinFiles.length} skin files. Identifier: ${item.identifier}`
       );
       continue;
     }

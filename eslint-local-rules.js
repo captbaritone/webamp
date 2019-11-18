@@ -184,9 +184,7 @@ module.exports = {
             ) {
               context.report({
                 node: body,
-                message: `Missing return type for Maki method. Expected \`${
-                  expectedTypeData.stringRepresentation
-                }\`.`,
+                message: `Missing return type for Maki method. Expected \`${expectedTypeData.stringRepresentation}\`.`,
                 fix: fixer => {
                   return fixer.insertTextBefore(
                     body,
@@ -203,9 +201,7 @@ module.exports = {
             ) {
               context.report({
                 node: returnType,
-                message: `Incorrect return type for Maki method. Expected \`${
-                  expectedTypeData.stringRepresentation
-                }\`.`,
+                message: `Incorrect return type for Maki method. Expected \`${expectedTypeData.stringRepresentation}\`.`,
               });
             }
           }
@@ -243,9 +239,7 @@ module.exports = {
             if (actual.typeAnnotation == null) {
               context.report({
                 node: actual,
-                message: `Missing type for Maki argument. Expected \`${
-                  expectedTypeData.stringRepresentation
-                }\`.`,
+                message: `Missing type for Maki argument. Expected \`${expectedTypeData.stringRepresentation}\`.`,
                 fix,
               });
               return;
@@ -257,9 +251,7 @@ module.exports = {
             if (actualTypeScriptName !== expectedTypeData.typeScriptName) {
               context.report({
                 node: actual,
-                message: `Invalid type for Maki argument. Expected \`${
-                  expectedTypeData.typeScriptName
-                }\`.`,
+                message: `Invalid type for Maki argument. Expected \`${expectedTypeData.typeScriptName}\`.`,
                 fix,
               });
             }
