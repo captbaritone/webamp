@@ -33,14 +33,18 @@ export function getButterchurnOptions(
 ): ButterchurnOptions {
   return {
     importButterchurn: () => {
-      return import(/* webpackChunkName: "butterchurn-initial-dependencies" */
-      // @ts-ignore
-      "butterchurn");
+      return import(
+        /* webpackChunkName: "butterchurn-initial-dependencies" */
+        // @ts-ignore
+        "butterchurn"
+      );
     },
     importConvertPreset: () => {
-      return import(/* webpackChunkName: "milkdrop-preset-converter" */
-      // @ts-ignore
-      "milkdrop-preset-converter-aws");
+      return import(
+        /* webpackChunkName: "milkdrop-preset-converter" */
+        // @ts-ignore
+        "milkdrop-preset-converter-aws"
+      );
     },
     presetConverterEndpoint:
       "https://p2tpeb5v8b.execute-api.us-east-2.amazonaws.com/default/milkdropShaderConverter",

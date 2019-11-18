@@ -12,7 +12,6 @@
     "react",
     "prettier",
     "import",
-    "no-constructor-bind",
     "@typescript-eslint",
     "react-hooks",
     "eslint-plugin-local-rules"
@@ -89,7 +88,7 @@
     "no-dupe-keys": "error",
     "no-duplicate-case": "error",
     "no-duplicate-imports": "error",
-    "no-else-return": "warn",
+    "no-else-return": "error",
     "no-empty-character-class": "error",
     "no-eval": "error",
     "no-ex-assign": "error",
@@ -164,7 +163,6 @@
     "import/no-extraneous-dependencies": "error",
     "import/no-named-as-default-member": "error",
     "import/no-unresolved": "error",
-    "no-constructor-bind/no-constructor-bind": "error",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "error"
   }

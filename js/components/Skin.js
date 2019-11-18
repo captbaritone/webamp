@@ -189,15 +189,9 @@ function cssRulesFromProps(props) {
        color: ${props.skinGenExColors.listHeaderText};
        background-color: ${props.skinGenExColors.listHeaderBackground};
        border-top: 1px solid ${props.skinGenExColors.listHeaderFrameTopAndLeft};
-       border-left: 1px solid ${
-         props.skinGenExColors.listHeaderFrameTopAndLeft
-       };
-       border-bottom: 1px solid ${
-         props.skinGenExColors.listHeaderFrameBottomAndRight
-       };
-       border-right: 1px solid ${
-         props.skinGenExColors.listHeaderFrameBottomAndRight
-       };
+       border-left: 1px solid ${props.skinGenExColors.listHeaderFrameTopAndLeft};
+       border-bottom: 1px solid ${props.skinGenExColors.listHeaderFrameBottomAndRight};
+       border-right: 1px solid ${props.skinGenExColors.listHeaderFrameBottomAndRight};
     }`
   );
   cssRules.push(

@@ -113,9 +113,7 @@ class LibraryLayout extends React.Component<Props, State> {
               left: 0,
               right: 0,
               display: "grid",
-              gridTemplateColumns: `${
-                this.state.sidebarWidth
-              }px ${DIVIDER_WIDTH}px auto`,
+              gridTemplateColumns: `${this.state.sidebarWidth}px ${DIVIDER_WIDTH}px auto`,
             }}
           >
             {this.state.sidebarWidth === 0 ? <div /> : this.props.sidebar}
