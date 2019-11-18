@@ -35,7 +35,4 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
     crop: () => dispatch(cropPlaylist()),
   };
 };
-export default connect(
-  () => ({}),
-  mapDispatchToProps
-)(RemoveMenu);
+export default connect(() => ({}), mapDispatchToProps)(RemoveMenu);

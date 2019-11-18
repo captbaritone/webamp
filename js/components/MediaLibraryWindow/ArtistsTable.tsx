@@ -8,7 +8,10 @@ export default class ArtistsTable extends React.Component<Props> {
     return (
       <LibraryTable
         headings={["Album", "Tracks", "Other"]}
-        rows={[["All (1 album)", "1", "1"], ["Ben Mason", "1", "1"]]}
+        rows={[
+          ["All (1 album)", "1", "1"],
+          ["Ben Mason", "1", "1"],
+        ]}
         widths={[100, 150, 200]}
       />
     );

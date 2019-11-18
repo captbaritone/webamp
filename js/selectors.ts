@@ -37,39 +37,32 @@ import { SerializedStateV1 } from "./serializedStates/v1Types";
 
 export const getSliders = (state: AppState) => state.equalizer.sliders;
 
-export const getEqfData = createSelector(
-  getSliders,
-  sliders => {
-    const preset: { [key: string]: number | string } = {
-      name: "Entry1",
-      preamp: Utils.denormalizeEqBand(sliders.preamp),
-    };
-    BANDS.forEach(band => {
-      preset[`hz${band}`] = Utils.denormalizeEqBand(sliders[band]);
-    });
-    const eqfData = {
-      presets: [preset],
-      type: "Winamp EQ library file v1.1",
-    };
-    return eqfData;
-  }
-);
+export const getEqfData = createSelector(getSliders, sliders => {
+  const preset: { [key: string]: number | string } = {
+    name: "Entry1",
+    preamp: Utils.denormalizeEqBand(sliders.preamp),
+  };
+  BANDS.forEach(band => {
+    preset[`hz${band}`] = Utils.denormalizeEqBand(sliders[band]);
+  });
+  const eqfData = {
+    presets: [preset],
+    type: "Winamp EQ library file v1.1",
+  };
+  return eqfData;
+});
 
 export const getTracks = (state: AppState) => state.tracks;
 
-export const getTracksMatchingFilter = createSelector(
-  getTracks,
-  tracks => {
-    const tracksArray = Object.values(tracks);
-    const filter = Utils.makeCachingFilterFunction(
-      tracksArray,
-      (track, query) => TrackUtils.trackFilterContents(track).includes(query)
-    );
-    return (filterString: string): PlaylistTrack[] => {
-      return filter(filterString.toLowerCase());
-    };
-  }
-);
+export const getTracksMatchingFilter = createSelector(getTracks, tracks => {
+  const tracksArray = Object.values(tracks);
+  const filter = Utils.makeCachingFilterFunction(tracksArray, (track, query) =>
+    TrackUtils.trackFilterContents(track).includes(query)
+  );
+  return (filterString: string): PlaylistTrack[] => {
+    return filter(filterString.toLowerCase());
+  };
+});
 
 export const getTrackUrl = (state: AppState) => {
   return (id: number): string | null => {
@@ -202,33 +195,21 @@ export const getGenWindows = (state: AppState) => {
   return state.windows.genWindows;
 };
 
-export const getWindowOpen = createSelector(
-  getGenWindows,
-  genWindows => {
-    return (windowId: WindowId) => genWindows[windowId].open;
-  }
-);
+export const getWindowOpen = createSelector(getGenWindows, genWindows => {
+  return (windowId: WindowId) => genWindows[windowId].open;
+});
 
-export const getWindowHidden = createSelector(
-  getGenWindows,
-  genWindows => {
-    return (windowId: WindowId) => genWindows[windowId].hidden;
-  }
-);
+export const getWindowHidden = createSelector(getGenWindows, genWindows => {
+  return (windowId: WindowId) => genWindows[windowId].hidden;
+});
 
-export const getWindowShade = createSelector(
-  getGenWindows,
-  genWindows => {
-    return (windowId: WindowId) => genWindows[windowId].shade;
-  }
-);
+export const getWindowShade = createSelector(getGenWindows, genWindows => {
+  return (windowId: WindowId) => genWindows[windowId].shade;
+});
 
-export const getWindowSize = createSelector(
-  getGenWindows,
-  genWindows => {
-    return (windowId: WindowId) => genWindows[windowId].size;
-  }
-);
+export const getWindowSize = createSelector(getGenWindows, genWindows => {
+  return (windowId: WindowId) => genWindows[windowId].size;
+});
 
 export const getWindowPositions = createSelector(
   getGenWindows,
@@ -314,14 +295,11 @@ export const getDuration = (state: AppState): number | null => {
   return currentTrack && currentTrack.duration;
 };
 
-export const getTrackDisplayName = createSelector(
-  getTracks,
-  tracks => {
-    return defaultMemoize((trackId: number | null) =>
-      fromTracks.getTrackDisplayName(tracks, trackId)
-    );
-  }
-);
+export const getTrackDisplayName = createSelector(getTracks, tracks => {
+  return defaultMemoize((trackId: number | null) =>
+    fromTracks.getTrackDisplayName(tracks, trackId)
+  );
+});
 
 export const getCurrentTrackDisplayName = createSelector(
   getCurrentTrackId,
@@ -396,13 +374,11 @@ export const getMediaText = createSelector(
 
 export const getNumberOfTracks = (state: AppState) =>
   getTrackOrder(state).length;
-const getPlaylistDuration = createSelector(
-  getTracks,
-  tracks =>
-    Object.values(tracks).reduce(
-      (total, track) => total + (track.duration || 0),
-      0
-    )
+const getPlaylistDuration = createSelector(getTracks, tracks =>
+  Object.values(tracks).reduce(
+    (total, track) => total + (track.duration || 0),
+    0
+  )
 );
 
 export const getPlaylistURL = createSelector(
@@ -472,12 +448,9 @@ export const getWindowSizes = createSelector(
   }
 );
 
-export const getWindowPixelSize = createSelector(
-  getWindowSizes,
-  sizes => {
-    return (windowId: WindowId) => sizes[windowId];
-  }
-);
+export const getWindowPixelSize = createSelector(getWindowSizes, sizes => {
+  return (windowId: WindowId) => sizes[windowId];
+});
 
 const getWindowOrder = (state: AppState): WindowId[] =>
   state.windows.windowOrder;
@@ -505,10 +478,7 @@ export const getWindowsInfo = createSelector(
   }
 );
 
-export const getWindowGraph = createSelector(
-  getWindowsInfo,
-  generateGraph
-);
+export const getWindowGraph = createSelector(getWindowsInfo, generateGraph);
 
 const defaultPlaylistStyle = {
   normal: "#00FF00",
@@ -574,9 +544,8 @@ export function getBrowserWindowSize(
   return state.windows.browserWindowSize;
 }
 
-export const getOpenWindows = createSelector(
-  getGenWindows,
-  genWindows => Utils.objectFilter(genWindows, w => w.open)
+export const getOpenWindows = createSelector(getGenWindows, genWindows =>
+  Utils.objectFilter(genWindows, w => w.open)
 );
 
 export const getStackedLayoutPositions = createSelector(

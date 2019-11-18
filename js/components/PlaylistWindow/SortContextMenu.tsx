@@ -39,7 +39,4 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
   };
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(SortContextMenu);
+export default connect(null, mapDispatchToProps)(SortContextMenu);

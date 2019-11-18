@@ -77,7 +77,4 @@ const mapDispatchToProps = (
   handleMouseUp: () => dispatch({ type: UNSET_FOCUS }),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Band);
+export default connect(mapStateToProps, mapDispatchToProps)(Band);

@@ -195,7 +195,4 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
     dispatch(Actions.scheduleMilkdropMessage(message)),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Milkdrop);
+export default connect(mapStateToProps, mapDispatchToProps)(Milkdrop);

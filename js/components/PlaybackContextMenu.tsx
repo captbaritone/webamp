@@ -71,7 +71,4 @@ const mapDispatchToProps = (dispatch: Dispatch): Props => {
   };
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(PlaybackContextMenu);
+export default connect(null, mapDispatchToProps)(PlaybackContextMenu);

@@ -5,7 +5,10 @@ const AlbumsTable = React.memo(() => {
   return (
     <LibraryTable
       headings={["Album", "Tracks"]}
-      rows={[["All (1 album)", "1"], ["Ben Mason", "1"]]}
+      rows={[
+        ["All (1 album)", "1"],
+        ["Ben Mason", "1"],
+      ]}
       widths={[50, 200]}
     />
   );

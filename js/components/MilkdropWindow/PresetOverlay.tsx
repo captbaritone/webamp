@@ -241,7 +241,4 @@ function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PresetOverlay);
+export default connect(mapStateToProps, mapDispatchToProps)(PresetOverlay);

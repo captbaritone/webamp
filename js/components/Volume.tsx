@@ -42,7 +42,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     dispatch(Actions.setVolume(Number((e.target as HTMLInputElement).value))),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Volume);
+export default connect(mapStateToProps, mapDispatchToProps)(Volume);
