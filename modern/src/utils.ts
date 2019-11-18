@@ -218,7 +218,7 @@ export function findDescendantByTypeAndId<
       (!type || child.name === type) &&
       child.attributes &&
       child.attributes.id !== undefined &&
-        child.attributes.id.toLowerCase() === lowerCaseId
+      child.attributes.id.toLowerCase() === lowerCaseId
     ) {
       return child;
     }
