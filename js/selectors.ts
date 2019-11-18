@@ -66,8 +66,7 @@ export const getTracksMatchingFilter = createSelector(getTracks, tracks => {
 
 export const getTrackUrl = (state: AppState) => {
   return (id: number): string | null => {
-    const track = state.tracks[id];
-    return track == null ? null : track.url;
+    return state.tracks[id]?.url;
   };
 };
 export const getTrackOrder = (state: AppState) => state.playlist.trackOrder;
