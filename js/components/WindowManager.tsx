@@ -181,7 +181,4 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(WindowManager);
+export default connect(mapStateToProps, mapDispatchToProps)(WindowManager);

@@ -25,7 +25,4 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
     selectZero: () => dispatch({ type: SELECT_ZERO }),
   };
 };
-export default connect(
-  null,
-  mapDispatchToProps
-)(SelectionMenu);
+export default connect(null, mapDispatchToProps)(SelectionMenu);

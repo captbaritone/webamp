@@ -41,7 +41,4 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
   };
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(PresetsContextMenu);
+export default connect(null, mapDispatchToProps)(PresetsContextMenu);

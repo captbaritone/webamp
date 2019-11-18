@@ -52,7 +52,4 @@ const mapDispatchToProps = (dispatch: Dispatch): Props => {
   };
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(PlaylistWindow);
+export default connect(null, mapDispatchToProps)(PlaylistWindow);

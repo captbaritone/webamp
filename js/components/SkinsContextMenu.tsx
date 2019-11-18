@@ -49,7 +49,4 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SkinContextMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(SkinContextMenu);

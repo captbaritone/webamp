@@ -28,7 +28,4 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   removeAllTracks: () => dispatch(Actions.removeAllTracks()),
 });
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(ListMenu);
+export default connect(null, mapDispatchToProps)(ListMenu);

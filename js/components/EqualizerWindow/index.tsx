@@ -113,7 +113,4 @@ const mapStateToProps = (state: AppState): StateProps => ({
   shade: getWindowShade(state)("equalizer"),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EqualizerWindow);
+export default connect(mapStateToProps, mapDispatchToProps)(EqualizerWindow);

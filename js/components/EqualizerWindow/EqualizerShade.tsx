@@ -49,7 +49,4 @@ const mapStateToProps = (state: AppState): StateProps => ({
   balance: state.media.balance,
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EqualizerShade);
+export default connect(mapStateToProps, mapDispatchToProps)(EqualizerShade);

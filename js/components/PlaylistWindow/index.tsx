@@ -210,7 +210,4 @@ const mapStateToProps = (state: AppState): StateProps => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PlaylistWindow);
+export default connect(mapStateToProps, mapDispatchToProps)(PlaylistWindow);

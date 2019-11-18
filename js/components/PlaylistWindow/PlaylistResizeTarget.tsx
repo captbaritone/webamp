@@ -26,7 +26,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ResizeTarget);
+export default connect(mapStateToProps, mapDispatchToProps)(ResizeTarget);

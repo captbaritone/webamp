@@ -98,7 +98,4 @@ function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(FocusTarget);
+export default connect(mapStateToProps, mapDispatchToProps)(FocusTarget);

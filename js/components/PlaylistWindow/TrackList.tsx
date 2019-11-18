@@ -119,7 +119,4 @@ const mapStateToProps = (state: AppState): StateProps => ({
   numberOfTracks: getNumberOfTracks(state),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TrackList);
+export default connect(mapStateToProps, mapDispatchToProps)(TrackList);

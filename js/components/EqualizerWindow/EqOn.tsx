@@ -33,7 +33,4 @@ const mapDispatchProps = (dispatch: Dispatch): DispatchProps => {
   return { toggleEq: () => dispatch(toggleEq()) };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchProps
-)(EqOn);
+export default connect(mapStateToProps, mapDispatchProps)(EqOn);
