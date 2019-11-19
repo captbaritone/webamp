@@ -27,7 +27,7 @@ const tracks = (
         [action.id]: {
           id: action.id,
           defaultName: action.defaultName || null,
-          duration: action.duration == null ? null : action.duration,
+          duration: action.duration ?? null,
           url: action.url,
           mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.INITIALIZED,
         },
