@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
 import { getTimeStr } from "../../utils";
@@ -31,65 +31,61 @@ interface DispatchProps {
   toggleShade: () => void;
 }
 
-class PlaylistShade extends React.Component<StateProps & DispatchProps> {
-  _addedWidth() {
-    return this.props.playlistSize[0] * WINDOW_RESIZE_SEGMENT_WIDTH;
-  }
+type Props = StateProps & DispatchProps;
 
-  _trimmedName() {
-    const { name } = this.props;
+function PlaylistShade({
+  name,
+  playlistSize,
+  duration,
+  toggleShade,
+  close,
+  focusPlaylist,
+  focused,
+}: Props) {
+  const addedWidth = playlistSize[0] * WINDOW_RESIZE_SEGMENT_WIDTH;
+
+  const trimmedName = useMemo(() => {
     if (name == null) {
       return "[No file]";
     }
 
     const MIN_NAME_WIDTH = 205;
 
-    const nameLength = (MIN_NAME_WIDTH + this._addedWidth()) / CHARACTER_WIDTH;
+    const nameLength = (MIN_NAME_WIDTH + addedWidth) / CHARACTER_WIDTH;
     return name.length > nameLength
       ? name.slice(0, nameLength - 1) + UTF8_ELLIPSIS
       : name;
-  }
+  }, [name, addedWidth]);
 
-  _time() {
-    const { duration, name } = this.props;
+  const time = useMemo(() => {
     return name == null ? "" : getTimeStr(duration);
-  }
+  }, [name, duration]);
 
-  render() {
-    const { toggleShade, close, focusPlaylist, focused } = this.props;
-
-    const style = {
-      width: `${WINDOW_WIDTH + this._addedWidth()}px`,
-    };
-
-    const classes = classnames("window", "draggable", {
-      selected: focused === WINDOWS.PLAYLIST,
-    });
-
-    return (
-      <div
-        id="playlist-window-shade"
-        className={classes}
-        style={{ width: style.width }}
-        onMouseDown={focusPlaylist}
-        onDoubleClick={toggleShade}
-      >
-        <div className="left">
-          <div className="right draggable">
-            <div id="playlist-shade-track-title">
-              <CharacterString>{this._trimmedName()}</CharacterString>
-            </div>
-            <div id="playlist-shade-time">
-              <CharacterString>{this._time()}</CharacterString>
-            </div>
-            <PlaylistResizeTarget widthOnly />
-            <div id="playlist-shade-button" onClick={toggleShade} />
-            <div id="playlist-close-button" onClick={close} />
+  return (
+    <div
+      id="playlist-window-shade"
+      className={classnames("window", "draggable", {
+        selected: focused === WINDOWS.PLAYLIST,
+      })}
+      style={{ width: `${WINDOW_WIDTH + addedWidth}px` }}
+      onMouseDown={focusPlaylist}
+      onDoubleClick={toggleShade}
+    >
+      <div className="left">
+        <div className="right draggable">
+          <div id="playlist-shade-track-title">
+            <CharacterString>{trimmedName}</CharacterString>
           </div>
+          <div id="playlist-shade-time">
+            <CharacterString>{time}</CharacterString>
+          </div>
+          <PlaylistResizeTarget widthOnly />
+          <div id="playlist-shade-button" onClick={toggleShade} />
+          <div id="playlist-close-button" onClick={close} />
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
