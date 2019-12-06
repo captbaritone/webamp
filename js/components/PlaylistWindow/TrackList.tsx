@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
 import { getTimeStr } from "../../utils";
@@ -33,27 +33,21 @@ function getNumberLength(number: number): number {
   return number.toString().length;
 }
 
-class TrackList extends React.Component<DispatchProps & StateProps> {
-  _node?: HTMLDivElement | null;
-  _renderTracks(format: (id: number, i: number) => JSX.Element | string) {
-    return this.props.trackIds.map((id, i) => (
-      <TrackCell
-        key={id}
-        id={id}
-        index={this.props.offset + i}
-        handleMoveClick={this._handleMoveClick}
-      >
-        {format(id, i)}
-      </TrackCell>
-    ));
-  }
+function TrackList(props: DispatchProps & StateProps) {
+  const [node, setNode] = useState<Element | null>(null);
+  const [moving, setMoving] = useState(false);
+  const [mouseStartY, setMouseStartY] = useState<number | null>(null);
 
-  _handleMoveClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!this._node) {
+  const _handleMoveClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    setMoving(true);
+    setMouseStartY(e.clientY);
+  };
+
+  useEffect(() => {
+    if (node == null || mouseStartY == null || moving === false) {
       return;
     }
-    const { top, bottom, left, right } = this._node.getBoundingClientRect();
-    const mouseStart = e.clientY;
+    const { top, bottom, left, right } = node.getBoundingClientRect();
     let lastDiff = 0;
     const handleMouseMove = (ee: MouseEvent) => {
       const { clientY: y, clientX: x } = ee;
@@ -61,48 +55,63 @@ class TrackList extends React.Component<DispatchProps & StateProps> {
         // Mouse is outside the track list
         return;
       }
-      const proposedDiff = Math.floor((y - mouseStart) / TRACK_HEIGHT);
+      const proposedDiff = Math.floor((y - mouseStartY) / TRACK_HEIGHT);
       if (proposedDiff !== lastDiff) {
         const diffDiff = proposedDiff - lastDiff;
-        this.props.dragSelected(diffDiff);
+        props.dragSelected(diffDiff);
         lastDiff = proposedDiff;
       }
     };
 
-    window.addEventListener("mouseup", () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    });
+    const handleMouseUp = () => setMoving(false);
+    window.addEventListener("mouseup", handleMouseUp);
     window.addEventListener("mousemove", handleMouseMove);
-  };
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+    // I'm not 100% sure how well this would work if it rebound mid drag, so
+    // we'll just pretend it's okay that we have stale values in there.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [moving]);
 
-  _handleRef = (node: HTMLDivElement | null) => {
-    this._node = node;
-  };
-
-  render() {
-    const { tracks, offset } = this.props;
-    const maxTrackNumberLength = getNumberLength(this.props.numberOfTracks);
-    const paddedTrackNumForIndex = (i: number) =>
-      (i + 1 + offset).toString().padStart(maxTrackNumberLength, "\u00A0");
-    return (
-      <div
-        ref={this._handleRef}
-        className="playlist-tracks"
-        style={{ height: "100%" }}
-        onClick={this.props.selectZero}
-        onWheel={this.props.scrollPlaylistByDelta}
+  function _renderTracks(
+    format: (id: number, i: number) => JSX.Element | string
+  ) {
+    return props.trackIds.map((id, i) => (
+      <TrackCell
+        key={id}
+        id={id}
+        index={props.offset + i}
+        handleMoveClick={_handleMoveClick}
       >
-        <div className="playlist-track-titles">
-          {this._renderTracks((id, i) => (
-            <TrackTitle id={id} paddedTrackNumber={paddedTrackNumForIndex(i)} />
-          ))}
-        </div>
-        <div className="playlist-track-durations">
-          {this._renderTracks(id => getTimeStr(tracks[id].duration))}
-        </div>
-      </div>
-    );
+        {format(id, i)}
+      </TrackCell>
+    ));
   }
+
+  const { tracks, offset } = props;
+  const maxTrackNumberLength = getNumberLength(props.numberOfTracks);
+  const paddedTrackNumForIndex = (i: number) =>
+    (i + 1 + offset).toString().padStart(maxTrackNumberLength, "\u00A0");
+  return (
+    <div
+      ref={setNode}
+      className="playlist-tracks"
+      style={{ height: "100%" }}
+      onClick={props.selectZero}
+      onWheel={props.scrollPlaylistByDelta}
+    >
+      <div className="playlist-track-titles">
+        {_renderTracks((id, i) => (
+          <TrackTitle id={id} paddedTrackNumber={paddedTrackNumForIndex(i)} />
+        ))}
+      </div>
+      <div className="playlist-track-durations">
+        {_renderTracks(id => getTimeStr(tracks[id].duration))}
+      </div>
+    </div>
+  );
 }
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
