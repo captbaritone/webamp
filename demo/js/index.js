@@ -95,7 +95,7 @@ Sentry.init({
   release: typeof COMMITHASH !== "undefined" ? COMMITHASH : "DEV",
 });
 
-const ravenMiddleware = createMiddleware(Sentry, {
+const sentryMiddleware = createMiddleware(Sentry, {
   filterBreadcrumbActions,
   stateTransformer: Selectors.getDebugData,
 });
@@ -174,7 +174,7 @@ async function main() {
     __initialWindowLayout,
     __initialState: screenshot ? screenshotInitialState : initialState,
     __butterchurnOptions,
-    __customMiddlewares: [ravenMiddleware],
+    __customMiddlewares: [sentryMiddleware],
   });
 
   if (disableMarquee || screenshot) {
