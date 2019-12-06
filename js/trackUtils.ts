@@ -35,12 +35,3 @@ export const trackFilename = Utils.weakMapMemoize(
     return "???";
   }
 );
-
-export const trackFilterContents = Utils.weakMapMemoize(
-  (track: PlaylistTrack): string => {
-    return [track.artist, track.title, track.defaultName]
-      .filter(Boolean)
-      .join("|")
-      .toLowerCase();
-  }
-);
