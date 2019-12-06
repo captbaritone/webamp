@@ -1,16 +1,9 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
 
 import { WINDOWS, TRACK_HEIGHT, LOAD_STYLE } from "../../constants";
-import {
-  scrollUpFourTracks,
-  scrollDownFourTracks,
-  togglePlaylistShadeMode,
-  scrollVolume,
-  closeWindow,
-  loadMedia,
-} from "../../actionCreators";
+import * as Actions from "../../actionCreators";
 import * as Selectors from "../../selectors";
 
 import { clamp } from "../../utils";
@@ -59,132 +52,135 @@ interface OwnProps {
 
 type Props = StateProps & DispatchProps & OwnProps;
 
-class PlaylistWindow extends React.Component<Props> {
-  _handleDrop = (
-    e: React.DragEvent<HTMLDivElement>,
-    targetCoords: { x: number; y: number }
-  ) => {
-    const top = e.clientY - targetCoords.y;
-    const atIndex = clamp(
-      this.props.offset + Math.round((top - 23) / TRACK_HEIGHT),
-      0,
-      this.props.maxTrackIndex + 1
-    );
-    this.props.loadMedia(e, atIndex);
+function PlaylistWindow({
+  skinPlaylistStyle,
+  selected,
+  playlistSize,
+  playlistWindowPixelSize,
+  playlistShade,
+  close,
+  toggleShade,
+  analyser,
+  showVisualizer,
+  activateVisualizer,
+  maxTrackIndex,
+  offset,
+  loadMedia,
+  scrollUpFourTracks,
+  scrollDownFourTracks,
+  scrollVolume,
+}: Props) {
+  const _handleDrop = useCallback(
+    (
+      e: React.DragEvent<HTMLDivElement>,
+      targetCoords: { x: number; y: number }
+    ) => {
+      const top = e.clientY - targetCoords.y;
+      const atIndex = clamp(
+        offset + Math.round((top - 23) / TRACK_HEIGHT),
+        0,
+        maxTrackIndex + 1
+      );
+      loadMedia(e, atIndex);
+    },
+    [loadMedia, offset, maxTrackIndex]
+  );
+
+  if (playlistShade) {
+    return <PlaylistShade />;
+  }
+
+  const style = {
+    color: skinPlaylistStyle.normal,
+    backgroundColor: skinPlaylistStyle.normalbg,
+    fontFamily: `${skinPlaylistStyle.font}, Arial, sans-serif`,
+    height: `${playlistWindowPixelSize.height}px`,
+    width: `${playlistWindowPixelSize.width}px`,
   };
 
-  render() {
-    const {
-      skinPlaylistStyle,
-      selected,
-      playlistSize,
-      playlistWindowPixelSize,
-      playlistShade,
-      close,
-      toggleShade,
-      analyser,
-      showVisualizer,
-      activateVisualizer,
-    } = this.props;
-    if (playlistShade) {
-      return <PlaylistShade />;
-    }
+  const classes = classnames("window", "draggable", { selected });
 
-    const style = {
-      color: skinPlaylistStyle.normal,
-      backgroundColor: skinPlaylistStyle.normalbg,
-      fontFamily: `${skinPlaylistStyle.font}, Arial, sans-serif`,
-      height: `${playlistWindowPixelSize.height}px`,
-      width: `${playlistWindowPixelSize.width}px`,
-    };
+  const showSpacers = playlistSize[0] % 2 === 0;
 
-    const classes = classnames("window", "draggable", { selected });
-
-    const showSpacers = playlistSize[0] % 2 === 0;
-
-    return (
-      <FocusTarget windowId={WINDOWS.PLAYLIST}>
-        <DropTarget
-          id="playlist-window"
-          className={classes}
-          style={style}
-          handleDrop={this._handleDrop}
-          onWheel={this.props.scrollVolume}
-        >
-          <div className="playlist-top draggable" onDoubleClick={toggleShade}>
-            <div className="playlist-top-left draggable" />
-            {showSpacers && (
-              <div className="playlist-top-left-spacer draggable" />
+  return (
+    <FocusTarget windowId={WINDOWS.PLAYLIST}>
+      <DropTarget
+        id="playlist-window"
+        className={classes}
+        style={style}
+        handleDrop={_handleDrop}
+        onWheel={scrollVolume}
+      >
+        <div className="playlist-top draggable" onDoubleClick={toggleShade}>
+          <div className="playlist-top-left draggable" />
+          {showSpacers && (
+            <div className="playlist-top-left-spacer draggable" />
+          )}
+          <div className="playlist-top-left-fill draggable" />
+          <div className="playlist-top-title draggable" />
+          {showSpacers && (
+            <div className="playlist-top-right-spacer draggable" />
+          )}
+          <div className="playlist-top-right-fill draggable" />
+          <div className="playlist-top-right draggable">
+            <div id="playlist-shade-button" onClick={toggleShade} />
+            <div id="playlist-close-button" onClick={close} />
+          </div>
+        </div>
+        <div className="playlist-middle draggable">
+          <div className="playlist-middle-left draggable" />
+          <div className="playlist-middle-center">
+            <TrackList />
+          </div>
+          <div className="playlist-middle-right draggable">
+            <ScrollBar />
+          </div>
+        </div>
+        <div className="playlist-bottom draggable">
+          <div className="playlist-bottom-left draggable">
+            <AddMenu />
+            <RemoveMenu />
+            <SelectionMenu />
+            <MiscMenu />
+          </div>
+          <div className="playlist-bottom-center draggable" />
+          <div className="playlist-bottom-right draggable">
+            {showVisualizer && (
+              <div className="playlist-visualizer">
+                {activateVisualizer && (
+                  <div className="visualizer-wrapper">
+                    <Visualizer
+                      // @ts-ignore Visualizer is not yet typed
+                      analyser={analyser}
+                    />
+                  </div>
+                )}
+              </div>
             )}
-            <div className="playlist-top-left-fill draggable" />
-            <div className="playlist-top-title draggable" />
-            {showSpacers && (
-              <div className="playlist-top-right-spacer draggable" />
-            )}
-            <div className="playlist-top-right-fill draggable" />
-            <div className="playlist-top-right draggable">
-              <div id="playlist-shade-button" onClick={toggleShade} />
-              <div id="playlist-close-button" onClick={close} />
-            </div>
+            <PlaylistActionArea />
+            <ListMenu />
+            <div id="playlist-scroll-up-button" onClick={scrollUpFourTracks} />
+            <div
+              id="playlist-scroll-down-button"
+              onClick={scrollDownFourTracks}
+            />
+            <PlaylistResizeTarget />
           </div>
-          <div className="playlist-middle draggable">
-            <div className="playlist-middle-left draggable" />
-            <div className="playlist-middle-center">
-              <TrackList />
-            </div>
-            <div className="playlist-middle-right draggable">
-              <ScrollBar />
-            </div>
-          </div>
-          <div className="playlist-bottom draggable">
-            <div className="playlist-bottom-left draggable">
-              <AddMenu />
-              <RemoveMenu />
-              <SelectionMenu />
-              <MiscMenu />
-            </div>
-            <div className="playlist-bottom-center draggable" />
-            <div className="playlist-bottom-right draggable">
-              {showVisualizer && (
-                <div className="playlist-visualizer">
-                  {activateVisualizer && (
-                    <div className="visualizer-wrapper">
-                      <Visualizer
-                        // @ts-ignore Visualizer is not yet typed
-                        analyser={analyser}
-                      />
-                    </div>
-                  )}
-                </div>
-              )}
-              <PlaylistActionArea />
-              <ListMenu />
-              <div
-                id="playlist-scroll-up-button"
-                onClick={this.props.scrollUpFourTracks}
-              />
-              <div
-                id="playlist-scroll-down-button"
-                onClick={this.props.scrollDownFourTracks}
-              />
-              <PlaylistResizeTarget />
-            </div>
-          </div>
-        </DropTarget>
-      </FocusTarget>
-    );
-  }
+        </div>
+      </DropTarget>
+    </FocusTarget>
+  );
 }
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
   return {
-    close: () => dispatch(closeWindow(WINDOWS.PLAYLIST)),
-    toggleShade: () => dispatch(togglePlaylistShadeMode()),
-    scrollUpFourTracks: () => dispatch(scrollUpFourTracks()),
-    scrollDownFourTracks: () => dispatch(scrollDownFourTracks()),
+    close: () => dispatch(Actions.closeWindow(WINDOWS.PLAYLIST)),
+    toggleShade: () => dispatch(Actions.togglePlaylistShadeMode()),
+    scrollUpFourTracks: () => dispatch(Actions.scrollUpFourTracks()),
+    scrollDownFourTracks: () => dispatch(Actions.scrollDownFourTracks()),
     loadMedia: (e, startIndex) =>
-      dispatch(loadMedia(e, LOAD_STYLE.NONE, startIndex)),
-    scrollVolume: e => dispatch(scrollVolume(e)),
+      dispatch(Actions.loadMedia(e, LOAD_STYLE.NONE, startIndex)),
+    scrollVolume: e => dispatch(Actions.scrollVolume(e)),
   };
 };
 
