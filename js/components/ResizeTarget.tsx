@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   WINDOW_RESIZE_SEGMENT_WIDTH,
   WINDOW_RESIZE_SEGMENT_HEIGHT,
@@ -13,16 +13,17 @@ interface Props {
   id?: string;
 }
 
-export default class ResizeTarget extends React.Component<Props> {
-  handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    // Prevent dragging from highlighting text.
-    e.preventDefault();
-    const [width, height] = this.props.currentSize;
-    const mouseStart = {
-      x: e.clientX,
-      y: e.clientY,
-    };
-
+export default function ResizeTarget(props: Props) {
+  const { currentSize, setWindowSize, widthOnly, ...passThroughProps } = props;
+  const [mouseDown, setMouseDown] = useState(false);
+  const [mouseStart, setMouseStart] = useState<null | { x: number; y: number }>(
+    null
+  );
+  useEffect(() => {
+    if (mouseDown === false || mouseStart == null) {
+      return;
+    }
+    const [width, height] = currentSize;
     const handleMove = (ee: MouseEvent) => {
       const x = ee.clientX - mouseStart.x;
       const y = ee.clientY - mouseStart.y;
@@ -32,28 +33,37 @@ export default class ResizeTarget extends React.Component<Props> {
         width + Math.round(x / WINDOW_RESIZE_SEGMENT_WIDTH)
       );
 
-      const newHeight = this.props.widthOnly
+      const newHeight = widthOnly
         ? width
         : Math.max(0, height + Math.round(y / WINDOW_RESIZE_SEGMENT_HEIGHT));
 
       const newSize: Size = [newWidth, newHeight];
 
-      this.props.setWindowSize(newSize);
+      props.setWindowSize(newSize);
     };
 
     window.addEventListener("mousemove", handleMove);
-    window.addEventListener("mouseup", () => {
+
+    const handleMouseUp = () => setMouseDown(false);
+    window.addEventListener("mouseup", handleMouseUp);
+
+    return () => {
       window.removeEventListener("mousemove", handleMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+    // We pruposefully close over the props from when the mouse went down
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mouseStart, mouseDown]);
+
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Prevent dragging from highlighting text.
+    e.preventDefault();
+    setMouseStart({
+      x: e.clientX,
+      y: e.clientY,
     });
+    setMouseDown(true);
   };
 
-  render() {
-    const {
-      currentSize,
-      setWindowSize,
-      widthOnly,
-      ...passThroughProps
-    } = this.props;
-    return <div onMouseDown={this.handleMouseDown} {...passThroughProps} />;
-  }
+  return <div onMouseDown={handleMouseDown} {...passThroughProps} />;
 }
