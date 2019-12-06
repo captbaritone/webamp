@@ -1,5 +1,4 @@
 import * as React from "react";
-import "../../../css/media-library-window.css";
 import Sidebar from "./Sidebar";
 import ArtistsTable from "./ArtistsTable";
 import AlbumsTable from "./AlbumsTable";
