@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useLayoutEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Utils from "./utils";
 import { Action, Thunk, AppState } from "./types";
@@ -16,15 +16,18 @@ export function useScreenSize() {
 
 export function useWindowSize() {
   const [size, setSize] = useState<Size>(Utils.getWindowSize());
-  const handler = Utils.throttle(() => {
-    setSize(Utils.getWindowSize());
-  }, 100) as () => void;
+  const handler = useCallback(
+    Utils.throttle(() => {
+      setSize(Utils.getWindowSize());
+    }, 100) as () => void,
+    []
+  );
   useEffect(() => {
     window.addEventListener("resize", handler);
     return () => {
       window.removeEventListener("resize", handler);
     };
-  }, [setSize, handler]);
+  }, [handler]);
   return size;
 }
 
@@ -36,6 +39,56 @@ export function useActionCreator<T extends (...args: any[]) => Action | Thunk>(
     dispatch,
     actionCreator,
   ]);
+}
+
+const cursorPositionRef = { current: { pageX: 0, pageY: 0 } };
+window.document.addEventListener("mousemove", ({ pageX, pageY }) => {
+  cursorPositionRef.current = { pageX, pageY };
+});
+
+// We use a single global event listener because there is no way to get the
+// mouse position aside from an event. Ideally we could create/clean up the
+// event listener in the hook, but in the case where we want to check the cursor
+// position on mount, that we wouldn't have had time to capture an event.
+function useCursorPositionRef() {
+  return cursorPositionRef;
+}
+
+// CSS hover state is not respected if the cursor is already over the node when
+// it is added to the DOM. This hook allows your component to know its hover
+// state on mount without waiting for the mouse to move.
+// https://stackoverflow.com/a/13259049/1263117
+export function useIsHovered() {
+  const cursorRef = useCursorPositionRef();
+  const [hover, setHover] = useState(false);
+  const [node, setNode] = useState<HTMLElement | null>(null);
+
+  useLayoutEffect(() => {
+    if (node == null) {
+      setHover(false);
+      return;
+    }
+    const domRect = node.getBoundingClientRect();
+    const { pageX, pageY } = cursorRef.current;
+    setHover(
+      pageX >= domRect.left &&
+        pageX <= domRect.right &&
+        pageY >= domRect.top &&
+        pageY <= domRect.bottom
+    );
+
+    const enter = () => setHover(true);
+    const leave = () => setHover(false);
+    node.addEventListener("mouseenter", enter);
+    node.addEventListener("mouseleave", leave);
+
+    return () => {
+      node.removeEventListener("mouseenter", enter);
+      node.removeEventListener("mouseleave", leave);
+    };
+  }, [node, cursorRef]);
+
+  return { ref: setNode, hover };
 }
 
 // TODO: Return useSelector directly and apply the type without wrapping
