@@ -496,7 +496,6 @@ export type Action =
   | { type: "RESET_WINDOW_SIZES" }
   | { type: "BROWSER_WINDOW_SIZE_CHANGED"; height: number; width: number }
   | { type: "LOAD_DEFAULT_SKIN" }
-  | { type: "ENABLE_MEDIA_LIBRARY" }
   | { type: "ENABLE_MILKDROP"; open: boolean }
   | { type: "SCHEDULE_MILKDROP_MESSAGE"; message: string }
   | {
