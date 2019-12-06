@@ -20,16 +20,21 @@ const puppeteer = require("puppeteer");
     return;
   }
   // TODO: Wait for node to be ready
-  await new Promise(resolve => setTimeout(resolve, 200));
-  const css = await page.evaluate(
-    () => document.getElementById("webamp-skin").innerText
-  );
+  await new Promise(resolve => setTimeout(resolve, 500));
+  try {
+    const css = await page.evaluate(
+      () => document.getElementById("webamp-skin").innerText
+    );
+    console.log(css);
+  } catch (e) {
+    console.error("Hit an error, putting a screenshot in ./error.png");
+    page.screenshot({ path: "./error.png" });
+    throw e;
+  } finally {
+    await browser.close();
+  }
 
   // TODO: Extract non-CSS stuff
-  // TODO: Extract data URIs and optimize
-  // TODO: Minify the CSS
 
-  await browser.close();
   // TODO: Write to stdout
-  console.log(css);
 })();
