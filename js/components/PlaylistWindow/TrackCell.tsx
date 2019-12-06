@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, ReactNode } from "react";
 import { connect } from "react-redux";
 import classnames from "classnames";
 import {
@@ -14,6 +14,7 @@ interface OwnProps {
   id: number;
   index: number;
   handleMoveClick: (e: React.MouseEvent<HTMLDivElement>) => void;
+  children: ReactNode;
 }
 
 interface StateProps {
@@ -29,48 +30,53 @@ interface DispatchProps {
   onDoubleClick: () => void;
 }
 
-class TrackCell extends React.Component<OwnProps & StateProps & DispatchProps> {
-  _onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.shiftKey) {
-      this.props.shiftClick(e);
-      return;
-    } else if (e.metaKey || e.ctrlKey) {
-      this.props.ctrlClick(e);
-      return;
-    }
+type Props = OwnProps & StateProps & DispatchProps;
+function TrackCell({
+  skinPlaylistStyle,
+  selected,
+  current,
+  children,
+  shiftClick,
+  ctrlClick,
+  onDoubleClick,
+  handleMoveClick,
+  click,
+}: Props) {
+  const onMouseDown = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (e.shiftKey) {
+        shiftClick(e);
+        return;
+      } else if (e.metaKey || e.ctrlKey) {
+        ctrlClick(e);
+        return;
+      }
 
-    if (!this.props.selected) {
-      this.props.click();
-    }
+      if (!selected) {
+        click();
+      }
 
-    this.props.handleMoveClick(e);
+      handleMoveClick(e);
+    },
+    [click, ctrlClick, shiftClick, handleMoveClick, selected]
+  );
+
+  const style: React.CSSProperties = {
+    backgroundColor: selected ? skinPlaylistStyle.selectedbg : undefined,
+    color: current ? skinPlaylistStyle.current : undefined,
   };
-
-  render() {
-    const {
-      skinPlaylistStyle,
-      selected,
-      current,
-      children,
-      onDoubleClick,
-    } = this.props;
-    const style: React.CSSProperties = {
-      backgroundColor: selected ? skinPlaylistStyle.selectedbg : undefined,
-      color: current ? skinPlaylistStyle.current : undefined,
-    };
-    return (
-      <div
-        className={classnames("track-cell", { selected, current })}
-        style={style}
-        onClick={e => e.stopPropagation()}
-        onMouseDown={this._onMouseDown}
-        onContextMenu={e => e.preventDefault()}
-        onDoubleClick={onDoubleClick}
-      >
-        {children}
-      </div>
-    );
-  }
+  return (
+    <div
+      className={classnames("track-cell", { selected, current })}
+      style={style}
+      onClick={e => e.stopPropagation()}
+      onMouseDown={onMouseDown}
+      onContextMenu={e => e.preventDefault()}
+      onDoubleClick={onDoubleClick}
+    >
+      {children}
+    </div>
+  );
 }
 
 const mapStateToProps = (state: AppState, ownProps: OwnProps): StateProps => {
