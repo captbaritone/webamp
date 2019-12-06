@@ -1,0 +1,102 @@
+#webamp-media-library {
+  font-size: 11px;
+  font-family: "MS Sans Serif", "Segoe UI", sans-serif;
+  -webkit-font-smoothing: none;
+  padding-right: 2px;
+  padding-bottom: 3px;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -webkit-touch-callout: none;
+  -o-user-select: none;
+  -moz-user-select: none;
+}
+
+#webamp-media-library input {
+  height: 15px;
+  border: none;
+  background-color: inherit;
+  padding: 0;
+}
+
+#webamp-media-library ul {
+  list-style: none;
+}
+
+#webamp-media-library ul {
+  padding: 0;
+  margin: 0;
+}
+
+#webamp-media-library ul li ul {
+  padding-left: 10px;
+}
+
+#webamp-media-library .webamp-media-library-vertical-divider {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 4px;
+  padding-right: 4px;
+  cursor: col-resize;
+}
+
+#webamp-media-library .webamp-media-library-vertical-divider-line {
+  width: 1px;
+  height: 100%;
+}
+
+#webamp-media-library .webamp-media-library-horizontal-divider {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 0px;
+  padding-right: 0px;
+  cursor: row-resize;
+}
+
+#webamp-media-library .webamp-media-library-horizontal-divider-line {
+  height: 1px;
+  width: 100%;
+}
+
+#webamp-media-library .webamp-media-library-item {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+#webamp-media-library .webamp-media-library-table .library-table-heading > div {
+  margin-right: 1px;
+  margin-bottom: 1px;
+}
+
+#webamp-media-library
+  .webamp-media-library-table
+  .library-table-heading
+  > div:active {
+  margin-right: 0px;
+  margin-bottom: 0px;
+  margin-top: 1px;
+  margin-left: 1px;
+  border: 1px solid transparent;
+}
+
+#webamp-media-library .library-button {
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: inherit;
+  height: 15px;
+  cursor: inherit;
+  display: inline-grid;
+  grid-template-columns: 4px auto 4px;
+  margin-right: 4px;
+  align-items: stretch;
+}
+
+#webamp-media-library .library-button-center {
+  text-align: center;
+}
+
+#webamp-media-library-track-summary-duration {
+  /* This plus the margin-right on the button add up to 8px; */
+  margin-left: 4px;
+}

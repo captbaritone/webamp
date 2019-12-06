@@ -738,9 +738,6 @@ const sprites: SpriteMap = {
     { name: "GEN_MIDDLE_RIGHT_BOTTOM", x: 170, y: 42, width: 8, height: 24 },
     { name: "GEN_CLOSE_SELECTED", x: 148, y: 42, width: 9, height: 9 },
   ],
-  /*
-
-  We don't currently support the Media Library, so there are disabled
   GENEX: [
     {
       name: "GENEX_BUTTON_BACKGROUND_LEFT_UNPRESSED",
@@ -819,7 +816,6 @@ const sprites: SpriteMap = {
       width: 28,
     },
   ],
-  */
 };
 
 export default sprites;
