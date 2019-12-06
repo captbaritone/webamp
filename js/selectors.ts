@@ -483,10 +483,6 @@ export const getSkinPlaylistStyle = (state: AppState): PlaylistStyle => {
   return state.display.skinPlaylistStyle || defaultPlaylistStyle;
 };
 
-export const getSkinGenExColors = (state: AppState) => {
-  return state.display.skinGenExColors;
-};
-
 export const getVisualizerStyle = (state: AppState): string => {
   const milkdrop = state.windows.genWindows[WINDOWS.MILKDROP];
   if (milkdrop != null && milkdrop.open) {

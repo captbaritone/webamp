@@ -318,15 +318,6 @@ export const imageSelectors: Selectors = {
   GEN_MIDDLE_RIGHT: [".gen-window .gen-middle-right"],
   GEN_MIDDLE_RIGHT_BOTTOM: [".gen-window .gen-middle-right-bottom"],
   GEN_CLOSE_SELECTED: [".gen-window .gen-close:active"],
-  GENEX_BUTTON_BACKGROUND_LEFT_UNPRESSED: [
-    "#webamp-media-library .library-button-left",
-  ],
-  GENEX_BUTTON_BACKGROUND_CENTER_UNPRESSED: [
-    "#webamp-media-library .library-button-center",
-  ],
-  GENEX_BUTTON_BACKGROUND_RIGHT_UNPRESSED: [
-    "#webamp-media-library .library-button-right",
-  ],
 };
 
 Object.keys(FONT_LOOKUP).forEach(character => {

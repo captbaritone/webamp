@@ -135,71 +135,6 @@ function cssRulesFromProps(props) {
     }
   }
 
-  // TODO: Find a way to make this declarative.
-  cssRules.push(
-    `#webamp-media-library {
-       background-color: ${props.skinGenExColors.windowBackground};
-       color: ${props.skinGenExColors.windowText};
-    }`
-  );
-  cssRules.push(
-    `#webamp-media-library input {
-       caret-color: ${props.skinGenExColors.windowText};
-    }`
-  );
-  cssRules.push(
-    `#webamp-media-library .webamp-media-library-item {
-       color: ${props.skinGenExColors.itemForeground};
-       background-color: ${props.skinGenExColors.itemBackground};
-       border-right: 1px solid ${props.skinGenExColors.divider};
-       border-bottom: 1px solid ${props.skinGenExColors.divider};
-    }`
-  );
-  cssRules.push(
-    `#webamp-media-library .library-button-center {
-       color: ${props.skinGenExColors.buttonText};
-    }`
-  );
-  cssRules.push(
-    `#webamp-media-library .webamp-media-library-vertical-divider {
-    }`
-  );
-  cssRules.push(
-    `#webamp-media-library .webamp-media-library-vertical-divider-line,
-     #webamp-media-library .webamp-media-library-horizontal-divider-line
-     {
-       background-color: ${props.skinGenExColors.divider};
-    }`
-  );
-  cssRules.push(
-    `#webamp-media-library .webamp-media-library-table {
-       color: ${props.skinGenExColors.itemForeground};
-       background-color: ${props.skinGenExColors.itemBackground};
-    }`
-  );
-
-  cssRules.push(
-    `#webamp-media-library .webamp-media-library-table .library-table-heading {
-       background-color: ${props.skinGenExColors.listHeaderFramePressed};
-    }`
-  );
-
-  cssRules.push(
-    `#webamp-media-library .webamp-media-library-table .library-table-heading > div {
-       color: ${props.skinGenExColors.listHeaderText};
-       background-color: ${props.skinGenExColors.listHeaderBackground};
-       border-top: 1px solid ${props.skinGenExColors.listHeaderFrameTopAndLeft};
-       border-left: 1px solid ${props.skinGenExColors.listHeaderFrameTopAndLeft};
-       border-bottom: 1px solid ${props.skinGenExColors.listHeaderFrameBottomAndRight};
-       border-right: 1px solid ${props.skinGenExColors.listHeaderFrameBottomAndRight};
-    }`
-  );
-  cssRules.push(
-    `#webamp-media-library .webamp-media-library-table .library-table-row.selected {
-      background-color: ${props.skinGenExColors.playlistSelection};
-      color: ${props.skinGenExColors.listHeaderText};
-    }`
-  );
   return cssRules;
 }
 
@@ -233,5 +168,4 @@ export default connect(state => ({
   skinCursors: state.display.skinCursors,
   skinRegion: state.display.skinRegion,
   skinGenLetterWidths: state.display.skinGenLetterWidths,
-  skinGenExColors: state.display.skinGenExColors,
 }))(Skin);
