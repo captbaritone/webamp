@@ -98,27 +98,25 @@ interface ContextMenuProps {
   zIndex: number;
 }
 
-class ContextMenu extends React.Component<ContextMenuProps> {
-  render() {
-    const {
-      children,
-      offsetTop,
-      offsetLeft,
-      top,
-      bottom,
-      selected,
-      zIndex,
-    } = this.props;
-    return (
-      selected && (
-        <Portal top={offsetTop} left={offsetLeft} zIndex={zIndex}>
-          <ul className={classnames("context-menu", { top, bottom })}>
-            {children}
-          </ul>
-        </Portal>
-      )
-    );
+function ContextMenu({
+  children,
+  offsetTop,
+  offsetLeft,
+  top,
+  bottom,
+  selected,
+  zIndex,
+}: ContextMenuProps) {
+  if (!selected) {
+    return null;
   }
+  return (
+    <Portal top={offsetTop} left={offsetLeft} zIndex={zIndex}>
+      <ul className={classnames("context-menu", { top, bottom })}>
+        {children}
+      </ul>
+    </Portal>
+  );
 }
 
 const mapStateToProps = (state: AppState) => ({
