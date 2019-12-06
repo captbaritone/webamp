@@ -1,5 +1,4 @@
 import * as React from "react";
-import LibraryButton from "./LibraryButton";
 
 export default class Sidebar extends React.Component {
   render() {
@@ -31,14 +30,6 @@ export default class Sidebar extends React.Component {
             <li>Internet TV</li>
           </ul>
         </div>
-        <LibraryButton
-          style={{
-            width: "100%",
-            marginTop: 1,
-          }}
-        >
-          Library
-        </LibraryButton>
       </div>
     );
   }
