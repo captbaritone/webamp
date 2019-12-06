@@ -7,7 +7,7 @@ interface Props {
 }
 
 // We implement hover ourselves, because we hate ourselves and https://stackoverflow.com/a/13259049/1263117
-export default function PlaylistMenuEntry({ children }: Props) {
+function PlaylistMenuEntry({ children }: Props) {
   const { ref, hover } = useIsHovered();
   return (
     <li ref={ref} className={classnames({ hover })}>
@@ -15,3 +15,5 @@ export default function PlaylistMenuEntry({ children }: Props) {
     </li>
   );
 }
+
+export default React.memo(PlaylistMenuEntry);

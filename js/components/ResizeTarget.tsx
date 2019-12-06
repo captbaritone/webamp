@@ -13,7 +13,7 @@ interface Props {
   id?: string;
 }
 
-export default function ResizeTarget(props: Props) {
+function ResizeTarget(props: Props) {
   const { currentSize, setWindowSize, widthOnly, ...passThroughProps } = props;
   const [mouseDown, setMouseDown] = useState(false);
   const [mouseStart, setMouseStart] = useState<null | { x: number; y: number }>(
@@ -67,3 +67,4 @@ export default function ResizeTarget(props: Props) {
 
   return <div onMouseDown={handleMouseDown} {...passThroughProps} />;
 }
+export default React.memo(ResizeTarget);

@@ -13,7 +13,7 @@ interface State {
   selected: boolean;
 }
 
-export default function PlaylistMenu(props: Props) {
+function PlaylistMenu(props: Props) {
   const [selected, setSelected] = useState(false);
 
   const [ref, setRef] = useState<Element | null>(null);
@@ -51,3 +51,4 @@ export default function PlaylistMenu(props: Props) {
     </div>
   );
 }
+export default React.memo(PlaylistMenu);

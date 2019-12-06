@@ -39,4 +39,4 @@ const ScrollBar = () => {
   );
 };
 
-export default ScrollBar;
+export default React.memo(ScrollBar);
