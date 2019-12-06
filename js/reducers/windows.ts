@@ -93,7 +93,6 @@ const defaultWindowsState: WindowsState = {
     WINDOWS.PLAYLIST,
     WINDOWS.EQUALIZER,
     WINDOWS.MILKDROP,
-    WINDOWS.MEDIA_LIBRARY,
     WINDOWS.MAIN,
   ],
 };
