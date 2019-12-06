@@ -11,7 +11,6 @@ import {
   LOAD_SERIALIZED_STATE,
   BROWSER_WINDOW_SIZE_CHANGED,
   RESET_WINDOW_SIZES,
-  ENABLE_MEDIA_LIBRARY,
   ENABLE_MILKDROP,
 } from "../actionTypes";
 import * as Utils from "../utils";
@@ -94,7 +93,6 @@ const defaultWindowsState: WindowsState = {
     WINDOWS.PLAYLIST,
     WINDOWS.EQUALIZER,
     WINDOWS.MILKDROP,
-    WINDOWS.MEDIA_LIBRARY,
     WINDOWS.MAIN,
   ],
 };
@@ -104,25 +102,6 @@ const windows = (
   action: Action
 ): WindowsState => {
   switch (action.type) {
-    case ENABLE_MEDIA_LIBRARY:
-      return {
-        ...state,
-        genWindows: {
-          ...state.genWindows,
-          [WINDOWS.MEDIA_LIBRARY]: {
-            title: "Library",
-            size: [0, 0],
-            open: true,
-            hidden: false,
-            shade: false,
-            canResize: true,
-            canShade: false,
-            canDouble: false,
-            hotkey: "Alt+E",
-            position: { x: 0, y: 0 },
-          },
-        },
-      };
     case ENABLE_MILKDROP:
       return {
         ...state,

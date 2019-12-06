@@ -30,7 +30,6 @@ import * as fromDisplay from "./reducers/display";
 import * as fromEqualizer from "./reducers/equalizer";
 import * as fromMedia from "./reducers/media";
 import * as fromWindows from "./reducers/windows";
-import * as TrackUtils from "./trackUtils";
 import * as MarqueeUtils from "./marqueeUtils";
 import { generateGraph } from "./resizeUtils";
 import { SerializedStateV1 } from "./serializedStates/v1Types";
@@ -53,17 +52,6 @@ export const getEqfData = createSelector(getSliders, sliders => {
 });
 
 export const getTracks = (state: AppState) => state.tracks;
-
-export const getTracksMatchingFilter = createSelector(getTracks, tracks => {
-  const tracksArray = Object.values(tracks);
-  const filter = Utils.makeCachingFilterFunction(tracksArray, (track, query) =>
-    TrackUtils.trackFilterContents(track).includes(query)
-  );
-  return (filterString: string): PlaylistTrack[] => {
-    return filter(filterString.toLowerCase());
-  };
-});
-
 export const getTrackUrl = (state: AppState) => {
   return (id: number): string | null => {
     return state.tracks[id]?.url;
@@ -493,10 +481,6 @@ const defaultPlaylistStyle = {
 
 export const getSkinPlaylistStyle = (state: AppState): PlaylistStyle => {
   return state.display.skinPlaylistStyle || defaultPlaylistStyle;
-};
-
-export const getSkinGenExColors = (state: AppState) => {
-  return state.display.skinGenExColors;
 };
 
 export const getVisualizerStyle = (state: AppState): string => {

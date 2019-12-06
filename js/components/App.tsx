@@ -20,7 +20,6 @@ import WindowManager from "./WindowManager";
 import MainWindow from "./MainWindow";
 import PlaylistWindow from "./PlaylistWindow";
 import EqualizerWindow from "./EqualizerWindow";
-import MediaLibraryWindow from "./MediaLibraryWindow";
 import Skin from "./Skin";
 
 import "../../css/webamp.css";
@@ -123,8 +122,6 @@ class App extends React.Component<Props> {
           return <EqualizerWindow />;
         case WINDOWS.PLAYLIST:
           return <PlaylistWindow analyser={media.getAnalyser()} />;
-        case WINDOWS.MEDIA_LIBRARY:
-          return <MediaLibraryWindow />;
         case WINDOWS.MILKDROP:
           return <MilkdropWindow analyser={media.getAnalyser()} />;
         default:

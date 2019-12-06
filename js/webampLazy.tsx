@@ -32,7 +32,6 @@ import {
   LOADED,
   SET_Z_INDEX,
   CLOSE_REQUESTED,
-  ENABLE_MEDIA_LIBRARY,
   ENABLE_MILKDROP,
 } from "./actionTypes";
 import Emitter from "./emitter";
@@ -117,7 +116,6 @@ interface PrivateOptions {
   requireMusicMetadata(): Promise<any>; // TODO: Type musicmetadata
   __initialState?: AppState;
   __customMiddlewares?: Middleware[];
-  __enableMediaLibrary?: boolean;
   __initialWindowLayout: {
     [windowId: string]: {
       size: null | [number, number];
@@ -239,10 +237,6 @@ class Winamp {
       this.store.dispatch(
         Actions.initializePresets(options.__butterchurnOptions)
       );
-    }
-
-    if (options.__enableMediaLibrary) {
-      this.store.dispatch({ type: ENABLE_MEDIA_LIBRARY });
     }
 
     const handleOnline = () => this.store.dispatch({ type: NETWORK_CONNECTED });

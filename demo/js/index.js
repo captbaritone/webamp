@@ -5,7 +5,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import createMiddleware from "raven-for-redux";
 import isButterchurnSupported from "butterchurn/lib/isSupported.min";
-import base from "../../skins/base-2.91-png.wsz";
 import { WINDOWS } from "../../js/constants";
 import * as Selectors from "../../js/selectors";
 
@@ -54,17 +53,9 @@ const MIN_MILKDROP_WIDTH = 725;
 
 let screenshot = false;
 let skinUrl = configSkinUrl;
-let library = false;
 if ("URLSearchParams" in window) {
   const params = new URLSearchParams(location.search);
   screenshot = params.get("screenshot");
-  library = Boolean(params.get("library"));
-  // The default skin CSS baked into the JS library does not have full Media
-  // Library support. If we are going to show the library we have to load a
-  // skin at start time.
-  if (library && skinUrl == null) {
-    skinUrl = base;
-  }
   skinUrl = params.get("skinUrl") || skinUrl;
 }
 
@@ -123,21 +114,13 @@ Raven.context(async () => {
   let __initialWindowLayout = null;
   if (isButterchurnSupported()) {
     const startWithMilkdropHidden =
-      library ||
       document.body.clientWidth < MIN_MILKDROP_WIDTH ||
       skinUrl != null ||
       screenshot;
 
     __butterchurnOptions = getButterchurnOptions(startWithMilkdropHidden);
 
-    if (library) {
-      __initialWindowLayout = {
-        [WINDOWS.MAIN]: { position: { x: 0, y: 0 } },
-        [WINDOWS.EQUALIZER]: { position: { x: 0, y: 116 } },
-        [WINDOWS.PLAYLIST]: { position: { x: 0, y: 232 }, size: [0, 4] },
-        [WINDOWS.MEDIA_LIBRARY]: { position: { x: 275, y: 0 }, size: [7, 12] },
-      };
-    } else if (startWithMilkdropHidden) {
+    if (startWithMilkdropHidden) {
       __initialWindowLayout = {
         [WINDOWS.MAIN]: { position: { x: 0, y: 0 } },
         [WINDOWS.EQUALIZER]: { position: { x: 0, y: 116 } },
@@ -170,7 +153,6 @@ Raven.context(async () => {
       import(
         /* webpackChunkName: "music-metadata-browser" */ "music-metadata-browser/dist/index"
       ),
-    __enableMediaLibrary: library,
     __initialWindowLayout,
     __initialState: screenshot ? screenshotInitialState : initialState,
     __butterchurnOptions,

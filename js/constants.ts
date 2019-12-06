@@ -23,7 +23,6 @@ export const WINDOWS = {
   MAIN: "main",
   PLAYLIST: "playlist",
   EQUALIZER: "equalizer",
-  MEDIA_LIBRARY: "mediaLibrary",
   MILKDROP: "milkdrop",
 };
 

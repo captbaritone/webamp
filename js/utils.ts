@@ -403,39 +403,3 @@ export function weakMapMemoize<T extends object, R>(
     return cache.get(value);
   };
 }
-
-interface Cache<V> {
-  results?: V[];
-  subCaches: { [char: string]: Cache<V> };
-}
-
-// Is this a premature optimizaiton? Probably. But it's my side-project so I can
-// do what I like. :P
-export function makeCachingFilterFunction<V>(
-  values: V[],
-  includes: (v: V, query: string) => boolean
-) {
-  const cache: Cache<V> = {
-    results: values,
-    subCaches: {},
-  };
-  return (query: string): V[] => {
-    let queryCache: Cache<V> = cache;
-    let lastResults: V[] = values;
-    for (const char of query) {
-      let letterCaches = queryCache.subCaches[char];
-      if (!letterCaches) {
-        letterCaches = queryCache.subCaches[char] = { subCaches: {} };
-      } else if (letterCaches.results) {
-        lastResults = letterCaches.results;
-      }
-      queryCache = letterCaches;
-    }
-
-    if (!queryCache.results) {
-      queryCache.results = lastResults.filter(v => includes(v, query));
-    }
-
-    return queryCache.results;
-  };
-}
