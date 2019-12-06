@@ -31,16 +31,6 @@ export function useWindowSize() {
   return size;
 }
 
-export function useActionCreator<T extends (...args: any[]) => Action | Thunk>(
-  actionCreator: T
-): (...funcArgs: Parameters<T>) => void {
-  const dispatch = useDispatch();
-  return useCallback((...args) => dispatch(actionCreator(...args)), [
-    dispatch,
-    actionCreator,
-  ]);
-}
-
 const cursorPositionRef = { current: { pageX: 0, pageY: 0 } };
 window.document.addEventListener("mousemove", ({ pageX, pageY }) => {
   cursorPositionRef.current = { pageX, pageY };
@@ -131,6 +121,16 @@ export function useOnClickAway(
 // TODO: Return useSelector directly and apply the type without wrapping
 export function useTypedSelector<T>(selector: (state: AppState) => T): T {
   return useSelector(selector);
+}
+
+export function useActionCreator<T extends (...args: any[]) => Action | Thunk>(
+  actionCreator: T
+): (...funcArgs: Parameters<T>) => void {
+  const dispatch = useDispatch();
+  return useCallback((...args) => dispatch(actionCreator(...args)), [
+    dispatch,
+    actionCreator,
+  ]);
 }
 
 export function useTypedDispatch(): (action: Action | Thunk) => void {

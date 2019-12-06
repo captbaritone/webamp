@@ -270,6 +270,10 @@ export const getVisibleTrackIds = createSelector(
     trackOrder.slice(offset, offset + numberOfVisibleTracks)
 );
 
+export function getAllTracksAreVisible(state: AppState): boolean {
+  return getVisibleTrackIds(state).length === state.playlist.trackOrder.length;
+}
+
 export const getTrackIsVisibleFunction = createSelector(
   getVisibleTrackIds,
   visibleTrackIds => {
