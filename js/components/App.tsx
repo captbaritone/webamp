@@ -1,4 +1,9 @@
-import React from "react";
+import React, {
+  useLayoutEffect,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
 import ReactDOM from "react-dom";
 import { connect } from "react-redux";
 import {
@@ -52,60 +57,67 @@ type Props = StateProps & DispatchProps & OwnProps;
 /**
  * Constructs the windows to render
  */
-class App extends React.Component<Props> {
-  _webampNode: HTMLDivElement | null;
-  constructor(props: Props) {
-    super(props);
-    this._webampNode = null;
-  }
-
-  componentWillMount() {
-    this._webampNode = document.createElement("div");
-    this._webampNode.id = "webamp";
+function App({
+  zIndex,
+  browserWindowSizeChanged,
+  closed,
+  container,
+  clearFocus,
+  media,
+  genWindowsInfo,
+  filePickers,
+}: Props) {
+  const [webampNode] = useState(() => {
+    const node = document.createElement("div");
+    node.id = "webamp";
     // @ts-ignore I think I'm supposed to set this with setAttribute, but I can't confirm.
-    this._webampNode.role = "application";
-    this._webampNode.style.zIndex = String(this.props.zIndex);
-    document.body.appendChild(this._webampNode);
+    node.role = "application";
+    return node;
+  });
 
-    this.props.browserWindowSizeChanged(Utils.getWindowSize());
-    window.addEventListener("resize", this._handleWindowResize);
-  }
+  useLayoutEffect(() => {
+    webampNode.style.zIndex = String(zIndex);
+  }, [webampNode, zIndex]);
 
-  componentWillUnmount() {
-    window.removeEventListener("resize", this._handleWindowResize);
-    const webampNode = this._webampNode;
-    if (webampNode == null) {
-      return;
-    }
-    const parentNode = webampNode.parentNode;
-    if (parentNode != null) {
-      parentNode.removeChild(webampNode!);
-    }
-  }
+  useLayoutEffect(() => {
+    document.body.appendChild(webampNode);
+    return () => {
+      document.body.removeChild(webampNode);
+    };
+  }, [webampNode]);
 
-  _handleWindowResize = () => {
-    if (this._webampNode == null) {
-      return;
-    }
-    // It's a bit tricky to measure the "natural" size of the browser window.
-    // Specifically we want to know how large the window would be without our
-    // own Webamp windows influencing it. To achieve this, we temporarily make
-    // our container `overflow: hidden;`. We then make our container full
-    // screen by setting the bottom/right properties to zero. This second part
-    // allows our Webamp windows to stay visible during the resize. After we
-    // measure, we set the style back so that we don't end up interfering with
-    // click events outside of our Webamp windows.
-    this._webampNode.style.right = "0";
-    this._webampNode.style.bottom = "0";
-    this._webampNode.style.overflow = "hidden";
-    this.props.browserWindowSizeChanged(Utils.getWindowSize());
-    this._webampNode.style.right = "none";
-    this._webampNode.style.bottom = "none";
-    this._webampNode.style.overflow = "visible";
-  };
+  useEffect(() => {
+    const handleWindowResize = () => {
+      if (webampNode == null) {
+        return;
+      }
+      // It's a bit tricky to measure the "natural" size of the browser window.
+      // Specifically we want to know how large the window would be without our
+      // own Webamp windows influencing it. To achieve this, we temporarily make
+      // our container `overflow: hidden;`. We then make our container full
+      // screen by setting the bottom/right properties to zero. This second part
+      // allows our Webamp windows to stay visible during the resize. After we
+      // measure, we set the style back so that we don't end up interfering with
+      // click events outside of our Webamp windows.
+      webampNode.style.right = "0";
+      webampNode.style.bottom = "0";
+      webampNode.style.overflow = "hidden";
+      browserWindowSizeChanged(Utils.getWindowSize());
+      webampNode.style.right = "auto";
+      webampNode.style.bottom = "auto";
+      webampNode.style.overflow = "visible";
+    };
 
-  _renderWindows() {
-    const { media, genWindowsInfo, filePickers } = this.props;
+    handleWindowResize();
+
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, [browserWindowSizeChanged, webampNode]);
+
+  const renderWindows = useCallback(() => {
     return Utils.objectMap(genWindowsInfo, (w, id) => {
       if (!w.open) {
         return null;
@@ -128,36 +140,31 @@ class App extends React.Component<Props> {
           throw new Error(`Tried to render an unknown window: ${id}`);
       }
     });
-  }
+  }, [media, filePickers, genWindowsInfo]);
 
-  _handleBlur = (e: React.FocusEvent<HTMLElement>) => {
+  const handleBlur = (e: React.FocusEvent<HTMLElement>) => {
     if (!e.currentTarget.contains(e.relatedTarget as Element)) {
-      this.props.clearFocus();
+      clearFocus();
     }
   };
 
-  render() {
-    const { closed, container, filePickers } = this.props;
-    if (closed || this._webampNode == null) {
-      return null;
-    }
-    return ReactDOM.createPortal(
-      <React.StrictMode>
-        <div onBlur={this._handleBlur}>
-          <Skin />
-          <ContextMenuWrapper
-            renderContents={() => <MainContextMenu filePickers={filePickers} />}
-          >
-            <WindowManager
-              windows={this._renderWindows()}
-              container={container}
-            />
-          </ContextMenuWrapper>
-        </div>
-      </React.StrictMode>,
-      this._webampNode
-    );
+  if (closed) {
+    return null;
   }
+
+  return ReactDOM.createPortal(
+    <React.StrictMode>
+      <div onBlur={handleBlur}>
+        <Skin />
+        <ContextMenuWrapper
+          renderContents={() => <MainContextMenu filePickers={filePickers} />}
+        >
+          <WindowManager windows={renderWindows()} container={container} />
+        </ContextMenuWrapper>
+      </div>
+    </React.StrictMode>,
+    webampNode
+  );
 }
 
 const mapStateToProps = (state: AppState): StateProps => {
