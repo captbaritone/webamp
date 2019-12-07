@@ -35,22 +35,24 @@ const WebampIcon = (props: Props) => {
     document.addEventListener("click", handleClick);
     return () => document.removeEventListener("click", handleClick);
   }, [selected]);
+
+  if (hidden) {
+    return null;
+  }
   return (
-    !hidden && (
-      <div
-        ref={ref}
-        onDoubleClick={() => {
-          props.webamp.reopen();
-          setHidden(true);
-          setSelected(false);
-        }}
-        onClick={() => setSelected(true)}
-        className={selected ? "selected" : ""}
-      >
-        <img src={icon} style={{ width: 48, height: 48 }} />
-        <div className="webamp-icon-title">Webamp</div>
-      </div>
-    )
+    <div
+      ref={ref}
+      onDoubleClick={() => {
+        props.webamp.reopen();
+        setHidden(true);
+        setSelected(false);
+      }}
+      onClick={() => setSelected(true)}
+      className={selected ? "selected" : ""}
+    >
+      <img src={icon} style={{ width: 48, height: 48 }} />
+      <div className="webamp-icon-title">Webamp</div>
+    </div>
   );
 };
 
