@@ -1,8 +1,9 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState, useEffect, useCallback } from "react";
 import ContextMenu from "./ContextMenu";
 
 interface Props {
   renderContents(): ReactNode;
+  children: ReactNode;
 }
 
 interface State {
@@ -11,74 +12,71 @@ interface State {
   offsetLeft: number | null;
 }
 
-export default class ContextMenuWraper extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      selected: false,
-      offsetTop: null,
-      offsetLeft: null,
-    };
-  }
+// TODO: Consider using nested contexts to ensure we don't ever have multiple
+// non-nested context menus open at a time.
+export default function ContextMenuWraper({
+  children,
+  renderContents,
+  ...passThroughProps
+}: Props) {
+  const [openPosition, setOpenPosition] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
 
-  componentWillUnmount() {
-    this._closeMenu();
-  }
+  const closeMenu = useCallback(() => {
+    setOpenPosition(null);
+  }, []);
 
-  _closeMenu() {
-    this.setState({ selected: false, offsetTop: null, offsetLeft: null });
-    document.removeEventListener("click", this._handleGlobalClick);
-    document.body.removeEventListener(
-      "contextmenu",
-      this._handleGlobalRightClick
-    );
-  }
+  const handleGlobalClick = useCallback(
+    (e: MouseEvent) => {
+      if (e.button !== 2) {
+        closeMenu();
+      }
+    },
+    [closeMenu]
+  );
 
-  _handleGlobalRightClick = () => {
-    this._closeMenu();
-  };
-
-  _handleGlobalClick = (e: MouseEvent) => {
-    if (e.button === 2) {
-      return;
-    }
-    this._closeMenu();
-  };
-
-  _handleRightClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    const { pageX, pageY } = e;
-    this.setState({
-      selected: true,
+  const handleRightClick = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      const { pageX, pageY } = e;
       // TODO: We could do an initial render to see if the menu fits here
       // and do a second render if it does not.
-      offsetTop: pageY,
-      offsetLeft: pageX,
-    });
-    // Even if you right click multiple times before closeing,
-    // we should only end up with one global listener.
-    document.addEventListener("click", this._handleGlobalClick);
-    document.body.addEventListener("contextmenu", this._handleGlobalRightClick);
-    e.preventDefault();
-    e.stopPropagation();
-  };
+      setOpenPosition({ x: pageX, y: pageY });
+      e.preventDefault();
+      e.stopPropagation();
+    },
+    []
+  );
 
-  render() {
-    const { children, renderContents, ...passThroughProps } = this.props;
-    return (
-      <div
-        onContextMenu={this._handleRightClick}
-        style={{ width: "100%", height: "100%" }}
-        {...passThroughProps}
+  // Add click-away listeners when window is open
+  useEffect(() => {
+    if (openPosition == null) {
+      return;
+    }
+    document.addEventListener("click", handleGlobalClick);
+    document.body.addEventListener("contextmenu", closeMenu);
+
+    return () => {
+      document.removeEventListener("click", handleGlobalClick);
+      document.body.removeEventListener("contextmenu", closeMenu);
+    };
+  }, [openPosition, closeMenu, handleGlobalClick]);
+
+  return (
+    <div
+      onContextMenu={handleRightClick}
+      style={{ width: "100%", height: "100%" }}
+      {...passThroughProps}
+    >
+      <ContextMenu
+        selected={openPosition != null}
+        offsetTop={openPosition?.y ?? 0}
+        offsetLeft={openPosition?.x ?? 0}
       >
-        <ContextMenu
-          selected={this.state.selected}
-          offsetTop={this.state.offsetTop || 0}
-          offsetLeft={this.state.offsetLeft || 0}
-        >
-          {renderContents()}
-        </ContextMenu>
-        {children}
-      </div>
-    );
-  }
+        {renderContents()}
+      </ContextMenu>
+      {children}
+    </div>
+  );
 }
