@@ -25,8 +25,8 @@ const ClutterBar = React.memo(() => {
   const doubled = useTypedSelector(Selectors.getDoubled);
   return (
     <div id="clutter-bar">
-      <ContextMenuTarget bottom handle={<div id="button-o" />}>
-        <OptionsContextMenu />
+      <ContextMenuTarget bottom renderMenu={() => <OptionsContextMenu />}>
+        <div id="button-o" />
       </ContextMenuTarget>
       <div id="button-a" />
       <div id="button-i" />

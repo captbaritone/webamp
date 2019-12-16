@@ -1,18 +1,10 @@
 import React, { useState, useRef, useEffect, useMemo } from "react";
 import ContextMenu from "./ContextMenu";
 
-type DivProps = React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
->;
-
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
-  handle: React.ReactNode;
+  renderMenu: () => React.ReactNode;
   top?: boolean;
   bottom?: boolean;
-}
-interface State {
-  selected: boolean;
 }
 
 function getNodeOffset(node: HTMLDivElement | null) {
@@ -26,10 +18,18 @@ function getNodeOffset(node: HTMLDivElement | null) {
   return { top: rect.top + scrollTop, left: rect.left + scrollLeft };
 }
 
+// Trigger a context menu relative to the child element when the user
+// left-clicks on the child.
+//
+// For a component that triggers relative to the user's cursor on right-click
+// see `<ContextMenuWrapper />`.
 function ContextMenuTarget(props: Props) {
   const handleNode = useRef<HTMLDivElement>(null);
   const [selected, setSelected] = useState(false);
   useEffect(() => {
+    if (!selected) {
+      return;
+    }
     function handleGlobalClick(e: MouseEvent) {
       if (
         selected &&
@@ -58,7 +58,7 @@ function ContextMenuTarget(props: Props) {
         { top: 0, left: 0 };
   }, [selected]);
 
-  const { handle, children, top, bottom, ...passThroughProps } = props;
+  const { renderMenu, children, top, bottom, ...passThroughProps } = props;
   return (
     <div {...passThroughProps}>
       <div
@@ -67,7 +67,7 @@ function ContextMenuTarget(props: Props) {
         ref={handleNode}
         onClick={() => setSelected(!selected)}
       >
-        {handle}
+        {children}
       </div>
       <ContextMenu
         selected={selected}
@@ -76,7 +76,7 @@ function ContextMenuTarget(props: Props) {
         top={top}
         bottom={bottom}
       >
-        {children}
+        {renderMenu()}
       </ContextMenu>
     </div>
   );

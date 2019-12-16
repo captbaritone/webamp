@@ -22,12 +22,16 @@ const SortContextMenu = (props: DispatchProps) => (
   <ContextMenuTarget
     style={{ width: "100%", height: "100%" }}
     top
-    handle={<div />}
+    renderMenu={() => (
+      <>
+        <Node label="Sort list by title" onClick={props.sortListByTitle} />
+        <Hr />
+        <Node label="Reverse list" onClick={props.reverseList} />
+        <Node label="Randomize list" onClick={props.randomizeList} />
+      </>
+    )}
   >
-    <Node label="Sort list by title" onClick={props.sortListByTitle} />
-    <Hr />
-    <Node label="Reverse list" onClick={props.reverseList} />
-    <Node label="Randomize list" onClick={props.randomizeList} />
+    <div />
   </ContextMenuTarget>
 );
 

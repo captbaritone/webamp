@@ -11,11 +11,15 @@ interface DispatchProps {
 
 const MiscOptionsContextMenu = (props: DispatchProps) => (
   <ContextMenuTarget
-    style={{ width: "100%", height: "100%" }}
     top
-    handle={<div />}
+    renderMenu={() => (
+      <Node
+        onClick={props.downloadHtmlPlaylist}
+        label="Generate HTML playlist"
+      />
+    )}
   >
-    <Node onClick={props.downloadHtmlPlaylist} label="Generate HTML playlist" />
+    <div />
   </ContextMenuTarget>
 );
 

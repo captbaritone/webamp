@@ -6,11 +6,10 @@ interface Props {
   children: ReactNode;
 }
 
-interface State {
-  selected: boolean;
-  offsetTop: number | null;
-  offsetLeft: number | null;
-}
+// Trigger a context menu at the user's cursor position when the user right
+// clicks within this component.
+// For a component that triggers relative to a given component when the user
+// left-clicks see `<ContextMenuTarget />`.
 
 // TODO: Consider using nested contexts to ensure we don't ever have multiple
 // non-nested context menus open at a time.

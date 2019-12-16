@@ -17,19 +17,27 @@ interface DispatchProps {
 }
 
 const PresetsContextMenu = (props: DispatchProps) => (
-  <ContextMenuTarget top id="presets-context" handle={<div id="presets" />}>
-    <Parent label="Load">
-      {builtin.presets.map(preset => (
-        <Node
-          key={preset.name}
-          onClick={() => props.setEqFromObject(preset)}
-          label={preset.name}
-        />
-      ))}
-      <Hr />
-      <Node onClick={props.openEqfFileDialog} label="From Eqf..." />
-    </Parent>
-    <Node onClick={props.downloadPreset} label="Save" />
+  <ContextMenuTarget
+    top
+    id="presets-context"
+    renderMenu={() => (
+      <>
+        <Parent label="Load">
+          {builtin.presets.map(preset => (
+            <Node
+              key={preset.name}
+              onClick={() => props.setEqFromObject(preset)}
+              label={preset.name}
+            />
+          ))}
+          <Hr />
+          <Node onClick={props.openEqfFileDialog} label="From Eqf..." />
+        </Parent>
+        <Node onClick={props.downloadPreset} label="Save" />
+      </>
+    )}
+  >
+    <div id="presets" />
   </ContextMenuTarget>
 );
 

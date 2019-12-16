@@ -88,9 +88,9 @@ const MainWindow = React.memo(({ analyser, filePickers }: Props) => {
           <ContextMenuTarget
             id="option-context"
             bottom
-            handle={<ClickedDiv id="option" title="Winamp Menu" />}
+            renderMenu={() => <MainContextMenu filePickers={filePickers} />}
           >
-            <MainContextMenu filePickers={filePickers} />
+            <ClickedDiv id="option" title="Winamp Menu" />
           </ContextMenuTarget>
           {mainShade && <MiniTime />}
           <Minimize />
