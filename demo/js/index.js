@@ -1,9 +1,9 @@
 /* global SENTRY_DSN */
 
-import Raven from "raven-js";
+import * as Sentry from "@sentry/browser";
 import React from "react";
 import ReactDOM from "react-dom";
-import createMiddleware from "raven-for-redux";
+import createMiddleware from "./sentryMiddleware";
 import isButterchurnSupported from "butterchurn/lib/isSupported.min";
 import { WINDOWS } from "../../js/constants";
 import * as Selectors from "../../js/selectors";
@@ -80,12 +80,13 @@ function filterBreadcrumbActions(action) {
   return !noisy;
 }
 
-Raven.config(SENTRY_DSN, {
+Sentry.init({
+  dsn: SENTRY_DSN,
   /* global COMMITHASH */
   release: typeof COMMITHASH !== "undefined" ? COMMITHASH : "DEV",
-}).install();
+});
 
-const ravenMiddleware = createMiddleware(Raven, {
+const sentryMiddleware = createMiddleware(Sentry, {
   filterBreadcrumbActions,
   stateTransformer: Selectors.getDebugData,
 });
@@ -97,8 +98,7 @@ window.addEventListener("beforeinstallprompt", e => {
   e.preventDefault();
 });
 
-Raven.context(async () => {
-  window.Raven = Raven;
+async function main() {
   const about = document.getElementsByClassName("about")[0];
   if (screenshot) {
     about.style.visibility = "hidden";
@@ -156,7 +156,7 @@ Raven.context(async () => {
     __initialWindowLayout,
     __initialState: screenshot ? screenshotInitialState : initialState,
     __butterchurnOptions,
-    __customMiddlewares: [ravenMiddleware],
+    __customMiddlewares: [sentryMiddleware],
   });
 
   if (disableMarquee || screenshot) {
@@ -219,4 +219,6 @@ Raven.context(async () => {
     <WebampIcon webamp={webamp} />,
     document.getElementById("webamp-icon")
   );
-});
+}
+
+main();
