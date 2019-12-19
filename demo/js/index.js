@@ -3,7 +3,7 @@
 import * as Sentry from "@sentry/browser";
 import React from "react";
 import ReactDOM from "react-dom";
-import createMiddleware from "./sentryMiddleware";
+import createMiddleware from "redux-sentry-middleware";
 import isButterchurnSupported from "butterchurn/lib/isSupported.min";
 import { WINDOWS } from "../../js/constants";
 import * as Selectors from "../../js/selectors";

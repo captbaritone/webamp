@@ -9816,6 +9816,11 @@ redux-devtools-extension@^2.13.2:
   resolved "https://registry.yarnpkg.com/redux-devtools-extension/-/redux-devtools-extension-2.13.8.tgz#37b982688626e5e4993ff87220c9bbb7cd2d96e1"
   integrity sha512-8qlpooP2QqPtZHQZRhx3x3OP5skEV1py/zUdMY28WNAocbafxdG2tRD1MWE7sp8obGMNYuLWanhhQ7EQvT1FBg==
 
+redux-sentry-middleware@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/redux-sentry-middleware/-/redux-sentry-middleware-0.1.3.tgz#d2ab581b36ff06c54b7ded2ebb73d2e2bfd4941f"
+  integrity sha512-Qg6Q5dD8fd7YShTrBzT3xINhdUmXrQOVSOKk11lYdgA9i2QYmnNGZ6P9BxNkkgnWslZpD2xAC/yunEKAYKdshw==
+
 redux-thunk@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.3.0.tgz#51c2c19a185ed5187aaa9a2d08b666d0d6467622"
