@@ -2,7 +2,7 @@ import JSZip from "jszip";
 import * as musicMetadataBrowser from "music-metadata-browser";
 import WebampLazy from "./webampLazy";
 
-class Winamp extends WebampLazy {
+export default class Webamp extends WebampLazy {
   constructor(options) {
     super({
       ...options,
@@ -11,5 +11,3 @@ class Winamp extends WebampLazy {
     });
   }
 }
-
-export default Winamp;
