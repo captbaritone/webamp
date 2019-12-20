@@ -91,13 +91,6 @@ const sentryMiddleware = createMiddleware(Sentry, {
   stateTransformer: Selectors.getDebugData,
 });
 
-// Don't prompt user to install Webamp. It's probably not
-// what they want.
-window.addEventListener("beforeinstallprompt", e => {
-  // TODO: we could add this as a context menu item, or something.
-  e.preventDefault();
-});
-
 async function main() {
   const about = document.getElementsByClassName("about")[0];
   if (screenshot) {

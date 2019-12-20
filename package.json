@@ -138,7 +138,6 @@
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.8.2",
     "webpack-merge": "^4.1.2",
-    "webpack-pwa-manifest": "^3.7.1",
     "winamp-eqf": "^1.0.0"
   },
   "jest": {

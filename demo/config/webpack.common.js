@@ -1,6 +1,5 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const WebpackPwaManifest = require("webpack-pwa-manifest");
 const HtmlWebpackInlineSVGPlugin = require("html-webpack-inline-svg-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
@@ -69,39 +68,6 @@ module.exports = {
       filename: "modern/ready/index.html",
       template: "../modern/index.html",
       chunks: ["modern"],
-    }),
-    // Automatically generates the manifest.json file inside the built
-    // directory, and injects a tag into the gererated index.html file
-    // it also, applies cache-busting for all the icons.
-    new WebpackPwaManifest({
-      name: "Webamp",
-      short_name: "Webamp", // eslint-disable-line camelcase
-      description: "Winamp 2.9 reimplemented in HTML5 and JavaScript",
-      start_url: "./?utm_source=web_app_manifest", // eslint-disable-line camelcase
-      scope: "./",
-      display: "standalone",
-      theme_color: "#4b4b4b", // eslint-disable-line camelcase
-      background_color: "#ffffff", // eslint-disable-line camelcase
-      icons: [
-        {
-          src: path.resolve("./demo/images/manifest/icon-192x192.png"),
-          sizes: "192x192",
-          type: "image/png",
-        },
-        {
-          src: path.resolve("./demo/images/manifest/icon-512x512.png"),
-          sizes: "512x512",
-          type: "image/png",
-        },
-        {
-          src: path.resolve("./demo/images/manifest/icon.svg"),
-          sizes: "513x513",
-          type: "image/svg+xml",
-        },
-      ].map(icon => ({
-        ...icon,
-        destination: path.join("images", "manifest"),
-      })),
     }),
     new HtmlWebpackInlineSVGPlugin({ runPreEmit: true }),
     new CopyWebpackPlugin([
