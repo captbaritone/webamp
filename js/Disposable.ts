@@ -30,6 +30,7 @@ export default class Disposable {
         teardown.dispose();
       }
     });
+    this._teardowns = [];
     this.disposed = true;
   }
 }
