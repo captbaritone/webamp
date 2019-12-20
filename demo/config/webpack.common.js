@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WebpackPwaManifest = require("webpack-pwa-manifest");
 const HtmlWebpackInlineSVGPlugin = require("html-webpack-inline-svg-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   resolve: {
@@ -103,7 +104,15 @@ module.exports = {
       })),
     }),
     new HtmlWebpackInlineSVGPlugin({ runPreEmit: true }),
+    new CopyWebpackPlugin([
+      {
+        from: "./js/delete-service-worker.js",
+        to: "service-worker.js",
+        force: true,
+      },
+    ]),
   ],
+
   performance: {
     // We do some crazy shit okay! Don't judge!
     maxEntrypointSize: 7000000,
