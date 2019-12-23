@@ -8,6 +8,25 @@ interface Size {
   height: number;
 }
 
+export function usePromiseValueOrNull<T>(propValue: Promise<T>): T | null {
+  const [value, setValue] = useState<T | null>(null);
+  useEffect(() => {
+    let disposed = false;
+    propValue.then(resolvedValue => {
+      if (disposed) {
+        return;
+      }
+      setValue(resolvedValue);
+    });
+
+    return () => {
+      disposed = true;
+    };
+  }, [propValue]);
+
+  return value;
+}
+
 export function useScreenSize() {
   const [size] = useState<Size>(Utils.getScreenSize());
   // TODO: We could subscribe to screen size changes.
