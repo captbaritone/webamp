@@ -47,7 +47,6 @@ interface DispatchProps {
 }
 
 interface OwnProps {
-  container: HTMLElement;
   filePickers: FilePicker[];
   media: Media;
 }
@@ -61,7 +60,6 @@ function App({
   zIndex,
   browserWindowSizeChanged,
   closed,
-  container,
   clearFocus,
   media,
   genWindowsInfo,
@@ -159,7 +157,7 @@ function App({
         <ContextMenuWrapper
           renderContents={() => <MainContextMenu filePickers={filePickers} />}
         >
-          <WindowManager windows={renderWindows()} container={container} />
+          <WindowManager windows={renderWindows()} />
         </ContextMenuWrapper>
       </div>
     </React.StrictMode>,

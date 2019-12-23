@@ -1,18 +1,11 @@
-import React, { ReactNode } from "react";
-import { connect } from "react-redux";
+import React, { ReactNode, useCallback, useEffect, useState } from "react";
 
 import * as SnapUtils from "../snapUtils";
 import * as Selectors from "../selectors";
 import * as Actions from "../actionCreators";
-import {
-  WindowInfo,
-  Dispatch,
-  WindowPositions,
-  AppState,
-  WindowId,
-  Box,
-  Point,
-} from "../types";
+import { WindowInfo, WindowId, Box, Point } from "../types";
+import { useTypedSelector, useActionCreator } from "../hooks";
+
 const abuts = (a: Box, b: Box) => {
   // TODO: This is kinda a hack. They should really be touching, not just within snapping distance.
   // Also, overlapping should not count.
@@ -20,65 +13,35 @@ const abuts = (a: Box, b: Box) => {
   return wouldMoveTo.x !== undefined || wouldMoveTo.y !== undefined;
 };
 
-interface StateProps {
-  windowsInfo: WindowInfo[];
-  browserWindowSize: { height: number; width: number };
-  getWindowHidden(windowId: WindowId): boolean;
-}
-
-interface DispatchProps {
-  updateWindowPositions(positions: WindowPositions, center: boolean): void;
-  clearWindowFocus(): void;
-}
-
-interface OwnProps {
+interface Props {
   windows: { [windowId: string]: ReactNode };
-  container: HTMLElement;
 }
 
-type Props = StateProps & DispatchProps & OwnProps;
+type DraggingState = {
+  moving: WindowInfo[];
+  stationary: WindowInfo[];
+  boundingBox: Box;
+  mouseStart: Point;
+};
 
-class WindowManager extends React.Component<Props> {
-  movingAndStationaryNodes(key: WindowId): [WindowInfo[], WindowInfo[]] {
-    const windows = this.props.windowsInfo.filter(
-      w =>
-        this.props.windows[w.key] != null && !this.props.getWindowHidden(w.key)
-    );
-    const targetNode = windows.find(node => node.key === key);
-    if (targetNode == null) {
-      throw new Error(`Tried to move a node that does not exist: ${key}`);
-    }
+function useHandleMouseDown(propsWindows: {
+  [windowId: string]: ReactNode;
+}): (key: WindowId, e: React.MouseEvent<HTMLDivElement>) => void {
+  const windowsInfo = useTypedSelector(Selectors.getWindowsInfo);
+  const getWindowHidden = useTypedSelector(Selectors.getWindowHidden);
+  const browserWindowSize = useTypedSelector(Selectors.getBrowserWindowSize);
+  const updateWindowPositions = useActionCreator(Actions.updateWindowPositions);
 
-    let movingSet = new Set([targetNode]);
-    // Only the main window brings other windows along.
-    if (key === "main") {
-      const findAllConnected = SnapUtils.traceConnection<WindowInfo>(abuts);
-      movingSet = findAllConnected(windows, targetNode);
-    }
+  const [draggingState, setDraggingState] = useState<DraggingState | null>(
+    null
+  );
 
-    const stationary = windows.filter(w => !movingSet.has(w));
-    const moving = Array.from(movingSet);
-
-    return [moving, stationary];
-  }
-
-  handleMouseDown = (key: WindowId, e: React.MouseEvent<HTMLDivElement>) => {
-    if (!(e.target as HTMLElement).classList.contains("draggable")) {
+  // When the mouse is down, attach a listener to track mouse move events.
+  useEffect(() => {
+    if (draggingState == null) {
       return;
     }
-
-    if (this.props.getWindowHidden(key)) {
-      // The user may be clicking on full screen Milkdrop.
-      return;
-    }
-
-    const [moving, stationary] = this.movingAndStationaryNodes(key);
-
-    const mouseStart = { x: e.clientX, y: e.clientY };
-    const { browserWindowSize } = this.props;
-
-    const box = SnapUtils.boundingBox(moving);
-
+    const { boundingBox, moving, stationary, mouseStart } = draggingState;
     const handleMouseMove = (ee: MouseEvent) => {
       const proposedDiff = {
         x: ee.clientX - mouseStart.x,
@@ -91,8 +54,8 @@ class WindowManager extends React.Component<Props> {
       }));
 
       const proposedBox = {
-        ...box,
-        ...SnapUtils.applyDiff(box, proposedDiff),
+        ...boundingBox,
+        ...SnapUtils.applyDiff(boundingBox, proposedDiff),
       };
 
       const snapDiff = SnapUtils.snapDiffManyToMany(
@@ -111,74 +74,107 @@ class WindowManager extends React.Component<Props> {
         withinDiff
       );
 
-      const windowPositionDiff = moving.reduce(
-        (diff: { [windowId: string]: Point }, window) => {
-          diff[window.key] = SnapUtils.applyDiff(window, finalDiff);
-          return diff;
-        },
-        {}
-      );
+      const windowPositionDiff: { [windowId: string]: Point } = {};
+      moving.forEach(w => {
+        windowPositionDiff[w.key] = SnapUtils.applyDiff(w, finalDiff);
+      });
 
-      this.props.updateWindowPositions(windowPositionDiff, false);
+      updateWindowPositions(windowPositionDiff, false);
     };
 
-    const removeListeners = () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", removeListeners);
-    };
+    function handleMouseUp() {
+      setDraggingState(null);
+    }
 
-    window.addEventListener("mouseup", removeListeners);
+    window.addEventListener("mouseup", handleMouseUp);
     window.addEventListener("mousemove", handleMouseMove);
-  };
 
-  render() {
-    const style: React.CSSProperties = {
-      position: "absolute",
-      top: 0,
-      left: 0,
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
     };
+  }, [browserWindowSize, draggingState, updateWindowPositions]);
 
-    const windows = this.props.windowsInfo.filter(
-      w => this.props.windows[w.key]
-    );
+  // Mouse down handler
+  return useCallback(
+    (key: WindowId, e: React.MouseEvent<HTMLDivElement>) => {
+      if (!(e.target as HTMLElement).classList.contains("draggable")) {
+        return;
+      }
 
-    return windows.map(w => (
-      <div
-        key={w.key}
-        // I give up on trying to type things with `relatedTarget`.
-        onBlur={(e: any) => {
-          const { currentTarget, relatedTarget } = e;
-          if (
-            currentTarget === relatedTarget ||
-            currentTarget.contains(relatedTarget)
-          ) {
-            return;
-          }
-          this.props.clearWindowFocus();
-        }}
-        onMouseDown={(e: React.MouseEvent<HTMLDivElement>) => {
-          this.handleMouseDown(w.key, e);
-        }}
-        style={{ ...style, transform: `translate(${w.x}px, ${w.y}px)` }}
-      >
-        {this.props.windows[w.key]}
-      </div>
-    ));
-  }
+      if (getWindowHidden(key)) {
+        // The user may be clicking on full screen Milkdrop.
+        return;
+      }
+
+      const windows = windowsInfo.filter(
+        w => propsWindows[w.key] != null && !getWindowHidden(w.key)
+      );
+      const targetNode = windows.find(node => node.key === key);
+      if (targetNode == null) {
+        throw new Error(`Tried to move a node that does not exist: ${key}`);
+      }
+
+      let movingSet = new Set([targetNode]);
+      // Only the main window brings other windows along.
+      if (key === "main") {
+        const findAllConnected = SnapUtils.traceConnection<WindowInfo>(abuts);
+        movingSet = findAllConnected(windows, targetNode);
+      }
+
+      const stationary = windows.filter(w => !movingSet.has(w));
+      const moving = Array.from(movingSet);
+
+      const mouseStart = { x: e.clientX, y: e.clientY };
+
+      const boundingBox = SnapUtils.boundingBox(moving);
+      setDraggingState({ boundingBox, moving, stationary, mouseStart });
+    },
+    [getWindowHidden, propsWindows, windowsInfo]
+  );
 }
 
-const mapStateToProps = (state: AppState): StateProps => ({
-  windowsInfo: Selectors.getWindowsInfo(state),
-  getWindowHidden: Selectors.getWindowHidden(state),
-  browserWindowSize: Selectors.getBrowserWindowSize(state),
-});
+export default function WindowManager({ windows: propsWindows }: Props) {
+  const windowsInfo = useTypedSelector(Selectors.getWindowsInfo);
+  const setFocusedWindow = useActionCreator(Actions.setFocusedWindow);
+  const handleMouseDown = useHandleMouseDown(propsWindows);
 
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
-  return {
-    updateWindowPositions: (positions: WindowPositions) =>
-      dispatch(Actions.updateWindowPositions(positions)),
-    clearWindowFocus: () => dispatch(Actions.setFocusedWindow(null)),
-  };
-};
+  const windows = windowsInfo.filter(w => propsWindows[w.key]);
 
-export default connect(mapStateToProps, mapDispatchToProps)(WindowManager);
+  const onBlur = useCallback(
+    // I give up on trying to type things with `relatedTarget`.
+    (e: any) => {
+      const { currentTarget, relatedTarget } = e;
+      if (
+        currentTarget === relatedTarget ||
+        currentTarget.contains(relatedTarget)
+      ) {
+        return;
+      }
+      setFocusedWindow(null);
+    },
+    [setFocusedWindow]
+  );
+
+  return (
+    <>
+      {windows.map(w => (
+        <div
+          key={w.key}
+          onBlur={onBlur}
+          onMouseDown={(e: React.MouseEvent<HTMLDivElement>) => {
+            handleMouseDown(w.key, e);
+          }}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            transform: `translate(${w.x}px, ${w.y}px)`,
+          }}
+        >
+          {propsWindows[w.key]}
+        </div>
+      ))}
+    </>
+  );
+}

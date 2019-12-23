@@ -120,7 +120,7 @@ export const applySnap = (original: Point, ...snaps: Diff[]) =>
     original
   );
 
-export const boundingBox = (nodes: Box[]) => {
+export const boundingBox = (nodes: Box[]): Box => {
   const boxes = nodes.slice();
   const firstNode = boxes.pop();
   if (firstNode == null) {

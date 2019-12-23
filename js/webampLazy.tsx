@@ -432,11 +432,7 @@ class Winamp {
 
     ReactDOM.render(
       <Provider<Action> store={this.store}>
-        <App
-          media={this.media}
-          container={node}
-          filePickers={this.options.filePickers || []}
-        />
+        <App media={this.media} filePickers={this.options.filePickers || []} />
       </Provider>,
       node
     );
