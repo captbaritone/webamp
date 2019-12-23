@@ -19,15 +19,4 @@ std["5D0C5BB67DE14b1fA70F8D1659941941"].functions[5].result = "boolean";
  */
 std.B4DCCFFF81FE4bcc961B720FD5BE0FFF.functions[0].parameters[0][1] = "onoff";
 
-/*
- * From Object.pm
- *
- * > note, my std.mi did not contain this!
- */
-std.B4DCCFFF81FE4bcc961B720FD5BE0FFF.functions.push({
-  parameters: [],
-  name: "getCurCfgVal",
-  result: "Int",
-});
-
 module.exports = std;
