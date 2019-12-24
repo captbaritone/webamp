@@ -9,11 +9,9 @@ import {
   preRenderBar,
   paintOscilloscopeFrame,
   octaveBucketsForBufferLength,
-  printBar,
+  paintBarFrame,
   NUM_BARS,
-  BAR_WIDTH,
   PIXEL_DENSITY,
-  BAR_PEAK_DROP_RATE,
 } from "./visualizerUtils";
 
 class Visualizer extends React.Component {
@@ -128,48 +126,22 @@ class Visualizer extends React.Component {
         break;
       case VISUALIZERS.BAR:
         this.canvasCtx.drawImage(this.bgCanvas, 0, 0);
-        this._paintBarFrame();
+        paintBarFrame({
+          analyser: this.props.analyser,
+          dataArray: this.dataArray,
+          renderHeight: this._renderHeight(),
+          octaveBuckets: this.octaveBuckets,
+          barPeaks: this.barPeaks,
+          barPeakFrames: this.barPeakFrames,
+          height: this._height(),
+          canvasCtx: this.canvasCtx,
+          barCanvas: this.barCanvas,
+          windowShade: this.props.windowShade,
+          colors: this.props.colors,
+        });
         break;
       default:
         this.canvasCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    }
-  }
-
-  _paintBarFrame() {
-    this.props.analyser.getByteFrequencyData(this.dataArray);
-    const heightMultiplier = this._renderHeight() / 256;
-    const xOffset = BAR_WIDTH + PIXEL_DENSITY; // Bar width, plus a pixel of spacing to the right.
-    for (let j = 0; j < NUM_BARS - 1; j++) {
-      const start = this.octaveBuckets[j];
-      const end = this.octaveBuckets[j + 1];
-      let amplitude = 0;
-      for (let k = start; k < end; k++) {
-        amplitude += this.dataArray[k];
-      }
-      amplitude /= end - start;
-
-      // The drop rate should probably be normalized to the rendering FPS, for now assume 60 FPS
-      let barPeak =
-        this.barPeaks[j] -
-        BAR_PEAK_DROP_RATE * Math.pow(this.barPeakFrames[j], 2);
-      if (barPeak < amplitude) {
-        barPeak = amplitude;
-        this.barPeakFrames[j] = 0;
-      } else {
-        this.barPeakFrames[j] += 1;
-      }
-      this.barPeaks[j] = barPeak;
-
-      printBar({
-        x: j * xOffset,
-        _height: amplitude * heightMultiplier,
-        peakHeight: barPeak * heightMultiplier,
-        height: this._height(),
-        canvasCtx: this.canvasCtx,
-        barCanvas: this.barCanvas,
-        windowShade: this.props.windowShade,
-        colors: this.props.colors,
-      });
     }
   }
 

@@ -142,7 +142,7 @@ export function paintOscilloscopeFrame({
   //
   // We use the  2x scale here since we only want to plot values for
   // "real" pixels.
-  const sliceWidth = Math.floor(bufferLength / width()) * PIXEL_DENSITY;
+  const sliceWidth = Math.floor(bufferLength / width) * PIXEL_DENSITY;
 
   const h = height;
 
@@ -165,6 +165,67 @@ export function paintOscilloscopeFrame({
     }
   }
   canvasCtx.stroke();
+}
+
+export function paintBarFrame({
+  analyser,
+  dataArray,
+  renderHeight,
+  octaveBuckets,
+  barPeaks,
+  barPeakFrames,
+  height,
+  canvasCtx,
+  barCanvas,
+  windowShade,
+  colors,
+}: {
+  analyser: AnalyserNode;
+  dataArray: Uint8Array /* MUTABLE */;
+  renderHeight: number;
+  octaveBuckets: number[];
+  barPeaks: number[] /* MUTABLE */;
+  barPeakFrames: number[] /* MUTABLE */;
+  height: number;
+  canvasCtx: CanvasRenderingContext2D;
+  barCanvas: HTMLCanvasElement;
+  windowShade: boolean;
+  colors: string[];
+}) {
+  analyser.getByteFrequencyData(dataArray);
+  const heightMultiplier = renderHeight / 256;
+  const xOffset = BAR_WIDTH + PIXEL_DENSITY; // Bar width, plus a pixel of spacing to the right.
+  for (let j = 0; j < NUM_BARS - 1; j++) {
+    const start = octaveBuckets[j];
+    const end = octaveBuckets[j + 1];
+    let amplitude = 0;
+    for (let k = start; k < end; k++) {
+      amplitude += dataArray[k];
+    }
+    amplitude /= end - start;
+
+    // The drop rate should probably be normalized to the rendering FPS, for now assume 60 FPS
+    let barPeak =
+      barPeaks[j] - BAR_PEAK_DROP_RATE * Math.pow(barPeakFrames[j], 2);
+    if (barPeak < amplitude) {
+      barPeak = amplitude;
+      barPeakFrames[j] = 0;
+    } else {
+      barPeakFrames[j] += 1;
+    }
+    barPeaks[j] = barPeak;
+
+    printBar({
+      x: j * xOffset,
+      _height: amplitude * heightMultiplier,
+      peakHeight: barPeak * heightMultiplier,
+      height,
+      canvasCtx,
+      barCanvas,
+      windowShade,
+      colors,
+    });
+  }
 }
 
 export function printBar({
