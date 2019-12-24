@@ -95,7 +95,6 @@ interface ContextMenuProps {
   bottom?: boolean;
   // TODO: Remove this. Just conditionally render in the parent.
   selected: boolean;
-  zIndex: number;
 }
 
 export default function ContextMenu({
