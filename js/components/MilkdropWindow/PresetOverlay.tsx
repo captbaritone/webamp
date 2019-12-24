@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState, useCallback } from "react";
 import { promptForFileReferences } from "../../fileUtils";
 import * as Selectors from "../../selectors";
 import * as Actions from "../../actionCreators";
 import { clamp } from "../../utils";
 import { AppState, Dispatch, TransitionType } from "../../types";
 import { connect } from "react-redux";
-import Disposable from "../../Disposable";
+import { useUnmountedRef } from "../../hooks";
 
 const ENTRY_HEIGHT = 14;
 const HEIGHT_PADDING = 15;
@@ -34,10 +34,6 @@ const INNER_WRAPPER_STYLE: React.CSSProperties = {
   fontSize: "12px",
 };
 
-interface State {
-  selectedListIndex: number;
-}
-
 interface StateProps {
   presetKeys: string[];
   currentPresetIndex: number | null; // Index
@@ -56,57 +52,47 @@ interface OwnProps {
 
 type Props = StateProps & DispatchProps & OwnProps;
 
-class PresetOverlay extends React.Component<Props, State> {
-  _disposable: Disposable;
+function presetIndexFromListIndex(listIndex: number) {
+  return listIndex - 1;
+}
 
-  constructor(props: Props) {
-    super(props);
-    this.state = { selectedListIndex: 0 };
-    this._disposable = new Disposable();
-  }
+function listIndexFromPresetIndex(listIndex: number) {
+  return listIndex + 1;
+}
 
-  componentDidMount() {
-    const { currentPresetIndex } = this.props;
+function PresetOverlay({
+  currentPresetIndex,
+  presetKeys,
+  height,
+  width,
+  requestPresetAtIndex,
+  togglePresetOverlay,
+  appendPresetFileList,
+}: Props) {
+  const unmountedRef = useUnmountedRef();
+  const [selectedListIndex, setSelectedListIndex] = useState(() => {
     if (currentPresetIndex != null) {
-      this.setState({
-        selectedListIndex: this._listIndexFromPresetIndex(currentPresetIndex),
-      });
+      return listIndexFromPresetIndex(currentPresetIndex);
     }
-  }
+    return 0;
+  });
 
-  componentWillUnmount() {
-    this._disposable.dispose();
-  }
+  // Number of presets, plus one for the "Load Local Directory" option, minus
+  // one to convert a length to an index.
+  const maxListIndex = presetKeys.length; // - 1 + 1;
 
-  _presetIndexFromListIndex(listIndex: number) {
-    return listIndex - 1;
-  }
-
-  _listIndexFromPresetIndex(listIndex: number) {
-    return listIndex + 1;
-  }
-
-  _maxListIndex() {
-    // Number of presets, plus one for the "Load Local Directory" option, minus
-    // one to convert a length to an index.
-    return this.props.presetKeys.length; // - 1 + 1;
-  }
-
-  _renderList() {
-    const { presetKeys, currentPresetIndex, height } = this.props;
-    const { selectedListIndex } = this.state;
-
+  const renderList = useCallback(() => {
     const maxVisibleRows = Math.floor((height - HEIGHT_PADDING) / ENTRY_HEIGHT);
     const rowsToShow = Math.floor(maxVisibleRows * 0.75); // Only fill 3/4 of the screen.
     const [startIndex, endIndex] = getRangeCenteredOnIndex(
-      this._maxListIndex() + 1, // Add one to convert an index to a length
+      maxListIndex + 1, // Add one to convert an index to a length
       rowsToShow,
       selectedListIndex
     );
 
     const presetElms = [];
     for (let i = startIndex; i <= endIndex; i++) {
-      const presetIndex = this._presetIndexFromListIndex(i);
+      const presetIndex = presetIndexFromListIndex(i);
       const isSelected = i === selectedListIndex;
       const isCurrent = presetIndex === currentPresetIndex;
       let color: string;
@@ -123,88 +109,83 @@ class PresetOverlay extends React.Component<Props, State> {
     }
 
     return presetElms;
-  }
+  }, [currentPresetIndex, height, maxListIndex, presetKeys, selectedListIndex]);
 
-  _handleFocusedKeyboardInput = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    switch (e.keyCode) {
-      case 38: // up arrow
-        this.setState({
-          selectedListIndex: Math.max(this.state.selectedListIndex - 1, 0),
-        });
-        e.stopPropagation();
-        break;
-      case 40: // down arrow
-        this.setState({
-          selectedListIndex: Math.min(
-            this.state.selectedListIndex + 1,
-            this._maxListIndex()
-          ),
-        });
-        e.stopPropagation();
-        break;
-      case 13: // enter
-        if (this.state.selectedListIndex === 0) {
-          this.loadLocalDir();
-        } else {
-          this.props.requestPresetAtIndex(
-            this._presetIndexFromListIndex(this.state.selectedListIndex)
-          );
-        }
-        e.stopPropagation();
-        break;
-      case 27: // escape
-        this.props.togglePresetOverlay();
-        e.stopPropagation();
-        break;
-    }
-  };
-
-  async loadLocalDir() {
+  const loadLocalDir = useCallback(async () => {
     const fileReferences = await promptForFileReferences({ directory: true });
-    if (this._disposable.disposed) {
+    if (unmountedRef.current) {
       return;
     }
-    // TODO: Technically there is a race condition here, since the component
-    // could get unmounted before the promise resolves.
-    this.props.appendPresetFileList(fileReferences);
-  }
+    appendPresetFileList(fileReferences);
+  }, [appendPresetFileList, unmountedRef]);
 
-  _handleNode = (node: HTMLDivElement | null) => {
+  const handleFocusedKeyboardInput = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      switch (e.keyCode) {
+        case 38: // up arrow
+          setSelectedListIndex(value => Math.max(value - 1, 0));
+          e.stopPropagation();
+          break;
+        case 40: // down arrow
+          setSelectedListIndex(value => Math.min(value + 1, maxListIndex));
+          e.stopPropagation();
+          break;
+        case 13: // enter
+          if (selectedListIndex === 0) {
+            loadLocalDir();
+          } else {
+            requestPresetAtIndex(presetIndexFromListIndex(selectedListIndex));
+          }
+          e.stopPropagation();
+          break;
+        case 27: // escape
+          togglePresetOverlay();
+          e.stopPropagation();
+          break;
+      }
+    },
+    [
+      loadLocalDir,
+      maxListIndex,
+      requestPresetAtIndex,
+      selectedListIndex,
+      togglePresetOverlay,
+    ]
+  );
+
+  const handleNode = useCallback((node: HTMLDivElement | null) => {
     if (node != null && document.activeElement !== node) {
       node.focus();
     }
-  };
+  }, []);
 
-  render() {
-    const { height, width } = this.props;
-    if (this.props.presetKeys == null) {
-      return (
-        <div style={LOADING_STYLE}>
-          <span>Loading presets</span>
-        </div>
-      );
-    }
+  if (presetKeys == null) {
     return (
-      <div
-        ref={this._handleNode}
-        tabIndex={-1}
-        style={OUTER_WRAPPER_STYLE}
-        onKeyDown={this._handleFocusedKeyboardInput}
-      >
-        <div
-          style={{
-            ...INNER_WRAPPER_STYLE,
-            width: width - 20 - WIDTH_PADDING,
-            maxHeight: height - HEIGHT_PADDING,
-          }}
-        >
-          <ul style={{ listStyleType: "none", padding: 0, margin: 0 }}>
-            {this._renderList()}
-          </ul>
-        </div>
+      <div style={LOADING_STYLE}>
+        <span>Loading presets</span>
       </div>
     );
   }
+  return (
+    <div
+      ref={handleNode}
+      tabIndex={-1}
+      style={OUTER_WRAPPER_STYLE}
+      onKeyDown={handleFocusedKeyboardInput}
+    >
+      <div
+        style={{
+          ...INNER_WRAPPER_STYLE,
+          width: width - 20 - WIDTH_PADDING,
+          maxHeight: height - HEIGHT_PADDING,
+        }}
+      >
+        <ul style={{ listStyleType: "none", padding: 0, margin: 0 }}>
+          {renderList()}
+        </ul>
+      </div>
+    </div>
+  );
 }
 
 // Find a tuple `[startIndex, endIndex]` representing start/end indexes into an

@@ -1,4 +1,10 @@
-import { useState, useEffect, useCallback, useLayoutEffect } from "react";
+import {
+  useState,
+  useEffect,
+  useCallback,
+  useLayoutEffect,
+  useRef,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Utils from "./utils";
 import { Action, Thunk, AppState } from "./types";
@@ -6,6 +12,16 @@ import { Action, Thunk, AppState } from "./types";
 interface Size {
   width: number;
   height: number;
+}
+
+export function useUnmountedRef(): { current: boolean } {
+  const unmountedRef = useRef(false);
+  useEffect(() => {
+    return () => {
+      unmountedRef.current = true;
+    };
+  }, []);
+  return unmountedRef;
 }
 
 export function usePromiseValueOrNull<T>(propValue: Promise<T>): T | null {
