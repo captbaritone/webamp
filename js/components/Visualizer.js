@@ -7,12 +7,12 @@ import { VISUALIZERS, MEDIA_STATUS } from "../constants";
 import {
   preRenderBg,
   preRenderBar,
-  sliceAverage,
+  paintOscilloscopeFrame,
   octaveBucketsForBufferLength,
+  printBar,
   NUM_BARS,
   BAR_WIDTH,
   PIXEL_DENSITY,
-  PEAK_COLOR_INDEX,
   BAR_PEAK_DROP_RATE,
 } from "./visualizerUtils";
 
@@ -115,7 +115,16 @@ class Visualizer extends React.Component {
     switch (this.props.style) {
       case VISUALIZERS.OSCILLOSCOPE:
         this.canvasCtx.drawImage(this.bgCanvas, 0, 0);
-        this._paintOscilloscopeFrame();
+        paintOscilloscopeFrame({
+          analyser: this.props.analyser,
+          dataArray: this.dataArray,
+          canvasCtx: this.canvasCtx,
+          height: this._height(),
+          width: this._width(),
+          bufferLength: this.bufferLength,
+          colors: this.props.colors,
+          renderWidth: this._renderWidth(),
+        });
         break;
       case VISUALIZERS.BAR:
         this.canvasCtx.drawImage(this.bgCanvas, 0, 0);
@@ -123,67 +132,6 @@ class Visualizer extends React.Component {
         break;
       default:
         this.canvasCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    }
-  }
-
-  _paintOscilloscopeFrame() {
-    this.props.analyser.getByteTimeDomainData(this.dataArray);
-
-    this.canvasCtx.lineWidth = PIXEL_DENSITY;
-
-    // Just use one of the viscolors for now
-    this.canvasCtx.strokeStyle = this.props.colors[18];
-
-    // Since dataArray has more values than we have pixels to display, we
-    // have to average several dataArray values per pixel. We call these
-    // groups slices.
-    //
-    // We use the  2x scale here since we only want to plot values for
-    // "real" pixels.
-    const sliceWidth =
-      Math.floor(this.bufferLength / this._width()) * PIXEL_DENSITY;
-
-    const h = this._height();
-
-    this.canvasCtx.beginPath();
-
-    // Iterate over the width of the canvas in "real" pixels.
-    for (let j = 0; j <= this._renderWidth(); j++) {
-      const amplitude = sliceAverage(this.dataArray, sliceWidth, j);
-      const percentAmplitude = amplitude / 255; // dataArray gives us bytes
-      const y = (1 - percentAmplitude) * h; // flip y
-      const x = j * PIXEL_DENSITY;
-
-      // Canvas coordinates are in the middle of the pixel by default.
-      // When we want to draw pixel perfect lines, we will need to
-      // account for that here
-      if (x === 0) {
-        this.canvasCtx.moveTo(x, y);
-      } else {
-        this.canvasCtx.lineTo(x, y);
-      }
-    }
-    this.canvasCtx.stroke();
-  }
-
-  _printBar(x, height, peakHeight) {
-    height = Math.ceil(height) * PIXEL_DENSITY;
-    peakHeight = Math.ceil(peakHeight) * PIXEL_DENSITY;
-    if (height > 0 || peakHeight > 0) {
-      const y = this._height() - height;
-      const ctx = this.canvasCtx;
-      // Draw the gradient
-      const b = BAR_WIDTH;
-      if (height > 0) {
-        ctx.drawImage(this.barCanvas, 0, y, b, height, x, y, b, height);
-      }
-
-      // Draw the gray peak line
-      if (!this.props.windowShade) {
-        const peakY = this._height() - peakHeight;
-        ctx.fillStyle = this.props.colors[PEAK_COLOR_INDEX];
-        ctx.fillRect(x, peakY, b, PIXEL_DENSITY);
-      }
     }
   }
 
@@ -212,11 +160,16 @@ class Visualizer extends React.Component {
       }
       this.barPeaks[j] = barPeak;
 
-      this._printBar(
-        j * xOffset,
-        amplitude * heightMultiplier,
-        barPeak * heightMultiplier
-      );
+      printBar({
+        x: j * xOffset,
+        _height: amplitude * heightMultiplier,
+        peakHeight: barPeak * heightMultiplier,
+        height: this._height(),
+        canvasCtx: this.canvasCtx,
+        barCanvas: this.barCanvas,
+        windowShade: this.props.windowShade,
+        colors: this.props.colors,
+      });
     }
   }
 
