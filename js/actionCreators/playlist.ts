@@ -11,6 +11,9 @@ import {
   SET_TRACK_ORDER,
   SET_PLAYLIST_SCROLL_POSITION,
   DRAG_SELECTED,
+  SELECT_ALL,
+  SELECT_ZERO,
+  INVERT_SELECTION,
 } from "../actionTypes";
 import { Thunk, Action } from "../types";
 
@@ -145,4 +148,15 @@ export function dragSelected(offset: number): Thunk {
       dispatch({ type: DRAG_SELECTED, offset: normalizedOffset });
     }
   };
+}
+
+export function invertSelection(): Action {
+  return { type: INVERT_SELECTION };
+}
+export function selectZero(): Action {
+  return { type: SELECT_ZERO };
+}
+
+export function selectAll(): Action {
+  return { type: SELECT_ALL };
 }

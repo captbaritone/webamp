@@ -1,45 +1,34 @@
-import React, { ChangeEvent } from "react";
-import { connect } from "react-redux";
+import React from "react";
 
 import * as Actions from "../actionCreators";
-import { Dispatch, AppState } from "../types";
 import * as Selectors from "../selectors";
+import { useTypedSelector, useActionCreator } from "../hooks";
 
 interface Props {
   id?: string;
-  balance: number;
-  showMarquee(): void;
-  hideMarquee(): void;
-  setBalance(e: ChangeEvent<HTMLInputElement>): void;
   style?: React.CSSProperties;
   className?: string;
 }
 
-const Balance = (props: Props) => (
-  <input
-    id={props.id}
-    className={props.className}
-    type="range"
-    min="-100"
-    max="100"
-    step="1"
-    value={props.balance}
-    style={props.style}
-    onChange={props.setBalance}
-    onMouseDown={props.showMarquee}
-    onMouseUp={props.hideMarquee}
-    title="Balance"
-  />
-);
-
-const mapStateToProps = (state: AppState) => ({
-  balance: Selectors.getBalance(state),
-});
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setBalance: (e: ChangeEvent<HTMLInputElement>) =>
-    dispatch(Actions.setBalance(Number((e.target as HTMLInputElement).value))),
-  showMarquee: () => dispatch(Actions.setFocus("balance")),
-  hideMarquee: () => dispatch(Actions.unsetFocus()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Balance);
+export default function Balance({ style, className, id }: Props) {
+  const balance = useTypedSelector(Selectors.getBalance);
+  const setBalance = useActionCreator(Actions.setBalance);
+  const setFocus = useActionCreator(Actions.setFocus);
+  const unsetFocus = useActionCreator(Actions.unsetFocus);
+  return (
+    <input
+      id={id}
+      className={className}
+      type="range"
+      min="-100"
+      max="100"
+      step="1"
+      value={balance}
+      style={style}
+      onChange={e => setBalance(Number(e.target.value))}
+      onMouseDown={() => setFocus("balance")}
+      onMouseUp={unsetFocus}
+      title="Balance"
+    />
+  );
+}

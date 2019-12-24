@@ -1,14 +1,9 @@
 import React from "react";
-import { connect } from "react-redux";
-import {
-  reverseList,
-  randomizeList,
-  sortListByTitle,
-} from "../../actionCreators";
+import * as Actions from "../../actionCreators";
 
 import { Hr, Node } from "../ContextMenu";
 import ContextMenuTarget from "../ContextMenuTarget";
-import { Dispatch } from "../../types";
+import { useActionCreator } from "../../hooks";
 
 interface DispatchProps {
   sortListByTitle: () => void;
@@ -18,29 +13,24 @@ interface DispatchProps {
 
 /* eslint-disable no-alert */
 /* TODO: This should really be kitty-corner to the upper right hand corner of the MiscMenu */
-const SortContextMenu = (props: DispatchProps) => (
-  <ContextMenuTarget
-    style={{ width: "100%", height: "100%" }}
-    top
-    renderMenu={() => (
-      <>
-        <Node label="Sort list by title" onClick={props.sortListByTitle} />
-        <Hr />
-        <Node label="Reverse list" onClick={props.reverseList} />
-        <Node label="Randomize list" onClick={props.randomizeList} />
-      </>
-    )}
-  >
-    <div />
-  </ContextMenuTarget>
-);
-
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
-  return {
-    reverseList: () => dispatch(reverseList()),
-    randomizeList: () => dispatch(randomizeList()),
-    sortListByTitle: () => dispatch(sortListByTitle()),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(SortContextMenu);
+export default function SortContextMenu() {
+  const reverseList = useActionCreator(Actions.reverseList);
+  const randomizeList = useActionCreator(Actions.randomizeList);
+  const sortListByTitle = useActionCreator(Actions.sortListByTitle);
+  return (
+    <ContextMenuTarget
+      style={{ width: "100%", height: "100%" }}
+      top
+      renderMenu={() => (
+        <>
+          <Node label="Sort list by title" onClick={sortListByTitle} />
+          <Hr />
+          <Node label="Reverse list" onClick={reverseList} />
+          <Node label="Randomize list" onClick={randomizeList} />
+        </>
+      )}
+    >
+      <div />
+    </ContextMenuTarget>
+  );
+}

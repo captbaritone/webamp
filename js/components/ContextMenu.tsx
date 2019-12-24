@@ -1,10 +1,10 @@
 import React, { useMemo, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { connect } from "react-redux";
 import classnames from "classnames";
 
 import "../../css/context-menu.css";
-import { AppState } from "../types";
+import { useTypedSelector } from "../hooks";
+import * as Selectors from "../selectors";
 
 interface PortalProps {
   zIndex: number;
@@ -98,15 +98,15 @@ interface ContextMenuProps {
   zIndex: number;
 }
 
-function ContextMenu({
+export default function ContextMenu({
   children,
   offsetTop,
   offsetLeft,
   top,
   bottom,
   selected,
-  zIndex,
 }: ContextMenuProps) {
+  const zIndex = useTypedSelector(Selectors.getZIndex);
   if (!selected) {
     return null;
   }
@@ -118,9 +118,3 @@ function ContextMenu({
     </Portal>
   );
 }
-
-const mapStateToProps = (state: AppState) => ({
-  zIndex: state.display.zIndex,
-});
-
-export default connect(mapStateToProps)(ContextMenu);

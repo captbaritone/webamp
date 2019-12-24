@@ -13,9 +13,10 @@ import {
   SET_MILKDROP_FULLSCREEN,
   TOGGLE_PRESET_OVERLAY,
   STEP_MARQUEE,
+  SET_BAND_FOCUS,
 } from "../actionTypes";
 import { WINDOWS } from "../constants";
-import { Thunk, Action } from "../types";
+import { Thunk, Action, Slider } from "../types";
 import { SerializedStateV1 } from "../serializedStates/v1Types";
 import * as Selectors from "../selectors";
 import {
@@ -103,6 +104,9 @@ export {
   scrollUpFourTracks,
   scrollDownFourTracks,
   dragSelected,
+  selectAll,
+  selectZero,
+  invertSelection,
 } from "./playlist";
 export {
   initializePresets,
@@ -152,6 +156,10 @@ export function setFocus(input: string): Action {
 
 export function unsetFocus(): Action {
   return { type: UNSET_FOCUS };
+}
+
+export function focusBand(band: Slider): Action {
+  return { type: SET_BAND_FOCUS, input: "eq", bandFocused: band };
 }
 
 export function loadSerializedState(
