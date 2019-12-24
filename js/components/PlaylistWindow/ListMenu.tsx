@@ -1,31 +1,22 @@
 import React from "react";
-import { connect } from "react-redux";
 import * as Actions from "../../actionCreators";
 import PlaylistMenu from "./PlaylistMenu";
-import { Dispatch } from "../../types";
+import { useActionCreator } from "../../hooks";
 
 /* eslint-disable no-alert */
-
-interface DispatchProps {
-  removeAllTracks: () => void;
+export default function ListMenu() {
+  const removeAllTracks = useActionCreator(Actions.removeAllTracks);
+  return (
+    <PlaylistMenu id="playlist-list-menu">
+      <div className="new-list" onClick={removeAllTracks} />
+      <div
+        className="save-list"
+        onClick={() => alert("Not supported in Webamp")}
+      />
+      <div
+        className="load-list"
+        onClick={() => alert("Not supported in Webamp")}
+      />
+    </PlaylistMenu>
+  );
 }
-
-const ListMenu = (props: DispatchProps) => (
-  <PlaylistMenu id="playlist-list-menu">
-    <div className="new-list" onClick={props.removeAllTracks} />
-    <div
-      className="save-list"
-      onClick={() => alert("Not supported in Webamp")}
-    />
-    <div
-      className="load-list"
-      onClick={() => alert("Not supported in Webamp")}
-    />
-  </PlaylistMenu>
-);
-
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-  removeAllTracks: () => dispatch(Actions.removeAllTracks()),
-});
-
-export default connect(null, mapDispatchToProps)(ListMenu);
