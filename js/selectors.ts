@@ -10,6 +10,10 @@ import {
   TransitionType,
   MediaStatus,
   TimeMode,
+  SkinImages,
+  Cursors,
+  SkinRegion,
+  GenLetterWidths,
 } from "./types";
 import { createSelector, defaultMemoize } from "reselect";
 import * as Utils from "./utils";
@@ -675,6 +679,22 @@ export function getPresetsAreCycling(state: AppState): boolean {
 
 export function getRandomizePresets(state: AppState): boolean {
   return state.milkdrop.randomize;
+}
+
+export function getSkinImages(state: AppState): SkinImages {
+  return state.display.skinImages;
+}
+
+export function getSkinCursors(state: AppState): Cursors | null {
+  return state.display.skinCursors;
+}
+
+export function getSkinRegion(state: AppState): SkinRegion {
+  return state.display.skinRegion;
+}
+
+export function getSkinLetterWidths(state: AppState): GenLetterWidths | null {
+  return state.display.skinGenLetterWidths;
 }
 
 export function getPreampLineUrl(state: AppState): string | null {
