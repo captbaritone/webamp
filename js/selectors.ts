@@ -434,6 +434,10 @@ export function getLlamaMode(state: AppState) {
   return state.display.llama;
 }
 
+export function getZIndex(state: AppState): number {
+  return state.display.zIndex;
+}
+
 // TODO: This is poorly memoized. It invalidates when a window moves.
 export const getWindowSizes = createSelector(
   getGenWindows,
@@ -679,6 +683,10 @@ export function getPresetsAreCycling(state: AppState): boolean {
 
 export function getRandomizePresets(state: AppState): boolean {
   return state.milkdrop.randomize;
+}
+
+export function getClosed(state: AppState): boolean {
+  return state.display.closed;
 }
 
 export function getSkinImages(state: AppState): SkinImages {

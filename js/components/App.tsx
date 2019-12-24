@@ -5,15 +5,7 @@ import React, {
   useCallback,
 } from "react";
 import ReactDOM from "react-dom";
-import { connect } from "react-redux";
-import {
-  WindowId,
-  AppState,
-  Dispatch,
-  Size,
-  MediaStatus,
-  FilePicker,
-} from "../types";
+import { FilePicker } from "../types";
 import { WINDOWS } from "../constants";
 import * as Selectors from "../selectors";
 import * as Actions from "../actionCreators";
@@ -28,43 +20,27 @@ import EqualizerWindow from "./EqualizerWindow";
 import Skin from "./Skin";
 
 import "../../css/webamp.css";
-import { WebampWindow } from "../reducers/windows";
 import Media from "../media";
+import { useTypedSelector, useActionCreator } from "../hooks";
 
-interface StateProps {
-  visualizerStyle: string;
-  status: MediaStatus;
-  closed: boolean;
-  // TODO: Get only the info we really need
-  genWindowsInfo: { [windowId: string]: WebampWindow };
-  zIndex: number;
-}
-
-interface DispatchProps {
-  closeWindow(id: WindowId): void;
-  browserWindowSizeChanged(size: Size): void;
-  clearFocus(): void;
-}
-
-interface OwnProps {
+interface Props {
   filePickers: FilePicker[];
   media: Media;
 }
 
-type Props = StateProps & DispatchProps & OwnProps;
-
 /**
  * Constructs the windows to render
  */
-function App({
-  zIndex,
-  browserWindowSizeChanged,
-  closed,
-  clearFocus,
-  media,
-  genWindowsInfo,
-  filePickers,
-}: Props) {
+export default function App({ media, filePickers }: Props) {
+  const closed = useTypedSelector(Selectors.getClosed);
+  const genWindowsInfo = useTypedSelector(Selectors.getGenWindows);
+  const zIndex = useTypedSelector(Selectors.getZIndex);
+
+  const browserWindowSizeChanged = useActionCreator(
+    Actions.browserWindowSizeChanged
+  );
+  const setFocusedWindow = useActionCreator(Actions.setFocusedWindow);
+
   const [webampNode] = useState(() => {
     const node = document.createElement("div");
     node.id = "webamp";
@@ -142,7 +118,7 @@ function App({
 
   const handleBlur = (e: React.FocusEvent<HTMLElement>) => {
     if (!e.currentTarget.contains(e.relatedTarget as Element)) {
-      clearFocus();
+      setFocusedWindow(null);
     }
   };
 
@@ -164,24 +140,3 @@ function App({
     webampNode
   );
 }
-
-const mapStateToProps = (state: AppState): StateProps => {
-  return {
-    visualizerStyle: Selectors.getVisualizerStyle(state),
-    status: state.media.status,
-    closed: state.display.closed,
-    genWindowsInfo: state.windows.genWindows,
-    zIndex: state.display.zIndex,
-  };
-};
-
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
-  return {
-    closeWindow: (id: WindowId) => dispatch(Actions.closeWindow(id)),
-    browserWindowSizeChanged: (size: Size) =>
-      dispatch(Actions.browserWindowSizeChanged(size)),
-    clearFocus: () => dispatch(Actions.setFocusedWindow(null)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
