@@ -107,3 +107,102 @@ export function octaveBucketsForBufferLength(bufferLength: number): number[] {
 
   return octaveBuckets;
 }
+
+// Rendering Functions
+
+export function paintOscilloscopeFrame({
+  analyser,
+  dataArray,
+  canvasCtx,
+  height,
+  width,
+  bufferLength,
+  colors,
+  renderWidth,
+}: {
+  analyser: AnalyserNode;
+  dataArray: Uint8Array;
+  canvasCtx: CanvasRenderingContext2D;
+  height: number;
+  width: number;
+  bufferLength: number;
+  colors: string[];
+  renderWidth: number;
+}) {
+  analyser.getByteTimeDomainData(dataArray);
+
+  canvasCtx.lineWidth = PIXEL_DENSITY;
+
+  // Just use one of the viscolors for now
+  canvasCtx.strokeStyle = colors[18];
+
+  // Since dataArray has more values than we have pixels to display, we
+  // have to average several dataArray values per pixel. We call these
+  // groups slices.
+  //
+  // We use the  2x scale here since we only want to plot values for
+  // "real" pixels.
+  const sliceWidth = Math.floor(bufferLength / width()) * PIXEL_DENSITY;
+
+  const h = height;
+
+  canvasCtx.beginPath();
+
+  // Iterate over the width of the canvas in "real" pixels.
+  for (let j = 0; j <= renderWidth; j++) {
+    const amplitude = sliceAverage(dataArray, sliceWidth, j);
+    const percentAmplitude = amplitude / 255; // dataArray gives us bytes
+    const y = (1 - percentAmplitude) * h; // flip y
+    const x = j * PIXEL_DENSITY;
+
+    // Canvas coordinates are in the middle of the pixel by default.
+    // When we want to draw pixel perfect lines, we will need to
+    // account for that here
+    if (x === 0) {
+      canvasCtx.moveTo(x, y);
+    } else {
+      canvasCtx.lineTo(x, y);
+    }
+  }
+  canvasCtx.stroke();
+}
+
+export function printBar({
+  x,
+  _height,
+  peakHeight,
+  height,
+  canvasCtx,
+  barCanvas,
+  windowShade,
+  colors,
+}: {
+  x: number;
+  _height: number;
+  peakHeight: number;
+  height: number;
+  canvasCtx: CanvasRenderingContext2D;
+  barCanvas: HTMLCanvasElement;
+  windowShade: boolean;
+  colors: string[];
+}) {
+  const barHeight = Math.ceil(_height) * PIXEL_DENSITY;
+  peakHeight = Math.ceil(peakHeight) * PIXEL_DENSITY;
+  if (barHeight < 1 || peakHeight < 1) {
+    return;
+  }
+  const y = height - barHeight;
+  const ctx = canvasCtx;
+  // Draw the gradient
+  const b = BAR_WIDTH;
+  if (barHeight > 0) {
+    ctx.drawImage(barCanvas, 0, y, b, barHeight, x, y, b, barHeight);
+  }
+
+  // Draw the gray peak line
+  if (!windowShade) {
+    const peakY = height - peakHeight;
+    ctx.fillStyle = colors[PEAK_COLOR_INDEX];
+    ctx.fillRect(x, peakY, b, PIXEL_DENSITY);
+  }
+}
