@@ -30,6 +30,10 @@ function Wrapper(props) {
     );
   }, [height, props.colors, props.windowShade, width]);
 
+  const barCanvas = useMemo(() => {
+    return preRenderBar(height, props.colors, renderHeight);
+  }, [height, props.colors, renderHeight]);
+
   const visualizerProps = {
     ...props,
     renderHeight,
@@ -37,6 +41,7 @@ function Wrapper(props) {
     height,
     width,
     bgCanvas,
+    barCanvas,
   };
 
   return <Visualizer {...visualizerProps} />;
@@ -85,7 +90,6 @@ class Visualizer extends React.Component {
     }
     // TODO: Split this into to methods. One for skin update, one for style
     // update.
-    this.preRenderBar();
     this.props.analyser.fftSize = 2048;
     if (this.props.style === VISUALIZERS.OSCILLOSCOPE) {
       this.bufferLength = this.props.analyser.fftSize;
@@ -98,14 +102,6 @@ class Visualizer extends React.Component {
         this.octaveBuckets = octaveBucketsForBufferLength(this.bufferLength);
       }
     }
-  }
-
-  preRenderBar() {
-    this.barCanvas = preRenderBar(
-      this.props.height,
-      this.props.colors,
-      this.props.renderHeight
-    );
   }
 
   paintFrame() {
@@ -134,7 +130,7 @@ class Visualizer extends React.Component {
           barPeakFrames: this.barPeakFrames,
           height: this.props.height,
           canvasCtx: this.canvasCtx,
-          barCanvas: this.barCanvas,
+          barCanvas: this.props.barCanvas,
           windowShade: this.props.windowShade,
           colors: this.props.colors,
         });
