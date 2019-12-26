@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { connect } from "react-redux";
 
 import { toggleVisualizerStyle } from "../actionCreators";
@@ -15,6 +15,8 @@ import {
 } from "./visualizerUtils";
 
 function Wrapper(props) {
+  const [barPeaks] = useState(() => new Array(NUM_BARS).fill(0));
+  const [barPeakFrames] = useState(() => new Array(NUM_BARS).fill(0));
   const renderWidth = props.canvasWidth;
   const renderHeight = props.canvasHeight;
   const height = props.canvasHeight * PIXEL_DENSITY;
@@ -42,6 +44,8 @@ function Wrapper(props) {
     width,
     bgCanvas,
     barCanvas,
+    barPeaks,
+    barPeakFrames,
   };
 
   return <Visualizer {...visualizerProps} />;
@@ -49,8 +53,6 @@ function Wrapper(props) {
 
 class Visualizer extends React.Component {
   componentDidMount() {
-    this.barPeaks = new Array(NUM_BARS).fill(0);
-    this.barPeakFrames = new Array(NUM_BARS).fill(0);
     this.canvasCtx = this.canvas.getContext("2d");
     this.canvasCtx.imageSmoothingEnabled = false;
 
@@ -126,8 +128,8 @@ class Visualizer extends React.Component {
           dataArray: this.dataArray,
           renderHeight: this.props.renderHeight,
           octaveBuckets: this.octaveBuckets,
-          barPeaks: this.barPeaks,
-          barPeakFrames: this.barPeakFrames,
+          barPeaks: this.props.barPeaks,
+          barPeakFrames: this.props.barPeakFrames,
           height: this.props.height,
           canvasCtx: this.canvasCtx,
           barCanvas: this.props.barCanvas,
