@@ -27,9 +27,11 @@ type InternetArchiveItem {
     tweetStatus: TweetStatus
     readmeText: String
     internetArchiveItem: InternetArchiveItem
+    imageHash: String
   }
   type Query {
     skin(md5: String!): Skin
+    skins(imageHash: String!): [Skin]
   }
 `);
 
@@ -57,21 +59,20 @@ class InternetArchiveItem {
 }
 
 class Skin {
-  constructor(md5) {
-    this._md5 = md5;
-    this._skinPromise = Skins.getSkinByMd5(this._md5);
+  static async fromMd5(md5) {
+    return new Skin(await Skins.getSkinByMd5(md5));
+  }
+
+  constructor(data) {
+    this._data = data;
   }
 
   md5() {
-    return this._md5;
+    return this._data.md5;
   }
 
   async _get(getter) {
-    const skin = await this._skinPromise;
-    if (skin == null) {
-      return null;
-    }
-    return getter(skin);
+    return getter(this._data);
   }
 
   async canonicalFilename() {
@@ -114,6 +115,10 @@ class Skin {
     return this._get((skin) => skin.averageColor);
   }
 
+  async imageHash() {
+    return this._get((skin) => skin.imageHash);
+  }
+
   internetArchiveItem() {
     return new InternetArchiveItem(this._md5);
   }
@@ -121,8 +126,15 @@ class Skin {
 
 // The root provides a resolver function for each API endpoint
 const root = {
-  skin: ({ md5 }) => {
-    return new Skin(md5);
+  skin: async ({ md5, query }) => {
+    return Skin.fromMd5(md5);
+  },
+  skins: async ({ imageHash }) => {
+    if (imageHash) {
+      const matches = await Skins.getMd5sMatchingImageHash(imageHash);
+      return matches.map(({ md5 }) => Skin.fromMd5(md5));
+    }
+    return [];
   },
 };
 

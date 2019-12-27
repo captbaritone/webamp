@@ -10,6 +10,7 @@ const filter = (reaction) => {
 async function postSkin({ md5, title, dest }) {
   const skin = await Skins.getSkinByMd5(md5);
   if (skin == null) {
+    console.warn("Could not find skin for md5", { md5, alert: true });
     logger.warn("Could not find skin for md5", { md5, alert: true });
     return;
   }

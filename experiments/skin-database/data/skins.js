@@ -27,6 +27,7 @@ function getSkinRecord(skin) {
     twitterLikes,
     readmeText,
     filePaths,
+    imageHash,
   } = skin;
   const fileNames = filePaths.map((p) => path.basename(p));
   const skinUrl = `https://s3.amazonaws.com/webamp-uploaded-skins/skins/${md5}.wsz`;
@@ -42,6 +43,7 @@ function getSkinRecord(skin) {
     twitterLikes,
     webampUrl: `https://webamp.org?skinUrl=${skinUrl}`,
     readmeText,
+    imageHash,
   };
 }
 
@@ -58,7 +60,10 @@ async function getMd5ByAnything(anything) {
   const md5Match = anything.match(MD5);
   if (md5Match != null) {
     const md5 = md5Match[1];
-    return md5;
+    const found = await skins.findOne({ md5, type: "CLASSIC" });
+    if (found != null) {
+      return md5;
+    }
   }
   const itemMatchResult = anything.match(IA_URL);
   if (itemMatchResult != null) {
@@ -72,6 +77,10 @@ async function getMd5ByAnything(anything) {
   if (md5 != null) {
     return md5;
   }
+
+  const imageHashMd5 = await getMd5FromImageHash(anything);
+
+  return imageHashMd5;
 }
 
 async function getSkinByMd5(md5) {
@@ -115,6 +124,16 @@ async function getInternetArchiveItem(md5) {
 async function getMd5FromInternetArchvieItemName(itemName) {
   const item = await iaItems.findOne({ identifier: itemName }, { md5: 1 });
   return item == null ? null : item.md5;
+}
+
+async function getMd5FromImageHash(imageHash) {
+  const item = await skins.findOne({ imageHash }, { md5: 1 });
+  console.log(item);
+  return item == null ? null : item.md5;
+}
+
+async function getMd5sMatchingImageHash(imageHash) {
+  return skins.find({ imageHash }, { md5: 1 });
 }
 
 function getInternetArchiveUrl(itemName) {
@@ -196,7 +215,12 @@ async function reconcile() {
   ]);
 }
 
+async function setImageHash(md5, imageHash) {
+  await skins.findOneAndUpdate({ md5 }, { $set: { imageHash } });
+}
+
 module.exports = {
+  getMd5sMatchingImageHash,
   getInternetArchiveItem,
   getMd5ByAnything,
   getReadme,
@@ -213,4 +237,5 @@ module.exports = {
   getTweetableSkinCount,
   reconcile,
   getSkinToTweet,
+  setImageHash,
 };
