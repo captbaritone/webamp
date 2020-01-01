@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 
 import { toggleVisualizerStyle } from "../actionCreators";
@@ -13,6 +13,7 @@ import {
   NUM_BARS,
   PIXEL_DENSITY,
 } from "./visualizerUtils";
+import { useAnimationLoop } from "../hooks";
 
 function Wrapper(props) {
   const [barPeaks] = useState(() => new Array(NUM_BARS).fill(0));
@@ -52,103 +53,90 @@ function Wrapper(props) {
     return octaveBucketsForBufferLength(dataArray.length);
   }, [dataArray.length]);
 
+  const paintFrame = useMemo(() => {
+    if (dataArray == null || props.status !== MEDIA_STATUS.PLAYING) {
+      return null;
+    }
+    return canvasCtx => {
+      switch (props.style) {
+        case VISUALIZERS.OSCILLOSCOPE:
+          canvasCtx.drawImage(bgCanvas, 0, 0);
+          paintOscilloscopeFrame({
+            analyser: props.analyser,
+            dataArray,
+            canvasCtx,
+            height,
+            width,
+            colors: props.colors,
+            renderWidth,
+          });
+          break;
+        case VISUALIZERS.BAR:
+          canvasCtx.drawImage(bgCanvas, 0, 0);
+          paintBarFrame({
+            analyser: props.analyser,
+            dataArray,
+            renderHeight,
+            octaveBuckets,
+            barPeaks,
+            barPeakFrames,
+            height,
+            canvasCtx,
+            barCanvas,
+            windowShade: props.windowShade,
+            colors: props.colors,
+          });
+          break;
+        default:
+          this.canvasCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      }
+    };
+  }, [
+    barCanvas,
+    barPeakFrames,
+    barPeaks,
+    bgCanvas,
+    dataArray,
+    height,
+    octaveBuckets,
+    props.analyser,
+    props.colors,
+    props.status,
+    props.style,
+    props.windowShade,
+    renderHeight,
+    renderWidth,
+    width,
+  ]);
+
   const visualizerProps = {
     ...props,
     renderHeight,
     renderWidth,
     height,
     width,
-    bgCanvas,
-    barCanvas,
-    barPeaks,
-    barPeakFrames,
-    dataArray,
-    octaveBuckets,
+    paintFrame,
   };
 
   return <Visualizer {...visualizerProps} />;
 }
 
-class Visualizer extends React.Component {
-  componentDidMount() {
-    this.canvasCtx = this.canvas.getContext("2d");
-    this.canvasCtx.imageSmoothingEnabled = false;
+function Visualizer(props) {
+  const canvasRef = useRef(null);
 
-    // Kick off the animation loop
-    const loop = () => {
-      if (this.props.status === MEDIA_STATUS.PLAYING) {
-        if (this.props.dummyVizData) {
-          Object.keys(this.props.dummyVizData).forEach(i => {
-            this._printBar(i, this.props.dummyVizData[i]);
-          });
-        } else {
-          this.paintFrame();
-        }
-      }
-      this._animationRequest = window.requestAnimationFrame(loop);
-    };
-    loop();
-  }
+  useAnimationLoop({ canvas: canvasRef.current, paintFrame: props.paintFrame });
 
-  componentWillUnmount() {
-    if (this._animationRequest) {
-      window.cancelAnimationFrame(this._animationRequest);
-    }
-  }
-
-  componentDidUpdate() {
-    // Redraw the current frame, since the skin may have changed.
-    this.paintFrame();
-  }
-
-  paintFrame() {
-    switch (this.props.style) {
-      case VISUALIZERS.OSCILLOSCOPE:
-        this.canvasCtx.drawImage(this.props.bgCanvas, 0, 0);
-        paintOscilloscopeFrame({
-          analyser: this.props.analyser,
-          dataArray: this.props.dataArray,
-          canvasCtx: this.canvasCtx,
-          height: this.props.height,
-          width: this.props.width,
-          colors: this.props.colors,
-          renderWidth: this.props.renderWidth,
-        });
-        break;
-      case VISUALIZERS.BAR:
-        this.canvasCtx.drawImage(this.props.bgCanvas, 0, 0);
-        paintBarFrame({
-          analyser: this.props.analyser,
-          dataArray: this.props.dataArray,
-          renderHeight: this.props.renderHeight,
-          octaveBuckets: this.props.octaveBuckets,
-          barPeaks: this.props.barPeaks,
-          barPeakFrames: this.props.barPeakFrames,
-          height: this.props.height,
-          canvasCtx: this.canvasCtx,
-          barCanvas: this.props.barCanvas,
-          windowShade: this.props.windowShade,
-          colors: this.props.colors,
-        });
-        break;
-      default:
-        this.canvasCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    }
-  }
-
-  render() {
-    const { renderWidth, renderHeight, width, height } = this.props;
-    return (
-      <canvas
-        id="visualizer"
-        ref={node => (this.canvas = node)}
-        style={{ width: renderWidth, height: renderHeight }}
-        width={width}
-        height={height}
-        onClick={this.props.toggleVisualizerStyle}
-      />
-    );
-  }
+  const { renderWidth, renderHeight, width, height } = props;
+  return (
+    <canvas
+      id="visualizer"
+      ref={canvasRef}
+      style={{ width: renderWidth, height: renderHeight }}
+      width={width}
+      height={height}
+      onClick={props.toggleVisualizerStyle}
+    />
+  );
 }
 
 const mapStateToProps = state => ({

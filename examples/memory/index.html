@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+
+  <body>
+    <div style="position: absolute; top: 50px; left: 50px;">
+      <button id="load">Load</button>
+      <button id="clean">Clean</button>
+    </div>
+    <div id="app" style="height: 100vh">
+      <!-- Webamp will attempt to center itself within this div -->
+    </div>
+    <script src="../../built/webamp.bundle.js"></script>
+    <script>
+      const Webamp = window.Webamp;
+      let webamp = null;
+      async function load() {
+          webamp = new Webamp({
+            initialTracks: [
+              {
+                metaData: {
+                  artist: "DJ Mike Llama",
+                  title: "Llama Whippin' Intro",
+                },
+                url:
+                  "https://cdn.jsdelivr.net/gh/captbaritone/webamp@43434d82cfe0e37286dbbe0666072dc3190a83bc/mp3/llama-2.91.mp3",
+                duration: 5.322286,
+              },
+            ],
+          });
+          await webamp.renderWhenReady(document.getElementById("app"));
+        }
+        function clean() {
+          webamp.dispose();
+          webamp = null;
+        }
+
+        async function leak(times = 1) {
+          for(let i = 0; i < times; i++) {
+            await load();
+            clean();
+          }
+          console.log('done')
+        }
+        
+        document
+        .getElementById("load")
+        .addEventListener("click", load);
+
+      document
+        .getElementById("clean")
+        .addEventListener("click", clean);
+    </script>
+  </body>
+</html>
