@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { connect } from "react-redux";
 
 import { toggleVisualizerStyle } from "../actionCreators";
@@ -36,6 +36,22 @@ function Wrapper(props) {
     return preRenderBar(height, props.colors, renderHeight);
   }, [height, props.colors, renderHeight]);
 
+  useEffect(() => {
+    props.analyser.fftSize = 2048;
+  }, [props.analyser]);
+
+  const dataArray = useMemo(() => {
+    if (props.style === VISUALIZERS.OSCILLOSCOPE) {
+      return new Uint8Array(props.analyser.fftSize);
+    } else if (props.style === VISUALIZERS.BAR) {
+      return new Uint8Array(props.analyser.frequencyBinCount);
+    }
+  }, [props.analyser.fftSize, props.analyser.frequencyBinCount, props.style]);
+
+  const octaveBuckets = useMemo(() => {
+    return octaveBucketsForBufferLength(dataArray.length);
+  }, [dataArray.length]);
+
   const visualizerProps = {
     ...props,
     renderHeight,
@@ -46,6 +62,8 @@ function Wrapper(props) {
     barCanvas,
     barPeaks,
     barPeakFrames,
+    dataArray,
+    octaveBuckets,
   };
 
   return <Visualizer {...visualizerProps} />;
@@ -55,8 +73,6 @@ class Visualizer extends React.Component {
   componentDidMount() {
     this.canvasCtx = this.canvas.getContext("2d");
     this.canvasCtx.imageSmoothingEnabled = false;
-
-    this.setStyle();
 
     // Kick off the animation loop
     const loop = () => {
@@ -81,29 +97,8 @@ class Visualizer extends React.Component {
   }
 
   componentDidUpdate() {
-    this.setStyle();
     // Redraw the current frame, since the skin may have changed.
     this.paintFrame();
-  }
-
-  setStyle() {
-    if (!this.props.colors) {
-      return;
-    }
-    // TODO: Split this into to methods. One for skin update, one for style
-    // update.
-    this.props.analyser.fftSize = 2048;
-    if (this.props.style === VISUALIZERS.OSCILLOSCOPE) {
-      this.dataArray = new Uint8Array(this.props.analyser.fftSize);
-    } else if (this.props.style === VISUALIZERS.BAR) {
-      this.dataArray = new Uint8Array(this.props.analyser.frequencyBinCount);
-
-      if (!this.octaveBuckets) {
-        this.octaveBuckets = octaveBucketsForBufferLength(
-          this.dataArray.length
-        );
-      }
-    }
   }
 
   paintFrame() {
@@ -112,7 +107,7 @@ class Visualizer extends React.Component {
         this.canvasCtx.drawImage(this.props.bgCanvas, 0, 0);
         paintOscilloscopeFrame({
           analyser: this.props.analyser,
-          dataArray: this.dataArray,
+          dataArray: this.props.dataArray,
           canvasCtx: this.canvasCtx,
           height: this.props.height,
           width: this.props.width,
@@ -124,9 +119,9 @@ class Visualizer extends React.Component {
         this.canvasCtx.drawImage(this.props.bgCanvas, 0, 0);
         paintBarFrame({
           analyser: this.props.analyser,
-          dataArray: this.dataArray,
+          dataArray: this.props.dataArray,
           renderHeight: this.props.renderHeight,
-          octaveBuckets: this.octaveBuckets,
+          octaveBuckets: this.props.octaveBuckets,
           barPeaks: this.props.barPeaks,
           barPeakFrames: this.props.barPeakFrames,
           height: this.props.height,
