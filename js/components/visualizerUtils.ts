@@ -116,7 +116,6 @@ export function paintOscilloscopeFrame({
   canvasCtx,
   height,
   width,
-  bufferLength,
   colors,
   renderWidth,
 }: {
@@ -125,7 +124,6 @@ export function paintOscilloscopeFrame({
   canvasCtx: CanvasRenderingContext2D;
   height: number;
   width: number;
-  bufferLength: number;
   colors: string[];
   renderWidth: number;
 }) {
@@ -142,7 +140,7 @@ export function paintOscilloscopeFrame({
   //
   // We use the  2x scale here since we only want to plot values for
   // "real" pixels.
-  const sliceWidth = Math.floor(bufferLength / width) * PIXEL_DENSITY;
+  const sliceWidth = Math.floor(dataArray.length / width) * PIXEL_DENSITY;
 
   const h = height;
 
