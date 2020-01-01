@@ -94,14 +94,14 @@ class Visualizer extends React.Component {
     // update.
     this.props.analyser.fftSize = 2048;
     if (this.props.style === VISUALIZERS.OSCILLOSCOPE) {
-      this.bufferLength = this.props.analyser.fftSize;
-      this.dataArray = new Uint8Array(this.bufferLength);
+      this.dataArray = new Uint8Array(this.props.analyser.fftSize);
     } else if (this.props.style === VISUALIZERS.BAR) {
-      this.bufferLength = this.props.analyser.frequencyBinCount;
-      this.dataArray = new Uint8Array(this.bufferLength);
+      this.dataArray = new Uint8Array(this.props.analyser.frequencyBinCount);
 
       if (!this.octaveBuckets) {
-        this.octaveBuckets = octaveBucketsForBufferLength(this.bufferLength);
+        this.octaveBuckets = octaveBucketsForBufferLength(
+          this.dataArray.length
+        );
       }
     }
   }
@@ -116,7 +116,6 @@ class Visualizer extends React.Component {
           canvasCtx: this.canvasCtx,
           height: this.props.height,
           width: this.props.width,
-          bufferLength: this.bufferLength,
           colors: this.props.colors,
           renderWidth: this.props.renderWidth,
         });
