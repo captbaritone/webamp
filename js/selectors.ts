@@ -14,6 +14,7 @@ import {
   Cursors,
   SkinRegion,
   GenLetterWidths,
+  DummyVizData,
 } from "./types";
 import { createSelector, defaultMemoize } from "reselect";
 import * as Utils from "./utils";
@@ -426,12 +427,16 @@ export function getPositionsAreRelative(state: AppState) {
   return state.windows.positionsAreRelative;
 }
 
-export function getDoubled(state: AppState) {
+export function getDoubled(state: AppState): boolean {
   return state.display.doubled;
 }
 
-export function getLlamaMode(state: AppState) {
+export function getLlamaMode(state: AppState): boolean {
   return state.display.llama;
+}
+
+export function getDummyVizData(state: AppState): DummyVizData | null {
+  return state.display.dummyVizData;
 }
 
 export function getZIndex(state: AppState): number {
@@ -691,6 +696,10 @@ export function getClosed(state: AppState): boolean {
 
 export function getSkinImages(state: AppState): SkinImages {
   return state.display.skinImages;
+}
+
+export function getSkinColors(state: AppState): string[] {
+  return state.display.skinColors;
 }
 
 export function getSkinCursors(state: AppState): Cursors | null {
