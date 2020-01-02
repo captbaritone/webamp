@@ -45,11 +45,15 @@ export function usePromiseValueOrNull<T>(propValue: Promise<T>): T | null {
 
 type AnimationLoopOptions = {
   paintFrame: null | (() => void);
+  clear: null | (() => void);
 };
 
-export function useAnimationLoop({ paintFrame }: AnimationLoopOptions) {
+export function useAnimationLoop({ paintFrame, clear }: AnimationLoopOptions) {
   useLayoutEffect(() => {
     if (paintFrame == null) {
+      if (clear != null) {
+        clear();
+      }
       return;
     }
 
@@ -67,7 +71,7 @@ export function useAnimationLoop({ paintFrame }: AnimationLoopOptions) {
         window.cancelAnimationFrame(animationRequest);
       }
     };
-  }, [paintFrame]);
+  }, [clear, paintFrame]);
 }
 
 export function useScreenSize() {
