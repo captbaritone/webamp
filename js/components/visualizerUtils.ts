@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
+import { DummyVizData } from "../types";
 export const PIXEL_DENSITY = 2;
 export const NUM_BARS = 20;
 export const BAR_WIDTH = 3 * PIXEL_DENSITY;
@@ -135,7 +136,7 @@ export function preRenderBg(
   return bgCanvas;
 }
 
-export function preRenderBar(
+function preRenderBar(
   height: number,
   colors: string[],
   renderHeight: number
@@ -175,7 +176,7 @@ export function preRenderBar(
 }
 
 // Return the average value in a slice of dataArray
-export function sliceAverage(
+function sliceAverage(
   dataArray: Uint8Array,
   sliceWidth: number,
   sliceNumber: number
@@ -189,7 +190,7 @@ export function sliceAverage(
   return sum / sliceWidth;
 }
 
-export function octaveBucketsForBufferLength(bufferLength: number): number[] {
+function octaveBucketsForBufferLength(bufferLength: number): number[] {
   const octaveBuckets = new Array(NUM_BARS).fill(0);
   const minHz = 200;
   const maxHz = 22050;
@@ -212,7 +213,7 @@ export function octaveBucketsForBufferLength(bufferLength: number): number[] {
 
 // Rendering Functions
 
-export function paintOscilloscopeFrame({
+function paintOscilloscopeFrame({
   analyser,
   dataArray,
   canvasCtx,
@@ -267,7 +268,45 @@ export function paintOscilloscopeFrame({
   canvasCtx.stroke();
 }
 
-export function paintBarFrame({
+export function usePaintDummyBarFrame({
+  dummyVizData,
+  height,
+  canvasCtx,
+  windowShade,
+  colors,
+  renderHeight,
+}: {
+  dummyVizData: DummyVizData | null;
+  height: number;
+  canvasCtx: CanvasRenderingContext2D | null;
+  windowShade: boolean;
+  colors: string[];
+  renderHeight: number;
+}) {
+  const barCanvas = useMemo(() => {
+    return preRenderBar(height, colors, renderHeight);
+  }, [colors, height, renderHeight]);
+
+  return useCallback(() => {
+    if (dummyVizData == null || canvasCtx == null) {
+      return;
+    }
+    Object.entries(dummyVizData).forEach(([i, _height]) => {
+      printBar({
+        x: Number(i),
+        _height,
+        peakHeight: Infinity,
+        height,
+        canvasCtx,
+        barCanvas,
+        windowShade,
+        colors,
+      });
+    });
+  }, [barCanvas, canvasCtx, colors, dummyVizData, height, windowShade]);
+}
+
+function paintBarFrame({
   analyser,
   dataArray,
   renderHeight,
@@ -328,7 +367,7 @@ export function paintBarFrame({
   }
 }
 
-export function printBar({
+function printBar({
   x,
   _height,
   peakHeight,

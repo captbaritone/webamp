@@ -8,6 +8,7 @@ import {
   usePaintOscilloscope,
   PIXEL_DENSITY,
   usePaintBars,
+  usePaintDummyBarFrame,
 } from "./visualizerUtils";
 import { useAnimationLoop, useTypedSelector, useActionCreator } from "../hooks";
 
@@ -22,7 +23,7 @@ export default function Visualizer({ analyser }: Props) {
   const colors = useTypedSelector(Selectors.getSkinColors);
   const style = useTypedSelector(Selectors.getVisualizerStyle);
   const status = useTypedSelector(Selectors.getMediaStatus);
-  // const dummyVizData = useTypedSelector(Selectors.getDummyVizData);
+  const dummyVizData = useTypedSelector(Selectors.getDummyVizData);
   const toggleVisualizerStyle = useActionCreator(Actions.toggleVisualizerStyle);
 
   const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
@@ -62,9 +63,21 @@ export default function Visualizer({ analyser }: Props) {
     colors,
   });
 
+  const paintDummyFrame = usePaintDummyBarFrame({
+    dummyVizData,
+    height,
+    canvasCtx,
+    windowShade,
+    colors,
+    renderHeight,
+  });
+
   const paintFrame = useMemo(() => {
     if (canvasCtx == null || status !== MEDIA_STATUS.PLAYING) {
       return null;
+    }
+    if (dummyVizData != null) {
+      return paintDummyFrame;
     }
     switch (style) {
       case VISUALIZERS.OSCILLOSCOPE:
@@ -79,7 +92,16 @@ export default function Visualizer({ analyser }: Props) {
         };
     }
     return null;
-  }, [bgCanvas, canvasCtx, paintBars, paintOscilloscope, status, style]);
+  }, [
+    bgCanvas,
+    canvasCtx,
+    dummyVizData,
+    paintBars,
+    paintDummyFrame,
+    paintOscilloscope,
+    status,
+    style,
+  ]);
 
   useAnimationLoop({ paintFrame });
 
