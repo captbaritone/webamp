@@ -4,7 +4,6 @@ import {
   useCallback,
   useLayoutEffect,
   useRef,
-  useMemo,
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Utils from "./utils";
@@ -45,28 +44,19 @@ export function usePromiseValueOrNull<T>(propValue: Promise<T>): T | null {
 }
 
 type AnimationLoopOptions = {
-  canvas: HTMLCanvasElement;
-  paintFrame: null | ((canvasCtx: CanvasRenderingContext2D) => void);
+  paintFrame: null | (() => void);
 };
 
-export function useAnimationLoop({ canvas, paintFrame }: AnimationLoopOptions) {
-  const canvasCtx = useMemo(() => {
-    if (canvas == null) {
-      return null;
-    }
-
-    return canvas.getContext("2d");
-  }, [canvas]);
-
+export function useAnimationLoop({ paintFrame }: AnimationLoopOptions) {
   useLayoutEffect(() => {
-    if (canvasCtx == null || paintFrame == null) {
+    if (paintFrame == null) {
       return;
     }
 
     let animationRequest: number | null = null;
     function loop() {
       // @ts-ignore This can't be null
-      paintFrame(canvasCtx);
+      paintFrame();
       animationRequest = window.requestAnimationFrame(loop);
     }
 
@@ -77,7 +67,7 @@ export function useAnimationLoop({ canvas, paintFrame }: AnimationLoopOptions) {
         window.cancelAnimationFrame(animationRequest);
       }
     };
-  }, [canvasCtx, paintFrame]);
+  }, [paintFrame]);
 }
 
 export function useScreenSize() {

@@ -1,9 +1,111 @@
+import { useCallback, useMemo, useState } from "react";
 export const PIXEL_DENSITY = 2;
 export const NUM_BARS = 20;
 export const BAR_WIDTH = 3 * PIXEL_DENSITY;
 export const BAR_PEAK_DROP_RATE = 0.01;
 export const GRADIENT_COLOR_COUNT = 16;
 export const PEAK_COLOR_INDEX = 23;
+
+type UsePaintBarsOptions = {
+  analyser: AnalyserNode;
+  canvasCtx: CanvasRenderingContext2D | null;
+  renderHeight: number;
+  height: number;
+  windowShade: boolean;
+  colors: string[];
+};
+
+export function usePaintBars({
+  analyser,
+  canvasCtx,
+  renderHeight,
+  height,
+  windowShade,
+  colors,
+}: UsePaintBarsOptions) {
+  const [barPeaks] = useState(() => new Array(NUM_BARS).fill(0));
+  const [barPeakFrames] = useState(() => new Array(NUM_BARS).fill(0));
+
+  const barCanvas = useMemo(() => {
+    return preRenderBar(height, colors, renderHeight);
+  }, [colors, height, renderHeight]);
+
+  const dataArray = useMemo(() => {
+    return new Uint8Array(analyser.frequencyBinCount);
+  }, [analyser.frequencyBinCount]);
+
+  const octaveBuckets = useMemo(() => {
+    return octaveBucketsForBufferLength(dataArray.length);
+  }, [dataArray.length]);
+
+  return useCallback(() => {
+    if (canvasCtx == null) {
+      return;
+    }
+    paintBarFrame({
+      analyser,
+      dataArray,
+      renderHeight,
+      octaveBuckets,
+      barPeaks,
+      barPeakFrames,
+      height,
+      canvasCtx,
+      barCanvas,
+      windowShade,
+      colors,
+    });
+  }, [
+    analyser,
+    barCanvas,
+    barPeakFrames,
+    barPeaks,
+    canvasCtx,
+    colors,
+    dataArray,
+    height,
+    octaveBuckets,
+    renderHeight,
+    windowShade,
+  ]);
+}
+
+type UsePaintOscilloscopeOptions = {
+  analyser: AnalyserNode;
+  canvasCtx: CanvasRenderingContext2D | null;
+  renderWidth: number;
+  height: number;
+  width: number;
+  colors: string[];
+};
+
+export function usePaintOscilloscope({
+  canvasCtx,
+  analyser,
+  height,
+  colors,
+  width,
+  renderWidth,
+}: UsePaintOscilloscopeOptions) {
+  const dataArray = useMemo(() => {
+    return new Uint8Array(analyser.fftSize);
+  }, [analyser.fftSize]);
+
+  return useCallback(() => {
+    if (canvasCtx == null) {
+      return;
+    }
+    paintOscilloscopeFrame({
+      analyser,
+      dataArray,
+      canvasCtx,
+      height,
+      width,
+      colors,
+      renderWidth,
+    });
+  }, [analyser, canvasCtx, colors, dataArray, height, renderWidth, width]);
+}
 
 // Pre-render the background grid
 export function preRenderBg(
