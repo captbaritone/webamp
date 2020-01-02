@@ -49,7 +49,7 @@ async function testPage({ url, name, firstTrackText }) {
   } catch (e) {
     log(`🛑 Errored in [${name}]. Wrote screenshot to ./error.png`);
     await page.screenshot({ path: "error.png", fullPage: true });
-    console.error(e);
+    throw e;
   } finally {
     log("DONE");
     await browser.close();
