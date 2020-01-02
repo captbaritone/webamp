@@ -85,6 +85,13 @@ async function main() {
       "https://archive.org/details/78_house-of-the-rising-sun_josh-white-and-his-guitar_gbia0001628b",
     firstTrackText: "House Of The Rising Sun",
   });
+
+  await testPage({
+    name: "Another",
+    url:
+      "https://archive.org/details/78_house-of-the-rising-sun_josh-white-and-his-guitar_gbia0001628b",
+    firstTrackText: "THE WRONG TEXT GROMIT",
+  });
 }
 
 main();
