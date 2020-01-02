@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState } from "react";
+import React, { useMemo, useEffect, useState, useCallback } from "react";
 
 import * as Actions from "../actionCreators";
 import * as Selectors from "../selectors";
@@ -91,6 +91,7 @@ export default function Visualizer({ analyser }: Props) {
           paintBars();
         };
     }
+    // Maybe Milkdrop is active.
     return null;
   }, [
     bgCanvas,
@@ -103,7 +104,14 @@ export default function Visualizer({ analyser }: Props) {
     style,
   ]);
 
-  useAnimationLoop({ paintFrame });
+  const clear = useCallback(() => {
+    if (canvasCtx == null) {
+      return;
+    }
+    canvasCtx.clearRect(0, 0, width, height);
+  }, [canvasCtx, height, width]);
+
+  useAnimationLoop({ paintFrame, clear });
 
   return (
     <canvas
