@@ -1,6 +1,7 @@
 name: "Internet Archvie Integration Tests"
 
 on:
+  push:
   schedule:
     - cron: "0 8 * * *"
 
