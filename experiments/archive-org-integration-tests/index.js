@@ -49,7 +49,7 @@ async function testPage({ url, name, firstTrackText }) {
   } catch (e) {
     log(`🛑 Errored in [${name}]. Wrote screenshot to ./error.png`);
     await page.screenshot({ path: "error.png", fullPage: true });
-    console.error(e);
+    throw e;
   } finally {
     log("DONE");
     await browser.close();
@@ -87,4 +87,12 @@ async function main() {
   });
 }
 
-main();
+(async function() {
+  try {
+    await main();
+  } catch (e) {
+    console.error(e);
+    // Ensure process returns an error exit code so that other tools know the test failed.
+    process.exit(1);
+  }
+})();

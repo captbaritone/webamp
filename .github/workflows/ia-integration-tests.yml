@@ -1,0 +1,23 @@
+name: "Internet Archvie Integration Tests"
+
+on:
+  push:
+  schedule:
+    - cron: "0 8 * * *"
+
+jobs:
+  ia-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: Run Tests
+        run: |
+          cd experiments/archive-org-integration-tests
+          yarn
+          node ./index.js
+        env:
+          CI: true
