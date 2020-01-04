@@ -94,4 +94,12 @@ async function main() {
   });
 }
 
-main();
+(async function() {
+  try {
+    await main();
+  } catch (e) {
+    console.error(e);
+    // Ensure process returns an error exit code so that other tools know the test failed.
+    process.exit(1);
+  }
+})();
