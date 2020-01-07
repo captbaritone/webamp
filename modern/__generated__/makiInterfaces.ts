@@ -38,7 +38,12 @@ export interface System extends MakiObject {
   enumcontainer(num: number): Container;
   enumembedguid(num: number): string;
   getwac(wac_guid: string): Wac;
-  messagebox(message: string, msgtitle: string, flag: number, notanymore_id: string): number;
+  messagebox(
+    message: string,
+    msgtitle: string,
+    flag: number,
+    notanymore_id: string
+  ): number;
   getplayitemstring(): string;
   getplayitemlength(): number;
   getplayitemmetadatastring(metadataname: string): string;
@@ -51,8 +56,17 @@ export interface System extends MakiObject {
   getdecodername(playitem: string): string;
   playfile(playitem: string): void;
   getalbumart(playitem: string): number;
-  downloadmedia(url: string, destinationPath: string, wantAddToML: boolean, notifyDownloadsList: boolean): void;
-  downloadurl(url: string, destination_filename: string, progress_dialog_title: string): void;
+  downloadmedia(
+    url: string,
+    destinationPath: string,
+    wantAddToML: boolean,
+    notifyDownloadsList: boolean
+  ): void;
+  downloadurl(
+    url: string,
+    destination_filename: string,
+    progress_dialog_title: string
+  ): void;
   ondownloadfinished(url: string, success: boolean, filename: string): void;
   getdownloadpath(): string;
   setdownloadpath(new_path: string): void;
@@ -191,11 +205,23 @@ export interface System extends MakiObject {
   getstring(table: string, id: number): string;
   getlanguageid(): string;
   selectfile(extlist: string, id: string, prev_filename: string): string;
-  selectfolder(wnd_title: string, wnd_info: string, default_path: string): string;
+  selectfolder(
+    wnd_title: string,
+    wnd_info: string,
+    default_path: string
+  ): string;
   systemmenu(): void;
   windowmenu(): void;
-  triggeraction(context: GuiObject, actionname: string, actionparam: string): void;
-  showwindow(guidorgroupid: string, preferedcontainer: string, transient: boolean): GuiObject;
+  triggeraction(
+    context: GuiObject,
+    actionname: string,
+    actionparam: string
+  ): void;
+  showwindow(
+    guidorgroupid: string,
+    preferedcontainer: string,
+    transient: boolean
+  ): GuiObject;
   hidewindow(hw: GuiObject): void;
   hidenamedwindow(guidorgroup: string): void;
   isnamedwindowvisible(guidorgroup: string): boolean;
@@ -254,7 +280,12 @@ export interface Container extends MakiObject {
 export interface Wac extends MakiObject {
   getguid(): string;
   getname(): string;
-  sendcommand(cmd: string, param1: number, param2: number, param3: string): number;
+  sendcommand(
+    cmd: string,
+    param1: number,
+    param2: number,
+    param3: string
+  ): number;
   show(): void;
   hide(): void;
   isvisible(): boolean;
@@ -294,7 +325,12 @@ export interface MakiMap extends MakiObject {
 
 export interface PopupMenu extends MakiObject {
   addsubmenu(submenu: PopupMenu, submenutext: string): void;
-  addcommand(cmdtxt: string, cmd_id: number, checked: boolean, disabled: boolean): void;
+  addcommand(
+    cmdtxt: string,
+    cmd_id: number,
+    checked: boolean,
+    disabled: boolean
+  ): void;
   addseparator(): void;
   popatxy(x: number, y: number): number;
   popatmouse(): number;
@@ -419,8 +455,23 @@ export interface GuiObject extends MakiObject {
   onkeyup(vk_code: number): void;
   ongetfocus(): void;
   onkillfocus(): void;
-  sendaction(action: string, param: string, x: number, y: number, p1: number, p2: number): number;
-  onaction(action: string, param: string, x: number, y: number, p1: number, p2: number, source: GuiObject): number;
+  sendaction(
+    action: string,
+    param: string,
+    x: number,
+    y: number,
+    p1: number,
+    p2: number
+  ): number;
+  onaction(
+    action: string,
+    param: string,
+    x: number,
+    y: number,
+    p1: number,
+    p2: number,
+    source: GuiObject
+  ): number;
 }
 
 export interface Group extends GuiObject {
@@ -462,7 +513,11 @@ export interface Layout extends Group {
 }
 
 export interface WindowHolder extends GuiObject {
-  setregionfrommap(regionmap: MakiMap, threshold: number, reverse: boolean): void;
+  setregionfrommap(
+    regionmap: MakiMap,
+    threshold: number,
+    reverse: boolean
+  ): void;
   setregion(reg: Region): void;
   getcontent(): GuiObject;
   getguid(): string;
@@ -524,7 +579,11 @@ export interface Browser extends GuiObject {
   refresh(): void;
   home(): void;
   settargetname(targetname: string): void;
-  onbeforenavigate(url: string, flags: number, targetframename: string): boolean;
+  onbeforenavigate(
+    url: string,
+    flags: number,
+    targetframename: string
+  ): boolean;
   ondocumentcomplete(url: string): void;
   ondocumentready(url: string): void;
   getdocumenttitle(): string;
@@ -534,13 +593,9 @@ export interface Browser extends GuiObject {
   onmedialink(url: string): string;
 }
 
-export interface EqVis extends GuiObject {
+export interface EqVis extends GuiObject {}
 
-}
-
-export interface Status extends GuiObject {
-
-}
+export interface Status extends GuiObject {}
 
 export interface Text extends GuiObject {
   settext(txt: string): void;
@@ -550,9 +605,7 @@ export interface Text extends GuiObject {
   ontextchanged(newtxt: string): void;
 }
 
-export interface Title extends GuiObject {
-
-}
+export interface Title extends GuiObject {}
 
 export interface Layer extends GuiObject {
   onbeginresize(x: number, y: number, w: number, h: number): void;
@@ -564,7 +617,11 @@ export interface Layer extends GuiObject {
   fx_ongetpixelx(r: number, d: number, x: number, y: number): number;
   fx_ongetpixely(r: number, d: number, x: number, y: number): number;
   fx_ongetpixela(r: number, d: number, x: number, y: number): number;
-  setregionfrommap(regionmap: MakiMap, threshold: number, reverse: boolean): void;
+  setregionfrommap(
+    regionmap: MakiMap,
+    threshold: number,
+    reverse: boolean
+  ): void;
   setregion(reg: Region): void;
   fx_setenabled(onoff: boolean): void;
   fx_getenabled(): boolean;
@@ -668,7 +725,11 @@ export interface QueryList extends GuiObject {
 export interface MouseRedir extends GuiObject {
   setredirection(o: GuiObject): void;
   getredirection(): GuiObject;
-  setregionfrommap(regionmap: MakiMap, threshold: number, reverse: boolean): void;
+  setregionfrommap(
+    regionmap: MakiMap,
+    threshold: number,
+    reverse: boolean
+  ): void;
   setregion(reg: Region): void;
 }
 
@@ -809,7 +870,12 @@ export interface GuiTree extends GuiObject {
   ensureitemvisible(item: TreeItem): void;
   getcontentswidth(): number;
   getcontentsheight(): number;
-  addtreeitem(item: TreeItem, par: TreeItem, sorted: number, haschildtab: number): TreeItem;
+  addtreeitem(
+    item: TreeItem,
+    par: TreeItem,
+    sorted: number,
+    haschildtab: number
+  ): TreeItem;
   removetreeitem(item: TreeItem): number;
   movetreeitem(item: TreeItem, newparent: TreeItem): void;
   deleteallitems(): void;
