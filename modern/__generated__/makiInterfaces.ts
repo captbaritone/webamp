@@ -258,7 +258,7 @@ export interface Wac extends MakiObject {
   show(): void;
   hide(): void;
   isvisible(): boolean;
-  onnotify(notifstr: string, a: number, b: number): void;
+  onnotify(command: string, param: string, a: number, b: number): number;
   onshow(): void;
   onhide(): void;
   setstatusbar(onoff: boolean): void;
@@ -731,7 +731,7 @@ export interface GuiList extends GuiObject {
   setminimumsize(size: number): void;
   getwantautodeselect(): number;
   setwantautodeselect(want: number): void;
-  onsetvisible(show: number): void;
+  onsetvisible(show: boolean): void;
   setautosort(dosort: number): void;
   setfontsize(size: number): number;
   getfontsize(): number;
@@ -798,7 +798,7 @@ export interface GuiTree extends GuiObject {
   onmousewheelup(clicked: number, lines: number): number;
   onmousewheeldown(clicked: number, lines: number): number;
   oncontextmenu(x: number, y: number): number;
-  onchar(c: number): number;
+  onchar(c: string): number;
   onitemrecvdrop(item: TreeItem): void;
   onlabelchange(item: TreeItem): void;
   onitemselected(item: TreeItem): void;
