@@ -1,116 +1,102 @@
 export interface MakiObject {
-  getClassName(): string;
-  getId(): string;
-  onNotify(command: string, param: string, a: number, b: number): number;
+  getclassname(): string;
+  getid(): string;
+  onnotify(command: string, param: string, a: number, b: number): number;
 }
 
 export interface System extends MakiObject {
-  onScriptLoaded(): void;
-  onScriptUnloading(): void;
-  onQuit(): void;
-  onSetXuiParam(param: string, value: string): void;
-  onKeyDown(key: string): void;
-  onAccelerator(action: string, section: string, key: string): void;
-  onCreateLayout(_layout: Layout): void;
-  onShowLayout(_layout: Layout): void;
-  onHideLayout(_layout: Layout): void;
-  onViewPortChanged(width: number, height: number): void;
-  onStop(): void;
-  onPlay(): void;
-  onPause(): void;
-  onResume(): void;
-  onTitleChange(newtitle: string): void;
-  onTitle2Change(newtitle2: string): void;
-  onUrlChange(url: string): void;
-  onInfoChange(info: string): void;
-  onStatusMsg(msg: string): void;
-  onEqBandChanged(band: number, newvalue: number): void;
-  onEqPreampChanged(newvalue: number): void;
-  onEqChanged(newstatus: number): void;
-  onEqFreqChanged(isiso: number): void;
-  onVolumeChanged(newvol: number): void;
-  onSeek(newpos: number): void;
-  getContainer(container_id: string): Container;
-  newDynamicContainer(container_id: string): Container;
-  newGroup(group_id: string): Group;
-  newGroupAsLayout(group_id: string): Layout;
-  getNumContainers(): number;
-  enumContainer(num: number): Container;
-  enumEmbedGUID(num: number): string;
-  getWac(wac_guid: string): Wac;
-  messageBox(
-    message: string,
-    msgtitle: string,
-    flag: number,
-    notanymore_id: string
-  ): number;
-  getPlayItemString(): string;
-  getPlayItemLength(): number;
-  getPlayItemMetaDataString(metadataname: string): string;
-  getMetaDataString(filename: string, metadataname: string): string;
-  getPlayItemDisplayTitle(): string;
-  getCurrentTrackRating(): number;
-  onCurrentTrackRated(rating: number): void;
-  setCurrentTrackRating(rating: number): void;
-  getExtFamily(ext: string): string;
-  getDecoderName(playitem: string): string;
-  playFile(playitem: string): void;
-  getAlbumArt(playitem: string): number;
-  downloadMedia(
-    url: string,
-    destinationPath: string,
-    wantAddToML: boolean,
-    notifyDownloadsList: boolean
-  ): void;
-  downloadURL(
-    url: string,
-    destination_filename: string,
-    progress_dialog_title: string
-  ): void;
-  onDownloadFinished(url: string, success: boolean, filename: string): void;
-  getDownloadPath(): string;
-  setDownloadPath(new_path: string): void;
-  enqueueFile(playitem: string): void;
-  getLeftVuMeter(): number;
-  getRightVuMeter(): number;
-  getVolume(): number;
-  setVolume(vol: number): void;
+  onscriptloaded(): void;
+  onscriptunloading(): void;
+  onquit(): void;
+  onsetxuiparam(param: string, value: string): void;
+  onkeydown(key: string): void;
+  onaccelerator(action: string, section: string, key: string): void;
+  oncreatelayout(_layout: Layout): void;
+  onshowlayout(_layout: Layout): void;
+  onhidelayout(_layout: Layout): void;
+  onviewportchanged(width: number, height: number): void;
+  onstop(): void;
+  onplay(): void;
+  onpause(): void;
+  onresume(): void;
+  ontitlechange(newtitle: string): void;
+  ontitle2change(newtitle2: string): void;
+  onurlchange(url: string): void;
+  oninfochange(info: string): void;
+  onstatusmsg(msg: string): void;
+  oneqbandchanged(band: number, newvalue: number): void;
+  oneqpreampchanged(newvalue: number): void;
+  oneqchanged(newstatus: number): void;
+  oneqfreqchanged(isiso: number): void;
+  onvolumechanged(newvol: number): void;
+  onseek(newpos: number): void;
+  getcontainer(container_id: string): Container;
+  newdynamiccontainer(container_id: string): Container;
+  newgroup(group_id: string): Group;
+  newgroupaslayout(group_id: string): Layout;
+  getnumcontainers(): number;
+  enumcontainer(num: number): Container;
+  enumembedguid(num: number): string;
+  getwac(wac_guid: string): Wac;
+  messagebox(message: string, msgtitle: string, flag: number, notanymore_id: string): number;
+  getplayitemstring(): string;
+  getplayitemlength(): number;
+  getplayitemmetadatastring(metadataname: string): string;
+  getmetadatastring(filename: string, metadataname: string): string;
+  getplayitemdisplaytitle(): string;
+  getcurrenttrackrating(): number;
+  oncurrenttrackrated(rating: number): void;
+  setcurrenttrackrating(rating: number): void;
+  getextfamily(ext: string): string;
+  getdecodername(playitem: string): string;
+  playfile(playitem: string): void;
+  getalbumart(playitem: string): number;
+  downloadmedia(url: string, destinationPath: string, wantAddToML: boolean, notifyDownloadsList: boolean): void;
+  downloadurl(url: string, destination_filename: string, progress_dialog_title: string): void;
+  ondownloadfinished(url: string, success: boolean, filename: string): void;
+  getdownloadpath(): string;
+  setdownloadpath(new_path: string): void;
+  enqueuefile(playitem: string): void;
+  getleftvumeter(): number;
+  getrightvumeter(): number;
+  getvolume(): number;
+  setvolume(vol: number): void;
   play(): void;
   stop(): void;
   pause(): void;
   next(): void;
   previous(): void;
   eject(): void;
-  seekTo(pos: number): void;
-  getPosition(): number;
-  setEqBand(band: number, value: number): void;
-  setEqPreamp(value: number): void;
-  setEq(onoff: number): void;
-  getEqBand(band: number): number;
-  getEqPreamp(): number;
-  getEq(): number;
-  getMousePosX(): number;
-  getMousePosY(): number;
-  integerToString(value: number): string;
-  StringToInteger(str: string): number;
-  floatToString(value: number, ndigits: number): string;
-  stringToFloat(str: string): number;
-  integerToLongTime(value: number): string;
-  integerToTime(value: number): string;
-  dateToTime(datetime: number): string;
-  dateToLongTime(datetime: number): string;
-  formatDate(datetime: number): string;
-  formatLongDate(datetime: number): string;
-  getDateYear(datetime: number): number;
-  getDateMonth(datetime: number): number;
-  getDateDay(datetime: number): number;
-  getDateDow(datetime: number): number;
-  getDateDoy(datetime: number): number;
-  getDateHour(datetime: number): number;
-  getDateMin(datetime: number): number;
-  getDateSec(datetime: number): number;
-  getDateDst(datetime: number): number;
-  getDate(): number;
+  seekto(pos: number): void;
+  getposition(): number;
+  seteqband(band: number, value: number): void;
+  seteqpreamp(value: number): void;
+  seteq(onoff: number): void;
+  geteqband(band: number): number;
+  geteqpreamp(): number;
+  geteq(): number;
+  getmouseposx(): number;
+  getmouseposy(): number;
+  integertostring(value: number): string;
+  stringtointeger(str: string): number;
+  floattostring(value: number, ndigits: number): string;
+  stringtofloat(str: string): number;
+  integertolongtime(value: number): string;
+  integertotime(value: number): string;
+  datetotime(datetime: number): string;
+  datetolongtime(datetime: number): string;
+  formatdate(datetime: number): string;
+  formatlongdate(datetime: number): string;
+  getdateyear(datetime: number): number;
+  getdatemonth(datetime: number): number;
+  getdateday(datetime: number): number;
+  getdatedow(datetime: number): number;
+  getdatedoy(datetime: number): number;
+  getdatehour(datetime: number): number;
+  getdatemin(datetime: number): number;
+  getdatesec(datetime: number): number;
+  getdatedst(datetime: number): number;
+  getdate(): number;
   strmid(str: string, start: number, len: number): string;
   strleft(str: string, nchars: number): string;
   strright(str: string, nchars: number): string;
@@ -118,13 +104,13 @@ export interface System extends MakiObject {
   strlen(str: string): number;
   strupper(str: string): string;
   strlower(str: string): string;
-  urlEncode(url: string): string;
-  urlDecode(url: string): string;
-  parseATF(topass: string): string;
-  removePath(str: string): string;
-  getPath(str: string): string;
-  getExtension(str: string): string;
-  getToken(str: string, separator: string, tokennum: number): string;
+  urlencode(url: string): string;
+  urldecode(url: string): string;
+  parseatf(topass: string): string;
+  removepath(str: string): string;
+  getpath(str: string): string;
+  getextension(str: string): string;
+  gettoken(str: string, separator: string, tokennum: number): string;
   sin(value: number): number;
   cos(value: number): number;
   tan(value: number): number;
@@ -138,205 +124,183 @@ export interface System extends MakiObject {
   ln(value: number): number;
   sqrt(value: number): number;
   random(max: number): number;
-  setPrivateString(section: string, item: string, value: string): void;
-  setPrivateInt(section: string, item: string, value: number): void;
-  getPrivateString(section: string, item: string, defvalue: string): string;
-  getPrivateInt(section: string, item: string, defvalue: number): number;
-  setPublicString(item: string, value: string): void;
-  setPublicInt(item: string, value: number): void;
-  getPublicString(item: string, defvalue: string): string;
-  getPublicInt(item: string, defvalue: number): number;
-  getParam(): string;
-  getScriptGroup(): Group;
-  getViewportWidth(): number;
-  getViewportWidthFromGuiObject(g: GuiObject): number;
-  getViewportWidthFromPoint(x: number, y: number): number;
-  getMonitorWidth(): number;
-  getMonitorWidthFromPoint(x: number, y: number): number;
-  getMonitorWidthFromGuiObject(g: GuiObject): number;
-  onMouseMove(x: number, y: number): void;
-  getViewportHeight(): number;
-  getViewportHeightFromGuiObject(g: GuiObject): number;
-  getViewportHeightFromPoint(x: number, y: number): number;
-  getMonitorHeight(): number;
-  getMonitorHeightFromPoint(x: number, y: number): number;
-  getMonitorHeightFromGuiObject(g: GuiObject): number;
-  getMonitorLeft(): number;
-  getMonitorLeftFromGuiObject(g: GuiObject): number;
-  getMonitorLeftFromPoint(x: number, y: number): number;
-  getMonitorTop(): number;
-  getMonitorTopFromGuiObject(g: GuiObject): number;
-  getMonitorTopFromPoint(x: number, y: number): number;
-  getViewportLeft(): number;
-  getViewportLeftFromGuiObject(g: GuiObject): number;
-  getViewportLeftFromPoint(x: number, y: number): number;
-  getViewportTop(): number;
-  getViewportTopFromGuiObject(g: GuiObject): number;
-  getViewportTopFromPoint(x: number, y: number): number;
-  debugString(str: string, severity: number): void;
-  ddeSend(application: string, command: string, mininterval: number): void;
-  onLookForComponent(guid: string): WindowHolder;
-  getCurAppLeft(): number;
-  getCurAppTop(): number;
-  getCurAppWidth(): number;
-  getCurAppHeight(): number;
-  isAppActive(): boolean;
-  getSkinName(): string;
-  switchSkin(skinname: string): void;
-  isLoadingSkin(): number;
-  lockUI(): void;
-  unlockUI(): void;
-  getMainBrowser(): Browser;
-  popMainBrowser(): void;
-  navigateUrl(url: string): void;
-  navigateUrlBrowser(url: string): void;
-  onOpenURL(url: string): boolean;
-  isObjectValid(o: MakiObject): boolean;
+  setprivatestring(section: string, item: string, value: string): void;
+  setprivateint(section: string, item: string, value: number): void;
+  getprivatestring(section: string, item: string, defvalue: string): string;
+  getprivateint(section: string, item: string, defvalue: number): number;
+  setpublicstring(item: string, value: string): void;
+  setpublicint(item: string, value: number): void;
+  getpublicstring(item: string, defvalue: string): string;
+  getpublicint(item: string, defvalue: number): number;
+  getparam(): string;
+  getscriptgroup(): Group;
+  getviewportwidth(): number;
+  getviewportwidthfromguiobject(g: GuiObject): number;
+  getviewportwidthfrompoint(x: number, y: number): number;
+  getmonitorwidth(): number;
+  getmonitorwidthfrompoint(x: number, y: number): number;
+  getmonitorwidthfromguiobject(g: GuiObject): number;
+  onmousemove(x: number, y: number): void;
+  getviewportheight(): number;
+  getviewportheightfromguiobject(g: GuiObject): number;
+  getviewportheightfrompoint(x: number, y: number): number;
+  getmonitorheight(): number;
+  getmonitorheightfrompoint(x: number, y: number): number;
+  getmonitorheightfromguiobject(g: GuiObject): number;
+  getmonitorleft(): number;
+  getmonitorleftfromguiobject(g: GuiObject): number;
+  getmonitorleftfrompoint(x: number, y: number): number;
+  getmonitortop(): number;
+  getmonitortopfromguiobject(g: GuiObject): number;
+  getmonitortopfrompoint(x: number, y: number): number;
+  getviewportleft(): number;
+  getviewportleftfromguiobject(g: GuiObject): number;
+  getviewportleftfrompoint(x: number, y: number): number;
+  getviewporttop(): number;
+  getviewporttopfromguiobject(g: GuiObject): number;
+  getviewporttopfrompoint(x: number, y: number): number;
+  debugstring(str: string, severity: number): void;
+  ddesend(application: string, command: string, mininterval: number): void;
+  onlookforcomponent(guid: string): WindowHolder;
+  getcurappleft(): number;
+  getcurapptop(): number;
+  getcurappwidth(): number;
+  getcurappheight(): number;
+  isappactive(): boolean;
+  getskinname(): string;
+  switchskin(skinname: string): void;
+  isloadingskin(): number;
+  lockui(): void;
+  unlockui(): void;
+  getmainbrowser(): Browser;
+  popmainbrowser(): void;
+  navigateurl(url: string): void;
+  navigateurlbrowser(url: string): void;
+  onopenurl(url: string): boolean;
+  isobjectvalid(o: MakiObject): boolean;
   integer(d: number): number;
   frac(d: number): number;
-  getTimeOfDay(): number;
-  setMenuTransparency(alphavalue: number): void;
-  onGetCancelComponent(guid: string, goingvisible: boolean): boolean;
-  getStatus(): number;
-  isKeyDown(vk_code: number): number;
-  setClipboardText(_text: string): void;
-  Chr(charnum: number): string;
+  gettimeofday(): number;
+  setmenutransparency(alphavalue: number): void;
+  ongetcancelcomponent(guid: string, goingvisible: boolean): boolean;
+  getstatus(): number;
+  iskeydown(vk_code: number): number;
+  setclipboardtext(_text: string): void;
+  chr(charnum: number): string;
   translate(str: string): string;
-  getString(table: string, id: number): string;
-  getLanguageId(): string;
-  selectFile(extlist: string, id: string, prev_filename: string): string;
-  selectFolder(
-    wnd_title: string,
-    wnd_info: string,
-    default_path: string
-  ): string;
-  systemMenu(): void;
-  windowMenu(): void;
-  triggerAction(
-    context: GuiObject,
-    actionname: string,
-    actionparam: string
-  ): void;
-  showWindow(
-    guidorgroupid: string,
-    preferedcontainer: string,
-    transient: boolean
-  ): GuiObject;
-  hideWindow(hw: GuiObject): void;
-  hideNamedWindow(guidorgroup: string): void;
-  isNamedWindowVisible(guidorgroup: string): boolean;
-  setAtom(atomname: string, object: MakiObject): void;
-  getAtom(atomname: string): MakiObject;
-  invokeDebugger(): void;
-  hasVideoSupport(): number;
-  isVideo(): number;
-  isVideoFullscreen(): number;
-  getIdealVideoWidth(): number;
-  getIdealVideoHeight(): number;
-  isMinimized(): number;
-  minimizeApplication(): void;
-  restoreApplication(): void;
-  activateApplication(): void;
-  getPlaylistLength(): number;
-  getPlaylistIndex(): number;
-  clearPlaylist(): void;
-  isDesktopAlphaAvailable(): boolean;
-  isTransparencyAvailable(): boolean;
-  onShowNotification(): number;
-  getSongInfoText(): string;
-  getSongInfoTextTranslated(): string;
-  getVisBand(channel: number, band: number): number;
-  getRuntimeVersion(): number;
-  isWa2ComponentVisible(guid: string): number;
-  hideWa2Component(guid: string): void;
-  isProVersion(): boolean;
-  getWinampVersion(): string;
-  getBuildNumber(): number;
-  getFileSize(fullfilename: string): number;
+  getstring(table: string, id: number): string;
+  getlanguageid(): string;
+  selectfile(extlist: string, id: string, prev_filename: string): string;
+  selectfolder(wnd_title: string, wnd_info: string, default_path: string): string;
+  systemmenu(): void;
+  windowmenu(): void;
+  triggeraction(context: GuiObject, actionname: string, actionparam: string): void;
+  showwindow(guidorgroupid: string, preferedcontainer: string, transient: boolean): GuiObject;
+  hidewindow(hw: GuiObject): void;
+  hidenamedwindow(guidorgroup: string): void;
+  isnamedwindowvisible(guidorgroup: string): boolean;
+  setatom(atomname: string, object: MakiObject): void;
+  getatom(atomname: string): MakiObject;
+  invokedebugger(): void;
+  hasvideosupport(): number;
+  isvideo(): number;
+  isvideofullscreen(): number;
+  getidealvideowidth(): number;
+  getidealvideoheight(): number;
+  isminimized(): number;
+  minimizeapplication(): void;
+  restoreapplication(): void;
+  activateapplication(): void;
+  getplaylistlength(): number;
+  getplaylistindex(): number;
+  clearplaylist(): void;
+  isdesktopalphaavailable(): boolean;
+  istransparencyavailable(): boolean;
+  onshownotification(): number;
+  getsonginfotext(): string;
+  getsonginfotexttranslated(): string;
+  getvisband(channel: number, band: number): number;
+  getruntimeversion(): number;
+  iswa2componentvisible(guid: string): number;
+  hidewa2component(guid: string): void;
+  isproversion(): boolean;
+  getwinampversion(): string;
+  getbuildnumber(): number;
+  getfilesize(fullfilename: string): number;
 }
 
 export interface Container extends MakiObject {
-  onSwitchToLayout(newlayout: Layout): void;
-  onBeforeSwitchToLayout(oldlayout: Layout, newlayout: Layout): void;
-  setXmlParam(param: string, value: string): void;
-  onHideLayout(_layout: Layout): void;
-  onShowLayout(_layout: Layout): void;
-  getLayout(layout_id: string): Layout;
-  getNumLayouts(): number;
-  enumLayout(num: number): Layout;
-  switchToLayout(layout_id: string): void;
+  onswitchtolayout(newlayout: Layout): void;
+  onbeforeswitchtolayout(oldlayout: Layout, newlayout: Layout): void;
+  setxmlparam(param: string, value: string): void;
+  onhidelayout(_layout: Layout): void;
+  onshowlayout(_layout: Layout): void;
+  getlayout(layout_id: string): Layout;
+  getnumlayouts(): number;
+  enumlayout(num: number): Layout;
+  switchtolayout(layout_id: string): void;
   show(): void;
   hide(): void;
   close(): void;
   toggle(): void;
-  isDynamic(): number;
-  setName(name: string): void;
-  getName(): string;
-  getGuid(): string;
-  getCurLayout(): Layout;
-  onAddContent(wnd: GuiObject, id: string, guid: string): void;
+  isdynamic(): number;
+  setname(name: string): void;
+  getname(): string;
+  getguid(): string;
+  getcurlayout(): Layout;
+  onaddcontent(wnd: GuiObject, id: string, guid: string): void;
 }
 
 export interface Wac extends MakiObject {
-  getGuid(): string;
-  getName(): string;
-  sendCommand(
-    cmd: string,
-    param1: number,
-    param2: number,
-    param3: string
-  ): number;
+  getguid(): string;
+  getname(): string;
+  sendcommand(cmd: string, param1: number, param2: number, param3: string): number;
   show(): void;
   hide(): void;
-  isVisible(): boolean;
-  onNotify(notifstr: string, a: number, b: number): void;
-  onShow(): void;
-  onHide(): void;
-  setStatusBar(onoff: boolean): void;
-  getStatusBar(): boolean;
+  isvisible(): boolean;
+  onnotify(notifstr: string, a: number, b: number): void;
+  onshow(): void;
+  onhide(): void;
+  setstatusbar(onoff: boolean): void;
+  getstatusbar(): boolean;
 }
 
 export interface List extends MakiObject {
-  addItem(_object: any): void;
-  removeItem(pos: number): void;
-  enumItem(pos: number): any;
-  findItem(_object: any): number;
-  findItem2(_object: any, startItem: number): number;
-  getNumItems(): number;
-  removeAll(): void;
+  additem(_object: any): void;
+  removeitem(pos: number): void;
+  enumitem(pos: number): any;
+  finditem(_object: any): number;
+  finditem2(_object: any, startItem: number): number;
+  getnumitems(): number;
+  removeall(): void;
 }
 
 export interface BitList extends MakiObject {
-  getItem(n: number): boolean;
-  setItem(n: number, val: boolean): void;
-  setSize(s: number): void;
-  getSize(): number;
+  getitem(n: number): boolean;
+  setitem(n: number, val: boolean): void;
+  setsize(s: number): void;
+  getsize(): number;
 }
 
 export interface MakiMap extends MakiObject {
-  getValue(x: number, y: number): number;
-  getARGBValue(x: number, y: number, channel: number): number;
-  inRegion(x: number, y: number): boolean;
-  loadMap(bitmapid: string): void;
-  getWidth(): number;
-  getHeight(): number;
-  getRegion(): Region;
+  getvalue(x: number, y: number): number;
+  getargbvalue(x: number, y: number, channel: number): number;
+  inregion(x: number, y: number): boolean;
+  loadmap(bitmapid: string): void;
+  getwidth(): number;
+  getheight(): number;
+  getregion(): Region;
 }
 
 export interface PopupMenu extends MakiObject {
-  addSubMenu(submenu: PopupMenu, submenutext: string): void;
-  addCommand(
-    cmdtxt: string,
-    cmd_id: number,
-    checked: boolean,
-    disabled: boolean
-  ): void;
-  addSeparator(): void;
-  popAtXY(x: number, y: number): number;
-  popAtMouse(): number;
-  getNumCommands(): number;
-  checkCommand(cmd_id: number, check: boolean): void;
-  disableCommand(cmd_id: number, disable: boolean): void;
+  addsubmenu(submenu: PopupMenu, submenutext: string): void;
+  addcommand(cmdtxt: string, cmd_id: number, checked: boolean, disabled: boolean): void;
+  addseparator(): void;
+  popatxy(x: number, y: number): number;
+  popatmouse(): number;
+  getnumcommands(): number;
+  checkcommand(cmd_id: number, check: boolean): void;
+  disablecommand(cmd_id: number, disable: boolean): void;
 }
 
 export interface Region extends MakiObject {
@@ -345,412 +309,387 @@ export interface Region extends MakiObject {
   offset(x: number, y: number): void;
   stretch(r: number): void;
   copy(reg: Region): void;
-  loadFromMap(regionmap: MakiMap, threshold: number, reversed: boolean): void;
-  loadFromBitmap(bitmapid: string): void;
-  getBoundingBoxX(): number;
-  getBoundingBoxY(): number;
-  getBoundingBoxW(): number;
-  getBoundingBoxH(): number;
+  loadfrommap(regionmap: MakiMap, threshold: number, reversed: boolean): void;
+  loadfrombitmap(bitmapid: string): void;
+  getboundingboxx(): number;
+  getboundingboxy(): number;
+  getboundingboxw(): number;
+  getboundingboxh(): number;
 }
 
 export interface Timer extends MakiObject {
-  onTimer(): void;
-  setDelay(millisec: number): void;
-  getDelay(): number;
+  ontimer(): void;
+  setdelay(millisec: number): void;
+  getdelay(): number;
   start(): void;
   stop(): void;
-  isRunning(): boolean;
-  getSkipped(): number;
+  isrunning(): boolean;
+  getskipped(): number;
 }
 
 export interface FeedWatcher extends MakiObject {
-  setFeed(feed_id: string): number;
-  releaseFeed(): void;
-  onFeedChange(new_feeddata: string): void;
+  setfeed(feed_id: string): number;
+  releasefeed(): void;
+  onfeedchange(new_feeddata: string): void;
 }
 
 export interface GuiObject extends MakiObject {
   show(): void;
   hide(): void;
-  isVisible(): number;
-  onSetVisible(onoff: boolean): void;
-  setAlpha(alpha: number): void;
-  getAlpha(): number;
-  onLeftButtonUp(x: number, y: number): void;
-  onLeftButtonDown(x: number, y: number): void;
-  onRightButtonUp(x: number, y: number): void;
-  onRightButtonDown(x: number, y: number): void;
-  onRightButtonDblClk(x: number, y: number): void;
-  onLeftButtonDblClk(x: number, y: number): void;
-  onMouseWheelUp(clicked: number, lines: number): number;
-  onMouseWheelDown(clicked: number, lines: number): number;
-  onMouseMove(x: number, y: number): void;
-  onEnterArea(): void;
-  onLeaveArea(): void;
-  setEnabled(onoff: boolean): void;
-  getEnabled(): boolean;
-  onEnable(onoff: boolean): void;
+  isvisible(): number;
+  onsetvisible(onoff: boolean): void;
+  setalpha(alpha: number): void;
+  getalpha(): number;
+  onleftbuttonup(x: number, y: number): void;
+  onleftbuttondown(x: number, y: number): void;
+  onrightbuttonup(x: number, y: number): void;
+  onrightbuttondown(x: number, y: number): void;
+  onrightbuttondblclk(x: number, y: number): void;
+  onleftbuttondblclk(x: number, y: number): void;
+  onmousewheelup(clicked: number, lines: number): number;
+  onmousewheeldown(clicked: number, lines: number): number;
+  onmousemove(x: number, y: number): void;
+  onenterarea(): void;
+  onleavearea(): void;
+  setenabled(onoff: boolean): void;
+  getenabled(): boolean;
+  onenable(onoff: boolean): void;
   resize(x: number, y: number, w: number, h: number): void;
-  onResize(x: number, y: number, w: number, h: number): void;
-  isMouseOver(x: number, y: number): boolean;
-  getLeft(): number;
-  getTop(): number;
-  getWidth(): number;
-  getHeight(): number;
-  setTargetX(x: number): void;
-  setTargetY(y: number): void;
-  setTargetW(w: number): void;
-  setTargetH(r: number): void;
-  setTargetA(alpha: number): void;
-  setTargetSpeed(insecond: number): void;
-  gotoTarget(): void;
-  onTargetReached(): void;
-  cancelTarget(): void;
-  reverseTarget(reverse: number): void;
-  onStartup(): void;
-  isGoingToTarget(): boolean;
-  setXmlParam(param: string, value: string): void;
-  getXmlParam(param: string): string;
+  onresize(x: number, y: number, w: number, h: number): void;
+  ismouseover(x: number, y: number): boolean;
+  getleft(): number;
+  gettop(): number;
+  getwidth(): number;
+  getheight(): number;
+  settargetx(x: number): void;
+  settargety(y: number): void;
+  settargetw(w: number): void;
+  settargeth(r: number): void;
+  settargeta(alpha: number): void;
+  settargetspeed(insecond: number): void;
+  gototarget(): void;
+  ontargetreached(): void;
+  canceltarget(): void;
+  reversetarget(reverse: number): void;
+  onstartup(): void;
+  isgoingtotarget(): boolean;
+  setxmlparam(param: string, value: string): void;
+  getxmlparam(param: string): string;
   init(parent: Group): void;
-  bringToFront(): void;
-  bringToBack(): void;
-  bringAbove(guiobj: GuiObject): void;
-  bringBelow(guiobj: GuiObject): void;
-  getGuiX(): number;
-  getGuiY(): number;
-  getGuiW(): number;
-  getGuiH(): number;
-  getGuiRelatX(): number;
-  getGuiRelatY(): number;
-  getGuiRelatW(): number;
-  getGuiRelatH(): number;
-  isActive(): boolean;
-  getParent(): GuiObject;
-  getParentLayout(): Layout;
-  getTopParent(): GuiObject;
-  runModal(): number;
-  endModal(retcode: number): void;
-  findObject(id: string): GuiObject;
-  findObjectXY(x: number, y: number): GuiObject;
-  getName(): string;
-  clientToScreenX(x: number): number;
-  clientToScreenY(y: number): number;
-  clientToScreenW(w: number): number;
-  clientToScreenH(h: number): number;
-  screenToClientX(x: number): number;
-  screenToClientY(y: number): number;
-  screenToClientW(w: number): number;
-  screenToClientH(h: number): number;
-  getAutoWidth(): number;
-  getAutoHeight(): number;
-  setFocus(): void;
-  onChar(c: string): void;
-  onAccelerator(accel: string): void;
-  isMouseOverRect(): boolean;
-  getInterface(interface_guid: string): MakiObject;
-  onDragEnter(): void;
-  onDragOver(x: number, y: number): void;
-  onDragLeave(): void;
-  onKeyDown(vk_code: number): void;
-  onKeyUp(vk_code: number): void;
-  onGetFocus(): void;
-  onKillFocus(): void;
-  sendAction(
-    action: string,
-    param: string,
-    x: number,
-    y: number,
-    p1: number,
-    p2: number
-  ): number;
-  onAction(
-    action: string,
-    param: string,
-    x: number,
-    y: number,
-    p1: number,
-    p2: number,
-    source: GuiObject
-  ): number;
+  bringtofront(): void;
+  bringtoback(): void;
+  bringabove(guiobj: GuiObject): void;
+  bringbelow(guiobj: GuiObject): void;
+  getguix(): number;
+  getguiy(): number;
+  getguiw(): number;
+  getguih(): number;
+  getguirelatx(): number;
+  getguirelaty(): number;
+  getguirelatw(): number;
+  getguirelath(): number;
+  isactive(): boolean;
+  getparent(): GuiObject;
+  getparentlayout(): Layout;
+  gettopparent(): GuiObject;
+  runmodal(): number;
+  endmodal(retcode: number): void;
+  findobject(id: string): GuiObject;
+  findobjectxy(x: number, y: number): GuiObject;
+  getname(): string;
+  clienttoscreenx(x: number): number;
+  clienttoscreeny(y: number): number;
+  clienttoscreenw(w: number): number;
+  clienttoscreenh(h: number): number;
+  screentoclientx(x: number): number;
+  screentoclienty(y: number): number;
+  screentoclientw(w: number): number;
+  screentoclienth(h: number): number;
+  getautowidth(): number;
+  getautoheight(): number;
+  setfocus(): void;
+  onchar(c: string): void;
+  onaccelerator(accel: string): void;
+  ismouseoverrect(): boolean;
+  getinterface(interface_guid: string): MakiObject;
+  ondragenter(): void;
+  ondragover(x: number, y: number): void;
+  ondragleave(): void;
+  onkeydown(vk_code: number): void;
+  onkeyup(vk_code: number): void;
+  ongetfocus(): void;
+  onkillfocus(): void;
+  sendaction(action: string, param: string, x: number, y: number, p1: number, p2: number): number;
+  onaction(action: string, param: string, x: number, y: number, p1: number, p2: number, source: GuiObject): number;
 }
 
 export interface Group extends GuiObject {
-  getObject(object_id: string): GuiObject;
-  getNumObjects(): number;
-  enumObject(num: number): GuiObject;
-  onCreateObject(newobj: GuiObject): void;
-  getMousePosX(): number;
-  getMousePosY(): number;
-  isLayout(): boolean;
+  getobject(object_id: string): GuiObject;
+  getnumobjects(): number;
+  enumobject(num: number): GuiObject;
+  oncreateobject(newobj: GuiObject): void;
+  getmouseposx(): number;
+  getmouseposy(): number;
+  islayout(): boolean;
 }
 
 export interface Layout extends Group {
-  onDock(side: number): void;
-  onUndock(): void;
-  onScale(newscalevalue: number): void;
-  getScale(): number;
-  setScale(scalevalue: number): void;
-  setDesktopAlpha(onoff: boolean): void;
-  getDesktopAlpha(): boolean;
-  getContainer(): Container;
+  ondock(side: number): void;
+  onundock(): void;
+  onscale(newscalevalue: number): void;
+  getscale(): number;
+  setscale(scalevalue: number): void;
+  setdesktopalpha(onoff: boolean): void;
+  getdesktopalpha(): boolean;
+  getcontainer(): Container;
   center(): void;
-  onMove(): void;
-  onEndMove(): void;
-  onUserResize(x: number, y: number, w: number, h: number): void;
-  snapAdjust(left: number, top: number, right: number, bottom: number): void;
-  getSnapAdjustTop(): number;
-  getSnapAdjustRight(): number;
-  getSnapAdjustLeft(): number;
-  getSnapAdjustBottom(): number;
-  setRedrawOnResize(wantredrawonresize: number): void;
-  beforeRedock(): void;
+  onmove(): void;
+  onendmove(): void;
+  onuserresize(x: number, y: number, w: number, h: number): void;
+  snapadjust(left: number, top: number, right: number, bottom: number): void;
+  getsnapadjusttop(): number;
+  getsnapadjustright(): number;
+  getsnapadjustleft(): number;
+  getsnapadjustbottom(): number;
+  setredrawonresize(wantredrawonresize: number): void;
+  beforeredock(): void;
   redock(): void;
-  isTransparencySafe(): boolean;
-  isLayoutAnimationSafe(): boolean;
-  onMouseEnterLayout(): void;
-  onMouseLeaveLayout(): void;
-  onSnapAdjustChanged(): void;
+  istransparencysafe(): boolean;
+  islayoutanimationsafe(): boolean;
+  onmouseenterlayout(): void;
+  onmouseleavelayout(): void;
+  onsnapadjustchanged(): void;
 }
 
 export interface WindowHolder extends GuiObject {
-  setRegionFromMap(
-    regionmap: MakiMap,
-    threshold: number,
-    reverse: boolean
-  ): void;
-  setRegion(reg: Region): void;
-  getContent(): GuiObject;
-  getGuid(): string;
-  getComponentName(): string;
-  onGetWac(wacobj: Wac): void;
-  onGiveUpWac(wacobj: Wac): void;
-  getWac(): Wac;
-  setAcceptWac(onoff: boolean): void;
+  setregionfrommap(regionmap: MakiMap, threshold: number, reverse: boolean): void;
+  setregion(reg: Region): void;
+  getcontent(): GuiObject;
+  getguid(): string;
+  getcomponentname(): string;
+  ongetwac(wacobj: Wac): void;
+  ongiveupwac(wacobj: Wac): void;
+  getwac(): Wac;
+  setacceptwac(onoff: boolean): void;
 }
 
 export interface ComponentBucket extends GuiObject {
-  getMaxHeight(): number;
-  getMaxWidth(): number;
-  setScroll(x: number): number;
-  getScroll(): number;
-  getNumChildren(): number;
-  enumChildren(n: number): GuiObject;
+  getmaxheight(): number;
+  getmaxwidth(): number;
+  setscroll(x: number): number;
+  getscroll(): number;
+  getnumchildren(): number;
+  enumchildren(n: number): GuiObject;
 }
 
 export interface Edit extends GuiObject {
-  onEnter(): void;
-  onAbort(): void;
-  onIdleEditUpdate(): void;
-  onEditUpdate(): void;
-  setText(txt: string): void;
-  setAutoEnter(onoff: boolean): void;
-  getAutoEnter(): number;
-  getText(): string;
-  selectAll(): void;
+  onenter(): void;
+  onabort(): void;
+  onidleeditupdate(): void;
+  oneditupdate(): void;
+  settext(txt: string): void;
+  setautoenter(onoff: boolean): void;
+  getautoenter(): number;
+  gettext(): string;
+  selectall(): void;
   enter(): void;
-  setIdleEnabled(onoff: boolean): void;
-  getIdleEnabled(): number;
+  setidleenabled(onoff: boolean): void;
+  getidleenabled(): number;
 }
 
 export interface Slider extends GuiObject {
-  onSetPosition(newpos: number): void;
-  onPostedPosition(newpos: number): void;
-  onSetFinalPosition(pos: number): void;
-  setPosition(pos: number): void;
-  getPosition(): number;
+  onsetposition(newpos: number): void;
+  onpostedposition(newpos: number): void;
+  onsetfinalposition(pos: number): void;
+  setposition(pos: number): void;
+  getposition(): number;
   lock(): void;
   unlock(): void;
 }
 
 export interface Vis extends GuiObject {
-  onFrame(): void;
-  setRealtime(onoff: boolean): void;
-  getRealtime(): boolean;
-  getMode(): number;
-  setMode(mode: number): void;
-  nextMode(): void;
+  onframe(): void;
+  setrealtime(onoff: boolean): void;
+  getrealtime(): boolean;
+  getmode(): number;
+  setmode(mode: number): void;
+  nextmode(): void;
 }
 
 export interface Browser extends GuiObject {
-  navigateUrl(url: string): void;
+  navigateurl(url: string): void;
   back(): void;
   forward(): void;
   stop(): void;
   refresh(): void;
   home(): void;
-  setTargetName(targetname: string): void;
-  onBeforeNavigate(
-    url: string,
-    flags: number,
-    targetframename: string
-  ): boolean;
-  onDocumentComplete(url: string): void;
-  onDocumentReady(url: string): void;
-  getDocumentTitle(): string;
-  onNavigateError(url: string, code: number): void;
-  setCancelIEErrorPage(cancel: boolean): void;
+  settargetname(targetname: string): void;
+  onbeforenavigate(url: string, flags: number, targetframename: string): boolean;
+  ondocumentcomplete(url: string): void;
+  ondocumentready(url: string): void;
+  getdocumenttitle(): string;
+  onnavigateerror(url: string, code: number): void;
+  setcancelieerrorpage(cancel: boolean): void;
   scrape(): void;
-  onMediaLink(url: string): string;
+  onmedialink(url: string): string;
 }
 
-export interface EqVis extends GuiObject {}
+export interface EqVis extends GuiObject {
 
-export interface Status extends GuiObject {}
+}
+
+export interface Status extends GuiObject {
+
+}
 
 export interface Text extends GuiObject {
-  setText(txt: string): void;
-  setAlternateText(txt: string): void;
-  getText(): string;
-  getTextWidth(): number;
-  onTextChanged(newtxt: string): void;
+  settext(txt: string): void;
+  setalternatetext(txt: string): void;
+  gettext(): string;
+  gettextwidth(): number;
+  ontextchanged(newtxt: string): void;
 }
 
-export interface Title extends GuiObject {}
+export interface Title extends GuiObject {
+
+}
 
 export interface Layer extends GuiObject {
-  onBeginResize(x: number, y: number, w: number, h: number): void;
-  onEndResize(x: number, y: number, w: number, h: number): void;
-  fx_onInit(): void;
-  fx_onFrame(): void;
-  fx_onGetPixelR(r: number, d: number, x: number, y: number): number;
-  fx_onGetPixelD(r: number, d: number, x: number, y: number): number;
-  fx_onGetPixelX(r: number, d: number, x: number, y: number): number;
-  fx_onGetPixelY(r: number, d: number, x: number, y: number): number;
-  fx_onGetPixelA(r: number, d: number, x: number, y: number): number;
-  setRegionFromMap(
-    regionmap: MakiMap,
-    threshold: number,
-    reverse: boolean
-  ): void;
-  setRegion(reg: Region): void;
-  fx_setEnabled(onoff: boolean): void;
-  fx_getEnabled(): boolean;
-  fx_setWrap(onoff: boolean): void;
-  fx_getWrap(): boolean;
-  fx_setRect(onoff: boolean): void;
-  fx_getRect(): boolean;
-  fx_setBgFx(onoff: boolean): void;
-  fx_getBgFx(): boolean;
-  fx_setClear(onoff: boolean): void;
-  fx_getClear(): boolean;
-  fx_setSpeed(msperframe: number): void;
-  fx_getSpeed(): number;
-  fx_setRealtime(onoff: boolean): void;
-  fx_getRealtime(): boolean;
-  fx_setLocalized(onoff: boolean): void;
-  fx_getLocalized(): boolean;
-  fx_setBilinear(onoff: boolean): void;
-  fx_getBilinear(): boolean;
-  fx_setAlphaMode(onoff: boolean): void;
-  fx_getAlphaMode(): boolean;
-  fx_setGridSize(x: number, y: number): void;
+  onbeginresize(x: number, y: number, w: number, h: number): void;
+  onendresize(x: number, y: number, w: number, h: number): void;
+  fx_oninit(): void;
+  fx_onframe(): void;
+  fx_ongetpixelr(r: number, d: number, x: number, y: number): number;
+  fx_ongetpixeld(r: number, d: number, x: number, y: number): number;
+  fx_ongetpixelx(r: number, d: number, x: number, y: number): number;
+  fx_ongetpixely(r: number, d: number, x: number, y: number): number;
+  fx_ongetpixela(r: number, d: number, x: number, y: number): number;
+  setregionfrommap(regionmap: MakiMap, threshold: number, reverse: boolean): void;
+  setregion(reg: Region): void;
+  fx_setenabled(onoff: boolean): void;
+  fx_getenabled(): boolean;
+  fx_setwrap(onoff: boolean): void;
+  fx_getwrap(): boolean;
+  fx_setrect(onoff: boolean): void;
+  fx_getrect(): boolean;
+  fx_setbgfx(onoff: boolean): void;
+  fx_getbgfx(): boolean;
+  fx_setclear(onoff: boolean): void;
+  fx_getclear(): boolean;
+  fx_setspeed(msperframe: number): void;
+  fx_getspeed(): number;
+  fx_setrealtime(onoff: boolean): void;
+  fx_getrealtime(): boolean;
+  fx_setlocalized(onoff: boolean): void;
+  fx_getlocalized(): boolean;
+  fx_setbilinear(onoff: boolean): void;
+  fx_getbilinear(): boolean;
+  fx_setalphamode(onoff: boolean): void;
+  fx_getalphamode(): boolean;
+  fx_setgridsize(x: number, y: number): void;
   fx_update(): void;
   fx_restart(): void;
-  isInvalid(): boolean;
+  isinvalid(): boolean;
 }
 
 export interface Button extends GuiObject {
-  onActivate(activated: number): void;
-  onLeftClick(): void;
-  onRightClick(): void;
-  setActivated(onoff: boolean): void;
-  setActivatedNoCallback(onoff: boolean): void;
-  getActivated(): boolean;
-  leftClick(): void;
-  rightClick(): void;
+  onactivate(activated: number): void;
+  onleftclick(): void;
+  onrightclick(): void;
+  setactivated(onoff: boolean): void;
+  setactivatednocallback(onoff: boolean): void;
+  getactivated(): boolean;
+  leftclick(): void;
+  rightclick(): void;
 }
 
 export interface AnimatedLayer extends Layer {
-  onPlay(): void;
-  onPause(): void;
-  onResume(): void;
-  onStop(): void;
-  onFrame(framenum: number): void;
-  setSpeed(msperframe: number): void;
-  gotoFrame(framenum: number): void;
-  setStartFrame(framenum: number): void;
-  setEndFrame(framenum: number): void;
-  setAutoReplay(onoff: boolean): void;
+  onplay(): void;
+  onpause(): void;
+  onresume(): void;
+  onstop(): void;
+  onframe(framenum: number): void;
+  setspeed(msperframe: number): void;
+  gotoframe(framenum: number): void;
+  setstartframe(framenum: number): void;
+  setendframe(framenum: number): void;
+  setautoreplay(onoff: boolean): void;
   play(): void;
   stop(): void;
   pause(): void;
-  isPlaying(): boolean;
-  isPaused(): boolean;
-  isStopped(): boolean;
-  getStartFrame(): number;
-  getEndFrame(): number;
-  getLength(): number;
-  getDirection(): number;
-  getAutoReplay(): boolean;
-  getCurFrame(): number;
-  setRealtime(onoff: boolean): void;
+  isplaying(): boolean;
+  ispaused(): boolean;
+  isstopped(): boolean;
+  getstartframe(): number;
+  getendframe(): number;
+  getlength(): number;
+  getdirection(): number;
+  getautoreplay(): boolean;
+  getcurframe(): number;
+  setrealtime(onoff: boolean): void;
 }
 
 export interface AlbumArtLayer extends Layer {
   refresh(): void;
-  isLoading(): void;
-  onAlbumArtLoaded(success: boolean): void;
+  isloading(): void;
+  onalbumartloaded(success: boolean): void;
 }
 
 export interface ToggleButton extends Button {
-  onToggle(onoff: boolean): void;
-  getCurCfgVal(): number;
+  ontoggle(onoff: boolean): void;
+  getcurcfgval(): number;
 }
 
 export interface GroupList extends GuiObject {
   instantiate(group_id: string, num_groups: number): Group;
-  getNumItems(): number;
-  enumItem(num: number): Group;
-  removeAll(): void;
-  scrollToPercent(percent: number): void;
-  setRedraw(redraw: number): void;
+  getnumitems(): number;
+  enumitem(num: number): Group;
+  removeall(): void;
+  scrolltopercent(percent: number): void;
+  setredraw(redraw: number): void;
 }
 
 export interface CfgGroup extends Group {
-  cfgGetInt(): number;
-  cfgSetInt(intvalue: number): void;
-  cfgGetString(): string;
-  cfgGetFloat(): number;
-  cfgSetFloat(floatvalue: number): void;
-  cfgSetString(strvalue: string): void;
-  onCfgChanged(): void;
-  cfgGetGuid(): string;
-  cfgGetName(): string;
+  cfggetint(): number;
+  cfgsetint(intvalue: number): void;
+  cfggetstring(): string;
+  cfggetfloat(): number;
+  cfgsetfloat(floatvalue: number): void;
+  cfgsetstring(strvalue: string): void;
+  oncfgchanged(): void;
+  cfggetguid(): string;
+  cfggetname(): string;
 }
 
 export interface QueryList extends GuiObject {
-  onResetQuery(): void;
+  onresetquery(): void;
 }
 
 export interface MouseRedir extends GuiObject {
-  setRedirection(o: GuiObject): void;
-  getRedirection(): GuiObject;
-  setRegionFromMap(
-    regionmap: MakiMap,
-    threshold: number,
-    reverse: boolean
-  ): void;
-  setRegion(reg: Region): void;
+  setredirection(o: GuiObject): void;
+  getredirection(): GuiObject;
+  setregionfrommap(regionmap: MakiMap, threshold: number, reverse: boolean): void;
+  setregion(reg: Region): void;
 }
 
 export interface DropDownList extends GuiObject {
-  getItemSelected(): string;
-  onSelect(id: number, hover: number): void;
-  setListHeight(h: number): void;
-  openList(): void;
-  closeList(): void;
-  setItems(lotsofitems: string): void;
-  addItem(_text: string): number;
-  delItem(id: number): void;
-  findItem(_text: string): number;
-  getNumItems(): number;
-  selectItem(id: number, hover: number): void;
-  getItemText(id: number): string;
-  getSelected(): number;
-  getSelectedText(): string;
-  getCustomText(): string;
-  deleteAllItems(): void;
-  setNoItemText(txt: string): void;
+  getitemselected(): string;
+  onselect(id: number, hover: number): void;
+  setlistheight(h: number): void;
+  openlist(): void;
+  closelist(): void;
+  setitems(lotsofitems: string): void;
+  additem(_text: string): number;
+  delitem(id: number): void;
+  finditem(_text: string): number;
+  getnumitems(): number;
+  selectitem(id: number, hover: number): void;
+  getitemtext(id: number): string;
+  getselected(): number;
+  getselectedtext(): string;
+  getcustomtext(): string;
+  deleteallitems(): void;
+  setnoitemtext(txt: string): void;
 }
 
 export interface LayoutStatus extends GuiObject {
@@ -758,53 +697,53 @@ export interface LayoutStatus extends GuiObject {
 }
 
 export interface TabSheet extends GuiObject {
-  getCurPage(): number;
-  setCurPage(a: number): void;
+  getcurpage(): number;
+  setcurpage(a: number): void;
 }
 
 export interface GuiList extends GuiObject {
-  addColumn(name: string, width: number, numeric: number): number;
-  getNumColumns(): number;
-  getColumnWidth(column: number): number;
-  setColumnWidth(column: number, newwidth: number): void;
-  getColumnLabel(column: number): string;
-  setColumnLabel(column: number, newlabel: string): void;
-  getColumnNumeric(column: number): number;
-  setColumnDynamic(column: number, isdynamic: number): void;
-  isColumnDynamic(column: number): number;
-  invalidateColumns(): void;
-  getNumItems(): number;
-  getItemCount(): number;
-  addItem(label: string): number;
-  insertItem(pos: number, label: string): number;
-  getLastAddedItemPos(): number;
-  setSubItem(pos: number, subpos: number, txt: string): void;
-  deleteAllItems(): void;
-  deleteByPos(pos: number): number;
-  getItemLabel(pos: number, subpos: number): string;
-  getSubitemText(pos: number, subpos: number): string;
-  setItemLabel(pos: number, _text: string): void;
-  invalidateItem(pos: number): number;
-  getFirstItemVisible(): number;
-  getLastItemVisible(): number;
-  setItemIcon(pos: number, bitmapId: string): void;
-  getItemIcon(pos: number): string;
-  setMinimumSize(size: number): void;
-  getWantAutoDeselect(): number;
-  setWantAutoDeselect(want: number): void;
-  onSetVisible(show: number): void;
-  setAutoSort(dosort: number): void;
-  setFontSize(size: number): number;
-  getFontSize(): number;
-  getHeaderHeight(): number;
-  getPreventMultipleSelection(): number;
-  setPreventMultipleSelection(val: number): number;
-  setShowIcons(showThem: number): void;
-  getShowIcons(): number;
-  setIconWidth(width: number): number;
-  setIconHeight(width: number): number;
-  getIconWidth(): void;
-  getIconHeight(): void;
+  addcolumn(name: string, width: number, numeric: number): number;
+  getnumcolumns(): number;
+  getcolumnwidth(column: number): number;
+  setcolumnwidth(column: number, newwidth: number): void;
+  getcolumnlabel(column: number): string;
+  setcolumnlabel(column: number, newlabel: string): void;
+  getcolumnnumeric(column: number): number;
+  setcolumndynamic(column: number, isdynamic: number): void;
+  iscolumndynamic(column: number): number;
+  invalidatecolumns(): void;
+  getnumitems(): number;
+  getitemcount(): number;
+  additem(label: string): number;
+  insertitem(pos: number, label: string): number;
+  getlastaddeditempos(): number;
+  setsubitem(pos: number, subpos: number, txt: string): void;
+  deleteallitems(): void;
+  deletebypos(pos: number): number;
+  getitemlabel(pos: number, subpos: number): string;
+  getsubitemtext(pos: number, subpos: number): string;
+  setitemlabel(pos: number, _text: string): void;
+  invalidateitem(pos: number): number;
+  getfirstitemvisible(): number;
+  getlastitemvisible(): number;
+  setitemicon(pos: number, bitmapId: string): void;
+  getitemicon(pos: number): string;
+  setminimumsize(size: number): void;
+  getwantautodeselect(): number;
+  setwantautodeselect(want: number): void;
+  onsetvisible(show: number): void;
+  setautosort(dosort: number): void;
+  setfontsize(size: number): number;
+  getfontsize(): number;
+  getheaderheight(): number;
+  getpreventmultipleselection(): number;
+  setpreventmultipleselection(val: number): number;
+  setshowicons(showThem: number): void;
+  getshowicons(): number;
+  seticonwidth(width: number): number;
+  seticonheight(width: number): number;
+  geticonwidth(): void;
+  geticonheight(): void;
   next(): void;
   previous(): void;
   pagedown(): void;
@@ -812,187 +751,182 @@ export interface GuiList extends GuiObject {
   home(): void;
   end(): void;
   reset(): void;
-  ensureItemVisible(pos: number): void;
-  scrollAbsolute(x: number): number;
-  scrollRelative(x: number): number;
-  scrollLeft(lines: number): void;
-  scrollRight(lines: number): void;
-  scrollUp(lines: number): void;
-  scrollDown(lines: number): void;
-  jumpToNext(c: number): void;
-  scrollToItem(pos: number): void;
-  selectCurrent(): void;
-  selectFirstEntry(): void;
-  getItemSelected(pos: number): number;
-  isItemFocused(pos: number): number;
-  getItemFocused(): number;
-  setItemFocused(pos: number): void;
-  getFirstItemSelected(): number;
-  getNextItemSelected(lastpos: number): number;
-  selectAll(): number;
-  deselectAll(): number;
-  invertSelection(): number;
-  setSelectionStart(pos: number): void;
-  setSelectionEnd(pos: number): void;
-  setSelected(pos: number, selected: number): void;
-  toggleSelection(pos: number, setfocus: number): void;
+  ensureitemvisible(pos: number): void;
+  scrollabsolute(x: number): number;
+  scrollrelative(x: number): number;
+  scrollleft(lines: number): void;
+  scrollright(lines: number): void;
+  scrollup(lines: number): void;
+  scrolldown(lines: number): void;
+  jumptonext(c: number): void;
+  scrolltoitem(pos: number): void;
+  selectcurrent(): void;
+  selectfirstentry(): void;
+  getitemselected(pos: number): number;
+  isitemfocused(pos: number): number;
+  getitemfocused(): number;
+  setitemfocused(pos: number): void;
+  getfirstitemselected(): number;
+  getnextitemselected(lastpos: number): number;
+  selectall(): number;
+  deselectall(): number;
+  invertselection(): number;
+  setselectionstart(pos: number): void;
+  setselectionend(pos: number): void;
+  setselected(pos: number, selected: number): void;
+  toggleselection(pos: number, setfocus: number): void;
   resort(): void;
-  getSortDirection(): number;
-  getSortColumn(): number;
-  setSortColumn(col: number): void;
-  setSortDirection(dir: number): void;
-  moveItem(from: number, to: number): void;
-  onSelectAll(): void;
-  onDelete(): void;
-  onDoubleClick(itemnum: number): void;
-  onLeftClick(itemnum: number): void;
-  onSecondLeftClick(itemnum: number): void;
-  onRightClick(itemnum: number): number;
-  onColumnDblClick(col: number, x: number, y: number): number;
-  onColumnLabelClick(col: number, x: number, y: number): number;
-  onItemSelection(itemnum: number, selected: number): void;
-  onIconLeftClick(itemnum: number, x: number, y: number): number;
+  getsortdirection(): number;
+  getsortcolumn(): number;
+  setsortcolumn(col: number): void;
+  setsortdirection(dir: number): void;
+  moveitem(from: number, to: number): void;
+  onselectall(): void;
+  ondelete(): void;
+  ondoubleclick(itemnum: number): void;
+  onleftclick(itemnum: number): void;
+  onsecondleftclick(itemnum: number): void;
+  onrightclick(itemnum: number): number;
+  oncolumndblclick(col: number, x: number, y: number): number;
+  oncolumnlabelclick(col: number, x: number, y: number): number;
+  onitemselection(itemnum: number, selected: number): void;
+  oniconleftclick(itemnum: number, x: number, y: number): number;
 }
 
 export interface GuiTree extends GuiObject {
-  onWantAutoContextMenu(): number;
-  onMouseWheelUp(clicked: number, lines: number): number;
-  onMouseWheelDown(clicked: number, lines: number): number;
-  onContextMenu(x: number, y: number): number;
-  onChar(c: number): number;
-  onItemRecvDrop(item: TreeItem): void;
-  onLabelChange(item: TreeItem): void;
-  onItemSelected(item: TreeItem): void;
-  onItemDeselected(item: TreeItem): void;
-  getNumRootItems(): number;
-  enumRootItem(which: number): TreeItem;
-  jumpToNext(c: number): void;
-  ensureItemVisible(item: TreeItem): void;
-  getContentsWidth(): number;
-  getContentsHeight(): number;
-  addTreeItem(
-    item: TreeItem,
-    par: TreeItem,
-    sorted: number,
-    haschildtab: number
-  ): TreeItem;
-  removeTreeItem(item: TreeItem): number;
-  moveTreeItem(item: TreeItem, newparent: TreeItem): void;
-  deleteAllItems(): void;
-  expandItem(item: TreeItem): number;
-  expandItemDeferred(item: TreeItem): void;
-  collapseItem(item: TreeItem): number;
-  collapseItemDeferred(item: TreeItem): void;
-  selectItem(item: TreeItem): void;
-  selectItemDeferred(item: TreeItem): void;
-  delItemDeferred(item: TreeItem): void;
-  hiliteItem(item: TreeItem): void;
-  unhiliteItem(item: TreeItem): void;
-  getCurItem(): TreeItem;
-  hitTest(x: number, y: number): TreeItem;
-  editItemLabel(item: TreeItem): void;
-  cancelEditLabel(destroyit: number): void;
-  setAutoEdit(ae: number): void;
-  getAutoEdit(): number;
-  getByLabel(item: TreeItem, name: string): TreeItem;
-  setSorted(dosort: number): void;
-  getSorted(): number;
-  sortTreeItems(): void;
-  getSibling(item: TreeItem): TreeItem;
-  setAutoCollapse(doautocollapse: number): void;
-  setFontSize(newsize: number): number;
-  getFontSize(): number;
-  getNumVisibleChildItems(c: TreeItem): number;
-  getNumVisibleItems(): number;
-  enumVisibleItems(n: number): TreeItem;
-  enumVisibleChildItems(c: TreeItem, n: number): TreeItem;
-  enumAllItems(n: number): TreeItem;
-  getItemRectX(item: TreeItem): number;
-  getItemRectY(item: TreeItem): number;
-  getItemRectW(item: TreeItem): number;
-  getItemRectH(item: TreeItem): number;
-  getItemFromPoint(x: number, y: number): TreeItem;
+  onwantautocontextmenu(): number;
+  onmousewheelup(clicked: number, lines: number): number;
+  onmousewheeldown(clicked: number, lines: number): number;
+  oncontextmenu(x: number, y: number): number;
+  onchar(c: number): number;
+  onitemrecvdrop(item: TreeItem): void;
+  onlabelchange(item: TreeItem): void;
+  onitemselected(item: TreeItem): void;
+  onitemdeselected(item: TreeItem): void;
+  getnumrootitems(): number;
+  enumrootitem(which: number): TreeItem;
+  jumptonext(c: number): void;
+  ensureitemvisible(item: TreeItem): void;
+  getcontentswidth(): number;
+  getcontentsheight(): number;
+  addtreeitem(item: TreeItem, par: TreeItem, sorted: number, haschildtab: number): TreeItem;
+  removetreeitem(item: TreeItem): number;
+  movetreeitem(item: TreeItem, newparent: TreeItem): void;
+  deleteallitems(): void;
+  expanditem(item: TreeItem): number;
+  expanditemdeferred(item: TreeItem): void;
+  collapseitem(item: TreeItem): number;
+  collapseitemdeferred(item: TreeItem): void;
+  selectitem(item: TreeItem): void;
+  selectitemdeferred(item: TreeItem): void;
+  delitemdeferred(item: TreeItem): void;
+  hiliteitem(item: TreeItem): void;
+  unhiliteitem(item: TreeItem): void;
+  getcuritem(): TreeItem;
+  hittest(x: number, y: number): TreeItem;
+  edititemlabel(item: TreeItem): void;
+  canceleditlabel(destroyit: number): void;
+  setautoedit(ae: number): void;
+  getautoedit(): number;
+  getbylabel(item: TreeItem, name: string): TreeItem;
+  setsorted(dosort: number): void;
+  getsorted(): number;
+  sorttreeitems(): void;
+  getsibling(item: TreeItem): TreeItem;
+  setautocollapse(doautocollapse: number): void;
+  setfontsize(newsize: number): number;
+  getfontsize(): number;
+  getnumvisiblechilditems(c: TreeItem): number;
+  getnumvisibleitems(): number;
+  enumvisibleitems(n: number): TreeItem;
+  enumvisiblechilditems(c: TreeItem, n: number): TreeItem;
+  enumallitems(n: number): TreeItem;
+  getitemrectx(item: TreeItem): number;
+  getitemrecty(item: TreeItem): number;
+  getitemrectw(item: TreeItem): number;
+  getitemrecth(item: TreeItem): number;
+  getitemfrompoint(x: number, y: number): TreeItem;
 }
 
 export interface TreeItem extends MakiObject {
-  getNumChildren(): number;
-  setLabel(label: string): void;
-  getLabel(): string;
-  ensureVisible(): void;
-  getNthChild(nth: number): TreeItem;
-  getChild(): TreeItem;
-  getChildSibling(_item: TreeItem): TreeItem;
-  getSibling(): TreeItem;
-  getParent(): TreeItem;
-  editLabel(): void;
-  hasSubItems(): number;
-  setSorted(issorted: number): void;
-  setChildTab(haschildtab: number): void;
-  isSorted(): number;
-  isCollapsed(): number;
-  isExpanded(): number;
+  getnumchildren(): number;
+  setlabel(label: string): void;
+  getlabel(): string;
+  ensurevisible(): void;
+  getnthchild(nth: number): TreeItem;
+  getchild(): TreeItem;
+  getchildsibling(_item: TreeItem): TreeItem;
+  getsibling(): TreeItem;
+  getparent(): TreeItem;
+  editlabel(): void;
+  hassubitems(): number;
+  setsorted(issorted: number): void;
+  setchildtab(haschildtab: number): void;
+  issorted(): number;
+  iscollapsed(): number;
+  isexpanded(): number;
   invalidate(): void;
-  isSelected(): number;
-  isHilited(): number;
-  setHilited(ishilited: number): void;
+  isselected(): number;
+  ishilited(): number;
+  sethilited(ishilited: number): void;
   collapse(): number;
   expand(): number;
-  getTree(): GuiTree;
-  onTreeAdd(): void;
-  onTreeRemove(): void;
-  onSelect(): void;
-  onDeselect(): void;
-  onLeftDoubleClick(): number;
-  onRightDoubleClick(): number;
-  onChar(key: number): number;
-  onExpand(): void;
-  onCollapse(): void;
-  onBeginLabelEdit(): number;
-  onEndLabelEdit(newlabel: string): number;
-  onContextMenu(x: number, y: number): number;
+  gettree(): GuiTree;
+  ontreeadd(): void;
+  ontreeremove(): void;
+  onselect(): void;
+  ondeselect(): void;
+  onleftdoubleclick(): number;
+  onrightdoubleclick(): number;
+  onchar(key: number): number;
+  onexpand(): void;
+  oncollapse(): void;
+  onbeginlabeledit(): number;
+  onendlabeledit(newlabel: string): number;
+  oncontextmenu(x: number, y: number): number;
 }
 
 export interface MenuButton extends GuiObject {
-  onOpenMenu(): void;
-  onCloseMenu(): void;
-  onSelectItem(item: string): void;
-  openMenu(): void;
-  closeMenu(): void;
+  onopenmenu(): void;
+  onclosemenu(): void;
+  onselectitem(item: string): void;
+  openmenu(): void;
+  closemenu(): void;
 }
 
 export interface CheckBox extends GuiObject {
-  onToggle(newstate: number): void;
-  setChecked(checked: number): void;
-  isChecked(): number;
-  setText(txt: string): void;
-  getText(): string;
+  ontoggle(newstate: number): void;
+  setchecked(checked: number): void;
+  ischecked(): number;
+  settext(txt: string): void;
+  gettext(): string;
 }
 
 export interface Form extends GuiObject {
-  getContentsHeight(): number;
-  newCell(groupname: string): void;
-  nextRow(): void;
-  deleteAll(): void;
+  getcontentsheight(): number;
+  newcell(groupname: string): void;
+  nextrow(): void;
+  deleteall(): void;
 }
 
 export interface Frame extends GuiObject {
-  getPosition(): number;
-  setPosition(position: number): void;
-  onSetPosition(position: number): void;
+  getposition(): number;
+  setposition(position: number): void;
+  onsetposition(position: number): void;
 }
 
 export interface Menu extends GuiObject {
-  setMenuGroup(groupId: string): void;
-  getMenuGroup(): string;
-  setMenu(menuId: string): void;
-  getMenu(): string;
-  spawnMenu(monitor: number): void;
-  cancelMenu(): void;
-  setNormalId(id: string): void;
-  setDownId(id: string): void;
-  setHoverId(id: string): void;
-  onOpenMenu(): void;
-  onCloseMenu(): void;
-  nextMenu(): void;
-  previousMenu(): void;
+  setmenugroup(groupId: string): void;
+  getmenugroup(): string;
+  setmenu(menuId: string): void;
+  getmenu(): string;
+  spawnmenu(monitor: number): void;
+  cancelmenu(): void;
+  setnormalid(id: string): void;
+  setdownid(id: string): void;
+  sethoverid(id: string): void;
+  onopenmenu(): void;
+  onclosemenu(): void;
+  nextmenu(): void;
+  previousmenu(): void;
 }
