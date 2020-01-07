@@ -34,7 +34,8 @@
     "build-presets": "node scripts/parsePresetFiles.js > presets/builtin.json",
     "analyze-wals": "babel-node --extensions=\".ts,.js,.tsx\" modern/src/maki-interpreter/tools/extract-functions.js > modern/resources/maki-skin-data.json",
     "extract-object-types": "babel-node --extensions=\".ts,.js,.tsx\" modern/src/maki-interpreter/tools/extract-object-types.js",
-    "extract-attributes": "babel-node --extensions=\".ts,.js,.tsx\" modern/src/maki-interpreter/tools/extract-attributes.js > modern/resources/attribute-skin-data.json"
+    "extract-attributes": "babel-node --extensions=\".ts,.js,.tsx\" modern/src/maki-interpreter/tools/extract-attributes.js > modern/resources/attribute-skin-data.json",
+    "maki-interfaces": "babel-node --extensions=\".ts,.js,.tsx\" modern/src/maki-interpreter/tools/build-typescript-interfaces.js > modern/__generated__/makiInterfaces.ts"
   },
   "repository": {
     "type": "git",
