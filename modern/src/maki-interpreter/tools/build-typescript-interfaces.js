@@ -41,7 +41,7 @@ function argumentTypeForParameter(param) {
 
 function methodTypeForFunction(func) {
   const args = func.parameters.map(argumentTypeForParameter).join(", ");
-  return `${func.name}(${args}): ${mapType(func.result)};`;
+  return `${func.name.toLowerCase()}(${args}): ${mapType(func.result)};`;
 }
 
 function interfaceForObject(object) {
