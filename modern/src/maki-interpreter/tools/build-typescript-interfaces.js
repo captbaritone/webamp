@@ -31,7 +31,7 @@ function mapType(makiType) {
       return "any";
   }
 
-  throw new Error(`Unhandled Maki type ${makiType}`);
+  throw new Error(`Unhandled Maki type "${makiType}"`);
 }
 
 function argumentTypeForParameter(param) {
