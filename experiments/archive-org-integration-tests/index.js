@@ -9,9 +9,11 @@ function log(message) {
   console.log(message);
 }
 
+const TIMEOUT = 10000;
+
 async function expectSelector(page, selector) {
   log(`Waiting for selector ${selector}...`);
-  await page.waitForSelector(selector, { timeout: 8000 });
+  await page.waitForSelector(selector, { timeout: TIMEOUT });
   log(`Found selector ✅`);
 }
 
@@ -23,7 +25,7 @@ async function testPage({ url, name, firstTrackText }) {
     await page.goto(url);
     await expectSelector(page, webampButtonSelector);
     log("Going to click the Webamp button");
-    await page.click(webampButtonSelector, { timeout: 8000 });
+    await page.click(webampButtonSelector, { timeout: TIMEOUT });
     await expectSelector(page, "#webamp #main-window");
     log("Looking for first track...");
     const firstTrack = await page.$(".track-cell.current");
@@ -43,7 +45,7 @@ async function testPage({ url, name, firstTrackText }) {
     }
 
     log("Clicking play...");
-    await page.click("#webamp #main-window #play", { timeout: 2000 });
+    await page.click("#webamp #main-window #play", { timeout: TIMEOUT });
     await expectSelector(page, "#webamp #main-window.play");
     log("✅ Success! Test passed.");
   } catch (e) {
