@@ -13,6 +13,7 @@
     "index.d.ts"
   ],
   "scripts": {
+    "lint-fix": "eslint . --ext ts,tsx,js --fix",
     "lint": "eslint . --ext ts,tsx,js",
     "type-check": "tsc",
     "build": "webpack --config=demo/config/webpack.prod.js",
