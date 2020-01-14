@@ -4,7 +4,7 @@ const Skins = require("../data/skins");
 const logger = require("../logger");
 
 const filter = (reaction) => {
-  return ["👍", "👎"].some((name) => reaction.emoji.name === name);
+  return ["👍", "👎", "👏", "😔"].some((name) => reaction.emoji.name === name);
 };
 
 async function postSkin({ md5, title, dest }) {
@@ -87,6 +87,7 @@ async function postSkin({ md5, title, dest }) {
     const user = vote.users.first();
     switch (vote.emoji.name) {
       case "👍":
+      case "👏":
         await Skins.approve(md5);
         logger.info(`${user.username} approved ${md5}`);
         await msg.channel.send(
@@ -94,6 +95,7 @@ async function postSkin({ md5, title, dest }) {
         );
         msg.react("✅");
         break;
+      case "😔":
       case "👎":
         await Skins.reject(md5);
         logger.info(`${user.username} rejected ${md5}`);
