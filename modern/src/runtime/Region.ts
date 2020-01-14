@@ -1,6 +1,6 @@
 import MakiObject from "./MakiObject";
 import { unimplementedWarning } from "../utils";
-import MakiMap from "./Map";
+import MakiMap from "./MakiMap";
 
 class Region extends MakiObject {
   /**

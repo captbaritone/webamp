@@ -1,7 +1,7 @@
 import GuiObject from "./GuiObject";
 import { unimplementedWarning } from "../utils";
 import Wac from "./Wac";
-import MakiMap from "./Map";
+import MakiMap from "./MakiMap";
 import Region from "./Region";
 
 class WindowHolder extends GuiObject {

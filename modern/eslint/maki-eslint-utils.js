@@ -2,6 +2,7 @@ const { objects } = require("../src/maki-interpreter/objects");
 
 const classNameMappings = {
   Object: "MakiObject",
+  Map: "MakiMap",
   "@{00000000-0000-0000-0000-000000000000}@": null,
 };
 

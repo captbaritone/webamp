@@ -1,7 +1,7 @@
 import MakiObject from "./MakiObject";
 import { unimplementedWarning } from "../utils";
 
-class Map extends MakiObject {
+class MakiMap extends MakiObject {
   /**
    * getclassname()
    *
@@ -47,4 +47,4 @@ class Map extends MakiObject {
   }
 }
 
-export default Map;
+export default MakiMap;

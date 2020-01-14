@@ -1,7 +1,7 @@
 import GuiObject from "./GuiObject";
 import { unimplementedWarning } from "../utils";
 import Region from "./Region";
-import MakiMap from "./Map";
+import MakiMap from "./MakiMap";
 
 class Layer extends GuiObject {
   /**
