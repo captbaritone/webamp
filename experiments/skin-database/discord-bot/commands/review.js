@@ -17,18 +17,18 @@ async function reviewSkin(message) {
 async function handler(message, args) {
   let count = args[0] || 1;
   if (count > 50) {
-    message.channel.send(`You can only review up to ${count} skins at a time.`);
-    message.channel.send(`Going to show ${count} skins to review`);
+    await message.channel.send(`You can only review up to ${count} skins at a time.`);
+    await message.channel.send(`Going to show ${count} skins to review`);
     count = 50;
   }
-  message.channel.send(`Going to show ${count} skins to review.`);
+  await message.channel.send(`Going to show ${count} skins to review.`);
   let i = Number(count);
   while (i--) {
     await reviewSkin(message);
   }
   if (count > 1) {
     const tweetableCount = await Skins.getTweetableSkinCount();
-    message.channel.send(
+    await message.channel.send(
       `Done reviewing ${count} skins. There are now ${tweetableCount} Tweetable skins. Thanks!`
     );
   }
