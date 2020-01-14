@@ -66,7 +66,7 @@ client.on("message", async (message) => {
     });
     return;
   }
-  handler(message, args);
+  await handler(message, args);
 });
 
 client.on("error", (e) => {
