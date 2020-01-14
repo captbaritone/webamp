@@ -7,12 +7,12 @@ const BASE_OBJECT = "@{00000000-0000-0000-0000-000000000000}@";
 function mapType(makiType) {
   switch (makiType) {
     case "Object":
-      return "MakiObject";
+      return "IMakiObject";
     case "Map":
-      return "MakiMap";
+      return "IMakiMap";
   }
   if (makiObjectNames.has(makiType)) {
-    return makiType;
+    return `I${makiType}`;
   }
 
   const lowerCaseType = makiType.toLowerCase();
