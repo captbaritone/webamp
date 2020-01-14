@@ -58,39 +58,32 @@ class Container extends MakiObject {
     this.js_trigger("onShowLayout", _layout);
   }
 
-  getnumlayouts() {
-    unimplementedWarning("getnumlayouts");
-    return;
+  getnumlayouts(): number {
+    return unimplementedWarning("getnumlayouts");
   }
 
   enumlayout(num: number) {
-    unimplementedWarning("enumlayout");
-    return;
+    return unimplementedWarning("enumlayout");
   }
 
-  switchtolayout(layout_id: string) {
-    unimplementedWarning("switchtolayout");
-    return;
+  switchtolayout(layout_id: string): void {
+    return unimplementedWarning("switchtolayout");
   }
 
-  close() {
-    unimplementedWarning("close");
-    return;
+  close(): void {
+    return unimplementedWarning("close");
   }
 
-  toggle() {
-    unimplementedWarning("toggle");
-    return;
+  toggle(): void {
+    return unimplementedWarning("toggle");
   }
 
-  isdynamic() {
-    unimplementedWarning("isdynamic");
-    return;
+  isdynamic(): number {
+    return unimplementedWarning("isdynamic");
   }
 
-  setname(name: string) {
-    unimplementedWarning("setname");
-    return;
+  setname(name: string): void {
+    return unimplementedWarning("setname");
   }
 
   getcurlayout() {
@@ -101,19 +94,16 @@ class Container extends MakiObject {
     });
   }
 
-  getname() {
-    unimplementedWarning("getname");
-    return;
+  getname(): string {
+    return unimplementedWarning("getname");
   }
 
-  getguid() {
-    unimplementedWarning("getguid");
-    return;
+  getguid(): string {
+    return unimplementedWarning("getguid");
   }
 
-  onaddcontent(wnd: GuiObject, id: string, guid: string) {
-    unimplementedWarning("onaddcontent");
-    return;
+  onaddcontent(wnd: GuiObject, id: string, guid: string): void {
+    return unimplementedWarning("onaddcontent");
   }
 }
 

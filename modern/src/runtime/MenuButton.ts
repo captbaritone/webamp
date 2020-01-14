@@ -24,14 +24,12 @@ class MenuButton extends GuiObject {
     this.js_trigger("onSelectItem", item);
   }
 
-  openmenu() {
-    unimplementedWarning("openmenu");
-    return;
+  openmenu(): void {
+    return unimplementedWarning("openmenu");
   }
 
-  closemenu() {
-    unimplementedWarning("closemenu");
-    return;
+  closemenu(): void {
+    return unimplementedWarning("closemenu");
   }
 }
 

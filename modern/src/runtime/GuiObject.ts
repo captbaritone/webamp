@@ -108,8 +108,8 @@ class GuiObject extends MakiObject {
     this.js_trigger("js_update");
   }
 
-  getxmlparam(param: string) {
-    return this.attributes[param];
+  getxmlparam(param: string): string {
+    return String(this.attributes[param]);
   }
 
   getparent() {
@@ -205,9 +205,8 @@ class GuiObject extends MakiObject {
     this.js_trigger("onSetVisible", onoff);
   }
 
-  getalpha() {
-    unimplementedWarning("getalpha");
-    return;
+  getalpha(): number {
+    return unimplementedWarning("getalpha");
   }
 
   onleftbuttonup(x: number, y: number): void {
@@ -246,14 +245,12 @@ class GuiObject extends MakiObject {
     this.js_trigger("onLeaveArea");
   }
 
-  setenabled(onoff: boolean) {
-    unimplementedWarning("setenabled");
-    return;
+  setenabled(onoff: boolean): void {
+    return unimplementedWarning("setenabled");
   }
 
-  getenabled() {
-    unimplementedWarning("getenabled");
-    return;
+  getenabled(): boolean {
+    return unimplementedWarning("getenabled");
   }
 
   onenable(onoff: boolean): void {
@@ -264,9 +261,8 @@ class GuiObject extends MakiObject {
     this.js_trigger("onResize", x, y, w, h);
   }
 
-  ismouseover(x: number, y: number) {
-    unimplementedWarning("ismouseover");
-    return;
+  ismouseover(x: number, y: number): boolean {
+    return unimplementedWarning("ismouseover");
   }
 
   settargetx(x: number): void {
@@ -352,163 +348,132 @@ class GuiObject extends MakiObject {
     this._targetParams = {};
   }
 
-  reversetarget(reverse: number) {
-    unimplementedWarning("reversetarget");
-    return;
+  reversetarget(reverse: number): void {
+    return unimplementedWarning("reversetarget");
   }
 
   onstartup(): void {
     this.js_trigger("onStartup");
   }
 
-  isgoingtotarget() {
-    unimplementedWarning("isgoingtotarget");
-    return;
+  isgoingtotarget(): boolean {
+    return unimplementedWarning("isgoingtotarget");
   }
 
-  bringtofront() {
-    unimplementedWarning("bringtofront");
-    return;
+  bringtofront(): void {
+    return unimplementedWarning("bringtofront");
   }
 
-  bringtoback() {
-    unimplementedWarning("bringtoback");
-    return;
+  bringtoback(): void {
+    return unimplementedWarning("bringtoback");
   }
 
-  bringabove(guiobj: GuiObject) {
-    unimplementedWarning("bringabove");
-    return;
+  bringabove(guiobj: GuiObject): void {
+    return unimplementedWarning("bringabove");
   }
 
-  bringbelow(guiobj: GuiObject) {
-    unimplementedWarning("bringbelow");
-    return;
+  bringbelow(guiobj: GuiObject): void {
+    return unimplementedWarning("bringbelow");
   }
 
-  getguix() {
-    unimplementedWarning("getguix");
-    return;
+  getguix(): number {
+    return unimplementedWarning("getguix");
   }
 
-  getguiy() {
-    unimplementedWarning("getguiy");
-    return;
+  getguiy(): number {
+    return unimplementedWarning("getguiy");
   }
 
-  getguiw() {
-    unimplementedWarning("getguiw");
-    return;
+  getguiw(): number {
+    return unimplementedWarning("getguiw");
   }
 
-  getguih() {
-    unimplementedWarning("getguih");
-    return;
+  getguih(): number {
+    return unimplementedWarning("getguih");
   }
 
-  getguirelatx() {
-    unimplementedWarning("getguirelatx");
-    return;
+  getguirelatx(): number {
+    return unimplementedWarning("getguirelatx");
   }
 
-  getguirelaty() {
-    unimplementedWarning("getguirelaty");
-    return;
+  getguirelaty(): number {
+    return unimplementedWarning("getguirelaty");
   }
 
-  getguirelatw() {
-    unimplementedWarning("getguirelatw");
-    return;
+  getguirelatw(): number {
+    return unimplementedWarning("getguirelatw");
   }
 
-  getguirelath() {
-    unimplementedWarning("getguirelath");
-    return;
+  getguirelath(): number {
+    return unimplementedWarning("getguirelath");
   }
 
-  isactive() {
-    unimplementedWarning("isactive");
-    return;
+  isactive(): boolean {
+    return unimplementedWarning("isactive");
   }
 
   gettopparent() {
-    unimplementedWarning("gettopparent");
-    return;
+    return unimplementedWarning("gettopparent");
   }
 
-  runmodal() {
-    unimplementedWarning("runmodal");
-    return;
+  runmodal(): number {
+    return unimplementedWarning("runmodal");
   }
 
-  endmodal(retcode: number) {
-    unimplementedWarning("endmodal");
-    return;
+  endmodal(retcode: number): void {
+    return unimplementedWarning("endmodal");
   }
 
   findobjectxy(x: number, y: number) {
-    unimplementedWarning("findobjectxy");
-    return;
+    return unimplementedWarning("findobjectxy");
   }
 
-  getname() {
-    unimplementedWarning("getname");
-    return;
+  getname(): string {
+    return unimplementedWarning("getname");
   }
 
-  clienttoscreenx(x: number) {
-    unimplementedWarning("clienttoscreenx");
-    return;
+  clienttoscreenx(x: number): number {
+    return unimplementedWarning("clienttoscreenx");
   }
 
-  clienttoscreeny(y: number) {
-    unimplementedWarning("clienttoscreeny");
-    return;
+  clienttoscreeny(y: number): number {
+    return unimplementedWarning("clienttoscreeny");
   }
 
-  clienttoscreenw(w: number) {
-    unimplementedWarning("clienttoscreenw");
-    return;
+  clienttoscreenw(w: number): number {
+    return unimplementedWarning("clienttoscreenw");
   }
 
-  clienttoscreenh(h: number) {
-    unimplementedWarning("clienttoscreenh");
-    return;
+  clienttoscreenh(h: number): number {
+    return unimplementedWarning("clienttoscreenh");
   }
 
-  screentoclientx(x: number) {
-    unimplementedWarning("screentoclientx");
-    return;
+  screentoclientx(x: number): number {
+    return unimplementedWarning("screentoclientx");
   }
 
-  screentoclienty(y: number) {
-    unimplementedWarning("screentoclienty");
-    return;
+  screentoclienty(y: number): number {
+    return unimplementedWarning("screentoclienty");
   }
 
-  screentoclientw(w: number) {
-    unimplementedWarning("screentoclientw");
-    return;
+  screentoclientw(w: number): number {
+    return unimplementedWarning("screentoclientw");
   }
 
-  screentoclienth(h: number) {
-    unimplementedWarning("screentoclienth");
-    return;
+  screentoclienth(h: number): number {
+    return unimplementedWarning("screentoclienth");
   }
 
-  getautowidth() {
-    unimplementedWarning("getautowidth");
-    return;
+  getautowidth(): number {
+    return unimplementedWarning("getautowidth");
   }
 
-  getautoheight() {
-    unimplementedWarning("getautoheight");
-    return;
+  getautoheight(): number {
+    return unimplementedWarning("getautoheight");
   }
 
-  setfocus() {
-    unimplementedWarning("setfocus");
-    return;
+  setfocus(): void {
+    return unimplementedWarning("setfocus");
   }
 
   onchar(c: string): void {
@@ -519,14 +484,12 @@ class GuiObject extends MakiObject {
     this.js_trigger("onAccelerator", accel);
   }
 
-  ismouseoverrect() {
-    unimplementedWarning("ismouseoverrect");
-    return;
+  ismouseoverrect(): boolean {
+    return unimplementedWarning("ismouseoverrect");
   }
 
   getinterface(interface_guid: string) {
-    unimplementedWarning("getinterface");
-    return;
+    return unimplementedWarning("getinterface");
   }
 
   onkeydown(vk_code: number): void {
@@ -553,9 +516,8 @@ class GuiObject extends MakiObject {
     y: number,
     p1: number,
     p2: number
-  ) {
-    unimplementedWarning("sendaction");
-    return;
+  ): number {
+    return unimplementedWarning("sendaction");
   }
 
   /* eslint-disable-next-line max-params */
@@ -574,29 +536,24 @@ class GuiObject extends MakiObject {
     return 0;
   }
 
-  onmousewheelup(clicked: number, lines: number) {
-    unimplementedWarning("onmousewheelup");
-    return;
+  onmousewheelup(clicked: number, lines: number): number {
+    return unimplementedWarning("onmousewheelup");
   }
 
-  onmousewheeldown(clicked: number, lines: number) {
-    unimplementedWarning("onmousewheeldown");
-    return;
+  onmousewheeldown(clicked: number, lines: number): number {
+    return unimplementedWarning("onmousewheeldown");
   }
 
-  ondragenter() {
-    unimplementedWarning("ondragenter");
-    return;
+  ondragenter(): void {
+    return unimplementedWarning("ondragenter");
   }
 
-  ondragover(x: number, y: number) {
-    unimplementedWarning("ondragover");
-    return;
+  ondragover(x: number, y: number): void {
+    return unimplementedWarning("ondragover");
   }
 
-  ondragleave() {
-    unimplementedWarning("ondragleave");
-    return;
+  ondragleave(): void {
+    return unimplementedWarning("ondragleave");
   }
 }
 

@@ -167,7 +167,7 @@ export async function inlineIncludes(
   });
 }
 
-export function unimplementedWarning(name: string): void {
+export function unimplementedWarning(name: string): any {
   console.warn(`Executing unimplemented MAKI function: ${name}`);
 }
 

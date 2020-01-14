@@ -30,29 +30,24 @@ class Layout extends Group {
     this.js_trigger("onScale", newscalevalue);
   }
 
-  getscale() {
-    unimplementedWarning("getscale");
-    return;
+  getscale(): number {
+    return unimplementedWarning("getscale");
   }
 
-  setscale(scalevalue: number) {
-    unimplementedWarning("setscale");
-    return;
+  setscale(scalevalue: number): void {
+    return unimplementedWarning("setscale");
   }
 
-  setdesktopalpha(onoff: boolean) {
-    unimplementedWarning("setdesktopalpha");
-    return;
+  setdesktopalpha(onoff: boolean): void {
+    return unimplementedWarning("setdesktopalpha");
   }
 
-  getdesktopalpha() {
-    unimplementedWarning("getdesktopalpha");
-    return;
+  getdesktopalpha(): boolean {
+    return unimplementedWarning("getdesktopalpha");
   }
 
-  center() {
-    unimplementedWarning("center");
-    return;
+  center(): void {
+    return unimplementedWarning("center");
   }
 
   onmove(): void {
@@ -67,54 +62,44 @@ class Layout extends Group {
     this.js_trigger("onUserResize", x, y, w, h);
   }
 
-  snapadjust(left: number, top: number, right: number, bottom: number) {
-    unimplementedWarning("snapadjust");
-    return;
+  snapadjust(left: number, top: number, right: number, bottom: number): void {
+    return unimplementedWarning("snapadjust");
   }
 
-  getsnapadjusttop() {
-    unimplementedWarning("getsnapadjusttop");
-    return;
+  getsnapadjusttop(): number {
+    return unimplementedWarning("getsnapadjusttop");
   }
 
-  getsnapadjustright() {
-    unimplementedWarning("getsnapadjustright");
-    return;
+  getsnapadjustright(): number {
+    return unimplementedWarning("getsnapadjustright");
   }
 
-  getsnapadjustleft() {
-    unimplementedWarning("getsnapadjustleft");
-    return;
+  getsnapadjustleft(): number {
+    return unimplementedWarning("getsnapadjustleft");
   }
 
-  getsnapadjustbottom() {
-    unimplementedWarning("getsnapadjustbottom");
-    return;
+  getsnapadjustbottom(): number {
+    return unimplementedWarning("getsnapadjustbottom");
   }
 
-  setredrawonresize(wantredrawonresize: number) {
-    unimplementedWarning("setredrawonresize");
-    return;
+  setredrawonresize(wantredrawonresize: number): void {
+    return unimplementedWarning("setredrawonresize");
   }
 
-  beforeredock() {
-    unimplementedWarning("beforeredock");
-    return;
+  beforeredock(): void {
+    return unimplementedWarning("beforeredock");
   }
 
-  redock() {
-    unimplementedWarning("redock");
-    return;
+  redock(): void {
+    return unimplementedWarning("redock");
   }
 
-  istransparencysafe() {
-    unimplementedWarning("istransparencysafe");
-    return;
+  istransparencysafe(): boolean {
+    return unimplementedWarning("istransparencysafe");
   }
 
-  islayoutanimationsafe() {
-    unimplementedWarning("islayoutanimationsafe");
-    return;
+  islayoutanimationsafe(): boolean {
+    return unimplementedWarning("islayoutanimationsafe");
   }
 
   onmouseenterlayout(): void {

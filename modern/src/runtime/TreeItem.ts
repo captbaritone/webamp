@@ -12,119 +12,96 @@ class TreeItem extends MakiObject {
     return "TreeItem";
   }
 
-  getnumchildren() {
-    unimplementedWarning("getnumchildren");
-    return;
+  getnumchildren(): number {
+    return unimplementedWarning("getnumchildren");
   }
 
-  setlabel(label: string) {
-    unimplementedWarning("setlabel");
-    return;
+  setlabel(label: string): void {
+    return unimplementedWarning("setlabel");
   }
 
-  getlabel() {
-    unimplementedWarning("getlabel");
-    return;
+  getlabel(): string {
+    return unimplementedWarning("getlabel");
   }
 
-  ensurevisible() {
-    unimplementedWarning("ensurevisible");
-    return;
+  ensurevisible(): void {
+    return unimplementedWarning("ensurevisible");
   }
 
   getnthchild(nth: number) {
-    unimplementedWarning("getnthchild");
-    return;
+    return unimplementedWarning("getnthchild");
   }
 
   getchild() {
-    unimplementedWarning("getchild");
-    return;
+    return unimplementedWarning("getchild");
   }
 
   getchildsibling(_item: TreeItem) {
-    unimplementedWarning("getchildsibling");
-    return;
+    return unimplementedWarning("getchildsibling");
   }
 
   getsibling() {
-    unimplementedWarning("getsibling");
-    return;
+    return unimplementedWarning("getsibling");
   }
 
   getparent() {
-    unimplementedWarning("getparent");
-    return;
+    return unimplementedWarning("getparent");
   }
 
-  editlabel() {
-    unimplementedWarning("editlabel");
-    return;
+  editlabel(): void {
+    return unimplementedWarning("editlabel");
   }
 
-  hassubitems() {
-    unimplementedWarning("hassubitems");
-    return;
+  hassubitems(): number {
+    return unimplementedWarning("hassubitems");
   }
 
-  setsorted(issorted: number) {
-    unimplementedWarning("setsorted");
-    return;
+  setsorted(issorted: number): void {
+    return unimplementedWarning("setsorted");
   }
 
-  setchildtab(haschildtab: number) {
-    unimplementedWarning("setchildtab");
-    return;
+  setchildtab(haschildtab: number): void {
+    return unimplementedWarning("setchildtab");
   }
 
-  issorted() {
-    unimplementedWarning("issorted");
-    return;
+  issorted(): number {
+    return unimplementedWarning("issorted");
   }
 
-  iscollapsed() {
-    unimplementedWarning("iscollapsed");
-    return;
+  iscollapsed(): number {
+    return unimplementedWarning("iscollapsed");
   }
 
-  isexpanded() {
-    unimplementedWarning("isexpanded");
-    return;
+  isexpanded(): number {
+    return unimplementedWarning("isexpanded");
   }
 
-  invalidate() {
-    unimplementedWarning("invalidate");
-    return;
+  invalidate(): void {
+    return unimplementedWarning("invalidate");
   }
 
-  isselected() {
-    unimplementedWarning("isselected");
-    return;
+  isselected(): number {
+    return unimplementedWarning("isselected");
   }
 
-  ishilited() {
-    unimplementedWarning("ishilited");
-    return;
+  ishilited(): number {
+    return unimplementedWarning("ishilited");
   }
 
-  sethilited(ishilited: number) {
-    unimplementedWarning("sethilited");
-    return;
+  sethilited(ishilited: number): void {
+    return unimplementedWarning("sethilited");
   }
 
-  collapse() {
-    unimplementedWarning("collapse");
-    return;
+  collapse(): number {
+    return unimplementedWarning("collapse");
   }
 
-  expand() {
-    unimplementedWarning("expand");
-    return;
+  expand(): number {
+    return unimplementedWarning("expand");
   }
 
   gettree() {
-    unimplementedWarning("gettree");
-    return;
+    return unimplementedWarning("gettree");
   }
 
   ontreeadd(): void {

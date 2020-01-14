@@ -63,7 +63,7 @@ class PopupMenu extends MakiObject {
     this._commands.push({ id: "separator" });
   }
 
-  checkcommand(id: number, check: boolean) {
+  checkcommand(id: number, check: boolean): void {
     unimplementedWarning("checkcommand");
   }
 
@@ -82,24 +82,20 @@ class PopupMenu extends MakiObject {
     });
   }
 
-  addsubmenu(submenu: PopupMenu, submenutext: string) {
-    unimplementedWarning("addsubmenu");
-    return;
+  addsubmenu(submenu: PopupMenu, submenutext: string): void {
+    return unimplementedWarning("addsubmenu");
   }
 
-  popatxy(x: number, y: number) {
-    unimplementedWarning("popatxy");
-    return;
+  popatxy(x: number, y: number): number {
+    return unimplementedWarning("popatxy");
   }
 
-  getnumcommands() {
-    unimplementedWarning("getnumcommands");
-    return;
+  getnumcommands(): number {
+    return unimplementedWarning("getnumcommands");
   }
 
-  disablecommand(cmd_id: number, disable: boolean) {
-    unimplementedWarning("disablecommand");
-    return;
+  disablecommand(cmd_id: number, disable: boolean): void {
+    return unimplementedWarning("disablecommand");
   }
 }
 

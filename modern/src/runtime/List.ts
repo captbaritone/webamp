@@ -44,9 +44,8 @@ class List extends MakiObject {
     this._list = [];
   }
 
-  finditem2(_object: any, startItem: number) {
-    Utils.unimplementedWarning("finditem2");
-    return;
+  finditem2(_object: any, startItem: number): number {
+    return Utils.unimplementedWarning("finditem2");
   }
 }
 

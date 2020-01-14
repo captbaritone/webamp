@@ -13,33 +13,27 @@ class GroupList extends GuiObject {
   }
 
   instantiate(group_id: string, num_groups: number) {
-    unimplementedWarning("instantiate");
-    return;
+    return unimplementedWarning("instantiate");
   }
 
-  getnumitems() {
-    unimplementedWarning("getnumitems");
-    return;
+  getnumitems(): number {
+    return unimplementedWarning("getnumitems");
   }
 
   enumitem(num: number) {
-    unimplementedWarning("enumitem");
-    return;
+    return unimplementedWarning("enumitem");
   }
 
-  removeall() {
-    unimplementedWarning("removeall");
-    return;
+  removeall(): void {
+    return unimplementedWarning("removeall");
   }
 
-  scrolltopercent(percent: number) {
-    unimplementedWarning("scrolltopercent");
-    return;
+  scrolltopercent(percent: number): void {
+    return unimplementedWarning("scrolltopercent");
   }
 
-  setredraw(redraw: number) {
-    unimplementedWarning("setredraw");
-    return;
+  setredraw(redraw: number): void {
+    return unimplementedWarning("setredraw");
   }
 }
 

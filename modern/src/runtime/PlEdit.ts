@@ -12,108 +12,87 @@ export default class PlEdit extends MakiObject {
     return "PlEdit";
   }
 
-  getnumtracks() {
-    unimplementedWarning("getnumtracks");
-    return;
+  getnumtracks(): number {
+    return unimplementedWarning("getnumtracks");
   }
 
-  getcurrentindex() {
-    unimplementedWarning("getcurrentindex");
-    return;
+  getcurrentindex(): number {
+    return unimplementedWarning("getcurrentindex");
   }
 
-  getnumselectedtracks() {
-    unimplementedWarning("getnumselectedtracks");
-    return;
+  getnumselectedtracks(): number {
+    return unimplementedWarning("getnumselectedtracks");
   }
 
-  getnextselectedtrack(i: number) {
-    unimplementedWarning("getnextselectedtrack");
-    return;
+  getnextselectedtrack(i: number): number {
+    return unimplementedWarning("getnextselectedtrack");
   }
 
-  showcurrentlyplayingtrack() {
-    unimplementedWarning("showcurrentlyplayingtrack");
-    return;
+  showcurrentlyplayingtrack(): void {
+    return unimplementedWarning("showcurrentlyplayingtrack");
   }
 
-  showtrack(item: number) {
-    unimplementedWarning("showtrack");
-    return;
+  showtrack(item: number): void {
+    return unimplementedWarning("showtrack");
   }
 
-  enqueuefile(file: string) {
-    unimplementedWarning("enqueuefile");
-    return;
+  enqueuefile(file: string): void {
+    return unimplementedWarning("enqueuefile");
   }
 
-  clear() {
-    unimplementedWarning("clear");
-    return;
+  clear(): void {
+    return unimplementedWarning("clear");
   }
 
-  removetrack(item: number) {
-    unimplementedWarning("removetrack");
-    return;
+  removetrack(item: number): void {
+    return unimplementedWarning("removetrack");
   }
 
-  swaptracks(item1: number, item2: number) {
-    unimplementedWarning("swaptracks");
-    return;
+  swaptracks(item1: number, item2: number): void {
+    return unimplementedWarning("swaptracks");
   }
 
-  moveup(item: number) {
-    unimplementedWarning("moveup");
-    return;
+  moveup(item: number): void {
+    return unimplementedWarning("moveup");
   }
 
-  movedown(item: number) {
-    unimplementedWarning("movedown");
-    return;
+  movedown(item: number): void {
+    return unimplementedWarning("movedown");
   }
 
-  moveto(item: number, pos: number) {
-    unimplementedWarning("moveto");
-    return;
+  moveto(item: number, pos: number): void {
+    return unimplementedWarning("moveto");
   }
 
-  playtrack(item: number) {
-    unimplementedWarning("playtrack");
-    return;
+  playtrack(item: number): void {
+    return unimplementedWarning("playtrack");
   }
 
-  getrating(item: number) {
-    unimplementedWarning("getrating");
-    return;
+  getrating(item: number): number {
+    return unimplementedWarning("getrating");
   }
 
-  setrating(item: number, rating: number) {
-    unimplementedWarning("setrating");
-    return;
+  setrating(item: number, rating: number): void {
+    return unimplementedWarning("setrating");
   }
 
-  gettitle(item: number) {
-    unimplementedWarning("gettitle");
-    return;
+  gettitle(item: number): string {
+    return unimplementedWarning("gettitle");
   }
 
-  getlength(item: number) {
-    unimplementedWarning("getlength");
-    return;
+  getlength(item: number): string {
+    return unimplementedWarning("getlength");
   }
 
-  getmetadata(item: number, metadatastring: string) {
-    unimplementedWarning("getmetadata");
-    return;
+  getmetadata(item: number, metadatastring: string): string {
+    return unimplementedWarning("getmetadata");
   }
 
-  getfilename(item: number) {
-    unimplementedWarning("getfilename");
-    return;
+  getfilename(item: number): string {
+    return unimplementedWarning("getfilename");
   }
 
-  onpleditmodified() {
-    unimplementedWarning("onpleditmodified");
-    return;
+  onpleditmodified(): void {
+    return unimplementedWarning("onpleditmodified");
   }
 }

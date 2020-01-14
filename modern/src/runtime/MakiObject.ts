@@ -124,7 +124,7 @@ class MakiObject {
   /**
    * getId()
    */
-  getid() {
+  getid(): string {
     throw new Error("getId not implemented");
   }
 

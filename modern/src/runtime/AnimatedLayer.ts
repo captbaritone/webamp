@@ -230,14 +230,12 @@ class AnimatedLayer extends Layer {
     return this._playing;
   }
 
-  ispaused() {
-    unimplementedWarning("ispaused");
-    return;
+  ispaused(): boolean {
+    return unimplementedWarning("ispaused");
   }
 
-  isstopped() {
-    unimplementedWarning("isstopped");
-    return;
+  isstopped(): boolean {
+    return unimplementedWarning("isstopped");
   }
 
   getstartframe(): number {
@@ -248,9 +246,8 @@ class AnimatedLayer extends Layer {
     return this._end;
   }
 
-  getdirection() {
-    unimplementedWarning("getdirection");
-    return;
+  getdirection(): number {
+    return unimplementedWarning("getdirection");
   }
 
   getautoreplay(): boolean {
@@ -261,9 +258,8 @@ class AnimatedLayer extends Layer {
     return this._frameNum;
   }
 
-  setrealtime(onoff: boolean) {
-    unimplementedWarning("setrealtime");
-    return;
+  setrealtime(onoff: boolean): void {
+    return unimplementedWarning("setrealtime");
   }
 }
 

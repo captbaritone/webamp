@@ -72,9 +72,8 @@ class Timer extends MakiObject {
     return this._animationCancelID != null;
   }
 
-  getskipped() {
-    unimplementedWarning("getskipped");
-    return;
+  getskipped(): number {
+    return unimplementedWarning("getskipped");
   }
 }
 

@@ -12,7 +12,7 @@ class Slider extends GuiObject {
     return "Slider";
   }
 
-  getposition() {
+  getposition(): number {
     unimplementedWarning("getposition");
     return 0;
   }
@@ -29,19 +29,16 @@ class Slider extends GuiObject {
     this.js_trigger("onSetFinalPosition", pos);
   }
 
-  setposition(pos: number) {
-    unimplementedWarning("setposition");
-    return;
+  setposition(pos: number): void {
+    return unimplementedWarning("setposition");
   }
 
-  lock() {
-    unimplementedWarning("lock");
-    return;
+  lock(): void {
+    return unimplementedWarning("lock");
   }
 
-  unlock() {
-    unimplementedWarning("unlock");
-    return;
+  unlock(): void {
+    return unimplementedWarning("unlock");
   }
 }
 

@@ -17,14 +17,12 @@ class Group extends GuiObject {
     return this.findobject(id);
   }
 
-  getnumobjects() {
-    unimplementedWarning("getnumobjects");
-    return;
+  getnumobjects(): number {
+    return unimplementedWarning("getnumobjects");
   }
 
   enumobject(num: number) {
-    unimplementedWarning("enumobject");
-    return;
+    return unimplementedWarning("enumobject");
   }
 
   oncreateobject(newobj: GuiObject): void {
@@ -39,9 +37,8 @@ class Group extends GuiObject {
     return getMousePosition().y;
   }
 
-  islayout() {
-    unimplementedWarning("islayout");
-    return;
+  islayout(): boolean {
+    return unimplementedWarning("islayout");
   }
 }
 

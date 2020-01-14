@@ -12,18 +12,15 @@ export default class Frame extends GuiObject {
     return "Frame";
   }
 
-  getposition() {
-    Utils.unimplementedWarning("getposition");
-    return;
+  getposition(): number {
+    return Utils.unimplementedWarning("getposition");
   }
 
-  setposition(position: number) {
-    Utils.unimplementedWarning("setposition");
-    return;
+  setposition(position: number): void {
+    return Utils.unimplementedWarning("setposition");
   }
 
-  onsetposition(position: number) {
-    Utils.unimplementedWarning("onsetposition");
-    return;
+  onsetposition(position: number): void {
+    return Utils.unimplementedWarning("onsetposition");
   }
 }

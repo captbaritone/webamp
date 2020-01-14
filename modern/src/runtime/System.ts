@@ -50,8 +50,8 @@ class System extends MakiObject {
     return findDescendantByTypeAndId(this._root, "container", id);
   }
 
-  getruntimeversion() {
-    return "5.666";
+  getruntimeversion(): number {
+    return 5.666;
   }
 
   // Retreive a token from a list of tokens seperated by separator.
@@ -63,22 +63,22 @@ class System extends MakiObject {
     return "";
   }
 
-  getparam() {
+  getparam(): string {
     unimplementedWarning("getparam");
     return "Some String";
   }
 
-  getskinname() {
+  getskinname(): string {
     unimplementedWarning("getskinname");
     return "Some String";
   }
 
-  getplayitemstring() {
+  getplayitemstring(): string {
     unimplementedWarning("getplayitemstring");
     return "Some String";
   }
 
-  geteq() {
+  geteq(): number {
     unimplementedWarning("geteq");
     return 0;
   }
@@ -87,17 +87,17 @@ class System extends MakiObject {
     this.js_trigger("onEqChanged", newstatus);
   }
 
-  geteqband(band: number) {
+  geteqband(band: number): number {
     unimplementedWarning("geteqband");
     return 0;
   }
 
-  geteqpreamp() {
+  geteqpreamp(): number {
     unimplementedWarning("geteqpreamp");
     return 0;
   }
 
-  getstatus() {
+  getstatus(): number {
     unimplementedWarning("getstatus");
     return 0;
   }
@@ -107,15 +107,16 @@ class System extends MakiObject {
     msgtitle: string,
     flag: number,
     notanymoreId: string
-  ) {
+  ): number {
     console.log({ message, msgtitle, flag, notanymoreId });
+    return unimplementedWarning("getstatus");
   }
 
-  integertostring(value: number) {
+  integertostring(value: number): string {
     return value.toString();
   }
 
-  stringtointeger(str: string) {
+  stringtointeger(str: string): number {
     return parseInt(str, 10);
   }
 
@@ -150,7 +151,7 @@ class System extends MakiObject {
   }
 
   // Seems like volume is 0-255
-  getvolume() {
+  getvolume(): number {
     return Selectors.getVolume(this._store.getState());
   }
 
@@ -158,23 +159,23 @@ class System extends MakiObject {
     return this._store.dispatch(Actions.setVolume(volume));
   }
 
-  getplayitemlength() {
+  getplayitemlength(): number {
     unimplementedWarning("getplayitemlength");
     return 100000;
   }
 
-  seekto(pos: number) {
+  seekto(pos: number): void {
     unimplementedWarning("seekto");
   }
 
-  getviewportheight() {
+  getviewportheight(): number {
     return Math.max(
       document.documentElement.clientHeight,
       window.innerHeight || 0
     );
   }
 
-  getviewportwidth() {
+  getviewportwidth(): number {
     return Math.max(
       document.documentElement.clientWidth,
       window.innerWidth || 0
@@ -266,103 +267,83 @@ class System extends MakiObject {
   }
 
   newdynamiccontainer(container_id: string) {
-    unimplementedWarning("newdynamiccontainer");
-    return;
+    return unimplementedWarning("newdynamiccontainer");
   }
 
   newgroup(group_id: string) {
-    unimplementedWarning("newgroup");
-    return;
+    return unimplementedWarning("newgroup");
   }
 
   newgroupaslayout(group_id: string) {
-    unimplementedWarning("newgroupaslayout");
-    return;
+    return unimplementedWarning("newgroupaslayout");
   }
 
-  getnumcontainers() {
-    unimplementedWarning("getnumcontainers");
-    return;
+  getnumcontainers(): number {
+    return unimplementedWarning("getnumcontainers");
   }
 
   enumcontainer(num: number) {
-    unimplementedWarning("enumcontainer");
-    return;
+    return unimplementedWarning("enumcontainer");
   }
 
   getwac(wac_guid: string) {
-    unimplementedWarning("getwac");
-    return;
+    return unimplementedWarning("getwac");
   }
 
-  getplayitemmetadatastring(metadataname: string) {
-    unimplementedWarning("getplayitemmetadatastring");
-    return;
+  getplayitemmetadatastring(metadataname: string): string {
+    return unimplementedWarning("getplayitemmetadatastring");
   }
 
-  getplayitemdisplaytitle() {
-    unimplementedWarning("getplayitemdisplaytitle");
-    return;
+  getplayitemdisplaytitle(): string {
+    return unimplementedWarning("getplayitemdisplaytitle");
   }
 
-  getextfamily(ext: string) {
-    unimplementedWarning("getextfamily");
-    return;
+  getextfamily(ext: string): string {
+    return unimplementedWarning("getextfamily");
   }
 
-  playfile(playitem: string) {
-    unimplementedWarning("playfile");
-    return;
+  playfile(playitem: string): void {
+    return unimplementedWarning("playfile");
   }
 
-  play() {
-    unimplementedWarning("play");
-    return;
+  play(): void {
+    return unimplementedWarning("play");
   }
 
-  stop() {
-    unimplementedWarning("stop");
-    return;
+  stop(): void {
+    return unimplementedWarning("stop");
   }
 
-  pause() {
-    unimplementedWarning("pause");
-    return;
+  pause(): void {
+    return unimplementedWarning("pause");
   }
 
-  next() {
-    unimplementedWarning("next");
-    return;
+  next(): void {
+    return unimplementedWarning("next");
   }
 
-  previous() {
-    unimplementedWarning("previous");
-    return;
+  previous(): void {
+    return unimplementedWarning("previous");
   }
 
-  eject() {
-    unimplementedWarning("eject");
-    return;
+  eject(): void {
+    return unimplementedWarning("eject");
   }
 
-  getposition() {
-    unimplementedWarning("getposition");
-    return;
+  getposition(): number {
+    return unimplementedWarning("getposition");
   }
 
-  seteqband(band: number, value: number) {
-    unimplementedWarning("seteqband");
-    return;
+  seteqband(band: number, value: number): void {
+    return unimplementedWarning("seteqband");
   }
 
-  seteqpreamp(value: number) {
-    unimplementedWarning("seteqpreamp");
-    return;
+  seteqpreamp(value: number): void {
+    return unimplementedWarning("seteqpreamp");
   }
 
-  seteq(onoff: number) {
-    unimplementedWarning("seteq");
-    return;
+  seteq(onoff: number): void {
+    return unimplementedWarning("seteq");
   }
 
   getmouseposx(): number {
@@ -567,18 +548,16 @@ class System extends MakiObject {
     return encodeURI(url);
   }
 
-  removepath(str: string) {
-    unimplementedWarning("removepath");
+  removepath(str: string): string {
+    return unimplementedWarning("removepath");
   }
 
-  getpath(str: string) {
-    unimplementedWarning("getpath");
-    return;
+  getpath(str: string): string {
+    return unimplementedWarning("getpath");
   }
 
-  getextension(str: string) {
-    unimplementedWarning("getextension");
-    return;
+  getextension(str: string): string {
+    return unimplementedWarning("getextension");
   }
 
   sin(value: number): number {
@@ -646,134 +625,108 @@ class System extends MakiObject {
     return this._privateString.get(section).get(item);
   }
 
-  setpublicstring(item: string, value: string) {
-    unimplementedWarning("setpublicstring");
-    return;
+  setpublicstring(item: string, value: string): void {
+    return unimplementedWarning("setpublicstring");
   }
 
-  setpublicint(item: string, value: number) {
-    unimplementedWarning("setpublicint");
-    return;
+  setpublicint(item: string, value: number): void {
+    return unimplementedWarning("setpublicint");
   }
 
-  getpublicstring(item: string, defvalue: string) {
-    unimplementedWarning("getpublicstring");
-    return;
+  getpublicstring(item: string, defvalue: string): string {
+    return unimplementedWarning("getpublicstring");
   }
 
-  getpublicint(item: string, defvalue: number) {
-    unimplementedWarning("getpublicint");
-    return;
+  getpublicint(item: string, defvalue: number): number {
+    return unimplementedWarning("getpublicint");
   }
 
-  getviewportwidthfrompoint(x: number, y: number) {
-    unimplementedWarning("getviewportwidthfrompoint");
-    return;
+  getviewportwidthfrompoint(x: number, y: number): number {
+    return unimplementedWarning("getviewportwidthfrompoint");
   }
 
-  getviewportheightfrompoint(x: number, y: number) {
-    unimplementedWarning("getviewportheightfrompoint");
-    return;
+  getviewportheightfrompoint(x: number, y: number): number {
+    return unimplementedWarning("getviewportheightfrompoint");
   }
 
-  getviewportleft() {
-    unimplementedWarning("getviewportleft");
-    return;
+  getviewportleft(): number {
+    return unimplementedWarning("getviewportleft");
   }
 
-  getviewportleftfrompoint(x: number, y: number) {
-    unimplementedWarning("getviewportleftfrompoint");
-    return;
+  getviewportleftfrompoint(x: number, y: number): number {
+    return unimplementedWarning("getviewportleftfrompoint");
   }
 
-  getviewporttop() {
-    unimplementedWarning("getviewporttop");
-    return;
+  getviewporttop(): number {
+    return unimplementedWarning("getviewporttop");
   }
 
-  getviewporttopfrompoint(x: number, y: number) {
-    unimplementedWarning("getviewporttopfrompoint");
-    return;
+  getviewporttopfrompoint(x: number, y: number): number {
+    return unimplementedWarning("getviewporttopfrompoint");
   }
 
-  debugstring(str: string, severity: number) {
-    unimplementedWarning("debugstring");
-    return;
+  debugstring(str: string, severity: number): void {
+    return unimplementedWarning("debugstring");
   }
 
-  ddesend(application: string, command: string, mininterval: number) {
-    unimplementedWarning("ddesend");
-    return;
+  ddesend(application: string, command: string, mininterval: number): void {
+    return unimplementedWarning("ddesend");
   }
 
   onlookforcomponent(guid: string) {
-    unimplementedWarning("onlookforcomponent");
-    return;
+    return unimplementedWarning("onlookforcomponent");
   }
 
-  getcurappleft() {
-    unimplementedWarning("getcurappleft");
-    return;
+  getcurappleft(): number {
+    return unimplementedWarning("getcurappleft");
   }
 
-  getcurapptop() {
-    unimplementedWarning("getcurapptop");
-    return;
+  getcurapptop(): number {
+    return unimplementedWarning("getcurapptop");
   }
 
-  getcurappwidth() {
-    unimplementedWarning("getcurappwidth");
-    return;
+  getcurappwidth(): number {
+    return unimplementedWarning("getcurappwidth");
   }
 
-  getcurappheight() {
-    unimplementedWarning("getcurappheight");
-    return;
+  getcurappheight(): number {
+    return unimplementedWarning("getcurappheight");
   }
 
-  isappactive() {
-    unimplementedWarning("isappactive");
-    return;
+  isappactive(): boolean {
+    return unimplementedWarning("isappactive");
   }
 
-  switchskin(skinname: string) {
-    unimplementedWarning("switchskin");
-    return;
+  switchskin(skinname: string): void {
+    return unimplementedWarning("switchskin");
   }
 
-  isloadingskin() {
-    unimplementedWarning("isloadingskin");
-    return;
+  isloadingskin(): number {
+    return unimplementedWarning("isloadingskin");
   }
 
-  lockui() {
-    unimplementedWarning("lockui");
-    return;
+  lockui(): void {
+    return unimplementedWarning("lockui");
   }
 
-  unlockui() {
-    unimplementedWarning("unlockui");
-    return;
+  unlockui(): void {
+    return unimplementedWarning("unlockui");
   }
 
   getmainbrowser() {
-    unimplementedWarning("getmainbrowser");
-    return;
+    return unimplementedWarning("getmainbrowser");
   }
 
-  popmainbrowser() {
-    unimplementedWarning("popmainbrowser");
-    return;
+  popmainbrowser(): void {
+    return unimplementedWarning("popmainbrowser");
   }
 
-  navigateurl(url: string) {
-    unimplementedWarning("navigateurl");
-    return;
+  navigateurl(url: string): void {
+    return unimplementedWarning("navigateurl");
   }
 
-  isobjectvalid(o: MakiObject) {
-    unimplementedWarning("isobjectvalid");
-    return;
+  isobjectvalid(o: MakiObject): boolean {
+    return unimplementedWarning("isobjectvalid");
   }
 
   // Takes a Double and returns the closest integer representation.
@@ -791,9 +744,8 @@ class System extends MakiObject {
     return this._getDateTimeInMs(date);
   }
 
-  setmenutransparency(alphavalue: number) {
-    unimplementedWarning("setmenutransparency");
-    return;
+  setmenutransparency(alphavalue: number): void {
+    return unimplementedWarning("setmenutransparency");
   }
 
   ongetcancelcomponent(guid: string, goingvisible: boolean): boolean {
@@ -803,38 +755,36 @@ class System extends MakiObject {
     return true;
   }
 
-  iskeydown(vk_code: number) {
-    unimplementedWarning("iskeydown");
-    return;
+  iskeydown(vk_code: number): number {
+    return unimplementedWarning("iskeydown");
   }
 
-  setclipboardtext(_text: string) {
-    unimplementedWarning("setclipboardtext");
-    return;
+  setclipboardtext(_text: string): void {
+    return unimplementedWarning("setclipboardtext");
   }
 
   chr(charnum: number): string {
     return String.fromCharCode(charnum);
   }
 
-  selectfile(extlist: string, id: string, prev_filename: string) {
-    unimplementedWarning("selectfile");
-    return;
+  selectfile(extlist: string, id: string, prev_filename: string): string {
+    return unimplementedWarning("selectfile");
   }
 
-  systemmenu() {
-    unimplementedWarning("systemmenu");
-    return;
+  systemmenu(): void {
+    return unimplementedWarning("systemmenu");
   }
 
-  windowmenu() {
-    unimplementedWarning("windowmenu");
-    return;
+  windowmenu(): void {
+    return unimplementedWarning("windowmenu");
   }
 
-  triggeraction(context: GuiObject, actionname: string, actionparam: string) {
-    unimplementedWarning("triggeraction");
-    return;
+  triggeraction(
+    context: GuiObject,
+    actionname: string,
+    actionparam: string
+  ): void {
+    return unimplementedWarning("triggeraction");
   }
 
   showwindow(
@@ -842,98 +792,79 @@ class System extends MakiObject {
     preferedcontainer: string,
     transient: boolean
   ) {
-    unimplementedWarning("showwindow");
-    return;
+    return unimplementedWarning("showwindow");
   }
 
-  hidewindow(hw: GuiObject) {
-    unimplementedWarning("hidewindow");
-    return;
+  hidewindow(hw: GuiObject): void {
+    return unimplementedWarning("hidewindow");
   }
 
-  hidenamedwindow(guidorgroup: string) {
-    unimplementedWarning("hidenamedwindow");
-    return;
+  hidenamedwindow(guidorgroup: string): void {
+    return unimplementedWarning("hidenamedwindow");
   }
 
-  isnamedwindowvisible(guidorgroup: string) {
-    unimplementedWarning("isnamedwindowvisible");
-    return;
+  isnamedwindowvisible(guidorgroup: string): boolean {
+    return unimplementedWarning("isnamedwindowvisible");
   }
 
-  setatom(atomname: string, object: MakiObject) {
-    unimplementedWarning("setatom");
-    return;
+  setatom(atomname: string, object: MakiObject): void {
+    return unimplementedWarning("setatom");
   }
 
   getatom(atomname: string) {
-    unimplementedWarning("getatom");
-    return;
+    return unimplementedWarning("getatom");
   }
 
-  invokedebugger() {
-    unimplementedWarning("invokedebugger");
-    return;
+  invokedebugger(): void {
+    return unimplementedWarning("invokedebugger");
   }
 
-  isvideo() {
-    unimplementedWarning("isvideo");
-    return;
+  isvideo(): number {
+    return unimplementedWarning("isvideo");
   }
 
-  isvideofullscreen() {
-    unimplementedWarning("isvideofullscreen");
-    return;
+  isvideofullscreen(): number {
+    return unimplementedWarning("isvideofullscreen");
   }
 
-  getidealvideowidth() {
-    unimplementedWarning("getidealvideowidth");
-    return;
+  getidealvideowidth(): number {
+    return unimplementedWarning("getidealvideowidth");
   }
 
-  getidealvideoheight() {
-    unimplementedWarning("getidealvideoheight");
-    return;
+  getidealvideoheight(): number {
+    return unimplementedWarning("getidealvideoheight");
   }
 
-  isminimized() {
-    unimplementedWarning("isminimized");
-    return;
+  isminimized(): number {
+    return unimplementedWarning("isminimized");
   }
 
-  minimizeapplication() {
-    unimplementedWarning("minimizeapplication");
-    return;
+  minimizeapplication(): void {
+    return unimplementedWarning("minimizeapplication");
   }
 
-  restoreapplication() {
-    unimplementedWarning("restoreapplication");
-    return;
+  restoreapplication(): void {
+    return unimplementedWarning("restoreapplication");
   }
 
-  activateapplication() {
-    unimplementedWarning("activateapplication");
-    return;
+  activateapplication(): void {
+    return unimplementedWarning("activateapplication");
   }
 
-  getplaylistlength() {
-    unimplementedWarning("getplaylistlength");
-    return;
+  getplaylistlength(): number {
+    return unimplementedWarning("getplaylistlength");
   }
 
-  getplaylistindex() {
-    unimplementedWarning("getplaylistindex");
-    return;
+  getplaylistindex(): number {
+    return unimplementedWarning("getplaylistindex");
   }
 
-  isdesktopalphaavailable() {
-    unimplementedWarning("isdesktopalphaavailable");
-    return;
+  isdesktopalphaavailable(): boolean {
+    return unimplementedWarning("isdesktopalphaavailable");
   }
 
-  istransparencyavailable() {
-    unimplementedWarning("istransparencyavailable");
-    return;
+  istransparencyavailable(): boolean {
+    return unimplementedWarning("istransparencyavailable");
   }
 
   onshownotification(): number {
@@ -941,64 +872,52 @@ class System extends MakiObject {
     return 1; // return 1 if you implement it
   }
 
-  getsonginfotext() {
-    unimplementedWarning("getsonginfotext");
-    return;
+  getsonginfotext(): string {
+    return unimplementedWarning("getsonginfotext");
   }
 
-  getvisband(channel: number, band: number) {
-    unimplementedWarning("getvisband");
-    return;
+  getvisband(channel: number, band: number): number {
+    return unimplementedWarning("getvisband");
   }
 
-  onviewportchanged(width: number, height: number) {
-    unimplementedWarning("onviewportchanged");
-    return;
+  onviewportchanged(width: number, height: number): void {
+    return unimplementedWarning("onviewportchanged");
   }
 
-  onurlchange(url: string) {
-    unimplementedWarning("onurlchange");
-    return;
+  onurlchange(url: string): void {
+    return unimplementedWarning("onurlchange");
   }
 
-  oneqfreqchanged(isiso: number) {
-    unimplementedWarning("oneqfreqchanged");
-    return;
+  oneqfreqchanged(isiso: number): void {
+    return unimplementedWarning("oneqfreqchanged");
   }
 
-  enumembedguid(num: number) {
-    unimplementedWarning("enumembedguid");
-    return;
+  enumembedguid(num: number): string {
+    return unimplementedWarning("enumembedguid");
   }
 
-  getmetadatastring(filename: string, metadataname: string) {
-    unimplementedWarning("getmetadatastring");
-    return;
+  getmetadatastring(filename: string, metadataname: string): string {
+    return unimplementedWarning("getmetadatastring");
   }
 
-  getcurrenttrackrating() {
-    unimplementedWarning("getcurrenttrackrating");
-    return;
+  getcurrenttrackrating(): number {
+    return unimplementedWarning("getcurrenttrackrating");
   }
 
-  oncurrenttrackrated(rating: number) {
-    unimplementedWarning("oncurrenttrackrated");
-    return;
+  oncurrenttrackrated(rating: number): void {
+    return unimplementedWarning("oncurrenttrackrated");
   }
 
-  setcurrenttrackrating(rating: number) {
-    unimplementedWarning("setcurrenttrackrating");
-    return;
+  setcurrenttrackrating(rating: number): void {
+    return unimplementedWarning("setcurrenttrackrating");
   }
 
-  getdecodername(playitem: string) {
-    unimplementedWarning("getdecodername");
-    return;
+  getdecodername(playitem: string): string {
+    return unimplementedWarning("getdecodername");
   }
 
-  getalbumart(playitem: string) {
-    unimplementedWarning("getalbumart");
-    return;
+  getalbumart(playitem: string): number {
+    return unimplementedWarning("getalbumart");
   }
 
   downloadmedia(
@@ -1006,218 +925,180 @@ class System extends MakiObject {
     destinationPath: string,
     wantAddToML: boolean,
     notifyDownloadsList: boolean
-  ) {
-    unimplementedWarning("downloadmedia");
-    return;
+  ): void {
+    return unimplementedWarning("downloadmedia");
   }
 
   downloadurl(
     url: string,
     destination_filename: string,
     progress_dialog_title: string
-  ) {
-    unimplementedWarning("downloadurl");
-    return;
+  ): void {
+    return unimplementedWarning("downloadurl");
   }
 
-  ondownloadfinished(url: string, success: boolean, filename: string) {
-    unimplementedWarning("ondownloadfinished");
-    return;
+  ondownloadfinished(url: string, success: boolean, filename: string): void {
+    return unimplementedWarning("ondownloadfinished");
   }
 
-  getdownloadpath() {
-    unimplementedWarning("getdownloadpath");
-    return;
+  getdownloadpath(): string {
+    return unimplementedWarning("getdownloadpath");
   }
 
-  setdownloadpath(new_path: string) {
-    unimplementedWarning("setdownloadpath");
-    return;
+  setdownloadpath(new_path: string): void {
+    return unimplementedWarning("setdownloadpath");
   }
 
-  enqueuefile(playitem: string) {
-    unimplementedWarning("enqueuefile");
-    return;
+  enqueuefile(playitem: string): void {
+    return unimplementedWarning("enqueuefile");
   }
 
-  urldecode(url: string) {
-    unimplementedWarning("urldecode");
-    return;
+  urldecode(url: string): string {
+    return unimplementedWarning("urldecode");
   }
 
-  parseatf(topass: string) {
-    unimplementedWarning("parseatf");
-    return;
+  parseatf(topass: string): string {
+    return unimplementedWarning("parseatf");
   }
 
-  log10(value: number) {
-    unimplementedWarning("log10");
-    return;
+  log10(value: number): number {
+    return unimplementedWarning("log10");
   }
 
-  ln(value: number) {
-    unimplementedWarning("ln");
-    return;
+  ln(value: number): number {
+    return unimplementedWarning("ln");
   }
 
-  getviewportwidthfromguiobject(g: GuiObject) {
-    unimplementedWarning("getviewportwidthfromguiobject");
-    return;
+  getviewportwidthfromguiobject(g: GuiObject): number {
+    return unimplementedWarning("getviewportwidthfromguiobject");
   }
 
-  getmonitorwidth() {
-    unimplementedWarning("getmonitorwidth");
-    return;
+  getmonitorwidth(): number {
+    return unimplementedWarning("getmonitorwidth");
   }
 
-  getmonitorwidthfrompoint(x: number, y: number) {
-    unimplementedWarning("getmonitorwidthfrompoint");
-    return;
+  getmonitorwidthfrompoint(x: number, y: number): number {
+    return unimplementedWarning("getmonitorwidthfrompoint");
   }
 
-  getmonitorwidthfromguiobject(g: GuiObject) {
-    unimplementedWarning("getmonitorwidthfromguiobject");
-    return;
+  getmonitorwidthfromguiobject(g: GuiObject): number {
+    return unimplementedWarning("getmonitorwidthfromguiobject");
   }
 
-  onmousemove(x: number, y: number) {
-    unimplementedWarning("onmousemove");
-    return;
+  onmousemove(x: number, y: number): void {
+    return unimplementedWarning("onmousemove");
   }
 
-  getviewportheightfromguiobject(g: GuiObject) {
-    unimplementedWarning("getviewportheightfromguiobject");
-    return;
+  getviewportheightfromguiobject(g: GuiObject): number {
+    return unimplementedWarning("getviewportheightfromguiobject");
   }
 
-  getmonitorheight() {
-    unimplementedWarning("getmonitorheight");
-    return;
+  getmonitorheight(): number {
+    return unimplementedWarning("getmonitorheight");
   }
 
-  getmonitorheightfrompoint(x: number, y: number) {
-    unimplementedWarning("getmonitorheightfrompoint");
-    return;
+  getmonitorheightfrompoint(x: number, y: number): number {
+    return unimplementedWarning("getmonitorheightfrompoint");
   }
 
-  getmonitorheightfromguiobject(g: GuiObject) {
-    unimplementedWarning("getmonitorheightfromguiobject");
-    return;
+  getmonitorheightfromguiobject(g: GuiObject): number {
+    return unimplementedWarning("getmonitorheightfromguiobject");
   }
 
-  getmonitorleft() {
-    unimplementedWarning("getmonitorleft");
-    return;
+  getmonitorleft(): number {
+    return unimplementedWarning("getmonitorleft");
   }
 
-  getmonitorleftfromguiobject(g: GuiObject) {
-    unimplementedWarning("getmonitorleftfromguiobject");
-    return;
+  getmonitorleftfromguiobject(g: GuiObject): number {
+    return unimplementedWarning("getmonitorleftfromguiobject");
   }
 
-  getmonitorleftfrompoint(x: number, y: number) {
-    unimplementedWarning("getmonitorleftfrompoint");
-    return;
+  getmonitorleftfrompoint(x: number, y: number): number {
+    return unimplementedWarning("getmonitorleftfrompoint");
   }
 
-  getmonitortop() {
-    unimplementedWarning("getmonitortop");
-    return;
+  getmonitortop(): number {
+    return unimplementedWarning("getmonitortop");
   }
 
-  getmonitortopfromguiobject(g: GuiObject) {
-    unimplementedWarning("getmonitortopfromguiobject");
-    return;
+  getmonitortopfromguiobject(g: GuiObject): number {
+    return unimplementedWarning("getmonitortopfromguiobject");
   }
 
-  getmonitortopfrompoint(x: number, y: number) {
-    unimplementedWarning("getmonitortopfrompoint");
-    return;
+  getmonitortopfrompoint(x: number, y: number): number {
+    return unimplementedWarning("getmonitortopfrompoint");
   }
 
-  getviewportleftfromguiobject(g: GuiObject) {
-    unimplementedWarning("getviewportleftfromguiobject");
-    return;
+  getviewportleftfromguiobject(g: GuiObject): number {
+    return unimplementedWarning("getviewportleftfromguiobject");
   }
 
-  getviewporttopfromguiobject(g: GuiObject) {
-    unimplementedWarning("getviewporttopfromguiobject");
-    return;
+  getviewporttopfromguiobject(g: GuiObject): number {
+    return unimplementedWarning("getviewporttopfromguiobject");
   }
 
-  navigateurlbrowser(url: string) {
-    unimplementedWarning("navigateurlbrowser");
-    return;
+  navigateurlbrowser(url: string): void {
+    return unimplementedWarning("navigateurlbrowser");
   }
 
-  onopenurl(url: string) {
-    unimplementedWarning("onopenurl");
-    return;
+  onopenurl(url: string): boolean {
+    return unimplementedWarning("onopenurl");
   }
 
-  translate(str: string) {
-    unimplementedWarning("translate");
-    return;
+  translate(str: string): string {
+    return unimplementedWarning("translate");
   }
 
-  getstring(table: string, id: number) {
-    unimplementedWarning("getstring");
-    return;
+  getstring(table: string, id: number): string {
+    return unimplementedWarning("getstring");
   }
 
-  getlanguageid() {
-    unimplementedWarning("getlanguageid");
-    return;
+  getlanguageid(): string {
+    return unimplementedWarning("getlanguageid");
   }
 
-  selectfolder(wnd_title: string, wnd_info: string, default_path: string) {
-    unimplementedWarning("selectfolder");
-    return;
+  selectfolder(
+    wnd_title: string,
+    wnd_info: string,
+    default_path: string
+  ): string {
+    return unimplementedWarning("selectfolder");
   }
 
-  hasvideosupport() {
-    unimplementedWarning("hasvideosupport");
-    return;
+  hasvideosupport(): number {
+    return unimplementedWarning("hasvideosupport");
   }
 
-  clearplaylist() {
-    unimplementedWarning("clearplaylist");
-    return;
+  clearplaylist(): void {
+    return unimplementedWarning("clearplaylist");
   }
 
-  getsonginfotexttranslated() {
-    unimplementedWarning("getsonginfotexttranslated");
-    return;
+  getsonginfotexttranslated(): string {
+    return unimplementedWarning("getsonginfotexttranslated");
   }
 
-  iswa2componentvisible(guid: string) {
-    unimplementedWarning("iswa2componentvisible");
-    return;
+  iswa2componentvisible(guid: string): number {
+    return unimplementedWarning("iswa2componentvisible");
   }
 
-  hidewa2component(guid: string) {
-    unimplementedWarning("hidewa2component");
-    return;
+  hidewa2component(guid: string): void {
+    return unimplementedWarning("hidewa2component");
   }
 
-  isproversion() {
-    unimplementedWarning("isproversion");
-    return;
+  isproversion(): boolean {
+    return unimplementedWarning("isproversion");
   }
 
-  getwinampversion() {
-    unimplementedWarning("getwinampversion");
-    return;
+  getwinampversion(): string {
+    return unimplementedWarning("getwinampversion");
   }
 
-  getbuildnumber() {
-    unimplementedWarning("getbuildnumber");
-    return;
+  getbuildnumber(): number {
+    return unimplementedWarning("getbuildnumber");
   }
 
-  getfilesize(fullfilename: string) {
-    unimplementedWarning("getfilesize");
-    return;
+  getfilesize(fullfilename: string): number {
+    return unimplementedWarning("getfilesize");
   }
 }
 

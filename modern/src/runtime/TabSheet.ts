@@ -12,14 +12,12 @@ class TabSheet extends GuiObject {
     return "TabSheet";
   }
 
-  getcurpage() {
-    unimplementedWarning("getcurpage");
-    return;
+  getcurpage(): number {
+    return unimplementedWarning("getcurpage");
   }
 
-  setcurpage(a: number) {
-    unimplementedWarning("setcurpage");
-    return;
+  setcurpage(a: number): void {
+    return unimplementedWarning("setcurpage");
   }
 }
 

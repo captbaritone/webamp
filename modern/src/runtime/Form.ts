@@ -12,23 +12,19 @@ export default class Form extends GuiObject {
     return "Form";
   }
 
-  getcontentsheight() {
-    Utils.unimplementedWarning("getcontentsheight");
-    return;
+  getcontentsheight(): number {
+    return Utils.unimplementedWarning("getcontentsheight");
   }
 
-  newcell(groupname: string) {
-    Utils.unimplementedWarning("newcell");
-    return;
+  newcell(groupname: string): void {
+    return Utils.unimplementedWarning("newcell");
   }
 
-  nextrow() {
-    Utils.unimplementedWarning("nextrow");
-    return;
+  nextrow(): void {
+    return Utils.unimplementedWarning("nextrow");
   }
 
-  deleteall() {
-    Utils.unimplementedWarning("deleteall");
-    return;
+  deleteall(): void {
+    return Utils.unimplementedWarning("deleteall");
   }
 }

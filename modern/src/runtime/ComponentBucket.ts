@@ -12,34 +12,28 @@ class ComponentBucket extends GuiObject {
     return "ComponentBucket";
   }
 
-  getmaxheight() {
-    unimplementedWarning("getmaxheight");
-    return;
+  getmaxheight(): number {
+    return unimplementedWarning("getmaxheight");
   }
 
-  getmaxwidth() {
-    unimplementedWarning("getmaxwidth");
-    return;
+  getmaxwidth(): number {
+    return unimplementedWarning("getmaxwidth");
   }
 
-  setscroll(x: number) {
-    unimplementedWarning("setscroll");
-    return;
+  setscroll(x: number): number {
+    return unimplementedWarning("setscroll");
   }
 
-  getscroll() {
-    unimplementedWarning("getscroll");
-    return;
+  getscroll(): number {
+    return unimplementedWarning("getscroll");
   }
 
-  getnumchildren() {
-    unimplementedWarning("getnumchildren");
-    return;
+  getnumchildren(): number {
+    return unimplementedWarning("getnumchildren");
   }
 
   enumchildren(n: number) {
-    unimplementedWarning("enumchildren");
-    return;
+    return unimplementedWarning("enumchildren");
   }
 }
 

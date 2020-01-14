@@ -13,57 +13,48 @@ class Region extends MakiObject {
     return "Region";
   }
 
-  loadfrommap(regionmap: MakiMap, threshold: number, reversed: boolean) {
+  loadfrommap(regionmap: MakiMap, threshold: number, reversed: boolean): void {
     unimplementedWarning("loadFromMap");
   }
 
-  offset(x: number, y: number) {
+  offset(x: number, y: number): void {
     unimplementedWarning("offset");
   }
 
-  add(reg: Region) {
-    unimplementedWarning("add");
-    return;
+  add(reg: Region): void {
+    return unimplementedWarning("add");
   }
 
-  sub(reg: Region) {
-    unimplementedWarning("sub");
-    return;
+  sub(reg: Region): void {
+    return unimplementedWarning("sub");
   }
 
-  stretch(r: number) {
-    unimplementedWarning("stretch");
-    return;
+  stretch(r: number): void {
+    return unimplementedWarning("stretch");
   }
 
-  copy(reg: Region) {
-    unimplementedWarning("copy");
-    return;
+  copy(reg: Region): void {
+    return unimplementedWarning("copy");
   }
 
-  loadfrombitmap(bitmapid: string) {
-    unimplementedWarning("loadfrombitmap");
-    return;
+  loadfrombitmap(bitmapid: string): void {
+    return unimplementedWarning("loadfrombitmap");
   }
 
-  getboundingboxx() {
-    unimplementedWarning("getboundingboxx");
-    return;
+  getboundingboxx(): number {
+    return unimplementedWarning("getboundingboxx");
   }
 
-  getboundingboxy() {
-    unimplementedWarning("getboundingboxy");
-    return;
+  getboundingboxy(): number {
+    return unimplementedWarning("getboundingboxy");
   }
 
-  getboundingboxw() {
-    unimplementedWarning("getboundingboxw");
-    return;
+  getboundingboxw(): number {
+    return unimplementedWarning("getboundingboxw");
   }
 
-  getboundingboxh() {
-    unimplementedWarning("getboundingboxh");
-    return;
+  getboundingboxh(): number {
+    return unimplementedWarning("getboundingboxh");
   }
 }
 

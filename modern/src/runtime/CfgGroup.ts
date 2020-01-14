@@ -12,48 +12,40 @@ class CfgGroup extends Group {
     return "CfgGroup";
   }
 
-  cfggetint() {
-    unimplementedWarning("cfggetint");
-    return;
+  cfggetint(): number {
+    return unimplementedWarning("cfggetint");
   }
 
-  cfgsetint(intvalue: number) {
-    unimplementedWarning("cfgsetint");
-    return;
+  cfgsetint(intvalue: number): void {
+    return unimplementedWarning("cfgsetint");
   }
 
-  cfggetstring() {
-    unimplementedWarning("cfggetstring");
-    return;
+  cfggetstring(): string {
+    return unimplementedWarning("cfggetstring");
   }
 
-  cfggetfloat() {
-    unimplementedWarning("cfggetfloat");
-    return;
+  cfggetfloat(): number {
+    return unimplementedWarning("cfggetfloat");
   }
 
-  cfgsetfloat(floatvalue: number) {
-    unimplementedWarning("cfgsetfloat");
-    return;
+  cfgsetfloat(floatvalue: number): void {
+    return unimplementedWarning("cfgsetfloat");
   }
 
-  cfgsetstring(strvalue: string) {
-    unimplementedWarning("cfgsetstring");
-    return;
+  cfgsetstring(strvalue: string): void {
+    return unimplementedWarning("cfgsetstring");
   }
 
   oncfgchanged(): void {
     this.js_trigger("onCfgChanged");
   }
 
-  cfggetguid() {
-    unimplementedWarning("cfggetguid");
-    return;
+  cfggetguid(): string {
+    return unimplementedWarning("cfggetguid");
   }
 
-  cfggetname() {
-    unimplementedWarning("cfggetname");
-    return;
+  cfggetname(): string {
+    return unimplementedWarning("cfggetname");
   }
 }
 

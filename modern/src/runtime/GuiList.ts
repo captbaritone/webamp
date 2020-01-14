@@ -12,359 +12,289 @@ class GuiList extends GuiObject {
     return "GuiList";
   }
 
-  getnumitems() {
-    unimplementedWarning("getnumitems");
-    return;
+  getnumitems(): number {
+    return unimplementedWarning("getnumitems");
   }
 
-  getwantautodeselect() {
-    unimplementedWarning("getwantautodeselect");
-    return;
+  getwantautodeselect(): number {
+    return unimplementedWarning("getwantautodeselect");
   }
 
-  setwantautodeselect(want: number) {
-    unimplementedWarning("setwantautodeselect");
-    return;
+  setwantautodeselect(want: number): void {
+    return unimplementedWarning("setwantautodeselect");
   }
 
   // @ts-ignore Type does not match that of parent.
-  onsetvisible(show: number): void {
+  onsetvisible(show: boolean): void {
     this.js_trigger("onSetVisible", show);
   }
 
-  setautosort(dosort: number) {
-    unimplementedWarning("setautosort");
-    return;
+  setautosort(dosort: number): void {
+    return unimplementedWarning("setautosort");
   }
 
-  next() {
-    unimplementedWarning("next");
-    return;
+  next(): void {
+    return unimplementedWarning("next");
   }
 
-  selectcurrent() {
-    unimplementedWarning("selectcurrent");
-    return;
+  selectcurrent(): void {
+    return unimplementedWarning("selectcurrent");
   }
 
-  selectfirstentry() {
-    unimplementedWarning("selectfirstentry");
-    return;
+  selectfirstentry(): void {
+    return unimplementedWarning("selectfirstentry");
   }
 
-  previous() {
-    unimplementedWarning("previous");
-    return;
+  previous(): void {
+    return unimplementedWarning("previous");
   }
 
-  pagedown() {
-    unimplementedWarning("pagedown");
-    return;
+  pagedown(): void {
+    return unimplementedWarning("pagedown");
   }
 
-  pageup() {
-    unimplementedWarning("pageup");
-    return;
+  pageup(): void {
+    return unimplementedWarning("pageup");
   }
 
-  home() {
-    unimplementedWarning("home");
-    return;
+  home(): void {
+    return unimplementedWarning("home");
   }
 
-  end() {
-    unimplementedWarning("end");
-    return;
+  end(): void {
+    return unimplementedWarning("end");
   }
 
-  reset() {
-    unimplementedWarning("reset");
-    return;
+  reset(): void {
+    return unimplementedWarning("reset");
   }
 
-  addcolumn(name: string, width: number, numeric: number) {
-    unimplementedWarning("addcolumn");
-    return;
+  addcolumn(name: string, width: number, numeric: number): number {
+    return unimplementedWarning("addcolumn");
   }
 
-  getnumcolumns() {
-    unimplementedWarning("getnumcolumns");
-    return;
+  getnumcolumns(): number {
+    return unimplementedWarning("getnumcolumns");
   }
 
-  getcolumnwidth(column: number) {
-    unimplementedWarning("getcolumnwidth");
-    return;
+  getcolumnwidth(column: number): number {
+    return unimplementedWarning("getcolumnwidth");
   }
 
-  setcolumnwidth(column: number, newwidth: number) {
-    unimplementedWarning("setcolumnwidth");
-    return;
+  setcolumnwidth(column: number, newwidth: number): void {
+    return unimplementedWarning("setcolumnwidth");
   }
 
-  getcolumnlabel(column: number) {
-    unimplementedWarning("getcolumnlabel");
-    return;
+  getcolumnlabel(column: number): string {
+    return unimplementedWarning("getcolumnlabel");
   }
 
-  setcolumnlabel(column: number, newlabel: string) {
-    unimplementedWarning("setcolumnlabel");
-    return;
+  setcolumnlabel(column: number, newlabel: string): void {
+    return unimplementedWarning("setcolumnlabel");
   }
 
-  getcolumnnumeric(column: number) {
-    unimplementedWarning("getcolumnnumeric");
-    return;
+  getcolumnnumeric(column: number): number {
+    return unimplementedWarning("getcolumnnumeric");
   }
 
-  setcolumndynamic(column: number, isdynamic: number) {
-    unimplementedWarning("setcolumndynamic");
-    return;
+  setcolumndynamic(column: number, isdynamic: number): void {
+    return unimplementedWarning("setcolumndynamic");
   }
 
-  iscolumndynamic(column: number) {
-    unimplementedWarning("iscolumndynamic");
-    return;
+  iscolumndynamic(column: number): number {
+    return unimplementedWarning("iscolumndynamic");
   }
 
-  setminimumsize(size: number) {
-    unimplementedWarning("setminimumsize");
-    return;
+  setminimumsize(size: number): void {
+    return unimplementedWarning("setminimumsize");
   }
 
-  additem(label: string) {
-    unimplementedWarning("additem");
-    return;
+  additem(label: string): number {
+    return unimplementedWarning("additem");
   }
 
-  insertitem(pos: number, label: string) {
-    unimplementedWarning("insertitem");
-    return;
+  insertitem(pos: number, label: string): number {
+    return unimplementedWarning("insertitem");
   }
 
-  getlastaddeditempos() {
-    unimplementedWarning("getlastaddeditempos");
-    return;
+  getlastaddeditempos(): number {
+    return unimplementedWarning("getlastaddeditempos");
   }
 
-  setsubitem(pos: number, subpos: number, txt: string) {
-    unimplementedWarning("setsubitem");
-    return;
+  setsubitem(pos: number, subpos: number, txt: string): void {
+    return unimplementedWarning("setsubitem");
   }
 
-  deleteallitems() {
-    unimplementedWarning("deleteallitems");
-    return;
+  deleteallitems(): void {
+    return unimplementedWarning("deleteallitems");
   }
 
-  deletebypos(pos: number) {
-    unimplementedWarning("deletebypos");
-    return;
+  deletebypos(pos: number): number {
+    return unimplementedWarning("deletebypos");
   }
 
-  getitemlabel(pos: number, subpos: number) {
-    unimplementedWarning("getitemlabel");
-    return;
+  getitemlabel(pos: number, subpos: number): string {
+    return unimplementedWarning("getitemlabel");
   }
 
-  setitemlabel(pos: number, _text: string) {
-    unimplementedWarning("setitemlabel");
-    return;
+  setitemlabel(pos: number, _text: string): void {
+    return unimplementedWarning("setitemlabel");
   }
 
-  getitemselected(pos: number) {
-    unimplementedWarning("getitemselected");
-    return;
+  getitemselected(pos: number): number {
+    return unimplementedWarning("getitemselected");
   }
 
-  isitemfocused(pos: number) {
-    unimplementedWarning("isitemfocused");
-    return;
+  isitemfocused(pos: number): number {
+    return unimplementedWarning("isitemfocused");
   }
 
-  getitemfocused() {
-    unimplementedWarning("getitemfocused");
-    return;
+  getitemfocused(): number {
+    return unimplementedWarning("getitemfocused");
   }
 
-  setitemfocused(pos: number) {
-    unimplementedWarning("setitemfocused");
-    return;
+  setitemfocused(pos: number): void {
+    return unimplementedWarning("setitemfocused");
   }
 
-  ensureitemvisible(pos: number) {
-    unimplementedWarning("ensureitemvisible");
-    return;
+  ensureitemvisible(pos: number): void {
+    return unimplementedWarning("ensureitemvisible");
   }
 
-  invalidatecolumns() {
-    unimplementedWarning("invalidatecolumns");
-    return;
+  invalidatecolumns(): void {
+    return unimplementedWarning("invalidatecolumns");
   }
 
-  scrollabsolute(x: number) {
-    unimplementedWarning("scrollabsolute");
-    return;
+  scrollabsolute(x: number): number {
+    return unimplementedWarning("scrollabsolute");
   }
 
-  scrollrelative(x: number) {
-    unimplementedWarning("scrollrelative");
-    return;
+  scrollrelative(x: number): number {
+    return unimplementedWarning("scrollrelative");
   }
 
-  scrollleft(lines: number) {
-    unimplementedWarning("scrollleft");
-    return;
+  scrollleft(lines: number): void {
+    return unimplementedWarning("scrollleft");
   }
 
-  scrollright(lines: number) {
-    unimplementedWarning("scrollright");
-    return;
+  scrollright(lines: number): void {
+    return unimplementedWarning("scrollright");
   }
 
-  scrollup(lines: number) {
-    unimplementedWarning("scrollup");
-    return;
+  scrollup(lines: number): void {
+    return unimplementedWarning("scrollup");
   }
 
-  scrolldown(lines: number) {
-    unimplementedWarning("scrolldown");
-    return;
+  scrolldown(lines: number): void {
+    return unimplementedWarning("scrolldown");
   }
 
-  getsubitemtext(pos: number, subpos: number) {
-    unimplementedWarning("getsubitemtext");
-    return;
+  getsubitemtext(pos: number, subpos: number): string {
+    return unimplementedWarning("getsubitemtext");
   }
 
-  getfirstitemselected() {
-    unimplementedWarning("getfirstitemselected");
-    return;
+  getfirstitemselected(): number {
+    return unimplementedWarning("getfirstitemselected");
   }
 
-  getnextitemselected(lastpos: number) {
-    unimplementedWarning("getnextitemselected");
-    return;
+  getnextitemselected(lastpos: number): number {
+    return unimplementedWarning("getnextitemselected");
   }
 
-  selectall() {
-    unimplementedWarning("selectall");
-    return;
+  selectall(): number {
+    return unimplementedWarning("selectall");
   }
 
-  deselectall() {
-    unimplementedWarning("deselectall");
-    return;
+  deselectall(): number {
+    return unimplementedWarning("deselectall");
   }
 
-  invertselection() {
-    unimplementedWarning("invertselection");
-    return;
+  invertselection(): number {
+    return unimplementedWarning("invertselection");
   }
 
-  invalidateitem(pos: number) {
-    unimplementedWarning("invalidateitem");
-    return;
+  invalidateitem(pos: number): number {
+    return unimplementedWarning("invalidateitem");
   }
 
-  getfirstitemvisible() {
-    unimplementedWarning("getfirstitemvisible");
-    return;
+  getfirstitemvisible(): number {
+    return unimplementedWarning("getfirstitemvisible");
   }
 
-  getlastitemvisible() {
-    unimplementedWarning("getlastitemvisible");
-    return;
+  getlastitemvisible(): number {
+    return unimplementedWarning("getlastitemvisible");
   }
 
-  setfontsize(size: number) {
-    unimplementedWarning("setfontsize");
-    return;
+  setfontsize(size: number): number {
+    return unimplementedWarning("setfontsize");
   }
 
-  getfontsize() {
-    unimplementedWarning("getfontsize");
-    return;
+  getfontsize(): number {
+    return unimplementedWarning("getfontsize");
   }
 
-  jumptonext(c: number) {
-    unimplementedWarning("jumptonext");
-    return;
+  jumptonext(c: number): void {
+    return unimplementedWarning("jumptonext");
   }
 
-  scrolltoitem(pos: number) {
-    unimplementedWarning("scrolltoitem");
-    return;
+  scrolltoitem(pos: number): void {
+    return unimplementedWarning("scrolltoitem");
   }
 
-  resort() {
-    unimplementedWarning("resort");
-    return;
+  resort(): void {
+    return unimplementedWarning("resort");
   }
 
-  getsortdirection() {
-    unimplementedWarning("getsortdirection");
-    return;
+  getsortdirection(): number {
+    return unimplementedWarning("getsortdirection");
   }
 
-  getsortcolumn() {
-    unimplementedWarning("getsortcolumn");
-    return;
+  getsortcolumn(): number {
+    return unimplementedWarning("getsortcolumn");
   }
 
-  setsortcolumn(col: number) {
-    unimplementedWarning("setsortcolumn");
-    return;
+  setsortcolumn(col: number): void {
+    return unimplementedWarning("setsortcolumn");
   }
 
-  setsortdirection(dir: number) {
-    unimplementedWarning("setsortdirection");
-    return;
+  setsortdirection(dir: number): void {
+    return unimplementedWarning("setsortdirection");
   }
 
-  getitemcount() {
-    unimplementedWarning("getitemcount");
-    return;
+  getitemcount(): number {
+    return unimplementedWarning("getitemcount");
   }
 
-  setselectionstart(pos: number) {
-    unimplementedWarning("setselectionstart");
-    return;
+  setselectionstart(pos: number): void {
+    return unimplementedWarning("setselectionstart");
   }
 
-  setselectionend(pos: number) {
-    unimplementedWarning("setselectionend");
-    return;
+  setselectionend(pos: number): void {
+    return unimplementedWarning("setselectionend");
   }
 
-  setselected(pos: number, selected: number) {
-    unimplementedWarning("setselected");
-    return;
+  setselected(pos: number, selected: number): void {
+    return unimplementedWarning("setselected");
   }
 
-  toggleselection(pos: number, setfocus: number) {
-    unimplementedWarning("toggleselection");
-    return;
+  toggleselection(pos: number, setfocus: number): void {
+    return unimplementedWarning("toggleselection");
   }
 
-  getheaderheight() {
-    unimplementedWarning("getheaderheight");
-    return;
+  getheaderheight(): number {
+    return unimplementedWarning("getheaderheight");
   }
 
-  getpreventmultipleselection() {
-    unimplementedWarning("getpreventmultipleselection");
-    return;
+  getpreventmultipleselection(): number {
+    return unimplementedWarning("getpreventmultipleselection");
   }
 
-  setpreventmultipleselection(val: number) {
-    unimplementedWarning("setpreventmultipleselection");
-    return;
+  setpreventmultipleselection(val: number): number {
+    return unimplementedWarning("setpreventmultipleselection");
   }
 
-  moveitem(from: number, to: number) {
-    unimplementedWarning("moveitem");
-    return;
+  moveitem(from: number, to: number): void {
+    return unimplementedWarning("moveitem");
   }
 
   onselectall(): void {
@@ -412,49 +342,40 @@ class GuiList extends GuiObject {
     this.js_trigger("onItemSelection", itemnum, selected);
   }
 
-  setitemicon(pos: number, bitmapId: string) {
-    unimplementedWarning("setitemicon");
-    return;
+  setitemicon(pos: number, bitmapId: string): void {
+    return unimplementedWarning("setitemicon");
   }
 
-  getitemicon(pos: number) {
-    unimplementedWarning("getitemicon");
-    return;
+  getitemicon(pos: number): string {
+    return unimplementedWarning("getitemicon");
   }
 
-  setshowicons(showThem: number) {
-    unimplementedWarning("setshowicons");
-    return;
+  setshowicons(showThem: number): void {
+    return unimplementedWarning("setshowicons");
   }
 
-  getshowicons() {
-    unimplementedWarning("getshowicons");
-    return;
+  getshowicons(): number {
+    return unimplementedWarning("getshowicons");
   }
 
-  seticonwidth(width: number) {
-    unimplementedWarning("seticonwidth");
-    return;
+  seticonwidth(width: number): number {
+    return unimplementedWarning("seticonwidth");
   }
 
-  seticonheight(width: number) {
-    unimplementedWarning("seticonheight");
-    return;
+  seticonheight(width: number): number {
+    return unimplementedWarning("seticonheight");
   }
 
-  geticonwidth() {
-    unimplementedWarning("geticonwidth");
-    return;
+  geticonwidth(): void {
+    return unimplementedWarning("geticonwidth");
   }
 
-  geticonheight() {
-    unimplementedWarning("geticonheight");
-    return;
+  geticonheight(): void {
+    return unimplementedWarning("geticonheight");
   }
 
-  oniconleftclick(itemnum: number, x: number, y: number) {
-    unimplementedWarning("oniconleftclick");
-    return;
+  oniconleftclick(itemnum: number, x: number, y: number): number {
+    return unimplementedWarning("oniconleftclick");
   }
 }
 

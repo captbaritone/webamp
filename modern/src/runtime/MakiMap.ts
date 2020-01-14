@@ -12,38 +12,34 @@ class MakiMap extends MakiObject {
     return "Map";
   }
 
-  loadmap(bitmapid: string) {
+  loadmap(bitmapid: string): void {
     unimplementedWarning("loadmap");
   }
 
-  getwidth() {
+  getwidth(): number {
     unimplementedWarning("getwidth");
     return 10;
   }
 
-  getheight() {
+  getheight(): number {
     unimplementedWarning("getheight");
     return 10;
   }
 
-  getvalue(x: number, y: number) {
-    unimplementedWarning("getvalue");
-    return;
+  getvalue(x: number, y: number): number {
+    return unimplementedWarning("getvalue");
   }
 
-  inregion(x: number, y: number) {
-    unimplementedWarning("inregion");
-    return;
+  inregion(x: number, y: number): boolean {
+    return unimplementedWarning("inregion");
   }
 
   getregion() {
-    unimplementedWarning("getregion");
-    return;
+    return unimplementedWarning("getregion");
   }
 
-  getargbvalue(x: number, y: number, channel: number) {
-    unimplementedWarning("getargbvalue");
-    return;
+  getargbvalue(x: number, y: number, channel: number): number {
+    return unimplementedWarning("getargbvalue");
   }
 }
 

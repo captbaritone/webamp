@@ -24,11 +24,11 @@ class Button extends GuiObject {
     this.js_trigger("onActivate", activated);
   }
 
-  setactivated(onoff: boolean) {
-    unimplementedWarning("setactivated");
+  setactivated(onoff: boolean): void {
+    return unimplementedWarning("setactivated");
   }
 
-  getactivated() {
+  getactivated(): boolean {
     unimplementedWarning("getactivated");
     return false;
   }
@@ -41,9 +41,8 @@ class Button extends GuiObject {
     this.js_trigger("onRightClick");
   }
 
-  setactivatednocallback(onoff: boolean) {
-    unimplementedWarning("setactivatednocallback");
-    return;
+  setactivatednocallback(onoff: boolean): void {
+    return unimplementedWarning("setactivatednocallback");
   }
 }
 

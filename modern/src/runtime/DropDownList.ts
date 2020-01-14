@@ -12,88 +12,72 @@ class DropDownList extends GuiObject {
     return "DropDownList";
   }
 
-  getitemselected() {
-    unimplementedWarning("getitemselected");
-    return;
+  getitemselected(): string {
+    return unimplementedWarning("getitemselected");
   }
 
   onselect(id: number, hover: number): void {
     this.js_trigger("onSelect", id, hover);
   }
 
-  setlistheight(h: number) {
-    unimplementedWarning("setlistheight");
-    return;
+  setlistheight(h: number): void {
+    return unimplementedWarning("setlistheight");
   }
 
-  openlist() {
-    unimplementedWarning("openlist");
-    return;
+  openlist(): void {
+    return unimplementedWarning("openlist");
   }
 
-  closelist() {
-    unimplementedWarning("closelist");
-    return;
+  closelist(): void {
+    return unimplementedWarning("closelist");
   }
 
-  setitems(lotsofitems: string) {
-    unimplementedWarning("setitems");
-    return;
+  setitems(lotsofitems: string): void {
+    return unimplementedWarning("setitems");
   }
 
-  additem(_text: string) {
-    unimplementedWarning("additem");
-    return;
+  additem(_text: string): number {
+    return unimplementedWarning("additem");
   }
 
-  delitem(id: number) {
-    unimplementedWarning("delitem");
-    return;
+  delitem(id: number): void {
+    return unimplementedWarning("delitem");
   }
 
-  finditem(_text: string) {
-    unimplementedWarning("finditem");
-    return;
+  finditem(_text: string): number {
+    return unimplementedWarning("finditem");
   }
 
-  getnumitems() {
-    unimplementedWarning("getnumitems");
-    return;
+  getnumitems(): number {
+    return unimplementedWarning("getnumitems");
   }
 
-  selectitem(id: number, hover: number) {
-    unimplementedWarning("selectitem");
-    return;
+  selectitem(id: number, hover: number): void {
+    return unimplementedWarning("selectitem");
   }
 
-  getitemtext(id: number) {
-    unimplementedWarning("getitemtext");
-    return;
+  getitemtext(id: number): string {
+    return unimplementedWarning("getitemtext");
   }
 
-  getselected() {
-    unimplementedWarning("getselected");
-    return;
+  getselected(): number {
+    return unimplementedWarning("getselected");
   }
 
-  getselectedtext() {
-    unimplementedWarning("getselectedtext");
-    return;
+  getselectedtext(): string {
+    return unimplementedWarning("getselectedtext");
   }
 
-  getcustomtext() {
-    unimplementedWarning("getcustomtext");
-    return;
+  getcustomtext(): string {
+    return unimplementedWarning("getcustomtext");
   }
 
-  deleteallitems() {
-    unimplementedWarning("deleteallitems");
-    return;
+  deleteallitems(): void {
+    return unimplementedWarning("deleteallitems");
   }
 
-  setnoitemtext(txt: string) {
-    unimplementedWarning("setnoitemtext");
-    return;
+  setnoitemtext(txt: string): void {
+    return unimplementedWarning("setnoitemtext");
   }
 }
 

@@ -22,13 +22,11 @@ class Config extends MakiObject {
   }
 
   getitem(item_name: string) {
-    unimplementedWarning("getitem");
-    return;
+    return unimplementedWarning("getitem");
   }
 
   getitembyguid(item_guid: string) {
-    unimplementedWarning("getitembyguid");
-    return;
+    return unimplementedWarning("getitembyguid");
   }
 }
 

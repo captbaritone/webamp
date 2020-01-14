@@ -39,8 +39,7 @@ module.exports = {
           // We also expect `unimplementedWarning` to already be imported.
           const methodString = `
               ${methodName}(${args}) {
-                unimplementedWarning("${methodName}");
-                return;
+                return unimplementedWarning("${methodName}");
               }
             `;
 

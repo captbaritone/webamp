@@ -12,7 +12,7 @@ import Container from "./Container";
 import GuiObject from "./GuiObject";
 import MakiObject from "./MakiObject";
 import Wac from "./Wac";
-import MakiMap from "./Map";
+import MakiMap from "./MakiMap";
 import Region from "./Region";
 import Timer from "./Timer";
 import AnimatedLayer from "./AnimatedLayer";

@@ -13,23 +13,19 @@ class ConfigItem extends MakiObject {
   }
 
   getattribute(attr_name: string) {
-    unimplementedWarning("getattribute");
-    return;
+    return unimplementedWarning("getattribute");
   }
 
   newattribute(attr_name: string, default_val: string) {
-    unimplementedWarning("newattribute");
-    return;
+    return unimplementedWarning("newattribute");
   }
 
-  getguid(attr_name: string) {
-    unimplementedWarning("getguid");
-    return;
+  getguid(attr_name: string): string {
+    return unimplementedWarning("getguid");
   }
 
-  getname() {
-    unimplementedWarning("getname");
-    return;
+  getname(): string {
+    return unimplementedWarning("getname");
   }
 }
 

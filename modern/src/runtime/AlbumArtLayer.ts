@@ -12,19 +12,16 @@ class AlbumArtLayer extends Layer {
     return "AlbumArtLayer";
   }
 
-  refresh() {
-    unimplementedWarning("refresh");
-    return;
+  refresh(): void {
+    return unimplementedWarning("refresh");
   }
 
-  isloading() {
-    unimplementedWarning("isloading");
-    return;
+  isloading(): void {
+    return unimplementedWarning("isloading");
   }
 
-  onalbumartloaded(success: boolean) {
-    unimplementedWarning("onalbumartloaded");
-    return;
+  onalbumartloaded(success: boolean): void {
+    return unimplementedWarning("onalbumartloaded");
   }
 }
 

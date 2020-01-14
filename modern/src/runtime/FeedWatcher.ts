@@ -12,18 +12,15 @@ export default class FeedWatcher extends MakiObject {
     return "FeedWatcher";
   }
 
-  setfeed(feed_id: string) {
-    Utils.unimplementedWarning("setfeed");
-    return;
+  setfeed(feed_id: string): number {
+    return Utils.unimplementedWarning("setfeed");
   }
 
-  releasefeed() {
-    Utils.unimplementedWarning("releasefeed");
-    return;
+  releasefeed(): void {
+    return Utils.unimplementedWarning("releasefeed");
   }
 
-  onfeedchange(new_feeddata: string) {
-    Utils.unimplementedWarning("onfeedchange");
-    return;
+  onfeedchange(new_feeddata: string): void {
+    return Utils.unimplementedWarning("onfeedchange");
   }
 }

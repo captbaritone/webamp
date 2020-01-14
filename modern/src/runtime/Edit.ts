@@ -28,44 +28,36 @@ class Edit extends GuiObject {
     this.js_trigger("onEditUpdate");
   }
 
-  settext(txt: string) {
-    unimplementedWarning("settext");
-    return;
+  settext(txt: string): void {
+    return unimplementedWarning("settext");
   }
 
-  setautoenter(onoff: boolean) {
-    unimplementedWarning("setautoenter");
-    return;
+  setautoenter(onoff: boolean): void {
+    return unimplementedWarning("setautoenter");
   }
 
-  getautoenter() {
-    unimplementedWarning("getautoenter");
-    return;
+  getautoenter(): number {
+    return unimplementedWarning("getautoenter");
   }
 
-  gettext() {
-    unimplementedWarning("gettext");
-    return;
+  gettext(): string {
+    return unimplementedWarning("gettext");
   }
 
-  selectall() {
-    unimplementedWarning("selectall");
-    return;
+  selectall(): void {
+    return unimplementedWarning("selectall");
   }
 
-  enter() {
-    unimplementedWarning("enter");
-    return;
+  enter(): void {
+    return unimplementedWarning("enter");
   }
 
-  setidleenabled(onoff: boolean) {
-    unimplementedWarning("setidleenabled");
-    return;
+  setidleenabled(onoff: boolean): void {
+    return unimplementedWarning("setidleenabled");
   }
 
-  getidleenabled() {
-    unimplementedWarning("getidleenabled");
-    return;
+  getidleenabled(): number {
+    return unimplementedWarning("getidleenabled");
   }
 }
 

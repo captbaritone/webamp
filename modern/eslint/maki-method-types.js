@@ -95,15 +95,7 @@ module.exports = {
         }
 
         const { params, returnType, body } = node.value;
-        const sourceCode = context.getSourceCode();
 
-        const unimplemented = sourceCode
-          .getText(node)
-          .includes("unimplementedWarning");
-
-        if (unimplemented) {
-          return;
-        }
         if (returnType == null) {
           const expectedTypeData = getTypeData(func.result);
           if (expectedTypeData != null) {

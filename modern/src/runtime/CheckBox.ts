@@ -16,24 +16,20 @@ class CheckBox extends GuiObject {
     this.js_trigger("onToggle", newstate);
   }
 
-  setchecked(checked: number) {
-    unimplementedWarning("setchecked");
-    return;
+  setchecked(checked: number): void {
+    return unimplementedWarning("setchecked");
   }
 
-  ischecked() {
-    unimplementedWarning("ischecked");
-    return;
+  ischecked(): number {
+    return unimplementedWarning("ischecked");
   }
 
-  settext(txt: string) {
-    unimplementedWarning("settext");
-    return;
+  settext(txt: string): void {
+    return unimplementedWarning("settext");
   }
 
-  gettext() {
-    unimplementedWarning("gettext");
-    return;
+  gettext(): string {
+    return unimplementedWarning("gettext");
   }
 }
 

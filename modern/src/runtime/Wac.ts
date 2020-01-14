@@ -12,40 +12,39 @@ class Wac extends MakiObject {
     return "Wac";
   }
 
-  getguid() {
-    unimplementedWarning("getguid");
-    return;
+  getguid(): string {
+    return unimplementedWarning("getguid");
   }
 
-  getname() {
-    unimplementedWarning("getname");
-    return;
+  getname(): string {
+    return unimplementedWarning("getname");
   }
 
-  sendcommand(cmd: string, param1: number, param2: number, param3: string) {
-    unimplementedWarning("sendcommand");
-    return;
+  sendcommand(
+    cmd: string,
+    param1: number,
+    param2: number,
+    param3: string
+  ): number {
+    return unimplementedWarning("sendcommand");
   }
 
-  show() {
-    unimplementedWarning("show");
-    return;
+  show(): void {
+    return unimplementedWarning("show");
   }
 
-  hide() {
-    unimplementedWarning("hide");
-    return;
+  hide(): void {
+    return unimplementedWarning("hide");
   }
 
-  isvisible() {
-    unimplementedWarning("isvisible");
-    return;
+  isvisible(): boolean {
+    return unimplementedWarning("isvisible");
   }
 
   // @ts-ignore This (deprecated) method's signature does not quite match the
   // same method on MakiObject. This method is not used by any skins as far as
   // we know, so we'll just ignore the issue for now.
-  onnotify(notifstr: string, a: number, b: number): void {
+  onnotify(notifstr: string, a: string, b: number): void {
     this.js_trigger("onNotify", notifstr, a, b);
   }
 
@@ -57,14 +56,12 @@ class Wac extends MakiObject {
     this.js_trigger("onHide");
   }
 
-  setstatusbar(onoff: boolean) {
-    unimplementedWarning("setstatusbar");
-    return;
+  setstatusbar(onoff: boolean): void {
+    return unimplementedWarning("setstatusbar");
   }
 
-  getstatusbar() {
-    unimplementedWarning("getstatusbar");
-    return;
+  getstatusbar(): boolean {
+    return unimplementedWarning("getstatusbar");
   }
 }
 

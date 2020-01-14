@@ -42,7 +42,7 @@ class GuiTree extends GuiObject {
   }
 
   // @ts-ignore Type does not match that of parent.
-  onchar(c: number): number {
+  onchar(c: string): number {
     unimplementedWarning("onchar");
     this.js_trigger("onChar", c);
     // TODO: not sure what we shuld return
@@ -65,34 +65,28 @@ class GuiTree extends GuiObject {
     this.js_trigger("onItemDeselected", item);
   }
 
-  getnumrootitems() {
-    unimplementedWarning("getnumrootitems");
-    return;
+  getnumrootitems(): number {
+    return unimplementedWarning("getnumrootitems");
   }
 
   enumrootitem(which: number) {
-    unimplementedWarning("enumrootitem");
-    return;
+    return unimplementedWarning("enumrootitem");
   }
 
-  jumptonext(c: number) {
-    unimplementedWarning("jumptonext");
-    return;
+  jumptonext(c: number): void {
+    return unimplementedWarning("jumptonext");
   }
 
-  ensureitemvisible(item: TreeItem) {
-    unimplementedWarning("ensureitemvisible");
-    return;
+  ensureitemvisible(item: TreeItem): void {
+    return unimplementedWarning("ensureitemvisible");
   }
 
-  getcontentswidth() {
-    unimplementedWarning("getcontentswidth");
-    return;
+  getcontentswidth(): number {
+    return unimplementedWarning("getcontentswidth");
   }
 
-  getcontentsheight() {
-    unimplementedWarning("getcontentsheight");
-    return;
+  getcontentsheight(): number {
+    return unimplementedWarning("getcontentsheight");
   }
 
   addtreeitem(
@@ -101,188 +95,151 @@ class GuiTree extends GuiObject {
     sorted: number,
     haschildtab: number
   ) {
-    unimplementedWarning("addtreeitem");
-    return;
+    return unimplementedWarning("addtreeitem");
   }
 
-  removetreeitem(item: TreeItem) {
-    unimplementedWarning("removetreeitem");
-    return;
+  removetreeitem(item: TreeItem): number {
+    return unimplementedWarning("removetreeitem");
   }
 
-  movetreeitem(item: TreeItem, newparent: TreeItem) {
-    unimplementedWarning("movetreeitem");
-    return;
+  movetreeitem(item: TreeItem, newparent: TreeItem): void {
+    return unimplementedWarning("movetreeitem");
   }
 
-  deleteallitems() {
-    unimplementedWarning("deleteallitems");
-    return;
+  deleteallitems(): void {
+    return unimplementedWarning("deleteallitems");
   }
 
-  expanditem(item: TreeItem) {
-    unimplementedWarning("expanditem");
-    return;
+  expanditem(item: TreeItem): number {
+    return unimplementedWarning("expanditem");
   }
 
-  expanditemdeferred(item: TreeItem) {
-    unimplementedWarning("expanditemdeferred");
-    return;
+  expanditemdeferred(item: TreeItem): void {
+    return unimplementedWarning("expanditemdeferred");
   }
 
-  collapseitem(item: TreeItem) {
-    unimplementedWarning("collapseitem");
-    return;
+  collapseitem(item: TreeItem): number {
+    return unimplementedWarning("collapseitem");
   }
 
-  collapseitemdeferred(item: TreeItem) {
-    unimplementedWarning("collapseitemdeferred");
-    return;
+  collapseitemdeferred(item: TreeItem): void {
+    return unimplementedWarning("collapseitemdeferred");
   }
 
-  selectitem(item: TreeItem) {
-    unimplementedWarning("selectitem");
-    return;
+  selectitem(item: TreeItem): void {
+    return unimplementedWarning("selectitem");
   }
 
-  selectitemdeferred(item: TreeItem) {
-    unimplementedWarning("selectitemdeferred");
-    return;
+  selectitemdeferred(item: TreeItem): void {
+    return unimplementedWarning("selectitemdeferred");
   }
 
-  delitemdeferred(item: TreeItem) {
-    unimplementedWarning("delitemdeferred");
-    return;
+  delitemdeferred(item: TreeItem): void {
+    return unimplementedWarning("delitemdeferred");
   }
 
-  hiliteitem(item: TreeItem) {
-    unimplementedWarning("hiliteitem");
-    return;
+  hiliteitem(item: TreeItem): void {
+    return unimplementedWarning("hiliteitem");
   }
 
-  unhiliteitem(item: TreeItem) {
-    unimplementedWarning("unhiliteitem");
-    return;
+  unhiliteitem(item: TreeItem): void {
+    return unimplementedWarning("unhiliteitem");
   }
 
   getcuritem() {
-    unimplementedWarning("getcuritem");
-    return;
+    return unimplementedWarning("getcuritem");
   }
 
   hittest(x: number, y: number) {
-    unimplementedWarning("hittest");
-    return;
+    return unimplementedWarning("hittest");
   }
 
-  edititemlabel(item: TreeItem) {
-    unimplementedWarning("edititemlabel");
-    return;
+  edititemlabel(item: TreeItem): void {
+    return unimplementedWarning("edititemlabel");
   }
 
-  canceleditlabel(destroyit: number) {
-    unimplementedWarning("canceleditlabel");
-    return;
+  canceleditlabel(destroyit: number): void {
+    return unimplementedWarning("canceleditlabel");
   }
 
-  setautoedit(ae: number) {
-    unimplementedWarning("setautoedit");
-    return;
+  setautoedit(ae: number): void {
+    return unimplementedWarning("setautoedit");
   }
 
-  getautoedit() {
-    unimplementedWarning("getautoedit");
-    return;
+  getautoedit(): number {
+    return unimplementedWarning("getautoedit");
   }
 
   getbylabel(item: TreeItem, name: string) {
-    unimplementedWarning("getbylabel");
-    return;
+    return unimplementedWarning("getbylabel");
   }
 
-  setsorted(dosort: number) {
-    unimplementedWarning("setsorted");
-    return;
+  setsorted(dosort: number): void {
+    return unimplementedWarning("setsorted");
   }
 
-  getsorted() {
-    unimplementedWarning("getsorted");
-    return;
+  getsorted(): number {
+    return unimplementedWarning("getsorted");
   }
 
-  sorttreeitems() {
-    unimplementedWarning("sorttreeitems");
-    return;
+  sorttreeitems(): void {
+    return unimplementedWarning("sorttreeitems");
   }
 
   getsibling(item: TreeItem) {
-    unimplementedWarning("getsibling");
-    return;
+    return unimplementedWarning("getsibling");
   }
 
-  setautocollapse(doautocollapse: number) {
-    unimplementedWarning("setautocollapse");
-    return;
+  setautocollapse(doautocollapse: number): void {
+    return unimplementedWarning("setautocollapse");
   }
 
-  setfontsize(newsize: number) {
-    unimplementedWarning("setfontsize");
-    return;
+  setfontsize(newsize: number): number {
+    return unimplementedWarning("setfontsize");
   }
 
-  getfontsize() {
-    unimplementedWarning("getfontsize");
-    return;
+  getfontsize(): number {
+    return unimplementedWarning("getfontsize");
   }
 
-  getnumvisiblechilditems(c: TreeItem) {
-    unimplementedWarning("getnumvisiblechilditems");
-    return;
+  getnumvisiblechilditems(c: TreeItem): number {
+    return unimplementedWarning("getnumvisiblechilditems");
   }
 
-  getnumvisibleitems() {
-    unimplementedWarning("getnumvisibleitems");
-    return;
+  getnumvisibleitems(): number {
+    return unimplementedWarning("getnumvisibleitems");
   }
 
   enumvisibleitems(n: number) {
-    unimplementedWarning("enumvisibleitems");
-    return;
+    return unimplementedWarning("enumvisibleitems");
   }
 
   enumvisiblechilditems(c: TreeItem, n: number) {
-    unimplementedWarning("enumvisiblechilditems");
-    return;
+    return unimplementedWarning("enumvisiblechilditems");
   }
 
   enumallitems(n: number) {
-    unimplementedWarning("enumallitems");
-    return;
+    return unimplementedWarning("enumallitems");
   }
 
-  getitemrectx(item: TreeItem) {
-    unimplementedWarning("getitemrectx");
-    return;
+  getitemrectx(item: TreeItem): number {
+    return unimplementedWarning("getitemrectx");
   }
 
-  getitemrecty(item: TreeItem) {
-    unimplementedWarning("getitemrecty");
-    return;
+  getitemrecty(item: TreeItem): number {
+    return unimplementedWarning("getitemrecty");
   }
 
-  getitemrectw(item: TreeItem) {
-    unimplementedWarning("getitemrectw");
-    return;
+  getitemrectw(item: TreeItem): number {
+    return unimplementedWarning("getitemrectw");
   }
 
-  getitemrecth(item: TreeItem) {
-    unimplementedWarning("getitemrecth");
-    return;
+  getitemrecth(item: TreeItem): number {
+    return unimplementedWarning("getitemrecth");
   }
 
   getitemfrompoint(x: number, y: number) {
-    unimplementedWarning("getitemfrompoint");
-    return;
+    return unimplementedWarning("getitemfrompoint");
   }
 }
 

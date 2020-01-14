@@ -12,14 +12,12 @@ class ConfigAttribute extends MakiObject {
     return "ConfigAttribute";
   }
 
-  setdata(value: string) {
-    unimplementedWarning("setdata");
-    return;
+  setdata(value: string): void {
+    return unimplementedWarning("setdata");
   }
 
-  getdata() {
-    unimplementedWarning("getdata");
-    return;
+  getdata(): string {
+    return unimplementedWarning("getdata");
   }
 
   ondatachanged(): void {
@@ -27,13 +25,11 @@ class ConfigAttribute extends MakiObject {
   }
 
   getparentitem() {
-    unimplementedWarning("getparentitem");
-    return;
+    return unimplementedWarning("getparentitem");
   }
 
-  getattributename() {
-    unimplementedWarning("getattributename");
-    return;
+  getattributename(): string {
+    return unimplementedWarning("getattributename");
   }
 }
 

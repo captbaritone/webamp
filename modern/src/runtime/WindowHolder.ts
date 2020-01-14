@@ -23,39 +23,36 @@ class WindowHolder extends GuiObject {
     this.js_trigger("onGiveUpWac", wacobj);
   }
 
-  getguid() {
-    unimplementedWarning("getguid");
-    return;
+  getguid(): string {
+    return unimplementedWarning("getguid");
   }
 
   getwac() {
-    unimplementedWarning("getwac");
-    return;
+    return unimplementedWarning("getwac");
   }
 
-  setregionfrommap(regionmap: MakiMap, threshold: number, reverse: boolean) {
-    unimplementedWarning("setregionfrommap");
-    return;
+  setregionfrommap(
+    regionmap: MakiMap,
+    threshold: number,
+    reverse: boolean
+  ): void {
+    return unimplementedWarning("setregionfrommap");
   }
 
-  setregion(reg: Region) {
-    unimplementedWarning("setregion");
-    return;
+  setregion(reg: Region): void {
+    return unimplementedWarning("setregion");
   }
 
-  setacceptwac(onoff: boolean) {
-    unimplementedWarning("setacceptwac");
-    return;
+  setacceptwac(onoff: boolean): void {
+    return unimplementedWarning("setacceptwac");
   }
 
   getcontent() {
-    unimplementedWarning("getcontent");
-    return;
+    return unimplementedWarning("getcontent");
   }
 
-  getcomponentname() {
-    unimplementedWarning("getcomponentname");
-    return;
+  getcomponentname(): string {
+    return unimplementedWarning("getcomponentname");
   }
 }
 

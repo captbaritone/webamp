@@ -14,11 +14,15 @@ class Layer extends GuiObject {
     return "Layer";
   }
 
-  setregion(reg: Region) {
+  setregion(reg: Region): void {
     unimplementedWarning("setregion");
   }
 
-  setregionfrommap(regionmap: MakiMap, threshold: number, reverse: boolean) {
+  setregionfrommap(
+    regionmap: MakiMap,
+    threshold: number,
+    reverse: boolean
+  ): void {
     unimplementedWarning("setregion");
   }
 
@@ -30,159 +34,128 @@ class Layer extends GuiObject {
     this.js_trigger("onEndResize", x, y, w, h);
   }
 
-  fx_oninit() {
-    unimplementedWarning("fx_oninit");
-    return;
+  fx_oninit(): void {
+    return unimplementedWarning("fx_oninit");
   }
 
-  fx_onframe() {
-    unimplementedWarning("fx_onframe");
-    return;
+  fx_onframe(): void {
+    return unimplementedWarning("fx_onframe");
   }
 
-  fx_ongetpixelr(r: number, d: number, x: number, y: number) {
-    unimplementedWarning("fx_ongetpixelr");
-    return;
+  fx_ongetpixelr(r: number, d: number, x: number, y: number): number {
+    return unimplementedWarning("fx_ongetpixelr");
   }
 
-  fx_ongetpixeld(r: number, d: number, x: number, y: number) {
-    unimplementedWarning("fx_ongetpixeld");
-    return;
+  fx_ongetpixeld(r: number, d: number, x: number, y: number): number {
+    return unimplementedWarning("fx_ongetpixeld");
   }
 
-  fx_ongetpixelx(r: number, d: number, x: number, y: number) {
-    unimplementedWarning("fx_ongetpixelx");
-    return;
+  fx_ongetpixelx(r: number, d: number, x: number, y: number): number {
+    return unimplementedWarning("fx_ongetpixelx");
   }
 
-  fx_ongetpixely(r: number, d: number, x: number, y: number) {
-    unimplementedWarning("fx_ongetpixely");
-    return;
+  fx_ongetpixely(r: number, d: number, x: number, y: number): number {
+    return unimplementedWarning("fx_ongetpixely");
   }
 
-  fx_ongetpixela(r: number, d: number, x: number, y: number) {
-    unimplementedWarning("fx_ongetpixela");
-    return;
+  fx_ongetpixela(r: number, d: number, x: number, y: number): number {
+    return unimplementedWarning("fx_ongetpixela");
   }
 
-  fx_setenabled(onoff: boolean) {
-    unimplementedWarning("fx_setenabled");
-    return;
+  fx_setenabled(onoff: boolean): void {
+    return unimplementedWarning("fx_setenabled");
   }
 
-  fx_getenabled() {
-    unimplementedWarning("fx_getenabled");
-    return;
+  fx_getenabled(): boolean {
+    return unimplementedWarning("fx_getenabled");
   }
 
-  fx_setwrap(onoff: boolean) {
-    unimplementedWarning("fx_setwrap");
-    return;
+  fx_setwrap(onoff: boolean): void {
+    return unimplementedWarning("fx_setwrap");
   }
 
-  fx_getwrap() {
-    unimplementedWarning("fx_getwrap");
-    return;
+  fx_getwrap(): boolean {
+    return unimplementedWarning("fx_getwrap");
   }
 
-  fx_setrect(onoff: boolean) {
-    unimplementedWarning("fx_setrect");
-    return;
+  fx_setrect(onoff: boolean): void {
+    return unimplementedWarning("fx_setrect");
   }
 
-  fx_getrect() {
-    unimplementedWarning("fx_getrect");
-    return;
+  fx_getrect(): boolean {
+    return unimplementedWarning("fx_getrect");
   }
 
-  fx_setbgfx(onoff: boolean) {
-    unimplementedWarning("fx_setbgfx");
-    return;
+  fx_setbgfx(onoff: boolean): void {
+    return unimplementedWarning("fx_setbgfx");
   }
 
-  fx_getbgfx() {
-    unimplementedWarning("fx_getbgfx");
-    return;
+  fx_getbgfx(): boolean {
+    return unimplementedWarning("fx_getbgfx");
   }
 
-  fx_setclear(onoff: boolean) {
-    unimplementedWarning("fx_setclear");
-    return;
+  fx_setclear(onoff: boolean): void {
+    return unimplementedWarning("fx_setclear");
   }
 
-  fx_getclear() {
-    unimplementedWarning("fx_getclear");
-    return;
+  fx_getclear(): boolean {
+    return unimplementedWarning("fx_getclear");
   }
 
-  fx_setspeed(msperframe: number) {
-    unimplementedWarning("fx_setspeed");
-    return;
+  fx_setspeed(msperframe: number): void {
+    return unimplementedWarning("fx_setspeed");
   }
 
-  fx_getspeed() {
-    unimplementedWarning("fx_getspeed");
-    return;
+  fx_getspeed(): number {
+    return unimplementedWarning("fx_getspeed");
   }
 
-  fx_setrealtime(onoff: boolean) {
-    unimplementedWarning("fx_setrealtime");
-    return;
+  fx_setrealtime(onoff: boolean): void {
+    return unimplementedWarning("fx_setrealtime");
   }
 
-  fx_getrealtime() {
-    unimplementedWarning("fx_getrealtime");
-    return;
+  fx_getrealtime(): boolean {
+    return unimplementedWarning("fx_getrealtime");
   }
 
-  fx_setlocalized(onoff: boolean) {
-    unimplementedWarning("fx_setlocalized");
-    return;
+  fx_setlocalized(onoff: boolean): void {
+    return unimplementedWarning("fx_setlocalized");
   }
 
-  fx_getlocalized() {
-    unimplementedWarning("fx_getlocalized");
-    return;
+  fx_getlocalized(): boolean {
+    return unimplementedWarning("fx_getlocalized");
   }
 
-  fx_setbilinear(onoff: boolean) {
-    unimplementedWarning("fx_setbilinear");
-    return;
+  fx_setbilinear(onoff: boolean): void {
+    return unimplementedWarning("fx_setbilinear");
   }
 
-  fx_getbilinear() {
-    unimplementedWarning("fx_getbilinear");
-    return;
+  fx_getbilinear(): boolean {
+    return unimplementedWarning("fx_getbilinear");
   }
 
-  fx_setalphamode(onoff: boolean) {
-    unimplementedWarning("fx_setalphamode");
-    return;
+  fx_setalphamode(onoff: boolean): void {
+    return unimplementedWarning("fx_setalphamode");
   }
 
-  fx_getalphamode() {
-    unimplementedWarning("fx_getalphamode");
-    return;
+  fx_getalphamode(): boolean {
+    return unimplementedWarning("fx_getalphamode");
   }
 
-  fx_setgridsize(x: number, y: number) {
-    unimplementedWarning("fx_setgridsize");
-    return;
+  fx_setgridsize(x: number, y: number): void {
+    return unimplementedWarning("fx_setgridsize");
   }
 
-  fx_update() {
-    unimplementedWarning("fx_update");
-    return;
+  fx_update(): void {
+    return unimplementedWarning("fx_update");
   }
 
-  fx_restart() {
-    unimplementedWarning("fx_restart");
-    return;
+  fx_restart(): void {
+    return unimplementedWarning("fx_restart");
   }
 
-  isinvalid() {
-    unimplementedWarning("isinvalid");
-    return;
+  isinvalid(): boolean {
+    return unimplementedWarning("isinvalid");
   }
 }
 

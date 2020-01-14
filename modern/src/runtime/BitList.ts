@@ -12,24 +12,20 @@ class BitList extends MakiObject {
     return "BitList";
   }
 
-  getitem(n: number) {
-    unimplementedWarning("getitem");
-    return;
+  getitem(n: number): boolean {
+    return unimplementedWarning("getitem");
   }
 
-  setitem(n: number, val: boolean) {
-    unimplementedWarning("setitem");
-    return;
+  setitem(n: number, val: boolean): void {
+    return unimplementedWarning("setitem");
   }
 
-  setsize(s: number) {
-    unimplementedWarning("setsize");
-    return;
+  setsize(s: number): void {
+    return unimplementedWarning("setsize");
   }
 
-  getsize() {
-    unimplementedWarning("getsize");
-    return;
+  getsize(): number {
+    return unimplementedWarning("getsize");
   }
 }
 

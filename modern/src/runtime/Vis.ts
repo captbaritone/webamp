@@ -12,7 +12,7 @@ class Vis extends GuiObject {
     return "Vis";
   }
 
-  setmode(mode: number) {
+  setmode(mode: number): void {
     unimplementedWarning("setmode");
   }
 
@@ -20,24 +20,20 @@ class Vis extends GuiObject {
     this.js_trigger("onFrame");
   }
 
-  setrealtime(onoff: boolean) {
-    unimplementedWarning("setrealtime");
-    return;
+  setrealtime(onoff: boolean): void {
+    return unimplementedWarning("setrealtime");
   }
 
-  getrealtime() {
-    unimplementedWarning("getrealtime");
-    return;
+  getrealtime(): boolean {
+    return unimplementedWarning("getrealtime");
   }
 
-  getmode() {
-    unimplementedWarning("getmode");
-    return;
+  getmode(): number {
+    return unimplementedWarning("getmode");
   }
 
-  nextmode() {
-    unimplementedWarning("nextmode");
-    return;
+  nextmode(): void {
+    return unimplementedWarning("nextmode");
   }
 }
 

@@ -12,68 +12,55 @@ export default class Menu extends GuiObject {
     return "Menu";
   }
 
-  setmenugroup(groupId: string) {
-    unimplementedWarning("setmenugroup");
-    return;
+  setmenugroup(groupId: string): void {
+    return unimplementedWarning("setmenugroup");
   }
 
-  getmenugroup() {
-    unimplementedWarning("getmenugroup");
-    return;
+  getmenugroup(): string {
+    return unimplementedWarning("getmenugroup");
   }
 
-  setmenu(menuId: string) {
-    unimplementedWarning("setmenu");
-    return;
+  setmenu(menuId: string): void {
+    return unimplementedWarning("setmenu");
   }
 
-  getmenu() {
-    unimplementedWarning("getmenu");
-    return;
+  getmenu(): string {
+    return unimplementedWarning("getmenu");
   }
 
-  spawnmenu(monitor: number) {
-    unimplementedWarning("spawnmenu");
-    return;
+  spawnmenu(monitor: number): void {
+    return unimplementedWarning("spawnmenu");
   }
 
-  cancelmenu() {
-    unimplementedWarning("cancelmenu");
-    return;
+  cancelmenu(): void {
+    return unimplementedWarning("cancelmenu");
   }
 
-  setnormalid(id: string) {
-    unimplementedWarning("setnormalid");
-    return;
+  setnormalid(id: string): void {
+    return unimplementedWarning("setnormalid");
   }
 
-  setdownid(id: string) {
-    unimplementedWarning("setdownid");
-    return;
+  setdownid(id: string): void {
+    return unimplementedWarning("setdownid");
   }
 
-  sethoverid(id: string) {
-    unimplementedWarning("sethoverid");
-    return;
+  sethoverid(id: string): void {
+    return unimplementedWarning("sethoverid");
   }
 
-  onopenmenu() {
-    unimplementedWarning("onopenmenu");
-    return;
+  onopenmenu(): void {
+    return unimplementedWarning("onopenmenu");
   }
 
-  onclosemenu() {
-    unimplementedWarning("onclosemenu");
-    return;
+  onclosemenu(): void {
+    return unimplementedWarning("onclosemenu");
   }
 
-  nextmenu() {
-    unimplementedWarning("nextmenu");
-    return;
+  nextmenu(): void {
+    return unimplementedWarning("nextmenu");
   }
 
-  previousmenu() {
-    unimplementedWarning("previousmenu");
-    return;
+  previousmenu(): void {
+    return unimplementedWarning("previousmenu");
   }
 }

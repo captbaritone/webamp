@@ -12,39 +12,32 @@ class Browser extends GuiObject {
     return "Browser";
   }
 
-  navigateurl(url: string) {
-    unimplementedWarning("navigateurl");
-    return;
+  navigateurl(url: string): void {
+    return unimplementedWarning("navigateurl");
   }
 
-  back() {
-    unimplementedWarning("back");
-    return;
+  back(): void {
+    return unimplementedWarning("back");
   }
 
-  forward() {
-    unimplementedWarning("forward");
-    return;
+  forward(): void {
+    return unimplementedWarning("forward");
   }
 
-  stop() {
-    unimplementedWarning("stop");
-    return;
+  stop(): void {
+    return unimplementedWarning("stop");
   }
 
-  refresh() {
-    unimplementedWarning("refresh");
-    return;
+  refresh(): void {
+    return unimplementedWarning("refresh");
   }
 
-  home() {
-    unimplementedWarning("home");
-    return;
+  home(): void {
+    return unimplementedWarning("home");
   }
 
-  settargetname(targetname: string) {
-    unimplementedWarning("settargetname");
-    return;
+  settargetname(targetname: string): void {
+    return unimplementedWarning("settargetname");
   }
 
   onbeforenavigate(url: string, flags: number, targetframename: string): void {
@@ -55,34 +48,28 @@ class Browser extends GuiObject {
     this.js_trigger("onDocumentComplete", url);
   }
 
-  ondocumentready(url: string) {
-    unimplementedWarning("ondocumentready");
-    return;
+  ondocumentready(url: string): void {
+    return unimplementedWarning("ondocumentready");
   }
 
-  getdocumenttitle() {
-    unimplementedWarning("getdocumenttitle");
-    return;
+  getdocumenttitle(): string {
+    return unimplementedWarning("getdocumenttitle");
   }
 
-  onnavigateerror(url: string, code: number) {
-    unimplementedWarning("onnavigateerror");
-    return;
+  onnavigateerror(url: string, code: number): void {
+    return unimplementedWarning("onnavigateerror");
   }
 
-  setcancelieerrorpage(cancel: boolean) {
-    unimplementedWarning("setcancelieerrorpage");
-    return;
+  setcancelieerrorpage(cancel: boolean): void {
+    return unimplementedWarning("setcancelieerrorpage");
   }
 
-  scrape() {
-    unimplementedWarning("scrape");
-    return;
+  scrape(): void {
+    return unimplementedWarning("scrape");
   }
 
-  onmedialink(url: string) {
-    unimplementedWarning("onmedialink");
-    return;
+  onmedialink(url: string): string {
+    return unimplementedWarning("onmedialink");
   }
 }
 

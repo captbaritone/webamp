@@ -12,23 +12,21 @@ class Text extends GuiObject {
     return "Text";
   }
 
-  setalternatetext(txt: string) {
+  setalternatetext(txt: string): void {
     unimplementedWarning("setalternatetext");
   }
 
-  settext(txt: string) {
-    unimplementedWarning("settext");
-    return;
+  settext(txt: string): void {
+    return unimplementedWarning("settext");
   }
 
-  gettext() {
+  gettext(): string {
     unimplementedWarning("gettext");
     return "";
   }
 
-  gettextwidth() {
-    unimplementedWarning("gettextwidth");
-    return;
+  gettextwidth(): number {
+    return unimplementedWarning("gettextwidth");
   }
 
   ontextchanged(newtxt: string): void {

@@ -12,38 +12,31 @@ export default class PlDir extends MakiObject {
     return "PlDir";
   }
 
-  showcurrentlyplayingentry() {
-    Utils.unimplementedWarning("showcurrentlyplayingentry");
-    return;
+  showcurrentlyplayingentry(): void {
+    return Utils.unimplementedWarning("showcurrentlyplayingentry");
   }
 
-  getnumitems() {
-    Utils.unimplementedWarning("getnumitems");
-    return;
+  getnumitems(): number {
+    return Utils.unimplementedWarning("getnumitems");
   }
 
-  getitemname(item: number) {
-    Utils.unimplementedWarning("getitemname");
-    return;
+  getitemname(item: number): string {
+    return Utils.unimplementedWarning("getitemname");
   }
 
-  refresh() {
-    Utils.unimplementedWarning("refresh");
-    return;
+  refresh(): void {
+    return Utils.unimplementedWarning("refresh");
   }
 
-  renameitem(item: number, name: string) {
-    Utils.unimplementedWarning("renameitem");
-    return;
+  renameitem(item: number, name: string): void {
+    return Utils.unimplementedWarning("renameitem");
   }
 
-  enqueueitem(item: number) {
-    Utils.unimplementedWarning("enqueueitem");
-    return;
+  enqueueitem(item: number): void {
+    return Utils.unimplementedWarning("enqueueitem");
   }
 
-  playitem(item: number) {
-    Utils.unimplementedWarning("playitem");
-    return;
+  playitem(item: number): void {
+    return Utils.unimplementedWarning("playitem");
   }
 }
