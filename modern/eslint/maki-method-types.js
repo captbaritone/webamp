@@ -34,6 +34,14 @@ const TYPE_MAP = {
   },
 };
 
+function getTypeData(makiType) {
+  const type = TYPE_MAP[makiType.toLowerCase()];
+  if (type == null) {
+    console.warn(`Could not find type for "${makiType}"`);
+  }
+  return type;
+}
+
 module.exports = {
   meta: {
     docs: {
@@ -89,12 +97,16 @@ module.exports = {
         const { params, returnType, body } = node.value;
         const sourceCode = context.getSourceCode();
 
+        const unimplemented = sourceCode
+          .getText(node)
+          .includes("unimplementedWarning");
+
+        if (unimplemented) {
+          return;
+        }
         if (returnType == null) {
-          const expectedTypeData = TYPE_MAP[func.result];
-          if (
-            expectedTypeData != null &&
-            !sourceCode.getText(node).includes("unimplementedWarning")
-          ) {
+          const expectedTypeData = getTypeData(func.result);
+          if (expectedTypeData != null) {
             context.report({
               node: body,
               message: `Missing return type for Maki method. Expected \`${expectedTypeData.stringRepresentation}\`.`,
