@@ -9,9 +9,11 @@ function log(message) {
   console.log(message);
 }
 
+const TIMEOUT = 10000;
+
 async function expectSelector(page, selector) {
   log(`Waiting for selector ${selector}...`);
-  await page.waitForSelector(selector, { timeout: 8000 });
+  await page.waitForSelector(selector, { timeout: TIMEOUT });
   log(`Found selector ✅`);
 }
 
@@ -23,7 +25,7 @@ async function testPage({ url, name, firstTrackText }) {
     await page.goto(url);
     await expectSelector(page, webampButtonSelector);
     log("Going to click the Webamp button");
-    await page.click(webampButtonSelector, { timeout: 8000 });
+    await page.click(webampButtonSelector, { timeout: TIMEOUT });
     await expectSelector(page, "#webamp #main-window");
     log("Looking for first track...");
     const firstTrack = await page.$(".track-cell.current");
@@ -43,7 +45,7 @@ async function testPage({ url, name, firstTrackText }) {
     }
 
     log("Clicking play...");
-    await page.click("#webamp #main-window #play", { timeout: 2000 });
+    await page.click("#webamp #main-window #play", { timeout: TIMEOUT });
     await expectSelector(page, "#webamp #main-window.play");
     log("✅ Success! Test passed.");
   } catch (e) {
@@ -56,30 +58,46 @@ async function testPage({ url, name, firstTrackText }) {
   }
 }
 
+async function testPageAndRetry(options) {
+  let retries = 5;
+  while (retries--) {
+    try {
+      await testPage(options);
+      return;
+    } catch (e) {
+      console.error(e);
+      if (retries > 0) {
+        console.warn(`Retrying... ${retries} retries left.`);
+      }
+    }
+  }
+  throw new Error("Failed to pass even after 5 retries");
+}
+
 async function main() {
-  await testPage({
+  await testPageAndRetry({
     name: "Popular",
     url: "https://archive.org/details/gd73-06-10.sbd.hollister.174.sbeok.shnf",
     firstTrackText: "Grateful Dead - Morning Dew",
   });
-  await testPage({
+  await testPageAndRetry({
     name: "Regular",
     url:
       "https://archive.org/details/78_mambo-no.-5_perez-prado-and-his-orchestra-d.-perez-prado_gbia0009774b",
     firstTrackText: "Mambo No. 5",
   });
-  await testPage({
+  await testPageAndRetry({
     name: "Samples Only",
     url:
       "https://archive.org/details/lp_smokey-and-the-bandit-2-original-soundtrac_various-brenda-lee-burt-reynolds-don-willi",
     firstTrackText: "Texas Bound And Flyin",
   });
-  await testPage({
+  await testPageAndRetry({
     name: "Stream Only",
     url: "https://archive.org/details/cd_a-sweeter-music_sarah-cahill",
     firstTrackText: "Be Kind to One Another",
   });
-  await testPage({
+  await testPageAndRetry({
     name: "Another",
     url:
       "https://archive.org/details/78_house-of-the-rising-sun_josh-white-and-his-guitar_gbia0001628b",
