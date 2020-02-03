@@ -80,11 +80,17 @@ function filterBreadcrumbActions(action) {
   return !noisy;
 }
 
-Sentry.init({
-  dsn: SENTRY_DSN,
-  /* global COMMITHASH */
-  release: typeof COMMITHASH !== "undefined" ? COMMITHASH : "DEV",
-});
+try {
+  Sentry.init({
+    dsn: SENTRY_DSN,
+    /* global COMMITHASH */
+    release: typeof COMMITHASH !== "undefined" ? COMMITHASH : "DEV",
+  });
+} catch (e) {
+  // Archive.org tries to rewrite the DSN to point to a archive.org version
+  // since it looks like a URL. When this happens, Sentry crashes.
+  console.error(e);
+}
 
 const sentryMiddleware = createMiddleware(Sentry, {
   filterBreadcrumbActions,

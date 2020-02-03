@@ -8,7 +8,7 @@ const snapshotOptions = {
   // There are some font rendering issues which prevent us from pushing this lower right now.
   // We could setup some tests which don't render text and set the threshold lower.
   // Ideally we can resolve the font rendering issue.
-  failureThreshold: "0.01",
+  failureThreshold: "0.00",
   failureThresholdType: "percent",
 };
 
