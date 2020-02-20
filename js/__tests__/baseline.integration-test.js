@@ -77,3 +77,12 @@ test("pads empty space in the marquee with the space character", async () => {
   );
   expect(await page.screenshot()).toMatchImageSnapshot(snapshotOptions);
 });
+
+test("closing winamp shows the icon", async () => {
+  await page.goto(`${DOMAIN}/#{"disableMarquee":true}`);
+  await page.evaluate(() => window.__webamp.skinIsLoaded());
+  await page.evaluate(() =>
+    window.__webamp.store.dispatch({ type: "CLOSE_WINAMP" })
+  );
+  expect(await page.screenshot()).toMatchImageSnapshot(snapshotOptions);
+});
