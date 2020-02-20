@@ -13,7 +13,7 @@ const TIMEOUT = 10000;
 
 async function expectSelector(page, selector) {
   log(`Waiting for selector ${selector}...`);
-  await page.waitForSelector(selector, { timeout: TIMEOUT });
+  await page.waitForSelector(selector, { visible: true, timeout: TIMEOUT });
   log(`Found selector ✅`);
 }
 
@@ -25,7 +25,15 @@ async function testPage({ url, name, firstTrackText }) {
     await page.goto(url);
     await expectSelector(page, webampButtonSelector);
     log("Going to click the Webamp button");
-    await page.click(webampButtonSelector, { timeout: TIMEOUT });
+    // For some reason `page.click` often fails with `Error: Node is either not
+    // visible or not an HTMLElement` so we use `page.evaluate` instead.
+    // https://stackoverflow.com/a/52336777
+    // await page.click(webampButtonSelector, { timeout: TIMEOUT });
+    await page.evaluate(() => {
+      document
+        .querySelector(".js-webamp-use_skin_for_audio_items, .webamp-link")
+        .click();
+    });
     await expectSelector(page, "#webamp #main-window");
     log("Looking for first track...");
     const firstTrack = await page.$(".track-cell.current");
