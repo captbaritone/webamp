@@ -162,11 +162,7 @@ body {
   image-rendering: pixelated;
 }
 
-#webamp-icon.hidden {
-  display: none;
-}
-
-.webamp-icon-title {
+.desktop-icon-title {
   color: white;
   font-family: "MS Sans Serif", "Segoe UI", sans-serif;
   font-size: 11px;
@@ -176,7 +172,7 @@ body {
   border: 1px dotted transparent;
 }
 
-#webamp-icon .selected .webamp-icon-title {
+.desktop-icon.selected .desktop-icon-title {
   background-color: #000080;
   border-color: white;
 }
