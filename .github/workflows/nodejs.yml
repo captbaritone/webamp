@@ -3,7 +3,7 @@ name: CI
 on: [push]
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     strategy:
@@ -16,9 +16,35 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Run Tests
+      - name: Install Dependencies
+        run: yarn
+      - name: Lint
         run: |
-          yarn
-          yarn travis-tests
+          yarn lint
+          yarn type-check
+      - name: Build
+        run: |
+          yarn build
+          yarn build-library
+      - name: Run Unit Tests
+        run: yarn test
+      - name: Run Integration Tests
+        run: yarn integration-tests
         env:
           CI: true
+      - name: Upload Screenshot Diffs
+        if: failure()
+        uses: actions/upload-artifact@v1
+        with:
+          name: image_diffs
+          path: js/__tests__/__image_snapshots__/__diff_output__/
+      - name: Generate New Screenshots
+        if: failure()
+        run: |
+          yarn integration-tests -u
+      - name: Upload New Screenshots
+        if: failure()
+        uses: actions/upload-artifact@v1
+        with:
+          name: new_images
+          path: js/__tests__/__image_snapshots__/

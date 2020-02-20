@@ -21,3 +21,8 @@ jobs:
           node ./index.js
         env:
           CI: true
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: error
+          path: experiments/archive-org-integration-tests/error.png

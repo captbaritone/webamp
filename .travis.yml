@@ -1,8 +1,0 @@
-language: node_js
-node_js:
-  # Don't use Node 12 while we wait for transitive dependencies to upgrade nan
-  # https://github.com/nodejs/nan/issues/849
-  - lts/*
-  - node
-script: >
-  npm run travis-tests
