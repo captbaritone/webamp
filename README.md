@@ -56,7 +56,8 @@ I do most development by starting the demo site in dev mode and iterating that w
     # Clone the repo
     cd webamp
     # __Note:__ Please use yarn over npm, since yarn will respect our `yarn.lock` file
-    yarn
+    yarn install
+    yarn start
 
 `http://localhost:8080/` should automatically open in your browser.
 
