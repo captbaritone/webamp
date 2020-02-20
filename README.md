@@ -1,4 +1,4 @@
-[![Discord](https://img.shields.io/discord/434058775012311061.svg)](https://discord.gg/fBTDMqR)
+![Tests](https://github.com/captbaritone/webamp/workflows/CI/badge.svg) [![Discord](https://img.shields.io/discord/434058775012311061.svg)](https://discord.gg/fBTDMqR)
 
 # Webamp
 
