@@ -8,6 +8,7 @@ System.geteq
 System.geteqband
 System.geteqpreamp
 System.getstatus
+System.messagebox
 System.getplayitemlength
 System.seekto
 System.newdynamiccontainer
@@ -146,6 +147,7 @@ Wac.sendcommand
 Wac.show
 Wac.hide
 Wac.isvisible
+Wac.onnotify
 Wac.setstatusbar
 Wac.getstatusbar
 Map.loadmap
