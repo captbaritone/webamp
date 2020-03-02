@@ -34,7 +34,7 @@ import {
   initialState,
   disableMarquee,
 } from "./config";
-import WebampIcon from "./WebampIcon";
+import DemoDesktop from "./DemoDesktop";
 import enableMediaSession from "./mediaSession";
 import screenshotInitialState from "./screenshotInitialState";
 
@@ -215,8 +215,8 @@ async function main() {
   await webamp.renderWhenReady(document.getElementById("app"));
 
   ReactDOM.render(
-    <WebampIcon webamp={webamp} />,
-    document.getElementById("webamp-icon")
+    <DemoDesktop webamp={webamp} />,
+    document.getElementById("demo-desktop")
   );
 }
 
