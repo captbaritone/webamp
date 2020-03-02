@@ -152,6 +152,7 @@
     "trailingComma": "es5"
   },
   "dependencies": {
+    "butterchurn-presets-weekly": "^0.0.4",
     "eslint-plugin-react-hooks": "^2.1.2",
     "fscreen": "^1.0.2",
     "react-dropzone": "^10.1.7",
