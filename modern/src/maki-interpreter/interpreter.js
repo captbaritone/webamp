@@ -34,7 +34,7 @@ export function* interpret(start, program, stack = []) {
     let aValue = a instanceof Variable ? a.getValue() : a;
     const bValue = b instanceof Variable ? b.getValue() : b;
 
-    aValue = coerceTypes(a, b, aValue, bValue);
+    aValue = coerceTypes(a, b, aValue);
     stack.push(operator(bValue, aValue));
   }
 
