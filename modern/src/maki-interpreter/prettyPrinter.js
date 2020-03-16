@@ -7,7 +7,7 @@ function printValue(value) {
     return value;
   }
   const variable = value;
-  let type = "UNKOWN";
+  let type;
   switch (variable.typeName) {
     case "OBJECT":
       const obj = runtime[variable.type];
