@@ -19,17 +19,17 @@ module.exports = postcss.plugin("postcss-optimize-data-uri-pngs", () => {
     // walkDecls does not let us work async, so we collect the async work we
     // need to do here, and await it at the end
     const promisesFactories = [];
+
+    const createPromiseFactory = async function(decl, dataUri) {
+      decl.value = decl.value.replace(dataUri, await optimizeDataUri(dataUri));
+    };
+
     css.walkDecls(DATA_URL_PROPS_REGEX, decl => {
       let matches;
       // WTF JavaScript. This is the worst API for iterating RegEx matches.
       while ((matches = DATA_URL_REGEX.exec(decl.value))) {
         const [, dataUri] = matches;
-        promisesFactories.push(async () => {
-          decl.value = decl.value.replace(
-            dataUri,
-            await optimizeDataUri(dataUri)
-          );
-        });
+        promisesFactories.push(createPromiseFactory(decl, dataUri));
       }
     });
     await Promise.all(promisesFactories.map(p => p()));
