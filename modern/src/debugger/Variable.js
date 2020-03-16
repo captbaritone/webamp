@@ -4,8 +4,11 @@ function quote(str) {
   return `"${str}"`;
 }
 
+/**
+ * @return {string}
+ */
 export default function Variable({ variable }) {
-  let type = "UNKOWN";
+  let type;
   switch (variable.typeName) {
     case "OBJECT": {
       const obj = runtime[variable.type];
@@ -39,5 +42,6 @@ export default function Variable({ variable }) {
     default:
       throw new Error(`Unknown variable type ${variable.typeName}`);
   }
+
   return type;
 }
