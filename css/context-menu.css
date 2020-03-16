@@ -1,5 +1,5 @@
 #webamp-context-menu .context-menu {
-  left: 0px;
+  left: 0;
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
@@ -10,7 +10,7 @@
 }
 
 #webamp-context-menu .context-menu.top {
-  top: 0px;
+  top: 0;
 }
 
 #webamp-context-menu .context-menu,
@@ -27,7 +27,7 @@
 
 #webamp-context-menu .context-menu li {
   position: relative;
-  font-family: "Tahoma";
+  font-family: "Tahoma", sans-serif;
   font-size: 11px;
   color: black;
   white-space: nowrap;

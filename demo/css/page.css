@@ -1,7 +1,7 @@
 /* Rules for the page layout */
 body {
   background-color: rgb(58, 110, 165);
-  font-family: arial;
+  font-family: arial, sans-serif;
   font-size: 15px;
 }
 
@@ -82,7 +82,6 @@ body {
 
 #butterchurn-share {
   display: none; /* Button is only shown if the window gets enabled */
-  background-size: 100%; /* Image is 2x size for retina displays */
   background-size: 100%; /* Image is 2x size for retina displays */
 }
 
