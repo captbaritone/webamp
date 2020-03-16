@@ -57,8 +57,7 @@ const MD5 = /([a-fA-F0-9]{32})/;
 async function getMd5ByAnything(anything) {
   const md5Match = anything.match(MD5);
   if (md5Match != null) {
-    const md5 = md5Match[1];
-    return md5;
+    return md5Match[1];
   }
   const itemMatchResult = anything.match(IA_URL);
   if (itemMatchResult != null) {
