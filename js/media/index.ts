@@ -37,10 +37,13 @@ export default class Media {
     // Via: https://stackoverflow.com/a/43395068/1263117
     // TODO #leak
     if (this._context.state === "suspended") {
-      const resume = async () => {
+      console.warn("Audio Context(suspended)");
+      const resume = async (e: any) => {
+        console.warn("Audio Context Resume", e);
         await this._context.resume();
 
         if (this._context.state === "running") {
+          console.warn("Audio Context(running)");
           // TODO: Add this to the disposable
           document.body.removeEventListener("touchend", resume, false);
           document.body.removeEventListener("click", resume, false);
@@ -96,12 +99,15 @@ export default class Media {
     this._source = new ElementSource(this._context, this._staticSource);
 
     this._source.on("positionChange", () => {
+      console.warn("Audio Source(positionChange)");
       this._emitter.trigger("timeupdate");
     });
     this._source.on("ended", () => {
+      console.warn("Audio Source(ended)");
       this._emitter.trigger("ended");
     });
     this._source.on("statusChange", () => {
+      console.warn("Audio Source(statusChange)", this._source.getStatus());
       switch (this._source.getStatus()) {
         case MEDIA_STATUS.PLAYING:
           this._emitter.trigger("playing");
@@ -110,6 +116,7 @@ export default class Media {
       this._emitter.trigger("timeupdate");
     });
     this._source.on("loaded", () => {
+      console.warn("Audio Source(loaded)");
       this._emitter.trigger("fileLoaded");
     });
 

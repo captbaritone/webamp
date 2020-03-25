@@ -27,17 +27,20 @@ export default class ElementSource {
 
     // TODO: #leak
     this._audio.addEventListener("suspend", () => {
+      console.warn("Audio(suspend)");
       this._setStalled(true);
     });
 
     // TODO: #leak
     this._audio.addEventListener("durationchange", () => {
+      console.warn("Audio(durationChange)");
       this._emitter.trigger("loaded");
       this._setStalled(false);
     });
 
     // TODO: #leak
     this._audio.addEventListener("ended", () => {
+      console.warn("Audio(ended)");
       this._emitter.trigger("ended");
       this._setStatus(MEDIA_STATUS.STOPPED);
     });
@@ -45,11 +48,13 @@ export default class ElementSource {
     // TODO: Throttle to 50 (if needed)
     // TODO: #leak
     this._audio.addEventListener("timeupdate", () => {
+      console.warn("Audio(timeupdate)");
       this._emitter.trigger("positionChange");
     });
 
     // TODO: #leak
     this._audio.addEventListener("error", e => {
+      console.warn("Audio(error)", this._audio.error);
       switch (this._audio.error!.code) {
         case 1:
           // The fetching of the associated resource was aborted by the user's request.
