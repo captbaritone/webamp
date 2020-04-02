@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import { connect } from "react-redux";
-import Skin from "./Skin";
+import Skin from "./components/Skin";
 import * as Utils from "./utils";
 import * as Selectors from "./redux/selectors";
 import * as Actions from "./redux/actionCreators";
@@ -85,7 +85,4 @@ const mapDispatchToProps = dispatch => ({
     dispatch(Actions.selectedSkin(hash, position));
   }
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Cell);
+export default connect(mapStateToProps, mapDispatchToProps)(Cell);

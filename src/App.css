@@ -142,23 +142,6 @@ body.webamp-loaded #webamp {
   opacity: 1;
 }
 
-.skin img {
-  box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
-}
-
-.screenshot {
-  height: 100%;
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-
-.screenshot.loaded {
-  opacity: 1;
-  /* https://stackoverflow.com/a/16833496/1263117 */
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
-
 .metadata {
   position: absolute;
   margin: 10px;
