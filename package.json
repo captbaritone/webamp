@@ -14,9 +14,9 @@
     "md5-file": "^4.0.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-helmet": "^5.2.0",
+    "react-helmet": "^5.2.1",
     "react-redux": "^5.1.1",
-    "react-scripts": "2.0.3",
+    "react-scripts": "^3.4.1",
     "react-window": "^1.8.1",
     "redux": "^4.0.1",
     "redux-observable": "^1.0.0",
@@ -31,7 +31,10 @@
     "eject": "react-scripts eject",
     "find-skins": "node ./scripts/findSkins.js",
     "index": "node ./scripts/createSearchIndex.js",
-    "extract": "node ./scripts/extractSkinText.js \"/Volumes/Mobile Backup/skins/md5Skins/\""
+    "extract": "node ./scripts/extractSkinText.js \"/Volumes/Mobile Backup/skins/md5Skins/\"",
+    "deploy": "netlify deploy",
+    "styleguide": "styleguidist server",
+    "styleguide:build": "styleguidist build"
   },
   "prettier": {},
   "browserslist": [
@@ -44,6 +47,8 @@
     "extends": "react-app"
   },
   "devDependencies": {
-    "bluebird": "^3.5.3"
+    "bluebird": "^3.5.3",
+    "netlify-cli": "^2.40.0",
+    "react-styleguidist": "^11.0.5"
   }
 }

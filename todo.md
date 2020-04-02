@@ -2,14 +2,18 @@
 
 ## Rewrite
 
-Add color to index
-Add tweet likes to index
 Crawl/index IA view count
 
 Handle case where search results area loading
 Handle slow search
 
 Define a Skin interface which has all skin data or dummy skin data with a loading function
+
+Add an x button to clear search
+
+"Random" skin button should act on full set not just the loaded skins
+
+Find a way to fetch skin data based on hash
 
 ## Blocking
 
