@@ -43,12 +43,12 @@ function Metadata({ permalink, openFileExplorer, fileName, hash }) {
       {elements.map((element, i) => {
         const last = i === element.length - 1;
         return (
-          <>
+          <React.Fragment key={i}>
             {"["}
             {element}
             {"]"}
             {last ? "" : " "}
-          </>
+          </React.Fragment>
         );
       })}
     </div>
