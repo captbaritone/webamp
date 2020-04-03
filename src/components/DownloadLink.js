@@ -1,7 +1,7 @@
 import React from "react";
 import { Subject } from "rxjs";
 import { switchMap, distinctUntilChanged, map } from "rxjs/operators";
-import Disposable from "./Disposable";
+import Disposable from "../Disposable";
 
 // The `download` attribute on `<a>` tags is not respected on cross origin
 // assets. However, it does work for Object URLs. So, we download the skin as

@@ -1,6 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
-import * as ActionCreators from "./redux/actionCreators";
 import Disposable from "./Disposable";
 
 class WebampComponent extends React.Component {
@@ -185,12 +183,4 @@ class WebampComponent extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  closeModal() {
-    dispatch(ActionCreators.closeModal());
-  }
-});
-export default connect(
-  null,
-  mapDispatchToProps
-)(WebampComponent);
+export default WebampComponent;
