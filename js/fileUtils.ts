@@ -1,5 +1,5 @@
 import invariant from "invariant";
-import { IMusicMetadataBrowserApi } from "./types";
+import { IMusicMetadataBrowserApi, Track } from "./types";
 import { IAudioMetadata } from "music-metadata-browser"; // Import music-metadata type definitions
 
 type MediaDataType = string | ArrayBuffer | Blob;
@@ -116,6 +116,18 @@ export async function promptForFileReferences(
       resolve(files as FileList);
     });
     fileInput.click();
+  });
+}
+
+export async function promptForUrlReference(): Promise<Track> {
+  return new Promise<Track>(resolve => {
+    const url = prompt("Enter an Internet location to open here:\nFor example: http://www.server.com/file.mp3");
+
+    const track: any = {
+      url
+    };
+
+    resolve(track);
   });
 }
 

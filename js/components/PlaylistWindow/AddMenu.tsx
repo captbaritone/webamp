@@ -2,8 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { LOAD_STYLE } from "../../constants";
 import { getTrackCount } from "../../selectors";
-import { addTracksFromReferences } from "../../actionCreators";
-import { promptForFileReferences } from "../../fileUtils";
+import { addTracksFromReferences, loadMediaFiles } from "../../actionCreators";
+import { promptForFileReferences, promptForUrlReference } from "../../fileUtils";
 import PlaylistMenu from "./PlaylistMenu";
 import { AppState, Dispatch } from "../../types";
 
