@@ -174,13 +174,21 @@ async function reject(md5) {
 }
 
 async function getSkinToReview() {
-  const skin = await skins.findOne(REVIEWABLE_QUERY);
+  const reviewable = await skins.aggregate([
+    { $match: REVIEWABLE_QUERY },
+    { $sample: { size: 1 } }
+  ]);
+  const skin = reviewable[0];
   const { canonicalFilename, md5 } = getSkinRecord(skin);
   return { filename: canonicalFilename, md5 };
 }
 
 async function getSkinToTweet() {
-  const skin = await skins.findOne(TWEETABLE_QUERY);
+  const tweetables = await skins.aggregate([
+    { $match: TWEETABLE_QUERY },
+    { $sample: { size: 1 } }
+  ]);
+  const skin = tweetables[0];
   if (skin == null) {
     return null;
   }
