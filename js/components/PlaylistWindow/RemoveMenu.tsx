@@ -1,38 +1,25 @@
 import React from "react";
-import { connect } from "react-redux";
-import {
-  cropPlaylist,
-  removeSelectedTracks,
-  removeAllTracks,
-} from "../../actionCreators";
+import * as Actions from "../../actionCreators";
 import PlaylistMenu from "./PlaylistMenu";
-import { Dispatch } from "../../types";
+import { useActionCreator } from "../../hooks";
 
 /* eslint-disable no-alert */
 
-interface DispatchProps {
-  removeSelected: () => void;
-  removeAll: () => void;
-  crop: () => void;
-}
-
-const RemoveMenu = (props: DispatchProps) => (
-  <PlaylistMenu id="playlist-remove-menu">
-    <div
-      className="remove-misc"
-      onClick={() => alert("Not supported in Webamp")}
-    />
-    <div className="remove-all" onClick={props.removeAll} />
-    <div className="crop" onClick={props.crop} />
-    <div className="remove-selected" onClick={props.removeSelected} />
-  </PlaylistMenu>
-);
-
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
-  return {
-    removeSelected: () => dispatch(removeSelectedTracks()),
-    removeAll: () => dispatch(removeAllTracks()),
-    crop: () => dispatch(cropPlaylist()),
-  };
+const RemoveMenu = () => {
+  const removeSelected = useActionCreator(Actions.removeSelectedTracks);
+  const removeAll = useActionCreator(Actions.removeAllTracks);
+  const crop = useActionCreator(Actions.cropPlaylist);
+  return (
+    <PlaylistMenu id="playlist-remove-menu">
+      <div
+        className="remove-misc"
+        onClick={() => alert("Not supported in Webamp")}
+      />
+      <div className="remove-all" onClick={removeAll} />
+      <div className="crop" onClick={crop} />
+      <div className="remove-selected" onClick={removeSelected} />
+    </PlaylistMenu>
+  );
 };
-export default connect(() => ({}), mapDispatchToProps)(RemoveMenu);
+
+export default RemoveMenu;

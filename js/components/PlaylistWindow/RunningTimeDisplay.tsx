@@ -1,9 +1,8 @@
-import React from "react";
-import { connect } from "react-redux";
+import React, { useMemo } from "react";
 
 import CharacterString from "../CharacterString";
-import { getRunningTimeMessage } from "../../selectors";
-import { AppState } from "../../types";
+import * as Actions from "../../selectors";
+import { useTypedSelector } from "../../hooks";
 
 // While all the browsers I care about support String.prototype.padEnd,
 // Not all node versions do, and I want tests to pass in Jest...
@@ -15,23 +14,19 @@ function rightPad(str: string, len: number, fillChar: string): string {
   return str;
 }
 
-interface Props {
-  runningTimeMessage: string;
-}
-
-const RunningTimeDisplay = (props: Props) => (
-  <div className="playlist-running-time-display draggable">
-    {/* This div is probably not strictly needed */}
-    <div>
-      <CharacterString>
-        {rightPad(props.runningTimeMessage, 18, " ")}
-      </CharacterString>
+const RunningTimeDisplay = () => {
+  const runningTimeMessage = useTypedSelector(Actions.getRunningTimeMessage);
+  const text = useMemo(() => rightPad(runningTimeMessage, 18, " "), [
+    runningTimeMessage,
+  ]);
+  return (
+    <div className="playlist-running-time-display draggable">
+      {/* This div is probably not strictly needed */}
+      <div>
+        <CharacterString>{text}</CharacterString>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
-const mapStateToProps = (state: AppState): Props => ({
-  runningTimeMessage: getRunningTimeMessage(state),
-});
-
-export default connect(mapStateToProps)(RunningTimeDisplay);
+export default RunningTimeDisplay;

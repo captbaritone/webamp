@@ -365,3 +365,38 @@ export function downloadHtmlPlaylist(): Thunk {
     Utils.downloadURI(uri, "Winamp Playlist.html");
   };
 }
+
+let el: HTMLInputElement | null = document.createElement("input");
+el.type = "file";
+// @ts-ingore
+const DIR_SUPPORT =
+  // @ts-ignore
+  typeof el.webkitdirectory !== "undefined" ||
+  // @ts-ignore
+  typeof el.mozdirectory !== "undefined" ||
+  // @ts-ignore
+  typeof el.directory !== "undefined";
+// Release our reference
+el = null;
+
+export function addFilesAtIndex(nextIndex: number): Thunk {
+  return async dispatch => {
+    const fileReferences = await promptForFileReferences();
+    dispatch(
+      addTracksFromReferences(fileReferences, LOAD_STYLE.NONE, nextIndex)
+    );
+  };
+}
+
+export function addDirAtIndex(nextIndex: number): Thunk {
+  return async dispatch => {
+    if (!DIR_SUPPORT) {
+      alert("Not supported in your browser");
+      return;
+    }
+    const fileReferences = await promptForFileReferences({ directory: true });
+    dispatch(
+      addTracksFromReferences(fileReferences, LOAD_STYLE.NONE, nextIndex)
+    );
+  };
+}

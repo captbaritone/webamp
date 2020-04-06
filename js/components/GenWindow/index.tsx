@@ -1,13 +1,13 @@
 import React from "react";
-import { connect } from "react-redux";
 import classnames from "classnames";
 import "../../../css/gen-window.css";
 
-import { setWindowSize, closeWindow } from "../../actionCreators";
-import { getWindowPixelSize } from "../../selectors";
+import * as Actions from "../../actionCreators";
+import * as Selectors from "../../selectors";
 import ResizeTarget from "../ResizeTarget";
-import { AppState, WindowId, Dispatch } from "../../types";
+import { WindowId } from "../../types";
 import FocusTarget from "../FocusTarget";
+import { useActionCreator, useTypedSelector } from "../../hooks";
 
 interface TextProps {
   children: string;
@@ -37,40 +37,23 @@ interface WindowSize {
   height: number;
 }
 
-interface OwnProps {
+interface Props {
   windowId: WindowId;
   children: (windowSize: WindowSize) => React.ReactNode;
   title: string;
   onKeyDown?(e: KeyboardEvent): void;
 }
 
-interface DispatchProps {
-  close: (windowId: WindowId) => void;
-  setGenWindowSize: (windowId: WindowId, size: [number, number]) => void;
-}
-
-interface StateProps {
-  windowSize: [number, number];
-  selected: boolean;
-  height: number;
-  width: number;
-}
-
-type Props = OwnProps & DispatchProps & StateProps;
-
 // Named export for testing
-export const GenWindow = ({
-  selected,
-  children,
-  close,
-  title,
-  windowId,
-  windowSize,
-  setGenWindowSize,
-  width,
-  height,
-  onKeyDown,
-}: Props) => {
+export const GenWindow = ({ children, title, windowId, onKeyDown }: Props) => {
+  const setWindowSize = useActionCreator(Actions.setWindowSize);
+  const closeWindow = useActionCreator(Actions.closeWindow);
+  const getWindowPixelSize = useTypedSelector(Selectors.getWindowPixelSize);
+  const focusedWindow = useTypedSelector(Selectors.getFocusedWindow);
+  const getWindowSize = useTypedSelector(Selectors.getWindowSize);
+  const windowSize = getWindowSize(windowId);
+  const selected = focusedWindow === windowId;
+  const { width, height } = getWindowPixelSize(windowId);
   return (
     <FocusTarget windowId={windowId} onKeyDown={onKeyDown}>
       <div
@@ -89,7 +72,7 @@ export const GenWindow = ({
           <div className="gen-top-right draggable">
             <div
               className="gen-close selected"
-              onClick={() => close(windowId)}
+              onClick={() => closeWindow(windowId)}
             />
           </div>
         </div>
@@ -112,7 +95,7 @@ export const GenWindow = ({
           <div className="gen-bottom-right draggable">
             <ResizeTarget
               currentSize={windowSize}
-              setWindowSize={size => setGenWindowSize(windowId, size)}
+              setWindowSize={size => setWindowSize(windowId, size)}
               id={"gen-resize-target"}
             />
           </div>
@@ -122,22 +105,4 @@ export const GenWindow = ({
   );
 };
 
-const mapStateToProps = (state: AppState, ownProps: OwnProps): StateProps => {
-  const { width, height } = getWindowPixelSize(state)(ownProps.windowId);
-  return {
-    width,
-    height,
-    selected: state.windows.focused === ownProps.windowId,
-    windowSize: state.windows.genWindows[ownProps.windowId].size,
-  };
-};
-
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
-  return {
-    close: (windowId: WindowId) => dispatch(closeWindow(windowId)),
-    setGenWindowSize: (windowId: WindowId, size: [number, number]) =>
-      dispatch(setWindowSize(windowId, size)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(GenWindow);
+export default GenWindow;

@@ -1,12 +1,16 @@
 import React, { useEffect, useCallback } from "react";
 import Fullscreen from "../Fullscreen";
-import { connect } from "react-redux";
-import { useWindowSize, useScreenSize } from "../../hooks";
+import {
+  useWindowSize,
+  useScreenSize,
+  useTypedSelector,
+  useActionCreator,
+} from "../../hooks";
 import GenWindow from "../GenWindow";
 import { WINDOWS } from "../../constants";
 import * as Selectors from "../../selectors";
 import * as Actions from "../../actionCreators";
-import { AppState, Dispatch, TransitionType } from "../../types";
+import { TransitionType } from "../../types";
 import Visualizer from "./Visualizer";
 
 import "../../../css/milkdrop-window.css";
@@ -18,47 +22,22 @@ import Desktop from "./Desktop";
 
 const MILLISECONDS_BETWEEN_PRESET_TRANSITIONS = 15000;
 
-interface StateProps {
-  desktop: boolean;
-  fullscreen: boolean;
-  overlay: boolean;
-  presetsAreCycling: boolean;
-  currentPresetIndex: number | null; // Index
-  trackTitle: string | null;
-  mediaIsPlaying: boolean;
-}
-
-interface DispatchProps {
-  closeWindow(): void;
-  toggleDesktop(): void;
-  toggleFullscreen(): void;
-  setFullscreen(fullscreen: boolean): void;
-  togglePresetOverlay(): void;
-  selectRandomPreset(): void;
-  toggleRandomize(): void;
-  toggleCycling(): void;
-  handlePresetDrop(e: React.DragEvent): void;
-  selectNextPreset(transitionType?: TransitionType): void;
-  selectPreviousPreset(transitionType?: TransitionType): void;
-  scheduleMilkdropMessage(message: string): void;
-}
-
-interface OwnProps {
+interface Props {
   analyser: AnalyserNode;
 }
 
-type Props = StateProps & DispatchProps & OwnProps;
+function useKeyHandler() {
+  const trackTitle = useTypedSelector(Selectors.getCurrentTrackDisplayName);
 
-function useKeyHandler(props: Props) {
-  const {
-    selectNextPreset,
-    selectPreviousPreset,
-    toggleRandomize,
-    togglePresetOverlay,
-    scheduleMilkdropMessage,
-    trackTitle,
-    toggleCycling,
-  } = props;
+  const selectNextPreset = useActionCreator(Actions.selectNextPreset);
+  const selectPreviousPreset = useActionCreator(Actions.selectPreviousPreset);
+  const toggleRandomize = useActionCreator(Actions.toggleRandomizePresets);
+  const togglePresetOverlay = useActionCreator(Actions.togglePresetOverlay);
+  const scheduleMilkdropMessage = useActionCreator(
+    Actions.scheduleMilkdropMessage
+  );
+  const toggleCycling = useActionCreator(Actions.togglePresetCycling);
+
   // Handle keyboard events
   return useCallback(
     (e: KeyboardEvent) => {
@@ -92,45 +71,52 @@ function useKeyHandler(props: Props) {
       }
     },
     [
+      scheduleMilkdropMessage,
       selectNextPreset,
       selectPreviousPreset,
-      toggleRandomize,
-      togglePresetOverlay,
-      scheduleMilkdropMessage,
-      trackTitle,
       toggleCycling,
+      togglePresetOverlay,
+      toggleRandomize,
+      trackTitle,
     ]
   );
 }
 
-function Milkdrop(props: Props) {
-  const handleKeyDown = useKeyHandler(props);
+function Milkdrop({ analyser }: Props) {
+  const desktop = useTypedSelector(Selectors.getMilkdropDesktopEnabled);
+  const fullscreen = useTypedSelector(Selectors.getMilkdropFullscreenEnabled);
+  const overlay = useTypedSelector(Selectors.getPresetOverlayOpen);
+  const presetsAreCycling = useTypedSelector(Selectors.getPresetsAreCycling);
+  const currentPresetIndex = useTypedSelector(Selectors.getCurrentPresetIndex);
+  const mediaIsPlaying = useTypedSelector(Selectors.getMediaIsPlaying);
+
+  const toggleFullscreen = useActionCreator(Actions.toggleMilkdropFullscreen);
+  const selectNextPreset = useActionCreator(Actions.selectNextPreset);
+  const handlePresetDrop = useActionCreator(Actions.handlePresetDrop);
+  const setFullscreen = useActionCreator(Actions.setMilkdropFullscreen);
+
+  const handleKeyDown = useKeyHandler();
 
   // Cycle presets
   useEffect(() => {
-    if (!props.presetsAreCycling || !props.mediaIsPlaying) {
+    if (!presetsAreCycling || !mediaIsPlaying) {
       return;
     }
     const intervalId = setInterval(
-      props.selectNextPreset,
+      selectNextPreset,
       MILLISECONDS_BETWEEN_PRESET_TRANSITIONS
     );
     return () => clearInterval(intervalId);
-  }, [
-    props.selectNextPreset,
-    props.presetsAreCycling,
-    props.currentPresetIndex,
-    props.mediaIsPlaying,
-  ]);
+  }, [presetsAreCycling, currentPresetIndex, mediaIsPlaying, selectNextPreset]);
 
   const screenSize = useScreenSize();
   const windowSize = useWindowSize();
 
-  if (props.desktop) {
+  if (desktop) {
     return (
       <Desktop>
         <MilkdropContextMenu>
-          <Visualizer {...windowSize} analyser={props.analyser} />
+          <Visualizer {...windowSize} analyser={analyser} />
         </MilkdropContextMenu>
       </Desktop>
     );
@@ -143,18 +129,15 @@ function Milkdrop(props: Props) {
       onKeyDown={handleKeyDown}
     >
       {(genWindowSize: { width: number; height: number }) => {
-        const size = props.fullscreen ? screenSize : genWindowSize;
+        const size = fullscreen ? screenSize : genWindowSize;
         return (
           <MilkdropContextMenu>
             <Background>
-              <DropTarget handleDrop={props.handlePresetDrop}>
-                {props.overlay && <PresetOverlay {...size} />}
-                <Fullscreen
-                  enabled={props.fullscreen}
-                  onChange={props.setFullscreen}
-                >
-                  <div onDoubleClick={props.toggleFullscreen}>
-                    <Visualizer {...size} analyser={props.analyser} />
+              <DropTarget handleDrop={handlePresetDrop}>
+                {overlay && <PresetOverlay {...size} />}
+                <Fullscreen enabled={fullscreen} onChange={setFullscreen}>
+                  <div onDoubleClick={toggleFullscreen}>
+                    <Visualizer {...size} analyser={analyser} />
                   </div>
                 </Fullscreen>
               </DropTarget>
@@ -165,34 +148,4 @@ function Milkdrop(props: Props) {
     </GenWindow>
   );
 }
-
-const mapStateToProps = (state: AppState): StateProps => ({
-  desktop: Selectors.getMilkdropDesktopEnabled(state),
-  fullscreen: Selectors.getMilkdropFullscreenEnabled(state),
-  overlay: Selectors.getPresetOverlayOpen(state),
-  presetsAreCycling: Selectors.getPresetsAreCycling(state),
-  currentPresetIndex: Selectors.getCurrentPresetIndex(state),
-  trackTitle: Selectors.getCurrentTrackDisplayName(state),
-  mediaIsPlaying: Selectors.getMediaIsPlaying(state),
-});
-
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-  closeWindow: () => dispatch(Actions.closeWindow(WINDOWS.MILKDROP)),
-  toggleDesktop: () => dispatch(Actions.toggleMilkdropDesktop()),
-  toggleFullscreen: () => dispatch(Actions.toggleMilkdropFullscreen()),
-  setFullscreen: (fullscreen: boolean) =>
-    dispatch(Actions.setMilkdropFullscreen(fullscreen)),
-  togglePresetOverlay: () => dispatch(Actions.togglePresetOverlay()),
-  selectRandomPreset: () => dispatch(Actions.selectRandomPreset()),
-  toggleRandomize: () => dispatch(Actions.toggleRandomizePresets()),
-  toggleCycling: () => dispatch(Actions.togglePresetCycling()),
-  handlePresetDrop: e => dispatch(Actions.handlePresetDrop(e)),
-  selectNextPreset: (transitionType?: TransitionType) =>
-    dispatch(Actions.selectNextPreset(transitionType)),
-  selectPreviousPreset: (transitionType?: TransitionType) =>
-    dispatch(Actions.selectPreviousPreset(transitionType)),
-  scheduleMilkdropMessage: (message: string) =>
-    dispatch(Actions.scheduleMilkdropMessage(message)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Milkdrop);
+export default Milkdrop;

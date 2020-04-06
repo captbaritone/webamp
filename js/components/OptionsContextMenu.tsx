@@ -1,82 +1,56 @@
 import React from "react";
-import { connect } from "react-redux";
 
 import { Hr, Node } from "./ContextMenu";
 import SkinsContextMenu from "./SkinsContextMenu";
-import { Dispatch, TimeMode, AppState } from "../types";
 import * as Actions from "../actionCreators";
+import * as Selectors from "../selectors";
 import { TIME_MODE } from "../constants";
+import { useActionCreator, useTypedSelector } from "../hooks";
 
-interface StateProps {
-  timeMode: TimeMode;
-  doubled: boolean;
-  repeat: boolean;
-  shuffle: boolean;
-}
+const OptionsContextMenu = () => {
+  const toggleTimeMode = useActionCreator(Actions.toggleTimeMode);
+  const toggleDoubleSizeMode = useActionCreator(Actions.toggleDoubleSizeMode);
+  const toggleRepeat = useActionCreator(Actions.toggleRepeat);
+  const toggleShuffle = useActionCreator(Actions.toggleShuffle);
 
-interface DispatchProps {
-  toggleTimeMode(): void;
-  toggleDoubleSizeMode(): void;
-  toggleRepeat(): void;
-  toggleShuffle(): void;
-}
-
-const OptionsContextMenu = (props: DispatchProps & StateProps) => (
-  <React.Fragment>
-    {/* <Node label="Preferences..." /> */}
-    <SkinsContextMenu />
-    <Hr />
-    <Node
-      label="Time elapsed"
-      hotkey="(Ctrl+T toggles)"
-      onClick={props.toggleTimeMode}
-      checked={props.timeMode === TIME_MODE.ELAPSED}
-    />
-    <Node
-      label="Time remaining"
-      hotkey="(Ctrl+T toggles)"
-      onClick={props.toggleTimeMode}
-      checked={props.timeMode === TIME_MODE.REMAINING}
-    />
-    {/* <Node label="Always On Top" hotkey="Ctrl+A" /> */}
-    <Node
-      label="Double Size"
-      hotkey="Ctrl+D"
-      onClick={props.toggleDoubleSizeMode}
-      checked={props.doubled}
-    />
-    {/* <Node label="EasyMove" hotkey="Ctrl+E" /> */}
-    <Hr />
-    <Node
-      label="Repeat"
-      hotkey="R"
-      onClick={props.toggleRepeat}
-      checked={props.repeat}
-    />
-    <Node
-      label="Shuffle"
-      hotkey="S"
-      onClick={props.toggleShuffle}
-      checked={props.shuffle}
-    />
-  </React.Fragment>
-);
-
-const mapStateToProps = (state: AppState): StateProps => {
-  return {
-    doubled: state.display.doubled,
-    timeMode: state.media.timeMode,
-    repeat: state.media.repeat,
-    shuffle: state.media.shuffle,
-  };
+  const doubled = useTypedSelector(Selectors.getDoubled);
+  const timeMode = useTypedSelector(Selectors.getTimeMode);
+  const repeat = useTypedSelector(Selectors.getRepeat);
+  const shuffle = useTypedSelector(Selectors.getShuffle);
+  return (
+    <>
+      {/* <Node label="Preferences..." /> */}
+      <SkinsContextMenu />
+      <Hr />
+      <Node
+        label="Time elapsed"
+        hotkey="(Ctrl+T toggles)"
+        onClick={toggleTimeMode}
+        checked={timeMode === TIME_MODE.ELAPSED}
+      />
+      <Node
+        label="Time remaining"
+        hotkey="(Ctrl+T toggles)"
+        onClick={toggleTimeMode}
+        checked={timeMode === TIME_MODE.REMAINING}
+      />
+      {/* <Node label="Always On Top" hotkey="Ctrl+A" /> */}
+      <Node
+        label="Double Size"
+        hotkey="Ctrl+D"
+        onClick={toggleDoubleSizeMode}
+        checked={doubled}
+      />
+      {/* <Node label="EasyMove" hotkey="Ctrl+E" /> */}
+      <Hr />
+      <Node label="Repeat" hotkey="R" onClick={toggleRepeat} checked={repeat} />
+      <Node
+        label="Shuffle"
+        hotkey="S"
+        onClick={toggleShuffle}
+        checked={shuffle}
+      />
+    </>
+  );
 };
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
-  return {
-    toggleTimeMode: () => dispatch(Actions.toggleTimeMode()),
-    toggleDoubleSizeMode: () => dispatch(Actions.toggleDoubleSizeMode()),
-    toggleRepeat: () => dispatch(Actions.toggleRepeat()),
-    toggleShuffle: () => dispatch(Actions.toggleShuffle()),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(OptionsContextMenu);
+export default OptionsContextMenu;

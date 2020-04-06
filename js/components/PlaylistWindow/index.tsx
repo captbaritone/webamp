@@ -1,5 +1,4 @@
 import React, { useCallback } from "react";
-import { connect } from "react-redux";
 import classnames from "classnames";
 
 import { WINDOWS, TRACK_HEIGHT, LOAD_STYLE } from "../../constants";
@@ -21,56 +20,44 @@ import TrackList from "./TrackList";
 import ScrollBar from "./ScrollBar";
 
 import "../../../css/playlist-window.css";
-import { AppState, PlaylistStyle, Dispatch } from "../../types";
+import { AppState } from "../../types";
 import FocusTarget from "../FocusTarget";
+import { useActionCreator, useTypedSelector } from "../../hooks";
 
-interface StateProps {
-  offset: number;
-  maxTrackIndex: number;
-  playlistWindowPixelSize: { width: number; height: number };
-  showVisualizer: boolean;
-  activateVisualizer: boolean;
-  selected: boolean;
-  skinPlaylistStyle: PlaylistStyle;
-  playlistSize: [number, number];
-  playlistShade: boolean;
-  duration: number | null;
-}
-
-interface DispatchProps {
-  close(): void;
-  toggleShade(): void;
-  scrollUpFourTracks(): void;
-  scrollDownFourTracks(): void;
-  loadMedia(e: React.DragEvent<HTMLDivElement>, startIndex: number): void;
-  scrollVolume(e: React.WheelEvent<HTMLDivElement>): void;
-}
-
-interface OwnProps {
+interface Props {
   analyser: AnalyserNode;
 }
 
-type Props = StateProps & DispatchProps & OwnProps;
+function _maxTrackIndex(state: AppState) {
+  return state.playlist.trackOrder.length - 1;
+}
 
-function PlaylistWindow({
-  skinPlaylistStyle,
-  selected,
-  playlistSize,
-  playlistWindowPixelSize,
-  playlistShade,
-  close,
-  toggleShade,
-  analyser,
-  showVisualizer,
-  activateVisualizer,
-  maxTrackIndex,
-  offset,
-  loadMedia,
-  scrollUpFourTracks,
-  scrollDownFourTracks,
-  scrollVolume,
-}: Props) {
-  const _handleDrop = useCallback(
+function PlaylistWindow({ analyser }: Props) {
+  const offset = useTypedSelector(Selectors.getScrollOffset);
+  const getWindowSize = useTypedSelector(Selectors.getWindowSize);
+  const selectedWindow = useTypedSelector(Selectors.getFocusedWindow);
+  const getWindowShade = useTypedSelector(Selectors.getWindowShade);
+  const getWindowOpen = useTypedSelector(Selectors.getWindowOpen);
+  const maxTrackIndex = useTypedSelector(_maxTrackIndex);
+  const skinPlaylistStyle = useTypedSelector(Selectors.getSkinPlaylistStyle);
+  const getWindowPixelSize = useTypedSelector(Selectors.getWindowPixelSize);
+
+  const selected = selectedWindow === WINDOWS.PLAYLIST;
+  const playlistShade = Boolean(getWindowShade(WINDOWS.PLAYLIST));
+  const playlistSize = getWindowSize(WINDOWS.PLAYLIST);
+  const playlistWindowPixelSize = getWindowPixelSize(WINDOWS.PLAYLIST);
+
+  const close = useActionCreator(Actions.closeWindow);
+  const toggleShade = useActionCreator(Actions.togglePlaylistShadeMode);
+  const scrollUpFourTracks = useActionCreator(Actions.scrollUpFourTracks);
+  const scrollDownFourTracks = useActionCreator(Actions.scrollDownFourTracks);
+  const scrollVolume = useActionCreator(Actions.scrollVolume);
+  const loadMedia = useActionCreator(Actions.loadMedia);
+
+  const showVisualizer = playlistSize[0] > 2;
+  const activateVisualizer = !getWindowOpen(WINDOWS.MAIN);
+
+  const handleDrop = useCallback(
     (
       e: React.DragEvent<HTMLDivElement>,
       targetCoords: { x: number; y: number }
@@ -81,9 +68,9 @@ function PlaylistWindow({
         0,
         maxTrackIndex + 1
       );
-      loadMedia(e, atIndex);
+      loadMedia(e, LOAD_STYLE.NONE, atIndex);
     },
-    [loadMedia, offset, maxTrackIndex]
+    [loadMedia, maxTrackIndex, offset]
   );
 
   if (playlistShade) {
@@ -108,7 +95,7 @@ function PlaylistWindow({
         id="playlist-window"
         className={classes}
         style={style}
-        handleDrop={_handleDrop}
+        handleDrop={handleDrop}
         onWheel={scrollVolume}
       >
         <div className="playlist-top draggable" onDoubleClick={toggleShade}>
@@ -124,7 +111,10 @@ function PlaylistWindow({
           <div className="playlist-top-right-fill draggable" />
           <div className="playlist-top-right draggable">
             <div id="playlist-shade-button" onClick={toggleShade} />
-            <div id="playlist-close-button" onClick={close} />
+            <div
+              id="playlist-close-button"
+              onClick={() => close(WINDOWS.PLAYLIST)}
+            />
           </div>
         </div>
         <div className="playlist-middle draggable">
@@ -172,38 +162,4 @@ function PlaylistWindow({
   );
 }
 
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
-  return {
-    close: () => dispatch(Actions.closeWindow(WINDOWS.PLAYLIST)),
-    toggleShade: () => dispatch(Actions.togglePlaylistShadeMode()),
-    scrollUpFourTracks: () => dispatch(Actions.scrollUpFourTracks()),
-    scrollDownFourTracks: () => dispatch(Actions.scrollDownFourTracks()),
-    loadMedia: (e, startIndex) =>
-      dispatch(Actions.loadMedia(e, LOAD_STYLE.NONE, startIndex)),
-    scrollVolume: e => dispatch(Actions.scrollVolume(e)),
-  };
-};
-
-const mapStateToProps = (state: AppState): StateProps => {
-  const {
-    playlist: { trackOrder },
-  } = state;
-  const playlistSize = Selectors.getWindowSize(state)(WINDOWS.PLAYLIST);
-
-  return {
-    offset: Selectors.getScrollOffset(state),
-    maxTrackIndex: trackOrder.length - 1,
-    playlistWindowPixelSize: Selectors.getWindowPixelSize(state)(
-      WINDOWS.PLAYLIST
-    ),
-    showVisualizer: playlistSize[0] > 2,
-    activateVisualizer: !Selectors.getWindowOpen(state)(WINDOWS.MAIN),
-    playlistSize,
-    selected: Selectors.getFocusedWindow(state) === WINDOWS.PLAYLIST,
-    skinPlaylistStyle: Selectors.getSkinPlaylistStyle(state),
-    playlistShade: Boolean(Selectors.getWindowShade(state)(WINDOWS.PLAYLIST)),
-    duration: Selectors.getDuration(state),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(PlaylistWindow);
+export default PlaylistWindow;

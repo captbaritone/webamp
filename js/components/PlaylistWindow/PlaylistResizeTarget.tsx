@@ -1,29 +1,27 @@
-import { connect } from "react-redux";
+import React from "react";
 import ResizeTarget from "../ResizeTarget";
-import { setWindowSize } from "../../actionCreators";
-import { getWindowSize } from "../../selectors";
-import { AppState, Dispatch } from "../../types";
+import * as Actions from "../../actionCreators";
+import * as Selectors from "../../selectors";
+import { useTypedSelector, useActionCreator } from "../../hooks";
 
-interface StateProps {
-  currentSize: [number, number];
-  id: string;
-}
-
-interface DispatchProps {
-  currentSize: [number, number];
-  id: string;
-}
-
-const mapStateToProps = (state: AppState): StateProps => ({
-  currentSize: getWindowSize(state)("playlist"),
-  id: "playlist-resize-target",
-});
-
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return {
-    setWindowSize: (size: [number, number]) =>
-      dispatch(setWindowSize("playlist", size)),
-  };
+type Props = {
+  widthOnly?: boolean;
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ResizeTarget);
+function PlaylistResizeTarget({ widthOnly }: Props) {
+  const windowSize = useTypedSelector(Selectors.getWindowSize);
+  const setWindowSize = useActionCreator(Actions.setWindowSize);
+  const currentSize = windowSize("playlist");
+
+  return (
+    <ResizeTarget
+      currentSize={currentSize}
+      id="playlist-resize-target"
+      setWindowSize={size => {
+        setWindowSize("playlist", size);
+      }}
+      widthOnly={widthOnly}
+    />
+  );
+}
+export default PlaylistResizeTarget;

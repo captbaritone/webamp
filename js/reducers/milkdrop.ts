@@ -1,4 +1,4 @@
-import { Action, StatePreset, TransitionType } from "../types";
+import { Action, StatePreset, TransitionType, MilkdropMessage } from "../types";
 import {
   SET_MILKDROP_DESKTOP,
   SET_MILKDROP_FULLSCREEN,
@@ -14,11 +14,6 @@ import {
 } from "../actionTypes";
 import * as Utils from "../utils";
 
-interface Message {
-  text: string;
-  time: number;
-}
-
 export interface MilkdropState {
   display: "WINDOW" | "DESKTOP" | "FULLSCREEN";
   overlay: boolean;
@@ -31,7 +26,7 @@ export interface MilkdropState {
   cycling: boolean;
   // TODO: This could probably be simplified to just a date and we could assume
   // the song title is the message.
-  message: Message | null;
+  message: MilkdropMessage | null;
 }
 
 const defaultMilkdropState: MilkdropState = {

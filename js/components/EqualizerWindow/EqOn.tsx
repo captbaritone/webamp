@@ -1,36 +1,16 @@
 import React from "react";
-import { connect } from "react-redux";
 import classnames from "classnames";
 
-import { toggleEq } from "../../actionCreators";
-import { AppState, Dispatch } from "../../types";
+import * as Actions from "../../actionCreators";
+import * as Selectors from "../../selectors";
+import { useActionCreator, useTypedSelector } from "../../hooks";
 
-interface StateProps {
-  on: boolean;
-}
-
-interface DispatchProps {
-  toggleEq(): void;
-}
-
-const EqOn = (props: StateProps & DispatchProps) => {
+const EqOn = () => {
+  const toggleEq = useActionCreator(Actions.toggleEq);
+  const on = useTypedSelector(Selectors.getEqualizerEnabled);
   return (
-    <div
-      id="on"
-      className={classnames({
-        selected: props.on,
-      })}
-      onClick={props.toggleEq}
-    />
+    <div id="on" className={classnames({ selected: on })} onClick={toggleEq} />
   );
 };
 
-const mapStateToProps = (state: AppState): StateProps => ({
-  on: state.equalizer.on,
-});
-
-const mapDispatchProps = (dispatch: Dispatch): DispatchProps => {
-  return { toggleEq: () => dispatch(toggleEq()) };
-};
-
-export default connect(mapStateToProps, mapDispatchProps)(EqOn);
+export default EqOn;

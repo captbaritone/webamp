@@ -1,14 +1,13 @@
-import { AppState, Dispatch } from "../types";
 import React from "react";
-import { connect } from "react-redux";
 import classnames from "classnames";
 import { getTimeObj } from "../utils";
-import { TOGGLE_TIME_MODE } from "../actionTypes";
 import { TIME_MODE, MEDIA_STATUS } from "../constants";
+import * as Actions from "../actionCreators";
 import Character from "./Character";
 import * as Selectors from "../selectors";
 
 import "../../css/mini-time.css";
+import { useTypedSelector, useActionCreator } from "../hooks";
 
 // Sigh. When the display is blinking (say when it's paused) we need to
 // alternate between the actual character and the space character. Not
@@ -27,39 +26,29 @@ const Background = () => (
   </React.Fragment>
 );
 
-interface StateProps {
-  status: string | null;
-  timeMode: string;
-  timeElapsed: number;
-  length: number | null;
-}
+const MiniTime = () => {
+  const status = useTypedSelector(Selectors.getMediaStatus);
+  const duration = useTypedSelector(Selectors.getDuration);
+  const timeElapsed = useTypedSelector(Selectors.getTimeElapsed);
+  const timeMode = useTypedSelector(Selectors.getTimeMode);
 
-interface DispatchProps {
-  toggle: () => void;
-}
-
-type Props = StateProps & DispatchProps;
-
-const MiniTime = (props: Props) => {
+  const toggle = useActionCreator(Actions.toggleTimeMode);
   let seconds = null;
   // TODO: Clean this up: If stopped, just render the background, rather than
   // rendering spaces twice.
-  if (props.status !== MEDIA_STATUS.STOPPED && props.length != null) {
+  if (status !== MEDIA_STATUS.STOPPED && duration != null) {
     seconds =
-      props.timeMode === TIME_MODE.ELAPSED
-        ? props.timeElapsed
-        : props.length - props.timeElapsed;
+      timeMode === TIME_MODE.ELAPSED ? timeElapsed : duration - timeElapsed;
   }
 
   const timeObj = getTimeObj(seconds);
   const showMinus =
-    props.timeMode === TIME_MODE.REMAINING &&
-    props.status !== MEDIA_STATUS.STOPPED;
+    timeMode === TIME_MODE.REMAINING && status !== MEDIA_STATUS.STOPPED;
   return (
     <div
-      onClick={props.toggle}
+      onClick={toggle}
       className={classnames("mini-time", "countdown", {
-        blinking: props.status === MEDIA_STATUS.PAUSED,
+        blinking: status === MEDIA_STATUS.PAUSED,
       })}
     >
       <Background />
@@ -72,18 +61,4 @@ const MiniTime = (props: Props) => {
   );
 };
 
-const mapStateToProps = (state: AppState): StateProps => ({
-  status: state.media.status,
-  timeMode: state.media.timeMode,
-  timeElapsed: Selectors.getTimeElapsed(state),
-  length: Selectors.getDuration(state),
-});
-
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-  // TODO: move to actionCreators
-  toggle: () => {
-    dispatch({ type: TOGGLE_TIME_MODE });
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(MiniTime);
+export default MiniTime;

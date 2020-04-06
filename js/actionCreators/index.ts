@@ -90,6 +90,8 @@ export {
   downloadPreset,
   setEqFromObject,
   downloadHtmlPlaylist,
+  addDirAtIndex,
+  addFilesAtIndex,
 } from "./files";
 export {
   cropPlaylist,

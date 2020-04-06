@@ -14,6 +14,7 @@ import {
   Cursors,
   SkinRegion,
   GenLetterWidths,
+  MilkdropMessage,
 } from "./types";
 import { createSelector, defaultMemoize } from "reselect";
 import * as Utils from "./utils";
@@ -634,6 +635,10 @@ export function getDebugData(state: AppState) {
   };
 }
 
+export function getMilkdropMessage(state: AppState): MilkdropMessage | null {
+  return state.milkdrop.message;
+}
+
 export function getMilkdropDesktopEnabled(state: AppState): boolean {
   return state.milkdrop.display === "DESKTOP";
 }
@@ -751,4 +756,8 @@ export function getLoading(state: AppState): boolean {
 
 export function getWorking(state: AppState): boolean {
   return state.display.working;
+}
+
+export function getAvaliableSkins(state: AppState) {
+  return state.settings.availableSkins;
 }
