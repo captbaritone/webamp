@@ -3,9 +3,12 @@ import { promptForFileReferences } from "../../fileUtils";
 import * as Selectors from "../../selectors";
 import * as Actions from "../../actionCreators";
 import { clamp } from "../../utils";
-import { AppState, Dispatch, TransitionType } from "../../types";
-import { connect } from "react-redux";
-import { useUnmountedRef } from "../../hooks";
+import { TransitionType } from "../../types";
+import {
+  useUnmountedRef,
+  useActionCreator,
+  useTypedSelector,
+} from "../../hooks";
 
 const ENTRY_HEIGHT = 14;
 const HEIGHT_PADDING = 15;
@@ -34,23 +37,10 @@ const INNER_WRAPPER_STYLE: React.CSSProperties = {
   fontSize: "12px",
 };
 
-interface StateProps {
-  presetKeys: string[];
-  currentPresetIndex: number | null; // Index
-}
-
-interface DispatchProps {
-  requestPresetAtIndex(i: number): void;
-  togglePresetOverlay(): void;
-  appendPresetFileList(fileList: FileList): void;
-}
-
-interface OwnProps {
+interface Props {
   height: number;
   width: number;
 }
-
-type Props = StateProps & DispatchProps & OwnProps;
 
 function presetIndexFromListIndex(listIndex: number) {
   return listIndex - 1;
@@ -60,15 +50,13 @@ function listIndexFromPresetIndex(listIndex: number) {
   return listIndex + 1;
 }
 
-function PresetOverlay({
-  currentPresetIndex,
-  presetKeys,
-  height,
-  width,
-  requestPresetAtIndex,
-  togglePresetOverlay,
-  appendPresetFileList,
-}: Props) {
+function PresetOverlay({ height, width }: Props) {
+  const presetKeys = useTypedSelector(Selectors.getPresetNames);
+  const currentPresetIndex = useTypedSelector(Selectors.getCurrentPresetIndex);
+  const requestPresetAtIndex = useActionCreator(Actions.requestPresetAtIndex);
+  const togglePresetOverlay = useActionCreator(Actions.togglePresetOverlay);
+  const appendPresetFileList = useActionCreator(Actions.appendPresetFileList);
+
   const unmountedRef = useUnmountedRef();
   const [selectedListIndex, setSelectedListIndex] = useState(() => {
     if (currentPresetIndex != null) {
@@ -134,7 +122,11 @@ function PresetOverlay({
           if (selectedListIndex === 0) {
             loadLocalDir();
           } else {
-            requestPresetAtIndex(presetIndexFromListIndex(selectedListIndex));
+            requestPresetAtIndex(
+              presetIndexFromListIndex(selectedListIndex),
+              TransitionType.DEFAULT,
+              true
+            );
           }
           e.stopPropagation();
           break;
@@ -203,23 +195,4 @@ export function getRangeCenteredOnIndex(
   const endIndex = startIndex + rangeSize - 1;
   return [startIndex, endIndex];
 }
-
-function mapStateToProps(state: AppState): StateProps {
-  return {
-    presetKeys: Selectors.getPresetNames(state),
-    currentPresetIndex: Selectors.getCurrentPresetIndex(state),
-  };
-}
-
-function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
-  return {
-    requestPresetAtIndex: (i: number) => {
-      dispatch(Actions.requestPresetAtIndex(i, TransitionType.DEFAULT, true));
-    },
-    togglePresetOverlay: () => dispatch(Actions.togglePresetOverlay()),
-    appendPresetFileList: (fileList: FileList) =>
-      dispatch(Actions.appendPresetFileList(fileList)),
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(PresetOverlay);
+export default PresetOverlay;

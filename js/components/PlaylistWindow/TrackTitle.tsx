@@ -1,25 +1,19 @@
 import React from "react";
-import { connect } from "react-redux";
-import { getTrackDisplayName } from "../../selectors";
-import { AppState } from "../../types";
+import * as Selectors from "../../selectors";
+import { useTypedSelector } from "../../hooks";
 
-interface OwnProps {
+interface Props {
   id: number;
   paddedTrackNumber: string;
 }
 
-interface StateProps {
-  title: string | null;
-}
+const TrackTitle = ({ id, paddedTrackNumber }: Props) => {
+  const title = useTypedSelector(Selectors.getTrackDisplayName)(id);
+  return (
+    <span>
+      {paddedTrackNumber}. {title}
+    </span>
+  );
+};
 
-const TrackTitle = (props: OwnProps & StateProps) => (
-  <span>
-    {props.paddedTrackNumber}. {props.title}
-  </span>
-);
-
-const mapStateToProps = (state: AppState, ownProps: OwnProps): StateProps => ({
-  title: getTrackDisplayName(state)(ownProps.id),
-});
-
-export default connect(mapStateToProps)(TrackTitle);
+export default TrackTitle;

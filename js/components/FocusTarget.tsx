@@ -1,26 +1,18 @@
 import React, { useCallback, useState, useEffect } from "react";
-import { WindowId, AppState, Dispatch } from "../types";
+import { WindowId } from "../types";
 import * as Actions from "../actionCreators";
 import * as Selectors from "../selectors";
-import { connect } from "react-redux";
+import { useActionCreator, useTypedSelector } from "../hooks";
 
-interface DispatchProps {
-  setFocus(windowId: WindowId | null): void;
-}
-interface StateProps {
-  focusedWindowId: WindowId | null;
-}
-
-interface OwnProps {
+interface Props {
   onKeyDown?(e: KeyboardEvent): void;
   windowId: WindowId;
   children: React.ReactNode;
 }
 
-type Props = StateProps & DispatchProps & OwnProps;
-
-function FocusTarget(props: Props) {
-  const { onKeyDown, focusedWindowId, windowId, setFocus, children } = props;
+function FocusTarget({ onKeyDown, windowId, children }: Props) {
+  const focusedWindowId = useTypedSelector(Selectors.getFocusedWindow);
+  const setFocus = useActionCreator(Actions.setFocusedWindow);
 
   const focusHandler = useCallback(() => {
     if (windowId !== focusedWindowId) {
@@ -86,16 +78,4 @@ function FocusTarget(props: Props) {
   );
 }
 
-function mapStateToProps(state: AppState): StateProps {
-  return {
-    focusedWindowId: Selectors.getFocusedWindow(state),
-  };
-}
-
-function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
-  return {
-    setFocus: windowId => dispatch(Actions.setFocusedWindow(windowId)),
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(FocusTarget);
+export default FocusTarget;

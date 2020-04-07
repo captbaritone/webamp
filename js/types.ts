@@ -55,6 +55,11 @@ export type Skin = {
   name: string;
 };
 
+export interface MilkdropMessage {
+  text: string;
+  time: number;
+}
+
 export type Band =
   | 60
   | 170

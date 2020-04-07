@@ -2,7 +2,7 @@ import React from "react";
 
 import PlaylistMenu from "./PlaylistMenu";
 import SortContextMenu from "./SortContextMenu";
-import { ConnectedMiscOptionsContextMenu } from "./MiscOptionsContextMenu";
+import MiscOptionsContextMenu from "./MiscOptionsContextMenu";
 
 const MiscMenu = () => (
   <PlaylistMenu id="playlist-misc-menu">
@@ -15,7 +15,7 @@ const MiscMenu = () => (
     />
 
     <div className="misc-options" onClick={e => e.stopPropagation()}>
-      <ConnectedMiscOptionsContextMenu />
+      <MiscOptionsContextMenu />
     </div>
   </PlaylistMenu>
 );

@@ -1,8 +1,6 @@
 import React, { useMemo } from "react";
-import { connect } from "react-redux";
 import classnames from "classnames";
 import { getTimeStr } from "../../utils";
-import { SET_FOCUSED_WINDOW } from "../../actionTypes";
 import * as Selectors from "../../selectors";
 
 import {
@@ -12,36 +10,22 @@ import {
   CHARACTER_WIDTH,
   UTF8_ELLIPSIS,
 } from "../../constants";
-import { togglePlaylistShadeMode, closeWindow } from "../../actionCreators";
+import * as Actions from "../../actionCreators";
 import CharacterString from "../CharacterString";
 import PlaylistResizeTarget from "./PlaylistResizeTarget";
-import { AppState, WindowId, Dispatch } from "../../types";
+import { useTypedSelector, useActionCreator } from "../../hooks";
 
-interface StateProps {
-  name: string | null;
-  duration: number | null;
-  playlistSize: [number, number];
-  focused: WindowId | null;
-  trackOrder: number[];
-}
+function PlaylistShade() {
+  const focused = useTypedSelector(Selectors.getFocusedWindow);
+  const getWindowSize = useTypedSelector(Selectors.getWindowSize);
+  const playlistSize = getWindowSize("playlist");
+  const duration = useTypedSelector(Selectors.getDuration);
+  const name = useTypedSelector(Selectors.getMinimalMediaText);
 
-interface DispatchProps {
-  focusPlaylist: () => void;
-  close: () => void;
-  toggleShade: () => void;
-}
+  const closeWindow = useActionCreator(Actions.closeWindow);
+  const toggleShade = useActionCreator(Actions.togglePlaylistShadeMode);
+  const focusWindow = useActionCreator(Actions.setFocusedWindow);
 
-type Props = StateProps & DispatchProps;
-
-function PlaylistShade({
-  name,
-  playlistSize,
-  duration,
-  toggleShade,
-  close,
-  focusPlaylist,
-  focused,
-}: Props) {
   const addedWidth = playlistSize[0] * WINDOW_RESIZE_SEGMENT_WIDTH;
 
   const trimmedName = useMemo(() => {
@@ -55,11 +39,11 @@ function PlaylistShade({
     return name.length > nameLength
       ? name.slice(0, nameLength - 1) + UTF8_ELLIPSIS
       : name;
-  }, [name, addedWidth]);
+  }, [addedWidth, name]);
 
   const time = useMemo(() => {
     return name == null ? "" : getTimeStr(duration);
-  }, [name, duration]);
+  }, [duration, name]);
 
   return (
     <div
@@ -68,7 +52,7 @@ function PlaylistShade({
         selected: focused === WINDOWS.PLAYLIST,
       })}
       style={{ width: `${WINDOW_WIDTH + addedWidth}px` }}
-      onMouseDown={focusPlaylist}
+      onMouseDown={() => focusWindow("playlist")}
       onDoubleClick={toggleShade}
     >
       <div className="left">
@@ -81,37 +65,14 @@ function PlaylistShade({
           </div>
           <PlaylistResizeTarget widthOnly />
           <div id="playlist-shade-button" onClick={toggleShade} />
-          <div id="playlist-close-button" onClick={close} />
+          <div
+            id="playlist-close-button"
+            onClick={() => closeWindow("playlist")}
+          />
         </div>
       </div>
     </div>
   );
 }
 
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => {
-  return {
-    focusPlaylist: () =>
-      dispatch({
-        type: SET_FOCUSED_WINDOW,
-        window: WINDOWS.PLAYLIST,
-      }),
-    close: () => dispatch(closeWindow("playlist")),
-    toggleShade: () => dispatch(togglePlaylistShadeMode()),
-  };
-};
-
-const mapStateToProps = (state: AppState): StateProps => {
-  const duration = Selectors.getDuration(state);
-  const {
-    windows: { focused },
-  } = state;
-  return {
-    focused,
-    playlistSize: Selectors.getWindowSize(state)("playlist"),
-    trackOrder: Selectors.getOrderedTracks(state),
-    duration,
-    name: Selectors.getMinimalMediaText(state),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(PlaylistShade);
+export default PlaylistShade;

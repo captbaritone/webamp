@@ -1,19 +1,9 @@
 import React from "react";
-import { connect } from "react-redux";
 import classnames from "classnames";
 
 import { BANDS, WINDOWS } from "../../constants";
-import {
-  setEqBand,
-  setPreamp,
-  setEqToMax,
-  setEqToMid,
-  setEqToMin,
-  closeWindow,
-  toggleEqualizerShadeMode,
-} from "../../actionCreators";
-
-import { getWindowShade } from "../../selectors";
+import * as Actions from "../../actionCreators";
+import * as Selectors from "../../selectors";
 
 import Band from "./Band";
 import EqOn from "./EqOn";
@@ -23,29 +13,29 @@ import PresetsContextMenu from "./PresetsContextMenu";
 import EqualizerShade from "./EqualizerShade";
 
 import "../../../css/equalizer-window.css";
-import { Dispatch, Band as BandType, AppState } from "../../types";
+import { Band as BandType } from "../../types";
 import FocusTarget from "../FocusTarget";
-
-interface StateProps {
-  doubled: boolean;
-  selected: boolean;
-  shade: boolean | undefined;
-}
-
-interface DispatchProps {
-  setPreampValue(value: number): void;
-  setEqToMin(): void;
-  setEqToMid(): void;
-  setEqToMax(): void;
-  setHertzValue(hertz: BandType): (value: number) => void;
-  closeEqualizerWindow(): void;
-  toggleEqualizerShadeMode(): void;
-}
+import { useTypedSelector, useActionCreator } from "../../hooks";
 
 const bandClassName = (band: BandType) => `band-${band}`;
 
-const EqualizerWindow = (props: StateProps & DispatchProps) => {
-  const { doubled, selected, shade } = props;
+const EqualizerWindow = () => {
+  const doubled = useTypedSelector(Selectors.getDoubled);
+  const focusedWindow = useTypedSelector(Selectors.getFocusedWindow);
+  const getWindowShade = useTypedSelector(Selectors.getWindowShade);
+
+  const selected = focusedWindow === WINDOWS.EQUALIZER;
+  const shade = getWindowShade(WINDOWS.EQUALIZER);
+
+  const setPreampValue = useActionCreator(Actions.setPreamp);
+  const setEqToMin = useActionCreator(Actions.setEqToMin);
+  const setEqToMid = useActionCreator(Actions.setEqToMid);
+  const setEqToMax = useActionCreator(Actions.setEqToMax);
+  const setHertzValue = useActionCreator(Actions.setEqBand);
+  const closeWindow = useActionCreator(Actions.closeWindow);
+  const toggleEqualizerShadeMode = useActionCreator(
+    Actions.toggleEqualizerShadeMode
+  );
 
   const className = classnames({
     selected,
@@ -57,34 +47,34 @@ const EqualizerWindow = (props: StateProps & DispatchProps) => {
   return (
     <div id="equalizer-window" className={className}>
       <FocusTarget windowId={WINDOWS.EQUALIZER}>
-        {props.shade ? (
+        {shade ? (
           <EqualizerShade />
         ) : (
           <div>
             <div
               className="equalizer-top title-bar draggable"
-              onDoubleClick={props.toggleEqualizerShadeMode}
+              onDoubleClick={toggleEqualizerShadeMode}
             >
+              <div id="equalizer-shade" onClick={toggleEqualizerShadeMode} />
               <div
-                id="equalizer-shade"
-                onClick={props.toggleEqualizerShadeMode}
+                id="equalizer-close"
+                onClick={() => closeWindow(WINDOWS.EQUALIZER)}
               />
-              <div id="equalizer-close" onClick={props.closeEqualizerWindow} />
             </div>
             <EqOn />
             <EqAuto />
             <EqGraph />
             <PresetsContextMenu />
-            <Band id="preamp" band="preamp" onChange={props.setPreampValue} />
-            <div id="plus12db" onClick={props.setEqToMax} />
-            <div id="zerodb" onClick={props.setEqToMid} />
-            <div id="minus12db" onClick={props.setEqToMin} />
+            <Band id="preamp" band="preamp" onChange={setPreampValue} />
+            <div id="plus12db" onClick={setEqToMax} />
+            <div id="zerodb" onClick={setEqToMid} />
+            <div id="minus12db" onClick={setEqToMin} />
             {BANDS.map(hertz => (
               <Band
                 key={hertz}
                 id={bandClassName(hertz)}
                 band={hertz}
-                onChange={props.setHertzValue(hertz)}
+                onChange={value => setHertzValue(hertz, value)}
               />
             ))}
           </div>
@@ -93,24 +83,4 @@ const EqualizerWindow = (props: StateProps & DispatchProps) => {
     </div>
   );
 };
-
-// This does not use the shorthand object syntax becuase `setHertzValue` needs
-// to return a function.
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-  setPreampValue: (value: number) => dispatch(setPreamp(value)),
-  setEqToMin: () => dispatch(setEqToMin()),
-  setEqToMid: () => dispatch(setEqToMid()),
-  setEqToMax: () => dispatch(setEqToMax()),
-  setHertzValue: (hertz: BandType) => (value: number) =>
-    dispatch(setEqBand(hertz, value)),
-  closeEqualizerWindow: () => dispatch(closeWindow("equalizer")),
-  toggleEqualizerShadeMode: () => dispatch(toggleEqualizerShadeMode()),
-});
-
-const mapStateToProps = (state: AppState): StateProps => ({
-  doubled: state.display.doubled,
-  selected: state.windows.focused === WINDOWS.EQUALIZER,
-  shade: getWindowShade(state)("equalizer"),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(EqualizerWindow);
+export default EqualizerWindow;

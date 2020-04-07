@@ -1,67 +1,46 @@
 import React, { ReactNode } from "react";
 import { Hr, Node } from "../ContextMenu";
-import { connect } from "react-redux";
 import { WINDOWS } from "../../constants";
 import * as Selectors from "../../selectors";
 import * as Actions from "../../actionCreators";
-import { AppState, Dispatch } from "../../types";
 import ContextMenuWraper from "../ContextMenuWrapper";
+import { useTypedSelector, useActionCreator } from "../../hooks";
 
-interface StateProps {
-  desktop: boolean;
-  fullscreen: boolean;
-}
-
-interface DispatchProps {
-  closeWindow(): void;
-  toggleDesktop(): void;
-  toggleFullscreen(): void;
-}
-
-interface OwnProps {
+interface Props {
   children: ReactNode;
 }
 
-type Props = StateProps & DispatchProps & OwnProps;
+const MilkdropContextMenu = (props: Props) => {
+  const desktop = useTypedSelector(Selectors.getMilkdropDesktopEnabled);
 
-const MilkdropContextMenu = (props: Props) => (
-  <ContextMenuWraper
-    renderContents={() => {
-      return (
-        <>
-          <Node
-            onClick={props.toggleFullscreen}
-            label="Fullscreen"
-            hotkey="Alt+Enter"
-          />
-          <Node
-            onClick={props.toggleDesktop}
-            checked={props.desktop}
-            label="Desktop Mode"
-            hotkey="Alt+D"
-          />
-          <Hr />
-          <Node onClick={props.closeWindow} label="Quit" />
-        </>
-      );
-    }}
-  >
-    {props.children}
-  </ContextMenuWraper>
-);
+  const closeWindow = useActionCreator(Actions.closeWindow);
+  const toggleDesktop = useActionCreator(Actions.toggleMilkdropDesktop);
+  const toggleFullscreen = useActionCreator(Actions.toggleMilkdropFullscreen);
+  return (
+    <ContextMenuWraper
+      renderContents={() => {
+        return (
+          <>
+            <Node
+              onClick={toggleFullscreen}
+              label="Fullscreen"
+              hotkey="Alt+Enter"
+            />
+            <Node
+              onClick={toggleDesktop}
+              checked={desktop}
+              label="Desktop Mode"
+              hotkey="Alt+D"
+            />
+            <Hr />
+            <Node onClick={() => closeWindow(WINDOWS.MILKDROP)} label="Quit" />
+          </>
+        );
+      }}
+    >
+      {props.children}
+    </ContextMenuWraper>
+  );
+};
 
-const mapStateToProps = (state: AppState): StateProps => ({
-  desktop: Selectors.getMilkdropDesktopEnabled(state),
-  fullscreen: Selectors.getMilkdropFullscreenEnabled(state),
-});
-
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-  closeWindow: () => dispatch(Actions.closeWindow(WINDOWS.MILKDROP)),
-  toggleDesktop: () => dispatch(Actions.toggleMilkdropDesktop()),
-  toggleFullscreen: () => dispatch(Actions.toggleMilkdropFullscreen()),
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MilkdropContextMenu);
+export default MilkdropContextMenu;

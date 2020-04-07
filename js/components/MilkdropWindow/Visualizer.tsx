@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
-import { connect } from "react-redux";
 import { VISUALIZERS } from "../../constants";
 import * as Selectors from "../../selectors";
-import { AppState, TransitionType } from "../../types";
+import { TransitionType } from "../../types";
+import { useTypedSelector } from "../../hooks";
 
 type ButterchurnVisualizer = {
   setRendererSize(width: number, height: number): void;
@@ -11,26 +11,11 @@ type ButterchurnVisualizer = {
   render(): void;
 };
 
-interface StateProps {
-  isEnabledVisualizer: boolean;
-  playing: boolean;
-  butterchurn: any;
-  trackTitle: string | null;
-  currentPreset: any;
-  transitionType: TransitionType;
-  message: {
-    text: string;
-    time: number;
-  } | null;
-}
-
-interface OwnProps {
+interface Props {
   analyser: AnalyserNode;
   height: number;
   width: number;
 }
-
-type Props = StateProps & OwnProps;
 
 const TRANSITION_TYPE_DURATIONS = {
   [TransitionType.DEFAULT]: 2.7,
@@ -38,19 +23,17 @@ const TRANSITION_TYPE_DURATIONS = {
   [TransitionType.USER_PRESET]: 5.7,
 };
 
-function Visualizer(_props: Props) {
-  const {
-    butterchurn,
-    analyser,
-    width,
-    height,
-    currentPreset,
-    transitionType,
-    trackTitle,
-    isEnabledVisualizer,
-    message,
-    playing,
-  } = _props;
+function Visualizer({ analyser, width, height }: Props) {
+  const visualizerStyle = useTypedSelector(Selectors.getVisualizerStyle);
+  const playing = useTypedSelector(Selectors.getMediaIsPlaying);
+  const butterchurn = useTypedSelector(Selectors.getButterchurn);
+  const trackTitle = useTypedSelector(Selectors.getCurrentTrackDisplayName);
+  const currentPreset = useTypedSelector(Selectors.getCurrentPreset);
+  const transitionType = useTypedSelector(Selectors.getPresetTransitionType);
+  const message = useTypedSelector(Selectors.getMilkdropMessage);
+
+  const isEnabledVisualizer = visualizerStyle === VISUALIZERS.MILKDROP;
+
   const canvasRef = useRef(null);
   const [visualizer, setVisualizer] = useState<ButterchurnVisualizer | null>(
     null
@@ -169,15 +152,4 @@ function Visualizer(_props: Props) {
   );
 }
 
-const mapStateToProps = (state: AppState): StateProps => ({
-  isEnabledVisualizer:
-    Selectors.getVisualizerStyle(state) === VISUALIZERS.MILKDROP,
-  playing: Selectors.getMediaIsPlaying(state),
-  butterchurn: Selectors.getButterchurn(state),
-  trackTitle: Selectors.getCurrentTrackDisplayName(state),
-  currentPreset: Selectors.getCurrentPreset(state),
-  transitionType: Selectors.getPresetTransitionType(state),
-  message: state.milkdrop.message,
-});
-
-export default connect(mapStateToProps)(Visualizer);
+export default Visualizer;

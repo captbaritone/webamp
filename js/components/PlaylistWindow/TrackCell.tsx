@@ -1,64 +1,54 @@
 import React, { useCallback, ReactNode } from "react";
-import { connect } from "react-redux";
 import classnames from "classnames";
 import {
   CLICKED_TRACK,
   CTRL_CLICKED_TRACK,
   SHIFT_CLICKED_TRACK,
-  PLAY_TRACK,
 } from "../../actionTypes";
 import * as Selectors from "../../selectors";
-import { AppState, Dispatch, PlaylistStyle } from "../../types";
+import * as Actions from "../../actionCreators";
+import {
+  useTypedSelector,
+  useActionCreator,
+  useTypedDispatch,
+} from "../../hooks";
 
-interface OwnProps {
+interface Props {
   id: number;
   index: number;
   handleMoveClick: (e: React.MouseEvent<HTMLDivElement>) => void;
   children: ReactNode;
 }
 
-interface StateProps {
-  selected: boolean;
-  current: boolean;
-  skinPlaylistStyle: PlaylistStyle;
-}
+function TrackCell({ children, handleMoveClick, index, id }: Props) {
+  const skinPlaylistStyle = useTypedSelector(Selectors.getSkinPlaylistStyle);
+  const selectedTrackIds = useTypedSelector(Selectors.getSelectedTrackIds);
+  const currentTrackId = useTypedSelector(Selectors.getCurrentTrackId);
+  const selected = selectedTrackIds.has(id);
+  const current = currentTrackId === id;
 
-interface DispatchProps {
-  shiftClick: (e: React.MouseEvent<HTMLDivElement>) => void;
-  ctrlClick: (e: React.MouseEvent<HTMLDivElement>) => void;
-  click: () => void;
-  onDoubleClick: () => void;
-}
+  const dispatch = useTypedDispatch();
+  const playTrack = useActionCreator(Actions.playTrack);
 
-type Props = OwnProps & StateProps & DispatchProps;
-function TrackCell({
-  skinPlaylistStyle,
-  selected,
-  current,
-  children,
-  shiftClick,
-  ctrlClick,
-  onDoubleClick,
-  handleMoveClick,
-  click,
-}: Props) {
   const onMouseDown = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (e.shiftKey) {
-        shiftClick(e);
+        e.preventDefault();
+        dispatch({ type: SHIFT_CLICKED_TRACK, index });
         return;
       } else if (e.metaKey || e.ctrlKey) {
-        ctrlClick(e);
+        e.preventDefault();
+        dispatch({ type: CTRL_CLICKED_TRACK, index });
         return;
       }
 
       if (!selected) {
-        click();
+        dispatch({ type: CLICKED_TRACK, index });
       }
 
       handleMoveClick(e);
     },
-    [click, ctrlClick, shiftClick, handleMoveClick, selected]
+    [dispatch, handleMoveClick, index, selected]
   );
 
   const style: React.CSSProperties = {
@@ -72,35 +62,11 @@ function TrackCell({
       onClick={e => e.stopPropagation()}
       onMouseDown={onMouseDown}
       onContextMenu={e => e.preventDefault()}
-      onDoubleClick={onDoubleClick}
+      onDoubleClick={() => playTrack(id)}
     >
       {children}
     </div>
   );
 }
 
-const mapStateToProps = (state: AppState, ownProps: OwnProps): StateProps => {
-  return {
-    skinPlaylistStyle: Selectors.getSkinPlaylistStyle(state),
-    selected: Selectors.getSelectedTrackIds(state).has(ownProps.id),
-    current: Selectors.getCurrentTrackId(state) === ownProps.id,
-  };
-};
-
-const mapDispatchToProps = (
-  dispatch: Dispatch,
-  ownProps: OwnProps
-): DispatchProps => ({
-  shiftClick: e => {
-    e.preventDefault();
-    return dispatch({ type: SHIFT_CLICKED_TRACK, index: ownProps.index });
-  },
-  ctrlClick: e => {
-    e.preventDefault();
-    return dispatch({ type: CTRL_CLICKED_TRACK, index: ownProps.index });
-  },
-  click: () => dispatch({ type: CLICKED_TRACK, index: ownProps.index }),
-  onDoubleClick: () => dispatch({ type: PLAY_TRACK, id: ownProps.id }),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(TrackCell);
+export default TrackCell;
