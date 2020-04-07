@@ -16,8 +16,7 @@ interface Props {
 
 const Mp3Icon = ({ webamp, track }: Props) => {
   const url = track.url.toString();
-  const segments = url.toString().split("/");
-  const filename = segments.pop();
+  const title = track.metaData?.title;
 
   const onDragStart = useCallback(
     (e: React.DragEvent<HTMLDivElement>) => {
@@ -26,7 +25,7 @@ const Mp3Icon = ({ webamp, track }: Props) => {
     [track]
   );
 
-  if (filename == null) {
+  if (title == null) {
     console.warn(`Could not derive filename for ${url}`);
     return null;
   }
@@ -37,7 +36,7 @@ const Mp3Icon = ({ webamp, track }: Props) => {
   return (
     <DesktopIcon
       iconUrl={iconUrl}
-      name={`${track.metaData.title}.mp3`}
+      name={`${title}.mp3`}
       onOpen={onOpen}
       onDragStart={onDragStart}
     />
