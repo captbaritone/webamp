@@ -17,7 +17,9 @@ const SkinIcon = ({ webamp, skin }: Props) => {
   function onOpen() {
     webamp.setSkinFromUrl(skin.url);
   }
-  return <DesktopIcon iconUrl={iconUrl} name={skin.name} onOpen={onOpen} />;
+  return (
+    <DesktopIcon iconUrl={iconUrl} name={`${skin.name}.wsz`} onOpen={onOpen} />
+  );
 };
 
 export default SkinIcon;

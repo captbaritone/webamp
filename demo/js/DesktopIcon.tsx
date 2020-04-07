@@ -5,9 +5,10 @@ interface Props {
   iconUrl: string;
   name: string;
   onOpen: () => void;
+  onDragStart?: (e: React.DragEvent<HTMLDivElement>) => void;
 }
 
-const DesktopIcon = ({ iconUrl, onOpen, name }: Props) => {
+const DesktopIcon = ({ iconUrl, onOpen, name, onDragStart }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const [selected, setSelected] = useState(false);
 
@@ -34,6 +35,7 @@ const DesktopIcon = ({ iconUrl, onOpen, name }: Props) => {
       }}
       onClick={() => setSelected(true)}
       className={classnames("desktop-icon", { selected })}
+      onDragStart={onDragStart}
     >
       <img src={iconUrl} style={{ width: 48, height: 48 }} />
       <div className="desktop-icon-title">{name}</div>

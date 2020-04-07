@@ -167,6 +167,9 @@ body {
   margin-top: 5px;
   width: 100%;
   border: 1px dotted transparent;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .desktop-icon.selected .desktop-icon-title {

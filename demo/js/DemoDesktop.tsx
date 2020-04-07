@@ -6,12 +6,13 @@ import SkinIcon from "./SkinIcon";
 import { defaultInitialTracks, SHOW_DESKTOP_ICONS } from "./config";
 import { useWindowSize } from "../../js/hooks";
 import avaliableSkins from "./avaliableSkins";
+import MilkIcon from "./MilkIcon";
 
 interface Props {
   webamp: WebampLazy;
 }
 
-const ICON_WIDTH = 100;
+const ICON_WIDTH = 75;
 const ICON_HEIGHT = 100;
 const VERTICAL_MARGIN = 30;
 const HORIZONTAL_MARGIN = 10;
@@ -31,7 +32,15 @@ const DemoDesktop = ({ webamp }: Props) => {
       }),
       ...avaliableSkins.map((skin) => {
         return <SkinIcon webamp={webamp} skin={skin} />;
-      })
+      }),
+      <MilkIcon
+        webamp={webamp}
+        preset={{
+          url:
+            "https://s3-us-east-2.amazonaws.com/butterchurn-presets/65b9eea6e1cc6bb9f0cd2a47751a186f.json",
+          name: "105",
+        }}
+      />
     );
   }
   return (

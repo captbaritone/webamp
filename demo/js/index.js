@@ -146,6 +146,18 @@ async function main() {
     availableSkins,
     filePickers: [dropboxFilePicker],
     enableHotkeys: true,
+    handleTrackDropEvent: (e) => {
+      const trackJson = e.dataTransfer.getData("text/json");
+      if (trackJson == null) {
+        return null;
+      }
+      try {
+        const track = JSON.parse(trackJson);
+        return [track];
+      } catch (err) {
+        return null;
+      }
+    },
     requireJSZip: () =>
       import(/* webpackChunkName: "jszip" */ "jszip/dist/jszip"),
     requireMusicMetadata: () =>

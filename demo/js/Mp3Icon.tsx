@@ -1,5 +1,5 @@
 import WebampLazy from "../../js/webampLazy";
-import React from "react";
+import React, { useCallback } from "react";
 // @ts-ignore
 import iconLarge from "../images/manifest/icon-96x96.png";
 // @ts-ignore
@@ -18,6 +18,14 @@ const Mp3Icon = ({ webamp, track }: Props) => {
   const url = track.url.toString();
   const segments = url.toString().split("/");
   const filename = segments.pop();
+
+  const onDragStart = useCallback(
+    (e: React.DragEvent<HTMLDivElement>) => {
+      e.dataTransfer.setData("text/json", JSON.stringify(track));
+    },
+    [track]
+  );
+
   if (filename == null) {
     console.warn(`Could not derive filename for ${url}`);
     return null;
@@ -25,7 +33,15 @@ const Mp3Icon = ({ webamp, track }: Props) => {
   function onOpen() {
     webamp.setTracksToPlay([track]);
   }
-  return <DesktopIcon iconUrl={iconUrl} name={filename} onOpen={onOpen} />;
+
+  return (
+    <DesktopIcon
+      iconUrl={iconUrl}
+      name={`${track.metaData.title}.mp3`}
+      onOpen={onOpen}
+      onDragStart={onDragStart}
+    />
+  );
 };
 
 export default Mp3Icon;
