@@ -28,7 +28,7 @@ function TrackCell({ children, handleMoveClick, index, id }: Props) {
   const current = currentTrackId === id;
 
   const dispatch = useTypedDispatch();
-  const playTrack = useActionCreator(Actions.playTrack);
+  const playTrackNow = useActionCreator(Actions.playTrackNow);
 
   const onMouseDown = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
@@ -62,7 +62,7 @@ function TrackCell({ children, handleMoveClick, index, id }: Props) {
       onClick={(e) => e.stopPropagation()}
       onMouseDown={onMouseDown}
       onContextMenu={(e) => e.preventDefault()}
-      onDoubleClick={() => playTrack(id)}
+      onDoubleClick={() => playTrackNow(id)}
     >
       {children}
     </div>

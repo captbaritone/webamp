@@ -31,6 +31,10 @@ export function playTrack(id: number): Thunk {
   };
 }
 
+export function playTrackNow(id: number): Action {
+  return { type: PLAY_TRACK, id };
+}
+
 export function play(): Thunk {
   return (dispatch: Dispatch, getState: GetState) => {
     const state = getState();
