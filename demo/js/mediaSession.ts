@@ -3,7 +3,7 @@ import WebampLazy from "../../js/webampLazy";
 export default function enableMediaSession(webamp: WebampLazy) {
   if ("mediaSession" in navigator) {
     /* global MediaMetadata */
-    webamp.onTrackDidChange(track => {
+    webamp.onTrackDidChange((track) => {
       if (track == null) {
         return;
       }

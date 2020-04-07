@@ -28,7 +28,7 @@ function getSkinRecord(skin) {
     readmeText,
     filePaths,
   } = skin;
-  const fileNames = filePaths.map(p => path.basename(p));
+  const fileNames = filePaths.map((p) => path.basename(p));
   const skinUrl = `https://s3.amazonaws.com/webamp-uploaded-skins/skins/${md5}.wsz`;
   return {
     skinUrl,
@@ -184,13 +184,13 @@ async function reconcile() {
     S3.getAllTweeted(),
   ]);
   await Promise.all([
-    ...approved.map(md5 =>
+    ...approved.map((md5) =>
       skins.findOneAndUpdate({ md5 }, { $set: { approved: true } })
     ),
-    ...rejected.map(md5 =>
+    ...rejected.map((md5) =>
       skins.findOneAndUpdate({ md5 }, { $set: { rejected: true } })
     ),
-    ...tweeted.map(md5 =>
+    ...tweeted.map((md5) =>
       skins.findOneAndUpdate({ md5 }, { $set: { tweeted: true } })
     ),
   ]);

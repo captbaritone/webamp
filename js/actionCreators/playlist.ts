@@ -31,7 +31,7 @@ export function cropPlaylist(): Thunk {
       type: REMOVE_TRACKS,
       // @ts-ignore The keys are numbers, but TypeScript does not trust us.
       // https://github.com/Microsoft/TypeScript/pull/12253#issuecomment-263132208
-      ids: trackOrder.filter(id => !selectedTrackIds.has(id)),
+      ids: trackOrder.filter((id) => !selectedTrackIds.has(id)),
     });
   };
 }
@@ -48,7 +48,7 @@ export function removeSelectedTracks(): Thunk {
 }
 
 export function removeAllTracks(): Thunk {
-  return dispatch => {
+  return (dispatch) => {
     // It's a bit funky that we need to do both of these.
     dispatch({ type: STOP });
     dispatch({ type: REMOVE_ALL_TRACKS });
@@ -67,7 +67,7 @@ export function sortListByTitle(): Thunk {
   return (dispatch, getState) => {
     const state = getState();
     const tracks = Selectors.getTracks(state);
-    const trackOrder = sort(Selectors.getTrackOrder(state), i =>
+    const trackOrder = sort(Selectors.getTrackOrder(state), (i) =>
       `${tracks[i].title}`.toLowerCase()
     );
     return dispatch({ type: SET_TRACK_ORDER, trackOrder });
@@ -128,14 +128,14 @@ export function dragSelected(offset: number): Thunk {
     const trackOrder = Selectors.getTrackOrder(state);
     const selectedIds = Selectors.getSelectedTrackIds(state);
     const firstSelected = trackOrder.findIndex(
-      trackId => tracks[trackId] && selectedIds.has(trackId)
+      (trackId) => tracks[trackId] && selectedIds.has(trackId)
     );
     if (firstSelected === -1) {
       return;
     }
     const lastSelected = findLastIndex(
       trackOrder,
-      trackId => tracks[trackId] && selectedIds.has(trackId)
+      (trackId) => tracks[trackId] && selectedIds.has(trackId)
     );
     if (lastSelected === -1) {
       throw new Error("We found a first selected, but not a last selected.");

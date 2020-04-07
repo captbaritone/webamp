@@ -124,7 +124,7 @@ const windows = (
       let windowOrder = state.windowOrder;
       if (action.window != null) {
         windowOrder = [
-          ...state.windowOrder.filter(windowId => windowId !== action.window),
+          ...state.windowOrder.filter((windowId) => windowId !== action.window),
           action.window,
         ];
       }
@@ -215,7 +215,7 @@ const windows = (
     case RESET_WINDOW_SIZES:
       return {
         ...state,
-        genWindows: Utils.objectMap(state.genWindows, w => ({
+        genWindows: Utils.objectMap(state.genWindows, (w) => ({
           ...w,
           // Not sure why TypeScript can't figure this out for itself.
           size: [0, 0] as [number, number],
@@ -256,7 +256,7 @@ export function getSerializedState(
 ): WindowsSerializedStateV1 {
   return {
     positionsAreRelative: state.positionsAreRelative,
-    genWindows: Utils.objectMap(state.genWindows, w => {
+    genWindows: Utils.objectMap(state.genWindows, (w) => {
       return {
         size: w.size,
         open: w.open,

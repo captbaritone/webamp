@@ -16,7 +16,7 @@ const PresetsContextMenu = () => {
       renderMenu={() => (
         <>
           <Parent label="Load">
-            {builtin.presets.map(preset => (
+            {builtin.presets.map((preset) => (
               <Node
                 key={preset.name}
                 onClick={() => setEqFromObject(preset)}

@@ -1,6 +1,8 @@
 const objectData = require("../objectData/stdPatched");
 
-const makiObjectNames = new Set(Object.values(objectData).map(obj => obj.name));
+const makiObjectNames = new Set(
+  Object.values(objectData).map((obj) => obj.name)
+);
 
 const BASE_OBJECT = "@{00000000-0000-0000-0000-000000000000}@";
 
@@ -52,7 +54,7 @@ function interfaceForObject(object) {
     ext = ` extends ${parentType}`;
   }
   return `export interface ${mapType(object.name)}${ext} {
-${methods.map(method => `  ${method}`).join("\n")}
+${methods.map((method) => `  ${method}`).join("\n")}
 }`;
 }
 

@@ -13,18 +13,18 @@ type RegionData = { [section: string]: string[] };
 export default function regionParser(regionStr: string): RegionData {
   const iniData = parseIni(regionStr);
   const data: RegionData = {};
-  Object.keys(iniData).forEach(section => {
+  Object.keys(iniData).forEach((section) => {
     const { numpoints, pointlist } = iniData[section];
     if (!numpoints || !pointlist) {
       return;
     }
-    const pointCounts = numpoints.split(/\s*,\s*/).filter(val => val !== "");
+    const pointCounts = numpoints.split(/\s*,\s*/).filter((val) => val !== "");
     const points = pointPairs(
       // points can be separated by spaces, or by commas
-      pointlist.split(/\s*[, ]\s*/).filter(val => val !== "")
+      pointlist.split(/\s*[, ]\s*/).filter((val) => val !== "")
     );
     let pointIndex = 0;
-    const polygons = pointCounts.map(numStr => {
+    const polygons = pointCounts.map((numStr) => {
       const num = Number(numStr);
       const polygon = points.slice(pointIndex, pointIndex + num).join(" ");
       if (!polygon.length) {
@@ -35,7 +35,7 @@ export default function regionParser(regionStr: string): RegionData {
       return polygon;
     });
     const validPolygons = polygons.filter(
-      polygon => polygon != null
+      (polygon) => polygon != null
     ) as string[];
     if (validPolygons.length) {
       data[section] = validPolygons;

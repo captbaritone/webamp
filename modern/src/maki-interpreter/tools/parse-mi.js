@@ -31,7 +31,7 @@ function parseFile(filePath) {
       const className = methodMatch[2].toLowerCase();
       const name = methodMatch[3].trim();
       const rawArgs = methodMatch[4].split(/\s*,\s*/);
-      const parameters = rawArgs.filter(Boolean).map(rawArg => {
+      const parameters = rawArgs.filter(Boolean).map((rawArg) => {
         const argMatch = /^\s*(.*\s+)?(.*)\s*/.exec(rawArg);
         if (argMatch == null) {
           throw new Error(`Could not find args in ${rawArg} in ${line}`);
@@ -55,7 +55,7 @@ function parseFile(filePath) {
   });
 
   const objectIds = {};
-  Object.keys(objects).forEach(normalizedName => {
+  Object.keys(objects).forEach((normalizedName) => {
     const { id, parent, functions, name } = objects[normalizedName];
     objectIds[id] = { parent, functions, name };
   });

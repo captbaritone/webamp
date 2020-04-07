@@ -26,8 +26,8 @@ export function setEqBand(band: Band, value: number): Action {
 }
 
 function _setEqTo(value: number): Thunk {
-  return dispatch => {
-    Object.values(BANDS).forEach(band => {
+  return (dispatch) => {
+    Object.values(BANDS).forEach((band) => {
       dispatch({
         type: SET_BAND_VALUE,
         value,
@@ -64,7 +64,7 @@ export function toggleEq(): Thunk {
 }
 
 export function toggleEqAuto(): Thunk {
-  return dispatch => {
+  return (dispatch) => {
     // We don't actually support this feature yet so don't let the user ever turn it on.
     // dispatch({ type: SET_EQ_AUTO, value: !getState().equalizer.auto });
     dispatch({ type: SET_EQ_AUTO, value: false });

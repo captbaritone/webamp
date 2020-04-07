@@ -79,12 +79,12 @@ describe("inlineIncludes", () => {
   test("inlines the contents of included files as children of the include node", async () => {
     const zip = await getSkinZip();
     const originalFile = zip.file;
-    zip.file = jest.fn(filePath => originalFile.call(zip, filePath));
+    zip.file = jest.fn((filePath) => originalFile.call(zip, filePath));
 
     const xml = await Utils.readXml(zip, "SkIn.XmL");
     const resolvedXml = await Utils.inlineIncludes(xml, zip);
     expect(resolvedXml).toMatchSnapshot();
-    expect(zip.file.mock.calls.map(args => args[0])).toMatchInlineSnapshot(`
+    expect(zip.file.mock.calls.map((args) => args[0])).toMatchInlineSnapshot(`
 Array [
   /SkIn\\.XmL/i,
   /xml\\\\/system-colors\\.xml/i,
@@ -106,7 +106,7 @@ Array [
 describe("asyncFlatMap", () => {
   test("recurses", async () => {
     const start = ["parent", ["child", ["grandchild"], "sibling"], "partner"];
-    expect(await Utils.asyncFlatMap(start, v => Promise.resolve(v))).toEqual([
+    expect(await Utils.asyncFlatMap(start, (v) => Promise.resolve(v))).toEqual([
       "parent",
       "child",
       "grandchild",
@@ -118,7 +118,7 @@ describe("asyncFlatMap", () => {
 
 describe("asyncTreeFlatMap", () => {
   test("encounters children first", async () => {
-    const mapper = jest.fn(async node => {
+    const mapper = jest.fn(async (node) => {
       if (node.replaceWithChildren) {
         return node.children;
       }
@@ -145,7 +145,7 @@ describe("asyncTreeFlatMap", () => {
       children: [{ name: "b" }, { name: "e" }, { name: "g" }, { name: "d" }],
     });
 
-    const callOrder = mapper.mock.calls.map(args => args[0].name);
+    const callOrder = mapper.mock.calls.map((args) => args[0].name);
     expect(callOrder).toEqual(["B", "C", "D", "E", "F", "G"]);
   });
 });

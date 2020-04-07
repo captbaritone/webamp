@@ -19,9 +19,9 @@ module.exports = {
     schema: [],
     fixable: "code",
   },
-  create: function(context) {
+  create: function (context) {
     return {
-      ClassDeclaration: function(node) {
+      ClassDeclaration: function (node) {
         const className = node.id.name;
         if (isJsMakiNode(node)) {
           return;

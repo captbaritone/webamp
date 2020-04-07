@@ -21,7 +21,7 @@ export function setMakiTree(makiTree: MakiTree): ModernAction {
 }
 
 export function setXmlTree(xmlTree: XmlTree): Thunk {
-  return async dispatch => {
+  return async (dispatch) => {
     dispatch({
       type: "SET_XML_TREE",
       xmlTree: await initializeStateTree(xmlTree),
@@ -30,14 +30,14 @@ export function setXmlTree(xmlTree: XmlTree): Thunk {
 }
 
 export function gotSkinUrl(skinUrl: string, store: ModernStore): Thunk {
-  return async dispatch => {
+  return async (dispatch) => {
     const resp = await fetch(skinUrl);
     dispatch(gotSkinBlob(await resp.blob(), store));
   };
 }
 
 export function gotSkinBlob(blob: Blob, store: ModernStore): Thunk {
-  return async dispatch => {
+  return async (dispatch) => {
     dispatch(gotSkinZip(await JSZip.loadAsync(blob), store));
   };
 }
@@ -53,7 +53,7 @@ async function unloadSkin(makiTree: MakiTree): Promise<void> {
 }
 
 export function gotSkinZip(zip: JSZip, store: ModernStore): Thunk {
-  return async dispatch => {
+  return async (dispatch) => {
     // unload current skin if one has been loaded
     if (store.getState().modernSkin.skinLoaded) {
       await unloadSkin(store.getState().modernSkin.makiTree);

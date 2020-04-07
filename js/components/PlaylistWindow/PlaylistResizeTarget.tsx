@@ -17,7 +17,7 @@ function PlaylistResizeTarget({ widthOnly }: Props) {
     <ResizeTarget
       currentSize={currentSize}
       id="playlist-resize-target"
-      setWindowSize={size => {
+      setWindowSize={(size) => {
         setWindowSize("playlist", size);
       }}
       widthOnly={widthOnly}

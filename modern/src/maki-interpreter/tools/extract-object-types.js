@@ -12,7 +12,7 @@ const files = {
   std: path.join(lib566, "std.mi"),
 };
 
-Object.keys(files).forEach(name => {
+Object.keys(files).forEach((name) => {
   const sourcePath = files[name];
   const types = parseFile(sourcePath);
   const destinationPath = path.join(__dirname, `../objectData/${name}.json`);

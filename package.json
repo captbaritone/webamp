@@ -118,7 +118,7 @@
     "music-metadata-browser": "^0.6.1",
     "postcss": "^7.0.18",
     "postcss-loader": "^3.0.0",
-    "prettier": "^1.19.1",
+    "prettier": "^2.0.4",
     "puppeteer": "^1.15.0",
     "rc-slider": "^8.7.1",
     "react": "^16.8.6",

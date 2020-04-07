@@ -320,13 +320,13 @@ export const imageSelectors: Selectors = {
   GEN_CLOSE_SELECTED: [".gen-window .gen-close:active"],
 };
 
-Object.keys(FONT_LOOKUP).forEach(character => {
+Object.keys(FONT_LOOKUP).forEach((character) => {
   const key = imageConstFromChar(character);
   const code = character.charCodeAt(0);
   imageSelectors[key] = [`.character-${code}`];
 });
 
-LETTERS.forEach(character => {
+LETTERS.forEach((character) => {
   imageSelectors[`GEN_TEXT_${character}`] = [
     `.gen-text-${character.toLowerCase()}`,
   ];

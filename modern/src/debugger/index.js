@@ -31,7 +31,7 @@ function backgroundColorFromMessageTitle(messageTitle) {
 
 function Wrapper() {
   const [maki, setMaki] = React.useState(null);
-  const onDrop = React.useCallback(async acceptedFiles => {
+  const onDrop = React.useCallback(async (acceptedFiles) => {
     if (acceptedFiles.length !== 1) {
       alert("Only drop one file at a time");
       return;
@@ -130,7 +130,7 @@ function Debugger({ maki }) {
 
   const system = React.useMemo(() => {
     const sys = new System();
-    sys.messagebox = function(message, messageTitle, flag, notanymoreId) {
+    sys.messagebox = function (message, messageTitle, flag, notanymoreId) {
       dispatch({
         type: "GOT_MESSAGE",
         message: { message, messageTitle, flag, notanymoreId },
@@ -144,7 +144,7 @@ function Debugger({ maki }) {
   }, [maki, system]);
 
   const nextValue = React.useCallback(
-    value => {
+    (value) => {
       dispatch({
         type: "STEPPED",
         variables: value.variables,

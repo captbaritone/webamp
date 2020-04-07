@@ -25,7 +25,7 @@ export default function Volume({ id, style, className }: Props) {
       value={volume}
       style={style}
       className={className}
-      onChange={e => setVolume(Number(e.target.value))}
+      onChange={(e) => setVolume(Number(e.target.value))}
       onMouseDown={() => setFocus("volume")}
       onMouseUp={unsetFocus}
       title="Volume Bar"

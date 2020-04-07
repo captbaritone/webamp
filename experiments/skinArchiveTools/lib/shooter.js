@@ -21,10 +21,10 @@ class Shooter {
     this._page.on("console", (...args) => {
       console.log("page log:", ...args);
     });
-    this._page.on("error", e => {
+    this._page.on("error", (e) => {
       console.log(`Page error: ${e.toString()}`);
     });
-    this._page.on("dialog", async dialog => {
+    this._page.on("dialog", async (dialog) => {
       console.log(`Page dialog ${dialog.message()}`);
       await dialog.dismiss();
     });

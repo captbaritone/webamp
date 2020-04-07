@@ -125,7 +125,7 @@ export {
 } from "./milkdrop";
 
 export function close(): Thunk {
-  return dispatch => {
+  return (dispatch) => {
     // TODO: This could probably be improved by adding a "PREVENT_CLOSE" action
     // or something, but this works okay for now.
     let defaultPrevented = false;
@@ -168,7 +168,7 @@ export function loadSerializedState(
   // In the future this type should be the union of all versioned types.
   serializedState: SerializedStateV1
 ): Thunk {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({ type: LOAD_SERIALIZED_STATE, serializedState });
     dispatch(ensureWindowsAreOnScreen());
   };

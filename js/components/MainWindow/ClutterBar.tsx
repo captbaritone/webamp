@@ -13,7 +13,7 @@ function setFocusDouble(): Action {
 }
 
 function mouseUp(): Thunk {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(Actions.toggleDoubleSizeMode());
     dispatch(Actions.unsetFocus());
   };

@@ -53,7 +53,7 @@ const MainContextMenu = React.memo((props: Props) => {
           )}
       </Parent>
       <Hr />
-      {Object.keys(genWindows).map(i => (
+      {Object.keys(genWindows).map((i) => (
         <Node
           key={i}
           label={genWindows[i].title}

@@ -122,10 +122,7 @@ function readClasses(makiFile) {
     let identifier = "";
     let chunks = 4;
     while (chunks--) {
-      identifier += makiFile
-        .readUInt32LE()
-        .toString(16)
-        .padStart(8, "0");
+      identifier += makiFile.readUInt32LE().toString(16).padStart(8, "0");
     }
     classes.push(identifier);
   }
@@ -331,14 +328,14 @@ function parse(data) {
     }
   });
 
-  const resolvedBindings = bindings.map(binding => {
+  const resolvedBindings = bindings.map((binding) => {
     return Object.assign({}, binding, {
       commandOffset: offsetToCommand[binding.binaryOffset],
       binaryOffset: undefined,
     });
   });
 
-  const resolvedCommands = commands.map(command => {
+  const resolvedCommands = commands.map((command) => {
     if (command.argType === "COMMAND_OFFSET") {
       return Object.assign({}, command, { arg: offsetToCommand[command.arg] });
     }

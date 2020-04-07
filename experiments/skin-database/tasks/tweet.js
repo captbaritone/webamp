@@ -11,16 +11,16 @@ function spawnPromise(command, args) {
     let stdout = "";
     let stderr = "";
 
-    ls.stdout.on("data", data => {
+    ls.stdout.on("data", (data) => {
       stdout += data;
     });
 
-    ls.stderr.on("data", data => {
+    ls.stderr.on("data", (data) => {
       stderr += data;
       console.log(`stderr: ${data}`);
     });
 
-    ls.on("close", code => {
+    ls.on("close", (code) => {
       console.log(`child process exited with code ${code}`);
       if (code === 0) {
         resolve(stdout);

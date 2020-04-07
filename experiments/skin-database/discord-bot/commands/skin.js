@@ -5,7 +5,7 @@ async function handler(message, args) {
   const md5 = await Skins.getMd5ByAnything(anything);
   await Utils.postSkin({
     md5,
-    dest: message.channel
+    dest: message.channel,
   });
 }
 
@@ -13,5 +13,5 @@ module.exports = {
   usage: "<md5-skin>",
   description: "Show information about a skin",
   command: "skin",
-  handler
+  handler,
 };

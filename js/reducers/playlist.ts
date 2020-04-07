@@ -90,7 +90,7 @@ const playlist = (
       return {
         ...state,
         selectedTracks: new Set(
-          state.trackOrder.filter(id => !state.selectedTracks.has(id))
+          state.trackOrder.filter((id) => !state.selectedTracks.has(id))
         ),
       };
     case REMOVE_ALL_TRACKS:
@@ -108,10 +108,12 @@ const playlist = (
       const { currentTrack } = state;
       return {
         ...state,
-        trackOrder: state.trackOrder.filter(trackId => !actionIds.has(trackId)),
+        trackOrder: state.trackOrder.filter(
+          (trackId) => !actionIds.has(trackId)
+        ),
         currentTrack: actionIds.has(Number(currentTrack)) ? null : currentTrack,
         selectedTracks: new Set(
-          Array.from(state.selectedTracks).filter(id => actionIds.has(id))
+          Array.from(state.selectedTracks).filter((id) => actionIds.has(id))
         ),
         // TODO: This could probably be made to work, but we clear it just to be safe.
         lastSelectedIndex: null,
@@ -155,7 +157,7 @@ const playlist = (
         ...state,
         trackOrder: moveSelected(
           state.trackOrder,
-          i => state.selectedTracks.has(state.trackOrder[i]),
+          (i) => state.selectedTracks.has(state.trackOrder[i]),
           action.offset
         ),
         // TODO: This could probably be made to work, but we clear it just to be safe.

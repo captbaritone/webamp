@@ -38,7 +38,7 @@ function PlaylistMenu(props: Props) {
         selected,
       })}
       ref={setRef}
-      onClick={() => setSelected(selected_ => !selected_)}
+      onClick={() => setSelected((selected_) => !selected_)}
     >
       <div className="bar" />
       {selected && (

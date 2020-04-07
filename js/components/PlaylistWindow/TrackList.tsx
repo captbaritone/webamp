@@ -95,7 +95,7 @@ function TrackList() {
         ))}
       </div>
       <div className="playlist-track-durations">
-        {_renderTracks(id => getTimeStr(tracks[id].duration))}
+        {_renderTracks((id) => getTimeStr(tracks[id].duration))}
       </div>
     </div>
   );

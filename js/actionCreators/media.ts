@@ -81,7 +81,7 @@ export function previous(): Thunk {
 }
 
 export function seekToTime(seconds: number): Thunk {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     const state = getState();
     const duration = Selectors.getDuration(state);
     if (duration == null) {
@@ -94,7 +94,7 @@ export function seekToTime(seconds: number): Thunk {
   };
 }
 export function seekForward(seconds: number): Thunk {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     const timeElapsed = Selectors.getTimeElapsed(getState());
     dispatch(seekToTime(timeElapsed + seconds));
   };

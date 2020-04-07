@@ -9,7 +9,7 @@ async function unique(arr, hasher) {
   const seen = new Set();
   const items = [];
   await Promise.all(
-    arr.map(async item => {
+    arr.map(async (item) => {
       const key = await hasher(item);
       if (seen.has(key)) {
         return;
@@ -35,11 +35,11 @@ function md5File(filePath) {
 }
 
 function skinWasGenerated(filePath) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     childProcess.execFile(
       `zipgrep`,
       ["This file was created by Skinamp", filePath],
-      err => {
+      (err) => {
         if (err) {
           // node couldn't execute the command
           resolve(false);

@@ -48,7 +48,7 @@ function useHandleMouseDown(propsWindows: {
         y: ee.clientY - mouseStart.y,
       };
 
-      const proposedWindows = moving.map(node => ({
+      const proposedWindows = moving.map((node) => ({
         ...node,
         ...SnapUtils.applyDiff(node, proposedDiff),
       }));
@@ -75,7 +75,7 @@ function useHandleMouseDown(propsWindows: {
       );
 
       const windowPositionDiff: { [windowId: string]: Point } = {};
-      moving.forEach(w => {
+      moving.forEach((w) => {
         windowPositionDiff[w.key] = SnapUtils.applyDiff(w, finalDiff);
       });
 
@@ -108,9 +108,9 @@ function useHandleMouseDown(propsWindows: {
       }
 
       const windows = windowsInfo.filter(
-        w => propsWindows[w.key] != null && !getWindowHidden(w.key)
+        (w) => propsWindows[w.key] != null && !getWindowHidden(w.key)
       );
-      const targetNode = windows.find(node => node.key === key);
+      const targetNode = windows.find((node) => node.key === key);
       if (targetNode == null) {
         throw new Error(`Tried to move a node that does not exist: ${key}`);
       }
@@ -122,7 +122,7 @@ function useHandleMouseDown(propsWindows: {
         movingSet = findAllConnected(windows, targetNode);
       }
 
-      const stationary = windows.filter(w => !movingSet.has(w));
+      const stationary = windows.filter((w) => !movingSet.has(w));
       const moving = Array.from(movingSet);
 
       const mouseStart = { x: e.clientX, y: e.clientY };
@@ -139,7 +139,7 @@ export default function WindowManager({ windows: propsWindows }: Props) {
   const setFocusedWindow = useActionCreator(Actions.setFocusedWindow);
   const handleMouseDown = useHandleMouseDown(propsWindows);
 
-  const windows = windowsInfo.filter(w => propsWindows[w.key]);
+  const windows = windowsInfo.filter((w) => propsWindows[w.key]);
 
   const onBlur = useCallback(
     // I give up on trying to type things with `relatedTarget`.
@@ -158,7 +158,7 @@ export default function WindowManager({ windows: propsWindows }: Props) {
 
   return (
     <>
-      {windows.map(w => (
+      {windows.map((w) => (
         <div
           key={w.key}
           onBlur={onBlur}

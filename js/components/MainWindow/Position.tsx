@@ -27,7 +27,7 @@ const Position = React.memo(() => {
   const dispatch = useTypedDispatch();
 
   const seekToPercentComplete = React.useCallback(
-    e => {
+    (e) => {
       dispatch({
         type: SEEK_TO_PERCENT_COMPLETE,
         percent: Number((e.target as HTMLInputElement).value),
@@ -38,7 +38,7 @@ const Position = React.memo(() => {
   );
 
   const setPosition = React.useCallback(
-    e => {
+    (e) => {
       dispatch({ type: SET_FOCUS, input: "position" });
       dispatch({
         type: SET_SCRUB_POSITION,

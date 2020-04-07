@@ -23,7 +23,7 @@ export default class Disposable {
         "Attempted to dispose disposable which is already disposed."
       );
     }
-    this._teardowns.forEach(teardown => {
+    this._teardowns.forEach((teardown) => {
       if (typeof teardown === "function") {
         teardown();
       } else if (typeof teardown.dispose === "function") {

@@ -62,7 +62,7 @@ export function getSpriteUrisFromImg(
     throw new Error("Failed to get canvas context");
   }
   const images: { [spriteName: string]: string } = {};
-  sprites.forEach(sprite => {
+  sprites.forEach((sprite) => {
     canvas.height = sprite.height;
     canvas.width = sprite.width;
 
@@ -133,7 +133,7 @@ export async function getPlaylistStyle(zip: JSZip): Promise<PlaylistStyle> {
   // Winamp seems to permit colors that contain too many characters.
   // For compatibility with existing skins, we normalize them here.
   ["normal", "current", "normalbg", "selectedbg", "mbFG", "mbBG"].forEach(
-    colorKey => {
+    (colorKey) => {
       let color = data[colorKey];
       if (!color) {
         return;

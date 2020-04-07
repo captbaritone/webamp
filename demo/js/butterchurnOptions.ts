@@ -58,7 +58,7 @@ export function getButterchurnOptions(
         const milkdropPresetUrl = params.get("milkdropPresetUrl");
         if (butterchurnPresetMapUrlParam) {
           if (
-            !KNOWN_PRESET_URLS_REGEXES.some(pattern =>
+            !KNOWN_PRESET_URLS_REGEXES.some((pattern) =>
               pattern.test(butterchurnPresetMapUrlParam)
             )
           ) {
@@ -70,7 +70,7 @@ export function getButterchurnOptions(
           }
         } else if (butterchurnPresetUrlParam) {
           if (
-            !KNOWN_PRESET_URLS_REGEXES.some(pattern =>
+            !KNOWN_PRESET_URLS_REGEXES.some((pattern) =>
               pattern.test(butterchurnPresetUrlParam)
             )
           ) {

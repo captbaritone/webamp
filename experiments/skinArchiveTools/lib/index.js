@@ -70,7 +70,7 @@ async function main() {
     let screenshotCount = 0;
     let archived = 0;
     let generated = 0;
-    Object.values(cache).forEach(skin => {
+    Object.values(cache).forEach((skin) => {
       switch (skin.type) {
         case FILE_TYPES.CLASSIC:
           classic++;
@@ -114,7 +114,7 @@ async function main() {
   }
   if (moveHome) {
     console.log("Moving skins to md5AllSkins");
-    Object.values(cache).forEach(skin => {
+    Object.values(cache).forEach((skin) => {
       const md5Path = path.join(outputDir, "md5AllSkins", `${skin.md5}`);
       if (md5Path === skin.md5Path) {
         return;
@@ -127,8 +127,8 @@ async function main() {
     save();
     console.log("Moving classic skins to md5Skins");
     Object.values(cache)
-      .filter(skin => skin.type === FILE_TYPES.CLASSIC)
-      .forEach(skin => {
+      .filter((skin) => skin.type === FILE_TYPES.CLASSIC)
+      .forEach((skin) => {
         const classicMd5Path = path.join(
           outputDir,
           "md5Skins",
@@ -157,7 +157,7 @@ async function main() {
     }, 10000);
     await Bluebird.map(
       skins,
-      async skin => {
+      async (skin) => {
         if (skin.type && force === false) {
           return;
         }
@@ -182,7 +182,7 @@ async function main() {
       save();
     }, 10000);
 
-    const needScreenshot = skins.filter(skin => {
+    const needScreenshot = skins.filter((skin) => {
       return skin.type === FILE_TYPES.CLASSIC && !skin.screenshotPath;
     });
 
@@ -217,7 +217,7 @@ async function main() {
 
   if (detectGenerated) {
     const unknownSkins = Object.values(cache).filter(
-      skin => skin.type === FILE_TYPES.CLASSIC && skin.generated == null
+      (skin) => skin.type === FILE_TYPES.CLASSIC && skin.generated == null
     );
     console.log(
       `Found ${unknownSkins.length} skins to check if they are generated`
@@ -232,7 +232,7 @@ async function main() {
     }, 10000);
     await Bluebird.map(
       unknownSkins,
-      async skin => {
+      async (skin) => {
         const generated = await Utils.skinWasGenerated(skin.classicMd5Path);
         j++;
         if (generated) {
@@ -248,11 +248,11 @@ async function main() {
 
   if (archive) {
     const classicSkins = Object.values(cache).filter(
-      skin => skin.type === FILE_TYPES.CLASSIC && skin.iaItemName == null
+      (skin) => skin.type === FILE_TYPES.CLASSIC && skin.iaItemName == null
     );
 
     const seenItemNames = new Set();
-    Object.values(cache).forEach(skin => {
+    Object.values(cache).forEach((skin) => {
       if (skin.iaItemName != null) {
         seenItemNames.add(skin.iaItemName.toLowerCase());
       }
@@ -260,7 +260,7 @@ async function main() {
 
     await Bluebird.map(
       classicSkins,
-      async skin => {
+      async (skin) => {
         const itemName = Utils.getArchiveItemName(skin);
         console.log("going to upload ", itemName);
         if (seenItemNames.has(itemName.toLowerCase())) {
@@ -285,7 +285,7 @@ async function main() {
 
   if (color) {
     const classicSkins = Object.values(cache).filter(
-      skin => skin.type === FILE_TYPES.CLASSIC
+      (skin) => skin.type === FILE_TYPES.CLASSIC
     );
     let i = 0;
     const interval = setInterval(() => {
@@ -297,7 +297,7 @@ async function main() {
 
     await Bluebird.map(
       classicSkins,
-      async skin => {
+      async (skin) => {
         if (skin.screenshotPath == null) {
           console.log("Could not extract color from skin");
           return;
@@ -320,7 +320,7 @@ async function main() {
       path.join("/Volumes/Mobile Backup/skins/", "likes.txt"),
       "utf8"
     );
-    content.split("\n").forEach(line => {
+    content.split("\n").forEach((line) => {
       if (!line.length) {
         return;
       }
@@ -337,7 +337,7 @@ async function main() {
 
   if (readme) {
     const classicSkins = Object.values(cache).filter(
-      skin => skin.type === FILE_TYPES.CLASSIC
+      (skin) => skin.type === FILE_TYPES.CLASSIC
     );
     let i = 0;
     const interval = setInterval(() => {
@@ -349,7 +349,7 @@ async function main() {
 
     await Bluebird.map(
       classicSkins,
-      async skin => {
+      async (skin) => {
         const readmePath = path.join(outputDir, "readmes", `${skin.md5}.txt`);
         // if (skin.readmePath || skin.emails) {
         if (skin.readmePath !== undefined) {

@@ -21,13 +21,13 @@ async function main(skinPath) {
   // Find all the .wal files in the path recursively
   const wals = await findWals(skinPath);
   const zips = await Promise.all(
-    wals.map(async skin => {
+    wals.map(async (skin) => {
       const walPath = path.join(skinPath, skin);
 
       const buffer = fs.readFileSync(walPath);
       const zip = await JSZip.loadAsync(buffer);
       const makis = await Promise.all(
-        zip.file(/\.maki$/i).map(async file => {
+        zip.file(/\.maki$/i).map(async (file) => {
           return {
             name: file.name,
             buffer: await file.async("nodebuffer"),

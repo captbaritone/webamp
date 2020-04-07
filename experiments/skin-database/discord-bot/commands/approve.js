@@ -14,12 +14,12 @@ async function handler(message, args) {
   let filename = null;
   await Utils.postSkin({
     md5,
-    title: f => {
+    title: (f) => {
       // Hack to get access to the file name
       filename = f;
       return `Approve: ${f}`;
     },
-    dest: tweetBotChannel
+    dest: tweetBotChannel,
   });
   await tweetBotChannel.send(
     `${filename} was approved by ${message.author.username}`
@@ -30,5 +30,5 @@ module.exports = {
   command: "approve",
   handler,
   usage: "<md5-hash>",
-  description: "Approve a given skin to be Tweeted by the Twitter bot"
+  description: "Approve a given skin to be Tweeted by the Twitter bot",
 };

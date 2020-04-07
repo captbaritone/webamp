@@ -10,7 +10,7 @@ const Shade = React.memo(() => {
     <ClickedDiv
       id="shade"
       onMouseDown={handleClick}
-      onDoubleClick={e => e.stopPropagation()}
+      onDoubleClick={(e) => e.stopPropagation()}
       title="Toggle Windowshade Mode"
     />
   );

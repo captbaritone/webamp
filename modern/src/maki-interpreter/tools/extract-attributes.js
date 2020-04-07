@@ -12,7 +12,7 @@ function findWals(parentDir) {
       if (err) {
         return reject(err);
       }
-      resolve(files.map(filePath => path.join(parentDir, filePath)));
+      resolve(files.map((filePath) => path.join(parentDir, filePath)));
     });
   });
 }
@@ -38,14 +38,14 @@ async function getAttributeDataFromWal(absolutePath) {
   const rawXmlTree = await Utils.inlineIncludes(skinXml, zip);
 
   const nodeTypes = [];
-  Utils.mapTreeBreadth(rawXmlTree, node => {
+  Utils.mapTreeBreadth(rawXmlTree, (node) => {
     if (node.type === "element") {
       nodeTypes.push({
         name: node.name.toLowerCase(),
         attributes:
           node.attributes == null
             ? []
-            : Object.keys(node.attributes).map(attr => attr.toLowerCase()),
+            : Object.keys(node.attributes).map((attr) => attr.toLowerCase()),
       });
     }
     return node;
@@ -82,7 +82,7 @@ async function main(parentDir) {
     }
     sum[attrs.name].count++;
     const nodeAttrs = sum[attrs.name].attributes;
-    attrs.attributes.forEach(attr => {
+    attrs.attributes.forEach((attr) => {
       if (nodeAttrs[attr] == null) {
         nodeAttrs[attr] = 1;
       } else {

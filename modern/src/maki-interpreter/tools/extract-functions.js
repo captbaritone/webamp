@@ -16,7 +16,7 @@ function findWals(parentDir) {
       if (err) {
         return reject(err);
       }
-      resolve(files.map(filePath => path.join(parentDir, filePath)));
+      resolve(files.map((filePath) => path.join(parentDir, filePath)));
     });
   });
 }
@@ -37,7 +37,7 @@ async function getCallCountsFromWal(absolutePath) {
   const zip = await JSZip.loadAsync(buffer);
   const files = zip.file(/\.maki$/);
   const buffers = await Promise.all(
-    files.map(file => file.async("nodebuffer"))
+    files.map((file) => file.async("nodebuffer"))
   );
   return buffers.map(getCallCountsFromMaki).reduce(sumCountObjects, {});
 }
@@ -45,8 +45,8 @@ async function getCallCountsFromWal(absolutePath) {
 function getCallCountsFromMaki(buffer) {
   const maki = parse(buffer);
   return maki.commands
-    .filter(command => CALL_OPCODES.has(command.opcode))
-    .map(command => {
+    .filter((command) => CALL_OPCODES.has(command.opcode))
+    .map((command) => {
       const method = maki.methods[command.arg];
       const classId = maki.classes[method.typeOffset];
       const klass = getClass(classId);
@@ -58,13 +58,13 @@ function getCallCountsFromMaki(buffer) {
       const parentClass = getFunctionObject(klass, method.name);
       return `${parentClass.name}.${method.name.toLowerCase()}`;
     })
-    .map(methodName => ({ [methodName]: 1 }))
+    .map((methodName) => ({ [methodName]: 1 }))
     .reduce(sumCountObjects, {});
 }
 
 function setObjectValuesToOne(obj) {
   const newObj = {};
-  Object.keys(obj).forEach(key => {
+  Object.keys(obj).forEach((key) => {
     if (obj[key] != null) {
       newObj[key] = 1;
     }

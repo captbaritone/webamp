@@ -14,7 +14,7 @@ async function handler(message) {
     return;
   }
   const files = await Promise.all(
-    attachments.map(async attachment => {
+    attachments.map(async (attachment) => {
       const { filename, url } = attachment;
       const response = await fetch(url);
       console.log("got response");
@@ -37,7 +37,7 @@ async function handler(message) {
 
     try {
       await shooter.takeScreenshot(tempFile, tempScreenshotPath, {
-        minify: true
+        minify: true,
       });
     } catch (e) {
       await message.channel.send(
@@ -64,5 +64,5 @@ module.exports = {
   command: "screenshot",
   usage: "",
   description: "Take a screenshot of the accompanying uploaded skin",
-  handler
+  handler,
 };

@@ -156,7 +156,7 @@ export function centerWindows(box: {
     // A layout has been suplied. We will compute the bounding box and
     // center the given layout.
     const bounding = Utils.calculateBoundingBox(
-      windowsInfo.filter(w => getOpen(w.key))
+      windowsInfo.filter((w) => getOpen(w.key))
     );
 
     if (bounding == null) {
@@ -214,7 +214,7 @@ export function ensureWindowsAreOnScreen(): Thunk {
     const getOpen = Selectors.getWindowOpen(state);
     const { height, width } = Utils.getWindowSize();
     const bounding = Utils.calculateBoundingBox(
-      windowsInfo.filter(w => getOpen(w.key))
+      windowsInfo.filter((w) => getOpen(w.key))
     );
     if (bounding == null) {
       // There are no windows visible, so there's no work to do.
@@ -252,7 +252,7 @@ export function ensureWindowsAreOnScreen(): Thunk {
         moveX = bounding.right - width;
       }
 
-      const newPositions = Utils.objectMap(positions, position => ({
+      const newPositions = Utils.objectMap(positions, (position) => ({
         x: position.x - moveX,
         y: position.y - moveY,
       }));

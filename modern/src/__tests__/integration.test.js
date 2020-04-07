@@ -44,7 +44,7 @@ function buildZipFromDirectory(dir, zip, root) {
 // Returns a promise that resolves when the state of a Redux store matches the
 // given predicate
 function isInState(store, predicate) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const unsubscribe = store.subscribe(() => {
       if (predicate(store.getState())) {
         resolve();
@@ -77,7 +77,7 @@ async function runSkin(skinDirectory) {
 
   const store = create();
   store.dispatch(Actions.gotSkinZip(zip, store));
-  await isInState(store, state => state.modernSkin.skinLoaded);
+  await isInState(store, (state) => state.modernSkin.skinLoaded);
 
   return mockMessageBox.mock.calls;
 }
@@ -92,10 +92,10 @@ Utils.getSizeFromUrl = jest.fn(() => {
   // It will likely require converting data URIs generted by getUrlFromBlob into a buffer.
   return { width: 0, height: 0 };
 });
-Utils.getUrlFromBlob = jest.fn(blob => {
-  return new Promise(resolve => {
+Utils.getUrlFromBlob = jest.fn((blob) => {
+  return new Promise((resolve) => {
     const reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = function (e) {
       resolve(e.target.result);
     };
     // TODO: Preserve the mimetype of these files

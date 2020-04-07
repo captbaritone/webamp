@@ -13,7 +13,7 @@ module.exports = async function main() {
   );
 
   for (const item of items) {
-    const skinFiles = item.metadata.files.filter(file => {
+    const skinFiles = item.metadata.files.filter((file) => {
       return file.name.endsWith(".wsz");
     });
     if (skinFiles.length !== 1) {

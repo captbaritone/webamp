@@ -75,31 +75,31 @@ class Skin {
   }
 
   async canonicalFilename() {
-    return this._get(skin => skin.canonicalFilename);
+    return this._get((skin) => skin.canonicalFilename);
   }
 
   async filenames() {
-    return this._get(skin => skin.fileNames);
+    return this._get((skin) => skin.fileNames);
   }
 
   async emails() {
-    return this._get(skin => skin.emails);
+    return this._get((skin) => skin.emails);
   }
 
   async tweetUrl() {
-    return this._get(skin => skin.tweetUrl);
+    return this._get((skin) => skin.tweetUrl);
   }
 
   async skinUrl() {
-    return this._get(skin => skin.skinUrl);
+    return this._get((skin) => skin.skinUrl);
   }
 
   async screenshotUrl() {
-    return this._get(skin => skin.screenshotUrl);
+    return this._get((skin) => skin.screenshotUrl);
   }
 
   async webampUrl() {
-    return this._get(skin => skin.webampUrl);
+    return this._get((skin) => skin.webampUrl);
   }
 
   async tweetStatus() {
@@ -107,11 +107,11 @@ class Skin {
   }
 
   async readmeText() {
-    return this._get(skin => skin.readmeText);
+    return this._get((skin) => skin.readmeText);
   }
 
   async averageColor() {
-    return this._get(skin => skin.averageColor);
+    return this._get((skin) => skin.averageColor);
   }
 
   internetArchiveItem() {
@@ -126,7 +126,7 @@ const root = {
   },
 };
 
-exports.default = function() {
+exports.default = function () {
   return graphqlHTTP({
     schema: schema,
     rootValue: root,

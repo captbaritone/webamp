@@ -5,7 +5,7 @@ async function handler(message) {
   const info = getCache();
   let classic = 0;
   const { tweeted, approved, rejected, tweetable } = await getStats();
-  Object.values(info).forEach(skin => {
+  Object.values(info).forEach((skin) => {
     if (skin.type === "CLASSIC") {
       classic++;
     }
@@ -22,5 +22,5 @@ module.exports = {
   command: "stats",
   handler,
   usage: "",
-  description: "Give some statistics about the skin archive"
+  description: "Give some statistics about the skin archive",
 };

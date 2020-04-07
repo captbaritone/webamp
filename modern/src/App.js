@@ -59,7 +59,7 @@ const skinUrls = [
 ];
 
 function useJsUpdates(makiObject) {
-  const [, forceUpdate] = useReducer(x => x + 1, 0);
+  const [, forceUpdate] = useReducer((x) => x + 1, 0);
   useEffect(() => makiObject.js_listen("js_update", forceUpdate));
 }
 
@@ -124,7 +124,7 @@ function GuiObjectEvents({ makiObject, children }) {
 
   return (
     <div
-      onMouseDown={e =>
+      onMouseDown={(e) =>
         handleMouseButtonEventDispatch(
           makiObject,
           e,
@@ -132,7 +132,7 @@ function GuiObjectEvents({ makiObject, children }) {
           "onRightButtonDown"
         )
       }
-      onDoubleClick={e =>
+      onDoubleClick={(e) =>
         handleMouseButtonEventDispatch(
           makiObject,
           e,
@@ -140,15 +140,21 @@ function GuiObjectEvents({ makiObject, children }) {
           "onRightButtonDblClk"
         )
       }
-      onMouseMove={e => handleMouseEventDispatch(makiObject, e, "onMouseMove")}
-      onMouseEnter={e => handleMouseEventDispatch(makiObject, e, "onEnterArea")}
-      onMouseLeave={e => handleMouseEventDispatch(makiObject, e, "onLeaveArea")}
+      onMouseMove={(e) =>
+        handleMouseEventDispatch(makiObject, e, "onMouseMove")
+      }
+      onMouseEnter={(e) =>
+        handleMouseEventDispatch(makiObject, e, "onEnterArea")
+      }
+      onMouseLeave={(e) =>
+        handleMouseEventDispatch(makiObject, e, "onLeaveArea")
+      }
       onDragEnter={() => makiObject.js_trigger("onDragEnter")}
       onDragLeave={() => makiObject.js_trigger("onDragLeave")}
-      onDragOver={e => handleMouseEventDispatch(makiObject, e, "onDragOver")}
-      onKeyUp={e => makiObject.js_trigger("onKeyUp", e.keyCode)}
-      onKeyDown={e => makiObject.js_trigger("onKeyDown", e.keyCode)}
-      onContextMenu={e => {
+      onDragOver={(e) => handleMouseEventDispatch(makiObject, e, "onDragOver")}
+      onKeyUp={(e) => makiObject.js_trigger("onKeyUp", e.keyCode)}
+      onKeyDown={(e) => makiObject.js_trigger("onKeyDown", e.keyCode)}
+      onContextMenu={(e) => {
         e.preventDefault();
         return false;
       }}
@@ -444,7 +450,7 @@ function Button({ makiObject }) {
             setDown(false);
           });
         }}
-        onClick={e => {
+        onClick={(e) => {
           if (e.button === 2) {
             makiObject.js_trigger("onRightClick");
           } else {
@@ -473,7 +479,7 @@ function Button({ makiObject }) {
 function Popupmenu({ makiObject }) {
   const { id, x, y } = makiObject.attributes;
 
-  const children = makiObject.js_getCommands().map(item => {
+  const children = makiObject.js_getCommands().map((item) => {
     if (item.id === "seperator") {
       return <li />;
     }
@@ -680,7 +686,7 @@ function Modern() {
     <div style={{ width: "100vw", height: "100vh", display: "flex" }}>
       <DropTarget
         style={{ width: "100%", height: "100%" }}
-        handleDrop={e => {
+        handleDrop={(e) => {
           dispatch(Actions.gotSkinBlob(e.dataTransfer.files[0], store));
         }}
       >
@@ -689,7 +695,7 @@ function Modern() {
       <select
         style={{ position: "absolute", bottom: 0 }}
         value={skinUrl}
-        onChange={e => {
+        onChange={(e) => {
           const newSkinUrl = e.target.value;
           setSkinUrl(newSkinUrl);
           // TODO: This should really go in a middleware somewhere.
@@ -697,7 +703,7 @@ function Modern() {
           dispatch(Actions.gotSkinUrl(newSkinUrl, store));
         }}
       >
-        {skinUrls.map(url => (
+        {skinUrls.map((url) => (
           <option value={url} key={url}>
             {url}
           </option>

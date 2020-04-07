@@ -75,7 +75,7 @@ export const snapToMany = (boxA: Box, otherBoxes: Box[]): Diff => {
   let x: number | undefined;
   let y: number | undefined;
 
-  otherBoxes.forEach(boxB => {
+  otherBoxes.forEach((boxB) => {
     const newPos = snap(boxA, boxB);
     x = newPos.x || x;
     y = newPos.y || y;
@@ -133,7 +133,7 @@ export const boundingBox = (nodes: Box[]): Box => {
     left: left(firstNode),
   };
 
-  boxes.forEach(node => {
+  boxes.forEach((node) => {
     bounding.top = Math.min(bounding.top, top(node));
     bounding.right = Math.max(bounding.right, right(node));
     bounding.bottom = Math.max(bounding.bottom, bottom(node));

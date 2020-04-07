@@ -47,9 +47,9 @@ function normalizePresetTypes(preset: Preset): StatePreset {
 }
 
 export function initializePresets(presetOptions: ButterchurnOptions): Thunk {
-  return async dispatch => {
+  return async (dispatch) => {
     const { getPresets, importButterchurn } = presetOptions;
-    importButterchurn().then(butterchurn => {
+    importButterchurn().then((butterchurn) => {
       dispatch({ type: GOT_BUTTERCHURN, butterchurn: butterchurn.default });
     });
 
@@ -77,7 +77,7 @@ export function loadPresets(presets: StatePreset[]): Thunk {
 export function appendPresetFileList(fileList: FileList): Thunk {
   return async (dispatch, getState, { convertPreset }) => {
     const presets: StatePreset[] = Array.from(fileList)
-      .map(file => {
+      .map((file) => {
         const JSON_EXT = ".json";
         const MILK_EXT = ".milk";
         const filename = file.name.toLowerCase();

@@ -17,9 +17,9 @@ let METHOD_COUNT = 0;
 let IMPLEMENTED_METHOD_COUNT = 0;
 
 const normalizedMethods = [];
-Object.keys(objects).forEach(key => {
+Object.keys(objects).forEach((key) => {
   const makiObject = objects[key];
-  makiObject.functions.forEach(method => {
+  makiObject.functions.forEach((method) => {
     METHOD_COUNT++;
     const normalizedName = `${makiObject.name}.${method.name.toLowerCase()}`;
     const implemented = !unimplemented.has(normalizedName);
@@ -40,7 +40,7 @@ Object.keys(objects).forEach(key => {
 });
 
 const foundMethods = normalizedMethods.filter(
-  method => method.foundInSkins > 0
+  (method) => method.foundInSkins > 0
 );
 
 function PercentBox({ number, total, label }) {
@@ -85,13 +85,13 @@ function PercentBox({ number, total, label }) {
   );
 }
 
-export default function() {
+export default function () {
   const [searchQuery, setSearchQuery] = React.useState("");
   const [sortKey, setSortKey] = React.useState("totalCalls");
   const [sortDirection, setSortDirection] = React.useState("ASC");
   function setOrToggleSort(key) {
     if (sortKey === key) {
-      setSortDirection(dir => (dir === "ASC" ? "DESC" : "ASC"));
+      setSortDirection((dir) => (dir === "ASC" ? "DESC" : "ASC"));
     } else {
       setSortKey(key);
     }
@@ -105,7 +105,7 @@ export default function() {
   if (searchQuery) {
     const normalizedQuery = searchQuery.toLowerCase();
 
-    filterFunction = method => {
+    filterFunction = (method) => {
       return method.normalizedName.toLowerCase().includes(normalizedQuery);
     };
   }
@@ -118,14 +118,14 @@ export default function() {
         label="All Methods"
       />
       <PercentBox
-        number={foundMethods.filter(method => method.implemented).length}
+        number={foundMethods.filter((method) => method.implemented).length}
         total={foundMethods.length}
         label="Used Methods"
       />
       <input
         placeholder={"Search..."}
         value={searchQuery}
-        onChange={e => setSearchQuery(e.target.value)}
+        onChange={(e) => setSearchQuery(e.target.value)}
       />
       <table>
         <thead>

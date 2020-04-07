@@ -49,7 +49,7 @@ export default class ElementSource {
     });
 
     // TODO: #leak
-    this._audio.addEventListener("error", e => {
+    this._audio.addEventListener("error", (e) => {
       switch (this._audio.error!.code) {
         case 1:
           // The fetching of the associated resource was aborted by the user's request.

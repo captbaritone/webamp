@@ -44,14 +44,14 @@ function FocusTarget({ onKeyDown, windowId, children }: Props) {
       return;
     }
 
-    const observer = new MutationObserver(mutations => {
+    const observer = new MutationObserver((mutations) => {
       // In the common case we won't have focused the body, so we can do this
       // inexpensive check first to avoid calling the more expensive `O(n)`
       // check of the individual mutations.
       if (document.activeElement !== document.body) {
         return;
       }
-      if (mutations.some(mutation => mutation.removedNodes.length > 0)) {
+      if (mutations.some((mutation) => mutation.removedNodes.length > 0)) {
         ref.focus();
       }
     });

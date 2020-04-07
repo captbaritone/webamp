@@ -293,7 +293,7 @@ class GuiObject extends MakiObject {
 
   _targetAnimationLoop(): void {
     this._targetAnimationCancelID = window.requestAnimationFrame(
-      currentTime => {
+      (currentTime) => {
         const progress =
           (currentTime - this._targetAnimationStartTime) /
           this._targetAnimationSpeed;
@@ -302,7 +302,7 @@ class GuiObject extends MakiObject {
           this.ontargetreached();
           return;
         }
-        ANIMATION_PROP_KEYS.forEach(attr => {
+        ANIMATION_PROP_KEYS.forEach((attr) => {
           const transition = this._transitionParams[attr];
           if (transition == null) {
             return;
@@ -318,7 +318,7 @@ class GuiObject extends MakiObject {
 
   gototarget(): void {
     this._transitionParams = {};
-    ANIMATION_PROP_KEYS.forEach(attr => {
+    ANIMATION_PROP_KEYS.forEach((attr) => {
       const target = this._targetParams[attr];
       if (target == null) {
         return;

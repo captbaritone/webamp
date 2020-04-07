@@ -27,7 +27,7 @@ export function run({
   const program = parse(data);
 
   // Replace class hashes with actual JavaScript classes from the runtime
-  program.classes = program.classes.map(hash => {
+  program.classes = program.classes.map((hash) => {
     const resolved = runtime[hash];
     if (resolved == null && log) {
       const klass = getClass(hash);
@@ -42,7 +42,7 @@ export function run({
   });
 
   // Bind top level hooks.
-  program.bindings.forEach(binding => {
+  program.bindings.forEach((binding) => {
     const { commandOffset, variableOffset, methodOffset } = binding;
     const variable = program.variables[variableOffset];
     const method = program.methods[methodOffset];

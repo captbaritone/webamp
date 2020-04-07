@@ -111,11 +111,11 @@ function PresetOverlay({ height, width }: Props) {
     (e: React.KeyboardEvent<HTMLDivElement>) => {
       switch (e.keyCode) {
         case 38: // up arrow
-          setSelectedListIndex(value => Math.max(value - 1, 0));
+          setSelectedListIndex((value) => Math.max(value - 1, 0));
           e.stopPropagation();
           break;
         case 40: // down arrow
-          setSelectedListIndex(value => Math.min(value + 1, maxListIndex));
+          setSelectedListIndex((value) => Math.min(value + 1, maxListIndex));
           e.stopPropagation();
           break;
         case 13: // enter

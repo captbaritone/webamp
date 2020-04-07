@@ -78,7 +78,7 @@ function drawEqLine({
     preampLineImage.height
   );
 
-  const amplitudes = BANDS.map(band => sliders[band]);
+  const amplitudes = BANDS.map((band) => sliders[band]);
 
   canvasCtx.fillStyle = colorPattern;
   const paddingLeft = 2; // TODO: This should be 1.5

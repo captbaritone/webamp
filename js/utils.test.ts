@@ -334,7 +334,7 @@ describe("moveSelected", () => {
     expect(
       moveSelected(
         ["a", "b", "c", "d", "e", "f", "g", "h"],
-        i => new Set([1]).has(i),
+        (i) => new Set([1]).has(i),
         1
       )
     ).toEqual(["a", "c", "b", "d", "e", "f", "g", "h"]);
@@ -343,7 +343,7 @@ describe("moveSelected", () => {
     expect(
       moveSelected(
         ["a", "b", "c", "d", "e", "f", "g", "h"],
-        i => new Set([1]).has(i),
+        (i) => new Set([1]).has(i),
         3
       )
     ).toEqual(["a", "c", "d", "e", "b", "f", "g", "h"]);
@@ -352,18 +352,18 @@ describe("moveSelected", () => {
     expect(
       moveSelected(
         ["a", "b", "c", "d", "e", "f", "g", "h"],
-        i => new Set([1, 2]).has(i),
+        (i) => new Set([1, 2]).has(i),
         3
       )
     ).toEqual(["a", "d", "e", "f", "b", "c", "g", "h"]);
   });
   it("works for a simple example", () => {
     const arr = [true, false, false];
-    expect(moveSelected(arr, i => arr[i], 1)).toEqual([false, true, false]);
+    expect(moveSelected(arr, (i) => arr[i], 1)).toEqual([false, true, false]);
   });
   it("works for a simple negative example", () => {
     const arr = [false, false, true];
-    expect(moveSelected(arr, i => arr[i], -1)).toEqual([false, true, false]);
+    expect(moveSelected(arr, (i) => arr[i], -1)).toEqual([false, true, false]);
   });
 });
 

@@ -91,9 +91,9 @@ export const parseViscolors = (text: string): string[] => {
   const regex = /^\s*(\d+)\s*,?\s*(\d+)\s*,?\s*(\d+)/;
   const colors = [...DEFAULT_SKIN.colors];
   entries
-    .map(line => regex.exec(line))
+    .map((line) => regex.exec(line))
     .filter(Boolean)
-    .map(matches => (matches as RegExpExecArray).slice(1, 4).join(","))
+    .map((matches) => (matches as RegExpExecArray).slice(1, 4).join(","))
     .map((rgb, i) => {
       colors[i] = `rgb(${rgb})`;
     });
@@ -273,7 +273,7 @@ export function debounce(func: Function, delay: number): Function {
   let timeout: number;
   let callbackArgs: any[] = [];
 
-  return function(context: Object, ...args: any[]): void {
+  return function (context: Object, ...args: any[]): void {
     callbackArgs = args;
 
     if (timeout != null) {
@@ -290,7 +290,7 @@ export function throttle(func: Function, delay: number): Function {
   let timeout: number | null = null;
   let callbackArgs: any[] = [];
 
-  return function(context: Object, ...args: any[]): void {
+  return function (context: Object, ...args: any[]): void {
     callbackArgs = args;
 
     if (!timeout) {
@@ -311,7 +311,7 @@ export function objectForEach<V>(
   obj: { [key: string]: V },
   cb: (value: V, key: string) => void
 ): void {
-  Object.keys(obj).forEach(key => cb(obj[key], key));
+  Object.keys(obj).forEach((key) => cb(obj[key], key));
 }
 
 export function objectMap<V, N>(
@@ -319,7 +319,7 @@ export function objectMap<V, N>(
   cb: (value: V, key: string) => N
 ): { [key: string]: N } {
   const modified: { [key: string]: N } = {};
-  Object.keys(obj).forEach(key => (modified[key] = cb(obj[key], key)));
+  Object.keys(obj).forEach((key) => (modified[key] = cb(obj[key], key)));
   return modified;
 }
 
@@ -340,7 +340,7 @@ export const calculateBoundingBox = (windows: WindowInfo[]) => {
   if (windows.length === 0) {
     return null;
   }
-  const windowSizes = windows.map(w => ({
+  const windowSizes = windows.map((w) => ({
     left: w.x,
     top: w.y,
     bottom: w.y + w.height,

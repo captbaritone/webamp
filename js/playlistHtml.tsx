@@ -136,7 +136,7 @@ const Playlist = (props: Props) => (
         <ul>
           <Font face="Arial" color="#FFFFFF">
             <small>
-              {props.tracks.map(track => (
+              {props.tracks.map((track) => (
                 <span key={track}>
                   {track}
                   <br />

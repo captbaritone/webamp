@@ -9,8 +9,8 @@ async function reviewSkin(message) {
   const { md5 } = skin;
   await Utils.postSkin({
     md5,
-    title: filename => `Review: ${filename}`,
-    dest: message.channel
+    title: (filename) => `Review: ${filename}`,
+    dest: message.channel,
   });
 }
 
@@ -39,5 +39,5 @@ module.exports = {
   handler,
   usage: "[<number>]",
   description:
-    "Post a <number> of skins to be reviewed for inclusion in the Twitter bot. Defaults to 1"
+    "Post a <number> of skins to be reviewed for inclusion in the Twitter bot. Defaults to 1",
 };

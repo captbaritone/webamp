@@ -28,7 +28,7 @@ export function usePromiseValueOrNull<T>(propValue: Promise<T>): T | null {
   const [value, setValue] = useState<T | null>(null);
   useEffect(() => {
     let disposed = false;
-    propValue.then(resolvedValue => {
+    propValue.then((resolvedValue) => {
       if (disposed) {
         return;
       }

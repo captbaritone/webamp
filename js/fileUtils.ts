@@ -42,7 +42,7 @@ export function genMediaDuration(url: string): Promise<number> {
       // TODO: Not sure if this really gets cleaned up.
     };
     audio.addEventListener("durationchange", durationChange);
-    audio.addEventListener("error", e => {
+    audio.addEventListener("error", (e) => {
       reject(e);
     });
     audio.src = url;
@@ -90,7 +90,7 @@ export async function promptForFileReferences(
     directory: false,
   }
 ): Promise<FileList> {
-  return new Promise<FileList>(resolve => {
+  return new Promise<FileList>((resolve) => {
     // Does this represent a memory leak somehow?
     // Can this fail? Do we ever reject?
     const fileInput = document.createElement("input");

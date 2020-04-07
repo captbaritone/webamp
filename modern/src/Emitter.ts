@@ -15,23 +15,23 @@ export default class Emitter {
     this._hooks[eventName].push(cb);
     return () => {
       this._hooks[eventName] = this._hooks[eventName].filter(
-        hookCb => hookCb !== cb
+        (hookCb) => hookCb !== cb
       );
     };
   }
 
   trigger(eventName: string, ...args: any[]) {
-    this._globalHooks.map(cb => cb(eventName, ...args));
+    this._globalHooks.map((cb) => cb(eventName, ...args));
     if (this._hooks[eventName] == null) {
       return;
     }
-    this._hooks[eventName].map(cb => cb(...args));
+    this._hooks[eventName].map((cb) => cb(...args));
   }
 
   listenToAll(cb: (eventName: string, ...args: any[]) => void) {
     this._globalHooks.push(cb);
     return () => {
-      this._globalHooks = this._globalHooks.filter(hookCb => hookCb !== cb);
+      this._globalHooks = this._globalHooks.filter((hookCb) => hookCb !== cb);
     };
   }
 

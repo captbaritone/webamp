@@ -12,9 +12,9 @@ module.exports = {
     schema: [],
     fixable: "code",
   },
-  create: function(context) {
+  create: function (context) {
     return {
-      ClassBody: function(node) {
+      ClassBody: function (node) {
         const currentObject = getMakiObjectfromClassDeclarationNode(
           node.parent
         );
@@ -24,11 +24,11 @@ module.exports = {
 
         const implementedMethodNames = new Set(
           node.body
-            .filter(prop => prop.type === "MethodDefinition")
-            .map(method => method.key.name)
+            .filter((prop) => prop.type === "MethodDefinition")
+            .map((method) => method.key.name)
         );
 
-        currentObject.functions.forEach(func => {
+        currentObject.functions.forEach((func) => {
           const methodName = func.name.toLowerCase();
           if (implementedMethodNames.has(methodName)) {
             return;
@@ -47,7 +47,7 @@ module.exports = {
           context.report({
             node: node,
             message: `Missing method ${methodName}`,
-            fix: fixer => {
+            fix: (fixer) => {
               return fixer.insertTextAfter(lastChild, methodString);
             },
           });

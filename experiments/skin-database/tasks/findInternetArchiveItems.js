@@ -10,7 +10,7 @@ module.exports = async function main() {
   const items = collections.response.docs;
 
   const bulkUpdates = items
-    .map(item => {
+    .map((item) => {
       const { identifier } = item;
       return {
         updateOne: {

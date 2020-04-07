@@ -14,7 +14,7 @@ const compose = composeWithDevTools({
   actionsBlacklist: [UPDATE_TIME_ELAPSED, STEP_MARQUEE],
 });
 
-export default function(
+export default function (
   media: Media,
   actionEmitter: Emitter,
   customMiddlewares: Middleware[] = [],

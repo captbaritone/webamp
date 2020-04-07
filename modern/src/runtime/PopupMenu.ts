@@ -70,8 +70,8 @@ class PopupMenu extends MakiObject {
   popatmouse(): Promise<number> {
     this.attributes.x = this._guiParent.getmouseposx();
     this.attributes.y = this._guiParent.getmouseposy();
-    return new Promise(resolve => {
-      this.js_selectCommand = id => {
+    return new Promise((resolve) => {
+      this.js_selectCommand = (id) => {
         this.parent.js_removeChild(this);
         this.parent.js_trigger("js_update");
         resolve(id);

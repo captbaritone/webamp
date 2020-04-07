@@ -6,7 +6,7 @@ import MiscOptionsContextMenu from "./MiscOptionsContextMenu";
 
 const MiscMenu = () => (
   <PlaylistMenu id="playlist-misc-menu">
-    <div className="sort-list" onClick={e => e.stopPropagation()}>
+    <div className="sort-list" onClick={(e) => e.stopPropagation()}>
       <SortContextMenu />
     </div>
     <div
@@ -14,7 +14,7 @@ const MiscMenu = () => (
       onClick={() => alert("Not supported in Webamp")}
     />
 
-    <div className="misc-options" onClick={e => e.stopPropagation()}>
+    <div className="misc-options" onClick={(e) => e.stopPropagation()}>
       <MiscOptionsContextMenu />
     </div>
   </PlaylistMenu>

@@ -18,7 +18,7 @@ export function mapTreeBreadth<T extends { children: T[] }>(
   cb: (node: T, parent: T) => T
 ): T {
   const children = node.children || [];
-  const mappedChildren = children.map(child => {
+  const mappedChildren = children.map((child) => {
     const newChild = cb(child, node);
     return mapTreeBreadth(newChild, cb);
   });
@@ -82,7 +82,7 @@ export async function readUint8array(
 // array into the top level array.
 function flatten<T>(arr: Array<T | T[]>): T[] {
   const newArr: T[] = [];
-  arr.forEach(item => {
+  arr.forEach((item) => {
     if (Array.isArray(item)) {
       newArr.push(...item);
     } else {
@@ -100,7 +100,7 @@ export async function asyncFlatMap<T, R>(
   mapper: (value: T) => Promise<T[] | R>
 ): Promise<R[]> {
   const mapped = await Promise.all(arr.map(mapper));
-  const childPromises = mapped.map(async item => {
+  const childPromises = mapped.map(async (item) => {
     if (Array.isArray(item)) {
       return asyncFlatMap(item, mapper);
     }
@@ -130,7 +130,7 @@ export async function asyncTreeFlatMap<T extends { children: T[] }>(
   const mappedChildren = await asyncFlatMap(children, mapper);
 
   const recursedChildren = await Promise.all(
-    mappedChildren.map(child =>
+    mappedChildren.map((child) =>
       asyncTreeFlatMap(
         // @ts-ignore FixMe
         child,
@@ -148,7 +148,7 @@ export async function inlineIncludes(
   xml: XmlNode,
   zip: JSZip
 ): Promise<XmlNode> {
-  return asyncTreeFlatMap(xml, async node => {
+  return asyncTreeFlatMap(xml, async (node) => {
     if (node.name !== "include") {
       return node;
     }
@@ -191,7 +191,7 @@ export function findParentNodeOfType(
   node: MakiObject,
   type: Set<string>
 ): MakiObject | null {
-  return findParent(node, n => type.has(n.name.toLowerCase()));
+  return findParent(node, (n) => type.has(n.name.toLowerCase()));
 }
 
 export function findParentOrCurrentNodeOfType(
@@ -239,7 +239,7 @@ function findDirectDescendantById<
   T extends { children: T[]; attributes?: { id?: string } }
 >(node: T, id: string): T | undefined {
   const lowerCaseId = id.toLowerCase();
-  return node.children.find(item =>
+  return node.children.find((item) =>
     Boolean(
       item.attributes &&
         item.attributes.id &&
@@ -299,7 +299,7 @@ export function findGroupDefById(
   node: MakiObject,
   id: String
 ): MakiObject | null {
-  return findInLexicalScope(node, child => {
+  return findInLexicalScope(node, (child) => {
     return (
       child.getclassname &&
       child.getclassname() === "GroupDef" &&
@@ -355,7 +355,7 @@ export async function getUrlFromBlob(blob: Blob): Promise<string> {
   // frame to load resulting in a white flash when switching background iamges.
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = function (e) {
       // @ts-ignore This API is not very type-friendly.
       resolve(e.target.result);
     };
@@ -372,7 +372,7 @@ async function loadImage(
     img.addEventListener("load", () => {
       resolve(img);
     });
-    img.addEventListener("error", e => {
+    img.addEventListener("error", (e) => {
       reject(e);
     });
     img.src = imgUrl;

@@ -24,7 +24,7 @@ async function fetchAllMetadata(limit) {
   );
   console.log(`Found ${items.length} missing metadata`);
   await Promise.all(
-    items.map(item => {
+    items.map((item) => {
       return fetchMetadata(item.identifier);
     })
   );
@@ -33,7 +33,7 @@ async function fetchAllMetadata(limit) {
 // TODO: Refetch collections from:
 // https://archive.org/advancedsearch.php?q=collection%3Awinampskins&fl%5B%5D=identifier&rows=100000&page=1&output=json
 module.exports = async function main() {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     let delay = 60000;
     let timeout = null;
     async function go() {

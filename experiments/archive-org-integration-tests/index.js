@@ -42,7 +42,7 @@ async function testPage({ url, name, firstTrackText }) {
     }
     log("Getting text of first track...");
     const actualFirstTrackText = await page.evaluate(
-      _ => _.textContent,
+      (_) => _.textContent,
       firstTrack
     );
 
@@ -113,7 +113,7 @@ async function main() {
   });
 }
 
-(async function() {
+(async function () {
   try {
     await main();
   } catch (e) {

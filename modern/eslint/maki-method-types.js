@@ -52,9 +52,9 @@ module.exports = {
     schema: [],
     fixable: "code",
   },
-  create: function(context) {
+  create: function (context) {
     return {
-      MethodDefinition: function(node) {
+      MethodDefinition: function (node) {
         const currentObject = getMakiObjectfromClassDeclarationNode(
           node.parent.parent
         );
@@ -62,7 +62,7 @@ module.exports = {
           return;
         }
         const methods = {};
-        currentObject.functions.forEach(func => {
+        currentObject.functions.forEach((func) => {
           methods[func.name.toLowerCase()] = func;
         });
 
@@ -102,7 +102,7 @@ module.exports = {
             context.report({
               node: body,
               message: `Missing return type for Maki method. Expected \`${expectedTypeData.stringRepresentation}\`.`,
-              fix: fixer => {
+              fix: (fixer) => {
                 return fixer.insertTextBefore(
                   body,
                   `: ${expectedTypeData.stringRepresentation}`
@@ -147,7 +147,7 @@ module.exports = {
             // console.warn(`Missing type data for ${type}.`);
             return;
           }
-          const fix = fixer => {
+          const fix = (fixer) => {
             return fixer.replaceText(
               actual,
               `${actual.name}: ${expectedTypeData.stringRepresentation}`

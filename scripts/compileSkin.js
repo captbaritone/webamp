@@ -20,7 +20,7 @@ const puppeteer = require("puppeteer");
     return;
   }
   // TODO: Wait for node to be ready
-  await new Promise(resolve => setTimeout(resolve, 500));
+  await new Promise((resolve) => setTimeout(resolve, 500));
   try {
     const css = await page.evaluate(
       () => document.getElementById("webamp-skin").innerText

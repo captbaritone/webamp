@@ -126,7 +126,7 @@ async function parseChildren(node, children, zip) {
   }
 
   const resolvedChildren = await Promise.all(
-    children.map(async child => {
+    children.map(async (child) => {
       if (child.type === "comment") {
         return;
       }
@@ -158,7 +158,9 @@ async function parseChildren(node, children, zip) {
     })
   );
   // remove comments other trimmed nodes
-  const filteredChildren = resolvedChildren.filter(item => item !== undefined);
+  const filteredChildren = resolvedChildren.filter(
+    (item) => item !== undefined
+  );
 
   node.js_addChildren(filteredChildren);
 }
@@ -172,7 +174,7 @@ async function nodeImageLookup(node, root, zip) {
     node.attributes.js_assets = {};
   }
   await Promise.all(
-    imageAttributes.map(async attribute => {
+    imageAttributes.map(async (attribute) => {
       const image = node.attributes[attribute];
       if (!image || !Utils.isString(image)) {
         return;
@@ -202,14 +204,14 @@ async function nodeImageLookup(node, root, zip) {
 }
 
 async function applyImageLookups(root, zip) {
-  await Utils.asyncTreeFlatMap(root, async node => {
+  await Utils.asyncTreeFlatMap(root, async (node) => {
     await nodeImageLookup(node, root, zip);
     return node;
   });
 }
 
 async function applyGroupDefs(root) {
-  await Utils.asyncTreeFlatMap(root, async node => {
+  await Utils.asyncTreeFlatMap(root, async (node) => {
     switch (node.name) {
       case "group": {
         if (!node.children || node.children.length === 0) {
@@ -223,7 +225,7 @@ async function applyGroupDefs(root) {
           }
           node.children = groupdef.children;
           // Do we need to copy the items instead of just changing the parent?
-          node.children.forEach(item => {
+          node.children.forEach((item) => {
             item.parent = node;
           });
           node.attributes = {

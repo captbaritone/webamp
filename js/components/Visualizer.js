@@ -114,7 +114,7 @@ class Visualizer extends React.Component {
     const loop = () => {
       if (this.props.status === MEDIA_STATUS.PLAYING) {
         if (this.props.dummyVizData) {
-          Object.keys(this.props.dummyVizData).forEach(i => {
+          Object.keys(this.props.dummyVizData).forEach((i) => {
             this._printBar(i, this.props.dummyVizData[i]);
           });
         } else {
@@ -310,7 +310,7 @@ class Visualizer extends React.Component {
     return (
       <canvas
         id="visualizer"
-        ref={node => (this.canvas = node)}
+        ref={(node) => (this.canvas = node)}
         style={{ width, height }}
         width={width * PIXEL_DENSITY}
         height={height * PIXEL_DENSITY}
@@ -320,7 +320,7 @@ class Visualizer extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   colors: state.display.skinColors,
   style: getVisualizerStyle(state),
   width: getWindowShade(state)("main") ? 38 : 76,

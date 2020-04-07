@@ -1,7 +1,7 @@
 const { exec } = require("child_process");
 
 const reg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi;
-const extract = value => (value && value.match(reg)) || [];
+const extract = (value) => (value && value.match(reg)) || [];
 
 async function extractTextData(skinPath) {
   const ignoreFiles = [
@@ -18,7 +18,7 @@ async function extractTextData(skinPath) {
   ];
 
   const ignoreArgs = ignoreFiles
-    .map(file => `-x "**/${file}" ${file}`)
+    .map((file) => `-x "**/${file}" ${file}`)
     .join(" ");
 
   // Change -p to -c to get context of which file is missing
@@ -28,7 +28,7 @@ async function extractTextData(skinPath) {
   // TODO: Escape path
   const cmd = `unzip ${listFlag} -C "${skinPath}" "file_id.diz" "*.txt" ${ignoreArgs}`;
 
-  const raw = await new Promise(resolve => {
+  const raw = await new Promise((resolve) => {
     exec(cmd, (error, stdout) => {
       if (error != null) {
         // reject(error);

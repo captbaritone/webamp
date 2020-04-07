@@ -27,7 +27,7 @@ export default class LoadQueue {
     return () => {
       // TODO: Could return a boolean representing if the task has already been
       // kicked off.
-      this._queue = this._queue.filter(t1 => t1 !== t);
+      this._queue = this._queue.filter((t1) => t1 !== t);
     };
   }
 

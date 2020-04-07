@@ -48,7 +48,7 @@ export function addTracksFromReferences(
   loadStyle: LoadStyle,
   atIndex: number | undefined
 ): Thunk {
-  const tracks: Track[] = Array.from(fileReferences).map(file => ({
+  const tracks: Track[] = Array.from(fileReferences).map((file) => ({
     blob: file,
     defaultName: file.name,
   }));
@@ -62,7 +62,7 @@ export function loadFilesFromReferences(
   loadStyle: LoadStyle = LOAD_STYLE.PLAY,
   atIndex: number | undefined = undefined
 ): Thunk {
-  return dispatch => {
+  return (dispatch) => {
     if (fileReferences.length < 1) {
       return;
     } else if (fileReferences.length === 1) {
@@ -118,7 +118,7 @@ export function setSkinFromBlob(blob: Blob | Promise<Blob>): Thunk {
 }
 
 export function setSkinFromUrl(url: string): Thunk {
-  return async dispatch => {
+  return async (dispatch) => {
     dispatch({ type: LOADING });
     try {
       const response = await fetch(url);
@@ -138,7 +138,7 @@ export function setSkinFromUrl(url: string): Thunk {
 // opening files via other methods. Only use the file type specific
 // versions below, since they can defer to the user-defined behavior.
 function _openFileDialog(accept: string | null): Thunk {
-  return async dispatch => {
+  return async (dispatch) => {
     const fileReferences = await promptForFileReferences({ accept });
     dispatch(loadFilesFromReferences(fileReferences));
   };
@@ -202,7 +202,7 @@ export function loadMediaFiles(
   loadStyle: LoadStyle = LOAD_STYLE.NONE,
   atIndex = 0
 ): Thunk {
-  return dispatch => {
+  return (dispatch) => {
     if (loadStyle === LOAD_STYLE.PLAY) {
       // I'm the worst. It just so happens that in every case that we autoPlay,
       // we should also clear all tracks.
@@ -220,7 +220,7 @@ export function loadMediaFile(
   priority: LoadStyle = LOAD_STYLE.NONE,
   atIndex = 0
 ): Thunk {
-  return dispatch => {
+  return (dispatch) => {
     const id = Utils.uniqueId();
     const { defaultName, metaData, duration } = track;
     let canonicalUrl: string;
@@ -330,7 +330,7 @@ export function fetchMediaTags(file: string | Blob, id: number): Thunk {
 }
 
 export function setEqFromFileReference(fileReference: File): Thunk {
-  return async dispatch => {
+  return async (dispatch) => {
     const arrayBuffer = await genArrayBufferFromFileReference(fileReference);
     const eqf = parser(arrayBuffer);
     const preset: EqfPreset = eqf.presets[0];
@@ -339,9 +339,9 @@ export function setEqFromFileReference(fileReference: File): Thunk {
 }
 
 export function setEqFromObject(preset: EqfPreset): Thunk {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(setPreamp(Utils.normalizeEqBand(preset.preamp)));
-    BANDS.forEach(band => {
+    BANDS.forEach((band) => {
       // @ts-ignore band and EqfPreset align
       dispatch(setEqBand(band, Utils.normalizeEqBand(preset[`hz${band}`])));
     });
@@ -380,7 +380,7 @@ const DIR_SUPPORT =
 el = null;
 
 export function addFilesAtIndex(nextIndex: number): Thunk {
-  return async dispatch => {
+  return async (dispatch) => {
     const fileReferences = await promptForFileReferences();
     dispatch(
       addTracksFromReferences(fileReferences, LOAD_STYLE.NONE, nextIndex)
@@ -389,7 +389,7 @@ export function addFilesAtIndex(nextIndex: number): Thunk {
 }
 
 export function addDirAtIndex(nextIndex: number): Thunk {
-  return async dispatch => {
+  return async (dispatch) => {
     if (!DIR_SUPPORT) {
       alert("Not supported in your browser");
       return;

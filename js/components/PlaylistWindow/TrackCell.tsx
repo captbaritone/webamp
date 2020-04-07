@@ -59,9 +59,9 @@ function TrackCell({ children, handleMoveClick, index, id }: Props) {
     <div
       className={classnames("track-cell", { selected, current })}
       style={style}
-      onClick={e => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
       onMouseDown={onMouseDown}
-      onContextMenu={e => e.preventDefault()}
+      onContextMenu={(e) => e.preventDefault()}
       onDoubleClick={() => playTrack(id)}
     >
       {children}

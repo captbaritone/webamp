@@ -2,7 +2,7 @@ const std = require("./std.json");
 
 const NAME_TO_DEF = {};
 
-Object.values(std).forEach(value => {
+Object.values(std).forEach((value) => {
   NAME_TO_DEF[value.name] = value;
 });
 

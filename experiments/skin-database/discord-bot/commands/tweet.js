@@ -15,5 +15,5 @@ module.exports = {
   command: "tweet",
   handler,
   usage: "",
-  description: "Tweet an approved skin"
+  description: "Tweet an approved skin",
 };

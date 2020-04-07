@@ -23,7 +23,7 @@ new Webamp({
         "https://unpkg.com/butterchurn-presets-weekly@0.0.2/weeks/week1/presets.json"
       );
       const namesToPresetUrls = await resp.json();
-      return Object.keys(namesToPresetUrls).map(name => {
+      return Object.keys(namesToPresetUrls).map((name) => {
         return { name, butterchurnPresetUrl: namesToPresetUrls[name] };
       });
     },

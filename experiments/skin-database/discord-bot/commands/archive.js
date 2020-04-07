@@ -13,7 +13,7 @@ async function handler(message) {
     return;
   }
   const files = await Promise.all(
-    attachments.map(async attachment => {
+    attachments.map(async (attachment) => {
       const { filename, url } = attachment;
       const response = await fetch(url);
       console.log("got response");
@@ -43,7 +43,7 @@ async function handler(message) {
       await message.channel.send(`This skin is already in our collection.`);
       await Utils.postSkin({
         md5: file.md5,
-        dest: message.channel
+        dest: message.channel,
       });
     } else {
       fs.writeFileSync(
@@ -67,5 +67,5 @@ module.exports = {
   usage: "",
   description:
     "Queues the accompanying uploaded skin for inclusion in the Archive",
-  handler
+  handler,
 };

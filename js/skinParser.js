@@ -4,7 +4,7 @@ import { LETTERS, DEFAULT_SKIN } from "./constants";
 import { parseViscolors } from "./utils";
 import * as SkinParserUtils from "./skinParserUtils";
 
-const shallowMerge = objs =>
+const shallowMerge = (objs) =>
   objs.reduce((prev, img) => Object.assign(prev, img), {});
 
 const CURSORS = [
@@ -63,7 +63,7 @@ async function genVizColors(zip) {
 
 async function genImages(zip) {
   const imageObjs = await Promise.all(
-    Object.keys(SKIN_SPRITES).map(fileName =>
+    Object.keys(SKIN_SPRITES).map((fileName) =>
       SkinParserUtils.getSpriteUrisFromFilename(zip, fileName)
     )
   );
@@ -72,7 +72,7 @@ async function genImages(zip) {
 }
 async function genCursors(zip) {
   const cursorObjs = await Promise.all(
-    CURSORS.map(async cursorName => ({
+    CURSORS.map(async (cursorName) => ({
       [cursorName]: await SkinParserUtils.getCursorFromFilename(
         zip,
         cursorName
@@ -105,13 +105,13 @@ async function genGenTextSprites(zip) {
   context.drawImage(img, 0, 0);
 
   const getLetters = (y, prefix) => {
-    const getColorAt = x => context.getImageData(x, y, 1, 1).data.join(",");
+    const getColorAt = (x) => context.getImageData(x, y, 1, 1).data.join(",");
 
     let x = 1;
     const backgroundColor = getColorAt(0);
 
     const height = 7;
-    return LETTERS.map(letter => {
+    return LETTERS.map((letter) => {
       let nextBackground = x;
       while (
         getColorAt(nextBackground) !== backgroundColor &&
@@ -132,7 +132,7 @@ async function genGenTextSprites(zip) {
     ...getLetters(88, "GEN_TEXT_SELECTED"),
     ...getLetters(96, "GEN_TEXT"),
   ];
-  sprites.forEach(sprite => {
+  sprites.forEach((sprite) => {
     letterWidths[sprite.name] = sprite.width;
   });
   return [letterWidths, SkinParserUtils.getSpriteUrisFromImg(img, sprites)];

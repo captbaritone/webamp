@@ -1,7 +1,7 @@
 const exec = require("child_process").exec;
 const shellescape = require("shell-escape");
 
-const getColor = imgPath => {
+const getColor = (imgPath) => {
   return new Promise((resolve, reject) => {
     const excapedImgPath = shellescape([imgPath]);
     const command = `convert ${excapedImgPath} -scale 1x1\! -format '%[pixel:u]' info:-`;

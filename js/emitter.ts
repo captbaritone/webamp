@@ -10,7 +10,7 @@ export default class Emitter {
     eventListeners.push(callback);
     this._listeners[event] = eventListeners;
     const unsubscribe = () => {
-      this._listeners[event] = eventListeners.filter(cb => cb !== callback);
+      this._listeners[event] = eventListeners.filter((cb) => cb !== callback);
     };
     return unsubscribe;
   }
@@ -18,7 +18,7 @@ export default class Emitter {
   trigger(event: string, ...args: any[]) {
     const callbacks = this._listeners[event];
     if (callbacks) {
-      callbacks.forEach(cb => cb(...args));
+      callbacks.forEach((cb) => cb(...args));
     }
   }
 

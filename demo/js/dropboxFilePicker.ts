@@ -31,7 +31,7 @@ const dropboxFilePicker: FilePicker = {
     );
     // https://github.com/captbaritone/webamp/issues/750
     const files = await genAudioFileUrlsFromDropbox();
-    return files.map(file => ({
+    return files.map((file) => ({
       url: file.link,
       defaultName: file.name,
     }));

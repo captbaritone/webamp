@@ -6,7 +6,7 @@ const hashes = new Map();
 
 fs.readFileSync(path.join(__dirname, "./hash.txt"), "utf8")
   .split("\n")
-  .forEach(line => {
+  .forEach((line) => {
     const [md5, imgHash] = line.split(" ");
     hashes.set(md5, imgHash);
   });

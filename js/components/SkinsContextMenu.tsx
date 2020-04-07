@@ -15,7 +15,7 @@ const SkinContextMenu = () => {
       <Node onClick={openSkinFileDialog} label="Load Skin..." />
       <Hr />
       <Node onClick={loadDefaultSkin} label={"<Base Skin>"} />
-      {availableSkins.map(skin => (
+      {availableSkins.map((skin) => (
         <Node
           key={skin.url}
           onClick={() => setSkin(skin.url)}

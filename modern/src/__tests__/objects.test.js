@@ -2,22 +2,22 @@ import { getClass, getFormattedId, objects } from "../maki-interpreter/objects";
 import runtime from "../runtime";
 
 test("getFormattedId() is reversable", () => {
-  Object.keys(runtime).forEach(id => {
+  Object.keys(runtime).forEach((id) => {
     const formattedId = getFormattedId(id);
     const inverse = getFormattedId(formattedId);
     expect(inverse).toBe(id);
   });
   Object.keys(objects)
-    .map(id => id.toLowerCase())
-    .forEach(id => {
+    .map((id) => id.toLowerCase())
+    .forEach((id) => {
       const formattedId = getFormattedId(id);
       const inverse = getFormattedId(formattedId);
       expect(inverse).toBe(id);
     });
 });
 
-const getMakiMethods = obj =>
-  Object.getOwnPropertyNames(obj).filter(name => {
+const getMakiMethods = (obj) =>
+  Object.getOwnPropertyNames(obj).filter((name) => {
     return (
       typeof obj[name] === "function" &&
       !name.startsWith("js_") &&
@@ -41,7 +41,7 @@ for (const [key, Klass] of Object.entries(runtime)) {
       expect(Parent.prototype.getclassname()).toBe(obj.parent);
     });
     describe("methods have the correct arity", () => {
-      obj.functions.forEach(func => {
+      obj.functions.forEach((func) => {
         const methodName = func.name.toLowerCase();
         // Once all methods are implemented this check can be removed.
         // For now we have a separate test which checks that we haven't
@@ -68,25 +68,25 @@ describe("Maki classes", () => {
   const objectMethods = new Set();
   for (const [key, Klass] of Object.entries(runtime)) {
     const obj = getClass(key);
-    getMakiMethods(Klass.prototype).forEach(methodName => {
+    getMakiMethods(Klass.prototype).forEach((methodName) => {
       runtimeMethods.add(`${obj.name}.${methodName}`);
       const methodSource = Klass.prototype[methodName].toString();
       if (methodSource.includes("unimplementedWarning")) {
         unimplementedRuntimeMethods.add(`${obj.name}.${methodName}`);
       }
     });
-    obj.functions.forEach(func => {
+    obj.functions.forEach((func) => {
       objectMethods.add(`${obj.name}.${func.name.toLowerCase()}`);
     });
   }
 
   test("All classes are implemented", () => {
-    const getName = Klass => Klass.prototype.getclassname();
+    const getName = (Klass) => Klass.prototype.getclassname();
     const actualNames = Object.keys(runtime).map(
-      id => `${getName(runtime[id])} (${id})`
+      (id) => `${getName(runtime[id])} (${id})`
     );
     const expectedNames = Object.keys(objects).map(
-      id => `${objects[id].name} (${getFormattedId(id)})`
+      (id) => `${objects[id].name} (${getFormattedId(id)})`
     );
     expect(new Set(actualNames)).toEqual(new Set(expectedNames));
   });
@@ -111,7 +111,7 @@ describe("Maki classes", () => {
   });
 
   test("There are no missing methods", () => {
-    const missing = [...objectMethods].filter(x => !runtimeMethods.has(x));
+    const missing = [...objectMethods].filter((x) => !runtimeMethods.has(x));
 
     expect(missing).toEqual([]);
   });

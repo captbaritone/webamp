@@ -20,7 +20,7 @@ function getInfo(md5) {
 // TODO: Make async and rewriting using DB
 function getFilename(md5) {
   const info = getInfo(md5);
-  return info.filePaths.map(filepath => path.basename(filepath))[0];
+  return info.filePaths.map((filepath) => path.basename(filepath))[0];
 }
 
 module.exports = { getInfo, getCache, getFilename };

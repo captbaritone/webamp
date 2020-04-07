@@ -53,7 +53,7 @@ class MakiObject {
   }
 
   js_removeChild(child: MakiObject) {
-    this.children = this.children.filter(item => item !== child);
+    this.children = this.children.filter((item) => item !== child);
   }
 
   js_getChildren(): MakiObject[] {

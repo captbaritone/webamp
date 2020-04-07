@@ -44,11 +44,11 @@ const getCssRules = createSelector(
       return null;
     }
     const cssRules = [];
-    Object.keys(imageSelectors).forEach(imageName => {
+    Object.keys(imageSelectors).forEach((imageName) => {
       const imageUrl =
         skinImages[imageName] || skinImages[FALLBACKS[imageName]];
       if (imageUrl) {
-        imageSelectors[imageName].forEach(selector => {
+        imageSelectors[imageName].forEach((selector) => {
           cssRules.push(
             `${CSS_PREFIX} ${selector} {background-image: url(${imageUrl})}`
           );
@@ -57,7 +57,7 @@ const getCssRules = createSelector(
     });
 
     if (skinGenLetterWidths != null) {
-      LETTERS.forEach(letter => {
+      LETTERS.forEach((letter) => {
         const width = skinGenLetterWidths[`GEN_TEXT_${letter}`];
         const selectedWidth =
           skinGenLetterWidths[`GEN_TEXT_SELECTED_${letter}`];
@@ -69,10 +69,10 @@ const getCssRules = createSelector(
         );
       });
     }
-    Object.keys(cursorSelectors).forEach(cursorName => {
+    Object.keys(cursorSelectors).forEach((cursorName) => {
       const cursorUrl = skinCursors[cursorName];
       if (cursorUrl) {
-        cursorSelectors[cursorName].forEach(selector => {
+        cursorSelectors[cursorName].forEach((selector) => {
           cssRules.push(
             `${
               // TODO: Fix this hack
@@ -106,7 +106,7 @@ const getCssRules = createSelector(
   }
 );
 
-const getClipPaths = createSelector(Selectors.getSkinRegion, skinRegion => {
+const getClipPaths = createSelector(Selectors.getSkinRegion, (skinRegion) => {
   const clipPaths: { [id: string]: string[] } = {};
   for (const [regionName, polygons] of Object.entries(skinRegion)) {
     if (polygons) {

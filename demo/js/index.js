@@ -189,7 +189,7 @@ async function main() {
     });
   }
 
-  webamp.onTrackDidChange(track => {
+  webamp.onTrackDidChange((track) => {
     document.title =
       track == null
         ? DEFAULT_DOCUMENT_TITLE
@@ -204,7 +204,7 @@ async function main() {
   fileInput.style.display = "none";
   fileInput.type = "file";
   fileInput.value = null;
-  fileInput.addEventListener("change", e => {
+  fileInput.addEventListener("change", (e) => {
     webamp.store.dispatch(loadFilesFromReferences(e.target.files));
   });
   document.body.appendChild(fileInput);

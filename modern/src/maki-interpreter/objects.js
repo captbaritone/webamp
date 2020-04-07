@@ -8,16 +8,16 @@ const objects = { ...stdPatched, ...pldir, ...config };
 // We might even want to normalize the to match the formatting we get out the file. That could
 // avoid the awkward regex inside `getClass()`.
 const normalizedObjects = {};
-Object.keys(objects).forEach(key => {
+Object.keys(objects).forEach((key) => {
   normalizedObjects[key.toLowerCase()] = objects[key];
 });
 
 const objectsByName = {};
-Object.values(objects).forEach(object => {
+Object.values(objects).forEach((object) => {
   objectsByName[object.name] = object;
 });
 
-Object.values(normalizedObjects).forEach(object => {
+Object.values(normalizedObjects).forEach((object) => {
   const parentClass = objectsByName[object.parent];
   if (parentClass == null) {
     if (object.parent === "@{00000000-0000-0000-0000-000000000000}@") {
@@ -42,7 +42,7 @@ function getClass(id) {
 }
 
 function getObjectFunction(klass, functionName) {
-  const method = klass.functions.find(func => {
+  const method = klass.functions.find((func) => {
     // TODO: This could probably be normalized at load time, or evern sooner.
     return func.name.toLowerCase() === functionName.toLowerCase();
   });
@@ -56,7 +56,7 @@ function getObjectFunction(klass, functionName) {
 }
 
 function getFunctionObject(klass, functionName) {
-  const method = klass.functions.find(func => {
+  const method = klass.functions.find((func) => {
     // TODO: This could probably be normalized at load time, or evern sooner.
     return func.name.toLowerCase() === functionName.toLowerCase();
   });

@@ -14,12 +14,12 @@ async function handler(message, args) {
   let filename = null;
   await Utils.postSkin({
     md5,
-    title: f => {
+    title: (f) => {
       // Hack to get access to the file name
       filename = f;
       return `Rejected: ${f}`;
     },
-    dest: tweetBotChannel
+    dest: tweetBotChannel,
   });
   await tweetBotChannel.send(
     `${filename} was rejected by ${message.author.username}`
@@ -30,5 +30,5 @@ module.exports = {
   command: "reject",
   handler,
   usage: "<md5-hash>",
-  description: "Reject a given skin from being Tweeted by the Twitter bot"
+  description: "Reject a given skin from being Tweeted by the Twitter bot",
 };

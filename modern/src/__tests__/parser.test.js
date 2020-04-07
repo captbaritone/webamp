@@ -24,9 +24,9 @@ describe("can parse without crashing", () => {
     "simpleFunctions.maki",
   ];
 
-  scripts.forEach(script => {
+  scripts.forEach((script) => {
     describe(`script ${script}`, () => {
-      versions.forEach(version => {
+      versions.forEach((version) => {
         test(`compiled with compiler version ${version}`, () => {
           expect(() => {
             parseFile(`../../resources/maki_compiler/${version}/${script}`);
@@ -62,7 +62,7 @@ describe("standardframe.maki", () => {
   });
 
   test("can read classes", () => {
-    expect(maki.classes.map(klass => getClass(klass).name)).toEqual([
+    expect(maki.classes.map((klass) => getClass(klass).name)).toEqual([
       "Object",
       "System",
       "Container",
@@ -100,7 +100,7 @@ describe("standardframe.maki", () => {
   });
 
   test("can read methods", () => {
-    expect(maki.methods.map(func => func.name)).toEqual([
+    expect(maki.methods.map((func) => func.name)).toEqual([
       "onScriptLoaded",
       "getScriptGroup",
       "getParam",
@@ -114,13 +114,13 @@ describe("standardframe.maki", () => {
       "newGroup",
       "init",
     ]);
-    expect(maki.methods.every(func => func.typeOffset != null)).toBe(true);
+    expect(maki.methods.every((func) => func.typeOffset != null)).toBe(true);
   });
 
   test("can read variables", () => {
     expect(maki.variables.length).toBe(56);
     expect(
-      maki.variables.map(variable => {
+      maki.variables.map((variable) => {
         const { typeName, type } = variable;
         if (typeName === "OBJECT") {
           return type;
@@ -187,7 +187,7 @@ Array [
   "STRING",
 ]
 `);
-    maki.variables.forEach(variable => {
+    maki.variables.forEach((variable) => {
       expect(variable.type).not.toBe(undefined);
     });
   });

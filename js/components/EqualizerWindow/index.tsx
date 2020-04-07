@@ -69,12 +69,12 @@ const EqualizerWindow = () => {
             <div id="plus12db" onClick={setEqToMax} />
             <div id="zerodb" onClick={setEqToMid} />
             <div id="minus12db" onClick={setEqToMin} />
-            {BANDS.map(hertz => (
+            {BANDS.map((hertz) => (
               <Band
                 key={hertz}
                 id={bandClassName(hertz)}
                 band={hertz}
-                onChange={value => setHertzValue(hertz, value)}
+                onChange={(value) => setHertzValue(hertz, value)}
               />
             ))}
           </div>

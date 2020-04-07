@@ -95,7 +95,7 @@ export const GenWindow = ({ children, title, windowId, onKeyDown }: Props) => {
           <div className="gen-bottom-right draggable">
             <ResizeTarget
               currentSize={windowSize}
-              setWindowSize={size => setWindowSize(windowId, size)}
+              setWindowSize={(size) => setWindowSize(windowId, size)}
               id={"gen-resize-target"}
             />
           </div>

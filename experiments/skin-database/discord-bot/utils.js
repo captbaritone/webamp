@@ -3,8 +3,8 @@ const rgbHex = require("rgb-hex");
 const Skins = require("../data/skins");
 const logger = require("../logger");
 
-const filter = reaction => {
-  return ["👍", "👎"].some(name => reaction.emoji.name === name);
+const filter = (reaction) => {
+  return ["👍", "👎"].some((name) => reaction.emoji.name === name);
 };
 
 async function postSkin({ md5, title, dest }) {
@@ -25,7 +25,7 @@ async function postSkin({ md5, title, dest }) {
     tweetStatus,
     internetArchiveUrl,
     internetArchiveItemName,
-    readmeText
+    readmeText,
   } = skin;
   title = title ? title(canonicalFilename) : canonicalFilename;
 
@@ -49,7 +49,7 @@ async function postSkin({ md5, title, dest }) {
         logger.warn("Did not get a safe color", {
           averageColor,
           color,
-          warn: true
+          warn: true,
         });
       }
     } catch (e) {
@@ -81,7 +81,7 @@ async function postSkin({ md5, title, dest }) {
 
   const msg = await dest.send(embed);
 
-  await msg.awaitReactions(filter, { max: 1 }).then(async collected => {
+  await msg.awaitReactions(filter, { max: 1 }).then(async (collected) => {
     const vote = collected.first();
     const user = vote.users.first();
     switch (vote.emoji.name) {

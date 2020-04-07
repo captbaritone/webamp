@@ -18,8 +18,8 @@ function md5File(filePath) {
 module.exports = async function collectSkins({ inputDir, cache }) {
   console.log("Searching for files in", inputDir);
   const paths = new Set();
-  Object.values(cache).forEach(skin => {
-    skin.filePaths.forEach(filePath => {
+  Object.values(cache).forEach((skin) => {
+    skin.filePaths.forEach((filePath) => {
       paths.add(filePath);
     });
   });
@@ -36,7 +36,7 @@ module.exports = async function collectSkins({ inputDir, cache }) {
   }, 10000);
   await Bluebird.map(
     files,
-    async filePath => {
+    async (filePath) => {
       if (paths.has(filePath)) {
         return;
       }

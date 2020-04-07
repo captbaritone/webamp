@@ -16,7 +16,7 @@ class Timer extends MakiObject {
   }
 
   _animationLoop(): void {
-    this._animationCancelID = window.requestAnimationFrame(currentTime => {
+    this._animationCancelID = window.requestAnimationFrame((currentTime) => {
       if (currentTime > this._animationStartTime + this._speed) {
         this._animationStartTime = currentTime;
         this.ontimer();

@@ -20,7 +20,7 @@ function getFile(key) {
 function putFile(key, body) {
   return new Promise((resolve, rejectPromise) => {
     const bucketName = "winamp2-js-skins";
-    s3.putObject({ Bucket: bucketName, Key: key, Body: body }, err => {
+    s3.putObject({ Bucket: bucketName, Key: key, Body: body }, (err) => {
       if (err) {
         rejectPromise(err);
         return;
@@ -34,7 +34,7 @@ function getLines(body) {
   return body
     .trim()
     .split("\n")
-    .map(line => line.trim());
+    .map((line) => line.trim());
 }
 
 async function getAllApproved() {
@@ -98,7 +98,7 @@ async function getSkinToReview() {
   const tweetedSet = new Set(getLines(tweeted));
 
   const filenameLines = getLines(filenames);
-  const skins = filenameLines.map(line => {
+  const skins = filenameLines.map((line) => {
     const [md5, ...filename] = line.split(" ");
     return { md5, filename: filename.join(" ") };
   });
@@ -125,7 +125,7 @@ async function getTweetableSkins() {
 
   const filenameLines = getLines(filenames);
   return filenameLines
-    .map(line => {
+    .map((line) => {
       const [md5, ...filename] = line.split(" ");
       return { md5, filename: filename.join(" ") };
     })

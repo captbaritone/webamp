@@ -16,7 +16,7 @@ self.addEventListener("activate", () => {
     .then(() => {
       return self.clients.matchAll();
     })
-    .then(clients => {
-      clients.forEach(client => client.navigate(client.url));
+    .then((clients) => {
+      clients.forEach((client) => client.navigate(client.url));
     });
 });

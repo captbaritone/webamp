@@ -133,7 +133,7 @@ const storeHas = (
   store: Store,
   predicate: (state: AppState) => boolean
 ): Promise<void> =>
-  new Promise(resolve => {
+  new Promise((resolve) => {
     if (predicate(store.getState())) {
       resolve();
       return;
@@ -282,7 +282,7 @@ class Winamp {
       });
       this.store.dispatch(
         Actions.updateWindowPositions(
-          Utils.objectMap(layout, w => w.position),
+          Utils.objectMap(layout, (w) => w.position),
           false
         )
       );
@@ -350,7 +350,7 @@ class Winamp {
   }
 
   onWillClose(cb: (cancel: () => void) => void): () => void {
-    return this._actionEmitter.on(CLOSE_REQUESTED, action => {
+    return this._actionEmitter.on(CLOSE_REQUESTED, (action) => {
       cb(action.cancel);
     });
   }
@@ -388,7 +388,7 @@ class Winamp {
   async skinIsLoaded(): Promise<void> {
     // Wait for the skin to load.
     // TODO #leak
-    await storeHas(this.store, state => !state.display.loading);
+    await storeHas(this.store, (state) => !state.display.loading);
     // We attempt to pre-resolve these promises before we declare the skin
     // loaded. That's because `<EqGraph>` needs these in order to render fully.
     // As long as these are resolved before we attempt to render, we can ensure

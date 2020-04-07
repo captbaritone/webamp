@@ -99,7 +99,7 @@ test("setEqToMax", () => {
   const mockDispatch = jest.fn();
   const dispatcher = setEqToMax();
   dispatcher(mockDispatch);
-  const expectedCalls = BANDS.map(band => [
+  const expectedCalls = BANDS.map((band) => [
     { type: SET_BAND_VALUE, band, value: 100 },
   ]);
   expect(mockDispatch.mock.calls).toEqual(expectedCalls);
@@ -109,7 +109,7 @@ test("setEqToMin", () => {
   const mockDispatch = jest.fn();
   const dispatcher = setEqToMin();
   dispatcher(mockDispatch);
-  const expectedCalls = BANDS.map(band => [
+  const expectedCalls = BANDS.map((band) => [
     { type: SET_BAND_VALUE, band, value: 0 },
   ]);
   expect(mockDispatch.mock.calls).toEqual(expectedCalls);
@@ -119,7 +119,7 @@ test("setEqToMid", () => {
   const mockDispatch = jest.fn();
   const dispatcher = setEqToMid();
   dispatcher(mockDispatch);
-  const expectedCalls = BANDS.map(band => [
+  const expectedCalls = BANDS.map((band) => [
     { type: SET_BAND_VALUE, band, value: 50 },
   ]);
   expect(mockDispatch.mock.calls).toEqual(expectedCalls);

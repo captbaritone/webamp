@@ -20,7 +20,7 @@ export default function ClipPaths({ children }: Props) {
   return createPortal(
     <svg height={0} width={0}>
       <defs>
-        {Object.keys(children).map(id => (
+        {Object.keys(children).map((id) => (
           <clipPath id={id} key={id}>
             {children[id].map((points, i) => (
               <polygon points={points} key={i} />
