@@ -17,6 +17,7 @@ interface TrackInfo {
   metaData?: {
     artist: string;
     title: string;
+    album?: string;
   };
 
   /**

@@ -1,4 +1,4 @@
-import { Track, AppState } from "../../js/types";
+import { Track, AppState, URLTrack } from "../../js/types";
 // @ts-ignore
 import llamaAudio from "../mp3/llama-2.91.mp3";
 import { DeepPartial } from "redux";
@@ -26,14 +26,24 @@ if (config.audioUrl && !config.initialTracks) {
   config.initialTracks = [{ url: config.audioUrl }];
 }
 
+export let SHOW_DESKTOP_ICONS = false;
+
+if ("URLSearchParams" in window) {
+  const params = new URLSearchParams(location.search);
+  SHOW_DESKTOP_ICONS = Boolean(params.get("icons"));
+}
+
 export const skinUrl = config.skinUrl === undefined ? null : config.skinUrl;
 
 // https://freemusicarchive.org/music/netBloc_Artists/netBloc_Vol_24_tiuqottigeloot/
 const album = "netBloc Vol. 24: tiuqottigeloot";
 
-export const initialTracks = config.initialTracks || [
+export const defaultInitialTracks: URLTrack[] = [
   {
-    metaData: { artist: "DJ Mike Llama", title: "Llama Whippin' Intro" },
+    metaData: {
+      artist: "DJ Mike Llama",
+      title: "Llama Whippin' Intro",
+    },
     url: llamaAudio,
     duration: 5.322286,
   },
@@ -158,6 +168,8 @@ export const initialTracks = config.initialTracks || [
     },
   },
 ];
+
+export const initialTracks = config.initialTracks || defaultInitialTracks;
 
 export const disableMarquee = config.disableMarquee || false;
 export const initialState = config.initialState || undefined;

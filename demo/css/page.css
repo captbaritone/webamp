@@ -154,9 +154,6 @@ body {
 }
 
 .desktop-icon {
-  position: fixed;
-  top: 30px;
-  left: 30px;
   text-align: center;
   cursor: pointer;
   image-rendering: pixelated;
