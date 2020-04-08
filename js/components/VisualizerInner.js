@@ -1,9 +1,9 @@
 import React from "react";
-import { connect } from "react-redux";
 
-import { toggleVisualizerStyle } from "../actionCreators";
-import { getWindowShade, getVisualizerStyle } from "../selectors";
+import * as Actions from "../actionCreators";
+import * as Selectors from "../selectors";
 import { VISUALIZERS, MEDIA_STATUS } from "../constants";
+import { useTypedSelector, useActionCreator } from "../hooks";
 
 const PIXEL_DENSITY = 2;
 const NUM_BARS = 20;
@@ -101,7 +101,7 @@ function preRenderBar(height, colors, renderHeight) {
   return barCanvas;
 }
 
-class Visualizer extends React.Component {
+class VisualizerInner extends React.Component {
   componentDidMount() {
     this.barPeaks = new Array(NUM_BARS).fill(0);
     this.barPeakFrames = new Array(NUM_BARS).fill(0);
@@ -320,18 +320,4 @@ class Visualizer extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  colors: state.display.skinColors,
-  style: getVisualizerStyle(state),
-  width: getWindowShade(state)("main") ? 38 : 76,
-  height: getWindowShade(state)("main") ? 5 : 16,
-  status: state.media.status,
-  windowShade: getWindowShade(state)("main"),
-  dummyVizData: state.display.dummyVizData,
-});
-
-const mapDispatchToProps = {
-  toggleVisualizerStyle,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Visualizer);
+export default VisualizerInner;

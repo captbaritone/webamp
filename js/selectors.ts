@@ -15,6 +15,7 @@ import {
   SkinRegion,
   GenLetterWidths,
   MilkdropMessage,
+  DummyVizData,
 } from "./types";
 import { createSelector, defaultMemoize } from "reselect";
 import * as Utils from "./utils";
@@ -492,6 +493,10 @@ const defaultPlaylistStyle = {
   font: "Arial",
 };
 
+export function getSkinColors(state: AppState): string[] {
+  return state.display.skinColors;
+}
+
 export const getSkinPlaylistStyle = (state: AppState): PlaylistStyle => {
   return state.display.skinPlaylistStyle || defaultPlaylistStyle;
 };
@@ -741,6 +746,10 @@ export const getLineColorsImage = createSelector(
     return Utils.imgFromUrl(url);
   }
 );
+
+export function getDummyVizData(state: AppState): DummyVizData | null {
+  return state.display.dummyVizData;
+}
 
 export function getMarqueeStep(state: AppState): number {
   return state.display.marqueeStep;
