@@ -7,17 +7,6 @@ const NUM_BARS = 20;
 const BAR_WIDTH = 3 * PIXEL_DENSITY;
 const BAR_PEAK_DROP_RATE = 0.01;
 
-// Return the average value in a slice of dataArray
-function sliceAverage(dataArray, sliceWidth, sliceNumber) {
-  const start = sliceWidth * sliceNumber;
-  const end = start + sliceWidth;
-  let sum = 0;
-  for (let i = start; i < end; i++) {
-    sum += dataArray[i];
-  }
-  return sum / sliceWidth;
-}
-
 function octaveBucketsForBufferLength(bufferLength) {
   const octaveBuckets = new Array(NUM_BARS).fill(0);
   const minHz = 200;
@@ -116,7 +105,11 @@ class VisualizerInner extends React.Component {
     switch (this.props.style) {
       case VISUALIZERS.OSCILLOSCOPE:
         this.canvasCtx.drawImage(this.props.bgCanvas, 0, 0);
-        this._paintOscilloscopeFrame();
+        this.props.paintOscilloscopeFrame(
+          this.canvasCtx,
+          this.bufferLength,
+          this.dataArray
+        );
         break;
       case VISUALIZERS.BAR:
         this.canvasCtx.drawImage(this.props.bgCanvas, 0, 0);
@@ -125,46 +118,6 @@ class VisualizerInner extends React.Component {
       default:
         this.canvasCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
-  }
-
-  _paintOscilloscopeFrame() {
-    this.props.analyser.getByteTimeDomainData(this.dataArray);
-
-    this.canvasCtx.lineWidth = PIXEL_DENSITY;
-
-    // Just use one of the viscolors for now
-    this.canvasCtx.strokeStyle = this.props.colors[18];
-
-    // Since dataArray has more values than we have pixels to display, we
-    // have to average several dataArray values per pixel. We call these
-    // groups slices.
-    //
-    // We use the  2x scale here since we only want to plot values for
-    // "real" pixels.
-    const sliceWidth =
-      Math.floor(this.bufferLength / this._width()) * PIXEL_DENSITY;
-
-    const h = this._height();
-
-    this.canvasCtx.beginPath();
-
-    // Iterate over the width of the canvas in "real" pixels.
-    for (let j = 0; j <= this._renderWidth(); j++) {
-      const amplitude = sliceAverage(this.dataArray, sliceWidth, j);
-      const percentAmplitude = amplitude / 255; // dataArray gives us bytes
-      const y = (1 - percentAmplitude) * h; // flip y
-      const x = j * PIXEL_DENSITY;
-
-      // Canvas coordinates are in the middle of the pixel by default.
-      // When we want to draw pixel perfect lines, we will need to
-      // account for that here
-      if (x === 0) {
-        this.canvasCtx.moveTo(x, y);
-      } else {
-        this.canvasCtx.lineTo(x, y);
-      }
-    }
-    this.canvasCtx.stroke();
   }
 
   _paintBarFrame() {
