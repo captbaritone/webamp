@@ -89,14 +89,14 @@ class VisualizerInner extends React.Component {
     // update.
     this.props.analyser.fftSize = 2048;
     if (this.props.style === VISUALIZERS.OSCILLOSCOPE) {
-      this.bufferLength = this.props.analyser.fftSize;
-      this.dataArray = new Uint8Array(this.bufferLength);
+      this.dataArray = new Uint8Array(this.props.bufferLength);
     } else if (this.props.style === VISUALIZERS.BAR) {
-      this.bufferLength = this.props.analyser.frequencyBinCount;
-      this.dataArray = new Uint8Array(this.bufferLength);
+      this.dataArray = new Uint8Array(this.props.bufferLength);
 
       if (!this.octaveBuckets) {
-        this.octaveBuckets = octaveBucketsForBufferLength(this.bufferLength);
+        this.octaveBuckets = octaveBucketsForBufferLength(
+          this.props.bufferLength
+        );
       }
     }
   }
@@ -105,11 +105,7 @@ class VisualizerInner extends React.Component {
     switch (this.props.style) {
       case VISUALIZERS.OSCILLOSCOPE:
         this.canvasCtx.drawImage(this.props.bgCanvas, 0, 0);
-        this.props.paintOscilloscopeFrame(
-          this.canvasCtx,
-          this.bufferLength,
-          this.dataArray
-        );
+        this.props.paintOscilloscopeFrame(this.canvasCtx, this.dataArray);
         break;
       case VISUALIZERS.BAR:
         this.canvasCtx.drawImage(this.props.bgCanvas, 0, 0);

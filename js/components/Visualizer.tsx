@@ -4,6 +4,7 @@ import * as Actions from "../actionCreators";
 import * as Selectors from "../selectors";
 import { useTypedSelector, useActionCreator } from "../hooks";
 import VisualizerInner from "./VisualizerInner";
+import { VISUALIZERS } from "../constants";
 
 const PIXEL_DENSITY = 2;
 const BAR_WIDTH = 3 * PIXEL_DENSITY;
@@ -115,6 +116,16 @@ function Visualizer(props: Props) {
 
   const width = renderWidth * PIXEL_DENSITY;
   const height = renderHeight * PIXEL_DENSITY;
+  const bufferLength = useMemo(() => {
+    switch (style) {
+      case VISUALIZERS.OSCILLOSCOPE:
+        return props.analyser.fftSize;
+      case VISUALIZERS.BAR:
+        return props.analyser.frequencyBinCount;
+      default:
+        return 0;
+    }
+  }, [props.analyser.fftSize, props.analyser.frequencyBinCount, style]);
 
   const bgCanvas = useMemo(() => {
     return preRenderBg(
@@ -159,11 +170,7 @@ function Visualizer(props: Props) {
   );
 
   const paintOscilloscopeFrame = useCallback(
-    (
-      canvasCtx: CanvasRenderingContext2D,
-      bufferLength: number,
-      dataArray: Uint8Array
-    ) => {
+    (canvasCtx: CanvasRenderingContext2D, dataArray: Uint8Array) => {
       props.analyser.getByteTimeDomainData(dataArray);
 
       canvasCtx.lineWidth = PIXEL_DENSITY;
@@ -201,7 +208,7 @@ function Visualizer(props: Props) {
       }
       canvasCtx.stroke();
     },
-    [colors, height, props.analyser, renderWidth, width]
+    [bufferLength, colors, height, props.analyser, renderWidth, width]
   );
 
   const innerProps = {
@@ -217,6 +224,7 @@ function Visualizer(props: Props) {
     barCanvas,
     printBar,
     paintOscilloscopeFrame,
+    bufferLength,
   };
   return <VisualizerInner {...innerProps} {...props} />;
 }
