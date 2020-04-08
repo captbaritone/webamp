@@ -1,9 +1,6 @@
 import React from "react";
 
-import * as Actions from "../actionCreators";
-import * as Selectors from "../selectors";
 import { VISUALIZERS, MEDIA_STATUS } from "../constants";
-import { useTypedSelector, useActionCreator } from "../hooks";
 
 const PIXEL_DENSITY = 2;
 const NUM_BARS = 20;
@@ -43,29 +40,6 @@ function octaveBucketsForBufferLength(bufferLength) {
 
   return octaveBuckets;
 }
-
-// Pre-render the background grid
-function preRenderBg(width, height, bgColor, fgColor, windowShade) {
-  // Off-screen canvas for pre-rendering the background
-  const bgCanvas = document.createElement("canvas");
-  bgCanvas.width = width;
-  bgCanvas.height = height;
-  const distance = 2 * PIXEL_DENSITY;
-
-  const bgCanvasCtx = bgCanvas.getContext("2d");
-  bgCanvasCtx.fillStyle = bgColor;
-  bgCanvasCtx.fillRect(0, 0, width, height);
-  if (!windowShade) {
-    bgCanvasCtx.fillStyle = fgColor;
-    for (let x = 0; x < width; x += distance) {
-      for (let y = PIXEL_DENSITY; y < height; y += distance) {
-        bgCanvasCtx.fillRect(x, y, PIXEL_DENSITY, PIXEL_DENSITY);
-      }
-    }
-  }
-  return bgCanvas;
-}
-
 function preRenderBar(height, colors, renderHeight) {
   /**
    * The order of the colours is commented in the file: the fist two colours
@@ -160,7 +134,6 @@ class VisualizerInner extends React.Component {
     }
     // TODO: Split this into to methods. One for skin update, one for style
     // update.
-    this.preRenderBg();
     this.preRenderBar();
     this.props.analyser.fftSize = 2048;
     if (this.props.style === VISUALIZERS.OSCILLOSCOPE) {
@@ -176,17 +149,6 @@ class VisualizerInner extends React.Component {
     }
   }
 
-  // Pre-render the background grid
-  preRenderBg() {
-    this.bgCanvas = preRenderBg(
-      this._width(),
-      this._height(),
-      this.props.colors[0],
-      this.props.colors[1],
-      this.props.windowShade
-    );
-  }
-
   // Pre-render the bar gradient
   preRenderBar() {
     this.barCanvas = preRenderBar(
@@ -199,11 +161,11 @@ class VisualizerInner extends React.Component {
   paintFrame() {
     switch (this.props.style) {
       case VISUALIZERS.OSCILLOSCOPE:
-        this.canvasCtx.drawImage(this.bgCanvas, 0, 0);
+        this.canvasCtx.drawImage(this.props.bgCanvas, 0, 0);
         this._paintOscilloscopeFrame();
         break;
       case VISUALIZERS.BAR:
-        this.canvasCtx.drawImage(this.bgCanvas, 0, 0);
+        this.canvasCtx.drawImage(this.props.bgCanvas, 0, 0);
         this._paintBarFrame();
         break;
       default:
