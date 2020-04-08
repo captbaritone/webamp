@@ -6,28 +6,6 @@ const PIXEL_DENSITY = 2;
 const NUM_BARS = 20;
 const BAR_WIDTH = 3 * PIXEL_DENSITY;
 const BAR_PEAK_DROP_RATE = 0.01;
-
-function octaveBucketsForBufferLength(bufferLength) {
-  const octaveBuckets = new Array(NUM_BARS).fill(0);
-  const minHz = 200;
-  const maxHz = 22050;
-  const octaveStep = Math.pow(maxHz / minHz, 1 / NUM_BARS);
-
-  octaveBuckets[0] = 0;
-  octaveBuckets[1] = minHz;
-  for (let i = 2; i < NUM_BARS - 1; i++) {
-    octaveBuckets[i] = octaveBuckets[i - 1] * octaveStep;
-  }
-  octaveBuckets[NUM_BARS - 1] = maxHz;
-
-  for (let i = 0; i < NUM_BARS; i++) {
-    const octaveIdx = Math.floor((octaveBuckets[i] / maxHz) * bufferLength);
-    octaveBuckets[i] = octaveIdx;
-  }
-
-  return octaveBuckets;
-}
-
 class VisualizerInner extends React.Component {
   componentDidMount() {
     this.barPeaks = new Array(NUM_BARS).fill(0);
@@ -88,24 +66,13 @@ class VisualizerInner extends React.Component {
     // TODO: Split this into to methods. One for skin update, one for style
     // update.
     this.props.analyser.fftSize = 2048;
-    if (this.props.style === VISUALIZERS.OSCILLOSCOPE) {
-      this.dataArray = new Uint8Array(this.props.bufferLength);
-    } else if (this.props.style === VISUALIZERS.BAR) {
-      this.dataArray = new Uint8Array(this.props.bufferLength);
-
-      if (!this.octaveBuckets) {
-        this.octaveBuckets = octaveBucketsForBufferLength(
-          this.props.bufferLength
-        );
-      }
-    }
   }
 
   paintFrame() {
     switch (this.props.style) {
       case VISUALIZERS.OSCILLOSCOPE:
         this.canvasCtx.drawImage(this.props.bgCanvas, 0, 0);
-        this.props.paintOscilloscopeFrame(this.canvasCtx, this.dataArray);
+        this.props.paintOscilloscopeFrame(this.canvasCtx);
         break;
       case VISUALIZERS.BAR:
         this.canvasCtx.drawImage(this.props.bgCanvas, 0, 0);
@@ -117,15 +84,15 @@ class VisualizerInner extends React.Component {
   }
 
   _paintBarFrame() {
-    this.props.analyser.getByteFrequencyData(this.dataArray);
+    this.props.analyser.getByteFrequencyData(this.props.dataArray);
     const heightMultiplier = this._renderHeight() / 256;
     const xOffset = BAR_WIDTH + PIXEL_DENSITY; // Bar width, plus a pixel of spacing to the right.
     for (let j = 0; j < NUM_BARS - 1; j++) {
-      const start = this.octaveBuckets[j];
-      const end = this.octaveBuckets[j + 1];
+      const start = this.props.octaveBuckets[j];
+      const end = this.props.octaveBuckets[j + 1];
       let amplitude = 0;
       for (let k = start; k < end; k++) {
-        amplitude += this.dataArray[k];
+        amplitude += this.props.dataArray[k];
       }
       amplitude /= end - start;
 

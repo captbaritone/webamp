@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from "react";
+import React, { useMemo, useCallback, useState } from "react";
 
 import * as Actions from "../actionCreators";
 import * as Selectors from "../selectors";
@@ -10,10 +10,32 @@ const PIXEL_DENSITY = 2;
 const BAR_WIDTH = 3 * PIXEL_DENSITY;
 const GRADIENT_COLOR_COUNT = 16;
 const PEAK_COLOR_INDEX = 23;
+const NUM_BARS = 20;
 
 type Props = {
   analyser: AnalyserNode;
 };
+
+function octaveBucketsForBufferLength(bufferLength: number): number[] {
+  const octaveBuckets = new Array(NUM_BARS).fill(0);
+  const minHz = 200;
+  const maxHz = 22050;
+  const octaveStep = Math.pow(maxHz / minHz, 1 / NUM_BARS);
+
+  octaveBuckets[0] = 0;
+  octaveBuckets[1] = minHz;
+  for (let i = 2; i < NUM_BARS - 1; i++) {
+    octaveBuckets[i] = octaveBuckets[i - 1] * octaveStep;
+  }
+  octaveBuckets[NUM_BARS - 1] = maxHz;
+
+  for (let i = 0; i < NUM_BARS; i++) {
+    const octaveIdx = Math.floor((octaveBuckets[i] / maxHz) * bufferLength);
+    octaveBuckets[i] = octaveIdx;
+  }
+
+  return octaveBuckets;
+}
 
 // Return the average value in a slice of dataArray
 function sliceAverage(
@@ -127,6 +149,13 @@ function Visualizer(props: Props) {
     }
   }, [props.analyser.fftSize, props.analyser.frequencyBinCount, style]);
 
+  const dataArray = useMemo(() => {
+    return new Uint8Array(bufferLength);
+  }, [bufferLength]);
+  const octaveBuckets = useMemo(() => {
+    return octaveBucketsForBufferLength(bufferLength);
+  }, [bufferLength]);
+
   const bgCanvas = useMemo(() => {
     return preRenderBg(
       width,
@@ -170,7 +199,7 @@ function Visualizer(props: Props) {
   );
 
   const paintOscilloscopeFrame = useCallback(
-    (canvasCtx: CanvasRenderingContext2D, dataArray: Uint8Array) => {
+    (canvasCtx: CanvasRenderingContext2D) => {
       props.analyser.getByteTimeDomainData(dataArray);
 
       canvasCtx.lineWidth = PIXEL_DENSITY;
@@ -208,7 +237,15 @@ function Visualizer(props: Props) {
       }
       canvasCtx.stroke();
     },
-    [bufferLength, colors, height, props.analyser, renderWidth, width]
+    [
+      bufferLength,
+      colors,
+      dataArray,
+      height,
+      props.analyser,
+      renderWidth,
+      width,
+    ]
   );
 
   const innerProps = {
@@ -225,6 +262,8 @@ function Visualizer(props: Props) {
     printBar,
     paintOscilloscopeFrame,
     bufferLength,
+    dataArray,
+    octaveBuckets,
   };
   return <VisualizerInner {...innerProps} {...props} />;
 }
