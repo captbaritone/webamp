@@ -6,7 +6,6 @@ const PIXEL_DENSITY = 2;
 const NUM_BARS = 20;
 const BAR_WIDTH = 3 * PIXEL_DENSITY;
 const BAR_PEAK_DROP_RATE = 0.01;
-const PEAK_COLOR_INDEX = 23;
 
 // Return the average value in a slice of dataArray
 function sliceAverage(dataArray, sliceWidth, sliceNumber) {
@@ -54,7 +53,7 @@ class VisualizerInner extends React.Component {
       if (this.props.status === MEDIA_STATUS.PLAYING) {
         if (this.props.dummyVizData) {
           Object.keys(this.props.dummyVizData).forEach((i) => {
-            this._printBar(i, this.props.dummyVizData[i]);
+            this.props.printBar(this.canvasCtx, i, this.props.dummyVizData[i]);
           });
         } else {
           this.paintFrame();
@@ -168,27 +167,6 @@ class VisualizerInner extends React.Component {
     this.canvasCtx.stroke();
   }
 
-  _printBar(x, height, peakHeight) {
-    height = Math.ceil(height) * PIXEL_DENSITY;
-    peakHeight = Math.ceil(peakHeight) * PIXEL_DENSITY;
-    if (height > 0 || peakHeight > 0) {
-      const y = this._height() - height;
-      const ctx = this.canvasCtx;
-      // Draw the gradient
-      const b = BAR_WIDTH;
-      if (height > 0) {
-        ctx.drawImage(this.props.barCanvas, 0, y, b, height, x, y, b, height);
-      }
-
-      // Draw the gray peak line
-      if (!this.props.windowShade) {
-        const peakY = this._height() - peakHeight;
-        ctx.fillStyle = this.props.colors[PEAK_COLOR_INDEX];
-        ctx.fillRect(x, peakY, b, PIXEL_DENSITY);
-      }
-    }
-  }
-
   _paintBarFrame() {
     this.props.analyser.getByteFrequencyData(this.dataArray);
     const heightMultiplier = this._renderHeight() / 256;
@@ -214,7 +192,8 @@ class VisualizerInner extends React.Component {
       }
       this.barPeaks[j] = barPeak;
 
-      this._printBar(
+      this.props.printBar(
+        this.canvasCtx,
         j * xOffset,
         amplitude * heightMultiplier,
         barPeak * heightMultiplier

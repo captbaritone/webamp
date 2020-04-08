@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useCallback } from "react";
 
 import * as Actions from "../actionCreators";
 import * as Selectors from "../selectors";
@@ -8,6 +8,7 @@ import VisualizerInner from "./VisualizerInner";
 const PIXEL_DENSITY = 2;
 const BAR_WIDTH = 3 * PIXEL_DENSITY;
 const GRADIENT_COLOR_COUNT = 16;
+const PEAK_COLOR_INDEX = 23;
 
 type Props = {
   analyser: AnalyserNode;
@@ -85,7 +86,6 @@ function preRenderBar(
   }
   return barCanvas;
 }
-
 function Visualizer(props: Props) {
   const colors = useTypedSelector(Selectors.getSkinColors);
   const style = useTypedSelector(Selectors.getVisualizerStyle);
@@ -115,6 +115,34 @@ function Visualizer(props: Props) {
     return preRenderBar(height, colors, renderHeight);
   }, [colors, height, renderHeight]);
 
+  const printBar = useCallback(
+    (
+      ctx: CanvasRenderingContext2D,
+      x: number,
+      barHeight: number,
+      peakHeight: number
+    ) => {
+      barHeight = Math.ceil(barHeight) * PIXEL_DENSITY;
+      peakHeight = Math.ceil(peakHeight) * PIXEL_DENSITY;
+      if (barHeight > 0 || peakHeight > 0) {
+        const y = height - barHeight;
+        // Draw the gradient
+        const b = BAR_WIDTH;
+        if (height > 0) {
+          ctx.drawImage(barCanvas, 0, y, b, height, x, y, b, height);
+        }
+
+        // Draw the gray peak line
+        if (!windowShade) {
+          const peakY = height - peakHeight;
+          ctx.fillStyle = colors[PEAK_COLOR_INDEX];
+          ctx.fillRect(x, peakY, b, PIXEL_DENSITY);
+        }
+      }
+    },
+    [barCanvas, colors, height, windowShade]
+  );
+
   const innerProps = {
     width: renderWidth,
     height: renderHeight,
@@ -126,6 +154,7 @@ function Visualizer(props: Props) {
     toggleVisualizerStyle,
     bgCanvas,
     barCanvas,
+    printBar,
   };
   return <VisualizerInner {...innerProps} {...props} />;
 }
