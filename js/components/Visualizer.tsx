@@ -3,54 +3,15 @@ import React, { useMemo, useCallback, useState, useLayoutEffect } from "react";
 import * as Actions from "../actionCreators";
 import * as Selectors from "../selectors";
 import { useTypedSelector, useActionCreator } from "../hooks";
+import { usePaintOscilloscopeFrame } from "./useOscilloscopeVisualizer";
+import { usePaintBarFrame, usePaintBar } from "./useBarVisualizer";
 import { VISUALIZERS, MEDIA_STATUS } from "../constants";
 
 const PIXEL_DENSITY = 2;
-const BAR_WIDTH = 3 * PIXEL_DENSITY;
-const GRADIENT_COLOR_COUNT = 16;
-const PEAK_COLOR_INDEX = 23;
-const BAR_PEAK_DROP_RATE = 0.01;
-const NUM_BARS = 20;
 
 type Props = {
   analyser: AnalyserNode;
 };
-
-function octaveBucketsForBufferLength(bufferLength: number): number[] {
-  const octaveBuckets = new Array(NUM_BARS).fill(0);
-  const minHz = 200;
-  const maxHz = 22050;
-  const octaveStep = Math.pow(maxHz / minHz, 1 / NUM_BARS);
-
-  octaveBuckets[0] = 0;
-  octaveBuckets[1] = minHz;
-  for (let i = 2; i < NUM_BARS - 1; i++) {
-    octaveBuckets[i] = octaveBuckets[i - 1] * octaveStep;
-  }
-  octaveBuckets[NUM_BARS - 1] = maxHz;
-
-  for (let i = 0; i < NUM_BARS; i++) {
-    const octaveIdx = Math.floor((octaveBuckets[i] / maxHz) * bufferLength);
-    octaveBuckets[i] = octaveIdx;
-  }
-
-  return octaveBuckets;
-}
-
-// Return the average value in a slice of dataArray
-function sliceAverage(
-  dataArray: Uint8Array,
-  sliceWidth: number,
-  sliceNumber: number
-): number {
-  const start = sliceWidth * sliceNumber;
-  const end = start + sliceWidth;
-  let sum = 0;
-  for (let i = start; i < end; i++) {
-    sum += dataArray[i];
-  }
-  return sum / sliceWidth;
-}
 
 // Pre-render the background grid
 function preRenderBg(
@@ -83,54 +44,10 @@ function preRenderBg(
   return bgCanvas;
 }
 
-function preRenderBar(
-  height: number,
-  colors: string[],
-  renderHeight: number
-): HTMLCanvasElement {
-  /**
-   * The order of the colours is commented in the file: the fist two colours
-   * define the background and dots (check it to see what are the dots), the
-   * next 16 colours are the analyzer's colours from top to bottom, the next
-   * 5 colours are the oscilloscope's ones, from center to top/bottom, the
-   * last colour is for the analyzer's peak markers.
-   */
-
-  // Off-screen canvas for pre-rendering a single bar gradient
-  const barCanvas = document.createElement("canvas");
-  barCanvas.width = BAR_WIDTH;
-  barCanvas.height = height;
-
-  const offset = 2; // The first two colors are for the background;
-  const gradientColors = colors.slice(offset, offset + GRADIENT_COLOR_COUNT);
-
-  const barCanvasCtx = barCanvas.getContext("2d");
-  if (barCanvasCtx == null) {
-    throw new Error("Could not construct canvas context");
-  }
-  const multiplier = GRADIENT_COLOR_COUNT / renderHeight;
-  // In shade mode, the five colors are, from top to bottom:
-  // 214, 102, 0 -- 3
-  // 222, 165, 24 -- 6
-  // 148, 222, 33 -- 9
-  // 57, 181, 16 -- 12
-  // 24, 132, 8 -- 15
-  // TODO: This could probably be improved by iterating backwards
-  for (let i = 0; i < renderHeight; i++) {
-    const colorIndex = GRADIENT_COLOR_COUNT - 1 - Math.floor(i * multiplier);
-    barCanvasCtx.fillStyle = gradientColors[colorIndex];
-    const y = height - i * PIXEL_DENSITY;
-    barCanvasCtx.fillRect(0, y, BAR_WIDTH, PIXEL_DENSITY);
-  }
-  return barCanvas;
-}
-function Visualizer(props: Props) {
-  const [barPeaks] = useState(() => new Array(NUM_BARS).fill(0));
-  const [barPeakFrames] = useState(() => new Array(NUM_BARS).fill(0));
-
+function Visualizer({ analyser }: Props) {
   useLayoutEffect(() => {
-    props.analyser.fftSize = 2048;
-  }, [props.analyser]);
+    analyser.fftSize = 2048;
+  }, [analyser.fftSize]);
   const colors = useTypedSelector(Selectors.getSkinColors);
   const style = useTypedSelector(Selectors.getVisualizerStyle);
   const status = useTypedSelector(Selectors.getMediaStatus);
@@ -144,23 +61,6 @@ function Visualizer(props: Props) {
 
   const width = renderWidth * PIXEL_DENSITY;
   const height = renderHeight * PIXEL_DENSITY;
-  const bufferLength = useMemo(() => {
-    switch (style) {
-      case VISUALIZERS.OSCILLOSCOPE:
-        return props.analyser.fftSize;
-      case VISUALIZERS.BAR:
-        return props.analyser.frequencyBinCount;
-      default:
-        return 0;
-    }
-  }, [props.analyser.fftSize, props.analyser.frequencyBinCount, style]);
-
-  const dataArray = useMemo(() => {
-    return new Uint8Array(bufferLength);
-  }, [bufferLength]);
-  const octaveBuckets = useMemo(() => {
-    return octaveBucketsForBufferLength(bufferLength);
-  }, [bufferLength]);
 
   const bgCanvas = useMemo(() => {
     return preRenderBg(
@@ -172,139 +72,27 @@ function Visualizer(props: Props) {
     );
   }, [colors, height, width, windowShade]);
 
-  const barCanvas = useMemo(() => {
-    return preRenderBar(height, colors, renderHeight);
-  }, [colors, height, renderHeight]);
+  const paintOscilloscopeFrame = usePaintOscilloscopeFrame({
+    analyser,
+    height,
+    width,
+    renderWidth,
+  });
+  const paintBarFrame = usePaintBarFrame({
+    analyser,
+    height,
+    renderHeight,
+  });
+  const paintBar = usePaintBar({ height, renderHeight });
 
-  const printBar = useCallback(
-    (
-      ctx: CanvasRenderingContext2D,
-      x: number,
-      barHeight: number,
-      peakHeight: number
-    ) => {
-      barHeight = Math.ceil(barHeight) * PIXEL_DENSITY;
-      peakHeight = Math.ceil(peakHeight) * PIXEL_DENSITY;
-      if (barHeight > 0 || peakHeight > 0) {
-        const y = height - barHeight;
-        // Draw the gradient
-        const b = BAR_WIDTH;
-        if (height > 0) {
-          ctx.drawImage(barCanvas, 0, y, b, height, x, y, b, height);
-        }
-
-        // Draw the gray peak line
-        if (!windowShade) {
-          const peakY = height - peakHeight;
-          ctx.fillStyle = colors[PEAK_COLOR_INDEX];
-          ctx.fillRect(x, peakY, b, PIXEL_DENSITY);
-        }
-      }
-    },
-    [barCanvas, colors, height, windowShade]
-  );
-
-  const paintOscilloscopeFrame = useCallback(
-    (canvasCtx: CanvasRenderingContext2D) => {
-      props.analyser.getByteTimeDomainData(dataArray);
-
-      canvasCtx.lineWidth = PIXEL_DENSITY;
-
-      // Just use one of the viscolors for now
-      canvasCtx.strokeStyle = colors[18];
-
-      // Since dataArray has more values than we have pixels to display, we
-      // have to average several dataArray values per pixel. We call these
-      // groups slices.
-      //
-      // We use the  2x scale here since we only want to plot values for
-      // "real" pixels.
-      const sliceWidth = Math.floor(bufferLength / width) * PIXEL_DENSITY;
-
-      const h = height;
-
-      canvasCtx.beginPath();
-
-      // Iterate over the width of the canvas in "real" pixels.
-      for (let j = 0; j <= renderWidth; j++) {
-        const amplitude = sliceAverage(dataArray, sliceWidth, j);
-        const percentAmplitude = amplitude / 255; // dataArray gives us bytes
-        const y = (1 - percentAmplitude) * h; // flip y
-        const x = j * PIXEL_DENSITY;
-
-        // Canvas coordinates are in the middle of the pixel by default.
-        // When we want to draw pixel perfect lines, we will need to
-        // account for that here
-        if (x === 0) {
-          canvasCtx.moveTo(x, y);
-        } else {
-          canvasCtx.lineTo(x, y);
-        }
-      }
-      canvasCtx.stroke();
-    },
-    [
-      bufferLength,
-      colors,
-      dataArray,
-      height,
-      props.analyser,
-      renderWidth,
-      width,
-    ]
-  );
-
-  const paintBarFrame = useCallback(
-    (canvasCtx: CanvasRenderingContext2D) => {
-      props.analyser.getByteFrequencyData(dataArray);
-      const heightMultiplier = renderHeight / 256;
-      const xOffset = BAR_WIDTH + PIXEL_DENSITY; // Bar width, plus a pixel of spacing to the right.
-      for (let j = 0; j < NUM_BARS - 1; j++) {
-        const start = octaveBuckets[j];
-        const end = octaveBuckets[j + 1];
-        let amplitude = 0;
-        for (let k = start; k < end; k++) {
-          amplitude += dataArray[k];
-        }
-        amplitude /= end - start;
-
-        // The drop rate should probably be normalized to the rendering FPS, for now assume 60 FPS
-        let barPeak =
-          barPeaks[j] - BAR_PEAK_DROP_RATE * Math.pow(barPeakFrames[j], 2);
-        if (barPeak < amplitude) {
-          barPeak = amplitude;
-          barPeakFrames[j] = 0;
-        } else {
-          barPeakFrames[j] += 1;
-        }
-        barPeaks[j] = barPeak;
-
-        printBar(
-          canvasCtx,
-          j * xOffset,
-          amplitude * heightMultiplier,
-          barPeak * heightMultiplier
-        );
-      }
-    },
-    [
-      barPeakFrames,
-      barPeaks,
-      dataArray,
-      octaveBuckets,
-      printBar,
-      props.analyser,
-      renderHeight,
-    ]
-  );
   const paintFrame = useCallback(
-    (canvasCtx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
+    (canvasCtx: CanvasRenderingContext2D) => {
       if (status !== MEDIA_STATUS.PLAYING) {
         return;
       }
       if (dummyVizData) {
         Object.entries(dummyVizData).forEach(([i, value]) => {
-          printBar(canvasCtx, Number(i), value, -1);
+          paintBar(canvasCtx, Number(i), value, -1);
         });
         return;
       }
@@ -318,17 +106,19 @@ function Visualizer(props: Props) {
           paintBarFrame(canvasCtx);
           break;
         default:
-          canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+          canvasCtx.clearRect(0, 0, width, height);
       }
     },
     [
       bgCanvas,
       dummyVizData,
+      height,
+      paintBar,
       paintBarFrame,
       paintOscilloscopeFrame,
-      printBar,
       status,
       style,
+      width,
     ]
   );
 
@@ -347,7 +137,7 @@ function Visualizer(props: Props) {
     let animationRequest: number | null = null;
     // Kick off the animation loop
     const loop = () => {
-      paintFrame(canvasCtx, canvas);
+      paintFrame(canvasCtx);
       animationRequest = window.requestAnimationFrame(loop);
     };
     loop();
