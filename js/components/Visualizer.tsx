@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useState } from "react";
+import React, { useMemo, useCallback, useState, useLayoutEffect } from "react";
 
 import * as Actions from "../actionCreators";
 import * as Selectors from "../selectors";
@@ -125,6 +125,9 @@ function preRenderBar(
   return barCanvas;
 }
 function Visualizer(props: Props) {
+  useLayoutEffect(() => {
+    props.analyser.fftSize = 2048;
+  }, [props.analyser]);
   const colors = useTypedSelector(Selectors.getSkinColors);
   const style = useTypedSelector(Selectors.getVisualizerStyle);
   const status = useTypedSelector(Selectors.getMediaStatus);

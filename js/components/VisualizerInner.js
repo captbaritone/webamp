@@ -13,8 +13,6 @@ class VisualizerInner extends React.Component {
     this.canvasCtx = this.canvas.getContext("2d");
     this.canvasCtx.imageSmoothingEnabled = false;
 
-    this.setStyle();
-
     // Kick off the animation loop
     const loop = () => {
       if (this.props.status === MEDIA_STATUS.PLAYING) {
@@ -38,7 +36,6 @@ class VisualizerInner extends React.Component {
   }
 
   componentDidUpdate() {
-    this.setStyle();
     // Redraw the current frame, since the skin may have changed.
     this.paintFrame();
   }
@@ -57,15 +54,6 @@ class VisualizerInner extends React.Component {
 
   _width() {
     return this.props.width * PIXEL_DENSITY;
-  }
-
-  setStyle() {
-    if (!this.props.colors) {
-      return;
-    }
-    // TODO: Split this into to methods. One for skin update, one for style
-    // update.
-    this.props.analyser.fftSize = 2048;
   }
 
   paintFrame() {
