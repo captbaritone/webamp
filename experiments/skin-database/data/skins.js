@@ -28,6 +28,7 @@ function getSkinRecord(skin) {
     readmeText,
     filePaths,
     imageHash,
+    uploader,
   } = skin;
   const fileNames = filePaths.map((p) => path.basename(p));
   const skinUrl = `https://s3.amazonaws.com/webamp-uploaded-skins/skins/${md5}.wsz`;
@@ -44,6 +45,7 @@ function getSkinRecord(skin) {
     webampUrl: `https://webamp.org?skinUrl=${skinUrl}`,
     readmeText,
     imageHash,
+    uploader,
   };
 }
 
@@ -51,6 +53,10 @@ async function getProp(md5, prop) {
   const skin = await skins.findOne({ md5, type: "CLASSIC" });
   const value = skin && skin[prop];
   return value == null ? null : value;
+}
+
+async function addSkin({ md5, filePath, uploader }) {
+  skins.insert({ md5, type: "CLASSIC", filePaths: [filePath], uploader });
 }
 
 const IA_URL = /^(https:\/\/)?archive.org\/details\/([^\/]+)\/?/;
@@ -176,7 +182,7 @@ async function reject(md5) {
 async function getSkinToReview() {
   const reviewable = await skins.aggregate([
     { $match: REVIEWABLE_QUERY },
-    { $sample: { size: 1 } }
+    { $sample: { size: 1 } },
   ]);
   const skin = reviewable[0];
   const { canonicalFilename, md5 } = getSkinRecord(skin);
@@ -186,7 +192,7 @@ async function getSkinToReview() {
 async function getSkinToTweet() {
   const tweetables = await skins.aggregate([
     { $match: TWEETABLE_QUERY },
-    { $sample: { size: 1 } }
+    { $sample: { size: 1 } },
   ]);
   const skin = tweetables[0];
   if (skin == null) {
@@ -228,6 +234,7 @@ async function setImageHash(md5, imageHash) {
 }
 
 module.exports = {
+  addSkin,
   getMd5sMatchingImageHash,
   getInternetArchiveItem,
   getMd5ByAnything,

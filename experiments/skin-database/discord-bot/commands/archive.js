@@ -1,10 +1,11 @@
 const fs = require("fs");
-const path = require("path");
 const fetch = require("node-fetch");
 const md5Buffer = require("md5");
-const config = require("../../config");
 const Skins = require("../../data/skins");
 const Utils = require("../utils");
+const S3 = require("../../s3");
+const Shooter = require("../../shooter");
+const temp = require("temp").track();
 
 async function handler(message) {
   const { attachments } = message;
@@ -25,17 +26,14 @@ async function handler(message) {
     })
   );
 
-  // Compute MD5
-  // Upload to S3
-  // Record the filepath
-  // Take a screenshot
-  // Upload screenshot to S3
+  // TODO
   // Extract the readme
   // Extract the emails
   // Extract the average color
   // Upload to Internet Archive
   // Store the Internet Archive item name
   // Construct IA Webamp URL
+  const shooter = new Shooter("https://webamp.org");
 
   for (const file of files) {
     const skin = await Skins.getSkinByMd5(file.md5);
@@ -46,18 +44,39 @@ async function handler(message) {
         dest: message.channel,
       });
     } else {
-      fs.writeFileSync(
-        path.join(
-          config.uploadDir,
-          // TODO: Use a sub directory using md5 to avoid collision
-          // file.md5,
-          file.filename
-        ),
-        file.buffer
-      );
       await message.channel.send(
-        `Thanks! ${file.filename} is a brand new skin. 👏 It has been queued for archiving.`
+        `Thanks! ${file.filename} is a brand new skin. 👏 Uploading to our server and taking a screenshot...`
       );
+      const tempFile = temp.path({ suffix: ".wsz" });
+      fs.writeFileSync(tempFile, file.buffer);
+      const tempScreenshotPath = temp.path({ suffix: ".png" });
+
+      try {
+        await shooter.takeScreenshot(tempFile, tempScreenshotPath, {
+          minify: true,
+        });
+      } catch (e) {
+        console.error(e);
+        await message.channel.send(
+          `Something went wrong taking the screenshot of ${file.filename}. Sorry.`
+        );
+        continue;
+      }
+
+      await S3.putScreenshot(file.md5, fs.readFileSync(tempScreenshotPath));
+      await S3.putSkin(file.md5, file.buffer);
+      await Skins.addSkin({
+        md5: file.md5,
+        filePath: file.filename,
+        uploader: message.author.username,
+      });
+      await message.channel.send(
+        `Done! ${file.filename} has been queued for archiving. In the mean time, here's a screenshot and a link to it on Webamp.`
+      );
+      await Utils.postSkin({
+        md5: file.md5,
+        dest: message.channel,
+      });
     }
   }
 }
