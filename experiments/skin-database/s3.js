@@ -30,6 +30,42 @@ function putFile(key, body) {
   });
 }
 
+function putSkin(md5, buffer) {
+  return new Promise((resolve, rejectPromise) => {
+    const bucketName = "webamp-uploaded-skins";
+    const key = `skins/${md5}.wsz`;
+    s3.putObject(
+      { Bucket: bucketName, Key: key, Body: buffer, ACL: "public-read" },
+      err => {
+        if (err) {
+          rejectPromise(err);
+          return;
+        }
+        console.log(`Upladed skin to ${bucketName} ${key}`);
+        resolve();
+      }
+    );
+  });
+}
+
+function putScreenshot(md5, buffer) {
+  return new Promise((resolve, rejectPromise) => {
+    const bucketName = "webamp-uploaded-skins";
+    const key = `screenshots/${md5}.png`;
+    s3.putObject(
+      { Bucket: bucketName, Key: key, Body: buffer, ACL: "public-read" },
+      err => {
+        if (err) {
+          rejectPromise(err);
+          return;
+        }
+        console.log(`Upladed screenshot to ${bucketName} ${key}`);
+        resolve();
+      }
+    );
+  });
+}
+
 function getLines(body) {
   return body
     .trim()
@@ -155,6 +191,8 @@ async function markAsTweeted(md5) {
 }
 
 module.exports = {
+  putScreenshot,
+  putSkin,
   getSkinToReview,
   approve,
   reject,

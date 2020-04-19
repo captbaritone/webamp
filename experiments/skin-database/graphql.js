@@ -28,6 +28,7 @@ type InternetArchiveItem {
     readmeText: String
     internetArchiveItem: InternetArchiveItem
     imageHash: String
+    uploader: String
   }
   type Query {
     skin(md5: String!): Skin
@@ -116,6 +117,10 @@ class Skin {
 
   async imageHash() {
     return this._get(skin => skin.imageHash);
+  }
+
+  async uploader() {
+    return this._get(skin => skin.upload);
   }
 
   internetArchiveItem() {
