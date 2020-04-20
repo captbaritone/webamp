@@ -18,6 +18,7 @@ const REVIEWABLE_QUERY = {
   rejected: { $ne: true },
   type: "CLASSIC",
 };
+
 function getSkinRecord(skin) {
   const {
     md5,
@@ -55,8 +56,14 @@ async function getProp(md5, prop) {
   return value == null ? null : value;
 }
 
-async function addSkin({ md5, filePath, uploader }) {
-  skins.insert({ md5, type: "CLASSIC", filePaths: [filePath], uploader });
+async function addSkin({ md5, filePath, uploader, averageColor }) {
+  skins.insert({
+    md5,
+    type: "CLASSIC",
+    filePaths: [filePath],
+    uploader,
+    averageColor,
+  });
 }
 
 const IA_URL = /^(https:\/\/)?archive.org\/details\/([^\/]+)\/?/;
