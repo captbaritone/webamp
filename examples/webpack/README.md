@@ -2,6 +2,8 @@
 
 This example includes Webamp in a Webpack bundle. The audio file and skin are fetched from a free CDN at run time.
 
+You can play with a working example here: https://codesandbox.io/s/github/captbaritone/webamp/tree/master/examples/webpack
+
 **Note:** Currently Webamp is published to NPM as a single bundle which includes all of its dependencies. This means that no matter what you do, Webamp is going to bring along it's own React, Redux, JSZip, etc. If you have a use case where you would like Webamp to share some or all of these dependencies with your own application, please file an issue and I can look into it.
 
 To try it out:
