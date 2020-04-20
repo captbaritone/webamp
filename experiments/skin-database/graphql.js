@@ -61,7 +61,11 @@ class InternetArchiveItem {
 
 class Skin {
   static async fromMd5(md5) {
-    return new Skin(await Skins.getSkinByMd5(md5));
+    const data = await Skins.getSkinByMd5(md5);
+    if (data == null) {
+      return null;
+    }
+    return new Skin(data);
   }
 
   constructor(data) {
@@ -121,7 +125,7 @@ class Skin {
   }
 
   async uploader() {
-    return this._get(skin => skin.upload);
+    return this._get((skin) => skin.upload);
   }
 
   internetArchiveItem() {
@@ -148,5 +152,11 @@ exports.default = function () {
     schema: schema,
     rootValue: root,
     graphiql: true,
+    customFormatErrorFn: (error) => ({
+      message: error.message,
+      locations: error.locations,
+      stack: error.stack ? error.stack.split("\n") : [],
+      path: error.path,
+    }),
   });
 };
