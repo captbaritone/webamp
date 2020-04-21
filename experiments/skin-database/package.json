@@ -23,9 +23,12 @@
     "yargs": "^13.2.4"
   },
   "scripts": {
-    "start": "node index.js",
-    "tweet": "./cli.js tweet",
-    "fetch-metadata": "./cli.js fetch-metadata",
-    "bot": "node ./discord-bot/index.js"
+    "start": "tsc && node dist/index.js",
+    "tweet": "tsc && ./dist/cli.js tweet",
+    "fetch-metadata": "tsc && .dist/cli.js fetch-metadata",
+    "bot": "tsc && node ./dist/discord-bot/index.js"
+  },
+  "devDependencies": {
+    "typescript": "^3.8.3"
   }
 }

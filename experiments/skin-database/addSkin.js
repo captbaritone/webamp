@@ -9,7 +9,6 @@ const Analyser = require("./analyser");
 // TODO
 // Extract the readme
 // Extract the emails
-// Extract the average color
 // Upload to Internet Archive
 // Store the Internet Archive item name
 // Construct IA Webamp UR

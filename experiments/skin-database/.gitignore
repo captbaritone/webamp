@@ -4,3 +4,4 @@ config.js
 uploads/
 combined.log
 hash.txt
+dist/

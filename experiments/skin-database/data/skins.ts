@@ -5,6 +5,40 @@ const iaItems = db.get("internetArchiveItems");
 const S3 = require("../s3");
 const logger = require("../logger");
 
+type TweetStatus = "APPROVED" | "REJECTED" | "TWEETED" | "UNREVIEWED";
+
+type DBSkinRecord = {
+  md5: string;
+  averageColor?: string;
+  emails?: string[];
+  tweetUrl?: string;
+  twitterLikes?: number;
+  readmeText?: string;
+  filePaths: string[];
+  imageHash?: string;
+  uploader?: string;
+};
+
+type DBIARecord = {
+  identifier: string;
+};
+
+type SkinRecord = {
+  md5: string;
+  averageColor?: string;
+  emails?: string[];
+  tweetUrl?: string;
+  twitterLikes?: number;
+  readmeText?: string;
+  fileNames: string[];
+  imageHash?: string;
+  uploader?: string;
+  screenshotUrl: string;
+  skinUrl: string;
+  canonicalFilename: string | null;
+  webampUrl: string;
+};
+
 const TWEETABLE_QUERY = {
   tweeted: { $ne: true },
   approved: true,
@@ -19,7 +53,7 @@ const REVIEWABLE_QUERY = {
   type: "CLASSIC",
 };
 
-function getSkinRecord(skin) {
+function getSkinRecord(skin: DBSkinRecord): SkinRecord {
   const {
     md5,
     averageColor,
@@ -50,7 +84,10 @@ function getSkinRecord(skin) {
   };
 }
 
-async function getProp(md5, prop) {
+async function getProp<T extends keyof DBSkinRecord>(
+  md5: string,
+  prop: T
+): Promise<DBSkinRecord[T]> {
   const skin = await skins.findOne({ md5, type: "CLASSIC" });
   const value = skin && skin[prop];
   return value == null ? null : value;
@@ -69,7 +106,7 @@ async function addSkin({ md5, filePath, uploader, averageColor }) {
 const IA_URL = /^(https:\/\/)?archive.org\/details\/([^\/]+)\/?/;
 const MD5 = /([a-fA-F0-9]{32})/;
 
-async function getMd5ByAnything(anything) {
+async function getMd5ByAnything(anything: string): Promise<string | null> {
   const md5Match = anything.match(MD5);
   if (md5Match != null) {
     const md5 = md5Match[1];
@@ -103,8 +140,8 @@ async function getSkinByMd5(md5) {
     return null;
   }
   const internetArchiveItem = await getInternetArchiveItem(md5);
-  let internetArchiveUrl = null;
-  let internetArchiveItemName = null;
+  let internetArchiveUrl: string | null = null;
+  let internetArchiveItemName: string | null = null;
   if (internetArchiveItem != null) {
     internetArchiveItemName = internetArchiveItem.identifier;
     internetArchiveUrl = getInternetArchiveUrl(internetArchiveItemName);
@@ -118,51 +155,55 @@ async function getSkinByMd5(md5) {
   };
 }
 
-async function getReadme(md5) {
+async function getReadme(md5: string) {
   return getProp(md5, "readmeText");
 }
 
-async function getScreenshotUrl(md5) {
+async function getScreenshotUrl(md5: string): Promise<never> {
+  // @ts-ignore
   return getProp(md5, "screenshotUrl");
 }
 
-async function getSkinUrl(md5) {
+async function getSkinUrl(md5: string): Promise<never> {
+  // @ts-ignore
   return getProp(md5, "skinUrl");
 }
 
-async function getInternetArchiveItem(md5) {
+async function getInternetArchiveItem(md5: string): Promise<DBIARecord> {
   return iaItems.findOne({ md5: md5 });
 }
 
-async function getMd5FromInternetArchvieItemName(itemName) {
+async function getMd5FromInternetArchvieItemName(itemName: string) {
   const item = await iaItems.findOne({ identifier: itemName }, { md5: 1 });
   return item == null ? null : item.md5;
 }
 
-async function getMd5FromImageHash(imageHash) {
-  const item = await skins.findOne({ imageHash }, { md5: 1 });
-  console.log(item);
+async function getMd5FromImageHash(imageHash: string): Promise<string | null> {
+  const item: { md5: string } | null = await skins.findOne(
+    { imageHash },
+    { md5: 1 }
+  );
   return item == null ? null : item.md5;
 }
 
-async function getMd5sMatchingImageHash(imageHash) {
+async function getMd5sMatchingImageHash(imageHash: string) {
   return skins.find({ imageHash }, { md5: 1 });
 }
 
-function getInternetArchiveUrl(itemName) {
+function getInternetArchiveUrl(itemName: string | null): string | null {
   return itemName == null ? null : `https://archive.org/details/${itemName}`;
 }
 
-function getTweetableSkinCount() {
+function getTweetableSkinCount(): number {
   return skins.count(TWEETABLE_QUERY);
 }
 
-async function markAsTweeted(md5) {
+async function markAsTweeted(md5): Promise<void> {
   await skins.findOneAndUpdate({ md5 }, { $set: { tweeted: true } });
   return S3.markAsTweeted(md5);
 }
 
-async function getStatus(md5) {
+async function getStatus(md5: string): Promise<TweetStatus> {
   const skin = await skins.findOne({ md5 });
   if (skin.tweeted) {
     return "TWEETED";
@@ -176,17 +217,20 @@ async function getStatus(md5) {
   return "UNREVIEWED";
 }
 
-async function approve(md5) {
+async function approve(md5: string): Promise<void> {
   await skins.findOneAndUpdate({ md5 }, { $set: { approved: true } });
   return S3.approve(md5);
 }
 
-async function reject(md5) {
+async function reject(md5: string): Promise<void> {
   await skins.findOneAndUpdate({ md5 }, { $set: { rejected: true } });
   return S3.reject(md5);
 }
 
-async function getSkinToReview() {
+async function getSkinToReview(): Promise<{
+  filename: string | null;
+  md5: string;
+}> {
   const reviewable = await skins.aggregate([
     { $match: REVIEWABLE_QUERY },
     { $sample: { size: 1 } },
@@ -209,7 +253,12 @@ async function getSkinToTweet() {
   return { filename: canonicalFilename, md5 };
 }
 
-async function getStats() {
+async function getStats(): Promise<{
+  approved: number;
+  rejected: number;
+  tweeted: number;
+  tweetable: number;
+}> {
   const approved = await skins.count({ approved: true });
   const rejected = await skins.count({ rejected: true });
   const tweeted = await skins.count({ tweeted: true });
@@ -217,7 +266,7 @@ async function getStats() {
   return { approved, rejected, tweeted, tweetable };
 }
 
-async function reconcile() {
+async function reconcile(): Promise<void> {
   const [approved, rejected, tweeted] = await Promise.all([
     S3.getAllApproved(),
     S3.getAllRejected(),
@@ -236,7 +285,7 @@ async function reconcile() {
   ]);
 }
 
-async function setImageHash(md5, imageHash) {
+async function setImageHash(md5: string, imageHash: string): Promise<void> {
   await skins.findOneAndUpdate({ md5 }, { $set: { imageHash } });
 }
 
