@@ -1,10 +1,12 @@
-const fs = require("fs");
-const md5Buffer = require("md5");
-const Skins = require("./data/skins");
-const S3 = require("./s3");
-const Shooter = require("./shooter");
-const temp = require("temp").track();
-const Analyser = require("./analyser");
+import * as Skins from "./data/skins";
+import fs from "fs";
+import md5Buffer from "md5";
+import S3 from "./s3";
+import Shooter from "./shooter";
+import _temp from "temp";
+import Analyser from "./analyser";
+
+const temp = _temp.track();
 
 // TODO
 // Extract the readme
@@ -12,7 +14,15 @@ const Analyser = require("./analyser");
 // Upload to Internet Archive
 // Store the Internet Archive item name
 // Construct IA Webamp UR
-async function addSkinFromBuffer(buffer, filePath, uploader) {
+type Result =
+  | { md5: string; status: "FOUND" }
+  | { md5: string; status: "ADDED"; averageColor: string };
+
+async function addSkinFromBuffer(
+  buffer: Buffer,
+  filePath: string,
+  uploader: string
+): Promise<Result> {
   const md5 = md5Buffer(buffer);
   const skin = await Skins.getSkinByMd5(md5);
   if (skin != null) {

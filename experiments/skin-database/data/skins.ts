@@ -1,9 +1,9 @@
-const db = require("../db");
-const path = require("path");
+import db from "../db";
+import path from "path";
+import S3 from "../s3";
+import logger from "../logger";
 const skins = db.get("skins");
 const iaItems = db.get("internetArchiveItems");
-const S3 = require("../s3");
-const logger = require("../logger");
 
 type TweetStatus = "APPROVED" | "REJECTED" | "TWEETED" | "UNREVIEWED";
 
@@ -93,7 +93,7 @@ async function getProp<T extends keyof DBSkinRecord>(
   return value == null ? null : value;
 }
 
-async function addSkin({ md5, filePath, uploader, averageColor }) {
+export async function addSkin({ md5, filePath, uploader, averageColor }) {
   skins.insert({
     md5,
     type: "CLASSIC",
@@ -133,7 +133,7 @@ async function getMd5ByAnything(anything: string): Promise<string | null> {
   return imageHashMd5;
 }
 
-async function getSkinByMd5(md5) {
+export async function getSkinByMd5(md5: string) {
   const skin = await skins.findOne({ md5, type: "CLASSIC" });
   if (skin == null) {
     logger.warn("Could not find skin in database", { md5, alert: true });
@@ -262,7 +262,7 @@ async function getStats(): Promise<{
   const approved = await skins.count({ approved: true });
   const rejected = await skins.count({ rejected: true });
   const tweeted = await skins.count({ tweeted: true });
-  const tweetable = await getTweetableSkinCount();
+  const tweetable = getTweetableSkinCount();
   return { approved, rejected, tweeted, tweetable };
 }
 
