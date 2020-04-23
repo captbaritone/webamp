@@ -33,7 +33,7 @@ The `Winamp` class instantiates a single `Media` instance and passes it's [Analy
 
 ## Skins
 
-Winamp skins (`.wsz`) are, under the hood, just `.zip` files which contain `.bmp` sprite sheets, and some config files. We use [JSZip] to unpack the zip archive, and then some clever canvas slicing to extract the individual sprites out of each `.bmp`. We get these sprite images as [data URIs] which are dispatched to Redux. We then have a [Skin](../js/components/Skin.js) component which renders a `<style>` tag into the `<head>` using [React Portals](https://reactjs.org/docs/portals.html). You can read more about this in a [blog post](https://jordaneldredge.com/blog/how-winamp2-js-loads-native-skins-in-your-browser/) I wrote.
+Winamp skins (`.wsz`) are, under the hood, just `.zip` files which contain `.bmp` sprite sheets, and some config files. We use [JSZip] to unpack the zip archive, and then some clever canvas slicing to extract the individual sprites out of each `.bmp`. We get these sprite images as [data URIs] which are dispatched to Redux. We then have a [Skin](../js/components/Skin.tsx) component which renders a `<style>` tag into the `<head>` using [React Portals](https://reactjs.org/docs/portals.html). You can read more about this in a [blog post](https://jordaneldredge.com/blog/how-winamp2-js-loads-native-skins-in-your-browser/) I wrote.
 
 In addition to the sprite sheets there are some config files in various formats, mostly `.ini` (although with different names). We have a very simple `.ini` parser, for these files. Finally, there is a `region.txt` which defines some vectors which define the transparent areas of a skin. We have a custom parser for this file format, and then dispatch the data to Redux.
 
@@ -54,7 +54,7 @@ All windows are rendred with `image-rendering: pixelated;` (or equivilant) so th
 
 ## Visualizer
 
-The visualizer in the main window is a React component [Visualizer.js](../js/components/Visualizer.js) that gets passed skin data from the Redux store, an [analyser node](https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode) and some various user settings (which visualizer should be shown? are we playing?). All computation is done such that it works both in the "regular" mode, but also in shade mode. In shade mode the dimension values are just different.
+The visualizer in the main window is a React component [Visualizer.tsx](../js/components/Visualizer.tsx) that gets passed skin data from the Redux store, an [analyser node](https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode) and some various user settings (which visualizer should be shown? are we playing?). All computation is done such that it works both in the "regular" mode, but also in shade mode. In shade mode the dimension values are just different.
 
 To improve performance, two off-screen canvases are pre-rendered whenever the skin changes. These are then used as components of the per-frame rendering:
 
@@ -70,7 +70,7 @@ The audio portion of the equalizer is handed in the Media class (see above) but 
 The coloring of the curved line is achived by extracting the single-pixel-wide, many-pixel-tall sprite from the skin file, passing it through the Redux state to the graph component, and then drawing the splined line with [CanvasRenderingContext2D.createPattern()
 ](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/createPattern).
 
-You can see the implementation of the equalizer graph in [EqGraph.js](../js/components/EqualizerWindow/EqGraph.js).
+You can see the implementation of the equalizer graph in [EqGraph.tsx](../js/components/EqualizerWindow/EqGraph.tsx).
 
 The equalizer window can also load/geneate `.eqf` files. The loading and parsing of these has been extracted into its own NPM module: [winamp-eqf](https://www.npmjs.com/package/winamp-eqf).
 
@@ -108,4 +108,4 @@ Webamp allows you to drag files (media files, skins and `.eqf` equalizer presets
 [jszip]: https://stuk.github.io/jszip/
 [data uris]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
 [98.js.org]: https://98.js.org
-[spline.js]: ../js/Components/EqualizerWindow/spline.js
+[spline.js]: ../js/components/EqualizerWindow/spline.js
