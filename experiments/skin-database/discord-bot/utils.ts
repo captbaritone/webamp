@@ -1,4 +1,11 @@
-import { RichEmbed, User, MessageReaction, Channel } from "discord.js";
+import {
+  RichEmbed,
+  User,
+  MessageReaction,
+  TextChannel,
+  DMChannel,
+  GroupDMChannel,
+} from "discord.js";
 import rgbHex from "rgb-hex";
 import * as Skins from "../data/skins";
 import logger from "../logger";
@@ -17,14 +24,14 @@ const filter = (reaction: MessageReaction): boolean => {
   );
 };
 
-async function postSkin({
+export async function postSkin({
   md5,
   title: _title,
   dest,
 }: {
   md5: string;
-  title: (filename: string | null) => string;
-  dest: Channel;
+  title?: (filename: string | null) => string;
+  dest: TextChannel | DMChannel | GroupDMChannel;
 }) {
   const skin = await Skins.getSkinByMd5(md5);
   if (skin == null) {
@@ -141,5 +148,3 @@ function getPrettyTwitterStatus(status: TweetStatus): string {
       return "Tweeted 🐦";
   }
 }
-
-module.exports = { postSkin };

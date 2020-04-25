@@ -15,6 +15,15 @@ class Shooter {
     this._url = url;
   }
 
+  static async withShooter(cb) {
+    const shooter = new Shooter("https://webamp.org");
+    try {
+      await cb(shooter);
+    } finally {
+      shooter.dispose();
+    }
+  }
+
   async init() {
     this._browser = await puppeteer.launch();
     this._page = await this._browser.newPage();
