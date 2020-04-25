@@ -1,9 +1,9 @@
 // Functions for deriving information from skins
 
-const exec = require("child_process").exec;
-const shellescape = require("shell-escape");
+import { exec } from "child_process";
+import shellescape from "shell-escape";
 
-function getColor(imgPath) {
+export function getColor(imgPath: string): Promise<string> {
   return new Promise((resolve, reject) => {
     const excapedImgPath = shellescape([imgPath]);
     const command = `convert ${excapedImgPath} -scale 1x1\! -format '%[pixel:u]' info:-`;
@@ -16,5 +16,3 @@ function getColor(imgPath) {
     });
   });
 }
-
-module.exports = { getColor };

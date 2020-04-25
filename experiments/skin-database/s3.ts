@@ -1,9 +1,10 @@
-const AWS = require("aws-sdk");
+import AWS from "aws-sdk";
+
 AWS.config.update({ region: "us-west-2" });
 
 const s3 = new AWS.S3();
 
-function getFile(key) {
+function getFile(key: string): Promise<string> {
   return new Promise((resolve, rejectPromise) => {
     const bucketName = "winamp2-js-skins";
     s3.getObject({ Bucket: bucketName, Key: key }, (err, data) => {
@@ -11,13 +12,17 @@ function getFile(key) {
         rejectPromise(err);
         return;
       }
-      const body = Buffer.from(data.Body).toString("utf8");
+
+      const body = Buffer.from(
+        // @ts-ignore
+        data.Body
+      ).toString("utf8");
       resolve(body);
     });
   });
 }
 
-function putFile(key, body) {
+function putFile(key: string, body: string): Promise<void> {
   return new Promise((resolve, rejectPromise) => {
     const bucketName = "winamp2-js-skins";
     s3.putObject({ Bucket: bucketName, Key: key, Body: body }, (err) => {
@@ -30,13 +35,13 @@ function putFile(key, body) {
   });
 }
 
-function putSkin(md5, buffer) {
+export function putSkin(md5: string, buffer: Buffer): Promise<void> {
   return new Promise((resolve, rejectPromise) => {
     const bucketName = "webamp-uploaded-skins";
     const key = `skins/${md5}.wsz`;
     s3.putObject(
       { Bucket: bucketName, Key: key, Body: buffer, ACL: "public-read" },
-      err => {
+      (err) => {
         if (err) {
           rejectPromise(err);
           return;
@@ -48,13 +53,13 @@ function putSkin(md5, buffer) {
   });
 }
 
-function putScreenshot(md5, buffer) {
+export function putScreenshot(md5: string, buffer: Buffer): Promise<void> {
   return new Promise((resolve, rejectPromise) => {
     const bucketName = "webamp-uploaded-skins";
     const key = `screenshots/${md5}.png`;
     s3.putObject(
       { Bucket: bucketName, Key: key, Body: buffer, ACL: "public-read" },
-      err => {
+      (err) => {
         if (err) {
           rejectPromise(err);
           return;
@@ -66,22 +71,22 @@ function putScreenshot(md5, buffer) {
   });
 }
 
-function getLines(body) {
+function getLines(body: string): string[] {
   return body
     .trim()
     .split("\n")
     .map((line) => line.trim());
 }
 
-async function getAllApproved() {
+export async function getAllApproved(): Promise<string[]> {
   return getLines(await getFile("approved.txt"));
 }
 
-async function getAllRejected() {
+export async function getAllRejected(): Promise<string[]> {
   return getLines(await getFile("rejected.txt"));
 }
 
-async function getAllTweeted() {
+export async function getAllTweeted(): Promise<string[]> {
   return getLines(await getFile("tweeted.txt"));
 }
 
@@ -178,15 +183,15 @@ async function appendLine(key, line) {
   return putFile(key, newContent);
 }
 
-async function approve(md5) {
+export async function approve(md5: string): Promise<void> {
   return appendLine("approved.txt", md5);
 }
 
-async function reject(md5) {
+export async function reject(md5: string): Promise<void> {
   return appendLine("rejected.txt", md5);
 }
 
-async function markAsTweeted(md5) {
+export async function markAsTweeted(md5: string): Promise<void> {
   return appendLine("tweeted.txt", md5);
 }
 

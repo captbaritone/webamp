@@ -1,10 +1,11 @@
+import { Message } from "discord.js";
 const fetch = require("node-fetch");
 const Utils = require("../utils");
 const { addSkinFromBuffer } = require("../../addSkin");
 
-async function handler(message) {
+async function handler(message: Message) {
   const { attachments } = message;
-  if (attachments.length < 1) {
+  if (attachments.array().length < 1) {
     await message.channel.send("Could not archive. No attachment found.");
     return;
   }

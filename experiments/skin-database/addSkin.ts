@@ -1,10 +1,10 @@
 import * as Skins from "./data/skins";
 import fs from "fs";
 import md5Buffer from "md5";
-import S3 from "./s3";
+import * as S3 from "./s3";
 import Shooter from "./shooter";
 import _temp from "temp";
-import Analyser from "./analyser";
+import * as Analyser from "./analyser";
 
 const temp = _temp.track();
 

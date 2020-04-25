@@ -1,43 +1,10 @@
 import db from "../db";
 import path from "path";
-import S3 from "../s3";
+import * as S3 from "../s3";
 import logger from "../logger";
+import { DBSkinRecord, SkinRecord, DBIARecord, TweetStatus } from "../types";
 const skins = db.get("skins");
 const iaItems = db.get("internetArchiveItems");
-
-type TweetStatus = "APPROVED" | "REJECTED" | "TWEETED" | "UNREVIEWED";
-
-type DBSkinRecord = {
-  md5: string;
-  averageColor?: string;
-  emails?: string[];
-  tweetUrl?: string;
-  twitterLikes?: number;
-  readmeText?: string;
-  filePaths: string[];
-  imageHash?: string;
-  uploader?: string;
-};
-
-type DBIARecord = {
-  identifier: string;
-};
-
-type SkinRecord = {
-  md5: string;
-  averageColor?: string;
-  emails?: string[];
-  tweetUrl?: string;
-  twitterLikes?: number;
-  readmeText?: string;
-  fileNames: string[];
-  imageHash?: string;
-  uploader?: string;
-  screenshotUrl: string;
-  skinUrl: string;
-  canonicalFilename: string | null;
-  webampUrl: string;
-};
 
 const TWEETABLE_QUERY = {
   tweeted: { $ne: true },
@@ -240,7 +207,10 @@ async function getSkinToReview(): Promise<{
   return { filename: canonicalFilename, md5 };
 }
 
-async function getSkinToTweet() {
+async function getSkinToTweet(): Promise<{
+  filename: string | null;
+  md5: string;
+} | null> {
   const tweetables = await skins.aggregate([
     { $match: TWEETABLE_QUERY },
     { $sample: { size: 1 } },
@@ -289,6 +259,7 @@ async function setImageHash(md5: string, imageHash: string): Promise<void> {
   await skins.findOneAndUpdate({ md5 }, { $set: { imageHash } });
 }
 
+// Deprecated. Use module exports
 module.exports = {
   addSkin,
   getMd5sMatchingImageHash,
