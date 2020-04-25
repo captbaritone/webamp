@@ -54,7 +54,8 @@ client.on("message", async message => {
     command,
     user: message.author.username,
     args,
-    channel: message.channel.name || "DM"
+    channel: message.channel.name || "DM",
+    alert: message.channel.name == null
   });
   const handler = handlers[command];
   if (handler == null) {
@@ -69,10 +70,10 @@ client.on("message", async message => {
   try {
     await handler(message, args);
   } catch (e) {
-    console.error(e);
-    logger.error("Error handling command", e);
+    logger.error("Error handling command");
+    logger.error(e);
     message.channel.send(
-      "Oops. Something went wrong. Ping @captbaritone and yell at him to fix it."
+      "Oops. Something went wrong. @captbaritone has been DMed a stack trace. Feel free to ping him to fix."
     );
   }
 });
