@@ -16,7 +16,8 @@ class DiscordWinstonTransport extends Transport {
 
   async log(info, callback) {
     const { message, alert, ...rest } = info;
-    if (!alert) {
+    if (!alert && info.level !== "error") {
+      callback();
       return;
     }
     let dataString = null;
