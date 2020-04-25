@@ -47,7 +47,8 @@ async function tweet(discordClient) {
 
   const { md5, filename } = tweetableSkin;
   const output = await spawnPromise(
-    path.resolve(__dirname, "../../tweetBot/tweet.py"),
+    // This will be run from the dist directory
+    path.resolve(__dirname, "../../../tweetBot/tweet.py"),
     [
       "tweet",
       md5,

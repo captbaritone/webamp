@@ -1,11 +1,14 @@
-const Utils = require("../utils");
-const Skins = require("../../data/skins");
+import { Message } from "discord.js";
 
-async function handler(message, args) {
+import * as Utils from "../utils";
+import * as Skins from "../../data/skins";
+
+async function handler(message: Message, args: [string]) {
   const [anything] = args;
   const md5 = await Skins.getMd5ByAnything(anything);
   if (md5 == null) {
     message.channel.send(`Could not find a skin matching ${anything}`);
+    return;
   }
   await Utils.postSkin({
     md5,

@@ -1,7 +1,9 @@
-const tweet = require("../../tasks/tweet");
-const { CAPTBARITONE_USER_ID } = require("../../config");
+import { Message } from "discord.js";
 
-async function handler(message) {
+import tweet from "../../tasks/tweet";
+import { CAPTBARITONE_USER_ID } from "../../config";
+
+async function handler(message: Message): Promise<void> {
   if (message.author.id !== CAPTBARITONE_USER_ID) {
     await message.channel.send(
       `Currently only @captbaritone can use this command`

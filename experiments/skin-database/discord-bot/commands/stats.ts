@@ -1,6 +1,8 @@
-const { getStats, getClassicSkinCount } = require("../../data/skins");
+import { Message } from "discord.js";
 
-async function handler(message) {
+import { getStats, getClassicSkinCount } from "../../data/skins";
+
+async function handler(message: Message): Promise<void> {
   let classic = await getClassicSkinCount();
   const { tweeted, approved, rejected, tweetable } = await getStats();
   await message.channel.send(`Unique Skins: ${classic.toLocaleString()}
@@ -15,5 +17,5 @@ module.exports = {
   command: "stats",
   handler,
   usage: "",
-  description: "Give some statistics about the skin archive"
+  description: "Give some statistics about the skin archive",
 };

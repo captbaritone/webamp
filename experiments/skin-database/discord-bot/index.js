@@ -7,13 +7,13 @@ const DiscordWinstonTransport = require("../DiscordWinstonTransport");
 const client = new Discord.Client();
 
 const handlers = {
-  help: handleHelp
+  help: handleHelp,
 };
 
 const commands = fs
   .readdirSync(path.resolve(__dirname, "./commands"))
-  .filter(file => file.endsWith(".js"))
-  .map(file => {
+  .filter((file) => file.endsWith(".js"))
+  .map((file) => {
     return require(`./commands/${file}`);
   });
 
@@ -21,9 +21,11 @@ for (const command of commands) {
   handlers[command.command] = command.handler;
 }
 
+console.log(`Bot handlers registered: ${commands.map((c) => c.command)}`);
+
 async function handleHelp(message) {
   const commandHelp = commands
-    .map(command => {
+    .map((command) => {
       return `\`!${command.command} ${command.usage || ""}\` -- ${
         command.description
       }`;
@@ -41,7 +43,7 @@ You can issue these commands in a DM to me or in any channel. For tasks relating
   message.channel.send(help);
 }
 
-client.on("message", async message => {
+client.on("message", async (message) => {
   if (message.author.bot) {
     return;
   }
@@ -55,7 +57,7 @@ client.on("message", async message => {
     user: message.author.username,
     args,
     channel: message.channel.name || "DM",
-    alert: message.channel.name == null
+    alert: message.channel.name == null,
   });
   const handler = handlers[command];
   if (handler == null) {
@@ -63,7 +65,7 @@ client.on("message", async message => {
       command,
       user: message.author.username,
       args,
-      alert: true
+      alert: true,
     });
     return;
   }
@@ -78,7 +80,7 @@ client.on("message", async message => {
   }
 });
 
-client.on("error", e => {
+client.on("error", (e) => {
   logger.error("The WebSocket encountered an error:", e);
 });
 
