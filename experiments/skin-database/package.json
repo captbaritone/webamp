@@ -19,7 +19,6 @@
     "rgb-hex": "^3.0.0",
     "shell-escape": "^0.2.0",
     "temp": "^0.9.0",
-    "typescript": "^3.8.3",
     "winston": "^3.2.1",
     "yargs": "^13.2.4"
   },
@@ -28,5 +27,10 @@
     "tweet": "tsc && ./dist/cli.js tweet",
     "fetch-metadata": "tsc && .dist/cli.js fetch-metadata",
     "bot": "tsc && node ./dist/discord-bot/index.js"
+  },
+  "prettier": {},
+  "devDependencies": {
+    "typescript": "^3.8.3",
+    "prettier": "^2.0.5"
   }
 }
