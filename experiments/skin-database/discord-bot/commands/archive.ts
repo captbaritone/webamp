@@ -13,9 +13,7 @@ async function handler(message: Message) {
     attachments.map(async (attachment) => {
       const { filename, url } = attachment;
       const response = await fetch(url);
-      console.log("got response");
       const buffer = await response.buffer();
-      console.log("got buffer");
       return { filename, buffer };
     })
   );
