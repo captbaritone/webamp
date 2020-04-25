@@ -121,7 +121,7 @@ class Skin {
   }
 
   async uploader() {
-    return this._get(skin => skin.upload);
+    return this._get((skin) => skin.upload);
   }
 
   internetArchiveItem() {
