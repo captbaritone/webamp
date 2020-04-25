@@ -1,16 +1,16 @@
 #!/usr/bin/env node
-const path = require("path");
-const fs = require("fs");
-const argv = require("yargs").argv;
-const fetchInternetArchiveMetadata = require("./tasks/fetchInternetArchiveMetadata");
-const ensureInternetArchiveItemsIndexByMd5 = require("./tasks/ensureInternetArchiveItemsIndexByMd5");
-const logger = require("./logger");
-const DiscordWinstonTransport = require("./DiscordWinstonTransport");
-const Skins = require("./data/skins");
-const db = require("./db");
-const Discord = require("discord.js");
-const tweet = require("./tasks/tweet");
-const { addSkinFromBuffer } = require("./addSkin");
+import path from "path";
+import fs from "fs";
+import { argv } from "yargs";
+import fetchInternetArchiveMetadata from "./tasks/fetchInternetArchiveMetadata";
+import ensureInternetArchiveItemsIndexByMd5 from "./tasks/ensureInternetArchiveItemsIndexByMd5";
+import logger from "./logger";
+import DiscordWinstonTransport from "./DiscordWinstonTransport";
+import * as Skins from "./data/skins";
+import db from "./db";
+import Discord from "discord.js";
+import { tweet } from "./tasks/tweet";
+import { addSkinFromBuffer } from "./addSkin";
 
 async function main() {
   const client = new Discord.Client();

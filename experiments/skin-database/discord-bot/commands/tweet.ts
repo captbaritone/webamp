@@ -1,6 +1,6 @@
 import { Message } from "discord.js";
 
-import tweet from "../../tasks/tweet";
+import { tweet } from "../../tasks/tweet";
 import { CAPTBARITONE_USER_ID } from "../../config";
 
 async function handler(message: Message): Promise<void> {
