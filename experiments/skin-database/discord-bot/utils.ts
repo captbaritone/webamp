@@ -107,6 +107,9 @@ export async function postSkin({
 
   // @ts-ignore WAT?
   const msg = await dest.send(embed);
+  if (tweetStatus === "TWEETED") {
+    return;
+  }
   await Promise.all([msg.react("👍"), msg.react("👎")]);
 
   // TODO: Timeout at some point
