@@ -5,6 +5,10 @@ const iaItems = db.get("internetArchiveItems");
 const S3 = require("../s3");
 const logger = require("../logger");
 
+const CLASSIC_QUERY = {
+  type: "CLASSIC",
+};
+
 const TWEETABLE_QUERY = {
   tweeted: { $ne: true },
   approved: true,
@@ -30,7 +34,7 @@ function getSkinRecord(skin) {
     imageHash,
     uploader,
   } = skin;
-  const fileNames = filePaths.map((p) => path.basename(p));
+  const fileNames = filePaths.map(p => path.basename(p));
   const skinUrl = `https://s3.amazonaws.com/webamp-uploaded-skins/skins/${md5}.wsz`;
   return {
     skinUrl,
@@ -150,6 +154,10 @@ function getTweetableSkinCount() {
   return skins.count(TWEETABLE_QUERY);
 }
 
+function getClassicSkinCount() {
+  return skins.count(CLASSIC_QUERY);
+}
+
 async function markAsTweeted(md5) {
   await skins.findOneAndUpdate({ md5 }, { $set: { tweeted: true } });
   return S3.markAsTweeted(md5);
@@ -217,13 +225,13 @@ async function reconcile() {
     S3.getAllTweeted(),
   ]);
   await Promise.all([
-    ...approved.map((md5) =>
+    ...approved.map(md5 =>
       skins.findOneAndUpdate({ md5 }, { $set: { approved: true } })
     ),
-    ...rejected.map((md5) =>
+    ...rejected.map(md5 =>
       skins.findOneAndUpdate({ md5 }, { $set: { rejected: true } })
     ),
-    ...tweeted.map((md5) =>
+    ...tweeted.map(md5 =>
       skins.findOneAndUpdate({ md5 }, { $set: { tweeted: true } })
     ),
   ]);
@@ -231,6 +239,17 @@ async function reconcile() {
 
 async function setImageHash(md5, imageHash) {
   await skins.findOneAndUpdate({ md5 }, { $set: { imageHash } });
+}
+
+async function getRandomClassicSkinMd5() {
+  const random = await skins.aggregate([
+    { $match: CLASSIC_QUERY },
+    { $sample: { size: 1 } },
+  ]);
+  if (random.length === 0) {
+    return null;
+  }
+  return random[0].md5;
 }
 
 module.exports = {
@@ -253,4 +272,6 @@ module.exports = {
   reconcile,
   getSkinToTweet,
   setImageHash,
+  getClassicSkinCount,
+  getRandomClassicSkinMd5,
 };

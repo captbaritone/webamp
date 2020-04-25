@@ -1,15 +1,11 @@
 const Utils = require("../utils");
-
-const { getCache } = require("../info");
+const { getRandomClassicSkinMd5 } = require("../../data/skins");
 
 async function handler(message) {
-  const cache = getCache();
-  const skins = Object.values(cache).filter((skin) => skin.type === "CLASSIC");
-  const skin = skins[Math.floor(Math.random() * skins.length)];
-  const { md5 } = skin;
+  const md5 = await getRandomClassicSkinMd5();
   await Utils.postSkin({
     md5,
-    dest: message.channel,
+    dest: message.channel
   });
 }
 
@@ -17,5 +13,5 @@ module.exports = {
   usage: "",
   description: "Show information about a random skin",
   command: "random",
-  handler,
+  handler
 };
