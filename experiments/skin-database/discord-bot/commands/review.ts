@@ -1,7 +1,8 @@
-const Skins = require("../../data/skins");
-const Utils = require("../utils");
+import * as Skins from "../../data/skins";
+import * as Utils from "../utils";
+import { Message } from "discord.js";
 
-async function reviewSkin(message) {
+async function reviewSkin(message: Message): Promise<void> {
   const skin = await Skins.getSkinToReview();
   if (skin == null) {
     throw new Error("No skins to review");
@@ -14,15 +15,16 @@ async function reviewSkin(message) {
   });
 }
 
-async function handler(message, args) {
-  let count = args[0] || 1;
+async function handler(message: Message, args: [string]) {
+  let count = Number(args[0] || 1);
   if (count > 50) {
-    await message.channel.send(`You can only review up to ${count} skins at a time.`);
-    await message.channel.send(`Going to show ${count} skins to review`);
+    await message.channel.send(
+      `You can only review up to ${count} skins at a time.`
+    );
     count = 50;
   }
   await message.channel.send(`Going to show ${count} skins to review.`);
-  let i = Number(count);
+  let i = count;
   while (i--) {
     await reviewSkin(message);
   }
@@ -31,6 +33,8 @@ async function handler(message, args) {
     await message.channel.send(
       `Done reviewing ${count} skins. There are now ${tweetableCount} Tweetable skins. Thanks!`
     );
+  } else {
+    await message.channel.send(`Thanks!`);
   }
 }
 
