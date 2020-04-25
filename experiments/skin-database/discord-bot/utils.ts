@@ -1,22 +1,31 @@
-const Discord = require("discord.js");
-const rgbHex = require("rgb-hex");
-const Skins = require("../data/skins");
-const logger = require("../logger");
+import { RichEmbed, User, MessageReaction, Channel } from "discord.js";
+import rgbHex from "rgb-hex";
+import * as Skins from "../data/skins";
+import logger from "../logger";
+import { TweetStatus } from "../types";
 
-function isEligableToApprove(user) {
+function isEligableToApprove(user: User): boolean {
   return !user.bot;
 }
 
-const filter = reaction => {
+const filter = (reaction: MessageReaction): boolean => {
   const hasNonBot = reaction.users.some(isEligableToApprove);
 
   return (
     hasNonBot &&
-    ["👍", "👎", "👏", "😔"].some(name => reaction.emoji.name === name)
+    ["👍", "👎", "👏", "😔"].some((name) => reaction.emoji.name === name)
   );
 };
 
-async function postSkin({ md5, title, dest }) {
+async function postSkin({
+  md5,
+  title: _title,
+  dest,
+}: {
+  md5: string;
+  title: (filename: string | null) => string;
+  dest: Channel;
+}) {
   const skin = await Skins.getSkinByMd5(md5);
   if (skin == null) {
     console.warn("Could not find skin for md5", { md5, alert: true });
@@ -35,11 +44,11 @@ async function postSkin({ md5, title, dest }) {
     tweetStatus,
     internetArchiveUrl,
     internetArchiveItemName,
-    readmeText
+    readmeText,
   } = skin;
-  title = title ? title(canonicalFilename) : canonicalFilename;
+  const title = _title ? _title(canonicalFilename) : canonicalFilename;
 
-  const embed = new Discord.RichEmbed()
+  const embed = new RichEmbed()
     .setTitle(title)
     .addField("Try Online", `[webamp.org](${webampUrl})`, true)
     .addField("Download", `[${canonicalFilename}](${skinUrl})`, true)
@@ -59,7 +68,7 @@ async function postSkin({ md5, title, dest }) {
         logger.warn("Did not get a safe color", {
           averageColor,
           color,
-          warn: true
+          warn: true,
         });
       }
     } catch (e) {
@@ -89,11 +98,12 @@ async function postSkin({ md5, title, dest }) {
     );
   }
 
+  // @ts-ignore WAT?
   const msg = await dest.send(embed);
   await Promise.all([msg.react("👍"), msg.react("👎")]);
 
   // TODO: Timeout at some point
-  await msg.awaitReactions(filter, { max: 1 }).then(async collected => {
+  await msg.awaitReactions(filter, { max: 1 }).then(async (collected) => {
     const vote = collected.first();
     const user = vote.users.find(isEligableToApprove);
     switch (vote.emoji.name) {
@@ -119,7 +129,7 @@ async function postSkin({ md5, title, dest }) {
   });
 }
 
-function getPrettyTwitterStatus(status) {
+function getPrettyTwitterStatus(status: TweetStatus): string {
   switch (status) {
     case "APPROVED":
       return "Approved ✅";
