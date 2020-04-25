@@ -131,7 +131,7 @@ class Skin {
 
 // The root provides a resolver function for each API endpoint
 const root = {
-  skin: async ({ md5, query }) => {
+  skin: async ({ md5 }) => {
     return Skin.fromMd5(md5);
   },
   skins: async ({ imageHash }) => {
@@ -148,5 +148,11 @@ exports.default = function () {
     schema: schema,
     rootValue: root,
     graphiql: true,
+    customFormatErrorFn: (error) => ({
+      message: error.message,
+      locations: error.locations,
+      stack: error.stack ? error.stack.split("\n") : [],
+      path: error.path,
+    }),
   });
 };
