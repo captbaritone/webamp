@@ -134,13 +134,14 @@ asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
 
-aws-sdk@^2.469.0:
-  version "2.469.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.469.0.tgz#b52dbbffdcb52f3f01981eaad1559e0cdca53bd9"
+aws-sdk@^2.663.0:
+  version "2.663.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.663.0.tgz#003d8cc318635d1bf67deda586f5e5d583b7e384"
+  integrity sha512-xPOszNOaSXTRs8VGXaMbhTKXdlq2TlDRfFRVEGxkZrtow87hEIVZGAUSUme2e3GHqHUDnySwcufrUpUPUizOKQ==
   dependencies:
     buffer "4.9.1"
     events "1.1.1"
-    ieee754 "1.1.8"
+    ieee754 "1.1.13"
     jmespath "0.15.0"
     querystring "0.2.0"
     sax "1.2.1"
@@ -603,12 +604,13 @@ dir-glob@^3.0.1:
   dependencies:
     path-type "^4.0.0"
 
-discord.js@^11.5.1:
-  version "11.5.1"
-  resolved "https://registry.yarnpkg.com/discord.js/-/discord.js-11.5.1.tgz#910fb9f6410328581093e044cafb661783a4d9e8"
+discord.js@^11.4.2:
+  version "11.6.4"
+  resolved "https://registry.yarnpkg.com/discord.js/-/discord.js-11.6.4.tgz#76bab98de08d7586ecde44c063ef310e6b9a2700"
+  integrity sha512-cK6rH1PuGjSjpmEQbnpuTxq1Yv8B89SotyKUFcr4RhnsiZnfBfDOev7DD7v5vhtEyyj51NuMWFoRJzgy/m08Uw==
   dependencies:
     long "^4.0.0"
-    prism-media "^0.0.3"
+    prism-media "^0.0.4"
     snekfetch "^3.6.4"
     tweetnacl "^1.0.0"
     ws "^6.0.0"
@@ -1197,11 +1199,7 @@ iconv-lite@0.4.24:
   dependencies:
     safer-buffer ">= 2.1.2 < 3"
 
-ieee754@1.1.8:
-  version "1.1.8"
-  resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.8.tgz#be33d40ac10ef1926701f6f08a2d86fbfd1ad3e4"
-
-ieee754@^1.1.4:
+ieee754@1.1.13, ieee754@^1.1.4:
   version "1.1.13"
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.13.tgz#ec168558e95aa181fd87d37f55c32bbcb6708b84"
 
@@ -1472,6 +1470,7 @@ logform@^2.1.1:
 long@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/long/-/long-4.0.0.tgz#9a7b71cfb7d361a194ea555241c92f7468d5bf28"
+  integrity sha512-XsP+KhQif4bjX1kbuSiySJFNAehNxgLb6hPRGJ9QsUr8ajHkuXGdrHmFUTUUXhDwVX2R5bY4JNZEwbUiMhV+MA==
 
 longest@^1.0.0:
   version "1.0.1"
@@ -1533,6 +1532,7 @@ map-obj@^1.0.0, map-obj@^1.0.1:
 md5@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/md5/-/md5-2.2.1.tgz#53ab38d5fe3c8891ba465329ea23fac0540126f9"
+  integrity sha1-U6s41f48iJG6RlMp6iP6wFQBJvk=
   dependencies:
     charenc "~0.0.1"
     crypt "~0.0.1"
@@ -1722,6 +1722,7 @@ nice-try@^1.0.4:
 node-fetch@^2.6.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.0.tgz#e633456386d4aa55863f676a7ab0daa8fdecb0fd"
+  integrity sha512-8dG4H5ujfvFiqDmVu9fQ5bOHUC15JMjMY/Zumv26oOvvVJjM67KF8koCWIabKQ1GJIa9r2mMZscBq/TbdOcmNA==
 
 normalize-package-data@^2.3.2, normalize-package-data@^2.3.4:
   version "2.5.0"
@@ -1975,9 +1976,10 @@ prepend-http@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-2.0.0.tgz#e92434bfa5ea8c19f41cdfd401d741a3c819d897"
 
-prism-media@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/prism-media/-/prism-media-0.0.3.tgz#8842d4fae804f099d3b48a9a38e3c2bab6f4855b"
+prism-media@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/prism-media/-/prism-media-0.0.4.tgz#df5ddc6463670c97ff0e9cbac3c3e0db18df326f"
+  integrity sha512-dG2w7WtovUa4SiYTdWn9H8Bd4JNdei2djtkP/Bk9fXq81j5Q15ZPHYSwhUVvBRbp5zMkGtu0Yk62HuMcly0pRw==
 
 process-nextick-args@~2.0.0:
   version "2.0.0"
@@ -2196,9 +2198,10 @@ reusify@^1.0.0:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/reusify/-/reusify-1.0.4.tgz#90da382b1e126efc02146e90845a88db12925d76"
 
-rgb-hex@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/rgb-hex/-/rgb-hex-2.1.0.tgz#c773c5fe2268a25578d92539a82a7a5ce53beda6"
+rgb-hex@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/rgb-hex/-/rgb-hex-3.0.0.tgz#eab0168cc1279563b18a14605315389142e2e487"
+  integrity sha512-8h7ZcwxCBDKvchSWbWngJuSCqJGQ6nDuLLg+QcRyQDbX9jMWt+PpPeXAhSla0GOooEomk3lCprUpGkMdsLjKyg==
 
 rimraf@^2.5.4, rimraf@^2.6.1, rimraf@~2.6.2:
   version "2.6.3"
@@ -2301,6 +2304,11 @@ shebang-regex@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-1.0.0.tgz#da42f49740c0b42db2ca9728571cb190c98efea3"
 
+shell-escape@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/shell-escape/-/shell-escape-0.2.0.tgz#68fd025eb0490b4f567a027f0bf22480b5f84133"
+  integrity sha1-aP0CXrBJC09WegJ/C/IkgLX4QTM=
+
 signal-exit@^3.0.0:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
@@ -2318,6 +2326,7 @@ slash@^3.0.0:
 snekfetch@^3.6.4:
   version "3.6.4"
   resolved "https://registry.yarnpkg.com/snekfetch/-/snekfetch-3.6.4.tgz#d13e80a616d892f3d38daae4289f4d258a645120"
+  integrity sha512-NjxjITIj04Ffqid5lqr7XdgwM7X61c/Dns073Ly170bPQHLm6jkmelye/eglS++1nfTWktpP6Y2bFXjdPlQqdw==
 
 sort-keys-length@^1.0.0:
   version "1.0.1"
@@ -2550,8 +2559,9 @@ tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-0.14.5.tgz#5ae68177f192d4456269d108afa93ff8743f4f64"
 
 tweetnacl@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-1.0.1.tgz#2594d42da73cd036bd0d2a54683dd35a6b55ca17"
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-1.0.3.tgz#ac0af71680458d8a6378d0d0d050ab1407d35596"
+  integrity sha512-6rt+RN7aOi1nGMyC4Xa5DdYiukl2UWCbcJft7YhxReBGQD7OAM8Pbxw6YMo4r2diNEA8FEmu32YOn9rhaiE5yw==
 
 type-is@~1.6.17, type-is@~1.6.18:
   version "1.6.18"
@@ -2563,6 +2573,11 @@ type-is@~1.6.17, type-is@~1.6.18:
 typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
+
+typescript@^3.8.3:
+  version "3.8.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.3.tgz#409eb8544ea0335711205869ec458ab109ee1061"
+  integrity sha512-MYlEfn5VrLNsgudQTVJeNaQFUAI7DkhnOjdpAp4T+ku1TfQClewlbSuTVHiA+8skNBgaf02TL/kLOvig4y3G8w==
 
 unbzip2-stream@^1.0.9:
   version "1.3.3"
@@ -2685,6 +2700,7 @@ wrappy@1:
 ws@^6.0.0, ws@^6.1.0:
   version "6.2.1"
   resolved "https://registry.yarnpkg.com/ws/-/ws-6.2.1.tgz#442fdf0a47ed64f59b6a5d8ff130f4748ed524fb"
+  integrity sha512-GIyAXC2cB7LjvpgMt9EKS2ldqr0MTrORaleiOno6TweZ6r3TKtoFQWay/2PceJ3RuBasOHzXNn5Lrw1X0bEjqA==
   dependencies:
     async-limiter "~1.0.0"
 
