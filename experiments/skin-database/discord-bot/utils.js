@@ -3,8 +3,17 @@ const rgbHex = require("rgb-hex");
 const Skins = require("../data/skins");
 const logger = require("../logger");
 
-const filter = (reaction) => {
-  return ["👍", "👎", "👏", "😔"].some((name) => reaction.emoji.name === name);
+function isEligableToApprove(user) {
+  return !user.bot;
+}
+
+const filter = reaction => {
+  const hasNonBot = reaction.users.some(isEligableToApprove);
+
+  return (
+    hasNonBot &&
+    ["👍", "👎", "👏", "😔"].some(name => reaction.emoji.name === name)
+  );
 };
 
 async function postSkin({ md5, title, dest }) {
@@ -26,7 +35,7 @@ async function postSkin({ md5, title, dest }) {
     tweetStatus,
     internetArchiveUrl,
     internetArchiveItemName,
-    readmeText,
+    readmeText
   } = skin;
   title = title ? title(canonicalFilename) : canonicalFilename;
 
@@ -50,7 +59,7 @@ async function postSkin({ md5, title, dest }) {
         logger.warn("Did not get a safe color", {
           averageColor,
           color,
-          warn: true,
+          warn: true
         });
       }
     } catch (e) {
@@ -81,10 +90,12 @@ async function postSkin({ md5, title, dest }) {
   }
 
   const msg = await dest.send(embed);
+  await Promise.all([msg.react("👍"), msg.react("👎")]);
 
-  await msg.awaitReactions(filter, { max: 1 }).then(async (collected) => {
+  // TODO: Timeout at some point
+  await msg.awaitReactions(filter, { max: 1 }).then(async collected => {
     const vote = collected.first();
-    const user = vote.users.first();
+    const user = vote.users.find(isEligableToApprove);
     switch (vote.emoji.name) {
       case "👍":
       case "👏":
