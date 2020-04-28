@@ -6,11 +6,18 @@ const iaItems = db.get("internetArchiveItems");
 const Skins = require("./data/skins");
 const port = 3001;
 const graphql = require("./graphql").default;
+const fileUpload = require("express-fileupload");
+const { addSkinFromBuffer } = require("./addSkin");
 
 // TODO: Look into 766c4fad9088037ab4839b18292be8b1
 // Has huge number of filenames in info.json
 
 app.set("json spaces", 2);
+app.use(
+  fileUpload({
+    limits: { fileSize: 50 * 1024 * 1024 },
+  })
+);
 
 app.get("/", async (req, res) => {
   res.send("Hello World!");
@@ -24,6 +31,21 @@ app.get("/items/:identifier", async (req, res) => {
     return;
   }
   res.json(item);
+});
+
+app.post("/skins/", async (req, res) => {
+  const files = req.files;
+  if (files == null) {
+    res.status(500).send({ error: "No file supplied" });
+    return;
+  }
+  const upload = req.files.skin;
+  if (upload == null) {
+    res.status(500).send({ error: "No file supplied" });
+    return;
+  }
+  result = await addSkinFromBuffer(upload.data, upload.name, "Web API");
+  res.json({ ...result, filename: upload.name });
 });
 
 app.get("/skins/:md5", async (req, res) => {
