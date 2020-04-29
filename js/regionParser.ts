@@ -26,6 +26,11 @@ export default function regionParser(regionStr: string): RegionData {
     let pointIndex = 0;
     const polygons = pointCounts.map((numStr) => {
       const num = Number(numStr);
+      if (num < 3) {
+        // What use is a polygon with less than three sides?
+        pointIndex += num;
+        return null;
+      }
       const polygon = points.slice(pointIndex, pointIndex + num).join(" ");
       if (!polygon.length) {
         // It's possible that the skin author specified more polygons than provided points.
