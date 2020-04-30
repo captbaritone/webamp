@@ -1,4 +1,4 @@
-import { ButterchurnOptions } from "../../js/types";
+import { ButterchurnOptions, Preset } from "../../js/types";
 
 const KNOWN_PRESET_URLS_REGEXES = [
   /^https:\/\/unpkg\.com\/butterchurn-presets\/.*\.json$/,
@@ -20,12 +20,18 @@ function presetNameFromURL(url: string) {
   }
 }
 
-async function loadButterchurnPresetMapURL(url: string) {
-  const resp = await fetch(url);
-  const namesToPresetUrls = await resp.json();
+function restructureButterchurnPresetMap(namesToPresetUrls: {
+  [key: string]: string;
+}): Preset[] {
   return Object.keys(namesToPresetUrls).map((name: string) => {
     return { name, butterchurnPresetUrl: namesToPresetUrls[name] };
   });
+}
+
+async function loadButterchurnPresetMapURL(url: string) {
+  const resp = await fetch(url);
+  const namesToPresetUrls = await resp.json();
+  return restructureButterchurnPresetMap(namesToPresetUrls);
 }
 
 export function getButterchurnOptions(
@@ -48,7 +54,7 @@ export function getButterchurnOptions(
     },
     presetConverterEndpoint:
       "https://p2tpeb5v8b.execute-api.us-east-2.amazonaws.com/default/milkdropShaderConverter",
-    getPresets: async () => {
+    getPresets: async (): Promise<Preset[]> => {
       if ("URLSearchParams" in window) {
         const params = new URLSearchParams(location.search);
         const butterchurnPresetUrlParam = params.get("butterchurnPresetUrl");
@@ -89,10 +95,12 @@ export function getButterchurnOptions(
           throw new Error("We still need to implement this");
         }
       }
-      // TODO: Fallback to some other presets?
-      return loadButterchurnPresetMapURL(
-        "https://unpkg.com/butterchurn-presets-weekly@0.0.2/weeks/week1/presets.json"
+
+      const presetMap = await import(
+        /* webpackChunkName: "milkdrop-presets-weekly" */
+        "butterchurn-presets-weekly/weeks/week1/presets.json"
       );
+      return restructureButterchurnPresetMap(presetMap.default);
     },
     butterchurnOpen: !startWithMilkdropHidden,
   };

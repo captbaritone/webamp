@@ -2727,6 +2727,11 @@ builtin-status-codes@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/builtin-status-codes/-/builtin-status-codes-3.0.0.tgz#85982878e21b98e1c66425e03d0174788f569ee8"
 
+butterchurn-presets-weekly@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/butterchurn-presets-weekly/-/butterchurn-presets-weekly-0.0.4.tgz#2ab8b8bc1f90269c8d6861ea734d27e2e6e52184"
+  integrity sha512-vEc7PgNSOOsYU4G72riAMCy3RidImgfsAYQJLchOI1bugVhXdkAqZzyLqh0aEqoZ7xTZC1xBQFHqLm6NbKfZjg==
+
 butterchurn@^2.6.7:
   version "2.6.7"
   resolved "https://registry.yarnpkg.com/butterchurn/-/butterchurn-2.6.7.tgz#1ff0c1365731a4fb7ada7bb16ae1c6f09a110c12"
