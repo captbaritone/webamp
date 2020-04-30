@@ -13,5 +13,5 @@
     "pretty": true
   },
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "demo/built"]
+  "exclude": ["node_modules", "demo/built", "experiments/skin-database"]
 }
