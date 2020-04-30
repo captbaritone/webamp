@@ -4,12 +4,12 @@ const temp = require("temp").track();
 const fs = require("fs");
 const fetch = require("node-fetch");
 const md5Buffer = require("md5");
-const Shooter = require("../../shooter");
+const { withShooter } = require("../../shooter");
 
 async function handler(message) {
   console.log("Trying to take a screenshot");
   const { attachments } = message;
-  if (attachments.length < 1) {
+  if (attachments.size < 1) {
     await message.channel.send("Could not screenshot. No attachment found.");
     return;
   }
@@ -27,7 +27,6 @@ async function handler(message) {
   );
 
   console.log("got files");
-  const shooter = new Shooter("https://webamp.org");
 
   for (const file of files) {
     const tempFile = temp.path({ suffix: ".wsz" });
@@ -36,10 +35,16 @@ async function handler(message) {
     fs.writeFileSync(tempFile, file.buffer);
 
     try {
-      await shooter.takeScreenshot(tempFile, tempScreenshotPath, {
-        minify: true,
+      console.log("Starting screenshot");
+      await withShooter(async (shooter) => {
+        await shooter.takeScreenshot(tempFile, tempScreenshotPath, {
+          minify: true,
+        });
       });
+      console.log("Completed screenshot");
     } catch (e) {
+      // TODO: Actually log this.
+      console.error(e);
       await message.channel.send(
         `Something went wrong taking the screenshot of ${file.filename}. Sorry.`
       );
@@ -57,7 +62,6 @@ async function handler(message) {
 
     await message.channel.send(embed);
   }
-  await shooter.dispose();
 }
 
 module.exports = {
