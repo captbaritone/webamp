@@ -87,7 +87,7 @@ class Shooter {
   }
 
   async dispose() {
-    this._ensureInitialized();
+    await this._ensureInitialized();
     await this._page.close();
     await this._browser.close();
     this._initialized = false;
