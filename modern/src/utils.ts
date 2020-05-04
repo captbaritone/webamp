@@ -297,7 +297,7 @@ export function findElementById(
 // Search up the tree for a <GroupDef> node that is in node's lexical scope and matches id.
 export function findGroupDefById(
   node: MakiObject,
-  id: String
+  id: string
 ): MakiObject | null {
   return findInLexicalScope(node, child => {
     return (
