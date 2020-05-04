@@ -67,7 +67,7 @@ describe("clamp", () => {
 });
 
 describe("parseViscolors", () => {
-  it("can parse the default viscolors file", () => {
+  it("can parser the default viscolors file", () => {
     const viscolors = fixture("VISCOLOR.TXT");
     const actual = parseViscolors(viscolors);
     expect(actual).toMatchInlineSnapshot(`
@@ -100,7 +100,7 @@ Array [
 `);
   });
 
-  it("can parse a malformed viscolors file", () => {
+  it("can parser a malformed viscolors file", () => {
     // From https://skins.webamp.org/skin/018ddb394f2bfe49efa70bce27b71cb2/Centra_CSS-102_104-3.wsz/
     const viscolors = fixture("CENTRA_VISCOLOR.TXT");
     const actual = parseViscolors(viscolors);
@@ -204,7 +204,7 @@ Array [
 });
 
 describe("parseIni", () => {
-  it("can parse the default pledit.txt file", () => {
+  it("can parser the default pledit.txt file", () => {
     const pledit = fixture("PLEDIT.TXT");
     const actual = parseIni(pledit);
     const expected = {
@@ -219,7 +219,7 @@ describe("parseIni", () => {
     expect(actual).toEqual(expected);
   });
 
-  it("can parse TopazAmp's pledit.txt file", () => {
+  it("can parser TopazAmp's pledit.txt file", () => {
     const pledit = fixture("PLEDIT_TOPAZ.TXT");
     const actual = parseIni(pledit);
     const expected = {
@@ -249,7 +249,7 @@ bar = baz
     expect(actual).toEqual(expected);
   });
 
-  it("can parse a pledit.txt file with quotes", () => {
+  it("can parser a pledit.txt file with quotes", () => {
     const pledit = fixture("PLEDIT_WITH_QUOTES.TXT");
     const actual = parseIni(pledit);
     const expected = {
@@ -264,7 +264,7 @@ bar = baz
     expect(actual).toEqual(expected);
   });
 
-  it("can parse a pledit.txt file that uses = to mark comments", () => {
+  it("can parser a pledit.txt file that uses = to mark comments", () => {
     const pledit = fixture("PLEDIT_WITH_EQUALS.TXT");
     const actual = parseIni(pledit);
 

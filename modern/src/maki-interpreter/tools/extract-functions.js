@@ -2,7 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
-const parse = require("../parser").default;
+const parse = require("../parser").parser;
 const JSZip = require("jszip");
 const { getClass, getFunctionObject, getFormattedId } = require("../objects");
 const glob = require("glob");

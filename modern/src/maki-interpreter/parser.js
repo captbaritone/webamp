@@ -302,7 +302,7 @@ function parseComand({ start, makiFile, length }) {
   return command;
 }
 
-function parse(data) {
+function parser(data) {
   const makiFile = new MakiFile(data);
 
   const magic = readMagic(makiFile);
@@ -356,4 +356,4 @@ function parse(data) {
   };
 }
 
-export default parse;
+export default parser;

@@ -1,15 +1,15 @@
 import { readFileSync } from "fs";
 import { join } from "path";
-import parse from "../maki-interpreter/parser";
+import parser from "../maki-interpreter/parser";
 import { getClass } from "../maki-interpreter/objects";
 import { VERSIONS } from "./testConstants";
 
 function parseFile(relativePath) {
   const buffer = readFileSync(join(__dirname, relativePath));
-  return parse(buffer);
+  return parser(buffer);
 }
 
-describe("can parse without crashing", () => {
+describe("can parser without crashing", () => {
   const versions = [
     // VERSIONS.WINAMP_3_ALPHA,
     VERSIONS.WINAMP_3_BETA,

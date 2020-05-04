@@ -40,7 +40,7 @@ function getNumber(attr: string | undefined, fallback: number): number {
 }
 
 function getBoolean(attr: string | undefined, fallback: boolean): boolean {
-  // TODO: Check if there are othe values that parse as `true`, there probably are.
+  // TODO: Check if there are othe values that parser as `true`, there probably are.
   return attr === undefined ? fallback : attr === "1";
 }
 

@@ -1,4 +1,4 @@
-import parse from "./parser";
+import parser from "./parser";
 import { getClass, getFormattedId } from "./objects";
 import { interpret } from "./interpreter";
 import { isPromise } from "../utils";
@@ -24,7 +24,7 @@ export function run({
   log,
   debugHandler = runGeneratorUntilReturn,
 }) {
-  const program = parse(data);
+  const program = parser(data);
 
   // Replace class hashes with actual JavaScript classes from the runtime
   program.classes = program.classes.map(hash => {
