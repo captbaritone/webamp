@@ -16,7 +16,7 @@ jobs:
           node-version: 12.x
       - name: Run Tests
         run: |
-          cd experiments/archive-org-integration-tests
+          cd packages/webamp/experiments/archive-org-integration-tests
           yarn
           node ./index.js
         env:
@@ -25,4 +25,4 @@ jobs:
         if: failure()
         with:
           name: error
-          path: experiments/archive-org-integration-tests/error.png
+          path: packages/webamp/experiments/archive-org-integration-tests/error.png
