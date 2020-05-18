@@ -39,7 +39,7 @@ In addition to the sprite sheets there are some config files in various formats,
 
 From there, our `Skin` component has a `ClipPaths` sub component which ouputs a series of `<svg>`s representing the clip path for each window into the DOM. Finally, CSS `clip-path` rules representing each window are dynamically generated and added to the injected style sheet.
 
-The parsing of skin files is handed in [skinParser.js](../js/skinParser.js). Rendering the `<svg>` and `<style>` tags is done in [Skin.js](../js/components/Skin.js). The definitions for all the individual sprites live in [skinSpirtes.js](../js/skinSprites.ts), and the mapping of skin spirtes to CSS rules lives in [skinSelectors.js](../js/skinSelectors.ts).
+The parsing of skin files is handed in [skinParser.js](../js/skinParser.js). Rendering the `<svg>` and `<style>` tags is done in [Skin.js](../js/components/Skin.tsx). The definitions for all the individual sprites live in [skinSpirtes.js](../js/skinSprites.ts), and the mapping of skin spirtes to CSS rules lives in [skinSelectors.js](../js/skinSelectors.ts).
 
 ## CSS
 
