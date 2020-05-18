@@ -154,8 +154,9 @@ A list of public websites that are using Webamp:
 - [JuicyDrop](http://cggaurav.github.io/juicydrop/) An HTML5 implementation with
   less emphasis on being true to the skin, but fully featured visualizations.
   @cggaurav is keeping it alive on [GitHub](https://github.com/cggaurav/juicydrop)
-- [Spotiamp](http://spotiamp.com/) The folks at Spotify reimplemented Winamp as
-  a frontend for Spotify. Not in a browser, and only runs on Windows.
+- [Spotiamp](https://web.archive.org/web/20160109180426/http://spotiamp.com/)
+  The folks at Spotify reimplemented Winamp as a frontend for Spotify. Not in a
+  browser, and only runs on Windows. It has since been discontinued.
 
 ## Thanks
 
