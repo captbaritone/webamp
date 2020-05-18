@@ -16,7 +16,7 @@ jobs:
           node-version: 12.x
       - name: Run Tests
         run: |
-          cd packages/webamp/experiments/archive-org-integration-tests
+          cd packages/archive-org-webamp-integration-tests
           yarn
           node ./index.js
         env:

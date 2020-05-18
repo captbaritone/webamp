@@ -1,0 +1,11 @@
+{
+  "name": "archive-org-integration-tests",
+  "version": "1.0.0",
+  "description": "Automated tests to ensure the Internet Archive's Webamp integration is working",
+  "main": "index.js",
+  "license": "MIT",
+  "prettier": {},
+  "dependencies": {
+    "puppeteer": "^3.0.4"
+  }
+}
