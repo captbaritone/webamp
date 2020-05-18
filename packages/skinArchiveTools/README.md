@@ -1,5 +1,7 @@
 # Skin Archive Tools
 
+**Note:** My goal is to merge this into the `skin-database` package.
+
 A collection of scripts for managing the Internet Archive's collection of Winamp Skins.
 
 It works as a data pipeline. The phases are:
