@@ -1,2 +1,2 @@
-experiments/* linguist-vendored
-modern/resources/* linguist-vendored
+packages/webamp/experiments/* linguist-vendored
+packages/webamp/modern/resources/* linguist-vendored

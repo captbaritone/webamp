@@ -20,16 +20,16 @@ jobs:
         run: yarn
       - name: Lint
         run: |
-          yarn lint
-          yarn type-check
+          yarn workspace webamp lint
+          yarn workspace webamp type-check
       - name: Build
         run: |
-          yarn build
-          yarn build-library
+          yarn workspace webamp build
+          yarn workspace webamp build-library
       - name: Run Unit Tests
-        run: yarn test
+        run: yarn workspace webamp test
       - name: Run Integration Tests
-        run: yarn integration-tests
+        run: yarn workspace webamp integration-tests
         env:
           CI: true
       - name: Upload Screenshot Diffs
@@ -37,14 +37,14 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: image_diffs
-          path: js/__tests__/__image_snapshots__/__diff_output__/
+          path: packages/webamp/js/__tests__/__image_snapshots__/__diff_output__/
       - name: Generate New Screenshots
         if: failure()
         run: |
-          yarn integration-tests -u
+          yarn workspace webamp integration-tests -u
       - name: Upload New Screenshots
         if: failure()
         uses: actions/upload-artifact@v1
         with:
           name: new_images
-          path: js/__tests__/__image_snapshots__/
+          path: packages/webamp/js/__tests__/__image_snapshots__/
