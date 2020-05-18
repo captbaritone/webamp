@@ -27,9 +27,9 @@ jobs:
           yarn workspace webamp build
           yarn workspace webamp build-library
       - name: Run Unit Tests
-        run: yarn test
+        run: yarn workspace webamp test
       - name: Run Integration Tests
-        run: yarn integration-tests
+        run: yarn workspace webamp integration-tests
         env:
           CI: true
       - name: Upload Screenshot Diffs
