@@ -52,7 +52,7 @@ export async function tweet(discordClient: Client) {
   }
   const output = await spawnPromise(
     // This will be run from the dist directory
-    path.resolve(__dirname, "../../../tweetBot/tweet.py"),
+    path.resolve(__dirname, "../../../../packages/tweetBot/tweet.py"),
     [
       "tweet",
       md5,
