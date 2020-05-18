@@ -1,6 +1,6 @@
 [build]
   command = "yarn deploy"
-  publish = "demo/built"
+  publish = "packages/webamp/demo/built"
 
 # A short URL for listeners of https://changelog.com/podcast/291
 [[redirects]]
