@@ -629,12 +629,14 @@ function MakiChildren({ makiObject }) {
 
 // Given a skin XML node, pick which component to use, and render it.
 const Maki = React.memo(({ makiObject }) => {
+  useJsUpdates(makiObject);
   let { name } = makiObject;
   if (name == null) {
     // name is null is likely a comment
     return null;
   }
   name = name.toLowerCase();
+
   if (
     name === "groupdef" ||
     name === "elements" ||
@@ -646,7 +648,6 @@ const Maki = React.memo(({ makiObject }) => {
     // these nodes dont need to be rendered
     return null;
   }
-  useJsUpdates(makiObject);
   const Component = NODE_NAME_TO_COMPONENT[name] || DummyComponent;
   return <Component makiObject={makiObject} />;
 });

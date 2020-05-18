@@ -44,7 +44,7 @@ app.post("/skins/", async (req, res) => {
     res.status(500).send({ error: "No file supplied" });
     return;
   }
-  result = await addSkinFromBuffer(upload.data, upload.name, "Web API");
+  const result = await addSkinFromBuffer(upload.data, upload.name, "Web API");
   res.json({ ...result, filename: upload.name });
 });
 

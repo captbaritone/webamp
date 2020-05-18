@@ -3,7 +3,7 @@ import { Message } from "discord.js";
 import { getStats, getClassicSkinCount } from "../../data/skins";
 
 async function handler(message: Message): Promise<void> {
-  let classic = await getClassicSkinCount();
+  const classic = await getClassicSkinCount();
   const { tweeted, approved, rejected, tweetable } = await getStats();
   await message.channel.send(`Unique Skins: ${classic.toLocaleString()}
 Tweeted: ${tweeted.toLocaleString()}
