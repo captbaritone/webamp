@@ -40,6 +40,8 @@ import "../css/base-skin.css";
 import { SerializedStateV1 } from "./serializedStates/v1Types";
 import Disposable from "./Disposable";
 
+import { TracksState } from "./reducers/tracks";
+
 interface Options {
   /**
    * An object representing the initial skin to use.
@@ -108,6 +110,9 @@ interface Options {
   handleTrackDropEvent?: (
     e: React.DragEvent<HTMLDivElement>
   ) => Track[] | null | Promise<Track[] | null>;
+  handleAddUrlEvent?: () => Track[] | null | Promise<Track[] | null>;
+  handleLoadListEvent?: () => Track[] | null | Promise<Track[] | null>;
+  handleSaveListEvent?: (tracks: TracksState) => Promise<undefined>;
 }
 
 interface PrivateOptions {
@@ -179,6 +184,9 @@ class Winamp {
       requireJSZip,
       requireMusicMetadata,
       handleTrackDropEvent,
+      handleAddUrlEvent,
+      handleLoadListEvent,
+      handleSaveListEvent,
       __butterchurnOptions,
       __customMediaClass,
     } = this.options;
@@ -216,6 +224,9 @@ class Winamp {
         convertPreset,
         // @ts-ignore Typescript is drunk
         handleTrackDropEvent,
+        handleAddUrlEvent,
+        handleLoadListEvent,
+        handleSaveListEvent,
       }
     ) as Store;
 

@@ -688,6 +688,9 @@ export interface Extras {
   handleTrackDropEvent?: (
     e: React.DragEvent<HTMLDivElement>
   ) => Track[] | null | Promise<Track[] | null>;
+  handleAddUrlEvent?: () => Track[] | null | Promise<Track[] | null>;
+  handleLoadListEvent?: () => Track[] | null | Promise<Track[] | null>;
+  handleSaveListEvent?: (tracks: TracksState) => Promise<undefined>;
 }
 
 export type GetState = () => AppState;

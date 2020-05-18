@@ -158,6 +158,29 @@ async function main() {
         return null;
       }
     },
+    handleAddUrlEvent() {
+      const url = window.prompt("Paste your URL");
+
+      // only accept mp3 for the demo purpose
+      if (!url || !url.includes(".mp3")) {
+        return;
+      }
+
+      return [{ url }];
+    },
+    handleLoadListEvent() {
+      // in a real example the user will open a playlist file (maybe m3u?)
+
+      return [
+        {
+          url:
+            "https://raw.githubusercontent.com/captbaritone/webamp-music/4b556fbf/Diablo_Swing_Orchestra_-_01_-_Heroines.mp3",
+        },
+      ];
+    },
+    handleSaveListEvent(tracks) {
+      console.log(tracks);
+    },
     requireJSZip: () =>
       import(/* webpackChunkName: "jszip" */ "jszip/dist/jszip"),
     requireMusicMetadata: () =>

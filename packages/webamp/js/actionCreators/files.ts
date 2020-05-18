@@ -400,3 +400,46 @@ export function addDirAtIndex(nextIndex: number): Thunk {
     );
   };
 }
+
+export function addFilesFromUrl(atIndex = 0): Thunk {
+  return async (dispatch, getState, { handleAddUrlEvent }) => {
+    if (handleAddUrlEvent) {
+      const tracks = await handleAddUrlEvent();
+
+      if (tracks != null) {
+        dispatch(loadMediaFiles(tracks, LOAD_STYLE.NONE, atIndex));
+        return;
+      }
+    } else {
+      alert("Not supported in Webamp");
+    }
+  };
+}
+
+export function addFilesFromList(): Thunk {
+  return async (dispatch, getState, { handleLoadListEvent }) => {
+    if (handleLoadListEvent) {
+      const tracks = await handleLoadListEvent();
+
+      if (tracks != null) {
+        await dispatch(removeAllTracks());
+
+        dispatch(loadMediaFiles(tracks, LOAD_STYLE.NONE, 0));
+        return;
+      }
+    } else {
+      alert("Not supported in Webamp");
+    }
+  };
+}
+
+export function saveFilesToList(): Thunk {
+  return async (dispatch, getState, { handleSaveListEvent }) => {
+    if (handleSaveListEvent) {
+      const tracks = getTracks(getState());
+      await handleSaveListEvent(tracks);
+    } else {
+      alert("Not supported in Webamp");
+    }
+  };
+}
