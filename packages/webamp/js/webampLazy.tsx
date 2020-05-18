@@ -6,6 +6,7 @@ import {
   Store,
   AppState,
   Track,
+  PlaylistTrack,
   LoadedURLTrack,
   Middleware,
   WindowPosition,
@@ -39,8 +40,6 @@ import Emitter from "./emitter";
 import "../css/base-skin.css";
 import { SerializedStateV1 } from "./serializedStates/v1Types";
 import Disposable from "./Disposable";
-
-import { TracksState } from "./reducers/tracks";
 
 interface Options {
   /**
@@ -112,7 +111,7 @@ interface Options {
   ) => Track[] | null | Promise<Track[] | null>;
   handleAddUrlEvent?: () => Track[] | null | Promise<Track[] | null>;
   handleLoadListEvent?: () => Track[] | null | Promise<Track[] | null>;
-  handleSaveListEvent?: (tracks: TracksState) => Promise<undefined>;
+  handleSaveListEvent?: (tracks: PlaylistTrack[]) => Promise<undefined>;
 }
 
 interface PrivateOptions {

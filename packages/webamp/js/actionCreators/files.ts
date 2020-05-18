@@ -12,6 +12,7 @@ import {
 import skinParser from "../skinParser";
 import {
   getTracks,
+  getVisibleTrackIds,
   getTrackIsVisibleFunction,
   getEqfData,
   getPlaylistURL,
@@ -436,8 +437,10 @@ export function addFilesFromList(): Thunk {
 export function saveFilesToList(): Thunk {
   return async (dispatch, getState, { handleSaveListEvent }) => {
     if (handleSaveListEvent) {
-      const tracks = getTracks(getState());
-      await handleSaveListEvent(tracks);
+      const state = getState();
+      const trackIds = getVisibleTrackIds(state);
+      const tracks = getTracks(state);
+      await handleSaveListEvent(trackIds.map((id) => tracks[id]));
     } else {
       alert("Not supported in Webamp");
     }

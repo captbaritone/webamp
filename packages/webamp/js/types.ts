@@ -690,7 +690,7 @@ export interface Extras {
   ) => Track[] | null | Promise<Track[] | null>;
   handleAddUrlEvent?: () => Track[] | null | Promise<Track[] | null>;
   handleLoadListEvent?: () => Track[] | null | Promise<Track[] | null>;
-  handleSaveListEvent?: (tracks: TracksState) => Promise<undefined>;
+  handleSaveListEvent?: (tracks: PlaylistTrack[]) => Promise<undefined>;
 }
 
 export type GetState = () => AppState;
