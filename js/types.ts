@@ -17,6 +17,7 @@ import { MilkdropState } from "./reducers/milkdrop";
 import { SerializedStateV1 } from "./serializedStates/v1Types";
 import { TracksState } from "./reducers/tracks";
 import { IAudioMetadata, IOptions } from "music-metadata-browser";
+import { Store as ReduxStore } from "redux";
 
 // Avoid warnings from Webpack: https://github.com/webpack/webpack/issues/7378
 export type WebampWindow = _WebampWindow;
@@ -701,7 +702,7 @@ export type Middleware = (
   store: MiddlewareStore
 ) => (next: Dispatch) => (action: Action) => any;
 
-export interface Store {
+export interface Store extends ReduxStore {
   subscribe(cb: () => void): () => void;
   dispatch: Dispatch;
   getState: GetState;
