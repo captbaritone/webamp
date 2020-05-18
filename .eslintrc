@@ -13,8 +13,7 @@
     "prettier",
     "import",
     "@typescript-eslint",
-    "react-hooks",
-    "eslint-plugin-local-rules"
+    "react-hooks"
   ],
   "settings": {
     "react": {
