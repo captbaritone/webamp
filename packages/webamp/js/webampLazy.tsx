@@ -6,7 +6,6 @@ import {
   Store,
   AppState,
   Track,
-  PlaylistTrack,
   LoadedURLTrack,
   Middleware,
   WindowPosition,
@@ -111,7 +110,7 @@ interface Options {
   ) => Track[] | null | Promise<Track[] | null>;
   handleAddUrlEvent?: () => Track[] | null | Promise<Track[] | null>;
   handleLoadListEvent?: () => Track[] | null | Promise<Track[] | null>;
-  handleSaveListEvent?: (tracks: PlaylistTrack[]) => Promise<undefined>;
+  handleSaveListEvent?: (tracks: Track[]) => null | Promise<null>;
 }
 
 interface PrivateOptions {

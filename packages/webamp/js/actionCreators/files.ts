@@ -440,7 +440,21 @@ export function saveFilesToList(): Thunk {
       const state = getState();
       const trackIds = getTrackOrder(state);
       const tracks = getTracks(state);
-      handleSaveListEvent(trackIds.map((id) => tracks[id]));
+      handleSaveListEvent(
+        trackIds.map((id) => {
+          const track = tracks[id];
+
+          return {
+            url: track.url,
+            metaData: {
+              artist: track.artist || "",
+              title: track.title || "",
+              album: track.album,
+              albumArtUrl: track.albumArtUrl || "",
+            },
+          };
+        })
+      );
     } else {
       alert("Not supported in Webamp");
     }
