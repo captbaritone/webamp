@@ -11,8 +11,8 @@ export default function ListMenu() {
   return (
     <PlaylistMenu id="playlist-list-menu">
       <div className="new-list" onClick={removeAllTracks} />
-      <div className="save-list" onClick={() => saveFilesToList()} />
-      <div className="load-list" onClick={() => addFilesFromList()} />
+      <div className="save-list" onClick={saveFilesToList} />
+      <div className="load-list" onClick={addFilesFromList} />
     </PlaylistMenu>
   );
 }
