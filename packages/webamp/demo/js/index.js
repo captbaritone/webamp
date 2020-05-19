@@ -158,19 +158,8 @@ async function main() {
         return null;
       }
     },
-    handleAddUrlEvent() {
-      const url = window.prompt("Paste your URL");
-
-      // only accept mp3 for the demo purpose
-      if (!url || !url.includes(".mp3")) {
-        return;
-      }
-
-      return [{ url }];
-    },
     handleLoadListEvent() {
       // in a real example the user will open a playlist file (maybe m3u?)
-
       return [
         {
           url:
