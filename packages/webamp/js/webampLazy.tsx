@@ -39,8 +39,9 @@ import Emitter from "./emitter";
 import "../css/base-skin-optimized.css";
 import { SerializedStateV1 } from "./serializedStates/v1Types";
 import Disposable from "./Disposable";
+import JSZip from "jszip";
 
-interface Options {
+export interface Options {
   /**
    * An object representing the initial skin to use.
    *
@@ -115,19 +116,19 @@ interface Options {
 
 interface PrivateOptions {
   avaliableSkins?: { url: string; name: string }[]; // Old misspelled name
-  requireJSZip(): Promise<never>; // TODO: Type JSZip
+  requireJSZip(): Promise<JSZip>; // TODO: Type JSZip
   requireMusicMetadata(): Promise<any>; // TODO: Type musicmetadata
   __initialState?: AppState;
   __customMiddlewares?: Middleware[];
-  __initialWindowLayout: {
+  __initialWindowLayout?: {
     [windowId: string]: {
       size: null | [number, number];
       position: WindowPosition;
     };
   };
-  __butterchurnOptions: ButterchurnOptions;
+  __butterchurnOptions?: ButterchurnOptions;
   // This is used by https://winampify.io/ to proxy through to Spotify's API.
-  __customMediaClass: typeof Media; // This should have the same interface as Media
+  __customMediaClass?: typeof Media; // This should have the same interface as Media
 }
 
 // Return a promise that resolves when the store matches a predicate.

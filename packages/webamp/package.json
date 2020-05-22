@@ -3,17 +3,18 @@
   "version": "1.4.1-beta03",
   "description": "Winamp 2 implemented in HTML5 and JavaScript",
   "main": "built/webamp.js",
+  "types": "built/webampt.d.ts",
   "files": [
     "built/**/*.js",
     "built/**/*.js.map",
-    "index.d.ts"
+    "built/**/*.d.ts"
   ],
   "scripts": {
     "babel-build": "babel js --out-dir built --extensions=\".js,.tsx,.ts\"",
     "lint-fix": "eslint . --ext ts,tsx,js --fix",
     "lint": "eslint . --ext ts,tsx,js --rulesdir=modern/eslint",
     "type-check": "tsc",
-    "build": "webpack --config=demo/config/webpack.prod.js && yarn babel-build",
+    "build": "yarn babel-build && yarn tsc && webpack --config=demo/config/webpack.prod.js",
     "build-library": "webpack --config=config/webpack.library.js && yarn babel-build",
     "prepublishOnly": "npm run build-library",
     "serve": "http-server ./demo/built",

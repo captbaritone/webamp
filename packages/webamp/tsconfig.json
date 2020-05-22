@@ -9,9 +9,11 @@
     "resolveJsonModule": true,
     "strict": true,
     "jsx": "preserve",
-    "noEmit": true,
-    "pretty": true
+    "emitDeclarationOnly": true,
+    "declaration": true,
+    "pretty": true,
+    "outDir": "built"
   },
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "demo/built"]
+  "exclude": ["node_modules", "demo/built", "built"]
 }

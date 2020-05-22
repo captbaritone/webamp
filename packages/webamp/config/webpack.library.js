@@ -35,8 +35,8 @@ module.exports = {
     maxAssetSize: 9000000,
   },
   entry: {
-    bundle: "./js/webamp.js",
-    "bundle.min": "./js/webamp.js",
+    bundle: "./js/webamp.ts",
+    "bundle.min": "./js/webamp.ts",
     "lazy-bundle": "./js/webampLazy.tsx",
     "lazy-bundle.min": "./js/webampLazy.tsx",
   },

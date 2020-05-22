@@ -18,6 +18,7 @@ import { SerializedStateV1 } from "./serializedStates/v1Types";
 import { TracksState } from "./reducers/tracks";
 import { IAudioMetadata, IOptions } from "music-metadata-browser";
 import { Store as ReduxStore } from "redux";
+import JSZip from "jszip";
 
 // Avoid warnings from Webpack: https://github.com/webpack/webpack/issues/7378
 export type WebampWindow = _WebampWindow;
@@ -682,7 +683,7 @@ export interface IMusicMetadataBrowserApi {
 }
 
 export interface Extras {
-  requireJSZip(): Promise<never>;
+  requireJSZip(): Promise<JSZip>;
   requireMusicMetadata(): Promise<IMusicMetadataBrowserApi>;
   convertPreset: ((file: File) => Promise<Object>) | null;
   handleTrackDropEvent?: (
