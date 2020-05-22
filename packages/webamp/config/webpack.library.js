@@ -10,23 +10,6 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.css$/,
-        use: [
-          "style-loader",
-          { loader: "css-loader", options: { importLoaders: 1 } },
-          // We really only need this in prod. We could find a way to disable it in dev.
-          {
-            loader: "postcss-loader",
-            options: {
-              plugins: [
-                require("cssnano"),
-                require("../scripts/postcss-optimize-data-uri-pngs"),
-              ],
-            },
-          },
-        ],
-      },
-      {
         test: /\.(js|ts|tsx)$/,
         exclude: /(node_modules)/,
         use: {
