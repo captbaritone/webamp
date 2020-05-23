@@ -30,8 +30,9 @@ jobs:
           yarn workspace webamp-dot-org build
           yarn workspace webamp build-library
       - name: Run Unit Tests
-        run: yarn workspace webamp test
-        run: yarn workspace webamp-dot-org test
+        run: |
+          yarn workspace webamp test
+          yarn workspace webamp-dot-org test
       - name: Run Integration Tests
         run: yarn workspace webamp-dot-org integration-tests
         env:

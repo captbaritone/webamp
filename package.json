@@ -5,7 +5,7 @@
     "packages/*"
   ],
   "scripts": {
-    "deploy": "yarn workspace webamp build && yarn workspace webamp build-library"
+    "deploy": "yarn workspace webamp build && yarn workspace webamp-dot-org build"
   },
   "devDependencies": {
     "prettier": "^2.0.5"
