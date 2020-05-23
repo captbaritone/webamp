@@ -43,6 +43,5 @@
       "plugins": ["@babel/plugin-syntax-dynamic-import"]
     }
   },
-  "only": ["./js", "./scripts/"],
-  "ignore": ["**/*.d.ts", "built/"]
+  "ignore": ["**/*.d.ts"]
 }

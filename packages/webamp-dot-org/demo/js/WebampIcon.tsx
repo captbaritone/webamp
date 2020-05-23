@@ -1,4 +1,4 @@
-import WebampLazy from "../../js/webampLazy";
+import WebampLazy from "webamp/built/js/webampLazy";
 import React, { useEffect, useState } from "react";
 // @ts-ignore
 import iconLarge from "../images/manifest/icon-96x96.png";

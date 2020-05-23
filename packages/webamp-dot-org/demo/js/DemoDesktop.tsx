@@ -1,10 +1,10 @@
-import WebampLazy from "../../js/webampLazy";
+import WebampLazy from "webamp/built/js/webampLazy";
 import React from "react";
 import WebampIcon from "./WebampIcon";
 import Mp3Icon from "./Mp3Icon";
 import SkinIcon from "./SkinIcon";
 import { defaultInitialTracks, SHOW_DESKTOP_ICONS } from "./config";
-import { useWindowSize } from "../../js/hooks";
+import { useWindowSize } from "./hooks";
 import avaliableSkins from "./avaliableSkins";
 import MilkIcon from "./MilkIcon";
 
