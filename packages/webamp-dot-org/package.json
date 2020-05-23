@@ -5,7 +5,7 @@
   "description": "Webamp Demo site",
   "scripts": {
     "type-check": "tsc",
-    "build": "yarn tsc && webpack --config=demo/config/webpack.prod.js",
+    "build": "webpack --config=demo/config/webpack.prod.js",
     "serve": "http-server ./demo/built",
     "start": "webpack-dev-server --open --config=demo/config/webpack.dev.js",
     "stats": "webpack --config=demo/config/webpack.prod.js --json > stats.json",

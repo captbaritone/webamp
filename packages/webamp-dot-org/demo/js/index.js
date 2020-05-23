@@ -5,7 +5,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import createMiddleware from "redux-sentry-middleware";
 import isButterchurnSupported from "butterchurn/lib/isSupported.min";
-import { __CONSTANTS, __Actions, __Selectors } from "webamp";
 
 import WebampLazy from "webamp/built/js/webampLazy";
 
@@ -23,9 +22,9 @@ import DemoDesktop from "./DemoDesktop";
 import enableMediaSession from "./mediaSession";
 import screenshotInitialState from "./screenshotInitialState";
 
-const { loadFilesFromReferences } = __Actions;
-const { WINDOWS } = __CONSTANTS;
-const Selectors = __Selectors;
+import { loadFilesFromReferences } from "webamp/built/js/actionCreators";
+import { WINDOWS } from "webamp/built/js/constants";
+import * as Selectors from "webamp/built/js/selectors";
 
 const DEFAULT_DOCUMENT_TITLE = document.title;
 
