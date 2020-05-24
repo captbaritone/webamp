@@ -166,17 +166,20 @@ const options = {
     },
 
     // Optional. Provide a way to extend the behavior of the button ADD URL.
+    // **Since** 1.4.1-beta03 (unreleased)
     handleAddUrlEvent: async () => {
         // Return an optional array of `Track` objects or null.
     },
 
     // Optional. Provide a way to extend the behavior of the playlist button LOAD LIST.
+    // **Since** 1.4.1-beta03 (unreleased)
     handleLoadListEvent: async () => {
         // Return an optional array of `Track` objects or null.
     },
 
     // Optional. Provide a way to extend the behavior of the playlist button SAVE LIST.
     // Where tracks: Track[]
+    // **Since** 1.4.1-beta03 (unreleased)
     handleSaveListEvent: (tracks) => {}
 };
 const webamp = new Webamp(options);
