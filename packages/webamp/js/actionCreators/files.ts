@@ -12,7 +12,7 @@ import {
 import skinParser from "../skinParser";
 import {
   getTracks,
-  getTrackOrder,
+  getUserTracks,
   getTrackIsVisibleFunction,
   getEqfData,
   getPlaylistURL,
@@ -437,24 +437,7 @@ export function addFilesFromList(): Thunk {
 export function saveFilesToList(): Thunk {
   return (dispatch, getState, { handleSaveListEvent }) => {
     if (handleSaveListEvent) {
-      const state = getState();
-      const trackIds = getTrackOrder(state);
-      const tracks = getTracks(state);
-      handleSaveListEvent(
-        trackIds.map((id) => {
-          const track = tracks[id];
-
-          return {
-            url: track.url,
-            metaData: {
-              artist: track.artist || "",
-              title: track.title || "",
-              album: track.album,
-              albumArtUrl: track.albumArtUrl || "",
-            },
-          };
-        })
-      );
+      handleSaveListEvent(getUserTracks(getState()));
     } else {
       alert("Not supported in Webamp");
     }
