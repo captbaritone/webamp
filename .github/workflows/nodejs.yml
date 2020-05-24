@@ -21,7 +21,6 @@ jobs:
       - name: Lint
         run: |
           yarn workspace webamp lint
-          yarn workspace webamp-dot-org lint
           yarn workspace webamp type-check
           yarn workspace webamp-dot-org type-check
       - name: Build
@@ -32,9 +31,8 @@ jobs:
       - name: Run Unit Tests
         run: |
           yarn workspace webamp test
-          yarn workspace webamp-dot-org test
       - name: Run Integration Tests
-        run: yarn workspace webamp-dot-org integration-tests
+        run: yarn workspace webamp-dot-org test
         env:
           CI: true
       - name: Upload Screenshot Diffs

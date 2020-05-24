@@ -9,10 +9,8 @@
     "serve": "http-server ./demo/built",
     "start": "webpack-dev-server --open --config=demo/config/webpack.dev.js",
     "stats": "webpack --config=demo/config/webpack.prod.js --json > stats.json",
-    "test": "jest --config=config/jest.unit.js",
-    "tdd": "jest --config=config/jest.unit.js --watch",
-    "format": "prettier --write \"**/*.{js,ts,tsx,d.ts,css}\"",
-    "integration-tests": "yarn jest --config=config/jest.integration.js --runInBand"
+    "test": "yarn jest --config=config/jest.integration.js --runInBand",
+    "format": "prettier --write \"**/*.{js,ts,tsx,d.ts,css}\""
   },
   "repository": {
     "type": "git",
