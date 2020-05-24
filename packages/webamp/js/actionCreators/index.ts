@@ -93,6 +93,9 @@ export {
   downloadHtmlPlaylist,
   addDirAtIndex,
   addFilesAtIndex,
+  addFilesFromUrl,
+  addFilesFromList,
+  saveFilesToList,
 } from "./files";
 export {
   cropPlaylist,

@@ -163,7 +163,21 @@ const options = {
     handleTrackDropEvent: async (e) => {
         // Return an array of `Track` objects, see documentation below, or `null` to get the default drop behavior.
         // You may optionally wrap the return value in a promise.
-    }
+    },
+
+    // Optional. Provide a way to extend the behavior of the button ADD URL.
+    handleAddUrlEvent: async () => {
+        // Return an optional array of `Track` objects or null.
+    },
+
+    // Optional. Provide a way to extend the behavior of the playlist button LOAD LIST.
+    handleLoadListEvent: async () => {
+        // Return an optional array of `Track` objects or null.
+    },
+
+    // Optional. Provide a way to extend the behavior of the playlist button SAVE LIST.
+    // Where tracks: Track[]
+    handleSaveListEvent: (tracks) => {}
 };
 const webamp = new Webamp(options);
 ```

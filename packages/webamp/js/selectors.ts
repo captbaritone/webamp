@@ -76,6 +76,25 @@ export const getOrderedTracks = createSelector(
   (tracks, trackOrder) => trackOrder.filter((id) => tracks[id])
 );
 
+export const getUserTracks = createSelector(
+  getTracks,
+  getTrackOrder,
+  (tracks, trackOrder) =>
+    trackOrder.map((id) => {
+      const track = tracks[id];
+
+      return {
+        url: track.url,
+        metaData: {
+          artist: track.artist || "",
+          title: track.title || "",
+          album: track.album,
+          albumArtUrl: track.albumArtUrl || "",
+        },
+      };
+    })
+);
+
 const getOrderedTrackObjects = createSelector(
   getTracks,
   getOrderedTracks,

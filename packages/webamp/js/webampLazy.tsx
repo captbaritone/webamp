@@ -108,6 +108,9 @@ interface Options {
   handleTrackDropEvent?: (
     e: React.DragEvent<HTMLDivElement>
   ) => Track[] | null | Promise<Track[] | null>;
+  handleAddUrlEvent?: () => Track[] | null | Promise<Track[] | null>;
+  handleLoadListEvent?: () => Track[] | null | Promise<Track[] | null>;
+  handleSaveListEvent?: (tracks: Track[]) => null | Promise<null>;
 }
 
 interface PrivateOptions {
@@ -179,6 +182,9 @@ class Winamp {
       requireJSZip,
       requireMusicMetadata,
       handleTrackDropEvent,
+      handleAddUrlEvent,
+      handleLoadListEvent,
+      handleSaveListEvent,
       __butterchurnOptions,
       __customMediaClass,
     } = this.options;
@@ -216,6 +222,9 @@ class Winamp {
         convertPreset,
         // @ts-ignore Typescript is drunk
         handleTrackDropEvent,
+        handleAddUrlEvent,
+        handleLoadListEvent,
+        handleSaveListEvent,
       }
     ) as Store;
 
