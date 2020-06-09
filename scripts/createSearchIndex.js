@@ -35,7 +35,7 @@ async function buildSkinIndex(skin) {
     readmeText = tuncate(fs.readFileSync(skin.readmePath, "utf8"), 4800);
   }
   return {
-    objectID: skin.md5
+    objectID: skin.md5,
     //md5,
     //fileName,
     // emails: skin.emails || null,
@@ -47,18 +47,20 @@ async function buildSkinIndex(skin) {
 
 const indexesPromise = Promise.all(
   Object.values(info)
-    .filter(skin => skin.type === "CLASSIC")
-    .map(skin => buildSkinIndex(skin))
+    .filter((skin) => skin.type === "CLASSIC")
+    .map((skin) => buildSkinIndex(skin))
 );
 
-async function go() {
+async function go({ dry = true }) {
   const indexes = await indexesPromise;
 
-  console.log("Index turned off. Turn it on if you really mean it");
-  return;
+  if (dry) {
+    console.log("Index turned off. Turn it on if you really mean it");
+    return;
+  }
   console.log("Writing index");
   const results = await new Promise((resolve, reject) => {
-    index.partialUpdateObjects(indexes, function(err, content) {
+    index.partialUpdateObjects(indexes, function (err, content) {
       if (err != null) reject(err);
       resolve(content);
     });
@@ -66,4 +68,4 @@ async function go() {
   console.log("done!", results);
 }
 
-go(); // .then(content => console.log("Updated index for:", content.length));
+go({ dry: false }); // .then(content => console.log("Updated index for:", content.length));
