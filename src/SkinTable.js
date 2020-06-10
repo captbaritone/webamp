@@ -13,13 +13,13 @@ const SkinTable = ({
   windowHeight,
   skinCount,
   windowWidth,
-  getSkinData
+  getSkinData,
 }) => {
   function itemKey({ columnIndex, rowIndex }) {
     const { requestToken, data: skin } = getSkinData({
       columnIndex,
       rowIndex,
-      columnCount
+      columnCount,
     });
     if (skin == null && requestToken == null) {
       return `empty-cell-${columnIndex}-${rowIndex}`;
@@ -45,18 +45,15 @@ const SkinTable = ({
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   skinCount: Selectors.getCurrentSkinCount(state),
   selectedSkinHash: Selectors.getSelectedSkinHash(state),
-  getSkinData: Selectors.getSkinDataGetter(state)
+  getSkinData: Selectors.getSkinDataGetter(state),
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   setSelectedSkin(hash, position) {
     dispatch(Actions.selectedSkin(hash, position));
-  }
+  },
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SkinTable);
+export default connect(mapStateToProps, mapDispatchToProps)(SkinTable);

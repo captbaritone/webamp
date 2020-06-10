@@ -6,7 +6,7 @@ import * as Utils from "./utils";
 import * as Selectors from "./redux/selectors";
 import * as Actions from "./redux/actionCreators";
 
-const Cell = React.memo(props => {
+const Cell = React.memo((props) => {
   const {
     style,
     data,
@@ -15,7 +15,7 @@ const Cell = React.memo(props => {
     requestToken,
     setSelectedSkin,
     requestUnloadedSkin,
-    permalinkUrl
+    permalinkUrl,
   } = props;
   const { width, height } = data;
   React.useEffect(() => {
@@ -35,7 +35,6 @@ const Cell = React.memo(props => {
           ...style,
           width,
           height,
-          backgroundColor: requestToken == null ? "blue" : "magenta"
         }}
       />
     );
@@ -65,7 +64,7 @@ const mapStateToProps = (state, ownProps) => {
   const { requestToken, data: skin } = skinDataGetter({
     columnCount,
     rowIndex,
-    columnIndex
+    columnIndex,
   });
   const getPermalinkUrlFromHash = Selectors.getPermalinkUrlFromHashGetter(
     state
@@ -73,16 +72,16 @@ const mapStateToProps = (state, ownProps) => {
   return {
     requestToken,
     skin,
-    permalinkUrl: skin == null ? null : getPermalinkUrlFromHash(skin.hash)
+    permalinkUrl: skin == null ? null : getPermalinkUrlFromHash(skin.hash),
   };
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   requestUnloadedSkin(index) {
     dispatch(Actions.requestUnloadedSkin(index));
   },
   setSelectedSkin(hash, position) {
     dispatch(Actions.selectedSkin(hash, position));
-  }
+  },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Cell);

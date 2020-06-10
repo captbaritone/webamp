@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import WebampComponent from "../WebampComponent";
-import FileExplorer from "../FileExplorer";
 import * as Utils from "../utils";
 import { SCREENSHOT_HEIGHT, SCREENSHOT_WIDTH } from "../constants";
 import { delay } from "rxjs/operators";
@@ -8,6 +7,7 @@ import { Subject, combineLatest, timer, fromEvent, from } from "rxjs";
 import Disposable from "../Disposable";
 import { search } from "../algolia";
 import Metadata from "./Metadata";
+import SkinReadme from "../SkinReadme";
 
 function useSkinData({ hash, skinData, setSkinData }) {
   useEffect(() => {
@@ -16,7 +16,7 @@ function useSkinData({ hash, skinData, setSkinData }) {
     }
     // OMG Giant hack. Kill this please. We should be able to get this data from our own server.
     return from(search(hash, { hitsPerPage: 2, typoTolerance: 0 })).subscribe(
-      results => {
+      (results) => {
         if (results.nbHits.length === 1) {
           console.error("Failed to get skin data for hash", hash, results);
           return;
@@ -42,7 +42,7 @@ class BaseFocusedSkin extends React.Component {
         {
           previewLoaded: false,
           loaded: false,
-          transitionComplete: true
+          transitionComplete: true,
         },
         this._getCenteredState()
       );
@@ -54,7 +54,7 @@ class BaseFocusedSkin extends React.Component {
         top: this.props.initialPosition.top,
         left: this.props.initialPosition.left,
         width: this.props.initialWidth,
-        height: this.props.initialHeight
+        height: this.props.initialHeight,
       };
     }
     this._webampLoadedEvents = new Subject();
@@ -85,7 +85,7 @@ class BaseFocusedSkin extends React.Component {
 
   componentDidMount() {
     this._disposable.add(
-      fromEvent(window.document, "keydown").subscribe(e => {
+      fromEvent(window.document, "keydown").subscribe((e) => {
         if (e.key === "ArrowRight") {
           this.props.selectRelativeSkin(1);
         } else if (e.key === "ArrowLeft") {
@@ -128,7 +128,7 @@ class BaseFocusedSkin extends React.Component {
       top: (windowHeight - SCREENSHOT_HEIGHT) / 2,
       left: (windowWidth - SCREENSHOT_WIDTH) / 2,
       height: SCREENSHOT_HEIGHT,
-      width: SCREENSHOT_WIDTH
+      width: SCREENSHOT_WIDTH,
     };
   }
   render() {
@@ -146,7 +146,7 @@ class BaseFocusedSkin extends React.Component {
                 position: "fixed",
                 height: SCREENSHOT_HEIGHT,
                 width: SCREENSHOT_WIDTH,
-                transform
+                transform,
               }}
             >
               <WebampComponent
@@ -156,20 +156,7 @@ class BaseFocusedSkin extends React.Component {
                 closeModal={this.props.closeModal}
               />
             </div>
-            {false && (
-              <FileExplorer
-                skinUrl={Utils.skinUrlFromHash(this.props.hash)}
-                style={{
-                  width: "400px",
-                  height: "100%",
-                  top: 0,
-                  transform: `translateX(${
-                    this.props.fileExplorerOpen ? 0 : "-400px"
-                  })`,
-                  transition: "transform 200ms ease-out"
-                }}
-              />
-            )}
+            {false && <SkinReadme />}
           </>
         )}
         <div
@@ -180,7 +167,7 @@ class BaseFocusedSkin extends React.Component {
             width: this.state.width,
             transform,
             transition:
-              "all 400ms ease-out, height 400ms ease-out, width 400ms ease-out"
+              "all 400ms ease-out, height 400ms ease-out, width 400ms ease-out",
           }}
         >
           <div style={{ width: "100%", height: "100%" }}>
@@ -199,7 +186,7 @@ class BaseFocusedSkin extends React.Component {
                     this.props.initialPosition != null
                       ? 1
                       : 0,
-                  transition: "opacity 0.2s ease-out"
+                  transition: "opacity 0.2s ease-out",
                 }}
                 onLoad={() => this.setState({ previewLoaded: true })}
                 src={Utils.screenshotUrlFromHash(this.props.hash)}
@@ -219,7 +206,7 @@ class BaseFocusedSkin extends React.Component {
   }
 }
 
-export default props => {
+export default (props) => {
   const { hash, skinData, setSkinData } = props;
   useSkinData({ hash, skinData, setSkinData });
   return <BaseFocusedSkin {...props} />;
