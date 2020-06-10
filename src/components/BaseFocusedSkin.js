@@ -156,7 +156,7 @@ class BaseFocusedSkin extends React.Component {
                 closeModal={this.props.closeModal}
               />
             </div>
-            {false && <SkinReadme />}
+            {this.props.fileExplorerOpen && <SkinReadme />}
           </>
         )}
         <div
