@@ -1,6 +1,8 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import * as Utils from "../utils";
 import { SCREENSHOT_HEIGHT } from "../constants";
+
+let willSeeNsfw = false;
 
 function Skin({
   style,
@@ -11,13 +13,25 @@ function Skin({
   hash,
   permalink,
   src,
-  fileName
+  fileName,
 }) {
   const [loaded, setLoaded] = useState(false);
   const [ref, setRef] = useState(null);
+  const nsfw = useMemo(() => {
+    return false; // Math.random() > 0.9, []);
+  }, []);
 
   const clickHandler = useCallback(
-    e => {
+    (e) => {
+      if (nsfw && !willSeeNsfw) {
+        willSeeNsfw = window.confirm(
+          'This skin has been flagged as "not safe for work". Would you like to proceed?'
+        );
+        if (!willSeeNsfw) {
+          e.preventDefault();
+          return;
+        }
+      }
       if (Utils.eventIsLinkClick(e)) {
         e.preventDefault();
         if (ref == null) {
@@ -29,7 +43,7 @@ function Skin({
         selectSkin(hash, { top, left });
       }
     },
-    [hash, ref, selectSkin]
+    [hash, nsfw, ref, selectSkin]
   );
 
   const imgStyle = {
@@ -38,7 +52,8 @@ function Skin({
     height: "100%",
     opacity: loaded ? 1 : 0,
     transition: "opacity 0.2s",
-    backfaceVisibility: loaded ? "hidden" : null
+    backfaceVisibility: loaded ? "hidden" : null,
+    filter: nsfw ? "blur(10px)" : null,
   };
 
   return (
@@ -52,7 +67,7 @@ function Skin({
         // Ideally the final backgroundColor would be black
         // But that makes our opacitly transition kinda funky
         backgroundColor: color,
-        cursor: "pointer"
+        cursor: "pointer",
       }}
       onClick={clickHandler}
       href={permalink}
