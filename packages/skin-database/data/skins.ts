@@ -35,6 +35,10 @@ function getSkinRecord(skin: DBSkinRecord): SkinRecord {
     filePaths,
     imageHash,
     uploader,
+    tweeted,
+    rejected,
+    approved,
+    nsfw,
   } = skin;
   const fileNames = filePaths.map((p) => path.basename(p));
   const skinUrl = `https://s3.amazonaws.com/webamp-uploaded-skins/skins/${md5}.wsz`;
@@ -52,6 +56,10 @@ function getSkinRecord(skin: DBSkinRecord): SkinRecord {
     readmeText,
     imageHash,
     uploader,
+    tweeted,
+    rejected,
+    approved,
+    nsfw,
   };
 }
 
@@ -163,6 +171,10 @@ export async function getMd5sMatchingImageHash(imageHash: string) {
   return skins.find({ imageHash }, { md5: 1 });
 }
 
+export async function getUnarchived() {
+  return skins.find({ itemName: null }, { md5: 1 });
+}
+
 export function getInternetArchiveUrl(itemName: string | null): string | null {
   return itemName == null ? null : `https://archive.org/details/${itemName}`;
 }
@@ -178,6 +190,10 @@ export function getClassicSkinCount(): Promise<number> {
 export async function markAsTweeted(md5: string): Promise<void> {
   await skins.findOneAndUpdate({ md5 }, { $set: { tweeted: true } });
   return S3.markAsTweeted(md5);
+}
+
+export async function markAsNSFW(md5: string): Promise<void> {
+  await skins.findOneAndUpdate({ md5 }, { $set: { nsfw: true } });
 }
 
 export async function getStatus(md5: string): Promise<TweetStatus> {
@@ -204,6 +220,27 @@ export async function reject(md5: string): Promise<void> {
   return S3.reject(md5);
 }
 
+export async function getSkinToArchive(): Promise<{
+  filename: string | null;
+  md5: string;
+}> {
+  const reviewable = await skins.aggregate([
+    { $match: CLASSIC_QUERY },
+    {
+      $lookup: {
+        from: "internetArchiveItems",
+        localField: "md5",
+        foreignField: "md5",
+        as: "archive",
+      },
+    },
+    { $count: "5" },
+  ]);
+  const skin = reviewable[0];
+  const { canonicalFilename, md5 } = getSkinRecord(skin);
+  return { filename: canonicalFilename, md5 };
+}
+
 export async function getSkinToReview(): Promise<{
   filename: string | null;
   md5: string;
@@ -217,10 +254,7 @@ export async function getSkinToReview(): Promise<{
   return { filename: canonicalFilename, md5 };
 }
 
-export async function getSkinToTweet(): Promise<{
-  filename: string | null;
-  md5: string;
-} | null> {
+export async function getSkinToTweet(): Promise<SkinRecord | null> {
   const tweetables = await skins.aggregate([
     { $match: TWEETABLE_QUERY },
     { $sample: { size: 1 } },
@@ -229,8 +263,7 @@ export async function getSkinToTweet(): Promise<{
   if (skin == null) {
     return null;
   }
-  const { canonicalFilename, md5 } = getSkinRecord(skin);
-  return { filename: canonicalFilename, md5 };
+  return getSkinRecord(skin);
 }
 
 export async function getStats(): Promise<{

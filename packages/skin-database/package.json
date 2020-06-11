@@ -29,7 +29,8 @@
     "start": "tsc && node dist/index.js",
     "tweet": "tsc && ./dist/cli.js tweet",
     "fetch-metadata": "tsc && .dist/cli.js fetch-metadata",
-    "bot": "tsc && node ./dist/discord-bot/index.js"
+    "bot": "tsc && node ./dist/discord-bot/index.js",
+    "cli": "tsc && node ./dist/cli.js"
   },
   "prettier": {},
   "devDependencies": {

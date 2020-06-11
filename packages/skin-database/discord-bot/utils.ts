@@ -20,7 +20,7 @@ const filter = (reaction: MessageReaction): boolean => {
 
   return (
     hasNonBot &&
-    ["👍", "👎", "👏", "😔"].some((name) => reaction.emoji.name === name)
+    ["👍", "👎", "👏", "😔", "🔞"].some((name) => reaction.emoji.name === name)
   );
 };
 
@@ -52,6 +52,7 @@ export async function postSkin({
     internetArchiveUrl,
     internetArchiveItemName,
     readmeText,
+    nsfw,
   } = skin;
   const title = _title ? _title(canonicalFilename) : canonicalFilename;
 
@@ -59,8 +60,18 @@ export async function postSkin({
     .setTitle(title)
     .addField("Try Online", `[webamp.org](${webampUrl})`, true)
     .addField("Download", `[${canonicalFilename}](${skinUrl})`, true)
-    .addField("Md5", md5, true)
-    .setImage(screenshotUrl);
+    .addField("Md5", md5, true);
+
+  if (nsfw) {
+    embed.addField("NSFW", `🔞`, true);
+  }
+
+  // @ts-ignore
+  if (nsfw && !(dest.type === "text" && dest.nsfw)) {
+    embed.addField("Screenshot", `[Screenshot](${screenshotUrl})`, true);
+  } else {
+    embed.setImage(screenshotUrl);
+  }
 
   if (readmeText) {
     // Trim the readme since Discord will reject it otherwise.
@@ -93,7 +104,9 @@ export async function postSkin({
     embed.addField("Tweet Status", `[Tweeted](${tweetUrl}) ${likes}🐦`, true);
   } else {
     if (tweetStatus === "UNREVIEWED") {
-      embed.setFooter("React with 👍 or 👎 to approve or deny");
+      embed.setFooter(
+        "React with 👍 or 👎 to approve or deny or 🔞 to mark NSFW"
+      );
     }
     embed.addField("Tweet Status", getPrettyTwitterStatus(tweetStatus), true);
   }
@@ -110,8 +123,9 @@ export async function postSkin({
   if (tweetStatus === "TWEETED") {
     return;
   }
-  await Promise.all([msg.react("👍"), msg.react("👎")]);
 
+  // Don't await
+  Promise.all([msg.react("👍"), msg.react("👎"), msg.react("🔞")]);
   // TODO: Timeout at some point
   await msg.awaitReactions(filter, { max: 1 }).then(async (collected) => {
     const vote = collected.first();
@@ -135,6 +149,23 @@ export async function postSkin({
         );
         msg.react("❌");
         break;
+      case "🔞":
+        logger.info(`${user.username} marked ${md5} as NSFW`);
+        await Skins.markAsNSFW(md5);
+        await msg.channel.send(
+          `${canonicalFilename} was marked as NSFW by ${user.username}`
+        );
+        await Skins.reject(md5);
+        logger.info(`${user.username} rejected ${md5}`);
+        await msg.channel.send(
+          `${canonicalFilename} was rejected by ${user.username}`
+        );
+        msg.react("❌");
+        break;
+      default:
+        logger.alert(
+          `Unknown skin reaction by ${user.username} on ${md5}: ${vote.emoji.name}`
+        );
     }
   });
 }

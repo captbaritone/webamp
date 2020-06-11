@@ -4,6 +4,7 @@ import * as Skins from "../data/skins";
 import { TWEET_BOT_CHANNEL_ID } from "../config";
 import { spawn } from "child_process";
 import { Client } from "discord.js";
+import { SkinRecord } from "../types";
 
 function spawnPromise(command: string, args: string[]): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -31,12 +32,43 @@ function spawnPromise(command: string, args: string[]): Promise<string> {
   });
 }
 
-export async function tweet(discordClient: Client) {
+export async function tweet(discordClient: Client, anything: string | null) {
   const tweetBotChannel = discordClient.channels.get(TWEET_BOT_CHANNEL_ID);
   if (tweetBotChannel == null) {
     throw new Error("Could not connect to the #tweet-bot channel");
   }
-  const tweetableSkin = await Skins.getSkinToTweet();
+  let tweetableSkin: null | SkinRecord = null;
+  if (anything != null) {
+    const _md5 = await Skins.getMd5ByAnything(anything);
+    if (_md5 == null) {
+      // @ts-ignore
+      await tweetBotChannel.send(
+        `Oops! Could not find a skin matching ${anything}`
+      );
+      return;
+    }
+    tweetableSkin = await Skins.getSkinByMd5(_md5);
+    if (tweetableSkin == null) {
+      // @ts-ignore
+      await tweetBotChannel.send(
+        `Oops! Could not find a skin matching the md5 hash ${_md5}`
+      );
+      logger.info(`Could not find a skin matching hash ${_md5}`);
+      return;
+    }
+    if (tweetableSkin.tweeted) {
+      // @ts-ignore
+      await tweetBotChannel.send(`Oops! This skin has alraedy been tweeted.`);
+      return;
+    }
+    if (tweetableSkin.rejected) {
+      // @ts-ignore
+      await tweetBotChannel.send(`Oops! Can't tweet a rejected skin.`);
+      return;
+    }
+  } else {
+    tweetableSkin = await Skins.getSkinToTweet();
+  }
   if (tweetableSkin == null) {
     // @ts-ignore
     await tweetBotChannel.send(
@@ -46,7 +78,7 @@ export async function tweet(discordClient: Client) {
     return;
   }
 
-  const { md5, filename } = tweetableSkin;
+  const { md5, canonicalFilename: filename } = tweetableSkin;
   if (filename == null) {
     throw new Error(`Could not find filename for skin with hash ${md5}`);
   }

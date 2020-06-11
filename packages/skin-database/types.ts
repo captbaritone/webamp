@@ -10,6 +10,10 @@ export type DBSkinRecord = {
   filePaths: string[];
   imageHash?: string;
   uploader?: string;
+  tweeted?: boolean;
+  rejected?: boolean;
+  approved?: boolean;
+  nsfw?: boolean;
 };
 
 export type DBIARecord = {
@@ -30,4 +34,8 @@ export type SkinRecord = {
   skinUrl: string;
   canonicalFilename: string | null;
   webampUrl: string;
+  tweeted?: boolean;
+  rejected?: boolean;
+  approved?: boolean;
+  nsfw?: boolean;
 };

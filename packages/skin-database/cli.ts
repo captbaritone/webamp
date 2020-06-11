@@ -4,6 +4,7 @@ import fs from "fs";
 import { argv } from "yargs";
 import fetchInternetArchiveMetadata from "./tasks/fetchInternetArchiveMetadata";
 import ensureInternetArchiveItemsIndexByMd5 from "./tasks/ensureInternetArchiveItemsIndexByMd5";
+import migrate from "./tasks/migrate";
 import logger from "./logger";
 import DiscordWinstonTransport from "./DiscordWinstonTransport";
 import * as Skins from "./data/skins";
@@ -36,7 +37,7 @@ async function main() {
         break;
 
       case "tweet":
-        await tweet(client);
+        await tweet(client, null);
         break;
       case "fetch-metadata":
         console.log("Going to download metadata from the Internet Archive");
@@ -52,7 +53,8 @@ async function main() {
         break;
       }
       case "reconcile": {
-        await Skins.reconcile();
+        console.log("Reconcile");
+        console.log(await Skins.getSkinToArchive());
         break;
       }
       case "skin": {
@@ -67,6 +69,10 @@ async function main() {
         console.log(await addSkinFromBuffer(buffer, filePath, "cli-user"));
         break;
       }
+      case "migrate": {
+        await migrate();
+      }
+
       default:
         console.log(`Unknown command ${argv._[0]}`);
     }
