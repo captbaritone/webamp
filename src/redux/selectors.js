@@ -16,7 +16,7 @@ export function overlayShouldAnimate(state) {
 
 export const getSelectedSkinUrl = createSelector(
   getSelectedSkinHash,
-  hash => {
+  (hash) => {
     return hash == null ? null : Utils.screenshotUrlFromHash(hash);
   }
 );
@@ -29,18 +29,15 @@ export function getMatchingSkins(state) {
   return state.matchingSkins;
 }
 
-export const getSkinHashes = state => {
+export const getSkinHashes = (state) => {
   return state.defaultSkins;
 };
 
 export const getCurrentSkinCount = createSelector(
   getMatchingSkins,
-  getSkinHashes,
-  state => state.skinChunkData,
-  (matchingSkins, skinHashes, skinChunkData) => {
-    return matchingSkins == null
-      ? skinChunkData.numberOfSkins
-      : matchingSkins.length;
+  (state) => state.totalNumberOfSkins,
+  (matchingSkins, totalNumberOfSkins) => {
+    return matchingSkins == null ? totalNumberOfSkins : matchingSkins.length;
   }
 );
 
@@ -71,8 +68,8 @@ export const getSkinDataGetter = createSelector(
       if (hash == null) {
         return { data: null, requestToken: index };
       }
-      const { fileName, color } = skins[hash];
-      return { data: { fileName, color, hash } };
+      const { fileName, color, nsfw } = skins[hash];
+      return { data: { fileName, color, hash, nsfw } };
     };
   }
 );
@@ -85,7 +82,7 @@ export const getMatchingSkinHashes = createSelector(
     if (searchQuery == null || matchingSkins == null) {
       return skinHashes;
     }
-    return matchingSkins.map(skin => skin.hash);
+    return matchingSkins.map((skin) => skin.hash);
   }
 );
 
@@ -99,10 +96,10 @@ export function getRandomSkinHash(state) {
 
 export const getPermalinkUrlFromHashGetter = createSelector(
   getSkins,
-  skins => {
-    return hash => {
+  (skins) => {
+    return (hash) => {
       const skin = skins[hash];
-      if (skin == null) {
+      if (skin == null || skin.fileName == null) {
         return `/skin/${hash}/`;
       }
       return `/skin/${hash}/${skin.fileName}/`;
@@ -112,8 +109,8 @@ export const getPermalinkUrlFromHashGetter = createSelector(
 
 export const getAbsolutePermalinkUrlFromHashGetter = createSelector(
   getPermalinkUrlFromHashGetter,
-  getPermalinkUrlFromHash => {
-    return hash => {
+  (getPermalinkUrlFromHash) => {
+    return (hash) => {
       return window.location.origin + getPermalinkUrlFromHash(hash);
     };
   }
@@ -160,7 +157,7 @@ export function getPageTitle(state) {
 
 export const getPreviewImageUrl = createSelector(
   getSelectedSkinHash,
-  hash => {
+  (hash) => {
     return hash == null ? null : Utils.screenshotUrlFromHash(hash);
   }
 );

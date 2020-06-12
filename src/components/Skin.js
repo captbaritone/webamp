@@ -14,18 +14,16 @@ function Skin({
   permalink,
   src,
   fileName,
+  nsfw,
 }) {
   const [loaded, setLoaded] = useState(false);
   const [ref, setRef] = useState(null);
-  const nsfw = useMemo(() => {
-    return false; // Math.random() > 0.9, []);
-  }, []);
 
   const clickHandler = useCallback(
     (e) => {
       if (nsfw && !willSeeNsfw) {
         willSeeNsfw = window.confirm(
-          'This skin has been flagged as "not safe for work". Would you like to proceed?'
+          'This skin has been flagged as "not safe for work". Access adult content?'
         );
         if (!willSeeNsfw) {
           e.preventDefault();

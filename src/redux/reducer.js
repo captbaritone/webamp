@@ -1,26 +1,18 @@
-import skinChunkData from "../skins.json";
-import firstSkinChunk from "../skins-0.json";
 import { ABOUT_PAGE } from "../constants";
-
-const skins = {};
-const defaultSkins = [];
-firstSkinChunk.forEach(skin => {
-  skins[skin.md5] = skin;
-  defaultSkins.push(skin.md5);
-});
 
 const defaultState = {
   searchQuery: null,
   selectedSkinPosition: null,
   matchingSkins: null,
-  defaultSkins,
+  defaultSkins: [],
   selectedSkinHash: null,
   skinZip: null,
   focusedSkinFile: null,
   fileExplorerOpen: false,
   activeContentPage: null,
-  skins,
-  skinChunkData
+  totalNumberOfSkins: null,
+  skinChunkData: { chunkSize: 100, numberOfSkins: 64381, chunkFileNames: [] },
+  skins: {},
 };
 
 export default function reducer(state = defaultState, action) {
@@ -28,8 +20,14 @@ export default function reducer(state = defaultState, action) {
     case "GOT_SKIN_DATA": {
       return {
         ...state,
-        skins: { ...state.skins, [action.hash]: action.data }
+        skins: { ...state.skins, [action.hash]: action.data },
       };
+    }
+    case "GOT_TOTAL_NUMBER_OF_SKINS": {
+      if (state.totalNumberOfSkins === action.number) {
+        return state;
+      }
+      return { ...state, totalNumberOfSkins: action.number };
     }
     case "GOT_SKIN_CHUNK": {
       const newSkins = { ...state.skins };
@@ -45,7 +43,7 @@ export default function reducer(state = defaultState, action) {
       return {
         ...state,
         skins: newSkins,
-        defaultSkins: newDefaultSkins
+        defaultSkins: newDefaultSkins,
       };
     }
     case "SELECTED_SKIN":
@@ -54,7 +52,7 @@ export default function reducer(state = defaultState, action) {
         selectedSkinHash: action.hash,
         selectedSkinPosition: action.position,
         skinZip: null,
-        focusedSkinFile: null
+        focusedSkinFile: null,
       };
     case "CLOSE_MODAL":
       return {
@@ -62,7 +60,7 @@ export default function reducer(state = defaultState, action) {
         selectedSkinHash: null,
         selectedSkinPosition: null,
         skinZip: null,
-        activeContentPage: null
+        activeContentPage: null,
       };
     case "SEARCH_QUERY_CHANGED":
       return {
@@ -70,14 +68,14 @@ export default function reducer(state = defaultState, action) {
         searchQuery: action.query,
         selectedSkinHash: null,
         selectedSkinPosition: null,
-        focusedSkinFile: null
+        focusedSkinFile: null,
       };
     case "GOT_NEW_MATCHING_SKINS":
       let newSkins = state.skins;
       if (action.skins != null) {
         newSkins = { ...state.skins };
         // Add skins to the cache
-        action.skins.forEach(skin => {
+        action.skins.forEach((skin) => {
           if (newSkins[skin.hash] == null) {
             newSkins[skin.hash] = skin;
           }
@@ -86,12 +84,12 @@ export default function reducer(state = defaultState, action) {
       return {
         ...state,
         matchingSkins: action.skins,
-        skins: newSkins
+        skins: newSkins,
       };
     case "LOADED_SKIN_ZIP":
       return {
         ...state,
-        skinZip: action.zip
+        skinZip: action.zip,
       };
     case "SELECTED_SKIN_FILE_TO_FOCUS": {
       return {
@@ -99,8 +97,8 @@ export default function reducer(state = defaultState, action) {
         focusedSkinFile: {
           content: null,
           ext: action.ext,
-          fileName: action.fileName
-        }
+          fileName: action.fileName,
+        },
       };
     }
     case "GOT_FOCUSED_SKIN_FILE":
@@ -108,23 +106,23 @@ export default function reducer(state = defaultState, action) {
         ...state,
         focusedSkinFile: {
           ...state.focusedSkinFile,
-          content: action.content
-        }
+          content: action.content,
+        },
       };
     case "REQUESTED_ABOUT_PAGE":
       return {
         ...state,
-        activeContentPage: ABOUT_PAGE
+        activeContentPage: ABOUT_PAGE,
       };
     case "OPEN_FILE_EXPLORER":
       return {
         ...state,
-        fileExplorerOpen: true
+        fileExplorerOpen: true,
       };
     case "CLOSE_FILE_EXPLORER":
       return {
         ...state,
-        fileExplorerOpen: false
+        fileExplorerOpen: false,
       };
     default:
       return state;

@@ -11,11 +11,11 @@ const mapStateToProps = (state, ownProps) => {
     skinData: state.skins[ownProps.hash] || null,
     absolutePermalink: Selectors.getAbsolutePermalinkUrlFromHashGetter(state)(
       ownProps.hash
-    )
+    ),
   };
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   gotSkinData(hash, data) {
     dispatch({ type: "GOT_SKIN_DATA", hash, data });
   },
@@ -27,7 +27,7 @@ const mapDispatchToProps = dispatch => ({
   },
   closeModal() {
     dispatch(Actions.closeModal());
-  }
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BaseFocusedSkin);

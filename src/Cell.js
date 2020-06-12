@@ -39,7 +39,7 @@ const Cell = React.memo((props) => {
       />
     );
   }
-  const { hash, color } = skin;
+  const { hash, color, nsfw } = skin;
   return (
     <Skin
       style={style}
@@ -51,6 +51,7 @@ const Cell = React.memo((props) => {
       width={width}
       selectSkin={setSelectedSkin}
       color={color}
+      nsfw={nsfw}
       // TODO: This is werid because there is an implicit assumption that this is always avaliable if we have the skin
       permalink={permalinkUrl}
     />

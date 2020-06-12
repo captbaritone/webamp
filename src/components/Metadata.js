@@ -5,13 +5,27 @@ import LinkInput from "./LinkInput";
 
 function Metadata({ permalink, openFileExplorer, fileName, hash }) {
   const [showLink, setShowLink] = useState(false);
+  async function report(e) {
+    e.preventDefault();
+    try {
+      await fetch(`https://api.webamp.org/skins/${hash}/report`, {
+        method: "POST",
+        mode: "cors",
+      });
+    } catch (e) {
+      alert("Oops. Something went wrong. Please try again later.");
+      return;
+    }
+    alert("Thanks for reporting. We'll review this skin.");
+  }
+
   const elements = [
     <DownloadLink href={Utils.skinUrlFromHash(hash)} download={fileName}>
       Download
     </DownloadLink>,
     <a
       href={"#"}
-      onClick={e => {
+      onClick={(e) => {
         openFileExplorer();
         e.preventDefault();
       }}
@@ -20,8 +34,8 @@ function Metadata({ permalink, openFileExplorer, fileName, hash }) {
     </a>,
     <a
       href={permalink}
-      onClick={e => {
-        setShowLink(s => !s);
+      onClick={(e) => {
+        setShowLink((s) => !s);
         e.preventDefault();
       }}
     >
@@ -32,7 +46,10 @@ function Metadata({ permalink, openFileExplorer, fileName, hash }) {
       target="_new"
     >
       Webamp
-    </a>
+    </a>,
+    <a href="#" onClick={report}>
+      Report as NSFW
+    </a>,
   ];
   return (
     <div className="metadata">

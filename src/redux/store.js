@@ -1,6 +1,7 @@
 import { createStore as createReduxStore, applyMiddleware } from "redux";
 import { createEpicMiddleware } from "redux-observable";
 import * as Selectors from "./selectors";
+import * as Actions from "./actionCreators";
 import rootEpic from "./epics";
 import reducer from "./reducer";
 
@@ -10,10 +11,12 @@ export function createStore() {
   const store = createReduxStore(reducer, applyMiddleware(epicMiddleware));
   epicMiddleware.run(rootEpic);
   let lastUrl = null;
-  window.onpopstate = function() {
+  window.onpopstate = function () {
     store.dispatch({ type: "URL_CHANGED", location: document.location });
   };
   store.dispatch({ type: "URL_CHANGED", location: document.location });
+  // TODO: We could maybe get this going eaven before JS starts parsing...
+  store.dispatch(Actions.requestUnloadedSkin(0));
   store.subscribe(() => {
     const state = store.getState();
     const url = Selectors.getUrl(state);

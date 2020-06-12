@@ -13,7 +13,7 @@ import { SKIN_WIDTH, SKIN_RATIO } from "./constants";
 
 // Render your table
 
-const getTableDimensions = windowWidth => {
+const getTableDimensions = (windowWidth) => {
   const columnCount = Math.floor(windowWidth / SKIN_WIDTH);
   const columnWidth = windowWidth / columnCount; // TODO: Consider flooring this to get things aligned to the pixel
   const rowHeight = columnWidth * SKIN_RATIO;
@@ -69,10 +69,10 @@ function App(props) {
   );
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   selectedSkinHash: Selectors.getSelectedSkinHash(state),
   overlayShouldAnimate: Selectors.overlayShouldAnimate(state),
-  aboutPage: Selectors.getActiveContentPage(state) === ABOUT_PAGE
+  aboutPage: Selectors.getActiveContentPage(state) === ABOUT_PAGE,
 });
 
 export default connect(mapStateToProps)(App);

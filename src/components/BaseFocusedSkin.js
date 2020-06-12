@@ -2,33 +2,36 @@ import React, { useEffect } from "react";
 import WebampComponent from "../WebampComponent";
 import * as Utils from "../utils";
 import { SCREENSHOT_HEIGHT, SCREENSHOT_WIDTH } from "../constants";
-import { delay } from "rxjs/operators";
+import { delay, switchMap } from "rxjs/operators";
 import { Subject, combineLatest, timer, fromEvent, from } from "rxjs";
 import Disposable from "../Disposable";
-import { search } from "../algolia";
 import Metadata from "./Metadata";
 import SkinReadme from "../SkinReadme";
 
 function useSkinData({ hash, skinData, setSkinData }) {
   useEffect(() => {
-    if (skinData != null) {
+    if (
+      skinData != null &&
+      skinData.color != null &&
+      skinData.fileName != null
+    ) {
       return;
     }
-    // OMG Giant hack. Kill this please. We should be able to get this data from our own server.
-    return from(search(hash, { hitsPerPage: 2, typoTolerance: 0 })).subscribe(
-      (results) => {
-        if (results.nbHits.length === 1) {
-          console.error("Failed to get skin data for hash", hash, results);
-          return;
-        }
-        if (results.nbHits.length > 1) {
-          console.error("Failed to uniquely get skin data for hash", hash);
-          return;
-        }
-        const { fileName, color } = results.hits[0];
-        setSkinData({ md5: hash, fileName, color });
-      }
-    );
+    // TODO: Move this to Epic
+    const subscription = from(fetch(`https://api.webamp.org/skins/${hash}`))
+      .pipe(switchMap((response) => response.json()))
+      .subscribe((body) => {
+        setSkinData(hash, {
+          md5: hash,
+          fileName: body.canonicalFilename,
+          color: body.averageColor,
+          nsfw: body.nsfw,
+        });
+      });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, [hash, setSkinData, skinData]);
 }
 
@@ -207,7 +210,7 @@ class BaseFocusedSkin extends React.Component {
 }
 
 export default (props) => {
-  const { hash, skinData, setSkinData } = props;
-  useSkinData({ hash, skinData, setSkinData });
+  const { hash, skinData, gotSkinData } = props;
+  useSkinData({ hash, skinData, setSkinData: gotSkinData });
   return <BaseFocusedSkin {...props} />;
 };
