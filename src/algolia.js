@@ -8,13 +8,13 @@ export function search(query, options = {}) {
     index.search(
       {
         query,
-        attributes: ["objectID", "fileName", "color"],
+        attributes: ["objectID", "fileName", "color", "nsfw"],
         attributesToHighlight: [],
         hitsPerPage: 1000,
         // https://www.algolia.com/doc/api-reference/api-parameters/typoTolerance/
         // min: Retrieve records with the smallest number of typos.
         typoTolerance: "min",
-        ...options
+        ...options,
       },
       (err, content) => {
         if (err != null) {

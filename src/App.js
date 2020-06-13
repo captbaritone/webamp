@@ -9,12 +9,12 @@ import FocusedSkin from "./FocusedSkin";
 import * as Selectors from "./redux/selectors";
 import { ABOUT_PAGE } from "./constants";
 import * as Utils from "./utils";
-import { SKIN_WIDTH, SKIN_RATIO } from "./constants";
+import { SCREENSHOT_WIDTH, SKIN_RATIO } from "./constants";
 
 // Render your table
 
-const getTableDimensions = (windowWidth) => {
-  const columnCount = Math.floor(windowWidth / SKIN_WIDTH);
+const getTableDimensions = (windowWidth, scale) => {
+  const columnCount = Math.floor(windowWidth / (SCREENSHOT_WIDTH * scale));
   const columnWidth = windowWidth / columnCount; // TODO: Consider flooring this to get things aligned to the pixel
   const rowHeight = columnWidth * SKIN_RATIO;
   return { columnWidth, rowHeight, columnCount };
@@ -36,7 +36,8 @@ function useWindowSize() {
 function App(props) {
   const { windowWidth, windowHeight } = useWindowSize();
   const { columnWidth, rowHeight, columnCount } = getTableDimensions(
-    windowWidth
+    windowWidth,
+    props.scale
   );
   return (
     <div>
@@ -73,6 +74,7 @@ const mapStateToProps = (state) => ({
   selectedSkinHash: Selectors.getSelectedSkinHash(state),
   overlayShouldAnimate: Selectors.overlayShouldAnimate(state),
   aboutPage: Selectors.getActiveContentPage(state) === ABOUT_PAGE,
+  scale: state.scale,
 });
 
 export default connect(mapStateToProps)(App);

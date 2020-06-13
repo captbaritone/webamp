@@ -5,6 +5,7 @@ import * as Selectors from "./selectors";
 import * as Utils from "../utils";
 import { filter, switchMap, map, mergeMap } from "rxjs/operators";
 import { search } from "../algolia";
+import queryParser from "../queryParser";
 
 const urlChangedEpic = (actions) =>
   actions.pipe(
@@ -121,14 +122,16 @@ const searchEpic = (actions) =>
         return of(Actions.gotNewMatchingSkins(null));
       }
 
-      return from(search(query)).pipe(
+      const [newQuery, options] = queryParser(query);
+
+      return from(search(newQuery, options)).pipe(
         map((content) => {
           const matchingSkins = content.hits.map((hit) => ({
             hash: hit.objectID,
             fileName: hit.fileName,
             color: hit.color,
-            // TODO: Index these
-            nsfw: hit.nsfw,
+            // TODO: Some records still have float scores not booleans. Ignore those.
+            nsfw: hit.nsfw === true,
           }));
           return Actions.gotNewMatchingSkins(matchingSkins);
         })

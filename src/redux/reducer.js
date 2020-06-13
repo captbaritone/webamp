@@ -11,12 +11,17 @@ const defaultState = {
   fileExplorerOpen: false,
   activeContentPage: null,
   totalNumberOfSkins: null,
+  scale: 0.5,
   skinChunkData: { chunkSize: 100, numberOfSkins: 64381, chunkFileNames: [] },
   skins: {},
 };
 
 export default function reducer(state = defaultState, action) {
   switch (action.type) {
+    case "SET_SCALE": {
+      console.log(action);
+      return { ...state, scale: action.scale };
+    }
     case "GOT_SKIN_DATA": {
       return {
         ...state,

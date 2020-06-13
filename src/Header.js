@@ -14,7 +14,7 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
-    const handler = e => {
+    const handler = (e) => {
       // slash
       if (e.keyCode === 191) {
         if (this._inputRef == null) {
@@ -41,7 +41,7 @@ class Header extends React.Component {
         <h1>
           <a
             href="/"
-            onClick={e => {
+            onClick={(e) => {
               if (Utils.eventIsLinkClick(e)) {
                 e.preventDefault();
                 this.props.setSearchQuery(null);
@@ -59,18 +59,34 @@ class Header extends React.Component {
           rel="noopener noreferrer"
           style={{
             opacity: this.props.searchQuery ? 0.5 : 0,
-            transition: "opacity ease-in 300ms"
+            transition: "opacity ease-in 300ms",
           }}
         >
           <AlgoliaLogo />
         </a>
+        {/*
+        <button
+          onClick={() => {
+            this.props.setScale(this.props.scale + 0.1);
+          }}
+        >
+          +
+        </button>
+        <button
+          onClick={() => {
+            this.props.setScale(this.props.scale - 0.1);
+          }}
+        >
+          -
+        </button>
+        */}
         <input
           style={{ marginLeft: 10 }}
           type="text"
-          onChange={e => this.props.setSearchQuery(e.target.value)}
+          onChange={(e) => this.props.setSearchQuery(e.target.value)}
           value={this.props.searchQuery || ""}
           placeholder={"Search..."}
-          ref={node => {
+          ref={(node) => {
             this._inputRef = node;
           }}
         />
@@ -93,11 +109,12 @@ class Header extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  searchQuery: Selectors.getSearchQuery(state)
+const mapStateToProps = (state) => ({
+  searchQuery: Selectors.getSearchQuery(state),
+  scale: state.scale,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   setSearchQuery(query) {
     dispatch(Actions.searchQueryChanged(query));
   },
@@ -106,9 +123,9 @@ const mapDispatchToProps = dispatch => ({
   },
   requestedAboutPage() {
     dispatch(Actions.requestedAboutPage());
-  }
+  },
+  setScale(scale) {
+    dispatch({ type: "SET_SCALE", scale });
+  },
 });
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

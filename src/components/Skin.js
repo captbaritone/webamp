@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback } from "react";
 import * as Utils from "../utils";
 import { SCREENSHOT_HEIGHT } from "../constants";
 
