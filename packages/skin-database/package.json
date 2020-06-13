@@ -5,7 +5,9 @@
   "license": "MIT",
   "dependencies": {
     "@tensorflow/tfjs-node": "^2.0.0",
+    "algoliasearch": "^4.3.0",
     "aws-sdk": "^2.663.0",
+    "cors": "^2.8.5",
     "discord.js": "^11.4.2",
     "express": "^4.17.1",
     "express-fileupload": "^1.1.7-alpha.3",
@@ -30,7 +32,8 @@
     "tweet": "tsc && ./dist/cli.js tweet",
     "fetch-metadata": "tsc && .dist/cli.js fetch-metadata",
     "bot": "tsc && node ./dist/discord-bot/index.js",
-    "cli": "tsc && node ./dist/cli.js"
+    "cli": "tsc && node ./dist/cli.js",
+    "index": "tsc && node ./dist/tasks/searchIndex.js"
   },
   "prettier": {},
   "devDependencies": {

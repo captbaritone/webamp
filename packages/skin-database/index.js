@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const config = require("./config");
 const db = require("./db");
 const iaItems = db.get("internetArchiveItems");
 // const info = require("/Volumes/Mobile Backup/skins/cache/info.json");
@@ -8,6 +9,23 @@ const port = 3001;
 const graphql = require("./graphql").default;
 const fileUpload = require("express-fileupload");
 const { addSkinFromBuffer } = require("./addSkin");
+const Discord = require("discord.js");
+const Utils = require("./discord-bot/utils");
+const cors = require("cors");
+
+const whitelist = ["https://skins.webamp.org", "http://localhost:3000"];
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      console.log("okay");
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+};
+
+app.use(cors(corsOptions));
 
 // TODO: Look into 766c4fad9088037ab4839b18292be8b1
 // Has huge number of filenames in info.json
@@ -33,6 +51,18 @@ app.get("/items/:identifier", async (req, res) => {
   res.json(item);
 });
 
+app.get("/skins/", async (req, res) => {
+  const { offset = 0, first = 100 } = req.query;
+  const [skins, skinCount] = await Promise.all([
+    Skins.getMuseumPage({
+      offset: Number(offset),
+      first: Number(first),
+    }),
+    Skins.getClassicSkinCount(),
+  ]);
+  res.json({ skinCount, skins });
+});
+
 app.post("/skins/", async (req, res) => {
   const files = req.files;
   if (files == null) {
@@ -56,6 +86,22 @@ app.get("/skins/:md5", async (req, res) => {
     return;
   }
   res.json(skin);
+});
+
+// TODO: Make this POST
+app.post("/skins/:md5/report", async (req, res) => {
+  const { md5 } = req.params;
+  const client = new Discord.Client();
+  await client.login(config.discordToken);
+  const dest = client.channels.get(config.NSFW_SKIN_CHANNEL_ID);
+
+  // Don't await
+  Utils.postSkin({
+    md5,
+    title: (filename) => `Review: ${filename}`,
+    dest,
+  });
+  res.send("The skin has been reported and will be reviewed shortly.");
 });
 
 app.get("/skins/:md5/readme.txt", async (req, res) => {

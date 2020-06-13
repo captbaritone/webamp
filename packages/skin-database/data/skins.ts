@@ -3,6 +3,8 @@ import path from "path";
 import S3 from "../s3";
 import logger from "../logger";
 import { DBSkinRecord, SkinRecord, DBIARecord, TweetStatus } from "../types";
+import fetch from "node-fetch";
+import { analyseBuffer, NsfwPrediction } from "../nsfwImage";
 
 const skins = db.get("skins");
 const iaItems = db.get("internetArchiveItems");
@@ -39,6 +41,7 @@ function getSkinRecord(skin: DBSkinRecord): SkinRecord {
     rejected,
     approved,
     nsfw,
+    nsfwPredictions,
   } = skin;
   const fileNames = filePaths.map((p) => path.basename(p));
   const skinUrl = `https://s3.amazonaws.com/webamp-uploaded-skins/skins/${md5}.wsz`;
@@ -60,6 +63,7 @@ function getSkinRecord(skin: DBSkinRecord): SkinRecord {
     rejected,
     approved,
     nsfw,
+    nsfwPredictions,
   };
 }
 
@@ -175,6 +179,14 @@ export async function getUnarchived() {
   return skins.find({ itemName: null }, { md5: 1 });
 }
 
+export async function getMissingNsfwPredictions() {
+  const results = await skins.find(
+    { nsfwPredictions: null, type: "CLASSIC" },
+    { md5: 1 }
+  );
+  return results.map(({ md5 }) => md5);
+}
+
 export function getInternetArchiveUrl(itemName: string | null): string | null {
   return itemName == null ? null : `https://archive.org/details/${itemName}`;
 }
@@ -254,6 +266,19 @@ export async function getSkinToReview(): Promise<{
   return { filename: canonicalFilename, md5 };
 }
 
+export async function getSkinToReviewForNsfw(): Promise<{
+  filename: string | null;
+  md5: string;
+}> {
+  const reviewable = await skins.find(REVIEWABLE_QUERY, {
+    limit: 1,
+    sort: { "nsfwPredictions.porn": -1 },
+  });
+  const skin = reviewable[0];
+  const { canonicalFilename, md5 } = getSkinRecord(skin);
+  return { filename: canonicalFilename, md5 };
+}
+
 export async function getSkinToTweet(): Promise<SkinRecord | null> {
   const tweetables = await skins.aggregate([
     { $match: TWEETABLE_QUERY },
@@ -314,4 +339,72 @@ export async function getRandomClassicSkinMd5() {
     return null;
   }
   return random[0].md5;
+}
+
+export async function getScreenshotBuffer(md5: string): Promise<Buffer> {
+  const skin = await getSkinByMd5(md5);
+  if (skin == null) {
+    throw new Error(`Could not find skin with hash ${md5}`);
+  }
+  const screenshotResponse = await fetch(skin?.screenshotUrl);
+  if (!screenshotResponse.ok) {
+    throw new Error(`Could not get screenshot at ${skin?.screenshotUrl}`);
+  }
+  return screenshotResponse.buffer();
+}
+
+export async function setNsfwPredictions(
+  md5: string,
+  nsfwPredictions: NsfwPrediction
+): Promise<void> {
+  await skins.findOneAndUpdate({ md5 }, { $set: { nsfwPredictions } });
+}
+
+export async function setTweetInfo(
+  md5: string,
+  likes: number,
+  tweetId: string
+): Promise<void> {
+  if (md5 === "48bbdbbeb03d347e59b1eebda4d352d0") {
+    console.log(likes, tweetId);
+  }
+  await skins.findOneAndUpdate(
+    { md5 },
+    { $set: { twitterLikes: likes, tweetId } }
+  );
+}
+
+export async function computeAndSetNsfwPredictions(md5: string): Promise<void> {
+  const image = await getScreenshotBuffer(md5);
+  const predictions = await analyseBuffer(image);
+  await setNsfwPredictions(md5, predictions);
+}
+
+export async function getMuseumPage({
+  offset,
+  first,
+}: {
+  offset: number;
+  first: number;
+}): Promise<
+  Array<{ color: string; fileName: string; md5: string; nsfw: boolean }>
+> {
+  const reviewable = await skins.find(
+    { type: "CLASSIC" },
+    {
+      limit: first,
+      skip: offset,
+      sort: { twitterLikes: -1, approved: -1, rejected: 1 },
+      fields: { averageColor: 1, md5: 1, nsfw: 1 },
+    }
+  );
+
+  return reviewable.map(({ md5, averageColor, nsfw }) => {
+    return {
+      color: averageColor,
+      filename: "FILENAME",
+      md5,
+      nsfw,
+    };
+  });
 }

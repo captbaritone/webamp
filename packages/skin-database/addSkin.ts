@@ -6,6 +6,7 @@ import Shooter from "./shooter";
 import _temp from "temp";
 import * as Analyser from "./analyser";
 
+// TODO Move this into the function so that we clean up on each run?
 const temp = _temp.track();
 
 // TODO

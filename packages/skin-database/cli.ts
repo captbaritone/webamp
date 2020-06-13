@@ -12,6 +12,8 @@ import db from "./db";
 import Discord from "discord.js";
 import { tweet } from "./tasks/tweet";
 import { addSkinFromBuffer } from "./addSkin";
+import fetch from "node-fetch";
+import { analyseBuffer, NsfwPrediction } from "./nsfwImage";
 
 async function main() {
   const client = new Discord.Client();
@@ -69,8 +71,46 @@ async function main() {
         console.log(await addSkinFromBuffer(buffer, filePath, "cli-user"));
         break;
       }
+      case "nsfw": {
+        console.log(await Skins.getSkinToReviewForNsfw());
+        break;
+      }
+      case "confirm-nsfw-predictions": {
+        const md5s = await Skins.getMissingNsfwPredictions();
+        console.log(`Found ${md5s.length} to predict`);
+
+        for (const md5 of md5s) {
+          try {
+            await Skins.computeAndSetNsfwPredictions(md5);
+          } catch (e) {
+            console.error(e);
+          }
+        }
+        console.log("Done.");
+        break;
+      }
       case "migrate": {
         await migrate();
+      }
+      case "tweet-data": {
+        // From running `tweet.py sort`
+        const file = fs.readFileSync(
+          path.join(__dirname, "../../tweetBot/likes.txt"),
+          { encoding: "utf8" }
+        );
+
+        const lines = file.split("\n");
+        for (const line of lines) {
+          if (line == null || line === "") {
+            return;
+          }
+          const [md5, likes, tweetId] = line.split(" ");
+          console.log({ md5, likes, tweetId });
+          await Skins.setTweetInfo(md5, Number(likes), tweetId);
+        }
+
+        console.log("done");
+        break;
       }
 
       default:

@@ -2,8 +2,10 @@ import * as Skins from "../../data/skins";
 import * as Utils from "../utils";
 import { Message } from "discord.js";
 
-async function reviewSkin(message: Message): Promise<void> {
-  const skin = await Skins.getSkinToReview();
+async function reviewSkin(message: Message, nsfw: boolean): Promise<void> {
+  const skin = await (nsfw
+    ? Skins.getSkinToReviewForNsfw()
+    : Skins.getSkinToReview());
   if (skin == null) {
     throw new Error("No skins to review");
   }
@@ -15,8 +17,9 @@ async function reviewSkin(message: Message): Promise<void> {
   });
 }
 
-async function handler(message: Message, args: [string]) {
+async function handler(message: Message, args: [string, string]) {
   let count = Number(args[0] || 1);
+  let nsfw = args[1] === "nsfw";
   if (count > 50) {
     await message.channel.send(
       `You can only review up to ${count} skins at a time.`
@@ -26,7 +29,7 @@ async function handler(message: Message, args: [string]) {
   await message.channel.send(`Going to show ${count} skins to review.`);
   let i = count;
   while (i--) {
-    await reviewSkin(message);
+    await reviewSkin(message, nsfw);
   }
   if (count > 1) {
     const tweetableCount = await Skins.getTweetableSkinCount();

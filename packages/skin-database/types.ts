@@ -1,3 +1,5 @@
+import { NsfwPrediction } from "./nsfwImage";
+
 export type TweetStatus = "APPROVED" | "REJECTED" | "TWEETED" | "UNREVIEWED";
 
 export type DBSkinRecord = {
@@ -14,6 +16,7 @@ export type DBSkinRecord = {
   rejected?: boolean;
   approved?: boolean;
   nsfw?: boolean;
+  nsfwPredictions?: NsfwPrediction;
 };
 
 export type DBIARecord = {
@@ -38,4 +41,5 @@ export type SkinRecord = {
   rejected?: boolean;
   approved?: boolean;
   nsfw?: boolean;
+  nsfwPredictions?: NsfwPrediction;
 };
