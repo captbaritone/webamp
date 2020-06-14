@@ -1,6 +1,5 @@
 import db from "../db";
 import path from "path";
-import S3 from "../s3";
 import logger from "../logger";
 import { searchIndex } from "../algolia";
 import { DBSkinRecord, SkinRecord, DBIARecord, TweetStatus } from "../types";
@@ -202,7 +201,6 @@ export function getClassicSkinCount(): Promise<number> {
 
 export async function markAsTweeted(md5: string): Promise<void> {
   await skins.findOneAndUpdate({ md5 }, { $set: { tweeted: true } });
-  return S3.markAsTweeted(md5);
 }
 
 export async function markAsNSFW(md5: string): Promise<void> {
@@ -233,12 +231,10 @@ export async function getStatus(md5: string): Promise<TweetStatus> {
 
 export async function approve(md5: string): Promise<void> {
   await skins.findOneAndUpdate({ md5 }, { $set: { approved: true } });
-  return S3.approve(md5);
 }
 
 export async function reject(md5: string): Promise<void> {
   await skins.findOneAndUpdate({ md5 }, { $set: { rejected: true } });
-  return S3.reject(md5);
 }
 
 export async function getSkinToArchive(): Promise<{
@@ -311,25 +307,6 @@ export async function getStats(): Promise<{
   const tweeted = await skins.count({ tweeted: true });
   const tweetable = await getTweetableSkinCount();
   return { approved, rejected, tweeted, tweetable };
-}
-
-export async function reconcile(): Promise<void> {
-  const [approved, rejected, tweeted] = await Promise.all([
-    S3.getAllApproved(),
-    S3.getAllRejected(),
-    S3.getAllTweeted(),
-  ]);
-  await Promise.all([
-    ...approved.map((md5) =>
-      skins.findOneAndUpdate({ md5 }, { $set: { approved: true } })
-    ),
-    ...rejected.map((md5) =>
-      skins.findOneAndUpdate({ md5 }, { $set: { rejected: true } })
-    ),
-    ...tweeted.map((md5) =>
-      skins.findOneAndUpdate({ md5 }, { $set: { tweeted: true } })
-    ),
-  ]);
 }
 
 export async function setImageHash(

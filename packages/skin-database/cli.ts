@@ -54,11 +54,6 @@ async function main() {
         console.log(await Skins.getInternetArchiveUrl(hash));
         break;
       }
-      case "reconcile": {
-        console.log("Reconcile");
-        console.log(await Skins.getSkinToArchive());
-        break;
-      }
       case "skin": {
         const hash = argv._[1];
         logger.info({ hash });
