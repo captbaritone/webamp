@@ -10,7 +10,6 @@ export type DBSkinRecord = {
   twitterLikes?: number;
   readmeText?: string;
   filePaths: string[];
-  imageHash?: string;
   uploader?: string;
   tweeted?: boolean;
   rejected?: boolean;
@@ -31,7 +30,6 @@ export type SkinRecord = {
   twitterLikes?: number;
   readmeText?: string;
   fileNames: string[];
-  imageHash?: string;
   uploader?: string;
   screenshotUrl: string;
   skinUrl: string;

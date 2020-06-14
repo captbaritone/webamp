@@ -22,22 +22,6 @@ async function main() {
 
   try {
     switch (argv._[0]) {
-      case "image-hash":
-        const hashes = new Map();
-
-        fs.readFileSync(path.join(__dirname, "./hash.txt"), "utf8")
-          .split("\n")
-          .forEach((line) => {
-            const [md5, imgHash] = line.split(" ");
-            hashes.set(md5, imgHash);
-          });
-
-        for (const [md5, imgHash] of hashes.entries()) {
-          await Skins.setImageHash(md5, imgHash);
-          process.stderr.write(".");
-        }
-        break;
-
       case "tweet":
         await tweet(client, null);
         break;

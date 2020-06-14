@@ -35,7 +35,6 @@ function getSkinRecord(skin: DBSkinRecord): SkinRecord {
     twitterLikes,
     readmeText,
     filePaths,
-    imageHash,
     uploader,
     tweeted,
     rejected,
@@ -57,7 +56,6 @@ function getSkinRecord(skin: DBSkinRecord): SkinRecord {
     twitterLikes,
     webampUrl: `https://webamp.org?skinUrl=${skinUrl}`,
     readmeText,
-    imageHash,
     uploader,
     tweeted,
     rejected,
@@ -65,15 +63,6 @@ function getSkinRecord(skin: DBSkinRecord): SkinRecord {
     nsfw,
     nsfwPredictions,
   };
-}
-
-async function getProp<T extends keyof DBSkinRecord>(
-  md5: string,
-  prop: T
-): Promise<DBSkinRecord[T]> {
-  const skin = await skins.findOne({ md5, type: "CLASSIC" });
-  const value = skin && skin[prop];
-  return value == null ? null : value;
 }
 
 export async function addSkin({ md5, filePath, uploader, averageColor }) {
@@ -108,14 +97,7 @@ export async function getMd5ByAnything(
       return md5;
     }
   }
-  const md5 = await getMd5FromInternetArchvieItemName(anything);
-  if (md5 != null) {
-    return md5;
-  }
-
-  const imageHashMd5 = await getMd5FromImageHash(anything);
-
-  return imageHashMd5;
+  return getMd5FromInternetArchvieItemName(anything);
 }
 
 export async function getSkinByMd5(md5: string) {
@@ -140,20 +122,6 @@ export async function getSkinByMd5(md5: string) {
   };
 }
 
-export async function getReadme(md5: string) {
-  return getProp(md5, "readmeText");
-}
-
-export async function getScreenshotUrl(md5: string): Promise<never> {
-  // @ts-ignore
-  return getProp(md5, "screenshotUrl");
-}
-
-export async function getSkinUrl(md5: string): Promise<never> {
-  // @ts-ignore
-  return getProp(md5, "skinUrl");
-}
-
 export async function getInternetArchiveItem(md5: string): Promise<DBIARecord> {
   return iaItems.findOne({ md5: md5 });
 }
@@ -161,18 +129,6 @@ export async function getInternetArchiveItem(md5: string): Promise<DBIARecord> {
 async function getMd5FromInternetArchvieItemName(itemName: string) {
   const item = await iaItems.findOne({ identifier: itemName }, { md5: 1 });
   return item == null ? null : item.md5;
-}
-
-async function getMd5FromImageHash(imageHash: string): Promise<string | null> {
-  const item: { md5: string } | null = await skins.findOne(
-    { imageHash },
-    { md5: 1 }
-  );
-  return item == null ? null : item.md5;
-}
-
-export async function getMd5sMatchingImageHash(imageHash: string) {
-  return skins.find({ imageHash }, { md5: 1 });
 }
 
 export async function getUnarchived() {
@@ -309,13 +265,6 @@ export async function getStats(): Promise<{
   return { approved, rejected, tweeted, tweetable };
 }
 
-export async function setImageHash(
-  md5: string,
-  imageHash: string
-): Promise<void> {
-  await skins.findOneAndUpdate({ md5 }, { $set: { imageHash } });
-}
-
 export async function getRandomClassicSkinMd5() {
   const random = await skins.aggregate([
     { $match: CLASSIC_QUERY },
@@ -351,9 +300,6 @@ export async function setTweetInfo(
   likes: number,
   tweetId: string
 ): Promise<void> {
-  if (md5 === "48bbdbbeb03d347e59b1eebda4d352d0") {
-    console.log(likes, tweetId);
-  }
   await skins.findOneAndUpdate(
     { md5 },
     { $set: { twitterLikes: likes, tweetId } }

@@ -11,7 +11,6 @@
     "discord.js": "^11.4.2",
     "express": "^4.17.1",
     "express-fileupload": "^1.1.7-alpha.3",
-    "image-hash": "^3.5.1",
     "imagemin": "^7.0.0",
     "imagemin-optipng": "^7.0.0",
     "md5": "^2.2.1",

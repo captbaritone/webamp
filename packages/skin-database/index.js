@@ -96,7 +96,7 @@ app.post("/skins/:md5/report", async (req, res) => {
 
 app.get("/skins/:md5/screenshot.png", async (req, res) => {
   const { md5 } = req.params;
-  const screenshotUrl = await Skins.getScreenshotUrl(md5);
+  const { screenshotUrl } = await Skins.getSkinByMd5(md5);
   if (screenshotUrl == null) {
     res.status(404).send();
     return;
@@ -106,7 +106,7 @@ app.get("/skins/:md5/screenshot.png", async (req, res) => {
 
 app.get("/skins/:md5/download", async (req, res) => {
   const { md5 } = req.params;
-  const skinUrl = await Skins.getSkinUrl(md5);
+  const { skinUrl } = await Skins.getSkinByMd5(md5);
   if (skinUrl == null) {
     res.status(404).send();
     return;
