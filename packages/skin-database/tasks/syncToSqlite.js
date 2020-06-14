@@ -65,16 +65,16 @@ async function migrate(record) {
     filenames,
     uploader,
     nsfw,
-    // Unused
-    _id,
-    screenshotUrl,
-    skinUrl,
     rejected,
     approved,
     tweeted,
     tweetId,
-    imageHash,
     nsfwPredictions,
+    // Unused
+    _id,
+    screenshotUrl,
+    skinUrl,
+    imageHash,
     ...rest
   } = record;
   const found = await knex("skins").where({ md5 }).first();
