@@ -1,10 +1,10 @@
 import { Message } from "discord.js";
 
-import { getStats, getClassicSkinCount } from "../../data/skins";
+import * as Skins from "../../data/skins";
 
 async function handler(message: Message): Promise<void> {
-  const classic = await getClassicSkinCount();
-  const { tweeted, approved, rejected, tweetable } = await getStats();
+  const classic = await Skins.getClassicSkinCount();
+  const { tweeted, approved, rejected, tweetable } = await Skins.getStats();
   await message.channel.send(`Unique Skins: ${classic.toLocaleString()}
 Tweeted: ${tweeted.toLocaleString()}
 Rejected: ${rejected.toLocaleString()}

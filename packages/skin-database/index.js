@@ -6,7 +6,6 @@ const iaItems = db.get("internetArchiveItems");
 // const info = require("/Volumes/Mobile Backup/skins/cache/info.json");
 const Skins = require("./data/skins");
 const port = 3001;
-const graphql = require("./graphql").default;
 const fileUpload = require("express-fileupload");
 const { addSkinFromBuffer } = require("./addSkin");
 const Discord = require("discord.js");
@@ -40,16 +39,6 @@ app.use(
 
 app.get("/", async (req, res) => {
   res.send("Hello World!");
-});
-
-app.get("/items/:identifier", async (req, res) => {
-  const { identifier } = req.params;
-  const item = await iaItems.findOne({ identifier });
-  if (item == null) {
-    res.status(404).json();
-    return;
-  }
-  res.json(item);
 });
 
 app.get("/skins/", async (req, res) => {
@@ -105,17 +94,6 @@ app.post("/skins/:md5/report", async (req, res) => {
   res.send("The skin has been reported and will be reviewed shortly.");
 });
 
-app.get("/skins/:md5/readme.txt", async (req, res) => {
-  const { md5 } = req.params;
-  const readmeText = await Skins.getReadme(md5);
-  if (readmeText == null) {
-    // TODO: make this 404
-    res.send("");
-    return;
-  }
-  res.send(readmeText);
-});
-
 app.get("/skins/:md5/screenshot.png", async (req, res) => {
   const { md5 } = req.params;
   const screenshotUrl = await Skins.getScreenshotUrl(md5);
@@ -136,37 +114,4 @@ app.get("/skins/:md5/download", async (req, res) => {
   res.redirect(301, skinUrl);
 });
 
-app.use(graphql());
-
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
-
-async function main() {
-  return;
-  /*
-  const found = 0;
-  const bulkUpdates = Object.values(info)
-    .map((skin, i, collection) => {
-      const { md5, twitterLikes, tweetUrl } = skin;
-      if (twitterLikes == null && tweetUrl == null) {
-        return;
-      }
-      return {
-        updateOne: {
-          filter: { md5 },
-          update: {
-            $set: {
-              tweetUrl,
-              twitterLikes,
-            },
-          },
-          upsert: true,
-        },
-      };
-    })
-    .filter(Boolean);
-  await skins.bulkWrite(bulkUpdates);
-  console.log("done");
-  */
-}
-
-main();
