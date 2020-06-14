@@ -17,7 +17,6 @@ const whitelist = ["https://skins.webamp.org", "http://localhost:3000"];
 const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
-      console.log("okay");
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
@@ -26,6 +25,8 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
+app.options("*", cors(corsOptions));
 
 // TODO: Look into 766c4fad9088037ab4839b18292be8b1
 // Has huge number of filenames in info.json
