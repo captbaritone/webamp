@@ -1,14 +1,5 @@
 const path = require("path");
-const db = require("../db");
-
-var knex = require("knex")({
-  client: "sqlite3",
-  connection: {
-    filename: path.join(__dirname, "../skins.sqlite3"),
-  },
-  useNullAsDefault: true,
-  debug: false,
-});
+const { db, knex } = require("../db");
 
 const skins = db.get("skins");
 const iaItems = db.get("internetArchiveItems");

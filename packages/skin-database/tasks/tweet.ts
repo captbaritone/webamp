@@ -5,6 +5,7 @@ import { TWEET_BOT_CHANNEL_ID } from "../config";
 import { spawn } from "child_process";
 import { Client } from "discord.js";
 import { SkinRecord } from "../types";
+import { PROJECT_ROOT } from "../config";
 
 function spawnPromise(command: string, args: string[]): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -83,8 +84,7 @@ export async function tweet(discordClient: Client, anything: string | null) {
     throw new Error(`Could not find filename for skin with hash ${md5}`);
   }
   const output = await spawnPromise(
-    // This will be run from the dist directory
-    path.resolve(__dirname, "../../../../packages/tweetBot/tweet.py"),
+    path.resolve(PROJECT_ROOT, "../tweetBot/tweet.py"),
     [
       "tweet",
       md5,

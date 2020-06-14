@@ -1,10 +1,17 @@
-import db from "../db";
+import { db, knex } from "../db";
 import path from "path";
 import logger from "../logger";
 import { searchIndex } from "../algolia";
 import { DBSkinRecord, SkinRecord, DBIARecord, TweetStatus } from "../types";
 import fetch from "node-fetch";
 import { analyseBuffer, NsfwPrediction } from "../nsfwImage";
+
+const SKIN_TYPE = {
+  CLASSIC: 1,
+  MODERN: 2,
+  PACK: 3,
+  INVALID: 4,
+};
 
 const skins = db.get("skins");
 const iaItems = db.get("internetArchiveItems");
@@ -55,6 +62,22 @@ export async function addSkin({ md5, filePath, uploader, averageColor }) {
     uploader,
     averageColor,
   });
+  await knex("skins").insert(
+    {
+      md5,
+      skin_type: SKIN_TYPE.CLASSIC,
+      average_color: averageColor,
+    },
+    []
+  );
+  await knex("files").insert(
+    {
+      skin_md5: md5,
+      file_path: filePath,
+      source_attribution: uploader,
+    },
+    []
+  );
 }
 
 const IA_URL = /^(https:\/\/)?archive.org\/details\/([^\/]+)\/?/;
@@ -146,10 +169,13 @@ export function getClassicSkinCount(): Promise<number> {
   return skins.count(CLASSIC_QUERY);
 }
 
+// TODO: Also pass id
 export async function markAsTweeted(md5: string): Promise<void> {
   await skins.findOneAndUpdate({ md5 }, { $set: { tweeted: true } });
+  await knex("tweets").insert({ skin_md5: md5 }, []);
 }
 
+// TODO: Also path actor
 export async function markAsNSFW(md5: string): Promise<void> {
   await skins.findOneAndUpdate({ md5 }, { $set: { nsfw: true } });
   const indexes = [{ objectID: md5, nsfw: true }];
@@ -160,6 +186,7 @@ export async function markAsNSFW(md5: string): Promise<void> {
       resolve(content);
     });
   });
+  await knex("skin_reviews").insert({ skin_md5: md5, review: "NSFW" }, []);
 }
 
 export async function getStatus(md5: string): Promise<TweetStatus> {
@@ -176,12 +203,16 @@ export async function getStatus(md5: string): Promise<TweetStatus> {
   return "UNREVIEWED";
 }
 
+// TODO: Also path actor
 export async function approve(md5: string): Promise<void> {
   await skins.findOneAndUpdate({ md5 }, { $set: { approved: true } });
+  await knex("skin_reviews").insert({ skin_md5: md5, review: "APPROVED" }, []);
 }
 
+// TODO: Also path actor
 export async function reject(md5: string): Promise<void> {
   await skins.findOneAndUpdate({ md5 }, { $set: { rejected: true } });
+  await knex("skin_reviews").insert({ skin_md5: md5, review: "REJECTED" }, []);
 }
 
 export async function getSkinToReview(): Promise<{
@@ -233,13 +264,13 @@ export async function getStats(): Promise<{
   return { approved, rejected, tweeted, tweetable };
 }
 
-export async function getRandomClassicSkinMd5() {
+export async function getRandomClassicSkinMd5(): Promise<string> {
   const random = await skins.aggregate([
     { $match: CLASSIC_QUERY },
     { $sample: { size: 1 } },
   ]);
   if (random.length === 0) {
-    return null;
+    throw new Error("Could not find any classic skins");
   }
   return random[0].md5;
 }
@@ -261,6 +292,10 @@ export async function setNsfwPredictions(
   nsfwPredictions: NsfwPrediction
 ): Promise<void> {
   await skins.findOneAndUpdate({ md5 }, { $set: { nsfwPredictions } });
+  await knex("nsfw_predictions").insert(
+    { skin_md5: md5, ...nsfwPredictions },
+    []
+  );
 }
 
 export async function setTweetInfo(
@@ -272,6 +307,9 @@ export async function setTweetInfo(
     { md5 },
     { $set: { twitterLikes: likes, tweetId } }
   );
+  await knex("tweets")
+    .where({ skin_md5: md5 })
+    .update({ tweet_id: tweetId, likes }, []);
 }
 
 export async function computeAndSetNsfwPredictions(md5: string): Promise<void> {

@@ -10,6 +10,7 @@ import * as Skins from "./data/skins";
 import Discord from "discord.js";
 import { tweet } from "./tasks/tweet";
 import { addSkinFromBuffer } from "./addSkin";
+import { PROJECT_ROOT } from "./config";
 
 async function main() {
   const client = new Discord.Client();
@@ -67,7 +68,7 @@ async function main() {
       case "tweet-data": {
         // From running `tweet.py sort`
         const file = fs.readFileSync(
-          path.join(__dirname, "../../tweetBot/likes.txt"),
+          path.join(PROJECT_ROOT, "../tweetBot/likes.txt"),
           { encoding: "utf8" }
         );
 

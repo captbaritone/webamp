@@ -1,4 +1,4 @@
-const db = require("../db");
+const { db } = require("../db");
 const iaItems = db.get("internetArchiveItems");
 
 module.exports = async function main() {
