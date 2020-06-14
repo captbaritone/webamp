@@ -2,6 +2,7 @@ import db from "../db";
 import path from "path";
 import S3 from "../s3";
 import logger from "../logger";
+import { searchIndex } from "../algolia";
 import { DBSkinRecord, SkinRecord, DBIARecord, TweetStatus } from "../types";
 import fetch from "node-fetch";
 import { analyseBuffer, NsfwPrediction } from "../nsfwImage";
@@ -206,6 +207,14 @@ export async function markAsTweeted(md5: string): Promise<void> {
 
 export async function markAsNSFW(md5: string): Promise<void> {
   await skins.findOneAndUpdate({ md5 }, { $set: { nsfw: true } });
+  const indexes = [{ objectID: md5, nsfw: true }];
+  // TODO: Await here, but for some reason this never completes
+  new Promise((resolve, reject) => {
+    searchIndex.partialUpdateObjects(indexes, function (err, content) {
+      if (err != null) reject(err);
+      resolve(content);
+    });
+  });
 }
 
 export async function getStatus(md5: string): Promise<TweetStatus> {

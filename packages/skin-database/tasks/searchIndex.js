@@ -1,10 +1,6 @@
-const algoliasearch = require("algoliasearch");
-const { ALGOLIA_INDEX, ALGOLIA_KEY } = require("../config");
+const { searchIndex } = require("../algolia");
 const path = require("path");
 const db = require("../db");
-
-const client = algoliasearch(ALGOLIA_INDEX, ALGOLIA_KEY);
-const index = client.initIndex("Skins");
 
 function tuncate(str, len) {
   const overflow = str.length - len;
@@ -65,7 +61,7 @@ async function go({ dry = true }) {
   }
   console.log("Writing index");
   const results = await new Promise((resolve, reject) => {
-    index.partialUpdateObjects(indexes, function (err, content) {
+    searchIndex.partialUpdateObjects(indexes, function (err, content) {
       if (err != null) reject(err);
       resolve(content);
     });
