@@ -123,7 +123,10 @@ async function migrate(record) {
   await knex("skins").insert(skin, []);
 
   if (nsfwPredictions != null) {
-    await knex("nsfw_predictions").insert(nsfwPredictions, []);
+    await knex("nsfw_predictions").insert(
+      { ...nsfwPredictions, skin_md5: md5 },
+      []
+    );
   }
 
   if (approved) {
@@ -162,7 +165,6 @@ async function clean() {
   await knex("skins").delete();
   await knex("files").delete();
   await knex("tweets").delete();
-  await knex("reviews").delete();
   await knex("ia_items").delete();
   await knex("skin_reviews").delete();
 }
