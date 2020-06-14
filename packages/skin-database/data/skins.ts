@@ -170,9 +170,9 @@ export function getClassicSkinCount(): Promise<number> {
 }
 
 // TODO: Also pass id
-export async function markAsTweeted(md5: string): Promise<void> {
+export async function markAsTweeted(md5: string, url: string): Promise<void> {
   await skins.findOneAndUpdate({ md5 }, { $set: { tweeted: true } });
-  await knex("tweets").insert({ skin_md5: md5 }, []);
+  await knex("tweets").insert({ skin_md5: md5, url }, []);
 }
 
 // TODO: Also path actor

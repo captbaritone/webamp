@@ -92,7 +92,7 @@ export async function tweet(discordClient: Client, anything: string | null) {
       // "--dry",
     ]
   );
-  await Skins.markAsTweeted(md5);
+  await Skins.markAsTweeted(md5, output.trim());
   // @ts-ignore
   await tweetBotChannel.send(output.trim());
   const remainingSkinCount = await Skins.getTweetableSkinCount();
