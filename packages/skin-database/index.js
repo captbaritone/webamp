@@ -1,9 +1,6 @@
 const express = require("express");
 const app = express();
 const config = require("./config");
-const db = require("./db");
-const iaItems = db.get("internetArchiveItems");
-// const info = require("/Volumes/Mobile Backup/skins/cache/info.json");
 const Skins = require("./data/skins");
 const port = 3001;
 const fileUpload = require("express-fileupload");

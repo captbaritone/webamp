@@ -4,16 +4,12 @@ import fs from "fs";
 import { argv } from "yargs";
 import fetchInternetArchiveMetadata from "./tasks/fetchInternetArchiveMetadata";
 import ensureInternetArchiveItemsIndexByMd5 from "./tasks/ensureInternetArchiveItemsIndexByMd5";
-import migrate from "./tasks/migrate";
 import logger from "./logger";
 import DiscordWinstonTransport from "./DiscordWinstonTransport";
 import * as Skins from "./data/skins";
-import db from "./db";
 import Discord from "discord.js";
 import { tweet } from "./tasks/tweet";
 import { addSkinFromBuffer } from "./addSkin";
-import fetch from "node-fetch";
-import { analyseBuffer, NsfwPrediction } from "./nsfwImage";
 
 async function main() {
   const client = new Discord.Client();
@@ -35,7 +31,7 @@ async function main() {
         break;
       case "metadata": {
         const hash = argv._[1];
-        console.log(await Skins.getInternetArchiveUrl(hash));
+        console.log(Skins.getInternetArchiveUrl(hash));
         break;
       }
       case "skin": {
@@ -68,9 +64,6 @@ async function main() {
         console.log("Done.");
         break;
       }
-      case "migrate": {
-        await migrate();
-      }
       case "tweet-data": {
         // From running `tweet.py sort`
         const file = fs.readFileSync(
@@ -98,7 +91,6 @@ async function main() {
   } finally {
     logger.close();
     client.destroy();
-    await db.close();
   }
 }
 
