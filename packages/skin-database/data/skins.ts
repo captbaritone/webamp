@@ -26,43 +26,25 @@ const REVIEWABLE_QUERY = {
   rejected: { $ne: true },
   type: "CLASSIC",
 };
-function getSkinRecord(skin: DBSkinRecord): SkinRecord {
-  const {
-    md5,
-    averageColor,
-    emails,
-    tweetUrl,
-    twitterLikes,
-    readmeText,
-    filePaths,
-    uploader,
-    tweeted,
-    rejected,
-    approved,
-    nsfw,
-    nsfwPredictions,
-  } = skin;
-  const fileNames = filePaths.map((p) => path.basename(p));
-  const skinUrl = `https://s3.amazonaws.com/webamp-uploaded-skins/skins/${md5}.wsz`;
-  return {
-    skinUrl,
-    screenshotUrl: `https://s3.amazonaws.com/webamp-uploaded-skins/screenshots/${md5}.png`,
-    md5,
-    averageColor,
-    fileNames,
-    canonicalFilename: fileNames != null ? fileNames[0] : null,
-    emails,
-    tweetUrl,
-    twitterLikes,
-    webampUrl: `https://webamp.org?skinUrl=${skinUrl}`,
-    readmeText,
-    uploader,
-    tweeted,
-    rejected,
-    approved,
-    nsfw,
-    nsfwPredictions,
-  };
+
+function getFilenames(skin: DBSkinRecord): string[] {
+  return skin.filePaths.map((p) => path.basename(p));
+}
+
+function getCanonicalFilename(skin: DBSkinRecord): string | null {
+  const fileNames = getFilenames(skin);
+  return fileNames[0] || null;
+}
+
+function getSkinUrl(skin: DBSkinRecord): string {
+  return `https://s3.amazonaws.com/webamp-uploaded-skins/skins/${skin.md5}.wsz`;
+}
+function getScreenshotUrl(skin: DBSkinRecord): string {
+  return `https://s3.amazonaws.com/webamp-uploaded-skins/screenshots/${skin.md5}.png`;
+}
+
+function getWebampUrl(skin: DBSkinRecord): string {
+  return `https://webamp.org?skinUrl=${getSkinUrl(skin)}`;
 }
 
 export async function addSkin({ md5, filePath, uploader, averageColor }) {
@@ -100,8 +82,11 @@ export async function getMd5ByAnything(
   return getMd5FromInternetArchvieItemName(anything);
 }
 
-export async function getSkinByMd5(md5: string) {
-  const skin = await skins.findOne({ md5, type: "CLASSIC" });
+export async function getSkinByMd5(md5: string): Promise<SkinRecord | null> {
+  const skin: DBSkinRecord | null = await skins.findOne({
+    md5,
+    type: "CLASSIC",
+  });
   if (skin == null) {
     logger.warn("Could not find skin in database", { md5, alert: true });
     return null;
@@ -114,9 +99,15 @@ export async function getSkinByMd5(md5: string) {
     internetArchiveUrl = getInternetArchiveUrl(internetArchiveItemName);
   }
   const tweetStatus = await getStatus(md5);
+
   return {
-    ...getSkinRecord(skin),
+    ...skin,
     tweetStatus,
+    skinUrl: getSkinUrl(skin),
+    screenshotUrl: getScreenshotUrl(skin),
+    fileNames: getFilenames(skin),
+    canonicalFilename: getCanonicalFilename(skin),
+    webampUrl: getWebampUrl(skin),
     internetArchiveItemName,
     internetArchiveUrl,
   };
@@ -193,27 +184,6 @@ export async function reject(md5: string): Promise<void> {
   await skins.findOneAndUpdate({ md5 }, { $set: { rejected: true } });
 }
 
-export async function getSkinToArchive(): Promise<{
-  filename: string | null;
-  md5: string;
-}> {
-  const reviewable = await skins.aggregate([
-    { $match: CLASSIC_QUERY },
-    {
-      $lookup: {
-        from: "internetArchiveItems",
-        localField: "md5",
-        foreignField: "md5",
-        as: "archive",
-      },
-    },
-    { $count: "5" },
-  ]);
-  const skin = reviewable[0];
-  const { canonicalFilename, md5 } = getSkinRecord(skin);
-  return { filename: canonicalFilename, md5 };
-}
-
 export async function getSkinToReview(): Promise<{
   filename: string | null;
   md5: string;
@@ -223,8 +193,7 @@ export async function getSkinToReview(): Promise<{
     { $sample: { size: 1 } },
   ]);
   const skin = reviewable[0];
-  const { canonicalFilename, md5 } = getSkinRecord(skin);
-  return { filename: canonicalFilename, md5 };
+  return { filename: getCanonicalFilename(skin), md5: skin.md5 };
 }
 
 export async function getSkinToReviewForNsfw(): Promise<{
@@ -236,8 +205,7 @@ export async function getSkinToReviewForNsfw(): Promise<{
     sort: { "nsfwPredictions.porn": -1 },
   });
   const skin = reviewable[0];
-  const { canonicalFilename, md5 } = getSkinRecord(skin);
-  return { filename: canonicalFilename, md5 };
+  return { filename: getCanonicalFilename(skin), md5: skin.md5 };
 }
 
 export async function getSkinToTweet(): Promise<SkinRecord | null> {
@@ -249,7 +217,7 @@ export async function getSkinToTweet(): Promise<SkinRecord | null> {
   if (skin == null) {
     return null;
   }
-  return getSkinRecord(skin);
+  return getSkinByMd5(skin.md5);
 }
 
 export async function getStats(): Promise<{

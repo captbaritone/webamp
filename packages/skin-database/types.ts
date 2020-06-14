@@ -40,4 +40,7 @@ export type SkinRecord = {
   approved?: boolean;
   nsfw?: boolean;
   nsfwPredictions?: NsfwPrediction;
+  tweetStatus: TweetStatus;
+  internetArchiveItemName: string | null;
+  internetArchiveUrl: string | null;
 };
