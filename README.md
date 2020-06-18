@@ -8,7 +8,7 @@ A reimplementation of Winamp 2.9 in HTML5 and JavaScript.
 
 ## [Give it a try!](https://webamp.org)
 
-[![Screenshot of Webamp](https://raw.githubusercontent.com/captbaritone/webamp/master/demo/images/preview.png)](https://webamp.org)
+[![Screenshot of Webamp](https://raw.githubusercontent.com/captbaritone/webamp/master/packages/webamp/demo/images/preview.png)](https://webamp.org)
 
 Works in modern versions of Edge, Firefox, Safari and Chrome. IE is [not
 supported](http://caniuse.com/#feat=audio-api).
