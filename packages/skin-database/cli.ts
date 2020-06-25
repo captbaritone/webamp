@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import path from "path";
 import fs from "fs";
+import { db, knex } from "./db";
 import { argv } from "yargs";
 import fetchInternetArchiveMetadata from "./tasks/fetchInternetArchiveMetadata";
 import ensureInternetArchiveItemsIndexByMd5 from "./tasks/ensureInternetArchiveItemsIndexByMd5";
@@ -90,6 +91,8 @@ async function main() {
         console.log(`Unknown command ${argv._[0]}`);
     }
   } finally {
+    knex.destroy();
+    db.close();
     logger.close();
     client.destroy();
   }

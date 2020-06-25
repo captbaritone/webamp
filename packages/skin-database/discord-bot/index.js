@@ -10,12 +10,15 @@ const handlers = {
   help: handleHelp,
 };
 
-const commands = fs
-  .readdirSync(path.resolve(__dirname, "./commands"))
-  .filter((file) => file.endsWith(".js"))
-  .map((file) => {
-    return require(`./commands/${file}`);
-  });
+const commands = [
+  require("./commands/archive"),
+  require("./commands/random"),
+  require("./commands/review"),
+  require("./commands/screenshot"),
+  require("./commands/skin"),
+  require("./commands/stats"),
+  require("./commands/tweet"),
+];
 
 for (const command of commands) {
   handlers[command.command] = command.handler;

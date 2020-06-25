@@ -23,16 +23,18 @@
     "shell-escape": "^0.2.0",
     "sqlite3": "^4.2.0",
     "temp": "^0.9.0",
+    "ts-node": "^8.10.2",
     "winston": "^3.2.1",
     "yargs": "^13.2.4"
   },
   "scripts": {
-    "start": "tsc && node dist/index.js",
-    "tweet": "tsc && ./dist/cli.js tweet",
-    "fetch-metadata": "tsc && .dist/cli.js fetch-metadata",
-    "bot": "tsc && node ./dist/discord-bot/index.js",
-    "cli": "tsc && node ./dist/cli.js",
-    "index": "tsc && node ./dist/tasks/searchIndex.js"
+    "start": "ts-node --transpile-only index.js",
+    "tweet": "ts-node --transpile-only ./cli.ts tweet",
+    "fetch-metadata": "ts-node --transpile-only ./cli.ts fetch-metadata",
+    "bot": "ts-node --transpile-only ./discord-bot/index.js",
+    "cli": "ts-node --transpile-only ./cli.ts",
+    "repro": "ts-node --transpile-only ./repro.ts",
+    "index": "ts-node --transpile-only ./tasks/searchIndex.js"
   },
   "prettier": {},
   "devDependencies": {
