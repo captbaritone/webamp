@@ -37,7 +37,7 @@ const TYPE_MAP = {
 function getTypeData(makiType) {
   const type = TYPE_MAP[makiType.toLowerCase()];
   if (type == null) {
-    console.warn(`Could not find type for "${makiType}"`);
+    // console.warn(`Could not find type for "${makiType}"`);
   }
   return type;
 }

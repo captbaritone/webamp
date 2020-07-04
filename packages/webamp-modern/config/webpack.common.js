@@ -42,16 +42,16 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      filename: "modern/index.html",
-      template: "../modern/index.html",
+      filename: "index.html",
+      template: "./index.html",
       chunks: ["modern"],
     }),
     // Ideally we could just do this via client-side routing, but it's tricky
     // with both the real app and this sub directory. So we just hack it to
     // duplicate the html file in both places and move on with our lives.
     new HtmlWebpackPlugin({
-      filename: "modern/ready/index.html",
-      template: "../modern/index.html",
+      filename: "./ready/index.html",
+      template: "./index.html",
       chunks: ["modern"],
     }),
   ],
@@ -62,7 +62,7 @@ module.exports = {
     maxAssetSize: 7000000,
   },
   entry: {
-    modern: ["../modern/src/index.js"],
+    modern: ["./src/index.js"],
   },
   context: path.resolve(__dirname, "../"),
   output: {

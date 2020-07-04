@@ -4,10 +4,10 @@
   "description": "Winamp Modern Skins in the browser",
   "scripts": {
     "lint-fix": "eslint . --ext ts,tsx,js --fix",
-    "lint": "eslint . --ext ts,tsx,js --rulesdir=modern/eslint",
+    "lint": "eslint . --ext ts,tsx,js --rulesdir=eslint",
     "type-check": "tsc",
-    "serve": "http-server ./demo/built",
-    "start": "webpack-dev-server --open --config=demo/config/webpack.dev.js",
+    "serve": "http-server ./built",
+    "start": "webpack-dev-server --open --config=config/webpack.dev.js",
     "test": "jest --config=config/jest.unit.js",
     "tdd": "jest --config=config/jest.unit.js --watch",
     "format": "prettier --write \"**/*.{js,ts,tsx,d.ts,css}\"",

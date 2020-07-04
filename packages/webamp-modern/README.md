@@ -24,7 +24,7 @@ In addition to the Maki interpreter, we also need an implementation of the Maki 
 
 We also have a tool for examining a corpus of modern skins an extracting which methods of the standard libary they use. This lives in `modern/src/maki-interpreter/tools/extract-functions.js` it's not really built for anyone but Jordan to run, so it has a few paths hard coded into it. This could be fixed if somebody else had the interest. By running `yarn analyze-wals` it will look in a specific hard-coded folder for skins and extract method data from them. It will then write that data to `modern/resources/maki-skin-data.json`. This data is invaluable for prioritizing which methods we should implement next. Some methods are only used by a very small number of skins. Others are not used at all.
 
-The data extracted by the `extract-functions.js` utility and the list of unimplmented methods which is validated by `modern/src/objects.test.js` can be visualized visiting [https://webamp.org/modern/ready/](https://webamp.org/modern/ready/) or `localhost:8080/modern/ready` if developing locally. This dashboard makes it very easy to see current progress and explore the usage of different methods. Keep in mind that as of this writting some ~20% of `.maki` files fail to parse, so the data on this page represents a lower bound of actual usage.
+The data extracted by the `extract-functions.js` utility and the list of unimplmented methods which is validated by `modern/src/objects.test.js` can be visualized visiting [https://webamp.org/ready/](https://webamp.org/ready/) or `localhost:8080/ready` if developing locally. This dashboard makes it very easy to see current progress and explore the usage of different methods. Keep in mind that as of this writting some ~20% of `.maki` files fail to parse, so the data on this page represents a lower bound of actual usage.
 
 ## Architecture
 
@@ -39,7 +39,7 @@ yarn
 yarn start
 ```
 
-Then open: `http://localhost:8080/modern/`.
+Then open: `http://localhost:8080/`.
 
 ## Tests
 

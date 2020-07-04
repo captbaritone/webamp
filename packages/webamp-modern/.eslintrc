@@ -63,7 +63,6 @@
       }
     ],
     "block-scoped-var": "warn",
-    "camelcase": "error",
     "constructor-super": "error",
     "dot-notation": "error",
     "eqeqeq": ["error", "smart"],

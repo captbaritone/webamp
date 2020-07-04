@@ -1,6 +1,6 @@
-const makiClassRule = require("./modern/eslint/maki-class");
-const makiMissingMethods = require("./modern/eslint/maki-missing-methods");
-const makiMethodTypes = require("./modern/eslint/maki-method-types");
+const makiClassRule = require("./eslint/maki-class");
+const makiMissingMethods = require("./eslint/maki-missing-methods");
+const makiMethodTypes = require("./eslint/maki-method-types");
 
 module.exports = {
   "maki-class": makiClassRule,
