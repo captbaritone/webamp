@@ -6,7 +6,7 @@ import * as Selectors from "./Selectors";
 // import simpleSkin from "../skins/simple.wal";
 import cornerSkin from "../skins/CornerAmp_Redux.wal";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import DropTarget from "../../js/components/DropTarget";
+import DropTarget from "./components/DropTarget";
 import Debugger from "./debugger";
 import Sidebar from "./Sidebar";
 const Dashboard = React.lazy(() => import("./Dashboard"));
