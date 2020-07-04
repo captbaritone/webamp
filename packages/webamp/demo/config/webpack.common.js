@@ -63,6 +63,10 @@ module.exports = {
         to: "service-worker.js",
         force: true,
       },
+      {
+        from: "../assets",
+        to: "assets",
+      },
     ]),
   ],
 
