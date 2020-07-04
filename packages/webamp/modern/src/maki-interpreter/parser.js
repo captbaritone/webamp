@@ -219,6 +219,7 @@ function readConstants({ makiFile, variables }) {
   while (count--) {
     const i = makiFile.readUInt32LE();
     const variable = variables[i];
+    // TODO: Assert this is of type string.
     const value = makiFile.readString();
     // TODO: Don't mutate
     variable.setValue(value);
@@ -315,6 +316,8 @@ function parse(data) {
   readConstants({ makiFile, variables });
   const bindings = readBindings(makiFile);
   const commands = decodeCode({ makiFile });
+
+  // TODO: Assert that we are at the end of the maki file
 
   // Map binary offsets to command indexes.
   // Some bindings/functions ask us to jump to a place in the binary data and
