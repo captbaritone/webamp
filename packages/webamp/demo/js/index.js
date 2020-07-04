@@ -112,14 +112,10 @@ async function main() {
   let __butterchurnOptions = null;
   let __initialWindowLayout = null;
   if (isButterchurnSupported()) {
-    const params = new URLSearchParams(location.search);
-    const butterchurnPresetUrlParam = params.get("butterchurnPresetUrl");
-
     const startWithMilkdropHidden =
-      butterchurnPresetUrlParam == null &&
-      (document.body.clientWidth < MIN_MILKDROP_WIDTH ||
-        skinUrl != null ||
-        screenshot);
+      document.body.clientWidth < MIN_MILKDROP_WIDTH ||
+      skinUrl != null ||
+      screenshot;
 
     __butterchurnOptions = getButterchurnOptions(startWithMilkdropHidden);
 

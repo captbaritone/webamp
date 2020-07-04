@@ -33,10 +33,7 @@ if ("URLSearchParams" in window) {
   SHOW_DESKTOP_ICONS = Boolean(params.get("icons"));
 }
 
-export const skinUrl =
-  config.skinUrl === undefined
-    ? "https://s3.amazonaws.com/webamp-uploaded-skins/skins/e56349b6cedc3ddad73dcfba9405aba7.wsz"
-    : config.skinUrl;
+export const skinUrl = config.skinUrl === undefined ? null : config.skinUrl;
 
 // https://freemusicarchive.org/music/netBloc_Artists/netBloc_Vol_24_tiuqottigeloot/
 const album = "netBloc Vol. 24: tiuqottigeloot";
