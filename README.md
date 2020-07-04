@@ -4,7 +4,7 @@
 
 A reimplementation of Winamp 2.9 in HTML5 and JavaScript.
 
-**As seen on [TechCrunch], [Motherboard], [Gizmodo], Hacker News ([1], [2], [3], [4]), and [elsewhere](./docs/press.md).**
+**As seen on [TechCrunch], [Motherboard], [Gizmodo], Hacker News ([1], [2], [3], [4]), and [elsewhere](./packages/webamp/docs/press.md).**
 
 ## [Give it a try!](https://webamp.org)
 
@@ -21,9 +21,9 @@ Check out this Twitter thread for an illustrated list of features: https://twitt
 
 Its possible to use Webamp as a media player on your own website. In fact, the [Internet Archive](https://archive.org/) offers it as an optional player for all of their archived audio tracks. [Read more](https://blog.archive.org/2018/10/02/dont-click-on-the-llama/).
 
-For examples of how to add Webamp to your projects, check out out [`examples/` directory](./examples).
+For examples of how to add Webamp to your projects, check out out [`examples/` directory](./packages/webamp/examples).
 
-See the [usage documentation](./docs/usage.md) for more detailed information.
+See the [usage documentation](./packages/webamp/docs/usage.md) for more detailed information.
 
 ## About This Repository
 
@@ -108,7 +108,7 @@ There are some "feature flags" which you can manipulate by passing a specially c
 
 - `skinUrl` (string) Url of the default skin to use. Note, this file must be served with the correct Allows Origin header.
 - `audioUrl` (string) Url of the default audio file to use. Note, this file must be served with the correct Allows Origin header.
-- `initialState` (object) Override the [initial Redux state](js/reducers/index.ts). Values from this object will be recursively merged into the actual default state.
+- `initialState` (object) Override the [initial Redux state](packages/webamp/js/reducers/index.ts). Values from this object will be recursively merged into the actual default state.
 
 **Note:** These are intended mostly as development tools and are subject to change at any time.
 
