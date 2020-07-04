@@ -21,7 +21,7 @@ Check out this Twitter thread for an illustrated list of features: https://twitt
 
 Its possible to use Webamp as a media player on your own website. In fact, the [Internet Archive](https://archive.org/) offers it as an optional player for all of their archived audio tracks. [Read more](https://blog.archive.org/2018/10/02/dont-click-on-the-llama/).
 
-For examples of how to add Webamp to your projects, check out out [`examples/` directory](./packages/webamp/examples).
+For examples of how to add Webamp to your projects, check out out [`examples/` directory](./examples).
 
 See the [usage documentation](./packages/webamp/docs/usage.md) for more detailed information.
 
@@ -31,7 +31,7 @@ This repository contains a number of different things:
 
 1. `packages/webamp`: The code for the [Webamp NPM module](https://www.npmjs.com/package/webamp)
 2. `packages/webamp/demo`: The code for the demo site which lives at [webamp.org](https://webamp.org), see the next section for more details
-3. `packages/webamp/examples`: A few small examples showing how to use the NPM module
+3. `examples`: A few small examples showing how to use the NPM module
 4. `packages/*`: A few small projects that are either related to Webamp, or may some day be a part of Webamp
 
 ## About the Demo Site

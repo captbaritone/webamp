@@ -1,5 +1,5 @@
 {
-  "name": "webamp-webpack-example",
+  "name": "webamp-webpack-lazy-example",
   "version": "0.0.0",
   "description": "An example of using Webamp within a Webpack bundle",
   "main": "index.js",
