@@ -3,8 +3,6 @@ import path from "path";
 import fs from "fs";
 import { db, knex } from "./db";
 import { argv } from "yargs";
-import fetchInternetArchiveMetadata from "./tasks/fetchInternetArchiveMetadata";
-import ensureInternetArchiveItemsIndexByMd5 from "./tasks/ensureInternetArchiveItemsIndexByMd5";
 import logger from "./logger";
 import DiscordWinstonTransport from "./DiscordWinstonTransport";
 import * as Skins from "./data/skins";
@@ -20,16 +18,11 @@ async function main() {
 
   try {
     switch (argv._[0]) {
+      case "test":
+        console.log(await Skins.test());
+        break;
       case "tweet":
         await tweet(client, null);
-        break;
-      case "fetch-metadata":
-        console.log("Going to download metadata from the Internet Archive");
-        await fetchInternetArchiveMetadata();
-        break;
-
-      case "ensure-md5s":
-        await ensureInternetArchiveItemsIndexByMd5();
         break;
       case "metadata": {
         const hash = argv._[1];
@@ -40,6 +33,11 @@ async function main() {
         const hash = argv._[1];
         logger.info({ hash });
         console.log(await Skins.getSkinByMd5(hash));
+        break;
+      }
+
+      case "stats": {
+        console.log(await Skins.getStats());
         break;
       }
       case "add": {

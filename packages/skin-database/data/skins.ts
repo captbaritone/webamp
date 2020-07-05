@@ -163,8 +163,19 @@ export function getTweetableSkinCount(): Promise<number> {
   return skins_DEPRECATED.count(TWEETABLE_QUERY);
 }
 
-export function getClassicSkinCount(): Promise<number> {
-  return skins_DEPRECATED.count(CLASSIC_QUERY);
+export async function getClassicSkinCount(): Promise<number> {
+  const rows = await knex("skins")
+    .where({ skin_type: 1 })
+    .count({ count: "*" });
+  const row = rows[0];
+  if (row == null || row.count == null) {
+    throw new Error("Could not find count row");
+  }
+  const { count } = row;
+  if (count == null) {
+    throw new Error("Could not find count");
+  }
+  return Number(count);
 }
 
 // TODO: Also pass id
@@ -189,7 +200,7 @@ export async function markAsNSFW(md5: string): Promise<void> {
 
 export async function getStatus(md5: string): Promise<TweetStatus> {
   const tweeted = await knex("tweets").where({ skin_md5: md5 }).limit(1);
-  if (tweeted) {
+  if (tweeted.length > 0) {
     return "TWEETED";
   }
   const reviewRows = await knex("skin_reviews")
@@ -228,31 +239,54 @@ export async function getSkinToReview(): Promise<{
   filename: string | null;
   md5: string;
 }> {
-  const reviewable = await skins_DEPRECATED.aggregate([
-    { $match: REVIEWABLE_QUERY },
-    { $sample: { size: 1 } },
-  ]);
-  const skin = reviewable[0];
-  return { filename: getCanonicalFilename(skin), md5: skin.md5 };
+  const skins = await knex("skins")
+    .leftJoin("skin_reviews", "skin_reviews.skin_md5", "=", "skins.md5")
+    .leftJoin("tweets", "tweets.skin_md5", "=", "skins.md5")
+    .innerJoin("files", "files.skin_md5", "=", "skins.md5")
+    .select("skins.md5", "files.file_path")
+    .where({ "skin_reviews.id": null, "tweets.id": null, "skins.skin_type": 1 })
+    .orderByRaw("random()")
+    .limit(1);
+  if (!skins.length) {
+    throw new Error("Could not find any skins to review");
+  }
+  const skin = skins[0];
+  return { filename: path.basename(skin.file_path), md5: skin.md5 };
 }
 
 export async function getSkinToReviewForNsfw(): Promise<{
   filename: string | null;
   md5: string;
 }> {
-  const reviewable = await skins_DEPRECATED.find(REVIEWABLE_QUERY, {
-    limit: 1,
-    sort: { "nsfwPredictions.porn": -1 },
-  });
-  const skin = reviewable[0];
-  return { filename: getCanonicalFilename(skin), md5: skin.md5 };
+  // TODO: This will not surface skins which have already been reviewed for the bot but not for NSFW.
+  const skins = await knex("skins")
+    .leftJoin("nsfw_predictions", "nsfw_predictions.skin_md5", "=", "skins.md5")
+    .leftJoin("skin_reviews", "skin_reviews.skin_md5", "=", "skins.md5")
+    .innerJoin("files", "files.skin_md5", "=", "nsfw_predictions.skin_md5")
+    .select("nsfw_predictions.skin_md5", "files.file_path")
+    .where({ "skin_reviews.id": null, skin_type: 1 })
+    .orderBy("nsfw_predictions.porn", "desc")
+    .limit(1);
+  if (!skins.length) {
+    throw new Error("Could not find any skins to review");
+  }
+  const skin = skins[0];
+  return { filename: path.basename(skin.file_path), md5: skin.skin_md5 };
 }
 
 export async function getSkinToTweet(): Promise<SkinRecord | null> {
-  const tweetables = await skins_DEPRECATED.aggregate([
-    { $match: TWEETABLE_QUERY },
-    { $sample: { size: 1 } },
-  ]);
+  // TODO: This does not account for skins that have been both approved and rejected
+  const tweetables = await knex("skins")
+    .leftJoin("skin_reviews", "skin_reviews.skin_md5", "=", "skins.md5")
+    .leftJoin("tweets", "tweets.skin_md5", "=", "skins.md5")
+    .where({
+      "tweets.id": null,
+      skin_type: 1,
+      "skin_reviews.review": "APPROVED",
+    })
+    .select("skins.md5")
+    .orderByRaw("random()")
+    .limit(1);
   const skin = tweetables[0];
   if (skin == null) {
     return null;
@@ -266,6 +300,10 @@ export async function getStats(): Promise<{
   tweeted: number;
   tweetable: number;
 }> {
+  const result = await knex.raw(
+    `SELECT COUNT(DISTINCT skin_md5) AS "approved_count" FROM skin_reviews WHERE review = "APPROVED";`
+  );
+  console.log(result);
   const approved = await skins_DEPRECATED.count({ approved: true });
   const rejected = await skins_DEPRECATED.count({ rejected: true });
   const tweeted = await skins_DEPRECATED.count({ tweeted: true });

@@ -1,7 +1,5 @@
 import * as tf from "@tensorflow/tfjs-node";
 import { load as nsfwLoad } from "nsfwjs";
-import path from "path";
-import fs from "fs";
 
 const modelPromise = nsfwLoad();
 
@@ -14,6 +12,7 @@ export type NsfwPrediction = {
 };
 
 export async function analyseBuffer(buffer: Buffer): Promise<NsfwPrediction> {
+  // const tf = await import("@tensorflow/tfjs-node");
   const model = await modelPromise;
   const image = await tf.node.decodePng(buffer, 3);
   const predictions = await model.classify(image);

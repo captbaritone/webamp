@@ -33,6 +33,7 @@ export async function postSkin({
   title?: (filename: string | null) => string;
   dest: TextChannel | DMChannel | GroupDMChannel;
 }) {
+  console.log("postSkin...");
   const skin = await Skins.getSkinByMd5(md5);
   if (skin == null) {
     console.warn("Could not find skin for md5", { md5, alert: true });
