@@ -14,6 +14,7 @@ const SKIN_TYPE = {
 };
 
 const skins_DEPRECATED = db.get("skins");
+const skins_CONVERTED = db.get("skins");
 const iaItems = db.get("internetArchiveItems");
 
 const CLASSIC_QUERY = {
@@ -55,7 +56,7 @@ function getWebampUrl(skin: DBSkinRecord): string {
 }
 
 export async function addSkin({ md5, filePath, uploader, averageColor }) {
-  skins_DEPRECATED.insert({
+  skins_CONVERTED.insert({
     md5,
     type: "CLASSIC",
     filePaths: [filePath],
@@ -80,6 +81,14 @@ export async function addSkin({ md5, filePath, uploader, averageColor }) {
   );
 }
 
+export async function test() {
+  // Do we know about all IA items?
+  const skins = await knex("skins")
+    .leftJoin("ia_items", "ia_items.skin_md5", "=", "skins.md5")
+    .where({ "ia_items.id": null, "skins.skin_type": 1 });
+  console.log(skins);
+}
+
 const IA_URL = /^(https:\/\/)?archive.org\/details\/([^\/]+)\/?/;
 const MD5 = /([a-fA-F0-9]{32})/;
 
@@ -90,7 +99,7 @@ export async function getMd5ByAnything(
   const md5Match = anything.match(MD5);
   if (md5Match != null) {
     const md5 = md5Match[1];
-    const found = await skins_DEPRECATED.findOne({ md5, type: "CLASSIC" });
+    const found = await knex("skins").where({ md5, skin_type: 1 }).first();
     if (found != null) {
       return md5;
     }
@@ -108,11 +117,11 @@ export async function getMd5ByAnything(
 
 // TODO: SQLITE
 export async function getSkinByMd5(md5: string): Promise<SkinRecord | null> {
-  const skin: DBSkinRecord | null = await skins_DEPRECATED.findOne({
+  const _skin: DBSkinRecord | null = await skins_DEPRECATED.findOne({
     md5,
     type: "CLASSIC",
   });
-  if (skin == null) {
+  if (_skin == null) {
     logger.warn("Could not find skin in database", { md5, alert: true });
     return null;
   }
@@ -126,13 +135,26 @@ export async function getSkinByMd5(md5: string): Promise<SkinRecord | null> {
   const tweetStatus = await getStatus(md5);
 
   return {
-    ...skin,
+    // ...skin,
+    md5: _skin.md5,
+    readmeText: _skin.readmeText,
+    type: _skin.type,
+    filePaths: _skin.filePaths,
+    tweetId: _skin.tweetId,
+    tweeted: _skin.tweeted,
+    tweetUrl: _skin.tweetUrl,
+    twitterLikes: _skin.twitterLikes,
+    imageHash: _skin.imageHash,
+    nsfwPredictions: _skin.nsfwPredictions,
+    approved: _skin.approved,
+    averageColor: _skin.averageColor,
+    emails: _skin.emails,
     tweetStatus,
-    skinUrl: getSkinUrl(skin),
-    screenshotUrl: getScreenshotUrl(skin),
-    fileNames: getFilenames(skin),
-    canonicalFilename: getCanonicalFilename(skin),
-    webampUrl: getWebampUrl(skin),
+    skinUrl: getSkinUrl(_skin),
+    screenshotUrl: getScreenshotUrl(_skin),
+    fileNames: getFilenames(_skin),
+    canonicalFilename: getCanonicalFilename(_skin),
+    webampUrl: getWebampUrl(_skin),
     internetArchiveItemName,
     internetArchiveUrl,
   };
@@ -143,24 +165,36 @@ async function getInternetArchiveItem(md5: string): Promise<DBIARecord> {
 }
 
 async function getMd5FromInternetArchvieItemName(itemName: string) {
-  const item = await iaItems.findOne({ identifier: itemName }, { md5: 1 });
-  return item == null ? null : item.md5;
+  const item = await knex("ia_items")
+    .where({ identifier: itemName })
+    .first("skin_md5");
+  return item == null ? null : item.skin_md5;
 }
 
 export async function getMissingNsfwPredictions() {
-  const results = await skins_DEPRECATED.find(
-    { nsfwPredictions: null, type: "CLASSIC" },
-    { md5: 1 }
-  );
-  return results.map(({ md5 }) => md5);
+  const skins = await knex("skins")
+    .leftJoin("nsfw_predictions", "nsfw_predictions.skin_md5", "=", "skins.md5")
+    .select("skins.md5")
+    .where({ "nsfw_predictions.id": null, skin_type: 1 });
+  return skins.map(({ md5 }) => md5);
 }
 
 export function getInternetArchiveUrl(itemName: string | null): string | null {
   return itemName == null ? null : `https://archive.org/details/${itemName}`;
 }
 
-export function getTweetableSkinCount(): Promise<number> {
-  return skins_DEPRECATED.count(TWEETABLE_QUERY);
+export async function getTweetableSkinCount(): Promise<number> {
+  const tweetable = await knex("skins")
+    .leftJoin("skin_reviews", "skin_reviews.skin_md5", "=", "skins.md5")
+    .leftJoin("tweets", "tweets.skin_md5", "=", "skins.md5")
+    .where({
+      "tweets.id": null,
+      skin_type: 1,
+      "skin_reviews.review": "APPROVED",
+    })
+    .count("skins.id", { as: "count" })
+    .first();
+  return Number(tweetable?.count ?? 0);
 }
 
 export async function getClassicSkinCount(): Promise<number> {
@@ -180,13 +214,13 @@ export async function getClassicSkinCount(): Promise<number> {
 
 // TODO: Also pass id
 export async function markAsTweeted(md5: string, url: string): Promise<void> {
-  await skins_DEPRECATED.findOneAndUpdate({ md5 }, { $set: { tweeted: true } });
+  await skins_CONVERTED.findOneAndUpdate({ md5 }, { $set: { tweeted: true } });
   await knex("tweets").insert({ skin_md5: md5, url }, []);
 }
 
 // TODO: Also path actor
 export async function markAsNSFW(md5: string): Promise<void> {
-  await skins_DEPRECATED.findOneAndUpdate({ md5 }, { $set: { nsfw: true } });
+  await skins_CONVERTED.findOneAndUpdate({ md5 }, { $set: { nsfw: true } });
   const indexes = [{ objectID: md5, nsfw: true }];
   // TODO: Await here, but for some reason this never completes
   new Promise((resolve, reject) => {
@@ -219,19 +253,13 @@ export async function getStatus(md5: string): Promise<TweetStatus> {
 
 // TODO: Also path actor
 export async function approve(md5: string): Promise<void> {
-  await skins_DEPRECATED.findOneAndUpdate(
-    { md5 },
-    { $set: { approved: true } }
-  );
+  await skins_CONVERTED.findOneAndUpdate({ md5 }, { $set: { approved: true } });
   await knex("skin_reviews").insert({ skin_md5: md5, review: "APPROVED" }, []);
 }
 
 // TODO: Also path actor
 export async function reject(md5: string): Promise<void> {
-  await skins_DEPRECATED.findOneAndUpdate(
-    { md5 },
-    { $set: { rejected: true } }
-  );
+  await skins_CONVERTED.findOneAndUpdate({ md5 }, { $set: { rejected: true } });
   await knex("skin_reviews").insert({ skin_md5: md5, review: "REJECTED" }, []);
 }
 
@@ -300,26 +328,24 @@ export async function getStats(): Promise<{
   tweeted: number;
   tweetable: number;
 }> {
-  const result = await knex.raw(
-    `SELECT COUNT(DISTINCT skin_md5) AS "approved_count" FROM skin_reviews WHERE review = "APPROVED";`
-  );
-  console.log(result);
-  const approved = await skins_DEPRECATED.count({ approved: true });
-  const rejected = await skins_DEPRECATED.count({ rejected: true });
-  const tweeted = await skins_DEPRECATED.count({ tweeted: true });
+  const approved = (
+    await knex("skin_reviews")
+      .first(knex.raw(`COUNT(DISTINCT skin_md5) AS "approved_count"`))
+      .where({ review: "APPROVED" })
+  ).approved_count;
+  const rejected = (
+    await knex("skin_reviews")
+      .first(knex.raw(`COUNT(DISTINCT skin_md5) AS "rejected_count"`))
+      .where({ review: "REJECTED" })
+  ).rejected_count;
+  const tweeted = (await knex("tweets").count("*", { as: "tweeted" }))[0]
+    .tweeted;
   const tweetable = await getTweetableSkinCount();
-  return { approved, rejected, tweeted, tweetable };
+  return { approved, rejected, tweeted: Number(tweeted), tweetable };
 }
 
 export async function getRandomClassicSkinMd5(): Promise<string> {
-  const random = await skins_DEPRECATED.aggregate([
-    { $match: CLASSIC_QUERY },
-    { $sample: { size: 1 } },
-  ]);
-  if (random.length === 0) {
-    throw new Error("Could not find any classic skins");
-  }
-  return random[0].md5;
+  return (await knex("skins").orderByRaw("random()").first("md5")).md5;
 }
 
 export async function getScreenshotBuffer(md5: string): Promise<Buffer> {
@@ -338,7 +364,7 @@ export async function setNsfwPredictions(
   md5: string,
   nsfwPredictions: NsfwPrediction
 ): Promise<void> {
-  await skins_DEPRECATED.findOneAndUpdate(
+  await skins_CONVERTED.findOneAndUpdate(
     { md5 },
     { $set: { nsfwPredictions } }
   );
@@ -353,7 +379,7 @@ export async function setTweetInfo(
   likes: number,
   tweetId: string
 ): Promise<void> {
-  await skins_DEPRECATED.findOneAndUpdate(
+  await skins_CONVERTED.findOneAndUpdate(
     { md5 },
     { $set: { twitterLikes: likes, tweetId } }
   );
@@ -377,7 +403,7 @@ export async function getMuseumPage({
 }): Promise<
   Array<{ color: string; fileName: string; md5: string; nsfw: boolean }>
 > {
-  const reviewable = await skins_DEPRECATED.find(
+  const skins = await skins_DEPRECATED.find(
     { type: "CLASSIC" },
     {
       limit: first,
@@ -387,9 +413,9 @@ export async function getMuseumPage({
     }
   );
 
-  return reviewable.map(({ md5, averageColor, nsfw }) => {
+  return skins.map(({ md5, average_color, nsfw }) => {
     return {
-      color: averageColor,
+      color: average_color,
       filename: "FILENAME",
       md5,
       nsfw,
