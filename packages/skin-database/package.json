@@ -34,7 +34,8 @@
     "bot": "ts-node --transpile-only ./discord-bot/index.js",
     "cli": "ts-node --transpile-only ./cli.ts",
     "repro": "ts-node --transpile-only ./repro.ts",
-    "index": "ts-node --transpile-only ./tasks/searchIndex.js"
+    "index": "ts-node --transpile-only ./tasks/searchIndex.js",
+    "sync": "ts-node --transpile-only ./tasks/syncWithArchive.ts"
   },
   "prettier": {},
   "devDependencies": {
