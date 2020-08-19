@@ -54,7 +54,7 @@ function isInState(store, predicate) {
   });
 }
 
-// Given a skin directory in `modern/resources/testSkins/` loads it and returns
+// Given a skin directory in `resources/testSkins/` loads it and returns
 // an array representing all the calls to System.messagebox.
 async function runSkin(skinDirectory) {
   const skinDirectoryPath = path.join(

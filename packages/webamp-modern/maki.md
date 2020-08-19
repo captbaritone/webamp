@@ -2,7 +2,7 @@
 
 In the process of starting to build support for "modern" Winamp skins for Webamp, we built an interpreter for MAKI (Make A Killer Interface) byte code, the scripting language used for adding custom functionality to modern Winamp skins.
 
-Most of what we learned came from the decompiler built by [TODO] and trial and error testing of what the compiler output.
+Most of what we learned came from the Ralf Engels' [Maki Decompiler](http://www.rengels.de/maki_decompiler/) (which seems to be offline at the moment) and trial and error testing of what the compiler output.
 
 My goal here is to document the structure and semantics of the compiled `.maki` file that the MAKI compiler outputs and Winamp interprerates.
 
@@ -27,7 +27,7 @@ Encoded as little endien.
 
 ### _Vector_
 
-_Vectors_ are encoded with their [u32](#u32) length followed by the encoding of their element sequence.
+_Vectors_ are encoded with their _u32_ length followed by the encoding of their element sequence.
 
 ### _String_
 
@@ -37,7 +37,7 @@ A string is encoded as a _u16_ indicating the length of the string n followed by
 
 _module_ ::= _header_ _classes_ _methods_ _variables_ _constants_ _bindings_ _codes_
 
-A module (file) consists of seven consecutive sections.
+A module (file) consists of the above seven consecutive sections.
 
 ## Header
 

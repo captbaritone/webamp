@@ -46,7 +46,7 @@ getMethod("Wac", "onNotify").result = "int";
 
 Here's the error we get without that patch:
 
-modern/__generated__/makiInterfaces.ts:254:18 - error TS2430: Interface 'Wac' incorrectly extends interface 'MakiObject'.
+__generated__/makiInterfaces.ts:254:18 - error TS2430: Interface 'Wac' incorrectly extends interface 'MakiObject'.
   Types of property 'onnotify' are incompatible.
     Type '(notifstr: string, a: number, b: number) => void' is not assignable to type '(command: string, param: string, a: number, b: number) => number'.
       Types of parameters 'a' and 'param' are incompatible.

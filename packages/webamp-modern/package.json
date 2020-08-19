@@ -11,10 +11,10 @@
     "test": "jest --config=config/jest.unit.js",
     "tdd": "jest --config=config/jest.unit.js --watch",
     "format": "prettier --write \"**/*.{js,ts,tsx,d.ts,css}\"",
-    "analyze-wals": "babel-node --extensions=\".ts,.js,.tsx\" modern/src/maki-interpreter/tools/extract-functions.js > modern/resources/maki-skin-data.json",
-    "extract-object-types": "babel-node --extensions=\".ts,.js,.tsx\" modern/src/maki-interpreter/tools/extract-object-types.js",
-    "extract-attributes": "babel-node --extensions=\".ts,.js,.tsx\" modern/src/maki-interpreter/tools/extract-attributes.js > modern/resources/attribute-skin-data.json",
-    "maki-interfaces": "babel-node --extensions=\".ts,.js,.tsx\" modern/src/maki-interpreter/tools/build-typescript-interfaces.js > modern/__generated__/makiInterfaces.ts"
+    "analyze-wals": "babel-node --extensions=\".ts,.js,.tsx\" src/maki-interpreter/tools/extract-functions.js > resources/maki-skin-data.json",
+    "extract-object-types": "babel-node --extensions=\".ts,.js,.tsx\" src/maki-interpreter/tools/extract-object-types.js",
+    "extract-attributes": "babel-node --extensions=\".ts,.js,.tsx\" src/maki-interpreter/tools/extract-attributes.js > resources/attribute-skin-data.json",
+    "maki-interfaces": "babel-node --extensions=\".ts,.js,.tsx\" src/maki-interpreter/tools/build-typescript-interfaces.js > __generated__/makiInterfaces.ts"
   },
   "repository": {
     "type": "git",
