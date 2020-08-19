@@ -3,6 +3,7 @@
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
+  cursor: default;
 }
 
 #webamp-context-menu .context-menu.bottom {
