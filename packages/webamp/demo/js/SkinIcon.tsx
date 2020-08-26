@@ -1,12 +1,11 @@
 import WebampLazy from "../../js/webampLazy";
 import React from "react";
 // @ts-ignore
-import iconLarge from "../images/manifest/icon-96x96.png";
-// @ts-ignore
-import iconSmall from "../images/manifest/icon-48x48.png";
+import iconSmall from "../images/icons/paint-file-32x32.png";
 import DesktopIcon from "./DesktopIcon";
+import { log } from "./logger";
 
-const iconUrl = window.devicePixelRatio > 1 ? iconLarge : iconSmall;
+const iconUrl = iconSmall;
 
 interface Props {
   webamp: WebampLazy;
@@ -15,6 +14,7 @@ interface Props {
 
 const SkinIcon = ({ webamp, skin }: Props) => {
   function onOpen() {
+    log({ category: "SkinIcon", action: "click", label: skin.name });
     webamp.setSkinFromUrl(skin.url);
   }
   return (

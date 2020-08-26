@@ -1,12 +1,12 @@
 import WebampLazy from "../../js/webampLazy";
 import React from "react";
 import WebampIcon from "./WebampIcon";
-import Mp3Icon from "./Mp3Icon";
+// import Mp3Icon from "./Mp3Icon";
 import SkinIcon from "./SkinIcon";
-import { defaultInitialTracks, SHOW_DESKTOP_ICONS } from "./config";
+import { /* defaultInitialTracks, */ SHOW_DESKTOP_ICONS } from "./config";
 import { useWindowSize } from "../../js/hooks";
 import avaliableSkins from "./avaliableSkins";
-import MilkIcon from "./MilkIcon";
+// import MilkIcon from "./MilkIcon";
 
 interface Props {
   webamp: WebampLazy;
@@ -27,12 +27,15 @@ const DemoDesktop = ({ webamp }: Props) => {
 
   if (SHOW_DESKTOP_ICONS) {
     icons.push(
+      /*
       ...defaultInitialTracks.map((track) => {
         return <Mp3Icon webamp={webamp} track={track} />;
       }),
+      */
       ...avaliableSkins.map((skin) => {
         return <SkinIcon webamp={webamp} skin={skin} />;
-      }),
+      })
+      /*
       <MilkIcon
         webamp={webamp}
         preset={{
@@ -41,6 +44,7 @@ const DemoDesktop = ({ webamp }: Props) => {
           name: "105",
         }}
       />
+      */
     );
   }
   return (

@@ -26,7 +26,7 @@ if (config.audioUrl && !config.initialTracks) {
   config.initialTracks = [{ url: config.audioUrl }];
 }
 
-export let SHOW_DESKTOP_ICONS = false;
+export let SHOW_DESKTOP_ICONS = true;
 
 if ("URLSearchParams" in window) {
   const params = new URLSearchParams(location.search);

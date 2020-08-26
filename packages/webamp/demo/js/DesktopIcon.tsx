@@ -37,7 +37,7 @@ const DesktopIcon = ({ iconUrl, onOpen, name, onDragStart }: Props) => {
       className={classnames("desktop-icon", { selected })}
       onDragStart={onDragStart}
     >
-      <img src={iconUrl} style={{ width: 48, height: 48 }} />
+      <img src={iconUrl} style={{ width: 32, height: 32 }} />
       <div className="desktop-icon-title">{name}</div>
     </div>
   );
