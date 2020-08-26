@@ -5,7 +5,7 @@ export function log({
 }: {
   category: string;
   action: string;
-  label: string;
+  label?: string;
 }) {
   // @ts-ignore
   if (window.ga != null) {

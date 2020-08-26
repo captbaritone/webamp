@@ -7,6 +7,7 @@ import createMiddleware from "redux-sentry-middleware";
 import isButterchurnSupported from "butterchurn/lib/isSupported.min";
 import { WINDOWS } from "../../js/constants";
 import * as Selectors from "../../js/selectors";
+import { attachLogger } from "./eventLogger";
 
 import WebampLazy from "../../js/webampLazy";
 import {
@@ -169,6 +170,8 @@ async function main() {
     __butterchurnOptions,
     __customMiddlewares: [sentryMiddleware],
   });
+
+  attachLogger(webamp);
 
   if (disableMarquee || screenshot) {
     webamp.store.dispatch({ type: DISABLE_MARQUEE });
