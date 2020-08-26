@@ -26,11 +26,11 @@ if (config.audioUrl && !config.initialTracks) {
   config.initialTracks = [{ url: config.audioUrl }];
 }
 
-export let SHOW_DESKTOP_ICONS = true;
+export const SHOW_DESKTOP_ICONS = true;
 
 if ("URLSearchParams" in window) {
-  const params = new URLSearchParams(location.search);
-  SHOW_DESKTOP_ICONS = Boolean(params.get("icons"));
+  // const params = new URLSearchParams(location.search);
+  // SHOW_DESKTOP_ICONS = Boolean(params.get("icons"));
 }
 
 export const skinUrl = config.skinUrl === undefined ? null : config.skinUrl;
