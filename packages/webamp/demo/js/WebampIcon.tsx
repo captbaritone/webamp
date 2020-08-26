@@ -1,13 +1,11 @@
 import WebampLazy from "../../js/webampLazy";
 import React, { useEffect, useState } from "react";
 // @ts-ignore
-import iconLarge from "../images/manifest/icon-96x96.png";
-// @ts-ignore
-import iconSmall from "../images/manifest/icon-48x48.png";
+import iconSmall from "../images/icons/winamp2-32x32.png";
 import DesktopIcon from "./DesktopIcon";
 import { SHOW_DESKTOP_ICONS } from "./config";
 
-const iconUrl = window.devicePixelRatio > 1 ? iconLarge : iconSmall;
+const iconUrl = iconSmall;
 
 interface Props {
   webamp: WebampLazy;
