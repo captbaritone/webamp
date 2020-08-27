@@ -1,222 +1,128 @@
-import { log } from "./logger";
-import WebmapLazy from "../../js/webampLazy";
+import { log, GoogleAnalyticsEvent } from "./logger";
 import * as Selectors from "../../js/selectors";
+import { Action, Store } from "../../js/types";
 
-export function attachLogger(webamp: WebmapLazy) {
-  const { store } = webamp;
-  webamp._actionEmitter.on("IS_PLAYING", () => {
-    log({
-      category: "Media",
-      action: "IsPlaying",
-      label:
-        Selectors.getCurrentTrackDisplayName(store.getState()) ?? "[UNKNOWN]",
-    });
-  });
-  webamp._actionEmitter.on("PAUSE", () => {
-    log({
-      category: "Media",
-      action: "Pause",
-      label:
-        Selectors.getCurrentTrackDisplayName(store.getState()) ?? "[UNKNOWN]",
-    });
-  });
-  webamp._actionEmitter.on("STOP", () => {
-    log({
-      category: "Media",
-      action: "Stop",
-      label:
-        Selectors.getCurrentTrackDisplayName(store.getState()) ?? "[UNKNOWN]",
-    });
-  });
-  webamp._actionEmitter.on("TOGGLE_REPEAT", () => {
-    log({
-      category: "Media",
-      action: "ToggleRepeat",
-    });
-  });
-  webamp._actionEmitter.on("TOGGLE_SHUFFLE", () => {
-    log({
-      category: "Media",
-      action: "ToggleShuffle",
-    });
-  });
-  webamp._actionEmitter.on("TOGGLE_DOUBLESIZE_MODE", () => {
-    log({
-      category: "Display",
-      action: "ToggleDoublesizeMode",
-    });
-  });
-  webamp._actionEmitter.on("TOGGLE_VISUALIZER_STYLE", () => {
-    log({
-      category: "Display",
-      action: "ToggleVisualizerStyle",
-    });
-  });
-  webamp._actionEmitter.on("SET_SKIN_DATA", () => {
-    log({
-      category: "Display",
-      action: "SetSkinData",
-    });
-  });
-  webamp._actionEmitter.on("CLOSE_WINAMP", () => {
-    log({
-      category: "Display",
-      action: "CloseWinamp",
-    });
-  });
-  webamp._actionEmitter.on("OPEN_WINAMP", () => {
-    log({
-      category: "Display",
-      action: "OpenWinamp",
-    });
-  });
-  webamp._actionEmitter.on("SET_MILKDROP_DESKTOP", () => {
-    log({
-      category: "Milkdrop",
-      action: "SetMilkdropDesktop",
-    });
-  });
-  webamp._actionEmitter.on("SET_MILKDROP_FULLSCREEN", () => {
-    log({
-      category: "Milkdrop",
-      action: "SetMilkdropFullscreen",
-    });
-  });
-
-  webamp._actionEmitter.on("TOGGLE_PRESET_OVERLAY", () => {
-    log({
-      category: "Milkdrop",
-      action: "TogglePresetOverlay",
-    });
-  });
-  webamp._actionEmitter.on("TOGGLE_RANDOMIZE_PRESETS", () => {
-    log({
-      category: "Milkdrop",
-      action: "ToggleRandomizePresets",
-    });
-  });
-  webamp._actionEmitter.on("TOGGLE_PRESET_CYCLING", () => {
-    log({
-      category: "Milkdrop",
-      action: "TogglePresetCycling",
-    });
-  });
-  webamp._actionEmitter.on("CLICKED_TRACK", () => {
-    log({
-      category: "Playlist",
-      action: "ClickedTrack",
-    });
-  });
-  webamp._actionEmitter.on("CTRL_CLICKED_TRACK", () => {
-    log({
-      category: "Playlist",
-      action: "CtrlClickedTrack",
-    });
-  });
-  webamp._actionEmitter.on("SHIFT_CLICKED_TRACK", () => {
-    log({
-      category: "Playlist",
-      action: "ShiftClickedTrack",
-    });
-  });
-  webamp._actionEmitter.on("SELECT_ALL", () => {
-    log({
-      category: "Playlist",
-      action: "SelectAll",
-    });
-  });
-  webamp._actionEmitter.on("SELECT_ZERO", () => {
-    log({
-      category: "Playlist",
-      action: "SelectZero",
-    });
-  });
-  webamp._actionEmitter.on("INVERT_SELECTION", () => {
-    log({
-      category: "Playlist",
-      action: "InvertSelection",
-    });
-  });
-  /* This is triggered programatically when you load a new track
-  webamp._actionEmitter.on("REMOVE_ALL_TRACKS", () => {
-    log({
-      category: "Playlist",
-      action: "RemoveAllTracks",
-    });
-  });
-  */
-  webamp._actionEmitter.on("REVERSE_LIST", () => {
-    log({
-      category: "Playlist",
-      action: "ReverseList",
-    });
-  });
-  webamp._actionEmitter.on("RANDOMIZE_LIST", () => {
-    log({
-      category: "Playlist",
-      action: "RandomizeList",
-    });
-  });
-  webamp._actionEmitter.on("ENABLE_MILKDROP", () => {
-    log({
-      category: "Windows",
-      action: "EnableMilkdrop",
-    });
-  });
-  webamp._actionEmitter.on("TOGGLE_WINDOW_SHADE_MODE", (action) => {
-    log({
-      category: "Windows",
-      action: "ToggleWindowShadeMode",
-      label: action.windowId,
-    });
-  });
-  webamp._actionEmitter.on("TOGGLE_WINDOW", (action) => {
-    log({
-      category: "Windows",
-      action: "ToggleWindow",
-      label: action.windowId,
-    });
-  });
-  webamp._actionEmitter.on("CLOSE_WINDOW", (action) => {
-    log({
-      category: "Windows",
-      action: "CloseWindow",
-      label: action.windowId,
-    });
-  });
-  webamp._actionEmitter.on("SET_WINDOW_VISIBILITY", (action) => {
-    log({
-      category: "Windows",
-      action: "CloseWindow",
-      label: `${action.windowId}:${action.hidden ? "hidden" : "visibile"}`,
-    });
-  });
-  webamp._actionEmitter.on("MAIN_CONTEXT_MENU_OPENED", () => {
-    log({
-      category: "ContextMenu",
-      action: "MainContextMenuOpened",
-    });
-  });
-  webamp._actionEmitter.on("DROPPED_FILES", (action) => {
-    log({
-      category: "DroppedFiles",
-      action: action.windowId,
-      label: action.firstFileName ?? "[UNKNOWN]",
-      value: action.count,
-    });
-  });
-  webamp._actionEmitter.on("OPENED_FILES", (action) => {
-    log({
-      category: "OpenedFiles",
-      action: action.expectedType,
-      label: action.firstFileName ?? "[UNKNOWN]",
-      value: action.count,
-    });
-  });
-  webamp._actionEmitter.on("TOGGLE_LLAMA_MODE", () => {
-    log({
-      category: "Hotkeys",
-      action: "ToggledLlamaMode",
-    });
-  });
+function logEventFromAction(
+  action: Action,
+  store: Store
+): GoogleAnalyticsEvent | null {
+  switch (action.type) {
+    case "IS_PLAYING": {
+      const label =
+        Selectors.getCurrentTrackDisplayName(store.getState()) ?? "[UNKNOWN]";
+      return { category: "Media", action: "IsPlaying", label };
+    }
+    case "PAUSE": {
+      const label =
+        Selectors.getCurrentTrackDisplayName(store.getState()) ?? "[UNKNOWN]";
+      return { category: "Media", action: "Pause", label };
+    }
+    case "STOP": {
+      const label =
+        Selectors.getCurrentTrackDisplayName(store.getState()) ?? "[UNKNOWN]";
+      return { category: "Media", action: "Stop", label };
+    }
+    case "TOGGLE_REPEAT":
+      return { category: "Media", action: "ToggleRepeat" };
+    case "TOGGLE_SHUFFLE":
+      return { category: "Media", action: "ToggleShuffle" };
+    case "TOGGLE_DOUBLESIZE_MODE":
+      return { category: "Display", action: "ToggleDoublesizeMode" };
+    case "TOGGLE_VISUALIZER_STYLE":
+      return { category: "Display", action: "ToggleVisualizerStyle" };
+    case "SET_SKIN_DATA":
+      return { category: "Display", action: "SetSkinData" };
+    case "CLOSE_WINAMP":
+      return { category: "Display", action: "CloseWinamp" };
+    case "OPEN_WINAMP":
+      return { category: "Display", action: "OpenWinamp" };
+    case "SET_MILKDROP_DESKTOP":
+      return { category: "Milkdrop", action: "SetMilkdropDesktop" };
+    case "SET_MILKDROP_FULLSCREEN":
+      return { category: "Milkdrop", action: "SetMilkdropFullscreen" };
+    case "TOGGLE_PRESET_OVERLAY":
+      return { category: "Milkdrop", action: "TogglePresetOverlay" };
+    case "TOGGLE_RANDOMIZE_PRESETS":
+      return { category: "Milkdrop", action: "ToggleRandomizePresets" };
+    case "TOGGLE_PRESET_CYCLING":
+      return { category: "Milkdrop", action: "TogglePresetCycling" };
+    case "CLICKED_TRACK":
+      return { category: "Playlist", action: "ClickedTrack" };
+    case "CTRL_CLICKED_TRACK":
+      return { category: "Playlist", action: "CtrlClickedTrack" };
+    case "SHIFT_CLICKED_TRACK":
+      return { category: "Playlist", action: "ShiftClickedTrack" };
+    case "SELECT_ALL":
+      return { category: "Playlist", action: "SelectAll" };
+    case "SELECT_ZERO":
+      return { category: "Playlist", action: "SelectZero" };
+    case "INVERT_SELECTION":
+      return { category: "Playlist", action: "InvertSelection" };
+    /* This is triggered programatically when you load a new track
+    case "REMOVE_ALL_TRACKS":
+      return {
+        category: "Playlist",
+        action: "RemoveAllTracks",
+      };
+    */
+    case "REVERSE_LIST":
+      return { category: "Playlist", action: "ReverseList" };
+    case "RANDOMIZE_LIST":
+      return { category: "Playlist", action: "RandomizeList" };
+    case "ENABLE_MILKDROP":
+      return { category: "Windows", action: "EnableMilkdrop" };
+    case "TOGGLE_WINDOW_SHADE_MODE":
+      return {
+        category: "Windows",
+        action: "ToggleWindowShadeMode",
+        label: action.windowId,
+      };
+    case "TOGGLE_WINDOW":
+      return {
+        category: "Windows",
+        action: "ToggleWindow",
+        label: action.windowId,
+      };
+    case "CLOSE_WINDOW":
+      return {
+        category: "Windows",
+        action: "CloseWindow",
+        label: action.windowId,
+      };
+    case "SET_WINDOW_VISIBILITY":
+      return {
+        category: "Windows",
+        action: "CloseWindow",
+        label: `${action.windowId}:${action.hidden ? "hidden" : "visibile"}`,
+      };
+    case "MAIN_CONTEXT_MENU_OPENED":
+      return { category: "ContextMenu", action: "MainContextMenuOpened" };
+    case "DROPPED_FILES":
+      return {
+        category: "DroppedFiles",
+        action: action.windowId,
+        label: action.firstFileName ?? "[UNKNOWN]",
+        value: action.count,
+      };
+    case "OPENED_FILES":
+      return {
+        category: "OpenedFiles",
+        action: action.expectedType,
+        label: action.firstFileName ?? "[UNKNOWN]",
+        value: action.count,
+      };
+    case "TOGGLE_LLAMA_MODE":
+      return { category: "Hotkeys", action: "ToggledLlamaMode" };
+  }
+  return null;
 }
+
+export const loggerMiddleware = (store: Store) => (
+  next: (action: Action) => void
+) => (action: Action) => {
+  const event = logEventFromAction(action, store);
+  if (event != null) {
+    log(event);
+  }
+  return next(action);
+};

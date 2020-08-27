@@ -1,14 +1,10 @@
-export function log({
-  category,
-  action,
-  label,
-  value,
-}: {
+export type GoogleAnalyticsEvent = {
   category: string;
   action: string;
   label?: string;
   value?: number;
-}) {
+};
+export function log({ category, action, label, value }: GoogleAnalyticsEvent) {
   // @ts-ignore
   if (window.ga != null) {
     // @ts-ignore
