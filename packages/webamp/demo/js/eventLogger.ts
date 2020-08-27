@@ -149,15 +149,12 @@ export function attachLogger(webamp: WebmapLazy) {
       action: "RandomizeList",
     });
   });
-  /*
-  This will fire for every desktop user. too much?
   webamp._actionEmitter.on("ENABLE_MILKDROP", () => {
     log({
       category: "Windows",
       action: "EnableMilkdrop",
     });
   });
-  */
   webamp._actionEmitter.on("TOGGLE_WINDOW_SHADE_MODE", (action) => {
     log({
       category: "Windows",
