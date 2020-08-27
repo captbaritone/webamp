@@ -95,4 +95,58 @@ export function attachLogger(webamp: WebmapLazy) {
       action: "TogglePresetCycling",
     });
   });
+  webamp._actionEmitter.on("CLICKED_TRACK", () => {
+    log({
+      category: "Playlist",
+      action: "ClickedTrack",
+    });
+  });
+  webamp._actionEmitter.on("CTRL_CLICKED_TRACK", () => {
+    log({
+      category: "Playlist",
+      action: "CtrlClickedTrack",
+    });
+  });
+  webamp._actionEmitter.on("SHIFT_CLICKED_TRACK", () => {
+    log({
+      category: "Playlist",
+      action: "ShiftClickedTrack",
+    });
+  });
+  webamp._actionEmitter.on("SELECT_ALL", () => {
+    log({
+      category: "Playlist",
+      action: "SelectAll",
+    });
+  });
+  webamp._actionEmitter.on("SELECT_ZERO", () => {
+    log({
+      category: "Playlist",
+      action: "SelectZero",
+    });
+  });
+  webamp._actionEmitter.on("INVERT_SELECTION", () => {
+    log({
+      category: "Playlist",
+      action: "InvertSelection",
+    });
+  });
+  webamp._actionEmitter.on("REMOVE_ALL_TRACKS", () => {
+    log({
+      category: "Playlist",
+      action: "RemoveAllTracks",
+    });
+  });
+  webamp._actionEmitter.on("REVERSE_LIST", () => {
+    log({
+      category: "Playlist",
+      action: "ReverseList",
+    });
+  });
+  webamp._actionEmitter.on("RANDOMIZE_LIST", () => {
+    log({
+      category: "Playlist",
+      action: "RandomizeList",
+    });
+  });
 }
