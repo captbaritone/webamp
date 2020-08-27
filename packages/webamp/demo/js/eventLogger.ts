@@ -46,6 +46,12 @@ export function attachLogger(webamp: WebmapLazy) {
       action: "ToggleDoublesizeMode",
     });
   });
+  webamp._actionEmitter.on("TOGGLE_VISUALIZER_STYLE", () => {
+    log({
+      category: "Display",
+      action: "ToggleVisualizerStyle",
+    });
+  });
   webamp._actionEmitter.on("SET_SKIN_DATA", () => {
     log({
       category: "Display",
@@ -131,12 +137,14 @@ export function attachLogger(webamp: WebmapLazy) {
       action: "InvertSelection",
     });
   });
+  /* This is triggered programatically when you load a new track
   webamp._actionEmitter.on("REMOVE_ALL_TRACKS", () => {
     log({
       category: "Playlist",
       action: "RemoveAllTracks",
     });
   });
+  */
   webamp._actionEmitter.on("REVERSE_LIST", () => {
     log({
       category: "Playlist",
@@ -181,6 +189,34 @@ export function attachLogger(webamp: WebmapLazy) {
       category: "Windows",
       action: "CloseWindow",
       label: `${action.windowId}:${action.hidden ? "hidden" : "visibile"}`,
+    });
+  });
+  webamp._actionEmitter.on("MAIN_CONTEXT_MENU_OPENED", () => {
+    log({
+      category: "ContextMenu",
+      action: "MainContextMenuOpened",
+    });
+  });
+  webamp._actionEmitter.on("DROPPED_FILES", (action) => {
+    log({
+      category: "DroppedFiles",
+      action: action.windowId,
+      label: action.firstFileName ?? "[UNKNOWN]",
+      value: action.count,
+    });
+  });
+  webamp._actionEmitter.on("OPENED_FILES", (action) => {
+    log({
+      category: "OpenedFiles",
+      action: action.expectedType,
+      label: action.firstFileName ?? "[UNKNOWN]",
+      value: action.count,
+    });
+  });
+  webamp._actionEmitter.on("TOGGLE_LLAMA_MODE", () => {
+    log({
+      category: "Hotkeys",
+      action: "ToggledLlamaMode",
     });
   });
 }

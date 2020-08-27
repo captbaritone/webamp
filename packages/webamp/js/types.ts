@@ -535,7 +535,20 @@ export type Action =
       index: number;
       transitionType: TransitionType;
     }
-  | { type: "TOGGLE_PRESET_OVERLAY" };
+  | { type: "TOGGLE_PRESET_OVERLAY" }
+  | { type: "MAIN_CONTEXT_MENU_OPENED" }
+  | {
+      type: "DROPPED_FILES";
+      count: number;
+      firstFileName: string | null;
+      windowId: WindowId;
+    }
+  | {
+      type: "OPENED_FILES";
+      expectedType: "SKIN" | "MEDIA" | "EQ";
+      count: number;
+      firstFileName: string | null;
+    };
 
 export type MediaTagRequestStatus =
   | "INITIALIZED"

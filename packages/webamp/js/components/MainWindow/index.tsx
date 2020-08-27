@@ -75,6 +75,7 @@ const MainWindow = React.memo(({ analyser, filePickers }: Props) => {
   return (
     <DropTarget
       id="main-window"
+      windowId={WINDOWS.MAIN}
       className={className}
       handleDrop={loadMedia}
       onWheel={scrollVolume}

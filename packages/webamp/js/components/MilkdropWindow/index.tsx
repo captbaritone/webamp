@@ -133,7 +133,10 @@ function Milkdrop({ analyser }: Props) {
         return (
           <MilkdropContextMenu>
             <Background>
-              <DropTarget handleDrop={handlePresetDrop}>
+              <DropTarget
+                windowId={WINDOWS.MILKDROP}
+                handleDrop={handlePresetDrop}
+              >
                 {overlay && <PresetOverlay {...size} />}
                 <Fullscreen enabled={fullscreen} onChange={setFullscreen}>
                   <div onDoubleClick={toggleFullscreen}>

@@ -1,4 +1,7 @@
 import React, { useCallback } from "react";
+import { useActionCreator } from "../hooks";
+import * as Actions from "../actionCreators";
+import { WindowId } from "../types";
 
 interface Coord {
   x: number;
@@ -7,6 +10,7 @@ interface Coord {
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   handleDrop(e: React.DragEvent<HTMLDivElement>, coord: Coord): void;
+  windowId: WindowId;
 }
 
 function supress(e: React.DragEvent<HTMLDivElement>) {
@@ -20,12 +24,16 @@ const DropTarget = (props: Props) => {
   const {
     // eslint-disable-next-line no-shadow, no-unused-vars
     handleDrop,
+    windowId,
     ...passThroughProps
   } = props;
+
+  const droppedFiles = useActionCreator(Actions.droppedFiles);
 
   const onDrop = useCallback(
     (e: React.DragEvent<HTMLDivElement>) => {
       supress(e);
+      droppedFiles(e, windowId);
       // TODO: We could probably move this coordinate logic into the playlist.
       // I think that's the only place it gets used.
       const { currentTarget } = e;
@@ -36,7 +44,7 @@ const DropTarget = (props: Props) => {
       const { left: x, top: y } = currentTarget.getBoundingClientRect();
       handleDrop(e, { x, y });
     },
-    [handleDrop]
+    [handleDrop, droppedFiles, windowId]
   );
   return (
     <div

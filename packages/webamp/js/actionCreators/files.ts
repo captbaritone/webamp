@@ -34,7 +34,14 @@ import LoadQueue from "../loadQueue";
 
 import { removeAllTracks } from "./playlist";
 import { setPreamp, setEqBand } from "./equalizer";
-import { LoadStyle, Thunk, Track, EqfPreset, SkinData } from "../types";
+import {
+  LoadStyle,
+  Thunk,
+  Track,
+  EqfPreset,
+  SkinData,
+  WindowId,
+} from "../types";
 
 // Lower is better
 const DURATION_VISIBLE_PRIORITY = 5;
@@ -138,23 +145,32 @@ export function setSkinFromUrl(url: string): Thunk {
 // This function is private, since Winamp consumers can provide means for
 // opening files via other methods. Only use the file type specific
 // versions below, since they can defer to the user-defined behavior.
-function _openFileDialog(accept: string | null): Thunk {
+function _openFileDialog(
+  accept: string | null,
+  expectedType: "SKIN" | "MEDIA" | "EQ"
+): Thunk {
   return async (dispatch) => {
     const fileReferences = await promptForFileReferences({ accept });
+    dispatch({
+      type: "OPENED_FILES",
+      expectedType,
+      count: fileReferences.length,
+      firstFileName: fileReferences[0]?.name,
+    });
     dispatch(loadFilesFromReferences(fileReferences));
   };
 }
 
 export function openEqfFileDialog(): Thunk {
-  return _openFileDialog(".eqf");
+  return _openFileDialog(".eqf", "EQ");
 }
 
 export function openMediaFileDialog(): Thunk {
-  return _openFileDialog(null);
+  return _openFileDialog(null, "MEDIA");
 }
 
 export function openSkinFileDialog() {
-  return _openFileDialog(".zip, .wsz");
+  return _openFileDialog(".zip, .wsz", "SKIN");
 }
 
 export function fetchMediaDuration(url: string, id: number): Thunk {
@@ -442,4 +458,14 @@ export function saveFilesToList(): Thunk {
       alert("Not supported in Webamp");
     }
   };
+}
+
+export function droppedFiles(e: React.DragEvent, windowId: WindowId): Thunk {
+  return (dispatch) =>
+    dispatch({
+      type: "DROPPED_FILES",
+      count: e.dataTransfer.files.length,
+      firstFileName: e.dataTransfer.files[0]?.name,
+      windowId,
+    });
 }

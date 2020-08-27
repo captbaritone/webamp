@@ -96,6 +96,7 @@ export {
   addFilesFromUrl,
   addFilesFromList,
   saveFilesToList,
+  droppedFiles,
 } from "./files";
 export {
   cropPlaylist,

@@ -2,15 +2,18 @@ export function log({
   category,
   action,
   label,
+  value,
 }: {
   category: string;
   action: string;
   label?: string;
+  value?: number;
 }) {
   // @ts-ignore
   if (window.ga != null) {
-    window.ga("send", "event", category, action, label);
+    // @ts-ignore
+    window.ga("send", "event", category, action, label, value);
   } else {
-    // console.log({ category, action, label });
+    // console.log({ category, action, label, value });
   }
 }

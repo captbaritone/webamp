@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as Actions from "../../actionCreators";
 import * as Selectors from "../../selectors";
 import { LOAD_STYLE } from "../../constants";
@@ -13,7 +13,7 @@ interface Props {
   filePickers: FilePicker[];
 }
 
-const MainContextMenu = React.memo((props: Props) => {
+const MainContextMenu = React.memo(({ filePickers }: Props) => {
   const networkConnected = useTypedSelector(Selectors.getNetworkConnected);
   const genWindows = useTypedSelector(Selectors.getGenWindows);
 
@@ -21,6 +21,12 @@ const MainContextMenu = React.memo((props: Props) => {
   const openMediaFileDialog = useActionCreator(Actions.openMediaFileDialog);
   const loadMediaFiles = useActionCreator(Actions.loadMediaFiles);
   const toggleWindow = useActionCreator(Actions.toggleWindow);
+  const menuOpened = useActionCreator(() => ({
+    type: "MAIN_CONTEXT_MENU_OPENED",
+  }));
+  useEffect(() => {
+    menuOpened();
+  }, [menuOpened]);
 
   return (
     <React.Fragment>
@@ -32,8 +38,8 @@ const MainContextMenu = React.memo((props: Props) => {
       <Hr />
       <Parent label="Play">
         <Node onClick={openMediaFileDialog} label="File..." hotkey="L" />
-        {props.filePickers &&
-          props.filePickers.map(
+        {filePickers != null &&
+          filePickers.map(
             (picker, i) =>
               (networkConnected || !picker.requiresNetwork) && (
                 <Node

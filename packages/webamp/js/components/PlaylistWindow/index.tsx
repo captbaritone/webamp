@@ -93,6 +93,7 @@ function PlaylistWindow({ analyser }: Props) {
     <FocusTarget windowId={WINDOWS.PLAYLIST}>
       <DropTarget
         id="playlist-window"
+        windowId={WINDOWS.PLAYLIST}
         className={classes}
         style={style}
         handleDrop={handleDrop}
