@@ -1,4 +1,7 @@
 module.exports = {
+  launch: {
+    dumpio: true,
+  },
   server: {
     // Note: We require the the build be run before these tests.
     // TODO: Figure out how to get this command to run the build.

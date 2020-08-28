@@ -1,5 +1,6 @@
 /* global page */
 const { toMatchImageSnapshot } = require("jest-image-snapshot");
+const path = require("path");
 
 expect.extend({ toMatchImageSnapshot });
 
@@ -38,7 +39,7 @@ test("should render the Topaz skin", async () => {
   await page.goto(`${DOMAIN}/#{"disableMarquee":true}`);
   await expect(page).toUploadFile(
     "#webamp-file-input",
-    "./skins/TopazAmp1-2.wsz"
+    path.join(__dirname, "../../demo/skins/TopazAmp1-2.wsz")
   );
   await page.evaluate(() => window.__webamp.skinIsLoaded());
   expect(await page.screenshot()).toMatchImageSnapshot(snapshotOptions);
@@ -48,7 +49,7 @@ test("should render a skin that defines transparent regions", async () => {
   await page.goto(`${DOMAIN}/#{"disableMarquee":true}`);
   await expect(page).toUploadFile(
     "#webamp-file-input",
-    "./skins/Green-Dimension-V2.wsz"
+    path.join(__dirname, "../../demo/skins/Green-Dimension-V2.wsz")
   );
   await page.evaluate(() => window.__webamp.skinIsLoaded());
   expect(await page.screenshot()).toMatchImageSnapshot(snapshotOptions);
@@ -58,7 +59,7 @@ test("uses the volume spirtes as a fallback when balance spirtes are missing", a
   await page.goto(`${DOMAIN}/#{"disableMarquee":true}`);
   await expect(page).toUploadFile(
     "#webamp-file-input",
-    "./skins/AmigaPPC-dark.wsz"
+    path.join(__dirname, "../../demo/skins/AmigaPPC-dark.wsz")
   );
   await page.evaluate(() => window.__webamp.skinIsLoaded());
   expect(await page.screenshot()).toMatchImageSnapshot(snapshotOptions);
@@ -69,7 +70,7 @@ test("pads empty space in the marquee with the space character", async () => {
   // This skin has noticeable light blue where it expects the marquee to always cover.
   await expect(page).toUploadFile(
     "#webamp-file-input",
-    "./skins/Sonic_Attitude.wsz"
+    path.join(__dirname, "../../demo/skins/Sonic_Attitude.wsz")
   );
   await page.evaluate(() => window.__webamp.skinIsLoaded());
   await page.evaluate(() =>
