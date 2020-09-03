@@ -24,7 +24,6 @@ Find a way to fetch skin data based on hash
 
 - Scroll is not locked in overlay mode on ios
 - Fix animation for about page overlay fade in
-- "No results" page
 - Setup Sentry
 - Restore focus when leaving the modal
 - Add keyboard navigation to table

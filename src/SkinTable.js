@@ -14,6 +14,7 @@ const SkinTable = ({
   skinCount,
   windowWidth,
   getSkinData,
+  searchQuery,
 }) => {
   function itemKey({ columnIndex, rowIndex }) {
     const { requestToken, data: skin } = getSkinData({
@@ -35,20 +36,33 @@ const SkinTable = ({
   }, [skinCount]);
   return (
     <div id="infinite-skins">
-      <Grid
-        ref={gridRef}
-        itemKey={itemKey}
-        itemData={{ columnCount, width: columnWidth, height: rowHeight }}
-        columnCount={columnCount}
-        columnWidth={columnWidth}
-        height={windowHeight}
-        rowCount={Math.ceil(skinCount / columnCount)}
-        rowHeight={rowHeight}
-        width={windowWidth}
-        overscanRowsCount={5}
-      >
-        {Cell}
-      </Grid>
+      {skinCount > 0 || searchQuery === "" ? (
+        <Grid
+          ref={gridRef}
+          itemKey={itemKey}
+          itemData={{ columnCount, width: columnWidth, height: rowHeight }}
+          columnCount={columnCount}
+          columnWidth={columnWidth}
+          height={windowHeight}
+          rowCount={Math.ceil(skinCount / columnCount)}
+          rowHeight={rowHeight}
+          width={windowWidth}
+          overscanRowsCount={5}
+        >
+          {Cell}
+        </Grid>
+      ) : (
+        <div
+          style={{
+            textAlign: "center",
+            color: "rgb(58, 71, 88)",
+            fontSize: "35px",
+            paddingTop: 40,
+          }}
+        >
+          No skins matching "{searchQuery}"
+        </div>
+      )}
     </div>
   );
 };
@@ -57,6 +71,7 @@ const mapStateToProps = (state) => ({
   skinCount: Selectors.getCurrentSkinCount(state),
   selectedSkinHash: Selectors.getSelectedSkinHash(state),
   getSkinData: Selectors.getSkinDataGetter(state),
+  searchQuery: Selectors.getSearchQuery(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
