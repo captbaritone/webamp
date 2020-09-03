@@ -26,9 +26,17 @@ const SkinTable = ({
     }
     return skin ? skin.hash : `unfectched-index-${requestToken}`;
   }
+  const gridRef = React.useRef();
+  React.useLayoutEffect(() => {
+    if (gridRef.current == null) {
+      return;
+    }
+    gridRef.current.scrollTo({ scrollLeft: 0, scrollTop: 0 });
+  }, [skinCount]);
   return (
     <div id="infinite-skins">
       <Grid
+        ref={gridRef}
         itemKey={itemKey}
         itemData={{ columnCount, width: columnWidth, height: rowHeight }}
         columnCount={columnCount}

@@ -1,15 +1,12 @@
 Metadata example:
 
 ```js
+import { SKIN_CDN, SCREENSHOT_CDN } from "../constants";
 const hash = "48bbdbbeb03d347e59b1eebda4d352d0";
 
 <Metadata
-  href={
-    "https://s3.amazonaws.com/webamp-uploaded-skins/skins/48bbdbbeb03d347e59b1eebda4d352d0.wsz"
-  }
-  permalink={
-    "https://skins.webamp.org/skin/48bbdbbeb03d347e59b1eebda4d352d0/Zelda_Amp_3.wsz/"
-  }
+  href={`${SCREENSHOT_CDN}/skins/48bbdbbeb03d347e59b1eebda4d352d0.wsz`}
+  permalink={`${SKIN_CDN}/skin/48bbdbbeb03d347e59b1eebda4d352d0/Zelda_Amp_3.wsz/`}
   openFileExplorer={() => {}}
   fileName={"fake_filename.wsz"}
   hash={hash}

@@ -37,6 +37,15 @@ h1 a {
   color: rgba(255, 2550, 2550, 0.9);
 }
 
+/* https://stackoverflow.com/a/16255670/1263117 */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  select,
+  textarea,
+  input {
+    font-size: 16px;
+  }
+}
+
 #search h1 #logo {
   margin: 0 10px 0 15px;
 }

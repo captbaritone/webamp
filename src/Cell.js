@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import { connect } from "react-redux";
+import { SKIN_CDN } from "./constants";
 import Skin from "./components/Skin";
 import * as Utils from "./utils";
 import * as Selectors from "./redux/selectors";
@@ -43,7 +44,7 @@ const Cell = React.memo((props) => {
   return (
     <Skin
       style={style}
-      href={`https://webamp.org/?skinUrl=https://s3.amazonaws.com/webamp-uploaded-skins/skins/${hash}.wsz`}
+      href={`https://webamp.org/?skinUrl=${SKIN_CDN}/skins/${hash}.wsz`}
       src={Utils.screenshotUrlFromHash(hash)}
       key={hash}
       hash={hash}

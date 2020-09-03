@@ -22,7 +22,6 @@ Find a way to fetch skin data based on hash
 
 # Future
 
-- Add archive.org link?
 - Scroll is not locked in overlay mode on ios
 - Fix animation for about page overlay fade in
 - "No results" page

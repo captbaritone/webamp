@@ -81,8 +81,8 @@ class Header extends React.Component {
         </button>
         */}
         <input
+          type="search"
           style={{ marginLeft: 10 }}
-          type="text"
           onChange={(e) => this.props.setSearchQuery(e.target.value)}
           value={this.props.searchQuery || ""}
           placeholder={"Search..."}

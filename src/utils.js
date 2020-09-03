@@ -1,9 +1,10 @@
+import { SKIN_CDN, SCREENSHOT_CDN } from "./constants";
 export function screenshotUrlFromHash(hash) {
-  return `https://s3.amazonaws.com/webamp-uploaded-skins/screenshots/${hash}.png`;
+  return `${SCREENSHOT_CDN}/screenshots/${hash}.png`;
 }
 
 export function skinUrlFromHash(hash) {
-  return `https://s3.amazonaws.com/webamp-uploaded-skins/skins/${hash}.wsz`;
+  return `${SKIN_CDN}/skins/${hash}.wsz`;
 }
 
 export function getWindowSize() {
@@ -16,7 +17,7 @@ export function getWindowSize() {
 
   return {
     windowWidth: x,
-    windowHeight: y
+    windowHeight: y,
   };
 }
 

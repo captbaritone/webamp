@@ -23,6 +23,7 @@ function Metadata({ permalink, openFileExplorer, fileName, hash }) {
     <DownloadLink href={Utils.skinUrlFromHash(hash)} download={fileName}>
       Download
     </DownloadLink>,
+    /*
     <a
       href={"#"}
       onClick={(e) => {
@@ -32,6 +33,7 @@ function Metadata({ permalink, openFileExplorer, fileName, hash }) {
     >
       Readme
     </a>,
+    */
     <a
       href={permalink}
       onClick={(e) => {

@@ -2,6 +2,7 @@ Skin example:
 
 ```js
 import * as Utils from "../utils";
+import { SKIN_CDN } from "../constants";
 
 const [position, setPosition] = React.useState(null);
 const hash = "48bbdbbeb03d347e59b1eebda4d352d0";
@@ -12,7 +13,7 @@ const color = "rgb(67, 99, 96)";
 <>
   <Skin
     style={{ width, height }}
-    href={`https://webamp.org/?skinUrl=https://s3.amazonaws.com/webamp-uploaded-skins/skins/${hash}.wsz`}
+    href={`https://webamp.org/?skinUrl=${SKIN_CDN}/skins/${hash}.wsz`}
     src={Utils.screenshotUrlFromHash(hash)}
     key={hash}
     hash={hash}

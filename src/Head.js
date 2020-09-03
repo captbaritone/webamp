@@ -16,6 +16,10 @@ class Head extends React.Component {
         />
         <meta property="og:title" content={this.props.pageTitle} />
         <meta
+          property="og:description"
+          content="Infinite scroll through 65k Winamp skins with interactive preview"
+        />
+        <meta
           property="og:url"
           content={`https://skins.webamp.org${this.props.url}`}
         />
@@ -45,17 +49,17 @@ class Head extends React.Component {
             property="og:image:alt"
             key="og:image:alt"
             content={"Screenshot of a Winamp skin"}
-          />
+          />,
         ]}
       </Helmet>
     );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   url: Selectors.getUrl(state),
   pageTitle: Selectors.getPageTitle(state),
-  previewImageUrl: Selectors.getPreviewImageUrl(state)
+  previewImageUrl: Selectors.getPreviewImageUrl(state),
 });
 
 export default connect(mapStateToProps)(Head);
