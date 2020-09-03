@@ -4,7 +4,23 @@ import * as Utils from "./utils";
 import * as Selectors from "./redux/selectors";
 import * as Actions from "./redux/actionCreators";
 import Disposable from "./Disposable";
+import { useWindowSize } from "./hooks";
 import { ReactComponent as AlgoliaLogo } from "./searchByAlgoliaDarkbBackground.svg";
+import algoliaLogoSmallUrl from "./searchByAlgoliaSmall.png";
+
+function SearchLogo() {
+  const { windowWidth } = useWindowSize();
+  if (windowWidth > 500) {
+    return <AlgoliaLogo />;
+  }
+  return (
+    <img
+      alt="Search by Algolia"
+      style={{ width: 25, height: 25, paddingTop: 4 }}
+      src={algoliaLogoSmallUrl}
+    />
+  );
+}
 
 class Header extends React.Component {
   constructor(props) {
@@ -62,7 +78,7 @@ class Header extends React.Component {
             transition: "opacity ease-in 300ms",
           }}
         >
-          <AlgoliaLogo />
+          <SearchLogo />
         </a>
         {/*
         <button

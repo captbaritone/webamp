@@ -8,7 +8,7 @@ import SkinTable from "./SkinTable";
 import FocusedSkin from "./FocusedSkin";
 import * as Selectors from "./redux/selectors";
 import { ABOUT_PAGE } from "./constants";
-import * as Utils from "./utils";
+import { useWindowSize } from "./hooks";
 import { SCREENSHOT_WIDTH, SKIN_RATIO } from "./constants";
 
 // Render your table
@@ -19,19 +19,6 @@ const getTableDimensions = (windowWidth, scale) => {
   const rowHeight = columnWidth * SKIN_RATIO;
   return { columnWidth, rowHeight, columnCount };
 };
-
-function useWindowSize() {
-  const [windowSize, setWindowSize] = React.useState(Utils.getWindowSize());
-  React.useEffect(() => {
-    // TODO: Consider thottle
-    const handleResize = () => {
-      setWindowSize(Utils.getWindowSize());
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-  return windowSize;
-}
 
 function App(props) {
   const { windowWidth, windowHeight } = useWindowSize();
