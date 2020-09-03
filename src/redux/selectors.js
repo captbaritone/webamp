@@ -1,7 +1,6 @@
 import { createSelector } from "reselect";
 import * as Utils from "../utils";
 import { ABOUT_PAGE } from "../constants";
-import previewUrl from "../preview.png";
 
 export function getSelectedSkinHash(state) {
   return state.selectedSkinHash;
@@ -159,7 +158,7 @@ export function getPageTitle(state) {
 export const getPreviewImageUrl = createSelector(
   getSelectedSkinHash,
   (hash) => {
-    return hash == null ? previewUrl : Utils.screenshotUrlFromHash(hash);
+    return hash == null ? null : Utils.screenshotUrlFromHash(hash);
   }
 );
 
