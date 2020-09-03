@@ -138,6 +138,14 @@ button:active {
   color: rgb(73, 83, 112);
 }
 
+#search {
+  -webkit-appearance: searchfield;
+}
+
+*::-webkit-search-cancel-button {
+  -webkit-appearance: searchfield-cancel-button;
+}
+
 #infinite-skins {
   margin-top: 46px; /* This matches the height of #search */
 }
