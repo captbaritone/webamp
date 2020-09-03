@@ -21,6 +21,10 @@ export function createStore() {
     const state = store.getState();
     const url = Selectors.getUrl(state);
     if (url !== lastUrl) {
+      window.ga("set", "page", url);
+      if (lastUrl != null) {
+        window.ga("send", "pageview");
+      }
       window.history.pushState({}, Selectors.getPageTitle(state), url);
       lastUrl = url;
     }

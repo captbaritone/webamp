@@ -118,7 +118,7 @@ button:active {
   max-width: 250px;
   min-width: 100px;
   border: none;
-  font-size: 15px;
+  font-size: 16px;
   box-sizing: border-box;
   line-height: 1.15;
   height: 100%;
@@ -136,14 +136,6 @@ button:active {
 
 #search input::placeholder {
   color: rgb(73, 83, 112);
-}
-
-#search {
-  -webkit-appearance: searchfield;
-}
-
-*::-webkit-search-cancel-button {
-  -webkit-appearance: searchfield-cancel-button;
 }
 
 #infinite-skins {
