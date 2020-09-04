@@ -177,6 +177,30 @@ const unloadedSkinEpic = (actions, states) =>
           const page = await import("../page5.json");
           return [page.default, chunk];
         }
+        case 5: {
+          const page = await import("../page6.json");
+          return [page.default, chunk];
+        }
+        case 6: {
+          const page = await import("../page7.json");
+          return [page.default, chunk];
+        }
+        case 7: {
+          const page = await import("../page8.json");
+          return [page.default, chunk];
+        }
+        case 8: {
+          const page = await import("../page9.json");
+          return [page.default, chunk];
+        }
+        case 9: {
+          const page = await import("../page10.json");
+          return [page.default, chunk];
+        }
+        case 10: {
+          const page = await import("../page11.json");
+          return [page.default, chunk];
+        }
         default:
           console.log("Going to server");
       }
