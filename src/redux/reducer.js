@@ -19,7 +19,6 @@ const defaultState = {
 export default function reducer(state = defaultState, action) {
   switch (action.type) {
     case "SET_SCALE": {
-      console.log(action);
       return { ...state, scale: action.scale };
     }
     case "GOT_SKIN_DATA": {

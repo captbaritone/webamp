@@ -155,7 +155,6 @@ const unloadedSkinEpic = (actions, states) =>
     mergeMap(async ({ index }) => {
       const chunkSize = 100;
       const chunk = Math.floor(index / (chunkSize - 1));
-      console.log({ chunk });
       switch (chunk) {
         case 0: {
           const page = await import("../page1.json");
@@ -202,7 +201,7 @@ const unloadedSkinEpic = (actions, states) =>
           return [page.default, chunk];
         }
         default:
-          console.log("Going to server");
+          console.log("Going to server for chucnk", chunk);
       }
       if (chunkState[chunk] != null) {
         return null;
@@ -213,8 +212,9 @@ const unloadedSkinEpic = (actions, states) =>
           chunk * chunkSize
         }&first=${chunkSize}`
       );
+      console.log("Got from server for chucnk", chunk);
+
       const body = await response.json();
-      console.log("From api", body);
       return [body, chunk];
     }),
     filter(Boolean),
