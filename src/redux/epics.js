@@ -6,7 +6,6 @@ import * as Utils from "../utils";
 import { filter, switchMap, map, mergeMap } from "rxjs/operators";
 import { search } from "../algolia";
 import queryParser from "../queryParser";
-import page1 from "../page1.json";
 
 const urlChangedEpic = (actions) =>
   actions.pipe(
@@ -154,11 +153,33 @@ const unloadedSkinEpic = (actions, states) =>
   actions.pipe(
     filter((action) => action.type === "REQUEST_UNLOADED_SKIN"),
     mergeMap(async ({ index }) => {
-      if (index === 0) {
-        return [page1, 0];
-      }
       const chunkSize = 100;
       const chunk = Math.floor(index / (chunkSize - 1));
+      console.log({ chunk });
+      switch (chunk) {
+        case 0: {
+          const page = await import("../page1.json");
+          return [page.default, chunk];
+        }
+        case 1: {
+          const page = await import("../page2.json");
+          return [page.default, chunk];
+        }
+        case 2: {
+          const page = await import("../page3.json");
+          return [page.default, chunk];
+        }
+        case 3: {
+          const page = await import("../page4.json");
+          return [page.default, chunk];
+        }
+        case 4: {
+          const page = await import("../page5.json");
+          return [page.default, chunk];
+        }
+        default:
+          console.log("Going to server");
+      }
       if (chunkState[chunk] != null) {
         return null;
       }
@@ -169,6 +190,7 @@ const unloadedSkinEpic = (actions, states) =>
         }&first=${chunkSize}`
       );
       const body = await response.json();
+      console.log("From api", body);
       return [body, chunk];
     }),
     filter(Boolean),
