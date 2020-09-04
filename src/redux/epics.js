@@ -245,11 +245,11 @@ const unloadedSkinEpic = (actions, states) =>
           return [page.default, chunk];
         }
         default:
-          console.log("Going to server for chucnk", chunk);
       }
       if (chunkState[chunk] != null) {
         return null;
       }
+      console.log("Going to server for chucnk", chunk);
       chunkState[chunk] = "fetching";
       const response = await fetch(
         `https://api.webamp.org/skins?offset=${
