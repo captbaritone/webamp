@@ -6,6 +6,7 @@ import * as Utils from "../utils";
 import { filter, switchMap, map, mergeMap } from "rxjs/operators";
 import { search } from "../algolia";
 import queryParser from "../queryParser";
+import page1 from "../page1.json";
 
 const urlChangedEpic = (actions) =>
   actions.pipe(
@@ -153,6 +154,9 @@ const unloadedSkinEpic = (actions, states) =>
   actions.pipe(
     filter((action) => action.type === "REQUEST_UNLOADED_SKIN"),
     mergeMap(async ({ index }) => {
+      if (index === 0) {
+        return [page1, 0];
+      }
       const chunkSize = 100;
       const chunk = Math.floor(index / (chunkSize - 1));
       if (chunkState[chunk] != null) {
