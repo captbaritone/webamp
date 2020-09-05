@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import WebampComponent from "../WebampComponent";
 import * as Utils from "../utils";
-import { SCREENSHOT_HEIGHT, SCREENSHOT_WIDTH, API_URL } from "../constants";
+import { SCREENSHOT_HEIGHT, SCREENSHOT_WIDTH } from "../constants";
 import { delay, switchMap } from "rxjs/operators";
 import { Subject, combineLatest, timer, fromEvent, from } from "rxjs";
 import Disposable from "../Disposable";
@@ -18,7 +18,7 @@ function useSkinData({ hash, skinData, setSkinData }) {
       return;
     }
     // TODO: Move this to Epic
-    const subscription = from(fetch(`${API_URL}/skins/${hash}`))
+    const subscription = from(fetch(`https://api.webamp.org/skins/${hash}`))
       .pipe(switchMap((response) => response.json()))
       .subscribe((body) => {
         setSkinData(hash, {
