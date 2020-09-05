@@ -6,6 +6,7 @@ import * as Utils from "../utils";
 import { filter, switchMap, map, mergeMap } from "rxjs/operators";
 import { search } from "../algolia";
 import queryParser from "../queryParser";
+import { API_URL } from "../constants";
 
 const urlChangedEpic = (actions) =>
   actions.pipe(
@@ -155,106 +156,14 @@ const unloadedSkinEpic = (actions, states) =>
     mergeMap(async ({ index }) => {
       const chunkSize = 100;
       const chunk = Math.floor(index / (chunkSize - 1));
-      switch (chunk) {
-        case 0: {
-          const page = await import("../page1.json");
-          return [page.default, chunk];
-        }
-        case 1: {
-          const page = await import("../page2.json");
-          return [page.default, chunk];
-        }
-        case 2: {
-          const page = await import("../page3.json");
-          return [page.default, chunk];
-        }
-        case 3: {
-          const page = await import("../page4.json");
-          return [page.default, chunk];
-        }
-        case 4: {
-          const page = await import("../page5.json");
-          return [page.default, chunk];
-        }
-        case 5: {
-          const page = await import("../page6.json");
-          return [page.default, chunk];
-        }
-        case 6: {
-          const page = await import("../page7.json");
-          return [page.default, chunk];
-        }
-        case 7: {
-          const page = await import("../page8.json");
-          return [page.default, chunk];
-        }
-        case 8: {
-          const page = await import("../page9.json");
-          return [page.default, chunk];
-        }
-        case 9: {
-          const page = await import("../page10.json");
-          return [page.default, chunk];
-        }
-        case 10: {
-          const page = await import("../page11.json");
-          return [page.default, chunk];
-        }
-        case 11: {
-          const page = await import("../page12.json");
-          return [page.default, chunk];
-        }
-        case 12: {
-          const page = await import("../page13.json");
-          return [page.default, chunk];
-        }
-        case 13: {
-          const page = await import("../page14.json");
-          return [page.default, chunk];
-        }
-        case 14: {
-          const page = await import("../page15.json");
-          return [page.default, chunk];
-        }
-        case 15: {
-          const page = await import("../page16.json");
-          return [page.default, chunk];
-        }
-        case 16: {
-          const page = await import("../page17.json");
-          return [page.default, chunk];
-        }
-        case 17: {
-          const page = await import("../page18.json");
-          return [page.default, chunk];
-        }
-        case 18: {
-          const page = await import("../page19.json");
-          return [page.default, chunk];
-        }
-        case 19: {
-          const page = await import("../page20.json");
-          return [page.default, chunk];
-        }
-        case 20: {
-          const page = await import("../page21.json");
-          return [page.default, chunk];
-        }
-        case 21: {
-          const page = await import("../page22.json");
-          return [page.default, chunk];
-        }
-        default:
-      }
+
       if (chunkState[chunk] != null) {
         return null;
       }
       console.log("Going to server for chucnk", chunk);
       chunkState[chunk] = "fetching";
       const response = await fetch(
-        `https://api.webamp.org/skins?offset=${
-          chunk * chunkSize
-        }&first=${chunkSize}`
+        `${API_URL}/skins?offset=${chunk * chunkSize}&first=${chunkSize}`
       );
       console.log("Got from server for chucnk", chunk);
 

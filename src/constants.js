@@ -6,3 +6,4 @@ export const ABOUT_PAGE = "ABOUT_PAGE";
 // export const CDN = "https://s3.amazonaws.com/cdn.webampskins.org";
 export const SCREENSHOT_CDN = "https://cdn.webampskins.org";
 export const SKIN_CDN = "https://cdn.webampskins.org";
+export const API_URL = "https://api.webamp.org";
