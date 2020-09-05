@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import DownloadLink from "./DownloadLink";
 import * as Utils from "../utils";
 import LinkInput from "./LinkInput";
+import { API_URL } from "../constants";
 
 function Metadata({ permalink, openFileExplorer, fileName, hash }) {
   const [showLink, setShowLink] = useState(false);
   async function report(e) {
     e.preventDefault();
     try {
-      await fetch(`https://api.webamp.org/skins/${hash}/report`, {
+      await fetch(`${API_URL}/skins/${hash}/report`, {
         method: "POST",
         mode: "cors",
       });
