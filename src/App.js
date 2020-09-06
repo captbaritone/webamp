@@ -8,7 +8,7 @@ import SkinTable from "./SkinTable";
 import FocusedSkin from "./FocusedSkin";
 import * as Selectors from "./redux/selectors";
 import { ABOUT_PAGE } from "./constants";
-import { useWindowSize } from "./hooks";
+import { useWindowSize, useScrollbarWidth } from "./hooks";
 import { SCREENSHOT_WIDTH, SKIN_RATIO } from "./constants";
 
 // Render your table
@@ -21,9 +21,14 @@ const getTableDimensions = (windowWidth, scale) => {
 };
 
 function App(props) {
-  const { windowWidth, windowHeight } = useWindowSize();
+  const scrollbarWidth = useScrollbarWidth();
+  const {
+    windowWidth: windowWidthWithScrollabar,
+    windowHeight,
+  } = useWindowSize();
+
   const { columnWidth, rowHeight, columnCount } = getTableDimensions(
-    windowWidth,
+    windowWidthWithScrollabar - scrollbarWidth,
     props.scale
   );
   return (
@@ -35,7 +40,7 @@ function App(props) {
         columnWidth={columnWidth}
         rowHeight={rowHeight}
         windowHeight={windowHeight}
-        windowWidth={windowWidth}
+        windowWidth={windowWidthWithScrollabar}
       />
       {props.aboutPage ? (
         <Overlay>

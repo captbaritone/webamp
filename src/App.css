@@ -138,10 +138,6 @@ button:active {
   color: rgb(73, 83, 112);
 }
 
-#infinite-skins {
-  margin-top: 46px; /* This matches the height of #search */
-}
-
 #webamp {
   opacity: 0;
   transition: opacity 400ms ease-in-out;
