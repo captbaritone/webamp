@@ -6,6 +6,8 @@ import * as Actions from "./redux/actionCreators";
 import { FixedSizeGrid as Grid } from "react-window";
 import Cell from "./Cell";
 
+const HEADING_HEIGHT = 46;
+
 const SkinTable = ({
   columnCount,
   columnWidth,
@@ -35,7 +37,7 @@ const SkinTable = ({
     gridRef.current.scrollTo({ scrollLeft: 0, scrollTop: 0 });
   }, [skinCount]);
   return (
-    <div id="infinite-skins">
+    <div id="infinite-skins" style={{ marginTop: HEADING_HEIGHT }}>
       {skinCount > 0 || searchQuery === "" ? (
         <Grid
           ref={gridRef}
@@ -43,11 +45,12 @@ const SkinTable = ({
           itemData={{ columnCount, width: columnWidth, height: rowHeight }}
           columnCount={columnCount}
           columnWidth={columnWidth}
-          height={windowHeight}
+          height={windowHeight - HEADING_HEIGHT}
           rowCount={Math.ceil(skinCount / columnCount)}
           rowHeight={rowHeight}
           width={windowWidth}
           overscanRowsCount={5}
+          style={{ overflowY: "scroll" }}
         >
           {Cell}
         </Grid>
