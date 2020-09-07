@@ -10,7 +10,7 @@ export function createStore() {
 
   const store = createReduxStore(reducer, applyMiddleware(epicMiddleware));
   epicMiddleware.run(rootEpic);
-  let lastUrl = null;
+  let lastUrl = window.location.pathname;
   window.onpopstate = function () {
     store.dispatch({ type: "URL_CHANGED", location: document.location });
   };
@@ -21,11 +21,14 @@ export function createStore() {
     const state = store.getState();
     const url = Selectors.getUrl(state);
     if (url !== lastUrl) {
+      console.log(
+        `url ${url} does not match ${lastUrl} so we're adding a history entry`
+      );
       window.ga("set", "page", url);
       if (lastUrl != null) {
         window.ga("send", "pageview");
       }
-      window.history.pushState({}, Selectors.getPageTitle(state), url);
+      window.history.replaceState({}, Selectors.getPageTitle(state), url);
       lastUrl = url;
     }
   });
