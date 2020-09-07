@@ -64,7 +64,8 @@ function Skin({
         width,
         // Ideally the final backgroundColor would be black
         // But that makes our opacitly transition kinda funky
-        backgroundColor: color,
+        // This was causing perf issues
+        // backgroundColor: color,
         cursor: "pointer",
       }}
       onClick={clickHandler}
