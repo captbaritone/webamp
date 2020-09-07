@@ -50,15 +50,6 @@ def find(dir):
             yield os.path.join(root, file)
 
 
-def url_is_good(url):
-    try:
-        r = requests.head(url)
-        return r.status_code == 200
-        # prints the int of the status code. Find more at httpstatusrappers.com :)
-    except Exception:
-        return False
-
-
 def md5_file(path):
     hash_md5 = hashlib.md5()
     with open(path, "rb") as f:
@@ -68,28 +59,19 @@ def md5_file(path):
 
 
 def tweet_skin(md5, skin_name, dry):
-    skin_url = get_skin_url(md5)
     screenshot_url = get_screenshot_url(md5)
 
     screenshot_path = NamedTemporaryFile(suffix=".png").name
     urllib.request.urlretrieve(screenshot_url, screenshot_path)
 
-    if not url_is_good(skin_url):
-        print("URL %s is no good. Aborting." % skin_url)
-        return
-
-    return tweet_image(skin_name, md5, skin_url, screenshot_path, dry)
-
-
-def get_skin_url(md5):
-    return "https://s3.amazonaws.com/webamp-uploaded-skins/skins/%s.wsz" % md5
+    return tweet_image(skin_name, md5, screenshot_path, dry)
 
 
 def get_screenshot_url(md5):
     return "https://s3.amazonaws.com/webamp-uploaded-skins/screenshots/%s.png" % md5
 
 
-def tweet_image(skin_name, md5, skin_url, screenshot_path, dry):
+def tweet_image(skin_name, md5, screenshot_path, dry):
     # Trick Twitter into keeping the skin a PNG
     img = Image.open(screenshot_path)
     img = img.convert("RGBA")  # ensure 32-bit
@@ -105,16 +87,11 @@ def tweet_image(skin_name, md5, skin_url, screenshot_path, dry):
 
     img.save(screenshot_path)
 
-    escaped_skin_url = urllib.parse.quote(skin_url)
+    museum_url = "https://skins.webamp.org/skin/%s" % md5
 
-    winamp2_js_url = "https://webamp.org/?skinUrl=%s" % escaped_skin_url
-
-    status_message = """%s
-Try Online: %s
-Download: %s""" % (
+    status_message = "%s\n\n%s" % (
         skin_name,
-        winamp2_js_url,
-        skin_url,
+        museum_url,
     )
     if not dry:
         return tweet(status_message, screenshot_path)

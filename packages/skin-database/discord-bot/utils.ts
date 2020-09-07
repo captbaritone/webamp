@@ -34,7 +34,7 @@ export async function postSkin({
   dest: TextChannel | DMChannel | GroupDMChannel;
 }) {
   console.log("postSkin...");
-  const skin = await Skins.getSkinByMd5(md5);
+  const skin = await Skins.getSkinByMd5_DEPRECATED(md5);
   if (skin == null) {
     console.warn("Could not find skin for md5", { md5, alert: true });
     logger.warn("Could not find skin for md5", { md5, alert: true });

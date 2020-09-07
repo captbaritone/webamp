@@ -5,7 +5,7 @@ const s3 = new AWS.S3();
 
 function putSkin(md5, buffer) {
   return new Promise((resolve, rejectPromise) => {
-    const bucketName = "webamp-uploaded-skins";
+    const bucketName = "cdn.webampskins.org";
     const key = `skins/${md5}.wsz`;
     s3.putObject(
       { Bucket: bucketName, Key: key, Body: buffer, ACL: "public-read" },
@@ -23,7 +23,7 @@ function putSkin(md5, buffer) {
 
 function putScreenshot(md5, buffer) {
   return new Promise((resolve, rejectPromise) => {
-    const bucketName = "webamp-uploaded-skins";
+    const bucketName = "cdn.webampskins.org";
     const key = `screenshots/${md5}.png`;
     s3.putObject(
       { Bucket: bucketName, Key: key, Body: buffer, ACL: "public-read" },

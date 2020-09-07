@@ -18,9 +18,6 @@ async function main() {
 
   try {
     switch (argv._[0]) {
-      case "test":
-        console.log(await Skins.test());
-        break;
       case "tweet":
         await tweet(client, null);
         break;
@@ -32,7 +29,7 @@ async function main() {
       case "skin": {
         const hash = argv._[1];
         logger.info({ hash });
-        console.log(await Skins.getSkinByMd5(hash));
+        console.log(await Skins.getSkinByMd5_DEPRECATED(hash));
         break;
       }
 
@@ -46,8 +43,21 @@ async function main() {
         console.log(await addSkinFromBuffer(buffer, filePath, "cli-user"));
         break;
       }
+      case "sql": {
+        const filePath = argv._[1];
+        const skins = await Skins.getMuseumPageSql({ offset: 0, first: 70000 });
+        const firstNSFW = skins.findIndex((item) => item.rejected);
+        console.log(firstNSFW);
+        // console.log(await Skins.getMuseumPage({ offset: 100, first: 100 }));
+
+        break;
+      }
       case "nsfw": {
         console.log(await Skins.getSkinToReviewForNsfw());
+        break;
+      }
+      case "index": {
+        console.log(await Skins.updateSearchIndex(argv._[1]));
         break;
       }
       case "confirm-nsfw-predictions": {

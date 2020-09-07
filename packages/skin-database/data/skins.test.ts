@@ -9,8 +9,6 @@ test("getSkinToReview", async () => {
   const { md5, filename } = await Skins.getSkinToReview();
   expect(md5.length).toBe(32);
   expect(typeof filename).toBe("string");
-  const skin = await Skins.getSkinByMd5(md5);
-  expect(skin?.tweetStatus).toBe("UNREVIEWED");
 });
 
 test("getSkinToReviewForNsfw", async () => {
@@ -29,8 +27,8 @@ test("getStats", async () => {
   expect(stats).toMatchObject({
     approved: 1969,
     rejected: 4194,
-    tweetable: 16,
-    tweeted: 4292,
+    tweetable: expect.anything(),
+    tweeted: expect.anything(),
   });
 });
 
@@ -61,8 +59,16 @@ test.skip("getMissingNsfwPredictions", async () => {
   expect(page).toBe(8);
 });
 
+test("skinExists", async () => {
+  expect(await Skins.skinExists("6a2843f40058f86406630671b454d66b")).toBe(true);
+  expect(await Skins.skinExists("8a2843f40058f86406630671b454d66b")).toBe(
+    false
+  );
+});
 test("getSkinByMd5", async () => {
-  const skin = await Skins.getSkinByMd5("6a2843f40058f86406630671b454d66b");
+  const skin = await Skins.getSkinByMd5_DEPRECATED(
+    "6a2843f40058f86406630671b454d66b"
+  );
   expect(skin).toMatchInlineSnapshot(`
     Object {
       "approved": true,
@@ -182,15 +188,15 @@ test("getSkinByMd5", async () => {
     Leonard A Gray, produced 
     by Impact Software, Inc
     ",
-      "screenshotUrl": "https://s3.amazonaws.com/webamp-uploaded-skins/screenshots/6a2843f40058f86406630671b454d66b.png",
-      "skinUrl": "https://s3.amazonaws.com/webamp-uploaded-skins/skins/6a2843f40058f86406630671b454d66b.wsz",
+      "screenshotUrl": "https://cdn.webampskins.org/screenshots/6a2843f40058f86406630671b454d66b.png",
+      "skinUrl": "https://cdn.webampskins.org/skins/6a2843f40058f86406630671b454d66b.wsz",
       "tweetId": "1077896846117285890",
       "tweetStatus": "TWEETED",
       "tweetUrl": "https://twitter.com/statuses/1077896846117285890",
       "tweeted": true,
       "twitterLikes": 23,
       "type": "CLASSIC",
-      "webampUrl": "https://webamp.org?skinUrl=https://s3.amazonaws.com/webamp-uploaded-skins/skins/6a2843f40058f86406630671b454d66b.wsz",
+      "webampUrl": "https://webamp.org?skinUrl=https://cdn.webampskins.org/skins/6a2843f40058f86406630671b454d66b.wsz",
     }
   `);
 });

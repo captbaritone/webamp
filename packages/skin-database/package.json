@@ -14,6 +14,7 @@
     "imagemin": "^7.0.0",
     "imagemin-optipng": "^7.0.0",
     "knex": "^0.21.1",
+    "lru-cache": "^6.0.0",
     "md5": "^2.2.1",
     "monk": "^7.0.0",
     "node-fetch": "^2.6.0",

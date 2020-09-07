@@ -2,23 +2,34 @@ const express = require("express");
 const app = express();
 const config = require("./config");
 const Skins = require("./data/skins");
-const port = 3001;
+const port = process.env.PORT ? Number(process.env.PORT) : 3001;
 const fileUpload = require("express-fileupload");
 const { addSkinFromBuffer } = require("./addSkin");
 const Discord = require("discord.js");
 const Utils = require("./discord-bot/utils");
 const cors = require("cors");
+var bodyParser = require("body-parser");
+var LRU = require("lru-cache");
 
-const whitelist = ["https://skins.webamp.org", "http://localhost:3000"];
+const allowList = [
+  /https:\/\/skins\.webamp\.org/,
+  /http:\/\/localhost:3000/,
+  /netlify.app/,
+];
 const corsOptions = {
   origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
+    if (allowList.some((regex) => regex.test(origin)) || !origin) {
       callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS"));
+      callback(
+        new Error(`Request from origin "${origin}" not allowed by CORS.`)
+      );
     }
   },
 };
+
+// parse application/json
+app.use(bodyParser.json());
 
 app.use(cors(corsOptions));
 
@@ -34,20 +45,51 @@ app.use(
   })
 );
 
-app.get("/", async (req, res) => {
-  res.send("Hello World!");
-});
+let skinCount = null;
+
+const options = {
+  max: 100,
+  maxAge: 1000 * 60 * 60,
+};
+
+const cache = new LRU(options);
 
 app.get("/skins/", async (req, res) => {
+  if (skinCount == null) {
+    skinCount = await Skins.getClassicSkinCount();
+  }
   const { offset = 0, first = 100 } = req.query;
-  const [skins, skinCount] = await Promise.all([
-    Skins.getMuseumPage({
-      offset: Number(offset),
-      first: Number(first),
-    }),
-    Skins.getClassicSkinCount(),
-  ]);
+  const key = req.originalUrl;
+  const cached = cache.get(key);
+  if (cached != null) {
+    console.log(`Cache hit for ${key}`);
+    res.json({ skinCount, skins: cached });
+    return;
+  }
+  console.log(`Getting offset: ${offset}, first: ${first}`);
+
+  const start = Date.now();
+  const skins = await Skins.getMuseumPageSql({
+    offset: Number(offset),
+    first: Number(first),
+  });
+  console.log(`Query took ${(Date.now() - start) / 1000}`);
+  console.log(`Cache set for ${key}`);
+  cache.set(key, skins);
   res.json({ skinCount, skins });
+});
+
+app.post("/skins/missing", async (req, res) => {
+  const missing = [];
+  const found = [];
+  for (const md5 of req.body.hashes) {
+    if (!(await Skins.skinExists(md5))) {
+      missing.push(md5);
+    } else {
+      found.push(md5);
+    }
+  }
+  res.json({ missing, found });
 });
 
 app.post("/skins/", async (req, res) => {
@@ -62,12 +104,19 @@ app.post("/skins/", async (req, res) => {
     return;
   }
   const result = await addSkinFromBuffer(upload.data, upload.name, "Web API");
+
+  if (result.status === "ADDED") {
+    console.log(`Updating index for ${result.md5}.`);
+    await Skins.updateSearchIndex(result.md5);
+  }
+
   res.json({ ...result, filename: upload.name });
 });
 
 app.get("/skins/:md5", async (req, res) => {
   const { md5 } = req.params;
-  const skin = await Skins.getSkinByMd5(md5);
+  console.log(`Details for hash "${md5}"`);
+  const skin = await Skins.getSkinByMd5_DEPRECATED(md5);
   if (skin == null) {
     res.status(404).json();
     return;
@@ -75,9 +124,17 @@ app.get("/skins/:md5", async (req, res) => {
   res.json(skin);
 });
 
+app.post("/skins/:md5/index", async (req, res) => {
+  const { md5 } = req.params;
+  console.log(`Going to index hash "${md5}"`);
+  const skin = await Skins.updateSearchIndex(md5);
+  res.json(skin);
+});
+
 // TODO: Make this POST
 app.post("/skins/:md5/report", async (req, res) => {
   const { md5 } = req.params;
+  console.log(`Reporting skin with hash "${md5}"`);
   const client = new Discord.Client();
   await client.login(config.discordToken);
   const dest = client.channels.get(config.NSFW_SKIN_CHANNEL_ID);
@@ -93,7 +150,8 @@ app.post("/skins/:md5/report", async (req, res) => {
 
 app.get("/skins/:md5/screenshot.png", async (req, res) => {
   const { md5 } = req.params;
-  const { screenshotUrl } = await Skins.getSkinByMd5(md5);
+  console.log(`Getting screenshot for hash "${md5}"`);
+  const { screenshotUrl } = await Skins.getSkinByMd5_DEPRECATED(md5);
   if (screenshotUrl == null) {
     res.status(404).send();
     return;
@@ -103,12 +161,18 @@ app.get("/skins/:md5/screenshot.png", async (req, res) => {
 
 app.get("/skins/:md5/download", async (req, res) => {
   const { md5 } = req.params;
-  const { skinUrl } = await Skins.getSkinByMd5(md5);
+  console.log(`Downloading for hash "${md5}"`);
+  const { skinUrl } = await Skins.getSkinByMd5_DEPRECATED(md5);
   if (skinUrl == null) {
     res.status(404).send();
     return;
   }
   res.redirect(301, skinUrl);
+});
+
+app.use(function (err, req, res, next) {
+  console.error(err.stack);
+  res.status(500).send("Oops. Something went wrong. We're working on it.");
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

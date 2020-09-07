@@ -1,6 +1,7 @@
 const { searchIndex } = require("../algolia");
 const path = require("path");
 const { db } = require("../db");
+const { tuncate } = require("../utils");
 
 function tuncate(str, len) {
   const overflow = str.length - len;

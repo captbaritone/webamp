@@ -25,8 +25,8 @@ export async function addSkinFromBuffer(
   uploader: string
 ): Promise<Result> {
   const md5 = md5Buffer(buffer);
-  const skin = await Skins.getSkinByMd5(md5);
-  if (skin != null) {
+  const exists = await Skins.skinExists(md5);
+  if (exists) {
     return { md5, status: "FOUND" };
   }
   const tempFile = temp.path({ suffix: ".wsz" });

@@ -94,7 +94,7 @@ async function getNewIdentifier(filename: string): Promise<string> {
 }
 
 async function archive(md5: string): Promise<string> {
-  const skin = await Skins.getSkinByMd5(md5);
+  const skin = await Skins.getSkinByMd5_DEPRECATED(md5);
   if (skin == null) {
     throw new Error(`Could not find skin with hash ${md5}`);
   }
