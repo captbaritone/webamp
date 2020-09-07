@@ -11,9 +11,14 @@
       manifest.json provides metadata used when your web app is added to the
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
+    <meta
+      name="description"
+      content="Infinite scroll through 65k Winamp skins with interactive preview"
+    />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
     <link rel="canonical" href="https://skins.webamp.org" />
+    <meta property="og:url" content="https://skins.webamp.org" />
     <meta property="og:title" content="Winamp Skin Museum" />
     <meta
       property="og:description"
@@ -31,6 +36,21 @@
       key="og:image:alt"
       content="Screenshot of many Winamp skins in a grid."
     />
+
+    <!-- start twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@winampskins" />
+    <meta name="twitter:creator" content="@captbaritone" />
+    <meta name="twitter:title" content="Winamp Skin Museum" />
+    <meta
+      name="twitter:description"
+      content="Infinite scroll through 65k Winamp skins with interactive preview"
+    />
+    <meta
+      name="twitter:image"
+      content="https://skins.webamp.org%PUBLIC_URL%/preview.png"
+    />
+    <!-- end twitter -->
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
