@@ -52,6 +52,7 @@ function Skin({
     transition: "opacity 0.2s",
     backfaceVisibility: loaded ? "hidden" : null,
     filter: nsfw ? "blur(10px)" : null,
+    outline: "none",
   };
 
   return (
