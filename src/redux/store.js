@@ -21,9 +21,6 @@ export function createStore() {
     const state = store.getState();
     const url = Selectors.getUrl(state);
     if (url !== lastUrl) {
-      console.log(
-        `url ${url} does not match ${lastUrl} so we're adding a history entry`
-      );
       window.ga("set", "page", url);
       if (lastUrl != null) {
         window.ga("send", "pageview");
