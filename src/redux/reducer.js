@@ -14,12 +14,16 @@ const defaultState = {
   scale: 0.5,
   skinChunkData: { chunkSize: 100, numberOfSkins: 64381, chunkFileNames: [] },
   skins: {},
+  showNsfw: false,
 };
 
 export default function reducer(state = defaultState, action) {
   switch (action.type) {
     case "SET_SCALE": {
       return { ...state, scale: action.scale };
+    }
+    case "CONCENTS_TO_NSFW": {
+      return { ...state, showNsfw: true };
     }
     case "GOT_SKIN_DATA": {
       return {

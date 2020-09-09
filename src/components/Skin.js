@@ -2,8 +2,6 @@ import React, { useState, useCallback } from "react";
 import * as Utils from "../utils";
 import { SCREENSHOT_HEIGHT } from "../constants";
 
-let willSeeNsfw = false;
-
 function Skin({
   style,
   height,
@@ -15,19 +13,24 @@ function Skin({
   src,
   fileName,
   nsfw,
+  concentsToNsfw,
+  showNsfw,
 }) {
   const [loaded, setLoaded] = useState(false);
   const [ref, setRef] = useState(null);
 
   const clickHandler = useCallback(
     (e) => {
-      if (nsfw && !willSeeNsfw) {
-        willSeeNsfw = window.confirm(
-          'This skin has been flagged as "not safe for work". Access adult content?'
-        );
-        if (!willSeeNsfw) {
+      if (nsfw && !showNsfw) {
+        if (
+          !window.confirm(
+            'This skin has been flagged as "not safe for work". Reveal all NSFW content?'
+          )
+        ) {
           e.preventDefault();
           return;
+        } else {
+          concentsToNsfw();
         }
       }
       if (Utils.eventIsLinkClick(e)) {
@@ -41,7 +44,7 @@ function Skin({
         selectSkin(hash, { top, left });
       }
     },
-    [hash, nsfw, ref, selectSkin]
+    [concentsToNsfw, hash, nsfw, ref, selectSkin, showNsfw]
   );
 
   const imgStyle = {
@@ -51,7 +54,7 @@ function Skin({
     opacity: loaded ? 1 : 0,
     transition: "opacity 0.2s",
     backfaceVisibility: loaded ? "hidden" : null,
-    filter: nsfw ? "blur(10px)" : null,
+    filter: nsfw && !showNsfw ? "blur(10px)" : null,
     outline: "none",
   };
 

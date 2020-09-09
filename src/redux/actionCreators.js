@@ -26,11 +26,12 @@ export function loadedSkinZip(zip) {
   return { type: "LOADED_SKIN_ZIP", zip };
 }
 
+export function concentsToNswf() {
+  return { type: "CONCENTS_TO_NSFW" };
+}
+
 export function selectSkinFile(fileName) {
-  const ext = fileName
-    .split(".")
-    .pop()
-    .toLowerCase();
+  const ext = fileName.split(".").pop().toLowerCase();
 
   return { type: "SELECTED_SKIN_FILE_TO_FOCUS", fileName, ext };
 }

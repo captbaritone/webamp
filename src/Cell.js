@@ -17,6 +17,8 @@ const Cell = React.memo((props) => {
     setSelectedSkin,
     requestUnloadedSkin,
     permalinkUrl,
+    concentsToNsfw,
+    showNsfw,
   } = props;
   const { width, height } = data;
   React.useEffect(() => {
@@ -55,6 +57,8 @@ const Cell = React.memo((props) => {
       nsfw={nsfw}
       // TODO: This is werid because there is an implicit assumption that this is always avaliable if we have the skin
       permalink={permalinkUrl}
+      concentsToNsfw={concentsToNsfw}
+      showNsfw={showNsfw}
     />
   );
 });
@@ -75,6 +79,7 @@ const mapStateToProps = (state, ownProps) => {
     requestToken,
     skin,
     permalinkUrl: skin == null ? null : getPermalinkUrlFromHash(skin.hash),
+    showNsfw: state.showNsfw,
   };
 };
 
@@ -84,6 +89,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   setSelectedSkin(hash, position) {
     dispatch(Actions.selectedSkin(hash, position));
+  },
+  concentsToNsfw() {
+    dispatch(Actions.concentsToNswf());
   },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Cell);
