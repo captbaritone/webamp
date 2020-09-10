@@ -1,11 +1,16 @@
 import * as React from "react";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import * as Actions from "./redux/actionCreators";
 import { SHOW_UPLOAD } from "./constants";
 import UploadIcon from "./components/icons/UploadIcon";
 import CloseIcon from "./components/icons/CloseIcon";
 
-function UploadButton({ toggleUploadView, uploadViewOpen }) {
+function UploadButton() {
+  const uploadViewOpen = useSelector((state) => state.uploadViewState);
+  const dispatch = useDispatch();
+  function toggleUploadView() {
+    dispatch(Actions.toggleUploadView());
+  }
   if (!SHOW_UPLOAD) {
     return null;
   }
@@ -25,13 +30,4 @@ function UploadButton({ toggleUploadView, uploadViewOpen }) {
   );
 }
 
-const mapStateToProps = (state) => ({
-  uploadViewOpen: state.uploadViewOpen,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  toggleUploadView() {
-    dispatch(Actions.toggleUploadView());
-  },
-});
-export default connect(mapStateToProps, mapDispatchToProps)(UploadButton);
+export default UploadButton;
