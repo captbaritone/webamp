@@ -7,6 +7,8 @@ import Disposable from "./Disposable";
 import { useWindowSize } from "./hooks";
 import { ReactComponent as AlgoliaLogo } from "./searchByAlgoliaDarkbBackground.svg";
 import algoliaLogoSmallUrl from "./searchByAlgoliaSmall.png";
+import { SHOW_UPLOAD } from "./constants";
+import UploadButton from "./UploadButton";
 
 function SearchLogo() {
   const { windowWidth } = useWindowSize();
@@ -69,18 +71,20 @@ class Header extends React.Component {
           </a>
         </h1>
         <span style={{ flexGrow: 1 }} />
-        <a
-          href="https://www.algolia.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            opacity: this.props.searchQuery ? 0.5 : 0,
-            transition: "opacity ease-in 300ms",
-          }}
-        >
-          <SearchLogo />
-        </a>
-        {/*
+        {this.props.uploadViewOpen || (
+          <>
+            <a
+              href="https://www.algolia.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                opacity: this.props.searchQuery ? 0.5 : 0,
+                transition: "opacity ease-in 300ms",
+              }}
+            >
+              <SearchLogo />
+            </a>
+            {/*
         <button
           onClick={() => {
             this.props.setScale(this.props.scale + 0.1);
@@ -96,30 +100,33 @@ class Header extends React.Component {
           -
         </button>
         */}
-        <input
-          type="search"
-          style={{ marginLeft: 10 }}
-          onChange={(e) => this.props.setSearchQuery(e.target.value)}
-          value={this.props.searchQuery || ""}
-          placeholder={"Search..."}
-          ref={(node) => {
-            this._inputRef = node;
-          }}
-        />
-        <button
-          onClick={() => {
-            this.props.requestRandomSkin();
-          }}
-        >
-          Random
-        </button>
-        <button
-          onClick={() => {
-            this.props.requestedAboutPage();
-          }}
-        >
-          ?
-        </button>
+            <input
+              type="search"
+              style={{ marginLeft: 10 }}
+              onChange={(e) => this.props.setSearchQuery(e.target.value)}
+              value={this.props.searchQuery || ""}
+              placeholder={"Search..."}
+              ref={(node) => {
+                this._inputRef = node;
+              }}
+            />
+            <button
+              onClick={() => {
+                this.props.requestRandomSkin();
+              }}
+            >
+              Random
+            </button>
+            <button
+              onClick={() => {
+                this.props.requestedAboutPage();
+              }}
+            >
+              ?
+            </button>
+          </>
+        )}
+        <UploadButton />
       </div>
     );
   }
@@ -128,6 +135,7 @@ class Header extends React.Component {
 const mapStateToProps = (state) => ({
   searchQuery: Selectors.getSearchQuery(state),
   scale: state.scale,
+  uploadViewOpen: state.uploadViewOpen,
 });
 
 const mapDispatchToProps = (dispatch) => ({

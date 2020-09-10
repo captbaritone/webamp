@@ -35,13 +35,17 @@ function App(props) {
     <div>
       <Head />
       <Header />
-      <SkinTable
-        columnCount={columnCount}
-        columnWidth={columnWidth}
-        rowHeight={rowHeight}
-        windowHeight={windowHeight}
-        windowWidth={windowWidthWithScrollabar}
-      />
+      {props.uploadViewOpen ? (
+        "UPLOAD"
+      ) : (
+        <SkinTable
+          columnCount={columnCount}
+          columnWidth={columnWidth}
+          rowHeight={rowHeight}
+          windowHeight={windowHeight}
+          windowWidth={windowWidthWithScrollabar}
+        />
+      )}
       {props.aboutPage ? (
         <Overlay>
           <About />
@@ -67,6 +71,7 @@ const mapStateToProps = (state) => ({
   overlayShouldAnimate: Selectors.overlayShouldAnimate(state),
   aboutPage: Selectors.getActiveContentPage(state) === ABOUT_PAGE,
   scale: state.scale,
+  uploadViewOpen: state.uploadViewOpen,
 });
 
 export default connect(mapStateToProps)(App);

@@ -30,6 +30,9 @@ export function concentsToNswf() {
   return { type: "CONCENTS_TO_NSFW" };
 }
 
+export function toggleUploadView() {
+  return { type: "TOGGLE_UPLOAD_VIEW" };
+}
 export function selectSkinFile(fileName) {
   const ext = fileName.split(".").pop().toLowerCase();
 

@@ -51,7 +51,7 @@ h1 a {
 }
 
 #search h1 .name {
-  margin: 0 30px 0 0px;
+  margin: 0 15px 0 0px;
 }
 
 button {
@@ -75,6 +75,13 @@ button {
   border-top: 1px solid rgb(235, 255, 255);
   border-bottom: 1px solid rgb(58, 71, 88);
   border-right: 1px solid rgb(58, 71, 88);
+}
+
+button:active {
+  border-right: 1px solid rgb(235, 255, 255);
+  border-bottom: 1px solid rgb(235, 255, 255);
+  border-top: 1px solid rgb(58, 71, 88);
+  border-left: 1px solid rgb(58, 71, 88);
 }
 
 /*
@@ -165,7 +172,7 @@ body.webamp-loaded #webamp {
   visibility: visible;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 870px) {
   #search h1 .name {
     display: none;
   }

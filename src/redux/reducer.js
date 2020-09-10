@@ -9,6 +9,7 @@ const defaultState = {
   skinZip: null,
   focusedSkinFile: null,
   fileExplorerOpen: false,
+  uploadViewOpen: false,
   activeContentPage: null,
   totalNumberOfSkins: null,
   scale: 0.5,
@@ -21,6 +22,9 @@ export default function reducer(state = defaultState, action) {
   switch (action.type) {
     case "SET_SCALE": {
       return { ...state, scale: action.scale };
+    }
+    case "TOGGLE_UPLOAD_VIEW": {
+      return { ...state, uploadViewOpen: !state.uploadViewOpen };
     }
     case "CONCENTS_TO_NSFW": {
       return { ...state, showNsfw: true };
