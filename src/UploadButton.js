@@ -1,5 +1,6 @@
 import * as React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { useActionCreator } from "./hooks";
 import * as Actions from "./redux/actionCreators";
 import { SHOW_UPLOAD } from "./constants";
 import UploadIcon from "./components/icons/UploadIcon";
@@ -7,10 +8,7 @@ import CloseIcon from "./components/icons/CloseIcon";
 
 function UploadButton() {
   const uploadViewOpen = useSelector((state) => state.uploadViewState);
-  const dispatch = useDispatch();
-  function toggleUploadView() {
-    dispatch(Actions.toggleUploadView());
-  }
+  const toggleUploadView = useActionCreator(Actions.toggleUploadView);
   if (!SHOW_UPLOAD) {
     return null;
   }

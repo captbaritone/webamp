@@ -1,5 +1,6 @@
 import * as Utils from "./utils";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useCallback } from "react";
+import { useDispatch } from "react-redux";
 
 export function useWindowSize() {
   const [windowSize, setWindowSize] = useState(Utils.getWindowSize());
@@ -37,4 +38,12 @@ export function useScrollbarWidth() {
 
     return scrollbarWidth;
   }, []);
+}
+
+export function useActionCreator(actionCreator) {
+  const dispatch = useDispatch();
+  return useCallback((...args) => dispatch(actionCreator(...args)), [
+    dispatch,
+    actionCreator,
+  ]);
 }
