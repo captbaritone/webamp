@@ -5,8 +5,7 @@ import * as Selectors from "./redux/selectors";
 import * as Actions from "./redux/actionCreators";
 import { FixedSizeGrid as Grid } from "react-window";
 import Cell from "./Cell";
-
-const HEADING_HEIGHT = 46;
+import { HEADING_HEIGHT } from "./constants";
 
 const SkinTable = ({
   columnCount,

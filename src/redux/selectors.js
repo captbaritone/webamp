@@ -41,6 +41,15 @@ export const getCurrentSkinCount = createSelector(
   }
 );
 
+export const getFileToUpload = (state) => {
+  return Object.values(state.fileUploads).find(
+    (file) => file.status === "MISSING"
+  );
+};
+
+export const getHaveUploadFiles = (state) =>
+  Object.keys(state.fileUploads).length > 0;
+
 /**
  * Skin Interface
  * {
@@ -176,4 +185,16 @@ export function getFileExplorerOpen(state) {
 
 export function getFocusedSkinFile(state) {
   return state.focusedSkinFile;
+}
+
+export function getAreReadyToCheckMissingUploads(state) {
+  return Object.values(state.fileUploads).every(
+    (file) => file.invalid || file.md5 != null
+  );
+}
+
+export function getUploadedFilesMd5s(state) {
+  return Object.values(state.fileUploads)
+    .map((file) => file.md5)
+    .filter(Boolean);
 }

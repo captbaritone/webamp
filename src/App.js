@@ -10,6 +10,7 @@ import * as Selectors from "./redux/selectors";
 import { ABOUT_PAGE } from "./constants";
 import { useWindowSize, useScrollbarWidth } from "./hooks";
 import { SCREENSHOT_WIDTH, SKIN_RATIO } from "./constants";
+import UploadGrid from "./UploadGrid";
 
 // Render your table
 
@@ -36,7 +37,7 @@ function App(props) {
       <Head />
       <Header />
       {props.uploadViewOpen ? (
-        "UPLOAD"
+        <UploadGrid />
       ) : (
         <SkinTable
           columnCount={columnCount}
@@ -71,7 +72,7 @@ const mapStateToProps = (state) => ({
   overlayShouldAnimate: Selectors.overlayShouldAnimate(state),
   aboutPage: Selectors.getActiveContentPage(state) === ABOUT_PAGE,
   scale: state.scale,
-  uploadViewOpen: state.uploadViewOpen,
+  uploadViewOpen: Selectors.getHaveUploadFiles(state),
 });
 
 export default connect(mapStateToProps)(App);

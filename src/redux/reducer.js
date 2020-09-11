@@ -16,12 +16,131 @@ const defaultState = {
   skinChunkData: { chunkSize: 100, numberOfSkins: 64381, chunkFileNames: [] },
   skins: {},
   showNsfw: false,
+  fileUploads: {},
 };
 
 export default function reducer(state = defaultState, action) {
   switch (action.type) {
     case "SET_SCALE": {
       return { ...state, scale: action.scale };
+    }
+    case "GOT_FILE": {
+      return {
+        ...state,
+        fileUploads: {
+          ...state.fileUploads,
+          [action.id]: {
+            file: action.file,
+            id: action.id,
+            status: "NEW",
+            invalid: false,
+          },
+        },
+      };
+    }
+    case "INVALID_FILE_EXTENSION": {
+      return {
+        ...state,
+        fileUploads: {
+          ...state.fileUploads,
+          [action.id]: {
+            ...state.fileUploads[action.id],
+            invalid: true,
+            status: "INVALID_FILE_EXTENSION",
+          },
+        },
+      };
+    }
+    case "NOT_CLASSIC_SKIN": {
+      return {
+        ...state,
+        fileUploads: {
+          ...state.fileUploads,
+          [action.id]: {
+            ...state.fileUploads[action.id],
+            invalid: true,
+            status: "NOT_CLASSIC_SKIN",
+          },
+        },
+      };
+    }
+    case "STARTING_FILE_UPLOAD": {
+      return {
+        ...state,
+        fileUploads: {
+          ...state.fileUploads,
+          [action.id]: {
+            ...state.fileUploads[action.id],
+            status: "UPLOADING",
+          },
+        },
+      };
+    }
+    case "UPLOAD_FAILED": {
+      return {
+        ...state,
+        fileUploads: {
+          ...state.fileUploads,
+          [action.id]: {
+            ...state.fileUploads[action.id],
+            invalid: true,
+            status: "UPLOAD_FAILED",
+          },
+        },
+      };
+    }
+    case "ARCHIVED_SKIN": {
+      return {
+        ...state,
+        fileUploads: {
+          ...state.fileUploads,
+          [action.id]: {
+            ...state.fileUploads[action.id],
+            status: "ARCHIVED",
+          },
+        },
+      };
+    }
+    case "GOT_FILE_MD5": {
+      return {
+        ...state,
+        fileUploads: {
+          ...state.fileUploads,
+          [action.id]: {
+            ...state.fileUploads[action.id],
+            md5: action.md5,
+          },
+        },
+      };
+    }
+    case "GOT_MISSING_AND_FOUND_MD5S": {
+      const missingSet = new Set(action.missing);
+      const foundSet = new Set(action.found);
+
+      function getNewFile(file) {
+        if (file.md5 != null) {
+          if (missingSet.has(file.md5)) {
+            return { ...file, status: "MISSING" };
+          } else if (foundSet.has(file.md5)) {
+            return { ...file, status: "FOUND" };
+          }
+          return file;
+        }
+      }
+      const newFileUploads = {};
+      Object.entries(state.fileUploads).forEach(([key, file]) => {
+        newFileUploads[key] = getNewFile(file);
+      });
+      return {
+        ...state,
+        fileUploads: newFileUploads,
+      };
+    }
+    case "CLOSE_UPLOAD_FILES": {
+      return {
+        ...state,
+        fileUploads: {},
+      };
     }
     case "TOGGLE_UPLOAD_VIEW": {
       return { ...state, uploadViewOpen: !state.uploadViewOpen };

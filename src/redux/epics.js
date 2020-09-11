@@ -1,12 +1,20 @@
 import { combineEpics } from "redux-observable";
-import { of, from, empty } from "rxjs";
+import { of, from, empty, concat } from "rxjs";
 import * as Actions from "./actionCreators";
 import * as Selectors from "./selectors";
 import * as Utils from "../utils";
-import { filter, switchMap, map, mergeMap } from "rxjs/operators";
+import {
+  filter,
+  switchMap,
+  map,
+  mergeMap,
+  takeUntil,
+  catchError,
+} from "rxjs/operators";
 import { search } from "../algolia";
 import queryParser from "../queryParser";
 import { API_URL } from "../constants";
+import * as UploadUtils from "../uploadUtils";
 
 const urlChangedEpic = (actions) =>
   actions.pipe(
@@ -160,12 +168,10 @@ const unloadedSkinEpic = (actions, states) =>
       if (chunkState[chunk] != null) {
         return null;
       }
-      console.log("Going to server for chucnk", chunk);
       chunkState[chunk] = "fetching";
       const response = await fetch(
         `${API_URL}/skins?offset=${chunk * chunkSize}&first=${chunkSize}`
       );
-      console.log("Got from server for chucnk", chunk);
 
       const body = await response.json();
       return [body, chunk];
@@ -193,6 +199,118 @@ const selectRelativeSkinEpic = (actions, states) =>
     })
   );
 
+const gotFilesEpic = (actions) =>
+  actions.pipe(
+    filter((action) => action.type === "GOT_FILES"),
+    mergeMap(({ files }) => {
+      return concat(
+        of(Actions.toggleUploadView()),
+        from(files.map((file) => Actions.gotFile(file, Utils.uniqueId())))
+      ).pipe(
+        takeUntil(
+          actions.pipe(filter((action) => action.type === "CLOSE_UPLOAD_FILES"))
+        )
+      );
+    })
+  );
+
+const uploadSingleFileEpic = (actions) =>
+  actions.pipe(
+    filter((action) => action.type === "GOT_FILE"),
+    mergeMap(({ file, id }) => {
+      if (!UploadUtils.isValidSkinFilename(file.name)) {
+        return of(Actions.invalidFileExtension(id));
+      }
+      return from(UploadUtils.isClassicSkin(file))
+        .pipe(
+          mergeMap((isClassic) => {
+            if (!isClassic) {
+              return of(Actions.notClassicSkin(id));
+            }
+            return from(UploadUtils.hashFile(file)).pipe(
+              map((md5) => {
+                return Actions.gotFileMd5(id, md5);
+              })
+            );
+          })
+        )
+        .pipe(
+          takeUntil(
+            actions.pipe(
+              filter((action) => action.type === "CLOSE_UPLOAD_FILES")
+            )
+          )
+        );
+    })
+  );
+
+const checkIfUploadsAreMissingEpic = (actions, state) =>
+  actions.pipe(
+    filter((action) => {
+      return (
+        action.type === "GOT_FILE_MD5" &&
+        Selectors.getAreReadyToCheckMissingUploads(state.value)
+      );
+    }),
+    mergeMap(() => {
+      const md5s = Selectors.getUploadedFilesMd5s(state.value);
+      return from(UploadUtils.checkMd5sAreMissing(md5s))
+        .pipe(
+          map(({ missing, found }) =>
+            Actions.gotMissingAndFoundMd5s({ missing, found })
+          )
+        )
+        .pipe(
+          takeUntil(
+            actions.pipe(
+              filter((action) => action.type === "CLOSE_UPLOAD_FILES")
+            )
+          )
+        );
+    })
+  );
+
+function uploadActions(file) {
+  return concat(
+    of(Actions.startingFileUpload(file.id)),
+    from(UploadUtils.upload(file.file)).pipe(
+      map((response) => {
+        return Actions.archivedSkin(file.id, response);
+      }),
+      catchError(() => of(Actions.uploadFailed(file.id)))
+    )
+  );
+}
+
+const uploadFilesEpic = (actions, state) =>
+  actions.pipe(
+    filter((action) => action.type === "TRY_TO_UPLOAD_FILE"),
+    mergeMap(({ id }) => {
+      const file = state.value.fileUploads[id];
+      return concat(of(uploadActions(file)));
+    }),
+    takeUntil(
+      actions.pipe(filter((action) => action.type === "CLOSE_UPLOAD_FILES"))
+    )
+  );
+
+// When TRY_TO_UPLOAD_ALL_FILES is dispatched, upload a file and recursively
+// dispatch until no uploadable files are found
+const uploadAllFilesEpic = (actions, state) =>
+  actions.pipe(
+    filter((action) => action.type === "TRY_TO_UPLOAD_ALL_FILES"),
+    mergeMap(() => {
+      const file = Selectors.getFileToUpload(state.value);
+      if (file == null) {
+        return empty();
+      }
+      return concat(uploadActions(file), of(Actions.tryToUploadAllFiles()));
+    }),
+    takeUntil(
+      actions.pipe(filter((action) => action.type === "CLOSE_UPLOAD_FILES"))
+    )
+  );
+
 export default combineEpics(
   searchEpic,
   urlChangedEpic,
@@ -202,5 +320,10 @@ export default combineEpics(
   selectRelativeSkinEpic,
   selectSkinReadmeEpic,
   loadedSkinZipEpic,
-  unloadedSkinEpic
+  unloadedSkinEpic,
+  gotFilesEpic,
+  uploadFilesEpic,
+  uploadAllFilesEpic,
+  uploadSingleFileEpic,
+  checkIfUploadsAreMissingEpic
 );

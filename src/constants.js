@@ -8,3 +8,4 @@ export const SCREENSHOT_CDN = "https://cdn.webampskins.org";
 export const SKIN_CDN = "https://cdn.webampskins.org";
 export const API_URL = "https://api.webampskins.org";
 export const SHOW_UPLOAD = window.location.hash.includes("upload");
+export const HEADING_HEIGHT = 46;

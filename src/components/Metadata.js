@@ -50,9 +50,19 @@ function Metadata({ permalink, openFileExplorer, fileName, hash }) {
     >
       Webamp
     </a>,
-    <a href="#" onClick={report}>
+    <button
+      onClick={report}
+      style={{
+        border: "none",
+        background: "none",
+        padding: 0,
+        textDecoration: "underline",
+        cursor: "pointer",
+        margin: 0,
+      }}
+    >
       Report as NSFW
-    </a>,
+    </button>,
   ];
   return (
     <div className="metadata">

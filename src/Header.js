@@ -7,7 +7,6 @@ import Disposable from "./Disposable";
 import { useWindowSize } from "./hooks";
 import { ReactComponent as AlgoliaLogo } from "./searchByAlgoliaDarkbBackground.svg";
 import algoliaLogoSmallUrl from "./searchByAlgoliaSmall.png";
-import { SHOW_UPLOAD } from "./constants";
 import UploadButton from "./UploadButton";
 
 function SearchLogo() {
@@ -135,7 +134,7 @@ class Header extends React.Component {
 const mapStateToProps = (state) => ({
   searchQuery: Selectors.getSearchQuery(state),
   scale: state.scale,
-  uploadViewOpen: state.uploadViewOpen,
+  uploadViewOpen: Selectors.getHaveUploadFiles(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

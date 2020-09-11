@@ -8,7 +8,7 @@ class SkinReadme extends React.Component {
       return null;
     }
 
-    const { ext, fileName, content } = this.props.focusedFile;
+    const { fileName, content } = this.props.focusedFile;
     if (content == null) {
       return null;
     }

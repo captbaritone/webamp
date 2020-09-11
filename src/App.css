@@ -164,8 +164,10 @@ body.webamp-loaded #webamp {
   width: 100%;
 }
 
-.metadata a {
+.metadata a,
+.metadata button {
   color: #a7a394;
+  font-size: 16px;
 }
 
 #focused-skin {
