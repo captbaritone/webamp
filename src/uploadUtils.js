@@ -37,7 +37,7 @@ export async function isClassicSkin(file) {
   const JSZip = await import("jszip");
   try {
     const zip = await JSZip.loadAsync(file);
-    return zip.file(/main\.bmp$/i) != null;
+    return zip.file(/main\.bmp$/i).length > 0;
   } catch (e) {
     // TODO: We could give a better message here.
     console.error(e);

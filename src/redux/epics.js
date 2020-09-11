@@ -199,6 +199,12 @@ const selectRelativeSkinEpic = (actions, states) =>
     })
   );
 
+function takeUntilAction(actions, actionType) {
+  return takeUntil(
+    actions.pipe(filter((action) => action.type === actionType))
+  );
+}
+
 const gotFilesEpic = (actions) =>
   actions.pipe(
     filter((action) => action.type === "GOT_FILES"),
@@ -206,11 +212,7 @@ const gotFilesEpic = (actions) =>
       return concat(
         of(Actions.toggleUploadView()),
         from(files.map((file) => Actions.gotFile(file, Utils.uniqueId())))
-      ).pipe(
-        takeUntil(
-          actions.pipe(filter((action) => action.type === "CLOSE_UPLOAD_FILES"))
-        )
-      );
+      ).pipe(takeUntilAction(actions, "CLOSE_UPLOAD_FILES"));
     })
   );
 
@@ -234,13 +236,7 @@ const uploadSingleFileEpic = (actions) =>
             );
           })
         )
-        .pipe(
-          takeUntil(
-            actions.pipe(
-              filter((action) => action.type === "CLOSE_UPLOAD_FILES")
-            )
-          )
-        );
+        .pipe(takeUntilAction(actions, "CLOSE_UPLOAD_FILES"));
     })
   );
 
@@ -260,13 +256,7 @@ const checkIfUploadsAreMissingEpic = (actions, state) =>
             Actions.gotMissingAndFoundMd5s({ missing, found })
           )
         )
-        .pipe(
-          takeUntil(
-            actions.pipe(
-              filter((action) => action.type === "CLOSE_UPLOAD_FILES")
-            )
-          )
-        );
+        .pipe(takeUntilAction(actions, "CLOSE_UPLOAD_FILES"));
     })
   );
 
@@ -287,11 +277,10 @@ const uploadFilesEpic = (actions, state) =>
     filter((action) => action.type === "TRY_TO_UPLOAD_FILE"),
     mergeMap(({ id }) => {
       const file = state.value.fileUploads[id];
-      return concat(of(uploadActions(file)));
-    }),
-    takeUntil(
-      actions.pipe(filter((action) => action.type === "CLOSE_UPLOAD_FILES"))
-    )
+      return uploadActions(file).pipe(
+        takeUntilAction(actions, "CLOSE_UPLOAD_FILES")
+      );
+    })
   );
 
 // When TRY_TO_UPLOAD_ALL_FILES is dispatched, upload a file and recursively
@@ -304,11 +293,11 @@ const uploadAllFilesEpic = (actions, state) =>
       if (file == null) {
         return empty();
       }
-      return concat(uploadActions(file), of(Actions.tryToUploadAllFiles()));
-    }),
-    takeUntil(
-      actions.pipe(filter((action) => action.type === "CLOSE_UPLOAD_FILES"))
-    )
+      return concat(
+        uploadActions(file),
+        of(Actions.tryToUploadAllFiles())
+      ).pipe(takeUntilAction(actions, "CLOSE_UPLOAD_FILES"));
+    })
   );
 
 export default combineEpics(
