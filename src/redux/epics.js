@@ -337,7 +337,7 @@ const urlEpic = (actions, state) => {
   return actions.pipe(
     map(() => Selectors.getUrl(state.value)),
     distinctUntilChanged(),
-    startWith(window.location.pathname),
+    startWith(window.location),
     tap((url) => {
       window.ga("set", "page", url);
       window.history.replaceState({}, Selectors.getPageTitle(state), url);
