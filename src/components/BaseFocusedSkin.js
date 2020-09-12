@@ -159,7 +159,6 @@ class BaseFocusedSkin extends React.Component {
                 closeModal={this.props.closeModal}
               />
             </div>
-            {this.props.fileExplorerOpen && <SkinReadme />}
           </>
         )}
         <div
@@ -198,6 +197,7 @@ class BaseFocusedSkin extends React.Component {
             )}
           </div>
         </div>
+        {this.props.fileExplorerOpen && <SkinReadme />}
         <Metadata
           permalink={this.props.absolutePermalink}
           openFileExplorer={this.props.openFileExplorer}

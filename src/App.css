@@ -188,16 +188,8 @@ body.webamp-loaded #webamp {
   line-height: 1.4em;
 }
 
-.readme {
-  background: white;
-}
-
 .readme pre {
-  padding: 10px;
-  width: 100%;
-  height: 100%;
   white-space: pre-wrap;
   margin: 0;
   font-size: 12px;
-  box-sizing: border-box;
 }

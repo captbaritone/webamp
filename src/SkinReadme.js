@@ -1,55 +1,47 @@
 import React from "react";
-import { connect } from "react-redux";
-import * as Actions from "./redux/actionCreators";
+import { createPortal } from "react-dom";
+import { useSelector } from "react-redux";
 
-class SkinReadme extends React.Component {
-  render() {
-    if (this.props.focusedFile == null) {
-      return null;
-    }
+function SkinReadme() {
+  const focusedFile = useSelector((state) => state.focusedSkinFile);
+  if (focusedFile == null) {
+    return null;
+  }
 
-    const { fileName, content } = this.props.focusedFile;
-    if (content == null) {
-      return null;
-    }
-    return (
+  const { content } = focusedFile;
+  if (content == null) {
+    return null;
+  }
+  return createPortal(
+    <div
+      style={{
+        position: "fixed",
+        display: "flex",
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+        zIndex: 1002,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <div
         style={{
-          position: "fixed",
+          maxWidth: 400,
+          height: "60%",
           backgroundColor: "white",
-          overflow: "scroll",
-          ...this.props.style,
+          padding: 30,
         }}
       >
-        <h2>{fileName}</h2>
-        <div>
-          <div
-            className={"readme"}
-            style={{
-              width: "100%",
-              height: "300px",
-            }}
-          >
-            <pre>{content}</pre>
-          </div>
+        <div className={"readme"} style={{ overflow: "scroll" }}>
+          <pre>{content}</pre>
         </div>
       </div>
-    );
-  }
+    </div>,
+
+    window.document.body
+  );
 }
 
-function mapStateToProps(state) {
-  return {
-    zip: state.skinZip,
-    focusedFile: state.focusedSkinFile,
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    selectSkinFile(fileName) {
-      dispatch(Actions.selectSkinFile(fileName));
-    },
-  };
-}
-export default connect(mapStateToProps, mapDispatchToProps)(SkinReadme);
+export default SkinReadme;

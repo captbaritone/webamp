@@ -13,7 +13,6 @@ const hash = "48bbdbbeb03d347e59b1eebda4d352d0";
       absolutePermalink={
         "https://skins.webamp.org/skin/48bbdbbeb03d347e59b1eebda4d352d0/Zelda_Amp_3.wsz/"
       }
-      openFileExplorer={() => {}}
       initialPosition={{ top: 100, left: 100 }}
     />
   )}

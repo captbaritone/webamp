@@ -3,9 +3,17 @@ import DownloadLink from "./DownloadLink";
 import * as Utils from "../utils";
 import LinkInput from "./LinkInput";
 import { API_URL } from "../constants";
+import * as Actions from "../redux/actionCreators";
+import * as Selectors from "../redux/selectors";
+import { useSelector } from "react-redux";
+import { useActionCreator } from "../hooks";
+import DownloadText from "./DownloadText";
 
-function Metadata({ permalink, openFileExplorer, fileName, hash }) {
+function Metadata({ permalink, fileName, hash }) {
+  const toggleFileExplorer = useActionCreator(Actions.toggleFileExplorer);
+  const focusedSkinFile = useSelector(Selectors.getFocusedSkinFile);
   const [showLink, setShowLink] = useState(false);
+  // TODO: Move to Epic
   async function report(e) {
     e.preventDefault();
     try {
@@ -20,20 +28,45 @@ function Metadata({ permalink, openFileExplorer, fileName, hash }) {
     alert("Thanks for reporting. We'll review this skin.");
   }
 
+  let readmeLink = null;
+  if (
+    focusedSkinFile != null &&
+    focusedSkinFile.content != null &&
+    focusedSkinFile.fileName != null
+  ) {
+    readmeLink = (
+      <DownloadText
+        text={focusedSkinFile.content}
+        download={focusedSkinFile.fileName}
+      >
+        Readme
+      </DownloadText>
+    );
+  }
+
   const elements = [
     <DownloadLink href={Utils.skinUrlFromHash(hash)} download={fileName}>
       Download
     </DownloadLink>,
+    readmeLink,
     /*
-    <a
-      href={"#"}
+    <button
       onClick={(e) => {
-        openFileExplorer();
+        // The UI for this is not good yet
+        toggleFileExplorer();
         e.preventDefault();
+      }}
+      style={{
+        border: "none",
+        background: "none",
+        padding: 0,
+        textDecoration: "underline",
+        cursor: "pointer",
+        margin: 0,
       }}
     >
       Readme
-    </a>,
+    </button>,
     */
     <a
       href={permalink}
@@ -63,7 +96,7 @@ function Metadata({ permalink, openFileExplorer, fileName, hash }) {
     >
       Report as NSFW
     </button>,
-  ];
+  ].filter(Boolean);
   return (
     <div className="metadata">
       {showLink && (

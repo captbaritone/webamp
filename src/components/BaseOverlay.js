@@ -2,7 +2,7 @@ import React, {
   useEffect,
   useCallback,
   useLayoutEffect,
-  useState
+  useState,
 } from "react";
 import ReactDOM from "react-dom";
 
@@ -28,7 +28,7 @@ function Overlay({ shouldAnimate, closeModal, children }) {
   }, []);
 
   const handleClick = useCallback(
-    e => {
+    (e) => {
       if (e.target === e.currentTarget) {
         closeModal();
       }
@@ -37,7 +37,7 @@ function Overlay({ shouldAnimate, closeModal, children }) {
   );
 
   const handleKeyDown = useCallback(
-    e => {
+    (e) => {
       // Esc
       if (e.keyCode === 27) {
         closeModal();
@@ -68,7 +68,7 @@ function Overlay({ shouldAnimate, closeModal, children }) {
           !shouldAnimate || mounted
             ? "rgba(0, 0, 0, 0.95)"
             : "rgba(0, 0, 0, 0)",
-        transition: "background-color 400ms ease-out"
+        transition: "background-color 400ms ease-out",
       }}
     >
       <div
@@ -79,7 +79,7 @@ function Overlay({ shouldAnimate, closeModal, children }) {
           // children with top margins cause the top protion of the overlay to
           // be unclickable: https://stackoverflow.com/a/47351270/1263117
           display: "flex",
-          flexDirection: "column"
+          flexDirection: "column",
         }}
         onClick={handleClick}
         onScroll={handleTouchMove}
@@ -87,7 +87,7 @@ function Overlay({ shouldAnimate, closeModal, children }) {
         <a
           id="close-modal"
           href="/"
-          onClick={e => {
+          onClick={(e) => {
             closeModal();
             e.preventDefault();
           }}
@@ -100,7 +100,7 @@ function Overlay({ shouldAnimate, closeModal, children }) {
             padding: 0,
             fontSize: 50,
             lineHeight: "25px",
-            textDecoration: "none"
+            textDecoration: "none",
           }}
         >
           &times;

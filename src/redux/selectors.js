@@ -131,7 +131,6 @@ export const getUrl = createSelector(
   getSearchQuery,
   getFileExplorerOpen,
   getFocusedSkinFile,
-  getSkins,
   getPermalinkUrlFromHashGetter,
   (
     activeContentPage,
@@ -139,7 +138,6 @@ export const getUrl = createSelector(
     query,
     fileExplorerOpen,
     focusedSkinFile,
-    skins,
     getPermalinkUrlFromHash
   ) => {
     if (activeContentPage === ABOUT_PAGE) {
@@ -180,7 +178,9 @@ export function getSkins(state) {
 }
 
 export function getFileExplorerOpen(state) {
-  return state.fileExplorerOpen;
+  // The UI for this is not done yet.
+  // return state.fileExplorerOpen;
+  return false;
 }
 
 export function getFocusedSkinFile(state) {

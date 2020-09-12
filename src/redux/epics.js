@@ -12,7 +12,8 @@ import {
   takeUntil,
   catchError,
   ignoreElements,
-  delay,
+  distinctUntilChanged,
+  startWith,
 } from "rxjs/operators";
 import { search } from "../algolia";
 import queryParser from "../queryParser";
@@ -32,8 +33,12 @@ const urlChangedEpic = (actions) =>
       if (action.location.pathname.startsWith("/skin/")) {
         const segments = action.location.pathname.split("/");
         const actions = [Actions.selectedSkin(segments[2])];
-        if (segments[3] === "files") {
-          actions.push(Actions.selectSkinFile(segments[4]));
+        if (segments[4] === "files") {
+          actions.push(
+            // For now this is always the readme, so we don't need it.
+            // Actions.selectSkinFile(segments[5]),
+            Actions.openFileExplorer()
+          );
         }
         return of(...actions);
       }
@@ -328,6 +333,19 @@ const loggingEpic = (actions, state) =>
     ignoreElements()
   );
 
+const urlEpic = (actions, state) => {
+  return actions.pipe(
+    map(() => Selectors.getUrl(state.value)),
+    distinctUntilChanged(),
+    startWith(window.location.pathname),
+    tap((url) => {
+      window.ga("set", "page", url);
+      window.history.replaceState({}, Selectors.getPageTitle(state), url);
+    }),
+    ignoreElements()
+  );
+};
+
 export default combineEpics(
   searchEpic,
   urlChangedEpic,
@@ -343,5 +361,6 @@ export default combineEpics(
   uploadAllFilesEpic,
   uploadSingleFileEpic,
   checkIfUploadsAreMissingEpic,
+  urlEpic,
   loggingEpic
 );

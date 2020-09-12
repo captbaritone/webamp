@@ -192,6 +192,8 @@ export default function reducer(state = defaultState, action) {
         selectedSkinPosition: null,
         skinZip: null,
         activeContentPage: null,
+        focusedSkinFile: null,
+        fileExplorerOpen: false,
       };
     case "SEARCH_QUERY_CHANGED":
       return {
@@ -249,6 +251,11 @@ export default function reducer(state = defaultState, action) {
       return {
         ...state,
         fileExplorerOpen: true,
+      };
+    case "TOGGLE_FILE_EXPLORER":
+      return {
+        ...state,
+        fileExplorerOpen: !state.fileExplorerOpen,
       };
     case "CLOSE_FILE_EXPLORER":
       return {
