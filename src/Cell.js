@@ -18,6 +18,7 @@ const Cell = React.memo((props) => {
     requestUnloadedSkin,
     permalinkUrl,
     concentsToNsfw,
+    doesNotConcentToNsfw,
     showNsfw,
   } = props;
   const { width, height } = data;
@@ -58,6 +59,7 @@ const Cell = React.memo((props) => {
       // TODO: This is werid because there is an implicit assumption that this is always avaliable if we have the skin
       permalink={permalinkUrl}
       concentsToNsfw={concentsToNsfw}
+      doesNotConcentToNsfw={doesNotConcentToNsfw}
       showNsfw={showNsfw}
     />
   );
@@ -91,7 +93,11 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(Actions.selectedSkin(hash, position));
   },
   concentsToNsfw() {
-    dispatch(Actions.concentsToNswf());
+    dispatch(Actions.concentsToNsfw());
+  },
+
+  doesNotConcentToNsfw() {
+    dispatch(Actions.doesNotConcentToNsfw());
   },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Cell);

@@ -26,8 +26,12 @@ export function loadedSkinZip(zip) {
   return { type: "LOADED_SKIN_ZIP", zip };
 }
 
-export function concentsToNswf() {
+export function concentsToNsfw() {
   return { type: "CONCENTS_TO_NSFW" };
+}
+
+export function doesNotConcentToNsfw() {
+  return { type: "DOES_NOT_CONCENT_TO_NSFW" };
 }
 
 export function toggleUploadView() {

@@ -1,4 +1,5 @@
 import { SKIN_CDN, SCREENSHOT_CDN } from "./constants";
+
 export function screenshotUrlFromHash(hash) {
   return `${SCREENSHOT_CDN}/screenshots/${hash}.png`;
 }

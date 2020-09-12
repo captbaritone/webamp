@@ -4,6 +4,7 @@ import { HEADING_HEIGHT } from "./constants";
 import { useActionCreator } from "./hooks";
 import * as Actions from "./redux/actionCreators";
 import * as Selectors from "./redux/selectors";
+import * as Utils from "./utils";
 
 function UploadRow({ file }) {
   const tryToUploadFile = useActionCreator(Actions.tryToUploadFile);
@@ -44,6 +45,15 @@ function UploadRow({ file }) {
       <td>{getStatus()}</td>
       <td>{file.file.name}</td>
       <td>{file.status}</td>
+      <td>
+        {(file.status === "FOUND" || file.status === "ARCHIVED") && (
+          <img
+            src={Utils.screenshotUrlFromHash(file.md5)}
+            alt={file.file.name}
+            style={{ height: 100 }}
+          />
+        )}
+      </td>
     </tr>
   );
 }

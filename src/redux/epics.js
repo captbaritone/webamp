@@ -4,12 +4,15 @@ import * as Actions from "./actionCreators";
 import * as Selectors from "./selectors";
 import * as Utils from "../utils";
 import {
+  tap,
   filter,
   switchMap,
   map,
   mergeMap,
   takeUntil,
   catchError,
+  ignoreElements,
+  delay,
 } from "rxjs/operators";
 import { search } from "../algolia";
 import queryParser from "../queryParser";
@@ -264,9 +267,7 @@ function uploadActions(file) {
   return concat(
     of(Actions.startingFileUpload(file.id)),
     from(UploadUtils.upload(file.file)).pipe(
-      map((response) => {
-        return Actions.archivedSkin(file.id, response);
-      }),
+      map((response) => Actions.archivedSkin(file.id, response)),
       catchError(() => of(Actions.uploadFailed(file.id)))
     )
   );
@@ -300,6 +301,33 @@ const uploadAllFilesEpic = (actions, state) =>
     })
   );
 
+const loggingEpic = (actions, state) =>
+  actions.pipe(
+    tap((action) => {
+      // ga('send', 'event', [eventCategory], [eventAction], [eventLabel], [eventValue], [fieldsObject]);
+      switch (action.type) {
+        case "CONCENTS_TO_N_SFW":
+        case "DOES_NOT_CONCENT_TO_NSFW":
+        case "CLOSE_UPLOAD_FILES":
+        case "GOT_FILE_MD5":
+        case "ARCHIVED_SKIN":
+        case "TRY_TO_UPLOAD_FILE":
+        case "UPLOAD_FAILED":
+        case "STARTING_FILE_UPLOAD":
+        case "TRY_TO_UPLOAD_ALL_FILES":
+        case "INVALID_FILE_EXTENSION":
+        case "GOT_FILE":
+        case "NOT_CLASSIC_SKIN":
+        case "GOT_MISSING_AND_FOUND_MD5S":
+          window.ga("send", "event", "redux", action.type);
+          break;
+        default: {
+        }
+      }
+    }),
+    ignoreElements()
+  );
+
 export default combineEpics(
   searchEpic,
   urlChangedEpic,
@@ -314,5 +342,6 @@ export default combineEpics(
   uploadFilesEpic,
   uploadAllFilesEpic,
   uploadSingleFileEpic,
-  checkIfUploadsAreMissingEpic
+  checkIfUploadsAreMissingEpic,
+  loggingEpic
 );

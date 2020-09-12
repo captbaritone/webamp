@@ -14,6 +14,7 @@ function Skin({
   fileName,
   nsfw,
   concentsToNsfw,
+  doesNotConcentToNsfw,
   showNsfw,
 }) {
   const [loaded, setLoaded] = useState(false);
@@ -28,6 +29,7 @@ function Skin({
           )
         ) {
           e.preventDefault();
+          doesNotConcentToNsfw();
           return;
         } else {
           concentsToNsfw();
@@ -44,7 +46,15 @@ function Skin({
         selectSkin(hash, { top, left });
       }
     },
-    [concentsToNsfw, hash, nsfw, ref, selectSkin, showNsfw]
+    [
+      concentsToNsfw,
+      doesNotConcentToNsfw,
+      hash,
+      nsfw,
+      ref,
+      selectSkin,
+      showNsfw,
+    ]
   );
 
   const imgStyle = {
