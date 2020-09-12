@@ -22,6 +22,10 @@ export function gotNewMatchingSkins(skins) {
   return { type: "GOT_NEW_MATCHING_SKINS", skins };
 }
 
+export function gotSkinData(hash, data) {
+  return { type: "GOT_SKIN_DATA", hash, data };
+}
+
 export function loadedSkinZip(zip) {
   return { type: "LOADED_SKIN_ZIP", zip };
 }
