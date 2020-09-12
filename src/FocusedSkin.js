@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useActionCreator, useWindowSize } from "./hooks";
 import * as Selectors from "./redux/selectors";
@@ -58,31 +58,15 @@ function useCenteredState() {
   );
 }
 
-class BaseFocusedSkin extends React.Component {
+class AnimationWrapper extends React.Component {
   constructor(props) {
     super(props);
     this._disposable = new Disposable();
     // TODO: Handle the case were we come from a permalink
-    if (this.props.initialPosition == null) {
-      this.state = Object.assign(
-        {
-          previewLoaded: false,
-          loaded: false,
-          transitionComplete: true,
-        },
-        this.props.centeredState
-      );
-    } else {
-      this.state = {
-        loaded: false,
-        centered: false,
-        transitionComplete: false,
-        top: this.props.initialPosition.top,
-        left: this.props.initialPosition.left,
-        width: this.props.initialWidth,
-        height: this.props.initialHeight,
-      };
-    }
+    this.state = {
+      loaded: false,
+      centered: this.props.initialPosition == null,
+    };
     this._webampLoadedEvents = new Subject();
     this._transitionBeginEvents = new Subject();
     const transitionComplete = this._transitionBeginEvents.pipe(delay(500));
@@ -95,6 +79,9 @@ class BaseFocusedSkin extends React.Component {
 
     // This value matches the opacity transition timing for `#webamp` in CSS
     const webampFadeinComplete = startWebampFadein.pipe(delay(400));
+
+    // Once webamp has loaded and the transition is complete, we can start the Webamp fadein
+    // Once the webamp fadein is complete (400ms) we are "loaded"
 
     this._disposable.add(
       startWebampFadein.subscribe(() => {
@@ -110,11 +97,11 @@ class BaseFocusedSkin extends React.Component {
   }
 
   componentDidMount() {
-    if (!this.state.centered) {
+    if (this.props.initialPosition != null) {
       this._disposable.add(
         timer(0).subscribe(() => {
           // TODO: Observe DOM and recenter
-          this.setState(this.props.centeredState);
+          this.setState({ centered: true });
           this._transitionBeginEvents.next(null);
         })
       );
@@ -132,92 +119,108 @@ class BaseFocusedSkin extends React.Component {
   };
 
   render() {
-    const { loaded } = this.state;
-    const transform = `translateX(${Math.round(
-      this.state.left
-    )}px) translateY(${Math.round(this.state.top)}px)`;
-
-    return (
-      <React.Fragment>
-        {this.state.centered && (
-          <>
-            <div
-              style={{
-                position: "fixed",
-                height: SCREENSHOT_HEIGHT,
-                width: SCREENSHOT_WIDTH,
-                transform,
-              }}
-            >
-              <WebampComponent
-                key={this.props.hash} // Don't reuse instances
-                skinUrl={Utils.skinUrlFromHash(this.props.hash)}
-                loaded={this.handleWebampLoaded}
-                closeModal={this.props.closeModal}
-              />
-            </div>
-          </>
-        )}
-        <div
-          id="focused-skin"
-          style={{
-            position: "fixed",
-            height: this.state.height,
-            width: this.state.width,
-            transform,
-            transition:
-              "all 400ms ease-out, height 400ms ease-out, width 400ms ease-out",
-          }}
-        >
-          <div style={{ width: "100%", height: "100%" }}>
-            {loaded || (
-              <img
-                className={"focused-preview"}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  // Webamp measure the scrollHeight of the container. Making this a
-                  // block element ensures the parent element's scrollHeight is not
-                  // expanded.
-                  display: "block",
-                  opacity:
-                    this.state.previewLoaded ||
-                    this.props.initialPosition != null
-                      ? 1
-                      : 0,
-                  transition: "opacity 0.2s ease-out",
-                }}
-                onLoad={() => this.setState({ previewLoaded: true })}
-                src={Utils.screenshotUrlFromHash(this.props.hash)}
-                alt={this.props.skinData && this.props.skinData.fileName}
-              />
-            )}
-          </div>
-        </div>
-        {this.props.fileExplorerOpen && <SkinReadme />}
-        <Metadata
-          permalink={this.props.absolutePermalink}
-          openFileExplorer={this.props.openFileExplorer}
-          fileName={this.props.skinData && this.props.skinData.fileName}
-          hash={this.props.hash}
-        />
-      </React.Fragment>
-    );
+    return this.props.children({
+      handleWebampLoaded: () => this.handleWebampLoaded(),
+      centered: this.state.centered,
+      loaded: this.state.loaded,
+    });
   }
+}
+
+function BaseFocusedSkin({
+  initialPosition,
+  centered,
+  hash,
+  handleWebampLoaded,
+  loaded,
+}) {
+  const [previewLoaded, setPreviewLoaded] = useState(initialPosition != null);
+  const centeredState = useCenteredState();
+  const closeModal = useActionCreator(Actions.closeModal);
+  const skinData = useSelector((state) => state.skins[hash] || null);
+  const fileExplorerOpen = useSelector(Selectors.getFileExplorerOpen);
+  const openFileExplorer = useActionCreator(Actions.openFileExplorer);
+
+  const absolutePermalink = useSelector(
+    Selectors.getAbsolutePermalinkUrlFromHashGetter
+  )(hash);
+  const pos =
+    initialPosition == null || centered ? centeredState : initialPosition;
+
+  const transform = `translateX(${Math.round(
+    pos.left
+  )}px) translateY(${Math.round(pos.top)}px)`;
+
+  return (
+    <React.Fragment>
+      {centered && (
+        <>
+          <div
+            id="here"
+            style={{
+              position: "fixed",
+              height: SCREENSHOT_HEIGHT,
+              width: SCREENSHOT_WIDTH,
+              transform,
+            }}
+          >
+            <WebampComponent
+              key={hash} // Don't reuse instances
+              skinUrl={Utils.skinUrlFromHash(hash)}
+              loaded={handleWebampLoaded}
+              closeModal={closeModal}
+            />
+          </div>
+        </>
+      )}
+      <div
+        id="focused-skin"
+        style={{
+          position: "fixed",
+          height: pos.height,
+          width: pos.width,
+          transform,
+          transition:
+            "all 400ms ease-out, height 400ms ease-out, width 400ms ease-out",
+        }}
+      >
+        <div style={{ width: "100%", height: "100%" }}>
+          {loaded || (
+            <img
+              className={"focused-preview"}
+              style={{
+                width: "100%",
+                height: "100%",
+                // Webamp measure the scrollHeight of the container. Making this a
+                // block element ensures the parent element's scrollHeight is not
+                // expanded.
+                display: "block",
+                opacity: previewLoaded || initialPosition != null ? 1 : 0,
+                transition: "opacity 0.2s ease-out",
+              }}
+              onLoad={() => setPreviewLoaded(true)}
+              src={Utils.screenshotUrlFromHash(hash)}
+              alt={skinData && skinData.fileName}
+            />
+          )}
+        </div>
+      </div>
+      {fileExplorerOpen && <SkinReadme />}
+      <Metadata
+        permalink={absolutePermalink}
+        openFileExplorer={openFileExplorer}
+        fileName={skinData && skinData.fileName}
+        hash={hash}
+      />
+    </React.Fragment>
+  );
 }
 
 function Wrapper({ ...ownProps }) {
   const hash = useSelector(Selectors.getSelectedSkinHash);
   const initialPosition = useSelector(Selectors.getSelectedSkinPosition);
-  const fileExplorerOpen = useSelector(Selectors.getFileExplorerOpen);
-  const skinData = useSelector((state) => state.skins[hash] || null);
-  const absolutePermalink = useSelector(
-    Selectors.getAbsolutePermalinkUrlFromHashGetter
-  )(hash);
 
-  const openFileExplorer = useActionCreator(Actions.openFileExplorer);
   const selectRelativeSkin = useActionCreator(Actions.selectRelativeSkin);
-  const closeModal = useActionCreator(Actions.closeModal);
 
   useEffect(() => {
     const subscription = fromEvent(window.document, "keydown").subscribe(
@@ -234,8 +237,6 @@ function Wrapper({ ...ownProps }) {
 
   useSkinData();
 
-  const centeredState = useCenteredState();
-
   const prevSkinHash = useRef(null);
   useEffect(() => {
     if (hash !== prevSkinHash.current) {
@@ -244,19 +245,19 @@ function Wrapper({ ...ownProps }) {
     }
   }, [hash]);
 
-  const props = {
-    ...ownProps,
-    centeredState,
-    hash,
-    initialPosition,
-    fileExplorerOpen,
-    skinData,
-    absolutePermalink,
-    openFileExplorer,
-    selectRelativeSkin,
-    closeModal,
-  };
-  return <BaseFocusedSkin {...props} />;
+  const props = { ...ownProps, hash, initialPosition };
+  return (
+    <AnimationWrapper initialPosition={initialPosition}>
+      {({ centered, handleWebampLoaded, loaded }) => (
+        <BaseFocusedSkin
+          {...props}
+          centered={centered}
+          handleWebampLoaded={handleWebampLoaded}
+          loaded={loaded}
+        />
+      )}
+    </AnimationWrapper>
+  );
 }
 
 export default Wrapper;
