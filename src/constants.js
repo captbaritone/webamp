@@ -9,4 +9,4 @@ export const SKIN_CDN = "https://cdn.webampskins.org";
 export const API_URL = "https://api.webampskins.org";
 export const SHOW_UPLOAD = window.location.hash.includes("upload");
 export const HEADING_HEIGHT = 46;
-export const CHUNK_SIZE = 100;
+export const CHUNK_SIZE = 300;
