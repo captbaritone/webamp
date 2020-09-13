@@ -16,11 +16,12 @@ import {
   useDropFiles,
   useActionCreator,
 } from "./hooks";
-import { SCREENSHOT_WIDTH, SKIN_RATIO } from "./constants";
+import { SCREENSHOT_WIDTH, SKIN_RATIO, SHOW_UPLOAD } from "./constants";
 import UploadGrid from "./UploadGrid";
 import DropTarget from "./DropTarget";
 import Metadata from "./components/Metadata";
 import SkinReadme from "./SkinReadme";
+import { useDropzone } from "react-dropzone";
 
 const getTableDimensions = (windowWidth, scale) => {
   const columnCount = Math.floor(windowWidth / (SCREENSHOT_WIDTH * scale));
@@ -28,21 +29,6 @@ const getTableDimensions = (windowWidth, scale) => {
   const rowHeight = columnWidth * SKIN_RATIO;
   return { columnWidth, rowHeight, columnCount };
 };
-
-function useDropTarget() {
-  const gotFiles = useActionCreator(Actions.gotFiles);
-  const areDragging = useSelector(Selectors.getAreDragging);
-
-  const onDrop = useCallback(
-    (e) => {
-      gotFiles(Array.from(e.dataTransfer.files));
-    },
-    [gotFiles]
-  );
-  const setDragging = useActionCreator(Actions.setDragging);
-  useDropFiles({ onDrop, setDragging });
-  return areDragging;
-}
 
 function App(props) {
   const scrollbarWidth = useScrollbarWidth();
@@ -55,17 +41,29 @@ function App(props) {
     windowWidthWithScrollabar - scrollbarWidth,
     props.scale
   );
+  const gotFiles = useActionCreator(Actions.gotFiles);
+
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      gotFiles(acceptedFiles);
+      // Do something with the files
+    },
+    [gotFiles]
+  );
+  const {
+    getRootProps,
+    getInputProps,
+    isDragActive: areDragging,
+  } = useDropzone({ onDrop });
 
   const fileExplorerOpen = useSelector(Selectors.getFileExplorerOpen);
 
-  const areDragging = useDropTarget();
-
   return (
-    <div>
+    <div {...getRootProps()}>
       <Head />
       <Header />
-      {areDragging ? (
-        <DropTarget />
+      {areDragging && SHOW_UPLOAD ? (
+        <DropTarget getInputProps={getInputProps} />
       ) : props.uploadViewOpen ? (
         <UploadGrid />
       ) : (
