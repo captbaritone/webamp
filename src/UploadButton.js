@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { useActionCreator } from "./hooks";
 import * as Actions from "./redux/actionCreators";
@@ -12,6 +12,7 @@ function UploadButton() {
   const uploadViewOpen = useSelector(Selectors.getHaveUploadFiles);
   const gotFiles = useActionCreator(Actions.gotFiles);
   const closeUploadFiles = useActionCreator(Actions.closeUploadFiles);
+
   if (!SHOW_UPLOAD) {
     return null;
   }

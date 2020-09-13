@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import Head from "./Head";
 import About from "./About";
@@ -8,10 +8,17 @@ import SkinTable from "./SkinTable";
 import FocusedSkin from "./FocusedSkin";
 import { useSelector } from "react-redux";
 import * as Selectors from "./redux/selectors";
+import * as Actions from "./redux/actionCreators";
 import { ABOUT_PAGE } from "./constants";
-import { useWindowSize, useScrollbarWidth } from "./hooks";
+import {
+  useWindowSize,
+  useScrollbarWidth,
+  useDropFiles,
+  useActionCreator,
+} from "./hooks";
 import { SCREENSHOT_WIDTH, SKIN_RATIO } from "./constants";
 import UploadGrid from "./UploadGrid";
+import DropTarget from "./DropTarget";
 import Metadata from "./components/Metadata";
 import SkinReadme from "./SkinReadme";
 
@@ -21,6 +28,21 @@ const getTableDimensions = (windowWidth, scale) => {
   const rowHeight = columnWidth * SKIN_RATIO;
   return { columnWidth, rowHeight, columnCount };
 };
+
+function useDropTarget() {
+  const gotFiles = useActionCreator(Actions.gotFiles);
+  const areDragging = useSelector(Selectors.getAreDragging);
+
+  const onDrop = useCallback(
+    (e) => {
+      gotFiles(Array.from(e.dataTransfer.files));
+    },
+    [gotFiles]
+  );
+  const setDragging = useActionCreator(Actions.setDragging);
+  useDropFiles({ onDrop, setDragging });
+  return areDragging;
+}
 
 function App(props) {
   const scrollbarWidth = useScrollbarWidth();
@@ -36,11 +58,15 @@ function App(props) {
 
   const fileExplorerOpen = useSelector(Selectors.getFileExplorerOpen);
 
+  const areDragging = useDropTarget();
+
   return (
     <div>
       <Head />
       <Header />
-      {props.uploadViewOpen ? (
+      {areDragging ? (
+        <DropTarget />
+      ) : props.uploadViewOpen ? (
         <UploadGrid />
       ) : (
         <SkinTable

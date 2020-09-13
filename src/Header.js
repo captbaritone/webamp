@@ -25,7 +25,7 @@ function SearchLogo() {
 
 class Header extends React.Component {
   constructor(props) {
-    super(props);
+    super();
     this._disposable = new Disposable();
     this._inputRef = null;
   }

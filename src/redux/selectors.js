@@ -50,6 +50,8 @@ export const getFileToUpload = (state) => {
 export const getHaveUploadFiles = (state) =>
   Object.keys(state.fileUploads).length > 0;
 
+export const getAreDragging = (state) => state.areDragging;
+
 /**
  * Skin Interface
  * {

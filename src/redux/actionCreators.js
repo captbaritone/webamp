@@ -38,6 +38,10 @@ export function doesNotConcentToNsfw() {
   return { type: "DOES_NOT_CONCENT_TO_NSFW" };
 }
 
+export function setDragging(dragging) {
+  return { type: "SET_DRAGGING", dragging };
+}
+
 export function toggleUploadView() {
   return { type: "TOGGLE_UPLOAD_VIEW" };
 }

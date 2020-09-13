@@ -10,6 +10,7 @@ const defaultState = {
   focusedSkinFile: null,
   fileExplorerOpen: false,
   uploadViewOpen: false,
+  areDragging: false,
   activeContentPage: null,
   totalNumberOfSkins: null,
   scale: 0.5,
@@ -20,6 +21,8 @@ const defaultState = {
 
 export default function reducer(state = defaultState, action) {
   switch (action.type) {
+    case "SET_DRAGGING":
+      return { ...state, areDragging: action.dragging };
     case "SET_SCALE": {
       return { ...state, scale: action.scale };
     }
