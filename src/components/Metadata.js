@@ -9,7 +9,14 @@ import { useSelector } from "react-redux";
 import { useActionCreator } from "../hooks";
 import DownloadText from "./DownloadText";
 
-function Metadata({ permalink, fileName, hash }) {
+function Metadata() {
+  const hash = useSelector(Selectors.getSelectedSkinHash);
+  const skinData = useSelector((state) => state.skins[hash] || null);
+  const fileName = skinData && skinData.fileName;
+
+  const permalink = useSelector(
+    Selectors.getAbsolutePermalinkUrlFromHashGetter
+  )(hash);
   const toggleFileExplorer = useActionCreator(Actions.toggleFileExplorer);
   const focusedSkinFile = useSelector(Selectors.getFocusedSkinFile);
   const [showLink, setShowLink] = useState(false);

@@ -69,3 +69,21 @@ let i = 0;
 export function uniqueId() {
   return i++;
 }
+
+export function filenameIsReadme(filename) {
+  return (
+    filename.match(/\.txt$/) &&
+    ![
+      "genex.txt",
+      "genexinfo.txt",
+      "gen_gslyrics.txt",
+      "region.txt",
+      "pledit.txt",
+      "viscolor.txt",
+      "winampmb.txt",
+      "gen_ex help.txt",
+      "mbinner.txt",
+      // Skinning Updates.txt ?
+    ].some((name) => filename.match(new RegExp(name, "i")))
+  );
+}

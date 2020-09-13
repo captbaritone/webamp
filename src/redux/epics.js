@@ -1,5 +1,5 @@
 import { combineEpics } from "redux-observable";
-import { of, from, empty, concat } from "rxjs";
+import { of, from, EMPTY, concat } from "rxjs";
 import * as Actions from "./actionCreators";
 import * as Selectors from "./selectors";
 import * as Utils from "../utils";
@@ -70,7 +70,7 @@ const loadedSkinZipEpic = (actions) =>
     filter((action) => action.type === "LOADED_SKIN_ZIP"),
     switchMap((action) => {
       // If a file is focused, but not yet loaded, try to load it now?
-      return empty();
+      return EMPTY;
     })
   );
 
@@ -82,7 +82,7 @@ const focusedSkinFileEpic = (actions, states) =>
       const { skinZip } = states.value;
       if (skinZip == null) {
         // We don't have the skin zip yet. We trust that selectedSkinEpic will call this.
-        return empty();
+        return EMPTY;
       }
 
       const methodFromExt = {
@@ -99,35 +99,17 @@ const focusedSkinFileEpic = (actions, states) =>
 const selectSkinReadmeEpic = (actions, states) =>
   actions.pipe(
     filter((action) => action.type === "SELECTED_SKIN_README"),
-    switchMap(() => {
-      // TODO: Ensure this is never called with the wrong zip. Should this live in the "got zip" closure?
-      const { skinZip } = states.value;
-      if (skinZip == null) {
-        return empty();
-      }
-
-      const readmeFileName = Object.keys(skinZip.files).find((filename) => {
-        return (
-          filename.match(/\.txt$/) &&
-          ![
-            "genex.txt",
-            "genexinfo.txt",
-            "gen_gslyrics.txt",
-            "region.txt",
-            "pledit.txt",
-            "viscolor.txt",
-            "winampmb.txt",
-            "gen_ex help.txt",
-            "mbinner.txt",
-            // Skinning Updates.txt ?
-          ].some((name) => filename.match(new RegExp(name, "i")))
-        );
+    map(() => states.value.skinZip),
+    filter(Boolean),
+    map((skinZip) => {
+      return Object.keys(skinZip.files).find((filename) => {
+        return Utils.filenameIsReadme(filename);
       });
-      if (readmeFileName == null) {
-        return empty();
-      }
-
-      return of(Actions.selectSkinFile(readmeFileName));
+    }),
+    switchMap((readmeFileName) => {
+      return readmeFileName == null
+        ? EMPTY
+        : of(Actions.selectSkinFile(readmeFileName));
     })
   );
 
@@ -159,9 +141,7 @@ const searchEpic = (actions) =>
 const randomSkinEpic = (actions, states) =>
   actions.pipe(
     filter((action) => action.type === "REQUESTED_RANDOM_SKIN"),
-    map(() => {
-      return Actions.selectedSkin(Selectors.getRandomSkinHash(states.value));
-    })
+    map(() => Actions.selectedSkin(Selectors.getRandomSkinHash(states.value)))
   );
 
 const chunkState = {};
@@ -174,7 +154,7 @@ const unloadedSkinEpic = (actions, states) =>
       const chunk = Math.floor(index / (chunkSize - 1));
 
       if (chunkState[chunk] != null) {
-        return null;
+        return EMPTY;
       }
       chunkState[chunk] = "fetching";
       const response = await fetch(
@@ -297,7 +277,7 @@ const uploadAllFilesEpic = (actions, state) =>
     mergeMap(() => {
       const file = Selectors.getFileToUpload(state.value);
       if (file == null) {
-        return empty();
+        return EMPTY;
       }
       return concat(
         uploadActions(file),
@@ -368,7 +348,7 @@ const skinDataEpic = (actions, state) => {
           )
         );
       }
-      return empty();
+      return EMPTY;
     })
   );
 };

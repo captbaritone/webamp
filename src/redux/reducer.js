@@ -164,7 +164,11 @@ export default function reducer(state = defaultState, action) {
       const newSkins = { ...state.skins };
       const newDefaultSkins = [...state.defaultSkins];
       action.payload.forEach((skin, i) => {
-        newSkins[skin.md5] = skin;
+        newSkins[skin.md5] = {
+          // Spread in the old skin here, since we may have already gotten filename data about the skin.
+          ...state.skins[skin.md5],
+          ...skin,
+        };
         // TODO: Do this with splice
         // TODO: Get chunk size from state
         // TODO: validate the chunk number is in bounds

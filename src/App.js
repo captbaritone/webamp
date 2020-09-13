@@ -6,13 +6,14 @@ import Header from "./Header";
 import Overlay from "./Overlay";
 import SkinTable from "./SkinTable";
 import FocusedSkin from "./FocusedSkin";
+import { useSelector } from "react-redux";
 import * as Selectors from "./redux/selectors";
 import { ABOUT_PAGE } from "./constants";
 import { useWindowSize, useScrollbarWidth } from "./hooks";
 import { SCREENSHOT_WIDTH, SKIN_RATIO } from "./constants";
 import UploadGrid from "./UploadGrid";
-
-// Render your table
+import Metadata from "./components/Metadata";
+import SkinReadme from "./SkinReadme";
 
 const getTableDimensions = (windowWidth, scale) => {
   const columnCount = Math.floor(windowWidth / (SCREENSHOT_WIDTH * scale));
@@ -32,6 +33,9 @@ function App(props) {
     windowWidthWithScrollabar - scrollbarWidth,
     props.scale
   );
+
+  const fileExplorerOpen = useSelector(Selectors.getFileExplorerOpen);
+
   return (
     <div>
       <Head />
@@ -60,6 +64,8 @@ function App(props) {
               initialHeight={rowHeight}
               initialWidth={columnWidth}
             />
+            {fileExplorerOpen && <SkinReadme />}
+            <Metadata />
           </Overlay>
         )
       )}

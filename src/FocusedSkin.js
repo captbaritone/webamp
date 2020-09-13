@@ -8,8 +8,6 @@ import WebampComponent from "./WebampComponent";
 import * as Utils from "./utils";
 import { SCREENSHOT_HEIGHT, SCREENSHOT_WIDTH } from "./constants";
 import { fromEvent } from "rxjs";
-import Metadata from "./components/Metadata";
-import SkinReadme from "./SkinReadme";
 
 // TODO: Move to epic
 function useSkinKeyboardControls() {
@@ -55,12 +53,7 @@ function FocusedSkin() {
   const centeredState = useCenteredState();
   const closeModal = useActionCreator(Actions.closeModal);
   const skinData = useSelector((state) => state.skins[hash] || null);
-  const fileExplorerOpen = useSelector(Selectors.getFileExplorerOpen);
-  const openFileExplorer = useActionCreator(Actions.openFileExplorer);
 
-  const absolutePermalink = useSelector(
-    Selectors.getAbsolutePermalinkUrlFromHashGetter
-  )(hash);
   const pos =
     initialPosition == null || centered ? centeredState : initialPosition;
 
@@ -71,37 +64,35 @@ function FocusedSkin() {
   return (
     <React.Fragment>
       {centered && (
-        <>
-          <div
-            style={{
-              position: "fixed",
-              height: SCREENSHOT_HEIGHT,
-              width: SCREENSHOT_WIDTH,
-              transform,
-            }}
-          >
-            <WebampComponent
-              key={hash} // Don't reuse instances
-              skinUrl={Utils.skinUrlFromHash(hash)}
-              loaded={handleWebampLoaded}
-              closeModal={closeModal}
-            />
-          </div>
-        </>
+        <div
+          style={{
+            position: "fixed",
+            height: SCREENSHOT_HEIGHT,
+            width: SCREENSHOT_WIDTH,
+            transform,
+          }}
+        >
+          <WebampComponent
+            key={hash} // Don't reuse instances
+            skinUrl={Utils.skinUrlFromHash(hash)}
+            loaded={handleWebampLoaded}
+            closeModal={closeModal}
+          />
+        </div>
       )}
-      <div
-        id="focused-skin"
-        style={{
-          position: "fixed",
-          height: pos.height,
-          width: pos.width,
-          transform,
-          transition:
-            "all 400ms ease-out, height 400ms ease-out, width 400ms ease-out",
-        }}
-      >
-        <div style={{ width: "100%", height: "100%" }}>
-          {loaded || (
+      {loaded || (
+        <div
+          id="focused-skin"
+          style={{
+            position: "fixed",
+            height: pos.height,
+            width: pos.width,
+            transform,
+            transition:
+              "all 400ms ease-out, height 400ms ease-out, width 400ms ease-out",
+          }}
+        >
+          <div style={{ width: "100%", height: "100%" }}>
             <img
               className={"focused-preview"}
               style={{
@@ -118,16 +109,9 @@ function FocusedSkin() {
               src={Utils.screenshotUrlFromHash(hash)}
               alt={skinData && skinData.fileName}
             />
-          )}
+          </div>
         </div>
-      </div>
-      {fileExplorerOpen && <SkinReadme />}
-      <Metadata
-        permalink={absolutePermalink}
-        openFileExplorer={openFileExplorer}
-        fileName={skinData && skinData.fileName}
-        hash={hash}
-      />
+      )}
     </React.Fragment>
   );
 }
