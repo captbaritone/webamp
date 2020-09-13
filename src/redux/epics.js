@@ -346,6 +346,33 @@ const urlEpic = (actions, state) => {
   );
 };
 
+const skinDataEpic = (actions, state) => {
+  return actions.pipe(
+    filter((action) => action.type === "SELECTED_SKIN"),
+    switchMap(({ hash }) => {
+      const skinData = state.value.skins[hash];
+      if (
+        skinData == null ||
+        skinData.color == null ||
+        skinData.fileName == null
+      ) {
+        return from(fetch(`${API_URL}/skins/${hash}`)).pipe(
+          switchMap((response) => response.json()),
+          map((body) =>
+            Actions.gotSkinData(hash, {
+              md5: hash,
+              fileName: body.canonicalFilename,
+              color: body.averageColor,
+              nsfw: body.nsfw,
+            })
+          )
+        );
+      }
+      return empty();
+    })
+  );
+};
+
 export default combineEpics(
   searchEpic,
   urlChangedEpic,
@@ -362,5 +389,6 @@ export default combineEpics(
   uploadSingleFileEpic,
   checkIfUploadsAreMissingEpic,
   urlEpic,
-  loggingEpic
+  loggingEpic,
+  skinDataEpic
 );

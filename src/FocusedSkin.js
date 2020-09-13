@@ -7,40 +7,25 @@ import * as Actions from "./redux/actionCreators";
 import WebampComponent from "./WebampComponent";
 import * as Utils from "./utils";
 import { SCREENSHOT_HEIGHT, SCREENSHOT_WIDTH, API_URL } from "./constants";
-import { delay, switchMap } from "rxjs/operators";
-import { Subject, combineLatest, timer, fromEvent, from } from "rxjs";
-import Disposable from "./Disposable";
+import { fromEvent } from "rxjs";
 import Metadata from "./components/Metadata";
 import SkinReadme from "./SkinReadme";
+import AnimationWrapper from "./AnimationWrapper";
 
-// TODO: Move this to Epic
-function useSkinData() {
-  const hash = useSelector(Selectors.getSelectedSkinHash);
-  const skinData = useSelector((state) => state.skins[hash] || null);
-  const gotSkinData = useActionCreator(Actions.gotSkinData);
+function useSkinKeyboardControls() {
+  const selectRelativeSkin = useActionCreator(Actions.selectRelativeSkin);
   useEffect(() => {
-    if (
-      skinData != null &&
-      skinData.color != null &&
-      skinData.fileName != null
-    ) {
-      return;
-    }
-    const subscription = from(fetch(`${API_URL}/skins/${hash}`))
-      .pipe(switchMap((response) => response.json()))
-      .subscribe((body) => {
-        gotSkinData(hash, {
-          md5: hash,
-          fileName: body.canonicalFilename,
-          color: body.averageColor,
-          nsfw: body.nsfw,
-        });
-      });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [gotSkinData, hash, skinData]);
+    const subscription = fromEvent(window.document, "keydown").subscribe(
+      (e) => {
+        if (e.key === "ArrowRight") {
+          selectRelativeSkin(1);
+        } else if (e.key === "ArrowLeft") {
+          selectRelativeSkin(-1);
+        }
+      }
+    );
+    return () => subscription.unsubscribe();
+  }, [selectRelativeSkin]);
 }
 
 function useCenteredState() {
@@ -56,75 +41,6 @@ function useCenteredState() {
     }),
     [windowHeight, windowWidth]
   );
-}
-
-class AnimationWrapper extends React.Component {
-  constructor(props) {
-    super(props);
-    this._disposable = new Disposable();
-    // TODO: Handle the case were we come from a permalink
-    this.state = {
-      loaded: false,
-      centered: this.props.initialPosition == null,
-    };
-    this._webampLoadedEvents = new Subject();
-    this._transitionBeginEvents = new Subject();
-    const transitionComplete = this._transitionBeginEvents.pipe(delay(500));
-
-    // Emit after both Webamp has loaded, and the transition is complete
-    const startWebampFadein = combineLatest([
-      this._webampLoadedEvents,
-      transitionComplete,
-    ]);
-
-    // This value matches the opacity transition timing for `#webamp` in CSS
-    const webampFadeinComplete = startWebampFadein.pipe(delay(400));
-
-    // Once webamp has loaded and the transition is complete, we can start the Webamp fadein
-    // Once the webamp fadein is complete (400ms) we are "loaded"
-
-    this._disposable.add(
-      startWebampFadein.subscribe(() => {
-        document.body.classList.add("webamp-loaded");
-      }),
-      webampFadeinComplete.subscribe(() => {
-        this.setState({ loaded: true });
-      }),
-      () => {
-        document.body.classList.remove("webamp-loaded");
-      }
-    );
-  }
-
-  componentDidMount() {
-    if (this.props.initialPosition != null) {
-      this._disposable.add(
-        timer(0).subscribe(() => {
-          // TODO: Observe DOM and recenter
-          this.setState({ centered: true });
-          this._transitionBeginEvents.next(null);
-        })
-      );
-    } else {
-      this._transitionBeginEvents.next(null);
-    }
-  }
-
-  componentWillUnmount() {
-    this._disposable.dispose();
-  }
-
-  handleWebampLoaded = () => {
-    this._webampLoadedEvents.next(null);
-  };
-
-  render() {
-    return this.props.children({
-      handleWebampLoaded: () => this.handleWebampLoaded(),
-      centered: this.state.centered,
-      loaded: this.state.loaded,
-    });
-  }
 }
 
 function BaseFocusedSkin({
@@ -156,7 +72,6 @@ function BaseFocusedSkin({
       {centered && (
         <>
           <div
-            id="here"
             style={{
               position: "fixed",
               height: SCREENSHOT_HEIGHT,
@@ -219,23 +134,10 @@ function BaseFocusedSkin({
 function Wrapper({ ...ownProps }) {
   const hash = useSelector(Selectors.getSelectedSkinHash);
   const initialPosition = useSelector(Selectors.getSelectedSkinPosition);
+  const [centered, setCentered] = useState(initialPosition == null);
+  const [loaded, setLoaded] = useState(false);
 
-  const selectRelativeSkin = useActionCreator(Actions.selectRelativeSkin);
-
-  useEffect(() => {
-    const subscription = fromEvent(window.document, "keydown").subscribe(
-      (e) => {
-        if (e.key === "ArrowRight") {
-          selectRelativeSkin(1);
-        } else if (e.key === "ArrowLeft") {
-          selectRelativeSkin(-1);
-        }
-      }
-    );
-    return () => subscription.unsubscribe();
-  }, [selectRelativeSkin]);
-
-  useSkinData();
+  useSkinKeyboardControls();
 
   const prevSkinHash = useRef(null);
   useEffect(() => {
@@ -247,8 +149,12 @@ function Wrapper({ ...ownProps }) {
 
   const props = { ...ownProps, hash, initialPosition };
   return (
-    <AnimationWrapper initialPosition={initialPosition}>
-      {({ centered, handleWebampLoaded, loaded }) => (
+    <AnimationWrapper
+      initialPosition={initialPosition}
+      setCentered={setCentered}
+      setLoaded={setLoaded}
+    >
+      {({ handleWebampLoaded }) => (
         <BaseFocusedSkin
           {...props}
           centered={centered}
