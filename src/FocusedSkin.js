@@ -1,17 +1,17 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { useActionCreator, useWindowSize } from "./hooks";
+import { useActionCreator, useWindowSize, useWebampAnimation } from "./hooks";
 import * as Selectors from "./redux/selectors";
 import * as Actions from "./redux/actionCreators";
 
 import WebampComponent from "./WebampComponent";
 import * as Utils from "./utils";
-import { SCREENSHOT_HEIGHT, SCREENSHOT_WIDTH, API_URL } from "./constants";
+import { SCREENSHOT_HEIGHT, SCREENSHOT_WIDTH } from "./constants";
 import { fromEvent } from "rxjs";
 import Metadata from "./components/Metadata";
 import SkinReadme from "./SkinReadme";
-import AnimationWrapper from "./AnimationWrapper";
 
+// TODO: Move to epic
 function useSkinKeyboardControls() {
   const selectRelativeSkin = useActionCreator(Actions.selectRelativeSkin);
   useEffect(() => {
@@ -33,7 +33,6 @@ function useCenteredState() {
   const { windowWidth, windowHeight } = useWindowSize();
   return useMemo(
     () => ({
-      centered: true,
       top: (windowHeight - SCREENSHOT_HEIGHT) / 2,
       left: (windowWidth - SCREENSHOT_WIDTH) / 2,
       height: SCREENSHOT_HEIGHT,
@@ -43,13 +42,15 @@ function useCenteredState() {
   );
 }
 
-function BaseFocusedSkin({
-  initialPosition,
-  centered,
-  hash,
-  handleWebampLoaded,
-  loaded,
-}) {
+function FocusedSkin() {
+  const hash = useSelector(Selectors.getSelectedSkinHash);
+  const initialPosition = useSelector(Selectors.getSelectedSkinPosition);
+
+  useSkinKeyboardControls();
+
+  const { handleWebampLoaded, loaded, centered } = useWebampAnimation({
+    initialPosition,
+  });
   const [previewLoaded, setPreviewLoaded] = useState(initialPosition != null);
   const centeredState = useCenteredState();
   const closeModal = useActionCreator(Actions.closeModal);
@@ -131,39 +132,4 @@ function BaseFocusedSkin({
   );
 }
 
-function Wrapper({ ...ownProps }) {
-  const hash = useSelector(Selectors.getSelectedSkinHash);
-  const initialPosition = useSelector(Selectors.getSelectedSkinPosition);
-  const [centered, setCentered] = useState(initialPosition == null);
-  const [loaded, setLoaded] = useState(false);
-
-  useSkinKeyboardControls();
-
-  const prevSkinHash = useRef(null);
-  useEffect(() => {
-    if (hash !== prevSkinHash.current) {
-      document.body.classList.remove("webamp-loaded");
-      prevSkinHash.current = hash;
-    }
-  }, [hash]);
-
-  const props = { ...ownProps, hash, initialPosition };
-  return (
-    <AnimationWrapper
-      initialPosition={initialPosition}
-      setCentered={setCentered}
-      setLoaded={setLoaded}
-    >
-      {({ handleWebampLoaded }) => (
-        <BaseFocusedSkin
-          {...props}
-          centered={centered}
-          handleWebampLoaded={handleWebampLoaded}
-          loaded={loaded}
-        />
-      )}
-    </AnimationWrapper>
-  );
-}
-
-export default Wrapper;
+export default FocusedSkin;
