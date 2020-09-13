@@ -1,4 +1,4 @@
-import { ABOUT_PAGE } from "../constants";
+import { ABOUT_PAGE, CHUNK_SIZE } from "../constants";
 
 const defaultState = {
   searchQuery: null,
@@ -13,7 +13,6 @@ const defaultState = {
   activeContentPage: null,
   totalNumberOfSkins: null,
   scale: 0.5,
-  skinChunkData: { chunkSize: 100, numberOfSkins: 64381, chunkFileNames: [] },
   skins: {},
   showNsfw: false,
   fileUploads: {},
@@ -173,7 +172,7 @@ export default function reducer(state = defaultState, action) {
         // TODO: Get chunk size from state
         // TODO: validate the chunk number is in bounds
         // TODO: validate that we don't alredy have this chunk
-        newDefaultSkins[action.chunk * 100 + i] = skin.md5;
+        newDefaultSkins[action.chunk * CHUNK_SIZE + i] = skin.md5;
       });
       return {
         ...state,

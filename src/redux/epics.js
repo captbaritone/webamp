@@ -17,7 +17,7 @@ import {
 } from "rxjs/operators";
 import { search } from "../algolia";
 import queryParser from "../queryParser";
-import { API_URL } from "../constants";
+import { API_URL, CHUNK_SIZE } from "../constants";
 import * as UploadUtils from "../uploadUtils";
 
 const urlChangedEpic = (actions) =>
@@ -150,15 +150,14 @@ const unloadedSkinEpic = (actions, states) =>
   actions.pipe(
     filter((action) => action.type === "REQUEST_UNLOADED_SKIN"),
     mergeMap(async ({ index }) => {
-      const chunkSize = 100;
-      const chunk = Math.floor(index / (chunkSize - 1));
+      const chunk = Math.floor(index / (CHUNK_SIZE - 1));
 
       if (chunkState[chunk] != null) {
-        return EMPTY;
+        return null;
       }
       chunkState[chunk] = "fetching";
       const response = await fetch(
-        `${API_URL}/skins?offset=${chunk * chunkSize}&first=${chunkSize}`
+        `${API_URL}/skins?offset=${chunk * CHUNK_SIZE}&first=${CHUNK_SIZE}`
       );
 
       const body = await response.json();
