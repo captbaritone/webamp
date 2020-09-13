@@ -1,10 +1,9 @@
-import * as React from "react";
-import { connect } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import * as Utils from "./utils";
 import * as Selectors from "./redux/selectors";
 import * as Actions from "./redux/actionCreators";
-import Disposable from "./Disposable";
-import { useWindowSize } from "./hooks";
+import { useActionCreator, useWindowSize } from "./hooks";
 import { ReactComponent as AlgoliaLogo } from "./searchByAlgoliaDarkbBackground.svg";
 import algoliaLogoSmallUrl from "./searchByAlgoliaSmall.png";
 import UploadButton from "./UploadButton";
@@ -23,67 +22,73 @@ function SearchLogo() {
   );
 }
 
-class Header extends React.Component {
-  constructor(props) {
-    super();
-    this._disposable = new Disposable();
-    this._inputRef = null;
-  }
+function useFocusOnSlash() {
+  const [input, setInput] = useState(null);
 
-  componentDidMount() {
+  useEffect(() => {
+    if (input == null) {
+      return;
+    }
     const handler = (e) => {
       // slash
       if (e.keyCode === 191) {
-        if (this._inputRef == null) {
-          return;
-        }
-        if (this._inputRef !== document.activeElement) {
-          this._inputRef.focus();
+        if (input !== document.activeElement) {
+          input.focus();
           e.preventDefault();
         }
       }
     };
     window.document.addEventListener("keydown", handler);
-    this._disposable.add(() => {
+    return () => {
       window.document.removeEventListener("keydown", handler);
-    });
-  }
+    };
+  }, [input]);
 
-  componentWillUnmount() {
-    this._disposable.dispose();
-  }
-  render() {
-    return (
-      <div id="search">
-        <h1>
+  return setInput;
+}
+
+function Header() {
+  const searchQuery = useSelector(Selectors.getSearchQuery);
+  // const scale = useSelector((state) => state.scale);
+  const uploadViewOpen = useSelector(Selectors.getUploadViewOpen);
+
+  const setSearchQuery = useActionCreator(Actions.searchQueryChanged);
+  const requestRandomSkin = useActionCreator(Actions.requestedRandomSkin);
+  const requestedAboutPage = useActionCreator(Actions.requestedAboutPage);
+  // const setScale = useActionCreator((scale) => ({ type: "SET_SCALE", scale }));
+  const setInput = useFocusOnSlash();
+
+  return (
+    <div id="search">
+      <h1>
+        <a
+          href="/"
+          onClick={(e) => {
+            if (Utils.eventIsLinkClick(e)) {
+              e.preventDefault();
+              setSearchQuery(null);
+            }
+          }}
+        >
+          <span id="logo">{"🌩️"}</span>
+          <span className="name">Winamp Skin Museum</span>
+        </a>
+      </h1>
+      <span style={{ flexGrow: 1 }} />
+      {uploadViewOpen || (
+        <>
           <a
-            href="/"
-            onClick={(e) => {
-              if (Utils.eventIsLinkClick(e)) {
-                e.preventDefault();
-                this.props.setSearchQuery(null);
-              }
+            href="https://www.algolia.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              opacity: searchQuery ? 0.5 : 0,
+              transition: "opacity ease-in 300ms",
             }}
           >
-            <span id="logo">{"🌩️"}</span>
-            <span className="name">Winamp Skin Museum</span>
+            <SearchLogo />
           </a>
-        </h1>
-        <span style={{ flexGrow: 1 }} />
-        {this.props.uploadViewOpen || (
-          <>
-            <a
-              href="https://www.algolia.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                opacity: this.props.searchQuery ? 0.5 : 0,
-                transition: "opacity ease-in 300ms",
-              }}
-            >
-              <SearchLogo />
-            </a>
-            {/*
+          {/*
         <button
           onClick={() => {
             this.props.setScale(this.props.scale + 0.1);
@@ -99,56 +104,33 @@ class Header extends React.Component {
           -
         </button>
         */}
-            <input
-              type="search"
-              style={{ marginLeft: 10 }}
-              onChange={(e) => this.props.setSearchQuery(e.target.value)}
-              value={this.props.searchQuery || ""}
-              placeholder={"Search..."}
-              ref={(node) => {
-                this._inputRef = node;
-              }}
-            />
-            <button
-              onClick={() => {
-                this.props.requestRandomSkin();
-              }}
-            >
-              Random
-            </button>
-            <button
-              onClick={() => {
-                this.props.requestedAboutPage();
-              }}
-            >
-              ?
-            </button>
-          </>
-        )}
-        <UploadButton />
-      </div>
-    );
-  }
+          <input
+            type="search"
+            style={{ marginLeft: 10 }}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            value={searchQuery || ""}
+            placeholder={"Search..."}
+            ref={setInput}
+          />
+          <button
+            onClick={() => {
+              requestRandomSkin();
+            }}
+          >
+            Random
+          </button>
+          <button
+            onClick={() => {
+              requestedAboutPage();
+            }}
+          >
+            ?
+          </button>
+        </>
+      )}
+      <UploadButton />
+    </div>
+  );
 }
 
-const mapStateToProps = (state) => ({
-  searchQuery: Selectors.getSearchQuery(state),
-  scale: state.scale,
-  uploadViewOpen: Selectors.getHaveUploadFiles(state),
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  setSearchQuery(query) {
-    dispatch(Actions.searchQueryChanged(query));
-  },
-  requestRandomSkin() {
-    dispatch(Actions.requestedRandomSkin());
-  },
-  requestedAboutPage() {
-    dispatch(Actions.requestedAboutPage());
-  },
-  setScale(scale) {
-    dispatch({ type: "SET_SCALE", scale });
-  },
-});
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default Header;

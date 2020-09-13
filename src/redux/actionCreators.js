@@ -1,3 +1,4 @@
+import { ABOUT_PAGE, UPLOAD_PAGE } from "../constants";
 export function closeModal() {
   return { type: "CLOSE_MODAL" };
 }
@@ -109,7 +110,11 @@ export function gotFocusedSkinFile(content) {
 }
 
 export function requestedAboutPage() {
-  return { type: "REQUESTED_ABOUT_PAGE" };
+  return { type: "REQUESTED_PAGE", page: ABOUT_PAGE };
+}
+
+export function requestedUploadPage() {
+  return { type: "REQUESTED_PAGE", page: UPLOAD_PAGE };
 }
 
 export function selectRelativeSkin(offset) {

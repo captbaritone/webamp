@@ -27,6 +27,9 @@ const urlChangedEpic = (actions) =>
       if (action.location.pathname === "/about/") {
         return of(Actions.requestedAboutPage());
       }
+      if (action.location.pathname === "/upload/") {
+        return of(Actions.requestedUploadPage());
+      }
       const params = new URLSearchParams(action.location.search);
       const query = params != null && params.get("query");
 

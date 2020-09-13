@@ -1,6 +1,6 @@
 import { createSelector } from "reselect";
 import * as Utils from "../utils";
-import { ABOUT_PAGE } from "../constants";
+import { ABOUT_PAGE, UPLOAD_PAGE } from "../constants";
 
 export function getSelectedSkinHash(state) {
   return state.selectedSkinHash;
@@ -47,8 +47,9 @@ export const getFileToUpload = (state) => {
   );
 };
 
-export const getHaveUploadFiles = (state) =>
-  Object.keys(state.fileUploads).length > 0;
+export const getUploadViewOpen = (state) => {
+  return state.activeContentPage === UPLOAD_PAGE;
+};
 
 export const getAreDragging = (state) => state.areDragging;
 
@@ -144,6 +145,9 @@ export const getUrl = createSelector(
   ) => {
     if (activeContentPage === ABOUT_PAGE) {
       return "/about/";
+    }
+    if (activeContentPage === UPLOAD_PAGE) {
+      return "/upload/";
     }
     if (hash) {
       const skinUrl = getPermalinkUrlFromHash(hash);

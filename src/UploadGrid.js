@@ -58,27 +58,62 @@ function UploadRow({ file }) {
   );
 }
 
-function UploadGrid() {
+function UploadGrid({ getInputProps, isDragActive }) {
   const files = useSelector((state) => state.fileUploads);
   const tryToUploadAllFiles = useActionCreator(Actions.tryToUploadAllFiles);
   const canUpload = useSelector(Selectors.getFileToUpload) != null;
   return (
-    <div style={{ color: "white", marginTop: HEADING_HEIGHT }}>
-      {canUpload && <button onClick={tryToUploadAllFiles}>Upload All</button>}
-      <table>
-        <thead>
-          <tr>
-            <th>Action</th>
-            <th>Filename</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Object.values(files).map((file, i) => {
-            return <UploadRow key={i} file={file} />;
-          })}
-        </tbody>
-      </table>
+    <div
+      style={{
+        position: "absolute",
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
+        top: HEADING_HEIGHT,
+        left: 0,
+        bottom: 0,
+        right: 0,
+        display: "flex",
+      }}
+    >
+      {isDragActive || Object.keys(files).length === 0 ? (
+        <div
+          style={{
+            margin: 20,
+            flexGrow: 1,
+            border: "8px dashed #FFF",
+            borderRadius: 20,
+            color: "grey",
+            textAlign: "center",
+            vericalAlign: "middle",
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            fontSize: 30,
+          }}
+        >
+          Drop Skins Here
+          <input {...getInputProps()} />
+        </div>
+      ) : (
+        <>
+          {canUpload && (
+            <button onClick={tryToUploadAllFiles}>Upload All</button>
+          )}
+          <table>
+            <thead>
+              <tr>
+                <th>Action</th>
+                <th>Filename</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.values(files).map((file, i) => {
+                return <UploadRow key={i} file={file} />;
+              })}
+            </tbody>
+          </table>
+        </>
+      )}
     </div>
   );
 }

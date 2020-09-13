@@ -10,15 +10,9 @@ import { useSelector } from "react-redux";
 import * as Selectors from "./redux/selectors";
 import * as Actions from "./redux/actionCreators";
 import { ABOUT_PAGE } from "./constants";
-import {
-  useWindowSize,
-  useScrollbarWidth,
-  useDropFiles,
-  useActionCreator,
-} from "./hooks";
-import { SCREENSHOT_WIDTH, SKIN_RATIO, SHOW_UPLOAD } from "./constants";
+import { useWindowSize, useScrollbarWidth, useActionCreator } from "./hooks";
+import { SCREENSHOT_WIDTH, SKIN_RATIO } from "./constants";
 import UploadGrid from "./UploadGrid";
-import DropTarget from "./DropTarget";
 import Metadata from "./components/Metadata";
 import SkinReadme from "./SkinReadme";
 import { useDropzone } from "react-dropzone";
@@ -50,11 +44,10 @@ function App(props) {
     },
     [gotFiles]
   );
-  const {
-    getRootProps,
-    getInputProps,
-    isDragActive: areDragging,
-  } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    noClick: true,
+  });
 
   const fileExplorerOpen = useSelector(Selectors.getFileExplorerOpen);
 
@@ -62,10 +55,8 @@ function App(props) {
     <div {...getRootProps()}>
       <Head />
       <Header />
-      {areDragging && SHOW_UPLOAD ? (
-        <DropTarget getInputProps={getInputProps} />
-      ) : props.uploadViewOpen ? (
-        <UploadGrid />
+      {props.uploadViewOpen || isDragActive ? (
+        <UploadGrid isDragActive={isDragActive} getInputProps={getInputProps} />
       ) : (
         <SkinTable
           columnCount={columnCount}
@@ -75,7 +66,7 @@ function App(props) {
           windowWidth={windowWidthWithScrollabar}
         />
       )}
-      {props.aboutPage ? (
+      {props.page === ABOUT_PAGE ? (
         <Overlay>
           <About />
         </Overlay>
@@ -100,9 +91,9 @@ function App(props) {
 const mapStateToProps = (state) => ({
   selectedSkinHash: Selectors.getSelectedSkinHash(state),
   overlayShouldAnimate: Selectors.overlayShouldAnimate(state),
-  aboutPage: Selectors.getActiveContentPage(state) === ABOUT_PAGE,
+  page: Selectors.getActiveContentPage(state),
   scale: state.scale,
-  uploadViewOpen: Selectors.getHaveUploadFiles(state),
+  uploadViewOpen: Selectors.getUploadViewOpen(state),
 });
 
 export default connect(mapStateToProps)(App);
