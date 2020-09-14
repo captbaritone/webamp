@@ -25,7 +25,7 @@ function DropTarget({ getInputProps }) {
       <div style={{ fontSize: 30 }}>Drop Skins Here</div>
       <br />
       <div style={{ fontSize: 20, lineHeight: 1.3 }}>
-        We'll analyzed them in your browser to find <br />
+        We'll analyze them in your browser to find <br />
         any that are missing from the museum
       </div>
 
