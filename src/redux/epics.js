@@ -244,7 +244,15 @@ const checkIfUploadsAreMissingEpic = (actions, state) =>
         .pipe(
           map(({ missing, found }) =>
             Actions.gotMissingAndFoundMd5s({ missing, found })
-          )
+          ),
+          catchError((e) => {
+            console.error("Failed fo check missing skins", e);
+            // TODO: A real error here.
+            alert(
+              "Sorry. We had a problem checking which files are missing. Please contact jordan@jordaneldredge.com for help."
+            );
+            return of(Actions.closeUploadFiles());
+          })
         )
         .pipe(takeUntilAction(actions, "CLOSE_UPLOAD_FILES"));
     })
