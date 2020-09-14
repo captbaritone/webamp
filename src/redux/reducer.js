@@ -129,8 +129,8 @@ export default function reducer(state = defaultState, action) {
           } else if (foundSet.has(file.md5)) {
             return { ...file, status: "FOUND" };
           }
-          return file;
         }
+        return file;
       }
       const newFileUploads = {};
       Object.entries(state.fileUploads).forEach(([key, file]) => {

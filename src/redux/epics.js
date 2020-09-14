@@ -254,7 +254,16 @@ function uploadActions(file) {
   return concat(
     of(Actions.startingFileUpload(file.id)),
     from(UploadUtils.upload(file.file)).pipe(
-      map((response) => Actions.archivedSkin(file.id, response)),
+      map((response) => {
+        if (response.status === "ADDED") {
+          return Actions.archivedSkin(file.id, response);
+        }
+        if (response.status === "FOUND") {
+          // Maybe we could do something better here?
+        }
+        console.error(response);
+        return Actions.uploadFailed(file.id);
+      }),
       catchError(() => of(Actions.uploadFailed(file.id)))
     )
   );

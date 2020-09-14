@@ -8,6 +8,10 @@ export function skinUrlFromHash(hash) {
   return `${SKIN_CDN}/skins/${hash}.wsz`;
 }
 
+export function museumUrlFromHash(hash) {
+  return `/skin/${hash}`;
+}
+
 export function getWindowSize() {
   var w = window,
     d = document,

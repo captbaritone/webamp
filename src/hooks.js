@@ -1,5 +1,5 @@
 import * as Utils from "./utils";
-import { useMemo, useState, useEffect, useCallback, useRef } from "react";
+import { useMemo, useState, useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
 
 import { delay } from "rxjs/operators";

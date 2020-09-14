@@ -42,9 +42,13 @@ export const getCurrentSkinCount = createSelector(
 );
 
 export const getFileToUpload = (state) => {
-  return Object.values(state.fileUploads).find(
-    (file) => file.status === "MISSING"
-  );
+  return Object.values(state.fileUploads).find((file) => {
+    if (file == null) {
+      console.warn("Got a nullish file");
+      return false;
+    }
+    return file.status === "MISSING";
+  });
 };
 
 export const getUploadViewOpen = (state) => {
@@ -200,7 +204,5 @@ export function getAreReadyToCheckMissingUploads(state) {
 }
 
 export function getUploadedFilesMd5s(state) {
-  return Object.values(state.fileUploads)
-    .map((file) => file.md5)
-    .filter(Boolean);
+  return Object.values(state.fileUploads).map((file) => file.md5);
 }
