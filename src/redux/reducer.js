@@ -1,4 +1,4 @@
-import { ABOUT_PAGE, CHUNK_SIZE } from "../constants";
+import { CHUNK_SIZE, UPLOAD_PAGE } from "../constants";
 
 const defaultState = {
   searchQuery: null,
@@ -25,6 +25,9 @@ export default function reducer(state = defaultState, action) {
       return { ...state, areDragging: action.dragging };
     case "SET_SCALE": {
       return { ...state, scale: action.scale };
+    }
+    case "GOT_FILES": {
+      return { ...state, activeContentPage: UPLOAD_PAGE };
     }
     case "GOT_FILE": {
       return {
@@ -126,8 +129,8 @@ export default function reducer(state = defaultState, action) {
           } else if (foundSet.has(file.md5)) {
             return { ...file, status: "FOUND" };
           }
-          return file;
         }
+        return file;
       }
       const newFileUploads = {};
       Object.entries(state.fileUploads).forEach(([key, file]) => {
@@ -141,6 +144,7 @@ export default function reducer(state = defaultState, action) {
     case "CLOSE_UPLOAD_FILES": {
       return {
         ...state,
+        activeContentPage: null,
         fileUploads: {},
       };
     }
@@ -248,10 +252,11 @@ export default function reducer(state = defaultState, action) {
           content: action.content,
         },
       };
-    case "REQUESTED_ABOUT_PAGE":
+    case "REQUESTED_PAGE":
+      console.log(action);
       return {
         ...state,
-        activeContentPage: ABOUT_PAGE,
+        activeContentPage: action.page,
       };
     case "OPEN_FILE_EXPLORER":
       return {

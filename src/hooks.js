@@ -1,5 +1,5 @@
 import * as Utils from "./utils";
-import { useMemo, useState, useEffect, useCallback, useRef } from "react";
+import { useMemo, useState, useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
 
 import { delay } from "rxjs/operators";
@@ -99,55 +99,4 @@ export function useWebampAnimation({ initialPosition }) {
     loaded,
     handleWebampLoaded: () => webampLoadedEvents.next(null),
   };
-}
-
-export function useDropFiles({ onDrop, setDragging }) {
-  const onDragEnterCallback = useCallback(
-    (e) => {
-      e.preventDefault();
-      setDragging(true);
-    },
-    [setDragging]
-  );
-
-  const onDragLeaveCallback = useCallback(
-    (e) => {
-      e.preventDefault();
-      if (e.target === window.document.documentElement) {
-        setDragging(false);
-      }
-    },
-    [setDragging]
-  );
-
-  const onDropCallback = useCallback(
-    (e) => {
-      e.preventDefault();
-      setDragging(false);
-      onDrop(e);
-    },
-    [onDrop, setDragging]
-  );
-
-  const onDragoverCallback = useCallback((e) => {
-    e.preventDefault();
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener("drop", onDropCallback);
-    window.addEventListener("dragover", onDragoverCallback);
-    window.addEventListener("dragenter", onDragEnterCallback);
-    window.addEventListener("dragleave", onDragLeaveCallback);
-    return () => {
-      window.removeEventListener("drop", onDropCallback);
-      window.removeEventListener("dragover", onDragoverCallback);
-      window.removeEventListener("dragenter", onDragEnterCallback);
-      window.removeEventListener("dragleave", onDragLeaveCallback);
-    };
-  }, [
-    onDropCallback,
-    onDragoverCallback,
-    onDragEnterCallback,
-    onDragLeaveCallback,
-  ]);
 }

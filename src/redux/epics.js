@@ -27,6 +27,9 @@ const urlChangedEpic = (actions) =>
       if (action.location.pathname === "/about/") {
         return of(Actions.requestedAboutPage());
       }
+      if (action.location.pathname === "/upload/") {
+        return of(Actions.requestedUploadPage());
+      }
       const params = new URLSearchParams(action.location.search);
       const query = params != null && params.get("query");
 
@@ -231,7 +234,9 @@ const checkIfUploadsAreMissingEpic = (actions, state) =>
   actions.pipe(
     filter((action) => {
       return (
-        action.type === "GOT_FILE_MD5" &&
+        (action.type === "GOT_FILE_MD5" ||
+          action.type === "NOT_CLASSIC_SKIN" ||
+          action.type === "INVALID_FILE_EXTENSION") &&
         Selectors.getAreReadyToCheckMissingUploads(state.value)
       );
     }),
@@ -241,7 +246,15 @@ const checkIfUploadsAreMissingEpic = (actions, state) =>
         .pipe(
           map(({ missing, found }) =>
             Actions.gotMissingAndFoundMd5s({ missing, found })
-          )
+          ),
+          catchError((e) => {
+            console.error("Failed fo check missing skins", e);
+            // TODO: A real error here.
+            alert(
+              "Sorry. We had a problem checking which files are missing. Please contact jordan@jordaneldredge.com for help."
+            );
+            return of(Actions.closeUploadFiles());
+          })
         )
         .pipe(takeUntilAction(actions, "CLOSE_UPLOAD_FILES"));
     })
@@ -251,7 +264,16 @@ function uploadActions(file) {
   return concat(
     of(Actions.startingFileUpload(file.id)),
     from(UploadUtils.upload(file.file)).pipe(
-      map((response) => Actions.archivedSkin(file.id, response)),
+      map((response) => {
+        if (response.status === "ADDED") {
+          return Actions.archivedSkin(file.id, response);
+        }
+        if (response.status === "FOUND") {
+          // Maybe we could do something better here?
+        }
+        console.error(response);
+        return Actions.uploadFailed(file.id);
+      }),
       catchError(() => of(Actions.uploadFailed(file.id)))
     )
   );

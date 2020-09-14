@@ -3,10 +3,10 @@ import DownloadLink from "./DownloadLink";
 import * as Utils from "../utils";
 import LinkInput from "./LinkInput";
 import { API_URL } from "../constants";
-import * as Actions from "../redux/actionCreators";
+// import * as Actions from "../redux/actionCreators";
 import * as Selectors from "../redux/selectors";
 import { useSelector } from "react-redux";
-import { useActionCreator } from "../hooks";
+// import { useActionCreator } from "../hooks";
 import DownloadText from "./DownloadText";
 
 function Metadata() {
@@ -17,7 +17,7 @@ function Metadata() {
   const permalink = useSelector(
     Selectors.getAbsolutePermalinkUrlFromHashGetter
   )(hash);
-  const toggleFileExplorer = useActionCreator(Actions.toggleFileExplorer);
+  // const toggleFileExplorer = useActionCreator(Actions.toggleFileExplorer);
   const focusedSkinFile = useSelector(Selectors.getFocusedSkinFile);
   const [showLink, setShowLink] = useState(false);
   // TODO: Move to Epic

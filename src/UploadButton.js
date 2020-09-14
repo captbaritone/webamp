@@ -5,27 +5,28 @@ import * as Actions from "./redux/actionCreators";
 import { SHOW_UPLOAD } from "./constants";
 import UploadIcon from "./components/icons/UploadIcon";
 import CloseIcon from "./components/icons/CloseIcon";
-import { promptForFileReferences } from "./utils";
 import * as Selectors from "./redux/selectors";
 
 function UploadButton() {
-  const uploadViewOpen = useSelector(Selectors.getHaveUploadFiles);
-  const gotFiles = useActionCreator(Actions.gotFiles);
+  const uploadViewOpen = useSelector(Selectors.getUploadViewOpen);
   const closeUploadFiles = useActionCreator(Actions.closeUploadFiles);
+  const requestedUploadPage = useActionCreator(Actions.requestedUploadPage);
 
   if (!SHOW_UPLOAD) {
-    return null;
+    // return null;
   }
 
-  const style = { paddingLeft: "0.2rem", paddingRight: "0.2rem" };
+  const style = {
+    paddingLeft: "0.2rem",
+    paddingRight: "0.2rem",
+  };
+
+  // TODO: Make these buttons links.
   if (uploadViewOpen) {
     return (
       <button
         onClick={() => {
-          const areSure = window.confirm("Are you sure you're done uploading?");
-          if (areSure) {
-            closeUploadFiles();
-          }
+          closeUploadFiles();
         }}
         style={style}
       >
@@ -35,11 +36,9 @@ function UploadButton() {
   } else {
     return (
       <button
-        onClick={async () => {
-          const fileList = await promptForFileReferences({
-            accept: ".wsz,.zip",
-          });
-          gotFiles(Array.from(fileList));
+        onClick={(e) => {
+          e.preventDefault();
+          requestedUploadPage();
         }}
         style={style}
       >

@@ -27,7 +27,7 @@ export async function hashFile(file) {
 }
 
 /* SKIN UPLOAD UTILS */
-const validSkinFilename = /(\.wsz)|(\.zip)$/i;
+const validSkinFilename = /(\.wsz)|(\.zip)|(.wal)$/i;
 
 export function isValidSkinFilename(filename) {
   return validSkinFilename.test(filename);
