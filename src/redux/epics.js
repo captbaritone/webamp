@@ -234,7 +234,9 @@ const checkIfUploadsAreMissingEpic = (actions, state) =>
   actions.pipe(
     filter((action) => {
       return (
-        action.type === "GOT_FILE_MD5" &&
+        (action.type === "GOT_FILE_MD5" ||
+          action.type === "NOT_CLASSIC_SKIN" ||
+          action.type === "INVALID_FILE_EXTENSION") &&
         Selectors.getAreReadyToCheckMissingUploads(state.value)
       );
     }),
