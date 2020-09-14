@@ -141,7 +141,7 @@ function UploadGrid({ getInputProps, isDragActive }) {
           />
           <Section
             files={filesArr}
-            title="Modern Skins (we're not accepting these yet"
+            title="Modern Skins (we're not accepting these yet)"
             filter={(file) => file.status === "NOT_CLASSIC_SKIN"}
             render={(file) => file.file.name}
           />
