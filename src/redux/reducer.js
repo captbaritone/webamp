@@ -19,6 +19,21 @@ const defaultState = {
   fileUploads: {},
 };
 
+function setUploadFileStatus(state, id, status, invalid) {
+  const previousFile = state.fileUploads[id];
+  return {
+    ...state,
+    fileUploads: {
+      ...state.fileUploads,
+      [id]: {
+        ...previousFile,
+        status: status,
+        invalid: invalid ?? previousFile.invalid,
+      },
+    },
+  };
+}
+
 export default function reducer(state = defaultState, action) {
   switch (action.type) {
     case "SET_DRAGGING":
@@ -44,67 +59,24 @@ export default function reducer(state = defaultState, action) {
       };
     }
     case "INVALID_FILE_EXTENSION": {
-      return {
-        ...state,
-        fileUploads: {
-          ...state.fileUploads,
-          [action.id]: {
-            ...state.fileUploads[action.id],
-            invalid: true,
-            status: "INVALID_FILE_EXTENSION",
-          },
-        },
-      };
+      return setUploadFileStatus(
+        state,
+        action.id,
+        "INVALID_FILE_EXTENSION",
+        true
+      );
     }
     case "NOT_CLASSIC_SKIN": {
-      return {
-        ...state,
-        fileUploads: {
-          ...state.fileUploads,
-          [action.id]: {
-            ...state.fileUploads[action.id],
-            invalid: true,
-            status: "NOT_CLASSIC_SKIN",
-          },
-        },
-      };
+      return setUploadFileStatus(state, action.id, "NOT_CLASSIC_SKIN", true);
     }
     case "STARTING_FILE_UPLOAD": {
-      return {
-        ...state,
-        fileUploads: {
-          ...state.fileUploads,
-          [action.id]: {
-            ...state.fileUploads[action.id],
-            status: "UPLOADING",
-          },
-        },
-      };
+      return setUploadFileStatus(state, action.id, "UPLOADING");
     }
     case "UPLOAD_FAILED": {
-      return {
-        ...state,
-        fileUploads: {
-          ...state.fileUploads,
-          [action.id]: {
-            ...state.fileUploads[action.id],
-            invalid: true,
-            status: "UPLOAD_FAILED",
-          },
-        },
-      };
+      return setUploadFileStatus(state, action.id, "UPLOAD_FAILED", true);
     }
     case "ARCHIVED_SKIN": {
-      return {
-        ...state,
-        fileUploads: {
-          ...state.fileUploads,
-          [action.id]: {
-            ...state.fileUploads[action.id],
-            status: "ARCHIVED",
-          },
-        },
-      };
+      return setUploadFileStatus(state, action.id, "ARCHIVED");
     }
     case "GOT_FILE_MD5": {
       return {
