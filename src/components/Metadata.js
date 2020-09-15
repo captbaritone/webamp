@@ -85,7 +85,7 @@ function Metadata() {
     >
       Webamp
     </a>,
-    skinData.nsfw ? (
+    skinData && skinData.nsfw ? (
       "NSFW"
     ) : (
       <button
