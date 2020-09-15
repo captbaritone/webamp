@@ -374,6 +374,25 @@ const skinDataEpic = (actions, state) => {
   );
 };
 
+const markNsfwEpic = (actions) => {
+  return actions.pipe(
+    filter((action) => action.type === "MARK_NSFW"),
+    mergeMap(async ({ hash }) => {
+      try {
+        await fetch(`${API_URL}/skins/${hash}/report`, {
+          method: "POST",
+          mode: "cors",
+        });
+      } catch (e) {
+        alert("Oops. Something went wrong. Please try again later.");
+        return;
+      }
+      alert("Thanks for reporting. We'll review this skin.");
+    }),
+    ignoreElements()
+  );
+};
+
 export default combineEpics(
   searchEpic,
   urlChangedEpic,
@@ -391,5 +410,6 @@ export default combineEpics(
   checkIfUploadsAreMissingEpic,
   urlEpic,
   loggingEpic,
-  skinDataEpic
+  skinDataEpic,
+  markNsfwEpic
 );

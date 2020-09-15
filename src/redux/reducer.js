@@ -160,6 +160,13 @@ export default function reducer(state = defaultState, action) {
         skins: { ...state.skins, [action.hash]: action.data },
       };
     }
+    case "MARK_NSFW": {
+      const skin = state.skins[action.hash];
+      return {
+        ...state,
+        skins: { ...state.skins, [action.hash]: { ...skin, nsfw: true } },
+      };
+    }
     case "GOT_TOTAL_NUMBER_OF_SKINS": {
       if (state.totalNumberOfSkins === action.number) {
         return state;

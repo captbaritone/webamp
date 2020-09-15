@@ -19,6 +19,10 @@ export function requestedRandomSkin() {
   return { type: "REQUESTED_RANDOM_SKIN" };
 }
 
+export function markNsfw(hash) {
+  return { type: "MARK_NSFW", hash };
+}
+
 export function gotNewMatchingSkins(skins) {
   return { type: "GOT_NEW_MATCHING_SKINS", skins };
 }

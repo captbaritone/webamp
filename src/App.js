@@ -46,44 +46,49 @@ function App(props) {
   );
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    noClick: true,
+    noClick: false,
   });
 
   const fileExplorerOpen = useSelector(Selectors.getFileExplorerOpen);
 
   return (
-    <div {...getRootProps()}>
+    <div>
       <Head />
       <Header />
-      {props.uploadViewOpen || isDragActive ? (
-        <UploadGrid isDragActive={isDragActive} getInputProps={getInputProps} />
-      ) : (
-        <SkinTable
-          columnCount={columnCount}
-          columnWidth={columnWidth}
-          rowHeight={rowHeight}
-          windowHeight={windowHeight}
-          windowWidth={windowWidthWithScrollabar}
-        />
-      )}
-      {props.page === ABOUT_PAGE ? (
-        <Overlay>
-          <About />
-        </Overlay>
-      ) : (
-        props.selectedSkinHash == null || (
-          <Overlay shouldAnimate={props.overlayShouldAnimate}>
-            <FocusedSkin
-              key={props.selectedSkinHash}
-              hash={props.selectedSkinHash}
-              initialHeight={rowHeight}
-              initialWidth={columnWidth}
-            />
-            {fileExplorerOpen && <SkinReadme />}
-            <Metadata />
+      <div {...getRootProps()}>
+        {props.uploadViewOpen || isDragActive ? (
+          <UploadGrid
+            isDragActive={isDragActive}
+            getInputProps={getInputProps}
+          />
+        ) : (
+          <SkinTable
+            columnCount={columnCount}
+            columnWidth={columnWidth}
+            rowHeight={rowHeight}
+            windowHeight={windowHeight}
+            windowWidth={windowWidthWithScrollabar}
+          />
+        )}
+        {props.page === ABOUT_PAGE ? (
+          <Overlay>
+            <About />
           </Overlay>
-        )
-      )}
+        ) : (
+          props.selectedSkinHash == null || (
+            <Overlay shouldAnimate={props.overlayShouldAnimate}>
+              <FocusedSkin
+                key={props.selectedSkinHash}
+                hash={props.selectedSkinHash}
+                initialHeight={rowHeight}
+                initialWidth={columnWidth}
+              />
+              {fileExplorerOpen && <SkinReadme />}
+              <Metadata />
+            </Overlay>
+          )
+        )}
+      </div>
     </div>
   );
 }

@@ -5,13 +5,16 @@ import LinkInput from "./LinkInput";
 import { API_URL } from "../constants";
 // import * as Actions from "../redux/actionCreators";
 import * as Selectors from "../redux/selectors";
+import * as Actions from "../redux/actionCreators";
 import { useSelector } from "react-redux";
 // import { useActionCreator } from "../hooks";
 import DownloadText from "./DownloadText";
+import { useActionCreator } from "../hooks";
 
 function Metadata() {
   const hash = useSelector(Selectors.getSelectedSkinHash);
   const skinData = useSelector((state) => state.skins[hash] || null);
+  console.log(skinData);
   const fileName = skinData && skinData.fileName;
 
   const permalink = useSelector(
@@ -19,20 +22,12 @@ function Metadata() {
   )(hash);
   // const toggleFileExplorer = useActionCreator(Actions.toggleFileExplorer);
   const focusedSkinFile = useSelector(Selectors.getFocusedSkinFile);
+  const markNsfw = useActionCreator(Actions.markNsfw);
   const [showLink, setShowLink] = useState(false);
   // TODO: Move to Epic
   async function report(e) {
     e.preventDefault();
-    try {
-      await fetch(`${API_URL}/skins/${hash}/report`, {
-        method: "POST",
-        mode: "cors",
-      });
-    } catch (e) {
-      alert("Oops. Something went wrong. Please try again later.");
-      return;
-    }
-    alert("Thanks for reporting. We'll review this skin.");
+    markNsfw(hash);
   }
 
   let readmeLink = null;
@@ -90,19 +85,23 @@ function Metadata() {
     >
       Webamp
     </a>,
-    <button
-      onClick={report}
-      style={{
-        border: "none",
-        background: "none",
-        padding: 0,
-        textDecoration: "underline",
-        cursor: "pointer",
-        margin: 0,
-      }}
-    >
-      Report as NSFW
-    </button>,
+    skinData.nsfw ? (
+      "NSFW"
+    ) : (
+      <button
+        onClick={report}
+        style={{
+          border: "none",
+          background: "none",
+          padding: 0,
+          textDecoration: "underline",
+          cursor: "pointer",
+          margin: 0,
+        }}
+      >
+        Report as NSFW
+      </button>
+    ),
   ].filter(Boolean);
   return (
     <div className="metadata">
