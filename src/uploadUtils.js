@@ -33,14 +33,19 @@ export function isValidSkinFilename(filename) {
   return validSkinFilename.test(filename);
 }
 
-export async function isClassicSkin(file) {
+export async function getSkinType(file) {
   const JSZip = await import("jszip");
   try {
     const zip = await JSZip.loadAsync(file);
-    return zip.file(/main\.bmp$/i).length > 0;
+    if (zip.file(/main\.bmp$/i).length > 0) {
+      return "CLASSIC";
+    } else if (zip.file(/skin\.xml$/i).length > 0) {
+      return "MODERN";
+    }
+    return null;
   } catch (e) {
     // TODO: We could give a better message here.
     console.error(e);
-    return false;
+    return null;
   }
 }

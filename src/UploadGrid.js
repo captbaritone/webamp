@@ -28,7 +28,6 @@ function useBucketed(filesArr) {
   return useMemo(() => {
     const missing = [];
     const notSkins = [];
-    const modernSkins = [];
     const foundSkins = [];
     filesArr.forEach((file) => {
       switch (file.status) {
@@ -39,10 +38,8 @@ function useBucketed(filesArr) {
           missing.push(file);
           break;
         case "INVALID_FILE_EXTENSION":
+        case "INVALID_ARCHIVE":
           notSkins.push(file);
-          break;
-        case "NOT_CLASSIC_SKIN":
-          modernSkins.push(file);
           break;
         case "FOUND":
           foundSkins.push(file);
@@ -50,7 +47,7 @@ function useBucketed(filesArr) {
         default:
       }
     });
-    return { missing, notSkins, modernSkins, foundSkins };
+    return { missing, notSkins, foundSkins };
   }, [filesArr]);
 }
 
@@ -58,10 +55,10 @@ function Plural({ count, single, plural }) {
   return count === 1 ? single : plural;
 }
 
-function Inner({ getInputProps, isDragActive, files }) {
+function Inner({ files }) {
   const tryToUploadAllFiles = useActionCreator(Actions.tryToUploadAllFiles);
   const filesArr = Object.values(files);
-  const { missing, notSkins, modernSkins, foundSkins } = useBucketed(filesArr);
+  const { missing, notSkins, foundSkins } = useBucketed(filesArr);
 
   if (filesArr.some((file) => file.status === "NEW")) {
     return (
@@ -93,127 +90,98 @@ function Inner({ getInputProps, isDragActive, files }) {
           </tr>
         </thead>
         <tbody>
-          {missing.map((file) => {
-            switch (file.status) {
-              case "MISSING":
-                return (
-                  <tr>
-                    <td />
-                    <td>
-                      <code>{file.file.name}</code>
-                    </td>
-                  </tr>
-                );
-              case "UPLOADING":
-                return (
-                  <tr>
-                    <td>🚀 Uploading...</td>
-                    <td>
-                      <code>{file.file.name}</code>
-                    </td>
-                  </tr>
-                );
-              case "UPLOAD_FAILED":
-                return (
-                  <>
-                    <td>❌ Upload Failed</td>
-                    <td>
-                      <code>{file.file.name}</code>
-                    </td>
-                  </>
-                );
-              case "ARCHIVED":
-                return (
-                  <>
-                    <td>✅ Added!</td>
-                    <td>
-                      <a
-                        href={Utils.museumUrlFromHash(file.md5)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <code>{file.file.name}</code>
-                      </a>
-                    </td>
-                  </>
-                );
-              default:
-                console.error(`Unexpected file status: ${file.status}`);
-                return null;
-            }
-          })}
+          {missing
+            .map((file) => {
+              const fileName = <code>{file.file.name}</code>;
+              switch (file.status) {
+                case "MISSING":
+                  return (
+                    <>
+                      <td />
+                      <td>{fileName}</td>
+                    </>
+                  );
+                case "UPLOADING":
+                  return (
+                    <>
+                      <td>🚀 Uploading...</td>
+                      <td>{fileName}</td>
+                    </>
+                  );
+                case "UPLOAD_FAILED":
+                  return (
+                    <>
+                      <td>❌ Upload Failed</td>
+                      <td>{fileName}</td>
+                    </>
+                  );
+                case "ARCHIVED":
+                  return (
+                    <>
+                      <td>✅ Added!</td>
+                      <td>
+                        {file.skinType === "CLASSIC" ? (
+                          <a
+                            href={Utils.museumUrlFromHash(file.md5)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {fileName}
+                          </a>
+                        ) : file.skinType === "MODERN" ? (
+                          <>
+                            {fileName} (Note: Modern skins are not yet visible
+                            in the museum)
+                          </>
+                        ) : // TODO: Throw?
+                        null}
+                      </td>
+                    </>
+                  );
+                default:
+                  console.error(`Unexpected file status: ${file.status}`);
+                  return null;
+              }
+            })
+            .map((rows, i) => (
+              <tr key={i}>{rows}</tr>
+            ))}
         </tbody>
       </table>
       <Section
-        open={false}
-        files={missing}
-        title={<>New skins ({missing.length.toLocaleString()})</>}
-        render={(file) => {
-          switch (file.status) {
-            case "MISSING":
-              return <code>{file.file.name}</code>;
-            case "UPLOADING":
-              return (
-                <>
-                  <code>{file.file.name}</code> (🚀 Uploading...)
-                </>
-              );
-            case "UPLOAD_FAILED":
-              return (
-                <>
-                  <code>{file.file.name}</code> (❌ Upload Failed)
-                </>
-              );
-            case "ARCHIVED":
-              return (
-                <>
-                  <a
-                    href={Utils.museumUrlFromHash(file.md5)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <code>{file.file.name}</code>
-                  </a>{" "}
-                  (✅ Added!)
-                </>
-              );
-            default:
-              console.error(`Unexpected file status: ${file.status}`);
-              return null;
-          }
-        }}
-      />
-      <Section
         files={notSkins}
         title={
-          <>Files that are not skins ({notSkins.length.toLocaleString()})</>
-        }
-        render={(file) => <code>{file.file.name}</code>}
-      />
-      <Section
-        files={modernSkins}
-        title={
           <>
-            Modern Skins (we're not accepting these yet) (
-            {modernSkins.length.toLocaleString()})
+            Files that are not valid skins ({notSkins.length.toLocaleString()})
           </>
         }
         render={(file) => <code>{file.file.name}</code>}
       />
+
       <Section
         files={foundSkins}
         title={
           <>Already in the museum ({foundSkins.length.toLocaleString()})</>
         }
-        render={(file) => (
-          <a
-            href={Utils.museumUrlFromHash(file.md5)}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <code>{file.file.name}</code>
-          </a>
-        )}
+        render={(file) => {
+          if (file.skinType === "MODERN") {
+            return (
+              <>
+                <code>{file.file.name}</code> (Note: Modern skins are not yet
+                visible in the museum)
+              </>
+            );
+          }
+          return (
+            <a
+              href={Utils.museumUrlFromHash(file.md5)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <code>{file.file.name}</code>
+            </a>
+          );
+        }}
       />
     </>
   );
