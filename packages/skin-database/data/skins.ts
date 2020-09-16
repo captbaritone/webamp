@@ -3,9 +3,14 @@ import path from "path";
 import logger from "../logger";
 import { searchIndex } from "../algolia";
 import { truncate } from "../utils";
-import { DBSkinRecord, SkinRecord, DBIARecord, TweetStatus } from "../types";
+import {
+  DBSkinRecord,
+  SkinRecord,
+  DBIARecord,
+  TweetStatus,
+  NsfwPrediction,
+} from "../types";
 import fetch from "node-fetch";
-import { analyseBuffer, NsfwPrediction } from "../nsfwImage";
 
 const SKIN_TYPE = {
   CLASSIC: 1,
@@ -188,14 +193,6 @@ async function getMd5FromInternetArchvieItemName(itemName: string) {
     .where({ identifier: itemName })
     .first("skin_md5");
   return item == null ? null : item.skin_md5;
-}
-
-export async function getMissingNsfwPredictions() {
-  const skins = await knex("skins")
-    .leftJoin("nsfw_predictions", "nsfw_predictions.skin_md5", "=", "skins.md5")
-    .select("skins.md5")
-    .where({ "nsfw_predictions.id": null, skin_type: 1 });
-  return skins.map(({ md5 }) => md5);
 }
 
 export function getInternetArchiveUrl(itemName: string | null): string | null {
@@ -440,20 +437,6 @@ export async function getScreenshotBuffer(md5: string): Promise<Buffer> {
   return screenshotResponse.buffer();
 }
 
-export async function setNsfwPredictions(
-  md5: string,
-  nsfwPredictions: NsfwPrediction
-): Promise<void> {
-  await skins_CONVERTED.findOneAndUpdate(
-    { md5 },
-    { $set: { nsfwPredictions } }
-  );
-  await knex("nsfw_predictions").insert(
-    { skin_md5: md5, ...nsfwPredictions },
-    []
-  );
-}
-
 export async function setTweetInfo(
   md5: string,
   likes: number,
@@ -466,12 +449,6 @@ export async function setTweetInfo(
   await knex("tweets")
     .where({ skin_md5: md5 })
     .update({ tweet_id: tweetId, likes }, []);
-}
-
-export async function computeAndSetNsfwPredictions(md5: string): Promise<void> {
-  const image = await getScreenshotBuffer(md5);
-  const predictions = await analyseBuffer(image);
-  await setNsfwPredictions(md5, predictions);
 }
 
 export async function getMuseumPage({

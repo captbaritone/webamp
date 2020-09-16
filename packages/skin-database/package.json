@@ -4,7 +4,6 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@tensorflow/tfjs-node": "^2.0.0",
     "algoliasearch": "^4.3.0",
     "aws-sdk": "^2.663.0",
     "cors": "^2.8.5",
@@ -18,7 +17,6 @@
     "md5": "^2.2.1",
     "monk": "^7.0.0",
     "node-fetch": "^2.6.0",
-    "nsfwjs": "^2.2.0",
     "puppeteer": "^1.17.0",
     "rgb-hex": "^3.0.0",
     "shell-escape": "^0.2.0",

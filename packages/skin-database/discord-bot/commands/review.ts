@@ -8,7 +8,6 @@ async function reviewSkin(message: Message, nsfw: boolean): Promise<void> {
     ? Skins.getSkinToReviewForNsfw()
     : Skins.getSkinToReview());
   if (skin == null) {
-    console.log(1.5);
     throw new Error("No skins to review");
   }
   const { md5 } = skin;

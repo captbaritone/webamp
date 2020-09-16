@@ -1,4 +1,10 @@
-import { NsfwPrediction } from "./nsfwImage";
+export type NsfwPrediction = {
+  porn: number;
+  neutral: number;
+  sexy: number;
+  hentai: number;
+  drawing: number;
+};
 
 export type TweetStatus = "APPROVED" | "REJECTED" | "TWEETED" | "UNREVIEWED";
 export type SkinType = "MODERN" | "CLASSIC";

@@ -11,12 +11,6 @@ test("getSkinToReview", async () => {
   expect(typeof filename).toBe("string");
 });
 
-test("getSkinToReviewForNsfw", async () => {
-  const { md5, filename } = await Skins.getSkinToReviewForNsfw();
-  expect(md5.length).toBe(32);
-  expect(typeof filename).toBe("string");
-});
-
 test("getClassicSkinCount", async () => {
   const count = await Skins.getClassicSkinCount();
   expect(count > 60000).toBe(true);
@@ -48,15 +42,6 @@ test("getMd5ByAnything ia", async () => {
     "https://archive.org/details/winampskin_Expensive_HI_FI_Sony_2005"
   );
   expect(md5).toBe("6a2843f40058f86406630671b454d66b");
-});
-test("getMissingNsfwPredictions", async () => {
-  const missing = await Skins.getMissingNsfwPredictions();
-  expect(missing.length).toBe(8);
-});
-
-test.skip("getMissingNsfwPredictions", async () => {
-  const page = await Skins.getMuseumPage({ first: 10, offset: 0 });
-  expect(page).toBe(8);
 });
 
 test("skinExists", async () => {
