@@ -21,7 +21,7 @@
     "jszip": "^3.1.5",
     "lodash": "^4.17.13",
     "md5-file": "^4.0.0",
-    "node-fetch": "^2.3.0",
+    "node-fetch": "^2.6.1",
     "puppeteer": "^1.12.2",
     "shell-escape": "^0.2.0"
   }

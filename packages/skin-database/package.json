@@ -17,7 +17,7 @@
     "lru-cache": "^6.0.0",
     "md5": "^2.2.1",
     "monk": "^7.0.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "nsfwjs": "^2.2.0",
     "puppeteer": "^1.17.0",
     "rgb-hex": "^3.0.0",
