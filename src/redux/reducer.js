@@ -89,7 +89,7 @@ export default function reducer(state = defaultState, action) {
       return setUploadFileStatus(state, action.id, "ARCHIVED");
     }
     case "INVALID_ARCHIVE":
-      return setUploadFileStatus(state, action.id, "INVALID_ARCHIVE");
+      return setUploadFileStatus(state, action.id, "INVALID_ARCHIVE", true);
     case "GOT_FILE_MD5": {
       return {
         ...state,
