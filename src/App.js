@@ -12,7 +12,7 @@ import * as Actions from "./redux/actionCreators";
 import { ABOUT_PAGE } from "./constants";
 import { useWindowSize, useScrollbarWidth, useActionCreator } from "./hooks";
 import { SCREENSHOT_WIDTH, SKIN_RATIO } from "./constants";
-import UploadGrid from "./UploadGrid";
+import UploadGrid from "./upload/UploadGrid";
 import Metadata from "./components/Metadata";
 import SkinReadme from "./SkinReadme";
 import { useDropzone } from "react-dropzone";

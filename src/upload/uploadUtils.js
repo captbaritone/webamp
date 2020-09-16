@@ -1,4 +1,4 @@
-import { API_URL } from "./constants";
+import { API_URL } from "../constants";
 export async function upload(file) {
   const formData = new FormData();
   formData.append("skin", file, file.name);
@@ -22,7 +22,7 @@ export async function checkMd5sAreMissing(md5s) {
 }
 
 export async function hashFile(file) {
-  const { hashFile: hasher } = await import("./hashFile");
+  const { hashFile: hasher } = await import("../hashFile");
   return hasher(file);
 }
 

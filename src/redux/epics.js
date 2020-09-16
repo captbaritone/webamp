@@ -18,7 +18,7 @@ import {
 import { search } from "../algolia";
 import queryParser from "../queryParser";
 import { API_URL, CHUNK_SIZE } from "../constants";
-import * as UploadUtils from "../uploadUtils";
+import * as UploadUtils from "../upload/uploadUtils";
 
 const urlChangedEpic = (actions) =>
   actions.pipe(
