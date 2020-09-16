@@ -66,8 +66,18 @@ export default function reducer(state = defaultState, action) {
         true
       );
     }
-    case "NOT_CLASSIC_SKIN": {
-      return setUploadFileStatus(state, action.id, "NOT_CLASSIC_SKIN", true);
+    case "GOT_SKIN_TYPE": {
+      const previousFile = state.fileUploads[action.id];
+      return {
+        ...state,
+        fileUploads: {
+          ...state.fileUploads,
+          [action.id]: {
+            ...previousFile,
+            skinType: action.skinType,
+          },
+        },
+      };
     }
     case "STARTING_FILE_UPLOAD": {
       return setUploadFileStatus(state, action.id, "UPLOADING");
@@ -78,6 +88,8 @@ export default function reducer(state = defaultState, action) {
     case "ARCHIVED_SKIN": {
       return setUploadFileStatus(state, action.id, "ARCHIVED");
     }
+    case "INVALID_ARCHIVE":
+      return setUploadFileStatus(state, action.id, "INVALID_ARCHIVE");
     case "GOT_FILE_MD5": {
       return {
         ...state,
@@ -232,7 +244,6 @@ export default function reducer(state = defaultState, action) {
         },
       };
     case "REQUESTED_PAGE":
-      console.log(action);
       return {
         ...state,
         activeContentPage: action.page,

@@ -18,7 +18,7 @@ import {
 import { search } from "../algolia";
 import queryParser from "../queryParser";
 import { API_URL, CHUNK_SIZE } from "../constants";
-import * as UploadUtils from "../uploadUtils";
+import * as UploadUtils from "../upload/uploadUtils";
 
 const urlChangedEpic = (actions) =>
   actions.pipe(
@@ -213,16 +213,17 @@ const uploadSingleFileEpic = (actions) =>
       if (!UploadUtils.isValidSkinFilename(file.name)) {
         return of(Actions.invalidFileExtension(id));
       }
-      return from(UploadUtils.isClassicSkin(file))
+      return from(UploadUtils.getSkinType(file))
         .pipe(
-          mergeMap((isClassic) => {
-            if (!isClassic) {
-              return of(Actions.notClassicSkin(id));
+          mergeMap((skinType) => {
+            if (skinType === null) {
+              return of(Actions.invalidArchive(id));
             }
-            return from(UploadUtils.hashFile(file)).pipe(
-              map((md5) => {
-                return Actions.gotFileMd5(id, md5);
-              })
+            return concat(
+              of(Actions.gotSkinType(id, skinType)),
+              from(UploadUtils.hashFile(file)).pipe(
+                map((md5) => Actions.gotFileMd5(id, md5))
+              )
             );
           })
         )
@@ -235,8 +236,8 @@ const checkIfUploadsAreMissingEpic = (actions, state) =>
     filter((action) => {
       return (
         (action.type === "GOT_FILE_MD5" ||
-          action.type === "NOT_CLASSIC_SKIN" ||
-          action.type === "INVALID_FILE_EXTENSION") &&
+          action.type === "INVALID_FILE_EXTENSION" ||
+          action.type === "INVALID_ARCHIVE") &&
         Selectors.getAreReadyToCheckMissingUploads(state.value)
       );
     }),
@@ -323,7 +324,6 @@ const loggingEpic = (actions, state) =>
         case "TRY_TO_UPLOAD_ALL_FILES":
         case "INVALID_FILE_EXTENSION":
         case "GOT_FILE":
-        case "NOT_CLASSIC_SKIN":
         case "GOT_MISSING_AND_FOUND_MD5S":
           window.ga("send", "event", "redux", action.type);
           break;

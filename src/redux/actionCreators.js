@@ -67,8 +67,12 @@ export function invalidFileExtension(id) {
   return { type: "INVALID_FILE_EXTENSION", id };
 }
 
-export function notClassicSkin(id) {
-  return { type: "NOT_CLASSIC_SKIN", id };
+export function invalidArchive(id) {
+  return { type: "INVALID_ARCHIVE", id };
+}
+
+export function gotSkinType(id, skinType) {
+  return { type: "GOT_SKIN_TYPE", id, skinType };
 }
 
 export function gotFileMd5(id, md5) {

@@ -1,4 +1,4 @@
-import { API_URL } from "./constants";
+import { API_URL } from "../constants";
 export async function upload(file) {
   const formData = new FormData();
   formData.append("skin", file, file.name);
@@ -22,7 +22,7 @@ export async function checkMd5sAreMissing(md5s) {
 }
 
 export async function hashFile(file) {
-  const { hashFile: hasher } = await import("./hashFile");
+  const { hashFile: hasher } = await import("../hashFile");
   return hasher(file);
 }
 
@@ -33,14 +33,19 @@ export function isValidSkinFilename(filename) {
   return validSkinFilename.test(filename);
 }
 
-export async function isClassicSkin(file) {
+export async function getSkinType(file) {
   const JSZip = await import("jszip");
   try {
     const zip = await JSZip.loadAsync(file);
-    return zip.file(/main\.bmp$/i).length > 0;
+    if (zip.file(/main\.bmp$/i).length > 0) {
+      return "CLASSIC";
+    } else if (zip.file(/skin\.xml$/i).length > 0) {
+      return "MODERN";
+    }
+    return null;
   } catch (e) {
     // TODO: We could give a better message here.
     console.error(e);
-    return false;
+    return null;
   }
 }
