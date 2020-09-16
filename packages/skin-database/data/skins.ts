@@ -56,10 +56,26 @@ function getWebampUrl(md5: string): string {
   return `https://webamp.org?skinUrl=${getSkinUrl(md5)}`;
 }
 
-export async function addSkin({ md5, filePath, uploader, averageColor }) {
+function getMuseumUrl(md5: string): string {
+  return `https://skins.webamp.org/skin/${md5}`;
+}
+
+export async function addSkin({
+  md5,
+  filePath,
+  uploader,
+  averageColor,
+  modern,
+}: {
+  md5: string;
+  filePath: string;
+  uploader: string;
+  averageColor?: string;
+  modern: boolean;
+}) {
   skins_CONVERTED.insert({
     md5,
-    type: "CLASSIC",
+    type: modern ? "MODERN" : "CLASSIC",
     filePaths: [filePath],
     uploader,
     averageColor,
@@ -67,7 +83,7 @@ export async function addSkin({ md5, filePath, uploader, averageColor }) {
   await knex("skins").insert(
     {
       md5,
-      skin_type: SKIN_TYPE.CLASSIC,
+      skin_type: modern ? SKIN_TYPE.MODERN : SKIN_TYPE.CLASSIC,
       average_color: averageColor,
     },
     []
@@ -114,6 +130,7 @@ export async function skinExists(md5: string): Promise<boolean> {
 }
 
 // TODO: SQLITE
+// TODO: Handle modern skins
 export async function getSkinByMd5_DEPRECATED(
   md5: string
 ): Promise<SkinRecord | null> {
@@ -147,6 +164,7 @@ export async function getSkinByMd5_DEPRECATED(
     imageHash: _skin.imageHash,
     nsfwPredictions: _skin.nsfwPredictions,
     approved: _skin.approved,
+    rejected: _skin.rejected,
     averageColor: _skin.averageColor,
     emails: _skin.emails,
     tweetStatus,
@@ -155,6 +173,7 @@ export async function getSkinByMd5_DEPRECATED(
     fileNames: getFilenames(_skin),
     canonicalFilename: getCanonicalFilename(_skin),
     webampUrl: getWebampUrl(_skin.md5),
+    museumUrl: getMuseumUrl(_skin.md5),
     internetArchiveItemName,
     internetArchiveUrl,
   };
@@ -495,22 +514,31 @@ export async function getMuseumPageSql({
 > {
   const skins = await knex.raw(
     `
-SELECT skins.md5, 
-       skins.average_color, 
-       skin_reviews.review = 'NSFW'     AS nsfw, 
-       skin_reviews.review = 'APPROVED' AS approved, 
-       skin_reviews.review = 'REJECTED' AS rejected, 
-       tweets.likes
+    SELECT skins.md5, 
+    skins.average_color, 
+    skin_reviews.review = 'NSFW'     AS nsfw, 
+    skin_reviews.review = 'APPROVED' AS approved, 
+    skin_reviews.review = 'REJECTED' AS rejected, 
+    tweets.likes,
+  CASE skins.md5 
+   WHEN "5e4f10275dcb1fb211d4a8b4f1bda236" THEN 0 -- Base
+   WHEN "cd251187a5e6ff54ce938d26f1f2de02" THEN 1 -- Winamp3 Classified
+   WHEN "b0fb83cc20af3abe264291bb17fb2a13" THEN 2 -- Winamp5 Classified
+   WHEN "d6010aa35bed659bc1311820daa4b341" THEN 3 -- Bento Classified
+   ELSE 1000
+  END priority
 FROM   skins 
-       LEFT JOIN tweets 
-              ON tweets.skin_md5 = skins.md5 
-       LEFT JOIN skin_reviews 
-              ON skin_reviews.skin_md5 = skins.md5 
+    LEFT JOIN tweets 
+           ON tweets.skin_md5 = skins.md5 
+    LEFT JOIN skin_reviews 
+           ON skin_reviews.skin_md5 = skins.md5 
 WHERE  skin_type = 1 
-ORDER  BY tweets.likes DESC, 
-          nsfw ASC, 
-          approved DESC, 
-          rejected ASC 
+ORDER  BY 
+      priority ASC,
+       tweets.likes DESC, 
+       nsfw ASC, 
+       approved DESC, 
+       rejected ASC 
 LIMIT ? offset ?`,
     [first, offset]
   );

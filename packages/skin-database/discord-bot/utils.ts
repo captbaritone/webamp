@@ -44,7 +44,6 @@ export async function postSkin({
     canonicalFilename,
     screenshotUrl,
     skinUrl,
-    webampUrl,
     averageColor,
     emails,
     tweetUrl,
@@ -54,12 +53,13 @@ export async function postSkin({
     internetArchiveItemName,
     readmeText,
     nsfw,
+    museumUrl,
   } = skin;
   const title = _title ? _title(canonicalFilename) : canonicalFilename;
 
   const embed = new RichEmbed()
     .setTitle(title)
-    .addField("Try Online", `[webamp.org](${webampUrl})`, true)
+    .addField("Try Online", `[skins.webamp.org](${museumUrl})`, true)
     .addField("Download", `[${canonicalFilename}](${skinUrl})`, true)
     .addField("Md5", md5, true);
 
@@ -121,7 +121,7 @@ export async function postSkin({
 
   // @ts-ignore WAT?
   const msg = await dest.send(embed);
-  if (tweetStatus === "TWEETED") {
+  if (tweetStatus !== "UNREVIEWED") {
     return;
   }
 
@@ -182,4 +182,33 @@ function getPrettyTwitterStatus(status: TweetStatus): string {
     case "TWEETED":
       return "Tweeted 🐦";
   }
+}
+
+export async function sendAlreadyReviewed({
+  md5,
+  dest,
+}: {
+  md5: string;
+  dest: TextChannel | DMChannel | GroupDMChannel;
+}) {
+  const skin = await Skins.getSkinByMd5_DEPRECATED(md5);
+  if (skin == null) {
+    console.warn("Could not find skin for md5", { md5, alert: true });
+    logger.warn("Could not find skin for md5", { md5, alert: true });
+    return;
+  }
+  const { canonicalFilename, museumUrl, tweetStatus, nsfw } = skin;
+
+  const embed = new RichEmbed()
+    .setTitle(
+      `Someone flagged "${canonicalFilename}", but it's already been reviwed.`
+    )
+    .addField("Status", getPrettyTwitterStatus(tweetStatus), true)
+    .addField("Museum", `[${canonicalFilename}](${museumUrl})`, true);
+
+  if (nsfw) {
+    embed.addField("NSFW", `🔞`, true);
+  }
+
+  dest.send(embed);
 }

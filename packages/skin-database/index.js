@@ -80,6 +80,7 @@ app.get("/skins/", async (req, res) => {
 });
 
 app.post("/skins/missing", async (req, res) => {
+  console.log("Checking for missing skins.");
   const missing = [];
   const found = [];
   for (const md5 of req.body.hashes) {
@@ -89,25 +90,55 @@ app.post("/skins/missing", async (req, res) => {
       found.push(md5);
     }
   }
+  console.log(
+    `${found.length} skins are found and ${missing.length} are missing.`
+  );
   res.json({ missing, found });
 });
 
 app.post("/skins/", async (req, res) => {
+  const client = new Discord.Client();
+  await client.login(config.discordToken);
+  const dest = client.channels.get(config.SKIN_UPLOADS_CHANNEL_ID);
+
   const files = req.files;
   if (files == null) {
+    dest.send("Someone hit the upload endpoint with no files attached.");
     res.status(500).send({ error: "No file supplied" });
     return;
   }
   const upload = req.files.skin;
   if (upload == null) {
+    dest.send("Someone hit the upload endpoint with no files attached.");
     res.status(500).send({ error: "No file supplied" });
     return;
   }
-  const result = await addSkinFromBuffer(upload.data, upload.name, "Web API");
+  let result;
+
+  try {
+    result = await addSkinFromBuffer(upload.data, upload.name, "Web API");
+  } catch (e) {
+    console.error(e);
+    dest.send(`Encountered an error uploading a skin: ${e.message}`);
+    res.status(500).send({ error: `Error adding skin: ${e.message}` });
+    return;
+  }
 
   if (result.status === "ADDED") {
-    console.log(`Updating index for ${result.md5}.`);
-    await Skins.updateSearchIndex(result.md5);
+    // await new Promise((resolve) => setTimeout(resolve, 3000));
+    if (result.skinType === "CLASSIC") {
+      console.log(`Going to post new skin to discord: ${result.md5}`);
+      // Don't await
+      Utils.postSkin({
+        md5: result.md5,
+        title: (filename) => `New skin uploaded: ${filename}`,
+        dest,
+      });
+    } else if (result.skinType === "MODERN") {
+      dest.send(
+        `Someone uploaded a new modern skin: ${upload.name} (${result.md5})`
+      );
+    }
   }
 
   res.json({ ...result, filename: upload.name });
@@ -139,12 +170,19 @@ app.post("/skins/:md5/report", async (req, res) => {
   await client.login(config.discordToken);
   const dest = client.channels.get(config.NSFW_SKIN_CHANNEL_ID);
 
-  // Don't await
-  Utils.postSkin({
-    md5,
-    title: (filename) => `Review: ${filename}`,
-    dest,
-  });
+  const skin = await Skins.getSkinByMd5_DEPRECATED(md5);
+
+  if (skin.tweetStatus === "UNREVIEWED") {
+    // Don't await
+    Utils.postSkin({
+      md5,
+      title: (filename) => `Review: ${filename}`,
+      dest,
+    });
+  } else {
+    Utils.sendAlreadyReviewed({ md5, dest });
+  }
+
   res.send("The skin has been reported and will be reviewed shortly.");
 });
 

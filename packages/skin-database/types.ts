@@ -1,6 +1,7 @@
 import { NsfwPrediction } from "./nsfwImage";
 
 export type TweetStatus = "APPROVED" | "REJECTED" | "TWEETED" | "UNREVIEWED";
+export type SkinType = "MODERN" | "CLASSIC";
 
 export type DBSkinRecord = {
   md5: string;
@@ -35,6 +36,7 @@ export type SkinRecord = {
   skinUrl: string;
   canonicalFilename: string | null;
   webampUrl: string;
+  museumUrl: string;
   tweeted?: boolean;
   rejected?: boolean;
   approved?: boolean;

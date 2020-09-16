@@ -3,12 +3,17 @@ AWS.config.update({ region: "us-west-2" });
 
 const s3 = new AWS.S3();
 
-function putSkin(md5, buffer) {
+function putSkin(md5, buffer, ext = "wsz") {
   return new Promise((resolve, rejectPromise) => {
     const bucketName = "cdn.webampskins.org";
-    const key = `skins/${md5}.wsz`;
+    const key = `skins/${md5}.${ext}`;
     s3.putObject(
-      { Bucket: bucketName, Key: key, Body: buffer, ACL: "public-read" },
+      {
+        Bucket: bucketName,
+        Key: key,
+        Body: buffer,
+        ACL: "public-read",
+      },
       (err) => {
         if (err) {
           rejectPromise(err);
@@ -26,7 +31,12 @@ function putScreenshot(md5, buffer) {
     const bucketName = "cdn.webampskins.org";
     const key = `screenshots/${md5}.png`;
     s3.putObject(
-      { Bucket: bucketName, Key: key, Body: buffer, ACL: "public-read" },
+      {
+        Bucket: bucketName,
+        Key: key,
+        Body: buffer,
+        ACL: "public-read",
+      },
       (err) => {
         if (err) {
           rejectPromise(err);
