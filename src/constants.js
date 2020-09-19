@@ -9,6 +9,5 @@ export const S3_SCREENSHOT_CDN = "https://s3.amazonaws.com/cdn.webampskins.org";
 export const SCREENSHOT_CDN = "https://cdn.webampskins.org";
 export const SKIN_CDN = "https://cdn.webampskins.org";
 export const API_URL = "https://api.webampskins.org";
-export const SHOW_UPLOAD = window.location.hash.includes("upload");
 export const HEADING_HEIGHT = 46;
 export const CHUNK_SIZE = 300;
