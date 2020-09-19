@@ -25,6 +25,7 @@ function UploadButton() {
   if (uploadViewOpen) {
     return (
       <button
+        title="Close"
         onClick={() => {
           closeUploadFiles();
         }}
@@ -36,6 +37,7 @@ function UploadButton() {
   } else {
     return (
       <button
+        title="Upload"
         onClick={(e) => {
           e.preventDefault();
           requestedUploadPage();
