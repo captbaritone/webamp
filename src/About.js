@@ -8,7 +8,14 @@ function About() {
         The Winamp Skin Museum is an attempt to build a <i>fast</i>,{" "}
         <i>searchable</i>, and <i>shareable</i>, interface for the collection of
         Winamp Skins amassed on the{" "}
-        <a href="https://archive.org/details/winampskins">Internet Archive</a>.
+        <a
+          href="https://archive.org/details/winampskins"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Internet Archive
+        </a>
+        .
       </p>
       <h2>Features:</h2>
       <ul>
@@ -17,7 +24,13 @@ function About() {
         </li>
         <li>
           <strong>Experience</strong> skins with integrated{" "}
-          <a href="https://webamp.org">Webamp</a>
+          <a
+            href="https://webamp.org"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Webamp
+          </a>
         </li>
         <li>
           <strong>Fast search</strong> of indexed readme.txt texts
@@ -25,11 +38,36 @@ function About() {
       </ul>
       <p>
         Made by <a href="https://jordaneldredge.com">Jordan Eldredge</a> (
-        <a href="https://twitter.com/captbaritone">@captbaritone</a>)
+        <a
+          href="https://twitter.com/captbaritone"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          @captbaritone
+        </a>
+        )
       </p>
       <p>
         You might enjoy my Twitter bot{" "}
-        <a href="https://twitter.com/winampskins">@winampskins</a>
+        <a
+          href="https://twitter.com/winampskins"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          @winampskins
+        </a>
+      </p>
+      <hr />
+      <p>
+        Want Winamp on your Windows PC, but with supported updates & new
+        features?{" "}
+        <a
+          href="https://getwacup.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Try WACUP
+        </a>
       </p>
     </div>
   );
