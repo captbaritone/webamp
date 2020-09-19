@@ -54,6 +54,7 @@ const selectedSkinEpic = (actions) =>
     filter((action) => action.type === "SELECTED_SKIN"),
     switchMap((action) => {
       return from(fetch(Utils.skinUrlFromHash(action.hash))).pipe(
+        // TODO: Handle 404
         switchMap((response) => response.blob()),
         switchMap(async (blob) => {
           const JSZip = await import("jszip");
@@ -162,6 +163,8 @@ const unloadedSkinEpic = (actions, states) =>
       const response = await fetch(
         `${API_URL}/skins?offset=${chunk * CHUNK_SIZE}&first=${CHUNK_SIZE}`
       );
+
+      // TODO: Handle 404
 
       const body = await response.json();
       return [body, chunk];
