@@ -14,7 +14,6 @@ import { useActionCreator } from "../hooks";
 function Metadata() {
   const hash = useSelector(Selectors.getSelectedSkinHash);
   const skinData = useSelector((state) => state.skins[hash] || null);
-  console.log(skinData);
   const fileName = skinData && skinData.fileName;
 
   const permalink = useSelector(

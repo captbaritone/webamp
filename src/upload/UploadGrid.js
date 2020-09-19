@@ -5,6 +5,7 @@ import { useActionCreator } from "../hooks";
 import * as Actions from "../redux/actionCreators";
 import DropTarget from "../DropTarget";
 import UploadSection from "./UploadSection";
+import { WINAMP_NORMAL } from "../theme";
 
 function useBucketed(filesArr) {
   return useMemo(() => {
@@ -113,6 +114,7 @@ function UploadGrid({ getInputProps, isDragActive, ...props }) {
         display: "flex",
         flexDirection: "column",
         color: "lightgrey",
+        fontFamily: "Arial, Helvetica, sans-serif",
       }}
     >
       {isDragActive || Object.keys(files).length === 0 ? (

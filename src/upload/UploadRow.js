@@ -1,20 +1,21 @@
 import React from "react";
 import * as Utils from "../utils";
+import { WINAMP_NORMAL, WINAMP_SELECTED_BG } from "../theme";
 
 function Row({ name, loading, right, complete }) {
   return (
     <div
       style={{
-        borderBottom: "1px solid rgba(32, 31, 51, 1)",
         position: "relative",
-        paddingTop: 4,
+        paddingTop: 2,
         paddingBottom: 2,
+        fontSize: 14,
       }}
     >
       {(loading != null || complete) && (
         <div
           style={{
-            backgroundColor: "rgba(51, 71, 88, 1)",
+            backgroundColor: WINAMP_SELECTED_BG,
             position: "absolute",
             left: 0,
             top: 0,
@@ -33,13 +34,13 @@ function Row({ name, loading, right, complete }) {
           position: "relative",
           display: "flex",
           justifyContent: "space-between",
+          color: WINAMP_NORMAL,
         }}
       >
-        <code>{name}</code>
+        <span>{name}</span>
         {right && (
-          <code
+          <span
             style={{
-              color: "darkgray",
               paddingLeft: 10,
               // Ensure we are wide enough that text changes won't affect the layout
               minWidth: 100,
@@ -47,7 +48,7 @@ function Row({ name, loading, right, complete }) {
             }}
           >
             {right}
-          </code>
+          </span>
         )}
       </div>
     </div>
@@ -60,7 +61,7 @@ function SkinLink({ md5, children }) {
       href={Utils.museumUrlFromHash(md5)}
       target="_blank"
       rel="noopener noreferrer"
-      style={{ color: "darkgray" }}
+      style={{ color: WINAMP_NORMAL }}
     >
       {children}
     </a>
