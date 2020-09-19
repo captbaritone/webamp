@@ -62,6 +62,7 @@ function Header() {
     <div id="search">
       <h1>
         <a
+          title="Home"
           href="/"
           onClick={(e) => {
             if (Utils.eventIsLinkClick(e)) {
@@ -120,6 +121,7 @@ function Header() {
             Random
           </button>
           <button
+            title="About"
             onClick={() => {
               requestedAboutPage();
             }}
