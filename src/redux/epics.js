@@ -132,9 +132,8 @@ const searchEpic = (actions) =>
           const matchingSkins = content.hits.map((hit) => ({
             hash: hit.objectID,
             fileName: hit.fileName,
-            color: hit.color,
             // TODO: Some records still have float scores not booleans. Ignore those.
-            nsfw: hit.nsfw === true,
+            nsfw: hit.nsfw === true || hit.nsfw === 1,
           }));
           return Actions.gotNewMatchingSkins(matchingSkins);
         })
@@ -357,8 +356,8 @@ const skinDataEpic = (actions, state) => {
       const skinData = state.value.skins[hash];
       if (
         skinData == null ||
-        skinData.color == null ||
-        skinData.fileName == null
+        skinData.fileName == null ||
+        skinData.nsfw == null
       ) {
         return from(fetch(`${API_URL}/skins/${hash}`)).pipe(
           switchMap((response) => response.json()),
@@ -366,7 +365,6 @@ const skinDataEpic = (actions, state) => {
             Actions.gotSkinData(hash, {
               md5: hash,
               fileName: body.canonicalFilename,
-              color: body.averageColor,
               nsfw: body.nsfw,
             })
           )
