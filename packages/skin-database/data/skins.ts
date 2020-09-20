@@ -1,18 +1,14 @@
 import { db, knex } from "../db";
 import path from "path";
 import logger from "../logger";
+import md5Hash from "md5";
 import { searchIndex } from "../algolia";
 import { truncate } from "../utils";
-import {
-  DBSkinRecord,
-  SkinRecord,
-  DBIARecord,
-  TweetStatus,
-  NsfwPrediction,
-} from "../types";
+import { DBSkinRecord, SkinRecord, DBIARecord, TweetStatus } from "../types";
 import fetch from "node-fetch";
+import * as S3 from "../s3";
 
-const SKIN_TYPE = {
+export const SKIN_TYPE = {
   CLASSIC: 1,
   MODERN: 2,
   PACK: 3,
@@ -23,24 +19,6 @@ const skins_DEPRECATED = db.get("skins");
 const skins_CONVERTED = db.get("skins");
 const iaItems = db.get("internetArchiveItems");
 
-const CLASSIC_QUERY = {
-  type: "CLASSIC",
-};
-
-const TWEETABLE_QUERY = {
-  tweeted: { $ne: true },
-  approved: true,
-  rejected: { $ne: true },
-  type: "CLASSIC",
-};
-
-const REVIEWABLE_QUERY = {
-  tweeted: { $ne: true },
-  approved: { $ne: true },
-  rejected: { $ne: true },
-  type: "CLASSIC",
-};
-
 function getFilenames(skin: DBSkinRecord): string[] {
   return skin.filePaths.map((p) => path.basename(p));
 }
@@ -50,7 +28,7 @@ function getCanonicalFilename(skin: DBSkinRecord): string | null {
   return fileNames[0] || null;
 }
 
-function getSkinUrl(md5: string): string {
+export function getSkinUrl(md5: string): string {
   return `https://cdn.webampskins.org/skins/${md5}.wsz`;
 }
 function getScreenshotUrl(md5: string): string {
@@ -71,12 +49,14 @@ export async function addSkin({
   uploader,
   averageColor,
   modern,
+  readmeText,
 }: {
   md5: string;
   filePath: string;
   uploader: string;
   averageColor?: string;
   modern: boolean;
+  readmeText: string | null;
 }) {
   skins_CONVERTED.insert({
     md5,
@@ -84,12 +64,14 @@ export async function addSkin({
     filePaths: [filePath],
     uploader,
     averageColor,
+    readmeText,
   });
   await knex("skins").insert(
     {
       md5,
       skin_type: modern ? SKIN_TYPE.MODERN : SKIN_TYPE.CLASSIC,
       average_color: averageColor,
+      readme_text: readmeText,
     },
     []
   );
@@ -105,6 +87,26 @@ export async function addSkin({
 
 const IA_URL = /^(https:\/\/)?archive.org\/details\/([^\/]+)\/?/;
 const MD5 = /([a-fA-F0-9]{32})/;
+
+const CRUFT_FILENAME = /winampskins\.info\.(html)|(txt)$/;
+
+export async function setContentHash(md5: string): Promise<string | null> {
+  const files = await knex("archive_files").where("skin_md5", md5).select();
+  if (files.length === 0) {
+    return null;
+  }
+
+  const contentHash = md5Hash(
+    files
+      .filter(({ file_name }) => !CRUFT_FILENAME.test(file_name))
+      .map(({ file_name, file_md5 }) => `${file_name}:${file_md5}`)
+      .sort()
+      .join("|")
+  );
+
+  await knex("skins").update({ content_hash: contentHash }).where("md5", md5);
+  return contentHash;
+}
 
 // TODO: SQLITE
 export async function getMd5ByAnything(
@@ -263,50 +265,82 @@ export async function getStatus(md5: string): Promise<TweetStatus> {
   return "UNREVIEWED";
 }
 
-export async function updateSearchIndex(md5: string): Promise<{} | null> {
-  const skins = await knex.raw(
-    `
-    SELECT skins.md5, 
-    skins.average_color, 
-    skin_reviews.review = 'NSFW'     AS nsfw, 
-    skins.readme_text,
-  skins.emails,
-    tweets.likes,
-  files.file_path
-FROM   skins 
-    LEFT JOIN tweets 
-           ON tweets.skin_md5 = skins.md5 
-    LEFT JOIN skin_reviews 
-           ON skin_reviews.skin_md5 = skins.md5
-     LEFT JOIN files 
-           ON files.skin_md5 = skins.md5 
-WHERE  skin_type = 1 AND md5 = ? LIMIT 1;`,
-    [md5]
-  );
+type SearchIndex = {
+  objectID: string;
+  md5: string;
+  nsfw: boolean;
+  fileName: string;
+  twitterLikes: number;
+};
 
-  const skin = skins[0] || null;
-  if (skin == null) {
-    console.log("No skin");
-    return null;
-  }
+async function getSearchIndexes(md5s: string[]): Promise<SearchIndex[]> {
+  const skins = await knex("skins")
+    .leftJoin("tweets", "tweets.skin_md5", "=", "skins.md5")
+    .leftJoin("skin_reviews", "skin_reviews.skin_md5", "=", "skins.md5")
+    .leftJoin("files", "files.skin_md5", "=", "skins.md5")
+    .where("skin_type", SKIN_TYPE.CLASSIC)
+    .whereIn("md5", md5s)
+    .groupBy("skins.md5")
+    .select(
+      "skins.md5",
+      "skins.readme_text",
+      "tweets.likes",
+      "skin_reviews.review",
+      "files.file_path"
+    );
 
-  const index = {
-    objectID: skin.md5,
-    md5: skin.md5,
-    nsfw: skin.nsfw,
-    readmeText: skin.readme_text ? truncate(skin.readme_text, 4800) : null,
-    emails: skin.emails ? skin.emails.split() : [],
-    color: skin.average_color,
-    fileName: path.basename(skin.file_path),
-    twitterLikes: Number(skin.likes || 0),
-  };
-  const results = await searchIndex.partialUpdateObjects([index], {
+  return skins.map((skin) => {
+    return {
+      objectID: skin.md5,
+      md5: skin.md5,
+      nsfw: skin.review === "NSFW",
+      readmeText: skin.readme_text ? truncate(skin.readme_text, 4800) : null,
+      fileName: path.basename(skin.file_path),
+      twitterLikes: Number(skin.likes || 0),
+    };
+  });
+}
+
+export async function updateSearchIndexs(md5s: string[]): Promise<{}> {
+  const skinIndexes = await getSearchIndexes(md5s);
+
+  const results = await searchIndex.partialUpdateObjects(skinIndexes, {
     createIfNotExists: true,
   });
 
-  await recordSearchIndexUpdates(md5, Object.keys(index));
-
+  for (const index of skinIndexes) {
+    await recordSearchIndexUpdates(index.md5, Object.keys(index));
+  }
   return results;
+}
+
+export async function updateSearchIndex(md5: string): Promise<{} | null> {
+  return updateSearchIndexs([md5]);
+}
+
+export async function deleteSkin(md5: string): Promise<void> {
+  console.log(`Deleting skin ${md5}...`);
+  console.log(`... mongodb record`);
+  await skins_DEPRECATED.remove({ md5 }, { multi: false });
+  console.log(`... sqlite "skins"`);
+  await knex("skins").where({ md5 }).limit(1).delete();
+  console.log(`... sqlite "files"`);
+  await knex("files").where({ skin_md5: md5 }).delete();
+  console.log(`... sqlite "skin_reviews"`);
+  await knex("skin_reviews").where({ skin_md5: md5 }).delete();
+  console.log(`... sqlite "ia_items"`);
+  await knex("ia_items").where({ skin_md5: md5 }).delete();
+  console.log(`... sqlite "nsfw_predictions"`);
+  await knex("nsfw_predictions").where({ skin_md5: md5 }).delete();
+  console.log(`... sqlite "archive_files"`);
+  await knex("archive_files").where({ skin_md5: md5 }).delete();
+  console.log(`... removing from Algolia index`);
+  await searchIndex.deleteObjects([md5]);
+  console.log(`... removing skin from S3`);
+  await S3.deleteSkin(md5);
+  console.log(`... removing screenshot from S3`);
+  await S3.deleteScreenshot(md5);
+  console.log(`Done deleting skin ${md5}.`);
 }
 
 export async function recordSearchIndexUpdates(
@@ -452,35 +486,6 @@ export async function setTweetInfo(
 }
 
 export async function getMuseumPage({
-  offset,
-  first,
-}: {
-  offset: number;
-  first: number;
-}): Promise<
-  Array<{ color: string; fileName: string; md5: string; nsfw: boolean }>
-> {
-  const skins = await skins_DEPRECATED.find(
-    { type: "CLASSIC" },
-    {
-      limit: first,
-      skip: offset,
-      sort: { twitterLikes: -1, approved: -1, rejected: 1 },
-      fields: { averageColor: 1, md5: 1, nsfw: 1 },
-    }
-  );
-
-  return skins.map(({ md5, average_color, nsfw }) => {
-    return {
-      color: average_color,
-      filename: "FILENAME",
-      md5,
-      nsfw,
-    };
-  });
-}
-
-export async function getMuseumPageSql({
   offset,
   first,
 }: {

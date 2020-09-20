@@ -69,7 +69,7 @@ app.get("/skins/", async (req, res) => {
   console.log(`Getting offset: ${offset}, first: ${first}`);
 
   const start = Date.now();
-  const skins = await Skins.getMuseumPageSql({
+  const skins = await Skins.getMuseumPage({
     offset: Number(offset),
     first: Number(first),
   });
@@ -149,6 +149,7 @@ app.get("/skins/:md5", async (req, res) => {
   console.log(`Details for hash "${md5}"`);
   const skin = await Skins.getSkinByMd5_DEPRECATED(md5);
   if (skin == null) {
+    console.log(`Details for hash "${md5}" NOT FOUND`);
     res.status(404).json();
     return;
   }

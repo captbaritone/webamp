@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "@types/node-fetch": "^2.5.7",
     "algoliasearch": "^4.3.0",
     "aws-sdk": "^2.663.0",
     "cors": "^2.8.5",
@@ -33,7 +34,6 @@
     "bot": "ts-node --transpile-only ./discord-bot/index.js",
     "cli": "ts-node --transpile-only ./cli.ts",
     "repro": "ts-node --transpile-only ./repro.ts",
-    "index": "ts-node --transpile-only ./tasks/searchIndex.js",
     "sync": "ts-node --transpile-only ./tasks/syncWithArchive.ts"
   },
   "prettier": {},

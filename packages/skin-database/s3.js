@@ -26,6 +26,46 @@ function putSkin(md5, buffer, ext = "wsz") {
   });
 }
 
+function deleteSkin(md5, ext = "wsz") {
+  return new Promise((resolve, rejectPromise) => {
+    const bucketName = "cdn.webampskins.org";
+    const key = `skins/${md5}.${ext}`;
+    s3.deleteObject(
+      {
+        Bucket: bucketName,
+        Key: key,
+      },
+      (err) => {
+        if (err) {
+          rejectPromise(err);
+          return;
+        }
+        resolve();
+      }
+    );
+  });
+}
+
+function deleteScreenshot(md5) {
+  return new Promise((resolve, rejectPromise) => {
+    const bucketName = "cdn.webampskins.org";
+    const key = `screenshots/${md5}.png`;
+    s3.deleteObject(
+      {
+        Bucket: bucketName,
+        Key: key,
+      },
+      (err) => {
+        if (err) {
+          rejectPromise(err);
+          return;
+        }
+        resolve();
+      }
+    );
+  });
+}
+
 function putScreenshot(md5, buffer) {
   return new Promise((resolve, rejectPromise) => {
     const bucketName = "cdn.webampskins.org";
@@ -52,4 +92,6 @@ function putScreenshot(md5, buffer) {
 module.exports = {
   putScreenshot,
   putSkin,
+  deleteSkin,
+  deleteScreenshot,
 };

@@ -6,18 +6,6 @@ import Shooter from "./shooter";
 import _temp from "temp";
 import * as Analyser from "./analyser";
 import { SkinType } from "./types";
-import JSZip from "jszip";
-
-export async function getSkinType(file: Buffer): Promise<SkinType> {
-  const zip = await JSZip.loadAsync(file);
-  if (zip.file(/main\.bmp$/i).length > 0) {
-    return "CLASSIC";
-  }
-  if (zip.file(/skin\.xml$/i).length > 0) {
-    return "MODERN";
-  }
-  throw new Error("Not a skin");
-}
 
 // TODO Move this into the function so that we clean up on each run?
 const temp = _temp.track();
@@ -44,7 +32,7 @@ export async function addSkinFromBuffer(
   }
 
   // Note: This will thrown on invalid skins.
-  const skinType = await getSkinType(buffer);
+  const skinType = await Analyser.getSkinType(buffer);
 
   switch (skinType) {
     case "CLASSIC":
@@ -64,7 +52,13 @@ async function addModernSkinFromBuffer(
   fs.writeFileSync(tempFile, buffer);
   await S3.putSkin(md5, buffer, "wal");
 
-  await Skins.addSkin({ md5, filePath, uploader, modern: true });
+  await Skins.addSkin({
+    md5,
+    filePath,
+    uploader,
+    modern: true,
+    readmeText: null,
+  });
 
   return { md5, status: "ADDED", skinType: "MODERN" };
 }
@@ -88,7 +82,15 @@ async function addClassicSkinFromBuffer(
   const averageColor = await Analyser.getColor(tempScreenshotPath);
   await S3.putScreenshot(md5, fs.readFileSync(tempScreenshotPath));
   await S3.putSkin(md5, buffer, "wsz");
-  await Skins.addSkin({ md5, filePath, uploader, averageColor, modern: false });
+  const readmeText = await Analyser.getReadme(buffer);
+  await Skins.addSkin({
+    md5,
+    filePath,
+    uploader,
+    averageColor,
+    modern: false,
+    readmeText,
+  });
 
   await Skins.updateSearchIndex(md5);
   return { md5, status: "ADDED", averageColor, skinType: "CLASSIC" };
