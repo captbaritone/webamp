@@ -136,6 +136,31 @@ export async function skinExists(md5: string): Promise<boolean> {
   return skin != null;
 }
 
+export async function getSkinMuseumData(
+  md5: string
+): Promise<{ nsfw: boolean; fileName: string; md5: string } | null> {
+  const result = await knex("skins")
+    .where("md5", md5)
+    .leftJoin("files", "files.skin_md5", "=", "skins.md5")
+    .leftJoin("skin_reviews", "skin_reviews.skin_md5", "=", "skins.md5")
+    .groupBy("skins.md5")
+    .first([
+      "md5",
+      "file_path",
+      knex.raw("skin_reviews.review = 'NSFW' AS nsfw"),
+    ]);
+
+  if (result == null) {
+    return null;
+  }
+
+  return {
+    md5: result.md5,
+    nsfw: Boolean(result.nsfw),
+    fileName: path.basename(result.file_path),
+  };
+}
+
 // TODO: SQLITE
 // TODO: Handle modern skins
 export async function getSkinByMd5_DEPRECATED(
@@ -497,11 +522,11 @@ export async function getMuseumPage({
   const skins = await knex.raw(
     `
     SELECT skins.md5, 
-    skins.average_color, 
     skin_reviews.review = 'NSFW'     AS nsfw, 
     skin_reviews.review = 'APPROVED' AS approved, 
     skin_reviews.review = 'REJECTED' AS rejected, 
     tweets.likes,
+	files.file_path,
   CASE skins.md5 
    WHEN "5e4f10275dcb1fb211d4a8b4f1bda236" THEN 0 -- Base
    WHEN "cd251187a5e6ff54ce938d26f1f2de02" THEN 1 -- Winamp3 Classified
@@ -510,11 +535,11 @@ export async function getMuseumPage({
    ELSE 1000
   END priority
 FROM   skins 
-    LEFT JOIN tweets 
-           ON tweets.skin_md5 = skins.md5 
-    LEFT JOIN skin_reviews 
-           ON skin_reviews.skin_md5 = skins.md5 
+    LEFT JOIN tweets ON tweets.skin_md5 = skins.md5 
+    LEFT JOIN skin_reviews ON skin_reviews.skin_md5 = skins.md5
+	LEFT JOIN files ON files.skin_md5 = skins.md5
 WHERE  skin_type = 1 
+GROUP BY skins.md5
 ORDER  BY 
       priority ASC,
        tweets.likes DESC, 
@@ -525,12 +550,11 @@ LIMIT ? offset ?`,
     [first, offset]
   );
 
-  return skins.map(({ md5, nsfw, average_color }) => {
+  return skins.map(({ md5, nsfw, file_path }) => {
     return {
-      color: undefined,
-      filename: undefined,
+      fileName: path.basename(file_path),
       md5,
-      nsfw: nsfw ? true : undefined,
+      nsfw: Boolean(nsfw),
     };
   });
 }

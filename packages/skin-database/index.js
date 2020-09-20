@@ -147,7 +147,7 @@ app.post("/skins/", async (req, res) => {
 app.get("/skins/:md5", async (req, res) => {
   const { md5 } = req.params;
   console.log(`Details for hash "${md5}"`);
-  const skin = await Skins.getSkinByMd5_DEPRECATED(md5);
+  const skin = await Skins.getSkinMuseumData(md5);
   if (skin == null) {
     console.log(`Details for hash "${md5}" NOT FOUND`);
     res.status(404).json();
