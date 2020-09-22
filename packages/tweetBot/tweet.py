@@ -68,7 +68,7 @@ def tweet_skin(md5, skin_name, dry):
 
 
 def get_screenshot_url(md5):
-    return "https://s3.amazonaws.com/webamp-uploaded-skins/screenshots/%s.png" % md5
+    return "https://cdn.webampskins.org/screenshots/%s.png" % md5
 
 
 def tweet_image(skin_name, md5, screenshot_path, dry):

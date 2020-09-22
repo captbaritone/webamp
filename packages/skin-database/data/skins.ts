@@ -3,7 +3,7 @@ import path from "path";
 import logger from "../logger";
 import md5Hash from "md5";
 import { searchIndex } from "../algolia";
-import { truncate } from "../utils";
+import { truncate, MD5_REGEX } from "../utils";
 import { DBSkinRecord, SkinRecord, DBIARecord, TweetStatus } from "../types";
 import fetch from "node-fetch";
 import * as S3 from "../s3";
@@ -86,7 +86,6 @@ export async function addSkin({
 }
 
 const IA_URL = /^(https:\/\/)?archive.org\/details\/([^\/]+)\/?/;
-const MD5 = /([a-fA-F0-9]{32})/;
 
 const CRUFT_FILENAME = /winampskins\.info\.(html)|(txt)$/;
 
@@ -112,7 +111,7 @@ export async function setContentHash(md5: string): Promise<string | null> {
 export async function getMd5ByAnything(
   anything: string
 ): Promise<string | null> {
-  const md5Match = anything.match(MD5);
+  const md5Match = anything.match(MD5_REGEX);
   if (md5Match != null) {
     const md5 = md5Match[1];
     const found = await knex("skins").where({ md5, skin_type: 1 }).first();
@@ -499,6 +498,7 @@ export async function getScreenshotBuffer(md5: string): Promise<Buffer> {
 export async function setTweetInfo(
   md5: string,
   likes: number,
+  retweets: number,
   tweetId: string
 ): Promise<void> {
   await skins_CONVERTED.findOneAndUpdate(

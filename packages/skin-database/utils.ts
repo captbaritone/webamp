@@ -10,3 +10,5 @@ export function truncate(str: string, len: number): string {
   const end = str.slice(-half);
   return `${start} ########### ${end}`;
 }
+
+export const MD5_REGEX = /([a-fA-F0-9]{32})/;

@@ -27,7 +27,7 @@ function spawnPromise(command: string, args: string[]): Promise<string> {
       if (code === 0) {
         resolve(stdout);
       } else {
-        reject({ stdout, stderr });
+        reject(stderr);
       }
     });
   });
@@ -48,7 +48,7 @@ export async function tweet(discordClient: Client, anything: string | null) {
       );
       return;
     }
-    tweetableSkin = await Skins.getSkinByMd5(_md5);
+    tweetableSkin = await Skins.getSkinByMd5_DEPRECATED(_md5);
     if (tweetableSkin == null) {
       // @ts-ignore
       await tweetBotChannel.send(
@@ -83,15 +83,23 @@ export async function tweet(discordClient: Client, anything: string | null) {
   if (filename == null) {
     throw new Error(`Could not find filename for skin with hash ${md5}`);
   }
-  const output = await spawnPromise(
-    path.resolve(PROJECT_ROOT, "../tweetBot/tweet.py"),
-    [
-      "tweet",
-      md5,
-      filename,
-      // "--dry",
-    ]
-  );
+  let output;
+  try {
+    output = await spawnPromise(
+      path.resolve(PROJECT_ROOT, "../tweetBot/tweet.py"),
+      [
+        "tweet",
+        md5,
+        filename, // "--dry",
+      ]
+    );
+  } catch (e) {
+    // @ts-ignore
+    await tweetBotChannel.send(
+      `Oops. The Python part of the twitter bot crashed: ${e.message}`
+    );
+    return;
+  }
   await Skins.markAsTweeted(md5, output.trim());
   // @ts-ignore
   await tweetBotChannel.send(output.trim());
