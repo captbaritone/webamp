@@ -361,13 +361,13 @@ const skinDataEpic = (actions, state) => {
       ) {
         return from(fetch(`${API_URL}/skins/${hash}`)).pipe(
           switchMap((response) => response.json()),
-          map((body) =>
-            Actions.gotSkinData(hash, {
+          map((body) => {
+            return Actions.gotSkinData(hash, {
               md5: hash,
-              fileName: body.canonicalFilename,
+              fileName: body.fileName,
               nsfw: body.nsfw,
-            })
-          )
+            });
+          })
         );
       }
       return EMPTY;
