@@ -14715,9 +14715,9 @@ wcwidth@^1.0.1:
     defaults "^1.0.3"
 
 webamp@^1.4.1-beta04:
-  version "4.4.1-beta04"
-  resolved "https://registry.yarnpkg.com/webamp/-/webamp-4.4.1-beta04.tgz#8b0dad13489964f5677b1c37580fcfc2f35a0664"
-  integrity sha512-R+x9uqg1vVgppoYSaaOkTxB30NBR2PkZtJktcI/ESj+UOGcefUnIX49PzI2mrdmvWB0TOLCKzz4U4t/uTlL/ng==
+  version "1.4.1-beta04"
+  resolved "https://registry.yarnpkg.com/webamp/-/webamp-1.4.1-beta04.tgz#a753a03a0e21f299883b3be60952de4d0138626b"
+  integrity sha512-0DNWAP7q6m4wsLA/s3qXUiaiLpkSvAwskWJ6LYleL8doVSwNm8u5zLUte6sRt9UQIVs6pBYe/ialkZ+ocZjpIQ==
   dependencies:
     eslint-plugin-react-hooks "^2.1.2"
     fscreen "^1.0.2"
