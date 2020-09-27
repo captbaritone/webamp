@@ -5483,10 +5483,15 @@ eslint-plugin-jsx-a11y@6.2.3:
     has "^1.0.3"
     jsx-ast-utils "^2.2.1"
 
-eslint-plugin-react-hooks@^1.5.1, eslint-plugin-react-hooks@^1.6.1:
+eslint-plugin-react-hooks@^1.6.1:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-1.7.0.tgz#6210b6d5a37205f0b92858f895a4e827020a7d04"
   integrity sha512-iXTCFcOmlWvw4+TOE8CLWj6yX1GwzT0Y6cUfHHZqWnSk144VmVIRcVGtUAzrLES7C798lmvnt02C7rxaOX1HNA==
+
+eslint-plugin-react-hooks@^2.1.2:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-2.5.1.tgz#4ef5930592588ce171abeb26f400c7fbcbc23cd0"
+  integrity sha512-Y2c4b55R+6ZzwtTppKwSmK/Kar8AdLiC2f9NADCuxbcTgPPg41Gyqa6b9GppgXSvCtkRw43ZE86CT5sejKC6/g==
 
 eslint-plugin-react@7.19.0:
   version "7.19.0"
@@ -12357,6 +12362,11 @@ redux-observable@^1.0.0:
   resolved "https://registry.yarnpkg.com/redux-observable/-/redux-observable-1.2.0.tgz#ff51b6c6be2598e9b5e89fc36639186bb0e669c7"
   integrity sha512-yeR90RP2WzZzCxxnQPlh2uFzyfFLsfXu8ROh53jGDPXVqj71uNDMmvi/YKQkd9ofiVoO4OYb1snbowO49tCEMg==
 
+redux-sentry-middleware@^0.1.3:
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/redux-sentry-middleware/-/redux-sentry-middleware-0.1.8.tgz#29f71821c1fb87d4ebcb8f76067fea3c3738a64c"
+  integrity sha512-xubpYH9RgE31tZUESeRW5agwQa19Yd6Gy+4iO09raW/2TITPO5fhJdXpVwJfpGMbIYhEmHFqE2wD5Lnz7YtAeA==
+
 redux@^3.6.0:
   version "3.7.2"
   resolved "https://registry.yarnpkg.com/redux/-/redux-3.7.2.tgz#06b73123215901d25d065be342eb026bc1c8537b"
@@ -14704,13 +14714,14 @@ wcwidth@^1.0.1:
   dependencies:
     defaults "^1.0.3"
 
-webamp@^1.3.1:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/webamp/-/webamp-1.4.0.tgz#36c0ef2621ed3d14835d8cbd58206a408903e602"
-  integrity sha512-4pQjpPRtSI1Bde2YAIQfE3FOOY17YnVdn/et8jW5pxs788MKuDMVYgs8Iz1Tqn6mGh/u2lH3kF6I3hmyKDC/FA==
+webamp@^1.4.1-beta04:
+  version "4.4.1-beta04"
+  resolved "https://registry.yarnpkg.com/webamp/-/webamp-4.4.1-beta04.tgz#8b0dad13489964f5677b1c37580fcfc2f35a0664"
+  integrity sha512-R+x9uqg1vVgppoYSaaOkTxB30NBR2PkZtJktcI/ESj+UOGcefUnIX49PzI2mrdmvWB0TOLCKzz4U4t/uTlL/ng==
   dependencies:
-    eslint-plugin-react-hooks "^1.5.1"
+    eslint-plugin-react-hooks "^2.1.2"
     fscreen "^1.0.2"
+    redux-sentry-middleware "^0.1.3"
 
 webidl-conversions@^4.0.2:
   version "4.0.2"
