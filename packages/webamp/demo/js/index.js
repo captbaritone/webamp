@@ -227,10 +227,12 @@ async function main() {
 
   await webamp.renderWhenReady(document.getElementById("app"));
 
-  ReactDOM.render(
-    <DemoDesktop webamp={webamp} />,
-    document.getElementById("demo-desktop")
-  );
+  if (!screenshot) {
+    ReactDOM.render(
+      <DemoDesktop webamp={webamp} />,
+      document.getElementById("demo-desktop")
+    );
+  }
 }
 
 main();
