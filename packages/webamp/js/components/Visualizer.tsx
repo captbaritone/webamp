@@ -91,6 +91,7 @@ function Visualizer({ analyser }: Props) {
         return;
       }
       if (dummyVizData) {
+        canvasCtx.drawImage(bgCanvas, 0, 0);
         Object.entries(dummyVizData).forEach(([i, value]) => {
           paintBar(canvasCtx, Number(i), value, -1);
         });
