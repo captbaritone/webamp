@@ -26,8 +26,16 @@ const EqualizerShade = () => {
     >
       <div id="equalizer-shade" onClick={toggleEqualizerShadeMode} />
       <div id="equalizer-close" onClick={() => closeWindow("equalizer")} />
-      <Volume id="equalizer-volume" className={eqVolumeClassName} />
-      <Balance id="equalizer-balance" className={eqBalanceClassName} />
+      <Volume
+        id="equalizer-volume"
+        style={{ background: "none" }}
+        className={eqVolumeClassName}
+      />
+      <Balance
+        style={{ background: "none" }}
+        id="equalizer-balance"
+        className={eqBalanceClassName}
+      />
     </div>
   );
 };

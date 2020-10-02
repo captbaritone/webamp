@@ -6,15 +6,6 @@ interface Selectors {
 }
 
 export const imageSelectors: Selectors = {
-  MAIN_BALANCE_BACKGROUND: ["#balance"],
-  MAIN_BALANCE_THUMB: [
-    "#balance::-webkit-slider-thumb",
-    "#balance::-moz-range-thumb",
-  ],
-  MAIN_BALANCE_THUMB_ACTIVE: [
-    "#balance:active::-webkit-slider-thumb",
-    "#balance:active::-moz-range-thumb",
-  ],
   MAIN_PREVIOUS_BUTTON: [".actions #previous"],
   MAIN_PREVIOUS_BUTTON_ACTIVE: [".actions #previous:active"],
   MAIN_PLAY_BUTTON: [".actions #play"],

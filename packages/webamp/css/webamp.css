@@ -29,9 +29,6 @@
 #webamp [style*="--base-background"] {
   background-image: var(--base-background);
 }
-#webamp [style*="--base-background"] {
-  background-image: var(--base-background);
-}
 
 /**
  * Ideally we would collapse these next four down into two rules that each have
@@ -46,11 +43,11 @@
 #webamp [style*="--thumb-background"]::-moz-range-thumb {
   background-image: var(--thumb-background);
 }
-#webamp [style*="--active-thumb-background"]:active::-webkit-slider-thumb {
-  background-image: var(--active-thumb-background);
+#webamp [style*="--activeThumb-background"]:active::-webkit-slider-thumb {
+  background-image: var(--activeThumb-background);
 }
-#webamp [style*="--active-thumb-background"]:active::-moz-range-thumb {
-  background-image: var(--active-thumb-background);
+#webamp [style*="--activeThumb-background"]:active::-moz-range-thumb {
+  background-image: var(--activeThumb-background);
 }
 
 /* Range input css reset */
@@ -58,19 +55,16 @@
   -webkit-appearance: none;
   margin: 0;
   padding: 0;
-  background: none;
   border: none;
 }
 #webamp input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   border: none;
   border-radius: 0;
-  background: none;
 }
 #webamp input[type="range"]::-moz-range-thumb {
   border: none;
   border-radius: 0;
-  background: none;
 }
 #webamp input[type="range"]::-moz-range-track {
   border: none;
