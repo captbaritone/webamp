@@ -7,7 +7,7 @@ import * as Selectors from "../../selectors";
 import ResizeTarget from "../ResizeTarget";
 import { WindowId } from "../../types";
 import FocusTarget from "../FocusTarget";
-import { useActionCreator, useTypedSelector } from "../../hooks";
+import { useActionCreator, useSprite, useTypedSelector } from "../../hooks";
 
 interface TextProps {
   children: string;
@@ -54,13 +54,18 @@ export const GenWindow = ({ children, title, windowId, onKeyDown }: Props) => {
   const windowSize = getWindowSize(windowId);
   const selected = focusedWindow === windowId;
   const { width, height } = getWindowPixelSize(windowId);
+  const topStyle = useSprite(
+    selected
+      ? { base: "GEN_TOP_CENTER_FILL_SELECTED" }
+      : { base: "GEN_TOP_CENTER_FILL" }
+  );
   return (
     <FocusTarget windowId={windowId} onKeyDown={onKeyDown}>
       <div
         className={classnames("gen-window", "window", { selected })}
         style={{ width, height }}
       >
-        <div className="gen-top draggable">
+        <div className="gen-top draggable" style={topStyle}>
           <div className="gen-top-left draggable" />
           <div className="gen-top-left-fill draggable" />
           <div className="gen-top-left-end draggable" />

@@ -279,7 +279,6 @@ export const imageSelectors: Selectors = {
     "#volume input:active::-webkit-slider-thumb",
     "#volume input:active::-moz-range-thumb",
   ],
-  GEN_TOP_CENTER_FILL: [".gen-window .gen-top"],
   GEN_TOP_LEFT: [".gen-window .gen-top-left"],
   GEN_TOP_LEFT_END: [".gen-window .gen-top-left-end"],
   GEN_TOP_RIGHT: [".gen-window .gen-top-right"],
@@ -289,7 +288,6 @@ export const imageSelectors: Selectors = {
     ".gen-window .gen-top-right-fill",
   ],
 
-  GEN_TOP_CENTER_FILL_SELECTED: [".gen-window.selected .gen-top"],
   GEN_TOP_LEFT_SELECTED: [".gen-window.selected .gen-top-left"],
   GEN_TOP_LEFT_END_SELECTED: [".gen-window.selected .gen-top-left-end"],
   GEN_TOP_RIGHT_SELECTED: [".gen-window.selected .gen-top-right"],
