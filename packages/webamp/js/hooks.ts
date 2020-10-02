@@ -181,6 +181,54 @@ type SpriteConfig = {
   size?: SpriteName;
 };
 
+/**
+ * You can set CSS variables on an HTML element via it's style attribute.
+ * We use special (hacky) CSS selectors in `webamp.css` which match elements
+ * that have these special variables set and then use the value of that
+ * variable as the background image.
+ *
+ * ```css
+ * #webamp [style*="--base-background"] {
+ *  background-image: var(--base-background);
+ * }
+ * ```
+ *
+ * Sprite images are extracted and assigned to CSS variables of their own.
+ * By giving an HTML element a style attribute defining one of these CSS
+ * variables as one of the sprite images's CSS variables we can set the
+ * background of an HTML element to one of the skin's sprites.
+ *
+ * ## This is super conveluted. So why are we doing it?
+ *
+ * A simple approach would be to just get the sprite as an object URL and
+ * assign it to the HTML element's `backgroundImage` style attribute.
+ *
+ * The first problem with this approach is that we want the default skin to act
+ * as a fallback and the simplest way to achive that is via CSS. We have the
+ * parsed skin shadow the CSS variables defined by the default skin. If the
+ * parsed skin is missing any sprites, anyone referencing the sprite's CSS
+ * variable will get the default skin's sprite.
+ *
+ * Secondly, I suspect (but have not tested) that it's not performant to use
+ * large data URIs as style attributes when the element (and it's attributes)
+ * might be leaving the DOM, since the browser might need to re-parse the image
+ * every time it's added.
+ *
+ * Thirdly, we would like to be able to use the `:active` pseudo selector, and
+ * `::-webkit-slider-thumb` pseudo elements which cannot be directly set using
+ * the style attribute.
+ *
+ * Using this method (where we assign a CSS variable to a magic CSS variable)
+ * solves all three of these:
+ *
+ * 1. We can encode the default skin as a CSS sheet defining a bunch of CSS
+ *    variables, and these will act as fallbacks for any sprites the pased skin is
+ *    missing.
+ * 2. The sprite data URIs are added to the style sheet and should never have
+ *    to be re-parsed.
+ * 3. Since the actual styling is done in a real CSS rule, it can take
+ *    advantage of pseudo selectors and pseudo elements.
+ */
 export function useSprite(options: SpriteConfig): React.CSSProperties {
   const style: React.CSSProperties = {};
   (["base", "active", "thumb", "activeThumb"] as const).forEach((name) => {
