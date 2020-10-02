@@ -5,6 +5,7 @@ import {
   useLayoutEffect,
   useRef,
 } from "react";
+import { spritesByName, SpriteName } from "./skinSprites";
 import { useDispatch, useSelector } from "react-redux";
 import * as Utils from "./utils";
 import { Action, Thunk, AppState } from "./types";
@@ -170,4 +171,35 @@ export function useActionCreator<T extends (...args: any[]) => Action | Thunk>(
 
 export function useTypedDispatch(): (action: Action | Thunk) => void {
   return useDispatch();
+}
+
+type SpriteConfig = {
+  base?: SpriteName;
+  active?: SpriteName;
+  thumb?: SpriteName;
+  activeThumb?: SpriteName;
+  size?: SpriteName;
+};
+
+export function useSprite(options: SpriteConfig): React.CSSProperties {
+  const style: React.CSSProperties = {};
+  (["base", "active", "thumb", "activeThumb"] as const).forEach((name) => {
+    const spriteName = options[name];
+    if (spriteName != null) {
+      // Ideally we could use `{backgroundImage: "var(varName)"}` for `base`.
+      // Sadly, that overrides any `:active` styles. So instead we just use
+      // this CSS variable hack for all sprite backgrounds.
+      // @ts-ignore
+      style[`--${name}-background`] = `var(${Utils.imageVarName(spriteName)})`;
+    }
+  });
+  if (options.size != null) {
+    const sprite = spritesByName[options.size];
+    if (sprite == null) {
+      throw new Error(`Could not find sprite style for "${options.size}"`);
+    }
+    style.height = sprite.height;
+    style.width = sprite.width;
+  }
+  return style;
 }

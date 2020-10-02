@@ -9,6 +9,7 @@ import { SkinImages } from "../types";
 import { createSelector } from "reselect";
 import Css from "./Css";
 import ClipPaths from "./ClipPaths";
+import { imageVarName, cursorVarName } from "../utils";
 
 const CSS_PREFIX = "#webamp";
 
@@ -34,28 +35,37 @@ const FALLBACKS: { [key: string]: string } = {
   MAIN_BALANCE_THUMB_ACTIVE: "MAIN_VOLUME_THUMB_SELECTED",
 };
 
-const getCssRules = createSelector(
+const getCssVars = createSelector(
   Selectors.getSkinImages,
   Selectors.getSkinCursors,
-  Selectors.getSkinLetterWidths,
-  Selectors.getSkinRegion,
-  (skinImages, skinCursors, skinGenLetterWidths, skinRegion): string | null => {
+  (skinImages, skinCursors): string | null => {
     if (!skinImages || !skinCursors) {
       return null;
     }
-    const cssRules = [];
-    Object.keys(imageSelectors).forEach((imageName) => {
-      const imageUrl =
-        skinImages[imageName] || skinImages[FALLBACKS[imageName]];
-      if (imageUrl) {
-        imageSelectors[imageName].forEach((selector) => {
-          cssRules.push(
-            `${CSS_PREFIX} ${selector} {background-image: url(${imageUrl})}`
-          );
-        });
-      }
-    });
+    const variableRules = [
+      ...Object.entries(skinImages).map(([imageName, value]) => [
+        imageVarName(imageName),
+        value || skinImages[FALLBACKS[imageName]],
+      ]),
+      ...Object.entries(skinCursors).map(([imageName, value]) => [
+        cursorVarName(imageName),
+        value,
+      ]),
+    ];
 
+    const rules = variableRules
+      .filter(([, image]) => image != null)
+      .map(([name, image]) => `${name}: url(${image})`)
+      .join(";\n  ");
+
+    return `${CSS_PREFIX} {\n  ${rules}\n}`;
+  }
+);
+
+const getLetterWidths = createSelector(
+  Selectors.getSkinLetterWidths,
+  (skinGenLetterWidths) => {
+    const cssRules: string[] = [];
     if (skinGenLetterWidths != null) {
       LETTERS.forEach((letter) => {
         const width = skinGenLetterWidths[`GEN_TEXT_${letter}`];
@@ -69,21 +79,43 @@ const getCssRules = createSelector(
         );
       });
     }
+    return cssRules.join("\n");
+  }
+);
+
+const getCssRules = createSelector(
+  Selectors.getSkinImages,
+  Selectors.getSkinRegion,
+  (skinImages, skinRegion): string => {
+    const cssRules = [];
+    // DEPRECATED: All of these should be replaced with calls to `useSprite` in
+    // the component that actually renders the element.
+    Object.entries(imageSelectors).forEach(([imageName, selectors]) => {
+      selectors.forEach((selector) => {
+        // Ideally we would collapse this down into a single rule that has
+        // multipel comma separated selectors. However, `::-moz-range-thumb`
+        // will break the rule in non-Firefox browsers, so we just make each
+        // selector it's own rule.
+        cssRules.push(
+          `${CSS_PREFIX} ${selector} {\n  background-image: var(${imageVarName(
+            imageName
+          )});\n}`
+        );
+      });
+    });
+
     Object.keys(cursorSelectors).forEach((cursorName) => {
-      const cursorUrl = skinCursors[cursorName];
-      if (cursorUrl) {
-        cursorSelectors[cursorName].forEach((selector) => {
-          cssRules.push(
-            `${
-              // TODO: Fix this hack
-              // Maybe our CSS name spacing should be based on some other class/id
-              // than the one we use for defining the main div.
-              // That way it could be shared by both the player and the context menu.
-              selector.startsWith("#webamp-context-menu") ? "" : CSS_PREFIX
-            } ${selector} {cursor: url(${cursorUrl}), auto}`
-          );
-        });
-      }
+      cursorSelectors[cursorName].forEach((selector) => {
+        cssRules.push(
+          `${
+            // TODO: Fix this hack
+            // Maybe our CSS name spacing should be based on some other class/id
+            // than the one we use for defining the main div.
+            // That way it could be shared by both the player and the context menu.
+            selector.startsWith("#webamp-context-menu") ? "" : CSS_PREFIX
+          } ${selector} {cursor: var(${cursorVarName(cursorName)}), auto}`
+        );
+      });
     });
 
     if (numExIsUsed(skinImages)) {
@@ -119,13 +151,15 @@ const getClipPaths = createSelector(Selectors.getSkinRegion, (skinRegion) => {
 
 export default function Skin() {
   const cssRules = useTypedSelector(getCssRules);
+  const cssVars = useTypedSelector(getCssVars);
+  const letterWidths = useTypedSelector(getLetterWidths);
   const clipPaths = useTypedSelector(getClipPaths);
-  if (cssRules == null) {
-    return null;
-  }
   return (
     <>
-      <Css id="webamp-skin">{cssRules}</Css>
+      <Css id="webamp-style">{cssRules}</Css>
+      {cssVars != null && (
+        <Css id="webamp-skin">{`${cssVars} ${letterWidths}`}</Css>
+      )}
       <ClipPaths>{clipPaths}</ClipPaths>
     </>
   );

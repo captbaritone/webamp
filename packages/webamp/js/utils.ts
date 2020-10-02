@@ -403,3 +403,11 @@ export function weakMapMemoize<T extends object, R>(
     return cache.get(value);
   };
 }
+
+export function imageVarName(imageName: string): string {
+  return `--webamp-${imageName}`;
+}
+
+export function cursorVarName(imageName: string): string {
+  return `--webamp-cursor-${imageName}`;
+}
