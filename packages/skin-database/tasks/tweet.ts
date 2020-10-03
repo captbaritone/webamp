@@ -1,37 +1,13 @@
-import path from "path";
 import logger from "../logger";
+import fs from "fs";
 import * as Skins from "../data/skins";
-import { TWEET_BOT_CHANNEL_ID } from "../config";
-import { spawn } from "child_process";
+import { TWEET_BOT_CHANNEL_ID, TWITTER_CREDS } from "../config";
 import { Client } from "discord.js";
 import { SkinRecord } from "../types";
-import { PROJECT_ROOT } from "../config";
-
-function spawnPromise(command: string, args: string[]): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const ls = spawn(command, args);
-    let stdout = "";
-    let stderr = "";
-
-    ls.stdout.on("data", (data) => {
-      stdout += data;
-    });
-
-    ls.stderr.on("data", (data) => {
-      stderr += data;
-      console.log(`stderr: ${data}`);
-    });
-
-    ls.on("close", (code) => {
-      console.log(`child process exited with code ${code}`);
-      if (code === 0) {
-        resolve(stdout);
-      } else {
-        reject(stderr);
-      }
-    });
-  });
-}
+import _temp from "temp";
+import sharp from "sharp";
+import { getTwitterClient } from "../twitter";
+const temp = _temp.track();
 
 export async function tweet(discordClient: Client, anything: string | null) {
   const tweetBotChannel = discordClient.channels.get(TWEET_BOT_CHANNEL_ID);
@@ -83,21 +59,14 @@ export async function tweet(discordClient: Client, anything: string | null) {
   if (filename == null) {
     throw new Error(`Could not find filename for skin with hash ${md5}`);
   }
+
   let output;
   try {
-    output = await spawnPromise(
-      path.resolve(PROJECT_ROOT, "../tweetBot/tweet.py"),
-      [
-        "tweet",
-        md5,
-        filename, // "--dry",
-      ]
-    );
+    output = await sendTweet(md5, filename);
   } catch (e) {
+    console.error(e);
     // @ts-ignore
-    await tweetBotChannel.send(
-      `Oops. The Python part of the twitter bot crashed: ${e.message}`
-    );
+    await tweetBotChannel.send(`Oops. Tweeting crashed: ${e.message}`);
     return;
   }
   await Skins.markAsTweeted(md5, output.trim());
@@ -110,9 +79,47 @@ export async function tweet(discordClient: Client, anything: string | null) {
       `Only ${remainingSkinCount} approved skins left. Could someone please \`!review\` some more?`
     );
   }
-  logger.info("Tweeted a skin", {
-    md5,
-    filename,
-    url: output.trim(),
+  logger.info("Tweeted a skin", { md5, filename, url: output.trim() });
+}
+
+async function getResizedScreenshot(md5: string): Promise<Buffer> {
+  const screenshot = await Skins.getScreenshotBuffer(md5);
+  const { width, height } = await sharp(screenshot).metadata();
+
+  const image = await sharp(screenshot)
+    .resize(width * 2, height * 2, {
+      kernel: sharp.kernel.nearest,
+    })
+    .toBuffer();
+
+  return image;
+}
+
+async function sendTweet(md5: string, filename: string) {
+  const screenshotBuffer = await getResizedScreenshot(md5);
+  const tempFile = temp.path({ suffix: ".png" });
+  fs.writeFileSync(tempFile, screenshotBuffer);
+  const t = getTwitterClient();
+
+  const { media_id_string } = await new Promise((resolve, reject) => {
+    t.postMediaChunked({ file_path: tempFile }, (err, data) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(data);
+    });
   });
+
+  const params = {
+    status: `${filename}\n\n${Skins.getMuseumUrl(md5)}`,
+    media_ids: [media_id_string],
+  };
+
+  const result = await t.post("statuses/update", params);
+  const id = result.data.id_str;
+  if (id == null) {
+    throw new Error(`Could not get id`);
+  }
+  return `https://twitter.com/winampskins/status/${result.data.id_str}`;
 }

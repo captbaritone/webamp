@@ -39,7 +39,7 @@ function getWebampUrl(md5: string): string {
   return `https://webamp.org?skinUrl=${getSkinUrl(md5)}`;
 }
 
-function getMuseumUrl(md5: string): string {
+export function getMuseumUrl(md5: string): string {
   return `https://skins.webamp.org/skin/${md5}`;
 }
 
@@ -505,9 +505,24 @@ export async function setTweetInfo(
     { md5 },
     { $set: { twitterLikes: likes, tweetId } }
   );
-  await knex("tweets")
+  const first = await knex("tweets")
     .where({ skin_md5: md5 })
-    .update({ tweet_id: tweetId, likes }, []);
+    .first(["likes", "retweets"]);
+  if (first == null) {
+    await knex("skins").insert(
+      {
+        skin_md5: md5,
+        tweet_id: tweetId,
+        likes,
+        retweets,
+      },
+      []
+    );
+  } else {
+    await knex("tweets")
+      .where({ skin_md5: md5 })
+      .update({ tweet_id: tweetId, likes, retweets }, []);
+  }
 }
 
 export async function getMuseumPage({
@@ -521,11 +536,11 @@ export async function getMuseumPage({
 > {
   const skins = await knex.raw(
     `
-    SELECT skins.md5, 
+SELECT skins.md5, 
     skin_reviews.review = 'NSFW'     AS nsfw, 
     skin_reviews.review = 'APPROVED' AS approved, 
     skin_reviews.review = 'REJECTED' AS rejected, 
-    tweets.likes,
+    (IFNULL(tweets.likes, 0) + (IFNULL(tweets.retweets,0) * 1.5)) AS tweet_score,
 	files.file_path,
   CASE skins.md5 
    WHEN "5e4f10275dcb1fb211d4a8b4f1bda236" THEN 0 -- Base
@@ -542,10 +557,10 @@ WHERE  skin_type = 1
 GROUP BY skins.md5
 ORDER  BY 
       priority ASC,
-       tweets.likes DESC, 
+       tweet_score DESC, 
        nsfw ASC, 
        approved DESC, 
-       rejected ASC 
+       rejected ASC
 LIMIT ? offset ?`,
     [first, offset]
   );

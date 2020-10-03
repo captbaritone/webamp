@@ -36,6 +36,9 @@ class Shooter {
     });
     this._page.on("dialog", async (dialog) => {
       console.log(`Page dialog ${dialog.message()}`);
+      if (dialog.message === "Failed to parse skin") {
+        // Do something!
+      }
       await dialog.dismiss();
     });
     const url = `${this._url}/?screenshot=1`;
