@@ -24,16 +24,16 @@ class WebampComponent extends React.Component {
 
     this._webamp = new Webamp({
       initialSkin: {
-        url: this.props.skinUrl
+        url: this.props.skinUrl,
       },
       initialTracks: [
         {
           metaData: {
             artist: "DJ Mike Llama",
-            title: "Llama Whippin' Intro"
+            title: "Llama Whippin' Intro",
           },
           url: "/llama.mp3",
-          duration: 5.322286
+          duration: 5.322286,
         },
         {
           url:
@@ -42,8 +42,8 @@ class WebampComponent extends React.Component {
           metaData: {
             title: "Heroines",
             artist: "Diablo Swing Orchestra",
-            album
-          }
+            album,
+          },
         },
         {
           url:
@@ -52,8 +52,8 @@ class WebampComponent extends React.Component {
           metaData: {
             title: "We Are Going To Eclecfunk Your Ass",
             artist: "Eclectek",
-            album
-          }
+            album,
+          },
         },
         {
           url:
@@ -62,8 +62,8 @@ class WebampComponent extends React.Component {
           metaData: {
             title: "Seventeen",
             artist: "Auto-Pilot",
-            album
-          }
+            album,
+          },
         },
         {
           url:
@@ -72,8 +72,8 @@ class WebampComponent extends React.Component {
           metaData: {
             title: "Microphone",
             artist: "Muha",
-            album
-          }
+            album,
+          },
         },
         {
           url:
@@ -82,8 +82,8 @@ class WebampComponent extends React.Component {
           metaData: {
             title: "Stumble",
             artist: "Just Plain Ant",
-            album
-          }
+            album,
+          },
         },
         {
           url:
@@ -92,8 +92,8 @@ class WebampComponent extends React.Component {
           metaData: {
             title: "God Damn",
             artist: "Sleaze",
-            album
-          }
+            album,
+          },
         },
         {
           url:
@@ -102,8 +102,8 @@ class WebampComponent extends React.Component {
           metaData: {
             title: "Hola Hola Bossa Nova",
             artist: "Juanitos",
-            album
-          }
+            album,
+          },
         },
         {
           url:
@@ -112,8 +112,8 @@ class WebampComponent extends React.Component {
           metaData: {
             title: "Resolutions (Chris Summer Remix)",
             artist: "Entertainment for the Braindead",
-            album
-          }
+            album,
+          },
         },
         {
           url:
@@ -122,8 +122,8 @@ class WebampComponent extends React.Component {
           metaData: {
             title: "Trail",
             artist: "Nobara Hayakawa",
-            album
-          }
+            album,
+          },
         },
         {
           url:
@@ -132,8 +132,8 @@ class WebampComponent extends React.Component {
           metaData: {
             title: "Tongue Tied",
             artist: "Paper Navy",
-            album
-          }
+            album,
+          },
         },
         {
           url:
@@ -142,8 +142,8 @@ class WebampComponent extends React.Component {
           metaData: {
             title: "Garage",
             artist: "60 Tigres",
-            album
-          }
+            album,
+          },
         },
         {
           url:
@@ -152,12 +152,12 @@ class WebampComponent extends React.Component {
           metaData: {
             title: "The Cycle (Featuring Mista Mista)",
             artist: "CM aka Creative",
-            album
-          }
-        }
+            album,
+          },
+        },
       ],
       hotkeys: true,
-      zIndex: 1001
+      zIndex: 1001,
     });
 
     this._disposable.add(this._webamp.onClose(this.props.closeModal));
@@ -177,7 +177,7 @@ class WebampComponent extends React.Component {
     return (
       <div
         style={{ width: "100%", height: "100%", position: "absolute" }}
-        ref={node => (this._ref = node)}
+        ref={(node) => (this._ref = node)}
       />
     );
   }
