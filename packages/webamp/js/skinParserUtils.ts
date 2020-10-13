@@ -34,22 +34,21 @@ function fallbackGetImgFromBlob(blob: Blob): Promise<HTMLImageElement> {
   return Utils.imgFromUrl(URL.createObjectURL(blob));
 }
 
-export function getImgFromBlob(
+export async function getImgFromBlob(
   blob: Blob
-): Promise<ImageBitmap | HTMLImageElement> {
-  if (window.createImageBitmap) {
+): Promise<ImageBitmap | HTMLImageElement | null> {
+  try {
+    // Use this faster native browser API if available.
+    // NOTE: In some browsers `window.createImageBitmap` may not exist so this will throw.
+    return await window.createImageBitmap(blob);
+  } catch (e) {
     try {
-      // Use this faster native browser API if available.
-      return window.createImageBitmap(blob);
-    } catch (e) {
-      console.warn(
-        "Encountered an error with createImageBitmap. Falling back to Image approach."
-      );
-      // There are some bugs in the new API. In case something goes wrong, we call fall back.
-      return fallbackGetImgFromBlob(blob);
+      return await fallbackGetImgFromBlob(blob);
+    } catch (ee) {
+      // Like Winamp we will silently fail on images that don't parse.
+      return null;
     }
   }
-  return fallbackGetImgFromBlob(blob);
 }
 
 export function getSpriteUrisFromImg(
