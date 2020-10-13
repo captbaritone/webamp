@@ -6,8 +6,8 @@ class WebampComponent extends React.Component {
     super(props);
     this._disposable = new Disposable();
   }
-  componentDidMount() {
-    this._loadWebamp();
+  async componentDidMount() {
+    await this._loadWebamp();
   }
 
   componentWillUnmount() {
