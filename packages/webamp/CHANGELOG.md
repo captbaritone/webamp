@@ -4,6 +4,14 @@
 
 - New Webamp instance method: `.setSkinFromUrl(url)`. See [usage.md](./docs/usage.md) for more details.
 
+### Bug Fixes
+
+- Fix a bug where skins missing some images would fail to load [2e8392](https://github.com/captbaritone/webamp/commit/2e83920ca1597ad9704f01cc950d59a52c25635c)
+- Clicking on the lightning icon in the main window now correctly opens our about page in a new tab [#794](https://github.com/captbaritone/webamp/pull/794)
+- Skin `.ini` files can use `=` as a comment separator [577b5e3](https://github.com/captbaritone/webamp/commit/577b5e3c177f2f3ee06f9fbc6aac212adfbbc8c8)
+- We nolonger cycle Milkdrop presets when media is not playing [#799](https://github.com/captbaritone/webamp/pull/799)
+- Guard against some kinds of malformed `region.txt` files [0bd8b0](https://github.com/captbaritone/webamp/commit/0bd8b09ecff9f00873fc13dcd2a5662bf3efff61)
+
 ## 1.4.0
 
 ### Features
