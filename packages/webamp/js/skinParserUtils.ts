@@ -10,7 +10,7 @@ export const getFileExtension = (fileName: string): string | null => {
 };
 
 function getFilenameRegex(base: string, ext: string): RegExp {
-  return new RegExp(`^(.*/)?${base}(\.${ext})?$`, "i");
+  return new RegExp(`^(.*/)?${base}.(${ext})$`, "i");
 }
 
 export async function getFileFromZip(
