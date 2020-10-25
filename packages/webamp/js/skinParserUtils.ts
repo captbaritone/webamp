@@ -23,9 +23,19 @@ export async function getFileFromZip(
   if (!files.length) {
     return null;
   }
+
+  let contents;
+  try {
+    contents = await files[0].async(mode);
+  } catch (e) {
+    console.warn(
+      `Failed to extract "${fileName}.${ext}" from the skin archive.`
+    );
+    return null;
+  }
   // Return a promise (awaitable).
   return {
-    contents: await files[0].async(mode),
+    contents,
     name: files[0].name,
   };
 }
