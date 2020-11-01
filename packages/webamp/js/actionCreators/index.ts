@@ -30,6 +30,7 @@ export {
   toggleDoubleSizeMode,
   toggleEqualizerShadeMode,
   togglePlaylistShadeMode,
+  openWindow,
   closeWindow,
   hideWindow,
   showWindow,

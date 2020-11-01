@@ -7,6 +7,7 @@ import {
   WINDOW_SIZE_CHANGED,
   TOGGLE_WINDOW,
   CLOSE_WINDOW,
+  OPEN_WINDOW,
   TOGGLE_WINDOW_SHADE_MODE,
   SET_WINDOW_VISIBILITY,
   BROWSER_WINDOW_SIZE_CHANGED,
@@ -86,6 +87,10 @@ export function togglePlaylistShadeMode(): Thunk {
 
 export function closeWindow(windowId: WindowId): Action {
   return { type: CLOSE_WINDOW, windowId };
+}
+
+export function openWindow(windowId: WindowId): Action {
+  return { type: OPEN_WINDOW, windowId };
 }
 
 export function hideWindow(windowId: WindowId): Action {

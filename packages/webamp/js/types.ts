@@ -384,6 +384,10 @@ export type Action =
       windowId: WindowId;
     }
   | {
+      type: "OPEN_WINDOW";
+      windowId: WindowId;
+    }
+  | {
       type: "SET_WINDOW_VISIBILITY";
       windowId: WindowId;
       hidden: boolean;

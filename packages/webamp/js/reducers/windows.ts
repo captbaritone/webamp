@@ -4,6 +4,7 @@ import {
   SET_FOCUSED_WINDOW,
   TOGGLE_WINDOW,
   CLOSE_WINDOW,
+  OPEN_WINDOW,
   SET_WINDOW_VISIBILITY,
   UPDATE_WINDOW_POSITIONS,
   WINDOW_SIZE_CHANGED,
@@ -168,6 +169,18 @@ const windows = (
           [action.windowId]: {
             ...state.genWindows[action.windowId],
             open: false,
+          },
+        },
+      };
+    case OPEN_WINDOW:
+      return {
+        ...state,
+        genWindows: {
+          ...state.genWindows,
+          [action.windowId]: {
+            ...state.genWindows[action.windowId],
+            open: false,
+            hidden: false,
           },
         },
       };

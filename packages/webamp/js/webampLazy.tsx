@@ -11,6 +11,7 @@ import {
   WindowPosition,
   ButterchurnOptions,
   Action,
+  WindowId,
 } from "./types";
 import getStore from "./store";
 import App from "./components/App";
@@ -388,6 +389,14 @@ class Winamp {
 
   onMinimize(cb: () => void): () => void {
     return this._actionEmitter.on(MINIMIZE_WINAMP, cb);
+  }
+
+  closeWindow(id: WindowId) {
+    this.store.dispatch(Actions.closeWindow(id));
+  }
+
+  openWindow(id: WindowId) {
+    this.store.dispatch(Actions.openWindow(id));
   }
 
   setSkinFromUrl(url: string): void {
