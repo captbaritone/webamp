@@ -126,7 +126,7 @@ There are a few related projects that have communites:
 
 A list of public websites that are using Webamp:
 
-- [Internet Archvie](https://blog.archive.org/2018/10/02/dont-click-on-the-llama/) - The Internet Archive lets you preview winamp skins and listen to audio tracks using Webamp.
+- [Internet Archive](https://blog.archive.org/2018/10/02/dont-click-on-the-llama/) - The Internet Archive lets you preview winamp skins and listen to audio tracks using Webamp.
 - [Winampify.io](https://winampify.io/) - An online Spotify client using Webamp
 - [Webamp Desktop](https://desktop.webamp.org/) - An Electron app version of Webamp.
 - [98.js.org](https://98.js.org/) - A Windows 98 clone in JavaScript ([GitHub](https://github.com/1j01/98))
