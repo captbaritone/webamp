@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { memo, ReactNode } from "react";
 import classnames from "classnames";
 import { useIsHovered } from "../../hooks";
 
@@ -16,4 +16,4 @@ function PlaylistMenuEntry({ children }: Props) {
   );
 }
 
-export default React.memo(PlaylistMenuEntry);
+export default memo(PlaylistMenuEntry);

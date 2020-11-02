@@ -1,4 +1,3 @@
-import React from "react";
 import { Node } from "../ContextMenu";
 import ContextMenuTarget from "../ContextMenuTarget";
 import * as Actions from "../../actionCreators";

@@ -1,4 +1,3 @@
-import React from "react";
 import * as Actions from "../../actionCreators";
 
 import { Hr, Node } from "../ContextMenu";

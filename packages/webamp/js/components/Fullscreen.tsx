@@ -1,5 +1,5 @@
 // Adapted from https://github.com/snakesilk/react-fullscreen
-import React, { ReactNode, useRef, useLayoutEffect, useEffect } from "react";
+import { ReactNode, useRef, useLayoutEffect, useEffect } from "react";
 import fscreen from "fscreen";
 
 interface Props {

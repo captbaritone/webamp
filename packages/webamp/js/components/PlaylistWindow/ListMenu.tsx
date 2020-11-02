@@ -1,4 +1,3 @@
-import React from "react";
 import * as Actions from "../../actionCreators";
 import PlaylistMenu from "./PlaylistMenu";
 import { useActionCreator } from "../../hooks";

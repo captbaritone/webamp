@@ -1,4 +1,4 @@
-import React from "react";
+import { Fragment } from "react";
 import classnames from "classnames";
 import { getTimeObj } from "../utils";
 import { TIME_MODE, MEDIA_STATUS } from "../constants";
@@ -14,7 +14,7 @@ import { useTypedSelector, useActionCreator } from "../hooks";
 // Possible to do that in pure CSS with the background being dynamically generated.
 // All "space" characters is also how Winamp renders no content.
 const Background = () => (
-  <React.Fragment>
+  <Fragment>
     {[1, 7, 12, 20, 25].map((left, i) => (
       <Character
         style={{ left }}
@@ -23,7 +23,7 @@ const Background = () => (
         children=" "
       />
     ))}
-  </React.Fragment>
+  </Fragment>
 );
 
 const MiniTime = () => {

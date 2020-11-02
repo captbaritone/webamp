@@ -1,4 +1,4 @@
-import React from "react";
+import { memo } from "react";
 import * as Utils from "../../utils";
 
 import * as Actions from "../../actionCreators";
@@ -6,7 +6,7 @@ import * as Selectors from "../../selectors";
 import { TIME_MODE } from "../../constants";
 import { useActionCreator, useTypedSelector } from "../../hooks";
 
-const Time = React.memo(() => {
+const Time = memo(() => {
   const toggleTimeMode = useActionCreator(Actions.toggleTimeMode);
   const timeElapsed = useTypedSelector(Selectors.getTimeElapsed);
   const duration = useTypedSelector(Selectors.getDuration) || 0;

@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import { useEffect, useCallback } from "react";
 import Fullscreen from "../Fullscreen";
 import {
   useWindowSize,

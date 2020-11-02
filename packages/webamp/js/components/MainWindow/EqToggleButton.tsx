@@ -1,4 +1,4 @@
-import React from "react";
+import { memo } from "react";
 import classnames from "classnames";
 
 import * as Selectors from "../../selectors";
@@ -9,7 +9,7 @@ function toggleEqualizer() {
   return Actions.toggleWindow("equalizer");
 }
 
-const EqToggleButton = React.memo(() => {
+const EqToggleButton = memo(() => {
   const handleClick = useActionCreator(toggleEqualizer);
   const windowOpen = useTypedSelector(Selectors.getWindowOpen)("equalizer");
   return (

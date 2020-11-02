@@ -1,4 +1,4 @@
-import React, { useMemo, useLayoutEffect } from "react";
+import { useMemo, useLayoutEffect } from "react";
 import { createPortal } from "react-dom";
 
 type Props = {

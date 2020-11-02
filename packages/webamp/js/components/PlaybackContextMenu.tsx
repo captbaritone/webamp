@@ -1,4 +1,4 @@
-import React from "react";
+import { Fragment } from "react";
 import * as Actions from "../actionCreators";
 import { Hr, Node } from "./ContextMenu";
 import { useActionCreator } from "../hooks";
@@ -13,7 +13,7 @@ const PlaybackContextMenu = () => {
   const seekBackward = useActionCreator(Actions.seekBackward);
   const nextN = useActionCreator(Actions.nextN);
   return (
-    <React.Fragment>
+    <Fragment>
       <Node label="Previous" hotkey="Z" onClick={previous} />
       <Node label="Play" hotkey="X" onClick={play} />
       <Node label="Pause" hotkey="C" onClick={pause} />
@@ -44,7 +44,7 @@ const PlaybackContextMenu = () => {
     <Node label="Jump to time" hotkey="Ctrl+J" />
     <Node label="Jump to file" hotkey="J" />
     */}
-    </React.Fragment>
+    </Fragment>
   );
 };
 

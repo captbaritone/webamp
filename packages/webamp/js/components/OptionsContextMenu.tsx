@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Hr, Node } from "./ContextMenu";
 import SkinsContextMenu from "./SkinsContextMenu";
 import * as Actions from "../actionCreators";

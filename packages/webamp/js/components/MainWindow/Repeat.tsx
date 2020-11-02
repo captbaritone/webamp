@@ -1,4 +1,4 @@
-import React from "react";
+import { memo } from "react";
 import classnames from "classnames";
 import * as Actions from "../../actionCreators";
 import * as Selectors from "../../selectors";
@@ -6,7 +6,7 @@ import ContextMenuWraper from "../ContextMenuWrapper";
 import { Node } from "../ContextMenu";
 import { useTypedSelector, useActionCreator } from "../../hooks";
 
-const Repeat = React.memo(() => {
+const Repeat = memo(() => {
   const repeat = useTypedSelector(Selectors.getRepeat);
   const handleClick = useActionCreator(Actions.toggleRepeat);
   return (

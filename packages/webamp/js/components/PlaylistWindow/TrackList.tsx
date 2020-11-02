@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import { getTimeStr } from "../../utils";
 import * as Selectors from "../../selectors";

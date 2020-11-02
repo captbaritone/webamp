@@ -1,9 +1,9 @@
-import React from "react";
+import { memo } from "react";
 import classnames from "classnames";
 import * as Selectors from "../../selectors";
 import { useTypedSelector } from "../../hooks";
 
-const MonoStereo = React.memo(() => {
+const MonoStereo = memo(() => {
   const channels = useTypedSelector(Selectors.getChannels);
   return (
     <div className="mono-stereo">

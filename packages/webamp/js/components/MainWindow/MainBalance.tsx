@@ -1,4 +1,4 @@
-import React from "react";
+import { memo } from "react";
 
 import Balance from "../Balance";
 import * as Selectors from "../../selectors";
@@ -11,7 +11,7 @@ export const offsetFromBalance = (balance: number): number => {
   return offset;
 };
 
-const MainBalance = React.memo(() => {
+const MainBalance = memo(() => {
   const balance = useTypedSelector(Selectors.getBalance);
   return (
     <Balance

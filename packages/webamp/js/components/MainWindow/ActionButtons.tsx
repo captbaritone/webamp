@@ -1,8 +1,8 @@
-import React from "react";
+import { memo } from "react";
 import * as Actions from "../../actionCreators";
 import { useActionCreator } from "../../hooks";
 
-const ActionButtons = React.memo(() => {
+const ActionButtons = memo(() => {
   const previous = useActionCreator(Actions.previous);
   const play = useActionCreator(Actions.play);
   const pause = useActionCreator(Actions.pause);

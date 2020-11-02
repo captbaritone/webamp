@@ -1,4 +1,3 @@
-import React from "react";
 import ResizeTarget from "../ResizeTarget";
 import * as Actions from "../../actionCreators";
 import * as Selectors from "../../selectors";

@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import classnames from "classnames";
 import { getTimeStr } from "../../utils";
 import * as Selectors from "../../selectors";

@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 // A Resource is an object with a read method returning the payload
 interface Resource<Payload> {

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useLayoutEffect } from "react";
+import { useState, useMemo, useLayoutEffect } from "react";
 import { percentToRange, clamp } from "../../utils";
 import { BANDS } from "../../constants";
 import spline from "./spline";

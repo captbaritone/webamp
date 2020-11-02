@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import Slider from "rc-slider";
 import { Slider as SliderType } from "../../types";
 import { useTypedSelector, useActionCreator } from "../../hooks";

@@ -1,4 +1,4 @@
-import React, { useState, ReactNode, useCallback } from "react";
+import { Children, memo, useState, ReactNode, useCallback } from "react";
 import classnames from "classnames";
 import { useOnClickAway } from "../../hooks";
 
@@ -43,7 +43,7 @@ function PlaylistMenu(props: Props) {
       <div className="bar" />
       {selected && (
         <ul>
-          {React.Children.map(props.children, (child, i) => (
+          {Children.map(props.children, (child, i) => (
             <PlaylistMenuEnry key={i}>{child}</PlaylistMenuEnry>
           ))}
         </ul>
@@ -51,4 +51,4 @@ function PlaylistMenu(props: Props) {
     </div>
   );
 }
-export default React.memo(PlaylistMenu);
+export default memo(PlaylistMenu);
