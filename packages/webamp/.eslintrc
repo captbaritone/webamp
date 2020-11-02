@@ -143,7 +143,7 @@
     "no-return-await": "error",
     "react/no-string-refs": "error",
     "react/jsx-boolean-value": "error",
-    "react/jsx-uses-react": "error",
+    "react/jsx-uses-react": "off",
     "react/jsx-uses-vars": "error",
     "react/prefer-es6-class": "error",
     "react/jsx-pascal-case": "error",
