@@ -1,5 +1,5 @@
 import WebampLazy from "../../js/webampLazy";
-import React from "react";
+import React, { Suspense } from "react";
 import WebampIcon from "./WebampIcon";
 // import Mp3Icon from "./Mp3Icon";
 import SkinIcon from "./SkinIcon";
@@ -66,23 +66,27 @@ const DemoDesktop = ({ webamp }: Props) => {
         marginLeft: HORIZONTAL_MARGIN,
       }}
     >
-      {icons.map((icon, i) => {
-        const row = Math.floor(i / columns);
-        const column = i % columns;
-        return (
-          <div
-            key={i}
-            style={{
-              left: column * ICON_WIDTH,
-              top: row * ICON_HEIGHT,
-              width: ICON_WIDTH,
-              position: "absolute",
-            }}
-          >
-            {icon}
-          </div>
-        );
-      })}
+      <Suspense
+        fallback={null /* Wait for all icons to load before showing any */}
+      >
+        {icons.map((icon, i) => {
+          const row = Math.floor(i / columns);
+          const column = i % columns;
+          return (
+            <div
+              key={i}
+              style={{
+                left: column * ICON_WIDTH,
+                top: row * ICON_HEIGHT,
+                width: ICON_WIDTH,
+                position: "absolute",
+              }}
+            >
+              {icon}
+            </div>
+          );
+        })}
+      </Suspense>
     </div>
   );
 };

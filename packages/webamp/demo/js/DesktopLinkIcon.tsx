@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import classnames from "classnames";
+import IconImage from "./IconImage";
 
 interface Props {
   iconUrl: string;
@@ -43,7 +44,7 @@ const DesktopLinkIcon = ({ iconUrl, href, name }: Props) => {
       }}
       className={classnames("desktop-icon", { selected })}
     >
-      <img src={iconUrl} style={{ width: 32, height: 32 }} />
+      <IconImage src={iconUrl} />
       <div className="desktop-icon-title">{name}</div>
     </a>
   );
