@@ -458,8 +458,10 @@ export async function getSkinToTweet(): Promise<SkinRecord | null> {
 export async function getStats(): Promise<{
   approved: number;
   rejected: number;
+  nsfw: number;
   tweeted: number;
   tweetable: number;
+  webUploads: number;
 }> {
   const approved = (
     await knex("skin_reviews")
@@ -471,10 +473,27 @@ export async function getStats(): Promise<{
       .first(knex.raw(`COUNT(DISTINCT skin_md5) AS "rejected_count"`))
       .where({ review: "REJECTED" })
   ).rejected_count;
+  const nsfw = (
+    await knex("skin_reviews")
+      .first(knex.raw(`COUNT(DISTINCT skin_md5) AS "nsfw_count"`))
+      .where({ review: "NSFW" })
+  ).nsfw_count;
   const tweeted = (await knex("tweets").count("*", { as: "tweeted" }))[0]
     .tweeted;
+  const webUploads = (
+    await knex("files")
+      .where("source_attribution", "Web API")
+      .count("*", { as: "uploads" })
+  )[0].uploads;
   const tweetable = await getTweetableSkinCount();
-  return { approved, rejected, tweeted: Number(tweeted), tweetable };
+  return {
+    approved: Number(approved),
+    rejected: Number(rejected),
+    nsfw: Number(nsfw),
+    tweeted: Number(tweeted),
+    tweetable,
+    webUploads: Number(webUploads),
+  };
 }
 
 export async function getRandomClassicSkinMd5(): Promise<string> {
@@ -570,6 +589,28 @@ LIMIT ? offset ?`,
       fileName: path.basename(file_path),
       md5,
       nsfw: Boolean(nsfw),
+    };
+  });
+}
+
+export async function getAllClassicScreenshotUrls(): Promise<
+  Array<{ fileName: string; url: string }>
+> {
+  const skins = await knex.raw(
+    `
+SELECT skins.md5, 
+	files.file_path
+FROM   skins 
+	LEFT JOIN files ON files.skin_md5 = skins.md5
+WHERE  skin_type = 1 
+GROUP BY skins.md5`,
+    []
+  );
+
+  return skins.map(({ md5, file_path }) => {
+    return {
+      fileName: path.basename(file_path),
+      url: getScreenshotUrl(md5),
     };
   });
 }

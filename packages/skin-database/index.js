@@ -163,6 +163,11 @@ app.post("/skins/:md5/index", async (req, res) => {
   res.json(skin);
 });
 
+app.get("/stylegan.json", async (req, res) => {
+  const images = await Skins.getAllClassicScreenshotUrls();
+  res.json(images);
+});
+
 // TODO: Make this POST
 app.post("/skins/:md5/report", async (req, res) => {
   const { md5 } = req.params;

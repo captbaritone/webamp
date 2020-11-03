@@ -5,6 +5,7 @@ const fs = require("fs");
 const fetch = require("node-fetch");
 const md5Buffer = require("md5");
 const { withShooter } = require("../../shooter");
+const S3 = require("../../s3");
 
 async function handler(message) {
   console.log("Trying to take a screenshot");
@@ -50,6 +51,7 @@ async function handler(message) {
       );
       continue;
     }
+    await S3.putScreenshot(file.md5, fs.readFileSync(tempScreenshotPath));
 
     const attachment = new Discord.Attachment(
       tempScreenshotPath,

@@ -3,7 +3,6 @@ import * as Utils from "../utils";
 import { Message } from "discord.js";
 
 async function reviewSkin(message: Message, nsfw: boolean): Promise<void> {
-  console.log(1);
   const skin = await (nsfw
     ? Skins.getSkinToReviewForNsfw()
     : Skins.getSkinToReview());
@@ -11,7 +10,6 @@ async function reviewSkin(message: Message, nsfw: boolean): Promise<void> {
     throw new Error("No skins to review");
   }
   const { md5 } = skin;
-  console.log(2);
   await Utils.postSkin({
     md5,
     title: (filename) => `Review: ${filename}`,
@@ -19,10 +17,7 @@ async function reviewSkin(message: Message, nsfw: boolean): Promise<void> {
   });
 }
 
-console.log("Top scope");
-
 async function handler(message: Message, args: [string, string]) {
-  console.log("Handler called");
   let count = Number(args[0] || 1);
   let nsfw = args[1] === "nsfw";
   if (count > 50) {
@@ -31,7 +26,6 @@ async function handler(message: Message, args: [string, string]) {
     );
     count = 50;
   }
-  console.log("About to send");
   await message.channel.send(`Going to show ${count} skins to review.`);
   let i = count;
   while (i--) {
