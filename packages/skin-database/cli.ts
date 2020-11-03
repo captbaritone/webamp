@@ -13,8 +13,6 @@ import * as SkinHash from "./skinHash";
 import * as Analyser from "./analyser";
 import { searchIndex } from "./algolia";
 import { scrapeLikeData } from "./tasks/scrapeLikes";
-// import { checkAir } from "./air";
-// import twilio from "twilio";
 
 async function main() {
   const client = new Discord.Client();
@@ -23,32 +21,6 @@ async function main() {
 
   try {
     switch (argv._[0]) {
-      /*
-      case "air":
-        const message = await checkAir();
-        if (message == null) {
-          return;
-        }
-
-        const accountSid = "AC6074f98f735253cb970083417419bb33";
-        const authToken = "f16cefe5550ef4a9a149b62fa770aefd";
-        const client = require("twilio")(accountSid, authToken);
-
-        const result = await client.messages.create({
-          body: message,
-          from: "+12056066323",
-          to: "+17079710972",
-        });
-
-        const result2 = await client.messages.create({
-          body: message,
-          from: "+12056066323",
-          to: "+8059014147",
-        });
-        console.log(result2);
-
-        break;
-        */
       case "readme": {
         const rows = await knex.raw(
           'SELECT md5 FROM files LEFT JOIN skins on skins.md5 = files.skin_md5 WHERE source_attribution = "Web API" AND readme_text IS NULL;'
