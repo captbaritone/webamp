@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import {
   WINDOW_RESIZE_SEGMENT_WIDTH,
   WINDOW_RESIZE_SEGMENT_HEIGHT,
@@ -67,4 +67,4 @@ function ResizeTarget(props: Props) {
 
   return <div onMouseDown={handleMouseDown} {...passThroughProps} />;
 }
-export default React.memo(ResizeTarget);
+export default memo(ResizeTarget);

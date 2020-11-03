@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import ContextMenu from "./ContextMenu";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {

@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import classnames from "classnames";
 import { WINDOWS, MEDIA_STATUS, LOAD_STYLE } from "../../constants";
 import * as Actions from "../../actionCreators";

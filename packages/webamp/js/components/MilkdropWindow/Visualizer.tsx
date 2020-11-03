@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { VISUALIZERS } from "../../constants";
 import * as Selectors from "../../selectors";
 import { TransitionType } from "../../types";

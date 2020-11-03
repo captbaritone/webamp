@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import deburr from "lodash/deburr";
 
 interface Props extends React.HTMLAttributes<HTMLSpanElement> {

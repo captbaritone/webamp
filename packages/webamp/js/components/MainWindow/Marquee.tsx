@@ -1,6 +1,6 @@
 // Single line text display that can animate and hold multiple registers
 // Knows how to display various modes like tracking, volume, balance, etc.
-import React from "react";
+import * as React from "react";
 import CharacterString from "../CharacterString";
 import * as Actions from "../../actionCreators";
 import * as Selectors from "../../selectors";

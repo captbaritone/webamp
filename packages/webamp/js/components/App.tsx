@@ -1,8 +1,9 @@
-import React, {
+import {
   useLayoutEffect,
   useEffect,
   useState,
   useCallback,
+  StrictMode,
 } from "react";
 import ReactDOM from "react-dom";
 import { FilePicker } from "../types";
@@ -127,7 +128,7 @@ export default function App({ media, filePickers }: Props) {
   }
 
   return ReactDOM.createPortal(
-    <React.StrictMode>
+    <StrictMode>
       <div onBlur={handleBlur}>
         <Skin />
         <ContextMenuWrapper
@@ -136,7 +137,7 @@ export default function App({ media, filePickers }: Props) {
           <WindowManager windows={renderWindows()} />
         </ContextMenuWrapper>
       </div>
-    </React.StrictMode>,
+    </StrictMode>,
     webampNode
   );
 }

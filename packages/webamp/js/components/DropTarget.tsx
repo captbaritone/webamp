@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 import { useActionCreator } from "../hooks";
 import * as Actions from "../actionCreators";
 import { WindowId } from "../types";

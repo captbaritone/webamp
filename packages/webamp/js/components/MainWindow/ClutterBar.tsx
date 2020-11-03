@@ -1,4 +1,4 @@
-import React from "react";
+import { memo } from "react";
 import classnames from "classnames";
 
 import * as Actions from "../../actionCreators";
@@ -19,7 +19,7 @@ function mouseUp(): Thunk {
   };
 }
 
-const ClutterBar = React.memo(() => {
+const ClutterBar = memo(() => {
   const handleMouseDown = useActionCreator(setFocusDouble);
   const handleMouseUp = useActionCreator(mouseUp);
   const doubled = useTypedSelector(Selectors.getDoubled);

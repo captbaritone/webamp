@@ -1,4 +1,4 @@
-import React from "react";
+import { memo } from "react";
 import classnames from "classnames";
 
 import * as Selectors from "../../selectors";
@@ -9,7 +9,7 @@ function togglePlaylist() {
   return Actions.toggleWindow("playlist");
 }
 
-const PlaylistToggleButton = React.memo(() => {
+const PlaylistToggleButton = memo(() => {
   const selected = useTypedSelector(Selectors.getWindowOpen)("playlist");
   const handleClick = useActionCreator(togglePlaylist);
   return (

@@ -1,4 +1,3 @@
-import React from "react";
 import * as Selectors from "../../selectors";
 import * as Actions from "../../actionCreators";
 import PlaylistMenu from "./PlaylistMenu";

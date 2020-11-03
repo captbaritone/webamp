@@ -1,4 +1,3 @@
-import React from "react";
 import * as Actions from "../actionCreators";
 import * as Selectors from "../selectors";
 import { Hr, Node, Parent } from "./ContextMenu";

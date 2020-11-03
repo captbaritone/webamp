@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { Hr, Node } from "../ContextMenu";
 import { WINDOWS } from "../../constants";
 import * as Selectors from "../../selectors";

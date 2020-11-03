@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useState, useLayoutEffect } from "react";
+import { useMemo, useCallback, useState, useLayoutEffect } from "react";
 
 import * as Actions from "../actionCreators";
 import * as Selectors from "../selectors";

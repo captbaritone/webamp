@@ -1,4 +1,4 @@
-import React from "react";
+import { memo } from "react";
 
 // Here we import the rc-slider class just to get it's type.
 // We expect the Typescript compiler to not actually include this in the bundle.
@@ -39,4 +39,4 @@ const ScrollBar = () => {
   );
 };
 
-export default React.memo(ScrollBar);
+export default memo(ScrollBar);

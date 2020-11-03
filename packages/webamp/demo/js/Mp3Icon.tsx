@@ -1,5 +1,5 @@
 import WebampLazy from "../../js/webampLazy";
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 // @ts-ignore
 import iconLarge from "../images/manifest/icon-96x96.png";
 // @ts-ignore

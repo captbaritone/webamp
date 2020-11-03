@@ -1,10 +1,10 @@
-import React from "react";
+import { memo } from "react";
 import * as Selectors from "../../selectors";
 
 import Volume from "../Volume";
 import { useTypedSelector } from "../../hooks";
 
-const MainVolume = React.memo(() => {
+const MainVolume = memo(() => {
   const volume = useTypedSelector(Selectors.getVolume);
   const percent = volume / 100;
   const sprite = Math.round(percent * 28);

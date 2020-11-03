@@ -1,5 +1,5 @@
 import WebampLazy from "../../js/webampLazy";
-import React, { Suspense } from "react";
+import { Suspense } from "react";
 import WebampIcon from "./WebampIcon";
 // import Mp3Icon from "./Mp3Icon";
 import SkinIcon from "./SkinIcon";

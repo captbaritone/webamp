@@ -1,4 +1,4 @@
-import React from "react";
+import { Fragment } from "react";
 
 import * as Actions from "../../actionCreators";
 
@@ -14,7 +14,7 @@ const PlaylistWindow = () => {
   const next = useActionCreator(Actions.next);
   const previous = useActionCreator(Actions.previous);
   return (
-    <React.Fragment>
+    <Fragment>
       <RunningTimeDisplay />
       <div className="playlist-action-buttons">
         <div className="playlist-previous-button" onClick={previous} />
@@ -25,7 +25,7 @@ const PlaylistWindow = () => {
         <div className="playlist-eject-button" onClick={openMediaFileDialog} />
       </div>
       <MiniTime />
-    </React.Fragment>
+    </Fragment>
   );
 };
 export default PlaylistWindow;

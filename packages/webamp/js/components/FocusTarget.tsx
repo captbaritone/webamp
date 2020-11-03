@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { WindowId } from "../types";
 import * as Actions from "../actionCreators";
 import * as Selectors from "../selectors";

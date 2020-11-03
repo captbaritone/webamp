@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { memo, Fragment, useEffect } from "react";
 import * as Actions from "../../actionCreators";
 import * as Selectors from "../../selectors";
 import { LOAD_STYLE } from "../../constants";
@@ -13,7 +13,7 @@ interface Props {
   filePickers: FilePicker[];
 }
 
-const MainContextMenu = React.memo(({ filePickers }: Props) => {
+const MainContextMenu = memo(({ filePickers }: Props) => {
   const networkConnected = useTypedSelector(Selectors.getNetworkConnected);
   const genWindows = useTypedSelector(Selectors.getGenWindows);
 
@@ -29,7 +29,7 @@ const MainContextMenu = React.memo(({ filePickers }: Props) => {
   }, [menuOpened]);
 
   return (
-    <React.Fragment>
+    <Fragment>
       <LinkNode
         href="https://webamp.org/about"
         target="_blank"
@@ -79,7 +79,7 @@ const MainContextMenu = React.memo(({ filePickers }: Props) => {
       </Parent>
       <Hr />
       <Node onClick={close} label="Exit" />
-    </React.Fragment>
+    </Fragment>
   );
 });
 

@@ -1,5 +1,3 @@
-import React from "react";
-
 import PlaylistMenu from "./PlaylistMenu";
 import SortContextMenu from "./SortContextMenu";
 import MiscOptionsContextMenu from "./MiscOptionsContextMenu";

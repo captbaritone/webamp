@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import * as Actions from "../actionCreators";
 import * as Selectors from "../selectors";
 import { useTypedSelector, useActionCreator } from "../hooks";

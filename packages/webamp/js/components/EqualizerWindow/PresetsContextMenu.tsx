@@ -1,4 +1,3 @@
-import React from "react";
 import builtin from "../../../presets/builtin.json";
 import * as Actions from "../../actionCreators";
 import { Node, Parent, Hr } from "../ContextMenu";

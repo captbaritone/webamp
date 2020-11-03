@@ -1,4 +1,3 @@
-import React from "react";
 import Volume from "../Volume";
 import Balance from "../Balance";
 import { segment } from "../../utils";

@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 import classnames from "classnames";
 
 import { WINDOWS, TRACK_HEIGHT, LOAD_STYLE } from "../../constants";

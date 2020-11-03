@@ -1,5 +1,5 @@
 import WebampLazy from "../../js/webampLazy";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 // @ts-ignore
 import iconSmall from "../images/icons/winamp2-32x32.png";
 import DesktopIcon from "./DesktopIcon";

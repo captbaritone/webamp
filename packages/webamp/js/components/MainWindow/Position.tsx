@@ -1,4 +1,4 @@
-import React from "react";
+import { memo, useCallback } from "react";
 
 import {
   SEEK_TO_PERCENT_COMPLETE,
@@ -22,11 +22,11 @@ function usePosition() {
   return [position, displayedPosition];
 }
 
-const Position = React.memo(() => {
+const Position = memo(() => {
   const [position, displayedPosition] = usePosition();
   const dispatch = useTypedDispatch();
 
-  const seekToPercentComplete = React.useCallback(
+  const seekToPercentComplete = useCallback(
     (e) => {
       dispatch({
         type: SEEK_TO_PERCENT_COMPLETE,
@@ -37,7 +37,7 @@ const Position = React.memo(() => {
     [dispatch]
   );
 
-  const setPosition = React.useCallback(
+  const setPosition = useCallback(
     (e) => {
       dispatch({ type: SET_FOCUS, input: "position" });
       dispatch({

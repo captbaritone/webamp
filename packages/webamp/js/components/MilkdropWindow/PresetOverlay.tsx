@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { promptForFileReferences } from "../../fileUtils";
 import * as Selectors from "../../selectors";
 import * as Actions from "../../actionCreators";

@@ -1,19 +1,19 @@
-import React from "react";
+import { memo, Fragment } from "react";
 import Character from "./Character";
 
 interface Props {
   children: string;
 }
 
-const CharacterString = React.memo((props: Props) => {
+const CharacterString = memo((props: Props) => {
   const text = `${props.children}` || "";
   const chars = text.split("");
   return (
-    <React.Fragment>
+    <Fragment>
       {chars.map((character, index) => (
         <Character key={index + character}>{character}</Character>
       ))}
-    </React.Fragment>
+    </Fragment>
   );
 });
 

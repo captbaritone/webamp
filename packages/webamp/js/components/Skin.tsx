@@ -1,6 +1,4 @@
 // Dynamically set the css background images for all the sprites
-import React from "react";
-
 import { LETTERS } from "../constants";
 import { imageSelectors, cursorSelectors } from "../skinSelectors";
 import { useTypedSelector } from "../hooks";

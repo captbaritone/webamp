@@ -1,4 +1,3 @@
-import React from "react";
 import * as Selectors from "../../selectors";
 import { useTypedSelector } from "../../hooks";
 
