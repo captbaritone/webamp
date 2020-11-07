@@ -289,6 +289,21 @@ export async function getStatus(md5: string): Promise<TweetStatus> {
   return "UNREVIEWED";
 }
 
+export async function getUploadStatuses(
+  md5s: string[]
+): Promise<{ [md5: string]: string }> {
+  const skins = await knex("skin_uploads")
+    .whereIn("skin_md5", md5s)
+    .select("skin_md5", "status");
+
+  const statuses: { [md5: string]: string } = {};
+  skins.forEach(({ skin_md5, status }) => {
+    statuses[skin_md5] = status;
+  });
+
+  return statuses;
+}
+
 type SearchIndex = {
   objectID: string;
   md5: string;
@@ -380,6 +395,55 @@ export async function recordSearchIndexUpdates(
       field,
     }))
   );
+}
+
+export async function getReportedUpload(): Promise<{
+  skin_md5: string;
+  id: string;
+  filename: string;
+} | null> {
+  const found = await knex("skin_uploads")
+    .where("status", "UPLOAD_REPORTED")
+    .first(["skin_md5", "id", "filename"]);
+  return found || null;
+}
+
+export async function recordUserUploadComplete(
+  md5: string,
+  id: string
+): Promise<void> {
+  const result = await knex("skin_uploads")
+    .where({ skin_md5: md5, id, status: "URL_REQUESTED" })
+    .update({ status: "UPLOAD_REPORTED" }, [id])
+    .limit(1);
+  console.log("recordUserUploadComplete", result);
+}
+
+export async function recordUserUploadArchived(id: string): Promise<void> {
+  const result = await knex("skin_uploads")
+    .where({ id })
+    .update({ status: "ARCHIVED" }, [id])
+    .limit(1);
+  console.log("recordUserUploadArchived", result);
+}
+
+export async function recordUserUploadErrored(id: string): Promise<void> {
+  const result = await knex("skin_uploads")
+    .where({ id })
+    .update({ status: "ERRORED" }, [id])
+    .limit(1);
+  console.log("recordUserUploadErrored", result);
+}
+
+export async function recordUserUploadRequest(
+  md5: string,
+  filename: string
+): Promise<string> {
+  const record = await knex("skin_uploads").insert(
+    { skin_md5: md5, status: "URL_REQUESTED", filename },
+    ["id"]
+  );
+  return record[0];
 }
 
 // TODO: Also path actor

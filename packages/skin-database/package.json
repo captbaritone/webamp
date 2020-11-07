@@ -10,6 +10,7 @@
     "cors": "^2.8.5",
     "discord.js": "^11.4.2",
     "express": "^4.17.1",
+    "express-async-handler": "^1.1.4",
     "express-fileupload": "^1.1.7-alpha.3",
     "imagemin": "^7.0.0",
     "imagemin-optipng": "^7.0.0",
