@@ -3,8 +3,20 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { createStore } from "./redux/store";
 import App from "./App";
+import * as Sentry from "@sentry/react";
+import { Integrations } from "@sentry/tracing";
 // import registerServiceWorker from "./registerServiceWorker";
 import { unregister } from "./registerServiceWorker";
+
+Sentry.init({
+  dsn:
+    "https://e8278543caf0486b83d718156177c522@o68382.ingest.sentry.io/5508251",
+  integrations: [new Integrations.BrowserTracing()],
+
+  // We recommend adjusting this value in production, or using tracesSampler
+  // for finer control
+  tracesSampleRate: 1.0,
+});
 
 ReactDOM.render(
   <Provider store={createStore()}>

@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@sentry/react": "^5.27.3",
+    "@sentry/tracing": "^5.27.3",
     "algoliasearch": "^3.30.0",
     "async": "^2.6.0",
     "classnames": "^2.2.6",
