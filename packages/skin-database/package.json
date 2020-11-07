@@ -4,6 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "@sentry/node": "^5.27.3",
+    "@sentry/tracing": "^5.27.3",
     "@types/node-fetch": "^2.5.7",
     "algoliasearch": "^4.3.0",
     "aws-sdk": "^2.663.0",

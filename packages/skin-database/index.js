@@ -13,6 +13,23 @@ var LRU = require("lru-cache");
 const S3 = require("./s3");
 const asyncHandler = require("express-async-handler");
 
+const Sentry = require("@sentry/node");
+// or use es6 import statements
+// import * as Sentry from '@sentry/node';
+
+const Tracing = require("@sentry/tracing");
+// or use es6 import statements
+// import * as Tracing from '@sentry/tracing';
+
+Sentry.init({
+  dsn:
+    "https://0e6bc841b4f744b2953a1fe5981effe6@o68382.ingest.sentry.io/5508241",
+
+  // We recommend adjusting this value in production, or using tracesSampler
+  // for finer control
+  tracesSampleRate: 1.0,
+});
+
 const allowList = [
   /https:\/\/skins\.webamp\.org/,
   /http:\/\/localhost:3000/,
@@ -32,6 +49,8 @@ const corsOptions = {
 
 // parse application/json
 app.use(bodyParser.json());
+
+app.use(Sentry.Handlers.requestHandler());
 
 app.use(cors(corsOptions));
 
@@ -328,9 +347,13 @@ app.get(
   })
 );
 
-app.use(function (err, req, res, next) {
-  console.error(err.stack);
-  res.status(500).send("Oops. Something went wrong. We're working on it.");
+// The error handler must be before any other error middleware and after all controllers
+app.use(Sentry.Handlers.errorHandler());
+
+// Optional fallthrough error handler
+app.use(function onError(err, req, res, next) {
+  res.statusCode = 500;
+  res.json({ errorId: res.sentry, message: err.message });
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
