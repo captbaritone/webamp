@@ -521,7 +521,7 @@ export async function getSkinToTweet(): Promise<{
   if (skin == null) {
     return null;
   }
-  return { md5: skin.md5, canonicalFilename: skin.file_path };
+  return { md5: skin.md5, canonicalFilename: path.basename(skin.file_path) };
 }
 
 export async function getStats(): Promise<{
