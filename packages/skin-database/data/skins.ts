@@ -499,24 +499,29 @@ export async function getSkinToReviewForNsfw(): Promise<{
   return { filename: path.basename(skin.file_path), md5: skin.skin_md5 };
 }
 
-export async function getSkinToTweet(): Promise<SkinRecord | null> {
+export async function getSkinToTweet(): Promise<{
+  md5: string;
+  canonicalFilename: string;
+} | null> {
   // TODO: This does not account for skins that have been both approved and rejected
   const tweetables = await knex("skins")
     .leftJoin("skin_reviews", "skin_reviews.skin_md5", "=", "skins.md5")
     .leftJoin("tweets", "tweets.skin_md5", "=", "skins.md5")
+    .leftJoin("files", "files.skin_md5", "=", "skins.md5")
     .where({
       "tweets.id": null,
       skin_type: 1,
       "skin_reviews.review": "APPROVED",
     })
-    .select("skins.md5")
+    .groupBy("skins.md5")
+    .select(["skins.md5", "files.file_path"])
     .orderByRaw("random()")
     .limit(1);
   const skin = tweetables[0];
   if (skin == null) {
     return null;
   }
-  return getSkinByMd5_DEPRECATED(skin.md5);
+  return { md5: skin.md5, canonicalFilename: skin.file_path };
 }
 
 export async function getStats(): Promise<{
