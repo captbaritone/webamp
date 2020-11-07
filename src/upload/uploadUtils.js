@@ -1,24 +1,69 @@
 import { API_URL } from "../constants";
-export async function upload(file) {
-  const formData = new FormData();
-  formData.append("skin", file, file.name);
 
-  const postResponse = await fetch(`${API_URL}/skins/`, {
-    method: "POST",
-    body: formData,
-  });
+// Upload a skin to S3 and then notify our API that it's ready to process.
+export async function upload(fileObj) {
+  const { md5, uploadUrl, uploadId, file } = fileObj;
 
-  return postResponse.json();
+  let retries = 10;
+
+  while (true) {
+    const response = await fetch(uploadUrl, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "binary/octet-stream",
+        //   "Content-MD5": md5
+      },
+      body: file,
+    });
+
+    if (response.status === 503 && retries > 0) {
+      retries--;
+      console.warn(
+        `Request to ${uploadUrl} returned 503, going to retry again in 5 seconds. ${retries} retries left...`
+      );
+      await new Promise((resolve) => setTimeout((resolve) => 5000));
+      continue;
+    }
+
+    if (!response.ok) {
+      throw new Error("Failed to put skin to S3");
+    }
+    break;
+  }
+
+  await reportUploaded(md5, uploadId);
 }
 
-export async function checkMd5sAreMissing(md5s) {
-  const response = await fetch(`${API_URL}/skins/missing`, {
+// Given a list of skin md5s, get back data about which skins are found/missing
+// in the DB. For missing skins, we get a URL we can use to upload directly to
+// S3.
+export async function getUploadUrls(skins) {
+  const response = await fetch(`${API_URL}/skins/get_upload_urls`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ skins }),
+  });
+  return response.json();
+}
+
+// Tell the server that we've uploaded a given skin to S3.
+export async function reportUploaded(md5, id) {
+  const url = new URL(`${API_URL}/skins/${md5}/uploaded`);
+  url.searchParams.append("id", id);
+  const response = await fetch(url, { method: "POST" });
+  if (!response.ok) {
+    throw new Error("Unable to report skin as uploaded.");
+  }
+}
+
+// Given a list of md5s, ask the server which ones have been fully screenshot etc.
+export async function checkMd5sUploadStatus(md5s) {
+  const response = await fetch(`${API_URL}/skins/status`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ hashes: md5s }),
   });
-  const { missing, found } = await response.json();
-  return { missing, found };
+  return response.json();
 }
 
 export async function hashFile(file) {

@@ -1,5 +1,5 @@
 import { combineEpics } from "redux-observable";
-import { of, from, EMPTY, concat } from "rxjs";
+import { of, from, EMPTY, concat, timer, defer } from "rxjs";
 import * as Actions from "./actionCreators";
 import * as Selectors from "./selectors";
 import * as Utils from "../utils";
@@ -14,6 +14,9 @@ import {
   ignoreElements,
   distinctUntilChanged,
   startWith,
+  exhaustMap,
+  takeWhile,
+  mergeAll,
 } from "rxjs/operators";
 import { search } from "../algolia";
 import queryParser from "../queryParser";
@@ -53,7 +56,7 @@ const selectedSkinEpic = (actions) =>
   actions.pipe(
     filter((action) => action.type === "SELECTED_SKIN"),
     switchMap((action) => {
-      return from(fetch(Utils.skinUrlFromHash(action.hash))).pipe(
+      return defer(() => fetch(Utils.skinUrlFromHash(action.hash))).pipe(
         // TODO: Handle 404
         switchMap((response) => response.blob()),
         switchMap(async (blob) => {
@@ -244,12 +247,9 @@ const checkIfUploadsAreMissingEpic = (actions, state) =>
       );
     }),
     mergeMap(() => {
-      const md5s = Selectors.getUploadedFilesMd5s(state.value);
-      return from(UploadUtils.checkMd5sAreMissing(md5s))
+      const files = Selectors.getUploadedFiles(state.value);
+      return from(UploadUtils.getUploadUrls(files))
         .pipe(
-          map(({ missing, found }) =>
-            Actions.gotMissingAndFoundMd5s({ missing, found })
-          ),
           catchError((e) => {
             console.error("Failed fo check missing skins", e);
             // TODO: A real error here.
@@ -257,6 +257,24 @@ const checkIfUploadsAreMissingEpic = (actions, state) =>
               "Sorry. We had a problem checking which files are missing. Please contact jordan@jordaneldredge.com for help."
             );
             return of(Actions.closeUploadFiles());
+          }),
+          map((missingSkins) => {
+            const found = [];
+            const missing = [];
+
+            Object.keys(files).forEach((md5) => {
+              const data = missingSkins[md5];
+              if (data == null) {
+                found.push(md5);
+              } else {
+                missing[md5] = data;
+              }
+            });
+
+            return Actions.gotMissingAndFoundMd5s({
+              missing,
+              found,
+            });
           })
         )
         .pipe(takeUntilAction(actions, "CLOSE_UPLOAD_FILES"));
@@ -266,18 +284,12 @@ const checkIfUploadsAreMissingEpic = (actions, state) =>
 function uploadActions(file) {
   return concat(
     of(Actions.startingFileUpload(file.id)),
-    from(UploadUtils.upload(file.file)).pipe(
-      map((response) => {
-        if (response.status === "ADDED") {
-          return Actions.archivedSkin(file.id, response);
-        }
-        if (response.status === "FOUND") {
-          // Maybe we could do something better here?
-        }
-        console.error(response);
-        return Actions.uploadFailed(file.id);
-      }),
-      catchError(() => of(Actions.uploadFailed(file.id)))
+    defer(() => UploadUtils.upload(file)).pipe(
+      map(() => Actions.uploadedSkin(file.id)),
+      catchError((e) => {
+        console.error(e);
+        return of(Actions.uploadFailed(file.id));
+      })
     )
   );
 }
@@ -293,20 +305,68 @@ const uploadFilesEpic = (actions, state) =>
     })
   );
 
+function getProcessingSkins(state) {
+  return Object.values(state.fileUploads).filter(
+    (file) => file.status === "UPLOADED"
+  );
+}
+
+function checkStatus(state) {
+  const processingSkins = getProcessingSkins(state);
+  const processingMd5s = processingSkins.map((file) => file.md5);
+  return defer(() => UploadUtils.checkMd5sUploadStatus(processingMd5s)).pipe(
+    switchMap((statuses) => {
+      // Map the status data to a (potentially empty) set of actions to update
+      // our store.
+      return Object.entries(statuses)
+        .map(([md5, status]) => {
+          const skin = processingSkins.find((file) => file.md5 === md5);
+          if (skin == null) {
+            console.warn(`Could not find a processing skin with hash ${md5}. `);
+            return null;
+          }
+          switch (status) {
+            case "ARCHIVED":
+              return Actions.archivedSkin(skin.id);
+            case "ERRORED":
+              return Actions.uploadFailed(skin.id);
+            default:
+              return null;
+          }
+        })
+        .filter(Boolean);
+    })
+  );
+}
+
+// Every time we complete uploading a skin to S3, we start polling the museum
+// API to see which skins that are still processing have completed. We continue
+// polling (ignoring any newly uploaded file events) until we know the outcome
+// of every skin we've uploaded to S3.
+const uploadStatusEpic = (actions, state) =>
+  actions.pipe(
+    filter((action) => action.type === "UPLOADED_SKIN"),
+    exhaustMap(() => {
+      // TODO: Should we timeout at some point?
+      return timer(0, 4000).pipe(
+        takeWhile(() => getProcessingSkins(state.value).length > 0),
+        exhaustMap(() => checkStatus(state.value))
+      );
+    })
+  );
+
 // When TRY_TO_UPLOAD_ALL_FILES is dispatched, upload a file and recursively
 // dispatch until no uploadable files are found
 const uploadAllFilesEpic = (actions, state) =>
   actions.pipe(
     filter((action) => action.type === "TRY_TO_UPLOAD_ALL_FILES"),
     mergeMap(() => {
-      const file = Selectors.getFileToUpload(state.value);
-      if (file == null) {
-        return EMPTY;
-      }
-      return concat(
-        uploadActions(file),
-        of(Actions.tryToUploadAllFiles())
-      ).pipe(takeUntilAction(actions, "CLOSE_UPLOAD_FILES"));
+      const files = Selectors.getFilesToUpload(state.value);
+      return from(files).pipe(
+        map((file) => uploadActions(file)),
+        mergeAll(10), // Limit to 10 concurrent uploads
+        takeUntilAction(actions, "CLOSE_UPLOAD_FILES")
+      );
     })
   );
 
@@ -407,6 +467,7 @@ export default combineEpics(
   gotFilesEpic,
   uploadFilesEpic,
   uploadAllFilesEpic,
+  uploadStatusEpic,
   uploadSingleFileEpic,
   checkIfUploadsAreMissingEpic,
   urlEpic,

@@ -5,7 +5,6 @@ import { useActionCreator } from "../hooks";
 import * as Actions from "../redux/actionCreators";
 import DropTarget from "../DropTarget";
 import UploadSection from "./UploadSection";
-import { WINAMP_NORMAL } from "../theme";
 
 function useBucketed(filesArr) {
   return useMemo(() => {
@@ -18,6 +17,7 @@ function useBucketed(filesArr) {
         case "UPLOADING":
         case "UPLOAD_FAILED":
         case "ARCHIVED":
+        case "UPLOADED":
           missing.push(file);
           break;
         case "INVALID_FILE_EXTENSION":
@@ -58,6 +58,11 @@ function Inner({ files }) {
   const stillHaveFilesToUpload = filesArr.some(
     (file) => file.status === "MISSING" || file.status === "UPLOADING"
   );
+
+  /* TODO: Invite the user to Discord if they upload more than n
+  const uploadedCount = filesArr.filter((file) => file.status === "ARCHIVED")
+    .length;
+  */
 
   const filesToUpload = missing.length;
 

@@ -88,6 +88,9 @@ export default function reducer(state = defaultState, action) {
     case "ARCHIVED_SKIN": {
       return setUploadFileStatus(state, action.id, "ARCHIVED");
     }
+    case "UPLOADED_SKIN": {
+      return setUploadFileStatus(state, action.id, "UPLOADED");
+    }
     case "INVALID_ARCHIVE":
       return setUploadFileStatus(state, action.id, "INVALID_ARCHIVE", true);
     case "GOT_FILE_MD5": {
@@ -103,13 +106,18 @@ export default function reducer(state = defaultState, action) {
       };
     }
     case "GOT_MISSING_AND_FOUND_MD5S": {
-      const missingSet = new Set(action.missing);
       const foundSet = new Set(action.found);
 
       function getNewFile(file) {
         if (file.md5 != null) {
-          if (missingSet.has(file.md5)) {
-            return { ...file, status: "MISSING" };
+          const uploadData = action.missing[file.md5];
+          if (uploadData != null) {
+            return {
+              ...file,
+              status: "MISSING",
+              uploadUrl: uploadData.url,
+              uploadId: uploadData.id,
+            };
           } else if (foundSet.has(file.md5)) {
             return { ...file, status: "FOUND" };
           }

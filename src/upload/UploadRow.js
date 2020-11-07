@@ -71,6 +71,9 @@ function SkinLink({ md5, children }) {
 // TODO: This is a component
 function getRight(file) {
   switch (file.status) {
+    case "UPLOADED": {
+      return "uploaded (...server is processing)";
+    }
     case "ARCHIVED":
       switch (file.skinType) {
         case "MODERN":
@@ -110,7 +113,7 @@ function UploadRow({ file }) {
       name={file.file.name}
       loading={file.status === "UPLOADING"}
       right={getRight(file)}
-      complete={file.status === "ARCHIVED"}
+      complete={file.status === "ARCHIVED" || file.status === "UPLOADED"}
     />
   );
 }

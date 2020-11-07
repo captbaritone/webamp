@@ -41,8 +41,8 @@ export const getCurrentSkinCount = createSelector(
   }
 );
 
-export const getFileToUpload = (state) => {
-  return Object.values(state.fileUploads).find((file) => {
+export const getFilesToUpload = (state) => {
+  return Object.values(state.fileUploads).filter((file) => {
     if (file == null) {
       console.warn("Got a nullish file");
       return false;
@@ -203,6 +203,17 @@ export function getAreReadyToCheckMissingUploads(state) {
   );
 }
 
+// @deprecated
 export function getUploadedFilesMd5s(state) {
   return Object.values(state.fileUploads).map((file) => file.md5);
+}
+
+export function getUploadedFiles(state) {
+  const files = {};
+  Object.values(state.fileUploads).forEach((file) => {
+    if (file.status === "NEW") {
+      files[file.md5] = file.file.name;
+    }
+  });
+  return files;
 }

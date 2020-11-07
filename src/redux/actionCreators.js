@@ -87,16 +87,20 @@ export function startingFileUpload(id) {
   return { type: "STARTING_FILE_UPLOAD", id };
 }
 
-export function tryToUploadAllFiles(id) {
-  return { type: "TRY_TO_UPLOAD_ALL_FILES", id };
+export function tryToUploadAllFiles() {
+  return { type: "TRY_TO_UPLOAD_ALL_FILES" };
 }
 
 export function uploadFailed(id) {
   return { type: "UPLOAD_FAILED", id };
 }
 
-export function archivedSkin(id, response) {
-  return { type: "ARCHIVED_SKIN", id, response };
+export function uploadedSkin(id, response) {
+  return { type: "UPLOADED_SKIN", id, response };
+}
+
+export function archivedSkin(id) {
+  return { type: "ARCHIVED_SKIN", id };
 }
 
 export function gotMissingAndFoundMd5s({ missing, found }) {
