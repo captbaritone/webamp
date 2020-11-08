@@ -147,7 +147,20 @@ const searchEpic = (actions) =>
 const randomSkinEpic = (actions, states) =>
   actions.pipe(
     filter((action) => action.type === "REQUESTED_RANDOM_SKIN"),
-    map(() => Actions.selectedSkin(Selectors.getRandomSkinHash(states.value)))
+    map(() => Selectors.getRandomSkinHash(states.value)),
+    map((md5) => {
+      if (md5 == null) {
+        return Actions.alert("No skins found.");
+      }
+      return Actions.selectedSkin(md5);
+    })
+  );
+
+const alertEpic = (actions) =>
+  actions.pipe(
+    filter((action) => action.type === "ALERT"),
+    tap(({ message }) => alert(message)),
+    ignoreElements()
   );
 
 const chunkState = {};
@@ -440,17 +453,21 @@ const markNsfwEpic = (actions) => {
     filter((action) => action.type === "MARK_NSFW"),
     mergeMap(async ({ hash }) => {
       try {
-        await fetch(`${API_URL}/skins/${hash}/report`, {
+        const response = await fetch(`${API_URL}/skins/${hash}/report`, {
           method: "POST",
           mode: "cors",
         });
+        if (!response.ok) {
+          throw new Error("Failed to report skin.");
+        }
       } catch (e) {
-        alert("Oops. Something went wrong. Please try again later.");
-        return;
+        return Actions.alert(
+          "Oops. Something went wrong. Please try again later."
+        );
       }
-      alert("Thanks for reporting. We'll review this skin.");
+      return Actions.alert("Thanks for reporting. We'll review this skin.");
     }),
-    ignoreElements()
+    filter(Boolean)
   );
 };
 
@@ -473,5 +490,6 @@ export default combineEpics(
   urlEpic,
   loggingEpic,
   skinDataEpic,
-  markNsfwEpic
+  markNsfwEpic,
+  alertEpic
 );
