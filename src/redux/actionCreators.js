@@ -12,6 +12,10 @@ export function requestUnloadedSkin(index) {
 }
 
 export function selectedSkin(hash, position) {
+  if (hash == null) {
+    // trying to narrow down: https://sentry.io/share/issue/04b1bc5c2a764addac4e62dea201096a/
+    throw new Error("Tried to select a null skin");
+  }
   return { type: "SELECTED_SKIN", hash, position };
 }
 
