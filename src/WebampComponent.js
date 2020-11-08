@@ -16,7 +16,7 @@ class WebampComponent extends React.Component {
 
   async _loadWebamp() {
     const Webamp = (await import("webamp")).default;
-    if (this._unmounted === true) {
+    if (this._disposable.disposed) {
       return;
     }
     // https://freemusicarchive.org/music/netBloc_Artists/netBloc_Vol_24_tiuqottigeloot/
