@@ -37,6 +37,7 @@ function Metadata() {
   ) {
     readmeLink = (
       <DownloadText
+        id="metadata-download-reame"
         text={focusedSkinFile.content}
         download={focusedSkinFile.fileName}
       >
@@ -46,7 +47,11 @@ function Metadata() {
   }
 
   const elements = [
-    <DownloadLink href={Utils.skinUrlFromHash(hash)} download={fileName}>
+    <DownloadLink
+      id="metadata-download-skin"
+      href={Utils.skinUrlFromHash(hash)}
+      download={fileName}
+    >
       Download
     </DownloadLink>,
     readmeLink,
@@ -71,6 +76,7 @@ function Metadata() {
     */
     <a
       href={permalink}
+      id="metadata-share"
       onClick={(e) => {
         setShowLink((s) => !s);
         e.preventDefault();
@@ -79,6 +85,7 @@ function Metadata() {
       Share
     </a>,
     <a
+      id="metadata-webamp"
       href={`https://webamp.org?skinUrl=${Utils.skinUrlFromHash(hash)}`}
       target="_new"
     >
@@ -88,6 +95,7 @@ function Metadata() {
       "NSFW"
     ) : (
       <button
+        id="metadata-nsfw"
         onClick={report}
         style={{
           border: "none",
