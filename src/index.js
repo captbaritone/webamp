@@ -7,10 +7,10 @@ import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
 // import registerServiceWorker from "./registerServiceWorker";
 import { unregister } from "./registerServiceWorker";
+import { SENTRY_DSN } from "./constants";
 
 Sentry.init({
-  dsn:
-    "https://e8278543caf0486b83d718156177c522@o68382.ingest.sentry.io/5508251",
+  dsn: SENTRY_DSN,
   integrations: [new Integrations.BrowserTracing()],
 
   // We recommend adjusting this value in production, or using tracesSampler

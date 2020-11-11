@@ -11,3 +11,5 @@ export const SKIN_CDN = "https://cdn.webampskins.org";
 export const API_URL = "https://api.webampskins.org";
 export const HEADING_HEIGHT = 46;
 export const CHUNK_SIZE = 300;
+export const SENTRY_DSN =
+  "https://e8278543caf0486b83d718156177c522@o68382.ingest.sentry.io/5508251";
