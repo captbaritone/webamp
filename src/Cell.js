@@ -17,7 +17,7 @@ const Cell = React.memo((props) => {
     setSelectedSkin,
     requestUnloadedSkin,
     permalinkUrl,
-    concentsToNsfw,
+    consentsToNsfw,
     doesNotConcentToNsfw,
     showNsfw,
   } = props;
@@ -58,7 +58,7 @@ const Cell = React.memo((props) => {
       nsfw={nsfw}
       // TODO: This is werid because there is an implicit assumption that this is always avaliable if we have the skin
       permalink={permalinkUrl}
-      concentsToNsfw={concentsToNsfw}
+      consentsToNsfw={consentsToNsfw}
       doesNotConcentToNsfw={doesNotConcentToNsfw}
       showNsfw={showNsfw}
     />
@@ -92,8 +92,8 @@ const mapDispatchToProps = (dispatch) => ({
   setSelectedSkin(hash, position) {
     dispatch(Actions.selectedSkin(hash, position));
   },
-  concentsToNsfw() {
-    dispatch(Actions.concentsToNsfw());
+  consentsToNsfw() {
+    dispatch(Actions.consentsToNsfw());
   },
 
   doesNotConcentToNsfw() {

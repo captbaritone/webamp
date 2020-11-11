@@ -13,7 +13,7 @@ function Skin({
   src,
   fileName,
   nsfw,
-  concentsToNsfw,
+  consentsToNsfw,
   doesNotConcentToNsfw,
   showNsfw,
 }) {
@@ -32,7 +32,7 @@ function Skin({
           doesNotConcentToNsfw();
           return;
         } else {
-          concentsToNsfw();
+          consentsToNsfw();
         }
       }
       if (Utils.eventIsLinkClick(e)) {
@@ -47,7 +47,7 @@ function Skin({
       }
     },
     [
-      concentsToNsfw,
+      consentsToNsfw,
       doesNotConcentToNsfw,
       hash,
       nsfw,
