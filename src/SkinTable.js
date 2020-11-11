@@ -16,6 +16,7 @@ const SkinTable = ({
   windowWidth,
   getSkinData,
   searchQuery,
+  loadingSearchQuery,
 }) => {
   function itemKey({ columnIndex, rowIndex }) {
     const { requestToken, data: skin } = getSkinData({
@@ -35,9 +36,10 @@ const SkinTable = ({
     }
     gridRef.current.scrollTo({ scrollLeft: 0, scrollTop: 0 });
   }, [skinCount]);
+  const showGrid = loadingSearchQuery || skinCount > 0 || searchQuery === "";
   return (
     <div id="infinite-skins" style={{ marginTop: HEADING_HEIGHT }}>
-      {skinCount > 0 || searchQuery === "" ? (
+      {showGrid ? (
         <Grid
           ref={gridRef}
           itemKey={itemKey}
@@ -74,6 +76,7 @@ const mapStateToProps = (state) => ({
   selectedSkinHash: Selectors.getSelectedSkinHash(state),
   getSkinData: Selectors.getSkinDataGetter(state),
   searchQuery: Selectors.getSearchQuery(state),
+  loadingSearchQuery: Selectors.getLoadingSearchQuery(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

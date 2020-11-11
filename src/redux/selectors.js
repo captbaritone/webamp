@@ -25,6 +25,10 @@ export function getSearchQuery(state) {
   return state.searchQuery;
 }
 
+export function getLoadingSearchQuery(state) {
+  return state.loadingSearchResults;
+}
+
 export function getMatchingSkins(state) {
   return state.matchingSkins;
 }

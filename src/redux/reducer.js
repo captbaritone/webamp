@@ -2,6 +2,7 @@ import { CHUNK_SIZE, UPLOAD_PAGE } from "../constants";
 
 const defaultState = {
   searchQuery: null,
+  loadingSearchResults: false,
   selectedSkinPosition: null,
   matchingSkins: null,
   defaultSkins: [],
@@ -207,6 +208,7 @@ export default function reducer(state = defaultState, action) {
     case "SEARCH_QUERY_CHANGED":
       return {
         ...state,
+        loadingSearchResults: true,
         searchQuery: action.query,
         selectedSkinHash: null,
         selectedSkinPosition: null,
@@ -225,6 +227,7 @@ export default function reducer(state = defaultState, action) {
       }
       return {
         ...state,
+        loadingSearchResults: false,
         matchingSkins: action.skins,
         skins: newSkins,
       };
