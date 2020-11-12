@@ -14,8 +14,8 @@ ID = "be420a16-4ef3-43b1-ac62-35869bdf8679"
   command = "npm run build"
 
 [[redirects]]
-  from = "/sitemap.xml*"
-  to = "https://api.webamp.org/sitemap.xml"
+  from = "/sitemap*"
+  to = "https://api.webampskins.org/sitemap:splat"
   status = 200
 
 [[redirects]]
