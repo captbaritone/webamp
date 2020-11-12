@@ -17,7 +17,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-dropzone": "^11.1.0",
-    "react-helmet": "^5.2.1",
+    "react-helmet": "^6.1.0",
     "react-redux": "^7.2.1",
     "react-scripts": "^3.4.1",
     "react-window": "^1.8.1",

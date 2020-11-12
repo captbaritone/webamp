@@ -1,52 +1,75 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { connect } from "react-redux";
 import { Helmet } from "react-helmet";
 import * as Selectors from "./redux/selectors";
 import { SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT } from "./constants";
 
-function Head(props) {
+const DESCRIPTION =
+  "Infinite scroll through 65k Winamp skins with interactive preview";
+
+function Image({ url, width, height, alt }) {
+  return (
+    <>
+      <meta property="og:image" content={url} />,
+      <meta property="og:image:width" content={width} />,
+      <meta property="og:image:height" content={height} />,
+      <meta property="og:image:type" key="og:image:type" content="image/png" />,
+      <meta property="og:image:alt" key="og:image:alt" content={alt} />,
+      <meta name="twitter:image" content={url} />,
+      <meta property="twitter:image:alt" content={alt} />,
+    </>
+  );
+}
+
+function Head({ url: relativeUrl, pageTitle, previewImageUrl }) {
+  useMemo(() => {
+    // HACK! Helmet does not remove the values that are hard coded in index.html.
+    // So, once JS loads, we remove them ourselves being careful not to only remove things that we will rerender.
+    const elements = window.document.head.querySelectorAll(
+      "meta, title, link[rel='canonical']"
+    );
+    Array.prototype.forEach.call(elements, function (node) {
+      node.parentNode.removeChild(node);
+    });
+  }, []);
+  const pageUrl = `https://skins.webamp.org${relativeUrl}`;
   return (
     <Helmet canUseDOM={true}>
       <meta charSet="utf-8" />
-      <title>{props.pageTitle}</title>
-      <link rel="canonical" href={`https://skins.webamp.org${props.url}`} />
-      <meta property="og:title" content={props.pageTitle} />
       <meta
-        property="og:description"
-        content="Infinite scroll through 65k Winamp skins with interactive preview"
+        name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no"
       />
-      <meta
-        property="og:url"
-        content={`https://skins.webamp.org${props.url}`}
-      />
+      <meta name="theme-color" content="#000000" />
+      <title>{pageTitle}</title>
+      <meta name="description" content={DESCRIPTION} />
+      <link rel="canonical" href={pageUrl} />
+      <meta property="og:url" content={pageUrl} />
+      <meta property="og:title" content={pageTitle} />
+      <meta property="og:description" content={DESCRIPTION} />
+      <meta property="og:type" content="website" />
       <meta property="og:site-name" content="Winamp Skin Museum" />
-      {props.previewImageUrl && [
-        <meta
-          property="og:image"
-          key="og:image"
-          content={props.previewImageUrl}
-        />,
-        <meta
-          property="og:image:type"
-          key="og:image:type"
-          content="image/png"
-        />,
-        <meta
-          property="og:image:width"
-          key="og:image:width"
-          content={SCREENSHOT_WIDTH}
-        />,
-        <meta
-          property="og:image:height"
-          key="og:image:height"
-          content={SCREENSHOT_HEIGHT}
-        />,
-        <meta
-          property="og:image:alt"
-          key="og:image:alt"
-          content={"Screenshot of a Winamp skin"}
-        />,
-      ]}
+
+      <meta name="twitter:site" content="@winampskins" />
+      <meta name="twitter:creator" content="@captbaritone" />
+      <meta name="twitter:title" content={pageTitle} />
+      <meta name="twitter:description" content={DESCRIPTION} />
+
+      {previewImageUrl ? (
+        <Image
+          alt="Screenshot of many Winamp skins in a grid."
+          url={previewImageUrl}
+          width={SCREENSHOT_WIDTH}
+          height={SCREENSHOT_HEIGHT}
+        />
+      ) : (
+        <Image
+          alt="Screenshot of many Winamp skins in a grid."
+          url="https://skins.webamp.org/preview_small.png"
+          width="1844"
+          height="1297"
+        />
+      )}
     </Helmet>
   );
 }
