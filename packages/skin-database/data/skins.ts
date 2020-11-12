@@ -382,6 +382,41 @@ export async function deleteSkin(md5: string): Promise<void> {
   console.log(`Done deleting skin ${md5}.`);
 }
 
+export async function recordScreenshotUpdate(
+  md5: string,
+  errorMessage?: string
+) {
+  // TODO: Could this invalidate the CloudFlare cache?
+  const update_timestamp = Math.floor(Date.now() / 1000);
+
+  await knex("screenshot_updates").insert([
+    {
+      skin_md5: md5,
+      update_timestamp,
+      success: errorMessage == null,
+      error_message: errorMessage,
+    },
+  ]);
+}
+
+export async function getSkinToShoot(): Promise<string | null> {
+  // TODO: Once return an ordered list here of skins that have no record,
+  // followed by skins that have not been shot in a long time.
+  const result = await knex("skins")
+    .leftJoin(
+      "screenshot_updates",
+      "skins.md5",
+      "=",
+      "screenshot_updates.skin_md5"
+    )
+    .where("screenshot_updates.id", null)
+    .first(["md5"]);
+  if (result == null) {
+    return null;
+  }
+  return result.md5;
+}
+
 export async function recordSearchIndexUpdates(
   md5: string,
   fields: string[]
@@ -658,6 +693,29 @@ LIMIT ? offset ?`,
       fileName: path.basename(file_path),
       md5,
       nsfw: Boolean(nsfw),
+    };
+  });
+}
+
+export async function getAllClassicSkins(): Promise<
+  Array<{ fileName: string; url: string }>
+> {
+  const skins = await knex.raw(
+    `
+SELECT skins.md5, 
+	files.file_path
+FROM   skins 
+	LEFT JOIN files ON files.skin_md5 = skins.md5
+WHERE  skin_type = 1 
+GROUP BY skins.md5
+LIMIT 100`,
+    []
+  );
+
+  return skins.map(({ md5, file_path }) => {
+    return {
+      fileName: path.basename(file_path),
+      md5: md5,
     };
   });
 }

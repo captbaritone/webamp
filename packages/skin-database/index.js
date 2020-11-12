@@ -12,6 +12,7 @@ var bodyParser = require("body-parser");
 var LRU = require("lru-cache");
 const S3 = require("./s3");
 const asyncHandler = require("express-async-handler");
+const expressSitemapXml = require("express-sitemap-xml");
 
 const Sentry = require("@sentry/node");
 // or use es6 import statements
@@ -46,6 +47,14 @@ const corsOptions = {
     }
   },
 };
+
+async function getUrls() {
+  const md5s = await Skins.getAllClassicSkins();
+  const skinUrls = md5s.map(({ md5, fileName }) => `skin/${md5}/${fileName}`);
+  return ["/about", "/", "/upload", ...skinUrls];
+}
+
+app.use(expressSitemapXml(getUrls, "https://skins.webamp.org"));
 
 // parse application/json
 app.use(bodyParser.json());

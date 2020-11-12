@@ -13,6 +13,8 @@ import * as SkinHash from "./skinHash";
 import * as Analyser from "./analyser";
 import { searchIndex } from "./algolia";
 import { scrapeLikeData } from "./tasks/scrapeLikes";
+import { screenshot } from "./tasks/screenshotSkin";
+import Shooter from "./shooter";
 
 async function main() {
   const client = new Discord.Client();
@@ -21,6 +23,30 @@ async function main() {
 
   try {
     switch (argv._[0]) {
+      case "screenshot": {
+        const md5 = argv._[1] || (await Skins.getSkinToShoot());
+        if (md5 == null) {
+          return;
+        }
+        await Shooter.withShooter(async (shooter: Shooter) => {
+          await screenshot(md5, shooter);
+        });
+        console.log("Screenshot update complete.");
+        break;
+      }
+      case "screenshots": {
+        let count = 1000;
+        await Shooter.withShooter(async (shooter: Shooter) => {
+          while (count--) {
+            const md5 = await Skins.getSkinToShoot();
+            if (md5 == null) {
+              break;
+            }
+            await screenshot(md5, shooter);
+          }
+        });
+        break;
+      }
       case "readme": {
         const rows = await knex.raw(
           'SELECT md5 FROM files LEFT JOIN skins on skins.md5 = files.skin_md5 WHERE source_attribution = "Web API" AND readme_text IS NULL;'

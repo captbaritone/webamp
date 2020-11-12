@@ -76,6 +76,7 @@ async function addClassicSkinFromBuffer(
   await Shooter.withShooter((shooter) =>
     shooter.takeScreenshot(tempFile, tempScreenshotPath, {
       minify: true,
+      md5,
     })
   );
 

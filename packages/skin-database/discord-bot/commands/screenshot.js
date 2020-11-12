@@ -18,6 +18,9 @@ async function handler(message) {
     attachments.map(async (attachment) => {
       const { filename, url } = attachment;
       const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Failed to download skin.");
+      }
       console.log("got response");
       const buffer = await response.buffer();
       console.log("got buffer");
@@ -40,6 +43,7 @@ async function handler(message) {
       await withShooter(async (shooter) => {
         await shooter.takeScreenshot(tempFile, tempScreenshotPath, {
           minify: true,
+          md5: file.md5,
         });
       });
       console.log("Completed screenshot");

@@ -2,6 +2,7 @@ const path = require("path");
 const puppeteer = require("puppeteer");
 const imagemin = require("imagemin");
 const imageminOptipng = require("imagemin-optipng");
+const Skins = require("./data/skins");
 
 function min(imgPath) {
   return imagemin([imgPath], path.dirname(imgPath), {
@@ -9,7 +10,7 @@ function min(imgPath) {
   });
 }
 
-class Shooter {
+export default class Shooter {
   constructor(url) {
     this._initialized = false;
     this._url = url;
@@ -18,7 +19,7 @@ class Shooter {
   static async withShooter(cb) {
     const shooter = new Shooter("https://webamp.org");
     try {
-      await cb(shooter);
+      return await cb(shooter);
     } finally {
       shooter.dispose();
     }
@@ -58,8 +59,22 @@ class Shooter {
     }
   }
 
-  async takeScreenshot(skin, screenshotPath, { minify = false }) {
-    console.log("start!", this._page);
+  async takeScreenshot(skin, screenshotPath, { minify = false, md5 }) {
+    try {
+      await this._takeScreenshot(skin, screenshotPath, { minify });
+    } catch (e) {
+      await Skins.recordScreenshotUpdate(
+        md5,
+        e.message || String(e) || "Unkown error"
+      );
+      return false;
+    }
+    await Skins.recordScreenshotUpdate(md5);
+    return true;
+  }
+
+  async _takeScreenshot(skin, screenshotPath, { minify = false }) {
+    console.log("start!");
     await this._ensureInitialized();
     console.log("Going to try", screenshotPath, skin);
     try {
@@ -68,27 +83,31 @@ class Shooter {
       console.log("uploading skin");
 
       await new Promise(async (resolve, reject) => {
-        console.log("start promise");
-        const dialogHandler = (dialog) => {
-          reject(dialog.message());
-        };
-        this._page.on("dialog", dialogHandler);
-        await handle.uploadFile(skin);
-        console.log("waiting for skin to load...");
-        await this._page.evaluate(() => {
-          return window.__webamp.skinIsLoaded();
-        });
-        console.log("waiting for screenshot");
-        await this._page.screenshot({
-          path: screenshotPath,
-          omitBackground: true, // Make screenshot transparent
-          // https://github.com/GoogleChrome/puppeteer/issues/703#issuecomment-366041479
-          clip: { x: 0, y: 0, width: 275, height: 116 * 3 },
-        });
+        try {
+          console.log("start promise");
+          const dialogHandler = (dialog) => {
+            reject(new Error(`Dialog message: ${dialog.message()}`));
+          };
+          this._page.on("dialog", dialogHandler);
+          await handle.uploadFile(skin);
+          console.log("waiting for skin to load...");
+          await this._page.evaluate(() => {
+            return window.__webamp.skinIsLoaded();
+          });
+          console.log("waiting for screenshot");
+          await this._page.screenshot({
+            path: screenshotPath,
+            omitBackground: true, // Make screenshot transparent
+            // https://github.com/GoogleChrome/puppeteer/issues/703#issuecomment-366041479
+            clip: { x: 0, y: 0, width: 275, height: 116 * 3 },
+          });
 
-        this._page.off("dialog", dialogHandler);
+          this._page.off("dialog", dialogHandler);
 
-        resolve();
+          resolve();
+        } catch (e) {
+          reject(e);
+        }
       });
 
       console.log("Wrote screenshot to", screenshotPath);
@@ -111,5 +130,3 @@ class Shooter {
     this._initialized = false;
   }
 }
-
-module.exports = Shooter;
