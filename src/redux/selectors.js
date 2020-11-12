@@ -10,6 +10,15 @@ export function getSelectedSkinPosition(state) {
   return state.selectedSkinPosition;
 }
 
+export function getSelectedSkinData(state) {
+  const hash = getSelectedSkinHash(state);
+  if (hash == null) {
+    return null;
+  }
+
+  return state.skins[hash] || null;
+}
+
 export function overlayShouldAnimate(state) {
   return getSelectedSkinPosition(state) != null;
 }
@@ -136,44 +145,57 @@ export const getAbsolutePermalinkUrlFromHashGetter = createSelector(
   }
 );
 
-export const getUrl = createSelector(
+export const getRouteData = createSelector(
   getActiveContentPage,
   getSelectedSkinHash,
   getSearchQuery,
   getFileExplorerOpen,
   getFocusedSkinFile,
   getPermalinkUrlFromHashGetter,
+  getSelectedSkinData,
   (
     activeContentPage,
     hash,
     query,
     fileExplorerOpen,
     focusedSkinFile,
-    getPermalinkUrlFromHash
+    getPermalinkUrlFromHash,
+    skinData
   ) => {
     if (activeContentPage === ABOUT_PAGE) {
-      return "/about/";
+      return { url: "/about/", title: "About" };
     }
     if (activeContentPage === UPLOAD_PAGE) {
-      return "/upload/";
+      return { url: "/upload/", title: "Upload Skins" };
     }
     if (hash) {
       const skinUrl = getPermalinkUrlFromHash(hash);
       if (fileExplorerOpen && focusedSkinFile) {
-        return `${skinUrl}files/${encodeURIComponent(
+        const url = `${skinUrl}files/${encodeURIComponent(
           focusedSkinFile.fileName
         )}`;
+        return { url, title: skinData?.fileName };
       }
-      return skinUrl;
+      return { url: skinUrl, title: skinData?.fileName };
     } else if (query) {
-      return `/?query=${encodeURIComponent(query)}`;
+      return {
+        url: `/?query=${encodeURIComponent(query)}`,
+        title: `Search: ${query}`,
+      };
     }
-    return "/";
+    return { url: "/", title: null };
   }
 );
 
+export const getUrl = createSelector(getRouteData, (routeData) => {
+  return routeData.url;
+});
+
 export function getPageTitle(state) {
-  return "Winamp Skin Museum";
+  const routeData = getRouteData(state);
+  const pageTitle = routeData.title;
+  const siteTitle = "Winamp Skin Museum";
+  return [pageTitle, siteTitle].filter(Boolean).join(" - ");
 }
 
 export const getPreviewImageUrl = createSelector(

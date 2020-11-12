@@ -52,7 +52,7 @@ function FocusedSkin() {
   const [previewLoaded, setPreviewLoaded] = useState(initialPosition != null);
   const centeredState = useCenteredState();
   const closeModal = useActionCreator(Actions.closeModal);
-  const skinData = useSelector((state) => state.skins[hash] || null);
+  const skinData = useSelector(Selectors.getSelectedSkinData);
 
   const pos =
     initialPosition == null || centered ? centeredState : initialPosition;
