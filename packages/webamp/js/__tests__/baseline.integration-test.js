@@ -55,6 +55,16 @@ test("should render a skin that defines transparent regions", async () => {
   expect(await page.screenshot()).toMatchImageSnapshot(snapshotOptions);
 });
 
+test("should render a skin that has files that only differ by case: main.bmp and main.BMP", async () => {
+  await page.goto(`${DOMAIN}/#{"disableMarquee":true}`);
+  await expect(page).toUploadFile(
+    "#webamp-file-input",
+    path.join(__dirname, "../../demo/skins/My_Funny_Valentine.wsz")
+  );
+  await page.evaluate(() => window.__webamp.skinIsLoaded());
+  expect(await page.screenshot()).toMatchImageSnapshot(snapshotOptions);
+});
+
 test("uses the volume spirtes as a fallback when balance spirtes are missing", async () => {
   await page.goto(`${DOMAIN}/#{"disableMarquee":true}`);
   await expect(page).toUploadFile(
