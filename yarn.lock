@@ -14782,10 +14782,10 @@ wcwidth@^1.0.1:
   dependencies:
     defaults "^1.0.3"
 
-webamp@^1.4.1-beta05:
-  version "1.4.1-beta05"
-  resolved "https://registry.yarnpkg.com/webamp/-/webamp-1.4.1-beta05.tgz#f128b3c15361da9cbeb15ef0f0c3406d45c7df3a"
-  integrity sha512-IZlHrvee8PBBL7QJo/ufPueUX+yRaSIFVUs6Ogp9Gz0ZWwkEXWmvCSlMkzmGTXrcaMiU2sfrBkBGTLZ1cnn+2w==
+webamp@^1.4.1-beta06:
+  version "1.4.1-beta06"
+  resolved "https://registry.yarnpkg.com/webamp/-/webamp-1.4.1-beta06.tgz#d0a766d63610a7aae951c6701b452105d5e94117"
+  integrity sha512-fNoFQe7Mo+RfMG9P4w5vvFwCEvMHIJdO8cOP52LN33t33ELBVOiAYQcdo9XwopfD8XUBP/LexTb8idi60n872Q==
   dependencies:
     eslint-plugin-react-hooks "^2.1.2"
     fscreen "^1.0.2"
