@@ -400,6 +400,9 @@ const loggingEpic = (actions, state) =>
         case "INVALID_FILE_EXTENSION":
         case "GOT_FILE":
         case "GOT_MISSING_AND_FOUND_MD5S":
+        case "REQUESTED_RANDOM_SKIN":
+        case "MARK_NSFW":
+        case "INVALID_ARCHIVE":
           window.ga("send", "event", "redux", action.type);
           break;
         default: {
