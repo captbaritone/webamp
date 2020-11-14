@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { Helmet } from "react-helmet";
 import * as Selectors from "./redux/selectors";
 import { SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT } from "./constants";
@@ -32,6 +32,11 @@ function Head({ url: relativeUrl, pageTitle, previewImageUrl }) {
       node.parentNode.removeChild(node);
     });
   }, []);
+
+  const focusedSkinFile = useSelector(Selectors.getFocusedSkinFile);
+
+  let readme = focusedSkinFile?.content?.slice(0, 300);
+  const description = readme || DESCRIPTION;
   const pageUrl = `https://skins.webamp.org${relativeUrl}`;
   return (
     <Helmet canUseDOM={true}>
@@ -42,18 +47,18 @@ function Head({ url: relativeUrl, pageTitle, previewImageUrl }) {
       />
       <meta name="theme-color" content="#000000" />
       <title>{pageTitle}</title>
-      <meta name="description" content={DESCRIPTION} />
+      <meta name="description" content={description} />
       <link rel="canonical" href={pageUrl} />
       <meta property="og:url" content={pageUrl} />
       <meta property="og:title" content={pageTitle} />
-      <meta property="og:description" content={DESCRIPTION} />
+      <meta property="og:description" content={description} />
       <meta property="og:type" content="website" />
       <meta property="og:site-name" content="Winamp Skin Museum" />
 
       <meta name="twitter:site" content="@winampskins" />
       <meta name="twitter:creator" content="@captbaritone" />
       <meta name="twitter:title" content={pageTitle} />
-      <meta name="twitter:description" content={DESCRIPTION} />
+      <meta name="twitter:description" content={description} />
 
       {previewImageUrl ? (
         <Image
