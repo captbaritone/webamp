@@ -388,7 +388,7 @@ const loggingEpic = (actions, state) =>
     tap((action) => {
       // ga('send', 'event', [eventCategory], [eventAction], [eventLabel], [eventValue], [fieldsObject]);
       switch (action.type) {
-        case "CONCENTS_TO_N_SFW":
+        case "CONCENTS_TO_NSFW":
         case "DOES_NOT_CONCENT_TO_NSFW":
         case "CLOSE_UPLOAD_FILES":
         case "GOT_FILE_MD5":
