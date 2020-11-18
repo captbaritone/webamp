@@ -100,11 +100,6 @@ async function main() {
         await tweet(client, null);
         break;
       }
-      case "metadata": {
-        const hash = argv._[1];
-        console.log(Skins.getInternetArchiveUrl(hash));
-        break;
-      }
       case "skin": {
         const hash = argv._[1];
         console.log(await Skins.getSkinDebugData(hash));

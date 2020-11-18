@@ -1,14 +1,10 @@
 import path from "path";
-import {
-  getMuseumUrl,
-  getWebampUrl,
-  getScreenshotUrl,
-  getSkinUrl,
-} from "./skins";
+import { getScreenshotUrl, getSkinUrl } from "./skins";
 import { TweetStatus, SkinRow, TweetRow, ReviewRow, FileRow } from "../types";
 import UserContext from "./UserContext";
-import TweetModel from "./TweetModel";
+import TweetModel, { TweetDebugData } from "./TweetModel";
 import IaItemModel from "./IaItemModel";
+import FileModel, { FileDebugData } from "./FileModel";
 
 export default class SkinModel {
   constructor(readonly ctx: UserContext, readonly row: SkinRow) {}
@@ -21,12 +17,23 @@ export default class SkinModel {
     return row == null ? null : new SkinModel(ctx, row);
   }
 
+  static async exists(ctx: UserContext, md5: string): Promise<boolean> {
+    const row = await ctx.skin.load(md5);
+    return row != null;
+  }
+
   async tweeted(): Promise<boolean> {
     return (await this.getTweet()) != null;
   }
 
-  getTweet(): Promise<TweetModel | null> {
-    return TweetModel.fromMd5(this.ctx, this.row.md5);
+  async getTweet(): Promise<TweetModel | null> {
+    const tweets = await this.getTweets();
+    return tweets[0] || null;
+  }
+
+  async getTweets(): Promise<TweetModel[]> {
+    const rows = await this.ctx.tweets.load(this.row.md5);
+    return rows.map((row) => new TweetModel(this.ctx, row));
   }
 
   getIaItem(): Promise<IaItemModel | null> {
@@ -37,8 +44,8 @@ export default class SkinModel {
     return this.ctx.reviews.load(this.row.md5);
   }
 
-  getFile(): Promise<FileRow> {
-    return this.ctx.file.load(this.row.md5);
+  getFiles(): Promise<FileModel[]> {
+    return FileModel.fromMd5(this.ctx, this.row.md5);
   }
 
   async getIsNsfw(): Promise<boolean> {
@@ -63,9 +70,12 @@ export default class SkinModel {
     return "UNREVIEWED";
   }
 
-  async getFilename(): Promise<string> {
-    const file = await this.getFile();
-    return path.basename(file.file_path);
+  async getFileName(): Promise<string> {
+    const files = await this.getFiles();
+    if (files.length === 0) {
+      throw new Error(`Could not find file for skin with md5 ${this.getMd5()}`);
+    }
+    return files[0].getFileName();
   }
 
   getMd5(): string {
@@ -82,15 +92,31 @@ export default class SkinModel {
   }
 
   getMuseumUrl(): string {
-    return getMuseumUrl(this.row.md5);
+    return `https://skins.webamp.org/skin/${this.row.md5}`;
   }
   getWebampUrl(): string {
-    return getWebampUrl(this.row.md5);
+    return `https://webamp.org?skinUrl=${this.getSkinUrl()}`;
   }
   getScreenshotUrl(): string {
     return getScreenshotUrl(this.row.md5);
   }
   getSkinUrl(): string {
     return getSkinUrl(this.row.md5);
+  }
+
+  async debug(): Promise<{
+    row: SkinRow;
+    reviews: ReviewRow[];
+    tweets: TweetDebugData[];
+    files: FileDebugData[];
+  }> {
+    const tweets = await this.getTweets();
+    const files = await this.getFiles();
+    return {
+      row: this.row,
+      reviews: await this.getReviews(),
+      tweets: await Promise.all(tweets.map((tweet) => tweet.debug())),
+      files: await Promise.all(files.map((file) => file.debug())),
+    };
   }
 }

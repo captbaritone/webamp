@@ -1,8 +1,6 @@
 // Functions for deriving information from skins
 
-import { exec } from "child_process";
 import { knex } from "./db";
-import shellescape from "shell-escape";
 import JSZip from "jszip";
 import { SkinType } from "./types";
 import * as Skins from "./data/skins";
@@ -25,20 +23,6 @@ export async function setReadmeForSkin(skinMd5: string): Promise<void> {
   }
   await knex("skins").where({ md5: skinMd5 }).update({ readme_text: text });
   await Skins.updateSearchIndex(skinMd5);
-}
-
-export function getColor(imgPath: string): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const excapedImgPath = shellescape([imgPath]);
-    const command = `convert ${excapedImgPath} -scale 1x1\! -format '%[pixel:u]' info:-`;
-    exec(command, (error, stdout) => {
-      if (error !== null) {
-        reject(error);
-        return;
-      }
-      resolve(stdout.slice(1));
-    });
-  });
 }
 
 const IS_README = /(file_id\.diz)|(\.txt)$/i;

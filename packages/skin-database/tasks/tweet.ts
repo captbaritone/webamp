@@ -60,7 +60,7 @@ export async function tweet(discordClient: Client, anything: string | null) {
     return;
   }
 
-  const filename = await tweetableSkin.getFilename();
+  const filename = await tweetableSkin.getFileName();
   const md5 = tweetableSkin.getMd5();
 
   if (filename == null) {
@@ -69,7 +69,7 @@ export async function tweet(discordClient: Client, anything: string | null) {
 
   let output;
   try {
-    output = await sendTweet(md5, filename);
+    output = await sendTweet(tweetableSkin);
   } catch (e) {
     console.error(e);
     // @ts-ignore
@@ -102,8 +102,9 @@ async function getResizedScreenshot(md5: string): Promise<Buffer> {
   return image;
 }
 
-async function sendTweet(md5: string, filename: string) {
-  const screenshotBuffer = await getResizedScreenshot(md5);
+async function sendTweet(skin: SkinModel) {
+  const screenshotBuffer = await getResizedScreenshot(skin.getMd5());
+  const filename = await skin.getFileName();
   const tempFile = temp.path({ suffix: ".png" });
   fs.writeFileSync(tempFile, screenshotBuffer);
   const t = getTwitterClient();
@@ -119,7 +120,7 @@ async function sendTweet(md5: string, filename: string) {
   });
 
   const params = {
-    status: `${filename}\n\n${Skins.getMuseumUrl(md5)}`,
+    status: `${filename}\n\n${skin.getMuseumUrl()}`,
     media_ids: [media_id_string],
   };
 

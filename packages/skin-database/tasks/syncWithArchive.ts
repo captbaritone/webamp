@@ -101,7 +101,7 @@ async function archive(md5: string): Promise<string> {
     throw new Error(`Could not find skin with hash ${md5}`);
   }
 
-  const filename = await skin.getFilename();
+  const filename = await skin.getFileName();
   if (filename == null) {
     throw new Error(`Could archive skin. Filename not found. ${md5}`);
   }

@@ -12,6 +12,18 @@ export default class IaItemModel {
     return row == null ? null : new IaItemModel(ctx, row);
   }
 
+  static async fromIdentifier(
+    ctx: UserContext,
+    identifier: string
+  ): Promise<IaItemModel | null> {
+    const row = await ctx.iaItemByIdentifier.load(identifier);
+    return row == null ? null : new IaItemModel(ctx, row);
+  }
+
+  getMd5(): string {
+    return this.row.skin_md5;
+  }
+
   getUrl(): string {
     return `https://archive.org/details/${this.getIdentifier()}`;
   }

@@ -51,7 +51,7 @@ export async function postSkin({
   const internetArchiveUrl = iaItem?.getUrl();
   const internetArchiveItemName = iaItem?.getIdentifier();
   const emails = skin.getEmails();
-  const canonicalFilename = await skin.getFilename();
+  const canonicalFilename = await skin.getFileName();
   const nsfw = await skin.getIsNsfw();
   const title = _title ? _title(canonicalFilename) : canonicalFilename;
 
@@ -186,7 +186,7 @@ export async function sendAlreadyReviewed({
     logger.warn("Could not find skin for md5", { md5, alert: true });
     return;
   }
-  const canonicalFilename = await skin.getFilename();
+  const canonicalFilename = await skin.getFileName();
   const tweetStatus = await skin.getTweetStatus();
   const nsfw = await skin.getIsNsfw();
 

@@ -6,6 +6,9 @@ import { truncate, MD5_REGEX } from "../utils";
 import { TweetStatus } from "../types";
 import fetch from "node-fetch";
 import * as S3 from "../s3";
+import SkinModel from "./SkinModel";
+import UserContext from "./UserContext";
+import IaItemModel from "./IaItemModel";
 
 export const SKIN_TYPE = {
   CLASSIC: 1,
@@ -22,26 +25,16 @@ export function getScreenshotUrl(md5: string): string {
   return `https://cdn.webampskins.org/screenshots/${md5}.png`;
 }
 
-export function getWebampUrl(md5: string): string {
-  return `https://webamp.org?skinUrl=${getSkinUrl(md5)}`;
-}
-
-export function getMuseumUrl(md5: string): string {
-  return `https://skins.webamp.org/skin/${md5}`;
-}
-
 export async function addSkin({
   md5,
   filePath,
   uploader,
-  averageColor,
   modern,
   readmeText,
 }: {
   md5: string;
   filePath: string;
   uploader: string;
-  averageColor?: string;
   modern: boolean;
   readmeText: string | null;
 }) {
@@ -49,7 +42,6 @@ export async function addSkin({
     {
       md5,
       skin_type: modern ? SKIN_TYPE.MODERN : SKIN_TYPE.CLASSIC,
-      average_color: averageColor,
       readme_text: readmeText,
     },
     []
@@ -86,7 +78,6 @@ export async function setContentHash(md5: string): Promise<string | null> {
   return contentHash;
 }
 
-// TODO: SQLITE
 export async function getMd5ByAnything(
   anything: string
 ): Promise<string | null> {
@@ -106,37 +97,7 @@ export async function getMd5ByAnything(
       return md5;
     }
   }
-  return getMd5FromInternetArchvieItemName(anything);
-}
-
-export async function skinExists(md5: string): Promise<boolean> {
-  const skin = await knex("skins").where({ md5 }).first();
-  return skin != null;
-}
-
-export async function getSkinMuseumData(
-  md5: string
-): Promise<{ nsfw: boolean; fileName: string; md5: string } | null> {
-  const result = await knex("skins")
-    .where("md5", md5)
-    .leftJoin("files", "files.skin_md5", "=", "skins.md5")
-    .leftJoin("skin_reviews", "skin_reviews.skin_md5", "=", "skins.md5")
-    .groupBy("skins.md5")
-    .first([
-      "md5",
-      "file_path",
-      knex.raw("skin_reviews.review = 'NSFW' AS nsfw"),
-    ]);
-
-  if (result == null) {
-    return null;
-  }
-
-  return {
-    md5: result.md5,
-    nsfw: Boolean(result.nsfw),
-    fileName: path.basename(result.file_path),
-  };
+  return (await getMd5FromInternetArchvieItemName(anything)) ?? null;
 }
 
 export async function getSkinDebugData(md5: string): Promise<any | null> {
@@ -167,14 +128,9 @@ export async function getSkinDebugData(md5: string): Promise<any | null> {
 }
 
 async function getMd5FromInternetArchvieItemName(itemName: string) {
-  const item = await knex("ia_items")
-    .where({ identifier: itemName })
-    .first("skin_md5");
-  return item == null ? null : item.skin_md5;
-}
-
-export function getInternetArchiveUrl(itemName: string | null): string | null {
-  return itemName == null ? null : `https://archive.org/details/${itemName}`;
+  const ctx = new UserContext();
+  const item = await IaItemModel.fromIdentifier(ctx, itemName);
+  return item?.getMd5();
 }
 
 export async function getTweetableSkinCount(): Promise<number> {
@@ -218,25 +174,6 @@ export async function markAsNSFW(md5: string): Promise<void> {
   await searchIndex.partialUpdateObjects([index]);
   await recordSearchIndexUpdates(md5, Object.keys(index));
   await knex("skin_reviews").insert({ skin_md5: md5, review: "NSFW" }, []);
-}
-
-export async function getStatus(md5: string): Promise<TweetStatus> {
-  const tweeted = await knex("tweets").where({ skin_md5: md5 }).limit(1);
-  if (tweeted.length > 0) {
-    return "TWEETED";
-  }
-  const reviewRows = await knex("skin_reviews")
-    .where({ skin_md5: md5 })
-    .limit(1);
-  const reviews = new Set(reviewRows.map((row) => row.review));
-  if (reviews.has("REJECTED")) {
-    return "REJECTED";
-  }
-  if (reviews.has("APPROVED")) {
-    return "APPROVED";
-  }
-
-  return "UNREVIEWED";
 }
 
 export async function getUploadStatuses(
@@ -524,12 +461,9 @@ export async function getStats(): Promise<{
   };
 }
 
-export async function getRandomClassicSkinMd5(): Promise<string> {
-  return (await knex("skins").orderByRaw("random()").first("md5")).md5;
-}
-
 export async function getScreenshotBuffer(md5: string): Promise<Buffer> {
-  const exists = await skinExists(md5);
+  const ctx = new UserContext();
+  const exists = await SkinModel.exists(ctx, md5);
   if (!exists) {
     throw new Error(`Could not find skin with hash ${md5}`);
   }
@@ -568,15 +502,20 @@ export async function setTweetInfo(
   }
 }
 
+export type MuseumPage = Array<{
+  color: string;
+  fileName: string;
+  md5: string;
+  nsfw: boolean;
+}>;
+
 export async function getMuseumPage({
   offset,
   first,
 }: {
   offset: number;
   first: number;
-}): Promise<
-  Array<{ color: string; fileName: string; md5: string; nsfw: boolean }>
-> {
+}): Promise<MuseumPage> {
   const skins = await knex.raw(
     `
 SELECT skins.md5, 

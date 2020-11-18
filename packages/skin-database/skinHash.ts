@@ -32,13 +32,3 @@ export async function setHashesForSkin(skinMd5: string): Promise<void> {
   });
   await knex("archive_files").insert(rows);
 }
-
-function computeContentHash(fileInfo: FileData[]): string {
-  return md5(
-    fileInfo
-      .filter(({ fileName }) => !CRUFT_FILENAMES.has(fileName))
-      .map(({ fileName, md5 }) => `${fileName}:${md5}`)
-      .sort()
-      .join("|")
-  );
-}

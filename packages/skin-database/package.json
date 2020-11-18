@@ -6,6 +6,8 @@
   "dependencies": {
     "@sentry/node": "^5.27.3",
     "@sentry/tracing": "^5.27.3",
+    "@types/express": "^4.17.9",
+    "@types/lru-cache": "^5.1.0",
     "@types/node-fetch": "^2.5.7",
     "algoliasearch": "^4.3.0",
     "aws-sdk": "^2.663.0",

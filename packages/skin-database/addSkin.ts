@@ -6,6 +6,8 @@ import Shooter from "./shooter";
 import _temp from "temp";
 import * as Analyser from "./analyser";
 import { SkinType } from "./types";
+import SkinModel from "./data/SkinModel";
+import UserContext from "./data/UserContext";
 
 // TODO Move this into the function so that we clean up on each run?
 const temp = _temp.track();
@@ -16,18 +18,18 @@ const temp = _temp.track();
 // Upload to Internet Archive
 // Store the Internet Archive item name
 // Construct IA Webamp UR
-type Result =
+export type Result =
   | { md5: string; status: "FOUND" }
-  | { md5: string; status: "ADDED"; averageColor?: string; skinType: SkinType };
+  | { md5: string; status: "ADDED"; skinType: SkinType };
 
 export async function addSkinFromBuffer(
   buffer: Buffer,
   filePath: string,
   uploader: string
 ): Promise<Result> {
+  const ctx = new UserContext();
   const md5 = md5Buffer(buffer);
-  const exists = await Skins.skinExists(md5);
-  if (exists) {
+  if (await SkinModel.exists(ctx, md5)) {
     return { md5, status: "FOUND" };
   }
 
@@ -80,7 +82,6 @@ async function addClassicSkinFromBuffer(
     })
   );
 
-  const averageColor = await Analyser.getColor(tempScreenshotPath);
   await S3.putScreenshot(md5, fs.readFileSync(tempScreenshotPath));
   await S3.putSkin(md5, buffer, "wsz");
   const readmeText = await Analyser.getReadme(buffer);
@@ -88,11 +89,10 @@ async function addClassicSkinFromBuffer(
     md5,
     filePath,
     uploader,
-    averageColor,
     modern: false,
     readmeText,
   });
 
   await Skins.updateSearchIndex(md5);
-  return { md5, status: "ADDED", averageColor, skinType: "CLASSIC" };
+  return { md5, status: "ADDED", skinType: "CLASSIC" };
 }
