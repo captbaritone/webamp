@@ -6,7 +6,10 @@
   "dependencies": {
     "@sentry/node": "^5.27.3",
     "@sentry/tracing": "^5.27.3",
+    "@types/cors": "^2.8.8",
     "@types/express": "^4.17.9",
+    "@types/express-fileupload": "^1.1.5",
+    "@types/express-sitemap-xml": "^1.1.1",
     "@types/lru-cache": "^5.1.0",
     "@types/node-fetch": "^2.5.7",
     "algoliasearch": "^4.3.0",
@@ -37,7 +40,7 @@
     "yargs": "^13.2.4"
   },
   "scripts": {
-    "start": "ts-node --transpile-only index.js",
+    "start": "ts-node --transpile-only api/server.js",
     "tweet": "ts-node --transpile-only ./cli.ts tweet",
     "fetch-metadata": "ts-node --transpile-only ./cli.ts fetch-metadata",
     "bot": "ts-node --transpile-only ./discord-bot/index.js",

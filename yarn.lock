@@ -1687,6 +1687,12 @@
   dependencies:
     "@types/node" "*"
 
+"@types/cors@^2.8.8":
+  version "2.8.8"
+  resolved "https://registry.yarnpkg.com/@types/cors/-/cors-2.8.8.tgz#317a8d8561995c60e35b9e0fcaa8d36660c98092"
+  dependencies:
+    "@types/express" "*"
+
 "@types/css-font-loading-module@^0.0.2":
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/@types/css-font-loading-module/-/css-font-loading-module-0.0.2.tgz#09f1f1772975777e37851b7b7a4389d97c210add"
@@ -1699,6 +1705,12 @@
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@types/events/-/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
 
+"@types/express-fileupload@^1.1.5":
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/@types/express-fileupload/-/express-fileupload-1.1.5.tgz#dc8a971f9060d50b12e3908a09248f1772e99484"
+  dependencies:
+    "@types/express" "*"
+
 "@types/express-serve-static-core@*":
   version "4.17.13"
   resolved "https://registry.yarnpkg.com/@types/express-serve-static-core/-/express-serve-static-core-4.17.13.tgz#d9af025e925fc8b089be37423b8d1eac781be084"
@@ -1707,7 +1719,13 @@
     "@types/qs" "*"
     "@types/range-parser" "*"
 
-"@types/express@^4.17.9":
+"@types/express-sitemap-xml@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@types/express-sitemap-xml/-/express-sitemap-xml-1.1.1.tgz#be4c20cd458e8d22cd742db34623100579cc1c49"
+  dependencies:
+    "@types/express" "*"
+
+"@types/express@*", "@types/express@^4.17.9":
   version "4.17.9"
   resolved "https://registry.yarnpkg.com/@types/express/-/express-4.17.9.tgz#f5f2df6add703ff28428add52bdec8a1091b0a78"
   dependencies:

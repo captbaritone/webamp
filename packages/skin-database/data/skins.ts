@@ -3,7 +3,6 @@ import path from "path";
 import md5Hash from "md5";
 import { searchIndex } from "../algolia";
 import { truncate, MD5_REGEX } from "../utils";
-import { TweetStatus } from "../types";
 import fetch from "node-fetch";
 import * as S3 from "../s3";
 import SkinModel from "./SkinModel";
@@ -557,7 +556,7 @@ LIMIT ? offset ?`,
 }
 
 export async function getAllClassicSkins(): Promise<
-  Array<{ fileName: string; url: string }>
+  Array<{ fileName: string; md5: string }>
 > {
   const skins = await knex.raw(
     `
