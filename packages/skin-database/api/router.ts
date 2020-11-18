@@ -1,16 +1,14 @@
-import UserContext from "./data/UserContext";
 import { Router } from "express";
-
 import asyncHandler from "express-async-handler";
-import SkinModel from "./data/SkinModel";
-import * as Skins from "./data/skins";
-import S3 from "./s3";
+import SkinModel from "../data/SkinModel";
+import * as Skins from "../data/skins";
+import S3 from "../s3";
 import Discord, { TextChannel } from "discord.js";
-import * as Config from "./config";
-import * as DiscordUtils from "./discord-bot/utils";
+import * as Config from "../config";
+import * as DiscordUtils from "../discord-bot/utils";
 import LRU from "lru-cache";
-import { addSkinFromBuffer, Result as AddResult } from "./addSkin";
-import { MuseumPage } from "./data/skins";
+import { addSkinFromBuffer, Result as AddResult } from "../addSkin";
+import { MuseumPage } from "../data/skins";
 
 const router = Router();
 
@@ -52,12 +50,11 @@ router.get(
 router.post(
   "/skins/missing",
   asyncHandler(async (req, res) => {
-    const ctx = new UserContext();
     console.log("Checking for missing skins.");
     const missing: string[] = [];
     const found: string[] = [];
     for (const md5 of req.body.hashes as string[]) {
-      if (!(await SkinModel.exists(ctx, md5))) {
+      if (!(await SkinModel.exists(req.ctx, md5))) {
         missing.push(md5);
       } else {
         found.push(md5);
@@ -73,12 +70,11 @@ router.post(
 router.post(
   "/skins/get_upload_urls",
   asyncHandler(async (req, res) => {
-    const ctx = new UserContext();
     console.log("Checking which skins can upload.");
     const payload = req.body.skins as { [md5: string]: string };
     const missing = {};
     for (const [md5, filename] of Object.entries(payload)) {
-      if (!(await SkinModel.exists(ctx, md5))) {
+      if (!(await SkinModel.exists(req.ctx, md5))) {
         const id = await Skins.recordUserUploadRequest(md5, filename);
         const url = S3.getSkinUploadUrl(md5, id);
         missing[md5] = { id, url };
@@ -101,10 +97,9 @@ router.post(
 router.get(
   "/skins/:md5",
   asyncHandler(async (req, res) => {
-    const ctx = new UserContext();
     const { md5 } = req.params;
     console.log(`Details for hash "${md5}"`);
-    const skin = await SkinModel.fromMd5(ctx, md5);
+    const skin = await SkinModel.fromMd5(req.ctx, md5);
     if (skin == null) {
       console.log(`Details for hash "${md5}" NOT FOUND`);
       res.status(404).json();
@@ -135,9 +130,7 @@ router.post(
       throw new Error("Could not get NSFW channel");
     }
 
-    const ctx = new UserContext();
-
-    const skin = await SkinModel.fromMd5(ctx, md5);
+    const skin = await SkinModel.fromMd5(req.ctx, md5);
     if (skin == null) {
       throw new Error(`Cold not locate as skin with md5 ${md5}`);
     }

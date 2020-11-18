@@ -1,7 +1,8 @@
-const path = require("path");
-const { PROJECT_ROOT } = require("./config");
+import path from "path";
+import { PROJECT_ROOT } from "./config";
+import Knex from "knex";
 
-const knex = require("knex")({
+export const knex = Knex({
   client: "sqlite3",
   connection: {
     filename: path.join(PROJECT_ROOT, "./skins.sqlite3"),
@@ -9,5 +10,3 @@ const knex = require("knex")({
   useNullAsDefault: true,
   debug: false,
 });
-
-module.exports = { knex };

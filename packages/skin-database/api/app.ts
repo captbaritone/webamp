@@ -6,10 +6,27 @@ import Sentry from "@sentry/node";
 import expressSitemapXml from "express-sitemap-xml";
 import * as Skins from "../data/skins";
 import express from "express";
+import UserContext from "../data/UserContext";
+
+// Add UserContext to req objects globally
+declare global {
+  namespace Express {
+    interface Request {
+      ctx: UserContext;
+    }
+  }
+}
 
 export function createApp() {
   const app = express();
   app.use(Sentry.Handlers.requestHandler());
+
+  // Add UserContext to request
+  app.use((req, res, next) => {
+    req.ctx = new UserContext();
+    next();
+    // TODO: Dispose of context?
+  });
 
   // Configure CORs
   app.use(cors(corsOptions));
