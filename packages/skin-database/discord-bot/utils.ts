@@ -7,7 +7,9 @@ import {
   GroupDMChannel,
 } from "discord.js";
 import rgbHex from "rgb-hex";
+import SkinModel from "../data/SkinModel";
 import * as Skins from "../data/skins";
+import UserContext from "../data/UserContext";
 import logger from "../logger";
 import { TweetStatus } from "../types";
 
@@ -33,76 +35,62 @@ export async function postSkin({
   title?: (filename: string | null) => string;
   dest: TextChannel | DMChannel | GroupDMChannel;
 }) {
+  const ctx = new UserContext();
+
   console.log("postSkin...");
-  const skin = await Skins.getSkinByMd5_DEPRECATED(md5);
+  const skin = await SkinModel.fromMd5(ctx, md5);
   if (skin == null) {
     console.warn("Could not find skin for md5", { md5, alert: true });
     logger.warn("Could not find skin for md5", { md5, alert: true });
     return;
   }
-  const {
-    canonicalFilename,
-    screenshotUrl,
-    skinUrl,
-    averageColor,
-    emails,
-    tweetUrl,
-    twitterLikes,
-    tweetStatus,
-    internetArchiveUrl,
-    internetArchiveItemName,
-    readmeText,
-    nsfw,
-    museumUrl,
-  } = skin;
+  const readmeText = skin.getReadme();
+  const tweet = await skin.getTweet();
+  const tweetStatus = await skin.getTweetStatus();
+  const iaItem = await skin.getIaItem();
+  const internetArchiveUrl = iaItem?.getUrl();
+  const internetArchiveItemName = iaItem?.getIdentifier();
+  const emails = skin.getEmails();
+  const canonicalFilename = await skin.getFilename();
+  const nsfw = await skin.getIsNsfw();
   const title = _title ? _title(canonicalFilename) : canonicalFilename;
 
   const embed = new RichEmbed()
     .setTitle(title)
-    .addField("Try Online", `[skins.webamp.org](${museumUrl})`, true)
-    .addField("Download", `[${canonicalFilename}](${skinUrl})`, true)
+    .addField("Try Online", `[skins.webamp.org](${skin.getMuseumUrl()})`, true)
+    .addField("Download", `[${canonicalFilename}](${skin.getSkinUrl()})`, true)
     .addField("Md5", md5, true);
 
-  if (nsfw) {
+  if (await skin.getIsNsfw()) {
     embed.addField("NSFW", `🔞`, true);
   }
 
   // @ts-ignore
   if (nsfw && !(dest.type === "text" && dest.nsfw)) {
-    embed.addField("Screenshot", `[Screenshot](${screenshotUrl})`, true);
+    embed.addField(
+      "Screenshot",
+      `[Screenshot](${skin.getScreenshotUrl()})`,
+      true
+    );
   } else {
-    embed.setImage(screenshotUrl);
+    embed.setImage(skin.getScreenshotUrl());
   }
 
   if (readmeText) {
     // Trim the readme since Discord will reject it otherwise.
     embed.setDescription(`\`\`\`${readmeText.slice(0, 2000)}\`\`\``);
   }
-  if (averageColor) {
-    try {
-      const color = rgbHex(averageColor);
-      if (String(color).length === 6) {
-        embed.setColor(`#${color}`);
-      } else {
-        logger.warn("Did not get a safe color", {
-          averageColor,
-          color,
-          warn: true,
-        });
-      }
-    } catch (e) {
-      logger.error("Could not use color", { averageColor, alert: true });
-    }
-  }
-  if (emails != null && emails.length) {
+  if (emails.length) {
     embed.addField("Emails", emails.join(", "), true);
   }
-  if (tweetUrl != null) {
-    let likes = "";
-    if (twitterLikes != null) {
-      likes = `(${Number(twitterLikes).toLocaleString()} likes) `;
-    }
-    embed.addField("Tweet Status", `[Tweeted](${tweetUrl}) ${likes}🐦`, true);
+  if (tweet != null) {
+    const likes = `${tweet.getLikes().toLocaleString()} likes `;
+    const retweets = `${tweet.getRetweets().toLocaleString()} retweets `;
+    embed.addField(
+      "Tweet Status",
+      `[Tweeted](${tweet.getUrl()}) (${likes} / ${retweets})🐦`,
+      true
+    );
   } else {
     if (tweetStatus === "UNREVIEWED") {
       embed.setFooter(
@@ -191,20 +179,23 @@ export async function sendAlreadyReviewed({
   md5: string;
   dest: TextChannel | DMChannel | GroupDMChannel;
 }) {
-  const skin = await Skins.getSkinByMd5_DEPRECATED(md5);
+  const ctx = new UserContext();
+  const skin = await SkinModel.fromMd5(ctx, md5);
   if (skin == null) {
     console.warn("Could not find skin for md5", { md5, alert: true });
     logger.warn("Could not find skin for md5", { md5, alert: true });
     return;
   }
-  const { canonicalFilename, museumUrl, tweetStatus, nsfw } = skin;
+  const canonicalFilename = await skin.getFilename();
+  const tweetStatus = await skin.getTweetStatus();
+  const nsfw = await skin.getIsNsfw();
 
   const embed = new RichEmbed()
     .setTitle(
       `Someone flagged "${canonicalFilename}", but it's already been reviwed.`
     )
     .addField("Status", getPrettyTwitterStatus(tweetStatus), true)
-    .addField("Museum", `[${canonicalFilename}](${museumUrl})`, true);
+    .addField("Museum", `[${canonicalFilename}](${skin.getMuseumUrl()})`, true);
 
   if (nsfw) {
     embed.addField("NSFW", `🔞`, true);

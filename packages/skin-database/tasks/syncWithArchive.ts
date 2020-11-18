@@ -1,10 +1,11 @@
-import { knex, db } from "../db";
+import { knex } from "../db";
 import path from "path";
 import fetch from "node-fetch";
-import * as Skins from "../data/skins";
 import _temp from "temp";
 import fs from "fs";
 import child_process from "child_process";
+import UserContext from "../data/UserContext";
+import SkinModel from "../data/SkinModel";
 const temp = _temp.track();
 
 async function allItems(): Promise<string[]> {
@@ -94,12 +95,13 @@ async function getNewIdentifier(filename: string): Promise<string> {
 }
 
 async function archive(md5: string): Promise<string> {
-  const skin = await Skins.getSkinByMd5_DEPRECATED(md5);
+  const ctx = new UserContext();
+  const skin = await SkinModel.fromMd5(ctx, md5);
   if (skin == null) {
     throw new Error(`Could not find skin with hash ${md5}`);
   }
 
-  const filename = skin.canonicalFilename;
+  const filename = await skin.getFilename();
   if (filename == null) {
     throw new Error(`Could archive skin. Filename not found. ${md5}`);
   }
@@ -112,8 +114,8 @@ async function archive(md5: string): Promise<string> {
   const title = `Winamp Skin: ${filename}`;
 
   const [skinFile, screenshotFile] = await Promise.all([
-    downloadToTemp(skin.skinUrl, filename),
-    downloadToTemp(skin.screenshotUrl, screenshotFilename),
+    downloadToTemp(skin.getSkinUrl(), filename),
+    downloadToTemp(skin.getScreenshotUrl(), screenshotFilename),
   ]);
 
   // Pick identifier
@@ -161,7 +163,6 @@ async function m() {
   try {
     await main();
   } finally {
-    db.close();
     knex.destroy();
   }
 }

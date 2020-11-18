@@ -3,18 +3,20 @@ import fs from "fs";
 import * as Skins from "../data/skins";
 import { TWEET_BOT_CHANNEL_ID, TWITTER_CREDS } from "../config";
 import { Client } from "discord.js";
-import { SkinRecord } from "../types";
 import _temp from "temp";
 import sharp from "sharp";
 import { getTwitterClient } from "../twitter";
+import SkinModel from "../data/SkinModel";
+import UserContext from "../data/UserContext";
 const temp = _temp.track();
 
 export async function tweet(discordClient: Client, anything: string | null) {
+  const ctx = new UserContext();
   const tweetBotChannel = discordClient.channels.get(TWEET_BOT_CHANNEL_ID);
   if (tweetBotChannel == null) {
     throw new Error("Could not connect to the #tweet-bot channel");
   }
-  let tweetableSkin: null | SkinRecord = null;
+  let tweetableSkin: null | SkinModel = null;
   if (anything != null) {
     const _md5 = await Skins.getMd5ByAnything(anything);
     if (_md5 == null) {
@@ -24,7 +26,7 @@ export async function tweet(discordClient: Client, anything: string | null) {
       );
       return;
     }
-    tweetableSkin = await Skins.getSkinByMd5_DEPRECATED(_md5);
+    tweetableSkin = await SkinModel.fromMd5(ctx, _md5);
     if (tweetableSkin == null) {
       // @ts-ignore
       await tweetBotChannel.send(
@@ -33,18 +35,21 @@ export async function tweet(discordClient: Client, anything: string | null) {
       logger.info(`Could not find a skin matching hash ${_md5}`);
       return;
     }
-    if (tweetableSkin.tweeted) {
+    const tweetStatus = await tweetableSkin.getTweetStatus();
+    if (tweetStatus == "TWEETED") {
       // @ts-ignore
       await tweetBotChannel.send(`Oops! This skin has alraedy been tweeted.`);
       return;
     }
-    if (tweetableSkin.rejected) {
+    if (tweetStatus == "REJECTED") {
       // @ts-ignore
       await tweetBotChannel.send(`Oops! Can't tweet a rejected skin.`);
       return;
     }
   } else {
-    tweetableSkin = await Skins.getSkinToTweet();
+    const toTweet = await Skins.getSkinToTweet();
+    tweetableSkin =
+      toTweet == null ? null : await SkinModel.fromMd5(ctx, toTweet.md5);
   }
   if (tweetableSkin == null) {
     // @ts-ignore
@@ -55,7 +60,9 @@ export async function tweet(discordClient: Client, anything: string | null) {
     return;
   }
 
-  const { md5, canonicalFilename: filename } = tweetableSkin;
+  const filename = await tweetableSkin.getFilename();
+  const md5 = tweetableSkin.getMd5();
+
   if (filename == null) {
     throw new Error(`Could not find filename for skin with hash ${md5}`);
   }
@@ -69,7 +76,7 @@ export async function tweet(discordClient: Client, anything: string | null) {
     await tweetBotChannel.send(`Oops. Tweeting crashed: ${e.message}`);
     return;
   }
-  await Skins.markAsTweeted(md5, output.trim());
+  await Skins.markAsTweeted(tweetableSkin.getMd5(), output.trim());
   // @ts-ignore
   await tweetBotChannel.send(output.trim());
   const remainingSkinCount = await Skins.getTweetableSkinCount();

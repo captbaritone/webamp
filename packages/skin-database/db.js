@@ -1,6 +1,5 @@
 const path = require("path");
 const { PROJECT_ROOT } = require("./config");
-const db = require("monk")("mongodb://127.0.0.1:27017/winamp");
 
 const knex = require("knex")({
   client: "sqlite3",
@@ -11,4 +10,4 @@ const knex = require("knex")({
   debug: false,
 });
 
-module.exports = { db, knex };
+module.exports = { knex };

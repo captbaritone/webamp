@@ -310,10 +310,16 @@ app.post(
     const client = new Discord.Client();
     await client.login(config.discordToken);
     const dest = client.channels.get(config.NSFW_SKIN_CHANNEL_ID);
+    const ctx = new UserContext();
 
-    const skin = await Skins.getSkinByMd5_DEPRECATED(md5);
+    const skin = await SkinModel.fromMd5(ctx, md5);
+    if (skin == null) {
+      throw new Error(`Cold not locate as skin with md5 ${md5}`);
+    }
 
-    if (skin.tweetStatus === "UNREVIEWED") {
+    const tweetStatus = await skin.getTweetStatus();
+
+    if (tweetStatus === "UNREVIEWED") {
       // Don't await
       Utils.postSkin({
         md5,
@@ -325,34 +331,6 @@ app.post(
     }
 
     res.send("The skin has been reported and will be reviewed shortly.");
-  })
-);
-
-app.get(
-  "/skins/:md5/screenshot.png",
-  asyncHandler(async (req, res) => {
-    const { md5 } = req.params;
-    console.log(`Getting screenshot for hash "${md5}"`);
-    const { screenshotUrl } = await Skins.getSkinByMd5_DEPRECATED(md5);
-    if (screenshotUrl == null) {
-      res.status(404).send();
-      return;
-    }
-    res.redirect(301, screenshotUrl);
-  })
-);
-
-app.get(
-  "/skins/:md5/download",
-  asyncHandler(async (req, res) => {
-    const { md5 } = req.params;
-    console.log(`Downloading for hash "${md5}"`);
-    const { skinUrl } = await Skins.getSkinByMd5_DEPRECATED(md5);
-    if (skinUrl == null) {
-      res.status(404).send();
-      return;
-    }
-    res.redirect(301, skinUrl);
   })
 );
 

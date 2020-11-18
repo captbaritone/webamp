@@ -1,7 +1,6 @@
 #!/usr/bin/env node
-import path from "path";
 import fs from "fs";
-import { db, knex } from "./db";
+import { knex } from "./db";
 import { argv } from "yargs";
 import logger from "./logger";
 import DiscordWinstonTransport from "./DiscordWinstonTransport";
@@ -108,8 +107,7 @@ async function main() {
       }
       case "skin": {
         const hash = argv._[1];
-        logger.info({ hash });
-        console.log(await Skins.getSkinByMd5_DEPRECATED(hash));
+        console.log(await Skins.getSkinDebugData(hash));
         break;
       }
 
@@ -168,7 +166,6 @@ async function main() {
     }
   } finally {
     knex.destroy();
-    db.close();
     logger.close();
     client.destroy();
   }
