@@ -1,12 +1,4 @@
-import path from "path";
-import { PROJECT_ROOT } from "./config";
 import Knex from "knex";
+import * as knexConfigs from "./knexfile";
 
-export const knex = Knex({
-  client: "sqlite3",
-  connection: {
-    filename: path.join(PROJECT_ROOT, "./skins.sqlite3"),
-  },
-  useNullAsDefault: true,
-  debug: false,
-});
+export const knex = Knex(knexConfigs[process.env.NODE_ENV || "development"]);

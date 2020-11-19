@@ -1,10 +1,13 @@
 import Sentry from "@sentry/node";
 import { createApp } from "./app";
+import DiscordEventHandler from "./DiscordEventHandler";
 
 const port = process.env.PORT ? Number(process.env.PORT) : 3001;
 
+const handler = new DiscordEventHandler();
+
 // GO!
-const app = createApp();
+const app = createApp((action, ctx) => handler.handle(action, ctx));
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
 // Initialize Sentry after we start listening. Any crash at start time will appear in the console and we'll notice.

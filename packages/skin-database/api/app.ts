@@ -8,24 +8,53 @@ import * as Skins from "../data/skins";
 import express from "express";
 import UserContext from "../data/UserContext";
 
+export type ApiAction =
+  | { type: "REVIEW_REQUESTED"; md5: string }
+  | { type: "SKIN_UPLOADED"; md5: string }
+  | { type: "ERROR_PROCESSING_UPLOAD"; id: string; message: string };
+
+export type EventHandler = (event: ApiAction, ctx: UserContext) => void;
+
 // Add UserContext to req objects globally
 declare global {
   namespace Express {
     interface Request {
       ctx: UserContext;
+      notify(action: ApiAction): void;
+      log(message: string): void;
+      logError(message: string): void;
     }
   }
 }
 
-export function createApp() {
+export function createApp(eventHandler?: EventHandler) {
   const app = express();
-  app.use(Sentry.Handlers.requestHandler());
+  if (Sentry) {
+    app.use(Sentry.Handlers.requestHandler());
+  }
 
   // Add UserContext to request
   app.use((req, res, next) => {
     req.ctx = new UserContext();
     next();
     // TODO: Dispose of context?
+  });
+
+  // Attach event handler
+  app.use((req, res, next) => {
+    req.notify = (action) => {
+      if (eventHandler) {
+        eventHandler(action, req.ctx);
+      }
+    };
+    next();
+  });
+
+  // Attach logger
+  app.use((req, res, next) => {
+    req.log = () => {}; // console.log;
+    req.logError = () => {}; // console.log;
+    next();
   });
 
   // Configure CORs
@@ -49,7 +78,9 @@ export function createApp() {
   app.use("/", router);
 
   // The error handler must be before any other error middleware and after all controllers
-  app.use(Sentry.Handlers.errorHandler());
+  if (Sentry) {
+    app.use(Sentry.Handlers.errorHandler());
+  }
 
   // Optional fallthrough error handler
   app.use(function onError(err, req, res, next) {

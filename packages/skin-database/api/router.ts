@@ -29,19 +29,19 @@ router.get(
     const key = req.originalUrl;
     const cached = cache.get(key);
     if (cached != null) {
-      console.log(`Cache hit for ${key}`);
+      req.log(`Cache hit for ${key}`);
       res.json({ skinCount, skins: cached });
       return;
     }
-    console.log(`Getting offset: ${offset}, first: ${first}`);
+    req.log(`Getting offset: ${offset}, first: ${first}`);
 
     const start = Date.now();
     const skins = await Skins.getMuseumPage({
       offset: Number(offset),
       first: Number(first),
     });
-    console.log(`Query took ${(Date.now() - start) / 1000}`);
-    console.log(`Cache set for ${key}`);
+    req.log(`Query took ${(Date.now() - start) / 1000}`);
+    req.log(`Cache set for ${key}`);
     cache.set(key, skins);
     res.json({ skinCount, skins });
   })
@@ -50,7 +50,6 @@ router.get(
 router.post(
   "/skins/missing",
   asyncHandler(async (req, res) => {
-    console.log("Checking for missing skins.");
     const missing: string[] = [];
     const found: string[] = [];
     for (const md5 of req.body.hashes as string[]) {
@@ -60,7 +59,7 @@ router.post(
         found.push(md5);
       }
     }
-    console.log(
+    req.log(
       `${found.length} skins are found and ${missing.length} are missing.`
     );
     res.json({ missing, found });
@@ -70,7 +69,6 @@ router.post(
 router.post(
   "/skins/get_upload_urls",
   asyncHandler(async (req, res) => {
-    console.log("Checking which skins can upload.");
     const payload = req.body.skins as { [md5: string]: string };
     const missing = {};
     for (const [md5, filename] of Object.entries(payload)) {
@@ -80,7 +78,6 @@ router.post(
         missing[md5] = { id, url };
       }
     }
-    console.log({ missing });
     res.json(missing);
   })
 );
@@ -88,7 +85,6 @@ router.post(
 router.post(
   "/skins/status",
   asyncHandler(async (req, res) => {
-    console.log("Checking status of uploaded skins.");
     const statuses = await Skins.getUploadStatuses(req.body.hashes);
     res.json(statuses);
   })
@@ -98,10 +94,9 @@ router.get(
   "/skins/:md5",
   asyncHandler(async (req, res) => {
     const { md5 } = req.params;
-    console.log(`Details for hash "${md5}"`);
     const skin = await SkinModel.fromMd5(req.ctx, md5);
     if (skin == null) {
-      console.log(`Details for hash "${md5}" NOT FOUND`);
+      req.log(`Details for hash "${md5}" NOT FOUND`);
       res.status(404).json();
       return;
     }
@@ -113,41 +108,16 @@ router.get(
   })
 );
 
-// TODO: Make this POST
 router.post(
   "/skins/:md5/report",
   asyncHandler(async (req, res) => {
     const { md5 } = req.params;
-    console.log(`Reporting skin with hash "${md5}"`);
-    const client = new Discord.Client();
-    await client.login(Config.discordToken);
-
-    const dest = client.channels.get(
-      Config.NSFW_SKIN_CHANNEL_ID
-    ) as TextChannel | null;
-
-    if (dest == null) {
-      throw new Error("Could not get NSFW channel");
-    }
-
+    req.log(`Reporting skin with hash "${md5}"`);
     const skin = await SkinModel.fromMd5(req.ctx, md5);
     if (skin == null) {
       throw new Error(`Cold not locate as skin with md5 ${md5}`);
     }
-
-    const tweetStatus = await skin.getTweetStatus();
-
-    if (tweetStatus === "UNREVIEWED") {
-      // Don't await
-      DiscordUtils.postSkin({
-        md5,
-        title: (filename) => `Review: ${filename}`,
-        dest,
-      });
-    } else {
-      DiscordUtils.sendAlreadyReviewed({ md5, dest });
-    }
-
+    req.notify({ type: "REVIEW_REQUESTED", md5 });
     res.send("The skin has been reported and will be reviewed shortly.");
   })
 );
@@ -156,7 +126,6 @@ async function reportSkinUpload(result: AddResult, dest: TextChannel) {
   if (result.status === "ADDED") {
     // await new Promise((resolve) => setTimeout(resolve, 3000));
     if (result.skinType === "CLASSIC") {
-      console.log(`Going to post new skin to discord: ${result.md5}`);
       // Don't await
       DiscordUtils.postSkin({
         md5: result.md5,
@@ -198,7 +167,7 @@ router.post(
     try {
       result = await addSkinFromBuffer(upload.data, upload.name, "Web API");
     } catch (e) {
-      console.error(e);
+      req.logError(String(e));
       dest.send(`Encountered an error uploading a skin: ${e.message}`);
       res.status(500).send({ error: `Error adding skin: ${e.message}` });
       return;
@@ -263,7 +232,6 @@ router.post(
     }
     // TODO: Validate md5 and id;
     await Skins.recordUserUploadComplete(md5, id);
-    console.log(`Reporting skin uploaded: md5: ${md5} id: ${id}`);
     // Don't await, just kick off the task.
     processesUserUploads();
     res.json({ done: true });
@@ -274,7 +242,6 @@ router.post(
   "/skins/:md5/index",
   asyncHandler(async (req, res) => {
     const { md5 } = req.params;
-    console.log(`Going to index hash "${md5}"`);
     const skin = await Skins.updateSearchIndex(md5);
     res.json(skin);
   })

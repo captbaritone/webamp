@@ -570,6 +570,9 @@ GROUP BY skins.md5`,
   );
 
   return skins.map(({ md5, file_path }) => {
+    if (file_path == null) {
+      throw new Error(`Could not find a file path for skin with md5 "${md5}"`);
+    }
     return {
       fileName: path.basename(file_path),
       md5: md5,

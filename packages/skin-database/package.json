@@ -51,8 +51,10 @@
   "prettier": {},
   "devDependencies": {
     "@babel/preset-typescript": "^7.10.1",
+    "@types/supertest": "^2.0.10",
     "jest": "^26.1.0",
     "prettier": "^2.0.5",
+    "supertest": "^6.0.1",
     "typescript": "^3.8.3"
   }
 }
