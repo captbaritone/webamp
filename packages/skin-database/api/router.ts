@@ -48,25 +48,6 @@ router.get(
 );
 
 router.post(
-  "/skins/missing",
-  asyncHandler(async (req, res) => {
-    const missing: string[] = [];
-    const found: string[] = [];
-    for (const md5 of req.body.hashes as string[]) {
-      if (!(await SkinModel.exists(req.ctx, md5))) {
-        missing.push(md5);
-      } else {
-        found.push(md5);
-      }
-    }
-    req.log(
-      `${found.length} skins are found and ${missing.length} are missing.`
-    );
-    res.json({ missing, found });
-  })
-);
-
-router.post(
   "/skins/get_upload_urls",
   asyncHandler(async (req, res) => {
     const payload = req.body.skins as { [md5: string]: string };
@@ -138,46 +119,6 @@ async function reportSkinUpload(result: AddResult, dest: TextChannel) {
   }
 }
 
-router.post(
-  "/skins/",
-  asyncHandler(async (req, res) => {
-    const client = new Discord.Client();
-    await client.login(Config.discordToken);
-    const dest = client.channels.get(
-      Config.SKIN_UPLOADS_CHANNEL_ID
-    ) as TextChannel;
-
-    // https://github.com/richardgirges/express-fileupload#usage
-    // @ts-ignore
-    const files = req.files as {
-      [key: string]: { name: string; data: Buffer };
-    };
-    if (files == null) {
-      dest.send("Someone hit the upload endpoint with no files attached.");
-      res.status(500).send({ error: "No file supplied" });
-      return;
-    }
-    const upload = files.skin;
-    if (upload == null) {
-      dest.send("Someone hit the upload endpoint with no files attached.");
-      res.status(500).send({ error: "No file supplied" });
-      return;
-    }
-    let result: AddResult;
-    try {
-      result = await addSkinFromBuffer(upload.data, upload.name, "Web API");
-    } catch (e) {
-      req.logError(String(e));
-      dest.send(`Encountered an error uploading a skin: ${e.message}`);
-      res.status(500).send({ error: `Error adding skin: ${e.message}` });
-      return;
-    }
-
-    await reportSkinUpload(result, dest);
-    res.json({ ...result, filename: upload.name });
-  })
-);
-
 let processing = false;
 
 async function processesUserUploads() {
@@ -235,15 +176,6 @@ router.post(
     // Don't await, just kick off the task.
     processesUserUploads();
     res.json({ done: true });
-  })
-);
-
-router.post(
-  "/skins/:md5/index",
-  asyncHandler(async (req, res) => {
-    const { md5 } = req.params;
-    const skin = await Skins.updateSearchIndex(md5);
-    res.json(skin);
   })
 );
 

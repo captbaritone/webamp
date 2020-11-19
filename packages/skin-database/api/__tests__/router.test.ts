@@ -27,17 +27,6 @@ test("/skins/", async () => {
   });
 });
 
-// Deprecated
-test("/skins/missing", async () => {
-  const { body } = await request(app)
-    .post("/skins/missing")
-    .send({ hashes: ["a_fake_md5", "a_missing_md5"] });
-  expect(body).toEqual({
-    found: ["a_fake_md5"],
-    missing: ["a_missing_md5"],
-  });
-});
-
 test("/skins/a_fake_md5/report", async () => {
   const { body } = await request(app).post("/skins/a_fake_md5/report");
   expect(handler).toHaveBeenCalledWith({
