@@ -6,7 +6,6 @@ import {
   DMChannel,
   GroupDMChannel,
 } from "discord.js";
-import rgbHex from "rgb-hex";
 import SkinModel from "../data/SkinModel";
 import * as Skins from "../data/skins";
 import UserContext from "../data/UserContext";

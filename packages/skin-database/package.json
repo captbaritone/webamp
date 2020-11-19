@@ -28,13 +28,11 @@
     "md5": "^2.2.1",
     "node-fetch": "^2.6.0",
     "puppeteer": "^1.17.0",
-    "rgb-hex": "^3.0.0",
     "sharp": "^0.26.1",
     "sqlite3": "^4.2.0",
     "temp": "^0.9.0",
     "ts-node": "^8.10.2",
     "twit": "^2.2.11",
-    "twitter-api-client": "^0.2.1",
     "winston": "^3.2.1",
     "yargs": "^13.2.4"
   },
