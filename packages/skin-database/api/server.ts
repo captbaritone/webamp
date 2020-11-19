@@ -1,4 +1,4 @@
-import Sentry from "@sentry/node";
+// import Sentry from "@sentry/node";
 import { createApp } from "./app";
 import DiscordEventHandler from "./DiscordEventHandler";
 
@@ -11,6 +11,7 @@ const app = createApp((action, ctx) => handler.handle(action, ctx));
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
 // Initialize Sentry after we start listening. Any crash at start time will appear in the console and we'll notice.
+/*
 Sentry.init({
   dsn:
     "https://0e6bc841b4f744b2953a1fe5981effe6@o68382.ingest.sentry.io/5508241",
@@ -19,3 +20,4 @@ Sentry.init({
   // for finer control
   tracesSampleRate: 1.0,
 });
+*/

@@ -40,7 +40,7 @@
     "yargs": "^13.2.4"
   },
   "scripts": {
-    "start": "ts-node --transpile-only api/server.js",
+    "start": "ts-node --transpile-only api/server.ts",
     "tweet": "ts-node --transpile-only ./cli.ts tweet",
     "fetch-metadata": "ts-node --transpile-only ./cli.ts fetch-metadata",
     "bot": "ts-node --transpile-only ./discord-bot/index.js",
