@@ -6,3 +6,4 @@ combined.log
 hash.txt
 dist/
 skins.sqlite3
+skins-dev.sqlite3
