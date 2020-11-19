@@ -52,8 +52,9 @@ export function createApp(eventHandler?: EventHandler) {
 
   // Attach logger
   app.use((req, res, next) => {
-    req.log = () => {}; // console.log;
-    req.logError = () => {}; // console.log;
+    const context = { url: req.url, params: req.params, query: req.query };
+    req.log = (message) => console.log(message, context);
+    req.logError = (message) => console.error(message, context);
     next();
   });
 
