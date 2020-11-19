@@ -14,16 +14,30 @@ beforeEach(async () => {
   await knex.seed.run();
 });
 
-test("/skins/", async () => {
-  const { body } = await request(app).get("/skins/"); //uses the request function that calls on express app instance
-  expect(body).toEqual({
-    skinCount: 4,
-    skins: [
-      { fileName: "path.wsz", md5: "a_fake_md5", nsfw: false },
-      { fileName: "approved.wsz", md5: "an_approved_md5", nsfw: false },
-      { fileName: "rejected.wsz", md5: "a_rejected_md5", nsfw: false },
-      { fileName: "nsfw.wsz", md5: "a_nsfw_md5", nsfw: true },
-    ],
+describe("/skins/", () => {
+  test("no query params", async () => {
+    const { body } = await request(app).get("/skins/");
+    expect(body).toEqual({
+      skinCount: 4,
+      skins: [
+        { fileName: "path.wsz", md5: "a_fake_md5", nsfw: false },
+        { fileName: "approved.wsz", md5: "an_approved_md5", nsfw: false },
+        { fileName: "rejected.wsz", md5: "a_rejected_md5", nsfw: false },
+        { fileName: "nsfw.wsz", md5: "a_nsfw_md5", nsfw: true },
+      ],
+    });
+  });
+  test("first and offset", async () => {
+    const { body } = await request(app)
+      .get("/skins/")
+      .query({ first: 2, offset: 1 });
+    expect(body).toEqual({
+      skinCount: 4,
+      skins: [
+        { fileName: "approved.wsz", md5: "an_approved_md5", nsfw: false },
+        { fileName: "rejected.wsz", md5: "a_rejected_md5", nsfw: false },
+      ],
+    });
   });
 });
 
