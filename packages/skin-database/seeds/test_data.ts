@@ -30,4 +30,8 @@ export async function seed(knex: Knex): Promise<any> {
     { skin_md5: "a_rejected_md5", review: "REJECTED" },
     { skin_md5: "a_nsfw_md5", review: "NSFW" },
   ]);
+
+  await knex("ia_items").insert([
+    { skin_md5: "a_fake_md5", identifier: "a_fake_ia_identifier" },
+  ]);
 }
