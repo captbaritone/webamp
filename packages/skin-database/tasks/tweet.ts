@@ -18,21 +18,12 @@ export async function tweet(discordClient: Client, anything: string | null) {
   }
   let tweetableSkin: null | SkinModel = null;
   if (anything != null) {
-    const _md5 = await Skins.getMd5ByAnything(anything);
-    if (_md5 == null) {
+    tweetableSkin = await SkinModel.fromAnything(ctx, anything);
+    if (tweetableSkin == null) {
       // @ts-ignore
       await tweetBotChannel.send(
         `Oops! Could not find a skin matching ${anything}`
       );
-      return;
-    }
-    tweetableSkin = await SkinModel.fromMd5(ctx, _md5);
-    if (tweetableSkin == null) {
-      // @ts-ignore
-      await tweetBotChannel.send(
-        `Oops! Could not find a skin matching the md5 hash ${_md5}`
-      );
-      logger.info(`Could not find a skin matching hash ${_md5}`);
       return;
     }
     const tweetStatus = await tweetableSkin.getTweetStatus();

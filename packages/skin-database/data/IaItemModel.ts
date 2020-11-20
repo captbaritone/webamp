@@ -1,5 +1,8 @@
 import UserContext from "./UserContext";
 import { IaItemRow } from "../types";
+import SkinModel from "./SkinModel";
+
+const IA_URL = /^(https:\/\/)?archive.org\/details\/([^\/]+)\/?/;
 
 export default class IaItemModel {
   constructor(readonly ctx: UserContext, readonly row: IaItemRow) {}
@@ -18,6 +21,29 @@ export default class IaItemModel {
   ): Promise<IaItemModel | null> {
     const row = await ctx.iaItemByIdentifier.load(identifier);
     return row == null ? null : new IaItemModel(ctx, row);
+  }
+
+  static async fromAnything(
+    ctx: UserContext,
+    anything: string
+  ): Promise<IaItemModel | null> {
+    const itemMatchResult = anything.match(IA_URL);
+    if (itemMatchResult != null) {
+      const itemName = itemMatchResult[2];
+      const item = await IaItemModel.fromIdentifier(ctx, itemName);
+      if (item != null) {
+        return item;
+      }
+    }
+    return IaItemModel.fromIdentifier(ctx, anything);
+  }
+
+  async getSkin(): Promise<SkinModel> {
+    const skin = await SkinModel.fromMd5(this.ctx, this.getMd5());
+    if (skin == null) {
+      throw new Error(`Could not find skin for md5 "${this.getMd5()}"`);
+    }
+    return skin;
   }
 
   getMd5(): string {

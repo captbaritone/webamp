@@ -12,6 +12,7 @@ export async function seed(knex: Knex): Promise<any> {
     { md5: "an_approved_md5", skin_type: 1 },
     { md5: "a_rejected_md5", skin_type: 1 },
     { md5: "a_nsfw_md5", skin_type: 1 },
+    { md5: "48bbdbbeb03d347e59b1eebda4d352d0", skin_type: 1 },
   ]);
   await knex("files").insert([
     { skin_md5: "a_fake_md5", file_path: "/a/fake/path.wsz" },
@@ -19,6 +20,10 @@ export async function seed(knex: Knex): Promise<any> {
     { skin_md5: "an_approved_md5", file_path: "/a/fake/approved.wsz" },
     { skin_md5: "a_rejected_md5", file_path: "/a/fake/rejected.wsz" },
     { skin_md5: "a_nsfw_md5", file_path: "/a/fake/nsfw.wsz" },
+    {
+      skin_md5: "48bbdbbeb03d347e59b1eebda4d352d0",
+      file_path: "/a/fake/Zelda_Amp_3.wsz",
+    },
   ]);
   await knex("skin_reviews").insert([
     { skin_md5: "an_approved_md5", review: "APPROVED" },

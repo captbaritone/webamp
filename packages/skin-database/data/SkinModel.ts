@@ -1,10 +1,11 @@
 import path from "path";
 import { getScreenshotUrl, getSkinUrl } from "./skins";
-import { TweetStatus, SkinRow, TweetRow, ReviewRow, FileRow } from "../types";
+import { TweetStatus, SkinRow, ReviewRow } from "../types";
 import UserContext from "./UserContext";
 import TweetModel, { TweetDebugData } from "./TweetModel";
 import IaItemModel from "./IaItemModel";
 import FileModel, { FileDebugData } from "./FileModel";
+import { MD5_REGEX } from "../utils";
 
 export default class SkinModel {
   constructor(readonly ctx: UserContext, readonly row: SkinRow) {}
@@ -15,6 +16,22 @@ export default class SkinModel {
   ): Promise<SkinModel | null> {
     const row = await ctx.skin.load(md5);
     return row == null ? null : new SkinModel(ctx, row);
+  }
+
+  static async fromAnything(
+    ctx: UserContext,
+    anything: string
+  ): Promise<SkinModel | null> {
+    const md5Match = anything.match(MD5_REGEX);
+    if (md5Match != null) {
+      const md5 = md5Match[1];
+      const found = await SkinModel.fromMd5(ctx, md5);
+      if (found != null) {
+        return found;
+      }
+    }
+    const iaItem = await IaItemModel.fromAnything(ctx, anything);
+    return iaItem?.getSkin() ?? null;
   }
 
   static async exists(ctx: UserContext, md5: string): Promise<boolean> {

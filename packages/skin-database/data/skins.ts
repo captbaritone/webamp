@@ -55,8 +55,6 @@ export async function addSkin({
   );
 }
 
-const IA_URL = /^(https:\/\/)?archive.org\/details\/([^\/]+)\/?/;
-
 const CRUFT_FILENAME = /winampskins\.info\.(html)|(txt)$/;
 
 export async function setContentHash(md5: string): Promise<string | null> {
@@ -75,28 +73,6 @@ export async function setContentHash(md5: string): Promise<string | null> {
 
   await knex("skins").update({ content_hash: contentHash }).where("md5", md5);
   return contentHash;
-}
-
-export async function getMd5ByAnything(
-  anything: string
-): Promise<string | null> {
-  const md5Match = anything.match(MD5_REGEX);
-  if (md5Match != null) {
-    const md5 = md5Match[1];
-    const found = await knex("skins").where({ md5, skin_type: 1 }).first();
-    if (found != null) {
-      return md5;
-    }
-  }
-  const itemMatchResult = anything.match(IA_URL);
-  if (itemMatchResult != null) {
-    const itemName = itemMatchResult[2];
-    const md5 = await getMd5FromInternetArchvieItemName(itemName);
-    if (md5 != null) {
-      return md5;
-    }
-  }
-  return (await getMd5FromInternetArchvieItemName(anything)) ?? null;
 }
 
 export async function getSkinDebugData(md5: string): Promise<any | null> {
@@ -124,12 +100,6 @@ export async function getSkinDebugData(md5: string): Promise<any | null> {
     archiveFiles,
     files,
   };
-}
-
-async function getMd5FromInternetArchvieItemName(itemName: string) {
-  const ctx = new UserContext();
-  const item = await IaItemModel.fromIdentifier(ctx, itemName);
-  return item?.getMd5();
 }
 
 export async function getTweetableSkinCount(): Promise<number> {

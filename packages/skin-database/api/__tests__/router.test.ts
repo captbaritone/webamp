@@ -17,27 +17,60 @@ beforeEach(async () => {
 describe("/skins/", () => {
   test("no query params", async () => {
     const { body } = await request(app).get("/skins/");
-    expect(body).toEqual({
-      skinCount: 4,
-      skins: [
-        { fileName: "path.wsz", md5: "a_fake_md5", nsfw: false },
-        { fileName: "approved.wsz", md5: "an_approved_md5", nsfw: false },
-        { fileName: "rejected.wsz", md5: "a_rejected_md5", nsfw: false },
-        { fileName: "nsfw.wsz", md5: "a_nsfw_md5", nsfw: true },
-      ],
-    });
+    expect(body).toMatchInlineSnapshot(`
+      Object {
+        "skinCount": 5,
+        "skins": Array [
+          Object {
+            "fileName": "Zelda_Amp_3.wsz",
+            "md5": "48bbdbbeb03d347e59b1eebda4d352d0",
+            "nsfw": false,
+          },
+          Object {
+            "fileName": "path.wsz",
+            "md5": "a_fake_md5",
+            "nsfw": false,
+          },
+          Object {
+            "fileName": "approved.wsz",
+            "md5": "an_approved_md5",
+            "nsfw": false,
+          },
+          Object {
+            "fileName": "rejected.wsz",
+            "md5": "a_rejected_md5",
+            "nsfw": false,
+          },
+          Object {
+            "fileName": "nsfw.wsz",
+            "md5": "a_nsfw_md5",
+            "nsfw": true,
+          },
+        ],
+      }
+    `);
   });
   test("first and offset", async () => {
     const { body } = await request(app)
       .get("/skins/")
       .query({ first: 2, offset: 1 });
-    expect(body).toEqual({
-      skinCount: 4,
-      skins: [
-        { fileName: "approved.wsz", md5: "an_approved_md5", nsfw: false },
-        { fileName: "rejected.wsz", md5: "a_rejected_md5", nsfw: false },
-      ],
-    });
+    expect(body).toMatchInlineSnapshot(`
+      Object {
+        "skinCount": 5,
+        "skins": Array [
+          Object {
+            "fileName": "path.wsz",
+            "md5": "a_fake_md5",
+            "nsfw": false,
+          },
+          Object {
+            "fileName": "approved.wsz",
+            "md5": "an_approved_md5",
+            "nsfw": false,
+          },
+        ],
+      }
+    `);
   });
 });
 
@@ -76,22 +109,28 @@ test("/skins/a_fake_md5", async () => {
 
 test("/stylegan.json", async () => {
   let response = await request(app).get("/stylegan.json");
-  expect(response.body).toEqual([
-    {
-      fileName: "path.wsz",
-      url: "https://cdn.webampskins.org/screenshots/a_fake_md5.png",
-    },
-    {
-      fileName: "nsfw.wsz",
-      url: "https://cdn.webampskins.org/screenshots/a_nsfw_md5.png",
-    },
-    {
-      fileName: "rejected.wsz",
-      url: "https://cdn.webampskins.org/screenshots/a_rejected_md5.png",
-    },
-    {
-      fileName: "approved.wsz",
-      url: "https://cdn.webampskins.org/screenshots/an_approved_md5.png",
-    },
-  ]);
+  expect(response.body).toMatchInlineSnapshot(`
+    Array [
+      Object {
+        "fileName": "Zelda_Amp_3.wsz",
+        "url": "https://cdn.webampskins.org/screenshots/48bbdbbeb03d347e59b1eebda4d352d0.png",
+      },
+      Object {
+        "fileName": "path.wsz",
+        "url": "https://cdn.webampskins.org/screenshots/a_fake_md5.png",
+      },
+      Object {
+        "fileName": "nsfw.wsz",
+        "url": "https://cdn.webampskins.org/screenshots/a_nsfw_md5.png",
+      },
+      Object {
+        "fileName": "rejected.wsz",
+        "url": "https://cdn.webampskins.org/screenshots/a_rejected_md5.png",
+      },
+      Object {
+        "fileName": "approved.wsz",
+        "url": "https://cdn.webampskins.org/screenshots/an_approved_md5.png",
+      },
+    ]
+  `);
 });
