@@ -2,6 +2,8 @@ import { Application } from "express";
 import { knex } from "../../db";
 import request from "supertest"; // supertest is a framework that allows to easily test web apis
 import { createApp } from "../app";
+import * as S3 from "../../s3";
+jest.mock("../../s3");
 
 let app: Application;
 const handler = jest.fn();
@@ -105,6 +107,30 @@ test("/skins/a_fake_md5", async () => {
     nsfw: true,
   });
   await request(app).get("/skins/does_not_exist_md5").expect(404);
+});
+
+test("/skins/get_upload_urls", async () => {
+  const { body } = await request(app)
+    .post("/skins/get_upload_urls")
+    .send({
+      skins: {
+        "3b73bcd43c30b85d4cad3083e8ac9695": "a_fake_new_file.wsz",
+        "48bbdbbeb03d347e59b1eebda4d352d0":
+          "a_new_name_for_a_file_that_exists.wsz",
+      },
+    });
+
+  expect(S3.getSkinUploadUrl).toHaveBeenCalledWith(
+    "3b73bcd43c30b85d4cad3083e8ac9695",
+    expect.any(Number)
+  );
+
+  expect(body).toEqual({
+    "3b73bcd43c30b85d4cad3083e8ac9695": {
+      id: expect.any(Number),
+      url: "<MOCK_S3_UPLOAD_URL>",
+    },
+  });
 });
 
 test("/stylegan.json", async () => {
