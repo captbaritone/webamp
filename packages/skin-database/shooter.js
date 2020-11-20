@@ -1,3 +1,4 @@
+/* global window */
 const path = require("path");
 const puppeteer = require("puppeteer");
 const imagemin = require("imagemin");
@@ -82,6 +83,7 @@ export default class Shooter {
       const handle = await this._page.$("#webamp-file-input");
       console.log("uploading skin");
 
+      // eslint-disable-next-line no-async-promise-executor
       await new Promise(async (resolve, reject) => {
         try {
           console.log("start promise");

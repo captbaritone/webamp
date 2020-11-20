@@ -4,6 +4,7 @@ import request from "supertest"; // supertest is a framework that allows to easi
 import { createApp } from "../app";
 import * as S3 from "../../s3";
 jest.mock("../../s3");
+jest.mock("../processUserUploads");
 
 let app: Application;
 const handler = jest.fn();
@@ -133,8 +134,28 @@ test("/skins/get_upload_urls", async () => {
   });
 });
 
+test("An Upload Flow", async () => {
+  const md5 = "3b73bcd43c30b85d4cad3083e8ac9695";
+  const skins = { [md5]: "a_fake_new_file.wsz" };
+  const getUrlsResponse = await request(app)
+    .post("/skins/get_upload_urls")
+    .send({ skins });
+
+  const id = getUrlsResponse.body[md5].id;
+
+  expect(getUrlsResponse.body).toEqual({
+    [md5]: { id: expect.any(Number), url: "<MOCK_S3_UPLOAD_URL>" },
+  });
+
+  const uploadedResponse = await request(app)
+    .post(`/skins/${md5}/uploaded`)
+    .query({ id })
+    .send({ skins });
+  expect(uploadedResponse.body).toEqual({ done: true });
+});
+
 test("/stylegan.json", async () => {
-  let response = await request(app).get("/stylegan.json");
+  const response = await request(app).get("/stylegan.json");
   expect(response.body).toMatchInlineSnapshot(`
     Array [
       Object {

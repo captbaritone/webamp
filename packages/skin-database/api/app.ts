@@ -84,7 +84,7 @@ export function createApp(eventHandler?: EventHandler) {
   }
 
   // Optional fallthrough error handler
-  app.use(function onError(err, req, res, next) {
+  app.use(function onError(err, _req, res, _next) {
     res.statusCode = 500;
     res.json({ errorId: res.sentry, message: err.message });
   });

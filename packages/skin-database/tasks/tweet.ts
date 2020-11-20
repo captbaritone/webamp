@@ -1,7 +1,7 @@
 import logger from "../logger";
 import fs from "fs";
 import * as Skins from "../data/skins";
-import { TWEET_BOT_CHANNEL_ID, TWITTER_CREDS } from "../config";
+import { TWEET_BOT_CHANNEL_ID } from "../config";
 import { Client } from "discord.js";
 import _temp from "temp";
 import sharp from "sharp";

@@ -37,18 +37,22 @@
     "yargs": "^13.2.4"
   },
   "scripts": {
+    "test": "jest",
+    "lint": "eslint .",
     "start": "ts-node --transpile-only api/server.ts",
     "tweet": "ts-node --transpile-only ./cli.ts tweet",
     "fetch-metadata": "ts-node --transpile-only ./cli.ts fetch-metadata",
     "bot": "ts-node --transpile-only ./discord-bot/index.js",
     "cli": "ts-node --transpile-only ./cli.ts",
-    "repro": "ts-node --transpile-only ./repro.ts",
     "sync": "ts-node --transpile-only ./tasks/syncWithArchive.ts"
   },
   "prettier": {},
   "devDependencies": {
     "@babel/preset-typescript": "^7.10.1",
     "@types/supertest": "^2.0.10",
+    "@typescript-eslint/eslint-plugin": "^4.8.1",
+    "@typescript-eslint/parser": "^4.8.1",
+    "eslint": "^7.13.0",
     "jest": "^26.1.0",
     "prettier": "^2.0.5",
     "supertest": "^6.0.1",

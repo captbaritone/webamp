@@ -71,7 +71,7 @@ UNIQUE(skin_md5,file_name)
   );
 }
 
-export async function down(knex: Knex): Promise<any> {
+export async function down(_knex: Knex): Promise<any> {
   throw new Error(
     "In this case 'down' would just delete all tables and indexes, so I won't bother."
   );

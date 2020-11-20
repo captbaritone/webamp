@@ -2,7 +2,7 @@ import UserContext from "./UserContext";
 import { IaItemRow } from "../types";
 import SkinModel from "./SkinModel";
 
-const IA_URL = /^(https:\/\/)?archive.org\/details\/([^\/]+)\/?/;
+const IA_URL = /^(https:\/\/)?archive.org\/details\/([^/]+)\/?/;
 
 export default class IaItemModel {
   constructor(readonly ctx: UserContext, readonly row: IaItemRow) {}

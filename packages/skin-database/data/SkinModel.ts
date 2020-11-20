@@ -1,4 +1,3 @@
-import path from "path";
 import { getScreenshotUrl, getSkinUrl } from "./skins";
 import { TweetStatus, SkinRow, ReviewRow } from "../types";
 import UserContext from "./UserContext";

@@ -126,6 +126,7 @@ async function main() {
         break;
       }
       case "add-missing-indexes": {
+        // eslint-disable-next-line no-inner-declarations
         async function indexPage(pageNumber: number): Promise<void> {
           const page = await Skins.getMuseumPage({
             offset: pageNumber * 500,

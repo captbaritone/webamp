@@ -1,4 +1,4 @@
-function getSkinUploadUrl(md5, id) {
+function getSkinUploadUrl(_md5, _id) {
   return "<MOCK_S3_UPLOAD_URL>";
 }
 

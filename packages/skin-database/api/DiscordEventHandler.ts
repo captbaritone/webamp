@@ -1,4 +1,4 @@
-import { EventHandler, ApiAction } from "./app";
+import { ApiAction } from "./app";
 import Discord, { TextChannel } from "discord.js";
 import * as Config from "../config";
 import SkinModel from "../data/SkinModel";

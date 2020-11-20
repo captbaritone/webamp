@@ -55,6 +55,7 @@ async function ensureIaRecord(identifier: string): Promise<void> {
   console.log(`Inserted "${identifier}".`);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function collectExistingItems() {
   const items = await allItems();
   for (const identifier of items) {
@@ -81,6 +82,7 @@ async function getNewIdentifier(filename: string): Promise<string> {
   function getIdentifier() {
     return identifierBase + (counter === 0 ? "" : `_${counter}`);
   }
+  // eslint-disable-next-line no-constant-condition
   while (true) {
     const existing = await knex("ia_items").whereRaw(
       "LOWER(identifier) = LOWER(?)",

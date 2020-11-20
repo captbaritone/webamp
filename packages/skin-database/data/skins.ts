@@ -2,12 +2,11 @@ import { knex } from "../db";
 import path from "path";
 import md5Hash from "md5";
 import { searchIndex } from "../algolia";
-import { truncate, MD5_REGEX } from "../utils";
+import { truncate } from "../utils";
 import fetch from "node-fetch";
 import * as S3 from "../s3";
 import SkinModel from "./SkinModel";
 import UserContext from "./UserContext";
-import IaItemModel from "./IaItemModel";
 
 export const SKIN_TYPE = {
   CLASSIC: 1,
@@ -196,7 +195,7 @@ async function getSearchIndexes(md5s: string[]): Promise<SearchIndex[]> {
   });
 }
 
-export async function updateSearchIndexs(md5s: string[]): Promise<{}> {
+export async function updateSearchIndexs(md5s: string[]): Promise<any> {
   const skinIndexes = await getSearchIndexes(md5s);
 
   const results = await searchIndex.partialUpdateObjects(skinIndexes, {
@@ -209,7 +208,7 @@ export async function updateSearchIndexs(md5s: string[]): Promise<{}> {
   return results;
 }
 
-export async function updateSearchIndex(md5: string): Promise<{} | null> {
+export async function updateSearchIndex(md5: string): Promise<any | null> {
   return updateSearchIndexs([md5]);
 }
 
@@ -299,27 +298,24 @@ export async function recordUserUploadComplete(
   md5: string,
   id: string
 ): Promise<void> {
-  const result = await knex("skin_uploads")
+  await knex("skin_uploads")
     .where({ skin_md5: md5, id, status: "URL_REQUESTED" })
     .update({ status: "UPLOAD_REPORTED" }, [id])
     .limit(1);
-  console.log("recordUserUploadComplete", result);
 }
 
 export async function recordUserUploadArchived(id: string): Promise<void> {
-  const result = await knex("skin_uploads")
+  await knex("skin_uploads")
     .where({ id })
     .update({ status: "ARCHIVED" }, [id])
     .limit(1);
-  console.log("recordUserUploadArchived", result);
 }
 
 export async function recordUserUploadErrored(id: string): Promise<void> {
-  const result = await knex("skin_uploads")
+  await knex("skin_uploads")
     .where({ id })
     .update({ status: "ERRORED" }, [id])
     .limit(1);
-  console.log("recordUserUploadErrored", result);
 }
 
 export async function recordUserUploadRequest(
