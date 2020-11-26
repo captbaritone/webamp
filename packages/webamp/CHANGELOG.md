@@ -1,3 +1,9 @@
+## 1.4.2
+
+### Bug Fixes
+
+- Add `webamp.close()` method to public TypeScript types.
+
 ## 1.4.1
 
 ### Features

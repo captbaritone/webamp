@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "webamp": "1.4.0"
+    "webamp": "1.4.2"
   },
   "devDependencies": {
     "webpack": "^4.29.6",
