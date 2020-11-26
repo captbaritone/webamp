@@ -240,6 +240,12 @@ export default class Webamp {
   public onClose(cb: () => void): () => void;
 
   /**
+   * Equivalent to selection "Close" from Webamp's options menu. Once closed,
+   * you can open it again with `.reopen()`.
+   */
+  public close(): void;
+
+  /**
    * After `.close()`ing this instance, you can reopen it by calling this method.
    */
   public reopen(): void;
