@@ -368,6 +368,10 @@ class Winamp {
     return this._actionEmitter.on(CLOSE_WINAMP, cb);
   }
 
+  close(): void {
+    this.store.dispatch(Actions.close());
+  }
+
   reopen(): void {
     this.store.dispatch(Actions.open());
   }

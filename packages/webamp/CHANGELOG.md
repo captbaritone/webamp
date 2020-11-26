@@ -3,6 +3,7 @@
 ### Features
 
 - New Webamp instance method: `.setSkinFromUrl(url)`. See [usage.md](./docs/usage.md) for more details.
+- New Webamp instance method: `.close()`. See [usage.md](./docs/usage.md) for more details.
 
 ### Bug Fixes
 
