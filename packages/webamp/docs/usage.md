@@ -166,20 +166,20 @@ const options = {
     },
 
     // Optional. Provide a way to extend the behavior of the button ADD URL.
-    // **Since** 1.4.1-beta03 (unreleased)
+    // **Since** 1.4.1
     handleAddUrlEvent: async () => {
         // Return an optional array of `Track` objects or null.
     },
 
     // Optional. Provide a way to extend the behavior of the playlist button LOAD LIST.
-    // **Since** 1.4.1-beta03 (unreleased)
+    // **Since** 1.4.1
     handleLoadListEvent: async () => {
         // Return an optional array of `Track` objects or null.
     },
 
     // Optional. Provide a way to extend the behavior of the playlist button SAVE LIST.
     // Where tracks: Track[]
-    // **Since** 1.4.1-beta03 (unreleased)
+    // **Since** 1.4.1
     handleSaveListEvent: (tracks) => {}
 };
 const webamp = new Webamp(options);
@@ -363,6 +363,12 @@ const unsubscribe = webamp.onClose(() => {
 unsubscribe();
 ```
 
+### `close(): void`
+
+Equivalent to selection "Close" from Webamp's options menu. Once closed, you can open it again with `.reopen()`.
+
+**Since** 1.4.1
+
 ### `reopen(): void`
 
 After `.close()`ing this instance, you can reopen it by calling this method.
@@ -396,7 +402,7 @@ unsubscribe();
 
 Updates the skin used by the webamp instance. Note that this does not happen immediately. If you want to be notified when the skin load is complete, use `.skinIsLoaded()`, which returns a promise which you can await.
 
-**Since** 1.4.1-beta01 (unreleased)
+**Since** 1.4.1
 
 ### `skinIsLoaded(): Promise<void>`
 
