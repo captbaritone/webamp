@@ -1,10 +1,12 @@
 import { getScreenshotUrl, getSkinUrl } from "./skins";
 import { TweetStatus, SkinRow, ReviewRow } from "../types";
-import UserContext from "./UserContext";
+import UserContext, { ctxWeakMapMemoize } from "./UserContext";
 import TweetModel, { TweetDebugData } from "./TweetModel";
 import IaItemModel from "./IaItemModel";
 import FileModel, { FileDebugData } from "./FileModel";
 import { MD5_REGEX } from "../utils";
+import DataLoader from "dataloader";
+import { knex } from "../db";
 
 export default class SkinModel {
   constructor(readonly ctx: UserContext, readonly row: SkinRow) {}
@@ -13,7 +15,7 @@ export default class SkinModel {
     ctx: UserContext,
     md5: string
   ): Promise<SkinModel | null> {
-    const row = await ctx.skin.load(md5);
+    const row = await getSkinLoader(ctx).load(md5);
     return row == null ? null : new SkinModel(ctx, row);
   }
 
@@ -34,7 +36,7 @@ export default class SkinModel {
   }
 
   static async exists(ctx: UserContext, md5: string): Promise<boolean> {
-    const row = await ctx.skin.load(md5);
+    const row = await getSkinLoader(ctx).load(md5);
     return row != null;
   }
 
@@ -48,8 +50,7 @@ export default class SkinModel {
   }
 
   async getTweets(): Promise<TweetModel[]> {
-    const rows = await this.ctx.tweets.load(this.row.md5);
-    return rows.map((row) => new TweetModel(this.ctx, row));
+    return TweetModel.fromMd5(this.ctx, this.row.md5);
   }
 
   getIaItem(): Promise<IaItemModel | null> {
@@ -57,7 +58,7 @@ export default class SkinModel {
   }
 
   getReviews(): Promise<ReviewRow[]> {
-    return this.ctx.reviews.load(this.row.md5);
+    return getReviewsLoader(this.ctx).load(this.row.md5);
   }
 
   getFiles(): Promise<FileModel[]> {
@@ -136,3 +137,21 @@ export default class SkinModel {
     };
   }
 }
+
+const getSkinLoader = ctxWeakMapMemoize<DataLoader<string, SkinRow | null>>(
+  () =>
+    new DataLoader(async (md5s) => {
+      const rows = await knex("skins").whereIn("md5", md5s).select();
+      return md5s.map((md5) => rows.find((x) => x.md5 === md5));
+    })
+);
+
+const getReviewsLoader = ctxWeakMapMemoize<DataLoader<string, ReviewRow[]>>(
+  () =>
+    new DataLoader(async (md5s) => {
+      const rows = await knex("skin_reviews")
+        .whereIn("skin_md5", md5s)
+        .select();
+      return md5s.map((md5) => rows.filter((x) => x.skin_md5 === md5));
+    })
+);

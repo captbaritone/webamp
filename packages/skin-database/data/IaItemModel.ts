@@ -1,6 +1,8 @@
-import UserContext from "./UserContext";
+import UserContext, { ctxWeakMapMemoize } from "./UserContext";
 import { IaItemRow } from "../types";
 import SkinModel from "./SkinModel";
+import DataLoader from "dataloader";
+import { knex } from "../db";
 
 const IA_URL = /^(https:\/\/)?archive.org\/details\/([^/]+)\/?/;
 
@@ -11,7 +13,7 @@ export default class IaItemModel {
     ctx: UserContext,
     md5: string
   ): Promise<IaItemModel | null> {
-    const row = await ctx.iaItem.load(md5);
+    const row = await getIaItemLoader(ctx).load(md5);
     return row == null ? null : new IaItemModel(ctx, row);
   }
 
@@ -19,7 +21,7 @@ export default class IaItemModel {
     ctx: UserContext,
     identifier: string
   ): Promise<IaItemModel | null> {
-    const row = await ctx.iaItemByIdentifier.load(identifier);
+    const row = await getIaItemByItentifierLoader(ctx).load(identifier);
     return row == null ? null : new IaItemModel(ctx, row);
   }
 
@@ -64,3 +66,25 @@ export default class IaItemModel {
     return identifier;
   }
 }
+
+const getIaItemLoader = ctxWeakMapMemoize<DataLoader<string, IaItemRow>>(
+  () =>
+    new DataLoader(async (md5s) => {
+      const rows = await knex("ia_items").whereIn("skin_md5", md5s).select();
+      return md5s.map((md5) => rows.find((x) => x.skin_md5 === md5));
+    })
+);
+
+const getIaItemByItentifierLoader = ctxWeakMapMemoize<
+  DataLoader<string, IaItemRow>
+>(
+  () =>
+    new DataLoader(async (identifiers) => {
+      const rows = await knex("ia_items")
+        .whereIn("identifier", identifiers)
+        .select();
+      return identifiers.map((identifier) =>
+        rows.find((x) => x.identifier === identifier)
+      );
+    })
+);

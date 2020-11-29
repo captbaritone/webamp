@@ -1,3 +1,3 @@
-export async function processUserUploads() {
+export const processUserUploads = jest.fn(async () => {
   // Mock
-}
+});

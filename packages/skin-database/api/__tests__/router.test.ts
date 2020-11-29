@@ -3,6 +3,7 @@ import { knex } from "../../db";
 import request from "supertest"; // supertest is a framework that allows to easily test web apis
 import { createApp } from "../app";
 import * as S3 from "../../s3";
+import { processUserUploads } from "../processUserUploads";
 jest.mock("../../s3");
 jest.mock("../processUserUploads");
 
@@ -135,8 +136,10 @@ test("/skins/get_upload_urls", async () => {
 });
 
 test("An Upload Flow", async () => {
+  // Request an upload URL
   const md5 = "3b73bcd43c30b85d4cad3083e8ac9695";
-  const skins = { [md5]: "a_fake_new_file.wsz" };
+  const filename = "a_fake_new_file.wsz";
+  const skins = { [md5]: filename };
   const getUrlsResponse = await request(app)
     .post("/skins/get_upload_urls")
     .send({ skins });
@@ -147,11 +150,29 @@ test("An Upload Flow", async () => {
     [md5]: { id: expect.any(Number), url: "<MOCK_S3_UPLOAD_URL>" },
   });
 
+  const requestedUpload = await knex("skin_uploads").where({ id }).first();
+  expect(requestedUpload).toEqual({
+    filename,
+    id,
+    skin_md5: md5,
+    status: "URL_REQUESTED",
+  });
+
+  // Report that we've uploaded the skin to S3 (we lie)
   const uploadedResponse = await request(app)
     .post(`/skins/${md5}/uploaded`)
     .query({ id })
     .send({ skins });
   expect(uploadedResponse.body).toEqual({ done: true });
+  expect(processUserUploads).toHaveBeenCalled();
+
+  const reportedUpload = await knex("skin_uploads").where({ id }).first();
+  expect(reportedUpload).toEqual({
+    filename,
+    id,
+    skin_md5: md5,
+    status: "UPLOAD_REPORTED",
+  });
 });
 
 test("/stylegan.json", async () => {
