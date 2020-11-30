@@ -193,3 +193,8 @@ body.webamp-loaded #webamp {
   margin: 0;
   font-size: 12px;
 }
+
+.tinder-card {
+  position: absolute;
+  width: 100%;
+}

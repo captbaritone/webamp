@@ -1,4 +1,5 @@
 import * as Utils from "./utils";
+import TinderCard from "react-tinder-card";
 import { API_URL } from "./constants";
 import React, { useState, useEffect } from "react";
 
@@ -43,14 +44,13 @@ function useQueuedSkin() {
 
     return () => (canceled = true);
   }, [queue]);
-  const skin = queue[0];
 
-  return [skin || null, remove];
+  return [queue, remove];
 }
 
 export default function ReviewPage() {
-  const [skin, remove] = useQueuedSkin();
-  async function approve() {
+  const [skins, remove] = useQueuedSkin();
+  async function approve(skin) {
     remove();
     const response = await fetch(`${API_URL}/skins/${skin.md5}/approve`, {
       method: "POST",
@@ -61,7 +61,7 @@ export default function ReviewPage() {
       window.location = `${API_URL}/auth`;
     }
   }
-  async function reject() {
+  async function reject(skin) {
     remove();
     const response = await fetch(`${API_URL}/skins/${skin.md5}/reject`, {
       method: "POST",
@@ -75,16 +75,16 @@ export default function ReviewPage() {
   }
 
   useEffect(() => {
-    if (skin == null) {
+    if (skins.lenght === 0) {
       return;
     }
     function handleKeypress(e) {
       switch (e.key) {
         case "ArrowUp":
-          approve();
+          approve(skins[0]);
           break;
         case "ArrowDown":
-          reject();
+          reject(skins[0]);
           break;
         default:
         // noop
@@ -95,22 +95,60 @@ export default function ReviewPage() {
       document.body.removeEventListener("keydown", handleKeypress);
     };
   });
-  if (skin == null) {
+
+  function swiped(dir, skin) {
+    switch (dir) {
+      case "left":
+        reject(skin);
+        break;
+      case "right":
+        approve(skin);
+        break;
+      default:
+    }
+    console.log({ dir, skin });
+  }
+
+  function outOfFrame(skin) {
+    console.log("out of frame", { skin });
+  }
+  if (skins.length === 0) {
     return <h2 style={{ color: "white" }}>Loading...</h2>;
   }
 
+  const reverseSkins = [...skins].reverse();
+
   return (
-    <div style={{ color: "white" }}>
-      <h2>{skin.filename}</h2>
-      <img
-        style={{ width: "100%", maxWidth: 500, imageRendering: "pixelated" }}
-        src={Utils.screenshotUrlFromHash(skin.md5)}
-        alt={skin.filename}
-      />
-      <br />
-      <button onClick={approve}>{"👍"} Approve</button>
-      <button onClick={reject}>{"👎"} Reject</button>
-      <p>Press up arrow to approve or down arrow to reject.</p>
+    <div style={{ color: "white", display: "flex", justifyContent: "center" }}>
+      <div style={{ maxWidth: 500, position: "relative" }}>
+        <h2>{skins[0].filename}</h2>
+        <div style={{ height: 20 }}>
+          <button onClick={() => approve(skins[0])}>{"👍"} Approve</button>
+          <button onClick={() => reject(skins[0])}>{"👎"} Reject</button>
+        </div>
+        <p>Press up arrow to approve or down arrow to reject.</p>
+        {reverseSkins.map((skin) => {
+          return (
+            <TinderCard
+              className="tinder-card"
+              key={skin.md5}
+              onSwipe={(dir) => swiped(dir, skin)}
+              onCardLeftScreen={() => outOfFrame(skin)}
+              preventSwipe={["up", "down"]}
+            >
+              <img
+                style={{
+                  width: "100%",
+                  imageRendering: "pixelated",
+                }}
+                src={Utils.screenshotUrlFromHash(skin.md5)}
+                alt={skin.filename}
+              />
+            </TinderCard>
+          );
+        })}
+        <br />
+      </div>
     </div>
   );
 }
