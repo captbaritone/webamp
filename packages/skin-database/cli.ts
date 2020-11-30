@@ -14,6 +14,7 @@ import { searchIndex } from "./algolia";
 import { scrapeLikeData } from "./tasks/scrapeLikes";
 import { screenshot } from "./tasks/screenshotSkin";
 import Shooter from "./shooter";
+import UserContext from "./data/UserContext";
 
 async function main() {
   const client = new Discord.Client();
@@ -31,6 +32,15 @@ async function main() {
           await screenshot(md5, shooter);
         });
         console.log("Screenshot update complete.");
+        break;
+      }
+
+      case "reject": {
+        const md5 = argv._[1];
+        if (md5 == null) {
+          return;
+        }
+        await Skins.reject(new UserContext("CLI"), md5);
         break;
       }
       case "screenshots": {
