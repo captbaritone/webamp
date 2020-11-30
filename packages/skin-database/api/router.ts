@@ -168,9 +168,6 @@ router.post(
   "/skins/:md5/approve",
   requireAuthed,
   asyncHandler(async (req, res) => {
-    if (!req.ctx.authed()) {
-      throw new Error("Not authenticated");
-    }
     const { md5 } = req.params;
     req.log(`Approving skin with hash "${md5}"`);
     const skin = await SkinModel.fromMd5(req.ctx, md5);
