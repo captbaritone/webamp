@@ -460,7 +460,7 @@ export async function setTweetInfo(
     .where({ skin_md5: md5 })
     .first(["likes", "retweets"]);
   if (first == null) {
-    await knex("skins").insert(
+    await knex("tweets").insert(
       {
         skin_md5: md5,
         tweet_id: tweetId,

@@ -2,7 +2,11 @@ import { Router } from "express";
 import asyncHandler from "express-async-handler";
 import SkinModel from "../data/SkinModel";
 import * as Skins from "../data/skins";
-import { DISCORD_CLIENT_ID, DISCORD_REDIRECT_URL } from "../config";
+import {
+  DISCORD_CLIENT_ID,
+  DISCORD_REDIRECT_URL,
+  LOGIN_REDIRECT_URL,
+} from "../config";
 import S3 from "../s3";
 import LRU from "lru-cache";
 import { MuseumPage } from "../data/skins";
@@ -55,7 +59,7 @@ router.get(
     req.session.username = username;
 
     // TODO: What about dev?
-    res.redirect(302, `https://skins.webamp.org/review/`);
+    res.redirect(302, LOGIN_REDIRECT_URL);
   })
 );
 
