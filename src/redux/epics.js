@@ -27,7 +27,7 @@ const urlChangedEpic = (actions) =>
   actions.pipe(
     filter((action) => action.type === "URL_CHANGED"),
     switchMap((action) => {
-      const pathname = action.location.pathname.replace("/$", "");
+      const pathname = action.location.pathname.replace(/\/$/, "");
       switch (pathname) {
         case "/about":
           return of(Actions.requestedAboutPage());
