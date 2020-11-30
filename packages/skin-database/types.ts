@@ -20,6 +20,7 @@ export type TweetRow = {
 export type ReviewRow = {
   skin_md5: string;
   review: "APPROVED" | "REJECTED" | "NSFW";
+  reviewer: string;
 };
 
 export type FileRow = {

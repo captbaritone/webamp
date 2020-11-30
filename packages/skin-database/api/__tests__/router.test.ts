@@ -2,8 +2,10 @@ import { Application } from "express";
 import { knex } from "../../db";
 import request from "supertest"; // supertest is a framework that allows to easily test web apis
 import { createApp } from "../app";
+import SkinModel from "../../data/SkinModel";
 import * as S3 from "../../s3";
 import { processUserUploads } from "../processUserUploads";
+import UserContext from "../../data/UserContext";
 jest.mock("../../s3");
 jest.mock("../processUserUploads");
 
@@ -13,7 +15,13 @@ const handler = jest.fn();
 beforeEach(async () => {
   handler.mockReset();
   // We ignore the ctx
-  app = createApp((action, _ctx) => handler(action));
+  app = createApp({
+    eventHandler: (action, _ctx) => handler(action),
+    extraMiddleware: (req, res, next) => {
+      req.session.username = "<MOCKED>";
+      next();
+    },
+  });
   await knex.migrate.latest();
   await knex.seed.run();
 });
@@ -79,12 +87,44 @@ describe("/skins/", () => {
 });
 
 test("/skins/a_fake_md5/report", async () => {
-  const { body } = await request(app).post("/skins/a_fake_md5/report");
+  const { body } = await request(app)
+    .post("/skins/a_fake_md5/report")
+    .expect(200);
   expect(handler).toHaveBeenCalledWith({
     type: "REVIEW_REQUESTED",
     md5: "a_fake_md5",
   });
   expect(body).toEqual({}); // TODO: Where does the text response go?
+});
+
+test("/skins/a_fake_md5/approve", async () => {
+  const ctx = new UserContext();
+  const { body } = await request(app)
+    .post("/skins/a_fake_md5/approve")
+    .expect(200);
+  expect(handler).toHaveBeenCalledWith({
+    type: "APPROVED_SKIN",
+    md5: "a_fake_md5",
+  });
+  expect(body).toEqual({}); // TODO: Where does the text response go?
+  const skin = await SkinModel.fromMd5(ctx, "a_fake_md5");
+
+  expect(await skin?.getTweetStatus()).toEqual("APPROVED");
+});
+
+test("/skins/a_fake_md5/reject", async () => {
+  const ctx = new UserContext();
+  const { body } = await request(app)
+    .post("/skins/a_fake_md5/reject")
+    .expect(200);
+  expect(handler).toHaveBeenCalledWith({
+    type: "REJECTED_SKIN",
+    md5: "a_fake_md5",
+  });
+  expect(body).toEqual({}); // TODO: Where does the text response go?
+  const skin = await SkinModel.fromMd5(ctx, "a_fake_md5");
+
+  expect(await skin?.getTweetStatus()).toEqual("REJECTED");
 });
 
 // TODO: Actually upload some skins?

@@ -1,5 +1,13 @@
 // Currently only used as a WeakMap key
-export default class UserContext {}
+export default class UserContext {
+  username: string | null;
+  constructor(username?: string) {
+    this.username = username || null;
+  }
+  authed() {
+    return this.username != null;
+  }
+}
 
 export function ctxWeakMapMemoize<T>(factory: () => T) {
   const cache: WeakMap<UserContext, T> = new WeakMap();

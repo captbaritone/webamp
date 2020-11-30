@@ -2,10 +2,12 @@ import { Router } from "express";
 import asyncHandler from "express-async-handler";
 import SkinModel from "../data/SkinModel";
 import * as Skins from "../data/skins";
+import { DISCORD_CLIENT_ID, DISCORD_REDIRECT_URL } from "../config";
 import S3 from "../s3";
 import LRU from "lru-cache";
 import { MuseumPage } from "../data/skins";
 import { processUserUploads } from "./processUserUploads";
+import { auth } from "./auth";
 
 const router = Router();
 
@@ -15,6 +17,47 @@ const options = {
 };
 let skinCount: number | null = null;
 const cache = new LRU<string, MuseumPage>(options);
+
+router.get(
+  "/auth/",
+  asyncHandler(async (req, res) => {
+    res.redirect(
+      302,
+      `https://discord.com/api/oauth2/authorize?client_id=${encodeURIComponent(
+        DISCORD_CLIENT_ID
+      )}&redirect_uri=${encodeURIComponent(
+        DISCORD_REDIRECT_URL
+      )}&response_type=code&scope=identify%20guilds`
+    );
+  })
+);
+
+router.get(
+  "/authed/",
+  asyncHandler(async (req, res) => {
+    res.json({ username: req.ctx.username });
+  })
+);
+
+router.get(
+  "/auth/discord",
+  asyncHandler(async (req, res) => {
+    const code = req.query.code as string | undefined;
+
+    if (code == null) {
+      // TODO 400
+      throw new Error("Expected to get a code");
+    }
+    const username = await auth(code);
+    if (username == null) {
+      throw new Error("Expected to get a username");
+    }
+    req.session.username = username;
+
+    // TODO: What about dev?
+    res.redirect(302, `https://skins.webamp.org/review/`);
+  })
+);
 
 router.get(
   "/skins/",
@@ -83,6 +126,60 @@ router.get(
       nsfw: await skin.getIsNsfw(),
       fileName: await skin.getFileName(),
     });
+  })
+);
+
+function requireAuthed(req, res, next) {
+  if (!req.ctx.authed()) {
+    res.status(403);
+    res.send("You must be logged in");
+  } else {
+    next();
+  }
+}
+
+router.get(
+  "/to_review",
+  requireAuthed,
+  asyncHandler(async (req, res) => {
+    const { filename, md5 } = await Skins.getSkinToReview();
+    res.json({ filename, md5 });
+  })
+);
+
+router.post(
+  "/skins/:md5/reject",
+  requireAuthed,
+  asyncHandler(async (req, res) => {
+    const { md5 } = req.params;
+    req.log(`Rejecting skin with hash "${md5}"`);
+    const skin = await SkinModel.fromMd5(req.ctx, md5);
+    if (skin == null) {
+      req.log(`No skin skin`);
+      throw new Error(`Could not locate as skin with md5 ${md5}`);
+    }
+    await Skins.reject(req.ctx, md5);
+    req.notify({ type: "REJECTED_SKIN", md5 });
+    res.send("The skin has been rejected.");
+  })
+);
+
+router.post(
+  "/skins/:md5/approve",
+  requireAuthed,
+  asyncHandler(async (req, res) => {
+    if (!req.ctx.authed()) {
+      throw new Error("Not authenticated");
+    }
+    const { md5 } = req.params;
+    req.log(`Approving skin with hash "${md5}"`);
+    const skin = await SkinModel.fromMd5(req.ctx, md5);
+    if (skin == null) {
+      throw new Error(`Cold not locate as skin with md5 ${md5}`);
+    }
+    await Skins.approve(req.ctx, md5);
+    req.notify({ type: "APPROVED_SKIN", md5 });
+    res.send("The skin has been approved.");
   })
 );
 

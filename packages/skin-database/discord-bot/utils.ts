@@ -121,7 +121,7 @@ export async function postSkin({
     switch (vote.emoji.name) {
       case "👍":
       case "👏":
-        await Skins.approve(md5);
+        await Skins.approve(ctx, md5);
         logger.info(`${user.username} approved ${md5}`);
         await msg.channel.send(
           `${canonicalFilename} was approved by ${user.username}`
@@ -130,7 +130,7 @@ export async function postSkin({
         break;
       case "😔":
       case "👎":
-        await Skins.reject(md5);
+        await Skins.reject(ctx, md5);
         logger.info(`${user.username} rejected ${md5}`);
         await msg.channel.send(
           `${canonicalFilename} was rejected by ${user.username}`
@@ -139,11 +139,11 @@ export async function postSkin({
         break;
       case "🔞":
         logger.info(`${user.username} marked ${md5} as NSFW`);
-        await Skins.markAsNSFW(md5);
+        await Skins.markAsNSFW(ctx, md5);
         await msg.channel.send(
           `${canonicalFilename} was marked as NSFW by ${user.username}`
         );
-        await Skins.reject(md5);
+        await Skins.reject(ctx, md5);
         logger.info(`${user.username} rejected ${md5}`);
         await msg.channel.send(
           `${canonicalFilename} was rejected by ${user.username}`

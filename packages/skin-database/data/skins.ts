@@ -136,12 +136,15 @@ export async function markAsTweeted(md5: string, url: string): Promise<void> {
 }
 
 // TODO: Also path actor
-export async function markAsNSFW(md5: string): Promise<void> {
+export async function markAsNSFW(ctx: UserContext, md5: string): Promise<void> {
   const index = { objectID: md5, nsfw: true };
   // TODO: Await here, but for some reason this never completes
   await searchIndex.partialUpdateObjects([index]);
   await recordSearchIndexUpdates(md5, Object.keys(index));
-  await knex("skin_reviews").insert({ skin_md5: md5, review: "NSFW" }, []);
+  await knex("skin_reviews").insert(
+    { skin_md5: md5, review: "NSFW", reviewer: ctx.username || "UNKNOWN" },
+    []
+  );
 }
 
 export async function getUploadStatuses(
@@ -330,13 +333,19 @@ export async function recordUserUploadRequest(
 }
 
 // TODO: Also path actor
-export async function approve(md5: string): Promise<void> {
-  await knex("skin_reviews").insert({ skin_md5: md5, review: "APPROVED" }, []);
+export async function approve(ctx: UserContext, md5: string): Promise<void> {
+  await knex("skin_reviews").insert(
+    { skin_md5: md5, review: "APPROVED", reviewer: ctx.username || "UNKNOWN" },
+    []
+  );
 }
 
 // TODO: Also path actor
-export async function reject(md5: string): Promise<void> {
-  await knex("skin_reviews").insert({ skin_md5: md5, review: "REJECTED" }, []);
+export async function reject(ctx: UserContext, md5: string): Promise<void> {
+  await knex("skin_reviews").insert(
+    { skin_md5: md5, review: "REJECTED", reviewer: ctx.username || "UNKNOWN" },
+    []
+  );
 }
 
 export async function getSkinToReview(): Promise<{

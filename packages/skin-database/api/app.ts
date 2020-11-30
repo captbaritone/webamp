@@ -5,11 +5,15 @@ import bodyParser from "body-parser";
 import Sentry from "@sentry/node";
 import expressSitemapXml from "express-sitemap-xml";
 import * as Skins from "../data/skins";
-import express from "express";
+import express, { Handler } from "express";
 import UserContext from "../data/UserContext";
+import cookieSession from "cookie-session";
+import { SECRET } from "../config";
 
 export type ApiAction =
   | { type: "REVIEW_REQUESTED"; md5: string }
+  | { type: "REJECTED_SKIN"; md5: string }
+  | { type: "APPROVED_SKIN"; md5: string }
   | { type: "SKIN_UPLOADED"; md5: string }
   | { type: "ERROR_PROCESSING_UPLOAD"; id: string; message: string };
 
@@ -23,19 +27,46 @@ declare global {
       notify(action: ApiAction): void;
       log(message: string): void;
       logError(message: string): void;
+      session: {
+        username: string | undefined;
+      };
     }
   }
 }
 
-export function createApp(eventHandler?: EventHandler) {
+type Options = {
+  eventHandler?: EventHandler;
+  extraMiddleware?: Handler;
+};
+
+export function createApp({ eventHandler, extraMiddleware }: Options) {
   const app = express();
   if (Sentry) {
     app.use(Sentry.Handlers.requestHandler());
   }
 
+  // https://expressjs.com/en/guide/behind-proxies.html
+  // This is needed in order to allow `cookieSession({secure: true})` cookies to be sent.
+  app.set("trust proxy", "loopback");
+
+  app.use(
+    cookieSession({
+      secure: true,
+      sameSite: "none",
+      httpOnly: false,
+      name: "session",
+      secret: SECRET,
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    })
+  );
+
+  if (extraMiddleware != null) {
+    app.use(extraMiddleware);
+  }
+
   // Add UserContext to request
   app.use((req, res, next) => {
-    req.ctx = new UserContext();
+    req.ctx = new UserContext(req.session.username);
     next();
     // TODO: Dispose of context?
   });
@@ -52,7 +83,12 @@ export function createApp(eventHandler?: EventHandler) {
 
   // Attach logger
   app.use((req, res, next) => {
-    const context = { url: req.url, params: req.params, query: req.query };
+    const context = {
+      url: req.url,
+      params: req.params,
+      query: req.query,
+      username: req.ctx.username,
+    };
     req.log = (message) => console.log(message, context);
     req.logError = (message) => console.error(message, context);
     next();
@@ -105,6 +141,7 @@ const allowList = [
 ];
 
 const corsOptions: CorsOptions = {
+  credentials: true,
   origin: function (origin, callback) {
     if (!origin || allowList.some((regex) => regex.test(origin))) {
       callback(null, true);
