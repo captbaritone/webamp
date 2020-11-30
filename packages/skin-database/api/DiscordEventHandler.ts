@@ -47,7 +47,7 @@ export default class DiscordEventHandler {
     if (skin == null) {
       return;
     }
-    const dest = await this.getChannel(Config.TWEET_BOT_CHANNEL_ID);
+    const dest = await this.getChannel(Config.SKIN_REVIEW_CHANNEL_ID);
     await DiscordUtils.postSkin({
       md5,
       title: (filename) => `Approved by ${ctx.username}: ${filename}`,
@@ -61,7 +61,7 @@ export default class DiscordEventHandler {
     if (skin == null) {
       return;
     }
-    const dest = await this.getChannel(Config.TWEET_BOT_CHANNEL_ID);
+    const dest = await this.getChannel(Config.SKIN_REVIEW_CHANNEL_ID);
     await DiscordUtils.postSkin({
       md5,
       title: (filename) => `Rejected by ${ctx.username}: ${filename}`,
