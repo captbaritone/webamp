@@ -9,13 +9,14 @@ import FocusedSkin from "./FocusedSkin";
 import { useSelector } from "react-redux";
 import * as Selectors from "./redux/selectors";
 import * as Actions from "./redux/actionCreators";
-import { ABOUT_PAGE } from "./constants";
+import { ABOUT_PAGE, REVIEW_PAGE } from "./constants";
 import { useWindowSize, useScrollbarWidth, useActionCreator } from "./hooks";
 import { SCREENSHOT_WIDTH, SKIN_RATIO } from "./constants";
 import UploadGrid from "./upload/UploadGrid";
 import Metadata from "./components/Metadata";
 import SkinReadme from "./SkinReadme";
 import { useDropzone } from "react-dropzone";
+import ReviewPage from "./ReviewPage";
 
 const getTableDimensions = (windowWidth, scale) => {
   const columnCount = Math.floor(windowWidth / (SCREENSHOT_WIDTH * scale));
@@ -50,6 +51,10 @@ function App(props) {
   });
 
   const fileExplorerOpen = useSelector(Selectors.getFileExplorerOpen);
+
+  if (props.page === REVIEW_PAGE) {
+    return <ReviewPage />;
+  }
 
   return (
     <div>

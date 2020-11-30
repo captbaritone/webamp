@@ -1,4 +1,4 @@
-import { ABOUT_PAGE, UPLOAD_PAGE } from "../constants";
+import { ABOUT_PAGE, UPLOAD_PAGE, REVIEW_PAGE } from "../constants";
 export function closeModal() {
   return { type: "CLOSE_MODAL" };
 }
@@ -123,6 +123,10 @@ export function gotFocusedSkinFile(content) {
 
 export function requestedAboutPage() {
   return { type: "REQUESTED_PAGE", page: ABOUT_PAGE };
+}
+
+export function requestedReviewPage() {
+  return { type: "REQUESTED_PAGE", page: REVIEW_PAGE };
 }
 
 export function requestedUploadPage() {

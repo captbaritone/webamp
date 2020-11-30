@@ -33,6 +33,9 @@ const urlChangedEpic = (actions) =>
       if (action.location.pathname === "/upload/") {
         return of(Actions.requestedUploadPage());
       }
+      if (action.location.pathname === "/review/") {
+        return of(Actions.requestedReviewPage());
+      }
       const params = new URLSearchParams(action.location.search);
       const query = params != null && params.get("query");
 

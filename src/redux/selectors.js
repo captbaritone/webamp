@@ -1,6 +1,6 @@
 import { createSelector } from "reselect";
 import * as Utils from "../utils";
-import { ABOUT_PAGE, UPLOAD_PAGE } from "../constants";
+import { ABOUT_PAGE, UPLOAD_PAGE, REVIEW_PAGE } from "../constants";
 
 export function getSelectedSkinHash(state) {
   return state.selectedSkinHash;
@@ -162,6 +162,9 @@ export const getRouteData = createSelector(
     getPermalinkUrlFromHash,
     skinData
   ) => {
+    if (activeContentPage === REVIEW_PAGE) {
+      return { url: "/review/", title: "Review" };
+    }
     if (activeContentPage === ABOUT_PAGE) {
       return { url: "/about/", title: "About" };
     }
