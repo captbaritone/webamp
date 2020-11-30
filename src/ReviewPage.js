@@ -22,7 +22,7 @@ function useQueuedSkin() {
       return;
     }
     let canceled = false;
-    fetch(`${API_URL}/to_review`, {
+    fetch(`${API_URL}/to_review?cacheBust=${Math.random()}`, {
       mode: "cors",
       credentials: "include",
     })
