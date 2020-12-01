@@ -18,6 +18,10 @@ export type ApiAction =
   | { type: "ERROR_PROCESSING_UPLOAD"; id: string; message: string };
 
 export type EventHandler = (event: ApiAction, ctx: UserContext) => void;
+export type Logger = {
+  log(message: string, context: any): void;
+  logError(message: string, context: any): void;
+};
 
 // Add UserContext to req objects globally
 declare global {
@@ -37,9 +41,10 @@ declare global {
 type Options = {
   eventHandler?: EventHandler;
   extraMiddleware?: Handler;
+  logger?: Logger;
 };
 
-export function createApp({ eventHandler, extraMiddleware }: Options) {
+export function createApp({ eventHandler, extraMiddleware, logger }: Options) {
   const app = express();
   if (Sentry) {
     app.use(Sentry.Handlers.requestHandler());
@@ -89,8 +94,16 @@ export function createApp({ eventHandler, extraMiddleware }: Options) {
       query: req.query,
       username: req.ctx.username,
     };
-    req.log = (message) => console.log(message, context);
-    req.logError = (message) => console.error(message, context);
+    req.log = (message) => {
+      if (logger != null) {
+        logger.log(message, context);
+      }
+    };
+    req.logError = (message) => {
+      if (logger != null) {
+        logger.logError(message, context);
+      }
+    };
     next();
   });
 

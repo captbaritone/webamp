@@ -9,6 +9,10 @@ const handler = new DiscordEventHandler();
 // GO!
 const app = createApp({
   eventHandler: (action, ctx) => handler.handle(action, ctx),
+  logger: {
+    log: (message, context) => console.log(message, context),
+    logError: (message, context) => console.error(message, context),
+  },
 });
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
