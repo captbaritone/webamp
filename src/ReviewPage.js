@@ -74,6 +74,19 @@ export default function ReviewPage() {
     }
   }
 
+  async function nsfw(skin) {
+    remove();
+    const response = await fetch(`${API_URL}/skins/${skin.md5}/nsfw`, {
+      method: "POST",
+      mode: "cors",
+      credentials: "include",
+    });
+
+    if (response.status === 403) {
+      window.location = `${API_URL}/auth`;
+    }
+  }
+
   useEffect(() => {
     if (skins.lenght === 0) {
       return;
@@ -85,6 +98,10 @@ export default function ReviewPage() {
           break;
         case "ArrowDown":
           reject(skins[0]);
+          break;
+        case "n":
+        case "N":
+          nsfw(skins[0]);
           break;
         default:
         // noop
@@ -125,8 +142,12 @@ export default function ReviewPage() {
         <div style={{ height: 20 }}>
           <button onClick={() => approve(skins[0])}>{"👍"} Approve</button>
           <button onClick={() => reject(skins[0])}>{"👎"} Reject</button>
+          <button onClick={() => nsfw(skins[0])}>{"🔞"} NSFW</button>
         </div>
-        <p>Press up arrow to approve or down arrow to reject.</p>
+        <p>
+          Press up arrow to approve, down arrow to reject or "n" to mark as
+          NSFW.
+        </p>
         {reverseSkins.map((skin) => {
           return (
             <TinderCard
