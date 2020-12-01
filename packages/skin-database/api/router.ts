@@ -49,12 +49,13 @@ router.get(
     const code = req.query.code as string | undefined;
 
     if (code == null) {
-      // TODO 400
-      throw new Error("Expected to get a code");
+      res.status(400).send({ message: "Expected to get a code" });
+      return;
     }
     const username = await auth(code);
     if (username == null) {
-      throw new Error("Expected to get a username");
+      res.status(400).send({ message: "Invalid code" });
+      return;
     }
     req.session.username = username;
 
@@ -136,7 +137,7 @@ router.get(
 function requireAuthed(req, res, next) {
   if (!req.ctx.authed()) {
     res.status(403);
-    res.send("You must be logged in");
+    res.send({ message: "You must be logged in" });
   } else {
     next();
   }
@@ -159,8 +160,8 @@ router.post(
     req.log(`Rejecting skin with hash "${md5}"`);
     const skin = await SkinModel.fromMd5(req.ctx, md5);
     if (skin == null) {
-      req.log(`No skin skin`);
-      throw new Error(`Could not locate as skin with md5 ${md5}`);
+      res.status(404).send("Skin not found");
+      return;
     }
     await Skins.reject(req.ctx, md5);
     req.notify({ type: "REJECTED_SKIN", md5 });
@@ -176,7 +177,8 @@ router.post(
     req.log(`Approving skin with hash "${md5}"`);
     const skin = await SkinModel.fromMd5(req.ctx, md5);
     if (skin == null) {
-      throw new Error(`Cold not locate as skin with md5 ${md5}`);
+      res.status(404).send("Skin not found");
+      return;
     }
     await Skins.approve(req.ctx, md5);
     req.notify({ type: "APPROVED_SKIN", md5 });

@@ -140,9 +140,10 @@ describe("seeded", () => {
     });
   });
   test("getSkinToReview", async () => {
-    expect(Skins.getSkinToReview()).rejects.toThrow(
-      "Could not find any skins to review"
-    );
+    expect(Skins.getSkinToReview()).resolves.toEqual({
+      filename: expect.any(String),
+      md5: expect.any(String),
+    });
   });
   test("getReportedUpload", async () => {
     expect(await Skins.getReportedUpload()).toBe(null);

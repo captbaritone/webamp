@@ -4,26 +4,75 @@ import request from "supertest"; // supertest is a framework that allows to easi
 import { createApp } from "../app";
 import SkinModel from "../../data/SkinModel";
 import * as S3 from "../../s3";
+import * as Auth from "../auth";
 import { processUserUploads } from "../processUserUploads";
 import UserContext from "../../data/UserContext";
 jest.mock("../../s3");
 jest.mock("../processUserUploads");
+jest.mock("../auth");
 
 let app: Application;
 const handler = jest.fn();
+const log = jest.fn();
+const logError = jest.fn();
+
+let username: string | undefined;
 
 beforeEach(async () => {
-  handler.mockReset();
-  // We ignore the ctx
+  jest.clearAllMocks();
+  username = "<MOCKED>";
   app = createApp({
     eventHandler: (action, _ctx) => handler(action),
     extraMiddleware: (req, res, next) => {
-      req.session.username = "<MOCKED>";
+      req.session.username = username;
       next();
     },
+    logger: { log, logError },
   });
   await knex.migrate.latest();
   await knex.seed.run();
+});
+
+describe("/authed", () => {
+  test("logged in ", async () => {
+    const { body } = await request(app).get("/authed").expect(200);
+    expect(body).toEqual({ username: "<MOCKED>" });
+  });
+  test("not logged in", async () => {
+    username = undefined;
+    const { body } = await request(app).get("/authed").expect(200);
+    expect(body).toEqual({ username: null });
+  });
+});
+
+test("/auth", async () => {
+  const { body } = await request(app)
+    .get("/auth")
+    .expect(302)
+    .expect(
+      "Location",
+      "https://discord.com/api/oauth2/authorize?client_id=560264562222432304&redirect_uri=https%3A%2F%2Fapi.webampskins.org%2Fauth%2Fdiscord&response_type=code&scope=identify%20guilds"
+    );
+  expect(body).toEqual({});
+});
+
+describe("/auth/discord", () => {
+  test("valid code", async () => {
+    const response = await request(app)
+      .get("/auth/discord")
+      .query({ code: "<A_FAKE_CODE>" })
+      .expect(302)
+      .expect("Location", "https://skins.webamp.org/review/");
+    // TODO: Assert that we get cookie headers. I think that will not work now
+    // because express does not think it's secure in a test env.
+    expect(Auth.auth).toHaveBeenCalledWith("<A_FAKE_CODE>");
+    expect(response.body).toEqual({});
+  });
+  test("missing code", async () => {
+    const { body } = await request(app).get("/auth/discord").expect(400);
+    expect(Auth.auth).not.toHaveBeenCalled();
+    expect(body).toEqual({ message: "Expected to get a code" });
+  });
 });
 
 describe("/skins/", () => {
@@ -112,6 +161,31 @@ test("/skins/a_fake_md5/approve", async () => {
   expect(await skin?.getTweetStatus()).toEqual("APPROVED");
 });
 
+describe("/to_review", () => {
+  test("logged in ", async () => {
+    const { body } = await request(app).get("/to_review").expect(200);
+
+    expect(body).toEqual({
+      filename: expect.any(String),
+      md5: expect.any(String),
+    });
+  });
+  test("not logged in ", async () => {
+    username = undefined;
+    const { body } = await request(app).get("/to_review").expect(403);
+    expect(body).toEqual({ message: "You must be logged in" });
+  });
+});
+
+test("/skins/a_md5_that_does_not_exist/approve (404)", async () => {
+  const { body } = await request(app)
+    .post("/skins/a_md5_that_does_not_exist/approve")
+    .expect(404);
+
+  expect(body).toEqual({});
+  expect(handler).not.toHaveBeenCalled();
+});
+
 test("/skins/a_fake_md5/reject", async () => {
   const ctx = new UserContext();
   const { body } = await request(app)
@@ -125,6 +199,15 @@ test("/skins/a_fake_md5/reject", async () => {
   const skin = await SkinModel.fromMd5(ctx, "a_fake_md5");
 
   expect(await skin?.getTweetStatus()).toEqual("REJECTED");
+});
+
+test("/skins/a_md5_that_does_not_exist/reject (404)", async () => {
+  const { body } = await request(app)
+    .post("/skins/a_md5_that_does_not_exist/reject")
+    .expect(404);
+
+  expect(body).toEqual({});
+  expect(handler).not.toHaveBeenCalled();
 });
 
 // TODO: Actually upload some skins?

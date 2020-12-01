@@ -5,14 +5,15 @@ export async function seed(knex: Knex): Promise<any> {
   await knex("skins").del();
   await knex("files").del();
   await knex("skin_reviews").del();
+  await knex("ia_items").del();
   // Inserts seed entries
   await knex("skins").insert([
-    { md5: "a_fake_md5", skin_type: 1 },
-    { md5: "a_modern_skin_md5", skin_type: 2 },
-    { md5: "an_approved_md5", skin_type: 1 },
-    { md5: "a_rejected_md5", skin_type: 1 },
-    { md5: "a_nsfw_md5", skin_type: 1 },
-    { md5: "48bbdbbeb03d347e59b1eebda4d352d0", skin_type: 1 },
+    { md5: "a_fake_md5", skin_type: 1, emails: "" },
+    { md5: "a_modern_skin_md5", skin_type: 2, emails: "" },
+    { md5: "an_approved_md5", skin_type: 1, emails: "" },
+    { md5: "a_rejected_md5", skin_type: 1, emails: "" },
+    { md5: "a_nsfw_md5", skin_type: 1, emails: "" },
+    { md5: "48bbdbbeb03d347e59b1eebda4d352d0", skin_type: 1, emails: "" },
   ]);
   await knex("files").insert([
     { skin_md5: "a_fake_md5", file_path: "/a/fake/path.wsz" },
