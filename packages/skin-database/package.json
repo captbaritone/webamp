@@ -42,6 +42,7 @@
     "test": "jest",
     "lint": "eslint .",
     "start": "ts-node --transpile-only api/server.ts",
+    "dev": "NODE_ENV=development ts-node --transpile-only api/server.ts",
     "tweet": "ts-node --transpile-only ./cli.ts tweet",
     "fetch-metadata": "ts-node --transpile-only ./cli.ts fetch-metadata",
     "bot": "ts-node --transpile-only ./discord-bot/index.js",
