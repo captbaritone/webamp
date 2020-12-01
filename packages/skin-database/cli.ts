@@ -15,6 +15,7 @@ import { scrapeLikeData } from "./tasks/scrapeLikes";
 import { screenshot } from "./tasks/screenshotSkin";
 import Shooter from "./shooter";
 import UserContext from "./data/UserContext";
+import { integrityCheck } from "./tasks/integrityCheck";
 
 async function main() {
   const client = new Discord.Client();
@@ -23,6 +24,9 @@ async function main() {
 
   try {
     switch (argv._[0]) {
+      case "integity-check":
+        await integrityCheck();
+        break;
       case "screenshot": {
         const md5 = argv._[1] || (await Skins.getSkinToShoot());
         if (md5 == null) {
