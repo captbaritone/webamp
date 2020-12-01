@@ -7,7 +7,9 @@ import * as S3 from "../../s3";
 import * as Auth from "../auth";
 import { processUserUploads } from "../processUserUploads";
 import UserContext from "../../data/UserContext";
+import { searchIndex } from "../../algolia";
 jest.mock("../../s3");
+jest.mock("../../algolia");
 jest.mock("../processUserUploads");
 jest.mock("../auth");
 
@@ -155,7 +157,7 @@ test("/skins/a_fake_md5/approve", async () => {
     type: "APPROVED_SKIN",
     md5: "a_fake_md5",
   });
-  expect(body).toEqual({}); // TODO: Where does the text response go?
+  expect(body).toEqual({ message: "The skin has been approved." });
   const skin = await SkinModel.fromMd5(ctx, "a_fake_md5");
 
   expect(await skin?.getTweetStatus()).toEqual("APPROVED");
@@ -195,7 +197,7 @@ test("/skins/a_fake_md5/reject", async () => {
     type: "REJECTED_SKIN",
     md5: "a_fake_md5",
   });
-  expect(body).toEqual({}); // TODO: Where does the text response go?
+  expect(body).toEqual({ message: "The skin has been rejected." }); // TODO: Where does the text response go?
   const skin = await SkinModel.fromMd5(ctx, "a_fake_md5");
 
   expect(await skin?.getTweetStatus()).toEqual("REJECTED");
@@ -208,6 +210,24 @@ test("/skins/a_md5_that_does_not_exist/reject (404)", async () => {
 
   expect(body).toEqual({});
   expect(handler).not.toHaveBeenCalled();
+});
+
+test.only("/skins/a_fake_md5/nsfw", async () => {
+  const ctx = new UserContext();
+  const { body } = await request(app)
+    .post("/skins/a_fake_md5/nsfw")
+    .expect(200);
+  expect(handler).toHaveBeenCalledWith({
+    type: "MARKED_SKIN_NSFW",
+    md5: "a_fake_md5",
+  });
+  expect(searchIndex.partialUpdateObjects).toHaveBeenCalledWith([
+    { nsfw: true, objectID: "a_fake_md5" },
+  ]);
+  expect(body).toEqual({ message: "The skin has been marked as NSFW." });
+  const skin = await SkinModel.fromMd5(ctx, "a_fake_md5");
+
+  expect(await skin?.getTweetStatus()).toEqual("NSFW");
 });
 
 // TODO: Actually upload some skins?

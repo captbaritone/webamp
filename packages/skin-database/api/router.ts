@@ -165,7 +165,7 @@ router.post(
     }
     await Skins.reject(req.ctx, md5);
     req.notify({ type: "REJECTED_SKIN", md5 });
-    res.send("The skin has been rejected.");
+    res.send({ message: "The skin has been rejected." });
   })
 );
 
@@ -182,7 +182,26 @@ router.post(
     }
     await Skins.approve(req.ctx, md5);
     req.notify({ type: "APPROVED_SKIN", md5 });
-    res.send("The skin has been approved.");
+    res.send({ message: "The skin has been approved." });
+  })
+);
+
+// Unlike /report, this marks the skin NSFW right away without sending to
+// Discord. Because of this, it requires auth.
+router.post(
+  "/skins/:md5/nsfw",
+  requireAuthed,
+  asyncHandler(async (req, res) => {
+    const { md5 } = req.params;
+    req.log(`Approving skin with hash "${md5}"`);
+    const skin = await SkinModel.fromMd5(req.ctx, md5);
+    if (skin == null) {
+      res.status(404).send("Skin not found");
+      return;
+    }
+    await Skins.markAsNSFW(req.ctx, md5);
+    req.notify({ type: "MARKED_SKIN_NSFW", md5 });
+    res.send({ message: "The skin has been marked as NSFW." });
   })
 );
 

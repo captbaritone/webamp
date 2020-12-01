@@ -14,6 +14,7 @@ export type ApiAction =
   | { type: "REVIEW_REQUESTED"; md5: string }
   | { type: "REJECTED_SKIN"; md5: string }
   | { type: "APPROVED_SKIN"; md5: string }
+  | { type: "MARKED_SKIN_NSFW"; md5: string }
   | { type: "SKIN_UPLOADED"; md5: string }
   | { type: "ERROR_PROCESSING_UPLOAD"; id: string; message: string };
 

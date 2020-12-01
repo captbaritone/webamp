@@ -34,37 +34,44 @@ export default class DiscordEventHandler {
         await this.requestReview(action.md5, ctx);
         break;
       case "APPROVED_SKIN":
-        await this.reportApproved(action.md5, ctx);
+        await this.reportSkin(
+          action.md5,
+          ctx,
+          (filename) => `Approved by ${ctx.username}: ${filename}`
+        );
         break;
       case "REJECTED_SKIN":
-        await this.reportRejected(action.md5, ctx);
+        await this.reportSkin(
+          action.md5,
+          ctx,
+          (filename) => `Rejected by ${ctx.username}: ${filename}`
+        );
+        break;
+      case "MARKED_SKIN_NSFW":
+        await this.reportSkin(
+          action.md5,
+          ctx,
+          (filename) => `Marked NSFW by ${ctx.username}: ${filename}`,
+          Config.NSFW_SKIN_CHANNEL_ID
+        );
         break;
     }
   }
 
-  async reportApproved(md5: string, ctx: UserContext) {
+  async reportSkin(
+    md5: string,
+    ctx: UserContext,
+    getFilename: (filename: string) => string,
+    channelId = Config.SKIN_REVIEW_CHANNEL_ID
+  ) {
     const skin = await SkinModel.fromMd5(ctx, md5);
     if (skin == null) {
       return;
     }
-    const dest = await this.getChannel(Config.SKIN_REVIEW_CHANNEL_ID);
+    const dest = await this.getChannel(channelId);
     await DiscordUtils.postSkin({
       md5,
-      title: (filename) => `Approved by ${ctx.username}: ${filename}`,
-      dest,
-    });
-  }
-
-  async reportRejected(md5: string, ctx: UserContext) {
-    console.log("Report rejected");
-    const skin = await SkinModel.fromMd5(ctx, md5);
-    if (skin == null) {
-      return;
-    }
-    const dest = await this.getChannel(Config.SKIN_REVIEW_CHANNEL_ID);
-    await DiscordUtils.postSkin({
-      md5,
-      title: (filename) => `Rejected by ${ctx.username}: ${filename}`,
+      title: getFilename,
       dest,
     });
   }

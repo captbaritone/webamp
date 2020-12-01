@@ -1,4 +1,10 @@
-export type TweetStatus = "APPROVED" | "REJECTED" | "TWEETED" | "UNREVIEWED";
+export type TweetStatus =
+  | "APPROVED"
+  | "REJECTED"
+  | "TWEETED"
+  | "UNREVIEWED"
+  | "NSFW";
+
 export type SkinType = "MODERN" | "CLASSIC";
 
 export type SkinRow = {

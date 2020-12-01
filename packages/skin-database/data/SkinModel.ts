@@ -77,6 +77,9 @@ export default class SkinModel {
     }
     const reviewRows = await this.getReviews();
     const reviews = new Set(reviewRows.map((row) => row.review));
+    if (reviews.has("NSFW")) {
+      return "NSFW";
+    }
     if (reviews.has("REJECTED")) {
       return "REJECTED";
     }

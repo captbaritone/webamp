@@ -32,7 +32,7 @@ export async function tweet(discordClient: Client, anything: string | null) {
       await tweetBotChannel.send(`Oops! This skin has alraedy been tweeted.`);
       return;
     }
-    if (tweetStatus == "REJECTED") {
+    if (tweetStatus == "REJECTED" || tweetStatus == "NSFW") {
       // @ts-ignore
       await tweetBotChannel.send(`Oops! Can't tweet a rejected skin.`);
       return;

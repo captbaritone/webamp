@@ -162,6 +162,8 @@ function getPrettyTwitterStatus(status: TweetStatus): string {
   switch (status) {
     case "APPROVED":
       return "Approved ✅";
+    case "NSFW":
+      return "Rejected (NSFW) ❌";
     case "REJECTED":
       return "Rejected ❌";
     case "UNREVIEWED":
