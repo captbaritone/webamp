@@ -4,7 +4,7 @@ import UserContext, { ctxWeakMapMemoize } from "./UserContext";
 import TweetModel, { TweetDebugData } from "./TweetModel";
 import IaItemModel from "./IaItemModel";
 import FileModel, { FileDebugData } from "./FileModel";
-import { MD5_REGEX } from "../utils";
+import { MD5_REGEX, TWEET_ID_REGEX } from "../utils";
 import DataLoader from "dataloader";
 import { knex } from "../db";
 
@@ -32,7 +32,14 @@ export default class SkinModel {
       }
     }
     const iaItem = await IaItemModel.fromAnything(ctx, anything);
-    return iaItem?.getSkin() ?? null;
+    if (iaItem != null) {
+      return iaItem.getSkin();
+    }
+    const tweet = await TweetModel.fromAnything(ctx, anything);
+    if (tweet != null) {
+      return tweet.getSkin();
+    }
+    return null;
   }
 
   static async exists(ctx: UserContext, md5: string): Promise<boolean> {

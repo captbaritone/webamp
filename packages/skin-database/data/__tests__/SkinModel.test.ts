@@ -51,4 +51,12 @@ describe("fromAnything", () => {
     );
     expect(skin?.getMd5()).toBe("a_fake_md5");
   });
+  test("Tweet URL", async () => {
+    const ctx = new UserContext();
+    const skin = await SkinModel.fromAnything(
+      ctx,
+      "https://twitter.com/winampskins/status/1333893671326871552"
+    );
+    expect(skin?.getMd5()).toBe("a_tweeted_md5");
+  });
 });

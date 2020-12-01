@@ -82,7 +82,7 @@ describe("/skins/", () => {
     const { body } = await request(app).get("/skins/");
     expect(body).toMatchInlineSnapshot(`
       Object {
-        "skinCount": 5,
+        "skinCount": 6,
         "skins": Array [
           Object {
             "fileName": "Zelda_Amp_3.wsz",
@@ -92,6 +92,11 @@ describe("/skins/", () => {
           Object {
             "fileName": "path.wsz",
             "md5": "a_fake_md5",
+            "nsfw": false,
+          },
+          Object {
+            "fileName": "tweeted.wsz",
+            "md5": "a_tweeted_md5",
             "nsfw": false,
           },
           Object {
@@ -119,7 +124,7 @@ describe("/skins/", () => {
       .query({ first: 2, offset: 1 });
     expect(body).toMatchInlineSnapshot(`
       Object {
-        "skinCount": 5,
+        "skinCount": 6,
         "skins": Array [
           Object {
             "fileName": "path.wsz",
@@ -127,8 +132,8 @@ describe("/skins/", () => {
             "nsfw": false,
           },
           Object {
-            "fileName": "approved.wsz",
-            "md5": "an_approved_md5",
+            "fileName": "tweeted.wsz",
+            "md5": "a_tweeted_md5",
             "nsfw": false,
           },
         ],
@@ -212,7 +217,7 @@ test("/skins/a_md5_that_does_not_exist/reject (404)", async () => {
   expect(handler).not.toHaveBeenCalled();
 });
 
-test.only("/skins/a_fake_md5/nsfw", async () => {
+test("/skins/a_fake_md5/nsfw", async () => {
   const ctx = new UserContext();
   const { body } = await request(app)
     .post("/skins/a_fake_md5/nsfw")
@@ -337,6 +342,10 @@ test("/stylegan.json", async () => {
       Object {
         "fileName": "rejected.wsz",
         "url": "https://cdn.webampskins.org/screenshots/a_rejected_md5.png",
+      },
+      Object {
+        "fileName": "tweeted.wsz",
+        "url": "https://cdn.webampskins.org/screenshots/a_tweeted_md5.png",
       },
       Object {
         "fileName": "approved.wsz",

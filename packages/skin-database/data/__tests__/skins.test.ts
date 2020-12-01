@@ -53,6 +53,10 @@ describe("seeded", () => {
           "md5": "a_rejected_md5",
         },
         Object {
+          "fileName": "tweeted.wsz",
+          "md5": "a_tweeted_md5",
+        },
+        Object {
           "fileName": "approved.wsz",
           "md5": "an_approved_md5",
         },
@@ -60,7 +64,7 @@ describe("seeded", () => {
     `);
   });
   test("getClassicSkinCount", async () => {
-    expect(await Skins.getClassicSkinCount()).toBe(5);
+    expect(await Skins.getClassicSkinCount()).toBe(6);
   });
   test("getTweetableSkinCount", async () => {
     expect(await Skins.getTweetableSkinCount()).toBe(1);
@@ -85,6 +89,10 @@ describe("seeded", () => {
           "url": "https://cdn.webampskins.org/screenshots/a_rejected_md5.png",
         },
         Object {
+          "fileName": "tweeted.wsz",
+          "url": "https://cdn.webampskins.org/screenshots/a_tweeted_md5.png",
+        },
+        Object {
           "fileName": "approved.wsz",
           "url": "https://cdn.webampskins.org/screenshots/an_approved_md5.png",
         },
@@ -106,6 +114,11 @@ describe("seeded", () => {
           "nsfw": false,
         },
         Object {
+          "fileName": "tweeted.wsz",
+          "md5": "a_tweeted_md5",
+          "nsfw": false,
+        },
+        Object {
           "fileName": "approved.wsz",
           "md5": "an_approved_md5",
           "nsfw": false,
@@ -124,14 +137,16 @@ describe("seeded", () => {
     `);
   });
   test("getStats", async () => {
-    expect(await Skins.getStats()).toEqual({
-      approved: 1,
-      rejected: 1,
-      nsfw: 1,
-      tweeted: 0,
-      tweetable: 1,
-      webUploads: 0,
-    });
+    expect(await Skins.getStats()).toMatchInlineSnapshot(`
+      Object {
+        "approved": 2,
+        "nsfw": 1,
+        "rejected": 1,
+        "tweetable": 1,
+        "tweeted": 1,
+        "webUploads": 0,
+      }
+    `);
   });
   test("getSkinToTweet", async () => {
     expect(await Skins.getSkinToTweet()).toEqual({

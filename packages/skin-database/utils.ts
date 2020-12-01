@@ -12,3 +12,4 @@ export function truncate(str: string, len: number): string {
 }
 
 export const MD5_REGEX = /([a-fA-F0-9]{32})/;
+export const TWEET_SNOWFLAKE_REGEX = /([0-9]{19})/;
