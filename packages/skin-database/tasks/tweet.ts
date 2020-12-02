@@ -58,16 +58,16 @@ export async function tweet(discordClient: Client, anything: string | null) {
     throw new Error(`Could not find filename for skin with hash ${md5}`);
   }
 
-  let output;
+  let tweetId;
   try {
-    output = await sendTweet(tweetableSkin);
+    tweetId = await sendTweet(tweetableSkin);
   } catch (e) {
     console.error(e);
     // @ts-ignore
     await tweetBotChannel.send(`Oops. Tweeting crashed: ${e.message}`);
     return;
   }
-  await Skins.markAsTweeted(tweetableSkin.getMd5(), output.trim());
+  await Skins.markAsTweeted(tweetableSkin.getMd5(), tweetId);
   // @ts-ignore
   await tweetBotChannel.send(output.trim());
   const remainingSkinCount = await Skins.getTweetableSkinCount();
@@ -77,7 +77,7 @@ export async function tweet(discordClient: Client, anything: string | null) {
       `Only ${remainingSkinCount} approved skins left. Could someone please \`!review\` some more?`
     );
   }
-  logger.info("Tweeted a skin", { md5, filename, url: output.trim() });
+  logger.info("Tweeted a skin", { md5, filename, tweetId });
 }
 
 async function getResizedScreenshot(md5: string): Promise<Buffer> {
@@ -93,7 +93,7 @@ async function getResizedScreenshot(md5: string): Promise<Buffer> {
   return image;
 }
 
-async function sendTweet(skin: SkinModel) {
+async function sendTweet(skin: SkinModel): Promise<string> {
   const screenshotBuffer = await getResizedScreenshot(skin.getMd5());
   const filename = await skin.getFileName();
   const tempFile = temp.path({ suffix: ".png" });
@@ -120,5 +120,5 @@ async function sendTweet(skin: SkinModel) {
   if (id == null) {
     throw new Error(`Could not get id`);
   }
-  return `https://twitter.com/winampskins/status/${result.data.id_str}`;
+  return id;
 }

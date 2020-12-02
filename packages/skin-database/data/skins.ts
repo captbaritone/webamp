@@ -130,9 +130,11 @@ export async function getClassicSkinCount(): Promise<number> {
   return Number(count);
 }
 
-// TODO: Also pass id
-export async function markAsTweeted(md5: string, url: string): Promise<void> {
-  await knex("tweets").insert({ skin_md5: md5, url }, []);
+export async function markAsTweeted(
+  md5: string,
+  tweetId: string
+): Promise<void> {
+  await knex("tweets").insert({ skin_md5: md5, tweet_id: tweetId }, []);
 }
 
 // TODO: Also path actor
@@ -451,15 +453,19 @@ export async function getScreenshotBuffer(md5: string): Promise<Buffer> {
 }
 
 export async function setTweetInfo(
-  md5: string,
+  md5: string | null,
   likes: number,
   retweets: number,
   tweetId: string
-): Promise<void> {
+): Promise<boolean> {
   const first = await knex("tweets")
-    .where({ skin_md5: md5 })
+    .where({ tweet_id: tweetId })
     .first(["likes", "retweets"]);
   if (first == null) {
+    if (md5 == null) {
+      console.warn(`Cannot insert skin without an md5 for tweet ${tweetId}`);
+      return false;
+    }
     await knex("tweets").insert(
       {
         skin_md5: md5,
@@ -469,11 +475,12 @@ export async function setTweetInfo(
       },
       []
     );
-  } else {
+  } else if (first.likes !== likes || first.retweets !== retweets) {
     await knex("tweets")
-      .where({ skin_md5: md5 })
+      .where({ tweet_id: tweetId })
       .update({ tweet_id: tweetId, likes, retweets }, []);
   }
+  return true;
 }
 
 export type MuseumPage = Array<{

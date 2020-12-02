@@ -43,7 +43,6 @@ export async function seed(knex: Knex): Promise<any> {
   await knex("tweets").insert([
     {
       skin_md5: "a_tweeted_md5",
-      url: "https://twitter.com/winampskins/status/1333893671326871552",
       tweet_id: "1333893671326871552",
     },
   ]);

@@ -17,11 +17,11 @@ export default class TweetModel {
     return rows.map((row) => new TweetModel(ctx, row));
   }
 
-  static async fromUrl(
+  static async fromTweetId(
     ctx: UserContext,
-    url: string
+    tweetId: string
   ): Promise<TweetModel | null> {
-    const row = await getTweetByTweetUrlLoader(ctx).load(url);
+    const row = await getTweetByTweetIdLoader(ctx).load(tweetId);
     if (row == null) {
       return null;
     }
@@ -37,10 +37,7 @@ export default class TweetModel {
       return null;
     }
     const snowflake = snowflakeMatch[1];
-    const found = await TweetModel.fromUrl(
-      ctx,
-      `https://twitter.com/winampskins/status/${snowflake}`
-    );
+    const found = await TweetModel.fromTweetId(ctx, snowflake);
     return found || null;
   }
 
@@ -48,14 +45,19 @@ export default class TweetModel {
     return this.row.skin_md5;
   }
 
-  getUrl(): string {
-    return this.row.url;
+  getTweetId(): string | null {
+    return this.row.tweet_id || null;
+  }
+
+  getUrl(): string | null {
+    const tweetId = this.getTweetId();
+    return tweetId ? `https://twitter.com/winampskins/status/${tweetId}` : null;
   }
   getLikes(): number {
-    return this.row.likes;
+    return this.row.likes ?? 0;
   }
   getRetweets(): number {
-    return this.row.retweets;
+    return this.row.retweets ?? 0;
   }
 
   async getSkin(): Promise<SkinModel> {
@@ -81,12 +83,10 @@ const getTweetsLoader = ctxWeakMapMemoize<DataLoader<string, TweetRow[]>>(
     })
 );
 
-const getTweetByTweetUrlLoader = ctxWeakMapMemoize<
-  DataLoader<string, TweetRow>
->(
+const getTweetByTweetIdLoader = ctxWeakMapMemoize<DataLoader<string, TweetRow>>(
   () =>
-    new DataLoader(async (urls) => {
-      const rows = await knex("tweets").whereIn("url", urls).select();
-      return urls.map((url) => rows.find((x) => x.url === url));
+    new DataLoader(async (ids) => {
+      const rows = await knex("tweets").whereIn("tweet_id", ids).select();
+      return ids.map((id) => rows.find((x) => x.tweet_id === id));
     })
 );
