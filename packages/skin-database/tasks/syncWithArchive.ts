@@ -6,6 +6,12 @@ import fs from "fs";
 import child_process from "child_process";
 import UserContext from "../data/UserContext";
 import SkinModel from "../data/SkinModel";
+import util from "util";
+import * as Parallel from "async-parallel";
+const exec = util.promisify(child_process.exec);
+
+const CONCURRENT = 5;
+
 const temp = _temp.track();
 
 async function allItems(): Promise<string[]> {
@@ -27,7 +33,10 @@ async function allItems(): Promise<string[]> {
   return items.map((item: { identifier: string }) => item.identifier);
 }
 
-async function ensureIaRecord(identifier: string): Promise<void> {
+async function ensureIaRecord(
+  ctx: UserContext,
+  identifier: string
+): Promise<void> {
   const dbItem = await knex("ia_items").where({ identifier }).first();
   if (dbItem) {
     return;
@@ -43,7 +52,7 @@ async function ensureIaRecord(identifier: string): Promise<void> {
     return;
   }
   const md5 = skins[0].md5;
-  const skin = await knex("skins").where({ md5 }).first();
+  const skin = await SkinModel.fromMd5(ctx, md5);
   if (skin == null) {
     console.error(
       `We don't have a record for the skin found in "${identifier}"`
@@ -56,11 +65,15 @@ async function ensureIaRecord(identifier: string): Promise<void> {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-async function collectExistingItems() {
+async function collectExistingItems(ctx: UserContext) {
   const items = await allItems();
-  for (const identifier of items) {
-    await ensureIaRecord(identifier);
-  }
+  await Parallel.each(
+    items,
+    async (identifier) => {
+      await ensureIaRecord(ctx, identifier);
+    },
+    CONCURRENT
+  );
 }
 
 function sanitize(name: string): string {
@@ -69,6 +82,9 @@ function sanitize(name: string): string {
 
 async function downloadToTemp(url: string, filename: string): Promise<string> {
   const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Failed to download from ${filename} from ${url}`);
+  }
   const result = await response.buffer();
   const tempDir = temp.mkdirSync();
   const tempFile = path.join(tempDir, filename);
@@ -96,20 +112,21 @@ async function getNewIdentifier(filename: string): Promise<string> {
   return getIdentifier();
 }
 
-async function archive(md5: string): Promise<string> {
-  const ctx = new UserContext();
-  const skin = await SkinModel.fromMd5(ctx, md5);
-  if (skin == null) {
-    throw new Error(`Could not find skin with hash ${md5}`);
-  }
-
+async function archive(skin: SkinModel): Promise<string> {
   const filename = await skin.getFileName();
   if (filename == null) {
-    throw new Error(`Could archive skin. Filename not found. ${md5}`);
+    throw new Error(`Could archive skin. Filename not found. ${skin.getMd5()}`);
   }
 
-  if (!(filename.endsWith(".wsz") || filename.endsWith(".zip"))) {
-    throw new Error(`Unexpected file extension for ${md5}: ${filename}`);
+  if (
+    !(
+      filename.toLowerCase().endsWith(".wsz") ||
+      filename.toLowerCase().endsWith(".zip")
+    )
+  ) {
+    throw new Error(
+      `Unexpected file extension for ${skin.getMd5()}: ${filename}`
+    );
   }
 
   const screenshotFilename = filename.replace(/\.(wsz|zip)$/, ".png");
@@ -124,8 +141,8 @@ async function archive(md5: string): Promise<string> {
   const identifier = await getNewIdentifier(filename);
 
   const command = `ia upload ${identifier} "${skinFile}" "${screenshotFile}" --metadata="collection:winampskins" --metadata="skintype:wsz" --metadata="mediatype:software" --metadata="title:${title}"`;
-  child_process.execSync(command, { encoding: "utf8" });
-  await knex("ia_items").insert({ skin_md5: md5, identifier });
+  await exec(command, { encoding: "utf8" });
+  await knex("ia_items").insert({ skin_md5: skin.getMd5(), identifier });
   return identifier;
 }
 
@@ -134,10 +151,52 @@ const CORRUPT = new Set([
   "c3d2836f7f1b91d87d60b93aadf6981a",
   "4288c254d9a22024c48601db5f9812e9",
   "042271e3aea64970a885a8ab1cfe4a3f",
+  "0c91d27d8d9ee11ead8306f49dde0001",
+  "11944ffeec82f2d01d03cbfbb7783638",
+  "2043521751c6ba9b5c021f47afb28b64",
+  "72a399cbe37287371413680faccf40e1",
+  "6ba8c688c0cffad19ef3e410f9949233",
+  "b02cd2ee5b1e5237171c3b23df6f5194",
+  "b5554df8cf1048731d1292c609293166",
+  "3ca48d8f5b8b0590fee9a45e4eeb3297",
+  "096b26067ad5b0eabac47e40e2d9329e",
+  "2071b45150b9f3d640f9465051d32be3",
+  "6c1673efa65d1d53b4564d2ec7917d07",
+  "7749d85b72e8932f718c935211619390",
+  "7b32e418a29221d6a527c4e72de8be78",
+  "92eb393f78032405047a664cd99afcf5",
+  "bd0c3335fa70e7bb1cde8541c2a46139",
+  "bf390919a562a18bd8c669b6ebebe07a",
+  "c03255f333e2afcda76e1691e46c4dc7",
+  "c2e29dfb715bc37fea6b61e770bc902c",
+  "dae8579c14dc1b7738340a5f8dbffbc2",
+  "e2b29e7b4611b462c660575dd42ff458",
+  "e2b29e7b4611b462c660575dd42ff458",
+  "ea7f8863f58e42ea9fd1202a791187f1",
+  "ec3558f28f058cb1f147191ad19179eb",
+  "f014dae16799191a52b35c2f2aec1a74",
+  "23e09ddef5c380fe39ec94cf941433da",
+  "9592c095fb330699f95f771cc09a4654",
+  "d181107c52f97359aa39689f1611887c",
+  "dc61584841396e93b802efe82e1f18a8",
+  "de6708ea2adbfd756c1b4ee742a415a5",
+  "dec7b913d7092dfed2abafee45762eb5",
+  "a8f5a330362cde7ec97303564ce921be",
+  "07e165e6776f6e7b6a57c8db18af458f",
+  "a3d2b4e9894829fc7da23d054e2f4fcf",
+  "38c3d55bafd914eb647e8422f559e7fc",
+  "43505b99a3fa965a6823858539736370",
+  "04d172dc3f08d7fc1c9a047db956ea5d",
+  "515941f5dee8ab399bd0e58d0a116274",
+  "6b00596f4519fcc9d8bff7a69194333a",
 ]);
-async function main() {
+
+export async function syncWithArchive() {
+  const ctx = new UserContext();
   // Ensure we know about all items in the `winampskins` collection.
-  // await collectExistingItems();
+  // console.log("Going to ensure we know about all archive items");
+  // await collectExistingItems(ctx);
+  console.log("Checking which new skins we have...");
   const unarchived = await knex("skins")
     .leftJoin("ia_items", "ia_items.skin_md5", "=", "skins.md5")
     .where({ "ia_items.id": null, skin_type: 1 })
@@ -145,28 +204,34 @@ async function main() {
 
   console.log(`Found ${unarchived.length} skins to upload`);
 
-  for (const skin of unarchived) {
-    console.log(skin.md5);
-    if (CORRUPT.has(skin.md5)) {
-      console.log("Skipping corrupt archive");
-      continue;
-    }
-    try {
-      const identifier = await archive(skin.md5);
-      console.log(identifier);
-    } catch (e) {
-      console.log("Archive failed...");
-      console.error(e);
-    }
-  }
+  await Parallel.map(
+    unarchived.filter(({ md5 }) => !CORRUPT.has(md5)),
+    async ({ md5 }) => {
+      const skin = await SkinModel.fromMd5(ctx, md5);
+      if (skin == null) {
+        throw new Error(`Expected to get skin for ${md5}`);
+      }
+      try {
+        console.log(`Attempting to upload ${md5}`);
+        const identifier = await archive(skin);
+        console.log(`SUCCESS! Uplaoded ${md5} as ${identifier}`);
+      } catch (e) {
+        console.log("Archive failed...");
+        if (/error checking archive/.test(e.message)) {
+          console.log(`Corrupt archvie: ${skin.getMd5()}`);
+        } else if (
+          /archive files are not allowed to contain encrypted content/.test(
+            e.message
+          )
+        ) {
+          console.log(`Corrupt archvie (encrypted): ${skin.getMd5()}`);
+        } else if (/case alias may already exist/.test(e.message)) {
+          console.log(`Invalid name (case alias): ${skin.getMd5()}`);
+        } else {
+          console.error(e);
+        }
+      }
+    },
+    CONCURRENT
+  );
 }
-
-async function m() {
-  try {
-    await main();
-  } finally {
-    knex.destroy();
-  }
-}
-
-m();

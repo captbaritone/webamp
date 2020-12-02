@@ -16,6 +16,7 @@ import { screenshot } from "./tasks/screenshotSkin";
 import Shooter from "./shooter";
 import UserContext from "./data/UserContext";
 import { integrityCheck } from "./tasks/integrityCheck";
+import { syncWithArchive } from "./tasks/syncWithArchive";
 
 async function main() {
   const client = new Discord.Client();
@@ -24,6 +25,9 @@ async function main() {
 
   try {
     switch (argv._[0]) {
+      case "sync-ia":
+        await syncWithArchive();
+        break;
       case "integity-check":
         await integrityCheck();
         break;
