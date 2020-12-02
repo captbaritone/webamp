@@ -4,7 +4,7 @@ import UserContext, { ctxWeakMapMemoize } from "./UserContext";
 import TweetModel, { TweetDebugData } from "./TweetModel";
 import IaItemModel from "./IaItemModel";
 import FileModel, { FileDebugData } from "./FileModel";
-import { MD5_REGEX, TWEET_ID_REGEX } from "../utils";
+import { MD5_REGEX } from "../utils";
 import DataLoader from "dataloader";
 import { knex } from "../db";
 
