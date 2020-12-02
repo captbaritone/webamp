@@ -15,20 +15,21 @@ export default class DiscordEventHandler {
       .then(() => _client);
   }
 
-  async getClient() {
+  private async getClient() {
     return this._clientPromise;
   }
 
-  async getChannel(channelId: string): Promise<TextChannel> {
+  private async getChannel(channelId: string): Promise<TextChannel> {
     const client = await this.getClient();
     const dest = client.channels.get(channelId) as TextChannel | null;
     if (dest == null) {
-      throw new Error("Could not get NSFW channel");
+      throw new Error(`Could not get channel with id: ${channelId}`);
     }
     return dest;
   }
 
-  async handle(action: ApiAction, ctx: UserContext) {
+  async handle(action: ApiAction): Promise<void> {
+    const ctx = new UserContext();
     switch (action.type) {
       case "REVIEW_REQUESTED":
         await this.requestReview(action.md5, ctx);
@@ -55,10 +56,31 @@ export default class DiscordEventHandler {
           Config.NSFW_SKIN_CHANNEL_ID
         );
         break;
+      case "CLASSIC_SKIN_UPLOADED":
+        await this.reportSkin(
+          action.md5,
+          ctx,
+          (filename) => `New skin uploaded: ${filename}`,
+          Config.SKIN_UPLOADS_CHANNEL_ID
+        );
+        break;
+      case "MODERN_SKIN_UPLOADED": {
+        const dest = await this.getChannel(Config.SKIN_UPLOADS_CHANNEL_ID);
+        await dest.send(`Someone uploaded a new modern skin: ${action.md5}`);
+        break;
+      }
+
+      case "SKIN_UPLOAD_ERROR": {
+        const dest = await this.getChannel(Config.SKIN_UPLOADS_CHANNEL_ID);
+        await dest.send(
+          `Encountered an error processing upload ${action.uploadId}: ${action.message}`
+        );
+        break;
+      }
     }
   }
 
-  async reportSkin(
+  private async reportSkin(
     md5: string,
     ctx: UserContext,
     getFilename: (filename: string) => string,
@@ -76,7 +98,7 @@ export default class DiscordEventHandler {
     });
   }
 
-  async requestReview(md5: string, ctx: UserContext) {
+  private async requestReview(md5: string, ctx: UserContext) {
     const skin = await SkinModel.fromMd5(ctx, md5);
     if (skin == null) {
       return;

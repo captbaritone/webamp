@@ -16,9 +16,12 @@ export type ApiAction =
   | { type: "APPROVED_SKIN"; md5: string }
   | { type: "MARKED_SKIN_NSFW"; md5: string }
   | { type: "SKIN_UPLOADED"; md5: string }
-  | { type: "ERROR_PROCESSING_UPLOAD"; id: string; message: string };
+  | { type: "ERROR_PROCESSING_UPLOAD"; id: string; message: string }
+  | { type: "CLASSIC_SKIN_UPLOADED"; md5: string }
+  | { type: "MODERN_SKIN_UPLOADED"; md5: string }
+  | { type: "SKIN_UPLOAD_ERROR"; uploadId: string; message: string };
 
-export type EventHandler = (event: ApiAction, ctx: UserContext) => void;
+export type EventHandler = (event: ApiAction) => void;
 export type Logger = {
   log(message: string, context: any): void;
   logError(message: string, context: any): void;
@@ -81,7 +84,7 @@ export function createApp({ eventHandler, extraMiddleware, logger }: Options) {
   app.use((req, res, next) => {
     req.notify = (action) => {
       if (eventHandler) {
-        eventHandler(action, req.ctx);
+        eventHandler(action);
       }
     };
     next();

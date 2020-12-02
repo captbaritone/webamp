@@ -24,7 +24,7 @@ beforeEach(async () => {
   jest.clearAllMocks();
   username = "<MOCKED>";
   app = createApp({
-    eventHandler: (action, _ctx) => handler(action),
+    eventHandler: handler,
     extraMiddleware: (req, res, next) => {
       req.session.username = username;
       next();

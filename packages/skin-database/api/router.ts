@@ -231,7 +231,7 @@ router.post(
     // TODO: Validate md5 and id;
     await Skins.recordUserUploadComplete(md5, id);
     // Don't await, just kick off the task.
-    processUserUploads();
+    processUserUploads(req.notify);
     res.json({ done: true });
   })
 );
