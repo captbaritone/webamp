@@ -75,28 +75,20 @@ export default class Shooter {
   }
 
   async _takeScreenshot(skin, screenshotPath, { minify = false }) {
-    console.log("start!");
     await this._ensureInitialized();
-    console.log("Going to try", screenshotPath, skin);
     try {
-      console.log("geting input");
       const handle = await this._page.$("#webamp-file-input");
-      console.log("uploading skin");
 
       // eslint-disable-next-line no-async-promise-executor
       await new Promise(async (resolve, reject) => {
         try {
-          console.log("start promise");
           const dialogHandler = (dialog) => {
             reject(new Error(`Dialog message: ${dialog.message()}`));
           };
-          this._page.on("dialog", dialogHandler);
           await handle.uploadFile(skin);
-          console.log("waiting for skin to load...");
           await this._page.evaluate(() => {
             return window.__webamp.skinIsLoaded();
           });
-          console.log("waiting for screenshot");
           await this._page.screenshot({
             path: screenshotPath,
             omitBackground: true, // Make screenshot transparent
@@ -116,9 +108,7 @@ export default class Shooter {
       if (minify) {
         min(screenshotPath);
       }
-      console.log("Minified", screenshotPath);
     } catch (e) {
-      console.error("Something went wrong, restarting browser", e);
       await this.dispose();
       await this.init();
       throw e;
