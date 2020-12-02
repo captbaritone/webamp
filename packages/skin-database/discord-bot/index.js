@@ -12,6 +12,7 @@ const commands = [
   require("./commands/review"),
   require("./commands/screenshot"),
   require("./commands/skin"),
+  require("./commands/debug"),
   require("./commands/stats"),
   require("./commands/tweet"),
 ];

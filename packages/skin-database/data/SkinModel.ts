@@ -2,7 +2,7 @@ import { getScreenshotUrl, getSkinUrl } from "./skins";
 import { TweetStatus, SkinRow, ReviewRow } from "../types";
 import UserContext, { ctxWeakMapMemoize } from "./UserContext";
 import TweetModel, { TweetDebugData } from "./TweetModel";
-import IaItemModel from "./IaItemModel";
+import IaItemModel, { IaItemDebugData } from "./IaItemModel";
 import FileModel, { FileDebugData } from "./FileModel";
 import { MD5_REGEX } from "../utils";
 import DataLoader from "dataloader";
@@ -136,14 +136,17 @@ export default class SkinModel {
     reviews: ReviewRow[];
     tweets: TweetDebugData[];
     files: FileDebugData[];
+    iaItem: IaItemDebugData | null;
   }> {
     const tweets = await this.getTweets();
     const files = await this.getFiles();
+    const iaItem = await this.getIaItem();
     return {
       row: this.row,
       reviews: await this.getReviews(),
       tweets: await Promise.all(tweets.map((tweet) => tweet.debug())),
       files: await Promise.all(files.map((file) => file.debug())),
+      iaItem: iaItem == null ? null : await iaItem.debug(),
     };
   }
 }

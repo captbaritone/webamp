@@ -6,6 +6,10 @@ import { knex } from "../db";
 
 const IA_URL = /^(https:\/\/)?archive.org\/details\/([^/]+)\/?/;
 
+export type IaItemDebugData = {
+  row: IaItemRow;
+};
+
 export default class IaItemModel {
   constructor(readonly ctx: UserContext, readonly row: IaItemRow) {}
 
@@ -64,6 +68,12 @@ export default class IaItemModel {
       );
     }
     return identifier;
+  }
+
+  async debug(): Promise<IaItemDebugData> {
+    return {
+      row: this.row,
+    };
   }
 }
 
