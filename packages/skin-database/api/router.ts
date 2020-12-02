@@ -12,6 +12,7 @@ import LRU from "lru-cache";
 import { MuseumPage } from "../data/skins";
 import { processUserUploads } from "./processUserUploads";
 import { auth } from "./auth";
+import * as Parallel from "async-parallel";
 
 const router = Router();
 
@@ -97,13 +98,17 @@ router.post(
   asyncHandler(async (req, res) => {
     const payload = req.body.skins as { [md5: string]: string };
     const missing = {};
-    for (const [md5, filename] of Object.entries(payload)) {
-      if (!(await SkinModel.exists(req.ctx, md5))) {
-        const id = await Skins.recordUserUploadRequest(md5, filename);
-        const url = S3.getSkinUploadUrl(md5, id);
-        missing[md5] = { id, url };
-      }
-    }
+    await Parallel.each(
+      Object.entries(payload),
+      async ([md5, filename]) => {
+        if (!(await SkinModel.exists(req.ctx, md5))) {
+          const id = await Skins.recordUserUploadRequest(md5, filename);
+          const url = S3.getSkinUploadUrl(md5, id);
+          missing[md5] = { id, url };
+        }
+      },
+      5
+    );
     res.json(missing);
   })
 );
