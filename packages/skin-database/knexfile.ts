@@ -19,6 +19,7 @@ const configs = {
     ...production,
     connection: ":memory:",
     seeds: {
+      // Only put this in the test config so that we ensure we never clobber prod data.
       directory: path.join(PROJECT_ROOT, "./seeds"),
     },
   },
