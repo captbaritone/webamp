@@ -408,6 +408,7 @@ const loggingEpic = (actions, state) =>
         case "REQUESTED_RANDOM_SKIN":
         case "MARK_NSFW":
         case "INVALID_ARCHIVE":
+          window.fbq("track", action.type);
           window.ga("send", "event", "redux", action.type);
           break;
         default: {
