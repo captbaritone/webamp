@@ -85,6 +85,9 @@ export async function scrapeLikeData() {
       tweet.id_str
     );
     if (!success) {
+      console.warn(
+        `Cannot insert skin without an md5 for tweet ${tweet.id_str}`
+      );
       todo.push(tweet);
     }
   }

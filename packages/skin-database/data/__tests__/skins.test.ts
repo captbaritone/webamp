@@ -1,5 +1,7 @@
 import { knex } from "../../db";
 import * as Skins from "../skins";
+import TweetModel from "../TweetModel";
+import UserContext from "../UserContext";
 
 beforeEach(async () => {
   await knex.migrate.latest();
@@ -170,5 +172,48 @@ describe("seeded", () => {
   });
   test("getUploadStatuses", async () => {
     expect(await Skins.getUploadStatuses([])).toEqual({});
+  });
+
+  describe("setTweetInfo", () => {
+    test("update", async () => {
+      const ctx = new UserContext();
+      const md5 = "a_tweeted_md5";
+      const likes = 420;
+      const retweets = 69;
+      const tweetId = "1333893671326871552";
+      expect(await Skins.setTweetInfo(md5, likes, retweets, tweetId)).toBe(
+        true
+      );
+      const tweet = await TweetModel.fromTweetId(ctx, "1333893671326871552");
+      expect(tweet?.getLikes()).toBe(420);
+      expect(tweet?.getRetweets()).toBe(69);
+    });
+
+    test("insert", async () => {
+      const ctx = new UserContext();
+      const md5 = "a_fake_md5";
+      const likes = 1;
+      const retweets = 2;
+      const tweetId = "12345";
+      expect(await Skins.setTweetInfo(md5, likes, retweets, tweetId)).toBe(
+        true
+      );
+      const tweet = await TweetModel.fromTweetId(ctx, "12345");
+      expect(tweet?.getLikes()).toBe(1);
+      expect(tweet?.getRetweets()).toBe(2);
+    });
+
+    test("insert without an md5 returns false and does not write", async () => {
+      const ctx = new UserContext();
+      const md5 = null;
+      const likes = 1;
+      const retweets = 2;
+      const tweetId = "12345";
+      expect(await Skins.setTweetInfo(md5, likes, retweets, tweetId)).toBe(
+        false
+      );
+      const tweet = await TweetModel.fromTweetId(ctx, "12345");
+      expect(tweet).toBe(null);
+    });
   });
 });

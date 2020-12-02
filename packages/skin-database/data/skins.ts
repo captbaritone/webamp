@@ -463,7 +463,6 @@ export async function setTweetInfo(
     .first(["likes", "retweets"]);
   if (first == null) {
     if (md5 == null) {
-      console.warn(`Cannot insert skin without an md5 for tweet ${tweetId}`);
       return false;
     }
     await knex("tweets").insert(
@@ -475,7 +474,10 @@ export async function setTweetInfo(
       },
       []
     );
-  } else if (first.likes !== likes || first.retweets !== retweets) {
+    return true;
+  }
+
+  if (first.likes !== likes || first.retweets !== retweets) {
     await knex("tweets")
       .where({ tweet_id: tweetId })
       .update({ tweet_id: tweetId, likes, retweets }, []);
