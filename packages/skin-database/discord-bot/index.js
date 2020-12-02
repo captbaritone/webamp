@@ -9,7 +9,6 @@ const handlers = {
 };
 
 const commands = [
-  require("./commands/archive"),
   require("./commands/review"),
   require("./commands/screenshot"),
   require("./commands/skin"),
