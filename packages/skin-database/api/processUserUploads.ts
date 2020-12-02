@@ -3,6 +3,13 @@ import S3 from "../s3";
 import { addSkinFromBuffer } from "../addSkin";
 import { EventHandler } from "./app";
 
+async function* reportedUploads() {
+  const upload = await Skins.getReportedUpload();
+  if (upload != null) {
+    yield upload;
+  }
+}
+
 let processing = false;
 
 export async function processUserUploads(eventHandler: EventHandler) {
@@ -11,8 +18,8 @@ export async function processUserUploads(eventHandler: EventHandler) {
     return;
   }
   processing = true;
-  let upload = await Skins.getReportedUpload();
-  while (upload != null) {
+  const uploads = reportedUploads();
+  for await (const upload of uploads) {
     try {
       const buffer = await S3.getUploadedSkin(upload.id);
       const result = await addSkinFromBuffer(
@@ -41,7 +48,6 @@ export async function processUserUploads(eventHandler: EventHandler) {
       eventHandler(action);
       console.error(e);
     }
-    upload = await Skins.getReportedUpload();
   }
 
   processing = false;
