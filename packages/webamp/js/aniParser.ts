@@ -1,12 +1,22 @@
 import { RIFFFile } from "riff-file";
 import { unpackArray } from "byte-data";
 
-export function parseAni(arr) {
-  let riff = new RIFFFile();
+type Chunk = {
+  format: string;
+  chunkId: string;
+  chunkData: {
+    start: number;
+    end: number;
+  };
+  subChunks: Chunk[];
+};
+
+export function parseAni(arr: Uint8Array) {
+  const riff = new RIFFFile();
 
   riff.setSignature(arr);
 
-  const { signature } = riff;
+  const signature = riff.signature as Chunk;
   if (signature.format !== "ACON") {
     throw new Error(`Invalid format. Expected "ACON", got ${signature.format}`);
   }
@@ -44,7 +54,8 @@ export function parseAni(arr) {
 }
 
 const DWORD = { bits: 32, be: false, signed: false, fp: false };
-function parseMetadata(chunkData) {
+
+function parseMetadata(chunkData: Uint8Array) {
   const words = unpackArray(chunkData, DWORD);
   if (words.length !== 9) {
     throw new Error(
@@ -64,15 +75,15 @@ function parseMetadata(chunkData) {
   };
 }
 
-function base64(u8) {
-  return btoa(String.fromCharCode.apply(null, u8));
+function base64(u8: Uint8Array): string {
+  return window.btoa(String.fromCharCode.apply(null, u8));
 }
 
-function urlFromData(arr) {
+function urlFromData(arr: Uint8Array): string {
   const arrBase64 = base64(arr);
   return `data:image/x-win-bitmap;base64,${arrBase64}`;
 }
 
-function getChunkData(arr, chunk) {
+function getChunkData(arr: Uint8Array, chunk: Chunk): Uint8Array {
   return arr.slice(chunk.chunkData.start, chunk.chunkData.end);
 }
