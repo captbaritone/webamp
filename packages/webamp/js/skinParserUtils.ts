@@ -3,6 +3,7 @@ import { PlaylistStyle, SkinGenExColors } from "./types";
 import SKIN_SPRITES, { Sprite } from "./skinSprites";
 import { DEFAULT_SKIN } from "./constants";
 import * as Utils from "./utils";
+import { parseAni } from "./aniParser";
 
 export const getFileExtension = (fileName: string): string | null => {
   const matches = /\.([a-z]{3,4})$/i.exec(fileName);
@@ -17,7 +18,7 @@ export async function getFileFromZip(
   zip: JSZip,
   fileName: string,
   ext: string,
-  mode: "blob" | "text" | "base64"
+  mode: "blob" | "text" | "base64" | "uint8array"
 ) {
   const files = zip.file(getFilenameRegex(fileName, ext));
   if (!files.length) {
@@ -123,14 +124,27 @@ export async function getSpriteUrisFromFilename(
   return getSpriteUrisFromImg(img, SKIN_SPRITES[fileName]);
 }
 
+const ANI_MAGIC_BASE_64 = "UklGR";
+
 export async function getCursorFromFilename(
   zip: JSZip,
   fileName: string
 ): Promise<string | null> {
   const file = await getFileFromZip(zip, fileName, "CUR", "base64");
-  return file == null
-    ? null
-    : `data:image/x-win-bitmap;base64,${file.contents}`;
+  if (file == null) {
+    return null;
+  }
+  const contents = file.contents as string;
+  if (contents.startsWith(ANI_MAGIC_BASE_64)) {
+    const fileArr = await getFileFromZip(zip, fileName, "CUR", "uint8array");
+    if (fileArr == null) {
+      throw new Error("We just read this file, how can it be null??");
+    }
+    const ani = parseAni(fileArr.contents as Uint8Array);
+    return ani.urls[0];
+  }
+
+  return `data:image/x-win-bitmap;base64,${contents}`;
 }
 
 export async function getPlaylistStyle(zip: JSZip): Promise<PlaylistStyle> {
