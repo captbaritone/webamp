@@ -1,4 +1,5 @@
 import { RIFFFile } from "riff-file";
+import * as Utils from "./utils";
 import { unpackArray } from "byte-data";
 
 type Chunk = {
@@ -75,12 +76,8 @@ function parseMetadata(chunkData: Uint8Array) {
   };
 }
 
-function base64(u8: Uint8Array): string {
-  return window.btoa(String.fromCharCode.apply(null, u8));
-}
-
 function urlFromData(arr: Uint8Array): string {
-  const arrBase64 = base64(arr);
+  const arrBase64 = Utils.base64FromDataArray(arr);
   return `data:image/x-win-bitmap;base64,${arrBase64}`;
 }
 

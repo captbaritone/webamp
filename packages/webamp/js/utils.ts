@@ -129,9 +129,12 @@ export const parseIni = (text: string): IniData => {
 export const clamp = (value: number, min: number, max: number): number =>
   Math.min(Math.max(value, min), max);
 
+export const base64FromDataArray = (dataArray: Uint8Array): string => {
+  return window.btoa(String.fromCharCode(...dataArray));
+};
+
 export const base64FromArrayBuffer = (arrayBuffer: ArrayBuffer): string => {
-  const dataView = new Uint8Array(arrayBuffer);
-  return window.btoa(String.fromCharCode(...dataView));
+  return base64FromDataArray(new Uint8Array(arrayBuffer));
 };
 
 // https://stackoverflow.com/a/15832662/1263117
