@@ -1,11 +1,22 @@
 import { memo } from "react";
 
 import * as Actions from "../../actionCreators";
-import { useActionCreator } from "../../hooks";
+import { useActionCreator, useSprite } from "../../hooks";
 
 const Eject = memo(() => {
   const openMediaFileDialog = useActionCreator(Actions.openMediaFileDialog);
-  return <div id="eject" onClick={openMediaFileDialog} title="Open File(s)" />;
+  const spriteStyle = useSprite({
+    base: "MAIN_EJECT_BUTTON",
+    size: "MAIN_EJECT_BUTTON",
+    active: "MAIN_EJECT_BUTTON_ACTIVE",
+  });
+  return (
+    <div
+      style={{ ...spriteStyle, position: "absolute", top: 89, left: 136 }}
+      onClick={openMediaFileDialog}
+      title="Open File(s)"
+    />
+  );
 });
 
 export default Eject;

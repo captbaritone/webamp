@@ -6,15 +6,6 @@ interface Selectors {
 }
 
 export const imageSelectors: Selectors = {
-  MAIN_BALANCE_BACKGROUND: ["#balance"],
-  MAIN_BALANCE_THUMB: [
-    "#balance::-webkit-slider-thumb",
-    "#balance::-moz-range-thumb",
-  ],
-  MAIN_BALANCE_THUMB_ACTIVE: [
-    "#balance:active::-webkit-slider-thumb",
-    "#balance:active::-moz-range-thumb",
-  ],
   MAIN_PREVIOUS_BUTTON: [".actions #previous"],
   MAIN_PREVIOUS_BUTTON_ACTIVE: [".actions #previous:active"],
   MAIN_PLAY_BUTTON: [".actions #play"],
@@ -25,9 +16,6 @@ export const imageSelectors: Selectors = {
   MAIN_STOP_BUTTON_ACTIVE: [".actions #stop:active"],
   MAIN_NEXT_BUTTON: [".actions #next"],
   MAIN_NEXT_BUTTON_ACTIVE: [".actions #next:active"],
-  MAIN_EJECT_BUTTON: ["#eject"],
-  MAIN_EJECT_BUTTON_ACTIVE: ["#eject:active"],
-  MAIN_WINDOW_BACKGROUND: ["#main-window"],
   MAIN_STEREO: [".media-info #stereo", ".stop .media-info #stereo.selected"],
   MAIN_STEREO_SELECTED: [".media-info #stereo.selected"],
   MAIN_MONO: [".media-info #mono", ".stop .media-info #mono.selected"],
@@ -291,7 +279,6 @@ export const imageSelectors: Selectors = {
     "#volume input:active::-webkit-slider-thumb",
     "#volume input:active::-moz-range-thumb",
   ],
-  GEN_TOP_CENTER_FILL: [".gen-window .gen-top"],
   GEN_TOP_LEFT: [".gen-window .gen-top-left"],
   GEN_TOP_LEFT_END: [".gen-window .gen-top-left-end"],
   GEN_TOP_RIGHT: [".gen-window .gen-top-right"],
@@ -301,7 +288,6 @@ export const imageSelectors: Selectors = {
     ".gen-window .gen-top-right-fill",
   ],
 
-  GEN_TOP_CENTER_FILL_SELECTED: [".gen-window.selected .gen-top"],
   GEN_TOP_LEFT_SELECTED: [".gen-window.selected .gen-top-left"],
   GEN_TOP_LEFT_END_SELECTED: [".gen-window.selected .gen-top-left-end"],
   GEN_TOP_RIGHT_SELECTED: [".gen-window.selected .gen-top-right"],

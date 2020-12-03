@@ -2,7 +2,7 @@ import { memo } from "react";
 
 import Balance from "../Balance";
 import * as Selectors from "../../selectors";
-import { useTypedSelector } from "../../hooks";
+import { useSprite, useTypedSelector } from "../../hooks";
 
 export const offsetFromBalance = (balance: number): number => {
   const percent = Math.abs(balance) / 100;
@@ -13,10 +13,23 @@ export const offsetFromBalance = (balance: number): number => {
 
 const MainBalance = memo(() => {
   const balance = useTypedSelector(Selectors.getBalance);
+  const spriteStyle = useSprite({
+    base: "MAIN_BALANCE_BACKGROUND",
+    thumb: "MAIN_BALANCE_THUMB",
+    activeThumb: "MAIN_BALANCE_THUMB_ACTIVE",
+  });
   return (
     <Balance
       id="balance"
-      style={{ backgroundPosition: `0 -${offsetFromBalance(balance)}px` }}
+      style={{
+        ...spriteStyle,
+        left: 177,
+        top: 57,
+        height: 13,
+        width: 38,
+        position: "absolute",
+        backgroundPosition: `0 -${offsetFromBalance(balance)}px`,
+      }}
     />
   );
 });

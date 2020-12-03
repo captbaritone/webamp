@@ -33,7 +33,7 @@ import * as Selectors from "../../selectors";
 import "../../../css/main-window.css";
 import { FilePicker } from "../../types";
 import FocusTarget from "../FocusTarget";
-import { useActionCreator, useTypedSelector } from "../../hooks";
+import { useActionCreator, useSprite, useTypedSelector } from "../../hooks";
 
 interface Props {
   analyser: AnalyserNode;
@@ -52,6 +52,7 @@ const MainWindow = React.memo(({ analyser, filePickers }: Props) => {
   const doubled = useTypedSelector(Selectors.getDoubled);
   const llama = useTypedSelector(Selectors.getLlamaMode);
   const working = useTypedSelector(Selectors.getWorking);
+  const style = useSprite({ base: "MAIN_WINDOW_BACKGROUND" });
 
   const className = classnames({
     window: true,
@@ -74,6 +75,7 @@ const MainWindow = React.memo(({ analyser, filePickers }: Props) => {
 
   return (
     <DropTarget
+      style={style}
       id="main-window"
       windowId={WINDOWS.MAIN}
       className={className}

@@ -15,7 +15,7 @@ const MainVolume = memo(() => {
   };
   return (
     <div id="volume" style={style}>
-      <Volume />
+      <Volume style={{ background: "none" }} />
     </div>
   );
 });

@@ -23,24 +23,48 @@
   outline: 0;
 }
 
+#webamp [style*="--active-background"]:active {
+  background-image: var(--active-background);
+}
+#webamp [style*="--base-background"] {
+  background-image: var(--base-background);
+}
+
+/**
+ * Ideally we would collapse these next four down into two rules that each have
+ * multiple comma separated selectors. However, `::-moz-range-thumb`
+ * will break the rule in non-Firefox browsers, so we just make each
+ * selector it's own rule.
+ */
+
+#webamp [style*="--thumb-background"]::-webkit-slider-thumb {
+  background-image: var(--thumb-background);
+}
+#webamp [style*="--thumb-background"]::-moz-range-thumb {
+  background-image: var(--thumb-background);
+}
+#webamp [style*="--activeThumb-background"]:active::-webkit-slider-thumb {
+  background-image: var(--activeThumb-background);
+}
+#webamp [style*="--activeThumb-background"]:active::-moz-range-thumb {
+  background-image: var(--activeThumb-background);
+}
+
 /* Range input css reset */
 #webamp input[type="range"] {
   -webkit-appearance: none;
   margin: 0;
   padding: 0;
-  background: none;
   border: none;
 }
 #webamp input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   border: none;
   border-radius: 0;
-  background: none;
 }
 #webamp input[type="range"]::-moz-range-thumb {
   border: none;
   border-radius: 0;
-  background: none;
 }
 #webamp input[type="range"]::-moz-range-track {
   border: none;

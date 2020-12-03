@@ -4,7 +4,8 @@ const imagemin = require("imagemin");
 const imageminOptipng = require("imagemin-optipng");
 
 const DATA_URL_REGEX = new RegExp(/url\((data:image\/png;base64,.+)\)/gi);
-const DATA_URL_PROPS_REGEX = /^(background(?:-image)?)|(content)|(cursor)/;
+// The `--` is so that we consider CSS variables.
+const DATA_URL_PROPS_REGEX = /^(background(?:-image)?)|(content)|(cursor)|(--)/;
 
 async function optimizeDataUri(dataUri) {
   const buffer = dataUriToBuffer(dataUri);
