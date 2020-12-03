@@ -75,9 +75,20 @@ export type Band =
 
 export type Slider = Band | "preamp";
 
+export type CursorImage =
+  | {
+      type: "cur";
+      url: string;
+    }
+  | {
+      type: "ani";
+      iDispRate: number;
+      urls: string[];
+    };
+
 // TODO: Use a type to ensure these keys mirror the CURSORS constant in
 // skinParser.js
-export type Cursors = { [cursor: string]: string };
+export type Cursors = { [cursor: string]: CursorImage };
 
 export type GenLetterWidths = { [letter: string]: number };
 

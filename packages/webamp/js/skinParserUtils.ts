@@ -1,5 +1,5 @@
 import JSZip from "jszip";
-import { PlaylistStyle, SkinGenExColors } from "./types";
+import { PlaylistStyle, SkinGenExColors, CursorImage } from "./types";
 import SKIN_SPRITES, { Sprite } from "./skinSprites";
 import { DEFAULT_SKIN } from "./constants";
 import * as Utils from "./utils";
@@ -129,7 +129,7 @@ const ANI_MAGIC_BASE_64 = "UklGR";
 export async function getCursorFromFilename(
   zip: JSZip,
   fileName: string
-): Promise<string | null> {
+): Promise<CursorImage | null> {
   const file = await getFileFromZip(zip, fileName, "CUR", "base64");
   if (file == null) {
     return null;
@@ -141,10 +141,10 @@ export async function getCursorFromFilename(
       throw new Error("We just read this file, how can it be null??");
     }
     const ani = parseAni(fileArr.contents as Uint8Array);
-    return ani.urls[0];
+    return { type: "ani", urls: ani.urls, iDispRate: ani.iDispRate };
   }
 
-  return `data:image/x-win-bitmap;base64,${contents}`;
+  return { type: "cur", url: `data:image/x-win-bitmap;base64,${contents}` };
 }
 
 export async function getPlaylistStyle(zip: JSZip): Promise<PlaylistStyle> {

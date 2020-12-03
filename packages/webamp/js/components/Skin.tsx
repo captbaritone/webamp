@@ -5,6 +5,7 @@ import { useTypedSelector } from "../hooks";
 import * as Selectors from "../selectors";
 import { SkinImages } from "../types";
 import { createSelector } from "reselect";
+import * as Utils from "../utils";
 import Css from "./Css";
 import ClipPaths from "./ClipPaths";
 
@@ -67,19 +68,41 @@ const getCssRules = createSelector(
         );
       });
     }
+
     Object.keys(cursorSelectors).forEach((cursorName) => {
-      const cursorUrl = skinCursors[cursorName];
-      if (cursorUrl) {
+      const cursor = skinCursors[cursorName];
+      if (cursor) {
         cursorSelectors[cursorName].forEach((selector) => {
-          cssRules.push(
-            `${
-              // TODO: Fix this hack
-              // Maybe our CSS name spacing should be based on some other class/id
-              // than the one we use for defining the main div.
-              // That way it could be shared by both the player and the context menu.
-              selector.startsWith("#webamp-context-menu") ? "" : CSS_PREFIX
-            } ${selector} {cursor: url(${cursorUrl}), auto}`
-          );
+          const normalizedSelector = `${
+            // TODO: Fix this hack
+            // Maybe our CSS name spacing should be based on some other class/id
+            // than the one we use for defining the main div.
+            // That way it could be shared by both the player and the context menu.
+            selector.startsWith("#webamp-context-menu") ? "" : CSS_PREFIX
+          } ${selector}`;
+
+          switch (cursor.type) {
+            case "cur":
+              cssRules.push(
+                `${normalizedSelector} {cursor: url(${cursor.url}), auto}`
+              );
+              break;
+            case "ani": {
+              const animationName = `ani-cursor-${Utils.uniqueId()}`;
+              const frames = cursor.urls.map((url, i) => {
+                const percent = (i / (cursor.urls.length - 1)) * 100;
+                return `${percent}% { cursor: url(${url}), auto; }`;
+              });
+              const durationMs = cursor.iDispRate * 16 * frames.length;
+              const framesCss = frames.join("\n");
+              const keyframes = `@keyframes ${animationName} { ${framesCss} }`;
+              cssRules.push(keyframes);
+              cssRules.push(
+                `${normalizedSelector} { animation: ${animationName} ${durationMs}ms infinite; }`
+              );
+              break;
+            }
+          }
         });
       }
     });
