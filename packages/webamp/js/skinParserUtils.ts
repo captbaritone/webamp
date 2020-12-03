@@ -124,27 +124,32 @@ export async function getSpriteUrisFromFilename(
   return getSpriteUrisFromImg(img, SKIN_SPRITES[fileName]);
 }
 
-const ANI_MAGIC_BASE_64 = "UklGR";
+// https://docs.microsoft.com/en-us/windows/win32/xaudio2/resource-interchange-file-format--riff-
+const RIFF_MAGIC = "RIFF".split("").map((c) => c.charCodeAt(0));
+
+function arrayStartsWith(arr: Uint8Array, matcher: number[]): boolean {
+  return matcher.every((item, i) => arr[i] === item);
+}
 
 export async function getCursorFromFilename(
   zip: JSZip,
   fileName: string
 ): Promise<CursorImage | null> {
-  const file = await getFileFromZip(zip, fileName, "CUR", "base64");
+  const file = await getFileFromZip(zip, fileName, "CUR", "uint8array");
   if (file == null) {
     return null;
   }
-  const contents = file.contents as string;
-  if (contents.startsWith(ANI_MAGIC_BASE_64)) {
-    const fileArr = await getFileFromZip(zip, fileName, "CUR", "uint8array");
-    if (fileArr == null) {
-      throw new Error("We just read this file, how can it be null??");
-    }
-    const ani = parseAni(fileArr.contents as Uint8Array);
+  const contents = file.contents as Uint8Array;
+  if (arrayStartsWith(contents, RIFF_MAGIC)) {
+    const ani = parseAni(contents);
     return { type: "ani", urls: ani.urls, iDispRate: ani.iDispRate };
   }
 
-  return { type: "cur", url: `data:image/x-win-bitmap;base64,${contents}` };
+  const base64 = Utils.base64FromDataArray(contents);
+  return {
+    type: "cur",
+    url: `data:image/x-win-bitmap;base64,${base64}`,
+  };
 }
 
 export async function getPlaylistStyle(zip: JSZip): Promise<PlaylistStyle> {
