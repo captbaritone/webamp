@@ -8,6 +8,7 @@ import {
   SkinGenExColors,
   DummyVizData,
 } from "../types";
+import * as Utils from "../utils";
 import { createSelector } from "reselect";
 
 import {
@@ -105,7 +106,7 @@ const display = (
   action: Action
 ): DisplayState => {
   switch (action.type) {
-    case LOAD_DEFAULT_SKIN:
+    case LOAD_DEFAULT_SKIN: {
       const {
         skinImages,
         skinColors,
@@ -125,7 +126,7 @@ const display = (
         skinGenLetterWidths,
         skinGenExColors,
       };
-
+    }
     case TOGGLE_DOUBLESIZE_MODE:
       return { ...state, doubled: !state.doubled };
     case TOGGLE_LLAMA_MODE:
@@ -172,8 +173,13 @@ const display = (
       return { ...state, zIndex: action.zIndex };
     case SET_DUMMY_VIZ_DATA:
       return { ...state, dummyVizData: action.data };
-    case LOAD_SERIALIZED_STATE:
-      return { ...state, ...action.serializedState.display };
+    case LOAD_SERIALIZED_STATE: {
+      const { skinCursors, ...rest } = action.serializedState.display;
+      const upgrade = (url: string) => ({ type: "cur", url } as const);
+      const newSkinCursors =
+        skinCursors == null ? null : Utils.objectMap(skinCursors, upgrade);
+      return { ...state, skinCursors: newSkinCursors, ...rest };
+    }
     default:
       return state;
   }
@@ -196,13 +202,24 @@ export const getSerializedState = (
     skinColors,
     skinPlaylistStyle,
   } = state;
+
+  let newCursors: { [cursor: string]: string } | null = null;
+  if (skinCursors != null) {
+    // @ts-ignore Typescript does not like that we can have `undefined` as
+    // values here. Since this is going to get serialized to JSON (which will
+    // drop undefined) it's fine.
+    // This code is geting removed soon anyway.
+    newCursors = Utils.objectMap(skinCursors, (cursor) => {
+      return cursor.type === "cur" ? cursor.url : undefined;
+    });
+  }
   return {
     visualizerStyle,
     doubled,
     llama,
     marqueeStep,
     skinImages,
-    skinCursors,
+    skinCursors: newCursors,
     skinRegion,
     skinGenLetterWidths,
     skinColors,
