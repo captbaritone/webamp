@@ -82,13 +82,20 @@ export type CursorImage =
     }
   | {
       type: "ani";
-      iDispRate: number;
-      urls: string[];
+      frames: {
+        url: string;
+        rate: number;
+      }[];
     };
 
 // TODO: Use a type to ensure these keys mirror the CURSORS constant in
 // skinParser.js
 export type Cursors = { [cursor: string]: CursorImage };
+
+export type AniFrame = {
+  url: string;
+  rate: number;
+};
 
 export type GenLetterWidths = { [letter: string]: number };
 
