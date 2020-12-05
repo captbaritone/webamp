@@ -1,8 +1,9 @@
 import JSZip from "jszip";
-import { PlaylistStyle, SkinGenExColors } from "./types";
+import { PlaylistStyle, SkinGenExColors, CursorImage } from "./types";
 import SKIN_SPRITES, { Sprite } from "./skinSprites";
 import { DEFAULT_SKIN } from "./constants";
 import * as Utils from "./utils";
+import { parseAni, ParsedAni } from "./aniParser";
 
 export const getFileExtension = (fileName: string): string | null => {
   const matches = /\.([a-z]{3,4})$/i.exec(fileName);
@@ -17,7 +18,7 @@ export async function getFileFromZip(
   zip: JSZip,
   fileName: string,
   ext: string,
-  mode: "blob" | "text" | "base64"
+  mode: "blob" | "text" | "base64" | "uint8array"
 ) {
   const files = zip.file(getFilenameRegex(fileName, ext));
   if (!files.length) {
@@ -123,14 +124,42 @@ export async function getSpriteUrisFromFilename(
   return getSpriteUrisFromImg(img, SKIN_SPRITES[fileName]);
 }
 
+// https://docs.microsoft.com/en-us/windows/win32/xaudio2/resource-interchange-file-format--riff-
+const RIFF_MAGIC = "RIFF".split("").map((c) => c.charCodeAt(0));
+
+function arrayStartsWith(arr: Uint8Array, matcher: number[]): boolean {
+  return matcher.every((item, i) => arr[i] === item);
+}
+
+function curUrlFromByteArray(arr: Uint8Array) {
+  const base64 = Utils.base64FromDataArray(arr);
+  return `data:image/x-win-bitmap;base64,${base64}`;
+}
+
+function framesFromAni(ani: ParsedAni) {
+  const rawUrls = ani.images.map(curUrlFromByteArray);
+  const urls = ani.seq == null ? rawUrls : ani.seq.map((i) => rawUrls[i]);
+  return urls.map((url, i) => {
+    const rate = ani.rate == null ? ani.metadata.iDispRate : ani.rate[i];
+    return { url, rate };
+  });
+}
+
 export async function getCursorFromFilename(
   zip: JSZip,
   fileName: string
-): Promise<string | null> {
-  const file = await getFileFromZip(zip, fileName, "CUR", "base64");
-  return file == null
-    ? null
-    : `data:image/x-win-bitmap;base64,${file.contents}`;
+): Promise<CursorImage | null> {
+  const file = await getFileFromZip(zip, fileName, "CUR", "uint8array");
+  if (file == null) {
+    return null;
+  }
+  const contents = file.contents as Uint8Array;
+  if (arrayStartsWith(contents, RIFF_MAGIC)) {
+    const ani = parseAni(contents);
+    return { type: "ani", frames: framesFromAni(ani) };
+  }
+
+  return { type: "cur", url: curUrlFromByteArray(contents) };
 }
 
 export async function getPlaylistStyle(zip: JSZip): Promise<PlaylistStyle> {

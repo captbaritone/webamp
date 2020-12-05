@@ -1,3 +1,9 @@
+## NEXT
+
+### Features
+
+- Support `.ani` cursors in skins [#1035](https://github.com/captbaritone/webamp/pull/1035).
+
 ## 1.4.2
 
 ### Bug Fixes
