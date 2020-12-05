@@ -44,6 +44,9 @@ const FALLBACKS: { [key: string]: string } = {
 //
 // This function returns CSS containing a set of keyframes with embedded Data
 // URIs as well as a CSS rule to the given selector.
+//
+// **Note:** This does not seem to work on Safari. I've filed an issue here:
+// https://bugs.webkit.org/show_bug.cgi?id=219564
 function aniCss(selector: string, frames: AniFrame[]): string {
   const animationName = `webamp-ani-cursor-${Utils.uniqueId()}`;
   const totalDuration = Utils.sum(frames.map(({ rate }) => rate));
@@ -51,18 +54,37 @@ function aniCss(selector: string, frames: AniFrame[]): string {
   let elapsed = 0;
   const keyframes = frames.map(({ url, rate }) => {
     const percent = (elapsed / totalDuration) * 100;
-    // Since our animation loops, we need to tell CSS that 0% === 100%
-    const percentStr = percent === 0 ? `0%, 100%` : `${percent}%`;
-
     elapsed += rate;
-    return `${percentStr} { cursor: url(${url}), auto; }`;
+
+    return `${percent}% { cursor: url(${url}), auto; }`;
   });
-  const framesCss = keyframes.join("\n");
-  const keyframesCss = `@keyframes ${animationName} { ${framesCss} }`;
 
   const durationMs = totalDuration * JIFFIES_PER_MS;
-  const rule = `${selector} { animation: ${animationName} ${durationMs}ms infinite; }`;
-  return [keyframesCss, rule].join("\n");
+
+  // CSS properties with a animation type of "discrete", like `cursor`, actually
+  // switch half-way _between_ each keyframe percentage. Luckily this half-way
+  // measurement is applied _after_ the easing function is applied. So, we can
+  // force the frames to appear at exactly the % that we specify by using
+  // `timing-function` of `step-end`.
+  //
+  // https://drafts.csswg.org/web-animations-1/#discrete
+  const timingFunction = "step-end";
+
+  // Winamp (re)starts the animation cycle when your mouse enters an element. By
+  // default this approach would cause the animation to run continuously, even
+  // when the cursor is not visible. To match Winamp's behavior we add a
+  // `:hover` pseudo selector so that the animation only runs when the cursor is
+  // visible.
+  const pseudoSelector = ":hover";
+
+  return `
+    @keyframes ${animationName} {
+      ${keyframes.join("\n")}
+    }
+    ${selector}${pseudoSelector} {
+      animation: ${animationName} ${durationMs}ms ${timingFunction} infinite;
+    }
+  `;
 }
 
 // Cursors might appear in context menus which are not nested inside the window layout div.
