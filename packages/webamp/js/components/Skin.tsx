@@ -10,6 +10,7 @@ import Css from "./Css";
 import ClipPaths from "./ClipPaths";
 
 const CSS_PREFIX = "#webamp";
+const JIFFIES_PER_MS = 1000 / 60;
 
 const mapRegionNamesToIds: { [key: string]: string } = {
   normal: "mainWindowClipPath",
@@ -59,7 +60,7 @@ function aniCss(selector: string, frames: AniFrame[]): string {
   const framesCss = keyframes.join("\n");
   const keyframesCss = `@keyframes ${animationName} { ${framesCss} }`;
 
-  const durationMs = totalDuration * 16; // Convert jiffies to ms
+  const durationMs = totalDuration * JIFFIES_PER_MS;
   const rule = `${selector} { animation: ${animationName} ${durationMs}ms infinite; }`;
   return [keyframesCss, rule].join("\n");
 }
