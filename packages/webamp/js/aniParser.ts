@@ -54,15 +54,14 @@ export function parseAni(arr: Uint8Array): ParsedAni {
   let info: AniInfo = { artist: null, title: null };
 
   signature.subChunks.forEach(({ chunkId, chunkData, subChunks, format }) => {
-    // TODO: Why do we need to trim here?
     switch (trimNullTerminated(chunkId)) {
-      case "anih": // TODO: assert(i === 0)
+      case "anih":
         metadata = parseMetadata(arr, chunkData.start, chunkData.end);
         break;
-      case "rate": // TODO: assert(i === 1)
+      case "rate":
         rate = unpackArray(arr, DWORD, chunkData.start, chunkData.end);
         break;
-      case "seq": // TODO: assert(i === 2) (or 1??)
+      case "seq":
         seq = unpackArray(arr, DWORD, chunkData.start, chunkData.end);
         break;
       case "LIST": // TODO: assert(i === subChunks.length)
@@ -75,8 +74,6 @@ export function parseAni(arr: Uint8Array): ParsedAni {
               if (c.chunkId !== "icon") {
                 throw new Error(`Unexpected chunk type in fram: ${chunkId}`);
               }
-
-              // TODO: We could assert that each have a chunkId of "icon"
               return arr.slice(c.chunkData.start, c.chunkData.end);
             });
         }
