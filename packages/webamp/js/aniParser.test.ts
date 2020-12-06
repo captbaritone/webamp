@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { parseAni } from "./aniParser";
+import { readAni, aniCss } from "./aniUtils";
 
 // Parse a `.ani` in our fixture directory and trim down the image data for use
 // in snapshot tests.
@@ -16,6 +17,19 @@ function parsePath(filePath: string) {
   return ani;
 }
 
+function readPathCss(filePath: string) {
+  const buffer = fs.readFileSync(
+    path.join(__dirname, "./__tests__/fixtures/ani/", filePath)
+  );
+
+  const ani = readAni(buffer);
+  ani.frames = ani.frames.map(({ url, percents }) => ({
+    url: url.slice(0, 60),
+    percents,
+  }));
+  return aniCss("#example", ani);
+}
+
 // https://skins.webamp.org/skin/6e30f9e9b8f5719469809785ae5e4a1f/Super_Mario_Amp_2.wsz/
 describe("Super_Mario_Amp_2.wsz", () => {
   test("eqslid.cur", async () => {
@@ -23,6 +37,7 @@ describe("Super_Mario_Amp_2.wsz", () => {
   });
   test("close.cur", async () => {
     expect(parsePath("Super_Mario_Amp_2/close.cur")).toMatchSnapshot();
+    expect(readPathCss("Super_Mario_Amp_2/close.cur")).toMatchSnapshot();
   });
 });
 
