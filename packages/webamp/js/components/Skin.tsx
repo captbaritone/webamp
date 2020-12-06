@@ -3,14 +3,13 @@ import { LETTERS } from "../constants";
 import { imageSelectors, cursorSelectors } from "../skinSelectors";
 import { useTypedSelector } from "../hooks";
 import * as Selectors from "../selectors";
-import { AniFrame, SkinImages } from "../types";
+import { SkinImages } from "../types";
 import { createSelector } from "reselect";
-import * as Utils from "../utils";
 import Css from "./Css";
 import ClipPaths from "./ClipPaths";
+import { aniCss } from "../aniUtils";
 
 const CSS_PREFIX = "#webamp";
-const JIFFIES_PER_MS = 1000 / 60;
 
 const mapRegionNamesToIds: { [key: string]: string } = {
   normal: "mainWindowClipPath",
@@ -33,59 +32,6 @@ const FALLBACKS: { [key: string]: string } = {
   MAIN_BALANCE_THUMB: "MAIN_VOLUME_THUMB",
   MAIN_BALANCE_THUMB_ACTIVE: "MAIN_VOLUME_THUMB_SELECTED",
 };
-
-// Generate CSS for an animated cursor.
-//
-// Based on https://css-tricks.com/forums/topic/animated-cursor/
-//
-// Browsers won't render animated cursor images specified via CSS. For `.ani`
-// images, we already have the frames as indiviual images, so we create a CSS
-// animation.
-//
-// This function returns CSS containing a set of keyframes with embedded Data
-// URIs as well as a CSS rule to the given selector.
-//
-// **Note:** This does not seem to work on Safari. I've filed an issue here:
-// https://bugs.webkit.org/show_bug.cgi?id=219564
-function aniCss(selector: string, frames: AniFrame[]): string {
-  const animationName = `webamp-ani-cursor-${Utils.uniqueId()}`;
-  const totalDuration = Utils.sum(frames.map(({ rate }) => rate));
-
-  let elapsed = 0;
-  const keyframes = frames.map(({ url, rate }) => {
-    const percent = (elapsed / totalDuration) * 100;
-    elapsed += rate;
-
-    return `${percent}% { cursor: url(${url}), auto; }`;
-  });
-
-  const durationMs = totalDuration * JIFFIES_PER_MS;
-
-  // CSS properties with a animation type of "discrete", like `cursor`, actually
-  // switch half-way _between_ each keyframe percentage. Luckily this half-way
-  // measurement is applied _after_ the easing function is applied. So, we can
-  // force the frames to appear at exactly the % that we specify by using
-  // `timing-function` of `step-end`.
-  //
-  // https://drafts.csswg.org/web-animations-1/#discrete
-  const timingFunction = "step-end";
-
-  // Winamp (re)starts the animation cycle when your mouse enters an element. By
-  // default this approach would cause the animation to run continuously, even
-  // when the cursor is not visible. To match Winamp's behavior we add a
-  // `:hover` pseudo selector so that the animation only runs when the cursor is
-  // visible.
-  const pseudoSelector = ":hover";
-
-  return `
-    @keyframes ${animationName} {
-      ${keyframes.join("\n")}
-    }
-    ${selector}${pseudoSelector} {
-      animation: ${animationName} ${durationMs}ms ${timingFunction} infinite;
-    }
-  `;
-}
 
 // Cursors might appear in context menus which are not nested inside the window layout div.
 function normalizeCursorSelector(selector: string): string {
@@ -146,7 +92,7 @@ const getCssRules = createSelector(
             case "cur":
               return `${selector} {cursor: url(${cursor.url}), auto}`;
             case "ani": {
-              return aniCss(selector, cursor.frames);
+              return aniCss(selector, cursor.ani);
             }
           }
         });
