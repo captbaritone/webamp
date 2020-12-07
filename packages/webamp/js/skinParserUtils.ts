@@ -3,7 +3,8 @@ import { PlaylistStyle, SkinGenExColors, CursorImage } from "./types";
 import SKIN_SPRITES, { Sprite } from "./skinSprites";
 import { DEFAULT_SKIN } from "./constants";
 import * as Utils from "./utils";
-import { parseAni, ParsedAni } from "./aniParser";
+import * as FileUtils from "./fileUtils";
+import * as AniUtils from "./aniUtils";
 
 export const getFileExtension = (fileName: string): string | null => {
   const matches = /\.([a-z]{3,4})$/i.exec(fileName);
@@ -131,20 +132,6 @@ function arrayStartsWith(arr: Uint8Array, matcher: number[]): boolean {
   return matcher.every((item, i) => arr[i] === item);
 }
 
-function curUrlFromByteArray(arr: Uint8Array) {
-  const base64 = Utils.base64FromDataArray(arr);
-  return `data:image/x-win-bitmap;base64,${base64}`;
-}
-
-function framesFromAni(ani: ParsedAni) {
-  const rawUrls = ani.images.map(curUrlFromByteArray);
-  const urls = ani.seq == null ? rawUrls : ani.seq.map((i) => rawUrls[i]);
-  return urls.map((url, i) => {
-    const rate = ani.rate == null ? ani.metadata.iDispRate : ani.rate[i];
-    return { url, rate };
-  });
-}
-
 export async function getCursorFromFilename(
   zip: JSZip,
   fileName: string
@@ -155,11 +142,15 @@ export async function getCursorFromFilename(
   }
   const contents = file.contents as Uint8Array;
   if (arrayStartsWith(contents, RIFF_MAGIC)) {
-    const ani = parseAni(contents);
-    return { type: "ani", frames: framesFromAni(ani) };
+    try {
+      return { type: "ani", ani: AniUtils.readAni(contents) };
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
   }
 
-  return { type: "cur", url: curUrlFromByteArray(contents) };
+  return { type: "cur", url: FileUtils.curUrlFromByteArray(contents) };
 }
 
 export async function getPlaylistStyle(zip: JSZip): Promise<PlaylistStyle> {

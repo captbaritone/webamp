@@ -3,14 +3,13 @@ import { LETTERS } from "../constants";
 import { imageSelectors, cursorSelectors } from "../skinSelectors";
 import { useTypedSelector } from "../hooks";
 import * as Selectors from "../selectors";
-import { AniFrame, SkinImages } from "../types";
+import { SkinImages } from "../types";
 import { createSelector } from "reselect";
-import * as Utils from "../utils";
 import Css from "./Css";
 import ClipPaths from "./ClipPaths";
+import { aniCss } from "../aniUtils";
 
 const CSS_PREFIX = "#webamp";
-const JIFFIES_PER_MS = 1000 / 60;
 
 const mapRegionNamesToIds: { [key: string]: string } = {
   normal: "mainWindowClipPath",
@@ -33,37 +32,6 @@ const FALLBACKS: { [key: string]: string } = {
   MAIN_BALANCE_THUMB: "MAIN_VOLUME_THUMB",
   MAIN_BALANCE_THUMB_ACTIVE: "MAIN_VOLUME_THUMB_SELECTED",
 };
-
-// Generate CSS for an animated cursor.
-//
-// Based on https://css-tricks.com/forums/topic/animated-cursor/
-//
-// Browsers won't render animated cursor images specified via CSS. For `.ani`
-// images, we already have the frames as indiviual images, so we create a CSS
-// animation.
-//
-// This function returns CSS containing a set of keyframes with embedded Data
-// URIs as well as a CSS rule to the given selector.
-function aniCss(selector: string, frames: AniFrame[]): string {
-  const animationName = `webamp-ani-cursor-${Utils.uniqueId()}`;
-  const totalDuration = Utils.sum(frames.map(({ rate }) => rate));
-
-  let elapsed = 0;
-  const keyframes = frames.map(({ url, rate }) => {
-    const percent = (elapsed / totalDuration) * 100;
-    // Since our animation loops, we need to tell CSS that 0% === 100%
-    const percentStr = percent === 0 ? `0%, 100%` : `${percent}%`;
-
-    elapsed += rate;
-    return `${percentStr} { cursor: url(${url}), auto; }`;
-  });
-  const framesCss = keyframes.join("\n");
-  const keyframesCss = `@keyframes ${animationName} { ${framesCss} }`;
-
-  const durationMs = totalDuration * JIFFIES_PER_MS;
-  const rule = `${selector} { animation: ${animationName} ${durationMs}ms infinite; }`;
-  return [keyframesCss, rule].join("\n");
-}
 
 // Cursors might appear in context menus which are not nested inside the window layout div.
 function normalizeCursorSelector(selector: string): string {
@@ -124,7 +92,7 @@ const getCssRules = createSelector(
             case "cur":
               return `${selector} {cursor: url(${cursor.url}), auto}`;
             case "ani": {
-              return aniCss(selector, cursor.frames);
+              return aniCss(selector, cursor.ani);
             }
           }
         });

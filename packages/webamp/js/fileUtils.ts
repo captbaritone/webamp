@@ -1,6 +1,7 @@
 import invariant from "invariant";
 import { IMusicMetadataBrowserApi } from "./types";
 import { IAudioMetadata } from "music-metadata-browser"; // Import music-metadata type definitions
+import * as Utils from "./utils";
 
 type MediaDataType = string | ArrayBuffer | Blob;
 
@@ -121,6 +122,11 @@ export async function promptForFileReferences(
 
 function urlIsBlobUrl(url: string): boolean {
   return /^blob:/.test(url);
+}
+
+export function curUrlFromByteArray(arr: Uint8Array) {
+  const base64 = Utils.base64FromDataArray(arr);
+  return `data:image/x-win-bitmap;base64,${base64}`;
 }
 
 // This is not perfect, but... meh: https://stackoverflow.com/a/36756650/1263117
