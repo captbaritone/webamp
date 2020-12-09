@@ -34,6 +34,7 @@ function readPathCss(filePath: string) {
 describe("Super_Mario_Amp_2.wsz", () => {
   test("eqslid.cur", async () => {
     expect(parsePath("Super_Mario_Amp_2/eqslid.cur")).toMatchSnapshot();
+    expect(readPathCss("Super_Mario_Amp_2/eqslid.cur")).toMatchSnapshot();
   });
   test("close.cur", async () => {
     expect(parsePath("Super_Mario_Amp_2/close.cur")).toMatchSnapshot();
@@ -45,5 +46,13 @@ describe("Super_Mario_Amp_2.wsz", () => {
 describe("Green Dimension v2.wsz", () => {
   test("eqslid.cur", async () => {
     expect(parsePath("Green Dimension v2/eqslid.cur")).toMatchSnapshot();
+    expect(readPathCss("Green Dimension v2/eqslid.cur")).toMatchSnapshot();
+  });
+});
+
+describe("Edge cases", () => {
+  test("piano.ani", async () => {
+    expect(parsePath("piano.ani")).toMatchSnapshot();
+    expect(readPathCss("piano.ani")).toMatchSnapshot();
   });
 });
