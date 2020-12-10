@@ -24,10 +24,13 @@ jobs:
           yarn workspace webamp type-check
       - name: Build
         run: |
+          yarn workspace ani-cursor build
           yarn workspace webamp build
           yarn workspace webamp build-library
       - name: Run Unit Tests
-        run: yarn workspace webamp test
+        run: |
+          yarn workspace ani-cursor test
+          yarn workspace webamp test
       - name: Run Integration Tests
         run: yarn workspace webamp integration-tests
         env:

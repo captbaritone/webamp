@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Edge cases piano.ani 1`] = `
+"
+    @keyframes ani-cursor-3 {
+        0% { cursor: url(data:image/x-win-bitmap;base64,AAACAAEAICAAAA0ACQDoAgAAFgAAACgAAAAgAAAAQAAAAAEABA...), auto; }
+20% { cursor: url(data:image/x-win-bitmap;base64,AAACAAEAICAAAA0ACQDoAgAAFgAAACgAAAAgAAAAQAAAAAEABA...), auto; }
+40% { cursor: url(data:image/x-win-bitmap;base64,AAACAAEAICAAAA0ACQDoAgAAFgAAACgAAAAgAAAAQAAAAAEABA...), auto; }
+60% { cursor: url(data:image/x-win-bitmap;base64,AAACAAEAICAAAA0ACQDoAgAAFgAAACgAAAAgAAAAQAAAAAEABA...), auto; }
+80% { cursor: url(data:image/x-win-bitmap;base64,AAACAAEAICAAAA0ACQDoAgAAFgAAACgAAAAgAAAAQAAAAAEABA...), auto; }
+    }
+    #example:hover {
+        animation: ani-cursor-3 1250ms step-end infinite;
+    }
+   "
+`;
+
+exports[`Green Dimension v2.wsz eqslid.cur 1`] = `
+"
+    @keyframes ani-cursor-2 {
+        0% { cursor: url(data:image/x-win-bitmap;base64,AAACAAEAICAAAAAAAACoEAAAFgAAACgAAAAgAAAAQAAAAAEAIA...), auto; }
+50% { cursor: url(data:image/x-win-bitmap;base64,AAACAAEAICAAAAAAAACoEAAAFgAAACgAAAAgAAAAQAAAAAEAIA...), auto; }
+    }
+    #example:hover {
+        animation: ani-cursor-2 266.6666666666667ms step-end infinite;
+    }
+   "
+`;
+
+exports[`Super_Mario_Amp_2.wsz close.cur 1`] = `
+"
+    @keyframes ani-cursor-1 {
+        0% { cursor: url(data:image/x-win-bitmap;base64,AAACAAEAICAAAAAAAACoCAAAFgAAACgAAAAgAAAAQAAAAAEACA...), auto; }
+7.246376811594203% { cursor: url(data:image/x-win-bitmap;base64,AAACAAEAICAAAAAAAACoCAAAFgAAACgAAAAgAAAAQAAAAAEACA...), auto; }
+14.492753623188406% { cursor: url(data:image/x-win-bitmap;base64,AAACAAEAICAAAAAAAACoCAAAFgAAACgAAAAgAAAAQAAAAAEACA...), auto; }
+21.73913043478261% { cursor: url(data:image/x-win-bitmap;base64,AAACAAEAICAAAAAAAACoCAAAFgAAACgAAAAgAAAAQAAAAAEACA...), auto; }
+28.985507246376812%, 38.405797101449274%, 44.927536231884055% { cursor: url(data:image/x-win-bitmap;base64,AAACAAEAICAAAAAAAACoCAAAFgAAACgAAAAgAAAAQAAAAAEACA...), auto; }
+34.05797101449276%, 42.028985507246375%, 47.10144927536232% { cursor: url(data:image/x-win-bitmap;base64,AAACAAEAICAAAAAAAACoCAAAFgAAACgAAAAgAAAAQAAAAAEACA...), auto; }
+48.55072463768116% { cursor: url(data:image/x-win-bitmap;base64,AAACAAEAICAAAAAAAACoCAAAFgAAACgAAAAgAAAAQAAAAAEACA...), auto; }
+49.275362318840585% { cursor: url(data:image/x-win-bitmap;base64,AAACAAEAICAAAAAAAACoCAAAFgAAACgAAAAgAAAAQAAAAAEACA...), auto; }
+50.72463768115942%, 53.62318840579711%, 56.52173913043478% { cursor: url(data:image/x-win-bitmap;base64,AAACAAEAICAAAAAAAACoCAAAFgAAACgAAAAgAAAAQAAAAAEACA...), auto; }
+52.17391304347826%, 55.072463768115945% { cursor: url(data:image/x-win-bitmap;base64,AAACAAEAICAAAAAAAACoCAAAFgAAACgAAAAgAAAAQAAAAAEACA...), auto; }
+    }
+    #example:hover {
+        animation: ani-cursor-1 2300ms step-end infinite;
+    }
+   "
+`;
+
+exports[`Super_Mario_Amp_2.wsz eqslid.cur 1`] = `
+"
+    @keyframes ani-cursor-0 {
+        0% { cursor: url(data:image/x-win-bitmap;base64,AAACAAEAICAAAAAAAACoDAAAFgAAACgAAAAgAAAAQAAAAAEAGA...), auto; }
+12.5% { cursor: url(data:image/x-win-bitmap;base64,AAACAAEAICAAAAAAAACoDAAAFgAAACgAAAAgAAAAQAAAAAEAGA...), auto; }
+25% { cursor: url(data:image/x-win-bitmap;base64,AAACAAEAICAAAAAAAACoDAAAFgAAACgAAAAgAAAAQAAAAAEAGA...), auto; }
+37.5% { cursor: url(data:image/x-win-bitmap;base64,AAACAAEAICAAAAAAAACoDAAAFgAAACgAAAAgAAAAQAAAAAEAGA...), auto; }
+50% { cursor: url(data:image/x-win-bitmap;base64,AAACAAEAICAAAAAAAACoDAAAFgAAACgAAAAgAAAAQAAAAAEAGA...), auto; }
+62.5% { cursor: url(data:image/x-win-bitmap;base64,AAACAAEAICAAAAAAAACoDAAAFgAAACgAAAAgAAAAQAAAAAEAGA...), auto; }
+75% { cursor: url(data:image/x-win-bitmap;base64,AAACAAEAICAAAAAAAACoDAAAFgAAACgAAAAgAAAAQAAAAAEAGA...), auto; }
+87.5% { cursor: url(data:image/x-win-bitmap;base64,AAACAAEAICAAAAAAAACoDAAAFgAAACgAAAAgAAAAQAAAAAEAGA...), auto; }
+    }
+    #example:hover {
+        animation: ani-cursor-0 1333.3333333333335ms step-end infinite;
+    }
+   "
+`;

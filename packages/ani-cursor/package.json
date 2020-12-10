@@ -1,0 +1,27 @@
+{
+  "name": "ani-cursor",
+  "version": "1.0.0",
+  "description": "Render .ani cursors as CSS animations in the browser",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "Jordan Eldredge <jordan@jordaneldredge.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "prepublish": "tsc"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@babel/preset-env": "^7.12.7",
+    "@babel/preset-typescript": "^7.12.7",
+    "@types/jest": "^26.0.18",
+    "babel-jest": "^26.6.3",
+    "jest": "^26.6.3",
+    "typescript": "^4.1.2"
+  },
+  "dependencies": {
+    "byte-data": "18.1.1",
+    "riff-file": "^1.0.3"
+  }
+}

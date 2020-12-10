@@ -12,7 +12,7 @@ type Chunk = {
 };
 
 // https://www.informit.com/articles/article.aspx?p=1189080&seqNum=3
-export type AniMetadata = {
+type AniMetadata = {
   cbSize: number; // Data structure size (in bytes)
   nFrames: number; // Number of images (also known as frames) stored in the file
   nSteps: number; // Number of frames to be displayed before the animation repeats
@@ -24,7 +24,7 @@ export type AniMetadata = {
   bfAttributes: number; // ANI attribute bit flags
 };
 
-export type ParsedAni = {
+type ParsedAni = {
   rate: number[] | null;
   seq: number[] | null;
   images: Uint8Array[];
