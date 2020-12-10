@@ -34,7 +34,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/captbaritone/webamp.git"
+    "url": "git+https://github.com/captbaritone/webamp.git",
+    "directory": "packages/webamp"
   },
   "keywords": [
     "Winamp",
@@ -147,7 +148,7 @@
     "trailingComma": "es5"
   },
   "dependencies": {
-    "ani-cursor": "^1.0.0",
+    "ani-cursor": "0.0.1",
     "eslint-plugin-react-hooks": "^2.1.2",
     "fscreen": "^1.0.2",
     "redux-sentry-middleware": "^0.1.3"

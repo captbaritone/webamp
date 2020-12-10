@@ -1,11 +1,20 @@
 {
   "name": "ani-cursor",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Render .ani cursors as CSS animations in the browser",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "Jordan Eldredge <jordan@jordaneldredge.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/captbaritone/webamp.git",
+    "directory": "packages/ani-cursor"
+  },
+  "bugs": {
+    "url": "https://github.com/captbaritone/webamp/issues"
+  },
+  "homepage": "https://github.com/captbaritone/webamp/tree/master/packages/ani-cursor",
   "scripts": {
     "build": "tsc",
     "test": "jest",
@@ -27,5 +36,4 @@
   "jest": {
     "modulePathIgnorePatterns": ["dist"]
   }
-
 }

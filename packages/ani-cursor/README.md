@@ -1,3 +1,11 @@
+# ani-cursor
+
+A library for rendering Windows Animated Cursor files (`.ani`) in the browser by parsing out the individual frames and constructing a CSS animation.
+
+Built to support `.ani` files in Winamp skins for https://webamp.org.
+
+I wrote a blog post about this library which you can find [here](https://www.notion.so/jordaneldredge/Rendering-Animated-ani-Cursors-in-the-Browser-363bfd3b37044bb192bfbe55739a8c2c).
+
 ## Install
 
 ```bash
