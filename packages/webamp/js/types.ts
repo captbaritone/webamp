@@ -75,14 +75,6 @@ export type Band =
 
 export type Slider = Band | "preamp";
 
-export type AniCursorImage = {
-  frames: {
-    url: string;
-    percents: number[];
-  }[];
-  duration: number;
-};
-
 export type CursorImage =
   | {
       type: "cur";
@@ -90,7 +82,7 @@ export type CursorImage =
     }
   | {
       type: "ani";
-      ani: AniCursorImage;
+      aniData: Uint8Array;
     };
 
 // TODO: Use a type to ensure these keys mirror the CURSORS constant in

@@ -7,7 +7,7 @@ import { SkinImages } from "../types";
 import { createSelector } from "reselect";
 import Css from "./Css";
 import ClipPaths from "./ClipPaths";
-import { aniCss } from "../aniUtils";
+import { convertAniBinaryToCSS } from "ani-cursor";
 
 const CSS_PREFIX = "#webamp";
 
@@ -92,7 +92,7 @@ const getCssRules = createSelector(
             case "cur":
               return `${selector} {cursor: url(${cursor.url}), auto}`;
             case "ani": {
-              return aniCss(selector, cursor.ani);
+              return convertAniBinaryToCSS(selector, cursor.aniData);
             }
           }
         });

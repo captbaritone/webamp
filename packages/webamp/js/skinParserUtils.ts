@@ -4,7 +4,6 @@ import SKIN_SPRITES, { Sprite } from "./skinSprites";
 import { DEFAULT_SKIN } from "./constants";
 import * as Utils from "./utils";
 import * as FileUtils from "./fileUtils";
-import * as AniUtils from "./aniUtils";
 
 export const getFileExtension = (fileName: string): string | null => {
   const matches = /\.([a-z]{3,4})$/i.exec(fileName);
@@ -143,7 +142,7 @@ export async function getCursorFromFilename(
   const contents = file.contents as Uint8Array;
   if (arrayStartsWith(contents, RIFF_MAGIC)) {
     try {
-      return { type: "ani", ani: AniUtils.readAni(contents) };
+      return { type: "ani", aniData: contents };
     } catch (e) {
       console.error(e);
       return null;
