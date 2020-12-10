@@ -23,5 +23,9 @@
   "dependencies": {
     "byte-data": "18.1.1",
     "riff-file": "^1.0.3"
+  },
+  "jest": {
+    "modulePathIgnorePatterns": ["dist"]
   }
+
 }
