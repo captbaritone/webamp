@@ -2343,6 +2343,14 @@ analytics@0.3.1:
     analytics-utils "^0.1.2"
     redux "^3.6.0"
 
+ani-cursor@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/ani-cursor/-/ani-cursor-0.0.1.tgz#070fa971900cbf7fb97bdeba6272dd7f776e9f79"
+  integrity sha512-K3pQHbtOKSqRfjR5jZbWCh/fD5blPXYWrEBEuaAovqg4gN8LezkU8RO8PHEhB/eNrZAiXMEbq6J+BD+cauNAVQ==
+  dependencies:
+    byte-data "18.1.1"
+    riff-file "^1.0.3"
+
 ansi-align@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ansi-align/-/ansi-align-2.0.0.tgz#c36aeccba563b89ceb556f3690f0b1d9e3547f7f"
@@ -3310,6 +3318,15 @@ builtin-status-codes@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/builtin-status-codes/-/builtin-status-codes-3.0.0.tgz#85982878e21b98e1c66425e03d0174788f569ee8"
   integrity sha1-hZgoeOIbmOHGZCXgPQF0eI9Wnug=
+
+byte-data@18.1.1, byte-data@^18.0.3:
+  version "18.1.1"
+  resolved "https://registry.yarnpkg.com/byte-data/-/byte-data-18.1.1.tgz#4eed09970921bf7d786b250e56615d8314bb6746"
+  integrity sha512-Kv/B0r7adgnCcrs/y703sac2XFLdHW5kPfis1j8+Ij/hmEcWhBKf+1pNTv+vsNqXb207Uiyri8bpnogNxR/4Lg==
+  dependencies:
+    endianness "^8.0.2"
+    ieee754-buffer "^2.0.0"
+    utf8-buffer "^1.0.0"
 
 bytes@3.0.0:
   version "3.0.0"
@@ -5375,6 +5392,11 @@ end-of-stream@^1.0.0, end-of-stream@^1.1.0, end-of-stream@^1.4.1:
   dependencies:
     once "^1.4.0"
 
+endianness@^8.0.2:
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/endianness/-/endianness-8.0.2.tgz#e35d16bbe80b6ff94fbc199168dd234d9f78168e"
+  integrity sha512-IU+77+jJ7lpw2qZ3NUuqBZFy3GuioNgXUdsL1L9tooDNTaw0TgOnwNuc+8Ns+haDaTifK97QLzmOANJtI/rGvw==
+
 enhanced-resolve@^4.1.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-4.1.1.tgz#2937e2b8066cd0fe7ce0990a98f0d71a35189f66"
@@ -7403,6 +7425,11 @@ identity-obj-proxy@3.0.0:
   integrity sha1-lNK9qWCERT7zb7xarsN+D3nx/BQ=
   dependencies:
     harmony-reflect "^1.4.6"
+
+ieee754-buffer@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/ieee754-buffer/-/ieee754-buffer-2.0.0.tgz#5648050d1a037df59a6cc68f441c6b0b467314f8"
+  integrity sha512-AXUAT0nMEi7h1Is8HXGXof3eejl/GabZFKSj8Ym6kVRUSwrAb52EkAXywiCQYSHGQMRn7lvfY7vhPMjVc+Kybg==
 
 ieee754@1.1.13, ieee754@^1.1.4:
   version "1.1.13"
@@ -13077,6 +13104,13 @@ rgba-regex@^1.0.0:
   resolved "https://registry.yarnpkg.com/rgba-regex/-/rgba-regex-1.0.0.tgz#43374e2e2ca0968b0ef1523460b7d730ff22eeb3"
   integrity sha1-QzdOLiyglosO8VI0YLfXMP8i7rM=
 
+riff-file@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/riff-file/-/riff-file-1.0.3.tgz#95589f787e0c5fb2fa2937fc0a0e5e5d3131242b"
+  integrity sha512-Vv8wwGr0BCks7VMI3Lv0houZee4DaHFjjTT0LMhMJKio2YmLncLeIVpK63ydSverngNk8XQPU3fbeP3bWgSIig==
+  dependencies:
+    byte-data "^18.0.3"
+
 rimraf@2.6.3:
   version "2.6.3"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.3.tgz#b2d104fe0d8fb27cf9e0a1cda8262dd3833c6cab"
@@ -14854,6 +14888,11 @@ use@^3.1.0:
   resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
   integrity sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==
 
+utf8-buffer@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/utf8-buffer/-/utf8-buffer-1.0.0.tgz#457e7d848d4d9cd873772b710d150565f6e543d9"
+  integrity sha512-ueuhzvWnp5JU5CiGSY4WdKbiN/PO2AZ/lpeLiz2l38qwdLy/cW40XobgyuIWucNyum0B33bVB0owjFCeGBSLqg==
+
 util-deprecate@^1.0.1, util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
@@ -15032,11 +15071,12 @@ wcwidth@^1.0.1:
   dependencies:
     defaults "^1.0.3"
 
-webamp@^1.4.1-beta06:
-  version "1.4.1-beta06"
-  resolved "https://registry.yarnpkg.com/webamp/-/webamp-1.4.1-beta06.tgz#d0a766d63610a7aae951c6701b452105d5e94117"
-  integrity sha512-fNoFQe7Mo+RfMG9P4w5vvFwCEvMHIJdO8cOP52LN33t33ELBVOiAYQcdo9XwopfD8XUBP/LexTb8idi60n872Q==
+webamp@^1.4.3-beta.0:
+  version "1.4.3-beta.0"
+  resolved "https://registry.yarnpkg.com/webamp/-/webamp-1.4.3-beta.0.tgz#aec63d8a1988b3557883edf22f09121aeda636ca"
+  integrity sha512-Nya+myNccVrJeQaYiZJJIloPMf1yThG5Ol5BdMKqSutmVD8AiCmSdBgSll2sXMYMUHXIYMVNQ3apf12CbDpuUg==
   dependencies:
+    ani-cursor "0.0.1"
     eslint-plugin-react-hooks "^2.1.2"
     fscreen "^1.0.2"
     redux-sentry-middleware "^0.1.3"
