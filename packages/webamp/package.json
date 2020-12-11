@@ -148,7 +148,7 @@
     "trailingComma": "es5"
   },
   "dependencies": {
-    "ani-cursor": "0.0.1",
+    "ani-cursor": "^0.0.4",
     "eslint-plugin-react-hooks": "^2.1.2",
     "fscreen": "^1.0.2",
     "redux-sentry-middleware": "^0.1.3"
