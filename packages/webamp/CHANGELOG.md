@@ -2,7 +2,7 @@
 
 ### Features
 
-- Support `.ani` cursors in skins [#1035](https://github.com/captbaritone/webamp/pull/1035).
+- Support `.ani` cursors in skins [#1035](https://github.com/captbaritone/webamp/pull/1035) [blog post](https://jordaneldredge.com/blog/rendering-animated-ani-cursors-in-the-browser/).
 
 ## 1.4.2
 
