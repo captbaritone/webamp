@@ -40,3 +40,5 @@ document.body.appendChild(h1);
 
 applyCursor("#pizza", "https://archive.org/cors/tucows_169906_Pizza_cursor/pizza.ani");
 ```
+
+Try the [Live Demo on CodeSandbox](https://codesandbox.io/s/jolly-thunder-9jkio?file=/src/index.js).
