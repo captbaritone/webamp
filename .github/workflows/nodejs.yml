@@ -18,15 +18,15 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install Dependencies
         run: yarn
-      - name: Lint
-        run: |
-          yarn workspace webamp lint
-          yarn workspace webamp type-check
       - name: Build
         run: |
           yarn workspace ani-cursor build
           yarn workspace webamp build
           yarn workspace webamp build-library
+      - name: Lint
+        run: |
+          yarn workspace webamp lint
+          yarn workspace webamp type-check
       - name: Run Unit Tests
         run: |
           yarn workspace ani-cursor test
