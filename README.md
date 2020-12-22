@@ -1,4 +1,4 @@
-![Tests](https://github.com/captbaritone/webamp/workflows/CI/badge.svg) [![Discord](https://img.shields.io/discord/434058775012311061.svg)](https://discord.gg/fBTDMqR)
+[![Tests](https://github.com/captbaritone/webamp/workflows/CI/badge.svg)](https://github.com/captbaritone/webamp/actions?query=branch%3Amaster+workflow%3ACI) [![Discord](https://img.shields.io/discord/434058775012311061.svg)](https://discord.gg/fBTDMqR)
 
 # Webamp
 
