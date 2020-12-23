@@ -2343,10 +2343,10 @@ analytics@0.3.1:
     analytics-utils "^0.1.2"
     redux "^3.6.0"
 
-ani-cursor@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/ani-cursor/-/ani-cursor-0.0.1.tgz#070fa971900cbf7fb97bdeba6272dd7f776e9f79"
-  integrity sha512-K3pQHbtOKSqRfjR5jZbWCh/fD5blPXYWrEBEuaAovqg4gN8LezkU8RO8PHEhB/eNrZAiXMEbq6J+BD+cauNAVQ==
+ani-cursor@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/ani-cursor/-/ani-cursor-0.0.4.tgz#bdf0a5cc545adcb3af7d097c0f15b702129a89a8"
+  integrity sha512-2MTPTcPhVw+SkIV7R0MsYioVi58bYH+Jjz9k3jQraX2mOJjUiZRSa9QK37eD6b7F/VBq+y3q1mK12i+uG+f5HQ==
   dependencies:
     byte-data "18.1.1"
     riff-file "^1.0.3"
@@ -15071,12 +15071,12 @@ wcwidth@^1.0.1:
   dependencies:
     defaults "^1.0.3"
 
-webamp@^1.4.3-beta.0:
-  version "1.4.3-beta.0"
-  resolved "https://registry.yarnpkg.com/webamp/-/webamp-1.4.3-beta.0.tgz#aec63d8a1988b3557883edf22f09121aeda636ca"
-  integrity sha512-Nya+myNccVrJeQaYiZJJIloPMf1yThG5Ol5BdMKqSutmVD8AiCmSdBgSll2sXMYMUHXIYMVNQ3apf12CbDpuUg==
+webamp@^1.4.3-beta.1:
+  version "1.4.3-beta.1"
+  resolved "https://registry.yarnpkg.com/webamp/-/webamp-1.4.3-beta.1.tgz#4d22edbdde6d689d253b9a21642beb4e23ce52bc"
+  integrity sha512-n1Lk6PExB+nytcMa9b6QmkhwaiTgrN/tEdNjQ56r8dZJiOFuyHLa9dZZ3U/+fBk7n6GrAEXBGC8LGrCLidu9aw==
   dependencies:
-    ani-cursor "0.0.1"
+    ani-cursor "^0.0.4"
     eslint-plugin-react-hooks "^2.1.2"
     fscreen "^1.0.2"
     redux-sentry-middleware "^0.1.3"
