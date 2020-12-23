@@ -418,8 +418,8 @@ const sprites: SpriteMap = {
     },
     { name: "EQ_MAXIMIZE_BUTTON_ACTIVE", x: 1, y: 38, width: 9, height: 9 },
     { name: "EQ_MINIMIZE_BUTTON_ACTIVE", x: 1, y: 47, width: 9, height: 9 },
-    { name: "EQ_CLOSE_BUTTON", x: 11, y: 38, width: 9, height: 9 },
-    { name: "EQ_CLOSE_BUTTON_ACTIVE", x: 11, y: 47, width: 9, height: 9 },
+    { name: "EQ_SHADE_CLOSE_BUTTON", x: 11, y: 38, width: 9, height: 9 },
+    { name: "EQ_SHADE_CLOSE_BUTTON_ACTIVE", x: 11, y: 47, width: 9, height: 9 },
   ],
   EQMAIN: [
     { name: "EQ_WINDOW_BACKGROUND", x: 0, y: 0, width: 275, height: 116 },
@@ -428,6 +428,21 @@ const sprites: SpriteMap = {
     { name: "EQ_SLIDER_BACKGROUND", x: 13, y: 164, width: 209, height: 129 },
     { name: "EQ_SLIDER_THUMB", x: 0, y: 164, width: 11, height: 11 },
     { name: "EQ_SLIDER_THUMB_SELECTED", x: 0, y: 176, width: 11, height: 11 },
+    { name: "EQ_CLOSE_BUTTON", x: 0, y: 116, width: 9, height: 9 },
+    { name: "EQ_CLOSE_BUTTON_ACTIVE", x: 0, y: 125, width: 9, height: 9 },
+    // This is technically not a sprite, it's just part of the background.
+    // However, we extract it to use it as a fallback for
+    // `EQ_MAXIMIZE_BUTTON_ACTIVE`. Without this, skins that don't implement
+    // `eq_ex.bmp` would show the default skin's `EQ_MAXIMIZE_BUTTON_ACTIVE`
+    // instead of showing no sprite aka, just showing through to this portion of
+    // the title bar image.
+    {
+      name: "EQ_MAXIMIZE_BUTTON_ACTIVE_FALLBACK",
+      x: 254,
+      y: 152,
+      width: 9,
+      height: 9,
+    },
     { name: "EQ_ON_BUTTON", x: 10, y: 119, width: 26, height: 12 },
     { name: "EQ_ON_BUTTON_DEPRESSED", x: 128, y: 119, width: 26, height: 12 },
     { name: "EQ_ON_BUTTON_SELECTED", x: 69, y: 119, width: 26, height: 12 },

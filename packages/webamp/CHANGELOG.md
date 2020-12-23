@@ -2,7 +2,11 @@
 
 ### Features
 
-- Support `.ani` cursors in skins [#1035](https://github.com/captbaritone/webamp/pull/1035) [blog post](https://jordaneldredge.com/blog/rendering-animated-ani-cursors-in-the-browser/).
+- Support `.ani` cursors in skins [#1035](https://github.com/captbaritone/webamp/pull/1035), [blog post](https://jordaneldredge.com/blog/rendering-animated-ani-cursors-in-the-browser/).
+
+### Bug Fixes
+
+- Fix a number of edge cases where the close and minimize buttons in the equalizer window could render the wrong sprite [#1046](https://github.com/captbaritone/webamp/pull/1046)
 
 ## 1.4.2
 

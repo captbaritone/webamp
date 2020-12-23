@@ -31,6 +31,7 @@ const FALLBACKS: { [key: string]: string } = {
   MAIN_BALANCE_BACKGROUND: "MAIN_VOLUME_BACKGROUND",
   MAIN_BALANCE_THUMB: "MAIN_VOLUME_THUMB",
   MAIN_BALANCE_THUMB_ACTIVE: "MAIN_VOLUME_THUMB_SELECTED",
+  EQ_MAXIMIZE_BUTTON_ACTIVE: "EQ_MAXIMIZE_BUTTON_ACTIVE_FALLBACK",
 };
 
 // Cursors might appear in context menus which are not nested inside the window layout div.

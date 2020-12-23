@@ -15,6 +15,7 @@ import "../../../css/equalizer-window.css";
 import { Band as BandType } from "../../types";
 import FocusTarget from "../FocusTarget";
 import { useTypedSelector, useActionCreator } from "../../hooks";
+import EqTitleButtons from "./EqTitleButtons";
 
 const bandClassName = (band: BandType) => `band-${band}`;
 
@@ -31,7 +32,6 @@ const EqualizerWindow = () => {
   const setEqToMid = useActionCreator(Actions.setEqToMid);
   const setEqToMax = useActionCreator(Actions.setEqToMax);
   const setHertzValue = useActionCreator(Actions.setEqBand);
-  const closeWindow = useActionCreator(Actions.closeWindow);
   const toggleEqualizerShadeMode = useActionCreator(
     Actions.toggleEqualizerShadeMode
   );
@@ -54,11 +54,7 @@ const EqualizerWindow = () => {
               className="equalizer-top title-bar draggable"
               onDoubleClick={toggleEqualizerShadeMode}
             >
-              <div id="equalizer-shade" onClick={toggleEqualizerShadeMode} />
-              <div
-                id="equalizer-close"
-                onClick={() => closeWindow(WINDOWS.EQUALIZER)}
-              />
+              <EqTitleButtons />
             </div>
             <EqOn />
             <EqAuto />

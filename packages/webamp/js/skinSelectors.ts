@@ -201,8 +201,18 @@ export const imageSelectors: Selectors = {
   EQ_MINIMIZE_BUTTON_ACTIVE: [
     "#equalizer-window.shade #equalizer-shade:active",
   ],
-  EQ_CLOSE_BUTTON: ["#equalizer-window.selected #equalizer-close"],
-  EQ_CLOSE_BUTTON_ACTIVE: ["#equalizer-window #equalizer-close:active"],
+  EQ_CLOSE_BUTTON: [
+    "#equalizer-window.selected #eq-buttons.clicked #equalizer-close",
+  ],
+  EQ_CLOSE_BUTTON_ACTIVE: [
+    "#equalizer-window.selected #eq-buttons.clicked #equalizer-close:active",
+  ],
+  EQ_SHADE_CLOSE_BUTTON: [
+    "#equalizer-window.shade.selected #eq-buttons.clicked #equalizer-close",
+  ],
+  EQ_SHADE_CLOSE_BUTTON_ACTIVE: [
+    "#equalizer-window.shade.selected #eq-buttons.clicked #equalizer-close:active",
+  ],
   MAIN_POSITION_SLIDER_BACKGROUND: ["#position"],
   MAIN_POSITION_SLIDER_THUMB: [
     "#position::-webkit-slider-thumb",

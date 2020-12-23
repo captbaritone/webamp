@@ -1,6 +1,7 @@
 import Volume from "../Volume";
 import Balance from "../Balance";
 import { segment } from "../../utils";
+import EqTitleButtons from "./EqTitleButtons";
 
 import * as Actions from "../../actionCreators";
 import * as Selectors from "../../selectors";
@@ -9,7 +10,6 @@ import { useTypedSelector, useActionCreator } from "../../hooks";
 const EqualizerShade = () => {
   const volume = useTypedSelector(Selectors.getVolume);
   const balance = useTypedSelector(Selectors.getBalance);
-  const closeWindow = useActionCreator(Actions.closeWindow);
   const toggleEqualizerShadeMode = useActionCreator(
     Actions.toggleEqualizerShadeMode
   );
@@ -23,8 +23,7 @@ const EqualizerShade = () => {
       onDoubleClick={toggleEqualizerShadeMode}
       style={{ width: "100%", height: "100%" }}
     >
-      <div id="equalizer-shade" onClick={toggleEqualizerShadeMode} />
-      <div id="equalizer-close" onClick={() => closeWindow("equalizer")} />
+      <EqTitleButtons />
       <Volume id="equalizer-volume" className={eqVolumeClassName} />
       <Balance id="equalizer-balance" className={eqBalanceClassName} />
     </div>
