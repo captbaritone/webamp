@@ -8,7 +8,7 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "strict": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "noEmit": true,
     "pretty": true
   },
