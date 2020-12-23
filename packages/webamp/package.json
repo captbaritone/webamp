@@ -127,6 +127,7 @@
     "reselect": "^3.0.1",
     "screenfull": "^4.0.0",
     "style-loader": "^0.23.1",
+    "terser-webpack-plugin": "^1.4.3",
     "tinyqueue": "^1.2.3",
     "typescript": "^3.7.2",
     "url-loader": "^1.1.2",

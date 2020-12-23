@@ -1,5 +1,6 @@
 const path = require("path");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
   devtool: "source-map",
@@ -50,6 +51,15 @@ module.exports = {
     // We do some crazy shit okay! Don't judge!
     maxEntrypointSize: 9000000,
     maxAssetSize: 9000000,
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        // This allows us to produce both minfied and unminified files.
+        test: /\.min\.js$/i,
+      }),
+    ],
   },
   entry: {
     bundle: "./js/webamp.js",

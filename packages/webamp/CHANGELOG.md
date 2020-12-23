@@ -7,6 +7,7 @@
 ### Bug Fixes
 
 - Fix a number of edge cases where the close and minimize buttons in the equalizer window could render the wrong sprite [#1046](https://github.com/captbaritone/webamp/pull/1046)
+- Fix a bug where unminified bundle was accidentally minified.
 
 ## 1.4.2
 
