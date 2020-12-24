@@ -23,8 +23,6 @@ Coordination between the playing media (which is inherently stateful, and change
 
 We use [react-redux] to bind Redux state into our [React components](../js/components/). Any component which is not reusable, and even some that are, are connected using [connect]. This works well for us, since most components are "one off", and connecting most components allows for state changes to result in a mininmal set of react components needing to re-render. This does, however, require that our selectors be performant.
 
-In some places we use [rc-slider](https://github.com/react-component/slider) instead of `<input type='range'>` since it gives us more precise control over styling. This is particualarly true for the vertial sliders in the equalizer window. As far as I can tell, there is no way to style the handle of a vertical `<input type='range'>` in a way that gives pixel-level accuracy.
-
 ## Media
 
 Media (audio files) is managed by our [Media](../js/media/index.ts) class. It encapsulates the Web Audio API complexity. Audio manipulation (volume, balance, EQ) is handled in the main `Media` class, but the audio source is managed in [elementSource.ts](../js/media/elementSource.ts). This class tries to encapsulate some of the complexity required to get the playing of audio files working across all browsers seamlessly. We handle playing audio from a URL source (subject to CORs) and from a local file. Both of these are normalized to a URL before they are passed into our audio aparatus. For local files, we convert the `ArrayBuffer` we get, into a Blob url using `URL.createObjectURL()`. This transformation is handlded inside our Action Creators (see the Redux section above).
