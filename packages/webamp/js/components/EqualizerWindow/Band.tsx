@@ -43,10 +43,12 @@ export default function Band({ id, onChange, band }: Props) {
   const focusBand = useActionCreator(Actions.focusBand);
   const usetFocus = useActionCreator(Actions.unsetFocus);
 
+  // Note: The band background is actually one pixel taller (63) than the slider
+  // it contains (62).
   return (
-    <div id={id} className="band" style={{ backgroundPosition }}>
+    <div id={id} className="band" style={{ backgroundPosition, height: 63 }}>
       <VerticalSlider
-        height={63}
+        height={62}
         width={14}
         handleHeight={11}
         value={1 - value / MAX_VALUE}

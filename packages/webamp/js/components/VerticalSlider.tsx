@@ -29,7 +29,6 @@ export default function VerticalSlider({
 }: Props) {
   const ref = useRef<HTMLDivElement | null>(null);
   const handleRef = useRef<HTMLDivElement | null>(null);
-  const offset = (height - handleHeight) * value;
 
   function handleMouseDown(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     const sliderNode = ref.current;
@@ -83,6 +82,7 @@ export default function VerticalSlider({
     // Move the slider to where they've started.
     moveToCursor(e.nativeEvent);
   }
+  const offset = Math.floor((height - handleHeight) * value);
   return (
     <div
       style={{ height, width }}
