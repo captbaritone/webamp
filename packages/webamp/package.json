@@ -7,8 +7,8 @@
     "built/webamp.bundle.js",
     "built/webamp.bundle.min.js",
     "built/webamp.bundle.min.js.map",
-    "built/webamp-lazy.bundle.js",
-    "built/webamp-lazy.bundle.min.js",
+    "built/webamp.lazy.bundle.js",
+    "built/webamp.lazy.bundle.min.js",
     "built/webamp.lazy-bundle.min.js.map",
     "index.d.ts"
   ],
