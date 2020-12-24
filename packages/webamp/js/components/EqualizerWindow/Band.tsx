@@ -46,7 +46,7 @@ export default function Band({ id, onChange, band }: Props) {
   return (
     <div id={id} className="band" style={{ backgroundPosition }}>
       <VerticalSlider
-        height={62}
+        height={63}
         width={14}
         handleHeight={11}
         value={1 - value / MAX_VALUE}
