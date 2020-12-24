@@ -155,10 +155,10 @@ export const imageSelectors: Selectors = {
   EQ_TITLE_BAR: [".equalizer-top"],
   EQ_TITLE_BAR_SELECTED: [".selected .equalizer-top"],
   EQ_SLIDER_BACKGROUND: [".band"],
-  EQ_SLIDER_THUMB: [".band .rc-slider-handle"],
+  EQ_SLIDER_THUMB: [".band .slider-handle"],
   // But the "active" pseudo selector on the parent, since clicking
   // anywhere on the track moves the slider.
-  EQ_SLIDER_THUMB_SELECTED: [".band .rc-slider:active .rc-slider-handle"],
+  EQ_SLIDER_THUMB_SELECTED: [".band:active .slider-handle"],
   EQ_ON_BUTTON: ["#on"],
   EQ_ON_BUTTON_DEPRESSED: ["#on:active"],
   EQ_ON_BUTTON_SELECTED: ["#on.selected"],
@@ -349,7 +349,7 @@ export const cursorSelectors: Selectors = {
   CLOSE: ["#title-bar #close"],
   // This is not quite right. There are some areas that show this cursor
   // but are not clickable.
-  EQSLID: ["#equalizer-window .band .rc-slider"],
+  EQSLID: ["#equalizer-window .band"],
   EQNORMAL: ["#equalizer-window"],
   EQCLOSE: ["#equalizer-window #equalizer-close"],
   EQTITLE: [

@@ -17,7 +17,7 @@ import ListMenu from "./ListMenu";
 import PlaylistResizeTarget from "./PlaylistResizeTarget";
 import PlaylistActionArea from "./PlaylistActionArea";
 import TrackList from "./TrackList";
-import ScrollBar from "./ScrollBar";
+import PlaylistScrollBar from "./PlaylistScrollBar";
 
 import "../../../css/playlist-window.css";
 import { AppState } from "../../types";
@@ -124,7 +124,7 @@ function PlaylistWindow({ analyser }: Props) {
             <TrackList />
           </div>
           <div className="playlist-middle-right draggable">
-            <ScrollBar />
+            <PlaylistScrollBar />
           </div>
         </div>
         <div className="playlist-bottom draggable">

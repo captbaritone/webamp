@@ -195,20 +195,3 @@
   top: 38px;
 }
 
-#webamp .band {
-  width: 14px;
-  height: 63px;
-}
-
-#webamp .band .rc-slider {
-  height: 51px;
-  width: 14px;
-  margin-top: 6px;
-}
-
-#webamp .band .rc-slider .rc-slider-handle {
-  width: 11px;
-  height: 11px;
-  margin: -6px 0 0 1px;
-  position: absolute;
-}

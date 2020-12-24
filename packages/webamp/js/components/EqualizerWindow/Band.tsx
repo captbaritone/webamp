@@ -1,9 +1,9 @@
 import { useMemo } from "react";
-import Slider from "rc-slider";
 import { Slider as SliderType } from "../../types";
 import { useTypedSelector, useActionCreator } from "../../hooks";
 import * as Selectors from "../../selectors";
 import * as Actions from "../../actionCreators";
+import VerticalSlider from "../VerticalSlider";
 
 interface Props {
   id: string;
@@ -12,9 +12,10 @@ interface Props {
 }
 
 const MAX_VALUE = 100;
+
 // Given a value between 1-100, return the sprite number (0-27)
 export const spriteNumber = (value: number): number => {
-  const percent = value / 100;
+  const percent = value / MAX_VALUE;
   return Math.round(percent * 27);
 };
 
@@ -25,7 +26,10 @@ export const spriteOffsets = (number: number): { x: number; y: number } => {
   return { x, y };
 };
 
-const Handle = () => <div className="rc-slider-handle" />;
+const Handle = () => {
+  const style = { width: 11, height: 11, marginLeft: 1 };
+  return <div style={style} className="slider-handle" />;
+};
 
 export default function Band({ id, onChange, band }: Props) {
   const sliders = useTypedSelector(Selectors.getSliders);
@@ -39,20 +43,19 @@ export default function Band({ id, onChange, band }: Props) {
   const focusBand = useActionCreator(Actions.focusBand);
   const usetFocus = useActionCreator(Actions.unsetFocus);
 
-  const handleMouseDown = () => focusBand(band);
-
+  // Note: The band background is actually one pixel taller (63) than the slider
+  // it contains (62).
   return (
-    <div id={id} className="band" style={{ backgroundPosition }}>
-      <Slider
-        min={0}
-        max={MAX_VALUE}
-        step={1}
-        value={MAX_VALUE - value}
-        vertical
-        onChange={onChange}
-        onBeforeChange={handleMouseDown}
+    <div id={id} className="band" style={{ backgroundPosition, height: 63 }}>
+      <VerticalSlider
+        height={62}
+        width={14}
+        handleHeight={11}
+        value={1 - value / MAX_VALUE}
+        onBeforeChange={() => focusBand(band)}
+        onChange={(val) => onChange((1 - val) * MAX_VALUE)}
         onAfterChange={usetFocus}
-        handle={Handle}
+        handle={<Handle />}
       />
     </div>
   );
