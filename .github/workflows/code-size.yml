@@ -13,4 +13,4 @@ jobs:
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         build-script: "deploy"
-        pattern: "./packages/webamp/built/*bundle.js"
+        pattern: "./packages/webamp/built/*bundle.min.js"
