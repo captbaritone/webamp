@@ -13,6 +13,12 @@ type Props = {
   disabled?: boolean;
 };
 
+type RegOptions = {
+  target: HTMLElement;
+  touch: boolean;
+  clientY: number;
+};
+
 // `<input type="range" />` can be rotated to become a vertical slider using
 // CSS, but that makes it impossible to style the handle in a pixel perfect
 // manner. Instead we reimplement it in React.
@@ -30,7 +36,7 @@ export default function VerticalSlider({
   const ref = useRef<HTMLDivElement | null>(null);
   const handleRef = useRef<HTMLDivElement | null>(null);
 
-  function registerMoveListener(target: HTMLElement, clientY: number) {
+  function registerMoveListener({ target, clientY, touch }: RegOptions) {
     const sliderNode = ref.current;
     const handleNode = handleRef.current;
     if (sliderNode == null || handleNode == null) {
@@ -64,40 +70,39 @@ export default function VerticalSlider({
       onChange(Utils.clamp(startOffset / spanSize, 0, 1));
     }
 
-    // Mouse
-    function handleMouseMove(event: MouseEvent) {
-      event.preventDefault();
-      moveToPosition(event.clientY);
-    }
-
-    function handleMouseUp() {
-      if (onAfterChange != null) {
-        onAfterChange();
-      }
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-    }
-
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
-    // End Mouse
-
-    // Touch
-    function handleTouchMove(event: TouchEvent) {
-      if (event.cancelable) {
+    if (touch) {
+      const handleTouchMove = (event: TouchEvent) => {
+        if (event.cancelable) {
+          event.preventDefault();
+        }
+        moveToPosition(event.touches[0].clientY);
+      };
+      const handleTouchEnd = () => {
+        if (onAfterChange != null) {
+          onAfterChange();
+        }
+        document.removeEventListener("touchmove", handleTouchMove);
+        document.removeEventListener("touchend", handleTouchEnd);
+      };
+      document.addEventListener("touchmove", handleTouchMove, {
+        passive: false,
+      });
+      document.addEventListener("touchend", handleTouchEnd);
+    } else {
+      const handleMouseMove = (event: MouseEvent) => {
         event.preventDefault();
-      }
-      moveToPosition(event.touches[0].clientY);
+        moveToPosition(event.clientY);
+      };
+      const handleMouseUp = () => {
+        if (onAfterChange != null) {
+          onAfterChange();
+        }
+        document.removeEventListener("mousemove", handleMouseMove);
+        document.removeEventListener("mouseup", handleMouseUp);
+      };
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
     }
-
-    function handleTouchEnd() {
-      document.removeEventListener("touchmove", handleTouchMove);
-      document.removeEventListener("touchend", handleTouchEnd);
-    }
-
-    document.addEventListener("touchmove", handleTouchMove, { passive: false });
-    document.addEventListener("touchend", handleTouchEnd);
-    // End Touch
 
     if (onBeforeChange != null) {
       onBeforeChange();
@@ -109,11 +114,19 @@ export default function VerticalSlider({
 
   function handleMouseDown(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     e.preventDefault();
-    registerMoveListener(e.target as HTMLElement, e.clientY);
+    registerMoveListener({
+      target: e.target as HTMLElement,
+      clientY: e.clientY,
+      touch: false,
+    });
   }
 
   function handleTouchStart(e: React.TouchEvent<HTMLDivElement>) {
-    registerMoveListener(e.target as HTMLElement, e.touches[0].clientY);
+    registerMoveListener({
+      target: e.target as HTMLElement,
+      clientY: e.touches[0].clientY,
+      touch: true,
+    });
   }
 
   const offset = Math.floor((height - handleHeight) * value);
