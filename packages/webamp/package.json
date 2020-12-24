@@ -1,14 +1,14 @@
 {
   "name": "webamp",
-  "version": "1.4.3-beta.2",
+  "version": "1.4.3-beta.3",
   "description": "Winamp 2 implemented in HTML5 and JavaScript",
   "main": "built/webamp.bundle.js",
   "files": [
     "built/webamp.bundle.js",
     "built/webamp.bundle.min.js",
     "built/webamp.bundle.min.js.map",
-    "built/webamp.lazy.bundle.js",
-    "built/webamp.lazy.bundle.min.js",
+    "built/webamp.lazy-bundle.js",
+    "built/webamp.lazy-bundle.min.js",
     "built/webamp.lazy-bundle.min.js.map",
     "index.d.ts"
   ],
