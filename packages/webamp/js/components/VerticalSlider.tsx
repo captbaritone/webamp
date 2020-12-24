@@ -30,7 +30,7 @@ export default function VerticalSlider({
   const ref = useRef<HTMLDivElement | null>(null);
   const handleRef = useRef<HTMLDivElement | null>(null);
 
-  function handleMouseDown(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+  function registerMoveListener(target: HTMLElement, clientY: number) {
     const sliderNode = ref.current;
     const handleNode = handleRef.current;
     if (sliderNode == null || handleNode == null) {
@@ -48,8 +48,8 @@ export default function VerticalSlider({
     // that point of te handle. If they click outside of the handle (in the
     // slider itself) we want to center the handle at that point and have them
     // move the handle from the center.
-    const handleOffset = handleNode.contains(e.target as HTMLElement)
-      ? e.clientY - handleTop
+    const handleOffset = handleNode.contains(target as HTMLElement)
+      ? clientY - handleTop
       : realHandleHeight / 2;
 
     const baseOffset = sliderTop + handleOffset;
@@ -57,36 +57,71 @@ export default function VerticalSlider({
     // we might be in double-size mode.
     const spanSize = sliderHeight - realHandleHeight;
 
-    function moveToCursor(event: MouseEvent) {
+    function moveToPosition(y: number) {
       // Ensure dragging does not cause elements/text to be selected.
       // https://stackoverflow.com/a/19164149/1263117
-      event.preventDefault();
-      const startOffset = event.clientY - baseOffset;
+      const startOffset = y - baseOffset;
       onChange(Utils.clamp(startOffset / spanSize, 0, 1));
+    }
+
+    // Mouse
+    function handleMouseMove(event: MouseEvent) {
+      event.preventDefault();
+      moveToPosition(event.clientY);
     }
 
     function handleMouseUp() {
       if (onAfterChange != null) {
         onAfterChange();
       }
-      document.removeEventListener("mousemove", moveToCursor);
+      document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
     }
-    document.addEventListener("mousemove", moveToCursor);
+
+    document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
+    // End Mouse
+
+    // Touch
+    function handleTouchMove(event: TouchEvent) {
+      if (event.cancelable) {
+        event.preventDefault();
+      }
+      moveToPosition(event.touches[0].clientY);
+    }
+
+    function handleTouchEnd() {
+      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("touchend", handleTouchEnd);
+    }
+
+    document.addEventListener("touchmove", handleTouchMove, { passive: false });
+    document.addEventListener("touchend", handleTouchEnd);
+    // End Touch
 
     if (onBeforeChange != null) {
       onBeforeChange();
     }
 
     // Move the slider to where they've started.
-    moveToCursor(e.nativeEvent);
+    moveToPosition(clientY);
   }
+
+  function handleMouseDown(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    e.preventDefault();
+    registerMoveListener(e.target as HTMLElement, e.clientY);
+  }
+
+  function handleTouchStart(e: React.TouchEvent<HTMLDivElement>) {
+    registerMoveListener(e.target as HTMLElement, e.touches[0].clientY);
+  }
+
   const offset = Math.floor((height - handleHeight) * value);
   return (
     <div
       style={{ height, width }}
       onMouseDown={disabled ? undefined : handleMouseDown}
+      onTouchStart={disabled ? undefined : handleTouchStart}
       ref={ref}
     >
       <div style={{ transform: `translateY(${offset}px)` }} ref={handleRef}>
