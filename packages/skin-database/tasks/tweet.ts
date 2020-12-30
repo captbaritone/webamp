@@ -8,6 +8,7 @@ import sharp from "sharp";
 import { getTwitterClient } from "../twitter";
 import SkinModel from "../data/SkinModel";
 import UserContext from "../data/UserContext";
+import TweetModel from "../data/TweetModel";
 const temp = _temp.track();
 
 export async function tweet(discordClient: Client, anything: string | null) {
@@ -68,8 +69,13 @@ export async function tweet(discordClient: Client, anything: string | null) {
     return;
   }
   await Skins.markAsTweeted(tweetableSkin.getMd5(), tweetId);
+
+  const tweet = await TweetModel.fromTweetId(ctx, tweetId);
+  if (tweet == null) {
+    throw new Error(`Could not locate tweet with ID "${tweetId}"`);
+  }
   // @ts-ignore
-  await tweetBotChannel.send(output.trim());
+  await tweetBotChannel.send(tweet?.getUrl());
   const remainingSkinCount = await Skins.getTweetableSkinCount();
   if (remainingSkinCount < 10) {
     // @ts-ignore

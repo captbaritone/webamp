@@ -5,7 +5,7 @@ import { argv } from "yargs";
 import logger from "./logger";
 import DiscordWinstonTransport from "./DiscordWinstonTransport";
 import * as Skins from "./data/skins";
-import Discord from "discord.js";
+import Discord, { RichEmbed, TextChannel } from "discord.js";
 import { tweet } from "./tasks/tweet";
 import { addSkinFromBuffer } from "./addSkin";
 import * as SkinHash from "./skinHash";
@@ -16,7 +16,8 @@ import { screenshot } from "./tasks/screenshotSkin";
 import Shooter from "./shooter";
 import UserContext from "./data/UserContext";
 import { integrityCheck } from "./tasks/integrityCheck";
-import { syncWithArchive } from "./tasks/syncWithArchive";
+import { ensureWebampLinks, syncWithArchive } from "./tasks/syncWithArchive";
+import { syncFromArchive } from "./tasks/syncFromArchive";
 
 async function main() {
   const client = new Discord.Client();
@@ -25,6 +26,12 @@ async function main() {
 
   try {
     switch (argv._[0]) {
+      case "ensure-webamp-links":
+        await ensureWebampLinks();
+        break;
+      case "sync-from-ia":
+        await syncFromArchive();
+        break;
       case "sync-ia":
         await syncWithArchive();
         break;
@@ -118,12 +125,6 @@ async function main() {
         await tweet(client, null);
         break;
       }
-      case "skin": {
-        const hash = argv._[1];
-        console.log(await Skins.getSkinDebugData(hash));
-        break;
-      }
-
       case "stats": {
         console.log(await Skins.getStats());
         break;

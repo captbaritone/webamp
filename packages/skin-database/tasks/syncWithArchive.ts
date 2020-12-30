@@ -8,73 +8,12 @@ import UserContext from "../data/UserContext";
 import SkinModel from "../data/SkinModel";
 import util from "util";
 import * as Parallel from "async-parallel";
+import IaItemModel from "../data/IaItemModel";
 const exec = util.promisify(child_process.exec);
 
 const CONCURRENT = 5;
 
 const temp = _temp.track();
-
-async function allItems(): Promise<string[]> {
-  const r = await fetch(
-    "https://archive.org/advancedsearch.php?q=collection%3Awinampskins+skintype%3Awsz&fl%5B%5D=identifier&fl%5B%5D=skintype&sort%5B%5D=&sort%5B%5D=&sort%5B%5D=&rows=100000&page=1&output=json&save=yes"
-  );
-  const result = await r.json();
-  const response = result.response;
-  const numFound = response.numFound;
-  const items = response.docs;
-  if (items.length !== numFound) {
-    console.error(`Expected to find ${numFound} items but saw ${items.length}`);
-  }
-  items.forEach((item) => {
-    if (item.skintype !== "wsz") {
-      throw new Error(`${item.identifier} has skintype of ${item.skintype}`);
-    }
-  });
-  return items.map((item: { identifier: string }) => item.identifier);
-}
-
-async function ensureIaRecord(
-  ctx: UserContext,
-  identifier: string
-): Promise<void> {
-  const dbItem = await knex("ia_items").where({ identifier }).first();
-  if (dbItem) {
-    return;
-  }
-  const r = await fetch(`https://archive.org/metadata/${identifier}`);
-  const response = await r.json();
-  const files = response.files;
-  const skins = files.filter((file) => file.name.endsWith(".wsz"));
-  if (skins.length !== 1) {
-    console.error(
-      `Expected to find one skin file for "${identifier}", found ${skins.length}`
-    );
-    return;
-  }
-  const md5 = skins[0].md5;
-  const skin = await SkinModel.fromMd5(ctx, md5);
-  if (skin == null) {
-    console.error(
-      `We don't have a record for the skin found in "${identifier}"`
-    );
-    return;
-  }
-
-  await knex("ia_items").insert({ skin_md5: md5, identifier });
-  console.log(`Inserted "${identifier}".`);
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-async function collectExistingItems(ctx: UserContext) {
-  const items = await allItems();
-  await Parallel.each(
-    items,
-    async (identifier) => {
-      await ensureIaRecord(ctx, identifier);
-    },
-    CONCURRENT
-  );
-}
 
 function sanitize(name: string): string {
   return name.replace(/[^A-Za-z0-9_\-.]/g, "_").replace(/^\d*/, "");
@@ -92,21 +31,25 @@ async function downloadToTemp(url: string, filename: string): Promise<string> {
   return tempFile;
 }
 
+export async function identifierExists(identifier: string): Promise<boolean> {
+  const existing = await knex("ia_items")
+    .whereRaw("LOWER(identifier) = LOWER(?)", identifier)
+    .select([]);
+  if (existing.length > 0) {
+    return true;
+  }
+  const result = await exec(`ia metadata ${identifier}`);
+  const data = JSON.parse(result.stdout);
+  return Object.keys(data).length > 0;
+}
+
 async function getNewIdentifier(filename: string): Promise<string> {
   const identifierBase = `winampskins_${sanitize(path.parse(filename).name)}`;
   let counter = 0;
   function getIdentifier() {
     return identifierBase + (counter === 0 ? "" : `_${counter}`);
   }
-  // eslint-disable-next-line no-constant-condition
-  while (true) {
-    const existing = await knex("ia_items").whereRaw(
-      "LOWER(identifier) = LOWER(?)",
-      getIdentifier()
-    );
-    if (existing.length === 0) {
-      break;
-    }
+  while (await identifierExists(getIdentifier())) {
     counter++;
   }
   return getIdentifier();
@@ -115,7 +58,9 @@ async function getNewIdentifier(filename: string): Promise<string> {
 async function archive(skin: SkinModel): Promise<string> {
   const filename = await skin.getFileName();
   if (filename == null) {
-    throw new Error(`Could archive skin. Filename not found. ${skin.getMd5()}`);
+    throw new Error(
+      `Couldn't archive skin. Filename not found. ${skin.getMd5()}`
+    );
   }
 
   if (
@@ -189,13 +134,11 @@ const CORRUPT = new Set([
   "04d172dc3f08d7fc1c9a047db956ea5d",
   "515941f5dee8ab399bd0e58d0a116274",
   "6b00596f4519fcc9d8bff7a69194333a",
+  "0f2cd2d789d9194e3ef6525a8f00f5fd",
 ]);
 
 export async function syncWithArchive() {
   const ctx = new UserContext();
-  // Ensure we know about all items in the `winampskins` collection.
-  // console.log("Going to ensure we know about all archive items");
-  // await collectExistingItems(ctx);
   console.log("Checking which new skins we have...");
   const unarchived = await knex("skins")
     .leftJoin("ia_items", "ia_items.skin_md5", "=", "skins.md5")
@@ -233,5 +176,63 @@ export async function syncWithArchive() {
       }
     },
     CONCURRENT
+  );
+}
+// Build the URL to get all wsz files
+function getSearchUrl(): string {
+  const url = new URL("https://archive.org/advancedsearch.php");
+  // https://stackoverflow.com/a/11890368/1263117
+  const queryString =
+    "(collection:winampskins OR collection:winampskinsmature) skintype:wsz -webamp:[* TO *]";
+  url.searchParams.set("q", queryString);
+  url.searchParams.append("fl[]", "identifier");
+  url.searchParams.append("fl[]", "webamp");
+  url.searchParams.set("rows", "100000");
+  url.searchParams.set("page", "1");
+  url.searchParams.set("output", "json");
+  return url.toString();
+}
+
+export async function ensureWebampLinks() {
+  const ctx = new UserContext();
+  const r = await fetch(getSearchUrl());
+  const result = await r.json();
+  const response = result.response;
+  const items: { identifier: string }[] = response.docs;
+  await Parallel.each(
+    items,
+    async ({ identifier }) => {
+      const iaItem = await IaItemModel.fromIdentifier(ctx, identifier);
+      if (iaItem == null) {
+        console.log(`Found an IA item we are missing: "${identifier}`);
+        return;
+      }
+      const r = await fetch(`https://archive.org/metadata/${identifier}`);
+      const response = await r.json();
+      const files = response.files;
+      const skins = files.filter((file) => file.name.endsWith(".wsz"));
+      if (skins.length === 0) {
+        console.warn(`Could not find any skin file for ${identifier}`);
+        return;
+      }
+      if (skins.length > 1) {
+        console.warn(`Too many skin files for ${identifier}`);
+        return;
+      }
+
+      const skin = skins[0];
+      if (skin.md5 !== iaItem.getMd5()) {
+        console.error(`Md5 mismatch for ${identifier}`);
+        return;
+      }
+      const skinUrl = `https://archive.org/cors/${identifier}/${encodeURIComponent(
+        skin.name
+      )}`;
+
+      const webampLink = new URL("https://webamp.org");
+      webampLink.searchParams.set("skinUrl", skinUrl);
+      console.log(webampLink.toString());
+    },
+    5
   );
 }

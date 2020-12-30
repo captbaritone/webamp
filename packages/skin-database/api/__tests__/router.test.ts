@@ -319,7 +319,7 @@ test("An Upload Flow", async () => {
     filename,
     id,
     skin_md5: md5,
-    status: "UPLOAD_REPORTED",
+    status: "UPLOAD_REPRTED",
   });
 });
 
