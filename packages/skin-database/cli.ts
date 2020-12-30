@@ -5,7 +5,7 @@ import { argv } from "yargs";
 import logger from "./logger";
 import DiscordWinstonTransport from "./DiscordWinstonTransport";
 import * as Skins from "./data/skins";
-import Discord, { RichEmbed, TextChannel } from "discord.js";
+import Discord from "discord.js";
 import { tweet } from "./tasks/tweet";
 import { addSkinFromBuffer } from "./addSkin";
 import * as SkinHash from "./skinHash";
