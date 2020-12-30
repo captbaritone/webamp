@@ -72,6 +72,10 @@ const selectedSkinEpic = (actions) =>
           return of(Actions.loadedSkinZip(zip), {
             type: "SELECTED_SKIN_README",
           });
+        }),
+        catchError((e) => {
+          console.error(e);
+          return [];
         })
       );
     })
