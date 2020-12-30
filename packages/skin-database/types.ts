@@ -34,7 +34,25 @@ export type FileRow = {
   file_path: string;
 };
 
+export type ArchiveFileRow = {
+  skin_md5: string;
+  file_name: string;
+  file_md5: string;
+};
+
 export type IaItemRow = {
   skin_md5: string;
   identifier: string;
+};
+
+export type UploadStatus =
+  | "UPLOAD_REPORTED"
+  | "URL_REQUESTED"
+  | "ERRORED"
+  | "ARCHIVED";
+
+export type UploadRow = {
+  skin_md5: string;
+  id: string;
+  status: UploadStatus;
 };

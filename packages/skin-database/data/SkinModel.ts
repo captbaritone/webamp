@@ -1,5 +1,5 @@
 import { getScreenshotUrl, getSkinUrl } from "./skins";
-import { TweetStatus, SkinRow, ReviewRow } from "../types";
+import { TweetStatus, SkinRow, ReviewRow, UploadStatus } from "../types";
 import UserContext, { ctxWeakMapMemoize } from "./UserContext";
 import TweetModel, { TweetDebugData } from "./TweetModel";
 import IaItemModel, { IaItemDebugData } from "./IaItemModel";
@@ -7,6 +7,9 @@ import FileModel, { FileDebugData } from "./FileModel";
 import { MD5_REGEX } from "../utils";
 import DataLoader from "dataloader";
 import { knex } from "../db";
+import UploadModel, { UploadDebugData } from "./UploadModel";
+import ArchiveFileModel, { ArchiveFileDebugData } from "./ArchiveFileModel";
+import * as Skins from "./skins";
 
 export default class SkinModel {
   constructor(readonly ctx: UserContext, readonly row: SkinRow) {}
@@ -70,6 +73,19 @@ export default class SkinModel {
 
   getFiles(): Promise<FileModel[]> {
     return FileModel.fromMd5(this.ctx, this.row.md5);
+  }
+
+  getArchiveFiles(): Promise<ArchiveFileModel[]> {
+    return ArchiveFileModel.fromMd5(this.ctx, this.row.md5);
+  }
+
+  getUploadStatuses(): Promise<UploadModel[]> {
+    return UploadModel.fromMd5(this.ctx, this.row.md5);
+  }
+
+  async getUploadStatus(): Promise<UploadStatus | null> {
+    const status = await Skins.getUploadStatuses([this.row.md5]);
+    return (status[this.getMd5()] as UploadStatus) || null;
   }
 
   async getIsNsfw(): Promise<boolean> {
@@ -136,16 +152,24 @@ export default class SkinModel {
     reviews: ReviewRow[];
     tweets: TweetDebugData[];
     files: FileDebugData[];
+    archiveFiles: ArchiveFileDebugData[];
     iaItem: IaItemDebugData | null;
+    uploadStatuses: UploadDebugData[];
   }> {
     const tweets = await this.getTweets();
     const files = await this.getFiles();
+    const archiveFiles = await this.getArchiveFiles();
     const iaItem = await this.getIaItem();
+    const uploadStatuses = await this.getUploadStatuses();
     return {
       row: this.row,
       reviews: await this.getReviews(),
       tweets: await Promise.all(tweets.map((tweet) => tweet.debug())),
       files: await Promise.all(files.map((file) => file.debug())),
+      archiveFiles: await Promise.all(archiveFiles.map((file) => file.debug())),
+      uploadStatuses: await Promise.all(
+        uploadStatuses.map((upload) => upload.debug())
+      ),
       iaItem: iaItem == null ? null : await iaItem.debug(),
     };
   }

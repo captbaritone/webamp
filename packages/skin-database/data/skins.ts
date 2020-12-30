@@ -5,6 +5,7 @@ import { searchIndex } from "../algolia";
 import { truncate } from "../utils";
 import fetch from "node-fetch";
 import * as S3 from "../s3";
+import * as CloudFlare from "../CloudFlare";
 import SkinModel from "./SkinModel";
 import UserContext from "./UserContext";
 
@@ -74,33 +75,6 @@ export async function setContentHash(md5: string): Promise<string | null> {
   return contentHash;
 }
 
-export async function getSkinDebugData(md5: string): Promise<any | null> {
-  const skin = await knex("skins").where({ md5 }).select();
-  const searchIndexUpdates = await knex("algolia_field_updates")
-    .where({ skin_md5: md5 })
-    .select();
-  const reviews = await knex("skin_reviews").where({ skin_md5: md5 }).select();
-  const tweets = await knex("tweets").where({ skin_md5: md5 }).select();
-  const internetArchive = await knex("ia_items")
-    .where({ skin_md5: md5 })
-    .select();
-  const uploads = await knex("skin_uploads").where({ skin_md5: md5 }).select();
-  const archiveFiles = await knex("archive_files")
-    .where({ skin_md5: md5 })
-    .select();
-  const files = await knex("files").where({ skin_md5: md5 }).select();
-  return {
-    skin,
-    searchIndexUpdates,
-    reviews,
-    tweets,
-    internetArchive,
-    uploads,
-    archiveFiles,
-    files,
-  };
-}
-
 export async function getTweetableSkinCount(): Promise<number> {
   const tweetable = await knex("skins")
     .leftJoin("skin_reviews", "skin_reviews.skin_md5", "=", "skins.md5")
@@ -154,6 +128,7 @@ export async function getUploadStatuses(
 ): Promise<{ [md5: string]: string }> {
   const skins = await knex("skin_uploads")
     .whereIn("skin_md5", md5s)
+    .orderBy("id", "desc")
     .select("skin_md5", "status");
 
   const statuses: { [md5: string]: string } = {};
@@ -229,12 +204,22 @@ export async function deleteSkin(md5: string): Promise<void> {
   await knex("ia_items").where({ skin_md5: md5 }).delete();
   console.log(`... sqlite "archive_files"`);
   await knex("archive_files").where({ skin_md5: md5 }).delete();
+  console.log(`... sqlite "tweets"`);
+  await knex("tweets").where({ skin_md5: md5 }).delete();
+  console.log(`... sqlite "algolia_field_updates"`);
+  await knex("algolia_field_updates").where({ skin_md5: md5 }).delete();
+  console.log(`... sqlite "skin_uploads"`);
+  await knex("skin_uploads").where({ skin_md5: md5 }).delete();
+  console.log(`... sqlite "screenshot_updates"`);
+  await knex("screenshot_updates").where({ skin_md5: md5 }).delete();
   console.log(`... removing from Algolia index`);
   await searchIndex.deleteObjects([md5]);
   console.log(`... removing skin from S3`);
   await S3.deleteSkin(md5);
   console.log(`... removing screenshot from S3`);
   await S3.deleteScreenshot(md5);
+  console.log(`... purging screenshot and skin from CloudFlare`);
+  await CloudFlare.purgeFiles([getScreenshotUrl(md5), getSkinUrl(md5)]);
   console.log(`Done deleting skin ${md5}.`);
 }
 

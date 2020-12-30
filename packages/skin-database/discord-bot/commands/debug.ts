@@ -3,8 +3,6 @@ import { Message } from "discord.js";
 import UserContext from "../../data/UserContext";
 import SkinModel from "../../data/SkinModel";
 
-const TRIPPLE = "```";
-
 async function handler(message: Message, args: [string]) {
   const ctx = new UserContext();
   const [anything] = args;
@@ -18,9 +16,13 @@ async function handler(message: Message, args: [string]) {
     return;
   }
   const data = await skin.debug();
-  await message.channel.send(
-    [TRIPPLE, JSON.stringify(data, null, 2), TRIPPLE].join("")
-  );
+  const pageSize = 1975;
+  const jsonString = JSON.stringify(data, null, 2);
+  for (let i = 0; i < jsonString.length; i += pageSize) {
+    await message.channel.send(
+      "```" + jsonString.slice(i, i + pageSize) + "```"
+    );
+  }
 }
 
 module.exports = {
