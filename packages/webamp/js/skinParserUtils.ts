@@ -44,7 +44,6 @@ export async function getFileFromZip(
   // the last file that JSZip extracted.
   const lastFile = files[files.length - 1];
 
-  console.log(`Looking for ${fileName} and got ${lastFile.name}`);
   try {
     const contents = await lastFile.async(mode);
     return { contents, name: lastFile.name };
