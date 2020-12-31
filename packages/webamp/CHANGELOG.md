@@ -8,6 +8,7 @@
 
 - Fix a number of edge cases where the close and minimize buttons in the equalizer window could render the wrong sprite [#1046](https://github.com/captbaritone/webamp/pull/1046)
 - Fix a bug where unminified bundle was accidentally minified.
+- Treat skin files with forward slashes in their filename as directories [#1052](https://github.com/captbaritone/webamp/pull/1052)
 
 ## 1.4.2
 
