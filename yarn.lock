@@ -15071,10 +15071,10 @@ wcwidth@^1.0.1:
   dependencies:
     defaults "^1.0.3"
 
-webamp@^1.4.3-beta.1:
-  version "1.4.3-beta.1"
-  resolved "https://registry.yarnpkg.com/webamp/-/webamp-1.4.3-beta.1.tgz#4d22edbdde6d689d253b9a21642beb4e23ce52bc"
-  integrity sha512-n1Lk6PExB+nytcMa9b6QmkhwaiTgrN/tEdNjQ56r8dZJiOFuyHLa9dZZ3U/+fBk7n6GrAEXBGC8LGrCLidu9aw==
+webamp@^1.4.3-beta.4:
+  version "1.4.3-beta.4"
+  resolved "https://registry.yarnpkg.com/webamp/-/webamp-1.4.3-beta.4.tgz#0963f93e4acca8295aad4986ec296da43cd077b6"
+  integrity sha512-F+M7GLZfxdtamSONVHn2hIAjpZ4n4cPDLqwBLRBmi7Ypo1xR0TEsk4Xx/NKqXMSy83KiUCEDDDlUaa6nToJtng==
   dependencies:
     ani-cursor "^0.0.4"
     eslint-plugin-react-hooks "^2.1.2"
