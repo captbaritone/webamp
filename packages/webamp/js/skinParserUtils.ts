@@ -11,7 +11,11 @@ export const getFileExtension = (fileName: string): string | null => {
 };
 
 function getFilenameRegex(base: string, ext: string): RegExp {
-  return new RegExp(`^(.*/)?${base}.(${ext})$`, "i");
+  // Note: The four slashes: \\\\ ultimately represent a single escaped slash in
+  // the regex ("\\"), however each itself needs to be escaped so that
+  // JavaScript does not interperate it as an escape character in the string
+  // literal. Wonderful.
+  return new RegExp(`^(.*[/\\\\])?${base}.(${ext})$`, "i");
 }
 
 export async function getFileFromZip(

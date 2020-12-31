@@ -89,6 +89,16 @@ test("pads empty space in the marquee with the space character", async () => {
   expect(await page.screenshot()).toMatchImageSnapshot(snapshotOptions);
 });
 
+test("can render skins that have forward slash in filename", async () => {
+  await page.goto(`${DOMAIN}/#{"disableMarquee":true}`);
+  await expect(page).toUploadFile(
+    "#webamp-file-input",
+    path.join(__dirname, "../../demo/skins/rei_1.wsz")
+  );
+  await page.evaluate(() => window.__webamp.skinIsLoaded());
+  expect(await page.screenshot()).toMatchImageSnapshot(snapshotOptions);
+});
+
 test("closing winamp shows the icon", async () => {
   await page.goto(`${DOMAIN}/#{"disableMarquee":true}`);
   await page.evaluate(() => window.__webamp.skinIsLoaded());
