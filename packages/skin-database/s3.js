@@ -23,7 +23,7 @@ function putSkin(md5, buffer, ext = "wsz") {
           rejectPromise(err);
           return;
         }
-        console.log(`Upladed skin to ${bucketName} ${key}`);
+        console.log(`Uploaded skin to ${bucketName} ${key}`);
         resolve();
       }
     );
@@ -122,7 +122,7 @@ function putScreenshot(md5, buffer) {
           rejectPromise(err);
           return;
         }
-        console.log(`Upladed screenshot to ${bucketName} ${key}`);
+        console.log(`Uploaded screenshot to ${bucketName} ${key}`);
         resolve();
       }
     );
