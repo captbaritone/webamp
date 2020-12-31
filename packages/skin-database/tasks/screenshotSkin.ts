@@ -5,6 +5,7 @@ import fetch from "node-fetch";
 import md5Buffer from "md5";
 import * as S3 from "../s3";
 import * as Skins from "../data/skins";
+import * as CloudFlare from "../CloudFlare";
 
 const Shooter = require("../shooter");
 const temp = _temp.track();
@@ -36,6 +37,7 @@ export async function screenshot(md5: string, shooter: typeof Shooter) {
   if (success) {
     console.log("Completed screenshot");
     await S3.putScreenshot(md5, fs.readFileSync(tempScreenshotPath));
+    await CloudFlare.purgeFiles([Skins.getScreenshotUrl(actualMd5)]);
   } else {
     console.log(`Screenshot failed ${md5}`);
   }
