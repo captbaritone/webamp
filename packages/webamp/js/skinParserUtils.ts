@@ -15,7 +15,7 @@ function getFilenameRegex(base: string, ext: string): RegExp {
   // the regex ("\\"), however each itself needs to be escaped so that
   // JavaScript does not interperate it as an escape character in the string
   // literal. Wonderful.
-  return new RegExp(`^(.*[/\\\\])${base}.(${ext})$`, "i");
+  return new RegExp(`^(.*[/\\\\])?${base}.(${ext})$`, "i");
 }
 
 export async function getFileFromZip(
