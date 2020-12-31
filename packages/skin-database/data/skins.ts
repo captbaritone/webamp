@@ -240,10 +240,10 @@ export async function recordScreenshotUpdate(
   ]);
 }
 
-export async function getSkinToShoot(): Promise<string | null> {
+export async function getSkinsToShoot(limit: number): Promise<string[]> {
   // TODO: Once return an ordered list here of skins that have no record,
   // followed by skins that have not been shot in a long time.
-  const result = await knex("skins")
+  const results = await knex("skins")
     .leftJoin(
       "screenshot_updates",
       "skins.md5",
@@ -251,11 +251,9 @@ export async function getSkinToShoot(): Promise<string | null> {
       "screenshot_updates.skin_md5"
     )
     .where("screenshot_updates.id", null)
-    .first(["md5"]);
-  if (result == null) {
-    return null;
-  }
-  return result.md5;
+    .limit(limit)
+    .select(["md5"]);
+  return results.map((row) => row.md5);
 }
 
 export async function recordSearchIndexUpdates(

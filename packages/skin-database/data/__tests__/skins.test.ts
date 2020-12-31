@@ -27,7 +27,7 @@ test("empty", async () => {
     "Could not find any skins to review"
   );
   expect(await Skins.getReportedUpload()).toBe(null);
-  expect(await Skins.getSkinToShoot()).toBe(null);
+  expect(await Skins.getSkinsToShoot(1000)).toEqual([]);
   expect(await Skins.getUploadStatuses([])).toEqual({});
 });
 
@@ -165,10 +165,10 @@ describe("seeded", () => {
   test("getReportedUpload", async () => {
     expect(await Skins.getReportedUpload()).toBe(null);
   });
-  test("getSkinToShoot", async () => {
-    expect(await Skins.getSkinToShoot()).toBe(
-      "48bbdbbeb03d347e59b1eebda4d352d0"
-    );
+  test("getSkinsToShoot", async () => {
+    expect(await Skins.getSkinsToShoot(1)).toEqual([
+      "48bbdbbeb03d347e59b1eebda4d352d0",
+    ]);
   });
   test("getUploadStatuses", async () => {
     expect(await Skins.getUploadStatuses([])).toEqual({});

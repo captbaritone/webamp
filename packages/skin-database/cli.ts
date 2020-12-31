@@ -38,18 +38,6 @@ async function main() {
       case "integity-check":
         await integrityCheck();
         break;
-      case "screenshot": {
-        const md5 = argv._[1] || (await Skins.getSkinToShoot());
-        if (md5 == null) {
-          return;
-        }
-        await Shooter.withShooter(async (shooter: Shooter) => {
-          await screenshot(md5, shooter);
-        });
-        console.log("Screenshot update complete.");
-        break;
-      }
-
       case "reject": {
         const md5 = argv._[1];
         if (md5 == null) {
@@ -59,13 +47,13 @@ async function main() {
         break;
       }
       case "screenshots": {
-        let count = 1000;
+        const stdinBuffer = fs.readFileSync(0); // STDIN_FILENO = 0
+        let md5s = stdinBuffer.toString().trim().split("\n");
+        if (md5s.length === 0) {
+          md5s = await Skins.getSkinsToShoot(1000);
+        }
         await Shooter.withShooter(async (shooter: Shooter) => {
-          while (count--) {
-            const md5 = await Skins.getSkinToShoot();
-            if (md5 == null) {
-              break;
-            }
+          for (const md5 of md5s) {
             await screenshot(md5, shooter);
           }
         });
