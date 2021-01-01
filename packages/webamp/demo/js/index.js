@@ -5,7 +5,6 @@ import ReactDOM from "react-dom";
 import createMiddleware from "redux-sentry-middleware";
 import isButterchurnSupported from "butterchurn/lib/isSupported.min";
 import { WINDOWS } from "../../js/constants";
-import * as Selectors from "../../js/selectors";
 import { loggerMiddleware } from "./eventLogger";
 
 import WebampLazy from "../../js/webampLazy";
@@ -23,7 +22,6 @@ import {
   SET_DUMMY_VIZ_DATA,
 } from "../../js/actionTypes";
 
-import { loadFilesFromReferences } from "../../js/actionCreators";
 import { getButterchurnOptions } from "./butterchurnOptions";
 import dropboxFilePicker from "./dropboxFilePicker";
 import availableSkins from "./avaliableSkins";
@@ -94,7 +92,7 @@ try {
 
 const sentryMiddleware = createMiddleware(Sentry, {
   filterBreadcrumbActions,
-  stateTransformer: Selectors.getDebugData,
+  stateTransformer: getDebugData,
 });
 
 async function main() {
@@ -217,7 +215,12 @@ async function main() {
   fileInput.type = "file";
   fileInput.value = null;
   fileInput.addEventListener("change", (e) => {
-    webamp.store.dispatch(loadFilesFromReferences(e.target.files));
+    const firstFile = e.target.files[0];
+    if (firstFile == null) {
+      return;
+    }
+    const url = URL.createObjectURL(firstFile);
+    webamp.setSkinFromUrl(url);
   });
   document.body.appendChild(fileInput);
 
@@ -232,6 +235,19 @@ async function main() {
       document.getElementById("demo-desktop")
     );
   }
+}
+
+function getDebugData(state) {
+  return {
+    ...state,
+    display: {
+      ...state.display,
+      skinGenLetterWidths: "[[REDACTED]]",
+      skinImages: "[[REDACTED]]",
+      skinCursors: "[[REDACTED]]",
+      skinRegion: "[[REDACTED]]",
+    },
+  };
 }
 
 main();

@@ -650,19 +650,6 @@ export const getKhz = createSelector(
   }
 );
 
-export function getDebugData(state: AppState) {
-  return {
-    ...state,
-    display: {
-      ...state.display,
-      skinGenLetterWidths: "[[REDACTED]]",
-      skinImages: "[[REDACTED]]",
-      skinCursors: "[[REDACTED]]",
-      skinRegion: "[[REDACTED]]",
-    },
-  };
-}
-
 export function getMilkdropMessage(state: AppState): MilkdropMessage | null {
   return state.milkdrop.message;
 }
