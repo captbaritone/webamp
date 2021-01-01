@@ -1,0 +1,31 @@
+{
+  "name": "winamp-eqf",
+  "version": "1.0.0",
+  "description": "Parse and create Winamp .EQF files which describe equalizer settings",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/captbaritone/webamp.git",
+    "directory": "packages/winamp-eqf"
+  },
+  "bugs": {
+    "url": "https://github.com/captbaritone/webamp/issues"
+  },
+  "homepage": "https://github.com/captbaritone/webamp/tree/master/packages/winamp-eqf",
+  "scripts": {
+    "test": "jest",
+    "tdd": "jest --watch"
+  },
+  "keywords": [
+    "winamp",
+    "equalizer",
+    "parse",
+    "create"
+  ],
+  "author": "Jordan Eldgredge",
+  "license": "ISC",
+  "devDependencies": {
+    "buffer-to-arraybuffer": "0.0.4",
+    "jest": "24.9.0"
+  }
+}
