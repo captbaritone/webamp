@@ -12,7 +12,6 @@
     "url": "https://github.com/captbaritone/webamp/issues"
   },
   "homepage": "https://github.com/captbaritone/webamp/tree/master/packages/winamp-eqf",
- 
   "scripts": {
     "test": "jest",
     "tdd": "jest --watch"
@@ -27,6 +26,6 @@
   "license": "ISC",
   "devDependencies": {
     "buffer-to-arraybuffer": "0.0.4",
-    "jest": "^19.0.2"
+    "jest": "24.9.0"
   }
 }
