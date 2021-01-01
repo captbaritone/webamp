@@ -1,5 +1,5 @@
 import { DeepPartial } from "redux";
-import { AppState } from "../../js/types";
+import { AppState } from "./Webamp";
 
 const defaultTracksState = {
   "0": {

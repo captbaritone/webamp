@@ -4,11 +4,11 @@ import * as Sentry from "@sentry/browser";
 import ReactDOM from "react-dom";
 import createMiddleware from "redux-sentry-middleware";
 import isButterchurnSupported from "butterchurn/lib/isSupported.min";
-import { WINDOWS } from "../../js/constants";
 import { loggerMiddleware } from "./eventLogger";
 
-import WebampLazy from "../../js/webampLazy";
 import {
+  WebampLazy,
+  WINDOWS,
   STEP_MARQUEE,
   UPDATE_TIME_ELAPSED,
   UPDATE_WINDOW_POSITIONS,
@@ -20,7 +20,7 @@ import {
   TOGGLE_SHUFFLE,
   SET_EQ_AUTO,
   SET_DUMMY_VIZ_DATA,
-} from "../../js/actionTypes";
+} from "./Webamp";
 
 import { getButterchurnOptions } from "./butterchurnOptions";
 import dropboxFilePicker from "./dropboxFilePicker";
