@@ -148,7 +148,6 @@
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",
     "reselect": "^3.0.1",
-    "screenfull": "^4.0.0",
     "tinyqueue": "^1.2.3",
     "winamp-eqf": "^1.0.0"
   }
