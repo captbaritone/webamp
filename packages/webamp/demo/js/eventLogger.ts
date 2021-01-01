@@ -1,5 +1,5 @@
 import { log, GoogleAnalyticsEvent } from "./logger";
-import { Action, Store } from "../../js/types";
+import { Action } from "../../js/types";
 
 function logEventFromAction(action: Action): GoogleAnalyticsEvent | null {
   switch (action.type) {
