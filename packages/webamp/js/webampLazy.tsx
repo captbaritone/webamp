@@ -39,8 +39,9 @@ import Emitter from "./emitter";
 import "../css/base-skin.css";
 import { SerializedStateV1 } from "./serializedStates/v1Types";
 import Disposable from "./Disposable";
+import { DeepPartial } from "redux";
 
-interface Options {
+export interface Options {
   /**
    * An object representing the initial skin to use.
    *
@@ -113,21 +114,23 @@ interface Options {
   handleSaveListEvent?: (tracks: Track[]) => null | Promise<null>;
 }
 
-interface PrivateOptions {
-  avaliableSkins?: { url: string; name: string }[]; // Old misspelled name
-  requireJSZip(): Promise<never>; // TODO: Type JSZip
-  requireMusicMetadata(): Promise<any>; // TODO: Type musicmetadata
-  __initialState?: AppState;
-  __customMiddlewares?: Middleware[];
-  __initialWindowLayout: {
-    [windowId: string]: {
-      size: null | [number, number];
-      position: WindowPosition;
-    };
+export type WindowLayout = {
+  [windowId: string]: {
+    size?: null | [number, number];
+    position: WindowPosition;
   };
-  __butterchurnOptions: ButterchurnOptions;
+};
+
+export interface PrivateOptions {
+  avaliableSkins?: { url: string; name: string }[]; // Old misspelled name
+  requireJSZip(): Promise<any>; // TODO: Type JSZip
+  requireMusicMetadata(): Promise<any>; // TODO: Type musicmetadata
+  __initialState?: DeepPartial<AppState>;
+  __customMiddlewares?: Middleware[];
+  __initialWindowLayout?: WindowLayout;
+  __butterchurnOptions?: ButterchurnOptions;
   // This is used by https://winampify.io/ to proxy through to Spotify's API.
-  __customMediaClass: typeof Media; // This should have the same interface as Media
+  __customMediaClass?: typeof Media; // This should have the same interface as Media
 }
 
 // Return a promise that resolves when the store matches a predicate.
