@@ -2,19 +2,11 @@
 
 import * as Sentry from "@sentry/browser";
 import ReactDOM from "react-dom";
-import createMiddleware from "redux-sentry-middleware";
 import isButterchurnSupported from "butterchurn/lib/isSupported.min";
-import { loggerMiddleware } from "./eventLogger";
+import { getWebampConfig } from "./webampConfig";
 
 import {
   WebampLazy,
-  WINDOWS,
-  STEP_MARQUEE,
-  UPDATE_TIME_ELAPSED,
-  UPDATE_WINDOW_POSITIONS,
-  SET_VOLUME,
-  SET_BALANCE,
-  SET_BAND_VALUE,
   DISABLE_MARQUEE,
   TOGGLE_REPEAT,
   TOGGLE_SHUFFLE,
@@ -22,32 +14,11 @@ import {
   SET_DUMMY_VIZ_DATA,
 } from "./Webamp";
 
-import { getButterchurnOptions } from "./butterchurnOptions";
-import dropboxFilePicker from "./dropboxFilePicker";
-import availableSkins from "./avaliableSkins";
-
-import {
-  skinUrl as configSkinUrl,
-  initialTracks,
-  initialState,
-  disableMarquee,
-} from "./config";
+import { disableMarquee, skinUrl as configSkinUrl } from "./config";
 import DemoDesktop from "./DemoDesktop";
 import enableMediaSession from "./mediaSession";
-import screenshotInitialState from "./screenshotInitialState";
 
 const DEFAULT_DOCUMENT_TITLE = document.title;
-
-const NOISY_ACTION_TYPES = new Set([
-  STEP_MARQUEE,
-  UPDATE_TIME_ELAPSED,
-  UPDATE_WINDOW_POSITIONS,
-  SET_VOLUME,
-  SET_BALANCE,
-  SET_BAND_VALUE,
-]);
-
-const MIN_MILKDROP_WIDTH = 725;
 
 let screenshot = false;
 let skinUrl = configSkinUrl;
@@ -67,17 +38,6 @@ window.addEventListener("dragenter", supressDragAndDrop);
 window.addEventListener("dragover", supressDragAndDrop);
 window.addEventListener("drop", supressDragAndDrop);
 
-let lastActionType = null;
-
-// Filter out consecutive common actions
-function filterBreadcrumbActions(action) {
-  const noisy =
-    NOISY_ACTION_TYPES.has(action.type) &&
-    NOISY_ACTION_TYPES.has(lastActionType);
-  lastActionType = action.type;
-  return !noisy;
-}
-
 try {
   Sentry.init({
     dsn: SENTRY_DSN,
@@ -89,11 +49,6 @@ try {
   // since it looks like a URL. When this happens, Sentry crashes.
   console.error(e);
 }
-
-const sentryMiddleware = createMiddleware(Sentry, {
-  filterBreadcrumbActions,
-  stateTransformer: getDebugData,
-});
 
 async function main() {
   const about = document.getElementsByClassName("about")[0];
@@ -107,66 +62,11 @@ async function main() {
   }
   about.classList.add("loaded");
 
-  let __butterchurnOptions = null;
-  let __initialWindowLayout = null;
   if (isButterchurnSupported()) {
-    const startWithMilkdropHidden =
-      document.body.clientWidth < MIN_MILKDROP_WIDTH ||
-      skinUrl != null ||
-      screenshot;
-
-    __butterchurnOptions = getButterchurnOptions(startWithMilkdropHidden);
-
-    if (startWithMilkdropHidden) {
-      __initialWindowLayout = {
-        [WINDOWS.MAIN]: { position: { x: 0, y: 0 } },
-        [WINDOWS.EQUALIZER]: { position: { x: 0, y: 116 } },
-        [WINDOWS.PLAYLIST]: { position: { x: 0, y: 232 }, size: [0, 0] },
-        [WINDOWS.MILKDROP]: { position: { x: 0, y: 348 }, size: [0, 0] },
-      };
-    } else {
-      __initialWindowLayout = {
-        [WINDOWS.MAIN]: { position: { x: 0, y: 0 } },
-        [WINDOWS.EQUALIZER]: { position: { x: 0, y: 116 } },
-        [WINDOWS.PLAYLIST]: { position: { x: 0, y: 232 }, size: [0, 4] },
-        [WINDOWS.MILKDROP]: { position: { x: 275, y: 0 }, size: [7, 12] },
-      };
-    }
-
     document.getElementById("butterchurn-share").style.display = "flex";
   }
 
-  const initialSkin = !skinUrl ? null : { url: skinUrl };
-
-  const webamp = new WebampLazy({
-    initialSkin,
-    initialTracks: screenshot ? null : initialTracks,
-    availableSkins,
-    filePickers: [dropboxFilePicker],
-    enableHotkeys: true,
-    handleTrackDropEvent: (e) => {
-      const trackJson = e.dataTransfer.getData("text/json");
-      if (trackJson == null) {
-        return null;
-      }
-      try {
-        const track = JSON.parse(trackJson);
-        return [track];
-      } catch (err) {
-        return null;
-      }
-    },
-    requireJSZip: () =>
-      import(/* webpackChunkName: "jszip" */ "jszip/dist/jszip"),
-    requireMusicMetadata: () =>
-      import(
-        /* webpackChunkName: "music-metadata-browser" */ "music-metadata-browser/dist/index"
-      ),
-    __initialWindowLayout,
-    __initialState: screenshot ? screenshotInitialState : initialState,
-    __butterchurnOptions,
-    __customMiddlewares: [sentryMiddleware, loggerMiddleware],
-  });
+  const webamp = new WebampLazy(getWebampConfig(screenshot, skinUrl));
 
   if (disableMarquee || screenshot) {
     webamp.store.dispatch({ type: DISABLE_MARQUEE });
@@ -235,19 +135,6 @@ async function main() {
       document.getElementById("demo-desktop")
     );
   }
-}
-
-function getDebugData(state) {
-  return {
-    ...state,
-    display: {
-      ...state.display,
-      skinGenLetterWidths: "[[REDACTED]]",
-      skinImages: "[[REDACTED]]",
-      skinCursors: "[[REDACTED]]",
-      skinRegion: "[[REDACTED]]",
-    },
-  };
 }
 
 main();

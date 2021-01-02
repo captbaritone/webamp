@@ -705,7 +705,7 @@ export interface IMusicMetadataBrowserApi {
 }
 
 export interface Extras {
-  requireJSZip(): Promise<never>;
+  requireJSZip(): Promise<any>;
   requireMusicMetadata(): Promise<IMusicMetadataBrowserApi>;
   convertPreset: ((file: File) => Promise<Object>) | null;
   handleTrackDropEvent?: (
