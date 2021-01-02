@@ -1,11 +1,10 @@
-import WebampLazy from "../../js/webampLazy";
+import { WebampLazy, URLTrack } from "./Webamp";
 import { useCallback } from "react";
 // @ts-ignore
 import iconLarge from "../images/manifest/icon-96x96.png";
 // @ts-ignore
 import iconSmall from "../images/manifest/icon-48x48.png";
 import DesktopIcon from "./DesktopIcon";
-import { URLTrack } from "../../js/types";
 
 const iconUrl = window.devicePixelRatio > 1 ? iconLarge : iconSmall;
 
