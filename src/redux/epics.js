@@ -418,6 +418,11 @@ const loggingEpic = (actions, state) =>
         default: {
         }
       }
+      // Facebook requires a value for events that can be used to create
+      // look-a-like audiences.
+      if (action.type === "ARCHIVED_SKIN") {
+        window.fbq("track", "SKIN_UPLOAD_CONVERSION", { value: 1 });
+      }
     }),
     ignoreElements()
   );
