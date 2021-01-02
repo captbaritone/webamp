@@ -76,7 +76,7 @@ module.exports = {
     maxAssetSize: 7000000,
   },
   entry: {
-    webamp: ["./js/index.js"],
+    webamp: ["./js/index.tsx"],
   },
   context: path.resolve(__dirname, "../"),
   output: {
