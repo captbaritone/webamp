@@ -360,7 +360,7 @@ export type Action =
     }
   | {
       type: "SET_DUMMY_VIZ_DATA";
-      data: null;
+      data: DummyVizData;
     }
   | {
       type: "SET_BAND_VALUE";
