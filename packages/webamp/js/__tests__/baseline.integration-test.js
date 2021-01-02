@@ -35,6 +35,20 @@ test("can load a skin via the query params", async () => {
   expect(await page.screenshot()).toMatchImageSnapshot(snapshotOptions);
 });
 
+test("can set a background color via the query params", async () => {
+  await page.goto(`${DOMAIN}/?bg=%23ff0000#{"disableMarquee":true}`);
+  await page.evaluate(() => window.__webamp.skinIsLoaded());
+  expect(await page.screenshot()).toMatchImageSnapshot(snapshotOptions);
+});
+
+// This seems to fail hard for some other reason. Disable for now.
+test.skip("can set soundcloud playlist via the query params", async () => {
+  // If this test starts to fail, it might be flakyiness coming from the SoundCloud API, or that Poolside FM has changed their playlist.
+  await page.goto(`${DOMAIN}/?scPlaylist=1040356177#{"disableMarquee":true}`);
+  await page.evaluate(() => window.__webamp.skinIsLoaded());
+  expect(await page.screenshot()).toMatchImageSnapshot(snapshotOptions);
+});
+
 test("should render the Topaz skin", async () => {
   await page.goto(`${DOMAIN}/#{"disableMarquee":true}`);
   await expect(page).toUploadFile(
