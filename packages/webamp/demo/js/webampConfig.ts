@@ -4,6 +4,7 @@ import createMiddleware from "redux-sentry-middleware";
 // @ts-ignore
 import isButterchurnSupported from "butterchurn/lib/isSupported.min";
 import { loggerMiddleware } from "./eventLogger";
+import * as SoundCloud from "./SoundCloud";
 
 import {
   Action,
@@ -55,10 +56,11 @@ const sentryMiddleware = createMiddleware(Sentry, {
   stateTransformer: getDebugData,
 });
 
-export function getWebampConfig(
+export async function getWebampConfig(
   screenshot: boolean,
-  skinUrl: string | null
-): Options & PrivateOptions {
+  skinUrl: string | null,
+  soundCloudPlaylist: SoundCloud.SoundCloudPlaylist | null
+): Promise<Options & PrivateOptions> {
   let __butterchurnOptions;
   let __initialWindowLayout: WindowLayout | undefined;
   if (isButterchurnSupported()) {
@@ -90,7 +92,12 @@ export function getWebampConfig(
 
   return {
     initialSkin,
-    initialTracks: screenshot ? undefined : initialTracks,
+    // eslint-disable-next-line no-nested-ternary
+    initialTracks: screenshot
+      ? undefined
+      : soundCloudPlaylist != null
+      ? SoundCloud.tracksFromPlaylist(soundCloudPlaylist)
+      : initialTracks,
     availableSkins,
     filePickers: [dropboxFilePicker],
     enableHotkeys: true,

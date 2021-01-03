@@ -8,10 +8,13 @@ import { useWindowSize } from "../../js/hooks";
 import avaliableSkins from "./avaliableSkins";
 import DesktopLinkIcon from "./DesktopLinkIcon";
 import museumIcon from "../images/icons/internet-folder-32x32.png";
+import soundcloudIcon from "../images/icons/soundcloud-32x32.png";
+import { SoundCloudPlaylist } from "./SoundCloud";
 // import MilkIcon from "./MilkIcon";
 
 interface Props {
   webamp: WebampLazy;
+  soundCloudPlaylist: SoundCloudPlaylist | null;
 }
 
 const ICON_WIDTH = 75;
@@ -19,7 +22,7 @@ const ICON_HEIGHT = 100;
 const VERTICAL_MARGIN = 30;
 const HORIZONTAL_MARGIN = 10;
 
-const DemoDesktop = ({ webamp }: Props) => {
+const DemoDesktop = ({ webamp, soundCloudPlaylist }: Props) => {
   const { width } = useWindowSize();
   const visibleWidth = width - VERTICAL_MARGIN * 2;
 
@@ -52,6 +55,15 @@ const DemoDesktop = ({ webamp }: Props) => {
         href={"https://skins.webamp.org"}
       />
     );
+    if (soundCloudPlaylist != null) {
+      icons.push(
+        <DesktopLinkIcon
+          iconUrl={soundcloudIcon}
+          name={soundCloudPlaylist.title}
+          href={soundCloudPlaylist.permalink_url}
+        />
+      );
+    }
   }
   return (
     <div

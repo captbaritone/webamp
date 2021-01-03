@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 // @ts-ignore
 import isButterchurnSupported from "butterchurn/lib/isSupported.min";
 import { getWebampConfig } from "./webampConfig";
+import * as SoundCloud from "./SoundCloud";
 
 import {
   WebampLazy,
@@ -29,10 +30,14 @@ const DEFAULT_DOCUMENT_TITLE = document.title;
 
 let screenshot = false;
 let skinUrl = configSkinUrl;
+let backgroundColor: null | string = null;
+let soundcloudPlaylistId: null | string = null;
 if ("URLSearchParams" in window) {
   const params = new URLSearchParams(location.search);
   screenshot = Boolean(params.get("screenshot"));
   skinUrl = params.get("skinUrl") || skinUrl;
+  backgroundColor = params.get("bg");
+  soundcloudPlaylistId = params.get("scPlaylist");
 }
 
 function supressDragAndDrop(e: DragEvent) {
@@ -51,7 +56,7 @@ window.addEventListener("drop", supressDragAndDrop);
 try {
   Sentry.init({
     dsn: SENTRY_DSN,
-    release: COMMITHASH ?? "DEV",
+    release: typeof COMMITHASH === "undefined" ? "DEV" : COMMITHASH,
   });
 } catch (e) {
   // Archive.org tries to rewrite the DSN to point to a archive.org version
@@ -79,8 +84,13 @@ async function main() {
       "butterchurn-share"
     ) as HTMLDivElement).style.display = "flex";
   }
+  let soundcloudPlaylist = null;
+  if (soundcloudPlaylistId != null) {
+    soundcloudPlaylist = await SoundCloud.getPlaylist(soundcloudPlaylistId);
+  }
+  const config = await getWebampConfig(screenshot, skinUrl, soundcloudPlaylist);
 
-  const webamp = new WebampLazy(getWebampConfig(screenshot, skinUrl));
+  const webamp = new WebampLazy(config);
 
   if (disableMarquee || screenshot) {
     webamp.store.dispatch({ type: DISABLE_MARQUEE });
@@ -146,8 +156,11 @@ async function main() {
   );
 
   if (!screenshot) {
+    if (backgroundColor != null) {
+      window.document.body.style.backgroundColor = backgroundColor;
+    }
     ReactDOM.render(
-      <DemoDesktop webamp={webamp} />,
+      <DemoDesktop webamp={webamp} soundCloudPlaylist={soundcloudPlaylist} />,
       document.getElementById("demo-desktop")
     );
   }
