@@ -54,11 +54,17 @@ const webamp = new Webamp({
       artist: "DJ Mike Llama",
       title: "Llama Whippin' Intro",
     },
+    // NOTE: Your audio file must be served from the same domain as your HTML
+    // file, or served with permissive CORS HTTP headers:
+    // https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
     // Can be downloaded from: https://github.com/captbaritone/webamp/raw/master/mp3/llama-2.91.mp3
     url: "path/to/mp3/llama-2.91.mp3"
   }],
   // Optional. The default skin is included in the js bundle, and will be loaded by default.
   initialSkin: {
+    // NOTE: Your skin file must be served from the same domain as your HTML
+    // file, or served with permissive CORS HTTP headers:
+    // https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
     // Can be downloaded from https://github.com/captbaritone/webamp/raw/master/skins/TopazAmp1-2.wsz
     url: "path/to/skins/TopazAmp1-2.wsz"
   },
@@ -194,6 +200,9 @@ The `Webamp` class has the following _instance_ methods:
 Add an array of `track`s (see above) to the end of the playlist.
 
 ```JavaScript
+// NOTE: Your audio files must be served from the same domain as your HTML
+// file, or served with permissive CORS HTTP headers:
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
 webamp.appendTracks([
     {url: 'https://example.com/track1.mp3'},
     {url: 'https://example.com/track2.mp3'},
@@ -206,6 +215,9 @@ webamp.appendTracks([
 Replace the playlist with an array of `track`s (see above) and begin playing the first track.
 
 ```JavaScript
+// NOTE: Your audio files must be served from the same domain as your HTML
+// file, or served with permissive CORS HTTP headers:
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
 webamp.setTracksToPlay([
     {url: 'https://example.com/track1.mp3'},
     {url: 'https://example.com/track2.mp3'},
