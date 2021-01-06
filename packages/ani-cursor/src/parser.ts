@@ -86,7 +86,7 @@ export function parseAni(arr: Uint8Array): ParsedAni {
     throw new Error("Did not find fram LIST");
   }
 
-  const images = imageChunk.subChunks.slice(0, metadata.nFrames).map((c) => {
+  let images = imageChunk.subChunks.slice(0, metadata.nFrames).map((c) => {
     if (c.chunkId !== "icon") {
       throw new Error(`Unexpected chunk type in fram: ${c.chunkId}`);
     }
@@ -106,6 +106,18 @@ export function parseAni(arr: Uint8Array): ParsedAni {
         case "IART":
           artist = unpackString(arr, c.chunkData.start, c.chunkData.end);
           break;
+        case "LIST":
+          // Some cursors with an artist of "Created with Take ONE 3.5 (unregisterred version)" seem to have their frames here for some reason?
+          if (c.format === "fram") {
+            images = c.subChunks.slice(0, metadata.nFrames).map((c) => {
+              if (c.chunkId !== "icon") {
+                throw new Error(`Unexpected chunk type in fram: ${c.chunkId}`);
+              }
+              return arr.slice(c.chunkData.start, c.chunkData.end);
+            });
+          }
+          break;
+
         default:
         // Unexpected subchunk
       }
