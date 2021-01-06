@@ -93,10 +93,16 @@ const getCssRules = createSelector(
             case "cur":
               return `${selector} {cursor: url(${cursor.url}), auto}`;
             case "ani": {
-              return convertAniBinaryToCSS(selector, cursor.aniData);
+              try {
+                return convertAniBinaryToCSS(selector, cursor.aniData);
+              } catch (e) {
+                console.error(e);
+                return null;
+              }
             }
           }
-        });
+        })
+        .filter(Boolean);
       cssRules.push(...cursorRules);
     });
 

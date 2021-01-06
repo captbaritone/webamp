@@ -145,12 +145,7 @@ export async function getCursorFromFilename(
   }
   const contents = file.contents as Uint8Array;
   if (arrayStartsWith(contents, RIFF_MAGIC)) {
-    try {
-      return { type: "ani", aniData: contents };
-    } catch (e) {
-      console.error(e);
-      return null;
-    }
+    return { type: "ani", aniData: contents };
   }
 
   return { type: "cur", url: FileUtils.curUrlFromByteArray(contents) };
