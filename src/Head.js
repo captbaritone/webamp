@@ -7,18 +7,16 @@ import { SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT } from "./constants";
 const DESCRIPTION =
   "Infinite scroll through 65k Winamp skins with interactive preview";
 
-function Image({ url, width, height, alt }) {
-  return (
-    <>
-      <meta property="og:image" content={url} />,
-      <meta property="og:image:width" content={width} />,
-      <meta property="og:image:height" content={height} />,
-      <meta property="og:image:type" key="og:image:type" content="image/png" />,
-      <meta property="og:image:alt" key="og:image:alt" content={alt} />,
-      <meta name="twitter:image" content={url} />,
-      <meta property="twitter:image:alt" content={alt} />,
-    </>
-  );
+function useImageTags({ url, width, height, alt }) {
+  return [
+    <meta property="og:image" content={url} key={1} />,
+    <meta property="og:image:width" content={width} key={2} />,
+    <meta property="og:image:height" content={height} key={3} />,
+    <meta property="og:image:type" content="image/png" key={4} />,
+    <meta property="og:image:alt" content={alt} key={5} />,
+    <meta name="twitter:image" content={url} key={6} />,
+    <meta property="twitter:image:alt" content={alt} key={7} />,
+  ];
 }
 
 function Head({ url: relativeUrl, pageTitle, previewImageUrl }) {
@@ -38,6 +36,21 @@ function Head({ url: relativeUrl, pageTitle, previewImageUrl }) {
   let readme = focusedSkinFile?.content?.slice(0, 300);
   const description = readme || DESCRIPTION;
   const pageUrl = `https://skins.webamp.org${relativeUrl}`;
+  const imageTags = useImageTags(
+    previewImageUrl
+      ? {
+          alt: "Screenshot of many Winamp skins in a grid.",
+          url: previewImageUrl,
+          width: SCREENSHOT_WIDTH,
+          height: SCREENSHOT_HEIGHT,
+        }
+      : {
+          alt: "Screenshot of many Winamp skins in a grid.",
+          url: "https://skins.webamp.org/preview_small.png",
+          width: "1844",
+          height: "1297",
+        }
+  );
   return (
     <Helmet canUseDOM={true}>
       <meta charSet="utf-8" />
@@ -60,21 +73,7 @@ function Head({ url: relativeUrl, pageTitle, previewImageUrl }) {
       <meta name="twitter:title" content={pageTitle} />
       <meta name="twitter:description" content={description} />
 
-      {previewImageUrl ? (
-        <Image
-          alt="Screenshot of many Winamp skins in a grid."
-          url={previewImageUrl}
-          width={SCREENSHOT_WIDTH}
-          height={SCREENSHOT_HEIGHT}
-        />
-      ) : (
-        <Image
-          alt="Screenshot of many Winamp skins in a grid."
-          url="https://skins.webamp.org/preview_small.png"
-          width="1844"
-          height="1297"
-        />
-      )}
+      {imageTags}
     </Helmet>
   );
 }
