@@ -32,6 +32,12 @@ describe("Green Dimension v2.wsz", () => {
   });
 });
 
+describe("AfterShock_Digital_2003.wsz", () => {
+  test("close.cur", async () => {
+    expect(readPathCss("AfterShock_Digital_2003/close.cur")).toMatchSnapshot();
+  });
+});
+
 describe("Edge cases", () => {
   test("piano.ani", async () => {
     expect(readPathCss("piano.ani")).toMatchSnapshot();
