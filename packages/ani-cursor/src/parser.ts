@@ -53,6 +53,15 @@ export function parseAni(arr: Uint8Array): ParsedAni {
     return chunk == null ? null : mapper(chunk);
   }
 
+  function readImages(chunk: Chunk, frameCount: number): Uint8Array[] {
+    return chunk.subChunks.slice(0, frameCount).map((c) => {
+      if (c.chunkId !== "icon") {
+        throw new Error(`Unexpected chunk type in fram: ${c.chunkId}`);
+      }
+      return arr.slice(c.chunkData.start, c.chunkData.end);
+    });
+  }
+
   const metadata = mapChunk("anih", (c) => {
     const words = unpackArray(arr, DWORD, c.chunkData.start, c.chunkData.end);
     return {
@@ -86,12 +95,7 @@ export function parseAni(arr: Uint8Array): ParsedAni {
     throw new Error("Did not find fram LIST");
   }
 
-  let images = imageChunk.subChunks.slice(0, metadata.nFrames).map((c) => {
-    if (c.chunkId !== "icon") {
-      throw new Error(`Unexpected chunk type in fram: ${c.chunkId}`);
-    }
-    return arr.slice(c.chunkData.start, c.chunkData.end);
-  });
+  let images = readImages(imageChunk, metadata.nFrames);
 
   let title = null;
   let artist = null;
@@ -109,12 +113,7 @@ export function parseAni(arr: Uint8Array): ParsedAni {
         case "LIST":
           // Some cursors with an artist of "Created with Take ONE 3.5 (unregisterred version)" seem to have their frames here for some reason?
           if (c.format === "fram") {
-            images = c.subChunks.slice(0, metadata.nFrames).map((c) => {
-              if (c.chunkId !== "icon") {
-                throw new Error(`Unexpected chunk type in fram: ${c.chunkId}`);
-              }
-              return arr.slice(c.chunkData.start, c.chunkData.end);
-            });
+            images = readImages(c, metadata.nFrames);
           }
           break;
 
