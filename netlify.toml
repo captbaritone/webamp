@@ -15,6 +15,10 @@
 [[redirects]]
   from = "/about"
   to = "https://github.com/captbaritone/webamp"
+  
+[[redirects]]
+  from = "/wallpapers"
+  to = "https://www.dropbox.com/sh/3lx5ajfvsjeenj5/AADf8AihDeu1KgH1wr_WAsgXa?dl=0"
 
 # Redirect domain aliases to primary domain
 [[redirects]]
