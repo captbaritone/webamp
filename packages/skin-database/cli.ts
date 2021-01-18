@@ -18,6 +18,8 @@ import UserContext from "./data/UserContext";
 import { integrityCheck } from "./tasks/integrityCheck";
 import { ensureWebampLinks, syncWithArchive } from "./tasks/syncWithArchive";
 import { syncFromArchive } from "./tasks/syncFromArchive";
+import { processUserUploads } from "./api/processUserUploads";
+import DiscordEventHandler from "./api/DiscordEventHandler";
 
 async function main() {
   const client = new Discord.Client();
@@ -130,6 +132,12 @@ async function main() {
       }
       case "index": {
         console.log(await Skins.updateSearchIndex(argv._[1]));
+        break;
+      }
+      case "process": {
+        const handler = new DiscordEventHandler();
+        await processUserUploads((event) => handler.handle(event));
+        handler.dispose();
         break;
       }
       case "add-missing-indexes": {
