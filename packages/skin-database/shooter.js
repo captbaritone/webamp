@@ -38,7 +38,7 @@ export default class Shooter {
         return;
       }
 
-      console.log("page log:", consoleMessage);
+      console.log("page log:", consoleMessage.text());
     });
     this._page.on("error", (e) => {
       console.log(`Page error: ${e.toString()}`);
@@ -79,6 +79,7 @@ export default class Shooter {
     try {
       const handle = await this._page.$("#webamp-file-input");
 
+      console.log("Goinng to try to screenshot");
       // eslint-disable-next-line no-async-promise-executor
       await new Promise(async (resolve, reject) => {
         try {
