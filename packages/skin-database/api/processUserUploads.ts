@@ -7,6 +7,7 @@ async function* reportedUploads() {
   const seen = new Set();
   while (true) {
     const upload = await Skins.getReportedUpload();
+    console.log("Found one", { upload });
     if (upload == null) {
       return;
     }
@@ -26,6 +27,17 @@ function log(...args: any[]) {
   console.log(...args);
 }
 
+const ONE_MINUTE_IN_MS = 1000 * 60;
+
+function timeout<T>(p: Promise<T>, duration: number): Promise<T> {
+  return Promise.race([
+    p,
+    new Promise<never>((resolve, reject) =>
+      setTimeout(() => reject("timeout"), duration)
+    ),
+  ]);
+}
+
 export async function processUserUploads(eventHandler: EventHandler) {
   log("process user uploads");
   // Ensure we only have one worker processing requests.
@@ -34,16 +46,15 @@ export async function processUserUploads(eventHandler: EventHandler) {
   }
   processing = true;
   const uploads = reportedUploads();
-  log("Uploads to process: ", uploads);
+  log("Uploads to process...");
   for await (const upload of uploads) {
     log("Going to try: ", upload);
     try {
       const buffer = await S3.getUploadedSkin(upload.id);
       log("Got buffer: ", upload);
-      const result = await addSkinFromBuffer(
-        buffer,
-        upload.filename,
-        "Web API"
+      const result = await timeout(
+        addSkinFromBuffer(buffer, upload.filename, "Web API"),
+        ONE_MINUTE_IN_MS
       );
       log("Added skin from buffer: ", upload, result);
       await Skins.recordUserUploadArchived(upload.id);
@@ -73,6 +84,7 @@ export async function processUserUploads(eventHandler: EventHandler) {
       console.error(e);
     }
   }
+  log("Done processing uploads.");
 
   processing = false;
 }
