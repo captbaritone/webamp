@@ -15,6 +15,11 @@ export default class DiscordEventHandler {
       .then(() => _client);
   }
 
+  async dispose() {
+    const client = await this._clientPromise;
+    client.destroy();
+  }
+
   private async getClient() {
     return this._clientPromise;
   }
