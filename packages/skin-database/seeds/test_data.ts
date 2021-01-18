@@ -7,6 +7,7 @@ export async function seed(knex: Knex): Promise<any> {
   await knex("skin_reviews").del();
   await knex("ia_items").del();
   await knex("tweets").del();
+  await knex("archive_files").del();
   // Inserts seed entries
   await knex("skins").insert([
     { md5: "a_fake_md5", skin_type: 1, emails: "" },
@@ -44,6 +45,14 @@ export async function seed(knex: Knex): Promise<any> {
     {
       skin_md5: "a_tweeted_md5",
       tweet_id: "1333893671326871552",
+    },
+  ]);
+
+  await knex("archive_files").insert([
+    {
+      skin_md5: "a_fake_md5",
+      file_md5: "a_fake_file_md5",
+      file_date: new Date("1995-12-17T03:24:00"),
     },
   ]);
 }

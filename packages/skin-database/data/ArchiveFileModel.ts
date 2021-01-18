@@ -22,6 +22,10 @@ export default class ArchiveFileModel {
     return this.row.file_name;
   }
 
+  getFileDate(): Date {
+    return new Date(this.row.file_date);
+  }
+
   async debug(): Promise<ArchiveFileDebugData> {
     return {
       row: this.row,

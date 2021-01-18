@@ -38,6 +38,7 @@ export type ArchiveFileRow = {
   skin_md5: string;
   file_name: string;
   file_md5: string;
+  file_date: string;
 };
 
 export type IaItemRow = {

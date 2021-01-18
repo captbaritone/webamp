@@ -7,11 +7,12 @@ import fetch from "node-fetch";
 type FileData = {
   fileName: string;
   md5: string;
+  date: Date;
 };
 
 async function getFileData(file: JSZip.JSZipObject): Promise<FileData> {
   const blob = await file.async("nodebuffer");
-  return { fileName: file.name, md5: md5(blob) };
+  return { fileName: file.name, md5: md5(blob), date: file.date };
 }
 
 export async function getSkinFileData(skinData: Buffer): Promise<FileData[]> {
@@ -27,8 +28,14 @@ export async function setHashesForSkin(skinMd5: string): Promise<void> {
   }
   const body = await response.buffer();
   const hashes = await getSkinFileData(body);
-  const rows = hashes.map(({ fileName, md5 }) => {
-    return { skin_md5: skinMd5, file_name: fileName, file_md5: md5 };
+  const rows = hashes.map(({ fileName, md5, date }) => {
+    return {
+      skin_md5: skinMd5,
+      file_name: fileName,
+      file_md5: md5,
+      file_date: date,
+    };
   });
+  await knex("archive_files").where("skin_md5", skinMd5).delete();
   await knex("archive_files").insert(rows);
 }
