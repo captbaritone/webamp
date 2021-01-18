@@ -386,6 +386,8 @@ export async function getStats(): Promise<{
   tweeted: number;
   tweetable: number;
   webUploads: number;
+  uploadsAwaitingProcessing: number;
+  uploadsErrored: number;
 }> {
   const approved = (
     await knex("skin_reviews")
@@ -409,6 +411,18 @@ export async function getStats(): Promise<{
       .where("source_attribution", "Web API")
       .count("*", { as: "uploads" })
   )[0].uploads;
+
+  const uploadsAwaitingProcessing = (
+    await knex("skin_uploads")
+      .where("status", "UPLOAD_REPORTED")
+      .count("*", { as: "uploads" })
+  )[0].uploads;
+
+  const uploadsErrored = (
+    await knex("skin_uploads")
+      .where("status", "ERRORED")
+      .count("*", { as: "uploads" })
+  )[0].uploads;
   const tweetable = await getTweetableSkinCount();
   return {
     approved: Number(approved),
@@ -417,6 +431,8 @@ export async function getStats(): Promise<{
     tweeted: Number(tweeted),
     tweetable,
     webUploads: Number(webUploads),
+    uploadsAwaitingProcessing: Number(uploadsAwaitingProcessing),
+    uploadsErrored: Number(uploadsErrored),
   };
 }
 

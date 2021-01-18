@@ -20,6 +20,8 @@ test("empty", async () => {
     tweeted: 0,
     tweetable: 0,
     webUploads: 0,
+    uploadsAwaitingProcessing: 0,
+    uploadsErrored: 0,
   });
 
   expect(await Skins.getSkinToTweet()).toBe(null);
@@ -146,6 +148,8 @@ describe("seeded", () => {
         "rejected": 1,
         "tweetable": 1,
         "tweeted": 1,
+        "uploadsAwaitingProcessing": 0,
+        "uploadsErrored": 0,
         "webUploads": 0,
       }
     `);

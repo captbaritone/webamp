@@ -11,7 +11,10 @@ async function handler(message: Message): Promise<void> {
     nsfw,
     tweetable,
     webUploads,
+    uploadsAwaitingProcessing,
+    uploadsErrored,
   } = await Skins.getStats();
+
   await message.channel.send(`Unique Skins: ${classic.toLocaleString()}
 Tweeted: ${tweeted.toLocaleString()}
 Rejected: ${rejected.toLocaleString()}
@@ -19,6 +22,8 @@ NSFW: ${nsfw.toLocaleString()}
 Approved: ${approved.toLocaleString()}
 Tweetable: ${tweetable.toLocaleString()}
 Uploaded Via Web: ${webUploads.toLocaleString()}
+Uploads Awaiting Processing: ${uploadsAwaitingProcessing.toLocaleString()}
+Uploads that Errored: ${uploadsErrored.toLocaleString()}
  `);
 }
 
