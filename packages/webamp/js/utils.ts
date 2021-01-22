@@ -132,9 +132,13 @@ export const clamp = (value: number, min: number, max: number): number =>
 export const sum = (values: number[]): number =>
   values.reduce((total, value) => total + value, 0);
 
-export const base64FromDataArray = (dataArray: Uint8Array): string => {
-  return window.btoa(String.fromCharCode(...dataArray));
-};
+export function base64FromDataArray(dataArray: Uint8Array): string {
+  return window.btoa(
+    Array.from(dataArray)
+      .map((byte) => String.fromCharCode(byte))
+      .join("")
+  );
+}
 
 export const base64FromArrayBuffer = (arrayBuffer: ArrayBuffer): string => {
   return base64FromDataArray(new Uint8Array(arrayBuffer));

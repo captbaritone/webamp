@@ -1,5 +1,11 @@
 # Changelog for `ani-cursor`
 
+## Next (unreleased)
+
+### Bug Fixes
+
+* Prevent "Maximum call stack size exceeded" error when parsing large cursors.
+
 ## 0.0.5
 
 ### Bug Fixes
