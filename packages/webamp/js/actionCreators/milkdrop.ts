@@ -19,19 +19,26 @@ import {
 } from "../types";
 import * as FileUtils from "../fileUtils";
 
+function addUseWASM(obj: Object): Object {
+  return { ...obj, useWASM: true };
+}
+
 function normalizePresetTypes(preset: Preset): StatePreset {
   const { name } = preset;
   if ("butterchurnPresetObject" in preset) {
     return {
       type: "RESOLVED",
       name,
-      preset: preset.butterchurnPresetObject,
+      preset: addUseWASM(preset.butterchurnPresetObject),
     };
   } else if ("getButterchrunPresetObject" in preset) {
     return {
       type: "UNRESOLVED",
       name,
-      getPreset: preset.getButterchrunPresetObject,
+      getPreset: async () => {
+        const json = await preset.getButterchrunPresetObject();
+        return addUseWASM(json);
+      },
     };
   } else if ("butterchurnPresetUrl" in preset) {
     return {
@@ -39,7 +46,8 @@ function normalizePresetTypes(preset: Preset): StatePreset {
       name,
       getPreset: async () => {
         const resp = await fetch(preset.butterchurnPresetUrl);
-        return resp.json();
+        const json = await resp.json();
+        return addUseWASM(json);
       },
     };
   }

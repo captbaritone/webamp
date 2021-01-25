@@ -34,7 +34,7 @@ export function getButterchurnOptions(
   return {
     importButterchurn: () => {
       return import(
-        /* webpackChunkName: "butterchurn-initial-dependencies" */
+        /* webpackChunkName: "butterchurn" */
         // @ts-ignore
         "butterchurn"
       );
@@ -91,14 +91,13 @@ export function getButterchurnOptions(
       }
 
       const presets = await import(
+        /* webpackChunkName: "butterchurn-presets" */
         // @ts-ignore
         "butterchurn-presets/lib/butterchurnPresetsMinimal.min"
       );
       return Object.entries(presets.default.getPresets()).map(
         ([name, preset]) => {
-          const butterchurnPresetObject: any = preset;
-          butterchurnPresetObject.useWASM = true;
-          return { name, butterchurnPresetObject };
+          return { name, butterchurnPresetObject: preset as Object };
         }
       );
     },
