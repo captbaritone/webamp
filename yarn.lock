@@ -3355,6 +3355,14 @@ alphanum-sort@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/alphanum-sort/-/alphanum-sort-1.0.2.tgz#97a1119649b211ad33691d9f9f486a8ec9fbe0a3"
 
+ani-cursor@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/ani-cursor/-/ani-cursor-0.0.4.tgz#bdf0a5cc545adcb3af7d097c0f15b702129a89a8"
+  integrity sha512-2MTPTcPhVw+SkIV7R0MsYioVi58bYH+Jjz9k3jQraX2mOJjUiZRSa9QK37eD6b7F/VBq+y3q1mK12i+uG+f5HQ==
+  dependencies:
+    byte-data "18.1.1"
+    riff-file "^1.0.3"
+
 ansi-colors@^3.0.0:
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/ansi-colors/-/ansi-colors-3.2.4.tgz#e3a3da4bfbae6c86a9c285625de124a234026fbf"
