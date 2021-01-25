@@ -89,9 +89,17 @@ export function getButterchurnOptions(
           throw new Error("We still need to implement this");
         }
       }
-      // TODO: Fallback to some other presets?
-      return loadButterchurnPresetMapURL(
-        "https://unpkg.com/butterchurn-presets-weekly@0.0.2/weeks/week1/presets.json"
+
+      const presets = await import(
+        // @ts-ignore
+        "butterchurn-presets/lib/butterchurnPresetsMinimal.min"
+      );
+      return Object.entries(presets.default.getPresets()).map(
+        ([name, preset]) => {
+          const butterchurnPresetObject: any = preset;
+          butterchurnPresetObject.useWASM = true;
+          return { name, butterchurnPresetObject };
+        }
       );
     },
     butterchurnOpen: !startWithMilkdropHidden,

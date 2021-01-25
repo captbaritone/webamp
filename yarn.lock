@@ -92,6 +92,11 @@
     "@algolia/logger-common" "4.3.0"
     "@algolia/requester-common" "4.3.0"
 
+"@assemblyscript/loader@^0.17.11":
+  version "0.17.14"
+  resolved "https://registry.yarnpkg.com/@assemblyscript/loader/-/loader-0.17.14.tgz#43bfe793c787180c5eb0a57ada8318fb62171b4e"
+  integrity sha512-+PVTOfla/0XMLRTQLJFPg4u40XcdTfon6GGea70hBGi8Pd7ZymIXyVUR+vK8wt5Jb4MVKTKPIz43Myyebw5mZA==
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.8.3":
   version "7.8.3"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.8.3.tgz#33e25903d7481181534e12ec0a25f16b6fcf419e"
@@ -1794,6 +1799,13 @@
 "@babel/runtime@^7.0.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4":
   version "7.9.6"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.9.6.tgz#a9102eb5cadedf3f31d08a9ecf294af7827ea29f"
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
+"@babel/runtime@^7.11.2", "@babel/runtime@^7.12.5":
+  version "7.12.5"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.12.5.tgz#410e7e487441e1b360c29be715d870d9b985882e"
+  integrity sha512-plcc+hbExy3McchJCEQG3knOsuh3HH+Prx1P6cLIkET/0dLuQDEnrT+s27Axgc9bqfsmNUNHfscgMUdBpC9xfg==
   dependencies:
     regenerator-runtime "^0.13.4"
 
@@ -4269,12 +4281,29 @@ busboy@^0.3.1:
   dependencies:
     dicer "0.3.0"
 
+butterchurn-presets@^3.0.0-beta.0:
+  version "3.0.0-beta.0"
+  resolved "https://registry.yarnpkg.com/butterchurn-presets/-/butterchurn-presets-3.0.0-beta.0.tgz#a2b44d6164256ebacd5f779803d35aa6ab630330"
+  integrity sha512-IBfF7gdjM513pfA7LIBue7GzW074zKzf1NGpros5RvXvDxe+S5KEbhZxgBxXHp8xlQA3eDbD5aEt0SPxB2HWnQ==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+
 butterchurn@^2.6.7:
   version "2.6.7"
   resolved "https://registry.yarnpkg.com/butterchurn/-/butterchurn-2.6.7.tgz#1ff0c1365731a4fb7ada7bb16ae1c6f09a110c12"
   dependencies:
     "@babel/runtime" "^7.0.0"
     ecma-proposal-math-extensions "0.0.2"
+
+butterchurn@^3.0.0-beta.0:
+  version "3.0.0-beta.0"
+  resolved "https://registry.yarnpkg.com/butterchurn/-/butterchurn-3.0.0-beta.0.tgz#c70ff83ef39b3d27232ddca64fd187f56cd05adf"
+  integrity sha512-fFOUSzXVB5yXQRCrUXlBmUSGfB8heJVlRrmJQXumdzUr76aUIjt7hSVuYqa00Efv4JWn6QZqD8PDdypJfAbbeQ==
+  dependencies:
+    "@assemblyscript/loader" "^0.17.11"
+    "@babel/runtime" "^7.11.2"
+    ecma-proposal-math-extensions "0.0.2"
+    eel-wasm "^0.0.12"
 
 byte-data@18.1.1, byte-data@^18.0.3:
   version "18.1.1"
@@ -5771,6 +5800,11 @@ ecstatic@^3.0.0:
 ee-first@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
+
+eel-wasm@^0.0.12:
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/eel-wasm/-/eel-wasm-0.0.12.tgz#7bec69b6d7e1573cc1fc4d4ad65e92713dee79e1"
+  integrity sha512-FgC/P8j6b9hwMzerko+ixrdeWKN/kFR15FPNWUZ/ngtsMK84sD479385ccTywyAR47jegXompUGpqbWTGn7kIw==
 
 ejs@^2.6.1:
   version "2.7.4"
