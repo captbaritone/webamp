@@ -95,11 +95,9 @@ export function getButterchurnOptions(
         // @ts-ignore
         "butterchurn-presets/lib/butterchurnPresetsMinimal.min"
       );
-      return Object.entries(presets.default.getPresets()).map(
-        ([name, preset]) => {
-          return { name, butterchurnPresetObject: preset as Object };
-        }
-      );
+      return Object.entries(presets.default).map(([name, preset]) => {
+        return { name, butterchurnPresetObject: preset as Object };
+      });
     },
     butterchurnOpen: !startWithMilkdropHidden,
   };
