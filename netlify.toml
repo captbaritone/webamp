@@ -15,10 +15,14 @@
 [[redirects]]
   from = "/about"
   to = "https://github.com/captbaritone/webamp"
-  
+
 [[redirects]]
   from = "/wallpapers"
   to = "https://www.dropbox.com/sh/3lx5ajfvsjeenj5/AADf8AihDeu1KgH1wr_WAsgXa?dl=0&lst="
+
+[[redirects]]
+  from = "/chat"
+  to = "https://discord.gg/fpBPmFkngQ"
 
 # Redirect domain aliases to primary domain
 [[redirects]]

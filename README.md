@@ -1,7 +1,7 @@
 <!-- TODO: Update this to point to webamp.lazy-bundle.min.js -->
 [![gzip size](https://img.badgesize.io/https:/unpkg.com/browse/webamp/built/webamp.bundle.min.js?label=gzip&compression=gzip)](https://bundlephobia.com/result?p=webamp)
 [![Tests](https://github.com/captbaritone/webamp/workflows/CI/badge.svg)](https://github.com/captbaritone/webamp/actions?query=branch%3Amaster+workflow%3ACI)
-[![Discord](https://img.shields.io/discord/434058775012311061.svg)](https://discord.gg/fBTDMqR)
+[![Discord](https://img.shields.io/discord/434058775012311061.svg)](https://webamp.org/chat)
 
 # Webamp
 
