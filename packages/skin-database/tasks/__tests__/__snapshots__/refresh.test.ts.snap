@@ -1,0 +1,203 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`valid skin (TopazAmp) 1`] = `
+Array [
+  Object {
+    "row": Object {
+      "file_date": 932523808000,
+      "file_md5": "fbee37aa8e23945860c1e58cd6b8a80c",
+      "file_name": "Balance.bmp",
+      "id": 7,
+      "skin_md5": "a_fake_md5",
+    },
+  },
+  Object {
+    "row": Object {
+      "file_date": 932246040000,
+      "file_md5": "c6005d7d77f3ff78b57749f569582161",
+      "file_name": "Cbuttons.bmp",
+      "id": 12,
+      "skin_md5": "a_fake_md5",
+    },
+  },
+  Object {
+    "row": Object {
+      "file_date": 933074154000,
+      "file_md5": "fdb3aee2834b78d87f760962d969779b",
+      "file_name": "Eqmain.bmp",
+      "id": 3,
+      "skin_md5": "a_fake_md5",
+    },
+  },
+  Object {
+    "row": Object {
+      "file_date": 933073556000,
+      "file_md5": "c0d761d8f3363b13f99b4e691787a8eb",
+      "file_name": "Main.bmp",
+      "id": 5,
+      "skin_md5": "a_fake_md5",
+    },
+  },
+  Object {
+    "row": Object {
+      "file_date": 932246058000,
+      "file_md5": "96040c73c8f4a0a8bda59be8f5cf0bef",
+      "file_name": "Monoster.bmp",
+      "id": 9,
+      "skin_md5": "a_fake_md5",
+    },
+  },
+  Object {
+    "row": Object {
+      "file_date": 932246052000,
+      "file_md5": "0ad5b85bb51123c70e13b227eb689d3c",
+      "file_name": "Playpaus.bmp",
+      "id": 11,
+      "skin_md5": "a_fake_md5",
+    },
+  },
+  Object {
+    "row": Object {
+      "file_date": 932830402000,
+      "file_md5": "44faaa170461ca54203124892d697654",
+      "file_name": "Pledit.bmp",
+      "id": 6,
+      "skin_md5": "a_fake_md5",
+    },
+  },
+  Object {
+    "row": Object {
+      "file_date": 932246036000,
+      "file_md5": "d7e938bdec0aa7490977450d7162446e",
+      "file_name": "Posbar.bmp",
+      "id": 13,
+      "skin_md5": "a_fake_md5",
+    },
+  },
+  Object {
+    "row": Object {
+      "file_date": 932246026000,
+      "file_md5": "9d12fcaf2bad4fdf9f75c00554a051c2",
+      "file_name": "Shufrep.bmp",
+      "id": 15,
+      "skin_md5": "a_fake_md5",
+    },
+  },
+  Object {
+    "row": Object {
+      "file_date": 932246032000,
+      "file_md5": "7a08e36a3f7607dff03fb54b9cc95621",
+      "file_name": "Text.bmp",
+      "id": 14,
+      "skin_md5": "a_fake_md5",
+    },
+  },
+  Object {
+    "row": Object {
+      "file_date": 933074338000,
+      "file_md5": "2d58324dece68707e973ee5f4f072f7a",
+      "file_name": "Titlebar.bmp",
+      "id": 2,
+      "skin_md5": "a_fake_md5",
+    },
+  },
+  Object {
+    "row": Object {
+      "file_date": 933073820000,
+      "file_md5": "890df1888deb6e37ad34077d6e433a1e",
+      "file_name": "eq_ex.bmp",
+      "id": 4,
+      "skin_md5": "a_fake_md5",
+    },
+  },
+  Object {
+    "row": Object {
+      "file_date": 932246008000,
+      "file_md5": "c3f72ef137c58ae52e825e41a2129ca8",
+      "file_name": "mb.bmp",
+      "id": 16,
+      "skin_md5": "a_fake_md5",
+    },
+  },
+  Object {
+    "row": Object {
+      "file_date": 932246060000,
+      "file_md5": "c9ef2c8a717f354c6dccf839de4237d2",
+      "file_name": "numbers.bmp",
+      "id": 8,
+      "skin_md5": "a_fake_md5",
+    },
+  },
+  Object {
+    "row": Object {
+      "file_date": 932246054000,
+      "file_md5": "654653f2114144a2c079f4edfd58b5e1",
+      "file_name": "nums_ex.bmp",
+      "id": 10,
+      "skin_md5": "a_fake_md5",
+    },
+  },
+  Object {
+    "row": Object {
+      "file_date": 932230724000,
+      "file_md5": "c378b0acc505489f07adeabe9e6f3cff",
+      "file_name": "pledit.txt",
+      "id": 18,
+      "skin_md5": "a_fake_md5",
+    },
+  },
+  Object {
+    "row": Object {
+      "file_date": 933074876000,
+      "file_md5": "baf5a61397990b5fbf5cafeadf5e5acb",
+      "file_name": "readme.txt",
+      "id": 1,
+      "skin_md5": "a_fake_md5",
+    },
+  },
+  Object {
+    "row": Object {
+      "file_date": 932230356000,
+      "file_md5": "458b893975e52f6cb35d9d7b8d9b2bb3",
+      "file_name": "viscolor.txt",
+      "id": 19,
+      "skin_md5": "a_fake_md5",
+    },
+  },
+  Object {
+    "row": Object {
+      "file_date": 932246004000,
+      "file_md5": "dc770d401d56e758ba64b57dcf999186",
+      "file_name": "volume.bmp",
+      "id": 17,
+      "skin_md5": "a_fake_md5",
+    },
+  },
+]
+`;
+
+exports[`valid skin (TopazAmp) 2`] = `
+"--[ TopazAmp v1.2 ]--
+
+
+about this skin
+==========================
+
+(for v2.x of Winamp)
+This is my first attempt at a Winamp skin, based on the design my upcoming web site.
+
+  -- some bugs from v1.0 fixed
+  -- thanks to Wolf [http://surf.to/guf, hhc977@edu.ghs.dk] for fixing some v1.1 bugs
+
+--[ distribute freely, but please don't modify the images. thanks ]--
+
+==========================
+
+[ (c) 1999 Kelly McLarnon                  ]
+[ website: http://topazdesigns.com         ]
+[ (personal: http://topazdesigns.com/~klm) ]
+[ email: klm@topazdesigns.com              ]
+
+
+"
+`;

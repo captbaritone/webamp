@@ -1,8 +1,7 @@
 import JSZip from "jszip";
 import md5 from "md5";
 import { knex } from "./db";
-import * as Skins from "./data/skins";
-import fetch from "node-fetch";
+import SkinModel from "./data/SkinModel";
 
 type FileData = {
   fileName: string;
@@ -10,32 +9,38 @@ type FileData = {
   date: Date;
 };
 
-async function getFileData(file: JSZip.JSZipObject): Promise<FileData> {
-  const blob = await file.async("nodebuffer");
-  return { fileName: file.name, md5: md5(blob), date: file.date };
-}
-
-export async function getSkinFileData(skinData: Buffer): Promise<FileData[]> {
-  const zip = await JSZip.loadAsync(skinData);
-  return Promise.all(Object.values(zip.files).map(getFileData));
-}
-
-export async function setHashesForSkin(skinMd5: string): Promise<void> {
-  const url = Skins.getSkinUrl(skinMd5);
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error(`Could not fetch skin at "${url}"`);
+async function getFileData(file: JSZip.JSZipObject): Promise<FileData | null> {
+  try {
+    const blob = await file.async("nodebuffer");
+    return { fileName: file.name, md5: md5(blob), date: file.date };
+  } catch (e) {
+    // TODO: We could flag these.
+    return null;
   }
-  const body = await response.buffer();
-  const hashes = await getSkinFileData(body);
-  const rows = hashes.map(({ fileName, md5, date }) => {
+}
+
+export async function getSkinFileData(
+  skin: SkinModel
+): Promise<(FileData | null)[]> {
+  const zip = await skin.getZip();
+  return await Promise.all(Object.values(zip.files).map(getFileData));
+}
+
+// https://stackoverflow.com/a/46700791/1263117
+function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
+  return value !== null && value !== undefined;
+}
+
+export async function setHashesForSkin(skin: SkinModel): Promise<void> {
+  const hashes = await getSkinFileData(skin);
+  const rows = hashes.filter(notEmpty).map(({ fileName, md5, date }) => {
     return {
-      skin_md5: skinMd5,
+      skin_md5: skin.getMd5(),
       file_name: fileName,
       file_md5: md5,
       file_date: date,
     };
   });
-  await knex("archive_files").where("skin_md5", skinMd5).delete();
+  await knex("archive_files").where("skin_md5", skin.getMd5()).delete();
   await knex("archive_files").insert(rows);
 }

@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/skins/a_fake_md5/debug 1`] = `
+Object {
+  "archiveFiles": Array [
+    Object {
+      "row": Object {
+        "file_date": 819188640000,
+        "file_md5": "a_fake_file_md5",
+        "file_name": null,
+        "id": 1,
+        "skin_md5": "a_fake_md5",
+      },
+    },
+  ],
+  "files": Array [
+    Object {
+      "row": Object {
+        "file_path": "/a/fake/path.wsz",
+        "id": 50,
+        "skin_md5": "a_fake_md5",
+        "source_attribution": null,
+      },
+    },
+  ],
+  "iaItem": Object {
+    "row": Object {
+      "id": 8,
+      "identifier": "a_fake_ia_identifier",
+      "skin_md5": "a_fake_md5",
+    },
+  },
+  "reviews": Array [],
+  "row": Object {
+    "content_hash": null,
+    "emails": "",
+    "id": 50,
+    "md5": "a_fake_md5",
+    "readme_text": null,
+    "skin_type": 1,
+  },
+  "tweets": Array [],
+  "uploadStatuses": Array [],
+}
+`;

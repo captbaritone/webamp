@@ -140,6 +140,17 @@ describe("seeded", () => {
       ]
     `);
   });
+  test("getMuseumPage does not include skins with errors", async () => {
+    await knex("refreshes").insert({
+      skin_md5: "48bbdbbeb03d347e59b1eebda4d352d0",
+      error: "Whoops",
+    });
+    const page = await Skins.getMuseumPage({ offset: 0, first: 10 });
+    const hasZelda = page.some(
+      (skin) => skin.md5 === "48bbdbbeb03d347e59b1eebda4d352d0"
+    );
+    expect(hasZelda).toBe(false);
+  });
   test("getStats", async () => {
     expect(await Skins.getStats()).toMatchInlineSnapshot(`
       Object {
@@ -159,6 +170,13 @@ describe("seeded", () => {
       canonicalFilename: "approved.wsz",
       md5: "an_approved_md5",
     });
+  });
+  test("getSkinToTweet does not include skins with errors", async () => {
+    await knex("refreshes").insert({
+      skin_md5: "an_approved_md5",
+      error: "Whoops",
+    });
+    expect(await Skins.getSkinToTweet()).toBe(null);
   });
   test("getSkinToReview", async () => {
     expect(Skins.getSkinToReview()).resolves.toEqual({

@@ -196,6 +196,8 @@ export async function deleteSkin(md5: string): Promise<void> {
   console.log(`Deleting skin ${md5}...`);
   console.log(`... sqlite "skins"`);
   await knex("skins").where({ md5 }).limit(1).delete();
+  console.log(`... sqlite "refreshes"`);
+  await knex("refreshes").where({ skin_md5: md5 }).delete();
   console.log(`... sqlite "files"`);
   await knex("files").where({ skin_md5: md5 }).delete();
   console.log(`... sqlite "skin_reviews"`);
@@ -363,10 +365,12 @@ export async function getSkinToTweet(): Promise<{
     .leftJoin("skin_reviews", "skin_reviews.skin_md5", "=", "skins.md5")
     .leftJoin("tweets", "tweets.skin_md5", "=", "skins.md5")
     .leftJoin("files", "files.skin_md5", "=", "skins.md5")
+    .leftJoin("refreshes", "refreshes.skin_md5", "=", "skins.md5")
     .where({
       "tweets.id": null,
       skin_type: 1,
       "skin_reviews.review": "APPROVED",
+      "refreshes.error": null,
     })
     .groupBy("skins.md5")
     .select(["skins.md5", "files.file_path"])
@@ -501,30 +505,32 @@ export async function getMuseumPage({
   const skins = await knex.raw(
     `
 SELECT skins.md5, 
-    skin_reviews.review = 'NSFW'     AS nsfw, 
-    skin_reviews.review = 'APPROVED' AS approved, 
-    skin_reviews.review = 'REJECTED' AS rejected, 
-    (IFNULL(tweets.likes, 0) + (IFNULL(tweets.retweets,0) * 1.5)) AS tweet_score,
+  skin_reviews.review = 'NSFW'     AS nsfw, 
+  skin_reviews.review = 'APPROVED' AS approved, 
+  skin_reviews.review = 'REJECTED' AS rejected, 
+  (IFNULL(tweets.likes, 0) + (IFNULL(tweets.retweets,0) * 1.5)) AS tweet_score,
 	files.file_path,
   CASE skins.md5 
-   WHEN "5e4f10275dcb1fb211d4a8b4f1bda236" THEN 0 -- Base
-   WHEN "cd251187a5e6ff54ce938d26f1f2de02" THEN 1 -- Winamp3 Classified
-   WHEN "b0fb83cc20af3abe264291bb17fb2a13" THEN 2 -- Winamp5 Classified
-   WHEN "d6010aa35bed659bc1311820daa4b341" THEN 3 -- Bento Classified
-   ELSE 1000
-  END priority
-FROM   skins 
-    LEFT JOIN tweets ON tweets.skin_md5 = skins.md5 
-    LEFT JOIN skin_reviews ON skin_reviews.skin_md5 = skins.md5
+    WHEN "5e4f10275dcb1fb211d4a8b4f1bda236" THEN 0 -- Base
+    WHEN "cd251187a5e6ff54ce938d26f1f2de02" THEN 1 -- Winamp3 Classified
+    WHEN "b0fb83cc20af3abe264291bb17fb2a13" THEN 2 -- Winamp5 Classified
+    WHEN "d6010aa35bed659bc1311820daa4b341" THEN 3 -- Bento Classified
+    ELSE 1000
+    END
+  priority
+FROM skins 
+  LEFT JOIN tweets ON tweets.skin_md5 = skins.md5 
+  LEFT JOIN skin_reviews ON skin_reviews.skin_md5 = skins.md5
 	LEFT JOIN files ON files.skin_md5 = skins.md5
-WHERE  skin_type = 1 
+  LEFT JOIN refreshes ON refreshes.skin_md5 = skins.md5
+WHERE  skin_type = 1 AND refreshes.error IS NULL
 GROUP BY skins.md5
-ORDER  BY 
-      priority ASC,
-       tweet_score DESC, 
-       nsfw ASC, 
-       approved DESC, 
-       rejected ASC
+ORDER BY 
+  priority ASC,
+  tweet_score DESC, 
+  nsfw ASC, 
+  approved DESC, 
+  rejected ASC
 LIMIT ? offset ?`,
     [first, offset]
   );

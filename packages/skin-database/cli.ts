@@ -8,23 +8,25 @@ import * as Skins from "./data/skins";
 import Discord from "discord.js";
 import { tweet } from "./tasks/tweet";
 import { addSkinFromBuffer } from "./addSkin";
-import * as SkinHash from "./skinHash";
-import * as Analyser from "./analyser";
 import { searchIndex } from "./algolia";
 import { scrapeLikeData } from "./tasks/scrapeLikes";
-import { screenshot } from "./tasks/screenshotSkin";
-import Shooter from "./shooter";
 import UserContext from "./data/UserContext";
 import { integrityCheck } from "./tasks/integrityCheck";
 import { ensureWebampLinks, syncWithArchive } from "./tasks/syncWithArchive";
 import { syncFromArchive } from "./tasks/syncFromArchive";
+import { getSkinsToRefresh, refreshSkins } from "./tasks/refresh";
 import { processUserUploads } from "./api/processUserUploads";
 import DiscordEventHandler from "./api/DiscordEventHandler";
+import SkinModel from "./data/SkinModel";
+import { chunk } from "./utils";
+import rl from "readline";
 
 async function main() {
   const client = new Discord.Client();
   // The Winston transport logs in the client.
   await DiscordWinstonTransport.addToLogger(client, logger);
+  const ctx = new UserContext("CLI");
+  const handler = new DiscordEventHandler();
 
   try {
     switch (argv._[0]) {
@@ -48,66 +50,69 @@ async function main() {
         await Skins.reject(new UserContext("CLI"), md5);
         break;
       }
-      case "screenshots": {
-        const stdinBuffer = fs.readFileSync(0); // STDIN_FILENO = 0
-        let md5s = stdinBuffer.toString().trim().split("\n");
-        if (md5s.length === 0) {
-          md5s = await Skins.getSkinsToShoot(1000);
-        }
-        await Shooter.withShooter(async (shooter: Shooter) => {
-          for (const md5 of md5s) {
-            await screenshot(md5, shooter);
+      case "refresh": {
+        const md5 = argv._[1];
+        if (md5 != null) {
+          const skin = await SkinModel.fromMd5(ctx, md5);
+          if (skin == null) {
+            throw new Error(`Could not find skin ${md5}`);
           }
-        });
-        break;
-      }
-      case "readme": {
-        const rows = await knex.raw(
-          'SELECT md5 FROM files LEFT JOIN skins on skins.md5 = files.skin_md5 WHERE source_attribution = "Web API" AND readme_text IS NULL;'
-        );
+          refreshSkins([skin]);
+        } else {
+          const toRefresh = await getSkinsToRefresh(ctx, 100);
 
-        const hashes = rows.map(({ md5 }) => md5);
-        for (const hash of hashes) {
-          console.log(`Setting readme for ${hash}`);
-          await Analyser.setReadmeForSkin(hash);
+          const chunks = chunk(toRefresh, toRefresh.length / 3);
+
+          await Promise.all(chunks.map(refreshSkins));
         }
         break;
       }
-      case "content-hash": {
-        const rows = await knex("skins")
-          .leftJoin("archive_files", "archive_files.skin_md5", "=", "skins.md5")
-          .whereNot("skin_md5", null)
-          .where("content_hash", null)
-          // This is just because our URL schema sucks
-          .where("skin_type", Skins.SKIN_TYPE.CLASSIC)
-          .groupBy("md5")
-          .select("md5");
+      case "nested": {
+        const nested = await knex("archive_files")
+          .select("archive_files.skin_md5", "file_name")
+          .leftJoin("skins", "skins.md5", "=", "file_md5")
+          .where(function () {
+            //this.where("file_name", "like", "%.wsz");
+            this.orWhere("file_name", "like", "%.zip");
+          })
+          .where("skins.md5", "IS", null);
 
-        console.log(`Found ${rows.length} rows`);
-
-        for (const { md5 } of rows) {
-          const hash = await Skins.setContentHash(md5);
-          console.log(hash);
+        for (const row of nested) {
+          const url = `https://zip-worker.jordan1320.workers.dev/zip/${
+            row.skin_md5
+          }/${encodeURI(row.file_name)}`;
+          console.log(url);
         }
-        break;
-      }
-      case "hash": {
-        const rows = await knex("skins")
-          .leftJoin("archive_files", "archive_files.skin_md5", "=", "skins.md5")
-          .where("skin_md5", null)
-          // This is just because our URL schema sucks
-          .where("skin_type", Skins.SKIN_TYPE.CLASSIC)
-          .select("md5");
-
-        for (const { md5 } of rows) {
-          console.log(md5);
-          try {
-            await SkinHash.setHashesForSkin(md5);
-            await Skins.setContentHash(md5);
-          } catch (e) {
-            console.error(e);
+        /*
+        const query = `SELECT skin_md5, error
+        FROM refreshes
+        WHERE
+            error LIKE "Not a skin%";`;
+        const rows = await knex.raw(query);
+        for (const row of rows) {
+          const files = await knex("archive_files")
+            .where("skin_md5", row.skin_md5)
+            .select();
+          console.log("Download:", Skins.getSkinUrl(row.skin_md5));
+          // const url = `;
+          console.table(
+            files.map((f) => ({
+              file_name: f.file_name,
+              url: `https://zip-worker.jordan1320.workers.dev/zip/${
+                row.skin_md5
+              }/${encodeURI(f.file_name)}`,
+            })),
+            ["file_name", "url"]
+          );
+          const answer = await ask("skip (s), delete (d)");
+          switch (answer) {
+            case "s":
+              break;
+            case "d":
+              await Skins.deleteSkin(row.skin_md5);
           }
         }
+        */
         break;
       }
       case "tweet": {
@@ -179,7 +184,21 @@ async function main() {
     knex.destroy();
     logger.close();
     client.destroy();
+    await handler.dispose();
   }
+}
+
+function ask(question): Promise<string> {
+  return new Promise((resolve) => {
+    const r = rl.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+    r.question(question + "\n", function (answer) {
+      r.close();
+      resolve(answer);
+    });
+  });
 }
 
 main();

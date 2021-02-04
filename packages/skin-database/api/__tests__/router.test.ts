@@ -142,6 +142,13 @@ describe("/skins/", () => {
   });
 });
 
+test("/skins/a_fake_md5/debug", async () => {
+  const { body } = await request(app)
+    .get("/skins/a_fake_md5/debug")
+    .expect(200);
+  expect(body).toMatchSnapshot();
+});
+
 test("/skins/a_fake_md5/report", async () => {
   const { body } = await request(app)
     .post("/skins/a_fake_md5/report")

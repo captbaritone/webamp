@@ -8,6 +8,7 @@ export async function seed(knex: Knex): Promise<any> {
   await knex("ia_items").del();
   await knex("tweets").del();
   await knex("archive_files").del();
+  await knex("refreshes").del();
   // Inserts seed entries
   await knex("skins").insert([
     { md5: "a_fake_md5", skin_type: 1, emails: "" },

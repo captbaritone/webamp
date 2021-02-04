@@ -1,5 +1,11 @@
 import { getScreenshotUrl, getSkinUrl } from "./skins";
-import { TweetStatus, SkinRow, ReviewRow, UploadStatus } from "../types";
+import {
+  TweetStatus,
+  SkinRow,
+  ReviewRow,
+  UploadStatus,
+  SkinType,
+} from "../types";
 import UserContext, { ctxWeakMapMemoize } from "./UserContext";
 import TweetModel, { TweetDebugData } from "./TweetModel";
 import IaItemModel, { IaItemDebugData } from "./IaItemModel";
@@ -10,6 +16,8 @@ import { knex } from "../db";
 import UploadModel, { UploadDebugData } from "./UploadModel";
 import ArchiveFileModel, { ArchiveFileDebugData } from "./ArchiveFileModel";
 import * as Skins from "./skins";
+import fetch from "node-fetch";
+import JSZip from "jszip";
 
 export default class SkinModel {
   constructor(readonly ctx: UserContext, readonly row: SkinRow) {}
@@ -48,6 +56,16 @@ export default class SkinModel {
   static async exists(ctx: UserContext, md5: string): Promise<boolean> {
     const row = await getSkinLoader(ctx).load(md5);
     return row != null;
+  }
+
+  getSkinType(): SkinType {
+    switch (this.row.skin_type) {
+      case 1:
+        return "CLASSIC";
+      case 2:
+        return "MODERN";
+    }
+    throw new Error(`Unknown skin_type ${this.row.skin_type}`);
   }
 
   async tweeted(): Promise<boolean> {
@@ -147,6 +165,23 @@ export default class SkinModel {
     return getSkinUrl(this.row.md5);
   }
 
+  getBuffer = mem(
+    async (): Promise<Buffer> => {
+      const response = await fetch(this.getSkinUrl());
+      if (!response.ok) {
+        throw new Error(`Could not fetch skin at "${this.getSkinUrl()}"`);
+      }
+      return response.buffer();
+    }
+  );
+
+  getZip = mem(
+    async (): Promise<JSZip> => {
+      const buffer = await this.getBuffer();
+      return JSZip.loadAsync(buffer);
+    }
+  );
+
   async debug(): Promise<{
     row: SkinRow;
     reviews: ReviewRow[];
@@ -192,3 +227,13 @@ const getReviewsLoader = ctxWeakMapMemoize<DataLoader<string, ReviewRow[]>>(
       return md5s.map((md5) => rows.filter((x) => x.skin_md5 === md5));
     })
 );
+
+function mem<T>(fn: () => T): () => T {
+  let cached: T | null = null;
+  return () => {
+    if (cached == null) {
+      cached = fn();
+    }
+    return cached;
+  };
+}
