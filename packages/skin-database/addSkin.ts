@@ -8,6 +8,7 @@ import * as Analyser from "./analyser";
 import { SkinType } from "./types";
 import SkinModel from "./data/SkinModel";
 import UserContext from "./data/UserContext";
+import JSZip from "jszip";
 
 // TODO Move this into the function so that we clean up on each run?
 const temp = _temp.track();
@@ -34,7 +35,8 @@ export async function addSkinFromBuffer(
   }
 
   // Note: This will thrown on invalid skins.
-  const skinType = await Analyser.getSkinType(buffer);
+  const zip = await JSZip.loadAsync(buffer);
+  const skinType = await Analyser.getSkinType(zip);
 
   switch (skinType) {
     case "CLASSIC":
@@ -84,7 +86,8 @@ async function addClassicSkinFromBuffer(
 
   await S3.putScreenshot(md5, fs.readFileSync(tempScreenshotPath));
   await S3.putSkin(md5, buffer, "wsz");
-  const readmeText = await Analyser.getReadme(buffer);
+  const zip = await JSZip.loadAsync(buffer);
+  const readmeText = await Analyser.getReadme(zip);
   await Skins.addSkin({
     md5,
     filePath,

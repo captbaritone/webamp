@@ -139,6 +139,20 @@ router.get(
   })
 );
 
+router.get(
+  "/skins/:md5/debug",
+  asyncHandler(async (req, res) => {
+    const { md5 } = req.params;
+    const skin = await SkinModel.fromMd5(req.ctx, md5);
+    if (skin == null) {
+      req.log(`Details for hash "${md5}" NOT FOUND`);
+      res.status(404).json();
+      return;
+    }
+    res.json(await skin.debug());
+  })
+);
+
 function requireAuthed(req, res, next) {
   if (!req.ctx.authed()) {
     res.status(403);

@@ -4,16 +4,9 @@ import UserContext from "../data/UserContext";
 import SkinModel from "../data/SkinModel";
 import child_process from "child_process";
 import * as Parallel from "async-parallel";
+import { chunk } from "../utils";
 import util from "util";
 const exec = util.promisify(child_process.exec);
-
-function chunk<T>(items: T[], chunkSize: number): T[][] {
-  const chunks: T[][] = [];
-  for (let i = 0; i < items.length; i += chunkSize) {
-    chunks.push(items.slice(i, i + chunkSize));
-  }
-  return chunks;
-}
 
 function flatten<T>(matrix: T[][]): T[] {
   const flat: T[] = [];

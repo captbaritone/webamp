@@ -12,13 +12,14 @@ function min(imgPath) {
 }
 
 export default class Shooter {
-  constructor(url) {
+  constructor(url, logger) {
     this._initialized = false;
     this._url = url;
+    this._log = logger ?? ((str) => console.log(str));
   }
 
-  static async withShooter(cb) {
-    const shooter = new Shooter("https://webamp.org");
+  static async withShooter(cb, logger) {
+    const shooter = new Shooter("https://webamp.org", logger);
     try {
       return await cb(shooter);
     } finally {
@@ -38,10 +39,10 @@ export default class Shooter {
         return;
       }
 
-      console.log("page log:", consoleMessage.text());
+      this._log("page log:", consoleMessage.text());
     });
     this._page.on("error", (e) => {
-      console.log(`Page error: ${e.toString()}`);
+      this._log(`Page error: ${e.toString()}`);
     });
 
     const url = `${this._url}/?screenshot=1`;
@@ -79,7 +80,7 @@ export default class Shooter {
     try {
       const handle = await this._page.$("#webamp-file-input");
 
-      console.log("Goinng to try to screenshot");
+      this._log("Goinng to try to screenshot");
       // eslint-disable-next-line no-async-promise-executor
       await new Promise(async (resolve, reject) => {
         try {
@@ -105,7 +106,7 @@ export default class Shooter {
         }
       });
 
-      console.log("Wrote screenshot to", screenshotPath);
+      this._log("Wrote screenshot to", screenshotPath);
       if (minify) {
         min(screenshotPath);
       }
