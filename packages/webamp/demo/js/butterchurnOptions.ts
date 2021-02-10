@@ -97,7 +97,7 @@ export function getButterchurnOptions(
       const presets = await import(
         /* webpackChunkName: "butterchurn-presets" */
         // @ts-ignore
-        "butterchurn-presets/src/minimal.js"
+        "butterchurn-presets"
       );
       return Object.entries(presets.default).map(([name, preset]) => {
         return { name, butterchurnPresetObject: addUseWASM(preset as Object) };

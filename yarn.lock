@@ -4281,10 +4281,10 @@ busboy@^0.3.1:
   dependencies:
     dicer "0.3.0"
 
-butterchurn-presets@3.0.0-beta.1:
-  version "3.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/butterchurn-presets/-/butterchurn-presets-3.0.0-beta.1.tgz#8f2474f7857c7a6494476dec56dbd4255e1f4b0a"
-  integrity sha512-2/rBysBUNVdQviwQWDqEM+NtiAF55HwCHrPVmy65wh/ruGyUYuPZpp/pNUCyCsQAdajfPVcjViqkNBThdzHhDA==
+butterchurn-presets@3.0.0-beta.3:
+  version "3.0.0-beta.3"
+  resolved "https://registry.yarnpkg.com/butterchurn-presets/-/butterchurn-presets-3.0.0-beta.3.tgz#02e888456b2502a1bb89f14c6510bc7cc9cc3ccb"
+  integrity sha512-8p3V8/EnQTMiDFLXjDiWOJVBnlDOTbC+9HIzFSZxO5j7OeIht+e+/X2cGgEdt47DALCUE7XVU2sSWUz3o0bePA==
   dependencies:
     "@babel/runtime" "^7.12.5"
 
