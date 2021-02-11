@@ -11,7 +11,6 @@ import {
   Options,
   PrivateOptions,
   WINDOWS,
-  STEP_MARQUEE,
   UPDATE_TIME_ELAPSED,
   UPDATE_WINDOW_POSITIONS,
   SET_VOLUME,
@@ -29,7 +28,6 @@ import { initialTracks, initialState } from "./config";
 import screenshotInitialState from "./screenshotInitialState";
 
 const NOISY_ACTION_TYPES = new Set([
-  STEP_MARQUEE,
   UPDATE_TIME_ELAPSED,
   UPDATE_WINDOW_POSITIONS,
   SET_VOLUME,

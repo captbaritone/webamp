@@ -17,7 +17,6 @@ export const SET_SCRUB_POSITION = "SET_SCRUB_POSITION";
 export const SET_SKIN_DATA = "SET_SKIN_DATA";
 export const SET_VOLUME = "SET_VOLUME";
 export const START_WORKING = "START_WORKING";
-export const STEP_MARQUEE = "STEP_MARQUEE";
 export const STOP = "STOP";
 export const STOP_WORKING = "STOP_WORKING";
 export const TOGGLE_DOUBLESIZE_MODE = "TOGGLE_DOUBLESIZE_MODE";

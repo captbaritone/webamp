@@ -16,7 +16,6 @@ import {
   OPEN_WINAMP,
   SET_SKIN_DATA,
   START_WORKING,
-  STEP_MARQUEE,
   STOP_WORKING,
   TOGGLE_DOUBLESIZE_MODE,
   TOGGLE_LLAMA_MODE,
@@ -38,7 +37,6 @@ export interface DisplayState {
   doubled: boolean;
   llama: boolean;
   disableMarquee: boolean;
-  marqueeStep: number;
   skinImages: SkinImages;
   skinCursors: Cursors | null;
   skinRegion: SkinRegion;
@@ -131,10 +129,6 @@ const display = (
       return { ...state, doubled: !state.doubled };
     case TOGGLE_LLAMA_MODE:
       return { ...state, llama: !state.llama };
-    case STEP_MARQUEE:
-      return state.disableMarquee
-        ? state
-        : { ...state, marqueeStep: state.marqueeStep + 1 };
     case DISABLE_MARQUEE:
       return { ...state, disableMarquee: true };
     case STOP_WORKING:
@@ -194,7 +188,6 @@ export const getSerializedState = (
     visualizerStyle,
     doubled,
     llama,
-    marqueeStep,
     skinImages,
     skinCursors,
     skinRegion,
@@ -217,7 +210,7 @@ export const getSerializedState = (
     visualizerStyle,
     doubled,
     llama,
-    marqueeStep,
+    marqueeStep: 0, // This is not used any more.
     skinImages,
     skinCursors: newCursors,
     skinRegion,

@@ -12,7 +12,6 @@ import {
   SET_MILKDROP_DESKTOP,
   SET_MILKDROP_FULLSCREEN,
   TOGGLE_PRESET_OVERLAY,
-  STEP_MARQUEE,
   SET_BAND_FOCUS,
 } from "../actionTypes";
 import { WINDOWS } from "../constants";
@@ -214,8 +213,4 @@ export function togglePresetOverlay(): Thunk {
 
     dispatch({ type: TOGGLE_PRESET_OVERLAY });
   };
-}
-
-export function stepMarquee(): Action {
-  return { type: STEP_MARQUEE };
 }
