@@ -94,12 +94,14 @@ async function main() {
       "https://archive.org/details/78_mambo-no.-5_perez-prado-and-his-orchestra-d.-perez-prado_gbia0009774b",
     firstTrackText: "Mambo No. 5",
   });
+  /*
   await testPageAndRetry({
     name: "Samples Only",
     url:
       "https://archive.org/details/lp_smokey-and-the-bandit-2-original-soundtrac_various-brenda-lee-burt-reynolds-don-willi",
     firstTrackText: "Texas Bound And Flyin",
   });
+  */
   await testPageAndRetry({
     name: "Stream Only",
     url: "https://archive.org/details/cd_a-sweeter-music_sarah-cahill",
