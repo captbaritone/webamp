@@ -4281,10 +4281,10 @@ busboy@^0.3.1:
   dependencies:
     dicer "0.3.0"
 
-butterchurn-presets@3.0.0-beta.1:
-  version "3.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/butterchurn-presets/-/butterchurn-presets-3.0.0-beta.1.tgz#8f2474f7857c7a6494476dec56dbd4255e1f4b0a"
-  integrity sha512-2/rBysBUNVdQviwQWDqEM+NtiAF55HwCHrPVmy65wh/ruGyUYuPZpp/pNUCyCsQAdajfPVcjViqkNBThdzHhDA==
+butterchurn-presets@3.0.0-beta.4:
+  version "3.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/butterchurn-presets/-/butterchurn-presets-3.0.0-beta.4.tgz#393d3f7863d546bdef2c52aec90da76bdbcacd3b"
+  integrity sha512-TbQLUPvGOYMZAtWKoCmBtludh9aQZ6NaMGQU4lvPeadBPy3Du3yNmwBjlTMLP5c5mRWElxQPjTL1PtR7FZK3OQ==
   dependencies:
     "@babel/runtime" "^7.12.5"
 
@@ -4295,15 +4295,15 @@ butterchurn@^2.6.7:
     "@babel/runtime" "^7.0.0"
     ecma-proposal-math-extensions "0.0.2"
 
-butterchurn@^3.0.0-beta.1:
-  version "3.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/butterchurn/-/butterchurn-3.0.0-beta.1.tgz#b7e5b1a2168ce041a2a0b1771b23d958002b331e"
-  integrity sha512-crY/ppARjwHR6f6PcSIjvDgm1OrzTHdJa9ubAPZzOSsp/ohEanCIn1xhrUOSFT4c7rRKL7c3yqANICZMQAOh2w==
+butterchurn@^3.0.0-beta.2:
+  version "3.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/butterchurn/-/butterchurn-3.0.0-beta.2.tgz#1232f9b5b79527e77e604e6b08d4e103f87fe3cb"
+  integrity sha512-KlxSjT6sqVKW325qdrfImRH89rxSfW/O8xlwsgxh3xTiwT/o7omTdz4FKWrYwi0Vh/+xCYp1Ce7WUUDvEvFPjg==
   dependencies:
     "@assemblyscript/loader" "^0.17.11"
     "@babel/runtime" "^7.11.2"
     ecma-proposal-math-extensions "0.0.2"
-    eel-wasm "^0.0.12"
+    eel-wasm "^0.0.13"
 
 byte-data@18.1.1, byte-data@^18.0.3:
   version "18.1.1"
@@ -5801,10 +5801,10 @@ ee-first@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
 
-eel-wasm@^0.0.12:
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/eel-wasm/-/eel-wasm-0.0.12.tgz#7bec69b6d7e1573cc1fc4d4ad65e92713dee79e1"
-  integrity sha512-FgC/P8j6b9hwMzerko+ixrdeWKN/kFR15FPNWUZ/ngtsMK84sD479385ccTywyAR47jegXompUGpqbWTGn7kIw==
+eel-wasm@^0.0.13:
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/eel-wasm/-/eel-wasm-0.0.13.tgz#37fbeebabaa3c73f45f42ac90dc01dcec48ebf27"
+  integrity sha512-NfE8l660IbkDIm0FP51UP5rnOF5GEiXlc/RC0CzL8hmaBZ7zPqxpIBNzDtFJWhmLeQhADMck8u/Vzet9laeNsw==
 
 ejs@^2.6.1:
   version "2.7.4"

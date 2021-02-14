@@ -1,9 +1,5 @@
 import { ButterchurnOptions } from "./Webamp";
 
-function addUseWASM(obj: Object): Object {
-  return { ...obj, useWASM: true };
-}
-
 const KNOWN_PRESET_URLS_REGEXES = [
   /^https:\/\/unpkg\.com\/butterchurn-presets\/.*\.json$/,
   /^https:\/\/unpkg\.com\/butterchurn-presets-weekly\/.*\.json$/,
@@ -97,10 +93,10 @@ export function getButterchurnOptions(
       const presets = await import(
         /* webpackChunkName: "butterchurn-presets" */
         // @ts-ignore
-        "butterchurn-presets/src/minimal.js"
+        "butterchurn-presets"
       );
       return Object.entries(presets.default).map(([name, preset]) => {
-        return { name, butterchurnPresetObject: addUseWASM(preset as Object) };
+        return { name, butterchurnPresetObject: preset as Object };
       });
     },
     butterchurnOpen: !startWithMilkdropHidden,
