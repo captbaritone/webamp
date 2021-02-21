@@ -211,9 +211,14 @@ export const getWindowOpen = createSelector(getGenWindows, (genWindows) => {
   return (windowId: WindowId) => genWindows[windowId].open;
 });
 
-export const getWindowHidden = createSelector(getGenWindows, (genWindows) => {
-  return (windowId: WindowId) => genWindows[windowId].hidden;
-});
+export const getWindowHidden = createSelector(
+  getMilkdropWindowEnabled,
+  (milkdropWindowEnabled) => {
+    return (windowId: WindowId) => {
+      return windowId === WINDOWS.MILKDROP && !milkdropWindowEnabled;
+    };
+  }
+);
 
 export const getWindowShade = createSelector(getGenWindows, (genWindows) => {
   return (windowId: WindowId) => genWindows[windowId].shade;
@@ -652,6 +657,10 @@ export const getKhz = createSelector(
 
 export function getMilkdropMessage(state: AppState): MilkdropMessage | null {
   return state.milkdrop.message;
+}
+
+export function getMilkdropWindowEnabled(state: AppState): boolean {
+  return state.milkdrop.display === "WINDOW";
 }
 
 export function getMilkdropDesktopEnabled(state: AppState): boolean {

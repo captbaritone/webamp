@@ -194,13 +194,6 @@ describe("can serialize", () => {
   });
 
   testSerialization({
-    name: "window hidden",
-    action: Actions.hideWindow("playlist"),
-    selector: (state) => Selectors.getWindowHidden(state)("playlist"),
-    expected: true,
-  });
-
-  testSerialization({
     name: "window shade",
     // @ts-ignore
     action: Actions.toggleEqualizerShadeMode(),
