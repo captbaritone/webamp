@@ -4,7 +4,6 @@ import {
   SET_FOCUSED_WINDOW,
   TOGGLE_WINDOW,
   CLOSE_WINDOW,
-  SET_WINDOW_VISIBILITY,
   UPDATE_WINDOW_POSITIONS,
   WINDOW_SIZE_CHANGED,
   TOGGLE_WINDOW_SHADE_MODE,
@@ -26,7 +25,6 @@ export interface WebampWindow {
   title: string;
   size: [number, number];
   open: boolean;
-  hidden: boolean;
   shade?: boolean;
   canResize: boolean;
   canShade: boolean;
@@ -55,7 +53,6 @@ const defaultWindowsState: WindowsState = {
       title: "Main Window",
       size: [0, 0],
       open: true,
-      hidden: false,
       shade: false,
       canResize: false,
       canShade: true,
@@ -67,7 +64,6 @@ const defaultWindowsState: WindowsState = {
       title: "Equalizer",
       size: [0, 0],
       open: true,
-      hidden: false,
       shade: false,
       canResize: false,
       canShade: true,
@@ -79,7 +75,6 @@ const defaultWindowsState: WindowsState = {
       title: "Playlist Editor",
       size: [0, 0],
       open: true,
-      hidden: false,
       shade: false,
       canResize: true,
       canShade: true,
@@ -111,7 +106,6 @@ const windows = (
             title: "Milkdrop",
             size: [0, 0],
             open: action.open,
-            hidden: false,
             shade: false,
             canResize: true,
             canShade: false,
@@ -155,8 +149,6 @@ const windows = (
           [action.windowId]: {
             ...windowState,
             open: !windowState.open,
-            // Reset hidden state when opening window
-            hidden: windowState.open ? windowState.hidden : false,
           },
         },
       };
@@ -168,17 +160,6 @@ const windows = (
           [action.windowId]: {
             ...state.genWindows[action.windowId],
             open: false,
-          },
-        },
-      };
-    case SET_WINDOW_VISIBILITY:
-      return {
-        ...state,
-        genWindows: {
-          ...state.genWindows,
-          [action.windowId]: {
-            ...state.genWindows[action.windowId],
-            hidden: action.hidden,
           },
         },
       };
@@ -235,7 +216,9 @@ const windows = (
           if (serializedW == null) {
             return w;
           }
-          return { ...w, ...serializedW };
+          // Pull out `hidden` since it's been removed from our state.
+          const { hidden, ...rest } = serializedW;
+          return { ...w, ...rest };
         }),
         focused,
       };
@@ -260,7 +243,7 @@ export function getSerializedState(
       return {
         size: w.size,
         open: w.open,
-        hidden: w.hidden,
+        hidden: false, // Not used any more
         shade: w.shade || false,
         position: w.position,
       };
