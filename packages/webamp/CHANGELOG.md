@@ -10,6 +10,7 @@
 - Fix a bug where unminified bundle was accidentally minified.
 - Treat skin files with forward slashes in their filename as directories [#1052](https://github.com/captbaritone/webamp/pull/1052)
 - Prevent "Maximum call stack size exceeded" error when parsing large cursors.
+- Fix a bug where the Milkdrop window could not be moved in some cases [#1068](https://github.com/captbaritone/webamp/pull/1068)
 
 ## 1.4.2
 
