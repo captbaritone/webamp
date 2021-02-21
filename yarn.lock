@@ -4295,10 +4295,10 @@ butterchurn@^2.6.7:
     "@babel/runtime" "^7.0.0"
     ecma-proposal-math-extensions "0.0.2"
 
-butterchurn@^3.0.0-beta.2:
-  version "3.0.0-beta.2"
-  resolved "https://registry.yarnpkg.com/butterchurn/-/butterchurn-3.0.0-beta.2.tgz#1232f9b5b79527e77e604e6b08d4e103f87fe3cb"
-  integrity sha512-KlxSjT6sqVKW325qdrfImRH89rxSfW/O8xlwsgxh3xTiwT/o7omTdz4FKWrYwi0Vh/+xCYp1Ce7WUUDvEvFPjg==
+butterchurn@^3.0.0-beta.3:
+  version "3.0.0-beta.3"
+  resolved "https://registry.yarnpkg.com/butterchurn/-/butterchurn-3.0.0-beta.3.tgz#ee3172e97b211f462619b55a10d9accfb179a1c1"
+  integrity sha512-+N6j09ooExCH0NxvRjSBpeHBjXy8Tt8qbtTjFGCeSywKkM9uHSIMMgyUnA2ouOF5LcHjeamkKmOyU0tFWN9Ojw==
   dependencies:
     "@assemblyscript/loader" "^0.17.11"
     "@babel/runtime" "^7.11.2"
