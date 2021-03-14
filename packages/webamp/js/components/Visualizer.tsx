@@ -150,6 +150,10 @@ function Visualizer({ analyser }: Props) {
     };
   }, [canvas, paintFrame]);
 
+  if (status === MEDIA_STATUS.STOPPED) {
+    return null;
+  }
+
   return (
     <canvas
       id="visualizer"

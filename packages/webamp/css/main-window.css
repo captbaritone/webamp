@@ -162,10 +162,6 @@
   left: 79px;
 }
 
-#webamp #main-window.stop #visualizer {
-  display: none;
-}
-
 #webamp .text {
   display: none;
 }
