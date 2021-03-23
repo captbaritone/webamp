@@ -154,6 +154,8 @@
 - http://www.xia1ge.com/winamp2-js.html
 - https://www.techbang.com/posts/56800-do-you-miss-the-days-when-you-used-winamp-to-listen-to-music-now-you-can-go-back-to-this-page-and-relive-that-time
 
+### Hebrew - עברית
+- https://www.geektime.co.il/winamp-skin-museum-with-over-65k-skins/
 ### German
 
 - http://de.engadget.com/2018/02/09/retro-winamp-emulator-fur-deinen-browser/
