@@ -61,7 +61,7 @@ async function handler(message) {
       tempScreenshotPath,
       "screenshot.png"
     );
-    const embed = new Discord.RichEmbed()
+    const embed = new Discord.MessageEmbed()
       .setTitle(`Here's a screenshot of ${file.filename}`)
       .attachFile(attachment)
       .setImage(`attachment://screenshot.png`);

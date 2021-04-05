@@ -250,6 +250,11 @@ test("/skins/status", async () => {
   expect(body).toEqual({});
 });
 
+test("/approved", async () => {
+  const { body } = await request(app).get("/approved").expect(200);
+  expect(body).toEqual(["an_approved_md5", "a_tweeted_md5"]);
+});
+
 test("/skins/a_fake_md5", async () => {
   let response = await request(app).get("/skins/a_fake_md5");
   expect(response.body).toEqual({

@@ -13,7 +13,9 @@ const temp = _temp.track();
 
 export async function tweet(discordClient: Client, anything: string | null) {
   const ctx = new UserContext();
-  const tweetBotChannel = discordClient.channels.get(TWEET_BOT_CHANNEL_ID);
+  const tweetBotChannel = await discordClient.channels.fetch(
+    TWEET_BOT_CHANNEL_ID
+  );
   if (tweetBotChannel == null) {
     throw new Error("Could not connect to the #tweet-bot channel");
   }

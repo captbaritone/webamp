@@ -256,6 +256,14 @@ router.post(
 );
 
 router.get(
+  "/approved",
+  asyncHandler(async (req, res) => {
+    const approved = await Skins.getAllApproved();
+    res.json(approved);
+  })
+);
+
+router.get(
   "/stylegan.json",
   asyncHandler(async (req, res) => {
     const images = await Skins.getAllClassicScreenshotUrls();

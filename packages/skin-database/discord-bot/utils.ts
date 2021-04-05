@@ -1,10 +1,9 @@
 import {
-  RichEmbed,
   User,
   MessageReaction,
   TextChannel,
   DMChannel,
-  GroupDMChannel,
+  MessageEmbed,
 } from "discord.js";
 import SkinModel from "../data/SkinModel";
 import * as Skins from "../data/skins";
@@ -16,8 +15,9 @@ function isEligableToApprove(user: User): boolean {
   return !user.bot;
 }
 
-const filter = (reaction: MessageReaction): boolean => {
-  const hasNonBot = reaction.users.some(isEligableToApprove);
+const filter = async (reaction: MessageReaction): Promise<boolean> => {
+  const users = await reaction.users.fetch();
+  const hasNonBot = users.some(isEligableToApprove);
 
   return (
     hasNonBot &&
@@ -32,7 +32,7 @@ export async function postSkin({
 }: {
   md5: string;
   title?: (filename: string | null) => string;
-  dest: TextChannel | DMChannel | GroupDMChannel;
+  dest: TextChannel | DMChannel;
 }) {
   const ctx = new UserContext();
 
@@ -54,7 +54,7 @@ export async function postSkin({
   const nsfw = await skin.getIsNsfw();
   const title = _title ? _title(canonicalFilename) : canonicalFilename;
 
-  const embed = new RichEmbed()
+  const embed = new MessageEmbed()
     .setTitle(title)
     .addField("Try Online", `[skins.webamp.org](${skin.getMuseumUrl()})`, true)
     .addField("Download", `[${canonicalFilename}](${skin.getSkinUrl()})`, true)
@@ -117,7 +117,14 @@ export async function postSkin({
   // TODO: Timeout at some point
   await msg.awaitReactions(filter, { max: 1 }).then(async (collected) => {
     const vote = collected.first();
-    const user = vote.users.find(isEligableToApprove);
+    if (vote == null) {
+      throw new Error("Did not expect vote to be empty");
+    }
+    const users = await vote.users.fetch();
+    const user = users.find(isEligableToApprove);
+    if (user == null) {
+      throw new Error("Expected to find approver.");
+    }
     switch (vote.emoji.name) {
       case "👍":
       case "👏":
@@ -178,7 +185,7 @@ export async function sendAlreadyReviewed({
   dest,
 }: {
   md5: string;
-  dest: TextChannel | DMChannel | GroupDMChannel;
+  dest: TextChannel | DMChannel;
 }) {
   const ctx = new UserContext();
   const skin = await SkinModel.fromMd5(ctx, md5);
@@ -191,7 +198,7 @@ export async function sendAlreadyReviewed({
   const tweetStatus = await skin.getTweetStatus();
   const nsfw = await skin.getIsNsfw();
 
-  const embed = new RichEmbed()
+  const embed = new MessageEmbed()
     .setTitle(
       `Someone flagged "${canonicalFilename}", but it's already been reviwed.`
     )
