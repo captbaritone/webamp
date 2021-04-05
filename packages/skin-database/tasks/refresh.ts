@@ -46,9 +46,7 @@ export async function refreshSkins(skins: SkinModel[]): Promise<void> {
   };
   await Shooter.withShooter(async (shooter: Shooter) => {
     for (const [i, skin] of skins.entries()) {
-      console.log(`${i + 1}/${skins.length}: ${skin.getMd5()}`);
       await refresh(skin, shooter);
-      console.log(`COMPLETE: ${i + 1}/${skins.length}: ${skin.getMd5()}`);
       // We end up caching a lot of stuff (the whole skin/zip) on the model, so we can't just leave these around for the whole process.
       delete skins[i];
     }
@@ -96,21 +94,17 @@ export async function refresh(
   shooter: Shooter
 ): Promise<void> {
   if (skin.getSkinType() !== "CLASSIC") {
-    console.log("Not classic");
     throw new Error("Can't refresh non-classic skins");
   }
   try {
     await _refresh(skin, shooter);
-    console.log("Done!");
   } catch (e) {
-    console.log("Caught error!!");
     await knex("refreshes").insert({
       skin_md5: skin.getMd5(),
       error: e.message,
     });
     return;
   }
-  console.log("Insertting");
   await knex("refreshes").insert({
     skin_md5: skin.getMd5(),
   });

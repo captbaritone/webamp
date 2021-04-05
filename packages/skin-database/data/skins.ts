@@ -569,6 +569,15 @@ GROUP BY skins.md5`,
   });
 }
 
+export async function getAllApproved(): Promise<Array<string>> {
+  const skins = await knex("skins")
+    .leftJoin("skin_reviews", "skin_reviews.skin_md5", "=", "skins.md5")
+    .where("review", "APPROVED")
+    .select("md5");
+
+  return skins.map(({ md5 }) => md5);
+}
+
 export async function getAllClassicScreenshotUrls(): Promise<
   Array<{ fileName: string; url: string }>
 > {

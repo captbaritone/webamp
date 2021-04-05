@@ -26,7 +26,7 @@ export default class DiscordEventHandler {
 
   private async getChannel(channelId: string): Promise<TextChannel> {
     const client = await this.getClient();
-    const dest = client.channels.get(channelId) as TextChannel | null;
+    const dest = (await client.channels.fetch(channelId)) as TextChannel | null;
     if (dest == null) {
       throw new Error(`Could not get channel with id: ${channelId}`);
     }

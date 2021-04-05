@@ -9,7 +9,7 @@ class DiscordWinstonTransport extends Transport {
 
   static async addToLogger(client, logger) {
     await client.login(config.discordToken);
-    const captbaritone = await client.fetchUser(config.CAPTBARITONE_USER_ID);
+    const captbaritone = await client.users.fetch(config.CAPTBARITONE_USER_ID);
     const channel = await captbaritone.createDM();
     logger.add(new DiscordWinstonTransport(channel));
   }
