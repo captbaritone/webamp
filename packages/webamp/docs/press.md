@@ -1,3 +1,9 @@
+# Webamp Press
+
+This page lists various places where the Webamp project has been mentioned or discussed.
+
+For press mentions of the [Winamp Skin Museum](https://skins.webamp.org), see the [Winamp Skin Museum Press Page](./skin-museuem-press.md).
+
 ## Articles (notable)
 
 - [Gizmodo](https://gizmodo.com/winamp-2-has-been-immortalized-in-html5-for-your-pleasu-1655373653)
