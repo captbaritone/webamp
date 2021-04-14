@@ -29,6 +29,7 @@ For press mentions of the [Winamp Skin Museum](https://skins.webamp.org), see th
 ## News Aggregators
 
 - [/r/InternetIsBeautiful](https://www.reddit.com/r/InternetIsBeautiful/comments/2lh3ob/winamp_2_preserved_in_html5/)
+- [Hacker News](https://news.ycombinator.com/item?id=26811696) (Apr. 2021)
 - [Hacker News](https://news.ycombinator.com/item?id=17583997) (Jul. 2018)
 - [Hacker News](https://news.ycombinator.com/item?id=16333550) (Feb. 2018)
 - [Hacker News](https://news.ycombinator.com/item?id=15314629) (Sept. 2017)
