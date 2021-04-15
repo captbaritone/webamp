@@ -236,7 +236,8 @@ For press mentions of the [Winamp Skin Museum](https://skins.webamp.org), see th
 ### Japanese
 
 - http://jp.techcrunch.com/2018/02/10/2018-02-09-whip-the-llamas-ass-with-this-javascript-winamp-emulator/
-- https://gigazine.net/news/20180213-winamp2-js/
+- [GigaZine](https://gigazine.net/news/20180213-winamp2-js/) (Feb. 2018)
+- [GigaZine](https://gigazine.net/news/20210415-webamp/) (Apr. 2021)
 - https://www.gizmodo.jp/2014/11/90winamp_2html5.html
 - https://www.softantenna.com/wp/review/winamp2-js/
 - http://mantiddesign.com/archives/15468
