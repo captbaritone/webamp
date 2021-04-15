@@ -31,9 +31,12 @@ For press mentions of the core Webamp proejct, see the [Webamp Press Page](./pre
 - [Hacker News](https://news.ycombinator.com/item?id=24373699) (690 points)
 - [Imgur](https://imgur.com/gallery/wuq9BRv) (70k views)
 - [Kottke.org](https://kottke.org/quick-links/2020-09)
+- [Twisted Sifter](https://twistedsifter.com/2020/09/the-shirk-report-volume-595/)
+- [Product Hunt](https://www.producthunt.com/posts/winamp-skin-museum)
 
 ## German
 - [Gamestar.de](https://www.gamestar.de/artikel/digitales-winamp-museum-65000-skins,3361648.html)
+- [Golem.de](https://www.golem.de/sonstiges/zustimmung/auswahl.html?from=https%3A%2F%2Fwww.golem.de%2Fnews%2Fwinamp-skin-museum-musik-hoeren-wie-1999-2009-150820.html)
 
 ## Swedish
 - [Feber](https://feber.se/internet/kolla-in-winamp-skin-museum/415425/)
@@ -42,10 +45,17 @@ For press mentions of the core Webamp proejct, see the [Webamp Press Page](./pre
 - [Promo Descuentos](https://www.promodescuentos.com/ofertas/winamp-skin-museum-65000-skins-gratis-winap-502670)
 - [La Nacion](https://www.lanacion.com.ar/tecnologia/winamp-museum-este-es-sitio-recopila-disenos-nid2446466)
 - [Hipertextual](https://hipertextual.com/2020/12/winamp-online-winmap-skin-museum/)
+- [Microsiervos](https://www.microsiervos.com/archivo/musica/winamp-skin-museum.html)
 
 ## Russian
 - [Fishki](https://fishki.net/3416437-uterjannoe-iskusstvo-skinov-dlja-winamp.html)
 - [Habr](https://habr.com/en/company/selectel/blog/530648/)
 
-### Hebrew - עברית
+## Hebrew - עברית
 - [GeekTime](https://www.geektime.co.il/winamp-skin-museum-with-over-65k-skins/)
+
+## Turkish
+- [Ekşi Şeyler](https://eksisozluk.com/entry/118824042)
+
+## Polish
+- [Joe Monster](https://joemonster.org/art/51463/Morele_jednak_nie_wywinie_sie_od_kary_Co_nowego_w_technologii_)
