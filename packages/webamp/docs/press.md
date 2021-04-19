@@ -251,6 +251,7 @@ For press mentions of the [Winamp Skin Museum](https://skins.webamp.org), see th
 - https://pplware.sapo.pt/software/chegou-winamp-funciona-um-browser/
 - https://www.techtudo.com.br/noticias/2018/03/oito-curiosidades-sobre-o-winamp-player-que-era-sucesso-nos-anos-2000.ghtml (mention)
 - https://tecnoblog.net/234125/winamp-versao-web-navegador/
+- [tek.sapo.pt](https://tek.sapo.pt/extras/site-do-dia/artigos/webamp-da-vida-ao-classico-leitor-de-audio-winamp-diretamente-do-browser-de-internet) (Arp. 2021)
 
 ### Swedish
 
