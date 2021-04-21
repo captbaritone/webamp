@@ -10,6 +10,8 @@ import DesktopLinkIcon from "./DesktopLinkIcon";
 import museumIcon from "../images/icons/internet-folder-32x32.png";
 import soundcloudIcon from "../images/icons/soundcloud-32x32.png";
 import { SoundCloudPlaylist } from "./SoundCloud";
+import { getPlaylists } from "./Subsonic";
+import PlaylistIcon from "./PlaylistIcon";
 // import MilkIcon from "./MilkIcon";
 
 interface Props {
@@ -63,6 +65,9 @@ const DemoDesktop = ({ webamp, soundCloudPlaylist }: Props) => {
           href={soundCloudPlaylist.permalink_url}
         />
       );
+    }
+    for (const list of getPlaylists()) {
+      icons.push(PlaylistIcon({ webamp: webamp, playlist: list }));
     }
   }
   return (
