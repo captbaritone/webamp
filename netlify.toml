@@ -24,6 +24,10 @@
   from = "/chat"
   to = "https://discord.gg/fpBPmFkngQ"
 
+[[redirects]]
+  from = "/bot"
+  to = "https://twitter.com/winampskins"
+
 # Redirect domain aliases to primary domain
 [[redirects]]
   from = "https://webamp.net/*"
