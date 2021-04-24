@@ -10,8 +10,9 @@ import DesktopLinkIcon from "./DesktopLinkIcon";
 import museumIcon from "../images/icons/internet-folder-32x32.png";
 import soundcloudIcon from "../images/icons/soundcloud-32x32.png";
 import { SoundCloudPlaylist } from "./SoundCloud";
-import { getPlaylists } from "./Subsonic";
+import { getPlaylists, playlists } from "./Subsonic";
 import PlaylistIcon from "./PlaylistIcon";
+import SubsonicIcon from "./SubsonicIcon";
 // import MilkIcon from "./MilkIcon";
 
 interface Props {
@@ -66,9 +67,10 @@ const DemoDesktop = ({ webamp, soundCloudPlaylist }: Props) => {
         />
       );
     }
-    for (const list of getPlaylists()) {
+    icons.push(SubsonicIcon());
+    playlists.forEach(list => {
       icons.push(PlaylistIcon({ webamp: webamp, playlist: list }));
-    }
+    });
   }
   return (
     <div

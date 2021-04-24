@@ -2,8 +2,7 @@ import { WebampLazy, URLTrack } from "./Webamp";
 import { useCallback } from "react";
 import icon from "../images/icons/winamp-playlist-32x32.png";
 import DesktopIcon from "./DesktopIcon";
-import { getPlaylistTracks } from "./Subsonic";
-import { Playlist } from "./Subsonic";
+import { getPlaylistTracks, Playlist } from "./Subsonic";
 
 interface Props {
     webamp: WebampLazy; playlist: Playlist;
