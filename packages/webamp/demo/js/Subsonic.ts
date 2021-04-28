@@ -1,4 +1,4 @@
-import { PlaylistTrack, URLTrack } from "../../js/types"
+import { URLTrack } from "../../js/types"
 const md5 = require("md5");
 export interface Playlist {
     name: String, id: Number
@@ -72,9 +72,10 @@ export async function getPlaylistTracks(id: Number): Promise<URLTrack[]> {
         let lists = await res.json();
         for (const e of lists['subsonic-response']['playlist']['entry']) {
             output.push({
-                duration: e.duration, defaultName: `${e.artist} - ${e.title}`,
+                duration: e.duration,
+                defaultName: `${e.artist} - ${e.title}`,
                 url: `https://${domain}/rest/stream.view?id=${e.id}&${getAuthParams()}`,
-                metaData: { artist: e.artist, title: e.title, album: e.album }
+                //metaData: { artist: e.artist, title: e.title, album: e.album },
             });
         }
     }
