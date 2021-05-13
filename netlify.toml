@@ -19,7 +19,7 @@ ID = "be420a16-4ef3-43b1-ac62-35869bdf8679"
   status = 200
 
 [[redirects]]
-  from = "/og_skin/*"
+  from = "/skin/*"
   to = "https://skin-museum.jordan1320.workers.dev/skin/:splat"
   status = 200
 
