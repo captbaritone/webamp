@@ -20,7 +20,7 @@ ID = "be420a16-4ef3-43b1-ac62-35869bdf8679"
 
 [[redirects]]
   from = "/skin_og/:hash/*"
-  to = "https://skin-museum.jordan1320.workers.dev/:hash/:splat"
+  to = "https://skin-museum.jordan1320.workers.dev/skin/:hash/:splat"
   status = 200
 
 [[redirects]]
