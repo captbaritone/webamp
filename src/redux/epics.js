@@ -41,7 +41,11 @@ const urlChangedEpic = (actions) =>
       const params = new URLSearchParams(action.location.search);
       const query = params != null && params.get("query");
 
-      if (action.location.pathname.startsWith("/skin/")) {
+      if (
+        action.location.pathname.startsWith("/skin/") ||
+        // Temporary while we test out Cloudflare Workers to insert OG tags
+        action.location.pathname.startsWith("/og_skin/")
+      ) {
         const segments = action.location.pathname.split("/");
         const actions = [Actions.selectedSkin(segments[2])];
         if (segments[4] === "files") {
