@@ -53,6 +53,7 @@ An incomplete list of websites using Webamp:
 - [Webamp Desktop](https://desktop.webamp.org/) - An Electron app version of Webamp
 - [98.js.org](https://98.js.org/) - A Windows 98 clone in JavaScript ([GitHub](https://github.com/1j01/98))
 - [winxp.now.sh](https://winxp.now.sh/) - A Windows XP clone in JavaScript with React ([GitHub](https://github.com/ShizukuIchi))
+- [Try Andy's Desk](https://desk.glitchy.website/) - A quirky Windows themed desktop experience.
 - [www.dkdomino.zone](https://www.dkdomino.zone/album.html) - Someone's personal music player
 
 ## Thanks
