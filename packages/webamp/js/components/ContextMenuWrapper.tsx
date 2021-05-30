@@ -18,10 +18,11 @@ export default function ContextMenuWraper({
   renderContents,
   ...passThroughProps
 }: Props) {
-  const [openPosition, setOpenPosition] = useState<{
-    x: number;
-    y: number;
-  } | null>(null);
+  const [openPosition, setOpenPosition] =
+    useState<{
+      x: number;
+      y: number;
+    } | null>(null);
 
   const closeMenu = useCallback(() => {
     setOpenPosition(null);

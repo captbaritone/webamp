@@ -35,9 +35,8 @@ function Visualizer({ analyser, width, height }: Props) {
   const isEnabledVisualizer = visualizerStyle === VISUALIZERS.MILKDROP;
 
   const canvasRef = useRef(null);
-  const [visualizer, setVisualizer] = useState<ButterchurnVisualizer | null>(
-    null
-  );
+  const [visualizer, setVisualizer] =
+    useState<ButterchurnVisualizer | null>(null);
 
   // Initialize the visualizer
   useEffect(() => {

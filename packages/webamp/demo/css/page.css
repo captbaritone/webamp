@@ -5,7 +5,7 @@ body {
   font-size: 15px;
 }
 
-::selection{
+::selection {
   background: none;
 }
 

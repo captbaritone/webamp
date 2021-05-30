@@ -17,9 +17,10 @@ function EqGraph() {
 
   const [canvasNode, setCanvasNode] = useState<HTMLCanvasElement | null>(null);
 
-  const canvasCtx = useMemo(() => canvasNode?.getContext("2d") ?? null, [
-    canvasNode,
-  ]);
+  const canvasCtx = useMemo(
+    () => canvasNode?.getContext("2d") ?? null,
+    [canvasNode]
+  );
   const colorPattern = useColorPattern(canvasCtx);
 
   useLayoutEffect(() => {

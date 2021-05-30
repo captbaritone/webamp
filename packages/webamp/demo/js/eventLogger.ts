@@ -107,12 +107,11 @@ function logEventFromAction(action: Action): GoogleAnalyticsEvent | null {
   return null;
 }
 
-export const loggerMiddleware = () => (next: (action: Action) => void) => (
-  action: Action
-) => {
-  const event = logEventFromAction(action);
-  if (event != null) {
-    log(event);
-  }
-  return next(action);
-};
+export const loggerMiddleware =
+  () => (next: (action: Action) => void) => (action: Action) => {
+    const event = logEventFromAction(action);
+    if (event != null) {
+      log(event);
+    }
+    return next(action);
+  };

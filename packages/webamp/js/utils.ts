@@ -163,13 +163,10 @@ export const percentToRange = (percent: number, min: number, max: number) =>
 export const percentToIndex = (percent: number, length: number): number =>
   percentToRange(percent, 0, length - 1);
 
-const rebound = (
-  oldMin: number,
-  oldMax: number,
-  newMin: number,
-  newMax: number
-) => (oldValue: number): number =>
-  percentToRange(toPercent(oldMin, oldMax, oldValue), newMin, newMax);
+const rebound =
+  (oldMin: number, oldMax: number, newMin: number, newMax: number) =>
+  (oldValue: number): number =>
+    percentToRange(toPercent(oldMin, oldMax, oldValue), newMin, newMax);
 
 // Convert an .eqf value to a 0-100
 export const normalizeEqBand = rebound(1, 64, 0, 100);

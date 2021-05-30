@@ -16,9 +16,10 @@ function rightPad(str: string, len: number, fillChar: string): string {
 
 const RunningTimeDisplay = () => {
   const runningTimeMessage = useTypedSelector(Actions.getRunningTimeMessage);
-  const text = useMemo(() => rightPad(runningTimeMessage, 18, " "), [
-    runningTimeMessage,
-  ]);
+  const text = useMemo(
+    () => rightPad(runningTimeMessage, 18, " "),
+    [runningTimeMessage]
+  );
   return (
     <div className="playlist-running-time-display draggable">
       {/* This div is probably not strictly needed */}
