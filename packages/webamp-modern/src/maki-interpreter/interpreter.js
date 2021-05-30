@@ -14,6 +14,8 @@ function coerceTypes(var1, var2, val1 /* val2 */) {
 export function interpret(start, program, stack = []) {
   const { commands, methods, variables, classes } = program;
 
+  const callStack = [];
+
   function popStackValue() {
     const v = stack.pop();
     return v instanceof Variable ? v.getValue() : v;
@@ -159,18 +161,17 @@ export function interpret(start, program, stack = []) {
       }
       // callGlobal
       case 25: {
+        callStack.push(ip);
         const offset = command.arg;
-        // Note: We proxy all yielded values from the child `interpret` out to
-        // the caller, while capturing the return value, (`value`) for use within the
-        // VM.
-        const value = interpret(offset, program, stack);
-        stack.push(value);
+
+        ip = offset - 1; // -1 because we ++ after the switch
         break;
       }
       // return
       case 33: {
-        const aValue = popStackValue();
-        return aValue;
+        ip = callStack.pop();
+        // TODO: Stack protection?
+        break;
       }
       // complete
       case 40: {
