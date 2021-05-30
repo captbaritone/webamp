@@ -1,29 +1,8 @@
 import parse from "./parser";
 import { getClass, getFormattedId } from "./objects";
 import { interpret } from "./interpreter";
-import { isPromise } from "../utils";
 
-// Note: if this incurs a performance overhead, we could pass a flag into the VM
-// to not yield in production. In that case, we would never even enter the
-// `while` loop.
-async function runGeneratorUntilReturn(gen) {
-  let val = gen.next();
-  while (!val.done) {
-    val = gen.next();
-    if (isPromise(val.value)) {
-      gen.next(await val.value);
-    }
-  }
-  return val.value;
-}
-
-export function run({
-  runtime,
-  data,
-  system,
-  log,
-  debugHandler = runGeneratorUntilReturn,
-}) {
+export function run({ runtime, data, system, log }) {
   const program = parse(data);
 
   // Replace class hashes with actual JavaScript classes from the runtime
@@ -50,12 +29,7 @@ export function run({
     // TODO: Handle disposing of this.
     // TODO: Handle passing in variables.
     variable.hook(method.name, (...args) => {
-      // Interpret is a generator that yields before each command is exectued.
-      // `handler` is reponsible for `.next()`ing until the program execution is
-      // complete (the generator is "done"). In production this is done
-      // synchronously. In the debugger, if execution is paused, it's done
-      // async.
-      debugHandler(interpret(commandOffset, program, args.reverse()));
+      interpret(commandOffset, program, args.reverse());
     });
   });
 

@@ -11,16 +11,7 @@ function coerceTypes(var1, var2, val1 /* val2 */) {
   return val1;
 }
 
-// Note: We implement `interpret` as a generator in order to support pausing
-// execution in the debugger. This allows the caller granular control over the
-// execution timing of the virtual machine while also allowing the VM to divulge
-// some of its internal state before each command is exectued.
-//
-// In "production" we syncrnously call `.next()` on the generator until it's
-// empty, ignoring all yeilded values. In the debugger we use the yielded data
-// to populate the UI, and -- when stepping -- pause execution by waiting
-// between calls to `.next()`.
-export function* interpret(start, program, stack = []) {
+export function interpret(start, program, stack = []) {
   const { commands, methods, variables, classes } = program;
 
   function popStackValue() {
@@ -49,11 +40,6 @@ export function* interpret(start, program, stack = []) {
   let ip = start;
   while (ip < commands.length) {
     const command = commands[ip];
-    // This probably incurrs some perf cost. If it does, we can pass in a flag
-    // to enable it only when we are debugging. When we are not, (in prod) we
-    // can just jump right over it and we will execute straight through to the
-    // return value on the first call to `.next()`.
-    yield { i: ip, command, stack, variables, commands };
 
     switch (command.opcode) {
       // push
@@ -160,12 +146,9 @@ export function* interpret(start, program, stack = []) {
           methodArgs.push(aValue);
         }
         const obj = popStackValue();
-        const ret = obj[methodName](...methodArgs);
-        let value;
-        if (isPromise(ret)) {
-          value = yield ret;
-        } else {
-          value = ret;
+        let value = obj[methodName](...methodArgs);
+        if (isPromise(value)) {
+          throw new Error("Did not expect maki method to return promise");
         }
         if (value === null) {
           // variables[1] holds global NULL value
@@ -180,7 +163,7 @@ export function* interpret(start, program, stack = []) {
         // Note: We proxy all yielded values from the child `interpret` out to
         // the caller, while capturing the return value, (`value`) for use within the
         // VM.
-        const value = yield* interpret(offset, program, stack);
+        const value = interpret(offset, program, stack);
         stack.push(value);
         break;
       }
