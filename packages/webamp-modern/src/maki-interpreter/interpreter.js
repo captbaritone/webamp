@@ -11,9 +11,10 @@ function coerceTypes(var1, var2, val1 /* val2 */) {
   return val1;
 }
 
-export function interpret(start, program, stack = []) {
+export function interpret(start, program) {
   const { commands, methods, variables, classes } = program;
 
+  const stack = [];
   const callStack = [];
 
   function popStackValue() {
