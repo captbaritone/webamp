@@ -2,9 +2,8 @@
 // Knows how to display various modes like tracking, volume, balance, etc.
 import * as React from "react";
 import CharacterString from "../CharacterString";
-import * as Actions from "../../actionCreators";
 import * as Selectors from "../../selectors";
-import { useTypedSelector, useActionCreator } from "../../hooks";
+import { useTypedSelector } from "../../hooks";
 
 const SEPARATOR = "  ***  ";
 
@@ -43,20 +42,24 @@ export const loopText = (text: string): string =>
     : text.padEnd(MARQUEE_MAX_LENGTH, " ");
 
 interface UseStepperArgs {
-  step: () => void;
   dragging: boolean;
+  disableMarquee: boolean;
 }
 
 // Call `step` every second, except when dragging. Resume stepping 1 second after dragging ceases.
-function useStepper({ step, dragging }: UseStepperArgs): void {
+function useStepper({ dragging, disableMarquee }: UseStepperArgs): number {
+  const [currentStep, setStep] = React.useState(0);
   const [stepping, setStepping] = React.useState(true);
   React.useEffect(() => {
-    if (stepping === false) {
+    if (stepping === false || disableMarquee === true) {
       return;
     }
-    const stepHandle = setInterval(step, 220);
+    const stepHandle = setInterval(
+      () => setStep((current) => current + 1),
+      220
+    );
     return () => clearInterval(stepHandle);
-  }, [step, stepping]);
+  }, [stepping, disableMarquee]);
 
   React.useEffect(() => {
     if (dragging) {
@@ -70,6 +73,7 @@ function useStepper({ step, dragging }: UseStepperArgs): void {
       window.clearTimeout(steppingTimeout);
     };
   }, [dragging]);
+  return currentStep;
 }
 
 // When user calls `handleMouseDown`, and moves the mouse, `dragOffset` will update as they drag.
@@ -118,13 +122,11 @@ function useDragX() {
 const Marquee = React.memo(() => {
   const text = useTypedSelector(Selectors.getMarqueeText);
   const doubled = useTypedSelector(Selectors.getDoubled);
-  const marqueeStep = useTypedSelector(Selectors.getMarqueeStep);
-  const stepMarquee = useActionCreator(Actions.stepMarquee);
   const { handleMouseDown, dragOffset, dragging } = useDragX();
+  const disableMarquee = useTypedSelector(Selectors.getDisableMarquee);
+  const marqueeStep = useStepper({ dragging, disableMarquee });
   const offset = stepOffset(text, marqueeStep, dragOffset);
   const offsetPixels = pixelUnits(-offset);
-
-  useStepper({ step: stepMarquee, dragging });
 
   return (
     <div

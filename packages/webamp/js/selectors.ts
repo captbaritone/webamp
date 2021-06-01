@@ -642,6 +642,10 @@ export const getMarqueeText = (state: AppState): string => {
   return defaultText;
 };
 
+export function getDisableMarquee(state: AppState): boolean {
+  return state.display.disableMarquee;
+}
+
 export const getKbps = createSelector(
   getCurrentTrack,
   (track: PlaylistTrack | null): string | null => {
@@ -765,10 +769,6 @@ export const getLineColorsImage = createSelector(
 
 export function getDummyVizData(state: AppState): DummyVizData | null {
   return state.display.dummyVizData;
-}
-
-export function getMarqueeStep(state: AppState): number {
-  return state.display.marqueeStep;
 }
 
 export function getNetworkConnected(state: AppState): boolean {

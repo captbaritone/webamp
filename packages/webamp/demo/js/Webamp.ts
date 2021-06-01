@@ -20,7 +20,6 @@ export {
 } from "../../js/types";
 export { WINDOWS } from "../../js/constants";
 export {
-  STEP_MARQUEE,
   UPDATE_TIME_ELAPSED,
   UPDATE_WINDOW_POSITIONS,
   SET_VOLUME,

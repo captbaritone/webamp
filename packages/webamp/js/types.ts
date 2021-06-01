@@ -320,9 +320,6 @@ export type Action =
       type: "TOGGLE_LLAMA_MODE";
     }
   | {
-      type: "STEP_MARQUEE";
-    }
-  | {
       type: "DISABLE_MARQUEE";
     }
   | {

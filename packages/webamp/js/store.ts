@@ -4,14 +4,14 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import reducer from "./reducers";
 import mediaMiddleware from "./mediaMiddleware";
 import { merge } from "./utils";
-import { UPDATE_TIME_ELAPSED, STEP_MARQUEE } from "./actionTypes";
+import { UPDATE_TIME_ELAPSED } from "./actionTypes";
 import Media from "./media";
 import Emitter from "./emitter";
 import { Extras, Dispatch, Action, AppState, Middleware } from "./types";
 
 // TODO: Move to demo
 const compose = composeWithDevTools({
-  actionsBlacklist: [UPDATE_TIME_ELAPSED, STEP_MARQUEE],
+  actionsBlacklist: [UPDATE_TIME_ELAPSED],
 });
 
 export default function (
