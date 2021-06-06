@@ -130,7 +130,6 @@
       "error",
       { "ignoreRestSiblings": true }
     ],
-    "no-use-before-define": ["error", "nofunc"],
     "no-useless-rename": "error",
     "no-var": "error",
     "no-with": "error",
