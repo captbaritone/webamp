@@ -24,7 +24,7 @@ export default function Balance({ style, className, id }: Props) {
       max="100"
       step="1"
       value={balance}
-      style={style}
+      style={{ ...style, touchAction: "none" }}
       onChange={(e) => setBalance(Number(e.target.value))}
       onMouseDown={() => setFocus("balance")}
       onMouseUp={unsetFocus}

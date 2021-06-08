@@ -65,6 +65,7 @@ const Position = memo(() => {
       min="0"
       max="100"
       step="1"
+      style={{ touchAction: "none" }}
       value={displayedPosition}
       onInput={setPosition}
       onChange={

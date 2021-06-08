@@ -399,6 +399,36 @@ export function getScreenSize(): { width: number; height: number } {
   };
 }
 
+type PosEvent =
+  | MouseEvent
+  | TouchEvent
+  | React.MouseEvent<HTMLElement>
+  | React.TouchEvent<HTMLElement>;
+
+function getPos(e: PosEvent): { clientX: number; clientY: number } {
+  switch (e.type) {
+    case "touchstart":
+    case "touchmove": {
+      const touch = (e as TouchEvent).targetTouches[0];
+      return touch;
+    }
+    case "mousedown":
+    case "mousemove": {
+      return e as MouseEvent;
+    }
+    default:
+      throw new Error(`Unexpected event type: ${e.type}`);
+  }
+}
+
+export function getX(e: PosEvent) {
+  return getPos(e).clientX;
+}
+
+export function getY(e: PosEvent) {
+  return getPos(e).clientY;
+}
+
 export function weakMapMemoize<T extends object, R>(
   func: (value: T) => R
 ): (value: T) => R {
