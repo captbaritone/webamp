@@ -46,7 +46,27 @@ class Interpreter {
         }
         // ==
         case 8: {
-          this.twoArgCoercingOperator((b, a) => b === a);
+          const a = this.stack.pop();
+          const b = this.stack.pop();
+          switch (a.type) {
+            case "INT":
+            case "FLOAT":
+            case "DOUBLE":
+            case "BOOLEAN": {
+              break;
+            }
+            case "STRING": {
+              break;
+            }
+            default:
+              throw new Error(`Unexpected type: ${a}`);
+          }
+          let aValue = this.getValue(a);
+          const bValue = this.getValue(b);
+
+          aValue = this.coerceTypes__DEPRECATED(a, b);
+          const result = Variable.newInt(bValue === aValue);
+          this.stack.push(result);
           break;
         }
         // !=
@@ -302,18 +322,22 @@ class Interpreter {
     }
   }
 
+  getValue(v) {
+    return v instanceof Variable ? v.getValue() : v;
+  }
+
   popStackValue() {
     const v = this.stack.pop();
-    return v instanceof Variable ? v.getValue() : v;
+    return this.getValue(v);
   }
 
   twoArgCoercingOperator(operator) {
     const a = this.stack.pop();
     const b = this.stack.pop();
-    let aValue = a instanceof Variable ? a.getValue() : a;
-    const bValue = b instanceof Variable ? b.getValue() : b;
+    let aValue = this.getValue(a);
+    const bValue = this.getValue(b);
 
-    aValue = coerceTypes(a, b, aValue, bValue);
+    aValue = this.coerceTypes__DEPRECATED(a, b);
     this.stack.push(operator(bValue, aValue));
   }
 
@@ -323,14 +347,14 @@ class Interpreter {
 
     this.stack.push(operator(bValue, aValue));
   }
-}
 
-function coerceTypes(var1, var2, val1 /* val2 */) {
-  if (var2.type === "INT") {
-    if (var1.type === "FLOAT" || var1.type === "DOUBLE") {
-      return Math.floor(val1);
+  coerceTypes__DEPRECATED(var1, var2) {
+    if (var2.type === "INT") {
+      if (var1.type === "FLOAT" || var1.type === "DOUBLE") {
+        return Math.floor(this.getValue(var1));
+      }
     }
-  }
 
-  return val1;
+    return this.getValue(var1);
+  }
 }

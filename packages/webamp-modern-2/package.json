@@ -1,0 +1,18 @@
+{
+  "name": "webamp-modern-2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "snowpack dev",
+    "build": "snowpack build"
+  },
+  "devDependencies": {
+    "snowpack": "^3.5.5"
+  },
+  "prettier": {},
+  "dependencies": {
+    "@rgrove/parse-xml": "^3.0.0",
+    "jszip": "^3.6.0"
+  }
+}
