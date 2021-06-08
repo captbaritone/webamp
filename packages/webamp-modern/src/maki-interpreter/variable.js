@@ -37,6 +37,16 @@ class Variable {
     }
     this._emitter.dispose();
   }
+
+  static newInt(value) {
+    const result = new Variable({
+      type: "INT",
+      typeName: "WHAT",
+      global: false,
+    });
+    result.setValue(value);
+    return result;
+  }
 }
 
 export default Variable;
