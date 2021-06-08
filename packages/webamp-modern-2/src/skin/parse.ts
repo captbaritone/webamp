@@ -131,6 +131,7 @@ export default class SkinParser {
     assert(file != null, "Expected bitmap node to have a `file` attribute");
 
     const imgUrl = await this._imageManager.getUrl(file);
+    assert(imgUrl != null, `Could not find bitmap at path ${file}`);
 
     const id = node.attributes.id;
     const x = num(node.attributes.x) ?? 0;
@@ -152,14 +153,8 @@ export default class SkinParser {
       height = size.height;
     }
 
-    const bitmap = new Bitmap({
-      url: imgUrl,
-      id,
-      x,
-      y,
-      width,
-      height,
-    });
+    // prettier-ignore
+    const bitmap = new Bitmap({ url: imgUrl, id, x, y, width, height });
 
     // TODO: Store this somewhere. For now, we can just show it.
     const div = document.createElement("div");

@@ -9,9 +9,12 @@ export default class ImageManager {
     this._sizeCache = new Map();
   }
 
-  async getUrl(filePath: string): Promise<string> {
+  async getUrl(filePath: string): Promise<string | null> {
     if (!this._urlCache.has(filePath)) {
       const zipFile = getCaseInsensitiveFile(this._zip, filePath);
+      if (zipFile == null) {
+        return null;
+      }
       const imgBlob = await zipFile.async("blob");
       const imgUrl = await getUrlFromBlob(imgBlob);
       this._urlCache.set(filePath, imgUrl);
