@@ -3,7 +3,7 @@
 ### Features
 
 - Support `.ani` cursors in skins [#1035](https://github.com/captbaritone/webamp/pull/1035), [blog post](https://jordaneldredge.com/blog/rendering-animated-ani-cursors-in-the-browser/).
-- Improved support for mobile/touch screen interaction: volume, balance and position sliders, marquee, playlist and window resizing. [#1098](https://github.com/captbaritone/webamp/pull/1098)
+- Improved support for mobile/touch screen interaction: volume, balance and position sliders, marquee, playlist and window dragging/resizing/focusing. [#1098](https://github.com/captbaritone/webamp/pull/1098)/[#1099](https://github.com/captbaritone/webamp/pull/1099)
 
 ### Bug Fixes
 
