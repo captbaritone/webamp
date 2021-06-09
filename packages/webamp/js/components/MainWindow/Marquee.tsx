@@ -5,6 +5,7 @@ import CharacterString from "../CharacterString";
 import * as Actions from "../../actionCreators";
 import * as Selectors from "../../selectors";
 import { useTypedSelector, useActionCreator } from "../../hooks";
+import * as Utils from "../../utils";
 
 const SEPARATOR = "  ***  ";
 
@@ -82,8 +83,8 @@ function useDragX() {
       return;
     }
     const xStart = mouseDownX;
-    const handleMouseMove = (ee: MouseEvent) => {
-      const diff = ee.clientX - xStart;
+    const handleMouseMove = (ee: MouseEvent | TouchEvent) => {
+      const diff = Utils.getX(ee) - xStart;
       setDragOffset(-diff);
     };
 
@@ -94,20 +95,26 @@ function useDragX() {
         return;
       }
       document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseUp", handleMouseUp);
+      document.removeEventListener("touchmove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener("touchend", handleMouseUp);
       setMouseDownX(null);
       cleanedUp = true;
     };
 
     document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("touchmove", handleMouseMove);
+    document.addEventListener("touseup", handleMouseUp);
+    document.addEventListener("touchend", handleMouseUp);
 
     return handleMouseUp;
   }, [mouseDownX]);
 
   const handleMouseDown = React.useCallback(
-    (e: React.MouseEvent<HTMLDivElement>): void => {
-      setMouseDownX(e.clientX);
+    (
+      e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
+    ): void => {
+      setMouseDownX(Utils.getX(e));
     },
     []
   );
@@ -131,6 +138,7 @@ const Marquee = React.memo(() => {
       id="marquee"
       className="text"
       onMouseDown={handleMouseDown}
+      onTouchStart={handleMouseDown}
       title="Song Title"
     >
       <div
