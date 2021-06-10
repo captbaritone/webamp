@@ -64,14 +64,14 @@ export async function getWebampConfig(
   let __butterchurnOptions;
   let __initialWindowLayout: WindowLayout | undefined;
   if (isButterchurnSupported()) {
-    const startWithMilkdropHidden =
-      document.body.clientWidth < MIN_MILKDROP_WIDTH ||
-      skinUrl != null ||
-      screenshot;
+    const startWithMilkdropHidden = skinUrl != null || screenshot;
 
     __butterchurnOptions = getButterchurnOptions(startWithMilkdropHidden);
 
-    if (startWithMilkdropHidden) {
+    if (
+      startWithMilkdropHidden ||
+      document.body.clientWidth < MIN_MILKDROP_WIDTH
+    ) {
       __initialWindowLayout = {
         [WINDOWS.MAIN]: { position: { x: 0, y: 0 } },
         [WINDOWS.EQUALIZER]: { position: { x: 0, y: 116 } },
