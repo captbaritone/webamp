@@ -1,0 +1,269 @@
+{
+  "345BEEBC0229492190BE6CB6A49A79D9": {
+    "parent": "Object",
+    "functions": [
+      {
+        "result": "int",
+        "name": "getNumTracks",
+        "parameters": []
+      },
+      {
+        "result": "int",
+        "name": "getCurrentIndex",
+        "parameters": []
+      },
+      {
+        "result": "int",
+        "name": "getNumSelectedTracks",
+        "parameters": []
+      },
+      {
+        "result": "int",
+        "name": "getNextSelectedTrack",
+        "parameters": [
+          [
+            "int",
+            "i"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "showCurrentlyPlayingTrack",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "showTrack",
+        "parameters": [
+          [
+            "int",
+            "item"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "enqueueFile",
+        "parameters": [
+          [
+            "string",
+            "file"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "clear",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "removeTrack",
+        "parameters": [
+          [
+            "int",
+            "item"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "swapTracks",
+        "parameters": [
+          [
+            "int",
+            "item1"
+          ],
+          [
+            "int",
+            "item2"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "moveUp",
+        "parameters": [
+          [
+            "int",
+            "item"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "moveDown",
+        "parameters": [
+          [
+            "int",
+            "item"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "moveTo",
+        "parameters": [
+          [
+            "int",
+            "item"
+          ],
+          [
+            "int",
+            "pos"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "playTrack",
+        "parameters": [
+          [
+            "int",
+            "item"
+          ]
+        ]
+      },
+      {
+        "result": "int",
+        "name": "getRating",
+        "parameters": [
+          [
+            "int",
+            "item"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "setRating",
+        "parameters": [
+          [
+            "int",
+            "item"
+          ],
+          [
+            "int",
+            "rating"
+          ]
+        ]
+      },
+      {
+        "result": "String",
+        "name": "getTitle",
+        "parameters": [
+          [
+            "int",
+            "item"
+          ]
+        ]
+      },
+      {
+        "result": "String",
+        "name": "getLength",
+        "parameters": [
+          [
+            "int",
+            "item"
+          ]
+        ]
+      },
+      {
+        "result": "String",
+        "name": "getMetaData",
+        "parameters": [
+          [
+            "int",
+            "item"
+          ],
+          [
+            "String",
+            "metadatastring"
+          ]
+        ]
+      },
+      {
+        "result": "String",
+        "name": "getFileName",
+        "parameters": [
+          [
+            "int",
+            "item"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "onPleditModified",
+        "parameters": []
+      }
+    ],
+    "name": "PlEdit"
+  },
+  "61A7ABAD7D7941f6B1D0E1808603A4F4": {
+    "parent": "Object",
+    "functions": [
+      {
+        "result": "int",
+        "name": "getNumItems",
+        "parameters": []
+      },
+      {
+        "result": "String",
+        "name": "getItemName",
+        "parameters": [
+          [
+            "int",
+            "item"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "showCurrentlyPlayingEntry",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "refresh",
+        "parameters": []
+      },
+      {
+        "result": "",
+        "name": "renameItem",
+        "parameters": [
+          [
+            "int",
+            "item"
+          ],
+          [
+            "String",
+            "name"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "enqueueItem",
+        "parameters": [
+          [
+            "int",
+            "item"
+          ]
+        ]
+      },
+      {
+        "result": "",
+        "name": "playItem",
+        "parameters": [
+          [
+            "int",
+            "item"
+          ]
+        ]
+      }
+    ],
+    "name": "PlDir"
+  }
+}
