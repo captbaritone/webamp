@@ -9,6 +9,10 @@ async function main() {
   const parser = new SkinParser(zip);
 
   await parser.parse();
+
+  for (const container of parser._containers) {
+    document.body.appendChild(container.getDebugDom());
+  }
 }
 
 main();

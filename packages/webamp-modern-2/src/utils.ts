@@ -20,3 +20,8 @@ export function num(str: string | void): number | null {
 export function px(size: number): string {
   return `${size}px`;
 }
+
+export function toBool(str: string) {
+  assert(str === "0" || str === "1", 'Expected bool value to be "0" or "1".');
+  return str === "1";
+}
