@@ -45,7 +45,7 @@ export default class Group extends GuiObj {
     const div = super.getDebugDom();
     div.style.height = Utils.px(this._maximumHeight);
     div.style.width = Utils.px(this._maximumWidth);
-    if (this._background != null) {
+    if (this._background != null && this._drawBackground) {
       const bitmap = UI_ROOT.getBitmap(this._background);
       div.style.background = bitmap.getBackgrondCSSAttribute();
     }
