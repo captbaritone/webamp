@@ -1,9 +1,11 @@
+import { toBool } from "../utils";
 import Group from "./Group";
 import Layout from "./Layout";
 import XmlObj from "./XmlObj";
 
 export default class Container extends XmlObj {
   _layouts: Layout[] = [];
+  _defaultVisible: boolean = true;
   constructor() {
     super();
   }
@@ -13,6 +15,8 @@ export default class Container extends XmlObj {
       return true;
     }
     switch (key) {
+      case "default_visible":
+        this._defaultVisible = toBool(value);
       default:
         return false;
     }
@@ -26,8 +30,10 @@ export default class Container extends XmlObj {
 
   getDebugDom(): HTMLDivElement {
     const div = window.document.createElement("div");
-    for (const layout of this._layouts) {
-      div.appendChild(layout.getDebugDom());
+    if (this._defaultVisible) {
+      for (const layout of this._layouts) {
+        div.appendChild(layout.getDebugDom());
+      }
     }
     return div;
   }
