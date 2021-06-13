@@ -1,5 +1,5 @@
 import parseXml, { XmlDocument, XmlElement } from "@rgrove/parse-xml";
-import { assert, num, getCaseInsensitiveFile, px, toBool } from "../utils";
+import { assert, getCaseInsensitiveFile, assume } from "../utils";
 import UI_ROOT from "../UIRoot";
 import JSZip, { JSZipObject } from "jszip";
 import Bitmap from "./Bitmap";
@@ -8,10 +8,13 @@ import Layout from "./Layout";
 import Group from "./Group";
 import Container from "./Container";
 import Layer from "./Layer";
+import { parse as parseMaki } from "../maki/parser";
+import SystemObject from "./SystemObject";
 
 class ParserContext {
   container: Container | null = null;
   layout: Layout | null = null;
+  parentGroup: Group | null = null;
 }
 
 export default class SkinParser {
@@ -129,11 +132,12 @@ export default class SkinParser {
   async group(node: XmlElement) {
     const group = new Group();
     group.setXmlAttributes(node.attributes);
+    this._context.parentGroup = group;
     await this.traverseChildren(node);
   }
 
   async bitmap(node: XmlElement) {
-    assert(
+    assume(
       node.children.length === 0,
       "Unexpected children in <bitmap> XML node."
     );
@@ -145,7 +149,7 @@ export default class SkinParser {
   }
 
   async text(node: XmlElement) {
-    assert(
+    assume(
       node.children.length === 0,
       "Unexpected children in <text> XML node."
     );
@@ -154,12 +158,29 @@ export default class SkinParser {
   }
 
   async script(node: XmlElement) {
-    assert(
+    assume(
       node.children.length === 0,
       "Unexpected children in <script> XML node."
     );
 
-    // TODO: Parse bitmaps
+    const { file, id } = node.attributes;
+    assert(file != null, "Script element missing `file` attribute");
+    assert(id != null, "Script element missing `id` attribute");
+
+    const scriptFile = this.getCaseInsensitiveFile(file);
+    assert(scriptFile != null, `ScriptFile file not found at path ${file}`);
+    const scriptContents = await scriptFile.async("arraybuffer");
+    // TODO: Try catch?
+    const parsedScript = parseMaki(scriptContents);
+
+    const systemObj = new SystemObject(parsedScript);
+
+    assert(
+      this._context.parentGroup != null,
+      "Expected scripts to only live within a parent group."
+    );
+
+    this._context.parentGroup.addSystemObject(systemObj);
   }
 
   async scripts(node: XmlElement) {
@@ -167,7 +188,7 @@ export default class SkinParser {
   }
 
   async sendparams(node: XmlElement) {
-    assert(
+    assume(
       node.children.length === 0,
       "Unexpected children in <sendparams> XML node."
     );
@@ -176,7 +197,7 @@ export default class SkinParser {
   }
 
   async button(node: XmlElement) {
-    assert(
+    assume(
       node.children.length === 0,
       "Unexpected children in <button> XML node."
     );
@@ -185,7 +206,7 @@ export default class SkinParser {
   }
 
   async wasabiButton(node: XmlElement) {
-    assert(
+    assume(
       node.children.length === 0,
       "Unexpected children in <button> XML node."
     );
@@ -194,7 +215,7 @@ export default class SkinParser {
   }
 
   async toggleButton(node: XmlElement) {
-    assert(
+    assume(
       node.children.length === 0,
       "Unexpected children in <button> XML node."
     );
@@ -203,7 +224,7 @@ export default class SkinParser {
   }
 
   async color(node: XmlElement) {
-    assert(
+    assume(
       node.children.length === 0,
       "Unexpected children in <color> XML node."
     );
@@ -212,7 +233,7 @@ export default class SkinParser {
   }
 
   async slider(node: XmlElement) {
-    assert(
+    assume(
       node.children.length === 0,
       "Unexpected children in <slider> XML node."
     );
@@ -240,10 +261,11 @@ export default class SkinParser {
     const layout = new Layout();
     layout.setXmlAttributes(node.attributes);
     const { container } = this._context;
-    assert(container != null, "Expected <Layout> to be in a <container>");
+    assume(container != null, "Expected <Layout> to be in a <container>");
     container.addLayout(layout);
 
     this._context.layout = layout;
+    this._context.parentGroup = layout;
     await this.traverseChildren(node);
   }
 
@@ -272,52 +294,52 @@ export default class SkinParser {
   }
 
   async layoutStatus(node: XmlElement) {
-    assert(
+    assume(
       node.children.length === 0,
       "Unexpected children in <layoutStatus> XML node."
     );
   }
   async wasabiStandardframeStatus(node: XmlElement) {
-    assert(
+    assume(
       node.children.length === 0,
       "Unexpected children in <wasabiStandardframeStatus> XML node."
     );
   }
   async wasabiStandardframeNoStatus(node: XmlElement) {
-    assert(
+    assume(
       node.children.length === 0,
       "Unexpected children in <wasabiStandardframeNoStatus> XML node."
     );
   }
   async status(node: XmlElement) {
-    assert(
+    assume(
       node.children.length === 0,
       "Unexpected children in <status> XML node."
     );
   }
   async eqvis(node: XmlElement) {
-    assert(
+    assume(
       node.children.length === 0,
       "Unexpected children in <eqvis> XML node."
     );
   }
 
   async hideobject(node: XmlElement) {
-    assert(
+    assume(
       node.children.length === 0,
       "Unexpected children in <hideobject> XML node."
     );
   }
 
   async wasabiTitleBar(node: XmlElement) {
-    assert(
+    assume(
       node.children.length === 0,
       "Unexpected children in <wasabiTitleBar> XML node."
     );
   }
 
   async trueTypeFont(node: XmlElement) {
-    assert(
+    assume(
       node.children.length === 0,
       "Unexpected children in <truetypefont> XML node."
     );

@@ -1,6 +1,8 @@
 import * as Utils from "../utils";
 import UI_ROOT from "../UIRoot";
 import GuiObj from "./GuiObj";
+import Script from "./Script";
+import SystemObject from "./SystemObject";
 
 export default class Group extends GuiObj {
   _background: string;
@@ -10,8 +12,8 @@ export default class Group extends GuiObj {
   _maximumHeight: number;
   _minimumWidth: number;
   _maximumWidth: number;
+  _systemObjects: SystemObject[] = [];
 
-  // TODO: Some of these might belong back on Layout
   setXmlAttr(key: string, value: string): boolean {
     if (super.setXmlAttr(key, value)) {
       return true;
@@ -39,6 +41,11 @@ export default class Group extends GuiObj {
         return false;
     }
     return true;
+  }
+
+  addSystemObject(systemObj: SystemObject) {
+    systemObj.setParentGroup(this);
+    this._systemObjects.push(systemObj);
   }
 
   getDebugDom(): HTMLDivElement {

@@ -6,6 +6,14 @@ export function assert(condition: boolean, message: string) {
   }
 }
 
+// While developing I want to clarify some assumptions. These are things which
+// don't need to break the world, but I would like to know if/when my
+// assumptions are invalidated.
+// In the future these can be turned into warnings.
+export function assume(condtion: boolean, message: string) {
+  return assert(condtion, message);
+}
+
 export function getCaseInsensitiveFile(
   zip: JSZip,
   filePath: string
