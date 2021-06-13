@@ -1,20 +1,28 @@
-import parseXml, { XmlElement } from "@rgrove/parse-xml";
-import { assert, num, getCaseInsensitiveFile, px } from "../utils";
-import UIRoot from "../UIRoot";
+import parseXml, { XmlDocument, XmlElement } from "@rgrove/parse-xml";
+import { assert, num, getCaseInsensitiveFile, px, toBool } from "../utils";
+import UI_ROOT from "../UIRoot";
 import JSZip, { JSZipObject } from "jszip";
 import Bitmap from "./Bitmap";
 import ImageManager from "./ImageManager";
+import Layout from "./Layout";
+import Group from "./Group";
+import Container from "./Container";
+import Layer from "./Layer";
+
+class ParserContext {
+  container: Container | null = null;
+  layout: Layout | null = null;
+}
 
 export default class SkinParser {
   _zip: JSZip;
   _imageManager: ImageManager;
-  _path: string[];
-  _root: UIRoot;
+  _path: string[] = [];
+  _context: ParserContext = new ParserContext();
+  _containers: Container[] = [];
 
   constructor(zip: JSZip) {
     this._zip = zip;
-    this._path = [];
-    this._root = new UIRoot();
     this._imageManager = new ImageManager(zip);
   }
   async parse() {
@@ -26,16 +34,16 @@ export default class SkinParser {
     // A different XML parser library might make this unnessesary.
     const parsed = parseXml(includedXml);
 
-    this.traverseChildren(parsed);
+    await this.traverseChildren(parsed);
   }
-  async traverseChildren(parent) {
+  async traverseChildren(parent: XmlElement | XmlDocument) {
     for (const child of parent.children) {
       if (child instanceof XmlElement) {
         await this.traverseChild(child);
       }
     }
   }
-  async traverseChild(node) {
+  async traverseChild(node: XmlElement) {
     switch (node.name.toLowerCase()) {
       case "wasabixml":
         return this.wasabiXml(node);
@@ -119,6 +127,8 @@ export default class SkinParser {
   }
 
   async group(node: XmlElement) {
+    const group = new Group();
+    group.setXmlAttributes(node.attributes);
     await this.traverseChildren(node);
   }
 
@@ -127,46 +137,11 @@ export default class SkinParser {
       node.children.length === 0,
       "Unexpected children in <bitmap> XML node."
     );
-    const { file } = node.attributes;
-    assert(file != null, "Expected bitmap node to have a `file` attribute");
+    const bitmap = new Bitmap();
+    bitmap.setXmlAttributes(node.attributes);
+    await bitmap.ensureImageLoaded(this._imageManager);
 
-    const imgUrl = await this._imageManager.getUrl(file);
-    assert(imgUrl != null, `Could not find bitmap at path ${file}`);
-
-    const id = node.attributes.id;
-    const x = num(node.attributes.x) ?? 0;
-    const y = num(node.attributes.y) ?? 0;
-    let width = num(node.attributes.w);
-    let height = num(node.attributes.h);
-
-    if (width == null || height == null) {
-      assert(
-        x != null && y != null,
-        "Expected images with unknown size to not have offsets."
-      );
-      assert(
-        width == null && height == null,
-        "Expected both dimensions to be missing."
-      );
-      const size = await this._imageManager.getSize(imgUrl);
-      width = size.width;
-      height = size.height;
-    }
-
-    // prettier-ignore
-    const bitmap = new Bitmap({ url: imgUrl, id, x, y, width, height });
-
-    // TODO: Store this somewhere. For now, we can just show it.
-    const div = document.createElement("div");
-    div.style.height = px(bitmap._height);
-    div.style.width = px(bitmap._width);
-    div.style.backgroundImage = `url(${bitmap._url})`;
-    div.style.backgroundPositionX = px(-bitmap._x);
-    div.style.backgroundPositionY = px(-bitmap._y);
-    div.style.display = "inline-block";
-    div.style.imageRendering = "pixelated";
-
-    document.body.appendChild(div);
+    UI_ROOT.addBitmap(bitmap);
   }
 
   async text(node: XmlElement) {
@@ -250,10 +225,25 @@ export default class SkinParser {
   }
 
   async layer(node: XmlElement) {
+    const layer = new Layer();
+    layer.setXmlAttributes(node.attributes);
+    const { layout } = this._context;
+    if (layout == null) {
+      console.warn("FIXME: Expected <Layer> to be within a <layout>");
+      return;
+    }
+    layout.addLayer(layer);
     await this.traverseChildren(node);
   }
 
   async layout(node: XmlElement) {
+    const layout = new Layout();
+    layout.setXmlAttributes(node.attributes);
+    const { container } = this._context;
+    assert(container != null, "Expected <Layout> to be in a <container>");
+    container.addLayout(layout);
+
+    this._context.layout = layout;
     await this.traverseChildren(node);
   }
 
@@ -270,6 +260,10 @@ export default class SkinParser {
   }
 
   async container(node: XmlElement) {
+    const container = new Container();
+    container.setXmlAttributes(node.attributes);
+    this._context.container = container;
+    this._containers.push(container);
     await this.traverseChildren(node);
   }
 
@@ -349,7 +343,7 @@ export default class SkinParser {
     // A different XML parser library might make this unnessesary.
     const parsed = parseXml(`<wrapper>${includedXml}</wrapper>`);
 
-    this.traverseChildren(parsed);
+    await this.traverseChildren(parsed);
 
     for (const _dir of directories) {
       this._path.pop();
