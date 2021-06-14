@@ -3,10 +3,16 @@ import * as Utils from "../utils";
 import Container from "./Container";
 import Layer from "./Layer";
 
+// > A layout is a special kind of group, which shown inside a container. Each
+// > layout represents an appearance for that window. Layouts give you the ability
+// > to design different looks for the same container (or window). However, only
+// > one layout can be visible at a time. You must toggle among layouts you
+// > defined. An example is the normal mode and windowshade mode in the Default
+// > skin.
+//
+// -- http://wiki.winamp.com/wiki/Modern_Skin:_Container
 export default class Layout extends Group {
   _parent: Container | null = null;
-  // TODO: I don't think Layers are actually children of Layouts
-  _layers: Layer[] = [];
 
   setXmlAttr(key: string, value: string): boolean {
     if (super.setXmlAttr(key, value)) {
@@ -24,18 +30,5 @@ export default class Layout extends Group {
 
   setParent(container: Container) {
     this._parent = container;
-  }
-
-  // TODO: I don't think this is right.
-  addLayer(layer: Layer) {
-    this._layers.push(layer);
-  }
-
-  getDebugDom(): HTMLDivElement {
-    const div = super.getDebugDom();
-    for (const layer of this._layers) {
-      div.appendChild(layer.getDebugDom());
-    }
-    return div;
   }
 }

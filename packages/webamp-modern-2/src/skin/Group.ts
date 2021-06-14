@@ -1,7 +1,6 @@
 import * as Utils from "../utils";
 import UI_ROOT from "../UIRoot";
 import GuiObj from "./GuiObj";
-import Script from "./Script";
 import SystemObject from "./SystemObject";
 
 export default class Group extends GuiObj {
@@ -13,6 +12,7 @@ export default class Group extends GuiObj {
   _minimumWidth: number;
   _maximumWidth: number;
   _systemObjects: SystemObject[] = [];
+  _children: GuiObj[] = [];
 
   setXmlAttr(key: string, value: string): boolean {
     if (super.setXmlAttr(key, value)) {
@@ -48,6 +48,10 @@ export default class Group extends GuiObj {
     this._systemObjects.push(systemObj);
   }
 
+  addChild(child: GuiObj) {
+    this._children.push(child);
+  }
+
   getDebugDom(): HTMLDivElement {
     const div = super.getDebugDom();
     div.style.height = Utils.px(this._maximumHeight);
@@ -55,6 +59,9 @@ export default class Group extends GuiObj {
     if (this._background != null && this._drawBackground) {
       const bitmap = UI_ROOT.getBitmap(this._background);
       div.style.background = bitmap.getBackgrondCSSAttribute();
+    }
+    for (const child of this._children) {
+      div.appendChild(child.getDebugDom());
     }
     return div;
   }

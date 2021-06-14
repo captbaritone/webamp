@@ -3,8 +3,15 @@ import Group from "./Group";
 import Layout from "./Layout";
 import XmlObj from "./XmlObj";
 
+// > A container is a top level object and it basically represents a window.
+// > Nothing holds a container. It is an object that holds multiple related
+// > layouts. Each layout represents an appearance for that window. You can design
+// > different layouts for each window but only one can be visible at a time.
+//
+// -- http://wiki.winamp.com/wiki/Modern_Skin:_Container
 export default class Container extends XmlObj {
   _layouts: Layout[] = [];
+  _activeLayout: Layout | null = null;
   _defaultVisible: boolean = true;
   constructor() {
     super();
@@ -17,6 +24,7 @@ export default class Container extends XmlObj {
     switch (key) {
       case "default_visible":
         this._defaultVisible = toBool(value);
+        break;
       default:
         return false;
     }
@@ -26,14 +34,13 @@ export default class Container extends XmlObj {
   addLayout(layout: Layout) {
     layout.setParent(this);
     this._layouts.push(layout);
+    this._activeLayout = layout;
   }
 
   getDebugDom(): HTMLDivElement {
     const div = window.document.createElement("div");
-    if (this._defaultVisible) {
-      for (const layout of this._layouts) {
-        div.appendChild(layout.getDebugDom());
-      }
+    if (this._defaultVisible && this._activeLayout) {
+      div.appendChild(this._activeLayout.getDebugDom());
     }
     return div;
   }
