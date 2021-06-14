@@ -242,18 +242,20 @@ export default class SkinParser {
   }
 
   async groupdef(node: XmlElement) {
-    await this.traverseChildren(node);
+    // await this.traverseChildren(node);
   }
 
   async layer(node: XmlElement) {
     const layer = new Layer();
     layer.setXmlAttributes(node.attributes);
-    const { layout } = this._context;
-    if (layout == null) {
-      console.warn("FIXME: Expected <Layer> to be within a <layout>");
+    const { parentGroup } = this._context;
+    if (parentGroup == null) {
+      console.warn(
+        `FIXME: Expected <Layer id="${layer._id}"> to be within a <Layout> | <Group>`
+      );
       return;
     }
-    layout.addLayer(layer);
+    parentGroup.addChild(layer);
     await this.traverseChildren(node);
   }
 

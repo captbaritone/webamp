@@ -2,6 +2,7 @@ import GuiObj from "./GuiObj";
 import UI_ROOT from "../UIRoot";
 import { px } from "../utils";
 
+// http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Clayer.2F.3E
 export default class Layer extends GuiObj {
   _image: string;
 
@@ -12,6 +13,7 @@ export default class Layer extends GuiObj {
     switch (key) {
       case "image":
         this._image = value;
+        break;
       default:
         return false;
     }

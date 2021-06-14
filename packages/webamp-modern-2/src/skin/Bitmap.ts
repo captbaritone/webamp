@@ -39,8 +39,9 @@ export default class Bitmap {
         this._gammagroup = value;
         break;
       default:
-        console.log({ key });
+        return false;
     }
+    return true;
   }
 
   getWidth() {
