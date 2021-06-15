@@ -26,6 +26,7 @@ export type ParsedMaki = {
 
 export type Binding = {
   commandOffset: number;
+  methodOffset: number;
 };
 
 const MAGIC = "FG";

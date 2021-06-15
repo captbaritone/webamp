@@ -8,8 +8,13 @@ import Layout from "./Layout";
 import Group from "./Group";
 import Container from "./Container";
 import Layer from "./Layer";
+import Slider from "./Slider";
+import Button from "./Button";
+import Text from "./Text";
+import Status from "./Status";
 import { parse as parseMaki } from "../maki/parser";
 import SystemObject from "./SystemObject";
+import ToggleButton from "./ToggleButton";
 
 class ParserContext {
   container: Container | null = null;
@@ -154,7 +159,16 @@ export default class SkinParser {
       "Unexpected children in <text> XML node."
     );
 
-    // TODO: Parse text
+    const text = new Text();
+    text.setXmlAttributes(node.attributes);
+    const { parentGroup } = this._context;
+    if (parentGroup == null) {
+      console.warn(
+        `FIXME: Expected <Text id="${text._id}"> to be within a <Layout> | <Group>`
+      );
+      return;
+    }
+    parentGroup.addChild(text);
   }
 
   async script(node: XmlElement) {
@@ -202,7 +216,16 @@ export default class SkinParser {
       "Unexpected children in <button> XML node."
     );
 
-    // TODO: Parse buttons
+    const button = new Button();
+    button.setXmlAttributes(node.attributes);
+    const { parentGroup } = this._context;
+    if (parentGroup == null) {
+      console.warn(
+        `FIXME: Expected <Button id="${button._id}"> to be within a <Layout> | <Group>`
+      );
+      return;
+    }
+    parentGroup.addChild(button);
   }
 
   async wasabiButton(node: XmlElement) {
@@ -220,7 +243,16 @@ export default class SkinParser {
       "Unexpected children in <button> XML node."
     );
 
-    // TODO: Parse buttons
+    const button = new ToggleButton();
+    button.setXmlAttributes(node.attributes);
+    const { parentGroup } = this._context;
+    if (parentGroup == null) {
+      console.warn(
+        `FIXME: Expected <ToggleButton id="${button._id}"> to be within a <Layout> | <Group>`
+      );
+      return;
+    }
+    parentGroup.addChild(button);
   }
 
   async color(node: XmlElement) {
@@ -238,7 +270,16 @@ export default class SkinParser {
       "Unexpected children in <slider> XML node."
     );
 
-    // TODO: Parse slider
+    const slider = new Slider();
+    slider.setXmlAttributes(node.attributes);
+    const { parentGroup } = this._context;
+    if (parentGroup == null) {
+      console.warn(
+        `FIXME: Expected <Slider id="${slider._id}"> to be within a <Layout> | <Group>`
+      );
+      return;
+    }
+    parentGroup.addChild(slider);
   }
 
   async groupdef(node: XmlElement) {
@@ -246,6 +287,11 @@ export default class SkinParser {
   }
 
   async layer(node: XmlElement) {
+    assume(
+      node.children.length === 0,
+      "Unexpected children in <layer> XML node."
+    );
+
     const layer = new Layer();
     layer.setXmlAttributes(node.attributes);
     const { parentGroup } = this._context;
@@ -256,7 +302,6 @@ export default class SkinParser {
       return;
     }
     parentGroup.addChild(layer);
-    await this.traverseChildren(node);
   }
 
   async layout(node: XmlElement) {
@@ -318,6 +363,17 @@ export default class SkinParser {
       node.children.length === 0,
       "Unexpected children in <status> XML node."
     );
+
+    const status = new Status();
+    status.setXmlAttributes(node.attributes);
+    const { parentGroup } = this._context;
+    if (parentGroup == null) {
+      console.warn(
+        `FIXME: Expected <Status id="${status._id}"> to be within a <Layout> | <Group>`
+      );
+      return;
+    }
+    parentGroup.addChild(status);
   }
   async eqvis(node: XmlElement) {
     assume(

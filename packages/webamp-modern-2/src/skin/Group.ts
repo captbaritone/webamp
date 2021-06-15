@@ -2,6 +2,7 @@ import * as Utils from "../utils";
 import UI_ROOT from "../UIRoot";
 import GuiObj from "./GuiObj";
 import SystemObject from "./SystemObject";
+import { SkinContext } from "../types";
 
 export default class Group extends GuiObj {
   _background: string;
@@ -43,12 +44,12 @@ export default class Group extends GuiObj {
     return true;
   }
 
-  init() {
+  init(context: SkinContext) {
     for (const systemObject of this._systemObjects) {
-      systemObject.init();
+      systemObject.init(context);
     }
     for (const child of this._children) {
-      child.init();
+      child.init(context);
     }
   }
 
@@ -59,6 +60,18 @@ export default class Group extends GuiObj {
 
   addChild(child: GuiObj) {
     this._children.push(child);
+  }
+
+  /* Required for Maki */
+
+  getobject(objectId: string): GuiObj {
+    const lower = objectId.toLowerCase();
+    for (const obj of this._children) {
+      if (obj.getId() === lower) {
+        return obj;
+      }
+    }
+    throw new Error(`Could not find an object with the id; "${objectId}"`);
   }
 
   getDebugDom(): HTMLDivElement {
