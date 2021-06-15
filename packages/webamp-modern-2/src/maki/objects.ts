@@ -1,13 +1,57 @@
-const stdPatched = require("./objectData/stdPatched");
-const pldir = require("./objectData/pldir.json");
-const config = require("./objectData/config.json");
+import stdPatched from "./objectData/stdPatched";
+import pldir from "./objectData/pldir.json";
+import config from "./objectData/config.json";
+import { DataType } from "./v";
 
-const objects = { ...stdPatched, ...pldir, ...config };
+type MethodDefinition = {
+  name: string;
+  result: string;
+  parameters: string[][];
+};
+
+type ObjectDefinition = {
+  parent: string;
+  name: string;
+  functions: MethodDefinition[];
+  parentClass?: ObjectDefinition;
+};
+
+const objects: { [key: string]: ObjectDefinition } = {
+  ...stdPatched,
+  ...pldir,
+  ...config,
+};
+
+export function getClass(id: String): ObjectDefinition {
+  return normalizedObjects[getFormattedId(id)];
+}
+
+export function getReturnType(classId: string, methodName: string): DataType {
+  const method = getMethod(classId, methodName);
+  const upper = method.result.toUpperCase();
+  switch (upper) {
+    case "INT":
+    case "DOUBLE":
+    case "STRING":
+    case "FLOAT":
+    case "BOOL":
+      return upper as any;
+    case "":
+      return "NULL" as any;
+    default:
+      return "OBJECT" as any;
+  }
+}
+
+function getMethod(classId: string, methodName: string): MethodDefinition {
+  const klass = getClass(classId);
+  return getObjectFunction(klass, methodName);
+}
 
 // TODO: We could probably just fix the keys used in this file to already be normalized
 // We might even want to normalize the to match the formatting we get out the file. That could
 // avoid the awkward regex inside `getClass()`.
-const normalizedObjects = {};
+const normalizedObjects: { [key: string]: ObjectDefinition } = {};
 Object.keys(objects).forEach((key) => {
   normalizedObjects[key.toLowerCase()] = objects[key];
 });
@@ -37,14 +81,14 @@ function getFormattedId(id) {
   return formattedId.toLowerCase();
 }
 
-function getClass(id) {
-  return normalizedObjects[getFormattedId(id)];
-}
-
-function getObjectFunction(klass, functionName) {
+function getObjectFunction(
+  klass: ObjectDefinition,
+  functionName: string
+): MethodDefinition {
+  const lowerName = functionName.toLowerCase();
   const method = klass.functions.find((func) => {
     // TODO: This could probably be normalized at load time, or evern sooner.
-    return func.name.toLowerCase() === functionName.toLowerCase();
+    return func.name.toLowerCase() === lowerName;
   });
   if (method != null) {
     return method;
@@ -54,25 +98,3 @@ function getObjectFunction(klass, functionName) {
   }
   return getObjectFunction(klass.parentClass, functionName);
 }
-
-function getFunctionObject(klass, functionName) {
-  const method = klass.functions.find((func) => {
-    // TODO: This could probably be normalized at load time, or evern sooner.
-    return func.name.toLowerCase() === functionName.toLowerCase();
-  });
-  if (method != null) {
-    return klass;
-  }
-  if (klass.parentClass == null) {
-    throw new Error(`Could not find method ${functionName} on ${klass.name}.`);
-  }
-  return getFunctionObject(klass.parentClass, functionName);
-}
-
-module.exports = {
-  objects,
-  getFormattedId,
-  getClass,
-  getObjectFunction,
-  getFunctionObject,
-};
