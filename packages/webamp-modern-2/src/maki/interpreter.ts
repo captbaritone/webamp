@@ -18,6 +18,7 @@ class Interpreter {
   variables: Variable[];
   methods: Method[];
   commands: Command[];
+  debug: boolean;
   classResolver: (guid: string) => any;
   constructor(program: ParsedMaki, classResolver: (guid: string) => any) {
     const { commands, methods, variables, classes } = program;
@@ -29,6 +30,7 @@ class Interpreter {
 
     this.stack = [];
     this.callStack = [];
+    this.debug = false;
   }
 
   interpret(start: number) {
@@ -36,6 +38,9 @@ class Interpreter {
     let ip = start;
     while (ip < this.commands.length) {
       const command = this.commands[ip];
+      if (this.debug) {
+        console.log(command);
+      }
 
       switch (command.opcode) {
         // push
@@ -70,7 +75,7 @@ class Interpreter {
             a.type == b.type,
             `Tried to compare a ${a.type} to a ${b.type}.`
           );
-          const result = V.newInt(a.value === b.value);
+          const result = V.newInt(b.value === a.value);
           this.stack.push(result);
           break;
         }
@@ -82,7 +87,7 @@ class Interpreter {
             a.type == b.type,
             `Tried to compare a ${a.type} to a ${b.type}.`
           );
-          const result = V.newInt(a.value !== b.value);
+          const result = V.newInt(b.value !== a.value);
           this.stack.push(result);
           break;
         }
@@ -104,7 +109,10 @@ class Interpreter {
             case "NULL":
               throw new Error("Tried to add non-numbers.");
           }
-          this.stack.push(V.newInt(a.value > b.value));
+          if (this.debug) {
+            console.log(`${b.value} > ${a.value}`);
+          }
+          this.stack.push(V.newInt(b.value > a.value));
           break;
         }
         // >=
@@ -130,7 +138,11 @@ class Interpreter {
             case "NULL":
               throw new Error("Tried to add non-numbers.");
           }
-          this.stack.push(V.newInt(a.value < b.value));
+          if (this.debug) {
+            console.log(`${b.value} < ${a.value}`);
+          }
+
+          this.stack.push(V.newInt(b.value < a.value));
           break;
         }
         // <=
@@ -184,7 +196,7 @@ class Interpreter {
           // actually having access to the object instance.
           if (!klass.prototype[methodName]) {
             throw new Error(
-              `Need to add missing method "${methodName}" to ${klass.name}`
+              `Need to add missing method: ${klass.name}.${methodName}: ${returnType}`
             );
           }
           let argCount = klass.prototype[methodName].length;
@@ -200,12 +212,17 @@ class Interpreter {
             "Tried to call a method on a primitive."
           );
           let value = obj.value[methodName](...methodArgs);
-          if (typeof value.then === "function") {
-            throw new Error("Did not expect maki method to return promise");
+          if (value === undefined && returnType !== "NULL") {
+            throw new Error(
+              `Did not expect ${klass.name}.${methodName}: ${returnType} to return undefined`
+            );
           }
           if (value === null) {
             // variables[1] holds global NULL value
             value = this.variables[1];
+          }
+          if (this.debug) {
+            console.log(`Calling method ${methodName}`);
           }
           this.stack.push({ type: returnType, value } as any);
           break;
@@ -234,7 +251,6 @@ class Interpreter {
         case 48: {
           const a = this.stack.pop();
           const b = this.stack.pop();
-
           assume(
             a.type === b.type,
             `Type mismatch: ${a.type} != ${b.type} at ip: ${ip}`
@@ -319,7 +335,7 @@ class Interpreter {
               throw new Error("Tried to add non-numbers.");
           }
           // TODO: Do we need to round the value if INT?
-          this.stack.push({ type: a.type, value: a.value + b.value });
+          this.stack.push({ type: a.type, value: b.value + a.value });
           break;
         }
         // - (subtract)
@@ -341,7 +357,7 @@ class Interpreter {
               throw new Error("Tried to add non-numbers.");
           }
           // TODO: Do we need to round the value if INT?
-          this.stack.push({ type: a.type, value: a.value - b.value });
+          this.stack.push({ type: a.type, value: b.value - a.value });
           break;
         }
         // * (multiply)
@@ -363,7 +379,7 @@ class Interpreter {
               throw new Error("Tried to add non-numbers.");
           }
           // TODO: Do we need to round the value if INT?
-          this.stack.push({ type: a.type, value: a.value * b.value });
+          this.stack.push({ type: a.type, value: b.value * a.value });
           break;
         }
         // / (divide)
@@ -384,7 +400,7 @@ class Interpreter {
               throw new Error("Tried to add non-numbers.");
           }
           // TODO: Do we need to round the value if INT?
-          this.stack.push({ type: a.type, value: a.value / b.value });
+          this.stack.push({ type: a.type, value: b.value / a.value });
           break;
         }
         // % (mod)
@@ -451,7 +467,28 @@ class Interpreter {
         }
         // logAnd (&&)
         case 80: {
-          assume(false, "Unimplimented && operator");
+          const a = this.stack.pop();
+          const b = this.stack.pop();
+          // Some of these are probably valid, but we'll enable them once we see usage.
+          switch (a.type) {
+            case "STRING":
+            case "OBJECT":
+            case "BOOL":
+            case "NULL":
+              throw new Error("Tried to add non-numbers.");
+          }
+          switch (b.type) {
+            case "STRING":
+            case "OBJECT":
+            case "BOOL":
+            case "NULL":
+              throw new Error("Tried to add non-numbers.");
+          }
+          if (b.value && a.value) {
+            this.stack.push(a);
+          } else {
+            this.stack.push(b);
+          }
           break;
         }
         // logOr ||
@@ -473,10 +510,12 @@ class Interpreter {
             case "NULL":
               throw new Error("Tried to add non-numbers.");
           }
-          if (a.value) {
-            return a;
+          if (b.value) {
+            this.stack.push(b);
+          } else {
+            this.stack.push(a);
           }
-          return b;
+          break;
         }
         // <<
         case 88: {
@@ -494,7 +533,7 @@ class Interpreter {
           const guid = this.classes[classesOffset];
           const Klass = this.classResolver(guid);
           const klassInst = new Klass();
-          this.stack.push(klassInst);
+          this.stack.push({ type: "OBJECT", value: klassInst });
           break;
         }
         // delete

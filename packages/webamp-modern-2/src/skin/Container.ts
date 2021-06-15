@@ -1,5 +1,7 @@
+import { SkinContext } from "../types";
 import { toBool } from "../utils";
 import Group from "./Group";
+import Layer from "./Layer";
 import Layout from "./Layout";
 import XmlObj from "./XmlObj";
 
@@ -13,6 +15,7 @@ export default class Container extends XmlObj {
   _layouts: Layout[] = [];
   _activeLayout: Layout | null = null;
   _defaultVisible: boolean = true;
+  _id: string;
   constructor() {
     super();
   }
@@ -22,6 +25,9 @@ export default class Container extends XmlObj {
       return true;
     }
     switch (key) {
+      case "id":
+        this._id = value.toLowerCase();
+        break;
       case "default_visible":
         this._defaultVisible = toBool(value);
         break;
@@ -31,10 +37,33 @@ export default class Container extends XmlObj {
     return true;
   }
 
-  init() {
+  init(context: SkinContext) {
     for (const layout of this._layouts) {
-      layout.init();
+      layout.init(context);
     }
+  }
+
+  getId() {
+    return this._id;
+  }
+
+  /* Required for Maki */
+  /**
+   * Get the layout associated with the an id.
+   * This corresponds to the "id=..." attribute in
+   * the XML tag <layout .. />.
+   *
+   *  @ret             The layout associated with the id.
+   * @param  layout_id   The id of the layout you wish to retrieve.
+   */
+  getlayout(layoutId: string): Layout {
+    const lower = layoutId.toLowerCase();
+    for (const layout of this._layouts) {
+      if (layout.getId() === lower) {
+        return layout;
+      }
+    }
+    throw new Error(`Could not find a container with the id; "${layoutId}"`);
   }
 
   addLayout(layout: Layout) {

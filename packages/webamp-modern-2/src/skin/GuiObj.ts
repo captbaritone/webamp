@@ -1,3 +1,4 @@
+import { SkinContext } from "../types";
 import * as Utils from "../utils";
 import XmlObj from "./XmlObj";
 
@@ -10,11 +11,12 @@ export default class GuiObj extends XmlObj {
   _y: number = 0;
   _droptarget: string;
   _visible: boolean = true;
+  _dirty: boolean = false;
 
   setXmlAttr(key: string, value: string): boolean {
     switch (key) {
       case "id":
-        this._id = value;
+        this._id = value.toLowerCase();
         break;
       case "w":
         this._width = Utils.num(value);
@@ -40,8 +42,74 @@ export default class GuiObj extends XmlObj {
     return true;
   }
 
-  init() {
+  init(context: SkinContext) {
     // pass
+  }
+
+  getId(): string {
+    return this._id;
+  }
+
+  /**
+   * Trigger the show event.
+   */
+  show() {
+    this._visible = true;
+    this._dirty = true;
+  }
+
+  /**
+   * Trigger the hide event.
+   */
+  hide() {
+    this._visible = false;
+    this._dirty = true;
+  }
+
+  /**
+   * Get the Y position, in the screen, of the
+   * top edge of the object.
+   *
+   * @ret The top edge's position (in screen coordinates).
+   */
+  gettop(): number {
+    return this._x;
+  }
+
+  /**
+   * Get the height of the object, in pixels.
+   *
+   * @ret The height of the object.
+   */
+  getheight() {
+    // FIXME
+    return this._height || 100;
+  }
+
+  /**
+   * Get the width of the object, in pixels.
+   *
+   * @ret The width of the object.
+   */
+  getwidth() {
+    // FIXME
+    return this._width || 100;
+  }
+
+  /**
+   * Resize the object to the desired size and position.
+   *
+   * @param  x   The X position where to anchor the object before resize.
+   * @param  y   The Y position where to anchor the object before resize.
+   * @param  w   The width you wish the object to have.
+   * @param  h   The height you wish the object to have.
+   */
+  resize(x: number, y: number, w: number, h: number) {
+    this._x = x;
+    this._y = y;
+    this._width = w;
+    this._height = h;
+    this._dirty = true;
   }
 
   getDebugDom(): HTMLDivElement {

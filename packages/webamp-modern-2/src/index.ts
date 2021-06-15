@@ -11,12 +11,24 @@ async function main() {
   await parser.parse();
 
   for (const container of parser._containers) {
-    container.init();
+    container.init({ containers: parser._containers });
   }
 
+  let node = document.createElement("div");
+
   for (const container of parser._containers) {
-    document.body.appendChild(container.getDebugDom());
+    node.appendChild(container.getDebugDom());
   }
+
+  document.body.appendChild(node);
+  setInterval(() => {
+    document.body.removeChild(node);
+    node = document.createElement("div");
+    for (const container of parser._containers) {
+      node.appendChild(container.getDebugDom());
+    }
+    document.body.appendChild(node);
+  }, 1000);
 }
 
 main();

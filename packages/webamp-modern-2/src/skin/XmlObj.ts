@@ -8,4 +8,8 @@ export default class XmlObj {
   setXmlAttr(_key: string, _value: string): boolean {
     return false;
   }
+
+  setxmlparam(key: string, value: string) {
+    this.setXmlAttr(key, value);
+  }
 }
