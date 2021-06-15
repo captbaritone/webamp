@@ -1,5 +1,32 @@
+import { assert, assume } from "../utils";
 import { COMMANDS } from "./constants";
-import Variable from "./variable";
+import { DataType, Variable } from "./v";
+import MakiFile from "./MakiFile";
+import { getMethod, getReturnType } from "./objects";
+
+export type Command = {
+  opcode: number;
+  arg: number;
+};
+
+export type Method = {
+  name: string;
+  typeOffset: number;
+  returnType: DataType;
+};
+
+export type ParsedMaki = {
+  commands: Command[];
+  methods: Method[];
+  variables: Variable[];
+  classes: string[];
+  bindings: Binding[];
+  version: number;
+};
+
+export type Binding = {
+  commandOffset: number;
+};
 
 const MAGIC = "FG";
 
@@ -11,7 +38,7 @@ const PRIMITIVE_TYPES = {
   6: "STRING",
 };
 
-export function parse(data) {
+export function parse(data: ArrayBuffer): ParsedMaki {
   const makiFile = new MakiFile(data);
 
   const magic = readMagic(makiFile);
@@ -22,7 +49,7 @@ export function parse(data) {
   // Maybe it's additional version info?
   const extraVersion = makiFile.readUInt32LE();
   const classes = readClasses(makiFile);
-  const methods = readMethods(makiFile);
+  const methods = readMethods(makiFile, classes);
   const variables = readVariables({ makiFile, classes });
   readConstants({ makiFile, variables });
   const bindings = readBindings(makiFile);
@@ -42,33 +69,30 @@ export function parse(data) {
     }
   });
 
-  const resolvedBindings = bindings.map((binding) => {
+  const resolvedBindings = bindings.map((binding): Binding => {
     return Object.assign({}, binding, {
       commandOffset: offsetToCommand[binding.binaryOffset],
-      binaryOffset: undefined,
     });
   });
 
-  const resolvedCommands = commands.map((command) => {
+  const resolvedCommands = commands.map((command): Command => {
     if (command.argType === "COMMAND_OFFSET") {
       return Object.assign({}, command, { arg: offsetToCommand[command.arg] });
     }
     return command;
   });
   return {
-    magic,
     classes,
     methods,
     variables,
     bindings: resolvedBindings,
     commands: resolvedCommands,
     version,
-    extraVersion,
   };
 }
 
 // TODO: Don't depend upon COMMANDS
-function opcodeToArgType(opcode) {
+function opcodeToArgType(opcode: number) {
   const command = COMMANDS[opcode];
   if (command == null) {
     throw new Error(`Unknown opcode ${opcode}`);
@@ -87,77 +111,7 @@ function opcodeToArgType(opcode) {
   }
 }
 
-// Holds a buffer and a pointer. Consumers can consume bytesoff the end of the
-// file. When we want to run in the browser, we can refactor this class to use a
-// typed array: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays
-class MakiFile {
-  constructor(data) {
-    this._arr = new Uint8Array(data);
-    this._i = 0;
-  }
-
-  readInt32LE() {
-    const offset = this._i >>> 0;
-    this._i += 4;
-
-    return (
-      this._arr[offset] |
-      (this._arr[offset + 1] << 8) |
-      (this._arr[offset + 2] << 16) |
-      (this._arr[offset + 3] << 24)
-    );
-  }
-
-  readUInt32LE() {
-    const int = this.peekUInt32LE();
-    this._i += 4;
-    return int;
-  }
-
-  peekUInt32LE() {
-    const offset = this._i >>> 0;
-
-    return (
-      (this._arr[offset] |
-        (this._arr[offset + 1] << 8) |
-        (this._arr[offset + 2] << 16)) +
-      this._arr[offset + 3] * 0x1000000
-    );
-  }
-
-  readUInt16LE() {
-    const offset = this._i >>> 0;
-    this._i += 2;
-    return this._arr[offset] | (this._arr[offset + 1] << 8);
-  }
-
-  readUInt8() {
-    const int = this._arr[this._i];
-    this._i++;
-    return int;
-  }
-
-  readStringOfLength(length) {
-    let ret = "";
-    const end = Math.min(this._arr.length, this._i + length);
-
-    for (let i = this._i; i < end; ++i) {
-      ret += String.fromCharCode(this._arr[i]);
-    }
-    this._i += length;
-    return ret;
-  }
-
-  readString() {
-    return this.readStringOfLength(this.readUInt16LE());
-  }
-
-  getPosition() {
-    return this._i;
-  }
-}
-
-function readMagic(makiFile) {
+function readMagic(makiFile: MakiFile): string {
   const magic = makiFile.readStringOfLength(MAGIC.length);
   if (magic !== MAGIC) {
     throw new Error(
@@ -167,12 +121,12 @@ function readMagic(makiFile) {
   return magic;
 }
 
-function readVersion(makiFile) {
+function readVersion(makiFile: MakiFile): number {
   // No idea what we're actually expecting here.
   return makiFile.readUInt16LE();
 }
 
-function readClasses(makiFile) {
+function readClasses(makiFile: MakiFile): string[] {
   let count = makiFile.readUInt32LE();
   const classes = [];
   while (count--) {
@@ -186,9 +140,9 @@ function readClasses(makiFile) {
   return classes;
 }
 
-function readMethods(makiFile) {
+function readMethods(makiFile: MakiFile, classes: string[]): Method[] {
   let count = makiFile.readUInt32LE();
-  const methods = [];
+  const methods: Method[] = [];
   while (count--) {
     const classCode = makiFile.readUInt16LE();
     // Offset into our parsed types
@@ -196,7 +150,12 @@ function readMethods(makiFile) {
     // This is probably the second half of a uint32
     makiFile.readUInt16LE();
     const name = makiFile.readString();
-    methods.push({ name, typeOffset });
+
+    const className = classes[typeOffset];
+
+    const returnType = getReturnType(className, name);
+
+    methods.push({ name, typeOffset, returnType });
   }
   return methods;
 }
@@ -220,17 +179,14 @@ function readVariables({ makiFile, classes }) {
       if (variable == null) {
         throw new Error("Invalid type");
       }
-      variables.push(
-        new Variable({ type: variable, typeName: "SUBCLASS", global: !!global })
-      );
+      // assume(false, "Unimplemented subclass variable type");
+      variables.push({ type: "OBJECT", value: object });
     } else if (object) {
       const klass = classes[typeOffset];
       if (klass == null) {
         throw new Error("Invalid type");
       }
-      variables.push(
-        new Variable({ type: klass, typeName: "OBJECT", global: !!global })
-      );
+      variables.push({ type: "OBJECT", value: object });
     } else {
       const typeName = PRIMITIVE_TYPES[typeOffset];
       if (typeName == null) {
@@ -259,12 +215,10 @@ function readVariables({ makiFile, classes }) {
         default:
           throw new Error("Invalid primitive type");
       }
-      const variable = new Variable({
+      const variable = {
         type: typeName,
-        typeName,
-        global: !!global,
-      });
-      variable.setValue(value);
+        value,
+      };
       variables.push(variable);
     }
   }
@@ -279,7 +233,7 @@ function readConstants({ makiFile, variables }) {
     // TODO: Assert this is of type string.
     const value = makiFile.readString();
     // TODO: Don't mutate
-    variable.setValue(value);
+    variable.value = value;
   }
 }
 
@@ -346,8 +300,7 @@ function parseComand({ start, makiFile, length }) {
     makiFile.peekUInt32LE() >= 0xffff0000 &&
     makiFile.peekUInt32LE() <= 0xffff000f
   ) {
-    command.foo = true;
-    command.stackProtection = makiFile.readUInt32LE();
+    // command.stackProtection = makiFile.readUInt32LE();
   }
 
   // TODO: What even is this?

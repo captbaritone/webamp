@@ -1,4 +1,4 @@
-const std = require("./std.json");
+import std from "./std.json";
 
 const NAME_TO_DEF = {};
 
@@ -60,4 +60,4 @@ Found 1 error.
 
  */
 
-module.exports = std;
+export default std;

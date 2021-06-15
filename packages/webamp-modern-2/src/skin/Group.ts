@@ -43,6 +43,15 @@ export default class Group extends GuiObj {
     return true;
   }
 
+  init() {
+    for (const systemObject of this._systemObjects) {
+      systemObject.init();
+    }
+    for (const child of this._children) {
+      child.init();
+    }
+  }
+
   addSystemObject(systemObj: SystemObject) {
     systemObj.setParentGroup(this);
     this._systemObjects.push(systemObj);

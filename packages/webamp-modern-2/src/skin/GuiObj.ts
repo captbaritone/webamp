@@ -40,6 +40,10 @@ export default class GuiObj extends XmlObj {
     return true;
   }
 
+  init() {
+    // pass
+  }
+
   getDebugDom(): HTMLDivElement {
     const div = window.document.createElement("div");
     div.style.display = this._visible ? "inline-block" : "none";

@@ -11,6 +11,10 @@ async function main() {
   await parser.parse();
 
   for (const container of parser._containers) {
+    container.init();
+  }
+
+  for (const container of parser._containers) {
     document.body.appendChild(container.getDebugDom());
   }
 }
