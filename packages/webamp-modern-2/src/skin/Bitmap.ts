@@ -44,6 +44,10 @@ export default class Bitmap {
     return true;
   }
 
+  getId() {
+    return this._id;
+  }
+
   getWidth() {
     return this._width;
   }
@@ -73,9 +77,19 @@ export default class Bitmap {
     this.setUrl(imgUrl);
   }
 
-  getBackgrondCSSAttribute(): string {
+  getBackgrondImageCSSAttribute(): string {
+    return `url(${this._url})`;
+  }
+
+  getBackgrondPositionCSSAttribute(): string {
+    const x = Utils.px(-this._x);
+    const y = Utils.px(-this._y);
+    return `${x} ${y}`;
+  }
+
+  getBackgrondSizeCSSAttribute(): string {
     const width = Utils.px(this._width);
     const height = Utils.px(this._height);
-    return `url(${this._url}) ${width} ${height}`;
+    return `${width} ${height}`;
   }
 }

@@ -33,3 +33,8 @@ export function toBool(str: string) {
   assert(str === "0" || str === "1", 'Expected bool value to be "0" or "1".');
   return str === "1";
 }
+
+let id = 0;
+export function getId(): number {
+  return id++;
+}

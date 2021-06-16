@@ -15,6 +15,7 @@ import Status from "./Status";
 import { parse as parseMaki } from "../maki/parser";
 import SystemObject from "./SystemObject";
 import ToggleButton from "./ToggleButton";
+import TrueTypeFont from "./TrueTypeFont";
 
 class ParserContext {
   container: Container | null = null;
@@ -166,6 +167,7 @@ export default class SkinParser {
       node.children.length === 0,
       "Unexpected children in <bitmapFont> XML node."
     );
+    console.log(node);
   }
 
   async text(node: XmlElement) {
@@ -416,6 +418,11 @@ export default class SkinParser {
       node.children.length === 0,
       "Unexpected children in <truetypefont> XML node."
     );
+    const font = new TrueTypeFont();
+    font.setXmlAttributes(node.attributes);
+    await font.ensureFontLoaded(this._imageManager);
+
+    UI_ROOT.addTrueTypeFont(font);
   }
 
   async include(node: XmlElement) {
