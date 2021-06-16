@@ -1,24 +1,19 @@
-import { interpret } from "../maki/interpreter";
 import { getClass } from "../maki/objects";
 import { ParsedMaki } from "../maki/parser";
 import { SkinContext } from "../types";
-import Button from "./Button";
+import BaseObject from "./BaseObject";
 import Container from "./Container";
 
 import Group from "./Group";
-import Layer from "./Layer";
-import Layout from "./Layout";
-import PopupMenu from "./PopupMenu";
-import Status from "./Status";
-import Text from "./Text";
-import ToggleButton from "./ToggleButton";
+import { VM } from "./VM";
 
-export default class SystemObject {
+export default class SystemObject extends BaseObject {
   _parentGroup: Group;
   _parsedScript: ParsedMaki;
   _context: SkinContext;
 
   constructor(parsedScript: ParsedMaki) {
+    super();
     this._parsedScript = parsedScript;
   }
 
@@ -30,15 +25,9 @@ export default class SystemObject {
       throw new Error("First variable was not SystemObject.");
     }
     initialVariable.value = this;
-    // TODO: How should we setup bindings?
-    // console.log(this._parsedScript.bindings);
-    interpret(0, this._parsedScript, classResover);
 
-    interpret(
-      this._parsedScript.bindings[0].commandOffset,
-      this._parsedScript,
-      classResover
-    );
+    VM.addScript(this._parsedScript);
+    VM.dispatch(this, "onscriptloaded");
   }
 
   setParentGroup(group: Group) {
@@ -163,33 +152,6 @@ export default class SystemObject {
    */
   getviewportheight() {
     return window.document.documentElement.clientHeight;
-  }
-}
-
-function classResover(guid: string): any {
-  switch (guid) {
-    case "d6f50f6449b793fa66baf193983eaeef":
-      return SystemObject;
-    case "e90dc47b4ae7840d0b042cb0fcf775d2":
-      return Container;
-    case "60906d4e482e537e94cc04b072568861":
-      return Layout;
-    case "5ab9fa1545579a7d5765c8aba97cc6a6":
-      return Layer;
-    case "f4787af44ef7b2bb4be7fb9c8da8bea9":
-      return PopupMenu;
-    case "698eddcd4fec8f1e44f9129b45ff09f9":
-      return Button;
-    case "b4dccfff4bcc81fe0f721b96ff0fbed5":
-      return ToggleButton;
-    case "efaa867241fa310ea985dcb74bcb5b52":
-      return Text;
-    case "0f08c9404b23af39c4b8f38059bb7e8f":
-      return Status;
-    default:
-      throw new Error(
-        `Unresolvable class "${getClass(guid).name}" (guid: ${guid})`
-      );
   }
 }
 

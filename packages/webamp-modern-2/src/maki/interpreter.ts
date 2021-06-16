@@ -5,9 +5,11 @@ import { ParsedMaki, Command, Method } from "./parser";
 export function interpret(
   start: number,
   program: ParsedMaki,
+  stack: Variable[],
   classResolver: (guid: string) => any
 ) {
   const interpreter = new Interpreter(program, classResolver);
+  interpreter.stack = stack;
   return interpreter.interpret(start);
 }
 
@@ -18,7 +20,7 @@ class Interpreter {
   variables: Variable[];
   methods: Method[];
   commands: Command[];
-  debug: boolean;
+  debug: boolean = false;
   classResolver: (guid: string) => any;
   constructor(program: ParsedMaki, classResolver: (guid: string) => any) {
     const { commands, methods, variables, classes } = program;
@@ -30,7 +32,6 @@ class Interpreter {
 
     this.stack = [];
     this.callStack = [];
-    this.debug = false;
   }
 
   interpret(start: number) {

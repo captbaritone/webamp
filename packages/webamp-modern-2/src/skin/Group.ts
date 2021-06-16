@@ -76,6 +76,7 @@ export default class Group extends GuiObj {
 
   getDebugDom(): HTMLDivElement {
     const div = super.getDebugDom();
+    div.setAttribute("data-obj-name", "Group");
     div.style.height = Utils.px(this._maximumHeight);
     div.style.width = Utils.px(this._maximumWidth);
     if (this._background != null && this._drawBackground) {

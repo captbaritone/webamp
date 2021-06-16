@@ -55,6 +55,8 @@ export default class SkinParser {
     switch (node.name.toLowerCase()) {
       case "wasabixml":
         return this.wasabiXml(node);
+      case "winampabstractionlayer":
+        return this.winampAbstractionLayer(node);
       case "include":
         return this.include(node);
       case "skininfo":
@@ -63,6 +65,8 @@ export default class SkinParser {
         return this.elements(node);
       case "bitmap":
         return this.bitmap(node);
+      case "bitmapfont":
+        return this.bitmapFont(node);
       case "color":
         return this.color(node);
       case "groupdef":
@@ -130,6 +134,10 @@ export default class SkinParser {
     await this.traverseChildren(node);
   }
 
+  async winampAbstractionLayer(node: XmlElement) {
+    await this.traverseChildren(node);
+  }
+
   async elements(node: XmlElement) {
     await this.traverseChildren(node);
   }
@@ -151,6 +159,13 @@ export default class SkinParser {
     await bitmap.ensureImageLoaded(this._imageManager);
 
     UI_ROOT.addBitmap(bitmap);
+  }
+
+  async bitmapFont(node: XmlElement) {
+    assume(
+      node.children.length === 0,
+      "Unexpected children in <bitmapFont> XML node."
+    );
   }
 
   async text(node: XmlElement) {
@@ -416,7 +431,10 @@ export default class SkinParser {
 
     const path = [...this._path, fileName].join("/");
     const zipFile = this.getCaseInsensitiveFile(path);
-    assert(zipFile != null, `Zip file not found for ${file}`);
+    if (zipFile == null) {
+      console.warn(`Zip file not found: ${file}`);
+      return;
+    }
     const includedXml = await zipFile.async("string");
 
     // Note: Included files don't have a single root node, so we add a synthetic one.

@@ -2,7 +2,7 @@ import { assert, assume } from "../utils";
 import { COMMANDS } from "./constants";
 import { DataType, Variable } from "./v";
 import MakiFile from "./MakiFile";
-import { getMethod, getReturnType } from "./objects";
+import { getReturnType } from "./objects";
 
 export type Command = {
   opcode: number;
@@ -27,6 +27,8 @@ export type ParsedMaki = {
 export type Binding = {
   commandOffset: number;
   methodOffset: number;
+  variableOffset: number;
+  binaryOffset: number;
 };
 
 const MAGIC = "FG";
@@ -70,18 +72,24 @@ export function parse(data: ArrayBuffer): ParsedMaki {
     }
   });
 
-  const resolvedBindings = bindings.map((binding): Binding => {
-    return Object.assign({}, binding, {
-      commandOffset: offsetToCommand[binding.binaryOffset],
-    });
-  });
-
-  const resolvedCommands = commands.map((command): Command => {
-    if (command.argType === "COMMAND_OFFSET") {
-      return Object.assign({}, command, { arg: offsetToCommand[command.arg] });
+  const resolvedBindings = bindings.map(
+    (binding): Binding => {
+      return Object.assign({}, binding, {
+        commandOffset: offsetToCommand[binding.binaryOffset],
+      });
     }
-    return command;
-  });
+  );
+
+  const resolvedCommands = commands.map(
+    (command): Command => {
+      if (command.argType === "COMMAND_OFFSET") {
+        return Object.assign({}, command, {
+          arg: offsetToCommand[command.arg],
+        });
+      }
+      return command;
+    }
+  );
   return {
     classes,
     methods,
@@ -150,7 +158,7 @@ function readMethods(makiFile: MakiFile, classes: string[]): Method[] {
     const typeOffset = classCode & 0xff;
     // This is probably the second half of a uint32
     makiFile.readUInt16LE();
-    const name = makiFile.readString();
+    const name = makiFile.readString().toLowerCase();
 
     const className = classes[typeOffset];
 
@@ -238,7 +246,7 @@ function readConstants({ makiFile, variables }) {
   }
 }
 
-function readBindings(makiFile) {
+function readBindings(makiFile: MakiFile): Binding[] {
   let count = makiFile.readUInt32LE();
   const bindings = [];
   while (count--) {
