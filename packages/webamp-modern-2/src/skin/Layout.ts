@@ -1,7 +1,6 @@
 import Group from "./Group";
 import * as Utils from "../utils";
 import Container from "./Container";
-import Layer from "./Layer";
 
 // > A layout is a special kind of group, which shown inside a container. Each
 // > layout represents an appearance for that window. Layouts give you the ability
@@ -30,5 +29,11 @@ export default class Layout extends Group {
 
   setParent(container: Container) {
     this._parent = container;
+  }
+
+  getDebugDom(): HTMLDivElement {
+    const div = super.getDebugDom();
+    div.setAttribute("data-obj-name", "Layout");
+    return div;
   }
 }

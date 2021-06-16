@@ -1,7 +1,5 @@
 import { SkinContext } from "../types";
 import { toBool } from "../utils";
-import Group from "./Group";
-import Layer from "./Layer";
 import Layout from "./Layout";
 import XmlObj from "./XmlObj";
 
@@ -74,6 +72,9 @@ export default class Container extends XmlObj {
 
   getDebugDom(): HTMLDivElement {
     const div = window.document.createElement("div");
+    div.setAttribute("data-xml-id", this.getId());
+    div.setAttribute("data-obj-name", "Container");
+
     if (this._defaultVisible && this._activeLayout) {
       div.appendChild(this._activeLayout.getDebugDom());
     }

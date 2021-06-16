@@ -1,4 +1,6 @@
-export default class XmlObj {
+import BaseObject from "./BaseObject";
+
+export default class XmlObj extends BaseObject {
   setXmlAttributes(attributes: { [attrName: string]: string }) {
     for (const [key, value] of Object.entries(attributes)) {
       this.setXmlAttr(key, value);

@@ -22,6 +22,7 @@ export default class Layer extends GuiObj {
 
   getDebugDom(): HTMLDivElement {
     const div = super.getDebugDom();
+    div.setAttribute("data-obj-name", "Layer");
     if (this._image != null) {
       const bitmap = UI_ROOT.getBitmap(this._image);
       div.style.background = bitmap.getBackgrondCSSAttribute();

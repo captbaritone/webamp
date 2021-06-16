@@ -1,5 +1,6 @@
 import { SkinContext } from "../types";
 import * as Utils from "../utils";
+import { VM } from "./VM";
 import XmlObj from "./XmlObj";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#GuiObject_.28Global_params.29
@@ -112,8 +113,65 @@ export default class GuiObj extends XmlObj {
     this._dirty = true;
   }
 
+  /**
+   * Hookable. Event happens when the left mouse
+   * button was previously down and is now up.
+   *
+   * @param  x   The X position in the screen where the cursor was when the event was triggered.
+   * @param  y   The Y position in the screen where the cursor was when the event was triggered.
+   */
+  onLeftButtonUp(x: number, y: number) {
+    VM.dispatch(this, "onleftbuttonup", [
+      { type: "INT", value: x },
+      { type: "INT", value: y },
+    ]);
+  }
+
+  /**
+   * Hookable. Event happens when the left mouse button
+   * is pressed.
+   *
+   * @param  x   The X position in the screen where the cursor was when the event was triggered.
+   * @param  y   The Y position in the screen where the cursor was when the event was triggered.
+   */
+  onLeftButtonDown(x: number, y: number) {
+    VM.dispatch(this, "onleftbuttondown", [
+      { type: "INT", value: x },
+      { type: "INT", value: y },
+    ]);
+  }
+
+  /**
+   * Hookable. Event happens when the right mouse button
+   * was previously down and is now up.
+   *
+   * @param  x   The X position in the screen where the cursor was when the event was triggered.
+   * @param  y   The Y position in the screen where the cursor was when the event was triggered.
+   */
+  onRightButtonUp(x: number, y: number) {
+    VM.dispatch(this, "onrightbuttonup", [
+      { type: "INT", value: x },
+      { type: "INT", value: y },
+    ]);
+  }
+
+  /**
+   * Hookable. Event happens when the right mouse button
+   * is pressed.
+   *
+   * @param  x   The X position in the screen where the cursor was when the event was triggered.
+   * @param  y   The Y position in the screen where the cursor was when the event was triggered.
+   */
+  onRightButtonDown(x: number, y: number) {
+    VM.dispatch(this, "onrightbuttondown", [
+      { type: "INT", value: x },
+      { type: "INT", value: y },
+    ]);
+  }
+
   getDebugDom(): HTMLDivElement {
     const div = window.document.createElement("div");
+    div.setAttribute("data-id", this.getId());
     div.style.display = this._visible ? "inline-block" : "none";
     div.style.position = "absolute";
     if (this._x) {
@@ -128,6 +186,13 @@ export default class GuiObj extends XmlObj {
     if (this._height) {
       div.style.height = Utils.px(this._height);
     }
+    div.addEventListener("mouseup", (e) => {
+      this.onLeftButtonUp(e.clientX, e.clientX);
+    });
+
+    div.addEventListener("mousedown", (e) => {
+      this.onLeftButtonDown(e.clientX, e.clientX);
+    });
     return div;
   }
 }

@@ -1,4 +1,4 @@
-import GuiObj from "../skin/GuiObj";
+import BaseObject from "../skin/BaseObject";
 
 export type Variable =
   | {
@@ -15,7 +15,7 @@ export type Variable =
     }
   | {
       type: "OBJECT";
-      value: GuiObj;
+      value: BaseObject;
     }
   | {
       type: "NULL";
