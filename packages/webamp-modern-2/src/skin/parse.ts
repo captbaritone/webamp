@@ -16,11 +16,11 @@ import { parse as parseMaki } from "../maki/parser";
 import SystemObject from "./SystemObject";
 import ToggleButton from "./ToggleButton";
 import TrueTypeFont from "./TrueTypeFont";
+import GroupDef from "./GroupDef";
 
 class ParserContext {
   container: Container | null = null;
-  layout: Layout | null = null;
-  parentGroup: Group | null = null;
+  parentGroup: Group | /* Group includes Layout | */ GroupDef | null = null;
 }
 
 export default class SkinParser {
@@ -211,7 +211,14 @@ export default class SkinParser {
       "Expected scripts to only live within a parent group."
     );
 
-    this._context.parentGroup.addSystemObject(systemObj);
+    // TODO: Need to investigate how scripts find their group. In corneramp, the
+    // script itself is not in any group. `xml/player.xml:8
+    if (this._context.parentGroup instanceof Group) {
+      console.log("Adding script to ", this._context.parentGroup?.getId());
+      this._context.parentGroup.addSystemObject(systemObj);
+    } else {
+      // Script archives can also live in <groupdef /> but we don't know how to do that.
+    }
   }
 
   async scripts(node: XmlElement) {
@@ -300,7 +307,10 @@ export default class SkinParser {
   }
 
   async groupdef(node: XmlElement) {
-    // await this.traverseChildren(node);
+    const groupDef = new GroupDef();
+    groupDef.setXmlAttributes(node.attributes);
+    this._context.parentGroup = groupDef;
+    await this.traverseChildren(node);
   }
 
   async layer(node: XmlElement) {
@@ -328,7 +338,6 @@ export default class SkinParser {
     assume(container != null, "Expected <Layout> to be in a <container>");
     container.addLayout(layout);
 
-    this._context.layout = layout;
     this._context.parentGroup = layout;
     await this.traverseChildren(node);
   }

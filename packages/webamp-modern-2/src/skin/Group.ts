@@ -4,7 +4,9 @@ import GuiObj from "./GuiObj";
 import SystemObject from "./SystemObject";
 import { SkinContext } from "../types";
 
+// http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Cgroup.2F.3E
 export default class Group extends GuiObj {
+  _instanceId: string;
   _background: string;
   _desktopAlpha: boolean;
   _drawBackground: boolean;
@@ -20,6 +22,9 @@ export default class Group extends GuiObj {
       return true;
     }
     switch (key) {
+      case "instance_id":
+        this._instanceId = value;
+        break;
       case "background":
         this._background = value;
         break;
@@ -51,6 +56,10 @@ export default class Group extends GuiObj {
     for (const child of this._children) {
       child.init(context);
     }
+  }
+
+  getId() {
+    return this._instanceId || this._id;
   }
 
   addSystemObject(systemObj: SystemObject) {
