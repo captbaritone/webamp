@@ -43,7 +43,10 @@ export function getReturnType(classId: string, methodName: string): DataType {
   }
 }
 
-function getMethod(classId: string, methodName: string): MethodDefinition {
+export function getMethod(
+  classId: string,
+  methodName: string
+): MethodDefinition {
   const klass = getClass(classId);
   return getObjectFunction(klass, methodName);
 }

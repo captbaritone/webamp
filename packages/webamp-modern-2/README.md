@@ -1,5 +1,7 @@
 # TODO Next
 
+- [ ] Figure out if global NULL is actually typed as INT in Maki. I suspect there is no NULL type, but only an INT who happens to be zero.
+- [ ] GUI objects that are constructed by MAKI never get onInit called on them...
 - [ ] Fix all `// FIXME`
 - [ ] SystemObject.getruntimeversion
 - [ ] SystemObject.getskinname
@@ -16,3 +18,23 @@
 
 - [ ] Handle case (in)sensitivity of includes.
 - [ ] Handle forward/backward slashes issues (if they exist)
+
+# Phases of Initialization
+
+## Asset Parse
+
+Starting with `skin.xml`, and inlining each `<include />` we parse XML. As we go, we initialize GUI objects and attach them to their parent. During this phase we also encounter other asset files like Maki script, images, and fonts. These are parsed as they are encountered and setaside into a look-aside table (Maki scripts might live in the tree...).
+
+This phase is `async` since it may require reading files from zip or doing image/font manipulation which is inherently `async`.
+
+## Object Initialization
+
+Once all look-aside tables are populated, we notify all GUI objects to initialize themselves by propogating from the root of the tree to the leaves. Each node is reponsible for notifying its children. In this phase components pull images/scripts/fonts out of their look-aside tables. [Question: Could these just be lazy?]. At this point we also hook up any event bindings/hooks that exist in Maki.
+
+## Maki Initialization
+
+Once all nodes have been initialized, we trigger/dispatch `System.onScriptLoaded` for each Maki script.
+
+## First paint
+
+Now we can begin panting 
