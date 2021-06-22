@@ -54,6 +54,10 @@ function TrackList() {
       }
     };
 
+    // A little indirect here. Basically, we set `moving` false here which
+    // causes our useEffect to rerun which removes all of these event listeners.
+    // It might be a little tigher to actually remove these listeners in the
+    // `handleMouseUp` callback, but... I'm lazy.
     const handleMouseUp = () => setMoving(false);
     window.addEventListener("mouseup", handleMouseUp);
     window.addEventListener("mousemove", handleMouseMove);
@@ -109,7 +113,7 @@ function TrackList() {
     <div
       ref={setNode}
       className="playlist-tracks"
-      style={{ height: "100%" }}
+      style={{ height: "100%", userSelect: "none" }}
       onClick={selectZero}
     >
       <div className="playlist-track-titles">
