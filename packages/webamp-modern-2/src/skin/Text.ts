@@ -87,10 +87,17 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
         return "Niente da Caprie (3";
       case "songinfo":
         return "112kbps stereo 44.";
+      case "componentbucket":
+        return "componentbucket";
       default:
         throw new Error(`Unknown text display name: "${this._display}".`);
     }
     return this._display ?? this._text;
+  }
+
+  // extern Text.setText(String txt); // changes the display/text="something" param
+  settext(txt: string) {
+    this._text = txt;
   }
 
   getDebugDom(): HTMLDivElement {
@@ -115,7 +122,6 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
 
   /*
   
-extern Text.setText(String txt); // changes the display/text="something" param
 extern Text.setAlternateText(String txt); // overrides the display/text parameter with a custom string, set "" to cancel
 extern String Text.getText();
 extern int Text.getTextWidth();
