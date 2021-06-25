@@ -99,6 +99,10 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
   settext(txt: string) {
     this._text = txt;
   }
+  // overrides the display/text parameter with a custom string, set "" to cancel
+  setalternatetext(txt: string) {
+    // TODO
+  }
 
   getDebugDom(): HTMLDivElement {
     const div = super.getDebugDom();
@@ -122,7 +126,6 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
 
   /*
   
-extern Text.setAlternateText(String txt); // overrides the display/text parameter with a custom string, set "" to cancel
 extern String Text.getText();
 extern int Text.getTextWidth();
 extern Text.onTextChanged(String newtxt);
