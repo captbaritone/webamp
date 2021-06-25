@@ -22,6 +22,9 @@ export default class Button extends GuiObj {
   getactivated(): boolean {
     return true;
   }
+  setactivated(onoff: boolean) {
+    // TODO
+  }
 
   getDebugDom(): HTMLDivElement {
     const div = super.getDebugDom();
@@ -44,7 +47,6 @@ export default class Button extends GuiObj {
   extern Button.onActivate(int activated);
   extern Button.onLeftClick();
   extern Button.onRightClick();
-  extern Button.setActivated(Boolean onoff);
   extern Button.setActivatedNoCallback(Boolean onoff);
   extern Button.leftClick();
   extern Button.rightClick();e
