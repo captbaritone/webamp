@@ -4,15 +4,33 @@ import SystemObject from "./SystemObject";
 import Container from "./Container";
 import Layout from "./Layout";
 import Layer from "./Layer";
+import AnimatedLayer from "./AnimatedLayer";
 import PopupMenu from "./PopupMenu";
 import ToggleButton from "./ToggleButton";
 import Status from "./Status";
 import Text from "./Text";
+import Group from "./Group";
+import MakiMap from "./MakiMap";
+import Timer from "./Timer";
+import Slider from "./Slider";
+import Vis from "./Vis";
 
 // TODO: We could write a test using the data in object.ts which confirms that
 // this is complete.
 export function classResolver(guid: string): any {
   switch (guid) {
+    case "ce4f97be4e1977b098d45699276cc933":
+      return Vis;
+    case "62b65e3f408d375e8176ea8d771bb94a":
+      return Slider;
+    case "6b64cd274c4b5a26a7e6598c3a49f60c":
+      return AnimatedLayer;
+    case "5d0c5bb64b1f7de1168d0fa741199459":
+      return Timer;
+    case "3860366542a7461b3fd875aa73bf6766":
+      return MakiMap;
+    case "45be95e5419120725fbb5c93fd17f1f9":
+      return Group;
     case "d6f50f6449b793fa66baf193983eaeef":
       return SystemObject;
     case "e90dc47b4ae7840d0b042cb0fcf775d2":

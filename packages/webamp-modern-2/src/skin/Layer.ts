@@ -20,6 +20,15 @@ export default class Layer extends GuiObj {
     return true;
   }
 
+  /**
+   * Set the alphablending value of the object.
+   * Value ranges from 0 (fully transparent) to
+   * 255 (fully opaque).
+   *
+   * @param  alpha   The alpha value.
+   **/
+  setalpha(alpha: number) {}
+
   getDebugDom(): HTMLDivElement {
     const div = super.getDebugDom();
     div.setAttribute("data-obj-name", "Layer");

@@ -153,6 +153,28 @@ export default class SystemObject extends BaseObject {
   getviewportheight() {
     return window.document.documentElement.clientHeight;
   }
+
+  /**
+   * Get the value of an equalizer band. The bands
+   * are numbered from 0 (60Hz) to 9 (16kHz). The return
+   * value range is from -127 to +127.
+   *
+   * @ret       The value of the band.
+   * @param  band  The eq band number you want to get.
+   */
+  geteqband(band: number) {
+    return 100;
+  }
+
+  /**
+   * Get the equalizer state. 0 for off, 1 for on.
+   * Remember to compare return value to true and false.
+   *
+   *  @ret The EQ's state.
+   */
+  geteq(): number {
+    return 1;
+  }
 }
 
 function dumpScriptDebug(script: ParsedMaki) {
