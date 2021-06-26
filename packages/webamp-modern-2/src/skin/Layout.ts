@@ -31,9 +31,8 @@ export default class Layout extends Group {
     this._parent = container;
   }
 
-  getDebugDom(): HTMLDivElement {
-    const div = super.getDebugDom();
-    div.setAttribute("data-obj-name", "Layout");
-    return div;
+  draw() {
+    super.draw();
+    this._div.setAttribute("data-obj-name", "Layout");
   }
 }

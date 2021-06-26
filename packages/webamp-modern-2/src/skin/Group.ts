@@ -17,7 +17,8 @@ export default class Group extends GuiObj {
   _systemObjects: SystemObject[] = [];
   _children: GuiObj[] = [];
 
-  setXmlAttr(key: string, value: string): boolean {
+  setXmlAttr(_key: string, value: string): boolean {
+    const key = _key.toLowerCase();
     if (super.setXmlAttr(key, value)) {
       return true;
     }
@@ -86,18 +87,18 @@ export default class Group extends GuiObj {
     );
   }
 
-  getDebugDom(): HTMLDivElement {
-    const div = super.getDebugDom();
-    div.setAttribute("data-obj-name", "Group");
-    div.style.height = Utils.px(this._maximumHeight);
-    div.style.width = Utils.px(this._maximumWidth);
+  draw() {
+    super.draw();
+    this._div.setAttribute("data-obj-name", "Group");
+    this._div.style.height = Utils.px(this._maximumHeight);
+    this._div.style.width = Utils.px(this._maximumWidth);
     if (this._background != null && this._drawBackground) {
       const bitmap = UI_ROOT.getBitmap(this._background);
-      div.style.background = bitmap.getBackgrondCSSAttribute();
+      this._div.style.background = bitmap.getBackgrondCSSAttribute();
     }
     for (const child of this._children) {
-      div.appendChild(child.getDebugDom());
+      child.draw();
+      this._div.appendChild(child.getDiv());
     }
-    return div;
   }
 }

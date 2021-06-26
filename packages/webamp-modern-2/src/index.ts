@@ -27,7 +27,8 @@ async function main() {
   let node = document.createElement("div");
 
   for (const container of parser._containers) {
-    node.appendChild(container.getDebugDom());
+    container.draw();
+    node.appendChild(container.getDiv());
   }
 
   document.body.appendChild(node);

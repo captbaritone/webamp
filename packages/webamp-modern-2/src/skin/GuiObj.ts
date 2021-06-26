@@ -14,8 +14,11 @@ export default class GuiObj extends XmlObj {
   _visible: boolean = true;
   _dirty: boolean = false;
   _alpha: number = 255;
+  _ghost: boolean = false;
+  _div: HTMLDivElement = document.createElement("div");
 
-  setXmlAttr(key: string, value: string): boolean {
+  setXmlAttr(_key: string, value: string): boolean {
+    const key = _key.toLowerCase();
     switch (key) {
       case "id":
         this._id = value.toLowerCase();
@@ -35,6 +38,9 @@ export default class GuiObj extends XmlObj {
       case "droptarget":
         this._droptarget = value;
         break;
+      case "ghost":
+        this._ghost = Utils.toBool(value);
+        break;
       case "visible":
         this._visible = Utils.toBool(value);
         break;
@@ -49,6 +55,10 @@ export default class GuiObj extends XmlObj {
 
   init(context: SkinContext) {
     // pass
+  }
+
+  getDiv(): HTMLDivElement {
+    return this._div;
   }
 
   getId(): string {
@@ -182,34 +192,39 @@ export default class GuiObj extends XmlObj {
    */
   setalpha(alpha: number) {
     this._alpha = alpha;
-    // TODO Trigger an update
+    this._renderAlpha();
   }
 
-  getDebugDom(): HTMLDivElement {
-    const div = window.document.createElement("div");
-    div.setAttribute("data-id", this.getId());
-    div.style.display = this._visible ? "inline-block" : "none";
-    div.style.position = "absolute";
-    div.style.opacity = `${this._alpha / 255}`;
+  _renderAlpha() {
+    this._div.style.opacity = `${this._alpha / 255}`;
+  }
+
+  draw() {
+    this._div.setAttribute("data-id", this.getId());
+    this._div.style.display = this._visible ? "inline-block" : "none";
+    this._div.style.position = "absolute";
+    this._renderAlpha();
+    if (this._ghost) {
+      this._div.style.pointerEvents = "none";
+    }
     if (this._x) {
-      div.style.left = Utils.px(this._x);
+      this._div.style.left = Utils.px(this._x);
     }
     if (this._y) {
-      div.style.top = Utils.px(this._y);
+      this._div.style.top = Utils.px(this._y);
     }
     if (this._width) {
-      div.style.width = Utils.px(this._width);
+      this._div.style.width = Utils.px(this._width);
     }
     if (this._height) {
-      div.style.height = Utils.px(this._height);
+      this._div.style.height = Utils.px(this._height);
     }
-    div.addEventListener("mouseup", (e) => {
+    this._div.addEventListener("mouseup", (e) => {
       this.onLeftButtonUp(e.clientX, e.clientX);
     });
 
-    div.addEventListener("mousedown", (e) => {
+    this._div.addEventListener("mousedown", (e) => {
       this.onLeftButtonDown(e.clientX, e.clientX);
     });
-    return div;
   }
 }

@@ -106,24 +106,22 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
     // TODO
   }
 
-  getDebugDom(): HTMLDivElement {
-    const div = super.getDebugDom();
-    div.innerText = this.getText();
+  draw() {
+    super.draw();
+    this._div.innerText = this.getText();
     if (this._bold) {
-      div.style.fontWeight = "bold";
+      this._div.style.fontWeight = "bold";
     }
     if (this._align) {
-      div.style.textAlign = this._align;
+      this._div.style.textAlign = this._align;
     }
 
     if (this._font) {
       const font = UI_ROOT.getFont(this._font);
-      div.style.fontFamily = font.getFontFamily();
+      this._div.style.fontFamily = font.getFontFamily();
     }
 
-    div.style.fontSize = Utils.px(this._fontSize ?? 14);
-
-    return div;
+    this._div.style.fontSize = Utils.px(this._fontSize ?? 14);
   }
 
   /*
