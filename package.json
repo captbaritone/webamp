@@ -6,7 +6,7 @@
     "examples/*"
   ],
   "scripts": {
-    "deploy": "yarn workspace ani-cursor build && yarn workspace webamp build && yarn workspace webamp build-library"
+    "deploy": "sh deploy.sh"
   },
   "devDependencies": {
     "prettier": "^2.0.5"

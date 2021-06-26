@@ -133,9 +133,7 @@ export default class SkinParser {
       case "status":
         return this.status(node);
       case "wasabi:standardframe:nostatus":
-      case "wasabi:standardframe:status":
       case "componentbucket":
-      case "animatedlayer":
       case "playlisteditor":
       case "wasabi:tabsheet":
       case "wasabi:standardframe:status":
