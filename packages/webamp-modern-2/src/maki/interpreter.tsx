@@ -1,6 +1,26 @@
 import { V, Variable } from "./v";
 import { assert, assume } from "../utils";
 import { ParsedMaki, Command, Method } from "./parser";
+import { getClass, getMethod } from "./objects";
+import { classResolver } from "../skin/resolver";
+
+function validateMaki(program: ParsedMaki) {
+  for (const method of program.methods) {
+    if (method.name.startsWith("on")) {
+      continue;
+    }
+    const guid = program.classes[method.typeOffset];
+    const methodDefinition = getMethod(guid, method.name);
+    const klass = classResolver(guid);
+    const impl = klass.prototype[method.name];
+    if (!impl) {
+      const classDefinition = getClass(guid);
+      console.warn(`Expected to find ${classDefinition.name}.${method.name}`);
+    } else if (impl.length != methodDefinition.parameters.length) {
+      throw new Error("Arity Error");
+    }
+  }
+}
 
 export function interpret(
   start: number,
@@ -8,6 +28,7 @@ export function interpret(
   stack: Variable[],
   classResolver: (guid: string) => any
 ) {
+  validateMaki(program);
   const interpreter = new Interpreter(program, classResolver);
   interpreter.stack = stack;
   return interpreter.interpret(start);
@@ -73,7 +94,7 @@ class Interpreter {
           const a = this.stack.pop();
           const b = this.stack.pop();
           assume(
-            a.type == b.type,
+            typeof a.value == typeof b.value,
             `Tried to compare a ${a.type} to a ${b.type}.`
           );
           const result = V.newInt(b.value === a.value);
@@ -84,10 +105,12 @@ class Interpreter {
         case 9: {
           const a = this.stack.pop();
           const b = this.stack.pop();
+          /* It's fine to compare objects to null
           assume(
             a.type == b.type,
             `Tried to compare a ${a.type} to a ${b.type}.`
           );
+          */
           const result = V.newInt(b.value !== a.value);
           this.stack.push(result);
           break;
@@ -148,14 +171,34 @@ class Interpreter {
         }
         // <=
         case 13: {
-          assume(false, "Unimplimented <= operator");
+          const a = this.stack.pop();
+          const b = this.stack.pop();
+          switch (a.type) {
+            case "STRING":
+            case "OBJECT":
+            case "BOOL":
+            case "NULL":
+              throw new Error("Tried to add non-numbers.");
+          }
+          switch (b.type) {
+            case "STRING":
+            case "OBJECT":
+            case "BOOL":
+            case "NULL":
+              throw new Error("Tried to add non-numbers.");
+          }
+          if (this.debug) {
+            console.log(`${b.value} < ${a.value}`);
+          }
+
+          this.stack.push(V.newInt(b.value <= a.value));
           break;
         }
         // jumpIf
         case 16: {
           const value = this.stack.pop();
           // This seems backwards. Seems like we're doing a "jump if not"
-          if (value) {
+          if (value.value) {
             break;
           }
           ip = command.arg - 1;
@@ -165,7 +208,7 @@ class Interpreter {
         case 17: {
           const value = this.stack.pop();
           // This seems backwards. Same as above
-          if (!value) {
+          if (!value.value) {
             break;
           }
           ip = command.arg - 1;
@@ -200,7 +243,13 @@ class Interpreter {
               `Need to add missing method: ${klass.name}.${methodName}: ${returnType}`
             );
           }
-          let argCount = klass.prototype[methodName].length;
+          let argCount: number = klass.prototype[methodName].length;
+
+          const methodDefinition = getMethod(guid, methodName);
+          assert(
+            argCount === (methodDefinition.parameters.length ?? 0),
+            "Arg count mismatch"
+          );
 
           const methodArgs = [];
           while (argCount--) {
@@ -213,6 +262,7 @@ class Interpreter {
             "Tried to call a method on a primitive."
           );
           let value = obj.value[methodName](...methodArgs);
+
           if (value === undefined && returnType !== "NULL") {
             throw new Error(
               `Did not expect ${klass.name}.${methodName}: ${returnType} to return undefined`
@@ -221,6 +271,10 @@ class Interpreter {
           if (value === null) {
             // variables[1] holds global NULL value
             value = this.variables[1];
+          }
+          if (returnType === "BOOL") {
+            assert(typeof value === "boolean", "BOOL should return a boolean");
+            value = value ? 1 : 0;
           }
           if (this.debug) {
             console.log(`Calling method ${methodName}`);
@@ -252,10 +306,12 @@ class Interpreter {
         case 48: {
           const a = this.stack.pop();
           const b = this.stack.pop();
+          /*
           assume(
             a.type === b.type,
             `Type mismatch: ${a.type} != ${b.type} at ip: ${ip}`
           );
+          */
           b.value = a.value;
           this.stack.push(a);
           break;

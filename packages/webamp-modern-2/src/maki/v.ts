@@ -22,7 +22,14 @@ export type Variable =
       value: null;
     };
 
-export type DataType = Pick<Variable, "type">;
+export type DataType =
+  | "BOOLEAN"
+  | "INT"
+  | "FLOAT"
+  | "DOUBLE"
+  | "STRING"
+  | "NULL"
+  | "OBJECT";
 
 export const V = {
   // TODO: Split boolean out into its own method

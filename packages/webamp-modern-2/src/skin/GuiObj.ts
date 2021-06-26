@@ -13,6 +13,7 @@ export default class GuiObj extends XmlObj {
   _droptarget: string;
   _visible: boolean = true;
   _dirty: boolean = false;
+  _alpha: number = 255;
 
   setXmlAttr(key: string, value: string): boolean {
     switch (key) {
@@ -37,6 +38,9 @@ export default class GuiObj extends XmlObj {
       case "visible":
         this._visible = Utils.toBool(value);
         break;
+      // (int) An integer [0,255] specifying the alpha blend mode of the object (0 is transparent, 255 is opaque). Default is 255.
+      case "alpha":
+        this._alpha = Utils.num(value);
       default:
         return false;
     }
@@ -169,11 +173,24 @@ export default class GuiObj extends XmlObj {
     ]);
   }
 
+  /**
+   * Set the alphablending value of the object.
+   * Value ranges from 0 (fully transparent) to
+   * 255 (fully opaque).
+   *
+   * @param  alpha   The alpha value.
+   */
+  setalpha(alpha: number) {
+    this._alpha = alpha;
+    // TODO Trigger an update
+  }
+
   getDebugDom(): HTMLDivElement {
     const div = window.document.createElement("div");
     div.setAttribute("data-id", this.getId());
     div.style.display = this._visible ? "inline-block" : "none";
     div.style.position = "absolute";
+    div.style.opacity = `${this._alpha / 255}`;
     if (this._x) {
       div.style.left = Utils.px(this._x);
     }

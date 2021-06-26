@@ -80,19 +80,21 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
   }
 
   getText() {
-    switch (this._display) {
-      case "time":
-        return "01:58";
-      case "songname":
-        return "Niente da Caprie (3";
-      case "songinfo":
-        return "112kbps stereo 44.";
-      case "componentbucket":
-        return "componentbucket";
-      default:
-        throw new Error(`Unknown text display name: "${this._display}".`);
+    if (this._display) {
+      switch (this._display) {
+        case "time":
+          return "01:58";
+        case "songname":
+          return "Niente da Caprie (3";
+        case "songinfo":
+          return "112kbps stereo 44.";
+        case "componentbucket":
+          return "componentbucket";
+        default:
+          throw new Error(`Unknown text display name: "${this._display}".`);
+      }
     }
-    return this._display ?? this._text;
+    return this._text ?? "";
   }
 
   // extern Text.setText(String txt); // changes the display/text="something" param
@@ -115,7 +117,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
     }
 
     if (this._font) {
-      const font = UI_ROOT.getTrueTypeFont(this._font);
+      const font = UI_ROOT.getFont(this._font);
       div.style.fontFamily = font.getFontFamily();
     }
 

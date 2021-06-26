@@ -20,15 +20,6 @@ export default class Layer extends GuiObj {
     return true;
   }
 
-  /**
-   * Set the alphablending value of the object.
-   * Value ranges from 0 (fully transparent) to
-   * 255 (fully opaque).
-   *
-   * @param  alpha   The alpha value.
-   **/
-  setalpha(alpha: number) {}
-
   getDebugDom(): HTMLDivElement {
     const div = super.getDebugDom();
     div.setAttribute("data-obj-name", "Layer");
@@ -36,10 +27,10 @@ export default class Layer extends GuiObj {
       const bitmap = UI_ROOT.getBitmap(this._image);
       div.style.backgroundImage = bitmap.getBackgrondImageCSSAttribute();
       div.style.backgroundPosition = bitmap.getBackgrondPositionCSSAttribute();
-      if (div.style.width === "" && bitmap.getWidth()) {
+      if (!div.style.width && bitmap.getWidth()) {
         div.style.width = px(bitmap.getWidth());
       }
-      if (div.style.height === "" && bitmap.getHeight()) {
+      if (!div.style.height && bitmap.getHeight()) {
         div.style.height = px(bitmap.getHeight());
       }
     }
