@@ -67,7 +67,9 @@ export default class Container extends XmlObj {
   addLayout(layout: Layout) {
     layout.setParent(this);
     this._layouts.push(layout);
-    this._activeLayout = layout;
+    if (this._activeLayout == null) {
+      this._activeLayout = layout;
+    }
   }
 
   getDebugDom(): HTMLDivElement {

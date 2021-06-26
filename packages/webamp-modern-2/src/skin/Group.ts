@@ -80,7 +80,10 @@ export default class Group extends GuiObj {
         return obj;
       }
     }
-    throw new Error(`Could not find an object with the id; "${objectId}"`);
+    const foundIds = this._children.map((child) => child.getId()).join(", ");
+    throw new Error(
+      `Could not find an object with the id: "${objectId}" within object "${this.getId()}". Only found: ${foundIds}`
+    );
   }
 
   getDebugDom(): HTMLDivElement {

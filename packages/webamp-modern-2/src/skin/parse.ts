@@ -16,11 +16,14 @@ import { parse as parseMaki } from "../maki/parser";
 import SystemObject from "./SystemObject";
 import ToggleButton from "./ToggleButton";
 import TrueTypeFont from "./TrueTypeFont";
-import GroupDef from "./GroupDef";
+import GuiObj from "./GuiObj";
+import AnimatedLayer from "./AnimatedLayer";
+import Vis from "./Vis";
+import BitmapFont from "./BitmapFont";
 
 class ParserContext {
   container: Container | null = null;
-  parentGroup: Group | /* Group includes Layout | */ GroupDef | null = null;
+  parentGroup: Group | /* Group includes Layout | */ null = null;
 }
 
 export default class SkinParser {
@@ -34,7 +37,9 @@ export default class SkinParser {
     this._zip = zip;
     this._imageManager = new ImageManager(zip);
   }
-  async parse() {
+  async parse(): Promise<void> {
+    // Load built-in xui elements
+    // await this.parseFromUrl("assets/xml/xui/standardframe.xml");
     const includedXml = await this.getCaseInsensitiveFile("skin.xml").async(
       "string"
     );
@@ -45,6 +50,15 @@ export default class SkinParser {
 
     await this.traverseChildren(parsed);
   }
+
+  // Some XML files are built-in, so we want to be able to
+  async parseFromUrl(url: string): Promise<void> {
+    const response = await fetch(url);
+    const xml = await response.text();
+    const parsed = parseXmlFragment(xml);
+    await this.traverseChildren(parsed);
+  }
+
   async traverseChildren(parent: XmlElement | XmlDocument) {
     for (const child of parent.children) {
       if (child instanceof XmlElement) {
@@ -72,6 +86,8 @@ export default class SkinParser {
         return this.color(node);
       case "groupdef":
         return this.groupdef(node);
+      case "animatedlayer":
+        return this.animatedLayer(node);
       case "layer":
         return this.layer(node);
       case "container":
@@ -110,16 +126,26 @@ export default class SkinParser {
         return this.wasabiButton(node);
       case "truetypefont":
         return this.trueTypeFont(node);
-      case "wasabi:standardframe:status":
-        return this.wasabiStandardframeStatus(node);
-      case "wasabi:standardframe:nostatus":
-        return this.wasabiStandardframeNoStatus(node);
       case "eqvis":
         return this.eqvis(node);
       case "colorthemes:list":
         return this.colorThemesList(node);
       case "status":
         return this.status(node);
+      case "wasabi:standardframe:nostatus":
+      case "wasabi:standardframe:status":
+      case "componentbucket":
+      case "animatedlayer":
+      case "playlisteditor":
+      case "wasabi:tabsheet":
+      case "wasabi:standardframe:status":
+      case "Snappoint":
+        // TODO
+        return;
+      // TODO: This should be the default fall through
+      // return this.xuiElement(node);
+      case "vis":
+        return this.vis(node);
       // Note: Included files don't have a single root node, so we add a synthetic one.
       // A different XML parser library might make this unnessesary.
       case "wrapper":
@@ -127,6 +153,10 @@ export default class SkinParser {
       default:
         throw new Error(`Unhandled XML node type: ${node.name}`);
     }
+  }
+
+  addToGroup(obj: GuiObj) {
+    this._context.parentGroup.addChild(obj);
   }
 
   /* Individual Element Parsers */
@@ -145,9 +175,13 @@ export default class SkinParser {
 
   async group(node: XmlElement) {
     const group = new Group();
+    const previousParent = this._context.parentGroup;
+    await this.maybeApplyGroupDef(group, node);
     group.setXmlAttributes(node.attributes);
     this._context.parentGroup = group;
     await this.traverseChildren(node);
+    this._context.parentGroup = previousParent;
+    this.addToGroup(group);
   }
 
   async bitmap(node: XmlElement) {
@@ -167,7 +201,11 @@ export default class SkinParser {
       node.children.length === 0,
       "Unexpected children in <bitmapFont> XML node."
     );
-    console.log(node);
+    const font = new BitmapFont();
+    font.setXmlAttributes(node.attributes);
+    await font.ensureFontLoaded(this._imageManager);
+
+    UI_ROOT.addFont(font);
   }
 
   async text(node: XmlElement) {
@@ -198,23 +236,19 @@ export default class SkinParser {
     assert(file != null, "Script element missing `file` attribute");
     assert(id != null, "Script element missing `id` attribute");
 
+    let scriptContents: ArrayBuffer;
     const scriptFile = this.getCaseInsensitiveFile(file);
     assert(scriptFile != null, `ScriptFile file not found at path ${file}`);
-    const scriptContents = await scriptFile.async("arraybuffer");
+    scriptContents = await scriptFile.async("arraybuffer");
+
     // TODO: Try catch?
     const parsedScript = parseMaki(scriptContents);
 
     const systemObj = new SystemObject(parsedScript);
 
-    assert(
-      this._context.parentGroup != null,
-      "Expected scripts to only live within a parent group."
-    );
-
     // TODO: Need to investigate how scripts find their group. In corneramp, the
     // script itself is not in any group. `xml/player.xml:8
     if (this._context.parentGroup instanceof Group) {
-      console.log("Adding script to ", this._context.parentGroup?.getId());
       this._context.parentGroup.addSystemObject(systemObj);
     } else {
       // Script archives can also live in <groupdef /> but we don't know how to do that.
@@ -307,10 +341,7 @@ export default class SkinParser {
   }
 
   async groupdef(node: XmlElement) {
-    const groupDef = new GroupDef();
-    groupDef.setXmlAttributes(node.attributes);
-    this._context.parentGroup = groupDef;
-    await this.traverseChildren(node);
+    UI_ROOT.addGroupDef(node);
   }
 
   async layer(node: XmlElement) {
@@ -331,9 +362,42 @@ export default class SkinParser {
     parentGroup.addChild(layer);
   }
 
+  async animatedLayer(node: XmlElement) {
+    assume(
+      node.children.length === 0,
+      "Unexpected children in <animatedlayer> XML node."
+    );
+
+    const layer = new AnimatedLayer();
+    layer.setXmlAttributes(node.attributes);
+    const { parentGroup } = this._context;
+    if (parentGroup == null) {
+      console.warn(
+        `FIXME: Expected <animatedlayer id="${layer._id}"> to be within a <Layout> | <Group>`
+      );
+      return;
+    }
+    parentGroup.addChild(layer);
+  }
+
+  async maybeApplyGroupDef(group: Group, node: XmlElement) {
+    const id = node.attributes.id;
+    const groupDef = UI_ROOT.getGroupDef(id);
+    if (groupDef != null) {
+      group.setXmlAttributes(groupDef.attributes);
+      const previousParentGroup = this._context.parentGroup;
+      this._context.parentGroup = group;
+      await this.traverseChildren(groupDef);
+      this._context.parentGroup = previousParentGroup;
+      // TODO: Maybe traverse groupDef's children?
+    }
+  }
+
   async layout(node: XmlElement) {
     const layout = new Layout();
+    await this.maybeApplyGroupDef(layout, node);
     layout.setXmlAttributes(node.attributes);
+
     const { container } = this._context;
     assume(container != null, "Expected <Layout> to be in a <container>");
     container.addLayout(layout);
@@ -372,18 +436,29 @@ export default class SkinParser {
       "Unexpected children in <layoutStatus> XML node."
     );
   }
-  async wasabiStandardframeStatus(node: XmlElement) {
+
+  async xuiElement(node: XmlElement) {
+    assume(node.children.length === 0, "Unexpected children in XUI XML node.");
+    const xuiElement = UI_ROOT.getXuiElement(node.name);
     assume(
-      node.children.length === 0,
-      "Unexpected children in <wasabiStandardframeStatus> XML node."
+      xuiElement != null,
+      `Expected to find xui element with name "${node.name}".`
     );
+
+    const group = new Group();
+    group.setXmlAttributes(xuiElement.attributes);
+    const previousParentGroup = this._context.parentGroup;
+    this._context.parentGroup = group;
+
+    await this.traverseChildren(xuiElement);
+    group.setXmlAttributes(node.attributes);
+    await this.traverseChildren(node);
+
+    this._context.parentGroup = previousParentGroup;
+
+    this._context.parentGroup.addChild(group);
   }
-  async wasabiStandardframeNoStatus(node: XmlElement) {
-    assume(
-      node.children.length === 0,
-      "Unexpected children in <wasabiStandardframeNoStatus> XML node."
-    );
-  }
+
   async status(node: XmlElement) {
     assume(
       node.children.length === 0,
@@ -406,6 +481,24 @@ export default class SkinParser {
       node.children.length === 0,
       "Unexpected children in <eqvis> XML node."
     );
+  }
+
+  async vis(node: XmlElement) {
+    assume(
+      node.children.length === 0,
+      "Unexpected children in <vis> XML node."
+    );
+
+    const vis = new Vis();
+    vis.setXmlAttributes(node.attributes);
+    const { parentGroup } = this._context;
+    if (parentGroup == null) {
+      console.warn(
+        `FIXME: Expected <Vis id="${vis._id}"> to be within a <Layout> | <Group>`
+      );
+      return;
+    }
+    parentGroup.addChild(vis);
   }
 
   async hideobject(node: XmlElement) {
@@ -431,7 +524,7 @@ export default class SkinParser {
     font.setXmlAttributes(node.attributes);
     await font.ensureFontLoaded(this._imageManager);
 
-    UI_ROOT.addTrueTypeFont(font);
+    UI_ROOT.addFont(font);
   }
 
   async include(node: XmlElement) {
@@ -446,6 +539,7 @@ export default class SkinParser {
     }
 
     const path = [...this._path, fileName].join("/");
+
     const zipFile = this.getCaseInsensitiveFile(path);
     if (zipFile == null) {
       console.warn(`Zip file not found: ${file}`);
@@ -455,7 +549,7 @@ export default class SkinParser {
 
     // Note: Included files don't have a single root node, so we add a synthetic one.
     // A different XML parser library might make this unnessesary.
-    const parsed = parseXml(`<wrapper>${includedXml}</wrapper>`);
+    const parsed = parseXmlFragment(includedXml);
 
     await this.traverseChildren(parsed);
 
@@ -471,4 +565,10 @@ export default class SkinParser {
   getCaseInsensitiveFile(filePath: string): JSZipObject {
     return getCaseInsensitiveFile(this._zip, filePath);
   }
+}
+
+function parseXmlFragment(xml: string): XmlDocument {
+  // Note: Included files don't have a single root node, so we add a synthetic one.
+  // A different XML parser library might make this unnessesary.
+  return parseXml(`<wrapper>${xml}</wrapper>`);
 }

@@ -14,11 +14,14 @@ import MakiMap from "./MakiMap";
 import Timer from "./Timer";
 import Slider from "./Slider";
 import Vis from "./Vis";
+import GuiObj from "./GuiObj";
 
 // TODO: We could write a test using the data in object.ts which confirms that
 // this is complete.
 export function classResolver(guid: string): any {
   switch (guid) {
+    case "4ee3e1994becc636bc78cd97b028869c":
+      return GuiObj;
     case "ce4f97be4e1977b098d45699276cc933":
       return Vis;
     case "62b65e3f408d375e8176ea8d771bb94a":

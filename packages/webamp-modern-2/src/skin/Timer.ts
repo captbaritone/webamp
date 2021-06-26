@@ -1,7 +1,9 @@
 import BaseObject from "./BaseObject";
 
 export default class Timer extends BaseObject {
-  setdelay(millisec: number) {}
+  setdelay(millisec: number) {
+    // TODO
+  }
   stop() {
     //TODO
   }

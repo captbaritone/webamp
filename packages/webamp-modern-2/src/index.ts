@@ -10,8 +10,9 @@ function hack() {
 }
 
 async function main() {
-  const response = await fetch("assets/CornerAmp_Redux.wal");
+  // const response = await fetch("assets/CornerAmp_Redux.wal");
   // const response = await fetch("assets/Default_winamp3_build499.wal");
+  const response = await fetch("assets/MMD3.wal");
   const data = await response.blob();
   const zip = await JSZip.loadAsync(data);
 
@@ -30,17 +31,7 @@ async function main() {
   }
 
   document.body.appendChild(node);
-  setInterval(() => {
-    if (window.pause) {
-      return;
-    }
-    document.body.removeChild(node);
-    node = document.createElement("div");
-    for (const container of parser._containers) {
-      node.appendChild(container.getDebugDom());
-    }
-    document.body.appendChild(node);
-  }, 1000);
+  console.log("RENDER");
 }
 
 main();
