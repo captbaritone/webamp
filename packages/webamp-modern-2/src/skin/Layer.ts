@@ -20,20 +20,19 @@ export default class Layer extends GuiObj {
     return true;
   }
 
-  getDebugDom(): HTMLDivElement {
-    const div = super.getDebugDom();
-    div.setAttribute("data-obj-name", "Layer");
+  draw() {
+    super.draw();
+    this._div.setAttribute("data-obj-name", "Layer");
     if (this._image != null) {
       const bitmap = UI_ROOT.getBitmap(this._image);
-      div.style.backgroundImage = bitmap.getBackgrondImageCSSAttribute();
-      div.style.backgroundPosition = bitmap.getBackgrondPositionCSSAttribute();
-      if (!div.style.width && bitmap.getWidth()) {
-        div.style.width = px(bitmap.getWidth());
+      this._div.style.backgroundImage = bitmap.getBackgrondImageCSSAttribute();
+      this._div.style.backgroundPosition = bitmap.getBackgrondPositionCSSAttribute();
+      if (!this._div.style.width && bitmap.getWidth()) {
+        this._div.style.width = px(bitmap.getWidth());
       }
-      if (!div.style.height && bitmap.getHeight()) {
-        div.style.height = px(bitmap.getHeight());
+      if (!this._div.style.height && bitmap.getHeight()) {
+        this._div.style.height = px(bitmap.getHeight());
       }
     }
-    return div;
   }
 }

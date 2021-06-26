@@ -14,11 +14,13 @@ export default class Container extends XmlObj {
   _activeLayout: Layout | null = null;
   _defaultVisible: boolean = true;
   _id: string;
+  _div: HTMLDivElement = document.createElement("div");
   constructor() {
     super();
   }
 
-  setXmlAttr(key: string, value: string): boolean {
+  setXmlAttr(_key: string, value: string): boolean {
+    const key = _key.toLowerCase();
     if (super.setXmlAttr(key, value)) {
       return true;
     }
@@ -43,6 +45,10 @@ export default class Container extends XmlObj {
 
   getId() {
     return this._id;
+  }
+
+  getDiv(): HTMLDivElement {
+    return this._div;
   }
 
   /* Required for Maki */
@@ -72,14 +78,13 @@ export default class Container extends XmlObj {
     }
   }
 
-  getDebugDom(): HTMLDivElement {
-    const div = window.document.createElement("div");
-    div.setAttribute("data-xml-id", this.getId());
-    div.setAttribute("data-obj-name", "Container");
+  draw() {
+    this._div.setAttribute("data-xml-id", this.getId());
+    this._div.setAttribute("data-obj-name", "Container");
 
     if (this._defaultVisible && this._activeLayout) {
-      div.appendChild(this._activeLayout.getDebugDom());
+      this._activeLayout.draw();
+      this._div.appendChild(this._activeLayout.getDiv());
     }
-    return div;
   }
 }

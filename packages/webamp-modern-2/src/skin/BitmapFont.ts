@@ -11,7 +11,8 @@ export default class BitmapFont {
     }
   }
 
-  setXmlAttr(key: string, value: string) {
+  setXmlAttr(_key: string, value: string) {
+    const key = _key.toLowerCase();
     switch (key) {
       case "id":
         this._id = value;

@@ -1,7 +1,8 @@
 import Layer from "./Layer";
 
 export default class AnimatedLayer extends Layer {
-  setXmlAttr(key: string, value: string): boolean {
+  setXmlAttr(_key: string, value: string): boolean {
+    const key = _key.toLowerCase();
     if (super.setXmlAttr(key, value)) {
       return true;
     }
@@ -16,10 +17,8 @@ export default class AnimatedLayer extends Layer {
   }
   gotoframe(framenum: number) {}
 
-  getDebugDom(): HTMLDivElement {
-    const div = super.getDebugDom();
-
-    div.setAttribute("data-obj-name", "AnimatedLayer");
-    return div;
+  draw() {
+    super.draw();
+    this._div.setAttribute("data-obj-name", "AnimatedLayer");
   }
 }

@@ -5,6 +5,7 @@ import { getClass, getMethod } from "./objects";
 import { classResolver } from "../skin/resolver";
 
 function validateMaki(program: ParsedMaki) {
+  return; // Comment this out to get warnings about missing methods
   for (const method of program.methods) {
     if (method.name.startsWith("on")) {
       continue;
@@ -82,8 +83,8 @@ class Interpreter {
           const offsetIntoVariables = command.arg;
           const current = this.variables[offsetIntoVariables];
           assume(
-            aValue.type === current.type,
-            "Assigned from one type to a different type."
+            typeof aValue.value === typeof current.value,
+            `Assigned from one type to a different type ${typeof aValue.value}, ${typeof current.value}.`
           );
 
           current.value = aValue.value;

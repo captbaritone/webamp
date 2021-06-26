@@ -13,6 +13,11 @@ export default class ToggleButton extends Button {
     return true;
   }
 
+  draw() {
+    super.draw();
+    this._div.setAttribute("data-obj-name", "ToggleButton");
+  }
+
   /*
   extern ToggleButton.onToggle(Boolean onoff);
   extern int TOggleButton.getCurCfgVal()
