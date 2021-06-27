@@ -16,7 +16,8 @@ class Vm {
           script.methods[binding.methodOffset].name === event &&
           script.variables[binding.variableOffset].value === object
         ) {
-          this.interpret(scriptId, binding.commandOffset, args);
+          const reversedArgs = [...args].reverse();
+          this.interpret(scriptId, binding.commandOffset, reversedArgs);
         }
       }
     }

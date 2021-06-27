@@ -39,3 +39,8 @@ let id = 0;
 export function getId(): number {
   return id++;
 }
+
+// TODO: Delete this once we have proper type coersion in the VM.
+export function ensureVmInt(num: number): number {
+  return Math.floor(num);
+}

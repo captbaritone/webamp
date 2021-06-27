@@ -1,8 +1,12 @@
 import * as Utils from "../utils";
+import { assert } from "../utils";
 import ImageManager from "./ImageManager";
+
 export default class Bitmap {
   _id: string;
   _url: string;
+  _img: HTMLImageElement;
+  _canvas: HTMLCanvasElement;
   _x: number;
   _y: number;
   _width: number;
@@ -69,6 +73,8 @@ export default class Bitmap {
     );
     const imgUrl = await imageManager.getUrl(this._file);
 
+    this._img = await imageManager.getImage(imgUrl);
+
     if (this._width == null && this._height == null) {
       const size = await imageManager.getSize(imgUrl);
       this.setXmlAttr("w", String(size.width));
@@ -92,5 +98,19 @@ export default class Bitmap {
     const width = Utils.px(this._width);
     const height = Utils.px(this._height);
     return `${width} ${height}`;
+  }
+
+  getCanvas(): HTMLCanvasElement {
+    if (this._canvas == null) {
+      assert(this._img != null, "Expected bitmap image to be loaded");
+      this._canvas = document.createElement("canvas");
+      this._canvas.width = this.getWidth();
+      this._canvas.height = this.getHeight();
+      const ctx = this._canvas.getContext("2d");
+      ctx.drawImage(this._img, 0, 0, this.getWidth(), this.getHeight());
+      document.body.appendChild(this._img);
+      document.body.appendChild(this._canvas);
+    }
+    return this._canvas;
   }
 }
