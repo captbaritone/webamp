@@ -192,7 +192,7 @@ function readVariables({ makiFile, classes }) {
       // assume(false, "Unimplemented subclass variable type");
       variables.push({
         type: "OBJECT",
-        value: object,
+        value: null,
         global,
         guid: variable.guid,
       });
@@ -201,7 +201,7 @@ function readVariables({ makiFile, classes }) {
       if (klass == null) {
         throw new Error("Invalid type");
       }
-      variables.push({ type: "OBJECT", value: object, global, guid: klass });
+      variables.push({ type: "OBJECT", value: null, global, guid: klass });
     } else {
       const typeName = PRIMITIVE_TYPES[typeOffset];
       if (typeName == null) {
