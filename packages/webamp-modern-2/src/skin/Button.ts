@@ -27,6 +27,30 @@ export default class Button extends GuiObj {
     return true;
   }
 
+  // This shadows `getheight()` on GuiObj
+  getheight(): number {
+    if (this._height) {
+      return this._height;
+    }
+    if (this._image != null) {
+      const bitmap = UI_ROOT.getBitmap(this._image);
+      return bitmap.getHeight();
+    }
+    return super.getheight();
+  }
+
+  // This shadows `getwidth()` on GuiObj
+  getwidth(): number {
+    if (this._width) {
+      return this._width;
+    }
+    if (this._image != null) {
+      const bitmap = UI_ROOT.getBitmap(this._image);
+      return bitmap.getWidth();
+    }
+    return super.getwidth();
+  }
+
   getactivated(): boolean {
     return this._active;
   }

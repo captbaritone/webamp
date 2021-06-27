@@ -87,6 +87,30 @@ export default class Group extends GuiObj {
     );
   }
 
+  // This shadows `getheight()` on GuiObj
+  getheight(): number {
+    if (this._height) {
+      return this._height;
+    }
+    if (this._background != null) {
+      const bitmap = UI_ROOT.getBitmap(this._background);
+      return bitmap.getHeight();
+    }
+    return super.getheight();
+  }
+
+  // This shadows `getwidth()` on GuiObj
+  getwidth(): number {
+    if (this._width) {
+      return this._width;
+    }
+    if (this._background != null) {
+      const bitmap = UI_ROOT.getBitmap(this._background);
+      return bitmap.getWidth();
+    }
+    return super.getwidth();
+  }
+
   draw() {
     super.draw();
     this._div.setAttribute("data-obj-name", "Group");

@@ -1,6 +1,7 @@
 import GuiObj from "./GuiObj";
 import UI_ROOT from "../UIRoot";
 import { px } from "../utils";
+import Bitmap from "./Bitmap";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Clayer.2F.3E
 export default class Layer extends GuiObj {
@@ -20,6 +21,30 @@ export default class Layer extends GuiObj {
     return true;
   }
 
+  // This shadows `getheight()` on GuiObj
+  getheight(): number {
+    if (this._height) {
+      return this._height;
+    }
+    if (this._image != null) {
+      const bitmap = UI_ROOT.getBitmap(this._image);
+      return bitmap.getHeight();
+    }
+    return super.getheight();
+  }
+
+  // This shadows `getwidth()` on GuiObj
+  getwidth(): number {
+    if (this._width) {
+      return this._width;
+    }
+    if (this._image != null) {
+      const bitmap = UI_ROOT.getBitmap(this._image);
+      return bitmap.getWidth();
+    }
+    return super.getwidth();
+  }
+
   draw() {
     super.draw();
     this._div.setAttribute("data-obj-name", "Layer");
@@ -27,12 +52,6 @@ export default class Layer extends GuiObj {
       const bitmap = UI_ROOT.getBitmap(this._image);
       this._div.style.backgroundImage = bitmap.getBackgrondImageCSSAttribute();
       this._div.style.backgroundPosition = bitmap.getBackgrondPositionCSSAttribute();
-      if (!this._div.style.width && bitmap.getWidth()) {
-        this._div.style.width = px(bitmap.getWidth());
-      }
-      if (!this._div.style.height && bitmap.getHeight()) {
-        this._div.style.height = px(bitmap.getHeight());
-      }
     }
   }
 }
