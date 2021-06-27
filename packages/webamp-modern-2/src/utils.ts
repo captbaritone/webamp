@@ -1,4 +1,4 @@
-import JSZip, { JSZipObject } from "jszip";
+import JSZip, { file, JSZipObject } from "jszip";
 
 export function assert(condition: boolean, message: string) {
   if (!condition) {
@@ -18,7 +18,8 @@ export function getCaseInsensitiveFile(
   zip: JSZip,
   filePath: string
 ): JSZipObject | null {
-  return zip.file(new RegExp(filePath, "i"))[0] ?? null;
+  const normalized = filePath.replace(/[\/\\]/g, `[/\\\\]`);
+  return zip.file(new RegExp(normalized, "i"))[0] ?? null;
 }
 
 export function num(str: string | void): number | null {
