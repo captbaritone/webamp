@@ -109,8 +109,11 @@ export default class GuiObj extends XmlObj {
    *
    * @ret The height of the object.
    */
-  getheight() {
-    assert(this._height != null, "Expected GUIObj to have a height.");
+  getheight(): number {
+    assert(
+      this._height != null,
+      `Expected GUIObj to have a height in ${this.getId()}.`
+    );
     // FIXME
     return this._height;
   }
@@ -120,9 +123,12 @@ export default class GuiObj extends XmlObj {
    *
    * @ret The width of the object.
    */
-  getwidth() {
-    // FIXME
-    return this._width || 100;
+  getwidth(): number {
+    assert(
+      this._width != null,
+      `Expected GUIObj to have a width in ${this.getId()}.`
+    );
+    return this._width;
   }
 
   /**
@@ -222,12 +228,8 @@ export default class GuiObj extends XmlObj {
     if (this._y) {
       this._div.style.top = px(this._y);
     }
-    if (this._width) {
-      this._div.style.width = px(this._width);
-    }
-    if (this._height) {
-      this._div.style.height = px(this.getheight());
-    }
+    this._div.style.width = px(this.getwidth());
+    this._div.style.height = px(this.getheight());
   }
 
   draw() {
