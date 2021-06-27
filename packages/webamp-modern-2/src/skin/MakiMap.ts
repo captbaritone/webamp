@@ -1,23 +1,39 @@
+import UI_ROOT from "../UIRoot";
+import { assert, assume } from "../utils";
 import BaseObject from "./BaseObject";
+import Bitmap from "./Bitmap";
 
 export default class MakiMap extends BaseObject {
-  loadmap(bitmapId: string) {}
+  _bitmap: Bitmap;
+  loadmap(bitmapId: string) {
+    this._bitmap = UI_ROOT.getBitmap(bitmapId);
+  }
   inregion(x: number, y: number): boolean {
-    // TODO
+    // Maybe this checks if the pixel is transparent?
     return true;
   }
+
+  // 0-255
   getvalue(x: number, y: number): number {
-    // TODO
-    return 12345;
+    const canvas = this._bitmap.getCanvas();
+    const context = canvas.getContext("2d");
+    const { data } = context.getImageData(x, y, 1, 1);
+    assert(
+      data[0] === data[1] && data[0] === data[2],
+      "Expected map image to be grey scale"
+    );
+    assume(data[3] === 255, "Expected map image not have transparency");
+    return data[0];
+  }
+  getwidth(): number {
+    return this._bitmap.getWidth();
+  }
+  geheight(): number {
+    return this._bitmap.getHeight();
   }
 
   /*
-extern Int Map.getValue(int x, int y);
 extern Int Map.getARGBValue(int x, int y, int channel); // requires wa 5.51 // channel: 0=Blue, 1=Green, 2=Red, 3=Alpha. if your img has a alpha channal the returned rgb value might not be exact
-extern Boolean Map.inRegion(int x, int y);
-extern Map.loadMap(String bitmapid);
-extern Int Map.getWidth();
-extern Int Map.getHeight();
 extern Region Map.getRegion();
 */
 }

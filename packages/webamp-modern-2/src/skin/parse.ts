@@ -20,6 +20,7 @@ import GuiObj from "./GuiObj";
 import AnimatedLayer from "./AnimatedLayer";
 import Vis from "./Vis";
 import BitmapFont from "./BitmapFont";
+import Color from "./Color";
 
 class ParserContext {
   container: Container | null = null;
@@ -317,7 +318,10 @@ export default class SkinParser {
       "Unexpected children in <color> XML node."
     );
 
-    // TODO: Parse colors
+    const color = new Color();
+    color.setXmlAttributes(node.attributes);
+
+    UI_ROOT.addColor(color);
   }
 
   async slider(node: XmlElement) {

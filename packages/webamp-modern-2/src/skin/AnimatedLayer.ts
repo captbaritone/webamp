@@ -1,8 +1,14 @@
+import UI_ROOT from "../UIRoot";
+import { ensureVmInt, px } from "../utils";
 import Layer from "./Layer";
+import { VM } from "./VM";
 
 export default class AnimatedLayer extends Layer {
   _currentFrame: number = 0;
-  _frameCount: number = 0;
+  _startFrame: number = 0;
+  _endFrame: number = 0;
+  _speed: number = 0;
+  _animationInterval: NodeJS.Timeout | null = null;
   setXmlAttr(_key: string, value: string): boolean {
     const key = _key.toLowerCase();
     if (super.setXmlAttr(key, value)) {
@@ -14,36 +20,74 @@ export default class AnimatedLayer extends Layer {
     }
     return true;
   }
+
+  _getImageHeight(): number {
+    const bitmap = UI_ROOT.getBitmap(this._image);
+    return bitmap.getHeight();
+  }
+
   getlength(): number {
-    return this._frameCount;
+    // TODO: What about other orientations?
+    return this._getImageHeight() / this.getheight();
   }
   gotoframe(framenum: number) {
-    this._currentFrame = framenum;
+    this._currentFrame = ensureVmInt(framenum);
+    this._renderFrame();
+    // VM.dispatch(this, "onframe", [{ type: "INT", value: this._currentFrame }]);
   }
   getcurframe(): number {
     return this._currentFrame;
   }
   setstartframe(framenum: number) {
-    // TODO
+    this._startFrame = ensureVmInt(framenum);
   }
   setendframe(framenum: number) {
-    // TODO
+    this._endFrame = ensureVmInt(framenum);
   }
   setspeed(msperframe: number) {
-    // TODO
+    this._speed = msperframe;
   }
   play() {
-    // TODO
+    if (this._animationInterval != null) {
+      clearInterval(this._animationInterval);
+      this._animationInterval = null;
+    }
+    const end = this._endFrame;
+    const start = this._startFrame;
+
+    const change = end > start ? 1 : -1;
+
+    let frame = this._startFrame;
+    this.gotoframe(frame);
+    if (frame === end) {
+      return;
+    }
+    this._animationInterval = setInterval(() => {
+      frame += change;
+      this.gotoframe(frame);
+      if (frame === end) {
+        clearInterval(this._animationInterval);
+        this._animationInterval = null;
+      }
+    }, this._speed);
   }
   pause() {
     // TODO
   }
   stop() {
-    // TODO
+    if (this._animationInterval != null) {
+      clearInterval(this._animationInterval);
+      this._animationInterval = null;
+    }
   }
   isplaying(): boolean {
-    // TODO
-    return false;
+    return this._animationInterval != null;
+  }
+
+  _renderFrame() {
+    this._div.style.backgroundPositionY = px(
+      -(this._currentFrame * this.getheight())
+    );
   }
 
   /*
@@ -63,6 +107,7 @@ extern AnimatedLayer.setRealtime(Boolean onoff);
 
   draw() {
     super.draw();
+    this._renderFrame();
     this._div.setAttribute("data-obj-name", "AnimatedLayer");
   }
 }

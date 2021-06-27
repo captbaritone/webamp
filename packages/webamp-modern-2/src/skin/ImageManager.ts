@@ -3,10 +3,12 @@ import { getCaseInsensitiveFile } from "../utils";
 
 export default class ImageManager {
   _urlCache: Map<string, string>;
+  _imgCache: Map<string, HTMLImageElement>;
   _sizeCache: Map<string, { width: number; height: number }>;
   constructor(private _zip: JSZip) {
     this._urlCache = new Map();
     this._sizeCache = new Map();
+    this._imgCache = new Map();
   }
 
   async getUrl(filePath: string): Promise<string | null> {
@@ -24,10 +26,19 @@ export default class ImageManager {
 
   async getSize(url: string): Promise<{ width: number; height: number }> {
     if (!this._sizeCache.has(url)) {
-      const size = await getImageSize(url);
+      const size = await this.getImage(url);
       this._sizeCache.set(url, size);
     }
     return this._sizeCache.get(url);
+  }
+
+  async getImage(url: string): Promise<HTMLImageElement> {
+    if (!this._imgCache.has(url)) {
+      // TODO: We could cache this
+      const img = await loadImage(url);
+      this._imgCache.set(url, img);
+    }
+    return this._imgCache.get(url);
   }
 }
 
@@ -48,9 +59,7 @@ async function getUrlFromBlob(blob: Blob): Promise<string> {
   });
 }
 
-async function loadImage(
-  imgUrl: string
-): Promise<{ width: number; height: number }> {
+async function loadImage(imgUrl: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.addEventListener("load", () => {
@@ -61,11 +70,4 @@ async function loadImage(
     });
     img.src = imgUrl;
   });
-}
-
-async function getImageSize(
-  imgUrl: string
-): Promise<{ width: number; height: number }> {
-  const { width, height } = await loadImage(imgUrl);
-  return { width, height };
 }

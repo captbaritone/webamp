@@ -14,6 +14,7 @@ export default class Text extends GuiObj {
   _align: string;
   _font: string;
   _fontSize: number;
+  _color: string;
   setXmlAttr(key: string, value: string): boolean {
     if (super.setXmlAttr(key, value)) {
       return true;
@@ -50,13 +51,16 @@ export default class Text extends GuiObj {
       case "fontsize":
         // (int) The size to render the chosen font.
         this._fontSize = Utils.num(value);
+
+      case "color":
+        // (int[sic?]) The comma delimited RGB color of the text.
+        this._color = value;
       /*
 ticker - (bool) Setting this flag causes the object to scroll left and right if the text does not fit the rectangular area of the text object.
 antialias - (bool) Setting this flag causes the text to be rendered antialiased if possible.
 default - (str) A parameter alias for text.
 align - (str) One of the following three possible strings: "left" "center" "right" -- Default is "left."
 valign - (str) One of the following three possible strings: "top" "center" "bottom" -- Default is "top."
-color - (int) The comma delimited RGB color of the text.
 shadowcolor - (int) The comma delimited RGB color for underrendered shadow text.
 shadowx - (int) The x offset of the shadowrender.
 shadowy - (int) The y offset of the shadowrender.
@@ -119,6 +123,13 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
     if (this._font) {
       const font = UI_ROOT.getFont(this._font);
       this._div.style.fontFamily = font.getFontFamily();
+    }
+
+    if (this._color) {
+      console.log(this._color);
+      const color = UI_ROOT.getColor(this._color);
+      console.log({ color });
+      this._div.style.color = color.getRbg();
     }
 
     this._div.style.fontSize = Utils.px(this._fontSize ?? 14);

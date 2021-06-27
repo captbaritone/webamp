@@ -246,11 +246,11 @@ export default class GuiObj extends XmlObj {
     this._renderDimensions();
 
     this._div.addEventListener("mouseup", (e) => {
-      this.onLeftButtonUp(e.clientX, e.clientX);
+      this.onLeftButtonUp(e.clientX, e.clientY);
     });
 
     this._div.addEventListener("mousedown", (e) => {
-      this.onLeftButtonDown(e.clientX, e.clientX);
+      this.onLeftButtonDown(e.clientX, e.clientY);
     });
   }
 }
