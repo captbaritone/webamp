@@ -20,10 +20,6 @@ async function main() {
 
   await parser.parse();
 
-  for (const container of parser._containers) {
-    container.init({ containers: parser._containers });
-  }
-
   let node = document.createElement("div");
 
   for (const container of parser._containers) {
@@ -33,6 +29,11 @@ async function main() {
 
   document.body.appendChild(node);
   console.log("RENDER");
+
+  for (const container of parser._containers) {
+    container.init({ containers: parser._containers });
+  }
+  console.log("INIT");
 }
 
 main();

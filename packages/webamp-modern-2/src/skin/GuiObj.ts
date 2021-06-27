@@ -12,7 +12,6 @@ export default class GuiObj extends XmlObj {
   _y: number = 0;
   _droptarget: string;
   _visible: boolean = true;
-  _dirty: boolean = false;
   _alpha: number = 255;
   _ghost: boolean = false;
   _tooltip: string = "";
@@ -74,7 +73,7 @@ export default class GuiObj extends XmlObj {
    */
   show() {
     this._visible = true;
-    this._dirty = true;
+    this._renderVisibility();
   }
 
   /**
@@ -82,7 +81,7 @@ export default class GuiObj extends XmlObj {
    */
   hide() {
     this._visible = false;
-    this._dirty = true;
+    this._renderVisibility();
   }
 
   /**
@@ -113,7 +112,7 @@ export default class GuiObj extends XmlObj {
   getheight() {
     assert(this._height != null, "Expected GUIObj to have a height.");
     // FIXME
-    return this._height || 100;
+    return this._height;
   }
 
   /**
@@ -139,7 +138,7 @@ export default class GuiObj extends XmlObj {
     this._y = y;
     this._width = w;
     this._height = h;
-    this._dirty = true;
+    this._renderDimensions();
   }
 
   /**
@@ -213,18 +212,10 @@ export default class GuiObj extends XmlObj {
   _renderAlpha() {
     this._div.style.opacity = `${this._alpha / 255}`;
   }
-
-  draw() {
-    this._div.setAttribute("data-id", this.getId());
+  _renderVisibility() {
     this._div.style.display = this._visible ? "inline-block" : "none";
-    this._div.style.position = "absolute";
-    this._renderAlpha();
-    if (this._tooltip) {
-      this._div.setAttribute("title", this._tooltip);
-    }
-    if (this._ghost) {
-      this._div.style.pointerEvents = "none";
-    }
+  }
+  _renderDimensions() {
     if (this._x) {
       this._div.style.left = px(this._x);
     }
@@ -237,6 +228,21 @@ export default class GuiObj extends XmlObj {
     if (this._height) {
       this._div.style.height = px(this.getheight());
     }
+  }
+
+  draw() {
+    this._div.setAttribute("data-id", this.getId());
+    this._renderVisibility();
+    this._div.style.position = "absolute";
+    this._renderAlpha();
+    if (this._tooltip) {
+      this._div.setAttribute("title", this._tooltip);
+    }
+    if (this._ghost) {
+      this._div.style.pointerEvents = "none";
+    }
+    this._renderDimensions();
+
     this._div.addEventListener("mouseup", (e) => {
       this.onLeftButtonUp(e.clientX, e.clientX);
     });
