@@ -5,6 +5,11 @@ import { getClass, getMethod } from "./objects";
 import { classResolver } from "../skin/resolver";
 
 function validateMaki(program: ParsedMaki) {
+  /*
+  for (const v of program.variables) {
+    validateVariable(v);
+  }
+  */
   return; // Comment this out to get warnings about missing methods
   for (const method of program.methods) {
     if (method.name.startsWith("on")) {
@@ -35,6 +40,12 @@ export function interpret(
   return interpreter.interpret(start);
 }
 
+function validateVariable(v: Variable) {
+  if (v.type === "OBJECT" && typeof v.value !== "object") {
+    debugger;
+  }
+}
+
 class Interpreter {
   stack: Variable[];
   callStack: number[];
@@ -54,9 +65,21 @@ class Interpreter {
 
     this.stack = [];
     this.callStack = [];
+    /*
+    for (const v of this.variables) {
+      validateVariable(v);
+    }
+    */
+  }
+
+  push(variable: Variable) {
+    this.stack.push(variable);
   }
 
   interpret(start: number) {
+    for (const v of this.variables) {
+      validateVariable(v);
+    }
     // Instruction Pointer
     let ip = start;
     while (ip < this.commands.length) {
@@ -69,7 +92,7 @@ class Interpreter {
         // push
         case 1: {
           const offsetIntoVariables = command.arg;
-          this.stack.push(this.variables[offsetIntoVariables]);
+          this.push(this.variables[offsetIntoVariables]);
           break;
         }
         // pop
@@ -79,15 +102,15 @@ class Interpreter {
         }
         // popTo
         case 3: {
-          const aValue = this.stack.pop();
+          const a = this.stack.pop();
           const offsetIntoVariables = command.arg;
           const current = this.variables[offsetIntoVariables];
           assume(
-            typeof aValue.value === typeof current.value,
-            `Assigned from one type to a different type ${typeof aValue.value}, ${typeof current.value}.`
+            typeof a.value === typeof current.value,
+            `Assigned from one type to a different type ${typeof a.value}, ${typeof current.value}.`
           );
 
-          current.value = aValue.value;
+          current.value = a.value;
           break;
         }
         // ==
@@ -99,7 +122,7 @@ class Interpreter {
             `Tried to compare a ${a.type} to a ${b.type}.`
           );
           const result = V.newInt(b.value === a.value);
-          this.stack.push(result);
+          this.push(result);
           break;
         }
         // !=
@@ -113,7 +136,7 @@ class Interpreter {
           );
           */
           const result = V.newInt(b.value !== a.value);
-          this.stack.push(result);
+          this.push(result);
           break;
         }
         // >
@@ -137,7 +160,7 @@ class Interpreter {
           if (this.debug) {
             console.log(`${b.value} > ${a.value}`);
           }
-          this.stack.push(V.newInt(b.value > a.value));
+          this.push(V.newInt(b.value > a.value));
           break;
         }
         // >=
@@ -167,7 +190,7 @@ class Interpreter {
             console.log(`${b.value} < ${a.value}`);
           }
 
-          this.stack.push(V.newInt(b.value < a.value));
+          this.push(V.newInt(b.value < a.value));
           break;
         }
         // <=
@@ -192,7 +215,7 @@ class Interpreter {
             console.log(`${b.value} < ${a.value}`);
           }
 
-          this.stack.push(V.newInt(b.value <= a.value));
+          this.push(V.newInt(b.value <= a.value));
           break;
         }
         // jumpIf
@@ -262,6 +285,14 @@ class Interpreter {
             obj.type === "OBJECT",
             "Tried to call a method on a primitive."
           );
+          assert(
+            typeof obj.value === "object",
+            "Trying to call a method on a not object"
+          );
+          assert(
+            obj.value != null,
+            "Guru Meditation: Tried to call method on null object"
+          );
           let value = obj.value[methodName](...methodArgs);
 
           if (value === undefined && returnType !== "NULL") {
@@ -277,10 +308,13 @@ class Interpreter {
             assert(typeof value === "boolean", "BOOL should return a boolean");
             value = value ? 1 : 0;
           }
+          if (returnType === "OBJECT") {
+            assert(typeof value === "object", "not an object");
+          }
           if (this.debug) {
             console.log(`Calling method ${methodName}`);
           }
-          this.stack.push({ type: returnType, value } as any);
+          this.push({ type: returnType, value } as any);
           break;
         }
         // callGlobal
@@ -314,7 +348,7 @@ class Interpreter {
           );
           */
           b.value = a.value;
-          this.stack.push(a);
+          this.push(a);
           break;
         }
         // postinc
@@ -329,7 +363,7 @@ class Interpreter {
           }
           const aValue = a.value;
           a.value = aValue + 1;
-          this.stack.push({ type: a.type, value: aValue });
+          this.push({ type: a.type, value: aValue });
           break;
         }
         // postdec
@@ -344,7 +378,7 @@ class Interpreter {
           }
           const aValue = a.value;
           a.value = aValue - 1;
-          this.stack.push({ type: a.type, value: aValue });
+          this.push({ type: a.type, value: aValue });
           break;
         }
         // preinc
@@ -358,7 +392,7 @@ class Interpreter {
               throw new Error("Tried to increment a non-number.");
           }
           a.value++;
-          this.stack.push(a);
+          this.push(a);
           break;
         }
         // predec
@@ -372,7 +406,7 @@ class Interpreter {
               throw new Error("Tried to increment a non-number.");
           }
           a.value--;
-          this.stack.push(a);
+          this.push(a);
           break;
         }
         // + (add)
@@ -393,7 +427,7 @@ class Interpreter {
               throw new Error("Tried to add non-numbers.");
           }
           // TODO: Do we need to round the value if INT?
-          this.stack.push({ type: a.type, value: b.value + a.value });
+          this.push({ type: a.type, value: b.value + a.value });
           break;
         }
         // - (subtract)
@@ -415,7 +449,7 @@ class Interpreter {
               throw new Error("Tried to add non-numbers.");
           }
           // TODO: Do we need to round the value if INT?
-          this.stack.push({ type: a.type, value: b.value - a.value });
+          this.push({ type: a.type, value: b.value - a.value });
           break;
         }
         // * (multiply)
@@ -437,7 +471,7 @@ class Interpreter {
               throw new Error("Tried to add non-numbers.");
           }
           // TODO: Do we need to round the value if INT?
-          this.stack.push({ type: a.type, value: b.value * a.value });
+          this.push({ type: a.type, value: b.value * a.value });
           break;
         }
         // / (divide)
@@ -458,7 +492,7 @@ class Interpreter {
               throw new Error("Tried to add non-numbers.");
           }
           // TODO: Do we need to round the value if INT?
-          this.stack.push({ type: a.type, value: b.value / a.value });
+          this.push({ type: a.type, value: b.value / a.value });
           break;
         }
         // % (mod)
@@ -481,10 +515,10 @@ class Interpreter {
             case "FLOAT":
             case "DOUBLE":
               const value = Math.floor(b.value) % a.value;
-              this.stack.push({ type: a.type, value });
+              this.push({ type: a.type, value });
               break;
             case "INT":
-              this.stack.push({ type: a.type, value: b.value % a.value });
+              this.push({ type: a.type, value: b.value % a.value });
               break;
           }
           break;
@@ -507,7 +541,7 @@ class Interpreter {
             case "OBJECT":
               throw new Error("Tried ! a string or object.");
           }
-          this.stack.push(V.newInt(!a.value));
+          this.push(V.newInt(!a.value));
           break;
         }
         // - (negative)
@@ -520,7 +554,7 @@ class Interpreter {
             case "NULL":
               throw new Error("Tried to add non-numbers.");
           }
-          this.stack.push({ type: a.type, value: -a.value });
+          this.push({ type: a.type, value: -a.value });
           break;
         }
         // logAnd (&&)
@@ -543,9 +577,9 @@ class Interpreter {
               throw new Error("Tried to add non-numbers.");
           }
           if (b.value && a.value) {
-            this.stack.push(a);
+            this.push(a);
           } else {
-            this.stack.push(b);
+            this.push(b);
           }
           break;
         }
@@ -569,9 +603,9 @@ class Interpreter {
               throw new Error("Tried to add non-numbers.");
           }
           if (b.value) {
-            this.stack.push(b);
+            this.push(b);
           } else {
-            this.stack.push(a);
+            this.push(a);
           }
           break;
         }
@@ -591,7 +625,7 @@ class Interpreter {
           const guid = this.classes[classesOffset];
           const Klass = this.classResolver(guid);
           const klassInst = new Klass();
-          this.stack.push({ type: "OBJECT", value: klassInst });
+          this.push({ type: "OBJECT", value: klassInst });
           break;
         }
         // delete
@@ -605,6 +639,11 @@ class Interpreter {
       }
 
       ip++;
+      /*
+      for (const v of this.variables) {
+        validateVariable(v);
+      }
+      */
     }
   }
 }
