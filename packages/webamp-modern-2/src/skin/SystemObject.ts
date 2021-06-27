@@ -1,11 +1,20 @@
 import { getClass } from "../maki/objects";
 import { ParsedMaki } from "../maki/parser";
+import { V } from "../maki/v";
 import { SkinContext } from "../types";
 import BaseObject from "./BaseObject";
 import Container from "./Container";
 
 import Group from "./Group";
 import { VM } from "./VM";
+
+const MOUSE_POS = { x: 0, y: 0 };
+
+// TODO: Figure out how this could be unsubscribed eventually
+document.addEventListener("mousemove", (e: MouseEvent) => {
+  MOUSE_POS.x = e.clientX;
+  MOUSE_POS.y = e.clientY;
+});
 
 export default class SystemObject extends BaseObject {
   _parentGroup: Group;
@@ -41,6 +50,26 @@ export default class SystemObject extends BaseObject {
 
   getskinname() {
     return "TODO: Get the Real skin name";
+  }
+
+  /**
+   * This returns the X position of the mouse in the screen,
+   * using the screen coordinate system.
+   *
+   * @ret The mouse's current X pos.
+   */
+  getmouseposx(): number {
+    return MOUSE_POS.x;
+  }
+
+  /**
+   * This returns the Y position of the mouse in the screen,
+   * using the screen coordinate system.
+   *
+   * @ret The mouse's current Y pos.
+   */
+  getmouseposy(): number {
+    return MOUSE_POS.y;
   }
 
   /**
@@ -174,6 +203,132 @@ export default class SystemObject extends BaseObject {
    */
   geteq(): number {
     return 1;
+  }
+
+  /**
+   * Takes an angle in radians and returns the ratio between two sides of a right triangle.
+   * The ratio is sin(x) divided by cos(x).
+   *
+   * @ret       The tangent value of the angle.
+   * @param  value The angle for which you want to know the tangent value.
+   */
+  tan(value: number): number {
+    return Math.tan(value);
+  }
+
+  /**
+   * Takes an angle in radians and returns the ratio of two sides of a right triangle.
+   * The ratio is the length of the side opposite the angle divided by the length
+   * of the hypotenuse. The result range is from -1 to 1.
+   *
+   * Converting from degrees to radians can be done by multiplying degrees by PI/180.
+   *
+   * @ret       The sine value of the angle.
+   * @param  value The angle for which you want to know the sine value.
+   */
+  sin(value: number): number {
+    return Math.sin(value);
+  }
+
+  /**
+   * Takes an angle in radians and returns the ratio of the two sides of a right triangle.
+   * The ratio is the length of the side adjacent to the angle divided by the length of the
+   * hypotenuse. The result is range is from -1 to 1.
+   *
+   * @ret       The cosine value of the angle.
+   * @param  value The angle for which you want to know the cosine value.
+   */
+  cos(value: number): number {
+    return Math.cos(value);
+  }
+
+  /**
+   * Takes a sine value ranging from -1 to 1 and returns the angle in radians.
+   * The return value ranges from -PI/2 to +PI/2.
+   *
+   *  @ret       The angle in radians.
+   * @param  value The sine value for which you want to know the angle.
+   */
+  asin(value: number): number {
+    return Math.asin(value);
+  }
+
+  /**
+   * Takes a cosine value ranging from -1 to 1 and returns the angle in radians.
+   * The return value ranges from -PI/2 to +PI/2.
+   *
+   * @ret       The angle in radians.
+   * @param  value The cosine value for which you want to know the angle.
+   */
+  acos(value: number): number {
+    return Math.acos(value);
+  }
+
+  /**
+   * Takes an angle in radians and returns the ration between two sides of a right triangle.
+   * The ratio is cos(x) divided by sin(x).
+   *
+   * @ret     The arc tangent value of the angle.
+   */
+  atan(value: number): number {
+    return Math.atan(value);
+  }
+
+  /**
+   * @ret The arctangent of y/x.
+   */
+  atan2(y: number, x: number): number {
+    return Math.atan2(y, x);
+  }
+
+  /**
+   * Elevate a number to the N'th power.
+   *
+   * @ret         The number
+   * @param  value   The number you want to elevate to the N power.
+   * @param  pvalue  The power to which you want to elevate the number.
+   */
+  pow(value: number, pvalue: number): number {
+    return Math.pow(value, pvalue);
+  }
+
+  /**
+   * Get the square of a number.
+   *
+   * @ret       The number, squared.
+   * @param  value The number for which you want the square value.
+   */
+  sqr(value: number): number {
+    return value * value;
+  }
+
+  log10(value: number) {
+    return Math.log10(value);
+  }
+  ln(value: number): number {
+    throw new Error("Unimplemented");
+  }
+
+  /**
+   * Get the square root of a number.
+   *
+   * @ret       The square root of the number.
+   * @param  value The number for which you want the square root value.
+   */
+  sqrt(value: number): number {
+    return Math.sqrt(value);
+  }
+
+  /**
+   * Get a randomely generated number. The random number will not
+   * be bigger than the max value indicated. Smallest value is 0.
+   *
+   * @ret     The random number.
+   * @param  max The maximum value of the random number to return.
+   */
+  random(max: number) {
+    // TODO: Should this return an int?
+    return Math.random() * max;
   }
 }
 

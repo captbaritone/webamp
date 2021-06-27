@@ -1,5 +1,5 @@
 import { SkinContext } from "../types";
-import * as Utils from "../utils";
+import { assert, num, toBool, px } from "../utils";
 import { VM } from "./VM";
 import XmlObj from "./XmlObj";
 
@@ -15,6 +15,7 @@ export default class GuiObj extends XmlObj {
   _dirty: boolean = false;
   _alpha: number = 255;
   _ghost: boolean = false;
+  _tooltip: string = "";
   _div: HTMLDivElement = document.createElement("div");
 
   setXmlAttr(_key: string, value: string): boolean {
@@ -24,29 +25,32 @@ export default class GuiObj extends XmlObj {
         this._id = value.toLowerCase();
         break;
       case "w":
-        this._width = Utils.num(value);
+        this._width = num(value);
         break;
       case "h":
-        this._height = Utils.num(value);
+        this._height = num(value);
         break;
       case "x":
-        this._x = Utils.num(value) ?? 0;
+        this._x = num(value) ?? 0;
         break;
       case "y":
-        this._y = Utils.num(value) ?? 0;
+        this._y = num(value) ?? 0;
         break;
       case "droptarget":
         this._droptarget = value;
         break;
       case "ghost":
-        this._ghost = Utils.toBool(value);
+        this._ghost = toBool(value);
         break;
       case "visible":
-        this._visible = Utils.toBool(value);
+        this._visible = toBool(value);
+        break;
+      case "tooltip":
+        this._tooltip = value;
         break;
       // (int) An integer [0,255] specifying the alpha blend mode of the object (0 is transparent, 255 is opaque). Default is 255.
       case "alpha":
-        this._alpha = Utils.num(value);
+        this._alpha = num(value);
       default:
         return false;
     }
@@ -88,7 +92,17 @@ export default class GuiObj extends XmlObj {
    * @ret The top edge's position (in screen coordinates).
    */
   gettop(): number {
-    return this._x;
+    return this._div.getBoundingClientRect().top;
+  }
+
+  /**
+   * Get the X position, in the screen, of the
+   * left edge of the object.
+   *
+   * @ret The left edge's position (in screen coordinates).
+   */
+  getleft(): number {
+    return this._div.getBoundingClientRect().left;
   }
 
   /**
@@ -97,6 +111,7 @@ export default class GuiObj extends XmlObj {
    * @ret The height of the object.
    */
   getheight() {
+    assert(this._height != null, "Expected GUIObj to have a height.");
     // FIXME
     return this._height || 100;
   }
@@ -204,20 +219,23 @@ export default class GuiObj extends XmlObj {
     this._div.style.display = this._visible ? "inline-block" : "none";
     this._div.style.position = "absolute";
     this._renderAlpha();
+    if (this._tooltip) {
+      this._div.setAttribute("title", this._tooltip);
+    }
     if (this._ghost) {
       this._div.style.pointerEvents = "none";
     }
     if (this._x) {
-      this._div.style.left = Utils.px(this._x);
+      this._div.style.left = px(this._x);
     }
     if (this._y) {
-      this._div.style.top = Utils.px(this._y);
+      this._div.style.top = px(this._y);
     }
     if (this._width) {
-      this._div.style.width = Utils.px(this._width);
+      this._div.style.width = px(this._width);
     }
     if (this._height) {
-      this._div.style.height = Utils.px(this._height);
+      this._div.style.height = px(this.getheight());
     }
     this._div.addEventListener("mouseup", (e) => {
       this.onLeftButtonUp(e.clientX, e.clientX);
