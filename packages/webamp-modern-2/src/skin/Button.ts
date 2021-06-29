@@ -63,6 +63,10 @@ export default class Button extends GuiObj {
     }
   }
 
+  onLeftClick() {
+    VM.dispatch(this, "onleftclick", []);
+  }
+
   _renderBackground() {
     if (this._image != null) {
       const bitmap = UI_ROOT.getBitmap(this._image);
@@ -78,6 +82,10 @@ export default class Button extends GuiObj {
   _bindToDom() {
     // TODO: Cleanup!
     this._div.addEventListener("mousedown", this._handleMouseDown.bind(this));
+    this._div.addEventListener("click", (e) => {
+      // TODO: Only left button
+      this.onLeftClick();
+    });
   }
 
   _handleMouseDown(e: MouseEvent) {

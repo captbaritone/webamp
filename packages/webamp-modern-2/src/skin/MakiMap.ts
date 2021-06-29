@@ -15,6 +15,8 @@ export default class MakiMap extends BaseObject {
 
   // 0-255
   getvalue(x: number, y: number): number {
+    assume(x >= 0, `Expected x to be positive but it was ${x}`);
+    assume(y >= 0, `Expected y to be positive but it was ${y}`);
     const canvas = this._bitmap.getCanvas();
     const context = canvas.getContext("2d");
     const { data } = context.getImageData(x, y, 1, 1);

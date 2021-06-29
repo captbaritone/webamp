@@ -1,7 +1,6 @@
 import UI_ROOT from "../UIRoot";
 import { ensureVmInt, px } from "../utils";
 import Layer from "./Layer";
-import { VM } from "./VM";
 
 export default class AnimatedLayer extends Layer {
   _currentFrame: number = 0;

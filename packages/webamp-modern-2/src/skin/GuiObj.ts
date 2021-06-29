@@ -92,7 +92,7 @@ export default class GuiObj extends XmlObj {
    * @ret The top edge's position (in screen coordinates).
    */
   gettop(): number {
-    return this._div.getBoundingClientRect().top;
+    return this._div.getBoundingClientRect().y;
   }
 
   /**
@@ -102,7 +102,7 @@ export default class GuiObj extends XmlObj {
    * @ret The left edge's position (in screen coordinates).
    */
   getleft(): number {
-    return this._div.getBoundingClientRect().left;
+    return this._div.getBoundingClientRect().x;
   }
 
   /**
@@ -170,6 +170,14 @@ export default class GuiObj extends XmlObj {
    * @param  y   The Y position in the screen where the cursor was when the event was triggered.
    */
   onLeftButtonDown(x: number, y: number) {
+    assert(
+      x >= this.getleft(),
+      "Expected click to be to the right of the component's left"
+    );
+    assert(
+      y >= this.gettop(),
+      "Expected click to be below the component's top"
+    );
     VM.dispatch(this, "onleftbuttondown", [
       { type: "INT", value: x },
       { type: "INT", value: y },

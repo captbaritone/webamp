@@ -1,7 +1,5 @@
 import GuiObj from "./GuiObj";
 import UI_ROOT from "../UIRoot";
-import { px } from "../utils";
-import Bitmap from "./Bitmap";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Clayer.2F.3E
 export default class Layer extends GuiObj {
@@ -14,6 +12,7 @@ export default class Layer extends GuiObj {
     switch (key) {
       case "image":
         this._image = value;
+        this._renderBackground();
         break;
       default:
         return false;
@@ -45,12 +44,16 @@ export default class Layer extends GuiObj {
     return super.getwidth();
   }
 
-  draw() {
-    super.draw();
-    this._div.setAttribute("data-obj-name", "Layer");
+  _renderBackground() {
     if (this._image != null) {
       const bitmap = UI_ROOT.getBitmap(this._image);
       this.setBackgroundImage(bitmap);
     }
+  }
+
+  draw() {
+    super.draw();
+    this._div.setAttribute("data-obj-name", "Layer");
+    this._renderBackground();
   }
 }

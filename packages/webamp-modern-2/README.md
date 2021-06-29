@@ -19,6 +19,10 @@
 - [ ] Handle case (in)sensitivity of includes.
 - [ ] Handle forward/backward slashes issues (if they exist)
 
+## Known Bugs
+
+- [ ] In GuiObj's handling of left click, it's possible for the y/x of the click event to fall outside of the element being clicked. To repro click just above the volume2 of MMD3. Y can be one pixel above the clientBoundingRect of the element. Why?
+
 # Phases of Initialization
 
 ## Asset Parse

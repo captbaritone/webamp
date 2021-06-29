@@ -6,6 +6,7 @@ import BaseObject from "./BaseObject";
 import Container from "./Container";
 
 import Group from "./Group";
+import PRIVATE_CONFIG from "./PrivateConfig";
 import { VM } from "./VM";
 
 const MOUSE_POS = { x: 0, y: 0 };
@@ -83,9 +84,7 @@ export default class SystemObject extends BaseObject {
    * @param  defvalue  The defautl value to return if no item is found.
    */
   getprivateint(section: string, item: string, defvalue: number) {
-    // TODO: Implement this!
-    // FIXME
-    return defvalue;
+    return PRIVATE_CONFIG.getPrivateInt(section, item, defvalue);
   }
 
   /**
@@ -96,7 +95,7 @@ export default class SystemObject extends BaseObject {
    * @param  value     The value of the entry.
    */
   setprivateint(section: string, item: string, value: number) {
-    // FIXME
+    PRIVATE_CONFIG.setPrivateInt(section, item, value);
   }
 
   /**

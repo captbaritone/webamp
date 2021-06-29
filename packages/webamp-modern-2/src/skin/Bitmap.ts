@@ -108,8 +108,6 @@ export default class Bitmap {
       this._canvas.height = this.getHeight();
       const ctx = this._canvas.getContext("2d");
       ctx.drawImage(this._img, 0, 0, this.getWidth(), this.getHeight());
-      document.body.appendChild(this._img);
-      document.body.appendChild(this._canvas);
     }
     return this._canvas;
   }
