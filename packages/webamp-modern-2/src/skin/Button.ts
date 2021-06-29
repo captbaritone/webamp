@@ -8,6 +8,7 @@ export default class Button extends GuiObj {
   _image: string;
   _downimage: string;
   _active: boolean = false;
+  _action: string | null = null;
 
   setXmlAttr(_key: string, value: string): boolean {
     const key = _key.toLowerCase();
@@ -20,6 +21,9 @@ export default class Button extends GuiObj {
         break;
       case "downimage":
         this._downimage = value;
+        break;
+      case "action":
+        this._action = value;
         break;
       default:
         return false;
@@ -83,6 +87,9 @@ export default class Button extends GuiObj {
     // TODO: Cleanup!
     this._div.addEventListener("mousedown", this._handleMouseDown.bind(this));
     this._div.addEventListener("click", (e) => {
+      if (this._action) {
+        UI_ROOT.dispatch(this._action);
+      }
       // TODO: Only left button
       this.onLeftClick();
     });

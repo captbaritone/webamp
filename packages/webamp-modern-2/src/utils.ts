@@ -44,3 +44,7 @@ export function getId(): number {
 export function ensureVmInt(num: number): number {
   return Math.floor(num);
 }
+
+export function clamp(num: number, min: number, max: number): number {
+  return Math.max(min, Math.min(num, max));
+}

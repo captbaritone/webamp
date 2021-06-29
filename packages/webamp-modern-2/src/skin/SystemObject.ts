@@ -2,9 +2,10 @@ import { getClass } from "../maki/objects";
 import { ParsedMaki } from "../maki/parser";
 import { V } from "../maki/v";
 import { SkinContext } from "../types";
+import AUDIO_PLAYER from "./AudioPlayer";
 import BaseObject from "./BaseObject";
 import Container from "./Container";
-
+import { clamp } from "../utils";
 import Group from "./Group";
 import PRIVATE_CONFIG from "./PrivateConfig";
 import { VM } from "./VM";
@@ -151,7 +152,19 @@ export default class SystemObject extends BaseObject {
    * @ret The current volume.
    **/
   getvolume() {
-    return 100;
+    return AUDIO_PLAYER.getVolume() * 255;
+  }
+
+  /**
+   * Set the volume to the desired value.
+   * Range is from 0 to 255.
+   *
+   *  @param vol  The desired volume value.
+   */
+  setvolume(_vol: number) {
+    const vol = clamp(_vol, 0, 255);
+
+    AUDIO_PLAYER.setVolume(vol / 255);
   }
 
   /**

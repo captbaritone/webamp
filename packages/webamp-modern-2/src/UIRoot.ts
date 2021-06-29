@@ -1,9 +1,10 @@
 import Bitmap from "./skin/Bitmap";
 import { XmlElement } from "@rgrove/parse-xml";
 import TrueTypeFont from "./skin/TrueTypeFont";
-import { assert } from "./utils";
+import { assert, assume } from "./utils";
 import BitmapFont from "./skin/BitmapFont";
 import Color from "./skin/Color";
+import AUDIO_PLAYER from "./skin/AudioPlayer";
 
 class UIRoot {
   // Just a temporary place to stash things
@@ -82,6 +83,31 @@ class UIRoot {
     );
 
     return found ?? null;
+  }
+
+  dispatch(action: string) {
+    switch (action) {
+      case "PLAY":
+        AUDIO_PLAYER.play();
+        break;
+      case "PAUSE":
+        AUDIO_PLAYER.pause();
+        break;
+      case "STOP":
+        AUDIO_PLAYER.stop();
+        break;
+      case "NEXT":
+        AUDIO_PLAYER.next();
+        break;
+      case "PREV":
+        AUDIO_PLAYER.previous();
+        break;
+      case "EJECT":
+        AUDIO_PLAYER.eject();
+        break;
+      default:
+        assume(false, `Unknown global action: ${action}`);
+    }
   }
 }
 
