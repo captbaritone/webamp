@@ -89,8 +89,8 @@ export default class Bitmap {
   }
 
   getBackgrondPositionCSSAttribute(): string {
-    const x = Utils.px(-this._x);
-    const y = Utils.px(-this._y);
+    const x = Utils.px(-(this._x ?? 0));
+    const y = Utils.px(-(this._y ?? 0));
     return `${x} ${y}`;
   }
 
