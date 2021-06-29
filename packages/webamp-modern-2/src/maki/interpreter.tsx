@@ -414,14 +414,20 @@ class Interpreter {
           const a = this.stack.pop();
           const b = this.stack.pop();
           switch (a.type) {
-            case "STRING":
             case "OBJECT":
             case "BOOL":
             case "NULL":
-              throw new Error("Tried to add non-numbers.");
+              throw new Error(
+                `Tried to add non-numbers: ${b.type} + ${a.type}.`
+              );
+            case "STRING":
+              if (b.type !== "STRING") {
+                throw new Error(
+                  `Tried to add string and a non-string: ${b.type} + ${a.type}.`
+                );
+              }
           }
           switch (b.type) {
-            case "STRING":
             case "OBJECT":
             case "BOOL":
               throw new Error("Tried to add non-numbers.");

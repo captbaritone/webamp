@@ -1,6 +1,7 @@
 import UI_ROOT from "../UIRoot";
 import { ensureVmInt, px } from "../utils";
 import Layer from "./Layer";
+import { VM } from "./VM";
 
 export default class AnimatedLayer extends Layer {
   _currentFrame: number = 0;
@@ -32,7 +33,7 @@ export default class AnimatedLayer extends Layer {
   gotoframe(framenum: number) {
     this._currentFrame = ensureVmInt(framenum);
     this._renderFrame();
-    // VM.dispatch(this, "onframe", [{ type: "INT", value: this._currentFrame }]);
+    VM.dispatch(this, "onframe", [{ type: "INT", value: this._currentFrame }]);
   }
   getcurframe(): number {
     return this._currentFrame;
@@ -58,6 +59,7 @@ export default class AnimatedLayer extends Layer {
 
     let frame = this._startFrame;
     this.gotoframe(frame);
+    VM.dispatch(this, "onplay");
     if (frame === end) {
       return;
     }
@@ -71,6 +73,7 @@ export default class AnimatedLayer extends Layer {
     }, this._speed);
   }
   pause() {
+    VM.dispatch(this, "onpause");
     // TODO
   }
   stop() {
@@ -78,6 +81,7 @@ export default class AnimatedLayer extends Layer {
       clearInterval(this._animationInterval);
       this._animationInterval = null;
     }
+    VM.dispatch(this, "onstop");
   }
   isplaying(): boolean {
     return this._animationInterval != null;
@@ -90,13 +94,9 @@ export default class AnimatedLayer extends Layer {
   }
 
   /*
-  extern AnimatedLayer.onPlay();
 extern AnimatedLayer.onPause();
 extern AnimatedLayer.onResume();
-extern AnimatedLayer.onStop();
-extern AnimatedLayer.onFrame(Int framenum);
 extern AnimatedLayer.setAutoReplay(Boolean onoff);
-extern Boolean AnimatedLayer.isPlaying();
 extern Boolean AnimatedLayer.isPaused();
 extern Boolean AnimatedLayer.isStopped();
 extern Int AnimatedLayer.getDirection();
