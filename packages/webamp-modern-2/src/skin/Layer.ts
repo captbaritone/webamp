@@ -50,8 +50,7 @@ export default class Layer extends GuiObj {
     this._div.setAttribute("data-obj-name", "Layer");
     if (this._image != null) {
       const bitmap = UI_ROOT.getBitmap(this._image);
-      this._div.style.backgroundImage = bitmap.getBackgrondImageCSSAttribute();
-      this._div.style.backgroundPosition = bitmap.getBackgrondPositionCSSAttribute();
+      this.setBackgroundImage(bitmap);
     }
   }
 }

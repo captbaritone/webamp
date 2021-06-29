@@ -54,47 +54,34 @@ export default class Button extends GuiObj {
   getactivated(): boolean {
     return this._active;
   }
-  setactivated(onoff: boolean) {
-    const previous = this._active;
-    this._active = onoff;
-    if (onoff !== previous) {
-      VM.dispatch(this, "onactivate", [
-        { type: "BOOL", value: this._active ? 0 : 1 },
-      ]);
-      this._renderBackground();
+  setactivated(_onoff: boolean) {
+    const onoff = Boolean(_onoff);
+
+    if (onoff !== this._active) {
+      this._active = onoff;
+      VM.dispatch(this, "onactivate", [{ type: "BOOL", value: onoff ? 1 : 0 }]);
     }
   }
 
   _renderBackground() {
-    let image = this._image;
-    if (this._active && this._downimage) {
-      image = this._downimage;
+    if (this._image != null) {
+      const bitmap = UI_ROOT.getBitmap(this._image);
+      this.setBackgroundImage(bitmap);
     }
-    if (image != null) {
-      const bitmap = UI_ROOT.getBitmap(image);
-      this._div.style.backgroundImage = bitmap.getBackgrondImageCSSAttribute();
-      this._div.style.backgroundPosition = bitmap.getBackgrondPositionCSSAttribute();
-      if (this._div.style.width === "" && bitmap.getWidth()) {
-        this._div.style.width = px(bitmap.getWidth());
-      }
-      if (this._div.style.height === "" && bitmap.getHeight()) {
-        this._div.style.height = px(bitmap.getHeight());
-      }
+
+    if (this._downimage != null) {
+      const downBitmap = UI_ROOT.getBitmap(this._downimage);
+      this.setActiveBackgroundImage(downBitmap);
     }
   }
 
   _bindToDom() {
     // TODO: Cleanup!
     this._div.addEventListener("mousedown", this._handleMouseDown.bind(this));
-    this._div.addEventListener("mouseup", this._handleMouseUp.bind(this));
   }
 
   _handleMouseDown(e: MouseEvent) {
-    this.setactivated(true);
-  }
-
-  _handleMouseUp(e: MouseEvent) {
-    this.setactivated(false);
+    this.setactivated(!this._active);
   }
 
   draw() {

@@ -1,5 +1,6 @@
 import { SkinContext } from "../types";
 import { assert, num, toBool, px } from "../utils";
+import Bitmap from "./Bitmap";
 import { VM } from "./VM";
 import XmlObj from "./XmlObj";
 
@@ -232,8 +233,34 @@ export default class GuiObj extends XmlObj {
     this._div.style.height = px(this.getheight());
   }
 
+  setBackgroundImage(bitmap: Bitmap) {
+    this._div.style.setProperty(
+      "--background-image",
+      bitmap.getBackgrondImageCSSAttribute()
+    );
+    this._div.style.setProperty(
+      "--background-position",
+      bitmap.getBackgrondPositionCSSAttribute()
+    );
+  }
+
+  // JS Can't set the :active pseudo selector. Instead we have a hard-coded
+  // pseduo-selector in our stylesheet which references a CSS variable and then
+  // we control the value of that variable from JS.
+  setActiveBackgroundImage(bitmap: Bitmap) {
+    this._div.style.setProperty(
+      "--active-background-image",
+      bitmap.getBackgrondImageCSSAttribute()
+    );
+    this._div.style.setProperty(
+      "--active-background-position",
+      bitmap.getBackgrondPositionCSSAttribute()
+    );
+  }
+
   draw() {
     this._div.setAttribute("data-id", this.getId());
+    this._div.classList.add("webamp--guiobj");
     this._renderVisibility();
     this._div.style.position = "absolute";
     this._renderAlpha();

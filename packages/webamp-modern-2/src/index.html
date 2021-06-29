@@ -10,6 +10,14 @@
         margin: 0;
         background-color: rgb(58, 110, 165);
       }
+      .webamp--guiobj {
+        background-image: var(--background-image);
+        background-position: var(--background-position);
+      }
+      .webamp--guiobj:active {
+        background-image: var(--active-background-image, var(--background-image));
+        background-position: var(--active-background-position, var(--background-position));
+      }
     </style>
   </head>
   <body>
