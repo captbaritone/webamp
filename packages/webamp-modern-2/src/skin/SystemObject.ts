@@ -168,6 +168,16 @@ export default class SystemObject extends BaseObject {
   }
 
   /**
+   * Get the length of the track currently playing, in milliseconds.
+   *
+   * @ret Length of the track, in seconds.
+   */
+  getplayitemlength(): number {
+    return AUDIO_PLAYER.getLength();
+    //
+  }
+
+  /**
    * Get the string representation of an integer.
    *
    * @ret         The string equivalent of the integer.
@@ -175,6 +185,17 @@ export default class SystemObject extends BaseObject {
    */
   integertostring(value: number): string {
     return String(value);
+  }
+
+  /**
+   * Convert a time in seconds to a MM:SS value.
+   *
+   * @ret       The string representation of the time (MM:SS).
+   * @param  value Timestamp to use.
+   */
+  integertotime(value: number): string {
+    // TODO
+    return "00:00";
   }
 
   /**
@@ -215,6 +236,28 @@ export default class SystemObject extends BaseObject {
    */
   geteq(): number {
     return 1;
+  }
+
+  /**
+   * Set the equalizer to the desired state. On or off.
+   * 0 is off, 1 is on.
+   *
+   * @param  onoff The desired state for the eq.
+   */
+  seteq(onoff: number) {
+    // TODO
+  }
+
+  /**
+   * Sets the requested equalizer band to the specified value.
+   * The bands are numbered from 0 (60Hz) to 9 (16kHz) and
+   * each range from -127 to +127.
+   *
+   * @param  band  The EQ band to set.
+   * @param  value The desired value for the specified band.
+   */
+  seteqband(band: number, value: number) {
+    // TODO
   }
 
   /**

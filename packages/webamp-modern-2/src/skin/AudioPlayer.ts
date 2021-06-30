@@ -43,6 +43,11 @@ class AudioPlayer {
   setVolume(volume: number) {
     this._audio.volume = volume;
   }
+
+  // Current track length in seconds
+  getLength(): number {
+    return this._audio.duration;
+  }
 }
 
 const AUDIO_PLAYER = new AudioPlayer();

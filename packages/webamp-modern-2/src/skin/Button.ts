@@ -18,9 +18,11 @@ export default class Button extends GuiObj {
     switch (key) {
       case "image":
         this._image = value;
+        this._renderBackground();
         break;
       case "downimage":
         this._downimage = value;
+        this._renderBackground();
         break;
       case "action":
         this._action = value;

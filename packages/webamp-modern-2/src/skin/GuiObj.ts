@@ -26,15 +26,19 @@ export default class GuiObj extends XmlObj {
         break;
       case "w":
         this._width = num(value);
+        this._renderWidth();
         break;
       case "h":
         this._height = num(value);
+        this._renderHeight();
         break;
       case "x":
         this._x = num(value) ?? 0;
+        this._renderX();
         break;
       case "y":
         this._y = num(value) ?? 0;
+        this._renderY();
         break;
       case "droptarget":
         this._droptarget = value;
@@ -44,6 +48,7 @@ export default class GuiObj extends XmlObj {
         break;
       case "visible":
         this._visible = toBool(value);
+        this._renderVisibility();
         break;
       case "tooltip":
         this._tooltip = value;
@@ -213,6 +218,99 @@ export default class GuiObj extends XmlObj {
   }
 
   /**
+   * Set a target X position, in the screen, for
+   * the object.
+   *
+   * @param  x   The target X position of the object.
+   */
+  settargetx(x: number) {
+    // TOOD
+  }
+
+  /**
+   * Set a target Y position, in the screen, for
+   * the object.
+   *
+   * @param  y   The target Y position of the object.
+   */
+  settargety(y: number) {
+    // TODO
+  }
+
+  /**
+   * Set a target width, in pixels, for the object.
+   *
+   * @param  w   The target width of the object.
+   */
+  settargetw(w: number) {
+    // TODO
+  }
+
+  /**
+   * Set a target height, in pixels, for the object.
+   *
+   * @param  h   The target height of the object.
+   */
+  settargeth(r: number) {
+    // TODO
+  }
+
+  /**
+   * Set a target alphablending value for the object.
+   * The value range is from 0 (totally transparent)
+   * to 255 (totally opaque).
+   *
+   * @param  alpha   The target alpha value.
+   */
+  settargeta(alpha: number) {
+    // TODO
+  }
+
+  /**
+   * The amount of time in which you wish to arrive at
+   * the target(s) previously set, in seconds.
+   *
+   * @param  insecond    The number of seconds in which to reach the target.
+   */
+  settargetspeed(insecond: number) {
+    // TODO
+  }
+
+  /**
+   * Begin transition to previously set target.
+   */
+  gototarget() {
+    // TODO
+  }
+
+  /**
+   * Hookable. Event happens when the object has reached
+   * it's previously set target.
+   */
+  ontargetreached() {
+    // TODO
+  }
+
+  canceltarget() {
+    // TODO
+  }
+
+  /**
+   * isGoingToTarget()
+   */
+
+  // [WHERE IS THIS?]
+
+  // modifies the x/y targets so that they compensate for gained width/height. useful to make drawers that open up without jittering
+  reversetarget(reverse: number) {
+    // TODO
+  }
+
+  onStartup() {
+    // TODO
+  }
+
+  /**
    * Set the alphablending value of the object.
    * Value ranges from 0 (fully transparent) to
    * 255 (fully opaque).
@@ -224,21 +322,41 @@ export default class GuiObj extends XmlObj {
     this._renderAlpha();
   }
 
+  /**
+   * Get the current alphablending value of
+   * the object. Value ranges from 0 (fully
+   * transparent) to 255 (fully opaque).
+   *
+   * @ret The alpha value.
+   */
+  getalpha(): number {
+    return this._alpha;
+  }
+
   _renderAlpha() {
     this._div.style.opacity = `${this._alpha / 255}`;
   }
   _renderVisibility() {
     this._div.style.display = this._visible ? "inline-block" : "none";
   }
-  _renderDimensions() {
-    if (this._x) {
-      this._div.style.left = px(this._x);
-    }
-    if (this._y) {
-      this._div.style.top = px(this._y);
-    }
+  _renderX() {
+    this._div.style.left = px(this._x ?? 0);
+  }
+  _renderY() {
+    this._div.style.top = px(this._y ?? 0);
+  }
+  _renderWidth() {
     this._div.style.width = px(this.getwidth());
+  }
+  _renderHeight() {
     this._div.style.height = px(this.getheight());
+  }
+
+  _renderDimensions() {
+    this._renderX();
+    this._renderY();
+    this._renderWidth();
+    this._renderHeight();
   }
 
   setBackgroundImage(bitmap: Bitmap) {
@@ -268,6 +386,7 @@ export default class GuiObj extends XmlObj {
 
   draw() {
     this._div.setAttribute("data-id", this.getId());
+    this._div.setAttribute("data-obj-name", "GuiObj");
     this._div.classList.add("webamp--guiobj");
     this._renderVisibility();
     this._div.style.position = "absolute";

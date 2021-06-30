@@ -1,5 +1,5 @@
 import { SkinContext } from "../types";
-import { toBool } from "../utils";
+import { px, toBool } from "../utils";
 import Layout from "./Layout";
 import XmlObj from "./XmlObj";
 
@@ -51,6 +51,20 @@ export default class Container extends XmlObj {
     return this._div;
   }
 
+  getWidth(): number {
+    return this._activeLayout.getwidth();
+  }
+  getHeight(): number {
+    return this._activeLayout.getheight();
+  }
+
+  center() {
+    const height = document.documentElement.clientHeight;
+    const width = document.documentElement.clientWidth;
+    this._div.style.top = px((height - this.getHeight()) / 2);
+    this._div.style.left = px((width - this.getWidth()) / 2);
+  }
+
   /* Required for Maki */
   /**
    * Get the layout associated with the an id.
@@ -81,10 +95,12 @@ export default class Container extends XmlObj {
   draw() {
     this._div.setAttribute("data-xml-id", this.getId());
     this._div.setAttribute("data-obj-name", "Container");
+    this._div.style.position = "absolute";
 
     if (this._defaultVisible && this._activeLayout) {
       this._activeLayout.draw();
       this._div.appendChild(this._activeLayout.getDiv());
+      this.center();
     }
   }
 }

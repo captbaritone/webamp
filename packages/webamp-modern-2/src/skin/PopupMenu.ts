@@ -40,6 +40,26 @@ export default class PopupMenu extends BaseObject {
     }
     item.checked = check;
   }
+  popatmouse(): number {
+    const message = this._items.map((item) => {
+      switch (item.type) {
+        case "separator":
+          return "------";
+        case "item":
+          return `(${item.id}) ${item.text}${item.checked ? " ✔" : ""}`;
+      }
+    });
+    message.unshift("Pick the number matching your choice:\n");
+    let choice: number | null = null;
+    while (
+      !this._items.some((item) => item.type === "item" && item.id === choice)
+    ) {
+      choice = Number(window.prompt(message.join("\n")));
+    }
+    // TODO: Validate
+
+    return choice;
+  }
   /*
 extern PopupMenu.addSubMenu(PopupMenu submenu, String submenutext);
 extern Int PopupMenu.popAtXY(int x, int y);

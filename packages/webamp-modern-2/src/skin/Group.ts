@@ -9,7 +9,7 @@ export default class Group extends GuiObj {
   _instanceId: string;
   _background: string;
   _desktopAlpha: boolean;
-  _drawBackground: boolean;
+  _drawBackground: boolean = true;
   _minimumHeight: number;
   _maximumHeight: number;
   _minimumWidth: number;
@@ -28,9 +28,11 @@ export default class Group extends GuiObj {
         break;
       case "background":
         this._background = value;
+        this._renderBackground();
         break;
       case "drawbackground":
         this._drawBackground = Utils.toBool(value);
+        this._renderBackground();
         break;
       case "minimum_h":
         this._minimumHeight = Utils.num(value);
@@ -111,15 +113,22 @@ export default class Group extends GuiObj {
     return super.getwidth();
   }
 
+  _renderBackground() {
+    if (this._background != null && this._drawBackground) {
+      const bitmap = UI_ROOT.getBitmap(this._background);
+      this.setBackgroundImage(bitmap);
+    }
+    // TODO: Clear background
+  }
+
   draw() {
     super.draw();
     this._div.setAttribute("data-obj-name", "Group");
+    // this._div.style.pointerEvents = "none";
+    this._div.style.overflow = "hidden";
     this._div.style.height = Utils.px(this._maximumHeight);
     this._div.style.width = Utils.px(this._maximumWidth);
-    if (this._background != null && this._drawBackground) {
-      const bitmap = UI_ROOT.getBitmap(this._background);
-      this._div.style.background = bitmap.getBackgrondCSSAttribute();
-    }
+    this._renderBackground();
     for (const child of this._children) {
       child.draw();
       this._div.appendChild(child.getDiv());

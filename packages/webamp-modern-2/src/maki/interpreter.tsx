@@ -106,7 +106,7 @@ class Interpreter {
           const offsetIntoVariables = command.arg;
           const current = this.variables[offsetIntoVariables];
           assume(
-            typeof a.value === typeof current.value,
+            typeof a.value === typeof current.value || current.value == null,
             `Assigned from one type to a different type ${typeof a.value}, ${typeof current.value}.`
           );
 
@@ -272,7 +272,9 @@ class Interpreter {
           const methodDefinition = getMethod(guid, methodName);
           assert(
             argCount === (methodDefinition.parameters.length ?? 0),
-            "Arg count mismatch"
+            `Arg count mismatch. Expected ${
+              methodDefinition.parameters.length ?? 0
+            } arguments, but found ${argCount} for ${klass.name}.${methodName}`
           );
 
           const methodArgs = [];
@@ -334,7 +336,7 @@ class Interpreter {
         // complete
         case 40: {
           // noop for now
-          assume(false, "OPCODE: complete");
+          // assume(false, "OPCODE: complete");
           break;
         }
         // mov
