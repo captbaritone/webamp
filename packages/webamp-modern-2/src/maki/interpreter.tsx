@@ -165,7 +165,27 @@ class Interpreter {
         }
         // >=
         case 11: {
-          assume(false, "Unimplimented >= operator");
+          const a = this.stack.pop();
+          const b = this.stack.pop();
+          switch (a.type) {
+            case "STRING":
+            case "OBJECT":
+            case "BOOL":
+            case "NULL":
+              throw new Error("Tried to add non-numbers.");
+          }
+          switch (b.type) {
+            case "STRING":
+            case "OBJECT":
+            case "BOOL":
+            case "NULL":
+              throw new Error("Tried to add non-numbers.");
+          }
+          if (this.debug) {
+            console.log(`${b.value} >= ${a.value}`);
+          }
+          this.push(V.newInt(b.value >= a.value));
+          break;
           break;
         }
         // <
