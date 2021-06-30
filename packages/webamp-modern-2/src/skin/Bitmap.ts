@@ -1,8 +1,10 @@
 import * as Utils from "../utils";
-import { assert } from "../utils";
+import { assert, getId } from "../utils";
 import ImageManager from "./ImageManager";
 
+// http://wiki.winamp.com/wiki/XML_Elements#.3Cbitmap.2F.3E
 export default class Bitmap {
+  _uniqueId: number = getId();
   _id: string;
   _url: string;
   _img: HTMLImageElement;
@@ -61,7 +63,14 @@ export default class Bitmap {
     return this._height;
   }
 
+  getCSSVar(): string {
+    return `--bitmap-${this.getId().replace(/[^a-zA-Z0-9]/g, "-")}-${
+      this._uniqueId
+    }`;
+  }
+
   setUrl(url: string) {
+    document.documentElement.style.setProperty(this.getCSSVar(), `url(${url})`);
     this._url = url;
   }
 
@@ -85,7 +94,7 @@ export default class Bitmap {
   }
 
   getBackgrondImageCSSAttribute(): string {
-    return `url(${this._url})`;
+    return `var(${this.getCSSVar()})`;
   }
 
   getBackgrondPositionCSSAttribute(): string {
@@ -98,6 +107,10 @@ export default class Bitmap {
     const width = Utils.px(this._width);
     const height = Utils.px(this._height);
     return `${width} ${height}`;
+  }
+
+  getBackdropFilterCSSAttribute(): string {
+    return `url(#${Utils.normalizeDomId(this._gammagroup)})`;
   }
 
   getCanvas(): HTMLCanvasElement {

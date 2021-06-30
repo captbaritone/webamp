@@ -31,7 +31,10 @@ export function px(size: number): string {
 }
 
 export function toBool(str: string) {
-  assert(str === "0" || str === "1", 'Expected bool value to be "0" or "1".');
+  assert(
+    str === "0" || str === "1",
+    `Expected bool value to be "0" or "1", but it was "${str}".`
+  );
   return str === "1";
 }
 
@@ -47,4 +50,8 @@ export function ensureVmInt(num: number): number {
 
 export function clamp(num: number, min: number, max: number): number {
   return Math.max(min, Math.min(num, max));
+}
+
+export function normalizeDomId(id: string) {
+  return id.replace(/[^a-zA-Z0-9]/g, "-");
 }

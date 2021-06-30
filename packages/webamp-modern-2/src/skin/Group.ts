@@ -117,8 +117,9 @@ export default class Group extends GuiObj {
     if (this._background != null && this._drawBackground) {
       const bitmap = UI_ROOT.getBitmap(this._background);
       this.setBackgroundImage(bitmap);
+    } else {
+      this.setBackgroundImage(null);
     }
-    // TODO: Clear background
   }
 
   draw() {

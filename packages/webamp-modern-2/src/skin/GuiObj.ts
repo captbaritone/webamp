@@ -218,6 +218,22 @@ export default class GuiObj extends XmlObj {
   }
 
   /**
+   * Hookable. Event happens when the mouse
+   * enters the objects area.
+   */
+  onEnterArea() {
+    VM.dispatch(this, "onenterarea");
+  }
+
+  /**
+   * Hookable. Event happens when the mouse
+   * leaves the objects area.
+   */
+  onLeaveArea() {
+    VM.dispatch(this, "onleavearea");
+  }
+
+  /**
    * Set a target X position, in the screen, for
    * the object.
    *
@@ -359,28 +375,29 @@ export default class GuiObj extends XmlObj {
     this._renderHeight();
   }
 
-  setBackgroundImage(bitmap: Bitmap) {
+  setBackgroundImage(bitmap: Bitmap | null) {
     this._div.style.setProperty(
       "--background-image",
-      bitmap.getBackgrondImageCSSAttribute()
+      bitmap?.getBackgrondImageCSSAttribute() ?? "none"
     );
     this._div.style.setProperty(
       "--background-position",
-      bitmap.getBackgrondPositionCSSAttribute()
+      bitmap?.getBackgrondPositionCSSAttribute() ?? "none"
     );
+    this._div.style.filter = bitmap?.getBackdropFilterCSSAttribute() ?? "none";
   }
 
   // JS Can't set the :active pseudo selector. Instead we have a hard-coded
   // pseduo-selector in our stylesheet which references a CSS variable and then
   // we control the value of that variable from JS.
-  setActiveBackgroundImage(bitmap: Bitmap) {
+  setActiveBackgroundImage(bitmap: Bitmap | null) {
     this._div.style.setProperty(
       "--active-background-image",
-      bitmap.getBackgrondImageCSSAttribute()
+      bitmap?.getBackgrondImageCSSAttribute() ?? "none"
     );
     this._div.style.setProperty(
       "--active-background-position",
-      bitmap.getBackgrondPositionCSSAttribute()
+      bitmap?.getBackgrondPositionCSSAttribute() ?? "none"
     );
   }
 
@@ -405,6 +422,13 @@ export default class GuiObj extends XmlObj {
 
     this._div.addEventListener("mousedown", (e) => {
       this.onLeftButtonDown(e.clientX, e.clientY);
+    });
+    this._div.addEventListener("mouseenter", (e) => {
+      this.onEnterArea();
+    });
+
+    this._div.addEventListener("mouseleave", (e) => {
+      this.onLeaveArea();
     });
   }
 }

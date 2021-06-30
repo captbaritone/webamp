@@ -77,11 +77,15 @@ export default class Button extends GuiObj {
     if (this._image != null) {
       const bitmap = UI_ROOT.getBitmap(this._image);
       this.setBackgroundImage(bitmap);
+    } else {
+      this.setBackgroundImage(null);
     }
 
     if (this._downimage != null) {
       const downBitmap = UI_ROOT.getBitmap(this._downimage);
       this.setActiveBackgroundImage(downBitmap);
+    } else {
+      this.setActiveBackgroundImage(null);
     }
   }
 

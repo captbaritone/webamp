@@ -564,11 +564,6 @@ class Interpreter {
         // ! (not)
         case 74: {
           const a = this.stack.pop();
-          switch (a.type) {
-            case "STRING":
-            case "OBJECT":
-              throw new Error("Tried ! a string or object.");
-          }
           this.push(V.newInt(!a.value));
           break;
         }

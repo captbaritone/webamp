@@ -1,5 +1,5 @@
 import UI_ROOT from "../UIRoot";
-import { clamp, num, px } from "../utils";
+import { assume, clamp, num, px } from "../utils";
 import GuiObj from "./GuiObj";
 import { VM } from "./VM";
 
@@ -129,8 +129,6 @@ export default class Slider extends GuiObj {
       const startX = rect.x;
       const startY = rect.y;
       const width = this.getwidth();
-      const startMouseX = downEvent.clientX;
-      const startMouseY = downEvent.clientY;
 
       const handleMove = (moveEvent: MouseEvent) => {
         const newMouseX = moveEvent.clientX;
@@ -138,16 +136,23 @@ export default class Slider extends GuiObj {
         const deltaX = newMouseX - startX;
         const deltaY = newMouseY - startY;
 
+        // TODO: What about vertical sliders?
         const xPos = clamp(deltaX, 0, width);
         this._position = xPos / width;
         this._renderThumbPosition();
         this.onsetposition(this.getposition());
       };
 
-      function handleMouseUp() {
+      const handleMouseUp = () => {
+        VM.dispatch(this, "onsetfinalposition", [
+          { type: "INT", value: this.getposition() },
+        ]);
+        VM.dispatch(this, "onpostedposition", [
+          { type: "INT", value: this.getposition() },
+        ]);
         document.removeEventListener("mousemove", handleMove);
         document.removeEventListener("mouseup", handleMouseUp);
-      }
+      };
       document.addEventListener("mousemove", handleMove);
       document.addEventListener("mouseup", handleMouseUp);
     });
@@ -156,6 +161,9 @@ export default class Slider extends GuiObj {
   draw() {
     super.draw();
     this._div.setAttribute("data-obj-name", "Slider");
+    assume(this._barLeft == null, "Need to handle Slider barleft");
+    assume(this._barRight == null, "Need to handle Slider barright");
+    assume(this._barMiddle == null, "Need to handle Slider barmiddle");
     this._renderThumb();
     this._renderThumbPosition();
     this._div.appendChild(this._thumbDiv);

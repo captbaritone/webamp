@@ -21,6 +21,7 @@ import AnimatedLayer from "./AnimatedLayer";
 import Vis from "./Vis";
 import BitmapFont from "./BitmapFont";
 import Color from "./Color";
+import GammaGroup from "./GammaGroup";
 
 class ParserContext {
   container: Container | null = null;
@@ -33,6 +34,7 @@ export default class SkinParser {
   _path: string[] = [];
   _context: ParserContext = new ParserContext();
   _containers: Container[] = [];
+  _gammaSet: GammaGroup[] = [];
 
   constructor(zip: JSZip) {
     this._zip = zip;
@@ -409,11 +411,19 @@ export default class SkinParser {
   }
 
   async gammaset(node: XmlElement) {
+    this._gammaSet = [];
     await this.traverseChildren(node);
+    UI_ROOT.addGammaSet(node.attributes.id, this._gammaSet);
   }
 
   async gammagroup(node: XmlElement) {
-    await this.traverseChildren(node);
+    assume(
+      node.children.length === 0,
+      "Unexpected children in <gammagroup> XML node."
+    );
+    const gammaGroup = new GammaGroup();
+    gammaGroup.setXmlAttributes(node.attributes);
+    this._gammaSet.push(gammaGroup);
   }
 
   async component(node: XmlElement) {

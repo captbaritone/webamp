@@ -94,7 +94,11 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
 
   getText() {
     if (this._display) {
-      switch (this._display) {
+      switch (this._display.toLowerCase()) {
+        case "pe_info":
+          return "pe_info";
+        case "vid_info":
+          return "vid_info";
         case "time":
           return "01:58";
         case "songlength":
@@ -140,6 +144,9 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
         }
 
         //
+      } else if (font == null) {
+        this._div.innerText = this.getText();
+        this._div.style.fontFamily = "Ariel";
       } else {
         throw new Error("Unexpected font");
       }

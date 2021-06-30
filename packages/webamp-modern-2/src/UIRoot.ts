@@ -5,6 +5,7 @@ import { assert, assume } from "./utils";
 import BitmapFont from "./skin/BitmapFont";
 import Color from "./skin/Color";
 import AUDIO_PLAYER from "./skin/AudioPlayer";
+import GammaGroup from "./skin/GammaGroup";
 
 class UIRoot {
   // Just a temporary place to stash things
@@ -13,6 +14,7 @@ class UIRoot {
   _fonts: (TrueTypeFont | BitmapFont)[] = [];
   _colors: Color[] = [];
   _groupDefs: XmlElement[] = [];
+  _gammaSets: Map<string, GammaGroup[]> = new Map();
   _xuiElements: XmlElement[] = [];
 
   addBitmap(bitmap: Bitmap) {
@@ -52,13 +54,15 @@ class UIRoot {
     return found;
   }
 
-  getFont(id: string): TrueTypeFont | BitmapFont {
+  getFont(id: string): TrueTypeFont | BitmapFont | null {
     const found = this._fonts.find(
       (font) => font.getId().toLowerCase() === id.toLowerCase()
     );
 
-    assert(found != null, `Could not find true type font with id ${id}.`);
-    return found;
+    if (found == null) {
+      console.warn(`Could not find true type font with id ${id}.`);
+    }
+    return found ?? null;
   }
 
   addGroupDef(groupDef: XmlElement) {
@@ -75,6 +79,21 @@ class UIRoot {
     );
 
     return found ?? null;
+  }
+
+  addGammaSet(id: string, gammaSet: GammaGroup[]) {
+    this._gammaSets.set(id.toLowerCase(), gammaSet);
+  }
+
+  getGammaSet(id: string): GammaGroup[] {
+    const found = this._gammaSets.get(id.toLowerCase());
+    assume(
+      found != null,
+      `Could not find gammaset for id "${id}" from set of ${Array.from(
+        this._gammaSets.keys()
+      ).join(", ")}`
+    );
+    return found;
   }
 
   getXuiElement(name: string): XmlElement | null {
