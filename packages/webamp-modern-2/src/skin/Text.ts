@@ -1,6 +1,8 @@
 import GuiObj from "./GuiObj";
 import * as Utils from "../utils";
 import UI_ROOT from "../UIRoot";
+import TrueTypeFont from "./TrueTypeFont";
+import BitmapFont from "./BitmapFont";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Ctext.2F.3E_.26_.3CWasabi:Text.2F.3E
 export default class Text extends GuiObj {
@@ -15,6 +17,7 @@ export default class Text extends GuiObj {
   _font: string;
   _fontSize: number;
   _color: string;
+  _ticker: boolean;
   setXmlAttr(key: string, value: string): boolean {
     if (super.setXmlAttr(key, value)) {
       return true;
@@ -23,10 +26,12 @@ export default class Text extends GuiObj {
       case "display":
         // (str) Either a specific system display string or the string identifier of a text feed. Setting this value will override the text parameter. See below.
         this._display = value;
+        this._renderText();
         break;
       case "text":
         // (str) A static string to be displayed.
         this._text = value;
+        this._renderText();
         break;
       case "bold":
         // (str) A static string to be displayed.
@@ -43,6 +48,7 @@ export default class Text extends GuiObj {
       case "font":
         // (id) The id of a bitmapfont or truetypefont element. If no element with that id can be found, the OS will be asked for a font with that name instead.
         this._font = value;
+        this._renderText();
         break;
       case "align":
         // (str) One of the following three possible strings: "left" "center" "right" -- Default is "left."
@@ -51,12 +57,16 @@ export default class Text extends GuiObj {
       case "fontsize":
         // (int) The size to render the chosen font.
         this._fontSize = Utils.num(value);
-
+        break;
       case "color":
         // (int[sic?]) The comma delimited RGB color of the text.
         this._color = value;
+        break;
+      case "ticker":
+        /// (bool) Setting this flag causes the object to scroll left and right if the text does not fit the rectangular area of the text object.
+        this._ticker = Utils.toBool(value);
+        break;
       /*
-ticker - (bool) Setting this flag causes the object to scroll left and right if the text does not fit the rectangular area of the text object.
 antialias - (bool) Setting this flag causes the text to be rendered antialiased if possible.
 default - (str) A parameter alias for text.
 align - (str) One of the following three possible strings: "left" "center" "right" -- Default is "left."
@@ -71,7 +81,6 @@ showlen - (bool) Setting this flag will cause the text display to be appended wi
 forcefixed - (bool) Force the system to attempt to render the display string with fixed-width font spacing.
 forcelocase - (bool) Force the system to make the display string all lowercase before display.
 forcelowercase - (bool) Force the system to make the display string all lowercase before display.
-bold - (bool) Render the display string in bold.
 wrap - (bool) Setting this flag will cause the text to wrap in its rectangular space. Default is off.
 dblclickaction - (str) A string in the form "SWITCH;layout" where layout is the id of a layout in this object's parent container. No other actions function on this object. This action is deprecated.
 offsetx - (int) Extra pixels to be added to or subtracted from the calculated x value for the display string to render.
@@ -88,6 +97,8 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
       switch (this._display) {
         case "time":
           return "01:58";
+        case "songlength":
+          return "05:58";
         case "songname":
           return "Niente da Caprie (3";
         case "songinfo":
@@ -103,8 +114,10 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
 
   // extern Text.setText(String txt); // changes the display/text="something" param
   settext(txt: string) {
-    this._text = txt;
-    this._renderText();
+    if (this._text != txt) {
+      this._text = txt;
+      this._renderText();
+    }
   }
   // overrides the display/text parameter with a custom string, set "" to cancel
   setalternatetext(txt: string) {
@@ -112,12 +125,31 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
   }
 
   _renderText() {
-    this._div.innerText = this.getText();
+    this._div.innerHTML = "";
+    if (this._font) {
+      const font = UI_ROOT.getFont(this._font);
+      if (font instanceof TrueTypeFont) {
+        this._div.innerText = this.getText();
+        this._div.style.fontFamily = font.getFontFamily();
+      } else if (font instanceof BitmapFont) {
+        this._div.style.whiteSpace = "nowrap";
+        if (this.getText() != null) {
+          for (const char of this.getText().split("")) {
+            this._div.appendChild(font.renderLetter(char));
+          }
+        }
+
+        //
+      } else {
+        throw new Error("Unexpected font");
+      }
+    }
   }
 
   draw() {
     super.draw();
     this._renderText();
+    this._div.style.overflow = "hidden";
     if (this._bold) {
       this._div.style.fontWeight = "bold";
     }
@@ -125,12 +157,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
       this._div.style.textAlign = this._align;
     }
 
-    if (this._font) {
-      const font = UI_ROOT.getFont(this._font);
-      this._div.style.fontFamily = font.getFontFamily();
-    }
-
-    if (this._color) {
+    if (false && this._color) {
       console.log(this._color);
       const color = UI_ROOT.getColor(this._color);
       console.log({ color });

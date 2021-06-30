@@ -37,6 +37,7 @@ class UIRoot {
   addFont(font: TrueTypeFont | BitmapFont) {
     this._fonts.push(font);
   }
+
   addColor(color: Color) {
     this._colors.push(color);
   }
