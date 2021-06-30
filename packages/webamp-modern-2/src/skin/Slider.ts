@@ -116,9 +116,11 @@ export default class Slider extends GuiObj {
   }
 
   _renderThumbPosition() {
-    const bitmap = UI_ROOT.getBitmap(this._thumb);
-    const left = this._position * (this.getwidth() - bitmap.getWidth() / 2);
-    this._thumbDiv.style.left = px(left);
+    if (this._thumb != null) {
+      const bitmap = UI_ROOT.getBitmap(this._thumb);
+      const left = this._position * (this.getwidth() - bitmap.getWidth() / 2);
+      this._thumbDiv.style.left = px(left);
+    }
   }
 
   _renderBindings() {
