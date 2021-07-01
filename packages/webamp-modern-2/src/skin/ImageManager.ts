@@ -1,15 +1,11 @@
 import JSZip from "jszip";
-import { getCaseInsensitiveFile } from "../utils";
+import { assert, getCaseInsensitiveFile, getId } from "../utils";
 
 export default class ImageManager {
-  _urlCache: Map<string, string>;
-  _imgCache: Map<string, HTMLImageElement>;
-  _sizeCache: Map<string, { width: number; height: number }>;
-  constructor(private _zip: JSZip) {
-    this._urlCache = new Map();
-    this._sizeCache = new Map();
-    this._imgCache = new Map();
-  }
+  _urlCache: Map<string, string> = new Map();
+  _imgCache: Map<string, HTMLImageElement> = new Map();
+  _cssVarCache: Map<string, string> = new Map();
+  constructor(private _zip: JSZip) {}
 
   async getUrl(filePath: string): Promise<string | null> {
     if (!this._urlCache.has(filePath)) {
@@ -19,26 +15,20 @@ export default class ImageManager {
       }
       const imgBlob = await zipFile.async("blob");
       const imgUrl = await getUrlFromBlob(imgBlob);
+      // const img = await this.getImage(imgUrl);
+      // const transformedUrl = transformImage(img);
       this._urlCache.set(filePath, imgUrl);
     }
     return this._urlCache.get(filePath);
   }
 
-  async getSize(url: string): Promise<{ width: number; height: number }> {
-    if (!this._sizeCache.has(url)) {
-      const size = await this.getImage(url);
-      this._sizeCache.set(url, size);
-    }
-    return this._sizeCache.get(url);
-  }
-
-  async getImage(url: string): Promise<HTMLImageElement> {
-    if (!this._imgCache.has(url)) {
+  async getImage(filePath: string): Promise<HTMLImageElement> {
+    if (!this._imgCache.has(filePath)) {
       // TODO: We could cache this
-      const img = await loadImage(url);
-      this._imgCache.set(url, img);
+      const img = await loadImage(await this.getUrl(filePath));
+      this._imgCache.set(filePath, img);
     }
-    return this._imgCache.get(url);
+    return this._imgCache.get(filePath);
   }
 }
 

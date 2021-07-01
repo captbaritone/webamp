@@ -1,6 +1,5 @@
 import GuiObj from "./GuiObj";
 import UI_ROOT from "../UIRoot";
-import { px } from "../utils";
 import { VM } from "./VM";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Cbutton.2F.3E_.26_.3Ctogglebutton.2F.3E

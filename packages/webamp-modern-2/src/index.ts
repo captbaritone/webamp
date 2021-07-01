@@ -3,7 +3,6 @@ import JSZip from "jszip";
 import { classResolver } from "./skin/resolver";
 import SkinParser from "./skin/parse";
 import UI_ROOT from "./UIRoot";
-import GammaGroup from "./skin/GammaGroup";
 
 function hack() {
   // Without this Snowpack will try to treeshake out resolver causing a circular
@@ -24,15 +23,31 @@ async function main() {
 
   let node = document.createElement("div");
 
+  UI_ROOT.enableDefaultGammaSet();
+
   for (const container of parser._containers) {
     container.draw();
     node.appendChild(container.getDiv());
   }
 
-  const gammaSet = UI_ROOT.getDefaultGammaSet();
+  const select = document.createElement("select");
+  select.style.position = "absolute";
+  select.style.bottom = "0px";
+  select.style.left = "0px";
+  select.addEventListener("change", (e) => {
+    console.log(e.target.value);
+    UI_ROOT.enableGammaSet(e.target.value);
+  });
+  for (const set of UI_ROOT._gammaSets.keys()) {
+    const option = document.createElement("option");
+    option.innerText = set;
+    option.value = set;
+    select.appendChild(option);
+  }
+
+  document.body.appendChild(select);
 
   const div = document.createElement("div");
-  div.innerHTML = makeGammaSetSVG(gammaSet);
   document.body.appendChild(div);
 
   document.body.appendChild(node);
@@ -42,36 +57,6 @@ async function main() {
     container.init({ containers: parser._containers });
   }
   console.log("INIT");
-}
-
-function makeGammaSetSVG(gammaSet: GammaGroup[]) {
-  // 4000,510,-4000
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300">
-  <defs>
-    ${gammaSet.map((group) => makeGammaGroupSVG(group)).join("\n")}
-  </defs>
-</svg>`;
-}
-
-function colorToFrac(num: string) {
-  // -4096 to 4096
-  return Number(num) / 4096;
-}
-
-// https://webplatform.github.io/docs/svg/elements/feFuncA/
-// amplitude * pow(C, exponent) + offset (see below for amplitude, exponent, and offset)
-// https://www.pawelporwisz.pl/winamp/wct_en.php
-// TODO: Avoid XSS
-function makeGammaGroupSVG(gammaGroup: GammaGroup) {
-  const [r, g, b] = gammaGroup._value.split(",").map(colorToFrac);
-  return `<filter id="${gammaGroup.getDomId()}" x="0" y="0" width="100%" height="100%">
-  <feComponentTransfer>
-    <feFuncR type="gamma" amplitude="1" exponent="1" offset="${r}" />
-    <feFuncG type="gamma" amplitude="1" exponent="1" offset="${g}" />
-    <feFuncB type="gamma" amplitude="1" exponent="1" offset="${b}" />
-    
-  </feComponentTransfer>
-</filter>`;
 }
 
 main();

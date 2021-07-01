@@ -10,27 +10,37 @@
         margin: 0;
         background-color: rgb(58, 110, 165);
       }
-      .webamp--guiobj {
+      .webamp--img {
         background-image: var(--background-image);
         background-position: var(--background-position);
       }
-      .webamp--guiobj:active {
+      .webamp--img:active {
         background-image: var(--active-background-image, var(--background-image));
         background-position: var(--active-background-position, var(--background-position));
       }
-      .webamp--guiobj:hover {
+      .webamp--img:hover {
         background-image: var(--hover-background-image, var(--background-image));
         background-position: var(--hover-background-position, var(--background-position));
       }
 
-      .webamp--guiobj:hover:active {
+      /* TODO: Should this fallback to hover? */
+      .webamp--img:hover:active {
         background-image: var(--active-background-image, var(--background-image));
         background-position: var(--active-background-position, var(--background-position));
+      }
+
+      #experimental {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        color: white;
+        text-transform: uppercase;
       }
     </style>
   </head>
   <body>
     <div id="app"></div>
+    <div id="experimental">Work in Progress</div>
     <script type="module" src="./index.js"></script>
   </body>
 </html>

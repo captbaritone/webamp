@@ -1,5 +1,6 @@
-import { normalizeDomId, num, toBool } from "../utils";
+import { clamp, normalizeDomId, num, toBool } from "../utils";
 
+// https://www.pawelporwisz.pl/winamp/wct_en.php
 export default class GammaGroup {
   _id: string;
   _value: string;
@@ -42,5 +43,32 @@ export default class GammaGroup {
 
   getRgb() {
     return `rgb(${this._value})`;
+  }
+
+  // TODO: Figure out how to actually implement this.
+  transformImage(img: HTMLImageElement): string {
+    const [r, g, b] = this._value.split(",").map((v) => {
+      return (Number(v) / 4096) * 255;
+    });
+    const canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+    const imageData = ctx.getImageData(0, 0, img.width, img.height);
+    const data = imageData.data;
+    for (var i = 0; i < data.length; i += 4) {
+      if (this._boost) {
+        data[i] = (data[i] >> 1, 0, 255); // red
+        data[i + 1] = (data[i + 1] >> 1, 0, 255); // green
+        data[i + 2] = (data[i + 2] >> 1, 0, 255); // blue
+      }
+
+      data[i] = clamp(data[i] + r, 0, 255); // red
+      data[i + 1] = clamp(data[i + 1] + g, 0, 255); // green
+      data[i + 2] = clamp(data[i + 2] + b, 0, 255); // blue
+    }
+    ctx.putImageData(imageData, 0, 0);
+    return canvas.toDataURL();
   }
 }

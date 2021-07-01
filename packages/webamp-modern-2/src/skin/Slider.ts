@@ -75,43 +75,22 @@ export default class Slider extends GuiObj {
   _renderThumb() {
     this._thumbDiv.style.position = "absolute";
     this._thumbDiv.setAttribute("data-obj-name", "Slider::Handle");
-    this._thumbDiv.classList.add("webamp--guiobj");
+    this._thumbDiv.classList.add("webamp--img");
     if (this._thumb != null) {
       const bitmap = UI_ROOT.getBitmap(this._thumb);
       this._thumbDiv.style.width = px(bitmap.getWidth());
       this._thumbDiv.style.height = px(bitmap.getHeight());
-      this._thumbDiv.style.setProperty(
-        "--background-image",
-        bitmap.getBackgrondImageCSSAttribute()
-      );
-      this._thumbDiv.style.setProperty(
-        "--background-position",
-        bitmap.getBackgrondPositionCSSAttribute()
-      );
+      bitmap.setAsBackground(this._thumbDiv);
     }
 
     if (this._downThumb != null) {
       const bitmap = UI_ROOT.getBitmap(this._downThumb);
-      this._thumbDiv.style.setProperty(
-        "--active-background-image",
-        bitmap.getBackgrondImageCSSAttribute()
-      );
-      this._thumbDiv.style.setProperty(
-        "--active-background-position",
-        bitmap.getBackgrondPositionCSSAttribute()
-      );
+      bitmap.setAsActiveBackground(this._thumbDiv);
     }
 
     if (this._hoverThumb != null) {
       const bitmap = UI_ROOT.getBitmap(this._hoverThumb);
-      this._thumbDiv.style.setProperty(
-        "--hover-background-image",
-        bitmap.getBackgrondImageCSSAttribute()
-      );
-      this._thumbDiv.style.setProperty(
-        "--hover-background-position",
-        bitmap.getBackgrondPositionCSSAttribute()
-      );
+      bitmap.setAsHoverBackground(this._thumbDiv);
     }
   }
 

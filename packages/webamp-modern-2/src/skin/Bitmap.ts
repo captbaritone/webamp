@@ -1,11 +1,10 @@
-import * as Utils from "../utils";
-import { assert, getId } from "../utils";
+import { assert, getId, normalizeDomId, num, px } from "../utils";
 import ImageManager from "./ImageManager";
 
 // http://wiki.winamp.com/wiki/XML_Elements#.3Cbitmap.2F.3E
 export default class Bitmap {
-  _uniqueId: number = getId();
   _id: string;
+  _cssVar: string;
   _url: string;
   _img: HTMLImageElement;
   _canvas: HTMLCanvasElement;
@@ -27,21 +26,26 @@ export default class Bitmap {
     switch (key) {
       case "id":
         this._id = value;
+        this._cssVar = `--bitmap-${this.getId().replace(
+          /[^a-zA-Z0-9]/g,
+          "-"
+        )}-${getId()}`;
         break;
       case "x":
-        this._x = Utils.num(value) ?? 0;
+        this._x = num(value) ?? 0;
         break;
       case "y":
-        this._y = Utils.num(value) ?? 0;
+        this._y = num(value) ?? 0;
         break;
       case "w":
-        this._width = Utils.num(value);
+        this._width = num(value);
         break;
       case "h":
-        this._height = Utils.num(value);
+        this._height = num(value);
         break;
       case "file":
         this._file = value;
+        break;
       case "gammagroup":
         this._gammagroup = value;
         break;
@@ -64,53 +68,71 @@ export default class Bitmap {
   }
 
   getCSSVar(): string {
-    return `--bitmap-${this.getId().replace(/[^a-zA-Z0-9]/g, "-")}-${
-      this._uniqueId
-    }`;
+    return this._cssVar;
   }
 
-  setUrl(url: string) {
-    document.documentElement.style.setProperty(this.getCSSVar(), `url(${url})`);
-    this._url = url;
+  getGammaGroup(): string {
+    return this._gammagroup;
+  }
+
+  getImg(): HTMLImageElement {
+    return this._img;
   }
 
   // Ensure we've loaded the image into our image loader.
   async ensureImageLoaded(imageManager: ImageManager) {
-    Utils.assert(
+    assert(
       this._url == null,
       "Tried to ensure a Bitmap was laoded more than once."
     );
-    const imgUrl = await imageManager.getUrl(this._file);
 
-    this._img = await imageManager.getImage(imgUrl);
+    this._img = await imageManager.getImage(this._file);
 
     if (this._width == null && this._height == null) {
-      const size = await imageManager.getSize(imgUrl);
-      this.setXmlAttr("w", String(size.width));
-      this.setXmlAttr("h", String(size.height));
+      this.setXmlAttr("w", String(this._img.width));
+      this.setXmlAttr("h", String(this._img.height));
     }
 
-    this.setUrl(imgUrl);
+    // this.setUrl(imgUrl);
   }
 
-  getBackgrondImageCSSAttribute(): string {
+  _getBackgrondImageCSSAttribute(): string {
     return `var(${this.getCSSVar()})`;
   }
 
-  getBackgrondPositionCSSAttribute(): string {
-    const x = Utils.px(-(this._x ?? 0));
-    const y = Utils.px(-(this._y ?? 0));
+  _getBackgrondPositionCSSAttribute(): string {
+    const x = px(-(this._x ?? 0));
+    const y = px(-(this._y ?? 0));
     return `${x} ${y}`;
   }
 
-  getBackgrondSizeCSSAttribute(): string {
-    const width = Utils.px(this._width);
-    const height = Utils.px(this._height);
+  _getBackgrondSizeCSSAttribute(): string {
+    const width = px(this._width);
+    const height = px(this._height);
     return `${width} ${height}`;
   }
 
-  getBackdropFilterCSSAttribute(): string {
-    return `url(#${Utils.normalizeDomId(this._gammagroup)})`;
+  _setAsBackground(div: HTMLDivElement, prefix: string) {
+    div.style.setProperty(
+      `--${prefix}background-image`,
+      this._getBackgrondImageCSSAttribute()
+    );
+    div.style.setProperty(
+      `--${prefix}background-position`,
+      this._getBackgrondPositionCSSAttribute()
+    );
+  }
+
+  setAsBackground(div: HTMLDivElement) {
+    this._setAsBackground(div, "");
+  }
+
+  setAsActiveBackground(div: HTMLDivElement) {
+    this._setAsBackground(div, "active-");
+  }
+
+  setAsHoverBackground(div: HTMLDivElement) {
+    this._setAsBackground(div, "hover-");
   }
 
   getCanvas(): HTMLCanvasElement {

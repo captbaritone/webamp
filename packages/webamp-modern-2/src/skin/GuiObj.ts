@@ -376,35 +376,24 @@ export default class GuiObj extends XmlObj {
   }
 
   setBackgroundImage(bitmap: Bitmap | null) {
-    this._div.style.setProperty(
-      "--background-image",
-      bitmap?.getBackgrondImageCSSAttribute() ?? "none"
-    );
-    this._div.style.setProperty(
-      "--background-position",
-      bitmap?.getBackgrondPositionCSSAttribute() ?? "none"
-    );
-    this._div.style.filter = bitmap?.getBackdropFilterCSSAttribute() ?? "none";
+    if (bitmap != null) {
+      bitmap.setAsBackground(this._div);
+    }
   }
 
   // JS Can't set the :active pseudo selector. Instead we have a hard-coded
   // pseduo-selector in our stylesheet which references a CSS variable and then
   // we control the value of that variable from JS.
   setActiveBackgroundImage(bitmap: Bitmap | null) {
-    this._div.style.setProperty(
-      "--active-background-image",
-      bitmap?.getBackgrondImageCSSAttribute() ?? "none"
-    );
-    this._div.style.setProperty(
-      "--active-background-position",
-      bitmap?.getBackgrondPositionCSSAttribute() ?? "none"
-    );
+    if (bitmap != null) {
+      bitmap.setAsActiveBackground(this._div);
+    }
   }
 
   draw() {
     this._div.setAttribute("data-id", this.getId());
     this._div.setAttribute("data-obj-name", "GuiObj");
-    this._div.classList.add("webamp--guiobj");
+    this._div.classList.add("webamp--img");
     this._renderVisibility();
     this._div.style.position = "absolute";
     this._renderAlpha();

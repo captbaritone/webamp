@@ -10,12 +10,12 @@ import GammaGroup from "./skin/GammaGroup";
 class UIRoot {
   // Just a temporary place to stash things
   _bitmaps: Bitmap[] = [];
-  _bitmapImages: Map<string, HTMLImageElement> = new Map();
   _fonts: (TrueTypeFont | BitmapFont)[] = [];
   _colors: Color[] = [];
   _groupDefs: XmlElement[] = [];
   _gammaSets: Map<string, GammaGroup[]> = new Map();
   _xuiElements: XmlElement[] = [];
+  _activeGammaSet: GammaGroup[] | null = null;
 
   addBitmap(bitmap: Bitmap) {
     this._bitmaps.push(bitmap);
@@ -30,10 +30,6 @@ class UIRoot {
 
     assert(found != null, `Could not find bitmap with id ${id}.`);
     return found;
-  }
-
-  addBitmapImage(id: string, image: HTMLImageElement) {
-    this._bitmapImages.set(id, image);
   }
 
   addFont(font: TrueTypeFont | BitmapFont) {
@@ -85,7 +81,7 @@ class UIRoot {
     this._gammaSets.set(id.toLowerCase(), gammaSet);
   }
 
-  getGammaSet(id: string): GammaGroup[] {
+  enableGammaSet(id: string) {
     const found = this._gammaSets.get(id.toLowerCase());
     assume(
       found != null,
@@ -93,10 +89,11 @@ class UIRoot {
         this._gammaSets.keys()
       ).join(", ")}`
     );
-    return found;
+    this._activeGammaSet = found;
+    this._setCssVars();
   }
 
-  getDefaultGammaSet(): GammaGroup[] {
+  enableDefaultGammaSet() {
     const found = Array.from(this._gammaSets.values())[0];
     assume(
       found != null,
@@ -104,7 +101,42 @@ class UIRoot {
         this._gammaSets.keys()
       ).join(", ")}`
     );
+    this._activeGammaSet = found;
+    this._setCssVars();
+  }
+
+  _getGammaGroup(id: string): GammaGroup {
+    const lower = id.toLowerCase();
+    const found = this._activeGammaSet.find((gammaGroup) => {
+      return gammaGroup.getId().toLowerCase() === lower;
+    });
+    assume(found != null, `Cold not find a gammagroup for "${id}"`);
     return found;
+  }
+
+  _setCssVars() {
+    const map = new Map();
+    for (const bitmap of this._bitmaps) {
+      const img = bitmap.getImg();
+      const groupId = bitmap.getGammaGroup();
+      if (!map.has(img)) {
+        map.set(img, new Map());
+      }
+      const imgCache = map.get(img);
+      if (!imgCache.has(groupId)) {
+        const gammaGroup =
+          groupId != null ? this._getGammaGroup(groupId) : null;
+        const url =
+          gammaGroup == null ? img.src : gammaGroup.transformImage(img);
+        imgCache.set(groupId, url);
+      }
+      const url = imgCache.get(groupId);
+      // TODO: Techincally we only need one per image/gammagroup.
+      document.documentElement.style.setProperty(
+        bitmap.getCSSVar(),
+        `url(${url})`
+      );
+    }
   }
 
   getXuiElement(name: string): XmlElement | null {
