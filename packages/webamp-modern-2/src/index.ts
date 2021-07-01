@@ -29,7 +29,7 @@ async function main() {
     node.appendChild(container.getDiv());
   }
 
-  const gammaSet = UI_ROOT.getGammaSet("clean | orange (default)");
+  const gammaSet = UI_ROOT.getDefaultGammaSet();
 
   const div = document.createElement("div");
   div.innerHTML = makeGammaSetSVG(gammaSet);
@@ -37,12 +37,6 @@ async function main() {
 
   document.body.appendChild(node);
   console.log("RENDER");
-
-  window.color = function (name = "clean | lightblue") {
-    const gammaSet = UI_ROOT.getGammaSet(name);
-
-    div.innerHTML = makeGammaSetSVG(gammaSet);
-  };
 
   for (const container of parser._containers) {
     container.init({ containers: parser._containers });

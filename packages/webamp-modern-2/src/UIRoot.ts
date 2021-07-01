@@ -96,6 +96,17 @@ class UIRoot {
     return found;
   }
 
+  getDefaultGammaSet(): GammaGroup[] {
+    const found = Array.from(this._gammaSets.values())[0];
+    assume(
+      found != null,
+      `Could not find default gammaset from set of ${Array.from(
+        this._gammaSets.keys()
+      ).join(", ")}`
+    );
+    return found;
+  }
+
   getXuiElement(name: string): XmlElement | null {
     const lowercaseName = name.toLowerCase();
     const found = this._xuiElements.find(
