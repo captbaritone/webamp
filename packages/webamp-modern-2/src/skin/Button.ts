@@ -92,7 +92,7 @@ export default class Button extends GuiObj {
   _bindToDom() {
     // TODO: Cleanup!
     this._div.addEventListener("mousedown", this._handleMouseDown.bind(this));
-    this._div.addEventListener("mousedown", (e) => {
+    this._div.addEventListener("click", (e) => {
       if (this._action) {
         UI_ROOT.dispatch(this._action);
       }
