@@ -41,7 +41,7 @@ async function main() {
   select.style.bottom = "0px";
   select.style.left = "0px";
   select.addEventListener("change", (e) => {
-    UI_ROOT.enableGammaSet(e.target.value);
+    UI_ROOT.enableGammaSet((e.target as HTMLInputElement).value);
   });
   for (const set of UI_ROOT._gammaSets.keys()) {
     const option = document.createElement("option");
