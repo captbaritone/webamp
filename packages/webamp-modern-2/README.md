@@ -1,3 +1,13 @@
+## Running locally
+
+Assuming you have [Yarn](https://yarnpkg.com/) installed:
+
+```bash
+cd packages/webamp-modern-2
+yarn
+yarn start
+```
+
 # TODO Next
 
 - [ ] Figure out if global NULL is actually typed as INT in Maki. I suspect there is no NULL type, but only an INT who happens to be zero.
