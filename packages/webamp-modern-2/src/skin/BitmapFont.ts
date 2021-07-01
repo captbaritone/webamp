@@ -2,7 +2,7 @@ import { num, px } from "../utils";
 import ImageManager from "./ImageManager";
 
 // TODO: Fill out the rest of this
-const CHARS = "abcdefghijklmnopqrstuvwxyz\"@ \n0123456789.':";
+const CHARS = 'abcdefghijklmnopqrstuvwxyz"@ \n0123456789\u2026. :[]-!_+/[]^';
 
 const CHAR_MAP = {};
 for (const [line, chars] of CHARS.split("\n").entries()) {

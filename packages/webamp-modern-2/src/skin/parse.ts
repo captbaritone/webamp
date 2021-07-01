@@ -22,6 +22,7 @@ import Vis from "./Vis";
 import BitmapFont from "./BitmapFont";
 import Color from "./Color";
 import GammaGroup from "./GammaGroup";
+import ColorThemesList from "./ColorThemesList";
 
 class ParserContext {
   container: Container | null = null;
@@ -141,6 +142,7 @@ export default class SkinParser {
       case "wasabi:tabsheet":
       case "wasabi:standardframe:status":
       case "Snappoint":
+      case "accelerators":
         // TODO
         return;
       // TODO: This should be the default fall through
@@ -235,7 +237,7 @@ export default class SkinParser {
 
     const { file, id } = node.attributes;
     assert(file != null, "Script element missing `file` attribute");
-    assert(id != null, "Script element missing `id` attribute");
+    // assert(id != null, "Script element missing `id` attribute");
 
     let scriptContents: ArrayBuffer;
     const scriptFile = this.getCaseInsensitiveFile(file);
@@ -439,7 +441,21 @@ export default class SkinParser {
   }
 
   async colorThemesList(node: XmlElement) {
-    await this.traverseChildren(node);
+    assume(
+      node.children.length === 0,
+      "Unexpected children in <ColorThemes:List> XML node."
+    );
+
+    const list = new ColorThemesList();
+    list.setXmlAttributes(node.attributes);
+    const { parentGroup } = this._context;
+    if (parentGroup == null) {
+      console.warn(
+        `FIXME: Expected <ColorThemes:List id="${list.getId()}"> to be within a <Layout> | <Group>`
+      );
+      return;
+    }
+    parentGroup.addChild(list);
   }
 
   async layoutStatus(node: XmlElement) {

@@ -178,6 +178,15 @@ export default class SystemObject extends BaseObject {
   }
 
   /**
+   * Seek to the desired position in the track. Range is from
+   * 0 to SONG LENGTH (in milliseconds).
+   */
+  seekto(pos: number) {
+    // Note: For some reason I seem to be getting passed seconds here not MS
+    AUDIO_PLAYER.seekTo(pos);
+  }
+
+  /**
    * Get the string representation of an integer.
    *
    * @ret         The string equivalent of the integer.
@@ -214,6 +223,58 @@ export default class SystemObject extends BaseObject {
    */
   getviewportheight() {
     return window.document.documentElement.clientHeight;
+  }
+
+  getviewporttop() {
+    // TODO: What should this really be?
+    return 0;
+  }
+
+  getviewportleft() {
+    // TODO: What should this really be?
+    return 0;
+  }
+
+  /**
+   * Get the applications current left coordinate in the screen,
+   * using the screen coordinate system.
+   *
+   * @ret The left coordinate of the application.
+   */
+  getcurappleft(): number {
+    return 0;
+  }
+
+  /**
+   * Get the applications current top coordinate in the screen,
+   * using the screen coordinate system.
+   *
+   * @ret The top coordinate of the application.
+   */
+  getcurapptop(): number {
+    return 0;
+  }
+
+  /**
+   * getCurAppWidth()
+   *
+   * Get the applications current window width, in pixels.
+   *
+   * @ret The width of the application window.
+   */
+  getcurappwidth(): number {
+    // TODO
+    return 1000;
+  }
+
+  /**
+   * Get the applications current window height, in pixels.
+   *
+   * @ret The height of the application window.
+   */
+  getcurappheight(): number {
+    // TODO
+    return 1000;
   }
 
   /**

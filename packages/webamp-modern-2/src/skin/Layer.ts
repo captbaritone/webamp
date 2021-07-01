@@ -45,15 +45,14 @@ export default class Layer extends GuiObj {
   }
 
   _renderBackground() {
-    if (this._image != null) {
-      const bitmap = UI_ROOT.getBitmap(this._image);
-      this.setBackgroundImage(bitmap);
-    }
+    const bitmap = this._image != null ? UI_ROOT.getBitmap(this._image) : null;
+    this.setBackgroundImage(bitmap);
   }
 
   draw() {
     super.draw();
     this._div.setAttribute("data-obj-name", "Layer");
+    this._div.classList.add("webamp--img");
     this._renderBackground();
   }
 }

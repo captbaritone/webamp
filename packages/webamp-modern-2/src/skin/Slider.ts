@@ -16,6 +16,48 @@ export default class Slider extends GuiObj {
   _high: number;
   _position: number = 0;
   _thumbDiv: HTMLDivElement = document.createElement("div");
+
+  constructor() {
+    super();
+    this._thumbDiv.addEventListener("mousedown", (downEvent: MouseEvent) => {
+      const rect = this._div.getBoundingClientRect();
+      const startX = rect.x;
+      const startY = rect.y;
+      const width = this.getwidth();
+      const height = this.getheight();
+
+      const handleMove = (moveEvent: MouseEvent) => {
+        const newMouseX = moveEvent.clientX;
+        const newMouseY = moveEvent.clientY;
+        const deltaX = newMouseX - startX;
+        const deltaY = newMouseY - startY;
+
+        // TODO: What about vertical sliders?
+        if (this._vertical) {
+          const yPos = clamp(deltaY, 0, height);
+          this._position = yPos / height;
+        } else {
+          const xPos = clamp(deltaX, 0, width);
+          this._position = xPos / width;
+        }
+        this._renderThumbPosition();
+        this.onsetposition(this.getposition());
+      };
+
+      const handleMouseUp = () => {
+        VM.dispatch(this, "onsetfinalposition", [
+          { type: "INT", value: this.getposition() },
+        ]);
+        VM.dispatch(this, "onpostedposition", [
+          { type: "INT", value: this.getposition() },
+        ]);
+        document.removeEventListener("mousemove", handleMove);
+        document.removeEventListener("mouseup", handleMouseUp);
+      };
+      document.addEventListener("mousemove", handleMove);
+      document.addEventListener("mouseup", handleMouseUp);
+    });
+  }
   setXmlAttr(key: string, value: string): boolean {
     if (super.setXmlAttr(key, value)) {
       return true;
@@ -110,47 +152,6 @@ export default class Slider extends GuiObj {
     }
   }
 
-  _renderBindings() {
-    this._thumbDiv.addEventListener("mousedown", (downEvent: MouseEvent) => {
-      const rect = this._div.getBoundingClientRect();
-      const startX = rect.x;
-      const startY = rect.y;
-      const width = this.getwidth();
-      const height = this.getheight();
-
-      const handleMove = (moveEvent: MouseEvent) => {
-        const newMouseX = moveEvent.clientX;
-        const newMouseY = moveEvent.clientY;
-        const deltaX = newMouseX - startX;
-        const deltaY = newMouseY - startY;
-
-        // TODO: What about vertical sliders?
-        if (this._vertical) {
-          const yPos = clamp(deltaY, 0, height);
-          this._position = yPos / height;
-        } else {
-          const xPos = clamp(deltaX, 0, width);
-          this._position = xPos / width;
-        }
-        this._renderThumbPosition();
-        this.onsetposition(this.getposition());
-      };
-
-      const handleMouseUp = () => {
-        VM.dispatch(this, "onsetfinalposition", [
-          { type: "INT", value: this.getposition() },
-        ]);
-        VM.dispatch(this, "onpostedposition", [
-          { type: "INT", value: this.getposition() },
-        ]);
-        document.removeEventListener("mousemove", handleMove);
-        document.removeEventListener("mouseup", handleMouseUp);
-      };
-      document.addEventListener("mousemove", handleMove);
-      document.addEventListener("mouseup", handleMouseUp);
-    });
-  }
-
   draw() {
     super.draw();
     this._div.setAttribute("data-obj-name", "Slider");
@@ -160,7 +161,6 @@ export default class Slider extends GuiObj {
     this._renderThumb();
     this._renderThumbPosition();
     this._div.appendChild(this._thumbDiv);
-    this._renderBindings();
   }
 
   /*

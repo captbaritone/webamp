@@ -148,7 +148,7 @@ class UIRoot {
     return found ?? null;
   }
 
-  dispatch(action: string) {
+  dispatch(action: string, param: string | null, actionTarget: string | null) {
     switch (action) {
       case "PLAY":
         AUDIO_PLAYER.play();

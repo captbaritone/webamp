@@ -1,6 +1,8 @@
 import { SkinContext } from "../types";
-import { px, toBool } from "../utils";
+import UI_ROOT from "../UIRoot";
+import { assert, px, removeAllChildNodes, toBool } from "../utils";
 import Layout from "./Layout";
+import { VM } from "./VM";
 import XmlObj from "./XmlObj";
 
 // > A container is a top level object and it basically represents a window.
@@ -85,10 +87,51 @@ export default class Container extends XmlObj {
   }
 
   addLayout(layout: Layout) {
-    layout.setParent(this);
+    layout.setParentContainer(this);
     this._layouts.push(layout);
     if (this._activeLayout == null) {
       this._activeLayout = layout;
+    }
+  }
+
+  _clearCurrentLayout() {
+    removeAllChildNodes(this._div);
+  }
+
+  setLayout(id: string) {
+    const layout = this.getlayout(id);
+    assert(layout != null, `Could not find layout with id "${id}".`);
+    VM.dispatch(this, "onswitchtolayout", [
+      { type: "OBJECT", value: this._activeLayout },
+      { type: "OBJECT", value: layout },
+    ]);
+    this._activeLayout = layout;
+    this._clearCurrentLayout();
+    this._renderLayout();
+    VM.dispatch(this, "onswitchtolayout", [{ type: "OBJECT", value: layout }]);
+  }
+
+  dispatchAction(
+    action: string,
+    param: string | null,
+    actionTarget: string | null
+  ) {
+    switch (action) {
+      case "SWITCH":
+        this.setLayout(param);
+        break;
+      default:
+        UI_ROOT.dispatch(action, param, actionTarget);
+    }
+  }
+
+  _renderLayout() {
+    if (this._defaultVisible && this._activeLayout) {
+      this._activeLayout.draw();
+      this._div.appendChild(this._activeLayout.getDiv());
+      // this.center();
+    } else {
+      removeAllChildNodes(this._div);
     }
   }
 
@@ -96,11 +139,6 @@ export default class Container extends XmlObj {
     this._div.setAttribute("data-xml-id", this.getId());
     this._div.setAttribute("data-obj-name", "Container");
     this._div.style.position = "absolute";
-
-    if (this._defaultVisible && this._activeLayout) {
-      this._activeLayout.draw();
-      this._div.appendChild(this._activeLayout.getDiv());
-      this.center();
-    }
+    this._renderLayout();
   }
 }

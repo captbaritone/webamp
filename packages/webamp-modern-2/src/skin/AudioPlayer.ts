@@ -44,6 +44,10 @@ class AudioPlayer {
     this._audio.volume = volume;
   }
 
+  seekTo(secs: number) {
+    this._audio.currentTime = secs;
+  }
+
   // Current track length in seconds
   getLength(): number {
     return this._audio.duration;

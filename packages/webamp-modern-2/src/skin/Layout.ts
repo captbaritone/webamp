@@ -11,7 +11,7 @@ import Container from "./Container";
 //
 // -- http://wiki.winamp.com/wiki/Modern_Skin:_Container
 export default class Layout extends Group {
-  _parent: Container | null = null;
+  _parentContainer: Container | null = null;
 
   setXmlAttr(key: string, value: string): boolean {
     if (super.setXmlAttr(key, value)) {
@@ -27,8 +27,29 @@ export default class Layout extends Group {
     return true;
   }
 
-  setParent(container: Container) {
-    this._parent = container;
+  setParentContainer(container: Container) {
+    this._parentContainer = container;
+  }
+
+  dispatchAction(
+    action: string,
+    param: string | null,
+    actionTarget: string | null
+  ) {
+    // TODO: Maybe this should move to the container?
+    if (actionTarget != null) {
+      const target = this.findObject(actionTarget);
+      if (target != null) {
+        target.handleAction(action, param, actionTarget);
+      }
+      return;
+    }
+    switch (action) {
+      default:
+        if (this._parentContainer != null) {
+          this._parentContainer.dispatchAction(action, param, actionTarget);
+        }
+    }
   }
 
   draw() {

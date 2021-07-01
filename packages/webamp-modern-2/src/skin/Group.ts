@@ -6,6 +6,7 @@ import { SkinContext } from "../types";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Cgroup.2F.3E
 export default class Group extends GuiObj {
+  _parent: Group;
   _instanceId: string;
   _background: string;
   _desktopAlpha: boolean;
@@ -71,11 +72,27 @@ export default class Group extends GuiObj {
   }
 
   addChild(child: GuiObj) {
+    child.setParent(this);
     this._children.push(child);
   }
 
-  /* Required for Maki */
+  findObject(objectId: string): GuiObj | null {
+    const lower = objectId.toLowerCase();
+    for (const obj of this._children) {
+      if (obj.getId() === lower) {
+        return obj;
+      }
+      if (obj instanceof Group) {
+        const found = obj.findObject(objectId);
+        if (found != null) {
+          return found;
+        }
+      }
+    }
+    return null;
+  }
 
+  /* Required for Maki */
   getobject(objectId: string): GuiObj {
     const lower = objectId.toLowerCase();
     for (const obj of this._children) {
@@ -125,6 +142,7 @@ export default class Group extends GuiObj {
   draw() {
     super.draw();
     this._div.setAttribute("data-obj-name", "Group");
+    this._div.classList.add("webamp--img");
     // It seems Groups are not responsive to click events.
     this._div.style.pointerEvents = "none";
     this._div.style.overflow = "hidden";

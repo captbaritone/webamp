@@ -8,6 +8,21 @@ export default class Button extends GuiObj {
   _downimage: string;
   _active: boolean = false;
   _action: string | null = null;
+  _param: string | null = null;
+  _actionTarget: string | null = null;
+
+  constructor() {
+    super();
+    // TODO: Cleanup!
+    this._div.addEventListener("mousedown", this._handleMouseDown.bind(this));
+    this._div.addEventListener("click", (e) => {
+      if (this._action) {
+        this.dispatchAction(this._action, this._param, this._actionTarget);
+      }
+      // TODO: Only left button
+      this.onLeftClick();
+    });
+  }
 
   setXmlAttr(_key: string, value: string): boolean {
     const key = _key.toLowerCase();
@@ -25,6 +40,12 @@ export default class Button extends GuiObj {
         break;
       case "action":
         this._action = value;
+        break;
+      case "param":
+        this._param = value;
+        break;
+      case "action_target":
+        this._actionTarget = value;
         break;
       default:
         return false;
@@ -68,6 +89,10 @@ export default class Button extends GuiObj {
     }
   }
 
+  leftclick() {
+    this.onLeftClick();
+  }
+
   onLeftClick() {
     VM.dispatch(this, "onleftclick", []);
   }
@@ -88,18 +113,6 @@ export default class Button extends GuiObj {
     }
   }
 
-  _bindToDom() {
-    // TODO: Cleanup!
-    this._div.addEventListener("mousedown", this._handleMouseDown.bind(this));
-    this._div.addEventListener("click", (e) => {
-      if (this._action) {
-        UI_ROOT.dispatch(this._action);
-      }
-      // TODO: Only left button
-      this.onLeftClick();
-    });
-  }
-
   _handleMouseDown(e: MouseEvent) {
     this.setactivated(!this._active);
   }
@@ -107,7 +120,7 @@ export default class Button extends GuiObj {
   draw() {
     super.draw();
     this._div.setAttribute("data-obj-name", "Button");
-    this._bindToDom();
+    this._div.classList.add("webamp--img");
     this._renderBackground();
   }
 

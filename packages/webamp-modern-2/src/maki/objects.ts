@@ -2,6 +2,7 @@ import stdPatched from "./objectData/stdPatched";
 import pldir from "./objectData/pldir.json";
 import config from "./objectData/config.json";
 import { DataType } from "./v";
+import { assert } from "../utils";
 
 type MethodDefinition = {
   name: string;
@@ -49,6 +50,7 @@ export function getMethod(
   methodName: string
 ): MethodDefinition {
   const klass = getClass(classId);
+  assert(klass != null, `Could not find class matching id: ${classId}`);
   return getObjectFunction(klass, methodName);
 }
 
@@ -76,7 +78,7 @@ Object.values(normalizedObjects).forEach((object) => {
   object.parentClass = parentClass;
 });
 
-function getFormattedId(id) {
+function getFormattedId(id: string): string {
   // https://en.wikipedia.org/wiki/Universally_unique_identifier#Encoding
   const formattedId = id.replace(
     /(........)(....)(....)(..)(..)(..)(..)(..)(..)(..)(..)/,

@@ -1,11 +1,13 @@
 import { SkinContext } from "../types";
 import { assert, num, toBool, px, assume } from "../utils";
 import Bitmap from "./Bitmap";
+import Group from "./Group";
 import { VM } from "./VM";
 import XmlObj from "./XmlObj";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#GuiObject_.28Global_params.29
 export default class GuiObj extends XmlObj {
+  _parent: Group;
   _id: string;
   _width: number;
   _height: number;
@@ -23,6 +25,28 @@ export default class GuiObj extends XmlObj {
   _targetAlpha: number | null = null;
   _targetSpeed: number | null = null;
   _div: HTMLDivElement = document.createElement("div");
+
+  constructor() {
+    super();
+    this._div.addEventListener("mouseup", (e) => {
+      this.onLeftButtonUp(e.clientX, e.clientY);
+    });
+
+    this._div.addEventListener("mousedown", (e) => {
+      this.onLeftButtonDown(e.clientX, e.clientY);
+    });
+    this._div.addEventListener("mouseenter", (e) => {
+      this.onEnterArea();
+    });
+
+    this._div.addEventListener("mouseleave", (e) => {
+      this.onLeaveArea();
+    });
+  }
+
+  setParent(group: Group) {
+    this._parent = group;
+  }
 
   setXmlAttr(_key: string, value: string): boolean {
     const key = _key.toLowerCase();
@@ -122,12 +146,14 @@ export default class GuiObj extends XmlObj {
    * @ret The height of the object.
    */
   getheight(): number {
+    /*
     assert(
       this._height != null,
       `Expected GUIObj to have a height in ${this.getId()}.`
     );
+    */
     // FIXME
-    return this._height;
+    return this._height ?? 0;
   }
 
   /**
@@ -136,11 +162,13 @@ export default class GuiObj extends XmlObj {
    * @ret The width of the object.
    */
   getwidth(): number {
+    /*
     assert(
       this._width != null,
       `Expected GUIObj to have a width in ${this.getId()}.`
     );
-    return this._width;
+    */
+    return this._width ?? 0;
   }
 
   /**
@@ -431,6 +459,26 @@ export default class GuiObj extends XmlObj {
     return this._alpha;
   }
 
+  handleAction(
+    action: string,
+    param: string | null,
+    actionTarget: string | null
+  ): boolean {
+    return false;
+  }
+
+  // Sends an action up the UI heirarchy
+  dispatchAction(
+    action: string,
+    param: string | null,
+    actionTarget: string | null
+  ) {
+    const handled = this.handleAction(action, param, actionTarget);
+    if (!handled && this._parent != null) {
+      this._parent.dispatchAction(action, param, actionTarget);
+    }
+  }
+
   _renderAlpha() {
     this._div.style.opacity = `${this._alpha / 255}`;
   }
@@ -465,6 +513,9 @@ export default class GuiObj extends XmlObj {
   setBackgroundImage(bitmap: Bitmap | null) {
     if (bitmap != null) {
       bitmap.setAsBackground(this._div);
+    } else {
+      this._div.style.setProperty(`--background-image`, "none");
+      this._div.style.setProperty(`--background-position`, "none");
     }
   }
 
@@ -480,7 +531,6 @@ export default class GuiObj extends XmlObj {
   draw() {
     this._div.setAttribute("data-id", this.getId());
     this._div.setAttribute("data-obj-name", "GuiObj");
-    this._div.classList.add("webamp--img");
     this._renderVisibility();
     this._div.style.position = "absolute";
     this._renderAlpha();
@@ -493,20 +543,5 @@ export default class GuiObj extends XmlObj {
       this._div.style.pointerEvents = "auto";
     }
     this._renderDimensions();
-
-    this._div.addEventListener("mouseup", (e) => {
-      this.onLeftButtonUp(e.clientX, e.clientY);
-    });
-
-    this._div.addEventListener("mousedown", (e) => {
-      this.onLeftButtonDown(e.clientX, e.clientY);
-    });
-    this._div.addEventListener("mouseenter", (e) => {
-      this.onEnterArea();
-    });
-
-    this._div.addEventListener("mouseleave", (e) => {
-      this.onLeaveArea();
-    });
   }
 }

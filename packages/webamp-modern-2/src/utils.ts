@@ -55,3 +55,9 @@ export function clamp(num: number, min: number, max: number): number {
 export function normalizeDomId(id: string) {
   return id.replace(/[^a-zA-Z0-9]/g, "-");
 }
+
+export function removeAllChildNodes(parent: Element) {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  }
+}

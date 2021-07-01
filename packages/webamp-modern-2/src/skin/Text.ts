@@ -164,12 +164,14 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
       this._div.style.textAlign = this._align;
     }
 
-    if (false && this._color) {
+    /*
+    if (this._color) {
       console.log(this._color);
       const color = UI_ROOT.getColor(this._color);
       console.log({ color });
       this._div.style.color = color.getRbg();
     }
+    */
 
     this._div.style.fontSize = Utils.px(this._fontSize ?? 14);
   }
