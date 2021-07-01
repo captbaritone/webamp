@@ -305,48 +305,82 @@ export default class GuiObj extends XmlObj {
     const duration = this._targetSpeed * 1000;
     const startTime = performance.now();
 
-    const changes = {
-      _x: {
-        start: this._x,
-        delta: this._targetX == null ? 0 : this._targetX - this._x,
-      },
-      _y: {
-        start: this._y,
-        delta: this._targetY == null ? 0 : this._targetY - this._y,
-      },
-      _width: {
-        start: this._width,
-        delta: this._targetWidth == null ? 0 : this._targetWidth - this._width,
-      },
-      _height: {
-        start: this._height,
-        delta:
-          this._targetHeight == null ? 0 : this._targetHeight - this._height,
-      },
-      _alpha: {
-        start: this._alpha,
-        delta: this._targetAlpha == null ? 0 : this._targetAlpha - this._alpha,
-      },
-    };
+    const pairs = [
+      ["_x", "_targetX", "_renderX"],
+      ["_y", "_targetY", "_renderY"],
+      ["_width", "_targetWidth", "_renderWidth"],
+      ["_height", "_targetHeight", "_renderHeight"],
+      ["_alpha", "_targetAlpha", "_renderAlpha"],
+    ];
+
+    const changes: {
+      [key: string]: { start: number; delta: number; renderKey: string };
+    } = {};
+
+    for (const [key, targetKey, renderKey] of pairs) {
+      const target = this[targetKey];
+      if (target != null) {
+        const start = this[key];
+        const delta = target - start;
+        changes[key] = { start, delta, renderKey };
+      }
+    }
 
     const update = (time: number) => {
       const timeDiff = time - startTime;
       const progress = timeDiff / duration;
-      for (const [key, { start, delta }] of Object.entries(changes)) {
+      for (const [key, { start, delta, renderKey }] of Object.entries(
+        changes
+      )) {
         this[key] = start + delta * progress;
+        this[renderKey]();
       }
-      this._renderDimensions();
       if (timeDiff < duration) {
         window.requestAnimationFrame(update);
       } else {
+        // TODO: Clear targets?
         VM.dispatch(this, "ontargetreached");
       }
     };
 
     window.requestAnimationFrame(update);
-    // this._renderDimensions();
   }
 
+  /**
+   * Experimental/unused
+   */
+  __gototargetWebAnimationApi() {
+    const duration = this._targetSpeed * 1000;
+
+    const start = {
+      left: px(this._x ?? 0),
+      top: px(this._y ?? 0),
+      width: px(this._width),
+      height: px(this._height),
+      opacity: this._alpha / 255,
+    };
+    const end = {
+      left: px(this._targetX ?? this._x ?? 0),
+      top: px(this._targetY ?? this._y ?? 0),
+      width: px(this._targetWidth ?? this._width),
+      height: px(this._targetHeight ?? this._height),
+      opacity: (this._targetAlpha ?? this._alpha) / 255,
+    };
+
+    const frames = [start, end];
+
+    const animation = this._div.animate(frames, { duration });
+    animation.addEventListener("finish", () => {
+      this._x = this._targetX ?? this._x;
+      this._y = this._targetY ?? this._y;
+      this._width = this._targetWidth ?? this._width;
+      this._height = this._targetHeight ?? this._height;
+      this._alpha = this._targetAlpha ?? this._alpha;
+      this._renderDimensions();
+      this._renderAlpha();
+      VM.dispatch(this, "ontargetreached");
+    });
+  }
   /**
    * Hookable. Event happens when the object has reached
    * it's previously set target.
