@@ -8,7 +8,7 @@ export default class Slider extends GuiObj {
   _barLeft: string;
   _barMiddle: string;
   _barRight: string;
-  _orientation: string;
+  _vertical: boolean = false;
   _thumb: string;
   _downThumb: string;
   _hoverThumb: string;
@@ -47,7 +47,8 @@ export default class Slider extends GuiObj {
         break;
       case "orientation":
         // (str) Either "v" or "vertical" to make the slider vertical, otherwise it will be horizontal.
-        this._orientation = value;
+        const lower = value.toLowerCase();
+        this._vertical = lower === "v" || lower === "vertical";
         break;
       case "low":
         // (int) Set the low-value boundary. Default is 0.
@@ -97,8 +98,15 @@ export default class Slider extends GuiObj {
   _renderThumbPosition() {
     if (this._thumb != null) {
       const bitmap = UI_ROOT.getBitmap(this._thumb);
-      const left = this._position * (this.getwidth() - bitmap.getWidth() / 2);
-      this._thumbDiv.style.left = px(left);
+      // TODO: What if the orientation has changed?
+      if (this._vertical) {
+        const top =
+          this._position * (this.getheight() - bitmap.getHeight() / 2);
+        this._thumbDiv.style.top = px(top);
+      } else {
+        const left = this._position * (this.getwidth() - bitmap.getWidth() / 2);
+        this._thumbDiv.style.left = px(left);
+      }
     }
   }
 
@@ -108,6 +116,7 @@ export default class Slider extends GuiObj {
       const startX = rect.x;
       const startY = rect.y;
       const width = this.getwidth();
+      const height = this.getheight();
 
       const handleMove = (moveEvent: MouseEvent) => {
         const newMouseX = moveEvent.clientX;
@@ -116,8 +125,13 @@ export default class Slider extends GuiObj {
         const deltaY = newMouseY - startY;
 
         // TODO: What about vertical sliders?
-        const xPos = clamp(deltaX, 0, width);
-        this._position = xPos / width;
+        if (this._vertical) {
+          const yPos = clamp(deltaY, 0, height);
+          this._position = yPos / height;
+        } else {
+          const xPos = clamp(deltaX, 0, width);
+          this._position = xPos / width;
+        }
         this._renderThumbPosition();
         this.onsetposition(this.getposition());
       };
