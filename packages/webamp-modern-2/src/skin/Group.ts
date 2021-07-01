@@ -125,7 +125,8 @@ export default class Group extends GuiObj {
   draw() {
     super.draw();
     this._div.setAttribute("data-obj-name", "Group");
-    // this._div.style.pointerEvents = "none";
+    // It seems Groups are not responsive to click events.
+    this._div.style.pointerEvents = "none";
     this._div.style.overflow = "hidden";
     this._div.style.height = Utils.px(this._maximumHeight);
     this._div.style.width = Utils.px(this._maximumWidth);

@@ -11,20 +11,26 @@ function hack() {
 }
 
 async function main() {
+  const status = document.getElementById("status");
+  status.innerText = "Downloading skin...";
   // const response = await fetch("assets/CornerAmp_Redux.wal");
   // const response = await fetch("assets/Default_winamp3_build499.wal");
   const response = await fetch("assets/MMD3.wal");
   const data = await response.blob();
+  status.innerText = "Loading .wal archive...";
   const zip = await JSZip.loadAsync(data);
 
+  status.innerText = "Parsing XML and initializing images...";
   const parser = new SkinParser(zip);
 
   await parser.parse();
 
   let node = document.createElement("div");
 
+  status.innerText = "Enabling Colors...";
   UI_ROOT.enableDefaultGammaSet();
 
+  status.innerText = "Rendering skin for the first time...";
   for (const container of parser._containers) {
     container.draw();
     node.appendChild(container.getDiv());
@@ -35,7 +41,6 @@ async function main() {
   select.style.bottom = "0px";
   select.style.left = "0px";
   select.addEventListener("change", (e) => {
-    console.log(e.target.value);
     UI_ROOT.enableGammaSet(e.target.value);
   });
   for (const set of UI_ROOT._gammaSets.keys()) {
@@ -51,12 +56,12 @@ async function main() {
   document.body.appendChild(div);
 
   document.body.appendChild(node);
-  console.log("RENDER");
 
+  status.innerText = "Initializing Maki...";
   for (const container of parser._containers) {
     container.init({ containers: parser._containers });
   }
-  console.log("INIT");
+  status.innerText = "";
 }
 
 main();

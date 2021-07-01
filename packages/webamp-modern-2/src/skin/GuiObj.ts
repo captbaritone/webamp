@@ -1,5 +1,5 @@
 import { SkinContext } from "../types";
-import { assert, num, toBool, px } from "../utils";
+import { assert, num, toBool, px, assume } from "../utils";
 import Bitmap from "./Bitmap";
 import { VM } from "./VM";
 import XmlObj from "./XmlObj";
@@ -16,6 +16,12 @@ export default class GuiObj extends XmlObj {
   _alpha: number = 255;
   _ghost: boolean = false;
   _tooltip: string = "";
+  _targetX: number | null = null;
+  _targetY: number | null = null;
+  _targetWidth: number | null = null;
+  _targetHeight: number | null = null;
+  _targetAlpha: number | null = null;
+  _targetSpeed: number | null = null;
   _div: HTMLDivElement = document.createElement("div");
 
   setXmlAttr(_key: string, value: string): boolean {
@@ -240,7 +246,7 @@ export default class GuiObj extends XmlObj {
    * @param  x   The target X position of the object.
    */
   settargetx(x: number) {
-    // TOOD
+    this._targetX = x;
   }
 
   /**
@@ -250,7 +256,7 @@ export default class GuiObj extends XmlObj {
    * @param  y   The target Y position of the object.
    */
   settargety(y: number) {
-    // TODO
+    this._targetY = y;
   }
 
   /**
@@ -259,7 +265,7 @@ export default class GuiObj extends XmlObj {
    * @param  w   The target width of the object.
    */
   settargetw(w: number) {
-    // TODO
+    this._targetWidth = w;
   }
 
   /**
@@ -267,8 +273,8 @@ export default class GuiObj extends XmlObj {
    *
    * @param  h   The target height of the object.
    */
-  settargeth(r: number) {
-    // TODO
+  settargeth(h: number) {
+    this._targetHeight = h;
   }
 
   /**
@@ -279,7 +285,7 @@ export default class GuiObj extends XmlObj {
    * @param  alpha   The target alpha value.
    */
   settargeta(alpha: number) {
-    // TODO
+    this._targetAlpha = alpha;
   }
 
   /**
@@ -289,14 +295,56 @@ export default class GuiObj extends XmlObj {
    * @param  insecond    The number of seconds in which to reach the target.
    */
   settargetspeed(insecond: number) {
-    // TODO
+    this._targetSpeed = insecond;
   }
 
   /**
    * Begin transition to previously set target.
    */
   gototarget() {
-    // TODO
+    const duration = this._targetSpeed * 1000;
+    const startTime = performance.now();
+
+    const changes = {
+      _x: {
+        start: this._x,
+        delta: this._targetX == null ? 0 : this._targetX - this._x,
+      },
+      _y: {
+        start: this._y,
+        delta: this._targetY == null ? 0 : this._targetY - this._y,
+      },
+      _width: {
+        start: this._width,
+        delta: this._targetWidth == null ? 0 : this._targetWidth - this._width,
+      },
+      _height: {
+        start: this._height,
+        delta:
+          this._targetHeight == null ? 0 : this._targetHeight - this._height,
+      },
+      _alpha: {
+        start: this._alpha,
+        delta: this._targetAlpha == null ? 0 : this._targetAlpha - this._alpha,
+      },
+    };
+
+    const update = (time: number) => {
+      const timeDiff = time - startTime;
+      const progress = timeDiff / duration;
+      for (const [key, { start, delta }] of Object.entries(changes)) {
+        this[key] = start + delta * progress;
+      }
+      this._renderDimensions();
+      if (timeDiff < duration) {
+        window.requestAnimationFrame(update);
+      } else {
+        VM.dispatch(this, "ontargetreached");
+      }
+    };
+
+    window.requestAnimationFrame(update);
+    // this._renderDimensions();
   }
 
   /**
@@ -304,11 +352,11 @@ export default class GuiObj extends XmlObj {
    * it's previously set target.
    */
   ontargetreached() {
-    // TODO
+    assume(false, "Unimplemented");
   }
 
   canceltarget() {
-    // TODO
+    assume(false, "Unimplemented");
   }
 
   /**
@@ -319,11 +367,11 @@ export default class GuiObj extends XmlObj {
 
   // modifies the x/y targets so that they compensate for gained width/height. useful to make drawers that open up without jittering
   reversetarget(reverse: number) {
-    // TODO
+    assume(false, "Unimplemented");
   }
 
   onStartup() {
-    // TODO
+    assume(false, "Unimplemented");
   }
 
   /**
@@ -354,6 +402,11 @@ export default class GuiObj extends XmlObj {
   }
   _renderVisibility() {
     this._div.style.display = this._visible ? "inline-block" : "none";
+  }
+  _renderTransate() {
+    this._div.style.transform = `translate(${px(this._x ?? 0)}, ${px(
+      this._y ?? 0
+    )})`;
   }
   _renderX() {
     this._div.style.left = px(this._x ?? 0);
@@ -402,6 +455,8 @@ export default class GuiObj extends XmlObj {
     }
     if (this._ghost) {
       this._div.style.pointerEvents = "none";
+    } else {
+      this._div.style.pointerEvents = "auto";
     }
     this._renderDimensions();
 
