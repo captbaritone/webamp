@@ -217,6 +217,29 @@ export default class SystemObject extends BaseObject {
   }
 
   /**
+  getPosition()
+
+  Get the current position in the track currently playing,
+  in milliseconds.
+
+  @ret The current position in the track.
+  */
+  getposition() {
+    return "25000";
+  }
+
+  /**
+  getStatus()
+
+  returns the status of the main player core.
+
+  @ret STATUS_PAUSED (-1) if paused, STATUS_STOPPED (0) if stopped, STATUS_PLAYING (1) if playing.
+  */
+  getstatus() {
+    return 1;
+  }
+
+  /**
    * Get the user's screen height in pixels.
    *
    * @ret The height of the user's screen.
