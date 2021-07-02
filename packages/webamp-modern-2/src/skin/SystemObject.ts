@@ -6,7 +6,6 @@ import Container from "./Container";
 import { clamp } from "../utils";
 import Group from "./Group";
 import PRIVATE_CONFIG from "./PrivateConfig";
-import { VM } from "./VM";
 import UI_ROOT from "../UIRoot";
 
 const MOUSE_POS = { x: 0, y: 0 };
@@ -34,8 +33,8 @@ export default class SystemObject extends BaseObject {
     }
     initialVariable.value = this;
 
-    VM.addScript(this._parsedScript);
-    VM.dispatch(this, "onscriptloaded");
+    UI_ROOT.vm.addScript(this._parsedScript);
+    UI_ROOT.vm.dispatch(this, "onscriptloaded");
   }
 
   setParentGroup(group: Group) {

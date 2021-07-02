@@ -1,7 +1,6 @@
 import UI_ROOT from "../UIRoot";
 import { assume, clamp, num, px } from "../utils";
 import GuiObj from "./GuiObj";
-import { VM } from "./VM";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Cslider.2F.3E_.26_.3CWasabi:HSlider.2F.3E_.26_.3CWasabi:VSlider.2F.3E
 export default class Slider extends GuiObj {
@@ -45,10 +44,10 @@ export default class Slider extends GuiObj {
       };
 
       const handleMouseUp = () => {
-        VM.dispatch(this, "onsetfinalposition", [
+        UI_ROOT.vm.dispatch(this, "onsetfinalposition", [
           { type: "INT", value: this.getposition() },
         ]);
-        VM.dispatch(this, "onpostedposition", [
+        UI_ROOT.vm.dispatch(this, "onpostedposition", [
           { type: "INT", value: this.getposition() },
         ]);
         document.removeEventListener("mousemove", handleMove);
@@ -112,7 +111,9 @@ export default class Slider extends GuiObj {
   }
 
   onsetposition(newPos: number) {
-    VM.dispatch(this, "onsetposition", [{ type: "INT", value: newPos }]);
+    UI_ROOT.vm.dispatch(this, "onsetposition", [
+      { type: "INT", value: newPos },
+    ]);
   }
 
   _renderThumb() {

@@ -1,7 +1,6 @@
 import UI_ROOT from "../UIRoot";
 import { assert, px, removeAllChildNodes, toBool } from "../utils";
 import Layout from "./Layout";
-import { VM } from "./VM";
 import XmlObj from "./XmlObj";
 
 // > A container is a top level object and it basically represents a window.
@@ -100,14 +99,16 @@ export default class Container extends XmlObj {
   setLayout(id: string) {
     const layout = this.getlayout(id);
     assert(layout != null, `Could not find layout with id "${id}".`);
-    VM.dispatch(this, "onswitchtolayout", [
+    UI_ROOT.vm.dispatch(this, "onswitchtolayout", [
       { type: "OBJECT", value: this._activeLayout },
       { type: "OBJECT", value: layout },
     ]);
     this._activeLayout = layout;
     this._clearCurrentLayout();
     this._renderLayout();
-    VM.dispatch(this, "onswitchtolayout", [{ type: "OBJECT", value: layout }]);
+    UI_ROOT.vm.dispatch(this, "onswitchtolayout", [
+      { type: "OBJECT", value: layout },
+    ]);
   }
 
   dispatchAction(

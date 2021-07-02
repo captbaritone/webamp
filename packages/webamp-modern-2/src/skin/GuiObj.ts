@@ -1,7 +1,7 @@
+import UI_ROOT from "../UIRoot";
 import { assert, num, toBool, px, assume } from "../utils";
 import Bitmap from "./Bitmap";
 import Group from "./Group";
-import { VM } from "./VM";
 import XmlObj from "./XmlObj";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#GuiObject_.28Global_params.29
@@ -194,7 +194,7 @@ export default class GuiObj extends XmlObj {
    * @param  y   The Y position in the screen where the cursor was when the event was triggered.
    */
   onLeftButtonUp(x: number, y: number) {
-    VM.dispatch(this, "onleftbuttonup", [
+    UI_ROOT.vm.dispatch(this, "onleftbuttonup", [
       { type: "INT", value: x },
       { type: "INT", value: y },
     ]);
@@ -216,7 +216,7 @@ export default class GuiObj extends XmlObj {
       y >= this.gettop(),
       "Expected click to be below the component's top"
     );
-    VM.dispatch(this, "onleftbuttondown", [
+    UI_ROOT.vm.dispatch(this, "onleftbuttondown", [
       { type: "INT", value: x },
       { type: "INT", value: y },
     ]);
@@ -230,7 +230,7 @@ export default class GuiObj extends XmlObj {
    * @param  y   The Y position in the screen where the cursor was when the event was triggered.
    */
   onRightButtonUp(x: number, y: number) {
-    VM.dispatch(this, "onrightbuttonup", [
+    UI_ROOT.vm.dispatch(this, "onrightbuttonup", [
       { type: "INT", value: x },
       { type: "INT", value: y },
     ]);
@@ -244,7 +244,7 @@ export default class GuiObj extends XmlObj {
    * @param  y   The Y position in the screen where the cursor was when the event was triggered.
    */
   onRightButtonDown(x: number, y: number) {
-    VM.dispatch(this, "onrightbuttondown", [
+    UI_ROOT.vm.dispatch(this, "onrightbuttondown", [
       { type: "INT", value: x },
       { type: "INT", value: y },
     ]);
@@ -255,7 +255,7 @@ export default class GuiObj extends XmlObj {
    * enters the objects area.
    */
   onEnterArea() {
-    VM.dispatch(this, "onenterarea");
+    UI_ROOT.vm.dispatch(this, "onenterarea");
   }
 
   /**
@@ -263,7 +263,7 @@ export default class GuiObj extends XmlObj {
    * leaves the objects area.
    */
   onLeaveArea() {
-    VM.dispatch(this, "onleavearea");
+    UI_ROOT.vm.dispatch(this, "onleavearea");
   }
 
   /**
@@ -366,7 +366,7 @@ export default class GuiObj extends XmlObj {
         window.requestAnimationFrame(update);
       } else {
         // TODO: Clear targets?
-        VM.dispatch(this, "ontargetreached");
+        UI_ROOT.vm.dispatch(this, "ontargetreached");
       }
     };
 
@@ -405,7 +405,7 @@ export default class GuiObj extends XmlObj {
       this._alpha = this._targetAlpha ?? this._alpha;
       this._renderDimensions();
       this._renderAlpha();
-      VM.dispatch(this, "ontargetreached");
+      UI_ROOT.vm.dispatch(this, "ontargetreached");
     });
   }
   /**

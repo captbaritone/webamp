@@ -7,6 +7,7 @@ import Color from "./skin/Color";
 import AUDIO_PLAYER from "./skin/AudioPlayer";
 import GammaGroup from "./skin/GammaGroup";
 import Container from "./skin/Container";
+import Vm from "./skin/VM";
 
 class UIRoot {
   // Just a temporary place to stash things
@@ -18,6 +19,12 @@ class UIRoot {
   _xuiElements: XmlElement[] = [];
   _activeGammaSet: GammaGroup[] | null = null;
   _containers: Container[] = [];
+
+  vm: Vm;
+
+  constructor() {
+    this.vm = new Vm();
+  }
 
   addBitmap(bitmap: Bitmap) {
     this._bitmaps.push(bitmap);

@@ -1,6 +1,5 @@
 import GuiObj from "./GuiObj";
 import UI_ROOT from "../UIRoot";
-import { VM } from "./VM";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Cbutton.2F.3E_.26_.3Ctogglebutton.2F.3E
 export default class Button extends GuiObj {
@@ -85,7 +84,9 @@ export default class Button extends GuiObj {
 
     if (onoff !== this._active) {
       this._active = onoff;
-      VM.dispatch(this, "onactivate", [{ type: "BOOL", value: onoff ? 1 : 0 }]);
+      UI_ROOT.vm.dispatch(this, "onactivate", [
+        { type: "BOOL", value: onoff ? 1 : 0 },
+      ]);
     }
   }
 
@@ -94,7 +95,7 @@ export default class Button extends GuiObj {
   }
 
   onLeftClick() {
-    VM.dispatch(this, "onleftclick", []);
+    UI_ROOT.vm.dispatch(this, "onleftclick", []);
   }
 
   _renderBackground() {

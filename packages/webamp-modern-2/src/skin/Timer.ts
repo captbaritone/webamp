@@ -1,6 +1,6 @@
+import UI_ROOT from "../UIRoot";
 import { assume } from "../utils";
 import BaseObject from "./BaseObject";
-import { VM } from "./VM";
 
 export default class Timer extends BaseObject {
   _delay: number;
@@ -21,7 +21,7 @@ export default class Timer extends BaseObject {
   start() {
     assume(this._delay != null, "Tried to start a timer without a delay");
     this._timeout = setInterval(() => {
-      VM.dispatch(this, "ontimer");
+      UI_ROOT.vm.dispatch(this, "ontimer");
     }, this._delay);
   }
 

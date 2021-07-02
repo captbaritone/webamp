@@ -1,7 +1,6 @@
 import UI_ROOT from "../UIRoot";
 import { ensureVmInt, px } from "../utils";
 import Layer from "./Layer";
-import { VM } from "./VM";
 
 export default class AnimatedLayer extends Layer {
   _currentFrame: number = 0;
@@ -33,7 +32,9 @@ export default class AnimatedLayer extends Layer {
   gotoframe(framenum: number) {
     this._currentFrame = ensureVmInt(framenum);
     this._renderFrame();
-    VM.dispatch(this, "onframe", [{ type: "INT", value: this._currentFrame }]);
+    UI_ROOT.vm.dispatch(this, "onframe", [
+      { type: "INT", value: this._currentFrame },
+    ]);
   }
   getcurframe(): number {
     return this._currentFrame;
@@ -59,7 +60,7 @@ export default class AnimatedLayer extends Layer {
 
     let frame = this._startFrame;
     this.gotoframe(frame);
-    VM.dispatch(this, "onplay");
+    UI_ROOT.vm.dispatch(this, "onplay");
     if (frame === end) {
       return;
     }
@@ -73,7 +74,7 @@ export default class AnimatedLayer extends Layer {
     }, this._speed);
   }
   pause() {
-    VM.dispatch(this, "onpause");
+    UI_ROOT.vm.dispatch(this, "onpause");
     // TODO
   }
   stop() {
@@ -81,7 +82,7 @@ export default class AnimatedLayer extends Layer {
       clearInterval(this._animationInterval);
       this._animationInterval = null;
     }
-    VM.dispatch(this, "onstop");
+    UI_ROOT.vm.dispatch(this, "onstop");
   }
   isplaying(): boolean {
     return this._animationInterval != null;

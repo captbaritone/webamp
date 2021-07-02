@@ -5,7 +5,7 @@ import BaseObject from "./BaseObject";
 
 import { classResolver } from "./resolver";
 
-class Vm {
+export default class Vm {
   _scripts: ParsedMaki[] = [];
   // This could easily become performance sensitive. We could make this more
   // performant by normalizing some of these things when scripts are added.
@@ -34,5 +34,3 @@ class Vm {
     interpret(commandOffset, script, args, classResolver);
   }
 }
-
-export const VM = new Vm();
