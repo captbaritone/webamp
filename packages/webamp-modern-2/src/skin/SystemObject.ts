@@ -197,14 +197,15 @@ export default class SystemObject extends BaseObject {
   }
 
   /**
-   * Convert a time in seconds to a MM:SS value.
-   *
-   * @ret       The string representation of the time (MM:SS).
+   * Convert a time in seconds to a M:SS value, does not
+   * return MM:SS as originally stated.
+   * 
+   * @ret       The string representation of the time (M:SS).
    * @param  value Timestamp to use.
    */
   integertotime(value: number): string {
     // TODO
-    return "00:00";
+    return "0:00";
   }
 
   /**
