@@ -9,7 +9,7 @@ import GammaGroup from "./skin/GammaGroup";
 import Container from "./skin/Container";
 import Vm from "./skin/VM";
 
-class UIRoot {
+export class UIRoot {
   // Just a temporary place to stash things
   _bitmaps: Bitmap[] = [];
   _fonts: (TrueTypeFont | BitmapFont)[] = [];
@@ -86,8 +86,8 @@ class UIRoot {
     return found ?? null;
   }
 
-  setContainers(containers: Container[]) {
-    this._containers = containers;
+  addContainers(container: Container) {
+    this._containers.push(container);
   }
 
   getContainers(): Container[] {

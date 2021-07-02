@@ -1,6 +1,5 @@
 import parseXml, { XmlDocument, XmlElement } from "@rgrove/parse-xml";
 import { assert, getCaseInsensitiveFile, assume } from "../utils";
-import UI_ROOT from "../UIRoot";
 import JSZip, { JSZipObject } from "jszip";
 import Bitmap from "./Bitmap";
 import ImageManager from "./ImageManager";
@@ -23,6 +22,7 @@ import BitmapFont from "./BitmapFont";
 import Color from "./Color";
 import GammaGroup from "./GammaGroup";
 import ColorThemesList from "./ColorThemesList";
+import UI_ROOT, { UIRoot } from "../UIRoot";
 
 class ParserContext {
   container: Container | null = null;
@@ -34,14 +34,15 @@ export default class SkinParser {
   _imageManager: ImageManager;
   _path: string[] = [];
   _context: ParserContext = new ParserContext();
-  _containers: Container[] = [];
   _gammaSet: GammaGroup[] = [];
+  _uiRoot: UIRoot;
 
   constructor(zip: JSZip) {
     this._zip = zip;
     this._imageManager = new ImageManager(zip);
+    this._uiRoot = UI_ROOT;
   }
-  async parse(): Promise<void> {
+  async parse(): Promise<UIRoot> {
     // Load built-in xui elements
     // await this.parseFromUrl("assets/xml/xui/standardframe.xml");
     const includedXml = await this.getCaseInsensitiveFile("skin.xml").async(
@@ -53,6 +54,8 @@ export default class SkinParser {
     const parsed = parseXml(includedXml);
 
     await this.traverseChildren(parsed);
+
+    return this._uiRoot;
   }
 
   // Some XML files are built-in, so we want to be able to
@@ -196,7 +199,7 @@ export default class SkinParser {
     bitmap.setXmlAttributes(node.attributes);
     await bitmap.ensureImageLoaded(this._imageManager);
 
-    UI_ROOT.addBitmap(bitmap);
+    this._uiRoot.addBitmap(bitmap);
   }
 
   async bitmapFont(node: XmlElement) {
@@ -208,7 +211,7 @@ export default class SkinParser {
     font.setXmlAttributes(node.attributes);
     await font.ensureFontLoaded(this._imageManager);
 
-    UI_ROOT.addFont(font);
+    this._uiRoot.addFont(font);
   }
 
   async text(node: XmlElement) {
@@ -325,7 +328,7 @@ export default class SkinParser {
     const color = new Color();
     color.setXmlAttributes(node.attributes);
 
-    UI_ROOT.addColor(color);
+    this._uiRoot.addColor(color);
   }
 
   async slider(node: XmlElement) {
@@ -347,7 +350,7 @@ export default class SkinParser {
   }
 
   async groupdef(node: XmlElement) {
-    UI_ROOT.addGroupDef(node);
+    this._uiRoot.addGroupDef(node);
   }
 
   async layer(node: XmlElement) {
@@ -388,7 +391,7 @@ export default class SkinParser {
 
   async maybeApplyGroupDef(group: Group, node: XmlElement) {
     const id = node.attributes.id;
-    const groupDef = UI_ROOT.getGroupDef(id);
+    const groupDef = this._uiRoot.getGroupDef(id);
     if (groupDef != null) {
       group.setXmlAttributes(groupDef.attributes);
       const previousParentGroup = this._context.parentGroup;
@@ -415,7 +418,7 @@ export default class SkinParser {
   async gammaset(node: XmlElement) {
     this._gammaSet = [];
     await this.traverseChildren(node);
-    UI_ROOT.addGammaSet(node.attributes.id, this._gammaSet);
+    this._uiRoot.addGammaSet(node.attributes.id, this._gammaSet);
   }
 
   async gammagroup(node: XmlElement) {
@@ -436,7 +439,7 @@ export default class SkinParser {
     const container = new Container();
     container.setXmlAttributes(node.attributes);
     this._context.container = container;
-    this._containers.push(container);
+    this._uiRoot.addContainers(container);
     await this.traverseChildren(node);
   }
 
@@ -467,7 +470,7 @@ export default class SkinParser {
 
   async xuiElement(node: XmlElement) {
     assume(node.children.length === 0, "Unexpected children in XUI XML node.");
-    const xuiElement = UI_ROOT.getXuiElement(node.name);
+    const xuiElement = this._uiRoot.getXuiElement(node.name);
     assume(
       xuiElement != null,
       `Expected to find xui element with name "${node.name}".`
@@ -552,7 +555,7 @@ export default class SkinParser {
     font.setXmlAttributes(node.attributes);
     await font.ensureFontLoaded(this._imageManager);
 
-    UI_ROOT.addFont(font);
+    this._uiRoot.addFont(font);
   }
 
   async include(node: XmlElement) {

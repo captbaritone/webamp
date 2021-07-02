@@ -2,7 +2,6 @@ import JSZip from "jszip";
 // This module is imported early here in order to avoid a circular dependency.
 import { classResolver } from "./skin/resolver";
 import SkinParser from "./skin/parse";
-import UI_ROOT from "./UIRoot";
 
 function hack() {
   // Without this Snowpack will try to treeshake out resolver causing a circular
@@ -23,17 +22,15 @@ async function main() {
   status.innerText = "Parsing XML and initializing images...";
   const parser = new SkinParser(zip);
 
-  await parser.parse();
-
-  UI_ROOT.setContainers(parser._containers);
+  const uiRoot = await parser.parse();
 
   let node = document.createElement("div");
 
   status.innerText = "Enabling Colors...";
-  UI_ROOT.enableDefaultGammaSet();
+  uiRoot.enableDefaultGammaSet();
 
   status.innerText = "Rendering skin for the first time...";
-  for (const container of parser._containers) {
+  for (const container of uiRoot.getContainers()) {
     container.draw();
     node.appendChild(container.getDiv());
   }
@@ -43,9 +40,9 @@ async function main() {
   select.style.bottom = "0px";
   select.style.left = "0px";
   select.addEventListener("change", (e) => {
-    UI_ROOT.enableGammaSet((e.target as HTMLInputElement).value);
+    uiRoot.enableGammaSet((e.target as HTMLInputElement).value);
   });
-  for (const set of UI_ROOT._gammaSets.keys()) {
+  for (const set of uiRoot._gammaSets.keys()) {
     const option = document.createElement("option");
     option.innerText = set;
     option.value = set;
@@ -60,7 +57,7 @@ async function main() {
   document.body.appendChild(node);
 
   status.innerText = "Initializing Maki...";
-  for (const container of parser._containers) {
+  for (const container of uiRoot.getContainers()) {
     container.init();
   }
   status.innerText = "";
