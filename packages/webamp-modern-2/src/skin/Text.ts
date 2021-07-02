@@ -100,9 +100,9 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
         case "vid_info":
           return "vid_info";
         case "time":
-          return "01:58";
+          return "1:58";
         case "songlength":
-          return "05:58";
+          return "5:58";
         case "songname":
           return "Niente da Caprie (3";
         case "songinfo":
