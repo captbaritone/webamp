@@ -2,7 +2,6 @@ import * as Utils from "../utils";
 import UI_ROOT from "../UIRoot";
 import GuiObj from "./GuiObj";
 import SystemObject from "./SystemObject";
-import { SkinContext } from "../types";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Cgroup.2F.3E
 export default class Group extends GuiObj {
@@ -53,12 +52,12 @@ export default class Group extends GuiObj {
     return true;
   }
 
-  init(context: SkinContext) {
+  init() {
     for (const systemObject of this._systemObjects) {
-      systemObject.init(context);
+      systemObject.init();
     }
     for (const child of this._children) {
-      child.init(context);
+      child.init();
     }
   }
 

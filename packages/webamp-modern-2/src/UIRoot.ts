@@ -6,6 +6,7 @@ import BitmapFont from "./skin/BitmapFont";
 import Color from "./skin/Color";
 import AUDIO_PLAYER from "./skin/AudioPlayer";
 import GammaGroup from "./skin/GammaGroup";
+import Container from "./skin/Container";
 
 class UIRoot {
   // Just a temporary place to stash things
@@ -16,6 +17,7 @@ class UIRoot {
   _gammaSets: Map<string, GammaGroup[]> = new Map();
   _xuiElements: XmlElement[] = [];
   _activeGammaSet: GammaGroup[] | null = null;
+  _containers: Container[] = [];
 
   addBitmap(bitmap: Bitmap) {
     this._bitmaps.push(bitmap);
@@ -75,6 +77,14 @@ class UIRoot {
     );
 
     return found ?? null;
+  }
+
+  setContainers(containers: Container[]) {
+    this._containers = containers;
+  }
+
+  getContainers(): Container[] {
+    return this._containers;
   }
 
   addGammaSet(id: string, gammaSet: GammaGroup[]) {

@@ -25,6 +25,8 @@ async function main() {
 
   await parser.parse();
 
+  UI_ROOT.setContainers(parser._containers);
+
   let node = document.createElement("div");
 
   status.innerText = "Enabling Colors...";
@@ -59,7 +61,7 @@ async function main() {
 
   status.innerText = "Initializing Maki...";
   for (const container of parser._containers) {
-    container.init({ containers: parser._containers });
+    container.init();
   }
   status.innerText = "";
 }

@@ -1,7 +1,5 @@
 import { getClass } from "../maki/objects";
 import { ParsedMaki } from "../maki/parser";
-import { V } from "../maki/v";
-import { SkinContext } from "../types";
 import AUDIO_PLAYER from "./AudioPlayer";
 import BaseObject from "./BaseObject";
 import Container from "./Container";
@@ -9,6 +7,7 @@ import { clamp } from "../utils";
 import Group from "./Group";
 import PRIVATE_CONFIG from "./PrivateConfig";
 import { VM } from "./VM";
+import UI_ROOT from "../UIRoot";
 
 const MOUSE_POS = { x: 0, y: 0 };
 
@@ -21,15 +20,13 @@ document.addEventListener("mousemove", (e: MouseEvent) => {
 export default class SystemObject extends BaseObject {
   _parentGroup: Group;
   _parsedScript: ParsedMaki;
-  _context: SkinContext;
 
   constructor(parsedScript: ParsedMaki) {
     super();
     this._parsedScript = parsedScript;
   }
 
-  init(context: SkinContext) {
-    this._context = context;
+  init() {
     // dumpScriptDebug(this._parsedScript);
     const initialVariable = this._parsedScript.variables[0];
     if (initialVariable.type !== "OBJECT") {
@@ -118,7 +115,7 @@ export default class SystemObject extends BaseObject {
    **/
   getcontainer(containerId: string): Container {
     const lower = containerId.toLowerCase();
-    for (const container of this._context.containers) {
+    for (const container of UI_ROOT.getContainers()) {
       if (container.getId() === lower) {
         return container;
       }

@@ -1,4 +1,3 @@
-import { SkinContext } from "../types";
 import UI_ROOT from "../UIRoot";
 import { assert, px, removeAllChildNodes, toBool } from "../utils";
 import Layout from "./Layout";
@@ -39,9 +38,9 @@ export default class Container extends XmlObj {
     return true;
   }
 
-  init(context: SkinContext) {
+  init() {
     for (const layout of this._layouts) {
-      layout.init(context);
+      layout.init();
     }
   }
 

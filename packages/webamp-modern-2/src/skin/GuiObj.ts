@@ -1,4 +1,3 @@
-import { SkinContext } from "../types";
 import { assert, num, toBool, px, assume } from "../utils";
 import Bitmap from "./Bitmap";
 import Group from "./Group";
@@ -92,7 +91,7 @@ export default class GuiObj extends XmlObj {
     return true;
   }
 
-  init(context: SkinContext) {
+  init() {
     // pass
   }
 
