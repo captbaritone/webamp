@@ -1,7 +1,6 @@
 import { num, px } from "../utils";
 import ImageManager from "./ImageManager";
 
-// TODO: Fill out the rest of this
 const CHARS = 'abcdefghijklmnopqrstuvwxyz"@ \n0123456789\u2026.:()-\'!_+\/[]^&%,=$#\nâöä?*';
 
 const CHAR_MAP = {};
