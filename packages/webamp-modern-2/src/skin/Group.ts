@@ -76,14 +76,14 @@ export default class Group extends GuiObj {
     this._children.push(child);
   }
 
-  findObject(objectId: string): GuiObj | null {
+  findobject(objectId: string): GuiObj | null {
     const lower = objectId.toLowerCase();
     for (const obj of this._children) {
       if (obj.getId() === lower) {
         return obj;
       }
       if (obj instanceof Group) {
-        const found = obj.findObject(objectId);
+        const found = obj.findobject(objectId);
         if (found != null) {
           return found;
         }
