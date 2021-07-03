@@ -147,7 +147,7 @@ export default class SkinParser {
       case "playlisteditor":
       case "wasabi:tabsheet":
       case "wasabi:standardframe:status":
-      case "Snappoint":
+      case "snappoint":
       case "accelerators":
         // TODO
         return;
