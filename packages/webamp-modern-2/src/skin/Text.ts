@@ -18,6 +18,8 @@ export default class Text extends GuiObj {
   _fontSize: number;
   _color: string;
   _ticker: boolean;
+  _timeColonWidth: number | null = null;
+
   setXmlAttr(key: string, value: string): boolean {
     if (super.setXmlAttr(key, value)) {
       return true;
@@ -66,6 +68,9 @@ export default class Text extends GuiObj {
         /// (bool) Setting this flag causes the object to scroll left and right if the text does not fit the rectangular area of the text object.
         this._ticker = Utils.toBool(value);
         break;
+      case "timecolonwidth":
+        // (int) How many extra pixels wider or smaller should the colon be when displaying time. Default is -1.
+        this._timeColonWidth = Utils.num(value);
       /*
 antialias - (bool) Setting this flag causes the text to be rendered antialiased if possible.
 default - (str) A parameter alias for text.
@@ -75,7 +80,6 @@ shadowcolor - (int) The comma delimited RGB color for underrendered shadow text.
 shadowx - (int) The x offset of the shadowrender.
 shadowy - (int) The y offset of the shadowrender.
 timeroffstyle - (int) How to display an empty timer: "0" = "  : ", "1" = "00:00", and "2"="" (if one is displaying time)
-timecolonwidth - (int) How many extra pixels wider or smaller should the colon be when displaying time. Default is -1.
 nograb - (bool) Setting this flag will cause the text object to ignore left button down messages. Default is off.
 showlen - (bool) Setting this flag will cause the text display to be appended with the length in minutes and seconds of the current song. Default is off.
 forcefixed - (bool) Force the system to attempt to render the display string with fixed-width font spacing.
@@ -136,19 +140,27 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
         this._div.innerText = this.getText();
         this._div.style.fontFamily = font.getFontFamily();
       } else if (font instanceof BitmapFont) {
-        this._div.style.whiteSpace = "nowrap";
-        if (this.getText() != null) {
-          for (const char of this.getText().split("")) {
-            this._div.appendChild(font.renderLetter(char));
-          }
-        }
-
-        //
+        this._renderBitmapFont(font);
       } else if (font == null) {
         this._div.innerText = this.getText();
         this._div.style.fontFamily = "Ariel";
       } else {
         throw new Error("Unexpected font");
+      }
+    }
+  }
+
+  _renderBitmapFont(font: BitmapFont) {
+    this._div.style.whiteSpace = "nowrap";
+    if (this.getText() != null) {
+      for (const char of this.getText().split("")) {
+        const charNode = font.renderLetter(char);
+        // TODO: This is quite hacky. Also, should it only be applied if we are
+        // rendering a time? How do we know?
+        if (char === ":" && this._timeColonWidth != null) {
+          charNode.style.width = Utils.px(this._timeColonWidth);
+        }
+        this._div.appendChild(charNode);
       }
     }
   }
