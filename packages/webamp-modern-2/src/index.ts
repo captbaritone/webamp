@@ -12,6 +12,7 @@ function hack() {
   classResolver("A funny joke about why this is needed.");
 }
 
+addDropHandler(loadSkin);
 const NODE = document.createElement("div");
 document.body.appendChild(NODE);
 
@@ -22,7 +23,6 @@ function setStatus(status: string) {
 }
 
 async function main() {
-  addDropHandler(loadSkin);
   setStatus("Downloading skin...");
   // const response = await fetch("assets/CornerAmp_Redux.wal");
   // const response = await fetch("assets/Default_winamp3_build499.wal");
