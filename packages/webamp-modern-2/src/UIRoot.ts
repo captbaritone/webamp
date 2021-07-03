@@ -4,10 +4,11 @@ import TrueTypeFont from "./skin/TrueTypeFont";
 import { assert, assume } from "./utils";
 import BitmapFont from "./skin/BitmapFont";
 import Color from "./skin/Color";
-import AUDIO_PLAYER from "./skin/AudioPlayer";
 import GammaGroup from "./skin/GammaGroup";
 import Container from "./skin/Container";
 import Vm from "./skin/VM";
+import BaseObject from "./skin/BaseObject";
+import AudioPlayer from "./skin/AudioPlayer";
 
 export class UIRoot {
   // Just a temporary place to stash things
@@ -20,10 +21,32 @@ export class UIRoot {
   _activeGammaSet: GammaGroup[] | null = null;
   _containers: Container[] = [];
 
-  vm: Vm;
+  // A list of all objects created for this skin.
+  _objects: BaseObject[] = [];
 
-  constructor() {
+  vm: Vm = new Vm();
+  audio: AudioPlayer = new AudioPlayer();
+
+  reset() {
+    this.dispose();
+    this._bitmaps = [];
+    this._fonts = [];
+    this._colors = [];
+    this._groupDefs = [];
+    this._gammaSets = new Map();
+    this._xuiElements = [];
+    this._activeGammaSet = null;
+    this._containers = [];
+
+    // A list of all objects created for this skin.
+    this._objects = [];
+
     this.vm = new Vm();
+    this.audio = new AudioPlayer();
+  }
+
+  addObject(obj: BaseObject) {
+    this._objects.push(obj);
   }
 
   addBitmap(bitmap: Bitmap) {
@@ -127,7 +150,12 @@ export class UIRoot {
     const found = this._activeGammaSet.find((gammaGroup) => {
       return gammaGroup.getId().toLowerCase() === lower;
     });
-    assume(found != null, `Cold not find a gammagroup for "${id}"`);
+    assume(
+      found != null,
+      `Cold not find a gammagroup for "${id}" from ${Array.from(
+        this._gammaSets.keys()
+      ).join(", ")}`
+    );
     return found;
   }
 
@@ -168,29 +196,35 @@ export class UIRoot {
   dispatch(action: string, param: string | null, actionTarget: string | null) {
     switch (action) {
       case "PLAY":
-        AUDIO_PLAYER.play();
+        this.audio.play();
         break;
       case "PAUSE":
-        AUDIO_PLAYER.pause();
+        this.audio.pause();
         break;
       case "STOP":
-        AUDIO_PLAYER.stop();
+        this.audio.stop();
         break;
       case "NEXT":
-        AUDIO_PLAYER.next();
+        this.audio.next();
         break;
       case "PREV":
-        AUDIO_PLAYER.previous();
+        this.audio.previous();
         break;
       case "EJECT":
-        AUDIO_PLAYER.eject();
+        this.audio.eject();
         break;
       default:
         assume(false, `Unknown global action: ${action}`);
     }
   }
+
+  dispose() {
+    for (const obj of this._objects) {
+      obj.dispose();
+    }
+  }
 }
 
 // Global Singleton for now
-const UI_ROOT = new UIRoot();
+let UI_ROOT = new UIRoot();
 export default UI_ROOT;

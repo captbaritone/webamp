@@ -1,4 +1,4 @@
-class AudioPlayer {
+export default class AudioPlayer {
   _input: HTMLInputElement = document.createElement("input");
   _audio: HTMLAudioElement = document.createElement("audio");
   constructor() {
@@ -53,7 +53,3 @@ class AudioPlayer {
     return this._audio.duration;
   }
 }
-
-const AUDIO_PLAYER = new AudioPlayer();
-
-export default AUDIO_PLAYER;

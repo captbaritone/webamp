@@ -1,11 +1,12 @@
-/**
- Object Class.
+import UI_ROOT from "../UIRoot";
 
- @short    This is the base class from which all other classes inherit.
- @author   Nullsoft Inc.
- @ver  1.0
-*/
+/**
+ * This is the base class from which all other classes inherit.
+ */
 export default class BaseObject {
+  constructor() {
+    UI_ROOT.addObject(this);
+  }
   /**
    * Returns the class name for the object.
    *
@@ -17,5 +18,9 @@ export default class BaseObject {
 
   getId() {
     throw new Error("Unimplemented");
+  }
+
+  dispose() {
+    // Pass
   }
 }

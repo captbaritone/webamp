@@ -22,7 +22,7 @@ import BitmapFont from "./BitmapFont";
 import Color from "./Color";
 import GammaGroup from "./GammaGroup";
 import ColorThemesList from "./ColorThemesList";
-import UI_ROOT, { UIRoot } from "../UIRoot";
+import { UIRoot } from "../UIRoot";
 
 class ParserContext {
   container: Container | null = null;
@@ -37,10 +37,13 @@ export default class SkinParser {
   _gammaSet: GammaGroup[] = [];
   _uiRoot: UIRoot;
 
-  constructor(zip: JSZip) {
+  constructor(
+    zip: JSZip,
+    uiRoot: UIRoot /* Once UI_ROOT is not a singleton, we can create that objet in the constructor */
+  ) {
     this._zip = zip;
     this._imageManager = new ImageManager(zip);
-    this._uiRoot = UI_ROOT;
+    this._uiRoot = uiRoot;
   }
   async parse(): Promise<UIRoot> {
     // Load built-in xui elements

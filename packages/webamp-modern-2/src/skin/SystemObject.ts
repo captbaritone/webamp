@@ -1,6 +1,5 @@
 import { getClass } from "../maki/objects";
 import { ParsedMaki } from "../maki/parser";
-import AUDIO_PLAYER from "./AudioPlayer";
 import BaseObject from "./BaseObject";
 import Container from "./Container";
 import { clamp } from "../utils";
@@ -148,7 +147,7 @@ export default class SystemObject extends BaseObject {
    * @ret The current volume.
    **/
   getvolume() {
-    return AUDIO_PLAYER.getVolume() * 255;
+    return UI_ROOT.audio.getVolume() * 255;
   }
 
   /**
@@ -160,7 +159,7 @@ export default class SystemObject extends BaseObject {
   setvolume(_vol: number) {
     const vol = clamp(_vol, 0, 255);
 
-    AUDIO_PLAYER.setVolume(vol / 255);
+    UI_ROOT.audio.setVolume(vol / 255);
   }
 
   /**
@@ -169,7 +168,7 @@ export default class SystemObject extends BaseObject {
    * @ret Length of the track, in seconds.
    */
   getplayitemlength(): number {
-    return AUDIO_PLAYER.getLength();
+    return UI_ROOT.audio.getLength();
     //
   }
 
@@ -179,7 +178,7 @@ export default class SystemObject extends BaseObject {
    */
   seekto(pos: number) {
     // Note: For some reason I seem to be getting passed seconds here not MS
-    AUDIO_PLAYER.seekTo(pos);
+    UI_ROOT.audio.seekTo(pos);
   }
 
   /**
