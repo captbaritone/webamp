@@ -143,12 +143,18 @@ export default class SkinParser {
       case "status":
         return this.status(node);
       case "wasabi:standardframe:nostatus":
+      case "wasabi:mainframe:nostatus":
+      case "nstatesbutton":
       case "componentbucket":
       case "playlisteditor":
       case "wasabi:tabsheet":
       case "wasabi:standardframe:status":
       case "snappoint":
       case "accelerators":
+      case "elementalias":
+      case "browser":
+      case "grid":
+      case "syscmds":
         // TODO
         return;
       // TODO: This should be the default fall through
@@ -576,7 +582,7 @@ export default class SkinParser {
 
     const zipFile = this.getCaseInsensitiveFile(path);
     if (zipFile == null) {
-      console.warn(`Zip file not found: ${file}`);
+      console.warn(`Zip file not found: ${path} out of: `);
       return;
     }
     const includedXml = await zipFile.async("string");
