@@ -1,7 +1,8 @@
 import { num, px } from "../utils";
 import ImageManager from "./ImageManager";
 
-const CHARS = 'abcdefghijklmnopqrstuvwxyz"@ \n0123456789\u2026.:()-\'!_+\/[]^&%,=$#\nâöä?*';
+const CHARS =
+  "abcdefghijklmnopqrstuvwxyz\"@ \n0123456789\u2026.:()-'!_+/[]^&%,=$#\nâöä?*";
 
 const CHAR_MAP = {};
 for (const [line, chars] of CHARS.split("\n").entries()) {
