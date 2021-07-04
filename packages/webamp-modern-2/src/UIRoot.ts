@@ -135,28 +135,19 @@ export class UIRoot {
 
   enableDefaultGammaSet() {
     const found = Array.from(this._gammaSets.values())[0];
-    assume(
-      found != null,
-      `Could not find default gammaset from set of ${Array.from(
-        this._gammaSets.keys()
-      ).join(", ")}`
-    );
+    if (found == null) {
+      return;
+    }
     this._activeGammaSet = found;
     this._setCssVars();
   }
 
-  _getGammaGroup(id: string): GammaGroup {
+  _getGammaGroup(id: string): GammaGroup | null {
     const lower = id.toLowerCase();
     const found = this._activeGammaSet.find((gammaGroup) => {
       return gammaGroup.getId().toLowerCase() === lower;
     });
-    assume(
-      found != null,
-      `Cold not find a gammagroup for "${id}" from ${Array.from(
-        this._gammaSets.keys()
-      ).join(", ")}`
-    );
-    return found;
+    return found ?? null;
   }
 
   _setCssVars() {
@@ -194,23 +185,23 @@ export class UIRoot {
   }
 
   dispatch(action: string, param: string | null, actionTarget: string | null) {
-    switch (action) {
-      case "PLAY":
+    switch (action.toLowerCase()) {
+      case "play":
         this.audio.play();
         break;
-      case "PAUSE":
+      case "pause":
         this.audio.pause();
         break;
-      case "STOP":
+      case "stop":
         this.audio.stop();
         break;
-      case "NEXT":
+      case "next":
         this.audio.next();
         break;
-      case "PREV":
+      case "prev":
         this.audio.previous();
         break;
-      case "EJECT":
+      case "eject":
         this.audio.eject();
         break;
       default:
