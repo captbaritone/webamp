@@ -2,7 +2,7 @@ import { getClass } from "../maki/objects";
 import { ParsedMaki } from "../maki/parser";
 import BaseObject from "./BaseObject";
 import Container from "./Container";
-import { clamp } from "../utils";
+import { clamp, integerToTime } from "../utils";
 import Group from "./Group";
 import PRIVATE_CONFIG from "./PrivateConfig";
 import UI_ROOT from "../UIRoot";
@@ -194,13 +194,12 @@ export default class SystemObject extends BaseObject {
   /**
    * Convert a time in seconds to a M:SS value, does not
    * return MM:SS as originally stated.
-   * 
+   *
    * @ret       The string representation of the time (M:SS).
    * @param  value Timestamp to use.
    */
   integertotime(value: number): string {
-    // TODO
-    return "0:00";
+    return integerToTime(value);
   }
 
   /**
