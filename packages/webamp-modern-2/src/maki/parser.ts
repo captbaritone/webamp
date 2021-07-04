@@ -1,4 +1,3 @@
-import { assert, assume } from "../utils";
 import { COMMANDS } from "./constants";
 import { DataType, Variable } from "./v";
 import MakiFile from "./MakiFile";
@@ -316,7 +315,7 @@ function parseComand({ start, makiFile, length }) {
     makiFile.peekUInt32LE() >= 0xffff0000 &&
     makiFile.peekUInt32LE() <= 0xffff000f
   ) {
-    // command.stackProtection = makiFile.readUInt32LE();
+    makiFile.readUInt32LE();
   }
 
   // TODO: What even is this?
