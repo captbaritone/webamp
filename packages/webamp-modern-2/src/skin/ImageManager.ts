@@ -1,5 +1,9 @@
 import JSZip from "jszip";
-import { assert, getCaseInsensitiveFile, getId } from "../utils";
+import { getCaseInsensitiveFile } from "../utils";
+
+// https://png-pixel.com/
+const DEFAULT_IMAGE_URL =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg==";
 
 export default class ImageManager {
   _urlCache: Map<string, string> = new Map();
@@ -22,10 +26,11 @@ export default class ImageManager {
     return this._urlCache.get(filePath);
   }
 
-  async getImage(filePath: string): Promise<HTMLImageElement> {
+  async getImage(filePath: string): Promise<HTMLImageElement | null> {
     if (!this._imgCache.has(filePath)) {
       // TODO: We could cache this
-      const img = await loadImage(await this.getUrl(filePath));
+      const url = (await this.getUrl(filePath)) ?? DEFAULT_IMAGE_URL;
+      const img = await loadImage(url);
       this._imgCache.set(filePath, img);
     }
     return this._imgCache.get(filePath);
