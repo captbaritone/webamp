@@ -8,9 +8,10 @@ import GammaGroup from "./skin/GammaGroup";
 import Container from "./skin/Container";
 import Vm from "./skin/VM";
 import BaseObject from "./skin/BaseObject";
-import AudioPlayer from "./skin/AudioPlayer";
+import AUDIO_PLAYER, { AudioPlayer } from "./skin/AudioPlayer";
 
 export class UIRoot {
+  _div: HTMLDivElement = document.createElement("div");
   // Just a temporary place to stash things
   _bitmaps: Bitmap[] = [];
   _fonts: (TrueTypeFont | BitmapFont)[] = [];
@@ -25,7 +26,7 @@ export class UIRoot {
   _objects: BaseObject[] = [];
 
   vm: Vm = new Vm();
-  audio: AudioPlayer = new AudioPlayer();
+  audio: AudioPlayer = AUDIO_PLAYER;
 
   reset() {
     this.dispose();
@@ -40,9 +41,10 @@ export class UIRoot {
 
     // A list of all objects created for this skin.
     this._objects = [];
+  }
 
-    this.vm = new Vm();
-    this.audio = new AudioPlayer();
+  getRootDiv() {
+    return this._div;
   }
 
   addObject(obj: BaseObject) {
@@ -168,10 +170,7 @@ export class UIRoot {
       }
       const url = imgCache.get(groupId);
       // TODO: Techincally we only need one per image/gammagroup.
-      document.documentElement.style.setProperty(
-        bitmap.getCSSVar(),
-        `url(${url})`
-      );
+      this._div.style.setProperty(bitmap.getCSSVar(), `url(${url})`);
     }
   }
 
@@ -210,6 +209,7 @@ export class UIRoot {
   }
 
   dispose() {
+    this._div.remove();
     for (const obj of this._objects) {
       obj.dispose();
     }

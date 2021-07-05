@@ -13,8 +13,6 @@ function hack() {
 }
 
 addDropHandler(loadSkin);
-const NODE = document.createElement("div");
-document.body.appendChild(NODE);
 
 const STATUS = document.getElementById("status");
 
@@ -32,8 +30,8 @@ async function main() {
 }
 
 async function loadSkin(skinData: Blob) {
-  removeAllChildNodes(NODE);
   UI_ROOT.reset();
+  document.body.appendChild(UI_ROOT.getRootDiv());
 
   setStatus("Loading .wal archive...");
   const zip = await JSZip.loadAsync(skinData);
@@ -49,7 +47,7 @@ async function loadSkin(skinData: Blob) {
   setStatus("Rendering skin for the first time...");
   for (const container of uiRoot.getContainers()) {
     container.draw();
-    NODE.appendChild(container.getDiv());
+    UI_ROOT.getRootDiv().appendChild(container.getDiv());
   }
 
   setStatus("Initializing Maki...");
