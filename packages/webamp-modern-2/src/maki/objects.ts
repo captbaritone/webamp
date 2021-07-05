@@ -57,7 +57,7 @@ export function getMethod(
 // TODO: We could probably just fix the keys used in this file to already be normalized
 // We might even want to normalize the to match the formatting we get out the file. That could
 // avoid the awkward regex inside `getClass()`.
-const normalizedObjects: { [key: string]: ObjectDefinition } = {};
+export const normalizedObjects: { [key: string]: ObjectDefinition } = {};
 Object.keys(objects).forEach((key) => {
   normalizedObjects[key.toLowerCase()] = objects[key];
 });
@@ -78,7 +78,7 @@ Object.values(normalizedObjects).forEach((object) => {
   object.parentClass = parentClass;
 });
 
-function getFormattedId(id: string): string {
+export function getFormattedId(id: string): string {
   // https://en.wikipedia.org/wiki/Universally_unique_identifier#Encoding
   const formattedId = id.replace(
     /(........)(....)(....)(..)(..)(..)(..)(..)(..)(..)(..)/,
