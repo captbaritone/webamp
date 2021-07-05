@@ -1,12 +1,14 @@
 import GuiObj from "./GuiObj";
-import * as Utils from "../utils";
 import UI_ROOT from "../UIRoot";
 import TrueTypeFont from "./TrueTypeFont";
 import BitmapFont from "./BitmapFont";
+import { integerToTime, removeAllChildNodes, num, px, toBool } from "../utils";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Ctext.2F.3E_.26_.3CWasabi:Text.2F.3E
 export default class Text extends GuiObj {
   _display: string;
+  _displayValue: string = "";
+  _disposeDisplaySubscription: () => void | null = null;
   _text: string;
   _bold: boolean;
   _forceupcase: boolean;
@@ -27,8 +29,7 @@ export default class Text extends GuiObj {
     switch (key) {
       case "display":
         // (str) Either a specific system display string or the string identifier of a text feed. Setting this value will override the text parameter. See below.
-        this._display = value;
-        this._renderText();
+        this._setDisplay(value);
         break;
       case "text":
         // (str) A static string to be displayed.
@@ -37,15 +38,15 @@ export default class Text extends GuiObj {
         break;
       case "bold":
         // (str) A static string to be displayed.
-        this._bold = Utils.toBool(value);
+        this._bold = toBool(value);
         break;
       case "forceupcase":
         // (bool) Force the system to make the display string all uppercase before display.
-        this._forceupcase = Utils.toBool(value);
+        this._forceupcase = toBool(value);
         break;
       case "forceuppercase":
         // (bool) Force the system to make the display string all uppercase before display.
-        this._forceuppercase = Utils.toBool(value);
+        this._forceuppercase = toBool(value);
         break;
       case "font":
         // (id) The id of a bitmapfont or truetypefont element. If no element with that id can be found, the OS will be asked for a font with that name instead.
@@ -58,7 +59,7 @@ export default class Text extends GuiObj {
         break;
       case "fontsize":
         // (int) The size to render the chosen font.
-        this._fontSize = Utils.num(value);
+        this._fontSize = num(value);
         break;
       case "color":
         // (int[sic?]) The comma delimited RGB color of the text.
@@ -66,11 +67,11 @@ export default class Text extends GuiObj {
         break;
       case "ticker":
         /// (bool) Setting this flag causes the object to scroll left and right if the text does not fit the rectangular area of the text object.
-        this._ticker = Utils.toBool(value);
+        this._ticker = toBool(value);
         break;
       case "timecolonwidth":
         // (int) How many extra pixels wider or smaller should the colon be when displaying time. Default is -1.
-        this._timeColonWidth = Utils.num(value);
+        this._timeColonWidth = num(value);
       /*
 antialias - (bool) Setting this flag causes the text to be rendered antialiased if possible.
 default - (str) A parameter alias for text.
@@ -96,26 +97,60 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
     return true;
   }
 
+  _setDisplay(display: string) {
+    if (display.toLowerCase() === this._display?.toLowerCase()) {
+      return;
+    }
+    if (this._disposeDisplaySubscription != null) {
+      this._disposeDisplaySubscription();
+    }
+    this._display = display;
+    switch (this._display.toLowerCase()) {
+      case "":
+        this._displayValue = "";
+        break;
+      case "pe_info":
+        this._displayValue = "pe_info";
+        break;
+      case "vid_info":
+        this._displayValue = "vid_info";
+        break;
+      case "time":
+        this._disposeDisplaySubscription = UI_ROOT.audio.onCurrentTimeChange(
+          () => {
+            this.setDisplayValue(integerToTime(UI_ROOT.audio.getCurrentTime()));
+          }
+        );
+        this.setDisplayValue(integerToTime(UI_ROOT.audio.getCurrentTime()));
+        break;
+      case "songlength":
+        this._displayValue = "5:58";
+        break;
+      case "songname":
+        this._displayValue = "Niente da Caprie (3";
+        break;
+      case "songinfo":
+        this._displayValue = "112kbps stereo 44.";
+        break;
+      case "componentbucket":
+        this._displayValue = "componentbucket";
+        break;
+      default:
+        throw new Error(`Unknown text display name: "${this._display}".`);
+    }
+    this._renderText();
+  }
+
+  setDisplayValue(newValue: string) {
+    if (newValue !== this._displayValue) {
+      this._displayValue = newValue;
+      this._renderText();
+    }
+  }
+
   getText() {
     if (this._display) {
-      switch (this._display.toLowerCase()) {
-        case "pe_info":
-          return "pe_info";
-        case "vid_info":
-          return "vid_info";
-        case "time":
-          return "1:58";
-        case "songlength":
-          return "5:58";
-        case "songname":
-          return "Niente da Caprie (3";
-        case "songinfo":
-          return "112kbps stereo 44.";
-        case "componentbucket":
-          return "componentbucket";
-        default:
-          throw new Error(`Unknown text display name: "${this._display}".`);
-      }
+      return this._displayValue;
     }
     return this._text ?? "";
   }
@@ -133,7 +168,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
   }
 
   _renderText() {
-    this._div.innerHTML = "";
+    removeAllChildNodes(this._div);
     if (this._font) {
       const font = UI_ROOT.getFont(this._font);
       if (font instanceof TrueTypeFont) {
@@ -150,15 +185,28 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
     }
   }
 
+  _useColonWidth() {
+    if (this._timeColonWidth == null) {
+      return false;
+    }
+    switch (this._display.toLowerCase()) {
+      case "time":
+      case "timeelapsed":
+      case "timeremaining":
+        return true;
+    }
+    return false;
+  }
+
   _renderBitmapFont(font: BitmapFont) {
     this._div.style.whiteSpace = "nowrap";
+    const useColonWidth = this._useColonWidth();
     if (this.getText() != null) {
       for (const char of this.getText().split("")) {
         const charNode = font.renderLetter(char);
-        // TODO: This is quite hacky. Also, should it only be applied if we are
-        // rendering a time? How do we know?
-        if (char === ":" && this._timeColonWidth != null) {
-          charNode.style.width = Utils.px(this._timeColonWidth);
+        // TODO: This is quite hacky.
+        if (char === ":" && useColonWidth) {
+          charNode.style.width = px(this._timeColonWidth);
         }
         this._div.appendChild(charNode);
       }
@@ -185,7 +233,13 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
     }
     */
 
-    this._div.style.fontSize = Utils.px(this._fontSize ?? 14);
+    this._div.style.fontSize = px(this._fontSize ?? 14);
+  }
+
+  dispose() {
+    if (this._disposeDisplaySubscription != null) {
+      this._disposeDisplaySubscription();
+    }
   }
 
   /*

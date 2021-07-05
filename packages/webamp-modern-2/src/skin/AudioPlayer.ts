@@ -24,8 +24,8 @@ export default class AudioPlayer {
     this._audio.play();
   }
   stop() {
-    // TODO: Actually stop
     this._audio.pause();
+    this._audio.currentTime = 0;
   }
   pause() {
     this._audio.pause();
@@ -46,6 +46,20 @@ export default class AudioPlayer {
 
   seekTo(secs: number) {
     this._audio.currentTime = secs;
+  }
+
+  // In seconds
+  getCurrentTime(): number {
+    return this._audio.currentTime;
+  }
+
+  onCurrentTimeChange(cb: () => void): () => void {
+    const handler = () => cb();
+    this._audio.addEventListener("timeupdate", handler);
+    const dispose = () => {
+      this._audio.removeEventListener("timeupdate", handler);
+    };
+    return dispose;
   }
 
   // Current track length in seconds
