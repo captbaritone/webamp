@@ -2,6 +2,7 @@ import { COMMANDS } from "./constants";
 import { DataType, Variable } from "./v";
 import MakiFile from "./MakiFile";
 import { getReturnType } from "./objects";
+import { assert } from "../utils";
 
 export type Command = {
   opcode: number;
@@ -209,9 +210,13 @@ function readVariables({ makiFile, classes }) {
       let value = null;
 
       switch (typeName) {
-        // BOOLEAN
+        // BOOL
         case PRIMITIVE_TYPES[5]:
           value = uinit1;
+          assert(
+            value === 1 || value === 0,
+            "Expected boolean value to be initialized as zero or one"
+          );
           break;
         // INT
         case PRIMITIVE_TYPES[2]:

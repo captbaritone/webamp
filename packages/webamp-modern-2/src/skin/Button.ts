@@ -1,5 +1,6 @@
 import GuiObj from "./GuiObj";
 import UI_ROOT from "../UIRoot";
+import { V } from "../maki/v";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Cbutton.2F.3E_.26_.3Ctogglebutton.2F.3E
 export default class Button extends GuiObj {
@@ -84,9 +85,7 @@ export default class Button extends GuiObj {
 
     if (onoff !== this._active) {
       this._active = onoff;
-      UI_ROOT.vm.dispatch(this, "onactivate", [
-        { type: "BOOL", value: onoff ? 1 : 0 },
-      ]);
+      UI_ROOT.vm.dispatch(this, "onactivate", [V.newBool(onoff)]);
     }
   }
 

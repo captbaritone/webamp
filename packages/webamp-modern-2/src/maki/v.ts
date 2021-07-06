@@ -2,8 +2,8 @@ import BaseObject from "../skin/BaseObject";
 
 export type Variable =
   | {
-      type: "BOOL";
-      value: boolean;
+      type: "BOOLEAN";
+      value: number; // 1 || 0
     }
   | {
       type: "INT" | "FLOAT" | "DOUBLE";
@@ -35,5 +35,8 @@ export const V = {
   // TODO: Split boolean out into its own method
   newInt(value: number | boolean): Variable {
     return { type: "INT", value: Number(value) };
+  },
+  newBool(value: boolean): Variable {
+    return { type: "BOOLEAN", value: value ? 1 : 0 };
   },
 };

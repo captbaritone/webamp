@@ -23,7 +23,7 @@ const objects: { [key: string]: ObjectDefinition } = {
   ...config,
 };
 
-export function getClass(id: String): ObjectDefinition {
+export function getClass(id: string): ObjectDefinition {
   return normalizedObjects[getFormattedId(id)];
 }
 
@@ -35,9 +35,8 @@ export function getReturnType(classId: string, methodName: string): DataType {
     case "DOUBLE":
     case "STRING":
     case "FLOAT":
-      return upper as any;
     case "BOOLEAN":
-      return "BOOL";
+      return upper as any;
     case "":
       return "NULL" as any;
     default:
