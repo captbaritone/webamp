@@ -1,4 +1,5 @@
-import { clamp, normalizeDomId, num, toBool } from "../utils";
+import { clamp, normalizeDomId, num } from "../utils";
+import { glTransformImage } from "./GammaWebGL";
 
 // https://www.pawelporwisz.pl/winamp/wct_en.php
 export default class GammaGroup {
@@ -47,6 +48,10 @@ export default class GammaGroup {
 
   // TODO: Figure out how to actually implement this.
   transformImage(img: HTMLImageElement): string {
+    // Toggle this to play with gl transforming
+    if (false) {
+      return glTransformImage(img);
+    }
     const [r, g, b] = this._value.split(",").map((v) => {
       return (Number(v) / 4096) * 255;
     });
