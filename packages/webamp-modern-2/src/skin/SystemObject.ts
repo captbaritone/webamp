@@ -163,12 +163,102 @@ export default class SystemObject extends BaseObject {
   }
 
   /**
-  *  getPlayItemString()
+  * getPlayItemString()
   *
-  *  @ret The name of what is playing.
+  * @ret The name of what is playing.
   */
   getplayitemstring() {
     return "Niente da Caprie";
+  }
+
+  /**
+  * getPlayItemMetaDataString()
+  * 
+  * Get metadata for the track currently playing. Make sure to wrap metadataname in double quotes -> ". 
+  * The metadata field names that are available are the following:
+  * 
+  * title
+  * album
+  * artist
+  * albumartist
+  * comment
+  * year
+  * composer
+  * bitrate
+  * srate
+  * stereo
+  * vbr
+  * replaygain_track_gain
+  * replaygain_album_gain
+  * replaygain_track_peak
+  * replaygain_album_peak
+  * gain
+  * genre
+  * track
+  * length
+  * disc
+  * bpm
+  * conductor
+  * key
+  * mood
+  * subtitle
+  * lyricist
+  * ISRC
+  * media
+  * remixer
+  * encoder
+  * publisher
+  * tool
+  * pregap
+  * postgap
+  * numsamples
+  * 
+  * 
+  * @ret                 The requested metadata.
+  * @param  metadataname    The name of the metadata field you want to read.
+  */
+  getplayitemmetadatastring(metadataname: string): string {
+    return "Metadata"; //TODO 
+  }
+
+
+  /**
+  * // Requires 5.53
+  * @ret                 The requested metadata.
+  * @param  metadataname    The name of the metadata field you want to read.
+  */
+  getmetadatastring(filename: string, metadataname: string): string {
+    return "Metadatastring"; //TODO
+  }
+
+  /**
+  * TODO
+  */
+  getplayitemdisplaytitle(): string {
+    return "playitemdisplaytitle"; //What does this really do?
+  }
+
+  /**
+  * getExtFamily()
+  * 
+  * This one still return the same as getDecoderName()
+  * 
+  * //Gets registered family for given extension (i.e. mp3 -> "Audio")
+  * 
+  * @ret The registered family for given extension.
+  * @param ext The extension in question.
+  */
+  getextfamily(ext: string): string {
+    return "Audio";
+  }
+
+  /**
+   * 
+   * @param playitem 
+   * @returns Above as getExtFamily(), needs more investigating
+   */
+  getdecodername(playitem: string): string {
+    return "Nullsoft MPEG Decoder v4.103";
   }
 
   /**
@@ -232,6 +322,34 @@ export default class SystemObject extends BaseObject {
   */
   getextension(str: string): string {
     return "mp3";
+  }
+
+  /**
+  * removePath()
+  * 
+  * Remove the path from a full filename. (example:
+  * c:\music\mp3\test.mp3 -> test.mp3)
+  * Also works on URLs.
+  * 
+  * @ret    The filename with the path removed.
+  * @param str The fullpath of a file.
+  */
+  removepath(str: string): string {
+    return "test.mp3";
+  }
+
+  /**
+  * getPath()
+  * 
+  * Gets the path from a full filename. (example:
+  * c:\music\mp3\test.mp3 -> c:\music\mp3)
+  * Also works on URLs.
+  * 
+  * @ret    The path with the filename removed.
+  * @param str The fullpath of a file.
+  */
+  getpath(str: string): string {
+    return "c:\\music\\mp3";
   }
 
   /**
