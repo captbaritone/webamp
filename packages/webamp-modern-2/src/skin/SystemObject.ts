@@ -163,6 +163,60 @@ export default class SystemObject extends BaseObject {
   }
 
   /**
+  * play()
+  * 
+  * Trigger the play event.
+  */
+  play() {
+
+  }
+
+  /**
+  * stop()
+  * 
+  * Trigger the stop event.
+  */
+  stop() {
+    
+  }
+
+  /**
+  * pause()
+  * 
+  * Trigger the pause event.
+  */
+  pause() {
+    
+  }
+
+  /**
+  * next()
+  * 
+  * Trigger the next event.
+  */
+  next() {
+    
+  }
+
+  /**
+  * previous()
+  * 
+  * Trigger the previous event.
+  */
+  previous() {
+    
+  }
+
+  /**
+  * eject()
+  * 
+  * Trigger the eject event.
+  */
+  eject() {
+    
+  }
+
+  /**
   * getPlayItemString()
   *
   * @ret The name of what is playing.
@@ -260,6 +314,100 @@ export default class SystemObject extends BaseObject {
   getdecodername(playitem: string): string {
     return "Nullsoft MPEG Decoder v4.103";
   }
+
+  /**
+  * downloadMedia()
+  * 
+  * Hookable. Downloads a file from url and saves it as destination_filename.
+  * If destinationPath is "" it will be saved in CD Ripping dir (=getDownloadPath()).
+  * 
+  * @param  url  the file to be downloaded
+  * @param  destinationPath  the path you want to store the file
+  * @param  wantAddToML  set true if you wnt to add the file to ML database
+  * @param  notifyDownloadsList  set true in order to list the download in <DownloadsLis/> Object
+  */
+  downloadmedia(url: string, destinationPath: string, wantAddToML: boolean, notifyDownloadsList: boolean): string {
+    //TODO
+  }
+
+  /**
+   * Deprecated, destination_filename is just a dummy parameter as well as progress_dialog_title - use download() instead
+   * Requires 5.5
+   * @param url 
+   * @param destination_filename 
+   * @param progress_dialog_title 
+   */
+  downloadurl(url: string, destination_filename: string, progress_dialog_title: string) {
+    
+  } 
+
+  /**
+   * 
+   * @param url 
+   * @param success 
+   * @param filename 
+   */
+  ondownloadfinished(url: string, success: boolean, filename: string): string {
+    //TODO
+  }
+
+  /**
+   * 
+   * @param string returns the CD Ripping Directory
+   */
+  getdownloadpath(): string {
+    return "C:\\CD Rips";
+  }
+  /**
+   * 
+   * @param new_path Sets the CD Ripping Directory
+   */
+  setdownloadpath(new_path: string): string {
+    return "C:\\Music\\CD Rips";
+  }
+
+  /**
+  * enqueueFile()
+  * 
+  * Enqueque the requested file. Path and filename are required
+  * with proper extension (example: playFile("c:\music\mp3\file.mp3"); ).
+  * It also works with URL's (example: playFile("http://myshoutcast.com:8000"); ).
+  * 
+  * @param  playitem  The path and filename to play.
+  */
+  enqueuefile(playitem: string): string {
+    return "http://myshoutcast.com:8000";
+  } //Requires 5.5
+
+  /**
+  * playFile()
+  * 
+  * Play the requested file. Path and filename are required
+  * with proper extension (example: playFile("c:\music\mp3\file.mp3"); ).
+  * It also works with URL's (example: playFile("http://myshoutcast.com:8000"); ).
+  * 
+  * @param  playitem  The path and filename to play.
+  */
+  playfile(playitem: string): string {
+  return "C:\\Program Files\\Winamp\\demo.mp3"
+  }
+
+  /**
+   * //Requires 5.51
+   * @param fullfilename 
+   */
+  getfilesize(fullfilename: string): string {
+    return "FIXME"
+  } 
+
+  /**
+   * //Requires 5.5
+   * @param playitem 
+   * @returns Will return 1 if an album art has been downloaded, otherwise 0 
+   */
+  getalbumart(playitem: string): string {
+    return "1";
+  } 
 
   /**
    * Get the length of the track currently playing, in milliseconds.
