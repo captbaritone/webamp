@@ -216,6 +216,35 @@ export default class SystemObject extends BaseObject {
     
   }
 
+/**
+  * messageBox()
+  * 
+  * Creates a message box.
+  * The flag paramater lets you set the style of the message box.
+  * Just use the OR bitwise operator to set the style you want.
+  * Here's a list of the flags you can use:
+  * 
+  * MSGBOX_OK         Adds an OK button.      (1)
+  * MSGBOX_CANCEL     Adds a CANCEL button.   (2)
+  * MSGBOX_YES        Adds a YES button.      (4)
+  * MSGBOX_NO         Adds a NO button.       (8)
+  * MSGBOX_ALL        Adds ALL buttons.       (16)
+  * MSGBOX_NEXT       Adds a NEXT button.     (32)
+  * MSGBOX_PREVIOUS   Adds a PREVIOUS button. (64)
+  * 
+  * Note that the notanymore_id parameter stores the users answer in the 
+  * configuration file with the entry name specified by it's value.
+  * 
+  * @ret   The value of the button that was pressed (example: if OK is pressed, 1 is returned).
+  * @param    message         The message you want to display.
+  * @param    msgtitle        The title of the message box.
+  * @param    flag            The message box style you want.
+  * @param    notanymore_id   Configuration item name in which to store the users answer.
+  */
+  messagebox(message: string, msgtitle: string, flag: number, notanymore_id: string) {
+    // TODO
+  }
+
   /**
   * getPlayItemString()
   *
@@ -290,6 +319,31 @@ export default class SystemObject extends BaseObject {
   */
   getplayitemdisplaytitle(): string {
     return "playitemdisplaytitle"; //What does this really do?
+  }
+
+  /**
+   * Requires 5.5
+   * TODO
+   */
+  getcurrenttrackrating() {
+
+  }
+  /**
+   * Requires 5.5
+   * TODO
+   * @param rating 
+   */
+  oncurrenttrackrated(rating: number) {
+    
+  }
+  
+  /**
+   * Requires 5.5
+   * TODO
+   * @param rating 
+   */
+  setcurrenttrackrating(rating: number) {
+    
   }
 
   /**
