@@ -163,6 +163,15 @@ export default class SystemObject extends BaseObject {
   }
 
   /**
+  *  getPlayItemString()
+  *
+  *  @ret The name of what is playing.
+  */
+  getplayitemstring() {
+    return "Niente da Caprie";
+  }
+
+  /**
    * Get the length of the track currently playing, in milliseconds.
    *
    * @ret Length of the track, in seconds.
@@ -209,6 +218,20 @@ export default class SystemObject extends BaseObject {
    */
   getviewportwidth() {
     return window.document.documentElement.clientWidth;
+  }
+
+  /**
+  * getExtension()
+  * 
+  * Gets the extension from a filename. (example:
+  * c:\music\mp3\test.mp3 -> mp3)
+  * Also works on URLs.
+  *
+  * @ret    The extension of the filename.
+  * @param str The fullpath of a file.
+  */
+  getextension(str: string): string {
+    return "mp3";
   }
 
   /**
@@ -318,12 +341,36 @@ export default class SystemObject extends BaseObject {
   }
 
   /**
+  * getEqPreamp()
+  *
+  * Get the equalizer preamp value. The value range is
+  * from -127 to +127 (0 means no preamp).
+  *
+  * @ret The preamp's current value.
+  */
+  geteqpreamp(): number {
+    return 0;
+  }
+
+  /**
    * Set the equalizer to the desired state. On or off.
    * 0 is off, 1 is on.
    *
    * @param  onoff The desired state for the eq.
    */
   seteq(onoff: number) {
+    // TODO
+  }
+
+  /**
+  * setEqPreamp()
+  *
+  * Set the equalizer pre-amp to the desired value.
+  * Range is from -127 to +127 (0 means no preamp).
+  *
+  * @param  value The desired value for the pre-amp.
+  */
+  seteqpreamp(value: number) {
     // TODO
   }
 
@@ -337,6 +384,15 @@ export default class SystemObject extends BaseObject {
    */
   seteqband(band: number, value: number) {
     // TODO
+  }
+
+  /**
+   * @param channel 0: Mono, 1: Left, 2: Right, does not work in Winamp3 or Winamp5
+   * @param band Returns the selected band of the Spectrum Analyzer
+   * @ret ranges from 0 to 255
+   */
+  getvisband(channel: number, band: number) {
+    return 0;
   }
 
   /**
