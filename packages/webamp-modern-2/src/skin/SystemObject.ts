@@ -221,7 +221,7 @@ export default class SystemObject extends BaseObject {
   *
   * @ret The name of what is playing.
   */
-  getplayitemstring() {
+  getplayitemstring(): string {
     return "Niente da Caprie";
   }
 
@@ -272,17 +272,17 @@ export default class SystemObject extends BaseObject {
   * @param  metadataname    The name of the metadata field you want to read.
   */
   getplayitemmetadatastring(metadataname: string): string {
-    return "Metadata"; //TODO 
+    return "Metadata"; // TODO 
   }
 
 
   /**
-  * // Requires 5.53
+  * Requires 5.53
   * @ret                 The requested metadata.
   * @param  metadataname    The name of the metadata field you want to read.
   */
   getmetadatastring(filename: string, metadataname: string): string {
-    return "Metadatastring"; //TODO
+    return "Metadatastring"; // TODO
   }
 
   /**
@@ -297,7 +297,7 @@ export default class SystemObject extends BaseObject {
   * 
   * This one still return the same as getDecoderName()
   * 
-  * //Gets registered family for given extension (i.e. mp3 -> "Audio")
+  * Gets registered family for given extension (i.e. mp3 -> "Audio")
   * 
   * @ret The registered family for given extension.
   * @param ext The extension in question.
@@ -316,6 +316,7 @@ export default class SystemObject extends BaseObject {
   }
 
   /**
+  * Requires 5.54
   * downloadMedia()
   * 
   * Hookable. Downloads a file from url and saves it as destination_filename.
@@ -326,8 +327,8 @@ export default class SystemObject extends BaseObject {
   * @param  wantAddToML  set true if you wnt to add the file to ML database
   * @param  notifyDownloadsList  set true in order to list the download in <DownloadsLis/> Object
   */
-  downloadmedia(url: string, destinationPath: string, wantAddToML: boolean, notifyDownloadsList: boolean): string {
-    //TODO
+  downloadmedia(url: string, destinationPath: string, wantAddToML: boolean, notifyDownloadsList: boolean) {
+    // TODO
   }
 
   /**
@@ -338,35 +339,36 @@ export default class SystemObject extends BaseObject {
    * @param progress_dialog_title 
    */
   downloadurl(url: string, destination_filename: string, progress_dialog_title: string) {
-    
+
   } 
 
   /**
-   * 
+   * Requires 5.53
    * @param url 
    * @param success 
    * @param filename 
    */
-  ondownloadfinished(url: string, success: boolean, filename: string): string {
-    //TODO
+  ondownloadfinished(url: string, success: boolean, filename: string) {
+    // TODO
   }
 
   /**
-   * 
+   * Requires 5.53
    * @param string returns the CD Ripping Directory
    */
   getdownloadpath(): string {
     return "C:\\CD Rips";
   }
   /**
-   * 
+   * Requires 5.53
    * @param new_path Sets the CD Ripping Directory
    */
-  setdownloadpath(new_path: string): string {
-    return "C:\\Music\\CD Rips";
+  setdownloadpath(new_path: string) {
+    // TODO
   }
 
   /**
+  * Requires 5.5
   * enqueueFile()
   * 
   * Enqueque the requested file. Path and filename are required
@@ -375,9 +377,9 @@ export default class SystemObject extends BaseObject {
   * 
   * @param  playitem  The path and filename to play.
   */
-  enqueuefile(playitem: string): string {
-    return "http://myshoutcast.com:8000";
-  } //Requires 5.5
+  enqueuefile(playitem: string) {
+    // TODO
+  } 
 
   /**
   * playFile()
@@ -388,25 +390,25 @@ export default class SystemObject extends BaseObject {
   * 
   * @param  playitem  The path and filename to play.
   */
-  playfile(playitem: string): string {
-  return "C:\\Program Files\\Winamp\\demo.mp3"
+  playfile(playitem: string) {
+    // TODO
   }
 
   /**
-   * //Requires 5.51
+   * Requires 5.51
    * @param fullfilename 
    */
-  getfilesize(fullfilename: string): string {
-    return "FIXME"
+  getfilesize(fullfilename: string): number {
+    return 100;
   } 
 
   /**
-   * //Requires 5.5
+   * Requires 5.5
    * @param playitem 
    * @returns Will return 1 if an album art has been downloaded, otherwise 0 
    */
-  getalbumart(playitem: string): string {
-    return "1";
+  getalbumart(playitem: string): number {
+    return 1;
   } 
 
   /**
@@ -657,7 +659,7 @@ export default class SystemObject extends BaseObject {
    * @param band Returns the selected band of the Spectrum Analyzer
    * @ret ranges from 0 to 255
    */
-  getvisband(channel: number, band: number) {
+  getvisband(channel: number, band: number): number {
     return 0;
   }
 
