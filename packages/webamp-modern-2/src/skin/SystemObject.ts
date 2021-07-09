@@ -262,6 +262,136 @@ export default class SystemObject extends BaseObject {
   }
 
   /**
+  * strmid()
+  * 
+  * Get a substring from a string.
+  *
+  * @ret       The substring.
+  * @param  str   The string.
+  * @param  start The start position.
+  * @param  len   The length of the string to extract, from start position.
+  */
+  strmid(str: string, start: number, len: number) {
+    // TODO
+  }
+
+  /**
+  * strleft()
+  * 
+  * Get a substring from a string, starting from the left.
+  * 
+  * @ret         The substring.
+  * @param  str     The string.
+  * @param  nchars  The length of the string to extract, from the left.
+  */
+  strleft(str: string, nchars: number) {
+    // TODO
+  }
+
+  /**
+  * strright()
+  * 
+  * Get a substring from a string, starting from the right. Since
+  * the start point is the right of the string (or the end). It will
+  * extract the string starting from the END going towards the BEGINNING.
+  * 
+  * @ret         The substring.
+  * @param  str     The string.
+  * @param  nchars  The length of the string to extract, from the right.
+  */
+  strright(str: string, nchars: number) {
+    // TODO
+  }
+
+  /**
+  * strsearch()
+  * 
+  * Search a string for any occurance of substring. If the substring was
+  * found in the string, it will return the position of the substring in
+  * the string searched. If the substring is not found, the return value
+  * is -1.
+  * 
+  * @ret         Position at which the substring was found.
+  * @param  str     The string to search in.
+  * @param  substr  The substring to find.
+  */
+  strsearch(str: string, substr: string) {
+    // TODO
+  }
+
+  /**
+  * Int
+  * strlen()
+  * 
+  * Returns the length of the string.
+  * 
+  * @ret     The length of the string.
+  * @param  str The string.
+  */
+  strlen(str: string) {
+    // TODO
+  }
+
+  /**
+  * strupper()
+  * 
+  * Convert a string to all uppercase.
+  * 
+  * @ret     The uppercase string.
+  * @param  str The string to uppercase.
+  */
+  strupper(str: string) {
+    // TODO
+  }
+
+  /**
+  * strlower()
+  * 
+  * Convert a string to all lowercase.
+  * 
+  * @ret     The lowercase string.
+  * @param  str The string to lowercase.
+  */
+  strlower(str: string) {
+    // TODO
+  }
+
+  /**
+  * urlEncode()
+  * 
+  * URL Encode a string. Characters that are NOT encoded
+  * are: All letters, All digits, underscore (_), dash (-) and 
+  * period (.).
+  * 
+  * @ret       The URL encoded string.
+  * @param  url   The string to URL encode.
+  */
+  urlencode(url: string) {
+    // TODO
+  } 
+
+  /**
+   * Requires 5.54
+   * @param url 
+   */
+  urldecode(url: string) {
+    // TODO
+  } 
+
+  /**
+  * setPrivateString()
+  * 
+  * Create a private config entry for your script, of String type.
+  * 
+  * @param  section   The section for the entry.
+  * @param  item      The item name for the entry.
+  * @param  value     The value of the entry.
+  */
+  setprivatestring(section: string, item: string, value: string) {
+   // TODO
+  }
+
+  /**
    * Create a private config entry for your script, of Int type.
    *
    * @param  section   The section for the entry.
@@ -270,6 +400,92 @@ export default class SystemObject extends BaseObject {
    */
   setprivateint(section: string, item: string, value: number) {
     PRIVATE_CONFIG.setPrivateInt(section, item, value);
+  }
+
+  /**
+  * getPrivateString()
+  * 
+  * Read a private config entry of String type. Returns
+  * the specified default value if the section and item isn't
+  * found.  
+  * 
+  * @ret           The value of the config entry.
+  * @param  section   The section from which to read the entry.
+  * @param  item      The name of the item to read.
+  * @param  defvalue  The default value to return if no item is found.
+  */
+  getprivatestring(section: string, item: string, defvalue: string) {
+    // TODO
+  }
+
+  setpublicstring(item: string, value: string) {
+    // TODO
+  }
+
+  /**
+  * setPublicInt()
+  * 
+  * Create a public config entry for your script, of Int type.
+  * 
+  * @param  item  The item name of the entry.
+  * @param  value The value of the entry.
+  */
+  setpublicint(item: string, value: number) {
+    // TODO
+  }
+
+  /**
+  * getPublicString()
+  * 
+  * Read a public config entry of String type. Returns 
+  * the specified default value if the item isn't found.
+  * 
+  * @ret           The value of the config entry.
+  * @param  item      The item name to read.
+  * @param  defvalue  The default value to return if no item is found.
+  */
+  getpublicstring(item: string, defvalue: string) {
+    // TODO
+  }
+
+  /**
+  * Int
+  * getPublicInt()
+  * 
+  * Read a public config entry of Integer type. Returns
+  * the specified default value if the item isn't found.
+  * 
+  * @ret           The value of the config entry.
+  * @param  item      The item name to read.
+  * @param  defvalue  The default value to return if no item is found.
+  */
+  getpublicint(item: string, defvalue: number) {
+    // TODO
+  }
+
+  /**
+  * getParam()
+  * 
+  * Get the parameters with which the script is called.
+  * This is the 'param="..."' attribute in the <script ...>
+  * skin XML tag.
+  * 
+  * @ret The parameter for the script.
+  */
+  getparam() {
+    // TODO
+  }
+
+  /**
+  * getScriptGroup()
+  * 
+  * Get the group in which the script is instantiated. Returns
+  * Null if it's not instantiated in a group.
+  * 
+  * @ret 
+  */
+  getscriptgroup() {
+    // TODO
   }
 
   /**
@@ -771,6 +987,51 @@ export default class SystemObject extends BaseObject {
   }
 
   /**
+   * Requires 5.5
+   * Int
+   * Originally was (GuiObject g)
+   */
+  getviewportwidthfromguiobject() {
+    // TODO
+  }
+
+  /**
+   * 
+   * @param x 
+   * @param y 
+   */
+  getviewportwidthfrompoint(x: number, y: number) {
+    // TODO
+  }
+
+  /**
+   * Requires 5.5
+   * Int
+   */
+  getmonitorwidth() {
+    // TODO
+  }
+
+  /**
+   * Requires 5.5
+   * Int
+   * @param x 
+   * @param y 
+   */
+  getmonitorwidthfrompoint(x: number, y: number) {
+    // TODO
+  }
+
+  /**
+   * Requires 5.631
+   * Int
+   * Originally was (GuiObject g)
+   */
+  getmonitorwidthfromguiobject() {
+    // TODO
+  }
+
+  /**
   * getExtension()
   * 
   * Gets the extension from a filename. (example:
@@ -783,6 +1044,25 @@ export default class SystemObject extends BaseObject {
   getextension(str: string): string {
     return "mp3";
   }
+
+/**
+* getToken()
+* 
+* Retreive a token from a list of tokens seperated by separator.
+* The index starts at 0, not 1, so be careful.
+* Here's a short example:
+*   getToken("1,2,3,4,5", ",", 3);
+* Would return, 3. If the token you ask for doesn't exist, an 
+* empty string is returned.
+* 
+* @ret             The token requested.
+* @param  str         The tokenenized string.
+* @param  separator   The separator to use.
+* @param  tokennum    The token to retreive.
+*/
+  gettoken(str: string, separator: string, tokennum: number) {
+  // TODO
+}
 
   /**
   * removePath()
@@ -844,14 +1124,181 @@ export default class SystemObject extends BaseObject {
     return window.document.documentElement.clientHeight;
   }
 
+  /**
+   * Int
+   * Requires 5.5
+   * Originally was (GuiObject g)
+   */
+  getviewportheightfromguiobject() {
+    // TODO
+  }
+
+  /**
+   * Requires 5.5
+   * Int
+   * @param x 
+   * @param y 
+   */
+  getviewportheightfrompoint(x: number, y: number) {
+    // TODO
+  }
+
+  /**
+   * Requires 5.5
+   * Int
+   */
+  getmonitorheight() {
+    // TODO
+  }
+
+  /**
+   * Requires 5.5
+   * Int
+   * @param x 
+   * @param y 
+   */
+  getmonitorheightfrompoint(x: number, y: number) {
+    // TODO
+  }
+
+  /**
+   * Int
+   * Requires 5.631
+   * Originally was (GuiObject g)
+   */
+  getmonitorheightfromguiobject() {
+    // TODO
+  }
+
+  /**
+   * Requires 5.631
+   * Int
+   */
+  getmonitorleft() {
+    // TODO
+  }
+
+  /**
+   * Int
+   * Requires 5.5
+   * Originally was (GuiObject g)
+   */
+  getmonitorleftfromguiobject() {
+    // TODO
+  }
+
+  /**
+   * Requires 5.5
+   * Int
+   * @param x 
+   * @param y 
+   */
+  getmonitorleftfrompoint(x: number, y: number) {
+    // TODO
+  }
+
+  /**
+   * Requires 5.631
+   * Int
+   */
+  getmonitortop() {
+    // TODO
+  }
+
   getviewporttop() {
     // TODO: What should this really be?
     return 0;
   }
 
+  /**
+   * Int
+   * Requires 5.631
+   * Originally was (GuiObject g)
+   */
+  getmonitortopfromguiobject() {
+    // TODO
+  }
+
+  /**
+   * Requires 5.631
+   * Int
+   * @param x 
+   * @param y 
+   */
+  getmonitortopfrompoint(x: number, y: number) {
+    // TODO
+  }
+
   getviewportleft() {
     // TODO: What should this really be?
     return 0;
+  }
+
+  /**
+   * Int
+   * Requires 5.5
+   * Originally was (GuiObject g)
+   */
+  getviewportleftfromguiobject() {
+    // TODO
+  }
+
+  /**
+   * Requires 5.5
+   * Int
+   * @param x 
+   * @param y 
+   */
+  getviewportleftfrompoint(x: number, y: number) {
+    // TODO
+  }
+
+  /**
+   * Int
+   * Requires 5.5
+   * Originally was (GuiObject g)
+   */
+  getviewporttopfromguiobject() {
+    // TODO
+  }
+
+  /**
+   * Int
+   * @param x 
+   * @param y 
+   */
+  getviewporttopfrompoint(x: number, y: number) {
+    // TODO
+  }
+
+  /**
+  * debugString()
+  * 
+  * Send a debug message to the Wasabi Console.
+  * The severity ranges from 0 (not serious) to 9 (very serious).
+  * 
+  * @param  str       The debug message.
+  * @param  severity  The severity of the error.
+  */
+  debugstring(str: string, severity: number) {
+    // TODO
+  }
+
+  /**
+  * ddeSend()
+  * 
+  * Send a DDE message to an application. The minimum
+  * interval between messages is specified in milliseconds.
+  * Here's an example:
+  * 
+  * ddeSend("mIRC", "/msg #channel I'm using Winamp5", 300);
+  * 
+  * @param  application   The DDE server name of the application.
+  * @param  command       The command to send.
+  * @param  mininterval   The minimum interval to respect between messages (in ms).
+  */
+  ddesend(application: string, command: string, mininterval: number){
+    // TODO
   }
 
   /**
