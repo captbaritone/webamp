@@ -6,6 +6,7 @@ import { clamp, integerToTime } from "../utils";
 import Group from "./Group";
 import PRIVATE_CONFIG from "./PrivateConfig";
 import UI_ROOT from "../UIRoot";
+import GuiObj from "./GuiObj";
 
 const MOUSE_POS = { x: 0, y: 0 };
 
@@ -84,54 +85,54 @@ export default class SystemObject extends BaseObject {
   }
 
   /**
-  * Int
-  * StringToInteger()
-  * 
-  * Get the integer representation of a string.
-  * 
-  * @ret     The integer equivalent of the string.
-  * @param  str The string to change into an integer.
-  */
+   * Int
+   * StringToInteger()
+   *
+   * Get the integer representation of a string.
+   *
+   * @ret     The integer equivalent of the string.
+   * @param  str The string to change into an integer.
+   */
   stringtointeger(str: string) {
     // TODO
   }
 
   /**
-  * String
-  * floatToString()
-  * 
-  * Get the string representation of a floating point number.
-  * 
-  * @ret         The string representation of the float number.
-  * @param  value   The float to convert.
-  * @param  ndigits Number of digits after the decimal point you want.
-  */
+   * String
+   * floatToString()
+   *
+   * Get the string representation of a floating point number.
+   *
+   * @ret         The string representation of the float number.
+   * @param  value   The float to convert.
+   * @param  ndigits Number of digits after the decimal point you want.
+   */
   floattostring(value: number, ndigits: number) {
     // TODO
   }
 
   /**
-  * Float
-  * stringToFloat()
-  * 
-  * Get the floating point representation of a string.
-  * 
-  * @ret     The float representation of the string.
-  * @param  str The string to convert.
-  */
+   * Float
+   * stringToFloat()
+   *
+   * Get the floating point representation of a string.
+   *
+   * @ret     The float representation of the string.
+   * @param  str The string to convert.
+   */
   stringtofloat(str: string) {
     // TODO
   }
 
   /**
-  * String
-  * integerToLongTime()
-  * 
-  * Convert a time in seconds to a H:MM:SS value.
-  * 
-  * @ret       The string representation of the time (H:MM:SS).
-  * @param  value Timestamp to use.
-  */
+   * String
+   * integerToLongTime()
+   *
+   * Convert a time in seconds to a H:MM:SS value.
+   *
+   * @ret       The string representation of the time (H:MM:SS).
+   * @param  value Timestamp to use.
+   */
   integertolongtime(value: number) {
     // TODO
   }
@@ -139,7 +140,7 @@ export default class SystemObject extends BaseObject {
   /**
    * String
    * prints the time from a date with the same format as integerToTime
-   * @param datetime 
+   * @param datetime
    */
   datetotime(datetime: number) {
     // TODO
@@ -148,16 +149,16 @@ export default class SystemObject extends BaseObject {
   /**
    * String
    * prints the time from a date with the same format as integerToLongTime
-   * @param datetime 
+   * @param datetime
    */
   datetolongtime(datetime: number) {
     // TODO
   }
-  
+
   /**
    * String
    * formats the date according to the locales - short date format
-   * @param datetime 
+   * @param datetime
    */
   formatdate(datetime: number) {
     // TODO
@@ -165,7 +166,7 @@ export default class SystemObject extends BaseObject {
   /**
    * String
    * formats the date according to the locales - long date format
-   * @param datetime 
+   * @param datetime
    */
   formatlongdate(datetime: number) {
     // TODO
@@ -174,16 +175,16 @@ export default class SystemObject extends BaseObject {
   /**
    * Int
    * returns the datetime's year since 1900
-   * @param datetime 
+   * @param datetime
    */
   getdateyear(datetime: number) {
     // TODO
   }
-  
+
   /**
    * Int
    * returns the datetime's month (0-11)
-   * @param datetime 
+   * @param datetime
    */
   getdatemonth(datetime: number) {
     // TODO
@@ -192,7 +193,7 @@ export default class SystemObject extends BaseObject {
   /**
    * Int
    * returns the datetime's day of the month (1-31)
-   * @param datetime 
+   * @param datetime
    */
   getdateday(datetime: number) {
     // TODO
@@ -201,7 +202,7 @@ export default class SystemObject extends BaseObject {
   /**
    * Int
    * returns the datetime's day of the week (0-6)
-   * @param datetime 
+   * @param datetime
    */
   getdatedow(datetime: number) {
     // TODO
@@ -210,7 +211,7 @@ export default class SystemObject extends BaseObject {
   /**
    * Int
    * returns the datetime's day of the year (0-365)
-   * @param datetime 
+   * @param datetime
    */
   getdatedoy(datetime: number) {
     // TODO
@@ -219,7 +220,7 @@ export default class SystemObject extends BaseObject {
   /**
    * Int
    * returns the datetime's hour (0-23)
-   * @param datetime 
+   * @param datetime
    */
   getdatehour(datetime: number) {
     // TODO
@@ -228,7 +229,7 @@ export default class SystemObject extends BaseObject {
   /**
    * Int
    * returns the datetime's minutes (0-59)
-   * @param datetime 
+   * @param datetime
    */
   getdatemin(datetime: number) {
     // TODO
@@ -237,7 +238,7 @@ export default class SystemObject extends BaseObject {
   /**
    * Int
    * returns the datetime's seconds (0-59)
-   * @param datetime 
+   * @param datetime
    */
   getdatesec(datetime: number) {
     // TODO
@@ -246,7 +247,7 @@ export default class SystemObject extends BaseObject {
   /**
    * Int
    * returns the datetime's daylight savings flag
-   * @param datetime 
+   * @param datetime
    */
   getdatedst(datetime: number) {
     // TODO
@@ -255,140 +256,140 @@ export default class SystemObject extends BaseObject {
   /**
    * Int
    * returns the datetime, use with the above functions
-   * @param datetime 
+   * @param datetime
    */
   getdate() {
     // TODO
   }
 
   /**
-  * strmid()
-  * 
-  * Get a substring from a string.
-  *
-  * @ret       The substring.
-  * @param  str   The string.
-  * @param  start The start position.
-  * @param  len   The length of the string to extract, from start position.
-  */
+   * strmid()
+   *
+   * Get a substring from a string.
+   *
+   * @ret       The substring.
+   * @param  str   The string.
+   * @param  start The start position.
+   * @param  len   The length of the string to extract, from start position.
+   */
   strmid(str: string, start: number, len: number) {
     // TODO
   }
 
   /**
-  * strleft()
-  * 
-  * Get a substring from a string, starting from the left.
-  * 
-  * @ret         The substring.
-  * @param  str     The string.
-  * @param  nchars  The length of the string to extract, from the left.
-  */
+   * strleft()
+   *
+   * Get a substring from a string, starting from the left.
+   *
+   * @ret         The substring.
+   * @param  str     The string.
+   * @param  nchars  The length of the string to extract, from the left.
+   */
   strleft(str: string, nchars: number) {
     // TODO
   }
 
   /**
-  * strright()
-  * 
-  * Get a substring from a string, starting from the right. Since
-  * the start point is the right of the string (or the end). It will
-  * extract the string starting from the END going towards the BEGINNING.
-  * 
-  * @ret         The substring.
-  * @param  str     The string.
-  * @param  nchars  The length of the string to extract, from the right.
-  */
+   * strright()
+   *
+   * Get a substring from a string, starting from the right. Since
+   * the start point is the right of the string (or the end). It will
+   * extract the string starting from the END going towards the BEGINNING.
+   *
+   * @ret         The substring.
+   * @param  str     The string.
+   * @param  nchars  The length of the string to extract, from the right.
+   */
   strright(str: string, nchars: number) {
     // TODO
   }
 
   /**
-  * strsearch()
-  * 
-  * Search a string for any occurance of substring. If the substring was
-  * found in the string, it will return the position of the substring in
-  * the string searched. If the substring is not found, the return value
-  * is -1.
-  * 
-  * @ret         Position at which the substring was found.
-  * @param  str     The string to search in.
-  * @param  substr  The substring to find.
-  */
+   * strsearch()
+   *
+   * Search a string for any occurance of substring. If the substring was
+   * found in the string, it will return the position of the substring in
+   * the string searched. If the substring is not found, the return value
+   * is -1.
+   *
+   * @ret         Position at which the substring was found.
+   * @param  str     The string to search in.
+   * @param  substr  The substring to find.
+   */
   strsearch(str: string, substr: string) {
     // TODO
   }
 
   /**
-  * Int
-  * strlen()
-  * 
-  * Returns the length of the string.
-  * 
-  * @ret     The length of the string.
-  * @param  str The string.
-  */
+   * Int
+   * strlen()
+   *
+   * Returns the length of the string.
+   *
+   * @ret     The length of the string.
+   * @param  str The string.
+   */
   strlen(str: string) {
     // TODO
   }
 
   /**
-  * strupper()
-  * 
-  * Convert a string to all uppercase.
-  * 
-  * @ret     The uppercase string.
-  * @param  str The string to uppercase.
-  */
+   * strupper()
+   *
+   * Convert a string to all uppercase.
+   *
+   * @ret     The uppercase string.
+   * @param  str The string to uppercase.
+   */
   strupper(str: string) {
     // TODO
   }
 
   /**
-  * strlower()
-  * 
-  * Convert a string to all lowercase.
-  * 
-  * @ret     The lowercase string.
-  * @param  str The string to lowercase.
-  */
+   * strlower()
+   *
+   * Convert a string to all lowercase.
+   *
+   * @ret     The lowercase string.
+   * @param  str The string to lowercase.
+   */
   strlower(str: string) {
     // TODO
   }
 
   /**
-  * urlEncode()
-  * 
-  * URL Encode a string. Characters that are NOT encoded
-  * are: All letters, All digits, underscore (_), dash (-) and 
-  * period (.).
-  * 
-  * @ret       The URL encoded string.
-  * @param  url   The string to URL encode.
-  */
+   * urlEncode()
+   *
+   * URL Encode a string. Characters that are NOT encoded
+   * are: All letters, All digits, underscore (_), dash (-) and
+   * period (.).
+   *
+   * @ret       The URL encoded string.
+   * @param  url   The string to URL encode.
+   */
   urlencode(url: string) {
     // TODO
-  } 
+  }
 
   /**
    * Requires 5.54
-   * @param url 
+   * @param url
    */
   urldecode(url: string) {
     // TODO
-  } 
+  }
 
   /**
-  * setPrivateString()
-  * 
-  * Create a private config entry for your script, of String type.
-  * 
-  * @param  section   The section for the entry.
-  * @param  item      The item name for the entry.
-  * @param  value     The value of the entry.
-  */
+   * setPrivateString()
+   *
+   * Create a private config entry for your script, of String type.
+   *
+   * @param  section   The section for the entry.
+   * @param  item      The item name for the entry.
+   * @param  value     The value of the entry.
+   */
   setprivatestring(section: string, item: string, value: string) {
-   // TODO
+    // TODO
   }
 
   /**
@@ -403,17 +404,17 @@ export default class SystemObject extends BaseObject {
   }
 
   /**
-  * getPrivateString()
-  * 
-  * Read a private config entry of String type. Returns
-  * the specified default value if the section and item isn't
-  * found.  
-  * 
-  * @ret           The value of the config entry.
-  * @param  section   The section from which to read the entry.
-  * @param  item      The name of the item to read.
-  * @param  defvalue  The default value to return if no item is found.
-  */
+   * getPrivateString()
+   *
+   * Read a private config entry of String type. Returns
+   * the specified default value if the section and item isn't
+   * found.
+   *
+   * @ret           The value of the config entry.
+   * @param  section   The section from which to read the entry.
+   * @param  item      The name of the item to read.
+   * @param  defvalue  The default value to return if no item is found.
+   */
   getprivatestring(section: string, item: string, defvalue: string) {
     // TODO
   }
@@ -423,67 +424,67 @@ export default class SystemObject extends BaseObject {
   }
 
   /**
-  * setPublicInt()
-  * 
-  * Create a public config entry for your script, of Int type.
-  * 
-  * @param  item  The item name of the entry.
-  * @param  value The value of the entry.
-  */
+   * setPublicInt()
+   *
+   * Create a public config entry for your script, of Int type.
+   *
+   * @param  item  The item name of the entry.
+   * @param  value The value of the entry.
+   */
   setpublicint(item: string, value: number) {
     // TODO
   }
 
   /**
-  * getPublicString()
-  * 
-  * Read a public config entry of String type. Returns 
-  * the specified default value if the item isn't found.
-  * 
-  * @ret           The value of the config entry.
-  * @param  item      The item name to read.
-  * @param  defvalue  The default value to return if no item is found.
-  */
+   * getPublicString()
+   *
+   * Read a public config entry of String type. Returns
+   * the specified default value if the item isn't found.
+   *
+   * @ret           The value of the config entry.
+   * @param  item      The item name to read.
+   * @param  defvalue  The default value to return if no item is found.
+   */
   getpublicstring(item: string, defvalue: string) {
     // TODO
   }
 
   /**
-  * Int
-  * getPublicInt()
-  * 
-  * Read a public config entry of Integer type. Returns
-  * the specified default value if the item isn't found.
-  * 
-  * @ret           The value of the config entry.
-  * @param  item      The item name to read.
-  * @param  defvalue  The default value to return if no item is found.
-  */
+   * Int
+   * getPublicInt()
+   *
+   * Read a public config entry of Integer type. Returns
+   * the specified default value if the item isn't found.
+   *
+   * @ret           The value of the config entry.
+   * @param  item      The item name to read.
+   * @param  defvalue  The default value to return if no item is found.
+   */
   getpublicint(item: string, defvalue: number) {
     // TODO
   }
 
   /**
-  * getParam()
-  * 
-  * Get the parameters with which the script is called.
-  * This is the 'param="..."' attribute in the <script ...>
-  * skin XML tag.
-  * 
-  * @ret The parameter for the script.
-  */
+   * getParam()
+   *
+   * Get the parameters with which the script is called.
+   * This is the 'param="..."' attribute in the <script ...>
+   * skin XML tag.
+   *
+   * @ret The parameter for the script.
+   */
   getparam() {
     // TODO
   }
 
   /**
-  * getScriptGroup()
-  * 
-  * Get the group in which the script is instantiated. Returns
-  * Null if it's not instantiated in a group.
-  * 
-  * @ret 
-  */
+   * getScriptGroup()
+   *
+   * Get the group in which the script is instantiated. Returns
+   * Null if it's not instantiated in a group.
+   *
+   * @ret
+   */
   getscriptgroup() {
     // TODO
   }
@@ -516,79 +517,79 @@ export default class SystemObject extends BaseObject {
   }
 
   /**
-  * Container
-  * newDynamicContainer()
-  * 
-  * @ret                 The new container.
-  * @param  container_id    The identifier for the container you want to create.
-  */
+   * Container
+   * newDynamicContainer()
+   *
+   * @ret                 The new container.
+   * @param  container_id    The identifier for the container you want to create.
+   */
   newdynamiccontainer(container_id: string) {
     //TODO
   }
 
   /**
-  * Group
-  * newGroup()
-  * 
-  * @ret             The new group.
-  * @param  group_id    The identifier for the group you want to create.
-  */
+   * Group
+   * newGroup()
+   *
+   * @ret             The new group.
+   * @param  group_id    The identifier for the group you want to create.
+   */
   newgroup(group_id: string) {
     //TODO
   }
 
   /**
-   * 
-   * @param group_id 
+   *
+   * @param group_id
    */
   newgroupaslayout(group_id: string) {
     //TODO
   }
 
   /**
-  * Int
-  * getNumContainers()
-  * 
-  * Get the number of containers currently created.
-  * 
-  * @ret The number of containers.
-  */
+   * Int
+   * getNumContainers()
+   *
+   * Get the number of containers currently created.
+   *
+   * @ret The number of containers.
+   */
   getnumcontainers() {
     //TODO
   }
 
   /**
-  * Container
-  * enumContainer()
-  * 
-  * Returns the name of the container associated with it's number.
-  * Use getNumContainers() to fetch the number of containers present.
-  * The containers are numbered from 0 to the value returned by getNumContainers().
-  * 
-  * @ret       The name of the specified container.
-  * @param  num   The container's number for which you want to know the name.
-  */
+   * Container
+   * enumContainer()
+   *
+   * Returns the name of the container associated with it's number.
+   * Use getNumContainers() to fetch the number of containers present.
+   * The containers are numbered from 0 to the value returned by getNumContainers().
+   *
+   * @ret       The name of the specified container.
+   * @param  num   The container's number for which you want to know the name.
+   */
   enumcontainer(num: number) {
     //TODO
   }
-  
+
   /**
-   * 
-   * @param num 
+   *
+   * @param num
    */
   enumembedguid(num: number) {
     //TODO
-}
+  }
 
   /**
-  * deprecated, Wac
-  * getWac()
-  * 
-  * Gets the reference to the wac identified by the guid sent.
-  *
-  * @ret The requested WAC.
-  * @param  wac_guid  The WAC's GUID.
-  */
+   * deprecated, Wac
+   * getWac()
+   *
+   * Gets the reference to the wac identified by the guid sent.
+   *
+   * @ret The requested WAC.
+   * @param  wac_guid  The WAC's GUID.
+   */
   getwac(wac_guid: string) {
     //TODO
   }
@@ -635,160 +636,162 @@ export default class SystemObject extends BaseObject {
   }
 
   /**
-  * play()
-  * 
-  * Trigger the play event.
-  */
-  play() {
-
-  }
+   * play()
+   *
+   * Trigger the play event.
+   */
+  play() {}
 
   /**
-  * stop()
-  * 
-  * Trigger the stop event.
-  */
+   * stop()
+   *
+   * Trigger the stop event.
+   */
   stop() {
     // TODO
   }
 
   /**
-  * pause()
-  * 
-  * Trigger the pause event.
-  */
+   * pause()
+   *
+   * Trigger the pause event.
+   */
   pause() {
     // TODO
   }
 
   /**
-  * next()
-  * 
-  * Trigger the next event.
-  */
+   * next()
+   *
+   * Trigger the next event.
+   */
   next() {
     // TODO
   }
 
   /**
-  * previous()
-  * 
-  * Trigger the previous event.
-  */
+   * previous()
+   *
+   * Trigger the previous event.
+   */
   previous() {
     // TODO
   }
 
   /**
-  * eject()
-  * 
-  * Trigger the eject event.
-  */
+   * eject()
+   *
+   * Trigger the eject event.
+   */
   eject() {
     // TODO
   }
 
-/**
-  * messageBox()
-  * 
-  * Creates a message box.
-  * The flag paramater lets you set the style of the message box.
-  * Just use the OR bitwise operator to set the style you want.
-  * Here's a list of the flags you can use:
-  * 
-  * MSGBOX_OK         Adds an OK button.      (1)
-  * MSGBOX_CANCEL     Adds a CANCEL button.   (2)
-  * MSGBOX_YES        Adds a YES button.      (4)
-  * MSGBOX_NO         Adds a NO button.       (8)
-  * MSGBOX_ALL        Adds ALL buttons.       (16)
-  * MSGBOX_NEXT       Adds a NEXT button.     (32)
-  * MSGBOX_PREVIOUS   Adds a PREVIOUS button. (64)
-  * 
-  * Note that the notanymore_id parameter stores the users answer in the 
-  * configuration file with the entry name specified by it's value.
-  * 
-  * @ret   The value of the button that was pressed (example: if OK is pressed, 1 is returned).
-  * @param    message         The message you want to display.
-  * @param    msgtitle        The title of the message box.
-  * @param    flag            The message box style you want.
-  * @param    notanymore_id   Configuration item name in which to store the users answer.
-  */
-  messagebox(message: string, msgtitle: string, flag: number, notanymore_id: string) {
+  /**
+   * messageBox()
+   *
+   * Creates a message box.
+   * The flag paramater lets you set the style of the message box.
+   * Just use the OR bitwise operator to set the style you want.
+   * Here's a list of the flags you can use:
+   *
+   * MSGBOX_OK         Adds an OK button.      (1)
+   * MSGBOX_CANCEL     Adds a CANCEL button.   (2)
+   * MSGBOX_YES        Adds a YES button.      (4)
+   * MSGBOX_NO         Adds a NO button.       (8)
+   * MSGBOX_ALL        Adds ALL buttons.       (16)
+   * MSGBOX_NEXT       Adds a NEXT button.     (32)
+   * MSGBOX_PREVIOUS   Adds a PREVIOUS button. (64)
+   *
+   * Note that the notanymore_id parameter stores the users answer in the
+   * configuration file with the entry name specified by it's value.
+   *
+   * @ret   The value of the button that was pressed (example: if OK is pressed, 1 is returned).
+   * @param    message         The message you want to display.
+   * @param    msgtitle        The title of the message box.
+   * @param    flag            The message box style you want.
+   * @param    notanymore_id   Configuration item name in which to store the users answer.
+   */
+  messagebox(
+    message: string,
+    msgtitle: string,
+    flag: number,
+    notanymore_id: string
+  ) {
     // TODO
   }
 
   /**
-  * getPlayItemString()
-  *
-  * @ret The name of what is playing.
-  */
+   * getPlayItemString()
+   *
+   * @ret The name of what is playing.
+   */
   getplayitemstring(): string {
     return "Niente da Caprie";
   }
 
   /**
-  * getPlayItemMetaDataString()
-  * 
-  * Get metadata for the track currently playing. Make sure to wrap metadataname in double quotes -> ". 
-  * The metadata field names that are available are the following:
-  * 
-  * title
-  * album
-  * artist
-  * albumartist
-  * comment
-  * year
-  * composer
-  * bitrate
-  * srate
-  * stereo
-  * vbr
-  * replaygain_track_gain
-  * replaygain_album_gain
-  * replaygain_track_peak
-  * replaygain_album_peak
-  * gain
-  * genre
-  * track
-  * length
-  * disc
-  * bpm
-  * conductor
-  * key
-  * mood
-  * subtitle
-  * lyricist
-  * ISRC
-  * media
-  * remixer
-  * encoder
-  * publisher
-  * tool
-  * pregap
-  * postgap
-  * numsamples
-  * 
-  * 
-  * @ret                 The requested metadata.
-  * @param  metadataname    The name of the metadata field you want to read.
-  */
+   * getPlayItemMetaDataString()
+   *
+   * Get metadata for the track currently playing. Make sure to wrap metadataname in double quotes -> ".
+   * The metadata field names that are available are the following:
+   *
+   * title
+   * album
+   * artist
+   * albumartist
+   * comment
+   * year
+   * composer
+   * bitrate
+   * srate
+   * stereo
+   * vbr
+   * replaygain_track_gain
+   * replaygain_album_gain
+   * replaygain_track_peak
+   * replaygain_album_peak
+   * gain
+   * genre
+   * track
+   * length
+   * disc
+   * bpm
+   * conductor
+   * key
+   * mood
+   * subtitle
+   * lyricist
+   * ISRC
+   * media
+   * remixer
+   * encoder
+   * publisher
+   * tool
+   * pregap
+   * postgap
+   * numsamples
+   *
+   *
+   * @ret                 The requested metadata.
+   * @param  metadataname    The name of the metadata field you want to read.
+   */
   getplayitemmetadatastring(metadataname: string): string {
-    return "Metadata"; // TODO 
+    return "Metadata"; // TODO
   }
 
-
   /**
-  * Requires 5.53
-  * @ret                 The requested metadata.
-  * @param  metadataname    The name of the metadata field you want to read.
-  */
+   * Requires 5.53
+   * @ret                 The requested metadata.
+   * @param  metadataname    The name of the metadata field you want to read.
+   */
   getmetadatastring(filename: string, metadataname: string): string {
     return "Metadatastring"; // TODO
   }
 
   /**
-  * TODO
-  */
+   * TODO
+   */
   getplayitemdisplaytitle(): string {
     return "playitemdisplaytitle"; //What does this really do?
   }
@@ -803,7 +806,7 @@ export default class SystemObject extends BaseObject {
   /**
    * Requires 5.5
    * TODO
-   * @param rating 
+   * @param rating
    */
   oncurrenttrackrated(rating: number) {
     // TODO
@@ -812,29 +815,29 @@ export default class SystemObject extends BaseObject {
   /**
    * Requires 5.5
    * TODO
-   * @param rating 
+   * @param rating
    */
   setcurrenttrackrating(rating: number) {
     // TODO
   }
 
   /**
-  * getExtFamily()
-  * 
-  * This one still return the same as getDecoderName()
-  * 
-  * Gets registered family for given extension (i.e. mp3 -> "Audio")
-  * 
-  * @ret The registered family for given extension.
-  * @param ext The extension in question.
-  */
+   * getExtFamily()
+   *
+   * This one still return the same as getDecoderName()
+   *
+   * Gets registered family for given extension (i.e. mp3 -> "Audio")
+   *
+   * @ret The registered family for given extension.
+   * @param ext The extension in question.
+   */
   getextfamily(ext: string): string {
     return "Audio";
   }
 
   /**
-   * 
-   * @param playitem 
+   *
+   * @param playitem
    * @returns Above as getExtFamily(), needs more investigating
    */
   getdecodername(playitem: string): string {
@@ -842,37 +845,46 @@ export default class SystemObject extends BaseObject {
   }
 
   /**
-  * Requires 5.54
-  * downloadMedia()
-  * 
-  * Hookable. Downloads a file from url and saves it as destination_filename.
-  * If destinationPath is "" it will be saved in CD Ripping dir (=getDownloadPath()).
-  * 
-  * @param  url  the file to be downloaded
-  * @param  destinationPath  the path you want to store the file
-  * @param  wantAddToML  set true if you wnt to add the file to ML database
-  * @param  notifyDownloadsList  set true in order to list the download in <DownloadsLis/> Object
-  */
-  downloadmedia(url: string, destinationPath: string, wantAddToML: boolean, notifyDownloadsList: boolean) {
+   * Requires 5.54
+   * downloadMedia()
+   *
+   * Hookable. Downloads a file from url and saves it as destination_filename.
+   * If destinationPath is "" it will be saved in CD Ripping dir (=getDownloadPath()).
+   *
+   * @param  url  the file to be downloaded
+   * @param  destinationPath  the path you want to store the file
+   * @param  wantAddToML  set true if you wnt to add the file to ML database
+   * @param  notifyDownloadsList  set true in order to list the download in <DownloadsLis/> Object
+   */
+  downloadmedia(
+    url: string,
+    destinationPath: string,
+    wantAddToML: boolean,
+    notifyDownloadsList: boolean
+  ) {
     // TODO
   }
 
   /**
    * Deprecated, destination_filename is just a dummy parameter as well as progress_dialog_title - use download() instead
    * Requires 5.5
-   * @param url 
-   * @param destination_filename 
-   * @param progress_dialog_title 
+   * @param url
+   * @param destination_filename
+   * @param progress_dialog_title
    */
-  downloadurl(url: string, destination_filename: string, progress_dialog_title: string) {
+  downloadurl(
+    url: string,
+    destination_filename: string,
+    progress_dialog_title: string
+  ) {
     // TODO
-  } 
+  }
 
   /**
    * Requires 5.53
-   * @param url 
-   * @param success 
-   * @param filename 
+   * @param url
+   * @param success
+   * @param filename
    */
   ondownloadfinished(url: string, success: boolean, filename: string) {
     // TODO
@@ -894,48 +906,48 @@ export default class SystemObject extends BaseObject {
   }
 
   /**
-  * Requires 5.5
-  * enqueueFile()
-  * 
-  * Enqueque the requested file. Path and filename are required
-  * with proper extension (example: playFile("c:\music\mp3\file.mp3"); ).
-  * It also works with URL's (example: playFile("http://myshoutcast.com:8000"); ).
-  * 
-  * @param  playitem  The path and filename to play.
-  */
+   * Requires 5.5
+   * enqueueFile()
+   *
+   * Enqueque the requested file. Path and filename are required
+   * with proper extension (example: playFile("c:\music\mp3\file.mp3"); ).
+   * It also works with URL's (example: playFile("http://myshoutcast.com:8000"); ).
+   *
+   * @param  playitem  The path and filename to play.
+   */
   enqueuefile(playitem: string) {
     // TODO
-  } 
+  }
 
   /**
-  * playFile()
-  * 
-  * Play the requested file. Path and filename are required
-  * with proper extension (example: playFile("c:\music\mp3\file.mp3"); ).
-  * It also works with URL's (example: playFile("http://myshoutcast.com:8000"); ).
-  * 
-  * @param  playitem  The path and filename to play.
-  */
+   * playFile()
+   *
+   * Play the requested file. Path and filename are required
+   * with proper extension (example: playFile("c:\music\mp3\file.mp3"); ).
+   * It also works with URL's (example: playFile("http://myshoutcast.com:8000"); ).
+   *
+   * @param  playitem  The path and filename to play.
+   */
   playfile(playitem: string) {
     // TODO
   }
 
   /**
    * Requires 5.51
-   * @param fullfilename 
+   * @param fullfilename
    */
   getfilesize(fullfilename: string): number {
     return 100;
-  } 
+  }
 
   /**
    * Requires 5.5
-   * @param playitem 
-   * @returns Will return 1 if an album art has been downloaded, otherwise 0 
+   * @param playitem
+   * @returns Will return 1 if an album art has been downloaded, otherwise 0
    */
   getalbumart(playitem: string): number {
     return 1;
-  } 
+  }
 
   /**
    * Get the length of the track currently playing, in milliseconds.
@@ -995,9 +1007,9 @@ export default class SystemObject extends BaseObject {
   }
 
   /**
-   * 
-   * @param x 
-   * @param y 
+   *
+   * @param x
+   * @param y
    */
   getviewportwidthfrompoint(x: number, y: number) {
     // TODO
@@ -1014,8 +1026,8 @@ export default class SystemObject extends BaseObject {
   /**
    * Requires 5.5
    * Int
-   * @param x 
-   * @param y 
+   * @param x
+   * @param y
    */
   getmonitorwidthfrompoint(x: number, y: number) {
     // TODO
@@ -1030,85 +1042,85 @@ export default class SystemObject extends BaseObject {
   }
 
   /**
-  * getExtension()
-  * 
-  * Gets the extension from a filename. (example:
-  * c:\music\mp3\test.mp3 -> mp3)
-  * Also works on URLs.
-  *
-  * @ret    The extension of the filename.
-  * @param str The fullpath of a file.
-  */
+   * getExtension()
+   *
+   * Gets the extension from a filename. (example:
+   * c:\music\mp3\test.mp3 -> mp3)
+   * Also works on URLs.
+   *
+   * @ret    The extension of the filename.
+   * @param str The fullpath of a file.
+   */
   getextension(str: string): string {
     return "mp3";
   }
 
-/**
-* getToken()
-* 
-* Retreive a token from a list of tokens seperated by separator.
-* The index starts at 0, not 1, so be careful.
-* Here's a short example:
-*   getToken("1,2,3,4,5", ",", 3);
-* Would return, 3. If the token you ask for doesn't exist, an 
-* empty string is returned.
-* 
-* @ret             The token requested.
-* @param  str         The tokenenized string.
-* @param  separator   The separator to use.
-* @param  tokennum    The token to retreive.
-*/
+  /**
+   * getToken()
+   *
+   * Retreive a token from a list of tokens seperated by separator.
+   * The index starts at 0, not 1, so be careful.
+   * Here's a short example:
+   *   getToken("1,2,3,4,5", ",", 3);
+   * Would return, 3. If the token you ask for doesn't exist, an
+   * empty string is returned.
+   *
+   * @ret             The token requested.
+   * @param  str         The tokenenized string.
+   * @param  separator   The separator to use.
+   * @param  tokennum    The token to retreive.
+   */
   gettoken(str: string, separator: string, tokennum: number) {
-  // TODO
-}
+    // TODO
+  }
 
   /**
-  * removePath()
-  * 
-  * Remove the path from a full filename. (example:
-  * c:\music\mp3\test.mp3 -> test.mp3)
-  * Also works on URLs.
-  * 
-  * @ret    The filename with the path removed.
-  * @param str The fullpath of a file.
-  */
+   * removePath()
+   *
+   * Remove the path from a full filename. (example:
+   * c:\music\mp3\test.mp3 -> test.mp3)
+   * Also works on URLs.
+   *
+   * @ret    The filename with the path removed.
+   * @param str The fullpath of a file.
+   */
   removepath(str: string): string {
     return "test.mp3";
   }
 
   /**
-  * getPath()
-  * 
-  * Gets the path from a full filename. (example:
-  * c:\music\mp3\test.mp3 -> c:\music\mp3)
-  * Also works on URLs.
-  * 
-  * @ret    The path with the filename removed.
-  * @param str The fullpath of a file.
-  */
+   * getPath()
+   *
+   * Gets the path from a full filename. (example:
+   * c:\music\mp3\test.mp3 -> c:\music\mp3)
+   * Also works on URLs.
+   *
+   * @ret    The path with the filename removed.
+   * @param str The fullpath of a file.
+   */
   getpath(str: string): string {
     return "c:\\music\\mp3";
   }
 
   /**
-  * getPosition()
-  * 
-  * Get the current position in the track currently playing,
-  * in milliseconds.
-  * 
-  * @ret The current position in the track.
-  */
+   * getPosition()
+   *
+   * Get the current position in the track currently playing,
+   * in milliseconds.
+   *
+   * @ret The current position in the track.
+   */
   getposition() {
     return "25000";
   }
 
   /**
-  * getStatus()
-  * 
-  * returns the status of the main player core.
-  * 
-  * @ret STATUS_PAUSED (-1) if paused, STATUS_STOPPED (0) if stopped, STATUS_PLAYING (1) if playing.
-  */
+   * getStatus()
+   *
+   * returns the status of the main player core.
+   *
+   * @ret STATUS_PAUSED (-1) if paused, STATUS_STOPPED (0) if stopped, STATUS_PLAYING (1) if playing.
+   */
   getstatus() {
     return 1;
   }
@@ -1133,8 +1145,8 @@ export default class SystemObject extends BaseObject {
   /**
    * Requires 5.5
    * Int
-   * @param x 
-   * @param y 
+   * @param x
+   * @param y
    */
   getviewportheightfrompoint(x: number, y: number) {
     // TODO
@@ -1151,8 +1163,8 @@ export default class SystemObject extends BaseObject {
   /**
    * Requires 5.5
    * Int
-   * @param x 
-   * @param y 
+   * @param x
+   * @param y
    */
   getmonitorheightfrompoint(x: number, y: number) {
     // TODO
@@ -1185,8 +1197,8 @@ export default class SystemObject extends BaseObject {
   /**
    * Requires 5.5
    * Int
-   * @param x 
-   * @param y 
+   * @param x
+   * @param y
    */
   getmonitorleftfrompoint(x: number, y: number) {
     // TODO
@@ -1216,8 +1228,8 @@ export default class SystemObject extends BaseObject {
   /**
    * Requires 5.631
    * Int
-   * @param x 
-   * @param y 
+   * @param x
+   * @param y
    */
   getmonitortopfrompoint(x: number, y: number) {
     // TODO
@@ -1239,8 +1251,8 @@ export default class SystemObject extends BaseObject {
   /**
    * Requires 5.5
    * Int
-   * @param x 
-   * @param y 
+   * @param x
+   * @param y
    */
   getviewportleftfrompoint(x: number, y: number) {
     // TODO
@@ -1256,40 +1268,40 @@ export default class SystemObject extends BaseObject {
 
   /**
    * Int
-   * @param x 
-   * @param y 
+   * @param x
+   * @param y
    */
   getviewporttopfrompoint(x: number, y: number) {
     // TODO
   }
 
   /**
-  * debugString()
-  * 
-  * Send a debug message to the Wasabi Console.
-  * The severity ranges from 0 (not serious) to 9 (very serious).
-  * 
-  * @param  str       The debug message.
-  * @param  severity  The severity of the error.
-  */
+   * debugString()
+   *
+   * Send a debug message to the Wasabi Console.
+   * The severity ranges from 0 (not serious) to 9 (very serious).
+   *
+   * @param  str       The debug message.
+   * @param  severity  The severity of the error.
+   */
   debugstring(str: string, severity: number) {
     // TODO
   }
 
   /**
-  * ddeSend()
-  * 
-  * Send a DDE message to an application. The minimum
-  * interval between messages is specified in milliseconds.
-  * Here's an example:
-  * 
-  * ddeSend("mIRC", "/msg #channel I'm using Winamp5", 300);
-  * 
-  * @param  application   The DDE server name of the application.
-  * @param  command       The command to send.
-  * @param  mininterval   The minimum interval to respect between messages (in ms).
-  */
-  ddesend(application: string, command: string, mininterval: number){
+   * ddeSend()
+   *
+   * Send a DDE message to an application. The minimum
+   * interval between messages is specified in milliseconds.
+   * Here's an example:
+   *
+   * ddeSend("mIRC", "/msg #channel I'm using Winamp5", 300);
+   *
+   * @param  application   The DDE server name of the application.
+   * @param  command       The command to send.
+   * @param  mininterval   The minimum interval to respect between messages (in ms).
+   */
+  ddesend(application: string, command: string, mininterval: number) {
     // TODO
   }
 
@@ -1358,13 +1370,13 @@ export default class SystemObject extends BaseObject {
   }
 
   /**
-  * getEqPreamp()
-  *
-  * Get the equalizer preamp value. The value range is
-  * from -127 to +127 (0 means no preamp).
-  *
-  * @ret The preamp's current value.
-  */
+   * getEqPreamp()
+   *
+   * Get the equalizer preamp value. The value range is
+   * from -127 to +127 (0 means no preamp).
+   *
+   * @ret The preamp's current value.
+   */
   geteqpreamp(): number {
     return 0;
   }
@@ -1380,13 +1392,13 @@ export default class SystemObject extends BaseObject {
   }
 
   /**
-  * setEqPreamp()
-  *
-  * Set the equalizer pre-amp to the desired value.
-  * Range is from -127 to +127 (0 means no preamp).
-  *
-  * @param  value The desired value for the pre-amp.
-  */
+   * setEqPreamp()
+   *
+   * Set the equalizer pre-amp to the desired value.
+   * Range is from -127 to +127 (0 means no preamp).
+   *
+   * @param  value The desired value for the pre-amp.
+   */
   seteqpreamp(value: number) {
     // TODO
   }
