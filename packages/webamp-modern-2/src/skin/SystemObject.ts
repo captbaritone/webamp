@@ -989,9 +989,8 @@ export default class SystemObject extends BaseObject {
   /**
    * Requires 5.5
    * Int
-   * Originally was (GuiObject g)
    */
-  getviewportwidthfromguiobject() {
+  getviewportwidthfromguiobject(g: GuiObj) {
     // TODO
   }
 
@@ -1025,9 +1024,8 @@ export default class SystemObject extends BaseObject {
   /**
    * Requires 5.631
    * Int
-   * Originally was (GuiObject g)
    */
-  getmonitorwidthfromguiobject() {
+  getmonitorwidthfromguiobject(g: GuiObj) {
     // TODO
   }
 
@@ -1127,9 +1125,8 @@ export default class SystemObject extends BaseObject {
   /**
    * Int
    * Requires 5.5
-   * Originally was (GuiObject g)
    */
-  getviewportheightfromguiobject() {
+  getviewportheightfromguiobject(g: GuiObj) {
     // TODO
   }
 
@@ -1164,9 +1161,8 @@ export default class SystemObject extends BaseObject {
   /**
    * Int
    * Requires 5.631
-   * Originally was (GuiObject g)
    */
-  getmonitorheightfromguiobject() {
+  getmonitorheightfromguiobject(g: GuiObj) {
     // TODO
   }
 
@@ -1181,9 +1177,8 @@ export default class SystemObject extends BaseObject {
   /**
    * Int
    * Requires 5.5
-   * Originally was (GuiObject g)
    */
-  getmonitorleftfromguiobject() {
+  getmonitorleftfromguiobject(g: GuiObj) {
     // TODO
   }
 
@@ -1213,9 +1208,8 @@ export default class SystemObject extends BaseObject {
   /**
    * Int
    * Requires 5.631
-   * Originally was (GuiObject g)
    */
-  getmonitortopfromguiobject() {
+  getmonitortopfromguiobject(g: GuiObj) {
     // TODO
   }
 
@@ -1237,9 +1231,8 @@ export default class SystemObject extends BaseObject {
   /**
    * Int
    * Requires 5.5
-   * Originally was (GuiObject g)
    */
-  getviewportleftfromguiobject() {
+  getviewportleftfromguiobject(g: GuiObj) {
     // TODO
   }
 
@@ -1256,9 +1249,8 @@ export default class SystemObject extends BaseObject {
   /**
    * Int
    * Requires 5.5
-   * Originally was (GuiObject g)
    */
-  getviewporttopfromguiobject() {
+  getviewporttopfromguiobject(g: GuiObj) {
     // TODO
   }
 
