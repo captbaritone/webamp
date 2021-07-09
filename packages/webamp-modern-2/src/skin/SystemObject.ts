@@ -84,6 +84,184 @@ export default class SystemObject extends BaseObject {
   }
 
   /**
+  * Int
+  * StringToInteger()
+  * 
+  * Get the integer representation of a string.
+  * 
+  * @ret     The integer equivalent of the string.
+  * @param  str The string to change into an integer.
+  */
+  stringtointeger(str: string) {
+    // TODO
+  }
+
+  /**
+  * String
+  * floatToString()
+  * 
+  * Get the string representation of a floating point number.
+  * 
+  * @ret         The string representation of the float number.
+  * @param  value   The float to convert.
+  * @param  ndigits Number of digits after the decimal point you want.
+  */
+  floattostring(value: number, ndigits: number) {
+    // TODO
+  }
+
+  /**
+  * Float
+  * stringToFloat()
+  * 
+  * Get the floating point representation of a string.
+  * 
+  * @ret     The float representation of the string.
+  * @param  str The string to convert.
+  */
+  stringtofloat(str: string) {
+    // TODO
+  }
+
+  /**
+  * String
+  * integerToLongTime()
+  * 
+  * Convert a time in seconds to a H:MM:SS value.
+  * 
+  * @ret       The string representation of the time (H:MM:SS).
+  * @param  value Timestamp to use.
+  */
+  integertolongtime(value: number) {
+    // TODO
+  }
+
+  /**
+   * String
+   * prints the time from a date with the same format as integerToTime
+   * @param datetime 
+   */
+  datetotime(datetime: number) {
+    // TODO
+  }
+
+  /**
+   * String
+   * prints the time from a date with the same format as integerToLongTime
+   * @param datetime 
+   */
+  datetolongtime(datetime: number) {
+    // TODO
+  }
+  
+  /**
+   * String
+   * formats the date according to the locales - short date format
+   * @param datetime 
+   */
+  formatdate(datetime: number) {
+    // TODO
+  }
+  /**
+   * String
+   * formats the date according to the locales - long date format
+   * @param datetime 
+   */
+  formatlongdate(datetime: number) {
+    // TODO
+  }
+
+  /**
+   * Int
+   * returns the datetime's year since 1900
+   * @param datetime 
+   */
+  getdateyear(datetime: number) {
+    // TODO
+  }
+  
+  /**
+   * Int
+   * returns the datetime's month (0-11)
+   * @param datetime 
+   */
+  getdatemonth(datetime: number) {
+    // TODO
+  }
+
+  /**
+   * Int
+   * returns the datetime's day of the month (1-31)
+   * @param datetime 
+   */
+  getdateday(datetime: number) {
+    // TODO
+  }
+
+  /**
+   * Int
+   * returns the datetime's day of the week (0-6)
+   * @param datetime 
+   */
+  getdatedow(datetime: number) {
+    // TODO
+  }
+
+  /**
+   * Int
+   * returns the datetime's day of the year (0-365)
+   * @param datetime 
+   */
+  getdatedoy(datetime: number) {
+    // TODO
+  }
+
+  /**
+   * Int
+   * returns the datetime's hour (0-23)
+   * @param datetime 
+   */
+  getdatehour(datetime: number) {
+    // TODO
+  }
+
+  /**
+   * Int
+   * returns the datetime's minutes (0-59)
+   * @param datetime 
+   */
+  getdatemin(datetime: number) {
+    // TODO
+  }
+
+  /**
+   * Int
+   * returns the datetime's seconds (0-59)
+   * @param datetime 
+   */
+  getdatesec(datetime: number) {
+    // TODO
+  }
+
+  /**
+   * Int
+   * returns the datetime's daylight savings flag
+   * @param datetime 
+   */
+  getdatedst(datetime: number) {
+    // TODO
+  }
+
+  /**
+   * Int
+   * returns the datetime, use with the above functions
+   * @param datetime 
+   */
+  getdate() {
+    // TODO
+  }
+
+  /**
    * Create a private config entry for your script, of Int type.
    *
    * @param  section   The section for the entry.
@@ -119,6 +297,84 @@ export default class SystemObject extends BaseObject {
       }
     }
     throw new Error(`Could not find a container with the id; "${containerId}"`);
+  }
+
+  /**
+  * Container
+  * newDynamicContainer()
+  * 
+  * @ret                 The new container.
+  * @param  container_id    The identifier for the container you want to create.
+  */
+  newdynamiccontainer(container_id: string) {
+    //TODO
+  }
+
+  /**
+  * Group
+  * newGroup()
+  * 
+  * @ret             The new group.
+  * @param  group_id    The identifier for the group you want to create.
+  */
+  newgroup(group_id: string) {
+    //TODO
+  }
+
+  /**
+   * 
+   * @param group_id 
+   */
+  newgroupaslayout(group_id: string) {
+    //TODO
+  }
+
+  /**
+  * Int
+  * getNumContainers()
+  * 
+  * Get the number of containers currently created.
+  * 
+  * @ret The number of containers.
+  */
+  getnumcontainers() {
+    //TODO
+  }
+
+  /**
+  * Container
+  * enumContainer()
+  * 
+  * Returns the name of the container associated with it's number.
+  * Use getNumContainers() to fetch the number of containers present.
+  * The containers are numbered from 0 to the value returned by getNumContainers().
+  * 
+  * @ret       The name of the specified container.
+  * @param  num   The container's number for which you want to know the name.
+  */
+  enumcontainer(num: number) {
+    //TODO
+  }
+  
+  /**
+   * 
+   * @param num 
+   */
+  enumembedguid(num: number) {
+    //TODO
+}
+
+  /**
+  * deprecated, Wac
+  * getWac()
+  * 
+  * Gets the reference to the wac identified by the guid sent.
+  *
+  * @ret The requested WAC.
+  * @param  wac_guid  The WAC's GUID.
+  */
+  getwac(wac_guid: string) {
+    //TODO
   }
 
   /**
@@ -177,7 +433,7 @@ export default class SystemObject extends BaseObject {
   * Trigger the stop event.
   */
   stop() {
-    
+    // TODO
   }
 
   /**
@@ -186,7 +442,7 @@ export default class SystemObject extends BaseObject {
   * Trigger the pause event.
   */
   pause() {
-    
+    // TODO
   }
 
   /**
@@ -195,7 +451,7 @@ export default class SystemObject extends BaseObject {
   * Trigger the next event.
   */
   next() {
-    
+    // TODO
   }
 
   /**
@@ -204,7 +460,7 @@ export default class SystemObject extends BaseObject {
   * Trigger the previous event.
   */
   previous() {
-    
+    // TODO
   }
 
   /**
@@ -213,7 +469,7 @@ export default class SystemObject extends BaseObject {
   * Trigger the eject event.
   */
   eject() {
-    
+    // TODO
   }
 
 /**
@@ -326,7 +582,7 @@ export default class SystemObject extends BaseObject {
    * TODO
    */
   getcurrenttrackrating() {
-
+    // TODO
   }
   /**
    * Requires 5.5
@@ -334,16 +590,16 @@ export default class SystemObject extends BaseObject {
    * @param rating 
    */
   oncurrenttrackrated(rating: number) {
-    
+    // TODO
   }
-  
+
   /**
    * Requires 5.5
    * TODO
    * @param rating 
    */
   setcurrenttrackrating(rating: number) {
-    
+    // TODO
   }
 
   /**
@@ -393,7 +649,7 @@ export default class SystemObject extends BaseObject {
    * @param progress_dialog_title 
    */
   downloadurl(url: string, destination_filename: string, progress_dialog_title: string) {
-
+    // TODO
   } 
 
   /**
@@ -557,23 +813,23 @@ export default class SystemObject extends BaseObject {
   }
 
   /**
-  getPosition()
-
-  Get the current position in the track currently playing,
-  in milliseconds.
-
-  @ret The current position in the track.
+  * getPosition()
+  * 
+  * Get the current position in the track currently playing,
+  * in milliseconds.
+  * 
+  * @ret The current position in the track.
   */
   getposition() {
     return "25000";
   }
 
   /**
-  getStatus()
-
-  returns the status of the main player core.
-
-  @ret STATUS_PAUSED (-1) if paused, STATUS_STOPPED (0) if stopped, STATUS_PLAYING (1) if playing.
+  * getStatus()
+  * 
+  * returns the status of the main player core.
+  * 
+  * @ret STATUS_PAUSED (-1) if paused, STATUS_STOPPED (0) if stopped, STATUS_PLAYING (1) if playing.
   */
   getstatus() {
     return 1;
