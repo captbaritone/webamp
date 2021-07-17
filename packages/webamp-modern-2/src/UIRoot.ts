@@ -212,6 +212,13 @@ export class UIRoot {
         assume(false, `Unknown global action: ${action}`);
     }
   }
+  draw() {
+    this._div.style.imageRendering = "pixelated";
+    for (const container of this.getContainers()) {
+      container.draw();
+      this._div.appendChild(container.getDiv());
+    }
+  }
 
   dispose() {
     this._div.remove();

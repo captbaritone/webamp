@@ -39,16 +39,14 @@ async function loadSkin(skinData: Blob) {
   setStatus("Parsing XML and initializing images...");
   const parser = new SkinParser(zip, UI_ROOT);
 
+  // This is always the same as the global singleton.
   const uiRoot = await parser.parse();
 
   setStatus("Enabling Colors...");
   uiRoot.enableDefaultGammaSet();
 
   setStatus("Rendering skin for the first time...");
-  for (const container of uiRoot.getContainers()) {
-    container.draw();
-    UI_ROOT.getRootDiv().appendChild(container.getDiv());
-  }
+  uiRoot.draw();
 
   setStatus("Initializing Maki...");
   for (const container of uiRoot.getContainers()) {
