@@ -1,7 +1,7 @@
 import Bitmap from "./skin/Bitmap";
 import { XmlElement } from "@rgrove/parse-xml";
 import TrueTypeFont from "./skin/TrueTypeFont";
-import { assert, assume } from "./utils";
+import { assert, assume, findLast } from "./utils";
 import BitmapFont from "./skin/BitmapFont";
 import Color from "./skin/Color";
 import GammaGroup from "./skin/GammaGroup";
@@ -58,7 +58,8 @@ export class UIRoot {
   // TODO: Maybe return a default bitmap?
   getBitmap(id: string): Bitmap {
     const lowercaseId = id.toLowerCase();
-    const found = this._bitmaps.find(
+    const found = findLast(
+      this._bitmaps,
       (bitmap) => bitmap._id.toLowerCase() === lowercaseId
     );
 
@@ -76,7 +77,8 @@ export class UIRoot {
 
   getColor(id: string): Color {
     const lowercaseId = id.toLowerCase();
-    const found = this._colors.find(
+    const found = findLast(
+      this._colors,
       (color) => color._id.toLowerCase() === lowercaseId
     );
 
@@ -85,7 +87,8 @@ export class UIRoot {
   }
 
   getFont(id: string): TrueTypeFont | BitmapFont | null {
-    const found = this._fonts.find(
+    const found = findLast(
+      this._fonts,
       (font) => font.getId().toLowerCase() === id.toLowerCase()
     );
 
@@ -104,7 +107,8 @@ export class UIRoot {
 
   getGroupDef(id: string): XmlElement | null {
     const lowercaseId = id.toLowerCase();
-    const found = this._groupDefs.find(
+    const found = findLast(
+      this._groupDefs,
       (def) => def.attributes.id.toLowerCase() === lowercaseId
     );
 
@@ -146,7 +150,7 @@ export class UIRoot {
 
   _getGammaGroup(id: string): GammaGroup | null {
     const lower = id.toLowerCase();
-    const found = this._activeGammaSet.find((gammaGroup) => {
+    const found = findLast(this._activeGammaSet, (gammaGroup) => {
       return gammaGroup.getId().toLowerCase() === lower;
     });
     return found ?? null;
@@ -176,7 +180,8 @@ export class UIRoot {
 
   getXuiElement(name: string): XmlElement | null {
     const lowercaseName = name.toLowerCase();
-    const found = this._xuiElements.find(
+    const found = findLast(
+      this._xuiElements,
       (def) => def.attributes.xuitag.toLowerCase() === lowercaseName
     );
 

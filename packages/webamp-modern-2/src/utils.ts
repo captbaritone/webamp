@@ -67,3 +67,15 @@ export function integerToTime(seconds: number): string {
   const secs = String(Math.round(seconds % 60)).padStart(2, "0");
   return `${mins}:${secs}`;
 }
+
+export function findLast<T>(
+  arr: T[],
+  predicate: (value: T) => boolean
+): T | undefined {
+  for (let i = arr.length - 1; i >= 0; i--) {
+    const value = arr[i];
+    if (predicate(value)) {
+      return value;
+    }
+  }
+}
