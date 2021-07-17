@@ -1,13 +1,29 @@
 // This module is imported early here in order to avoid a circular dependency.
 import { classResolver } from "./skin/resolver";
 import { normalizedObjects, getFormattedId } from "./maki/objects";
-import BaseObject from "./skin/BaseObject";
+import BaseObject from "./skin/makiClasses/BaseObject";
+// import { addDropHandler } from "./dropTarget";
+// import JSZip from "jszip";
 
 function hack() {
   // Without this Snowpack will try to treeshake out resolver causing a circular
   // dependency.
   classResolver("A funny joke about why this is needed.");
 }
+
+/*
+async function validateSkinMaki(file: Blob) {
+  const zip = await JSZip.loadAsync(file);
+  const maki = zip.filter((path) => path.endsWith(".maki"));
+  for (const zipFile of maki) {
+    console.log(zipFile.name);
+    const arraybuffer = await zip.loadAsync("arraybuffer");
+    console.log(arraybuffer);
+  }
+}
+
+addDropHandler(validateSkinMaki);
+*/
 
 function getClass(guid: string): typeof BaseObject | null {
   try {
