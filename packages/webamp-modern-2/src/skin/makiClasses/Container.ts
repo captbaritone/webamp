@@ -1,7 +1,7 @@
-import UI_ROOT from "../UIRoot";
-import { assert, px, removeAllChildNodes, toBool } from "../utils";
+import UI_ROOT from "../../UIRoot";
+import { assert, px, removeAllChildNodes, toBool } from "../../utils";
 import Layout from "./Layout";
-import XmlObj from "./XmlObj";
+import XmlObj from "../XmlObj";
 
 // > A container is a top level object and it basically represents a window.
 // > Nothing holds a container. It is an object that holds multiple related
@@ -10,6 +10,7 @@ import XmlObj from "./XmlObj";
 //
 // -- http://wiki.winamp.com/wiki/Modern_Skin:_Container
 export default class Container extends XmlObj {
+  static GUID = "e90dc47b4ae7840d0b042cb0fcf775d2";
   _layouts: Layout[] = [];
   _activeLayout: Layout | null = null;
   _defaultVisible: boolean = true;

@@ -1,8 +1,9 @@
 import GuiObj from "./GuiObj";
-import UI_ROOT from "../UIRoot";
+import UI_ROOT from "../../UIRoot";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Clayer.2F.3E
 export default class Layer extends GuiObj {
+  static GUID = "5ab9fa1545579a7d5765c8aba97cc6a6";
   _image: string;
 
   setXmlAttr(key: string, value: string): boolean {

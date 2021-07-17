@@ -5,10 +5,20 @@
   "license": "MIT",
   "scripts": {
     "start": "snowpack dev",
-    "build": "snowpack build"
+    "build": "snowpack build",
+    "lint": "yarn build-lint && eslint . --ext .js,.jsx,.ts,.tsx",
+    "build-lint": "tsup tools/eslint-rules/proper-maki-types.ts -d tools/eslint-rules/dist --no-splitting --minify"
   },
   "devDependencies": {
-    "snowpack": "^3.5.5"
+    "@types/eslint": "^7.2.14",
+    "@types/estree": "^0.0.50",
+    "@typescript-eslint/eslint-plugin": "^4.28.2",
+    "@typescript-eslint/parser": "^4.28.2",
+    "eslint": "^7.30.0",
+    "eslint-plugin-rulesdir": "^0.2.0",
+    "snowpack": "^3.5.5",
+    "typescript": "^4.3.5",
+    "tsup": "^4.12.5"
   },
   "prettier": {},
   "dependencies": {

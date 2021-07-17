@@ -1,5 +1,5 @@
 import BaseObject from "./BaseObject";
-import { assume } from "../utils";
+import { assume } from "../../utils";
 
 type MenuItem =
   | {
@@ -12,6 +12,7 @@ type MenuItem =
   | { type: "separator" };
 
 export default class PopupMenu extends BaseObject {
+  static GUID = "f4787af44ef7b2bb4be7fb9c8da8bea9";
   _items: MenuItem[] = [];
   addcommand(
     cmdText: string,

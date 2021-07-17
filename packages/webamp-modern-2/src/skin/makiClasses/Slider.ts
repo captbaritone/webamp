@@ -1,9 +1,10 @@
-import UI_ROOT from "../UIRoot";
-import { assume, clamp, num, px } from "../utils";
+import UI_ROOT from "../../UIRoot";
+import { assume, clamp, num, px } from "../../utils";
 import GuiObj from "./GuiObj";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Cslider.2F.3E_.26_.3CWasabi:HSlider.2F.3E_.26_.3CWasabi:VSlider.2F.3E
 export default class Slider extends GuiObj {
+  static GUID = "62b65e3f408d375e8176ea8d771bb94a";
   _barLeft: string;
   _barMiddle: string;
   _barRight: string;

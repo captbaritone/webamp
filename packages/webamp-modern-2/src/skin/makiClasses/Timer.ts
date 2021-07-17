@@ -1,8 +1,9 @@
-import UI_ROOT from "../UIRoot";
-import { assume } from "../utils";
+import UI_ROOT from "../../UIRoot";
+import { assume } from "../../utils";
 import BaseObject from "./BaseObject";
 
 export default class Timer extends BaseObject {
+  static GUID = "5d0c5bb64b1f7de1168d0fa741199459";
   _delay: number;
   _timeout: NodeJS.Timeout | null = null;
   setdelay(millisec: number) {

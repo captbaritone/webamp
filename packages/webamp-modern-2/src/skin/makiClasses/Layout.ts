@@ -1,5 +1,5 @@
 import Group from "./Group";
-import * as Utils from "../utils";
+import * as Utils from "../../utils";
 import Container from "./Container";
 
 // > A layout is a special kind of group, which shown inside a container. Each
@@ -11,6 +11,7 @@ import Container from "./Container";
 //
 // -- http://wiki.winamp.com/wiki/Modern_Skin:_Container
 export default class Layout extends Group {
+  static GUID = "60906d4e482e537e94cc04b072568861";
   _parentContainer: Container | null = null;
 
   setXmlAttr(key: string, value: string): boolean {

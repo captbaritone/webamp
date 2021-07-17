@@ -1,4 +1,4 @@
-import GuiObj from "./GuiObj";
+import GuiObj from "./makiClasses/GuiObj";
 import UI_ROOT from "../UIRoot";
 import { removeAllChildNodes } from "../utils";
 

@@ -1,11 +1,11 @@
-import { getClass } from "../maki/objects";
-import { ParsedMaki } from "../maki/parser";
+import { getClass } from "../../maki/objects";
+import { ParsedMaki } from "../../maki/parser";
 import BaseObject from "./BaseObject";
 import Container from "./Container";
-import { clamp, integerToTime } from "../utils";
+import { clamp, integerToTime } from "../../utils";
 import Group from "./Group";
-import PRIVATE_CONFIG from "./PrivateConfig";
-import UI_ROOT from "../UIRoot";
+import PRIVATE_CONFIG from "../PrivateConfig";
+import UI_ROOT from "../../UIRoot";
 import GuiObj from "./GuiObj";
 
 const MOUSE_POS = { x: 0, y: 0 };
@@ -17,6 +17,7 @@ document.addEventListener("mousemove", (e: MouseEvent) => {
 });
 
 export default class SystemObject extends BaseObject {
+  static GUID = "d6f50f6449b793fa66baf193983eaeef";
   _parentGroup: Group;
   _parsedScript: ParsedMaki;
 
@@ -523,7 +524,7 @@ export default class SystemObject extends BaseObject {
    * @ret                 The new container.
    * @param  container_id    The identifier for the container you want to create.
    */
-  newdynamiccontainer(container_id: string) {
+  newdynamiccontainer(container_id: string): Container {
     //TODO
   }
 
@@ -534,7 +535,7 @@ export default class SystemObject extends BaseObject {
    * @ret             The new group.
    * @param  group_id    The identifier for the group you want to create.
    */
-  newgroup(group_id: string) {
+  newgroup(group_id: string): Group {
     //TODO
   }
 
@@ -619,7 +620,7 @@ export default class SystemObject extends BaseObject {
    *
    * @ret The current volume.
    **/
-  getvolume() {
+  getvolume(): number {
     return UI_ROOT.audio.getVolume() * 255;
   }
 

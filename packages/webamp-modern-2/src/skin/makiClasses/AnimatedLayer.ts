@@ -1,8 +1,9 @@
-import UI_ROOT from "../UIRoot";
-import { ensureVmInt, px } from "../utils";
+import UI_ROOT from "../../UIRoot";
+import { ensureVmInt, px } from "../../utils";
 import Layer from "./Layer";
 
 export default class AnimatedLayer extends Layer {
+  static GUID = "6b64cd274c4b5a26a7e6598c3a49f60c";
   _currentFrame: number = 0;
   _startFrame: number = 0;
   _endFrame: number = 0;

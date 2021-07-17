@@ -1,4 +1,4 @@
-import BaseObject from "./BaseObject";
+import BaseObject from "./makiClasses/BaseObject";
 
 export default class XmlObj extends BaseObject {
   setXmlAttributes(attributes: { [attrName: string]: string }) {

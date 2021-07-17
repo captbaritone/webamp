@@ -1,11 +1,12 @@
-import UI_ROOT from "../UIRoot";
-import { assert, num, toBool, px, assume } from "../utils";
-import Bitmap from "./Bitmap";
+import UI_ROOT from "../../UIRoot";
+import { assert, num, toBool, px, assume } from "../../utils";
+import Bitmap from "../Bitmap";
 import Group from "./Group";
-import XmlObj from "./XmlObj";
+import XmlObj from "../XmlObj";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#GuiObject_.28Global_params.29
 export default class GuiObj extends XmlObj {
+  static GUID = "4ee3e1994becc636bc78cd97b028869c";
   _parent: Group;
   _id: string;
   _width: number;

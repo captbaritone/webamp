@@ -1,4 +1,4 @@
-import UI_ROOT from "../UIRoot";
+import UI_ROOT from "../../UIRoot";
 
 /**
  * This is the base class from which all other classes inherit.

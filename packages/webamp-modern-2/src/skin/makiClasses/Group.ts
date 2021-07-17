@@ -1,10 +1,11 @@
-import * as Utils from "../utils";
-import UI_ROOT from "../UIRoot";
+import * as Utils from "../../utils";
+import UI_ROOT from "../../UIRoot";
 import GuiObj from "./GuiObj";
 import SystemObject from "./SystemObject";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Cgroup.2F.3E
 export default class Group extends GuiObj {
+  static GUID = "45be95e5419120725fbb5c93fd17f1f9";
   _parent: Group;
   _instanceId: string;
   _background: string;

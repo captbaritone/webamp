@@ -1,11 +1,18 @@
 import GuiObj from "./GuiObj";
-import UI_ROOT from "../UIRoot";
-import TrueTypeFont from "./TrueTypeFont";
-import BitmapFont from "./BitmapFont";
-import { integerToTime, removeAllChildNodes, num, px, toBool } from "../utils";
+import UI_ROOT from "../../UIRoot";
+import TrueTypeFont from "../TrueTypeFont";
+import BitmapFont from "../BitmapFont";
+import {
+  integerToTime,
+  removeAllChildNodes,
+  num,
+  px,
+  toBool,
+} from "../../utils";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Ctext.2F.3E_.26_.3CWasabi:Text.2F.3E
 export default class Text extends GuiObj {
+  static GUID = "efaa867241fa310ea985dcb74bcb5b52";
   _display: string;
   _displayValue: string = "";
   _disposeDisplaySubscription: () => void | null = null;
@@ -72,6 +79,7 @@ export default class Text extends GuiObj {
       case "timecolonwidth":
         // (int) How many extra pixels wider or smaller should the colon be when displaying time. Default is -1.
         this._timeColonWidth = num(value);
+        this._renderText();
       /*
 antialias - (bool) Setting this flag causes the text to be rendered antialiased if possible.
 default - (str) A parameter alias for text.

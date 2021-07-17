@@ -5,9 +5,9 @@ import { assert, assume } from "./utils";
 import BitmapFont from "./skin/BitmapFont";
 import Color from "./skin/Color";
 import GammaGroup from "./skin/GammaGroup";
-import Container from "./skin/Container";
+import Container from "./skin/makiClasses/Container";
 import Vm from "./skin/VM";
-import BaseObject from "./skin/BaseObject";
+import BaseObject from "./skin/makiClasses/BaseObject";
 import AUDIO_PLAYER, { AudioPlayer } from "./skin/AudioPlayer";
 
 export class UIRoot {

@@ -1,4 +1,4 @@
-import BaseObject from "../skin/BaseObject";
+import BaseObject from "../skin/makiClasses/BaseObject";
 
 export type Variable =
   | {

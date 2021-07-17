@@ -1,7 +1,7 @@
 import { interpret } from "../maki/interpreter";
 import { ParsedMaki } from "../maki/parser";
 import { Variable } from "../maki/v";
-import BaseObject from "./BaseObject";
+import BaseObject from "./makiClasses/BaseObject";
 
 import { classResolver } from "./resolver";
 
