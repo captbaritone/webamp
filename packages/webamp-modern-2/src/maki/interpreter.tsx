@@ -306,7 +306,7 @@ class Interpreter {
           assert(
             (obj.type === "OBJECT" && typeof obj.value) === "object" &&
               obj.value != null,
-            "Guru Meditation: Tried to call method on null object"
+            `Guru Meditation: Tried to call method ${klass.name}.${methodName} on null object`
           );
           let value = obj.value[methodName](...methodArgs);
 
