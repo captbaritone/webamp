@@ -48,9 +48,17 @@ export class AudioPlayer {
     this._audio.currentTime = secs;
   }
 
+  seekToPercent(percent: number) {
+    this._audio.currentTime = this._audio.duration * percent;
+  }
+
   // In seconds
   getCurrentTime(): number {
     return this._audio.currentTime;
+  }
+
+  getCurrentTimePercent(): number {
+    return this._audio.currentTime / this._audio.duration;
   }
 
   onCurrentTimeChange(cb: () => void): () => void {
@@ -58,6 +66,15 @@ export class AudioPlayer {
     this._audio.addEventListener("timeupdate", handler);
     const dispose = () => {
       this._audio.removeEventListener("timeupdate", handler);
+    };
+    return dispose;
+  }
+
+  onSeek(cb: () => void): () => void {
+    const handler = () => cb();
+    this._audio.addEventListener("seeked", handler);
+    const dispose = () => {
+      this._audio.removeEventListener("seeked", handler);
     };
     return dispose;
   }

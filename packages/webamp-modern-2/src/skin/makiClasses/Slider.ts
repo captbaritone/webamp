@@ -12,6 +12,7 @@ export default class Slider extends GuiObj {
   _thumb: string;
   _downThumb: string;
   _hoverThumb: string;
+  _action: string | null = null;
   _low: number;
   _high: number;
   _position: number = 0;
@@ -100,6 +101,10 @@ export default class Slider extends GuiObj {
         // (int) Set the high-value boundary. Default is 255.
         this._high = num(value);
         break;
+      case "action":
+        // Undocumented on the Wiki
+        this._action = value;
+        break;
       default:
         return false;
     }
@@ -115,6 +120,9 @@ export default class Slider extends GuiObj {
     UI_ROOT.vm.dispatch(this, "onsetposition", [
       { type: "INT", value: newPos },
     ]);
+    if (this._action) {
+      UI_ROOT.dispatch(this._action, this.getposition(), null);
+    }
   }
 
   _renderThumb() {

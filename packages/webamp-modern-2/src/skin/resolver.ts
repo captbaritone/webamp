@@ -15,8 +15,12 @@ import Timer from "./makiClasses/Timer";
 import Slider from "./makiClasses/Slider";
 import Vis from "./makiClasses/Vis";
 import GuiObj from "./makiClasses/GuiObj";
+import Config from "./makiClasses/Config";
+import ConfigItem from "./makiClasses/ConfigItem";
 
 const CLASSES = [
+  Config,
+  // ConfigItem,
   Button,
   SystemObject,
   Container,

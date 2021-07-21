@@ -166,7 +166,8 @@ export default class SkinParser {
       case "wrapper":
         return this.traverseChildren(node);
       default:
-        throw new Error(`Unhandled XML node type: ${node.name}`);
+        console.warn(`Unhandled XML node type: ${node.name}`);
+        return;
     }
   }
 

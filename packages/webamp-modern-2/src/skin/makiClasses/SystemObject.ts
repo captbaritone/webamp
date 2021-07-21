@@ -24,6 +24,11 @@ export default class SystemObject extends BaseObject {
   constructor(parsedScript: ParsedMaki) {
     super();
     this._parsedScript = parsedScript;
+    UI_ROOT.audio.onSeek(() => {
+      UI_ROOT.vm.dispatch(this, "onseek", [
+        { type: "INT", value: UI_ROOT.audio.getCurrentTimePercent() * 255 },
+      ]);
+    });
   }
 
   init() {

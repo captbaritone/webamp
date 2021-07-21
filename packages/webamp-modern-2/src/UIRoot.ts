@@ -188,7 +188,11 @@ export class UIRoot {
     return found ?? null;
   }
 
-  dispatch(action: string, param: string | null, actionTarget: string | null) {
+  dispatch(
+    action: string,
+    param: string | null | number,
+    actionTarget: string | null
+  ) {
     switch (action.toLowerCase()) {
       case "play":
         this.audio.play();
@@ -207,6 +211,9 @@ export class UIRoot {
         break;
       case "eject":
         this.audio.eject();
+        break;
+      case "seek":
+        this.audio.seekToPercent((param as number) / 255);
         break;
       default:
         assume(false, `Unknown global action: ${action}`);

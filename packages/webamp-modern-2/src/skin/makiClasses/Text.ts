@@ -137,6 +137,11 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
       case "songname":
         this._displayValue = "Niente da Caprie (3";
         break;
+      case "songtitle":
+        this._displayValue = "Niente da Caprie (3";
+        break;
+      case "songbitrate":
+      case "songsamplerate":
       case "songinfo":
         this._displayValue = "112kbps stereo 44.";
         break;
