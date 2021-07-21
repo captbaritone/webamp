@@ -8,21 +8,33 @@ yarn
 yarn start
 ```
 
+## Performance Improvements
+
+- [ ] We could use WebGL to try to improve the speed of switching gamma colors
+- [ ] We could use some CSS techniques to avoid having to appply inline style to each BitmapFont character's DOM node.
+- [ ] We should profile the parse phase to see what's taking time. Perhaps there's some sync image work that could be done lazily.
+- [ ] Remove some paranoid validation in the VM.
+- [ ] Consider throttling time updates coming from audio
+
 # TODO Next
 
+- [ ] Why doesn't scrolling work property in MMD3?
+- [ ] Implement proper color
+    - [ ] Move gammacolor to GPU
+- [ ] Requires VM
+    - [ ] Look at componentbucket (Where can I find the images)
+    - [ ] How is the scroll window for colors supposed to work?
+    - [ ] How is the position slider supposed to work?
+- [ ] Standardize handling of different type condition permutations in interpreter
+- [ ] Implement EQ
+- [ ] Implament global actions
+    - [ ] TOGGLE
+    - [ ] MINIMIZE
+- [ ] Allow for skins which don't have gamma sets
 - [ ] Figure out if global NULL is actually typed as INT in Maki. I suspect there is no NULL type, but only an INT who happens to be zero.
-- [ ] GUI objects that are constructed by MAKI never get onInit called on them...
 - [ ] Fix all `// FIXME`
 - [ ] SystemObject.getruntimeversion
 - [ ] SystemObject.getskinname
-- [ ] Ensure only wrapped variables go on the stack
-    - [ ] I suspect that this will require type-aware coersion
-        Meanding we don't just always convert to number, but match the type coersion of Maki?
-- [ ] What is the root node?
-- [ ] Where do Layers actually go?
-- [ ] Where are scripts initialized?
-- [ ] When parsing skins, where is the root state accumulated?
-- [ ] How do includes work when parsing skins? Do they create new context?
 
 # TODO Some day
 
