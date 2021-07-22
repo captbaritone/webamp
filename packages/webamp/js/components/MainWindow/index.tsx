@@ -98,7 +98,7 @@ const MainWindow = React.memo(({ analyser, filePickers }: Props) => {
           <Shade />
           <Close />
         </div>
-        <div className="status">
+        <div className="webamp-status">
           <ClutterBar />
           {!working && <div id="play-pause" />}
           <div

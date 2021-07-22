@@ -110,7 +110,7 @@ const getCssRules = createSelector(
       // This alternate number file requires that the minus sign be
       // formatted differently.
       cssRules.push(
-        `${CSS_PREFIX} .status #time #minus-sign { top: 0px; left: -1px; width: 9px; height: 13px; }`
+        `${CSS_PREFIX} .webamp-status #time #minus-sign { top: 0px; left: -1px; width: 9px; height: 13px; }`
       );
     }
 
