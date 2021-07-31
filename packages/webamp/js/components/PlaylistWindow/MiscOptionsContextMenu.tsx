@@ -7,6 +7,7 @@ const MiscOptionsContextMenu = () => {
   const downloadHtmlPlaylist = useActionCreator(Actions.downloadHtmlPlaylist);
   return (
     <ContextMenuTarget
+      style={{ width: "100%", height: "100%" }}
       top
       renderMenu={() => (
         <Node onClick={downloadHtmlPlaylist} label="Generate HTML playlist" />
