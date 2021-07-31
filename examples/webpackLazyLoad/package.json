@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "butterchurn": "^2.6.7",
-    "webamp": "1.4.2"
+    "webamp": "1.5.0"
   },
   "devDependencies": {
     "webpack": "^4.29.6",
