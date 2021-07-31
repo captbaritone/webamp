@@ -58,7 +58,7 @@
     "@typescript-eslint/parser": "^4.8.1",
     "eslint": "^7.13.0",
     "jest": "^26.1.0",
-    "prettier": "^2.0.5",
+    "prettier": "^2.3.2",
     "supertest": "^6.0.1",
     "typescript": "^3.8.3"
   }
