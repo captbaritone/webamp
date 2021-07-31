@@ -1,4 +1,4 @@
-## NEXT
+## 1.5.0
 
 ### Features
 
@@ -13,6 +13,8 @@
 - Fix a bug where the Milkdrop window could not be moved in some cases [#1068](https://github.com/captbaritone/webamp/pull/1068)
 - Fix a bug where the visualizer in the Playlist window was not hidden when audio was stopped. [#1072](https://github.com/captbaritone/webamp/pull/1072)
 - Fix a bug where the marquee was one pixel too narrow [#1087](https://github.com/captbaritone/webamp/pull/1087)
+- Fix a bug that was preventing the "Misc options" plalist submenu from opening. [c9fe24](https://github.com/captbaritone/webamp/commit/c9fe24daec32d23ac675f57e3c37854e5ecffbde)
+- Rename the `.status` class to `.webamp-status` to avoid potential conflicts with host site. [#1116](https://github.com/captbaritone/webamp/pull/1116)
 
 ## 1.4.2
 
