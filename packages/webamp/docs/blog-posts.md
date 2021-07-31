@@ -2,6 +2,8 @@
 
 Over the years that I've been working on Webamp, I've written a number of blog posts on topics related to it.
 
+- [Building the @WinampSkins Twitter Bot](https://jordaneldredge.com/blog/building-the-winampskins-twitter-bot/)
+- [Using Machine Learning to Generate Winamp Skins](https://jordaneldredge.com/blog/using-machine-learning-to-generate-winamp-skins/)
 - [Speeding Up Webamp's Music Visualizer with WebAssembly](https://jordaneldredge.com/blog/speeding-up-winamps-music-visualizer-with-webassembly/)
 - [Rendering Animated .ani Cursors in the Browser](https://jordaneldredge.com/blog/rendering-animated-ani-cursors-in-the-browser/)
 - [Mainlining Nostalgia: Making the Winamp Skin Museum](https://jordaneldredge.com/blog/winamp-skin-musuem/)
