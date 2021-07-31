@@ -72,24 +72,20 @@ export function parse(data: ArrayBuffer): ParsedMaki {
     }
   });
 
-  const resolvedBindings = bindings.map(
-    (binding): Binding => {
-      return Object.assign({}, binding, {
-        commandOffset: offsetToCommand[binding.binaryOffset],
+  const resolvedBindings = bindings.map((binding): Binding => {
+    return Object.assign({}, binding, {
+      commandOffset: offsetToCommand[binding.binaryOffset],
+    });
+  });
+
+  const resolvedCommands = commands.map((command): Command => {
+    if (command.argType === "COMMAND_OFFSET") {
+      return Object.assign({}, command, {
+        arg: offsetToCommand[command.arg],
       });
     }
-  );
-
-  const resolvedCommands = commands.map(
-    (command): Command => {
-      if (command.argType === "COMMAND_OFFSET") {
-        return Object.assign({}, command, {
-          arg: offsetToCommand[command.arg],
-        });
-      }
-      return command;
-    }
-  );
+    return command;
+  });
   return {
     classes,
     methods,

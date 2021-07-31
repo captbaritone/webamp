@@ -90,14 +90,12 @@ async function main() {
   });
   await testPageAndRetry({
     name: "Regular",
-    url:
-      "https://archive.org/details/78_mambo-no.-5_perez-prado-and-his-orchestra-d.-perez-prado_gbia0009774b",
+    url: "https://archive.org/details/78_mambo-no.-5_perez-prado-and-his-orchestra-d.-perez-prado_gbia0009774b",
     firstTrackText: "Mambo No. 5",
   });
   await testPageAndRetry({
     name: "Samples Only",
-    url:
-      "https://archive.org/details/lp_smokey-and-the-bandit-2-original-soundtrac_various-brenda-lee-burt-reynolds-don-willi",
+    url: "https://archive.org/details/lp_smokey-and-the-bandit-2-original-soundtrac_various-brenda-lee-burt-reynolds-don-willi",
     firstTrackText: "Texas Bound And Flyin",
   });
   await testPageAndRetry({
@@ -107,8 +105,7 @@ async function main() {
   });
   await testPageAndRetry({
     name: "Another",
-    url:
-      "https://archive.org/details/78_house-of-the-rising-sun_josh-white-and-his-guitar_gbia0001628b",
+    url: "https://archive.org/details/78_house-of-the-rising-sun_josh-white-and-his-guitar_gbia0001628b",
     firstTrackText: "House Of The Rising Sun",
   });
 }

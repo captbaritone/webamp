@@ -196,10 +196,8 @@ class Webamp {
     // TODO: Make this much cleaner
     let convertPreset = null;
     if (__butterchurnOptions != null) {
-      const {
-        importConvertPreset,
-        presetConverterEndpoint,
-      } = __butterchurnOptions;
+      const { importConvertPreset, presetConverterEndpoint } =
+        __butterchurnOptions;
 
       if (importConvertPreset != null && presetConverterEndpoint != null) {
         convertPreset = async (file: File): Promise<Object> => {

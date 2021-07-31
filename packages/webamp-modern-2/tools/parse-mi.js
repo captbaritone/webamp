@@ -12,9 +12,10 @@ function parseFile(filePath) {
 
   const objects = {};
   lines.forEach((line, lineNumber) => {
-    const classDefinitionMatch = /\s*extern\s+class\s*\@\{(........\s?-\s?....\s?-\s?....\s?-\s?....\s?-\s?............)\}\s*\@\s*(.*?)\s+(.*?);/.exec(
-      line
-    );
+    const classDefinitionMatch =
+      /\s*extern\s+class\s*\@\{(........\s?-\s?....\s?-\s?....\s?-\s?....\s?-\s?............)\}\s*\@\s*(.*?)\s+(.*?);/.exec(
+        line
+      );
     if (classDefinitionMatch) {
       const id = classDefinitionMatch[1].replace(/[-\s]/g, "");
       const parent = classDefinitionMatch[2];

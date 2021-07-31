@@ -78,14 +78,8 @@ class AnimatedLayer extends Layer {
   }
 
   _initializeEnd(): number {
-    const {
-      end,
-      js_assets,
-      frameheight,
-      framewidth,
-      w,
-      h,
-    } = this._typedAttributes;
+    const { end, js_assets, frameheight, framewidth, w, h } =
+      this._typedAttributes;
 
     if (end != null) {
       return getNumber(end, 0);

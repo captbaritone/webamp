@@ -87,8 +87,9 @@ for (const cls of classes) {
   const className = document.createElement("td");
   className.classList.add("class-name");
   const totalCount = cls.methods.filter((m) => !m.hook).length;
-  const foundCount = cls.methods.filter((m) => !m.hook && m.status === "found")
-    .length;
+  const foundCount = cls.methods.filter(
+    (m) => !m.hook && m.status === "found"
+  ).length;
   total += totalCount;
   found += foundCount;
   className.innerText = `${cls.name} (${foundCount}/${totalCount})`;

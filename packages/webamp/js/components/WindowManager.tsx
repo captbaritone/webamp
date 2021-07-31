@@ -36,8 +36,9 @@ function useHandleMouseDown(propsWindows: {
   const browserWindowSize = useTypedSelector(Selectors.getBrowserWindowSize);
   const updateWindowPositions = useActionCreator(Actions.updateWindowPositions);
 
-  const [draggingState, setDraggingState] =
-    useState<DraggingState | null>(null);
+  const [draggingState, setDraggingState] = useState<DraggingState | null>(
+    null
+  );
 
   // When the mouse is down, attach a listener to track mouse move events.
   useEffect(() => {
