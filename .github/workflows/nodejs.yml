@@ -37,7 +37,7 @@ jobs:
           CI: true
       - name: Upload Screenshot Diffs
         if: failure()
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: image_diffs
           path: packages/webamp/js/__tests__/__image_snapshots__/__diff_output__/
