@@ -140,6 +140,25 @@ router.get(
 );
 
 router.get(
+  "/skins/:md5/metadata",
+  asyncHandler(async (req, res) => {
+    const { md5 } = req.params;
+    const skin = await SkinModel.fromMd5(req.ctx, md5);
+    if (skin == null) {
+      req.log(`Details for hash "${md5}" NOT FOUND`);
+      res.status(404).json();
+      return;
+    }
+    res.json({
+      md5: skin.getMd5(),
+      nsfw: await skin.getIsNsfw(),
+      fileName: await skin.getFileName(),
+      readme: skin.getReadme(),
+    });
+  })
+);
+
+router.get(
   "/skins/:md5/debug",
   asyncHandler(async (req, res) => {
     const { md5 } = req.params;

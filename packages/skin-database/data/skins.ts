@@ -584,16 +584,20 @@ export async function getAllClassicScreenshotUrls(): Promise<
   const skins = await knex.raw(
     `
 SELECT skins.md5, 
-	files.file_path
+	files.file_path,
+  skin_reviews.review
 FROM   skins 
 	LEFT JOIN files ON files.skin_md5 = skins.md5
+	LEFT JOIN skin_reviews ON skin_reviews.skin_md5 = skins.md5 AND skin_reviews.review = "NSFW"
 WHERE  skin_type = 1 
 GROUP BY skins.md5`,
     []
   );
 
-  return skins.map(({ md5, file_path }) => {
+  return skins.map(({ md5, file_path, review }) => {
     return {
+      md5,
+      nsfw: review != null,
       fileName: path.basename(file_path),
       url: getScreenshotUrl(md5),
     };

@@ -153,6 +153,7 @@ async function getSitemapUrls() {
 
 const allowList = [
   /https:\/\/skins\.webamp\.org/,
+  /https:\/\/winamp-skin-museum\.pages\.dev/,
   /http:\/\/localhost:3000/,
   /netlify.app/,
 ];
