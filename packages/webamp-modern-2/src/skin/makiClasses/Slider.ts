@@ -17,6 +17,7 @@ export default class Slider extends GuiObj {
   _high: number;
   _position: number = 0;
   _thumbDiv: HTMLDivElement = document.createElement("div");
+  _actionSubscription: null | (() => void);
 
   constructor() {
     super();
@@ -102,13 +103,40 @@ export default class Slider extends GuiObj {
         this._high = num(value);
         break;
       case "action":
-        // Undocumented on the Wiki
-        this._action = value;
+        this._setAction(value);
         break;
       default:
         return false;
     }
     return true;
+  }
+
+  _setAction(value: string) {
+    if (this._actionSubscription != null) {
+      this._actionSubscription();
+      this._actionSubscription = null;
+    }
+    this._action = value.toLowerCase();
+    switch (this._action) {
+      case "seek": {
+        const update = () => {
+          this._position = UI_ROOT.audio.getCurrentTimePercent();
+          // TODO: We could throttle this, or only render if the change is "significant"?
+          this._renderThumbPosition();
+        };
+        update();
+        this._actionSubscription = UI_ROOT.audio.onCurrentTimeChange(update);
+        break;
+      }
+      case "eq_band":
+        break;
+      case "pan":
+        break;
+      case "volume":
+        break;
+      default:
+        assume(false, `Unhandled slider action: ${this._action}`);
+    }
   }
 
   // extern Int Slider.getPosition();
@@ -171,6 +199,11 @@ export default class Slider extends GuiObj {
     this._renderThumb();
     this._renderThumbPosition();
     this._div.appendChild(this._thumbDiv);
+  }
+
+  dispose() {
+    super.dispose();
+    this._actionSubscription();
   }
 
   /*
