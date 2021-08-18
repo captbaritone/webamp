@@ -52,7 +52,7 @@ export default class SystemObject extends BaseObject {
     return 5.666;
   }
 
-  getskinname() {
+  getskinname(): string {
     return "TODO: Get the Real skin name";
   }
 
@@ -86,7 +86,7 @@ export default class SystemObject extends BaseObject {
    * @param  item      The name of the item to read.
    * @param  defvalue  The defautl value to return if no item is found.
    */
-  getprivateint(section: string, item: string, defvalue: number) {
+  getprivateint(section: string, item: string, defvalue: number): number {
     return PRIVATE_CONFIG.getPrivateInt(section, item, defvalue);
   }
 
@@ -99,8 +99,9 @@ export default class SystemObject extends BaseObject {
    * @ret     The integer equivalent of the string.
    * @param  str The string to change into an integer.
    */
-  stringtointeger(str: string) {
-    // TODO
+  stringtointeger(str: string): number {
+    // TODO: Confirm if this should be round/ceil/floor
+    return Math.round(Number(str));
   }
 
   /**
@@ -113,8 +114,8 @@ export default class SystemObject extends BaseObject {
    * @param  value   The float to convert.
    * @param  ndigits Number of digits after the decimal point you want.
    */
-  floattostring(value: number, ndigits: number) {
-    // TODO
+  floattostring(value: number, ndigits: number): string {
+    return value.toFixed(ndigits);
   }
 
   /**
@@ -126,8 +127,8 @@ export default class SystemObject extends BaseObject {
    * @ret     The float representation of the string.
    * @param  str The string to convert.
    */
-  stringtofloat(str: string) {
-    // TODO
+  stringtofloat(str: string): number {
+    return Number(str);
   }
 
   /**
@@ -278,8 +279,8 @@ export default class SystemObject extends BaseObject {
    * @param  start The start position.
    * @param  len   The length of the string to extract, from start position.
    */
-  strmid(str: string, start: number, len: number) {
-    // TODO
+  strmid(str: string, start: number, len: number): string {
+    return str.slice(start, start + len);
   }
 
   /**
@@ -291,8 +292,8 @@ export default class SystemObject extends BaseObject {
    * @param  str     The string.
    * @param  nchars  The length of the string to extract, from the left.
    */
-  strleft(str: string, nchars: number) {
-    // TODO
+  strleft(str: string, nchars: number): string {
+    return str.slice(0, nchars);
   }
 
   /**
@@ -306,8 +307,9 @@ export default class SystemObject extends BaseObject {
    * @param  str     The string.
    * @param  nchars  The length of the string to extract, from the right.
    */
-  strright(str: string, nchars: number) {
-    // TODO
+  strright(str: string, nchars: number): string {
+    // TODO: Validate that this is correct
+    return str.slice(str.length - nchars);
   }
 
   /**
@@ -322,8 +324,8 @@ export default class SystemObject extends BaseObject {
    * @param  str     The string to search in.
    * @param  substr  The substring to find.
    */
-  strsearch(str: string, substr: string) {
-    // TODO
+  strsearch(str: string, substr: string): number {
+    return str.indexOf(substr);
   }
 
   /**
@@ -335,8 +337,8 @@ export default class SystemObject extends BaseObject {
    * @ret     The length of the string.
    * @param  str The string.
    */
-  strlen(str: string) {
-    // TODO
+  strlen(str: string): number {
+    return str.length;
   }
 
   /**
@@ -347,8 +349,8 @@ export default class SystemObject extends BaseObject {
    * @ret     The uppercase string.
    * @param  str The string to uppercase.
    */
-  strupper(str: string) {
-    // TODO
+  strupper(str: string): string {
+    return str.toUpperCase();
   }
 
   /**
@@ -359,8 +361,8 @@ export default class SystemObject extends BaseObject {
    * @ret     The lowercase string.
    * @param  str The string to lowercase.
    */
-  strlower(str: string) {
-    // TODO
+  strlower(str: string): string {
+    return str.toLowerCase();
   }
 
   /**
@@ -491,8 +493,8 @@ export default class SystemObject extends BaseObject {
    *
    * @ret
    */
-  getscriptgroup() {
-    // TODO
+  getscriptgroup(): Group {
+    return this._parentGroup;
   }
 
   /**
@@ -545,7 +547,6 @@ export default class SystemObject extends BaseObject {
   }
 
   /**
-   *
    * @param group_id
    */
   newgroupaslayout(group_id: string) {
@@ -560,8 +561,8 @@ export default class SystemObject extends BaseObject {
    *
    * @ret The number of containers.
    */
-  getnumcontainers() {
-    //TODO
+  getnumcontainers(): number {
+    return UI_ROOT.getContainers().length;
   }
 
   /**
@@ -806,7 +807,7 @@ export default class SystemObject extends BaseObject {
    * Requires 5.5
    * TODO
    */
-  getcurrenttrackrating() {
+  getcurrenttrackrating(): number {
     // TODO
   }
   /**
@@ -1127,7 +1128,8 @@ export default class SystemObject extends BaseObject {
    *
    * @ret STATUS_PAUSED (-1) if paused, STATUS_STOPPED (0) if stopped, STATUS_PLAYING (1) if playing.
    */
-  getstatus() {
+  getstatus(): number {
+    // TODO: Pull this from the actual media player
     return 1;
   }
 
@@ -1136,7 +1138,7 @@ export default class SystemObject extends BaseObject {
    *
    * @ret The height of the user's screen.
    */
-  getviewportheight() {
+  getviewportheight(): number {
     return window.document.documentElement.clientHeight;
   }
 
@@ -1144,7 +1146,7 @@ export default class SystemObject extends BaseObject {
    * Int
    * Requires 5.5
    */
-  getviewportheightfromguiobject(g: GuiObj) {
+  getviewportheightfromguiobject(g: GuiObj): number {
     // TODO
   }
 
@@ -1154,7 +1156,7 @@ export default class SystemObject extends BaseObject {
    * @param x
    * @param y
    */
-  getviewportheightfrompoint(x: number, y: number) {
+  getviewportheightfrompoint(x: number, y: number): number {
     // TODO
   }
 
@@ -1162,41 +1164,7 @@ export default class SystemObject extends BaseObject {
    * Requires 5.5
    * Int
    */
-  getmonitorheight() {
-    // TODO
-  }
-
-  /**
-   * Requires 5.5
-   * Int
-   * @param x
-   * @param y
-   */
-  getmonitorheightfrompoint(x: number, y: number) {
-    // TODO
-  }
-
-  /**
-   * Int
-   * Requires 5.631
-   */
-  getmonitorheightfromguiobject(g: GuiObj) {
-    // TODO
-  }
-
-  /**
-   * Requires 5.631
-   * Int
-   */
-  getmonitorleft() {
-    // TODO
-  }
-
-  /**
-   * Int
-   * Requires 5.5
-   */
-  getmonitorleftfromguiobject(g: GuiObj) {
+  getmonitorheight(): number {
     // TODO
   }
 
@@ -1206,7 +1174,15 @@ export default class SystemObject extends BaseObject {
    * @param x
    * @param y
    */
-  getmonitorleftfrompoint(x: number, y: number) {
+  getmonitorheightfrompoint(x: number, y: number): number {
+    // TODO
+  }
+
+  /**
+   * Int
+   * Requires 5.631
+   */
+  getmonitorheightfromguiobject(g: GuiObj): number {
     // TODO
   }
 
@@ -1214,11 +1190,37 @@ export default class SystemObject extends BaseObject {
    * Requires 5.631
    * Int
    */
-  getmonitortop() {
+  getmonitorleft(): number {
     // TODO
   }
 
-  getviewporttop() {
+  /**
+   * Int
+   * Requires 5.5
+   */
+  getmonitorleftfromguiobject(g: GuiObj): number {
+    // TODO
+  }
+
+  /**
+   * Requires 5.5
+   * Int
+   * @param x
+   * @param y
+   */
+  getmonitorleftfrompoint(x: number, y: number): number {
+    // TODO
+  }
+
+  /**
+   * Requires 5.631
+   * Int
+   */
+  getmonitortop(): number {
+    // TODO
+  }
+
+  getviewporttop(): number {
     // TODO: What should this really be?
     return 0;
   }
@@ -1227,7 +1229,7 @@ export default class SystemObject extends BaseObject {
    * Int
    * Requires 5.631
    */
-  getmonitortopfromguiobject(g: GuiObj) {
+  getmonitortopfromguiobject(g: GuiObj): number {
     // TODO
   }
 
@@ -1237,11 +1239,11 @@ export default class SystemObject extends BaseObject {
    * @param x
    * @param y
    */
-  getmonitortopfrompoint(x: number, y: number) {
+  getmonitortopfrompoint(x: number, y: number): number {
     // TODO
   }
 
-  getviewportleft() {
+  getviewportleft(): number {
     // TODO: What should this really be?
     return 0;
   }
@@ -1250,7 +1252,7 @@ export default class SystemObject extends BaseObject {
    * Int
    * Requires 5.5
    */
-  getviewportleftfromguiobject(g: GuiObj) {
+  getviewportleftfromguiobject(g: GuiObj): number {
     // TODO
   }
 
@@ -1260,7 +1262,7 @@ export default class SystemObject extends BaseObject {
    * @param x
    * @param y
    */
-  getviewportleftfrompoint(x: number, y: number) {
+  getviewportleftfrompoint(x: number, y: number): number {
     // TODO
   }
 
@@ -1268,7 +1270,7 @@ export default class SystemObject extends BaseObject {
    * Int
    * Requires 5.5
    */
-  getviewporttopfromguiobject(g: GuiObj) {
+  getviewporttopfromguiobject(g: GuiObj): number {
     // TODO
   }
 
@@ -1277,7 +1279,7 @@ export default class SystemObject extends BaseObject {
    * @param x
    * @param y
    */
-  getviewporttopfrompoint(x: number, y: number) {
+  getviewporttopfrompoint(x: number, y: number): number {
     // TODO
   }
 
@@ -1291,6 +1293,7 @@ export default class SystemObject extends BaseObject {
    * @param  severity  The severity of the error.
    */
   debugstring(str: string, severity: number) {
+    console.log("Wasabi Console:", str);
     // TODO
   }
 
@@ -1361,7 +1364,7 @@ export default class SystemObject extends BaseObject {
    * @ret       The value of the band.
    * @param  band  The eq band number you want to get.
    */
-  geteqband(band: number) {
+  geteqband(band: number): number {
     return 100;
   }
 
@@ -1527,7 +1530,7 @@ export default class SystemObject extends BaseObject {
     return value * value;
   }
 
-  log10(value: number) {
+  log10(value: number): number {
     return Math.log10(value);
   }
   ln(value: number): number {
@@ -1551,7 +1554,7 @@ export default class SystemObject extends BaseObject {
    * @ret     The random number.
    * @param  max The maximum value of the random number to return.
    */
-  random(max: number) {
+  random(max: number): number {
     // TODO: Should this return an int?
     return Math.random() * max;
   }
