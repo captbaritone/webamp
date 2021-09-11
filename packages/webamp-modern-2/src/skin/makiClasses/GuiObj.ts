@@ -34,6 +34,7 @@ export default class GuiObj extends XmlObj {
     });
 
     this._div.addEventListener("mousedown", (e) => {
+      /*
       if (this._backgroundBitmap != null) {
         const { clientX, clientY } = e;
         const { x, y } = this._div.getBoundingClientRect();
@@ -53,9 +54,10 @@ export default class GuiObj extends XmlObj {
             bubbles: true,
           });
           newTarget.dispatchEvent(newEvent);
+          return;
         }
       }
-      //
+     */
       this.onLeftButtonDown(e.clientX, e.clientY);
     });
     this._div.addEventListener("mouseenter", (e) => {
