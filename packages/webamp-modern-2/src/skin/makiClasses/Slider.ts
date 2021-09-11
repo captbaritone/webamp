@@ -34,7 +34,6 @@ export default class Slider extends GuiObj {
         const deltaX = newMouseX - startX;
         const deltaY = newMouseY - startY;
 
-        // TODO: What about vertical sliders?
         if (this._vertical) {
           const yPos = clamp(deltaY, 0, height);
           this._position = yPos / height;
