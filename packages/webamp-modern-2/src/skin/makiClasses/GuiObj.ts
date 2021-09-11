@@ -25,6 +25,7 @@ export default class GuiObj extends XmlObj {
   _targetAlpha: number | null = null;
   _targetSpeed: number | null = null;
   _div: HTMLDivElement = document.createElement("div");
+  _backgroundBitmap: Bitmap | null = null;
 
   constructor() {
     super();
@@ -33,6 +34,28 @@ export default class GuiObj extends XmlObj {
     });
 
     this._div.addEventListener("mousedown", (e) => {
+      if (this._backgroundBitmap != null) {
+        const { clientX, clientY } = e;
+        const { x, y } = this._div.getBoundingClientRect();
+        const canvasX = clientX - x;
+        const canvasY = clientY - y;
+        const canvas = this._backgroundBitmap.getCanvas();
+        const ctx = canvas.getContext("2d");
+
+        const opacity = ctx.getImageData(canvasX, canvasY, 1, 1).data[3];
+        if (opacity === 0) {
+          this._div.style.pointerEvents = "none";
+          const newTarget = document.elementFromPoint(clientX, clientY);
+          this._div.style.pointerEvents = "auto";
+          var newEvent = new MouseEvent("click", {
+            clientX,
+            clientY,
+            bubbles: true,
+          });
+          newTarget.dispatchEvent(newEvent);
+        }
+      }
+      //
       this.onLeftButtonDown(e.clientX, e.clientY);
     });
     this._div.addEventListener("mouseenter", (e) => {
@@ -511,6 +534,7 @@ export default class GuiObj extends XmlObj {
   }
 
   setBackgroundImage(bitmap: Bitmap | null) {
+    this._backgroundBitmap = bitmap;
     if (bitmap != null) {
       bitmap.setAsBackground(this._div);
     } else {

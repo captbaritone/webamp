@@ -2,6 +2,13 @@ import UI_ROOT from "../../UIRoot";
 import { assume, clamp, num, px } from "../../utils";
 import GuiObj from "./GuiObj";
 
+interface ActionHandler {
+  // 0-255
+  onsetposition(position: number): void;
+  dispose(): void;
+}
+const MAX = 255;
+
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Cslider.2F.3E_.26_.3CWasabi:HSlider.2F.3E_.26_.3CWasabi:VSlider.2F.3E
 export default class Slider extends GuiObj {
   static GUID = "62b65e3f408d375e8176ea8d771bb94a";
@@ -16,13 +23,13 @@ export default class Slider extends GuiObj {
   _low: number;
   _high: number;
   _position: number = 0;
+  _param: string | null = null;
   _thumbDiv: HTMLDivElement = document.createElement("div");
-  _actionSubscription: null | (() => void);
+  _actionHandler: null | ActionHandler;
 
   constructor() {
     super();
     this._thumbDiv.addEventListener("mousedown", (downEvent: MouseEvent) => {
-      const rect = this._div.getBoundingClientRect();
       const bitmap = UI_ROOT.getBitmap(this._thumb);
       const startX = downEvent.clientX;
       const startY = downEvent.clientY;
@@ -102,51 +109,67 @@ export default class Slider extends GuiObj {
       case "action":
         this._setAction(value);
         break;
+      case "param":
+        // Undocumented? In MMD3 for EQ (eq_band) action, this seems to indicate _which_ band.
+        this._param = value;
+        break;
       default:
         return false;
     }
     return true;
   }
 
-  _setAction(value: string) {
-    if (this._actionSubscription != null) {
-      this._actionSubscription();
-      this._actionSubscription = null;
-    }
-    this._action = value.toLowerCase();
+  init() {
+    this._initializeActionHandler();
+  }
+
+  _initializeActionHandler() {
     switch (this._action) {
-      case "seek": {
-        const update = () => {
-          this._position = UI_ROOT.audio.getCurrentTimePercent();
-          // TODO: We could throttle this, or only render if the change is "significant"?
-          this._renderThumbPosition();
-        };
-        update();
-        this._actionSubscription = UI_ROOT.audio.onCurrentTimeChange(update);
+      case "seek":
+        this._actionHandler = new SeekActionHandler(this);
         break;
-      }
       case "eq_band":
+        this._actionHandler = new EqActionHandler(this, this._param);
         break;
       case "pan":
+        this._actionHandler = new PanActionHandler(this);
         break;
       case "volume":
+        this._actionHandler = new VolumeActionHandler(this);
+        break;
+      case null:
         break;
       default:
         assume(false, `Unhandled slider action: ${this._action}`);
     }
   }
 
+  _setAction(value: string) {
+    if (this._actionHandler != null) {
+      this._actionHandler.dispose();
+      this._actionHandler = null;
+    }
+    this._action = value.toLowerCase();
+
+    // If we've already initialized we might have an action handler already. In
+    // that case, we want to reinitialize.
+    if (this._actionHandler != null) {
+      this._actionHandler.dispose();
+      this._initializeActionHandler();
+    }
+  }
+
   // extern Int Slider.getPosition();
   getposition(): number {
-    return this._position * 255;
+    return this._position * MAX;
   }
 
   onsetposition(newPos: number) {
     UI_ROOT.vm.dispatch(this, "onsetposition", [
       { type: "INT", value: newPos },
     ]);
-    if (this._action) {
-      UI_ROOT.dispatch(this._action, this.getposition(), null);
+    if (this._actionHandler != null) {
+      this._actionHandler.onsetposition(newPos);
     }
   }
 
@@ -198,8 +221,10 @@ export default class Slider extends GuiObj {
   }
 
   dispose() {
+    if (this._actionHandler) {
+      this._actionHandler.dispose();
+    }
     super.dispose();
-    this._actionSubscription();
   }
 
   /*
@@ -209,4 +234,84 @@ export default class Slider extends GuiObj {
   extern Slider.lock(); // locks descendant core collbacks
   extern Slider.unlock(); // unloads the
   */
+}
+
+/*****
+ * Here we have the action handlers for the different action types:
+ * Each one takes a reference to the slider and adds some extra behavior.
+ * It's a bit odd that they access pirvate fields/methods, but since they live
+ * in the same file I've allowed myself the sin of doing that.
+ **/
+
+// eslint-disable-next-line rulesdir/proper-maki-types
+class SeekActionHandler implements ActionHandler {
+  _subscription: () => void;
+  constructor(slider: Slider) {
+    const update = () => {
+      slider._position = UI_ROOT.audio.getCurrentTimePercent();
+      // TODO: We could throttle this, or only render if the change is "significant"?
+      slider._renderThumbPosition();
+    };
+    update();
+    this._subscription = UI_ROOT.audio.onCurrentTimeChange(update);
+  }
+
+  onsetposition(position: number): void {
+    UI_ROOT.audio.seekToPercent(position / MAX);
+  }
+  dispose(): void {
+    this._subscription();
+  }
+}
+
+// eslint-disable-next-line rulesdir/proper-maki-types
+class EqActionHandler implements ActionHandler {
+  _subscription: () => void;
+  _kind: string;
+  constructor(slider: Slider, kind: string) {
+    this._kind = kind;
+    const update = () => {
+      slider._position = UI_ROOT.audio.getEq(kind);
+      slider._renderThumbPosition();
+    };
+    update();
+    this._subscription = UI_ROOT.audio.onEqChange(kind, update);
+  }
+
+  onsetposition(position: number): void {
+    UI_ROOT.audio.setEq(this._kind, position / MAX);
+  }
+  dispose(): void {
+    this._subscription();
+  }
+}
+
+// eslint-disable-next-line rulesdir/proper-maki-types
+class PanActionHandler implements ActionHandler {
+  _subscription: () => void;
+  constructor(slider: Slider) {
+    // TODO
+  }
+
+  onsetposition(position: number): void {
+    // TODO
+  }
+  dispose(): void {
+    this._subscription();
+  }
+}
+
+// eslint-disable-next-line rulesdir/proper-maki-types
+class VolumeActionHandler implements ActionHandler {
+  _subscription: () => void;
+  constructor(slider: Slider) {
+    // TODO
+  }
+
+  onsetposition(position: number): void {
+    // TODO
+  }
+  dispose(): void {
+    this._subscription();
+  }
 }

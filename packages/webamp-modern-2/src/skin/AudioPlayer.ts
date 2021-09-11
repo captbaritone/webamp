@@ -1,6 +1,32 @@
+import { clamp } from "../utils";
+
+class Emitter {
+  _cbs: { [event: string]: Array<() => void> } = {};
+  on(event: string, cb: () => void) {
+    if (this._cbs[event] == null) {
+      this._cbs[event] = [];
+    }
+    this._cbs[event].push(cb);
+    return () => {
+      this._cbs[event] = this._cbs[event].filter((c) => c !== cb);
+    };
+  }
+  trigger(event: string) {
+    const subscriptions = this._cbs[event];
+    if (subscriptions == null) {
+      return;
+    }
+    for (const cb of subscriptions) {
+      cb();
+    }
+  }
+}
+
 export class AudioPlayer {
   _input: HTMLInputElement = document.createElement("input");
   _audio: HTMLAudioElement = document.createElement("audio");
+  _eqValues: { [kind: string]: number } = {};
+  _eqEmitter: Emitter = new Emitter();
   constructor() {
     this._audio.src =
       "https://raw.githubusercontent.com/captbaritone/webamp-music/4b556fbf/Auto-Pilot_-_03_-_Seventeen.mp3";
@@ -59,6 +85,68 @@ export class AudioPlayer {
 
   getCurrentTimePercent(): number {
     return this._audio.currentTime / this._audio.duration;
+  }
+
+  getEq(kind: string): number {
+    switch (kind) {
+      case "preamp":
+      case "1":
+      case "2":
+      case "3":
+      case "4":
+      case "5":
+      case "6":
+      case "7":
+      case "8":
+      case "9":
+      case "10":
+        if (this._eqValues[kind] == null) {
+          this._eqValues[kind] = 0.5;
+        }
+        return this._eqValues[kind];
+      default:
+        console.warn(`Tried to get unknown EQ kind: ${kind}`);
+    }
+  }
+
+  setEq(kind: string, value: number) {
+    switch (kind) {
+      case "preamp":
+      case "1":
+      case "2":
+      case "3":
+      case "4":
+      case "5":
+      case "6":
+      case "7":
+      case "8":
+      case "9":
+      case "10":
+        this._eqValues[kind] = clamp(value, 0, 1);
+        this._eqEmitter.trigger(kind);
+        break;
+      default:
+        console.warn(`Tried to set unknown EQ kind: ${kind}`);
+    }
+  }
+
+  onEqChange(kind: string, cb: () => void): () => void {
+    switch (kind) {
+      case "preamp":
+      case "1":
+      case "2":
+      case "3":
+      case "4":
+      case "5":
+      case "6":
+      case "7":
+      case "8":
+      case "9":
+      case "10":
+        return this._eqEmitter.on(kind, cb);
+      default:
+        console.warn(`Tried to bind to an unknown EQ kind: ${kind}`);
+    }
   }
 
   onCurrentTimeChange(cb: () => void): () => void {

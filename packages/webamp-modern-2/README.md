@@ -35,6 +35,7 @@ yarn start
 - [ ] Fix all `// FIXME`
 - [ ] SystemObject.getruntimeversion
 - [ ] SystemObject.getskinname
+- [ ] Handle clicking through transparent: https://stackoverflow.com/questions/38487569/click-through-png-image-only-if-clicked-coordinate-is-transparent
 
 # TODO Some day
 

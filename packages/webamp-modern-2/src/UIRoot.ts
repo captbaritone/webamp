@@ -212,9 +212,6 @@ export class UIRoot {
       case "eject":
         this.audio.eject();
         break;
-      case "seek":
-        this.audio.seekToPercent((param as number) / 255);
-        break;
       default:
         assume(false, `Unknown global action: ${action}`);
     }
