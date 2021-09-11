@@ -1,26 +1,4 @@
-import { clamp } from "../utils";
-
-class Emitter {
-  _cbs: { [event: string]: Array<() => void> } = {};
-  on(event: string, cb: () => void) {
-    if (this._cbs[event] == null) {
-      this._cbs[event] = [];
-    }
-    this._cbs[event].push(cb);
-    return () => {
-      this._cbs[event] = this._cbs[event].filter((c) => c !== cb);
-    };
-  }
-  trigger(event: string) {
-    const subscriptions = this._cbs[event];
-    if (subscriptions == null) {
-      return;
-    }
-    for (const cb of subscriptions) {
-      cb();
-    }
-  }
-}
+import { clamp, Emitter } from "../utils";
 
 export class AudioPlayer {
   _input: HTMLInputElement = document.createElement("input");

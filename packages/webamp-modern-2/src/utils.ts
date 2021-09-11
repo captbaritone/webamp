@@ -79,3 +79,25 @@ export function findLast<T>(
     }
   }
 }
+
+export class Emitter {
+  _cbs: { [event: string]: Array<() => void> } = {};
+  on(event: string, cb: () => void) {
+    if (this._cbs[event] == null) {
+      this._cbs[event] = [];
+    }
+    this._cbs[event].push(cb);
+    return () => {
+      this._cbs[event] = this._cbs[event].filter((c) => c !== cb);
+    };
+  }
+  trigger(event: string) {
+    const subscriptions = this._cbs[event];
+    if (subscriptions == null) {
+      return;
+    }
+    for (const cb of subscriptions) {
+      cb();
+    }
+  }
+}
