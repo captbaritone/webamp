@@ -42,8 +42,10 @@ async function loadSkin(skinData: Blob) {
   // This is always the same as the global singleton.
   const uiRoot = await parser.parse();
 
-  setStatus("Enabling Colors...");
+  const start = performance.now();
   uiRoot.enableDefaultGammaSet();
+  const end = performance.now();
+  console.log(`Loading initial gamma took: ${(end - start) / 1000}s`);
 
   setStatus("Rendering skin for the first time...");
   uiRoot.draw();
