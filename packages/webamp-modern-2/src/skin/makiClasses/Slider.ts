@@ -23,24 +23,22 @@ export default class Slider extends GuiObj {
     super();
     this._thumbDiv.addEventListener("mousedown", (downEvent: MouseEvent) => {
       const rect = this._div.getBoundingClientRect();
-      const startX = rect.x;
-      const startY = rect.y;
-      const width = this.getwidth();
-      const height = this.getheight();
+      const bitmap = UI_ROOT.getBitmap(this._thumb);
+      const startX = downEvent.clientX;
+      const startY = downEvent.clientY;
+      const width = this.getwidth() - bitmap.getWidth();
+      const height = this.getheight() - bitmap.getHeight();
+      const initialPostition = this._position;
 
       const handleMove = (moveEvent: MouseEvent) => {
         const newMouseX = moveEvent.clientX;
         const newMouseY = moveEvent.clientY;
-        const deltaX = newMouseX - startX;
         const deltaY = newMouseY - startY;
+        const deltaX = newMouseX - startX;
 
-        if (this._vertical) {
-          const yPos = clamp(deltaY, 0, height);
-          this._position = yPos / height;
-        } else {
-          const xPos = clamp(deltaX, 0, width);
-          this._position = xPos / width;
-        }
+        const deltaPercent = this._vertical ? deltaY / height : deltaX / width;
+
+        this._position = clamp(initialPostition + deltaPercent, 0, 1);
         this._renderThumbPosition();
         this.onsetposition(this.getposition());
       };
