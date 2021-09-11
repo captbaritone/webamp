@@ -179,11 +179,10 @@ export default class Slider extends GuiObj {
       const bitmap = UI_ROOT.getBitmap(this._thumb);
       // TODO: What if the orientation has changed?
       if (this._vertical) {
-        const top =
-          this._position * (this.getheight() - bitmap.getHeight() / 2);
+        const top = this._position * (this.getheight() - bitmap.getHeight());
         this._thumbDiv.style.top = px(top);
       } else {
-        const left = this._position * (this.getwidth() - bitmap.getWidth() / 2);
+        const left = this._position * (this.getwidth() - bitmap.getWidth());
         this._thumbDiv.style.left = px(left);
       }
     }
