@@ -1,4 +1,4 @@
-import JSZip, { file, JSZipObject } from "jszip";
+import JSZip, { JSZipObject } from "jszip";
 
 export function assert(condition: boolean, message: string) {
   if (!condition) {

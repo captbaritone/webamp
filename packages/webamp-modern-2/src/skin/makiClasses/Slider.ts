@@ -44,8 +44,11 @@ export default class Slider extends GuiObj {
         const deltaX = newMouseX - startX;
 
         const deltaPercent = this._vertical ? deltaY / height : deltaX / width;
+        const newPercent = this._vertical
+          ? initialPostition - deltaPercent
+          : initialPostition + deltaPercent;
 
-        this._position = clamp(initialPostition + deltaPercent, 0, 1);
+        this._position = clamp(newPercent, 0, 1);
         this._renderThumbPosition();
         this.onsetposition(this.getposition());
       };
@@ -200,7 +203,8 @@ export default class Slider extends GuiObj {
       const bitmap = UI_ROOT.getBitmap(this._thumb);
       // TODO: What if the orientation has changed?
       if (this._vertical) {
-        const top = this._position * (this.getheight() - bitmap.getHeight());
+        const top =
+          (1 - this._position) * (this.getheight() - bitmap.getHeight());
         this._thumbDiv.style.top = px(top);
       } else {
         const left = this._position * (this.getwidth() - bitmap.getWidth());
