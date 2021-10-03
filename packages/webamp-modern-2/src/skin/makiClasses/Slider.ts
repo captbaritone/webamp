@@ -294,7 +294,7 @@ class EqActionHandler implements ActionHandler {
 class PanActionHandler implements ActionHandler {
   _subscription: () => void;
   constructor(slider: Slider) {
-    // TODO
+    this._subscription = () => {};
   }
 
   onsetposition(position: number): void {
@@ -309,7 +309,7 @@ class PanActionHandler implements ActionHandler {
 class VolumeActionHandler implements ActionHandler {
   _subscription: () => void;
   constructor(slider: Slider) {
-    // TODO
+    this._subscription = () => {};
   }
 
   onsetposition(position: number): void {
