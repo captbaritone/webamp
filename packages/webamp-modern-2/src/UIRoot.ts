@@ -140,11 +140,7 @@ export class UIRoot {
   }
 
   enableDefaultGammaSet() {
-    const found = Array.from(this._gammaSets.values())[0];
-    if (found == null) {
-      return;
-    }
-    this._activeGammaSet = found;
+    this._activeGammaSet = Array.from(this._gammaSets.values())[0] ?? null;
     this._setCssVars();
   }
 
@@ -174,6 +170,7 @@ export class UIRoot {
       }
       const url = imgCache.get(groupId);
       // TODO: Techincally we only need one per image/gammagroup.
+      console.log("Setting css var");
       this._div.style.setProperty(bitmap.getCSSVar(), `url(${url})`);
     }
   }
