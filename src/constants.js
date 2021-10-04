@@ -7,8 +7,11 @@ export const REVIEW_PAGE = "REVIEW_PAGE";
 // export const CDN = "https://s3.amazonaws.com/webamp-uploaded-skins";
 // export const CDN = "https://s3.amazonaws.com/cdn.webampskins.org";
 export const S3_SCREENSHOT_CDN = "https://s3.amazonaws.com/cdn.webampskins.org";
-export const SCREENSHOT_CDN = "https://cdn.webampskins.org";
+export const SCREENSHOT_CDN = "https://mirror.webampskins.org";
 export const SKIN_CDN = "https://mirror.webampskins.org";
+// Uncomment these if something goes wrong
+// export const SCREENSHOT_CDN = "https://cdn.webampskins.org";
+// export const SKIN_CDN = "https://cdn.webampskins.org";
 export const API_URL = "https://api.webampskins.org";
 // export const API_URL = "https://dev.webamp.org";
 export const HEADING_HEIGHT = 46;
