@@ -23,11 +23,15 @@ export default function Volume({ id, style, className }: Props) {
       max="100"
       step="1"
       value={volume}
-      style={style}
+      style={{ ...style, touchAction: "none" }}
       className={className}
       onChange={(e) => setVolume(Number(e.target.value))}
       onMouseDown={() => setFocus("volume")}
+      onTouchStart={() => {
+        setFocus("volume");
+      }}
       onMouseUp={unsetFocus}
+      onTouchEnd={unsetFocus}
       title="Volume Bar"
     />
   );

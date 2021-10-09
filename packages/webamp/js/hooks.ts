@@ -162,10 +162,10 @@ export function useActionCreator<T extends (...args: any[]) => Action | Thunk>(
   actionCreator: T
 ): (...funcArgs: Parameters<T>) => void {
   const dispatch = useDispatch();
-  return useCallback((...args) => dispatch(actionCreator(...args)), [
-    dispatch,
-    actionCreator,
-  ]);
+  return useCallback(
+    (...args) => dispatch(actionCreator(...args)),
+    [dispatch, actionCreator]
+  );
 }
 
 export function useTypedDispatch(): (action: Action | Thunk) => void {

@@ -308,16 +308,8 @@ function animatedLayerOffsetAndSize(
 }
 
 function AnimatedLayer({ makiObject }) {
-  const {
-    id,
-    js_assets,
-    x,
-    y,
-    w,
-    h,
-    framewidth,
-    frameheight,
-  } = makiObject.attributes;
+  const { id, js_assets, x, y, w, h, framewidth, frameheight } =
+    makiObject.attributes;
   const img = js_assets.image;
   if (img == null) {
     console.warn("Got an AnimatedLayer without an image. Rendering null", id);
@@ -334,14 +326,10 @@ function AnimatedLayer({ makiObject }) {
     style.top = Number(y);
   }
 
-  const {
-    offset: backgroundPositionX,
-    size: width,
-  } = animatedLayerOffsetAndSize(frameNum, framewidth, w, img.w, img.x);
-  const {
-    offset: backgroundPositionY,
-    size: height,
-  } = animatedLayerOffsetAndSize(frameNum, frameheight, h, img.h, img.y);
+  const { offset: backgroundPositionX, size: width } =
+    animatedLayerOffsetAndSize(frameNum, framewidth, w, img.w, img.x);
+  const { offset: backgroundPositionY, size: height } =
+    animatedLayerOffsetAndSize(frameNum, frameheight, h, img.h, img.y);
   style = { ...style, width, height, backgroundPositionX, backgroundPositionY };
 
   if (img.imgUrl !== undefined) {

@@ -64,6 +64,7 @@ For press mentions of the [Winamp Skin Museum](https://skins.webamp.org), see th
 - [Scott Hanselman](https://twitter.com/shanselman/status/966129035649564677)
 - [Jake Rodkin](https://twitter.com/ja2ke/status/961279058507063296)
 - [Changelog](https://twitter.com/changelog/status/911957655392006145)
+- [GitHub](https://twitter.com/github/status/1428447452491927560)
 
 ## Articles (continued)
 

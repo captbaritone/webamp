@@ -96,7 +96,7 @@
   height: 9px;
   width: 3px;
 }
-#webamp .status #time {
+#webamp .webamp-status #time {
   position: absolute;
   left: 39px;
   top: 26px;
@@ -105,15 +105,15 @@
   width: 59px;
 }
 
-#webamp .stop .status #time {
+#webamp .stop .webamp-status #time {
   display: none;
 }
-#webamp .pause .status #time {
+#webamp .pause .webamp-status #time {
   animation: blink 2s step-start 1s infinite;
   -webkit-animation: blink 2s step-start 1s infinite;
 }
 
-#webamp .status #time #minus-sign {
+#webamp .webamp-status #time #minus-sign {
   /* Note that this get's augmented by the skin CSS if NUM_EX.BMP is present */
   position: absolute;
   top: 6px;
@@ -122,28 +122,28 @@
   height: 1px;
 }
 
-#webamp .status #time #minute-first-digit {
+#webamp .webamp-status #time #minute-first-digit {
   position: absolute;
   pointer-events: none;
   left: 9px;
   height: 13px;
   width: 9px;
 }
-#webamp .status #time #minute-second-digit {
+#webamp .webamp-status #time #minute-second-digit {
   position: absolute;
   pointer-events: none;
   left: 21px;
   height: 13px;
   width: 9px;
 }
-#webamp .status #time #second-first-digit {
+#webamp .webamp-status #time #second-first-digit {
   position: absolute;
   pointer-events: none;
   left: 39px;
   height: 13px;
   width: 9px;
 }
-#webamp .status #time #second-second-digit {
+#webamp .webamp-status #time #second-second-digit {
   position: absolute;
   pointer-events: none;
   left: 51px;
@@ -170,7 +170,7 @@
   position: absolute;
   left: 111px;
   top: 24px;
-  width: 155px;
+  width: 154px;
   height: 6px;
   overflow: hidden;
   display: block;
@@ -418,7 +418,7 @@
 #webamp .shade #volume,
 #webamp .shade #balance,
 #webamp .shade .shuffle-repeat,
-#webamp .shade .status {
+#webamp .shade .webamp-status {
   display: none;
 }
 #webamp .shade #title-bar {

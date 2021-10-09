@@ -163,13 +163,10 @@ export const percentToRange = (percent: number, min: number, max: number) =>
 export const percentToIndex = (percent: number, length: number): number =>
   percentToRange(percent, 0, length - 1);
 
-const rebound = (
-  oldMin: number,
-  oldMax: number,
-  newMin: number,
-  newMax: number
-) => (oldValue: number): number =>
-  percentToRange(toPercent(oldMin, oldMax, oldValue), newMin, newMax);
+const rebound =
+  (oldMin: number, oldMax: number, newMin: number, newMax: number) =>
+  (oldValue: number): number =>
+    percentToRange(toPercent(oldMin, oldMax, oldValue), newMin, newMax);
 
 // Convert an .eqf value to a 0-100
 export const normalizeEqBand = rebound(1, 64, 0, 100);
@@ -400,6 +397,41 @@ export function getScreenSize(): { width: number; height: number } {
     width: window.screen.width,
     height: window.screen.height,
   };
+}
+
+type PosEvent =
+  | MouseEvent
+  | TouchEvent
+  | React.MouseEvent<HTMLElement>
+  | React.TouchEvent<HTMLElement>;
+
+function getPos(e: PosEvent): { clientX: number; clientY: number } {
+  switch (e.type) {
+    case "touchstart":
+    case "touchmove": {
+      const touch =
+        (e as TouchEvent).targetTouches[0] ?? (e as TouchEvent).touches[0];
+      if (touch == null) {
+        // Investigating https://github.com/captbaritone/webamp/issues/1105
+        throw new Error("Unexpected touch event with zero touch targets.");
+      }
+      return touch;
+    }
+    case "mousedown":
+    case "mousemove": {
+      return e as MouseEvent;
+    }
+    default:
+      throw new Error(`Unexpected event type: ${e.type}`);
+  }
+}
+
+export function getX(e: PosEvent) {
+  return getPos(e).clientX;
+}
+
+export function getY(e: PosEvent) {
+  return getPos(e).clientY;
 }
 
 export function weakMapMemoize<T extends object, R>(

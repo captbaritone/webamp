@@ -5,6 +5,7 @@ import * as Selectors from "../selectors";
 import * as Actions from "../actionCreators";
 import { WindowInfo, WindowId, Box, Point } from "../types";
 import { useTypedSelector, useActionCreator } from "../hooks";
+import * as Utils from "../utils";
 
 const abuts = (a: Box, b: Box) => {
   // TODO: This is kinda a hack. They should really be touching, not just within snapping distance.
@@ -26,7 +27,10 @@ type DraggingState = {
 
 function useHandleMouseDown(propsWindows: {
   [windowId: string]: ReactNode;
-}): (key: WindowId, e: React.MouseEvent<HTMLDivElement>) => void {
+}): (
+  key: WindowId,
+  e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
+) => void {
   const windowsInfo = useTypedSelector(Selectors.getWindowsInfo);
   const getWindowHidden = useTypedSelector(Selectors.getWindowHidden);
   const browserWindowSize = useTypedSelector(Selectors.getBrowserWindowSize);
@@ -42,10 +46,10 @@ function useHandleMouseDown(propsWindows: {
       return;
     }
     const { boundingBox, moving, stationary, mouseStart } = draggingState;
-    const handleMouseMove = (ee: MouseEvent) => {
+    const handleMouseMove = (ee: MouseEvent | TouchEvent) => {
       const proposedDiff = {
-        x: ee.clientX - mouseStart.x,
-        y: ee.clientY - mouseStart.y,
+        x: Utils.getX(ee) - mouseStart.x,
+        y: Utils.getY(ee) - mouseStart.y,
       };
 
       const proposedWindows = moving.map((node) => ({
@@ -87,20 +91,31 @@ function useHandleMouseDown(propsWindows: {
     }
 
     window.addEventListener("mouseup", handleMouseUp);
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("touchend", handleMouseUp);
+
+    window.addEventListener("mousemove", handleMouseMove, { passive: false });
+    window.addEventListener("touchmove", handleMouseMove, { passive: false });
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("touchmove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("touchend", handleMouseUp);
     };
   }, [browserWindowSize, draggingState, updateWindowPositions]);
 
   // Mouse down handler
   return useCallback(
-    (key: WindowId, e: React.MouseEvent<HTMLDivElement>) => {
+    (
+      key: WindowId,
+      e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
+    ) => {
       if (!(e.target as HTMLElement).classList.contains("draggable")) {
         return;
       }
+
+      const x = Utils.getX(e);
+      const y = Utils.getY(e);
 
       if (getWindowHidden(key)) {
         // The user may be clicking on full screen Milkdrop.
@@ -125,7 +140,7 @@ function useHandleMouseDown(propsWindows: {
       const stationary = windows.filter((w) => !movingSet.has(w));
       const moving = Array.from(movingSet);
 
-      const mouseStart = { x: e.clientX, y: e.clientY };
+      const mouseStart = { x, y };
 
       const boundingBox = SnapUtils.boundingBox(moving);
       setDraggingState({ boundingBox, moving, stationary, mouseStart });
@@ -165,11 +180,15 @@ export default function WindowManager({ windows: propsWindows }: Props) {
           onMouseDown={(e: React.MouseEvent<HTMLDivElement>) => {
             handleMouseDown(w.key, e);
           }}
+          onTouchStart={(e: React.TouchEvent<HTMLDivElement>) => {
+            handleMouseDown(w.key, e);
+          }}
           style={{
             position: "absolute",
             top: 0,
             left: 0,
             transform: `translate(${w.x}px, ${w.y}px)`,
+            touchAction: "none",
           }}
         >
           {propsWindows[w.key]}

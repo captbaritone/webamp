@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Webamp Modern" />
+    <link rel="shortcut icon" type="image/x-icon" href="assets/favicon.ico"/>
+    <title>Progress</title>
+    <style>
+      h1 {
+        text-align: center;
+      }
+      table {
+        max-width: 800px;
+        margin: 0 auto;
+        font-family: monospace;
+      }
+
+      table th {
+        font-size: 20px;
+        text-align: left;
+      }
+      .method {
+        width: 20px;
+       height: 20px;
+       display: inline-block;
+       overflow: hidden;
+       text-indent: -99999px;
+       border: 1px solid grey;
+       margin: 1px;
+      }
+
+      .expanded .method {
+        width: auto;
+       height: 20px;
+       display: block;
+       overflow: hidden;
+       text-indent: 0;
+       border: none;
+       margin: 1px;
+       padding-left: 3px;
+      }
+      .class-name {
+        white-space: nowrap;
+        font-weight: bold;
+        display: block;
+        cursor: pointer;
+        text-align: right;
+        margin-right: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Maki Implementation Progress</h1>
+    <script type="module" src="./progress.js"></script>
+  </body>
+</html>

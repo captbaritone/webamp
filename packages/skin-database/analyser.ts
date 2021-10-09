@@ -25,7 +25,8 @@ export async function setReadmeForSkin(skin: SkinModel): Promise<void> {
 
 const IS_README = /(file_id\.diz)|(\.txt)$/i;
 // Skinning Updates.txt ?
-const IS_NOT_README = /(genex\.txt)|(genexinfo\.txt)|(gen_gslyrics\.txt)|(region\.txt)|(pledit\.txt)|(viscolor\.txt)|(winampmb\.txt)|("gen_ex help\.txt)|(mbinner\.txt)$/i;
+const IS_NOT_README =
+  /(genex\.txt)|(genexinfo\.txt)|(gen_gslyrics\.txt)|(region\.txt)|(pledit\.txt)|(viscolor\.txt)|(winampmb\.txt)|("gen_ex help\.txt)|(mbinner\.txt)$/i;
 
 export async function getReadme(zip: JSZip): Promise<string | null> {
   const readmeFiles = zip.filter((filePath) => {

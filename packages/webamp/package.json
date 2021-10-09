@@ -1,6 +1,6 @@
 {
   "name": "webamp",
-  "version": "1.4.3-beta.4",
+  "version": "1.5.0",
   "description": "Winamp 2 implemented in HTML5 and JavaScript",
   "main": "built/webamp.bundle.js",
   "files": [
@@ -105,9 +105,9 @@
     "jest": "^24.9.0",
     "jest-image-snapshot": "^2.12.0",
     "jest-puppeteer": "^4.4.0",
-    "postcss": "^7.0.18",
+    "postcss": "^8.2.10",
     "postcss-loader": "^3.0.0",
-    "prettier": "^2.0.4",
+    "prettier": "^2.3.2",
     "puppeteer": "^1.15.0",
     "react-test-renderer": "^17.0.1",
     "redux-devtools-extension": "^2.13.2",

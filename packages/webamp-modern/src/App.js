@@ -6,8 +6,6 @@ import * as Selectors from "./Selectors";
 import cornerSkin from "../skins/CornerAmp_Redux.wal";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import DropTarget from "./components/DropTarget";
-import Debugger from "./debugger";
-import Sidebar from "./Sidebar";
 import { Maki } from "./MakiRenderer";
 const Dashboard = React.lazy(() => import("./Dashboard"));
 
@@ -116,9 +114,6 @@ function Modern() {
           </option>
         ))}
       </select>
-      <Sidebar>
-        <Debugger />
-      </Sidebar>
     </div>
   );
 }

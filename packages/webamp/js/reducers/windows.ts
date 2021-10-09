@@ -203,11 +203,8 @@ const windows = (
         })),
       };
     case LOAD_SERIALIZED_STATE: {
-      const {
-        genWindows,
-        focused,
-        positionsAreRelative,
-      } = action.serializedState.windows;
+      const { genWindows, focused, positionsAreRelative } =
+        action.serializedState.windows;
       return {
         ...state,
         positionsAreRelative,

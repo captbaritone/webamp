@@ -567,9 +567,10 @@ export function getEqualizerAuto(state: AppState): boolean {
   return state.equalizer.auto;
 }
 
-export function getBrowserWindowSize(
-  state: AppState
-): { height: number; width: number } {
+export function getBrowserWindowSize(state: AppState): {
+  height: number;
+  width: number;
+} {
   return state.windows.browserWindowSize;
 }
 

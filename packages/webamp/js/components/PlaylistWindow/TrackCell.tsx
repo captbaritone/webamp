@@ -16,7 +16,9 @@ import {
 interface Props {
   id: number;
   index: number;
-  handleMoveClick: (e: React.MouseEvent<HTMLDivElement>) => void;
+  handleMoveClick: (
+    e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
+  ) => void;
   children: ReactNode;
 }
 
@@ -51,6 +53,27 @@ function TrackCell({ children, handleMoveClick, index, id }: Props) {
     [dispatch, handleMoveClick, index, selected]
   );
 
+  const handleTouchStart = useCallback(
+    (e) => {
+      if (!selected) {
+        dispatch({ type: CLICKED_TRACK, index });
+      }
+      handleMoveClick(e);
+
+      // There's no touch equivalent of onDoubleClick, so we fake one:
+      function handleSecondTap() {
+        playTrackNow(id);
+      }
+      e.target.addEventListener("touchstart", handleSecondTap);
+      setTimeout(() => {
+        // Technically we might be unmounted here, but that's fine since you
+        // can't tap an unmounted element and we will clean up eventually.
+        e.target.removeEventListener("touchstart", handleSecondTap);
+      }, 250);
+    },
+    [dispatch, handleMoveClick, id, index, playTrackNow, selected]
+  );
+
   const style: React.CSSProperties = {
     backgroundColor: selected ? skinPlaylistStyle.selectedbg : undefined,
     color: current ? skinPlaylistStyle.current : undefined,
@@ -61,6 +84,7 @@ function TrackCell({ children, handleMoveClick, index, id }: Props) {
       style={style}
       onClick={(e) => e.stopPropagation()}
       onMouseDown={onMouseDown}
+      onTouchStart={handleTouchStart}
       onContextMenu={(e) => e.preventDefault()}
       onDoubleClick={() => playTrackNow(id)}
     >

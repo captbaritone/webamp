@@ -114,7 +114,7 @@ export default class SkinModel {
   async getTweetStatus(): Promise<TweetStatus> {
     const tweet = await this.getTweet();
     if (tweet != null) {
-      "TWEETED";
+      return "TWEETED";
     }
     const reviewRows = await this.getReviews();
     const reviews = new Set(reviewRows.map((row) => row.review));

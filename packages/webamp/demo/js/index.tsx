@@ -70,9 +70,9 @@ async function main() {
     about.style.visibility = "hidden";
   }
   if (!WebampLazy.browserIsSupported()) {
-    (document.getElementById(
-      "browser-compatibility"
-    ) as HTMLDivElement).style.display = "block";
+    (
+      document.getElementById("browser-compatibility") as HTMLDivElement
+    ).style.display = "block";
     (document.getElementById("app") as HTMLDivElement).style.visibility =
       "hidden";
     return;
@@ -80,9 +80,9 @@ async function main() {
   about.classList.add("loaded");
 
   if (isButterchurnSupported()) {
-    (document.getElementById(
-      "butterchurn-share"
-    ) as HTMLDivElement).style.display = "flex";
+    (
+      document.getElementById("butterchurn-share") as HTMLDivElement
+    ).style.display = "flex";
   }
   let soundcloudPlaylist = null;
   if (soundcloudPlaylistId != null) {

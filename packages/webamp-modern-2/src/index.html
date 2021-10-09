@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Webamp Modern" />
+    <link rel="shortcut icon" type="image/x-icon" href="assets/favicon.ico"/>
+    <title>Webamp Modern</title>
+    <style>
+      body {
+        margin: 0;
+        background-color: rgb(58, 110, 165);
+      }
+      .webamp--img {
+        background-image: var(--background-image);
+        background-position: var(--background-position);
+      }
+      .webamp--img:active {
+        background-image: var(--active-background-image, var(--background-image));
+        background-position: var(--active-background-position, var(--background-position));
+      }
+      .webamp--img:hover {
+        background-image: var(--hover-background-image, var(--background-image));
+        background-position: var(--hover-background-position, var(--background-position));
+      }
+
+      /* TODO: Should this fallback to hover? */
+      .webamp--img:hover:active {
+        background-image: var(--active-background-image, var(--background-image));
+        background-position: var(--active-background-position, var(--background-position));
+      }
+
+      #experimental {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        color: white;
+        text-transform: uppercase;
+      }
+      #status {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="status">Downloading JavaScript...</h1>
+    <div id="experimental">Work in Progress</div>
+    <script type="module" src="./index.js"></script>
+  </body>
+</html>
