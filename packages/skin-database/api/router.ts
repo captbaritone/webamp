@@ -114,6 +114,24 @@ router.post(
 );
 
 router.post(
+  "/feedback",
+  asyncHandler(async (req, res) => {
+    const payload = req.body as {
+      email?: string;
+      message: string;
+      url?: string;
+    };
+    req.notify({
+      type: "GOT_FEEDBACK",
+      url: payload.url,
+      message: payload.message,
+      email: payload.email,
+    });
+    res.json({ message: "sent" });
+  })
+);
+
+router.post(
   "/skins/status",
   asyncHandler(async (req, res) => {
     const statuses = await Skins.getUploadStatuses(req.body.hashes);

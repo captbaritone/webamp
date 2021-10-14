@@ -82,6 +82,25 @@ export default class DiscordEventHandler {
         );
         break;
       }
+      case "GOT_FEEDBACK": {
+        const dest = await this.getChannel(Config.FEEDBACK_SKIN_CHANNEL_ID);
+        const userMessage = action.message
+          .split("\n")
+          .map((line) => {
+            return `> ${line}`;
+          })
+          .join("\n");
+        let message = `Feedback:\n\n ${userMessage}`;
+        if (action.email != null) {
+          message += `\n\n--${action.email}`;
+        }
+        if (action.url != null) {
+          message += `\n(${action.url})`;
+        }
+
+        await dest.send(message);
+        break;
+      }
     }
   }
 

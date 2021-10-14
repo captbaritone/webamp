@@ -48,7 +48,8 @@
     "fetch-metadata": "ts-node --transpile-only ./cli.ts fetch-metadata",
     "bot": "ts-node --transpile-only ./discord-bot/index.js",
     "cli": "ts-node --transpile-only ./cli.ts",
-    "sync": "ts-node --transpile-only ./tasks/syncWithArchive.ts"
+    "sync": "ts-node --transpile-only ./tasks/syncWithArchive.ts",
+    "migrate": "knex migrate:latest"
   },
   "prettier": {},
   "devDependencies": {
