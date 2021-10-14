@@ -18,6 +18,7 @@ const defaultState = {
   skins: {},
   showNsfw: false,
   fileUploads: {},
+  showFeedbackForm: false,
 };
 
 function setUploadFileStatus(state, id, status, invalid) {
@@ -204,6 +205,7 @@ export default function reducer(state = defaultState, action) {
         activeContentPage: null,
         focusedSkinFile: null,
         fileExplorerOpen: false,
+        showFeedbackForm: false,
       };
     case "SEARCH_QUERY_CHANGED":
       return {
@@ -273,6 +275,16 @@ export default function reducer(state = defaultState, action) {
       return {
         ...state,
         fileExplorerOpen: false,
+      };
+    case "SHOW_FEEDBACK_FORM":
+      return {
+        ...state,
+        showFeedbackForm: true,
+      };
+    case "CLOSE_FEEDBACK_FORM":
+      return {
+        ...state,
+        showFeedbackForm: false,
       };
     default:
       return state;

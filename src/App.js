@@ -2,6 +2,7 @@ import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import Head from "./Head";
 import About from "./About";
+import Feedback from "./Feedback";
 import Header from "./Header";
 import Overlay from "./Overlay";
 import SkinTable from "./SkinTable";
@@ -27,10 +28,8 @@ const getTableDimensions = (windowWidth, scale) => {
 
 function App(props) {
   const scrollbarWidth = useScrollbarWidth();
-  const {
-    windowWidth: windowWidthWithScrollabar,
-    windowHeight,
-  } = useWindowSize();
+  const { windowWidth: windowWidthWithScrollabar, windowHeight } =
+    useWindowSize();
 
   const { columnWidth, rowHeight, columnCount } = getTableDimensions(
     windowWidthWithScrollabar - scrollbarWidth,
@@ -75,7 +74,11 @@ function App(props) {
             windowWidth={windowWidthWithScrollabar}
           />
         )}
-        {props.page === ABOUT_PAGE ? (
+        {props.showFeedbackForm ? (
+          <Overlay>
+            <Feedback />
+          </Overlay>
+        ) : props.page === ABOUT_PAGE ? (
           <Overlay>
             <About />
           </Overlay>
@@ -104,6 +107,7 @@ const mapStateToProps = (state) => ({
   page: Selectors.getActiveContentPage(state),
   scale: state.scale,
   uploadViewOpen: Selectors.getUploadViewOpen(state),
+  showFeedbackForm: state.showFeedbackForm,
 });
 
 export default connect(mapStateToProps)(App);

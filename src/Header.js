@@ -7,6 +7,9 @@ import { useActionCreator, useWindowSize } from "./hooks";
 import { ReactComponent as AlgoliaLogo } from "./searchByAlgoliaDarkbBackground.svg";
 import algoliaLogoSmallUrl from "./searchByAlgoliaSmall.png";
 import UploadButton from "./UploadButton";
+import FeedbackIcon from "./components/icons/FeedbackIcon";
+import AboutIcon from "./components/icons/AboutIcon";
+import RandomIcon from "./components/icons/RandomIcon";
 
 function SearchLogo() {
   const { windowWidth } = useWindowSize();
@@ -53,6 +56,7 @@ function Header() {
   const uploadViewOpen = useSelector(Selectors.getUploadViewOpen);
 
   const setSearchQuery = useActionCreator(Actions.searchQueryChanged);
+  const showFeedbackForm = useActionCreator(Actions.showFeedbackForm);
   const requestRandomSkin = useActionCreator(Actions.requestedRandomSkin);
   const requestedAboutPage = useActionCreator(Actions.requestedAboutPage);
   // const setScale = useActionCreator((scale) => ({ type: "SET_SCALE", scale }));
@@ -117,16 +121,36 @@ function Header() {
             onClick={() => {
               requestRandomSkin();
             }}
+            style={{
+              paddingLeft: "0.2rem",
+              paddingRight: "0.2rem",
+            }}
           >
-            Random
+            <RandomIcon />
+          </button>
+          <button
+            title="Feedback"
+            onClick={() => {
+              showFeedbackForm();
+            }}
+            style={{
+              paddingLeft: "0.2rem",
+              paddingRight: "0.2rem",
+            }}
+          >
+            <FeedbackIcon />
           </button>
           <button
             title="About"
             onClick={() => {
               requestedAboutPage();
             }}
+            style={{
+              paddingLeft: "0.2rem",
+              paddingRight: "0.2rem",
+            }}
           >
-            ?
+            <AboutIcon />
           </button>
         </>
       )}
