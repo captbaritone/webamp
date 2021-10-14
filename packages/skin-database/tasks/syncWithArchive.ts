@@ -11,7 +11,7 @@ import * as Parallel from "async-parallel";
 import IaItemModel from "../data/IaItemModel";
 const exec = util.promisify(child_process.exec);
 
-const CONCURRENT = 5;
+const CONCURRENT = 1;
 
 const temp = _temp.track();
 
@@ -31,7 +31,21 @@ async function downloadToTemp(url: string, filename: string): Promise<string> {
   return tempFile;
 }
 
+// For some unknown reason IA rejects these.
+const INVALID_IDENTIFIERS = new Set([
+  "winampskins_DIGITOOL",
+  "winampskins_hell_2",
+  "winampskins_Tribute_to_Tupac_Shakur",
+  "winampskins_DARK",
+  "winampskins_DarK",
+  "winampskins_dark",
+  "winampskins_Sakura",
+]);
+
 export async function identifierExists(identifier: string): Promise<boolean> {
+  if (INVALID_IDENTIFIERS.has(identifier)) {
+    return true;
+  }
   const existing = await knex("ia_items")
     .whereRaw("LOWER(identifier) = LOWER(?)", identifier)
     .select([]);
@@ -55,7 +69,7 @@ async function getNewIdentifier(filename: string): Promise<string> {
   return getIdentifier();
 }
 
-async function archive(skin: SkinModel): Promise<string> {
+export async function archive(skin: SkinModel): Promise<string> {
   const filename = await skin.getFileName();
   if (filename == null) {
     throw new Error(
@@ -91,52 +105,6 @@ async function archive(skin: SkinModel): Promise<string> {
   return identifier;
 }
 
-const CORRUPT = new Set([
-  "2e146de10eef96773ea222fefad52eeb",
-  "c3d2836f7f1b91d87d60b93aadf6981a",
-  "4288c254d9a22024c48601db5f9812e9",
-  "042271e3aea64970a885a8ab1cfe4a3f",
-  "0c91d27d8d9ee11ead8306f49dde0001",
-  "11944ffeec82f2d01d03cbfbb7783638",
-  "2043521751c6ba9b5c021f47afb28b64",
-  "72a399cbe37287371413680faccf40e1",
-  "6ba8c688c0cffad19ef3e410f9949233",
-  "b02cd2ee5b1e5237171c3b23df6f5194",
-  "b5554df8cf1048731d1292c609293166",
-  "3ca48d8f5b8b0590fee9a45e4eeb3297",
-  "096b26067ad5b0eabac47e40e2d9329e",
-  "2071b45150b9f3d640f9465051d32be3",
-  "6c1673efa65d1d53b4564d2ec7917d07",
-  "7749d85b72e8932f718c935211619390",
-  "7b32e418a29221d6a527c4e72de8be78",
-  "92eb393f78032405047a664cd99afcf5",
-  "bd0c3335fa70e7bb1cde8541c2a46139",
-  "bf390919a562a18bd8c669b6ebebe07a",
-  "c03255f333e2afcda76e1691e46c4dc7",
-  "c2e29dfb715bc37fea6b61e770bc902c",
-  "dae8579c14dc1b7738340a5f8dbffbc2",
-  "e2b29e7b4611b462c660575dd42ff458",
-  "e2b29e7b4611b462c660575dd42ff458",
-  "ea7f8863f58e42ea9fd1202a791187f1",
-  "ec3558f28f058cb1f147191ad19179eb",
-  "f014dae16799191a52b35c2f2aec1a74",
-  "23e09ddef5c380fe39ec94cf941433da",
-  "9592c095fb330699f95f771cc09a4654",
-  "d181107c52f97359aa39689f1611887c",
-  "dc61584841396e93b802efe82e1f18a8",
-  "de6708ea2adbfd756c1b4ee742a415a5",
-  "dec7b913d7092dfed2abafee45762eb5",
-  "a8f5a330362cde7ec97303564ce921be",
-  "07e165e6776f6e7b6a57c8db18af458f",
-  "a3d2b4e9894829fc7da23d054e2f4fcf",
-  "38c3d55bafd914eb647e8422f559e7fc",
-  "43505b99a3fa965a6823858539736370",
-  "04d172dc3f08d7fc1c9a047db956ea5d",
-  "515941f5dee8ab399bd0e58d0a116274",
-  "6b00596f4519fcc9d8bff7a69194333a",
-  "0f2cd2d789d9194e3ef6525a8f00f5fd",
-]);
-
 export async function syncWithArchive() {
   const ctx = new UserContext();
   console.log("Checking which new skins we have...");
@@ -147,8 +115,11 @@ export async function syncWithArchive() {
 
   console.log(`Found ${unarchived.length} skins to upload`);
 
+  let successCount = 0;
+  let errorCount = 0;
+
   await Parallel.map(
-    unarchived.filter(({ md5 }) => !CORRUPT.has(md5)),
+    unarchived,
     async ({ md5 }) => {
       const skin = await SkinModel.fromMd5(ctx, md5);
       if (skin == null) {
@@ -158,8 +129,10 @@ export async function syncWithArchive() {
         console.log(`Attempting to upload ${md5}`);
         const identifier = await archive(skin);
         console.log(`SUCCESS! Uplaoded ${md5} as ${identifier}`);
+        successCount++;
       } catch (e) {
         console.log("Archive failed...");
+        errorCount++;
         if (/error checking archive/.test(e.message)) {
           console.log(`Corrupt archvie: ${skin.getMd5()}`);
         } else if (
@@ -169,7 +142,7 @@ export async function syncWithArchive() {
         ) {
           console.log(`Corrupt archvie (encrypted): ${skin.getMd5()}`);
         } else if (/case alias may already exist/.test(e.message)) {
-          console.log(`Invalid name (case alias): ${skin.getMd5()}`);
+          console.log(`Invalid name (case alias): ${skin.getMd5()} with `);
         } else {
           console.error(e);
         }
@@ -177,6 +150,7 @@ export async function syncWithArchive() {
     },
     CONCURRENT
   );
+  console.log(`Job complete: ${successCount} success, ${errorCount} errors`);
 }
 // Build the URL to get all wsz files
 function getSearchUrl(): string {
