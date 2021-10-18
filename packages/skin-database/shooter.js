@@ -4,6 +4,7 @@ const puppeteer = require("puppeteer");
 const imagemin = require("imagemin");
 const imageminOptipng = require("imagemin-optipng");
 const Skins = require("./data/skins");
+const { throwAfter } = require("./utils");
 
 function min(imgPath) {
   return imagemin([imgPath], path.dirname(imgPath), {
@@ -61,9 +62,19 @@ export default class Shooter {
     }
   }
 
-  async takeScreenshot(skin, screenshotPath, { minify = false, md5 }) {
+  async takeScreenshot(
+    skin,
+    screenshotPath,
+    { minify = false, timeout = 30000, md5 }
+  ) {
     try {
-      await this._takeScreenshot(skin, screenshotPath, { minify });
+      await Promise.race([
+        this._takeScreenshot(skin, screenshotPath, { minify }),
+        throwAfter(
+          `Screenshot did not complete within ${timeout / 1000} seconds.`,
+          timeout
+        ),
+      ]);
     } catch (e) {
       await Skins.recordScreenshotUpdate(
         md5,

@@ -21,3 +21,9 @@ export function chunk<T>(items: T[], chunkSize: number): T[][] {
 
 export const MD5_REGEX = /([a-fA-F0-9]{32})/;
 export const TWEET_SNOWFLAKE_REGEX = /([0-9]{19})/;
+
+export function throwAfter(message, ms) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => reject(new Error(message)), ms);
+  });
+}
