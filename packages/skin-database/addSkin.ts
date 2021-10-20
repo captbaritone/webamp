@@ -78,14 +78,23 @@ async function addClassicSkinFromBuffer(
   fs.writeFileSync(tempFile, buffer);
   const tempScreenshotPath = temp.path({ suffix: ".png" });
 
-  await Shooter.withShooter((shooter) =>
-    shooter.takeScreenshot(tempFile, tempScreenshotPath, {
-      minify: true,
-      md5,
-    })
+  const logLines: string[] = [];
+  const logger = (message: string) => logLines.push(message);
+  await Shooter.withShooter(
+    (shooter) =>
+      shooter.takeScreenshot(tempFile, tempScreenshotPath, {
+        minify: true,
+        md5,
+      }),
+    logger
   );
 
-  await S3.putScreenshot(md5, fs.readFileSync(tempScreenshotPath));
+  try {
+    await S3.putScreenshot(md5, fs.readFileSync(tempScreenshotPath));
+  } catch (e) {
+    console.error("Screenshot log lines:", logLines);
+    throw e;
+  }
   await S3.putSkin(md5, buffer, "wsz");
   const zip = await JSZip.loadAsync(buffer);
   const readmeText = await Analyser.getReadme(zip);
