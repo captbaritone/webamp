@@ -96,20 +96,37 @@ export default class Shooter {
       await new Promise(async (resolve, reject) => {
         try {
           const dialogHandler = (dialog) => {
+            cleanup();
             reject(new Error(`Dialog message: ${dialog.message()}`));
           };
+
+          const errorHandler = (e) => {
+            cleanup();
+            reject(`Page Error: ${e.toString()}`);
+          };
+
+          const cleanup = () => {
+            this._page.off("dialog", dialogHandler);
+            this._page.off("error", errorHandler);
+          };
+
+          this._page.on("dialog", dialogHandler);
+          this._page.on("error", errorHandler);
           await handle.uploadFile(skin);
+          this._log("Uploaded file");
           await this._page.evaluate(() => {
             return window.__webamp.skinIsLoaded();
           });
+          this._log("Skin loaded");
           await this._page.screenshot({
             path: screenshotPath,
             omitBackground: true, // Make screenshot transparent
             // https://github.com/GoogleChrome/puppeteer/issues/703#issuecomment-366041479
             clip: { x: 0, y: 0, width: 275, height: 116 * 3 },
           });
+          this._log("Took screenshot");
 
-          this._page.off("dialog", dialogHandler);
+          cleanup();
 
           resolve();
         } catch (e) {
