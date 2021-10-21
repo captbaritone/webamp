@@ -101,6 +101,24 @@ export default class DiscordEventHandler {
         await dest.send(message);
         break;
       }
+
+      case "SYNCED_TO_ARCHIVE": {
+        const dest = await this.getChannel(Config.SKIN_UPLOADS_CHANNEL_ID);
+
+        const message = `Synced skins to archive.org. Success: ${action.successes.toLocaleString()} Errors: ${action.errors.toLocaleString()}.`;
+
+        await dest.send(message);
+        break;
+      }
+
+      case "STARTED_SYNC_TO_ARCHIVE": {
+        const dest = await this.getChannel(Config.SKIN_UPLOADS_CHANNEL_ID);
+
+        const message = `Starting sync to archive.org. Found ${action.count.toLocaleString()} to sync.`;
+
+        await dest.send(message);
+        break;
+      }
     }
   }
 

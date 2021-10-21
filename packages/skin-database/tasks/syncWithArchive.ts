@@ -9,6 +9,7 @@ import SkinModel from "../data/SkinModel";
 import util from "util";
 import * as Parallel from "async-parallel";
 import IaItemModel from "../data/IaItemModel";
+import DiscordEventHandler from "../api/DiscordEventHandler";
 const exec = util.promisify(child_process.exec);
 
 const CONCURRENT = 1;
@@ -105,7 +106,7 @@ export async function archive(skin: SkinModel): Promise<string> {
   return identifier;
 }
 
-export async function syncWithArchive() {
+export async function syncWithArchive(handler: DiscordEventHandler) {
   const ctx = new UserContext();
   console.log("Checking which new skins we have...");
   const unarchived = await knex("skins")
@@ -113,7 +114,7 @@ export async function syncWithArchive() {
     .where({ "ia_items.id": null, skin_type: 1 })
     .select("skins.md5");
 
-  console.log(`Found ${unarchived.length} skins to upload`);
+  handler.handle({ type: "STARTED_SYNC_TO_ARCHIVE", count: unarchived.length });
 
   let successCount = 0;
   let errorCount = 0;
@@ -150,6 +151,11 @@ export async function syncWithArchive() {
     },
     CONCURRENT
   );
+  await handler.handle({
+    type: "SYNCED_TO_ARCHIVE",
+    successes: successCount,
+    errors: errorCount,
+  });
   console.log(`Job complete: ${successCount} success, ${errorCount} errors`);
 }
 // Build the URL to get all wsz files

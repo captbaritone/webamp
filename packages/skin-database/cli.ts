@@ -37,7 +37,7 @@ async function main() {
         await syncFromArchive();
         break;
       case "sync-ia":
-        await syncWithArchive();
+        await syncWithArchive(handler);
         break;
       case "integity-check":
         await integrityCheck();
