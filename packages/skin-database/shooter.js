@@ -32,6 +32,7 @@ export default class Shooter {
     this._browser = await puppeteer.launch();
     this._page = await this._browser.newPage();
     this._page.setViewport({ width: 275, height: 116 * 3 });
+
     this._page.on("console", (consoleMessage) => {
       if (
         consoleMessage.text() ===
@@ -42,10 +43,6 @@ export default class Shooter {
 
       this._log("page log:", consoleMessage.text());
     });
-    this._page.on("error", (e) => {
-      this._log(`Page error: ${e.toString()}`);
-    });
-
     const url = `${this._url}/?screenshot=1`;
     await this._page.goto(url);
     await this._page.waitForSelector("#main-window", { timeout: 2000 });
@@ -147,8 +144,13 @@ export default class Shooter {
 
   async dispose() {
     await this._ensureInitialized();
+    this._page.removeAllListeners();
     await this._page.close();
+    this._browser.removeAllListeners();
     await this._browser.close();
+
+    this._page = null;
+    this._browser = null;
     this._initialized = false;
   }
 }
