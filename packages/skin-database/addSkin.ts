@@ -9,7 +9,6 @@ import { SkinType } from "./types";
 import SkinModel from "./data/SkinModel";
 import UserContext from "./data/UserContext";
 import JSZip from "jszip";
-import { archive } from "./tasks/syncWithArchive";
 
 // TODO Move this into the function so that we clean up on each run?
 const temp = _temp.track();

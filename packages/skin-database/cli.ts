@@ -21,6 +21,11 @@ import SkinModel from "./data/SkinModel";
 import { chunk } from "./utils";
 import rl from "readline";
 
+import _temp from "temp";
+import Shooter from "./shooter";
+
+const temp = _temp.track();
+
 async function main() {
   const client = new Discord.Client();
   // The Winston transport logs in the client.
@@ -128,6 +133,23 @@ async function main() {
         const filePath = argv._[1];
         const buffer = fs.readFileSync(filePath);
         console.log(await addSkinFromBuffer(buffer, filePath, "cli-user"));
+        break;
+      }
+      case "screenshot": {
+        const filePath = argv._[1];
+        const buffer = fs.readFileSync(filePath);
+        const tempFile = temp.path({ suffix: ".wsz" });
+        fs.writeFileSync(tempFile, buffer);
+        const tempScreenshotPath = temp.path({ suffix: ".png" });
+        console.log({ tempScreenshotPath });
+
+        await Shooter.withShooter((shooter) =>
+          shooter.takeScreenshot(tempFile, tempScreenshotPath, {
+            minify: true,
+            md5: "FAKE_Md5",
+          })
+        );
+        console.log("Took screenshot", tempScreenshotPath);
         break;
       }
       case "delete": {
