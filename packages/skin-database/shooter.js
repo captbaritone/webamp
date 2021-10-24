@@ -29,7 +29,9 @@ export default class Shooter {
   }
 
   async init() {
-    this._browser = await puppeteer.launch();
+    this._browser = await puppeteer.launch({
+      args: ["--disable-dev-shm-usage"],
+    });
     this._page = await this._browser.newPage();
     this._page.setViewport({ width: 275, height: 116 * 3 });
 
