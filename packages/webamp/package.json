@@ -148,6 +148,7 @@
     "react-dom": "^18.0.0-alpha-9c8161ba8-20211028",
     "react-redux": "^8.0.0-alpha.0",
     "redux": "^4.1.0-alpha.0",
+    "redux-thunk": "^2.4.0",
     "reselect": "^3.0.1",
     "tinyqueue": "^1.2.3",
     "winamp-eqf": "^1.0.0"

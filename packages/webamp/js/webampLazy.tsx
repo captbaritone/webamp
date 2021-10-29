@@ -446,7 +446,7 @@ class Webamp {
     });
 
     ReactDOM.render(
-      <Provider<Action> store={this.store}>
+      <Provider store={this.store}>
         <App media={this.media} filePickers={this.options.filePickers || []} />
       </Provider>,
       node
