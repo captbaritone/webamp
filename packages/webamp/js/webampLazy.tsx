@@ -10,7 +10,6 @@ import {
   Middleware,
   WindowPosition,
   ButterchurnOptions,
-  Action,
 } from "./types";
 import getStore from "./store";
 import App from "./components/App";
