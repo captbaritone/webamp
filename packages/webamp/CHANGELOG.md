@@ -1,4 +1,4 @@
-## 1.5.0
+## 1.5.0 [CURRENT]
 
 ### Features
 
@@ -58,7 +58,7 @@
 - Upgraded [React Redux](https://github.com/reduxjs/react-redux) ([c3c3ad](https://github.com/captbaritone/webamp/commit/c3c3ad69abacdc34b58f3385b39b2634e9271590))
 - Several improvements to the performance of rendering Redux updates ([c75214](https://github.com/captbaritone/webamp/commit/c75214dcd7475b27f24c159cda26117a143ff740), [73f87b](https://github.com/captbaritone/webamp/commit/73f87be7c34acf5d0d5227a2a1b0e9718da11875), [4322aa](https://github.com/captbaritone/webamp/commit/4322aade4b5a60926c280e1807c4592cf915b497), [e89aa2](https://github.com/captbaritone/webamp/commit/e89aa266121ba7f890b96351d2da46314b7589e7),)
 
-## 1.3.1 [CURRENT]
+## 1.3.1
 
 ### Bug Fixes:
 
