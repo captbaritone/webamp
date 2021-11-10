@@ -161,7 +161,7 @@ export function useTypedSelector<T>(selector: (state: AppState) => T): T {
 export function useActionCreator<T extends (...args: any[]) => Action | Thunk>(
   actionCreator: T
 ): (...funcArgs: Parameters<T>) => void {
-  const dispatch = useDispatch();
+  const dispatch = useTypedDispatch();
   return useCallback(
     (...args) => dispatch(actionCreator(...args)),
     [dispatch, actionCreator]
@@ -169,5 +169,8 @@ export function useActionCreator<T extends (...args: any[]) => Action | Thunk>(
 }
 
 export function useTypedDispatch(): (action: Action | Thunk) => void {
+  // useDispatch does not know about thunks. In theory this should be solvable, but I haven't bothered to figure it out:
+  // https://redux.js.org/usage/usage-with-typescript#type-checking-redux-thunks
+  // @ts-ignore
   return useDispatch();
 }
