@@ -1,3 +1,9 @@
+## Upcoming [UNRELEASED]
+
+### Internal Improvements:
+
+- Upgrade to React 18, React Redux, 8 and Redux 4.1
+
 ## 1.5.0 [CURRENT]
 
 ### Features
