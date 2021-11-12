@@ -9,7 +9,7 @@ As seen on [TechCrunch], [Motherboard], [Gizmodo], Hacker News ([1], [2], [3], [
 
 [![Screenshot of Webamp](https://raw.githubusercontent.com/captbaritone/webamp/master/packages/webamp/demo/images/preview.png)](https://webamp.org)
 
-Check out this [Twitter thread](https://twitter.com/captbaritone/status/96127471401331916) for an illustrated list of features. Works in modern versions of Edge, Firefox, Safari and Chrome. IE is [not supported](http://caniuse.com/#feat=audio-api).
+Check out this [Twitter thread](https://twitter.com/captbaritone/status/961274714013319168) for an illustrated list of features. Works in modern versions of Edge, Firefox, Safari and Chrome. IE is [not supported](http://caniuse.com/#feat=audio-api).
 
 ## Add Webamp to Your Site
 
