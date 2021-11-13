@@ -246,3 +246,7 @@ export function getUploadedFiles(state) {
   });
   return files;
 }
+
+export function getFeedbackFormOpen(state) {
+  return state.showFeedbackForm;
+}

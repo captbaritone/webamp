@@ -27,9 +27,10 @@ function SearchLogo() {
 
 function useFocusOnSlash() {
   const [input, setInput] = useState(null);
+  const feedbackFormOpen = useSelector(Selectors.getFeedbackFormOpen);
 
   useEffect(() => {
-    if (input == null) {
+    if (input == null || feedbackFormOpen) {
       return;
     }
     const handler = (e) => {
@@ -45,7 +46,7 @@ function useFocusOnSlash() {
     return () => {
       window.document.removeEventListener("keydown", handler);
     };
-  }, [input]);
+  }, [input, feedbackFormOpen]);
 
   return setInput;
 }

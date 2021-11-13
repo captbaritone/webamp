@@ -16,6 +16,10 @@ export default function Feedback() {
   const url = useSelector(getUrl);
   const send = useCallback(async () => {
     const body = { message, email, url: "https://skins/webamp.org" + url };
+    if (message.trim().length === 0) {
+      alert("Please add a message before sending.");
+      return;
+    }
     setSending(true);
     await fetch(`${API_URL}/feedback`, {
       method: "POST",
