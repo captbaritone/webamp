@@ -29,9 +29,6 @@ export default class GuiObj extends XmlObj {
 
   constructor() {
     super();
-    this._div.addEventListener("mouseup", (e) => {
-      this.onLeftButtonUp(e.clientX, e.clientY);
-    });
 
     this._div.addEventListener("mousedown", (e) => {
       /*
@@ -59,6 +56,12 @@ export default class GuiObj extends XmlObj {
       }
      */
       this.onLeftButtonDown(e.clientX, e.clientY);
+
+      const mouseUpHandler = (e) => {
+        this.onLeftButtonUp(e.clientX, e.clientY);
+        this._div.removeEventListener("mouseup", mouseUpHandler);
+      };
+      this._div.addEventListener("mouseup", mouseUpHandler);
     });
     this._div.addEventListener("mouseenter", (e) => {
       this.onEnterArea();
