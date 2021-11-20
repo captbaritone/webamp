@@ -5,7 +5,7 @@ import * as Selectors from "./redux/selectors";
 import { SCREENSHOT_WIDTH, SCREENSHOT_HEIGHT } from "./constants";
 
 const DESCRIPTION =
-  "Infinite scroll through 65k Winamp skins with interactive preview";
+  "Infinite scroll through 80k Winamp skins with interactive preview";
 
 function useImageTags({ url, width, height, alt }) {
   return [
