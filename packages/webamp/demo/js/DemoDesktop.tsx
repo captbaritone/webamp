@@ -86,6 +86,7 @@ const DemoDesktop = ({ webamp, soundCloudPlaylist }: Props) => {
           const column = i % columns;
           return (
             <div
+              className="loaded-icon"
               key={i}
               style={{
                 left: column * ICON_WIDTH,
