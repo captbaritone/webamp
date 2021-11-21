@@ -10,7 +10,8 @@
     "strict": true,
     "jsx": "preserve",
     "noEmit": true,
-    "pretty": true
+    "pretty": true,
+    "types": ["react/experimental", "react-dom/experimental"]
   },
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules", "demo/built"]
