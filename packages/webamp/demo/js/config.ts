@@ -1,14 +1,13 @@
-import { Track, AppState, URLTrack } from "./Webamp";
+import { Track, URLTrack, PartialState } from "./Webamp";
 // @ts-ignore
 import llamaAudio from "../mp3/llama-2.91.mp3";
-import { DeepPartial } from "redux";
 
 interface Config {
   initialTracks?: Track[];
   audioUrl?: string;
   skinUrl?: string;
   disableMarquee?: boolean;
-  initialState?: DeepPartial<AppState>;
+  initialState?: PartialState;
 }
 
 const { hash } = window.location;

@@ -14,6 +14,7 @@ export {
   ButterchurnOptions,
   Track,
   AppState,
+  PartialState,
   URLTrack,
   FilePicker,
   Action,

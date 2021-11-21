@@ -10,6 +10,7 @@ import {
   Middleware,
   WindowPosition,
   ButterchurnOptions,
+  PartialState,
 } from "./types";
 import getStore from "./store";
 import App from "./components/App";
@@ -37,7 +38,6 @@ import Emitter from "./emitter";
 
 import { SerializedStateV1 } from "./serializedStates/v1Types";
 import Disposable from "./Disposable";
-import { DeepPartial } from "redux";
 
 export interface Options {
   /**
@@ -123,7 +123,7 @@ export interface PrivateOptions {
   avaliableSkins?: { url: string; name: string }[]; // Old misspelled name
   requireJSZip(): Promise<any>; // TODO: Type JSZip
   requireMusicMetadata(): Promise<any>; // TODO: Type musicmetadata
-  __initialState?: DeepPartial<AppState>;
+  __initialState?: PartialState;
   __customMiddlewares?: Middleware[];
   __initialWindowLayout?: WindowLayout;
   __butterchurnOptions?: ButterchurnOptions;
