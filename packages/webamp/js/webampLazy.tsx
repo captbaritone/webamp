@@ -443,11 +443,11 @@ class Webamp {
       }
     });
 
-    ReactDOM.render(
+    const root = ReactDOM.createRoot(node);
+    root.render(
       <Provider store={this.store}>
         <App media={this.media} filePickers={this.options.filePickers || []} />
-      </Provider>,
-      node
+      </Provider>
     );
   }
 

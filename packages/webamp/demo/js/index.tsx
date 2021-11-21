@@ -159,9 +159,9 @@ async function main() {
     if (backgroundColor != null) {
       window.document.body.style.backgroundColor = backgroundColor;
     }
-    ReactDOM.render(
-      <DemoDesktop webamp={webamp} soundCloudPlaylist={soundcloudPlaylist} />,
-      document.getElementById("demo-desktop")
+    const root = ReactDOM.createRoot(document.getElementById("demo-desktop"));
+    root.render(
+      <DemoDesktop webamp={webamp} soundCloudPlaylist={soundcloudPlaylist} />
     );
   }
 }

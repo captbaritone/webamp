@@ -1,4 +1,4 @@
-import { render } from "react-dom";
+import { createRoot } from "react-dom";
 
 interface Props {
   averageTrackLength: string;
@@ -159,7 +159,8 @@ const Playlist = (props: Props) => (
 
 const createPlaylistHTML = (props: Props): string => {
   const node = document.createElement("div");
-  render(<Playlist {...props} />, node);
+  const root = createRoot(node);
+  root.render(<Playlist {...props} />);
   return node.innerHTML;
 };
 
