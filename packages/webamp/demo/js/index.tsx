@@ -159,7 +159,11 @@ async function main() {
     if (backgroundColor != null) {
       window.document.body.style.backgroundColor = backgroundColor;
     }
-    const root = ReactDOM.createRoot(document.getElementById("demo-desktop"));
+    const div = document.getElementById("demo-desktop");
+    if (div == null) {
+      throw new Error("Could not locate #demo-desktop div");
+    }
+    const root = ReactDOM.createRoot(div);
     root.render(
       <DemoDesktop webamp={webamp} soundCloudPlaylist={soundcloudPlaylist} />
     );
