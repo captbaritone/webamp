@@ -19,7 +19,6 @@ import PlaylistActionArea from "./PlaylistActionArea";
 import TrackList from "./TrackList";
 import PlaylistScrollBar from "./PlaylistScrollBar";
 
-import "../../../css/playlist-window.css";
 import { AppState } from "../../types";
 import FocusTarget from "../FocusTarget";
 import { useActionCreator, useTypedSelector } from "../../hooks";

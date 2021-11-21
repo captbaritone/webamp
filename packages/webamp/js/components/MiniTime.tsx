@@ -6,7 +6,6 @@ import * as Actions from "../actionCreators";
 import Character from "./Character";
 import * as Selectors from "../selectors";
 
-import "../../css/mini-time.css";
 import { useTypedSelector, useActionCreator } from "../hooks";
 
 // Sigh. When the display is blinking (say when it's paused) we need to

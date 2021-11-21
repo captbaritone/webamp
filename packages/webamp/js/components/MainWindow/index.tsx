@@ -30,7 +30,6 @@ import Time from "./Time";
 import MainVolume from "./MainVolume";
 import * as Selectors from "../../selectors";
 
-import "../../../css/main-window.css";
 import { FilePicker } from "../../types";
 import FocusTarget from "../FocusTarget";
 import { useActionCreator, useTypedSelector } from "../../hooks";

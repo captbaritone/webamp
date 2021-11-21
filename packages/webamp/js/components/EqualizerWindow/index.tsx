@@ -11,7 +11,6 @@ import EqGraph from "./EqGraph";
 import PresetsContextMenu from "./PresetsContextMenu";
 import EqualizerShade from "./EqualizerShade";
 
-import "../../../css/equalizer-window.css";
 import { Band as BandType } from "../../types";
 import FocusTarget from "../FocusTarget";
 import { useTypedSelector, useActionCreator } from "../../hooks";
