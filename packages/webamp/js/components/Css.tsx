@@ -3,14 +3,16 @@ import { useMemo, useLayoutEffect } from "react";
 
 type Props = {
   children: string;
-  id: string;
+  id?: string;
 };
 
 export default function Css({ children, id }: Props) {
   const style = useMemo(() => {
     const s = document.createElement("style");
     s.type = "text/css";
-    s.id = id;
+    if (id != null) {
+      s.id = id;
+    }
     return s;
   }, [id]);
 
