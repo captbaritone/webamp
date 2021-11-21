@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware, DeepPartial } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import reducer from "./reducers";
@@ -7,7 +7,7 @@ import { merge } from "./utils";
 import { UPDATE_TIME_ELAPSED, STEP_MARQUEE } from "./actionTypes";
 import Media from "./media";
 import Emitter from "./emitter";
-import { Extras, Dispatch, Action, AppState, Middleware } from "./types";
+import { Extras, Dispatch, Action, Middleware, PartialState } from "./types";
 
 // TODO: Move to demo
 const compose = composeWithDevTools({
@@ -18,7 +18,7 @@ export default function (
   media: Media,
   actionEmitter: Emitter,
   customMiddlewares: Middleware[] = [],
-  stateOverrides: DeepPartial<AppState> | undefined,
+  stateOverrides: PartialState | undefined,
   extras: Extras
 ) {
   let initialState;

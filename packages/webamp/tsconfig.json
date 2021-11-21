@@ -11,7 +11,7 @@
     "jsx": "preserve",
     "noEmit": true,
     "pretty": true,
-    "types": ["react/experimental", "react-dom/experimental"]
+    "types": ["react/experimental", "react-dom/experimental", "jest"]
   },
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules", "demo/built"]

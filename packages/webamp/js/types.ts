@@ -666,6 +666,8 @@ export interface AppState {
   milkdrop: MilkdropState;
 }
 
+export type PartialState = any;
+
 /**
  * Type definition of the music-metadata-browser module.
  * Ref: https://github.com/Borewit/music-metadata-browser/blob/master/src/index.ts
@@ -732,7 +734,6 @@ export interface Store extends ReduxStore {
   subscribe(cb: () => void): () => void;
   dispatch: Dispatch;
   getState: GetState;
-  replaceReducer(reducer: Reducer): void;
 }
 
 export interface MiddlewareStore {
