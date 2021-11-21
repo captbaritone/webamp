@@ -18,6 +18,8 @@ async function optimizeDataUri(imagePool, dataUri) {
     const encodeOptions = {
       webp: {
         lossless: true,
+        method: 6,
+        quality: 100,
       },
     };
     await image.encode(encodeOptions);
