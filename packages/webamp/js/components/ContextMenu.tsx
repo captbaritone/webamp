@@ -2,7 +2,6 @@ import { useMemo, useEffect } from "react";
 import { createPortal } from "react-dom";
 import classnames from "classnames";
 
-import "../../css/context-menu.css";
 import { useTypedSelector } from "../hooks";
 import * as Selectors from "../selectors";
 

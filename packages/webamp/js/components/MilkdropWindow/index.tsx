@@ -13,7 +13,6 @@ import * as Actions from "../../actionCreators";
 import { TransitionType } from "../../types";
 import Visualizer from "./Visualizer";
 
-import "../../../css/milkdrop-window.css";
 import Background from "./Background";
 import PresetOverlay from "./PresetOverlay";
 import DropTarget from "../DropTarget";

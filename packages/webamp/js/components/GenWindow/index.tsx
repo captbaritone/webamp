@@ -1,6 +1,5 @@
 import * as React from "react";
 import classnames from "classnames";
-import "../../../css/gen-window.css";
 
 import * as Actions from "../../actionCreators";
 import * as Selectors from "../../selectors";
