@@ -17,6 +17,7 @@ import {
 import { disableMarquee, skinUrl as configSkinUrl } from "./config";
 import DemoDesktop from "./DemoDesktop";
 import enableMediaSession from "./mediaSession";
+// import { choreograph } from "./choreography";
 
 declare global {
   const SENTRY_DSN: string;
@@ -154,6 +155,8 @@ async function main() {
   await webamp.renderWhenReady(
     document.getElementById("app") as HTMLDivElement
   );
+
+  // choreograph(webamp);
 
   if (!screenshot) {
     if (backgroundColor != null) {
