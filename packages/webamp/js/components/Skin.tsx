@@ -59,7 +59,8 @@ const getCssRules = createSelector(
       const imageUrl =
         skinImages[imageName] || skinImages[FALLBACKS[imageName]];
       if (imageUrl) {
-        imageSelectors[imageName].forEach((selector) => {
+        imageSelectors[imageName].forEach((_selector) => {
+          const selector = _selector; // .replace(":active", ".active");
           cssRules.push(
             `${CSS_PREFIX} ${selector} {background-image: url(${imageUrl})}`
           );
