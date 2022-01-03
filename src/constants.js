@@ -1,6 +1,5 @@
 const urlSearchParams = new URLSearchParams(window.location.search);
 const params = Object.fromEntries(urlSearchParams.entries());
-console.log(params)
 
 export const SCREENSHOT_WIDTH = 275;
 export const SCREENSHOT_HEIGHT = 348;
