@@ -122,6 +122,7 @@ function Header() {
             onClick={() => {
               requestRandomSkin();
             }}
+            title="Random Skin"
             style={{
               paddingLeft: "0.2rem",
               paddingRight: "0.2rem",
