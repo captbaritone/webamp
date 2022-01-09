@@ -20,7 +20,7 @@ import { useDropzone } from "react-dropzone";
 import ReviewPage from "./ReviewPage";
 
 const getTableDimensions = (windowWidth, scale) => {
-  const columnCount = Math.floor(windowWidth / (SCREENSHOT_WIDTH * scale));
+  const columnCount = Math.round(windowWidth / (SCREENSHOT_WIDTH * scale));
   const columnWidth = windowWidth / columnCount; // TODO: Consider flooring this to get things aligned to the pixel
   const rowHeight = columnWidth * SKIN_RATIO;
   return { columnWidth, rowHeight, columnCount };
