@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import "./App.css";
 import { connect } from "react-redux";
 import * as Selectors from "./redux/selectors";
@@ -44,12 +44,21 @@ const SkinTable = ({
       return;
     }
 
-    const itemRow = Math.floor(itemRef.current / columnCount) 
+    const itemRow = Math.floor(itemRef.current / columnCount);
 
     gridRef.current.scrollTo({ scrollLeft: 0, scrollTop: rowHeight * itemRow });
   }, [rowHeight, columnCount]);
-  
+
   const showGrid = loadingSearchQuery || skinCount > 0 || searchQuery === "";
+
+  const onScroll = useMemo(() => {
+    const half = Math.round(columnCount / 2);
+    return (scrollData) => {
+      itemRef.current =
+        Math.round(scrollData.scrollTop / rowHeight) * columnCount + half;
+    };
+  }, [columnCount, rowHeight]);
+
   return (
     <div id="infinite-skins" style={{ marginTop: HEADING_HEIGHT }}>
       {showGrid ? (
@@ -65,14 +74,12 @@ const SkinTable = ({
             rowHeight={rowHeight}
             width={windowWidth}
             overscanRowsCount={5}
-            onScroll={scrollData => {
-              itemRef.current = Math.round(scrollData.scrollTop / rowHeight) * columnCount
-            }}
+            onScroll={onScroll}
             style={{ overflowY: "scroll" }}
           >
             {Cell}
           </Grid>
-         <Zoom columnCount={columnCount} windowWidth={windowWidth} /> 
+          <Zoom columnCount={columnCount} windowWidth={windowWidth} />
         </>
       ) : (
         <div
