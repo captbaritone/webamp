@@ -6,8 +6,8 @@ function getScaleForColumnCount(columnCount, windowWidth) {
   return windowWidth / (columnCount * SCREENSHOT_WIDTH);
 }
 
-const BACKGROUND_COLOR = "#000"
-const COLOR = "rgba(255, 2550, 2550, 0.9)"
+const BACKGROUND_COLOR = "#000";
+const COLOR = "rgba(255, 2550, 2550, 0.9)";
 
 const Zoom = ({ columnCount, windowWidth }) => {
   const scaleUp = getScaleForColumnCount(columnCount - 1, windowWidth);
@@ -18,6 +18,7 @@ const Zoom = ({ columnCount, windowWidth }) => {
 
   return (
     <div
+      id="zoom"
       style={{
         position: "absolute",
         backgroundColor: BACKGROUND_COLOR,
@@ -41,11 +42,10 @@ const Zoom = ({ columnCount, windowWidth }) => {
       }}
     >
       <Button
-      title={"Zoom In"}
+        title={"Zoom In"}
         onClick={zoomIn}
         disabled={scaleUp * SCREENSHOT_WIDTH >= 400}
         style={{ margin: 0 }}
-        v
       >
         +
       </Button>
@@ -59,11 +59,15 @@ const Zoom = ({ columnCount, windowWidth }) => {
           marginBottom: 0,
           marginLeft: 3,
           marginRight: 3,
-          padding: 0
+          padding: 0,
         }}
       />
-      <Button onClick={zoomOut} title={"Zoom Out"} disabled={scaleDown * SCREENSHOT_WIDTH <= 100}>
-      –
+      <Button
+        onClick={zoomOut}
+        title={"Zoom Out"}
+        disabled={scaleDown * SCREENSHOT_WIDTH <= 100}
+      >
+        –
       </Button>
     </div>
   );
@@ -76,7 +80,7 @@ function Button({ ...props }) {
       title={props.disabled ? `${props.title} (disabled)` : props.title}
       style={{
         margin: 0,
-        color: props.disabled ? "grey": COLOR,
+        color: props.disabled ? "grey" : COLOR,
         border: "none",
         cursor: props.disabled ? "default" : "pointer",
         font: "inherit",

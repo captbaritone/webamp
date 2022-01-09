@@ -198,3 +198,16 @@ body.webamp-loaded #webamp {
   position: absolute;
   width: 100%;
 }
+
+#zoom {
+  opacity: 0.7;
+  transition: opacity 100ms ease-in-out;
+}
+
+#zoom:hover {
+  opacity: 1;
+}
+
+#zoom.active {
+  opacity: 1;
+}
