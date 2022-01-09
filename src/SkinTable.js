@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import "./App.css";
 import { connect } from "react-redux";
 import * as Selectors from "./redux/selectors";
@@ -6,6 +6,7 @@ import * as Actions from "./redux/actionCreators";
 import { FixedSizeGrid as Grid } from "react-window";
 import Cell from "./Cell";
 import { HEADING_HEIGHT } from "./constants";
+import Zoom from "./Zoom";
 
 const SkinTable = ({
   columnCount,
@@ -30,31 +31,56 @@ const SkinTable = ({
     return skin ? skin.hash : `unfectched-index-${requestToken}`;
   }
   const gridRef = React.useRef();
+  const itemRef = React.useRef();
   React.useLayoutEffect(() => {
     if (gridRef.current == null) {
       return;
     }
     gridRef.current.scrollTo({ scrollLeft: 0, scrollTop: 0 });
   }, [skinCount]);
+
+  React.useLayoutEffect(() => {
+    if (gridRef.current == null) {
+      return;
+    }
+
+    const itemRow = Math.floor(itemRef.current / columnCount);
+
+    gridRef.current.scrollTo({ scrollLeft: 0, scrollTop: rowHeight * itemRow });
+  }, [rowHeight, columnCount]);
+
   const showGrid = loadingSearchQuery || skinCount > 0 || searchQuery === "";
+
+  const onScroll = useMemo(() => {
+    const half = Math.round(columnCount / 2);
+    return (scrollData) => {
+      itemRef.current =
+        Math.round(scrollData.scrollTop / rowHeight) * columnCount + half;
+    };
+  }, [columnCount, rowHeight]);
+
   return (
     <div id="infinite-skins" style={{ marginTop: HEADING_HEIGHT }}>
       {showGrid ? (
-        <Grid
-          ref={gridRef}
-          itemKey={itemKey}
-          itemData={{ columnCount, width: columnWidth, height: rowHeight }}
-          columnCount={columnCount}
-          columnWidth={columnWidth}
-          height={windowHeight - HEADING_HEIGHT}
-          rowCount={Math.ceil(skinCount / columnCount)}
-          rowHeight={rowHeight}
-          width={windowWidth}
-          overscanRowsCount={5}
-          style={{ overflowY: "scroll" }}
-        >
-          {Cell}
-        </Grid>
+        <>
+          <Grid
+            ref={gridRef}
+            itemKey={itemKey}
+            itemData={{ columnCount, width: columnWidth, height: rowHeight }}
+            columnCount={columnCount}
+            columnWidth={columnWidth}
+            height={windowHeight - HEADING_HEIGHT}
+            rowCount={Math.ceil(skinCount / columnCount)}
+            rowHeight={rowHeight}
+            width={windowWidth}
+            overscanRowsCount={5}
+            onScroll={onScroll}
+            style={{ overflowY: "scroll" }}
+          >
+            {Cell}
+          </Grid>
+          <Zoom columnCount={columnCount} windowWidth={windowWidth} />
+        </>
       ) : (
         <div
           style={{

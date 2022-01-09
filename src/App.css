@@ -198,3 +198,20 @@ body.webamp-loaded #webamp {
   position: absolute;
   width: 100%;
 }
+
+#zoom button {
+  color: rgba(255, 2550, 2550, 0.9);
+}
+#zoom button:active, #zoom button:disabled {
+  color: grey;
+}
+
+@media (hover: hover) {
+  #zoom {
+    opacity: 0.7;
+    transition: opacity 200ms ease-in-out;
+  }
+  #zoom:hover {
+    opacity: 1;
+  }
+}
