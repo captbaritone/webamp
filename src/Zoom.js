@@ -86,10 +86,10 @@ function Button({ ...props }) {
         font: "inherit",
         outline: "inherit",
         background: "none",
-        paddingLeft: 10,
-        paddingRight: 10,
-        paddingTop: 7,
-        paddingBottom: 7,
+        paddingLeft: 14,
+        paddingRight: 14,
+        paddingTop: 9,
+        paddingBottom: 9,
       }}
     />
   );
