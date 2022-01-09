@@ -6,6 +6,7 @@ import * as Actions from "./redux/actionCreators";
 import { FixedSizeGrid as Grid } from "react-window";
 import Cell from "./Cell";
 import { HEADING_HEIGHT } from "./constants";
+import Zoom from "./Zoom";
 
 const SkinTable = ({
   columnCount,
@@ -40,21 +41,24 @@ const SkinTable = ({
   return (
     <div id="infinite-skins" style={{ marginTop: HEADING_HEIGHT }}>
       {showGrid ? (
-        <Grid
-          ref={gridRef}
-          itemKey={itemKey}
-          itemData={{ columnCount, width: columnWidth, height: rowHeight }}
-          columnCount={columnCount}
-          columnWidth={columnWidth}
-          height={windowHeight - HEADING_HEIGHT}
-          rowCount={Math.ceil(skinCount / columnCount)}
-          rowHeight={rowHeight}
-          width={windowWidth}
-          overscanRowsCount={5}
-          style={{ overflowY: "scroll" }}
-        >
-          {Cell}
-        </Grid>
+        <>
+          <Grid
+            ref={gridRef}
+            itemKey={itemKey}
+            itemData={{ columnCount, width: columnWidth, height: rowHeight }}
+            columnCount={columnCount}
+            columnWidth={columnWidth}
+            height={windowHeight - HEADING_HEIGHT}
+            rowCount={Math.ceil(skinCount / columnCount)}
+            rowHeight={rowHeight}
+            width={windowWidth}
+            overscanRowsCount={5}
+            style={{ overflowY: "scroll" }}
+          >
+            {Cell}
+          </Grid>
+         <Zoom columnCount={columnCount} windowWidth={windowWidth} /> 
+        </>
       ) : (
         <div
           style={{

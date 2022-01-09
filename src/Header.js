@@ -60,7 +60,6 @@ function Header() {
   const showFeedbackForm = useActionCreator(Actions.showFeedbackForm);
   const requestRandomSkin = useActionCreator(Actions.requestedRandomSkin);
   const requestedAboutPage = useActionCreator(Actions.requestedAboutPage);
-  // const setScale = useActionCreator((scale) => ({ type: "SET_SCALE", scale }));
   const setInput = useFocusOnSlash();
 
   return (
