@@ -67,7 +67,7 @@ const Zoom = ({ columnCount, windowWidth }) => {
         title={"Zoom Out"}
         disabled={scaleDown * SCREENSHOT_WIDTH <= 100}
       >
-        –
+        {"–"}
       </Button>
     </div>
   );
@@ -84,6 +84,7 @@ function Button({ ...props }) {
         border: "none",
         cursor: props.disabled ? "default" : "pointer",
         font: "inherit",
+        fontWeight: 'bold',
         outline: "inherit",
         background: "none",
         paddingLeft: 14,
