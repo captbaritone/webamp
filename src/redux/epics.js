@@ -416,19 +416,11 @@ const loggingEpic = (actions, state) =>
         case "REQUESTED_RANDOM_SKIN":
         case "MARK_NSFW":
         case "INVALID_ARCHIVE":
-          window.fbq("track", action.type);
+        case "SET_SCALE":
           window.ga("send", "event", "redux", action.type);
           break;
         default: {
         }
-      }
-      // Facebook requires a value for events that can be used to create
-      // look-a-like audiences.
-      if (action.type === "ARCHIVED_SKIN") {
-        window.fbq("track", "SKIN_UPLOAD_CONVERSION", {
-          value: 1,
-          currency: "USD",
-        });
       }
     }),
     ignoreElements()
