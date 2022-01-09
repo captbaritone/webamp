@@ -31,12 +31,24 @@ const SkinTable = ({
     return skin ? skin.hash : `unfectched-index-${requestToken}`;
   }
   const gridRef = React.useRef();
+  const itemRef = React.useRef();
   React.useLayoutEffect(() => {
     if (gridRef.current == null) {
       return;
     }
     gridRef.current.scrollTo({ scrollLeft: 0, scrollTop: 0 });
   }, [skinCount]);
+
+  React.useLayoutEffect(() => {
+    if (gridRef.current == null) {
+      return;
+    }
+
+    const itemRow = Math.floor(itemRef.current / columnCount) 
+
+    gridRef.current.scrollTo({ scrollLeft: 0, scrollTop: rowHeight * itemRow });
+  }, [rowHeight, columnCount]);
+  
   const showGrid = loadingSearchQuery || skinCount > 0 || searchQuery === "";
   return (
     <div id="infinite-skins" style={{ marginTop: HEADING_HEIGHT }}>
@@ -53,6 +65,9 @@ const SkinTable = ({
             rowHeight={rowHeight}
             width={windowWidth}
             overscanRowsCount={5}
+            onScroll={scrollData => {
+              itemRef.current = Math.round(scrollData.scrollTop / rowHeight) * columnCount
+            }}
             style={{ overflowY: "scroll" }}
           >
             {Cell}
