@@ -7,6 +7,7 @@ import DiscordWinstonTransport from "./DiscordWinstonTransport";
 import * as Skins from "./data/skins";
 import Discord from "discord.js";
 import { tweet } from "./tasks/tweet";
+import md5Buffer from "md5";
 import { addSkinFromBuffer } from "./addSkin";
 import { searchIndex } from "./algolia";
 import { scrapeLikeData } from "./tasks/scrapeLikes";
@@ -20,7 +21,10 @@ import { processUserUploads } from "./api/processUserUploads";
 import DiscordEventHandler from "./api/DiscordEventHandler";
 import SkinModel from "./data/SkinModel";
 import { chunk } from "./utils";
+import _temp from "temp";
+import Shooter from "./shooter";
 import rl from "readline";
+const temp = _temp.track();
 
 import _temp from "temp";
 import Shooter from "./shooter";
@@ -123,7 +127,8 @@ async function main() {
       }
       case "tweet": {
         console.log("tweet");
-        await tweet(client, null);
+        const hash = argv._[1];
+        await tweet(client, hash);
         break;
       }
       case "stats": {
@@ -139,18 +144,15 @@ async function main() {
       case "screenshot": {
         const filePath = argv._[1];
         const buffer = fs.readFileSync(filePath);
-        const tempFile = temp.path({ suffix: ".wsz" });
-        fs.writeFileSync(tempFile, buffer);
-        const tempScreenshotPath = temp.path({ suffix: ".png" });
-        console.log({ tempScreenshotPath });
-
-        await Shooter.withShooter((shooter) =>
-          shooter.takeScreenshot(tempFile, tempScreenshotPath, {
-            minify: true,
-            md5: "FAKE_Md5",
-          })
+        const md5 = md5Buffer(buffer);
+        const tempPath = temp.path({ suffix: ".png" });
+        await Shooter.withShooter(
+          (shooter) => {
+            shooter.takeScreenshot(buffer, tempPath, { md5 });
+          },
+          (message) => console.log(message)
         );
-        console.log("Took screenshot", tempScreenshotPath);
+        console.log("Screenshot", tempPath);
         break;
       }
       case "delete": {
