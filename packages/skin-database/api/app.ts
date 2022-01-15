@@ -22,7 +22,8 @@ export type ApiAction =
   | { type: "SKIN_UPLOAD_ERROR"; uploadId: string; message: string }
   | { type: "GOT_FEEDBACK"; message: string; email?: string; url?: string }
   | { type: "SYNCED_TO_ARCHIVE"; successes: number; errors: number }
-  | { type: "STARTED_SYNC_TO_ARCHIVE"; count: number };
+  | { type: "STARTED_SYNC_TO_ARCHIVE"; count: number }
+  | { type: "POPULAR_TWEET"; bracket: number; url: string };
 
 export type EventHandler = (event: ApiAction) => void;
 export type Logger = {

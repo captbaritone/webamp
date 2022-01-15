@@ -10,6 +10,7 @@ import { tweet } from "./tasks/tweet";
 import { addSkinFromBuffer } from "./addSkin";
 import { searchIndex } from "./algolia";
 import { scrapeLikeData } from "./tasks/scrapeLikes";
+import {popularTweets} from "./tasks/popularTweets"
 import UserContext from "./data/UserContext";
 import { integrityCheck } from "./tasks/integrityCheck";
 import { ensureWebampLinks, syncWithArchive } from "./tasks/syncWithArchive";
@@ -196,6 +197,10 @@ async function main() {
       }
       case "tweet-data": {
         await scrapeLikeData();
+        break;
+      }
+      case "popular-tweets": {
+        await popularTweets(handler);
         break;
       }
 

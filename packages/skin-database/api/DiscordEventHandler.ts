@@ -119,6 +119,14 @@ export default class DiscordEventHandler {
         await dest.send(message);
         break;
       }
+      case "POPULAR_TWEET": {
+        const dest = await this.getChannel(Config.POPULAR_TWEETS_CHANNEL_ID);
+
+        const message = `An @winampskins tweet just passed **${action.bracket}** likes!\n\n${action.url}`;
+
+        await dest.send(message);
+        break;
+      }
     }
   }
 
