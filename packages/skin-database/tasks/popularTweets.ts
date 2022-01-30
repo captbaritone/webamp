@@ -5,6 +5,7 @@ import DiscordEventHandler from "../api/DiscordEventHandler";
 const MAX_CALL_COUNT = 2;
 
 type TweetPayload = {
+  created_at: string,
   entities: {
     urls: {
       expanded_url: string;
@@ -69,7 +70,7 @@ export async function popularTweets(handler: DiscordEventHandler) {
         const url = tweetUrl(tweet);
 
         if(!notified) {
-          await handler.handle({ type: "POPULAR_TWEET", url, bracket });
+          await handler.handle({ type: "POPULAR_TWEET", url, bracket, likes: tweet.favorite_count, date:  new Date(Date.parse(tweet.created_at))});
           notified = true
         }
 

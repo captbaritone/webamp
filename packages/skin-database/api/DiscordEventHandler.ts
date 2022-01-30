@@ -121,8 +121,12 @@ export default class DiscordEventHandler {
       }
       case "POPULAR_TWEET": {
         const dest = await this.getChannel(Config.POPULAR_TWEETS_CHANNEL_ID);
+        const diff = (Date.now() - Number(action.date));
+        const seconds = diff / 1000;
+        const minutes = seconds / 60;
+        const hours = Math.round(minutes / 60);
 
-        const message = `An @winampskins tweet just passed **${action.bracket}** likes!\n\n${action.url}`;
+        const message = `⭐️ This tweet passed **${action.bracket}** likes! (**${action.likes}** likes in **${hours}** hours)️ ⭐\n\n${action.url}`;
 
         await dest.send(message);
         break;
