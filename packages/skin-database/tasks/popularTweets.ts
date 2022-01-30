@@ -5,7 +5,7 @@ import DiscordEventHandler from "../api/DiscordEventHandler";
 const MAX_CALL_COUNT = 2;
 
 type TweetPayload = {
-  created_at: string,
+  created_at: string;
   entities: {
     urls: {
       expanded_url: string;
@@ -52,6 +52,11 @@ function tweetUrl(tweet: { id_str: string }) {
 
 const JSON_FILE_NAME = "./popularTweets.json";
 
+// Sort key/value entries by key largest to smallest
+function sortEntries(a: [string, never], b: [string, never]): number {
+  return Number(b[0]) - Number(a[0]);
+}
+
 export async function popularTweets(handler: DiscordEventHandler) {
   const twitterClient = getTwitterClient();
 
@@ -62,16 +67,22 @@ export async function popularTweets(handler: DiscordEventHandler) {
 
   for (const tweet of tweets) {
     let notified = false;
-    for (const [_bracket, seen] of Object.entries(current)) {
+    for (const [_bracket, seen] of Object.entries(current).sort(sortEntries)) {
       const bracket = Number(_bracket);
       if (tweet.favorite_count > bracket && !seen.includes(tweet.id_str)) {
         seen.push(tweet.id_str);
 
         const url = tweetUrl(tweet);
 
-        if(!notified) {
-          await handler.handle({ type: "POPULAR_TWEET", url, bracket, likes: tweet.favorite_count, date:  new Date(Date.parse(tweet.created_at))});
-          notified = true
+        if (!notified) {
+          await handler.handle({
+            type: "POPULAR_TWEET",
+            url,
+            bracket,
+            likes: tweet.favorite_count,
+            date: new Date(Date.parse(tweet.created_at)),
+          });
+          notified = true;
         }
 
         fs.writeFileSync(JSON_FILE_NAME, JSON.stringify(current, null, 2));
