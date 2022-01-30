@@ -60,6 +60,7 @@ export async function popularTweets(handler: DiscordEventHandler) {
   const current: { [bracket: string]: string[] } = JSON.parse(currentJSON);
 
   for (const tweet of tweets) {
+    let notified = false;
     for (const [_bracket, seen] of Object.entries(current)) {
       const bracket = Number(_bracket);
       if (tweet.favorite_count > bracket && !seen.includes(tweet.id_str)) {
@@ -67,7 +68,10 @@ export async function popularTweets(handler: DiscordEventHandler) {
 
         const url = tweetUrl(tweet);
 
-        await handler.handle({ type: "POPULAR_TWEET", url, bracket });
+        if(!notified) {
+          await handler.handle({ type: "POPULAR_TWEET", url, bracket });
+          notified = true
+        }
 
         fs.writeFileSync(JSON_FILE_NAME, JSON.stringify(current, null, 2));
       }

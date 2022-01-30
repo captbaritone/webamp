@@ -24,7 +24,6 @@ import { chunk } from "./utils";
 import _temp from "temp";
 import Shooter from "./shooter";
 import rl from "readline";
-const temp = _temp.track();
 
 import _temp from "temp";
 import Shooter from "./shooter";
