@@ -131,6 +131,12 @@ export default class DiscordEventHandler {
         await dest.send(message);
         break;
       }
+      case "TWEET_BOT_MILESTONE": {
+        const dest = await this.getChannel(Config.POPULAR_TWEETS_CHANNEL_ID);
+        const message = `🎉 Tweet Bot Milestone! Just passed ${action.bracket.toLocaleString()} Followers 🎉`;
+        await dest.send(message);
+        break
+      }
     }
   }
 

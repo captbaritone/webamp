@@ -23,7 +23,8 @@ export type ApiAction =
   | { type: "GOT_FEEDBACK"; message: string; email?: string; url?: string }
   | { type: "SYNCED_TO_ARCHIVE"; successes: number; errors: number }
   | { type: "STARTED_SYNC_TO_ARCHIVE"; count: number }
-  | { type: "POPULAR_TWEET"; bracket: number; url: string, likes: number, date: Date };
+  | { type: "POPULAR_TWEET"; bracket: number; url: string, likes: number, date: Date }
+  | { type: "TWEET_BOT_MILESTONE"; bracket: number; count: number};
 
 export type EventHandler = (event: ApiAction) => void;
 export type Logger = {

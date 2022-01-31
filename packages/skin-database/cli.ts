@@ -11,7 +11,7 @@ import md5Buffer from "md5";
 import { addSkinFromBuffer } from "./addSkin";
 import { searchIndex } from "./algolia";
 import { scrapeLikeData } from "./tasks/scrapeLikes";
-import {popularTweets} from "./tasks/popularTweets"
+import {followerCount, popularTweets} from "./tasks/tweetMilestones"
 import UserContext from "./data/UserContext";
 import { integrityCheck } from "./tasks/integrityCheck";
 import { ensureWebampLinks, syncWithArchive } from "./tasks/syncWithArchive";
@@ -24,9 +24,6 @@ import { chunk } from "./utils";
 import _temp from "temp";
 import Shooter from "./shooter";
 import rl from "readline";
-
-import _temp from "temp";
-import Shooter from "./shooter";
 
 const temp = _temp.track();
 
@@ -202,6 +199,11 @@ async function main() {
       }
       case "popular-tweets": {
         await popularTweets(handler);
+        break;
+      }
+
+      case "follower-count": {
+        await followerCount(handler);
         break;
       }
 

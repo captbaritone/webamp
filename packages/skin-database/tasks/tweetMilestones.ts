@@ -90,3 +90,36 @@ export async function popularTweets(handler: DiscordEventHandler) {
     }
   }
 }
+
+const FOLLOW_COUNT_FILE_NAME = "./followerCount.json";
+const FOLLOW_COUNT_BRACKET_SIZE = 1000;
+
+export async function followerCount(handler: DiscordEventHandler) {
+  const twitterClient = getTwitterClient();
+
+  const response = await twitterClient.get("users/show", {
+    screen_name: "winampskins",
+  });
+  const user = response.data;
+
+  const followerCount = user.followers_count;
+  const currentJSON = fs.readFileSync(FOLLOW_COUNT_FILE_NAME, "utf8");
+  const current: { count: number } = JSON.parse(currentJSON);
+  const currentNumber = current.count;
+
+  const nextMilestone = currentNumber + FOLLOW_COUNT_BRACKET_SIZE;
+
+  if (followerCount > nextMilestone) {
+    await handler.handle({
+      type: "TWEET_BOT_MILESTONE",
+      bracket: nextMilestone,
+      count: followerCount,
+    });
+    fs.writeFileSync(
+      FOLLOW_COUNT_FILE_NAME,
+      JSON.stringify({ count: nextMilestone }, null, 2)
+    );
+  } else {
+    console.log(`Not notifying: ${followerCount} < ${nextMilestone}`);
+  }
+}
