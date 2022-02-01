@@ -26,11 +26,13 @@ function deactivateId(id: string) {
 
 function hoverPlButton(id: string, i: number) {
   const elements = document.querySelector(id)!.childNodes;
+  // @ts-ignore
   elements[i]!.classList.add("hover");
 }
 
 function unhoverPlButton(id: string, i: number) {
   const elements = document.querySelector(id)!.childNodes;
+  // @ts-ignore
   elements[i]!.classList.remove("hover");
 }
 
