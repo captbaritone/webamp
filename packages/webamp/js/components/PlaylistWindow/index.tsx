@@ -22,6 +22,7 @@ import PlaylistScrollBar from "./PlaylistScrollBar";
 import { AppState } from "../../types";
 import FocusTarget from "../FocusTarget";
 import { useActionCreator, useTypedSelector } from "../../hooks";
+import WinampButton from "../WinampButton";
 
 interface Props {
   analyser: AnalyserNode;
@@ -122,9 +123,9 @@ function PlaylistWindow({ analyser }: Props) {
           <div className="playlist-middle-center">
             <TrackList />
           </div>
-          <div className="playlist-middle-right draggable">
+          <WinampButton className="playlist-middle-right draggable">
             <PlaylistScrollBar />
-          </div>
+          </WinampButton>
         </div>
         <div className="playlist-bottom draggable">
           <div className="playlist-bottom-left draggable">

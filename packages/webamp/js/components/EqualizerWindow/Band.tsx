@@ -4,6 +4,7 @@ import { useTypedSelector, useActionCreator } from "../../hooks";
 import * as Selectors from "../../selectors";
 import * as Actions from "../../actionCreators";
 import VerticalSlider from "../VerticalSlider";
+import WinampButton from "../WinampButton";
 
 interface Props {
   id: string;
@@ -46,7 +47,11 @@ export default function Band({ id, onChange, band }: Props) {
   // Note: The band background is actually one pixel taller (63) than the slider
   // it contains (62).
   return (
-    <div id={id} className="band" style={{ backgroundPosition, height: 63 }}>
+    <WinampButton
+      id={id}
+      className="band"
+      style={{ backgroundPosition, height: 63 }}
+    >
       <VerticalSlider
         height={62}
         width={14}
@@ -57,6 +62,6 @@ export default function Band({ id, onChange, band }: Props) {
         onAfterChange={usetFocus}
         handle={<Handle />}
       />
-    </div>
+    </WinampButton>
   );
 }

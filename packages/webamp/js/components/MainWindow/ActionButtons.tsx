@@ -1,6 +1,7 @@
 import { memo } from "react";
 import * as Actions from "../../actionCreators";
 import { useActionCreator } from "../../hooks";
+import WinampButton from "../WinampButton";
 
 const ActionButtons = memo(() => {
   const previous = useActionCreator(Actions.previous);
@@ -10,11 +11,11 @@ const ActionButtons = memo(() => {
   const stop = useActionCreator(Actions.stop);
   return (
     <div className="actions">
-      <div id="previous" onClick={previous} title="Previous Track" />
-      <div id="play" onClick={play} title="Play" />
-      <div id="pause" onClick={pause} title="Pause" />
-      <div id="stop" onClick={stop} title="Stop" />
-      <div id="next" onClick={next} title="Next Track" />
+      <WinampButton id="previous" onClick={previous} title="Previous Track" />
+      <WinampButton id="play" onClick={play} title="Play" />
+      <WinampButton id="pause" onClick={pause} title="Pause" />
+      <WinampButton id="stop" onClick={stop} title="Stop" />
+      <WinampButton id="next" onClick={next} title="Next Track" />
     </div>
   );
 });
