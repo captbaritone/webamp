@@ -5,6 +5,7 @@ import * as Selectors from "../../selectors";
 import ContextMenuWraper from "../ContextMenuWrapper";
 import { Node } from "../ContextMenu";
 import { useTypedSelector, useActionCreator } from "../../hooks";
+import WinampButton from "../WinampButton";
 
 const Shuffle = memo(() => {
   const shuffle = useTypedSelector(Selectors.getShuffle);
@@ -20,7 +21,7 @@ const Shuffle = memo(() => {
         />
       )}
     >
-      <div
+      <WinampButton
         id="shuffle"
         className={classnames({ selected: shuffle })}
         onClick={handleClick}
