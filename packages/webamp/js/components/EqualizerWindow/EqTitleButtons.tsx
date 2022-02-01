@@ -3,6 +3,7 @@ import { useTypedSelector, useActionCreator } from "../../hooks";
 import * as Selectors from "../../selectors";
 import * as Actions from "../../actionCreators";
 import { WINDOWS } from "../../constants";
+import WinampButton from "../WinampButton";
 
 export default function EqTitleButtons() {
   const focusedWindow = useTypedSelector(Selectors.getFocusedWindow);
@@ -14,8 +15,8 @@ export default function EqTitleButtons() {
   );
   return (
     <ClickedDiv id="eq-buttons" key={selected ? "selected" : "unselected"}>
-      <div id="equalizer-shade" onClick={toggleEqualizerShadeMode} />
-      <div
+      <WinampButton id="equalizer-shade" onClick={toggleEqualizerShadeMode} />
+      <WinampButton
         id="equalizer-close"
         onClick={() => closeWindow(WINDOWS.EQUALIZER)}
       />

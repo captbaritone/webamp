@@ -197,21 +197,21 @@ export const imageSelectors: Selectors = {
     "#equalizer-balance.right::-webkit-slider-thumb",
     "#equalizer-balance.right::-moz-range-thumb",
   ],
-  EQ_MAXIMIZE_BUTTON_ACTIVE: ["#equalizer-shade:active"],
+  EQ_MAXIMIZE_BUTTON_ACTIVE: ["#equalizer-shade.winamp-active"],
   EQ_MINIMIZE_BUTTON_ACTIVE: [
-    "#equalizer-window.shade #equalizer-shade:active",
+    "#equalizer-window.shade #equalizer-shade.winamp-active",
   ],
   EQ_CLOSE_BUTTON: [
     "#equalizer-window.selected #eq-buttons.clicked #equalizer-close",
   ],
   EQ_CLOSE_BUTTON_ACTIVE: [
-    "#equalizer-window.selected #eq-buttons.clicked #equalizer-close:active",
+    "#equalizer-window.selected #eq-buttons.clicked #equalizer-close.winamp-active",
   ],
   EQ_SHADE_CLOSE_BUTTON: [
     "#equalizer-window.shade.selected #eq-buttons.clicked #equalizer-close",
   ],
   EQ_SHADE_CLOSE_BUTTON_ACTIVE: [
-    "#equalizer-window.shade.selected #eq-buttons.clicked #equalizer-close:active",
+    "#equalizer-window.shade.selected #eq-buttons.clicked #equalizer-close.winamp-active",
   ],
   MAIN_POSITION_SLIDER_BACKGROUND: ["#position"],
   MAIN_POSITION_SLIDER_THUMB: [
