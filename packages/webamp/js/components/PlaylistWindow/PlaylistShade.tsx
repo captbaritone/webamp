@@ -14,6 +14,7 @@ import * as Actions from "../../actionCreators";
 import CharacterString from "../CharacterString";
 import PlaylistResizeTarget from "./PlaylistResizeTarget";
 import { useTypedSelector, useActionCreator } from "../../hooks";
+import WinampButton from "../WinampButton";
 
 function PlaylistShade() {
   const focused = useTypedSelector(Selectors.getFocusedWindow);
@@ -64,8 +65,8 @@ function PlaylistShade() {
             <CharacterString>{time}</CharacterString>
           </div>
           <PlaylistResizeTarget widthOnly />
-          <div id="playlist-shade-button" onClick={toggleShade} />
-          <div
+          <WinampButton id="playlist-shade-button" onClick={toggleShade} />
+          <WinampButton
             id="playlist-close-button"
             onClick={() => closeWindow("playlist")}
           />

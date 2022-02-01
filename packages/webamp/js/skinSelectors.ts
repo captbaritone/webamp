@@ -127,12 +127,12 @@ export const imageSelectors: Selectors = {
   ],
   PLAYLIST_SELECT_ALL: ["#playlist-selection-menu .select-all"],
   PLAYLIST_SELECT_ALL_SELECTED: ["#playlist-selection-menu .hover .select-all"],
-  PLAYLIST_CLOSE_SELECTED: ["#playlist-close-button:active"],
+  PLAYLIST_CLOSE_SELECTED: ["#playlist-close-button.winamp-active"],
   PLAYLIST_COLLAPSE_SELECTED: [
-    "#playlist-window #playlist-shade-button:active",
+    "#playlist-window #playlist-shade-button.winamp-active",
   ],
   PLAYLIST_EXPAND_SELECTED: [
-    "#playlist-window-shade #playlist-shade-button:active",
+    "#playlist-window-shade #playlist-shade-button.winamp-active",
   ],
 
   PLAYLIST_MISC_MENU_BAR: ["#playlist-misc-menu.selected .bar"],
