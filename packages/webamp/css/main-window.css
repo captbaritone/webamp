@@ -428,7 +428,7 @@
   position: absolute;
 }
 #webamp .shade .actions #previous,
-#webamp .shade .actions #previous:active {
+#webamp .shade .actions #previous.winamp-active {
   background: none;
   height: 10px;
   width: 7px;
@@ -436,7 +436,7 @@
   left: 169px;
 }
 #webamp .shade .actions #play,
-#webamp .shade .actions #play:active {
+#webamp .shade .actions #play.winamp-active {
   background: none;
   height: 10px;
   width: 10px;
@@ -444,7 +444,7 @@
   left: 176px;
 }
 #webamp .shade .actions #pause,
-#webamp .shade .actions #pause:active {
+#webamp .shade .actions #pause.winamp-active {
   background: none;
   height: 10px;
   width: 9px;
@@ -452,7 +452,7 @@
   left: 186px;
 }
 #webamp .shade .actions #stop,
-#webamp .shade .actions #stop:active {
+#webamp .shade .actions #stop.winamp-active {
   background: none;
   height: 10px;
   width: 9px;
@@ -460,7 +460,7 @@
   left: 195px;
 }
 #webamp .shade .actions #next,
-#webamp .shade .actions #next:active {
+#webamp .shade .actions #next.winamp-active {
   background: none;
   height: 10px;
   width: 10px;
@@ -468,7 +468,7 @@
   left: 204px;
 }
 #webamp .shade #eject,
-#webamp .shade #eject:active {
+#webamp .shade #eject.winamp-active {
   height: 10px;
   width: 10px;
   top: 2px;
