@@ -160,16 +160,16 @@ export const imageSelectors: Selectors = {
   // anywhere on the track moves the slider.
   EQ_SLIDER_THUMB_SELECTED: [".band.winamp-active .slider-handle"],
   EQ_ON_BUTTON: ["#on"],
-  EQ_ON_BUTTON_DEPRESSED: ["#on:active"],
+  EQ_ON_BUTTON_DEPRESSED: ["#on.winamp-active"],
   EQ_ON_BUTTON_SELECTED: ["#on.selected"],
-  EQ_ON_BUTTON_SELECTED_DEPRESSED: ["#on.selected:active"],
+  EQ_ON_BUTTON_SELECTED_DEPRESSED: ["#on.selected.winamp-active"],
   EQ_AUTO_BUTTON: ["#auto"],
-  EQ_AUTO_BUTTON_DEPRESSED: ["#auto:active"],
+  EQ_AUTO_BUTTON_DEPRESSED: ["#auto.winamp-active"],
   EQ_AUTO_BUTTON_SELECTED: ["#auto.selected"],
-  EQ_AUTO_BUTTON_SELECTED_DEPRESSED: ["#auto.selected:active"],
+  EQ_AUTO_BUTTON_SELECTED_DEPRESSED: ["#auto.selected.winamp-active"],
   EQ_GRAPH_BACKGROUND: ["#eqGraph"],
   EQ_PRESETS_BUTTON: ["#presets"],
-  EQ_PRESETS_BUTTON_SELECTED: ["#presets:active"],
+  EQ_PRESETS_BUTTON_SELECTED: ["#presets.winamp-active"],
   EQ_PREAMP_LINE: ["#preamp-line"],
   EQ_SHADE_BACKGROUND: ["#equalizer-window.shade"],
   EQ_SHADE_BACKGROUND_SELECTED: ["#equalizer-window.shade.selected"],
@@ -252,11 +252,13 @@ export const imageSelectors: Selectors = {
     ".selected #title-bar #option.selected",
   ],
   MAIN_MINIMIZE_BUTTON: [".selected #title-bar #minimize.clicked"],
-  MAIN_MINIMIZE_BUTTON_DEPRESSED: [".selected #title-bar #minimize:active"],
+  MAIN_MINIMIZE_BUTTON_DEPRESSED: [
+    ".selected #title-bar #minimize.winamp-active",
+  ],
   MAIN_SHADE_BUTTON: [".selected #title-bar #shade.clicked"],
-  MAIN_SHADE_BUTTON_DEPRESSED: [".selected #title-bar #shade:active"],
+  MAIN_SHADE_BUTTON_DEPRESSED: [".selected #title-bar #shade.winamp-active"],
   MAIN_CLOSE_BUTTON: [".selected #title-bar #close.clicked"],
-  MAIN_CLOSE_BUTTON_DEPRESSED: [".selected #title-bar #close:active"],
+  MAIN_CLOSE_BUTTON_DEPRESSED: [".selected #title-bar #close.winamp-active"],
   MAIN_CLUTTER_BAR_BACKGROUND: ["#clutter-bar"],
   MAIN_CLUTTER_BAR_BACKGROUND_DISABLED: ["#clutter-bar.disabled"],
   MAIN_CLUTTER_BAR_BUTTON_O_SELECTED: [
@@ -282,7 +284,9 @@ export const imageSelectors: Selectors = {
   MAIN_SHADE_BACKGROUND: [".shade #title-bar"],
   MAIN_SHADE_BACKGROUND_SELECTED: [".shade.selected #title-bar"],
   MAIN_SHADE_BUTTON_SELECTED: [".shade.selected #title-bar #shade"],
-  MAIN_SHADE_BUTTON_SELECTED_DEPRESSED: [".shade #title-bar #shade:active"],
+  MAIN_SHADE_BUTTON_SELECTED_DEPRESSED: [
+    ".shade #title-bar #shade.winamp-active",
+  ],
   MAIN_SHADE_POSITION_BACKGROUND: [".shade #position"],
   MAIN_SHADE_POSITION_THUMB: [
     ".shade #position::-moz-range-thumb",
@@ -331,7 +335,7 @@ export const imageSelectors: Selectors = {
   GEN_MIDDLE_LEFT_BOTTOM: [".gen-window .gen-middle-left-bottom"],
   GEN_MIDDLE_RIGHT: [".gen-window .gen-middle-right"],
   GEN_MIDDLE_RIGHT_BOTTOM: [".gen-window .gen-middle-right-bottom"],
-  GEN_CLOSE_SELECTED: [".gen-window .gen-close:active"],
+  GEN_CLOSE_SELECTED: [".gen-window .gen-close.winamp-active"],
 };
 
 Object.keys(FONT_LOOKUP).forEach((character) => {

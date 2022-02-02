@@ -1,5 +1,6 @@
 import { useState } from "react";
 import classnames from "classnames";
+import WinampButton from "./WinampButton";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
@@ -21,7 +22,7 @@ function ClickedDiv(props: Props) {
     }
   }
   return (
-    <div
+    <WinampButton
       {...props}
       className={classnames(props.className, { clicked })}
       onMouseDown={handleMouseDown}

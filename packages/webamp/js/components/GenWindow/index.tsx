@@ -7,6 +7,7 @@ import ResizeTarget from "../ResizeTarget";
 import { WindowId } from "../../types";
 import FocusTarget from "../FocusTarget";
 import { useActionCreator, useTypedSelector } from "../../hooks";
+import WinampButton from "../WinampButton";
 
 interface TextProps {
   children: string;
@@ -69,7 +70,7 @@ export const GenWindow = ({ children, title, windowId, onKeyDown }: Props) => {
           <div className="gen-top-right-end draggable" />
           <div className="gen-top-right-fill draggable" />
           <div className="gen-top-right draggable">
-            <div
+            <WinampButton
               className="gen-close selected"
               onClick={() => closeWindow(windowId)}
             />
