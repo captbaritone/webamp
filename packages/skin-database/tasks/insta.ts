@@ -1,13 +1,27 @@
 import * as Skins from "../data/skins";
 import * as S3 from "../s3";
-import { INSTAGRAM_ACCESS_TOKEN, INSTAGRAM_ACCOUNT_ID, TWEET_BOT_CHANNEL_ID } from "../config";
+import {
+  INSTAGRAM_ACCESS_TOKEN,
+  INSTAGRAM_ACCOUNT_ID,
+  TWEET_BOT_CHANNEL_ID,
+} from "../config";
 import { Client } from "discord.js";
 import sharp from "sharp";
 import SkinModel from "../data/SkinModel";
 import UserContext from "../data/UserContext";
 import fetch from "node-fetch";
 
-export async function insta(discordClient: Client, md5: string): Promise<void> {
+export async function insta(
+  discordClient: Client,
+  md5: string | null
+): Promise<void> {
+  if (md5 == null) {
+    md5 = await Skins.getSkinToPostToInstagram();
+  }
+  if (md5 == null) {
+    console.error("No skins to post to instagram");
+    return;
+  }
   const url = await post(md5);
 
   console.log("Going to post to discord");
@@ -18,7 +32,6 @@ export async function insta(discordClient: Client, md5: string): Promise<void> {
   await tweetBotChannel.send(url);
   console.log("Posted to discord");
 }
-
 
 async function createContent(
   imageUrl: string,
@@ -133,11 +146,11 @@ async function post(md5: string): Promise<string> {
   console.log("Publishing content...");
   const id = await publish(contentId);
 
-  console.log("Getting permalink")
+  console.log("Getting permalink");
   const permalink = await getPermalink(id);
   console.log("Permalink", permalink);
 
-  console.log("Marking posted in DB")
+  console.log("Marking posted in DB");
   await Skins.markAsPostedToInstagram(md5, id, permalink);
 
   return permalink;

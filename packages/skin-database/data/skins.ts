@@ -116,7 +116,10 @@ export async function markAsPostedToInstagram(
   postId: string,
   url: string
 ): Promise<void> {
-  await knex("instagram_posts").insert({ skin_md5: md5, post_id: postId, url }, []);
+  await knex("instagram_posts").insert(
+    { skin_md5: md5, post_id: postId, url },
+    []
+  );
 }
 
 // TODO: Also path actor
@@ -389,6 +392,28 @@ export async function getSkinToTweet(): Promise<{
     return null;
   }
   return { md5: skin.md5, canonicalFilename: path.basename(skin.file_path) };
+}
+
+export async function getSkinToPostToInstagram(): Promise<string | null> {
+  // TODO: This does not account for skins that have been both approved and rejected
+  const tweetables = await knex("skins")
+    .leftJoin("skin_reviews", "skin_reviews.skin_md5", "=", "skins.md5")
+    .leftJoin("instagram_posts", "instagram_posts.skin_md5", "=", "skins.md5")
+    .leftJoin("refreshes", "refreshes.skin_md5", "=", "skins.md5")
+    .where({
+      "instagram_posts.id": null,
+      skin_type: 1,
+      "skin_reviews.review": "APPROVED",
+      "refreshes.error": null,
+    })
+    .groupBy("skins.md5")
+    .orderByRaw("random()")
+    .limit(1);
+  const skin = tweetables[0];
+  if (skin == null) {
+    return null;
+  }
+  return skin.md5;
 }
 
 export async function getStats(): Promise<{

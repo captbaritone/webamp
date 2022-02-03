@@ -123,10 +123,10 @@ async function main() {
         break;
       }
       case "tweet": {
-        console.log("tweet");
+        console.log("tweet & insta");
         const hash = argv._[1];
-        const md5 = await tweet(client, hash);
-        await insta(client, md5);
+        await tweet(client, hash);
+        await insta(client, hash);
         break;
       }
       case "insta": {
