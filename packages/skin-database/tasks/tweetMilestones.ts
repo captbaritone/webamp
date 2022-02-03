@@ -51,7 +51,6 @@ function tweetUrl(tweet: { id_str: string }) {
   return `https://twitter.com/winampskins/status/${tweet.id_str}`;
 }
 
-const JSON_FILE_NAME = "./popularTweets.json";
 const KEY = "tweet_milestones";
 
 // Sort key/value entries by key largest to smallest
@@ -64,13 +63,7 @@ export async function popularTweets(handler: DiscordEventHandler) {
 
   const tweets = await getTweets(twitterClient);
 
-  const currentJSON = fs.readFileSync(JSON_FILE_NAME, "utf8");
-  const current: { [bracket: string]: string[] } = JSON.parse(currentJSON);
-
-  const kvCurrent = await KeyValue.get(KEY);
-  if(JSON.stringify(kvCurrent) === JSON.stringify(current)) {
-    console.warn("KV value does not match!")
-  }
+  const current = await KeyValue.get(KEY);
 
   for (const tweet of tweets) {
     let notified = false;
@@ -93,13 +86,12 @@ export async function popularTweets(handler: DiscordEventHandler) {
         }
 
         await KeyValue.set(KEY, current);
-        fs.writeFileSync(JSON_FILE_NAME, JSON.stringify(current, null, 2));
       }
     }
   }
 }
 
-const FOLLOW_COUNT_FILE_NAME = "./followerCount.json";
+const FOLLOW_COUNT_KEY = "winamp_skins_twitter_follow_count";
 const FOLLOW_COUNT_BRACKET_SIZE = 1000;
 
 export async function followerCount(handler: DiscordEventHandler) {
@@ -111,8 +103,7 @@ export async function followerCount(handler: DiscordEventHandler) {
   const user = response.data;
 
   const followerCount = user.followers_count;
-  const currentJSON = fs.readFileSync(FOLLOW_COUNT_FILE_NAME, "utf8");
-  const current: { count: number } = JSON.parse(currentJSON);
+  const current: { count: number } = await KeyValue.get(FOLLOW_COUNT_KEY);
   const currentNumber = current.count;
 
   const nextMilestone = currentNumber + FOLLOW_COUNT_BRACKET_SIZE;
@@ -123,10 +114,7 @@ export async function followerCount(handler: DiscordEventHandler) {
       bracket: nextMilestone,
       count: followerCount,
     });
-    fs.writeFileSync(
-      FOLLOW_COUNT_FILE_NAME,
-      JSON.stringify({ count: nextMilestone }, null, 2)
-    );
+    await KeyValue.set(FOLLOW_COUNT_KEY, { count: nextMilestone });
   } else {
     console.log(`Not notifying: ${followerCount} < ${nextMilestone}`);
   }

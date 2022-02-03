@@ -3,6 +3,9 @@ import { knex } from "../db";
 export default class KeyValue {
      static async get(key: string): Promise<any> {
         const result = await knex("key_value").where({key}).first("value");
+        if(result == null) {
+            return null;
+        }
         return JSON.parse(result.value);
     }
 
