@@ -1,6 +1,7 @@
 import { getTwitterClient } from "../twitter";
 import fs from "fs";
 import DiscordEventHandler from "../api/DiscordEventHandler";
+import KeyValue from "../data/KeyValue";
 
 const MAX_CALL_COUNT = 2;
 
@@ -51,6 +52,7 @@ function tweetUrl(tweet: { id_str: string }) {
 }
 
 const JSON_FILE_NAME = "./popularTweets.json";
+const KEY = "tweet_milestones";
 
 // Sort key/value entries by key largest to smallest
 function sortEntries(a: [string, never], b: [string, never]): number {
@@ -64,6 +66,11 @@ export async function popularTweets(handler: DiscordEventHandler) {
 
   const currentJSON = fs.readFileSync(JSON_FILE_NAME, "utf8");
   const current: { [bracket: string]: string[] } = JSON.parse(currentJSON);
+
+  const kvCurrent = await KeyValue.get(KEY);
+  if(JSON.stringify(kvCurrent) === JSON.stringify(current)) {
+    console.warn("KV value does not match!")
+  }
 
   for (const tweet of tweets) {
     let notified = false;
@@ -85,6 +92,7 @@ export async function popularTweets(handler: DiscordEventHandler) {
           notified = true;
         }
 
+        await KeyValue.set(KEY, current);
         fs.writeFileSync(JSON_FILE_NAME, JSON.stringify(current, null, 2));
       }
     }
