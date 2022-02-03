@@ -11,7 +11,7 @@ import UserContext from "../data/UserContext";
 import TweetModel from "../data/TweetModel";
 const temp = _temp.track();
 
-export async function tweet(discordClient: Client, anything: string | null) {
+export async function tweet(discordClient: Client, anything: string | null): Promise<string> {
   const ctx = new UserContext();
   const tweetBotChannel = await discordClient.channels.fetch(
     TWEET_BOT_CHANNEL_ID
@@ -86,6 +86,7 @@ export async function tweet(discordClient: Client, anything: string | null) {
     );
   }
   logger.info("Tweeted a skin", { md5, filename, tweetId });
+  return md5;
 }
 
 async function getResizedScreenshot(md5: string): Promise<Buffer> {
