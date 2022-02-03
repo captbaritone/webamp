@@ -65,6 +65,7 @@
     "@babel/preset-typescript": "^7.7.2",
     "@babel/runtime": "^7.7.2",
     "@sentry/browser": "5.9.1",
+    "@squoosh/lib": "^0.4.0",
     "@types/classnames": "^2.2.6",
     "@types/css-font-loading-module": "^0.0.2",
     "@types/fscreen": "^1.0.1",
