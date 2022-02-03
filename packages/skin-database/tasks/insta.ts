@@ -1,4 +1,3 @@
-import fs from "fs";
 import * as Skins from "../data/skins";
 import * as S3 from "../s3";
 import { INSTAGRAM_ACCESS_TOKEN, INSTAGRAM_ACCOUNT_ID, TWEET_BOT_CHANNEL_ID } from "../config";
