@@ -276,7 +276,7 @@ export async function recordSearchIndexUpdates(
   const update_timestamp = Math.floor(Date.now() / 1000);
 
   await knex("algolia_field_updates").insert(
-    Object.keys(fields).map((field) => ({
+    fields.map((field) => ({
       skin_md5: md5,
       update_timestamp,
       field,
