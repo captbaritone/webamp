@@ -111,6 +111,14 @@ export async function markAsTweeted(
   await knex("tweets").insert({ skin_md5: md5, tweet_id: tweetId }, []);
 }
 
+export async function markAsPostedToInstagram(
+  md5: string,
+  postId: string,
+  url: string
+): Promise<void> {
+  await knex("instagram_posts").insert({ skin_md5: md5, post_id: postId, url }, []);
+}
+
 // TODO: Also path actor
 export async function markAsNSFW(ctx: UserContext, md5: string): Promise<void> {
   const index = { objectID: md5, nsfw: true };
@@ -524,6 +532,16 @@ FROM skins
 	LEFT JOIN files ON files.skin_md5 = skins.md5
   LEFT JOIN refreshes ON refreshes.skin_md5 = skins.md5
 WHERE  skin_type = 1 AND refreshes.error IS NULL
+--
+-- WHERE 
+--  skin_type = 1
+--  AND refreshes.error IS NULL
+--  AND skins.md5 != "d7541f8c5be768cf23b9aeee1d6e70c7" -- Duplicate Garfield
+--  AND skins.md5 != "25a932542e307416ca86da4e16be1b32" -- Duplicate Vault-tec
+--  AND skins.md5 != "89643da06361e4bcc269fe811f07c4a3" -- Another duplicate Vault-tec
+--  AND skins.md5 != "db1f2e128f6dd6c702b7a448751fbe84" -- Duplicate Fallout
+--  AND skins.md5 != "be2de111c4710af306fea0813440f275" -- Duplicate Microchip
+--  AND skins.md5 != "66cf0af3593d79fc8a5080dd17f8b07d" -- Another duplicate Microchip
 GROUP BY skins.md5
 ORDER BY 
   priority ASC,

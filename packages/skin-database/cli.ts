@@ -7,6 +7,7 @@ import DiscordWinstonTransport from "./DiscordWinstonTransport";
 import * as Skins from "./data/skins";
 import Discord from "discord.js";
 import { tweet } from "./tasks/tweet";
+import { insta,  } from "./tasks/insta";
 import md5Buffer from "md5";
 import { addSkinFromBuffer } from "./addSkin";
 import { searchIndex } from "./algolia";
@@ -125,6 +126,12 @@ async function main() {
         console.log("tweet");
         const hash = argv._[1];
         await tweet(client, hash);
+        break;
+      }
+      case "insta": {
+        console.log("insta");
+        const hash = argv._[1];
+        await insta(client, hash);
         break;
       }
       case "stats": {

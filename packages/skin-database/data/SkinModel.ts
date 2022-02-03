@@ -165,6 +165,10 @@ export default class SkinModel {
     return getSkinUrl(this.row.md5);
   }
 
+  getAverageColor(): string {
+    return this.row.average_color;
+  }
+
   getBuffer = mem(
     async (): Promise<Buffer> => {
       const response = await fetch(this.getSkinUrl());

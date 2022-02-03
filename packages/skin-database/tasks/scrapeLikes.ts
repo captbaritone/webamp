@@ -30,7 +30,7 @@ async function getTweets(twitterClient): Promise<TweetPayload[]> {
   let tweets: TweetPayload[] = [];
   let callCount = 0;
 
-  while (callCount < MAX_CALL_COUNT) {
+  while (callCount < (MAX_CALL_COUNT * 6)) {
     callCount++;
     const response = await twitterClient.get("statuses/user_timeline", {
       max_id,
@@ -38,6 +38,7 @@ async function getTweets(twitterClient): Promise<TweetPayload[]> {
       exclude_replies: true,
       include_rts: false,
     });
+    console.log(JSON.stringify(response.data, null, 2));
     tweets = tweets.concat(response.data);
     const newMaxId = tweets.map((tweet) => tweet.id_str).sort()[0];
     if (newMaxId === max_id) {
@@ -47,10 +48,15 @@ async function getTweets(twitterClient): Promise<TweetPayload[]> {
 
     max_id = newMaxId;
     if (response.data.length <= 1) {
+      console.warn("Page was short")
       return tweets;
+    }
+    if(callCount === MAX_CALL_COUNT) {
+      console.warn("Hit MAX (but gonna keep going)")
     }
   }
 
+  console.warn("Hit MAX (but gonna keep going)")
   return tweets;
 }
 
@@ -67,8 +73,9 @@ function getMd5(tweet: TweetPayload): string | null {
 
 export async function scrapeLikeData() {
   const twitterClient = getTwitterClient();
+  const rawTweets = await getTweets(twitterClient);
 
-  const tweets = (await getTweets(twitterClient)).filter((tweet) => {
+  const tweets = rawTweets.filter((tweet) => {
     // Ignore tweets that don't have links, or are known manual tweets.
     return !(
       tweet.entities.urls.length === 0 || knownManualTweets.has(tweet.id_str)

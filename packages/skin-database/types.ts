@@ -23,6 +23,12 @@ export type TweetRow = {
   retweets: number;
 };
 
+export type InstagramPostRow = {
+  skin_md5: string;
+  url: string;
+  post_id: string;
+};
+
 export type ReviewRow = {
   skin_md5: string;
   review: "APPROVED" | "REJECTED" | "NSFW";

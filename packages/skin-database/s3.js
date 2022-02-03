@@ -127,7 +127,52 @@ function putScreenshot(md5, buffer) {
   });
 }
 
+function putTemp(fileName, buffer) {
+  return new Promise((resolve, rejectPromise) => {
+    const bucketName = "cdn.webampskins.org";
+    const key = `temp/${fileName}`;
+    s3.putObject(
+      {
+        Bucket: bucketName,
+        Key: key,
+        Body: buffer,
+        ACL: "public-read",
+      },
+      (err) => {
+        console.log("Hello...")
+        if (err) {
+          rejectPromise(err);
+          return;
+        }
+        resolve();
+      }
+    );
+  });
+}
+
+function deleteTemp(fileName) {
+  return new Promise((resolve, rejectPromise) => {
+    const bucketName = "cdn.webampskins.org";
+    const key = `screenshots/${fileName}`;
+    s3.deleteObject(
+      {
+        Bucket: bucketName,
+        Key: key,
+      },
+      (err) => {
+        if (err) {
+          rejectPromise(err);
+          return;
+        }
+        resolve();
+      }
+    );
+  });
+}
+
 module.exports = {
+  putTemp,
+  deleteTemp,
   putScreenshot,
   putSkin,
   deleteSkin,
