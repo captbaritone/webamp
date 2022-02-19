@@ -45,11 +45,7 @@ export default class InstagramPostModel {
   }
 
   async getSkin(): Promise<SkinModel> {
-    const skin = await SkinModel.fromMd5(this.ctx, this.getMd5());
-    if (skin == null) {
-      throw new Error(`Could not find skin for md5 "${this.getMd5()}"`);
-    }
-    return skin;
+    return SkinModel.fromMd5Assert(this.ctx, this.getMd5());
   }
 
   async debug(): Promise<InstagramPostDebugData> {
@@ -64,7 +60,9 @@ const getInstagramPostsLoader = ctxWeakMapMemoize<
 >(
   () =>
     new DataLoader(async (md5s) => {
-      const rows = await knex("instagram_posts").whereIn("skin_md5", md5s).select();
+      const rows = await knex("instagram_posts")
+        .whereIn("skin_md5", md5s)
+        .select();
       return md5s.map((md5) => rows.filter((x) => x.skin_md5 === md5));
     })
 );
@@ -74,7 +72,9 @@ const getInstagramPostsByPostIdLoader = ctxWeakMapMemoize<
 >(
   () =>
     new DataLoader(async (ids) => {
-      const rows = await knex("instagram_posts").whereIn("post_id", ids).select();
+      const rows = await knex("instagram_posts")
+        .whereIn("post_id", ids)
+        .select();
       return ids.map((id) => rows.find((x) => x.tweet_id === id));
     })
 );

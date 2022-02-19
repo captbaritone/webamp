@@ -266,10 +266,8 @@ router.post(
   asyncHandler(async (req, res) => {
     const { md5 } = req.params;
     req.log(`Reporting skin with hash "${md5}"`);
-    const skin = await SkinModel.fromMd5(req.ctx, md5);
-    if (skin == null) {
-      throw new Error(`Cold not locate as skin with md5 ${md5}`);
-    }
+    // Blow up if there is no skin with this hash
+    await SkinModel.fromMd5Assert(req.ctx, md5);
     req.notify({ type: "REVIEW_REQUESTED", md5 });
     res.send("The skin has been reported and will be reviewed shortly.");
   })

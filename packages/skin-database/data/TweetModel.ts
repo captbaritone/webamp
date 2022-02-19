@@ -61,11 +61,7 @@ export default class TweetModel {
   }
 
   async getSkin(): Promise<SkinModel> {
-    const skin = await SkinModel.fromMd5(this.ctx, this.getMd5());
-    if (skin == null) {
-      throw new Error(`Could not find skin for md5 "${this.getMd5()}"`);
-    }
-    return skin;
+    return SkinModel.fromMd5Assert(this.ctx, this.getMd5());
   }
 
   async debug(): Promise<TweetDebugData> {

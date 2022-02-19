@@ -1,20 +1,9 @@
 import { knex } from "../db";
 import fetch from "node-fetch";
 import UserContext from "../data/UserContext";
-import SkinModel from "../data/SkinModel";
-import child_process from "child_process";
 import * as Parallel from "async-parallel";
-import { chunk } from "../utils";
-import util from "util";
-const exec = util.promisify(child_process.exec);
-
-function flatten<T>(matrix: T[][]): T[] {
-  const flat: T[] = [];
-  matrix.forEach((arr) => {
-    flat.push(...arr);
-  });
-  return flat;
-}
+import { chunk, flatten } from "../utils";
+import IaItemModel from "../data/IaItemModel";
 
 async function _filterOutKnownIdentifiers(
   identifiers: string[]
@@ -69,47 +58,8 @@ async function allItems(): Promise<string[]> {
   return items.map((item: { identifier: string }) => item.identifier);
 }
 
-async function ensureIaRecord(
-  ctx: UserContext,
-  identifier: string
-): Promise<void> {
-  const response = await updateMetadata(identifier);
-  const files = response.files;
-  const skins = files.filter((file) => file.name.endsWith(".wsz"));
-  if (skins.length === 0) {
-    // TODO TODO TODO TODO
-    // TODO TODO TODO TODO
-    //
-    // What if the skin ends in .zip?
-    //
-    // TODO TODO TODO TODO
-    // TODO TODO TODO TODO
-    console.log(`No skins found in ${identifier}. Deleting... (YOLO)`);
-    const command = `ia delete ${identifier} --all`;
-    // await exec(command, { encoding: "utf8" });
-    console.log(`Deleted ${identifier}`);
-    return;
-  }
-  if (skins.length !== 1) {
-    console.error(
-      `Expected to find one skin file for "${identifier}", found ${skins.length}`
-    );
-    return;
-  }
-  const md5 = skins[0].md5;
-  const skin = await SkinModel.fromMd5(ctx, md5);
-  if (skin == null) {
-    console.error(
-      `We don't have a record for the skin found in "${identifier}"`
-    );
-    return;
-  }
-
-  await knex("ia_items").insert({ skin_md5: md5, identifier });
-  console.log(`Inserted "${identifier}".`);
-}
-
 export async function fillMissingMetadata(count: number) {
+  const ctx = new UserContext();
   const skins = await knex("skins")
     .leftJoin("ia_items", "skins.md5", "ia_items.skin_md5")
     .where("ia_items.metadata", null)
@@ -117,27 +67,19 @@ export async function fillMissingMetadata(count: number) {
     .limit(count)
     .select("skins.md5", "ia_items.identifier");
   for (const { md5, identifier } of skins) {
-    await updateMetadata(identifier);
+    const iaItem = await IaItemModel.fromIdentifier(ctx, identifier);
+    if (iaItem == null) {
+      console.error(`Could not find IA item for ${identifier}`);
+      break;
+    }
+    await iaItem.updateMetadata();
     console.log(`Updated metadata for ${identifier} ${md5}`);
   }
   console.log("Done updating metadata.");
 }
 
-async function updateMetadata(identifier: string): Promise<any> {
-  const r = await fetch(`https://archive.org/metadata/${identifier}`);
-  if (!r.ok) {
-    console.error(await r.json())
-    throw new Error(`Could not fetch metadata for ${identifier}`);
-  }
-  const response = await r.json();
-  await knex("ia_items")
-    .where("identifier", identifier)
-    .update({ metadata: JSON.stringify(response, null, 2) })
-    .update("metadata_timestamp", knex.fn.now());
-  return response;
-}
-
 export async function syncFromArchive() {
+  throw new Error("This needs to be rewritten");
   const ctx = new UserContext();
   // Ensure we know about all items in the `winampskins` collection.
   console.log("Going to ensure we know about all archive items");
@@ -146,7 +88,8 @@ export async function syncFromArchive() {
   await Parallel.each(
     unknownItems,
     async (identifier) => {
-      await ensureIaRecord(ctx, identifier);
+      console.log(identifier, ctx);
+      // await ensureIaRecord(ctx, identifier);
     },
     CONCURRENT
   );

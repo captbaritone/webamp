@@ -11,8 +11,16 @@ import { addSkinFromBuffer } from "./addSkin";
 import { scrapeLikeData } from "./tasks/scrapeLikes";
 import { followerCount, popularTweets } from "./tasks/tweetMilestones";
 import UserContext from "./data/UserContext";
-import { integrityCheck } from "./tasks/integrityCheck";
-import { ensureWebampLinks, syncWithArchive } from "./tasks/syncWithArchive";
+import {
+  integrityCheck,
+  checkInternetArchiveMetadata,
+} from "./tasks/integrityCheck";
+import {
+  ensureWebampLinks,
+  findItemsMissingImages,
+  syncWithArchive,
+  uploadScreenshotIfSafe,
+} from "./tasks/syncToArchive";
 import { fillMissingMetadata, syncFromArchive } from "./tasks/syncFromArchive";
 import { refreshSkins } from "./tasks/refresh";
 import {
@@ -110,10 +118,7 @@ program
       console.log(await Skins.updateSearchIndex(md5));
     }
     if (refresh) {
-      const skin = await SkinModel.fromMd5(ctx, md5);
-      if (skin == null) {
-        throw new Error(`Could not find skin ${md5}`);
-      }
+      const skin = await SkinModel.fromMd5Assert(ctx, md5);
       await refreshSkins([skin]);
     }
     if (reject) {
@@ -172,7 +177,7 @@ program
       "and add them."
   )
   .option(
-    "--upload",
+    "--upload-new",
     "Find newly uploaded skins, and publish them to the Internet Archive."
   )
   .action(async ({ metadata, webampLinks, fetchItems, upload }) => {
@@ -223,8 +228,16 @@ program
 program
   .command("integrity-check")
   .description("Perfrom a non-exhaustive list of database consistency checks")
-  .action(async () => {
-    await integrityCheck();
+  .option(
+    "--ia",
+    "Check the Internet Archive for items that are missing files."
+  )
+  .action(async ({ ia }) => {
+    if (ia) {
+      await checkInternetArchiveMetadata();
+    } else {
+      await integrityCheck();
+    }
   });
 
 /**
@@ -262,6 +275,41 @@ program
       await withHandler(async (handler) => {
         await followerCount(handler);
       });
+    }
+  });
+
+/**
+ * Commands thare are still in development
+ */
+
+program
+  .command("dev")
+  .description("Grab bag of commands that don't have a place to live yet")
+  .option(
+    "--upload-ia-screenshot <md5>",
+    "Upload a screenshot of a skin to the skin's Internet Archive itme. " +
+      "[[Warning!]] This might result in multiple screenshots on the item."
+  )
+  .option(
+    "--upload-missing-screenshots",
+    "Find all IA items that are missing screenshots, and upload the missing ones."
+  )
+  .action(async ({ uploadIaScreenshot, uploadMissingScreenshots }) => {
+    if (uploadIaScreenshot) {
+      const md5 = uploadIaScreenshot;
+      if (!(await uploadScreenshotIfSafe(md5))) {
+        console.log("Did not upload screenshot");
+      }
+    }
+    if (uploadMissingScreenshots) {
+      const md5s = await findItemsMissingImages();
+      for (const md5 of md5s) {
+        if (await uploadScreenshotIfSafe(md5)) {
+          console.log("Upladed screenshot for ", md5);
+        } else {
+          console.log("Did not upload screenshot for ", md5);
+        }
+      }
     }
   });
 

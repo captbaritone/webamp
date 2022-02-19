@@ -3,14 +3,70 @@ import path from "path";
 import fetch from "node-fetch";
 import _temp from "temp";
 import fs from "fs";
-import child_process from "child_process";
 import UserContext from "../data/UserContext";
 import SkinModel from "../data/SkinModel";
-import util from "util";
 import * as Parallel from "async-parallel";
 import IaItemModel from "../data/IaItemModel";
 import DiscordEventHandler from "../api/DiscordEventHandler";
-const exec = util.promisify(child_process.exec);
+import { exec } from "../utils";
+
+export async function findItemsMissingImages(): Promise<string[]> {
+  const ctx = new UserContext();
+  const results = await knex.raw("SELECT * FROM ia_items;");
+
+  const md5s: string[] = [];
+
+  for (const row of results) {
+    const iaItem = new IaItemModel(ctx, row);
+    if (iaItem == null) {
+      throw new Error("Expected to find IA item");
+    }
+    if (
+      iaItem.getUploadedFiles().length >= 2 ||
+      iaItem.getSkinFiles().length !== 1
+    ) {
+      continue;
+    }
+
+    md5s.push(iaItem.getMd5());
+  }
+
+  return md5s;
+}
+
+// Uploads the screenshot to IA if it's safe to do so. In general this should
+// not be needed, since we usually upload both files at once.
+export async function uploadScreenshotIfSafe(md5: string): Promise<boolean> {
+  const ctx = new UserContext();
+  const skin = await SkinModel.fromMd5Assert(ctx, md5);
+  const iaItem = await skin.getIaItem();
+  if (iaItem == null) {
+    throw new Error("Expected ia item to exist");
+  }
+  if (!iaItem.row.metadata) {
+    return false;
+  }
+  if (await iaItem.hasRunningTasks()) {
+    return false;
+  }
+  const skinFiles = iaItem.getSkinFiles();
+  if (skinFiles.length != 1) {
+    return false;
+  }
+  const uploadedFiles = iaItem.getUploadedFiles();
+  if (uploadedFiles.length !== skinFiles.length) {
+    return false;
+  }
+
+  await skin.withScreenshotTempFile(async (screenshotFile) => {
+    const command = `ia upload ${iaItem.getIdentifier()} "${screenshotFile}"`;
+    await exec(command, { encoding: "utf8" });
+  });
+  await iaItem.invalidateMetadata();
+  return true;
+}
+
+/** LEGACY BELOW HERE */
 
 const CONCURRENT = 1;
 
@@ -74,24 +130,8 @@ async function getNewIdentifier(filename: string): Promise<string> {
 
 export async function archive(skin: SkinModel): Promise<string> {
   const filename = await skin.getFileName();
-  if (filename == null) {
-    throw new Error(
-      `Couldn't archive skin. Filename not found. ${skin.getMd5()}`
-    );
-  }
 
-  if (
-    !(
-      filename.toLowerCase().endsWith(".wsz") ||
-      filename.toLowerCase().endsWith(".zip")
-    )
-  ) {
-    throw new Error(
-      `Unexpected file extension for ${skin.getMd5()}: ${filename}`
-    );
-  }
-
-  const screenshotFilename = filename.replace(/\.(wsz|zip)$/, ".png");
+  const screenshotFilename = await skin.getScreenshotFileName();
   const title = `Winamp Skin: ${filename}`;
 
   const [skinFile, screenshotFile] = await Promise.all([
@@ -126,15 +166,11 @@ export async function syncWithArchive(handler: DiscordEventHandler) {
   await Parallel.map(
     unarchived,
     async ({ md5 }) => {
-        // The internet archive claims this one is corrupt for some reason.
-        if (md5 === "513fdd06bf39391e52f3ac5b233dd147") {
-
-            return;
-        }
-      const skin = await SkinModel.fromMd5(ctx, md5);
-      if (skin == null) {
-        throw new Error(`Expected to get skin for ${md5}`);
+      // The internet archive claims this one is corrupt for some reason.
+      if (md5 === "513fdd06bf39391e52f3ac5b233dd147") {
+        return;
       }
+      const skin = await SkinModel.fromMd5Assert(ctx, md5);
       try {
         console.log(`Attempting to upload ${md5}`);
         const identifier = await archive(skin);
@@ -152,7 +188,9 @@ export async function syncWithArchive(handler: DiscordEventHandler) {
         ) {
           console.log(`Corrupt archvie (encrypted): ${skin.getMd5()}`);
         } else if (/case alias may already exist/.test(e.message)) {
-          console.log(`Invalid name (case alias): ${skin.getMd5()} with ${e.message}`);
+          console.log(
+            `Invalid name (case alias): ${skin.getMd5()} with ${e.message}`
+          );
         } else {
           console.error(e);
         }

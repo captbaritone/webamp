@@ -50,6 +50,7 @@ export type ArchiveFileRow = {
 export type IaItemRow = {
   skin_md5: string;
   identifier: string;
+  metadata: string; // JSON from the internet archive
 };
 
 export type UploadStatus =

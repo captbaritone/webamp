@@ -10,7 +10,7 @@ import UserContext, { ctxWeakMapMemoize } from "./UserContext";
 import TweetModel, { TweetDebugData } from "./TweetModel";
 import IaItemModel, { IaItemDebugData } from "./IaItemModel";
 import FileModel, { FileDebugData } from "./FileModel";
-import { MD5_REGEX } from "../utils";
+import { MD5_REGEX, withUrlAsTempFile } from "../utils";
 import DataLoader from "dataloader";
 import { knex } from "../db";
 import UploadModel, { UploadDebugData } from "./UploadModel";
@@ -28,6 +28,13 @@ export default class SkinModel {
   ): Promise<SkinModel | null> {
     const row = await getSkinLoader(ctx).load(md5);
     return row == null ? null : new SkinModel(ctx, row);
+  }
+
+  static async fromMd5Assert(
+    ctx: UserContext,
+    md5: string
+  ): Promise<SkinModel> {
+    return SkinModel.fromMd5Assert(ctx, md5);
   }
 
   static async fromAnything(
@@ -136,7 +143,16 @@ export default class SkinModel {
     if (files.length === 0) {
       throw new Error(`Could not find file for skin with md5 ${this.getMd5()}`);
     }
-    return files[0].getFileName();
+    const filename = files[0].getFileName();
+    if (!filename.match(/\.(zip)|(wsz)$/i)) {
+      throw new Error("Expected filename to end with zip or wsz.");
+    }
+    return filename;
+  }
+
+  async getScreenshotFileName(): Promise<string> {
+    const skinFilename = await this.getFileName();
+    return skinFilename.replace(/\.(wsz|zip)$/, ".png");
   }
 
   getMd5(): string {
@@ -169,22 +185,41 @@ export default class SkinModel {
     return this.row.average_color;
   }
 
-  getBuffer = mem(
-    async (): Promise<Buffer> => {
-      const response = await fetch(this.getSkinUrl());
-      if (!response.ok) {
-        throw new Error(`Could not fetch skin at "${this.getSkinUrl()}"`);
-      }
-      return response.buffer();
+  getBuffer = mem(async (): Promise<Buffer> => {
+    const response = await fetch(this.getSkinUrl());
+    if (!response.ok) {
+      throw new Error(`Could not fetch skin at "${this.getSkinUrl()}"`);
     }
-  );
+    return response.buffer();
+  });
 
-  getZip = mem(
-    async (): Promise<JSZip> => {
-      const buffer = await this.getBuffer();
-      return JSZip.loadAsync(buffer);
+  getScreenshotBuffer = mem(async (): Promise<Buffer> => {
+    const response = await fetch(this.getScreenshotUrl());
+    if (!response.ok) {
+      throw new Error(
+        `Could not fetch skin screenshot at "${this.getScreenshotUrl()}"`
+      );
     }
-  );
+    return response.buffer();
+  });
+
+  async withTempFile(cb: (file: string) => Promise<void>): Promise<void> {
+    const filename = await this.getFileName();
+
+    return withUrlAsTempFile(this.getSkinUrl(), filename, cb);
+  }
+
+  async withScreenshotTempFile(
+    cb: (file: string) => Promise<void>
+  ): Promise<void> {
+    const screenshotFilename = await this.getScreenshotFileName();
+    return withUrlAsTempFile(this.getScreenshotUrl(), screenshotFilename, cb);
+  }
+
+  getZip = mem(async (): Promise<JSZip> => {
+    const buffer = await this.getBuffer();
+    return JSZip.loadAsync(buffer);
+  });
 
   async debug(): Promise<{
     row: SkinRow;

@@ -93,10 +93,7 @@ const UPSCALE = 4;
 
 async function post(md5: string): Promise<string> {
   const ctx = new UserContext();
-  const skin = await SkinModel.fromMd5(ctx, md5);
-  if (skin == null) {
-    throw new Error("Could not find skin");
-  }
+  const skin = await SkinModel.fromMd5Assert(ctx, md5);
   const screenshot = await Skins.getScreenshotBuffer(md5);
   const { width, height } = await sharp(screenshot).metadata();
 

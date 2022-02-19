@@ -2,6 +2,66 @@ import fs from "fs";
 import { knex } from "../db";
 import { TWEET_SNOWFLAKE_REGEX, MD5_REGEX } from "../utils";
 
+function isNotGeneratedFile(file) {
+  switch (file.source) {
+    case "derivative":
+    case "metadata":
+      return false;
+  }
+  switch (file.format) {
+    case "Metadata":
+    case "Item Tile":
+    case "JPEG Thumb":
+      return false;
+  }
+  return true;
+}
+
+export async function checkInternetArchiveMetadata(): Promise<void> {
+  const results = await knex.raw(
+    'SELECT skin_md5, identifier, metadata FROM ia_items WHERE metadata != "";'
+  );
+
+  const tooMany: string[] = [];
+  const tooFew: string[] = [];
+  const missingSkin: string[] = [];
+
+  for (const item of results) {
+    const { identifier, metadata, skin_md5 } = item;
+    try {
+      const allFiles = JSON.parse(metadata).files;
+      const files = allFiles.filter(isNotGeneratedFile);
+      if (files.length > 2) {
+        tooMany.push(skin_md5);
+        continue;
+        console.warn("Too many files", { files, identifier, skin_md5 });
+      }
+      const skinFile = files.find((file) => file.md5 === skin_md5);
+      if (skinFile == null) {
+        missingSkin.push(skin_md5);
+        continue;
+        console.warn("No skin file", { identifier, skin_md5 });
+      }
+      if (files.length < 2) {
+        console.log({skin_md5, identifier, length: files.length});
+        tooFew.push(skin_md5);
+        continue;
+        console.warn("Too few files", { identifier, skin_md5 });
+      }
+    } catch (e) {
+      console.log(metadata);
+    }
+  }
+
+
+  console.table({
+    total: results.length,
+    tooMany: tooMany.length,
+    tooFew: tooFew.length,
+    missingSkin: missingSkin.length,
+  });
+}
+
 export async function integrityCheck(): Promise<void> {
   await noDuplicateTweetIds();
   await noDuplicateTweetMd5s();
