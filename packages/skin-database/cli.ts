@@ -180,9 +180,9 @@ program
     "--upload-new",
     "Find newly uploaded skins, and publish them to the Internet Archive."
   )
-  .action(async ({ metadata, webampLinks, fetchItems, upload }) => {
-    if (metadata) {
-      await fillMissingMetadata(Number(metadata || 1000));
+  .action(async ({ fetchMetadata, webampLinks, fetchItems, upload }) => {
+    if (fetchMetadata) {
+      await fillMissingMetadata(Number(fetchMetadata || 1000));
     }
     if (webampLinks) {
       await ensureWebampLinks();
