@@ -16,6 +16,7 @@
     "algoliasearch": "^4.3.0",
     "async-parallel": "^1.2.3",
     "aws-sdk": "^2.663.0",
+    "commander": "^9.0.0",
     "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
     "dataloader": "^2.0.0",
