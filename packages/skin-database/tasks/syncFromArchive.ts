@@ -73,8 +73,7 @@ async function ensureIaRecord(
   ctx: UserContext,
   identifier: string
 ): Promise<void> {
-  const r = await fetch(`https://archive.org/metadata/${identifier}`);
-  const response = await r.json();
+  const response = await updateMetadata(identifier);
   const files = response.files;
   const skins = files.filter((file) => file.name.endsWith(".wsz"));
   if (skins.length === 0) {
@@ -108,6 +107,34 @@ async function ensureIaRecord(
 
   await knex("ia_items").insert({ skin_md5: md5, identifier });
   console.log(`Inserted "${identifier}".`);
+}
+
+export async function fillMissingMetadata() {
+  const skins = await knex("skins")
+    .leftJoin("ia_items", "skins.md5", "ia_items.skin_md5")
+    .where("ia_items.metadata", null)
+    .whereNot("ia_items.identifier", null)
+    .limit(10)
+    .select("skins.md5", "ia_items.identifier");
+  for (const { md5, identifier } of skins) {
+    await updateMetadata(identifier);
+    console.log(`Updated metadata for ${identifier} ${md5}`);
+  }
+  console.log("Done updating metadata.");
+}
+
+async function updateMetadata(identifier: string): Promise<any> {
+  const r = await fetch(`https://archive.org/metadata/${identifier}`);
+  if (!r.ok) {
+    console.error(await r.json())
+    throw new Error(`Could not fetch metadata for ${identifier}`);
+  }
+  const response = await r.json();
+  await knex("ia_items")
+    .where("identifier", identifier)
+    .update({ metadata: JSON.stringify(response, null, 2) })
+    .update("metadata_timestamp", knex.fn.now());
+  return response;
 }
 
 export async function syncFromArchive() {
