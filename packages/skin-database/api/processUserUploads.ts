@@ -3,7 +3,7 @@ import S3 from "../s3";
 import { addSkinFromBuffer } from "../addSkin";
 import { EventHandler } from "./app";
 
-async function* reportedUploads() {
+async function* reportedUploads(): AsyncGenerator<{ skin_md5: string; id: string; filename: string; }, void, unknown> {
   const seen = new Set();
   while (true) {
     const upload = await Skins.getReportedUpload();
@@ -37,15 +37,7 @@ function timeout<T>(p: Promise<T>, duration: number): Promise<T> {
     ),
   ]);
 }
-
-export async function processUserUploads(eventHandler: EventHandler) {
-  log("process user uploads");
-  // Ensure we only have one worker processing requests.
-  if (processing) {
-    return;
-  }
-  processing = true;
-  const uploads = reportedUploads();
+export async function processGivenUserUploads(eventHandler: EventHandler, uploads: AsyncGenerator<{ skin_md5: string; id: string; filename: string; }>) {
   log("Uploads to process...");
   for await (const upload of uploads) {
     log("Going to try: ", upload);
@@ -85,6 +77,17 @@ export async function processUserUploads(eventHandler: EventHandler) {
     }
   }
   log("Done processing uploads.");
+}
 
+
+export async function processUserUploads(eventHandler: EventHandler) {
+  log("process user uploads");
+  // Ensure we only have one worker processing requests.
+  if (processing) {
+    return;
+  }
+  processing = true;
+  const uploads = reportedUploads();
+  await processGivenUserUploads(eventHandler, uploads);
   processing = false;
 }

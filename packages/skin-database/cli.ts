@@ -18,7 +18,7 @@ import { integrityCheck } from "./tasks/integrityCheck";
 import { ensureWebampLinks, syncWithArchive } from "./tasks/syncWithArchive";
 import { fillMissingMetadata, syncFromArchive } from "./tasks/syncFromArchive";
 import { getSkinsToRefresh, refreshSkins } from "./tasks/refresh";
-import { processUserUploads } from "./api/processUserUploads";
+import { processGivenUserUploads, processUserUploads } from "./api/processUserUploads";
 import DiscordEventHandler from "./api/DiscordEventHandler";
 import SkinModel from "./data/SkinModel";
 import { chunk } from "./utils";

@@ -41,6 +41,8 @@ const INVALID_IDENTIFIERS = new Set([
   "winampskins_DarK",
   "winampskins_dark",
   "winampskins_Sakura",
+  "winampskins_Sakura3",
+  "winampskins_Izumi2",
 ]);
 
 export async function identifierExists(identifier: string): Promise<boolean> {
@@ -100,6 +102,8 @@ export async function archive(skin: SkinModel): Promise<string> {
   // Pick identifier
   const identifier = await getNewIdentifier(filename);
 
+  console.log(`Going to try to upload with identifier "${identifier}"...`);
+
   const command = `ia upload ${identifier} "${skinFile}" "${screenshotFile}" --metadata="collection:winampskins" --metadata="skintype:wsz" --metadata="mediatype:software" --metadata="title:${title}"`;
   await exec(command, { encoding: "utf8" });
   await knex("ia_items").insert({ skin_md5: skin.getMd5(), identifier });
@@ -122,6 +126,11 @@ export async function syncWithArchive(handler: DiscordEventHandler) {
   await Parallel.map(
     unarchived,
     async ({ md5 }) => {
+        // The internet archive claims this one is corrupt for some reason.
+        if (md5 === "513fdd06bf39391e52f3ac5b233dd147") {
+
+            return;
+        }
       const skin = await SkinModel.fromMd5(ctx, md5);
       if (skin == null) {
         throw new Error(`Expected to get skin for ${md5}`);
@@ -143,7 +152,7 @@ export async function syncWithArchive(handler: DiscordEventHandler) {
         ) {
           console.log(`Corrupt archvie (encrypted): ${skin.getMd5()}`);
         } else if (/case alias may already exist/.test(e.message)) {
-          console.log(`Invalid name (case alias): ${skin.getMd5()} with `);
+          console.log(`Invalid name (case alias): ${skin.getMd5()} with ${e.message}`);
         } else {
           console.error(e);
         }

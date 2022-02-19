@@ -32,8 +32,8 @@ export async function tweet(discordClient: Client, anything: string | null): Pro
     const tweetStatus = await tweetableSkin.getTweetStatus();
     if (tweetStatus == "TWEETED") {
       // @ts-ignore
-      await tweetBotChannel.send(`Oops! This skin has alraedy been tweeted.`);
-      return;
+      // await tweetBotChannel.send(`Oops! This skin has alraedy been tweeted.`);
+      // return;
     }
     if (tweetStatus == "REJECTED" || tweetStatus == "NSFW") {
       // @ts-ignore

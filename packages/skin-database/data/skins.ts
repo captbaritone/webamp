@@ -295,6 +295,17 @@ export async function getReportedUpload(): Promise<{
   return found || null;
 }
 
+export async function getErroredUpload(): Promise<{
+  skin_md5: string;
+  id: string;
+  filename: string;
+} | null> {
+  const found = await knex("skin_uploads")
+    .where("status", "ERRORED")
+    .first(["skin_md5", "id", "filename"]);
+  return found || null;
+}
+
 export async function recordUserUploadComplete(
   md5: string,
   id: string
@@ -552,7 +563,14 @@ SELECT skins.md5,
     END
   priority
 FROM skins 
-  LEFT JOIN tweets ON tweets.skin_md5 = skins.md5 
+  LEFT JOIN (
+    SELECT 
+      skin_md5,
+      MAX(likes) as likes,
+      MAX(retweets) as retweets
+    FROM tweets
+    GROUP BY skin_md5
+    ) as tweets ON tweets.skin_md5 = skins.md5 
   LEFT JOIN skin_reviews ON skin_reviews.skin_md5 = skins.md5
 	LEFT JOIN files ON files.skin_md5 = skins.md5
   LEFT JOIN refreshes ON refreshes.skin_md5 = skins.md5

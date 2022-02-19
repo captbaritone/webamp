@@ -24,14 +24,17 @@ export default class Shooter {
     try {
       return await cb(shooter);
     } finally {
-      shooter.dispose();
+      await shooter.dispose();
     }
   }
 
   async init() {
+    this._log("init()")
+    this._log("Going to launch puppeteer")
     this._browser = await puppeteer.launch({
       args: ["--disable-dev-shm-usage"],
     });
+    this._log("Opening new page")
     this._page = await this._browser.newPage();
     this._page.setViewport({ width: 275, height: 116 * 3 });
 
@@ -46,13 +49,17 @@ export default class Shooter {
       this._log("page log:", consoleMessage.text());
     });
     const url = `${this._url}/?screenshot=1`;
+    this._log(`Goto url ${url}`)
     await this._page.goto(url);
+    this._log(`Waiting for selector...  #main-window...`)
     await this._page.waitForSelector("#main-window", { timeout: 2000 });
+    this._log(`Setting background to none`)
     await this._page.evaluate(() => {
       // Needed to allow for transparent screenshots
       window.document.body.style.background = "none";
     });
     this._initialized = true;
+    this._log(`Initialization complete!`)
   }
 
   async _ensureInitialized() {
@@ -86,8 +93,10 @@ export default class Shooter {
   }
 
   async _takeScreenshot(skin, screenshotPath, { minify = false }) {
+    this._log(`_takeScreenshot`)
     await this._ensureInitialized();
     try {
+      this._log(`Getting handle...`);
       const handle = await this._page.$("#webamp-file-input");
 
       this._log("Goinng to try to screenshot");
@@ -111,12 +120,13 @@ export default class Shooter {
 
           this._page.on("dialog", dialogHandler);
           this._page.on("error", errorHandler);
+          this._log(`Adding skin...`);
           await handle.uploadFile(skin);
-          this._log("Uploaded file");
+          this._log("Wating for skin to load...");
           await this._page.evaluate(() => {
             return window.__webamp.skinIsLoaded();
           });
-          this._log("Skin loaded");
+          this._log(`Taking screenshot. Path is: ${screenshotPath}`);
           await this._page.screenshot({
             path: screenshotPath,
             omitBackground: true, // Make screenshot transparent
@@ -125,6 +135,7 @@ export default class Shooter {
           });
           this._log("Took screenshot");
 
+          this._log("Cleaning up");
           cleanup();
 
           resolve();
@@ -138,19 +149,26 @@ export default class Shooter {
         min(screenshotPath);
       }
     } catch (e) {
+      this._log(`Caught an error, cleaning up: ${e}`)
       await this.dispose();
       await this.init();
-      throw e;
+      reject(e);
     }
   }
 
   async dispose() {
+    this._log(`Cleaning up shooter...`)
     await this._ensureInitialized();
+    this._log(`Removing page listeners`)
     this._page.removeAllListeners();
+    this._log(`Closing page`)
     await this._page.close();
+    this._log(`Removing browser listeners`)
     this._browser.removeAllListeners();
+    this._log(`Closing browser`)
     await this._browser.close();
 
+    this._log(`Nulling values`)
     this._page = null;
     this._browser = null;
     this._initialized = false;

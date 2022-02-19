@@ -114,7 +114,7 @@ export async function fillMissingMetadata() {
     .leftJoin("ia_items", "skins.md5", "ia_items.skin_md5")
     .where("ia_items.metadata", null)
     .whereNot("ia_items.identifier", null)
-    .limit(10)
+    .limit(4000)
     .select("skins.md5", "ia_items.identifier");
   for (const { md5, identifier } of skins) {
     await updateMetadata(identifier);
