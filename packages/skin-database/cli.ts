@@ -16,7 +16,7 @@ import {followerCount, popularTweets} from "./tasks/tweetMilestones"
 import UserContext from "./data/UserContext";
 import { integrityCheck } from "./tasks/integrityCheck";
 import { ensureWebampLinks, syncWithArchive } from "./tasks/syncWithArchive";
-import { syncFromArchive } from "./tasks/syncFromArchive";
+import { fillMissingMetadata, syncFromArchive } from "./tasks/syncFromArchive";
 import { getSkinsToRefresh, refreshSkins } from "./tasks/refresh";
 import { processUserUploads } from "./api/processUserUploads";
 import DiscordEventHandler from "./api/DiscordEventHandler";
@@ -45,6 +45,9 @@ async function main() {
         break;
       case "sync-ia":
         await syncWithArchive(handler);
+        break;
+      case "ia-metadata":
+        await fillMissingMetadata();
         break;
       case "integity-check":
         await integrityCheck();
@@ -156,7 +159,7 @@ async function main() {
           },
           (message) => console.log(message)
         );
-        console.log("Screenshot", tempPath);
+        console.log("Screenshot complete", tempPath);
         break;
       }
       case "delete": {
