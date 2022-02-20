@@ -3,7 +3,9 @@ import { graphqlHTTP } from "express-graphql";
 
 import { buildSchema } from "graphql";
 import SkinModel from "../../data/SkinModel";
+import TweetModel from "../../data/TweetModel";
 import SkinResolver from "./resolvers/SkinResolver";
+import TweetResolver from "./resolvers/TweetResolver";
 import UserResolver from "./resolvers/UserResolver";
 import SkinsConnection from "./SkinsConnection";
 import TweetsConnection from "./TweetsConnection";
@@ -11,7 +13,6 @@ import TweetsConnection from "./TweetsConnection";
 const router = Router();
 
 const schema = buildSchema(`
-
 """A classic Winamp skin"""
 type Skin {
   """Database ID of the skin"""
@@ -97,11 +98,29 @@ type Review {
 type ArchiveFile {
   """Filename of the file within the archive"""
   filename: String,
+
+  """
+  A URL to download the file. **Note:** This is powered by a little
+  serverless Cloudflare function which tries to exctact the file on the fly.
+  It may not work for all files.
+  """
+  url: String
+
+  """
+  The date on the file inside the archive. Given in simplified extended ISO
+  format (ISO 8601).
+  """
+  date: String
+  
 }
 
 """A tweet made by @winampskins mentioning a Winamp skin"""
 type Tweet {
-  """URL of the tweet"""
+  """
+  URL of the tweet. **Note:** Early on in the bot's life we just recorded
+  _which_ skins were tweeted, not any info about the actual tweet. This means we
+  don't always know the URL of the tweet.
+  """
   url: String
 
   """Number of likes the tweet has received. Updated nightly. (Note: Recent likes on older tweets may not be reflected here)"""
@@ -178,6 +197,9 @@ type Query {
   """Get a skin by its MD5 hash"""
   fetch_skin_by_md5(md5: String!): Skin
 
+  """Get a tweet by its URL"""
+  fetch_tweet_by_url(url: String!): Tweet
+
   """
   All skins in the database
 
@@ -207,6 +229,13 @@ const root = {
       return null;
     }
     return new SkinResolver(skin);
+  },
+  async fetch_tweet_by_url({ url }, { ctx }) {
+    const tweet = await TweetModel.fromAnything(ctx, url);
+    if (tweet == null) {
+      return null;
+    }
+    return new TweetResolver(tweet);
   },
   async skins({ first, offset, sort, filter }) {
     if (first > 1000) {

@@ -2,6 +2,7 @@ import UserContext, { ctxWeakMapMemoize } from "./UserContext";
 import { ArchiveFileRow } from "../types";
 import DataLoader from "dataloader";
 import { knex } from "../db";
+import SkinModel from "./SkinModel";
 
 export type ArchiveFileDebugData = {
   row: ArchiveFileRow;
@@ -18,12 +19,25 @@ export default class ArchiveFileModel {
     return rows.map((row) => new ArchiveFileModel(ctx, row));
   }
 
+  getMd5(): string {
+    return this.row.skin_md5;
+  }
+
   getFileName(): string {
     return this.row.file_name;
   }
 
   getFileDate(): Date {
     return new Date(this.row.file_date);
+  }
+
+  getUrl(): string {
+    const filename = encodeURIComponent(this.getFileName());
+    return `https://zip-worker.jordan1320.workers.dev/zip/${this.getMd5()}/${filename}`;
+  }
+
+  async getSkin(): Promise<SkinModel> {
+    return SkinModel.fromMd5Assert(this.ctx, this.getMd5());
   }
 
   async debug(): Promise<ArchiveFileDebugData> {

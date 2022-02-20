@@ -8,4 +8,10 @@ export default class ArchiveFileResolver {
   filename() {
     return this._model.getFileName();
   }
+  url() {
+    return this._model.getUrl();
+  }
+  date() {
+    return this._model.getFileDate().toISOString();
+  }
 }
