@@ -52,6 +52,7 @@ export type IaItemRow = {
   skin_md5: string;
   identifier: string;
   metadata: string; // JSON from the internet archive
+  metadata_timestamp: string;
 };
 
 export type UploadStatus =

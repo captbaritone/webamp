@@ -61,6 +61,14 @@ export default class IaItemModel {
     return `https://archive.org/details/${this.getIdentifier()}`;
   }
 
+  getMetadataUrl(): string {
+    return `https://archive.org/metadata/${this.getIdentifier()}`;
+  }
+
+  getMetadataTimestamp(): string | null {
+    return this.row.metadata_timestamp;
+  }
+
   getIdentifier(): string {
     const { identifier } = this.row;
     if (identifier == null) {
@@ -69,6 +77,14 @@ export default class IaItemModel {
       );
     }
     return identifier;
+  }
+
+  getMetadataJSON(): string | null {
+    return this.row.metadata;
+  }
+
+  getMetadataScrapeDate(): string | null {
+    return this.row.metadata;
   }
 
   getAllFiles(): any[] {
