@@ -248,9 +248,24 @@ enum SkinsSortOption {
 
 enum SkinsFilterOption {
   """
-  All the skins that have been approved for tweeting
+  Only the skins that have been approved for tweeting
   """
   APPROVED
+
+  """
+  Only the skins that have been rejected for tweeting
+  """
+  REJECTED
+
+  """
+  Only the skins that have been marked NSFW
+  """
+  NSFW
+
+  """
+  Only the skins that have been tweeted
+  """
+  TWEETED
 }
 
 type Query {

@@ -17,10 +17,26 @@ export default class SkinsConnection {
   _getQuery() {
     let query = knex("skins").where({ skin_type: 1 });
 
-    if (this._filter === "APPROVED") {
-      query = query
-        .leftJoin("skin_reviews", "skin_reviews.skin_md5", "=", "skins.md5")
-        .where("review", "APPROVED");
+    // TODO: What happens if there are multiple tweets/reviews?
+    // Do we return multiple instances of that skin?
+    switch (this._filter) {
+      case "APPROVED":
+        query = query
+          .leftJoin("skin_reviews", "skin_reviews.skin_md5", "=", "skins.md5")
+          .where("review", "APPROVED");
+        break;
+      case "REJECTED":
+        query = query
+          .leftJoin("skin_reviews", "skin_reviews.skin_md5", "=", "skins.md5")
+          .where("review", "REJECTED");
+        break;
+      case "NSFW":
+        query = query
+          .leftJoin("skin_reviews", "skin_reviews.skin_md5", "=", "skins.md5")
+          .where("review", "NSFW");
+        break;
+      case "TWEETED":
+        query = query.leftJoin("tweets", "tweet.skin_md5", "=", "skins.md5");
     }
 
     return query;
