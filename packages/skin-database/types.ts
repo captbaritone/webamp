@@ -8,6 +8,7 @@ export type TweetStatus =
 export type SkinType = "MODERN" | "CLASSIC";
 
 export type SkinRow = {
+  id: number;
   md5: string;
   skin_type: number;
   emails: string;

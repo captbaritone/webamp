@@ -1,4 +1,5 @@
 import router from "./router";
+import graphql from "./graphql";
 import fileUpload from "express-fileupload";
 import cors, { CorsOptions } from "cors";
 import bodyParser from "body-parser";
@@ -23,8 +24,14 @@ export type ApiAction =
   | { type: "GOT_FEEDBACK"; message: string; email?: string; url?: string }
   | { type: "SYNCED_TO_ARCHIVE"; successes: number; errors: number }
   | { type: "STARTED_SYNC_TO_ARCHIVE"; count: number }
-  | { type: "POPULAR_TWEET"; bracket: number; url: string, likes: number, date: Date }
-  | { type: "TWEET_BOT_MILESTONE"; bracket: number; count: number};
+  | {
+      type: "POPULAR_TWEET";
+      bracket: number;
+      url: string;
+      likes: number;
+      date: Date;
+    }
+  | { type: "TWEET_BOT_MILESTONE"; bracket: number; count: number };
 
 export type EventHandler = (event: ApiAction) => void;
 export type Logger = {
@@ -135,6 +142,7 @@ export function createApp({ eventHandler, extraMiddleware, logger }: Options) {
 
   // Add routes
   app.use("/", router);
+  app.use("/graphql", graphql);
 
   // The error handler must be before any other error middleware and after all controllers
   if (Sentry) {
@@ -143,6 +151,7 @@ export function createApp({ eventHandler, extraMiddleware, logger }: Options) {
 
   // Optional fallthrough error handler
   app.use(function onError(err, _req, res, _next) {
+    console.error(err);
     res.statusCode = 500;
     res.json({ errorId: res.sentry, message: err.message });
   });
@@ -160,6 +169,7 @@ const allowList = [
   /https:\/\/skins\.webamp\.org/,
   /https:\/\/winamp-skin-museum\.pages\.dev/,
   /http:\/\/localhost:3000/,
+  /http:\/\/localhost:3001/,
   /netlify.app/,
 ];
 

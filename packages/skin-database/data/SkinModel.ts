@@ -35,8 +35,8 @@ export default class SkinModel {
     md5: string
   ): Promise<SkinModel> {
     const skin = await SkinModel.fromMd5(ctx, md5);
-    if(skin == null) {
-        throw new Error(`Expected to find skin with md5 "${md5}".`);
+    if (skin == null) {
+      throw new Error(`Expected to find skin with md5 "${md5}".`);
     }
     return skin;
   }
@@ -77,6 +77,10 @@ export default class SkinModel {
         return "MODERN";
     }
     throw new Error(`Unknown skin_type ${this.row.skin_type}`);
+  }
+
+  getId(): number {
+    return this.row.id;
   }
 
   async tweeted(): Promise<boolean> {
