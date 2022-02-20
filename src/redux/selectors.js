@@ -23,13 +23,6 @@ export function overlayShouldAnimate(state) {
   return getSelectedSkinPosition(state) != null;
 }
 
-export const getSelectedSkinUrl = createSelector(
-  getSelectedSkinHash,
-  (hash) => {
-    return hash == null ? null : Utils.screenshotUrlFromHash(hash);
-  }
-);
-
 export function getSearchQuery(state) {
   return state.searchQuery;
 }
