@@ -2,8 +2,13 @@ import { Router } from "express";
 import { graphqlHTTP } from "express-graphql";
 
 import RootResolver from "./resolvers/RootResolver";
-import schema from "./schema";
 import DEFAULT_QUERY from "./defaultQuery";
+import { buildSchema } from "graphql";
+import fs from "fs";
+import path from "path";
+
+const schemaPath = path.join(__dirname, "./schema.graphql");
+const schema = buildSchema(fs.readFileSync(schemaPath, "utf8"));
 
 const router = Router();
 

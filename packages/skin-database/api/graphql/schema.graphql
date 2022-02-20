@@ -1,51 +1,76 @@
-import { buildSchema } from "graphql";
-
-const schema = buildSchema(`
-"""A classic Winamp skin"""
+"""
+A classic Winamp skin
+"""
 type Skin {
-  """Database ID of the skin"""
-  id: Int,
+  """
+  Database ID of the skin
+  """
+  id: Int
 
-  """MD5 hash of the skin's file"""
-  md5: String,
+  """
+  MD5 hash of the skin's file
+  """
+  md5: String
 
-  """URL of the skin on the Winamp Skin Museum"""
-  museum_url: String,
+  """
+  URL of the skin on the Winamp Skin Museum
+  """
+  museum_url: String
 
-  """URL of webamp.org with the skin loaded"""
-  webamp_url: String,
+  """
+  URL of webamp.org with the skin loaded
+  """
+  webamp_url: String
 
-  """URL of a screenshot of the skin"""
-  screenshot_url: String,
+  """
+  URL of a screenshot of the skin
+  """
+  screenshot_url: String
 
-  """URL to download the skin"""
-  download_url: String,
+  """
+  URL to download the skin
+  """
+  download_url: String
 
   """
   Filename of skin when uploaded to the Museum. Note: In some cases a skin
   has been uploaded under multiple names. Here we just pick one.
   """
-  filename: String,
+  filename: String
 
-  """Text of the readme file extracted from the skin"""
-  readme_text: String,
+  """
+  Text of the readme file extracted from the skin
+  """
+  readme_text: String
 
-  """Has the skin been flagged as "not safe for wrok"?"""
-  nsfw: Boolean,
+  """
+  Has the skin been flagged as "not safe for wrok"?
+  """
+  nsfw: Boolean
 
-  """String representation (rgb usually) of the skin's average color"""
-  average_color: String,
+  """
+  String representation (rgb usually) of the skin's average color
+  """
+  average_color: String
 
-  """Has the skin been tweeted?"""
+  """
+  Has the skin been tweeted?
+  """
   tweeted: Boolean
 
-  """List of @winampskins tweets that mentioned the skin."""
+  """
+  List of @winampskins tweets that mentioned the skin.
+  """
   tweets: [Tweet]
 
-  """List of files contained within the skin's .wsz archive"""
+  """
+  List of files contained within the skin's .wsz archive
+  """
   archive_files: [ArchiveFile]
 
-  """The skin's "item" at archive.org"""
+  """
+  The skin's "item" at archive.org
+  """
   internet_archive_item: InternetArchiveItem
 
   """
@@ -55,8 +80,9 @@ type Skin {
   reviews: [Review]
 }
 
-
-"""The judgement made about a skin by a moderator"""
+"""
+The judgement made about a skin by a moderator
+"""
 enum Rating {
   APPROVED
   REJECTED
@@ -68,7 +94,9 @@ A review of a skin. Done either on the Museum's Tinder-style
 reivew page, or via the Discord bot.
 """
 type Review {
-  """The skin that was reviewed"""
+  """
+  The skin that was reviewed
+  """
   skin: Skin
 
   """
@@ -77,15 +105,20 @@ type Review {
   """
   reviewer: String
 
-  """The rating that the user gave the skin"""
+  """
+  The rating that the user gave the skin
+  """
   rating: Rating
 }
 
-
-"""A file found within a Winamp Skin's .wsz archive"""
+"""
+A file found within a Winamp Skin's .wsz archive
+"""
 type ArchiveFile {
-  """Filename of the file within the archive"""
-  filename: String,
+  """
+  Filename of the file within the archive
+  """
+  filename: String
 
   """
   A URL to download the file. **Note:** This is powered by a little
@@ -99,10 +132,11 @@ type ArchiveFile {
   format (ISO 8601).
   """
   date: String
-
 }
 
-"""A tweet made by @winampskins mentioning a Winamp skin"""
+"""
+A tweet made by @winampskins mentioning a Winamp skin
+"""
 type Tweet {
   """
   URL of the tweet. **Note:** Early on in the bot's life we just recorded
@@ -111,22 +145,32 @@ type Tweet {
   """
   url: String
 
-  """Number of likes the tweet has received. Updated nightly. (Note: Recent likes on older tweets may not be reflected here)"""
+  """
+  Number of likes the tweet has received. Updated nightly. (Note: Recent likes on older tweets may not be reflected here)
+  """
   likes: Int
 
-  """Number of retweets the tweet has received. Updated nightly. (Note: Recent retweets on older tweets may not be reflected here)"""
+  """
+  Number of retweets the tweet has received. Updated nightly. (Note: Recent retweets on older tweets may not be reflected here)
+  """
   retweets: Int
   skin: Skin
 }
 
 type InternetArchiveItem {
-  """The Internet Archive's unique identifier for this item"""
+  """
+  The Internet Archive's unique identifier for this item
+  """
   identifier: String
 
-  """The URL where this item can be viewed on the Internet Archive"""
+  """
+  The URL where this item can be viewed on the Internet Archive
+  """
   url: String
 
-  """URL to get the Internet Archive's metadata for this item in JSON form."""
+  """
+  URL to get the Internet Archive's metadata for this item in JSON form.
+  """
   metadata_url: String
 
   """
@@ -141,17 +185,24 @@ type InternetArchiveItem {
   """
   last_metadata_scrape_date_UNSTABLE: String
 
-  """The skin that this item contains"""
+  """
+  The skin that this item contains
+  """
   skin: Skin
-
 }
 
-"""A collection of tweets made by the @winampskins bot"""
+"""
+A collection of tweets made by the @winampskins bot
+"""
 type TweetsConnection {
-  """The total number of tweets"""
+  """
+  The total number of tweets
+  """
   count: Int
 
-  """The list of tweets"""
+  """
+  The list of tweets
+  """
   nodes: [Tweet]
 }
 
@@ -160,12 +211,18 @@ enum TweetsSortOption {
   RETWEETS
 }
 
-"""A collection of classic Winamp skins"""
+"""
+A collection of classic Winamp skins
+"""
 type SkinsConnection {
-  """The total number of skins matching the filter"""
+  """
+  The total number of skins matching the filter
+  """
   count: Int
 
-  """The list of skins"""
+  """
+  The list of skins
+  """
   nodes: [Skin]
 }
 
@@ -190,18 +247,26 @@ enum SkinsSortOption {
 }
 
 enum SkinsFilterOption {
-  """All the skins that have been approved for tweeting"""
+  """
+  All the skins that have been approved for tweeting
+  """
   APPROVED
 }
 
 type Query {
-  """The currently authenticated user, if any."""
+  """
+  The currently authenticated user, if any.
+  """
   me: User
 
-  """Get a skin by its MD5 hash"""
+  """
+  Get a skin by its MD5 hash
+  """
   fetch_skin_by_md5(md5: String!): Skin
 
-  """Get a tweet by its URL"""
+  """
+  Get a tweet by its URL
+  """
   fetch_tweet_by_url(url: String!): Tweet
 
   """
@@ -209,7 +274,9 @@ type Query {
 
   https://archive.org/details/<identifier>/
   """
-  fetch_internet_archive_item_by_identifier(identifier: String!): InternetArchiveItem
+  fetch_internet_archive_item_by_identifier(
+    identifier: String!
+  ): InternetArchiveItem
 
   """
   All skins in the database
@@ -217,9 +284,9 @@ type Query {
   **Note:** We don't currently support combining sorting and filtering.
   """
   skins(
-    first: Int = 10,
-    offset: Int = 0,
-    sort: SkinsSortOption,
+    first: Int = 10
+    offset: Int = 0
+    sort: SkinsSortOption
     filter: SkinsFilterOption
   ): SkinsConnection
 
@@ -234,9 +301,8 @@ type Query {
   Tweets tweeted by @winampskins
   """
   tweets(
-    first: Int = 10,
-    offset: Int = 0,
+    first: Int = 10
+    offset: Int = 0
     sort: TweetsSortOption
   ): TweetsConnection
-}`);
-export default schema;
+}
