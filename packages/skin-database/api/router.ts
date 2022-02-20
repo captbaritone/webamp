@@ -23,6 +23,7 @@ const options = {
 let skinCount: number | null = null;
 const cache = new LRU<string, MuseumPage>(options);
 
+// Purposefully REST
 router.get(
   "/auth/",
   asyncHandler(async (req, res) => {
@@ -37,6 +38,7 @@ router.get(
   })
 );
 
+// @deprecated Use GraphQL
 router.get(
   "/authed/",
   asyncHandler(async (req, res) => {
@@ -44,6 +46,7 @@ router.get(
   })
 );
 
+// Purposefully REST
 router.get(
   "/auth/discord",
   asyncHandler(async (req, res) => {
@@ -65,6 +68,7 @@ router.get(
   })
 );
 
+// @deprecated Use GraphQL
 router.get(
   "/skins/",
   asyncHandler(async (req, res) => {
@@ -93,6 +97,7 @@ router.get(
   })
 );
 
+// @deprecated Use GraphQL
 router.post(
   "/skins/get_upload_urls",
   asyncHandler(async (req, res) => {
@@ -113,6 +118,7 @@ router.post(
   })
 );
 
+// @deprecated Use GraphQL
 router.post(
   "/feedback",
   asyncHandler(async (req, res) => {
@@ -131,6 +137,7 @@ router.post(
   })
 );
 
+// @deprecate Use GraphQL
 router.post(
   "/skins/status",
   asyncHandler(async (req, res) => {
@@ -139,6 +146,7 @@ router.post(
   })
 );
 
+// @deprecated Use GraphQL
 router.get(
   "/skins/:md5",
   asyncHandler(async (req, res) => {
@@ -157,6 +165,7 @@ router.get(
   })
 );
 
+// @deprecated Use GraphQL
 router.get(
   "/skins/:md5/metadata",
   asyncHandler(async (req, res) => {
@@ -176,6 +185,7 @@ router.get(
   })
 );
 
+// @deprecated Use GraphQL
 router.get(
   "/skins/:md5/debug",
   asyncHandler(async (req, res) => {
@@ -199,6 +209,7 @@ function requireAuthed(req, res, next) {
   }
 }
 
+// @deprecated Use GraphQL
 router.get(
   "/to_review",
   requireAuthed,
@@ -208,6 +219,7 @@ router.get(
   })
 );
 
+// @deprecated Use GraphQL
 router.post(
   "/skins/:md5/reject",
   requireAuthed,
@@ -225,6 +237,7 @@ router.post(
   })
 );
 
+// @deprecated Use GraphQL
 router.post(
   "/skins/:md5/approve",
   requireAuthed,
@@ -242,6 +255,7 @@ router.post(
   })
 );
 
+// @deprecated Use GraphQL
 // Unlike /report, this marks the skin NSFW right away without sending to
 // Discord. Because of this, it requires auth.
 router.post(
@@ -261,6 +275,7 @@ router.post(
   })
 );
 
+// @deprecated Use GraphQL
 router.post(
   "/skins/:md5/report",
   asyncHandler(async (req, res) => {
@@ -273,6 +288,7 @@ router.post(
   })
 );
 
+// @deprecated Use GraphQL
 // User reports that they uploaded a skin
 router.post(
   "/skins/:md5/uploaded",
@@ -290,6 +306,7 @@ router.post(
   })
 );
 
+// @deprecated Use GraphQL
 router.get(
   "/approved",
   asyncHandler(async (req, res) => {
@@ -298,6 +315,7 @@ router.get(
   })
 );
 
+// @deprecated Special purpose URL
 router.get(
   "/stylegan.json",
   asyncHandler(async (req, res) => {

@@ -12,6 +12,23 @@ const schema = buildSchema(fs.readFileSync(schemaPath, "utf8"));
 
 const router = Router();
 
+const extensions = ({
+  variables,
+  operationName,
+  context: req,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  document,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  result,
+}) => {
+  const runTime = Date.now() - req.startTime;
+  const vars = JSON.stringify(variables);
+  req.log(
+    `Handled GraphQL Query: "${operationName}" with variables ${vars} in ${runTime}ms`
+  );
+  return { runTime };
+};
+
 router.use(
   "/",
   graphqlHTTP({
@@ -29,6 +46,7 @@ router.use(
       stack: error.stack ? error.stack.split("\n") : [],
       path: error.path,
     }),
+    extensions,
   })
 );
 

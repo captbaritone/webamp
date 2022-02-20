@@ -47,6 +47,7 @@ declare global {
       notify(action: ApiAction): void;
       log(message: string): void;
       logError(message: string): void;
+      startTime: number;
       session: {
         username: string | undefined;
       };
@@ -65,6 +66,11 @@ export function createApp({ eventHandler, extraMiddleware, logger }: Options) {
   if (Sentry) {
     app.use(Sentry.Handlers.requestHandler());
   }
+
+  app.use(function (req, res, next) {
+    req.startTime = Date.now();
+    next();
+  });
 
   // https://expressjs.com/en/guide/behind-proxies.html
   // This is needed in order to allow `cookieSession({secure: true})` cookies to be sent.

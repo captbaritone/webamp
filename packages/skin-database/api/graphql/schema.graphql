@@ -268,6 +268,137 @@ enum SkinsFilterOption {
   TWEETED
 }
 
+"""
+The current status of a pending upload.
+
+**Note:** Expect more values here as we try to be more transparent about
+the status of a pending uploads.
+"""
+enum SkinUploadStatus {
+  """
+  The user has requested a URL, but the skin has not yet been processed.
+  """
+  URL_REQUESTED
+
+  """
+  The user has notified us that the skin has been uploaded, but we haven't yet
+  processed it.
+  """
+  UPLOAD_REPORTED
+
+  """
+  An error occured processing the skin. Usually this is a transient error, and
+  the skin will be retried at a later time.
+  """
+  ERRORED
+
+  """
+  The skin has been successfully added to the Museum.
+  """
+  ARCHIVED
+}
+
+"""
+Information about an attempt to upload a skin to the Museum.
+"""
+type SkinUpload {
+  id: String
+  status: SkinUploadStatus
+
+  """
+  Skin that was uploaded. **Note:** This is null if the skin has not yet been
+  fully processed. (status == ARCHIVED)
+  """
+  skin: Skin
+
+  """
+  Md5 hash given when requesting the upload URL.
+  """
+  upload_md5: String
+}
+
+"""
+A URL that the client can use to upload a skin to S3, and then notify the server
+when they're done.
+"""
+type UploadUrl {
+  id: String
+  url: String
+  md5: String
+}
+
+"""
+Input object used for a user to request an UploadUrl
+"""
+input UploadUrlRequest {
+  md5: String!
+  filename: String!
+}
+
+"""
+Mutations for the upload flow
+
+1. The user finds the md5 hash of their local files.
+2. (`get_upload_urls`) The user requests upload URLs for each of their files.
+3. The server returns upload URLs for each of their files which are not already in the collection.
+4. The user uploads each of their files to the URLs returned in step 3.
+5. (`report_skin_uploaded`) The user notifies the server that they're done uploading.
+6. (TODO) The user polls for the status of their uploads.
+"""
+type UploadMutations {
+  """
+  Get a (possibly incompelte) list of UploadUrls for each of the files. If an
+  UploadUrl is not returned for a given hash, it means the file is already in
+  the collection.
+  """
+  get_upload_urls(files: [UploadUrlRequest!]!): [UploadUrl]
+
+  """
+  Notify the server that the user is done uploading.
+  """
+  report_skin_uploaded(id: String!, md5: String!): Boolean
+}
+
+type Mutation {
+  """
+  Mutations for the upload flow
+  """
+  upload: UploadMutations
+
+  """
+  Send a message to the admin of the site. Currently this appears in Discord.
+  """
+  send_feedback(message: String!, email: String, url: String): Boolean
+
+  """
+  Reject skin for tweeting
+
+  **Note:** Requires being logged in
+  """
+  reject_skin(md5: String): Boolean
+
+  """
+  Approve skin for tweeting
+
+  **Note:** Requires being logged in
+  """
+  approve_skin(md5: String): Boolean
+
+  """
+  Mark a skin as NSFW
+
+  **Note:** Requires being logged in
+  """
+  mark_skin_nsfw(md5: String): Boolean
+
+  """
+  Request that an admin check if this skin is NSFW.
+  Unlike other review mutaiton endpoints, this one does not require being logged
+  in.
+  """
+  request_nsfw_review_for_skin(md5: String): Boolean
+}
+
 type Query {
   """
   The currently authenticated user, if any.
@@ -283,6 +414,11 @@ type Query {
   Get a tweet by its URL
   """
   fetch_tweet_by_url(url: String!): Tweet
+
+  """
+  A random skin that needs to be reviewed
+  """
+  skin_to_review: Skin
 
   """
   Get an archive.org item by its identifier. You can find this in the URL:
@@ -320,4 +456,17 @@ type Query {
     offset: Int = 0
     sort: TweetsSortOption
   ): TweetsConnection
+
+  """
+  Get the status of a batch of uploads by md5s
+  """
+  upload_statuses_by_md5(md5s: [String!]!): [SkinUpload]
+    @deprecated(
+      reason: "Prefer `upload_statuses` instead, were we operate on ids."
+    )
+
+  """
+  Get the status of a batch of uploads by ids
+  """
+  upload_statuses(ids: [String!]!): [SkinUpload]
 }
