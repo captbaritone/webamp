@@ -61,7 +61,10 @@ async function allItems(): Promise<string[]> {
 export async function fillMissingMetadata(count: number) {
   const ctx = new UserContext();
   const skins = await knex("ia_items")
-    .where("ia_items.metadata", "")
+    .where((builder) => {
+        builder.where("ia_items.metadata", null)
+          .orWhere("ia_items.metadata", "")
+    })
     .whereNot("ia_items.identifier", null)
     .select("ia_items.skin_md5", "ia_items.identifier");
     console.log(`Found ${skins.length} items to fetch metadata for`);
