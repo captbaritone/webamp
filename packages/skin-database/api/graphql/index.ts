@@ -3,10 +3,10 @@ import { graphqlHTTP } from "express-graphql";
 
 import { buildSchema } from "graphql";
 import SkinModel from "../../data/SkinModel";
-import { knex } from "../../db";
 import SkinResolver from "./resolvers/SkinResolver";
-import * as Skins from "../../data/skins";
 import UserResolver from "./resolvers/UserResolver";
+import SkinsConnection from "./SkinsConnection";
+import TweetsConnection from "./TweetsConnection";
 
 const router = Router();
 
@@ -123,9 +123,23 @@ type InternetArchiveItem {
   skin: Skin
 }
 
+"""A collection of tweets made by the @winampskins bot"""
+type TweetsConnection {
+  """The total number of tweets"""
+  count: Int
+
+  """The list of tweets"""
+  nodes: [Tweet]
+}
+
+enum TweetsSortOption {
+  LIKES
+  RETWEETS
+}
+
 """A collection of classic Winamp skins"""
 type SkinsConnection {
-  """The total number of skins"""
+  """The total number of skins matching the filter"""
   count: Int
 
   """The list of skins"""
@@ -175,62 +189,16 @@ type Query {
     sort: SkinsSortOption,
     filter: SkinsFilterOption
   ): SkinsConnection
+
+  """
+  Tweets tweeted by @winampskins
+  """
+  tweets(
+    first: Int,
+    offset: Int,
+    sort: TweetsSortOption
+  ): TweetsConnection
 }`);
-
-class SkinsConnection {
-  _first: number;
-  _offset: number;
-  _sort: string;
-  _filter: string;
-  constructor(first: number, offset: number, sort: string, filter: string) {
-    this._first = first;
-    this._offset = offset;
-    this._filter = filter;
-    this._sort = sort;
-  }
-  async count() {
-    const count = await knex("skins")
-      .where({ skin_type: 1 })
-      .count("*", { as: "count" });
-    return count[0].count;
-  }
-  async nodes(args, ctx) {
-    if (this._sort === "MUSEUM") {
-      if (this._filter) {
-        throw new Error(
-          "We don't support combining sorting and filtering at the same time."
-        );
-      }
-      const items = await Skins.getMuseumPage({
-        first: this._first,
-        offset: this._offset,
-      });
-      return Promise.all(
-        items.map(async (item) => {
-          const model = await SkinModel.fromMd5Assert(ctx, item.md5);
-          return new SkinResolver(model);
-        })
-      );
-    }
-
-    let query = knex("skins");
-
-    if (this._filter === "APPROVED") {
-      query = query
-        .leftJoin("skin_reviews", "skin_reviews.skin_md5", "=", "skins.md5")
-        .where("review", "APPROVED");
-    }
-
-    const skins = await query
-      .where({ skin_type: 1 })
-      .select()
-      .limit(this._first)
-      .offset(this._offset);
-    return skins.map((skin) => {
-      return new SkinResolver(new SkinModel(ctx, skin));
-    });
-  }
-}
 
 const root = {
   async fetch_skin_by_md5({ md5 }, { ctx }) {
@@ -245,6 +213,12 @@ const root = {
       throw new Error("Maximum limit is 1000");
     }
     return new SkinsConnection(first, offset, sort, filter);
+  },
+  async tweets({ first, offset, sort }) {
+    if (first > 1000) {
+      throw new Error("Maximum limit is 1000");
+    }
+    return new TweetsConnection(first, offset, sort);
   },
   me() {
     return new UserResolver();
