@@ -4,6 +4,7 @@ import SkinModel from "./SkinModel";
 import DataLoader from "dataloader";
 import { knex } from "../db";
 import { exec } from "../utils";
+import fetch from "node-fetch";
 
 const IA_URL = /^(https:\/\/)?archive.org\/details\/([^/]+)\/?/;
 
@@ -72,10 +73,15 @@ export default class IaItemModel {
   }
 
   getAllFiles(): any[] {
-    if (this.row.metadata == null) {
+    if (!this.row.metadata) {
       return [];
     }
-    return JSON.parse(this.row.metadata).files;
+    try {
+        return JSON.parse(this.row.metadata).files;
+    } catch(e) {
+        console.warn("Could not parse", this.row.metadata);
+        return [];
+    }
   }
 
   getUploadedFiles(): any {
@@ -84,17 +90,21 @@ export default class IaItemModel {
 
   // There should be exactly one, but in error cases there can be more or none.
   getSkinFiles(): any[] {
-    return this.getUploadedFiles().filter((file) => file.name.endsWith(".wsz"));
+    return this.getUploadedFiles().filter((file) => {
+        return file.name.toLowerCase().endsWith(".wsz")
+            || file.name.toLowerCase().endsWith(".zip");
+    });
   }
 
   async getTasks(): Promise<any[]> {
-    const result = await exec(`ia tasks ${this.getIdentifier()}`, {
+    const command = `ia tasks ${this.getIdentifier()}`;
+    const result = await exec(command, {
       encoding: "utf8",
     });
     return result.stdout
       .trim()
       .split("\n")
-      .map((line) => JSON.parse(line));
+      .map((line) => JSON.parse(line))
   }
 
   async hasRunningTasks(): Promise<boolean> {

@@ -34,7 +34,11 @@ export default class SkinModel {
     ctx: UserContext,
     md5: string
   ): Promise<SkinModel> {
-    return SkinModel.fromMd5Assert(ctx, md5);
+    const skin = await SkinModel.fromMd5(ctx, md5);
+    if(skin == null) {
+        throw new Error(`Expected to find skin with md5 "${md5}".`);
+    }
+    return skin;
   }
 
   static async fromAnything(

@@ -60,20 +60,22 @@ async function allItems(): Promise<string[]> {
 
 export async function fillMissingMetadata(count: number) {
   const ctx = new UserContext();
-  const skins = await knex("skins")
-    .leftJoin("ia_items", "skins.md5", "ia_items.skin_md5")
-    .where("ia_items.metadata", null)
+  const skins = await knex("ia_items")
+    .where("ia_items.metadata", "")
     .whereNot("ia_items.identifier", null)
-    .limit(count)
-    .select("skins.md5", "ia_items.identifier");
-  for (const { md5, identifier } of skins) {
+    .select("ia_items.skin_md5", "ia_items.identifier");
+    console.log(`Found ${skins.length} items to fetch metadata for`);
+
+    const items = skins.slice(0, count);
+
+  for (const { skin_md5, identifier } of items) {
     const iaItem = await IaItemModel.fromIdentifier(ctx, identifier);
     if (iaItem == null) {
       console.error(`Could not find IA item for ${identifier}`);
       break;
     }
     await iaItem.updateMetadata();
-    console.log(`Updated metadata for ${identifier} ${md5}`);
+    console.log(`Updated metadata for ${identifier} ${skin_md5}`);
   }
   console.log("Done updating metadata.");
 }

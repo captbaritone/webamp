@@ -21,9 +21,17 @@ export async function findItemsMissingImages(): Promise<string[]> {
     if (iaItem == null) {
       throw new Error("Expected to find IA item");
     }
+    if(iaItem.getSkinFiles().length > 1) {
+        console.warn("Too many skin files", row.skin_md5, row.identifier);
+        continue;
+    }
+    if(iaItem.getSkinFiles().length < 1) {
+        console.log(iaItem.getAllFiles());
+        console.warn("Missing skin file", row.skin_md5, row.identifier);
+        continue;
+    }
     if (
-      iaItem.getUploadedFiles().length >= 2 ||
-      iaItem.getSkinFiles().length !== 1
+      iaItem.getUploadedFiles().length >= 2
     ) {
       continue;
     }
@@ -44,17 +52,21 @@ export async function uploadScreenshotIfSafe(md5: string): Promise<boolean> {
     throw new Error("Expected ia item to exist");
   }
   if (!iaItem.row.metadata) {
+    console.warn("No metadata found for row");
     return false;
   }
   if (await iaItem.hasRunningTasks()) {
+    console.warn("Has running tasks");
     return false;
   }
   const skinFiles = iaItem.getSkinFiles();
   if (skinFiles.length != 1) {
+    console.warn(`Has ${skinFiles.length} skins`);
     return false;
   }
   const uploadedFiles = iaItem.getUploadedFiles();
   if (uploadedFiles.length !== skinFiles.length) {
+    console.warn(`Has ${skinFiles.length} skins and ${uploadedFiles.length} uploaded files.`);
     return false;
   }
 
