@@ -27,6 +27,7 @@ import SkinModel from "./data/SkinModel";
 import _temp from "temp";
 import Shooter from "./shooter";
 import { program } from "commander";
+import * as config from "./config";
 
 async function withHandler(
   cb: (handler: DiscordEventHandler) => Promise<void>
@@ -43,6 +44,7 @@ async function withDiscordClient(
   cb: (handler: Discord.Client) => Promise<void>
 ) {
   const client = new Discord.Client();
+  await client.login(config.discordToken);
   try {
     await cb(client);
   } finally {
