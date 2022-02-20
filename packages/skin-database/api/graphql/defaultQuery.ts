@@ -17,33 +17,33 @@ const DEFAULT_QUERY = `# Winamp Skins GraphQL API
 
 # An example query to get you started...
 query MyQuery {
-  # Get info about a @winampskins tweet
-  # (spoiler, it's Luigihann's ZeldaAmp)
-  fetch_tweet_by_url(url: "https://twitter.com/winampskins/status/1056605906597629953") {
-    skin {
 
-      # The filename of the skin that the tweet is about
+  # Search for a skin made by LuigiHann
+  search_skins(query: "luigihann zelda", first: 1) {
+    # The filename of the skin
+    filename
+    download_url
+    museum_url
+
+    # Try hovering the returned url
+    # for a preview of the skin -->
+    screenshot_url
+
+    # All the tweets that shared this skin
+    tweets {
+      likes
+      retweets
+      url
+    }
+
+    # Information about the files contained within the skin
+    archive_files {
       filename
-      download_url
-      screenshot_url
-      museum_url
-
-      # All the tweets that shared this skin
-      tweets {
-        likes
-        retweets
-        url
-      }
-
-      # Information about the files contained within the skin
-      archive_files {
-        filename
-        # For image files, try hovering the
-        # returned url --->
-        url
-        # Date the file was created according to the zip file
-        date
-      }
+      # For image files, try hovering the
+      # returned url --->
+      url
+      # Date the file was created according to the zip file
+    date
     }
   }
 }`;
