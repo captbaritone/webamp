@@ -9,6 +9,7 @@ import * as Parallel from "async-parallel";
 import IaItemModel from "../data/IaItemModel";
 import DiscordEventHandler from "../api/DiscordEventHandler";
 import { exec } from "../utils";
+import * as IAService from "../services/internetArchive";
 
 export async function findItemsMissingImages(): Promise<string[]> {
   const ctx = new UserContext();
@@ -21,18 +22,16 @@ export async function findItemsMissingImages(): Promise<string[]> {
     if (iaItem == null) {
       throw new Error("Expected to find IA item");
     }
-    if(iaItem.getSkinFiles().length > 1) {
-        console.warn("Too many skin files", row.skin_md5, row.identifier);
-        continue;
+    if (iaItem.getSkinFiles().length > 1) {
+      console.warn("Too many skin files", row.skin_md5, row.identifier);
+      continue;
     }
-    if(iaItem.getSkinFiles().length < 1) {
-        console.log(iaItem.getAllFiles());
-        console.warn("Missing skin file", row.skin_md5, row.identifier);
-        continue;
+    if (iaItem.getSkinFiles().length < 1) {
+      console.log(iaItem.getAllFiles());
+      console.warn("Missing skin file", row.skin_md5, row.identifier);
+      continue;
     }
-    if (
-      iaItem.getUploadedFiles().length >= 2
-    ) {
+    if (iaItem.getUploadedFiles().length >= 2) {
       continue;
     }
 
@@ -66,16 +65,64 @@ export async function uploadScreenshotIfSafe(md5: string): Promise<boolean> {
   }
   const uploadedFiles = iaItem.getUploadedFiles();
   if (uploadedFiles.length !== skinFiles.length) {
-    console.warn(`Has ${skinFiles.length} skins and ${uploadedFiles.length} uploaded files.`);
+    console.warn(
+      `Has ${skinFiles.length} skins and ${uploadedFiles.length} uploaded files.`
+    );
     return false;
   }
 
   await skin.withScreenshotTempFile(async (screenshotFile) => {
-    const command = `ia upload ${iaItem.getIdentifier()} "${screenshotFile}"`;
-    await exec(command, { encoding: "utf8" });
+    await IAService.uploadFile(iaItem.getIdentifier(), screenshotFile);
   });
   await iaItem.invalidateMetadata();
   return true;
+}
+
+export async function updateMissingMetadata(
+  ctx: UserContext,
+  count: number
+): Promise<void> {
+  const results = await knex("ia_items").limit(count).select();
+
+  for (const row of results) {
+    const _iaItem = new IaItemModel(ctx, row);
+    throw new Error("Not implemented yet");
+  }
+  //
+}
+
+export async function updateMetadata(
+  ctx: UserContext,
+  md5: string
+): Promise<void> {
+  const skin = await SkinModel.fromMd5Assert(ctx, md5);
+  if (skin.getSkinType() !== "CLASSIC") {
+    throw new Error("Only classic skins can be updated");
+  }
+
+  const filename = await skin.getFileName();
+
+  const title = `Winamp Skin: ${filename}`;
+
+  const metadata: { [key: string]: string } = {
+    title,
+    skintype: "wsz",
+    mediatype: "software",
+    webamp: skin.getWebampUrl(),
+    museum: skin.getMuseumUrl(),
+  };
+
+  if (await skin.getIsNsfw()) {
+    metadata.review = "NSFW";
+  }
+
+  const iaItem = await skin.getIaItem();
+  if (iaItem == null) {
+    throw new Error("Expected IA item to exist");
+  }
+
+  await IAService.setMetadata(iaItem.getIdentifier(), metadata);
+  await iaItem.invalidateMetadata();
 }
 
 /** LEGACY BELOW HERE */
@@ -123,9 +170,7 @@ export async function identifierExists(identifier: string): Promise<boolean> {
   if (existing.length > 0) {
     return true;
   }
-  const result = await exec(`ia metadata ${identifier}`);
-  const data = JSON.parse(result.stdout);
-  return Object.keys(data).length > 0;
+  return IAService.identifierExists(identifier);
 }
 
 async function getNewIdentifier(filename: string): Promise<string> {
@@ -162,7 +207,7 @@ export async function archive(skin: SkinModel): Promise<string> {
   return identifier;
 }
 
-export async function syncWithArchive(handler: DiscordEventHandler) {
+export async function syncToArchive(handler: DiscordEventHandler) {
   const ctx = new UserContext();
   console.log("Checking which new skins we have...");
   const unarchived = await knex("skins")

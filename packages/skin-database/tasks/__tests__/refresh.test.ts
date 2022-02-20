@@ -33,10 +33,7 @@ test("refresh", async () => {
 
 test("can't extract", async () => {
   const ctx = new UserContext();
-  const skin = await SkinModel.fromMd5(ctx, "a_fake_md5");
-  if (skin == null) {
-    throw new Error("Could not find skin");
-  }
+  const skin = await SkinModel.fromMd5Assert(ctx, "a_fake_md5");
   skin.getBuffer = async () => Buffer.from("");
 
   await refresh(skin, shooter);
@@ -54,10 +51,7 @@ test("can't extract", async () => {
 
 test("valid skin (TopazAmp)", async () => {
   const ctx = new UserContext();
-  const skin = await SkinModel.fromMd5(ctx, "a_fake_md5");
-  if (skin == null) {
-    throw new Error("Could not find skin");
-  }
+  const skin = await SkinModel.fromMd5Assert(ctx, "a_fake_md5");
 
   skin.getBuffer = async () => {
     return fs.readFileSync(

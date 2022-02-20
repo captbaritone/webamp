@@ -15,12 +15,7 @@ import {
   integrityCheck,
   checkInternetArchiveMetadata,
 } from "./tasks/integrityCheck";
-import {
-  ensureWebampLinks,
-  findItemsMissingImages,
-  syncWithArchive,
-  uploadScreenshotIfSafe,
-} from "./tasks/syncToArchive";
+import * as SyncToArchive from "./tasks/syncToArchive";
 import { fillMissingMetadata, syncFromArchive } from "./tasks/syncFromArchive";
 import { refreshSkins } from "./tasks/refresh";
 import {
@@ -109,7 +104,8 @@ program
     "Retake the screenshot of a skin and update the database."
   )
   .option("--reject", 'Give a skin a "rejected" review.')
-  .action(async (md5, { delete: del, index, refresh, reject }) => {
+  .option("--metadata", "Push metadata to the archive.")
+  .action(async (md5, { delete: del, index, refresh, reject, metadata }) => {
     const ctx = new UserContext("CLI");
     if (del) {
       await Skins.deleteSkin(md5);
@@ -123,6 +119,9 @@ program
     }
     if (reject) {
       await Skins.reject(ctx, md5);
+    }
+    if (metadata) {
+      await SyncToArchive.updateMetadata(ctx, md5);
     }
   });
 
@@ -172,28 +171,31 @@ program
       "and add them to our database."
   )
   .option(
-    "--webamp-links",
-    "Seach the Internet Archive for items missing a Webamp link" +
-      "and add them."
+    "--update-metadata <count>",
+    "Find <count> items in our database that have incorrect or incomplete " +
+      "metadata, and update the Internet Archive"
   )
   .option(
     "--upload-new",
     "Find newly uploaded skins, and publish them to the Internet Archive."
   )
-  .action(async ({ fetchMetadata, webampLinks, fetchItems, upload }) => {
+  .action(async ({ fetchMetadata, updateMetadata, fetchItems, upload }) => {
     if (fetchMetadata) {
       await fillMissingMetadata(Number(fetchMetadata || 1000));
-    }
-    if (webampLinks) {
-      await ensureWebampLinks();
     }
     if (fetchItems) {
       await syncFromArchive();
     }
     if (upload) {
       await withHandler(async (handler) => {
-        await syncWithArchive(handler);
+        await SyncToArchive.syncToArchive(handler);
       });
+    }
+    if (updateMetadata) {
+      await SyncToArchive.updateMissingMetadata(
+        new UserContext(),
+        Number(updateMetadata || 1000)
+      );
     }
   });
 
@@ -297,14 +299,14 @@ program
   .action(async ({ uploadIaScreenshot, uploadMissingScreenshots }) => {
     if (uploadIaScreenshot) {
       const md5 = uploadIaScreenshot;
-      if (!(await uploadScreenshotIfSafe(md5))) {
+      if (!(await SyncToArchive.uploadScreenshotIfSafe(md5))) {
         console.log("Did not upload screenshot");
       }
     }
     if (uploadMissingScreenshots) {
-      const md5s = await findItemsMissingImages();
+      const md5s = await SyncToArchive.findItemsMissingImages();
       for (const md5 of md5s) {
-        if (await uploadScreenshotIfSafe(md5)) {
+        if (await SyncToArchive.uploadScreenshotIfSafe(md5)) {
           console.log("Upladed screenshot for ", md5);
         } else {
           console.log("Did not upload screenshot for ", md5);

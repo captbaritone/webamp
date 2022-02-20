@@ -3,8 +3,7 @@ import { IaItemRow } from "../types";
 import SkinModel from "./SkinModel";
 import DataLoader from "dataloader";
 import { knex } from "../db";
-import { exec } from "../utils";
-import fetch from "node-fetch";
+import { fetchMetadata, fetchTasks } from "../services/internetArchive";
 
 const IA_URL = /^(https:\/\/)?archive.org\/details\/([^/]+)\/?/;
 
@@ -77,10 +76,10 @@ export default class IaItemModel {
       return [];
     }
     try {
-        return JSON.parse(this.row.metadata).files;
-    } catch(e) {
-        console.warn("Could not parse", this.row.metadata);
-        return [];
+      return JSON.parse(this.row.metadata).files;
+    } catch (e) {
+      console.warn("Could not parse", this.row.metadata);
+      return [];
     }
   }
 
@@ -91,20 +90,15 @@ export default class IaItemModel {
   // There should be exactly one, but in error cases there can be more or none.
   getSkinFiles(): any[] {
     return this.getUploadedFiles().filter((file) => {
-        return file.name.toLowerCase().endsWith(".wsz")
-            || file.name.toLowerCase().endsWith(".zip");
+      return (
+        file.name.toLowerCase().endsWith(".wsz") ||
+        file.name.toLowerCase().endsWith(".zip")
+      );
     });
   }
 
   async getTasks(): Promise<any[]> {
-    const command = `ia tasks ${this.getIdentifier()}`;
-    const result = await exec(command, {
-      encoding: "utf8",
-    });
-    return result.stdout
-      .trim()
-      .split("\n")
-      .map((line) => JSON.parse(line))
+    return fetchTasks(this.getIdentifier());
   }
 
   async hasRunningTasks(): Promise<boolean> {
@@ -132,15 +126,11 @@ export default class IaItemModel {
   async updateMetadataUnsafe(): Promise<void> {
     // TODO: Move some of this into a IA service.
     const identifier = this.getIdentifier();
-    const r = await fetch(`https://archive.org/metadata/${identifier}`);
-    if (!r.ok) {
-      console.error(await r.json());
-      throw new Error(`Could not fetch metadata for ${identifier}`);
-    }
-    const response = await r.json();
+    const metadata = await fetchMetadata(identifier);
+
     await knex("ia_items")
       .where("identifier", identifier)
-      .update({ metadata: JSON.stringify(response, null, 2) })
+      .update({ metadata: JSON.stringify(metadata, null, 2) })
       .update("metadata_timestamp", knex.fn.now());
   }
 
