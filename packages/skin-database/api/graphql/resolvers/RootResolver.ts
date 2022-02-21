@@ -7,7 +7,7 @@ import UserResolver from "../resolvers/UserResolver";
 import SkinsConnection from "../SkinsConnection";
 import TweetsConnection from "../TweetsConnection";
 import InternetArchiveItemResolver from "./InternetArchiveItemResolver";
-import * as Skins from "../../../data/Skins";
+import * as Skins from "../../../data/skins";
 
 import algoliasearch from "algoliasearch";
 import MutationResolver from "./MutationResolver";
