@@ -1,4 +1,5 @@
-import { API_URL } from "../constants";
+import { API_URL, USE_GRAPHQL } from "../constants";
+import { gql, fetchGraphql } from "../utils";
 
 // Upload a skin to S3 and then notify our API that it's ready to process.
 export async function upload(fileObj) {
@@ -38,32 +39,94 @@ export async function upload(fileObj) {
 // in the DB. For missing skins, we get a URL we can use to upload directly to
 // S3.
 export async function getUploadUrls(skins) {
-  const response = await fetch(`${API_URL}/skins/get_upload_urls`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ skins }),
-  });
-  return response.json();
+  if (USE_GRAPHQL) {
+    const files = Object.entries(skins).map(([md5, filename]) => {
+      return {
+        md5,
+        filename,
+      };
+    });
+    const mutation = gql`
+      mutation GetUploadUrls($files: [uplaodRequst!]!) {
+        upload {
+          get_upload_urls(files: $files) {
+            id
+            url
+            md5
+          }
+        }
+      }
+    `;
+    const data = await fetchGraphql(mutation, { files });
+    const normalized = {};
+    for (const { md5, id, url } in data.upload.get_upload_urls) {
+      normalized[md5] = {
+        id,
+        url,
+      };
+    }
+    return normalized;
+  } else {
+    const response = await fetch(`${API_URL}/skins/get_upload_urls`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ skins }),
+    });
+    return response.json();
+  }
 }
 
 // Tell the server that we've uploaded a given skin to S3.
 export async function reportUploaded(md5, id) {
-  const url = new URL(`${API_URL}/skins/${md5}/uploaded`);
-  url.searchParams.append("id", id);
-  const response = await fetch(url, { method: "POST" });
-  if (!response.ok) {
-    throw new Error("Unable to report skin as uploaded.");
+  if (USE_GRAPHQL) {
+    const mutation = gql`
+      mutation GetUploadUrls($id: String!, $md5: String!) {
+        upload {
+          report_skin_uploaded(id: $id, md5: $md5)
+        }
+      }
+    `;
+    const data = await fetchGraphql(mutation, { id, md5 });
+    if (!data.upload.report_skin_uploaded) {
+      throw new Error("Unable to report skin as uploaded.");
+    }
+  } else {
+    const url = new URL(`${API_URL}/skins/${md5}/uploaded`);
+    url.searchParams.append("id", id);
+    const response = await fetch(url, { method: "POST" });
+    if (!response.ok) {
+      throw new Error("Unable to report skin as uploaded.");
+    }
   }
 }
 
 // Given a list of md5s, ask the server which ones have been fully screenshot etc.
 export async function checkMd5sUploadStatus(md5s) {
-  const response = await fetch(`${API_URL}/skins/status`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ hashes: md5s }),
-  });
-  return response.json();
+  if (USE_GRAPHQL) {
+    const query = gql`
+      query CheckUploadStatus($md5s: [String!]!) {
+        upload_statuses_by_md5(md5s: $md5s) {
+          upload_md5
+          status
+        }
+      }
+    `;
+    const data = await fetchGraphql(query, { md5s });
+    return data.upload_statuses_by_md5.map((status) => {
+      return {
+        id: status.id,
+        md5: status.upload_md5,
+        status: status.status,
+      };
+    });
+  } else {
+    const response = await fetch(`${API_URL}/skins/status`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ hashes: md5s }),
+    });
+    return response.json();
+  }
 }
 
 export async function hashFile(file) {

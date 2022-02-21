@@ -6,6 +6,25 @@ import { useActionCreator } from "./hooks";
 
 import { useCallback } from "react";
 import { useSelector } from "react-redux";
+import { fetchGraphql, gql } from "./utils";
+import { USE_GRAPHQL } from "./constants";
+
+async function sendFeedback(variables) {
+  if (USE_GRAPHQL) {
+    const mutation = gql`
+      mutation GiveFeedback($message: String!, $email: String, $url: String) {
+        send_feedback(message: $message, email: $email, url: $url)
+      }
+    `;
+    await fetchGraphql(mutation, variables);
+  } else {
+    await fetch(`${API_URL}/feedback`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(variables),
+    });
+  }
+}
 
 export default function Feedback() {
   const close = useActionCreator(Actions.closeFeedbackForm);
@@ -15,17 +34,14 @@ export default function Feedback() {
   const [sent, setSent] = useState(false);
   const url = useSelector(getUrl);
   const send = useCallback(async () => {
-    const body = { message, email, url: "https://skins/webamp.org" + url };
     if (message.trim().length === 0) {
       alert("Please add a message before sending.");
       return;
     }
+    const body = { message, email, url: "https://skins/webamp.org" + url };
     setSending(true);
-    await fetch(`${API_URL}/feedback`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
+    await sendFeedback(body);
+
     setSent(true);
   }, [message, email, url]);
 

@@ -1,4 +1,4 @@
-import { SKIN_CDN, SCREENSHOT_CDN } from "./constants";
+import { SKIN_CDN, SCREENSHOT_CDN, API_URL } from "./constants";
 
 export function screenshotUrlFromHash(hash) {
   return `${SCREENSHOT_CDN}/screenshots/${hash}.png`;
@@ -90,4 +90,43 @@ export function filenameIsReadme(filename) {
       // Skinning Updates.txt ?
     ].some((name) => filename.match(new RegExp(name, "i")))
   );
+}
+
+// Tools like Prettier can infer that a string is GraphQL if it uses this tagged
+// template liteal.
+export function gql(strings) {
+  return strings[0];
+}
+
+export async function fetchGraphql(query, variables = {}) {
+  const url = `${API_URL}/graphql`;
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    mode: "cors",
+    credentials: "include",
+    body: JSON.stringify({ query, variables }),
+  });
+  if (response.status === 403) {
+    window.location = `${API_URL}/auth`;
+  }
+  if (!response.ok) {
+    const payload = await response.text();
+    throw new Error(
+      `GraphQL respose error.
+URL: ${url}
+Status: ${response.status}:
+Respones body:
+${payload}`
+    );
+  }
+
+  const payload = await response.json();
+  if (payload.errors) {
+    console.warn("GraphQL Response included errors", payload.errors);
+  }
+  return payload.data;
 }

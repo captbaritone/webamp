@@ -1,11 +1,40 @@
 import * as Utils from "./utils";
+import { gql } from "./utils";
 import TinderCard from "react-tinder-card";
-import { API_URL } from "./constants";
+import { API_URL, USE_GRAPHQL } from "./constants";
 import React, { useState, useEffect } from "react";
 
 function warmScreenshotImage(hash) {
   const screenshotUrl = Utils.screenshotUrlFromHash(hash);
   new Image().src = screenshotUrl;
+}
+
+const mutation = gql`
+  query GetSkinToReview {
+    skin_to_review {
+      filename
+      md5
+    }
+  }
+`;
+
+async function getSkinToReview() {
+  if (USE_GRAPHQL) {
+    const data = await Utils.fetchGraphql(mutation);
+    return data.skin_to_review;
+  } else {
+    const response = await fetch(
+      `${API_URL}/to_review?cacheBust=${Math.random()}`,
+      {
+        mode: "cors",
+        credentials: "include",
+      }
+    );
+    if (response.status === 403) {
+      window.location = `${API_URL}/auth`;
+    }
+    return response.json();
+  }
 }
 
 function useQueuedSkin() {
@@ -23,24 +52,13 @@ function useQueuedSkin() {
       return;
     }
     let canceled = false;
-    fetch(`${API_URL}/to_review?cacheBust=${Math.random()}`, {
-      mode: "cors",
-      credentials: "include",
-    })
-      .then((response) => {
-        if (response.status === 403) {
-          window.location = `${API_URL}/auth`;
-        }
-        return response;
-      })
-      .then((response) => response.json())
-      .then((response) => {
-        if (canceled) {
-          return;
-        }
-        warmScreenshotImage(response.md5);
-        setQueue((queue) => [...queue, response]);
-      });
+    getSkinToReview().then((response) => {
+      if (canceled) {
+        return;
+      }
+      warmScreenshotImage(response.md5);
+      setQueue((queue) => [...queue, response]);
+    });
 
     return () => (canceled = true);
   }, [queue]);
@@ -48,47 +66,75 @@ function useQueuedSkin() {
   return [queue, remove];
 }
 
+async function approveSkin(md5) {
+  if (USE_GRAPHQL) {
+    const mutation = gql`
+      mutation ApproveSkin($md5: String!) {
+        approve_skin(md5: $md5)
+      }
+    `;
+    await Utils.fetchGraphql(mutation, { md5 });
+  } else {
+    await restReview("approve", md5);
+  }
+}
+
+async function rejectSkin(md5) {
+  if (USE_GRAPHQL) {
+    const mutation = gql`
+      mutation RejectSkin($md5: String!) {
+        reject_skin(md5: $md5)
+      }
+    `;
+    await Utils.fetchGraphql(mutation, { md5 });
+  } else {
+    await restReview("reject", md5);
+  }
+}
+
+async function markSkinNSFW(md5) {
+  if (USE_GRAPHQL) {
+    const mutation = gql`
+      mutation markSkinNSFW($md5: String!) {
+        mark_skin_nsfw(md5: $md5)
+      }
+    `;
+    await Utils.fetchGraphql(mutation, { md5 });
+  } else {
+    await restReview("nsfw", md5);
+  }
+}
+
+async function restReview(action, md5) {
+  const response = await fetch(`${API_URL}/skins/${md5}/${action}`, {
+    method: "POST",
+    mode: "cors",
+    credentials: "include",
+  });
+
+  if (response.status === 403) {
+    window.location = `${API_URL}/auth`;
+  }
+}
+
 export default function ReviewPage() {
   const [skins, remove] = useQueuedSkin();
   async function approve(skin) {
     remove();
-    const response = await fetch(`${API_URL}/skins/${skin.md5}/approve`, {
-      method: "POST",
-      mode: "cors",
-      credentials: "include",
-    });
-    if (response.status === 403) {
-      window.location = `${API_URL}/auth`;
-    }
+    await approveSkin(skin.md5);
   }
   async function reject(skin) {
     remove();
-    const response = await fetch(`${API_URL}/skins/${skin.md5}/reject`, {
-      method: "POST",
-      mode: "cors",
-      credentials: "include",
-    });
-
-    if (response.status === 403) {
-      window.location = `${API_URL}/auth`;
-    }
+    await rejectSkin(skin.md5);
   }
 
   async function nsfw(skin) {
     remove();
-    const response = await fetch(`${API_URL}/skins/${skin.md5}/nsfw`, {
-      method: "POST",
-      mode: "cors",
-      credentials: "include",
-    });
-
-    if (response.status === 403) {
-      window.location = `${API_URL}/auth`;
-    }
+    await markSkinNSFW(skin.md5);
   }
 
   useEffect(() => {
-    if (skins.lenght === 0) {
+    if (skins.length === 0) {
       return;
     }
     function handleKeypress(e) {

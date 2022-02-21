@@ -3,6 +3,8 @@ import { of, from, EMPTY, concat, timer, defer } from "rxjs";
 import * as Actions from "./actionCreators";
 import * as Selectors from "./selectors";
 import * as Utils from "../utils";
+import { USE_GRAPHQL } from "../constants";
+import { gql } from "../utils";
 import {
   tap,
   filter,
@@ -181,23 +183,56 @@ const chunkState = {};
 const unloadedSkinEpic = (actions, states) =>
   actions.pipe(
     filter((action) => action.type === "REQUEST_UNLOADED_SKIN"),
-    mergeMap(async ({ index }) => {
-      const chunk = Math.floor(index / (CHUNK_SIZE - 1));
-
-      if (chunkState[chunk] != null) {
-        return null;
-      }
-      chunkState[chunk] = "fetching";
-      const response = await fetch(
-        `${API_URL}/skins?offset=${chunk * CHUNK_SIZE}&first=${CHUNK_SIZE}`
-      );
-
-      // TODO: Handle 404
-
-      const body = await response.json();
-      return [body, chunk];
+    map(({ index }) => {
+      return Math.floor(index / (CHUNK_SIZE - 1));
     }),
-    filter(Boolean),
+    filter((chunk) => chunkState[chunk] == null),
+    map((chunk) => {
+      chunkState[chunk] = "fetching";
+      const offset = chunk * CHUNK_SIZE;
+      const first = CHUNK_SIZE;
+      return { offset, first, chunk };
+    }),
+    mergeMap(({ offset, first, chunk }) => {
+      if (USE_GRAPHQL) {
+        const query = `
+      query MuseumPage($offset: Int, $first: Int) {
+        skins(offset: $offset, first: $first, sort: MUSEUM) {
+          count
+          nodes {
+            md5
+            filename
+            nsfw
+          }
+        }
+      }
+      `;
+
+        return from(Utils.fetchGraphql(query, { offset, first })).pipe(
+          map((data) => {
+            // Map GraphQL data into the format previously returned by REST.
+            return {
+              skinCount: data.skins.count,
+              skins: data.skins.nodes.map((skin) => ({
+                md5: skin.md5,
+                fileName: skin.filename,
+                nsfw: skin.nsfw,
+              })),
+            };
+          }),
+          map((payload) => [payload, chunk])
+        );
+      }
+
+      return from(
+        fetch(
+          `${API_URL}/skins?offset=${chunk * CHUNK_SIZE}&first=${CHUNK_SIZE}`
+        )
+      ).pipe(
+        mergeMap((response) => response.json()),
+        map((body) => [body, chunk])
+      );
+    }),
     mergeMap(([body, chunk]) => {
       return of(
         { type: "GOT_SKIN_CHUNK", chunk, payload: body.skins },
@@ -430,10 +465,26 @@ const urlEpic = (actions, state) => {
   return actions.pipe(
     map(() => Selectors.getUrl(state.value)),
     distinctUntilChanged(),
-    startWith(window.location),
+    startWith(window.location.pathname),
     tap((url) => {
-      window.ga("set", "page", url);
-      window.history.replaceState({}, Selectors.getPageTitle(state), url);
+      const currentParams = new URLSearchParams(document.location.search);
+      const proposedUrl = new URL(window.location.origin + url);
+
+      // There are some params that we want to preserve across reloads.
+      for (const key of ["graphql", "vps"]) {
+        let current = currentParams.get(key);
+        if (current == null) {
+          proposedUrl.searchParams.delete(key);
+        } else {
+          proposedUrl.searchParams.set(key, current);
+        }
+      }
+
+      const newUrl = proposedUrl.toString();
+
+      window.ga("set", "page", newUrl);
+
+      window.history.replaceState({}, Selectors.getPageTitle(state), newUrl);
     }),
     ignoreElements()
   );
@@ -449,16 +500,37 @@ const skinDataEpic = (actions, state) => {
         skinData.fileName == null ||
         skinData.nsfw == null
       ) {
-        return from(fetch(`${API_URL}/skins/${hash}`)).pipe(
-          switchMap((response) => response.json()),
-          map((body) => {
-            return Actions.gotSkinData(hash, {
-              md5: hash,
-              fileName: body.fileName,
-              nsfw: body.nsfw,
-            });
-          })
-        );
+        if (USE_GRAPHQL) {
+          const QUERY = gql`
+            query ($md5: String!) {
+              fetch_skin_by_md5(md5: $md5) {
+                filename
+                nsfw
+              }
+            }
+          `;
+          return from(Utils.fetchGraphql(QUERY, { md5: hash })).pipe(
+            map((data) => {
+              const skin = data.fetch_skin_by_md5;
+              return Actions.gotSkinData(hash, {
+                md5: hash,
+                fileName: skin.fileName,
+                nsfw: skin.nsfw,
+              });
+            })
+          );
+        } else {
+          return from(fetch(`${API_URL}/skins/${hash}`)).pipe(
+            switchMap((response) => response.json()),
+            map((body) => {
+              return Actions.gotSkinData(hash, {
+                md5: hash,
+                fileName: body.fileName,
+                nsfw: body.nsfw,
+              });
+            })
+          );
+        }
       }
       return EMPTY;
     })
@@ -470,12 +542,21 @@ const markNsfwEpic = (actions) => {
     filter((action) => action.type === "MARK_NSFW"),
     mergeMap(async ({ hash }) => {
       try {
-        const response = await fetch(`${API_URL}/skins/${hash}/report`, {
-          method: "POST",
-          mode: "cors",
-        });
-        if (!response.ok) {
-          throw new Error("Failed to report skin.");
+        if (USE_GRAPHQL) {
+          const mutation = gql`
+            mutation ReportSkin($md5: String!) {
+              request_nsfw_review_for_skin(md5: $md5)
+            }
+          `;
+          await Utils.fetchGraphql(mutation, { md5: hash });
+        } else {
+          const response = await fetch(`${API_URL}/skins/${hash}/report`, {
+            method: "POST",
+            mode: "cors",
+          });
+          if (!response.ok) {
+            throw new Error("Failed to report skin.");
+          }
         }
       } catch (e) {
         return Actions.alert(
