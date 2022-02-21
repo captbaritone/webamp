@@ -80,7 +80,7 @@ export async function getUploadUrls(skins) {
 export async function reportUploaded(md5, id) {
   if (USE_GRAPHQL) {
     const mutation = gql`
-      mutation GetUploadUrls($id: String!, $md5: String!) {
+      mutation ReportUploaded($id: String!, $md5: String!) {
         upload {
           report_skin_uploaded(id: $id, md5: $md5)
         }

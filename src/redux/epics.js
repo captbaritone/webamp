@@ -195,18 +195,18 @@ const unloadedSkinEpic = (actions, states) =>
     }),
     mergeMap(({ offset, first, chunk }) => {
       if (USE_GRAPHQL) {
-        const query = `
-      query MuseumPage($offset: Int, $first: Int) {
-        skins(offset: $offset, first: $first, sort: MUSEUM) {
-          count
-          nodes {
-            md5
-            filename
-            nsfw
+        const query = gql`
+          query MuseumPage($offset: Int, $first: Int) {
+            skins(offset: $offset, first: $first, sort: MUSEUM) {
+              count
+              nodes {
+                md5
+                filename
+                nsfw
+              }
+            }
           }
-        }
-      }
-      `;
+        `;
 
         return from(Utils.fetchGraphql(query, { offset, first })).pipe(
           map((data) => {
@@ -502,7 +502,7 @@ const skinDataEpic = (actions, state) => {
       ) {
         if (USE_GRAPHQL) {
           const QUERY = gql`
-            query ($md5: String!) {
+            query IndividualSkin($md5: String!) {
               fetch_skin_by_md5(md5: $md5) {
                 filename
                 nsfw
