@@ -23,6 +23,7 @@ const extensions = ({
 }) => {
   const runTime = Date.now() - req.startTime;
   const vars = JSON.stringify(variables);
+  // TODO: Log/notify on error.
   req.log(
     `Handled GraphQL Query: "${operationName}" with variables ${vars} in ${runTime}ms`
   );
