@@ -46,6 +46,9 @@ export type ArchiveFileRow = {
   file_name: string;
   file_md5: string;
   file_date: string;
+  uncompressed_size: number;
+  text_content: string | null;
+  is_directory: number; // SQLite uses integers for booleans
 };
 
 export type IaItemRow = {

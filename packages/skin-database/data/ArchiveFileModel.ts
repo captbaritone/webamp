@@ -19,8 +19,26 @@ export default class ArchiveFileModel {
     return rows.map((row) => new ArchiveFileModel(ctx, row));
   }
 
+  static async fromFileMd5(
+    ctx: UserContext,
+    md5: string
+  ): Promise<ArchiveFileModel | null> {
+    const row = await getArchiveFilesByFileMd5Loader(ctx).load(md5);
+    return row == null ? null : new ArchiveFileModel(ctx, row);
+  }
+
+  /**
+   * Md5 of the _skin_
+   *
+   * **Note:** This is not the md5 of the file itself. Consider renaming this to
+   * `getSkinMd5`
+   */
   getMd5(): string {
     return this.row.skin_md5;
+  }
+
+  getFileMd5(): string {
+    return this.row.file_md5;
   }
 
   getFileName(): string {
@@ -29,6 +47,19 @@ export default class ArchiveFileModel {
 
   getFileDate(): Date {
     return new Date(this.row.file_date);
+  }
+
+  // Null if directory
+  getFileSize(): number | null {
+    return this.row.uncompressed_size;
+  }
+
+  getTextContent(): string | null {
+    return this.row.text_content;
+  }
+
+  getIsDirectory(): boolean {
+    return Boolean(this.row.is_directory);
   }
 
   getUrl(): string {
@@ -56,5 +87,17 @@ const getArchiveFilesLoader = ctxWeakMapMemoize<
         .whereIn("skin_md5", md5s)
         .select();
       return md5s.map((md5) => rows.filter((x) => x.skin_md5 === md5));
+    })
+);
+
+const getArchiveFilesByFileMd5Loader = ctxWeakMapMemoize<
+  DataLoader<string, ArchiveFileRow>
+>(
+  () =>
+    new DataLoader<string, ArchiveFileRow>(async (md5s) => {
+      const rows = await knex("archive_files")
+        .whereIn("file_md5", md5s)
+        .select();
+      return md5s.map((md5) => rows.find((x) => x.file_md5 === md5));
     })
 );

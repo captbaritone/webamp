@@ -132,6 +132,33 @@ type ArchiveFile {
   format (ISO 8601).
   """
   date: String
+
+  """
+  The md5 hash of the file within the archive
+  """
+  file_md5: String
+
+  """
+  The uncompressed size of the file in bytes.
+
+  **Note:** Will be `null` for directories
+  """
+  size: Int
+
+  """
+  The content of the file, if it's a text file
+  """
+  text_content: String
+
+  """
+  Is the file a directory?
+  """
+  is_directory: Boolean
+
+  """
+  The skin in which this file was found
+  """
+  skin: Skin
 }
 
 """
@@ -414,6 +441,13 @@ type Query {
   Get a tweet by its URL
   """
   fetch_tweet_by_url(url: String!): Tweet
+
+  """
+  Fetch archive file by it's MD5 hash
+
+  Get information about a file found within a skin's wsz/wal/zip archive.
+  """
+  fetch_archive_file_by_md5(md5: String!): ArchiveFile
 
   """
   A random skin that needs to be reviewed

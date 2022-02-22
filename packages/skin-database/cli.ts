@@ -28,6 +28,9 @@ import _temp from "temp";
 import Shooter from "./shooter";
 import { program } from "commander";
 import * as config from "./config";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 async function withHandler(
   cb: (handler: DiscordEventHandler) => Promise<void>
@@ -117,7 +120,7 @@ program
     }
     if (refresh) {
       const skin = await SkinModel.fromMd5Assert(ctx, md5);
-      await refreshSkins([skin]);
+      await refreshSkins([skin], { noScreenshot: true });
     }
     if (reject) {
       await Skins.reject(ctx, md5);
@@ -236,6 +239,7 @@ program
     "--ia",
     "Check the Internet Archive for items that are missing files."
   )
+
   .action(async ({ ia }) => {
     if (ia) {
       await checkInternetArchiveMetadata();
@@ -298,24 +302,51 @@ program
     "--upload-missing-screenshots",
     "Find all IA items that are missing screenshots, and upload the missing ones."
   )
-  .action(async ({ uploadIaScreenshot, uploadMissingScreenshots }) => {
-    if (uploadIaScreenshot) {
-      const md5 = uploadIaScreenshot;
-      if (!(await SyncToArchive.uploadScreenshotIfSafe(md5))) {
-        console.log("Did not upload screenshot");
+  .option(
+    "--refresh-archive-files",
+    "Refresh the data we keep about files within skin archives"
+  )
+  .action(
+    async ({
+      uploadIaScreenshot,
+      uploadMissingScreenshots,
+      refreshArchiveFiles,
+    }) => {
+      if (uploadIaScreenshot) {
+        const md5 = uploadIaScreenshot;
+        if (!(await SyncToArchive.uploadScreenshotIfSafe(md5))) {
+          console.log("Did not upload screenshot");
+        }
       }
-    }
-    if (uploadMissingScreenshots) {
-      const md5s = await SyncToArchive.findItemsMissingImages();
-      for (const md5 of md5s) {
-        if (await SyncToArchive.uploadScreenshotIfSafe(md5)) {
-          console.log("Upladed screenshot for ", md5);
-        } else {
-          console.log("Did not upload screenshot for ", md5);
+      if (refreshArchiveFiles) {
+        const ctx = new UserContext();
+        const skinRows = await knex("skins")
+          .leftJoin("archive_files", "skins.md5", "archive_files.skin_md5")
+          .where("skin_type", 1)
+          .where((builder) => {
+            return builder
+              .where("archive_files.skin_md5", null)
+              .orWhere("archive_files.uncompressed_size", null);
+          })
+          .limit(80000)
+          .groupBy("skins.md5")
+          .select();
+        console.log(`Found ${skinRows.length} skins to update`);
+        const skins = skinRows.map((row) => new SkinModel(ctx, row));
+        await refreshSkins(skins, { noScreenshot: true });
+      }
+      if (uploadMissingScreenshots) {
+        const md5s = await SyncToArchive.findItemsMissingImages();
+        for (const md5 of md5s) {
+          if (await SyncToArchive.uploadScreenshotIfSafe(md5)) {
+            console.log("Upladed screenshot for ", md5);
+          } else {
+            console.log("Did not upload screenshot for ", md5);
+          }
         }
       }
     }
-  });
+  );
 
 async function main() {
   try {

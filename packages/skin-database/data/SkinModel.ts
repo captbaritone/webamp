@@ -18,6 +18,8 @@ import ArchiveFileModel, { ArchiveFileDebugData } from "./ArchiveFileModel";
 import * as Skins from "./skins";
 import fetch from "node-fetch";
 import JSZip from "jszip";
+import fs from "fs/promises";
+import path from "path";
 
 export default class SkinModel {
   constructor(readonly ctx: UserContext, readonly row: SkinRow) {}
@@ -194,11 +196,20 @@ export default class SkinModel {
   }
 
   getBuffer = mem(async (): Promise<Buffer> => {
-    const response = await fetch(this.getSkinUrl());
-    if (!response.ok) {
-      throw new Error(`Could not fetch skin at "${this.getSkinUrl()}"`);
+    if (process.env.LOCAL_FILE_CACHE) {
+      const skinPath = path.join(
+        process.env.LOCAL_FILE_CACHE,
+        "skins",
+        this.getMd5() + ".wsz"
+      );
+      return fs.readFile(skinPath);
+    } else {
+      const response = await fetch(this.getSkinUrl());
+      if (!response.ok) {
+        throw new Error(`Could not fetch skin at "${this.getSkinUrl()}"`);
+      }
+      return response.buffer();
     }
-    return response.buffer();
   });
 
   getScreenshotBuffer = mem(async (): Promise<Buffer> => {

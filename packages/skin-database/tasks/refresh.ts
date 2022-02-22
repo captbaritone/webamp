@@ -6,6 +6,7 @@ import * as Analyser from "../analyser";
 import Shooter from "../shooter";
 import { screenshot } from "./screenshotSkin";
 import * as Skins from "../data/skins";
+import { SkinType } from "../types";
 
 // TODO Move this into the function so that we clean up on each run?
 
@@ -40,7 +41,18 @@ export async function getSkinsToRefresh(
   return skins.map((row) => new SkinModel(ctx, row));
 }
 
-export async function refreshSkins(skins: SkinModel[]): Promise<void> {
+export async function refreshSkins(
+  skins: SkinModel[],
+  options: { noScreenshot: boolean }
+): Promise<void> {
+  if (options.noScreenshot) {
+    while (skins.length > 0) {
+      const skin = skins.pop();
+      // @ts-ignore
+      await refresh(skin, null);
+      console.log(`Refreshed ${skin?.getMd5()}`);
+    }
+  }
   const shooterLogger = () => {
     // Don't log
   };
@@ -55,7 +67,7 @@ export async function refreshSkins(skins: SkinModel[]): Promise<void> {
 
 export async function _refresh(
   skin: SkinModel,
-  shooter: Shooter
+  shooter: Shooter | null
 ): Promise<void> {
   const extractionError = await getExtractionError(skin);
   if (extractionError != null) {
@@ -66,7 +78,7 @@ export async function _refresh(
 
   await Analyser.setReadmeForSkin(skin);
 
-  let skinType;
+  let skinType: SkinType;
   try {
     skinType = await Analyser.getSkinType(await skin.getZip());
   } catch (e) {
@@ -82,7 +94,9 @@ export async function _refresh(
   }
 
   // Retake screenshot
-  await screenshot(skin, shooter);
+  if (shooter != null) {
+    await screenshot(skin, shooter);
+  }
 
   await knex("refreshes").insert({
     skin_md5: skin.getMd5(),
@@ -91,7 +105,7 @@ export async function _refresh(
 
 export async function refresh(
   skin: SkinModel,
-  shooter: Shooter
+  shooter: Shooter | null
 ): Promise<void> {
   if (skin.getSkinType() !== "CLASSIC") {
     throw new Error("Can't refresh non-classic skins");
@@ -99,6 +113,7 @@ export async function refresh(
   try {
     await _refresh(skin, shooter);
   } catch (e) {
+    console.error(e);
     await knex("refreshes").insert({
       skin_md5: skin.getMd5(),
       error: e.message,

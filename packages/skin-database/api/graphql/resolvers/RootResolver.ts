@@ -12,6 +12,8 @@ import * as Skins from "../../../data/skins";
 import algoliasearch from "algoliasearch";
 import MutationResolver from "./MutationResolver";
 import { knex } from "../../../db";
+import ArchiveFileModel from "../../../data/ArchiveFileModel";
+import ArchiveFileResolver from "./ArchiveFileResolver";
 
 // These keys are already in the web client, so they are not secret at all.
 const client = algoliasearch("HQ9I5Z6IM5", "6466695ec3f624a5fccf46ec49680e51");
@@ -38,6 +40,13 @@ class RootResolver extends MutationResolver {
       return null;
     }
     return new InternetArchiveItemResolver(iaItem);
+  }
+  async fetch_archive_file_by_md5({ md5 }, { ctx }) {
+    const archiveFile = await ArchiveFileModel.fromFileMd5(ctx, md5);
+    if (archiveFile == null) {
+      return null;
+    }
+    return new ArchiveFileResolver(archiveFile);
   }
 
   async search_skins({ query, first, offset }, { ctx }) {
