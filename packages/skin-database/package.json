@@ -33,7 +33,7 @@
     "knex": "^0.21.1",
     "lru-cache": "^6.0.0",
     "md5": "^2.2.1",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.7",
     "puppeteer": "^13.3.2",
     "sharp": "^0.28.3",
     "sqlite3": "^5.0.2",
