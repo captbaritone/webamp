@@ -118,13 +118,19 @@ export function getRandomSkinHash(state) {
 
 export const getPermalinkUrlFromHashGetter = createSelector(
   getSkins,
-  (skins) => {
+  getDebugViewOpen,
+  (skins, debugViewOpen) => {
     return (hash) => {
       const skin = skins[hash];
-      if (skin == null || skin.fileName == null) {
-        return `/skin/${hash}/`;
+
+      let root = `/skin/${hash}/`;
+      if (debugViewOpen) {
+        root += "debug/";
       }
-      return `/skin/${hash}/${skin.fileName}/`;
+      if (skin?.fileName != null) {
+        root += `${skin.fileName}/`;
+      }
+      return root;
     };
   }
 );
@@ -146,6 +152,7 @@ export const getRouteData = createSelector(
   getFocusedSkinFile,
   getPermalinkUrlFromHashGetter,
   getSelectedSkinData,
+  getDebugViewOpen,
   (
     activeContentPage,
     hash,
@@ -153,7 +160,8 @@ export const getRouteData = createSelector(
     fileExplorerOpen,
     focusedSkinFile,
     getPermalinkUrlFromHash,
-    skinData
+    skinData,
+    debugViewOpen
   ) => {
     if (activeContentPage === REVIEW_PAGE) {
       return { url: "/review/", title: "Review" };
@@ -242,4 +250,8 @@ export function getUploadedFiles(state) {
 
 export function getFeedbackFormOpen(state) {
   return state.showFeedbackForm;
+}
+
+export function getDebugViewOpen(state) {
+  return state.debugViewOpen;
 }

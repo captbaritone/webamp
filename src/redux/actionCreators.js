@@ -55,6 +55,10 @@ export function setDragging(dragging) {
   return { type: "SET_DRAGGING", dragging };
 }
 
+export function toggleDebugView() {
+  return { type: "TOGGLE_DEBUG_VIEW" };
+}
+
 export function toggleUploadView() {
   return { type: "TOGGLE_UPLOAD_VIEW" };
 }

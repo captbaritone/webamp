@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DownloadLink from "./DownloadLink";
 import * as Utils from "../utils";
 import LinkInput from "./LinkInput";
@@ -22,7 +22,19 @@ function Metadata() {
   // const toggleFileExplorer = useActionCreator(Actions.toggleFileExplorer);
   const focusedSkinFile = useSelector(Selectors.getFocusedSkinFile);
   const markNsfw = useActionCreator(Actions.markNsfw);
+  const toggleDebug = useActionCreator(Actions.toggleDebugView);
   const [showLink, setShowLink] = useState(false);
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (e.key === "d") {
+        toggleDebug();
+      }
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [toggleDebug]);
   // TODO: Move to Epic
   async function report(e) {
     e.preventDefault();

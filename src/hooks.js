@@ -45,10 +45,10 @@ export function useScrollbarWidth() {
 
 export function useActionCreator(actionCreator) {
   const dispatch = useDispatch();
-  return useCallback((...args) => dispatch(actionCreator(...args)), [
-    dispatch,
-    actionCreator,
-  ]);
+  return useCallback(
+    (...args) => dispatch(actionCreator(...args)),
+    [dispatch, actionCreator]
+  );
 }
 
 export function useWebampAnimation({ initialPosition }) {
@@ -99,4 +99,22 @@ export function useWebampAnimation({ initialPosition }) {
     loaded,
     handleWebampLoaded: () => webampLoadedEvents.next(null),
   };
+}
+
+export function useQuery(query, variables) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    let unmounted = false;
+    Utils.fetchGraphql(query, variables).then((data) => {
+      if (!unmounted) {
+        setData(data);
+        setLoading(false);
+      }
+    });
+    return () => {
+      unmounted = true;
+    };
+  }, [query, variables]);
+  return data;
 }

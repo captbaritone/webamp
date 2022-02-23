@@ -18,6 +18,7 @@ import Metadata from "./components/Metadata";
 import SkinReadme from "./SkinReadme";
 import { useDropzone } from "react-dropzone";
 import ReviewPage from "./ReviewPage";
+import DebugSkin from "./DebugSkin";
 
 const getTableDimensions = (windowWidth, scale) => {
   const columnCount = Math.round(windowWidth / (SCREENSHOT_WIDTH * scale));
@@ -53,6 +54,10 @@ function App(props) {
 
   if (props.page === REVIEW_PAGE) {
     return <ReviewPage />;
+  }
+
+  if (props.debugViewOpen && props.selectedSkinHash) {
+    return <DebugSkin md5={props.selectedSkinHash} />;
   }
 
   return (
@@ -108,6 +113,7 @@ const mapStateToProps = (state) => ({
   scale: state.scale,
   uploadViewOpen: Selectors.getUploadViewOpen(state),
   showFeedbackForm: state.showFeedbackForm,
+  debugViewOpen: Selectors.getDebugViewOpen(state),
 });
 
 export default connect(mapStateToProps)(App);

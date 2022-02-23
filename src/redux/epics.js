@@ -50,6 +50,10 @@ const urlChangedEpic = (actions) =>
       ) {
         const segments = action.location.pathname.split("/");
         const actions = [Actions.selectedSkin(segments[2])];
+        // TOOD: Account for the fact that we might have debug and files
+        if (segments[3] === "debug") {
+          actions.push(Actions.toggleDebugView());
+        }
         if (segments[4] === "files") {
           actions.push(
             // For now this is always the readme, so we don't need it.
@@ -465,9 +469,9 @@ const urlEpic = (actions, state) => {
   return actions.pipe(
     map(() => Selectors.getUrl(state.value)),
     distinctUntilChanged(),
-    startWith(window.location.pathname),
+    startWith(window.location.pathname + window.location.search),
     tap((url) => {
-      const currentParams = new URLSearchParams(document.location.search);
+      const currentParams = new URLSearchParams(window.location.search);
       const proposedUrl = new URL(window.location.origin + url);
 
       // There are some params that we want to preserve across reloads.

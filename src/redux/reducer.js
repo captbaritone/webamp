@@ -10,6 +10,7 @@ const defaultState = {
   skinZip: null,
   focusedSkinFile: null,
   fileExplorerOpen: false,
+  debugViewOpen: false,
   uploadViewOpen: false,
   areDragging: false,
   activeContentPage: null,
@@ -205,6 +206,7 @@ export default function reducer(state = defaultState, action) {
         activeContentPage: null,
         focusedSkinFile: null,
         fileExplorerOpen: false,
+        debugViewOpen: false,
         showFeedbackForm: false,
       };
     case "SEARCH_QUERY_CHANGED":
@@ -285,6 +287,11 @@ export default function reducer(state = defaultState, action) {
       return {
         ...state,
         showFeedbackForm: false,
+      };
+    case "TOGGLE_DEBUG_VIEW":
+      return {
+        ...state,
+        debugViewOpen: !state.debugViewOpen,
       };
     default:
       return state;
