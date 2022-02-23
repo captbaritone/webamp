@@ -111,18 +111,17 @@ export default function DebugSkin({ md5 }) {
         </div>
         <div style={{ flexGrow: 1 }}>
           <div style={{ textAlign: "right", marginBottom: 20 }}>
-            <a
-              href="#"
+            <button
               onClick={(e) => {
                 e.preventDefault();
                 toggleDebugView();
               }}
-              style={{ color: "blue" }}
             >
               [close]
-            </a>
+            </button>
           </div>
           <img
+            alt={`Screenshot of a Winamps skin named "${skin.filename}"`}
             style={{
               transformOrigin: "top left",
               transform: "scale(2)",

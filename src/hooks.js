@@ -103,7 +103,7 @@ export function useWebampAnimation({ initialPosition }) {
 
 export function useQuery(query, variables) {
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
   useEffect(() => {
     let unmounted = false;
     Utils.fetchGraphql(query, variables).then((data) => {
