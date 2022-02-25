@@ -14,7 +14,9 @@ const app = createApp({
     logError: (message, context) => console.error(message, context),
   },
 });
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(port, () =>
+  console.log(`Example app listening on http://localhost:${port}!`)
+);
 
 // Initialize Sentry after we start listening. Any crash at start time will appear in the console and we'll notice.
 /*
