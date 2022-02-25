@@ -14,6 +14,7 @@ import MutationResolver from "./MutationResolver";
 import { knex } from "../../../db";
 import ArchiveFileModel from "../../../data/ArchiveFileModel";
 import ArchiveFileResolver from "./ArchiveFileResolver";
+import DatabaseStatisticsResolver from "./DatabaseStatisticsResolver";
 
 // These keys are already in the web client, so they are not secret at all.
 const client = algoliasearch("HQ9I5Z6IM5", "6466695ec3f624a5fccf46ec49680e51");
@@ -54,7 +55,7 @@ class RootResolver extends MutationResolver {
       throw new Error("Can only query 1000 records via search.");
     }
 
-    const results = await index.search(query, {
+    const results: { hits: { md5: string }[] } = await index.search(query, {
       attributesToRetrieve: ["md5"],
       length: first,
       offset,
@@ -111,6 +112,10 @@ class RootResolver extends MutationResolver {
         return { id, skin, status, upload_md5: skin_md5 };
       })
     );
+  }
+
+  statistics() {
+    return new DatabaseStatisticsResolver();
   }
 }
 

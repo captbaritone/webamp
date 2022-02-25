@@ -427,6 +427,61 @@ export async function getSkinToPostToInstagram(): Promise<string | null> {
   return skin.md5;
 }
 
+export async function getUnreviewedSkinCount(): Promise<number> {
+  const rows = await knex("skins")
+    .where({ skin_type: 1 })
+    .whereNotIn("md5", knex("skin_reviews").select("skin_md5"))
+    .count("*", { as: "unreviewed" });
+  return Number(rows[0].unreviewed);
+}
+
+export async function getApprovedSkinCount(): Promise<number> {
+  const row = await knex("skin_reviews")
+    .first(knex.raw(`COUNT(DISTINCT skin_md5) AS "approved_count"`))
+    .where({ review: "APPROVED" });
+  return Number(row.approved_count);
+}
+
+export async function getRejectedSkinCount(): Promise<number> {
+  const row = await knex("skin_reviews")
+    .first(knex.raw(`COUNT(DISTINCT skin_md5) AS "rejected_count"`))
+    .where({ review: "REJECTED" });
+  return Number(row.rejected_count);
+}
+
+export async function getNsfwSkinCount(): Promise<number> {
+  const row = await knex("skin_reviews")
+    .first(knex.raw(`COUNT(DISTINCT skin_md5) AS "nsfw_count"`))
+    .where({ review: "NSFW" });
+  return Number(row.nsfw_count);
+}
+
+export async function getTweetedSkinCount(): Promise<number> {
+  const rows = await knex("tweets").count("*", { as: "tweeted" });
+  return Number(rows[0].tweeted);
+}
+
+export async function getWebUploadsCount(): Promise<number> {
+  const rows = await knex("files")
+    .where("source_attribution", "Web API")
+    .count("*", { as: "uploads" });
+  return Number(rows[0].uploads);
+}
+
+export async function getUploadsAwaitingProcessingCount(): Promise<number> {
+  const rows = await knex("skin_uploads")
+    .where("status", "UPLOAD_REPORTED")
+    .count("*", { as: "uploads" });
+  return Number(rows[0].uploads);
+}
+
+export async function getUploadsErroredCount(): Promise<number> {
+  const rows = await knex("skin_uploads")
+    .where("status", "ERRORED")
+    .count("*", { as: "uploads" });
+  return Number(rows[0].uploads);
+}
+
 export async function getStats(): Promise<{
   approved: number;
   rejected: number;
@@ -437,50 +492,15 @@ export async function getStats(): Promise<{
   uploadsAwaitingProcessing: number;
   uploadsErrored: number;
 }> {
-  const approved = (
-    await knex("skin_reviews")
-      .first(knex.raw(`COUNT(DISTINCT skin_md5) AS "approved_count"`))
-      .where({ review: "APPROVED" })
-  ).approved_count;
-  const rejected = (
-    await knex("skin_reviews")
-      .first(knex.raw(`COUNT(DISTINCT skin_md5) AS "rejected_count"`))
-      .where({ review: "REJECTED" })
-  ).rejected_count;
-  const nsfw = (
-    await knex("skin_reviews")
-      .first(knex.raw(`COUNT(DISTINCT skin_md5) AS "nsfw_count"`))
-      .where({ review: "NSFW" })
-  ).nsfw_count;
-  const tweeted = (await knex("tweets").count("*", { as: "tweeted" }))[0]
-    .tweeted;
-  const webUploads = (
-    await knex("files")
-      .where("source_attribution", "Web API")
-      .count("*", { as: "uploads" })
-  )[0].uploads;
-
-  const uploadsAwaitingProcessing = (
-    await knex("skin_uploads")
-      .where("status", "UPLOAD_REPORTED")
-      .count("*", { as: "uploads" })
-  )[0].uploads;
-
-  const uploadsErrored = (
-    await knex("skin_uploads")
-      .where("status", "ERRORED")
-      .count("*", { as: "uploads" })
-  )[0].uploads;
-  const tweetable = await getTweetableSkinCount();
   return {
-    approved: Number(approved),
-    rejected: Number(rejected),
-    nsfw: Number(nsfw),
-    tweeted: Number(tweeted),
-    tweetable,
-    webUploads: Number(webUploads),
-    uploadsAwaitingProcessing: Number(uploadsAwaitingProcessing),
-    uploadsErrored: Number(uploadsErrored),
+    approved: await getApprovedSkinCount(),
+    rejected: await getRejectedSkinCount(),
+    nsfw: await getNsfwSkinCount(),
+    tweeted: await getTweetedSkinCount(),
+    tweetable: await getTweetableSkinCount(),
+    webUploads: await getWebUploadsCount(),
+    uploadsAwaitingProcessing: await getUploadsAwaitingProcessingCount(),
+    uploadsErrored: await getUploadsErroredCount(),
   };
 }
 
