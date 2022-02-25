@@ -69,10 +69,12 @@ export default class GammaGroup {
         data[i + 2] = (data[i + 2] >> 1, 0, 255); // blue
       }
       let [ir,ig,ib] = [data[i],data[i+1],data[i+2] ];
-      if(this._gray==2)  ir = (ir + ig + ib)/3;
-      if(this._gray==1)  ir = Math.max(ir,ig,ib);
-      ig = ir;
-      ib = ir;
+      if(this._gray != 0){
+        if(this._gray==2)  ir = (ir + ig + ib)/3;
+        if(this._gray==1)  ir = Math.max(ir,ig,ib);
+        ig = ir;
+        ib = ir;
+      }
       data[i] =     clamp(ir * r, 0, 255); // red
       data[i + 1] = clamp(ig * g, 0, 255); // green
       data[i + 2] = clamp(ib * b, 0, 255); // blue
