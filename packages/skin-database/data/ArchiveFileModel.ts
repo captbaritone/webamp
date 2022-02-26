@@ -3,6 +3,7 @@ import { ArchiveFileRow } from "../types";
 import DataLoader from "dataloader";
 import { knex } from "../db";
 import SkinModel from "./SkinModel";
+import FileInfoModel from "./FileInfoModel";
 
 export type ArchiveFileDebugData = {
   row: ArchiveFileRow;
@@ -50,12 +51,20 @@ export default class ArchiveFileModel {
   }
 
   // Null if directory
-  getFileSize(): number | null {
-    return this.row.uncompressed_size;
+  async getFileSize(): Promise<number | null> {
+    const info = await this._getFileInfo();
+    if (info == null) {
+      return null;
+    }
+    return info.getFileSize();
   }
 
-  getTextContent(): string | null {
-    return this.row.text_content;
+  async getTextContent(): Promise<string | null> {
+    const info = await this._getFileInfo();
+    if (info == null) {
+      return null;
+    }
+    return info.getTextContent();
   }
 
   getIsDirectory(): boolean {
@@ -69,6 +78,11 @@ export default class ArchiveFileModel {
 
   async getSkin(): Promise<SkinModel> {
     return SkinModel.fromMd5Assert(this.ctx, this.getMd5());
+  }
+
+  // Let's try to keep this as an implementation detail
+  async _getFileInfo(): Promise<FileInfoModel | null> {
+    return FileInfoModel.fromFileMd5(this.ctx, this.getFileMd5());
   }
 
   async debug(): Promise<ArchiveFileDebugData> {

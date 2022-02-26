@@ -2,11 +2,11 @@ import UserContext from "../data/UserContext";
 import SkinModel from "../data/SkinModel";
 import { knex } from "../db";
 import { setHashesForSkin } from "../skinHash";
-import * as Analyser from "../analyser";
 import Shooter from "../shooter";
 import { screenshot } from "./screenshotSkin";
 import * as Skins from "../data/skins";
 import { SkinType } from "../types";
+import { getSkinType } from "../addSkin";
 
 // TODO Move this into the function so that we clean up on each run?
 
@@ -76,11 +76,9 @@ export async function _refresh(
   await setHashesForSkin(skin);
   await Skins.setContentHash(skin.getMd5());
 
-  await Analyser.setReadmeForSkin(skin);
-
   let skinType: SkinType;
   try {
-    skinType = await Analyser.getSkinType(await skin.getZip());
+    skinType = await getSkinType(await skin.getZip());
   } catch (e) {
     throw new Error("Not a skin (no main.bmp/skin.xml)");
   }

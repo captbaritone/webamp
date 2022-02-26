@@ -21,6 +21,11 @@ import JSZip from "jszip";
 import fs from "fs/promises";
 import path from "path";
 
+export const IS_README = /(file_id\.diz)|(\.txt)$/i;
+// Skinning Updates.txt ?
+export const IS_NOT_README =
+  /(genex\.txt)|(genexinfo\.txt)|(gen_gslyrics\.txt)|(region\.txt)|(pledit\.txt)|(viscolor\.txt)|(winampmb\.txt)|("gen_ex help\.txt)|(mbinner\.txt)$/i;
+
 export default class SkinModel {
   constructor(readonly ctx: UserContext, readonly row: SkinRow) {}
 
@@ -174,8 +179,17 @@ export default class SkinModel {
     return emails ? emails.split(" ") : [];
   }
 
-  getReadme(): string | null {
-    return this.row.readme_text || null;
+  async getReadme(): Promise<string | null> {
+    const files = await this.getArchiveFiles();
+    const readme = files.find((file) => {
+      const filename = file.getFileName();
+      return IS_README.test(filename) && !IS_NOT_README.test(filename);
+    });
+
+    if (readme == null) {
+      return null;
+    }
+    return readme.getTextContent();
   }
 
   getMuseumUrl(): string {

@@ -13,7 +13,7 @@ type FileData = {
 };
 
 function mightBeText(filename: string): boolean {
-  return !/\.(bmp|pdf|png|zip|wsz|cur|ani|jpg|jpeg|db|gif|avs|psd|psp|ico|ttf|milk|bak|maki|m|doc|tmp|_bm)$/i.test(
+  return !/\.(bmp|pdf|png|zip|wsz|cur|ani|jpg|jpeg|db|gif|avs|psd|psp|ico|ttf|milk|bak|maki|m|doc|tmp|_bm|ai|log|uue|)$/i.test(
     filename
   );
 }
@@ -56,19 +56,40 @@ export async function setHashesForSkin(skin: SkinModel): Promise<void> {
   const hashes = await getSkinFileData(skin);
   const rows = hashes
     .filter(notEmpty)
-    .map(
-      ({ fileName, md5, date, uncompressedSize, textContent, isDirectory }) => {
-        return {
-          skin_md5: skin.getMd5(),
-          file_name: fileName,
-          file_md5: md5,
-          file_date: date,
-          text_content: textContent,
-          uncompressed_size: uncompressedSize,
-          is_directory: isDirectory,
-        };
-      }
-    );
+    .map(({ fileName, md5, date, isDirectory }) => {
+      return {
+        skin_md5: skin.getMd5(),
+        file_name: fileName,
+        file_md5: md5, // TODO: Consider using an id into file_info table
+        file_date: date,
+        // text_content: textContent,
+        // uncompressed_size: uncompressedSize,
+        is_directory: isDirectory,
+      };
+    });
   await knex("archive_files").where("skin_md5", skin.getMd5()).delete();
   await knex("archive_files").insert(rows);
+
+  const fileInfoRows = hashes
+    .filter(notEmpty)
+    .filter(({ isDirectory }) => !isDirectory)
+    .map(({ md5, uncompressedSize, textContent }) => {
+      return {
+        file_md5: md5,
+        text_content: textContent,
+        size_in_bytes: uncompressedSize,
+      };
+    });
+
+  for (const row of fileInfoRows) {
+    const countRows = await knex("file_info")
+      .where({ file_md5: row.file_md5 })
+      .count({ count: "*" });
+    if (!countRows[0].count) {
+      await knex("file_info").insert(row);
+      console.log("Inserted file info:", row);
+    } else {
+      console.log("Already have file info for", row.file_md5);
+    }
+  }
 }

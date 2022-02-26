@@ -324,9 +324,7 @@ program
           .leftJoin("archive_files", "skins.md5", "archive_files.skin_md5")
           .where("skin_type", 1)
           .where((builder) => {
-            return builder
-              .where("archive_files.skin_md5", null)
-              .orWhere("archive_files.uncompressed_size", null);
+            return builder.where("archive_files.skin_md5", null);
           })
           .limit(80000)
           .groupBy("skins.md5")

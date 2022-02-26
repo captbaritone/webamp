@@ -12,7 +12,7 @@ export type SkinRow = {
   md5: string;
   skin_type: number;
   emails: string;
-  readme_text: string;
+  // readme_text: string;
   average_color: string;
 };
 
@@ -49,6 +49,12 @@ export type ArchiveFileRow = {
   uncompressed_size: number;
   text_content: string | null;
   is_directory: number; // SQLite uses integers for booleans
+};
+
+export type FileInfoRow = {
+  file_md5: string;
+  text_content: string | null;
+  size_in_bytes: number;
 };
 
 export type IaItemRow = {

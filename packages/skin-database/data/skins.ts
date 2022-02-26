@@ -8,6 +8,7 @@ import * as S3 from "../s3";
 import * as CloudFlare from "../CloudFlare";
 import SkinModel from "./SkinModel";
 import UserContext from "./UserContext";
+import TweetModel from "./TweetModel";
 
 export const SKIN_TYPE = {
   CLASSIC: 1,
@@ -29,19 +30,16 @@ export async function addSkin({
   filePath,
   uploader,
   modern,
-  readmeText,
 }: {
   md5: string;
   filePath: string;
   uploader: string;
   modern: boolean;
-  readmeText: string | null;
 }) {
   await knex("skins").insert(
     {
       md5,
       skin_type: modern ? SKIN_TYPE.MODERN : SKIN_TYPE.CLASSIC,
-      readme_text: readmeText,
     },
     []
   );
@@ -158,36 +156,40 @@ type SearchIndex = {
   twitterLikes: number;
 };
 
-async function getSearchIndexes(md5s: string[]): Promise<SearchIndex[]> {
-  const skins = await knex("skins")
-    .leftJoin("tweets", "tweets.skin_md5", "=", "skins.md5")
-    .leftJoin("skin_reviews", "skin_reviews.skin_md5", "=", "skins.md5")
-    .leftJoin("files", "files.skin_md5", "=", "skins.md5")
-    .where("skin_type", SKIN_TYPE.CLASSIC)
-    .whereIn("md5", md5s)
-    .groupBy("skins.md5")
-    .select(
-      "skins.md5",
-      "skins.readme_text",
-      "tweets.likes",
-      "skin_reviews.review",
-      "files.file_path"
-    );
+async function getSearchIndexes(
+  ctx: UserContext,
+  md5s: string[]
+): Promise<SearchIndex[]> {
+  const skins = await Promise.all(
+    md5s.map((md5) => {
+      return SkinModel.fromMd5Assert(ctx, md5);
+    })
+  );
 
-  return skins.map((skin) => {
-    return {
-      objectID: skin.md5,
-      md5: skin.md5,
-      nsfw: skin.review === "NSFW",
-      readmeText: skin.readme_text ? truncate(skin.readme_text, 4800) : null,
-      fileName: path.basename(skin.file_path),
-      twitterLikes: Number(skin.likes || 0),
-    };
-  });
+  return Promise.all(
+    skins.map(async (skin) => {
+      const readmeText = await skin.getReadme();
+      const tweets = await skin.getTweets();
+      const likes = tweets.reduce((acc: number, tweet: TweetModel) => {
+        return Math.max(acc, tweet.getLikes());
+      }, 0);
+      return {
+        objectID: skin.getMd5(),
+        md5: skin.getMd5(),
+        nsfw: await skin.getIsNsfw(),
+        readmeText: readmeText ? truncate(readmeText, 4800) : null,
+        fileName: await skin.getFileName(),
+        twitterLikes: likes,
+      };
+    })
+  );
 }
 
-export async function updateSearchIndexs(md5s: string[]): Promise<any> {
-  const skinIndexes = await getSearchIndexes(md5s);
+export async function updateSearchIndexs(
+  ctx: UserContext,
+  md5s: string[]
+): Promise<any> {
+  const skinIndexes = await getSearchIndexes(ctx, md5s);
 
   const results = await searchIndex.partialUpdateObjects(skinIndexes, {
     createIfNotExists: true,
@@ -199,10 +201,14 @@ export async function updateSearchIndexs(md5s: string[]): Promise<any> {
   return results;
 }
 
-export async function updateSearchIndex(md5: string): Promise<any | null> {
-  return updateSearchIndexs([md5]);
+export async function updateSearchIndex(
+  ctx: UserContext,
+  md5: string
+): Promise<any | null> {
+  return updateSearchIndexs(ctx, [md5]);
 }
 
+// Note: This might leave behind some files in file_info.
 export async function deleteSkin(md5: string): Promise<void> {
   console.log(`Deleting skin ${md5}...`);
   console.log(`... sqlite "skins"`);
