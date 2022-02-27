@@ -18,7 +18,7 @@ import Metadata from "./components/Metadata";
 import SkinReadme from "./SkinReadme";
 import { useDropzone } from "react-dropzone";
 import ReviewPage from "./ReviewPage";
-import DebugSkin from "./DebugSkin";
+import DebugSkin from "./debug/DebugSkin";
 
 const getTableDimensions = (windowWidth, scale) => {
   const columnCount = Math.round(windowWidth / (SCREENSHOT_WIDTH * scale));

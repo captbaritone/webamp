@@ -31,8 +31,8 @@
     "webamp": "^1.4.3-beta.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-scripts --openssl-legacy-provider start",
+    "build": "react-scripts  --openssl-legacy-provider build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "find-skins": "node ./scripts/findSkins.js",
@@ -50,9 +50,24 @@
     "not op_mini all"
   ],
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "overrides": [
+      {
+             "files": ["*.js"],
+             "processor": "@graphql-eslint/graphql"
+           },
+      {
+        "files": ["*.graphql"],
+        "parser": "@graphql-eslint/eslint-plugin",
+        "plugins": ["@graphql-eslint"],
+        "rules": {
+          "@graphql-eslint/known-type-names": "error"
+        }
+      }
+    ]
   },
   "devDependencies": {
+    "@graphql-eslint/eslint-plugin": "^3.8.0",
     "bluebird": "^3.5.3",
     "netlify-cli": "^2.40.0",
     "react-styleguidist": "^11.0.5"

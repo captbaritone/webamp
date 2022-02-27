@@ -1,14 +1,17 @@
 import * as React from "react";
-import { gql } from "./utils";
-import { useQuery, useActionCreator } from "./hooks";
-import * as Actions from "./redux/actionCreators";
+import { gql } from "../utils";
+import { useQuery, useActionCreator } from "../hooks";
+import * as Actions from "../redux/actionCreators";
+import { DebugFile } from "./DebugFile";
 
 const query = gql`
   query DebugSkin($md5: String!) {
     fetch_skin_by_md5(md5: $md5) {
       filename
+      download_url
       screenshot_url
       webamp_url
+      museum_url
       nsfw
       readme_text
       tweets {
@@ -21,6 +24,7 @@ const query = gql`
         url
       }
       archive_files {
+        is_directory
         url
         file_md5
         filename
@@ -38,6 +42,8 @@ const query = gql`
 
 export default function DebugSkin({ md5 }) {
   const variables = React.useMemo(() => ({ md5 }), [md5]);
+
+  const [file, setFile] = React.useState(null);
   const data = useQuery(query, variables);
   const toggleDebugView = useActionCreator(Actions.toggleDebugView);
   if (data == null) {
@@ -45,10 +51,26 @@ export default function DebugSkin({ md5 }) {
   }
   const skin = data.fetch_skin_by_md5;
 
+  const screenshotFile = {
+    filename: skin.filename + ".png",
+    url: skin.screenshot_url,
+  };
+  const focusedFile = file || screenshotFile;
+
   return (
-    <div style={{ backgroundColor: "white", width: "100%" }}>
+    <div style={{ backgroundColor: "white", minHeight: "100vh" }}>
       <div style={{ display: "flex", flexDirection: "row", padding: 20 }}>
-        <div style={{ flexGrow: 1 }}>
+        <div style={{ paddingRight: 20 }}>
+          <button
+            style={{ height: "inherit" }}
+            onClick={(e) => {
+              e.preventDefault();
+              toggleDebugView();
+            }}
+          >
+            [close]
+          </button>
+          <br />
           <h1>
             {" "}
             {skin.filename} {skin.nsfw && "🔞"}
@@ -56,7 +78,22 @@ export default function DebugSkin({ md5 }) {
           <h2>Links</h2>
           <ul>
             <li>
-              <a href={skin.screenshot_url}>Screenshot</a>
+              <a href={skin.museum_url}>Museum Link</a>
+            </li>
+            <li>
+              <a href={skin.download_url}>Download</a>
+            </li>
+            <li>
+              <a href={skin.screenshot_url}>Screenshot</a>{" "}
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setFile(screenshotFile);
+                }}
+              >
+                {"🔎"}
+              </a>
             </li>
             <li>
               <a href={skin.webamp_url}>Webamp</a>
@@ -91,11 +128,23 @@ export default function DebugSkin({ md5 }) {
                 return (
                   <tr key={file.filename}>
                     <td>
-                      <a href={file.url}>{file.filename}</a>
+                      <a
+                        href={file.url}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setFile(file);
+                        }}
+                      >
+                        {file.filename}
+                      </a>
                     </td>
-                    <td>{formatBytes(file.size)}</td>
                     <td>
-                      {new Date(Date.parse(file.date)).toLocaleDateString()}
+                      {file.is_directory ? "N/A" : formatBytes(file.size)}
+                    </td>
+                    <td>
+                      {file.is_directory
+                        ? "N/A"
+                        : new Date(Date.parse(file.date)).toLocaleDateString()}
                     </td>
                   </tr>
                 );
@@ -104,21 +153,14 @@ export default function DebugSkin({ md5 }) {
           </table>
         </div>
         <div>
-          <h2>Readme</h2>
+          {focusedFile && <DebugFile file={focusedFile} />}
+          {/*<h2>Readme</h2>
           <pre style={{ whiteSpace: "pre-line", maxWidth: 600 }}>
             {skin.readme_text}
-          </pre>
+          </pre>*/}
         </div>
-        <div style={{ flexGrow: 1 }}>
+        {/*<div style={{ flexGrow: 1 }}>
           <div style={{ textAlign: "right", marginBottom: 20 }}>
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                toggleDebugView();
-              }}
-            >
-              [close]
-            </button>
           </div>
           <img
             alt={`Screenshot of a Winamps skin named "${skin.filename}"`}
@@ -129,7 +171,7 @@ export default function DebugSkin({ md5 }) {
             }}
             src={skin.screenshot_url}
           />
-        </div>
+        </div>*/}
       </div>
     </div>
   );
