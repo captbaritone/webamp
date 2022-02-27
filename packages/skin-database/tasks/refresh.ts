@@ -50,8 +50,8 @@ export async function refreshSkins(
       const skin = skins.pop();
       // @ts-ignore
       await refresh(skin, null);
-      console.log(`Refreshed ${skin?.getMd5()}`);
     }
+    return;
   }
   const shooterLogger = () => {
     // Don't log
@@ -118,7 +118,4 @@ export async function refresh(
     });
     return;
   }
-  await knex("refreshes").insert({
-    skin_md5: skin.getMd5(),
-  });
 }
