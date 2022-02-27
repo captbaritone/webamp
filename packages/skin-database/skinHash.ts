@@ -87,9 +87,6 @@ export async function setHashesForSkin(skin: SkinModel): Promise<void> {
       .count({ count: "*" });
     if (!countRows[0].count) {
       await knex("file_info").insert(row);
-      console.log("Inserted file info:", row);
-    } else {
-      console.log("Already have file info for", row.file_md5);
     }
   }
 }

@@ -335,7 +335,7 @@ program
         const skins = skinRows.map((row) => new SkinModel(ctx, row));
         for (const skin of skins) {
           await setHashesForSkin(skin);
-          await Skins.setContentHash(skin.getMd5());
+          // await Skins.setContentHash(skin.getMd5());
           process.stdout.write(".");
         }
       }
