@@ -29,6 +29,7 @@ import Shooter from "./shooter";
 import { program } from "commander";
 import * as config from "./config";
 import dotenv from "dotenv";
+import { setHashesForSkin } from "./skinHash";
 
 dotenv.config();
 
@@ -116,7 +117,7 @@ program
       await Skins.deleteSkin(md5);
     }
     if (index) {
-      console.log(await Skins.updateSearchIndex(md5));
+      console.log(await Skins.updateSearchIndex(ctx, md5));
     }
     if (refresh) {
       const skin = await SkinModel.fromMd5Assert(ctx, md5);
@@ -322,16 +323,21 @@ program
         const ctx = new UserContext();
         const skinRows = await knex("skins")
           .leftJoin("archive_files", "skins.md5", "archive_files.skin_md5")
+          .leftJoin("file_info", "file_info.file_md5", "archive_files.file_md5")
           .where("skin_type", 1)
           .where((builder) => {
-            return builder.where("archive_files.skin_md5", null);
+            return builder.where("file_info.file_md5", null);
           })
-          .limit(80000)
+          .limit(90000)
           .groupBy("skins.md5")
           .select();
         console.log(`Found ${skinRows.length} skins to update`);
         const skins = skinRows.map((row) => new SkinModel(ctx, row));
-        await refreshSkins(skins, { noScreenshot: true });
+        for (const skin of skins) {
+          await setHashesForSkin(skin);
+          await Skins.setContentHash(skin.getMd5());
+          process.stdout.write(".");
+        }
       }
       if (uploadMissingScreenshots) {
         const md5s = await SyncToArchive.findItemsMissingImages();
