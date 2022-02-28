@@ -27,3 +27,7 @@ ID = "be420a16-4ef3-43b1-ac62-35869bdf8679"
   from = "/*"
   to = "/index.html"
   status = 200
+
+[[environment]]
+  NODE_VERSION = "17.3.0"
+
