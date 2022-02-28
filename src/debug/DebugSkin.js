@@ -85,6 +85,7 @@ export default function DebugSkin({ md5 }) {
             </li>
             <li>
               <a href={skin.screenshot_url}>Screenshot</a>{" "}
+              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
               <a
                 href="#"
                 onClick={(e) => {

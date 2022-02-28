@@ -14,6 +14,7 @@ export function PreviewFile({ file }) {
     file.filename.toLowerCase().endsWith(".png")
   ) {
     return (
+      // eslint-disable-next-line jsx-a11y/alt-text
       <img
         src={file.url}
         style={{
