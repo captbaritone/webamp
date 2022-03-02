@@ -2,7 +2,7 @@ import { V, Variable } from "./v";
 import { assert, assume } from "../utils";
 import { ParsedMaki, Command, Method } from "./parser";
 import { getClass, getMethod } from "./objects";
-import { classResolver } from "../skin/resolver";
+// import { classResolver } from "../skin/resolver";
 
 function validateMaki(program: ParsedMaki) {
   /*
@@ -11,6 +11,7 @@ function validateMaki(program: ParsedMaki) {
   }
   */
   return; // Comment this out to get warnings about missing methods
+  /*
   for (const method of program.methods) {
     if (method.name.startsWith("on")) {
       continue;
@@ -26,6 +27,7 @@ function validateMaki(program: ParsedMaki) {
       throw new Error("Arity Error");
     }
   }
+  */
 }
 
 export function interpret(
@@ -117,10 +119,12 @@ class Interpreter {
         case 8: {
           const a = this.stack.pop();
           const b = this.stack.pop();
+          /*
           assume(
             typeof a.value == typeof b.value,
             `Tried to compare a ${a.type} to a ${b.type}.`
           );
+          */
           const result = V.newInt(b.value === a.value);
           this.push(result);
           break;
