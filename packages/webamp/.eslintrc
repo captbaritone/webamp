@@ -146,7 +146,6 @@
     "react/no-unescaped-entities": "error",
     "use-isnan": "error",
     "valid-typeof": "error",
-    "prettier/prettier": "error",
     "import/default": "error",
     "import/export": "error",
     "import/first": "error",
