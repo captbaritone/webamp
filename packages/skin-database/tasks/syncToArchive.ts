@@ -91,11 +91,7 @@ export async function updateMissingMetadata(
   //
 }
 
-export async function updateMetadata(
-  ctx: UserContext,
-  md5: string
-): Promise<void> {
-  const skin = await SkinModel.fromMd5Assert(ctx, md5);
+export async function updateMetadata(skin: SkinModel): Promise<void> {
   if (skin.getSkinType() !== "CLASSIC") {
     throw new Error("Only classic skins can be updated");
   }
@@ -108,7 +104,6 @@ export async function updateMetadata(
     title,
     skintype: "wsz",
     mediatype: "software",
-    webamp: skin.getWebampUrl(),
     museum: skin.getMuseumUrl(),
   };
 

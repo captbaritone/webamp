@@ -127,7 +127,9 @@ program
       await Skins.reject(ctx, md5);
     }
     if (metadata) {
-      await SyncToArchive.updateMetadata(ctx, md5);
+      const skin = await SkinModel.fromMd5Assert(ctx, md5);
+      await SyncToArchive.updateMetadata(skin);
+      console.log("Updated Metadata");
     }
   });
 
