@@ -122,16 +122,10 @@
     "no-this-before-super": "error",
     "no-throw-literal": "error",
     "no-trailing-spaces": "error",
-    "no-undef": "error",
     "no-undef-init": "error",
     "no-unneeded-ternary": "error",
     "no-unreachable": "error",
     "no-unused-expressions": "error",
-    "@typescript-eslint/no-unused-vars": [
-      "error",
-      { "ignoreRestSiblings": true }
-    ],
-    "no-use-before-define": ["error", "nofunc"],
     "no-useless-rename": "error",
     "no-var": "error",
     "no-with": "error",
