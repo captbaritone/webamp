@@ -5,11 +5,14 @@ Object {
   "archiveFiles": Array [
     Object {
       "row": Object {
-        "file_date": 819188640000,
+        "file_date": "Sun Dec 17 1995 03:24:00 GMT-0800 (Pacific Standard Time)",
         "file_md5": "a_fake_file_md5",
         "file_name": null,
         "id": 1,
+        "is_directory": null,
         "skin_md5": "a_fake_md5",
+        "text_content": null,
+        "uncompressed_size": null,
       },
     },
   ],
@@ -27,6 +30,8 @@ Object {
     "row": Object {
       "id": 8,
       "identifier": "a_fake_ia_identifier",
+      "metadata": null,
+      "metadata_timestamp": null,
       "skin_md5": "a_fake_md5",
     },
   },

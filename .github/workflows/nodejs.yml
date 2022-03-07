@@ -29,9 +29,8 @@ jobs:
           yarn workspace webamp type-check
       - name: Run Unit Tests
         run: |
-          yarn workspace ani-cursor test
+          yarn test
           yarn workspace webamp test
-          yarn workspace webamp-modern-2 test
       - name: Run Integration Tests
         run: yarn workspace webamp integration-tests
         env:

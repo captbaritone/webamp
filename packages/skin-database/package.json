@@ -44,7 +44,6 @@
     "yargs": "^13.2.4"
   },
   "scripts": {
-    "test": "jest",
     "lint": "eslint .",
     "start": "ts-node --transpile-only api/server.ts",
     "dev": "NODE_ENV=development ts-node --transpile-only api/server.ts",
@@ -62,7 +61,6 @@
     "@typescript-eslint/eslint-plugin": "^4.8.1",
     "@typescript-eslint/parser": "^4.8.1",
     "eslint": "^7.13.0",
-    "jest": "^26.1.0",
     "prettier": "^2.3.2",
     "supertest": "^6.0.1",
     "typescript": "^3.8.3"

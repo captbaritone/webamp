@@ -12,10 +12,6 @@
     "url": "https://github.com/captbaritone/webamp/issues"
   },
   "homepage": "https://github.com/captbaritone/webamp/tree/master/packages/winamp-eqf",
-  "scripts": {
-    "test": "jest",
-    "tdd": "jest --watch"
-  },
   "keywords": [
     "winamp",
     "equalizer",
@@ -25,7 +21,6 @@
   "author": "Jordan Eldgredge",
   "license": "ISC",
   "devDependencies": {
-    "buffer-to-arraybuffer": "0.0.4",
-    "jest": "24.9.0"
+    "buffer-to-arraybuffer": "0.0.4"
   }
 }

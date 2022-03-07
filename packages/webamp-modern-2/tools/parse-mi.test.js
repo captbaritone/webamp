@@ -8,7 +8,11 @@ import path from "path";
  * This file basically ensures that `yarn extract-object-types` has been run.
  */
 
-const compilers = path.join(__dirname, "../../../resources/maki_compiler/");
+const compilers = path.join(
+  __dirname,
+  // TODO: Move these into webamp-modern-2
+  "../../webamp-modern/resources/maki_compiler/"
+);
 
 const lib566 = path.join(compilers, "v1.2.0 (Winamp 5.66)/lib/");
 

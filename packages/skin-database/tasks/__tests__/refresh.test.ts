@@ -1,3 +1,4 @@
+import path from "path";
 import UserContext from "../../data/UserContext";
 import { knex } from "../../db";
 import { getSkinsToRefresh, refresh } from "../refresh";
@@ -25,13 +26,18 @@ test("refresh", async () => {
 
   skin.getBuffer = async () => Buffer.from("");
 
+  const originalConsoleError = console.error;
+  console.error = jest.fn();
   await refresh(skin, shooter);
+  console.error = originalConsoleError;
 
   const [nextToRefresh] = await getSkinsToRefresh(ctx, 1);
   expect(nextToRefresh.getMd5()).not.toEqual("a_fake_md5");
 });
 
 test("can't extract", async () => {
+  const originalConsoleError = console.error;
+  console.error = jest.fn();
   const ctx = new UserContext();
   const skin = await SkinModel.fromMd5Assert(ctx, "a_fake_md5");
   skin.getBuffer = async () => Buffer.from("");
@@ -47,6 +53,7 @@ test("can't extract", async () => {
     id: expect.any(Number),
     timestamp: expect.stringMatching(/^[0-9]{4}-/),
   });
+  console.error = originalConsoleError;
 });
 
 test("valid skin (TopazAmp)", async () => {
@@ -55,7 +62,7 @@ test("valid skin (TopazAmp)", async () => {
 
   skin.getBuffer = async () => {
     return fs.readFileSync(
-      "/home/captbaritone/projects/webamp/packages/webamp/demo/skins/TopazAmp1-2.wsz"
+      path.join(__dirname, "../../../webamp/demo/skins/TopazAmp1-2.wsz")
     );
   };
 
@@ -73,7 +80,6 @@ test("valid skin (TopazAmp)", async () => {
   const skinRow = await knex("skins").where("md5", skin.getMd5()).first();
   expect(skinRow.readme_text).toMatchSnapshot();
   expect(skinRow.skin_type).toBe(1);
-  expect(skinRow.content_hash).toBe("512e79c5de299a6a13ee42e1bad9ac12");
 
   // Check Refresh
   const refreshRow = await knex("refreshes")

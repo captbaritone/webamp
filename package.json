@@ -6,10 +6,18 @@
     "examples/*"
   ],
   "scripts": {
+    "test": "jest",
     "deploy": "sh deploy.sh"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.16.7",
+    "jest": "^27.5.1",
     "prettier": "^2.3.2"
   },
-  "prettier": {}
+  "prettier": {},
+  "jest": {
+    "projects": [
+      "config/jest.*.js"
+    ]
+  }
 }

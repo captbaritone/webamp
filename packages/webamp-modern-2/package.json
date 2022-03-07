@@ -11,24 +11,19 @@
     "build-lint": "tsup tools/eslint-rules/proper-maki-types.ts -d tools/eslint-rules/dist --no-splitting --minify"
   },
   "devDependencies": {
-    "@babel/preset-typescript": "^7.16.7",
-    "@snowpack/app-scripts-react": "^2.0.1",
     "@types/eslint": "^7.2.14",
     "@types/estree": "^0.0.50",
     "@typescript-eslint/eslint-plugin": "^4.28.2",
     "@typescript-eslint/parser": "^4.28.2",
     "eslint": "^7.30.0",
     "eslint-plugin-rulesdir": "^0.2.0",
-    "jest": "^27.5.1",
     "snowpack": "^3.5.5",
-    "ts-jest": "^27.1.3",
     "tsup": "^4.12.5",
     "typescript": "^4.3.5"
   },
   "prettier": {},
   "dependencies": {
     "@rgrove/parse-xml": "^3.0.0",
-    "jszip": "^3.6.0",
-    "ts-jest": "^27.1.3"
+    "jszip": "^3.6.0"
   }
 }

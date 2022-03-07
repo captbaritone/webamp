@@ -9,7 +9,7 @@ expect.extend({
     if (received.byteLength !== argument.byteLength) {
       return {
         message: `ArrayBuffers do not match. Expected length ${received.byteLength} but got ${argument.byteLenth}`,
-        pass: false
+        pass: false,
       };
     }
     const a = new Uint8Array(received);
@@ -17,18 +17,16 @@ expect.extend({
     for (var i = 0; i < a.length; i++) {
       if (a[i] !== b[i]) {
         return {
-          message: `ArrayBuffers do not match. Expected ${a[i]} to equal ${b[
-            i
-          ]} at index ${i}`,
-          pass: false
+          message: `ArrayBuffers do not match. Expected ${a[i]} to equal ${b[i]} at index ${i}`,
+          pass: false,
         };
       }
     }
     return {
       message: `ArrayBuffers are equal.`,
-      pass: true
+      pass: true,
     };
-  }
+  },
 });
 
 const fixtures = [
@@ -44,12 +42,12 @@ const fixtures = [
   "preampMin.EQF",
   "random.EQF",
   "winamp_sample.q1",
-  "winamp.q1"
+  "winamp.q1",
 ];
 
 describe("parser", () => {
-  fixtures.forEach(fileName => {
-    const buffer = readFileSync(join("sample_data", fileName));
+  fixtures.forEach((fileName) => {
+    const buffer = readFileSync(join(__dirname, "sample_data", fileName));
     const arrayBuffer = bufferToArrayBuffer(buffer);
     it(`can parse ${fileName}`, () => {
       const data = parser(arrayBuffer);
@@ -59,8 +57,8 @@ describe("parser", () => {
 });
 
 describe("creator", () => {
-  fixtures.forEach(fileName => {
-    const buffer = readFileSync(join("sample_data", fileName));
+  fixtures.forEach((fileName) => {
+    const buffer = readFileSync(join(__dirname, "sample_data", fileName));
     const arrayBuffer = bufferToArrayBuffer(buffer);
     const data = parser(arrayBuffer);
     it(`can create and parse ${fileName}`, () => {
@@ -80,12 +78,12 @@ const eqfFixtures = [
   "preampMax.EQF",
   // All bands mid, preamp min
   "preampMin.EQF",
-  "random.EQF"
+  "random.EQF",
 ];
 
 describe("creator", () => {
-  eqfFixtures.forEach(fileName => {
-    const buffer = readFileSync(join("sample_data", fileName));
+  eqfFixtures.forEach((fileName) => {
+    const buffer = readFileSync(join(__dirname, "sample_data", fileName));
     const arrayBuffer = bufferToArrayBuffer(buffer);
     const data = parser(arrayBuffer);
     it(`can create ${fileName}`, () => {
