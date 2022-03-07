@@ -16,7 +16,7 @@ function creator(data) {
   if (!data.presets) {
     throw new Error("Eqf data is missing presets");
   }
-  data.presets.forEach(function(preset) {
+  data.presets.forEach(function (preset) {
     var k = 0;
     for (; k < preset.name.length; k++) {
       buffer.push(preset.name.charCodeAt(k));
@@ -25,7 +25,7 @@ function creator(data) {
       buffer.push(0);
     }
 
-    CONSTANTS.PRESET_VALUES.forEach(function(valueName) {
+    CONSTANTS.PRESET_VALUES.forEach(function (valueName) {
       buffer.push(64 - preset[valueName]); // Adjust for inverse values
     });
   });

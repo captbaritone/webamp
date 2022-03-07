@@ -43,7 +43,7 @@ export async function checkInternetArchiveMetadata(): Promise<void> {
         console.warn("No skin file", { identifier, skin_md5 });
       }
       if (files.length < 2) {
-        console.log({skin_md5, identifier, length: files.length});
+        console.log({ skin_md5, identifier, length: files.length });
         tooFew.push(skin_md5);
         continue;
         console.warn("Too few files", { identifier, skin_md5 });
@@ -52,7 +52,6 @@ export async function checkInternetArchiveMetadata(): Promise<void> {
       console.log(metadata);
     }
   }
-
 
   console.table({
     total: results.length,

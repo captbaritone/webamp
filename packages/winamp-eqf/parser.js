@@ -30,7 +30,7 @@ function parser(arrayBuffer) {
     i = nameEnd; // Skip over any unused bytes
 
     // Get the levels
-    CONSTANTS.PRESET_VALUES.forEach(function(valueName) {
+    CONSTANTS.PRESET_VALUES.forEach(function (valueName) {
       preset[valueName] = 64 - arr[i++]; // Adjust for inverse values
     });
     data.presets.push(preset);

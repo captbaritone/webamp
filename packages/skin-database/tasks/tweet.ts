@@ -11,7 +11,10 @@ import UserContext from "../data/UserContext";
 import TweetModel from "../data/TweetModel";
 const temp = _temp.track();
 
-export async function tweet(discordClient: Client, anything: string | null): Promise<string> {
+export async function tweet(
+  discordClient: Client,
+  anything: string | null
+): Promise<string> {
   const ctx = new UserContext();
   const tweetBotChannel = await discordClient.channels.fetch(
     TWEET_BOT_CHANNEL_ID

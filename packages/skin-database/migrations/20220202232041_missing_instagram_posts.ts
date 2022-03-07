@@ -1,6 +1,5 @@
 import * as Knex from "knex";
 
-
 const DATA = `8512eb9cb19bcdcb044b6fb1f7dc3a23 17920085909318662 https://www.instagram.com/p/CZfUam9vqNT/
 4b874c85014b42cf3d67cfab35e20109 17913896906185364 https://www.instagram.com/p/CZfU_gKPOsU/
 bb7fd9baf2292c81436825248837acc7 18163890691172492 https://www.instagram.com/p/CZfVJwVviZJ/
@@ -17,26 +16,24 @@ eda35a53d88257c88c0dbf7ca9c4a98d 17891238578503535 https://www.instagram.com/p/C
 b3239d943c5347c267a6ee3e1e81e1e5 17895571130531480 https://www.instagram.com/p/CZgWwGrgXh8/`;
 
 export async function up(knex: Knex): Promise<any> {
-    const lines = DATA.split("\n");
-    for (const line of lines) {
-        const [md5, postId, url] = line.split(" ");
+  const lines = DATA.split("\n");
+  for (const line of lines) {
+    const [md5, postId, url] = line.split(" ");
 
-        await knex("instagram_posts").insert({
-            skin_md5: md5,
-            post_id: postId,
-            url: url,
-        });
-    }
+    await knex("instagram_posts").insert({
+      skin_md5: md5,
+      post_id: postId,
+      url: url,
+    });
+  }
 }
-
 
 export async function down(knex: Knex): Promise<any> {
-    const lines = DATA.split("\n");
-    for (const line of lines) {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const [_md5, postId, _url] = line.split(" ");
+  const lines = DATA.split("\n");
+  for (const line of lines) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_md5, postId, _url] = line.split(" ");
 
-        await knex("instagram_posts").delete().where({post_id: postId});
-    }
+    await knex("instagram_posts").delete().where({ post_id: postId });
+  }
 }
-

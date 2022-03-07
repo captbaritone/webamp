@@ -139,7 +139,7 @@ function putTemp(fileName, buffer) {
         ACL: "public-read",
       },
       (err) => {
-        console.log("Hello...")
+        console.log("Hello...");
         if (err) {
           rejectPromise(err);
           return;

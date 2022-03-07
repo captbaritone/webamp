@@ -62,14 +62,13 @@ export async function fillMissingMetadata(count: number) {
   const ctx = new UserContext();
   const skins = await knex("ia_items")
     .where((builder) => {
-        builder.where("ia_items.metadata", null)
-          .orWhere("ia_items.metadata", "")
+      builder.where("ia_items.metadata", null).orWhere("ia_items.metadata", "");
     })
     .whereNot("ia_items.identifier", null)
     .select("ia_items.skin_md5", "ia_items.identifier");
-    console.log(`Found ${skins.length} items to fetch metadata for`);
+  console.log(`Found ${skins.length} items to fetch metadata for`);
 
-    const items = skins.slice(0, count);
+  const items = skins.slice(0, count);
 
   for (const { skin_md5, identifier } of items) {
     const iaItem = await IaItemModel.fromIdentifier(ctx, identifier);

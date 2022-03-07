@@ -9,12 +9,12 @@ var PRESET_VALUES = [
   "hz12000",
   "hz14000",
   "hz16000",
-  "preamp"
+  "preamp",
 ];
 
 var HEADER = "Winamp EQ library file v1.1";
 
 module.exports = {
   PRESET_VALUES: PRESET_VALUES,
-  HEADER: HEADER
+  HEADER: HEADER,
 };

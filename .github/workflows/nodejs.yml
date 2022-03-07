@@ -25,7 +25,7 @@ jobs:
           yarn workspace webamp build-library
       - name: Lint
         run: |
-          yarn workspace webamp lint
+          yarn lint
           yarn workspace webamp type-check
       - name: Run Unit Tests
         run: |

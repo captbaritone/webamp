@@ -3,5 +3,5 @@ var creator = require("./creator");
 
 module.exports = {
   parser: parser,
-  creator: creator
+  creator: creator,
 };

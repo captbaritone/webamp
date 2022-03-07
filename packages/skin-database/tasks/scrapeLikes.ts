@@ -30,7 +30,7 @@ async function getTweets(twitterClient): Promise<TweetPayload[]> {
   let tweets: TweetPayload[] = [];
   let callCount = 0;
 
-  while (callCount < (MAX_CALL_COUNT * 6)) {
+  while (callCount < MAX_CALL_COUNT * 6) {
     callCount++;
     const response = await twitterClient.get("statuses/user_timeline", {
       max_id,
@@ -48,15 +48,15 @@ async function getTweets(twitterClient): Promise<TweetPayload[]> {
 
     max_id = newMaxId;
     if (response.data.length <= 1) {
-      console.warn("Page was short")
+      console.warn("Page was short");
       return tweets;
     }
-    if(callCount === MAX_CALL_COUNT) {
-      console.warn("Hit MAX (but gonna keep going)")
+    if (callCount === MAX_CALL_COUNT) {
+      console.warn("Hit MAX (but gonna keep going)");
     }
   }
 
-  console.warn("Hit MAX (but gonna keep going)")
+  console.warn("Hit MAX (but gonna keep going)");
   return tweets;
 }
 

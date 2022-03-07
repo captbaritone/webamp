@@ -14,6 +14,7 @@
     "@babel/preset-typescript": "^7.16.7",
     "@typescript-eslint/parser": "^5.13.0",
     "eslint": "^8.10.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "jest": "^27.5.1",
     "prettier": "^2.3.2"
   },

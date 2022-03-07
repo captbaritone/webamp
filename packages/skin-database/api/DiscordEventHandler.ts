@@ -121,7 +121,7 @@ export default class DiscordEventHandler {
       }
       case "POPULAR_TWEET": {
         const dest = await this.getChannel(Config.POPULAR_TWEETS_CHANNEL_ID);
-        const diff = (Date.now() - Number(action.date));
+        const diff = Date.now() - Number(action.date);
         const seconds = diff / 1000;
         const minutes = seconds / 60;
         const hours = Math.round(minutes / 60);
@@ -135,7 +135,7 @@ export default class DiscordEventHandler {
         const dest = await this.getChannel(Config.POPULAR_TWEETS_CHANNEL_ID);
         const message = `🎉 Tweet Bot Milestone! Just passed ${action.bracket.toLocaleString()} Followers 🎉`;
         await dest.send(message);
-        break
+        break;
       }
     }
   }
