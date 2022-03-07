@@ -47,7 +47,7 @@ function preRenderBg(
 function Visualizer({ analyser }: Props) {
   useLayoutEffect(() => {
     analyser.fftSize = 2048;
-  }, [analyser.fftSize]);
+  }, [analyser, analyser.fftSize]);
   const colors = useTypedSelector(Selectors.getSkinColors);
   const style = useTypedSelector(Selectors.getVisualizerStyle);
   const status = useTypedSelector(Selectors.getMediaStatus);
