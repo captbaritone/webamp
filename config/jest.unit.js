@@ -8,6 +8,8 @@ module.exports = {
     "dist",
     // TODO: Add these as we can...
     "/packages/webamp/",
+    // TODO: Fix config improt so that this can work.
+    "/packages/skin-database/",
     "/packages/webamp-modern/src/__tests__/integration*",
   ],
   testEnvironment: "jsdom",
