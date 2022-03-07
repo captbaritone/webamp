@@ -51,12 +51,11 @@ export function useScreenSize() {
 
 export function useWindowSize() {
   const [size, setSize] = useState<Size>(Utils.getWindowSize());
-  const handler = useCallback(
+  const handler = useCallback(() => {
     Utils.throttle(() => {
       setSize(Utils.getWindowSize());
-    }, 100) as () => void,
-    []
-  );
+    }, 100) as () => void;
+  }, []);
   useEffect(() => {
     window.addEventListener("resize", handler);
     return () => {
