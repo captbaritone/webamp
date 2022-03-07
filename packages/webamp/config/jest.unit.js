@@ -15,4 +15,5 @@ module.exports = {
     "^.+\\.(js|ts|tsx)$": "babel-jest",
   },
   testPathIgnorePatterns: ["/node_modules/"],
+  testEnvironment: "jsdom",
 };
