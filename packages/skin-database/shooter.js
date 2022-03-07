@@ -1,4 +1,3 @@
-/* global window */
 const path = require("path");
 const puppeteer = require("puppeteer");
 const imagemin = require("imagemin");
@@ -29,12 +28,12 @@ export default class Shooter {
   }
 
   async init() {
-    this._log("init()")
-    this._log("Going to launch puppeteer")
+    this._log("init()");
+    this._log("Going to launch puppeteer");
     this._browser = await puppeteer.launch({
       args: ["--disable-dev-shm-usage"],
     });
-    this._log("Opening new page")
+    this._log("Opening new page");
     this._page = await this._browser.newPage();
     this._page.setViewport({ width: 275, height: 116 * 3 });
 
@@ -49,17 +48,17 @@ export default class Shooter {
       this._log("page log:", consoleMessage.text());
     });
     const url = `${this._url}/?screenshot=1`;
-    this._log(`Goto url ${url}`)
+    this._log(`Goto url ${url}`);
     await this._page.goto(url);
-    this._log(`Waiting for selector...  #main-window...`)
+    this._log(`Waiting for selector...  #main-window...`);
     await this._page.waitForSelector("#main-window", { timeout: 2000 });
-    this._log(`Setting background to none`)
+    this._log(`Setting background to none`);
     await this._page.evaluate(() => {
       // Needed to allow for transparent screenshots
       window.document.body.style.background = "none";
     });
     this._initialized = true;
-    this._log(`Initialization complete!`)
+    this._log(`Initialization complete!`);
   }
 
   async _ensureInitialized() {
@@ -93,7 +92,7 @@ export default class Shooter {
   }
 
   async _takeScreenshot(skin, screenshotPath, { minify = false }) {
-    this._log(`_takeScreenshot`)
+    this._log(`_takeScreenshot`);
     await this._ensureInitialized();
     try {
       this._log(`Getting handle...`);
@@ -149,26 +148,26 @@ export default class Shooter {
         min(screenshotPath);
       }
     } catch (e) {
-      this._log(`Caught an error, cleaning up: ${e}`)
+      this._log(`Caught an error, cleaning up: ${e}`);
       await this.dispose();
       await this.init();
-      reject(e);
+      throw e;
     }
   }
 
   async dispose() {
-    this._log(`Cleaning up shooter...`)
+    this._log(`Cleaning up shooter...`);
     await this._ensureInitialized();
-    this._log(`Removing page listeners`)
+    this._log(`Removing page listeners`);
     this._page.removeAllListeners();
-    this._log(`Closing page`)
+    this._log(`Closing page`);
     await this._page.close();
-    this._log(`Removing browser listeners`)
+    this._log(`Removing browser listeners`);
     this._browser.removeAllListeners();
-    this._log(`Closing browser`)
+    this._log(`Closing browser`);
     await this._browser.close();
 
-    this._log(`Nulling values`)
+    this._log(`Nulling values`);
     this._page = null;
     this._browser = null;
     this._initialized = false;

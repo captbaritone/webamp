@@ -1,0 +1,46 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "jsx": true,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "experimentalObjectRestSpread": true
+    }
+  },
+  "plugins": ["prettier"],
+  "settings": {
+    "react": {
+      "version": "15.2"
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".ts", ".tsx"]
+      }
+    }
+  },
+  "env": {
+    "node": true,
+    "amd": true,
+    "es6": true,
+    "jest": true
+  },
+  "globals": {
+    "window": true,
+    "document": true,
+    "console": true,
+    "navigator": true,
+    "alert": true,
+    "Blob": true,
+    "fetch": true,
+    "FileReader": true,
+    "Element": true,
+    "AudioNode": true,
+    "MutationObserver": true,
+    "Image": true,
+    "location": true
+  },
+  "rules": {
+    // "prettier/prettier": "error"
+  }
+}

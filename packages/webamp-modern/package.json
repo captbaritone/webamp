@@ -72,7 +72,6 @@
     "data-uri-to-buffer": "^2.0.0",
     "eslint": "^6.5.1",
     "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.16.0",
     "file-loader": "^2.0.0",
     "git-revision-webpack-plugin": "^3.0.3",

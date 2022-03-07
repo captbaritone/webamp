@@ -150,6 +150,8 @@ function makiTypeToTsType(makiType: string): string {
       return "Group";
     case "wac":
       return "Wac";
+    case "configitem":
+      return "ConfigItem";
     default:
       throw new Error(`Missing maki type: ${makiType}`);
   }

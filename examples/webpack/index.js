@@ -1,4 +1,4 @@
-import Webamp from "webamp"; // eslint-disable-line import/no-unresolved
+import Webamp from "webamp";
 
 new Webamp({
   initialTracks: [

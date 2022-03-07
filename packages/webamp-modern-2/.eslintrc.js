@@ -1,5 +1,5 @@
 const rulesDirPlugin = require("eslint-plugin-rulesdir");
-rulesDirPlugin.RULES_DIR = "tools/eslint-rules/dist";
+rulesDirPlugin.RULES_DIR = "packages/webamp-modern-2/tools/eslint-rules/dist";
 
 module.exports = {
   root: true,
@@ -8,6 +8,6 @@ module.exports = {
   extends: [],
   rules: {
     eqeqeq: "off",
-    "rulesdir/proper-maki-types": "error",
+    "rulesdir/proper-maki-types": "warn",
   },
 };
