@@ -76,6 +76,9 @@ class RootResolver extends MutationResolver {
     return new SkinsConnection(first, offset, sort, filter);
   }
   async skin_to_review(_args, { ctx }) {
+    if (!ctx.authed()) {
+      return null;
+    }
     const { md5 } = await Skins.getSkinToReview();
     const model = await SkinModel.fromMd5Assert(ctx, md5);
     return new SkinResolver(model);
@@ -90,7 +93,7 @@ class RootResolver extends MutationResolver {
     return new UserResolver();
   }
   async upload_statuses_by_md5({ md5s }, { ctx }) {
-    return this._upload_statuses({ keyName: "md5", keys: md5s }, ctx);
+    return this._upload_statuses({ keyName: "skin_md5", keys: md5s }, ctx);
   }
 
   async upload_statuses({ ids }, { ctx }) {

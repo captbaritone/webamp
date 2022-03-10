@@ -1,6 +1,7 @@
+import UserContext from "../../../data/UserContext";
+
 export default class UserResolver {
-  username(_args, ctx) {
-    // For now every user is the current user.
-    return ctx.user?.username;
+  username(_args, { ctx }) {
+    return ctx.username;
   }
 }
