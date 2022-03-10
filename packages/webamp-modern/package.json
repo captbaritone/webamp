@@ -86,7 +86,7 @@
     "lodash": "^4.17.21",
     "milkdrop-preset-converter-aws": "^0.1.6",
     "music-metadata-browser": "^0.6.1",
-    "postcss": "^8.2.10",
+    "postcss": "^8.2.13",
     "postcss-loader": "^3.0.0",
     "puppeteer": "^1.15.0",
     "rc-slider": "^8.7.1",
