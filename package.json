@@ -18,7 +18,9 @@
     "jest": "^27.5.1",
     "prettier": "^2.3.2"
   },
-  "prettier": {},
+  "prettier": {
+    "trailingComma": "es5"
+  },
   "jest": {
     "projects": [
       "config/jest.*.js"

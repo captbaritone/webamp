@@ -106,7 +106,6 @@
     "jest-puppeteer": "^4.4.0",
     "postcss": "^8.2.10",
     "postcss-loader": "^3.0.0",
-    "prettier": "^2.3.2",
     "puppeteer": "^1.15.0",
     "react-test-renderer": "^17.0.1",
     "redux-devtools-extension": "^2.13.2",
