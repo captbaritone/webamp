@@ -53,7 +53,7 @@ test("/auth", async () => {
     .expect(302)
     .expect(
       "Location",
-      "https://discord.com/api/oauth2/authorize?client_id=560264562222432304&redirect_uri=https%3A%2F%2Fapi.webampskins.org%2Fauth%2Fdiscord&response_type=code&scope=identify%20guilds"
+      "https://discord.com/api/oauth2/authorize?client_id=%3CDUMMY_DISCORD_CLIENT_ID%3E&redirect_uri=https%3A%2F%2Fapi.webampskins.org%2Fauth%2Fdiscord&response_type=code&scope=identify%20guilds"
     );
   expect(body).toEqual({});
 });

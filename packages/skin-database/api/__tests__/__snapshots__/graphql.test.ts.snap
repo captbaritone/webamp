@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Query.fetch_skin_by_md5 (debug data) 1`] = `
+Object {
+  "fetch_skin_by_md5": Object {
+    "archive_files": Array [
+      Object {
+        "date": "1995-12-17T11:24:00.000Z",
+        "file_md5": "a_fake_file_md5",
+        "filename": null,
+        "is_directory": false,
+        "size": null,
+        "skin": Object {
+          "md5": "a_fake_md5",
+        },
+        "text_content": null,
+        "url": "https://zip-worker.jordan1320.workers.dev/zip/a_fake_md5/null",
+      },
+    ],
+    "average_color": null,
+    "download_url": "https://cdn.webampskins.org/skins/a_fake_md5.wsz",
+    "filename": "path.wsz",
+    "id": 50,
+    "internet_archive_item": Object {
+      "identifier": "a_fake_ia_identifier",
+      "metadata_url": "https://archive.org/metadata/a_fake_ia_identifier",
+      "raw_metadata_json": null,
+      "skin": Object {
+        "md5": "a_fake_md5",
+      },
+      "url": "https://archive.org/details/a_fake_ia_identifier",
+    },
+    "md5": "a_fake_md5",
+    "museum_url": "https://skins.webamp.org/skin/a_fake_md5",
+    "nsfw": false,
+    "readme_text": null,
+    "reviews": Array [],
+    "screenshot_url": "https://cdn.webampskins.org/screenshots/a_fake_md5.png",
+    "tweeted": false,
+    "tweets": Array [],
+    "webamp_url": "https://webamp.org?skinUrl=https://cdn.webampskins.org/skins/a_fake_md5.wsz",
+  },
+}
+`;

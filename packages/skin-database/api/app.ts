@@ -84,6 +84,8 @@ export function createApp({ eventHandler, extraMiddleware, logger }: Options) {
       name: "session",
       secret: SECRET,
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
+      // @ts-ignore Tests fail if this is missing, but prod is fine.
+      keys: "what",
     })
   );
 
