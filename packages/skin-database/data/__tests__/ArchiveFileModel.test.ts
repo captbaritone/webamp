@@ -11,7 +11,5 @@ test("fromMd5", async () => {
   const ctx = new UserContext();
   const files = await ArchiveFileModel.fromMd5(ctx, "a_fake_md5");
   expect(files.length).toEqual(1);
-  expect(files[0].getFileDate().getTime()).toEqual(
-    new Date("1995-12-17T03:24:00").getTime()
-  );
+  expect(files[0].getFileDate().getTime()).toEqual(957771892000);
 });

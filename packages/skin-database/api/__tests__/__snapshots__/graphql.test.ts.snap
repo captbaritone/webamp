@@ -5,7 +5,7 @@ Object {
   "fetch_skin_by_md5": Object {
     "archive_files": Array [
       Object {
-        "date": "1995-12-17T11:24:00.000Z",
+        "date": "2000-05-08T07:44:52.000Z",
         "file_md5": "a_fake_file_md5",
         "filename": null,
         "is_directory": false,

@@ -53,7 +53,7 @@ export async function seed(knex: Knex): Promise<any> {
     {
       skin_md5: "a_fake_md5",
       file_md5: "a_fake_file_md5",
-      file_date: new Date("1995-12-17T03:24:00"),
+      file_date: 957771892000,
     },
   ]);
 }
