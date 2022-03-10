@@ -1,4 +1,4 @@
-import * as Skins from "../../../data/Skins";
+import * as Skins from "../../../data/skins";
 
 export default class DatabaseStatisticsResolver {
   unique_classic_skins_count(): Promise<number> {
