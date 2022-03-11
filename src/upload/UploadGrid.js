@@ -16,6 +16,7 @@ function useBucketed(filesArr) {
         case "MISSING":
         case "UPLOADING":
         case "UPLOAD_FAILED":
+        case "UPLOAD_DELAYED":
         case "ARCHIVED":
         case "UPLOADED":
           missing.push(file);

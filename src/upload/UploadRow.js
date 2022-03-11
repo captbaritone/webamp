@@ -72,7 +72,7 @@ function SkinLink({ md5, children }) {
 function getRight(file) {
   switch (file.status) {
     case "UPLOADED": {
-      return "uploaded (...server is processing)";
+      return "uploaded (...server processing)";
     }
     case "ARCHIVED":
       switch (file.skinType) {
@@ -96,6 +96,8 @@ function getRight(file) {
       return "missing";
     case "UPLOADING":
       return "uploading...";
+    case "UPLOAD_DELAYED":
+      return "uploaded complete (processing scheduled)";
     case "UPLOAD_FAILED":
       return "upload failed";
     case "INVALID_ARCHIVE":

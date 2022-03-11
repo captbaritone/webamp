@@ -395,6 +395,8 @@ function checkStatus(state) {
               return Actions.archivedSkin(skin.id);
             case "ERRORED":
               return Actions.uploadFailed(skin.id);
+            case "DELAYED":
+              return Actions.uploadDelayed(skin.id);
             default:
               return null;
           }

@@ -88,6 +88,9 @@ export default function reducer(state = defaultState, action) {
     case "UPLOAD_FAILED": {
       return setUploadFileStatus(state, action.id, "UPLOAD_FAILED", true);
     }
+    case "UPLOAD_DELAYED": {
+      return setUploadFileStatus(state, action.id, "UPLOAD_DELAYED", true);
+    }
     case "ARCHIVED_SKIN": {
       return setUploadFileStatus(state, action.id, "ARCHIVED");
     }

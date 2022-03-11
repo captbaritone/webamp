@@ -107,6 +107,10 @@ export function uploadFailed(id) {
   return { type: "UPLOAD_FAILED", id };
 }
 
+export function uploadDelayed(id) {
+  return { type: "UPLOAD_DELAYED", id };
+}
+
 export function uploadedSkin(id, response) {
   return { type: "UPLOADED_SKIN", id, response };
 }
