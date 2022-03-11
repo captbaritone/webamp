@@ -112,6 +112,10 @@ class RootResolver extends MutationResolver {
         // TODO: Could we avoid fetching the skin if it's not read?
         const skinModel = await SkinModel.fromMd5(ctx, skin_md5);
         const skin = skinModel == null ? null : new SkinResolver(skinModel);
+        // Most of the time when a skin fails to process, it's due to some infa
+        // issue on our side, and we can recover. For now, we'll always tell the user 
+        // That processing is just delayed.
+        status = status === "ERRORED" ? "DELAYED" : status;
         return { id, skin, status, upload_md5: skin_md5 };
       })
     );

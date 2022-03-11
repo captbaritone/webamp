@@ -318,6 +318,12 @@ enum SkinUploadStatus {
   the skin will be retried at a later time.
   """
   ERRORED
+  
+  """
+  An error occured processing the skin, but it was the fault of the server. It
+  will be processed at a later date.
+  """
+  DELAYED
 
   """
   The skin has been successfully added to the Museum.
