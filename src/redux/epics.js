@@ -518,7 +518,7 @@ const skinDataEpic = (actions, state) => {
               const skin = data.fetch_skin_by_md5;
               return Actions.gotSkinData(hash, {
                 md5: hash,
-                fileName: skin.fileName,
+                fileName: skin.filename,
                 nsfw: skin.nsfw,
               });
             })
