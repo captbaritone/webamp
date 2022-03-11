@@ -47,7 +47,7 @@ export async function getUploadUrls(skins) {
       };
     });
     const mutation = gql`
-      mutation GetUploadUrls($files: [uplaodRequst!]!) {
+      mutation GetUploadUrls($files: [UploadUrlRequest!]!) {
         upload {
           get_upload_urls(files: $files) {
             id
