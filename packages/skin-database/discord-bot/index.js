@@ -1,3 +1,7 @@
+const dotenv = require("dotenv");
+
+dotenv.config();
+
 const Discord = require("discord.js");
 const logger = require("../logger");
 const DiscordWinstonTransport = require("../DiscordWinstonTransport");

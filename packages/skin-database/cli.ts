@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import dotenv from "dotenv";
+dotenv.config();
 import fs from "fs";
 import { knex } from "./db";
 import logger from "./logger";
@@ -28,10 +30,8 @@ import _temp from "temp";
 import Shooter from "./shooter";
 import { program } from "commander";
 import * as config from "./config";
-import dotenv from "dotenv";
 import { setHashesForSkin } from "./skinHash";
 
-dotenv.config();
 
 async function withHandler(
   cb: (handler: DiscordEventHandler) => Promise<void>
