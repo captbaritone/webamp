@@ -1,6 +1,5 @@
 node_modules/
 yarn-error.log
-config.ts
 uploads/
 combined.log
 hash.txt
