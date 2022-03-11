@@ -106,25 +106,38 @@ export default function DebugSkin({ md5 }) {
             )}
           </ul>
           <h2>Shares</h2>
-          <ul>
-            {skin.tweets.map((tweet, i) => (
-              <li key={tweet.url}>
-                <a href={tweet.url}>Tweet</a> ({tweet.retweets} retweets /{" "}
-                {tweet.likes} likes)
-              </li>
-            ))}
-          </ul>
+          {skin.tweets.length === 0 ? (
+            <p>No Tweets</p>
+          ) : (
+            <ul>
+              {skin.tweets.map((tweet, i) => (
+                <li key={tweet.url}>
+                  <a href={tweet.url}>Tweet</a> ({tweet.retweets} retweets /{" "}
+                  {tweet.likes} likes)
+                </li>
+              ))}
+            </ul>
+          )}
           <h2>Reviews</h2>
-          <ul>
-            {skin.reviews.map((review, i) => (
-              <li key={i}>
-                {review.rating} by {review.reviewer ?? "[unknown]"}
-              </li>
-            ))}
-          </ul>
+          {skin.reviews.length === 0 ? (
+            <p>No reviews</p>
+          ) : (
+            <ul>
+              {skin.reviews.map((review, i) => (
+                <li key={i}>
+                  {review.rating} by {review.reviewer ?? "[unknown]"}
+                </li>
+              ))}
+            </ul>
+          )}
           <h2>Files</h2>
           <table>
             <tbody>
+              <tr>
+                <th style={{ textAlign: "left" }}>File Path</th>
+                <th style={{ textAlign: "left" }}>Size</th>
+                <th style={{ textAlign: "left" }}>Date</th>
+              </tr>
               {skin.archive_files.map((file) => {
                 return (
                   <tr key={file.filename}>
