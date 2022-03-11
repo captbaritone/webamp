@@ -15,12 +15,27 @@ import { knex } from "../../../db";
 import ArchiveFileModel from "../../../data/ArchiveFileModel";
 import ArchiveFileResolver from "./ArchiveFileResolver";
 import DatabaseStatisticsResolver from "./DatabaseStatisticsResolver";
+import { fromId } from "./NodeResolver";
 
 // These keys are already in the web client, so they are not secret at all.
 const client = algoliasearch("HQ9I5Z6IM5", "6466695ec3f624a5fccf46ec49680e51");
 const index = client.initIndex("Skins");
 
 class RootResolver extends MutationResolver {
+  async node({ id }, { ctx }) {
+    const { graphqlType, id: localId } = fromId(id)
+    // TODO Use typeResolver
+    switch (graphqlType) {
+      case "Skin": {
+        const skin = await SkinModel.fromMd5(ctx, id);
+        if (skin == null) {
+          return null;
+        }
+        return new SkinResolver(skin);
+      }
+    }
+    return null;
+  }
   async fetch_skin_by_md5({ md5 }, { ctx }) {
     const skin = await SkinModel.fromMd5(ctx, md5);
     if (skin == null) {

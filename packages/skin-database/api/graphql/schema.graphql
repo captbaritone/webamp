@@ -1,7 +1,16 @@
 """
+A globally unique object. The `id` here is intended only for use within 
+GraphQL.
+https://graphql.org/learn/global-object-identification/
+"""
+interface Node {
+  id: ID!
+}
+
+"""
 A classic Winamp skin
 """
-type Skin {
+type Skin implements Node {
   """
   Database ID of the skin
   """
@@ -499,6 +508,13 @@ type DatabaseStatistics {
 }
 
 type Query {
+  """
+  Get a globally unique object by its ID.
+
+  https://graphql.org/learn/global-object-identification/
+  """
+  node(id: ID): Node
+  
   """
   The currently authenticated user, if any.
   """

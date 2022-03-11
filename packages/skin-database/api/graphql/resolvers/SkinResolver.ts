@@ -1,16 +1,17 @@
 import SkinModel from "../../../data/SkinModel";
 import ArchiveFileResolver from "./ArchiveFileResolver";
 import InternetArchiveItemResolver from "./InternetArchiveItemResolver";
+import { NodeResolver, toId } from "./NodeResolver";
 import ReviewResolver from "./ReviewResolver";
 import TweetResolver from "./TweetResolver";
 
-export default class SkinResolver {
+export default class SkinResolver implements NodeResolver {
   _model: SkinModel;
   constructor(model: SkinModel) {
     this._model = model;
   }
-  id() {
-    return this._model.getId();
+  async id() {
+    return toId("Skin", this.md5())
   }
   md5() {
     return this._model.getMd5();

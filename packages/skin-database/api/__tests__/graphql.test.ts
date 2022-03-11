@@ -50,6 +50,19 @@ async function graphQLRequest(query: string, variables?: any) {
   return body;
 }
 
+test.skip(".node", async () => {
+  const { data } = await graphQLRequest(gql`
+      query {
+        skins(limit: 1) {
+          node {
+            id
+          }
+        }
+      }
+    `);
+  expect(data).toEqual({ skins: [{ node: { id: "hwllo" } }] });
+});
+
 describe(".me", () => {
   test("logged in ", async () => {
     const { data } = await graphQLRequest(gql`
