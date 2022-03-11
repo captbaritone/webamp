@@ -33,7 +33,7 @@ export const SCREENSHOT_CDN = "https://mirror.webampskins.org";
 export const SKIN_CDN = params.vps
   ? "https://mirror.webampskins.org"
   : "https://cdn.webampskins.org";
-export const USE_GRAPHQL = Boolean(params.graphql);
+export const USE_GRAPHQL = true; //Boolean(params.graphql);
 // Uncomment these if something goes wrong
 // export const SCREENSHOT_CDN = "https://cdn.webampskins.org";
 // export const SKIN_CDN = "https://cdn.webampskins.org";
