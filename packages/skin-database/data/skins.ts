@@ -26,11 +26,13 @@ export function getScreenshotUrl(md5: string): string {
 }
 
 export async function addSkin({
+  ctx,
   md5,
   filePath,
   uploader,
   modern,
 }: {
+  ctx: UserContext,
   md5: string;
   filePath: string;
   uploader: string;
@@ -51,6 +53,7 @@ export async function addSkin({
     },
     []
   );
+  SkinModel.clearMd5(ctx, md5);
 }
 
 const CRUFT_FILENAME = /winampskins\.info\.(html)|(txt)$/;
@@ -210,7 +213,21 @@ export async function updateSearchIndex(
 
 // Note: This might leave behind some files in file_info.
 export async function deleteSkin(md5: string): Promise<void> {
-  console.log(`Deleting skin ${md5}...`);
+  await deleteLocalSkin(md5);
+  console.log(`Deleting skin ${md5} from external sources...`);
+  console.log(`... removing from Algolia index`);
+  await searchIndex.deleteObjects([md5]);
+  console.log(`... removing skin from S3`);
+  await S3.deleteSkin(md5);
+  console.log(`... removing screenshot from S3`);
+  await S3.deleteScreenshot(md5);
+  console.log(`... purging screenshot and skin from CloudFlare`);
+  await CloudFlare.purgeFiles([getScreenshotUrl(md5), getSkinUrl(md5)]);
+  console.log(`Done deleting skin ${md5} from external sources.`);
+}
+
+export async function deleteLocalSkin(md5: string): Promise<void> {
+  console.log(`Deleting skin ${md5} locally...`);
   console.log(`... sqlite "skins"`);
   await knex("skins").where({ md5 }).limit(1).delete();
   console.log(`... sqlite "refreshes"`);
@@ -231,15 +248,7 @@ export async function deleteSkin(md5: string): Promise<void> {
   await knex("skin_uploads").where({ skin_md5: md5 }).delete();
   console.log(`... sqlite "screenshot_updates"`);
   await knex("screenshot_updates").where({ skin_md5: md5 }).delete();
-  console.log(`... removing from Algolia index`);
-  await searchIndex.deleteObjects([md5]);
-  console.log(`... removing skin from S3`);
-  await S3.deleteSkin(md5);
-  console.log(`... removing screenshot from S3`);
-  await S3.deleteScreenshot(md5);
-  console.log(`... purging screenshot and skin from CloudFlare`);
-  await CloudFlare.purgeFiles([getScreenshotUrl(md5), getSkinUrl(md5)]);
-  console.log(`Done deleting skin ${md5}.`);
+  console.log(`Done deleting skin ${md5} locally.`);
 }
 
 export async function recordScreenshotUpdate(

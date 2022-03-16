@@ -31,32 +31,41 @@ export async function addSkinFromBuffer(
   const ctx = new UserContext();
   const md5 = md5Buffer(buffer);
   if (await SkinModel.exists(ctx, md5)) {
+    console.log("Skin found.")
     return { md5, status: "FOUND" };
   }
 
   // Note: This will thrown on invalid skins.
+  console.log("Getting zip...")
   const zip = await JSZip.loadAsync(buffer);
+  console.log("Getting skin type...")
   const skinType = await getSkinType(zip);
 
   switch (skinType) {
     case "CLASSIC":
+      console.log("Adding classic skin...")
       return addClassicSkinFromBuffer(ctx, buffer, md5, filePath, uploader);
     case "MODERN":
-      return addModernSkinFromBuffer(buffer, md5, filePath, uploader);
+      return addModernSkinFromBuffer(ctx, buffer, md5, filePath, uploader);
   }
 }
 
 async function addModernSkinFromBuffer(
+  ctx: UserContext,
   buffer: Buffer,
   md5: string,
   filePath: string,
   uploader: string
 ): Promise<Result> {
+  console.log("Write temporarty file.")
   const tempFile = temp.path({ suffix: ".wal" });
   fs.writeFileSync(tempFile, buffer);
+  console.log("Put skin to S3.")
   await S3.putSkin(md5, buffer, "wal");
 
+  console.log("Add skin to DB")
   await Skins.addSkin({
+    ctx,
     md5,
     filePath,
     uploader,
@@ -97,6 +106,7 @@ async function addClassicSkinFromBuffer(
   await S3.putSkin(md5, buffer, "wsz");
 
   await Skins.addSkin({
+    ctx,
     md5,
     filePath,
     uploader,
