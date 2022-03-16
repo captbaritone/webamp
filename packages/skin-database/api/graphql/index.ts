@@ -19,7 +19,7 @@ function getQueryNameFromDocument(document) {
   if (!operationDefinition) {
     return null
   }
-  return operationDefinition.name.value;
+  return operationDefinition.name?.value;
 }
 
 const extensions = ({
