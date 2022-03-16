@@ -59,7 +59,7 @@ export async function getUploadUrls(skins) {
     `;
     const data = await fetchGraphql(mutation, { files });
     const normalized = {};
-    for (const { md5, id, url } in data.upload.get_upload_urls) {
+    for (const { id, url, md5 } of data.upload.get_upload_urls) {
       normalized[md5] = {
         id,
         url,
