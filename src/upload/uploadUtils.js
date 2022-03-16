@@ -112,13 +112,11 @@ export async function checkMd5sUploadStatus(md5s) {
       }
     `;
     const data = await fetchGraphql(query, { md5s });
-    return data.upload_statuses_by_md5.map((status) => {
-      return {
-        id: status.id,
-        md5: status.upload_md5,
-        status: status.status,
-      };
+    const statusObj = {};
+    data.upload_statuses_by_md5.forEach((status) => {
+      statusObj[status.upload_md5] = status.status;
     });
+    return statusObj;
   } else {
     const response = await fetch(`${API_URL}/skins/status`, {
       method: "POST",
