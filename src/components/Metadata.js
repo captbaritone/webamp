@@ -96,13 +96,14 @@ function Metadata() {
     >
       Share
     </a>,
+    /*
     <a
       id="metadata-webamp"
       href={`https://webamp.org?skinUrl=${Utils.skinUrlFromHash(hash)}`}
       target="_new"
     >
       Webamp
-    </a>,
+    </a>, */
     skinData && skinData.nsfw ? (
       "NSFW"
     ) : (
@@ -131,12 +132,12 @@ function Metadata() {
       {elements.map((element, i) => {
         const last = i === element.length - 1;
         return (
-          <React.Fragment key={i}>
+          <span style={{ whiteSpace: "nowrap" }} key={i}>
             {"["}
             {element}
             {"]"}
             {last ? "" : " "}
-          </React.Fragment>
+          </span>
         );
       })}
     </div>
