@@ -12,6 +12,16 @@ const schema = buildSchema(fs.readFileSync(schemaPath, "utf8"));
 
 const router = Router();
 
+function getQueryNameFromDocument(document) {
+  const operationDefinition = document.definitions.find(
+    (def) => def.kind === "OperationDefinition"
+  );
+  if (!operationDefinition) {
+    return null
+  }
+  return operationDefinition.name.value;
+}
+
 const extensions = ({
   variables,
   operationName,
@@ -23,9 +33,10 @@ const extensions = ({
 }) => {
   const runTime = Date.now() - req.startTime;
   const vars = JSON.stringify(variables);
+  const queryName = operationName ?? getQueryNameFromDocument(document);
   // TODO: Log/notify on error.
   req.log(
-    `Handled GraphQL Query: "${operationName}" with variables ${vars} in ${runTime}ms`
+    `Handled GraphQL Query: "${queryName}" with variables ${vars} in ${runTime}ms`
   );
   return { runTime };
 };
@@ -33,9 +44,11 @@ const extensions = ({
 router.use(
   "/",
   graphqlHTTP({
+    /*
     typeResolver(_type) {
       throw new Error("We probably need to implement typeResolver");
     },
+    */
     schema: schema,
     rootValue: new RootResolver(),
     graphiql: {
