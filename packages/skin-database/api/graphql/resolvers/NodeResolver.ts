@@ -1,5 +1,6 @@
 export interface NodeResolver {
     id({ id }): Promise<string>
+    __typename: String
 };
 
 export function toId(graphqlType: string, id: string) {

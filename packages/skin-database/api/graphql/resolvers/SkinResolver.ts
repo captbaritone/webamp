@@ -10,6 +10,7 @@ export default class SkinResolver implements NodeResolver {
   constructor(model: SkinModel) {
     this._model = model;
   }
+  __typename = "Skin";
   async id() {
     return toId("Skin", this.md5())
   }

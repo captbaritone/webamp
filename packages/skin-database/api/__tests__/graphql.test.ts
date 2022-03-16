@@ -44,23 +44,46 @@ async function graphQLRequest(query: string, variables?: any) {
     .post("/graphql")
     .send({ query, variables: variables ?? {} });
   if (body.errors && body.errors.length) {
-    console.warn(body);
+    for (const err of body.errors) {
+      console.warn(err.message);
+      console.warn('Stack', err.stack)
+    }
   }
 
   return body;
 }
 
-test.skip(".node", async () => {
+test(".node", async () => {
   const { data } = await graphQLRequest(gql`
       query {
-        skins(limit: 1) {
-          node {
+        skins(first: 1) {
+          nodes {
             id
+            md5
           }
         }
       }
     `);
-  expect(data).toEqual({ skins: [{ node: { id: "hwllo" } }] });
+  const skin = data.skins.nodes[0];
+  expect(skin.id).toEqual("U2tpbl9fYV9mYWtlX21kNQ==");
+
+  const { data: data2 } = await graphQLRequest(gql`
+  query MyQuery($id: ID!) {
+    node(id: $id) {
+      ... on Skin {
+        md5
+      }
+    }
+
+
+    
+  }
+`, { id: skin.id });
+  expect(
+
+
+
+    data2.node).toEqual({ md5: skin.md5 })
 });
 
 describe(".me", () => {

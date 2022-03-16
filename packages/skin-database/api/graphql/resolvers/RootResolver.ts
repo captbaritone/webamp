@@ -27,7 +27,7 @@ class RootResolver extends MutationResolver {
     // TODO Use typeResolver
     switch (graphqlType) {
       case "Skin": {
-        const skin = await SkinModel.fromMd5(ctx, id);
+        const skin = await SkinModel.fromMd5(ctx, localId);
         if (skin == null) {
           return null;
         }

@@ -1,5 +1,5 @@
 """
-A globally unique object. The `id` here is intended only for use within 
+A globally unique object. The `id` here is intended only for use within
 GraphQL.
 https://graphql.org/learn/global-object-identification/
 """
@@ -12,9 +12,9 @@ A classic Winamp skin
 """
 type Skin implements Node {
   """
-  Database ID of the skin
+  GraphQL ID of the skin
   """
-  id: Int
+  id: ID!
 
   """
   MD5 hash of the skin's file
@@ -327,7 +327,7 @@ enum SkinUploadStatus {
   the skin will be retried at a later time.
   """
   ERRORED
-  
+
   """
   An error occured processing the skin, but it was the fault of the server. It
   will be processed at a later date.
@@ -514,7 +514,7 @@ type Query {
   https://graphql.org/learn/global-object-identification/
   """
   node(id: ID): Node
-  
+
   """
   The currently authenticated user, if any.
   """
