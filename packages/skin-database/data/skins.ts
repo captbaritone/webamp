@@ -32,7 +32,7 @@ export async function addSkin({
   uploader,
   modern,
 }: {
-  ctx: UserContext,
+  ctx: UserContext;
   md5: string;
   filePath: string;
   uploader: string;

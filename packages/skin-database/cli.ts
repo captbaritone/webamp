@@ -32,7 +32,6 @@ import { program } from "commander";
 import * as config from "./config";
 import { setHashesForSkin } from "./skinHash";
 
-
 async function withHandler(
   cb: (handler: DiscordEventHandler) => Promise<void>
 ) {
@@ -73,7 +72,7 @@ program
   .command("share")
   .description(
     "Share a skin on Twitter and Instagram. If no md5 is " +
-    "given, random approved skins are shared."
+      "given, random approved skins are shared."
   )
   .argument("[md5]", "md5 of the skin to share")
   .option("-t, --twitter", "Share on Twitter")
@@ -102,12 +101,12 @@ program
   .option(
     "--delete",
     "Delete a skin from the database, including its S3 files " +
-    "CloudFlare cache and seach index entries."
+      "CloudFlare cache and seach index entries."
   )
   .option(
     "--delete-local",
     "Delete a skin from the database only, NOT including its S3 files " +
-    "CloudFlare cache and seach index entries."
+      "CloudFlare cache and seach index entries."
   )
   .option("--index", "Update the seach index for a skin.")
   .option(
@@ -116,30 +115,35 @@ program
   )
   .option("--reject", 'Give a skin a "rejected" review.')
   .option("--metadata", "Push metadata to the archive.")
-  .action(async (md5, { delete: del, deleteLocal, index, refresh, reject, metadata }) => {
-    const ctx = new UserContext("CLI");
-    if (del) {
-      await Skins.deleteSkin(md5);
+  .action(
+    async (
+      md5,
+      { delete: del, deleteLocal, index, refresh, reject, metadata }
+    ) => {
+      const ctx = new UserContext("CLI");
+      if (del) {
+        await Skins.deleteSkin(md5);
+      }
+      if (deleteLocal) {
+        await Skins.deleteLocalSkin(md5);
+      }
+      if (index) {
+        console.log(await Skins.updateSearchIndex(ctx, md5));
+      }
+      if (refresh) {
+        const skin = await SkinModel.fromMd5Assert(ctx, md5);
+        await refreshSkins([skin], { noScreenshot: true });
+      }
+      if (reject) {
+        await Skins.reject(ctx, md5);
+      }
+      if (metadata) {
+        const skin = await SkinModel.fromMd5Assert(ctx, md5);
+        await SyncToArchive.updateMetadata(skin);
+        console.log("Updated Metadata");
+      }
     }
-    if (deleteLocal) {
-      await Skins.deleteLocalSkin(md5);
-    }
-    if (index) {
-      console.log(await Skins.updateSearchIndex(ctx, md5));
-    }
-    if (refresh) {
-      const skin = await SkinModel.fromMd5Assert(ctx, md5);
-      await refreshSkins([skin], { noScreenshot: true });
-    }
-    if (reject) {
-      await Skins.reject(ctx, md5);
-    }
-    if (metadata) {
-      const skin = await SkinModel.fromMd5Assert(ctx, md5);
-      await SyncToArchive.updateMetadata(skin);
-      console.log("Updated Metadata");
-    }
-  });
+  );
 
 program
   .command("file")
@@ -178,18 +182,18 @@ program
   .option(
     "--fetch-metadata <count>",
     "Fetch missing metadata for <count> items from the Internet " +
-    "Archive. Currently it only fetches missing metadata. In the " +
-    "future it could refresh stale metadata."
+      "Archive. Currently it only fetches missing metadata. In the " +
+      "future it could refresh stale metadata."
   )
   .option(
     "--fetch-items",
     "Seach the Internet Archive for items that we don't know about" +
-    "and add them to our database."
+      "and add them to our database."
   )
   .option(
     "--update-metadata <count>",
     "Find <count> items in our database that have incorrect or incomplete " +
-    "metadata, and update the Internet Archive"
+      "metadata, and update the Internet Archive"
   )
   .option(
     "--upload-new",
@@ -223,7 +227,7 @@ program
   .command("stats")
   .description(
     "Report information about skins in the database. " +
-    "Identical to `!stats` in Discord."
+      "Identical to `!stats` in Discord."
   )
   .action(async () => {
     console.table([await Skins.getStats()]);
@@ -269,17 +273,17 @@ program
   .option(
     "--likes",
     "Scrape @winampskins tweets for like and retweet counts, " +
-    "and update the database."
+      "and update the database."
   )
   .option(
     "--milestones",
     "Check the most recent @winampskins tweets to see if they have " +
-    "passed a milestone. If so, notify the Discord channel."
+      "passed a milestone. If so, notify the Discord channel."
   )
   .option(
     "--followers",
     "Check if @winampskins has passed a follower count milestone. " +
-    "If so, notify the Discord channel."
+      "If so, notify the Discord channel."
   )
   .action(async ({ likes, milestones, followers }) => {
     if (likes) {
@@ -307,7 +311,7 @@ program
   .option(
     "--upload-ia-screenshot <md5>",
     "Upload a screenshot of a skin to the skin's Internet Archive itme. " +
-    "[[Warning!]] This might result in multiple screenshots on the item."
+      "[[Warning!]] This might result in multiple screenshots on the item."
   )
   .option(
     "--upload-missing-screenshots",

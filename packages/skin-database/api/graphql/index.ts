@@ -17,7 +17,7 @@ function getQueryNameFromDocument(document) {
     (def) => def.kind === "OperationDefinition"
   );
   if (!operationDefinition) {
-    return null
+    return null;
   }
   return operationDefinition.name?.value;
 }

@@ -12,7 +12,7 @@ export default class SkinResolver implements NodeResolver {
   }
   __typename = "Skin";
   async id() {
-    return toId("Skin", this.md5())
+    return toId("Skin", this.md5());
   }
   md5() {
     return this._model.getMd5();

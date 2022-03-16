@@ -46,7 +46,7 @@ async function graphQLRequest(query: string, variables?: any) {
   if (body.errors && body.errors.length) {
     for (const err of body.errors) {
       console.warn(err.message);
-      console.warn('Stack', err.stack)
+      console.warn("Stack", err.stack);
     }
   }
 
@@ -55,35 +55,31 @@ async function graphQLRequest(query: string, variables?: any) {
 
 test(".node", async () => {
   const { data } = await graphQLRequest(gql`
-      query {
-        skins(first: 1) {
-          nodes {
-            id
+    query {
+      skins(first: 1) {
+        nodes {
+          id
+          md5
+        }
+      }
+    }
+  `);
+  const skin = data.skins.nodes[0];
+  expect(skin.id).toEqual("U2tpbl9fYV9mYWtlX21kNQ==");
+
+  const { data: data2 } = await graphQLRequest(
+    gql`
+      query MyQuery($id: ID!) {
+        node(id: $id) {
+          ... on Skin {
             md5
           }
         }
       }
-    `);
-  const skin = data.skins.nodes[0];
-  expect(skin.id).toEqual("U2tpbl9fYV9mYWtlX21kNQ==");
-
-  const { data: data2 } = await graphQLRequest(gql`
-  query MyQuery($id: ID!) {
-    node(id: $id) {
-      ... on Skin {
-        md5
-      }
-    }
-
-
-    
-  }
-`, { id: skin.id });
-  expect(
-
-
-
-    data2.node).toEqual({ md5: skin.md5 })
+    `,
+    { id: skin.id }
+  );
+  expect(data2.node).toEqual({ md5: skin.md5 });
 });
 
 describe(".me", () => {

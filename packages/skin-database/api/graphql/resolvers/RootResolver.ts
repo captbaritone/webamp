@@ -23,7 +23,7 @@ const index = client.initIndex("Skins");
 
 class RootResolver extends MutationResolver {
   async node({ id }, { ctx }) {
-    const { graphqlType, id: localId } = fromId(id)
+    const { graphqlType, id: localId } = fromId(id);
     // TODO Use typeResolver
     switch (graphqlType) {
       case "Skin": {
@@ -128,7 +128,7 @@ class RootResolver extends MutationResolver {
         const skinModel = await SkinModel.fromMd5(ctx, skin_md5);
         const skin = skinModel == null ? null : new SkinResolver(skinModel);
         // Most of the time when a skin fails to process, it's due to some infa
-        // issue on our side, and we can recover. For now, we'll always tell the user 
+        // issue on our side, and we can recover. For now, we'll always tell the user
         // That processing is just delayed.
         status = status === "ERRORED" ? "DELAYED" : status;
         return { id, skin, status, upload_md5: skin_md5 };
