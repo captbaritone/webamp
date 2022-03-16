@@ -43,7 +43,7 @@ query MyQuery {
       # returned url --->
       url
       # Date the file was created according to the zip file
-    date
+      date
     }
   }
 }`;
