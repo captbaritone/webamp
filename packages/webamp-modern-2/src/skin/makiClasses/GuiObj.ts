@@ -1,5 +1,5 @@
 import UI_ROOT from "../../UIRoot";
-import { assert, num, toBool, px, assume } from "../../utils";
+import { assert, num, toBool, px, assume, relat } from "../../utils";
 import Bitmap from "../Bitmap";
 import Group from "./Group";
 import XmlObj from "../XmlObj";
@@ -13,6 +13,14 @@ export default class GuiObj extends XmlObj {
   _height: number;
   _x: number = 0;
   _y: number = 0;
+  _minimumHeight: number = 0;
+  _maximumHeight: number = 0;
+  _minimumWidth: number = 0;
+  _maximumWidth: number = 0;
+  _relatx: string;
+  _relaty: string;
+  _relatw: string;
+  _relath: string;
   _droptarget: string;
   _visible: boolean = true;
   _alpha: number = 255;
@@ -83,20 +91,48 @@ export default class GuiObj extends XmlObj {
         this._id = value.toLowerCase();
         break;
       case "w":
+      case "default_w":
         this._width = num(value);
         this._renderWidth();
         break;
       case "h":
+      case "default_h":
         this._height = num(value);
         this._renderHeight();
         break;
       case "x":
+      case "default_x":
         this._x = num(value) ?? 0;
         this._renderX();
         break;
       case "y":
+      case "default_y":
         this._y = num(value) ?? 0;
         this._renderY();
+        break;
+      case "minimum_h":
+        this._minimumHeight = num(value);
+        break;
+      case "minimum_w":
+        this._minimumWidth = num(value);
+        break;
+      case "maximum_h":
+        this._maximumHeight = num(value);
+        break;
+      case "maximum_w":
+        this._maximumWidth = num(value);
+        break;
+      case "relatw":
+        this._relatw = value;
+        break;
+      case "relath":
+        this._relath = value;
+        break;
+      case "relatx":
+        this._relatx = value;
+        break;
+      case "relaty":
+        this._relaty = value;
         break;
       case "droptarget":
         this._droptarget = value;
@@ -155,7 +191,7 @@ export default class GuiObj extends XmlObj {
    * @ret The top edge's position (in screen coordinates).
    */
   gettop(): number {
-    return this._div.getBoundingClientRect().y;
+    return this._y;
   }
 
   /**
@@ -165,7 +201,7 @@ export default class GuiObj extends XmlObj {
    * @ret The left edge's position (in screen coordinates).
    */
   getleft(): number {
-    return this._div.getBoundingClientRect().x;
+    return this._x;
   }
 
   /**
@@ -174,14 +210,12 @@ export default class GuiObj extends XmlObj {
    * @ret The height of the object.
    */
   getheight(): number {
-    /*
-    assert(
-      this._height != null,
-      `Expected GUIObj to have a height in ${this.getId()}.`
-    );
-    */
-    // FIXME
-    return this._height ?? 0;
+    if (this._height || this._minimumHeight || this._maximumHeight) {
+      let h = Math.max(this._height || 0, this._minimumHeight);
+      h = Math.min(h, this._maximumHeight || h);
+      return h
+    }
+    return this._height;
   }
 
   /**
@@ -190,13 +224,14 @@ export default class GuiObj extends XmlObj {
    * @ret The width of the object.
    */
   getwidth(): number {
-    /*
-    assert(
-      this._width != null,
-      `Expected GUIObj to have a width in ${this.getId()}.`
-    );
-    */
-    return this._width ?? 0;
+    if (this._width || this._minimumWidth || this._maximumWidth) {
+      let w = Math.max(this._width || 0, this._minimumWidth);
+      if(this._maximumHeight){
+        w = Math.min(w, this._maximumWidth || w);
+      }
+      return w
+    }
+    return this._width;
   }
 
   /**
@@ -519,16 +554,20 @@ export default class GuiObj extends XmlObj {
     )})`;
   }
   _renderX() {
-    this._div.style.left = px(this._x ?? 0);
+    this._div.style.left = this._relatx=='1' ? relat(this._x ?? 0) : px(this._x ?? 0);
   }
+
   _renderY() {
-    this._div.style.top = px(this._y ?? 0);
+    this._div.style.top = this._relaty=='1' ? relat(this._y ?? 0) : px(this._y ?? 0);
   }
+
   _renderWidth() {
-    this._div.style.width = px(this.getwidth());
+    // if(this._autowidthsource) return;
+    this._div.style.width = this._relatw=='1' ? relat(this._width??0) : px(this.getwidth());
   }
+
   _renderHeight() {
-    this._div.style.height = px(this.getheight());
+    this._div.style.height = this._relath=='1' ? relat(this._height??0) : px(this.getheight());
   }
 
   _renderDimensions() {

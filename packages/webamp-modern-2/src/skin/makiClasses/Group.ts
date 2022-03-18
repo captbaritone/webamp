@@ -11,10 +11,6 @@ export default class Group extends GuiObj {
   _background: string;
   _desktopAlpha: boolean;
   _drawBackground: boolean = true;
-  _minimumHeight: number;
-  _maximumHeight: number;
-  _minimumWidth: number;
-  _maximumWidth: number;
   _systemObjects: SystemObject[] = [];
   _children: GuiObj[] = [];
 
@@ -34,18 +30,6 @@ export default class Group extends GuiObj {
       case "drawbackground":
         this._drawBackground = Utils.toBool(value);
         this._renderBackground();
-        break;
-      case "minimum_h":
-        this._minimumHeight = Utils.num(value);
-        break;
-      case "minimum_w":
-        this._minimumWidth = Utils.num(value);
-        break;
-      case "maximum_h":
-        this._maximumHeight = Utils.num(value);
-        break;
-      case "maximum_w":
-        this._maximumWidth = Utils.num(value);
         break;
       default:
         return false;
@@ -108,26 +92,22 @@ export default class Group extends GuiObj {
 
   // This shadows `getheight()` on GuiObj
   getheight(): number {
-    if (this._height) {
-      return this._height;
-    }
-    if (this._background != null) {
+    const h = super.getheight();
+    if (h == null && this._background != null) {
       const bitmap = UI_ROOT.getBitmap(this._background);
-      return bitmap.getHeight();
+      if (bitmap) return bitmap.getHeight();
     }
-    return super.getheight();
+    return h;
   }
 
   // This shadows `getwidth()` on GuiObj
   getwidth(): number {
-    if (this._width) {
-      return this._width;
-    }
-    if (this._background != null) {
+    const w = super.getwidth();
+    if (w == null && this._background != null) {
       const bitmap = UI_ROOT.getBitmap(this._background);
-      return bitmap.getWidth();
+      if (bitmap) return bitmap.getWidth();
     }
-    return super.getwidth();
+    return w;
   }
 
   _renderBackground() {
@@ -145,9 +125,7 @@ export default class Group extends GuiObj {
     this._div.classList.add("webamp--img");
     // It seems Groups are not responsive to click events.
     this._div.style.pointerEvents = "none";
-    this._div.style.overflow = "hidden";
-    this._div.style.height = Utils.px(this._maximumHeight);
-    this._div.style.width = Utils.px(this._maximumWidth);
+    // this._div.style.overflow = "hidden";
     this._renderBackground();
     for (const child of this._children) {
       child.draw();

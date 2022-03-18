@@ -30,6 +30,11 @@ export function px(size: number): string {
   return `${size}px`;
 }
 
+export function relat(size: number): string {
+  if(size===0) return '100%';
+  return `calc(100% - ${size * -1}px)`;
+}
+
 export function toBool(str: string) {
   assert(
     str === "0" || str === "1",
