@@ -39,7 +39,6 @@ export default class Container extends XmlObj {
         break;
       case "default_visible":
         this._visible = toBool(value);
-<<<<<<< HEAD
         break;
       case "x":
       case "default_x":
@@ -50,8 +49,6 @@ export default class Container extends XmlObj {
       case "default_y":
         this._y = num(value) ?? 0;
         this._renderDimensions();
-=======
->>>>>>> 86f5a979 (Toggle container (action))
         break;
       default:
         return false;
@@ -77,7 +74,6 @@ export default class Container extends XmlObj {
     };
     const guid = this._componentGuid;
     this._componentAlias = knownContainerGuids[guid];
-<<<<<<< HEAD
     if (this._componentGuid && !this._componentAlias) {
       console.warn(
         `unknown component alias for guid:${this._componentGuid}`,
@@ -101,10 +97,6 @@ export default class Container extends XmlObj {
       return this._id == id;
     }
   }
-=======
-  }
-
->>>>>>> 86f5a979 (Toggle container (action))
   getId() {
     return this._id;
   }
