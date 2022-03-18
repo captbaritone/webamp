@@ -40,6 +40,7 @@ export default class GuiObj extends XmlObj {
   _targetHeight: number | null = null;
   _targetAlpha: number | null = null;
   _targetSpeed: number | null = null;
+  _goingToTarget: boolean = false;
   _div: HTMLDivElement = document.createElement("div");
   _backgroundBitmap: Bitmap | null = null;
   _resizingEventsRegisterd: boolean = false;
@@ -574,6 +575,7 @@ export default class GuiObj extends XmlObj {
    * Begin transition to previously set target.
    */
   gototarget() {
+    this._goingToTarget = true;
     const duration = this._targetSpeed * 1000;
     const startTime = performance.now();
 
@@ -586,30 +588,40 @@ export default class GuiObj extends XmlObj {
     ];
 
     const changes: {
-      [key: string]: { start: number; delta: number; renderKey: string };
+      [key: string]: { start: number; delta: number; renderKey: string; target: number; positive: boolean };
     } = {};
 
     for (const [key, targetKey, renderKey] of pairs) {
       const target = this[targetKey];
       if (target != null) {
         const start = this[key];
+        const positive = target > start;
         const delta = target - start;
-        changes[key] = { start, delta, renderKey };
+        changes[key] = { start, delta, renderKey, target, positive };
+      }
+    }
+
+    const clamp = (current, target, positive) => {
+      if(positive) {
+        return Math.min(current, target);
+      } else {
+        return Math.max(current, target);
       }
     }
 
     const update = (time: number) => {
       const timeDiff = time - startTime;
       const progress = timeDiff / duration;
-      for (const [key, { start, delta, renderKey }] of Object.entries(
+      for (const [key, { start, delta, renderKey, target, positive }] of Object.entries(
         changes
       )) {
-        this[key] = start + delta * progress;
+        this[key] = clamp(start + delta * progress, target, positive);
         this[renderKey]();
       }
       if (timeDiff < duration) {
         window.requestAnimationFrame(update);
       } else {
+        this._goingToTarget = false;
         // TODO: Clear targets?
         UI_ROOT.vm.dispatch(this, "ontargetreached");
       }
