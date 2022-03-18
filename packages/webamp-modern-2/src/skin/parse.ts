@@ -317,9 +317,10 @@ export default class SkinParser {
       "Unexpected children in <script> XML node."
     );
 
-    const { file, param } = node.attributes;
+    let { file, param } = node.attributes;
     assert(file != null, "Script element missing `file` attribute");
     // assert(id != null, "Script element missing `id` attribute");
+    file = file.replace("../Winamp Modern/", "");
 
     let scriptContents: ArrayBuffer;
     const scriptFile = this.getCaseInsensitiveFile(file);
