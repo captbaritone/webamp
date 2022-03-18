@@ -20,10 +20,12 @@ export default class SystemObject extends BaseObject {
   static GUID = "d6f50f6449b793fa66baf193983eaeef";
   _parentGroup: Group;
   _parsedScript: ParsedMaki;
+  _param: string;
 
-  constructor(parsedScript: ParsedMaki) {
+  constructor(parsedScript: ParsedMaki, param: string) {
     super();
     this._parsedScript = parsedScript;
+    this._param = param;
     UI_ROOT.audio.onSeek(() => {
       UI_ROOT.vm.dispatch(this, "onseek", [
         { type: "INT", value: UI_ROOT.audio.getCurrentTimePercent() * 255 },
@@ -481,8 +483,8 @@ export default class SystemObject extends BaseObject {
    *
    * @ret The parameter for the script.
    */
-  getparam() {
-    // TODO
+  getparam(): string {
+    return this._param;
   }
 
   /**
@@ -543,7 +545,7 @@ export default class SystemObject extends BaseObject {
    * @param  group_id    The identifier for the group you want to create.
    */
   newgroup(group_id: string): Group {
-    //TODO
+    return this._parentGroup.findobject(group_id) as Group;
   }
 
   /**
@@ -1078,7 +1080,8 @@ export default class SystemObject extends BaseObject {
    * @param  tokennum    The token to retreive.
    */
   gettoken(str: string, separator: string, tokennum: number) {
-    // TODO
+    const commas = str.split(separator);
+    return commas[tokennum] || "";
   }
 
   /**

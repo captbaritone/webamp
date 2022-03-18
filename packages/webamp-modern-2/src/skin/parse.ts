@@ -23,6 +23,7 @@ import Color from "./Color";
 import GammaGroup from "./GammaGroup";
 import ColorThemesList from "./ColorThemesList";
 import { UIRoot } from "../UIRoot";
+import WasabiFrame from "./makiClasses/WasabiFrame";
 
 class ParserContext {
   container: Container | null = null;
@@ -142,13 +143,17 @@ export default class SkinParser {
         return this.colorThemesList(node);
       case "status":
         return this.status(node);
-      case "wasabi:standardframe:nostatus":
       case "wasabi:mainframe:nostatus":
+      case "wasabi:medialibraryframe:nostatus":
+      case "wasabi:playlistframe:nostatus":
+      case "wasabi:standardframe:nostatus":
+      case "wasabi:standardframe:status":
+      case "wasabi:visframe:nostatus":
+        return this.wasabiFrame(node);
       case "nstatesbutton":
       case "componentbucket":
       case "playlisteditor":
       case "wasabi:tabsheet":
-      case "wasabi:standardframe:status":
       case "snappoint":
       case "accelerators":
       case "elementalias":
@@ -200,6 +205,71 @@ export default class SkinParser {
     this.addToGroup(group);
   }
 
+  async wasabiFrame(node: XmlElement) {
+    const frame = new WasabiFrame();
+    // this.addToGroup(frame, parent);
+    const previousParent = this._context.parentGroup;
+
+    //? Search Wasabi Inheritace
+    const xuitag: string = node.name; //Wasabi:MainFrame:NoStatus
+    const xuiEl: XmlElement = this._uiRoot.getXuiElement(xuitag);
+    if (xuiEl) {
+      const xuiFrame = new XmlElement("dummy", { id: xuiEl.attributes.id });
+      await this.maybeApplyGroupDef(frame, xuiFrame);
+      console.log(
+        "WasabiFrame succes to apply xuitag=",
+        xuitag,
+        node.attributes.id
+      );
+    } else {
+      const groupdef_id = this._getWasabiGroupDef(node.name);
+      console.log('Frame:',groupdef_id,node.attributes.id, groupdef_id,node.name)
+      const groupDef = this._uiRoot.getGroupDef(groupdef_id);
+      if (groupDef) {
+        await this.maybeApplyGroupDef(frame, groupDef);
+        // console.log('WasabiFrame success to apply groupDef.id=', groupdef_id)
+      } else {
+        // console.warn('WasabiFrame failed to apply groupDef.id=', groupdef_id)
+      }
+    }
+    frame.setXmlAttributes(node.attributes);
+
+    //?content
+    if (node.attributes.content) {
+      this._context.parentGroup = frame;
+      await this.group(
+        new XmlElement("group", {
+          id: node.attributes.content,
+          w: "0",
+          h: "0",
+          relatw: "1",
+          relath: "1",
+        })
+      );
+      // frame.addChild(content)
+    }
+    this._context.parentGroup = previousParent;
+    this.addToGroup(frame);
+  }
+
+  /** taken from Winamp Modern skin */
+  _getWasabiGroupDef(xmlTag: string): string {
+    switch (xmlTag.toLowerCase()) {
+
+      case "wasabi:mainframe:nostatus":return "wasabi.mainframe.nostatusbar";
+      case "wasabi:medialibraryframe:nostatus":return "wasabi.medialibraryframe.nostatusbar";
+      case "wasabi:playlistframe:nostatus":return "wasabi.playlistframe.nostatusbar";
+      case "wasabi:standardframe:modal":return "wasabi.standardframe.modal";
+      case "wasabi:standardframe:nostatus":return "wasabi.standardframe.nostatusbar";
+      case "wasabi:standardframe:static":return "wasabi.standardframe.static";
+      case "wasabi:standardframe:status":return "wasabi.standardframe.statusbar";
+      case "wasabi:visframe:nostatus":return "wasabi.visframe.nostatusbar";
+      default:
+        console.warn(`Unhandled <Wasabi:Frame:Tag>: ${xmlTag}`);
+        return;
+    }
+  }
+
   async bitmap(node: XmlElement) {
     assume(
       node.children.length === 0,
@@ -248,7 +318,7 @@ export default class SkinParser {
       "Unexpected children in <script> XML node."
     );
 
-    const { file, id } = node.attributes;
+    const { file, param } = node.attributes;
     assert(file != null, "Script element missing `file` attribute");
     // assert(id != null, "Script element missing `id` attribute");
 
@@ -260,7 +330,7 @@ export default class SkinParser {
     // TODO: Try catch?
     const parsedScript = parseMaki(scriptContents);
 
-    const systemObj = new SystemObject(parsedScript);
+    const systemObj = new SystemObject(parsedScript, param);
 
     // TODO: Need to investigate how scripts find their group. In corneramp, the
     // script itself is not in any group. `xml/player.xml:8

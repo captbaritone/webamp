@@ -294,12 +294,16 @@ class Interpreter {
           let argCount: number = klass.prototype[methodName].length;
 
           const methodDefinition = getMethod(guid, methodName);
-          assert(
-            argCount === (methodDefinition.parameters.length ?? 0),
-            `Arg count mismatch. Expected ${
-              methodDefinition.parameters.length ?? 0
-            } arguments, but found ${argCount} for ${klass.name}.${methodName}`
-          );
+          if (methodName.toLowerCase() != "init") {
+            assert(
+              argCount === (methodDefinition.parameters.length ?? 0),
+              `Arg count mismatch. Expected ${
+                methodDefinition.parameters.length ?? 0
+              } arguments, but found ${argCount} for ${
+                klass.name
+              }.${methodName}`
+            );
+          }
 
           const methodArgs = [];
           while (argCount--) {
@@ -307,12 +311,56 @@ class Interpreter {
             methodArgs.push(a.value);
           }
           const obj = this.stack.pop();
+          if(!!!obj.value/* ==null */ 
+            //&& (methodName==='newitem' || methodName==='newattribute'|| methodName==='getparentlayout')
+            && ( 
+                (klass.name || '').toLowerCase() == 'winampconfig' || 
+                (klass.name || '').toLowerCase() == 'winampconfiggroup' || 
+                (klass.name || '').toLowerCase() == 'configclass' 
+                )
+            ){
+            obj.value = new klass();
+          }
           assert(
             (obj.type === "OBJECT" && typeof obj.value) === "object" &&
               obj.value != null,
             `Guru Meditation: Tried to call method ${klass.name}.${methodName} on null object`
           );
-          let value = obj.value[methodName](...methodArgs);
+          // let value = obj.value[methodName](...methodArgs);
+          let value = null;
+          try{
+            // value = (obj.value[methodName] || obj.value.constructor[methodName])(...methodArgs);
+            // let fun;
+            // if (obj.value[methodName]) {
+            //   // value = obj.value[methodName](...methodArgs);
+            //   fun = obj.value[methodName].bind(obj.value);
+            // } else {
+            //   // value = obj.value.constructor[methodName](...methodArgs);
+            //   fun = obj.value.constructor[methodName].bind(obj.value);
+            // }
+            // value = fun(...methodArgs);
+
+            // let value;
+            if (obj.value[methodName]) {
+            value = obj.value[methodName](...methodArgs);
+            } else {
+            value = obj.value.constructor[methodName](...methodArgs);
+            }
+
+          } catch(err) {
+            // console.info('failed:', err.message)
+            value = null;
+            
+            try{
+              // const fun = (obj.value[methodName] || obj.value.constructor[methodName]).bind(obj.value)
+              const fun = (obj.value[methodName]? obj.value[methodName] : obj.value.constructor[methodName]).bind(obj.value)
+              value = fun(...methodArgs);
+            } catch(err) {
+              // console.warn('error call:',klass.name, '}}',methodName, 'args:',methodArgs, 'err:', err.message, 'obj:', obj)
+              value = null;
+            }
+  
+          }
 
           if (value === undefined && returnType !== "NULL") {
             throw new Error(
