@@ -8,7 +8,8 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint . --ext ts,tsx,js,jsx --rulesdir=packages/webamp-modern-2/tools/eslint-rules",
-    "deploy": "sh deploy.sh"
+    "deploy": "sh deploy.sh",
+    "format": "prettier --write '**/*.{js,ts,tsx}'"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.16.7",

@@ -1,0 +1,6 @@
+**/*.min.js
+
+packages/webamp/demo/built/
+packages/webamp/built/
+packages/webamp-modern-2/src/build/
+packages/webamp-modern-2/tools/eslint-rules/dist/

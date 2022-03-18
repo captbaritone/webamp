@@ -53,7 +53,7 @@ export default class GammaGroup {
       return glTransformImage(img);
     }
     const [r, g, b] = this._value.split(",").map((v) => {
-      return (Number(v) / 4096) +1.0;
+      return Number(v) / 4096 + 1.0;
     });
     const canvas = document.createElement("canvas");
     canvas.width = img.width;
@@ -68,14 +68,14 @@ export default class GammaGroup {
         data[i + 1] = (data[i + 1] >> 1, 0, 255); // green
         data[i + 2] = (data[i + 2] >> 1, 0, 255); // blue
       }
-      let [ir,ig,ib] = [data[i],data[i+1],data[i+2] ];
-      if(this._gray != 0){
-        if(this._gray==2)  ir = (ir + ig + ib)/3;
-        if(this._gray==1)  ir = Math.max(ir,ig,ib);
+      let [ir, ig, ib] = [data[i], data[i + 1], data[i + 2]];
+      if (this._gray != 0) {
+        if (this._gray == 2) ir = (ir + ig + ib) / 3;
+        if (this._gray == 1) ir = Math.max(ir, ig, ib);
         ig = ir;
         ib = ir;
       }
-      data[i] =     clamp(ir * r, 0, 255); // red
+      data[i] = clamp(ir * r, 0, 255); // red
       data[i + 1] = clamp(ig * g, 0, 255); // green
       data[i + 2] = clamp(ib * b, 0, 255); // blue
     }
