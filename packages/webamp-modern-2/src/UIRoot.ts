@@ -189,11 +189,7 @@ export class UIRoot {
     return found ?? null;
   }
 
-  dispatch(
-    action: string,
-    param: string | null | number,
-    actionTarget: string | null
-  ) {
+  dispatch(action: string, param: string | null, actionTarget: string | null) {
     switch (action.toLowerCase()) {
       case "play":
         this.audio.play();
@@ -213,10 +209,28 @@ export class UIRoot {
       case "eject":
         this.audio.eject();
         break;
+      case "toggle":
+        this.toggleContainer(param);
+        break;
       default:
         assume(false, `Unknown global action: ${action}`);
     }
   }
+
+  toggleContainer(param: string) {
+    const useGuid = param.startsWith("guid:");
+    if (useGuid) {
+      param = param.substring(5);
+    }
+    const container = findLast(this.getContainers(), (ct) =>
+      useGuid
+        ? ct._componentGuid == param || ct._componentAlias == param
+        : ct._id == param
+    );
+    assume(container != null, `Can not toggle on unknown container: ${param}`);
+    container.toggle();
+  }
+
   draw() {
     this._div.style.imageRendering = "pixelated";
     for (const container of this.getContainers()) {

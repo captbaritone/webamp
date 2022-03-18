@@ -22,7 +22,7 @@ function setStatus(status: string) {
 
 async function main() {
   setStatus("Downloading skin...");
-  const skinPath = getUrlQuery(window.location, 'skin') || "assets/MMD3.wal";
+  const skinPath = getUrlQuery(window.location, "skin") || "assets/MMD3.wal";
   const response = await fetch(skinPath);
   const data = await response.blob();
   await loadSkin(data);
