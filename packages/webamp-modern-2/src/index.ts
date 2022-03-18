@@ -3,7 +3,7 @@ import JSZip from "jszip";
 import { classResolver } from "./skin/resolver";
 import SkinParser from "./skin/parse";
 import UI_ROOT from "./UIRoot";
-import { removeAllChildNodes } from "./utils";
+import { getUrlQuery, removeAllChildNodes } from "./utils";
 import { addDropHandler } from "./dropTarget";
 
 function hack() {
@@ -22,9 +22,8 @@ function setStatus(status: string) {
 
 async function main() {
   setStatus("Downloading skin...");
-  // const response = await fetch("assets/CornerAmp_Redux.wal");
-  // const response = await fetch("assets/Default_winamp3_build499.wal");
-  const response = await fetch("assets/MMD3.wal");
+  const skinPath = getUrlQuery(window.location, 'skin') || "assets/MMD3.wal";
+  const response = await fetch(skinPath);
   const data = await response.blob();
   await loadSkin(data);
 }
