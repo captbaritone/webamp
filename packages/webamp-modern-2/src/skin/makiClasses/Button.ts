@@ -115,7 +115,7 @@ export default class Button extends GuiObj {
   }
 
   _handleMouseDown(e: MouseEvent) {
-    this.setactivated(!this._active);
+    // buttonToggle will handle it
   }
 
   draw() {

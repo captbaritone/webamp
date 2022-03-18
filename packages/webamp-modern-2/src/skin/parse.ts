@@ -216,14 +216,8 @@ export default class SkinParser {
     if (xuiEl) {
       const xuiFrame = new XmlElement("dummy", { id: xuiEl.attributes.id });
       await this.maybeApplyGroupDef(frame, xuiFrame);
-      console.log(
-        "WasabiFrame succes to apply xuitag=",
-        xuitag,
-        node.attributes.id
-      );
     } else {
       const groupdef_id = this._getWasabiGroupDef(node.name);
-      console.log('Frame:',groupdef_id,node.attributes.id, groupdef_id,node.name)
       const groupDef = this._uiRoot.getGroupDef(groupdef_id);
       if (groupDef) {
         await this.maybeApplyGroupDef(frame, groupDef);
@@ -255,15 +249,22 @@ export default class SkinParser {
   /** taken from Winamp Modern skin */
   _getWasabiGroupDef(xmlTag: string): string {
     switch (xmlTag.toLowerCase()) {
-
-      case "wasabi:mainframe:nostatus":return "wasabi.mainframe.nostatusbar";
-      case "wasabi:medialibraryframe:nostatus":return "wasabi.medialibraryframe.nostatusbar";
-      case "wasabi:playlistframe:nostatus":return "wasabi.playlistframe.nostatusbar";
-      case "wasabi:standardframe:modal":return "wasabi.standardframe.modal";
-      case "wasabi:standardframe:nostatus":return "wasabi.standardframe.nostatusbar";
-      case "wasabi:standardframe:static":return "wasabi.standardframe.static";
-      case "wasabi:standardframe:status":return "wasabi.standardframe.statusbar";
-      case "wasabi:visframe:nostatus":return "wasabi.visframe.nostatusbar";
+      case "wasabi:mainframe:nostatus":
+        return "wasabi.mainframe.nostatusbar";
+      case "wasabi:medialibraryframe:nostatus":
+        return "wasabi.medialibraryframe.nostatusbar";
+      case "wasabi:playlistframe:nostatus":
+        return "wasabi.playlistframe.nostatusbar";
+      case "wasabi:standardframe:modal":
+        return "wasabi.standardframe.modal";
+      case "wasabi:standardframe:nostatus":
+        return "wasabi.standardframe.nostatusbar";
+      case "wasabi:standardframe:static":
+        return "wasabi.standardframe.static";
+      case "wasabi:standardframe:status":
+        return "wasabi.standardframe.statusbar";
+      case "wasabi:visframe:nostatus":
+        return "wasabi.visframe.nostatusbar";
       default:
         console.warn(`Unhandled <Wasabi:Frame:Tag>: ${xmlTag}`);
         return;
@@ -318,9 +319,10 @@ export default class SkinParser {
       "Unexpected children in <script> XML node."
     );
 
-    const { file, param } = node.attributes;
+    let { file, param } = node.attributes;
     assert(file != null, "Script element missing `file` attribute");
     // assert(id != null, "Script element missing `id` attribute");
+    file = file.replace("../Winamp Modern/", "");
 
     let scriptContents: ArrayBuffer;
     const scriptFile = this.getCaseInsensitiveFile(file);
