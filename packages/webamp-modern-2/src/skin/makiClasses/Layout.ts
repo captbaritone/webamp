@@ -1,6 +1,8 @@
 import Group from "./Group";
 import * as Utils from "../../utils";
 import Container from "./Container";
+import { LEFT, RIGHT, TOP, BOTTOM, CURSOR, MOVE } from "../Cursor";
+import { px } from "../../utils";
 
 // > A layout is a special kind of group, which shown inside a container. Each
 // > layout represents an appearance for that window. Layouts give you the ability
@@ -13,6 +15,17 @@ import Container from "./Container";
 export default class Layout extends Group {
   static GUID = "60906d4e482e537e94cc04b072568861";
   _parentContainer: Container | null = null;
+  _resizingDiv: HTMLDivElement = null;
+  _resizing: boolean = false;
+  _resizable: number = 0; // combination of 4 directions: N/E/w/S
+  _movingStartX: number; //container XY
+  _movingStartY: number;
+  _moving: boolean = false;
+
+  constructor() {
+    super();
+    this._isLayout = true;
+  }
 
   setXmlAttr(key: string, value: string): boolean {
     if (super.setXmlAttr(key, value)) {
@@ -50,6 +63,94 @@ export default class Layout extends Group {
         if (this._parentContainer != null) {
           this._parentContainer.dispatchAction(action, param, actionTarget);
         }
+    }
+  }
+
+  setResizing(cmd: string, dx: number, dy: number) {
+    const clampW = (w): number => {
+      w = this._maximumWidth ? Math.min(w, this._maximumWidth) : w;
+      w = this._minimumWidth ? Math.max(w, this._minimumWidth) : w;
+      return w;
+    };
+    const clampH = (h): number => {
+      h = this._maximumHeight ? Math.min(h, this._maximumHeight) : h;
+      h = this._minimumHeight ? Math.max(h, this._minimumHeight) : h;
+      return h;
+    };
+    const r = this._div.getBoundingClientRect();
+    if (cmd == "constraint") {
+      this._resizable = dx;
+    } else if (cmd == "start") {
+      this.bringtofront();
+      this._resizing = true;
+      this._resizingDiv = document.createElement("div");
+      this._resizingDiv.className = "resizing";
+      this._resizingDiv.style.cssText = "position:absolute; top:0; left:0;";
+      this._resizingDiv.style.width = px(r.width);
+      this._resizingDiv.style.height = px(r.height);
+      this._div.appendChild(this._resizingDiv);
+    } else if (dx == CURSOR && dy == CURSOR) {
+      this._resizingDiv.style.cursor = cmd;
+    } else if (cmd == "move") {
+      if (!this._resizing) {
+        return;
+      }
+      // console.log(`resizing dx:${dx} dy:${dy}`);
+      if (this._resizable & RIGHT)
+        this._resizingDiv.style.width = px(clampW(r.width + dx));
+      if (this._resizable & BOTTOM)
+        this._resizingDiv.style.height = px(clampH(r.height + dy));
+      if (this._resizable & LEFT) {
+        this._resizingDiv.style.left = px(dx);
+        this._resizingDiv.style.width = px(clampW(r.width + -dx));
+      }
+      if (this._resizable & TOP) {
+        this._resizingDiv.style.top = px(dy);
+        this._resizingDiv.style.height = px(clampH(r.height + -dy));
+      }
+    } else if (cmd == "final") {
+      if (!this._resizing) {
+        return;
+      }
+      this._resizing = false;
+      this.setXmlAttr("w", this._resizingDiv.offsetWidth.toString());
+      this.setXmlAttr("h", this._resizingDiv.offsetHeight.toString());
+      const container = this._parentContainer;
+      container.setXmlAttr(
+        "x",
+        (container._x + this._resizingDiv.offsetLeft).toString()
+      );
+      container.setXmlAttr(
+        "y",
+        (container._y + this._resizingDiv.offsetTop).toString()
+      );
+      this._resizingDiv.remove();
+      this._resizingDiv = null;
+      // this.doResize();
+    }
+  }
+
+  // MOVING THINGS =====================
+  setMoving(cmd: string, dx: number, dy: number) {
+    const container = this._parentContainer;
+    if (cmd == "start") {
+      this._moving = true;
+      this._movingStartX = container._x;
+      this._movingStartY = container._y;
+      this.bringtofront();
+    } else if (dx == CURSOR && dy == CURSOR) {
+    } else if (cmd == "move") {
+      if (!this._moving) {
+        return;
+      }
+      // console.log(`moving dx:${dx} dy:${dy}`);
+      container.setXmlAttr("x", (this._movingStartX + dx).toString());
+      container.setXmlAttr("y", (this._movingStartY + dy).toString());
+    } else if (cmd == "final") {
+      if (!this._moving) {
+        return;
+      }
+      this._moving = false;
     }
   }
 

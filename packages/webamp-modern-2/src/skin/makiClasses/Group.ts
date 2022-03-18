@@ -11,6 +11,7 @@ export default class Group extends GuiObj {
   _background: string;
   _desktopAlpha: boolean;
   _drawBackground: boolean = true;
+  _isLayout: boolean = false;
   _systemObjects: SystemObject[] = [];
   _children: GuiObj[] = [];
 
@@ -88,6 +89,20 @@ export default class Group extends GuiObj {
     throw new Error(
       `Could not find an object with the id: "${objectId}" within object "${this.getId()}". Only found: ${foundIds}`
     );
+  }
+
+  getparentlayout(): Group {
+    let obj: Group = this;
+    while (obj._parent) {
+      if (obj._isLayout) {
+        break;
+      }
+      obj = obj._parent;
+    }
+    if (!obj) {
+      console.warn("getParentLayout", this.getId(), "failed!");
+    }
+    return obj;
   }
 
   // This shadows `getheight()` on GuiObj

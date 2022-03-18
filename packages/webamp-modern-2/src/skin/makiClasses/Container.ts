@@ -1,5 +1,5 @@
 import UI_ROOT from "../../UIRoot";
-import { assert, px, removeAllChildNodes, toBool } from "../../utils";
+import { assert, num, px, removeAllChildNodes, toBool } from "../../utils";
 import Layout from "./Layout";
 import XmlObj from "../XmlObj";
 
@@ -15,6 +15,8 @@ export default class Container extends XmlObj {
   _activeLayout: Layout | null = null;
   _visible: boolean = true;
   _id: string;
+  _x: number = 0;
+  _y: number = 0;
   _componentGuid: string; // eg. "guid:{1234-...-0ABC}"
   _componentAlias: string; // eg. "guid:pl"
   _div: HTMLDivElement = document.createElement("div");
@@ -37,6 +39,16 @@ export default class Container extends XmlObj {
         break;
       case "default_visible":
         this._visible = toBool(value);
+        break;
+      case "x":
+      case "default_x":
+        this._x = num(value) ?? 0;
+        this._renderDimensions();
+        break;
+      case "y":
+      case "default_y":
+        this._y = num(value) ?? 0;
+        this._renderDimensions();
         break;
       default:
         return false;
@@ -160,6 +172,11 @@ export default class Container extends XmlObj {
       default:
         UI_ROOT.dispatch(action, param, actionTarget);
     }
+  }
+
+  _renderDimensions() {
+    this._div.style.left = px(this._x);
+    this._div.style.top = px(this._y);
   }
 
   _renderLayout() {
