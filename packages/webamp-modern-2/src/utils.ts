@@ -80,9 +80,8 @@ export function findLast<T>(
   }
 }
 
-
-export function getUrlQuery(location:Location, variable:string):string {
-  return new URL(location.href).searchParams.get(variable)
+export function getUrlQuery(location: Location, variable: string): string {
+  return new URL(location.href).searchParams.get(variable);
 }
 
 export class Emitter {
