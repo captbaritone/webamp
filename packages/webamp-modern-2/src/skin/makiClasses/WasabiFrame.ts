@@ -39,7 +39,6 @@ export default class WasabiFrame extends Group {
   }
 
   init() {
-    // console.error('wasabi:standard->> INITing:', this._content)
     if (this.__inited) return;
     this.__inited = true;
 
