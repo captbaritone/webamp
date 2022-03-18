@@ -171,11 +171,11 @@ export class UIRoot {
       }
       const url = imgCache.get(groupId);
       // TODO: Techincally we only need one per image/gammagroup.
-      cssRules.push(`  ${bitmap.getCSSVar()}: url(${url});`)
+      cssRules.push(`  ${bitmap.getCSSVar()}: url(${url});`);
     }
-    cssRules.unshift(':root{')
-    cssRules.push('}')
-    const cssEl = document.getElementById('bitmap-css');
+    cssRules.unshift(":root{");
+    cssRules.push("}");
+    const cssEl = document.getElementById("bitmap-css");
     cssEl.textContent = cssRules.join("\n");
   }
 
