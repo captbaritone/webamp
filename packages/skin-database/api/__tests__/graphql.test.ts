@@ -106,7 +106,7 @@ describe(".me", () => {
   });
 });
 
-test("/auth", async () => {
+test.skip("/auth", async () => {
   const { body } = await request(app)
     .get("/auth")
     .expect(302)
@@ -117,7 +117,7 @@ test("/auth", async () => {
   expect(body).toEqual({});
 });
 
-describe("/auth/discord", () => {
+describe.skip("/auth/discord", () => {
   test("valid code", async () => {
     const response = await request(app)
       .get("/auth/discord")
