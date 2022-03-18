@@ -154,6 +154,7 @@ export class UIRoot {
 
   _setCssVars() {
     const map = new Map();
+    const cssRules = [];
     for (const bitmap of this._bitmaps) {
       const img = bitmap.getImg();
       const groupId = bitmap.getGammaGroup();
@@ -170,8 +171,12 @@ export class UIRoot {
       }
       const url = imgCache.get(groupId);
       // TODO: Techincally we only need one per image/gammagroup.
-      this._div.style.setProperty(bitmap.getCSSVar(), `url(${url})`);
+      cssRules.push(`  ${bitmap.getCSSVar()}: url(${url});`)
     }
+    cssRules.unshift(':root{')
+    cssRules.push('}')
+    const cssEl = document.getElementById('bitmap-css');
+    cssEl.textContent = cssRules.join("\n");
   }
 
   getXuiElement(name: string): XmlElement | null {
