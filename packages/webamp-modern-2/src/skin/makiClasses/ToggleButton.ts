@@ -21,7 +21,7 @@ export default class ToggleButton extends Button {
   _handleMouseDown(e: MouseEvent) {
     this.setactivated(!this._active);
   }
-  
+
   draw() {
     super.draw();
     this._div.setAttribute("data-obj-name", "ToggleButton");

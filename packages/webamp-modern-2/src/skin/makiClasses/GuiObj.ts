@@ -271,8 +271,6 @@ export default class GuiObj extends XmlObj {
     this._renderDimensions();
   }
 
-  
-
   /**
    * Hookable. Event happens when the left mouse
    * button was previously down and is now up.
@@ -684,9 +682,8 @@ export default class GuiObj extends XmlObj {
     }
     if (this._ghost) {
       this._div.style.pointerEvents = "none";
-      this._div.style.setProperty('--pointer-events-by', "gui-obj");
-    }
-    else {
+      this._div.style.setProperty("--pointer-events-by", "gui-obj");
+    } else {
       this._div.style.pointerEvents = "auto";
     }
     this._renderDimensions();

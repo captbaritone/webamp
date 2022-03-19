@@ -199,6 +199,5 @@ export default class Movable extends GuiObj {
       this._div.style.pointerEvents = "none";
       this._div.style.setProperty("--pointer-events-by", "movable");
     }
-     
   }
 }
