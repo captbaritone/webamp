@@ -44,6 +44,155 @@
         left: 0;
         text-align: center;
       }
+      button {
+        border: none;
+        background: transparent;
+        padding: 0;
+      }
+      slider {
+        overflow: hidden;
+      }
+      text {
+        overflow: hidden;
+        box-sizing: border-box;
+        text-align: center;
+        /* padding: 2px; */
+      }
+      text i{
+        pointer-events: none;
+        font-style:normal;
+      }
+      text wrap {
+        background-image: inherit;
+        background-size: 0px;
+        position: relative;
+        /* line-height: 1; */
+        height: 100%;
+        width: var(--full-width);
+        min-width: 100%;
+      }
+      text wrap[font='BitmapFont'] {
+        display: flex;
+        /* vertical align: */
+        align-items: center;
+        justify-content: center;
+      }
+      text span{
+        user-select: none;
+        pointer-events: none;
+        display: inline-block;
+        background-image: inherit;
+        /* vertical-align: bottom; */
+        color: transparent;
+        width: var(--charwidth);
+        height: var(--charheight);
+        background-position-x: var(--x);
+        background-position-y: var(--y);
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+      /* body > div *  */
+      container{
+        position: absolute;        
+      }
+      container0::after{
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        border-radius: 10px;
+        width: 20px;
+        height: 20px;
+        background-color: red;
+      }
+      layout, grid, progressgrid, group, layer, animatedlayer, button, slider, text,
+      wasabiframe, wasabititlebar, colorthemeslist
+      {
+        position: absolute;
+        left: 0;
+        top: 0;
+        display: block;
+      }
+      wasabititlebar {
+        text-align: center;
+      }
+      grid, progressgrid {display: flex;}
+      grid *, progressgrid * {height: 100%; background-image: var(--background-image); }
+      grid middle{flex-grow: 1;}
+      /* grid left, gridprogress left {left: 0;}
+      grid right, gridprogress right {right: 0;} */
+      /* body > div select>option {
+        position: unset;
+        display: block;
+      } */
+      .wasabi-button {
+        border: 3px solid transparent;
+        --border-image: var(--bitmap-studio-button);
+        border-image: var(--border-image) 3 fill/ 1 / 0px stretch;
+      }
+      .wasabi-button:active {
+        --border-image: var(--bitmap-studio-button-pressed);
+
+      }
+      /* .wasabi-button {
+        background-image: var(--bitmap-studio-button-middle);
+        background-size: contain;
+        display: flex;
+        border-image: var(--bitmap-studio-button) 10 fill / 10px / 0px space;
+      }
+      .wasabi-button span {
+        height: 100%;
+      }
+      .wasabi-button span:first-child,
+      .wasabi-button span:last-child {
+        background-image: var(--bitmap-studio-button-left);
+        background-repeat: no-repeat;
+        background: lime;
+        min-width: 18px;
+      }
+      .wasabi-button span:nth-child(2) {
+        background: fuchsia;
+        flex-grow: 1;
+      } */
+      .autowidthsource {width: auto;}
+      /* .autowidthsource > text{
+        width: auto !important;
+      } */
+
+      /* text#infoticker{
+        display: block !important;
+      }
+      text#songticker{
+        display: none !important;
+      } */
+      #main #seekerghost {
+        opacity: .7;
+      }
+      
+
+      /* titleBar active state */
+      /* [activeAlpha=0] {opacity: 0;} */
+      [inactivealpha='0'] {opacity: 0;}
+      [inactivealpha='128'] {opacity: 0.5;}
+      container:focus-within [activealpha='0'],
+      container:active [activealpha='0'] {
+        opacity: 0;
+      }
+      container:focus-within [inactivealpha],
+      container:active [inactivealpha] {
+        opacity: 1;
+      }
+      /* container:focus layout,
+      container:focus-within layout,
+      container:active layout{
+        border: 1px solid red;
+      } */
+      .resizing {
+        border: 1px solid blue;
+        background-color: rgba(74, 74, 251, 0.205);
+        z-index: 1000;
+      }
     </style>
     <style id="bitmap-css"></style>
   </head>

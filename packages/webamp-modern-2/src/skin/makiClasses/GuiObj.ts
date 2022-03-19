@@ -3,8 +3,6 @@ import { assert, num, toBool, px, assume, relat } from "../../utils";
 import Bitmap from "../Bitmap";
 import Group from "./Group";
 import XmlObj from "../XmlObj";
-import Layout from "./Layout";
-import { LEFT, RIGHT, TOP, BOTTOM, CURSOR, MOVE } from "../Cursor";
 
 let BRING_LEAST: number = -1;
 let BRING_MOST_TOP: number = 1;
@@ -26,13 +24,13 @@ export default class GuiObj extends XmlObj {
   _relaty: string;
   _relatw: string;
   _relath: string;
-  _resize: string;
+  // _resize: string;
   _droptarget: string;
   _visible: boolean = true;
   _alpha: number = 255;
   _ghost: boolean = false;
-  _movable: boolean = false;
-  _resizable: number = 0;
+  // _movable: boolean = false;
+  // _resizable: number = 0;
   _tooltip: string = "";
   _targetX: number | null = null;
   _targetY: number | null = null;
@@ -41,54 +39,21 @@ export default class GuiObj extends XmlObj {
   _targetAlpha: number | null = null;
   _targetSpeed: number | null = null;
   _goingToTarget: boolean = false;
-  _div: HTMLDivElement = document.createElement("div");
+  _div: HTMLElement;
   _backgroundBitmap: Bitmap | null = null;
-  _resizingEventsRegisterd: boolean = false;
-  _movingEventsRegisterd: boolean = false;
+  // _resizingEventsRegisterd: boolean = false;
+  // _movingEventsRegisterd: boolean = false;
 
   constructor() {
     super();
 
-    this._div.addEventListener("mousedown", (e) => {
-      /*
-      if (this._backgroundBitmap != null) {
-        const { clientX, clientY } = e;
-        const { x, y } = this._div.getBoundingClientRect();
-        const canvasX = clientX - x;
-        const canvasY = clientY - y;
-        const canvas = this._backgroundBitmap.getCanvas();
-        const ctx = canvas.getContext("2d");
+    this._div = document.createElement(
+      this.getElTag().toLowerCase().replace("_", "")
+    );
+  }
 
-        const opacity = ctx.getImageData(canvasX, canvasY, 1, 1).data[3];
-        if (opacity === 0) {
-          this._div.style.pointerEvents = "none";
-          const newTarget = document.elementFromPoint(clientX, clientY);
-          this._div.style.pointerEvents = "auto";
-          var newEvent = new MouseEvent("click", {
-            clientX,
-            clientY,
-            bubbles: true,
-          });
-          newTarget.dispatchEvent(newEvent);
-          return;
-        }
-      }
-     */
-      this.onLeftButtonDown(e.clientX, e.clientY);
-
-      const mouseUpHandler = (e) => {
-        this.onLeftButtonUp(e.clientX, e.clientY);
-        this._div.removeEventListener("mouseup", mouseUpHandler);
-      };
-      this._div.addEventListener("mouseup", mouseUpHandler);
-    });
-    this._div.addEventListener("mouseenter", (e) => {
-      this.onEnterArea();
-    });
-
-    this._div.addEventListener("mouseleave", (e) => {
-      this.onLeaveArea();
-    });
+  getElTag(): string {
+    return this.constructor.name;
   }
 
   setParent(group: Group) {
@@ -155,14 +120,6 @@ export default class GuiObj extends XmlObj {
         this._visible = toBool(value);
         this._renderVisibility();
         break;
-      case "move":
-        this._movable = toBool(value);
-        this._renderCssCursor();
-        break;
-      case "resize":
-        this._resize = value == "0" ? "" : value;
-        this._renderCssCursor();
-        break;
       case "tooltip":
         this._tooltip = value;
         break;
@@ -176,10 +133,51 @@ export default class GuiObj extends XmlObj {
   }
 
   init() {
-    // pass
+    this._div.addEventListener("mousedown", (e) => {
+      // e.stopPropagation();
+      /*
+      if (this._backgroundBitmap != null) {
+        const { clientX, clientY } = e;
+        const { x, y } = this._div.getBoundingClientRect();
+        const canvasX = clientX - x;
+        const canvasY = clientY - y;
+        const canvas = this._backgroundBitmap.getCanvas();
+        const ctx = canvas.getContext("2d");
+
+        const opacity = ctx.getImageData(canvasX, canvasY, 1, 1).data[3];
+        if (opacity === 0) {
+          this._div.style.pointerEvents = "none";
+          const newTarget = document.elementFromPoint(clientX, clientY);
+          this._div.style.pointerEvents = "auto";
+          var newEvent = new MouseEvent("click", {
+            clientX,
+            clientY,
+            bubbles: true,
+          });
+          newTarget.dispatchEvent(newEvent);
+          return;
+        }
+      }
+     */
+      this.onLeftButtonDown(e.clientX, e.clientY);
+
+      const mouseUpHandler = (e) => {
+        // e.stopPropagation();
+        this.onLeftButtonUp(e.clientX, e.clientY);
+        this._div.removeEventListener("mouseup", mouseUpHandler);
+      };
+      this._div.addEventListener("mouseup", mouseUpHandler);
+    });
+    this._div.addEventListener("mouseenter", (e) => {
+      this.onEnterArea();
+    });
+
+    this._div.addEventListener("mouseleave", (e) => {
+      this.onLeaveArea();
+    });
   }
 
-  getDiv(): HTMLDivElement {
+  getDiv(): HTMLElement {
     return this._div;
   }
 
@@ -269,154 +267,7 @@ export default class GuiObj extends XmlObj {
     this._renderDimensions();
   }
 
-  _renderCssCursor() {
-    this._resizable = 0; //flag. replace soon
-    switch (this._resize) {
-      case "right":
-        this._div.style.cursor = "e-resize";
-        this._resizable = RIGHT;
-        break;
-      case "left":
-        this._div.style.cursor = "w-resize";
-        this._resizable = LEFT;
-        break;
-      case "top":
-        this._div.style.cursor = "n-resize";
-        this._resizable = TOP;
-        break;
-      case "bottom":
-        this._div.style.cursor = "s-resize";
-        this._resizable = BOTTOM;
-        break;
-      case "topleft":
-        this._div.style.cursor = "nw-resize";
-        this._resizable = TOP | LEFT;
-        break;
-      case "topright":
-        this._div.style.cursor = "ne-resize";
-        this._resizable = TOP | RIGHT;
-        break;
-      case "bottomleft":
-        this._div.style.cursor = "sw-resize";
-        this._resizable = BOTTOM | LEFT;
-        break;
-      case "bottomright":
-        this._div.style.cursor = "se-resize";
-        this._resizable = BOTTOM | RIGHT;
-        break;
-      default:
-        // this._div.style.removeProperty('cursor');
-        this._resizable = 0;
-    }
-    if (this._movable) {
-      // this._div.style.cursor = "move";
-      this._resizable = MOVE;
-      this._registerMovingEvents();
-    } else if (this._resizable == 0) {
-      this._div.style.removeProperty("cursor");
-    } else {
-      this._div.style.pointerEvents = "auto";
-      this._registerResizingEvents();
-    }
-  }
-
-  _registerResizingEvents() {
-    if (this._resizingEventsRegisterd) {
-      return;
-    }
-    this._resizingEventsRegisterd = true;
-    this._div.addEventListener("mousedown", this._handleResizing.bind(this));
-  }
-
-  _unregisterResizingEvents() {
-    if (this._resizingEventsRegisterd) {
-      this._div.removeEventListener("mousedown", this._handleResizing);
-      this._resizingEventsRegisterd = false;
-    }
-  }
-
-  _handleResizing(downEvent: MouseEvent) {
-    if (downEvent.button != 0) return; // only care LeftButton
-    downEvent.stopPropagation();
-    const layout = this.getparentlayout() as Layout;
-    layout.setResizing("constraint", this._resizable, 0);
-    layout.setResizing("start", 0, 0);
-    layout.setResizing(
-      this._div.style.getPropertyValue("cursor"),
-      CURSOR,
-      CURSOR
-    );
-    const startX = downEvent.clientX;
-    const startY = downEvent.clientY;
-
-    const handleMove = (moveEvent: MouseEvent) => {
-      const newMouseX = moveEvent.clientX;
-      const newMouseY = moveEvent.clientY;
-      const deltaY = newMouseY - startY;
-      const deltaX = newMouseX - startX;
-      layout.setResizing("move", deltaX, deltaY);
-    };
-
-    const handleMouseUp = (upEvent: MouseEvent) => {
-      if (upEvent.button != 0) return; // only care LeftButton
-      upEvent.stopPropagation();
-      document.removeEventListener("mousemove", handleMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-      const newMouseX = upEvent.clientX;
-      const newMouseY = upEvent.clientY;
-      const deltaY = newMouseY - startY;
-      const deltaX = newMouseX - startX;
-      layout.setResizing("final", deltaX, deltaY);
-    };
-    document.addEventListener("mousemove", handleMove);
-    document.addEventListener("mouseup", handleMouseUp);
-  }
-
-  _registerMovingEvents() {
-    if (this._movingEventsRegisterd) {
-      return;
-    }
-    this._movingEventsRegisterd = true;
-    this._div.addEventListener("mousedown", this._handleMoving.bind(this));
-  }
-
-  _unregisterMovingEvents() {
-    if (this._movingEventsRegisterd) {
-      this._div.removeEventListener("mousedown", this._handleMoving);
-      this._movingEventsRegisterd = false;
-    }
-  }
-
-  _handleMoving(downEvent: MouseEvent) {
-    if (downEvent.button != 0) return; // only care LeftButton
-    downEvent.stopPropagation();
-    const layout = this.getparentlayout() as Layout;
-    layout.setMoving("start", 0, 0);
-    const startX = downEvent.clientX;
-    const startY = downEvent.clientY;
-
-    const handleMove = (moveEvent: MouseEvent) => {
-      const newMouseX = moveEvent.clientX;
-      const newMouseY = moveEvent.clientY;
-      const deltaY = newMouseY - startY;
-      const deltaX = newMouseX - startX;
-      layout.setMoving("move", deltaX, deltaY);
-    };
-
-    const handleMouseUp = (upEvent: MouseEvent) => {
-      if (upEvent.button != 0) return; // only care LeftButton
-      upEvent.stopPropagation();
-      document.removeEventListener("mousemove", handleMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-      const newMouseX = upEvent.clientX;
-      const newMouseY = upEvent.clientY;
-      const deltaY = newMouseY - startY;
-      const deltaX = newMouseX - startX;
-      layout.setMoving("final", deltaX, deltaY);
-    };
-    document.addEventListener("mousemove", handleMove);
-    document.addEventListener("mouseup", handleMouseUp);
-  }
+  
 
   /**
    * Hookable. Event happens when the left mouse
@@ -813,9 +664,10 @@ export default class GuiObj extends XmlObj {
     }
     if (this._ghost) {
       this._div.style.pointerEvents = "none";
-    } else {
-      this._div.style.pointerEvents = "auto";
     }
+    // } else {
+    //   this._div.style.pointerEvents = "auto";
+    // }
     this._renderDimensions();
   }
 }

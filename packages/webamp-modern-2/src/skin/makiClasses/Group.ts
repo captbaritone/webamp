@@ -2,9 +2,10 @@ import * as Utils from "../../utils";
 import UI_ROOT from "../../UIRoot";
 import GuiObj from "./GuiObj";
 import SystemObject from "./SystemObject";
+import Movable from "./Movable";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Cgroup.2F.3E
-export default class Group extends GuiObj {
+export default class Group extends Movable {
   static GUID = "45be95e5419120725fbb5c93fd17f1f9";
   _parent: Group;
   _instanceId: string;
@@ -139,7 +140,13 @@ export default class Group extends GuiObj {
     this._div.setAttribute("data-obj-name", "Group");
     this._div.classList.add("webamp--img");
     // It seems Groups are not responsive to click events.
-    this._div.style.pointerEvents = "none";
+    // this._div.style.pointerEvents = "none";
+    if(this._movable || this._resizable){
+        // this._div.style.removeProperty('pointer-events');
+        this._div.style.pointerEvents = 'auto'
+    } else {
+        this._div.style.pointerEvents = 'none'
+    }
     // this._div.style.overflow = "hidden";
     this._renderBackground();
     for (const child of this._children) {
