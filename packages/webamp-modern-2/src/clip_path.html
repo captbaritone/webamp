@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Webamp Modern" />
+    <title>Webamp Modern Test Suite</title>
+    <style>
+      body { margin: 0; padding: 50px; image-rendering: pixelated;}
+      .i {background: fuchsia; padding: 0;}
+      u {background: goldenrod; display: inline-flex; line-height: 1; padding: 0; pointer-events: all;}
+      .centered {padding: 10px; background-color: aquamarine;}
+      .table {display: flex; width: 800px;}
+      .col { min-width: 25%; }
+    </style>
+  </head>
+  <body>
+    <div class="table">
+      <div id="clickable" class="centered">
+        click me! +-&gt;
+        <u id="app">
+          <!-- <img id="img1" src="/assets/skins/webamp/window/main.png"/> -->
+          <!-- <img id="img1" src="/assets/skins/webamp/window/main2.png"/> -->
+          <!-- <img id="img1" src="/assets/extracted/skins/MMD3/player/Bgoverlay.png"/> -->
+          <img id="img1" src="/assets/extracted/skins/MMD3/component/comp-right-stretch-bg.png"/>
+          <!-- <img id="img1" src="/assets/skins/webamp/player/videoavs_button_bg.png" /> -->
+        </u>
+      </div>
+
+      <div class="i">
+        <canvas id="canvas"></canvas>
+      </div>
+    </div>
+    <script type="module" src="clip_path.js"></script>
+
+    <div class="table">
+      <div class="col">Top: <pre id="top"></pre></div>
+      <div class="col">Right: <pre id="right"></pre></div>
+      <div class="col">Bottom: <pre id="bottom"></pre></div>
+      <div class="col">Left: <pre id="left"></pre></div>
+    </div>
+  </body>
+</html>

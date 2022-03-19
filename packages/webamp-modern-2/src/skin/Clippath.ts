@@ -1,8 +1,8 @@
 export class Edges {
   _top: string[];
   _right: string[];
-  _bottom: string[];
-  _left: string[];
+  _bottom: string[] = [];
+  _left: string[] = [];
 
   parseCanvasTransparency(canvas: HTMLCanvasElement) {
     const w = canvas.width;
@@ -12,13 +12,13 @@ export class Edges {
     const data = ctx.getImageData(0, 0, w, h).data;
     let points: string[] = [];
     var x, y, lastX, lastY;
+    var alpha: number;
     var lastfoundx: number, lastfoundy: number, pending: boolean;
-    var first: boolean, found: boolean, lastfounded: boolean;
+    var first: boolean, found: boolean;
 
     //? return true if not transparent
-    function fine(ax, ay): boolean {
-      return data[(ax + ay * w) * 4 + 3] != 0;
-      // return data[(ax + (ay * w))*4+3] == 255;
+    function fine(ax: number, ay: number): number {
+      return data[(ax + ay * w) * 4 + 3];
     }
 
     function post(ax: number, ay: number) {
@@ -36,7 +36,7 @@ export class Edges {
       found = false;
       for (y = 0; y <= h; y++) {
         //? find most top of non-transparent
-        if (fine(x, y)) {
+        if ((alpha = fine(x, y))) {
           found = true;
           if (!first && y != lastY && pending) {
             post(lastfoundx + 1, lastfoundy);
@@ -56,11 +56,11 @@ export class Edges {
           break;
         }
       }
-      if (!found && lastfounded) {
-        post(lastX, lastY);
+      if (x == w - 1 && pending) {
+        post(lastfoundx+1, lastfoundy);
       }
+
       lastX = x;
-      lastfounded = found;
     }
     this._top = points; // points.join(', \n')
 
@@ -86,6 +86,7 @@ export class Edges {
             pending = false;
           } else if (y == h && pending) {
             post(lastfoundx + 1, lastfoundy);
+            pending = false;
           } else {
             pending = true;
           }
@@ -94,11 +95,11 @@ export class Edges {
           break;
         }
       }
-      if (!found && lastfounded) {
-        post(lastX, lastY);
+      if (y == h - 1 && pending) {
+        // last
+        post(lastfoundx + 1, lastfoundy);
       }
       lastY = y;
-      lastfounded = found;
     }
     this._right = points; // points.join(', \n')
 
@@ -124,6 +125,7 @@ export class Edges {
             pending = false;
           } else if (x == 0 && pending) {
             post(lastfoundx, lastfoundy + 1);
+            pending = false;
           } else {
             pending = true;
           }
@@ -132,11 +134,11 @@ export class Edges {
           break;
         }
       }
-      if (!found && lastfounded) {
-        post(lastX, lastY);
+      if (x == 0 && pending) {
+        // last
+        post(lastfoundx, lastfoundy + 1);
       }
       lastX = x;
-      lastfounded = found;
     }
     this._bottom = points; // points.join(', \n')
   }
@@ -150,6 +152,10 @@ export class Edges {
 
   getbottom(): string {
     return this._bottom.join(", ");
+  }
+
+  getleft(): string {
+    return this._left.join(", ");
   }
 
   isSimpleRect(): boolean {
