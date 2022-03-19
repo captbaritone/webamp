@@ -1,6 +1,7 @@
 import GuiObj from "./GuiObj";
 import UI_ROOT from "../../UIRoot";
 import Movable from "./Movable";
+import { Edges } from "../Clippath";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Clayer.2F.3E
 export default class Layer extends Movable {
@@ -9,12 +10,16 @@ export default class Layer extends Movable {
 
   setXmlAttr(key: string, value: string): boolean {
     if (super.setXmlAttr(key, value)) {
+      if(key=='sysregion'){
+        this._renderRegion()
+      }
       return true;
     }
     switch (key) {
       case "image":
         this._image = value;
         this._renderBackground();
+        this._renderRegion();
         break;
       default:
         return false;
@@ -51,6 +56,19 @@ export default class Layer extends Movable {
     this.setBackgroundImage(bitmap);
   }
 
+  _renderRegion(){
+    if(this._sysregion==1 && this._image){
+      const canvas = UI_ROOT.getBitmap(this._image).getCanvas();
+      const edge = new Edges();
+      edge.parseCanvasTransparency(canvas);
+      if(edge.isSimpleRect()){
+        this.setXmlAttr('sysregion','0')
+      } else {
+        this._div.style.clipPath = edge.getPolygon()
+      }
+    }
+  }
+  
   draw() {
     super.draw();
     this._div.setAttribute("data-obj-name", "Layer");

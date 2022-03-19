@@ -140,13 +140,14 @@ export default class Group extends Movable {
     this._div.setAttribute("data-obj-name", "Group");
     this._div.classList.add("webamp--img");
     // It seems Groups are not responsive to click events.
-    // this._div.style.pointerEvents = "none";
     if(this._movable || this._resizable){
-        // this._div.style.removeProperty('pointer-events');
-        this._div.style.pointerEvents = 'auto'
+      // this._div.style.removeProperty('pointer-events');
+      this._div.style.pointerEvents = 'auto'
     } else {
-        this._div.style.pointerEvents = 'none'
+      this._div.style.pointerEvents = 'none'
     }
+    //TODO: allow move/resize if has ._image
+    this._div.style.pointerEvents = "none"; 
     // this._div.style.overflow = "hidden";
     this._renderBackground();
     for (const child of this._children) {

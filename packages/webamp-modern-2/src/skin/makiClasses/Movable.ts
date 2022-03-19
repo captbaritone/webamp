@@ -196,8 +196,10 @@ export default class Movable extends GuiObj {
     if(this._movable || this._resizable){
         // this._div.style.removeProperty('pointer-events');
         this._div.style.pointerEvents = 'auto'
-    } else {
-        this._div.style.pointerEvents = 'none'
+    } else if (this._ghost) {
+        this._div.style.pointerEvents = "none";
+        this._div.style.setProperty('--pointer-events-by', "movable");
     }
+     
   }
 }

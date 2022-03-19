@@ -29,6 +29,7 @@ export default class GuiObj extends XmlObj {
   _visible: boolean = true;
   _alpha: number = 255;
   _ghost: boolean = false;
+  _sysregion: number = 0;
   // _movable: boolean = false;
   // _resizable: number = 0;
   _tooltip: string = "";
@@ -126,6 +127,9 @@ export default class GuiObj extends XmlObj {
       // (int) An integer [0,255] specifying the alpha blend mode of the object (0 is transparent, 255 is opaque). Default is 255.
       case "alpha":
         this._alpha = num(value);
+      case "sysregion":
+        this._sysregion = num(value);
+        break;
       default:
         return false;
     }
@@ -134,7 +138,7 @@ export default class GuiObj extends XmlObj {
 
   init() {
     this._div.addEventListener("mousedown", (e) => {
-      // e.stopPropagation();
+      e.stopPropagation();
       /*
       if (this._backgroundBitmap != null) {
         const { clientX, clientY } = e;
@@ -664,10 +668,11 @@ export default class GuiObj extends XmlObj {
     }
     if (this._ghost) {
       this._div.style.pointerEvents = "none";
+      this._div.style.setProperty('--pointer-events-by', "gui-obj");
     }
-    // } else {
-    //   this._div.style.pointerEvents = "auto";
-    // }
+    else {
+      this._div.style.pointerEvents = "auto";
+    }
     this._renderDimensions();
   }
 }
