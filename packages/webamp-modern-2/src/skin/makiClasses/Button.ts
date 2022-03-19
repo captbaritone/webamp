@@ -123,7 +123,7 @@ export default class Button extends GuiObj {
     super.draw();
     this._div.setAttribute("data-obj-name", "Button");
     this._div.classList.add("webamp--img");
-    this._div.style.pointerEvents = 'auto'
+    this._div.style.pointerEvents = "auto";
     this._renderBackground();
   }
 

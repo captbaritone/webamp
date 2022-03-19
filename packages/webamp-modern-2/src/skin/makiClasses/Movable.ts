@@ -8,7 +8,6 @@ import GuiObj from "./GuiObj";
 import Layout from "./Layout";
 import { LEFT, RIGHT, TOP, BOTTOM, CURSOR, MOVE } from "../Cursor";
 
-
 export default class Movable extends GuiObj {
   _movable: boolean = false;
   _resizable: number = 0;
@@ -87,7 +86,7 @@ export default class Movable extends GuiObj {
     } else if (this._div.style.cursor == "none") {
       this._div.style.removeProperty("cursor");
     } else {
-    //   this._div.style.pointerEvents = "auto";
+      //   this._div.style.pointerEvents = "auto";
       this._registerResizingEvents();
     }
   }
@@ -130,7 +129,7 @@ export default class Movable extends GuiObj {
     };
 
     const handleMouseUp = (upEvent: MouseEvent) => {
-        upEvent.stopPropagation();
+      upEvent.stopPropagation();
       if (upEvent.button != 0) return; // only care LeftButton
       document.removeEventListener("mousemove", handleMove);
       document.removeEventListener("mouseup", handleMouseUp);
@@ -191,15 +190,14 @@ export default class Movable extends GuiObj {
   }
 
   draw() {
-      super.draw()
+    super.draw();
     //   this._div.style.pointerEvents = this._movable || this._resizable? "auto": "none";
-    if(this._movable || this._resizable){
-        // this._div.style.removeProperty('pointer-events');
-        this._div.style.pointerEvents = 'auto'
+    if (this._movable || this._resizable) {
+      // this._div.style.removeProperty('pointer-events');
+      this._div.style.pointerEvents = "auto";
     } else if (this._ghost) {
-        this._div.style.pointerEvents = "none";
-        this._div.style.setProperty('--pointer-events-by', "movable");
+      this._div.style.pointerEvents = "none";
+      this._div.style.setProperty("--pointer-events-by", "movable");
     }
-     
   }
 }

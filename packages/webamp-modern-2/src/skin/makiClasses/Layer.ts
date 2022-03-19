@@ -10,8 +10,8 @@ export default class Layer extends Movable {
 
   setXmlAttr(key: string, value: string): boolean {
     if (super.setXmlAttr(key, value)) {
-      if(key=='sysregion'){
-        this._renderRegion()
+      if (key == "sysregion") {
+        this._renderRegion();
       }
       return true;
     }
@@ -56,19 +56,19 @@ export default class Layer extends Movable {
     this.setBackgroundImage(bitmap);
   }
 
-  _renderRegion(){
-    if(this._sysregion==1 && this._image){
+  _renderRegion() {
+    if (this._sysregion == 1 && this._image) {
       const canvas = UI_ROOT.getBitmap(this._image).getCanvas();
       const edge = new Edges();
       edge.parseCanvasTransparency(canvas);
-      if(edge.isSimpleRect()){
-        this.setXmlAttr('sysregion','0')
+      if (edge.isSimpleRect()) {
+        this.setXmlAttr("sysregion", "0");
       } else {
-        this._div.style.clipPath = edge.getPolygon()
+        this._div.style.clipPath = edge.getPolygon();
       }
     }
   }
-  
+
   draw() {
     super.draw();
     this._div.setAttribute("data-obj-name", "Layer");
