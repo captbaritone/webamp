@@ -157,6 +157,6 @@ export class Edges {
   }
 
   getPolygon(): string {
-    return `polygon(${this.gettop}, ${this.getright}, ${this.getbottom})`;
+    return `polygon(${this.gettop()}, ${this.getright()}, ${this.getbottom()})`;
   }
 }
