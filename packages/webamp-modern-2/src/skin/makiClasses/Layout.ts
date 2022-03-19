@@ -156,5 +156,6 @@ export default class Layout extends Group {
   draw() {
     super.draw();
     this._div.setAttribute("data-obj-name", "Layout");
+    // this._div.style.pointerEvents = 'auto'
   }
 }
