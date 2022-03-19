@@ -682,7 +682,6 @@ export default class GuiObj extends XmlObj {
     }
     if (this._ghost) {
       this._div.style.pointerEvents = "none";
-      this._div.style.setProperty("--pointer-events-by", "gui-obj");
     } else {
       this._div.style.pointerEvents = "auto";
     }
