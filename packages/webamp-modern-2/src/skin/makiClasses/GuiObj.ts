@@ -598,10 +598,18 @@ export default class GuiObj extends XmlObj {
   }
 
   _renderAlpha() {
-    this._div.style.opacity = `${this._alpha / 255}`;
+    if (this._alpha != 255) {
+      this._div.style.opacity = `${this._alpha / 255}`;
+    } else {
+      this._div.style.removeProperty("opacity");
+    }
   }
   _renderVisibility() {
-    this._div.style.display = this._visible ? "inline-block" : "none";
+    if (!this._visible) {
+      this._div.style.display = "none";
+    } else {
+      this._div.style.removeProperty("display");
+    }
   }
   _renderTransate() {
     this._div.style.transform = `translate(${px(this._x ?? 0)}, ${px(
@@ -642,13 +650,24 @@ export default class GuiObj extends XmlObj {
       bitmap.setAsBackground(this._div);
     } else {
       this._div.style.setProperty(`--background-image`, "none");
-      this._div.style.setProperty(`--background-position`, "none");
     }
   }
 
   // JS Can't set the :active pseudo selector. Instead we have a hard-coded
   // pseduo-selector in our stylesheet which references a CSS variable and then
   // we control the value of that variable from JS.
+  setDownBackgroundImage(bitmap: Bitmap | null) {
+    if (bitmap != null) {
+      bitmap.setAsDownBackground(this._div);
+    }
+  }
+
+  setHoverBackgroundImage(bitmap: Bitmap | null) {
+    if (bitmap != null) {
+      bitmap.setAsHoverBackground(this._div);
+    }
+  }
+
   setActiveBackgroundImage(bitmap: Bitmap | null) {
     if (bitmap != null) {
       bitmap.setAsActiveBackground(this._div);
@@ -656,17 +675,14 @@ export default class GuiObj extends XmlObj {
   }
 
   draw() {
-    this._div.setAttribute("data-id", this.getId());
-    this._div.setAttribute("data-obj-name", "GuiObj");
+    this.getId() && this._div.setAttribute("id", this.getId());
     this._renderVisibility();
-    this._div.style.position = "absolute";
     this._renderAlpha();
     if (this._tooltip) {
       this._div.setAttribute("title", this._tooltip);
     }
     if (this._ghost) {
       this._div.style.pointerEvents = "none";
-      this._div.style.setProperty("--pointer-events-by", "gui-obj");
     } else {
       this._div.style.pointerEvents = "auto";
     }

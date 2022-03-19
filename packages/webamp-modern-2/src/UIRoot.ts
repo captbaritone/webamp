@@ -18,6 +18,7 @@ export class UIRoot {
   _colors: Color[] = [];
   _groupDefs: XmlElement[] = [];
   _gammaSets: Map<string, GammaGroup[]> = new Map();
+  _dummyGammaGroup: GammaGroup = null;
   _xuiElements: XmlElement[] = [];
   _activeGammaSet: GammaGroup[] | null = null;
   _containers: Container[] = [];
@@ -145,6 +146,9 @@ export class UIRoot {
   }
 
   _getGammaGroup(id: string): GammaGroup | null {
+    if (!id) {
+      return this._getGammGroupDummy();
+    }
     const lower = id.toLowerCase();
     const found = findLast(this._activeGammaSet, (gammaGroup) => {
       return gammaGroup.getId().toLowerCase() === lower;
@@ -152,25 +156,36 @@ export class UIRoot {
     return found ?? null;
   }
 
+  _getGammGroupDummy() {
+    if (!this._dummyGammaGroup) {
+      //lazy create
+      this._dummyGammaGroup = new GammaGroup();
+      this._dummyGammaGroup.setXmlAttributes({
+        id: "dummy",
+        value: "0,0,0",
+      });
+    }
+    return this._dummyGammaGroup;
+  }
+
   _setCssVars() {
-    const map = new Map();
     const cssRules = [];
     for (const bitmap of this._bitmaps) {
       const img = bitmap.getImg();
+      if (!img) {
+        console.warn(`Bitmap/font ${bitmap.getId()} has no img!`);
+        continue;
+        // return ''
+      }
       const groupId = bitmap.getGammaGroup();
-      if (!map.has(img)) {
-        map.set(img, new Map());
-      }
-      const imgCache = map.get(img);
-      if (!imgCache.has(groupId)) {
-        const gammaGroup =
-          groupId != null ? this._getGammaGroup(groupId) : null;
-        const url =
-          gammaGroup == null ? img.src : gammaGroup.transformImage(img);
-        imgCache.set(groupId, url);
-      }
-      const url = imgCache.get(groupId);
-      // TODO: Techincally we only need one per image/gammagroup.
+      const gammaGroup = this._getGammaGroup(groupId);
+      const url = gammaGroup.transformImage(
+        img,
+        bitmap._x,
+        bitmap._y,
+        bitmap._width,
+        bitmap._height
+      );
       cssRules.push(`  ${bitmap.getCSSVar()}: url(${url});`);
     }
     cssRules.unshift(":root{");
@@ -232,6 +247,7 @@ export class UIRoot {
   }
 
   draw() {
+    this._div.setAttribute("id", "ui-root");
     this._div.style.imageRendering = "pixelated";
     for (const container of this.getContainers()) {
       container.draw();

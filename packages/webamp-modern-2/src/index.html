@@ -11,23 +11,31 @@
         margin: 0;
         background-color: rgb(58, 110, 165);
       }
+      textarea, input, select {
+        font-size: 10.5px;
+      }
+      textarea:focus, input:focus, select:focus{
+        outline: none;
+      }
       .webamp--img {
         background-image: var(--background-image);
-        background-position: var(--background-position);
+        background-position: top 0 left 0;
       }
+      
       .webamp--img:active {
-        background-image: var(--active-background-image, var(--background-image));
-        background-position: var(--active-background-position, var(--background-position));
+        background-image: var(--down-background-image, var(--background-image));
       }
       .webamp--img:hover {
         background-image: var(--hover-background-image, var(--background-image));
-        background-position: var(--hover-background-position, var(--background-position));
       }
 
       /* TODO: Should this fallback to hover? */
       .webamp--img:hover:active {
+        background-image: var(--down-background-image, var(--background-image));
+      }
+
+      .webamp--img.active {
         background-image: var(--active-background-image, var(--background-image));
-        background-position: var(--active-background-position, var(--background-position));
       }
 
       #experimental {
@@ -95,17 +103,7 @@
       container{
         position: absolute;        
       }
-      container0::after{
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        display: block;
-        border-radius: 10px;
-        width: 20px;
-        height: 20px;
-        background-color: red;
-      }
+      
       layout, grid, progressgrid, group, layer, animatedlayer, button, slider, text,
       wasabiframe, wasabititlebar, colorthemeslist
       {
@@ -133,39 +131,10 @@
       }
       .wasabi-button:active {
         --border-image: var(--bitmap-studio-button-pressed);
-
       }
-      /* .wasabi-button {
-        background-image: var(--bitmap-studio-button-middle);
-        background-size: contain;
-        display: flex;
-        border-image: var(--bitmap-studio-button) 10 fill / 10px / 0px space;
-      }
-      .wasabi-button span {
-        height: 100%;
-      }
-      .wasabi-button span:first-child,
-      .wasabi-button span:last-child {
-        background-image: var(--bitmap-studio-button-left);
-        background-repeat: no-repeat;
-        background: lime;
-        min-width: 18px;
-      }
-      .wasabi-button span:nth-child(2) {
-        background: fuchsia;
-        flex-grow: 1;
-      } */
+      
       .autowidthsource {width: auto;}
-      /* .autowidthsource > text{
-        width: auto !important;
-      } */
-
-      /* text#infoticker{
-        display: block !important;
-      }
-      text#songticker{
-        display: none !important;
-      } */
+      
       #main #seekerghost {
         opacity: .7;
       }
@@ -183,11 +152,6 @@
       container:active [inactivealpha] {
         opacity: 1;
       }
-      /* container:focus layout,
-      container:focus-within layout,
-      container:active layout{
-        border: 1px solid red;
-      } */
       .resizing {
         border: 1px solid blue;
         background-color: rgba(74, 74, 251, 0.205);

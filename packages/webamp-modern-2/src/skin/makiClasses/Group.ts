@@ -137,7 +137,6 @@ export default class Group extends Movable {
 
   draw() {
     super.draw();
-    this._div.setAttribute("data-obj-name", "Group");
     this._div.classList.add("webamp--img");
     // It seems Groups are not responsive to click events.
     if (this._movable || this._resizable) {

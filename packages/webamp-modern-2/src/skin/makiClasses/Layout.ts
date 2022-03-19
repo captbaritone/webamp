@@ -153,10 +153,4 @@ export default class Layout extends Group {
       this._moving = false;
     }
   }
-
-  draw() {
-    super.draw();
-    this._div.setAttribute("data-obj-name", "Layout");
-    // this._div.style.pointerEvents = 'auto'
-  }
 }

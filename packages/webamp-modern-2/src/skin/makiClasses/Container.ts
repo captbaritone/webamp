@@ -19,7 +19,7 @@ export default class Container extends XmlObj {
   _y: number = 0;
   _componentGuid: string; // eg. "guid:{1234-...-0ABC}"
   _componentAlias: string; // eg. "guid:pl"
-  _div: HTMLDivElement = document.createElement("div");
+  _div: HTMLElement = document.createElement("container");
   constructor() {
     super();
   }
@@ -80,7 +80,7 @@ export default class Container extends XmlObj {
     return this._id;
   }
 
-  getDiv(): HTMLDivElement {
+  getDiv(): HTMLElement {
     return this._div;
   }
 
@@ -190,9 +190,7 @@ export default class Container extends XmlObj {
   }
 
   draw() {
-    this._div.setAttribute("data-xml-id", this.getId());
-    this._div.setAttribute("data-obj-name", "Container");
-    this._div.style.position = "absolute";
+    this._div.setAttribute("id", this.getId());
     this._renderLayout();
   }
 }

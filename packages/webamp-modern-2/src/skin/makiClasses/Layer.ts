@@ -71,7 +71,6 @@ export default class Layer extends Movable {
 
   draw() {
     super.draw();
-    this._div.setAttribute("data-obj-name", "Layer");
     this._div.classList.add("webamp--img");
     this._renderBackground();
   }

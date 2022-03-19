@@ -7,6 +7,8 @@ export default class Button extends GuiObj {
   static GUID = "698eddcd4fec8f1e44f9129b45ff09f9";
   _image: string;
   _downimage: string;
+  _hoverimage: string;
+  _activeimage: string;
   _active: boolean = false;
   _action: string | null = null;
   _param: string | null = null;
@@ -37,6 +39,14 @@ export default class Button extends GuiObj {
         break;
       case "downimage":
         this._downimage = value;
+        this._renderBackground();
+        break;
+      case "hoverimage":
+        this._hoverimage = value;
+        this._renderBackground();
+        break;
+      case "activeimage":
+        this._activeimage = value;
         this._renderBackground();
         break;
       case "action":
@@ -86,6 +96,11 @@ export default class Button extends GuiObj {
 
     if (onoff !== this._active) {
       this._active = onoff;
+      if (this._active) {
+        this._div.classList.add("active");
+      } else {
+        this._div.classList.remove("active");
+      }
       UI_ROOT.vm.dispatch(this, "onactivate", [V.newBool(onoff)]);
     }
   }
@@ -108,20 +123,33 @@ export default class Button extends GuiObj {
 
     if (this._downimage != null) {
       const downBitmap = UI_ROOT.getBitmap(this._downimage);
-      this.setActiveBackgroundImage(downBitmap);
+      this.setDownBackgroundImage(downBitmap);
+    } else {
+      this.setDownBackgroundImage(null);
+    }
+
+    if (this._hoverimage != null) {
+      const hoverimage = UI_ROOT.getBitmap(this._hoverimage);
+      this.setHoverBackgroundImage(hoverimage);
+    } else {
+      this.setHoverBackgroundImage(null);
+    }
+
+    if (this._activeimage != null) {
+      const activeimage = UI_ROOT.getBitmap(this._activeimage);
+      this.setActiveBackgroundImage(activeimage);
     } else {
       this.setActiveBackgroundImage(null);
     }
   }
 
   _handleMouseDown(e: MouseEvent) {
-    // e.stopPropagation();
+    e.stopPropagation();
     // buttonToggle will handle it
   }
 
   draw() {
     super.draw();
-    this._div.setAttribute("data-obj-name", "Button");
     this._div.classList.add("webamp--img");
     this._div.style.pointerEvents = "auto";
     this._renderBackground();
