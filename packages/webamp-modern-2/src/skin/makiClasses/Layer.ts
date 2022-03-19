@@ -57,6 +57,7 @@ export default class Layer extends Movable {
   }
 
   _renderRegion() {
+    // return;
     if (this._sysregion == 1 && this._image) {
       const canvas = UI_ROOT.getBitmap(this._image).getCanvas();
       const edge = new Edges();
