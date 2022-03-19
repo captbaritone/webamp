@@ -29,9 +29,10 @@ export default class ColorThemesList extends GuiObj {
     for (const key of UI_ROOT._gammaSets.keys()) {
       const option = document.createElement("option");
       option.value = key;
-      option.innerText = key;
+      option.innerText = UI_ROOT._gammaNames[key];
       this._select.appendChild(option);
     }
+    this._select.value = UI_ROOT._activeGammaSetName;
   }
 
   handleAction(
