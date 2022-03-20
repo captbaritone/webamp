@@ -1,6 +1,6 @@
 export class Edges {
-  _top: string[];
-  _right: string[];
+  _top: string[] = [];
+  _right: string[] = [];
   _bottom: string[] = [];
   _left: string[] = [];
 
@@ -11,13 +11,12 @@ export class Edges {
     const data = ctx.getImageData(0, 0, w, h).data;
     let points: string[] = [];
     var x, y, lastX, lastY;
-    var alpha: number;
     var lastfoundx: number, lastfoundy: number, pending: boolean;
-    var first: boolean, found: boolean;
+    var first: boolean;
 
     //? return true if not transparent
-    function fine(ax: number, ay: number): number {
-      return data[(ax + ay * w) * 4 + 3];
+    function opaque(ax: number, ay: number): boolean {
+      return data[(ax + ay * w) * 4 + 3] != 0;
     }
 
     function post(ax: number, ay: number) {
@@ -29,13 +28,11 @@ export class Edges {
     lastY = 0;
     first = true;
     pending = false;
-    for (x = 0; x <= w; x++) {
+    for (x = 0; x < w; x++) {
       //? scan top, left->right
-      found = false;
-      for (y = 0; y <= h; y++) {
+      for (y = 0; y < h; y++) {
         //? find most top of non-transparent
-        if ((alpha = fine(x, y))) {
-          found = true;
+        if (opaque(x, y)) {
           if (!first && y != lastY && pending) {
             post(lastfoundx + 1, lastfoundy);
           }
@@ -69,11 +66,9 @@ export class Edges {
     pending = false;
     for (y = 0; y <= h; y++) {
       //? scan right, top->bottom
-      found = false;
       for (x = w - 1; x >= 0; x--) {
         //? find most right of non-transparent
-        if (fine(x, y)) {
-          found = true;
+        if (opaque(x, y)) {
           if (!first && x != lastX && pending) {
             post(lastfoundx + 1, lastfoundy);
           }
@@ -108,11 +103,9 @@ export class Edges {
     pending = false;
     for (x = w; x >= 0; x--) {
       //? scan bottom, right->left
-      found = false;
       for (y = h - 1; y >= 0; y--) {
         //? find most top of non-transparent
-        if (fine(x, y)) {
-          found = true;
+        if (opaque(x, y)) {
           if (!first && y != lastY && pending) {
             post(lastfoundx, lastfoundy + 1);
           }
@@ -161,6 +154,8 @@ export class Edges {
   }
 
   getPolygon(): string {
-    return `polygon(${this.gettop()}, ${this.getright()}, ${this.getbottom()})`;
+    // to avoid empty between two comma separator, we explode values befor join().
+    return `polygon(${[...this._top, ...this._right, ...this._bottom, ...this._left].join(", ")})`;
+    // TODO: detect if first points in bottom has ben detected by right.
   }
 }
