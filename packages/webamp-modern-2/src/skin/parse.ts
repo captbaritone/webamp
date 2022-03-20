@@ -207,7 +207,6 @@ export default class SkinParser {
 
   async wasabiFrame(node: XmlElement) {
     const frame = new WasabiFrame();
-    // this.addToGroup(frame, parent);
     const previousParent = this._context.parentGroup;
 
     //? Search Wasabi Inheritace
