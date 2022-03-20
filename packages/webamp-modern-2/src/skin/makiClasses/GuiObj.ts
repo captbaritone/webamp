@@ -138,31 +138,7 @@ export default class GuiObj extends XmlObj {
 
   init() {
     this._div.addEventListener("mousedown", (e) => {
-      e.stopPropagation();
-      /*
-      if (this._backgroundBitmap != null) {
-        const { clientX, clientY } = e;
-        const { x, y } = this._div.getBoundingClientRect();
-        const canvasX = clientX - x;
-        const canvasY = clientY - y;
-        const canvas = this._backgroundBitmap.getCanvas();
-        const ctx = canvas.getContext("2d");
-
-        const opacity = ctx.getImageData(canvasX, canvasY, 1, 1).data[3];
-        if (opacity === 0) {
-          this._div.style.pointerEvents = "none";
-          const newTarget = document.elementFromPoint(clientX, clientY);
-          this._div.style.pointerEvents = "auto";
-          var newEvent = new MouseEvent("click", {
-            clientX,
-            clientY,
-            bubbles: true,
-          });
-          newTarget.dispatchEvent(newEvent);
-          return;
-        }
-      }
-     */
+      e.stopPropagation();      
       this.onLeftButtonDown(e.clientX, e.clientY);
 
       const mouseUpHandler = (e) => {
