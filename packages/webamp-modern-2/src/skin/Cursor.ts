@@ -1,3 +1,5 @@
+// We use a bitmask to encode the possible combinations of cursor attributes as a single number.
+// https://en.wikipedia.org/wiki/Mask_(computing)
 export const LEFT   = 1 << 1;
 export const RIGHT  = 1 << 2;
 export const TOP    = 1 << 3;
