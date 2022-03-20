@@ -181,7 +181,6 @@ export class UIRoot {
       if (!img) {
         console.warn(`Bitmap/font ${bitmap.getId()} has no img!`);
         continue;
-        // return ''
       }
       const groupId = bitmap.getGammaGroup();
       const gammaGroup = this._getGammaGroup(groupId);
