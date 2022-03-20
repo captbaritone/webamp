@@ -74,6 +74,12 @@ export default class Container extends XmlObj {
     };
     const guid = this._componentGuid;
     this._componentAlias = knownContainerGuids[guid];
+    if (this._componentGuid && !this._componentAlias) {
+      console.warn(
+        `unknown component alias for guid:${this._componentGuid}`,
+        `for id:${this.getId()}`
+      );
+    }
   }
 
   /**
