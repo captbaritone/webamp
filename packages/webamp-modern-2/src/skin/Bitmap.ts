@@ -21,12 +21,12 @@ export default class Bitmap {
     }
   }
 
-  setXmlAttr(_key: string, value: string):boolean {
+  setXmlAttr(_key: string, value: string): boolean {
     const key = _key.toLowerCase();
     switch (key) {
       case "id":
         this._id = value;
-        this._cssVar = `--bitmap-${this.getId().replace(/[^a-zA-Z0-9]/g,"-")}`;
+        this._cssVar = `--bitmap-${this.getId().replace(/[^a-zA-Z0-9]/g, "-")}`;
         break;
       case "x":
         this._x = num(value) ?? 0;
@@ -85,7 +85,7 @@ export default class Bitmap {
 
     //force. also possibly set null:
     this._img = await imageManager.getImage(this._file);
-    if(this._img){
+    if (this._img) {
       if (this._width == null && this._height == null) {
         this.setXmlAttr("w", String(this._img.width));
         this.setXmlAttr("h", String(this._img.height));
@@ -110,7 +110,7 @@ export default class Bitmap {
   }
 
   _setAsBackground(div: HTMLElement, prefix: string) {
-    if(!this._cssVar) return; //avoid console error as: http://localhost/null
+    if (!this._cssVar) return; //avoid console error as: http://localhost/null
     div.style.setProperty(
       `--${prefix}background-image`,
       this._getBackgrondImageCSSAttribute()
@@ -141,8 +141,17 @@ export default class Bitmap {
       this._canvas.height = this.getHeight();
       const ctx = this._canvas.getContext("2d");
       // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
-      ctx.drawImage(this._img, this._x, this._y, this.getWidth(), this.getHeight(), 
-        0, 0, this.getWidth(), this.getHeight());
+      ctx.drawImage(
+        this._img,
+        this._x,
+        this._y,
+        this.getWidth(),
+        this.getHeight(),
+        0,
+        0,
+        this.getWidth(),
+        this.getHeight()
+      );
     }
     return this._canvas;
   }
