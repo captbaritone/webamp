@@ -44,12 +44,6 @@ export default class WasabiFrame extends Group {
     this.__inited = true;
 
     super.init();
-    // console.error('wasabi:standard->> sending onsetxuiparam:', this._content)
-    // UI_ROOT.vm.dispatch(this._systemObjects[0], "onsetxuiparam", [
-    // UI_ROOT.vm.dispatch(this, "onsetxuiparam", [
-    //   {type: "STRING", value:'content'},
-    //   {type:"STRING", value:this._content}
-    // ]);
 
     for (const systemObject of this._systemObjects) {
       // systemObject.init();
