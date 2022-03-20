@@ -311,14 +311,12 @@ class Interpreter {
             methodArgs.push(a.value);
           }
           const obj = this.stack.pop();
-          if(!!!obj.value/* ==null */ 
-            //&& (methodName==='newitem' || methodName==='newattribute'|| methodName==='getparentlayout')
-            && ( 
-                (klass.name || '').toLowerCase() == 'winampconfig' || 
-                (klass.name || '').toLowerCase() == 'winampconfiggroup' || 
-                (klass.name || '').toLowerCase() == 'configclass' 
-                )
-            ){
+          if (
+            !obj.value &&
+            ((klass.name || "").toLowerCase() == "winampconfig" ||
+              (klass.name || "").toLowerCase() == "winampconfiggroup" ||
+              (klass.name || "").toLowerCase() == "configclass")
+          ) {
             obj.value = new klass();
           }
           assert(
@@ -328,26 +326,29 @@ class Interpreter {
           );
           // let value = obj.value[methodName](...methodArgs);
           let value = null;
-          try{
+          try {
             if (obj.value[methodName]) {
-            value = obj.value[methodName](...methodArgs);
+              value = obj.value[methodName](...methodArgs);
             } else {
-            value = obj.value.constructor[methodName](...methodArgs);
+              value = obj.value.constructor[methodName](...methodArgs);
             }
-
-          } catch(err) {
-            // console.info('failed:', err.message)
+          } catch (err) {
             value = null;
-            
-            try{
-              // const fun = (obj.value[methodName] || obj.value.constructor[methodName]).bind(obj.value)
-              const fun = (obj.value[methodName]? obj.value[methodName] : obj.value.constructor[methodName]).bind(obj.value)
+
+            try {
+              const fun = (
+                obj.value[methodName]
+                  ? obj.value[methodName]
+                  : obj.value.constructor[methodName]
+              ).bind(obj.value);
               value = fun(...methodArgs);
-            } catch(err) {
-              // console.warn('error call:',klass.name, '}}',methodName, 'args:',methodArgs, 'err:', err.message, 'obj:', obj)
+            } catch (err) {
+              console.warn(
+                `error call: ${klass.name}.${methodName} args:${methodArgs}`,
+                `err: ${err.message} obj: ${JSON.stringify(obj)}`
+              );
               value = null;
             }
-  
           }
 
           if (value === undefined && returnType !== "NULL") {
