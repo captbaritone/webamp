@@ -67,7 +67,7 @@ export class UIRoot {
       (bitmap) => bitmap._id.toLowerCase() === lowercaseId
     );
 
-    assert(found != null, `Could not find bitmap with id ${id}.`);
+    assume(found != null, `Could not find bitmap with id ${id}.`);
     return found;
   }
 

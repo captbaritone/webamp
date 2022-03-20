@@ -10,8 +10,11 @@ export function assert(condition: boolean, message: string) {
 // don't need to break the world, but I would like to know if/when my
 // assumptions are invalidated.
 // In the future these can be turned into warnings.
-export function assume(condtion: boolean, message: string) {
-  return assert(condtion, message);
+export function assume(condition: boolean, message: string) {
+  if (!condition) {
+    console.warn(message);
+  }
+  return condition;
 }
 
 export function getCaseInsensitiveFile(
