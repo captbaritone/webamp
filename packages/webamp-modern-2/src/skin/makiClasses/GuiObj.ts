@@ -1,5 +1,5 @@
 import UI_ROOT from "../../UIRoot";
-import { assert, num, toBool, px, assume, relat } from "../../utils";
+import { assert, num, toBool, px, assume, relative } from "../../utils";
 import Bitmap from "../Bitmap";
 import Group from "./Group";
 import XmlObj from "../XmlObj";
@@ -618,23 +618,23 @@ export default class GuiObj extends XmlObj {
   }
   _renderX() {
     this._div.style.left =
-      this._relatx == "1" ? relat(this._x ?? 0) : px(this._x ?? 0);
+      this._relatx == "1" ? relative(this._x ?? 0) : px(this._x ?? 0);
   }
 
   _renderY() {
     this._div.style.top =
-      this._relaty == "1" ? relat(this._y ?? 0) : px(this._y ?? 0);
+      this._relaty == "1" ? relative(this._y ?? 0) : px(this._y ?? 0);
   }
 
   _renderWidth() {
     // if(this._autowidthsource) return;
     this._div.style.width =
-      this._relatw == "1" ? relat(this._width ?? 0) : px(this.getwidth());
+      this._relatw == "1" ? relative(this._width ?? 0) : px(this.getwidth());
   }
 
   _renderHeight() {
     this._div.style.height =
-      this._relath == "1" ? relat(this._height ?? 0) : px(this.getheight());
+      this._relath == "1" ? relative(this._height ?? 0) : px(this.getheight());
   }
 
   _renderDimensions() {

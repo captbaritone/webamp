@@ -30,7 +30,7 @@ export function px(size: number): string {
   return `${size}px`;
 }
 
-export function relat(size: number): string {
+export function relative(size: number): string {
   if (size === 0) return "100%";
   return `calc(100% + ${size}px)`;
 }
