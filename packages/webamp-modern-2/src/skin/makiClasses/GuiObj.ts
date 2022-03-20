@@ -627,7 +627,6 @@ export default class GuiObj extends XmlObj {
   }
 
   _renderWidth() {
-    // if(this._autowidthsource) return;
     this._div.style.width =
       this._relatw == "1" ? relative(this._width ?? 0) : px(this.getwidth());
   }

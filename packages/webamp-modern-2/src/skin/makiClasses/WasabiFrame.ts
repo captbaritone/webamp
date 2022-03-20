@@ -46,7 +46,6 @@ export default class WasabiFrame extends Group {
     super.init();
 
     for (const systemObject of this._systemObjects) {
-      // systemObject.init();
       ["content", "padtitleleft", "padtitleright", "shade"].forEach((att) => {
         const myValue = this["_" + att];
         if (myValue != null) {

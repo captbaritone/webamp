@@ -17,7 +17,7 @@ export default class Layout extends Group {
   _parentContainer: Container | null = null;
   _resizingDiv: HTMLDivElement = null;
   _resizing: boolean = false;
-  _resizable: number = 0; // combination of 4 directions: N/E/w/S
+  _resizable: number = 0; // combination of 4 directions: N/E/W/S
   _movingStartX: number; //container XY
   _movingStartY: number;
   _moving: boolean = false;
@@ -126,7 +126,6 @@ export default class Layout extends Group {
       );
       this._resizingDiv.remove();
       this._resizingDiv = null;
-      // this.doResize();
     }
   }
 
