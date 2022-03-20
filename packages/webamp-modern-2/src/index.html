@@ -4,29 +4,36 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Webamp Modern" />
-    <link rel="shortcut icon" type="image/x-icon" href="assets/favicon.ico"/>
+    <link rel="shortcut icon" type="image/x-icon" href="assets/favicon.ico" />
     <title>Webamp Modern</title>
     <style>
       body {
         margin: 0;
         background-color: rgb(58, 110, 165);
       }
-      textarea, input, select {
+      textarea,
+      input,
+      select {
         font-size: 10.5px;
       }
-      textarea:focus, input:focus, select:focus{
+      textarea:focus,
+      input:focus,
+      select:focus {
         outline: none;
       }
       .webamp--img {
         background-image: var(--background-image);
         background-position: top 0 left 0;
       }
-      
+
       .webamp--img:active {
         background-image: var(--down-background-image, var(--background-image));
       }
       .webamp--img:hover {
-        background-image: var(--hover-background-image, var(--background-image));
+        background-image: var(
+          --hover-background-image,
+          var(--background-image)
+        );
       }
 
       /* TODO: Should this fallback to hover? */
@@ -35,7 +42,10 @@
       }
 
       .webamp--img.active {
-        background-image: var(--active-background-image, var(--background-image));
+        background-image: var(
+          --active-background-image,
+          var(--background-image)
+        );
       }
 
       #experimental {
@@ -66,9 +76,9 @@
         text-align: center;
         /* padding: 2px; */
       }
-      text i{
+      text i {
         pointer-events: none;
-        font-style:normal;
+        font-style: normal;
       }
       text wrap {
         background-image: inherit;
@@ -79,13 +89,13 @@
         width: var(--full-width);
         min-width: 100%;
       }
-      text wrap[font='BitmapFont'] {
+      text wrap[font="BitmapFont"] {
         display: flex;
         /* vertical align: */
         align-items: center;
         justify-content: center;
       }
-      text span{
+      text span {
         user-select: none;
         pointer-events: none;
         display: inline-block;
@@ -100,13 +110,22 @@
         flex-shrink: 0;
       }
       /* body > div *  */
-      container{
-        position: absolute;        
+      container {
+        position: absolute;
       }
-      
-      layout, grid, progressgrid, group, layer, animatedlayer, button, slider, text,
-      wasabiframe, wasabititlebar, colorthemeslist
-      {
+
+      layout,
+      grid,
+      progressgrid,
+      group,
+      layer,
+      animatedlayer,
+      button,
+      slider,
+      text,
+      wasabiframe,
+      wasabititlebar,
+      colorthemeslist {
         position: absolute;
         left: 0;
         top: 0;
@@ -115,9 +134,18 @@
       wasabititlebar {
         text-align: center;
       }
-      grid, progressgrid {display: flex;}
-      grid *, progressgrid * {height: 100%; background-image: var(--background-image); }
-      grid middle{flex-grow: 1;}
+      grid,
+      progressgrid {
+        display: flex;
+      }
+      grid *,
+      progressgrid * {
+        height: 100%;
+        background-image: var(--background-image);
+      }
+      grid middle {
+        flex-grow: 1;
+      }
       /* grid left, gridprogress left {left: 0;}
       grid right, gridprogress right {right: 0;} */
       /* body > div select>option {
@@ -132,20 +160,20 @@
       .wasabi-button:active {
         --border-image: var(--bitmap-studio-button-pressed);
       }
-      
-      .autowidthsource {width: auto;}
-      
-      #main #seekerghost {
-        opacity: .7;
+
+      .autowidthsource {
+        width: auto;
       }
-      
 
       /* titleBar active state */
-      /* [activeAlpha=0] {opacity: 0;} */
-      [inactivealpha='0'] {opacity: 0;}
-      [inactivealpha='128'] {opacity: 0.5;}
-      container:focus-within [activealpha='0'],
-      container:active [activealpha='0'] {
+      [inactivealpha="0"] {
+        opacity: 0;
+      }
+      [inactivealpha="128"] {
+        opacity: 0.5;
+      }
+      container:focus-within [activealpha="0"],
+      container:active [activealpha="0"] {
         opacity: 0;
       }
       container:focus-within [inactivealpha],
