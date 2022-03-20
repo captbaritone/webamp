@@ -240,7 +240,6 @@ export default class SkinParser {
           relath: "1",
         })
       );
-      // frame.addChild(content)
     }
     this._context.parentGroup = previousParent;
     this.addToGroup(frame);
