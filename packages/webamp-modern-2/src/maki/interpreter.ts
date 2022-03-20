@@ -311,14 +311,6 @@ class Interpreter {
             methodArgs.push(a.value);
           }
           const obj = this.stack.pop();
-          if (
-            !obj.value &&
-            ((klass.name || "").toLowerCase() == "winampconfig" ||
-              (klass.name || "").toLowerCase() == "winampconfiggroup" ||
-              (klass.name || "").toLowerCase() == "configclass")
-          ) {
-            obj.value = new klass();
-          }
           assert(
             (obj.type === "OBJECT" && typeof obj.value) === "object" &&
               obj.value != null,
