@@ -37,56 +37,59 @@ export default class Movable extends GuiObj {
   }
 
   _renderCssCursor() {
-    // this._resizable = 0; //flag. replace soon
-    this._div.style.cursor = "none"; //flag. replace soon
-    switch (this._resize) {
-      case "right":
-        this._div.style.cursor = "e-resize";
-        this._resizable = RIGHT;
-        break;
-      case "left":
-        this._div.style.cursor = "w-resize";
-        this._resizable = LEFT;
-        break;
-      case "top":
-        this._div.style.cursor = "n-resize";
-        this._resizable = TOP;
-        break;
-      case "bottom":
-        this._div.style.cursor = "s-resize";
-        this._resizable = BOTTOM;
-        break;
-      case "topleft":
-        this._div.style.cursor = "nw-resize";
-        this._resizable = TOP | LEFT;
-        break;
-      case "topright":
-        this._div.style.cursor = "ne-resize";
-        this._resizable = TOP | RIGHT;
-        break;
-      case "bottomleft":
-        this._div.style.cursor = "sw-resize";
-        this._resizable = BOTTOM | LEFT;
-        break;
-      case "bottomright":
-        this._div.style.cursor = "se-resize";
-        this._resizable = BOTTOM | RIGHT;
-        break;
-      default:
-        // this._div.style.removeProperty('cursor');
-        this._resizable = 0;
-    }
+    // only one of this possible: movable or resizable. not both
     if (this._movable) {
+      this._unregisterResizingEvents();
+      // winamp cursor for movable area is default/arrow.
       this._div.style.removeProperty("cursor");
-      this._resizable = MOVE;
+      this._resizable = MOVE; // = left + top - (width, height)
       this._registerMovingEvents();
-
-      // } else if (this._resizable == 0) {
-    } else if (this._div.style.cursor == "none") {
-      this._div.style.removeProperty("cursor");
     } else {
-      //   this._div.style.pointerEvents = "auto";
-      this._registerResizingEvents();
+      this._unregisterMovingEvents();
+
+      switch (this._resize) {
+        case "right":
+          this._div.style.cursor = "e-resize";
+          this._resizable = RIGHT;
+          break;
+        case "left":
+          this._div.style.cursor = "w-resize";
+          this._resizable = LEFT;
+          break;
+        case "top":
+          this._div.style.cursor = "n-resize";
+          this._resizable = TOP;
+          break;
+        case "bottom":
+          this._div.style.cursor = "s-resize";
+          this._resizable = BOTTOM;
+          break;
+        case "topleft":
+          this._div.style.cursor = "nw-resize";
+          this._resizable = TOP | LEFT;
+          break;
+        case "topright":
+          this._div.style.cursor = "ne-resize";
+          this._resizable = TOP | RIGHT;
+          break;
+        case "bottomleft":
+          this._div.style.cursor = "sw-resize";
+          this._resizable = BOTTOM | LEFT;
+          break;
+        case "bottomright":
+          this._div.style.cursor = "se-resize";
+          this._resizable = BOTTOM | RIGHT;
+          break;
+        default:
+          this._div.style.removeProperty("cursor");
+          this._resizable = 0;
+      }
+
+      if (this._resizable != 0) {
+        this._registerResizingEvents();
+      } else {
+        this._unregisterResizingEvents();
+      }
     }
   }
 
@@ -140,7 +143,7 @@ export default class Movable extends GuiObj {
     };
     document.addEventListener("mousemove", handleMove);
     document.addEventListener("mouseup", handleMouseUp);
-  }
+  };
 
   _registerMovingEvents() {
     if (this._movingEventsRegistered) {
@@ -186,12 +189,11 @@ export default class Movable extends GuiObj {
     };
     document.addEventListener("mousemove", handleMove);
     document.addEventListener("mouseup", handleMouseUp);
-  }
+  };
 
   draw() {
     super.draw();
     if (this._movable || this._resizable) {
-      // this._div.style.removeProperty('pointer-events');
       this._div.style.pointerEvents = "auto";
     } else if (this._ghost) {
       this._div.style.pointerEvents = "none";
