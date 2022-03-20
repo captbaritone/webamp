@@ -55,6 +55,8 @@ export default class GuiObj extends XmlObj {
   // _resizingEventsRegisterd: boolean = false;
   // _movingEventsRegisterd: boolean = false;
 
+  _metaCommands: XmlElement[] = [];
+  
   constructor() {
     super();
 
@@ -76,6 +78,13 @@ export default class GuiObj extends XmlObj {
     switch (key) {
       case "id":
         this._id = value.toLowerCase();
+        break;
+      case "name":
+        this._name = value;
+        break;
+  
+      case "autowidthsource":
+        this._autowidthsource = value.toLowerCase();
         break;
       case "w":
       case "default_w":
@@ -146,6 +155,31 @@ export default class GuiObj extends XmlObj {
     return true;
   }
 
+  setxmlparam(key: string, value: string) {
+    this.setXmlAttr(key, value);
+  }
+
+  handleAction(
+    action: string,
+    param: string | null,
+    actionTarget: string | null
+  ): boolean {
+    return false;
+  }
+
+  // Sends an action up the UI heirarchy
+  dispatchAction(
+    action: string,
+    param: string | null,
+    actionTarget: string | null
+  ) {
+    const handled = this.handleAction(action, param, actionTarget);
+    if (!handled && this._parent != null) {
+      this._parent.dispatchAction(action, param, actionTarget);
+    }
+  }
+
+
   init() {
     this._div.addEventListener("mousedown", (e) => {
       e.stopPropagation();
@@ -189,6 +223,9 @@ export default class GuiObj extends XmlObj {
   hide() {
     this._visible = false;
     this._renderVisibility();
+  }
+  isvisible(): boolean {
+    return this._visible;
   }
 
   /**
@@ -643,6 +680,21 @@ export default class GuiObj extends XmlObj {
     return this._alpha;
   }
 
+  clienttoscreenx(x:number): number {
+    return x;
+  }
+
+  clienttoscreeny(y:number): number {
+    return y;
+  }
+
+  screentoclientx(x:number): number {
+    return x;
+  }
+
+  screentoclienty(y:number): number {
+    return y;
+  }
   getparentlayout(): Group {
     if (this._parent) {
       return this._parent.getparentlayout();

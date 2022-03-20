@@ -13,11 +13,13 @@ export default class SystemObject extends BaseObject {
   _parentGroup: Group;
   _parsedScript: ParsedMaki;
   _param: string;
+  _id: string;
 
-  constructor(parsedScript: ParsedMaki, param: string) {
+  constructor(parsedScript: ParsedMaki, param: string, id: string) {
     super();
     this._parsedScript = parsedScript;
     this._param = param;
+    this._id = id; // useful while debuggin
     UI_ROOT.audio.onSeek(() => {
       UI_ROOT.vm.dispatch(this, "onseek", [
         { type: "INT", value: UI_ROOT.audio.getCurrentTimePercent() * 255 },

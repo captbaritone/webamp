@@ -41,4 +41,9 @@ export default class AlbumArt extends Layer {
     return true; //TODO 
   }
 
+  isinvalid():boolean {
+    return false;
+  }
+
+
 }

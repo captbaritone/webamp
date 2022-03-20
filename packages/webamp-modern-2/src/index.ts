@@ -23,12 +23,6 @@ function setStatus(status: string) {
 // const DEFAULT_SKIN = "assets/MMD3.wal"
 const DEFAULT_SKIN = "assets/WinampModern566.wal"
 
-/*
-    const [firstName, antiBoring] = this._gammaSets.keys();
-    // this._activeGammaSetName = firstName;
-    this.enableGammaSet(antiBoring || firstName || '') 
-*/
-
 async function main() {
   setStatus("Downloading skin...");
   const skinPath = getUrlQuery(window.location, "skin") || DEFAULT_SKIN;
@@ -43,9 +37,10 @@ async function loadSkin(skinData: Blob) {
 
   setStatus("Loading .wal archive...");
   const zip = await JSZip.loadAsync(skinData);
+  UI_ROOT.setZip(zip);
 
   setStatus("Parsing XML and initializing images...");
-  const parser = new SkinParser(zip, UI_ROOT);
+  const parser = new SkinParser(UI_ROOT);
 
   // This is always the same as the global singleton.
   const uiRoot = await parser.parse();

@@ -158,12 +158,26 @@ export default class Container extends XmlObj {
     throw new Error(`Could not find a container with the id; "${layoutId}"`);
   }
 
+  /** 
+  * @ret Layout
+  */
+  getCurLayout(): Layout {
+    return this._activeLayout;
+  }
+
+
+
   addLayout(layout: Layout) {
     layout.setParentContainer(this);
     this._layouts.push(layout);
     if (this._activeLayout == null) {
       this._activeLayout = layout;
     }
+  }
+
+  // parser need it.
+  addChild(layout: Layout) {
+    this.addLayout(layout)
   }
 
   _clearCurrentLayout() {

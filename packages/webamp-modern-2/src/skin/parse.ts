@@ -24,45 +24,83 @@ import GammaGroup from "./GammaGroup";
 import ColorThemesList from "./ColorThemesList";
 import { UIRoot } from "../UIRoot";
 import AlbumArt from "./makiClasses/AlbumArt";
-// import WindowHolder from "./makiClasses/WindowHolder";
+import WindowHolder from "./makiClasses/WindowHolder";
 import WasabiFrame from "./makiClasses/WasabiFrame";
 import Grid from "./makiClasses/Grid";
 import ProgressGrid from "./makiClasses/ProgressGrid";
 import WasabiTitle from "./makiClasses/WasabiTitle";
 
-// class ParserContext {
-//   container: Container | null = null;
-//   parentGroup: Group | /* Group includes Layout | */ null = null;
-// }
+class ParserContext {
+  container: Container | null = null;
+  parentGroup: Group | /* Group includes Layout | */ null = null;
+}
+
+// let _CURRENT_PARSER: SkinParser;
+
+const RESOURCE_PHASE = 1; //full async + Promise.all()
+const ResourcesTag = [
+  //'groupdef',//'wrapper',
+  "color",
+  "bitmap",
+  "bitmapfont",
+  // 'script', //'scripts',
+  "skininfo",
+  //'elements',
+  "accelerators", //'gammaset','gammagroup'
+];
+
+const GROUP_PHASE = 2; //full sync mode, because of inheritance
 
 export default class SkinParser {
-  _zip: JSZip;
   _imageManager: ImageManager;
   _path: string[] = [];
   _includedXml = {}; // {file:xmlelement}
   _scripts = {}; // {file:SystemObject}
   _uiRoot: UIRoot;
+  _phase: number = 0;
+  _res = {
+    bitmaps: {
+      // 'studio.basetexture': false,
+      "studio.button": false,
+      "studio.button.pressed": false,
+      "studio.scrollbar.vertical.background": false,
+      "studio.scrollbar.vertical.left": false,
+      "studio.scrollbar.vertical.right": false,
+      "studio.scrollbar.vertical.button": false,
+      "studio.scrollbar.horizontal.background": false,
+      "studio.scrollbar.horizontal.left": false,
+      "studio.scrollbar.horizontal.right": false,
+      "studio.scrollbar.horizontal.button": false,
+    },
+    colors: {},
+  }; //requested by skin, later compared with UiRoot._bitmaps
 
   constructor(
-    zip: JSZip,
     uiRoot: UIRoot /* Once UI_ROOT is not a singleton, we can create that objet in the constructor */
   ) {
-    this._zip = zip;
-    this._imageManager = new ImageManager(zip);
+    this._imageManager = new ImageManager();
     this._uiRoot = uiRoot;
   }
   async parse(): Promise<UIRoot> {
     // Load built-in xui elements
     // await this.parseFromUrl("assets/xml/xui/standardframe.xml");
-    const includedXml = await this.getCaseInsensitiveFile("skin.xml").async(
-      "string"
-    );
+    const includedXml = await this._uiRoot.getFileAsString("skin.xml");
+    // const includedXml = skinXmlContent;
 
     // Note: Included files don't have a single root node, so we add a synthetic one.
     // A different XML parser library might make this unnessesary.
     const parsed = parseXml(includedXml) as unknown as XmlElement;
 
-    await this.traverseChildren(parsed, null);
+    console.log("RESOURCE_PHASE #################");
+    this._phase = RESOURCE_PHASE;
+    await this.traverseChildren(parsed);
+    await this._solveMissingBitmaps();
+    await this._imageManager.loadUniquePaths();
+    await this._imageManager.ensureBitmapsLoaded();
+
+    console.log("GROUP_PHASE #################");
+    this._phase = GROUP_PHASE;
+    await this.traverseChildren(parsed);
 
     return this._uiRoot;
   }
@@ -71,16 +109,81 @@ export default class SkinParser {
   async parseFromUrl(url: string): Promise<void> {
     const response = await fetch(url);
     const xml = await response.text();
-    const parsed = parseXmlFragment(xml) as unknown as XmlElement;
-    await this.traverseChildren(parsed, null);
+    const parsed = parseXmlFragment(xml);
+    await this.traverseChildren(parsed);
   }
 
-  async traverseChildren(node: XmlElement, parent: any) {
-    for (const child of node.children) {
-      if (child instanceof XmlElement) {
-        await this.traverseChild(child, parent);
+  _scanRes(node: XmlElement) {
+    // if(node.attributes.background!=null && !!!this._res.bitmaps[node.attributes.background]){
+    if (node.attributes.background) {
+      this._res.bitmaps[node.attributes.background] = false; // just add, dont need to check
+      // console.log(node.name, 'bg:', node.attributes.background)
+    }
+  }
+
+  /**
+   * Some bitmap al called by group/layer
+   * but has no explicit declaration in a loaded skin  */
+  async _solveMissingBitmaps() {
+    //? checkmark the already availble
+    // this._uiRoot._bitmaps.forEach(function (bitmap) {
+    //   self._res.bitmaps[bitmap._id.toLowerCase()] = true;
+    // });
+    for (const bitmap of this._uiRoot._bitmaps) {
+      this._res.bitmaps[bitmap._id.toLowerCase()] = true;
+    }
+    // console.log(this._res.bitmaps)
+    //? build not available bitmap
+    for (const [key, available] of Object.entries<boolean>(this._res.bitmaps)) {
+      // console.log('trial bitmap:', key, available, typeof available)
+      if (!available) {
+        const lowercaseId = key.toLowerCase();
+        // const dict = getBitmap_system_elements(lowercaseId);
+        // if (dict != null) {
+        //   const bitmapEl = new XmlElement("bitmap", { ...dict });
+        //   //   // parser.traverseChild(bitmapEl);
+        //   await this.bitmap(bitmapEl);
+        //   console.log("solving bitmap:", lowercaseId);
+        // }
       }
     }
+    // this._uiRoot._bitmaps.forEach(function (bitmap) {
+    //   this._res.bitmaps[bitmap._id.toLowerCase()] = true;
+    // });
+  }
+
+  async traverseChildren(node: XmlElement, parent: any = null) {
+    if (this._phase == RESOURCE_PHASE) {
+      return await Promise.all(
+        node.children.map((child) => {
+          if (child instanceof XmlElement) {
+            // console.log('traverse->', parent.name, child.name)
+            this._scanRes(child);
+            return this.traverseChild(child, parent);
+          }
+        })
+      );
+    } else {
+      for (const child of node.children) {
+        if (child instanceof XmlElement) {
+          // console.log('traverse->', parent.name, child.name)
+          // this._scanRes(child);
+          await this.traverseChild(child, parent);
+        }
+      }
+    }
+  }
+
+  async traverseChildren0(node: XmlElement, parent: any = null) {
+    return Promise.all(
+      node.children.map((child) => {
+        if (child instanceof XmlElement) {
+          // console.log('traverse->', parent.name, child.name)
+          this._scanRes(child);
+          return this.traverseChild(child, parent);
+        }
+      })
+    );
   }
   async traverseChild(node: XmlElement, parent: any) {
     switch (node.name.toLowerCase()) {
@@ -195,7 +298,12 @@ export default class SkinParser {
   }
 
   addToGroup(obj: GuiObj, parent: Group) {
-    parent.addChild(obj);
+    try{
+      parent.addChild(obj);
+
+    } catch(err) {
+      console.warn('addToGroup failed. child:',obj,'pareng:',parent)
+    }
   }
 
   async newGui<Type>(
@@ -354,7 +462,7 @@ export default class SkinParser {
 
     //? Search Wasabi Inheritace
     const xuitag: string = node.name; //Wasabi:MainFrame:NoStatus
-    const xuiEl: XmlElement = UI_ROOT.getXuiElement(xuitag);
+    const xuiEl: XmlElement = this._uiRoot.getXuiElement(xuitag);
     if (xuiEl && node.attributes.id != xuiEl.attributes.id) {
       const xuiFrame = new XmlElement("groupdev", { id: xuiEl.attributes.id });
       await this.maybeApplyGroupDef(group, xuiFrame);
@@ -409,7 +517,7 @@ export default class SkinParser {
 
     const parsedScript = parseMaki(maki);
 
-    const systemObj = new SystemObject(id, parsedScript, param);
+    const systemObj = new SystemObject(parsedScript, param, id);
 
     // TODO: Need to investigate how scripts find their group. In corneramp, the
     // script itself is not in any group. `xml/player.xml:8
@@ -423,7 +531,7 @@ export default class SkinParser {
         typeof parent,
         parent == null ? "NULL???????" : parent
       );
-      UI_ROOT.addSystemObject(systemObj);
+      this._uiRoot.addSystemObject(systemObj);
     }
   }
 
@@ -578,24 +686,24 @@ export default class SkinParser {
 
   async xuiElement(node: XmlElement, parent: any) {
     assume(node.children.length === 0, "Unexpected children in XUI XML node.");
-    const xuiElement = this._uiRoot.getXuiElement(node.name);
-    assume(
-      xuiElement != null,
-      `Expected to find xui element with name "${node.name}".`
-    );
+    // const xuiElement = this._uiRoot.getXuiElement(node.name);
+    // assume(
+    //   xuiElement != null,
+    //   `Expected to find xui element with name "${node.name}".`
+    // );
 
-    const group = new Group();
-    group.setXmlAttributes(xuiElement.attributes);
-    const previousParentGroup = this._context.parentGroup;
-    this._context.parentGroup = group;
+    // const group = new Group();
+    // group.setXmlAttributes(xuiElement.attributes);
+    // const previousParentGroup = this._context.parentGroup;
+    // this._context.parentGroup = group;
 
-    await this.traverseChildren(xuiElement);
-    group.setXmlAttributes(node.attributes);
-    await this.traverseChildren(node, parent);
+    // await this.traverseChildren(xuiElement);
+    // group.setXmlAttributes(node.attributes);
+    // await this.traverseChildren(node, parent);
 
-    this._context.parentGroup = previousParentGroup;
+    // this._context.parentGroup = previousParentGroup;
 
-    this._context.parentGroup.addChild(group);
+    // this._context.parentGroup.addChild(group);
   }
 
   async status(node: XmlElement, parent: any) {
@@ -625,34 +733,143 @@ export default class SkinParser {
   }
 
   async include(node: XmlElement, parent: any) {
-    const { file } = node.attributes;
+    const { file, parent_path } = node.attributes;
     assert(file != null, "Include element missing `file` attribute");
+    const promises = [];
+    const includes = [];
 
-    const directories = file.split("/");
-    const fileName = directories.pop();
+    let savedDocument = this._includedXml[file];
+    if (!savedDocument) {
+      this._includedXml[file] = true; //just immediatelly
 
-    for (const dir of directories) {
-      this._path.push(dir);
+      const parent_dir = parent_path ? parent_path.split("/") : [];
+
+      const directories = file.replace("@DEFAULTSKINPATH@", "").split("/");
+      const fileName = directories.pop();
+
+      const path = [...parent_dir, ...directories, fileName].join("/");
+      // console.log('build-path.', `parentdir:${parent_dir}; curdir:${directories}; file:${fileName}`)
+
+      let includedXml: string;
+      try {
+        // console.info(`trying to load: ${path}. par: "${parent_path}"`);
+        includedXml = await this._uiRoot.getFileAsString(path);
+      } catch (err) {
+        console.warn(`botFailed to load: ${path}. par:${parent_path}`);
+      }
+      // const includedXml = await this._uiRoot.getFileAsString(path);
+      if (includedXml == null) {
+        console.warn(`Zip file not found: ${path} out of: `);
+        return;
+      }
+
+      const current_dir = [...parent_dir, ...directories].join("/");
+
+      var self = this;
+      function recursiveScanChildren(mother: XmlElement) {
+        var nonGroupDefs = [];
+        for (const element of mother.children) {
+          // if (element instanceof XmlComment || element instanceof XmlText) {
+          //   continue;
+          // } else 
+          if (element instanceof XmlElement) {
+            // recursiveScanChildren(element);
+            const lower = element.name.toLowerCase();
+            if (lower == "groupdef") {
+              recursiveScanChildren(element);
+              self._uiRoot.addGroupDef(element);
+              continue;
+            }
+            // if(lower=='elements') {
+            //   recursiveScanChildren(element);
+            //   continue;
+            // } else
+            else if (ResourcesTag.indexOf(lower) >= 0) {
+              // if(lower=='script') {
+              // console.log('ScriptLoadFound:',element.attributes.file);
+              // }
+              // console.log('removed:',lower)
+              promises.push(self.traverseChild(element, parent));
+              continue;
+            }
+            // else if(lower=='script') {
+            //   console.log('ScriptLoadFound:',element.attributes.file);
+            // }
+            else if (lower == "script") {
+              // console.log('not removed:',lower)
+              promises.push(self.script(element, parent));
+              // not "continue", let element reparse later
+            }
+            // else if(lower=='groupdef')
+            // {
+            //   self._uiRoot.addGroupDef(element);
+            //   continue;
+            // }
+            else if (lower == "include") {
+              element.attributes.parent_path = current_dir;
+              element.attributes["parent_path"] = current_dir;
+              includes.push(element); //recursive soon
+            }
+            recursiveScanChildren(element);
+            nonGroupDefs.push(element);
+          }
+        }
+        //replace children
+        mother.children.splice(0, mother.children.length, ...nonGroupDefs);
+      } //eof function
+
+      // Note: Included files don't have a single root node, so we add a synthetic one.
+      // A different XML parser library might make this unnessesary.
+      savedDocument = parseXmlFragment(includedXml);
+      recursiveScanChildren(savedDocument);
+
+      this._includedXml[file] = savedDocument;
+
+      for (const element of includes) {
+        promises.push(self.include(element, parent));
+      }
+      return Promise.all(promises);
+
+      // return Promise.all([
+      //   ...promises,
+      //   this.scanIncludes(savedDocument, parent)
+      // ])
     }
 
-    const path = [...this._path, fileName].join("/");
-
-    const zipFile = this.getCaseInsensitiveFile(path);
-    if (zipFile == null) {
-      console.warn(`Zip file not found: ${path} out of: `);
+    if (this._phase == RESOURCE_PHASE) {
+      //some maki may included in several place.
+      //ignore for now
       return;
     }
-    const includedXml = await zipFile.async("string");
 
-    // Note: Included files don't have a single root node, so we add a synthetic one.
-    // A different XML parser library might make this unnessesary.
-    const parsed = parseXmlFragment(includedXml);
+    // for(const element of wrapper.children)
+    // {
+    //   if(element instanceof XmlElement)
+    //   {
+    //   }
+    // }
+    //replace children
+    // parsed.children.splice(0, parsed.children.length, ...nonGroupDefs);
 
-    await this.traverseChildren(parsed);
+    // await this.traverseChildren({children:}, parent);
+    // return Promise.all([
+    //   ...promises,
+    //   /* await */ this.traverseChildren(savedDocument, parent)
+    // ])
+    await this.traverseChildren(savedDocument, parent);
+  }
 
-    for (const _dir of directories) {
-      this._path.pop();
-    }
+  async scanIncludes(node: XmlElement, parent: any) {
+    return await Promise.all(
+      node.children.map((child) => {
+        if (
+          child instanceof XmlElement &&
+          child.name.toLowerCase() == "include"
+        ) {
+          return this.include(child, parent);
+        }
+      })
+    );
   }
 
   async windowholder(node: XmlElement, parent: any) {
@@ -663,13 +880,10 @@ export default class SkinParser {
     // Ignore this metadata for now
   }
 
-  getCaseInsensitiveFile(filePath: string): JSZipObject {
-    return getCaseInsensitiveFile(this._zip, filePath);
-  }
 }
 
-function parseXmlFragment(xml: string): XmlDocument {
+function parseXmlFragment(xml: string): XmlElement {
   // Note: Included files don't have a single root node, so we add a synthetic one.
   // A different XML parser library might make this unnessesary.
-  return parseXml(`<wrapper>${xml}</wrapper>`);
+  return parseXml(`<wrapper>${xml}</wrapper>`) as unknown as XmlElement;
 }
