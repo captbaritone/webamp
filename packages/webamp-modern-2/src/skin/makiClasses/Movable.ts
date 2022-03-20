@@ -96,7 +96,7 @@ export default class Movable extends GuiObj {
       return;
     }
     this._resizingEventsRegisterd = true;
-    this._div.addEventListener("mousedown", this._handleResizing.bind(this));
+    this._div.addEventListener("mousedown", this._handleResizing);
   }
 
   _unregisterResizingEvents() {
@@ -148,7 +148,7 @@ export default class Movable extends GuiObj {
       return;
     }
     this._movingEventsRegisterd = true;
-    this._div.addEventListener("mousedown", this._handleMoving.bind(this));
+    this._div.addEventListener("mousedown", this._handleMoving);
   }
 
   _unregisterMovingEvents() {
@@ -158,7 +158,7 @@ export default class Movable extends GuiObj {
     }
   }
 
-  _handleMoving(downEvent: MouseEvent) {
+  _handleMoving = (downEvent: MouseEvent) => {
     downEvent.stopPropagation();
     if (downEvent.button != 0) return; // only care LeftButton
     const layout = this.getparentlayout() as Layout;
