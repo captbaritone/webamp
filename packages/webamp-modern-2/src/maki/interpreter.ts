@@ -316,31 +316,17 @@ class Interpreter {
               obj.value != null,
             `Guru Meditation: Tried to call method ${klass.name}.${methodName} on null object`
           );
-          // let value = obj.value[methodName](...methodArgs);
-          let value = null;
-          try {
-            if (obj.value[methodName]) {
-              value = obj.value[methodName](...methodArgs);
-            } else {
-              value = obj.value.constructor[methodName](...methodArgs);
-            }
-          } catch (err) {
-            value = null;
 
-            try {
-              const fun = (
-                obj.value[methodName]
-                  ? obj.value[methodName]
-                  : obj.value.constructor[methodName]
-              ).bind(obj.value);
-              value = fun(...methodArgs);
-            } catch (err) {
-              console.warn(
-                `error call: ${klass.name}.${methodName} args:${methodArgs}`,
-                `err: ${err.message} obj: ${JSON.stringify(obj)}`
-              );
-              value = null;
-            }
+          // let value = obj.value[methodName](...methodArgs);
+          let value;
+          try {
+            value = obj.value[methodName](...methodArgs);
+          } catch (err) {
+            console.warn(
+              `error call: ${klass.name}.${methodName}(...${JSON.stringify(methodArgs)})`,
+              `err: ${err.message} obj: ${JSON.stringify(obj)}`
+            );
+            value = null;
           }
 
           if (value === undefined && returnType !== "NULL") {
