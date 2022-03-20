@@ -22,7 +22,7 @@ export class UIRoot {
   _dummyGammaGroup: GammaGroup = null;
   _activeGammaSetName: string = "";
   _xuiElements: XmlElement[] = [];
-  _activeGammaSet: GammaGroup[] | null = null;
+  _activeGammaSet: GammaGroup[] = [];
   _containers: Container[] = [];
 
   // A list of all objects created for this skin.
@@ -39,7 +39,7 @@ export class UIRoot {
     this._groupDefs = [];
     this._gammaSets = new Map();
     this._xuiElements = [];
-    this._activeGammaSet = null;
+    this._activeGammaSet = [];
     this._containers = [];
     this._gammaNames = {};
 
@@ -139,21 +139,26 @@ export class UIRoot {
   }
 
   enableGammaSet(id: string) {
-    const found = this._gammaSets.get(id.toLowerCase());
-    assume(
-      found != null,
-      `Could not find gammaset for id "${id}" from set of ${Array.from(
-        this._gammaSets.keys()
-      ).join(", ")}`
-    );
-    this._activeGammaSetName = id;
-    this._activeGammaSet = found;
+    if (id) {
+      const found = this._gammaSets.get(id.toLowerCase());
+      assume(
+        found != null,
+        `Could not find gammaset for id "${id}" from set of ${Array.from(
+          this._gammaSets.keys()
+        ).join(", ")}`
+      );
+      this._activeGammaSetName = id;
+      this._activeGammaSet = found;
+    }
     this._setCssVars();
   }
 
   enableDefaultGammaSet() {
-    this._activeGammaSet = Array.from(this._gammaSets.values())[0] ?? null;
-    this._setCssVars();
+    // TODO: restore the latest gammaSet picked by user for this skin
+    const gammaSetNames = Array.from(this._gammaSets.keys());
+    const firstName = gammaSetNames[0];
+    const antiBoring = gammaSetNames[1];
+    this.enableGammaSet(antiBoring || firstName || "");
   }
 
   _getGammaGroup(id: string): GammaGroup | null {
@@ -164,7 +169,7 @@ export class UIRoot {
     const found = findLast(this._activeGammaSet, (gammaGroup) => {
       return gammaGroup.getId().toLowerCase() === lower;
     });
-    return found ?? null;
+    return found ?? this._getGammaGroupDummy();
   }
 
   _getGammaGroupDummy() {
