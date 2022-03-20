@@ -12,8 +12,8 @@ export default class Movable extends GuiObj {
   _movable: boolean = false;
   _resizable: number = 0;
   _resize: string;
-  _resizingEventsRegisterd: boolean = false;
-  _movingEventsRegisterd: boolean = false;
+  _resizingEventsRegistered: boolean = false;
+  _movingEventsRegistered: boolean = false;
 
   setXmlAttr(_key: string, value: string): boolean {
     const key = _key.toLowerCase();
@@ -91,17 +91,17 @@ export default class Movable extends GuiObj {
   }
 
   _registerResizingEvents() {
-    if (this._resizingEventsRegisterd) {
+    if (this._resizingEventsRegistered) {
       return;
     }
-    this._resizingEventsRegisterd = true;
+    this._resizingEventsRegistered = true;
     this._div.addEventListener("mousedown", this._handleResizing);
   }
 
   _unregisterResizingEvents() {
-    if (this._resizingEventsRegisterd) {
+    if (this._resizingEventsRegistered) {
       this._div.removeEventListener("mousedown", this._handleResizing);
-      this._resizingEventsRegisterd = false;
+      this._resizingEventsRegistered = false;
     }
   }
 
@@ -143,17 +143,17 @@ export default class Movable extends GuiObj {
   }
 
   _registerMovingEvents() {
-    if (this._movingEventsRegisterd) {
+    if (this._movingEventsRegistered) {
       return;
     }
-    this._movingEventsRegisterd = true;
+    this._movingEventsRegistered = true;
     this._div.addEventListener("mousedown", this._handleMoving);
   }
 
   _unregisterMovingEvents() {
-    if (this._movingEventsRegisterd) {
+    if (this._movingEventsRegistered) {
       this._div.removeEventListener("mousedown", this._handleMoving);
-      this._movingEventsRegisterd = false;
+      this._movingEventsRegistered = false;
     }
   }
 
