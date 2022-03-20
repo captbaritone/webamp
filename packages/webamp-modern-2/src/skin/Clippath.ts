@@ -52,10 +52,8 @@ export class Edges {
         }
       }
       if (x == w - 1 && pending) {
-        post(lastfoundx+1, lastfoundy);
+        post(lastfoundx + 1, lastfoundy);
       }
-
-      lastX = x;
     }
     this._top = points; // points.join(', \n')
 
@@ -92,7 +90,6 @@ export class Edges {
         // last
         post(lastfoundx + 1, lastfoundy);
       }
-      lastY = y;
     }
     this._right = points; // points.join(', \n')
 
@@ -129,7 +126,6 @@ export class Edges {
         // last
         post(lastfoundx, lastfoundy + 1);
       }
-      lastX = x;
     }
     this._bottom = points; // points.join(', \n')
   }
@@ -155,7 +151,12 @@ export class Edges {
 
   getPolygon(): string {
     // to avoid empty between two comma separator, we explode values befor join().
-    return `polygon(${[...this._top, ...this._right, ...this._bottom, ...this._left].join(", ")})`;
+    return `polygon(${[
+      ...this._top,
+      ...this._right,
+      ...this._bottom,
+      ...this._left,
+    ].join(", ")})`;
     // TODO: detect if first points in bottom has ben detected by right.
   }
 }
