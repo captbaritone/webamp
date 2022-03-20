@@ -20,9 +20,18 @@ function setStatus(status: string) {
   STATUS.innerText = status;
 }
 
+// const DEFAULT_SKIN = "assets/MMD3.wal"
+const DEFAULT_SKIN = "assets/WinampModern566.wal"
+
+/*
+    const [firstName, antiBoring] = this._gammaSets.keys();
+    // this._activeGammaSetName = firstName;
+    this.enableGammaSet(antiBoring || firstName || '') 
+*/
+
 async function main() {
   setStatus("Downloading skin...");
-  const skinPath = getUrlQuery(window.location, "skin") || "assets/MMD3.wal";
+  const skinPath = getUrlQuery(window.location, "skin") || DEFAULT_SKIN;
   const response = await fetch(skinPath);
   const data = await response.blob();
   await loadSkin(data);
