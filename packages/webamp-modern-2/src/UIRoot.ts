@@ -162,7 +162,7 @@ export class UIRoot {
     return found ?? null;
   }
 
-  _getGammGroupDummy() {
+  _getGammaGroupDummy() {
     if (!this._dummyGammaGroup) {
       //lazy create
       this._dummyGammaGroup = new GammaGroup();
