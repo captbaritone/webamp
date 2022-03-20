@@ -22,7 +22,6 @@ export class Edges {
 
     function post(ax: number, ay: number) {
       points.push(`${ax}px ${ay}px`);
-      // points.push(`x:${ax} y:${ay}`)
     }
 
     //? top -------------------------------------------------
