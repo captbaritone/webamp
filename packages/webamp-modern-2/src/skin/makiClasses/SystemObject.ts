@@ -8,14 +8,6 @@ import PRIVATE_CONFIG from "../PrivateConfig";
 import UI_ROOT from "../../UIRoot";
 import GuiObj from "./GuiObj";
 
-const MOUSE_POS = { x: 0, y: 0 };
-
-// TODO: Figure out how this could be unsubscribed eventually
-document.addEventListener("mousemove", (e: MouseEvent) => {
-  MOUSE_POS.x = e.clientX;
-  MOUSE_POS.y = e.clientY;
-});
-
 export default class SystemObject extends BaseObject {
   static GUID = "d6f50f6449b793fa66baf193983eaeef";
   _parentGroup: Group;
@@ -29,6 +21,15 @@ export default class SystemObject extends BaseObject {
     UI_ROOT.audio.onSeek(() => {
       UI_ROOT.vm.dispatch(this, "onseek", [
         { type: "INT", value: UI_ROOT.audio.getCurrentTimePercent() * 255 },
+      ]);
+    });
+    UI_ROOT.audio.on('play',() => UI_ROOT.vm.dispatch(this, "onplay", []));
+    UI_ROOT.audio.on('pause',() => UI_ROOT.vm.dispatch(this, "onpause", []));
+    UI_ROOT.audio.on('stop',() => UI_ROOT.vm.dispatch(this, "onstop", []));
+    // UI_ROOT.audio.onPlay(() => UI_ROOT.vm.dispatch(this, "onplay", []));
+    UI_ROOT.audio.onVolumeChanged(() => {
+      UI_ROOT.vm.dispatch(this, "onvolumechanged", [
+        { type: "INT", value: UI_ROOT.audio.getVolume() * 255 },
       ]);
     });
   }
@@ -65,7 +66,7 @@ export default class SystemObject extends BaseObject {
    * @ret The mouse's current X pos.
    */
   getmouseposx(): number {
-    return MOUSE_POS.x;
+    return this._parentGroup.getmouseposx();
   }
 
   /**
@@ -75,7 +76,7 @@ export default class SystemObject extends BaseObject {
    * @ret The mouse's current Y pos.
    */
   getmouseposy(): number {
-    return MOUSE_POS.y;
+    return this._parentGroup.getmouseposy();
   }
 
   /**
