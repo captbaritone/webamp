@@ -106,7 +106,7 @@ export default class Movable extends GuiObj {
     }
   }
 
-  _handleResizing(downEvent: MouseEvent) {
+  _handleResizing = (downEvent: MouseEvent) => {
     downEvent.stopPropagation();
     if (downEvent.button != 0) return; // only care LeftButton
     const layout = this.getparentlayout() as Layout;
