@@ -110,6 +110,7 @@ export default class Bitmap {
   }
 
   _setAsBackground(div: HTMLElement, prefix: string) {
+    if (!this._cssVar) return; //avoid console error as: http://localhost/null
     div.style.setProperty(
       `--${prefix}background-image`,
       this._getBackgrondImageCSSAttribute()
