@@ -140,7 +140,6 @@ export default class Bitmap {
       this._canvas.width = this.getWidth();
       this._canvas.height = this.getHeight();
       const ctx = this._canvas.getContext("2d");
-      // ctx.drawImage(this._img, 0, 0, this.getWidth(), this.getHeight());
       // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
       ctx.drawImage(this._img, this._x, this._y, this.getWidth(), this.getHeight(), 
         0, 0, this.getWidth(), this.getHeight());
