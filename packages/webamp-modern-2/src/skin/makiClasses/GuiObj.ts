@@ -1,5 +1,13 @@
 import UI_ROOT from "../../UIRoot";
-import { assert, num, toBool, px, assume, relative } from "../../utils";
+import {
+  assert,
+  num,
+  toBool,
+  px,
+  assume,
+  relative,
+  findLast,
+} from "../../utils";
 import Bitmap from "../Bitmap";
 import Group from "./Group";
 import XmlObj from "../XmlObj";
@@ -11,6 +19,7 @@ let BRING_MOST_TOP: number = 1;
 export default class GuiObj extends XmlObj {
   static GUID = "4ee3e1994becc636bc78cd97b028869c";
   _parent: Group;
+  _children: GuiObj[] = [];
   _id: string;
   _width: number;
   _height: number;
@@ -24,6 +33,7 @@ export default class GuiObj extends XmlObj {
   _relaty: string;
   _relatw: string;
   _relath: string;
+  _autowidthsource: string;
   // _resize: string;
   _droptarget: string;
   _visible: boolean = true;
@@ -138,7 +148,7 @@ export default class GuiObj extends XmlObj {
 
   init() {
     this._div.addEventListener("mousedown", (e) => {
-      e.stopPropagation();      
+      e.stopPropagation();
       this.onLeftButtonDown(e.clientX, e.clientY);
 
       const mouseUpHandler = (e) => {
@@ -245,6 +255,102 @@ export default class GuiObj extends XmlObj {
     this._width = w;
     this._height = h;
     this._renderDimensions();
+  }
+
+  getxmlparam(param: string): string {
+    const _ = this["_" + param];
+    return _ != null ? _.toString() : null;
+  }
+  getguiw(): number {
+    return this._width;
+  }
+  getguih(): number {
+    return this._height;
+  }
+  getguix(): number {
+    return this._x;
+  }
+  getguiy(): number {
+    return this._y;
+  }
+  getguirelatw(): number {
+    return this._relatw == "1" ? 1 : 0;
+  }
+  getguirelath(): number {
+    return this._relath == "1" ? 1 : 0;
+  }
+  getguirelatx(): number {
+    return this._relatx == "1" ? 1 : 0;
+  }
+  getguirelaty(): number {
+    return this._relaty == "1" ? 1 : 0;
+  }
+  getautowidth(): number {
+    const child = !this._autowidthsource
+      ? this
+      : findLast(
+          this._children,
+          (c) => c._id.toLowerCase() == this._autowidthsource
+        );
+    if (child) {
+      return child._div.getBoundingClientRect().width;
+      // return child._width;
+    }
+    return 1;
+  }
+  getautoheight(): number {
+    return this._div.getBoundingClientRect().height;
+  }
+
+  findobject(id: string): GuiObj {
+    if (id.toLowerCase() == this.getId().toLowerCase()) return this;
+
+    //? Phase 1: find in this children
+    let ret = this._findobject(id);
+
+    //? Phase 2: find in this layout's children
+    if (!ret /* && this._parent  */) {
+      const layout = this.getparentlayout();
+      if (layout) {
+        ret = layout._findobject(id);
+      }
+    }
+    if (!ret && id != "sysmenu") {
+      console.warn(`findObject(${id}) failed, @${this.getId()}`);
+    }
+    return ret;
+  }
+
+  /* internal findObject with custom error msg */
+  findobjectF(id: string, msg: string): GuiObj {
+    const ret = this._findobject(id);
+    if (!ret && id != "sysmenu") {
+      console.warn(msg);
+    }
+    return ret;
+  }
+
+  _findobject(id: string): GuiObj {
+    // too complex to consol.log here
+    const lower = id.toLowerCase();
+    // find in direct children first
+    for (const obj of this._children) {
+      if ((obj.getId() || "").toLowerCase() === lower) {
+        return obj;
+      }
+    }
+    // find in grand child
+    for (const obj of this._children) {
+      const found = obj._findobject(id);
+      if (found != null) {
+        return found;
+      }
+    }
+    return null;
+  }
+
+  isActive(): boolean {
+    return this._div.matches(":focus");
   }
 
   /**

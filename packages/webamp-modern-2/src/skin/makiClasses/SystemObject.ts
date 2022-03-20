@@ -426,7 +426,7 @@ export default class SystemObject extends BaseObject {
    * @param  defvalue  The default value to return if no item is found.
    */
   getprivatestring(section: string, item: string, defvalue: string) {
-    // TODO
+    return PRIVATE_CONFIG.getPrivateString(section, item, defvalue);
   }
 
   setpublicstring(item: string, value: string) {
@@ -984,7 +984,7 @@ export default class SystemObject extends BaseObject {
    * @param  value   The integer to change into a string.
    */
   integertostring(value: number): string {
-    return String(value);
+    return String( Math.round(value) );
   }
 
   /**
@@ -1133,8 +1133,7 @@ export default class SystemObject extends BaseObject {
    * @ret STATUS_PAUSED (-1) if paused, STATUS_STOPPED (0) if stopped, STATUS_PLAYING (1) if playing.
    */
   getstatus(): number {
-    // TODO: Pull this from the actual media player
-    return 1;
+    return AUDIO_PLAYER.getState();
   }
 
   /**
@@ -1561,6 +1560,42 @@ export default class SystemObject extends BaseObject {
   random(max: number): number {
     // TODO: Should this return an int?
     return Math.random() * max;
+  }
+
+  oneqfreqchanged(isiso: number){
+
+  }
+
+  
+
+  getsonginfotext():string{
+    return "123kbps stereo 79khz"
+  }
+
+  getsonginfotexttranslated():string{
+    return this.getplayitemstring()
+  }
+
+  lockui(){
+    //TODO:
+  }
+
+  unlockui(){
+    //TODO:
+  }
+
+  translate(str: string): string{
+    return str;
+  }
+
+  isvideo(): number {
+    return 0;
+  }
+  isvideofullscreen(): number {
+    return 0;
+  }
+  iskeydown(vk:number): number {
+    return 0;
   }
 }
 

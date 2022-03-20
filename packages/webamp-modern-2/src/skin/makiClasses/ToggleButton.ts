@@ -8,6 +8,10 @@ export default class ToggleButton extends Button {
     return "button";
   }
 
+  getcurcfgval(): number{
+    return this._active? 1 : 0;
+  }
+
   /**
    * This method is called by Button
    */
@@ -16,6 +20,10 @@ export default class ToggleButton extends Button {
     e.stopPropagation();
     // implementation of standard mouse down
     this.setactivated(!this._active);
+  }
+
+  ontoggle(onoff: boolean){
+    UI_ROOT.vm.dispatch(this, "ontoggle", [V.newBool(onoff)]);
   }
 
   draw() {

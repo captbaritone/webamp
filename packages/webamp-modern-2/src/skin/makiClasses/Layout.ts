@@ -21,6 +21,7 @@ export default class Layout extends Group {
   _movingStartX: number; //container XY
   _movingStartY: number;
   _moving: boolean = false;
+  _snap = { left: 0, top: 0, right: 0, bottom: 0 };
 
   constructor() {
     super();
@@ -45,6 +46,24 @@ export default class Layout extends Group {
     this._parentContainer = container;
   }
 
+  getcontainer(): Container {
+    return this._parentContainer;
+  }
+
+  gettop(): number {
+    return this._parent._y;
+  }
+
+  /**
+   * Get the X position, in the screen, of the
+   * left edge of the object.
+   *
+   * @ret The left edge's position (in screen coordinates).
+   */
+  getleft(): number {
+    return this._parent._x;
+  }
+
   dispatchAction(
     action: string,
     param: string | null,
@@ -64,6 +83,33 @@ export default class Layout extends Group {
           this._parentContainer.dispatchAction(action, param, actionTarget);
         }
     }
+  }
+
+  snapadjust(left: number, top: number, right: number, bottom: number) {
+    this._snap.left = left;
+    this._snap.top = top;
+    this._snap.right = right;
+    this._snap.bottom = bottom;
+  }
+
+  beforeredock() {
+    // TODO:
+  }
+
+  redock() {
+    // TODO:
+  }
+
+  getsnapadjustbottom(): number {
+    return 100;
+  }
+
+  clienttoscreenh(h: number): number {
+    return h;
+  }
+
+  islayoutanimationsafe(): boolean {
+    return true;
   }
 
   setResizing(cmd: string, dx: number, dy: number) {

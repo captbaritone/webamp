@@ -1,4 +1,5 @@
 import XmlObj from "../XmlObj";
+import ConfigAttribute from "./ConfigAttribute";
 
 export default class ConfigItem extends XmlObj {
     static GUID = "d40302824d873aab32128d87d5fcad6f";

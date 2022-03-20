@@ -14,7 +14,7 @@ export default class Group extends Movable {
   _drawBackground: boolean = true;
   _isLayout: boolean = false;
   _systemObjects: SystemObject[] = [];
-  _children: GuiObj[] = [];
+  
 
   setXmlAttr(_key: string, value: string): boolean {
     const key = _key.toLowerCase();
@@ -113,7 +113,7 @@ export default class Group extends Movable {
       const bitmap = UI_ROOT.getBitmap(this._background);
       if (bitmap) return bitmap.getHeight();
     }
-    return h;
+    return h ?? 0;
   }
 
   // This shadows `getwidth()` on GuiObj
@@ -123,7 +123,7 @@ export default class Group extends Movable {
       const bitmap = UI_ROOT.getBitmap(this._background);
       if (bitmap) return bitmap.getWidth();
     }
-    return w;
+    return w ?? 0;
   }
 
   _renderBackground() {
