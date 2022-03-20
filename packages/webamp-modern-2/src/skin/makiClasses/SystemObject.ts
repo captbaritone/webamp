@@ -1071,7 +1071,7 @@ export default class SystemObject extends BaseObject {
    * The index starts at 0, not 1, so be careful.
    * Here's a short example:
    *   getToken("1,2,3,4,5", ",", 3);
-   * Would return, 3. If the token you ask for doesn't exist, an
+   * Would return, 4. If the token you ask for doesn't exist, an
    * empty string is returned.
    *
    * @ret             The token requested.
@@ -1080,6 +1080,7 @@ export default class SystemObject extends BaseObject {
    * @param  tokennum    The token to retreive.
    */
   gettoken(str: string, separator: string, tokennum: number) {
+    // getToken("28,39,-56,-84,0,0,1,1", ",", 3) will return "-84"
     const commas = str.split(separator);
     return commas[tokennum] || "";
   }
