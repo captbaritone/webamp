@@ -77,7 +77,6 @@ export default class Movable extends GuiObj {
         this._resizable = 0;
     }
     if (this._movable) {
-      // this._div.style.cursor = "move";
       this._div.style.removeProperty("cursor");
       this._resizable = MOVE;
       this._registerMovingEvents();
