@@ -329,18 +329,6 @@ class Interpreter {
           // let value = obj.value[methodName](...methodArgs);
           let value = null;
           try{
-            // value = (obj.value[methodName] || obj.value.constructor[methodName])(...methodArgs);
-            // let fun;
-            // if (obj.value[methodName]) {
-            //   // value = obj.value[methodName](...methodArgs);
-            //   fun = obj.value[methodName].bind(obj.value);
-            // } else {
-            //   // value = obj.value.constructor[methodName](...methodArgs);
-            //   fun = obj.value.constructor[methodName].bind(obj.value);
-            // }
-            // value = fun(...methodArgs);
-
-            // let value;
             if (obj.value[methodName]) {
             value = obj.value[methodName](...methodArgs);
             } else {
