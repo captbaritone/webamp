@@ -110,13 +110,6 @@ export default class Bitmap {
   }
 
   _setAsBackground(div: HTMLElement, prefix: string) {
-    if (!this._cssVar) {
-      //avoid console error as: http://localhost/null
-      console.warn(
-        `Can not set ${prefix}-background. at ${div.getAttribute("id")}`
-      );
-      return;
-    }
     div.style.setProperty(
       `--${prefix}background-image`,
       this._getBackgrondImageCSSAttribute()
