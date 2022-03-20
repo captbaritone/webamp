@@ -126,7 +126,6 @@ export default class Layout extends Group {
       );
       this._resizingDiv.remove();
       this._resizingDiv = null;
-      // this.doResize();
     }
   }
 
