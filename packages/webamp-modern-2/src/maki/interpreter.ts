@@ -5,29 +5,6 @@ import { getClass, getMethod } from "./objects";
 import GuiObj from "../skin/makiClasses/GuiObj";
 // import { classResolver } from "../skin/resolver";
 
-function stringify(errObj) {
-  if(errObj instanceof GuiObj){
-    return errObj.getId()
-  } else {
-    return JSON.stringify(errObj, function(key,value){
-      if(value instanceof GuiObj){
-        return value.getId()
-      } else if (value == null) {
-        return 'null'
-      } else if (value.hasOwnProperty('_id')) {
-        return value._id;
-      } else if('_children _parsedScript _systemObjects _layouts _activeLayout'.split(' ').includes(key)) { 
-        return '~';
-      } else {
-        return value
-      }
-    })
-    // function(erkey,ervalue){
-      //   if('_children _parsedScript _systemObjects _layouts _activeLayout'.split(' ').includes(erkey)) { return '[]' }
-      //   else {return ervalue}
-      // }
-    }
-}
 function validateMaki(program: ParsedMaki) {
   /*
   for (const v of program.variables) {
@@ -335,14 +312,13 @@ class Interpreter {
             methodArgs.push(a.value);
           }
           const obj = this.stack.pop();
-          if(!obj.value/* ==null */ 
-            && ( 
-                (klass.name || '').toLowerCase() == 'winampconfig' || 
-                (klass.name || '').toLowerCase() == 'winampconfiggroup' || 
-                (klass.name || '').toLowerCase() == 'configclass' ||
-                (klass.name || '').toLowerCase() == 'config' 
-                )
-            ){
+          if (
+            !obj.value /* ==null */ &&
+            ((klass.name || "").toLowerCase() == "winampconfig" ||
+              (klass.name || "").toLowerCase() == "winampconfiggroup" ||
+              (klass.name || "").toLowerCase() == "configclass" ||
+              (klass.name || "").toLowerCase() == "config")
+          ) {
             obj.value = new klass();
           }
           assert(
@@ -356,10 +332,12 @@ class Interpreter {
           try {
             value = obj.value[methodName](...methodArgs);
           } catch (err) {
-            
             console.warn(
-              `error call: ${klass.name}.${methodName}(...${JSON.stringify(methodArgs)})`,
-              `err: ${err.message} obj: ${stringify(obj)}`
+              `error call: ${klass.name}.${methodName}(...${JSON.stringify(
+                methodArgs
+              )})`,
+              `err: ${err.message} obj:`,
+              obj
             );
             value = null;
           }
