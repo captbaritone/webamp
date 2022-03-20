@@ -144,6 +144,7 @@ export default class Button extends GuiObj {
   }
 
   _handleMouseDown(e: MouseEvent) {
+    // don't send to parent to start move/resizing
     e.stopPropagation();
     // buttonToggle will handle it
   }
