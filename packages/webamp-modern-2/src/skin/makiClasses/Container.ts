@@ -76,6 +76,21 @@ export default class Container extends XmlObj {
     this._componentAlias = knownContainerGuids[guid];
   }
 
+  /**
+   * Container sometime identified with a guid, or a-guid alias
+   * so which one correct (id, 'guid:{abcde}, 'guid:pl') is acceptable.
+   */
+  hasId(id: string): boolean {
+    if (!id) return false;
+    id = id.toLowerCase();
+    const useGuid = id.startsWith("guid:");
+    if (useGuid) {
+      id = id.substring(5);
+      return this._componentGuid == id || this._componentAlias == id;
+    } else {
+      return this._id == id;
+    }
+  }
   getId() {
     return this._id;
   }

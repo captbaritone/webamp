@@ -20,7 +20,7 @@ export class UIRoot {
   _gammaSets: Map<string, GammaGroup[]> = new Map();
   _gammaNames = {};
   _dummyGammaGroup: GammaGroup = null;
-  _activeGammaSetName : string = '';
+  _activeGammaSetName: string = "";
   _xuiElements: XmlElement[] = [];
   _activeGammaSet: GammaGroup[] | null = null;
   _containers: Container[] = [];
@@ -127,8 +127,13 @@ export class UIRoot {
     return this._containers;
   }
 
+  findContainer(id: string): Container {
+    const container = findLast(this.getContainers(), (ct) => ct.hasId(id));
+    return container;
+  }
+
   addGammaSet(id: string, gammaSet: GammaGroup[]) {
-    const lower = id.toLowerCase()
+    const lower = id.toLowerCase();
     this._gammaNames[lower] = id;
     this._gammaSets.set(lower, gammaSet);
   }
@@ -238,15 +243,7 @@ export class UIRoot {
   }
 
   toggleContainer(param: string) {
-    const useGuid = param.startsWith("guid:");
-    if (useGuid) {
-      param = param.substring(5);
-    }
-    const container = findLast(this.getContainers(), (ct) =>
-      useGuid
-        ? ct._componentGuid == param || ct._componentAlias == param
-        : ct._id == param
-    );
+    const container = this.findContainer(param);
     assume(container != null, `Can not toggle on unknown container: ${param}`);
     container.toggle();
   }
