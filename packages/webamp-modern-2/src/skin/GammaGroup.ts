@@ -56,14 +56,20 @@ export default class GammaGroup {
     const [r, g, b] = this._value.split(",").map((v) => {
       return Number(v) / 4096 + 1.0;
     });
-    const W = w || img.width;
-    const H = h || img.height;
+    // because some <bitmap> didn't has explicit "w" attribute
+    const safeWidth = w || img.width;
+    const safeHeight = h || img.height;
+    // because some <bitmap> didn't has explicit "x" attribute
+    // if it is any, we threat it as background-position coordinate
+    const safeLeft = x ? -x : 0;
+    const safeTop = y ? -y : 0;
     const canvas = document.createElement("canvas");
-    canvas.width = W;
-    canvas.height = H;
+    canvas.width = safeWidth;
+    canvas.height = safeHeight;
     const ctx = canvas.getContext("2d");
-    ctx.drawImage(img, x ? -x : 0, y ? -y : 0);
-    const imageData = ctx.getImageData(0, 0, W, H);
+    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
+    ctx.drawImage(img, safeLeft, safeTop);
+    const imageData = ctx.getImageData(0, 0, safeWidth, safeHeight);
     const data = imageData.data;
     for (var i = 0; i < data.length; i += 4) {
       let [ir, ig, ib] = [data[i], data[i + 1], data[i + 2]];
