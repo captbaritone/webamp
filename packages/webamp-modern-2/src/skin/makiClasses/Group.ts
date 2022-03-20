@@ -2,19 +2,17 @@ import * as Utils from "../../utils";
 import UI_ROOT from "../../UIRoot";
 import GuiObj from "./GuiObj";
 import SystemObject from "./SystemObject";
+import Movable from "./Movable";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Cgroup.2F.3E
-export default class Group extends GuiObj {
+export default class Group extends Movable {
   static GUID = "45be95e5419120725fbb5c93fd17f1f9";
   _parent: Group;
   _instanceId: string;
   _background: string;
   _desktopAlpha: boolean;
   _drawBackground: boolean = true;
-  _minimumHeight: number;
-  _maximumHeight: number;
-  _minimumWidth: number;
-  _maximumWidth: number;
+  _isLayout: boolean = false;
   _systemObjects: SystemObject[] = [];
   _children: GuiObj[] = [];
 
@@ -34,18 +32,6 @@ export default class Group extends GuiObj {
       case "drawbackground":
         this._drawBackground = Utils.toBool(value);
         this._renderBackground();
-        break;
-      case "minimum_h":
-        this._minimumHeight = Utils.num(value);
-        break;
-      case "minimum_w":
-        this._minimumWidth = Utils.num(value);
-        break;
-      case "maximum_h":
-        this._maximumHeight = Utils.num(value);
-        break;
-      case "maximum_w":
-        this._maximumWidth = Utils.num(value);
         break;
       default:
         return false;
@@ -106,28 +92,38 @@ export default class Group extends GuiObj {
     );
   }
 
+  getparentlayout(): Group {
+    let obj: Group = this;
+    while (obj._parent) {
+      if (obj._isLayout) {
+        break;
+      }
+      obj = obj._parent;
+    }
+    if (!obj) {
+      console.warn("getParentLayout", this.getId(), "failed!");
+    }
+    return obj;
+  }
+
   // This shadows `getheight()` on GuiObj
   getheight(): number {
-    if (this._height) {
-      return this._height;
-    }
-    if (this._background != null) {
+    const h = super.getheight();
+    if (h == null && this._background != null) {
       const bitmap = UI_ROOT.getBitmap(this._background);
-      return bitmap.getHeight();
+      if (bitmap) return bitmap.getHeight();
     }
-    return super.getheight();
+    return h;
   }
 
   // This shadows `getwidth()` on GuiObj
   getwidth(): number {
-    if (this._width) {
-      return this._width;
-    }
-    if (this._background != null) {
+    const w = super.getwidth();
+    if (w == null && this._background != null) {
       const bitmap = UI_ROOT.getBitmap(this._background);
-      return bitmap.getWidth();
+      if (bitmap) return bitmap.getWidth();
     }
-    return super.getwidth();
+    return w;
   }
 
   _renderBackground() {
@@ -141,13 +137,17 @@ export default class Group extends GuiObj {
 
   draw() {
     super.draw();
-    this._div.setAttribute("data-obj-name", "Group");
     this._div.classList.add("webamp--img");
     // It seems Groups are not responsive to click events.
+    if (this._movable || this._resizable) {
+      // this._div.style.removeProperty('pointer-events');
+      this._div.style.pointerEvents = "auto";
+    } else {
+      this._div.style.pointerEvents = "none";
+    }
+    //TODO: allow move/resize if has ._image
     this._div.style.pointerEvents = "none";
-    this._div.style.overflow = "hidden";
-    this._div.style.height = Utils.px(this._maximumHeight);
-    this._div.style.width = Utils.px(this._maximumWidth);
+    // this._div.style.overflow = "hidden";
     this._renderBackground();
     for (const child of this._children) {
       child.draw();

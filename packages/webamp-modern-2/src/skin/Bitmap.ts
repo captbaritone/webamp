@@ -21,15 +21,12 @@ export default class Bitmap {
     }
   }
 
-  setXmlAttr(_key: string, value: string) {
+  setXmlAttr(_key: string, value: string): boolean {
     const key = _key.toLowerCase();
     switch (key) {
       case "id":
         this._id = value;
-        this._cssVar = `--bitmap-${this.getId().replace(
-          /[^a-zA-Z0-9]/g,
-          "-"
-        )}-${getId()}`;
+        this._cssVar = `--bitmap-${this.getId().replace(/[^a-zA-Z0-9]/g, "-")}`;
         break;
       case "x":
         this._x = num(value) ?? 0;
@@ -86,14 +83,14 @@ export default class Bitmap {
       "Tried to ensure a Bitmap was laoded more than once."
     );
 
+    //force. also possibly set null:
     this._img = await imageManager.getImage(this._file);
-
-    if (this._width == null && this._height == null) {
-      this.setXmlAttr("w", String(this._img.width));
-      this.setXmlAttr("h", String(this._img.height));
+    if (this._img) {
+      if (this._width == null && this._height == null) {
+        this.setXmlAttr("w", String(this._img.width));
+        this.setXmlAttr("h", String(this._img.height));
+      }
     }
-
-    // this.setUrl(imgUrl);
   }
 
   _getBackgrondImageCSSAttribute(): string {
@@ -112,26 +109,26 @@ export default class Bitmap {
     return `${width} ${height}`;
   }
 
-  _setAsBackground(div: HTMLDivElement, prefix: string) {
+  _setAsBackground(div: HTMLElement, prefix: string) {
     div.style.setProperty(
       `--${prefix}background-image`,
       this._getBackgrondImageCSSAttribute()
     );
-    div.style.setProperty(
-      `--${prefix}background-position`,
-      this._getBackgrondPositionCSSAttribute()
-    );
   }
 
-  setAsBackground(div: HTMLDivElement) {
+  setAsBackground(div: HTMLElement) {
     this._setAsBackground(div, "");
   }
 
-  setAsActiveBackground(div: HTMLDivElement) {
+  setAsDownBackground(div: HTMLElement) {
+    this._setAsBackground(div, "down-");
+  }
+
+  setAsActiveBackground(div: HTMLElement) {
     this._setAsBackground(div, "active-");
   }
 
-  setAsHoverBackground(div: HTMLDivElement) {
+  setAsHoverBackground(div: HTMLElement) {
     this._setAsBackground(div, "hover-");
   }
 
@@ -142,7 +139,18 @@ export default class Bitmap {
       this._canvas.width = this.getWidth();
       this._canvas.height = this.getHeight();
       const ctx = this._canvas.getContext("2d");
-      ctx.drawImage(this._img, 0, 0, this.getWidth(), this.getHeight());
+      // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
+      ctx.drawImage(
+        this._img,
+        this._x,
+        this._y,
+        this.getWidth(),
+        this.getHeight(),
+        0,
+        0,
+        this.getWidth(),
+        this.getHeight()
+      );
     }
     return this._canvas;
   }

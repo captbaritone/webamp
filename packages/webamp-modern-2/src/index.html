@@ -4,30 +4,48 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Webamp Modern" />
-    <link rel="shortcut icon" type="image/x-icon" href="assets/favicon.ico"/>
+    <link rel="shortcut icon" type="image/x-icon" href="assets/favicon.ico" />
     <title>Webamp Modern</title>
     <style>
       body {
         margin: 0;
         background-color: rgb(58, 110, 165);
       }
+      textarea,
+      input,
+      select {
+        font-size: 10.5px;
+      }
+      textarea:focus,
+      input:focus,
+      select:focus {
+        outline: none;
+      }
       .webamp--img {
         background-image: var(--background-image);
-        background-position: var(--background-position);
+        background-position: top 0 left 0;
       }
+
       .webamp--img:active {
-        background-image: var(--active-background-image, var(--background-image));
-        background-position: var(--active-background-position, var(--background-position));
+        background-image: var(--down-background-image, var(--background-image));
       }
       .webamp--img:hover {
-        background-image: var(--hover-background-image, var(--background-image));
-        background-position: var(--hover-background-position, var(--background-position));
+        background-image: var(
+          --hover-background-image,
+          var(--background-image)
+        );
       }
 
       /* TODO: Should this fallback to hover? */
       .webamp--img:hover:active {
-        background-image: var(--active-background-image, var(--background-image));
-        background-position: var(--active-background-position, var(--background-position));
+        background-image: var(--down-background-image, var(--background-image));
+      }
+
+      .webamp--img.active {
+        background-image: var(
+          --active-background-image,
+          var(--background-image)
+        );
       }
 
       #experimental {
@@ -43,6 +61,129 @@
         right: 0;
         left: 0;
         text-align: center;
+      }
+      button {
+        border: none;
+        background: transparent;
+        padding: 0;
+      }
+      slider {
+        overflow: hidden;
+      }
+      text {
+        overflow: hidden;
+        box-sizing: border-box;
+        text-align: center;
+        /* padding: 2px; */
+      }
+      text i {
+        pointer-events: none;
+        font-style: normal;
+      }
+      text wrap {
+        background-image: inherit;
+        background-size: 0px;
+        position: relative;
+        /* line-height: 1; */
+        height: 100%;
+        width: var(--full-width);
+        min-width: 100%;
+      }
+      text wrap[font="BitmapFont"] {
+        display: flex;
+        /* vertical align: */
+        align-items: center;
+        justify-content: center;
+      }
+      text span {
+        user-select: none;
+        pointer-events: none;
+        display: inline-block;
+        background-image: inherit;
+        /* vertical-align: bottom; */
+        color: transparent;
+        width: var(--charwidth);
+        height: var(--charheight);
+        background-position-x: var(--x);
+        background-position-y: var(--y);
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+      /* body > div *  */
+      container {
+        position: absolute;
+      }
+
+      layout,
+      grid,
+      progressgrid,
+      group,
+      layer,
+      animatedlayer,
+      button,
+      slider,
+      text,
+      wasabiframe,
+      wasabititlebar,
+      colorthemeslist {
+        position: absolute;
+        left: 0;
+        top: 0;
+        display: block;
+      }
+      wasabititlebar {
+        text-align: center;
+      }
+      grid,
+      progressgrid {
+        display: flex;
+      }
+      grid *,
+      progressgrid * {
+        height: 100%;
+        background-image: var(--background-image);
+      }
+      grid middle {
+        flex-grow: 1;
+      }
+      /* grid left, gridprogress left {left: 0;}
+      grid right, gridprogress right {right: 0;} */
+      /* body > div select>option {
+        position: unset;
+        display: block;
+      } */
+      .wasabi-button {
+        border: 3px solid transparent;
+        --border-image: var(--bitmap-studio-button);
+        border-image: var(--border-image) 3 fill/ 1 / 0px stretch;
+      }
+      .wasabi-button:active {
+        --border-image: var(--bitmap-studio-button-pressed);
+      }
+
+      .autowidthsource {
+        width: auto;
+      }
+
+      /* titleBar active state */
+      [inactivealpha="0"] {
+        opacity: 0;
+      }
+      [inactivealpha="128"] {
+        opacity: 0.5;
+      }
+      container:focus-within [activealpha="0"],
+      container:active [activealpha="0"] {
+        opacity: 0;
+      }
+      container:focus-within [inactivealpha],
+      container:active [inactivealpha] {
+        opacity: 1;
+      }
+      .resizing {
+        border: 1px solid blue;
+        background-color: rgba(74, 74, 251, 0.205);
+        z-index: 1000;
       }
     </style>
     <style id="bitmap-css"></style>

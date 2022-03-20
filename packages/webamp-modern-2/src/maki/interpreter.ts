@@ -294,12 +294,16 @@ class Interpreter {
           let argCount: number = klass.prototype[methodName].length;
 
           const methodDefinition = getMethod(guid, methodName);
-          assert(
-            argCount === (methodDefinition.parameters.length ?? 0),
-            `Arg count mismatch. Expected ${
-              methodDefinition.parameters.length ?? 0
-            } arguments, but found ${argCount} for ${klass.name}.${methodName}`
-          );
+          if (methodName.toLowerCase() != "init") {
+            assert(
+              argCount === (methodDefinition.parameters.length ?? 0),
+              `Arg count mismatch. Expected ${
+                methodDefinition.parameters.length ?? 0
+              } arguments, but found ${argCount} for ${
+                klass.name
+              }.${methodName}`
+            );
+          }
 
           const methodArgs = [];
           while (argCount--) {
@@ -312,7 +316,18 @@ class Interpreter {
               obj.value != null,
             `Guru Meditation: Tried to call method ${klass.name}.${methodName} on null object`
           );
-          let value = obj.value[methodName](...methodArgs);
+
+          // let value = obj.value[methodName](...methodArgs);
+          let value;
+          try {
+            value = obj.value[methodName](...methodArgs);
+          } catch (err) {
+            console.warn(
+              `error call: ${klass.name}.${methodName}(...${JSON.stringify(methodArgs)})`,
+              `err: ${err.message} obj: ${JSON.stringify(obj)}`
+            );
+            value = null;
+          }
 
           if (value === undefined && returnType !== "NULL") {
             throw new Error(

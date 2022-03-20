@@ -1,8 +1,11 @@
 import UI_ROOT from "../../UIRoot";
-import { assert, num, toBool, px, assume } from "../../utils";
+import { assert, num, toBool, px, assume, relative } from "../../utils";
 import Bitmap from "../Bitmap";
 import Group from "./Group";
 import XmlObj from "../XmlObj";
+
+let BRING_LEAST: number = -1;
+let BRING_MOST_TOP: number = 1;
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#GuiObject_.28Global_params.29
 export default class GuiObj extends XmlObj {
@@ -13,10 +16,22 @@ export default class GuiObj extends XmlObj {
   _height: number;
   _x: number = 0;
   _y: number = 0;
+  _minimumHeight: number = 0;
+  _maximumHeight: number = 0;
+  _minimumWidth: number = 0;
+  _maximumWidth: number = 0;
+  _relatx: string;
+  _relaty: string;
+  _relatw: string;
+  _relath: string;
+  // _resize: string;
   _droptarget: string;
   _visible: boolean = true;
   _alpha: number = 255;
   _ghost: boolean = false;
+  _sysregion: number = 0;
+  // _movable: boolean = false;
+  // _resizable: number = 0;
   _tooltip: string = "";
   _targetX: number | null = null;
   _targetY: number | null = null;
@@ -24,13 +39,106 @@ export default class GuiObj extends XmlObj {
   _targetHeight: number | null = null;
   _targetAlpha: number | null = null;
   _targetSpeed: number | null = null;
-  _div: HTMLDivElement = document.createElement("div");
+  _goingToTarget: boolean = false;
+  _div: HTMLElement;
   _backgroundBitmap: Bitmap | null = null;
+  // _resizingEventsRegisterd: boolean = false;
+  // _movingEventsRegisterd: boolean = false;
 
   constructor() {
     super();
 
+    this._div = document.createElement(
+      this.getElTag().toLowerCase().replace("_", "")
+    );
+  }
+
+  getElTag(): string {
+    return this.constructor.name;
+  }
+
+  setParent(group: Group) {
+    this._parent = group;
+  }
+
+  setXmlAttr(_key: string, value: string): boolean {
+    const key = _key.toLowerCase();
+    switch (key) {
+      case "id":
+        this._id = value.toLowerCase();
+        break;
+      case "w":
+      case "default_w":
+        this._width = num(value);
+        this._renderWidth();
+        break;
+      case "h":
+      case "default_h":
+        this._height = num(value);
+        this._renderHeight();
+        break;
+      case "x":
+      case "default_x":
+        this._x = num(value) ?? 0;
+        this._renderX();
+        break;
+      case "y":
+      case "default_y":
+        this._y = num(value) ?? 0;
+        this._renderY();
+        break;
+      case "minimum_h":
+        this._minimumHeight = num(value);
+        break;
+      case "minimum_w":
+        this._minimumWidth = num(value);
+        break;
+      case "maximum_h":
+        this._maximumHeight = num(value);
+        break;
+      case "maximum_w":
+        this._maximumWidth = num(value);
+        break;
+      case "relatw":
+        this._relatw = value;
+        break;
+      case "relath":
+        this._relath = value;
+        break;
+      case "relatx":
+        this._relatx = value;
+        break;
+      case "relaty":
+        this._relaty = value;
+        break;
+      case "droptarget":
+        this._droptarget = value;
+        break;
+      case "ghost":
+        this._ghost = toBool(value);
+        break;
+      case "visible":
+        this._visible = toBool(value);
+        this._renderVisibility();
+        break;
+      case "tooltip":
+        this._tooltip = value;
+        break;
+      // (int) An integer [0,255] specifying the alpha blend mode of the object (0 is transparent, 255 is opaque). Default is 255.
+      case "alpha":
+        this._alpha = num(value);
+      case "sysregion":
+        this._sysregion = num(value);
+        break;
+      default:
+        return false;
+    }
+    return true;
+  }
+
+  init() {
     this._div.addEventListener("mousedown", (e) => {
+      e.stopPropagation();
       /*
       if (this._backgroundBitmap != null) {
         const { clientX, clientY } = e;
@@ -58,6 +166,7 @@ export default class GuiObj extends XmlObj {
       this.onLeftButtonDown(e.clientX, e.clientY);
 
       const mouseUpHandler = (e) => {
+        // e.stopPropagation();
         this.onLeftButtonUp(e.clientX, e.clientY);
         this._div.removeEventListener("mouseup", mouseUpHandler);
       };
@@ -72,59 +181,7 @@ export default class GuiObj extends XmlObj {
     });
   }
 
-  setParent(group: Group) {
-    this._parent = group;
-  }
-
-  setXmlAttr(_key: string, value: string): boolean {
-    const key = _key.toLowerCase();
-    switch (key) {
-      case "id":
-        this._id = value.toLowerCase();
-        break;
-      case "w":
-        this._width = num(value);
-        this._renderWidth();
-        break;
-      case "h":
-        this._height = num(value);
-        this._renderHeight();
-        break;
-      case "x":
-        this._x = num(value) ?? 0;
-        this._renderX();
-        break;
-      case "y":
-        this._y = num(value) ?? 0;
-        this._renderY();
-        break;
-      case "droptarget":
-        this._droptarget = value;
-        break;
-      case "ghost":
-        this._ghost = toBool(value);
-        break;
-      case "visible":
-        this._visible = toBool(value);
-        this._renderVisibility();
-        break;
-      case "tooltip":
-        this._tooltip = value;
-        break;
-      // (int) An integer [0,255] specifying the alpha blend mode of the object (0 is transparent, 255 is opaque). Default is 255.
-      case "alpha":
-        this._alpha = num(value);
-      default:
-        return false;
-    }
-    return true;
-  }
-
-  init() {
-    // pass
-  }
-
-  getDiv(): HTMLDivElement {
+  getDiv(): HTMLElement {
     return this._div;
   }
 
@@ -155,7 +212,7 @@ export default class GuiObj extends XmlObj {
    * @ret The top edge's position (in screen coordinates).
    */
   gettop(): number {
-    return this._div.getBoundingClientRect().y;
+    return this._y;
   }
 
   /**
@@ -165,7 +222,7 @@ export default class GuiObj extends XmlObj {
    * @ret The left edge's position (in screen coordinates).
    */
   getleft(): number {
-    return this._div.getBoundingClientRect().x;
+    return this._x;
   }
 
   /**
@@ -174,14 +231,12 @@ export default class GuiObj extends XmlObj {
    * @ret The height of the object.
    */
   getheight(): number {
-    /*
-    assert(
-      this._height != null,
-      `Expected GUIObj to have a height in ${this.getId()}.`
-    );
-    */
-    // FIXME
-    return this._height ?? 0;
+    if (this._height || this._minimumHeight || this._maximumHeight) {
+      let h = Math.max(this._height || 0, this._minimumHeight);
+      h = Math.min(h, this._maximumHeight || h);
+      return h;
+    }
+    return this._height;
   }
 
   /**
@@ -190,13 +245,14 @@ export default class GuiObj extends XmlObj {
    * @ret The width of the object.
    */
   getwidth(): number {
-    /*
-    assert(
-      this._width != null,
-      `Expected GUIObj to have a width in ${this.getId()}.`
-    );
-    */
-    return this._width ?? 0;
+    if (this._width || this._minimumWidth || this._maximumWidth) {
+      let w = Math.max(this._width || 0, this._minimumWidth);
+      if (this._maximumHeight) {
+        w = Math.min(w, this._maximumWidth || w);
+      }
+      return w;
+    }
+    return this._width;
   }
 
   /**
@@ -358,6 +414,7 @@ export default class GuiObj extends XmlObj {
    * Begin transition to previously set target.
    */
   gototarget() {
+    this._goingToTarget = true;
     const duration = this._targetSpeed * 1000;
     const startTime = performance.now();
 
@@ -370,30 +427,47 @@ export default class GuiObj extends XmlObj {
     ];
 
     const changes: {
-      [key: string]: { start: number; delta: number; renderKey: string };
+      [key: string]: {
+        start: number;
+        delta: number;
+        renderKey: string;
+        target: number;
+        positive: boolean;
+      };
     } = {};
 
     for (const [key, targetKey, renderKey] of pairs) {
       const target = this[targetKey];
       if (target != null) {
         const start = this[key];
+        const positive = target > start;
         const delta = target - start;
-        changes[key] = { start, delta, renderKey };
+        changes[key] = { start, delta, renderKey, target, positive };
       }
     }
+
+    const clamp = (current, target, positive) => {
+      if (positive) {
+        return Math.min(current, target);
+      } else {
+        return Math.max(current, target);
+      }
+    };
 
     const update = (time: number) => {
       const timeDiff = time - startTime;
       const progress = timeDiff / duration;
-      for (const [key, { start, delta, renderKey }] of Object.entries(
-        changes
-      )) {
-        this[key] = start + delta * progress;
+      for (const [
+        key,
+        { start, delta, renderKey, target, positive },
+      ] of Object.entries(changes)) {
+        this[key] = clamp(start + delta * progress, target, positive);
         this[renderKey]();
       }
       if (timeDiff < duration) {
         window.requestAnimationFrame(update);
       } else {
+        this._goingToTarget = false;
         // TODO: Clear targets?
         UI_ROOT.vm.dispatch(this, "ontargetreached");
       }
@@ -487,6 +561,22 @@ export default class GuiObj extends XmlObj {
     return this._alpha;
   }
 
+  getparentlayout(): Group {
+    if (this._parent) {
+      return this._parent.getparentlayout();
+    }
+  }
+
+  bringtofront() {
+    BRING_MOST_TOP += 1;
+    this._div.style.zIndex = String(BRING_MOST_TOP);
+  }
+
+  bringtoback() {
+    BRING_LEAST -= 1;
+    this._div.style.zIndex = String(BRING_LEAST);
+  }
+
   handleAction(
     action: string,
     param: string | null,
@@ -508,10 +598,18 @@ export default class GuiObj extends XmlObj {
   }
 
   _renderAlpha() {
-    this._div.style.opacity = `${this._alpha / 255}`;
+    if (this._alpha != 255) {
+      this._div.style.opacity = `${this._alpha / 255}`;
+    } else {
+      this._div.style.removeProperty("opacity");
+    }
   }
   _renderVisibility() {
-    this._div.style.display = this._visible ? "inline-block" : "none";
+    if (!this._visible) {
+      this._div.style.display = "none";
+    } else {
+      this._div.style.removeProperty("display");
+    }
   }
   _renderTransate() {
     this._div.style.transform = `translate(${px(this._x ?? 0)}, ${px(
@@ -519,16 +617,23 @@ export default class GuiObj extends XmlObj {
     )})`;
   }
   _renderX() {
-    this._div.style.left = px(this._x ?? 0);
+    this._div.style.left =
+      this._relatx == "1" ? relative(this._x ?? 0) : px(this._x ?? 0);
   }
+
   _renderY() {
-    this._div.style.top = px(this._y ?? 0);
+    this._div.style.top =
+      this._relaty == "1" ? relative(this._y ?? 0) : px(this._y ?? 0);
   }
+
   _renderWidth() {
-    this._div.style.width = px(this.getwidth());
+    this._div.style.width =
+      this._relatw == "1" ? relative(this._width ?? 0) : px(this.getwidth());
   }
+
   _renderHeight() {
-    this._div.style.height = px(this.getheight());
+    this._div.style.height =
+      this._relath == "1" ? relative(this._height ?? 0) : px(this.getheight());
   }
 
   _renderDimensions() {
@@ -544,13 +649,24 @@ export default class GuiObj extends XmlObj {
       bitmap.setAsBackground(this._div);
     } else {
       this._div.style.setProperty(`--background-image`, "none");
-      this._div.style.setProperty(`--background-position`, "none");
     }
   }
 
   // JS Can't set the :active pseudo selector. Instead we have a hard-coded
   // pseduo-selector in our stylesheet which references a CSS variable and then
   // we control the value of that variable from JS.
+  setDownBackgroundImage(bitmap: Bitmap | null) {
+    if (bitmap != null) {
+      bitmap.setAsDownBackground(this._div);
+    }
+  }
+
+  setHoverBackgroundImage(bitmap: Bitmap | null) {
+    if (bitmap != null) {
+      bitmap.setAsHoverBackground(this._div);
+    }
+  }
+
   setActiveBackgroundImage(bitmap: Bitmap | null) {
     if (bitmap != null) {
       bitmap.setAsActiveBackground(this._div);
@@ -558,10 +674,8 @@ export default class GuiObj extends XmlObj {
   }
 
   draw() {
-    this._div.setAttribute("data-id", this.getId());
-    this._div.setAttribute("data-obj-name", "GuiObj");
+    this.getId() && this._div.setAttribute("id", this.getId());
     this._renderVisibility();
-    this._div.style.position = "absolute";
     this._renderAlpha();
     if (this._tooltip) {
       this._div.setAttribute("title", this._tooltip);

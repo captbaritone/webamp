@@ -30,6 +30,7 @@ export default class Slider extends GuiObj {
   constructor() {
     super();
     this._thumbDiv.addEventListener("mousedown", (downEvent: MouseEvent) => {
+      downEvent.stopPropagation();
       const bitmap = UI_ROOT.getBitmap(this._thumb);
       const startX = downEvent.clientX;
       const startY = downEvent.clientY;
@@ -38,6 +39,7 @@ export default class Slider extends GuiObj {
       const initialPostition = this._position;
 
       const handleMove = (moveEvent: MouseEvent) => {
+        moveEvent.stopPropagation();
         const newMouseX = moveEvent.clientX;
         const newMouseY = moveEvent.clientY;
         const deltaY = newMouseY - startY;
@@ -53,7 +55,8 @@ export default class Slider extends GuiObj {
         this.onsetposition(this.getposition());
       };
 
-      const handleMouseUp = () => {
+      const handleMouseUp = (upEvent: MouseEvent) => {
+        upEvent.stopPropagation();
         UI_ROOT.vm.dispatch(this, "onsetfinalposition", [
           { type: "INT", value: this.getposition() },
         ]);
