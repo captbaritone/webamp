@@ -153,7 +153,7 @@ export class UIRoot {
 
   _getGammaGroup(id: string): GammaGroup | null {
     if (!id) {
-      return this._getGammGroupDummy();
+      return this._getGammaGroupDummy();
     }
     const lower = id.toLowerCase();
     const found = findLast(this._activeGammaSet, (gammaGroup) => {
