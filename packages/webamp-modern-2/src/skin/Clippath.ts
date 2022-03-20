@@ -11,7 +11,6 @@ export class Edges {
     const data = ctx.getImageData(0, 0, w, h).data;
     let points: string[] = [];
     var x, y, lastX, lastY;
-    var alpha: number;
     var lastfoundx: number, lastfoundy: number, pending: boolean;
     var first: boolean;
 
