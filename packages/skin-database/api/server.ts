@@ -19,8 +19,10 @@ const app = createApp({
   },
 });
 app.listen(port, () => {
-  console.log(`Winamp Skin Museum database API app listening on http://localhost:${port}`);
-  console.log(`Explore: http://localhost:${port}/graphql`)
+  console.log(
+    `Winamp Skin Museum database API app listening on http://localhost:${port}`
+  );
+  console.log(`Explore: http://localhost:${port}/graphql`);
 });
 
 // Initialize Sentry after we start listening. Any crash at start time will appear in the console and we'll notice.

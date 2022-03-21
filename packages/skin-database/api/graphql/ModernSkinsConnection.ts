@@ -2,7 +2,6 @@ import SkinModel from "../../data/SkinModel";
 import { knex } from "../../db";
 import ModernSkinResolver from "./resolvers/ModernSkinResolver";
 
-
 export default class ModernSkinsConnection {
   _first: number;
   _offset: number;
@@ -11,7 +10,7 @@ export default class ModernSkinsConnection {
     this._offset = offset;
   }
   _getQuery() {
-    let query = knex("skins").where({ skin_type: 2 });
+    const query = knex("skins").where({ skin_type: 2 });
     return query;
   }
 
