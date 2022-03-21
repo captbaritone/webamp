@@ -195,7 +195,8 @@ export class UIRoot {
 
   _setCssVars() {
     const cssRules = [];
-    for (const bitmap of this._bitmaps) {
+    const bitmapFonts: BitmapFont[] = this._fonts.filter(f => (f instanceof BitmapFont && !f._externalBitmap) ) as BitmapFont[];
+    for (const bitmap of [...this._bitmaps, ...bitmapFonts]) {
       const img = bitmap.getImg();
       if (!img) {
         console.warn(`Bitmap/font ${bitmap.getId()} has no img!`);

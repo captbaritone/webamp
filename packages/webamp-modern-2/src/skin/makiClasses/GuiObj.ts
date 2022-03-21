@@ -11,6 +11,7 @@ import {
 import Bitmap from "../Bitmap";
 import Group from "./Group";
 import XmlObj from "../XmlObj";
+import Layout from "./Layout";
 
 let BRING_LEAST: number = -1;
 let BRING_MOST_TOP: number = 1;
@@ -695,7 +696,7 @@ export default class GuiObj extends XmlObj {
   screentoclienty(y:number): number {
     return y;
   }
-  getparentlayout(): Group {
+  getparentlayout(): Layout {
     if (this._parent) {
       return this._parent.getparentlayout();
     }

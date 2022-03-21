@@ -15,6 +15,7 @@ export default class Container extends XmlObj {
   _activeLayout: Layout | null = null;
   _visible: boolean = true;
   _id: string;
+  _name: string;
   _x: number = 0;
   _y: number = 0;
   _componentGuid: string; // eg. "guid:{1234-...-0ABC}"
@@ -30,6 +31,9 @@ export default class Container extends XmlObj {
       return true;
     }
     switch (key) {
+      case "name":
+        this._name = value;
+        break;
       case "id":
         this._id = value.toLowerCase();
         break;

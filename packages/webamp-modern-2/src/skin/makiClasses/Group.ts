@@ -3,6 +3,7 @@ import UI_ROOT from "../../UIRoot";
 import GuiObj from "./GuiObj";
 import SystemObject from "./SystemObject";
 import Movable from "./Movable";
+import Layout from "./Layout";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Cgroup.2F.3E
 export default class Group extends Movable {
@@ -92,7 +93,7 @@ export default class Group extends Movable {
     );
   }
 
-  getparentlayout(): Group {
+  getparentlayout(): Layout {
     let obj: Group = this;
     while (obj._parent) {
       if (obj._isLayout) {
@@ -103,7 +104,7 @@ export default class Group extends Movable {
     if (!obj) {
       console.warn("getParentLayout", this.getId(), "failed!");
     }
-    return obj;
+    return obj as Layout;
   }
 
   // This shadows `getheight()` on GuiObj

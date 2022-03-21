@@ -156,6 +156,13 @@ export default class Button extends GuiObj {
     this._renderBackground();
   }
 
+  hide() {
+    if(document.activeElement == this._div){
+      this.getparentlayout()._parent._div.focus()
+    }
+    super.hide()
+  }
+
   /*
   extern Button.onActivate(int activated);
   extern Button.onLeftClick();

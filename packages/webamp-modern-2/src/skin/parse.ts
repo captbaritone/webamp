@@ -153,38 +153,27 @@ export default class SkinParser {
   }
 
   async traverseChildren(node: XmlElement, parent: any = null) {
-    if (this._phase == RESOURCE_PHASE) {
-      return await Promise.all(
-        node.children.map((child) => {
-          if (child instanceof XmlElement) {
-            // console.log('traverse->', parent.name, child.name)
-            this._scanRes(child);
-            return this.traverseChild(child, parent);
-          }
-        })
-      );
-    } else {
+    // if (this._phase == RESOURCE_PHASE) {
+    //   return await Promise.all(
+    //     node.children.map((child) => {
+    //       if (child instanceof XmlElement) {
+    //         // console.log('traverse->', parent.name, child.name)
+    //         this._scanRes(child);
+    //         return this.traverseChild(child, parent);
+    //       }
+    //     })
+    //   );
+    // } else {
       for (const child of node.children) {
         if (child instanceof XmlElement) {
           // console.log('traverse->', parent.name, child.name)
-          // this._scanRes(child);
+          this._scanRes(child);
           await this.traverseChild(child, parent);
         }
       }
-    }
+    // }
   }
 
-  async traverseChildren0(node: XmlElement, parent: any = null) {
-    return Promise.all(
-      node.children.map((child) => {
-        if (child instanceof XmlElement) {
-          // console.log('traverse->', parent.name, child.name)
-          this._scanRes(child);
-          return this.traverseChild(child, parent);
-        }
-      })
-    );
-  }
   async traverseChild(node: XmlElement, parent: any) {
     switch (node.name.toLowerCase()) {
       case "albumart":
@@ -435,7 +424,7 @@ export default class SkinParser {
     font.setXmlAttributes(node.attributes);
 
     const externalBitmap =
-      font._file.indexOf(".") > 0 || font._file.indexOf("/") < 0;
+      /* font._file.indexOf(".") > 0 || */ font._file.indexOf("/") < 0;
     if (externalBitmap) {
       font._externalBitmap = true;
     } else {

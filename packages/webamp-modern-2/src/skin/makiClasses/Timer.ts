@@ -2,16 +2,30 @@ import UI_ROOT from "../../UIRoot";
 import { assume } from "../../utils";
 import BaseObject from "./BaseObject";
 
+let TIMER_IDS = 0;
+
 export default class Timer extends BaseObject {
   static GUID = "5d0c5bb64b1f7de1168d0fa741199459";
-  _delay: number;
+  _delay: number = 5000; //x2nie
   _timeout: NodeJS.Timeout | null = null;
+  _nid: number;
+  _onTimer: ()=>void = null;
+
+  constructor(){
+    super();
+    TIMER_IDS += 1;
+    this._nid = TIMER_IDS;
+  }
+
   setdelay(millisec: number) {
-    assume(
-      this._timeout == null,
-      "Tried to change the delay on a running timer"
-    );
+    // assume(
+    //   this._timeout == null,
+    //   "Tried to change the delay on a running timer"
+    // );
+    const running = this.isrunning();
+    if(running) this.stop();
     this._delay = millisec;
+    if(running) this.start()
   }
   stop() {
     if (this._timeout != null) {
@@ -19,11 +33,46 @@ export default class Timer extends BaseObject {
       this._timeout = null;
     }
   }
-  start() {
-    assume(this._delay != null, "Tried to start a timer without a delay");
-    this._timeout = setInterval(() => {
-      UI_ROOT.vm.dispatch(this, "ontimer");
-    }, this._delay);
+  async start(): Promise<boolean> {
+    console.log('timer.start()', this._nid)
+    if(!this._delay){
+      return false;
+    }
+    const self=this;
+
+    try{
+      assume(this._delay != null, "Tried to start a timer without a delay");
+      if(this.isrunning()){
+        this.stop();
+      }
+      this._timeout = setInterval(() => {
+        // console.log('timer.ontimer()', this._nid)
+        // UI_ROOT.vm.dispatch(self, "ontimer");
+        self.doTimer();
+      }, this._delay);
+      return true
+    } 
+    catch(err){
+      return false
+    }
+    return false
+  }
+
+  doTimer(){
+    // console.log('timer.ontimer()', this._nid)
+    if(this._onTimer!=null){
+      this._onTimer()
+    } else {
+      UI_ROOT.vm.dispatch(this, "ontimer");   
+    }
+  }
+
+  setOnTimer(callback:()=>void){
+    const handler = ()=>{
+      callback();
+    }
+    this._onTimer = handler;
+    // this._onTimer = callback;
   }
 
   isrunning(): boolean {
@@ -34,6 +83,9 @@ export default class Timer extends BaseObject {
     return this._delay;
   }
 
+  getskipped(): number {
+    return 0;
+  }
   /*
 extern Int Timer.getSkipped();
 */
