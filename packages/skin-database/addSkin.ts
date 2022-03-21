@@ -123,10 +123,15 @@ async function addClassicSkinFromBuffer(
 }
 
 export async function getSkinType(zip: JSZip): Promise<SkinType> {
-  if (zip.file(/main\.bmp$/i).length > 0) {
+  const classic = (zip.file(/main\.bmp$/i).length > 0)
+  const modern = (zip.file(/skin\.xml$/i).length > 0);
+  if (classic && modern) {
+    throw new Error("Skin is both modern and classic.");
+  }
+  if (classic) {
     return "CLASSIC";
   }
-  if (zip.file(/skin\.xml$/i).length > 0) {
+  if (modern) {
     return "MODERN";
   }
   throw new Error("Not a skin");
