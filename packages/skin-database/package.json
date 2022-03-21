@@ -58,9 +58,9 @@
   "devDependencies": {
     "@babel/preset-typescript": "^7.10.1",
     "@types/supertest": "^2.0.10",
-    "@typescript-eslint/eslint-plugin": "^4.8.1",
-    "@typescript-eslint/parser": "^4.8.1",
-    "eslint": "^7.13.0",
+    "@typescript-eslint/eslint-plugin": "^5.15.0",
+    "@typescript-eslint/parser": "^5.15.0",
+    "eslint": "^8.11.0",
     "supertest": "^6.0.1",
     "typescript": "^3.8.3"
   },
