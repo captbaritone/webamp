@@ -1,4 +1,3 @@
-import { getScreenshotUrl, getSkinUrl } from "./skins";
 import {
   TweetStatus,
   SkinRow,
@@ -27,7 +26,7 @@ export const IS_NOT_README =
   /(genex\.txt)|(genexinfo\.txt)|(gen_gslyrics\.txt)|(region\.txt)|(pledit\.txt)|(viscolor\.txt)|(winampmb\.txt)|("gen_ex help\.txt)|(mbinner\.txt)$/i;
 
 export default class SkinModel {
-  constructor(readonly ctx: UserContext, readonly row: SkinRow) {}
+  constructor(readonly ctx: UserContext, readonly row: SkinRow) { }
 
   static async fromMd5(
     ctx: UserContext,
@@ -163,13 +162,16 @@ export default class SkinModel {
       throw new Error(`Could not find file for skin with md5 ${this.getMd5()}`);
     }
     const filename = files[0].getFileName();
-    if (!filename.match(/\.(zip)|(wsz)$/i)) {
-      throw new Error("Expected filename to end with zip or wsz.");
+    if (!filename.match(/\.(zip)|(wsz)|(wal)$/i)) {
+      throw new Error("Expected filename to end with zip, wsz or wal.");
     }
     return filename;
   }
 
   async getScreenshotFileName(): Promise<string> {
+    if (this.getSkinType() === "MODERN") {
+      throw new Error("Modern skins do not have screenshots yet.");
+    }
     const skinFilename = await this.getFileName();
     return skinFilename.replace(/\.(wsz|zip)$/, ".png");
   }
@@ -197,16 +199,31 @@ export default class SkinModel {
   }
 
   getMuseumUrl(): string {
+    if (this.getSkinType() === "MODERN") {
+      throw new Error("Modern skins do not render in the museum.");
+    }
     return `https://skins.webamp.org/skin/${this.row.md5}`;
   }
   getWebampUrl(): string {
+    if (this.getSkinType() === "MODERN") {
+      throw new Error("Modern skins do not render in Webamp.");
+    }
     return `https://webamp.org?skinUrl=${this.getSkinUrl()}`;
   }
   getScreenshotUrl(): string {
-    return getScreenshotUrl(this.row.md5);
+    if (this.getSkinType() === "MODERN") {
+      throw new Error("Modern skins do not have screenshots.");
+    }
+    return Skins.getScreenshotUrl(this.row.md5);
   }
   getSkinUrl(): string {
-    return getSkinUrl(this.row.md5);
+    switch (this.getSkinType()) {
+      case "CLASSIC":
+        return Skins.getSkinUrl(this.row.md5);
+      case "MODERN":
+        return Skins.getModernSkinUrl(this.row.md5);
+
+    }
   }
 
   getAverageColor(): string {
@@ -215,10 +232,11 @@ export default class SkinModel {
 
   getBuffer = mem(async (): Promise<Buffer> => {
     if (process.env.LOCAL_FILE_CACHE) {
+      const ext = this.getSkinType() === "CLASSIC" ? ".wsz" : ".wal";
       const skinPath = path.join(
         process.env.LOCAL_FILE_CACHE,
         "skins",
-        this.getMd5() + ".wsz"
+        this.getMd5() + ext
       );
       return fs.readFile(skinPath);
     } else {
@@ -231,6 +249,9 @@ export default class SkinModel {
   });
 
   getScreenshotBuffer = mem(async (): Promise<Buffer> => {
+    if (this.getSkinType() === "MODERN") {
+      throw new Error("Modern skins do not have screenshots.");
+    }
     const response = await fetch(this.getScreenshotUrl());
     if (!response.ok) {
       throw new Error(
@@ -249,6 +270,9 @@ export default class SkinModel {
   async withScreenshotTempFile(
     cb: (file: string) => Promise<void>
   ): Promise<void> {
+    if (this.getSkinType() === "MODERN") {
+      throw new Error("Modern skins do not have screenshots.");
+    }
     const screenshotFilename = await this.getScreenshotFileName();
     return withUrlAsTempFile(this.getScreenshotUrl(), screenshotFilename, cb);
   }

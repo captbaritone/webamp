@@ -16,6 +16,8 @@ import ArchiveFileModel from "../../../data/ArchiveFileModel";
 import ArchiveFileResolver from "./ArchiveFileResolver";
 import DatabaseStatisticsResolver from "./DatabaseStatisticsResolver";
 import { fromId } from "./NodeResolver";
+import ModernSkinsConnection from "../ModernSkinsConnection";
+import ModernSkinResolver from "./ModernSkinResolver";
 
 // These keys are already in the web client, so they are not secret at all.
 const client = algoliasearch("HQ9I5Z6IM5", "6466695ec3f624a5fccf46ec49680e51");
@@ -33,6 +35,13 @@ class RootResolver extends MutationResolver {
         }
         return new SkinResolver(skin);
       }
+      case "ModernSkin": {
+        const skin = await SkinModel.fromMd5(ctx, localId);
+        if (skin == null) {
+          return null;
+        }
+        return new ModernSkinResolver(skin);
+      }
     }
     return null;
   }
@@ -41,7 +50,11 @@ class RootResolver extends MutationResolver {
     if (skin == null) {
       return null;
     }
-    return new SkinResolver(skin);
+    if (skin.getSkinType() === "MODERN") {
+      return new ModernSkinResolver(skin);
+    } else {
+      return new SkinResolver(skin);
+    }
   }
   async fetch_tweet_by_url({ url }, { ctx }) {
     const tweet = await TweetModel.fromAnything(ctx, url);
@@ -90,6 +103,14 @@ class RootResolver extends MutationResolver {
     }
     return new SkinsConnection(first, offset, sort, filter);
   }
+
+  async modern_skins({ first, offset }) {
+    if (first > 1000) {
+      throw new Error("Maximum limit is 1000");
+    }
+    return new ModernSkinsConnection(first, offset);
+  }
+
   async skin_to_review(_args, { ctx }) {
     if (!ctx.authed()) {
       return null;

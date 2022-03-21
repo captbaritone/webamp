@@ -8,9 +8,76 @@ interface Node {
 }
 
 """
+A Winamp skin. Could be modern or classic.
+
+**Note**: At some point in the future, this might be renamed to `Skin`.
+"""
+interface GenericSkin {
+  """
+  GraphQL ID of the skin
+  """
+  id: ID!
+
+  """
+  MD5 hash of the skin's file
+  """
+  md5: String
+
+  """
+  URL to download the skin
+  """
+  download_url: String
+
+  """
+  Filename of skin when uploaded to the Museum. Note: In some cases a skin
+  has been uploaded under multiple names. Here we just pick one.
+  """
+  filename: String
+
+  """
+  List of files contained within the skin's .wsz/.wal archive
+  """
+  archive_files: [ArchiveFile]
+}
+
+"""
+A "modern" Winamp skin. These skins use the `.wal` file extension and are free-form.
+
+Most functionality in the Winamp Skin Museum is centered around "classic" skins,
+which are currently called just `Skin` in this schema.
+"""
+type ModernSkin implements GenericSkin & Node {
+  """
+  GraphQL ID of the skin
+  """
+  id: ID!
+
+  """
+  MD5 hash of the skin's file
+  """
+  md5: String
+
+  """
+  URL to download the skin
+  """
+  download_url: String
+
+  """
+  Filename of skin when uploaded to the Museum. Note: In some cases a skin
+  has been uploaded under multiple names. Here we just pick one.
+  """
+  filename: String
+
+  """
+  List of files contained within the skin's .wsz archive
+  """
+  archive_files: [ArchiveFile]
+}
+
+"""
 A classic Winamp skin
 """
-type Skin implements Node {
+type Skin implements GenericSkin & Node {
   """
   GraphQL ID of the skin
   """
@@ -87,6 +154,21 @@ type Skin implements Node {
   reivew page, or via the Discord bot.
   """
   reviews: [Review]
+}
+
+"""
+A collection of "modern" Winamp skins
+"""
+type ModernSkinsConnection {
+  """
+  The total number of skins matching the filter
+  """
+  count: Int
+
+  """
+  The list of skins
+  """
+  nodes: [ModernSkin]
 }
 
 """
@@ -523,7 +605,7 @@ type Query {
   """
   Get a skin by its MD5 hash
   """
-  fetch_skin_by_md5(md5: String!): Skin
+  fetch_skin_by_md5(md5: String!): GenericSkin
 
   """
   Get a tweet by its URL
@@ -552,7 +634,7 @@ type Query {
   ): InternetArchiveItem
 
   """
-  All skins in the database
+  All classic skins in the database
 
   **Note:** We don't currently support combining sorting and filtering.
   """
@@ -562,6 +644,11 @@ type Query {
     sort: SkinsSortOption
     filter: SkinsFilterOption
   ): SkinsConnection
+
+  """
+  All modern skins in the database
+  """
+  modern_skins(first: Int = 10, offset: Int = 0): ModernSkinsConnection
 
   """
   Search the database using the Algolia search index used by the Museum.

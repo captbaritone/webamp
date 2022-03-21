@@ -21,6 +21,10 @@ export function getSkinUrl(md5: string): string {
   return `https://cdn.webampskins.org/skins/${md5}.wsz`;
 }
 
+export function getModernSkinUrl(md5: string): string {
+  return `https://cdn.webampskins.org/skins/${md5}.wal`;
+}
+
 export function getScreenshotUrl(md5: string): string {
   return `https://cdn.webampskins.org/screenshots/${md5}.png`;
 }
