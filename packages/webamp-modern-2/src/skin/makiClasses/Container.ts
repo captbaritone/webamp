@@ -2,6 +2,7 @@ import UI_ROOT from "../../UIRoot";
 import { assert, num, px, removeAllChildNodes, toBool } from "../../utils";
 import Layout from "./Layout";
 import XmlObj from "../XmlObj";
+import Group from "./Group";
 
 // > A container is a top level object and it basically represents a window.
 // > Nothing holds a container. It is an object that holds multiple related
@@ -172,7 +173,7 @@ export default class Container extends XmlObj {
 
 
   addLayout(layout: Layout) {
-    layout.setParentContainer(this);
+    layout.setParent(this as unknown as Group);
     this._layouts.push(layout);
     if (this._activeLayout == null) {
       this._activeLayout = layout;
