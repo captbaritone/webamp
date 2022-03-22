@@ -161,6 +161,35 @@ export default class GuiObj extends XmlObj {
   }
 
   init() {
+    //process <sendparams> and <hideobject>
+    for (const node of this._metaCommands) {
+      const cmd = node.name.toLowerCase();
+      const el = node.attributes.group
+        ? this.findobject(node.attributes.group)
+        : this;
+      const targets_ids = node.attributes.target.split(";");
+      for (const target_id of targets_ids) {
+        // individual target
+        const gui = el.findobjectF(
+          target_id,
+          `<${cmd}(${target_id})=notfound. @${this.getId()}`
+        );
+        if (gui == null) {
+          // console.warn('  --',cmd, 'failed:not-found:',target_id, '@'+this.getId());
+          continue;
+        }
+        if (cmd == "sendparams") {
+          for (let attribute in node.attributes) {
+            if (gui && attribute != "target") {
+              gui.setxmlparam(attribute, node.attributes[attribute]);
+            }
+          }
+        } else if (cmd == "hideobject" && target_id != "close") {
+          gui.hide();
+        }
+      }
+    }
+
     this._div.addEventListener("mousedown", (e) => {
       e.stopPropagation();
       this.onLeftButtonDown(e.clientX, e.clientY);
@@ -576,6 +605,13 @@ export default class GuiObj extends XmlObj {
   }
 
   /**
+   * isGoingToTarget()
+   */
+  isgoingtotarget() {
+    return this._goingToTarget;
+  }
+
+  /**
    * Experimental/unused
    */
   __gototargetWebAnimationApi() {
@@ -621,10 +657,6 @@ export default class GuiObj extends XmlObj {
   canceltarget() {
     assume(false, "Unimplemented");
   }
-
-  /**
-   * isGoingToTarget()
-   */
 
   // [WHERE IS THIS?]
 
