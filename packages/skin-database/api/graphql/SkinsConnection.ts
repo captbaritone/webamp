@@ -93,7 +93,7 @@ export default class SkinsConnection {
       return Promise.all(
         items.map(async (item) => {
           const model = await SkinModel.fromMd5Assert(ctx, item.md5);
-          return new SkinResolver(model);
+          return SkinResolver.fromModel(model);
         })
       );
     }
@@ -103,7 +103,7 @@ export default class SkinsConnection {
       .limit(this._first)
       .offset(this._offset);
     return skins.map((skin) => {
-      return new SkinResolver(new SkinModel(ctx, skin));
+      return SkinResolver.fromModel(new SkinModel(ctx, skin));
     });
   }
 }

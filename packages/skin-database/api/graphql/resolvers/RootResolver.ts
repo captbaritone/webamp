@@ -27,20 +27,15 @@ class RootResolver extends MutationResolver {
   async node({ id }, { ctx }) {
     const { graphqlType, id: localId } = fromId(id);
     // TODO Use typeResolver
+    console.log(graphqlType, localId);
     switch (graphqlType) {
-      case "Skin": {
-        const skin = await SkinModel.fromMd5(ctx, localId);
-        if (skin == null) {
-          return null;
-        }
-        return new SkinResolver(skin);
-      }
+      case "ClassicSkin":
       case "ModernSkin": {
         const skin = await SkinModel.fromMd5(ctx, localId);
         if (skin == null) {
           return null;
         }
-        return new ModernSkinResolver(skin);
+        return SkinResolver.fromModel(skin);
       }
     }
     return null;
@@ -53,7 +48,7 @@ class RootResolver extends MutationResolver {
     if (skin.getSkinType() === "MODERN") {
       return new ModernSkinResolver(skin);
     } else {
-      return new SkinResolver(skin);
+      return SkinResolver.fromModel(skin);
     }
   }
   async fetch_tweet_by_url({ url }, { ctx }) {
@@ -92,7 +87,7 @@ class RootResolver extends MutationResolver {
     return Promise.all(
       results.hits.map(async (hit) => {
         const model = await SkinModel.fromMd5Assert(ctx, hit.md5);
-        return new SkinResolver(model);
+        return SkinResolver.fromModel(model);
       })
     );
   }
@@ -117,7 +112,7 @@ class RootResolver extends MutationResolver {
     }
     const { md5 } = await Skins.getSkinToReview();
     const model = await SkinModel.fromMd5Assert(ctx, md5);
-    return new SkinResolver(model);
+    return SkinResolver.fromModel(model);
   }
   async tweets({ first, offset, sort }) {
     if (first > 1000) {
@@ -147,7 +142,8 @@ class RootResolver extends MutationResolver {
       skins.map(async ({ id, skin_md5, status }) => {
         // TODO: Could we avoid fetching the skin if it's not read?
         const skinModel = await SkinModel.fromMd5(ctx, skin_md5);
-        const skin = skinModel == null ? null : new SkinResolver(skinModel);
+        const skin =
+          skinModel == null ? null : SkinResolver.fromModel(skinModel);
         // Most of the time when a skin fails to process, it's due to some infa
         // issue on our side, and we can recover. For now, we'll always tell the user
         // That processing is just delayed.

@@ -1,67 +1,16 @@
 import SkinModel from "../../../data/SkinModel";
-import ArchiveFileResolver from "./ArchiveFileResolver";
-import InternetArchiveItemResolver from "./InternetArchiveItemResolver";
-import { NodeResolver, toId } from "./NodeResolver";
-import ReviewResolver from "./ReviewResolver";
-import TweetResolver from "./TweetResolver";
+import ClassicSkinResolver from "./ClassicSkinResolver";
+import ModernSkinResolver from "./ModernSkinResolver";
 
-export default class SkinResolver implements NodeResolver {
-  _model: SkinModel;
-  constructor(model: SkinModel) {
-    this._model = model;
+export default class SkinResolver {
+  constructor() {
+    throw new Error("This is a stub.");
   }
-  __typename = "Skin";
-  async id() {
-    return toId("Skin", this.md5());
-  }
-  md5() {
-    return this._model.getMd5();
-  }
-  filename() {
-    return this._model.getFileName();
-  }
-  museum_url() {
-    return this._model.getMuseumUrl();
-  }
-  webamp_url() {
-    return this._model.getWebampUrl();
-  }
-  screenshot_url() {
-    return this._model.getScreenshotUrl();
-  }
-  download_url() {
-    return this._model.getSkinUrl();
-  }
-  readme_text() {
-    return this._model.getReadme();
-  }
-  nsfw() {
-    return this._model.getIsNsfw();
-  }
-  average_color() {
-    return this._model.getAverageColor();
-  }
-  tweeted() {
-    return this._model.tweeted();
-  }
-  async tweets() {
-    const tweets = await this._model.getTweets();
-    return tweets.map((tweetModel) => new TweetResolver(tweetModel));
-  }
-  async archive_files() {
-    const files = await this._model.getArchiveFiles();
-    return files.map((file) => new ArchiveFileResolver(file));
-  }
-  async internet_archive_item() {
-    const item = await this._model.getIaItem();
-    if (item == null) {
-      return null;
+  static fromModel(model: SkinModel) {
+    if (model.getSkinType() === "MODERN") {
+      return new ModernSkinResolver(model);
+    } else {
+      return new ClassicSkinResolver(model);
     }
-    return new InternetArchiveItemResolver(item);
-  }
-
-  async reviews() {
-    const reviews = await this._model.getReviews();
-    return reviews.map((row) => new ReviewResolver(row));
   }
 }

@@ -44,11 +44,6 @@ const extensions = ({
 router.use(
   "/",
   graphqlHTTP({
-    /*
-    typeResolver(_type) {
-      throw new Error("We probably need to implement typeResolver");
-    },
-    */
     schema: schema,
     rootValue: new RootResolver(),
     graphiql: {

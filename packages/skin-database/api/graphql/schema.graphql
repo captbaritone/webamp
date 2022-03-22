@@ -12,7 +12,7 @@ A Winamp skin. Could be modern or classic.
 
 **Note**: At some point in the future, this might be renamed to `Skin`.
 """
-interface GenericSkin {
+interface Skin {
   """
   GraphQL ID of the skin
   """
@@ -35,9 +35,40 @@ interface GenericSkin {
   filename: String
 
   """
-  List of files contained within the skin's .wsz/.wal archive
+  Has the skin been tweeted?
+  """
+  tweeted: Boolean
+
+  """
+  List of @winampskins tweets that mentioned the skin.
+  """
+  tweets: [Tweet]
+
+  """
+  List of files contained within the skin's .wsz archive
   """
   archive_files: [ArchiveFile]
+
+  """
+  The skin's "item" at archive.org
+  """
+  internet_archive_item: InternetArchiveItem
+
+  """
+  Times that the skin has been reviewed either on the Museum's Tinder-style
+  reivew page, or via the Discord bot.
+  """
+  reviews: [Review]
+
+  # BELOW HERE ARE FOR MIGRATION
+  # We add extra fields for now so that the client will still work using `Skin`.
+  # After we migrate these will go away.
+  museum_url: String @deprecated(reason: "Needed for migration")
+  webamp_url: String @deprecated(reason: "Needed for migration")
+  screenshot_url: String @deprecated(reason: "Needed for migration")
+  readme_text: String @deprecated(reason: "Needed for migration")
+  nsfw: Boolean @deprecated(reason: "Needed for migration")
+  average_color: String @deprecated(reason: "Needed for migration")
 }
 
 """
@@ -46,7 +77,7 @@ A "modern" Winamp skin. These skins use the `.wal` file extension and are free-f
 Most functionality in the Winamp Skin Museum is centered around "classic" skins,
 which are currently called just `Skin` in this schema.
 """
-type ModernSkin implements GenericSkin & Node {
+type ModernSkin implements Skin & Node {
   """
   GraphQL ID of the skin
   """
@@ -69,15 +100,46 @@ type ModernSkin implements GenericSkin & Node {
   filename: String
 
   """
+  Has the skin been tweeted?
+  """
+  tweeted: Boolean
+
+  """
+  List of @winampskins tweets that mentioned the skin.
+  """
+  tweets: [Tweet]
+
+  """
   List of files contained within the skin's .wsz archive
   """
   archive_files: [ArchiveFile]
+
+  """
+  The skin's "item" at archive.org
+  """
+  internet_archive_item: InternetArchiveItem
+
+  """
+  Times that the skin has been reviewed either on the Museum's Tinder-style
+  reivew page, or via the Discord bot.
+  """
+  reviews: [Review]
+
+  # BELOW HERE ARE FOR MIGRATION
+  # We add extra fields for now so that the client will still work using `Skin`.
+  # After we migrate these will go away.
+  museum_url: String @deprecated(reason: "Needed for migration")
+  webamp_url: String @deprecated(reason: "Needed for migration")
+  screenshot_url: String @deprecated(reason: "Needed for migration")
+  readme_text: String @deprecated(reason: "Needed for migration")
+  nsfw: Boolean @deprecated(reason: "Needed for migration")
+  average_color: String @deprecated(reason: "Needed for migration")
 }
 
 """
 A classic Winamp skin
 """
-type Skin implements GenericSkin & Node {
+type ClassicSkin implements Skin & Node {
   """
   GraphQL ID of the skin
   """
@@ -272,6 +334,10 @@ type Tweet {
   Number of retweets the tweet has received. Updated nightly. (Note: Recent retweets on older tweets may not be reflected here)
   """
   retweets: Int
+
+  """
+  The skin featured in this Tweet
+  """
   skin: Skin
 }
 
@@ -605,7 +671,7 @@ type Query {
   """
   Get a skin by its MD5 hash
   """
-  fetch_skin_by_md5(md5: String!): GenericSkin
+  fetch_skin_by_md5(md5: String!): Skin
 
   """
   Get a tweet by its URL

@@ -28,6 +28,6 @@ export default class InternetArchiveItemResolver {
     if (skin == null) {
       return null;
     }
-    return new SkinResolver(skin);
+    return SkinResolver.fromModel(skin);
   }
 }

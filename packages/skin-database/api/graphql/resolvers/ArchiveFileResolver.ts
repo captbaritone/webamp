@@ -27,7 +27,7 @@ export default class ArchiveFileResolver {
   }
   async skin(_, { ctx }) {
     const model = await SkinModel.fromMd5Assert(ctx, this._model.getMd5());
-    return new SkinResolver(model);
+    return SkinResolver.fromModel(model);
   }
   date() {
     return this._model.getFileDate().toISOString();

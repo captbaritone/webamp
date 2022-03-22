@@ -65,7 +65,7 @@ test(".node", async () => {
     }
   `);
   const skin = data.skins.nodes[0];
-  expect(skin.id).toEqual("U2tpbl9fYV9mYWtlX21kNQ==");
+  expect(skin.id).toEqual("Q2xhc3NpY1NraW5fX2FfZmFrZV9tZDU=");
 
   const { data: data2 } = await graphQLRequest(
     gql`
@@ -144,9 +144,11 @@ describe("Query.skins", () => {
           skins(sort: MUSEUM) {
             count
             nodes {
-              md5
-              filename
-              nsfw
+              ... on ClassicSkin {
+                md5
+                filename
+                nsfw
+              }
             }
           }
         }
@@ -197,9 +199,11 @@ describe("Query.skins", () => {
           skins(first: $first, offset: $offset, sort: MUSEUM) {
             count
             nodes {
-              md5
-              filename
-              nsfw
+              ... on ClassicSkin {
+                md5
+                filename
+                nsfw
+              }
             }
           }
         }
@@ -231,48 +235,50 @@ test("Query.fetch_skin_by_md5 (debug data)", async () => {
     gql`
       query MyQuery($md5: String!) {
         fetch_skin_by_md5(md5: $md5) {
-          id
-          md5
-          museum_url
-          webamp_url
-          screenshot_url
-          download_url
-          filename
-          readme_text
-          nsfw
-          average_color
-          tweeted
-          tweets {
-            url
-          }
-          archive_files {
+          ... on ClassicSkin {
+            id
+            md5
+            museum_url
+            webamp_url
+            screenshot_url
+            download_url
             filename
-            url
-            date
-            file_md5
-            size
-            text_content
-            is_directory
-            skin {
-              md5
+            readme_text
+            nsfw
+            average_color
+            tweeted
+            tweets {
+              url
             }
-          }
-          filename
-          internet_archive_item {
-            identifier
-            url
-            metadata_url
-            raw_metadata_json
-            skin {
-              md5
+            archive_files {
+              filename
+              url
+              date
+              file_md5
+              size
+              text_content
+              is_directory
+              skin {
+                md5
+              }
             }
-          }
-          reviews {
-            skin {
-              md5
+            filename
+            internet_archive_item {
+              identifier
+              url
+              metadata_url
+              raw_metadata_json
+              skin {
+                md5
+              }
             }
-            reviewer
-            rating
+            reviews {
+              skin {
+                md5
+              }
+              reviewer
+              rating
+            }
           }
         }
       }
