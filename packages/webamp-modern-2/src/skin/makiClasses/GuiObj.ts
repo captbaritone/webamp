@@ -23,8 +23,8 @@ export default class GuiObj extends XmlObj {
   _children: GuiObj[] = [];
   _id: string;
   _name: string;
-  _width: number;
-  _height: number;
+  _width: number = 0;
+  _height: number = 0;
   _x: number = 0;
   _y: number = 0;
   _minimumHeight: number = 0;
@@ -135,6 +135,12 @@ export default class GuiObj extends XmlObj {
       case "droptarget":
         this._droptarget = value;
         break;
+      case "dblclickaction":
+        const [action,param, actionTarget] = value.split(';')
+        this._div.addEventListener("dblclick", (e) => {
+            this.dispatchAction(action, param, actionTarget);
+        });
+        break;
       case "ghost":
         this._ghost = toBool(value);
         break;
@@ -142,6 +148,12 @@ export default class GuiObj extends XmlObj {
         this._visible = toBool(value);
         this._renderVisibility();
         break;
+      case "activealpha":
+      case "inactivealpha":
+        this._div.setAttribute(key, value);
+        // this._div.setAttribute(key, `${parseFloat(value)/255*100}`);
+        break;
+    
       case "tooltip":
         this._tooltip = value;
         break;

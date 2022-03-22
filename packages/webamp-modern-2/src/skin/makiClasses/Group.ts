@@ -17,6 +17,7 @@ document.addEventListener("mousemove", (e: MouseEvent) => {
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Cgroup.2F.3E
 export default class Group extends Movable {
   static GUID = "45be95e5419120725fbb5c93fd17f1f9";
+  _inited: boolean = false;
   _parent: Group;
   _instanceId: string;
   _background: string;
@@ -49,6 +50,11 @@ export default class Group extends Movable {
   }
 
   init() {
+    if(this._inited) return;
+    this._inited = true;
+    
+    super.init();
+
     for (const systemObject of this._systemObjects) {
       systemObject.init();
     }

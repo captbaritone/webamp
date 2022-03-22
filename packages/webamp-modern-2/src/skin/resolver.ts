@@ -7,6 +7,7 @@ import Layer from "./makiClasses/Layer";
 import AnimatedLayer from "./makiClasses/AnimatedLayer";
 import PopupMenu from "./makiClasses/PopupMenu";
 import ToggleButton from "./makiClasses/ToggleButton";
+import LayoutStatus from "./makiClasses/LayoutStatus";
 import Status from "./makiClasses/Status";
 import Text from "./makiClasses/Text";
 import Group from "./makiClasses/Group";
@@ -38,6 +39,7 @@ const CLASSES = [
   PopupMenu,
   ToggleButton,
   Status,
+  LayoutStatus,
   Text,
   Group,
   MakiMap,
