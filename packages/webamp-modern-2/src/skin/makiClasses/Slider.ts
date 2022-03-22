@@ -5,6 +5,8 @@ import GuiObj from "./GuiObj";
 interface ActionHandler {
   // 0-255
   onsetposition(position: number): void;
+  onLeftMouseDown(x: number, y: number): void;
+  onLeftMouseUp(x: number, y: number): void;
   dispose(): void;
 }
 const MAX = 255;
@@ -20,26 +22,34 @@ export default class Slider extends GuiObj {
   _downThumb: string;
   _hoverThumb: string;
   _action: string | null = null;
-  _low: number;
-  _high: number;
+  _low: number = 0;
+  _high: number = 1;
   _position: number = 0;
   _param: string | null = null;
   _thumbDiv: HTMLDivElement = document.createElement("div");
   _actionHandler: null | ActionHandler;
+  _onSetPositionEvenEaten: number;
+  _mouseX: number;
+  _mouseY: number;
 
+  getRealWidth() {
+    return this._div.getBoundingClientRect().width;
+  }
   constructor() {
     super();
     this._thumbDiv.addEventListener("mousedown", (downEvent: MouseEvent) => {
-      downEvent.stopPropagation();
+      //downEvent.stopPropagation();
+      if (downEvent.button != 0) return; // only care LeftButton
       const bitmap = UI_ROOT.getBitmap(this._thumb);
       const startX = downEvent.clientX;
       const startY = downEvent.clientY;
-      const width = this.getwidth() - bitmap.getWidth();
+      const width = this.getRealWidth() - bitmap.getWidth();
       const height = this.getheight() - bitmap.getHeight();
       const initialPostition = this._position;
+      this.doLeftMouseDown(downEvent.offsetX, downEvent.offsetY);
 
       const handleMove = (moveEvent: MouseEvent) => {
-        moveEvent.stopPropagation();
+        //moveEvent.stopPropagation();
         const newMouseX = moveEvent.clientX;
         const newMouseY = moveEvent.clientY;
         const deltaY = newMouseY - startY;
@@ -52,19 +62,16 @@ export default class Slider extends GuiObj {
 
         this._position = clamp(newPercent, 0, 1);
         this._renderThumbPosition();
-        this.onsetposition(this.getposition());
+        this.doSetPosition(this.getposition());
       };
 
       const handleMouseUp = (upEvent: MouseEvent) => {
-        upEvent.stopPropagation();
-        UI_ROOT.vm.dispatch(this, "onsetfinalposition", [
-          { type: "INT", value: this.getposition() },
-        ]);
-        UI_ROOT.vm.dispatch(this, "onpostedposition", [
-          { type: "INT", value: this.getposition() },
-        ]);
+        //upEvent.stopPropagation();
+        if (upEvent.button != 0) return; // only care LeftButton
+
         document.removeEventListener("mousemove", handleMove);
         document.removeEventListener("mouseup", handleMouseUp);
+        this.doLeftMouseUp(upEvent.offsetX, upEvent.offsetY);
       };
       document.addEventListener("mousemove", handleMove);
       document.addEventListener("mouseup", handleMouseUp);
@@ -137,6 +144,8 @@ export default class Slider extends GuiObj {
       case "eq_band":
         this._actionHandler = new EqActionHandler(this, this._param);
         break;
+      case "eq_preamp":
+        break;
       case "pan":
         this._actionHandler = new PanActionHandler(this);
         break;
@@ -171,11 +180,42 @@ export default class Slider extends GuiObj {
   }
 
   onsetposition(newPos: number) {
-    UI_ROOT.vm.dispatch(this, "onsetposition", [
+    this._onSetPositionEvenEaten = UI_ROOT.vm.dispatch(this, "onsetposition", [
+      //needed by seekerGhost
       { type: "INT", value: newPos },
     ]);
     if (this._actionHandler != null) {
       this._actionHandler.onsetposition(newPos);
+    }
+  }
+  doSetPosition(newPos: number) {
+    this.onsetposition(newPos);
+  }
+
+  doLeftMouseDown(x: number, y: number) {
+    UI_ROOT.vm.dispatch(this, "onleftbuttondown", [
+      { type: "INT", value: x },
+      { type: "INT", value: y },
+    ]);
+    if (this._actionHandler != null) {
+      this._actionHandler.onLeftMouseDown(x, y);
+    }
+  }
+  doLeftMouseUp(x: number, y: number) {
+    console.log("slider.doLeftMouseUp");
+    UI_ROOT.vm.dispatch(this, "onleftbuttonup", [
+      { type: "INT", value: x },
+      { type: "INT", value: y },
+    ]);
+    UI_ROOT.vm.dispatch(this, "onsetfinalposition", [
+      { type: "INT", value: this.getposition() },
+    ]);
+    UI_ROOT.vm.dispatch(this, "onpostedposition", [
+      { type: "INT", value: this.getposition() },
+    ]);
+    if (this._actionHandler != null) {
+      console.log("slider_ACTION.doLeftMouseUp");
+      this._actionHandler.onLeftMouseUp(x, y);
     }
   }
 
@@ -210,7 +250,10 @@ export default class Slider extends GuiObj {
           (1 - this._position) * (this.getheight() - bitmap.getHeight());
         this._thumbDiv.style.top = px(top);
       } else {
-        const left = this._position * (this.getwidth() - bitmap.getWidth());
+        // const left = (1 - this._position * (this.getwidth() - bitmap.getWidth());
+        const curwidth = this.getRealWidth();
+        const left = this._position * (curwidth - bitmap.getWidth());
+        // console.log('thumb.left', this._position, left, 'w:',this.getwidth(),'bmp.w:', bitmap.getWidth())
         this._thumbDiv.style.left = px(left);
       }
     }
@@ -252,20 +295,40 @@ export default class Slider extends GuiObj {
 
 // eslint-disable-next-line rulesdir/proper-maki-types
 class SeekActionHandler implements ActionHandler {
+  _slider: Slider;
+  _pendingChange: boolean;
   _subscription: () => void;
+
   constructor(slider: Slider) {
+    this._slider = slider;
     const update = () => {
-      slider._position = UI_ROOT.audio.getCurrentTimePercent();
-      // TODO: We could throttle this, or only render if the change is "significant"?
-      slider._renderThumbPosition();
+      if (!this._pendingChange) {
+        slider._position = UI_ROOT.audio.getCurrentTimePercent();
+        // TODO: We could throttle this, or only render if the change is "significant"?
+        slider._renderThumbPosition();
+      }
     };
     update();
     this._subscription = UI_ROOT.audio.onCurrentTimeChange(update);
   }
 
   onsetposition(position: number): void {
-    UI_ROOT.audio.seekToPercent(position / MAX);
+    console.log("seek:", position);
+    this._pendingChange = this._slider._onSetPositionEvenEaten != 0;
+    if (!this._pendingChange) {
+      UI_ROOT.audio.seekToPercent(position / MAX);
+    }
   }
+
+  onLeftMouseDown(x: number, y: number) {}
+  onLeftMouseUp(x: number, y: number) {
+    console.log("slider_ACTION.doLeftMouseUp");
+    if (this._pendingChange) {
+      this._pendingChange = false;
+      UI_ROOT.audio.seekToPercent(this._slider.getposition() / MAX);
+    }
+  }
+
   dispose(): void {
     this._subscription();
   }
@@ -288,6 +351,9 @@ class EqActionHandler implements ActionHandler {
   onsetposition(position: number): void {
     UI_ROOT.audio.setEq(this._kind, position / MAX);
   }
+  onLeftMouseDown(x: number, y: number) {}
+  onLeftMouseUp(x: number, y: number) {}
+
   dispose(): void {
     this._subscription();
   }
@@ -303,6 +369,9 @@ class PanActionHandler implements ActionHandler {
   onsetposition(position: number): void {
     // TODO
   }
+  onLeftMouseDown(x: number, y: number) {}
+  onLeftMouseUp(x: number, y: number) {}
+
   dispose(): void {
     this._subscription();
   }
@@ -311,13 +380,31 @@ class PanActionHandler implements ActionHandler {
 // eslint-disable-next-line rulesdir/proper-maki-types
 class VolumeActionHandler implements ActionHandler {
   _subscription: () => void;
+  _changing: boolean = false;
+
   constructor(slider: Slider) {
     this._subscription = () => {};
+    slider._position = UI_ROOT.audio.getVolume();
+    slider._renderThumbPosition();
+
+    this._subscription = UI_ROOT.audio.onVolumeChanged(() => {
+      if (!this._changing) {
+        slider._position = UI_ROOT.audio.getVolume();
+        slider._renderThumbPosition();
+      }
+    });
   }
 
   onsetposition(position: number): void {
-    // TODO
+    UI_ROOT.audio.setVolume(position / 255);
   }
+  onLeftMouseDown(x: number, y: number) {
+    this._changing = true;
+  }
+  onLeftMouseUp(x: number, y: number) {
+    this._changing = false;
+  }
+
   dispose(): void {
     this._subscription();
   }
