@@ -111,6 +111,12 @@ export default class Layout extends Group {
     return true;
   }
 
+  init() {
+    super.init();
+    this.doResize();
+  }
+
+
   setResizing(cmd: string, dx: number, dy: number) {
     const clampW = (w): number => {
       w = this._maximumWidth ? Math.min(w, this._maximumWidth) : w;

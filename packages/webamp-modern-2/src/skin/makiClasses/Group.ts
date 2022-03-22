@@ -136,6 +136,16 @@ export default class Group extends Movable {
     }
   }
 
+  doResize() {
+    super.doResize();
+    this._regionCanvas=null;
+    //this.applyRegions();
+    for (const child of this._children) {
+      child.doResize()
+    }
+  }
+
+  
   draw() {
     super.draw();
     this._div.classList.add("webamp--img");
