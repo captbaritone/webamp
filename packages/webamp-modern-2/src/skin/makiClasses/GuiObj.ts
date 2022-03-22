@@ -22,6 +22,7 @@ export default class GuiObj extends XmlObj {
   _parent: Group;
   _children: GuiObj[] = [];
   _id: string;
+  _name: string;
   _width: number;
   _height: number;
   _x: number = 0;
@@ -158,6 +159,10 @@ export default class GuiObj extends XmlObj {
 
   setxmlparam(key: string, value: string) {
     this.setXmlAttr(key, value);
+  }
+
+  setSize(newWidth:number, newHeight:number){
+    
   }
 
   init() {

@@ -5,6 +5,15 @@ import SystemObject from "./SystemObject";
 import Movable from "./Movable";
 import Layout from "./Layout";
 
+const MOUSE_POS = { x: 0, y: 0 };
+
+// TODO: Figure out how this could be unsubscribed eventually
+document.addEventListener("mousemove", (e: MouseEvent) => {
+  MOUSE_POS.x = e.clientX;
+  MOUSE_POS.y = e.clientY;
+});
+
+
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Cgroup.2F.3E
 export default class Group extends Movable {
   static GUID = "45be95e5419120725fbb5c93fd17f1f9";
@@ -62,7 +71,7 @@ export default class Group extends Movable {
     this._children.push(child);
   }
 
-  findobject(objectId: string): GuiObj | null {
+  /* findobject(objectId: string): GuiObj | null {
     const lower = objectId.toLowerCase();
     for (const obj of this._children) {
       if (obj.getId() === lower) {
@@ -76,7 +85,7 @@ export default class Group extends Movable {
       }
     }
     return null;
-  }
+  } */
 
   /* Required for Maki */
   getobject(objectId: string): GuiObj {
@@ -92,6 +101,22 @@ export default class Group extends Movable {
     );
   }
 
+  enumobject(index: number): GuiObj {
+    return this._children[index]
+  }
+
+  getnumobjects(): number {
+    return this._children.length;
+  }
+
+  getmouseposx(): number {
+    return MOUSE_POS.x - this.getparentlayout().getleft();
+  }
+
+  getmouseposy(): number {
+    return MOUSE_POS.y - this.getparentlayout().gettop();
+  }
+
   getparentlayout(): Layout {
     let obj: Group = this;
     while (obj._parent) {
@@ -105,6 +130,11 @@ export default class Group extends Movable {
     }
     return obj as Layout;
   }
+
+  isLayout():boolean{
+    return this._isLayout;
+  }
+
 
   // This shadows `getheight()` on GuiObj
   getheight(): number {
@@ -141,13 +171,21 @@ export default class Group extends Movable {
     }
   }
 
+  // doResize() {
+  //   super.doResize();
+    // this._regionCanvas = null;
+  //   //this.applyRegions();
+  //   for (const child of this._children) {
+  //     child.doResize();
+  //   }
+  // }
   doResize() {
-    super.doResize();
-    this._regionCanvas = null;
-    //this.applyRegions();
-    for (const child of this._children) {
-      child.doResize();
-    }
+    UI_ROOT.vm.dispatch(this, "onresize", [
+      { type: "INT", value: 0 },
+      { type: "INT", value: 0 },
+      { type: "INT", value: this.getwidth() },
+      { type: "INT", value: this.getheight() },
+    ]);
   }
 
   draw() {

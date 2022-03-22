@@ -89,7 +89,7 @@ export default class Button extends GuiObj {
   }
 
   getactivated(): boolean {
-    return this._active;
+    return this._active ? true : false;
   }
   setactivated(_onoff: boolean) {
     const onoff = Boolean(_onoff);

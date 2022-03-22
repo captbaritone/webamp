@@ -34,7 +34,7 @@ export default class Timer extends BaseObject {
     }
   }
   async start(): Promise<boolean> {
-    console.log('timer.start()', this._nid)
+    // console.log('timer.start()', this._nid)
     if(!this._delay){
       return false;
     }

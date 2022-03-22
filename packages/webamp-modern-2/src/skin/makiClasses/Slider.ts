@@ -35,8 +35,8 @@ export default class Slider extends GuiObj {
   getRealWidth() {
     return this._div.getBoundingClientRect().width;
   }
-  constructor() {
-    super();
+
+  _registerDragEvents() {
     this._thumbDiv.addEventListener("mousedown", (downEvent: MouseEvent) => {
       //downEvent.stopPropagation();
       if (downEvent.button != 0) return; // only care LeftButton
@@ -134,6 +134,7 @@ export default class Slider extends GuiObj {
 
   init() {
     this._initializeActionHandler();
+    this._registerDragEvents();
   }
 
   _initializeActionHandler() {
@@ -184,12 +185,12 @@ export default class Slider extends GuiObj {
       //needed by seekerGhost
       { type: "INT", value: newPos },
     ]);
-    if (this._actionHandler != null) {
-      this._actionHandler.onsetposition(newPos);
-    }
   }
   doSetPosition(newPos: number) {
     this.onsetposition(newPos);
+    if (this._actionHandler != null) {
+      this._actionHandler.onsetposition(newPos);
+    }
   }
 
   doLeftMouseDown(x: number, y: number) {
@@ -202,7 +203,7 @@ export default class Slider extends GuiObj {
     }
   }
   doLeftMouseUp(x: number, y: number) {
-    console.log("slider.doLeftMouseUp");
+    // console.log("slider.doLeftMouseUp");
     UI_ROOT.vm.dispatch(this, "onleftbuttonup", [
       { type: "INT", value: x },
       { type: "INT", value: y },
@@ -214,7 +215,7 @@ export default class Slider extends GuiObj {
       { type: "INT", value: this.getposition() },
     ]);
     if (this._actionHandler != null) {
-      console.log("slider_ACTION.doLeftMouseUp");
+      // console.log("slider_ACTION.doLeftMouseUp");
       this._actionHandler.onLeftMouseUp(x, y);
     }
   }
@@ -297,32 +298,48 @@ export default class Slider extends GuiObj {
 class SeekActionHandler implements ActionHandler {
   _slider: Slider;
   _pendingChange: boolean;
+  _dragging: boolean = false;
+
   _subscription: () => void;
+
+  isPendingChange(): boolean {
+    // return true;// this._pendingChange || this._dragging;
+    return this._dragging == true;
+  }
 
   constructor(slider: Slider) {
     this._slider = slider;
-    const update = () => {
-      if (!this._pendingChange) {
-        slider._position = UI_ROOT.audio.getCurrentTimePercent();
-        // TODO: We could throttle this, or only render if the change is "significant"?
-        slider._renderThumbPosition();
-      }
-    };
-    update();
-    this._subscription = UI_ROOT.audio.onCurrentTimeChange(update);
+    this._registerOnAudioProgress();
   }
 
+  _registerOnAudioProgress() {
+    this._subscription = UI_ROOT.audio.onCurrentTimeChange(this._onAudioProgres);
+  }
+
+  _onAudioProgres = () => {
+    if (!this.isPendingChange()) {
+      if (this._slider.getId() == "seekerghost")
+        console.log("thumb: not isPending()!");
+      this._slider._position = UI_ROOT.audio.getCurrentTimePercent();
+      // TODO: We could throttle this, or only render if the change is "significant"?
+      this._slider._renderThumbPosition();
+    }
+  };
+
   onsetposition(position: number): void {
-    console.log("seek:", position);
+    // console.log("seek:", position);
     this._pendingChange = this._slider._onSetPositionEvenEaten != 0;
     if (!this._pendingChange) {
       UI_ROOT.audio.seekToPercent(position / MAX);
     }
   }
 
-  onLeftMouseDown(x: number, y: number) {}
+  onLeftMouseDown(x: number, y: number) {
+    this._dragging = true;
+  }
   onLeftMouseUp(x: number, y: number) {
-    console.log("slider_ACTION.doLeftMouseUp");
+    this._dragging = false;
+    // console.log("slider_ACTION.doLeftMouseUp");
     if (this._pendingChange) {
       this._pendingChange = false;
       UI_ROOT.audio.seekToPercent(this._slider.getposition() / MAX);

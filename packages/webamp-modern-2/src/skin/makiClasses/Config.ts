@@ -3,19 +3,21 @@ import ConfigItem from "./ConfigItem";
 
 const _items : {[key:string]: ConfigItem} = {};
 
-export default class Config extends XmlObj {
+export default class ConfigClass {
   static GUID = "593dba224976d07771f452b90b405536";
 
   newitem(itemName: string, itemGuid: string): ConfigItem {
-    return new ConfigItem();
+    const cfg = new ConfigItem();
+    cfg._name = itemName;
+    _items[itemGuid] = cfg;
+    return cfg;
   }
 
-  getitem(itemName: string): ConfigItem {
-    console.log(`Config.getItem(${itemName})`)
-    let cfg = _items[itemName];
+  getitem(itemGuid: string): ConfigItem {
+    let cfg = _items[itemGuid];
     if(!cfg){
       cfg = new ConfigItem();
-      _items[itemName] = cfg;  
+      _items[itemGuid] = cfg;  
     } 
     return cfg;
   }

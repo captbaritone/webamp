@@ -1136,7 +1136,7 @@ export default class SystemObject extends BaseObject {
    * @ret STATUS_PAUSED (-1) if paused, STATUS_STOPPED (0) if stopped, STATUS_PLAYING (1) if playing.
    */
   getstatus(): number {
-    return AUDIO_PLAYER.getState();
+    return UI_ROOT.audio.getState();
   }
 
   /**

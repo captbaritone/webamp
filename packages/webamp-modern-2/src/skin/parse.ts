@@ -504,6 +504,7 @@ export default class SkinParser {
       return;
     }
 
+    console.log('parsing.maki:',file)
     const parsedScript = parseMaki(maki);
 
     const systemObj = new SystemObject(parsedScript, param, id);
