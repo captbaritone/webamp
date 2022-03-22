@@ -15,7 +15,6 @@ export default class Group extends Movable {
   _drawBackground: boolean = true;
   _isLayout: boolean = false;
   _systemObjects: SystemObject[] = [];
-  
 
   setXmlAttr(_key: string, value: string): boolean {
     const key = _key.toLowerCase();
@@ -119,6 +118,12 @@ export default class Group extends Movable {
 
   // This shadows `getwidth()` on GuiObj
   getwidth(): number {
+    if (this._autowidthsource) {
+      const widthSource = this.findobject(this._autowidthsource);
+      if (widthSource) {
+        return widthSource.getautowidth();
+      }
+    }
     const w = super.getwidth();
     if (w == null && this._background != null) {
       const bitmap = UI_ROOT.getBitmap(this._background);
@@ -138,14 +143,13 @@ export default class Group extends Movable {
 
   doResize() {
     super.doResize();
-    this._regionCanvas=null;
+    this._regionCanvas = null;
     //this.applyRegions();
     for (const child of this._children) {
-      child.doResize()
+      child.doResize();
     }
   }
 
-  
   draw() {
     super.draw();
     this._div.classList.add("webamp--img");
@@ -163,6 +167,10 @@ export default class Group extends Movable {
     for (const child of this._children) {
       child.draw();
       this._div.appendChild(child.getDiv());
+    }
+    if (this._autowidthsource) {
+      // this._div.style.removeProperty('width');
+      this._div.classList.add("autowidthsource");
     }
   }
 }

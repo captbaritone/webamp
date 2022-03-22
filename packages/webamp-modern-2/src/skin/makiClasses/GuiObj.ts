@@ -57,7 +57,7 @@ export default class GuiObj extends XmlObj {
   // _movingEventsRegisterd: boolean = false;
 
   _metaCommands: XmlElement[] = [];
-  
+
   constructor() {
     super();
 
@@ -83,7 +83,7 @@ export default class GuiObj extends XmlObj {
       case "name":
         this._name = value;
         break;
-  
+
       case "autowidthsource":
         this._autowidthsource = value.toLowerCase();
         break;
@@ -159,27 +159,6 @@ export default class GuiObj extends XmlObj {
   setxmlparam(key: string, value: string) {
     this.setXmlAttr(key, value);
   }
-
-  handleAction(
-    action: string,
-    param: string | null,
-    actionTarget: string | null
-  ): boolean {
-    return false;
-  }
-
-  // Sends an action up the UI heirarchy
-  dispatchAction(
-    action: string,
-    param: string | null,
-    actionTarget: string | null
-  ) {
-    const handled = this.handleAction(action, param, actionTarget);
-    if (!handled && this._parent != null) {
-      this._parent.dispatchAction(action, param, actionTarget);
-    }
-  }
-
 
   init() {
     this._div.addEventListener("mousedown", (e) => {
@@ -681,19 +660,19 @@ export default class GuiObj extends XmlObj {
     return this._alpha;
   }
 
-  clienttoscreenx(x:number): number {
+  clienttoscreenx(x: number): number {
     return x;
   }
 
-  clienttoscreeny(y:number): number {
+  clienttoscreeny(y: number): number {
     return y;
   }
 
-  screentoclientx(x:number): number {
+  screentoclientx(x: number): number {
     return x;
   }
 
-  screentoclienty(y:number): number {
+  screentoclienty(y: number): number {
     return y;
   }
   getparentlayout(): Layout {
