@@ -4,9 +4,9 @@ export class Edges {
   _bottom: string[] = [];
   _left: string[] = [];
 
-  parseCanvasTransparency(canvas: HTMLCanvasElement) {
-    const w = canvas.width;
-    const h = canvas.height;
+  parseCanvasTransparency(canvas: HTMLCanvasElement, preferedWidth:number, preferedHeight:number) {
+    const w = preferedWidth || canvas.width;
+    const h = preferedHeight || canvas.height;
     const ctx = canvas.getContext("2d");
     const data = ctx.getImageData(0, 0, w, h).data;
     let points: string[] = [];

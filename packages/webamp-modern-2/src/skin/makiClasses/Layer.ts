@@ -60,7 +60,7 @@ export default class Layer extends Movable {
     if (this._sysregion == 1 && this._image) {
       const canvas = UI_ROOT.getBitmap(this._image).getCanvas();
       const edge = new Edges();
-      edge.parseCanvasTransparency(canvas);
+      edge.parseCanvasTransparency(canvas, this.getwidth(), this.getheight());
       if (edge.isSimpleRect()) {
         this.setXmlAttr("sysregion", "0");
       } else {

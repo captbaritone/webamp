@@ -142,14 +142,8 @@ export default class Bitmap {
       // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
       ctx.drawImage(
         this._img,
-        this._x,
-        this._y,
-        this.getWidth(),
-        this.getHeight(),
         0,
-        0,
-        this.getWidth(),
-        this.getHeight()
+        0
       );
     }
     return this._canvas;
