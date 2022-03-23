@@ -11,6 +11,9 @@ function warmScreenshotImage(hash) {
 
 const mutation = gql`
   query GetSkinToReview {
+    me {
+      username
+    }
     skin_to_review {
       filename
       md5
@@ -21,7 +24,11 @@ const mutation = gql`
 async function getSkinToReview() {
   if (USE_GRAPHQL) {
     const data = await Utils.fetchGraphql(mutation);
-    return data.skin_to_review;
+    if (data.me.username) {
+      return data.skin_to_review;
+    } else {
+      window.location = `${API_URL}/auth`;
+    }
   } else {
     const response = await fetch(
       `${API_URL}/to_review?cacheBust=${Math.random()}`,
