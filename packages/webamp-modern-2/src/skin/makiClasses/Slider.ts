@@ -81,7 +81,7 @@ export default class Slider extends GuiObj {
     if (super.setXmlAttr(key, value)) {
       return true;
     }
-    switch (key) {
+    switch (key.toLowerCase()) {
       case "thumb":
         // (id) The bitmap element for the slider thumb.
         this._thumb = value;
@@ -233,7 +233,7 @@ export default class Slider extends GuiObj {
 
     if (this._downThumb != null) {
       const bitmap = UI_ROOT.getBitmap(this._downThumb);
-      bitmap.setAsActiveBackground(this._thumbDiv);
+      bitmap.setAsDownBackground(this._thumbDiv);
     }
 
     if (this._hoverThumb != null) {
@@ -298,13 +298,12 @@ export default class Slider extends GuiObj {
 class SeekActionHandler implements ActionHandler {
   _slider: Slider;
   _pendingChange: boolean;
-  _dragging: boolean = false;
 
   _subscription: () => void;
 
   isPendingChange(): boolean {
-    // return true;// this._pendingChange || this._dragging;
-    return this._dragging == true;
+    return true;// this._pendingChange || this._dragging;
+    // return this._dragging == true;
   }
 
   constructor(slider: Slider) {
@@ -317,7 +316,7 @@ class SeekActionHandler implements ActionHandler {
   }
 
   _onAudioProgres = () => {
-    if (!this.isPendingChange()) {
+    if (!this._pendingChange) {
       if (this._slider.getId() == "seekerghost")
         console.log("thumb: not isPending()!");
       this._slider._position = UI_ROOT.audio.getCurrentTimePercent();
@@ -334,11 +333,8 @@ class SeekActionHandler implements ActionHandler {
     }
   }
 
-  onLeftMouseDown(x: number, y: number) {
-    this._dragging = true;
-  }
+  onLeftMouseDown(x: number, y: number) {}
   onLeftMouseUp(x: number, y: number) {
-    this._dragging = false;
     // console.log("slider_ACTION.doLeftMouseUp");
     if (this._pendingChange) {
       this._pendingChange = false;
