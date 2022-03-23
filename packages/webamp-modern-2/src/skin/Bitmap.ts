@@ -8,8 +8,8 @@ export default class Bitmap {
   _url: string;
   _img: HTMLImageElement;
   _canvas: HTMLCanvasElement;
-  _x: number;
-  _y: number;
+  _x: number = 0;
+  _y: number = 0;
   _width: number;
   _height: number;
   _file: string;
@@ -136,15 +136,11 @@ export default class Bitmap {
     if (this._canvas == null) {
       assert(this._img != null, "Expected bitmap image to be loaded");
       this._canvas = document.createElement("canvas");
-      this._canvas.width = this.getWidth();
-      this._canvas.height = this.getHeight();
+      this._canvas.width = this.getWidth() || this._img.width;
+      this._canvas.height = this.getHeight() || this._img.height;
       const ctx = this._canvas.getContext("2d");
       // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
-      ctx.drawImage(
-        this._img,
-        -this._x,
-        -this._y
-      );
+      ctx.drawImage(this._img, -this._x, -this._y);
     }
     return this._canvas;
   }
