@@ -238,58 +238,22 @@ export default class Group extends Movable {
       return;
     }
 
-    if (child._sysregion == 1) {
-      //just crop by transparency.
-      const bitmap = child._backgroundBitmap;
-      const ctxSrc = bitmap.getCanvas().getContext("2d");
-      const dataSrc = ctxSrc.getImageData(
-        0,
-        0,
-        bitmap.getWidth(),
-        bitmap.getHeight()
-      ).data;
-      // const data = imageData.data;
+    const ctx2 = this._regionCanvas.getContext("2d");
+    const r = child._div.getBoundingClientRect();
+    const bitmap = child._backgroundBitmap;
+    const img = child._backgroundBitmap.getImg();
+    ctx2.drawImage(
+      img,
+      bitmap._x,
+      bitmap._y,
+      r.width,
+      r.height,
 
-      const ctx2 = this._regionCanvas.getContext("2d");
-      const r = child._div.getBoundingClientRect();
-
-      const imageData = ctx2.getImageData(
-        r.left,
-        r.top,
-        bitmap.getWidth(),
-        bitmap.getHeight()
-      );
-      const dataDst = imageData.data;
-      for (var i = 0; i < dataDst.length; i += 4) {
-        // data[i + 3] = data[i + 1] != 255 ? 0 : data[i + 1];
-        dataDst[i + 0] = dataSrc[i + 3]; //? draw transparency
-      }
-      ctx2.putImageData(imageData, r.left, r.top);
-    } else {
-      const ctx2 = this._regionCanvas.getContext("2d");
-      const r = child._div.getBoundingClientRect();
-      const bitmap = child._backgroundBitmap;
-      const img = child._backgroundBitmap.getImg();
-      ctx2.drawImage(
-        img,
-        bitmap._x,
-        bitmap._y,
-        r.width,
-        r.height,
-
-        child._div.offsetLeft,
-        child._div.offsetTop,
-        // 0,0,
-        r.width,
-        r.height
-        // bitmap._width, bitmap._height
-        // 500, 500
-      );
-      // console.log('createDraw:',  child._div.offsetLeft - bitmap._x,
-      // child._div.offsetTop - bitmap._y,
-      // r.width, r.height,
-      // r)
-    }
+      child._div.offsetLeft,
+      child._div.offsetTop,
+      r.width,
+      r.height
+    );
   }
 
   setRegion() {
