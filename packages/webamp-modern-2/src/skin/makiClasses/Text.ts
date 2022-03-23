@@ -48,7 +48,7 @@ export default class Text extends GuiObj {
     if (super.setXmlAttr(key, value)) {
       return true;
     }
-    switch (key) {
+    switch (key.toLowerCase()) {
       case "display":
         // (str) Either a specific system display string or the string identifier of a text feed. Setting this value will override the text parameter. See below.
         this._setDisplay(value);
@@ -74,6 +74,7 @@ export default class Text extends GuiObj {
       case "font":
         // (id) The id of a bitmapfont or truetypefont element. If no element with that id can be found, the OS will be asked for a font with that name instead.
         this._font_id = value;
+        this._autoDetectFontType();
         this.ensureFontSize();
         this._prepareCss();
         // this._renderText();
@@ -125,6 +126,19 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
         return false;
     }
     return true;
+  }
+
+  _autoDetectFontType() {
+    if(this._font_id){
+      console.log('auto-detect-font:', this._font_id)
+      this._font_obj = UI_ROOT.getFont(this._font_id);
+      if (!this._font_obj) {
+        const newFont = new TrueTypeFont();
+        newFont._inlineFamily = this._font_id;
+        UI_ROOT.addFont(newFont);
+        this._font_obj = newFont;
+      }
+    }
   }
 
   ensureFontSize() {
