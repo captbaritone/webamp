@@ -30,7 +30,7 @@ export default class WasabiTitleBar extends Group {
   }
 
   _renderX() {
-    this._div.style.left = this._relativex=='1' ? relative(this._padtitleleft + this._x ?? 0) : px(this._padtitleleft + this._x ?? 0);
+    this._div.style.left = this._relatx=='1' ? relative(this._padtitleleft + this._x ?? 0) : px(this._padtitleleft + this._x ?? 0);
     // this._div.setAttribute('pad-left', this._padtitleleft.toString())
   }
   
@@ -39,7 +39,7 @@ export default class WasabiTitleBar extends Group {
     // this._div.setAttribute('_width', this._width.toString())
     // this._div.setAttribute('_width_', this.getwidth().toString())
     // if(this._autowidthsource) return;
-    this._div.style.width = this._relativew=='1' ? relative(-this._padtitleleft + -this._padtitleright + this._width??0) : px(-this._padtitleright + this.getwidth());
+    this._div.style.width = this._relatw=='1' ? relative(-this._padtitleleft + -this._padtitleright + this._width??0) : px(-this._padtitleright + this.getwidth());
   }
 
 
