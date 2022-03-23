@@ -213,6 +213,14 @@ export class UIRoot {
       );
       cssRules.push(`  ${bitmap.getCSSVar()}: url(${url});`);
     }
+    for (const color of this._colors) {
+      const groupId = color.getGammaGroup();
+      const gammaGroup = this._getGammaGroup(groupId);
+      const url = gammaGroup.transformColor(
+        color.getValue()
+      );
+      cssRules.push(`  ${color.getCSSVar()}: ${url};`);
+    }
     cssRules.unshift(":root{");
     cssRules.push("}");
     const cssEl = document.getElementById("bitmap-css");
