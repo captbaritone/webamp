@@ -2,7 +2,7 @@
  * this file is needed to workaround of button-moving-layout issue
  */
 
-import { toBool } from "../../utils";
+import { throttle, toBool } from "../../utils";
 import GuiObj from "./GuiObj";
 
 import Layout from "./Layout";
@@ -141,7 +141,7 @@ export default class Movable extends GuiObj {
       const deltaX = newMouseX - startX;
       layout.setResizing("final", deltaX, deltaY);
     };
-    document.addEventListener("mousemove", handleMove);
+    document.addEventListener("mousemove", throttle(handleMove, 75));
     document.addEventListener("mouseup", handleMouseUp);
   };
 
@@ -187,7 +187,7 @@ export default class Movable extends GuiObj {
       const deltaX = newMouseX - startX;
       layout.setMoving("final", deltaX, deltaY);
     };
-    document.addEventListener("mousemove", handleMove);
+    document.addEventListener("mousemove", throttle(handleMove, 50));
     document.addEventListener("mouseup", handleMouseUp);
   };
 
