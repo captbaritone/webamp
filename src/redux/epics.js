@@ -477,7 +477,7 @@ const urlEpic = (actions, state) => {
       const proposedUrl = new URL(window.location.origin + url);
 
       // There are some params that we want to preserve across reloads.
-      for (const key of ["graphql", "vps"]) {
+      for (const key of ["rest", "vps"]) {
         let current = currentParams.get(key);
         if (current == null) {
           proposedUrl.searchParams.delete(key);
