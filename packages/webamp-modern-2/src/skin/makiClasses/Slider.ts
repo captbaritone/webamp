@@ -77,8 +77,11 @@ export default class Slider extends GuiObj {
       document.addEventListener("mouseup", handleMouseUp);
     });
   }
-  setXmlAttr(key: string, value: string): boolean {
+  setXmlAttr(_key: string, value: string): boolean {
+    const key = _key.toLowerCase()
     if (super.setXmlAttr(key, value)) {
+      if(key=="action")
+        this._setAction(value);
       return true;
     }
     switch (key.toLowerCase()) {
@@ -133,6 +136,7 @@ export default class Slider extends GuiObj {
   }
 
   init() {
+    console.log('SLIDER-INITED!')
     this._initializeActionHandler();
     this._registerDragEvents();
   }

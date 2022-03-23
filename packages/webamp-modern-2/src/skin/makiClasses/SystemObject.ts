@@ -43,6 +43,24 @@ export default class SystemObject extends BaseObject {
         { type: "INT", value: UI_ROOT.audio.getVolume() * 255 },
       ]);
     });
+    const EqBandHandle = (band: number) => {
+      // console.log('eq.changed:',band, UI_ROOT.audio.getEq(String(band)))
+      UI_ROOT.vm.dispatch(this, "oneqbandchanged", [
+        { type: "INT", value: band },
+        { type: "INT", value: UI_ROOT.audio.getEq(String(band)) * 255 - 127 },
+      ]);
+    };
+    UI_ROOT.audio.onEqChange("1", () => EqBandHandle(1));
+    UI_ROOT.audio.onEqChange("2", () => EqBandHandle(2));
+    UI_ROOT.audio.onEqChange("3", () => EqBandHandle(3));
+    UI_ROOT.audio.onEqChange("4", () => EqBandHandle(4));
+    UI_ROOT.audio.onEqChange("5", () => EqBandHandle(5));
+    UI_ROOT.audio.onEqChange("6", () => EqBandHandle(6));
+    UI_ROOT.audio.onEqChange("7", () => EqBandHandle(7));
+    UI_ROOT.audio.onEqChange("8", () => EqBandHandle(8));
+    UI_ROOT.audio.onEqChange("9", () => EqBandHandle(9));
+    UI_ROOT.audio.onEqChange("10", () => EqBandHandle(10));
+
   }
 
   init() {

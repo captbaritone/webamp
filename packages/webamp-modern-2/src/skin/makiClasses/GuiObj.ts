@@ -770,6 +770,26 @@ export default class GuiObj extends XmlObj {
     }
   }
 
+  sendaction(
+    action: string,
+    param: string,
+    x: number,
+    y: number,
+    p1: number,
+    p2: number
+  ):number {
+    // console.log('sendaction!',action, param)
+    return UI_ROOT.vm.dispatch(this, "onaction", [
+      { type: "STRING", value: action },
+      { type: "STRING", value: param },
+      { type: "INT", value: x },
+      { type: "INT", value: y },
+      { type: "INT", value: p1 },
+      { type: "INT", value: p2 },
+      { type: "OBJECT", value: this },
+    ]);
+  }
+
   _renderAlpha() {
     if (this._alpha != 255) {
       this._div.style.opacity = `${this._alpha / 255}`;
