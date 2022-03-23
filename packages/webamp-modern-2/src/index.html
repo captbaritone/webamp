@@ -86,6 +86,22 @@
       slider {
         overflow: hidden;
       }
+      slider > div {display: none;}
+      slider::after {
+        content: '';
+        position: absolute;
+        left: var(--thumb-left);
+        top: var(--thumb-top);
+        width: var(--thumb-width);
+        height: var(--thumb-height);
+        background-image: var(--thumb-background-image);
+      }
+      slider:hover:after {
+        background-image: var(--thumb-hover-background-image, var(--thumb-background-image));
+      }
+      slider:active:after {
+        background-image: var(--thumb-down-background-image, var(--thumb-background-image));
+      }
       text {
         overflow: hidden;
         box-sizing: border-box;

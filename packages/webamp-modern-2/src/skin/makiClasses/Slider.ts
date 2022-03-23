@@ -2,12 +2,17 @@ import UI_ROOT from "../../UIRoot";
 import { assume, clamp, num, px } from "../../utils";
 import GuiObj from "./GuiObj";
 
-interface ActionHandler {
+class ActionHandler {
+  _subscription: () => void = () => {};
   // 0-255
-  onsetposition(position: number): void;
-  onLeftMouseDown(x: number, y: number): void;
-  onLeftMouseUp(x: number, y: number): void;
-  dispose(): void;
+  onsetposition(position: number): void {}
+  onLeftMouseDown(x: number, y: number): void {}
+  onLeftMouseUp(x: number, y: number): void {}
+  onMouseMove(x: number, y: number): void {}
+  onFreeMouseMove(x: number, y: number): void {}
+  dispose(): void {
+    this._subscription();
+  }
 }
 const MAX = 255;
 
@@ -24,9 +29,11 @@ export default class Slider extends GuiObj {
   _action: string | null = null;
   _low: number = 0;
   _high: number = 1;
+  _thumbWidth: number = 0;
+  _thumbHeight: number = 0;
   _position: number = 0;
   _param: string | null = null;
-  _thumbDiv: HTMLDivElement = document.createElement("div");
+  // _thumbDiv: HTMLDivElement = document.createElement("div");
   _actionHandler: null | ActionHandler;
   _onSetPositionEvenEaten: number;
   _mouseX: number;
@@ -36,33 +43,55 @@ export default class Slider extends GuiObj {
     return this._div.getBoundingClientRect().width;
   }
 
+  /**
+   * set .position by X, Y
+   * where X,Y is mouseEvent.offsetX & Y
+   */
+  _setPositionXY(x: number, y: number) {
+    //TODO: consider padding. where padding = thumbSize/2
+    const width = this.getRealWidth() - this._thumbWidth;
+    const height = this.getheight() - this._thumbHeight;
+    const newPercent = this._vertical ? (height - y) / height : x / width;
+    this._position = clamp(newPercent, 0, 1);
+    this._renderThumbPosition();
+    this.doSetPosition(this.getposition());
+  }
+
   _registerDragEvents() {
-    this._thumbDiv.addEventListener("mousedown", (downEvent: MouseEvent) => {
+    // this._thumbDiv.addEventListener("mousedown", (downEvent: MouseEvent) => {
+    this._div.addEventListener("mousedown", (downEvent: MouseEvent) => {
       downEvent.stopPropagation();
       if (downEvent.button != 0) return; // only care LeftButton
-      const bitmap = UI_ROOT.getBitmap(this._thumb);
+      // const bitmap = UI_ROOT.getBitmap(this._thumb);
+      //TODO: change client/offset into pageX/Y
       const startX = downEvent.clientX;
       const startY = downEvent.clientY;
-      const width = this.getRealWidth() - bitmap.getWidth();
-      const height = this.getheight() - bitmap.getHeight();
-      const initialPostition = this._position;
+      const innerX = downEvent.offsetX;
+      const innerY = downEvent.offsetY;
+      // const width = this.getRealWidth() - this._thumbWidth;
+      // const height = this.getheight() - this._thumbHeight;
+      // const initialPostition = this._position;
+      // const newPercent = this._vertical ? startY / height : startX / width;
+      console.log("mouseDown:", downEvent.offsetX, downEvent.offsetY);
       this.doLeftMouseDown(downEvent.offsetX, downEvent.offsetY);
 
       const handleMove = (moveEvent: MouseEvent) => {
         moveEvent.stopPropagation();
         const newMouseX = moveEvent.clientX;
         const newMouseY = moveEvent.clientY;
-        const deltaY = newMouseY - startY;
         const deltaX = newMouseX - startX;
+        const deltaY = newMouseY - startY;
 
-        const deltaPercent = this._vertical ? deltaY / height : deltaX / width;
-        const newPercent = this._vertical
-          ? initialPostition - deltaPercent
-          : initialPostition + deltaPercent;
+        // const deltaPercent = this._vertical ? deltaY / height : deltaX / width;
+        // const newPercent = this._vertical
+        //   ? initialPostition - deltaPercent
+        //   : initialPostition + deltaPercent;
 
-        this._position = clamp(newPercent, 0, 1);
-        this._renderThumbPosition();
-        this.doSetPosition(this.getposition());
+        // this._position = clamp(newPercent, 0, 1);
+        // this._renderThumbPosition();
+        // this.doSetPosition(this.getposition());
+        //below is mousePosition conversion relative to inner _div
+        this.doMouseMove(innerX + deltaX, innerY + deltaY);
       };
 
       const handleMouseUp = (upEvent: MouseEvent) => {
@@ -76,18 +105,27 @@ export default class Slider extends GuiObj {
       document.addEventListener("mousemove", handleMove);
       document.addEventListener("mouseup", handleMouseUp);
     });
+
+    //? free mouse move, currently only Equalizers use it. =============
+    this._div.addEventListener("mousemove", (moveEvent: MouseEvent) => {
+      // moveEvent.stopPropagation();
+      this.doFreeMouseMove(moveEvent.offsetX, moveEvent.offsetY);
+    });
   }
+
   setXmlAttr(_key: string, value: string): boolean {
-    const key = _key.toLowerCase()
+    const key = _key.toLowerCase();
     if (super.setXmlAttr(key, value)) {
-      if(key=="action")
-        this._setAction(value);
+      if (key == "action") this._setAction(value);
       return true;
     }
     switch (key.toLowerCase()) {
       case "thumb":
         // (id) The bitmap element for the slider thumb.
         this._thumb = value;
+        const bitmap = UI_ROOT.getBitmap(this._thumb);
+        this._thumbWidth = bitmap.getWidth();
+        this._thumbHeight = bitmap.getHeight();
         break;
       case "downthumb":
         // (id) The bitmap element for the slider thumb when held by the user.
@@ -136,7 +174,7 @@ export default class Slider extends GuiObj {
   }
 
   init() {
-    console.log('SLIDER-INITED!')
+    // console.log("SLIDER-INITED!");
     this._initializeActionHandler();
     this._registerDragEvents();
   }
@@ -147,7 +185,9 @@ export default class Slider extends GuiObj {
         this._actionHandler = new SeekActionHandler(this);
         break;
       case "eq_band":
-        this._actionHandler = new EqActionHandler(this, this._param);
+        if (this._param == "preamp")
+          this._actionHandler = new PreampActionHandler(this, this._param);
+        else this._actionHandler = new EqActionHandler(this, this._param);
         break;
       case "eq_preamp":
         break;
@@ -198,12 +238,18 @@ export default class Slider extends GuiObj {
   }
 
   doLeftMouseDown(x: number, y: number) {
+    this._setPositionXY(x, y);
     UI_ROOT.vm.dispatch(this, "onleftbuttondown", [
       { type: "INT", value: x },
       { type: "INT", value: y },
     ]);
     if (this._actionHandler != null) {
       this._actionHandler.onLeftMouseDown(x, y);
+    }
+  }
+  doMouseMove(x: number, y: number) {
+    if (this._actionHandler != null) {
+      this._actionHandler.onMouseMove(x, y);
     }
   }
   doLeftMouseUp(x: number, y: number) {
@@ -224,42 +270,64 @@ export default class Slider extends GuiObj {
     }
   }
 
+  doFreeMouseMove(x: number, y: number) {
+    // UI_ROOT.vm.dispatch(this, "onleftbuttondown", [
+    //   { type: "INT", value: x },
+    //   { type: "INT", value: y },
+    // ]);
+    if (this._actionHandler != null) {
+      this._actionHandler.onFreeMouseMove(x, y);
+    }
+  }
+
   _renderThumb() {
-    this._thumbDiv.style.position = "absolute";
-    this._thumbDiv.setAttribute("data-obj-name", "Slider::Handle");
-    this._thumbDiv.classList.add("webamp--img");
+    // this._thumbDiv.style.position = "absolute";
+    // this._thumbDiv.setAttribute("data-obj-name", "Slider::Handle");
+    // this._thumbDiv.classList.add("webamp--img");
     if (this._thumb != null) {
       const bitmap = UI_ROOT.getBitmap(this._thumb);
-      this._thumbDiv.style.width = px(bitmap.getWidth());
-      this._thumbDiv.style.height = px(bitmap.getHeight());
-      bitmap.setAsBackground(this._thumbDiv);
+      // this._thumbDiv.style.width = px(bitmap.getWidth());
+      // this._thumbDiv.style.height = px(bitmap.getHeight());
+      // bitmap.setAsBackground(this._thumbDiv);
+
+      bitmap._setAsBackground(this._div, "thumb-");
+      this._div.style.setProperty("--thumb-width", px(bitmap.getWidth()));
+      this._div.style.setProperty("--thumb-height", px(bitmap.getHeight()));
     }
 
     if (this._downThumb != null) {
       const bitmap = UI_ROOT.getBitmap(this._downThumb);
-      bitmap.setAsDownBackground(this._thumbDiv);
+      // bitmap.setAsDownBackground(this._thumbDiv);
+
+      bitmap._setAsBackground(this._div, "thumb-down-");
     }
 
     if (this._hoverThumb != null) {
       const bitmap = UI_ROOT.getBitmap(this._hoverThumb);
-      bitmap.setAsHoverBackground(this._thumbDiv);
+      // bitmap.setAsHoverBackground(this._thumbDiv);
+
+      bitmap._setAsBackground(this._div, "thumb-hover-");
     }
   }
 
   _renderThumbPosition() {
     if (this._thumb != null) {
-      const bitmap = UI_ROOT.getBitmap(this._thumb);
+      // const bitmap = UI_ROOT.getBitmap(this._thumb);
       // TODO: What if the orientation has changed?
       if (this._vertical) {
         const top =
-          (1 - this._position) * (this.getheight() - bitmap.getHeight());
-        this._thumbDiv.style.top = px(top);
+          (1 - this._position) * (this.getheight() - this._thumbHeight);
+        // this._thumbDiv.style.top = px(top);
+
+        this._div.style.setProperty("--thumb-top", px(top));
       } else {
         // const left = (1 - this._position * (this.getwidth() - bitmap.getWidth());
         const curwidth = this.getRealWidth();
-        const left = this._position * (curwidth - bitmap.getWidth());
+        const left = this._position * (curwidth - this._thumbWidth);
         // console.log('thumb.left', this._position, left, 'w:',this.getwidth(),'bmp.w:', bitmap.getWidth())
-        this._thumbDiv.style.left = px(left);
+        // this._thumbDiv.style.left = px(left);
+
+        this._div.style.setProperty("--thumb-left", px(left));
       }
     }
   }
@@ -272,7 +340,7 @@ export default class Slider extends GuiObj {
     assume(this._barMiddle == null, "Need to handle Slider barmiddle");
     this._renderThumb();
     this._renderThumbPosition();
-    this._div.appendChild(this._thumbDiv);
+    // this._div.appendChild(this._thumbDiv);
   }
 
   dispose() {
@@ -299,24 +367,25 @@ export default class Slider extends GuiObj {
  **/
 
 // eslint-disable-next-line rulesdir/proper-maki-types
-class SeekActionHandler implements ActionHandler {
+class SeekActionHandler extends ActionHandler {
   _slider: Slider;
   _pendingChange: boolean;
 
-  _subscription: () => void;
-
   isPendingChange(): boolean {
-    return true;// this._pendingChange || this._dragging;
+    return true; // this._pendingChange || this._dragging;
     // return this._dragging == true;
   }
 
   constructor(slider: Slider) {
+    super();
     this._slider = slider;
     this._registerOnAudioProgress();
   }
 
   _registerOnAudioProgress() {
-    this._subscription = UI_ROOT.audio.onCurrentTimeChange(this._onAudioProgres);
+    this._subscription = UI_ROOT.audio.onCurrentTimeChange(
+      this._onAudioProgres
+    );
   }
 
   _onAudioProgres = () => {
@@ -337,7 +406,7 @@ class SeekActionHandler implements ActionHandler {
     }
   }
 
-  onLeftMouseDown(x: number, y: number) {}
+  // onLeftMouseDown(x: number, y: number) {}
   onLeftMouseUp(x: number, y: number) {
     // console.log("slider_ACTION.doLeftMouseUp");
     if (this._pendingChange) {
@@ -345,17 +414,57 @@ class SeekActionHandler implements ActionHandler {
       UI_ROOT.audio.seekToPercent(this._slider.getposition() / MAX);
     }
   }
+}
 
-  dispose(): void {
-    this._subscription();
+const EqGlobalVar = { eqMouseDown: false, targetSlider: null };
+// eslint-disable-next-line rulesdir/proper-maki-types
+class EqActionHandler extends ActionHandler {
+  _kind: string;
+  _slider: Slider;
+
+  constructor(slider: Slider, kind: string) {
+    super();
+    this._kind = kind;
+    this._slider = slider;
+    const update = () => {
+      slider._position = UI_ROOT.audio.getEq(kind);
+      slider._renderThumbPosition();
+    };
+    update();
+    this._subscription = UI_ROOT.audio.onEqChange(kind, update);
+  }
+
+  onLeftMouseDown(x: number, y: number): void {
+    EqGlobalVar.eqMouseDown = true;
+  }
+  onLeftMouseUp(x: number, y: number): void {
+    EqGlobalVar.eqMouseDown = false;
+  }
+
+  onFreeMouseMove(x: number, y: number): void {
+    if (EqGlobalVar.eqMouseDown) {
+      EqGlobalVar.targetSlider = this._slider;
+      this._slider._setPositionXY(x, y);
+    }
+  }
+
+  onMouseMove(x: number, y: number): void {
+    if (EqGlobalVar.eqMouseDown) {
+      // send mouse pos to last hovered slider
+      EqGlobalVar.targetSlider._setPositionXY(x, y);
+    }
+  }
+
+  onsetposition(position: number): void {
+    UI_ROOT.audio.setEq(this._kind, position / MAX);
   }
 }
 
 // eslint-disable-next-line rulesdir/proper-maki-types
-class EqActionHandler implements ActionHandler {
-  _subscription: () => void;
+class PreampActionHandler extends ActionHandler {
   _kind: string;
   constructor(slider: Slider, kind: string) {
+    super();
     this._kind = kind;
     const update = () => {
       slider._position = UI_ROOT.audio.getEq(kind);
@@ -368,39 +477,21 @@ class EqActionHandler implements ActionHandler {
   onsetposition(position: number): void {
     UI_ROOT.audio.setEq(this._kind, position / MAX);
   }
-  onLeftMouseDown(x: number, y: number) {}
-  onLeftMouseUp(x: number, y: number) {}
-
-  dispose(): void {
-    this._subscription();
-  }
 }
 
 // eslint-disable-next-line rulesdir/proper-maki-types
-class PanActionHandler implements ActionHandler {
-  _subscription: () => void;
-  constructor(slider: Slider) {
-    this._subscription = () => {};
-  }
-
+class PanActionHandler extends ActionHandler {
   onsetposition(position: number): void {
     // TODO
   }
-  onLeftMouseDown(x: number, y: number) {}
-  onLeftMouseUp(x: number, y: number) {}
-
-  dispose(): void {
-    this._subscription();
-  }
 }
 
 // eslint-disable-next-line rulesdir/proper-maki-types
-class VolumeActionHandler implements ActionHandler {
-  _subscription: () => void;
+class VolumeActionHandler extends ActionHandler {
   _changing: boolean = false;
 
   constructor(slider: Slider) {
-    this._subscription = () => {};
+    super();
     slider._position = UI_ROOT.audio.getVolume();
     slider._renderThumbPosition();
 
@@ -420,9 +511,5 @@ class VolumeActionHandler implements ActionHandler {
   }
   onLeftMouseUp(x: number, y: number) {
     this._changing = false;
-  }
-
-  dispose(): void {
-    this._subscription();
   }
 }
