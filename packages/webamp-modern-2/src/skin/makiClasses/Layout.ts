@@ -113,9 +113,8 @@ export default class Layout extends Group {
 
   init() {
     super.init();
-    this.doResize();
+    this._invalidateSize();
   }
-
 
   setResizing(cmd: string, dx: number, dy: number) {
     const clampW = (w): number => {
@@ -177,6 +176,7 @@ export default class Layout extends Group {
       );
       this._resizingDiv.remove();
       this._resizingDiv = null;
+      this._invalidateSize();
     }
   }
 
