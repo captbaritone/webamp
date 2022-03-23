@@ -21,6 +21,23 @@
       select:focus {
         outline: none;
       }
+      select option {
+        padding-left: 5px;
+        width: 300%;
+      }
+      select option[selected]{
+        font-weight: bold;
+      }
+      select::before {
+        padding-left: 5px;
+        content: var(--colheader, none);
+        display: block;
+        position: sticky;
+        top: var(--colheadertop, 0);
+        left: 0;
+        background-color: black;
+        color: silver;
+      }
       .webamp--img {
         background-image: var(--background-image);
         background-position: top 0 left 0;
