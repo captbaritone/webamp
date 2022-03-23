@@ -1,14 +1,20 @@
 import UI_ROOT from "../../UIRoot";
-import { assume, clamp, num, px } from "../../utils";
+import { assume, clamp, num, px, throttle } from "../../utils";
 import GuiObj from "./GuiObj";
 
 class ActionHandler {
+  _slider: Slider;
+  constructor(slider: Slider) {
+    this._slider=slider;
+  }
   _subscription: () => void = () => {};
   // 0-255
   onsetposition(position: number): void {}
   onLeftMouseDown(x: number, y: number): void {}
   onLeftMouseUp(x: number, y: number): void {}
-  onMouseMove(x: number, y: number): void {}
+  onMouseMove(x: number, y: number): void {
+    this._slider._setPositionXY(x, y);
+  }
   onFreeMouseMove(x: number, y: number): void {}
   dispose(): void {
     this._subscription();
@@ -94,15 +100,17 @@ export default class Slider extends GuiObj {
         this.doMouseMove(innerX + deltaX, innerY + deltaY);
       };
 
+      const throttleMouseMove = throttle(handleMove,50)
+
       const handleMouseUp = (upEvent: MouseEvent) => {
         upEvent.stopPropagation();
         if (upEvent.button != 0) return; // only care LeftButton
 
-        document.removeEventListener("mousemove", handleMove);
+        document.removeEventListener("mousemove", throttleMouseMove);
         document.removeEventListener("mouseup", handleMouseUp);
         this.doLeftMouseUp(upEvent.offsetX, upEvent.offsetY);
       };
-      document.addEventListener("mousemove", handleMove);
+      document.addEventListener("mousemove", throttleMouseMove);
       document.addEventListener("mouseup", handleMouseUp);
     });
 
@@ -367,8 +375,8 @@ export default class Slider extends GuiObj {
  **/
 
 // eslint-disable-next-line rulesdir/proper-maki-types
+
 class SeekActionHandler extends ActionHandler {
-  _slider: Slider;
   _pendingChange: boolean;
 
   isPendingChange(): boolean {
@@ -377,8 +385,7 @@ class SeekActionHandler extends ActionHandler {
   }
 
   constructor(slider: Slider) {
-    super();
-    this._slider = slider;
+    super(slider);
     this._registerOnAudioProgress();
   }
 
@@ -420,12 +427,10 @@ const EqGlobalVar = { eqMouseDown: false, targetSlider: null };
 // eslint-disable-next-line rulesdir/proper-maki-types
 class EqActionHandler extends ActionHandler {
   _kind: string;
-  _slider: Slider;
 
   constructor(slider: Slider, kind: string) {
-    super();
+    super(slider);
     this._kind = kind;
-    this._slider = slider;
     const update = () => {
       slider._position = UI_ROOT.audio.getEq(kind);
       slider._renderThumbPosition();
@@ -491,7 +496,7 @@ class VolumeActionHandler extends ActionHandler {
   _changing: boolean = false;
 
   constructor(slider: Slider) {
-    super();
+    super(slider);
     slider._position = UI_ROOT.audio.getVolume();
     slider._renderThumbPosition();
 
