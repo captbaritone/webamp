@@ -36,7 +36,7 @@ export default class Text extends GuiObj {
   _scrollPaused: boolean = false;
   _scrollLeft: number = 0; // logically, not visually
   _textFullWidth: number; //calculated, not runtime by css
-  _inited: boolean = false;
+  _drawn: boolean = false; // needed to check has parents
 
   constructor() {
     super();
@@ -146,8 +146,6 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
   }
 
   init() {
-    if (this._inited) return;
-    this._inited = true;
     super.init();
     if (this._ticker) {
       this._prepareScrolling();
@@ -213,7 +211,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
 
   gettext() {
     // console.log('txt=', this._id, this._text, this.getTopParent()._id)
-    if ((this._text || "").startsWith(":") && this._inited) {
+    if ((this._text || "").startsWith(":") && this._drawn) {
       // return this.getTopParent()._name || this._text;
       const layout = this.getparentlayout();
       if (layout) {
@@ -431,6 +429,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
   }
 
   draw() {
+    this._drawn = true;
     super.draw();
     // this._prepareCss();
     this._renderText();
