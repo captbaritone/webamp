@@ -859,7 +859,7 @@ export default class GuiObj extends XmlObj {
     if (this._tooltip) {
       this._div.setAttribute("title", this._tooltip);
     }
-    if (this._ghost) {
+    if (this._ghost || this._sysregion==-2) {
       this._div.style.pointerEvents = "none";
     } else {
       this._div.style.pointerEvents = "auto";

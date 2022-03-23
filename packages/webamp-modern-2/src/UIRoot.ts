@@ -2,7 +2,13 @@ import Bitmap from "./skin/Bitmap";
 import JSZip, { JSZipObject } from "jszip";
 import { XmlElement } from "@rgrove/parse-xml";
 import TrueTypeFont from "./skin/TrueTypeFont";
-import { assert, assume, findLast, getCaseInsensitiveFile, removeAllChildNodes } from "./utils";
+import {
+  assert,
+  assume,
+  findLast,
+  getCaseInsensitiveFile,
+  removeAllChildNodes,
+} from "./utils";
 import BitmapFont from "./skin/BitmapFont";
 import Color from "./skin/Color";
 import GammaGroup from "./skin/GammaGroup";
@@ -49,7 +55,7 @@ export class UIRoot {
     this._containers = [];
     this._systemObjects = [];
     this._gammaNames = {};
-    removeAllChildNodes(this._div)
+    removeAllChildNodes(this._div);
 
     // A list of all objects created for this skin.
     this._objects = [];
@@ -118,7 +124,7 @@ export class UIRoot {
   }
 
   getGroupDef(id: string): XmlElement | null {
-    if(!id) return null;
+    if (!id) return null;
     const lowercaseId = id.toLowerCase();
     const found = findLast(
       this._groupDefs,
@@ -195,7 +201,9 @@ export class UIRoot {
 
   _setCssVars() {
     const cssRules = [];
-    const bitmapFonts: BitmapFont[] = this._fonts.filter(f => (f instanceof BitmapFont && !f._externalBitmap) ) as BitmapFont[];
+    const bitmapFonts: BitmapFont[] = this._fonts.filter(
+      (f) => f instanceof BitmapFont && !f._externalBitmap
+    ) as BitmapFont[];
     for (const bitmap of [...this._bitmaps, ...bitmapFonts]) {
       const img = bitmap.getImg();
       if (!img) {
@@ -216,9 +224,7 @@ export class UIRoot {
     for (const color of this._colors) {
       const groupId = color.getGammaGroup();
       const gammaGroup = this._getGammaGroup(groupId);
-      const url = gammaGroup.transformColor(
-        color.getValue()
-      );
+      const url = gammaGroup.transformColor(color.getValue());
       cssRules.push(`  ${color.getCSSVar()}: ${url};`);
     }
     cssRules.unshift(":root{");
@@ -260,6 +266,9 @@ export class UIRoot {
       case "toggle":
         this.toggleContainer(param);
         break;
+      case "close":
+        this.closeContainer();
+        break;
       default:
         assume(false, `Unknown global action: ${action}`);
     }
@@ -269,6 +278,17 @@ export class UIRoot {
     const container = this.findContainer(param);
     assume(container != null, `Can not toggle on unknown container: ${param}`);
     container.toggle();
+  }
+
+  closeContainer() {
+    const btn = document.activeElement;
+    const containerEl = btn.closest("container");
+    const container_id = containerEl.getAttribute("id").toLowerCase();
+    for (const container of this._containers) {
+      if (container._id.toLowerCase() == container_id) {
+        container.close();
+      }
+    }
   }
 
   draw() {
@@ -289,18 +309,18 @@ export class UIRoot {
 
   //? Zip things ========================
   /* because maki need to load a groupdef outside init() */
-  _zip : JSZip;
+  _zip: JSZip;
 
-  setZip(zip : JSZip) {
+  setZip(zip: JSZip) {
     this._zip = zip;
-    if(zip!=null){
+    if (zip != null) {
       this.getFileAsString = this.getFileAsStringZip;
-      this.getFileAsBytes  = this.getFileAsBytesZip;
-      this.getFileAsBlob  = this.getFileAsBlobZip;
+      this.getFileAsBytes = this.getFileAsBytesZip;
+      this.getFileAsBlob = this.getFileAsBlobZip;
     } else {
       this.getFileAsString = this.getFileAsStringPath;
-      this.getFileAsBytes  = this.getFileAsBytesPath;
-      this.getFileAsBlob  = this.getFileAsBlobPath;
+      this.getFileAsBytes = this.getFileAsBytesPath;
+      this.getFileAsBlob = this.getFileAsBlobPath;
     }
   }
 
@@ -308,37 +328,37 @@ export class UIRoot {
   /* needed to avoid direct fetch to root path */
   _skinPath: string;
 
-  setSkinDir(skinPath: string) { // required to end with slash/
+  setSkinDir(skinPath: string) {
+    // required to end with slash/
     this._skinPath = skinPath;
   }
 
-
   async getFileAsStringZip(filePath: string): Promise<string> {
-    if(!filePath) return null;
+    if (!filePath) return null;
     const zipObj = getCaseInsensitiveFile(this._zip, filePath);
-    if(!zipObj) return null;
-    return await zipObj.async('string');
+    if (!zipObj) return null;
+    return await zipObj.async("string");
   }
-  
+
   async getFileAsBytesZip(filePath: string): Promise<ArrayBuffer> {
-    if(!filePath) return null;
+    if (!filePath) return null;
     const zipObj = getCaseInsensitiveFile(this._zip, filePath);
-    if(!zipObj) return null;
-    return await zipObj.async('arraybuffer');
+    if (!zipObj) return null;
+    return await zipObj.async("arraybuffer");
   }
-  
+
   async getFileAsBlobZip(filePath: string): Promise<Blob> {
-    if(!filePath) return null;
+    if (!filePath) return null;
     const zipObj = getCaseInsensitiveFile(this._zip, filePath);
-    if(!zipObj) return null;
-    return await zipObj.async('blob');
+    if (!zipObj) return null;
+    return await zipObj.async("blob");
   }
 
   async getFileAsStringPath(filePath: string): Promise<string> {
     const response = await fetch(this._skinPath + filePath);
     return await response.text();
   }
-  
+
   async getFileAsBytesPath(filePath: string): Promise<ArrayBuffer> {
     const response = await fetch(this._skinPath + filePath);
     return await response.arrayBuffer();
@@ -349,25 +369,23 @@ export class UIRoot {
     return await response.blob();
   }
 
-
   getFileIsExist(filePath: string): boolean {
     const zipObj = getCaseInsensitiveFile(this._zip, filePath);
     return !!zipObj;
   }
-
 
   //? System things ========================
   /* because maki need to be run if not inside any Group @init() */
   addSystemObject(systemObj: SystemObject) {
     this._systemObjects.push(systemObj);
   }
-  init(){
+  init() {
     for (const systemObject of this._systemObjects) {
       systemObject.init();
     }
   }
-  getId(){
-    return 'UIROOT';
+  getId() {
+    return "UIROOT";
   }
 }
 
