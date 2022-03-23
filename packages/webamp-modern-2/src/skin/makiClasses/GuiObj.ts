@@ -136,9 +136,9 @@ export default class GuiObj extends XmlObj {
         this._droptarget = value;
         break;
       case "dblclickaction":
-        const [action,param, actionTarget] = value.split(';')
+        const [action, param, actionTarget] = value.split(";");
         this._div.addEventListener("dblclick", (e) => {
-            this.dispatchAction(action, param, actionTarget);
+          this.dispatchAction(action, param, actionTarget);
         });
         break;
       case "ghost":
@@ -153,7 +153,7 @@ export default class GuiObj extends XmlObj {
         this._div.setAttribute(key, value);
         // this._div.setAttribute(key, `${parseFloat(value)/255*100}`);
         break;
-    
+
       case "tooltip":
         this._tooltip = value;
         break;
@@ -173,9 +173,7 @@ export default class GuiObj extends XmlObj {
     this.setXmlAttr(key, value);
   }
 
-  setSize(newWidth:number, newHeight:number){
-    
-  }
+  setSize(newWidth: number, newHeight: number) {}
 
   init() {
     //process <sendparams> and <hideobject>
@@ -209,11 +207,16 @@ export default class GuiObj extends XmlObj {
 
     this._div.addEventListener("mousedown", (e) => {
       e.stopPropagation();
-      this.onLeftButtonDown(e.clientX, e.clientY);
+      this.onLeftButtonDown(
+        e.offsetX + this.getleft(),
+        e.offsetY + this.gettop()
+      );
 
-      const mouseUpHandler = (e) => {
-        // e.stopPropagation();
-        this.onLeftButtonUp(e.clientX, e.clientY);
+      const mouseUpHandler = (e: MouseEvent) => {
+        this.onLeftButtonUp(
+          e.offsetX + this.getleft(),
+          e.offsetY + this.gettop()
+        );
         this._div.removeEventListener("mouseup", mouseUpHandler);
       };
       this._div.addEventListener("mouseup", mouseUpHandler);
@@ -742,12 +745,12 @@ export default class GuiObj extends XmlObj {
 
   handleAction(
     action: string,
-    param: string | null=null,
-    actionTarget: string | null=null
+    param: string | null = null,
+    actionTarget: string | null = null
   ): boolean {
-    if(actionTarget){
+    if (actionTarget) {
       const guiObj = this.findobject(actionTarget);
-      if(guiObj) {
+      if (guiObj) {
         guiObj.handleAction(action, param);
         return true;
       }
@@ -859,7 +862,7 @@ export default class GuiObj extends XmlObj {
     if (this._tooltip) {
       this._div.setAttribute("title", this._tooltip);
     }
-    if (this._ghost || this._sysregion==-2) {
+    if (this._ghost || this._sysregion == -2) {
       this._div.style.pointerEvents = "none";
     } else {
       this._div.style.pointerEvents = "auto";

@@ -5,14 +5,6 @@ import SystemObject from "./SystemObject";
 import Movable from "./Movable";
 import Layout from "./Layout";
 
-const MOUSE_POS = { x: 0, y: 0 };
-
-// TODO: Figure out how this could be unsubscribed eventually
-document.addEventListener("mousemove", (e: MouseEvent) => {
-  MOUSE_POS.x = e.clientX;
-  MOUSE_POS.y = e.clientY;
-});
-
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Cgroup.2F.3E
 export default class Group extends Movable {
   static GUID = "45be95e5419120725fbb5c93fd17f1f9";
@@ -115,14 +107,6 @@ export default class Group extends Movable {
 
   getnumobjects(): number {
     return this._children.length;
-  }
-
-  getmouseposx(): number {
-    return MOUSE_POS.x - this.getparentlayout().getleft();
-  }
-
-  getmouseposy(): number {
-    return MOUSE_POS.y - this.getparentlayout().gettop();
   }
 
   getparentlayout(): Layout {

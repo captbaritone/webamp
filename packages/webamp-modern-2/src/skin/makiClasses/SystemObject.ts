@@ -8,6 +8,15 @@ import PRIVATE_CONFIG from "../PrivateConfig";
 import UI_ROOT from "../../UIRoot";
 import GuiObj from "./GuiObj";
 
+const MOUSE_POS = { x: 0, y: 0 };
+
+// TODO: Figure out how this could be unsubscribed eventually
+document.addEventListener("mousemove", (e: MouseEvent) => {
+  // https://stackoverflow.com/questions/6073505/what-is-the-difference-between-screenx-y-clientx-y-and-pagex-y
+  MOUSE_POS.x = e.pageX;
+  MOUSE_POS.y = e.pageY;
+});
+
 export default class SystemObject extends BaseObject {
   static GUID = "d6f50f6449b793fa66baf193983eaeef";
   _parentGroup: Group;
@@ -68,7 +77,7 @@ export default class SystemObject extends BaseObject {
    * @ret The mouse's current X pos.
    */
   getmouseposx(): number {
-    return this._parentGroup.getmouseposx();
+    return MOUSE_POS.x;
   }
 
   /**
@@ -78,7 +87,7 @@ export default class SystemObject extends BaseObject {
    * @ret The mouse's current Y pos.
    */
   getmouseposy(): number {
-    return this._parentGroup.getmouseposy();
+    return MOUSE_POS.y;
   }
 
   /**
