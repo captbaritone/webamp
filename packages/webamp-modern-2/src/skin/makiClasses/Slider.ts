@@ -38,7 +38,7 @@ export default class Slider extends GuiObj {
 
   _registerDragEvents() {
     this._thumbDiv.addEventListener("mousedown", (downEvent: MouseEvent) => {
-      //downEvent.stopPropagation();
+      downEvent.stopPropagation();
       if (downEvent.button != 0) return; // only care LeftButton
       const bitmap = UI_ROOT.getBitmap(this._thumb);
       const startX = downEvent.clientX;
@@ -49,7 +49,7 @@ export default class Slider extends GuiObj {
       this.doLeftMouseDown(downEvent.offsetX, downEvent.offsetY);
 
       const handleMove = (moveEvent: MouseEvent) => {
-        //moveEvent.stopPropagation();
+        moveEvent.stopPropagation();
         const newMouseX = moveEvent.clientX;
         const newMouseY = moveEvent.clientY;
         const deltaY = newMouseY - startY;
@@ -66,7 +66,7 @@ export default class Slider extends GuiObj {
       };
 
       const handleMouseUp = (upEvent: MouseEvent) => {
-        //upEvent.stopPropagation();
+        upEvent.stopPropagation();
         if (upEvent.button != 0) return; // only care LeftButton
 
         document.removeEventListener("mousemove", handleMove);
