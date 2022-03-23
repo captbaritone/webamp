@@ -742,9 +742,16 @@ export default class GuiObj extends XmlObj {
 
   handleAction(
     action: string,
-    param: string | null,
-    actionTarget: string | null
+    param: string | null=null,
+    actionTarget: string | null=null
   ): boolean {
+    if(actionTarget){
+      const guiObj = this.findobject(actionTarget);
+      if(guiObj) {
+        guiObj.handleAction(action, param);
+        return true;
+      }
+    }
     return false;
   }
 

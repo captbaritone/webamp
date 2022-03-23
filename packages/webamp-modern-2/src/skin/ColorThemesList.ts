@@ -93,6 +93,18 @@ export default class ColorThemesList extends GuiObj {
           this._renderBoldSelection();
         }
         return true;
+      case "colorthemes_previous":
+        if(this._select.selectedIndex > 0) {
+          this._select.selectedIndex--;
+          return this.handleAction('colorthemes_switch')
+        }
+        break
+      case "colorthemes_next":
+        if(this._select.selectedIndex < this._select.options.length) {
+          this._select.selectedIndex++;
+          return this.handleAction('colorthemes_switch')
+        }
+        break
     }
     return false;
   }
