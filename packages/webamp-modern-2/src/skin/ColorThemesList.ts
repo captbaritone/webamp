@@ -71,7 +71,7 @@ export default class ColorThemesList extends GuiObj {
   }
 
   _renderBoldSelection() {
-    Array.from(this._select.options).forEach(function (option_element) {
+    Array.from(this._select.options).forEach((option_element) => {
       if (option_element.value === UI_ROOT._activeGammaSetName) {
         option_element.setAttribute("selected", "selected");
       } else {
