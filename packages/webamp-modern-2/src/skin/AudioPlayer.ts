@@ -279,7 +279,9 @@ export class AudioPlayer {
 
   // execute the callback everytime the label is trigger
   on(label:string, callback, checkPast = false): ()=>void {
-    this._listeners.has(label) || this._listeners.set(label, []);
+    if (!this._listeners.has(label)) {
+       this._listeners.set(label, []);
+    }
     this._listeners.get(label).push(callback);
     if (checkPast)
         this._fCheckPast(label, callback);
