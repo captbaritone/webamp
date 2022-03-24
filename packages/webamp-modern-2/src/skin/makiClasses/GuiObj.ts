@@ -235,7 +235,7 @@ export default class GuiObj extends XmlObj {
   }
 
   getId(): string {
-    return this._id;
+    return this._id || '';
   }
 
   /**
@@ -727,6 +727,11 @@ export default class GuiObj extends XmlObj {
   screentoclienty(y: number): number {
     return y;
   }
+
+  getparent(): Group {
+    return this._parent;
+  }
+
   getparentlayout(): Layout {
     if (this._parent) {
       return this._parent.getparentlayout();
@@ -777,7 +782,7 @@ export default class GuiObj extends XmlObj {
     y: number,
     p1: number,
     p2: number
-  ):number {
+  ): number {
     // console.log('sendaction!',action, param)
     return UI_ROOT.vm.dispatch(this, "onaction", [
       { type: "STRING", value: action },

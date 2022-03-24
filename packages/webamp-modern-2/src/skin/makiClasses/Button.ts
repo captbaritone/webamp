@@ -56,6 +56,7 @@ export default class Button extends GuiObj {
         this._param = value;
         break;
       case "action_target":
+      case "cbtarget":
         this._actionTarget = value;
         break;
       default:
@@ -71,7 +72,7 @@ export default class Button extends GuiObj {
     }
     if (this._image != null) {
       const bitmap = UI_ROOT.getBitmap(this._image);
-      if(bitmap) return bitmap.getHeight();
+      if (bitmap) return bitmap.getHeight();
     }
     return super.getheight();
   }
@@ -83,7 +84,7 @@ export default class Button extends GuiObj {
     }
     if (this._image != null) {
       const bitmap = UI_ROOT.getBitmap(this._image);
-      if(bitmap) return bitmap.getWidth();
+      if (bitmap) return bitmap.getWidth();
     }
     return super.getwidth();
   }
@@ -157,10 +158,10 @@ export default class Button extends GuiObj {
   }
 
   hide() {
-    if(document.activeElement == this._div){
-      this.getparentlayout()._parent._div.focus()
+    if (document.activeElement == this._div) {
+      this.getparentlayout()._parent._div.focus();
     }
-    super.hide()
+    super.hide();
   }
 
   /*
