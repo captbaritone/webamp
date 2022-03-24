@@ -157,6 +157,7 @@
       text,
       wasabiframe,
       wasabititlebar,
+      componentbucket,
       colorthemeslist {
         position: absolute;
         left: 0;
@@ -177,6 +178,18 @@
       }
       grid middle {
         flex-grow: 1;
+      }
+      componentbucket {
+        overflow: hidden;
+      }
+      componentbucket > wrapper {
+        display: flex;
+      }
+      componentbucket.vertical > wrapper {
+        flex-direction: column;
+      }
+      componentbucket > wrapper > group {
+        position: relative;
       }
       /* grid left, gridprogress left {left: 0;}
       grid right, gridprogress right {right: 0;} */

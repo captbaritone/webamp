@@ -292,6 +292,17 @@ export default class Group extends Movable {
     // this._div.style.setProperty('-webkit-mask-type', 'luminance')
   }
 
+  appendChildrenDiv() {
+    // ComponentBucket may has different way to append children
+    this._appendChildrenToDiv(this._div);
+  }
+  _appendChildrenToDiv(containerDiv: HTMLElement) {
+    for (const child of this._children) {
+      child.draw();
+      containerDiv.appendChild(child.getDiv());
+    }
+  }
+
   draw() {
     super.draw();
     this._div.classList.add("webamp--img");
@@ -306,10 +317,7 @@ export default class Group extends Movable {
     this._div.style.pointerEvents = "none";
     // this._div.style.overflow = "hidden";
     this._renderBackground();
-    for (const child of this._children) {
-      child.draw();
-      this._div.appendChild(child.getDiv());
-    }
+    this.appendChildrenDiv();
     if (this._autowidthsource) {
       // this._div.style.removeProperty('width');
       this._div.classList.add("autowidthsource");
