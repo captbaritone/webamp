@@ -108,7 +108,7 @@ export default class ImageManager {
     const img = bitmap._img = await this.getImage(bitmap._file);
   }
   async setBimapImg0(bitmap: Bitmap){
-    const img = bitmap._img = await this.getImage(bitmap._file);
+    bitmap._img = await this.getImage(bitmap._file);
     if(bitmap._img){
       if (bitmap._width == null && bitmap._height == null) {
         bitmap.setXmlAttr("w", String(bitmap._img.width));
