@@ -15,8 +15,6 @@ for (const [line, chars] of CHARS.split("\n").entries()) {
 
 // http://wiki.winamp.com/wiki/XML_Elements#.3Cbitmapfont.2F.3E
 export default class BitmapFont extends Bitmap {
-  // _file: string;
-  // _id: string;
   _charWidth: number;
   _charHeight: number;
   _horizontalSpacing: number;
@@ -31,12 +29,6 @@ export default class BitmapFont extends Bitmap {
 
     const key = _key.toLowerCase();
     switch (key) {
-      // case "id":
-      //   this._id = value;
-      //   break;
-      // case "file":
-      //   this._file = value;
-      //   break;
       case "charwidth":
         this._charWidth = num(value);
         break;
