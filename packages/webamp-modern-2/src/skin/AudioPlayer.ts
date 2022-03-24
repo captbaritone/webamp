@@ -339,7 +339,7 @@ export class AudioPlayer {
   trigger(label:string, ...args: any[]) {
       let res = false;
       this._triggerdLabels.set(label, args); // save all triggerd labels for onready and onceready
-      let _trigger = (inListener, label, ...args) => {
+      let _trigger = (inListener, label) => {
           let listeners = inListener.get(label);
           if (listeners && listeners.length) {
               listeners.forEach((listener) => {
