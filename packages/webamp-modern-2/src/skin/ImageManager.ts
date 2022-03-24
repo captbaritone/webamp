@@ -40,7 +40,7 @@ export default class ImageManager {
   }
   async ensureBitmapsLoaded() {
     return Promise.all(
-      Object.values(this._bitmaps).map((bitmap) => {
+      Object.values(this._bitmaps).map(async (bitmap) => {
         return this.setBimapImg(bitmap).then(() => {
           if (bitmap._img) {
             if (bitmap._width == null && bitmap._height == null) {
