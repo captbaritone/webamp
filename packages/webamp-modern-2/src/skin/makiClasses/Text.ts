@@ -96,6 +96,7 @@ export default class Text extends GuiObj {
         break;
       case "ticker":
         /// (bool) Setting this flag causes the object to scroll left and right if the text does not fit the rectangular area of the text object.
+        if (value == "0") value = "off";
         this._ticker = value.toLowerCase();
         break;
       case "timecolonwidth":
@@ -161,7 +162,8 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
 
   init() {
     super.init();
-    if (this._ticker != "off") {
+    console.log(`text: ${this.getId()} "${this._ticker}"`);
+    if (this._ticker && this._ticker != "off") {
       this._prepareScrolling();
     }
   }
@@ -224,15 +226,12 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
   }
 
   gettext() {
-    // console.log('txt=', this._id, this._text, this.getTopParent()._id)
     if ((this._text || "").startsWith(":") && this._drawn) {
-      // return this.getTopParent()._name || this._text;
       const layout = this.getparentlayout();
       if (layout) {
         return layout.getcontainer()._name || this._text;
       }
     }
-    // return 'Assalamualaikum'
     if (this._display) {
       return this._displayValue;
     }
@@ -253,21 +252,16 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
 
   //to speedup, we spit render. This is only rendering style
   _prepareCss() {
-    // this._div.style.boxShadow = 'inset 0 0 1px 1px blue'; //debug mode
     if (!this._font_obj) {
       this._font_obj = UI_ROOT.getFont(this._font_id);
     }
     const font = this._font_obj;
     if (font instanceof BitmapFont) {
-      // this._div.style.setProperty('--fontMode', 'BitmapFont');
       this._textWrapper.setAttribute("font", "BitmapFont");
       this._div.style.setProperty(
         "--fontSize",
         (this._fontSize || "~").toString()
       );
-      // this._renderBitmapFont(font);
-      // font.ensureFontLoaded()
-      // const bitmap = font != null ? UI_ROOT.getBitmap(font._file) : null;
       this.setBackgroundImage(font);
       this._div.style.backgroundSize = "0"; //disable parent background, because only children will use it
       this._div.style.lineHeight = px(this._div.getBoundingClientRect().height);
@@ -277,15 +271,12 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
       if (this._color) {
         const color = UI_ROOT.getColor(this._color);
         if (color) {
-          // this._div.style.color = color.getRgb()
           this._div.style.color = `var(${color.getCSSVar()}, ${color.getRgb})`;
         }
       }
       if (font instanceof TrueTypeFont) {
         this._textWrapper.setAttribute("font", "TrueType");
 
-        // this._div.innerText = this.gettext();
-        this._div.style.fontFamily = font.getFontFamily();
         this._div.style.fontFamily = font.getFontFamily();
         this._div.style.fontSize = px(this._fontSize ?? 12);
         this._div.style.textTransform = this._forceuppercase
@@ -299,7 +290,6 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
         }
       } else if (font == null) {
         this._div.style.setProperty("--fontMode", "Null");
-        // this._div.innerText = this.gettext();
         this._div.style.fontFamily = "Arial";
       } else {
         throw new Error("Unexpected font");
@@ -357,17 +347,6 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
     this._div.innerHTML = s;
   }
 
-  // getwidth(): number {
-  //   let charWidth = 12+3;
-  //   if(this._font){
-  //     const font = UI_ROOT.getFont(this._font);
-  //     if(font instanceof BitmapFont){
-  //       charWidth = font._charWidth+3;
-  //     }
-  //   }
-  //   // return this._div.getBoundingClientRect().width; // cant calc when _dif is out of document
-  //   return this.gettext().length * charWidth;
-  // }
   // it is needed for scrolltext.
   _invalidateFullWidth() {
     const font = this._font_obj;
@@ -380,30 +359,23 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
   }
 
   getautowidth(): number {
-    // if (this._font) {
     this._invalidateFullWidth();
     let textWidth = this._textFullWidth;
-    // const font = this._font_obj;
-    // if (font instanceof BitmapFont)
-    // {
-    //   textWidth = this._getBitmapFontTextWidth(font)
-    // } else  {
-    //   textWidth = this._getTrueTypeTextWidth()
-    // }
-    // textWidth += this._x || 0;
     if (this._relatw == "1") {
       textWidth += this._width * -1;
     }
     return textWidth;
   }
+
   gettextwidth(): number {
     return this.getautowidth();
   }
+
   _getBitmapFontTextWidth(font: BitmapFont): number {
     const charWidth = font._charWidth;
-    // this._div.setAttribute('charwidth', charWidth.toString())
     return this.gettext().length * charWidth + this._paddingX * 2;
   }
+
   _getTrueTypeTextWidth(font: TrueTypeFont): number {
     /**
      * Uses canvas.measureText to compute and return the width of the given text of given font in pixels.
@@ -414,53 +386,22 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
      * @see https://stackoverflow.com/questions/118241/calculate-text-width-with-javascript/21015393#21015393
      */
     const self = this;
-    // function gettextWidth(text, font) {
-    // re-use canvas object for better performance
-    // const canvas = gettextWidth.canvas || (gettextWidth.canvas = document.createElement("canvas"));
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
     context.font = `${this._fontSize || 14}px ${
       (font && font.getFontFamily()) || "Arial"
     }`;
-    // console.log('calcTextWidth:', context.font, self.getId())
     const metrics = context.measureText(this.gettext());
     return metrics.width + self._paddingX * 2;
-    // }
-
-    // function getCssStyle(element, prop) {
-    //     return window.getComputedStyle(element, null).getPropertyValue(prop);
-    // }
-
-    // function getCanvasFontSize(el = document.body) {
-    //   const fontWeight = getCssStyle(el, 'font-weight') || 'normal';
-    //   const fontSize = getCssStyle(el, 'font-size') || '16px';
-    //   const fontFamily = getCssStyle(el, 'font-family') || 'Times New Roman';
-
-    //   return `${fontWeight} ${fontSize} ${fontFamily}`;
-    // }
-
-    // return gettextWidth(this.gettext(), `${this._fontSize}px ${'Arial'}`)
   }
 
   draw() {
     this._drawn = true;
     super.draw();
-    // this._prepareCss();
     this._renderText();
 
-    // this._div.style.width = "auto";
     this._div.style.removeProperty("line-height");
-    // this._div.style.display = "block";
     this._div.classList.add("webamp--img");
-
-    /*
-    if (this._color) {
-      console.log(this._color);
-      const color = UI_ROOT.getColor(this._color);
-      console.log({ color });
-      this._div.style.color = color.getRbg();
-    }
-    */
   }
 
   _prepareScrolling() {
@@ -474,16 +415,12 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
   }
 
   doScrollText() {
-    // console.log('scrolling!', this._textWrapper.style.left);
-    const curL = this._scrollLeft; //parseInt(this._textWrapper.style.left) || 0;
+    const curL = this._scrollLeft; 
     const step = 1; //pixel
     const idle = 20; //when overflow
     const container = this._div.getBoundingClientRect();
-    // const wrapper = this._textWrapper.getBoundingClientRect();
     const wrapperWidth = this._textFullWidth;
     if (wrapperWidth <= container.width) return;
-    // const cw = wrapper.width;
-    // var l = container.width - wrapper.width
     var l = curL + step * this._scrollDirection;
     if (l + wrapperWidth < container.width - step * idle) {
       // too left
