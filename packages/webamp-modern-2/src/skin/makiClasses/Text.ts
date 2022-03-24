@@ -131,7 +131,6 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
 
   _autoDetectFontType() {
     if (this._font_id) {
-      console.log("auto-detect-font:", this._font_id);
       this._font_obj = UI_ROOT.getFont(this._font_id);
       if (!this._font_obj) {
         const newFont = new TrueTypeFont();
@@ -149,12 +148,10 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
       context.font = `${this._fontSize}px ${
         this._font_obj.getFontFamily() || "Arial"
       }`;
-      // console.log('calcTextWidth:', context.font, self.getId())
       const metrics = context.measureText("IWH");
       const fontHeight =
         metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent;
 
-      // this._fontSize = this._fontSize * (1 + ((fontHeight - this._fontSize ) / this._fontSize));
       this._fontSize =
         this._fontSize * (1 - (fontHeight - this._fontSize) / this._fontSize);
     }
@@ -162,7 +159,6 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
 
   init() {
     super.init();
-    console.log(`text: ${this.getId()} "${this._ticker}"`);
     if (this._ticker && this._ticker != "off") {
       this._prepareScrolling();
     }
