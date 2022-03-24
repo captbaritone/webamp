@@ -158,7 +158,7 @@ export class AudioPlayer {
   }
 
   getState(): number {
-    if(!!this.__isStop) { // To distinc with pause
+    if(this.__isStop) { // To distinct from pause
       return STATUS_STOPPED; 
     }
     const audio = this._audio;
