@@ -454,7 +454,7 @@ class EqActionHandler extends ActionHandler {
   }
 
   onMouseMove(x: number, y: number): void {
-    if (EqGlobalVar.eqMouseDown) {
+    if (EqGlobalVar.eqMouseDown && EqGlobalVar.targetSlider) {
       // send mouse pos to last hovered slider
       EqGlobalVar.targetSlider._setPositionXY(x, y);
     }
@@ -469,7 +469,7 @@ class EqActionHandler extends ActionHandler {
 class PreampActionHandler extends ActionHandler {
   _kind: string;
   constructor(slider: Slider, kind: string) {
-    super();
+    super(slider);
     this._kind = kind;
     const update = () => {
       slider._position = UI_ROOT.audio.getEq(kind);
