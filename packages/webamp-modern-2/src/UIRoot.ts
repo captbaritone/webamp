@@ -131,6 +131,9 @@ export class UIRoot {
     }
     this._bucketEntries[windowType].push(entry);
   }
+  getBucketEntries(windowType: string): XmlElement[] {
+    return this._bucketEntries[windowType] || []
+  }
 
   addGroupDef(groupDef: XmlElement) {
     this._groupDefs.push(groupDef);

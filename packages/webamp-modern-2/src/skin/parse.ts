@@ -103,11 +103,9 @@ export default class SkinParser {
     console.log("GROUP_PHASE #################");
     this._phase = GROUP_PHASE;
     await this.traverseChildren(parsed);
-    
+
     console.log("BUCKET_PHASE #################");
     await this.rebuildBuckets();
-
-
 
     return this._uiRoot;
   }
@@ -607,24 +605,28 @@ export default class SkinParser {
     const windowType = groupDef.attributes.windowtype;
     // in async mode, bucket may not already loaded.
     // so we register entry here, will excuted later in end of parse()
-    groupDef.attributes.attached = '0'; 
+    groupDef.attributes.attached = "0";
     this._uiRoot.addBucketEntry(windowType, groupDef);
 
     // in synchronouse mode, bucket may already exists
     const bucket = UI_ROOT.getComponentBucket(windowType);
     if (bucket) {
       // custom signal to be not attached to bucket twice
-      groupDef.attributes.attached = '1'; 
+      groupDef.attributes.attached = "1";
       await this.group(groupDef, bucket);
     }
   }
 
   // assure that bucket entries are attached
   async rebuildBuckets() {
-    for (const [wndType, bucket] of Object.entries<ComponentBucket>(this._uiRoot._buckets)) {
-      for (const entry of this._uiRoot._bucketEntries[wndType]) {
-        if(entry.attributes.attached=='0'){
-          const dummyNode = new XmlElement('dummy', {id:entry.attributes.id})
+    for (const [wndType, bucket] of Object.entries<ComponentBucket>(
+      this._uiRoot._buckets
+    )) {
+      for (const entry of this._uiRoot.getBucketEntries(wndType)) {
+        if (entry.attributes.attached == "0") {
+          const dummyNode = new XmlElement("dummy", {
+            id: entry.attributes.id,
+          });
           await this.group(dummyNode, bucket);
         }
       }
