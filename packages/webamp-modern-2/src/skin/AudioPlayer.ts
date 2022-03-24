@@ -16,7 +16,7 @@ export class AudioPlayer {
   _eqValues: { [kind: string]: number } = {};
   _eqNodes: { [kind: string]: number } = {};
   _eqEmitter: Emitter = new Emitter();
-  __isStop: boolean = true; //becaue we can't audio.stop() currently
+  _isStop: boolean = true; //becaue we can't audio.stop() currently
   //events aka addEventListener()
   _listeners = new Map();
   _onceListeners = new Map();
@@ -107,13 +107,13 @@ export class AudioPlayer {
     return this._audio.volume;
   }
   play() {
-    this.__isStop = false;
+    this._isStop = false;
     this._audio.play();
     this.trigger('play');
     this.trigger('statchanged');
   }
   stop() {
-    this.__isStop = true; // needed to make threestate
+    this._isStop = true; // needed to make threestate
     if(this._audio.paused) {this._audio.play()}; // for trigger the event change
     this._audio.pause();
     this._audio.currentTime = 0;
@@ -121,7 +121,7 @@ export class AudioPlayer {
     this.trigger('statchanged');
   }
   pause() {
-    this.__isStop = false; // needed to make threestate
+    this._isStop = false; // needed to make threestate
     this._audio.pause();
     this.trigger('pause');
     this.trigger('statchanged');
@@ -158,7 +158,7 @@ export class AudioPlayer {
   }
 
   getState(): number {
-    if(this.__isStop) { // To distinct from pause
+    if(this._isStop) { // To distinct from pause
       return STATUS_STOPPED; 
     }
     const audio = this._audio;
