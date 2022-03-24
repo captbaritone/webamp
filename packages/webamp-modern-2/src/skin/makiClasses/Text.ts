@@ -27,7 +27,7 @@ export default class Text extends GuiObj {
   _font_obj: TrueTypeFont | BitmapFont;
   _fontSize: number;
   _color: string;
-  _ticker: boolean = false;
+  _ticker: string = "off"; // "scroll" | "bounce" | "off"
   _paddingX: number = 2;
   _timeColonWidth: number | null = null;
   _textWrapper: HTMLElement;
@@ -96,7 +96,7 @@ export default class Text extends GuiObj {
         break;
       case "ticker":
         /// (bool) Setting this flag causes the object to scroll left and right if the text does not fit the rectangular area of the text object.
-        this._ticker = toBool(value);
+        this._ticker = value.toLowerCase();
         break;
       case "timecolonwidth":
         // (int) How many extra pixels wider or smaller should the colon be when displaying time. Default is -1.
@@ -129,8 +129,8 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
   }
 
   _autoDetectFontType() {
-    if(this._font_id){
-      console.log('auto-detect-font:', this._font_id)
+    if (this._font_id) {
+      console.log("auto-detect-font:", this._font_id);
       this._font_obj = UI_ROOT.getFont(this._font_id);
       if (!this._font_obj) {
         const newFont = new TrueTypeFont();
@@ -161,7 +161,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
 
   init() {
     super.init();
-    if (this._ticker) {
+    if (this._ticker != "off") {
       this._prepareScrolling();
     }
   }
