@@ -23,6 +23,7 @@ export class AudioPlayer {
   _triggerdLabels = new Map();
   _trackInfo: {};
   _albumArtUrl: string = null;
+  _eventListener: Emitter = new Emitter();
 
   constructor() {
     this._context = this._context = new (window.AudioContext ||
@@ -102,6 +103,18 @@ export class AudioPlayer {
     //TODO: in future, when ended: play next mp3
     this._audio.addEventListener("ended", () => this.stop());
   }
+
+  // shortcut of this.Emitter
+  on(event: string, callback: Function) {
+    this._eventListener.on(event, callback);
+  }
+  trigger(event: string, ...args: any[]) {
+    this._eventListener.trigger(event, ...args);
+  }
+  off(event: string, callback: Function) {
+    this._eventListener.off(event, callback);
+  }
+
   // 0-1
   getVolume(): number {
     return this._audio.volume;
@@ -275,7 +288,7 @@ export class AudioPlayer {
   }
 
   //* this only custom listerner ================================
-
+  /*
   // execute the callback everytime the label is trigger
   on(label: string, callback, checkPast = false): () => void {
     if (!this._listeners.has(label)) {
@@ -346,6 +359,7 @@ export class AudioPlayer {
     this._onceListeners.delete(label); // callback for once executed, so delete it.
     return res;
   }
+  */
 
   /* sample usage --------------------------
   // execute the callback everytime the label is trigger

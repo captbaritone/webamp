@@ -115,9 +115,14 @@ export const throttle = (fn: Function, wait: number = 300) => {
   };
 };
 
+/**
+ * Purpuse: to hold eventListeners
+ */
 export class Emitter {
-  _cbs: { [event: string]: Array<() => void> } = {};
-  on(event: string, cb: () => void) {
+  _cbs: { [event: string]: Array<Function> } = {};
+
+  // call this to register a callback to a specific event
+  on(event: string, cb: Function) {
     if (this._cbs[event] == null) {
       this._cbs[event] = [];
     }
@@ -126,13 +131,27 @@ export class Emitter {
       this._cbs[event] = this._cbs[event].filter((c) => c !== cb);
     };
   }
-  trigger(event: string) {
+
+  // remove an registered callback from a specific event
+  off(event: string, cb: Function) {
+    if (this._cbs[event] == null) {
+      return;
+    }
+    const cbs = this._cbs[event];
+    const index = cbs.indexOf(cb, 0);
+    if (index > -1) {
+      cbs.splice(index, 1);
+    }
+  }
+
+  // call this to run registered callbacks of an event
+  trigger(event: string, ...args: any[]) {
     const subscriptions = this._cbs[event];
     if (subscriptions == null) {
       return;
     }
     for (const cb of subscriptions) {
-      cb();
+      cb(...args);
     }
   }
 }
