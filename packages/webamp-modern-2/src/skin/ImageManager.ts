@@ -26,8 +26,8 @@ export default class ImageManager {
   }
 
   addBitmap(bitmap: Bitmap) {
-    const id = bitmap._id;
-    const filePath = bitmap._file;
+    const id = bitmap.getId();
+    const filePath = bitmap.getFile();
     this._pathofBitmap[filePath] = false;
     this._bitmaps[id] = bitmap;
   }
@@ -51,7 +51,7 @@ export default class ImageManager {
   }
 
   async setBimapImg(bitmap: Bitmap) {
-    bitmap._img = await this.getImage(bitmap._file);
+    bitmap._img = await this.getImage(bitmap.getFile());
   }
 
   async getImage(filePath: string): Promise<HTMLImageElement | null> {

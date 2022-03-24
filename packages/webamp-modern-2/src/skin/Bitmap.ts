@@ -56,6 +56,10 @@ export default class Bitmap {
     return this._id || "";
   }
 
+  getFile() {
+    return this._file;
+  }
+
   getWidth() {
     return this._width;
   }
