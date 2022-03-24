@@ -348,8 +348,8 @@ export class AudioPlayer {
               res = true;
           }
       };
-      _trigger(this._onceListeners, label, ...args);
-      _trigger(this._listeners, label, ...args);
+      _trigger(this._onceListeners, label);
+      _trigger(this._listeners, label);
       this._onceListeners.delete(label); // callback for once executed, so delete it.
       return res;
   }
