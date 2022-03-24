@@ -22,13 +22,14 @@ import BitmapFont from "./BitmapFont";
 import Color from "./Color";
 import GammaGroup from "./GammaGroup";
 import ColorThemesList from "./ColorThemesList";
-import { UIRoot } from "../UIRoot";
+import UI_ROOT, { UIRoot } from "../UIRoot";
 import AlbumArt from "./makiClasses/AlbumArt";
 import WindowHolder from "./makiClasses/WindowHolder";
 import WasabiFrame from "./makiClasses/WasabiFrame";
 import Grid from "./makiClasses/Grid";
 import ProgressGrid from "./makiClasses/ProgressGrid";
 import WasabiTitle from "./makiClasses/WasabiTitle";
+import ComponentBucket from "./makiClasses/ComponentBucket";
 
 class ParserContext {
   container: Container | null = null;
@@ -81,6 +82,7 @@ export default class SkinParser {
     this._imageManager = new ImageManager();
     this._uiRoot = uiRoot;
   }
+
   async parse(): Promise<UIRoot> {
     // Load built-in xui elements
     // await this.parseFromUrl("assets/xml/xui/standardframe.xml");
@@ -101,6 +103,11 @@ export default class SkinParser {
     console.log("GROUP_PHASE #################");
     this._phase = GROUP_PHASE;
     await this.traverseChildren(parsed);
+    
+    console.log("BUCKET_PHASE #################");
+    await this.rebuildBuckets();
+
+
 
     return this._uiRoot;
   }
@@ -249,6 +256,7 @@ export default class SkinParser {
       case "wasabi:visframe:nostatus":
         return this.wasabiFrame(node, parent);
       case "componentbucket":
+        return this.componentBucket(node, parent);
       case "playlisteditor":
       case "wasabi:tabsheet":
       case "snappoint":
@@ -322,6 +330,15 @@ export default class SkinParser {
 
   async group(node: XmlElement, parent: any): Promise<Group> {
     return await this.newGroup(Group, node, parent);
+  }
+
+  async componentBucket(node: XmlElement, parent: any) {
+    const bucket: ComponentBucket = await this.newGroup(
+      ComponentBucket,
+      node,
+      parent
+    );
+    UI_ROOT.addComponentBucket(bucket.getWindowType(), bucket);
   }
 
   async wasabiFrame(node: XmlElement, parent: any) {
@@ -580,6 +597,38 @@ export default class SkinParser {
 
   async groupdef(node: XmlElement, parent: any) {
     this._uiRoot.addGroupDef(node);
+    //check if it is a bucket.entry, then auto create here
+    if (node.attributes.windowtype) {
+      await this.appendToBucket(node);
+    }
+  }
+
+  async appendToBucket(groupDef: XmlElement) {
+    const windowType = groupDef.attributes.windowtype;
+    // in async mode, bucket may not already loaded.
+    // so we register entry here, will excuted later in end of parse()
+    groupDef.attributes.attached = '0'; 
+    this._uiRoot.addBucketEntry(windowType, groupDef);
+
+    // in synchronouse mode, bucket may already exists
+    const bucket = UI_ROOT.getComponentBucket(windowType);
+    if (bucket) {
+      // custom signal to be not attached to bucket twice
+      groupDef.attributes.attached = '1'; 
+      await this.group(groupDef, bucket);
+    }
+  }
+
+  // assure that bucket entries are attached
+  async rebuildBuckets() {
+    for (const [wndType, bucket] of Object.entries<ComponentBucket>(this._uiRoot._buckets)) {
+      for (const entry of this._uiRoot._bucketEntries[wndType]) {
+        if(entry.attributes.attached=='0'){
+          const dummyNode = new XmlElement('dummy', {id:entry.attributes.id})
+          await this.group(dummyNode, bucket);
+        }
+      }
+    }
   }
 
   async albumart(node: XmlElement, parent: any) {
@@ -751,7 +800,8 @@ export default class SkinParser {
             const lower = element.name.toLowerCase();
             if (lower == "groupdef") {
               recursiveScanChildren(element);
-              self._uiRoot.addGroupDef(element);
+              // self._uiRoot.addGroupDef(element);
+              self.groupdef(element, null);
               continue;
             }
             // if(lower=='elements') {

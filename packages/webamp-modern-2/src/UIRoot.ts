@@ -17,6 +17,7 @@ import Vm from "./skin/VM";
 import BaseObject from "./skin/makiClasses/BaseObject";
 import AUDIO_PLAYER, { AudioPlayer } from "./skin/AudioPlayer";
 import SystemObject from "./skin/makiClasses/SystemObject";
+import ComponentBucket from "./skin/makiClasses/ComponentBucket";
 
 export class UIRoot {
   _div: HTMLDivElement = document.createElement("div");
@@ -33,6 +34,8 @@ export class UIRoot {
   _activeGammaSet: GammaGroup[] = [];
   _containers: Container[] = [];
   _systemObjects: SystemObject[] = [];
+  _buckets: { [wndType: string]: ComponentBucket } = {};
+  _bucketEntries: { [wndType: string]: XmlElement[] } = {};
 
   // A list of all objects created for this skin.
   _objects: BaseObject[] = [];
@@ -114,6 +117,19 @@ export class UIRoot {
       console.warn(`Could not find true type font with id ${id}.`);
     }
     return found ?? null;
+  }
+
+  addComponentBucket(windowType: string, bucket: ComponentBucket) {
+    this._buckets[windowType] = bucket;
+  }
+  getComponentBucket(windowType: string): ComponentBucket {
+    return this._buckets[windowType];
+  }
+  addBucketEntry(windowType: string, entry: XmlElement) {
+    if (!this._bucketEntries[windowType]) {
+      this._bucketEntries[windowType] = [];
+    }
+    this._bucketEntries[windowType].push(entry);
   }
 
   addGroupDef(groupDef: XmlElement) {
