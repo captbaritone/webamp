@@ -8,6 +8,8 @@ import PRIVATE_CONFIG from "../PrivateConfig";
 import UI_ROOT from "../../UIRoot";
 import GuiObj from "./GuiObj";
 
+import { AUDIO_PAUSED, AUDIO_STOPPED, AUDIO_PLAYING } from "../AudioPlayer";
+
 const MOUSE_POS = { x: 0, y: 0 };
 
 // TODO: Figure out how this could be unsubscribed eventually
@@ -34,9 +36,9 @@ export default class SystemObject extends BaseObject {
         { type: "INT", value: UI_ROOT.audio.getCurrentTimePercent() * 255 },
       ]);
     });
-    UI_ROOT.audio.on('play',() => UI_ROOT.vm.dispatch(this, "onplay", []));
-    UI_ROOT.audio.on('pause',() => UI_ROOT.vm.dispatch(this, "onpause", []));
-    UI_ROOT.audio.on('stop',() => UI_ROOT.vm.dispatch(this, "onstop", []));
+    UI_ROOT.audio.on("play", () => UI_ROOT.vm.dispatch(this, "onplay", []));
+    UI_ROOT.audio.on("pause", () => UI_ROOT.vm.dispatch(this, "onpause", []));
+    UI_ROOT.audio.on("stop", () => UI_ROOT.vm.dispatch(this, "onstop", []));
     // UI_ROOT.audio.onPlay(() => UI_ROOT.vm.dispatch(this, "onplay", []));
     UI_ROOT.audio.onVolumeChanged(() => {
       UI_ROOT.vm.dispatch(this, "onvolumechanged", [
@@ -60,7 +62,6 @@ export default class SystemObject extends BaseObject {
     UI_ROOT.audio.onEqChange("8", () => EqBandHandle(8));
     UI_ROOT.audio.onEqChange("9", () => EqBandHandle(9));
     UI_ROOT.audio.onEqChange("10", () => EqBandHandle(10));
-
   }
 
   init() {
@@ -1014,7 +1015,7 @@ export default class SystemObject extends BaseObject {
    * @param  value   The integer to change into a string.
    */
   integertostring(value: number): string {
-    return String( Math.round(value) );
+    return String(Math.round(value));
   }
 
   /**
@@ -1163,7 +1164,17 @@ export default class SystemObject extends BaseObject {
    * @ret STATUS_PAUSED (-1) if paused, STATUS_STOPPED (0) if stopped, STATUS_PLAYING (1) if playing.
    */
   getstatus(): number {
-    return UI_ROOT.audio.getState();
+    const audioState = UI_ROOT.audio.getState();
+    switch (audioState) {
+      case AUDIO_PLAYING:
+        return 1;
+      case AUDIO_PAUSED:
+        return -1;
+      case AUDIO_STOPPED:
+        return 0;
+      default:
+        console.warn("Unknown audio state:", audioState);
+    }
   }
 
   /**
@@ -1592,29 +1603,25 @@ export default class SystemObject extends BaseObject {
     return Math.random() * max;
   }
 
-  oneqfreqchanged(isiso: number){
+  oneqfreqchanged(isiso: number) {}
 
+  getsonginfotext(): string {
+    return "123kbps stereo 79khz";
   }
 
-  
-
-  getsonginfotext():string{
-    return "123kbps stereo 79khz"
+  getsonginfotexttranslated(): string {
+    return this.getplayitemstring();
   }
 
-  getsonginfotexttranslated():string{
-    return this.getplayitemstring()
-  }
-
-  lockui(){
+  lockui() {
     //TODO:
   }
 
-  unlockui(){
+  unlockui() {
     //TODO:
   }
 
-  translate(str: string): string{
+  translate(str: string): string {
     return str;
   }
 
@@ -1624,7 +1631,7 @@ export default class SystemObject extends BaseObject {
   isvideofullscreen(): number {
     return 0;
   }
-  iskeydown(vk:number): number {
+  iskeydown(vk: number): number {
     return 0;
   }
 }

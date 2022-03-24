@@ -1,6 +1,6 @@
 import GuiObj from "./GuiObj";
 import UI_ROOT from "../../UIRoot";
-import { STATUS_PAUSED, STATUS_STOPPED, STATUS_PLAYING } from "../AudioPlayer";
+import { AUDIO_PAUSED, AUDIO_STOPPED, AUDIO_PLAYING } from "../AudioPlayer";
 
 // Maybe this?
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3CWasabi:StandardFrame:Status.2F.3E
@@ -9,14 +9,14 @@ export default class Status extends GuiObj {
   _stopbitmap: string;
   _playbitmap: string;
   _pausebitmap: string;
-  _state: number = STATUS_STOPPED;
+  _state: string = AUDIO_STOPPED;
 
-  constructor(){
-    super()
-    UI_ROOT.audio.on('statchanged', () => this._updateStatus());
+  constructor() {
+    super();
+    UI_ROOT.audio.on("statchanged", () => this._updateStatus());
   }
 
-  _updateStatus(){
+  _updateStatus() {
     this._state = UI_ROOT.audio.getState();
     this._renderBackground();
   }
@@ -70,14 +70,18 @@ export default class Status extends GuiObj {
   }
 
   _renderBackground() {
-    let bitmap_id = this._stopbitmap;
+    let bitmap_id:string;
     switch (this._state) {
-      case STATUS_PLAYING:
+      case AUDIO_PLAYING:
         bitmap_id = this._playbitmap;
-        break
-      case STATUS_PAUSED:
+        break;
+      case AUDIO_PAUSED:
         bitmap_id = this._pausebitmap;
-        break
+        break;
+      case AUDIO_STOPPED:
+      default:
+        bitmap_id = this._stopbitmap;
+        break;
     }
     const bitmap = UI_ROOT.getBitmap(bitmap_id);
     if (bitmap != null) {

@@ -2,9 +2,9 @@ import { clamp, Emitter } from "../utils";
 
 const BANDS = [60, 170, 310, 600, 1000, 3000, 6000, 12000, 14000, 16000];
 
-export const STATUS_PAUSED = -1;
-export const STATUS_STOPPED = 0;
-export const STATUS_PLAYING = 1;
+export const AUDIO_PAUSED = "paused";
+export const AUDIO_STOPPED = "stopped";
+export const AUDIO_PLAYING = "playing";
 
 export class AudioPlayer {
   _input: HTMLInputElement = document.createElement("input");
@@ -22,7 +22,7 @@ export class AudioPlayer {
   _onceListeners = new Map();
   _triggerdLabels = new Map();
   _trackInfo: {};
-  _albumArtUrl : string = null;
+  _albumArtUrl: string = null;
 
   constructor() {
     this._context = this._context = new (window.AudioContext ||
@@ -100,7 +100,7 @@ export class AudioPlayer {
 
     //temporary: in the end of playing mp3, lets stop.
     //TODO: in future, when ended: play next mp3
-    this._audio.addEventListener("ended", ()=> this.stop());
+    this._audio.addEventListener("ended", () => this.stop());
   }
   // 0-1
   getVolume(): number {
@@ -109,22 +109,24 @@ export class AudioPlayer {
   play() {
     this._isStop = false;
     this._audio.play();
-    this.trigger('play');
-    this.trigger('statchanged');
+    this.trigger("play");
+    this.trigger("statchanged");
   }
   stop() {
     this._isStop = true; // needed to make threestate
-    if(this._audio.paused) {this._audio.play()}; // for trigger the event change
+    if (this._audio.paused) {
+      this._audio.play();
+    } // for trigger the event change
     this._audio.pause();
     this._audio.currentTime = 0;
-    this.trigger('stop');
-    this.trigger('statchanged');
+    this.trigger("stop");
+    this.trigger("statchanged");
   }
   pause() {
     this._isStop = false; // needed to make threestate
     this._audio.pause();
-    this.trigger('pause');
-    this.trigger('statchanged');
+    this.trigger("pause");
+    this.trigger("statchanged");
   }
 
   eject() {
@@ -157,22 +159,19 @@ export class AudioPlayer {
     return this._audio.currentTime / this._audio.duration;
   }
 
-  getState(): number {
-    if(this._isStop) { // To distinct from pause
-      return STATUS_STOPPED; 
+  getState(): string {
+    if (this._isStop) {
+      // To distinct from pause
+      return AUDIO_STOPPED;
     }
     const audio = this._audio;
-    if(!audio.ended && !audio.paused) {
-      return STATUS_PLAYING
-    } 
-    else
-    if(audio.ended){
-      return STATUS_STOPPED
-    } 
-    else 
-    if(audio.paused){
-      return STATUS_PAUSED
-    } 
+    if (!audio.ended && !audio.paused) {
+      return AUDIO_PLAYING;
+    } else if (audio.ended) {
+      return AUDIO_STOPPED;
+    } else if (audio.paused) {
+      return AUDIO_PAUSED;
+    }
   }
 
   getEq(kind: string): number {
@@ -278,13 +277,12 @@ export class AudioPlayer {
   //* this only custom listerner ================================
 
   // execute the callback everytime the label is trigger
-  on(label:string, callback, checkPast = false): ()=>void {
+  on(label: string, callback, checkPast = false): () => void {
     if (!this._listeners.has(label)) {
-       this._listeners.set(label, []);
+      this._listeners.set(label, []);
     }
     this._listeners.get(label).push(callback);
-    if (checkPast)
-        this._fCheckPast(label, callback);
+    if (checkPast) this._fCheckPast(label, callback);
     const dispose = () => {
       this.off(label, callback);
     };
@@ -292,66 +290,68 @@ export class AudioPlayer {
   }
 
   // remove the callback for a label
-  off(label:string, callback) {
+  off(label: string, callback) {
     // if (callback === true) {
     //     // remove listeners for all callbackfunctions
     //     this._listeners.delete(label);
     //     this._onceListeners.delete(label);
     // } else {
-        // remove listeners only with match callbackfunctions
-        let _off = (inListener) => {
-            let listeners = inListener.get(label);
-            if (listeners) {
-                inListener.set(label, listeners.filter((value) => !(value === callback)));
-            }
-        };
-        _off(this._listeners);
-        _off(this._onceListeners);
+    // remove listeners only with match callbackfunctions
+    let _off = (inListener) => {
+      let listeners = inListener.get(label);
+      if (listeners) {
+        inListener.set(
+          label,
+          listeners.filter((value) => !(value === callback))
+        );
+      }
+    };
+    _off(this._listeners);
+    _off(this._onceListeners);
     // }
-}
-
+  }
 
   // help-function for onReady and onceReady
-  // the callbackfunction will execute, 
+  // the callbackfunction will execute,
   // if the label has already been triggerd with the last called parameters
   _fCheckPast(label, callback) {
     if (this._triggerdLabels.has(label)) {
-        callback(this._triggerdLabels.get(label));
-        return true;
+      callback(this._triggerdLabels.get(label));
+      return true;
     } else {
-        return false;
+      return false;
     }
   }
 
   // execute the callback onetime the label is trigger
-  once(label:string, callback, checkPast = false) {
-      if(!this._onceListeners.has(label)) {
-        this._onceListeners.set(label, []);
-      }
-      if (!(checkPast && this._fCheckPast(label, callback))) {
-          // label wurde nocht nicht aufgerufen und 
-          // der callback in _fCheckPast nicht ausgeführt
-          this._onceListeners.get(label).push(callback);
-      }
+  once(label: string, callback, checkPast = false) {
+    if (!this._onceListeners.has(label)) {
+      this._onceListeners.set(label, []);
+    }
+    if (!(checkPast && this._fCheckPast(label, callback))) {
+      // label wurde nocht nicht aufgerufen und
+      // der callback in _fCheckPast nicht ausgeführt
+      this._onceListeners.get(label).push(callback);
+    }
   }
- 
-  // trigger the event with the label 
-  trigger(label:string, ...args: any[]) {
-      let res = false;
-      this._triggerdLabels.set(label, args); // save all triggerd labels for onready and onceready
-      let _trigger = (inListener, label) => {
-          let listeners = inListener.get(label);
-          if (listeners && listeners.length) {
-              listeners.forEach((listener) => {
-                  listener(...args);
-              });
-              res = true;
-          }
-      };
-      _trigger(this._onceListeners, label);
-      _trigger(this._listeners, label);
-      this._onceListeners.delete(label); // callback for once executed, so delete it.
-      return res;
+
+  // trigger the event with the label
+  trigger(label: string, ...args: any[]) {
+    let res = false;
+    this._triggerdLabels.set(label, args); // save all triggerd labels for onready and onceready
+    let _trigger = (inListener, label) => {
+      let listeners = inListener.get(label);
+      if (listeners && listeners.length) {
+        listeners.forEach((listener) => {
+          listener(...args);
+        });
+        res = true;
+      }
+    };
+    _trigger(this._onceListeners, label);
+    _trigger(this._listeners, label);
+    this._onceListeners.delete(label); // callback for once executed, so delete it.
+    return res;
   }
   // onStop( cb: ()=>void): ()=>void {
   //   const handler = () => {
@@ -373,8 +373,6 @@ export class AudioPlayer {
   onceReady(label, callback) {
       this.once(label, callback, true);
   } */
-
-
 
   // Current track length in seconds
   getLength(): number {
