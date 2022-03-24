@@ -175,26 +175,6 @@ export class AudioPlayer {
     } 
   }
 
-  // doStateChanged() {
-  //   this.trigger('play')
-  // }
-
-  // onStateChange(cb: () => void): () => void {
-  //   const handler = () => {
-  //     // console.log('audio.onPlay!')
-  //     cb();
-  //   }
-  //   this._audio.addEventListener("playing", handler);
-  //   this._audio.addEventListener("pause", handler);
-  //   this._audio.addEventListener("ended", handler);
-  //   const dispose = () => {
-  //     this._audio.removeEventListener("playing", handler);
-  //     this._audio.removeEventListener("pause", handler);
-  //     this._audio.removeEventListener("ended", handler);
-  //   };
-  //   return dispose;
-  // }
-
   getEq(kind: string): number {
     switch (kind) {
       case "preamp":
