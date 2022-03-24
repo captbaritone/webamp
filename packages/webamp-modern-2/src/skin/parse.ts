@@ -126,9 +126,6 @@ export default class SkinParser {
    * but has no explicit declaration in a loaded skin  */
   async _solveMissingBitmaps() {
     //? checkmark the already availble
-    // this._uiRoot._bitmaps.forEach(function (bitmap) {
-    //   self._res.bitmaps[bitmap._id.toLowerCase()] = true;
-    // });
     for (const bitmap of this._uiRoot._bitmaps) {
       this._res.bitmaps[bitmap._id.toLowerCase()] = true;
     }
@@ -138,18 +135,8 @@ export default class SkinParser {
       // console.log('trial bitmap:', key, available, typeof available)
       if (!available) {
         const lowercaseId = key.toLowerCase();
-        // const dict = getBitmap_system_elements(lowercaseId);
-        // if (dict != null) {
-        //   const bitmapEl = new XmlElement("bitmap", { ...dict });
-        //   //   // parser.traverseChild(bitmapEl);
-        //   await this.bitmap(bitmapEl);
-        //   console.log("solving bitmap:", lowercaseId);
-        // }
       }
     }
-    // this._uiRoot._bitmaps.forEach(function (bitmap) {
-    //   this._res.bitmaps[bitmap._id.toLowerCase()] = true;
-    // });
   }
 
   async traverseChildren(node: XmlElement, parent: any = null) {
@@ -239,7 +226,6 @@ export default class SkinParser {
       case "songticker":
         return this.songticker(node, parent);
       case "hideobject":
-      // return this.hideobject(node, parent);
       case "sendparams":
         return this.sendparams(node, parent);
       case "wasabi:titlebar":

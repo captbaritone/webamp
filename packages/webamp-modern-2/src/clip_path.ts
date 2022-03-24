@@ -14,7 +14,6 @@ function main() {
   const preferedHeight = parseInt(oriImg.getAttribute("data-height"));
   const img2 = new Image();
   img2.onload = (ev) => {
-    // const canvas = document.createElement('canvas');
     const canvas = document.getElementById("canvas") as HTMLCanvasElement;
     canvas.width = img2.width;
     canvas.height = img2.height;
@@ -40,7 +39,6 @@ function main() {
       .getleft()
       .replace(/px/gi, "")
       .replace(/\,\s/gi, "\n");
-    // document.getElementById('app').style.clipPath = `polygon(${edge.top}, ${edge.bottom})`;
     document.getElementById("app").style.clipPath = edge.getPolygon();
   };
   img2.setAttribute("src", oriImg.getAttribute("src"));

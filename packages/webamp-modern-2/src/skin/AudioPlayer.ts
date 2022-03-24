@@ -291,12 +291,6 @@ export class AudioPlayer {
 
   // remove the callback for a label
   off(label: string, callback) {
-    // if (callback === true) {
-    //     // remove listeners for all callbackfunctions
-    //     this._listeners.delete(label);
-    //     this._onceListeners.delete(label);
-    // } else {
-    // remove listeners only with match callbackfunctions
     let _off = (inListener) => {
       let listeners = inListener.get(label);
       if (listeners) {
@@ -308,7 +302,6 @@ export class AudioPlayer {
     };
     _off(this._listeners);
     _off(this._onceListeners);
-    // }
   }
 
   // help-function for onReady and onceReady
@@ -353,14 +346,8 @@ export class AudioPlayer {
     this._onceListeners.delete(label); // callback for once executed, so delete it.
     return res;
   }
-  // onStop( cb: ()=>void): ()=>void {
-  //   const handler = () => {
-  //     cb(); //guard
-  //   }
-  //   return this.on('stop', handler);
-  // }
 
-  /* sample --------------------------
+  /* sample usage --------------------------
   // execute the callback everytime the label is trigger
   // check if the label had been already called 
   // and if so excute the callback immediately
@@ -372,7 +359,8 @@ export class AudioPlayer {
   // or execute the callback if the label had been called already
   onceReady(label, callback) {
       this.once(label, callback, true);
-  } */
+  } 
+  */
 
   // Current track length in seconds
   getLength(): number {
