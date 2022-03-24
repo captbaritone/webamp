@@ -153,7 +153,7 @@ export class UIRoot {
     this._gammaSets.set(lower, gammaSet);
   }
 
-  enableGammaSet(id: string) {
+  enableGammaSet(id: string | null) {
     if (id) {
       const found = this._gammaSets.get(id.toLowerCase());
       assume(
@@ -173,7 +173,7 @@ export class UIRoot {
     const gammaSetNames = Array.from(this._gammaSets.keys());
     const firstName = gammaSetNames[0];
     const antiBoring = gammaSetNames[1];
-    this.enableGammaSet(antiBoring || firstName || "");
+    this.enableGammaSet(antiBoring || firstName || null);
   }
 
   _getGammaGroup(id: string): GammaGroup | null {
