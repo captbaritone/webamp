@@ -127,7 +127,10 @@ export class Emitter {
       this._cbs[event] = [];
     }
     this._cbs[event].push(cb);
-    return () => {
+
+    // return a function for later unregistering
+    return () => { 
+      //TODO: consider using this.off(), or integrate both
       this._cbs[event] = this._cbs[event].filter((c) => c !== cb);
     };
   }
