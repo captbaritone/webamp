@@ -325,7 +325,9 @@ export class AudioPlayer {
 
   // execute the callback onetime the label is trigger
   once(label:string, callback, checkPast = false) {
-      this._onceListeners.has(label) || this._onceListeners.set(label, []);
+      if(!this._onceListeners.has(label)) {
+        this._onceListeners.set(label, []);
+      }
       if (!(checkPast && this._fCheckPast(label, callback))) {
           // label wurde nocht nicht aufgerufen und 
           // der callback in _fCheckPast nicht ausgeführt
