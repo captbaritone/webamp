@@ -623,14 +623,12 @@ class Interpreter {
           switch (a.type) {
             case "STRING":
             case "OBJECT":
-            case "BOOLEAN":
             case "NULL":
               throw new Error("Tried to add non-numbers.");
           }
           switch (b.type) {
             case "STRING":
             case "OBJECT":
-            case "BOOLEAN":
             case "NULL":
               throw new Error("Tried to add non-numbers.");
           }
