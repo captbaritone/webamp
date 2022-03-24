@@ -313,7 +313,7 @@ class Interpreter {
           }
           const obj = this.stack.pop();
           if (
-            !obj.value /* ==null */ &&
+            !obj.value &&
             ((klass.name || "").toLowerCase() == "winampconfig" ||
               (klass.name || "").toLowerCase() == "winampconfiggroup" ||
               (klass.name || "").toLowerCase() == "configclass" ||
