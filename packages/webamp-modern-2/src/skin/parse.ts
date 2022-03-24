@@ -164,13 +164,13 @@ export default class SkinParser {
     //     })
     //   );
     // } else {
-      for (const child of node.children) {
-        if (child instanceof XmlElement) {
-          // console.log('traverse->', parent.name, child.name)
-          this._scanRes(child);
-          await this.traverseChild(child, parent);
-        }
+    for (const child of node.children) {
+      if (child instanceof XmlElement) {
+        // console.log('traverse->', parent.name, child.name)
+        this._scanRes(child);
+        await this.traverseChild(child, parent);
       }
+    }
     // }
   }
 
@@ -287,11 +287,10 @@ export default class SkinParser {
   }
 
   addToGroup(obj: GuiObj, parent: Group) {
-    try{
+    try {
       parent.addChild(obj);
-
-    } catch(err) {
-      console.warn('addToGroup failed. child:',obj,'pareng:',parent)
+    } catch (err) {
+      console.warn("addToGroup failed. child:", obj, "pareng:", parent);
     }
   }
 
@@ -423,10 +422,9 @@ export default class SkinParser {
     const font = new BitmapFont();
     font.setXmlAttributes(node.attributes);
 
-    const externalBitmap =
-      /* font._file.indexOf(".") > 0 || */ font._file.indexOf("/") < 0;
+    const externalBitmap = font._file.indexOf("/") < 0;
     if (externalBitmap) {
-      font._externalBitmap = true;
+      font.setExternalBitmap(true);
     } else {
       this._imageManager.addBitmap(font);
     }
@@ -504,7 +502,7 @@ export default class SkinParser {
       return;
     }
 
-    console.log('parsing.maki:',file)
+    console.log("parsing.maki:", file);
     const parsedScript = parseMaki(maki);
 
     const systemObj = new SystemObject(parsedScript, param, id);
@@ -761,7 +759,7 @@ export default class SkinParser {
         for (const element of mother.children) {
           // if (element instanceof XmlComment || element instanceof XmlText) {
           //   continue;
-          // } else 
+          // } else
           if (element instanceof XmlElement) {
             // recursiveScanChildren(element);
             const lower = element.name.toLowerCase();
@@ -869,7 +867,6 @@ export default class SkinParser {
   skininfo(node: XmlElement, parent: any) {
     // Ignore this metadata for now
   }
-
 }
 
 function parseXmlFragment(xml: string): XmlElement {
