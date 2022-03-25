@@ -25,7 +25,7 @@
         padding-left: 5px;
         width: 300%;
       }
-      select option[selected]{
+      select option[selected] {
         font-weight: bold;
       }
       select::before {
@@ -86,9 +86,11 @@
       slider {
         overflow: hidden;
       }
-      slider > div {display: none;}
+      slider > div {
+        display: none;
+      }
       slider::after {
-        content: '';
+        content: "";
         position: absolute;
         left: var(--thumb-left);
         top: var(--thumb-top);
@@ -97,10 +99,16 @@
         background-image: var(--thumb-background-image);
       }
       slider:hover:after {
-        background-image: var(--thumb-hover-background-image, var(--thumb-background-image));
+        background-image: var(
+          --thumb-hover-background-image,
+          var(--thumb-background-image)
+        );
       }
       slider:active:after {
-        background-image: var(--thumb-down-background-image, var(--thumb-background-image));
+        background-image: var(
+          --thumb-down-background-image,
+          var(--thumb-background-image)
+        );
       }
       text {
         overflow: hidden;
@@ -189,6 +197,7 @@
         top: 0;
         height: 100%;
         width: auto;
+        transition: top 0.5s, left 0.5s;
       }
       componentbucket.vertical > wrapper {
         flex-direction: column;
@@ -197,6 +206,12 @@
       }
       componentbucket > wrapper > group {
         position: relative;
+      }
+      group.x-fade > * {
+        transition: opacity var(--fade-in-speed, 0.50);
+      }
+      group.x-fade > .fading-out {
+        transition: opacity var(--fade-out-speed, 0.25);
       }
       /* grid left, gridprogress left {left: 0;}
       grid right, gridprogress right {right: 0;} */
@@ -237,7 +252,7 @@
         background-color: rgba(74, 74, 251, 0.205);
         z-index: 1000;
         box-sizing: border-box;
-        transition: width .1s, height .1s, left .1s, top .1s;
+        transition: width 0.1s, height 0.1s, left 0.1s, top 0.1s;
       }
     </style>
     <style id="bitmap-css"></style>

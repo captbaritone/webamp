@@ -2,9 +2,11 @@ import Group from "./Group";
 import { findLast, num, px, removeAllChildNodes, toBool } from "../../utils";
 import UI_ROOT from "../../UIRoot";
 import { XmlElement } from "@rgrove/parse-xml";
+import GuiObj from "./GuiObj";
 
 export default class GroupXFade extends Group {
   _speed: number = null;
+  _activeChild: GuiObj = null;
 
   getElTag(): string {
     return "group";
@@ -59,8 +61,9 @@ export default class GroupXFade extends Group {
   }
 
   async _switchTo(group_id: string) {
-    // clear
-    removeAllChildNodes(this._div);
+    // hide current page
+    if (this._activeChild) this._fadeOut(this._activeChild);
+
     let child = findLast(this._children, (c) => c.getId() == group_id);
     if (child == null) {
       const dummyNode = new XmlElement("dummy", {
@@ -69,16 +72,35 @@ export default class GroupXFade extends Group {
         h: "0",
         relatw: "1",
         relath: "1",
+        alpha: "0",
       });
       child = await UI_ROOT._parser.group(dummyNode, this);
-      child.draw()
+      child.draw();
       child.init();
+      this._div.appendChild(child.getDiv());
     }
-    this._div.appendChild(child.getDiv())
+    this._activeChild = child;
+    this._fadeIn(child);
+  }
+
+  // hide slowly
+  async _fadeOut(child: GuiObj) {
+    child._div.classList.add("fading-out");
+    child.setalpha(0);
+    setTimeout(() => {
+      child._div.classList.remove("fading-out");
+    }, this._speed);
+  }
+  //show slowly
+  async _fadeIn(child: GuiObj) {
+    child.setalpha(255);
+    //
   }
 
   draw() {
     super.draw();
     this._div.classList.add("x-fade");
+    this._div.style.setProperty("--fade-in-speed", `${this._speed}s`);
+    this._div.style.setProperty("--fade-out-speed", `${this._speed / 2}s`);
   }
 }
