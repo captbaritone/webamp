@@ -27,7 +27,6 @@ class RootResolver extends MutationResolver {
   async node({ id }, { ctx }) {
     const { graphqlType, id: localId } = fromId(id);
     // TODO Use typeResolver
-    console.log(graphqlType, localId);
     switch (graphqlType) {
       case "ClassicSkin":
       case "ModernSkin": {
