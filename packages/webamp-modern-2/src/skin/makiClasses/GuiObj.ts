@@ -748,6 +748,10 @@ export default class GuiObj extends XmlObj {
     this._div.style.zIndex = String(BRING_LEAST);
   }
 
+  setenabled(onoff:boolean|number){
+    //TODO:
+  }
+
   handleAction(
     action: string,
     param: string | null = null,

@@ -1621,6 +1621,10 @@ export default class SystemObject extends BaseObject {
     //TODO:
   }
 
+  istransparencyavailable():boolean {
+    return true
+  }
+  
   translate(str: string): string {
     return str;
   }
