@@ -66,9 +66,9 @@ export class UIRoot {
     this._containers = [];
     this._systemObjects = [];
     this._gammaNames = {};
-    this._buckets = {}
-    this._bucketEntries = {}
-    this._xFades = []
+    this._buckets = {};
+    this._bucketEntries = {};
+    this._xFades = [];
     removeAllChildNodes(this._div);
 
     // A list of all objects created for this skin.
@@ -143,11 +143,11 @@ export class UIRoot {
     this._bucketEntries[windowType].push(entry);
   }
   getBucketEntries(windowType: string): XmlElement[] {
-    return this._bucketEntries[windowType] || []
+    return this._bucketEntries[windowType] || [];
   }
 
-  addXFade(xfade: GroupXFade){
-    this._xFades.push(xfade)
+  addXFade(xfade: GroupXFade) {
+    this._xFades.push(xfade);
   }
   getXFades(): GroupXFade[] {
     return this._xFades;
@@ -192,6 +192,7 @@ export class UIRoot {
 
   enableGammaSet(id: string | null) {
     if (id) {
+      console.log(`Enabling gammaset: '${id}'`);
       const found = this._gammaSets.get(id.toLowerCase());
       assume(
         found != null,
