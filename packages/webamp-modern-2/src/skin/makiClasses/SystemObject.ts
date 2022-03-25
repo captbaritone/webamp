@@ -8,12 +8,15 @@ import PRIVATE_CONFIG from "../PrivateConfig";
 import UI_ROOT from "../../UIRoot";
 import GuiObj from "./GuiObj";
 
+import { AUDIO_PAUSED, AUDIO_STOPPED, AUDIO_PLAYING } from "../AudioPlayer";
+
 const MOUSE_POS = { x: 0, y: 0 };
 
 // TODO: Figure out how this could be unsubscribed eventually
 document.addEventListener("mousemove", (e: MouseEvent) => {
-  MOUSE_POS.x = e.clientX;
-  MOUSE_POS.y = e.clientY;
+  // https://stackoverflow.com/questions/6073505/what-is-the-difference-between-screenx-y-clientx-y-and-pagex-y
+  MOUSE_POS.x = e.pageX;
+  MOUSE_POS.y = e.pageY;
 });
 
 export default class SystemObject extends BaseObject {
@@ -21,16 +24,44 @@ export default class SystemObject extends BaseObject {
   _parentGroup: Group;
   _parsedScript: ParsedMaki;
   _param: string;
+  _id: string;
 
-  constructor(parsedScript: ParsedMaki, param: string) {
+  constructor(parsedScript: ParsedMaki, param: string, id: string) {
     super();
     this._parsedScript = parsedScript;
     this._param = param;
+    this._id = id; // useful while debuggin
     UI_ROOT.audio.onSeek(() => {
       UI_ROOT.vm.dispatch(this, "onseek", [
         { type: "INT", value: UI_ROOT.audio.getCurrentTimePercent() * 255 },
       ]);
     });
+    UI_ROOT.audio.on("play", () => UI_ROOT.vm.dispatch(this, "onplay", []));
+    UI_ROOT.audio.on("pause", () => UI_ROOT.vm.dispatch(this, "onpause", []));
+    UI_ROOT.audio.on("stop", () => UI_ROOT.vm.dispatch(this, "onstop", []));
+    // UI_ROOT.audio.onPlay(() => UI_ROOT.vm.dispatch(this, "onplay", []));
+    UI_ROOT.audio.onVolumeChanged(() => {
+      UI_ROOT.vm.dispatch(this, "onvolumechanged", [
+        { type: "INT", value: UI_ROOT.audio.getVolume() * 255 },
+      ]);
+    });
+    const EqBandHandle = (band: number) => {
+      // console.log('eq.changed:',band, UI_ROOT.audio.getEq(String(band)))
+      UI_ROOT.vm.dispatch(this, "oneqbandchanged", [
+        { type: "INT", value: band },
+        { type: "INT", value: UI_ROOT.audio.getEq(String(band)) * 255 - 127 },
+      ]);
+    };
+    UI_ROOT.audio.onEqChange("1", () => EqBandHandle(1));
+    UI_ROOT.audio.onEqChange("2", () => EqBandHandle(2));
+    UI_ROOT.audio.onEqChange("3", () => EqBandHandle(3));
+    UI_ROOT.audio.onEqChange("4", () => EqBandHandle(4));
+    UI_ROOT.audio.onEqChange("5", () => EqBandHandle(5));
+    UI_ROOT.audio.onEqChange("6", () => EqBandHandle(6));
+    UI_ROOT.audio.onEqChange("7", () => EqBandHandle(7));
+    UI_ROOT.audio.onEqChange("8", () => EqBandHandle(8));
+    UI_ROOT.audio.onEqChange("9", () => EqBandHandle(9));
+    UI_ROOT.audio.onEqChange("10", () => EqBandHandle(10));
   }
 
   init() {
@@ -426,7 +457,7 @@ export default class SystemObject extends BaseObject {
    * @param  defvalue  The default value to return if no item is found.
    */
   getprivatestring(section: string, item: string, defvalue: string) {
-    // TODO
+    return PRIVATE_CONFIG.getPrivateString(section, item, defvalue);
   }
 
   setpublicstring(item: string, value: string) {
@@ -984,7 +1015,7 @@ export default class SystemObject extends BaseObject {
    * @param  value   The integer to change into a string.
    */
   integertostring(value: number): string {
-    return String(value);
+    return String(Math.round(value));
   }
 
   /**
@@ -1133,8 +1164,17 @@ export default class SystemObject extends BaseObject {
    * @ret STATUS_PAUSED (-1) if paused, STATUS_STOPPED (0) if stopped, STATUS_PLAYING (1) if playing.
    */
   getstatus(): number {
-    // TODO: Pull this from the actual media player
-    return 1;
+    const audioState = UI_ROOT.audio.getState();
+    switch (audioState) {
+      case AUDIO_PLAYING:
+        return 1;
+      case AUDIO_PAUSED:
+        return -1;
+      case AUDIO_STOPPED:
+        return 0;
+      default:
+        console.warn("Unknown audio state:", audioState);
+    }
   }
 
   /**
@@ -1561,6 +1601,42 @@ export default class SystemObject extends BaseObject {
   random(max: number): number {
     // TODO: Should this return an int?
     return Math.random() * max;
+  }
+
+  oneqfreqchanged(isiso: number) {}
+
+  getsonginfotext(): string {
+    return "123kbps stereo 79khz";
+  }
+
+  getsonginfotexttranslated(): string {
+    return this.getplayitemstring();
+  }
+
+  lockui() {
+    //TODO:
+  }
+
+  unlockui() {
+    //TODO:
+  }
+
+  istransparencyavailable():boolean {
+    return true
+  }
+  
+  translate(str: string): string {
+    return str;
+  }
+
+  isvideo(): number {
+    return 0;
+  }
+  isvideofullscreen(): number {
+    return 0;
+  }
+  iskeydown(vk: number): number {
+    return 0;
   }
 }
 

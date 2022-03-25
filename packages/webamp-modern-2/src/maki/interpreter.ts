@@ -2,6 +2,7 @@ import { V, Variable } from "./v";
 import { assert, assume } from "../utils";
 import { ParsedMaki, Command, Method } from "./parser";
 import { getClass, getMethod } from "./objects";
+import GuiObj from "../skin/makiClasses/GuiObj";
 // import { classResolver } from "../skin/resolver";
 
 function validateMaki(program: ParsedMaki) {
@@ -311,6 +312,22 @@ class Interpreter {
             methodArgs.push(a.value);
           }
           const obj = this.stack.pop();
+
+          // It is temporary patch until we can bind a
+          // singleton object to maki world.
+          // It is because maki think each class name below as a const.
+          if (
+            !obj.value &&
+            klass.name &&
+            [
+              "winampconfig",
+              "winampconfiggroup",
+              "configclass",
+              "config",
+            ].includes(klass.name.toLowerCase())
+          ) {
+            obj.value = new klass();
+          }
           assert(
             (obj.type === "OBJECT" && typeof obj.value) === "object" &&
               obj.value != null,
@@ -323,8 +340,11 @@ class Interpreter {
             value = obj.value[methodName](...methodArgs);
           } catch (err) {
             console.warn(
-              `error call: ${klass.name}.${methodName}(...${JSON.stringify(methodArgs)})`,
-              `err: ${err.message} obj: ${JSON.stringify(obj)}`
+              `error call: ${klass.name}.${methodName}(...${JSON.stringify(
+                methodArgs
+              )})`,
+              `err: ${err.message} obj:`,
+              obj
             );
             value = null;
           }
@@ -603,14 +623,12 @@ class Interpreter {
           switch (a.type) {
             case "STRING":
             case "OBJECT":
-            case "BOOLEAN":
             case "NULL":
               throw new Error("Tried to add non-numbers.");
           }
           switch (b.type) {
             case "STRING":
             case "OBJECT":
-            case "BOOLEAN":
             case "NULL":
               throw new Error("Tried to add non-numbers.");
           }

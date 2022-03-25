@@ -18,12 +18,13 @@ export default class Button extends GuiObj {
     super();
     // TODO: Cleanup!
     this._div.addEventListener("mousedown", this._handleMouseDown.bind(this));
-    this._div.addEventListener("click", (e) => {
+    this._div.addEventListener("click", (e: MouseEvent) => {
       if (this._action) {
         this.dispatchAction(this._action, this._param, this._actionTarget);
       }
-      // TODO: Only left button
-      this.onLeftClick();
+      if (e.button == 0) {
+        this.leftclick();
+      }
     });
   }
 
@@ -56,6 +57,7 @@ export default class Button extends GuiObj {
         this._param = value;
         break;
       case "action_target":
+      case "cbtarget":
         this._actionTarget = value;
         break;
       default:
@@ -71,7 +73,7 @@ export default class Button extends GuiObj {
     }
     if (this._image != null) {
       const bitmap = UI_ROOT.getBitmap(this._image);
-      return bitmap.getHeight();
+      if (bitmap) return bitmap.getHeight();
     }
     return super.getheight();
   }
@@ -83,15 +85,15 @@ export default class Button extends GuiObj {
     }
     if (this._image != null) {
       const bitmap = UI_ROOT.getBitmap(this._image);
-      return bitmap.getWidth();
+      if (bitmap) return bitmap.getWidth();
     }
     return super.getwidth();
   }
 
   getactivated(): boolean {
-    return this._active;
+    return this._active ? true : false;
   }
-  setactivated(_onoff: boolean) {
+  setactivated(_onoff: boolean | number) {
     const onoff = Boolean(_onoff);
 
     if (onoff !== this._active) {
@@ -107,10 +109,39 @@ export default class Button extends GuiObj {
 
   leftclick() {
     this.onLeftClick();
+    if (this._action && this._actionTarget) {
+      const guiObj = this.findobject(this._actionTarget);
+      if (guiObj) {
+        guiObj.sendaction(
+          this._action,
+          this._param,
+          0,
+          0,
+          this._div.offsetLeft,
+          this._div.offsetTop,
+          this
+        );
+      }
+    }
   }
 
   onLeftClick() {
     UI_ROOT.vm.dispatch(this, "onleftclick", []);
+  }
+
+  handleAction(
+    action: string,
+    param: string | null = null,
+    actionTarget: string | null = null
+  ): boolean {
+    if (actionTarget) {
+      const guiObj = this.findobject(actionTarget);
+      if (guiObj) {
+        guiObj.handleAction(action, param);
+        return true;
+      }
+    }
+    return false;
   }
 
   _renderBackground() {
@@ -154,6 +185,13 @@ export default class Button extends GuiObj {
     this._div.classList.add("webamp--img");
     this._div.style.pointerEvents = "auto";
     this._renderBackground();
+  }
+
+  hide() {
+    if (document.activeElement == this._div) {
+      this.getparentlayout()._parent._div.focus();
+    }
+    super.hide();
   }
 
   /*

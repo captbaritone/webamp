@@ -14,13 +14,13 @@ import { px } from "../../utils";
 // -- http://wiki.winamp.com/wiki/Modern_Skin:_Container
 export default class Layout extends Group {
   static GUID = "60906d4e482e537e94cc04b072568861";
-  _parentContainer: Container | null = null;
   _resizingDiv: HTMLDivElement = null;
   _resizing: boolean = false;
   _resizable: number = 0; // combination of 4 directions: N/E/W/S
   _movingStartX: number; //container XY
   _movingStartY: number;
   _moving: boolean = false;
+  _snap = { left: 0, top: 0, right: 0, bottom: 0 };
 
   constructor() {
     super();
@@ -41,8 +41,26 @@ export default class Layout extends Group {
     return true;
   }
 
-  setParentContainer(container: Container) {
-    this._parentContainer = container;
+  // setParent(container: Container) {
+  //   this._parent = container;
+  // }
+
+  getcontainer(): Container {
+    return this._parent as unknown as Container;
+  }
+
+  gettop(): number {
+    return this._parent._y;
+  }
+
+  /**
+   * Get the X position, in the screen, of the
+   * left edge of the object.
+   *
+   * @ret The left edge's position (in screen coordinates).
+   */
+  getleft(): number {
+    return this._parent._x;
   }
 
   dispatchAction(
@@ -60,10 +78,42 @@ export default class Layout extends Group {
     }
     switch (action) {
       default:
-        if (this._parentContainer != null) {
-          this._parentContainer.dispatchAction(action, param, actionTarget);
+        if (this._parent != null) {
+          this._parent.dispatchAction(action, param, actionTarget);
         }
     }
+  }
+
+  snapadjust(left: number, top: number, right: number, bottom: number) {
+    this._snap.left = left;
+    this._snap.top = top;
+    this._snap.right = right;
+    this._snap.bottom = bottom;
+  }
+
+  beforeredock() {
+    // TODO:
+  }
+
+  redock() {
+    // TODO:
+  }
+
+  getsnapadjustbottom(): number {
+    return 100;
+  }
+
+  clienttoscreenh(h: number): number {
+    return h;
+  }
+
+  islayoutanimationsafe(): boolean {
+    return true;
+  }
+
+  init() {
+    super.init();
+    this._invalidateSize();
   }
 
   setResizing(cmd: string, dx: number, dy: number) {
@@ -115,7 +165,7 @@ export default class Layout extends Group {
       this._resizing = false;
       this.setXmlAttr("w", this._resizingDiv.offsetWidth.toString());
       this.setXmlAttr("h", this._resizingDiv.offsetHeight.toString());
-      const container = this._parentContainer;
+      const container = this._parent;
       container.setXmlAttr(
         "x",
         (container._x + this._resizingDiv.offsetLeft).toString()
@@ -126,12 +176,13 @@ export default class Layout extends Group {
       );
       this._resizingDiv.remove();
       this._resizingDiv = null;
+      this._invalidateSize();
     }
   }
 
   // MOVING THINGS =====================
   setMoving(cmd: string, dx: number, dy: number) {
-    const container = this._parentContainer;
+    const container = this._parent;
     if (cmd == "start") {
       this._moving = true;
       this._movingStartX = container._x;

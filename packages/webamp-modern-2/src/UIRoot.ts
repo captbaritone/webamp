@@ -1,7 +1,14 @@
 import Bitmap from "./skin/Bitmap";
+import JSZip, { JSZipObject } from "jszip";
 import { XmlElement } from "@rgrove/parse-xml";
 import TrueTypeFont from "./skin/TrueTypeFont";
-import { assert, assume, findLast } from "./utils";
+import {
+  assert,
+  assume,
+  findLast,
+  getCaseInsensitiveFile,
+  removeAllChildNodes,
+} from "./utils";
 import BitmapFont from "./skin/BitmapFont";
 import Color from "./skin/Color";
 import GammaGroup from "./skin/GammaGroup";
@@ -9,9 +16,14 @@ import Container from "./skin/makiClasses/Container";
 import Vm from "./skin/VM";
 import BaseObject from "./skin/makiClasses/BaseObject";
 import AUDIO_PLAYER, { AudioPlayer } from "./skin/AudioPlayer";
+import SystemObject from "./skin/makiClasses/SystemObject";
+import ComponentBucket from "./skin/makiClasses/ComponentBucket";
+import GroupXFade from "./skin/makiClasses/GroupXFade";
+import SkinParser from "./skin/parse";
 
 export class UIRoot {
   _div: HTMLDivElement = document.createElement("div");
+  _parser: SkinParser;
   // Just a temporary place to stash things
   _bitmaps: Bitmap[] = [];
   _fonts: (TrueTypeFont | BitmapFont)[] = [];
@@ -22,14 +34,25 @@ export class UIRoot {
   _dummyGammaGroup: GammaGroup = null;
   _activeGammaSetName: string = "";
   _xuiElements: XmlElement[] = [];
-  _activeGammaSet: GammaGroup[] | null = null;
+  _activeGammaSet: GammaGroup[] = [];
   _containers: Container[] = [];
+  _systemObjects: SystemObject[] = [];
+  _buckets: { [wndType: string]: ComponentBucket } = {};
+  _bucketEntries: { [wndType: string]: XmlElement[] } = {};
+  _xFades: GroupXFade[] = [];
 
   // A list of all objects created for this skin.
   _objects: BaseObject[] = [];
 
   vm: Vm = new Vm();
   audio: AudioPlayer = AUDIO_PLAYER;
+  getFileAsString: (filePath: string) => Promise<string>;
+  getFileAsBytes: (filePath: string) => Promise<ArrayBuffer>;
+  getFileAsBlob: (filePath: string) => Promise<Blob>;
+
+  constructor() {
+    this._parser = new SkinParser(this);
+  }
 
   reset() {
     this.dispose();
@@ -39,9 +62,14 @@ export class UIRoot {
     this._groupDefs = [];
     this._gammaSets = new Map();
     this._xuiElements = [];
-    this._activeGammaSet = null;
+    this._activeGammaSet = [];
     this._containers = [];
+    this._systemObjects = [];
     this._gammaNames = {};
+    this._buckets = {}
+    this._bucketEntries = {}
+    this._xFades = []
+    removeAllChildNodes(this._div);
 
     // A list of all objects created for this skin.
     this._objects = [];
@@ -67,7 +95,7 @@ export class UIRoot {
       (bitmap) => bitmap._id.toLowerCase() === lowercaseId
     );
 
-    assert(found != null, `Could not find bitmap with id ${id}.`);
+    assume(found != null, `Could not find bitmap with id ${id}.`);
     return found;
   }
 
@@ -86,7 +114,7 @@ export class UIRoot {
       (color) => color._id.toLowerCase() === lowercaseId
     );
 
-    assert(found != null, `Could not find color with id ${id}.`);
+    assume(found != null, `Could not find color with id ${id}.`);
     return found;
   }
 
@@ -102,6 +130,29 @@ export class UIRoot {
     return found ?? null;
   }
 
+  addComponentBucket(windowType: string, bucket: ComponentBucket) {
+    this._buckets[windowType] = bucket;
+  }
+  getComponentBucket(windowType: string): ComponentBucket {
+    return this._buckets[windowType];
+  }
+  addBucketEntry(windowType: string, entry: XmlElement) {
+    if (!this._bucketEntries[windowType]) {
+      this._bucketEntries[windowType] = [];
+    }
+    this._bucketEntries[windowType].push(entry);
+  }
+  getBucketEntries(windowType: string): XmlElement[] {
+    return this._bucketEntries[windowType] || []
+  }
+
+  addXFade(xfade: GroupXFade){
+    this._xFades.push(xfade)
+  }
+  getXFades(): GroupXFade[] {
+    return this._xFades;
+  }
+
   addGroupDef(groupDef: XmlElement) {
     this._groupDefs.push(groupDef);
     if (groupDef.attributes.xuitag) {
@@ -110,6 +161,7 @@ export class UIRoot {
   }
 
   getGroupDef(id: string): XmlElement | null {
+    if (!id) return null;
     const lowercaseId = id.toLowerCase();
     const found = findLast(
       this._groupDefs,
@@ -138,22 +190,27 @@ export class UIRoot {
     this._gammaSets.set(lower, gammaSet);
   }
 
-  enableGammaSet(id: string) {
-    const found = this._gammaSets.get(id.toLowerCase());
-    assume(
-      found != null,
-      `Could not find gammaset for id "${id}" from set of ${Array.from(
-        this._gammaSets.keys()
-      ).join(", ")}`
-    );
-    this._activeGammaSetName = id;
-    this._activeGammaSet = found;
+  enableGammaSet(id: string | null) {
+    if (id) {
+      const found = this._gammaSets.get(id.toLowerCase());
+      assume(
+        found != null,
+        `Could not find gammaset for id "${id}" from set of ${Array.from(
+          this._gammaSets.keys()
+        ).join(", ")}`
+      );
+      this._activeGammaSetName = id;
+      this._activeGammaSet = found;
+    }
     this._setCssVars();
   }
 
   enableDefaultGammaSet() {
-    this._activeGammaSet = Array.from(this._gammaSets.values())[0] ?? null;
-    this._setCssVars();
+    // TODO: restore the latest gammaSet picked by user for this skin
+    const gammaSetNames = Array.from(this._gammaSets.keys());
+    const firstName = gammaSetNames[0];
+    const antiBoring = gammaSetNames[1];
+    this.enableGammaSet(antiBoring || firstName || null);
   }
 
   _getGammaGroup(id: string): GammaGroup | null {
@@ -164,7 +221,7 @@ export class UIRoot {
     const found = findLast(this._activeGammaSet, (gammaGroup) => {
       return gammaGroup.getId().toLowerCase() === lower;
     });
-    return found ?? null;
+    return found ?? this._getGammaGroupDummy();
   }
 
   _getGammaGroupDummy() {
@@ -181,7 +238,10 @@ export class UIRoot {
 
   _setCssVars() {
     const cssRules = [];
-    for (const bitmap of this._bitmaps) {
+    const bitmapFonts: BitmapFont[] = this._fonts.filter(
+      (font) => font instanceof BitmapFont && !font.useExternalBitmap()
+    ) as BitmapFont[];
+    for (const bitmap of [...this._bitmaps, ...bitmapFonts]) {
       const img = bitmap.getImg();
       if (!img) {
         console.warn(`Bitmap/font ${bitmap.getId()} has no img!`);
@@ -197,6 +257,12 @@ export class UIRoot {
         bitmap._height
       );
       cssRules.push(`  ${bitmap.getCSSVar()}: url(${url});`);
+    }
+    for (const color of this._colors) {
+      const groupId = color.getGammaGroup();
+      const gammaGroup = this._getGammaGroup(groupId);
+      const url = gammaGroup.transformColor(color.getValue());
+      cssRules.push(`  ${color.getCSSVar()}: ${url};`);
     }
     cssRules.unshift(":root{");
     cssRules.push("}");
@@ -237,6 +303,9 @@ export class UIRoot {
       case "toggle":
         this.toggleContainer(param);
         break;
+      case "close":
+        this.closeContainer();
+        break;
       default:
         assume(false, `Unknown global action: ${action}`);
     }
@@ -246,6 +315,17 @@ export class UIRoot {
     const container = this.findContainer(param);
     assume(container != null, `Can not toggle on unknown container: ${param}`);
     container.toggle();
+  }
+
+  closeContainer() {
+    const btn = document.activeElement;
+    const containerEl = btn.closest("container");
+    const container_id = containerEl.getAttribute("id").toLowerCase();
+    for (const container of this._containers) {
+      if (container._id.toLowerCase() == container_id) {
+        container.close();
+      }
+    }
   }
 
   draw() {
@@ -262,6 +342,87 @@ export class UIRoot {
     for (const obj of this._objects) {
       obj.dispose();
     }
+  }
+
+  //? Zip things ========================
+  /* because maki need to load a groupdef outside init() */
+  _zip: JSZip;
+
+  setZip(zip: JSZip) {
+    this._zip = zip;
+    if (zip != null) {
+      this.getFileAsString = this.getFileAsStringZip;
+      this.getFileAsBytes = this.getFileAsBytesZip;
+      this.getFileAsBlob = this.getFileAsBlobZip;
+    } else {
+      this.getFileAsString = this.getFileAsStringPath;
+      this.getFileAsBytes = this.getFileAsBytesPath;
+      this.getFileAsBlob = this.getFileAsBlobPath;
+    }
+  }
+
+  //? Path things ========================
+  /* needed to avoid direct fetch to root path */
+  _skinPath: string;
+
+  setSkinDir(skinPath: string) {
+    // required to end with slash/
+    this._skinPath = skinPath;
+  }
+
+  async getFileAsStringZip(filePath: string): Promise<string> {
+    if (!filePath) return null;
+    const zipObj = getCaseInsensitiveFile(this._zip, filePath);
+    if (!zipObj) return null;
+    return await zipObj.async("string");
+  }
+
+  async getFileAsBytesZip(filePath: string): Promise<ArrayBuffer> {
+    if (!filePath) return null;
+    const zipObj = getCaseInsensitiveFile(this._zip, filePath);
+    if (!zipObj) return null;
+    return await zipObj.async("arraybuffer");
+  }
+
+  async getFileAsBlobZip(filePath: string): Promise<Blob> {
+    if (!filePath) return null;
+    const zipObj = getCaseInsensitiveFile(this._zip, filePath);
+    if (!zipObj) return null;
+    return await zipObj.async("blob");
+  }
+
+  async getFileAsStringPath(filePath: string): Promise<string> {
+    const response = await fetch(this._skinPath + filePath);
+    return await response.text();
+  }
+
+  async getFileAsBytesPath(filePath: string): Promise<ArrayBuffer> {
+    const response = await fetch(this._skinPath + filePath);
+    return await response.arrayBuffer();
+  }
+
+  async getFileAsBlobPath(filePath: string): Promise<Blob> {
+    const response = await fetch(this._skinPath + filePath);
+    return await response.blob();
+  }
+
+  getFileIsExist(filePath: string): boolean {
+    const zipObj = getCaseInsensitiveFile(this._zip, filePath);
+    return !!zipObj;
+  }
+
+  //? System things ========================
+  /* because maki need to be run if not inside any Group @init() */
+  addSystemObject(systemObj: SystemObject) {
+    this._systemObjects.push(systemObj);
+  }
+  init() {
+    for (const systemObject of this._systemObjects) {
+      systemObject.init();
+    }
+  }
+  getId() {
+    return "UIROOT";
   }
 }
 

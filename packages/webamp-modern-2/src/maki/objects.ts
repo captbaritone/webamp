@@ -1,6 +1,7 @@
 import stdPatched from "./objectData/stdPatched";
 import pldir from "./objectData/pldir.json";
 import config from "./objectData/config.json";
+import winampconfig from "./objectData/winampconfig.json";
 import { DataType } from "./v";
 import { assert } from "../utils";
 
@@ -21,6 +22,7 @@ const objects: { [key: string]: ObjectDefinition } = {
   ...stdPatched,
   ...pldir,
   ...config,
+  ...winampconfig,
 };
 
 export function getClass(id: string): ObjectDefinition {

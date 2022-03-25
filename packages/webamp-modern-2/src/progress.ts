@@ -2,8 +2,6 @@
 import { classResolver } from "./skin/resolver";
 import { normalizedObjects, getFormattedId } from "./maki/objects";
 import BaseObject from "./skin/makiClasses/BaseObject";
-// import { addDropHandler } from "./dropTarget";
-// import JSZip from "jszip";
 
 function hack() {
   // Without this Snowpack will try to treeshake out resolver causing a circular

@@ -7,6 +7,7 @@ import Layer from "./makiClasses/Layer";
 import AnimatedLayer from "./makiClasses/AnimatedLayer";
 import PopupMenu from "./makiClasses/PopupMenu";
 import ToggleButton from "./makiClasses/ToggleButton";
+import LayoutStatus from "./makiClasses/LayoutStatus";
 import Status from "./makiClasses/Status";
 import Text from "./makiClasses/Text";
 import Group from "./makiClasses/Group";
@@ -17,10 +18,18 @@ import Vis from "./makiClasses/Vis";
 import GuiObj from "./makiClasses/GuiObj";
 import Config from "./makiClasses/Config";
 import ConfigItem from "./makiClasses/ConfigItem";
+import ConfigAttribute from "./makiClasses/ConfigAttribute";
+import WinampConfig, { WinampConfigGroup } from "./makiClasses/WinampConfig";
+import ComponentBucket from "./makiClasses/ComponentBucket";
+import AlbumArt from "./makiClasses/AlbumArt";
+
 
 const CLASSES = [
   Config,
-  // ConfigItem,
+  Config, ConfigItem, ConfigAttribute,
+  WinampConfig, WinampConfigGroup,
+  ComponentBucket,
+  AlbumArt,
   Button,
   SystemObject,
   Container,
@@ -30,6 +39,7 @@ const CLASSES = [
   PopupMenu,
   ToggleButton,
   Status,
+  LayoutStatus,
   Text,
   Group,
   MakiMap,

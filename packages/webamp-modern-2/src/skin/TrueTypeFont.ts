@@ -5,6 +5,7 @@ export default class TrueTypeFont {
   _file: string;
   _id: string;
   _fontFace: FontFace;
+  _inlineFamily: string;
 
   setXmlAttributes(attributes: { [attrName: string]: string }) {
     for (const [key, value] of Object.entries(attributes)) {
@@ -13,10 +14,12 @@ export default class TrueTypeFont {
   }
 
   setXmlAttr(key: string, value: string) {
-    switch (key) {
+    switch (key.toLowerCase()) {
       case "id":
         this._id = value;
         break;
+      case "family":
+        this._inlineFamily = value;
       case "file":
         this._file = value;
       default:
@@ -26,11 +29,11 @@ export default class TrueTypeFont {
   }
 
   getId() {
-    return this._id;
+    return this._id || "";
   }
 
   getFontFamily() {
-    return this._fontFace.family;
+    return this._inlineFamily || this._fontFace.family;
   }
 
   dispose() {

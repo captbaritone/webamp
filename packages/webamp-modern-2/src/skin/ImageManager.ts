@@ -1,5 +1,6 @@
-import JSZip from "jszip";
+import UI_ROOT from "../UIRoot";
 import { getCaseInsensitiveFile } from "../utils";
+import Bitmap from "./Bitmap";
 
 // https://png-pixel.com/
 const DEFAULT_IMAGE_URL =
@@ -8,22 +9,49 @@ const DEFAULT_IMAGE_URL =
 export default class ImageManager {
   _urlCache: Map<string, string> = new Map();
   _imgCache: Map<string, HTMLImageElement> = new Map();
-  _cssVarCache: Map<string, string> = new Map();
-  constructor(private _zip: JSZip) {}
+  _pathofBitmap = {}; //? file : true|false|null
+  _bitmaps: { [key: string]: Bitmap } = {}; //? Bitmap:file
+  _bitmapAlias = {}; //? file|id : true|false|null //for BitmapFont
 
   async getUrl(filePath: string): Promise<string | null> {
     if (!this._urlCache.has(filePath)) {
-      const zipFile = getCaseInsensitiveFile(this._zip, filePath);
-      if (zipFile == null) {
+      const imgBlob = await UI_ROOT.getFileAsBlob(filePath);
+      if (imgBlob == null) {
         return null;
       }
-      const imgBlob = await zipFile.async("blob");
       const imgUrl = await getUrlFromBlob(imgBlob);
-      // const img = await this.getImage(imgUrl);
-      // const transformedUrl = transformImage(img);
       this._urlCache.set(filePath, imgUrl);
     }
     return this._urlCache.get(filePath);
+  }
+
+  addBitmap(bitmap: Bitmap) {
+    const id = bitmap.getId();
+    const filePath = bitmap.getFile();
+    this._pathofBitmap[filePath] = false;
+    this._bitmaps[id] = bitmap;
+  }
+
+  // Ensure we've loaded the image into our image loader.
+  async loadUniquePaths() {
+    for (const filePath of Object.keys(this._pathofBitmap)) {
+      await this.getImage(filePath);
+    }
+  }
+  async ensureBitmapsLoaded() {
+    return Promise.all(
+      Object.values(this._bitmaps).map(async (bitmap) => {
+        await this.setBimapImg(bitmap);
+        if (bitmap._img && bitmap._width == null && bitmap._height == null) {
+          bitmap.setXmlAttr("w", String(bitmap._img.width));
+          bitmap.setXmlAttr("h", String(bitmap._img.height));
+        }
+      })
+    );
+  }
+
+  async setBimapImg(bitmap: Bitmap) {
+    bitmap._img = await this.getImage(bitmap.getFile());
   }
 
   async getImage(filePath: string): Promise<HTMLImageElement | null> {

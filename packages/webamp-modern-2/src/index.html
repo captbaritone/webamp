@@ -21,11 +21,27 @@
       select:focus {
         outline: none;
       }
+      select option {
+        padding-left: 5px;
+        width: 300%;
+      }
+      select option[selected] {
+        font-weight: bold;
+      }
+      select::before {
+        padding-left: 5px;
+        content: var(--colheader, none);
+        display: block;
+        position: sticky;
+        top: var(--colheadertop, 0);
+        left: 0;
+        background-color: black;
+        color: silver;
+      }
       .webamp--img {
         background-image: var(--background-image);
         background-position: top 0 left 0;
       }
-
       .webamp--img:active {
         background-image: var(--down-background-image, var(--background-image));
       }
@@ -69,6 +85,30 @@
       }
       slider {
         overflow: hidden;
+      }
+      slider > div {
+        display: none;
+      }
+      slider::after {
+        content: "";
+        position: absolute;
+        left: var(--thumb-left);
+        top: var(--thumb-top);
+        width: var(--thumb-width);
+        height: var(--thumb-height);
+        background-image: var(--thumb-background-image);
+      }
+      slider:hover:after {
+        background-image: var(
+          --thumb-hover-background-image,
+          var(--thumb-background-image)
+        );
+      }
+      slider:active:after {
+        background-image: var(
+          --thumb-down-background-image,
+          var(--thumb-background-image)
+        );
       }
       text {
         overflow: hidden;
@@ -125,6 +165,7 @@
       text,
       wasabiframe,
       wasabititlebar,
+      componentbucket,
       colorthemeslist {
         position: absolute;
         left: 0;
@@ -146,12 +187,33 @@
       grid middle {
         flex-grow: 1;
       }
-      /* grid left, gridprogress left {left: 0;}
-      grid right, gridprogress right {right: 0;} */
-      /* body > div select>option {
-        position: unset;
-        display: block;
-      } */
+      componentbucket {
+        overflow: hidden;
+      }
+      componentbucket > wrapper {
+        display: flex;
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: auto;
+        transition: top 0.5s, left 0.5s;
+      }
+      componentbucket.vertical > wrapper {
+        flex-direction: column;
+        height: auto;
+        width: 100%;
+      }
+      componentbucket > wrapper > group {
+        position: relative;
+      }
+      group.x-fade > * {
+        transition: opacity var(--fade-in-speed, 0.5);
+      }
+      group.x-fade > .fading-out {
+        transition: opacity var(--fade-out-speed, 0.25);
+      }
+
       .wasabi-button {
         border: 3px solid transparent;
         --border-image: var(--bitmap-studio-button);
@@ -184,6 +246,8 @@
         border: 1px solid blue;
         background-color: rgba(74, 74, 251, 0.205);
         z-index: 1000;
+        box-sizing: border-box;
+        transition: width 0.1s, height 0.1s, left 0.1s, top 0.1s;
       }
     </style>
     <style id="bitmap-css"></style>

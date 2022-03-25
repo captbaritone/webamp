@@ -2,6 +2,10 @@ import { clamp, Emitter } from "../utils";
 
 const BANDS = [60, 170, 310, 600, 1000, 3000, 6000, 12000, 14000, 16000];
 
+export const AUDIO_PAUSED = "paused";
+export const AUDIO_STOPPED = "stopped";
+export const AUDIO_PLAYING = "playing";
+
 export class AudioPlayer {
   _input: HTMLInputElement = document.createElement("input");
   _audio: HTMLAudioElement = document.createElement("audio");
@@ -12,6 +16,12 @@ export class AudioPlayer {
   _eqValues: { [kind: string]: number } = {};
   _eqNodes: { [kind: string]: number } = {};
   _eqEmitter: Emitter = new Emitter();
+  _isStop: boolean = true; //becaue we can't audio.stop() currently
+  _trackInfo: {};
+  _albumArtUrl: string = null;
+  //events aka addEventListener()
+  _eventListener: Emitter = new Emitter();
+
   constructor() {
     this._context = this._context = new (window.AudioContext ||
       window.webkitAudioContext)();
@@ -85,20 +95,48 @@ export class AudioPlayer {
       this._audio.src = URL.createObjectURL(file);
       this.play();
     };
+
+    //temporary: in the end of playing mp3, lets stop.
+    //TODO: in future, when ended: play next mp3
+    this._audio.addEventListener("ended", () => this.stop());
   }
+
+  // shortcut of this.Emitter
+  on(event: string, callback: Function) {
+    this._eventListener.on(event, callback);
+  }
+  trigger(event: string, ...args: any[]) {
+    this._eventListener.trigger(event, ...args);
+  }
+  off(event: string, callback: Function) {
+    this._eventListener.off(event, callback);
+  }
+
   // 0-1
   getVolume(): number {
     return this._audio.volume;
   }
   play() {
+    this._isStop = false;
     this._audio.play();
+    this.trigger("play");
+    this.trigger("statchanged");
   }
   stop() {
+    this._isStop = true; // needed to make threestate
+    if (this._audio.paused) {
+      this._audio.play();
+    } // for trigger the event change
     this._audio.pause();
     this._audio.currentTime = 0;
+    this.trigger("stop");
+    this.trigger("statchanged");
   }
   pause() {
+    this._isStop = false; // needed to make threestate
     this._audio.pause();
+    this.trigger("pause");
+    this.trigger("statchanged");
   }
 
   eject() {
@@ -131,10 +169,25 @@ export class AudioPlayer {
     return this._audio.currentTime / this._audio.duration;
   }
 
+  getState(): string {
+    if (this._isStop) {
+      // To distinct from pause
+      return AUDIO_STOPPED;
+    }
+    const audio = this._audio;
+    if (!audio.ended && !audio.paused) {
+      return AUDIO_PLAYING;
+    } else if (audio.ended) {
+      return AUDIO_STOPPED;
+    } else if (audio.paused) {
+      return AUDIO_PAUSED;
+    }
+  }
+
   getEq(kind: string): number {
     switch (kind) {
       case "preamp":
-        return this.__preamp.gain.value;
+        return (this.__preamp.gain.value + 12) / 24;
       case "1":
       case "2":
       case "3":
@@ -221,6 +274,17 @@ export class AudioPlayer {
     };
     return dispose;
   }
+
+  onVolumeChanged(cb: () => void): () => void {
+    const handler = () => cb();
+    this._audio.addEventListener("volumechange", handler);
+    const dispose = () => {
+      this._audio.removeEventListener("volumechange", handler);
+    };
+    return dispose;
+  }
+
+  
 
   // Current track length in seconds
   getLength(): number {

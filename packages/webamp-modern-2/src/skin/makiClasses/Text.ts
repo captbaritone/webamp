@@ -8,7 +8,9 @@ import {
   num,
   px,
   toBool,
+  clamp,
 } from "../../utils";
+import Timer from "./Timer";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Ctext.2F.3E_.26_.3CWasabi:Text.2F.3E
 export default class Text extends GuiObj {
@@ -18,27 +20,41 @@ export default class Text extends GuiObj {
   _disposeDisplaySubscription: () => void | null = null;
   _text: string;
   _bold: boolean;
-  _forceupcase: boolean;
   _forceuppercase: boolean;
-  _forcelocase: boolean;
   _forcelowercase: boolean;
   _align: string;
-  _font: string;
+  _font_id: string;
+  _font_obj: TrueTypeFont | BitmapFont;
   _fontSize: number;
   _color: string;
-  _ticker: boolean;
+  _ticker: string = "off"; // "scroll" | "bounce" | "off"
+  _paddingX: number = 2;
   _timeColonWidth: number | null = null;
+  _textWrapper: HTMLElement;
+  _scrollTimer: Timer;
+  _scrollDirection: -1 | 1;
+  _scrollPaused: boolean = false;
+  _scrollLeft: number = 0; // logically, not visually
+  _textFullWidth: number; //calculated, not runtime by css
+  _drawn: boolean = false; // needed to check has parents
+
+  constructor() {
+    super();
+    this._textWrapper = document.createElement("wrap");
+    this._div.appendChild(this._textWrapper);
+  }
 
   setXmlAttr(key: string, value: string): boolean {
     if (super.setXmlAttr(key, value)) {
       return true;
     }
-    switch (key) {
+    switch (key.toLowerCase()) {
       case "display":
         // (str) Either a specific system display string or the string identifier of a text feed. Setting this value will override the text parameter. See below.
         this._setDisplay(value);
         break;
       case "text":
+      case "default":
         // (str) A static string to be displayed.
         this._text = value;
         this._renderText();
@@ -46,19 +62,22 @@ export default class Text extends GuiObj {
       case "bold":
         // (str) A static string to be displayed.
         this._bold = toBool(value);
+        this._prepareCss();
         break;
       case "forceupcase":
-        // (bool) Force the system to make the display string all uppercase before display.
-        this._forceupcase = toBool(value);
-        break;
       case "forceuppercase":
         // (bool) Force the system to make the display string all uppercase before display.
         this._forceuppercase = toBool(value);
+        this._prepareCss();
+        this._renderText();
         break;
       case "font":
         // (id) The id of a bitmapfont or truetypefont element. If no element with that id can be found, the OS will be asked for a font with that name instead.
-        this._font = value;
-        this._renderText();
+        this._font_id = value;
+        this._autoDetectFontType();
+        this.ensureFontSize();
+        this._prepareCss();
+        // this._renderText();
         break;
       case "align":
         // (str) One of the following three possible strings: "left" "center" "right" -- Default is "left."
@@ -67,6 +86,9 @@ export default class Text extends GuiObj {
       case "fontsize":
         // (int) The size to render the chosen font.
         this._fontSize = num(value);
+        //this._renderText(); //
+        this.ensureFontSize();
+        this._invalidateFullWidth();
         break;
       case "color":
         // (int[sic?]) The comma delimited RGB color of the text.
@@ -74,11 +96,13 @@ export default class Text extends GuiObj {
         break;
       case "ticker":
         /// (bool) Setting this flag causes the object to scroll left and right if the text does not fit the rectangular area of the text object.
-        this._ticker = toBool(value);
+        if (value == "0") value = "off";
+        this._ticker = value.toLowerCase();
         break;
       case "timecolonwidth":
         // (int) How many extra pixels wider or smaller should the colon be when displaying time. Default is -1.
         this._timeColonWidth = num(value);
+        this._prepareCss();
         this._renderText();
       /*
 antialias - (bool) Setting this flag causes the text to be rendered antialiased if possible.
@@ -103,6 +127,41 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
         return false;
     }
     return true;
+  }
+
+  _autoDetectFontType() {
+    if (this._font_id) {
+      this._font_obj = UI_ROOT.getFont(this._font_id);
+      if (!this._font_obj) {
+        const newFont = new TrueTypeFont();
+        newFont._inlineFamily = this._font_id;
+        UI_ROOT.addFont(newFont);
+        this._font_obj = newFont;
+      }
+    }
+  }
+
+  ensureFontSize() {
+    if (this._font_obj instanceof TrueTypeFont && this._fontSize) {
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+      context.font = `${this._fontSize}px ${
+        this._font_obj.getFontFamily() || "Arial"
+      }`;
+      const metrics = context.measureText("IWH");
+      const fontHeight =
+        metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent;
+
+      this._fontSize =
+        this._fontSize * (1 - (fontHeight - this._fontSize) / this._fontSize);
+    }
+  }
+
+  init() {
+    super.init();
+    if (this._ticker && this._ticker != "off") {
+      this._prepareScrolling();
+    }
   }
 
   _setDisplay(display: string) {
@@ -135,10 +194,11 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
         this._displayValue = "5:58";
         break;
       case "songname":
-        this._displayValue = "Niente da Caprie (3";
-        break;
+      // this._displayValue = "Niente da Caprie (3";
+      // break;
       case "songtitle":
-        this._displayValue = "Niente da Caprie (3";
+        this._displayValue = "Your Favorite MP3 Song Title, U R Reading";
+        // this._displayValue = "Short MP3 Title";
         break;
       case "songbitrate":
       case "songsamplerate":
@@ -161,7 +221,13 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
     }
   }
 
-  getText() {
+  gettext() {
+    if ((this._text || "").startsWith(":") && this._drawn) {
+      const layout = this.getparentlayout();
+      if (layout) {
+        return layout.getcontainer()._name || this._text;
+      }
+    }
     if (this._display) {
       return this._displayValue;
     }
@@ -180,26 +246,67 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
     // TODO
   }
 
-  _renderText() {
-    removeAllChildNodes(this._div);
-    if (this._font) {
-      const font = UI_ROOT.getFont(this._font);
+  //to speedup, we spit render. This is only rendering style
+  _prepareCss() {
+    if (!this._font_obj) {
+      this._font_obj = UI_ROOT.getFont(this._font_id);
+    }
+    const font = this._font_obj;
+    if (font instanceof BitmapFont) {
+      this._textWrapper.setAttribute("font", "BitmapFont");
+      this._div.style.setProperty(
+        "--fontSize",
+        (this._fontSize || "~").toString()
+      );
+      this.setBackgroundImage(font);
+      this._div.style.backgroundSize = "0"; //disable parent background, because only children will use it
+      this._div.style.lineHeight = px(this._div.getBoundingClientRect().height);
+      this._div.style.setProperty("--charwidth", px(font._charWidth));
+      this._div.style.setProperty("--charheight", px(font._charHeight));
+    } else {
+      if (this._color) {
+        const color = UI_ROOT.getColor(this._color);
+        if (color) {
+          this._div.style.color = `var(${color.getCSSVar()}, ${color.getRgb})`;
+        }
+      }
       if (font instanceof TrueTypeFont) {
-        this._div.innerText = this.getText();
+        this._textWrapper.setAttribute("font", "TrueType");
+
         this._div.style.fontFamily = font.getFontFamily();
-      } else if (font instanceof BitmapFont) {
-        this._renderBitmapFont(font);
+        this._div.style.fontSize = px(this._fontSize ?? 12);
+        this._div.style.textTransform = this._forceuppercase
+          ? "uppercase"
+          : "none";
+        if (this._bold) {
+          this._div.style.fontWeight = "bold";
+        }
+        if (this._align) {
+          this._div.style.textAlign = this._align;
+        }
       } else if (font == null) {
-        this._div.innerText = this.getText();
-        this._div.style.fontFamily = "Ariel";
+        this._div.style.setProperty("--fontMode", "Null");
+        this._div.style.fontFamily = "Arial";
       } else {
         throw new Error("Unexpected font");
       }
     }
   }
 
+  _renderText() {
+    //TODO: invalidating text width is only important when srolling?
+    this._invalidateFullWidth();
+
+    const font = this._font_obj;
+    if (font instanceof BitmapFont) {
+      this._renderBitmapFont(font);
+    } else {
+      this._textWrapper.innerText = this.gettext();
+    }
+  }
+
   _useColonWidth() {
-    if (this._timeColonWidth == null) {
+    if (this._timeColonWidth == null || this._display == null) {
       return false;
     }
     switch (this._display.toLowerCase()) {
@@ -212,41 +319,117 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
   }
 
   _renderBitmapFont(font: BitmapFont) {
+    removeAllChildNodes(this._textWrapper);
     this._div.style.whiteSpace = "nowrap";
     const useColonWidth = this._useColonWidth();
-    if (this.getText() != null) {
-      for (const char of this.getText().split("")) {
+    if (this.gettext() != null) {
+      for (const char of this.gettext().split("")) {
         const charNode = font.renderLetter(char);
         // TODO: This is quite hacky.
         if (char === ":" && useColonWidth) {
           charNode.style.width = px(this._timeColonWidth);
         }
-        this._div.appendChild(charNode);
+        this._textWrapper.appendChild(charNode);
       }
     }
   }
 
+  _renderBitmapFont1(font: BitmapFont) {
+    this._div.style.whiteSpace = "nowrap";
+    let s = "";
+    for (const char of this.gettext().split("")) {
+      s += `<i>${char}</i>`;
+    }
+    this._div.innerHTML = s;
+  }
+
+  // it is needed for scrolltext.
+  _invalidateFullWidth() {
+    const font = this._font_obj;
+    if (font instanceof BitmapFont) {
+      this._textFullWidth = this._getBitmapFontTextWidth(font);
+    } else {
+      this._textFullWidth = this._getTrueTypeTextWidth(font);
+    }
+    this._div.style.setProperty("--full-width", px(this._textFullWidth));
+  }
+
+  getautowidth(): number {
+    this._invalidateFullWidth();
+    let textWidth = this._textFullWidth;
+    if (this._relatw == "1") {
+      textWidth += this._width * -1;
+    }
+    return textWidth;
+  }
+
+  gettextwidth(): number {
+    return this.getautowidth();
+  }
+
+  _getBitmapFontTextWidth(font: BitmapFont): number {
+    const charWidth = font._charWidth;
+    return this.gettext().length * charWidth + this._paddingX * 2;
+  }
+
+  _getTrueTypeTextWidth(font: TrueTypeFont): number {
+    /**
+     * Uses canvas.measureText to compute and return the width of the given text of given font in pixels.
+     *
+     * @param {String} text The text to be rendered.
+     * @param {String} font The css font descriptor that text is to be rendered with (e.g. "bold 14px verdana").
+     *
+     * @see https://stackoverflow.com/questions/118241/calculate-text-width-with-javascript/21015393#21015393
+     */
+    const self = this;
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    context.font = `${this._fontSize || 14}px ${
+      (font && font.getFontFamily()) || "Arial"
+    }`;
+    const metrics = context.measureText(this.gettext());
+    return metrics.width + self._paddingX * 2;
+  }
+
   draw() {
+    this._drawn = true;
     super.draw();
     this._renderText();
-    this._div.style.overflow = "hidden";
-    if (this._bold) {
-      this._div.style.fontWeight = "bold";
-    }
-    if (this._align) {
-      this._div.style.textAlign = this._align;
-    }
 
-    /*
-    if (this._color) {
-      console.log(this._color);
-      const color = UI_ROOT.getColor(this._color);
-      console.log({ color });
-      this._div.style.color = color.getRbg();
-    }
-    */
+    this._div.style.removeProperty("line-height");
+    this._div.classList.add("webamp--img");
+  }
 
-    this._div.style.fontSize = px(this._fontSize ?? 14);
+  _prepareScrolling() {
+    this._scrollDirection = -1;
+    const timer = (this._scrollTimer = new Timer());
+    timer.setdelay(50);
+    timer.setOnTimer(() => {
+      this.doScrollText();
+    });
+    timer.start();
+  }
+
+  doScrollText() {
+    const curL = this._scrollLeft; 
+    const step = 1; //pixel
+    const idle = 20; //when overflow
+    const container = this._div.getBoundingClientRect();
+    const wrapperWidth = this._textFullWidth;
+    if (wrapperWidth <= container.width) return;
+    var l = curL + step * this._scrollDirection;
+    if (l + wrapperWidth < container.width - step * idle) {
+      // too left
+      this._scrollDirection *= -1; //? flip dir!
+      l = curL + step * this._scrollDirection;
+    } else if (l > step * idle) {
+      // too right
+      this._scrollDirection *= -1; //? flip dir!
+      l = curL + step * this._scrollDirection;
+    }
+    this._scrollLeft = l;
+    l = clamp(l, -(wrapperWidth - container.width), 0);
+    this._textWrapper.style.left = px(Math.round(l));
   }
 
   dispose() {

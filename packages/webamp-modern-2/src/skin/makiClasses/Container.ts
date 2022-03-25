@@ -2,6 +2,7 @@ import UI_ROOT from "../../UIRoot";
 import { assert, num, px, removeAllChildNodes, toBool } from "../../utils";
 import Layout from "./Layout";
 import XmlObj from "../XmlObj";
+import Group from "./Group";
 
 // > A container is a top level object and it basically represents a window.
 // > Nothing holds a container. It is an object that holds multiple related
@@ -15,6 +16,7 @@ export default class Container extends XmlObj {
   _activeLayout: Layout | null = null;
   _visible: boolean = true;
   _id: string;
+  _name: string;
   _x: number = 0;
   _y: number = 0;
   _componentGuid: string; // eg. "guid:{1234-...-0ABC}"
@@ -30,6 +32,9 @@ export default class Container extends XmlObj {
       return true;
     }
     switch (key) {
+      case "name":
+        this._name = value;
+        break;
       case "id":
         this._id = value.toLowerCase();
         break;
@@ -158,12 +163,26 @@ export default class Container extends XmlObj {
     throw new Error(`Could not find a container with the id; "${layoutId}"`);
   }
 
+  /** 
+  * @ret Layout
+  */
+  getCurLayout(): Layout {
+    return this._activeLayout;
+  }
+
+
+
   addLayout(layout: Layout) {
-    layout.setParentContainer(this);
+    layout.setParent(this as unknown as Group);
     this._layouts.push(layout);
     if (this._activeLayout == null) {
       this._activeLayout = layout;
     }
+  }
+
+  // parser need it.
+  addChild(layout: Layout) {
+    this.addLayout(layout)
   }
 
   _clearCurrentLayout() {
@@ -212,6 +231,8 @@ export default class Container extends XmlObj {
 
   draw() {
     this._div.setAttribute("id", this.getId());
+    this._div.setAttribute("tabindex", "1");
+    this._renderDimensions();
     this._renderLayout();
   }
 }

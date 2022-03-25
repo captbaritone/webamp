@@ -3,10 +3,12 @@ import UI_ROOT from "../../UIRoot";
 import GuiObj from "./GuiObj";
 import SystemObject from "./SystemObject";
 import Movable from "./Movable";
+import Layout from "./Layout";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Cgroup.2F.3E
 export default class Group extends Movable {
   static GUID = "45be95e5419120725fbb5c93fd17f1f9";
+  _inited: boolean = false;
   _parent: Group;
   _instanceId: string;
   _background: string;
@@ -14,7 +16,9 @@ export default class Group extends Movable {
   _drawBackground: boolean = true;
   _isLayout: boolean = false;
   _systemObjects: SystemObject[] = [];
-  _children: GuiObj[] = [];
+  _actualWidth: number; // for _invalidatesize, after draw
+  _actualHeight: number;
+  _regionCanvas: HTMLCanvasElement;
 
   setXmlAttr(_key: string, value: string): boolean {
     const key = _key.toLowerCase();
@@ -40,6 +44,11 @@ export default class Group extends Movable {
   }
 
   init() {
+    if (this._inited) return;
+    this._inited = true;
+
+    super.init();
+
     for (const systemObject of this._systemObjects) {
       systemObject.init();
     }
@@ -62,22 +71,6 @@ export default class Group extends Movable {
     this._children.push(child);
   }
 
-  findobject(objectId: string): GuiObj | null {
-    const lower = objectId.toLowerCase();
-    for (const obj of this._children) {
-      if (obj.getId() === lower) {
-        return obj;
-      }
-      if (obj instanceof Group) {
-        const found = obj.findobject(objectId);
-        if (found != null) {
-          return found;
-        }
-      }
-    }
-    return null;
-  }
-
   /* Required for Maki */
   getobject(objectId: string): GuiObj {
     const lower = objectId.toLowerCase();
@@ -92,7 +85,15 @@ export default class Group extends Movable {
     );
   }
 
-  getparentlayout(): Group {
+  enumobject(index: number): GuiObj {
+    return this._children[index];
+  }
+
+  getnumobjects(): number {
+    return this._children.length;
+  }
+
+  getparentlayout(): Layout {
     let obj: Group = this;
     while (obj._parent) {
       if (obj._isLayout) {
@@ -103,7 +104,11 @@ export default class Group extends Movable {
     if (!obj) {
       console.warn("getParentLayout", this.getId(), "failed!");
     }
-    return obj;
+    return obj as Layout;
+  }
+
+  isLayout(): boolean {
+    return this._isLayout;
   }
 
   // This shadows `getheight()` on GuiObj
@@ -113,17 +118,23 @@ export default class Group extends Movable {
       const bitmap = UI_ROOT.getBitmap(this._background);
       if (bitmap) return bitmap.getHeight();
     }
-    return h;
+    return h ?? 0;
   }
 
   // This shadows `getwidth()` on GuiObj
   getwidth(): number {
+    if (this._autowidthsource) {
+      const widthSource = this.findobject(this._autowidthsource);
+      if (widthSource) {
+        return widthSource.getautowidth();
+      }
+    }
     const w = super.getwidth();
     if (w == null && this._background != null) {
       const bitmap = UI_ROOT.getBitmap(this._background);
       if (bitmap) return bitmap.getWidth();
     }
-    return w;
+    return w ?? 0;
   }
 
   _renderBackground() {
@@ -135,23 +146,140 @@ export default class Group extends Movable {
     }
   }
 
+  async doResize() {
+    UI_ROOT.vm.dispatch(this, "onresize", [
+      { type: "INT", value: 0 },
+      { type: "INT", value: 0 },
+      { type: "INT", value: this.getwidth() },
+      { type: "INT", value: this.getheight() },
+    ]);
+  }
+
+  /**
+   * it is needed because render region is expensive.
+   * Hence, we recalculate regions only if needed */
+  async _invalidateSize() {
+    const actualBox = this._div.getBoundingClientRect();
+    if (
+      actualBox.width != this._actualWidth ||
+      actualBox.height != this._actualHeight
+    ) {
+      this._actualWidth = actualBox.width;
+      this._actualHeight = actualBox.height;
+      this.doResize();
+      this.applyRegions();
+    }
+    for (const child of this._children) {
+      if (child instanceof Group) child._invalidateSize();
+    }
+  }
+
+  // SYSREGION THINGS ==============================
+  applyRegions() {
+    this._regionCanvas = null;
+    let hasRegions = false;
+    for (const child of this._children) {
+      // child.draw();
+      if (child._sysregion == -1 || child._sysregion == -2) {
+        this.putAsRegion(child);
+        hasRegions = true;
+      }
+    }
+    if (hasRegions) {
+      this.setRegion();
+    }
+    this._regionCanvas = null;
+  }
+
+  putAsRegion(child: GuiObj) {
+    if (
+      this._regionCanvas == null ||
+      this._regionCanvas.width == 0 ||
+      this._regionCanvas.height == 0
+    ) {
+      const canvas = (this._regionCanvas = document.createElement("canvas"));
+      const bound = this._div.getBoundingClientRect();
+      canvas.width = bound.width;
+      canvas.height = bound.height;
+      // console.log('createRegionCanvas:', bound.width, bound.height)
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "white";
+      ctx.fillRect(0, 0, bound.width, bound.height);
+    }
+    if (this._regionCanvas.width == 0 || this._regionCanvas.height == 0) {
+      return;
+    }
+
+    const ctx2 = this._regionCanvas.getContext("2d");
+    const r = child._div.getBoundingClientRect();
+    const bitmap = child._backgroundBitmap;
+    const img = child._backgroundBitmap.getImg();
+    ctx2.drawImage(
+      img,
+      bitmap._x,
+      bitmap._y,
+      r.width,
+      r.height,
+
+      child._div.offsetLeft,
+      child._div.offsetTop,
+      r.width,
+      r.height
+    );
+  }
+
+  setRegion() {
+    if (this._regionCanvas.width == 0 || this._regionCanvas.height == 0) {
+      return;
+    }
+
+    const ctx2 = this._regionCanvas.getContext("2d");
+
+    const imageData = ctx2.getImageData(
+      0,
+      0,
+      this._regionCanvas.width,
+      this._regionCanvas.height
+    );
+    const data = imageData.data;
+    for (var i = 0; i < data.length; i += 4) {
+      data[i + 3] = data[i + 0];
+    }
+    ctx2.putImageData(imageData, 0, 0);
+
+    this._regionCanvas.toBlob((blob) => {
+      const url = URL.createObjectURL(blob);
+      this._div.style.setProperty("mask-image", `url(${url})`);
+      this._div.style.setProperty("-webkit-mask-image", `url(${url})`);
+    });
+  }
+
+  appendChildrenDiv() {
+    // ComponentBucket may has different way to append children
+    this._appendChildrenToDiv(this._div);
+  }
+  _appendChildrenToDiv(containerDiv: HTMLElement) {
+    for (const child of this._children) {
+      child.draw();
+      containerDiv.appendChild(child.getDiv());
+    }
+  }
+
   draw() {
     super.draw();
     this._div.classList.add("webamp--img");
     // It seems Groups are not responsive to click events.
     if (this._movable || this._resizable) {
-      // this._div.style.removeProperty('pointer-events');
       this._div.style.pointerEvents = "auto";
     } else {
       this._div.style.pointerEvents = "none";
     }
     //TODO: allow move/resize if has ._image
     this._div.style.pointerEvents = "none";
-    // this._div.style.overflow = "hidden";
     this._renderBackground();
-    for (const child of this._children) {
-      child.draw();
-      this._div.appendChild(child.getDiv());
+    this.appendChildrenDiv();
+    if (this._autowidthsource) {
+      this._div.classList.add("autowidthsource");
     }
   }
 }

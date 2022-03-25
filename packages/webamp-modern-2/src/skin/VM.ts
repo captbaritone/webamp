@@ -9,7 +9,8 @@ export default class Vm {
   _scripts: ParsedMaki[] = [];
   // This could easily become performance sensitive. We could make this more
   // performant by normalizing some of these things when scripts are added.
-  dispatch(object: BaseObject, event: string, args: Variable[] = []) {
+  dispatch(object: BaseObject, event: string, args: Variable[] = []): number {
+    let ran = 0;
     for (const [scriptId, script] of this._scripts.entries()) {
       for (const binding of script.bindings) {
         if (
@@ -18,9 +19,11 @@ export default class Vm {
         ) {
           const reversedArgs = [...args].reverse();
           this.interpret(scriptId, binding.commandOffset, reversedArgs);
+          ran++;
         }
       }
     }
+    return ran
   }
 
   addScript(maki: ParsedMaki): number {

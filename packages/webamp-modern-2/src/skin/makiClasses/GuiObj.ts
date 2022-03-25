@@ -1,8 +1,17 @@
 import UI_ROOT from "../../UIRoot";
-import { assert, num, toBool, px, assume, relative } from "../../utils";
+import {
+  assert,
+  num,
+  toBool,
+  px,
+  assume,
+  relative,
+  findLast,
+} from "../../utils";
 import Bitmap from "../Bitmap";
 import Group from "./Group";
 import XmlObj from "../XmlObj";
+import Layout from "./Layout";
 
 let BRING_LEAST: number = -1;
 let BRING_MOST_TOP: number = 1;
@@ -11,9 +20,11 @@ let BRING_MOST_TOP: number = 1;
 export default class GuiObj extends XmlObj {
   static GUID = "4ee3e1994becc636bc78cd97b028869c";
   _parent: Group;
+  _children: GuiObj[] = [];
   _id: string;
-  _width: number;
-  _height: number;
+  _name: string;
+  _width: number = 0;
+  _height: number = 0;
   _x: number = 0;
   _y: number = 0;
   _minimumHeight: number = 0;
@@ -24,14 +35,12 @@ export default class GuiObj extends XmlObj {
   _relaty: string;
   _relatw: string;
   _relath: string;
-  // _resize: string;
+  _autowidthsource: string;
   _droptarget: string;
   _visible: boolean = true;
   _alpha: number = 255;
   _ghost: boolean = false;
   _sysregion: number = 0;
-  // _movable: boolean = false;
-  // _resizable: number = 0;
   _tooltip: string = "";
   _targetX: number | null = null;
   _targetY: number | null = null;
@@ -42,8 +51,8 @@ export default class GuiObj extends XmlObj {
   _goingToTarget: boolean = false;
   _div: HTMLElement;
   _backgroundBitmap: Bitmap | null = null;
-  // _resizingEventsRegisterd: boolean = false;
-  // _movingEventsRegisterd: boolean = false;
+
+  _metaCommands: XmlElement[] = [];
 
   constructor() {
     super();
@@ -66,6 +75,13 @@ export default class GuiObj extends XmlObj {
     switch (key) {
       case "id":
         this._id = value.toLowerCase();
+        break;
+      case "name":
+        this._name = value;
+        break;
+
+      case "autowidthsource":
+        this._autowidthsource = value.toLowerCase();
         break;
       case "w":
       case "default_w":
@@ -114,6 +130,12 @@ export default class GuiObj extends XmlObj {
       case "droptarget":
         this._droptarget = value;
         break;
+      case "dblclickaction":
+        const [action, param, actionTarget] = value.split(";");
+        this._div.addEventListener("dblclick", (e) => {
+          this.dispatchAction(action, param, actionTarget);
+        });
+        break;
       case "ghost":
         this._ghost = toBool(value);
         break;
@@ -121,6 +143,11 @@ export default class GuiObj extends XmlObj {
         this._visible = toBool(value);
         this._renderVisibility();
         break;
+      case "activealpha":
+      case "inactivealpha":
+        this._div.setAttribute(key, value); // set directly to html attribute
+        break;
+
       case "tooltip":
         this._tooltip = value;
         break;
@@ -136,38 +163,53 @@ export default class GuiObj extends XmlObj {
     return true;
   }
 
-  init() {
-    this._div.addEventListener("mousedown", (e) => {
-      e.stopPropagation();
-      /*
-      if (this._backgroundBitmap != null) {
-        const { clientX, clientY } = e;
-        const { x, y } = this._div.getBoundingClientRect();
-        const canvasX = clientX - x;
-        const canvasY = clientY - y;
-        const canvas = this._backgroundBitmap.getCanvas();
-        const ctx = canvas.getContext("2d");
+  setxmlparam(key: string, value: string) {
+    this.setXmlAttr(key, value);
+  }
 
-        const opacity = ctx.getImageData(canvasX, canvasY, 1, 1).data[3];
-        if (opacity === 0) {
-          this._div.style.pointerEvents = "none";
-          const newTarget = document.elementFromPoint(clientX, clientY);
-          this._div.style.pointerEvents = "auto";
-          var newEvent = new MouseEvent("click", {
-            clientX,
-            clientY,
-            bubbles: true,
-          });
-          newTarget.dispatchEvent(newEvent);
-          return;
+  setSize(newWidth: number, newHeight: number) {}
+
+  init() {
+    //process <sendparams> and <hideobject>
+    for (const node of this._metaCommands) {
+      const cmd = node.name.toLowerCase();
+      const el = node.attributes.group
+        ? this.findobject(node.attributes.group)
+        : this;
+      const targets_ids = node.attributes.target.split(";");
+      for (const target_id of targets_ids) {
+        // individual target
+        const gui = el.findobjectF(
+          target_id,
+          `<${cmd}(${target_id})=notfound. @${this.getId()}`
+        );
+        if (gui == null) {
+          continue;
+        }
+        if (cmd == "sendparams") {
+          for (let attribute in node.attributes) {
+            if (gui && attribute != "target") {
+              gui.setxmlparam(attribute, node.attributes[attribute]);
+            }
+          }
+        } else if (cmd == "hideobject" && target_id != "close") {
+          gui.hide();
         }
       }
-     */
-      this.onLeftButtonDown(e.clientX, e.clientY);
+    }
 
-      const mouseUpHandler = (e) => {
-        // e.stopPropagation();
-        this.onLeftButtonUp(e.clientX, e.clientY);
+    this._div.addEventListener("mousedown", (e) => {
+      e.stopPropagation();
+      this.onLeftButtonDown(
+        e.offsetX + this.getleft(),
+        e.offsetY + this.gettop()
+      );
+
+      const mouseUpHandler = (e: MouseEvent) => {
+        this.onLeftButtonUp(
+          e.offsetX + this.getleft(),
+          e.offsetY + this.gettop()
+        );
         this._div.removeEventListener("mouseup", mouseUpHandler);
       };
       this._div.addEventListener("mouseup", mouseUpHandler);
@@ -186,7 +228,7 @@ export default class GuiObj extends XmlObj {
   }
 
   getId(): string {
-    return this._id;
+    return this._id || '';
   }
 
   /**
@@ -203,6 +245,9 @@ export default class GuiObj extends XmlObj {
   hide() {
     this._visible = false;
     this._renderVisibility();
+  }
+  isvisible(): boolean {
+    return this._visible;
   }
 
   /**
@@ -269,6 +314,101 @@ export default class GuiObj extends XmlObj {
     this._width = w;
     this._height = h;
     this._renderDimensions();
+  }
+
+  getxmlparam(param: string): string {
+    const _ = this["_" + param];
+    return _ != null ? _.toString() : null;
+  }
+  getguiw(): number {
+    return this._width;
+  }
+  getguih(): number {
+    return this._height;
+  }
+  getguix(): number {
+    return this._x;
+  }
+  getguiy(): number {
+    return this._y;
+  }
+  getguirelatw(): number {
+    return this._relatw == "1" ? 1 : 0;
+  }
+  getguirelath(): number {
+    return this._relath == "1" ? 1 : 0;
+  }
+  getguirelatx(): number {
+    return this._relatx == "1" ? 1 : 0;
+  }
+  getguirelaty(): number {
+    return this._relaty == "1" ? 1 : 0;
+  }
+  getautowidth(): number {
+    const child = !this._autowidthsource
+      ? this
+      : findLast(
+          this._children,
+          (c) => c._id.toLowerCase() == this._autowidthsource
+        );
+    if (child) {
+      return child._div.getBoundingClientRect().width;
+    }
+    return 1;
+  }
+  getautoheight(): number {
+    return this._div.getBoundingClientRect().height;
+  }
+
+  findobject(id: string): GuiObj {
+    if (id.toLowerCase() == this.getId().toLowerCase()) return this;
+
+    //? Phase 1: find in this children
+    let ret = this._findobject(id);
+
+    //? Phase 2: find in this layout's children
+    if (!ret /* && this._parent  */) {
+      const layout = this.getparentlayout();
+      if (layout) {
+        ret = layout._findobject(id);
+      }
+    }
+    if (!ret && id != "sysmenu") {
+      console.warn(`findObject(${id}) failed, @${this.getId()}`);
+    }
+    return ret;
+  }
+
+  /* internal findObject with custom error msg */
+  findobjectF(id: string, msg: string): GuiObj {
+    const ret = this._findobject(id);
+    if (!ret && id != "sysmenu") {
+      console.warn(msg);
+    }
+    return ret;
+  }
+
+  _findobject(id: string): GuiObj {
+    // too complex to consol.log here
+    const lower = id.toLowerCase();
+    // find in direct children first
+    for (const obj of this._children) {
+      if ((obj.getId() || "").toLowerCase() === lower) {
+        return obj;
+      }
+    }
+    // find in grand child
+    for (const obj of this._children) {
+      const found = obj._findobject(id);
+      if (found != null) {
+        return found;
+      }
+    }
+    return null;
+  }
+
+  isActive(): boolean {
+    return this._div.matches(":focus");
   }
 
   /**
@@ -477,6 +617,13 @@ export default class GuiObj extends XmlObj {
   }
 
   /**
+   * isGoingToTarget()
+   */
+  isgoingtotarget() {
+    return this._goingToTarget;
+  }
+
+  /**
    * Experimental/unused
    */
   __gototargetWebAnimationApi() {
@@ -523,10 +670,6 @@ export default class GuiObj extends XmlObj {
     assume(false, "Unimplemented");
   }
 
-  /**
-   * isGoingToTarget()
-   */
-
   // [WHERE IS THIS?]
 
   // modifies the x/y targets so that they compensate for gained width/height. useful to make drawers that open up without jittering
@@ -561,7 +704,27 @@ export default class GuiObj extends XmlObj {
     return this._alpha;
   }
 
-  getparentlayout(): Group {
+  clienttoscreenx(x: number): number {
+    return x;
+  }
+
+  clienttoscreeny(y: number): number {
+    return y;
+  }
+
+  screentoclientx(x: number): number {
+    return x;
+  }
+
+  screentoclienty(y: number): number {
+    return y;
+  }
+
+  getparent(): Group {
+    return this._parent;
+  }
+
+  getparentlayout(): Layout {
     if (this._parent) {
       return this._parent.getparentlayout();
     }
@@ -577,11 +740,22 @@ export default class GuiObj extends XmlObj {
     this._div.style.zIndex = String(BRING_LEAST);
   }
 
+  setenabled(onoff:boolean|number){
+    //TODO:
+  }
+
   handleAction(
     action: string,
-    param: string | null,
-    actionTarget: string | null
+    param: string | null = null,
+    actionTarget: string | null = null
   ): boolean {
+    if (actionTarget) {
+      const guiObj = this.findobject(actionTarget);
+      if (guiObj) {
+        guiObj.handleAction(action, param);
+        return true;
+      }
+    }
     return false;
   }
 
@@ -595,6 +769,26 @@ export default class GuiObj extends XmlObj {
     if (!handled && this._parent != null) {
       this._parent.dispatchAction(action, param, actionTarget);
     }
+  }
+
+  sendaction(
+    action: string,
+    param: string,
+    x: number,
+    y: number,
+    p1: number,
+    p2: number,
+    source: GuiObj,
+  ): number {
+    return UI_ROOT.vm.dispatch(this, "onaction", [
+      { type: "STRING", value: action },
+      { type: "STRING", value: param },
+      { type: "INT", value: x },
+      { type: "INT", value: y },
+      { type: "INT", value: p1 },
+      { type: "INT", value: p2 },
+      { type: "OBJECT", value: source },
+    ]);
   }
 
   _renderAlpha() {
@@ -643,6 +837,15 @@ export default class GuiObj extends XmlObj {
     this._renderHeight();
   }
 
+  doResize() {
+    UI_ROOT.vm.dispatch(this, "onresize", [
+      { type: "INT", value: 0 },
+      { type: "INT", value: 0 },
+      { type: "INT", value: this.getwidth() },
+      { type: "INT", value: this.getheight() },
+    ]);
+  }
+
   setBackgroundImage(bitmap: Bitmap | null) {
     this._backgroundBitmap = bitmap;
     if (bitmap != null) {
@@ -680,7 +883,7 @@ export default class GuiObj extends XmlObj {
     if (this._tooltip) {
       this._div.setAttribute("title", this._tooltip);
     }
-    if (this._ghost) {
+    if (this._ghost || this._sysregion == -2) {
       this._div.style.pointerEvents = "none";
     } else {
       this._div.style.pointerEvents = "auto";

@@ -8,6 +8,9 @@ module.exports = {
     src: "/",
     assets: "/assets",
   },
+  exclude: [
+    '*.tmp'
+  ],
   plugins: [
     /* ... */
   ],
