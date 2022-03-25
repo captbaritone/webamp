@@ -199,14 +199,14 @@ program
     "--upload-new",
     "Find newly uploaded skins, and publish them to the Internet Archive."
   )
-  .action(async ({ fetchMetadata, updateMetadata, fetchItems, upload }) => {
+  .action(async ({ fetchMetadata, updateMetadata, fetchItems, uploadNew }) => {
     if (fetchMetadata) {
       await fillMissingMetadata(Number(fetchMetadata || 1000));
     }
     if (fetchItems) {
       await syncFromArchive();
     }
-    if (upload) {
+    if (uploadNew) {
       await withHandler(async (handler) => {
         await SyncToArchive.syncToArchive(handler);
       });
