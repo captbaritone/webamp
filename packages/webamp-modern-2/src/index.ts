@@ -13,7 +13,7 @@ function setStatus(status: string) {
 }
 
 // const DEFAULT_SKIN = "assets/MMD3.wal"
-const DEFAULT_SKIN = "assets/WinampModern566.wal"
+const DEFAULT_SKIN = "assets/WinampModern566.wal";
 
 async function main() {
   setStatus("Downloading skin...");
@@ -24,6 +24,8 @@ async function main() {
 }
 
 async function loadSkin(skinData: Blob) {
+  // Purposefully don't await, let this load in parallel.
+  initializeSkinListMenu();
   UI_ROOT.reset();
   document.body.appendChild(UI_ROOT.getRootDiv());
 
@@ -50,6 +52,60 @@ async function loadSkin(skinData: Blob) {
     container.init();
   }
   setStatus("");
+}
+
+function gql(strings: TemplateStringsArray): string {
+  return strings[0];
+}
+
+async function initializeSkinListMenu() {
+  const query = gql`
+    query {
+      modern_skins(first: 1000) {
+        nodes {
+          filename
+          download_url
+        }
+      }
+    }
+  `;
+
+  const response = await fetch("https://api.webampskins.org/graphql", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    mode: "cors",
+    credentials: "include",
+    body: JSON.stringify({ query, variables: {} }),
+  });
+
+  const data = await response.json();
+
+  const select = document.createElement("select");
+  select.style.position = "absolute";
+  select.style.bottom = "0";
+
+  const current = getUrlQuery(window.location, "skin");
+
+  for (const skin of data.data.modern_skins.nodes) {
+    const option = document.createElement("option");
+    option.value = skin.download_url;
+    option.textContent = skin.filename;
+    if (current === skin.download_url) {
+      option.selected = true;
+    }
+    select.appendChild(option);
+  }
+
+  select.addEventListener("change", (e: any) => {
+    const url = new URL(window.location.href);
+    url.searchParams.set("skin", e.target.value);
+    window.location.replace(url.href);
+  });
+
+  document.body.appendChild(select);
 }
 
 main();
