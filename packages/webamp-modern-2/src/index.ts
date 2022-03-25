@@ -6,11 +6,11 @@ import UI_ROOT from "./UIRoot";
 import { getUrlQuery, removeAllChildNodes } from "./utils";
 import { addDropHandler } from "./dropTarget";
 
-function hack() {
-  // Without this Snowpack will try to treeshake out resolver causing a circular
-  // dependency.
-  classResolver("A funny joke about why this is needed.");
-}
+// function hack() {
+//   // Without this Snowpack will try to treeshake out resolver causing a circular
+//   // dependency.
+//   classResolver("A funny joke about why this is needed.");
+// }
 
 addDropHandler(loadSkin);
 
@@ -40,10 +40,10 @@ async function loadSkin(skinData: Blob) {
   UI_ROOT.setZip(zip);
 
   setStatus("Parsing XML and initializing images...");
-  const parser = new SkinParser(UI_ROOT);
+  // const parser = new SkinParser(UI_ROOT);
 
   // This is always the same as the global singleton.
-  const uiRoot = await parser.parse();
+  const uiRoot = await UI_ROOT._parser.parse();
 
   const start = performance.now();
   uiRoot.enableDefaultGammaSet();

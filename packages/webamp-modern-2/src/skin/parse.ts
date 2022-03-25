@@ -22,7 +22,7 @@ import BitmapFont from "./BitmapFont";
 import Color from "./Color";
 import GammaGroup from "./GammaGroup";
 import ColorThemesList from "./ColorThemesList";
-import UI_ROOT, { UIRoot } from "../UIRoot";
+import { UIRoot } from "../UIRoot";
 import AlbumArt from "./makiClasses/AlbumArt";
 import WindowHolder from "./makiClasses/WindowHolder";
 import WasabiFrame from "./makiClasses/WasabiFrame";
@@ -30,6 +30,14 @@ import Grid from "./makiClasses/Grid";
 import ProgressGrid from "./makiClasses/ProgressGrid";
 import WasabiTitle from "./makiClasses/WasabiTitle";
 import ComponentBucket from "./makiClasses/ComponentBucket";
+import GroupXFade from "./makiClasses/GroupXFade";
+import { classResolver } from "./resolver";
+
+function hack() {
+  // Without this Snowpack will try to treeshake out resolver causing a circular
+  // dependency.
+  classResolver("A funny joke about why this is needed.");
+}
 
 class ParserContext {
   container: Container | null = null;
@@ -76,9 +84,8 @@ export default class SkinParser {
     colors: {},
   }; //requested by skin, later compared with UiRoot._bitmaps
 
-  constructor(
-    uiRoot: UIRoot /* Once UI_ROOT is not a singleton, we can create that objet in the constructor */
-  ) {
+  constructor(uiRoot: UIRoot) {
+    /* Once UI_ROOT is not a singleton, we can create that objet in the constructor */
     this._imageManager = new ImageManager();
     this._uiRoot = uiRoot;
   }
@@ -206,10 +213,10 @@ export default class SkinParser {
       case "nstatesbutton":
         return this.toggleButton(node, parent);
       case "rect":
-      case "layoutstatus":
-      case "groupxfade":
       case "group":
         return this.group(node, parent);
+      case "groupxfade":
+        return this.groupXFade(node, parent);
       case "layout":
         return this.layout(node, parent);
       case "windowholder":
@@ -330,13 +337,18 @@ export default class SkinParser {
     return await this.newGroup(Group, node, parent);
   }
 
+  async groupXFade(node: XmlElement, parent: any) {
+    const xFade: GroupXFade = await this.newGroup(GroupXFade, node, parent);
+    this._uiRoot.addXFade(xFade);
+  }
+
   async componentBucket(node: XmlElement, parent: any) {
     const bucket: ComponentBucket = await this.newGroup(
       ComponentBucket,
       node,
       parent
     );
-    UI_ROOT.addComponentBucket(bucket.getWindowType(), bucket);
+    this._uiRoot.addComponentBucket(bucket.getWindowType(), bucket);
   }
 
   async wasabiFrame(node: XmlElement, parent: any) {
@@ -609,11 +621,14 @@ export default class SkinParser {
     this._uiRoot.addBucketEntry(windowType, groupDef);
 
     // in synchronouse mode, bucket may already exists
-    const bucket = UI_ROOT.getComponentBucket(windowType);
+    const bucket = this._uiRoot.getComponentBucket(windowType);
     if (bucket) {
       // custom signal to be not attached to bucket twice
       groupDef.attributes.attached = "1";
-      await this.group(groupDef, bucket);
+      const dummyNode = new XmlElement("dummy", {
+        id: groupDef.attributes.id,
+      });
+      await this.group(dummyNode, bucket);
     }
   }
 
@@ -632,6 +647,20 @@ export default class SkinParser {
       }
     }
   }
+
+  // assure that GroupXFade entries are attached
+  // async rebuildXFades() {
+  //   for (const xfade of this._uiRoot.getXFades()) {
+  //     for (const entry of this._uiRoot.getBucketEntries(wndType)) {
+  //       if (entry.attributes.attached == "0") {
+  //         const dummyNode = new XmlElement("dummy", {
+  //           id: entry.attributes.id,
+  //         });
+  //         await this.group(dummyNode, bucket);
+  //       }
+  //     }
+  //   }
+  // }
 
   async albumart(node: XmlElement, parent: any) {
     return this.newGui(AlbumArt, node, parent);

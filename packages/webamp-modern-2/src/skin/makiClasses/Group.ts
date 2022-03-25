@@ -271,7 +271,6 @@ export default class Group extends Movable {
     );
     const data = imageData.data;
     for (var i = 0; i < data.length; i += 4) {
-      // data[i + 3] = data[i + 1] != 255 ? 0 : data[i + 1];
       data[i + 3] = data[i + 0];
     }
     ctx2.putImageData(imageData, 0, 0);
@@ -281,15 +280,6 @@ export default class Group extends Movable {
       this._div.style.setProperty("mask-image", `url(${url})`);
       this._div.style.setProperty("-webkit-mask-image", `url(${url})`);
     });
-
-    // const url = this._regionCanvas.toDataURL();
-    // this._div.style.setProperty('mask-image', `url(${url})`)
-    // this._div.style.setProperty('-webkit-mask-image', `url(${url})`);
-    // this._div.style.setProperty('--mask-image', `url(${url})`);
-    // document.body.style.setProperty('background-image', `url(${url})`);
-    // document.body.style.backgroundRepeat = 'no-repeat';
-    // this._div.style.setProperty('mask-type', 'luminance')
-    // this._div.style.setProperty('-webkit-mask-type', 'luminance')
   }
 
   appendChildrenDiv() {
@@ -308,7 +298,6 @@ export default class Group extends Movable {
     this._div.classList.add("webamp--img");
     // It seems Groups are not responsive to click events.
     if (this._movable || this._resizable) {
-      // this._div.style.removeProperty('pointer-events');
       this._div.style.pointerEvents = "auto";
     } else {
       this._div.style.pointerEvents = "none";

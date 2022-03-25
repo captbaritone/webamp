@@ -781,7 +781,8 @@ export default class GuiObj extends XmlObj {
     x: number,
     y: number,
     p1: number,
-    p2: number
+    p2: number,
+    source: GuiObj,
   ): number {
     // console.log('sendaction!',action, param)
     return UI_ROOT.vm.dispatch(this, "onaction", [
@@ -791,7 +792,7 @@ export default class GuiObj extends XmlObj {
       { type: "INT", value: y },
       { type: "INT", value: p1 },
       { type: "INT", value: p2 },
-      { type: "OBJECT", value: this },
+      { type: "OBJECT", value: source },
     ]);
   }
 
