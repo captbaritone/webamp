@@ -86,6 +86,13 @@ async function initializeSkinListMenu() {
   const select = document.createElement("select");
   select.style.position = "absolute";
   select.style.bottom = "0";
+  select.style.width = "300px";
+
+  const downloadLink = document.createElement("a");
+  downloadLink.style.position = "absolute";
+  downloadLink.style.bottom = "0";
+  downloadLink.style.left = "320px";
+  downloadLink.text = "Download"
 
   const current = getUrlQuery(window.location, "skin");
 
@@ -95,6 +102,7 @@ async function initializeSkinListMenu() {
     option.textContent = skin.filename;
     if (current === skin.download_url) {
       option.selected = true;
+      downloadLink.href = skin.download_url;
     }
     select.appendChild(option);
   }
@@ -103,9 +111,11 @@ async function initializeSkinListMenu() {
     const url = new URL(window.location.href);
     url.searchParams.set("skin", e.target.value);
     window.location.replace(url.href);
+    downloadLink.href = e.target.value;
   });
 
   document.body.appendChild(select);
+  document.body.appendChild(downloadLink);
 }
 
 main();
