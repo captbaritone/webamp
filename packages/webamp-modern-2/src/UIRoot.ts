@@ -19,11 +19,9 @@ import AUDIO_PLAYER, { AudioPlayer } from "./skin/AudioPlayer";
 import SystemObject from "./skin/makiClasses/SystemObject";
 import ComponentBucket from "./skin/makiClasses/ComponentBucket";
 import GroupXFade from "./skin/makiClasses/GroupXFade";
-import SkinParser from "./skin/parse";
 
 export class UIRoot {
   _div: HTMLDivElement = document.createElement("div");
-  _parser: SkinParser;
   // Just a temporary place to stash things
   _bitmaps: Bitmap[] = [];
   _fonts: (TrueTypeFont | BitmapFont)[] = [];
@@ -49,10 +47,6 @@ export class UIRoot {
   getFileAsString: (filePath: string) => Promise<string>;
   getFileAsBytes: (filePath: string) => Promise<ArrayBuffer>;
   getFileAsBlob: (filePath: string) => Promise<Blob>;
-
-  constructor() {
-    this._parser = new SkinParser(this);
-  }
 
   reset() {
     this.dispose();
