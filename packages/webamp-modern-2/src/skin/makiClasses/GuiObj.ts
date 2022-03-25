@@ -36,14 +36,11 @@ export default class GuiObj extends XmlObj {
   _relatw: string;
   _relath: string;
   _autowidthsource: string;
-  // _resize: string;
   _droptarget: string;
   _visible: boolean = true;
   _alpha: number = 255;
   _ghost: boolean = false;
   _sysregion: number = 0;
-  // _movable: boolean = false;
-  // _resizable: number = 0;
   _tooltip: string = "";
   _targetX: number | null = null;
   _targetY: number | null = null;
@@ -54,8 +51,6 @@ export default class GuiObj extends XmlObj {
   _goingToTarget: boolean = false;
   _div: HTMLElement;
   _backgroundBitmap: Bitmap | null = null;
-  // _resizingEventsRegisterd: boolean = false;
-  // _movingEventsRegisterd: boolean = false;
 
   _metaCommands: XmlElement[] = [];
 
@@ -150,8 +145,7 @@ export default class GuiObj extends XmlObj {
         break;
       case "activealpha":
       case "inactivealpha":
-        this._div.setAttribute(key, value);
-        // this._div.setAttribute(key, `${parseFloat(value)/255*100}`);
+        this._div.setAttribute(key, value); // set directly to html attribute
         break;
 
       case "tooltip":
@@ -190,7 +184,6 @@ export default class GuiObj extends XmlObj {
           `<${cmd}(${target_id})=notfound. @${this.getId()}`
         );
         if (gui == null) {
-          // console.warn('  --',cmd, 'failed:not-found:',target_id, '@'+this.getId());
           continue;
         }
         if (cmd == "sendparams") {
@@ -360,7 +353,6 @@ export default class GuiObj extends XmlObj {
         );
     if (child) {
       return child._div.getBoundingClientRect().width;
-      // return child._width;
     }
     return 1;
   }
@@ -788,7 +780,6 @@ export default class GuiObj extends XmlObj {
     p2: number,
     source: GuiObj,
   ): number {
-    // console.log('sendaction!',action, param)
     return UI_ROOT.vm.dispatch(this, "onaction", [
       { type: "STRING", value: action },
       { type: "STRING", value: param },

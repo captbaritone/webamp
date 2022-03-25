@@ -71,22 +71,6 @@ export default class Group extends Movable {
     this._children.push(child);
   }
 
-  /* findobject(objectId: string): GuiObj | null {
-    const lower = objectId.toLowerCase();
-    for (const obj of this._children) {
-      if (obj.getId() === lower) {
-        return obj;
-      }
-      if (obj instanceof Group) {
-        const found = obj.findobject(objectId);
-        if (found != null) {
-          return found;
-        }
-      }
-    }
-    return null;
-  } */
-
   /* Required for Maki */
   getobject(objectId: string): GuiObj {
     const lower = objectId.toLowerCase();
@@ -162,14 +146,6 @@ export default class Group extends Movable {
     }
   }
 
-  // doResize() {
-  //   super.doResize();
-  // this._regionCanvas = null;
-  //   //this.applyRegions();
-  //   for (const child of this._children) {
-  //     child.doResize();
-  //   }
-  // }
   async doResize() {
     UI_ROOT.vm.dispatch(this, "onresize", [
       { type: "INT", value: 0 },
@@ -227,12 +203,8 @@ export default class Group extends Movable {
       canvas.height = bound.height;
       // console.log('createRegionCanvas:', bound.width, bound.height)
       const ctx = canvas.getContext("2d");
-      // const fs = ctx.fillStyle;
       ctx.fillStyle = "white";
-      // ctx.fillStyle = 'rgba(0,0,0,0)';
       ctx.fillRect(0, 0, bound.width, bound.height);
-      // ctx.fillStyle = 'transparent';
-      // ctx.fillStyle = fs;
     }
     if (this._regionCanvas.width == 0 || this._regionCanvas.height == 0) {
       return;
@@ -304,11 +276,9 @@ export default class Group extends Movable {
     }
     //TODO: allow move/resize if has ._image
     this._div.style.pointerEvents = "none";
-    // this._div.style.overflow = "hidden";
     this._renderBackground();
     this.appendChildrenDiv();
     if (this._autowidthsource) {
-      // this._div.style.removeProperty('width');
       this._div.classList.add("autowidthsource");
     }
   }
