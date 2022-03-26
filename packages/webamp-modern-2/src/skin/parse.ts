@@ -786,7 +786,7 @@ export default class SkinParser {
       const current_dir = [...parent_dir, ...directories].join("/");
 
       var self = this;
-      function recursiveScanChildren(mother: XmlElement) {
+      const recursiveScanChildren = (mother: XmlElement) => {
         var nonGroupDefs = [];
         for (const element of mother.children) {
           if (element instanceof XmlElement) {
