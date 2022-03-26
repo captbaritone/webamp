@@ -1,5 +1,5 @@
 import UI_ROOT from "../../UIRoot";
-import { ensureVmInt, px } from "../../utils";
+import { ensureVmInt, num, px } from "../../utils";
 import Layer from "./Layer";
 
 export default class AnimatedLayer extends Layer {
@@ -9,12 +9,17 @@ export default class AnimatedLayer extends Layer {
   _endFrame: number = 0;
   _speed: number = 0;
   _animationInterval: NodeJS.Timeout | null = null;
+
   setXmlAttr(_key: string, value: string): boolean {
     const key = _key.toLowerCase();
     if (super.setXmlAttr(key, value)) {
       return true;
     }
     switch (key) {
+      case "frameheight":
+        this._height = num(value);
+        this._renderHeight();
+        break;
       default:
         return false;
     }

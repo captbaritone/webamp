@@ -93,6 +93,7 @@ export default class Text extends GuiObj {
       case "color":
         // (int[sic?]) The comma delimited RGB color of the text.
         this._color = value;
+        this._prepareCss();
         break;
       case "ticker":
         /// (bool) Setting this flag causes the object to scroll left and right if the text does not fit the rectangular area of the text object.
