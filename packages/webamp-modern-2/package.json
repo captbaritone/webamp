@@ -8,6 +8,7 @@
     "build": "snowpack build",
     "lint": "yarn build-lint && eslint . --ext .js,.jsx,.ts,.tsx",
     "test": "yarn jest",
+    "extract-object-types": "node tools/extract-object-types.js",  
     "build-lint": "tsup tools/eslint-rules/proper-maki-types.ts -d tools/eslint-rules/dist --no-splitting --minify"
   },
   "devDependencies": {
