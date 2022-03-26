@@ -267,13 +267,14 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
       if (this._color) {
         const color = UI_ROOT.getColor(this._color);
         if (color) {
-          this._div.style.color = `var(${color.getCSSVar()}, ${color.getRgb})`;
+          this._div.style.color = `var(${color.getCSSVar()}, ${color.getRgb()})`;
         }
       }
       if (font instanceof TrueTypeFont) {
         this._textWrapper.setAttribute("font", "TrueType");
 
-        this._div.style.fontFamily = font.getFontFamily();
+        // this._div.style.fontFamily = font.getFontFamily();
+        this._div.style.fontFamily = `'${font.getId()}'`;
         this._div.style.fontSize = px(this._fontSize ?? 12);
         this._div.style.textTransform = this._forceuppercase
           ? "uppercase"

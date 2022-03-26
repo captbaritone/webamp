@@ -51,6 +51,7 @@ const ResourcesTag = [
   "color",
   "bitmap",
   "bitmapfont",
+  "truetypefont",
   "skininfo",
   "accelerators",
   // other resource not listed here are also parsed/loaded first in RESOURCE_PHASE (eg script)

@@ -275,6 +275,27 @@ export class UIRoot {
     return found ?? null;
   }
 
+  loadTrueTypeFonts() {
+    const cssRules = [];
+    const truetypeFonts: TrueTypeFont[] = this._fonts.filter(
+      (font) => font instanceof TrueTypeFont
+    ) as TrueTypeFont[];
+    for (const ttf of truetypeFonts) {
+      if(!ttf.hasUrl()) {
+        continue; // some dummy ttf (eg Arial) doesn't has url.
+      }
+      // src: url(data:font/truetype;charset=utf-8;base64,${ttf.getBase64()}) format('truetype');
+      cssRules.push(`@font-face {
+        font-family: '${ttf.getId()}';
+        src: url(${ttf.getBase64()}) format('truetype');
+        font-weight: normal;
+        font-style: normal;
+      }`)
+    }
+    const cssEl = document.getElementById("truetypefont-css");
+    cssEl.textContent = cssRules.join("\n");
+  }
+
   dispatch(action: string, param: string | null, actionTarget: string | null) {
     switch (action.toLowerCase()) {
       case "play":

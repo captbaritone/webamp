@@ -25,6 +25,10 @@ export default class ImageManager {
     return this._urlCache.get(filePath);
   }
 
+  getCachedUrl(filePath: string): string {
+    return this._urlCache.get(filePath);
+  }
+
   addBitmap(bitmap: Bitmap) {
     const id = bitmap.getId();
     const filePath = bitmap.getFile();

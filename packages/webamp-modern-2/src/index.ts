@@ -47,6 +47,8 @@ async function loadSkin(skinData: Blob) {
   // This is always the same as the global singleton.
   const uiRoot = await parser.parse();
 
+  uiRoot.loadTrueTypeFonts();
+
   const start = performance.now();
   uiRoot.enableDefaultGammaSet();
   const end = performance.now();
