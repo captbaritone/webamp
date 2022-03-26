@@ -12,6 +12,7 @@ import Bitmap from "../Bitmap";
 import Group from "./Group";
 import XmlObj from "../XmlObj";
 import Layout from "./Layout";
+import Region from "./Region";
 
 let BRING_LEAST: number = -1;
 let BRING_MOST_TOP: number = 1;
@@ -409,6 +410,10 @@ export default class GuiObj extends XmlObj {
 
   isActive(): boolean {
     return this._div.matches(":focus");
+  }
+
+  setregion(reg: Region){
+    //TODO:
   }
 
   /**

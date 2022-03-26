@@ -107,6 +107,10 @@ export default class Button extends GuiObj {
     }
   }
 
+  setactivatednocallback(onoff: boolean){
+    //TODO:
+  }
+
   leftclick() {
     this.onLeftClick();
     if (this._action && this._actionTarget) {

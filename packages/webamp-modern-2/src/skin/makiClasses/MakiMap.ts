@@ -6,6 +6,7 @@ import Bitmap from "../Bitmap";
 export default class MakiMap extends BaseObject {
   static GUID = "3860366542a7461b3fd875aa73bf6766";
   _bitmap: Bitmap;
+  
   loadmap(bitmapId: string) {
     this._bitmap = UI_ROOT.getBitmap(bitmapId);
   }

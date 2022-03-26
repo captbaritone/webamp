@@ -22,6 +22,7 @@ import ConfigAttribute from "./makiClasses/ConfigAttribute";
 import WinampConfig, { WinampConfigGroup } from "./makiClasses/WinampConfig";
 import ComponentBucket from "./makiClasses/ComponentBucket";
 import AlbumArt from "./makiClasses/AlbumArt";
+import Region from "./makiClasses/Region";
 
 
 const CLASSES = [
@@ -29,6 +30,7 @@ const CLASSES = [
   Config, ConfigItem, ConfigAttribute,
   WinampConfig, WinampConfigGroup,
   ComponentBucket,
+  Region,
   AlbumArt,
   Button,
   SystemObject,
