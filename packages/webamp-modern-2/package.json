@@ -6,9 +6,13 @@
   "scripts": {
     "start": "snowpack dev",
     "build": "snowpack build",
+    "serve": "http-server ./built",
     "lint": "yarn build-lint && eslint . --ext .js,.jsx,.ts,.tsx",
     "test": "yarn jest",
     "extract-object-types": "node tools/extract-object-types.js",  
+    "extract-attributes": "babel-node --extensions=\".ts,.js,.tsx\" src/maki-interpreter/tools/extract-attributes.js > resources/attribute-skin-data.json",
+    "maki-interfaces": "babel-node --extensions=\".ts,.js,.tsx\" src/maki-interpreter/tools/build-typescript-interfaces.js > __generated__/makiInterfaces.ts",
+    "analyze-wals": "babel-node --extensions=\".ts,.js,.tsx\" src/maki-interpreter/tools/extract-functions.js > resources/maki-skin-data.json",
     "build-lint": "tsup tools/eslint-rules/proper-maki-types.ts -d tools/eslint-rules/dist --no-splitting --minify"
   },
   "devDependencies": {
