@@ -1,8 +1,16 @@
 import JSZip from "jszip";
 // This module is imported early here in order to avoid a circular dependency.
+import { classResolver } from "./skin/resolver";
+import SkinParser from "./skin/parse";
 import UI_ROOT from "./UIRoot";
 import { getUrlQuery } from "./utils";
 import { addDropHandler } from "./dropTarget";
+
+function hack() {
+  // Without this Snowpack will try to treeshake out resolver causing a circular
+  // dependency.
+  classResolver("A funny joke about why this is needed.");
+}
 
 addDropHandler(loadSkin);
 
@@ -34,9 +42,10 @@ async function loadSkin(skinData: Blob) {
   UI_ROOT.setZip(zip);
 
   setStatus("Parsing XML and initializing images...");
+  const parser = new SkinParser(UI_ROOT);
 
   // This is always the same as the global singleton.
-  const uiRoot = await UI_ROOT._parser.parse();
+  const uiRoot = await parser.parse();
 
   const start = performance.now();
   uiRoot.enableDefaultGammaSet();
@@ -86,6 +95,13 @@ async function initializeSkinListMenu() {
   const select = document.createElement("select");
   select.style.position = "absolute";
   select.style.bottom = "0";
+  select.style.width = "300px";
+
+  const downloadLink = document.createElement("a");
+  downloadLink.style.position = "absolute";
+  downloadLink.style.bottom = "0";
+  downloadLink.style.left = "320px";
+  downloadLink.text = "Download"
 
   const current = getUrlQuery(window.location, "skin");
 
@@ -95,6 +111,7 @@ async function initializeSkinListMenu() {
     option.textContent = skin.filename;
     if (current === skin.download_url) {
       option.selected = true;
+      downloadLink.href = skin.download_url;
     }
     select.appendChild(option);
   }
@@ -103,9 +120,11 @@ async function initializeSkinListMenu() {
     const url = new URL(window.location.href);
     url.searchParams.set("skin", e.target.value);
     window.location.replace(url.href);
+    downloadLink.href = e.target.value;
   });
 
   document.body.appendChild(select);
+  document.body.appendChild(downloadLink);
 }
 
 main();

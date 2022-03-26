@@ -19,11 +19,9 @@ import AUDIO_PLAYER, { AudioPlayer } from "./skin/AudioPlayer";
 import SystemObject from "./skin/makiClasses/SystemObject";
 import ComponentBucket from "./skin/makiClasses/ComponentBucket";
 import GroupXFade from "./skin/makiClasses/GroupXFade";
-import SkinParser from "./skin/parse";
 
 export class UIRoot {
   _div: HTMLDivElement = document.createElement("div");
-  _parser: SkinParser;
   // Just a temporary place to stash things
   _bitmaps: Bitmap[] = [];
   _fonts: (TrueTypeFont | BitmapFont)[] = [];
@@ -50,10 +48,6 @@ export class UIRoot {
   getFileAsBytes: (filePath: string) => Promise<ArrayBuffer>;
   getFileAsBlob: (filePath: string) => Promise<Blob>;
 
-  constructor() {
-    this._parser = new SkinParser(this);
-  }
-
   reset() {
     this.dispose();
     this._bitmaps = [];
@@ -66,9 +60,9 @@ export class UIRoot {
     this._containers = [];
     this._systemObjects = [];
     this._gammaNames = {};
-    this._buckets = {}
-    this._bucketEntries = {}
-    this._xFades = []
+    this._buckets = {};
+    this._bucketEntries = {};
+    this._xFades = [];
     removeAllChildNodes(this._div);
 
     // A list of all objects created for this skin.
@@ -143,11 +137,11 @@ export class UIRoot {
     this._bucketEntries[windowType].push(entry);
   }
   getBucketEntries(windowType: string): XmlElement[] {
-    return this._bucketEntries[windowType] || []
+    return this._bucketEntries[windowType] || [];
   }
 
-  addXFade(xfade: GroupXFade){
-    this._xFades.push(xfade)
+  addXFade(xfade: GroupXFade) {
+    this._xFades.push(xfade);
   }
   getXFades(): GroupXFade[] {
     return this._xFades;
@@ -192,6 +186,7 @@ export class UIRoot {
 
   enableGammaSet(id: string | null) {
     if (id) {
+      console.log(`Enabling gammaset: '${id}'`);
       const found = this._gammaSets.get(id.toLowerCase());
       assume(
         found != null,
