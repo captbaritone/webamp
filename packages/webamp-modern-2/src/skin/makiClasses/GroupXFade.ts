@@ -3,7 +3,6 @@ import { findLast, num, px, removeAllChildNodes, toBool } from "../../utils";
 import UI_ROOT from "../../UIRoot";
 import { XmlElement } from "@rgrove/parse-xml";
 import GuiObj from "./GuiObj";
-import SkinParser from "../parse";
 
 export default class GroupXFade extends Group {
   _speed: number = null;
@@ -75,9 +74,7 @@ export default class GroupXFade extends Group {
         relath: "1",
         alpha: "0",
       });
-      //TODO: Find a way to reuse skinParser instead create new one
-      const parser = new SkinParser(UI_ROOT);
-      child = await parser.group(dummyNode, this);
+      child = await UI_ROOT._parser.group(dummyNode, this);
       child.draw();
       child.init();
       this._div.appendChild(child.getDiv());
