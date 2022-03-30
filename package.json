@@ -7,7 +7,7 @@
   ],
   "scripts": {
     "test": "jest",
-    "lint": "eslint . --ext ts,tsx,js,jsx --rulesdir=packages/webamp-modern-2/tools/eslint-rules",
+    "lint": "eslint . --ext ts,tsx,js,jsx --rulesdir=packages/webamp-modern/tools/eslint-rules",
     "deploy": "sh deploy.sh",
     "format": "prettier --write '**/*.{js,ts,tsx}'"
   },

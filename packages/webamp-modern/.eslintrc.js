@@ -1,5 +1,5 @@
 const rulesDirPlugin = require("eslint-plugin-rulesdir");
-rulesDirPlugin.RULES_DIR = "packages/webamp-modern-2/tools/eslint-rules/dist";
+rulesDirPlugin.RULES_DIR = "packages/webamp-modern/tools/eslint-rules/dist";
 
 module.exports = {
   root: true,
