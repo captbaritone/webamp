@@ -274,8 +274,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
       if (font instanceof TrueTypeFont) {
         this._textWrapper.setAttribute("font", "TrueType");
 
-        // this._div.style.fontFamily = font.getFontFamily();
-        this._div.style.fontFamily = `'${font.getId()}'`;
+        this._div.style.fontFamily = font.getFontFamily();
         this._div.style.fontSize = px(this._fontSize ?? 12);
         this._div.style.textTransform = this._forceuppercase
           ? "uppercase"

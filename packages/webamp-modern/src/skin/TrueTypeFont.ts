@@ -36,7 +36,7 @@ export default class TrueTypeFont {
   }
 
   getFontFamily() {
-    return this._inlineFamily || this._fontFace.family;
+    return `'${this._inlineFamily || this._fontFace.family || this.getId()}'`;
   }
 
   dispose() {
@@ -44,12 +44,12 @@ export default class TrueTypeFont {
   }
 
   getBase64() {
-    console.log('getting Base64. me:', this.getId())
+    console.log("getting Base64. me:", this.getId());
     return this._imageManager.getCachedUrl(this._file);
   }
 
   // dummy ttf has no url, such as Arial
-  hasUrl():boolean {
+  hasUrl(): boolean {
     return this._imageManager != null;
   }
 
