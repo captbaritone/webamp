@@ -249,7 +249,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
 
   //to speedup, we spit render. This is only rendering style
   _prepareCss() {
-    if (!this._font_obj) {
+    if (!this._font_obj && this._font_id) {
       this._font_obj = UI_ROOT.getFont(this._font_id);
     }
     const font = this._font_obj;
