@@ -142,6 +142,20 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
     }
   }
 
+  // only applicable for TrueType Font
+  _autoDetectColor() {
+    if (this._color) {
+      if (this._color.split(",").length == 3) {
+        this._div.style.color = `rgb(${this._color})`;
+        return;
+      }
+      const color = UI_ROOT.getColor(this._color);
+      if (color) {
+        this._div.style.color = `var(${color.getCSSVar()}, ${color.getRgb()})`;
+      }
+    }
+  }
+
   ensureFontSize() {
     if (this._font_obj instanceof TrueTypeFont && this._fontSize) {
       const canvas = document.createElement("canvas");
@@ -247,7 +261,8 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
     // TODO
   }
 
-  //to speedup, we spit render. This is only rendering style
+  //to speedup animation like text-scrolling, we spit rendering processes.
+  //This function is only rendering static styles
   _prepareCss() {
     if (!this._font_obj && this._font_id) {
       this._font_obj = UI_ROOT.getFont(this._font_id);
@@ -265,12 +280,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
       this._div.style.setProperty("--charwidth", px(font._charWidth));
       this._div.style.setProperty("--charheight", px(font._charHeight));
     } else {
-      if (this._color) {
-        const color = UI_ROOT.getColor(this._color);
-        if (color) {
-          this._div.style.color = `var(${color.getCSSVar()}, ${color.getRgb()})`;
-        }
-      }
+      this._autoDetectColor();
       if (font instanceof TrueTypeFont) {
         this._textWrapper.setAttribute("font", "TrueType");
 
@@ -412,7 +422,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
   }
 
   doScrollText() {
-    const curL = this._scrollLeft; 
+    const curL = this._scrollLeft;
     const step = 1; //pixel
     const idle = 20; //when overflow
     const container = this._div.getBoundingClientRect();
