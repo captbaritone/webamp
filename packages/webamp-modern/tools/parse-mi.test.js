@@ -10,8 +10,7 @@ import path from "path";
 
 const compilers = path.join(
   __dirname,
-  // TODO: Move these into webamp-modern-2
-  "../../webamp-modern/resources/maki_compiler/"
+  "../resources/maki_compiler/"
 );
 
 const lib566 = path.join(compilers, "v1.2.0 (Winamp 5.66)/lib/");
