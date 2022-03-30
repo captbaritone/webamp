@@ -1,6 +1,5 @@
 {
   "B2AD3F2B31ED4e31BC6DE9951CD555BB": {
-    "name": "WinampConfig",
     "parent": "Object",
     "functions": [
       {
@@ -13,10 +12,10 @@
           ]
         ]
       }
-    ]
+    ],
+    "name": "WinampConfig"
   },
   "FC17844EC72B4518A068A8F930A5BA80": {
-    "name": "WinampConfigGroup",
     "parent": "Object",
     "functions": [
       {
@@ -83,6 +82,7 @@
           ]
         ]
       }
-    ]
+    ],
+    "name": "WinampConfigGroup"
   }
 }
