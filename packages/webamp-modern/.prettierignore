@@ -1,6 +1,0 @@
-package.json
-**/*.min.css
-**/base-skin.css
-built/*
-coverage/*
-examples/webpack/bundle.js
