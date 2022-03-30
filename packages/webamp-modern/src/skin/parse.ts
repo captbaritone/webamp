@@ -263,7 +263,9 @@ export default class SkinParser {
       case "wasabi:medialibraryframe:nostatus":
       case "wasabi:playlistframe:nostatus":
       case "wasabi:standardframe:nostatus":
+      case "wasabi:standardframe:nostatus:short":
       case "wasabi:standardframe:status":
+      case "wasabi:standardframe:modal:short":
       case "wasabi:visframe:nostatus":
         return this.wasabiFrame(node, parent);
       case "componentbucket":
@@ -679,6 +681,9 @@ export default class SkinParser {
     const groupDef = this._uiRoot.getGroupDef(groupdef_id);
     if (groupDef != null) {
       group.setXmlAttributes(groupDef.attributes);
+      if(groupDef.attributes.inherit_group){
+        await this.maybeApplyGroupDefId(group, groupDef.attributes.inherit_group);
+      }
       await this.traverseChildren(groupDef, group);
       // TODO: Maybe traverse groupDef's children?
     }
