@@ -1,6 +1,1 @@
-**/node_modules
-
-/built
-/coverage
-/examples/webpack/bundle.js
-**/__diff_output__/
+build/

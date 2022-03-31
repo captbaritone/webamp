@@ -1,7 +1,0 @@
-{
-  "rules": {
-    // TODO: Turn these all back on
-    // For now we want to be able to define maki method arguments even though we don't use them.
-    "@typescript-eslint/no-unused-vars": "off"
-  }
-}
