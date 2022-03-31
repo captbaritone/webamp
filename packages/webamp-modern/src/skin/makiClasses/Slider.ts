@@ -397,8 +397,8 @@ class SeekActionHandler extends ActionHandler {
 
   _onAudioProgres = () => {
     if (!this._pendingChange) {
-      if (this._slider.getId() == "seekerghost")
-        console.log("thumb: not isPending()!");
+      // if (this._slider.getId() == "seekerghost")
+      //   console.log("thumb: not isPending()!");
       this._slider._position = UI_ROOT.audio.getCurrentTimePercent();
       // TODO: We could throttle this, or only render if the change is "significant"?
       this._slider._renderThumbPosition();
