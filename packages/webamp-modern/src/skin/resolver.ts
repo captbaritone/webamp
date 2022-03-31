@@ -27,7 +27,7 @@ import Region from "./makiClasses/Region";
 
 const CLASSES = [
   Config,
-  Config, ConfigItem, ConfigAttribute,
+  ConfigItem, ConfigAttribute,
   WinampConfig, WinampConfigGroup,
   ComponentBucket,
   Region,
