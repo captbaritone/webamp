@@ -3,39 +3,43 @@
 Assuming you have [Yarn](https://yarnpkg.com/) installed:
 
 ```bash
-cd packages/webamp-modern-2
+cd packages/webamp-modern
 yarn
 yarn start
 ```
 
 ## Performance Improvements
 
-- [ ] We could use WebGL to try to improve the speed of switching gamma colors
-- [ ] We could use some CSS techniques to avoid having to appply inline style to each BitmapFont character's DOM node.
+- [ ] We could use CSS `filter` to try to improve the speed of switching gamma colors?
+- [ ] We could use WebGL to try to improve the speed of switching gamma colors?
+- [x] We could use some CSS techniques to avoid having to appply inline style to each BitmapFont character's DOM node.
 - [ ] We should profile the parse phase to see what's taking time. Perhaps there's some sync image work that could be done lazily.
 - [ ] Remove some paranoid validation in the VM.
 - [ ] Consider throttling time updates coming from audio
+- [ ] Attach method binding on script init.
 
 # TODO Next
 
+- [ ] Implement event-listner-pool for native `on('eventname')`. It will improves readability & speed
 - [ ] Why doesn't scrolling work property in MMD3?
-- [ ] Implement proper color
-    - [ ] Move gammacolor to GPU
+- [x] Implement proper color
+    - [ ] Move gammacolor to GPU?
 - [ ] Requires VM
     - [ ] Look at componentbucket (Where can I find the images)
     - [ ] How is the scroll window for colors supposed to work?
     - [ ] How is the position slider supposed to work?
 - [ ] Standardize handling of different type condition permutations in interpreter
-- [ ] Implement EQ
+- [x] Implement EQ
 - [ ] Implament global actions
-    - [ ] TOGGLE
+    - [x] TOGGLE
     - [ ] MINIMIZE
-- [ ] Allow for skins which don't have gamma sets
+- [x] Allow for skins which don't have gamma sets
 - [ ] Figure out if global NULL is actually typed as INT in Maki. I suspect there is no NULL type, but only an INT who happens to be zero.
+- [ ] Implement custom list instead of html `select`, so scrollbars can be rendered properly.
 - [ ] Fix all `// FIXME`
 - [ ] SystemObject.getruntimeversion
 - [ ] SystemObject.getskinname
-- [ ] Handle clicking through transparent: https://stackoverflow.com/questions/38487569/click-through-png-image-only-if-clicked-coordinate-is-transparent
+- [x] Handle clicking through transparent: Using css `clip-path`. ~~https://stackoverflow.com/questions/38487569/click-through-png-image-only-if-clicked-coordinate-is-transparent~~
 
 # TODO Some day
 
