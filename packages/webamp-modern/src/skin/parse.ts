@@ -32,6 +32,7 @@ import WasabiTitle from "./makiClasses/WasabiTitle";
 import ComponentBucket from "./makiClasses/ComponentBucket";
 import GroupXFade from "./makiClasses/GroupXFade";
 import { classResolver } from "./resolver";
+import WasabiButton from "./makiClasses/WasabiButton";
 
 function hack() {
   // Without this Snowpack will try to treeshake out resolver causing a circular
@@ -586,7 +587,7 @@ export default class SkinParser {
     this._res.bitmaps["studio.button.pressed.bottom"] = false;
     this._res.bitmaps["studio.button.pressed.lowerRight"] = false;
 
-    return this.newGui(Button, node, parent);
+    return this.newGui(WasabiButton, node, parent);
   }
 
   async toggleButton(node: XmlElement, parent: any) {

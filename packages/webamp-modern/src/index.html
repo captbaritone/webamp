@@ -222,6 +222,26 @@
       .wasabi-button:active {
         --border-image: var(--bitmap-studio-button-pressed);
       }
+      .wasabi-button {
+        background-image: var(--bitmap-studio-button-middle);
+        background-size: contain;
+        display: flex;
+        border-image: var(--bitmap-studio-button) 10 fill / 10px / 0px space;
+      }
+      .wasabi-button span {
+        height: 100%;
+      }
+      .wasabi-button span:first-child,
+      .wasabi-button span:last-child {
+        background-image: var(--bitmap-studio-button-left);
+        background-repeat: no-repeat;
+        /* background: lime; */
+        min-width: 18px;
+      }
+      .wasabi-button span:nth-child(2) {
+        /* background: fuchsia; */
+        flex-grow: 1;
+      } 
 
       .autowidthsource {
         width: auto;
