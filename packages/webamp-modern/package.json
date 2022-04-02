@@ -9,7 +9,7 @@
     "serve": "http-server ./build",
     "lint": "yarn build-lint && eslint . --ext .js,.jsx,.ts,.tsx",
     "test": "yarn jest",
-    "extract-object-types": "node tools/extract-object-types.js",  
+    "extract-object-types": "node tools/extract-object-types.js",
     "extract-attributes": "babel-node --extensions=\".ts,.js,.tsx\" src/maki-interpreter/tools/extract-attributes.js > resources/attribute-skin-data.json",
     "maki-interfaces": "babel-node --extensions=\".ts,.js,.tsx\" src/maki-interpreter/tools/build-typescript-interfaces.js > __generated__/makiInterfaces.ts",
     "analyze-wals": "babel-node --extensions=\".ts,.js,.tsx\" src/maki-interpreter/tools/extract-functions.js > resources/maki-skin-data.json",
@@ -22,7 +22,7 @@
     "@typescript-eslint/parser": "^4.28.2",
     "eslint": "^7.30.0",
     "eslint-plugin-rulesdir": "^0.2.0",
-    "snowpack": "^3.5.5",
+    "snowpack": "^3.8.8",
     "tsup": "^4.12.5",
     "typescript": "^4.3.5"
   },
