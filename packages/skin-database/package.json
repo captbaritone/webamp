@@ -15,7 +15,7 @@
     "@types/node-fetch": "^2.5.7",
     "algoliasearch": "^4.3.0",
     "async-parallel": "^1.2.3",
-    "aws-sdk": "^2.663.0",
+    "aws-sdk": "^2.814.0",
     "commander": "^9.0.0",
     "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
