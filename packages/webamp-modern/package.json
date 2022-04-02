@@ -6,7 +6,7 @@
   "scripts": {
     "start": "snowpack dev",
     "build": "snowpack build",
-    "serve": "http-server ./built",
+    "serve": "http-server ./build",
     "lint": "yarn build-lint && eslint . --ext .js,.jsx,.ts,.tsx",
     "test": "yarn jest",
     "extract-object-types": "node tools/extract-object-types.js",  
