@@ -1,3 +1,4 @@
+import { Emitter } from "../../utils";
 import AUDIO_PLAYER from "../AudioPlayer";
 // import BaseObject from "./BaseObject";
 // import GuiObj from "./GuiObj";
@@ -26,6 +27,18 @@ export class PlEdit {
   _tracks: Track[] = [];
   _currentIndex: number;
   _selection: number[] = [];
+  _eventListener: Emitter = new Emitter();
+
+  // shortcut of this.Emitter
+  on(event: string, callback: Function): () => void {
+    return this._eventListener.on(event, callback);
+  }
+  trigger(event: string, ...args: any[]) {
+    this._eventListener.trigger(event, ...args);
+  }
+  off(event: string, callback: Function) {
+    this._eventListener.off(event, callback);
+  }
 
   //? ======= General PlEdit Information =======
   getnumtracks(): number {
@@ -98,9 +111,15 @@ export class PlEdit {
   }
 
   playtrack(item: number): void {
+    this._currentIndex = item;
     const track = this._tracks[item];
     const url = track.file ? URL.createObjectURL(track.file) : track.filename;
     AUDIO_PLAYER.setAudioSource(url);
+    this.trigger("trackchanged")
+  }
+
+  getCurrentTrackTitle():string {
+    return this.gettitle(this._currentIndex)
   }
 
   getrating(item: number): number {
@@ -112,7 +131,7 @@ export class PlEdit {
   }
 
   gettitle(item: number): string {
-    // return unimplementedWarning("gettitle");
+    return this._tracks[item].filename;
   }
 
   getlength(item: number): string {

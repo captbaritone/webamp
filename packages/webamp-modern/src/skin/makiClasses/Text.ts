@@ -18,6 +18,7 @@ export default class Text extends GuiObj {
   _display: string;
   _displayValue: string = "";
   _disposeDisplaySubscription: () => void | null = null;
+  _disposeTrackChangedSubscription: () => void | null = null;
   _text: string;
   _bold: boolean;
   _forceuppercase: boolean;
@@ -186,6 +187,9 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
     if (this._disposeDisplaySubscription != null) {
       this._disposeDisplaySubscription();
     }
+    if (this._disposeTrackChangedSubscription != null) {
+      this._disposeTrackChangedSubscription();
+    }
     this._display = display;
     switch (this._display.toLowerCase()) {
       case "":
@@ -214,6 +218,9 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
       case "songtitle":
         this._displayValue = "Your Favorite MP3 Song Title, U R Reading";
         // this._displayValue = "Short MP3 Title";
+        this._disposeTrackChangedSubscription = UI_ROOT.playlist.on('trackchanged', () => {
+          this._displayValue = UI_ROOT.playlist.getCurrentTrackTitle();
+        })
         break;
       case "songbitrate":
       case "songsamplerate":
