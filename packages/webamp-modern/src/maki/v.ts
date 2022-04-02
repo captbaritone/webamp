@@ -16,11 +16,7 @@ export type Variable =
   | {
       type: "OBJECT";
       value: BaseObject;
-      guid: string;
-    }
-  | {
-      type: "OBJECT";
-      value: BaseObject;
+      guid?: string;
     }
   | {
       type: "NULL";
