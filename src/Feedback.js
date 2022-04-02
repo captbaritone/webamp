@@ -7,23 +7,14 @@ import { useActionCreator } from "./hooks";
 import { useCallback } from "react";
 import { useSelector } from "react-redux";
 import { fetchGraphql, gql } from "./utils";
-import { USE_GRAPHQL } from "./constants";
 
 async function sendFeedback(variables) {
-  if (USE_GRAPHQL) {
-    const mutation = gql`
-      mutation GiveFeedback($message: String!, $email: String, $url: String) {
-        send_feedback(message: $message, email: $email, url: $url)
-      }
-    `;
-    await fetchGraphql(mutation, variables);
-  } else {
-    await fetch(`${API_URL}/feedback`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(variables),
-    });
-  }
+  const mutation = gql`
+    mutation GiveFeedback($message: String!, $email: String, $url: String) {
+      send_feedback(message: $message, email: $email, url: $url)
+    }
+  `;
+  await fetchGraphql(mutation, variables);
 }
 
 export default function Feedback() {
