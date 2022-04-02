@@ -1,7 +1,7 @@
 import * as Utils from "./utils";
 import { gql } from "./utils";
 import TinderCard from "react-tinder-card";
-import { API_URL, USE_GRAPHQL } from "./constants";
+import { API_URL } from "./constants";
 import React, { useState, useEffect } from "react";
 
 function warmScreenshotImage(hash) {
@@ -22,25 +22,11 @@ const mutation = gql`
 `;
 
 async function getSkinToReview() {
-  if (USE_GRAPHQL) {
-    const data = await Utils.fetchGraphql(mutation);
-    if (data.me.username) {
-      return data.skin_to_review;
-    } else {
-      window.location = `${API_URL}/auth`;
-    }
+  const data = await Utils.fetchGraphql(mutation);
+  if (data.me.username) {
+    return data.skin_to_review;
   } else {
-    const response = await fetch(
-      `${API_URL}/to_review?cacheBust=${Math.random()}`,
-      {
-        mode: "cors",
-        credentials: "include",
-      }
-    );
-    if (response.status === 403) {
-      window.location = `${API_URL}/auth`;
-    }
-    return response.json();
+    window.location = `${API_URL}/auth`;
   }
 }
 
@@ -74,54 +60,30 @@ function useQueuedSkin() {
 }
 
 async function approveSkin(md5) {
-  if (USE_GRAPHQL) {
-    const mutation = gql`
-      mutation ApproveSkin($md5: String!) {
-        approve_skin(md5: $md5)
-      }
-    `;
-    await Utils.fetchGraphql(mutation, { md5 });
-  } else {
-    await restReview("approve", md5);
-  }
+  const mutation = gql`
+    mutation ApproveSkin($md5: String!) {
+      approve_skin(md5: $md5)
+    }
+  `;
+  await Utils.fetchGraphql(mutation, { md5 });
 }
 
 async function rejectSkin(md5) {
-  if (USE_GRAPHQL) {
-    const mutation = gql`
-      mutation RejectSkin($md5: String!) {
-        reject_skin(md5: $md5)
-      }
-    `;
-    await Utils.fetchGraphql(mutation, { md5 });
-  } else {
-    await restReview("reject", md5);
-  }
+  const mutation = gql`
+    mutation RejectSkin($md5: String!) {
+      reject_skin(md5: $md5)
+    }
+  `;
+  await Utils.fetchGraphql(mutation, { md5 });
 }
 
 async function markSkinNSFW(md5) {
-  if (USE_GRAPHQL) {
-    const mutation = gql`
-      mutation markSkinNSFW($md5: String!) {
-        mark_skin_nsfw(md5: $md5)
-      }
-    `;
-    await Utils.fetchGraphql(mutation, { md5 });
-  } else {
-    await restReview("nsfw", md5);
-  }
-}
-
-async function restReview(action, md5) {
-  const response = await fetch(`${API_URL}/skins/${md5}/${action}`, {
-    method: "POST",
-    mode: "cors",
-    credentials: "include",
-  });
-
-  if (response.status === 403) {
-    window.location = `${API_URL}/auth`;
-  }
+  const mutation = gql`
+    mutation markSkinNSFW($md5: String!) {
+      mark_skin_nsfw(md5: $md5)
+    }
+  `;
+  await Utils.fetchGraphql(mutation, { md5 });
 }
 
 export default function ReviewPage() {
