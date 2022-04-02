@@ -220,6 +220,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
         // this._displayValue = "Short MP3 Title";
         this._disposeTrackChangedSubscription = UI_ROOT.playlist.on('trackchanged', () => {
           this._displayValue = UI_ROOT.playlist.getCurrentTrackTitle();
+          this._renderText();
         })
         break;
       case "songbitrate":

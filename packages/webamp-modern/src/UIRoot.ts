@@ -343,19 +343,19 @@ export class UIRoot {
 
   next() {
     const currentTrack = this.playlist.getcurrentindex();
-    if (currentTrack < this.playlist.getnumtracks()) {
+    if (currentTrack < this.playlist.getnumtracks() - 1) {
       this.playlist.playtrack(currentTrack + 1);
     }
-    this.audio.play()
+    this.audio.play();
     //TODO: check if "repeat" is take account
   }
-  
+
   previous() {
     const currentTrack = this.playlist.getcurrentindex();
     if (currentTrack > 0) {
       this.playlist.playtrack(currentTrack - 1);
     }
-    this.audio.play()
+    this.audio.play();
     //TODO: check if "repeat" is take account
   }
 
@@ -368,8 +368,8 @@ export class UIRoot {
     this.playlist.clear();
     for (var i = 0; i < this._input.files.length; i++) {
       const newTrack: Track = {
-        filename: this._input.files[0].name,
-        file: this._input.files[0],
+        filename: this._input.files[i].name,
+        file: this._input.files[i],
       };
       this.playlist.addTrack(newTrack);
     }

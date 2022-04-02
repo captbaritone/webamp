@@ -23,6 +23,7 @@ import WinampConfig, { WinampConfigGroup } from "./makiClasses/WinampConfig";
 import ComponentBucket from "./makiClasses/ComponentBucket";
 import AlbumArt from "./makiClasses/AlbumArt";
 import Region from "./makiClasses/Region";
+import { PlEdit, PlDir } from "./makiClasses/PlayList";
 
 
 const CLASSES = [
@@ -48,6 +49,7 @@ const CLASSES = [
   Timer,
   Slider,
   Vis,
+  PlEdit, PlDir,
   GuiObj,
 ];
 

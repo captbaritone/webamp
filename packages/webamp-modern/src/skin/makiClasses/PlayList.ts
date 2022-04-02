@@ -22,6 +22,7 @@ export type Track = {
  * It still exist (not interfered) when skin changed
  */
 export class PlEdit {
+  static GUID = "345beebc49210229b66cbe90d9799aa4";
   // taken from lib/pldir.mi
   static guid = "{345BEEBC-0229-4921-90BE-6CB6A49A79D9}";
   _tracks: Track[] = [];
@@ -115,11 +116,11 @@ export class PlEdit {
     const track = this._tracks[item];
     const url = track.file ? URL.createObjectURL(track.file) : track.filename;
     AUDIO_PLAYER.setAudioSource(url);
-    this.trigger("trackchanged")
+    this.trigger("trackchanged");
   }
 
-  getCurrentTrackTitle():string {
-    return this.gettitle(this._currentIndex)
+  getCurrentTrackTitle(): string {
+    return this.gettitle(this._currentIndex);
   }
 
   getrating(item: number): number {
@@ -152,6 +153,7 @@ export class PlEdit {
 }
 
 export class PlDir {
+  static GUID = "61a7abad41f67d7980e1d0b1f4a40386";
   // taken from lib/pldir.mi
   static guid = "{61A7ABAD-7D79-41f6-B1D0-E1808603A4F4}";
 
