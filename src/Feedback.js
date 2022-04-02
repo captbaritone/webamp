@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { API_URL } from "./constants";
 import { getUrl } from "./redux/selectors";
 import * as Actions from "./redux/actionCreators";
 import { useActionCreator } from "./hooks";
