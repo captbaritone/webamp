@@ -8,7 +8,8 @@ import AUDIO_PLAYER from "../AudioPlayer";
 // }
 
 export type Track = {
-  url: string; // filename included
+  filename: string; // full url, or just File.name
+  file?: File; // Blob
   metadata?: string; // http://forums.winamp.com/showthread.php?t=345521
   title?: string;
   rating?: number; // 0..5
@@ -16,7 +17,7 @@ export type Track = {
 
 /**
  * Non GUI element.
- * Hold tracs. 
+ * Hold tracs.
  * It still exist (not interfered) when skin changed
  */
 export class PlEdit {
@@ -56,14 +57,18 @@ export class PlEdit {
     // return unimplementedWarning("showtrack");
   }
 
-  enqueuefile(file: string): void {
-    const newTrack: Track = { url: file };
-    this._tracks.push(newTrack);
+  addTrack(track: Track) {
+    this._tracks.push(track);
 
     // set audio source if it is the first
-    if(this._tracks.length==1) {
-      this.playtrack(0)
+    if (this._tracks.length == 1) {
+      this.playtrack(0);
     }
+  }
+
+  enqueuefile(file: string): void {
+    const newTrack: Track = { filename: file };
+    this.addTrack(newTrack);
   }
 
   clear(): void {
@@ -93,8 +98,9 @@ export class PlEdit {
   }
 
   playtrack(item: number): void {
-    // return unimplementedWarning("playtrack");
-    AUDIO_PLAYER.setAudioSource(this._tracks[item].url);
+    const track = this._tracks[item];
+    const url = track.file ? URL.createObjectURL(track.file) : track.filename;
+    AUDIO_PLAYER.setAudioSource(url);
   }
 
   getrating(item: number): number {

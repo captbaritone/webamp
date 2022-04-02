@@ -19,7 +19,7 @@ import AUDIO_PLAYER, { AudioPlayer } from "./skin/AudioPlayer";
 import SystemObject from "./skin/makiClasses/SystemObject";
 import ComponentBucket from "./skin/makiClasses/ComponentBucket";
 import GroupXFade from "./skin/makiClasses/GroupXFade";
-import { PlEdit } from "./skin/makiClasses/PlayList";
+import { PlEdit, Track } from "./skin/makiClasses/PlayList";
 
 export class UIRoot {
   _div: HTMLDivElement = document.createElement("div");
@@ -39,13 +39,25 @@ export class UIRoot {
   _buckets: { [wndType: string]: ComponentBucket } = {};
   _bucketEntries: { [wndType: string]: XmlElement[] } = {};
   _xFades: GroupXFade[] = [];
-  
+  _input: HTMLInputElement = document.createElement("input");
+
   // A list of all objects created for this skin.
   _objects: BaseObject[] = [];
-  
+
+  //published
   vm: Vm = new Vm();
   audio: AudioPlayer = AUDIO_PLAYER;
   playlist: PlEdit = new PlEdit();
+
+  constructor() {
+    //"https://raw.githubusercontent.com/captbaritone/webamp-music/4b556fbf/Auto-Pilot_-_03_-_Seventeen.mp3";
+    this._input.type = "file";
+    this._input.setAttribute("multiple", "true");
+    // document.body.appendChild(this._input);
+    // TODO: dispose
+    this._input.onchange = this._inputChanged;
+  }
+
   getFileAsString: (filePath: string) => Promise<string>;
   getFileAsBytes: (filePath: string) => Promise<ArrayBuffer>;
   getFileAsBlob: (filePath: string) => Promise<Blob>;
@@ -310,13 +322,13 @@ export class UIRoot {
         this.audio.stop();
         break;
       case "next":
-        this.audio.next();
+        this.next();
         break;
       case "prev":
-        this.audio.previous();
+        this.previous();
         break;
       case "eject":
-        this.audio.eject();
+        this.eject();
         break;
       case "toggle":
         this.toggleContainer(param);
@@ -328,6 +340,42 @@ export class UIRoot {
         assume(false, `Unknown global action: ${action}`);
     }
   }
+
+  next() {
+    const currentTrack = this.playlist.getcurrentindex();
+    if (currentTrack < this.playlist.getnumtracks()) {
+      this.playlist.playtrack(currentTrack + 1);
+    }
+    this.audio.play()
+    //TODO: check if "repeat" is take account
+  }
+  
+  previous() {
+    const currentTrack = this.playlist.getcurrentindex();
+    if (currentTrack > 0) {
+      this.playlist.playtrack(currentTrack - 1);
+    }
+    this.audio.play()
+    //TODO: check if "repeat" is take account
+  }
+
+  eject() {
+    // this will call _inputChanged()
+    this._input.click();
+  }
+
+  _inputChanged = () => {
+    this.playlist.clear();
+    for (var i = 0; i < this._input.files.length; i++) {
+      const newTrack: Track = {
+        filename: this._input.files[0].name,
+        file: this._input.files[0],
+      };
+      this.playlist.addTrack(newTrack);
+    }
+
+    this.audio.play();
+  };
 
   toggleContainer(param: string) {
     const container = this.findContainer(param);

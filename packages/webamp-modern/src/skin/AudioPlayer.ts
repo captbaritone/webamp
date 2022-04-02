@@ -7,7 +7,6 @@ export const AUDIO_STOPPED = "stopped";
 export const AUDIO_PLAYING = "playing";
 
 export class AudioPlayer {
-  _input: HTMLInputElement = document.createElement("input");
   _audio: HTMLAudioElement = document.createElement("audio");
   _context: AudioContext;
   __preamp: GainNode;
@@ -48,8 +47,6 @@ export class AudioPlayer {
       document.body.addEventListener("click", resume, false);
       document.body.addEventListener("keydown", resume, false);
     }
-    //"https://raw.githubusercontent.com/captbaritone/webamp-music/4b556fbf/Auto-Pilot_-_03_-_Seventeen.mp3";
-    this._input.type = "file";
 
     this._source = this._context.createMediaElementSource(this._audio);
 
@@ -84,17 +81,6 @@ export class AudioPlayer {
       current = next;
     }
 
-    // document.body.appendChild(this._input);
-    // TODO: dispose
-    this._input.onchange = (e) => {
-      const file = this._input.files[0];
-      if (file == null) {
-        return;
-      }
-      this._audio.src = URL.createObjectURL(file);
-      this.play();
-    };
-
     //temporary: in the end of playing mp3, lets stop.
     //TODO: in future, when ended: play next mp3
     this._audio.addEventListener("ended", () => this.stop());
@@ -111,8 +97,9 @@ export class AudioPlayer {
     this._eventListener.off(event, callback);
   }
 
-  setAudioSource(url:string){
-    this._audio.src = url
+  setAudioSource(url: string) {
+    this.stop();
+    this._audio.src = url;
   }
 
   // 0-1
@@ -141,14 +128,6 @@ export class AudioPlayer {
     this.trigger("pause");
     this.trigger("statchanged");
   }
-
-  eject() {
-    this._input.click();
-  }
-
-  next() {}
-
-  previous() {}
 
   // 0-1
   setVolume(volume: number) {
@@ -286,8 +265,6 @@ export class AudioPlayer {
     };
     return dispose;
   }
-
-  
 
   // Current track length in seconds
   getLength(): number {
