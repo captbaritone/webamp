@@ -28,7 +28,7 @@ export default function Feedback() {
       alert("Please add a message before sending.");
       return;
     }
-    const body = { message, email, url: "https://skins/webamp.org" + url };
+    const body = { message, email, url: "https://skins.webamp.org" + url };
     setSending(true);
     await sendFeedback(body);
 
