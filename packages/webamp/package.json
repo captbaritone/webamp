@@ -90,7 +90,7 @@
     "cssnano": "^4.1.10",
     "data-uri-to-buffer": "^2.0.0",
     "eslint": "^8.10.0",
-    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-react": "^7.16.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "file-loader": "^2.0.0",

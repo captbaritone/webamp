@@ -138,6 +138,8 @@ function makiTypeToTsType(makiType: string): string {
       return "number";
     case "string":
       return "string";
+    case "map":
+      return "MakiMap";
     case "boolean":
       return "boolean";
     case "guiobject":
