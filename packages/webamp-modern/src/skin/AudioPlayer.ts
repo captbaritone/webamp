@@ -48,7 +48,6 @@ export class AudioPlayer {
       document.body.addEventListener("click", resume, false);
       document.body.addEventListener("keydown", resume, false);
     }
-    this._audio.src = "assets/Just_Plain_Ant_-_05_-_Stumble.mp3";
     //"https://raw.githubusercontent.com/captbaritone/webamp-music/4b556fbf/Auto-Pilot_-_03_-_Seventeen.mp3";
     this._input.type = "file";
 
@@ -110,6 +109,10 @@ export class AudioPlayer {
   }
   off(event: string, callback: Function) {
     this._eventListener.off(event, callback);
+  }
+
+  setAudioSource(url:string){
+    this._audio.src = url
   }
 
   // 0-1

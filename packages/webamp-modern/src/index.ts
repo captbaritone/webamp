@@ -26,6 +26,10 @@ const DEFAULT_SKIN = "assets/WinampModern566.wal";
 async function main() {
   // Purposefully don't await, let this load in parallel.
   initializeSkinListMenu();
+  
+  setStatus("Downloading MP3...");
+  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+
   setStatus("Downloading skin...");
   const skinPath = getUrlQuery(window.location, "skin") || DEFAULT_SKIN;
   const response = await fetch(skinPath);
@@ -103,16 +107,16 @@ async function initializeSkinListMenu() {
   downloadLink.style.position = "absolute";
   downloadLink.style.bottom = "0";
   downloadLink.style.left = "320px";
-  downloadLink.text = "Download"
+  downloadLink.text = "Download";
 
   const current = getUrlQuery(window.location, "skin");
 
   const internalSkins = [
-    {filename:"default", download_url:""},
-    {filename:"MMD3", download_url:"assets/MMD3.wal"}
-  ]
+    { filename: "default", download_url: "" },
+    { filename: "MMD3", download_url: "assets/MMD3.wal" },
+  ];
 
-  const skins = [...internalSkins, ...data.data.modern_skins.nodes]
+  const skins = [...internalSkins, ...data.data.modern_skins.nodes];
 
   for (const skin of skins) {
     const option = document.createElement("option");

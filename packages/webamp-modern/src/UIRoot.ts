@@ -19,6 +19,7 @@ import AUDIO_PLAYER, { AudioPlayer } from "./skin/AudioPlayer";
 import SystemObject from "./skin/makiClasses/SystemObject";
 import ComponentBucket from "./skin/makiClasses/ComponentBucket";
 import GroupXFade from "./skin/makiClasses/GroupXFade";
+import { PlEdit } from "./skin/makiClasses/PlayList";
 
 export class UIRoot {
   _div: HTMLDivElement = document.createElement("div");
@@ -38,12 +39,13 @@ export class UIRoot {
   _buckets: { [wndType: string]: ComponentBucket } = {};
   _bucketEntries: { [wndType: string]: XmlElement[] } = {};
   _xFades: GroupXFade[] = [];
-
+  
   // A list of all objects created for this skin.
   _objects: BaseObject[] = [];
-
+  
   vm: Vm = new Vm();
   audio: AudioPlayer = AUDIO_PLAYER;
+  playlist: PlEdit = new PlEdit();
   getFileAsString: (filePath: string) => Promise<string>;
   getFileAsBytes: (filePath: string) => Promise<ArrayBuffer>;
   getFileAsBlob: (filePath: string) => Promise<Blob>;
@@ -281,7 +283,7 @@ export class UIRoot {
       (font) => font instanceof TrueTypeFont
     ) as TrueTypeFont[];
     for (const ttf of truetypeFonts) {
-      if(!ttf.hasUrl()) {
+      if (!ttf.hasUrl()) {
         continue; // some dummy ttf (eg Arial) doesn't has url.
       }
       // src: url(data:font/truetype;charset=utf-8;base64,${ttf.getBase64()}) format('truetype');
@@ -290,7 +292,7 @@ export class UIRoot {
         src: url(${ttf.getBase64()}) format('truetype');
         font-weight: normal;
         font-style: normal;
-      }`)
+      }`);
     }
     const cssEl = document.getElementById("truetypefont-css");
     cssEl.textContent = cssRules.join("\n");
