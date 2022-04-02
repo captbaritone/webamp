@@ -1,12 +1,6 @@
 import { Emitter } from "../../utils";
 import AUDIO_PLAYER from "../AudioPlayer";
 // import BaseObject from "./BaseObject";
-// import GuiObj from "./GuiObj";
-
-// export default class PlayListGui extends GuiObj {
-//   // static GUID = "";
-//   static guid = "{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D}";
-// }
 
 export type Track = {
   filename: string; // full url, or just File.name
@@ -78,6 +72,8 @@ export class PlEdit {
     if (this._tracks.length == 1) {
       this.playtrack(0);
     }
+
+    this.trigger("trackchange");
   }
 
   enqueuefile(file: string): void {
@@ -88,7 +84,7 @@ export class PlEdit {
   clear(): void {
     this._selection = [];
     this._tracks = [];
-    this._currentIndex = -1;
+    this._currentIndex = null;
   }
 
   removetrack(item: number): void {
@@ -116,10 +112,13 @@ export class PlEdit {
     const track = this._tracks[item];
     const url = track.file ? URL.createObjectURL(track.file) : track.filename;
     AUDIO_PLAYER.setAudioSource(url);
-    this.trigger("trackchanged");
+    this.trigger("trackchange");
   }
 
   getCurrentTrackTitle(): string {
+    if(this._currentIndex==null){
+      return ""
+    }
     return this.gettitle(this._currentIndex);
   }
 
@@ -132,7 +131,7 @@ export class PlEdit {
   }
 
   gettitle(item: number): string {
-    return this._tracks[item].filename;
+    return this._tracks[item].filename.split('/').pop();
   }
 
   getlength(item: number): string {

@@ -33,6 +33,7 @@ import ComponentBucket from "./makiClasses/ComponentBucket";
 import GroupXFade from "./makiClasses/GroupXFade";
 import { classResolver } from "./resolver";
 import WasabiButton from "./makiClasses/WasabiButton";
+import PlayListGui from "./makiClasses/PlayListGui";
 
 function hack() {
   // Without this Snowpack will try to treeshake out resolver causing a circular
@@ -711,6 +712,10 @@ export default class SkinParser {
   }
 
   async component(node: XmlElement, parent: any) {
+    //TODO: parse dynamic element by guid value
+    if(node.attributes.param=="guid:{45F3F7C1-A6F3-4ee6-A15E-125E92FC3F8D}"){
+      return this.newGui(PlayListGui, node, parent);
+    }
     await this.traverseChildren(node, parent);
   }
 

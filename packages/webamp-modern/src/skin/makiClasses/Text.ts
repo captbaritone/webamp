@@ -216,9 +216,8 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
       // this._displayValue = "Niente da Caprie (3";
       // break;
       case "songtitle":
-        this._displayValue = "Your Favorite MP3 Song Title, U R Reading";
-        // this._displayValue = "Short MP3 Title";
-        this._disposeTrackChangedSubscription = UI_ROOT.playlist.on('trackchanged', () => {
+        this._displayValue = UI_ROOT.playlist.getCurrentTrackTitle();
+        this._disposeTrackChangedSubscription = UI_ROOT.playlist.on('trackchange', () => {
           this._displayValue = UI_ROOT.playlist.getCurrentTrackTitle();
           this._renderText();
         })

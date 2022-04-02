@@ -26,15 +26,17 @@ const DEFAULT_SKIN = "assets/WinampModern566.wal";
 async function main() {
   // Purposefully don't await, let this load in parallel.
   initializeSkinListMenu();
-  
-  setStatus("Downloading MP3...");
-  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
 
   setStatus("Downloading skin...");
   const skinPath = getUrlQuery(window.location, "skin") || DEFAULT_SKIN;
   const response = await fetch(skinPath);
   const data = await response.blob();
   await loadSkin(data);
+
+  setStatus("Downloading MP3...");
+  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+
+  setStatus("");
 }
 
 async function loadSkin(skinData: Blob) {
