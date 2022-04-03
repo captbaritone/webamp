@@ -1,0 +1,5 @@
+.list {
+    color: var(--color-studio-list-text, var(--color-wasabi-list-text));
+    background-color: var(--color-wasabi-list-background, transparent);
+    background-image: var(--bitmap-studio-list-background, none);
+}

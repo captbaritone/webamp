@@ -35,6 +35,7 @@ export default class PlayListGui extends GuiObj {
     super.draw()
 
     this._div.classList.add('pl')
+    this._div.classList.add('list')
   }
 }
 
