@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import * as Utils from "../utils";
 import { SCREENSHOT_HEIGHT } from "../constants";
+import CancelableImg from "./CancelableImg";
 
 function Skin({
   style,
@@ -85,7 +86,7 @@ function Skin({
       onClick={clickHandler}
       href={permalink}
     >
-      <img
+      <CancelableImg
         tabIndex={1}
         src={src}
         style={imgStyle}
