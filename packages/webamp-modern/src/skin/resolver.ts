@@ -1,4 +1,5 @@
 import { getClass } from "../maki/objects";
+import BaseObject from "./makiClasses/BaseObject";
 import Button from "./makiClasses/Button";
 import SystemObject from "./makiClasses/SystemObject";
 import Container from "./makiClasses/Container";
@@ -27,6 +28,7 @@ import { PlEdit, PlDir } from "./makiClasses/PlayList";
 
 
 const CLASSES = [
+  BaseObject,
   Config,
   ConfigItem, ConfigAttribute,
   WinampConfig, WinampConfigGroup,
