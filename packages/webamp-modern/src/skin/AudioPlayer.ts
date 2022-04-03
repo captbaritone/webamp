@@ -98,7 +98,6 @@ export class AudioPlayer {
   }
 
   setAudioSource(url: string) {
-    this.stop();
     this._audio.src = url;
   }
 
