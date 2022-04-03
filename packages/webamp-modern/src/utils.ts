@@ -122,7 +122,7 @@ export class Emitter {
   _cbs: { [event: string]: Array<Function> } = {};
 
   // call this to register a callback to a specific event
-  on(event: string, cb: Function) {
+  on(event: string, cb: Function): Function {
     if (this._cbs[event] == null) {
       this._cbs[event] = [];
     }
