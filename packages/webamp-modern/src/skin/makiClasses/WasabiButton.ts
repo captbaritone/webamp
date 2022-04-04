@@ -3,9 +3,6 @@ import Button from "./Button";
 
 export default class WasabiButton extends Button {
   //   static GUID = "unknown";
-  _l: HTMLSpanElement = document.createElement("span");
-  _r: HTMLSpanElement = document.createElement("span");
-  _m: HTMLSpanElement = document.createElement("span");
 
   getElTag(): string {
     return "button";
@@ -13,17 +10,7 @@ export default class WasabiButton extends Button {
 
   constructor() {
     super();
-    this._div.appendChild(this._l);
-    this._div.appendChild(this._m);
-    this._div.appendChild(this._r);
-    // this._image = 'studio.button'
-    // this._downimage = 'studio.button.pressed'
     this.registerDimensions();
-  }
-  init() {
-    super.init();
-    this.setXmlAttr("image", "studio.button");
-    this.setXmlAttr("downimage", "studio.button.pressed");
   }
 
   setXmlAttr(key: string, value: string): boolean {
@@ -32,7 +19,7 @@ export default class WasabiButton extends Button {
     }
     switch (key) {
       case "text":
-        this._m.innerText = value;
+        this._div.innerText = value;
         break;
       default:
         return false;
