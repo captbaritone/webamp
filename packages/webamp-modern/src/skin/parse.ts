@@ -588,7 +588,49 @@ export default class SkinParser {
     this._res.bitmaps["studio.button.pressed.bottom"] = false;
     this._res.bitmaps["studio.button.pressed.lowerRight"] = false;
 
+    await this.buildWasabiButtonFace();
+
     return this.newGui(WasabiButton, node, parent);
+  }
+
+  async buildWasabiButtonFace() {
+    const face = this._uiRoot.getBitmap("studio.button");
+    let upperLeft = this._uiRoot.getBitmap("studio.button.upperLeft");
+    if (face == null && upperLeft !== null) {
+      //? default
+      let bottomRight = this._uiRoot.getBitmap("studio.button.lowerRight");
+      let dict: {
+        [attrName: string]: string;
+      } = {
+        id: "studio.button",
+        file: upperLeft.getFile(),
+        x: String(upperLeft.getLeft()),
+        y: String(upperLeft.getTop()),
+        w: String(bottomRight.getLeft() - upperLeft.getLeft() + bottomRight.getWidth()),
+        h: String(bottomRight.getTop() - upperLeft.getTop() + bottomRight.getHeight()),
+      };
+      const btnFace = new XmlElement("bitmap", { ...dict });
+      await this.bitmap(btnFace);
+
+      //? pressed
+      upperLeft = this._uiRoot.getBitmap("studio.button.pressed.upperLeft");
+        bottomRight = this._uiRoot.getBitmap("studio.button.pressed.lowerRight");
+        dict = {
+          id: "studio.button.pressed",
+          file: upperLeft.getFile(),
+          x: String(upperLeft.getLeft()),
+          y: String(upperLeft.getTop()),
+          w: String(bottomRight.getLeft() - upperLeft.getLeft() + bottomRight.getWidth()),
+          h: String(bottomRight.getTop() - upperLeft.getTop() + bottomRight.getHeight()),
+        };
+        const btnPressedFace = new XmlElement("bitmap", { ...dict });
+        await this.bitmap(btnPressedFace);
+  
+  
+      //TODO: why this new created bitmap doesn't loaded?
+      await this._imageManager.loadUniquePaths();
+      await this._imageManager.ensureBitmapsLoaded();
+    }
   }
 
   async toggleButton(node: XmlElement, parent: any) {
@@ -683,8 +725,11 @@ export default class SkinParser {
     const groupDef = this._uiRoot.getGroupDef(groupdef_id);
     if (groupDef != null) {
       group.setXmlAttributes(groupDef.attributes);
-      if(groupDef.attributes.inherit_group){
-        await this.maybeApplyGroupDefId(group, groupDef.attributes.inherit_group);
+      if (groupDef.attributes.inherit_group) {
+        await this.maybeApplyGroupDefId(
+          group,
+          groupDef.attributes.inherit_group
+        );
       }
       await this.traverseChildren(groupDef, group);
       // TODO: Maybe traverse groupDef's children?
@@ -713,7 +758,9 @@ export default class SkinParser {
 
   async component(node: XmlElement, parent: any) {
     //TODO: parse dynamic element by guid value
-    if(node.attributes.param=="guid:{45F3F7C1-A6F3-4ee6-A15E-125E92FC3F8D}"){
+    if (
+      node.attributes.param == "guid:{45F3F7C1-A6F3-4ee6-A15E-125E92FC3F8D}"
+    ) {
       return this.newGui(PlayListGui, node, parent);
     }
     await this.traverseChildren(node, parent);
@@ -823,7 +870,7 @@ export default class SkinParser {
         }
         //replace children
         mother.children.splice(0, mother.children.length, ...nonGroupDefs);
-      } //eof function
+      }; //eof function
 
       // Note: Included files don't have a single root node, so we add a synthetic one.
       // A different XML parser library might make this unnessesary.

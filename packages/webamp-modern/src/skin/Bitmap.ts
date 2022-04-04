@@ -68,6 +68,14 @@ export default class Bitmap {
     return this._height;
   }
 
+  getLeft() {
+    return this._x;
+  }
+
+  getTop() {
+    return this._y;
+  }
+
   getCSSVar(): string {
     return this._cssVar;
   }
