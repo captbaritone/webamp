@@ -12,7 +12,9 @@
         background-color: rgb(58, 110, 165);
         font-family: Arial, Helvetica, sans-serif;
       }
-      textarea, group, text,
+      textarea,
+      group,
+      text,
       input,
       select {
         font-size: 10.5px;
@@ -216,35 +218,6 @@
         transition: opacity var(--fade-out-speed, 0.25);
       }
 
-      .wasabi-button {
-        border: 3px solid transparent;
-        --border-image: var(--bitmap-studio-button);
-        border-image: var(--border-image) 3 fill/ 1 / 0px stretch;
-      }
-      .wasabi-button:active {
-        --border-image: var(--bitmap-studio-button-pressed);
-      }
-      .wasabi-button {
-        background-image: var(--bitmap-studio-button-middle);
-        background-size: contain;
-        display: flex;
-        border-image: var(--bitmap-studio-button) 10 fill / 10px / 0px space;
-      }
-      .wasabi-button span {
-        height: 100%;
-      }
-      .wasabi-button span:first-child,
-      .wasabi-button span:last-child {
-        background-image: var(--bitmap-studio-button-left);
-        background-repeat: no-repeat;
-        /* background: lime; */
-        min-width: 18px;
-      }
-      .wasabi-button span:nth-child(2) {
-        /* background: fuchsia; */
-        flex-grow: 1;
-      } 
-
       .autowidthsource {
         width: auto;
       }
@@ -277,7 +250,8 @@
         transition: width 0.1s, height 0.1s, left 0.1s, top 0.1s;
       }
     </style>
-    <link rel="stylesheet" href="css/list.css"/>
+    <link rel="stylesheet" href="css/list.css" />
+    <link rel="stylesheet" href="css/button.css" />
     <style id="bitmap-css"></style>
     <style id="truetypefont-css"></style>
   </head>

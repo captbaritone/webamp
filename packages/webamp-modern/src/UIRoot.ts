@@ -27,6 +27,7 @@ export class UIRoot {
   _bitmaps: Bitmap[] = [];
   _fonts: (TrueTypeFont | BitmapFont)[] = [];
   _colors: Color[] = [];
+  _dimensions: { [id: string]: number } = {}; //css: width
   _groupDefs: XmlElement[] = [];
   _gammaSets: Map<string, GammaGroup[]> = new Map();
   _gammaNames = {};
@@ -113,6 +114,17 @@ export class UIRoot {
 
   addColor(color: Color) {
     this._colors.push(color);
+  }
+
+  // to reduce polution of inline style.
+  addDimension(id: string, size: number) {
+    this._dimensions[id] = size;
+  }
+  addWidth(id: string, bitmapId: string) {
+    this.addDimension(id, this.getBitmap(bitmapId).getWidth());
+  }
+  addHeight(id: string, bitmapId: string) {
+    this.addDimension(id, this.getBitmap(bitmapId).getHeight());
   }
 
   getColor(id: string): Color {
@@ -250,6 +262,7 @@ export class UIRoot {
     const bitmapFonts: BitmapFont[] = this._fonts.filter(
       (font) => font instanceof BitmapFont && !font.useExternalBitmap()
     ) as BitmapFont[];
+    // css of bitmaps
     for (const bitmap of [...this._bitmaps, ...bitmapFonts]) {
       const img = bitmap.getImg();
       if (!img) {
@@ -267,16 +280,21 @@ export class UIRoot {
       );
       cssRules.push(`  ${bitmap.getCSSVar()}: url(${url});`);
     }
+    // css of colors
     for (const color of this._colors) {
       const groupId = color.getGammaGroup();
       const gammaGroup = this._getGammaGroup(groupId);
       const url = gammaGroup.transformColor(color.getValue());
       cssRules.push(`  ${color.getCSSVar()}: ${url};`);
     }
-    cssRules.unshift(":root{");
-    cssRules.push("}");
+    // css of dimensions
+    for (const [dimension, size] of Object.entries(this._dimensions)) {
+      cssRules.push(`  --dim-${dimension}: ${size}px;`);
+    }
+    // cssRules.unshift(":root{");
+    // cssRules.push("}");
     const cssEl = document.getElementById("bitmap-css");
-    cssEl.textContent = cssRules.join("\n");
+    cssEl.textContent = `:root{${cssRules.join("\n")}}`;
   }
 
   getXuiElement(name: string): XmlElement | null {
