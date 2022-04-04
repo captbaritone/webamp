@@ -121,10 +121,16 @@ export class UIRoot {
     this._dimensions[id] = size;
   }
   addWidth(id: string, bitmapId: string) {
-    this.addDimension(id, this.getBitmap(bitmapId).getWidth());
+    const bitmap = this.getBitmap(bitmapId);
+    if (bitmap) {
+      this.addDimension(id, bitmap.getWidth());
+    }
   }
   addHeight(id: string, bitmapId: string) {
-    this.addDimension(id, this.getBitmap(bitmapId).getHeight());
+    const bitmap = this.getBitmap(bitmapId);
+    if (bitmap) {
+      this.addDimension(id, bitmap.getHeight());
+    }
   }
 
   getColor(id: string): Color {
