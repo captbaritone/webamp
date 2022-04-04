@@ -606,27 +606,34 @@ export default class SkinParser {
         file: upperLeft.getFile(),
         x: String(upperLeft.getLeft()),
         y: String(upperLeft.getTop()),
-        w: String(bottomRight.getLeft() - upperLeft.getLeft() + bottomRight.getWidth()),
-        h: String(bottomRight.getTop() - upperLeft.getTop() + bottomRight.getHeight()),
+        w: String(
+          bottomRight.getLeft() - upperLeft.getLeft() + bottomRight.getWidth()
+        ),
+        h: String(
+          bottomRight.getTop() - upperLeft.getTop() + bottomRight.getHeight()
+        ),
       };
       const btnFace = new XmlElement("bitmap", { ...dict });
       await this.bitmap(btnFace);
 
       //? pressed
       upperLeft = this._uiRoot.getBitmap("studio.button.pressed.upperLeft");
-        bottomRight = this._uiRoot.getBitmap("studio.button.pressed.lowerRight");
-        dict = {
-          id: "studio.button.pressed",
-          file: upperLeft.getFile(),
-          x: String(upperLeft.getLeft()),
-          y: String(upperLeft.getTop()),
-          w: String(bottomRight.getLeft() - upperLeft.getLeft() + bottomRight.getWidth()),
-          h: String(bottomRight.getTop() - upperLeft.getTop() + bottomRight.getHeight()),
-        };
-        const btnPressedFace = new XmlElement("bitmap", { ...dict });
-        await this.bitmap(btnPressedFace);
-  
-  
+      bottomRight = this._uiRoot.getBitmap("studio.button.pressed.lowerRight");
+      dict = {
+        id: "studio.button.pressed",
+        file: upperLeft.getFile(),
+        x: String(upperLeft.getLeft()),
+        y: String(upperLeft.getTop()),
+        w: String(
+          bottomRight.getLeft() - upperLeft.getLeft() + bottomRight.getWidth()
+        ),
+        h: String(
+          bottomRight.getTop() - upperLeft.getTop() + bottomRight.getHeight()
+        ),
+      };
+      const btnPressedFace = new XmlElement("bitmap", { ...dict });
+      await this.bitmap(btnPressedFace);
+
       //TODO: why this new created bitmap doesn't loaded?
       await this._imageManager.loadUniquePaths();
       await this._imageManager.ensureBitmapsLoaded();
