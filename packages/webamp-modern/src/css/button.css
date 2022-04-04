@@ -1,38 +1,16 @@
 button.wasabi {
-    display: flex;
     background-image: none;
-    /* border: none; */
-    /* background-image: var(--bitmap-wasabi-button-center); */
-  /* border: 4px solid transparent; */
-  /* border-width: 4px 4px 4px 5px; */
   border: 4px solid transparent;
-  border-image: var(--bitmap-wasabi-button);  
+  border-image-source: var(--bitmap-wasabi-button);  
   /* border-image-slice: 4 4 4 5 fill; */
   border-image-slice: 4 fill;
-  /* border-image-repeat: round; */
-  /* --border-image: var(--bitmap-studio-button); */
-  /* border-image: var(--border-image) 3 fill/ 1 / 0px stretch; */
-  /* border-image: var(--bitmap-studio-button) 10 fill / 10px / 0px space; */
-
-  /* background-size: contain; */
-  line-height: 21px;
   vertical-align:middle;
 }
-button.wasabi span {
-  height: 100%;
-}
-button.wasabi span:first-child,
-button.wasabi span:last-child {
-  /* background-image: var(--bitmap-studio-button-left); */
-  /* background-repeat: no-repeat; */
-  /* background: lime; */
-  min-width: 18px;
-}
-button.wasabi span:nth-child(2) {
-  /* background: fuchsia; */
-  flex-grow: 1;
+
+button.wasabi:hover {
+    border-image-source: var(--bitmap-wasabi-button-hover);
 }
 
 button.wasabi:active {
-    --border-image: var(--bitmap-studio-button-pressed);
+    border-image-source: var(--bitmap-wasabi-button-pressed);
 }
