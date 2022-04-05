@@ -595,44 +595,79 @@ export default class SkinParser {
 
   async buildWasabiButtonFace() {
     const face = this._uiRoot.getBitmap("studio.button");
-    let upperLeft = this._uiRoot.getBitmap("studio.button.upperLeft");
-    if (face == null && upperLeft !== null) {
-      //? default
-      let bottomRight = this._uiRoot.getBitmap("studio.button.lowerRight");
-      let dict: {
-        [attrName: string]: string;
-      } = {
-        id: "studio.button",
-        file: upperLeft.getFile(),
-        x: String(upperLeft.getLeft()),
-        y: String(upperLeft.getTop()),
-        w: String(
-          bottomRight.getLeft() - upperLeft.getLeft() + bottomRight.getWidth()
-        ),
-        h: String(
-          bottomRight.getTop() - upperLeft.getTop() + bottomRight.getHeight()
-        ),
-      };
-      const btnFace = new XmlElement("bitmap", { ...dict });
-      await this.bitmap(btnFace);
+    // if (face == null && upperLeft !== null) {
+    if (!face) {
+      let upperLeft = this._uiRoot.getBitmap("studio.button.upperLeft");
+      if (upperLeft) {
+        //? default
+        let bottomRight = this._uiRoot.getBitmap("studio.button.lowerRight");
+        let dict: {
+          [attrName: string]: string;
+        } = {
+          id: "studio.button",
+          file: upperLeft.getFile(),
+          x: String(upperLeft.getLeft()),
+          y: String(upperLeft.getTop()),
+          w: String(
+            bottomRight.getLeft() - upperLeft.getLeft() + bottomRight.getWidth()
+          ),
+          h: String(
+            bottomRight.getTop() - upperLeft.getTop() + bottomRight.getHeight()
+          ),
+        };
+        const btnFace = new XmlElement("bitmap", { ...dict });
+        await this.bitmap(btnFace);
 
-      //? pressed
-      upperLeft = this._uiRoot.getBitmap("studio.button.pressed.upperLeft");
-      bottomRight = this._uiRoot.getBitmap("studio.button.pressed.lowerRight");
-      dict = {
-        id: "studio.button.pressed",
-        file: upperLeft.getFile(),
-        x: String(upperLeft.getLeft()),
-        y: String(upperLeft.getTop()),
-        w: String(
-          bottomRight.getLeft() - upperLeft.getLeft() + bottomRight.getWidth()
-        ),
-        h: String(
-          bottomRight.getTop() - upperLeft.getTop() + bottomRight.getHeight()
-        ),
-      };
-      const btnPressedFace = new XmlElement("bitmap", { ...dict });
-      await this.bitmap(btnPressedFace);
+        //? pressed
+        upperLeft = this._uiRoot.getBitmap("studio.button.pressed.upperLeft");
+        bottomRight = this._uiRoot.getBitmap(
+          "studio.button.pressed.lowerRight"
+        );
+        dict = {
+          id: "studio.button.pressed",
+          file: upperLeft.getFile(),
+          x: String(upperLeft.getLeft()),
+          y: String(upperLeft.getTop()),
+          w: String(
+            bottomRight.getLeft() - upperLeft.getLeft() + bottomRight.getWidth()
+          ),
+          h: String(
+            bottomRight.getTop() - upperLeft.getTop() + bottomRight.getHeight()
+          ),
+        };
+        const btnPressedFace = new XmlElement("bitmap", { ...dict });
+        await this.bitmap(btnPressedFace);
+      } else {
+        // we can't find ingredient, lets search the raw material
+        if (!this._imageManager.isFilePathAdded("window/window-elements.png"))
+          return;
+
+        //? default
+        let dict: {
+          [attrName: string]: string;
+        } = {
+          id: "studio.button",
+          file: "window/window-elements.png",
+          x: "1",
+          y: "135",
+          w: "31",
+          h: "31",
+        };
+        const btnFace = new XmlElement("bitmap", { ...dict });
+        await this.bitmap(btnFace);
+
+        //? pressed
+        dict = {
+          id: "studio.button.pressed",
+          file: "window/window-elements.png",
+          x: "67",
+          y: "135",
+          w: "31",
+          h: "31",
+        };
+        const btnPressedFace = new XmlElement("bitmap", { ...dict });
+        await this.bitmap(btnPressedFace);
+      }
 
       //TODO: why this new created bitmap doesn't loaded?
       await this._imageManager.loadUniquePaths();
@@ -768,6 +803,7 @@ export default class SkinParser {
     if (
       node.attributes.param == "guid:{45F3F7C1-A6F3-4ee6-A15E-125E92FC3F8D}"
     ) {
+      await this.buildWasabiButtonFace();
       return this.newGui(PlayListGui, node, parent);
     }
     await this.traverseChildren(node, parent);
