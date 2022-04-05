@@ -464,7 +464,7 @@ export class UIRoot {
     if (!filePath) return null;
     const zipObj = getCaseInsensitiveFile(this._zip, filePath);
     if (!zipObj) return null;
-    return await zipObj.async("string");
+    return await zipObj.async("text");
   }
 
   async getFileAsBytesZip(filePath: string): Promise<ArrayBuffer> {
