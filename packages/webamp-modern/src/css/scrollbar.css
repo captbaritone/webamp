@@ -1,0 +1,66 @@
+/* Let's get this party started */
+/* TODO: Set the width|height by --var-dimension */
+::-webkit-scrollbar {
+    width: 13px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background-image: var(--bitmap-wasabi-scrollbar-vertical-background);
+}
+::-webkit-scrollbar-button {
+    background-image: var(--bitmap-wasabi-scrollbar-vertical-left);
+  }
+::-webkit-scrollbar-button:vertical {
+    height: 18px;
+}
+::-webkit-scrollbar-button:vertical:increment {
+  background-image: var(--bitmap-wasabi-scrollbar-vertical-right);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background-image: var(--bitmap-wasabi-scrollbar-vertical-button, var(--bitmap-studio-scrollbar-vertical-button));
+    /*background-repeat: repeat;*/
+}
+::-webkit-scrollbar-thumb {
+    max-height: 41px;
+    min-height: 41px;
+    background-repeat: no-repeat;
+}
+/* ::-webkit-scrollbar-thumb::after {
+    content: 'HALO';
+    position: absolute;
+    display: block;
+    inset: 0;
+    background: rgba(255, 230, 0, 1);
+    z-index: 100;
+} */
+/* ::-webkit-scrollbar-thumb:window-inactive {
+  background: rgba(255,0,0,0.4); 
+} */
+
+/*? HORIZONTAL */
+::-webkit-scrollbar:horizontal {
+    height: 13px;
+}
+/* Track */
+::-webkit-scrollbar-track:horizontal {
+    background-image: var(--bitmap-wasabi-scrollbar-horizontal-background);
+}
+/* Handle */
+::-webkit-scrollbar-thumb:horizontal {
+    background-image: var(--bitmap-studio-scrollbar-horizontal-button);
+    
+}
+::-webkit-scrollbar-button:horizontal {
+    background-image: var(--bitmap-wasabi-scrollbar-horizontal-left);
+    width: 17px;
+}
+::-webkit-scrollbar-button:horizontal:increment {
+    background-image: var(--bitmap-wasabi-scrollbar-horizontal-right);
+}
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+/* ---------- EOF SCROLLBAR ------------ */

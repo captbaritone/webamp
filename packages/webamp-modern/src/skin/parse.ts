@@ -161,24 +161,24 @@ export default class SkinParser {
     //? But in the same time we need to reduce code complexity
     //? So, temporary we are trying to not do Promise.all
 
-    // if (this._phase == RESOURCE_PHASE) {
-    //   return await Promise.all(
-    //     node.children.map((child) => {
-    //       if (child instanceof XmlElement) {
-    //         // console.log('traverse->', parent.name, child.name)
-    //         this._scanRes(child);
-    //         return this.traverseChild(child, parent);
-    //       }
-    //     })
-    //   );
-    // } else {
-    for (const child of node.children) {
-      if (child instanceof XmlElement) {
-        this._scanRes(child);
-        await this.traverseChild(child, parent);
+    if (this._phase == RESOURCE_PHASE) {
+      return await Promise.all(
+        node.children.map((child) => {
+          if (child instanceof XmlElement) {
+            // console.log('traverse->', parent.name, child.name)
+            this._scanRes(child);
+            return this.traverseChild(child, parent);
+          }
+        })
+      );
+    } else {
+      for (const child of node.children) {
+        if (child instanceof XmlElement) {
+          this._scanRes(child);
+          await this.traverseChild(child, parent);
+        }
       }
     }
-    // }
   }
 
   async traverseChild(node: XmlElement, parent: any) {
