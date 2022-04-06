@@ -817,7 +817,21 @@ export default class SkinParser {
   }
 
   async colorThemesList(node: XmlElement, parent: any) {
+    this.buildWasabiScrollbarDimension()
     return this.newGui(ColorThemesList, node, parent);
+  }
+
+  buildWasabiScrollbarDimension() {
+    this._uiRoot.addWidth("vscrollbar-width", "wasabi.scrollbar.vertical.left");
+    this._uiRoot.addHeight("vscrollbar-btn-height", "wasabi.scrollbar.vertical.left");
+    this._uiRoot.addHeight("vscrollbar-thumb-height", "wasabi.scrollbar.vertical.button");
+    this._uiRoot.addHeight("vscrollbar-thumb-height2", "studio.scrollbar.vertical.button");
+
+    this._uiRoot.addHeight("hscrollbar-height", "wasabi.scrollbar.horizontal.left");
+    this._uiRoot.addWidth("hscrollbar-btn-width", "wasabi.scrollbar.horizontal.left");
+    this._uiRoot.addWidth("hscrollbar-thumb-width", "wasabi.scrollbar.horizontal.button");
+    this._uiRoot.addWidth("hscrollbar-thumb-width2", "studio.scrollbar.horizontal.button");
+
   }
 
   async layoutStatus(node: XmlElement, parent: any) {

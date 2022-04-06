@@ -20,6 +20,7 @@
 /* == COLORTHEMELIST == */
 colorthemeslist{
   border: 1px solid black;
+  border: none;
 }
 colorthemeslist > select{
   border: none;
