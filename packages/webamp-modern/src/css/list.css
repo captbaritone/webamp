@@ -17,6 +17,14 @@
   );
 }
 
+/* == COLORTHEMELIST == */
+colorthemeslist{
+  border: 1px solid black;
+}
+colorthemeslist > select{
+  border: none;
+}
+
 /* == PLAYLIST == */
 .pl > div {
   margin-right: 15px;
