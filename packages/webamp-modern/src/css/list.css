@@ -37,9 +37,9 @@
   height: 100%;
   top: 0;
   right: 2px;
-  border-left: 1px solid var(--color-wasabi-border-sunken);
-  border-right: 1px solid var(--color-wasabi-border-sunken);
-  background: var(--color-wasabi-scrollbar-background-inverted);
+  border-left: 1px solid var(--color-wasabi-border-sunken, rgba(192,192,192,.8));
+  border-right: 1px solid var(--color-wasabi-border-sunken, rgba(192,192,192,.8));
+  background: var(--color-wasabi-scrollbar-background-inverted, black);
 }
 .pl > div.scrollbar::after /* button.wasabi */ {
   content: "";
