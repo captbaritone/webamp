@@ -261,6 +261,9 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
     if (newValue !== this._displayValue) {
       this._displayValue = newValue;
       this._renderText();
+      UI_ROOT.vm.dispatch(this, "ontextchanged", [
+        {type:"STRING", value: this.gettext()}
+      ]);
     }
   }
 
