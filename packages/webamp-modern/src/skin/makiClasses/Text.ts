@@ -37,6 +37,9 @@ export default class Text extends GuiObj {
   _scrollPaused: boolean = false;
   _scrollLeft: number = 0; // logically, not visually
   _textFullWidth: number; //calculated, not runtime by css
+  _shadowColor: string;
+  _shadowX: number = 0; 
+  _shadowY: number = 0; 
   _drawn: boolean = false; // needed to check has parents
 
   constructor() {
@@ -106,14 +109,29 @@ export default class Text extends GuiObj {
         this._timeColonWidth = num(value);
         this._prepareCss();
         this._renderText();
+        break;
+
+      case "shadowcolor":
+        // (int) The comma delimited RGB color for underrendered shadow text.
+        this._shadowColor = value;
+        this._prepareCss();
+        break;
+      case "shadowx":
+        // (int) The x offset of the shadowrender.
+        this._shadowX = num(value);
+        this._prepareCss();
+        break;
+      case "shadowy":
+        // (int) The x offset of the shadowrender.
+        this._shadowY = num(value);
+        this._prepareCss();
+        break;
+
       /*
 antialias - (bool) Setting this flag causes the text to be rendered antialiased if possible.
 default - (str) A parameter alias for text.
 align - (str) One of the following three possible strings: "left" "center" "right" -- Default is "left."
 valign - (str) One of the following three possible strings: "top" "center" "bottom" -- Default is "top."
-shadowcolor - (int) The comma delimited RGB color for underrendered shadow text.
-shadowx - (int) The x offset of the shadowrender.
-shadowy - (int) The y offset of the shadowrender.
 timeroffstyle - (int) How to display an empty timer: "0" = "  : ", "1" = "00:00", and "2"="" (if one is displaying time)
 nograb - (bool) Setting this flag will cause the text object to ignore left button down messages. Default is off.
 showlen - (bool) Setting this flag will cause the text display to be appended with the length in minutes and seconds of the current song. Default is off.
@@ -217,10 +235,13 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
       // break;
       case "songtitle":
         this._displayValue = UI_ROOT.playlist.getCurrentTrackTitle();
-        this._disposeTrackChangedSubscription = UI_ROOT.playlist.on('trackchange', () => {
-          this._displayValue = UI_ROOT.playlist.getCurrentTrackTitle();
-          this._renderText();
-        })
+        this._disposeTrackChangedSubscription = UI_ROOT.playlist.on(
+          "trackchange",
+          () => {
+            this._displayValue = UI_ROOT.playlist.getCurrentTrackTitle();
+            this._renderText();
+          }
+        );
         break;
       case "songbitrate":
       case "songsamplerate":
@@ -288,6 +309,9 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
       this._div.style.setProperty("--charheight", px(font._charHeight));
     } else {
       this._autoDetectColor();
+      if(this._shadowColor){
+        this._div.style.textShadow = `${this._shadowX}px ${this._shadowY}px rgb(${this._shadowColor})`;
+      }
       if (font instanceof TrueTypeFont) {
         this._textWrapper.setAttribute("font", "TrueType");
 
