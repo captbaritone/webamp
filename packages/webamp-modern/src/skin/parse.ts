@@ -275,6 +275,7 @@ export default class SkinParser {
       case "buttonled":
       case "fadebutton":
       case "fadetogglebutton":
+      case "configcheckbox":
         //temporary, to localize error
         return this.dynamicXuiElement(node, parent)
       case "componentbucket":
