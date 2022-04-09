@@ -446,6 +446,7 @@ export default class GuiObj extends XmlObj {
       y >= this.gettop(),
       "Expected click to be below the component's top"
     );
+    this.getparentlayout().bringtofront()
     UI_ROOT.vm.dispatch(this, "onleftbuttondown", [
       { type: "INT", value: x },
       { type: "INT", value: y },
