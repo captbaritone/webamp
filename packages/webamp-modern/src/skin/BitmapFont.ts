@@ -17,7 +17,7 @@ for (const [line, chars] of CHARS.split("\n").entries()) {
 export default class BitmapFont extends Bitmap {
   _charWidth: number;
   _charHeight: number;
-  _horizontalSpacing: number;
+  _horizontalSpacing: number = 0;
   _verticalSpacing: number;
   _externalBitmap: boolean = false; //? true == _file = another.bitmap.id
   _bitmap: Bitmap = null; // the real external bitmap
@@ -45,6 +45,10 @@ export default class BitmapFont extends Bitmap {
         return false;
     }
     return true;
+  }
+
+  getHorizontalSpacing(): number {
+    return this._horizontalSpacing;
   }
 
   _setAsBackground(div: HTMLElement, prefix: string) {

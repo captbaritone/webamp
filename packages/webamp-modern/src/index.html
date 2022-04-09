@@ -146,17 +146,18 @@
         display: flex;
         /* vertical align: */
         align-items: center;
-        justify-content: center;
+        justify-content: var(--align, center);
       }
       text span {
         user-select: none;
         pointer-events: none;
-        display: inline-block;
+        /* display: inline-block; */
         background-image: inherit;
         /* vertical-align: bottom; */
         color: transparent;
         width: var(--charwidth);
         height: var(--charheight);
+        margin-right: var(--hspacing, 0);
         background-position-x: var(--x);
         background-position-y: var(--y);
         overflow: hidden;

@@ -23,7 +23,7 @@ export default class Text extends GuiObj {
   _bold: boolean;
   _forceuppercase: boolean;
   _forcelowercase: boolean;
-  _align: string;
+  _align: string = "center";
   _font_id: string;
   _font_obj: TrueTypeFont | BitmapFont;
   _fontSize: number;
@@ -86,6 +86,7 @@ export default class Text extends GuiObj {
       case "align":
         // (str) One of the following three possible strings: "left" "center" "right" -- Default is "left."
         this._align = value;
+        this._prepareCss();
         break;
       case "fontsize":
         // (int) The size to render the chosen font.
@@ -200,7 +201,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
   }
 
   _onClick = () => {
-    if (this._display == "time") {
+    if (this._display.toLowerCase() == "time") {
       UI_ROOT.audio.toggleRemainingTime();
       this.setDisplayValue(integerToTime(UI_ROOT.audio.getCurrentTime()));
     }
@@ -309,10 +310,20 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
     const font = this._font_obj;
     if (font instanceof BitmapFont) {
       this._textWrapper.setAttribute("font", "BitmapFont");
+      //? font-size
       this._div.style.setProperty(
         "--fontSize",
         (this._fontSize || "~").toString()
       );
+      //? text-align
+      if (this._align != "center") {
+        this._div.style.setProperty("--align", this._align);
+      } else {
+        this._div.style.removeProperty("--align");
+      }
+      //? margin
+      this._div.style.setProperty("--hspacing", px(font.getHorizontalSpacing()));
+
       this.setBackgroundImage(font);
       this._div.style.backgroundSize = "0"; //disable parent background, because only children will use it
       this._div.style.lineHeight = px(this._div.getBoundingClientRect().height);
