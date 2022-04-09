@@ -72,7 +72,7 @@ export function removeAllChildNodes(parent: Element) {
 
 export function integerToTime(seconds: number): string {
   const mins = Math.floor(seconds / 60);
-  const secs = String(Math.round(seconds % 60)).padStart(2, "0");
+  const secs = String(Math.abs(Math.round(seconds % 60))).padStart(2, "0");
   return `${mins}:${secs}`;
 }
 
@@ -129,7 +129,7 @@ export class Emitter {
     this._cbs[event].push(cb);
 
     // return a function for later unregistering
-    return () => { 
+    return () => {
       //TODO: consider using this.off(), or integrate both
       this._cbs[event] = this._cbs[event].filter((c) => c !== cb);
     };

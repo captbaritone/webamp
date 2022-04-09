@@ -38,8 +38,8 @@ export default class Text extends GuiObj {
   _scrollLeft: number = 0; // logically, not visually
   _textFullWidth: number; //calculated, not runtime by css
   _shadowColor: string;
-  _shadowX: number = 0; 
-  _shadowY: number = 0; 
+  _shadowX: number = 0;
+  _shadowY: number = 0;
   _drawn: boolean = false; // needed to check has parents
 
   constructor() {
@@ -196,7 +196,15 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
     if (this._ticker && this._ticker != "off") {
       this._prepareScrolling();
     }
+    this._div.addEventListener("click", this._onClick);
   }
+
+  _onClick = () => {
+    if (this._display == "time") {
+      UI_ROOT.audio.toggleRemainingTime();
+      this.setDisplayValue(integerToTime(UI_ROOT.audio.getCurrentTime()));
+    }
+  };
 
   _setDisplay(display: string) {
     if (display.toLowerCase() === this._display?.toLowerCase()) {
@@ -262,7 +270,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
       this._displayValue = newValue;
       this._renderText();
       UI_ROOT.vm.dispatch(this, "ontextchanged", [
-        {type:"STRING", value: this.gettext()}
+        { type: "STRING", value: this.gettext() },
       ]);
     }
   }
@@ -312,7 +320,7 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
       this._div.style.setProperty("--charheight", px(font._charHeight));
     } else {
       this._autoDetectColor();
-      if(this._shadowColor){
+      if (this._shadowColor) {
         this._div.style.textShadow = `${this._shadowX}px ${this._shadowY}px rgb(${this._shadowColor})`;
       }
       if (font instanceof TrueTypeFont) {

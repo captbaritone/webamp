@@ -18,6 +18,7 @@ export class AudioPlayer {
   _isStop: boolean = true; //becaue we can't audio.stop() currently
   _trackInfo: {};
   _albumArtUrl: string = null;
+  _timeRemaining: boolean = false; //temporary. to show minus
   //events aka addEventListener()
   _eventListener: Emitter = new Emitter();
 
@@ -141,9 +142,15 @@ export class AudioPlayer {
     this._audio.currentTime = this._audio.duration * percent;
   }
 
+  toggleRemainingTime() {
+    this._timeRemaining = !this._timeRemaining;
+  }
   // In seconds
   getCurrentTime(): number {
-    return this._audio.currentTime;
+    // return this._audio.currentTime;
+    return this._timeRemaining
+      ? this._audio.currentTime - this._audio.duration
+      : this._audio.currentTime;
   }
 
   getCurrentTimePercent(): number {
