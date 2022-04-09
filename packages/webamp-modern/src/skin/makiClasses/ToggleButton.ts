@@ -28,6 +28,10 @@ export default class ToggleButton extends Button {
     UI_ROOT.vm.dispatch(this, "ontoggle", [V.newBool(onoff)]);
   }
 
+  onactivate(activated: number){
+    UI_ROOT.vm.dispatch(this, "onactivate", [{type: "INT", value: activated}]);
+  }
+
   draw() {
     super.draw();
     this._div.setAttribute("data-obj-name", "ToggleButton");

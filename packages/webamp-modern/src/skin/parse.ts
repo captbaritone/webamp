@@ -34,6 +34,7 @@ import GroupXFade from "./makiClasses/GroupXFade";
 import { classResolver } from "./resolver";
 import WasabiButton from "./makiClasses/WasabiButton";
 import PlayListGui from "./makiClasses/PlayListGui";
+import XuiElement from "./makiClasses/XuiElement";
 
 function hack() {
   // Without this Snowpack will try to treeshake out resolver causing a circular
@@ -182,7 +183,8 @@ export default class SkinParser {
   }
 
   async traverseChild(node: XmlElement, parent: any) {
-    switch (node.name.toLowerCase()) {
+    const tag = node.name.toLowerCase();
+    switch (tag) {
       case "albumart":
         return this.albumart(node, parent);
       case "wasabixml":
@@ -270,6 +272,11 @@ export default class SkinParser {
       case "wasabi:standardframe:modal:short":
       case "wasabi:visframe:nostatus":
         return this.wasabiFrame(node, parent);
+      case "buttonled":
+      case "fadebutton":
+      case "fadetogglebutton":
+        //temporary, to localize error
+        return this.dynamicXuiElement(node, parent)
       case "componentbucket":
         return this.componentBucket(node, parent);
       case "playlisteditor":
@@ -290,6 +297,9 @@ export default class SkinParser {
       case "wrapper":
         return this.traverseChildren(node, parent);
       default:
+        // if(this._uiRoot.getXuiElement(tag)) {
+        //   return this.dynamicXuiElement(node, parent)
+        // }
         console.warn(`Unhandled XML node type: ${node.name}`);
         return;
     }
@@ -361,6 +371,16 @@ export default class SkinParser {
     this._uiRoot.addComponentBucket(bucket.getWindowType(), bucket);
   }
 
+  async dynamicXuiElement(node: XmlElement, parent: any) {
+    const xuitag: string = node.name; // eg. Wasabi:MainFrame:NoStatus
+    const xuiEl: XmlElement = this._uiRoot.getXuiElement(xuitag);
+    if (xuiEl) {
+      const xuiFrame = new XmlElement("dummy", { id: xuiEl.attributes.id });
+      const Element:XuiElement =  await this.newGroup(XuiElement, xuiFrame, parent);
+      Element.setXmlAttributes(node.attributes);
+      // await this.maybeApplyGroupDef(frame, xuiFrame);
+    }
+  }
   async wasabiFrame(node: XmlElement, parent: any) {
     const frame = new WasabiFrame();
     this.addToGroup(frame, parent);

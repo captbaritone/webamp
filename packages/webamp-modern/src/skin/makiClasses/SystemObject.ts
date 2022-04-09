@@ -384,7 +384,7 @@ export default class SystemObject extends BaseObject {
    * @param  str The string.
    */
   strlen(str: string): number {
-    return str.length;
+    return str?str.length:0;
   }
 
   /**
