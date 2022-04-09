@@ -69,13 +69,13 @@ export default class Container extends XmlObj {
 
   resolveAlias() {
     const knownContainerGuids = {
-      "{0000000a-000c-0010-ff7b-01014263450c}": "vis",
-      "{45f3f7c1-a6f3-4ee6-a15e-125e92fc3f8d}": "pl",
-      "{6b0edf80-c9a5-11d3-9f26-00c04f39ffc6}": "ml",
-      "{7383a6fb-1d01-413b-a99a-7e6f655f4591}": "con",
-      "{7a8b2d76-9531-43b9-91a1-ac455a7c8242}": "lir",
-      "{a3ef47bd-39eb-435a-9fb3-a5d87f6f17a5}": "dl",
-      "{f0816d7b-fffc-4343-80f2-e8199aa15cc3}": "video",
+      "{0000000a-000c-0010-ff7b-01014263450c}": "vis",  // visualization
+      "{45f3f7c1-a6f3-4ee6-a15e-125e92fc3f8d}": "pl",   // playlist editor
+      "{6b0edf80-c9a5-11d3-9f26-00c04f39ffc6}": "ml",   // media library
+      "{7383a6fb-1d01-413b-a99a-7e6f655f4591}": "con",  // config?
+      "{7a8b2d76-9531-43b9-91a1-ac455a7c8242}": "lir",  // lyric?
+      "{a3ef47bd-39eb-435a-9fb3-a5d87f6f17a5}": "dl",   // download??
+      "{f0816d7b-fffc-4343-80f2-e8199aa15cc3}": "video",// independent video window
     };
     const guid = this._componentGuid;
     this._componentAlias = knownContainerGuids[guid];
