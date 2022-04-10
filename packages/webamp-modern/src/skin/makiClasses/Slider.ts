@@ -5,7 +5,7 @@ import GuiObj from "./GuiObj";
 class ActionHandler {
   _slider: Slider;
   constructor(slider: Slider) {
-    this._slider=slider;
+    this._slider = slider;
   }
   _subscription: () => void = () => {};
   // 0-255
@@ -21,6 +21,9 @@ class ActionHandler {
   }
 }
 const MAX = 255;
+
+// Note: FreeMouseMove is about receiving mousemove without mousedown precedent.
+//       It is useful for equalizer sliders that may changed once a slider is moved
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Cslider.2F.3E_.26_.3CWasabi:HSlider.2F.3E_.26_.3CWasabi:VSlider.2F.3E
 export default class Slider extends GuiObj {
@@ -39,46 +42,69 @@ export default class Slider extends GuiObj {
   _thumbHeight: number = 0;
   _position: number = 0;
   _param: string | null = null;
-  // _thumbDiv: HTMLDivElement = document.createElement("div");
   _actionHandler: null | ActionHandler;
   _onSetPositionEvenEaten: number;
-  _mouseX: number;
-  _mouseY: number;
+  _mouseDx: number = 0; // mouseDown inside thumb. 0..thumbHeight
+  _mouseDy: number = 0;
 
-  getRealWidth() {
-    return this._div.getBoundingClientRect().width;
+  _getActualSize() {
+    return this._div.getBoundingClientRect();
   }
 
   /**
+   * Central logic of setting new position using mouse
+   *
    * set .position by X, Y
-   * where X,Y is mouseEvent.offsetX & Y
+   * where X,Y is mouse position inside _div
    */
   _setPositionXY(x: number, y: number) {
-    //TODO: consider padding. where padding = thumbSize/2
-    const width = this.getRealWidth() - this._thumbWidth;
-    const height = this.getheight() - this._thumbHeight;
+    if (this._vertical) {
+      y = y - this._thumbHeight / 2 - this._mouseDy;
+    } else {
+      x = x - this._thumbWidth / 2 - this._mouseDx;
+    }
+    const actual = this._getActualSize();
+    const width = actual.width - this._thumbWidth;
+    const height = actual.height - this._thumbHeight;
     const newPercent = this._vertical ? (height - y) / height : x / width;
     this._position = clamp(newPercent, 0, 1);
     this._renderThumbPosition();
     this.doSetPosition(this.getposition());
   }
+  /**
+   * Part of central logic that detect whether mouseDown is inside thumb
+   * @param x mouse position inside _div
+   * @param y mouse position inside _div
+   */
+  _checkMouseDownInThumb(x: number, y: number) {
+    if (this._vertical) {
+      const thumbTop = parseInt(
+        this._div.style.getPropertyValue("--thumb-top")
+      );
+      const dy = y - thumbTop;
+      this._mouseDy =
+        dy >= 0 && dy <= this._thumbHeight ? dy - this._thumbHeight / 2 : 0;
+    } else {
+      //? horizontal
+      const thumbLeft = parseInt(
+        this._div.style.getPropertyValue("--thumb-left")
+      );
+      const dx = x - thumbLeft;
+      this._mouseDx =
+        dx >= 0 && dx <= this._thumbWidth ? dx - this._thumbWidth / 2 : 0;
+    }
+  }
 
   _registerDragEvents() {
-    // this._thumbDiv.addEventListener("mousedown", (downEvent: MouseEvent) => {
     this._div.addEventListener("mousedown", (downEvent: MouseEvent) => {
       downEvent.stopPropagation();
       if (downEvent.button != 0) return; // only care LeftButton
-      // const bitmap = UI_ROOT.getBitmap(this._thumb);
       //TODO: change client/offset into pageX/Y
       const startX = downEvent.clientX;
       const startY = downEvent.clientY;
       const innerX = downEvent.offsetX;
       const innerY = downEvent.offsetY;
-      // const width = this.getRealWidth() - this._thumbWidth;
-      // const height = this.getheight() - this._thumbHeight;
-      // const initialPostition = this._position;
-      // const newPercent = this._vertical ? startY / height : startX / width;
-      console.log("mouseDown:", downEvent.offsetX, downEvent.offsetY);
+      this._checkMouseDownInThumb(downEvent.offsetX, downEvent.offsetY);
       this.doLeftMouseDown(downEvent.offsetX, downEvent.offsetY);
 
       const handleMove = (moveEvent: MouseEvent) => {
@@ -88,19 +114,11 @@ export default class Slider extends GuiObj {
         const deltaX = newMouseX - startX;
         const deltaY = newMouseY - startY;
 
-        // const deltaPercent = this._vertical ? deltaY / height : deltaX / width;
-        // const newPercent = this._vertical
-        //   ? initialPostition - deltaPercent
-        //   : initialPostition + deltaPercent;
-
-        // this._position = clamp(newPercent, 0, 1);
-        // this._renderThumbPosition();
-        // this.doSetPosition(this.getposition());
         //below is mousePosition conversion relative to inner _div
         this.doMouseMove(innerX + deltaX, innerY + deltaY);
       };
 
-      const throttleMouseMove = throttle(handleMove,50)
+      const throttleMouseMove = throttle(handleMove, 50);
 
       const handleMouseUp = (upEvent: MouseEvent) => {
         upEvent.stopPropagation();
@@ -182,7 +200,6 @@ export default class Slider extends GuiObj {
   }
 
   init() {
-    // console.log("SLIDER-INITED!");
     this._initializeActionHandler();
     this._registerDragEvents();
   }
@@ -261,7 +278,6 @@ export default class Slider extends GuiObj {
     }
   }
   doLeftMouseUp(x: number, y: number) {
-    // console.log("slider.doLeftMouseUp");
     UI_ROOT.vm.dispatch(this, "onleftbuttonup", [
       { type: "INT", value: x },
       { type: "INT", value: y },
@@ -273,7 +289,6 @@ export default class Slider extends GuiObj {
       { type: "INT", value: this.getposition() },
     ]);
     if (this._actionHandler != null) {
-      // console.log("slider_ACTION.doLeftMouseUp");
       this._actionHandler.onLeftMouseUp(x, y);
     }
   }
@@ -288,16 +303,10 @@ export default class Slider extends GuiObj {
     }
   }
 
-  _renderThumb() {
-    // this._thumbDiv.style.position = "absolute";
-    // this._thumbDiv.setAttribute("data-obj-name", "Slider::Handle");
+  _prepareThumbBitmaps() {
     // this._thumbDiv.classList.add("webamp--img");
     if (this._thumb != null) {
       const bitmap = UI_ROOT.getBitmap(this._thumb);
-      // this._thumbDiv.style.width = px(bitmap.getWidth());
-      // this._thumbDiv.style.height = px(bitmap.getHeight());
-      // bitmap.setAsBackground(this._thumbDiv);
-
       bitmap._setAsBackground(this._div, "thumb-");
       this._div.style.setProperty("--thumb-width", px(bitmap.getWidth()));
       this._div.style.setProperty("--thumb-height", px(bitmap.getHeight()));
@@ -305,36 +314,24 @@ export default class Slider extends GuiObj {
 
     if (this._downThumb != null) {
       const bitmap = UI_ROOT.getBitmap(this._downThumb);
-      // bitmap.setAsDownBackground(this._thumbDiv);
-
       bitmap._setAsBackground(this._div, "thumb-down-");
     }
 
     if (this._hoverThumb != null) {
       const bitmap = UI_ROOT.getBitmap(this._hoverThumb);
-      // bitmap.setAsHoverBackground(this._thumbDiv);
-
       bitmap._setAsBackground(this._div, "thumb-hover-");
     }
   }
 
   _renderThumbPosition() {
     if (this._thumb != null) {
-      // const bitmap = UI_ROOT.getBitmap(this._thumb);
       // TODO: What if the orientation has changed?
+      const actual = this._getActualSize();
       if (this._vertical) {
-        const top =
-          (1 - this._position) * (this.getheight() - this._thumbHeight);
-        // this._thumbDiv.style.top = px(top);
-
+        const top = (1 - this._position) * (actual.height - this._thumbHeight);
         this._div.style.setProperty("--thumb-top", px(top));
       } else {
-        // const left = (1 - this._position * (this.getwidth() - bitmap.getWidth());
-        const curwidth = this.getRealWidth();
-        const left = this._position * (curwidth - this._thumbWidth);
-        // console.log('thumb.left', this._position, left, 'w:',this.getwidth(),'bmp.w:', bitmap.getWidth())
-        // this._thumbDiv.style.left = px(left);
-
+        const left = this._position * (actual.width - this._thumbWidth);
         this._div.style.setProperty("--thumb-left", px(left));
       }
     }
@@ -346,7 +343,7 @@ export default class Slider extends GuiObj {
     assume(this._barLeft == null, "Need to handle Slider barleft");
     assume(this._barRight == null, "Need to handle Slider barright");
     assume(this._barMiddle == null, "Need to handle Slider barmiddle");
-    this._renderThumb();
+    this._prepareThumbBitmaps();
     this._renderThumbPosition();
     // this._div.appendChild(this._thumbDiv);
   }
