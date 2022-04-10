@@ -226,7 +226,7 @@ export class AudioPlayer {
     }
   }
 
-  onEqChange(kind: string, cb: () => void): () => void {
+  onEqChange(kind: string, cb: () => void): Function {
     switch (kind) {
       case "preamp":
       case "1":

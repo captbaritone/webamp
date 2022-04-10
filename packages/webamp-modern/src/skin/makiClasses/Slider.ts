@@ -7,7 +7,7 @@ class ActionHandler {
   constructor(slider: Slider) {
     this._slider = slider;
   }
-  _subscription: () => void = () => {};
+  _subscription: Function = () => {};
   // 0-255
   onsetposition(position: number): void {}
   onLeftMouseDown(x: number, y: number): void {}
