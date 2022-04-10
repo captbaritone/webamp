@@ -249,6 +249,10 @@ export default class Slider extends GuiObj {
     return this._position * MAX;
   }
 
+  setposition(newpos: number) {
+    console.log("Slider.setPosition:", newpos);
+  }
+
   onsetposition(newPos: number) {
     this._onSetPositionEvenEaten = UI_ROOT.vm.dispatch(this, "onsetposition", [
       //needed by seekerGhost

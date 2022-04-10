@@ -111,6 +111,10 @@ export default class Layout extends Group {
     return true;
   }
 
+  getscale(): number {
+    return 1.0;
+  }
+
   init() {
     super.init();
     this._invalidateSize();

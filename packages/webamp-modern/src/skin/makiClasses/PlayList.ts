@@ -25,7 +25,7 @@ export class PlEdit {
   _eventListener: Emitter = new Emitter();
 
   // shortcut of this.Emitter
-  on(event: string, callback: Function): () => void {
+  on(event: string, callback: Function): Function {
     return this._eventListener.on(event, callback);
   }
   trigger(event: string, ...args: any[]) {
