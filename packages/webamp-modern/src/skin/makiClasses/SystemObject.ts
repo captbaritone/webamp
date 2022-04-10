@@ -654,9 +654,9 @@ export default class SystemObject extends BaseObject {
    * @ret The value of the left vu meter.
    */
   getleftvumeter(): number {
-    return 0;
+    return UI_ROOT.audio._vuMeter;
   }
-
+  
   /**
    * Get the value of the right vu meter.
    * Range is from 0 to 255. Linear.
@@ -664,7 +664,7 @@ export default class SystemObject extends BaseObject {
    * @ret The value of the right vu meter.
    */
   getrightvumeter(): number {
-    return 0;
+    return UI_ROOT.audio._vuMeter;
   }
 
   /**

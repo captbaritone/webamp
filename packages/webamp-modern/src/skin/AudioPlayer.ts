@@ -10,6 +10,7 @@ export class AudioPlayer {
   _audio: HTMLAudioElement = document.createElement("audio");
   _context: AudioContext;
   __preamp: GainNode;
+  _analyser: AnalyserNode;
   _bands: GainNode[] = [];
   _source: MediaElementAudioSourceNode;
   _eqValues: { [kind: string]: number } = {};
@@ -21,6 +22,7 @@ export class AudioPlayer {
   _timeRemaining: boolean = false; //temporary. to show minus
   //events aka addEventListener()
   _eventListener: Emitter = new Emitter();
+  _vuMeter: number = 0;
 
   constructor() {
     this._context = this._context = new (window.AudioContext ||
@@ -53,7 +55,31 @@ export class AudioPlayer {
 
     this.__preamp = this._context.createGain();
 
-    const connectionNodes: AudioNode[] = [this._source, this.__preamp];
+    // Create the analyser node for the visualizer
+    this._analyser = this._context.createAnalyser();
+    this._analyser.fftSize = 2048;
+    this._analyser.fftSize = 32;
+    // don't smooth audio analysis
+    // this._analyser.smoothingTimeConstant = 0.0;
+
+    const connectionNodes: AudioNode[] = [
+      this._source,
+      this.__preamp,
+      this._analyser,
+    ];
+
+    const analyserNode = this._analyser;
+    const pcmData = new Float32Array(analyserNode.fftSize);
+    const onFrame = () => {
+      analyserNode.getFloatTimeDomainData(pcmData);
+      let sumSquares = 0.0;
+      for (const amplitude of pcmData) {
+        sumSquares += amplitude * amplitude;
+      }
+      this._vuMeter = Math.sqrt(sumSquares / pcmData.length);
+      window.requestAnimationFrame(onFrame);
+    };
+    window.requestAnimationFrame(onFrame);
 
     BANDS.forEach((band, i) => {
       const filter = this._context.createBiquadFilter();
