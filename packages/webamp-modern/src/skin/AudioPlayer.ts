@@ -69,6 +69,8 @@ export class AudioPlayer {
     ];
 
     const analyserNode = this._analyser;
+
+    //TODO: generate vuMeter only once needed.
     const pcmData = new Float32Array(analyserNode.fftSize);
     const onFrame = () => {
       analyserNode.getFloatTimeDomainData(pcmData);
