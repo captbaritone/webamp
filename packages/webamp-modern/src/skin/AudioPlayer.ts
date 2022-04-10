@@ -73,7 +73,8 @@ export class AudioPlayer {
     const onFrame = () => {
       analyserNode.getFloatTimeDomainData(pcmData);
       let sumSquares = 0.0;
-      for (const amplitude of pcmData) {
+      for (let i = 0; i < pcmData.length; i++) {
+        const amplitude = pcmData[i];
         sumSquares += amplitude * amplitude;
       }
       this._vuMeter = Math.sqrt(sumSquares / pcmData.length);
