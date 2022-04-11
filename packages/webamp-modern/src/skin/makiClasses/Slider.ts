@@ -263,7 +263,14 @@ export default class Slider extends GuiObj {
     return this._position * MAX;
   }
 
+  /**
+   * 
+   * @param newpos 0..MAX
+   */
   setposition(newpos: number) {
+    this._position= newpos / MAX;
+    this._renderThumbPosition();
+    this.doSetPosition(this.getposition());
     console.log("Slider.setPosition:", newpos);
   }
 
@@ -326,9 +333,9 @@ export default class Slider extends GuiObj {
     if (this._thumb != null) {
       const bitmap = UI_ROOT.getBitmap(this._thumb);
       bitmap._setAsBackground(this._div, "thumb-");
-      this._div.style.setProperty("--thumb-width", px(bitmap.getWidth()));
-      this._div.style.setProperty("--thumb-height", px(bitmap.getHeight()));
     }
+    this._div.style.setProperty("--thumb-width", px(this._thumbWidth));
+    this._div.style.setProperty("--thumb-height", px(this._thumbHeight));
 
     if (this._downThumb != null) {
       const bitmap = UI_ROOT.getBitmap(this._downThumb);
@@ -342,17 +349,17 @@ export default class Slider extends GuiObj {
   }
 
   _renderThumbPosition() {
-    if (this._thumb != null) {
-      // TODO: What if the orientation has changed?
-      const actual = this._getActualSize();
-      if (this._vertical) {
-        const top = (1 - this._position) * (actual.height - this._thumbHeight);
-        this._div.style.setProperty("--thumb-top", px(top));
-      } else {
-        const left = this._position * (actual.width - this._thumbWidth);
-        this._div.style.setProperty("--thumb-left", px(left));
-      }
+    // if (this._thumb != null) {
+    // TODO: What if the orientation has changed?
+    const actual = this._getActualSize();
+    if (this._vertical) {
+      const top = (1 - this._position) * (actual.height - this._thumbHeight);
+      this._div.style.setProperty("--thumb-top", px(Math.max(0, top)));
+    } else {
+      const left = this._position * (actual.width - this._thumbWidth);
+      this._div.style.setProperty("--thumb-left", px(left));
     }
+    // }
   }
 
   draw() {

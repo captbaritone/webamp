@@ -48,6 +48,7 @@ colorthemeslist > select {
   right: 0;
   box-sizing: border-box;
   background: var(--color-wasabi-window-background, silver);
+  z-index: 0;
   pointer-events: none;
 }
 .pl::after {
@@ -59,22 +60,23 @@ colorthemeslist > select {
     var(--color-wasabi-border-sunken, rgba(192, 192, 192, 0.8));
   background: var(--color-wasabi-scrollbar-background-inverted, black);
 }
-.pl > .scrollbar {
+.pl > slider {
   margin: 0;
-  float: right;
-  height: 100%;
+  z-index: 1;
+  /* float: right; */
+  /* height: 100%; */
   /* background: var(--color-wasabi-window-background); */
-  position: relative;
+  /* position: relative; */
 }
 
-.pl > .scrollbar0::after /* button.wasabi */ {
+.pl > slider::before /* button.wasabi */ {
   /* content: ""; */
-  position: absolute;
+  /* position: absolute; */
   box-sizing: border-box;
-  right: 2px;
-  top: 0;
-  width: 8px;
-  height: 18px;
+  /* right: 2px; */
+  /* top: 0; */
+  /* width: 8px; */
+  /* height: 18px; */
   background-image: none;
   border: 4px solid transparent;
   border-image-source: var(--bitmap-studio-button);
@@ -83,7 +85,7 @@ colorthemeslist > select {
   vertical-align: middle;
 }
 
-.pl > .scrollbar0:active:after /* button.wasabi:active  */ {
+.pl > slider:active:before /* button.wasabi:active  */ {
   border-image-source: var(--bitmap-studio-button-pressed);
 }
 .pl .current {

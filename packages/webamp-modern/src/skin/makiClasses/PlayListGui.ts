@@ -13,7 +13,7 @@ export default class PlayListGui extends Group {
   _selectedIndex: number = -1;
   // _scrollPanel: HTMLDivElement = document.createElement("div");
   _contentPanel: HTMLDivElement = document.createElement("div");
-  _slider: Slider;
+  _slider: Slider = new Slider();
   _sliderHandler: ActionHandler;
 
   getElTag(): string {
@@ -31,26 +31,45 @@ export default class PlayListGui extends Group {
 
   init() {
     super.init();
+    this._slider._setPositionXY(0, 0);
 
     UI_ROOT.playlist.on("trackchange", this.refresh);
   }
 
   _prepareScrollbar() {
-    this._slider = new Slider();
+    // this._slider = new Slider();
     this._slider.setXmlAttributes({
       orientation: "v",
-      x: "0",
+      x: "-10",
+      relatx: "1",
       y: "0",
       w: "8",
-      h: "-1",
+      h: "0",
       relath: "1",
     });
+    this._slider.setThumbSize(8, 18);
     this._sliderHandler = new PlaylistScrollActionHandler(this._slider, this);
     this._slider.setActionHandler(this._sliderHandler);
     this._slider.getDiv().classList.add("scrollbar");
     // this._scrollPanel.appendChild(this._slider.getDiv());
+    this._slider.draw();
     this.addChild(this._slider);
+
+    this._contentPanel.addEventListener("scroll", this._contentScrolled);
   }
+
+  _contentScrolled = () => {
+    const list = this._contentPanel;
+    const newPercent = (list.scrollTop / (list.scrollHeight - list.clientHeight));
+    this._slider.setposition((1-newPercent) * 255);
+    console.log(
+      newPercent,
+      "scrolled",
+      list.scrollTop,
+      list.clientHeight,
+      list.scrollHeight
+    );
+  };
 
   // experimental, brutal, just to see reflection of PlayList changes
   refresh = () => {
