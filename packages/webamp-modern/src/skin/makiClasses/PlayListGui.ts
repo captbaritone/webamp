@@ -1,17 +1,12 @@
 import UI_ROOT from "../../UIRoot";
 import { removeAllChildNodes } from "../../utils";
 import Group from "./Group";
-// import { Emitter } from "../../utils";
-// import AUDIO_PLAYER from "../AudioPlayer";
-// import BaseObject from "./BaseObject";
-// import GuiObj from "./GuiObj";
 import Slider, { ActionHandler } from "./Slider";
 
 export default class PlayListGui extends Group {
   static GUID = "pl";
   static guid = "{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D}";
   _selectedIndex: number = -1;
-  // _scrollPanel: HTMLDivElement = document.createElement("div");
   _contentPanel: HTMLDivElement = document.createElement("div");
   _slider: Slider = new Slider();
   _sliderHandler: ActionHandler;
@@ -22,13 +17,10 @@ export default class PlayListGui extends Group {
 
   init() {
     super.init();
-    // this._slider._setPositionXY(0, 0);
-
     UI_ROOT.playlist.on("trackchange", this.refresh);
   }
 
   _prepareScrollbar() {
-    // this._slider = new Slider();
     this._slider.setXmlAttributes({
       orientation: "v",
       x: "-10",
@@ -42,7 +34,6 @@ export default class PlayListGui extends Group {
     this._sliderHandler = new PlaylistScrollActionHandler(this._slider, this);
     this._slider.setActionHandler(this._sliderHandler);
     this._slider.getDiv().classList.add("scrollbar");
-    // this._scrollPanel.appendChild(this._slider.getDiv());
     this._slider.draw();
     this.addChild(this._slider);
 
@@ -64,7 +55,6 @@ export default class PlayListGui extends Group {
   // experimental, brutal, just to see reflection of PlayList changes
   refresh = () => {
     removeAllChildNodes(this._contentPanel);
-    // this._div.appendChild(this._scrollPanel);
     const pl = UI_ROOT.playlist;
     const currentTrack = pl.getcurrentindex();
     for (let i = 0; i < pl.getnumtracks(); i++) {
@@ -80,12 +70,11 @@ export default class PlayListGui extends Group {
         this.refresh();
       });
       line.addEventListener("dblclick", (ev: MouseEvent) => {
-        // this._selectedIndex = i;
         UI_ROOT.playlist.playtrack(i);
         UI_ROOT.audio.play();
         this.refresh();
       });
-      line.textContent = `${i}. ${pl.gettitle(i)}`;
+      line.textContent = `${i+1}. ${pl.gettitle(i)}`;
       this._contentPanel.appendChild(line);
     }
   };
@@ -95,10 +84,8 @@ export default class PlayListGui extends Group {
   draw() {
     super.draw();
     this._prepareScrollbar();
-    // this._div.appendChild(this._scrollPanel)
     this._div.appendChild(this._contentPanel);
 
-    // this._scrollPanel.classList.add("scrollbar");
     this._contentPanel.classList.add("content-list");
     this._div.setAttribute("tabindex", "0");
     this._div.classList.add("pl");

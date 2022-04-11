@@ -47,7 +47,7 @@ colorthemeslist > select {
   height: 100%;
   right: 0;
   box-sizing: border-box;
-  background: var(--color-wasabi-window-background, silver);
+  background: var(--color-wasabi-window-background, transparent);
   z-index: 0;
   pointer-events: none;
 }
