@@ -111,6 +111,7 @@ export default class ColorThemesList extends GuiObj {
 
   draw() {
     super.draw();
+    this._div.classList.add('list');
     this._div.setAttribute("data-obj-name", "ColorThemes:List");
     this._renderGammaSets();
   }
