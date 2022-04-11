@@ -1,4 +1,5 @@
 import { getClass } from "../maki/objects";
+import BaseObject from "./makiClasses/BaseObject";
 import Button from "./makiClasses/Button";
 import SystemObject from "./makiClasses/SystemObject";
 import Container from "./makiClasses/Container";
@@ -23,11 +24,13 @@ import WinampConfig, { WinampConfigGroup } from "./makiClasses/WinampConfig";
 import ComponentBucket from "./makiClasses/ComponentBucket";
 import AlbumArt from "./makiClasses/AlbumArt";
 import Region from "./makiClasses/Region";
+import { PlEdit, PlDir } from "./makiClasses/PlayList";
 
 
 const CLASSES = [
+  BaseObject,
   Config,
-  Config, ConfigItem, ConfigAttribute,
+  ConfigItem, ConfigAttribute,
   WinampConfig, WinampConfigGroup,
   ComponentBucket,
   Region,
@@ -48,6 +51,7 @@ const CLASSES = [
   Timer,
   Slider,
   Vis,
+  PlEdit, PlDir,
   GuiObj,
 ];
 

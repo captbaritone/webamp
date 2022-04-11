@@ -10,16 +10,28 @@
       body {
         margin: 0;
         background-color: rgb(58, 110, 165);
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      * {
+        box-sizing: border-box;
       }
       textarea,
+      group,
+      text,
       input,
       select {
         font-size: 10.5px;
+        user-select: none;
       }
       textarea:focus,
       input:focus,
       select:focus {
         outline: none;
+      }
+      #ui-root
+      select {
+        background-color: transparent;
+        color:var(--color-studio-list-text, var(--color-wasabi-list-text));
       }
       select option {
         padding-left: 5px;
@@ -89,7 +101,7 @@
       slider > div {
         display: none;
       }
-      slider::after {
+      slider::before {
         content: "";
         position: absolute;
         left: var(--thumb-left);
@@ -98,13 +110,13 @@
         height: var(--thumb-height);
         background-image: var(--thumb-background-image);
       }
-      slider:hover:after {
+      slider:hover:before {
         background-image: var(
           --thumb-hover-background-image,
           var(--thumb-background-image)
         );
       }
-      slider:active:after {
+      slider:active:before {
         background-image: var(
           --thumb-down-background-image,
           var(--thumb-background-image)
@@ -121,6 +133,7 @@
         font-style: normal;
       }
       text wrap {
+        display: block;
         background-image: inherit;
         background-size: 0px;
         position: relative;
@@ -133,17 +146,18 @@
         display: flex;
         /* vertical align: */
         align-items: center;
-        justify-content: center;
+        justify-content: var(--align, center);
       }
       text span {
         user-select: none;
         pointer-events: none;
-        display: inline-block;
+        /* display: inline-block; */
         background-image: inherit;
         /* vertical-align: bottom; */
         color: transparent;
         width: var(--charwidth);
         height: var(--charheight);
+        margin-right: var(--hspacing, 0);
         background-position-x: var(--x);
         background-position-y: var(--y);
         overflow: hidden;
@@ -159,7 +173,7 @@
       progressgrid,
       group,
       layer,
-      animatedlayer,
+      animatedlayer, vis,
       button,
       slider,
       text,
@@ -214,18 +228,14 @@
         transition: opacity var(--fade-out-speed, 0.25);
       }
 
-      .wasabi-button {
-        border: 3px solid transparent;
-        --border-image: var(--bitmap-studio-button);
-        border-image: var(--border-image) 3 fill/ 1 / 0px stretch;
-      }
-      .wasabi-button:active {
-        --border-image: var(--bitmap-studio-button-pressed);
-      }
-
       .autowidthsource {
         width: auto;
       }
+
+      /* .pl {
+        background: white;
+        color: black;
+      } */
 
       /* titleBar active state */
       [inactivealpha="0"] {
@@ -250,6 +260,9 @@
         transition: width 0.1s, height 0.1s, left 0.1s, top 0.1s;
       }
     </style>
+    <link rel="stylesheet" href="css/list.css" />
+    <link rel="stylesheet" href="css/button.css" />
+    <link rel="stylesheet" href="css/scrollbar.css" />
     <style id="bitmap-css"></style>
     <style id="truetypefont-css"></style>
   </head>

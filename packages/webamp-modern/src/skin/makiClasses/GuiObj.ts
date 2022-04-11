@@ -446,6 +446,7 @@ export default class GuiObj extends XmlObj {
       y >= this.gettop(),
       "Expected click to be below the component's top"
     );
+    this.getparentlayout().bringtofront()
     UI_ROOT.vm.dispatch(this, "onleftbuttondown", [
       { type: "INT", value: x },
       { type: "INT", value: y },
@@ -752,15 +753,10 @@ export default class GuiObj extends XmlObj {
   handleAction(
     action: string,
     param: string | null = null,
-    actionTarget: string | null = null
+    actionTarget: string | null = null,
+    source: GuiObj = null
   ): boolean {
-    if (actionTarget) {
-      const guiObj = this.findobject(actionTarget);
-      if (guiObj) {
-        guiObj.handleAction(action, param);
-        return true;
-      }
-    }
+    // ancestor may override this function.
     return false;
   }
 
@@ -783,7 +779,6 @@ export default class GuiObj extends XmlObj {
     y: number,
     p1: number,
     p2: number,
-    source: GuiObj,
   ): number {
     return UI_ROOT.vm.dispatch(this, "onaction", [
       { type: "STRING", value: action },
@@ -792,7 +787,7 @@ export default class GuiObj extends XmlObj {
       { type: "INT", value: y },
       { type: "INT", value: p1 },
       { type: "INT", value: p2 },
-      { type: "OBJECT", value: source },
+      { type: "OBJECT", value: this },
     ]);
   }
 

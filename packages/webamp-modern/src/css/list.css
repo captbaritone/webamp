@@ -1,0 +1,96 @@
+.list {
+  color: var(--color-studio-list-text, var(--color-wasabi-list-text));
+  background-color: var(--color-wasabi-list-background, transparent);
+  background-image: var(--bitmap-studio-list-background, none);
+}
+.list > * {
+  user-select: none;
+}
+.list .selected {
+  background-color: var(
+    --color-studio-list-item-selected,
+    var(--color-wasabi-list-text-selected-background)
+  );
+  color: var(
+    --color-studio-list-item-selected-fg,
+    var(--color-wasabi-list-text-selected)
+  );
+}
+
+/* == COLORTHEMELIST == */
+colorthemeslist {
+  border: 1px solid black;
+  border: none;
+}
+colorthemeslist > select {
+  border: none;
+}
+
+/* == PLAYLIST == */
+/* .pl.list {
+  pointer-events: all;
+} */
+.pl > .content-list {
+  margin-right: 15px;
+  max-height: 100%;
+  overflow: auto;
+}
+.pl > .content-list::-webkit-scrollbar {
+  display: none;
+}
+.pl::before,
+.pl::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 15px;
+  height: 100%;
+  right: 0;
+  box-sizing: border-box;
+  background: var(--color-wasabi-window-background, transparent);
+  z-index: 0;
+  pointer-events: none;
+}
+.pl::after {
+  width: 8px;
+  right: 2px;
+  border-left: 1px solid
+    var(--color-wasabi-border-sunken, rgba(192, 192, 192, 0.8));
+  border-right: 1px solid
+    var(--color-wasabi-border-sunken, rgba(192, 192, 192, 0.8));
+  background: var(--color-wasabi-scrollbar-background-inverted, black);
+}
+.pl > slider {
+  margin: 0;
+  z-index: 1;
+  /* float: right; */
+  /* height: 100%; */
+  /* background: var(--color-wasabi-window-background); */
+  /* position: relative; */
+}
+
+.pl > slider::before /* button.wasabi */ {
+  /* content: ""; */
+  /* position: absolute; */
+  box-sizing: border-box;
+  /* right: 2px; */
+  /* top: 0; */
+  /* width: 8px; */
+  /* height: 18px; */
+  background-image: none;
+  border: 4px solid transparent;
+  border-image-source: var(--bitmap-studio-button);
+  /* border-image-slice: 4 4 4 5 fill; */
+  border-image-slice: 4 fill;
+  vertical-align: middle;
+}
+
+.pl > slider:active:before /* button.wasabi:active  */ {
+  border-image-source: var(--bitmap-studio-button-pressed);
+}
+.pl .current {
+  color: var(
+    --color-pledit-text-current,
+    var(--color-wasabi-list-text-current)
+  );
+}

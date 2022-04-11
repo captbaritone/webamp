@@ -1,8 +1,9 @@
+import BaseObject from "./BaseObject";
 import ConfigItem from "./ConfigItem";
 
 const _items: { [key: string]: ConfigItem } = {};
 
-export default class WinampConfig {
+export default class WinampConfig extends BaseObject {
   static GUID = "b2ad3f2b4e3131ed95e96dbcbb55d51c";
   // _items : {[key:string]: ConfigItem} = {};
 
@@ -27,6 +28,5 @@ export class WinampConfigGroup {
   }
 }
 
-// Global Singleton for now
-// export const Config = new ConfigClass();
-// export Config;
+// Global Singleton
+export const WINAMP_CONFIG: WinampConfig = new WinampConfig();

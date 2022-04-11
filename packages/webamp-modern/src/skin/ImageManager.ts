@@ -36,6 +36,10 @@ export default class ImageManager {
     this._bitmaps[id] = bitmap;
   }
 
+  isFilePathAdded(filePath:string) {
+    return Object.keys(this._pathofBitmap).includes(filePath)    
+  }
+
   // Ensure we've loaded the image into our image loader.
   async loadUniquePaths() {
     for (const filePath of Object.keys(this._pathofBitmap)) {

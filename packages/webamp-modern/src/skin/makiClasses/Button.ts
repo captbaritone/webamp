@@ -108,25 +108,18 @@ export default class Button extends GuiObj {
   }
 
   setactivatednocallback(onoff: boolean){
-    //TODO:
+    if (onoff !== this._active) {
+      this._active = onoff;
+      if (this._active) {
+        this._div.classList.add("active");
+      } else {
+        this._div.classList.remove("active");
+      }
+    }
   }
 
   leftclick() {
     this.onLeftClick();
-    if (this._action && this._actionTarget) {
-      const guiObj = this.findobject(this._actionTarget);
-      if (guiObj) {
-        guiObj.sendaction(
-          this._action,
-          this._param,
-          0,
-          0,
-          this._div.offsetLeft,
-          this._div.offsetTop,
-          this
-        );
-      }
-    }
   }
 
   onLeftClick() {
@@ -136,12 +129,13 @@ export default class Button extends GuiObj {
   handleAction(
     action: string,
     param: string | null = null,
-    actionTarget: string | null = null
+    actionTarget: string | null = null,
+    source: GuiObj = null
   ): boolean {
     if (actionTarget) {
       const guiObj = this.findobject(actionTarget);
       if (guiObj) {
-        guiObj.handleAction(action, param);
+        guiObj.handleAction(action, param, null, this);
         return true;
       }
     }

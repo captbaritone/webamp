@@ -7,10 +7,10 @@ export const AUDIO_STOPPED = "stopped";
 export const AUDIO_PLAYING = "playing";
 
 export class AudioPlayer {
-  _input: HTMLInputElement = document.createElement("input");
   _audio: HTMLAudioElement = document.createElement("audio");
   _context: AudioContext;
   __preamp: GainNode;
+  _analyser: AnalyserNode;
   _bands: GainNode[] = [];
   _source: MediaElementAudioSourceNode;
   _eqValues: { [kind: string]: number } = {};
@@ -19,8 +19,10 @@ export class AudioPlayer {
   _isStop: boolean = true; //becaue we can't audio.stop() currently
   _trackInfo: {};
   _albumArtUrl: string = null;
+  _timeRemaining: boolean = false; //temporary. to show minus
   //events aka addEventListener()
   _eventListener: Emitter = new Emitter();
+  _vuMeter: number = 0;
 
   constructor() {
     this._context = this._context = new (window.AudioContext ||
@@ -48,15 +50,39 @@ export class AudioPlayer {
       document.body.addEventListener("click", resume, false);
       document.body.addEventListener("keydown", resume, false);
     }
-    this._audio.src = "assets/Just_Plain_Ant_-_05_-_Stumble.mp3";
-    //"https://raw.githubusercontent.com/captbaritone/webamp-music/4b556fbf/Auto-Pilot_-_03_-_Seventeen.mp3";
-    this._input.type = "file";
 
     this._source = this._context.createMediaElementSource(this._audio);
 
     this.__preamp = this._context.createGain();
 
-    const connectionNodes: AudioNode[] = [this._source, this.__preamp];
+    // Create the analyser node for the visualizer
+    this._analyser = this._context.createAnalyser();
+    this._analyser.fftSize = 2048;
+    this._analyser.fftSize = 32;
+    // don't smooth audio analysis
+    // this._analyser.smoothingTimeConstant = 0.0;
+
+    const connectionNodes: AudioNode[] = [
+      this._source,
+      this.__preamp,
+      this._analyser,
+    ];
+
+    const analyserNode = this._analyser;
+
+    //TODO: generate vuMeter only once needed.
+    const pcmData = new Float32Array(analyserNode.fftSize);
+    const onFrame = () => {
+      analyserNode.getFloatTimeDomainData(pcmData);
+      let sumSquares = 0.0;
+      for (let i = 0; i < pcmData.length; i++) {
+        const amplitude = pcmData[i];
+        sumSquares += amplitude * amplitude;
+      }
+      this._vuMeter = Math.sqrt(sumSquares / pcmData.length);
+      window.requestAnimationFrame(onFrame);
+    };
+    window.requestAnimationFrame(onFrame);
 
     BANDS.forEach((band, i) => {
       const filter = this._context.createBiquadFilter();
@@ -85,17 +111,6 @@ export class AudioPlayer {
       current = next;
     }
 
-    // document.body.appendChild(this._input);
-    // TODO: dispose
-    this._input.onchange = (e) => {
-      const file = this._input.files[0];
-      if (file == null) {
-        return;
-      }
-      this._audio.src = URL.createObjectURL(file);
-      this.play();
-    };
-
     //temporary: in the end of playing mp3, lets stop.
     //TODO: in future, when ended: play next mp3
     this._audio.addEventListener("ended", () => this.stop());
@@ -110,6 +125,10 @@ export class AudioPlayer {
   }
   off(event: string, callback: Function) {
     this._eventListener.off(event, callback);
+  }
+
+  setAudioSource(url: string) {
+    this._audio.src = url;
   }
 
   // 0-1
@@ -139,14 +158,6 @@ export class AudioPlayer {
     this.trigger("statchanged");
   }
 
-  eject() {
-    this._input.click();
-  }
-
-  next() {}
-
-  previous() {}
-
   // 0-1
   setVolume(volume: number) {
     this._audio.volume = volume;
@@ -160,9 +171,15 @@ export class AudioPlayer {
     this._audio.currentTime = this._audio.duration * percent;
   }
 
+  toggleRemainingTime() {
+    this._timeRemaining = !this._timeRemaining;
+  }
   // In seconds
   getCurrentTime(): number {
-    return this._audio.currentTime;
+    // return this._audio.currentTime;
+    return this._timeRemaining
+      ? this._audio.currentTime - this._audio.duration
+      : this._audio.currentTime;
   }
 
   getCurrentTimePercent(): number {
@@ -238,7 +255,7 @@ export class AudioPlayer {
     }
   }
 
-  onEqChange(kind: string, cb: () => void): () => void {
+  onEqChange(kind: string, cb: () => void): Function {
     switch (kind) {
       case "preamp":
       case "1":
@@ -283,8 +300,6 @@ export class AudioPlayer {
     };
     return dispose;
   }
-
-  
 
   // Current track length in seconds
   getLength(): number {

@@ -1,9 +1,10 @@
 import XmlObj from "../XmlObj";
+import BaseObject from "./BaseObject";
 import ConfigItem from "./ConfigItem";
 
-const _items : {[key:string]: ConfigItem} = {};
+const _items: { [key: string]: ConfigItem } = {};
 
-export default class ConfigClass {
+export default class Config extends BaseObject {
   static GUID = "593dba224976d07771f452b90b405536";
 
   newitem(itemName: string, itemGuid: string): ConfigItem {
@@ -15,10 +16,13 @@ export default class ConfigClass {
 
   getitem(itemGuid: string): ConfigItem {
     let cfg = _items[itemGuid];
-    if(!cfg){
+    if (!cfg) {
       cfg = new ConfigItem();
-      _items[itemGuid] = cfg;  
-    } 
+      _items[itemGuid] = cfg;
+    }
     return cfg;
   }
 }
+
+// Global Singleton
+export const CONFIG: Config = new Config();
