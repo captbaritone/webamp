@@ -61,22 +61,11 @@ colorthemeslist > select {
   background: var(--color-wasabi-scrollbar-background-inverted, black);
 }
 .pl > slider {
-  margin: 0;
   z-index: 1;
-  /* float: right; */
-  /* height: 100%; */
-  /* background: var(--color-wasabi-window-background); */
-  /* position: relative; */
 }
 
 .pl > slider::before /* button.wasabi */ {
-  /* content: ""; */
-  /* position: absolute; */
   box-sizing: border-box;
-  /* right: 2px; */
-  /* top: 0; */
-  /* width: 8px; */
-  /* height: 18px; */
   background-image: none;
   border: 4px solid transparent;
   border-image-source: var(--bitmap-studio-button);
@@ -84,10 +73,21 @@ colorthemeslist > select {
   border-image-slice: 4 fill;
   vertical-align: middle;
 }
-
 .pl > slider:active:before /* button.wasabi:active  */ {
   border-image-source: var(--bitmap-studio-button-pressed);
 }
+
+.pl > slider::after {
+  content: "";
+  position: absolute;
+  /* TODO: do centering it by calc the real grip's bitmap height/width. */
+  left: calc(var(--thumb-left) + 1px);
+  top: calc(var(--thumb-top) + 5px);
+  width: 6px;
+  height: 8px;
+  background-image: var(--bitmap-wasabi-scrollbar-vertical-grip);
+}
+
 .pl .current {
   color: var(
     --color-pledit-text-current,

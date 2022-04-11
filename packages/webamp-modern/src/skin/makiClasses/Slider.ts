@@ -349,8 +349,6 @@ export default class Slider extends GuiObj {
   }
 
   _renderThumbPosition() {
-    // if (this._thumb != null) {
-    // TODO: What if the orientation has changed?
     const actual = this._getActualSize();
     if (this._vertical) {
       const top = (1 - this._position) * (actual.height - this._thumbHeight);
@@ -359,15 +357,16 @@ export default class Slider extends GuiObj {
       const left = this._position * (actual.width - this._thumbWidth);
       this._div.style.setProperty("--thumb-left", px(left));
     }
-    // }
   }
-
+  
   draw() {
     super.draw();
     this._div.setAttribute("data-obj-name", "Slider");
     assume(this._barLeft == null, "Need to handle Slider barleft");
     assume(this._barRight == null, "Need to handle Slider barright");
     assume(this._barMiddle == null, "Need to handle Slider barmiddle");
+    this._div.style.setProperty("--thumb-left", px(0));
+    this._div.style.setProperty("--thumb-top", px(0));
     this._prepareThumbBitmaps();
     this._renderThumbPosition();
     // this._div.appendChild(this._thumbDiv);
