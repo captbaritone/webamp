@@ -271,7 +271,7 @@ export default class Slider extends GuiObj {
     this._position= newpos / MAX;
     this._renderThumbPosition();
     this.doSetPosition(this.getposition());
-    console.log("Slider.setPosition:", newpos);
+    // console.log("Slider.setPosition:", newpos);
   }
 
   onsetposition(newPos: number) {

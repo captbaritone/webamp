@@ -15,6 +15,7 @@ export default class PlayListGui extends Group {
   _contentPanel: HTMLDivElement = document.createElement("div");
   _slider: Slider = new Slider();
   _sliderHandler: ActionHandler;
+  _scrolling: boolean = false;
 
   getElTag(): string {
     return "group";
@@ -59,17 +60,26 @@ export default class PlayListGui extends Group {
   }
 
   _contentScrolled = () => {
+    if (this._scrolling) {
+      return;
+    }
     const list = this._contentPanel;
-    const newPercent = (list.scrollTop / (list.scrollHeight - list.clientHeight));
-    this._slider.setposition((1-newPercent) * 255);
-    console.log(
-      newPercent,
-      "scrolled",
-      list.scrollTop,
-      list.clientHeight,
-      list.scrollHeight
-    );
+    const newPercent = list.scrollTop / (list.scrollHeight - list.clientHeight);
+    this._scrolling = true;
+    this._slider.setposition((1 - newPercent) * 255);
+    this._scrolling = false;
   };
+
+  _scrollTo(percent: number) {
+    if (this._scrolling) {
+      return;
+    }
+    const list = this._contentPanel;
+    const newScrollTop = percent * (list.scrollHeight - list.clientHeight);
+    this._scrolling = true;
+    list.scrollTop = newScrollTop;
+    this._scrolling = false;
+  }
 
   // experimental, brutal, just to see reflection of PlayList changes
   refresh = () => {
@@ -118,6 +128,8 @@ export default class PlayListGui extends Group {
 
 class PlaylistScrollActionHandler extends ActionHandler {
   _pl: PlayListGui;
+  _scrolling: boolean = false;
+
   constructor(slider: Slider, pl: PlayListGui) {
     super(slider);
     this._pl = pl;
@@ -129,7 +141,16 @@ class PlaylistScrollActionHandler extends ActionHandler {
     // this._subscription = UI_ROOT.audio.onEqChange(kind, update);
   }
 
+  onLeftMouseDown(x: number, y: number): void {
+    this._scrolling = true;
+  }
+  onLeftMouseUp(x: number, y: number): void {
+    this._scrolling = false;
+  }
+
   onsetposition(position: number): void {
-    // UI_ROOT.audio.setEq(this._kind, position / MAX);
+    if (this._scrolling) {
+      this._pl._scrollTo(1 - position / 255);
+    }
   }
 }
