@@ -108,7 +108,14 @@ export default class Button extends GuiObj {
   }
 
   setactivatednocallback(onoff: boolean){
-    //TODO:
+    if (onoff !== this._active) {
+      this._active = onoff;
+      if (this._active) {
+        this._div.classList.add("active");
+      } else {
+        this._div.classList.remove("active");
+      }
+    }
   }
 
   leftclick() {
