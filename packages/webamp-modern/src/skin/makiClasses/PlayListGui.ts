@@ -15,24 +15,14 @@ export default class PlayListGui extends Group {
   _contentPanel: HTMLDivElement = document.createElement("div");
   _slider: Slider = new Slider();
   _sliderHandler: ActionHandler;
-  _scrolling: boolean = false;
 
   getElTag(): string {
     return "group";
   }
 
-  constructor() {
-    super();
-
-    // this._prepareScrollbar();
-    // // this._div.appendChild(this._scrollPanel)
-    // this._div.appendChild(this._contentPanel);
-    // this._scrollPanel.appendChild(this._slider.getDiv());
-  }
-
   init() {
     super.init();
-    this._slider._setPositionXY(0, 0);
+    // this._slider._setPositionXY(0, 0);
 
     UI_ROOT.playlist.on("trackchange", this.refresh);
   }
@@ -60,25 +50,15 @@ export default class PlayListGui extends Group {
   }
 
   _contentScrolled = () => {
-    if (this._scrolling) {
-      return;
-    }
     const list = this._contentPanel;
     const newPercent = list.scrollTop / (list.scrollHeight - list.clientHeight);
-    this._scrolling = true;
     this._slider.setposition((1 - newPercent) * 255);
-    this._scrolling = false;
   };
 
   _scrollTo(percent: number) {
-    if (this._scrolling) {
-      return;
-    }
     const list = this._contentPanel;
     const newScrollTop = percent * (list.scrollHeight - list.clientHeight);
-    this._scrolling = true;
     list.scrollTop = newScrollTop;
-    this._scrolling = false;
   }
 
   // experimental, brutal, just to see reflection of PlayList changes
@@ -102,6 +82,7 @@ export default class PlayListGui extends Group {
       line.addEventListener("dblclick", (ev: MouseEvent) => {
         // this._selectedIndex = i;
         UI_ROOT.playlist.playtrack(i);
+        UI_ROOT.audio.play();
         this.refresh();
       });
       line.textContent = `${i}. ${pl.gettitle(i)}`;
@@ -133,12 +114,6 @@ class PlaylistScrollActionHandler extends ActionHandler {
   constructor(slider: Slider, pl: PlayListGui) {
     super(slider);
     this._pl = pl;
-    // const update = () => {
-    //   slider._position = UI_ROOT.audio.getEq(kind);
-    //   slider._renderThumbPosition();
-    // };
-    // update();
-    // this._subscription = UI_ROOT.audio.onEqChange(kind, update);
   }
 
   onLeftMouseDown(x: number, y: number): void {

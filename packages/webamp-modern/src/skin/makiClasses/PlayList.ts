@@ -134,17 +134,17 @@ export class PlEdit {
     return this._tracks[item].filename.split("/").pop();
   }
 
-  getlength(item: number): string {
-    // return unimplementedWarning("getlength");
-  }
+  // getlength(item: number): string {
+  //   // return unimplementedWarning("getlength");
+  // }
 
-  getmetadata(item: number, metadatastring: string): string {
-    // return unimplementedWarning("getmetadata");
-  }
+  // getmetadata(item: number, metadatastring: string): string {
+  //   // return unimplementedWarning("getmetadata");
+  // }
 
-  getfilename(item: number): string {
-    // return unimplementedWarning("getfilename");
-  }
+  // getfilename(item: number): string {
+  //   // return unimplementedWarning("getfilename");
+  // }
 
   onpleditmodified(): void {
     // return unimplementedWarning("onpleditmodified");
@@ -160,13 +160,13 @@ export class PlDir {
     // return unimplementedWarning("showcurrentlyplayingentry");
   }
 
-  getnumitems(): number {
-    // return unimplementedWarning("getnumitems");
-  }
+  // getnumitems(): number {
+  //   // return unimplementedWarning("getnumitems");
+  // }
 
-  getitemname(item: number): string {
-    // return unimplementedWarning("getitemname");
-  }
+  // getitemname(item: number): string {
+  //   // return unimplementedWarning("getitemname");
+  // }
 
   refresh(): void {
     // return unimplementedWarning("refresh");
