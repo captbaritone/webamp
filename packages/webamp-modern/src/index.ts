@@ -35,6 +35,18 @@ async function main() {
 
   setStatus("Downloading MP3...");
   UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
 
   setStatus("");
 }

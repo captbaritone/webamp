@@ -18,40 +18,57 @@
 }
 
 /* == COLORTHEMELIST == */
-colorthemeslist{
+colorthemeslist {
   border: 1px solid black;
   border: none;
 }
-colorthemeslist > select{
+colorthemeslist > select {
   border: none;
 }
 
 /* == PLAYLIST == */
-.pl > div {
+/* .pl.list {
+  pointer-events: all;
+} */
+.pl > .content-list {
   margin-right: 15px;
+  max-height: 100%;
+  overflow: auto;
 }
-.pl > div.scrollbar {
-  margin: 0;
-  width: 15px;
-  float: right;
-  height: 100%;
-  background: var(--color-wasabi-window-background);
-  position: relative;
+.pl > .content-list::-webkit-scrollbar {
+  display: none;
 }
-.pl > div.scrollbar::before {
+.pl::before,
+.pl::after {
   content: "";
   position: absolute;
-  box-sizing: border-box;
-  width: 8px;
-  height: 100%;
   top: 0;
+  width: 15px;
+  height: 100%;
+  right: 0;
+  box-sizing: border-box;
+  background: var(--color-wasabi-window-background, silver);
+  pointer-events: none;
+}
+.pl::after {
+  width: 8px;
   right: 2px;
-  border-left: 1px solid var(--color-wasabi-border-sunken, rgba(192,192,192,.8));
-  border-right: 1px solid var(--color-wasabi-border-sunken, rgba(192,192,192,.8));
+  border-left: 1px solid
+    var(--color-wasabi-border-sunken, rgba(192, 192, 192, 0.8));
+  border-right: 1px solid
+    var(--color-wasabi-border-sunken, rgba(192, 192, 192, 0.8));
   background: var(--color-wasabi-scrollbar-background-inverted, black);
 }
-.pl > div.scrollbar::after /* button.wasabi */ {
-  content: "";
+.pl > .scrollbar {
+  margin: 0;
+  float: right;
+  height: 100%;
+  /* background: var(--color-wasabi-window-background); */
+  position: relative;
+}
+
+.pl > .scrollbar0::after /* button.wasabi */ {
+  /* content: ""; */
   position: absolute;
   box-sizing: border-box;
   right: 2px;
@@ -66,7 +83,7 @@ colorthemeslist > select{
   vertical-align: middle;
 }
 
-.pl > div.scrollbar:active:after /* button.wasabi:active  */ {
+.pl > .scrollbar0:active:after /* button.wasabi:active  */ {
   border-image-source: var(--bitmap-studio-button-pressed);
 }
 .pl .current {

@@ -101,7 +101,7 @@
       slider > div {
         display: none;
       }
-      slider::after {
+      slider::before {
         content: "";
         position: absolute;
         left: var(--thumb-left);
@@ -110,13 +110,13 @@
         height: var(--thumb-height);
         background-image: var(--thumb-background-image);
       }
-      slider:hover:after {
+      slider:hover:before {
         background-image: var(
           --thumb-hover-background-image,
           var(--thumb-background-image)
         );
       }
-      slider:active:after {
+      slider:active:before {
         background-image: var(
           --thumb-down-background-image,
           var(--thumb-background-image)

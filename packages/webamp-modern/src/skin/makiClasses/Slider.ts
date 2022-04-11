@@ -2,7 +2,7 @@ import UI_ROOT from "../../UIRoot";
 import { assume, clamp, num, px, throttle } from "../../utils";
 import GuiObj from "./GuiObj";
 
-class ActionHandler {
+export class ActionHandler {
   _slider: Slider;
   constructor(slider: Slider) {
     this._slider = slider;
@@ -242,6 +242,20 @@ export default class Slider extends GuiObj {
       this._actionHandler.dispose();
       this._initializeActionHandler();
     }
+  }
+
+  // called by playlist.scrollbar
+  setActionHandler(actionHandler: ActionHandler) {
+    if (this._actionHandler != null) {
+      this._actionHandler.dispose();
+      this._actionHandler = null;
+    }
+    this._actionHandler = actionHandler;
+  }
+  // called by playlist.scrollbar
+  setThumbSize(width: number, height: number) {
+    this._thumbWidth = width;
+    this._thumbHeight = height;
   }
 
   // extern Int Slider.getPosition();

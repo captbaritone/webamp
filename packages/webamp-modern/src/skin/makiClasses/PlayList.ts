@@ -20,7 +20,7 @@ export class PlEdit {
   // taken from lib/pldir.mi
   static guid = "{345BEEBC-0229-4921-90BE-6CB6A49A79D9}";
   _tracks: Track[] = [];
-  _currentIndex: number;
+  _currentIndex: number = -1;
   _selection: number[] = [];
   _eventListener: Emitter = new Emitter();
 
@@ -116,8 +116,8 @@ export class PlEdit {
   }
 
   getCurrentTrackTitle(): string {
-    if(this._currentIndex==null){
-      return ""
+    if (this._currentIndex < 0) {
+      return "";
     }
     return this.gettitle(this._currentIndex);
   }
@@ -131,7 +131,7 @@ export class PlEdit {
   }
 
   gettitle(item: number): string {
-    return this._tracks[item].filename.split('/').pop();
+    return this._tracks[item].filename.split("/").pop();
   }
 
   getlength(item: number): string {
