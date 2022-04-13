@@ -35,6 +35,7 @@ import { classResolver } from "./resolver";
 import WasabiButton from "./makiClasses/WasabiButton";
 import PlayListGui from "./makiClasses/PlayListGui";
 import XuiElement from "./makiClasses/XuiElement";
+import NStateButton from "./makiClasses/NStateButton";
 
 function hack() {
   // Without this Snowpack will try to treeshake out resolver causing a circular
@@ -220,8 +221,9 @@ export default class SkinParser {
       case "button":
         return this.button(node, parent);
       case "togglebutton":
-      case "nstatesbutton":
         return this.toggleButton(node, parent);
+      case "nstatesbutton":
+        return this.nStateButton(node, parent);
       case "rect":
       case "group":
         return this.group(node, parent);
@@ -698,6 +700,10 @@ export default class SkinParser {
 
   async toggleButton(node: XmlElement, parent: any) {
     return this.newGui(ToggleButton, node, parent);
+  }
+
+  async nStateButton(node: XmlElement, parent: any) {
+    return this.newGui(NStateButton, node, parent);
   }
 
   async color(node: XmlElement, parent: any) {

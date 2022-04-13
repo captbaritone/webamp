@@ -107,6 +107,15 @@ export class UIRoot {
     assume(found != null, `Could not find bitmap with id ${id}.`);
     return found;
   }
+  
+  hasBitmap(id: string): boolean {
+    const lowercaseId = id.toLowerCase();
+    const found = findLast(
+      this._bitmaps,
+      (bitmap) => bitmap._id.toLowerCase() === lowercaseId
+    );
+    return found? true: false
+  }
 
   addFont(font: TrueTypeFont | BitmapFont) {
     this._fonts.push(font);
