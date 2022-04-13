@@ -3,6 +3,7 @@ import { assert, assume } from "../utils";
 import { ParsedMaki, Command, Method } from "./parser";
 import { getClass, getMethod } from "./objects";
 import GuiObj from "../skin/makiClasses/GuiObj";
+import BaseObject from "../skin/makiClasses/BaseObject";
 // import { classResolver } from "../skin/resolver";
 
 function validateMaki(program: ParsedMaki) {
@@ -389,6 +390,11 @@ class Interpreter {
             `Type mismatch: ${a.type} != ${b.type} at ip: ${ip}`
           );
           */
+          if(a.type=='OBJECT' && b.type=="OBJECT"){
+            // TODO: do attach bindings here now, since we got the variable type=object
+            // const objId = a.value instanceof BaseObject ? a.value.getId() : '!noid'
+            // console.log(objId, '=','dest:',b, 'src:',a)
+          }
           b.value = a.value;
           this.push(a);
           break;
