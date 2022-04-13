@@ -59,6 +59,9 @@ export function parse(data: ArrayBuffer): ParsedMaki {
   const commands = decodeCode({ makiFile });
 
   // TODO: Assert that we are at the end of the maki file
+  if(!makiFile.isEof()){
+    console.warn('EOF not reached!')
+  }
 
   // Map binary offsets to command indexes.
   // Some bindings/functions ask us to jump to a place in the binary data and

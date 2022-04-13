@@ -9,6 +9,10 @@ export default class MakiFile {
     this._i = 0;
   }
 
+  isEof():boolean {
+    return this._i == this._arr.length;
+  }
+
   readInt32LE(): number {
     const offset = this._i >>> 0;
     this._i += 4;
