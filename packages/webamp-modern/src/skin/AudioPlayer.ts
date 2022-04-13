@@ -117,8 +117,8 @@ export class AudioPlayer {
   }
 
   // shortcut of this.Emitter
-  on(event: string, callback: Function) {
-    this._eventListener.on(event, callback);
+  on(event: string, callback: Function): Function {
+    return this._eventListener.on(event, callback);
   }
   trigger(event: string, ...args: any[]) {
     this._eventListener.trigger(event, ...args);
