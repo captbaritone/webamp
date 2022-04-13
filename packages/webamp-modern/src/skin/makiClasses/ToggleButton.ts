@@ -10,15 +10,14 @@ export default class ToggleButton extends Button {
     return "button";
   }
 
-  getcurcfgval(): number{
-    return this._active? 1 : 0;
+  getcurcfgval(): number {
+    return this._active ? 1 : 0;
   }
 
-  _cfgAttribChanged(newValue:string) {
+  _cfgAttribChanged(newValue: string) {
     //do something when configAttrib broadcast message `datachanged` by other object
-    this.setactivated(newValue=='1');
-  };
-
+    this.setactivated(newValue == "1");
+  }
 
   /**
    * This method is called by Button
@@ -28,25 +27,22 @@ export default class ToggleButton extends Button {
     e.stopPropagation();
     // implementation of standard mouse down
     this.setactivated(!this._active);
-    this.updateCfgAttib(this._active?'1':'0')
+    this.updateCfgAttib(this._active ? "1" : "0");
     this.ontoggle(this._active);
   }
 
-  ontoggle(onoff: boolean){
+  ontoggle(onoff: boolean) {
     UI_ROOT.vm.dispatch(this, "ontoggle", [V.newBool(onoff)]);
   }
 
-  onactivate(activated: number){
-    UI_ROOT.vm.dispatch(this, "onactivate", [{type: "INT", value: activated}]);
+  onactivate(activated: number) {
+    UI_ROOT.vm.dispatch(this, "onactivate", [
+      { type: "INT", value: activated },
+    ]);
   }
 
   draw() {
     super.draw();
     this._div.setAttribute("data-obj-name", "ToggleButton");
   }
-
-  /*
-  extern ToggleButton.onToggle(Boolean onoff);
-  extern int TOggleButton.getCurCfgVal()
-  */
 }

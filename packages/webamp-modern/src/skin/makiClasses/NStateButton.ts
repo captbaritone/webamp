@@ -1,5 +1,3 @@
-import { V } from "../../maki/v";
-// import UI_ROOT from "../../UIRoot";
 import UI_ROOT from "../../UIRoot";
 import { num } from "../../utils";
 import ToggleButton from "./ToggleButton";
@@ -40,7 +38,7 @@ export default class NStateButton extends ToggleButton {
     return this._states[this._stateIndex];
   }
 
-  _cfgAttribChanged(newValue:string) {
+  _cfgAttribChanged(newValue: string) {
     //do something when configAttrib broadcast message `datachanged` by other object
     const inewValue = parseInt(newValue);
     const newIndex = this._states.indexOf(inewValue);
@@ -48,7 +46,7 @@ export default class NStateButton extends ToggleButton {
       this._stateIndex = newIndex;
       this._updateBitmaps();
     }
-  };
+  }
 
   /**
    * This method is called by Button
@@ -57,7 +55,6 @@ export default class NStateButton extends ToggleButton {
     // don't send to parent to start move/resizing
     e.stopPropagation();
     // implementation of standard mouse down
-    // this.setactivated(!this._active);
     this._cycleState();
     this.updateCfgAttib(String(this._states[this._stateIndex]));
     this.setactivated(this._states[this._stateIndex] != 0);
@@ -98,9 +95,4 @@ export default class NStateButton extends ToggleButton {
     super.draw();
     this._div.setAttribute("data-obj-name", "NStateButton");
   }
-
-  /*
-  extern ToggleButton.onToggle(Boolean onoff);
-  extern int TOggleButton.getCurCfgVal()
-  */
 }
