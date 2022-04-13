@@ -1,4 +1,4 @@
-// import { V } from "../../maki/v";
+import { V } from "../../maki/v";
 // import UI_ROOT from "../../UIRoot";
 import UI_ROOT from "../../UIRoot";
 import { num } from "../../utils";
@@ -36,6 +36,7 @@ export default class NStateButton extends ToggleButton {
   }
 
   getcurcfgval(): number {
+    console.log('getCurCfgVal:',this._states[this._stateIndex])
     return this._states[this._stateIndex];
   }
 
@@ -48,6 +49,7 @@ export default class NStateButton extends ToggleButton {
     // implementation of standard mouse down
     // this.setactivated(!this._active);
     this._cycleState();
+    this.setactivated(this._states[this._stateIndex] != 0);
   }
 
   _cycleState() {
@@ -58,11 +60,15 @@ export default class NStateButton extends ToggleButton {
     //debug:
     this._div.style.setProperty('--state', String(this._stateIndex))
     this._updateBitmaps();
+    this.ontoggle(this._states[this._stateIndex] != 0);
   }
 
   init() {
     super.init();
-    this._updateBitmaps();
+    // this._updateBitmaps();
+    //and because NStateButton may not explicitely
+    // this._renderWidth()
+    // this._renderHeight()
   }
 
   /**
@@ -72,7 +78,8 @@ export default class NStateButton extends ToggleButton {
    * see WinampModern.wal #RepeatDisplay --> cfgvals="0;1;-1"
    */
   _updateBitmaps() {
-    const bitmapSuffix = this._states[this._stateIndex] >= 0 ? String(this._states[this._stateIndex]) : "";
+    // const bitmapSuffix = this._states[this._stateIndex] >= 0 ? String(this._states[this._stateIndex]) : "";
+    const bitmapSuffix = String(this._stateIndex);
     ["image", "downimage", "hoverimage", "activeimage"].forEach((att) => {
       //this button has xml attribute?
       if (this._plainImages[att]) {
@@ -86,7 +93,8 @@ export default class NStateButton extends ToggleButton {
   }
 
   ontoggle(onoff: boolean) {
-    // UI_ROOT.vm.dispatch(this, "ontoggle", [V.newBool(onoff)]);
+    console.log('onToggle woy!')
+    UI_ROOT.vm.dispatch(this, "ontoggle", [V.newBool(onoff)]);
   }
 
   onactivate(activated: number) {
@@ -96,6 +104,7 @@ export default class NStateButton extends ToggleButton {
   }
 
   draw() {
+    this._updateBitmaps();
     super.draw();
     this._div.setAttribute("data-obj-name", "NStateButton");
   }
