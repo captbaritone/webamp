@@ -36,9 +36,19 @@ export default class NStateButton extends ToggleButton {
   }
 
   getcurcfgval(): number {
-    console.log('getCurCfgVal:',this._states[this._stateIndex])
+    console.log("getCurCfgVal:", this._states[this._stateIndex]);
     return this._states[this._stateIndex];
   }
+
+  _cfgAttribChanged(newValue:string) {
+    //do something when configAttrib broadcast message `datachanged` by other object
+    const inewValue = parseInt(newValue);
+    const newIndex = this._states.indexOf(inewValue);
+    if (newIndex != this._stateIndex) {
+      this._stateIndex = newIndex;
+      this._updateBitmaps();
+    }
+  };
 
   /**
    * This method is called by Button
@@ -49,6 +59,7 @@ export default class NStateButton extends ToggleButton {
     // implementation of standard mouse down
     // this.setactivated(!this._active);
     this._cycleState();
+    this.updateCfgAttib(String(this._states[this._stateIndex]));
     this.setactivated(this._states[this._stateIndex] != 0);
   }
 
@@ -57,18 +68,8 @@ export default class NStateButton extends ToggleButton {
     if (this._stateIndex >= this._statesCount) {
       this._stateIndex = 0;
     }
-    //debug:
-    this._div.style.setProperty('--state', String(this._stateIndex))
     this._updateBitmaps();
     this.ontoggle(this._states[this._stateIndex] != 0);
-  }
-
-  init() {
-    super.init();
-    // this._updateBitmaps();
-    //and because NStateButton may not explicitely
-    // this._renderWidth()
-    // this._renderHeight()
   }
 
   /**
@@ -90,17 +91,6 @@ export default class NStateButton extends ToggleButton {
         }
       }
     });
-  }
-
-  ontoggle(onoff: boolean) {
-    console.log('onToggle woy!')
-    UI_ROOT.vm.dispatch(this, "ontoggle", [V.newBool(onoff)]);
-  }
-
-  onactivate(activated: number) {
-    // UI_ROOT.vm.dispatch(this, "onactivate", [
-    //   { type: "INT", value: activated },
-    // ]);
   }
 
   draw() {

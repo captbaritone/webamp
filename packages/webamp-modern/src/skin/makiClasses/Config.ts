@@ -1,4 +1,3 @@
-import XmlObj from "../XmlObj";
 import BaseObject from "./BaseObject";
 import ConfigItem from "./ConfigItem";
 
@@ -9,8 +8,9 @@ export default class Config extends BaseObject {
   _items: { [key: string]: ConfigItem } = {};
 
   /**
-   * SAMPLE: 	// create the custom cfgpage for this session (if it does exist, it just returns it)
-   * ConfigItem custom_page = Config.newItem("Winamp Modern", CUSTOM_PAGE);
+   * SAMPLE: 	
+   *    create the custom cfgpage for this session (if it does exist, it just returns it)
+   *    ConfigItem custom_page = Config.newItem("Winamp Modern", CUSTOM_PAGE);
    * @param itemName 
    * @param itemGuid 
    * @returns 

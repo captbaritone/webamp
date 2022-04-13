@@ -13,6 +13,8 @@ import Group from "./Group";
 import XmlObj from "../XmlObj";
 import Layout from "./Layout";
 import Region from "./Region";
+import { CONFIG } from "./Config";
+import ConfigAttribute from "./ConfigAttribute";
 
 let BRING_LEAST: number = -1;
 let BRING_MOST_TOP: number = 1;
@@ -52,6 +54,7 @@ export default class GuiObj extends XmlObj {
   _goingToTarget: boolean = false;
   _div: HTMLElement;
   _backgroundBitmap: Bitmap | null = null;
+  _configAttrib: ConfigAttribute;
 
   _metaCommands: XmlElement[] = [];
 
@@ -158,6 +161,9 @@ export default class GuiObj extends XmlObj {
       case "sysregion":
         this._sysregion = num(value);
         break;
+      case "cfgattrib":
+        this._setConfigAttrib(value);
+        break;
       default:
         return false;
     }
@@ -166,6 +172,28 @@ export default class GuiObj extends XmlObj {
 
   setxmlparam(key: string, value: string) {
     this.setXmlAttr(key, value);
+  }
+
+  _setConfigAttrib(cfgattrib: string) {
+    const [guid, attrib] = cfgattrib.split(";");
+    const configItem = CONFIG.getitem(guid);
+    //TODO: check if old exist: dispose.
+    this._configAttrib = configItem.getattribute(attrib);
+    //TODO: dispose it
+    this._configAttrib.on("datachanged", this.__cfgAttribChanged);
+  }
+
+  __cfgAttribChanged = () => {
+    const newValue = this._configAttrib.getdata();
+    this._cfgAttribChanged(newValue)
+  };
+  
+  _cfgAttribChanged(newValue:string){
+    //do something when configAttrib broadcast message `datachanged` by other object
+  };
+
+  updateCfgAttib(newValue: string) {
+    this._configAttrib.setdata(newValue);
   }
 
   setSize(newWidth: number, newHeight: number) {}
@@ -229,7 +257,7 @@ export default class GuiObj extends XmlObj {
   }
 
   getId(): string {
-    return this._id || '';
+    return this._id || "";
   }
 
   /**
@@ -412,7 +440,7 @@ export default class GuiObj extends XmlObj {
     return this._div.matches(":focus");
   }
 
-  setregion(reg: Region){
+  setregion(reg: Region) {
     //TODO:
   }
 
@@ -446,7 +474,7 @@ export default class GuiObj extends XmlObj {
       y >= this.gettop(),
       "Expected click to be below the component's top"
     );
-    this.getparentlayout().bringtofront()
+    this.getparentlayout().bringtofront();
     UI_ROOT.vm.dispatch(this, "onleftbuttondown", [
       { type: "INT", value: x },
       { type: "INT", value: y },
@@ -746,7 +774,7 @@ export default class GuiObj extends XmlObj {
     this._div.style.zIndex = String(BRING_LEAST);
   }
 
-  setenabled(onoff:boolean|number){
+  setenabled(onoff: boolean | number) {
     //TODO:
   }
 
@@ -778,7 +806,7 @@ export default class GuiObj extends XmlObj {
     x: number,
     y: number,
     p1: number,
-    p2: number,
+    p2: number
   ): number {
     return UI_ROOT.vm.dispatch(this, "onaction", [
       { type: "STRING", value: action },
