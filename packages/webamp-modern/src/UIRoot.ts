@@ -41,6 +41,7 @@ export class UIRoot {
   _bucketEntries: { [wndType: string]: XmlElement[] } = {};
   _xFades: GroupXFade[] = [];
   _input: HTMLInputElement = document.createElement("input");
+  _skinInfo: { [key: string]: string }  = {};
 
   // A list of all objects created for this skin.
   _objects: BaseObject[] = [];
@@ -522,6 +523,13 @@ export class UIRoot {
   }
   getId() {
     return "UIROOT";
+  }
+
+  setSkinInfo(skinInfo:{ [key: string]: string }){
+    this._skinInfo = skinInfo
+  }
+  getSkinInfo():{ [key: string]: string }{
+    return this._skinInfo 
   }
 }
 

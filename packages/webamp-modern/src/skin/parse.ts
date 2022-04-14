@@ -996,7 +996,14 @@ export default class SkinParser {
   }
 
   skininfo(node: XmlElement, parent: any) {
-    // Ignore this metadata for now
+    const skinInfo = {}
+    for (const child of node.children) {
+      if (child instanceof XmlElement) {
+        const tag = child.name.toLowerCase();
+        skinInfo[tag] = child.text;
+      }
+    }
+    this._uiRoot.setSkinInfo(skinInfo)
   }
 }
 

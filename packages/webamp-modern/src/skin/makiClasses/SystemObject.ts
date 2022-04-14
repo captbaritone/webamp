@@ -98,7 +98,7 @@ export default class SystemObject extends BaseObject {
   }
 
   getskinname(): string {
-    return "TODO: Get the Real skin name";
+    return UI_ROOT.getSkinInfo()['name'];
   }
 
   /**
