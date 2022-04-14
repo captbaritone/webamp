@@ -183,17 +183,25 @@ export default class GuiObj extends XmlObj {
     this._configAttrib.on("datachanged", this.__cfgAttribChanged);
   }
 
+  /**
+   * a callback that will be triggered when cfgattrib just being changed.
+   * Inteded for disposable of .on() & .off()
+   */
   __cfgAttribChanged = () => {
+    // this function is called when other object make change to cfgattrib
     const newValue = this._configAttrib.getdata();
-    this._cfgAttribChanged(newValue)
-  };
-  
-  _cfgAttribChanged(newValue:string){
-    //do something when configAttrib broadcast message `datachanged` by other object
+    this._cfgAttribChanged(newValue);
   };
 
+  _cfgAttribChanged(newValue: string) {
+    // inheritor shall 
+    // do something when configAttrib broadcast message `datachanged` by other object
+  }
+
   updateCfgAttib(newValue: string) {
-    this._configAttrib.setdata(newValue);
+    if (this._configAttrib != null) {
+      this._configAttrib.setdata(newValue);
+    }
   }
 
   setSize(newWidth: number, newHeight: number) {}
