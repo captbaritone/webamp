@@ -20,6 +20,7 @@ import SystemObject from "./skin/makiClasses/SystemObject";
 import ComponentBucket from "./skin/makiClasses/ComponentBucket";
 import GroupXFade from "./skin/makiClasses/GroupXFade";
 import { PlEdit, Track } from "./skin/makiClasses/PlayList";
+import PRIVATE_CONFIG from "./skin/PrivateConfig";
 
 export class UIRoot {
   _div: HTMLDivElement = document.createElement("div");
@@ -238,6 +239,7 @@ export class UIRoot {
       );
       this._activeGammaSetName = id;
       this._activeGammaSet = found;
+      PRIVATE_CONFIG.setPrivateString(this.getSkinName(),'_gammagroup_',id)
     }
     this._setCssVars();
   }
@@ -245,9 +247,10 @@ export class UIRoot {
   enableDefaultGammaSet() {
     // TODO: restore the latest gammaSet picked by user for this skin
     const gammaSetNames = Array.from(this._gammaSets.keys());
-    const firstName = gammaSetNames[0];
+    const firstName = gammaSetNames[0] || '';
     const antiBoring = gammaSetNames[1];
-    this.enableGammaSet(antiBoring || firstName || null);
+    const lastGamma = PRIVATE_CONFIG.getPrivateString(this.getSkinName(),'_gammagroup_',firstName)
+    this.enableGammaSet(lastGamma);
   }
 
   _getGammaGroup(id: string): GammaGroup | null {
@@ -530,6 +533,9 @@ export class UIRoot {
   }
   getSkinInfo():{ [key: string]: string }{
     return this._skinInfo 
+  }
+  getSkinName(): string {
+    return this.getSkinInfo()['name'];
   }
 }
 
