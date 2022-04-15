@@ -20,7 +20,6 @@ export class ActionHandler {
     this._subscription();
   }
 }
-const MAX = 255;
 
 // Note: FreeMouseMove is about receiving mousemove without mousedown precedent.
 //       It is useful for equalizer sliders that may changed once a slider is moved
@@ -37,7 +36,7 @@ export default class Slider extends GuiObj {
   _hoverThumb: string;
   _action: string | null = null;
   _low: number = 0;
-  _high: number = 1;
+  _high: number = 255;
   _thumbWidth: number = 0;
   _thumbHeight: number = 0;
   _position: number = 0;
@@ -224,6 +223,8 @@ export default class Slider extends GuiObj {
         this._actionHandler = new VolumeActionHandler(this);
         break;
       case null:
+        // CrossFadeSlider doesn't has action. should be supported.
+        this._actionHandler = new ActionHandler(this);
         break;
       default:
         assume(false, `Unhandled slider action: ${this._action}`);
@@ -269,7 +270,7 @@ export default class Slider extends GuiObj {
 
   // extern Int Slider.getPosition();
   getposition(): number {
-    return this._position * MAX;
+    return this._position * this._high;
   }
 
   /**
@@ -277,7 +278,7 @@ export default class Slider extends GuiObj {
    * @param newpos 0..MAX
    */
   setposition(newpos: number) {
-    this._position = newpos / MAX;
+    this._position = newpos / this._high;
     this._renderThumbPosition();
     this.doSetPosition(this.getposition());
     // console.log("Slider.setPosition:", newpos);
@@ -440,7 +441,7 @@ class SeekActionHandler extends ActionHandler {
     // console.log("seek:", position);
     this._pendingChange = this._slider._onSetPositionEvenEaten != 0;
     if (!this._pendingChange) {
-      UI_ROOT.audio.seekToPercent(position / MAX);
+      UI_ROOT.audio.seekToPercent(position / this._slider._high);
     }
   }
 
@@ -449,7 +450,9 @@ class SeekActionHandler extends ActionHandler {
     // console.log("slider_ACTION.doLeftMouseUp");
     if (this._pendingChange) {
       this._pendingChange = false;
-      UI_ROOT.audio.seekToPercent(this._slider.getposition() / MAX);
+      UI_ROOT.audio.seekToPercent(
+        this._slider.getposition() / this._slider._high
+      );
     }
   }
 }
@@ -492,7 +495,7 @@ class EqActionHandler extends ActionHandler {
   }
 
   onsetposition(position: number): void {
-    UI_ROOT.audio.setEq(this._kind, position / MAX);
+    UI_ROOT.audio.setEq(this._kind, position / this._slider._high);
   }
 }
 
@@ -511,7 +514,7 @@ class PreampActionHandler extends ActionHandler {
   }
 
   onsetposition(position: number): void {
-    UI_ROOT.audio.setEq(this._kind, position / MAX);
+    UI_ROOT.audio.setEq(this._kind, position / this._slider._high);
   }
 }
 
@@ -540,7 +543,7 @@ class VolumeActionHandler extends ActionHandler {
   }
 
   onsetposition(position: number): void {
-    UI_ROOT.audio.setVolume(position / 255);
+    UI_ROOT.audio.setVolume(position / this._slider._high);
   }
   onLeftMouseDown(x: number, y: number) {
     this._changing = true;
