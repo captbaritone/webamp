@@ -1,7 +1,10 @@
 import BaseObject from "./BaseObject";
 
+export type SectionValues = { [key: string]: string };
 export default class ConfigPersistent extends BaseObject {
-  _configTree: { [key: string]: string };
+  // _configTree: { [key: string]: string };
+  _configTree: { [section: string]: SectionValues };
+
 
   getStorageName(): string {
     // inheritor should give a real name.
@@ -24,13 +27,20 @@ export default class ConfigPersistent extends BaseObject {
     }
   }
 
-  getValue(key: string): string {
-    return this._configTree[key];
+  getSectionValues(section: string): SectionValues {
+    if (this._configTree[section] == null) {
+      this._configTree[section] = {};
+    }
+    return this._configTree[section];
   }
 
-  setValue(key: string, value: string): string {
-    if (this._configTree[key] != value) {
-      this._configTree[key] = value;
+  getValue(section: string, key: string): string {
+    return this.getSectionValues(section)[key];
+  }
+
+  setValue(section:string, key: string, value: string): string {
+    if (this.getValue(section,key) != value) {
+      this._configTree[section][key] = value;
       this._saveState();
     }
     return value;

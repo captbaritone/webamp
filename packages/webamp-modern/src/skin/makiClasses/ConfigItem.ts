@@ -1,24 +1,37 @@
 import BaseObject from "./BaseObject";
+import Config from "./Config";
 import ConfigAttribute from "./ConfigAttribute";
-import ConfigPersistent from "./ConfigPersistent";
+import { SectionValues } from "./ConfigPersistent";
+// import ConfigPersistent from "./ConfigPersistent";
 
-export default class ConfigItem extends ConfigPersistent {
+export default class ConfigItem extends BaseObject {
   static GUID = "d40302824d873aab32128d87d5fcad6f";
   _guid: string;
+  _config: Config;
+  _section: SectionValues;
   _attributes: { [key: string]: ConfigAttribute } = {};
   // _itemGuid: string;
 
-  getStorageName(): string {
-    return this._guid;
-  }
+  // getStorageName(): string {
+  //   return this._guid;
+  // }
 
-  constructor(name: string, guid: string) {
+  constructor(name: string, guid: string, config: Config) {
     super();
     this._id = name;
     this._guid = guid;
+    this._config = config;
+    this._section = config.getSectionValues(guid)
     // this._itemGuid = itemGuid;
     // this._value = ''
-    this.loadStorage();
+    // this.loadStorage();
+  }
+
+  getValue(key:string): string {
+    return this._config.getValue(this._guid, key)
+  }
+  setValue(key:string, value: string) {
+    return this._config.setValue(this._guid, key, value)
   }
 
   newattribute(name: string, defaultValue: string): ConfigAttribute {

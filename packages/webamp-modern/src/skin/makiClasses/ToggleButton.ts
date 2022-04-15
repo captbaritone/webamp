@@ -16,7 +16,7 @@ export default class ToggleButton extends Button {
 
   _cfgAttribChanged(newValue: string) {
     //do something when configAttrib broadcast message `datachanged` by other object
-    this.setactivated(newValue == "1");
+    this.setactivated(newValue != "0");
     // this.setactivatednocallback(newValue == "1");
   }
 
