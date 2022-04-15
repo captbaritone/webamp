@@ -5,7 +5,6 @@ import ConfigItem from "./ConfigItem";
 
 export default class ConfigAttribute extends BaseObject {
   static GUID = "24dec2834a36b76e249ecc8c736c6bc4";
-  // _value: string;
   _configItem: ConfigItem;
   _eventListener: Emitter = new Emitter();
 
@@ -13,8 +12,6 @@ export default class ConfigAttribute extends BaseObject {
     super();
     this._configItem = configItem;
     this._id = name;
-    // this._default = defaultValue;
-    // this._value = ''
   }
 
   getparentitem(): ConfigItem {
@@ -37,10 +34,8 @@ export default class ConfigAttribute extends BaseObject {
 
   getdata(): string {
     return this._configItem.getValue(this._id);
-    // return this._value || this._default || '';
   }
   setdata(value: string) {
-    // this._value = value;
     this._configItem.setValue(this._id, value);
     this.trigger("datachanged");
   }

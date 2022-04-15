@@ -8,24 +8,12 @@ import ConfigAttribute from "./ConfigAttribute";
 export default class ConfigItem extends BaseObject {
   static GUID = "d40302824d873aab32128d87d5fcad6f";
   _guid: string;
-  // _config: Config;
-  // _section: SectionValues;
   _attributes: { [key: string]: ConfigAttribute } = {};
-  // _itemGuid: string;
-
-  // getStorageName(): string {
-  //   return this._guid;
-  // }
 
   constructor(name: string, guid: string) {
     super();
     this._id = name;
     this._guid = guid;
-    // this._config = config;
-    // this._section = CONFIG.getSectionValues(guid);
-    // this._itemGuid = itemGuid;
-    // this._value = ''
-    // this.loadStorage();
   }
 
   getname(): string {
@@ -63,6 +51,5 @@ export default class ConfigItem extends BaseObject {
       return this.newattribute(att_name, "0");
     }
     return cfg;
-    // return new ConfigAttribute(att_name, "1");
   }
 }
