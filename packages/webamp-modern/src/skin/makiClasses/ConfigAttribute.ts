@@ -17,6 +17,13 @@ export default class ConfigAttribute extends BaseObject {
     // this._value = ''
   }
 
+  getparentitem(): ConfigItem {
+    return this._configItem;
+  }
+  getattributename(): string {
+    return this._id;
+  }
+
   // shortcut of this.Emitter
   on(event: string, callback: Function): Function {
     return this._eventListener.on(event, callback);

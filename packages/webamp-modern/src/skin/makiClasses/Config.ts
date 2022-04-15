@@ -12,9 +12,9 @@ export default class Config extends ConfigPersistent {
     return "_CONFIG_";
   }
 
-  constructor(){
-    super()
-    this._aliases = this.getSectionValues('_alias_')
+  constructor() {
+    super();
+    this._aliases = this.getSectionValues("_alias_");
   }
 
   /**
@@ -26,19 +26,32 @@ export default class Config extends ConfigPersistent {
    * @returns
    */
   newitem(itemName: string, itemGuid: string): ConfigItem {
-    // const values = this.getSectionValues(itemGuid); 
-    const cfg = new ConfigItem(itemName, itemGuid, this);
-    // cfg._name = itemName;
+    // line below wouldn't replace the _configTree. ^_^v
+    const cfg = new ConfigItem(itemName, itemGuid);
+
     this._items[itemGuid] = cfg;
     this._aliases[itemName] = itemGuid;
     this._saveState();
     return cfg;
   }
 
-  getitem(itemGuid: string): ConfigItem {
-    const cfg = this._items[itemGuid];
+  getitem(item_name: string): ConfigItem {
+    const item_guid = this._aliases[item_name] || item_name;
+    const cfg = this._items[item_guid];
     if (!cfg) {
-      return this.newitem(itemGuid, itemGuid);
+      return this.newitem(item_name, item_guid);
+    }
+    return cfg;
+  }
+
+  getitembyguid(item_guid: string): ConfigItem {
+    const cfg = this._items[item_guid];
+    if (!cfg) {
+      const item_name =
+        Object.keys(this._aliases).find(
+          (key) => this._aliases[key] === item_guid
+        ) || item_guid;
+      return this.newitem(item_name, item_guid);
     }
     return cfg;
   }

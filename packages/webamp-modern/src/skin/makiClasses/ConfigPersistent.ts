@@ -40,7 +40,13 @@ export default class ConfigPersistent extends BaseObject {
 
   setValue(section:string, key: string, value: string): string {
     if (this.getValue(section,key) != value) {
-      this._configTree[section][key] = value;
+      const values = this.getSectionValues(section);
+      values[key] = value
+      // if(this._configTree[section][key]==null) {
+      //   this._configTree[section][key] = value;
+      // } else {
+      //   this._configTree[section][key] = value;
+      // }
       this._saveState();
     }
     return value;

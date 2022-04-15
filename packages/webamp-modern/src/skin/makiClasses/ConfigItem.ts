@@ -1,14 +1,15 @@
 import BaseObject from "./BaseObject";
-import Config from "./Config";
+import { CONFIG } from "./Config";
+// import Config from "./Config";
 import ConfigAttribute from "./ConfigAttribute";
-import { SectionValues } from "./ConfigPersistent";
+// import { SectionValues } from "./ConfigPersistent";
 // import ConfigPersistent from "./ConfigPersistent";
 
 export default class ConfigItem extends BaseObject {
   static GUID = "d40302824d873aab32128d87d5fcad6f";
   _guid: string;
-  _config: Config;
-  _section: SectionValues;
+  // _config: Config;
+  // _section: SectionValues;
   _attributes: { [key: string]: ConfigAttribute } = {};
   // _itemGuid: string;
 
@@ -16,27 +17,35 @@ export default class ConfigItem extends BaseObject {
   //   return this._guid;
   // }
 
-  constructor(name: string, guid: string, config: Config) {
+  constructor(name: string, guid: string) {
     super();
     this._id = name;
     this._guid = guid;
-    this._config = config;
-    this._section = config.getSectionValues(guid)
+    // this._config = config;
+    // this._section = CONFIG.getSectionValues(guid);
     // this._itemGuid = itemGuid;
     // this._value = ''
     // this.loadStorage();
   }
 
-  getValue(key:string): string {
-    return this._config.getValue(this._guid, key)
+  getname(): string {
+    return this._id;
   }
-  setValue(key:string, value: string) {
-    return this._config.setValue(this._guid, key, value)
+
+  getguid(attr_name: string): string {
+    return this._guid;
+  }
+
+  getValue(key: string): string {
+    return CONFIG.getValue(this._guid, key);
+  }
+  setValue(key: string, value: string) {
+    return CONFIG.setValue(this._guid, key, value);
   }
 
   newattribute(name: string, defaultValue: string): ConfigAttribute {
     let oldValue = this.getValue(name);
-    if(oldValue==null) {
+    if (oldValue == null) {
       this.setValue(name, defaultValue);
     }
     const cfg = this._attributes[name] || new ConfigAttribute(this, name);
