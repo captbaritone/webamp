@@ -43,7 +43,7 @@ export default class Slider extends GuiObj {
   _param: string | null = null;
   _actionHandler: null | ActionHandler;
   _onSetPositionEvenEaten: number;
-  _mouseDx: number = 0; // mouseDown inside thumb. 0..thumbHeight
+  _mouseDx: number = 0; // mouseDown inside thumb. 0..thumbWidth
   _mouseDy: number = 0;
 
   _getActualSize() {
