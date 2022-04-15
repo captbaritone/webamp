@@ -200,6 +200,7 @@ export default class Slider extends GuiObj {
   }
 
   init() {
+    super.init();
     this._initializeActionHandler();
     this._registerDragEvents();
   }
@@ -258,17 +259,25 @@ export default class Slider extends GuiObj {
     this._thumbHeight = height;
   }
 
+  _cfgAttribChanged(newValue: string) {
+    // do something when configAttrib broadcast message `datachanged` by other object
+    const newPos = parseInt(newValue);
+    if (newPos != this.getposition()) {
+      this.setposition(newPos);
+    }
+  }
+
   // extern Int Slider.getPosition();
   getposition(): number {
     return this._position * MAX;
   }
 
   /**
-   * 
+   *
    * @param newpos 0..MAX
    */
   setposition(newpos: number) {
-    this._position= newpos / MAX;
+    this._position = newpos / MAX;
     this._renderThumbPosition();
     this.doSetPosition(this.getposition());
     // console.log("Slider.setPosition:", newpos);
@@ -285,6 +294,7 @@ export default class Slider extends GuiObj {
     if (this._actionHandler != null) {
       this._actionHandler.onsetposition(newPos);
     }
+    this.updateCfgAttib(String(this.getposition()));
   }
 
   doLeftMouseDown(x: number, y: number) {
@@ -358,7 +368,7 @@ export default class Slider extends GuiObj {
       this._div.style.setProperty("--thumb-left", px(left));
     }
   }
-  
+
   draw() {
     super.draw();
     this._div.setAttribute("data-obj-name", "Slider");
