@@ -40,12 +40,15 @@ export default class NStateButton extends ToggleButton {
 
   _cfgAttribChanged(newValue: string) {
     //do something when configAttrib broadcast message `datachanged` by other object
+    // super._cfgAttribChanged(newValue)
+    
     const inewValue = parseInt(newValue);
     const newIndex = this._states.indexOf(inewValue);
     if (newIndex != this._stateIndex) {
       this._stateIndex = newIndex;
       this._updateBitmaps();
     }
+    this.setactivated(newIndex != 0);
   }
 
   /**

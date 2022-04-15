@@ -235,6 +235,10 @@ export default class GuiObj extends XmlObj {
       }
     }
 
+    if(this._configAttrib){
+      this._cfgAttribChanged( this._configAttrib.getdata() )
+    }
+
     this._div.addEventListener("mousedown", (e) => {
       e.stopPropagation();
       this.onLeftButtonDown(

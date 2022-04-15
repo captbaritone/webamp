@@ -103,8 +103,9 @@ export default class Button extends GuiObj {
       } else {
         this._div.classList.remove("active");
       }
-      UI_ROOT.vm.dispatch(this, "onactivate", [V.newBool(onoff)]);
     }
+    //sometime maki call: setactivated(getactivated())
+    UI_ROOT.vm.dispatch(this, "onactivate", [V.newBool(onoff)]);
   }
 
   setactivatednocallback(onoff: boolean){
