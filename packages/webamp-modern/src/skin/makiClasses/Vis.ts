@@ -1,4 +1,6 @@
+import UI_ROOT from "../../UIRoot";
 import { num, toBool } from "../../utils";
+import { AUDIO_PLAYING } from "../AudioPlayer";
 import GuiObj from "./GuiObj";
 
 type ColorTriplet = string;
@@ -13,7 +15,7 @@ class VisPainter {
 
   prepare() {}
 
-  paintFrame(canvasCtx: CanvasRenderingContext2D) {}
+  paintFrame(ctx: CanvasRenderingContext2D) {}
 
   dispose() {}
 }
@@ -23,6 +25,7 @@ export default class Vis extends GuiObj {
   static GUID = "ce4f97be4e1977b098d45699276cc933";
   _canvas: HTMLCanvasElement = document.createElement("canvas");
   _painter: VisPainter;
+  _animationRequest: number = null;
   // (int) One of three values for which mode to display:
   // "0" is no display,
   // "1" is spectrum,
@@ -38,6 +41,7 @@ export default class Vis extends GuiObj {
   constructor() {
     super();
     this._painter = new NoVisualizer(this);
+    UI_ROOT.audio.on("statchanged", this.audioStatusChanged);
   }
 
   setXmlAttr(_key: string, value: string): boolean {
@@ -144,6 +148,30 @@ export default class Vis extends GuiObj {
     this._painter = new PainterType(this);
   }
 
+  // disposable
+  audioStatusChanged = () => {
+    const playing = UI_ROOT.audio.getState() == AUDIO_PLAYING;
+
+    if (this._animationRequest != null) {
+      window.cancelAnimationFrame(this._animationRequest);
+      this._animationRequest = null;
+    }
+
+    if (playing) {
+      // Kick off the animation loop
+      const ctx = this._canvas.getContext("2d");
+      if (ctx == null) {
+        return;
+      }
+      ctx.imageSmoothingEnabled = false;
+      const loop = () => {
+        this._painter.paintFrame(ctx);
+        this._animationRequest = window.requestAnimationFrame(loop);
+      };
+      loop();
+    }
+  };
+
   /*extern Vis.onFrame();
 extern Vis.setRealtime(Boolean onoff);
 extern Boolean Vis.getRealtime();
@@ -172,14 +200,9 @@ extern Vis.nextMode();*/
 class NoVisualizer extends VisPainter {
   _cleared: boolean = false;
 
-  paintFrame(canvasCtx: CanvasRenderingContext2D) {
+  paintFrame(ctx: CanvasRenderingContext2D) {
     if (!this._cleared) {
-      canvasCtx.clearRect(
-        0,
-        0,
-        canvasCtx.canvas.width,
-        canvasCtx.canvas.height
-      );
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
       this._cleared = true;
     }
   }
@@ -188,14 +211,43 @@ class NoVisualizer extends VisPainter {
 class BarPainter extends VisPainter {
   prepare() {}
 
-  paintFrame(canvasCtx: CanvasRenderingContext2D) {
-    canvasCtx.clearRect(0, 0, canvasCtx.canvas.width, canvasCtx.canvas.height);
+  paintFrame(ctx: CanvasRenderingContext2D) {
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    for (var i = 0; i < 600; i++) {
+      var x = Math.floor(Math.random() * 300);
+      var y = Math.floor(Math.random() * 300);
+      var radius = Math.floor(Math.random() * 20);
+
+      var r = Math.floor(Math.random() * 255);
+      var g = Math.floor(Math.random() * 255);
+      var b = Math.floor(Math.random() * 255);
+
+      ctx.beginPath();
+      ctx.arc(x, y, radius, Math.PI * 2, 0, false);
+      ctx.fillStyle = "rgba(" + r + "," + g + "," + b + ",1)";
+      ctx.fill();
+      ctx.closePath();
+    }
   }
 }
 class WavePainter extends VisPainter {
   prepare() {}
 
-  paintFrame(canvasCtx: CanvasRenderingContext2D) {
-    canvasCtx.clearRect(0, 0, canvasCtx.canvas.width, canvasCtx.canvas.height);
+  paintFrame(ctx: CanvasRenderingContext2D) {
+    const width = ctx.canvas.width
+    const height = ctx.canvas.height
+    ctx.clearRect(0, 0, width, height);
+    ctx.lineWidth=5;
+    for(var i=0; i < 30; i+=1) {
+      var r = Math.floor(Math.random() * 255);
+      var g = Math.floor(Math.random() * 255);
+      var b = Math.floor(Math.random() * 255);
+
+      ctx.beginPath();
+      ctx.moveTo(Math.random() * width, Math.random() * height);
+      ctx.lineTo(Math.random() * width, Math.random() * height);
+      ctx.strokeStyle = "rgba(" + r + "," + g + "," + b + ",1)";
+      ctx.stroke();
+    }
   }
 }
