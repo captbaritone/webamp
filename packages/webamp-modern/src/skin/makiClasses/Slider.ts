@@ -39,6 +39,8 @@ export default class Slider extends GuiObj {
   _high: number = 255;
   _thumbWidth: number = 0;
   _thumbHeight: number = 0;
+  _thumbLeft: number = 0;
+  _thumbTop: number = 0;
   _position: number = 0;
   _param: string | null = null;
   _actionHandler: null | ActionHandler;
@@ -362,11 +364,21 @@ export default class Slider extends GuiObj {
   _renderThumbPosition() {
     const actual = this._getActualSize();
     if (this._vertical) {
-      const top = (1 - this._position) * (actual.height - this._thumbHeight);
-      this._div.style.setProperty("--thumb-top", px(Math.max(0, top)));
+      const top = Math.floor(
+        Math.max(0, (1 - this._position) * (actual.height - this._thumbHeight))
+      );
+      if (this._thumbTop != top) {
+        this._thumbTop = top;
+        this._div.style.setProperty("--thumb-top", px(top));
+      }
     } else {
-      const left = this._position * (actual.width - this._thumbWidth);
-      this._div.style.setProperty("--thumb-left", px(left));
+      const left = Math.floor(
+        this._position * (actual.width - this._thumbWidth)
+      );
+      if (this._thumbLeft != left) {
+        this._thumbLeft = left;
+        this._div.style.setProperty("--thumb-left", px(left));
+      }
     }
   }
 
@@ -432,7 +444,6 @@ class SeekActionHandler extends ActionHandler {
       // if (this._slider.getId() == "seekerghost")
       //   console.log("thumb: not isPending()!");
       this._slider._position = UI_ROOT.audio.getCurrentTimePercent();
-      // TODO: We could throttle this, or only render if the change is "significant"?
       this._slider._renderThumbPosition();
     }
   };
