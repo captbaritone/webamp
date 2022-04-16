@@ -65,6 +65,9 @@ export default class Container extends XmlObj {
     for (const layout of this._layouts) {
       layout.init();
     }
+    // maki need 'onSwitchToLayout':
+    this.switchToLayout(this.getCurLayout().getId())
+    
   }
 
   deinit() {
