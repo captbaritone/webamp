@@ -27,11 +27,7 @@ async function main() {
   // Purposefully don't await, let this load in parallel.
   initializeSkinListMenu();
 
-  setStatus("Downloading skin...");
-  const skinPath = getUrlQuery(window.location, "skin") || DEFAULT_SKIN;
-  const response = await fetch(skinPath);
-  const data = await response.blob();
-  await loadSkin(data);
+  changeSkinByUrl();
 
   setStatus("Downloading MP3...");
   UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
@@ -48,6 +44,15 @@ async function main() {
   UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
   UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
 
+  setStatus("");
+}
+
+async function changeSkinByUrl() {
+  setStatus("Downloading skin...");
+  const skinPath = getUrlQuery(window.location, "skin") || DEFAULT_SKIN;
+  const response = await fetch(skinPath);
+  const data = await response.blob();
+  await loadSkin(data);
   setStatus("");
 }
 
@@ -146,9 +151,24 @@ async function initializeSkinListMenu() {
   select.addEventListener("change", (e: any) => {
     const url = new URL(window.location.href);
     url.searchParams.set("skin", e.target.value);
-    window.location.replace(url.href);
+    // window.location.replace(url.href);
+    const title = e.target.text;
+    const newPath = url.href.substring(url.origin.length);
+
+    // https://stackoverflow.com/questions/3338642/updating-address-bar-with-new-url-without-hash-or-reloading-the-page
+    window.history.pushState({ pageTitle: title }, title, newPath);
+    changeSkinByUrl();
+
     downloadLink.href = e.target.value;
   });
+
+  window.onpopstate = function (e) {
+    if (e.state) {
+      // document.getElementById("content").innerHTML = e.state.html;
+      document.title = e.state.pageTitle;
+      changeSkinByUrl();
+    }
+  };
 
   document.body.appendChild(select);
   document.body.appendChild(downloadLink);

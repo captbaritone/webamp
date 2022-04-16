@@ -67,6 +67,12 @@ export default class Container extends XmlObj {
     }
   }
 
+  deinit() {
+    for (const layout of this._layouts) {
+      layout.deinit();
+    }
+  }
+
   resolveAlias() {
     const knownContainerGuids = {
       "{0000000a-000c-0010-ff7b-01014263450c}": "vis",  // visualization

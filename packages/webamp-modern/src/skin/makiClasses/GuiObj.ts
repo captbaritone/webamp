@@ -264,6 +264,10 @@ export default class GuiObj extends XmlObj {
     });
   }
 
+  deinit(){
+    
+  }
+
   getDiv(): HTMLElement {
     return this._div;
   }

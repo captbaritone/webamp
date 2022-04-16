@@ -57,6 +57,15 @@ export default class Group extends Movable {
     }
   }
 
+  deinit() {
+    for (const systemObject of this._systemObjects) {
+      systemObject.deinit();
+    }
+    for (const child of this._children) {
+      child.deinit();
+    }
+  }
+
   getId() {
     return this._instanceId || this._id;
   }

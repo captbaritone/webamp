@@ -42,7 +42,7 @@ export class UIRoot {
   _bucketEntries: { [wndType: string]: XmlElement[] } = {};
   _xFades: GroupXFade[] = [];
   _input: HTMLInputElement = document.createElement("input");
-  _skinInfo: { [key: string]: string }  = {};
+  _skinInfo: { [key: string]: string } = {};
 
   // A list of all objects created for this skin.
   _objects: BaseObject[] = [];
@@ -66,6 +66,7 @@ export class UIRoot {
   getFileAsBlob: (filePath: string) => Promise<Blob>;
 
   reset() {
+    this.deinitSkin();
     this.dispose();
     this._bitmaps = [];
     this._fonts = [];
@@ -84,6 +85,13 @@ export class UIRoot {
 
     // A list of all objects created for this skin.
     this._objects = [];
+  }
+
+  deinitSkin() {
+    // skin is being switched to another skin
+    for (const container of this._containers) {
+      container.deinit();
+    }
   }
 
   getRootDiv() {
@@ -109,14 +117,14 @@ export class UIRoot {
     assume(found != null, `Could not find bitmap with id ${id}.`);
     return found;
   }
-  
+
   hasBitmap(id: string): boolean {
     const lowercaseId = id.toLowerCase();
     const found = findLast(
       this._bitmaps,
       (bitmap) => bitmap._id.toLowerCase() === lowercaseId
     );
-    return found? true: false
+    return found ? true : false;
   }
 
   addFont(font: TrueTypeFont | BitmapFont) {
@@ -239,7 +247,7 @@ export class UIRoot {
       );
       this._activeGammaSetName = id;
       this._activeGammaSet = found;
-      PRIVATE_CONFIG.setPrivateString(this.getSkinName(),'_gammagroup_',id)
+      PRIVATE_CONFIG.setPrivateString(this.getSkinName(), "_gammagroup_", id);
     }
     this._setCssVars();
   }
@@ -247,9 +255,13 @@ export class UIRoot {
   enableDefaultGammaSet() {
     // TODO: restore the latest gammaSet picked by user for this skin
     const gammaSetNames = Array.from(this._gammaSets.keys());
-    const firstName = gammaSetNames[0] || '';
+    const firstName = gammaSetNames[0] || "";
     const antiBoring = gammaSetNames[1];
-    const lastGamma = PRIVATE_CONFIG.getPrivateString(this.getSkinName(),'_gammagroup_',firstName)
+    const lastGamma = PRIVATE_CONFIG.getPrivateString(
+      this.getSkinName(),
+      "_gammagroup_",
+      firstName
+    );
     this.enableGammaSet(lastGamma);
   }
 
@@ -528,14 +540,14 @@ export class UIRoot {
     return "UIROOT";
   }
 
-  setSkinInfo(skinInfo:{ [key: string]: string }){
-    this._skinInfo = skinInfo
+  setSkinInfo(skinInfo: { [key: string]: string }) {
+    this._skinInfo = skinInfo;
   }
-  getSkinInfo():{ [key: string]: string }{
-    return this._skinInfo 
+  getSkinInfo(): { [key: string]: string } {
+    return this._skinInfo;
   }
   getSkinName(): string {
-    return this.getSkinInfo()['name'];
+    return this.getSkinInfo()["name"];
   }
 }
 

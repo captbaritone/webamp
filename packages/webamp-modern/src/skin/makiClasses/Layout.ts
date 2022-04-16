@@ -3,6 +3,7 @@ import * as Utils from "../../utils";
 import Container from "./Container";
 import { LEFT, RIGHT, TOP, BOTTOM, CURSOR, MOVE } from "../Cursor";
 import { px } from "../../utils";
+import UI_ROOT from "../../UIRoot";
 
 // > A layout is a special kind of group, which shown inside a container. Each
 // > layout represents an appearance for that window. Layouts give you the ability
@@ -63,6 +64,24 @@ export default class Layout extends Group {
     return this._parent._x;
   }
 
+  /**
+   * Resize the object to the desired size and position.
+   *
+   * @param  x   The X position where to anchor the object before resize.
+   * @param  y   The Y position where to anchor the object before resize.
+   * @param  w   The width you wish the object to have.
+   * @param  h   The height you wish the object to have.
+   */
+  resize(x: number, y: number, w: number, h: number) {
+    const container = this._parent;
+    container.setXmlAttr("x", String(x));
+    container.setXmlAttr("y", String(y));
+    
+    this._width = w;
+    this._height = h;
+    this._renderDimensions();
+  }
+
   dispatchAction(
     action: string,
     param: string | null,
@@ -118,6 +137,7 @@ export default class Layout extends Group {
   init() {
     super.init();
     this._invalidateSize();
+    UI_ROOT.vm.dispatch(this, "onstartup");
   }
 
   setResizing(cmd: string, dx: number, dy: number) {

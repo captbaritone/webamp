@@ -87,6 +87,10 @@ export default class SystemObject extends BaseObject {
     UI_ROOT.vm.addScript(this._parsedScript);
     UI_ROOT.vm.dispatch(this, "onscriptloaded");
   }
+  
+  deinit(){
+    UI_ROOT.vm.dispatch(this, "onscriptunloading");
+  }
 
   setParentGroup(group: Group) {
     this._parentGroup = group;

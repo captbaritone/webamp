@@ -18,6 +18,7 @@ export default class PlayListGui extends Group {
   init() {
     super.init();
     UI_ROOT.playlist.on("trackchange", this.refresh);
+    this.refresh();
   }
 
   _prepareScrollbar() {
@@ -74,7 +75,7 @@ export default class PlayListGui extends Group {
         UI_ROOT.audio.play();
         this.refresh();
       });
-      line.textContent = `${i+1}. ${pl.gettitle(i)}`;
+      line.textContent = `${i + 1}. ${pl.gettitle(i)}`;
       this._contentPanel.appendChild(line);
     }
   };
