@@ -37,9 +37,13 @@ export default class Vis extends GuiObj {
   _peaks: boolean = true;
   _oscStyle: string;
   _bandwidth: string;
+  _gammagroup: string;
 
   constructor() {
     super();
+    while(this._colorBands.length<16){
+      this._colorBands.push("255,255,255")
+    }
     this._painter = new NoVisualizer(this);
     UI_ROOT.audio.on("statchanged", this.audioStatusChanged);
   }
@@ -53,6 +57,9 @@ export default class Vis extends GuiObj {
     switch (key) {
       case "mode":
         this.setmode(num(value));
+        break;
+      case "gammagroup":
+        this._gammagroup = value;
         break;
 
       //? SPECTRUM -------------------------------------------
@@ -243,13 +250,24 @@ class NoVisualizer extends VisPainter {
 const NUM_BARS = 19;
 class BarPainter extends VisPainter {
   _barWidth: number;
-  _color: string;
+  _color: string = "rgb(255,255,255)";
 
   prepare() {
     const vis = this._vis;
-    // this._barWidth = Math.ceil(vis.getwidth() / NUM_BARS); //! why width not valid?
     this._barWidth = Math.ceil(vis._canvas.width / NUM_BARS);
-    this._color = `rgba(${(vis._colorBands[0], 1)}`;
+    if (vis._colorBands[0]) {
+      this._color = `rgba(${(vis._colorBands[0], 1)}`;
+
+      if (vis._gammagroup) {
+        const groupId = vis._gammagroup;
+        const gammaGroup = UI_ROOT._getGammaGroup(groupId);
+        // const url = gammaGroup.transformColor(color.getValue());
+
+        // this._barWidth = Math.ceil(vis.getwidth() / NUM_BARS); //! why width not valid?
+        // this._color = `rgba(${(vis._colorBands[0], 1)}`;
+        this._color = gammaGroup.transformColor(vis._colorBands[0]);
+      }
+    }
   }
 
   paintFrame(ctx: CanvasRenderingContext2D) {
