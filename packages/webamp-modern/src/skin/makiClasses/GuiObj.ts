@@ -36,8 +36,8 @@ export default class GuiObj extends XmlObj {
   _maximumWidth: number = 0;
   _relatx: string;
   _relaty: string;
-  _relatw: string;
-  _relath: string;
+  _relatw: string = "0";
+  _relath: string = "0";
   _autowidthsource: string;
   _droptarget: string;
   _visible: boolean = true;
@@ -194,7 +194,7 @@ export default class GuiObj extends XmlObj {
   };
 
   _cfgAttribChanged(newValue: string) {
-    // inheritor shall 
+    // inheritor shall
     // do something when configAttrib broadcast message `datachanged` by other object
   }
 
@@ -235,8 +235,8 @@ export default class GuiObj extends XmlObj {
       }
     }
 
-    if(this._configAttrib){
-      this._cfgAttribChanged( this._configAttrib.getdata() )
+    if (this._configAttrib) {
+      this._cfgAttribChanged(this._configAttrib.getdata());
     }
 
     this._div.addEventListener("mousedown", (e) => {
@@ -264,9 +264,7 @@ export default class GuiObj extends XmlObj {
     });
   }
 
-  deinit(){
-    
-  }
+  deinit() {}
 
   getDiv(): HTMLElement {
     return this._div;

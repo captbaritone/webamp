@@ -37,6 +37,7 @@ export default class Vis extends GuiObj {
   _peaks: boolean = true;
   _oscStyle: string;
   _bandwidth: string;
+  // _destroying: boolean = false; // set true when deinit
 
   constructor() {
     super();
@@ -123,6 +124,16 @@ export default class Vis extends GuiObj {
     return true;
   }
 
+  init() {
+    super.init()
+    this.audioStatusChanged()
+  }
+
+  deinit() {
+    super.deinit();
+    this._stopVisualizer()
+  }
+
   setmode(mode: number) {
     this._mode = mode;
     switch (mode) {
@@ -142,35 +153,47 @@ export default class Vis extends GuiObj {
   }
 
   _setPainter(PainterType: typeof VisPainter) {
-    if (this._painter) {
-      this._painter.dispose();
-    }
+    // uninteruptable painting requires _painter to be always available
+    const oldPainter = this._painter;
     this._painter = new PainterType(this);
+
+    if (oldPainter) {
+      oldPainter.dispose();
+    }
   }
 
   // disposable
   audioStatusChanged = () => {
+    // to avoid multiple loop, we always stop the old painting loop
+    this._stopVisualizer()
+    
+    // start the new loop
     const playing = UI_ROOT.audio.getState() == AUDIO_PLAYING;
+    if (playing) {
+      this._startVisualizer()
+    }
+  };
 
+  _startVisualizer() {
+    // Kick off the animation loop
+    const ctx = this._canvas.getContext("2d");
+    if (ctx == null) {
+      return;
+    }
+    ctx.imageSmoothingEnabled = false;
+    const loop = () => {
+      this._painter.paintFrame(ctx);
+      this._animationRequest = window.requestAnimationFrame(loop);
+    };
+    loop();
+  }
+
+  _stopVisualizer() {
     if (this._animationRequest != null) {
       window.cancelAnimationFrame(this._animationRequest);
       this._animationRequest = null;
     }
-
-    if (playing) {
-      // Kick off the animation loop
-      const ctx = this._canvas.getContext("2d");
-      if (ctx == null) {
-        return;
-      }
-      ctx.imageSmoothingEnabled = false;
-      const loop = () => {
-        this._painter.paintFrame(ctx);
-        this._animationRequest = window.requestAnimationFrame(loop);
-      };
-      loop();
-    }
-  };
+  }
 
   /*extern Vis.onFrame();
 extern Vis.setRealtime(Boolean onoff);
@@ -234,11 +257,11 @@ class WavePainter extends VisPainter {
   prepare() {}
 
   paintFrame(ctx: CanvasRenderingContext2D) {
-    const width = ctx.canvas.width
-    const height = ctx.canvas.height
+    const width = ctx.canvas.width;
+    const height = ctx.canvas.height;
     ctx.clearRect(0, 0, width, height);
-    ctx.lineWidth=5;
-    for(var i=0; i < 30; i+=1) {
+    ctx.lineWidth = 5;
+    for (var i = 0; i < 30; i += 1) {
       var r = Math.floor(Math.random() * 255);
       var g = Math.floor(Math.random() * 255);
       var b = Math.floor(Math.random() * 255);

@@ -49,7 +49,15 @@ export default class Slider extends GuiObj {
   _mouseDy: number = 0;
 
   _getActualSize() {
-    return this._div.getBoundingClientRect();
+    const relatSize = this._div.getBoundingClientRect();
+    // sometime getBoundingClientRect return zero if element not in DOM.
+    if (!this.getguirelatw()) {
+      relatSize.width = this.getwidth();
+    }
+    if (!this.getguirelath()) {
+      relatSize.height = this.getheight();
+    }
+    return relatSize;
   }
 
   /**
@@ -207,6 +215,7 @@ export default class Slider extends GuiObj {
   }
 
   _initializeActionHandler() {
+    const oldActionHandler = this._actionHandler;
     switch (this._action) {
       case "seek":
         this._actionHandler = new SeekActionHandler(this);
@@ -230,6 +239,9 @@ export default class Slider extends GuiObj {
         break;
       default:
         assume(false, `Unhandled slider action: ${this._action}`);
+    }
+    if (oldActionHandler != null && oldActionHandler != this._actionHandler) {
+      oldActionHandler.dispose();
     }
   }
 
@@ -388,8 +400,8 @@ export default class Slider extends GuiObj {
     assume(this._barLeft == null, "Need to handle Slider barleft");
     assume(this._barRight == null, "Need to handle Slider barright");
     assume(this._barMiddle == null, "Need to handle Slider barmiddle");
-    this._div.style.setProperty("--thumb-left", px(0));
-    this._div.style.setProperty("--thumb-top", px(0));
+    // this._div.style.setProperty("--thumb-left", px(0));
+    // this._div.style.setProperty("--thumb-top", px(0));
     this._prepareThumbBitmaps();
     this._renderThumbPosition();
     // this._div.appendChild(this._thumbDiv);

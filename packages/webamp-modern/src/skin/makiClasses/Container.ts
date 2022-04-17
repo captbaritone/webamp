@@ -66,7 +66,11 @@ export default class Container extends XmlObj {
       layout.init();
     }
     // maki need 'onSwitchToLayout':
-    this.switchToLayout(this.getCurLayout().getId())
+    // this.switchToLayout(this.getCurLayout().getId())
+    UI_ROOT.vm.dispatch(this, "onswitchtolayout", [
+      { type: "OBJECT", value: this.getCurLayout() },
+    ]);
+
     
   }
 
@@ -196,6 +200,7 @@ export default class Container extends XmlObj {
 
   _clearCurrentLayout() {
     removeAllChildNodes(this._div);
+    // this._div.removeChild(this._activeLayout.getDiv())
   }
 
   switchToLayout(layout_id: string) {
@@ -230,11 +235,17 @@ export default class Container extends XmlObj {
 
   _renderLayout() {
     if (this._visible && this._activeLayout) {
-      this._activeLayout.draw();
+      // this._activeLayout.draw();
       this._div.appendChild(this._activeLayout.getDiv());
       // this.center();
     } else {
-      removeAllChildNodes(this._div);
+      this._clearCurrentLayout();
+    }
+  }
+
+  _renderLayouts(){
+    for (const layout of this._layouts) {
+      layout.draw();
     }
   }
 
@@ -242,6 +253,7 @@ export default class Container extends XmlObj {
     this._div.setAttribute("id", this.getId());
     this._div.setAttribute("tabindex", "1");
     this._renderDimensions();
+    this._renderLayouts();
     this._renderLayout();
   }
 }
