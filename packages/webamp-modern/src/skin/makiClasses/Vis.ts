@@ -1,5 +1,5 @@
 import UI_ROOT from "../../UIRoot";
-import { num, toBool } from "../../utils";
+import { debounce, num, toBool } from "../../utils";
 import { AUDIO_PLAYING } from "../AudioPlayer";
 import GuiObj from "./GuiObj";
 
@@ -37,7 +37,6 @@ export default class Vis extends GuiObj {
   _peaks: boolean = true;
   _oscStyle: string;
   _bandwidth: string;
-  // _destroying: boolean = false; // set true when deinit
 
   constructor() {
     super();
@@ -121,11 +120,12 @@ export default class Vis extends GuiObj {
       default:
         return false;
     }
+    this._rebuildPainter();
     return true;
   }
 
   init() {
-    this.setmode(1)
+    this.setmode(1);
     super.init();
     this.audioStatusChanged();
   }
@@ -134,6 +134,12 @@ export default class Vis extends GuiObj {
     super.deinit();
     this._stopVisualizer();
   }
+
+  _rebuildPainter = debounce(() => {
+    if (this._painter) {
+      this._painter.prepare();
+    }
+  }, 500);
 
   setmode(mode: number) {
     this._mode = mode;
@@ -181,7 +187,8 @@ export default class Vis extends GuiObj {
     if (ctx == null) {
       return;
     }
-    ctx.imageSmoothingEnabled = false;
+    // ctx.imageSmoothingEnabled = false;
+    this._rebuildPainter();
     const loop = () => {
       this._painter.paintFrame(ctx);
       this._animationRequest = window.requestAnimationFrame(loop);
@@ -232,10 +239,58 @@ class NoVisualizer extends VisPainter {
   }
 }
 
+//? =============================== BAR PAINTER ===============================
+const NUM_BARS = 19;
 class BarPainter extends VisPainter {
-  prepare() {}
+  _barWidth: number;
+  _color: string;
+
+  prepare() {
+    const vis = this._vis;
+    // this._barWidth = Math.ceil(vis.getwidth() / NUM_BARS); //! why width not valid?
+    this._barWidth = Math.ceil(vis._canvas.width / NUM_BARS);
+    this._color = `rgba(${(vis._colorBands[0], 1)}`;
+  }
 
   paintFrame(ctx: CanvasRenderingContext2D) {
+    const w = ctx.canvas.width;
+    const h = ctx.canvas.height;
+    // this._barWidth = Math.ceil(w / NUM_BARS);
+    ctx.clearRect(0, 0, w, h);
+    // ctx.fillStyle = 'white';
+    // ctx.fillRect(0,0,w,h);
+    ctx.fillStyle = this._color;
+    for (var i = 0; i < NUM_BARS; i++) {
+      var x2 = i + 1;
+      // var x = Math.floor(Math.random() * ctx.canvas.width - 17);
+      // var y = Math.floor(Math.random() * h);
+      var y = Math.ceil(Math.random() * h);
+      // var radius = Math.floor(Math.random() * 20);
+      ctx.fillRect(this._barWidth * i, y, this._barWidth * x2, h);
+
+      // ctx.beginPath();
+      // ctx.rect(this._barWidth*i, y, this._barWidth*(i+1), h);
+
+      // var r = Math.floor(Math.random() * 255);
+      // var g = Math.floor(Math.random() * 255);
+      // var b = Math.floor(Math.random() * 255);
+
+      // ctx.beginPath();
+      // ctx.arc(x, y, radius, Math.PI * 2, 0, false);
+      // ctx.fill();
+      // ctx.closePath();
+      // ctx.fill();
+      // ctx.closePath();
+    }
+    // ctx.beginPath();
+    // ctx.moveTo(0,0);
+    // ctx.lineTo(0,h);
+    // ctx.lineTo(w,h);
+    // ctx.strokeStyle = "rgb(255,0,0)";
+    // ctx.stroke();
+  }
+
+  paintFrame0(ctx: CanvasRenderingContext2D) {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     for (var i = 0; i < 600; i++) {
       var x = Math.floor(Math.random() * ctx.canvas.width - 17);
@@ -254,6 +309,9 @@ class BarPainter extends VisPainter {
     }
   }
 }
+
+//? =============================== OSCILOSCOPE PAINTER ===============================
+
 class WavePainter extends VisPainter {
   prepare() {}
 
