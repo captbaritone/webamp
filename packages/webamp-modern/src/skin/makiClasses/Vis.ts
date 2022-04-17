@@ -30,7 +30,7 @@ export default class Vis extends GuiObj {
   // "0" is no display,
   // "1" is spectrum,
   // "2" is oscilloscope. Default is to read from a config item. When the user clicks on the vis, it will cycle between its three modes.
-  _mode: number = 0;
+  _mode: number = 1;
   _colorBands: ColorTriplet[] = []; // 1..16
   _colorBandPeak: ColorTriplet = "255,255,255";
   _colorOsc: ColorTriplet[] = []; // 1..5
@@ -125,13 +125,14 @@ export default class Vis extends GuiObj {
   }
 
   init() {
-    super.init()
-    this.audioStatusChanged()
+    this.setmode(1)
+    super.init();
+    this.audioStatusChanged();
   }
 
   deinit() {
     super.deinit();
-    this._stopVisualizer()
+    this._stopVisualizer();
   }
 
   setmode(mode: number) {
@@ -165,12 +166,12 @@ export default class Vis extends GuiObj {
   // disposable
   audioStatusChanged = () => {
     // to avoid multiple loop, we always stop the old painting loop
-    this._stopVisualizer()
-    
+    this._stopVisualizer();
+
     // start the new loop
     const playing = UI_ROOT.audio.getState() == AUDIO_PLAYING;
     if (playing) {
-      this._startVisualizer()
+      this._startVisualizer();
     }
   };
 
@@ -237,8 +238,8 @@ class BarPainter extends VisPainter {
   paintFrame(ctx: CanvasRenderingContext2D) {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     for (var i = 0; i < 600; i++) {
-      var x = Math.floor(Math.random() * 300);
-      var y = Math.floor(Math.random() * 300);
+      var x = Math.floor(Math.random() * ctx.canvas.width - 17);
+      var y = Math.floor(Math.random() * ctx.canvas.height - 17);
       var radius = Math.floor(Math.random() * 20);
 
       var r = Math.floor(Math.random() * 255);
