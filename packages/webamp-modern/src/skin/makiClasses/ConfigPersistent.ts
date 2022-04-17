@@ -1,3 +1,4 @@
+import { debounce } from "../../utils";
 import BaseObject from "./BaseObject";
 
 export type SectionValues = { [key: string]: string };
@@ -53,15 +54,3 @@ export default class ConfigPersistent extends BaseObject {
   }, 500);
 }
 
-function debounce<Params extends any[]>(
-  func: (...args: Params) => any,
-  timeout: number
-): (...args: Params) => void {
-  let timer: NodeJS.Timeout;
-  return (...args: Params) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      func(...args);
-    }, timeout);
-  };
-}
