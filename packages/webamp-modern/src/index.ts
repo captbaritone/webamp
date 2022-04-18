@@ -13,7 +13,8 @@ function hack() {
   classResolver("A funny joke about why this is needed.");
 }
 
-addDropHandler(loadSkin);
+// temporary disable:
+// addDropHandler(loadSkin);
 
 const STATUS = document.getElementById("status");
 
@@ -136,6 +137,7 @@ async function initializeSkinListMenu() {
     { filename: "default", download_url: "" },
     { filename: "MMD3", download_url: "assets/MMD3.wal" },
     { filename: "[Folder] MMD3", download_url: "assets/extracted/MMD3/" },
+    { filename: "[Classic]", download_url: "assets/base-2.91.wsz" },
   ];
 
   const skins = [...internalSkins, ...data.data.modern_skins.nodes];

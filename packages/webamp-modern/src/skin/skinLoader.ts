@@ -1,6 +1,7 @@
 import JSZip from "jszip";
 import UI_ROOT from "../UIRoot";
 import SkinParser from "./parse";
+import ClassicSkinParser from "./skinParser_wsz";
 
 const STATUS = document.getElementById("status");
 
@@ -15,12 +16,12 @@ async function _loadSkin_WAL(skinPath: string) {
   setStatus("Loading .wal archive...");
   const zip = await JSZip.loadAsync(skinZipBlob);
   UI_ROOT.setZip(zip);
-  await _parseSkin_WAL();
+  await _parseSkin_WAL(SkinParser);
 }
 
-async function _parseSkin_WAL() {
+async function _parseSkin_WAL(ASkinParser: typeof SkinParser) {
   setStatus("Parsing XML and initializing images...");
-  const parser = new SkinParser(UI_ROOT);
+  const parser = new ASkinParser(UI_ROOT);
 
   // This is always the same as the global singleton.
   const uiRoot = await parser.parse();
@@ -49,7 +50,17 @@ async function _loadPath_WAL(skinPath: string) {
   UI_ROOT.setSkinDir(skinPath);
 
   setStatus("Loading skin folder...");
-  await _parseSkin_WAL();
+  await _parseSkin_WAL(SkinParser);
+}
+
+async function _loadSkin_WSZ(skinPath: string) {
+  const response = await fetch(skinPath);
+  const skinZipBlob = await response.blob();
+
+  setStatus("Loading .wsz archive...");
+  const zip = await JSZip.loadAsync(skinZipBlob);
+  UI_ROOT.setZip(zip);
+  await _parseSkin_WAL(ClassicSkinParser);
 }
 
 export async function loadSkin(skinPath: string) {
@@ -62,9 +73,8 @@ export async function loadSkin(skinPath: string) {
   } else if (skinPath.endsWith("/")) {
     await _loadPath_WAL(skinPath);
     //
-  } else if (skinPath.endsWith(".swz")) {
-    //TODO: support .swz classic skin
-    setStatus("not supported file: " + skinPath);
+  } else if (skinPath.endsWith(".wsz")) {
+    await _loadSkin_WSZ(skinPath);    
     //
   } else {
     //TODO: support .swz and localhost path/to/skin-name/

@@ -48,7 +48,7 @@ class ParserContext {
   parentGroup: Group | /* Group includes Layout | */ null = null;
 }
 
-const RESOURCE_PHASE = 1; //full async + Promise.all()
+export const RESOURCE_PHASE = 1; //full async + Promise.all()
 const ResourcesTag = [
   // below are some resource that immediatelly popped (removed) from xml structure.
   // so wouldn't be parsed twice.
@@ -62,7 +62,7 @@ const ResourcesTag = [
   // but will be kept in xml (unremoved).
 ];
 
-const GROUP_PHASE = 2; //full sync mode, because of inheritance
+export const GROUP_PHASE = 2; //full sync mode, because of inheritance
 
 export default class SkinParser {
   _imageManager: ImageManager;
@@ -1007,7 +1007,7 @@ export default class SkinParser {
   }
 }
 
-function parseXmlFragment(xml: string): XmlElement {
+export function parseXmlFragment(xml: string): XmlElement {
   // Note: Included files don't have a single root node, so we add a synthetic one.
   // A different XML parser library might make this unnessesary.
   return parseXml(`<wrapper>${xml}</wrapper>`) as unknown as XmlElement;
