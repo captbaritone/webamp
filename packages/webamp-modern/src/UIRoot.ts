@@ -5,6 +5,7 @@ import TrueTypeFont from "./skin/TrueTypeFont";
 import {
   assert,
   assume,
+  Emitter,
   findLast,
   getCaseInsensitiveFile,
   removeAllChildNodes,
@@ -43,6 +44,7 @@ export class UIRoot {
   _xFades: GroupXFade[] = [];
   _input: HTMLInputElement = document.createElement("input");
   _skinInfo: { [key: string]: string } = {};
+  _eventListener: Emitter = new Emitter();
 
   // A list of all objects created for this skin.
   _objects: BaseObject[] = [];
@@ -59,6 +61,17 @@ export class UIRoot {
     // document.body.appendChild(this._input);
     // TODO: dispose
     this._input.onchange = this._inputChanged;
+  }
+
+  // shortcut of this.Emitter
+  on(event: string, callback: Function): Function {
+    return this._eventListener.on(event, callback);
+  }
+  trigger(event: string, ...args: any[]) {
+    this._eventListener.trigger(event, ...args);
+  }
+  off(event: string, callback: Function) {
+    this._eventListener.off(event, callback);
   }
 
   getFileAsString: (filePath: string) => Promise<string>;
@@ -91,6 +104,9 @@ export class UIRoot {
     // skin is being switched to another skin
     for (const container of this._containers) {
       container.deinit();
+    }
+    for(const systemObj of this._systemObjects) {
+      systemObj.deinit()
     }
   }
 
@@ -249,6 +265,7 @@ export class UIRoot {
       this._activeGammaSet = found;
       PRIVATE_CONFIG.setPrivateString(this.getSkinName(), "_gammagroup_", id);
     }
+    this.trigger('colorthemechanged', id || '');
     this._setCssVars();
   }
 

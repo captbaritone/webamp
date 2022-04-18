@@ -46,6 +46,7 @@ export default class Vis extends GuiObj {
     }
     this._painter = new NoVisualizer(this);
     UI_ROOT.audio.on("statchanged", this.audioStatusChanged);
+    UI_ROOT.on("colorthemechanged", this._colorThemeChanged);
   }
 
   setXmlAttr(_key: string, value: string): boolean {
@@ -146,7 +147,11 @@ export default class Vis extends GuiObj {
     if (this._painter) {
       this._painter.prepare();
     }
-  }, 500);
+  }, 100);
+
+  _colorThemeChanged = (newGammaId:string) => {
+    this._rebuildPainter()
+  }
 
   setmode(mode: number) {
     this._mode = mode;
