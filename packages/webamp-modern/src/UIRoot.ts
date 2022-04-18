@@ -262,7 +262,7 @@ export class UIRoot {
         ).join(", ")}`
       );
       this._activeGammaSetName = id;
-      this._activeGammaSet = found;
+      this._activeGammaSet = found || [];
       PRIVATE_CONFIG.setPrivateString(this.getSkinName(), "_gammagroup_", id);
     }
     this.trigger('colorthemechanged', id || '');
