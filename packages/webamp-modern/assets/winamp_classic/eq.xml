@@ -1,0 +1,71 @@
+<container id="EQ" name="Winamp - Graphical Equalizer" default_w="364">
+    <groupdef id="eq">
+        <!--layer image="eqbg"/-->
+        <Wasabi:Button id="close" x="290" y="11" w="72" h="20" text="Close" action="close" retcode="0"/>
+        <Wasabi:Button id="EQ_0" x="290" y="60" w="72" h="20" text="Zero" retcode="0"/>
+        <Wasabi:Button id="reset" x="290" y="36" w="72" h="20" text="Reset" retcode="0"/>
+
+        <text x="12" y="13" valign="down" text="There can be a significant amount of latency\nbetween adjusting and hearing the effects,due\nto the buffering scheme used. You can reduce\nthe delay by decreasing buffers in the buffering\nsection of the preferences."/>
+
+        <text x="12" y="91" text="Gain values of >0% can result in distortion."/>
+
+        <text x="28" y="120" text="100% -"/>
+        <text x="12" y="160" text="Gain: 0% -"/>
+        <text x="25" y="201" text="-100% -"/>
+
+        <text x="70" y="225" text="bass...................................mid....................................treble"/>
+
+            <!--Wasabi:CheckBox x="269" y="91" w="70"
+                text="EQ Enabled"
+                action="EQ_TOGGLE"
+            /-->
+
+            <grid
+            x="271" y="95" w="11" h="11"
+            topleft="wasabi.objectframe.top.left"
+            top="wasabi.objectframe.top"
+            topright="wasabi.objectframe.top.right"
+            left="wasabi.objectframe.left"
+            middle="wasabi.objectframe.center"
+            right="wasabi.objectframe.right"
+            bottomleft="wasabi.objectframe.bottom.left"
+            bottom="wasabi.objectframe.bottom"
+            bottomright="wasabi.objectframe.bottom.right"
+            />
+
+            <button
+                x="273" y="97" 
+                image="wasabi.button.checkbox"
+                activeImage="wasabi.button.checkbox.pressed"
+                action="EQ_TOGGLE"
+                rectrgn="1"
+            />
+
+            <text x="282" y="94" text="EQ Enabled" align="left"/>
+
+        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="74" y="127" h="88" w="8"/>
+        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="111" y="127" h="88" w="8"/>
+        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="149" y="127" h="88" w="8"/>
+        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="186" y="127" h="88" w="8"/>
+        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="224" y="127" h="88" w="8"/>
+        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="261" y="127" h="88" w="8"/>
+        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="299" y="127" h="88" w="8"/>
+        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="336" y="127" h="88" w="8"/>
+        <Slider id="eq1" orientation="vertical" action="EQ_BAND" param="1" x="67" y="127" h="88" w="22" thumb="wasabi.slider.vertical.button" downThumb="wasabi.slider.vertical.button.pressed"/>
+        <Slider id="eq2" orientation="vertical" action="EQ_BAND" param="2" x="104" y="127" h="88" w="22" thumb="wasabi.slider.vertical.button" downThumb="wasabi.slider.vertical.button.pressed"/>
+        <Slider id="eq3" orientation="vertical" action="EQ_BAND" param="3" x="142" y="127" h="88" w="22" thumb="wasabi.slider.vertical.button" downThumb="wasabi.slider.vertical.button.pressed"/>
+        <Slider id="eq4" orientation="vertical" action="EQ_BAND" param="4" x="179" y="127" h="88" w="22" thumb="wasabi.slider.vertical.button" downThumb="wasabi.slider.vertical.button.pressed"/>
+        <Slider id="eq5" orientation="vertical" action="EQ_BAND" param="5" x="217" y="127" h="88" w="22" thumb="wasabi.slider.vertical.button" downThumb="wasabi.slider.vertical.button.pressed"/>
+        <Slider id="eq6" orientation="vertical" action="EQ_BAND" param="6" x="254" y="127" h="88" w="22" thumb="wasabi.slider.vertical.button" downThumb="wasabi.slider.vertical.button.pressed"/>
+        <Slider id="eq7" orientation="vertical" action="EQ_BAND" param="7" x="292" y="127" h="88" w="22" thumb="wasabi.slider.vertical.button" downThumb="wasabi.slider.vertical.button.pressed"/>
+        <Slider id="eq8" orientation="vertical" action="EQ_BAND" param="8" x="329" y="127" h="88" w="22" thumb="wasabi.slider.vertical.button" downThumb="wasabi.slider.vertical.button.pressed"/>
+
+        <script file="scripts/ZeroEQ.maki"/>
+        <script file="scripts/ResetEQ.maki"/>
+    </groupdef>
+
+    <layout id="EQ" background="component.basetexture" desktopalpha="0" minimum_h="269" minimum_w="382" maximum_h="269" maximum_w="382" appbar="top|bottom|left|right">
+        <Wasabi:StandardFrame:NoStatus x="0" y="0" w="0" h="0" relatw="1" relath="1" content="eq"/>
+    </layout>
+
+</container>

@@ -159,8 +159,10 @@ export default class Slider extends GuiObj {
         // (id) The bitmap element for the slider thumb.
         this._thumb = value;
         const bitmap = UI_ROOT.getBitmap(this._thumb);
-        this._thumbWidth = bitmap.getWidth();
-        this._thumbHeight = bitmap.getHeight();
+        if(bitmap){
+          this._thumbWidth = bitmap.getWidth();
+          this._thumbHeight = bitmap.getHeight();
+        }
         break;
       case "downthumb":
         // (id) The bitmap element for the slider thumb when held by the user.

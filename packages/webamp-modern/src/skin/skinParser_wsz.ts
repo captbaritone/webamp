@@ -30,16 +30,9 @@ export default class ClassicSkinParser extends SkinParser {
   async parse() {
     // Load built-in xui elements
     // await this.parseFromUrl("assets/xml/xui/standardframe.xml");
-    // const includedXml = await this._internalFile("player-elements.xml");
-    // // const includedXml = skinXmlContent;
-
-    // // Note: Included files don't have a single root node, so we add a synthetic one.
-    // // A different XML parser library might make this unnessesary.
-    // const parsed = parseXml(includedXml) as unknown as XmlElement;
 
     console.log("RESOURCE_PHASE #################");
     this._phase = RESOURCE_PHASE;
-    // await this.traverseChildren(parsed);
     await this._parseInternalFile("player-elements.xml");
 
     await this._solveMissingBitmaps();
@@ -48,8 +41,9 @@ export default class ClassicSkinParser extends SkinParser {
 
     console.log("GROUP_PHASE #################");
     this._phase = GROUP_PHASE;
-    // await this.traverseChildren(parsed);
     await this._parseInternalFile("player.xml");
+    //eqmain.bmp seem as not yet loaded, temporary disable:
+    // await this._parseInternalFile("eq.xml");
 
     console.log("BUCKET_PHASE #################");
     await this.rebuildBuckets();
