@@ -224,11 +224,15 @@ extern Vis.nextMode();*/
   _renderWidth() {
     super._renderWidth();
     this._canvas.style.width = this._div.style.width;
+    // this._canvas.style.width = '72px';
+    // this._canvas.setAttribute('width', `${parseInt(this._div.style.width)}`);
   }
-
+  
   _renderHeight() {
     super._renderHeight();
     this._canvas.style.height = this._div.style.height;
+    // this._canvas.style.height = '16px';
+    // this._canvas.setAttribute('height', `${parseInt(this._div.style.height)}`);
   }
 
   draw() {
