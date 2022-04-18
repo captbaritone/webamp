@@ -10,7 +10,7 @@ class VisPainter {
 
   constructor(vis: Vis) {
     this._vis = vis;
-    this.prepare();
+    // this.prepare();
   }
 
   prepare() {}
@@ -41,8 +41,8 @@ export default class Vis extends GuiObj {
 
   constructor() {
     super();
-    while(this._colorBands.length<16){
-      this._colorBands.push("255,255,255")
+    while (this._colorBands.length < 16) {
+      this._colorBands.push("255,255,255");
     }
     this._painter = new NoVisualizer(this);
     UI_ROOT.audio.on("statchanged", this.audioStatusChanged);
@@ -146,12 +146,17 @@ export default class Vis extends GuiObj {
   _rebuildPainter = debounce(() => {
     if (this._painter) {
       this._painter.prepare();
-    }
+      const ctx = this._canvas.getContext("2d");
+      if (ctx == null) {
+        return;
+      }
+      this._painter.paintFrame(ctx);
+      }
   }, 100);
 
-  _colorThemeChanged = (newGammaId:string) => {
-    this._rebuildPainter()
-  }
+  _colorThemeChanged = (newGammaId: string) => {
+    this._rebuildPainter();
+  };
 
   setmode(mode: number) {
     this._mode = mode;
@@ -199,7 +204,7 @@ export default class Vis extends GuiObj {
     if (ctx == null) {
       return;
     }
-    // ctx.imageSmoothingEnabled = false;
+    ctx.imageSmoothingEnabled = false;
     this._rebuildPainter();
     const loop = () => {
       this._painter.paintFrame(ctx);
@@ -225,14 +230,14 @@ extern Vis.nextMode();*/
     super._renderWidth();
     this._canvas.style.width = this._div.style.width;
     // this._canvas.style.width = '72px';
-    // this._canvas.setAttribute('width', `${parseInt(this._div.style.width)}`);
+    this._canvas.setAttribute("width", `${parseInt(this._div.style.width)}`);
   }
-  
+
   _renderHeight() {
     super._renderHeight();
     this._canvas.style.height = this._div.style.height;
     // this._canvas.style.height = '16px';
-    // this._canvas.setAttribute('height', `${parseInt(this._div.style.height)}`);
+    this._canvas.setAttribute("height", `${parseInt(this._div.style.height)}`);
   }
 
   draw() {
@@ -260,10 +265,16 @@ const NUM_BARS = 19;
 class BarPainter extends VisPainter {
   _barWidth: number;
   _color: string = "rgb(255,255,255)";
+  // Off-screen canvas for pre-rendering a single bar gradient
+  _bar: HTMLCanvasElement = document.createElement("canvas");
 
   prepare() {
     const vis = this._vis;
     this._barWidth = Math.ceil(vis._canvas.width / NUM_BARS);
+    // this._barWidth = vis._canvas.width / NUM_BARS;
+    this._bar.height = vis._canvas.height;
+    this._bar.width = 1;
+    // ctx.clearRect(0, 0, w, h);
     if (vis._colorBands[0]) {
       this._color = `rgba(${(vis._colorBands[0], 1)}`;
 
@@ -271,12 +282,15 @@ class BarPainter extends VisPainter {
         const groupId = vis._gammagroup;
         const gammaGroup = UI_ROOT._getGammaGroup(groupId);
         // const url = gammaGroup.transformColor(color.getValue());
-
+        
         // this._barWidth = Math.ceil(vis.getwidth() / NUM_BARS); //! why width not valid?
         // this._color = `rgba(${(vis._colorBands[0], 1)}`;
         this._color = gammaGroup.transformColor(vis._colorBands[0]);
       }
     }
+    var ctx = this._bar.getContext("2d")
+    ctx.fillStyle = this._color;
+    ctx.fillRect(0, 0, 1, vis._canvas.height);
   }
 
   paintFrame(ctx: CanvasRenderingContext2D) {
@@ -288,12 +302,17 @@ class BarPainter extends VisPainter {
     // ctx.fillRect(0,0,w,h);
     ctx.fillStyle = this._color;
     for (var i = 0; i < NUM_BARS; i++) {
-      var x2 = i + 1;
+      var x = Math.round(this._barWidth * i);
+      var r = this._barWidth - 2;
+      var x2 = Math.round(this._barWidth * (i + 1)) - 2;
       // var x = Math.floor(Math.random() * ctx.canvas.width - 17);
       // var y = Math.floor(Math.random() * h);
       var y = Math.ceil(Math.random() * h);
+      // var y = Math.ceil(i / NUM_BARS * h);
       // var radius = Math.floor(Math.random() * 20);
-      ctx.fillRect(this._barWidth * i, y, this._barWidth * x2, h);
+
+      // ctx.fillRect(x, y, x2, h);
+      ctx.drawImage(this._bar,x, y, x2-x+1, h-y)
 
       // ctx.beginPath();
       // ctx.rect(this._barWidth*i, y, this._barWidth*(i+1), h);
