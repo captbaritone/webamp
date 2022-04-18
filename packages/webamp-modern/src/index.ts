@@ -5,6 +5,7 @@ import SkinParser from "./skin/parse";
 import UI_ROOT from "./UIRoot";
 import { getUrlQuery } from "./utils";
 import { addDropHandler } from "./dropTarget";
+import { loadSkin } from "./skin/skinLoader";
 
 function hack() {
   // Without this Snowpack will try to treeshake out resolver causing a circular
@@ -50,13 +51,14 @@ async function main() {
 async function changeSkinByUrl() {
   setStatus("Downloading skin...");
   const skinPath = getUrlQuery(window.location, "skin") || DEFAULT_SKIN;
-  const response = await fetch(skinPath);
-  const data = await response.blob();
-  await loadSkin(data);
+  // const response = await fetch(skinPath);
+  // const data = await response.blob();
+  // await loadSkin(data);
+  await loadSkin(skinPath);
   setStatus("");
 }
 
-async function loadSkin(skinData: Blob) {
+async function loadSkin0(skinData: Blob) {
   UI_ROOT.reset();
   document.body.appendChild(UI_ROOT.getRootDiv());
 
@@ -133,6 +135,7 @@ async function initializeSkinListMenu() {
   const internalSkins = [
     { filename: "default", download_url: "" },
     { filename: "MMD3", download_url: "assets/MMD3.wal" },
+    { filename: "[Folder] MMD3", download_url: "assets/extracted/MMD3/" },
   ];
 
   const skins = [...internalSkins, ...data.data.modern_skins.nodes];
