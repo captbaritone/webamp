@@ -1,7 +1,5 @@
-import JSZip from "jszip";
 // This module is imported early here in order to avoid a circular dependency.
 import { classResolver } from "./skin/resolver";
-import SkinParser from "./skin/parse";
 import UI_ROOT from "./UIRoot";
 import { getUrlQuery } from "./utils";
 import { addDropHandler } from "./dropTarget";
@@ -56,38 +54,6 @@ async function changeSkinByUrl() {
   // const data = await response.blob();
   // await loadSkin(data);
   await loadSkin(skinPath);
-  setStatus("");
-}
-
-async function loadSkin0(skinData: Blob) {
-  UI_ROOT.reset();
-  document.body.appendChild(UI_ROOT.getRootDiv());
-
-  setStatus("Loading .wal archive...");
-  const zip = await JSZip.loadAsync(skinData);
-  UI_ROOT.setZip(zip);
-
-  setStatus("Parsing XML and initializing images...");
-  const parser = new SkinParser(UI_ROOT);
-
-  // This is always the same as the global singleton.
-  const uiRoot = await parser.parse();
-
-  uiRoot.loadTrueTypeFonts();
-
-  const start = performance.now();
-  uiRoot.enableDefaultGammaSet();
-  const end = performance.now();
-  console.log(`Loading initial gamma took: ${(end - start) / 1000}s`);
-
-  setStatus("Rendering skin for the first time...");
-  uiRoot.draw();
-  uiRoot.init();
-
-  setStatus("Initializing Maki...");
-  for (const container of uiRoot.getContainers()) {
-    container.init();
-  }
   setStatus("");
 }
 
