@@ -1,0 +1,73 @@
+<!-- Element definition -->
+<elements>
+
+<!-- titlebar -->
+
+    <bitmap id="menu" file="titlebar.bmp" x="0" y="0" w="9" h="9"/>
+    <bitmap id="menup" file="titlebar.bmp" x="0" y="9" w="9" h="9"/>
+
+    <bitmap id="mini" file="titlebar.bmp" x="9" y="0" w="9" h="9"/>
+    <bitmap id="minip" file="titlebar.bmp" x="9" y="9" w="9" h="9"/>
+
+    <bitmap id="close" file="titlebar.bmp" x="18" y="0" w="9" h="9"/>
+    <bitmap id="closep" file="titlebar.bmp" x="18" y="9" w="9" h="9"/>
+
+<!-- main -->
+    <bitmapfont id="player.BIGNUM" file="numfont.png" charwidth="9" charheight="13" hspacing="3" vspacing="1" gammagroup="Fonts"/>
+    <bitmapfont id="wasabi.font.default" file="text.bmp" charwidth="5" charheight="6" hspacing="0" vspacing="0" gammagroup="Display Fonts"/>
+    <bitmap id="player.main.background" file="main.bmp"/>
+
+<!-- cbuttons -->
+
+    <bitmap id="prev" file="cbuttons.bmp" x="0" y="0" w="23" h="18"/>
+    <bitmap id="prevp" file="cbuttons.bmp" x="0" y="18" w="23" h="18"/>
+
+    <bitmap id="play" file="cbuttons.bmp" x="23" y="0" w="23" h="18"/>
+    <bitmap id="playp" file="cbuttons.bmp" x="23" y="18" w="23" h="18"/>
+
+    <bitmap id="pause" file="cbuttons.bmp" x="46" y="0" w="23" h="18"/>
+    <bitmap id="pausep" file="cbuttons.bmp" x="46" y="18" w="23" h="18"/>
+
+    <bitmap id="stop" file="cbuttons.bmp" x="69" y="0" w="23" h="18"/>
+    <bitmap id="stopp" file="cbuttons.bmp" x="69" y="18" w="23" h="18"/>
+
+    <bitmap id="next" file="cbuttons.bmp" x="92" y="0" w="23" h="18"/>
+    <bitmap id="nextp" file="cbuttons.bmp" x="92" y="18" w="23" h="18"/>
+
+<!-- shufrep -->
+
+    <bitmap id="rep" file="shufrep.bmp" x="0" y="0" w="28" h="15"/>
+    <bitmap id="repp" file="shufrep.bmp" x="0" y="15" w="28" h="15"/>
+    <bitmap id="repa" file="shufrep.bmp" x="0" y="30" w="28" h="15"/>
+
+    <bitmap id="shuf" file="shufrep.bmp" x="28" y="0" w="51" h="15"/>
+    <bitmap id="shufp" file="shufrep.bmp" x="28" y="15" w="51" h="15"/>
+    <bitmap id="shufa" file="shufrep.bmp" x="28" y="30" w="51" h="15"/>
+
+<!-- posbar -->
+
+    <bitmap id="posbarbg" file="posbar.bmp" x="0" y="0" w="248" h="10"/>
+    <bitmap id="posbar" file="posbar.bmp" x="248" y="0" w="29" h="10"/>
+    <bitmap id="posbarp" file="posbar.bmp" x="278" y="0" w="29" h="10"/>
+
+<!-- monoster -->
+
+    <bitmap id="stereoon" file="monoster.bmp" x="0" y="0" w="29" h="12"/>
+    <bitmap id="stereooff" file="monoster.bmp" x="0" y="12" w="29" h="12"/>
+    <bitmap id="monoon" file="monoster.bmp" x="30" y="0" w="26" h="12"/>
+    <bitmap id="monooff" file="monoster.bmp" x="30" y="12" w="26" h="12"/>
+
+<!-- playpaus -->
+    <bitmap id="wa.play" file="playpaus.bmp" x="0" y="0" w="9" h="9"/>
+    <bitmap id="wa.pause" file="playpaus.bmp" x="9" y="0" w="9" h="9"/>
+    <bitmap id="wa.stop" file="playpaus.bmp" x="18" y="0" w="9" h="9"/>
+
+<!-- volume -->
+    <bitmap id="volume" file="volume.bmp" x="0" y="0" w="68" h="420"/>
+    <bitmap id="volbtnd" file="volume.bmp" x="0" y="422" w="14" h="11"/>
+    <bitmap id="volbtn" file="volume.bmp" x="15" y="422" w="14" h="11"/>
+
+<!-- analyzer -->
+    <bitmap id="analyzer" file="analyzer.bmp" x="0" y="0" w="32" h="15"/>
+
+</elements>
