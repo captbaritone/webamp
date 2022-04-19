@@ -1,5 +1,6 @@
 import parseXml, { XmlElement } from "@rgrove/parse-xml";
 import { UIRoot } from "../UIRoot";
+import BitmapFont from "./BitmapFont";
 import SkinParser, {
   GROUP_PHASE,
   parseXmlFragment,
@@ -61,4 +62,24 @@ export default class ClassicSkinParser extends SkinParser {
 
     this._uiRoot.getFileAsBytes = binFunc;
   }
+
+  //special case, wsz never use external/linked bitmap in its filename
+  _isExternalBitmapFont(font: BitmapFont) {
+    return false
+  }
+
+//   async bitmapFont(node: XmlElement) {
+//     // assume(
+//     //   node.children.length === 0,
+//     //   "Unexpected children in <bitmapFont> XML node."
+//     // );
+//     const font = new BitmapFont();
+//     font.setXmlAttributes(node.attributes);
+
+//       this._imageManager.addBitmap(font);
+//     }
+
+//     this._uiRoot.addFont(font);
+//   }
+
 }

@@ -276,7 +276,7 @@ class BarPainter extends VisPainter {
     this._bar.width = 1;
     // ctx.clearRect(0, 0, w, h);
     if (vis._colorBands[0]) {
-      this._color = `rgba(${(vis._colorBands[0], 1)}`;
+      this._color = `rgba(${vis._colorBands[0]}, 1)`;
 
       if (vis._gammagroup) {
         const groupId = vis._gammagroup;
@@ -291,6 +291,8 @@ class BarPainter extends VisPainter {
     var ctx = this._bar.getContext("2d")
     ctx.fillStyle = this._color;
     ctx.fillRect(0, 0, 1, vis._canvas.height);
+    //debug:
+    vis._canvas.style.setProperty('--color', this._color)
   }
 
   paintFrame(ctx: CanvasRenderingContext2D) {

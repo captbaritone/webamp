@@ -1,148 +1,81 @@
-<!-- stolen from pixelpusher and Ken Chen for the official Winamp3 skinning site. -->
-<!-- R.I.P Winamp3 <3 -->
+<groupdef id="mainwindow" x="0" y="0" w="550" h="232" relatw="1" relath="1">
+	
+	<vis id="wa.vis" x="24" y="43" w="72" h="16"/>	
+	<!-- Timer -->	
+	<text
+		id="timer"
+		display="time"
+		x="33" y="24"
+		w="70" h="18"
+		font="player.BIGNUM" fontsize="21" align="right"
+		timecolonwidth="6"
+	/>
 
-<!-- winamp cbuttons -->
-<groupdef id="player.normal.playbuttons" name="cbuttons">
-  <button 
-  id="Previous"
-	action="PREV" 
-	x="0" y="0" 
-	image="prev"
-  downimage="prevp"/>
-
-  <button
-  id="Play"
-	action="PLAY"
-	x="23" y="0"
-	image="play"
-  downimage="playp"/>
-
-  <button
-	id="Pause"
-	action="PAUSE"
-	x="46" y="0"
-	image="pause"
-  downimage="pausep"/>
-
-  <button
-	id="Stop"
-	action="STOP"
-	x="69" y="0"
-	image="stop"
-  downimage="stopp"/>
-
-  <button
-	id="Next"
-	action="NEXT"
-	x="92" y="0"
-	image="next"
-  downimage="nextp"/>
-
-</groupdef>
-
-<!-- main window construction -->
-<groupdef id="player.normal" name="Winamp">
-  <text
-	id="timer"
-	display="time"
-	x="29" y="24"
-	w="70" h="18"
-	font="player.BIGNUM" fontsize="21" align="right"
-	timecolonwidth="6"
-  />
+	<layer id="TimerTrigger" x="33" y="24"
+		w="70" h="18"/>
 
 <script file="scripts/wa2songtimer.maki"/>
+	<Songticker
+		id="songticker" ticker="1"
+		x="110" y="27"
+		w="155" h="9"
+		font="wasabi.font.default" fontsize="13"
+	/>
 
-  <togglebutton id="Repeat" x="189" y="89" image="rep"
-  downImage="repp" activeImage="repa"
-  cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Repeat" cfgval="2"/>
+	<slider id="player.slider.seek" action="SEEK" x="16" y="72" w="248" h="10" orientation="horizontal" thumb="posbar" downthumb="posbarp" rectrgn="1"/>	
 
-  <togglebutton id="Shuffle" x="139" y="89" image="shuf"
-  downImage="shufp" activeImage="shufa"
-  cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Shuffle"/>
+	<togglebutton id="Repeat" x="210" y="89" image="rep"
+		downImage="repp" activeImage="repa"
+		cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Repeat" cfgval="2"/>
+	
+	<togglebutton id="Shuffle" x="164" y="89" image="shuf"
+		downImage="shufp" activeImage="shufa"
+		cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Shuffle"/>
 
-	<button id="player.button.mainmenu" action="SYSMENU" x="6" y="3" image="menu" downimage="menup"/>
-	<button id="player.button.minimize" action="MINIMIZE" x="254" y="3" image="mini" downimage="minip"/>
-	<button id="player.button.close" action="CLOSE" x="264" y="3" image="close" downimage="closep"/>
+	<status id="wastatus" x="26" y="28" stopBitmap="wa.stop" playBitmap="wa.play" pauseBitmap="wa.pause" ghost="1"/>	
+	<layer id="playbackstatus" x="24" y="28" image="wa.play.green"/>
 
-  <status id="playpaus" x="24" y="28" stopBitmap="wa.stop" playBitmap="wa.play" pauseBitmap="wa.pause" ghost="1"/>
+	<!-- <script file="scripts/classicplaystatus.maki"/> -->
 
-  <Songticker
-    id="songticker" ticker="1"
-	x="142" y="27"
-	w="123" h="9"
-	font="wasabi.font.default" fontsize="13"
-  />
+	<text id="mixrate" display="songsamplerate" x="154" y="43" w="12" h="14" font="wasabi.font.default" fontsize="13" align="left" valign="top"/>	
+	<text id="bitrate" display="songbitrate" x="109" y="43" w="17" h="14" font="wasabi.font.default" fontsize="13" align="left" valign="top"/>	
 
-  <text
-    id="bitrate"
-    display="" align="left"
-    x="140" y="39"
-    w="17" h="14"
-    font="wasabi.font.default" fontsize="13"
-  />
+	<script file="scripts/winamp1kbps.maki"/>
 
-<script file="scripts/winamp1kbps.maki"/>
+	<button id="wabtn.previous" action="PREV" 	x="16" y="88" 	image="prev" downimage="prevp" tooltip="Previous Track"/>	
+	<button id="wabtn.play" action="PLAY" 		x="39" y="88" 	image="play" downimage="playp" tooltip="Play"/>	
+	<button id="wabtn.pause" action="PAUSE" 	x="62" y="88" image="pause" downimage="pausep" tooltip="Pause"/>	
+	<button id="wabtn.stop" action="STOP" 		x="84" y="88" image="stop" downimage="stopp" tooltip="Stop"/>	
+	<button id="wabtn.next" action="NEXT" 		x="107" y="88" image="next"	downimage="nextp" tooltip="Next Track"/>	
 
-    <text
-    id="mixrate"
-    display="" align="left"
-    x="234" y="39"
-    w="12" h="14"
-    font="wasabi.font.default" fontsize="13"
-  />
+	<button id="wabtn.open" action="EJECT" 		x="136" y="89" image="eject" downimage="ejectp" tooltip="Open File(s)"/>	
 
-  <layer id="mono" x="213" y="57" image="monoon" ghost="1"/>
-  <layer id="stereo" x="239" y="57" image="stereoon" ghost="1"/>
 
-  <script file="scripts/monoster.maki"/>
+	<layer id="wa.titlebar.on" x="0" y="0" image="wa.titlebar.on" ghost="1" activealpha="255" inactivealpha="0"/>	
+	<layer id="wa.titlebar.on" x="0" y="0" image="wa.titlebar.off" ghost="1" activealpha="0" inactivealpha="255"/>	
 
-<layer id="posbarbg" x="16" y="72" image="posbarbg" ghost="1" visible="0"/>
+	<button id="wa.sysmenu" action="SYSMENU" x="6" y="3" image="menu" downimage="menup" activealpha="255" inactivealpha="0" tooltip="Winamp Menu"/>	
 
-<slider id="player.slider.seek" action="SEEK" x="16" y="72" w="248" h="10" orientation="horizontal" thumb="posbar" downthumb="posbarp" rectrgn="1"/>
+	<button id="wa.switch" x="255" y="3" image="switch" downimage="switchp" tooltip="Minimize" activealpha="255" inactivealpha="0"/>	
+	<button id="wa.minimize" x="245" y="3" action="MINIMIZE" image="mini" downimage="minip" tooltip="Toggle Windowshade Mode" activealpha="255" inactivealpha="0"/>	
+	<button id="wa.close" x="264" y="3" action="CLOSE" image="close" downimage="closep" tooltip="Close" activealpha="255" inactivealpha="0"/>	
 
-<script file="scripts/setposbarvisibility.maki"/>
+	<button id="eq" action="TOGGLE" param="eq" x="219" y="58" image="player.toggler.eq.disabled" downImage="player.toggler.eq.pressed" activeImage="player.toggler.eq.enabled" tooltip="Toggle Equalizer"/>
+	<button id="pl" action="TOGGLE" param="guid:pl" x="242" y="58" image="player.toggler.pl.disabled" downImage="player.toggler.pl.pressed" activeImage="player.toggler.pl.enabled" tooltip="Toggle Playlist Editor"/>
 
-<togglebutton x="251" y="91" w="14" h="16" image="none" hoverimage="none" downimage="none" rectrgn="1" action="TOGGLE" param="guid:{D6201408-476A-4308-BF1B-7BACA1124B12}"/>
+	<layer id="mono" x="212" y="41" w="27" h="12" image="player.status.mono.inactive"/>
+	<layer id="stereo" x="239" y="41" w="29" h="12" image="player.status.stereo.inactive"/>
 
-</groupdef>
+	<script file="scripts/monoster.maki"/>
 
-<groupdef id="volumebar">
+	<Slider id="volumewa2" action="volume" orientation="horizontal" x="108" y="58" w="68" h="13" thumb="volbtn" downThumb="volbtnd"/>
+	<Slider id="balancewa2" action="PAN" orientation="horizontal" x="177" y="58" w="38" h="13" thumb="volbtn" downThumb="volbtnd"/>
 
-  <AnimatedLayer id="volume" w="68" h="15" image="volume" start="0" end="27" frameheight="15" ghost="1"/>
-  <slider action="VOLUME" y="-1" w="68" h="15" thumb="volbtn" downthumb="volbtnd"/>
+</groupdef>	
 
-  <script file="scripts/volume.maki"/>
 
-</groupdef>
-
-<groupdef id="analyzer">
-  <AnimatedLayer id="band1" w="4" h="15" image="analyzer" start="0" end="7" framewidth="4" ghost="1"/>
-  <AnimatedLayer id="band2" x="6" w="4" h="15" image="analyzer" start="0" end="7" framewidth="4" ghost="1"/>
-  <AnimatedLayer id="band3" x="12" w="4" h="15" image="analyzer" start="0" end="7" framewidth="4" ghost="1"/>
-  <AnimatedLayer id="band4" x="18" w="4" h="15" image="analyzer" start="0" end="7" framewidth="4" ghost="1"/>
-  <AnimatedLayer id="band5" x="24" w="4" h="15" image="analyzer" start="0" end="7" framewidth="4" ghost="1"/>
-  <AnimatedLayer id="band6" x="30" w="4" h="15" image="analyzer" start="0" end="7" framewidth="4" ghost="1"/>
-  <AnimatedLayer id="band7" x="36" w="4" h="15" image="analyzer" start="0" end="7" framewidth="4" ghost="1"/>
-  <AnimatedLayer id="band8" x="42" w="4" h="15" image="analyzer" start="0" end="7" framewidth="4" ghost="1"/>
-  <AnimatedLayer id="band9" x="48" w="4" h="15" image="analyzer" start="0" end="7" framewidth="4" ghost="1"/>
-  <AnimatedLayer id="band10" x="54" w="4" h="15" image="analyzer" start="0" end="7" framewidth="4" ghost="1"/>
-  <AnimatedLayer id="band11" x="60" w="4" h="15" image="analyzer" start="0" end="7" framewidth="4" ghost="1"/>
-  <AnimatedLayer id="band12" x="66" w="4" h="15" image="analyzer" start="0" end="7" framewidth="4" ghost="1"/>
-
-  <!-- <text id="analyzerdebug" w="50" h="15" color="255,255,255" bold="1" fontsize="18"/> -->
-
-  <script file="scripts/wa1vis.maki"/>
-</groupdef>
-
-<!-- Main Window: Container and Layout -->
 <container id="main" name="Main Window" default_x="0" default_y="0" default_visible="1">
-  <!-- First Layout -->
-  <layout id="normal" background="player.main.background" droptarget="pldr" minimum_h="116" minimum_w="275" >
-	<!-- Using Playback Buttons Group -->
-	<group id="player.normal" />
-	<group id="player.normal.playbuttons" x="16" y="88"/>
-  <group id="volumebar" x="139" y="57" w="68" h="14"/>
-  <group id="analyzer" x="26" y="44"/>
-  </layout>
+	<layout id="normal" background="wa.main" droptarget="pldr" minimum_h="116" minimum_w="275" >
+		<group id="mainwindow" />
+	</layout>
 </container>

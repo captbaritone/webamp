@@ -465,7 +465,7 @@ export default class SkinParser {
     const font = new BitmapFont();
     font.setXmlAttributes(node.attributes);
 
-    const externalBitmap = font._file.indexOf("/") < 0;
+    const externalBitmap = this._isExternalBitmapFont(font);
     if (externalBitmap) {
       font.setExternalBitmap(true);
     } else {
@@ -473,6 +473,10 @@ export default class SkinParser {
     }
 
     this._uiRoot.addFont(font);
+  }
+
+  _isExternalBitmapFont(font: BitmapFont) {
+    return font._file.indexOf("/") < 0
   }
 
   async text(node: XmlElement, parent: any): Promise<Text> {
