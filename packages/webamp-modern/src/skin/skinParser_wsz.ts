@@ -21,7 +21,8 @@ export default class ClassicSkinParser extends SkinParser {
   }
 
   async _parseInternalFile(fileName: string) {
-    const content = await this._internalFile(fileName);
+    let content = await this._internalFile(fileName);
+    content = content.replace(/wsz_root\//ig,'')
     // Note: Included files don't have a single root node, so we add a synthetic one.
     // A different XML parser library might make this unnessesary.
     const parsed = parseXmlFragment(content);
@@ -34,7 +35,7 @@ export default class ClassicSkinParser extends SkinParser {
 
     console.log("RESOURCE_PHASE #################");
     this._phase = RESOURCE_PHASE;
-    await this._parseInternalFile("player-elements.xml");
+    await this._parseInternalFile("xml/player-elements.xml");
 
     await this._solveMissingBitmaps();
     await this._imageManager.loadUniquePaths();
@@ -42,7 +43,7 @@ export default class ClassicSkinParser extends SkinParser {
 
     console.log("GROUP_PHASE #################");
     this._phase = GROUP_PHASE;
-    await this._parseInternalFile("player.xml");
+    await this._parseInternalFile("xml/player.xml");
     //eqmain.bmp seem as not yet loaded, temporary disable:
     // await this._parseInternalFile("eq.xml");
 
