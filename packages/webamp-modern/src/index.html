@@ -15,6 +15,14 @@
       * {
         box-sizing: border-box;
       }
+      /* DEBUG */
+      /* body {
+        background-image: url(/assets/winamp_classic/screenshot.png);
+      }
+      #ui-root {
+        opacity: 0.4;
+      } */
+
       textarea,
       group,
       text,
@@ -28,10 +36,9 @@
       select:focus {
         outline: none;
       }
-      #ui-root
-      select {
+      #ui-root select {
         background-color: transparent;
-        color:var(--color-studio-list-text, var(--color-wasabi-list-text));
+        color: var(--color-studio-list-text, var(--color-wasabi-list-text));
       }
       select option {
         padding-left: 5px;
@@ -177,9 +184,11 @@
       progressgrid,
       group,
       layer,
-      animatedlayer, vis,
+      animatedlayer,
+      vis,
       button,
       slider,
+      status,
       text,
       wasabiframe,
       wasabititlebar,
