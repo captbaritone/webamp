@@ -261,7 +261,7 @@ class NoVisualizer extends VisPainter {
 }
 
 //? =============================== BAR PAINTER ===============================
-const NUM_BARS = 19;
+const NUM_BARS = 20;
 class BarPainter extends VisPainter {
   _barWidth: number;
   _color: string = "rgb(255,255,255)";
