@@ -1,81 +1,58 @@
 <groupdef id="mainwindow" x="0" y="0" w="550" h="232" relatw="1" relath="1">
-	
-	<vis id="wa.vis" x="24" y="43" w="72" h="16"/>	
-	<!-- Timer -->	
-	<text
-		id="timer"
-		display="time"
-		x="33" y="24"
-		w="70" h="18"
-		font="player.BIGNUM" fontsize="21" align="right"
-		timecolonwidth="6"
-	/>
+  <layer image="clutterbar" x="10" y="22"/>
+  <group id="waclassicvis" x="24" y="43" w="72" h="16"/>
+  <!-- Timer -->
+  <text id="timer" display="time" x="33" y="24" w="70" h="18" font="player.BIGNUM" fontsize="21" align="right" timecolonwidth="6" />
+  <layer id="TimerTrigger" x="33" y="24" w="70" h="18"/>
+  <script file="scripts/wa2songtimer.maki"/>
+  <Songticker id="songticker" ticker="1" x="110" y="27" w="155" h="9" font="wasabi.font.default" fontsize="13" />
+  <slider id="player.slider.seek" action="SEEK" x="16" y="72" w="248" h="10" orientation="horizontal" thumb="posbar" downthumb="posbarp" rectrgn="1"/>
+  <togglebutton id="Repeat" x="210" y="89" image="rep" downImage="repp" activeImage="repa" cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Repeat" cfgval="2"/>
+  <togglebutton id="Shuffle" x="164" y="89" image="shuf" downImage="shufp" activeImage="shufa" cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Shuffle"/>
+  <status id="wastatus" x="26" y="28" stopBitmap="wa.stop" playBitmap="wa.play" pauseBitmap="wa.pause" ghost="1"/>
+  <layer id="playbackstatus" x="24" y="28" image="wa.play.green"/>
+  <script file="scripts/classicplaystatus.maki"/>
+  <text id="mixrate" display="songsamplerate" x="154" y="43" w="12" h="14" font="wasabi.font.default" fontsize="13" align="left" valign="top"/>
+  <text id="bitrate" display="songbitrate" x="109" y="43" w="17" h="14" font="wasabi.font.default" fontsize="13" align="left" valign="top"/>
+  <script file="scripts/winamp1kbps.maki"/>
+  <button id="wabtn.previous" action="PREV" x="16" y="88" image="prev" downimage="prevp" tooltip="Previous Track"/>
+  <button id="wabtn.play" action="PLAY" x="39" y="88" image="play" downimage="playp" tooltip="Play"/>
+  <button id="wabtn.pause" action="PAUSE" x="62" y="88" image="pause" downimage="pausep" tooltip="Pause"/>
+  <button id="wabtn.stop" action="STOP" x="85" y="88" image="stop" downimage="stopp" tooltip="Stop"/>
+  <button id="wabtn.next" action="NEXT" x="108" y="88" image="next" downimage="nextp" tooltip="Next Track"/>
+  <button id="wabtn.open" action="EJECT" x="136" y="89" image="eject" downimage="ejectp" tooltip="Open File(s)"/>
+  <layer id="wa.titlebar.on" x="0" y="0" image="wa.titlebar.on" ghost="1" activealpha="255" inactivealpha="0"/>
+  <layer id="wa.titlebar.on" x="0" y="0" image="wa.titlebar.off" ghost="1" activealpha="0" inactivealpha="255"/>
+  <button id="wa.sysmenu" action="SYSMENU" x="6" y="3" image="menu" downimage="menup" activealpha="255" inactivealpha="0" tooltip="Winamp Menu"/>
+  <button id="wa.switch" x="254" y="3" image="switch" downimage="switchp" tooltip="Minimize" activealpha="255" inactivealpha="0"/>
+  <button id="wa.minimize" x="244" y="3" action="MINIMIZE" image="mini" downimage="minip" tooltip="Toggle Windowshade Mode" activealpha="255" inactivealpha="0"/>
+  <button id="wa.close" x="264" y="3" action="CLOSE" image="close" downimage="closep" tooltip="Close" activealpha="255" inactivealpha="0"/>
+  <button id="eq" action="TOGGLE" param="eq" x="219" y="58" image="player.toggler.eq.disabled" downImage="player.toggler.eq.pressed" activeImage="player.toggler.eq.enabled" tooltip="Toggle Equalizer"/>
+  <button id="pl" action="TOGGLE" param="guid:pl" x="242" y="58" image="player.toggler.pl.disabled" downImage="player.toggler.pl.pressed" activeImage="player.toggler.pl.enabled" tooltip="Toggle Playlist Editor"/>
+  <layer id="mono" x="212" y="41" w="27" h="12" image="player.status.mono.inactive"/>
+  <layer id="stereo" x="239" y="41" w="29" h="12" image="player.status.stereo.inactive"/>
+  <script file="scripts/monoster.maki"/>
+  <group id="sliders" x="107" y="57" h="13"/>
+</groupdef>
 
-	<layer id="TimerTrigger" x="33" y="24"
-		w="70" h="18"/>
+<groupdef id="sliders">
+  <AnimatedLayer id="volume" w="68" h="14" image="volume" start="0" end="27" frameheight="14" ghost="1"/>
+  <Slider id="volumewa2" action="volume" orientation="horizontal" x="0" y="1" w="65" h="14" thumb="volbtn" downThumb="volbtnd"/>
+  <script file="scripts/volume.maki"/>
 
-<script file="scripts/wa2songtimer.maki"/>
-	<Songticker
-		id="songticker" ticker="1"
-		x="110" y="27"
-		w="155" h="9"
-		font="wasabi.font.default" fontsize="13"
-	/>
+  <AnimatedLayer id="balance" x="70" w="38" h="14" image="balance" start="0" end="27" frameheight="14" ghost="1"/>
+  <Slider id="balancewa2" action="PAN" orientation="horizontal" x="70" y="1" w="38" h="14" thumb="panbtn" downThumb="panbtnd"/>
+  <script file="scripts/balance.maki"/>
+</groupdef>
 
-	<slider id="player.slider.seek" action="SEEK" x="16" y="72" w="248" h="10" orientation="horizontal" thumb="posbar" downthumb="posbarp" rectrgn="1"/>	
-
-	<togglebutton id="Repeat" x="210" y="89" image="rep"
-		downImage="repp" activeImage="repa"
-		cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Repeat" cfgval="2"/>
-	
-	<togglebutton id="Shuffle" x="164" y="89" image="shuf"
-		downImage="shufp" activeImage="shufa"
-		cfgattrib="{45F3F7C1-A6F3-4EE6-A15E-125E92FC3F8D};Shuffle"/>
-
-	<status id="wastatus" x="26" y="28" stopBitmap="wa.stop" playBitmap="wa.play" pauseBitmap="wa.pause" ghost="1"/>	
-	<layer id="playbackstatus" x="24" y="28" image="wa.play.green"/>
-
-	<!-- <script file="scripts/classicplaystatus.maki"/> -->
-
-	<text id="mixrate" display="songsamplerate" x="154" y="43" w="12" h="14" font="wasabi.font.default" fontsize="13" align="left" valign="top"/>	
-	<text id="bitrate" display="songbitrate" x="109" y="43" w="17" h="14" font="wasabi.font.default" fontsize="13" align="left" valign="top"/>	
-
-	<script file="scripts/winamp1kbps.maki"/>
-
-	<button id="wabtn.previous" action="PREV" 	x="16" y="88" 	image="prev" downimage="prevp" tooltip="Previous Track"/>	
-	<button id="wabtn.play" action="PLAY" 		x="39" y="88" 	image="play" downimage="playp" tooltip="Play"/>	
-	<button id="wabtn.pause" action="PAUSE" 	x="62" y="88" image="pause" downimage="pausep" tooltip="Pause"/>	
-	<button id="wabtn.stop" action="STOP" 		x="84" y="88" image="stop" downimage="stopp" tooltip="Stop"/>	
-	<button id="wabtn.next" action="NEXT" 		x="107" y="88" image="next"	downimage="nextp" tooltip="Next Track"/>	
-
-	<button id="wabtn.open" action="EJECT" 		x="136" y="89" image="eject" downimage="ejectp" tooltip="Open File(s)"/>	
-
-
-	<layer id="wa.titlebar.on" x="0" y="0" image="wa.titlebar.on" ghost="1" activealpha="255" inactivealpha="0"/>	
-	<layer id="wa.titlebar.on" x="0" y="0" image="wa.titlebar.off" ghost="1" activealpha="0" inactivealpha="255"/>	
-
-	<button id="wa.sysmenu" action="SYSMENU" x="6" y="3" image="menu" downimage="menup" activealpha="255" inactivealpha="0" tooltip="Winamp Menu"/>	
-
-	<button id="wa.switch" x="255" y="3" image="switch" downimage="switchp" tooltip="Minimize" activealpha="255" inactivealpha="0"/>	
-	<button id="wa.minimize" x="245" y="3" action="MINIMIZE" image="mini" downimage="minip" tooltip="Toggle Windowshade Mode" activealpha="255" inactivealpha="0"/>	
-	<button id="wa.close" x="264" y="3" action="CLOSE" image="close" downimage="closep" tooltip="Close" activealpha="255" inactivealpha="0"/>	
-
-	<button id="eq" action="TOGGLE" param="eq" x="219" y="58" image="player.toggler.eq.disabled" downImage="player.toggler.eq.pressed" activeImage="player.toggler.eq.enabled" tooltip="Toggle Equalizer"/>
-	<button id="pl" action="TOGGLE" param="guid:pl" x="242" y="58" image="player.toggler.pl.disabled" downImage="player.toggler.pl.pressed" activeImage="player.toggler.pl.enabled" tooltip="Toggle Playlist Editor"/>
-
-	<layer id="mono" x="212" y="41" w="27" h="12" image="player.status.mono.inactive"/>
-	<layer id="stereo" x="239" y="41" w="29" h="12" image="player.status.stereo.inactive"/>
-
-	<script file="scripts/monoster.maki"/>
-
-	<Slider id="volumewa2" action="volume" orientation="horizontal" x="108" y="58" w="68" h="13" thumb="volbtn" downThumb="volbtnd"/>
-	<Slider id="balancewa2" action="PAN" orientation="horizontal" x="177" y="58" w="38" h="13" thumb="volbtn" downThumb="volbtnd"/>
-
-</groupdef>	
-
+<groupdef id="waclassicvis">
+  <vis id="wa.vis" y="0" w="72" h="16" fps="60"/>
+  <layer id="main.vis.trigger" w="72" h="16"/>
+  <script file="scripts/wa2visualizer.maki"/>
+</groupdef>
 
 <container id="main" name="Main Window" default_x="0" default_y="0" default_visible="1">
-	<layout id="normal" background="wa.main" droptarget="pldr" minimum_h="116" minimum_w="275" >
-		<group id="mainwindow" />
-	</layout>
+  <layout id="normal" background="wa.main" droptarget="pldr" minimum_h="116" minimum_w="275">
+    <group id="mainwindow"/>
+  </layout>
 </container>

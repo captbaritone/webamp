@@ -19,14 +19,14 @@ System.onScriptLoaded(){
     c = getChannels();
 
     if(c == 2){
-        mono.setXmlParam("image", "monooff");
-        stereo.setXmlParam("image", "stereoon");
+        mono.setXmlParam("image", "player.status.mono.inactive");
+        stereo.setXmlParam("image", "player.status.stereo.active");
     }else if(c == 1){
-        mono.setXmlParam("image", "monoon");
-        stereo.setXmlParam("image", "stereooff");
+        mono.setXmlParam("image", "player.status.mono.active");
+        stereo.setXmlParam("image", "player.status.stereo.inactive");
     }else if(c == -1){
-        mono.setXmlParam("image", "monooff");
-        stereo.setXmlParam("image", "stereooff");
+        mono.setXmlParam("image", "player.status.mono.inactive");
+        stereo.setXmlParam("image", "player.status.stereo.inactive");
     }
 }
 
@@ -40,14 +40,14 @@ System.onPlay()
 	getchanneltimer.start();
     c = getChannels();
     if(c == 2){
-        mono.setXmlParam("image", "monooff");
-        stereo.setXmlParam("image", "stereoon");
+        mono.setXmlParam("image", "player.status.mono.inactive");
+        stereo.setXmlParam("image", "player.status.stereo.active");
     }else if(c == 1){
-        mono.setXmlParam("image", "monoon");
-        stereo.setXmlParam("image", "stereooff");
+        mono.setXmlParam("image", "player.status.mono.active");
+        stereo.setXmlParam("image", "player.status.stereo.inactive");
     }else if(c == -1){
-        mono.setXmlParam("image", "monooff");
-        stereo.setXmlParam("image", "stereooff");
+        mono.setXmlParam("image", "player.status.mono.inactive");
+        stereo.setXmlParam("image", "player.status.stereo.inactive");
     }
 }
 
@@ -56,35 +56,35 @@ System.onTitleChange(String newtitle)
 	getchanneltimer.start();
     c = getChannels();
     if(c == 2){
-        mono.setXmlParam("image", "monooff");
-        stereo.setXmlParam("image", "stereoon");
+        mono.setXmlParam("image", "player.status.mono.inactive");
+        stereo.setXmlParam("image", "player.status.stereo.active");
     }else if(c == 1){
-        mono.setXmlParam("image", "monoon");
-        stereo.setXmlParam("image", "stereooff");
+        mono.setXmlParam("image", "player.status.mono.active");
+        stereo.setXmlParam("image", "player.status.stereo.inactive");
     }else if(c == -1){
-        mono.setXmlParam("image", "monooff");
-        stereo.setXmlParam("image", "stereooff");
+        mono.setXmlParam("image", "player.status.mono.inactive");
+        stereo.setXmlParam("image", "player.status.stereo.inactive");
     }
 }
 
 System.onStop(){
     getchanneltimer.stop();
-    mono.setXmlParam("image", "monooff");
-    stereo.setXmlParam("image", "stereooff");
+    mono.setXmlParam("image", "player.status.mono.inactive");
+    stereo.setXmlParam("image", "player.status.stereo.inactive");
 }
 
 getchanneltimer.onTimer ()
 {
     c = getChannels();
     if(c == 2){
-        mono.setXmlParam("image", "monooff");
-        stereo.setXmlParam("image", "stereoon");
+        mono.setXmlParam("image", "player.status.mono.inactive");
+        stereo.setXmlParam("image", "player.status.stereo.active");
     }else if(c == 1){
-        mono.setXmlParam("image", "monoon");
-        stereo.setXmlParam("image", "stereooff");
+        mono.setXmlParam("image", "player.status.mono.active");
+        stereo.setXmlParam("image", "player.status.stereo.inactive");
     }else if(c == -1){
-        mono.setXmlParam("image", "monooff");
-        stereo.setXmlParam("image", "stereooff");
+        mono.setXmlParam("image", "player.status.mono.inactive");
+        stereo.setXmlParam("image", "player.status.stereo.inactive");
     }
 }
 

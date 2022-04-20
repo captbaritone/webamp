@@ -119,6 +119,6 @@ getSonginfo(String SongInfoString) {
 	String freqstring = System.IntegerToString(freqint);
 	if(tkn != "") {frequencyText.setText(tkn);}
 	if(freqint < 100) {frequencyText.setText(tkn);}
-	if(freqint < 10) {frequencyText.setText(tkn);}
+	if(freqint < 10) {frequencyText.setText(" "+tkn);}
 	if(freqint == 0 || freqint == -1 ) {frequencyText.setText(" 0");}
 }

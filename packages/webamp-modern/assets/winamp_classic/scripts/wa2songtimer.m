@@ -15,6 +15,7 @@
 
 Global String currentpos, strremainder, currentpos_rev;
 Global GuiObject DisplayTime/*DisplayTimeShade*/;
+Global GuiObject TimerTrigger;
 Global Timer timerSongTimer;
 Global Timer timerSongTimerReverse;
 Global Timer PauseBlinkPaused, PauseBlink, Clock;
@@ -25,7 +26,7 @@ Global int remainder;
 Global int milliseconds_rev;
 Global int i;
 
-Global PopUpMenu clockMenu;
+//Global PopUpMenu clockMenu;
 
 Function AreWePlaying();
 Function InReverse();
@@ -50,9 +51,10 @@ System.onScriptLoaded()
     /* Replace "timer" with "shade.time" for Winamp Classic Modern */
     //DisplayTimeShade = mainshade.findObject("timer");
 
-    Group mainnormal = getContainer("main").getLayout("normal");
+    Group mainnormal = getScriptGroup();
     /* Replace "timer" with "display.time" for Winamp Classic Modern */
     DisplayTime = mainnormal.findObject("timer");
+    TimerTrigger = mainnormal.findObject("TimerTrigger");
     //The above was taken from Ariszló's updated oldtimer.maki script
     //Allows it to be included in the skin.xml file of the skin
 
@@ -76,7 +78,7 @@ System.onScriptLoaded()
     PauseBlinkPaused = new Timer;
     PauseBlinkPaused.setDelay(50);
     Clock = new Timer;
-    Clock.setDelay(500);
+    Clock.setDelay(1000);
     Clock.start();
 
     setTimer(getPrivateInt(getSkinName(), "TimerElapsedRemaining", 1));
@@ -143,7 +145,7 @@ PauseBlink.onTimer(){ //Elapsed
         //DisplayTimeShade.setXmlParam("text", "  :  ");
     }
 }
-
+/*
 DisplayTime.onRightButtonUp (int x, int y){
     int timermode = getPrivateInt(getSkinName(), "TimerElapsedRemaining", 1);
 
@@ -159,21 +161,21 @@ DisplayTime.onRightButtonUp (int x, int y){
 	complete;
 }
 
-//DisplayTimeShade.onRightButtonUp (int x, int y){
-//    int timermode = getPrivateInt(getSkinName(), "TimerElapsedRemaining", 1);
-//
-//    clockMenu = new PopUpMenu;
-//
-//	clockMenu.addcommand("Time elapsed", 1, timermode == 1,0);
-//	clockMenu.addcommand("Time remaining", 2, timermode == 2,0);
-//
-//	timermode = clockMenu.popAtMouse();
-//
-//	setTimer(timermode);
-//	complete;
-//}
+DisplayTimeShade.onRightButtonUp (int x, int y){
+    int timermode = getPrivateInt(getSkinName(), "TimerElapsedRemaining", 1);
 
-DisplayTime.onLeftButtonDown(int x, int y)
+    clockMenu = new PopUpMenu;
+
+	clockMenu.addcommand("Time elapsed", 1, timermode == 1,0);
+	clockMenu.addcommand("Time remaining", 2, timermode == 2,0);
+
+	timermode = clockMenu.popAtMouse();
+
+	setTimer(timermode);
+	complete;
+}
+*/
+TimerTrigger.onLeftButtonDown(int x, int y)
 {
     int timermode = getPrivateInt(getSkinName(), "TimerElapsedRemaining", 1);
 
