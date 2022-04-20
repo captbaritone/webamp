@@ -56,7 +56,7 @@
 
 <groupdef id="shademain">
 
-    <layer id="blah" dblClickAction="SWITCH;normal" x="0" y="0" image="wa2.player.shade.enabled" inactiveAlpha="0" />
+    <layer id="blah" dblClickAction="SWITCH;normal" x="0" y="0" image="wa2.player.shade.enabled" inactiveAlpha="0" move="1" />
 
     <text id="timer" display="time" x="130" y="2" w="26" h="10" font="player.SmallFixed" fontsize="8" />
 
