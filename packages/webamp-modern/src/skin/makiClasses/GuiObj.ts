@@ -917,6 +917,11 @@ export default class GuiObj extends XmlObj {
       bitmap.setAsActiveBackground(this._div);
     }
   }
+  setInactiveBackgroundImage(bitmap: Bitmap | null) {
+    if (bitmap != null) {
+      bitmap.setAsInactiveBackground(this._div);
+    }
+  }
 
   draw() {
     this.getId() && this._div.setAttribute("id", this.getId());

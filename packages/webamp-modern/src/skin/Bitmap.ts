@@ -139,6 +139,9 @@ export default class Bitmap {
   setAsActiveBackground(div: HTMLElement) {
     this._setAsBackground(div, "active-");
   }
+  setAsInactiveBackground(div: HTMLElement) {
+    this._setAsBackground(div, "inactive-");
+  }
 
   setAsHoverBackground(div: HTMLElement) {
     this._setAsBackground(div, "hover-");

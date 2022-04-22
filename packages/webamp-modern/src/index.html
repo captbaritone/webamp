@@ -273,6 +273,14 @@
       container:active [inactivealpha] {
         opacity: 1;
       }
+      container:not(:active):not(container:focus-within)
+        .webamp--img.inactivable {
+        background-image: var(
+          --inactive-background-image,
+          var(--background-image)
+        );
+      }
+
       .resizing {
         border: 1px solid blue;
         background-color: rgba(74, 74, 251, 0.205);
