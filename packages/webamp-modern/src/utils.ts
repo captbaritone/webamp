@@ -22,7 +22,11 @@ export function getCaseInsensitiveFile(
   filePath: string
 ): JSZipObject | null {
   const normalized = filePath.replace(/[\/\\]/g, `[/\\\\]`);
-  return zip.file(new RegExp(normalized, "i"))[0] ?? null;
+  const files = zip.file(new RegExp(normalized, "i"));
+  if (files && files.length > 1) {
+    return zip.file(new RegExp(`^${normalized}$`, "i"))[0] ?? null;
+  }
+  return files[0] ?? null;
 }
 
 export function num(str: string | void): number | null {
