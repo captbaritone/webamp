@@ -350,7 +350,7 @@ export default class SkinParser {
       default:
         return false;
     }
-    // pop
+    // push
     const oldZip = UI_ROOT.getZip();
     const oldSkinDir = UI_ROOT.getSkinDir();
 
@@ -361,7 +361,7 @@ export default class SkinParser {
     const node = new XmlElement("include", { file: xmlFilePath });
     await this.include(node, null);
 
-    // store
+    // pop
     UI_ROOT.setSkinDir(oldSkinDir);
     UI_ROOT.setZip(oldZip);
     return true;
