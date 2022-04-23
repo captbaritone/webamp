@@ -345,7 +345,10 @@ class Interpreter {
             value = this.variables[1];
           }
           if (returnType === "BOOLEAN") {
-            assert(typeof value === "boolean", "BOOL should return a boolean");
+            assert(
+              typeof value === "boolean",
+              `${klass.name}.${methodName} should return a boolean, but "${JSON.stringify(value)}"`
+            );
             value = value ? 1 : 0;
           }
           if (returnType === "OBJECT") {
@@ -390,19 +393,20 @@ class Interpreter {
             `Type mismatch: ${a.type} != ${b.type} at ip: ${ip}`
           );
           */
-          if(a.type=='OBJECT' && b.type=="OBJECT"){
+          if (a.type == "OBJECT" && b.type == "OBJECT") {
             // TODO: do attach bindings here now, since we got the variable type=object
             // const objId = a.value instanceof BaseObject ? a.value.getId() : '!noid'
             // console.log(objId, '=','dest:',b, 'src:',a)
           }
-          if(b==null){
+          if (b == null) {
             // TypeError: Cannot set properties of undefined (setting 'value'):
-            const objId = a.value instanceof BaseObject ? a.value.getId() : '!noid'
-            console.log(objId, ':=','dest:',b, 'src:',a);
+            const objId =
+              a.value instanceof BaseObject ? a.value.getId() : "!noid";
+            console.log(objId, ":=", "dest:", b, "src:", a);
             //b={value:null}
-            console.warn("Hey, can't move: b.value=a.value with b==nul;a=",a )
+            console.warn("Hey, can't move: b.value=a.value with b==nul;a=", a);
           }
-          if(b!=null){
+          if (b != null) {
             //temporary, to see what next problem ?
             b.value = a.value;
           }
