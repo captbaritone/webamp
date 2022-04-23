@@ -22,7 +22,7 @@ import BitmapFont from "./BitmapFont";
 import Color from "./Color";
 import GammaGroup from "./GammaGroup";
 import ColorThemesList from "./ColorThemesList";
-import { UIRoot } from "../UIRoot";
+import UI_ROOT, { UIRoot } from "../UIRoot";
 import AlbumArt from "./makiClasses/AlbumArt";
 import WindowHolder from "./makiClasses/WindowHolder";
 import WasabiFrame from "./makiClasses/WasabiFrame";
@@ -274,16 +274,16 @@ export default class SkinParser {
       case "wasabi:standardframe:modal:short":
       case "wasabi:visframe:nostatus":
         return this.wasabiFrame(node, parent);
-      case "buttonled":
-      case "fadebutton":
-      case "fadetogglebutton":
-      case "configcheckbox":
-      case "configradio":
-      case "cover":
-      case "scanline":
-      case "statusbar":
-        //temporary, to localize error
-        return this.dynamicXuiElement(node, parent)
+      // case "buttonled":
+      // case "fadebutton":
+      // case "fadetogglebutton":
+      // case "configcheckbox":
+      // case "configradio":
+      // case "cover":
+      // case "scanline":
+      // case "statusbar":
+      //   //temporary, to localize error
+      //   return this.dynamicXuiElement(node, parent);
       case "componentbucket":
         return this.componentBucket(node, parent);
       case "playlisteditor":
@@ -304,12 +304,38 @@ export default class SkinParser {
       case "wrapper":
         return this.traverseChildren(node, parent);
       default:
-        // if(this._uiRoot.getXuiElement(tag)) {
-        //   return this.dynamicXuiElement(node, parent)
-        // }
+        if (this._uiRoot.getXuiElement(tag)) {
+          return this.dynamicXuiElement(node, parent);
+        } else if (this._predefinedXuiNode(tag)) {
+          return this.dynamicXuiElement(node, parent);
+        }
         console.warn(`Unhandled XML node type: ${node.name}`);
         return;
     }
+  }
+
+  /**
+   * Lazy load xml from freeform
+   * @param tag string
+   * @returns
+   */
+  async _predefinedXuiNode(tag: string): Promise<boolean> {
+    let xmlFilePath: string = null;
+    switch (tag) {
+      case "wasabi:text":
+        xmlFilePath = "wasabi/xml/xui/text/text.xml";
+        break;
+      default:
+        return false;
+    }
+    const oldSkinDir = UI_ROOT.getSkinDir();
+    UI_ROOT.setSkinDir("assets/freeform/xml/");
+
+    const node = new XmlElement("include", { file: xmlFilePath });
+    await this.include(node, null);
+
+    UI_ROOT.setSkinDir(oldSkinDir);
+    return true;
   }
 
   addToGroup(obj: GuiObj, parent: Group) {
@@ -383,7 +409,11 @@ export default class SkinParser {
     const xuiEl: XmlElement = this._uiRoot.getXuiElement(xuitag);
     if (xuiEl) {
       const xuiFrame = new XmlElement("dummy", { id: xuiEl.attributes.id });
-      const Element:XuiElement =  await this.newGroup(XuiElement, xuiFrame, parent);
+      const Element: XuiElement = await this.newGroup(
+        XuiElement,
+        xuiFrame,
+        parent
+      );
       Element.setXmlAttributes(node.attributes);
       // await this.maybeApplyGroupDef(frame, xuiFrame);
     }
@@ -480,7 +510,7 @@ export default class SkinParser {
   }
 
   _isExternalBitmapFont(font: BitmapFont) {
-    return font._file.indexOf("/") < 0
+    return font._file.indexOf("/") < 0;
   }
 
   async text(node: XmlElement, parent: any): Promise<Text> {
@@ -852,21 +882,41 @@ export default class SkinParser {
   }
 
   async colorThemesList(node: XmlElement, parent: any) {
-    this.buildWasabiScrollbarDimension()
+    this.buildWasabiScrollbarDimension();
     return this.newGui(ColorThemesList, node, parent);
   }
 
   buildWasabiScrollbarDimension() {
     this._uiRoot.addWidth("vscrollbar-width", "wasabi.scrollbar.vertical.left");
-    this._uiRoot.addHeight("vscrollbar-btn-height", "wasabi.scrollbar.vertical.left");
-    this._uiRoot.addHeight("vscrollbar-thumb-height", "wasabi.scrollbar.vertical.button");
-    this._uiRoot.addHeight("vscrollbar-thumb-height2", "studio.scrollbar.vertical.button");
+    this._uiRoot.addHeight(
+      "vscrollbar-btn-height",
+      "wasabi.scrollbar.vertical.left"
+    );
+    this._uiRoot.addHeight(
+      "vscrollbar-thumb-height",
+      "wasabi.scrollbar.vertical.button"
+    );
+    this._uiRoot.addHeight(
+      "vscrollbar-thumb-height2",
+      "studio.scrollbar.vertical.button"
+    );
 
-    this._uiRoot.addHeight("hscrollbar-height", "wasabi.scrollbar.horizontal.left");
-    this._uiRoot.addWidth("hscrollbar-btn-width", "wasabi.scrollbar.horizontal.left");
-    this._uiRoot.addWidth("hscrollbar-thumb-width", "wasabi.scrollbar.horizontal.button");
-    this._uiRoot.addWidth("hscrollbar-thumb-width2", "studio.scrollbar.horizontal.button");
-
+    this._uiRoot.addHeight(
+      "hscrollbar-height",
+      "wasabi.scrollbar.horizontal.left"
+    );
+    this._uiRoot.addWidth(
+      "hscrollbar-btn-width",
+      "wasabi.scrollbar.horizontal.left"
+    );
+    this._uiRoot.addWidth(
+      "hscrollbar-thumb-width",
+      "wasabi.scrollbar.horizontal.button"
+    );
+    this._uiRoot.addWidth(
+      "hscrollbar-thumb-width2",
+      "studio.scrollbar.horizontal.button"
+    );
   }
 
   async layoutStatus(node: XmlElement, parent: any) {
@@ -1004,14 +1054,14 @@ export default class SkinParser {
   }
 
   skininfo(node: XmlElement, parent: any) {
-    const skinInfo = {}
+    const skinInfo = {};
     for (const child of node.children) {
       if (child instanceof XmlElement) {
         const tag = child.name.toLowerCase();
         skinInfo[tag] = child.text;
       }
     }
-    this._uiRoot.setSkinInfo(skinInfo)
+    this._uiRoot.setSkinInfo(skinInfo);
   }
 }
 
