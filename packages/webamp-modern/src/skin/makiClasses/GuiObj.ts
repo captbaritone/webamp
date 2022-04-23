@@ -15,6 +15,7 @@ import Layout from "./Layout";
 import Region from "./Region";
 import { CONFIG } from "./Config";
 import ConfigAttribute from "./ConfigAttribute";
+import { XmlElement } from "@rgrove/parse-xml";
 
 let BRING_LEAST: number = -1;
 let BRING_MOST_TOP: number = 1;
