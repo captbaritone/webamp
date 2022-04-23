@@ -174,6 +174,18 @@ export default class SkinParser {
         })
       );
     } else {
+      // try{
+      //   for (const child of node.children) {
+      //     if (child instanceof XmlElement) {
+      //       // console.log(child)
+      //     }
+      //     break
+      //   }
+      // } catch(e) {
+      //   debugger;
+      //   console.log('traverseChildren.childs', node.children)
+      //   return
+      // }
       for (const child of node.children) {
         if (child instanceof XmlElement) {
           this._scanRes(child);
@@ -268,9 +280,9 @@ export default class SkinParser {
       case "wasabi:mainframe:nostatus":
       case "wasabi:medialibraryframe:nostatus":
       case "wasabi:playlistframe:nostatus":
-      case "wasabi:standardframe:nostatus":
+      // case "wasabi:standardframe:nostatus":
       case "wasabi:standardframe:nostatus:short":
-      case "wasabi:standardframe:status":
+      // case "wasabi:standardframe:status":
       case "wasabi:standardframe:modal:short":
       case "wasabi:visframe:nostatus":
         return this.wasabiFrame(node, parent);
@@ -320,21 +332,38 @@ export default class SkinParser {
    * @returns
    */
   async _predefinedXuiNode(tag: string): Promise<boolean> {
+    console.log("handling _predefinedXuiNode", tag);
+    let xmlRootPath: string = "assets/freeform/xml/";
     let xmlFilePath: string = null;
     switch (tag) {
       case "wasabi:text":
-        xmlFilePath = "wasabi/xml/xui/text/text.xml";
+        xmlRootPath += "wasabi/";
+        xmlFilePath = "xml/xui/text/text.xml";
+        break;
+      case "wasabi:standardframe:status":
+      case "wasabi:standardframe:nostatus":
+      case "wasabi:standardframe:modal":
+      case "wasabi:standardframe:static":
+        xmlRootPath += "wasabi/";
+        xmlFilePath = "xml/xui/standardframe/standardframe.xml";
         break;
       default:
         return false;
     }
+    // pop
+    const oldZip = UI_ROOT.getZip();
     const oldSkinDir = UI_ROOT.getSkinDir();
-    UI_ROOT.setSkinDir("assets/freeform/xml/");
+
+    // set
+    UI_ROOT.setZip(null);
+    UI_ROOT.setSkinDir(xmlRootPath);
 
     const node = new XmlElement("include", { file: xmlFilePath });
     await this.include(node, null);
 
+    // store
     UI_ROOT.setSkinDir(oldSkinDir);
+    UI_ROOT.setZip(oldZip);
     return true;
   }
 
@@ -1032,8 +1061,14 @@ export default class SkinParser {
       //ignore for now
       return;
     }
-
-    await this.traverseChildren(savedDocument, parent);
+    // await this.traverseChildren(savedDocument, parent);
+    // console.log('savedDocument',savedDocument)
+    if (
+      savedDocument instanceof XmlElement ||
+      savedDocument instanceof XmlDocument
+    ) {
+      await this.traverseChildren(savedDocument as XmlElement, parent);
+    }
   }
 
   async scanIncludes(node: XmlElement, parent: any) {

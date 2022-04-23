@@ -492,6 +492,9 @@ export class UIRoot {
       this.getFileAsBlob = this.getFileAsBlobPath;
     }
   }
+  getZip(): JSZip {
+    return this._zip;
+  }
 
   //? Path things ========================
   /* needed to avoid direct fetch to root path */
@@ -500,6 +503,9 @@ export class UIRoot {
   setSkinDir(skinPath: string) {
     // required to end with slash/
     this._skinPath = skinPath;
+  }
+  getSkinDir():string {
+    return this._skinPath;
   }
 
   async getFileAsStringZip(filePath: string): Promise<string> {
