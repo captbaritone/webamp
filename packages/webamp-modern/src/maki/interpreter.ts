@@ -395,7 +395,17 @@ class Interpreter {
             // const objId = a.value instanceof BaseObject ? a.value.getId() : '!noid'
             // console.log(objId, '=','dest:',b, 'src:',a)
           }
-          b.value = a.value;
+          if(b==null){
+            // TypeError: Cannot set properties of undefined (setting 'value'):
+            const objId = a.value instanceof BaseObject ? a.value.getId() : '!noid'
+            console.log(objId, ':=','dest:',b, 'src:',a);
+            //b={value:null}
+            console.warn("Hey, can't move: b.value=a.value with b==nul;a=",a )
+          }
+          if(b!=null){
+            //temporary, to see what next problem ?
+            b.value = a.value;
+          }
           this.push(a);
           break;
         }
