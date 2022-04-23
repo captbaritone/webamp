@@ -42,6 +42,18 @@ export default class Layout extends Group {
     return true;
   }
 
+  _renderBackground() {
+    super._renderBackground(); //set css
+    if (this._background != null && this._width == 0 && this._height == 0) {
+      const bitmap = UI_ROOT.getBitmap(this._background);
+      if (bitmap != null) {
+        this._width = bitmap.getWidth();
+        this._height = bitmap.getHeight();
+        this._renderSize();
+      }
+    }
+  }
+
   // setParent(container: Container) {
   //   this._parent = container;
   // }
@@ -76,7 +88,7 @@ export default class Layout extends Group {
     const container = this._parent;
     container.setXmlAttr("x", String(x));
     container.setXmlAttr("y", String(y));
-    
+
     this._width = w;
     this._height = h;
     this._renderDimensions();

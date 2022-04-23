@@ -879,6 +879,15 @@ export default class GuiObj extends XmlObj {
     this._renderHeight();
   }
 
+  _renderLocation() {
+    this._renderX();
+    this._renderY();
+  }
+  _renderSize() {
+    this._renderWidth();
+    this._renderHeight();
+  }
+
   doResize() {
     UI_ROOT.vm.dispatch(this, "onresize", [
       { type: "INT", value: 0 },
