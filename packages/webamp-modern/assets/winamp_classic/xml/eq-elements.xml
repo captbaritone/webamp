@@ -1,0 +1,7 @@
+<elements>
+    <!-- Content EQ -->
+  <bitmap id="eq.bg" file="wsz_root/eqmain.bmp" x="0" y="0" h="116" w="275" gammagroup="Backgrounds"/>
+  <bitmap id="eq.button" file="wsz_root/eqmain.bmp" x="0" y="164" h="11" w="11" gammagroup="Buttons"/>
+  <bitmap id="eq.button.pressed" file="wsz_root/eqmain.bmp" x="0" y="176" h="11" w="11" gammagroup="Buttons"/>
+
+</elements>	
