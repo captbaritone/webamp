@@ -36,6 +36,7 @@ import WasabiButton from "./makiClasses/WasabiButton";
 import PlayListGui from "./makiClasses/PlayListGui";
 import XuiElement from "./makiClasses/XuiElement";
 import NStateButton from "./makiClasses/NStateButton";
+import EqVis from "./makiClasses/EqVis";
 
 function hack() {
   // Without this Snowpack will try to treeshake out resolver causing a circular
@@ -1002,11 +1003,13 @@ export default class SkinParser {
   async status(node: XmlElement, parent: any) {
     return this.newGui(Status, node, parent);
   }
+  
   async eqvis(node: XmlElement, parent: any) {
     assume(
       node.children.length === 0,
       "Unexpected children in <eqvis> XML node."
     );
+    return this.newGui(EqVis, node, parent);
   }
 
   async vis(node: XmlElement, parent: any) {
