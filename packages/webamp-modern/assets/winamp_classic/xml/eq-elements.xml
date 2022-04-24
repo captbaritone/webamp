@@ -1,7 +1,36 @@
 <elements>
     <!-- Content EQ -->
-  <bitmap id="eq.bg" file="wsz_root/eqmain.bmp" x="0" y="0" h="116" w="275" gammagroup="Backgrounds"/>
-  <bitmap id="eq.button" file="wsz_root/eqmain.bmp" x="0" y="164" h="11" w="11" gammagroup="Buttons"/>
-  <bitmap id="eq.button.pressed" file="wsz_root/eqmain.bmp" x="0" y="176" h="11" w="11" gammagroup="Buttons"/>
+    <bitmap id="eq.bg" file="wsz_root/eqmain.bmp" x="0" y="0" h="116" w="275" gammagroup="Backgrounds"/>
+    <bitmap id="eq.button" file="wsz_root/eqmain.bmp" x="0" y="164" h="11" w="11" gammagroup="Buttons"/>
+    <bitmap id="eq.button.pressed" file="wsz_root/eqmain.bmp" x="0" y="176" h="11" w="11" gammagroup="Buttons"/>
 
+    <bitmap id="eq.slider.level1" file="wsz_root/eqmain.bmp" x="13" y="164" h="63" w="14"/>
+    <bitmap id="eq.slider.level2" file="wsz_root/eqmain.bmp" x="28" y="164" h="63" w="14"/>
+    <bitmap id="eq.slider.level3" file="wsz_root/eqmain.bmp" x="43" y="164" h="63" w="14"/>
+    <bitmap id="eq.slider.level4" file="wsz_root/eqmain.bmp" x="58" y="164" h="63" w="14"/>
+    <bitmap id="eq.slider.level5" file="wsz_root/eqmain.bmp" x="73" y="164" h="63" w="14"/>
+    <bitmap id="eq.slider.level6" file="wsz_root/eqmain.bmp" x="88" y="164" h="63" w="14"/>
+    <bitmap id="eq.slider.level7" file="wsz_root/eqmain.bmp" x="103" y="164" h="63" w="14"/>
+    <bitmap id="eq.slider.level8" file="wsz_root/eqmain.bmp" x="118" y="164" h="63" w="14"/>
+    <bitmap id="eq.slider.level9" file="wsz_root/eqmain.bmp" x="133" y="164" h="63" w="14"/>
+    <bitmap id="eq.slider.level10" file="wsz_root/eqmain.bmp" x="148" y="164" h="63" w="14"/>
+    <bitmap id="eq.slider.level11" file="wsz_root/eqmain.bmp" x="163" y="164" h="63" w="14"/>
+    <bitmap id="eq.slider.level12" file="wsz_root/eqmain.bmp" x="178" y="164" h="63" w="14"/>
+    <bitmap id="eq.slider.level13" file="wsz_root/eqmain.bmp" x="193" y="164" h="63" w="14"/>
+    <bitmap id="eq.slider.level14" file="wsz_root/eqmain.bmp" x="208" y="164" h="63" w="14"/>
+
+    <bitmap id="eq.slider.level15" file="wsz_root/eqmain.bmp" x="13" y="229" h="63" w="14"/>
+    <bitmap id="eq.slider.level16" file="wsz_root/eqmain.bmp" x="28" y="229" h="63" w="14"/>
+    <bitmap id="eq.slider.level17" file="wsz_root/eqmain.bmp" x="43" y="229" h="63" w="14"/>
+    <bitmap id="eq.slider.level18" file="wsz_root/eqmain.bmp" x="58" y="229" h="63" w="14"/>
+    <bitmap id="eq.slider.level19" file="wsz_root/eqmain.bmp" x="73" y="229" h="63" w="14"/>
+    <bitmap id="eq.slider.level20" file="wsz_root/eqmain.bmp" x="88" y="229" h="63" w="14"/>
+    <bitmap id="eq.slider.level21" file="wsz_root/eqmain.bmp" x="103" y="229" h="63" w="14"/>
+    <bitmap id="eq.slider.level22" file="wsz_root/eqmain.bmp" x="118" y="229" h="63" w="14"/>
+    <bitmap id="eq.slider.level23" file="wsz_root/eqmain.bmp" x="133" y="229" h="63" w="14"/>
+    <bitmap id="eq.slider.level24" file="wsz_root/eqmain.bmp" x="148" y="229" h="63" w="14"/>
+    <bitmap id="eq.slider.level25" file="wsz_root/eqmain.bmp" x="163" y="229" h="63" w="14"/>
+    <bitmap id="eq.slider.level26" file="wsz_root/eqmain.bmp" x="178" y="229" h="63" w="14"/>
+    <bitmap id="eq.slider.level27" file="wsz_root/eqmain.bmp" x="193" y="229" h="63" w="14"/>
+    <bitmap id="eq.slider.level28" file="wsz_root/eqmain.bmp" x="208" y="229" h="63" w="14"/>
 </elements>	
