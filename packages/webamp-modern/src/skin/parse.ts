@@ -94,18 +94,43 @@ export default class SkinParser {
     this._uiRoot = uiRoot;
   }
 
+  async loadFreeformXui() {
+    let xmlRootPath: string = "assets/freeform/xml/";
+    let xmlFilePath: string = null;
+    xmlRootPath += "wasabi/";
+    xmlFilePath = "xml/xui/standardframe/standardframe.xml";
+
+    // push
+    const oldZip = UI_ROOT.getZip();
+    const oldSkinDir = UI_ROOT.getSkinDir();
+
+    // set
+    UI_ROOT.setZip(null);
+    UI_ROOT.setSkinDir(xmlRootPath);
+
+    const node = new XmlElement("include", { file: xmlFilePath });
+    await this.include(node, null);
+
+    // pop
+    UI_ROOT.setSkinDir(oldSkinDir);
+    UI_ROOT.setZip(oldZip);
+  }
+
   async parse(): Promise<UIRoot> {
+    console.log("RESOURCE_PHASE #################");
+    this._phase = RESOURCE_PHASE;
+
     // Load built-in xui elements
-    // await this.parseFromUrl("assets/xml/xui/standardframe.xml");
+    await this.loadFreeformXui();
+
     const includedXml = await this._uiRoot.getFileAsString("skin.xml");
-    // const includedXml = skinXmlContent;
 
     // Note: Included files don't have a single root node, so we add a synthetic one.
     // A different XML parser library might make this unnessesary.
     const parsed = parseXml(includedXml) as unknown as XmlElement;
 
-    console.log("RESOURCE_PHASE #################");
-    this._phase = RESOURCE_PHASE;
+    // console.log("RESOURCE_PHASE #################");
+    // this._phase = RESOURCE_PHASE;
     await this.traverseChildren(parsed);
     await this._solveMissingBitmaps();
     await this._imageManager.loadUniquePaths();
@@ -445,6 +470,21 @@ export default class SkinParser {
       );
       Element.setXmlAttributes(node.attributes);
       // await this.maybeApplyGroupDef(frame, xuiFrame);
+
+      //?content
+      if (node.attributes.content) {
+        const content = await this.group(
+          new XmlElement("group", {
+            id: node.attributes.content,
+            w: "0",
+            h: "0",
+            relatw: "1",
+            relath: "1",
+          }),
+          Element
+        );
+        Element.addChild(content);
+      }
     }
   }
   async wasabiFrame(node: XmlElement, parent: any) {
