@@ -4,8 +4,13 @@
         <!-- <Wasabi:Button id="close" x="290" y="11" w="72" h="20" text="Close" action="close" retcode="0"/> -->
         <!-- <Wasabi:Button id="EQ_0" x="290" y="60" w="72" h="20" text="Zero" retcode="0"/> -->
         <!-- <Wasabi:Button id="reset" x="290" y="36" w="72" h="20" text="Reset" retcode="0"/> -->
-        <eqvis id="spline" x="86" y="17" w="113" h="19" colortop="211,34,27" colormiddle="239,220,49" colorbottom="42,154,22" colorpreamp="246,181,0" gamma="192" />
+        <eqvis id="spline" x="86" y="17" w="113" h="19" colors="eqvis.colors" colortop="211,34,27" colormiddle="239,220,49" colorbottom="42,154,22" colorpreamp="246,181,0"  gamma="192" />
 
+
+
+        <button id="EQ_p12" x="45" y="36" w="21" h="7" rectrgn="1" />
+        <button id="EQ_0" x="45" y="66" w="21" h="7" rectrgn="1" />
+        <button id="EQ_m12" x="45" y="96" w="21" h="7" rectrgn="1" />
 
         <!-- Backgrounds -->
         <layer id="preamp_layer" x="21" y="38" image="eq.slider.level14" move="0" tooltip="Preamp" rectrgn="0" />
@@ -50,6 +55,9 @@
 
         <!-- <script file="scripts/ZeroEQ.maki"/> -->
         <!-- <script file="scripts/ResetEQ.maki"/> -->
+
+        <!-- taken from winamp modern: -->
+        <script file="scripts/eq.maki"/>
     </groupdef>
 
     <layout id="normal" background0="eq.bg" w="275" h="116">

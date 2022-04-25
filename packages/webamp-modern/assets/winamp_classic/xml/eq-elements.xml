@@ -1,4 +1,5 @@
 <elements>
+    <bitmap id="eqvis.colors" file="wsz_root/eqmain.bmp" x="115" y="294" h="19" w="1" gammagroup="Display"/>
     <!-- Content EQ -->
     <bitmap id="eq.bg" file="wsz_root/eqmain.bmp" x="0" y="0" h="116" w="275" gammagroup="Backgrounds"/>
     <bitmap id="eq.button" file="wsz_root/eqmain.bmp" x="0" y="164" h="11" w="11" gammagroup="Buttons"/>
