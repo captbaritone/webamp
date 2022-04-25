@@ -1,6 +1,7 @@
 import GuiObj from "./GuiObj";
 import UI_ROOT from "../../UIRoot";
 import { clamp, px } from "../../utils";
+import Bitmap from "../Bitmap";
 
 type ColorTriplet = string;
 
@@ -12,6 +13,9 @@ export default class EqVis extends GuiObj {
   _colorMiddle: ColorTriplet = "255,255,255";
   _colorBotttom: ColorTriplet = "255,255,255";
   _colorPreamp: ColorTriplet = "0,0,0";
+  _colorBitmapName: string;
+  // _colorBitmap: Bitmap;
+  _fillStyle:CanvasPattern | CanvasGradient;
 
   constructor() {
     super();
@@ -35,14 +39,15 @@ export default class EqVis extends GuiObj {
     }
 
     // Create gradient
-    var grd = ctx.createLinearGradient(0, 0, 0, h);
-    grd.addColorStop(0, `rgb(${this._colorTop})`);
-    grd.addColorStop(0.5, `rgb(${this._colorMiddle})`);
-    grd.addColorStop(1, `rgb(${this._colorBotttom})`);
+    // var grd = ctx.createLinearGradient(0, 0, 0, h);
+    // grd.addColorStop(0, `rgb(${this._colorTop})`);
+    // grd.addColorStop(0.5, `rgb(${this._colorMiddle})`);
+    // grd.addColorStop(1, `rgb(${this._colorBotttom})`);
     // grd.addColorStop(0, "red");
     // grd.addColorStop(0.5, "yellow");
     // grd.addColorStop(1, "green");
-    ctx.fillStyle = grd;
+    // ctx.fillStyle = grd;
+    ctx.fillStyle = this._getFillStyle();
 
     //taken from webamp classic
     const paddingLeft = 2; // TODO: This should be 1.5
@@ -107,10 +112,35 @@ export default class EqVis extends GuiObj {
       case "colorpreamp":
         this._colorPreamp = value;
         break;
+      case "colors":
+        this._colorBitmapName = value;
+        // this._setColors()
+        break;
       default:
         return false;
     }
     return true;
+  }
+
+  // private _setColors() {
+  //   this._colorBitmap = UI_ROOT.getBitmap(this._colorBitmapName)  
+  // }
+  _getFillStyle(): CanvasPattern | CanvasGradient {
+    if(!this._fillStyle){
+      const ctx = this._canvas.getContext('2d')
+      if(this._colorBitmapName){
+        //from bitmap. used by classic skin
+        const bitmap = UI_ROOT.getBitmap(this._colorBitmapName);
+        this._fillStyle = ctx.createPattern(bitmap.getCanvas(), "repeat-x")
+      } else {
+        const grd = ctx.createLinearGradient(0, 0, 0, this._canvas.height);
+        grd.addColorStop(0, `rgb(${this._colorTop})`);
+        grd.addColorStop(0.5, `rgb(${this._colorMiddle})`);
+        grd.addColorStop(1, `rgb(${this._colorBotttom})`);
+        this._fillStyle = grd
+      }
+    }
+    return this._fillStyle;
   }
 
   _renderWidth() {
