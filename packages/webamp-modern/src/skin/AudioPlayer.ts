@@ -225,6 +225,11 @@ export class AudioPlayer {
     }
   }
 
+  /**
+   * 
+   * @param kind : string range: '1'..'10'
+   * @param value : float range 0..1
+   */
   setEq(kind: string, value: number) {
     // console.log({ kind, value });
     const db = value * 24 - 12;
