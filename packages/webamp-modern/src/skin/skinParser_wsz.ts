@@ -43,6 +43,7 @@ export default class ClassicSkinParser extends SkinParser {
 
     await this._parseInternalFile("xml/player-elements.xml");
     await this._parseInternalFile("xml/eq-elements.xml");
+    await this._parseInternalFile("xml/eq.xml");
 
     await this._solveMissingBitmaps();
     await this._imageManager.loadUniquePaths();
