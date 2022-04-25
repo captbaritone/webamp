@@ -63,9 +63,46 @@ async function _loadSkin_WSZ(skinPath: string) {
   await _parseSkin_WAL(ClassicSkinParser);
 }
 
+function prepareXuiTags() {
+  UI_ROOT.addXuitagGroupDefId(
+    "wasabi:mainframe:nostatus",
+    "wasabi.mainframe.nostatusbar"
+  );
+  UI_ROOT.addXuitagGroupDefId(
+    "wasabi:medialibraryframe:nostatus",
+    "wasabi.medialibraryframe.nostatusbar"
+  );
+  UI_ROOT.addXuitagGroupDefId(
+    "wasabi:playlistframe:nostatus",
+    "wasabi.playlistframe.nostatusbar"
+  );
+  UI_ROOT.addXuitagGroupDefId(
+    "wasabi:standardframe:modal",
+    "wasabi.standardframe.modal"
+  );
+  UI_ROOT.addXuitagGroupDefId(
+    "wasabi:standardframe:nostatus",
+    "wasabi.standardframe.nostatusbar"
+  );
+  UI_ROOT.addXuitagGroupDefId(
+    "wasabi:standardframe:static",
+    "wasabi.standardframe.static"
+  );
+  UI_ROOT.addXuitagGroupDefId(
+    "wasabi:standardframe:status",
+    "wasabi.standardframe.statusbar"
+  );
+  UI_ROOT.addXuitagGroupDefId(
+    "wasabi:visframe:nostatus",
+    "wasabi.visframe.nostatusbar"
+  );
+}
+
 export async function loadSkin(skinPath: string) {
   UI_ROOT.reset();
   document.body.appendChild(UI_ROOT.getRootDiv());
+
+  prepareXuiTags();
 
   if (skinPath.endsWith(".wal")) {
     await _loadSkin_WAL(skinPath);
@@ -74,7 +111,7 @@ export async function loadSkin(skinPath: string) {
     await _loadPath_WAL(skinPath);
     //
   } else if (skinPath.endsWith(".wsz")) {
-    await _loadSkin_WSZ(skinPath);    
+    await _loadSkin_WSZ(skinPath);
     //
   } else {
     //TODO: support .swz and localhost path/to/skin-name/

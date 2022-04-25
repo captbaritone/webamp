@@ -1,7 +1,7 @@
 import GuiObj from "./GuiObj";
 import UI_ROOT from "../../UIRoot";
 import { clamp, px } from "../../utils";
-import Bitmap from "../Bitmap";
+// import Bitmap from "../Bitmap";
 
 type ColorTriplet = string;
 
@@ -37,6 +37,7 @@ export default class EqVis extends GuiObj {
     for (let i = 1; i <= 10; i++) {
       amplitudes.push(UI_ROOT.audio.getEq(String(i)));
     }
+    const preampValue = percentToRange(UI_ROOT.audio.getEq("preamp"), 0, h - 1);
 
     // Create gradient
     // var grd = ctx.createLinearGradient(0, 0, 0, h);

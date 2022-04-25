@@ -30,8 +30,8 @@ export default class ImageManager {
   }
 
   addBitmap(bitmap: Bitmap) {
-    const id = bitmap.getId();
-    const filePath = bitmap.getFile();
+    const id = bitmap.getId().toLowerCase();
+    const filePath = bitmap.getFile().toLowerCase();
     this._pathofBitmap[filePath] = false;
     this._bitmaps[id] = bitmap;
   }

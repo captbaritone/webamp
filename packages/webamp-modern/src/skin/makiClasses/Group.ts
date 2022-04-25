@@ -222,19 +222,21 @@ export default class Group extends Movable {
     const ctx2 = this._regionCanvas.getContext("2d");
     const r = child._div.getBoundingClientRect();
     const bitmap = child._backgroundBitmap;
-    const img = child._backgroundBitmap.getImg();
-    ctx2.drawImage(
-      img,
-      bitmap._x,
-      bitmap._y,
-      r.width,
-      r.height,
+    if (bitmap) {
+      const img = bitmap.getImg();
+      ctx2.drawImage(
+        img,
+        bitmap._x,
+        bitmap._y,
+        r.width,
+        r.height,
 
-      child._div.offsetLeft,
-      child._div.offsetTop,
-      r.width,
-      r.height
-    );
+        child._div.offsetLeft,
+        child._div.offsetTop,
+        r.width,
+        r.height
+      );
+    }
   }
 
   setRegion() {

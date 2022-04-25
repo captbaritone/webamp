@@ -104,6 +104,7 @@ async function initializeSkinListMenu() {
     { filename: "MMD3", download_url: "assets/MMD3.wal" },
     { filename: "[Folder] MMD3", download_url: "assets/extracted/MMD3/" },
     { filename: "[Classic]", download_url: "assets/base-2.91.wsz" },
+    { filename: "CornerAmp_Redux", download_url: "assets/CornerAmp_Redux.wal" },
   ];
 
   const skins = [...internalSkins, ...data.data.modern_skins.nodes];

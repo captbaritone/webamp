@@ -26,16 +26,16 @@ import PRIVATE_CONFIG from "./skin/PrivateConfig";
 export class UIRoot {
   _div: HTMLDivElement = document.createElement("div");
   // Just a temporary place to stash things
-  _bitmaps: Bitmap[] = [];
+  _bitmaps: { [id: string]: Bitmap } = {};
   _fonts: (TrueTypeFont | BitmapFont)[] = [];
   _colors: Color[] = [];
   _dimensions: { [id: string]: number } = {}; //css: width
-  _groupDefs: XmlElement[] = [];
+  _groupDefs: { [id: string]: XmlElement } = {};
   _gammaSets: Map<string, GammaGroup[]> = new Map();
   _gammaNames = {};
   _dummyGammaGroup: GammaGroup = null;
   _activeGammaSetName: string = "";
-  _xuiElements: XmlElement[] = [];
+  _xuiGroupDefs: { [xuitag: string]: /* groupdef_id */ string } = {};
   _activeGammaSet: GammaGroup[] = [];
   _containers: Container[] = [];
   _systemObjects: SystemObject[] = [];
@@ -81,12 +81,12 @@ export class UIRoot {
   reset() {
     this.deinitSkin();
     this.dispose();
-    this._bitmaps = [];
+    this._bitmaps = {};
     this._fonts = [];
     this._colors = [];
-    this._groupDefs = [];
+    this._groupDefs = {};
     this._gammaSets = new Map();
-    this._xuiElements = [];
+    this._xuiGroupDefs = {};
     this._activeGammaSet = [];
     this._containers = [];
     this._systemObjects = [];
@@ -105,8 +105,8 @@ export class UIRoot {
     for (const container of this._containers) {
       container.deinit();
     }
-    for(const systemObj of this._systemObjects) {
-      systemObj.deinit()
+    for (const systemObj of this._systemObjects) {
+      systemObj.deinit();
     }
   }
 
@@ -119,27 +119,34 @@ export class UIRoot {
   }
 
   addBitmap(bitmap: Bitmap) {
-    this._bitmaps.push(bitmap);
+    const id = bitmap.getId().toLowerCase();
+    this._bitmaps[id] = bitmap;
   }
 
   // TODO: Maybe return a default bitmap?
   getBitmap(id: string): Bitmap {
     const lowercaseId = id.toLowerCase();
-    const found = findLast(
-      this._bitmaps,
-      (bitmap) => bitmap._id.toLowerCase() === lowercaseId
-    );
+    // const found = findLast(
+    //   this._bitmaps,
+    //   (bitmap) => bitmap._id.toLowerCase() === lowercaseId
+    // );
+    const found = this._bitmaps[lowercaseId];
 
     assume(found != null, `Could not find bitmap with id ${id}.`);
     return found;
   }
+  getBitmaps(): { [id: string]: Bitmap } {
+    // return Object.values(this._bitmaps)
+    return this._bitmaps;
+  }
 
   hasBitmap(id: string): boolean {
     const lowercaseId = id.toLowerCase();
-    const found = findLast(
-      this._bitmaps,
-      (bitmap) => bitmap._id.toLowerCase() === lowercaseId
-    );
+    // const found = findLast(
+    //   this._bitmaps,
+    //   (bitmap) => bitmap._id.toLowerCase() === lowercaseId
+    // );
+    const found = this._bitmaps[lowercaseId];
     return found ? true : false;
   }
 
@@ -215,21 +222,22 @@ export class UIRoot {
   }
 
   addGroupDef(groupDef: XmlElement) {
-    this._groupDefs.push(groupDef);
+    const groupdef_id = groupDef.attributes.id.toLowerCase();
+    this._groupDefs[groupdef_id] = groupDef;
     if (groupDef.attributes.xuitag) {
-      this._xuiElements.push(groupDef);
+      // this._xuiGroupDefs[groupDef.attributes.xuitag.toLowerCase()] =
+      // groupdef_id;
+      this.addXuitagGroupDefId(groupDef.attributes.xuitag, groupdef_id)
     }
+  }
+  addXuitagGroupDefId(xuitag:string, groupdef_id: string) {
+    this._xuiGroupDefs[xuitag.toLowerCase()] = groupdef_id.toLowerCase()
   }
 
   getGroupDef(id: string): XmlElement | null {
     if (!id) return null;
-    const lowercaseId = id.toLowerCase();
-    const found = findLast(
-      this._groupDefs,
-      (def) => def.attributes.id.toLowerCase() === lowercaseId
-    );
-
-    return found ?? null;
+    const groupdef_id = id.toLowerCase();
+    return this._groupDefs[groupdef_id];
   }
 
   addContainers(container: Container) {
@@ -265,7 +273,7 @@ export class UIRoot {
       this._activeGammaSet = found || [];
       PRIVATE_CONFIG.setPrivateString(this.getSkinName(), "_gammagroup_", id);
     }
-    this.trigger('colorthemechanged', id || '');
+    this.trigger("colorthemechanged", id || "");
     this._setCssVars();
   }
 
@@ -311,7 +319,7 @@ export class UIRoot {
       (font) => font instanceof BitmapFont && !font.useExternalBitmap()
     ) as BitmapFont[];
     // css of bitmaps
-    for (const bitmap of [...this._bitmaps, ...bitmapFonts]) {
+    for (const bitmap of [...Object.values(this._bitmaps), ...bitmapFonts]) {
       const img = bitmap.getImg();
       if (!img) {
         console.warn(`Bitmap/font ${bitmap.getId()} has no img!`);
@@ -345,14 +353,10 @@ export class UIRoot {
     cssEl.textContent = `:root{${cssRules.join("\n")}}`;
   }
 
-  getXuiElement(name: string): XmlElement | null {
-    const lowercaseName = name.toLowerCase();
-    const found = findLast(
-      this._xuiElements,
-      (def) => def.attributes.xuitag.toLowerCase() === lowercaseName
-    );
-
-    return found ?? null;
+  getXuiElement(xuitag: string): XmlElement | null {
+    const lowercaseName = xuitag.toLowerCase();
+    const groupdef_id = this._xuiGroupDefs[lowercaseName];
+    return this.getGroupDef(groupdef_id);
   }
 
   loadTrueTypeFonts() {
@@ -504,7 +508,7 @@ export class UIRoot {
     // required to end with slash/
     this._skinPath = skinPath;
   }
-  getSkinDir():string {
+  getSkinDir(): string {
     return this._skinPath;
   }
 

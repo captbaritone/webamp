@@ -96,33 +96,43 @@ export default class SkinParser {
   }
 
   async loadFreeformXui() {
-    let xmlRootPath: string = "assets/freeform/xml/";
-    let xmlFilePath: string = null;
-    xmlRootPath += "wasabi/";
-    xmlFilePath = "xml/xui/standardframe/standardframe.xml";
+    // let xmlRootPath: string = "assets/freeform/xml/";
+    // let xmlFilePath: string = null;
+    // xmlRootPath += "wasabi/";
+    // xmlFilePath = "xml/xui/standardframe/standardframe.xml";
 
-    // push
-    const oldZip = UI_ROOT.getZip();
-    const oldSkinDir = UI_ROOT.getSkinDir();
+    // // push
+    // const oldZip = UI_ROOT.getZip();
+    // const oldSkinDir = UI_ROOT.getSkinDir();
 
-    // set
-    UI_ROOT.setZip(null);
-    UI_ROOT.setSkinDir(xmlRootPath);
+    // // set
+    // UI_ROOT.setZip(null);
+    // UI_ROOT.setSkinDir(xmlRootPath);
 
-    const node = new XmlElement("include", { file: xmlFilePath });
-    await this.include(node, null);
+    // const node = new XmlElement("include", { file: xmlFilePath });
+    // await this.include(node, null);
 
-    // pop
-    UI_ROOT.setSkinDir(oldSkinDir);
-    UI_ROOT.setZip(oldZip);
+    // // pop
+    // UI_ROOT.setSkinDir(oldSkinDir);
+    // UI_ROOT.setZip(oldZip);
+  }
+
+  // bad name, okay I know
+  async prepareArial(){
+    const node : XmlElement = new XmlElement('truetypefont', {
+      'id': 'Arial', 'family': 'Arial'
+    })
+    await this.trueTypeFont(node, null)
   }
 
   async parse(): Promise<UIRoot> {
     console.log("RESOURCE_PHASE #################");
     this._phase = RESOURCE_PHASE;
 
+    await this.prepareArial()
+
     // Load built-in xui elements
-    await this.loadFreeformXui();
+    // await this.loadFreeformXui();
 
     const includedXml = await this._uiRoot.getFileAsString("skin.xml");
 
@@ -157,7 +167,7 @@ export default class SkinParser {
 
   _scanRes(node: XmlElement) {
     if (node.attributes.background) {
-      this._res.bitmaps[node.attributes.background] = false; // just add, dont need to check
+      this._res.bitmaps[node.attributes.background.toLowerCase()] = false; // just add, dont need to check
     }
   }
 
@@ -166,8 +176,8 @@ export default class SkinParser {
    * but has no explicit declaration in a loaded skin  */
   async _solveMissingBitmaps() {
     //? checkmark the already availble
-    for (const bitmap of this._uiRoot._bitmaps) {
-      this._res.bitmaps[bitmap._id.toLowerCase()] = true;
+    for (const id of Object.keys(this._uiRoot.getBitmaps())) {
+      this._res.bitmaps[id] = true;
     }
     //? build not available bitmap
     // ------- ONLY APPLICABLE ONCE WE ABLE TO LOAD FROM FILEPATH -------

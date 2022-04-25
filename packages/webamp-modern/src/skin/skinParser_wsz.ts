@@ -90,4 +90,9 @@ export default class ClassicSkinParser extends SkinParser {
 
   //     this._uiRoot.addFont(font);
   //   }
+
+  async eqvis(node: XmlElement, parent: any) {
+    await super.eqvis(node, parent)
+    this._imageManager.isFilePathAdded('');
+  }
 }
