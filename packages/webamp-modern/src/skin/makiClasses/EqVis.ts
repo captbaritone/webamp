@@ -9,23 +9,27 @@ type ColorTriplet = string;
 export default class EqVis extends GuiObj {
   static GUID = "8d1eba38489e483eb9608d1f43c5c405";
   _canvas: HTMLCanvasElement = document.createElement("canvas");
+  _preampImg: HTMLCanvasElement = document.createElement("canvas");
   _colorTop: ColorTriplet = "255,255,255";
   _colorMiddle: ColorTriplet = "255,255,255";
   _colorBotttom: ColorTriplet = "255,255,255";
-  _colorPreamp: ColorTriplet = "0,0,0";
+  _colorPreamp: ColorTriplet = "186,203,221";
   _colorBitmapName: string;
+  _preampBitmapName: string;
   // _colorBitmap: Bitmap;
-  _fillStyle:CanvasPattern | CanvasGradient;
+  _fillStyle: CanvasPattern | CanvasGradient;
 
   constructor() {
     super();
     this.registerEqChanges();
+    this._preampImg.width = 0;
   }
 
   registerEqChanges() {
     for (let i = 1; i <= 10; i++) {
       UI_ROOT.audio.onEqChange(String(i), this.update);
     }
+    UI_ROOT.audio.onEqChange("preamp", this.update);
   }
 
   update = () => {
@@ -38,6 +42,7 @@ export default class EqVis extends GuiObj {
       amplitudes.push(UI_ROOT.audio.getEq(String(i)));
     }
     const preampValue = percentToRange(UI_ROOT.audio.getEq("preamp"), 0, h - 1);
+    ctx.drawImage(this._getPreampImg(), 0, preampValue);
 
     // Create gradient
     // var grd = ctx.createLinearGradient(0, 0, 0, h);
@@ -115,6 +120,9 @@ export default class EqVis extends GuiObj {
         break;
       case "colors":
         this._colorBitmapName = value;
+        break;
+      case "preamp":
+        this._preampBitmapName = value;
         // this._setColors()
         break;
       default:
@@ -124,24 +132,43 @@ export default class EqVis extends GuiObj {
   }
 
   // private _setColors() {
-  //   this._colorBitmap = UI_ROOT.getBitmap(this._colorBitmapName)  
+  //   this._colorBitmap = UI_ROOT.getBitmap(this._colorBitmapName)
   // }
   _getFillStyle(): CanvasPattern | CanvasGradient {
-    if(!this._fillStyle){
-      const ctx = this._canvas.getContext('2d')
-      if(this._colorBitmapName){
+    if (!this._fillStyle) {
+      const ctx = this._canvas.getContext("2d");
+      if (this._colorBitmapName) {
         //from bitmap. used by classic skin
         const bitmap = UI_ROOT.getBitmap(this._colorBitmapName);
-        this._fillStyle = ctx.createPattern(bitmap.getCanvas(), "repeat-x")
+        this._fillStyle = ctx.createPattern(bitmap.getCanvas(), "repeat-x");
       } else {
         const grd = ctx.createLinearGradient(0, 0, 0, this._canvas.height);
         grd.addColorStop(0, `rgb(${this._colorTop})`);
         grd.addColorStop(0.5, `rgb(${this._colorMiddle})`);
         grd.addColorStop(1, `rgb(${this._colorBotttom})`);
-        this._fillStyle = grd
+        this._fillStyle = grd;
       }
     }
     return this._fillStyle;
+  }
+
+  _getPreampImg(): HTMLCanvasElement {
+    if (!this._preampImg.width) {
+      this._preampImg.width = this.getwidth();
+      this._preampImg.height = 1;
+      const ctx = this._preampImg.getContext("2d");
+      ctx.fillStyle = `rgba(${this._colorPreamp},1)`;
+      ctx.fillRect(0, 0, this.getwidth(), 1);
+      if (this._preampBitmapName) {
+        //from bitmap. used by classic skin
+        const bitmap = UI_ROOT.getBitmap(this._preampBitmapName);
+        this._preampImg.height = bitmap.getHeight(); //debug
+        ctx.drawImage(bitmap.getImg(), - bitmap.getLeft(), - bitmap.getTop());
+      } 
+      //debug
+      this._div.style.setProperty('--colorPreamp', this._colorPreamp)
+    }
+    return this._preampImg;
   }
 
   _renderWidth() {

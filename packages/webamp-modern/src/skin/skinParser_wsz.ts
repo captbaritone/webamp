@@ -1,6 +1,7 @@
 import parseXml, { XmlElement } from "@rgrove/parse-xml";
 import { UIRoot } from "../UIRoot";
 import BitmapFont from "./BitmapFont";
+import EqVis from "./makiClasses/EqVis";
 import SkinParser, {
   GROUP_PHASE,
   parseXmlFragment,
@@ -91,8 +92,29 @@ export default class ClassicSkinParser extends SkinParser {
   //     this._uiRoot.addFont(font);
   //   }
 
-  async eqvis(node: XmlElement, parent: any) {
-    await super.eqvis(node, parent)
-    this._imageManager.isFilePathAdded('');
+  async eqvis(node: XmlElement, parent: any): Promise<EqVis> {
+    const eqv = await super.eqvis(node, parent)
+    if(this._imageManager.isFilePathAdded('eqmain.bmp')) {
+      //gradient lines
+      let node : XmlElement = new XmlElement('bitmap', {
+        'id': 'eq_gradient_line_', 
+        'file': 'eqmain.bmp',
+        'x': '115', 'y': '294', 'w': '1', 'h': '19' 
+      })
+      await this.bitmap(node)
+      eqv.setXmlAttr('colors','eq_gradient_line_')
+      // x="115" y="294" h="19" w="1"
+
+      //preamp
+      node = new XmlElement('bitmap', {
+        'id': 'eq_preamp_line_', 
+        'file': 'eqmain.bmp',
+        'x': '0', 'y': '314', 'w': '113', 'h': '1' 
+      })
+      await this.bitmap(node)
+      eqv.setXmlAttr('preamp','eq_preamp_line_')
+
+    }
+    return eqv
   }
 }

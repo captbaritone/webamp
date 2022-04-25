@@ -100,36 +100,33 @@ export default class SkinParser {
     // let xmlFilePath: string = null;
     // xmlRootPath += "wasabi/";
     // xmlFilePath = "xml/xui/standardframe/standardframe.xml";
-
     // // push
     // const oldZip = UI_ROOT.getZip();
     // const oldSkinDir = UI_ROOT.getSkinDir();
-
     // // set
     // UI_ROOT.setZip(null);
     // UI_ROOT.setSkinDir(xmlRootPath);
-
     // const node = new XmlElement("include", { file: xmlFilePath });
     // await this.include(node, null);
-
     // // pop
     // UI_ROOT.setSkinDir(oldSkinDir);
     // UI_ROOT.setZip(oldZip);
   }
 
   // bad name, okay I know
-  async prepareArial(){
-    const node : XmlElement = new XmlElement('truetypefont', {
-      'id': 'Arial', 'family': 'Arial'
-    })
-    await this.trueTypeFont(node, null)
+  async prepareArial() {
+    const node: XmlElement = new XmlElement("truetypefont", {
+      id: "Arial",
+      family: "Arial",
+    });
+    await this.trueTypeFont(node, null);
   }
 
   async parse(): Promise<UIRoot> {
     console.log("RESOURCE_PHASE #################");
     this._phase = RESOURCE_PHASE;
 
-    await this.prepareArial()
+    await this.prepareArial();
 
     // Load built-in xui elements
     // await this.loadFreeformXui();
@@ -498,65 +495,65 @@ export default class SkinParser {
       }
     }
   }
-  async wasabiFrame(node: XmlElement, parent: any) {
-    const frame = new WasabiFrame();
-    this.addToGroup(frame, parent);
+  // async wasabiFrame(node: XmlElement, parent: any) {
+  //   const frame = new WasabiFrame();
+  //   this.addToGroup(frame, parent);
 
-    //? Search Wasabi Inheritace
-    const xuitag: string = node.name; // eg. Wasabi:MainFrame:NoStatus
-    const xuiEl: XmlElement = this._uiRoot.getXuiElement(xuitag);
-    if (xuiEl) {
-      const xuiFrame = new XmlElement("dummy", { id: xuiEl.attributes.id });
-      await this.maybeApplyGroupDef(frame, xuiFrame);
-    } else {
-      const groupdef_id = this._getWasabiGroupDef(node.name);
-      const groupDef = this._uiRoot.getGroupDef(groupdef_id);
-      if (groupDef) {
-        await this.maybeApplyGroupDef(frame, groupDef);
-      }
-    }
-    frame.setXmlAttributes(node.attributes);
+  //   //? Search Wasabi Inheritace
+  //   const xuitag: string = node.name; // eg. Wasabi:MainFrame:NoStatus
+  //   const xuiEl: XmlElement = this._uiRoot.getXuiElement(xuitag);
+  //   if (xuiEl) {
+  //     const xuiFrame = new XmlElement("dummy", { id: xuiEl.attributes.id });
+  //     await this.maybeApplyGroupDef(frame, xuiFrame);
+  //   } else {
+  //     const groupdef_id = this._getWasabiGroupDef(node.name);
+  //     const groupDef = this._uiRoot.getGroupDef(groupdef_id);
+  //     if (groupDef) {
+  //       await this.maybeApplyGroupDef(frame, groupDef);
+  //     }
+  //   }
+  //   frame.setXmlAttributes(node.attributes);
 
-    //?content
-    if (node.attributes.content) {
-      const content = await this.group(
-        new XmlElement("group", {
-          id: node.attributes.content,
-          w: "0",
-          h: "0",
-          relatw: "1",
-          relath: "1",
-        }),
-        frame
-      );
-      frame.addChild(content);
-    }
-  }
+  //   //?content
+  //   if (node.attributes.content) {
+  //     const content = await this.group(
+  //       new XmlElement("group", {
+  //         id: node.attributes.content,
+  //         w: "0",
+  //         h: "0",
+  //         relatw: "1",
+  //         relath: "1",
+  //       }),
+  //       frame
+  //     );
+  //     frame.addChild(content);
+  //   }
+  // }
 
   /** taken from Winamp Modern skin */
-  _getWasabiGroupDef(xmlTag: string): string {
-    switch (xmlTag.toLowerCase()) {
-      case "wasabi:mainframe:nostatus":
-        return "wasabi.mainframe.nostatusbar";
-      case "wasabi:medialibraryframe:nostatus":
-        return "wasabi.medialibraryframe.nostatusbar";
-      case "wasabi:playlistframe:nostatus":
-        return "wasabi.playlistframe.nostatusbar";
-      case "wasabi:standardframe:modal":
-        return "wasabi.standardframe.modal";
-      case "wasabi:standardframe:nostatus":
-        return "wasabi.standardframe.nostatusbar";
-      case "wasabi:standardframe:static":
-        return "wasabi.standardframe.static";
-      case "wasabi:standardframe:status":
-        return "wasabi.standardframe.statusbar";
-      case "wasabi:visframe:nostatus":
-        return "wasabi.visframe.nostatusbar";
-      default:
-        console.warn(`Unhandled <Wasabi:Frame:Tag>: ${xmlTag}`);
-        return;
-    }
-  }
+  // _getWasabiGroupDef(xmlTag: string): string {
+  //   switch (xmlTag.toLowerCase()) {
+  //     case "wasabi:mainframe:nostatus":
+  //       return "wasabi.mainframe.nostatusbar";
+  //     case "wasabi:medialibraryframe:nostatus":
+  //       return "wasabi.medialibraryframe.nostatusbar";
+  //     case "wasabi:playlistframe:nostatus":
+  //       return "wasabi.playlistframe.nostatusbar";
+  //     case "wasabi:standardframe:modal":
+  //       return "wasabi.standardframe.modal";
+  //     case "wasabi:standardframe:nostatus":
+  //       return "wasabi.standardframe.nostatusbar";
+  //     case "wasabi:standardframe:static":
+  //       return "wasabi.standardframe.static";
+  //     case "wasabi:standardframe:status":
+  //       return "wasabi.standardframe.statusbar";
+  //     case "wasabi:visframe:nostatus":
+  //       return "wasabi.visframe.nostatusbar";
+  //     default:
+  //       console.warn(`Unhandled <Wasabi:Frame:Tag>: ${xmlTag}`);
+  //       return;
+  //   }
+  // }
 
   async bitmap(node: XmlElement) {
     assume(
@@ -569,6 +566,12 @@ export default class SkinParser {
 
     this._uiRoot.addBitmap(bitmap);
     this._res.bitmaps[node.attributes.id] = true;
+
+    if (this._phase == GROUP_PHASE) {
+      this._imageManager.setBimapImg(bitmap);
+      // await this._imageManager.loadUniquePaths();
+      // await this._imageManager.ensureBitmapsLoaded();
+    }
   }
 
   async bitmapFont(node: XmlElement) {
@@ -1013,13 +1016,13 @@ export default class SkinParser {
   async status(node: XmlElement, parent: any) {
     return this.newGui(Status, node, parent);
   }
-  
-  async eqvis(node: XmlElement, parent: any) {
+
+  async eqvis(node: XmlElement, parent: any): Promise<EqVis> {
     assume(
       node.children.length === 0,
       "Unexpected children in <eqvis> XML node."
     );
-    return this.newGui(EqVis, node, parent);
+    return await this.newGui(EqVis, node, parent);
   }
 
   async vis(node: XmlElement, parent: any) {
