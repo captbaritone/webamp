@@ -81,7 +81,7 @@ export default class Vis extends GuiObj {
       case "colorband15":
       case "colorband16":
         // color spectrum band #
-        const cobaIndex = parseInt(key) - 1;
+        const cobaIndex = parseInt(key.substring(9)) - 1;
         this._colorBands[cobaIndex] = value;
         break;
       case "colorallbands":
@@ -151,7 +151,7 @@ export default class Vis extends GuiObj {
         return;
       }
       this._painter.paintFrame(ctx);
-      }
+    }
   }, 100);
 
   _colorThemeChanged = (newGammaId: string) => {
@@ -274,25 +274,33 @@ class BarPainter extends VisPainter {
     // this._barWidth = vis._canvas.width / NUM_BARS;
     this._bar.height = vis._canvas.height;
     this._bar.width = 1;
+    var ctx = this._bar.getContext("2d");
     // ctx.clearRect(0, 0, w, h);
-    if (vis._colorBands[0]) {
-      this._color = `rgba(${vis._colorBands[0]}, 1)`;
-
-      if (vis._gammagroup) {
-        const groupId = vis._gammagroup;
-        const gammaGroup = UI_ROOT._getGammaGroup(groupId);
-        // const url = gammaGroup.transformColor(color.getValue());
-        
-        // this._barWidth = Math.ceil(vis.getwidth() / NUM_BARS); //! why width not valid?
-        // this._color = `rgba(${(vis._colorBands[0], 1)}`;
-        this._color = gammaGroup.transformColor(vis._colorBands[0]);
-      }
+    const grd = ctx.createLinearGradient(0, 0, 0, vis._canvas.height);
+    for (let i = 0; i < vis._colorBands.length; i++) {
+      grd.addColorStop(
+        (1 / (vis._colorBands.length - 1)) * i,
+        `rgb(${vis._colorBands[i]})`
+      );
     }
-    var ctx = this._bar.getContext("2d")
-    ctx.fillStyle = this._color;
+    // if (vis._colorBands[0]) {
+    //   this._color = `rgba(${vis._colorBands[0]}, 1)`;
+
+    //   if (vis._gammagroup) {
+    //     const groupId = vis._gammagroup;
+    //     const gammaGroup = UI_ROOT._getGammaGroup(groupId);
+    //     // const url = gammaGroup.transformColor(color.getValue());
+
+    //     // this._barWidth = Math.ceil(vis.getwidth() / NUM_BARS); //! why width not valid?
+    //     // this._color = `rgba(${(vis._colorBands[0], 1)}`;
+    //     this._color = gammaGroup.transformColor(vis._colorBands[0]);
+    //   }
+    // }
+    // ctx.fillStyle = this._color;
+    ctx.fillStyle = grd;
     ctx.fillRect(0, 0, 1, vis._canvas.height);
     //debug:
-    vis._canvas.style.setProperty('--color', this._color)
+    vis._canvas.style.setProperty("--color", this._color);
   }
 
   paintFrame(ctx: CanvasRenderingContext2D) {
@@ -314,7 +322,9 @@ class BarPainter extends VisPainter {
       // var radius = Math.floor(Math.random() * 20);
 
       // ctx.fillRect(x, y, x2, h);
-      ctx.drawImage(this._bar,x, y, x2-x+1, h-y)
+
+      //it draw fire mode:
+      ctx.drawImage(this._bar, x, y, x2 - x + 1, h - y);
 
       // ctx.beginPath();
       // ctx.rect(this._barWidth*i, y, this._barWidth*(i+1), h);

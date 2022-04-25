@@ -1025,7 +1025,7 @@ export default class SkinParser {
     return await this.newGui(EqVis, node, parent);
   }
 
-  async vis(node: XmlElement, parent: any) {
+  async vis(node: XmlElement, parent: any): Promise<Vis> {
     return this.newGui(Vis, node, parent);
   }
 

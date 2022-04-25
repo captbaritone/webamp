@@ -2,6 +2,7 @@ import parseXml, { XmlElement } from "@rgrove/parse-xml";
 import { UIRoot } from "../UIRoot";
 import BitmapFont from "./BitmapFont";
 import EqVis from "./makiClasses/EqVis";
+import Vis from "./makiClasses/Vis";
 import SkinParser, {
   GROUP_PHASE,
   parseXmlFragment,
@@ -93,28 +94,86 @@ export default class ClassicSkinParser extends SkinParser {
   //   }
 
   async eqvis(node: XmlElement, parent: any): Promise<EqVis> {
-    const eqv = await super.eqvis(node, parent)
-    if(this._imageManager.isFilePathAdded('eqmain.bmp')) {
+    const eqv = await super.eqvis(node, parent);
+    if (this._imageManager.isFilePathAdded("eqmain.bmp")) {
       //gradient lines
-      let node : XmlElement = new XmlElement('bitmap', {
-        'id': 'eq_gradient_line_', 
-        'file': 'eqmain.bmp',
-        'x': '115', 'y': '294', 'w': '1', 'h': '19' 
-      })
-      await this.bitmap(node)
-      eqv.setXmlAttr('colors','eq_gradient_line_')
+      let node: XmlElement = new XmlElement("bitmap", {
+        id: "eq_gradient_line_",
+        file: "eqmain.bmp",
+        x: "115",
+        y: "294",
+        w: "1",
+        h: "19",
+      });
+      await this.bitmap(node);
+      eqv.setXmlAttr("colors", "eq_gradient_line_");
       // x="115" y="294" h="19" w="1"
 
       //preamp
-      node = new XmlElement('bitmap', {
-        'id': 'eq_preamp_line_', 
-        'file': 'eqmain.bmp',
-        'x': '0', 'y': '314', 'w': '113', 'h': '1' 
-      })
-      await this.bitmap(node)
-      eqv.setXmlAttr('preamp','eq_preamp_line_')
-
+      node = new XmlElement("bitmap", {
+        id: "eq_preamp_line_",
+        file: "eqmain.bmp",
+        x: "0",
+        y: "314",
+        w: "113",
+        h: "1",
+      });
+      await this.bitmap(node);
+      eqv.setXmlAttr("preamp", "eq_preamp_line_");
     }
-    return eqv
+    return eqv;
+  }
+
+  async vis(node: XmlElement, parent: any): Promise<Vis> {
+    const vis = await super.vis(node, parent);
+
+    const content = await this._uiRoot.getFileAsString("viscolor.txt");
+    if (content) {
+      const colors = parseViscolors(content);
+      for (let i = 1; i < 16; i++) {
+        vis.setxmlparam(`colorband${i}`, colors[i]);
+      }
+    }
+
+    return vis;
   }
 }
+
+const parseViscolors = (text: string): string[] => {
+  const entries = text.split("\n");
+  const regex = /^\s*(\d+)\s*,?\s*(\d+)\s*,?\s*(\d+)/;
+  const colors = [
+    "0,0,0",
+    "24,33,41",
+    "239,49,16",
+    "206,41,16",
+    "214,90,0",
+    "214,102,0",
+    "214,115,0",
+    "198,123,8",
+    "222,165,24",
+    "214,181,33",
+    "189,222,41",
+    "148,222,33",
+    "41,206,16",
+    "50,190,16",
+    "57,181,16",
+    "49,156,8",
+    "41,148,0",
+    "24,132,8",
+    "255,255,255",
+    "214,214,222",
+    "181,189,189",
+    "160,170,175",
+    "148,156,165",
+    "150,150,150",
+  ];
+  entries
+    .map((line) => regex.exec(line))
+    .filter(Boolean)
+    .map((matches) => (matches as RegExpExecArray).slice(1, 4).join(","))
+    .map((rgb, i) => {
+      colors[i] = rgb; // `rgb(${rgb})`;
+    });
+  return colors;
+};
