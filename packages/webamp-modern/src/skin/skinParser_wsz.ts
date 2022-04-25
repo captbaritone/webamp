@@ -41,7 +41,7 @@ export default class ClassicSkinParser extends SkinParser {
     this._phase = RESOURCE_PHASE;
 
     // Load built-in xui elements
-    await this.loadFreeformXui();
+    // await this.loadFreeformXui();
 
     await this._parseInternalFile("xml/player-elements.xml");
     await this._parseInternalFile("xml/eq-elements.xml");

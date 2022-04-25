@@ -24,6 +24,14 @@ export function getCaseInsensitiveFile(
   const normalized = filePath.replace(/[\/\\]/g, `[/\\\\]`);
   const files = zip.file(new RegExp(normalized, "i"));
   if (files && files.length > 1) {
+    // console.log('asking',filePath,'got files:', files);
+    const requestName = filePath.split("/").pop().toLowerCase();
+    for (let i = 0; i < files.length; i++) {
+      const responseName = files[i].name.split("/").pop().toLowerCase();
+      if (responseName == requestName) {
+        return files[i];
+      }
+    }
     return zip.file(new RegExp(`^${normalized}$`, "i"))[0] ?? null;
   }
   return files[0] ?? null;
