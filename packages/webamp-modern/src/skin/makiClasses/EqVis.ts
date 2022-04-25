@@ -25,7 +25,6 @@ export default class EqVis extends GuiObj {
   }
 
   update = () => {
-    console.log("udpated");
     const ctx = this._canvas.getContext("2d");
     const w = ctx.canvas.width;
     const h = ctx.canvas.height;
