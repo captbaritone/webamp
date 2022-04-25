@@ -37,9 +37,12 @@ export default class EqVis extends GuiObj {
 
     // Create gradient
     var grd = ctx.createLinearGradient(0, 0, 0, h);
-    grd.addColorStop(0, "red");
-    grd.addColorStop(0.5, "yellow");
-    grd.addColorStop(1, "green");
+    grd.addColorStop(0, `rgb(${this._colorTop})`);
+    grd.addColorStop(0.5, `rgb(${this._colorMiddle})`);
+    grd.addColorStop(1, `rgb(${this._colorBotttom})`);
+    // grd.addColorStop(0, "red");
+    // grd.addColorStop(0.5, "yellow");
+    // grd.addColorStop(1, "green");
     ctx.fillStyle = grd;
 
     //taken from webamp classic
@@ -53,7 +56,8 @@ export default class EqVis extends GuiObj {
     amplitudes.forEach((value, i) => {
       const percent = 1 - value;
       // Each band is 12 pixels widex
-      xs.push(i * (w / 10));
+      xs.push(i * ((w - 2 * paddingLeft) / (10 - 1)));
+      // xs.push(i * 12);
       ys.push(percentToRange(percent, min, max));
     });
 
