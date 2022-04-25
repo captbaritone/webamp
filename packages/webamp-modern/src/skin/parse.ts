@@ -303,15 +303,15 @@ export default class SkinParser {
         return this.colorThemesList(node, parent);
       case "status":
         return this.status(node, parent);
-      case "wasabi:mainframe:nostatus":
-      case "wasabi:medialibraryframe:nostatus":
-      case "wasabi:playlistframe:nostatus":
-      // case "wasabi:standardframe:nostatus":
-      case "wasabi:standardframe:nostatus:short":
-      // case "wasabi:standardframe:status":
-      case "wasabi:standardframe:modal:short":
-      case "wasabi:visframe:nostatus":
-        return this.wasabiFrame(node, parent);
+      // case "wasabi:mainframe:nostatus":
+      // case "wasabi:medialibraryframe:nostatus":
+      // case "wasabi:playlistframe:nostatus":
+      // // case "wasabi:standardframe:nostatus":
+      // case "wasabi:standardframe:nostatus:short":
+      // // case "wasabi:standardframe:status":
+      // case "wasabi:standardframe:modal:short":
+      // case "wasabi:visframe:nostatus":
+      //   return this.wasabiFrame(node, parent);
       // case "buttonled":
       // case "fadebutton":
       // case "fadetogglebutton":
