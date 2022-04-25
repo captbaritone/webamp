@@ -16,16 +16,16 @@
         <button id="EQ_m12" x="45" y="88" w="21" h="12" rectrgn="1" />
 
         <!-- Backgrounds -->
-        <layer id="preamp_layer" x="21" y="38" image="eq.slider.level14" move="0" tooltip="Preamp" rectrgn="0" />
+        <layer id="preampback" x="21" y="38" image="eq.slider.level14" move="0" tooltip="Preamp" rectrgn="0" />
         <layer id="eq1back" x="78" y="38" image="eq.slider.level1" />
         <layer id="eq2back" x="96" y="38" image="eq.slider.level1" />
         <layer id="eq3back" x="114" y="38" image="eq.slider.level1" />
         <layer id="eq4back" x="132" y="38" image="eq.slider.level1" />
         <layer id="eq5back" x="150" y="38" image="eq.slider.level1" />
-        <layer id="eq6back" x="168" y="38" image="eq.slider.level1" />
-        <layer id="eq7back" x="186" y="38" image="eq.slider.level1" />
-        <layer id="eq8back" x="204" y="38" image="eq.slider.level1" />
-        <layer id="eq9back" x="222" y="38" image="eq.slider.level1" />
+        <layer id="eq6back" x="168" y="38" image="eq.slider.level5" />
+        <layer id="eq7back" x="186" y="38" image="eq.slider.level7" />
+        <layer id="eq8back" x="204" y="38" image="eq.slider.level10" />
+        <layer id="eq9back" x="222" y="38" image="eq.slider.level14" />
         <layer id="eq10back" x="240" y="38" image="eq.slider.level28" />
 
 

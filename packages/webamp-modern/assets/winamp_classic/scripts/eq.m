@@ -1,5 +1,8 @@
-#include <lib/std.mi>
-#include <lib/winampconfig.mi>
+#include <Lib/std.mi>
+#include <Lib/winampconfig.mi>
+
+Function initEqualizer();
+Function setEqualizerRegion(Int intEqualizerBandValue, Layer layerEqualizerBand);
 
 Global Group frameGroup, use;
 Global Button btnEQp12,btnEQ0,btnEQm12;
@@ -7,6 +10,31 @@ Global Layer eqBand;
 Global Boolean manual_set;
 
 Global Layout normal;
+
+
+Global Layer layerConfigNormalEqualizerBand00;
+Global Layer layerConfigNormalEqualizerBand01;
+Global Layer layerConfigNormalEqualizerBand02;
+Global Layer layerConfigNormalEqualizerBand03;
+Global Layer layerConfigNormalEqualizerBand04;
+Global Layer layerConfigNormalEqualizerBand05;
+Global Layer layerConfigNormalEqualizerBand06;
+Global Layer layerConfigNormalEqualizerBand07;
+Global Layer layerConfigNormalEqualizerBand08;
+Global Layer layerConfigNormalEqualizerBand09;
+Global Layer layerConfigNormalEqualizerBand10;
+
+Global Slider sliderConfigNormalEqualizerBand00;
+Global Slider sliderConfigNormalEqualizerBand01;
+Global Slider sliderConfigNormalEqualizerBand02;
+Global Slider sliderConfigNormalEqualizerBand03;
+Global Slider sliderConfigNormalEqualizerBand04;
+Global Slider sliderConfigNormalEqualizerBand05;
+Global Slider sliderConfigNormalEqualizerBand06;
+Global Slider sliderConfigNormalEqualizerBand07;
+Global Slider sliderConfigNormalEqualizerBand08;
+Global Slider sliderConfigNormalEqualizerBand09;
+Global Slider sliderConfigNormalEqualizerBand10;
 
 #define ISOBANDS "31.5 Hz,63 Hz,125 Hz,250 Hz,500 Hz,1 KHz,2 KHz,4 KHz,8 KHz,16 KHz"
 #define WINAMPBANDS "70 Hz,180 Hz,320 Hz,600 Hz,1 KHz,3 KHz,6 KHz,12 KHz,14 KHz,16 KHz"
@@ -23,7 +51,44 @@ System.onScriptLoaded() {
 	eqBand = frameGroup.findObject("equalizer.band.label");
 
 	system.onEqFreqChanged(freqmode);
+
+	initEqualizer();
 }
+
+initEqualizer() {
+	layerConfigNormalEqualizerBand00 = normal.findObject("preampback");
+	
+	layerConfigNormalEqualizerBand01 = normal.findObject("eq1back");
+	layerConfigNormalEqualizerBand02 = normal.findObject("eq2back");
+	layerConfigNormalEqualizerBand03 = normal.findObject("eq3back");
+	layerConfigNormalEqualizerBand04 = normal.findObject("eq4back");
+	layerConfigNormalEqualizerBand05 = normal.findObject("eq5back");
+	layerConfigNormalEqualizerBand06 = normal.findObject("eq6back");
+	layerConfigNormalEqualizerBand07 = normal.findObject("eq7back");
+	layerConfigNormalEqualizerBand08 = normal.findObject("eq8back");
+	layerConfigNormalEqualizerBand09 = normal.findObject("eq9back");
+	layerConfigNormalEqualizerBand10 = normal.findObject("eq10back");
+	
+	sliderConfigNormalEqualizerBand00 = normal.findObject("preamp");
+	
+	sliderConfigNormalEqualizerBand01 = normal.findObject("eq1");
+	sliderConfigNormalEqualizerBand02 = normal.findObject("eq2");
+	sliderConfigNormalEqualizerBand03 = normal.findObject("eq3");
+	sliderConfigNormalEqualizerBand04 = normal.findObject("eq4");
+	sliderConfigNormalEqualizerBand05 = normal.findObject("eq5");
+	sliderConfigNormalEqualizerBand06 = normal.findObject("eq6");
+	sliderConfigNormalEqualizerBand07 = normal.findObject("eq7");
+	sliderConfigNormalEqualizerBand08 = normal.findObject("eq8");
+	sliderConfigNormalEqualizerBand09 = normal.findObject("eq9");
+	sliderConfigNormalEqualizerBand10 = normal.findObject("eq10");
+}
+
+setEqualizerRegion(Int intEqualizerBandValue, Layer layerEqualizerBand) {
+	int level = 28-((128-intEqualizerBandValue) / 255 * 27) ;
+	layerEqualizerBand.setXmlParam("image", "eq.slider.level" + System.integerToString(level) );
+}
+
+
 
 btnEQp12.onLeftClick() {
 	manual_set = 1;
@@ -74,6 +139,31 @@ system.onEqBandChanged(int band, int value)
 	}
 
 	normal.sendAction("showinfo", t, 0,0,0,0);
+
+	//if (band == 0) {
+	//	setEqualizerRegion(value, layerConfigNormalEqualizerBand00);
+	//} else 
+	if (band == 1) {
+		setEqualizerRegion(value, layerConfigNormalEqualizerBand01);
+	} else if (band == 2) {
+		setEqualizerRegion(value, layerConfigNormalEqualizerBand02);
+	} else if (band == 3) {
+		setEqualizerRegion(value, layerConfigNormalEqualizerBand03);
+	} else if (band == 4) {
+		setEqualizerRegion(value, layerConfigNormalEqualizerBand04);
+	} else if (band == 5) {
+		setEqualizerRegion(value, layerConfigNormalEqualizerBand05);
+	} else if (band == 6) {
+		setEqualizerRegion(value, layerConfigNormalEqualizerBand06);
+	} else if (band == 7) {
+		setEqualizerRegion(value, layerConfigNormalEqualizerBand07);
+	} else if (band == 8) {
+		setEqualizerRegion(value, layerConfigNormalEqualizerBand08);
+	} else if (band == 9) {
+		setEqualizerRegion(value, layerConfigNormalEqualizerBand09);
+	} else if (band == 10) {
+		setEqualizerRegion(value, layerConfigNormalEqualizerBand10);
+	}
 }
 
 system.onEqPreampChanged(int value)
@@ -87,4 +177,7 @@ system.onEqPreampChanged(int value)
 	else t += floattostring(f, 1) + " "+ translate("dB");
 	
 	normal.sendAction("showinfo", t, 0,0,0,0);
+
+	setEqualizerRegion(value, layerConfigNormalEqualizerBand00);
 }
+

@@ -1,7 +1,7 @@
 <elements>
 	<!-- NUMFONT -->
 
-	<bitmap id="wa.main" file="wsz_root/Main.BMP"/>
+	<bitmap id="wa.main" file="wsz_root/Main.BMP" x="0" y="0" w="275" h="116"/>
 
 	<bitmap id="posbarbg" file="wsz_root/posbar.bmp" x="0" y="0" w="248" h="10"/>
 	<bitmap id="posbar" file="wsz_root/posbar.bmp" x="248" y="0" w="29" h="10"/>
