@@ -4,19 +4,21 @@
         <!-- <Wasabi:Button id="close" x="290" y="11" w="72" h="20" text="Close" action="close" retcode="0"/> -->
         <!-- <Wasabi:Button id="EQ_0" x="290" y="60" w="72" h="20" text="Zero" retcode="0"/> -->
         <!-- <Wasabi:Button id="reset" x="290" y="36" w="72" h="20" text="Reset" retcode="0"/> -->
+        <eqvis id="spline" x="86" y="17" w="113" h="19" colortop="211,34,27" colormiddle="239,220,49" colorbottom="42,154,22" colorpreamp="246,181,0" gamma="192" />
+
 
         <!-- Backgrounds -->
-				<layer id="preamp_layer" x="21" y="38" image="eq.slider.level14" move="0" tooltip="Preamp" rectrgn="0" />
-				<layer id="eq1back" x="78" y="38" image="eq.slider.level1" />
-				<layer id="eq2back" x="96" y="38" image="eq.slider.level1" />
-				<layer id="eq3back" x="114" y="38" image="eq.slider.level1" />
-				<layer id="eq4back" x="132" y="38" image="eq.slider.level1" />
-				<layer id="eq5back" x="150" y="38" image="eq.slider.level1" />
-				<layer id="eq6back" x="168" y="38" image="eq.slider.level1" />
-				<layer id="eq7back" x="186" y="38" image="eq.slider.level1" />
-				<layer id="eq8back" x="204" y="38" image="eq.slider.level1" />
-				<layer id="eq9back" x="222" y="38" image="eq.slider.level1" />
-				<layer id="eq10back" x="240" y="38" image="eq.slider.level28" />
+        <layer id="preamp_layer" x="21" y="38" image="eq.slider.level14" move="0" tooltip="Preamp" rectrgn="0" />
+        <layer id="eq1back" x="78" y="38" image="eq.slider.level1" />
+        <layer id="eq2back" x="96" y="38" image="eq.slider.level1" />
+        <layer id="eq3back" x="114" y="38" image="eq.slider.level1" />
+        <layer id="eq4back" x="132" y="38" image="eq.slider.level1" />
+        <layer id="eq5back" x="150" y="38" image="eq.slider.level1" />
+        <layer id="eq6back" x="168" y="38" image="eq.slider.level1" />
+        <layer id="eq7back" x="186" y="38" image="eq.slider.level1" />
+        <layer id="eq8back" x="204" y="38" image="eq.slider.level1" />
+        <layer id="eq9back" x="222" y="38" image="eq.slider.level1" />
+        <layer id="eq10back" x="240" y="38" image="eq.slider.level28" />
 
 
         <!-- <grid x="271" y="95" w="11" h="11" topleft="wasabi.objectframe.top.left" top="wasabi.objectframe.top" topright="wasabi.objectframe.top.right" left="wasabi.objectframe.left" middle="wasabi.objectframe.center" right="wasabi.objectframe.right" bottomleft="wasabi.objectframe.bottom.left" bottom="wasabi.objectframe.bottom" bottomright="wasabi.objectframe.bottom.right" />
@@ -51,7 +53,7 @@
     </groupdef>
 
     <layout id="normal" background0="eq.bg" w="275" h="116">
-        <group id="eq-content" x="0" y="0" w="0" h="0" relatw="1" relath="1"  background="eq.bg"/>
+        <group id="eq-content" x="0" y="0" w="0" h="0" relatw="1" relath="1" background="eq.bg"/>
     </layout>
 
 </container>
