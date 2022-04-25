@@ -1478,7 +1478,7 @@ export default class SystemObject extends BaseObject {
    * @param  value The desired value for the pre-amp.
    */
   seteqpreamp(value: number) {
-    // TODO
+    UI_ROOT.audio.setEq('preamp', (value+127) / 255)
   }
 
   /**
@@ -1490,7 +1490,7 @@ export default class SystemObject extends BaseObject {
    * @param  value The desired value for the specified band.
    */
   seteqband(band: number, value: number) {
-    // TODO
+    UI_ROOT.audio.setEq(String(band+1), (value+127) / 255)
   }
 
   /**
