@@ -4,10 +4,7 @@ import UI_ROOT, { UIRoot } from "../UIRoot";
 import BitmapFont from "./BitmapFont";
 import EqVis from "./makiClasses/EqVis";
 import Vis from "./makiClasses/Vis";
-import SkinParser, {
-  GROUP_PHASE,
-  RESOURCE_PHASE,
-} from "./parse";
+import SkinParser, { GROUP_PHASE, RESOURCE_PHASE } from "./parse";
 
 type StreamSource = {
   zip: JSZip;
@@ -34,27 +31,27 @@ export default class ClassicSkinParser extends SkinParser {
 
     // load last setting
     const sources: StreamSource = this._streamSources.pop();
-    this._uiRoot.setZip(sources.zip) 
+    this._uiRoot.setZip(sources.zip);
     this._uiRoot.setSkinDir(sources.skinDir);
-    return current
+    return current;
   }
 
   _setStreamSource(skinDir: string, zip: JSZip) {
     // push & set new
     // const sources: StreamSource = this._streamSources.pop();
     this._uiRoot.setSkinDir(skinDir);
-    this._uiRoot.setZip(zip) 
+    this._uiRoot.setZip(zip);
   }
 
   _pushStreamSource(skinDir: string, zip: JSZip) {
     // push & set new
-    this._pushCurrentStreamSource()
-    this._setStreamSource(skinDir, zip)
+    this._pushCurrentStreamSource();
+    this._setStreamSource(skinDir, zip);
   }
 
   _pushAStreamSource(sources: StreamSource) {
     // push & set new
-    this._pushStreamSource(sources.skinDir, sources.zip)
+    this._pushStreamSource(sources.skinDir, sources.zip);
   }
 
   constructor(uiRoot: UIRoot) {
@@ -67,20 +64,17 @@ export default class ClassicSkinParser extends SkinParser {
    * Inherit: Actual bitmap loading from wsz
    */
   async _loadBitmaps() {
-    const sources = this._popStreamSource()
-    // await this._solveMissingBitmaps();
-    // await this._imageManager.loadUniquePaths();
-    // await this._imageManager.ensureBitmapsLoaded();
-    await super._loadBitmaps()
-    this._pushAStreamSource(sources)
+    const sources = this._popStreamSource();
+    await super._loadBitmaps();
+    this._pushAStreamSource(sources);
   }
 
   /**
    * inherit: we allow /wsz_root/ to be / (root)
    */
-   parseXmlFragment(xml: string): XmlElement {
+  parseXmlFragment(xml: string): XmlElement {
     xml = xml.replace(/wsz_root\//gi, "");
-    return super.parseXmlFragment(xml)
+    return super.parseXmlFragment(xml);
   }
 
   // async _internalFile(fileName: string): Promise<string> {
@@ -132,15 +126,15 @@ export default class ClassicSkinParser extends SkinParser {
   // }
 
   //special loading mode. WSZ has no script.
-  async script0(node: XmlElement, parent: any) {
-    // temporary hack
-    const binFunc = this._uiRoot.getFileAsBytes;
-    this._uiRoot.getFileAsBytes = this._uiRoot.getFileAsBytesPath;
+  // async script0(node: XmlElement, parent: any) {
+  //   // temporary hack
+  //   const binFunc = this._uiRoot.getFileAsBytes;
+  //   this._uiRoot.getFileAsBytes = this._uiRoot.getFileAsBytesPath;
 
-    await super.script(node, parent);
+  //   await super.script(node, parent);
 
-    this._uiRoot.getFileAsBytes = binFunc;
-  }
+  //   this._uiRoot.getFileAsBytes = binFunc;
+  // }
 
   //special case, wsz never use external/linked bitmap in its filename
   _isExternalBitmapFont(font: BitmapFont) {
@@ -161,9 +155,11 @@ export default class ClassicSkinParser extends SkinParser {
   //     this._uiRoot.addFont(font);
   //   }
 
-  async eqvis0(node: XmlElement, parent: any): Promise<EqVis> {
+  async eqvis(node: XmlElement, parent: any): Promise<EqVis> {
     const eqv = await super.eqvis(node, parent);
+
     if (this._imageManager.isFilePathAdded("eqmain.bmp")) {
+      const sources = this._popStreamSource();
       //gradient lines
       let node: XmlElement = new XmlElement("bitmap", {
         id: "eq_gradient_line_",
@@ -188,6 +184,8 @@ export default class ClassicSkinParser extends SkinParser {
       });
       await this.bitmap(node);
       eqv.setXmlAttr("preamp", "eq_preamp_line_");
+
+      this._pushAStreamSource(sources);
     }
     return eqv;
   }
@@ -195,8 +193,8 @@ export default class ClassicSkinParser extends SkinParser {
   async vis(node: XmlElement, parent: any): Promise<Vis> {
     const vis = await super.vis(node, parent);
 
-    const sources = this._popStreamSource()
-    
+    const sources = this._popStreamSource();
+
     const content = await this._uiRoot.getFileAsString("viscolor.txt");
     if (content) {
       const colors = parseViscolors(content);
@@ -204,10 +202,9 @@ export default class ClassicSkinParser extends SkinParser {
         vis.setxmlparam(`colorband${i}`, colors[i]);
       }
     }
-    this._pushAStreamSource(sources)
+    this._pushAStreamSource(sources);
     return vis;
   }
-
 }
 
 const parseViscolors = (text: string): string[] => {
