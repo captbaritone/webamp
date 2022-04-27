@@ -7,7 +7,7 @@
   <layer id="TimerTrigger" x="33" y="24" w="70" h="18"/>
   <script file="scripts/wa2songtimer.maki"/>
 
-  <Songticker id="songticker" ticker="1" x="110" y="27" w="155" h="9" font="wasabi.font.default" fontsize="13" />
+  <Songticker id="songticker" ticker="1" x="110" y="27" w="155" h="9" font="wasabi.font.default" fontsize="13" valign="top"/>
   <Text id="Infoticker" x="110" y="27" w="155" h="9" leftpadding="5" rightpadding="-5" font="wasabi.font.default" align="center" valign="top" fontsize="13" color="font.display.songticker" altfont="Arial" visible="0" />
 
   <slider id="player.slider.seek" action="SEEK" x="16" y="72" w="248" h="10" orientation="horizontal" thumb="posbar" downthumb="posbarp" rectrgn="1"/>
@@ -16,9 +16,11 @@
   <status id="wastatus" x="26" y="28" stopBitmap="wa.stop" playBitmap="wa.play" pauseBitmap="wa.pause" ghost="1"/>
   <layer id="playbackstatus" x="24" y="28" image="wa.play.green"/>
   <script file="scripts/classicplaystatus.maki"/>
-  <text id="mixrate" display="songsamplerate" x="154" y="43" w="12" h="14" font="wasabi.font.default" fontsize="13" align="left" valign="top"/>
-  <text id="bitrate" display="songbitrate" x="109" y="43" w="17" h="14" font="wasabi.font.default" fontsize="13" align="left" valign="top"/>
+
+  <text id="mixrate"  x="154" y="43" w="12" h="9" font="wasabi.font.default" fontsize="13" align="center" valign="top"/>
+  <text id="bitrate"  x="109" y="43" w="17" h="9" font="wasabi.font.default" fontsize="13" align="center" valign="top"/>
   <script file="scripts/winamp1kbps.maki"/>
+  
   <button id="wabtn.previous" action="PREV" x="16" y="88" image="prev" downimage="prevp" tooltip="Previous Track"/>
   <button id="wabtn.play" action="PLAY" x="39" y="88" image="play" downimage="playp" tooltip="Play"/>
   <button id="wabtn.pause" action="PAUSE" x="62" y="88" image="pause" downimage="pausep" tooltip="Pause"/>
