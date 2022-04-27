@@ -9,7 +9,9 @@ Global Button btnEQp12,btnEQ0,btnEQm12;
 // Global Layer eqBand;
 Global Boolean manual_set;
 
+Global Container main;
 Global Layout normal;
+Global Layout mainNormal;
 
 
 Global Layer layerConfigNormalEqualizerBand00;
@@ -42,6 +44,9 @@ Global Slider sliderConfigNormalEqualizerBand10;
 System.onScriptLoaded() {
 	// WinampConfigGroup eqwcg = WinampConfig.getGroup("{72409F84-BAF1-4448-8211-D84A30A1591A}");
 	// int freqmode = eqwcg.getInt("frequencies"); // returns 0 for classical winamp levels, 1 for ISO levels
+
+	main = getContainer("main");
+	mainNormal = main.getLayout("normal");
 
 	frameGroup = getScriptGroup();
 	normal = frameGroup.getParentLayout();
@@ -138,7 +143,7 @@ system.onEqBandChanged(int band, int value)
 		else t = "EQ: " + translate(getToken(WINAMPBANDS,",",band)) + ": " + floattostring(f, 1) + " "+ translate("dB");
 	}
 
-	normal.sendAction("showinfo", t, 0,0,0,0);
+	mainNormal.sendAction("showinfo", t, 0,0,0,0);
 
 	//if (band == 0) {
 	//	setEqualizerRegion(value, layerConfigNormalEqualizerBand00);
@@ -176,7 +181,7 @@ system.onEqPreampChanged(int value)
 	if (f >= -3) t += "+"+floattostring(f, 1) + " "+ translate("dB");
 	else t += floattostring(f, 1) + " "+ translate("dB");
 	
-	normal.sendAction("showinfo", t, 0,0,0,0);
+	mainNormal.sendAction("showinfo", t, 0,0,0,0);
 
 	setEqualizerRegion(value, layerConfigNormalEqualizerBand00);
 }
