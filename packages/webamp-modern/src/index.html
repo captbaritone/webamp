@@ -139,6 +139,7 @@
         box-sizing: border-box;
         text-align: center;
         /* padding: 2px; */
+        --valign: center;
       }
       text i {
         pointer-events: none;
@@ -157,7 +158,8 @@
       text wrap[font="BitmapFont"] {
         display: flex;
         /* vertical align: */
-        align-items: center;
+        /* align-items: center; */
+        align-items: var(--valign, center);
         justify-content: var(--align, center);
       }
       text span {
