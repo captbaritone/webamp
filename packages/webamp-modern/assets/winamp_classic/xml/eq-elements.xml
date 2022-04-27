@@ -9,6 +9,10 @@
     <bitmap id="eq.button" file="wsz_root/eqmain.bmp" x="0" y="164" h="11" w="11" gammagroup="Buttons"/>
     <bitmap id="eq.button.pressed" file="wsz_root/eqmain.bmp" x="0" y="176" h="11" w="11" gammagroup="Buttons"/>
 
+    <!-- Titlebar EQ -->
+    <bitmap id="eq.titlebar" file="wsz_root/eqmain.bmp" x="0" y="134" h="14" w="275"/>
+    <bitmap id="eq.titlebar.inactive" file="wsz_root/eqmain.bmp" x="0" y="149" h="14" w="275"/>
+
     <bitmap id="eq.slider.level1" file="wsz_root/eqmain.bmp" x="13" y="164" h="63" w="14"/>
     <bitmap id="eq.slider.level2" file="wsz_root/eqmain.bmp" x="28" y="164" h="63" w="14"/>
     <bitmap id="eq.slider.level3" file="wsz_root/eqmain.bmp" x="43" y="164" h="63" w="14"/>
@@ -38,4 +42,5 @@
     <bitmap id="eq.slider.level26" file="wsz_root/eqmain.bmp" x="178" y="229" h="63" w="14"/>
     <bitmap id="eq.slider.level27" file="wsz_root/eqmain.bmp" x="193" y="229" h="63" w="14"/>
     <bitmap id="eq.slider.level28" file="wsz_root/eqmain.bmp" x="208" y="229" h="63" w="14"/>
+
 </elements>	

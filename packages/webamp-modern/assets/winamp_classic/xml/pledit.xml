@@ -1,0 +1,69 @@
+<groupdef id="pledit.buttons.group" relatw="1" w="0" h="21">
+  <layer x="0" y="0" image="player.pl.button.add.bg" />
+  <button id="pl.add" action="PE_Add" x="3" y="4" image="player.pl.button.add" downImage="player.pl.button.add.pressed" hoverImage="player.pl.button.add.hover" tooltip="Add Files to Playlist" />
+
+  <layer x="42" y="0" image="player.pl.button.rem.bg" />
+  <button id="pl.rem" action="PE_Rem" x="46" y="4" image="player.pl.button.rem" downImage="player.pl.button.rem.pressed" hoverImage="player.pl.button.rem.hover" tooltip="Remove Files from Playlist" />
+
+  <layer x="86" y="0" image="player.pl.button.sel.bg" />
+  <button id="pl.sel" action="PE_Sel" x="90" y="4" image="player.pl.button.sel" downImage="player.pl.button.sel.pressed" hoverImage="player.pl.button.sel.hover" tooltip="Select Files in Playlist" />
+
+  <layer x="123" y="0" image="player.pl.button.misc.bg" />
+  <button id="pl.misc" action="PE_Misc" x="127" y="4" image="player.pl.button.misc" downImage="player.pl.button.misc.pressed" hoverImage="player.pl.button.misc.hover" tooltip="Misc Actions" />
+
+  <layer x="-119" y="0" relatx="1" image="player.pl.button.list.bg" />
+  <button id="pl.list" action="PE_List" x="-115" y="4" relatx="1" image="player.pl.button.list" downImage="player.pl.button.list.pressed" hoverImage="player.pl.button.list.hover" tooltip="Manage Playlist" />
+
+  <layer x="-187" y="1" relatx="1" image="player.pl.time" />
+  <layer x="-182" y="5" relatx="1" image="player.pl.time.display" />
+  <layer id="player.pl.time.left" x="-227" y="1" relatx="1" image="player.pl.time.left" visible="0" />
+  <layer id="player.pl.time.display.left" x="-222" y="5" relatx="1" image="player.pl.time.display.left" visible="0" />
+  <text id="PLTime" ticker="1" display="PE_Info" x="-180" y="7" w="55" h="8" relatx="1" font="player.pe.time.font" align="left" valign="top" fontsize="8" color="font.display" />
+
+  <layer x="-24" y="4" relatx="1" image="player.pl.resizer" resize="bottomright" />
+</groupdef>
+
+
+<groupdef id="pl.frame.layout" relatw="1" relath="1" w="0" h="-35" background="wasabi.frame.basetexture">
+  <layer x="0" y="0" image="player.pl.topleft" resize="topleft" />
+  <layer x="6" y="0" w="-12" relatw="1" image="player.pl.topcenter" resize="top" />
+  <layer x="-6" y="0" relatx="1" image="player.pl.topright" resize="topright" />
+  <layer x="0" y="5" relath="1" h="-50" image="player.pl.left" resize="left" />
+  <layer x="-6" y="5" relatx="1" relath="1" h="-50" image="player.pl.right" resize="right" />
+  <layer x="0" y="-67" relaty="1" image="player.pl.bottomleft" resize="bottomleft" />
+  <layer x="20" y="-25" w="-40" relatw="1" relaty="1" image="player.pl.bottomcenter" resize="bottom" />
+  <layer x="-20" y="-67" relatx="1" relaty="1" image="player.pl.bottomright" resize="bottomright" />
+  <layer x="0" y="-6" relaty="1" image="player.main.left.region" resize="left" sysregion="-2" />
+  <layer x="-6" y="-6" relaty="1" relatx="1" image="player.main.right.region" sysregion="-2" />
+  <group id="pledit.buttons.group" x="5" y="-23" relaty="1"/>
+</groupdef>
+
+<groupdef id="player.content.pl.dummy.group" name="PlaylistDummyGroup" relatw="1" relath="1" w="0" h="0">
+  <group id="pl.frame.layout" x="0" y="1"/>
+  <component x="6" y="6" w="-12" relatw="1" h="-65" relath="1" noshowcmdbar="1" autoopen="1" autoclose="0" param="guid:{45F3F7C1-A6F3-4ee6-A15E-125E92FC3F8D}" />
+</groupdef>
+
+<groupdef id="pledit.content.group" name="PlaylistContent">
+  <group id="player.content.pl.dummy.group" x="0" y="17" sysregion="1"/>
+  <!-- <script id="plmenu.script" file="scripts/plmenu.maki" /> -->
+  <!-- <script id="pltime.script" file="scripts/pltime.maki" /> -->
+</groupdef>
+
+
+
+
+<container id="Pledit" name="Playlist Editor" dynamic="1" component="guid:{45F3F7C1-A6F3-4ee6-A15E-125E92FC3F8D}" default_x="0" default_y="232" default_visible="1">
+  <!-- <include file="pledit-normal.xml"/> -->
+  <layout id="normal" minimum_w="275" minimum_h="164" h="164" w="275" linkwidth="shade" appbar="left|top|right|bottom">
+    <Wasabi:PlaylistFrame:NoStatus x="0" y="0" w="0" h="0" relatw="1" relath="1" content="pledit.content.group" padtitleleft="10" padtitleright="12" />
+    <sendparams target="mousetrap" dblClickAction="SWITCH;shade"/>
+    <sendparams target="window.top.left;window.top;window.top.right;window.left;window.right;window.bottom.left.top;window.bottom.left;window.bottom.left.bottom;window.bottom.top;window.bottom;window.bottom.bottom;window.bottom.right.top;window.bottom.right;window.bottom.right.bottom;" resize="0"/>
+
+    <layer x="-30" y="4" relatx="1" image="wasabi.button.bg.title" />
+    <button id="winshade" action="SWITCH" param="shade" x="-29" y="4" relatx="1" image="wasabi.button.winshade.inactive" tooltip="Windowshade Mode" activeAlpha="0" />
+    <button id="winshade" action="SWITCH" param="shade" x="-29" y="4" relatx="1" image="wasabi.button.winshade" downImage="wasabi.button.winshade.pressed" hoverImage="wasabi.button.winshade.hover" tooltip="Windowshade Mode" inactiveAlpha="0" />
+
+  </layout>
+
+  <!-- <include file="pledit-shade.xml"/> -->
+</container>

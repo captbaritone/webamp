@@ -1,7 +1,7 @@
 <elements>
 	<!-- NUMFONT -->
 
-	<bitmap id="wa.main" file="wsz_root/Main.BMP" x="0" y="0" w="275" h="116"/>
+	<bitmap id="wa.main" file="wsz_root/main.bmp" x="0" y="0" w="275" h="116"/>
 
 	<bitmap id="posbarbg" file="wsz_root/posbar.bmp" x="0" y="0" w="248" h="10"/>
 	<bitmap id="posbar" file="wsz_root/posbar.bmp" x="248" y="0" w="29" h="10"/>
@@ -10,7 +10,7 @@
 	<!-- SONGTICKERFONT -->
 	<bitmapfont id="player.SmallFixed" file="wsz_root/text.bmp" charwidth="5" charheight="6" hspacing="0" vspacing="0"/>
 	<bitmapfont id="player.BIGNUM" file="wsz_root/numbers.bmp" charwidth="9" charheight="13" hspacing="3" vspacing="1"/>
-	<bitmapfont id="player.BIGNUMEX" file="wsz_root/NUMS_EX.bmp" charwidth="9" charheight="13" hspacing="3" vspacing="1" />
+	<!-- <bitmapfont id="player.BIGNUMEX" file="wsz_root/NUMS_EX.bmp" charwidth="9" charheight="13" hspacing="3" vspacing="1" /> -->
 
 	<bitmapfont id="wasabi.font.default" file="wsz_root/text.bmp" charwidth="5" charheight="6" hspacing="0" vspacing="0"/>
 

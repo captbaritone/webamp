@@ -10,9 +10,11 @@
   </skininfo>
   <!-- <include file="xml/system-colors.xml"/> -->
   <!-- <include file="xml/color-presets.xml"/> -->
+  <include file="xml/standardframe-elements.xml"/>
+  <include file="xml/standardframe.xml"/>
   <include file="xml/player-elements.xml"/>
   <include file="xml/player.xml"/>
   <include file="xml/eq-elements.xml"/>
   <include file="xml/eq.xml"/>
-  <!--include file="xml/pledit.xml"/--> <!-- not yet ;) -->
+  <include file="xml/pledit.xml"/>
 </WinampAbstractionLayer>
