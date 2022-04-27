@@ -26,7 +26,7 @@
 	<bitmap id="pause" file="wsz_root/cbuttons.bmp" x="46" y="0" h="18" w="23"/>
 	<bitmap id="stop" file="wsz_root/cbuttons.bmp" x="69" y="0" h="18" w="23"/>
 	<bitmap id="next" file="wsz_root/cbuttons.bmp" x="92" y="0" h="18" w="22"/>
-	<bitmap id="eject" file="wsz_root/cbuttons.bmp" x="114" y="0" h="16" w="22"/>
+	<bitmap id="ejectbmp" file="wsz_root/cbuttons.bmp" x="114" y="0" h="16" w="22"/>
 
 	<bitmap id="prevp" file="wsz_root/cbuttons.bmp" x="0" y="18" h="18" w="23"/>
 	<bitmap id="playp" file="wsz_root/cbuttons.bmp" x="23" y="18" h="18" w="23"/>

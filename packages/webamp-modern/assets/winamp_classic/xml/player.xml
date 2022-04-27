@@ -24,7 +24,7 @@
   <button id="wabtn.pause" action="PAUSE" x="62" y="88" image="pause" downimage="pausep" tooltip="Pause"/>
   <button id="wabtn.stop" action="STOP" x="85" y="88" image="stop" downimage="stopp" tooltip="Stop"/>
   <button id="wabtn.next" action="NEXT" x="108" y="88" image="next" downimage="nextp" tooltip="Next Track"/>
-  <button id="wabtn.open" action="EJECT" x="136" y="89" image="eject" downimage="ejectp" tooltip="Open File(s)"/>
+  <button id="wabtn.open" action="EJECT" x="136" y="89" image="ejectbmp" downimage="ejectp" tooltip="Open File(s)"/>
 
   <layer id="wa.titlebar.on" x="0" y="0" image="wa.titlebar.on" ghost="1" inactivealpha="0"/>
   <layer id="wa.titlebar.on" x="0" y="0" image="wa.titlebar.off" ghost="1" activealpha="0" />
