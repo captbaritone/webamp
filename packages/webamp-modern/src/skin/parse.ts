@@ -140,9 +140,11 @@ export default class SkinParser {
     // console.log("RESOURCE_PHASE #################");
     // this._phase = RESOURCE_PHASE;
     await this.traverseChildren(parsed);
-    await this._solveMissingBitmaps();
-    await this._imageManager.loadUniquePaths();
-    await this._imageManager.ensureBitmapsLoaded();
+
+    // await this._solveMissingBitmaps();
+    // await this._imageManager.loadUniquePaths();
+    // await this._imageManager.ensureBitmapsLoaded();
+    await this._loadBitmaps()
 
     console.log("GROUP_PHASE #################");
     this._phase = GROUP_PHASE;
@@ -154,11 +156,20 @@ export default class SkinParser {
     return this._uiRoot;
   }
 
+  /**
+   * Actual bitmap loading
+   */
+  async _loadBitmaps(){
+    await this._solveMissingBitmaps();
+    await this._imageManager.loadUniquePaths();
+    await this._imageManager.ensureBitmapsLoaded();
+  }
+
   // Some XML files are built-in, so we want to be able to
   async parseFromUrl(url: string): Promise<void> {
     const response = await fetch(url);
     const xml = await response.text();
-    const parsed = parseXmlFragment(xml);
+    const parsed = this.parseXmlFragment(xml);
     await this.traverseChildren(parsed);
   }
 
@@ -1101,7 +1112,7 @@ export default class SkinParser {
 
       // Note: Included files don't have a single root node, so we add a synthetic one.
       // A different XML parser library might make this unnessesary.
-      savedDocument = parseXmlFragment(includedXml);
+      savedDocument = this.parseXmlFragment(includedXml);
       recursiveScanChildren(savedDocument);
 
       this._includedXml[file] = savedDocument;
@@ -1154,10 +1165,16 @@ export default class SkinParser {
     }
     this._uiRoot.setSkinInfo(skinInfo);
   }
+
+  /**
+   * inheritable
+   * @param xml string in valid xml tags.
+   * @returns xmlElement object
+   */
+  parseXmlFragment(xml: string): XmlElement {
+    // Note: Included files don't have a single root node, so we add a synthetic one.
+    // A different XML parser library might make this unnessesary.
+    return parseXml(`<wrapper>${xml}</wrapper>`) as unknown as XmlElement;
+  }
 }
 
-export function parseXmlFragment(xml: string): XmlElement {
-  // Note: Included files don't have a single root node, so we add a synthetic one.
-  // A different XML parser library might make this unnessesary.
-  return parseXml(`<wrapper>${xml}</wrapper>`) as unknown as XmlElement;
-}
