@@ -1,8 +1,8 @@
 <groupdef id="eq-content">
-    <layer id="eqwin.bg" background="eq.bg" x="0" y="0" w="0" h="0" relatw="1" relath="1" move="1"/>
+    <layer id="eqwin.bg" image="eq.bg" x="0" y="0" w="0" h="0" relatw="1" relath="1" move="1"/>
 
     <layer id="titlebar" x="0" y="0" image="eq.titlebar" inactiveAlpha="0"/>
-    <layer id="titlebar.inactive" x="0" y="0" image="eq.titlebar.inactive" activeAlpha="0"/>
+    <layer id="titlebar.inactive" x="0" y="0" image="eq.titlebar.inactive" activeAlpha="0" move="1"/>
     <!--layer image="eqbg"/-->
     <!-- <Wasabi:Button id="close" x="290" y="11" w="72" h="20" text="Close" action="close" retcode="0"/> -->
     <!-- <Wasabi:Button id="EQ_0" x="290" y="60" w="72" h="20" text="Zero" retcode="0"/> -->
