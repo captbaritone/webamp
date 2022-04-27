@@ -1,12 +1,12 @@
-#include <Lib/std.mi>
-#include <Lib/winampconfig.mi>
+#include <lib/std.mi>
+#include <lib/winampconfig.mi>
 
 Function initEqualizer();
 Function setEqualizerRegion(Int intEqualizerBandValue, Layer layerEqualizerBand);
 
 Global Group frameGroup, use;
 Global Button btnEQp12,btnEQ0,btnEQm12;
-Global Layer eqBand;
+// Global Layer eqBand;
 Global Boolean manual_set;
 
 Global Layout normal;
@@ -40,17 +40,17 @@ Global Slider sliderConfigNormalEqualizerBand10;
 #define WINAMPBANDS "70 Hz,180 Hz,320 Hz,600 Hz,1 KHz,3 KHz,6 KHz,12 KHz,14 KHz,16 KHz"
 
 System.onScriptLoaded() {
-	WinampConfigGroup eqwcg = WinampConfig.getGroup("{72409F84-BAF1-4448-8211-D84A30A1591A}");
-	int freqmode = eqwcg.getInt("frequencies"); // returns 0 for classical winamp levels, 1 for ISO levels
+	// WinampConfigGroup eqwcg = WinampConfig.getGroup("{72409F84-BAF1-4448-8211-D84A30A1591A}");
+	// int freqmode = eqwcg.getInt("frequencies"); // returns 0 for classical winamp levels, 1 for ISO levels
 
 	frameGroup = getScriptGroup();
 	normal = frameGroup.getParentLayout();
 	btnEQp12 = frameGroup.findObject("EQ_p12");
 	btnEQ0 = frameGroup.findObject("EQ_0");
 	btnEQm12 = frameGroup.findObject("EQ_m12");
-	eqBand = frameGroup.findObject("equalizer.band.label");
+	// eqBand = frameGroup.findObject("equalizer.band.label");
 
-	system.onEqFreqChanged(freqmode);
+	// system.onEqFreqChanged(freqmode);
 
 	initEqualizer();
 }
@@ -108,7 +108,7 @@ btnEQm12.onLeftClick() {
 	manual_set = 0;
 }
 
-System.onEqFreqChanged (boolean isoonoff)
+/* System.onEqFreqChanged (boolean isoonoff)
 {
 	if (isoonoff == 1)
 	{
@@ -120,7 +120,7 @@ System.onEqFreqChanged (boolean isoonoff)
 		eqBand.setXmlParam("image", "drawer.eq.label.winamp");
 		for(int i=0; i<10; i++) frameGroup.findObject("eq"+integerToString(i+1)).setXmlParam("tooltip", getToken(WINAMPBANDS,",",i));
 	}
-}
+} */
 
 system.onEqBandChanged(int band, int value)
 {
