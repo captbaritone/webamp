@@ -1,6 +1,7 @@
 import UI_ROOT from "../../UIRoot";
 import { debounce, num, toBool } from "../../utils";
 import { AUDIO_PLAYING } from "../AudioPlayer";
+import GammaGroup from "../GammaGroup";
 import GuiObj from "./GuiObj";
 
 type ColorTriplet = string;
@@ -270,6 +271,8 @@ class BarPainter extends VisPainter {
 
   prepare() {
     const vis = this._vis;
+    const groupId = vis._gammagroup;
+    const gammaGroup = UI_ROOT._getGammaGroup(groupId);
     this._barWidth = Math.ceil(vis._canvas.width / NUM_BARS);
     // this._barWidth = vis._canvas.width / NUM_BARS;
     this._bar.height = vis._canvas.height;
@@ -280,7 +283,7 @@ class BarPainter extends VisPainter {
     for (let i = 0; i < vis._colorBands.length; i++) {
       grd.addColorStop(
         (1 / (vis._colorBands.length - 1)) * i,
-        `rgb(${vis._colorBands[i]})`
+        gammaGroup.transformColor(vis._colorBands[i])
       );
     }
     // if (vis._colorBands[0]) {
