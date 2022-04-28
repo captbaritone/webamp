@@ -60,7 +60,7 @@ export default class Images extends Layer {
 
   updateBalance = () => {
     const balance = UI_ROOT.audio.getBalance(); //0..1
-    console.log('balance:', balance)
+    // console.log('balance:', balance)
     this.gotoframe(balance * this._frameCount)
   }
 
