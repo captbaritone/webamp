@@ -79,11 +79,11 @@
 
 	<bitmap id="clutterbar" file="wsz_root/titlebar.bmp" x="304" y="0" w="8" h="43"/>
 
-	<bitmap id="volume" file="wsz_root/volume.bmp" x="0" y="0" w="68" h="420"/>
+	<bitmap id="volumes" file="wsz_root/volume.bmp" x="0" y="0" w="68" h="420"/>
 	<bitmap id="volbtnd" file="wsz_root/volume.bmp" x="0" y="422" w="14" h="11"/>
 	<bitmap id="volbtn" file="wsz_root/volume.bmp" x="15" y="422" w="14" h="11"/>
 
-	<bitmap id="balance" file="wsz_root/balance.bmp" x="9" y="0" w="38" h="420"/>
+	<bitmap id="balances" file="wsz_root/balance.bmp" x="9" y="0" w="38" h="420"/>
 	<bitmap id="panbtnd" file="wsz_root/balance.bmp" x="0" y="422" w="14" h="11"/>
 	<bitmap id="panbtn" file="wsz_root/balance.bmp" x="15" y="422" w="14" h="11"/>
 

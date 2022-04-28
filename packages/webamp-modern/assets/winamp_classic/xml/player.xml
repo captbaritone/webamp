@@ -47,11 +47,11 @@
 </groupdef>
 
 <groupdef id="sliders">
-  <AnimatedLayer id="volume" w="68" h="14" image="volume" start="0" end="27" frameheight="14" ghost="1"/>
-  <Slider id="volumewa2" action="volume" orientation="horizontal" x="0" y="1" w="65" h="14" thumb="volbtn" downThumb="volbtnd"/>
-  <script file="scripts/volume.maki"/>
+  <images id="volume.anim" source="volume" w="68" h="14" images="volumes" imagesspacing="15" />
+  <Slider id="volume" action="volume" orientation="horizontal" x="0" y="1" w="65" h="14" thumb="volbtn" downThumb="volbtnd"/>
+  <!-- <script file="scripts/volume.maki"/> -->
 
-  <AnimatedLayer id="balance.bg" x="70" w="38" h="14" image="balance" start="0" end="27" frameheight="14" ghost="1"/>
+  <images id="balance.anim" source="balance" x="70" w="38" h="14" images="balances" imagesspacing="15" />
   <Slider id="balance" action="PAN" orientation="horizontal" x="70" y="1" w="38" h="14" thumb="panbtn" downThumb="panbtnd"/>
   <!-- <script file="scripts/balance.maki"/> -->
 </groupdef>
