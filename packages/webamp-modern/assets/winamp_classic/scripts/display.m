@@ -67,6 +67,14 @@ Balance.onSetPosition(int newpos)
 	InfoTicker.setText(t);
 }
 
+System.onvolumechanged(int newvol)
+{
+	SongTickerTimer.start();
+	SongTicker.hide();
+	InfoTicker.show();
+	InfoTicker.setText(translate("Volume") + ": " + integerToString(newvol/2.55) + "%");
+}
+
 RepeatBtn.onToggle(boolean on) {
 	SongTickerTimer.start();
 	int v = getCurCfgVal();
