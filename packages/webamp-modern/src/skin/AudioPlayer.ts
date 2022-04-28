@@ -12,6 +12,7 @@ export class AudioPlayer {
   __preamp: GainNode;
   _analyser: AnalyserNode;
   _bands: GainNode[] = [];
+  _balance: number = 0; // -127..127 temporary
   _source: MediaElementAudioSourceNode;
   _eqValues: { [kind: string]: number } = {};
   _eqNodes: { [kind: string]: number } = {};
@@ -135,6 +136,10 @@ export class AudioPlayer {
   getVolume(): number {
     return this._audio.volume;
   }
+  getBalance(): number {
+    return this._balance;
+  }
+  
   play() {
     this._isStop = false;
     this._audio.play();
@@ -161,6 +166,12 @@ export class AudioPlayer {
   // 0-1
   setVolume(volume: number) {
     this._audio.volume = volume;
+  }
+
+  // -127..127
+  setBalance(balance: number) {
+    this._balance = balance;
+    this.trigger("balancechange");
   }
 
   seekTo(secs: number) {
@@ -226,7 +237,7 @@ export class AudioPlayer {
   }
 
   /**
-   * 
+   *
    * @param kind : string range: '1'..'10'
    * @param value : float range 0..1
    */
@@ -303,6 +314,12 @@ export class AudioPlayer {
     const dispose = () => {
       this._audio.removeEventListener("volumechange", handler);
     };
+    return dispose;
+  }
+
+  onBalanceChanged(cb: () => void): Function {
+    const handler = () => cb();
+    const dispose = this.on("balancechange", handler);
     return dispose;
   }
 

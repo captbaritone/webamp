@@ -37,6 +37,7 @@ import PlayListGui from "./makiClasses/PlayListGui";
 import XuiElement from "./makiClasses/XuiElement";
 import NStateButton from "./makiClasses/NStateButton";
 import EqVis from "./makiClasses/EqVis";
+import Images from "./makiClasses/Images";
 
 function hack() {
   // Without this Snowpack will try to treeshake out resolver causing a circular
@@ -264,6 +265,8 @@ export default class SkinParser {
         return this.groupdef(node, parent);
       case "animatedlayer":
         return this.animatedLayer(node, parent);
+      case "images":
+        return this.images(node, parent);
       case "layer":
         return this.layer(node, parent);
       case "container":
@@ -915,6 +918,10 @@ export default class SkinParser {
 
   async animatedLayer(node: XmlElement, parent: any) {
     return this.newGui(AnimatedLayer, node, parent);
+  }
+
+  async images(node: XmlElement, parent: any) {
+    return this.newGui(Images, node, parent);
   }
 
   async maybeApplyGroupDef(group: GuiObj, node: XmlElement) {

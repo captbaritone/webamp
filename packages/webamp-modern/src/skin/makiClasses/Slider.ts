@@ -547,6 +547,7 @@ class PreampActionHandler extends ActionHandler {
 class PanActionHandler extends ActionHandler {
   onsetposition(position: number): void {
     // TODO
+    UI_ROOT.audio.setBalance(position / this._slider._high);
   }
 }
 
