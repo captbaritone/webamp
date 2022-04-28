@@ -50,7 +50,7 @@ export default class SystemObject extends BaseObject {
     const EqBandHandle = (band: number) => {
       // console.log('eq.changed:',band, UI_ROOT.audio.getEq(String(band)))
       UI_ROOT.vm.dispatch(this, "oneqbandchanged", [
-        { type: "INT", value: band },
+        { type: "INT", value: band-1 },
         { type: "INT", value: UI_ROOT.audio.getEq(String(band)) * 255 - 127 },
       ]);
     };
