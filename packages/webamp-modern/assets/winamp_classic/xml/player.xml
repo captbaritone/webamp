@@ -47,11 +47,11 @@
 </groupdef>
 
 <groupdef id="sliders">
-  <images id="volume.anim" source="volume" w="68" h="14" images="volumes" imagesspacing="15" />
+  <images id="volume.anim" source="volume" w="68" h="13" images="volumes" imagesspacing="15" />
   <Slider id="volume" action="volume" orientation="horizontal" x="0" y="1" w="65" h="14" thumb="volbtn" downThumb="volbtnd"/>
   <!-- <script file="scripts/volume.maki"/> -->
 
-  <images id="balance.anim" source="balance" x="70" w="38" h="14" images="balances" imagesspacing="15" />
+  <images id="balance.anim" source="balance" x="70" w="38" h="13" images="balances" imagesspacing="15" />
   <Slider id="balance" action="PAN" orientation="horizontal" x="70" y="1" w="38" h="14" thumb="panbtn" downThumb="panbtnd"/>
   <!-- <script file="scripts/balance.maki"/> -->
 </groupdef>
