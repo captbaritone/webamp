@@ -185,9 +185,9 @@ system.onEqBandChanged(int band, int value)
 system.onEqPreampChanged(int value)
 {
 	slider s = getScriptGroup().findObject("preamp");
-	value = s.getPosition(); // Somehow this function returns a range from [-127;125] with hotpos -3, so we take the slider instead
+	int value2 = s.getPosition(); // Somehow this function returns a range from [-127;125] with hotpos -3, so we take the slider instead
 	String t = "EQ: " + translate("Preamp:") + " ";
-	Float f = value;
+	Float f = value2;
 	f = f / 10.5;
 	if (f >= -3) t += "+"+floattostring(f, 1) + " "+ translate("dB");
 	else t += floattostring(f, 1) + " "+ translate("dB");

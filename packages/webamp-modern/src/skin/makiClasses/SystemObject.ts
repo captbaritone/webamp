@@ -64,6 +64,11 @@ export default class SystemObject extends BaseObject {
     UI_ROOT.audio.onEqChange("8", () => EqBandHandle(8));
     UI_ROOT.audio.onEqChange("9", () => EqBandHandle(9));
     UI_ROOT.audio.onEqChange("10", () => EqBandHandle(10));
+    UI_ROOT.audio.onEqChange("preamp", () => {
+      UI_ROOT.vm.dispatch(this, "oneqpreampchanged", [
+        { type: "INT", value: UI_ROOT.audio.getEq("preamp") * 255 - 127 },
+      ]);
+    });
   }
 
   init() {

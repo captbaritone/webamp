@@ -139,7 +139,7 @@ export class AudioPlayer {
   getBalance(): number {
     return this._balance;
   }
-  
+
   play() {
     this._isStop = false;
     this._audio.play();
@@ -215,6 +215,7 @@ export class AudioPlayer {
   getEq(kind: string): number {
     switch (kind) {
       case "preamp":
+        console.log("preamp:", (this.__preamp.gain.value + 12) / 24);
         return (this.__preamp.gain.value + 12) / 24;
       case "1":
       case "2":
