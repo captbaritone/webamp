@@ -2,6 +2,7 @@ import UI_ROOT from "../../UIRoot";
 import { ensureVmInt, num, px } from "../../utils";
 import Layer from "./Layer";
 
+// http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Canimatedlayer.2F.3E
 export default class AnimatedLayer extends Layer {
   static GUID = "6b64cd274c4b5a26a7e6598c3a49f60c";
   _currentFrame: number = 0;
