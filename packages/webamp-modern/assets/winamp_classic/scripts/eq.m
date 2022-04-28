@@ -7,7 +7,8 @@ Function setEqualizerRegion(Int intEqualizerBandValue, Layer layerEqualizerBand)
 Global Group frameGroup, use;
 Global Button btnEQp12,btnEQ0,btnEQm12;
 // Global Layer eqBand;
-Global Boolean manual_set;
+// Global Boolean silent_change;
+Global Boolean silent_change; // don't show any info in display
 
 Global Container main;
 Global Layout normal;
@@ -86,6 +87,13 @@ initEqualizer() {
 	sliderConfigNormalEqualizerBand08 = normal.findObject("eq8");
 	sliderConfigNormalEqualizerBand09 = normal.findObject("eq9");
 	sliderConfigNormalEqualizerBand10 = normal.findObject("eq10");
+
+	silent_change = 1;
+	for(int i=0; i<10; i++) {
+		// setEqBand(i, -127);
+		system.onEqBandChanged(i, system.getEqBand(i));
+	}
+	silent_change = 0;
 }
 
 setEqualizerRegion(Int intEqualizerBandValue, Layer layerEqualizerBand) {
@@ -96,21 +104,21 @@ setEqualizerRegion(Int intEqualizerBandValue, Layer layerEqualizerBand) {
 
 
 btnEQp12.onLeftClick() {
-	manual_set = 1;
+	silent_change = 1;
 	for(int i=0; i<10; i++) setEqBand(i, 127);
-	manual_set = 0;
+	silent_change = 0;
 }
 
 btnEQ0.onLeftClick() {
-	manual_set = 1;
+	silent_change = 1;
 	for(int i=0; i<10; i++) setEqBand(i, 0);
-	manual_set = 0;
+	silent_change = 0;
 }
 
 btnEQm12.onLeftClick() {
-	manual_set = 1;
+	silent_change = 1;
 	for(int i=0; i<10; i++) setEqBand(i, -127);
-	manual_set = 0;
+	silent_change = 0;
 }
 
 /* System.onEqFreqChanged (boolean isoonoff)
@@ -129,44 +137,47 @@ btnEQm12.onLeftClick() {
 
 system.onEqBandChanged(int band, int value)
 {
-	if (manual_set) return;
-	String t;
-	Float f = value;
-	f = f / 10.5;
-	WinampConfigGroup eqwcg = WinampConfig.getGroup("{72409F84-BAF1-4448-8211-D84A30A1591A}");
-	if (eqwcg.getInt("frequencies") == 1) {
-		if (f >= 0) t = "EQ: " + translate(getToken(ISOBANDS,",",band)) + ": +" + floattostring(f, 1) + " "+ translate("dB");
-		else t = "EQ: " + translate(getToken(ISOBANDS,",",band)) + ": " + floattostring(f, 1) + " "+ translate("dB");
-	}
-	else {
-		if (f >= 0) t = "EQ: " + translate(getToken(WINAMPBANDS,",",band)) + ": +" + floattostring(f, 1) + " "+ translate("dB");
-		else t = "EQ: " + translate(getToken(WINAMPBANDS,",",band)) + ": " + floattostring(f, 1) + " "+ translate("dB");
-	}
+	// if (silent_change) return;
+	if (silent_change == 0) {
 
-	mainNormal.sendAction("showinfo", t, 0,0,0,0);
+		String t;
+		Float f = value;
+		f = f / 10.5;
+		WinampConfigGroup eqwcg = WinampConfig.getGroup("{72409F84-BAF1-4448-8211-D84A30A1591A}");
+		if (eqwcg.getInt("frequencies") == 1) {
+			if (f >= 0) t = "EQ: " + translate(getToken(ISOBANDS,",",band)) + ": +" + floattostring(f, 1) + " "+ translate("dB");
+			else t = "EQ: " + translate(getToken(ISOBANDS,",",band)) + ": " + floattostring(f, 1) + " "+ translate("dB");
+		}
+		else {
+			if (f >= 0) t = "EQ: " + translate(getToken(WINAMPBANDS,",",band)) + ": +" + floattostring(f, 1) + " "+ translate("dB");
+			else t = "EQ: " + translate(getToken(WINAMPBANDS,",",band)) + ": " + floattostring(f, 1) + " "+ translate("dB");
+		}
 
+		mainNormal.sendAction("showinfo", t, 0,0,0,0);
+
+	}
 	//if (band == 0) {
 	//	setEqualizerRegion(value, layerConfigNormalEqualizerBand00);
 	//} else 
-	if (band == 1) {
+	if (band == 0) {
 		setEqualizerRegion(value, layerConfigNormalEqualizerBand01);
-	} else if (band == 2) {
+	} else if (band == 1) {
 		setEqualizerRegion(value, layerConfigNormalEqualizerBand02);
-	} else if (band == 3) {
+	} else if (band == 2) {
 		setEqualizerRegion(value, layerConfigNormalEqualizerBand03);
-	} else if (band == 4) {
+	} else if (band == 3) {
 		setEqualizerRegion(value, layerConfigNormalEqualizerBand04);
-	} else if (band == 5) {
+	} else if (band == 4) {
 		setEqualizerRegion(value, layerConfigNormalEqualizerBand05);
-	} else if (band == 6) {
+	} else if (band == 5) {
 		setEqualizerRegion(value, layerConfigNormalEqualizerBand06);
-	} else if (band == 7) {
+	} else if (band == 6) {
 		setEqualizerRegion(value, layerConfigNormalEqualizerBand07);
-	} else if (band == 8) {
+	} else if (band == 7) {
 		setEqualizerRegion(value, layerConfigNormalEqualizerBand08);
-	} else if (band == 9) {
+	} else if (band == 8) {
 		setEqualizerRegion(value, layerConfigNormalEqualizerBand09);
-	} else if (band == 10) {
+	} else if (band == 9) {
 		setEqualizerRegion(value, layerConfigNormalEqualizerBand10);
 	}
 }
