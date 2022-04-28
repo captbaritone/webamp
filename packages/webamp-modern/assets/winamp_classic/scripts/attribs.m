@@ -10,34 +10,34 @@
 // -----------------------------------------------------------------------------------------------------------------
 
 // this is the page that maps its items to the options menu, you can add attribs or more pages (submenus)
-#define CUSTOM_OPTIONSMENU_ITEMS "{1828D28F-78DD-4647-8532-EBA504B8FC04}"
+// #define CUSTOM_OPTIONSMENU_ITEMS "{1828D28F-78DD-4647-8532-EBA504B8FC04}"
 
 // this is the page that maps its items to the windows menu (aka View), you can add attribs or more pages (submenus)
-#define CUSTOM_WINDOWSMENU_ITEMS "{6559CA61-7EB2-4415-A8A9-A2AEEF762B7F}"
+// #define CUSTOM_WINDOWSMENU_ITEMS "{6559CA61-7EB2-4415-A8A9-A2AEEF762B7F}"
 
 // custom options submenu item page, you can add more, just use guidgen and Config.newItem()
-#define CUSTOM_PAGE "{26E26319-AECA-4433-B8F1-F4A5BF2A9ED5}"
+// #define CUSTOM_PAGE "{26E26319-AECA-4433-B8F1-F4A5BF2A9ED5}"
 
 // drawer config page
-#define CUSTOM_PAGE_DRAWER "{C338B30F-2A04-4b10-871F-4E9D52D62806}"
+// #define CUSTOM_PAGE_DRAWER "{C338B30F-2A04-4b10-871F-4E9D52D62806}"
 
 // menubars config page
-#define CUSTOM_PAGE_MENUBARS "{12ED320E-6813-45ac-9F8E-78EE5B2B5F6D}"
+// #define CUSTOM_PAGE_MENUBARS "{12ED320E-6813-45ac-9F8E-78EE5B2B5F6D}"
 
 // main windowshade config page
-#define CUSTOM_PAGE_WINDOWSHADE "{58F07E21-AE96-4899-B7BC-3640B40029FB}"
+// #define CUSTOM_PAGE_WINDOWSHADE "{58F07E21-AE96-4899-B7BC-3640B40029FB}"
 
 // vis button config page
-#define CUSTOM_PAGE_VISCMD "{D70E3ABF-D2FF-4b82-9A70-4B5DF1A5D942}"
+// #define CUSTOM_PAGE_VISCMD "{D70E3ABF-D2FF-4b82-9A70-4B5DF1A5D942}"
 
 // notifier config page
-#define CUSTOM_PAGE_NOTIFIER "{1AB968B3-8687-4a35-BA70-FCF6D92FB57F}"
+// #define CUSTOM_PAGE_NOTIFIER "{1AB968B3-8687-4a35-BA70-FCF6D92FB57F}"
 
 // songticker config page
 #define CUSTOM_PAGE_SONGTICKER "{7061FDE0-0E12-11D8-BB41-0050DA442EF3}"
 
 // non exposed attribs page
-#define CUSTOM_PAGE_NONEXPOSED "{E9C2D926-53CA-400f-9A4D-85E31755A4CF}"
+// #define CUSTOM_PAGE_NONEXPOSED "{E9C2D926-53CA-400f-9A4D-85E31755A4CF}"
 
 
 // -----------------------------------------------------------------------------------------------------------------

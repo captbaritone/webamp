@@ -2,7 +2,7 @@
 #include "attribs.m"
 
 Global Group frameGroup;
-Global Togglebutton ShuffleBtn,RepeatBtn,ShuffleBtn2,RepeatBtn2;
+Global Togglebutton ShuffleBtn,RepeatBtn;
 Global Timer SongTickerTimer;
 Global Text InfoTicker;
 Global GuiObject SongTicker;
@@ -23,8 +23,6 @@ System.onScriptLoaded() {
 
 	RepeatBtn = frameGroup.findObject("Repeat");
 	ShuffleBtn = frameGroup.findObject("Shuffle");
-	RepeatBtn2 = frameGroup.findObject("RepeatDisplay");
-	ShuffleBtn2 = frameGroup.findObject("ShuffleDisplay");
 
 	Balance = frameGroup.findObject("Balance");
 	setSongtickerScrolling();
@@ -86,22 +84,6 @@ ShuffleBtn.onToggle(boolean on) {
 	if (on) InfoTicker.setText("Playlist Shuffling: ON"); else InfoTicker.setText("Playlist Shuffling: OFF");
 }
 
-RepeatBtn2.onToggle(boolean on) {
-	SongTickerTimer.start();
-	int v = getCurCfgVal();
-	SongTicker.hide();
-	InfoTicker.show();
-	if (v == 0) InfoTicker.setText("Repeat: OFF");
-	else if (v > 0) InfoTicker.setText("Repeat: ALL");
-	else if (v < 0) InfoTicker.setText("Repeat: TRACK");
-}
-
-ShuffleBtn2.onToggle(boolean on) {
-	SongTickerTimer.start();
-	SongTicker.hide();
-	InfoTicker.show();
-	if (on) InfoTicker.setText("Playlist Shuffling: ON"); else InfoTicker.setText("Playlist Shuffling: OFF");
-}
 
 songticker_scrolling_attrib.onDataChanged() {
 	setSongtickerScrolling();
