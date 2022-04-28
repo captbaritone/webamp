@@ -1,5 +1,6 @@
 <groupdef id="mainwindow" x="0" y="0" w="550" h="232" relatw="1" relath="1">
   <layer id="main.bg" x="0" y="0" w="0" h="0" relatw="1" relath="1" move="1"/>
+  <layer id="blah" dblClickAction="SWITCH;shade" x="0" y="0" h="14" w="275" move="1"/>
   <layer image="clutterbar" x="10" y="22"/>
   <group id="waclassicvis" x="24" y="43" w="72" h="16"/>
   <!-- Timer -->
@@ -28,8 +29,7 @@
   <button id="wabtn.next" action="NEXT" x="108" y="88" image="next" downimage="nextp" tooltip="Next Track"/>
   <button id="wabtn.open" action="EJECT" x="136" y="89" image="ejectbmp" downimage="ejectp" tooltip="Open File(s)"/>
 
-  <layer id="wa.titlebar.on" x="0" y="0" image="wa.titlebar.on" ghost="1" inactivealpha="0"/>
-  <layer id="wa.titlebar.on" x="0" y="0" image="wa.titlebar.off" ghost="1" activealpha="0" />
+  <layer id="wa.titlebar.on" x="0" y="0" image="wa.titlebar.on" inactiveimage="wa.titlebar.off"  ghost="1" />
   <button id="wa.sysmenu" action="SYSMENU" x="6" y="3" image="menu" downimage="menup" activealpha="255" inactivealpha="0" tooltip="Winamp Menu"/>
 
   <button id="wa.minimize" x="244" y="3" action="MINIMIZE" image="mini" downimage="minip" tooltip="Minimize" activealpha="255" inactivealpha="0"/>
