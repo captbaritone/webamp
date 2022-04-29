@@ -15,6 +15,13 @@
         image="eq.on" 
         downImage="eq.on.pressed" 
         activeImage="eq.on.active" tooltip="Toggle EQ processing" />
+    <button id="auto" action="EQ_AUTO" x="38" y="18" 
+        image="eq.auto" 
+        downImage="eq.auto.pressed" 
+        activeImage="eq.auto.active" tooltip="Toggle EQ automatic processing" />
+    <button id="presets" action="MENU" param="presets" x="217" y="18" 
+    image="eq.preset" 
+    downImage="eq.preset.pressed" tooltip="Display Presets menu" />
 
     <button id="EQ_p12" x="45" y="36" w="21" h="12" rectrgn="1" />
     <button id="EQ_0" x="45" y="63" w="21" h="12" rectrgn="1" />

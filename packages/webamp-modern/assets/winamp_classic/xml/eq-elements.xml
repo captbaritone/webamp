@@ -13,9 +13,19 @@
     <bitmap id="eq.titlebar" file="wsz_root/eqmain.bmp" x="0" y="134" h="14" w="275"/>
     <bitmap id="eq.titlebar.inactive" file="wsz_root/eqmain.bmp" x="0" y="149" h="14" w="275"/>
 
+    <!-- on|off -->
     <bitmap id="eq.on" file="wsz_root/eqmain.bmp" x="10" y="119" h="12" w="24"/>
     <bitmap id="eq.on.pressed" file="wsz_root/eqmain.bmp" x="128" y="119" h="12" w="24"/>
     <bitmap id="eq.on.active" file="wsz_root/eqmain.bmp" x="69" y="119" h="12" w="24"/>
+    <!-- auto -->
+    <bitmap id="eq.auto" file="wsz_root/eqmain.bmp" x="34" y="119" h="12" w="34"/>
+    <bitmap id="eq.auto.pressed" file="wsz_root/eqmain.bmp" x="152" y="119" h="12" w="34"/>
+    <bitmap id="eq.auto.active" file="wsz_root/eqmain.bmp" x="93" y="119" h="12" w="34"/>
+    <!-- preset -->
+    <bitmap id="eq.preset" file="wsz_root/eqmain.bmp" x="224" y="164" h="12" w="44"/>
+    <bitmap id="eq.preset.pressed" file="wsz_root/eqmain.bmp" x="224" y="176" h="12" w="44"/>
+
+
 
     <bitmap id="eq.slider.level1" file="wsz_root/eqmain.bmp" x="13" y="164" h="63" w="14"/>
     <bitmap id="eq.slider.level2" file="wsz_root/eqmain.bmp" x="28" y="164" h="63" w="14"/>
