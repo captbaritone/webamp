@@ -12,8 +12,11 @@ export class AudioPlayer {
   __preamp: GainNode;
   _analyser: AnalyserNode;
   _bands: GainNode[] = [];
+  _volumeNode: GainNode;
+  _balanceNode: StereoPannerNode;
   _balance: number = 0; // -127..127 temporary
   _source: MediaElementAudioSourceNode;
+  _eqEnabled: boolean = true;
   _eqValues: { [kind: string]: number } = {};
   _eqNodes: { [kind: string]: number } = {};
   _eqEmitter: Emitter = new Emitter();
@@ -56,6 +59,8 @@ export class AudioPlayer {
 
     this.__preamp = this._context.createGain();
 
+    this._volumeNode = this._context.createGain();
+
     // Create the analyser node for the visualizer
     this._analyser = this._context.createAnalyser();
     this._analyser.fftSize = 2048;
@@ -63,10 +68,17 @@ export class AudioPlayer {
     // don't smooth audio analysis
     // this._analyser.smoothingTimeConstant = 0.0;
 
+    // default pan set to 0 - center
+    this._balanceNode = new StereoPannerNode(this._context, { pan: 0 });
+    // change the value of the balance by updating the pan value
+    // stereoNode.pan.value = -1; // left
+    // stereoNode.pan.value = 0; // center
+    // stereoNode.pan.value = 1; // right
+
     const connectionNodes: AudioNode[] = [
       this._source,
       this.__preamp,
-      this._analyser,
+      // this._analyser,
     ];
 
     const analyserNode = this._analyser;
@@ -103,6 +115,8 @@ export class AudioPlayer {
       connectionNodes.push(filter);
     });
 
+    connectionNodes.push(this._balanceNode);
+    connectionNodes.push(this._volumeNode);
     connectionNodes.push(this._context.destination);
 
     let current = connectionNodes[0];
@@ -112,9 +126,46 @@ export class AudioPlayer {
       current = next;
     }
 
+    this._balanceNode.connect(this._analyser);
+
+    // Connect all the nodes in the correct way
+    // (Note, source is created and connected later)
+    //
+    //                <source>
+    //                    | _ _ _ _ _ _
+    //                    |            :
+    //                    V            :
+    //                <preamp>         :
+    //                    v            : <-- Optional bypass
+    //           [...biquadFilters]    :
+    //                    |            :
+    //                    |<- - - - - -'
+    //                    v
+    //                <balance>
+    //                    |\
+    //                    | `--> <analyser>
+    //                    v
+    //                 <volume>
+    //                    v
+    //              <destination>
+
     //temporary: in the end of playing mp3, lets stop.
     //TODO: in future, when ended: play next mp3
     this._audio.addEventListener("ended", () => this.stop());
+  }
+
+  setEqEnabled(enable: boolean) {
+    this._eqEnabled = enable;
+    this._source.disconnect();
+    if (enable) {
+      this._source.connect(this.__preamp);
+    } else {
+      // bypassed.
+      this._source.connect(this._balanceNode);
+    }
+  }
+  getEqEnabled(): boolean {
+    return this._eqEnabled;
   }
 
   // shortcut of this.Emitter
