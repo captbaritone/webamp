@@ -155,6 +155,9 @@ export default class Container extends XmlObj {
     this._activeLayout = null;
     this.hide();
   }
+  getVisible(): boolean {
+    return this._visible;
+  }
 
   /* Required for Maki */
   /**

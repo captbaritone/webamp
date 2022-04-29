@@ -227,11 +227,11 @@ export class UIRoot {
     if (groupDef.attributes.xuitag) {
       // this._xuiGroupDefs[groupDef.attributes.xuitag.toLowerCase()] =
       // groupdef_id;
-      this.addXuitagGroupDefId(groupDef.attributes.xuitag, groupdef_id)
+      this.addXuitagGroupDefId(groupDef.attributes.xuitag, groupdef_id);
     }
   }
-  addXuitagGroupDefId(xuitag:string, groupdef_id: string) {
-    this._xuiGroupDefs[xuitag.toLowerCase()] = groupdef_id.toLowerCase()
+  addXuitagGroupDefId(xuitag: string, groupdef_id: string) {
+    this._xuiGroupDefs[xuitag.toLowerCase()] = groupdef_id.toLowerCase();
   }
 
   getGroupDef(id: string): XmlElement | null {
@@ -400,8 +400,13 @@ export class UIRoot {
       case "eject":
         this.eject();
         break;
+      case "eq_toggle":
+        this.eq_toggle();
+        this.trigger('eq_toggle')
+        break;
       case "toggle":
         this.toggleContainer(param);
+        this.trigger('toggle')
         break;
       case "close":
         this.closeContainer();
@@ -409,6 +414,18 @@ export class UIRoot {
       default:
         assume(false, `Unknown global action: ${action}`);
     }
+  }
+
+  getActionState(action: string, param: string, actionTarget: string): boolean {
+    if (action != null) {
+      switch (action.toLowerCase()) {
+        case "eq_toggle":
+          return this.audio.getEqEnabled();
+        case "toggle":
+          return this.getContainerVisible(param);
+      }
+    }
+    return null; //unknown
   }
 
   next() {
@@ -434,6 +451,10 @@ export class UIRoot {
     this._input.click();
   }
 
+  eq_toggle() {
+    this.audio.setEqEnabled(!this.audio.getEqEnabled());
+  }
+
   _inputChanged = () => {
     this.playlist.clear();
     for (var i = 0; i < this._input.files.length; i++) {
@@ -451,6 +472,13 @@ export class UIRoot {
     const container = this.findContainer(param);
     assume(container != null, `Can not toggle on unknown container: ${param}`);
     container.toggle();
+  }
+
+  getContainerVisible(param: string):boolean {
+    const container = this.findContainer(param);
+    if(container != null){
+      return container.getVisible();
+    }
   }
 
   closeContainer() {
