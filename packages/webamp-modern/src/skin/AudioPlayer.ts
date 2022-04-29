@@ -185,11 +185,13 @@ export class AudioPlayer {
 
   // 0-1
   getVolume(): number {
-    return this._audio.volume;
+    // return this._audio.volume;
+    return this._volumeNode.gain.value;
   }
   // 0-1
   setVolume(volume: number) {
-    this._audio.volume = volume;
+    // this._audio.volume = volume;
+    this._volumeNode.gain.value = volume;
   }
 
   getBalance(): number {
@@ -267,7 +269,10 @@ export class AudioPlayer {
   getEq(kind: string): number {
     switch (kind) {
       case "preamp":
-        return (this.__preamp.gain.value + 12) / 24;
+        const a = this.__preamp.gain.value;
+        const c = Math.log(a) / Math.log(10);
+        const n = c * 20;
+        return (n + 12) / 24;
       case "1":
       case "2":
       case "3":
@@ -298,7 +303,9 @@ export class AudioPlayer {
     const db = value * 24 - 12;
     switch (kind) {
       case "preamp": {
-        this.__preamp.gain.value = db;
+        // For now, 0 is 0db (no change).
+        // Equation used is: 10^((dB)/20) = x, where x (preamp.gain.value) is passed on to gainnode for boosting or attenuation.
+        this.__preamp.gain.value = Math.pow(10, db / 20);
         this._eqValues[kind] = db;
         this._eqEmitter.trigger(kind);
         break;
