@@ -196,7 +196,9 @@ export class AudioPlayer {
     return this._balance;
   }
   // -127..127
+  // -1..0..1
   setBalance(balance: number) {
+    this._balanceNode.pan.value = balance;
     this._balance = balance;
     this.trigger("balancechange");
   }
