@@ -187,8 +187,18 @@ export class AudioPlayer {
   getVolume(): number {
     return this._audio.volume;
   }
+  // 0-1
+  setVolume(volume: number) {
+    this._audio.volume = volume;
+  }
+
   getBalance(): number {
     return this._balance;
+  }
+  // -127..127
+  setBalance(balance: number) {
+    this._balance = balance;
+    this.trigger("balancechange");
   }
 
   play() {
@@ -212,17 +222,6 @@ export class AudioPlayer {
     this._audio.pause();
     this.trigger("pause");
     this.trigger("statchanged");
-  }
-
-  // 0-1
-  setVolume(volume: number) {
-    this._audio.volume = volume;
-  }
-
-  // -127..127
-  setBalance(balance: number) {
-    this._balance = balance;
-    this.trigger("balancechange");
   }
 
   seekTo(secs: number) {
