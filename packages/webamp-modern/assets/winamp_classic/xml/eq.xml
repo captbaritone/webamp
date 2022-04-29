@@ -11,7 +11,10 @@
     <layer id="spline.bg" x="86" y="17" image="eqvis.bg" />
     <eqvis id="spline" x="86" y="17" w="113" h="19" colortop="211,34,27" colormiddle="239,220,49" colorbottom="42,154,22" colorpreamp="246,181,0" gamma="192" />
 
-
+    <button id="toggle" action="EQ_TOGGLE" x="14" y="18" 
+        image="eq.on" 
+        downImage="eq.on.pressed" 
+        activeImage="eq.on.active" tooltip="Toggle EQ processing" />
 
     <button id="EQ_p12" x="45" y="36" w="21" h="12" rectrgn="1" />
     <button id="EQ_0" x="45" y="63" w="21" h="12" rectrgn="1" />
