@@ -35,6 +35,7 @@ export default class Vis extends GuiObj {
   _colorBands: ColorTriplet[] = []; // 1..16
   _colorBandPeak: ColorTriplet = "255,255,255";
   _colorOsc: ColorTriplet[] = []; // 1..5
+  _coloring: string;
   _peaks: boolean = true;
   _oscStyle: string;
   _bandwidth: string;
@@ -90,6 +91,10 @@ export default class Vis extends GuiObj {
         for (var i = 0; i < 16; i++) {
           this._colorBands[i] = value;
         }
+        break;
+      case "coloring":
+        // Change coloring method for spectroscope ("Normal", "Fire" or "Line").
+        this._coloring = value;
         break;
       case "colorbandpeak":
         // color the spectrum peak line.
@@ -373,10 +378,13 @@ class BarPainter extends VisPainter {
       const start = this._octaveBuckets[j];
       const end = this._octaveBuckets[j + 1];
       let amplitude = 0;
-      for (let k = start; k < end; k++) {
-        amplitude += this._dataArray[k];
-      }
+      // for (let k = start; k < end; k++) {
+      //   amplitude += this._dataArray[k];
+      // }
       amplitude /= end - start;
+      for (let k = start; k < end; k++) {
+        amplitude = Math.max(amplitude, this._dataArray[k]);
+      }
 
       // The drop rate should probably be normalized to the rendering FPS, for now assume 60 FPS
       let barPeak =
@@ -413,15 +421,34 @@ class BarPainter extends VisPainter {
     // var y = Math.ceil(Math.random() * h);
     var y = h - barHeight;
 
+    ctx.drawImage(this._bar, 0,y,1,h-y, x,y,  x2 - x + 1, h - y);
+
+    if(this._vis._peaks){
+      const peakY = h - peakHeight;
+      ctx.drawImage(this._peak, 0, 0, 1, 1, x, peakY, x2 - x + 1, 1);
+    }
+  }
+
+  paintBarFire(
+    ctx: CanvasRenderingContext2D,
+    barIndex: number,
+    barHeight: number,
+    peakHeight: number
+  ) {
+    const w = ctx.canvas.width;
+    const h = ctx.canvas.height;
+    var x = Math.round(this._barWidth * barIndex);
+    var r = this._barWidth - 2;
+    var x2 = Math.round(this._barWidth * (barIndex + 1)) - 2;
+    // var y = Math.ceil(Math.random() * h);
+    var y = h - barHeight;
+
     ctx.drawImage(this._bar, x, y, x2 - x + 1, h - y);
 
-    const peakY = h - peakHeight;
-    ctx.drawImage(this._peak, 0,0,1,1, x, peakY, x2 - x + 1, 1);
-
-    // ctx.beginPath();
-    // ctx.moveTo(x, peakHeight);
-    // ctx.lineTo(x2, peakHeight);
-    // ctx.stroke();
+    if(this._vis._peaks){
+      const peakY = h - peakHeight;
+      ctx.drawImage(this._peak, 0, 0, 1, 1, x, peakY, x2 - x + 1, 1);
+    }
   }
 
   paintFrame1(ctx: CanvasRenderingContext2D) {

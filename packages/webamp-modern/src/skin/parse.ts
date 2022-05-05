@@ -343,13 +343,14 @@ export default class SkinParser {
       // case "statusbar":
       //   //temporary, to localize error
       //   return this.dynamicXuiElement(node, parent);
+      case "elementalias":
+        return this.elementalias(node);
       case "componentbucket":
         return this.componentBucket(node, parent);
       case "playlisteditor":
       case "wasabi:tabsheet":
       case "snappoint":
       case "accelerators":
-      case "elementalias":
       case "browser":
       case "syscmds":
         // TODO
@@ -851,6 +852,16 @@ export default class SkinParser {
     color.setXmlAttributes(node.attributes);
 
     this._uiRoot.addColor(color);
+  }
+
+  async elementalias(node: XmlElement) {
+    assume(
+      node.children.length === 0,
+      "Unexpected children in <elementalias> XML node."
+    );
+
+    // <elementalias id="studio.button" target="playlist.scroll.thumb"/>
+    this._uiRoot.addAlias(node.attributes.id, node.attributes.target);
   }
 
   async slider(node: XmlElement, parent: any) {

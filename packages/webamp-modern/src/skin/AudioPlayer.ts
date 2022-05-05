@@ -64,9 +64,9 @@ export class AudioPlayer {
     // Create the analyser node for the visualizer
     this._analyser = this._context.createAnalyser();
     this._analyser.fftSize = 2048;
-    this._analyser.fftSize = 32;
+    // this._analyser.fftSize = 32;
     // don't smooth audio analysis
-    // this._analyser.smoothingTimeConstant = 0.0;
+    this._analyser.smoothingTimeConstant = 0.0;
 
     // default pan set to 0 - center
     this._balanceNode = new StereoPannerNode(this._context, { pan: 0 });
@@ -166,6 +166,10 @@ export class AudioPlayer {
   }
   getEqEnabled(): boolean {
     return this._eqEnabled;
+  }
+
+  getAnalyser(): AnalyserNode {
+    return this._analyser;
   }
 
   // shortcut of this.Emitter

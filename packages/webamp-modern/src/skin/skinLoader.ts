@@ -20,6 +20,8 @@ async function _loadSkin_WAL(skinPath: string) {
 }
 
 async function _parseSkin_WAL(ASkinParser: typeof SkinParser) {
+  UI_ROOT._div.classList.remove("classic");
+
   setStatus("Parsing XML and initializing images...");
   const parser = new ASkinParser(UI_ROOT);
 
@@ -56,11 +58,12 @@ async function _loadPath_WAL(skinPath: string) {
 async function _loadSkin_WSZ(skinPath: string) {
   const response = await fetch(skinPath);
   const skinZipBlob = await response.blob();
-
+  
   setStatus("Loading .wsz archive...");
   const zip = await JSZip.loadAsync(skinZipBlob);
   UI_ROOT.setZip(zip);
   await _parseSkin_WAL(ClassicSkinParser);
+  UI_ROOT._div.classList.add("classic");
 }
 
 function prepareXuiTags() {

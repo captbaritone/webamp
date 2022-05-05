@@ -1,4 +1,4 @@
-import Bitmap from "./skin/Bitmap";
+import Bitmap, { genCssVar } from "./skin/Bitmap";
 import JSZip, { JSZipObject } from "jszip";
 import { XmlElement } from "@rgrove/parse-xml";
 import TrueTypeFont from "./skin/TrueTypeFont";
@@ -29,6 +29,7 @@ export class UIRoot {
   _bitmaps: { [id: string]: Bitmap } = {};
   _fonts: (TrueTypeFont | BitmapFont)[] = [];
   _colors: Color[] = [];
+  _elementAlias: { [id: string]: string } = {};
   _dimensions: { [id: string]: number } = {}; //css: width
   _groupDefs: { [id: string]: XmlElement } = {};
   _gammaSets: Map<string, GammaGroup[]> = new Map();
@@ -125,11 +126,10 @@ export class UIRoot {
 
   // TODO: Maybe return a default bitmap?
   getBitmap(id: string): Bitmap {
-    const lowercaseId = id.toLowerCase();
-    // const found = findLast(
-    //   this._bitmaps,
-    //   (bitmap) => bitmap._id.toLowerCase() === lowercaseId
-    // );
+    let lowercaseId = id.toLowerCase();
+    if (!this.hasBitmap(lowercaseId)) {
+      lowercaseId = this._elementAlias[lowercaseId];
+    }
     const found = this._bitmaps[lowercaseId];
 
     assume(found != null, `Could not find bitmap with id ${id}.`);
@@ -140,6 +140,11 @@ export class UIRoot {
     return this._bitmaps;
   }
 
+  /**
+   * Purely search in _bitmaps, no alias
+   * @param id
+   * @returns
+   */
   hasBitmap(id: string): boolean {
     const lowercaseId = id.toLowerCase();
     // const found = findLast(
@@ -156,6 +161,13 @@ export class UIRoot {
 
   addColor(color: Color) {
     this._colors.push(color);
+  }
+
+  addAlias(id: string, target: string) {
+    this._elementAlias[id.toLowerCase()] = target.toLowerCase();
+  }
+  getAlias(id: string): string {
+    return this._elementAlias[id.toLowerCase()];
   }
 
   // to reduce polution of inline style.
@@ -313,8 +325,40 @@ export class UIRoot {
     return this._dummyGammaGroup;
   }
 
+  _getBitmapAliases(): { [key: string]: string[] } {
+    // const swap = (obj:Object) => Object.entries(Object.entries(obj).map(a => a.reverse()))
+    const aliases = {};
+    for (const [aliasId, targetId] of Object.entries(this._elementAlias)) {
+      if (this.hasBitmap(targetId)) {
+        if (!aliases[targetId]) {
+          aliases[targetId] = [];
+        }
+        aliases[targetId].push(aliasId);
+      }
+    }
+    return aliases;
+  }
+
   _setCssVars() {
     const cssRules = [];
+
+    // bitmap aliases; support multiple names (elementalias)
+    const bitmapAliases = this._getBitmapAliases();
+    const maybeBitmapAliases = (bitmap: Bitmap): void => {
+      // const vars = []; // [bitmap.getCSSVar()];
+      const aliases: string[] = bitmapAliases[bitmap.getId().toLowerCase()];
+      if (aliases != null) {
+        for (const alias of aliases) {
+          // vars.push(genCssVar(alias));
+          cssRules.push(`${genCssVar(alias)}: var(${bitmap.getCSSVar()});`)
+        }
+      }
+      // if (vars.length > 1) {
+      //   console.log("aliases:", vars);
+      // }
+      // return vars.join(",\n");
+    };
+
     const bitmapFonts: BitmapFont[] = this._fonts.filter(
       (font) => font instanceof BitmapFont && !font.useExternalBitmap()
     ) as BitmapFont[];
@@ -325,6 +369,12 @@ export class UIRoot {
         console.warn(`Bitmap/font ${bitmap.getId()} has no img!`);
         continue;
       }
+      //support multiple names
+      // const vars = [
+      //   bitmap.getCSSVar(),
+      //   ...(bitmapAliases[bitmap.getId().toLowerCase()] || []),
+      // ];
+
       const groupId = bitmap.getGammaGroup();
       const gammaGroup = this._getGammaGroup(groupId);
       const url = gammaGroup.transformImage(
@@ -335,6 +385,8 @@ export class UIRoot {
         bitmap._height
       );
       cssRules.push(`  ${bitmap.getCSSVar()}: url(${url});`);
+      maybeBitmapAliases(bitmap);
+      // cssRules.push(`  ${bitmapCssVars(bitmap)}: url(${url});`);
     }
     // css of colors
     for (const color of this._colors) {
@@ -402,11 +454,11 @@ export class UIRoot {
         break;
       case "eq_toggle":
         this.eq_toggle();
-        this.trigger('eq_toggle')
+        this.trigger("eq_toggle");
         break;
       case "toggle":
         this.toggleContainer(param);
-        this.trigger('toggle')
+        this.trigger("toggle");
         break;
       case "close":
         this.closeContainer();
@@ -474,9 +526,9 @@ export class UIRoot {
     container.toggle();
   }
 
-  getContainerVisible(param: string):boolean {
+  getContainerVisible(param: string): boolean {
     const container = this.findContainer(param);
-    if(container != null){
+    if (container != null) {
       return container.getVisible();
     }
   }
