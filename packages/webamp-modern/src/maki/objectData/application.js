@@ -1,4 +1,4 @@
-{
+export default {
   "B8E867B027154da7A5BA53DBA1FCFEAC": {
     "parent": "Object",
     "functions": [
