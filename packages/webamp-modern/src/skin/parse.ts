@@ -25,7 +25,6 @@ import ColorThemesList from "./ColorThemesList";
 import UI_ROOT, { UIRoot } from "../UIRoot";
 import AlbumArt from "./makiClasses/AlbumArt";
 import WindowHolder from "./makiClasses/WindowHolder";
-import WasabiFrame from "./makiClasses/WasabiFrame";
 import Grid from "./makiClasses/Grid";
 import ProgressGrid from "./makiClasses/ProgressGrid";
 import WasabiTitle from "./makiClasses/WasabiTitle";

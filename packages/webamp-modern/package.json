@@ -6,6 +6,8 @@
   "scripts": {
     "start": "snowpack dev",
     "build": "snowpack build",
+    "learn": "snowpack --help",
+    "minify": "snowpack build --config ./snowpack.x2nie.config.mjs",
     "serve": "http-server ./build",
     "lint": "yarn build-lint && eslint . --ext .js,.jsx,.ts,.tsx",
     "test": "yarn jest",
