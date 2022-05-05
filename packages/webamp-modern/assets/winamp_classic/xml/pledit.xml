@@ -131,6 +131,7 @@
     <!-- End Playlist Entries -->
     <!--Bottom Stuff-->
     <layer id="glass" x="0" y="0" image="wa2.pl.glass" ghost="1"/>
+    <layer x="-19" y="-19" w="19" h="19" relatx="1" relaty="1" resize="bottomright" move="0"/>
     <!-- <AlbumArt id="wa2.player.eq.album" notfoundImage="notfound" valign="top" align="left" stretched="false" w="275" h="116" x="0" y="0" alpha="15"/> -->
   </layout>
   <!-- <include file="pledit-shade.xml"/> -->
