@@ -2,6 +2,7 @@
   <!-- Used Pledit.png to Pledit.png -->
   <!-- <bitmap id="wa2.playlist.base" file="wsz_root/plmain.bmp"/> -->
   <bitmap id="wa2.pl.glass" file="wsz_root/glassploverlay.bmp"/>
+  <color id="wasabi.list.background" value="0,0,0"/>
 
   <bitmap id="playlist.topleft" file="wsz_root/pledit.bmp" x="0" y="0" h="20" w="25"/>
   <bitmap id="playlist.topcenter" file="wsz_root/pledit.bmp" x="127" y="0" h="20" w="25"/>
