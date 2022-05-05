@@ -36,8 +36,8 @@
   <button id="wa.switch" x="254" y="3" action="SWITCH" param="shade" image="switch" downimage="switchp" tooltip="Toggle Windowshade Mode" activealpha="255" inactivealpha="0"/>
 
   <button id="wa.close" x="264" y="3" action="CLOSE" image="close" downimage="closep" tooltip="Close" activealpha="255" inactivealpha="0"/>
-  <button id="eq" action="TOGGLE" param="eq" x="219" y="58" image="player.toggler.eq.disabled" downImage="player.toggler.eq.pressed" activeImage="player.toggler.eq.enabled" tooltip="Toggle Equalizer"/>
-  <button id="pl" action="TOGGLE" param="guid:pl" x="242" y="58" image="player.toggler.pl.disabled" downImage="player.toggler.pl.pressed" activeImage="player.toggler.pl.enabled" tooltip="Toggle Playlist Editor"/>
+  <button id="btn-eq" action="TOGGLE" param="eq" x="219" y="58" image="player.toggler.eq.disabled" downImage="player.toggler.eq.pressed" activeImage="player.toggler.eq.enabled" tooltip="Toggle Equalizer"/>
+  <button id="btn-pl" action="TOGGLE" param="guid:pl" x="242" y="58" image="player.toggler.pl.disabled" downImage="player.toggler.pl.pressed" activeImage="player.toggler.pl.enabled" tooltip="Toggle Playlist Editor"/>
   <layer id="mono" x="212" y="41" w="27" h="12" image="player.status.mono.inactive"/>
   <layer id="stereo" x="239" y="41" w="29" h="12" image="player.status.stereo.inactive"/>
   <group id="sliders" x="107" y="57" h="13"/>
