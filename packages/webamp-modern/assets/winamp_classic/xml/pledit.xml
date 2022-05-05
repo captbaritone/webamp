@@ -20,6 +20,10 @@
 
   <bitmap id="playlist.scrollleft" file="wsz_root/pledit.bmp" x="15" y="81" h="14" w="18"/>
   <bitmap id="playlist.scrollright" file="wsz_root/pledit.bmp" x="44" y="81" h="14" w="18"/>
+  <bitmap id="playlist.scroll.thumb" file="wsz_root/pledit.bmp" x="52" y="53" h="18" w="8"/>
+  <bitmap id="playlist.scroll.thumb.down" file="wsz_root/pledit.bmp" x="61" y="53" h="18" w="8"/>
+  <elementalias id="studio.button" target="playlist.scroll.thumb"/>
+  <elementalias id="studio.button.pressed" target="playlist.scroll.thumb.down"/>
 
   <bitmap id="wa2.playlist.add" file="wsz_root/pledit.bmp" x="14" y="80" h="18" w="22"/>
   <bitmap id="wa2.playlist.rem" file="wsz_root/pledit.bmp" x="43" y="80" h="18" w="22"/>
@@ -81,7 +85,7 @@
 <groupdef id="player.content.pl.dummy.group" name="PlaylistDummyGroup" relatw="1" relath="1" w="0" h="0">
   <layer id="pleditwin.bg"  x="0" y="0" w="0" h="0" relatw="1" relath="1" move="1"/>
   <group id="pl.frame.layout" x="0" y="0"/>
-  <component x="12" y="20" w="-18" relatw="1" h="-58" relath="1" noshowcmdbar="1" autoopen="1" autoclose="0" param="guid:{45F3F7C1-A6F3-4ee6-A15E-125E92FC3F8D}" />
+  <component x="12" y="20" w="-17" relatw="1" h="-58" relath="1" noshowcmdbar="1" autoopen="1" autoclose="0" param="guid:{45F3F7C1-A6F3-4ee6-A15E-125E92FC3F8D}" />
 </groupdef>
 
 <groupdef id="pledit.content.group" name="PlaylistContent">

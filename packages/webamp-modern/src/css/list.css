@@ -63,6 +63,10 @@ colorthemeslist > select {
 .pl > slider {
   z-index: 1;
 }
+.classic .pl::before,
+.classic .pl::after {
+  content: none;
+}
 
 .pl > slider::before /* button.wasabi */ {
   box-sizing: border-box;

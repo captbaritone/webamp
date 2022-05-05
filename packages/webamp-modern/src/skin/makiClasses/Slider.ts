@@ -159,7 +159,7 @@ export default class Slider extends GuiObj {
         // (id) The bitmap element for the slider thumb.
         this._thumb = value;
         const bitmap = UI_ROOT.getBitmap(this._thumb);
-        if(bitmap){
+        if (bitmap) {
           this._thumbWidth = bitmap.getWidth();
           this._thumbHeight = bitmap.getHeight();
         }
@@ -237,7 +237,9 @@ export default class Slider extends GuiObj {
         break;
       case null:
         // CrossFadeSlider doesn't has action. should be supported.
-        this._actionHandler = new ActionHandler(this);
+        if (!this._actionHandler) {
+          this._actionHandler = new ActionHandler(this);
+        }
         break;
       default:
         assume(false, `Unhandled slider action: ${this._action}`);
