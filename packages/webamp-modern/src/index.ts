@@ -1,14 +1,19 @@
-// This module is imported early here in order to avoid a circular dependency.
-import { classResolver } from "./skin/resolver";
-import UI_ROOT from "./UIRoot";
-import { getUrlQuery } from "./utils";
-import { addDropHandler } from "./dropTarget";
-import { loadSkin } from "./skin/skinLoader";
+// // This module is imported early here in order to avoid a circular dependency.
+// import { classResolver } from "./skin/resolver";
+// import UI_ROOT from "./UIRoot";
+// import { getUrlQuery } from "./utils";
+// import { addDropHandler } from "./dropTarget";
+// import { loadSkin } from "./skin/skinLoader";
+import { Webamp } from "./WebampModern";
 
-function hack() {
-  // Without this Snowpack will try to treeshake out resolver causing a circular
-  // dependency.
-  classResolver("A funny joke about why this is needed.");
+// function hack() {
+//   // Without this Snowpack will try to treeshake out resolver causing a circular
+//   // dependency.
+//   classResolver("A funny joke about why this is needed.");
+// }
+
+function getUrlQuery(location: Location, variable: string): string {
+  return new URL(location.href).searchParams.get(variable);
 }
 
 // temporary disable:
@@ -23,26 +28,37 @@ function setStatus(status: string) {
 // const DEFAULT_SKIN = "assets/MMD3.wal"
 const DEFAULT_SKIN = "assets/WinampModern566.wal";
 
+var webamp: Webamp;
+
 async function main() {
   // Purposefully don't await, let this load in parallel.
   initializeSkinListMenu();
 
-  changeSkinByUrl();
-
+  
+  // changeSkinByUrl();
+  
   setStatus("Downloading MP3...");
-  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+  // UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+  // UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+  // UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+  // UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+  // UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+  // UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+  // UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+  // UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+  // UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+  // UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+  // UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+  // UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+  // UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
+
+  webamp = new Webamp(document.getElementById('web-amp'), {
+    tracks: [
+      "assets/Just_Plain_Ant_-_05_-_Stumble.mp3",
+      "assets/Just_Plain_Ant_-_05_-_Stumble.mp3",
+      "assets/Just_Plain_Ant_-_05_-_Stumble.mp3",
+    ]
+  })
 
   setStatus("");
 }
@@ -53,7 +69,8 @@ async function changeSkinByUrl() {
   // const response = await fetch(skinPath);
   // const data = await response.blob();
   // await loadSkin(data);
-  await loadSkin(skinPath);
+  // await loadSkin(document.body, skinPath);
+  webamp.switchSkin(skinPath)
   setStatus("");
 }
 

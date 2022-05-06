@@ -101,9 +101,10 @@ function prepareXuiTags() {
   );
 }
 
-export async function loadSkin(skinPath: string) {
+export async function loadSkin(container: HTMLElement, skinPath: string) {
   UI_ROOT.reset();
-  document.body.appendChild(UI_ROOT.getRootDiv());
+  // document.body.appendChild(UI_ROOT.getRootDiv());
+  container.appendChild(UI_ROOT.getRootDiv());
 
   prepareXuiTags();
 
