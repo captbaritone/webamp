@@ -48,12 +48,15 @@ export default class ComponentBucket extends Group {
   }
 
   setscroll(x: number): number {
-    console.log("setscroll", x);
-    return 10; //TODO setscroll to ._div
+    const anchor = this._vertical ? "top" : "left";
+    this._wrapper.style.setProperty(anchor, px(x));
+    return x;
   }
-
+  
   getscroll(): number {
-    return 10; //TODO: Check by ._div.scroll
+    const anchor = this._vertical ? "top" : "left";
+    const value = parseInt( this._wrapper.style.getPropertyValue(anchor));
+    return value
   }
 
   getnumchildren(): number {
