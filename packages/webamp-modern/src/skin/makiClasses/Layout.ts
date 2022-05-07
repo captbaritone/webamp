@@ -236,6 +236,7 @@ export default class Layout extends Group {
       if (!this._moving) {
         return;
       }
+      this._invalidateSize();
       this._moving = false;
     }
   }
