@@ -40,17 +40,17 @@ export default class GroupXFade extends Group {
     actionTarget: string | null = null,
     source: GuiObj = null
   ): boolean {
-    if(action.toLowerCase().startsWith('switchto;')){
-        UI_ROOT.vm.dispatch(this, 'onaction', [
-          { type: "STRING", value: action },
-          { type: "STRING", value: param },
-          { type: "INT", value: 0 },
-          { type: "INT", value: 0 },
-          { type: "INT", value: 0 },
-          { type: "INT", value: 0 },
-          { type: "OBJECT", value: source },
-        ])
-        return true
+    if (action.toLowerCase().startsWith("switchto;")) {
+      UI_ROOT.vm.dispatch(this, "onaction", [
+        { type: "STRING", value: action },
+        { type: "STRING", value: param },
+        { type: "INT", value: 0 },
+        { type: "INT", value: 0 },
+        { type: "INT", value: 0 },
+        { type: "INT", value: 0 },
+        { type: "OBJECT", value: source },
+      ]);
+      return true;
     }
     switch (action.toLowerCase()) {
       case "groupid":
@@ -90,8 +90,8 @@ export default class GroupXFade extends Group {
       child.init();
       this._div.appendChild(child.getDiv());
     }
+    await this._fadeIn(child);
     this._activeChild = child;
-    this._fadeIn(child);
   }
 
   // hide slowly
@@ -100,12 +100,13 @@ export default class GroupXFade extends Group {
     child.setalpha(0);
     setTimeout(() => {
       child._div.classList.remove("fading-out");
-    }, this._speed);
+      child.hide(); //set display=none to completely disabling mouse event
+    }, this._speed * 1500);
   }
   //show slowly
   async _fadeIn(child: GuiObj) {
+    child.show();
     child.setalpha(255);
-    //
   }
 
   draw() {
