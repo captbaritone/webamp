@@ -125,9 +125,9 @@ export const throttle = (fn: Function, wait: number = 300) => {
     const context = this,
       args = arguments;
     if (!inThrottle) {
+      inThrottle = true;
       fn.apply(context, args);
       lastTime = Date.now();
-      inThrottle = true;
     } else {
       clearTimeout(lastFn);
       lastFn = setTimeout(() => {
