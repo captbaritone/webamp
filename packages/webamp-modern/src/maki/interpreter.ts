@@ -45,7 +45,7 @@ export function interpret(
 }
 
 function validateVariable(v: Variable) {
-  if (v.type === "OBJECT" && typeof v.value !== "object") {
+  if (v.type === "OBJECT" && typeof v.value !== "object" && v.value !==0) {
     debugger;
   }
 }
