@@ -19,10 +19,10 @@ export default class Button extends GuiObj {
     // TODO: Cleanup!
     this._div.addEventListener("mousedown", this._handleMouseDown.bind(this));
     this._div.addEventListener("click", (e: MouseEvent) => {
-      if (this._action) {
-        this.dispatchAction(this._action, this._param, this._actionTarget);
-        this.invalidateActionState();
-      }
+      // if (this._action) {
+      //   this.dispatchAction(this._action, this._param, this._actionTarget);
+      //   this.invalidateActionState();
+      // }
       if (e.button == 0) {
         this.leftclick();
       }
@@ -123,6 +123,11 @@ export default class Button extends GuiObj {
   }
 
   leftclick() {
+    // console.log('enumchildren',n, this._children[n]);
+    if (this._action) {
+      this.dispatchAction(this._action, this._param, this._actionTarget);
+      this.invalidateActionState();
+    }
     this.onLeftClick();
   }
 
