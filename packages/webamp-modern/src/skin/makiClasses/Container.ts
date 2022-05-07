@@ -129,6 +129,14 @@ export default class Container extends XmlObj {
     return this._activeLayout.getheight();
   }
 
+  gettop(): number {
+    return this._y;
+  }
+
+  getleft(): number {
+    return this._x;
+  }
+
   center() {
     const height = document.documentElement.clientHeight;
     const width = document.documentElement.clientWidth;
@@ -136,7 +144,10 @@ export default class Container extends XmlObj {
     this._div.style.left = px((width - this.getWidth()) / 2);
   }
 
-  setLocation(x:number, y:number){
+  setLocation(x: number, y: number) {
+    if (x == this._x && y == this._y) {
+      return;
+    }
     this._x = x;
     this._y = y;
     this._renderDimensions();
