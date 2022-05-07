@@ -1,0 +1,76 @@
+/* Let's get this party started */
+/*? VERTICAL */
+::-webkit-scrollbar {
+  width: var(--dim-vscrollbar-width);
+  background-image: var(--bitmap-wasabi-scrollbar-vertical-background);
+}
+
+/* Track */
+/* ::-webkit-scrollbar-track {
+    background-image: var(--bitmap-wasabi-scrollbar-vertical-background);
+} */
+::-webkit-scrollbar-button {
+  background-image: var(--bitmap-wasabi-scrollbar-vertical-left);
+}
+::-webkit-scrollbar-button:vertical {
+  height: var(--dim-vscrollbar-btn-height);
+}
+::-webkit-scrollbar-button:vertical:increment {
+  background-image: var(--bitmap-wasabi-scrollbar-vertical-right);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-image: var(
+    --bitmap-wasabi-scrollbar-vertical-button,
+    var(--bitmap-studio-scrollbar-vertical-button)
+  );
+  /*background-repeat: repeat;*/
+}
+::-webkit-scrollbar-thumb {
+  max-height: var(
+    --dim-vscrollbar-thumb-height,
+    var(--dim-vscrollbar-thumb-height2)
+  );
+  min-height: var(
+    --dim-vscrollbar-thumb-height,
+    var(--dim-vscrollbar-thumb-height2)
+  );
+  background-repeat: no-repeat;
+}
+/* ::-webkit-scrollbar-thumb::after {
+    content: 'HALO';
+    position: absolute;
+    display: block;
+    inset: 0;
+    background: rgba(255, 230, 0, 1);
+    z-index: 100;
+} */
+/* ::-webkit-scrollbar-thumb:window-inactive {
+  background: rgba(255,0,0,0.4); 
+} */
+
+/*? HORIZONTAL */
+::-webkit-scrollbar:horizontal {
+  height: var(--dim-hscrollbar-height);
+  background-image: var(--bitmap-wasabi-scrollbar-horizontal-background);
+}
+/* Track */
+/* ::-webkit-scrollbar-track:horizontal {
+} */
+::-webkit-scrollbar-button:horizontal {
+  background-image: var(--bitmap-wasabi-scrollbar-horizontal-left);
+  width: var(--dim-hscrollbar-btn-width);
+}
+::-webkit-scrollbar-button:horizontal:increment {
+  background-image: var(--bitmap-wasabi-scrollbar-horizontal-right);
+}
+/* Handle */
+::-webkit-scrollbar-thumb:horizontal {
+  background-image: var(--bitmap-studio-scrollbar-horizontal-button);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+/* ---------- EOF SCROLLBAR ------------ */

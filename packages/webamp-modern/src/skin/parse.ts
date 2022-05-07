@@ -32,6 +32,9 @@ import WasabiTitle from "./makiClasses/WasabiTitle";
 import ComponentBucket from "./makiClasses/ComponentBucket";
 import GroupXFade from "./makiClasses/GroupXFade";
 import { classResolver } from "./resolver";
+import WasabiButton from "./makiClasses/WasabiButton";
+import PlayListGui from "./makiClasses/PlayListGui";
+import XuiElement from "./makiClasses/XuiElement";
 
 function hack() {
   // Without this Snowpack will try to treeshake out resolver causing a circular
@@ -159,28 +162,29 @@ export default class SkinParser {
     //? But in the same time we need to reduce code complexity
     //? So, temporary we are trying to not do Promise.all
 
-    // if (this._phase == RESOURCE_PHASE) {
-    //   return await Promise.all(
-    //     node.children.map((child) => {
-    //       if (child instanceof XmlElement) {
-    //         // console.log('traverse->', parent.name, child.name)
-    //         this._scanRes(child);
-    //         return this.traverseChild(child, parent);
-    //       }
-    //     })
-    //   );
-    // } else {
-    for (const child of node.children) {
-      if (child instanceof XmlElement) {
-        this._scanRes(child);
-        await this.traverseChild(child, parent);
+    if (this._phase == RESOURCE_PHASE) {
+      return await Promise.all(
+        node.children.map((child) => {
+          if (child instanceof XmlElement) {
+            // console.log('traverse->', parent.name, child.name)
+            this._scanRes(child);
+            return this.traverseChild(child, parent);
+          }
+        })
+      );
+    } else {
+      for (const child of node.children) {
+        if (child instanceof XmlElement) {
+          this._scanRes(child);
+          await this.traverseChild(child, parent);
+        }
       }
     }
-    // }
   }
 
   async traverseChild(node: XmlElement, parent: any) {
-    switch (node.name.toLowerCase()) {
+    const tag = node.name.toLowerCase();
+    switch (tag) {
       case "albumart":
         return this.albumart(node, parent);
       case "wasabixml":
@@ -263,9 +267,17 @@ export default class SkinParser {
       case "wasabi:medialibraryframe:nostatus":
       case "wasabi:playlistframe:nostatus":
       case "wasabi:standardframe:nostatus":
+      case "wasabi:standardframe:nostatus:short":
       case "wasabi:standardframe:status":
+      case "wasabi:standardframe:modal:short":
       case "wasabi:visframe:nostatus":
         return this.wasabiFrame(node, parent);
+      case "buttonled":
+      case "fadebutton":
+      case "fadetogglebutton":
+      case "configcheckbox":
+        //temporary, to localize error
+        return this.dynamicXuiElement(node, parent)
       case "componentbucket":
         return this.componentBucket(node, parent);
       case "playlisteditor":
@@ -286,6 +298,9 @@ export default class SkinParser {
       case "wrapper":
         return this.traverseChildren(node, parent);
       default:
+        // if(this._uiRoot.getXuiElement(tag)) {
+        //   return this.dynamicXuiElement(node, parent)
+        // }
         console.warn(`Unhandled XML node type: ${node.name}`);
         return;
     }
@@ -357,6 +372,16 @@ export default class SkinParser {
     this._uiRoot.addComponentBucket(bucket.getWindowType(), bucket);
   }
 
+  async dynamicXuiElement(node: XmlElement, parent: any) {
+    const xuitag: string = node.name; // eg. Wasabi:MainFrame:NoStatus
+    const xuiEl: XmlElement = this._uiRoot.getXuiElement(xuitag);
+    if (xuiEl) {
+      const xuiFrame = new XmlElement("dummy", { id: xuiEl.attributes.id });
+      const Element:XuiElement =  await this.newGroup(XuiElement, xuiFrame, parent);
+      Element.setXmlAttributes(node.attributes);
+      // await this.maybeApplyGroupDef(frame, xuiFrame);
+    }
+  }
   async wasabiFrame(node: XmlElement, parent: any) {
     const frame = new WasabiFrame();
     this.addToGroup(frame, parent);
@@ -584,7 +609,91 @@ export default class SkinParser {
     this._res.bitmaps["studio.button.pressed.bottom"] = false;
     this._res.bitmaps["studio.button.pressed.lowerRight"] = false;
 
-    return this.newGui(Button, node, parent);
+    await this.buildWasabiButtonFace();
+
+    return this.newGui(WasabiButton, node, parent);
+  }
+
+  async buildWasabiButtonFace() {
+    const face = this._uiRoot.getBitmap("studio.button");
+    // if (face == null && upperLeft !== null) {
+    if (!face) {
+      let upperLeft = this._uiRoot.getBitmap("studio.button.upperLeft");
+      if (upperLeft) {
+        //? default
+        let bottomRight = this._uiRoot.getBitmap("studio.button.lowerRight");
+        let dict: {
+          [attrName: string]: string;
+        } = {
+          id: "studio.button",
+          file: upperLeft.getFile(),
+          x: String(upperLeft.getLeft()),
+          y: String(upperLeft.getTop()),
+          w: String(
+            bottomRight.getLeft() - upperLeft.getLeft() + bottomRight.getWidth()
+          ),
+          h: String(
+            bottomRight.getTop() - upperLeft.getTop() + bottomRight.getHeight()
+          ),
+        };
+        const btnFace = new XmlElement("bitmap", { ...dict });
+        await this.bitmap(btnFace);
+
+        //? pressed
+        upperLeft = this._uiRoot.getBitmap("studio.button.pressed.upperLeft");
+        bottomRight = this._uiRoot.getBitmap(
+          "studio.button.pressed.lowerRight"
+        );
+        dict = {
+          id: "studio.button.pressed",
+          file: upperLeft.getFile(),
+          x: String(upperLeft.getLeft()),
+          y: String(upperLeft.getTop()),
+          w: String(
+            bottomRight.getLeft() - upperLeft.getLeft() + bottomRight.getWidth()
+          ),
+          h: String(
+            bottomRight.getTop() - upperLeft.getTop() + bottomRight.getHeight()
+          ),
+        };
+        const btnPressedFace = new XmlElement("bitmap", { ...dict });
+        await this.bitmap(btnPressedFace);
+      } else {
+        // we can't find ingredient, lets search the raw material
+        if (!this._imageManager.isFilePathAdded("window/window-elements.png"))
+          return;
+
+        //? default
+        let dict: {
+          [attrName: string]: string;
+        } = {
+          id: "studio.button",
+          file: "window/window-elements.png",
+          x: "1",
+          y: "135",
+          w: "31",
+          h: "31",
+        };
+        const btnFace = new XmlElement("bitmap", { ...dict });
+        await this.bitmap(btnFace);
+
+        //? pressed
+        dict = {
+          id: "studio.button.pressed",
+          file: "window/window-elements.png",
+          x: "67",
+          y: "135",
+          w: "31",
+          h: "31",
+        };
+        const btnPressedFace = new XmlElement("bitmap", { ...dict });
+        await this.bitmap(btnPressedFace);
+      }
+
+      //TODO: why this new created bitmap doesn't loaded?
+      await this._imageManager.loadUniquePaths();
+      await this._imageManager.ensureBitmapsLoaded();
+    }
   }
 
   async toggleButton(node: XmlElement, parent: any) {
@@ -679,6 +788,12 @@ export default class SkinParser {
     const groupDef = this._uiRoot.getGroupDef(groupdef_id);
     if (groupDef != null) {
       group.setXmlAttributes(groupDef.attributes);
+      if (groupDef.attributes.inherit_group) {
+        await this.maybeApplyGroupDefId(
+          group,
+          groupDef.attributes.inherit_group
+        );
+      }
       await this.traverseChildren(groupDef, group);
       // TODO: Maybe traverse groupDef's children?
     }
@@ -705,6 +820,13 @@ export default class SkinParser {
   }
 
   async component(node: XmlElement, parent: any) {
+    //TODO: parse dynamic element by guid value
+    if (
+      node.attributes.param == "guid:{45F3F7C1-A6F3-4ee6-A15E-125E92FC3F8D}"
+    ) {
+      await this.buildWasabiButtonFace();
+      return this.newGui(PlayListGui, node, parent);
+    }
     await this.traverseChildren(node, parent);
   }
 
@@ -716,7 +838,21 @@ export default class SkinParser {
   }
 
   async colorThemesList(node: XmlElement, parent: any) {
+    this.buildWasabiScrollbarDimension()
     return this.newGui(ColorThemesList, node, parent);
+  }
+
+  buildWasabiScrollbarDimension() {
+    this._uiRoot.addWidth("vscrollbar-width", "wasabi.scrollbar.vertical.left");
+    this._uiRoot.addHeight("vscrollbar-btn-height", "wasabi.scrollbar.vertical.left");
+    this._uiRoot.addHeight("vscrollbar-thumb-height", "wasabi.scrollbar.vertical.button");
+    this._uiRoot.addHeight("vscrollbar-thumb-height2", "studio.scrollbar.vertical.button");
+
+    this._uiRoot.addHeight("hscrollbar-height", "wasabi.scrollbar.horizontal.left");
+    this._uiRoot.addWidth("hscrollbar-btn-width", "wasabi.scrollbar.horizontal.left");
+    this._uiRoot.addWidth("hscrollbar-thumb-width", "wasabi.scrollbar.horizontal.button");
+    this._uiRoot.addWidth("hscrollbar-thumb-width2", "studio.scrollbar.horizontal.button");
+
   }
 
   async layoutStatus(node: XmlElement, parent: any) {
@@ -812,7 +948,7 @@ export default class SkinParser {
         }
         //replace children
         mother.children.splice(0, mother.children.length, ...nonGroupDefs);
-      } //eof function
+      }; //eof function
 
       // Note: Included files don't have a single root node, so we add a synthetic one.
       // A different XML parser library might make this unnessesary.

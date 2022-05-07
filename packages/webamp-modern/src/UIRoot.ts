@@ -19,6 +19,7 @@ import AUDIO_PLAYER, { AudioPlayer } from "./skin/AudioPlayer";
 import SystemObject from "./skin/makiClasses/SystemObject";
 import ComponentBucket from "./skin/makiClasses/ComponentBucket";
 import GroupXFade from "./skin/makiClasses/GroupXFade";
+import { PlEdit, Track } from "./skin/makiClasses/PlayList";
 
 export class UIRoot {
   _div: HTMLDivElement = document.createElement("div");
@@ -26,6 +27,7 @@ export class UIRoot {
   _bitmaps: Bitmap[] = [];
   _fonts: (TrueTypeFont | BitmapFont)[] = [];
   _colors: Color[] = [];
+  _dimensions: { [id: string]: number } = {}; //css: width
   _groupDefs: XmlElement[] = [];
   _gammaSets: Map<string, GammaGroup[]> = new Map();
   _gammaNames = {};
@@ -38,12 +40,25 @@ export class UIRoot {
   _buckets: { [wndType: string]: ComponentBucket } = {};
   _bucketEntries: { [wndType: string]: XmlElement[] } = {};
   _xFades: GroupXFade[] = [];
+  _input: HTMLInputElement = document.createElement("input");
 
   // A list of all objects created for this skin.
   _objects: BaseObject[] = [];
 
+  //published
   vm: Vm = new Vm();
   audio: AudioPlayer = AUDIO_PLAYER;
+  playlist: PlEdit = new PlEdit();
+
+  constructor() {
+    //"https://raw.githubusercontent.com/captbaritone/webamp-music/4b556fbf/Auto-Pilot_-_03_-_Seventeen.mp3";
+    this._input.type = "file";
+    this._input.setAttribute("multiple", "true");
+    // document.body.appendChild(this._input);
+    // TODO: dispose
+    this._input.onchange = this._inputChanged;
+  }
+
   getFileAsString: (filePath: string) => Promise<string>;
   getFileAsBytes: (filePath: string) => Promise<ArrayBuffer>;
   getFileAsBlob: (filePath: string) => Promise<Blob>;
@@ -99,6 +114,23 @@ export class UIRoot {
 
   addColor(color: Color) {
     this._colors.push(color);
+  }
+
+  // to reduce polution of inline style.
+  addDimension(id: string, size: number) {
+    this._dimensions[id] = size;
+  }
+  addWidth(id: string, bitmapId: string) {
+    const bitmap = this.getBitmap(bitmapId);
+    if (bitmap) {
+      this.addDimension(id, bitmap.getWidth());
+    }
+  }
+  addHeight(id: string, bitmapId: string) {
+    const bitmap = this.getBitmap(bitmapId);
+    if (bitmap) {
+      this.addDimension(id, bitmap.getHeight());
+    }
   }
 
   getColor(id: string): Color {
@@ -236,6 +268,7 @@ export class UIRoot {
     const bitmapFonts: BitmapFont[] = this._fonts.filter(
       (font) => font instanceof BitmapFont && !font.useExternalBitmap()
     ) as BitmapFont[];
+    // css of bitmaps
     for (const bitmap of [...this._bitmaps, ...bitmapFonts]) {
       const img = bitmap.getImg();
       if (!img) {
@@ -253,16 +286,21 @@ export class UIRoot {
       );
       cssRules.push(`  ${bitmap.getCSSVar()}: url(${url});`);
     }
+    // css of colors
     for (const color of this._colors) {
       const groupId = color.getGammaGroup();
       const gammaGroup = this._getGammaGroup(groupId);
       const url = gammaGroup.transformColor(color.getValue());
       cssRules.push(`  ${color.getCSSVar()}: ${url};`);
     }
-    cssRules.unshift(":root{");
-    cssRules.push("}");
+    // css of dimensions
+    for (const [dimension, size] of Object.entries(this._dimensions)) {
+      cssRules.push(`  --dim-${dimension}: ${size}px;`);
+    }
+    // cssRules.unshift(":root{");
+    // cssRules.push("}");
     const cssEl = document.getElementById("bitmap-css");
-    cssEl.textContent = cssRules.join("\n");
+    cssEl.textContent = `:root{${cssRules.join("\n")}}`;
   }
 
   getXuiElement(name: string): XmlElement | null {
@@ -281,7 +319,7 @@ export class UIRoot {
       (font) => font instanceof TrueTypeFont
     ) as TrueTypeFont[];
     for (const ttf of truetypeFonts) {
-      if(!ttf.hasUrl()) {
+      if (!ttf.hasUrl()) {
         continue; // some dummy ttf (eg Arial) doesn't has url.
       }
       // src: url(data:font/truetype;charset=utf-8;base64,${ttf.getBase64()}) format('truetype');
@@ -290,7 +328,7 @@ export class UIRoot {
         src: url(${ttf.getBase64()}) format('truetype');
         font-weight: normal;
         font-style: normal;
-      }`)
+      }`);
     }
     const cssEl = document.getElementById("truetypefont-css");
     cssEl.textContent = cssRules.join("\n");
@@ -308,13 +346,13 @@ export class UIRoot {
         this.audio.stop();
         break;
       case "next":
-        this.audio.next();
+        this.next();
         break;
       case "prev":
-        this.audio.previous();
+        this.previous();
         break;
       case "eject":
-        this.audio.eject();
+        this.eject();
         break;
       case "toggle":
         this.toggleContainer(param);
@@ -326,6 +364,42 @@ export class UIRoot {
         assume(false, `Unknown global action: ${action}`);
     }
   }
+
+  next() {
+    const currentTrack = this.playlist.getcurrentindex();
+    if (currentTrack < this.playlist.getnumtracks() - 1) {
+      this.playlist.playtrack(currentTrack + 1);
+    }
+    this.audio.play();
+    //TODO: check if "repeat" is take account
+  }
+
+  previous() {
+    const currentTrack = this.playlist.getcurrentindex();
+    if (currentTrack > 0) {
+      this.playlist.playtrack(currentTrack - 1);
+    }
+    this.audio.play();
+    //TODO: check if "repeat" is take account
+  }
+
+  eject() {
+    // this will call _inputChanged()
+    this._input.click();
+  }
+
+  _inputChanged = () => {
+    this.playlist.clear();
+    for (var i = 0; i < this._input.files.length; i++) {
+      const newTrack: Track = {
+        filename: this._input.files[i].name,
+        file: this._input.files[i],
+      };
+      this.playlist.addTrack(newTrack);
+    }
+
+    this.audio.play();
+  };
 
   toggleContainer(param: string) {
     const container = this.findContainer(param);
@@ -390,7 +464,7 @@ export class UIRoot {
     if (!filePath) return null;
     const zipObj = getCaseInsensitiveFile(this._zip, filePath);
     if (!zipObj) return null;
-    return await zipObj.async("string");
+    return await zipObj.async("text");
   }
 
   async getFileAsBytesZip(filePath: string): Promise<ArrayBuffer> {

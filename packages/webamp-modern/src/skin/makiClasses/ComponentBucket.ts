@@ -66,7 +66,8 @@ export default class ComponentBucket extends Group {
   handleAction(
     action: string,
     param: string | null = null,
-    actionTarget: string | null = null
+    actionTarget: string | null = null,
+    source: GuiObj = null
   ) {
     switch (action.toLowerCase()) {
       case "cb_prev":

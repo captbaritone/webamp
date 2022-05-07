@@ -313,21 +313,6 @@ class Interpreter {
           }
           const obj = this.stack.pop();
 
-          // It is temporary patch until we can bind a
-          // singleton object to maki world.
-          // It is because maki think each class name below as a const.
-          if (
-            !obj.value &&
-            klass.name &&
-            [
-              "winampconfig",
-              "winampconfiggroup",
-              "configclass",
-              "config",
-            ].includes(klass.name.toLowerCase())
-          ) {
-            obj.value = new klass();
-          }
           assert(
             (obj.type === "OBJECT" && typeof obj.value) === "object" &&
               obj.value != null,

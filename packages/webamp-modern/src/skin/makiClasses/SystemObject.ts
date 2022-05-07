@@ -7,6 +7,8 @@ import Group from "./Group";
 import PRIVATE_CONFIG from "../PrivateConfig";
 import UI_ROOT from "../../UIRoot";
 import GuiObj from "./GuiObj";
+import Config, { CONFIG } from "./Config";
+import WinampConfig, { WINAMP_CONFIG } from "./WinampConfig";
 
 import { AUDIO_PAUSED, AUDIO_STOPPED, AUDIO_PLAYING } from "../AudioPlayer";
 
@@ -71,6 +73,16 @@ export default class SystemObject extends BaseObject {
       throw new Error("First variable was not SystemObject.");
     }
     initialVariable.value = this;
+
+    for (const vari of this._parsedScript.variables) {
+      if (vari.type == "OBJECT") {
+        if (vari.guid == Config.GUID) {
+          vari.value = CONFIG;
+        } else if (vari.guid == WinampConfig.GUID) {
+          vari.value = WINAMP_CONFIG;
+        }
+      }
+    }
 
     UI_ROOT.vm.addScript(this._parsedScript);
     UI_ROOT.vm.dispatch(this, "onscriptloaded");
@@ -371,7 +383,7 @@ export default class SystemObject extends BaseObject {
    * @param  str The string.
    */
   strlen(str: string): number {
-    return str.length;
+    return str ? str.length : 0;
   }
 
   /**
@@ -641,7 +653,7 @@ export default class SystemObject extends BaseObject {
    * @ret The value of the left vu meter.
    */
   getleftvumeter(): number {
-    return 0;
+    return UI_ROOT.audio._vuMeter;
   }
 
   /**
@@ -651,7 +663,7 @@ export default class SystemObject extends BaseObject {
    * @ret The value of the right vu meter.
    */
   getrightvumeter(): number {
-    return 0;
+    return UI_ROOT.audio._vuMeter;
   }
 
   /**
@@ -768,6 +780,14 @@ export default class SystemObject extends BaseObject {
    */
   getplayitemstring(): string {
     return "Niente da Caprie";
+  }
+
+  getplaylistlength(): number {
+    return UI_ROOT.playlist.getnumtracks();
+  }
+
+  getplaylistindex(): number {
+    return UI_ROOT.playlist.getcurrentindex();
   }
 
   /**
@@ -1621,10 +1641,10 @@ export default class SystemObject extends BaseObject {
     //TODO:
   }
 
-  istransparencyavailable():boolean {
-    return true
+  istransparencyavailable(): boolean {
+    return true;
   }
-  
+
   translate(str: string): string {
     return str;
   }
@@ -1636,6 +1656,9 @@ export default class SystemObject extends BaseObject {
     return 0;
   }
   iskeydown(vk: number): number {
+    return 0;
+  }
+  isminimized(): number {
     return 0;
   }
 }

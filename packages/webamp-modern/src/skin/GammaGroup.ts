@@ -67,6 +67,7 @@ export default class GammaGroup {
     canvas.width = safeWidth;
     canvas.height = safeHeight;
     const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
     ctx.drawImage(img, safeLeft, safeTop);
     const imageData = ctx.getImageData(0, 0, safeWidth, safeHeight);
