@@ -136,6 +136,12 @@ export default class Container extends XmlObj {
     this._div.style.left = px((width - this.getWidth()) / 2);
   }
 
+  setLocation(x:number, y:number){
+    this._x = x;
+    this._y = y;
+    this._renderDimensions();
+  }
+
   show() {
     if (!this._activeLayout) {
       this.switchToLayout(this._layouts[0]._id);

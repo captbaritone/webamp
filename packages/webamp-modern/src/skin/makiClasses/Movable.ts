@@ -187,7 +187,7 @@ export default class Movable extends GuiObj {
       const deltaX = newMouseX - startX;
       layout.setMoving("final", deltaX, deltaY);
     };
-    document.addEventListener("mousemove", throttle(handleMove, 50));
+    document.addEventListener("mousemove", throttle(handleMove, 10));
     document.addEventListener("mouseup", handleMouseUp);
   };
 

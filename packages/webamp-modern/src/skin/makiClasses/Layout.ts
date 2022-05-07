@@ -218,7 +218,7 @@ export default class Layout extends Group {
 
   // MOVING THINGS =====================
   setMoving(cmd: string, dx: number, dy: number) {
-    const container = this._parent;
+    const container = this._parent as unknown as Container;
     if (cmd == "start") {
       this._moving = true;
       this._movingStartX = container._x;
@@ -229,9 +229,7 @@ export default class Layout extends Group {
       if (!this._moving) {
         return;
       }
-      // console.log(`moving dx:${dx} dy:${dy}`);
-      container.setXmlAttr("x", (this._movingStartX + dx).toString());
-      container.setXmlAttr("y", (this._movingStartY + dy).toString());
+      container.setLocation(this._movingStartX + dx, this._movingStartY + dy);
     } else if (cmd == "final") {
       if (!this._moving) {
         return;
