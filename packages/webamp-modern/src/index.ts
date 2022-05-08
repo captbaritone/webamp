@@ -4,8 +4,14 @@
 // import { getUrlQuery } from "./utils";
 // import { addDropHandler } from "./dropTarget";
 // import { loadSkin } from "./skin/skinLoader";
-import { Webamp } from "./WebampModern";
+// import { Webamp } from "./WebampModern";
+import { WebAmpModern, IWebampModern, Options } from "./WebampModernInteface";
 
+declare global {
+  interface Window {
+    WebampModern: typeof WebAmpModern;
+  }
+}
 // function hack() {
 //   // Without this Snowpack will try to treeshake out resolver causing a circular
 //   // dependency.
@@ -28,7 +34,8 @@ function setStatus(status: string) {
 // const DEFAULT_SKIN = "assets/MMD3.wal"
 const DEFAULT_SKIN = "assets/WinampModern566.wal";
 
-var webamp: Webamp;
+// type Webamp = window.WebampModern
+var webamp: IWebampModern;
 
 async function main() {
   // Purposefully don't await, let this load in parallel.
@@ -52,7 +59,7 @@ async function main() {
   // UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
   // UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
 
-  webamp = new Webamp(document.getElementById('web-amp'), {
+  webamp = new window.WebampModern(document.getElementById('web-amp'), {
     tracks: [
       "assets/Just_Plain_Ant_-_05_-_Stumble.mp3",
       "assets/Just_Plain_Ant_-_05_-_Stumble.mp3",
