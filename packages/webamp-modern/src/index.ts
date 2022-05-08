@@ -41,31 +41,20 @@ async function main() {
   // Purposefully don't await, let this load in parallel.
   initializeSkinListMenu();
 
-  
+  const skinPath = getUrlQuery(window.location, "skin") || DEFAULT_SKIN;
   // changeSkinByUrl();
-  
-  setStatus("Downloading MP3...");
-  // UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  // UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  // UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  // UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  // UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  // UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  // UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  // UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  // UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  // UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  // UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  // UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
-  // UI_ROOT.playlist.enqueuefile("assets/Just_Plain_Ant_-_05_-_Stumble.mp3");
 
-  webamp = new window.WebampModern(document.getElementById('web-amp'), {
+  const option: Options = {
+    skin: skinPath,
     tracks: [
       "assets/Just_Plain_Ant_-_05_-_Stumble.mp3",
       "assets/Just_Plain_Ant_-_05_-_Stumble.mp3",
       "assets/Just_Plain_Ant_-_05_-_Stumble.mp3",
-    ]
-  })
+    ],
+  };
+  
+  setStatus("Downloading MP3...");
+  webamp = new window.WebampModern(document.getElementById("web-amp"), option);
 
   setStatus("");
 }
@@ -77,7 +66,7 @@ async function changeSkinByUrl() {
   // const data = await response.blob();
   // await loadSkin(data);
   // await loadSkin(document.body, skinPath);
-  webamp.switchSkin(skinPath)
+  webamp.switchSkin(skinPath);
   setStatus("");
 }
 
