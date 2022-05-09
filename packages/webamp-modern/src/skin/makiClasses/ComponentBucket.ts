@@ -1,7 +1,7 @@
 import GuiObj from "./GuiObj";
 import UI_ROOT from "../../UIRoot";
 import Group from "./Group";
-import { px, toBool } from "../../utils";
+import { px, toBool, clamp } from "../../utils";
 import Button from "./Button";
 
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Ccomponentbucket.2F.3E
@@ -48,11 +48,15 @@ export default class ComponentBucket extends Group {
   }
 
   setscroll(x: number): number {
-    return 10; //TODO setscroll to ._div
+    const anchor = this._vertical ? "top" : "left";
+    this._wrapper.style.setProperty(anchor, px(x));
+    return x;
   }
-
+  
   getscroll(): number {
-    return 10; //TODO: Check by ._div.scroll
+    const anchor = this._vertical ? "top" : "left";
+    const value = parseInt( this._wrapper.style.getPropertyValue(anchor));
+    return value
   }
 
   getnumchildren(): number {
@@ -85,15 +89,17 @@ export default class ComponentBucket extends Group {
   init() {
     this.resolveButtonsAction();
     super.init();
+    UI_ROOT.vm.dispatch(this, "onstartup", []);
   }
   resolveButtonsAction() {
     for (const obj of this.getparent()._children) {
       if (
         obj instanceof Button &&
-        (obj._actionTarget == null || obj._actionTarget == "bucket") && 
-        (obj._action && obj._action.startsWith('cb_'))
+        (obj._actionTarget == null || obj._actionTarget == "bucket") &&
+        obj._action &&
+        obj._action.startsWith("cb_")
       ) {
-        obj._actionTarget = this.getId()
+        obj._actionTarget = this.getId();
       }
     }
   }
@@ -103,9 +109,24 @@ export default class ComponentBucket extends Group {
     const oneChild = this._children[0];
     const oneStep = this._vertical ? oneChild.getheight() : oneChild.getwidth();
     const anchor = this._vertical ? "top" : "left";
-    const currentStep = this._vertical? this._wrapper.offsetTop : this._wrapper.offsetLeft;
-    //TODO: Clamp to not over top nor over left (showing empty space bug)
-    this._wrapper.style.setProperty(anchor, px(currentStep + oneStep * step));
+    const currentStep = this._vertical
+      ? this._wrapper.offsetTop
+      : this._wrapper.offsetLeft;
+    const viewportSize = this._div.getBoundingClientRect();
+    const maxViewport = this._vertical
+      ? viewportSize.height
+      : viewportSize.width;
+    const maxSteps = Math.ceil(maxViewport / oneStep);
+    const wrapperSize = this._wrapper.getBoundingClientRect();
+    const maxScroll = this._vertical
+      ? wrapperSize.height - viewportSize.height
+      : wrapperSize.width - viewportSize.width;
+    const newScroll = clamp(
+      currentStep + oneStep * maxSteps * step,
+      -maxScroll,
+      0
+    );
+    this._wrapper.style.setProperty(anchor, px(newScroll));
   }
 
   appendChildrenDiv() {

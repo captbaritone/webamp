@@ -1,6 +1,10 @@
 import { assert, getId, normalizeDomId, num, px } from "../utils";
 import ImageManager from "./ImageManager";
 
+export function genCssVar(bitmapId:string): string {
+  return `--bitmap-${bitmapId.replace(/[^a-zA-Z0-9]/g, "-")}`;
+}
+
 // http://wiki.winamp.com/wiki/XML_Elements#.3Cbitmap.2F.3E
 export default class Bitmap {
   _id: string;
@@ -57,7 +61,7 @@ export default class Bitmap {
   }
 
   getFile() {
-    return this._file;
+    return this._file || "";
   }
 
   getWidth() {
@@ -138,6 +142,9 @@ export default class Bitmap {
 
   setAsActiveBackground(div: HTMLElement) {
     this._setAsBackground(div, "active-");
+  }
+  setAsInactiveBackground(div: HTMLElement) {
+    this._setAsBackground(div, "inactive-");
   }
 
   setAsHoverBackground(div: HTMLElement) {

@@ -1,10 +1,11 @@
-import Bitmap from "./skin/Bitmap";
+import Bitmap, { genCssVar } from "./skin/Bitmap";
 import JSZip, { JSZipObject } from "jszip";
 import { XmlElement } from "@rgrove/parse-xml";
 import TrueTypeFont from "./skin/TrueTypeFont";
 import {
   assert,
   assume,
+  Emitter,
   findLast,
   getCaseInsensitiveFile,
   removeAllChildNodes,
@@ -20,20 +21,22 @@ import SystemObject from "./skin/makiClasses/SystemObject";
 import ComponentBucket from "./skin/makiClasses/ComponentBucket";
 import GroupXFade from "./skin/makiClasses/GroupXFade";
 import { PlEdit, Track } from "./skin/makiClasses/PlayList";
+import PRIVATE_CONFIG from "./skin/PrivateConfig";
 
 export class UIRoot {
   _div: HTMLDivElement = document.createElement("div");
   // Just a temporary place to stash things
-  _bitmaps: Bitmap[] = [];
+  _bitmaps: { [id: string]: Bitmap } = {};
   _fonts: (TrueTypeFont | BitmapFont)[] = [];
   _colors: Color[] = [];
+  _elementAlias: { [id: string]: string } = {};
   _dimensions: { [id: string]: number } = {}; //css: width
-  _groupDefs: XmlElement[] = [];
+  _groupDefs: { [id: string]: XmlElement } = {};
   _gammaSets: Map<string, GammaGroup[]> = new Map();
   _gammaNames = {};
   _dummyGammaGroup: GammaGroup = null;
   _activeGammaSetName: string = "";
-  _xuiElements: XmlElement[] = [];
+  _xuiGroupDefs: { [xuitag: string]: /* groupdef_id */ string } = {};
   _activeGammaSet: GammaGroup[] = [];
   _containers: Container[] = [];
   _systemObjects: SystemObject[] = [];
@@ -41,6 +44,8 @@ export class UIRoot {
   _bucketEntries: { [wndType: string]: XmlElement[] } = {};
   _xFades: GroupXFade[] = [];
   _input: HTMLInputElement = document.createElement("input");
+  _skinInfo: { [key: string]: string } = {};
+  _eventListener: Emitter = new Emitter();
 
   // A list of all objects created for this skin.
   _objects: BaseObject[] = [];
@@ -59,18 +64,30 @@ export class UIRoot {
     this._input.onchange = this._inputChanged;
   }
 
+  // shortcut of this.Emitter
+  on(event: string, callback: Function): Function {
+    return this._eventListener.on(event, callback);
+  }
+  trigger(event: string, ...args: any[]) {
+    this._eventListener.trigger(event, ...args);
+  }
+  off(event: string, callback: Function) {
+    this._eventListener.off(event, callback);
+  }
+
   getFileAsString: (filePath: string) => Promise<string>;
   getFileAsBytes: (filePath: string) => Promise<ArrayBuffer>;
   getFileAsBlob: (filePath: string) => Promise<Blob>;
 
   reset() {
+    this.deinitSkin();
     this.dispose();
-    this._bitmaps = [];
+    this._bitmaps = {};
     this._fonts = [];
     this._colors = [];
-    this._groupDefs = [];
+    this._groupDefs = {};
     this._gammaSets = new Map();
-    this._xuiElements = [];
+    this._xuiGroupDefs = {};
     this._activeGammaSet = [];
     this._containers = [];
     this._systemObjects = [];
@@ -84,6 +101,16 @@ export class UIRoot {
     this._objects = [];
   }
 
+  deinitSkin() {
+    // skin is being switched to another skin
+    for (const container of this._containers) {
+      container.deinit();
+    }
+    for (const systemObj of this._systemObjects) {
+      systemObj.deinit();
+    }
+  }
+
   getRootDiv() {
     return this._div;
   }
@@ -93,19 +120,39 @@ export class UIRoot {
   }
 
   addBitmap(bitmap: Bitmap) {
-    this._bitmaps.push(bitmap);
+    const id = bitmap.getId().toLowerCase();
+    this._bitmaps[id] = bitmap;
   }
 
   // TODO: Maybe return a default bitmap?
   getBitmap(id: string): Bitmap {
-    const lowercaseId = id.toLowerCase();
-    const found = findLast(
-      this._bitmaps,
-      (bitmap) => bitmap._id.toLowerCase() === lowercaseId
-    );
+    let lowercaseId = id.toLowerCase();
+    if (!this.hasBitmap(lowercaseId)) {
+      lowercaseId = this._elementAlias[lowercaseId];
+    }
+    const found = this._bitmaps[lowercaseId];
 
     assume(found != null, `Could not find bitmap with id ${id}.`);
     return found;
+  }
+  getBitmaps(): { [id: string]: Bitmap } {
+    // return Object.values(this._bitmaps)
+    return this._bitmaps;
+  }
+
+  /**
+   * Purely search in _bitmaps, no alias
+   * @param id
+   * @returns
+   */
+  hasBitmap(id: string): boolean {
+    const lowercaseId = id.toLowerCase();
+    // const found = findLast(
+    //   this._bitmaps,
+    //   (bitmap) => bitmap._id.toLowerCase() === lowercaseId
+    // );
+    const found = this._bitmaps[lowercaseId];
+    return found ? true : false;
   }
 
   addFont(font: TrueTypeFont | BitmapFont) {
@@ -114,6 +161,13 @@ export class UIRoot {
 
   addColor(color: Color) {
     this._colors.push(color);
+  }
+
+  addAlias(id: string, target: string) {
+    this._elementAlias[id.toLowerCase()] = target.toLowerCase();
+  }
+  getAlias(id: string): string {
+    return this._elementAlias[id.toLowerCase()];
   }
 
   // to reduce polution of inline style.
@@ -180,21 +234,22 @@ export class UIRoot {
   }
 
   addGroupDef(groupDef: XmlElement) {
-    this._groupDefs.push(groupDef);
+    const groupdef_id = groupDef.attributes.id.toLowerCase();
+    this._groupDefs[groupdef_id] = groupDef;
     if (groupDef.attributes.xuitag) {
-      this._xuiElements.push(groupDef);
+      // this._xuiGroupDefs[groupDef.attributes.xuitag.toLowerCase()] =
+      // groupdef_id;
+      this.addXuitagGroupDefId(groupDef.attributes.xuitag, groupdef_id);
     }
+  }
+  addXuitagGroupDefId(xuitag: string, groupdef_id: string) {
+    this._xuiGroupDefs[xuitag.toLowerCase()] = groupdef_id.toLowerCase();
   }
 
   getGroupDef(id: string): XmlElement | null {
     if (!id) return null;
-    const lowercaseId = id.toLowerCase();
-    const found = findLast(
-      this._groupDefs,
-      (def) => def.attributes.id.toLowerCase() === lowercaseId
-    );
-
-    return found ?? null;
+    const groupdef_id = id.toLowerCase();
+    return this._groupDefs[groupdef_id];
   }
 
   addContainers(container: Container) {
@@ -227,17 +282,24 @@ export class UIRoot {
         ).join(", ")}`
       );
       this._activeGammaSetName = id;
-      this._activeGammaSet = found;
+      this._activeGammaSet = found || [];
+      PRIVATE_CONFIG.setPrivateString(this.getSkinName(), "_gammagroup_", id);
     }
+    this.trigger("colorthemechanged", id || "");
     this._setCssVars();
   }
 
   enableDefaultGammaSet() {
     // TODO: restore the latest gammaSet picked by user for this skin
     const gammaSetNames = Array.from(this._gammaSets.keys());
-    const firstName = gammaSetNames[0];
+    const firstName = gammaSetNames[0] || "";
     const antiBoring = gammaSetNames[1];
-    this.enableGammaSet(antiBoring || firstName || null);
+    const lastGamma = PRIVATE_CONFIG.getPrivateString(
+      this.getSkinName(),
+      "_gammagroup_",
+      firstName
+    );
+    this.enableGammaSet(lastGamma);
   }
 
   _getGammaGroup(id: string): GammaGroup | null {
@@ -263,18 +325,56 @@ export class UIRoot {
     return this._dummyGammaGroup;
   }
 
+  _getBitmapAliases(): { [key: string]: string[] } {
+    // const swap = (obj:Object) => Object.entries(Object.entries(obj).map(a => a.reverse()))
+    const aliases = {};
+    for (const [aliasId, targetId] of Object.entries(this._elementAlias)) {
+      if (this.hasBitmap(targetId)) {
+        if (!aliases[targetId]) {
+          aliases[targetId] = [];
+        }
+        aliases[targetId].push(aliasId);
+      }
+    }
+    return aliases;
+  }
+
   _setCssVars() {
     const cssRules = [];
+
+    // bitmap aliases; support multiple names (elementalias)
+    const bitmapAliases = this._getBitmapAliases();
+    const maybeBitmapAliases = (bitmap: Bitmap): void => {
+      // const vars = []; // [bitmap.getCSSVar()];
+      const aliases: string[] = bitmapAliases[bitmap.getId().toLowerCase()];
+      if (aliases != null) {
+        for (const alias of aliases) {
+          // vars.push(genCssVar(alias));
+          cssRules.push(`${genCssVar(alias)}: var(${bitmap.getCSSVar()});`)
+        }
+      }
+      // if (vars.length > 1) {
+      //   console.log("aliases:", vars);
+      // }
+      // return vars.join(",\n");
+    };
+
     const bitmapFonts: BitmapFont[] = this._fonts.filter(
       (font) => font instanceof BitmapFont && !font.useExternalBitmap()
     ) as BitmapFont[];
     // css of bitmaps
-    for (const bitmap of [...this._bitmaps, ...bitmapFonts]) {
+    for (const bitmap of [...Object.values(this._bitmaps), ...bitmapFonts]) {
       const img = bitmap.getImg();
       if (!img) {
         console.warn(`Bitmap/font ${bitmap.getId()} has no img!`);
         continue;
       }
+      //support multiple names
+      // const vars = [
+      //   bitmap.getCSSVar(),
+      //   ...(bitmapAliases[bitmap.getId().toLowerCase()] || []),
+      // ];
+
       const groupId = bitmap.getGammaGroup();
       const gammaGroup = this._getGammaGroup(groupId);
       const url = gammaGroup.transformImage(
@@ -285,6 +385,8 @@ export class UIRoot {
         bitmap._height
       );
       cssRules.push(`  ${bitmap.getCSSVar()}: url(${url});`);
+      maybeBitmapAliases(bitmap);
+      // cssRules.push(`  ${bitmapCssVars(bitmap)}: url(${url});`);
     }
     // css of colors
     for (const color of this._colors) {
@@ -303,14 +405,10 @@ export class UIRoot {
     cssEl.textContent = `:root{${cssRules.join("\n")}}`;
   }
 
-  getXuiElement(name: string): XmlElement | null {
-    const lowercaseName = name.toLowerCase();
-    const found = findLast(
-      this._xuiElements,
-      (def) => def.attributes.xuitag.toLowerCase() === lowercaseName
-    );
-
-    return found ?? null;
+  getXuiElement(xuitag: string): XmlElement | null {
+    const lowercaseName = xuitag.toLowerCase();
+    const groupdef_id = this._xuiGroupDefs[lowercaseName];
+    return this.getGroupDef(groupdef_id);
   }
 
   loadTrueTypeFonts() {
@@ -354,8 +452,13 @@ export class UIRoot {
       case "eject":
         this.eject();
         break;
+      case "eq_toggle":
+        this.eq_toggle();
+        this.trigger("eq_toggle");
+        break;
       case "toggle":
         this.toggleContainer(param);
+        this.trigger("toggle");
         break;
       case "close":
         this.closeContainer();
@@ -363,6 +466,18 @@ export class UIRoot {
       default:
         assume(false, `Unknown global action: ${action}`);
     }
+  }
+
+  getActionState(action: string, param: string, actionTarget: string): boolean {
+    if (action != null) {
+      switch (action.toLowerCase()) {
+        case "eq_toggle":
+          return this.audio.getEqEnabled();
+        case "toggle":
+          return this.getContainerVisible(param);
+      }
+    }
+    return null; //unknown
   }
 
   next() {
@@ -388,6 +503,10 @@ export class UIRoot {
     this._input.click();
   }
 
+  eq_toggle() {
+    this.audio.setEqEnabled(!this.audio.getEqEnabled());
+  }
+
   _inputChanged = () => {
     this.playlist.clear();
     for (var i = 0; i < this._input.files.length; i++) {
@@ -405,6 +524,13 @@ export class UIRoot {
     const container = this.findContainer(param);
     assume(container != null, `Can not toggle on unknown container: ${param}`);
     container.toggle();
+  }
+
+  getContainerVisible(param: string): boolean {
+    const container = this.findContainer(param);
+    if (container != null) {
+      return container.getVisible();
+    }
   }
 
   closeContainer() {
@@ -450,6 +576,9 @@ export class UIRoot {
       this.getFileAsBlob = this.getFileAsBlobPath;
     }
   }
+  getZip(): JSZip {
+    return this._zip;
+  }
 
   //? Path things ========================
   /* needed to avoid direct fetch to root path */
@@ -458,6 +587,9 @@ export class UIRoot {
   setSkinDir(skinPath: string) {
     // required to end with slash/
     this._skinPath = skinPath;
+  }
+  getSkinDir(): string {
+    return this._skinPath;
   }
 
   async getFileAsStringZip(filePath: string): Promise<string> {
@@ -514,6 +646,26 @@ export class UIRoot {
   getId() {
     return "UIROOT";
   }
+
+  setSkinInfo(skinInfo: { [key: string]: string }) {
+    this._skinInfo = skinInfo;
+  }
+  getSkinInfo(): { [key: string]: string } {
+    return this._skinInfo;
+  }
+  getSkinName(): string {
+    return this.getSkinInfo()["name"];
+  }
+
+  //? Logging things ========================
+  /**
+   * This is a replacement of setStatus('Parsing XML and initializing images...')
+   * @param message string to be sent to application
+   */
+  logMessage(message:string){
+    this.trigger('onlogmessage', message)
+  }
+
 }
 
 // Global Singleton for now

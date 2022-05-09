@@ -1,26 +1,45 @@
-// import XmlObj from "../XmlObj";
+import UI_ROOT from "../../UIRoot";
+import { Emitter } from "../../utils";
+import BaseObject from "./BaseObject";
+import ConfigItem from "./ConfigItem";
 
-export default class ConfigAttribute  {
+export default class ConfigAttribute extends BaseObject {
   static GUID = "24dec2834a36b76e249ecc8c736c6bc4";
-  _name : string;
-  _default: string;
-  _value: string;
+  _configItem: ConfigItem;
+  _eventListener: Emitter = new Emitter();
 
-  constructor(name:string, defaultValue: string) {
-//   constructor() {
-    // super();
-    this._name = name;
-    this._default = defaultValue;
-    // this._value = ''
+  constructor(configItem: ConfigItem, name: string) {
+    super();
+    this._configItem = configItem;
+    this._id = name;
   }
-  getdata():string{
-    //   return '';
-      return this._value || this._default || '';
+
+  getparentitem(): ConfigItem {
+    return this._configItem;
   }
-  setdata(value:string){
-      this._value = value;
+  getattributename(): string {
+    return this._id;
   }
-  ondatachanged(){
-    //   this._value = value;
+
+  // shortcut of this.Emitter
+  on(event: string, callback: Function): Function {
+    return this._eventListener.on(event, callback);
+  }
+  trigger(event: string, ...args: any[]) {
+    this._eventListener.trigger(event, ...args);
+  }
+  off(event: string, callback: Function) {
+    this._eventListener.off(event, callback);
+  }
+
+  getdata(): string {
+    return this._configItem.getValue(this._id);
+  }
+  setdata(value: string) {
+    this._configItem.setValue(this._id, value);
+    this.trigger("datachanged");
+  }
+  ondatachanged() {
+    UI_ROOT.vm.dispatch(this, "ondatachanged");
   }
 }

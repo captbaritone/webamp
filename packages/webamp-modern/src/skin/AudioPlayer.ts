@@ -12,7 +12,11 @@ export class AudioPlayer {
   __preamp: GainNode;
   _analyser: AnalyserNode;
   _bands: GainNode[] = [];
+  _volumeNode: GainNode;
+  _balanceNode: StereoPannerNode;
+  _balance: number = 0; // -127..127 temporary
   _source: MediaElementAudioSourceNode;
+  _eqEnabled: boolean = true;
   _eqValues: { [kind: string]: number } = {};
   _eqNodes: { [kind: string]: number } = {};
   _eqEmitter: Emitter = new Emitter();
@@ -55,17 +59,26 @@ export class AudioPlayer {
 
     this.__preamp = this._context.createGain();
 
+    this._volumeNode = this._context.createGain();
+
     // Create the analyser node for the visualizer
     this._analyser = this._context.createAnalyser();
     this._analyser.fftSize = 2048;
-    this._analyser.fftSize = 32;
+    // this._analyser.fftSize = 32;
     // don't smooth audio analysis
-    // this._analyser.smoothingTimeConstant = 0.0;
+    this._analyser.smoothingTimeConstant = 0.0;
+
+    // default pan set to 0 - center
+    this._balanceNode = new StereoPannerNode(this._context, { pan: 0 });
+    // change the value of the balance by updating the pan value
+    // stereoNode.pan.value = -1; // left
+    // stereoNode.pan.value = 0; // center
+    // stereoNode.pan.value = 1; // right
 
     const connectionNodes: AudioNode[] = [
       this._source,
       this.__preamp,
-      this._analyser,
+      // this._analyser,
     ];
 
     const analyserNode = this._analyser;
@@ -102,6 +115,8 @@ export class AudioPlayer {
       connectionNodes.push(filter);
     });
 
+    connectionNodes.push(this._balanceNode);
+    connectionNodes.push(this._volumeNode);
     connectionNodes.push(this._context.destination);
 
     let current = connectionNodes[0];
@@ -111,14 +126,55 @@ export class AudioPlayer {
       current = next;
     }
 
+    this._balanceNode.connect(this._analyser);
+
+    // Connect all the nodes in the correct way
+    // (Note, source is created and connected later)
+    //
+    //                <source>
+    //                    | _ _ _ _ _ _
+    //                    |            :
+    //                    V            :
+    //                <preamp>         :
+    //                    v            : <-- Optional bypass
+    //           [...biquadFilters]    :
+    //                    |            :
+    //                    |<- - - - - -'
+    //                    v
+    //                <balance>
+    //                    |\
+    //                    | `--> <analyser>
+    //                    v
+    //                 <volume>
+    //                    v
+    //              <destination>
+
     //temporary: in the end of playing mp3, lets stop.
     //TODO: in future, when ended: play next mp3
     this._audio.addEventListener("ended", () => this.stop());
   }
 
+  setEqEnabled(enable: boolean) {
+    this._eqEnabled = enable;
+    this._source.disconnect();
+    if (enable) {
+      this._source.connect(this.__preamp);
+    } else {
+      // bypassed.
+      this._source.connect(this._balanceNode);
+    }
+  }
+  getEqEnabled(): boolean {
+    return this._eqEnabled;
+  }
+
+  getAnalyser(): AnalyserNode {
+    return this._analyser;
+  }
+
   // shortcut of this.Emitter
-  on(event: string, callback: Function) {
-    this._eventListener.on(event, callback);
+  on(event: string, callback: Function): Function {
+    return this._eventListener.on(event, callback);
   }
   trigger(event: string, ...args: any[]) {
     this._eventListener.trigger(event, ...args);
@@ -133,8 +189,26 @@ export class AudioPlayer {
 
   // 0-1
   getVolume(): number {
-    return this._audio.volume;
+    // return this._audio.volume;
+    return this._volumeNode.gain.value;
   }
+  // 0-1
+  setVolume(volume: number) {
+    // this._audio.volume = volume;
+    this._volumeNode.gain.value = volume;
+  }
+
+  getBalance(): number {
+    return this._balance;
+  }
+  // -127..127
+  // -1..0..1
+  setBalance(balance: number) {
+    this._balanceNode.pan.value = balance;
+    this._balance = balance;
+    this.trigger("balancechange");
+  }
+
   play() {
     this._isStop = false;
     this._audio.play();
@@ -156,11 +230,6 @@ export class AudioPlayer {
     this._audio.pause();
     this.trigger("pause");
     this.trigger("statchanged");
-  }
-
-  // 0-1
-  setVolume(volume: number) {
-    this._audio.volume = volume;
   }
 
   seekTo(secs: number) {
@@ -204,7 +273,10 @@ export class AudioPlayer {
   getEq(kind: string): number {
     switch (kind) {
       case "preamp":
-        return (this.__preamp.gain.value + 12) / 24;
+        const a = this.__preamp.gain.value;
+        const c = Math.log(a) / Math.log(10);
+        const n = c * 20;
+        return (n + 12) / 24;
       case "1":
       case "2":
       case "3":
@@ -225,12 +297,19 @@ export class AudioPlayer {
     }
   }
 
+  /**
+   *
+   * @param kind : string range: '1'..'10'
+   * @param value : float range 0..1
+   */
   setEq(kind: string, value: number) {
     // console.log({ kind, value });
     const db = value * 24 - 12;
     switch (kind) {
       case "preamp": {
-        this.__preamp.gain.value = db;
+        // For now, 0 is 0db (no change).
+        // Equation used is: 10^((dB)/20) = x, where x (preamp.gain.value) is passed on to gainnode for boosting or attenuation.
+        this.__preamp.gain.value = Math.pow(10, db / 20);
         this._eqValues[kind] = db;
         this._eqEmitter.trigger(kind);
         break;
@@ -298,6 +377,12 @@ export class AudioPlayer {
     const dispose = () => {
       this._audio.removeEventListener("volumechange", handler);
     };
+    return dispose;
+  }
+
+  onBalanceChanged(cb: () => void): Function {
+    const handler = () => cb();
+    const dispose = this.on("balancechange", handler);
     return dispose;
   }
 

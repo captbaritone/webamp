@@ -1,0 +1,14 @@
+<elements>
+
+  <bitmap id="wasabi.frame.basetexture" file="window/background.png" gammagroup="Backgrounds" />
+  <elementalias id="component.basetexture" target="wasabi.frame.basetexture" />
+
+  <bitmap id="wasabi.frame.top.left" file="window/titlebar.png" x="0" y="0" h="18" w="10" gammagroup="Titlebar"/>
+  <bitmap id="wasabi.frame.top" file="window/titlebar.png" x="10" y="0" h="18" w="10" gammagroup="Titlebar"/>
+  <bitmap id="wasabi.frame.top.right" file="window/titlebar.png" x="43" y="0" h="18" w="10" gammagroup="Titlebar"/>
+
+  <bitmap id="wasabi.frame.top.left.region" file="window/titlebar.png" x="0" y="120" h="18" w="10" />
+  <bitmap id="wasabi.frame.top.right.region" file="window/titlebar.png" x="43" y="120" h="18" w="10" />
+
+
+</elements>

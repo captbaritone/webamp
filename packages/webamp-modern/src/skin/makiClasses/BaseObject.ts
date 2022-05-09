@@ -3,6 +3,7 @@
  */
 export default class BaseObject {
   static GUID = "516549714a510d87b5a6e391e7f33532";
+  _id: string;
 
   /**
    * Returns the class name for the object.
@@ -14,7 +15,7 @@ export default class BaseObject {
   }
 
   getId() {
-    throw new Error("Unimplemented");
+    return this._id;
   }
 
   dispose() {

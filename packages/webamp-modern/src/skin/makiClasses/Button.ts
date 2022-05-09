@@ -19,9 +19,10 @@ export default class Button extends GuiObj {
     // TODO: Cleanup!
     this._div.addEventListener("mousedown", this._handleMouseDown.bind(this));
     this._div.addEventListener("click", (e: MouseEvent) => {
-      if (this._action) {
-        this.dispatchAction(this._action, this._param, this._actionTarget);
-      }
+      // if (this._action) {
+      //   this.dispatchAction(this._action, this._param, this._actionTarget);
+      //   this.invalidateActionState();
+      // }
       if (e.button == 0) {
         this.leftclick();
       }
@@ -98,27 +99,35 @@ export default class Button extends GuiObj {
 
     if (onoff !== this._active) {
       this._active = onoff;
-      if (this._active) {
-        this._div.classList.add("active");
-      } else {
-        this._div.classList.remove("active");
-      }
-      UI_ROOT.vm.dispatch(this, "onactivate", [V.newBool(onoff)]);
+      // if (this._active) {
+      //   this._div.classList.add("active");
+      // } else {
+      //   this._div.classList.remove("active");
+      // }
+      this._renderActive();
     }
+    //sometime maki call: setactivated(getactivated())
+    UI_ROOT.vm.dispatch(this, "onactivate", [V.newBool(onoff)]);
   }
 
-  setactivatednocallback(onoff: boolean){
+  setactivatednocallback(onoff: boolean) {
     if (onoff !== this._active) {
       this._active = onoff;
-      if (this._active) {
-        this._div.classList.add("active");
-      } else {
-        this._div.classList.remove("active");
-      }
+      // if (this._active) {
+      //   this._div.classList.add("active");
+      // } else {
+      //   this._div.classList.remove("active");
+      // }
+      this._renderActive();
     }
   }
 
   leftclick() {
+    // console.log('enumchildren',n, this._children[n]);
+    if (this._action) {
+      this.dispatchAction(this._action, this._param, this._actionTarget);
+      this.invalidateActionState();
+    }
     this.onLeftClick();
   }
 
@@ -140,6 +149,42 @@ export default class Button extends GuiObj {
       }
     }
     return false;
+  }
+
+  /**
+   * when button has "action" property,
+   * the "active" property should auto reflect the actual situation.
+   * eg action="EQ_TOGGLE" will set button to active|not
+   */
+  invalidateActionState() {
+    const active = UI_ROOT.getActionState(
+      this._action,
+      this._param,
+      this._actionTarget
+    );
+    if (active != null) {
+      this.setactivatednocallback(active);
+    }
+  }
+
+  init() {
+    super.init();
+    
+    if (this._action != null) {
+      // listen the actual action state
+      UI_ROOT.on(this._action.toLowerCase(), () =>
+        this.invalidateActionState()
+      );
+    }
+    this.invalidateActionState();
+  }
+
+  _renderActive() {
+    if (this._active) {
+      this._div.classList.add("active");
+    } else {
+      this._div.classList.remove("active");
+    }
   }
 
   _renderBackground() {

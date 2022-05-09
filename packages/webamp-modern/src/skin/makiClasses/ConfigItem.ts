@@ -1,15 +1,43 @@
-import XmlObj from "../XmlObj";
+import BaseObject from "./BaseObject";
+import { CONFIG } from "./Config";
+// import Config from "./Config";
 import ConfigAttribute from "./ConfigAttribute";
+// import { SectionValues } from "./ConfigPersistent";
+// import ConfigPersistent from "./ConfigPersistent";
 
-export default class ConfigItem {
+export default class ConfigItem extends BaseObject {
   static GUID = "d40302824d873aab32128d87d5fcad6f";
-  _name: string;
-  _items: { [key: string]: ConfigAttribute } = {};
+  _guid: string;
+  _attributes: { [key: string]: ConfigAttribute } = {};
+
+  constructor(name: string, guid: string) {
+    super();
+    this._id = name;
+    this._guid = guid;
+  }
+
+  getname(): string {
+    return this._id;
+  }
+
+  getguid(attr_name: string): string {
+    return this._guid;
+  }
+
+  getValue(key: string): string {
+    return CONFIG.getValue(this._guid, key);
+  }
+  setValue(key: string, value: string) {
+    return CONFIG.setValue(this._guid, key, value);
+  }
 
   newattribute(name: string, defaultValue: string): ConfigAttribute {
-    const cfg = new ConfigAttribute(name, defaultValue);
-    // const cfg = new ConfigAttribute();
-    // this._items[name] = cfg;
+    let oldValue = this.getValue(name);
+    if (oldValue == null) {
+      this.setValue(name, defaultValue);
+    }
+    const cfg = this._attributes[name] || new ConfigAttribute(this, name);
+    this._attributes[name] = cfg;
     return cfg;
   }
 
@@ -18,6 +46,10 @@ export default class ConfigItem {
     // ConfigItem ciMisc;
     // ciMisc = Config.getItem("Options");
     // configAttribute_system_repeatType = ciMisc.getAttribute("repeat");
-    return new ConfigAttribute(att_name, "1");
+    let cfg = this._attributes[att_name];
+    if (!cfg) {
+      return this.newattribute(att_name, "0");
+    }
+    return cfg;
   }
 }

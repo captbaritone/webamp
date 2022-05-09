@@ -24,6 +24,7 @@ export default class Text extends GuiObj {
   _forceuppercase: boolean;
   _forcelowercase: boolean;
   _align: string = "center";
+  _valign: string = "center";
   _font_id: string;
   _font_obj: TrueTypeFont | BitmapFont;
   _fontSize: number;
@@ -88,6 +89,13 @@ export default class Text extends GuiObj {
         this._align = value;
         this._prepareCss();
         break;
+
+      case "valign":
+        // (str) One of the following three possible strings: "top" "center" "bottom" -- Default is "center."
+        this._valign = value;
+        this._prepareCss();
+        break;
+
       case "fontsize":
         // (int) The size to render the chosen font.
         this._fontSize = num(value);
@@ -132,7 +140,6 @@ export default class Text extends GuiObj {
 antialias - (bool) Setting this flag causes the text to be rendered antialiased if possible.
 default - (str) A parameter alias for text.
 align - (str) One of the following three possible strings: "left" "center" "right" -- Default is "left."
-valign - (str) One of the following three possible strings: "top" "center" "bottom" -- Default is "top."
 timeroffstyle - (int) How to display an empty timer: "0" = "  : ", "1" = "00:00", and "2"="" (if one is displaying time)
 nograb - (bool) Setting this flag will cause the text object to ignore left button down messages. Default is off.
 showlen - (bool) Setting this flag will cause the text display to be appended with the length in minutes and seconds of the current song. Default is off.
@@ -320,6 +327,12 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
         this._div.style.setProperty("--align", this._align);
       } else {
         this._div.style.removeProperty("--align");
+      }
+      //? vertical align
+      if (this._valign != "center") {
+        this._div.style.setProperty("--valign", this._valign=='top'?'flex-start':'flex-end');
+      } else {
+        this._div.style.removeProperty("--valign");
       }
       //? margin
       this._div.style.setProperty("--hspacing", px(font.getHorizontalSpacing()));

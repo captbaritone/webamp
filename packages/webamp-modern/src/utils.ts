@@ -22,7 +22,19 @@ export function getCaseInsensitiveFile(
   filePath: string
 ): JSZipObject | null {
   const normalized = filePath.replace(/[\/\\]/g, `[/\\\\]`);
-  return zip.file(new RegExp(normalized, "i"))[0] ?? null;
+  const files = zip.file(new RegExp(normalized, "i"));
+  if (files && files.length > 1) {
+    // console.log('asking',filePath,'got files:', files);
+    const requestName = filePath.split("/").pop().toLowerCase();
+    for (let i = 0; i < files.length; i++) {
+      const responseName = files[i].name.split("/").pop().toLowerCase();
+      if (responseName == requestName) {
+        return files[i];
+      }
+    }
+    return zip.file(new RegExp(`^${normalized}$`, "i"))[0] ?? null;
+  }
+  return files[0] ?? null;
 }
 
 export function num(str: string | void): number | null {
@@ -92,6 +104,19 @@ export function getUrlQuery(location: Location, variable: string): string {
   return new URL(location.href).searchParams.get(variable);
 }
 
+export function debounce<Params extends any[]>(
+  func: (...args: Params) => any,
+  timeout: number
+): (...args: Params) => void {
+  let timer: NodeJS.Timeout;
+  return (...args: Params) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func(...args);
+    }, timeout);
+  };
+}
+
 export const throttle = (fn: Function, wait: number = 300) => {
   let inThrottle: boolean,
     lastFn: ReturnType<typeof setTimeout>,
@@ -100,9 +125,9 @@ export const throttle = (fn: Function, wait: number = 300) => {
     const context = this,
       args = arguments;
     if (!inThrottle) {
+      inThrottle = true;
       fn.apply(context, args);
       lastTime = Date.now();
-      inThrottle = true;
     } else {
       clearTimeout(lastFn);
       lastFn = setTimeout(() => {

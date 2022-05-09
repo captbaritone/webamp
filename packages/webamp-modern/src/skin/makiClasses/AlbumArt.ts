@@ -38,6 +38,6 @@ export default class AlbumArt extends Layer {
   }
 
   isinvalid(): boolean {
-    return false;
+    return true;
   }
 }

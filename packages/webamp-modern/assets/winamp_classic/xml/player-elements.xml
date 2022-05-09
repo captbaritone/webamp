@@ -1,0 +1,118 @@
+<elements>
+	<!-- NUMFONT -->
+
+	<bitmap id="wa.main" file="wsz_root/main.bmp" x="0" y="0" w="275" h="116"/>
+
+	<bitmap id="posbarbg" file="wsz_root/posbar.bmp" x="0" y="0" w="248" h="10"/>
+	<bitmap id="posbar" file="wsz_root/posbar.bmp" x="248" y="0" w="29" h="10"/>
+	<bitmap id="posbarp" file="wsz_root/posbar.bmp" x="278" y="0" w="29" h="10"/>
+
+	<!-- SONGTICKERFONT -->
+	<bitmapfont id="player.SmallFixed" file="wsz_root/text.bmp" charwidth="5" charheight="6" hspacing="0" vspacing="0"/>
+	<bitmapfont id="player.BIGNUM" file="wsz_root/numbers.bmp" charwidth="9" charheight="13" hspacing="3" vspacing="1"/>
+	<!-- <bitmapfont id="player.BIGNUMEX" file="wsz_root/NUMS_EX.bmp" charwidth="9" charheight="13" hspacing="3" vspacing="1" /> -->
+
+	<bitmapfont id="wasabi.font.default" file="wsz_root/text.bmp" charwidth="5" charheight="6" hspacing="0" vspacing="0"/>
+
+	<bitmap id="wa.play" file="wsz_root/playpaus.bmp" x="0" y="0" w="9" h="9"/>
+	<bitmap id="wa.pause" file="wsz_root/playpaus.bmp" x="9" y="0" w="9" h="9"/>
+	<bitmap id="wa.stop" file="wsz_root/playpaus.bmp" x="18" y="0" w="9" h="9"/>
+
+	<bitmap id="wa.play.green" file="wsz_root/playpaus.bmp" x="36" y="0" w="3" h="9"/>
+	<bitmap id="wa.play.red" file="wsz_root/playpaus.bmp" x="39" y="0" w="3" h="9"/>
+
+	<bitmap id="prev" file="wsz_root/cbuttons.bmp" x="0" y="0" h="18" w="23"/>
+	<bitmap id="play" file="wsz_root/cbuttons.bmp" x="23" y="0" h="18" w="23"/>
+	<bitmap id="pause" file="wsz_root/cbuttons.bmp" x="46" y="0" h="18" w="23"/>
+	<bitmap id="stop" file="wsz_root/cbuttons.bmp" x="69" y="0" h="18" w="23"/>
+	<bitmap id="next" file="wsz_root/cbuttons.bmp" x="92" y="0" h="18" w="22"/>
+	<bitmap id="ejectbmp" file="wsz_root/cbuttons.bmp" x="114" y="0" h="16" w="22"/>
+
+	<bitmap id="prevp" file="wsz_root/cbuttons.bmp" x="0" y="18" h="18" w="23"/>
+	<bitmap id="playp" file="wsz_root/cbuttons.bmp" x="23" y="18" h="18" w="23"/>
+	<bitmap id="pausep" file="wsz_root/cbuttons.bmp" x="46" y="18" h="18" w="23"/>
+	<bitmap id="stopp" file="wsz_root/cbuttons.bmp" x="69" y="18" h="18" w="23"/>
+	<bitmap id="nextp" file="wsz_root/cbuttons.bmp" x="92" y="18" h="18" w="22"/>
+	<bitmap id="ejectp" file="wsz_root/cbuttons.bmp" x="114" y="16" h="16" w="22"/>
+
+	<bitmap id="rep" file="wsz_root/shufrep.bmp" x="0" y="0" w="28" h="15"/>
+	<bitmap id="repp" file="wsz_root/shufrep.bmp" x="0" y="15" w="28" h="15"/>
+	<bitmap id="repa" file="wsz_root/shufrep.bmp" x="0" y="30" w="28" h="15"/>
+
+	<bitmap id="shuf" file="wsz_root/shufrep.bmp" x="28" y="0" h="15" w="47"/>
+	<bitmap id="shufp" file="wsz_root/shufrep.bmp" x="28" y="15" h="15" w="47"/>
+	<bitmap id="shufa" file="wsz_root/shufrep.bmp" x="28" y="30" h="15" w="47"/>
+
+	<bitmap id="player.toggler.eq.disabled" file="wsz_root/shufrep.bmp" x="0" y="61" h="12" w="23"/>
+	<bitmap id="player.toggler.eq.pressed" file="wsz_root/shufrep.bmp" x="46" y="73" h="12" w="23"/>
+	<bitmap id="player.toggler.eq.enabled" file="wsz_root/shufrep.bmp" x="0" y="73" h="12" w="23"/>
+	<bitmap id="player.toggler.pl.disabled" file="wsz_root/shufrep.bmp" x="23" y="61" h="12" w="23"/>
+	<bitmap id="player.toggler.pl.pressed" file="wsz_root/shufrep.bmp" x="69" y="73" h="12" w="23"/>
+	<bitmap id="player.toggler.pl.enabled" file="wsz_root/shufrep.bmp" x="23" y="73" h="12" w="23"/>
+
+	<bitmap id="player.status.mono.active" file="wsz_root/monoster.bmp" x="29" y="0" h="12" w="27"/>
+	<bitmap id="player.status.mono.inactive" file="wsz_root/monoster.bmp" x="29" y="12" h="12" w="27"/>
+	<bitmap id="player.status.stereo.active" file="wsz_root/monoster.bmp" x="0" y="0" h="12" w="29"/>
+	<bitmap id="player.status.stereo.inactive" file="wsz_root/monoster.bmp" x="0" y="12" h="12" w="29"/>
+
+	<bitmap id="wa.titlebar.on" file="wsz_root/titlebar.bmp" x="27" y="0" h="13" w="275"/>
+	<bitmap id="wa.titlebar.off" file="wsz_root/titlebar.bmp" x="27" y="15" h="13" w="275"/>
+
+	<bitmap id="wa.switch.on" file="wsz_root/titlebar.bmp" x="0" y="36" w="18" h="18"/>
+	<bitmap id="wa.switch.pressed" file="wsz_root/titlebar.bmp" x="18" y="36" w="18" h="18"/>
+
+	<bitmap id="posbarbg" file="wsz_root/posbar.bmp" x="0" y="0" w="248" h="10"/>
+	<bitmap id="posbar" file="wsz_root/posbar.bmp" x="248" y="0" w="29" h="10"/>
+	<bitmap id="posbarp" file="wsz_root/posbar.bmp" x="278" y="0" w="29" h="10"/>
+
+	<bitmap id="menu" file="wsz_root/titlebar.bmp" x="0" y="0" w="9" h="9"/>
+	<bitmap id="menup" file="wsz_root/titlebar.bmp" x="0" y="9" w="9" h="9"/>
+
+	<bitmap id="mini" file="wsz_root/titlebar.bmp" x="9" y="0" w="9" h="9"/>
+	<bitmap id="minip" file="wsz_root/titlebar.bmp" x="9" y="9" w="9" h="9"/>
+
+	<bitmap id="close" file="wsz_root/titlebar.bmp" x="18" y="0" w="9" h="9"/>
+	<bitmap id="closep" file="wsz_root/titlebar.bmp" x="18" y="9" w="9" h="9"/>
+
+	<bitmap id="switch" file="wsz_root/titlebar.bmp" x="0" y="18" h="9" w="9"/>
+	<bitmap id="switchp" file="wsz_root/titlebar.bmp" x="9" y="18" h="9" w="9"/>
+
+	<bitmap id="clutterbar" file="wsz_root/titlebar.bmp" x="304" y="0" w="8" h="43"/>
+
+	<bitmap id="volumes" file="wsz_root/volume.bmp" x="0" y="0" w="68" h="420"/>
+	<bitmap id="volbtnd" file="wsz_root/volume.bmp" x="0" y="422" w="14" h="11"/>
+	<bitmap id="volbtn" file="wsz_root/volume.bmp" x="15" y="422" w="14" h="11"/>
+
+	<bitmap id="balances" file="wsz_root/balance.bmp" x="9" y="0" w="38" h="420"/>
+	<bitmap id="panbtnd" file="wsz_root/balance.bmp" x="0" y="422" w="14" h="11"/>
+	<bitmap id="panbtn" file="wsz_root/balance.bmp" x="15" y="422" w="14" h="11"/>
+
+	<!-- titlebar.png to titlebar.png -->
+	<bitmap id="wa2.player.title.enabled" file="wsz_root/titlebar.bmp" x="27" y="0" h="13" w="275"/>
+	<bitmap id="wa2.player.title.dissabled" file="wsz_root/titlebar.bmp" x="27" y="15" h="13" w="275"/>
+	<bitmap id="wa2.player.title.quit" file="wsz_root/titlebar.bmp" x="18" y="0" h="9" w="9"/>
+	<bitmap id="wa2.player.title.quit.pressed" file="wsz_root/titlebar.bmp" x="18" y="9" h="9" w="9"/>
+	<bitmap id="wa2.player.title.shade" file="wsz_root/titlebar.bmp" x="0" y="18" h="9" w="9"/>
+	<bitmap id="wa2.player.title.shade.pressed" file="wsz_root/titlebar.bmp" x="9" y="18" h="9" w="9"/>
+	<bitmap id="wa2.player.title.min" file="wsz_root/titlebar.bmp" x="9" y="0" h="9" w="9"/>
+	<bitmap id="wa2.player.title.min.pressed" file="wsz_root/titlebar.bmp" x="9" y="9" h="9" w="9"/>
+	<bitmap id="wa2.player.title.menu" file="wsz_root/titlebar.bmp" x="0" y="0" h="9" w="9"/>
+	<bitmap id="wa2.player.title.menu.pressed" file="wsz_root/titlebar.bmp" x="0" y="9" h="9" w="9"/>
+
+
+	<!-- Winshade Stuff -->
+	<bitmap id="wa2.player.shade.enabled" file="wsz_root/titlebar.bmp" x="27" y="29" h="14" w="275"/>
+	<bitmap id="wa2.player.shade.disabled" file="wsz_root/titlebar.bmp" x="27" y="42" h="14" w="275"/>
+	<bitmap id="wa2.player.shade.menu" file="wsz_root/titlebar.bmp" x="0" y="0" h="9" w="9"/>
+	<bitmap id="wa2.player.shade.menu.pressed" file="wsz_root/titlebar.bmp" x="0" y="9" h="9" w="9"/>
+
+	<!-- Winshade Buttons -->
+	<bitmap id="player.winshade.button.previous" file="wsz_root/titlebar.bmp" x="193" y="32" w="10" h="9"/>
+	<bitmap id="player.winshade.button.play" file="wsz_root/titlebar.bmp" x="203" y="32" w="10" h="9" />
+	<bitmap id="player.winshade.button.pause" file="wsz_root/titlebar.bmp" x="213" y="32" w="10" h="9" />
+	<bitmap id="player.winshade.button.stop" file="wsz_root/titlebar.bmp" x="223" y="32" w="10" h="9" />
+	<bitmap id="player.winshade.button.next" file="wsz_root/titlebar.bmp" x="233" y="32" w="10" h="9" />
+	<bitmap id="player.winshade.button.open" file="wsz_root/titlebar.bmp" x="243" y="32" w="10" h="9" />
+	<bitmap id="player.winshade.seek" file="wsz_root/titlebar.bmp" x="20" y="36" w="3" h="7" />
+
+</elements>	

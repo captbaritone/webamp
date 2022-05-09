@@ -57,6 +57,15 @@ export default class Group extends Movable {
     }
   }
 
+  deinit() {
+    for (const systemObject of this._systemObjects) {
+      systemObject.deinit();
+    }
+    for (const child of this._children) {
+      child.deinit();
+    }
+  }
+
   getId() {
     return this._instanceId || this._id;
   }
@@ -130,11 +139,11 @@ export default class Group extends Movable {
       }
     }
     const w = super.getwidth();
-    if (w == null && this._background != null) {
+    if (w == 0 && this._background != null) {
       const bitmap = UI_ROOT.getBitmap(this._background);
       if (bitmap) return bitmap.getWidth();
     }
-    return w ?? 0;
+    return w || this._div.getBoundingClientRect().width;
   }
 
   _renderBackground() {
@@ -213,19 +222,21 @@ export default class Group extends Movable {
     const ctx2 = this._regionCanvas.getContext("2d");
     const r = child._div.getBoundingClientRect();
     const bitmap = child._backgroundBitmap;
-    const img = child._backgroundBitmap.getImg();
-    ctx2.drawImage(
-      img,
-      bitmap._x,
-      bitmap._y,
-      r.width,
-      r.height,
+    if (bitmap) {
+      const img = bitmap.getImg();
+      ctx2.drawImage(
+        img,
+        bitmap._x,
+        bitmap._y,
+        r.width,
+        r.height,
 
-      child._div.offsetLeft,
-      child._div.offsetTop,
-      r.width,
-      r.height
-    );
+        child._div.offsetLeft,
+        child._div.offsetTop,
+        r.width,
+        r.height
+      );
+    }
   }
 
   setRegion() {

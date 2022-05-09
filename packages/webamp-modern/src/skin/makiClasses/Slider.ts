@@ -20,7 +20,9 @@ export class ActionHandler {
     this._subscription();
   }
 }
-const MAX = 255;
+
+// Note: FreeMouseMove is about receiving mousemove without mousedown precedent.
+//       It is useful for equalizer sliders that may changed once a slider is moved
 
 // Note: FreeMouseMove is about receiving mousemove without mousedown precedent.
 //       It is useful for equalizer sliders that may changed once a slider is moved
@@ -37,18 +39,28 @@ export default class Slider extends GuiObj {
   _hoverThumb: string;
   _action: string | null = null;
   _low: number = 0;
-  _high: number = 1;
+  _high: number = 255;
   _thumbWidth: number = 0;
   _thumbHeight: number = 0;
+  _thumbLeft: number = 0;
+  _thumbTop: number = 0;
   _position: number = 0;
   _param: string | null = null;
   _actionHandler: null | ActionHandler;
   _onSetPositionEvenEaten: number;
-  _mouseDx: number = 0; // mouseDown inside thumb. 0..thumbHeight
+  _mouseDx: number = 0; // mouseDown inside thumb. 0..thumbWidth
   _mouseDy: number = 0;
 
   _getActualSize() {
-    return this._div.getBoundingClientRect();
+    const relatSize = this._div.getBoundingClientRect();
+    // sometime getBoundingClientRect return zero if element not in DOM.
+    if (!this.getguirelatw()) {
+      relatSize.width = this.getwidth();
+    }
+    if (!this.getguirelath()) {
+      relatSize.height = this.getheight();
+    }
+    return relatSize;
   }
 
   /**
@@ -150,8 +162,10 @@ export default class Slider extends GuiObj {
         // (id) The bitmap element for the slider thumb.
         this._thumb = value;
         const bitmap = UI_ROOT.getBitmap(this._thumb);
-        this._thumbWidth = bitmap.getWidth();
-        this._thumbHeight = bitmap.getHeight();
+        if (bitmap) {
+          this._thumbWidth = bitmap.getWidth();
+          this._thumbHeight = bitmap.getHeight();
+        }
         break;
       case "downthumb":
         // (id) The bitmap element for the slider thumb when held by the user.
@@ -200,11 +214,13 @@ export default class Slider extends GuiObj {
   }
 
   init() {
+    super.init();
     this._initializeActionHandler();
     this._registerDragEvents();
   }
 
   _initializeActionHandler() {
+    const oldActionHandler = this._actionHandler;
     switch (this._action) {
       case "seek":
         this._actionHandler = new SeekActionHandler(this);
@@ -223,9 +239,16 @@ export default class Slider extends GuiObj {
         this._actionHandler = new VolumeActionHandler(this);
         break;
       case null:
+        // CrossFadeSlider doesn't has action. should be supported.
+        if (!this._actionHandler) {
+          this._actionHandler = new ActionHandler(this);
+        }
         break;
       default:
         assume(false, `Unhandled slider action: ${this._action}`);
+    }
+    if (oldActionHandler != null && oldActionHandler != this._actionHandler) {
+      oldActionHandler.dispose();
     }
   }
 
@@ -258,9 +281,28 @@ export default class Slider extends GuiObj {
     this._thumbHeight = height;
   }
 
+  _cfgAttribChanged(newValue: string) {
+    // do something when configAttrib broadcast message `datachanged` by other object
+    const newPos = parseInt(newValue);
+    if (newPos != this.getposition()) {
+      this.setposition(newPos);
+    }
+  }
+
   // extern Int Slider.getPosition();
   getposition(): number {
-    return this._position * MAX;
+    return this._position * this._high;
+  }
+
+  /**
+   *
+   * @param newpos 0..MAX
+   */
+  setposition(newpos: number) {
+    this._position = newpos / this._high;
+    this._renderThumbPosition();
+    this.doSetPosition(this.getposition());
+    // console.log("Slider.setPosition:", newpos);
   }
 
   /**
@@ -285,6 +327,7 @@ export default class Slider extends GuiObj {
     if (this._actionHandler != null) {
       this._actionHandler.onsetposition(newPos);
     }
+    this.updateCfgAttib(String(this.getposition()));
   }
 
   doLeftMouseDown(x: number, y: number) {
@@ -351,11 +394,21 @@ export default class Slider extends GuiObj {
   _renderThumbPosition() {
     const actual = this._getActualSize();
     if (this._vertical) {
-      const top = (1 - this._position) * (actual.height - this._thumbHeight);
-      this._div.style.setProperty("--thumb-top", px(Math.max(0, top)));
+      const top = Math.floor(
+        Math.max(0, (1 - this._position) * (actual.height - this._thumbHeight))
+      );
+      if (this._thumbTop != top) {
+        this._thumbTop = top;
+        this._div.style.setProperty("--thumb-top", px(top));
+      }
     } else {
-      const left = this._position * (actual.width - this._thumbWidth);
-      this._div.style.setProperty("--thumb-left", px(left));
+      const left = Math.floor(
+        this._position * (actual.width - this._thumbWidth)
+      );
+      if (this._thumbLeft != left) {
+        this._thumbLeft = left;
+        this._div.style.setProperty("--thumb-left", px(left));
+      }
     }
   }
   
@@ -365,8 +418,8 @@ export default class Slider extends GuiObj {
     assume(this._barLeft == null, "Need to handle Slider barleft");
     assume(this._barRight == null, "Need to handle Slider barright");
     assume(this._barMiddle == null, "Need to handle Slider barmiddle");
-    this._div.style.setProperty("--thumb-left", px(0));
-    this._div.style.setProperty("--thumb-top", px(0));
+    // this._div.style.setProperty("--thumb-left", px(0));
+    // this._div.style.setProperty("--thumb-top", px(0));
     this._prepareThumbBitmaps();
     this._renderThumbPosition();
     // this._div.appendChild(this._thumbDiv);
@@ -421,7 +474,6 @@ class SeekActionHandler extends ActionHandler {
       // if (this._slider.getId() == "seekerghost")
       //   console.log("thumb: not isPending()!");
       this._slider._position = UI_ROOT.audio.getCurrentTimePercent();
-      // TODO: We could throttle this, or only render if the change is "significant"?
       this._slider._renderThumbPosition();
     }
   };
@@ -430,7 +482,7 @@ class SeekActionHandler extends ActionHandler {
     // console.log("seek:", position);
     this._pendingChange = this._slider._onSetPositionEvenEaten != 0;
     if (!this._pendingChange) {
-      UI_ROOT.audio.seekToPercent(position / MAX);
+      UI_ROOT.audio.seekToPercent(position / this._slider._high);
     }
   }
 
@@ -439,7 +491,9 @@ class SeekActionHandler extends ActionHandler {
     // console.log("slider_ACTION.doLeftMouseUp");
     if (this._pendingChange) {
       this._pendingChange = false;
-      UI_ROOT.audio.seekToPercent(this._slider.getposition() / MAX);
+      UI_ROOT.audio.seekToPercent(
+        this._slider.getposition() / this._slider._high
+      );
     }
   }
 }
@@ -482,7 +536,7 @@ class EqActionHandler extends ActionHandler {
   }
 
   onsetposition(position: number): void {
-    UI_ROOT.audio.setEq(this._kind, position / MAX);
+    UI_ROOT.audio.setEq(this._kind, position / this._slider._high);
   }
 }
 
@@ -501,7 +555,7 @@ class PreampActionHandler extends ActionHandler {
   }
 
   onsetposition(position: number): void {
-    UI_ROOT.audio.setEq(this._kind, position / MAX);
+    UI_ROOT.audio.setEq(this._kind, position / this._slider._high);
   }
 }
 
@@ -509,6 +563,7 @@ class PreampActionHandler extends ActionHandler {
 class PanActionHandler extends ActionHandler {
   onsetposition(position: number): void {
     // TODO
+    UI_ROOT.audio.setBalance(position / this._slider._high);
   }
 }
 
@@ -530,7 +585,7 @@ class VolumeActionHandler extends ActionHandler {
   }
 
   onsetposition(position: number): void {
-    UI_ROOT.audio.setVolume(position / 255);
+    UI_ROOT.audio.setVolume(position / this._slider._high);
   }
   onLeftMouseDown(x: number, y: number) {
     this._changing = true;

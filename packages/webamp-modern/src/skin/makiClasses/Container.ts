@@ -43,7 +43,8 @@ export default class Container extends XmlObj {
         this.resolveAlias();
         break;
       case "default_visible":
-        this._visible = toBool(value);
+        // allow @HAVE_LIBRARY@ (for now, its recognized as "false")
+        this._visible = value == "1";
         break;
       case "x":
       case "default_x":
@@ -65,17 +66,28 @@ export default class Container extends XmlObj {
     for (const layout of this._layouts) {
       layout.init();
     }
+    // maki need 'onSwitchToLayout':
+    // this.switchToLayout(this.getCurLayout().getId())
+    UI_ROOT.vm.dispatch(this, "onswitchtolayout", [
+      { type: "OBJECT", value: this.getCurLayout() },
+    ]);
+  }
+
+  deinit() {
+    for (const layout of this._layouts) {
+      layout.deinit();
+    }
   }
 
   resolveAlias() {
     const knownContainerGuids = {
-      "{0000000a-000c-0010-ff7b-01014263450c}": "vis",  // visualization
-      "{45f3f7c1-a6f3-4ee6-a15e-125e92fc3f8d}": "pl",   // playlist editor
-      "{6b0edf80-c9a5-11d3-9f26-00c04f39ffc6}": "ml",   // media library
-      "{7383a6fb-1d01-413b-a99a-7e6f655f4591}": "con",  // config?
-      "{7a8b2d76-9531-43b9-91a1-ac455a7c8242}": "lir",  // lyric?
-      "{a3ef47bd-39eb-435a-9fb3-a5d87f6f17a5}": "dl",   // download??
-      "{f0816d7b-fffc-4343-80f2-e8199aa15cc3}": "video",// independent video window
+      "{0000000a-000c-0010-ff7b-01014263450c}": "vis", // visualization
+      "{45f3f7c1-a6f3-4ee6-a15e-125e92fc3f8d}": "pl", // playlist editor
+      "{6b0edf80-c9a5-11d3-9f26-00c04f39ffc6}": "ml", // media library
+      "{7383a6fb-1d01-413b-a99a-7e6f655f4591}": "con", // config?
+      "{7a8b2d76-9531-43b9-91a1-ac455a7c8242}": "lir", // lyric?
+      "{a3ef47bd-39eb-435a-9fb3-a5d87f6f17a5}": "dl", // download??
+      "{f0816d7b-fffc-4343-80f2-e8199aa15cc3}": "video", // independent video window
     };
     const guid = this._componentGuid;
     this._componentAlias = knownContainerGuids[guid];
@@ -117,11 +129,28 @@ export default class Container extends XmlObj {
     return this._activeLayout.getheight();
   }
 
+  gettop(): number {
+    return this._y;
+  }
+
+  getleft(): number {
+    return this._x;
+  }
+
   center() {
     const height = document.documentElement.clientHeight;
     const width = document.documentElement.clientWidth;
     this._div.style.top = px((height - this.getHeight()) / 2);
     this._div.style.left = px((width - this.getWidth()) / 2);
+  }
+
+  setLocation(x: number, y: number) {
+    if (x == this._x && y == this._y) {
+      return;
+    }
+    this._x = x;
+    this._y = y;
+    this._renderDimensions();
   }
 
   show() {
@@ -143,6 +172,9 @@ export default class Container extends XmlObj {
     this._activeLayout = null;
     this.hide();
   }
+  getVisible(): boolean {
+    return this._visible;
+  }
 
   /* Required for Maki */
   /**
@@ -163,14 +195,12 @@ export default class Container extends XmlObj {
     throw new Error(`Could not find a container with the id; "${layoutId}"`);
   }
 
-  /** 
-  * @ret Layout
-  */
+  /**
+   * @ret Layout
+   */
   getCurLayout(): Layout {
     return this._activeLayout;
   }
-
-
 
   addLayout(layout: Layout) {
     layout.setParent(this as unknown as Group);
@@ -182,22 +212,23 @@ export default class Container extends XmlObj {
 
   // parser need it.
   addChild(layout: Layout) {
-    this.addLayout(layout)
+    this.addLayout(layout);
   }
 
   _clearCurrentLayout() {
     removeAllChildNodes(this._div);
+    // this._div.removeChild(this._activeLayout.getDiv())
   }
 
   switchToLayout(layout_id: string) {
     const layout = this.getlayout(layout_id);
     assert(layout != null, `Could not find layout with id "${layout_id}".`);
-    this._clearCurrentLayout();
-    this._activeLayout = layout;
-    this._renderLayout();
     UI_ROOT.vm.dispatch(this, "onswitchtolayout", [
       { type: "OBJECT", value: layout },
     ]);
+    this._clearCurrentLayout();
+    this._activeLayout = layout;
+    this._renderLayout();
   }
 
   dispatchAction(
@@ -221,11 +252,17 @@ export default class Container extends XmlObj {
 
   _renderLayout() {
     if (this._visible && this._activeLayout) {
-      this._activeLayout.draw();
+      // this._activeLayout.draw();
       this._div.appendChild(this._activeLayout.getDiv());
       // this.center();
     } else {
-      removeAllChildNodes(this._div);
+      this._clearCurrentLayout();
+    }
+  }
+
+  _renderLayouts() {
+    for (const layout of this._layouts) {
+      layout.draw();
     }
   }
 
@@ -233,6 +270,7 @@ export default class Container extends XmlObj {
     this._div.setAttribute("id", this.getId());
     this._div.setAttribute("tabindex", "1");
     this._renderDimensions();
+    this._renderLayouts();
     this._renderLayout();
   }
 }

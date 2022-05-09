@@ -50,7 +50,7 @@ export default class SystemObject extends BaseObject {
     const EqBandHandle = (band: number) => {
       // console.log('eq.changed:',band, UI_ROOT.audio.getEq(String(band)))
       UI_ROOT.vm.dispatch(this, "oneqbandchanged", [
-        { type: "INT", value: band },
+        { type: "INT", value: band - 1 },
         { type: "INT", value: UI_ROOT.audio.getEq(String(band)) * 255 - 127 },
       ]);
     };
@@ -64,6 +64,11 @@ export default class SystemObject extends BaseObject {
     UI_ROOT.audio.onEqChange("8", () => EqBandHandle(8));
     UI_ROOT.audio.onEqChange("9", () => EqBandHandle(9));
     UI_ROOT.audio.onEqChange("10", () => EqBandHandle(10));
+    UI_ROOT.audio.onEqChange("preamp", () => {
+      UI_ROOT.vm.dispatch(this, "oneqpreampchanged", [
+        { type: "INT", value: UI_ROOT.audio.getEq("preamp") * 255 - 127 },
+      ]);
+    });
   }
 
   init() {
@@ -88,6 +93,10 @@ export default class SystemObject extends BaseObject {
     UI_ROOT.vm.dispatch(this, "onscriptloaded");
   }
 
+  deinit() {
+    UI_ROOT.vm.dispatch(this, "onscriptunloading");
+  }
+
   setParentGroup(group: Group) {
     this._parentGroup = group;
   }
@@ -98,7 +107,7 @@ export default class SystemObject extends BaseObject {
   }
 
   getskinname(): string {
-    return "TODO: Get the Real skin name";
+    return UI_ROOT.getSkinName();
   }
 
   /**
@@ -653,7 +662,7 @@ export default class SystemObject extends BaseObject {
    * @ret The value of the left vu meter.
    */
   getleftvumeter(): number {
-    return UI_ROOT.audio._vuMeter;
+    return UI_ROOT.audio._vuMeter * 255;
   }
 
   /**
@@ -663,7 +672,7 @@ export default class SystemObject extends BaseObject {
    * @ret The value of the right vu meter.
    */
   getrightvumeter(): number {
-    return UI_ROOT.audio._vuMeter;
+    return UI_ROOT.audio._vuMeter * 255;
   }
 
   /**
@@ -1421,18 +1430,6 @@ export default class SystemObject extends BaseObject {
   }
 
   /**
-   * Get the value of an equalizer band. The bands
-   * are numbered from 0 (60Hz) to 9 (16kHz). The return
-   * value range is from -127 to +127.
-   *
-   * @ret       The value of the band.
-   * @param  band  The eq band number you want to get.
-   */
-  geteqband(band: number): number {
-    return 100;
-  }
-
-  /**
    * Get the equalizer state. 0 for off, 1 for on.
    * Remember to compare return value to true and false.
    *
@@ -1473,7 +1470,7 @@ export default class SystemObject extends BaseObject {
    * @param  value The desired value for the pre-amp.
    */
   seteqpreamp(value: number) {
-    // TODO
+    UI_ROOT.audio.setEq("preamp", (value + 127) / 255);
   }
 
   /**
@@ -1485,7 +1482,30 @@ export default class SystemObject extends BaseObject {
    * @param  value The desired value for the specified band.
    */
   seteqband(band: number, value: number) {
-    // TODO
+    UI_ROOT.audio.setEq(String(band + 1), (value + 127) / 255);
+  }
+
+  /**
+   getEqBand()
+
+  Get the value of an equalizer band. The bands
+  are numbered from 0 (60Hz) to 9 (16kHz). The return
+  value range is from -127 to +127.
+
+  @ret       The value of the band.
+  @param  band  The eq band number you want to get.
+  */
+  geteqband(band: number): number {
+    // console.log('getEqBand',band, UI_ROOT.audio.getEq(String(band + 1)) * 255 - 127);
+    return UI_ROOT.audio.getEq(String(band + 1)) * 255 - 127;
+  }
+
+  //maki need it
+  oneqbandchanged(band: number, value: number) {
+    UI_ROOT.vm.dispatch(this, "oneqbandchanged", [
+      { type: "INT", value: band },
+      { type: "INT", value: value },
+    ]);
   }
 
   /**

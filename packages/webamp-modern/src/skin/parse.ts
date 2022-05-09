@@ -22,10 +22,9 @@ import BitmapFont from "./BitmapFont";
 import Color from "./Color";
 import GammaGroup from "./GammaGroup";
 import ColorThemesList from "./ColorThemesList";
-import { UIRoot } from "../UIRoot";
+import UI_ROOT, { UIRoot } from "../UIRoot";
 import AlbumArt from "./makiClasses/AlbumArt";
 import WindowHolder from "./makiClasses/WindowHolder";
-import WasabiFrame from "./makiClasses/WasabiFrame";
 import Grid from "./makiClasses/Grid";
 import ProgressGrid from "./makiClasses/ProgressGrid";
 import WasabiTitle from "./makiClasses/WasabiTitle";
@@ -35,6 +34,9 @@ import { classResolver } from "./resolver";
 import WasabiButton from "./makiClasses/WasabiButton";
 import PlayListGui from "./makiClasses/PlayListGui";
 import XuiElement from "./makiClasses/XuiElement";
+import NStateButton from "./makiClasses/NStateButton";
+import EqVis from "./makiClasses/EqVis";
+import Images from "./makiClasses/Images";
 
 function hack() {
   // Without this Snowpack will try to treeshake out resolver causing a circular
@@ -47,7 +49,7 @@ class ParserContext {
   parentGroup: Group | /* Group includes Layout | */ null = null;
 }
 
-const RESOURCE_PHASE = 1; //full async + Promise.all()
+export const RESOURCE_PHASE = 1; //full async + Promise.all()
 const ResourcesTag = [
   // below are some resource that immediatelly popped (removed) from xml structure.
   // so wouldn't be parsed twice.
@@ -61,7 +63,7 @@ const ResourcesTag = [
   // but will be kept in xml (unremoved).
 ];
 
-const GROUP_PHASE = 2; //full sync mode, because of inheritance
+export const GROUP_PHASE = 2; //full sync mode, because of inheritance
 
 export default class SkinParser {
   _imageManager: ImageManager;
@@ -93,22 +95,56 @@ export default class SkinParser {
     this._uiRoot = uiRoot;
   }
 
+  async loadFreeformXui() {
+    // let xmlRootPath: string = "assets/freeform/xml/";
+    // let xmlFilePath: string = null;
+    // xmlRootPath += "wasabi/";
+    // xmlFilePath = "xml/xui/standardframe/standardframe.xml";
+    // // push
+    // const oldZip = UI_ROOT.getZip();
+    // const oldSkinDir = UI_ROOT.getSkinDir();
+    // // set
+    // UI_ROOT.setZip(null);
+    // UI_ROOT.setSkinDir(xmlRootPath);
+    // const node = new XmlElement("include", { file: xmlFilePath });
+    // await this.include(node, null);
+    // // pop
+    // UI_ROOT.setSkinDir(oldSkinDir);
+    // UI_ROOT.setZip(oldZip);
+  }
+
+  // bad name, okay I know
+  async prepareArial() {
+    const node: XmlElement = new XmlElement("truetypefont", {
+      id: "Arial",
+      family: "Arial",
+    });
+    await this.trueTypeFont(node, null);
+  }
+
   async parse(): Promise<UIRoot> {
+    console.log("RESOURCE_PHASE #################");
+    this._phase = RESOURCE_PHASE;
+
+    await this.prepareArial();
+
     // Load built-in xui elements
-    // await this.parseFromUrl("assets/xml/xui/standardframe.xml");
+    // await this.loadFreeformXui();
+
     const includedXml = await this._uiRoot.getFileAsString("skin.xml");
-    // const includedXml = skinXmlContent;
 
     // Note: Included files don't have a single root node, so we add a synthetic one.
     // A different XML parser library might make this unnessesary.
     const parsed = parseXml(includedXml) as unknown as XmlElement;
 
-    console.log("RESOURCE_PHASE #################");
-    this._phase = RESOURCE_PHASE;
+    // console.log("RESOURCE_PHASE #################");
+    // this._phase = RESOURCE_PHASE;
     await this.traverseChildren(parsed);
-    await this._solveMissingBitmaps();
-    await this._imageManager.loadUniquePaths();
-    await this._imageManager.ensureBitmapsLoaded();
+
+    // await this._solveMissingBitmaps();
+    // await this._imageManager.loadUniquePaths();
+    // await this._imageManager.ensureBitmapsLoaded();
+    await this._loadBitmaps()
 
     console.log("GROUP_PHASE #################");
     this._phase = GROUP_PHASE;
@@ -120,17 +156,26 @@ export default class SkinParser {
     return this._uiRoot;
   }
 
+  /**
+   * Actual bitmap loading
+   */
+  async _loadBitmaps(){
+    await this._solveMissingBitmaps();
+    await this._imageManager.loadUniquePaths();
+    await this._imageManager.ensureBitmapsLoaded();
+  }
+
   // Some XML files are built-in, so we want to be able to
   async parseFromUrl(url: string): Promise<void> {
     const response = await fetch(url);
     const xml = await response.text();
-    const parsed = parseXmlFragment(xml);
+    const parsed = this.parseXmlFragment(xml);
     await this.traverseChildren(parsed);
   }
 
   _scanRes(node: XmlElement) {
     if (node.attributes.background) {
-      this._res.bitmaps[node.attributes.background] = false; // just add, dont need to check
+      this._res.bitmaps[node.attributes.background.toLowerCase()] = false; // just add, dont need to check
     }
   }
 
@@ -139,8 +184,8 @@ export default class SkinParser {
    * but has no explicit declaration in a loaded skin  */
   async _solveMissingBitmaps() {
     //? checkmark the already availble
-    for (const bitmap of this._uiRoot._bitmaps) {
-      this._res.bitmaps[bitmap._id.toLowerCase()] = true;
+    for (const id of Object.keys(this._uiRoot.getBitmaps())) {
+      this._res.bitmaps[id] = true;
     }
     //? build not available bitmap
     // ------- ONLY APPLICABLE ONCE WE ABLE TO LOAD FROM FILEPATH -------
@@ -173,6 +218,18 @@ export default class SkinParser {
         })
       );
     } else {
+      // try{
+      //   for (const child of node.children) {
+      //     if (child instanceof XmlElement) {
+      //       // console.log(child)
+      //     }
+      //     break
+      //   }
+      // } catch(e) {
+      //   debugger;
+      //   console.log('traverseChildren.childs', node.children)
+      //   return
+      // }
       for (const child of node.children) {
         if (child instanceof XmlElement) {
           this._scanRes(child);
@@ -207,6 +264,8 @@ export default class SkinParser {
         return this.groupdef(node, parent);
       case "animatedlayer":
         return this.animatedLayer(node, parent);
+      case "images":
+        return this.images(node, parent);
       case "layer":
         return this.layer(node, parent);
       case "container":
@@ -220,8 +279,9 @@ export default class SkinParser {
       case "button":
         return this.button(node, parent);
       case "togglebutton":
-      case "nstatesbutton":
         return this.toggleButton(node, parent);
+      case "nstatesbutton":
+        return this.nStateButton(node, parent);
       case "rect":
       case "group":
         return this.group(node, parent);
@@ -263,28 +323,33 @@ export default class SkinParser {
         return this.colorThemesList(node, parent);
       case "status":
         return this.status(node, parent);
-      case "wasabi:mainframe:nostatus":
-      case "wasabi:medialibraryframe:nostatus":
-      case "wasabi:playlistframe:nostatus":
-      case "wasabi:standardframe:nostatus":
-      case "wasabi:standardframe:nostatus:short":
-      case "wasabi:standardframe:status":
-      case "wasabi:standardframe:modal:short":
-      case "wasabi:visframe:nostatus":
-        return this.wasabiFrame(node, parent);
-      case "buttonled":
-      case "fadebutton":
-      case "fadetogglebutton":
-      case "configcheckbox":
-        //temporary, to localize error
-        return this.dynamicXuiElement(node, parent)
+      // case "wasabi:mainframe:nostatus":
+      // case "wasabi:medialibraryframe:nostatus":
+      // case "wasabi:playlistframe:nostatus":
+      // // case "wasabi:standardframe:nostatus":
+      // case "wasabi:standardframe:nostatus:short":
+      // // case "wasabi:standardframe:status":
+      // case "wasabi:standardframe:modal:short":
+      // case "wasabi:visframe:nostatus":
+      //   return this.wasabiFrame(node, parent);
+      // case "buttonled":
+      // case "fadebutton":
+      // case "fadetogglebutton":
+      // case "configcheckbox":
+      // case "configradio":
+      // case "cover":
+      // case "scanline":
+      // case "statusbar":
+      //   //temporary, to localize error
+      //   return this.dynamicXuiElement(node, parent);
+      case "elementalias":
+        return this.elementalias(node);
       case "componentbucket":
         return this.componentBucket(node, parent);
       case "playlisteditor":
       case "wasabi:tabsheet":
       case "snappoint":
       case "accelerators":
-      case "elementalias":
       case "browser":
       case "syscmds":
         // TODO
@@ -298,12 +363,55 @@ export default class SkinParser {
       case "wrapper":
         return this.traverseChildren(node, parent);
       default:
-        // if(this._uiRoot.getXuiElement(tag)) {
-        //   return this.dynamicXuiElement(node, parent)
-        // }
+        if (this._uiRoot.getXuiElement(tag)) {
+          return this.dynamicXuiElement(node, parent);
+        } else if (this._predefinedXuiNode(tag)) {
+          return this.dynamicXuiElement(node, parent);
+        }
         console.warn(`Unhandled XML node type: ${node.name}`);
         return;
     }
+  }
+
+  /**
+   * Lazy load xml from freeform
+   * @param tag string
+   * @returns
+   */
+  async _predefinedXuiNode(tag: string): Promise<boolean> {
+    console.log("handling _predefinedXuiNode", tag);
+    let xmlRootPath: string = "assets/freeform/xml/";
+    let xmlFilePath: string = null;
+    switch (tag) {
+      case "wasabi:text":
+        xmlRootPath += "wasabi/";
+        xmlFilePath = "xml/xui/text/text.xml";
+        break;
+      case "wasabi:standardframe:status":
+      case "wasabi:standardframe:nostatus":
+      case "wasabi:standardframe:modal":
+      case "wasabi:standardframe:static":
+        xmlRootPath += "wasabi/";
+        xmlFilePath = "xml/xui/standardframe/standardframe.xml";
+        break;
+      default:
+        return false;
+    }
+    // push
+    const oldZip = UI_ROOT.getZip();
+    const oldSkinDir = UI_ROOT.getSkinDir();
+
+    // set
+    UI_ROOT.setZip(null);
+    UI_ROOT.setSkinDir(xmlRootPath);
+
+    const node = new XmlElement("include", { file: xmlFilePath });
+    await this.include(node, null);
+
+    // pop
+    UI_ROOT.setSkinDir(oldSkinDir);
+    UI_ROOT.setZip(oldZip);
+    return true;
   }
 
   addToGroup(obj: GuiObj, parent: Group) {
@@ -377,70 +485,89 @@ export default class SkinParser {
     const xuiEl: XmlElement = this._uiRoot.getXuiElement(xuitag);
     if (xuiEl) {
       const xuiFrame = new XmlElement("dummy", { id: xuiEl.attributes.id });
-      const Element:XuiElement =  await this.newGroup(XuiElement, xuiFrame, parent);
+      const Element: XuiElement = await this.newGroup(
+        XuiElement,
+        xuiFrame,
+        parent
+      );
       Element.setXmlAttributes(node.attributes);
       // await this.maybeApplyGroupDef(frame, xuiFrame);
-    }
-  }
-  async wasabiFrame(node: XmlElement, parent: any) {
-    const frame = new WasabiFrame();
-    this.addToGroup(frame, parent);
 
-    //? Search Wasabi Inheritace
-    const xuitag: string = node.name; // eg. Wasabi:MainFrame:NoStatus
-    const xuiEl: XmlElement = this._uiRoot.getXuiElement(xuitag);
-    if (xuiEl) {
-      const xuiFrame = new XmlElement("dummy", { id: xuiEl.attributes.id });
-      await this.maybeApplyGroupDef(frame, xuiFrame);
-    } else {
-      const groupdef_id = this._getWasabiGroupDef(node.name);
-      const groupDef = this._uiRoot.getGroupDef(groupdef_id);
-      if (groupDef) {
-        await this.maybeApplyGroupDef(frame, groupDef);
+      //?content
+      if (node.attributes.content) {
+        const content = await this.group(
+          new XmlElement("group", {
+            id: node.attributes.content,
+            w: "0",
+            h: "0",
+            relatw: "1",
+            relath: "1",
+          }),
+          Element
+        );
+        Element.addChild(content);
       }
     }
-    frame.setXmlAttributes(node.attributes);
-
-    //?content
-    if (node.attributes.content) {
-      const content = await this.group(
-        new XmlElement("group", {
-          id: node.attributes.content,
-          w: "0",
-          h: "0",
-          relatw: "1",
-          relath: "1",
-        }),
-        frame
-      );
-      frame.addChild(content);
-    }
   }
+  // async wasabiFrame(node: XmlElement, parent: any) {
+  //   const frame = new WasabiFrame();
+  //   this.addToGroup(frame, parent);
+
+  //   //? Search Wasabi Inheritace
+  //   const xuitag: string = node.name; // eg. Wasabi:MainFrame:NoStatus
+  //   const xuiEl: XmlElement = this._uiRoot.getXuiElement(xuitag);
+  //   if (xuiEl) {
+  //     const xuiFrame = new XmlElement("dummy", { id: xuiEl.attributes.id });
+  //     await this.maybeApplyGroupDef(frame, xuiFrame);
+  //   } else {
+  //     const groupdef_id = this._getWasabiGroupDef(node.name);
+  //     const groupDef = this._uiRoot.getGroupDef(groupdef_id);
+  //     if (groupDef) {
+  //       await this.maybeApplyGroupDef(frame, groupDef);
+  //     }
+  //   }
+  //   frame.setXmlAttributes(node.attributes);
+
+  //   //?content
+  //   if (node.attributes.content) {
+  //     const content = await this.group(
+  //       new XmlElement("group", {
+  //         id: node.attributes.content,
+  //         w: "0",
+  //         h: "0",
+  //         relatw: "1",
+  //         relath: "1",
+  //       }),
+  //       frame
+  //     );
+  //     frame.addChild(content);
+  //   }
+  // }
 
   /** taken from Winamp Modern skin */
-  _getWasabiGroupDef(xmlTag: string): string {
-    switch (xmlTag.toLowerCase()) {
-      case "wasabi:mainframe:nostatus":
-        return "wasabi.mainframe.nostatusbar";
-      case "wasabi:medialibraryframe:nostatus":
-        return "wasabi.medialibraryframe.nostatusbar";
-      case "wasabi:playlistframe:nostatus":
-        return "wasabi.playlistframe.nostatusbar";
-      case "wasabi:standardframe:modal":
-        return "wasabi.standardframe.modal";
-      case "wasabi:standardframe:nostatus":
-        return "wasabi.standardframe.nostatusbar";
-      case "wasabi:standardframe:static":
-        return "wasabi.standardframe.static";
-      case "wasabi:standardframe:status":
-        return "wasabi.standardframe.statusbar";
-      case "wasabi:visframe:nostatus":
-        return "wasabi.visframe.nostatusbar";
-      default:
-        console.warn(`Unhandled <Wasabi:Frame:Tag>: ${xmlTag}`);
-        return;
-    }
-  }
+  // _getWasabiGroupDef(xmlTag: string): string {
+  //   switch (xmlTag.toLowerCase()) {
+  //     case "wasabi:mainframe:nostatus":
+  //       return "wasabi.mainframe.nostatusbar";
+  //     case "wasabi:medialibraryframe:nostatus":
+  //       return "wasabi.medialibraryframe.nostatusbar";
+  //     case "wasabi:playlistframe:nostatus":
+  //       return "wasabi.playlistframe.nostatusbar";
+  //     case "wasabi:standardframe:modal":
+  //       return "wasabi.standardframe.modal";
+  //     case "wasabi:standardframe:nostatus":
+  //       return "wasabi.standardframe.nostatusbar";
+  //     case "wasabi:standardframe:static":
+  //       return "wasabi.standardframe.static";
+  //     case "wasabi:standardframe:status":
+  //       return "wasabi.standardframe.statusbar";
+  //     case "wasabi:visframe:nostatus":
+  //       return "wasabi.visframe.nostatusbar";
+  //     default:
+  //       console.warn(`Unhandled <Wasabi:Frame:Tag>: ${xmlTag}`);
+  //       return;
+  //   }
+  // }
 
   async bitmap(node: XmlElement) {
     assume(
@@ -453,6 +580,12 @@ export default class SkinParser {
 
     this._uiRoot.addBitmap(bitmap);
     this._res.bitmaps[node.attributes.id] = true;
+
+    if (this._phase == GROUP_PHASE) {
+      this._imageManager.setBimapImg(bitmap);
+      // await this._imageManager.loadUniquePaths();
+      // await this._imageManager.ensureBitmapsLoaded();
+    }
   }
 
   async bitmapFont(node: XmlElement) {
@@ -463,7 +596,7 @@ export default class SkinParser {
     const font = new BitmapFont();
     font.setXmlAttributes(node.attributes);
 
-    const externalBitmap = font._file.indexOf("/") < 0;
+    const externalBitmap = this._isExternalBitmapFont(font);
     if (externalBitmap) {
       font.setExternalBitmap(true);
     } else {
@@ -471,6 +604,10 @@ export default class SkinParser {
     }
 
     this._uiRoot.addFont(font);
+  }
+
+  _isExternalBitmapFont(font: BitmapFont) {
+    return font._file.indexOf("/") < 0;
   }
 
   async text(node: XmlElement, parent: any): Promise<Text> {
@@ -700,6 +837,10 @@ export default class SkinParser {
     return this.newGui(ToggleButton, node, parent);
   }
 
+  async nStateButton(node: XmlElement, parent: any) {
+    return this.newGui(NStateButton, node, parent);
+  }
+
   async color(node: XmlElement, parent: any) {
     assume(
       node.children.length === 0,
@@ -710,6 +851,16 @@ export default class SkinParser {
     color.setXmlAttributes(node.attributes);
 
     this._uiRoot.addColor(color);
+  }
+
+  async elementalias(node: XmlElement) {
+    assume(
+      node.children.length === 0,
+      "Unexpected children in <elementalias> XML node."
+    );
+
+    // <elementalias id="studio.button" target="playlist.scroll.thumb"/>
+    this._uiRoot.addAlias(node.attributes.id, node.attributes.target);
   }
 
   async slider(node: XmlElement, parent: any) {
@@ -779,6 +930,10 @@ export default class SkinParser {
     return this.newGui(AnimatedLayer, node, parent);
   }
 
+  async images(node: XmlElement, parent: any) {
+    return this.newGui(Images, node, parent);
+  }
+
   async maybeApplyGroupDef(group: GuiObj, node: XmlElement) {
     const id = node.attributes.id;
     await this.maybeApplyGroupDefId(group, id);
@@ -838,21 +993,41 @@ export default class SkinParser {
   }
 
   async colorThemesList(node: XmlElement, parent: any) {
-    this.buildWasabiScrollbarDimension()
+    this.buildWasabiScrollbarDimension();
     return this.newGui(ColorThemesList, node, parent);
   }
 
   buildWasabiScrollbarDimension() {
     this._uiRoot.addWidth("vscrollbar-width", "wasabi.scrollbar.vertical.left");
-    this._uiRoot.addHeight("vscrollbar-btn-height", "wasabi.scrollbar.vertical.left");
-    this._uiRoot.addHeight("vscrollbar-thumb-height", "wasabi.scrollbar.vertical.button");
-    this._uiRoot.addHeight("vscrollbar-thumb-height2", "studio.scrollbar.vertical.button");
+    this._uiRoot.addHeight(
+      "vscrollbar-btn-height",
+      "wasabi.scrollbar.vertical.left"
+    );
+    this._uiRoot.addHeight(
+      "vscrollbar-thumb-height",
+      "wasabi.scrollbar.vertical.button"
+    );
+    this._uiRoot.addHeight(
+      "vscrollbar-thumb-height2",
+      "studio.scrollbar.vertical.button"
+    );
 
-    this._uiRoot.addHeight("hscrollbar-height", "wasabi.scrollbar.horizontal.left");
-    this._uiRoot.addWidth("hscrollbar-btn-width", "wasabi.scrollbar.horizontal.left");
-    this._uiRoot.addWidth("hscrollbar-thumb-width", "wasabi.scrollbar.horizontal.button");
-    this._uiRoot.addWidth("hscrollbar-thumb-width2", "studio.scrollbar.horizontal.button");
-
+    this._uiRoot.addHeight(
+      "hscrollbar-height",
+      "wasabi.scrollbar.horizontal.left"
+    );
+    this._uiRoot.addWidth(
+      "hscrollbar-btn-width",
+      "wasabi.scrollbar.horizontal.left"
+    );
+    this._uiRoot.addWidth(
+      "hscrollbar-thumb-width",
+      "wasabi.scrollbar.horizontal.button"
+    );
+    this._uiRoot.addWidth(
+      "hscrollbar-thumb-width2",
+      "studio.scrollbar.horizontal.button"
+    );
   }
 
   async layoutStatus(node: XmlElement, parent: any) {
@@ -869,14 +1044,16 @@ export default class SkinParser {
   async status(node: XmlElement, parent: any) {
     return this.newGui(Status, node, parent);
   }
-  async eqvis(node: XmlElement, parent: any) {
+
+  async eqvis(node: XmlElement, parent: any): Promise<EqVis> {
     assume(
       node.children.length === 0,
       "Unexpected children in <eqvis> XML node."
     );
+    return await this.newGui(EqVis, node, parent);
   }
 
-  async vis(node: XmlElement, parent: any) {
+  async vis(node: XmlElement, parent: any): Promise<Vis> {
     return this.newGui(Vis, node, parent);
   }
 
@@ -952,7 +1129,7 @@ export default class SkinParser {
 
       // Note: Included files don't have a single root node, so we add a synthetic one.
       // A different XML parser library might make this unnessesary.
-      savedDocument = parseXmlFragment(includedXml);
+      savedDocument = this.parseXmlFragment(includedXml);
       recursiveScanChildren(savedDocument);
 
       this._includedXml[file] = savedDocument;
@@ -968,8 +1145,14 @@ export default class SkinParser {
       //ignore for now
       return;
     }
-
-    await this.traverseChildren(savedDocument, parent);
+    // await this.traverseChildren(savedDocument, parent);
+    // console.log('savedDocument',savedDocument)
+    if (
+      savedDocument instanceof XmlElement ||
+      savedDocument instanceof XmlDocument
+    ) {
+      await this.traverseChildren(savedDocument as XmlElement, parent);
+    }
   }
 
   async scanIncludes(node: XmlElement, parent: any) {
@@ -990,12 +1173,25 @@ export default class SkinParser {
   }
 
   skininfo(node: XmlElement, parent: any) {
-    // Ignore this metadata for now
+    const skinInfo = {};
+    for (const child of node.children) {
+      if (child instanceof XmlElement) {
+        const tag = child.name.toLowerCase();
+        skinInfo[tag] = child.text;
+      }
+    }
+    this._uiRoot.setSkinInfo(skinInfo);
+  }
+
+  /**
+   * inheritable
+   * @param xml string in valid xml tags.
+   * @returns xmlElement object
+   */
+  parseXmlFragment(xml: string): XmlElement {
+    // Note: Included files don't have a single root node, so we add a synthetic one.
+    // A different XML parser library might make this unnessesary.
+    return parseXml(`<wrapper>${xml}</wrapper>`) as unknown as XmlElement;
   }
 }
 
-function parseXmlFragment(xml: string): XmlElement {
-  // Note: Included files don't have a single root node, so we add a synthetic one.
-  // A different XML parser library might make this unnessesary.
-  return parseXml(`<wrapper>${xml}</wrapper>`) as unknown as XmlElement;
-}

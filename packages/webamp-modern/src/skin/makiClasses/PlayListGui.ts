@@ -9,7 +9,6 @@ export default class PlayListGui extends Group {
   _selectedIndex: number = -1;
   _contentPanel: HTMLDivElement = document.createElement("div");
   _slider: Slider = new Slider();
-  _sliderHandler: ActionHandler;
 
   getElTag(): string {
     return "group";
@@ -18,6 +17,8 @@ export default class PlayListGui extends Group {
   init() {
     super.init();
     UI_ROOT.playlist.on("trackchange", this.refresh);
+    this._contentPanel.addEventListener("scroll", this._contentScrolled);
+    this.refresh();
   }
 
   _prepareScrollbar() {
@@ -31,13 +32,11 @@ export default class PlayListGui extends Group {
       relath: "1",
     });
     this._slider.setThumbSize(8, 18);
-    this._sliderHandler = new PlaylistScrollActionHandler(this._slider, this);
-    this._slider.setActionHandler(this._sliderHandler);
+    const sliderHandler = new PlaylistScrollActionHandler(this._slider, this);
+    this._slider.setActionHandler(sliderHandler);
     this._slider.getDiv().classList.add("scrollbar");
-    this._slider.draw();
+    // this._slider.draw();
     this.addChild(this._slider);
-
-    this._contentPanel.addEventListener("scroll", this._contentScrolled);
   }
 
   _contentScrolled = () => {
@@ -74,7 +73,7 @@ export default class PlayListGui extends Group {
         UI_ROOT.audio.play();
         this.refresh();
       });
-      line.textContent = `${i+1}. ${pl.gettitle(i)}`;
+      line.textContent = `${i + 1}. ${pl.gettitle(i)}`;
       this._contentPanel.appendChild(line);
     }
   };
@@ -82,8 +81,8 @@ export default class PlayListGui extends Group {
   itemClick = () => {};
 
   draw() {
-    super.draw();
     this._prepareScrollbar();
+    super.draw();
     this._div.appendChild(this._contentPanel);
 
     this._contentPanel.classList.add("content-list");

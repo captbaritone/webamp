@@ -11,13 +11,13 @@ const files = {
   config: path.join(lib566, "config.mi"),
   std: path.join(lib566, "std.mi"),
   winampconfig: path.join(lib566, "winampconfig.mi"),
-  application: path.join(lib566, "application.mi"),
+  // application: path.join(lib566, "application.mi"),
 };
 
 Object.keys(files).forEach((name) => {
   const sourcePath = files[name];
   const types = parser.parseFile(sourcePath);
-  const destinationPath = path.join(__dirname, `../src/maki/objectData/${name}.json`);
+  const destinationPath = path.join(__dirname, `../src/maki/objectData/${name}.js`);
 
-  fs.writeFileSync(destinationPath, JSON.stringify(types, null, 2));
+  fs.writeFileSync(destinationPath, `export default ${JSON.stringify(types, null, 2)}`);
 });

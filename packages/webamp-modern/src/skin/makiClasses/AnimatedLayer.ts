@@ -2,12 +2,15 @@ import UI_ROOT from "../../UIRoot";
 import { ensureVmInt, num, px } from "../../utils";
 import Layer from "./Layer";
 
+// http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Canimatedlayer.2F.3E
 export default class AnimatedLayer extends Layer {
   static GUID = "6b64cd274c4b5a26a7e6598c3a49f60c";
   _currentFrame: number = 0;
   _startFrame: number = 0;
   _endFrame: number = 0;
   _speed: number = 0;
+  _frameWidth: number;
+  _frameHeight: number;
   _animationInterval: NodeJS.Timeout | null = null;
 
   setXmlAttr(_key: string, value: string): boolean {
@@ -17,13 +20,23 @@ export default class AnimatedLayer extends Layer {
     }
     switch (key) {
       case "frameheight":
-        this._height = num(value);
+        this._frameHeight = num(value);
         this._renderHeight();
         break;
       default:
         return false;
     }
     return true;
+  }
+
+  _renderHeight() {
+    super._renderHeight();
+    if (this._frameHeight) {
+      const height = parseInt(this._div.style.height);
+      this._div.style.height = px(this._frameHeight);
+      this._div.style.transform = `scaleY(${height / this._frameHeight})`;
+      this._div.style.transformOrigin = "top left";
+    }
   }
 
   _getImageHeight(): number {
@@ -33,7 +46,7 @@ export default class AnimatedLayer extends Layer {
 
   getlength(): number {
     // TODO: What about other orientations?
-    return this._getImageHeight() / this.getheight();
+    return this._getImageHeight() / (this._frameHeight || this.getheight());
   }
   gotoframe(framenum: number) {
     this._currentFrame = ensureVmInt(framenum);
@@ -68,7 +81,7 @@ export default class AnimatedLayer extends Layer {
     this.gotoframe(frame);
     UI_ROOT.vm.dispatch(this, "onplay");
     if (frame === end) {
-      this.stop()
+      this.stop();
       return;
     }
     this._animationInterval = setInterval(() => {
@@ -77,7 +90,7 @@ export default class AnimatedLayer extends Layer {
       if (frame === end) {
         clearInterval(this._animationInterval);
         this._animationInterval = null;
-        this.stop()
+        this.stop();
       }
     }, this._speed);
   }
@@ -96,9 +109,13 @@ export default class AnimatedLayer extends Layer {
     return this._animationInterval != null;
   }
 
+  _getActualHeight():number {
+    return this._height || this._div.getBoundingClientRect().height;
+  }
+
   _renderFrame() {
     this._div.style.backgroundPositionY = px(
-      -(this._currentFrame * this.getheight())
+      -(this._currentFrame * this._getActualHeight())
     );
   }
 

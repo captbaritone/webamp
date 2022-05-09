@@ -7,6 +7,7 @@ import { Edges } from "../Clippath";
 export default class Layer extends Movable {
   static GUID = "5ab9fa1545579a7d5765c8aba97cc6a6";
   _image: string;
+  _inactiveImage: string;
 
   setXmlAttr(key: string, value: string): boolean {
     if (super.setXmlAttr(key, value)) {
@@ -21,6 +22,9 @@ export default class Layer extends Movable {
         this._renderBackground();
         this._renderRegion();
         break;
+      case "inactiveimage":
+        this._inactiveImage = value;
+        this._renderBackground();
       default:
         return false;
     }
@@ -34,7 +38,7 @@ export default class Layer extends Movable {
     }
     if (this._image != null) {
       const bitmap = UI_ROOT.getBitmap(this._image);
-      if(bitmap) return bitmap.getHeight();
+      if (bitmap) return bitmap.getHeight();
     }
     return super.getheight();
   }
@@ -46,7 +50,7 @@ export default class Layer extends Movable {
     }
     if (this._image != null) {
       const bitmap = UI_ROOT.getBitmap(this._image);
-      if(bitmap) return bitmap.getWidth();
+      if (bitmap) return bitmap.getWidth();
     }
     return super.getwidth();
   }
@@ -54,6 +58,11 @@ export default class Layer extends Movable {
   _renderBackground() {
     const bitmap = this._image != null ? UI_ROOT.getBitmap(this._image) : null;
     this.setBackgroundImage(bitmap);
+    this.setInactiveBackgroundImage(bitmap);
+    if(this._inactiveImage){
+      this.setInactiveBackgroundImage(UI_ROOT.getBitmap(this._inactiveImage))
+      this._div.classList.add('inactivable')
+    }
   }
 
   _renderRegion() {
