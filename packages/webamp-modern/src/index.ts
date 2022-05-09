@@ -55,6 +55,7 @@ async function main() {
   
   setStatus("Downloading MP3...");
   webamp = new window.WebampModern(document.getElementById("web-amp"), option);
+  webamp.onLogMessage(setStatus)
 
   setStatus("");
 }

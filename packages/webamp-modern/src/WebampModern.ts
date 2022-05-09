@@ -36,6 +36,10 @@ export class Webamp5 extends WebAmpModern {
   
   playSong(songurl: string /* or track */): void {    
   }
+
+  onLogMessage(callback: (message: string) => void) {
+    UI_ROOT.on('onlogmessage', callback)
+  }
 }
 
 declare global {

@@ -656,6 +656,12 @@ export class UIRoot {
   getSkinName(): string {
     return this.getSkinInfo()["name"];
   }
+
+  //? Logging things ========================
+  logMessage(message:string){
+    this.trigger('onlogmessage', message)
+  }
+
 }
 
 // Global Singleton for now
