@@ -426,8 +426,10 @@ export default class GuiObj extends XmlObj {
   /* internal findObject with custom error msg */
   findobjectF(id: string, msg: string): GuiObj {
     const ret = this._findobject(id);
-    if (!ret && id != "sysmenu") {
-      console.warn(msg);
+    // temporary stop complaining missing obj, reduce polution of Devtool's Cnsole
+    const warnMissingObject = false;
+    if (warnMissingObject && !ret && id != "sysmenu") {
+       console.warn(msg);
     }
     return ret;
   }
