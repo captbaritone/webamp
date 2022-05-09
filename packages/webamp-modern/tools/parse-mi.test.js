@@ -1,6 +1,6 @@
-import std from "../src/maki/objectData/std.json";
-import config from "../src/maki/objectData/config.json";
-import pldir from "../src/maki/objectData/pldir.json";
+import std from "../src/maki/objectData/std";
+import config from "../src/maki/objectData/config";
+import pldir from "../src/maki/objectData/pldir";
 import { parseFile } from "../tools/parse-mi";
 import path from "path";
 
