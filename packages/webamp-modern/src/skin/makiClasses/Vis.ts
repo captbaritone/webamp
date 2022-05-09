@@ -235,21 +235,18 @@ extern Vis.nextMode();*/
   _renderWidth() {
     super._renderWidth();
     this._canvas.style.width = this._div.style.width;
-    // this._canvas.style.width = '72px';
     this._canvas.setAttribute("width", `${parseInt(this._div.style.width)}`);
   }
 
   _renderHeight() {
     super._renderHeight();
     this._canvas.style.height = this._div.style.height;
-    // this._canvas.style.height = '16px';
     this._canvas.setAttribute("height", `${parseInt(this._div.style.height)}`);
   }
 
   draw() {
     super.draw();
     this._div.appendChild(this._canvas);
-    // this._div.setAttribute("data-obj-name", "AnimatedLayer");
   }
 }
 
@@ -307,7 +304,6 @@ class BarPainter extends VisPainter {
 
   constructor(vis: Vis) {
     super(vis);
-    // this.prepare();
     this._analyser = UI_ROOT.audio.getAnalyser();
     this._bufferLength = this._analyser.frequencyBinCount;
     this._octaveBuckets = octaveBucketsForBufferLength(this._bufferLength);
@@ -319,7 +315,6 @@ class BarPainter extends VisPainter {
     const groupId = vis._gammagroup;
     const gammaGroup = UI_ROOT._getGammaGroup(groupId);
     this._barWidth = Math.ceil(vis._canvas.width / NUM_BARS);
-    // this._barWidth = vis._canvas.width / NUM_BARS;
 
     //? paint peak
     this._peak.height = 1;
@@ -332,7 +327,6 @@ class BarPainter extends VisPainter {
     this._bar.height = vis._canvas.height;
     this._bar.width = 1;
     var ctx = this._bar.getContext("2d");
-    // ctx.clearRect(0, 0, w, h);
     const grd = ctx.createLinearGradient(0, 0, 0, vis._canvas.height);
     for (let i = 0; i < vis._colorBands.length; i++) {
       grd.addColorStop(
@@ -341,34 +335,15 @@ class BarPainter extends VisPainter {
       );
     }
 
-    // if (vis._colorBands[0]) {
-    //   this._color = `rgba(${vis._colorBands[0]}, 1)`;
-
-    //   if (vis._gammagroup) {
-    //     const groupId = vis._gammagroup;
-    //     const gammaGroup = UI_ROOT._getGammaGroup(groupId);
-    //     // const url = gammaGroup.transformColor(color.getValue());
-
-    //     // this._barWidth = Math.ceil(vis.getwidth() / NUM_BARS); //! why width not valid?
-    //     // this._color = `rgba(${(vis._colorBands[0], 1)}`;
-    //     this._color = gammaGroup.transformColor(vis._colorBands[0]);
-    //   }
-    // }
-    // ctx.fillStyle = this._color;
     ctx.strokeStyle = this._color;
     ctx.fillStyle = grd;
     ctx.fillRect(0, 0, 1, vis._canvas.height);
-    //debug:
-    vis._canvas.style.setProperty("--color", this._color);
   }
 
   paintFrame(ctx: CanvasRenderingContext2D) {
     const w = ctx.canvas.width;
     const h = ctx.canvas.height;
-    // this._barWidth = Math.ceil(w / NUM_BARS);
     ctx.clearRect(0, 0, w, h);
-    // ctx.fillStyle = 'white';
-    // ctx.fillRect(0,0,w,h);
     ctx.fillStyle = this._color;
 
     this._analyser.getByteFrequencyData(this._dataArray);
@@ -378,9 +353,6 @@ class BarPainter extends VisPainter {
       const start = this._octaveBuckets[j];
       const end = this._octaveBuckets[j + 1];
       let amplitude = 0;
-      // for (let k = start; k < end; k++) {
-      //   amplitude += this._dataArray[k];
-      // }
       amplitude /= end - start;
       for (let k = start; k < end; k++) {
         amplitude = Math.max(amplitude, this._dataArray[k]);
@@ -418,7 +390,6 @@ class BarPainter extends VisPainter {
     var x = Math.round(this._barWidth * barIndex);
     var r = this._barWidth - 2;
     var x2 = Math.round(this._barWidth * (barIndex + 1)) - 2;
-    // var y = Math.ceil(Math.random() * h);
     var y = h - barHeight;
 
     ctx.drawImage(this._bar, 0,y,1,h-y, x,y,  x2 - x + 1, h - y);
@@ -440,7 +411,6 @@ class BarPainter extends VisPainter {
     var x = Math.round(this._barWidth * barIndex);
     var r = this._barWidth - 2;
     var x2 = Math.round(this._barWidth * (barIndex + 1)) - 2;
-    // var y = Math.ceil(Math.random() * h);
     var y = h - barHeight;
 
     ctx.drawImage(this._bar, x, y, x2 - x + 1, h - y);
@@ -451,68 +421,6 @@ class BarPainter extends VisPainter {
     }
   }
 
-  paintFrame1(ctx: CanvasRenderingContext2D) {
-    const w = ctx.canvas.width;
-    const h = ctx.canvas.height;
-    // this._barWidth = Math.ceil(w / NUM_BARS);
-    ctx.clearRect(0, 0, w, h);
-    // ctx.fillStyle = 'white';
-    // ctx.fillRect(0,0,w,h);
-    ctx.fillStyle = this._color;
-    for (var i = 0; i < NUM_BARS; i++) {
-      var x = Math.round(this._barWidth * i);
-      var r = this._barWidth - 2;
-      var x2 = Math.round(this._barWidth * (i + 1)) - 2;
-      var y = Math.ceil(Math.random() * h);
-
-      // var y = Math.ceil(i / NUM_BARS * h);
-      // var radius = Math.floor(Math.random() * 20);
-
-      // ctx.fillRect(x, y, x2, h);
-
-      //it draw fire mode:
-      ctx.drawImage(this._bar, x, y, x2 - x + 1, h - y);
-
-      // ctx.beginPath();
-      // ctx.rect(this._barWidth*i, y, this._barWidth*(i+1), h);
-
-      // var r = Math.floor(Math.random() * 255);
-      // var g = Math.floor(Math.random() * 255);
-      // var b = Math.floor(Math.random() * 255);
-
-      // ctx.beginPath();
-      // ctx.arc(x, y, radius, Math.PI * 2, 0, false);
-      // ctx.fill();
-      // ctx.closePath();
-      // ctx.fill();
-      // ctx.closePath();
-    }
-    // ctx.beginPath();
-    // ctx.moveTo(0,0);
-    // ctx.lineTo(0,h);
-    // ctx.lineTo(w,h);
-    // ctx.strokeStyle = "rgb(255,0,0)";
-    // ctx.stroke();
-  }
-
-  paintFrame0(ctx: CanvasRenderingContext2D) {
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    for (var i = 0; i < 600; i++) {
-      var x = Math.floor(Math.random() * ctx.canvas.width - 17);
-      var y = Math.floor(Math.random() * ctx.canvas.height - 17);
-      var radius = Math.floor(Math.random() * 20);
-
-      var r = Math.floor(Math.random() * 255);
-      var g = Math.floor(Math.random() * 255);
-      var b = Math.floor(Math.random() * 255);
-
-      ctx.beginPath();
-      ctx.arc(x, y, radius, Math.PI * 2, 0, false);
-      ctx.fillStyle = "rgba(" + r + "," + g + "," + b + ",1)";
-      ctx.fill();
-      ctx.closePath();
-    }
-  }
 }
 
 //? =============================== OSCILOSCOPE PAINTER ===============================

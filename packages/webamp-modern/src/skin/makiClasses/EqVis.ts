@@ -16,7 +16,6 @@ export default class EqVis extends GuiObj {
   _colorPreamp: ColorTriplet = "186,203,221";
   _colorBitmapName: string;
   _preampBitmapName: string;
-  // _colorBitmap: Bitmap;
   _fillStyle: CanvasPattern | CanvasGradient;
 
   constructor() {
@@ -83,22 +82,6 @@ export default class EqVis extends GuiObj {
       lastY = y;
     }
 
-    // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    // for (var i = 0; i < 60; i++) {
-    //   var x = Math.floor(Math.random() * ctx.canvas.width - 1);
-    //   var y = Math.floor(Math.random() * ctx.canvas.height - 1);
-    //   var radius = Math.floor(Math.random() * 5);
-
-    //   var r = Math.floor(Math.random() * 255);
-    //   var g = Math.floor(Math.random() * 255);
-    //   var b = Math.floor(Math.random() * 255);
-
-    //   ctx.beginPath();
-    //   ctx.arc(x, y, radius, Math.PI * 2, 0, false);
-    //   //   ctx.fillStyle = "rgba(" + r + "," + g + "," + b + ",1)";
-    //   ctx.fill();
-    //   ctx.closePath();
-    // }
   };
 
   setXmlAttr(key: string, value: string): boolean {
@@ -131,9 +114,6 @@ export default class EqVis extends GuiObj {
     return true;
   }
 
-  // private _setColors() {
-  //   this._colorBitmap = UI_ROOT.getBitmap(this._colorBitmapName)
-  // }
   _getFillStyle(): CanvasPattern | CanvasGradient {
     if (!this._fillStyle) {
       const ctx = this._canvas.getContext("2d");
@@ -165,8 +145,6 @@ export default class EqVis extends GuiObj {
         this._preampImg.height = bitmap.getHeight(); //debug
         ctx.drawImage(bitmap.getImg(), - bitmap.getLeft(), - bitmap.getTop());
       } 
-      //debug
-      this._div.style.setProperty('--colorPreamp', this._colorPreamp)
     }
     return this._preampImg;
   }
@@ -190,7 +168,6 @@ export default class EqVis extends GuiObj {
     this._div.appendChild(this._canvas);
     this.update();
   }
-  //setRegionFromMap(regionMap:Map, threshold:number)
 
   isinvalid(): boolean {
     return false;

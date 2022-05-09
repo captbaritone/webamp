@@ -93,7 +93,6 @@ export default class Status extends GuiObj {
 
   draw() {
     super.draw();
-    // this._div.setAttribute("data-obj-name", "Button");
     this._div.classList.add("webamp--img");
     this._renderBackground();
   }

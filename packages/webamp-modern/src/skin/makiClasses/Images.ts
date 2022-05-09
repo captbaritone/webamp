@@ -2,9 +2,9 @@ import UI_ROOT from "../../UIRoot";
 import { ensureVmInt, num, px } from "../../utils";
 import Layer from "./Layer";
 
+//? Images is used by classic skin to change background of Volume & Balance only.
 // http://wiki.winamp.com/wiki/XML_GUI_Objects#.3Cimages.2F.3E
 export default class Images extends Layer {
-  //   static GUID = "6b64cd274c4b5a26a7e6598c3a49f60c";
   _currentFrame: number = 0;
   _frameCount: number;
   _frameHeight: number;
@@ -22,7 +22,6 @@ export default class Images extends Layer {
     switch (key) {
       case "source":
         this._source = value.toLowerCase();
-        // this._renderBackground();
         break;
       case "images":
         this._image = value;
@@ -30,7 +29,6 @@ export default class Images extends Layer {
         break;
       case "imagesspacing":
         this._frameHeight = num(value);
-        // this._renderHeight();
         break;
       default:
         return false;
@@ -60,7 +58,6 @@ export default class Images extends Layer {
 
   updateBalance = () => {
     const balance = UI_ROOT.audio.getBalance(); //0..1
-    // console.log('balance:', balance)
     this.gotoframe(balance * this._frameCount)
   }
 
@@ -69,24 +66,10 @@ export default class Images extends Layer {
     return bitmap.getHeight();
   }
 
-//   getlength(): number {
-//     // TODO: What about other orientations?
-//     return this._getImageHeight() / (this._frameHeight || this.getheight());
-//   }
   gotoframe(framenum: number) {
     this._currentFrame = Math.ceil(framenum);
     this._renderFrame();
-    // UI_ROOT.vm.dispatch(this, "onframe", [
-    //   { type: "INT", value: this._currentFrame },
-    // ]);
   }
-//   getcurframe(): number {
-//     return this._currentFrame;
-//   }
-
-//   _getActualHeight(): number {
-//     return this._height || this._div.getBoundingClientRect().height;
-//   }
 
   _renderFrame() {
     this._div.style.backgroundPositionY = px(

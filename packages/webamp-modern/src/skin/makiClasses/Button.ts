@@ -19,10 +19,6 @@ export default class Button extends GuiObj {
     // TODO: Cleanup!
     this._div.addEventListener("mousedown", this._handleMouseDown.bind(this));
     this._div.addEventListener("click", (e: MouseEvent) => {
-      // if (this._action) {
-      //   this.dispatchAction(this._action, this._param, this._actionTarget);
-      //   this.invalidateActionState();
-      // }
       if (e.button == 0) {
         this.leftclick();
       }
@@ -99,11 +95,6 @@ export default class Button extends GuiObj {
 
     if (onoff !== this._active) {
       this._active = onoff;
-      // if (this._active) {
-      //   this._div.classList.add("active");
-      // } else {
-      //   this._div.classList.remove("active");
-      // }
       this._renderActive();
     }
     //sometime maki call: setactivated(getactivated())
@@ -113,17 +104,11 @@ export default class Button extends GuiObj {
   setactivatednocallback(onoff: boolean) {
     if (onoff !== this._active) {
       this._active = onoff;
-      // if (this._active) {
-      //   this._div.classList.add("active");
-      // } else {
-      //   this._div.classList.remove("active");
-      // }
       this._renderActive();
     }
   }
 
   leftclick() {
-    // console.log('enumchildren',n, this._children[n]);
     if (this._action) {
       this.dispatchAction(this._action, this._param, this._actionTarget);
       this.invalidateActionState();

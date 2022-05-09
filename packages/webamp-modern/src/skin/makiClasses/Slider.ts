@@ -302,19 +302,9 @@ export default class Slider extends GuiObj {
     this._position = newpos / this._high;
     this._renderThumbPosition();
     this.doSetPosition(this.getposition());
-    // console.log("Slider.setPosition:", newpos);
   }
 
-  /**
-   * 
-   * @param newpos 0..MAX
-   */
-  setposition(newpos: number) {
-    this._position= newpos / MAX;
-    this._renderThumbPosition();
-    this.doSetPosition(this.getposition());
-    // console.log("Slider.setPosition:", newpos);
-  }
+  
 
   onsetposition(newPos: number) {
     this._onSetPositionEvenEaten = UI_ROOT.vm.dispatch(this, "onsetposition", [
@@ -362,17 +352,12 @@ export default class Slider extends GuiObj {
   }
 
   doFreeMouseMove(x: number, y: number) {
-    // UI_ROOT.vm.dispatch(this, "onleftbuttondown", [
-    //   { type: "INT", value: x },
-    //   { type: "INT", value: y },
-    // ]);
     if (this._actionHandler != null) {
       this._actionHandler.onFreeMouseMove(x, y);
     }
   }
 
   _prepareThumbBitmaps() {
-    // this._thumbDiv.classList.add("webamp--img");
     if (this._thumb != null) {
       const bitmap = UI_ROOT.getBitmap(this._thumb);
       bitmap._setAsBackground(this._div, "thumb-");
@@ -418,11 +403,8 @@ export default class Slider extends GuiObj {
     assume(this._barLeft == null, "Need to handle Slider barleft");
     assume(this._barRight == null, "Need to handle Slider barright");
     assume(this._barMiddle == null, "Need to handle Slider barmiddle");
-    // this._div.style.setProperty("--thumb-left", px(0));
-    // this._div.style.setProperty("--thumb-top", px(0));
     this._prepareThumbBitmaps();
     this._renderThumbPosition();
-    // this._div.appendChild(this._thumbDiv);
   }
 
   dispose() {
@@ -455,7 +437,6 @@ class SeekActionHandler extends ActionHandler {
 
   isPendingChange(): boolean {
     return true; // this._pendingChange || this._dragging;
-    // return this._dragging == true;
   }
 
   constructor(slider: Slider) {
@@ -471,24 +452,19 @@ class SeekActionHandler extends ActionHandler {
 
   _onAudioProgres = () => {
     if (!this._pendingChange) {
-      // if (this._slider.getId() == "seekerghost")
-      //   console.log("thumb: not isPending()!");
       this._slider._position = UI_ROOT.audio.getCurrentTimePercent();
       this._slider._renderThumbPosition();
     }
   };
 
   onsetposition(position: number): void {
-    // console.log("seek:", position);
     this._pendingChange = this._slider._onSetPositionEvenEaten != 0;
     if (!this._pendingChange) {
       UI_ROOT.audio.seekToPercent(position / this._slider._high);
     }
   }
 
-  // onLeftMouseDown(x: number, y: number) {}
   onLeftMouseUp(x: number, y: number) {
-    // console.log("slider_ACTION.doLeftMouseUp");
     if (this._pendingChange) {
       this._pendingChange = false;
       UI_ROOT.audio.seekToPercent(

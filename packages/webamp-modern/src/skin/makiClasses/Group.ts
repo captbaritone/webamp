@@ -188,7 +188,6 @@ export default class Group extends Movable {
     this._regionCanvas = null;
     let hasRegions = false;
     for (const child of this._children) {
-      // child.draw();
       if (child._sysregion == -1 || child._sysregion == -2) {
         this.putAsRegion(child);
         hasRegions = true;
@@ -210,7 +209,6 @@ export default class Group extends Movable {
       const bound = this._div.getBoundingClientRect();
       canvas.width = bound.width;
       canvas.height = bound.height;
-      // console.log('createRegionCanvas:', bound.width, bound.height)
       const ctx = canvas.getContext("2d");
       ctx.fillStyle = "white";
       ctx.fillRect(0, 0, bound.width, bound.height);

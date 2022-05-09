@@ -17,8 +17,8 @@ export default class Text extends GuiObj {
   static GUID = "efaa867241fa310ea985dcb74bcb5b52";
   _display: string;
   _displayValue: string = "";
-  _disposeDisplaySubscription: () => void | null = null;
-  _disposeTrackChangedSubscription: () => void | null = null;
+  _disposeDisplaySubscription: Function;
+  _disposeTrackChangedSubscription: Function;
   _text: string;
   _bold: boolean;
   _forceuppercase: boolean;
@@ -82,7 +82,6 @@ export default class Text extends GuiObj {
         this._autoDetectFontType();
         this.ensureFontSize();
         this._prepareCss();
-        // this._renderText();
         break;
       case "align":
         // (str) One of the following three possible strings: "left" "center" "right" -- Default is "left."
@@ -99,7 +98,6 @@ export default class Text extends GuiObj {
       case "fontsize":
         // (int) The size to render the chosen font.
         this._fontSize = num(value);
-        //this._renderText(); //
         this.ensureFontSize();
         this._invalidateFullWidth();
         break;
@@ -247,8 +245,6 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
         this._displayValue = "5:58";
         break;
       case "songname":
-      // this._displayValue = "Niente da Caprie (3";
-      // break;
       case "songtitle":
         this._displayValue = UI_ROOT.playlist.getCurrentTrackTitle();
         this._disposeTrackChangedSubscription = UI_ROOT.playlist.on(

@@ -1,10 +1,3 @@
-// // This module is imported early here in order to avoid a circular dependency.
-// import { classResolver } from "./skin/resolver";
-// import UI_ROOT from "./UIRoot";
-// import { getUrlQuery } from "./utils";
-// import { addDropHandler } from "./dropTarget";
-// import { loadSkin } from "./skin/skinLoader";
-// import { Webamp } from "./WebampModern";
 import { WebAmpModern, IWebampModern, Options } from "./WebampModernInteface";
 
 declare global {
@@ -12,11 +5,6 @@ declare global {
     WebampModern: typeof WebAmpModern;
   }
 }
-// function hack() {
-//   // Without this Snowpack will try to treeshake out resolver causing a circular
-//   // dependency.
-//   classResolver("A funny joke about why this is needed.");
-// }
 
 function getUrlQuery(location: Location, variable: string): string {
   return new URL(location.href).searchParams.get(variable);
@@ -63,10 +51,6 @@ async function main() {
 async function changeSkinByUrl() {
   setStatus("Downloading skin...");
   const skinPath = getUrlQuery(window.location, "skin") || DEFAULT_SKIN;
-  // const response = await fetch(skinPath);
-  // const data = await response.blob();
-  // await loadSkin(data);
-  // await loadSkin(document.body, skinPath);
   webamp.switchSkin(skinPath);
   setStatus("");
 }
@@ -150,7 +134,6 @@ async function initializeSkinListMenu() {
 
   window.onpopstate = function (e) {
     if (e.state) {
-      // document.getElementById("content").innerHTML = e.state.html;
       document.title = e.state.pageTitle;
       changeSkinByUrl();
     }

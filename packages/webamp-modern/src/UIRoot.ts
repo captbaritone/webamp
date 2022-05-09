@@ -136,7 +136,6 @@ export class UIRoot {
     return found;
   }
   getBitmaps(): { [id: string]: Bitmap } {
-    // return Object.values(this._bitmaps)
     return this._bitmaps;
   }
 
@@ -147,10 +146,6 @@ export class UIRoot {
    */
   hasBitmap(id: string): boolean {
     const lowercaseId = id.toLowerCase();
-    // const found = findLast(
-    //   this._bitmaps,
-    //   (bitmap) => bitmap._id.toLowerCase() === lowercaseId
-    // );
     const found = this._bitmaps[lowercaseId];
     return found ? true : false;
   }
@@ -342,21 +337,16 @@ export class UIRoot {
   _setCssVars() {
     const cssRules = [];
 
-    // bitmap aliases; support multiple names (elementalias)
+    // bitmap aliases; support multiple names (<elementalias/>)
     const bitmapAliases = this._getBitmapAliases();
     const maybeBitmapAliases = (bitmap: Bitmap): void => {
-      // const vars = []; // [bitmap.getCSSVar()];
       const aliases: string[] = bitmapAliases[bitmap.getId().toLowerCase()];
       if (aliases != null) {
         for (const alias of aliases) {
           // vars.push(genCssVar(alias));
-          cssRules.push(`${genCssVar(alias)}: var(${bitmap.getCSSVar()});`)
+          cssRules.push(`${genCssVar(alias)}: var(${bitmap.getCSSVar()});`);
         }
       }
-      // if (vars.length > 1) {
-      //   console.log("aliases:", vars);
-      // }
-      // return vars.join(",\n");
     };
 
     const bitmapFonts: BitmapFont[] = this._fonts.filter(
@@ -369,11 +359,6 @@ export class UIRoot {
         console.warn(`Bitmap/font ${bitmap.getId()} has no img!`);
         continue;
       }
-      //support multiple names
-      // const vars = [
-      //   bitmap.getCSSVar(),
-      //   ...(bitmapAliases[bitmap.getId().toLowerCase()] || []),
-      // ];
 
       const groupId = bitmap.getGammaGroup();
       const gammaGroup = this._getGammaGroup(groupId);
@@ -385,8 +370,8 @@ export class UIRoot {
         bitmap._height
       );
       cssRules.push(`  ${bitmap.getCSSVar()}: url(${url});`);
+      //support multiple names
       maybeBitmapAliases(bitmap);
-      // cssRules.push(`  ${bitmapCssVars(bitmap)}: url(${url});`);
     }
     // css of colors
     for (const color of this._colors) {
@@ -399,8 +384,6 @@ export class UIRoot {
     for (const [dimension, size] of Object.entries(this._dimensions)) {
       cssRules.push(`  --dim-${dimension}: ${size}px;`);
     }
-    // cssRules.unshift(":root{");
-    // cssRules.push("}");
     const cssEl = document.getElementById("bitmap-css");
     cssEl.textContent = `:root{${cssRules.join("\n")}}`;
   }
@@ -662,10 +645,9 @@ export class UIRoot {
    * This is a replacement of setStatus('Parsing XML and initializing images...')
    * @param message string to be sent to application
    */
-  logMessage(message:string){
-    this.trigger('onlogmessage', message)
+  logMessage(message: string) {
+    this.trigger("onlogmessage", message);
   }
-
 }
 
 // Global Singleton for now

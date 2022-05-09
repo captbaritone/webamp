@@ -54,9 +54,6 @@ export default class Layout extends Group {
     }
   }
 
-  // setParent(container: Container) {
-  //   this._parent = container;
-  // }
 
   getcontainer(): Container {
     return this._parent as unknown as Container;

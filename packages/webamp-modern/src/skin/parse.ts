@@ -95,24 +95,6 @@ export default class SkinParser {
     this._uiRoot = uiRoot;
   }
 
-  async loadFreeformXui() {
-    // let xmlRootPath: string = "assets/freeform/xml/";
-    // let xmlFilePath: string = null;
-    // xmlRootPath += "wasabi/";
-    // xmlFilePath = "xml/xui/standardframe/standardframe.xml";
-    // // push
-    // const oldZip = UI_ROOT.getZip();
-    // const oldSkinDir = UI_ROOT.getSkinDir();
-    // // set
-    // UI_ROOT.setZip(null);
-    // UI_ROOT.setSkinDir(xmlRootPath);
-    // const node = new XmlElement("include", { file: xmlFilePath });
-    // await this.include(node, null);
-    // // pop
-    // UI_ROOT.setSkinDir(oldSkinDir);
-    // UI_ROOT.setZip(oldZip);
-  }
-
   // bad name, okay I know
   async prepareArial() {
     const node: XmlElement = new XmlElement("truetypefont", {
@@ -128,23 +110,15 @@ export default class SkinParser {
 
     await this.prepareArial();
 
-    // Load built-in xui elements
-    // await this.loadFreeformXui();
-
     const includedXml = await this._uiRoot.getFileAsString("skin.xml");
 
     // Note: Included files don't have a single root node, so we add a synthetic one.
     // A different XML parser library might make this unnessesary.
     const parsed = parseXml(includedXml) as unknown as XmlElement;
 
-    // console.log("RESOURCE_PHASE #################");
-    // this._phase = RESOURCE_PHASE;
     await this.traverseChildren(parsed);
 
-    // await this._solveMissingBitmaps();
-    // await this._imageManager.loadUniquePaths();
-    // await this._imageManager.ensureBitmapsLoaded();
-    await this._loadBitmaps()
+    await this._loadBitmaps();
 
     console.log("GROUP_PHASE #################");
     this._phase = GROUP_PHASE;
@@ -159,7 +133,7 @@ export default class SkinParser {
   /**
    * Actual bitmap loading
    */
-  async _loadBitmaps(){
+  async _loadBitmaps() {
     await this._solveMissingBitmaps();
     await this._imageManager.loadUniquePaths();
     await this._imageManager.ensureBitmapsLoaded();
@@ -205,7 +179,7 @@ export default class SkinParser {
   async traverseChildren(node: XmlElement, parent: any = null) {
     //? NOTE: I am considering to speedup resource loading by Promise.all
     //? But in the same time we need to reduce code complexity
-    //? So, temporary we are trying to not do Promise.all
+    //? So, we do Promise.all only on resource loading phase.
 
     if (this._phase == RESOURCE_PHASE) {
       return await Promise.all(
@@ -218,18 +192,6 @@ export default class SkinParser {
         })
       );
     } else {
-      // try{
-      //   for (const child of node.children) {
-      //     if (child instanceof XmlElement) {
-      //       // console.log(child)
-      //     }
-      //     break
-      //   }
-      // } catch(e) {
-      //   debugger;
-      //   console.log('traverseChildren.childs', node.children)
-      //   return
-      // }
       for (const child of node.children) {
         if (child instanceof XmlElement) {
           this._scanRes(child);
@@ -323,24 +285,14 @@ export default class SkinParser {
         return this.colorThemesList(node, parent);
       case "status":
         return this.status(node, parent);
+      //? uncomment line below to localize error with XuiElement
       // case "wasabi:mainframe:nostatus":
       // case "wasabi:medialibraryframe:nostatus":
-      // case "wasabi:playlistframe:nostatus":
-      // // case "wasabi:standardframe:nostatus":
-      // case "wasabi:standardframe:nostatus:short":
-      // // case "wasabi:standardframe:status":
-      // case "wasabi:standardframe:modal:short":
-      // case "wasabi:visframe:nostatus":
-      //   return this.wasabiFrame(node, parent);
       // case "buttonled":
       // case "fadebutton":
       // case "fadetogglebutton":
       // case "configcheckbox":
       // case "configradio":
-      // case "cover":
-      // case "scanline":
-      // case "statusbar":
-      //   //temporary, to localize error
       //   return this.dynamicXuiElement(node, parent);
       case "elementalias":
         return this.elementalias(node);
@@ -354,8 +306,6 @@ export default class SkinParser {
       case "syscmds":
         // TODO
         return;
-      // TODO: This should be the default fall through
-      // return this.xuiElement(node, parent);
       case "vis":
         return this.vis(node, parent);
       // Note: Included files don't have a single root node, so we add a synthetic one.
@@ -363,6 +313,7 @@ export default class SkinParser {
       case "wrapper":
         return this.traverseChildren(node, parent);
       default:
+        // TODO: This should be the default fall through
         if (this._uiRoot.getXuiElement(tag)) {
           return this.dynamicXuiElement(node, parent);
         } else if (this._predefinedXuiNode(tag)) {
@@ -509,65 +460,6 @@ export default class SkinParser {
       }
     }
   }
-  // async wasabiFrame(node: XmlElement, parent: any) {
-  //   const frame = new WasabiFrame();
-  //   this.addToGroup(frame, parent);
-
-  //   //? Search Wasabi Inheritace
-  //   const xuitag: string = node.name; // eg. Wasabi:MainFrame:NoStatus
-  //   const xuiEl: XmlElement = this._uiRoot.getXuiElement(xuitag);
-  //   if (xuiEl) {
-  //     const xuiFrame = new XmlElement("dummy", { id: xuiEl.attributes.id });
-  //     await this.maybeApplyGroupDef(frame, xuiFrame);
-  //   } else {
-  //     const groupdef_id = this._getWasabiGroupDef(node.name);
-  //     const groupDef = this._uiRoot.getGroupDef(groupdef_id);
-  //     if (groupDef) {
-  //       await this.maybeApplyGroupDef(frame, groupDef);
-  //     }
-  //   }
-  //   frame.setXmlAttributes(node.attributes);
-
-  //   //?content
-  //   if (node.attributes.content) {
-  //     const content = await this.group(
-  //       new XmlElement("group", {
-  //         id: node.attributes.content,
-  //         w: "0",
-  //         h: "0",
-  //         relatw: "1",
-  //         relath: "1",
-  //       }),
-  //       frame
-  //     );
-  //     frame.addChild(content);
-  //   }
-  // }
-
-  /** taken from Winamp Modern skin */
-  // _getWasabiGroupDef(xmlTag: string): string {
-  //   switch (xmlTag.toLowerCase()) {
-  //     case "wasabi:mainframe:nostatus":
-  //       return "wasabi.mainframe.nostatusbar";
-  //     case "wasabi:medialibraryframe:nostatus":
-  //       return "wasabi.medialibraryframe.nostatusbar";
-  //     case "wasabi:playlistframe:nostatus":
-  //       return "wasabi.playlistframe.nostatusbar";
-  //     case "wasabi:standardframe:modal":
-  //       return "wasabi.standardframe.modal";
-  //     case "wasabi:standardframe:nostatus":
-  //       return "wasabi.standardframe.nostatusbar";
-  //     case "wasabi:standardframe:static":
-  //       return "wasabi.standardframe.static";
-  //     case "wasabi:standardframe:status":
-  //       return "wasabi.standardframe.statusbar";
-  //     case "wasabi:visframe:nostatus":
-  //       return "wasabi.visframe.nostatusbar";
-  //     default:
-  //       console.warn(`Unhandled <Wasabi:Frame:Tag>: ${xmlTag}`);
-  //       return;
-  //   }
-  // }
 
   async bitmap(node: XmlElement) {
     assume(
@@ -583,8 +475,6 @@ export default class SkinParser {
 
     if (this._phase == GROUP_PHASE) {
       this._imageManager.setBimapImg(bitmap);
-      // await this._imageManager.loadUniquePaths();
-      // await this._imageManager.ensureBitmapsLoaded();
     }
   }
 
@@ -690,12 +580,11 @@ export default class SkinParser {
     if (parent instanceof Group) {
       parent.addSystemObject(systemObj);
     } else {
-      // Script archives can also live in <groupdef /> but we don't know how to do that.
+      // Script archives can also live in <groupdef /> Lets UI_ROOT handle that.
       console.log(
         ">>ScriptLoad at non group: ",
         `@${file}`,
-        typeof parent,
-        parent == null ? "NULL???????" : parent
+        typeof parent
       );
       this._uiRoot.addSystemObject(systemObj);
     }
@@ -753,7 +642,6 @@ export default class SkinParser {
 
   async buildWasabiButtonFace() {
     const face = this._uiRoot.getBitmap("studio.button");
-    // if (face == null && upperLeft !== null) {
     if (!face) {
       let upperLeft = this._uiRoot.getBitmap("studio.button.upperLeft");
       if (upperLeft) {
@@ -859,7 +747,7 @@ export default class SkinParser {
       "Unexpected children in <elementalias> XML node."
     );
 
-    // <elementalias id="studio.button" target="playlist.scroll.thumb"/>
+    //sample: <elementalias id="studio.button" target="playlist.scroll.thumb"/>
     this._uiRoot.addAlias(node.attributes.id, node.attributes.target);
   }
 
@@ -1145,8 +1033,6 @@ export default class SkinParser {
       //ignore for now
       return;
     }
-    // await this.traverseChildren(savedDocument, parent);
-    // console.log('savedDocument',savedDocument)
     if (
       savedDocument instanceof XmlElement ||
       savedDocument instanceof XmlDocument
@@ -1194,4 +1080,3 @@ export default class SkinParser {
     return parseXml(`<wrapper>${xml}</wrapper>`) as unknown as XmlElement;
   }
 }
-

@@ -26,8 +26,6 @@ export default class Grid extends GuiObj {
     }
     switch (key) {
       case "middle":
-        // this._image = value;
-        // this._renderBackground();
         this._setBitmap(this._middle, value);
         break;
       case "left":
@@ -73,7 +71,6 @@ export default class Grid extends GuiObj {
 
   _setBitmap(element: HTMLElement, bitmap_id: string) {
     const bitmap = UI_ROOT.getBitmap(bitmap_id);
-    // this.setBackgroundImage(bitmap);
     if(bitmap){
         bitmap.setAsBackground(element);
         element.style.width = px(bitmap.getWidth());
@@ -82,15 +79,11 @@ export default class Grid extends GuiObj {
 
   draw() {
     super.draw();
-    // this._div.setAttribute("data-obj-name", "Layer");
-    // this._div.style.pointerEvents = this._sysregion==-2 || this._ghost? 'none' : 'auto';
     this._div.style.pointerEvents = 'none';
-    // this._div.style.overflow = "hidden";
     this._div.style.removeProperty("display");
     this._div.classList.add("webamp--img");
     this._renderBackground();
   }
-  //setRegionFromMap(regionMap:Map, threshold:number)
 
   isinvalid():boolean {
     return false;
