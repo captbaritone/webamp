@@ -59,9 +59,9 @@ export default class Layer extends Movable {
     const bitmap = this._image != null ? UI_ROOT.getBitmap(this._image) : null;
     this.setBackgroundImage(bitmap);
     this.setInactiveBackgroundImage(bitmap);
-    if(this._inactiveImage){
-      this.setInactiveBackgroundImage(UI_ROOT.getBitmap(this._inactiveImage))
-      this._div.classList.add('inactivable')
+    if (this._inactiveImage) {
+      this.setInactiveBackgroundImage(UI_ROOT.getBitmap(this._inactiveImage));
+      this._div.classList.add("inactivable");
     }
   }
 

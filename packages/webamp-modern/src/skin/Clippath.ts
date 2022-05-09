@@ -4,7 +4,11 @@ export class Edges {
   _bottom: string[] = [];
   _left: string[] = [];
 
-  parseCanvasTransparency(canvas: HTMLCanvasElement, preferedWidth:number, preferedHeight:number) {
+  parseCanvasTransparency(
+    canvas: HTMLCanvasElement,
+    preferedWidth: number,
+    preferedHeight: number
+  ) {
     const w = preferedWidth || canvas.width;
     const h = preferedHeight || canvas.height;
     const ctx = canvas.getContext("2d");

@@ -4,7 +4,6 @@ import { loadSkin } from "./skin/skinLoader";
 import UI_ROOT from "./UIRoot";
 import { IWebampModern, Options, WebAmpModern } from "./WebampModernInteface";
 
-
 function hack() {
   // Without this Snowpack will try to treeshake out resolver causing a circular
   // dependency.
@@ -21,7 +20,7 @@ export class Webamp5 extends WebAmpModern {
   _container: HTMLElement;
 
   constructor(container: HTMLElement, options: Options = {}) {
-    super(container, options)
+    super(container, options);
     this._container = container || document.body;
     this._options = { ...DEFAULT_OPTIONS, ...options };
     this.switchSkin(this._options.skin);
@@ -33,12 +32,11 @@ export class Webamp5 extends WebAmpModern {
   switchSkin(skinPath: string): void {
     loadSkin(this._container, skinPath);
   }
-  
-  playSong(songurl: string /* or track */): void {    
-  }
+
+  playSong(songurl: string /* or track */): void {}
 
   onLogMessage(callback: (message: string) => void) {
-    UI_ROOT.on('onlogmessage', callback)
+    UI_ROOT.on("onlogmessage", callback);
   }
 }
 
@@ -52,4 +50,4 @@ declare global {
 async function main() {
   window.WebampModern = Webamp5;
 }
-main()
+main();

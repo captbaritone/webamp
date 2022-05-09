@@ -429,7 +429,7 @@ export default class GuiObj extends XmlObj {
     // temporary stop complaining missing obj, reduce polution of Devtool's Cnsole
     const warnMissingObject = false;
     if (warnMissingObject && !ret && id != "sysmenu") {
-       console.warn(msg);
+      console.warn(msg);
     }
     return ret;
   }

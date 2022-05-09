@@ -326,12 +326,18 @@ offsety - (int) Extra pixels to be added to or subtracted from the calculated x 
       }
       //? vertical align
       if (this._valign != "center") {
-        this._div.style.setProperty("--valign", this._valign=='top'?'flex-start':'flex-end');
+        this._div.style.setProperty(
+          "--valign",
+          this._valign == "top" ? "flex-start" : "flex-end"
+        );
       } else {
         this._div.style.removeProperty("--valign");
       }
       //? margin
-      this._div.style.setProperty("--hspacing", px(font.getHorizontalSpacing()));
+      this._div.style.setProperty(
+        "--hspacing",
+        px(font.getHorizontalSpacing())
+      );
 
       this.setBackgroundImage(font);
       this._div.style.backgroundSize = "0"; //disable parent background, because only children will use it

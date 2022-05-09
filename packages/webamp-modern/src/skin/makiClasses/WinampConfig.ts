@@ -31,7 +31,7 @@ export class WinampConfigGroup {
   }
 
   getint(itemName: string): number {
-    return parseInt(this.getstring(itemName)||'0');
+    return parseInt(this.getstring(itemName) || "0");
   }
 
   setstring(itemName: string, itemValue: string) {

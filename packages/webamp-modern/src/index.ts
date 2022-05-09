@@ -40,10 +40,10 @@ async function main() {
       "assets/Just_Plain_Ant_-_05_-_Stumble.mp3",
     ],
   };
-  
+
   setStatus("Downloading MP3...");
   webamp = new window.WebampModern(document.getElementById("web-amp"), option);
-  webamp.onLogMessage(setStatus)
+  webamp.onLogMessage(setStatus);
 
   setStatus("");
 }

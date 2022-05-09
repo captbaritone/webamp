@@ -83,5 +83,4 @@ export default class BitmapFont extends Bitmap {
   setExternalBitmap(isExternal: boolean) {
     this._externalBitmap = isExternal;
   }
-
 }

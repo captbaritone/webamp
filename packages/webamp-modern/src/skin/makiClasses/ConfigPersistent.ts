@@ -5,7 +5,6 @@ export type SectionValues = { [key: string]: string };
 export default class ConfigPersistent extends BaseObject {
   _configTree: { [section: string]: SectionValues };
 
-
   getStorageName(): string {
     return `${this.getclassname()}.${this.getId() || "~"}`;
   }
@@ -36,10 +35,10 @@ export default class ConfigPersistent extends BaseObject {
     return this.getSectionValues(section)[key];
   }
 
-  setValue(section:string, key: string, value: string): string {
-    if (this.getValue(section,key) != value) {
+  setValue(section: string, key: string, value: string): string {
+    if (this.getValue(section, key) != value) {
       const values = this.getSectionValues(section);
-      values[key] = value
+      values[key] = value;
       this._saveState();
     }
     return value;
@@ -53,4 +52,3 @@ export default class ConfigPersistent extends BaseObject {
     );
   }, 500);
 }
-

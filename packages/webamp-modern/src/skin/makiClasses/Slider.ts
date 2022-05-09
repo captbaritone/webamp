@@ -304,8 +304,6 @@ export default class Slider extends GuiObj {
     this.doSetPosition(this.getposition());
   }
 
-  
-
   onsetposition(newPos: number) {
     this._onSetPositionEvenEaten = UI_ROOT.vm.dispatch(this, "onsetposition", [
       //needed by seekerGhost
@@ -396,7 +394,7 @@ export default class Slider extends GuiObj {
       }
     }
   }
-  
+
   draw() {
     super.draw();
     this._div.setAttribute("data-obj-name", "Slider");

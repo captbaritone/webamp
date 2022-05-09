@@ -52,11 +52,11 @@ export default class ComponentBucket extends Group {
     this._wrapper.style.setProperty(anchor, px(x));
     return x;
   }
-  
+
   getscroll(): number {
     const anchor = this._vertical ? "top" : "left";
-    const value = parseInt( this._wrapper.style.getPropertyValue(anchor));
-    return value
+    const value = parseInt(this._wrapper.style.getPropertyValue(anchor));
+    return value;
   }
 
   getnumchildren(): number {

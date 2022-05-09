@@ -392,9 +392,9 @@ class BarPainter extends VisPainter {
     var x2 = Math.round(this._barWidth * (barIndex + 1)) - 2;
     var y = h - barHeight;
 
-    ctx.drawImage(this._bar, 0,y,1,h-y, x,y,  x2 - x + 1, h - y);
+    ctx.drawImage(this._bar, 0, y, 1, h - y, x, y, x2 - x + 1, h - y);
 
-    if(this._vis._peaks){
+    if (this._vis._peaks) {
       const peakY = h - peakHeight;
       ctx.drawImage(this._peak, 0, 0, 1, 1, x, peakY, x2 - x + 1, 1);
     }
@@ -415,12 +415,11 @@ class BarPainter extends VisPainter {
 
     ctx.drawImage(this._bar, x, y, x2 - x + 1, h - y);
 
-    if(this._vis._peaks){
+    if (this._vis._peaks) {
       const peakY = h - peakHeight;
       ctx.drawImage(this._peak, 0, 0, 1, 1, x, peakY, x2 - x + 1, 1);
     }
   }
-
 }
 
 //? =============================== OSCILOSCOPE PAINTER ===============================

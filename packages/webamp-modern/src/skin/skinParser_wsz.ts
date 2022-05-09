@@ -77,14 +77,11 @@ export default class ClassicSkinParser extends SkinParser {
     return super.parseXmlFragment(xml);
   }
 
-  
-
   //special case, wsz never use external/linked bitmap in its filename
   _isExternalBitmapFont(font: BitmapFont) {
     return false;
   }
 
-  
   async eqvis(node: XmlElement, parent: any): Promise<EqVis> {
     const eqv = await super.eqvis(node, parent);
 

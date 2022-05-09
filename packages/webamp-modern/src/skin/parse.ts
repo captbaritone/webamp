@@ -581,11 +581,7 @@ export default class SkinParser {
       parent.addSystemObject(systemObj);
     } else {
       // Script archives can also live in <groupdef /> Lets UI_ROOT handle that.
-      console.log(
-        ">>ScriptLoad at non group: ",
-        `@${file}`,
-        typeof parent
-      );
+      console.log(">>ScriptLoad at non group: ", `@${file}`, typeof parent);
       this._uiRoot.addSystemObject(systemObj);
     }
   }

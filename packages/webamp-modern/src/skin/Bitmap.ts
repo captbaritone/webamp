@@ -1,7 +1,7 @@
 import { assert, getId, normalizeDomId, num, px } from "../utils";
 import ImageManager from "./ImageManager";
 
-export function genCssVar(bitmapId:string): string {
+export function genCssVar(bitmapId: string): string {
   return `--bitmap-${bitmapId.replace(/[^a-zA-Z0-9]/g, "-")}`;
 }
 

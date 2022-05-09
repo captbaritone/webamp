@@ -26,12 +26,13 @@ import AlbumArt from "./makiClasses/AlbumArt";
 import Region from "./makiClasses/Region";
 import { PlEdit, PlDir } from "./makiClasses/PlayList";
 
-
 const CLASSES = [
   BaseObject,
   Config,
-  ConfigItem, ConfigAttribute,
-  WinampConfig, WinampConfigGroup,
+  ConfigItem,
+  ConfigAttribute,
+  WinampConfig,
+  WinampConfigGroup,
   ComponentBucket,
   Region,
   AlbumArt,
@@ -51,7 +52,8 @@ const CLASSES = [
   Timer,
   Slider,
   Vis,
-  PlEdit, PlDir,
+  PlEdit,
+  PlDir,
   GuiObj,
 ];
 

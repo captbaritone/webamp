@@ -17,7 +17,13 @@ const files = {
 Object.keys(files).forEach((name) => {
   const sourcePath = files[name];
   const types = parser.parseFile(sourcePath);
-  const destinationPath = path.join(__dirname, `../src/maki/objectData/${name}.js`);
+  const destinationPath = path.join(
+    __dirname,
+    `../src/maki/objectData/${name}.js`
+  );
 
-  fs.writeFileSync(destinationPath, `export default ${JSON.stringify(types, null, 2)}`);
+  fs.writeFileSync(
+    destinationPath,
+    `export default ${JSON.stringify(types, null, 2)}`
+  );
 });

@@ -154,7 +154,7 @@ export default class Button extends GuiObj {
 
   init() {
     super.init();
-    
+
     if (this._action != null) {
       // listen the actual action state
       UI_ROOT.on(this._action.toLowerCase(), () =>

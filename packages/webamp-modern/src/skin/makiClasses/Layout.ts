@@ -54,7 +54,6 @@ export default class Layout extends Group {
     }
   }
 
-
   getcontainer(): Container {
     return this._parent as unknown as Container;
   }
@@ -205,11 +204,13 @@ export default class Layout extends Group {
       const container = this._parent;
       container.setXmlAttr(
         "x",
-        (/* container._x + */ this._resizingDiv.offsetLeft).toString()
+        this._resizingDiv/* container._x + */ .offsetLeft
+          .toString()
       );
       container.setXmlAttr(
         "y",
-        (/* container._y + */ this._resizingDiv.offsetTop).toString()
+        this._resizingDiv/* container._y + */ .offsetTop
+          .toString()
       );
       this._resizingDiv.remove();
       this._resizingDiv = null;

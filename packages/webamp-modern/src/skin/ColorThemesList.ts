@@ -94,24 +94,24 @@ export default class ColorThemesList extends GuiObj {
         }
         return true;
       case "colorthemes_previous":
-        if(this._select.selectedIndex > 0) {
+        if (this._select.selectedIndex > 0) {
           this._select.selectedIndex--;
-          return this.handleAction('colorthemes_switch')
+          return this.handleAction("colorthemes_switch");
         }
-        break
+        break;
       case "colorthemes_next":
-        if(this._select.selectedIndex < this._select.options.length) {
+        if (this._select.selectedIndex < this._select.options.length) {
           this._select.selectedIndex++;
-          return this.handleAction('colorthemes_switch')
+          return this.handleAction("colorthemes_switch");
         }
-        break
+        break;
     }
     return false;
   }
 
   draw() {
     super.draw();
-    this._div.classList.add('list');
+    this._div.classList.add("list");
     this._div.setAttribute("data-obj-name", "ColorThemes:List");
     this._renderGammaSets();
   }

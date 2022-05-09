@@ -1,11 +1,9 @@
 import ConfigPersistent from "./makiClasses/ConfigPersistent";
 
 class PrivateConfig extends ConfigPersistent {
-
   getStorageName(): string {
-    return '_PRIVATE-CONFIG_';
+    return "_PRIVATE-CONFIG_";
   }
-
 
   getPrivateInt(section: string, item: string, defvalue: number): number {
     let value: string = this.getValue(section, item);
@@ -17,7 +15,7 @@ class PrivateConfig extends ConfigPersistent {
   }
 
   setPrivateInt(section: string, item: string, value: number): number {
-    const strValue: string = this.setValue(section, item, String(value))
+    const strValue: string = this.setValue(section, item, String(value));
     return Number(strValue);
   }
 
@@ -27,11 +25,11 @@ class PrivateConfig extends ConfigPersistent {
     if (value == null) {
       value = this.setValue(section, item, defvalue);
     }
-    return value
+    return value;
   }
 
   setPrivateString(section: string, item: string, value: string): string {
-    return this.setValue(section, item, String(value))
+    return this.setValue(section, item, String(value));
   }
 }
 

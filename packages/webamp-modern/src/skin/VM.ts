@@ -18,11 +18,11 @@ export default class Vm {
         ) {
           const reversedArgs = [...args].reverse();
           this.interpret(script, binding.commandOffset, reversedArgs);
-          return 1
+          return 1;
         }
       }
     }
-    return 0
+    return 0;
   }
 
   addScript(maki: ParsedMaki): number {

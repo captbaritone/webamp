@@ -81,7 +81,6 @@ export default class EqVis extends GuiObj {
       ctx.fillRect(paddingLeft + x, yTop, 1, height);
       lastY = y;
     }
-
   };
 
   setXmlAttr(key: string, value: string): boolean {
@@ -143,8 +142,8 @@ export default class EqVis extends GuiObj {
         //from bitmap. used by classic skin
         const bitmap = UI_ROOT.getBitmap(this._preampBitmapName);
         this._preampImg.height = bitmap.getHeight(); //debug
-        ctx.drawImage(bitmap.getImg(), - bitmap.getLeft(), - bitmap.getTop());
-      } 
+        ctx.drawImage(bitmap.getImg(), -bitmap.getLeft(), -bitmap.getTop());
+      }
     }
     return this._preampImg;
   }

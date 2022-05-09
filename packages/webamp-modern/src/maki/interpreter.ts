@@ -45,7 +45,7 @@ export function interpret(
 }
 
 function validateVariable(v: Variable) {
-  if (v.type === "OBJECT" && typeof v.value !== "object" && v.value !==0) {
+  if (v.type === "OBJECT" && typeof v.value !== "object" && v.value !== 0) {
     debugger;
   }
 }
@@ -347,7 +347,11 @@ class Interpreter {
           if (returnType === "BOOLEAN") {
             assert(
               typeof value === "boolean",
-              `${klass.name}.${methodName} should return a boolean, but "${JSON.stringify(value)}"`
+              `${
+                klass.name
+              }.${methodName} should return a boolean, but "${JSON.stringify(
+                value
+              )}"`
             );
             value = value ? 1 : 0;
           }

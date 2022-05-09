@@ -18,7 +18,7 @@ export interface Options {
 export interface IWebampModern {
   switchSkin(skinPath: string): void;
   playSong(songurl: string /* or track */): void;
-  onLogMessage(callback: (message: string) => void)
+  onLogMessage(callback: (message: string) => void);
 }
 
 /**

@@ -1,7 +1,7 @@
 import GuiObj from "./GuiObj";
 
 // Maybe this?
-// http://wiki.winamp.com/wiki/ 
+// http://wiki.winamp.com/wiki/
 export default class LayoutStatus extends GuiObj {
   static GUID = "7fd5f21048dfacc45154a0a676dc6c57";
 
@@ -16,7 +16,7 @@ export default class LayoutStatus extends GuiObj {
     return true;
   }
 
-  callme(str: string){
-    console.log('callme:', str)
+  callme(str: string) {
+    console.log("callme:", str);
   }
 }

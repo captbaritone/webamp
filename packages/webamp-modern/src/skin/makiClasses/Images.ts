@@ -38,28 +38,28 @@ export default class Images extends Layer {
 
   init() {
     super.init();
-    this._frameCount = Math.ceil( this._getImageHeight() / this._frameHeight)-1;
+    this._frameCount =
+      Math.ceil(this._getImageHeight() / this._frameHeight) - 1;
     if (this._source == "volume") {
-        //TODO: make disposable:
-        UI_ROOT.audio.onVolumeChanged(this.updateVolume);
-        this.updateVolume()
-    }
-    else if (this._source == "balance") {
-        //TODO: make disposable:
-        UI_ROOT.audio.onBalanceChanged(this.updateBalance);
-        this.updateBalance()
+      //TODO: make disposable:
+      UI_ROOT.audio.onVolumeChanged(this.updateVolume);
+      this.updateVolume();
+    } else if (this._source == "balance") {
+      //TODO: make disposable:
+      UI_ROOT.audio.onBalanceChanged(this.updateBalance);
+      this.updateBalance();
     }
   }
 
   updateVolume = () => {
     const vol = UI_ROOT.audio.getVolume(); //0..1
-    this.gotoframe(vol * this._frameCount)
-  }
+    this.gotoframe(vol * this._frameCount);
+  };
 
   updateBalance = () => {
     const balance = UI_ROOT.audio.getBalance(); //0..1
-    this.gotoframe(balance * this._frameCount)
-  }
+    this.gotoframe(balance * this._frameCount);
+  };
 
   _getImageHeight(): number {
     const bitmap = UI_ROOT.getBitmap(this._image);

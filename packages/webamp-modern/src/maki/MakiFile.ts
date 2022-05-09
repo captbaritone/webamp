@@ -9,7 +9,7 @@ export default class MakiFile {
     this._i = 0;
   }
 
-  isEof():boolean {
+  isEof(): boolean {
     return this._i == this._arr.length;
   }
 
