@@ -5,6 +5,8 @@ Global Group EQg;
 Global Button btnEQ0, btnEQ1, btnEQ2;
 Global Layer eq1back, eq2back, eq3back, eq4back, eq5back, eq6back, eq7back, eq8back, eq9back, eq10back;
 Global Boolean manual_set;
+Global int freqmode;
+Global WinampConfigGroup eqwcg;
 
 Global Layout normal;
 
@@ -12,8 +14,8 @@ Global Layout normal;
 #define WINAMPBANDS "70 Hz,180 Hz,320 Hz,600 Hz,1 KHz,3 KHz,6 KHz,12 KHz,14 KHz,16 KHz"
 
 System.onScriptLoaded() {
-	WinampConfigGroup eqwcg = WinampConfig.getGroup("{72409F84-BAF1-4448-8211-D84A30A1591A}");
-	int freqmode = eqwcg.getInt("frequencies"); // returns 0 for classical winamp levels, 1 for ISO levels
+	eqwcg = WinampConfig.getGroup("{72409F84-BAF1-4448-8211-D84A30A1591A}");
+	freqmode = eqwcg.getInt("frequencies"); // returns 0 for classical winamp levels, 1 for ISO levels
 
 	EQg = getScriptGroup();
 
@@ -32,57 +34,103 @@ System.onScriptLoaded() {
     btnEQ0 = EQg.findObject("12db");
 	btnEQ1 = EQg.findObject("0db");
     btnEQ2 = EQg.findObject("-12db");
+
+    //system.onEqFreqChanged(freqmode);
 }
 
 btnEQ0.onLeftClick() {
+    freqmode = eqwcg.getInt("frequencies");
 	manual_set = 1;
 	for(int i=0; i<10; i++) setEqBand(i, 127);
 	manual_set = 0;
 
-    eq1back.setXMLParam("image", "eq.slider14");
-    eq2back.setXMLParam("image", "eq.slider14");
-    eq3back.setXMLParam("image", "eq.slider14");
-    eq4back.setXMLParam("image", "eq.slider14");
-    eq5back.setXMLParam("image", "eq.slider14");
-    eq6back.setXMLParam("image", "eq.slider14");
-    eq7back.setXMLParam("image", "eq.slider14");
-    eq8back.setXMLParam("image", "eq.slider14");
-    eq9back.setXMLParam("image", "eq.slider14");
-    eq10back.setXMLParam("image", "eq.slider14");
+    if (freqmode == 1)
+	{
+        eq1back.setXMLParam("image", "iso.eq.slider14");
+        eq2back.setXMLParam("image", "iso.eq.slider14");
+        eq3back.setXMLParam("image", "iso.eq.slider14");
+        eq4back.setXMLParam("image", "iso.eq.slider14");
+        eq5back.setXMLParam("image", "iso.eq.slider14");
+        eq6back.setXMLParam("image", "iso.eq.slider14");
+        eq7back.setXMLParam("image", "iso.eq.slider14");
+        eq8back.setXMLParam("image", "iso.eq.slider14");
+        eq9back.setXMLParam("image", "iso.eq.slider14");
+        eq10back.setXMLParam("image", "iso.eq.slider14");
+    }else{
+        eq1back.setXMLParam("image", "eq.slider14");
+        eq2back.setXMLParam("image", "eq.slider14");
+        eq3back.setXMLParam("image", "eq.slider14");
+        eq4back.setXMLParam("image", "eq.slider14");
+        eq5back.setXMLParam("image", "eq.slider14");
+        eq6back.setXMLParam("image", "eq.slider14");
+        eq7back.setXMLParam("image", "eq.slider14");
+        eq8back.setXMLParam("image", "eq.slider14");
+        eq9back.setXMLParam("image", "eq.slider14");
+        eq10back.setXMLParam("image", "eq.slider14");
+    }
 }
 
 btnEQ1.onLeftClick() {
+    freqmode = eqwcg.getInt("frequencies");
 	manual_set = 1;
 	for(int i=0; i<10; i++) setEqBand(i, 1);
 	manual_set = 0;
 
-    eq1back.setXMLParam("image", "eq.slider0");
-    eq2back.setXMLParam("image", "eq.slider0");
-    eq3back.setXMLParam("image", "eq.slider0");
-    eq4back.setXMLParam("image", "eq.slider0");
-    eq5back.setXMLParam("image", "eq.slider0");
-    eq6back.setXMLParam("image", "eq.slider0");
-    eq7back.setXMLParam("image", "eq.slider0");
-    eq8back.setXMLParam("image", "eq.slider0");
-    eq9back.setXMLParam("image", "eq.slider0");
-    eq10back.setXMLParam("image", "eq.slider0");
+    if (freqmode == 1)
+	{
+        eq1back.setXMLParam("image", "iso.eq.slider0");
+        eq2back.setXMLParam("image", "iso.eq.slider0");
+        eq3back.setXMLParam("image", "iso.eq.slider0");
+        eq4back.setXMLParam("image", "iso.eq.slider0");
+        eq5back.setXMLParam("image", "iso.eq.slider0");
+        eq6back.setXMLParam("image", "iso.eq.slider0");
+        eq7back.setXMLParam("image", "iso.eq.slider0");
+        eq8back.setXMLParam("image", "iso.eq.slider0");
+        eq9back.setXMLParam("image", "iso.eq.slider0");
+        eq10back.setXMLParam("image", "iso.eq.slider0");
+    }else{
+        eq1back.setXMLParam("image", "eq.slider0");
+        eq2back.setXMLParam("image", "eq.slider0");
+        eq3back.setXMLParam("image", "eq.slider0");
+        eq4back.setXMLParam("image", "eq.slider0");
+        eq5back.setXMLParam("image", "eq.slider0");
+        eq6back.setXMLParam("image", "eq.slider0");
+        eq7back.setXMLParam("image", "eq.slider0");
+        eq8back.setXMLParam("image", "eq.slider0");
+        eq9back.setXMLParam("image", "eq.slider0");
+        eq10back.setXMLParam("image", "eq.slider0");
+    }
 }
 
 btnEQ2.onLeftClick() {
+    freqmode = eqwcg.getInt("frequencies");
 	manual_set = 1;
 	for(int i=0; i<10; i++) setEqBand(i, -127);
 	manual_set = 0;
-
-    eq1back.setXMLParam("image", "eq.slider-14");
-    eq2back.setXMLParam("image", "eq.slider-14");
-    eq3back.setXMLParam("image", "eq.slider-14");
-    eq4back.setXMLParam("image", "eq.slider-14");
-    eq5back.setXMLParam("image", "eq.slider-14");
-    eq6back.setXMLParam("image", "eq.slider-14");
-    eq7back.setXMLParam("image", "eq.slider-14");
-    eq8back.setXMLParam("image", "eq.slider-14");
-    eq9back.setXMLParam("image", "eq.slider-14");
-    eq10back.setXMLParam("image", "eq.slider-14");
+    if (freqmode == 1)
+	{
+        eq1back.setXMLParam("image", "iso.eq.slider-14");
+        eq2back.setXMLParam("image", "iso.eq.slider-14");
+        eq3back.setXMLParam("image", "iso.eq.slider-14");
+        eq4back.setXMLParam("image", "iso.eq.slider-14");
+        eq5back.setXMLParam("image", "iso.eq.slider-14");
+        eq6back.setXMLParam("image", "iso.eq.slider-14");
+        eq7back.setXMLParam("image", "iso.eq.slider-14");
+        eq8back.setXMLParam("image", "iso.eq.slider-14");
+        eq9back.setXMLParam("image", "iso.eq.slider-14");
+        eq10back.setXMLParam("image", "iso.eq.slider-14");
+    }else{
+        eq1back.setXMLParam("image", "eq.slider-14");
+        eq2back.setXMLParam("image", "eq.slider-14");
+        eq3back.setXMLParam("image", "eq.slider-14");
+        eq4back.setXMLParam("image", "eq.slider-14");
+        eq5back.setXMLParam("image", "eq.slider-14");
+        eq6back.setXMLParam("image", "eq.slider-14");
+        eq7back.setXMLParam("image", "eq.slider-14");
+        eq8back.setXMLParam("image", "eq.slider-14");
+        eq9back.setXMLParam("image", "eq.slider-14");
+        eq10back.setXMLParam("image", "eq.slider-14");
+    }
 }
 
 system.onEqBandChanged(int band, int value)

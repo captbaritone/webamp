@@ -75,14 +75,70 @@
 <bitmap id="eqshade.shade" file="skin/eq_ex.bmp" x="254" y="3" w="9" h="9"/>
 <bitmap id="eqshade.shadep" file="skin/eq_ex.bmp" x="1" y="47" w="9" h="9"/>
 
+<bitmap id="wa.iso.eq" file="skin/eqmain_iso.bmp" x="0" y="0" w="275" h="116"/>
+<bitmap id="wa.iso.eqvis.bg" file="skin/eqmain_iso.bmp" x="0" y="294" w="113" h="19"/>
+<bitmap id="waisoeq.titlebar.on" file="skin/eqmain_iso.bmp" x="0" y="134" w="275" h="14"/>
+<bitmap id="waisoeq.titlebar.off" file="skin/eqmain_iso.bmp" x="0" y="149" w="275" h="14"/>
+
+<bitmap id="iso.eq.close" file="skin/eqmain_iso.bmp" x="0" y="116" w="9" h="9"/>
+<bitmap id="iso.eq.closep" file="skin/eqmain_iso.bmp" x="0" y="125" w="9" h="9"/>
+
+<bitmap id="iso.eq.switch" file="skin/eqmain_iso.bmp" x="254" y="137" h="9" w="9"/>
+
+<bitmap id="iso.eq.presets" file="skin/eqmain_iso.bmp"  x="224" y="164" w="44" h="12"/>
+<bitmap id="iso.eq.presetsp" file="skin/eqmain_iso.bmp" x="224" y="176" w="44" h="12"/>
+
+<bitmap id="iso.eq.off" file="skin/eqmain_iso.bmp"  x="10" y="119" w="25" h="12"/>
+<bitmap id="iso.eq.offp" file="skin/eqmain_iso.bmp" x="128" y="119" w="25" h="12"/>
+<bitmap id="iso.eq.on" file="skin/eqmain_iso.bmp"  x="69" y="119" w="25" h="12"/>
+
+<bitmap id="iso.eq.auto" file="skin/eqmain_iso.bmp"   x="35" y="119" w="33" h="12"/>
+<bitmap id="iso.eq.autop" file="skin/eqmain_iso.bmp"  x="153" y="119" w="33" h="12"/>
+<bitmap id="iso.eq.autoon" file="skin/eqmain_iso.bmp" x="94" y="119" w="33" h="12"/>
+
+<bitmap id="iso.eq.slider0" file="skin/eqmain_iso.bmp" x="13" y="229" h="63" w="14"/>
+<bitmap id="iso.eq.slider1" file="skin/eqmain_iso.bmp" x="13" y="229" h="63" w="14"/>
+<bitmap id="iso.eq.slider2" file="skin/eqmain_iso.bmp" x="28" y="229" h="63" w="14"/>
+<bitmap id="iso.eq.slider3" file="skin/eqmain_iso.bmp" x="43" y="229" h="63" w="14"/>
+<bitmap id="iso.eq.slider4" file="skin/eqmain_iso.bmp" x="58" y="229" h="63" w="14"/>
+<bitmap id="iso.eq.slider5" file="skin/eqmain_iso.bmp" x="73" y="229" h="63" w="14"/>
+<bitmap id="iso.eq.slider6" file="skin/eqmain_iso.bmp" x="88" y="229" h="63" w="14"/>
+<bitmap id="iso.eq.slider7" file="skin/eqmain_iso.bmp" x="103" y="229" h="63" w="14"/>
+<bitmap id="iso.eq.slider8" file="skin/eqmain_iso.bmp" x="118" y="229" h="63" w="14"/>
+<bitmap id="iso.eq.slider9" file="skin/eqmain_iso.bmp" x="133" y="229" h="63" w="14"/>
+<bitmap id="iso.eq.slider10" file="skin/eqmain_iso.bmp" x="148" y="229" h="63" w="14"/>
+<bitmap id="iso.eq.slider11" file="skin/eqmain_iso.bmp" x="163" y="229" h="63" w="14"/>
+<bitmap id="iso.eq.slider12" file="skin/eqmain_iso.bmp" x="178" y="229" h="63" w="14"/>
+<bitmap id="iso.eq.slider13" file="skin/eqmain_iso.bmp" x="193" y="229" h="63" w="14"/>
+<bitmap id="iso.eq.slider14" file="skin/eqmain_iso.bmp" x="208" y="229" h="63" w="14"/>
+<bitmap id="iso.eq.slider-1" file="skin/eqmain_iso.bmp" x="208" y="164" h="63" w="14"/>
+<bitmap id="iso.eq.slider-2" file="skin/eqmain_iso.bmp" x="193" y="164" h="63" w="14"/>
+<bitmap id="iso.eq.slider-3" file="skin/eqmain_iso.bmp" x="178" y="164" h="63" w="14"/>
+<bitmap id="iso.eq.slider-4" file="skin/eqmain_iso.bmp" x="163" y="164" h="63" w="14"/>
+<bitmap id="iso.eq.slider-5" file="skin/eqmain_iso.bmp" x="148" y="164" h="63" w="14"/>
+<bitmap id="iso.eq.slider-6" file="skin/eqmain_iso.bmp" x="133" y="164" h="63" w="14"/>
+<bitmap id="iso.eq.slider-7" file="skin/eqmain_iso.bmp" x="118" y="164" h="63" w="14"/>
+<bitmap id="iso.eq.slider-8" file="skin/eqmain_iso.bmp" x="103" y="164" h="63" w="14"/>
+<bitmap id="iso.eq.slider-9" file="skin/eqmain_iso.bmp" x="88" y="164" h="63" w="14" />
+<bitmap id="iso.eq.slider-10" file="skin/eqmain_iso.bmp" x="73" y="164" h="63" w="14"/>
+<bitmap id="iso.eq.slider-11" file="skin/eqmain_iso.bmp" x="58" y="164" h="63" w="14"/>
+<bitmap id="iso.eq.slider-12" file="skin/eqmain_iso.bmp" x="43" y="164" h="63" w="14"/>
+<bitmap id="iso.eq.slider-13" file="skin/eqmain_iso.bmp" x="28" y="164" h="63" w="14"/>
+<bitmap id="iso.eq.slider-14" file="skin/eqmain_iso.bmp" x="13" y="164" h="63" w="14"/>
+
+<bitmap id="iso.eq.slider" file="skin/eqmain_iso.bmp" x="0" y="164" h="11" w="11"/>
+<bitmap id="iso.eq.sliderp" file="skin/eqmain_iso.bmp" x="0" y="176" h="11" w="11"/>
+
 </elements>
 
 <container id="EQ" name="Equalizer" default_w="275">
     <groupdef id="eq">
 
         <layer id="blah" dblClickAction="SWITCH;shadeeq" x="0" y="0" h="14" w="275" move="1"/>
+        <layer id="eq.bg" image="wa.eq" ghost="1"/>
+
         <layer id="waeq.titlebar" x="0" y="0" image="waeq.titlebar.on" inactiveimage="waeq.titlebar.off" ghost="1"/>
-        <layer id="waeq.titlebar" x="86" y="17" image="wa.eqvis.bg" ghost="1"/>
+        <layer id="waeq.eqvis" x="86" y="17" image="wa.eqvis.bg" ghost="1"/>
 
         <button id="eq.switch" x="254" y="3" action="SWITCH" param="shadeeq" image="eq.switch" downimage="eq.switchp" activealpha="255" inactivealpha="0"/>
         <button id="eq.close" x="264" y="3" action="CLOSE" image="eq.close" downimage="eq.closep" activealpha="255" inactivealpha="0"/>
@@ -125,22 +181,7 @@
 
         <script file="scripts/eq_layers.maki"/>
 
-        <!--grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="74" y="127" h="88" w="8"/>
-        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="111" y="127" h="88" w="8"/>
-        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="149" y="127" h="88" w="8"/>
-        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="186" y="127" h="88" w="8"/>
-        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="224" y="127" h="88" w="8"/>
-        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="261" y="127" h="88" w="8"/>
-        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="299" y="127" h="88" w="8"/>
-        <grid top="wasabi.slider.vertical.top" middle="wasabi.slider.vertical.middle" bottom="wasabi.slider.vertical.bottom" x="336" y="127" h="88" w="8"/>
-        <Slider id="eq1" orientation="vertical" action="EQ_BAND" param="1" x="67" y="127" h="88" w="22" thumb="wasabi.slider.vertical.button" downThumb="wasabi.slider.vertical.button.pressed"/>
-        <Slider id="eq2" orientation="vertical" action="EQ_BAND" param="2" x="104" y="127" h="88" w="22" thumb="wasabi.slider.vertical.button" downThumb="wasabi.slider.vertical.button.pressed"/>
-        <Slider id="eq3" orientation="vertical" action="EQ_BAND" param="3" x="142" y="127" h="88" w="22" thumb="wasabi.slider.vertical.button" downThumb="wasabi.slider.vertical.button.pressed"/>
-        <Slider id="eq4" orientation="vertical" action="EQ_BAND" param="4" x="179" y="127" h="88" w="22" thumb="wasabi.slider.vertical.button" downThumb="wasabi.slider.vertical.button.pressed"/>
-        <Slider id="eq5" orientation="vertical" action="EQ_BAND" param="5" x="217" y="127" h="88" w="22" thumb="wasabi.slider.vertical.button" downThumb="wasabi.slider.vertical.button.pressed"/>
-        <Slider id="eq6" orientation="vertical" action="EQ_BAND" param="6" x="254" y="127" h="88" w="22" thumb="wasabi.slider.vertical.button" downThumb="wasabi.slider.vertical.button.pressed"/>
-        <Slider id="eq7" orientation="vertical" action="EQ_BAND" param="7" x="292" y="127" h="88" w="22" thumb="wasabi.slider.vertical.button" downThumb="wasabi.slider.vertical.button.pressed"/>
-        <Slider id="eq8" orientation="vertical" action="EQ_BAND" param="8" x="329" y="127" h="88" w="22" thumb="wasabi.slider.vertical.button" downThumb="wasabi.slider.vertical.button.pressed"/-->
+    <script file="scripts/eq_iso_mode.maki"/>
 
     </groupdef>
 
@@ -158,7 +199,7 @@
 
     </groupdef>
 
-    <layout id="EQ" background="wa.eq" minimum_w="275" minimum_h="116" maximum_w="275" maximum_h="116">
+    <layout id="EQ" background="wasabi.frame.basetexture" minimum_w="275" minimum_h="116" maximum_w="275" maximum_h="116">
         <group id="eq"/>
     </layout>
     <layout id="shadeeq" background="eq.shade.on" minimum_h="14" minimum_w="275">
