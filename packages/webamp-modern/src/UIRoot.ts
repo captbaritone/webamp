@@ -658,6 +658,10 @@ export class UIRoot {
   }
 
   //? Logging things ========================
+  /**
+   * This is a replacement of setStatus('Parsing XML and initializing images...')
+   * @param message string to be sent to application
+   */
   logMessage(message:string){
     this.trigger('onlogmessage', message)
   }
